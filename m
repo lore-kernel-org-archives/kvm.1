@@ -1,120 +1,127 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC04451357C;
-	Tue, 29 Sep 2026 11:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D8E5158B6;
+	Tue, 29 Sep 2026 11:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790681473; cv=none; b=Yq0CHLK5xIBo3DIxB3n8rTZtBitsCWc3Epxt4tjtN2o+yrw4lM4yI2mP12kxr73orQLGsXgYETC/SbIcYjOPJlq0B1N0oRs1F0OwLvuV0/htAY6nyMmzIoCsglRKMviQIGV63KCgtAdvZSCkJEZTekCSkb1t9jXubhpzca63zHw=
+	t=1790681883; cv=none; b=Z0r38Yue/FUWauZDtZ3e0/5ujIi5wFmX8n9MKQKypW4/FeVGCtQa98+0qk8Q57K6msElv68jTUvUNt8pfocp22VGB4xMRw1Y5jIY4NDFgbLjGbYrNPHXXcE3ROO2Xb4ENvf4/WAX7PzT6w3geOqqNr2np56mwjmhPQJoVzPAzHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790681473; c=relaxed/simple;
-	bh=39WAh65SpL0BJXfTCIl7yx62Bw/nb/Mc+m5exwkUOZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TiTAn7Xs4iIhOP0iSmFWmhaxgNhZbbWpsKq2VdSFVSlU/n1XqcQZ9zwXePCsSp8qdGznGQZCENO8H9+94/U7/bNDOK5LNU1NRZkUqlsW7D6Qy8m0i9NIc4qnp4briLBhVh8lha+R0rXyUblU8C7lgOSvWHvt/jVD/BsI8BzOI28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pp3s2yHs; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790681883; c=relaxed/simple;
+	bh=tqjmlp+/lUnMUWbQnrX31y/+aHqlRJRtl0e4XiSbrZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I0ugvnN1OV3r1GQzXXTd9ecfGW9XyjjC5BXyKXZVZSyDmnjJ9vHbmPDDzDw1g4hGkdbEH4KDrchDVglcqZ8NJMKRl8ahvR4TickgOatWDoII0rF8h17XGrTDsnSVLNGiyy32FwLzjq7q33yAhTbJRdDCWYe/cmI1ETXEl7cWq0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=d0jXuIL/; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pp3s2yHs"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5Lvt2187741;
-	Tue, 29 Sep 2026 11:30:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Cvf5Xf
-	u+khajZRhnM2vhFUes+Kbf/fmv87LY0yilRxY=; b=pp3s2yHsuRE+s68seff0Rn
-	CzE9bvDk6a2aoGeiOHkWGnZVXSYdQxnt9IlOWY7g1/hmBCR6OrZyy2QZbZAO4aHi
-	mHyVWo7SJUrVJq78S1bGIpGrM3OjYc2akMwJttV+5e67A+dXfySgrcsbk5/mdXzs
-	nirg3qcvJwwKVEQY2euggXjUAnohWEoZ/Y+odXZESEo9YhIZD36+q/19TCn844ql
-	xIm1Hp5QtNMb6cWNSuHkTH9n4wramp+QLMRn7qkFc/WvAtthudFMy/h2HbFnGTLi
-	IcmLqs8ml1l1b2bUfEue3Bqf/KeqRGM1oRf2yVkz1Os+WruMSPaYdRRIg2ykueHA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qr6p89-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 11:30:57 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TAlWOe1617007;
-	Tue, 29 Sep 2026 11:30:56 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxrrw9kcu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 11:30:56 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TBUsVj47776004
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Sep 2026 11:30:54 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 738EE2004B;
-	Tue, 29 Sep 2026 11:30:54 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E93E20040;
-	Tue, 29 Sep 2026 11:30:52 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.43.88.139])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Sep 2026 11:30:52 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, Bui Nguyen Nhu Quynh <kaylovefoss@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] KVM: PPC: Fix callback check in kvmppc_gsm_refresh_info
-Date: Tue, 29 Sep 2026 17:00:51 +0530
-Message-ID: <179066556642.265207.5042470829768833413.b4-ty@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="d0jXuIL/"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B629C1476;
+	Tue, 29 Sep 2026 04:37:56 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F40D33F85F;
+	Tue, 29 Sep 2026 04:37:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790681880; bh=tqjmlp+/lUnMUWbQnrX31y/+aHqlRJRtl0e4XiSbrZM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=d0jXuIL/6Emp4J/TGs+f2eNtHj6eC2hd23MA10VhpzQ3oX5codkrdBvd36sYXREKb
+	 wHYjOdCMGCYCRWksplqCqoSYQsrLey51qyF2LE0dbXjQNTmdPNX1v/AIb9N210rlcn
+	 If/6UsSAoT/YifI0XMo6LFEJ8PZGxXtnEcR2pmqw=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Josh Hilke <jrhilke@google.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Wu Fei <wu.fei9@sanechips.com.cn>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/3] KVM: selftests: Add support for dirty-ring on dirty_log_perf_test
+Date: Tue, 29 Sep 2026 12:37:05 +0100
+Message-ID: <20260929113711.2064390-1-leo.bras@arm.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260918143124.9913-1-kaylovefoss@gmail.com>
-References: <20260907145626.7675e892-56-amachhiw@linux.ibm.com> <20260918143124.9913-1-kaylovefoss@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2850; i=leo.bras@arm.com; h=from:subject; bh=tqjmlp+/lUnMUWbQnrX31y/+aHqlRJRtl0e4XiSbrZM=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLJ2L5r+tcx4B/ODecnZDSUiZYXz+VLmZS2yP2O6QG+PX Mwpm5mLO0pZGMS4GGTFFFlkH81fxfN9SsaRKz8WwMxhZQIZwsDFKQATcf/DyPDdUOeawynG6om+ Utf2xdW85QvoL/7oMvNpq6dV5vYAJXWGP9ysr65NYnjHkxNU9/7jApHWin21KySMb6SldUw5rfN QgwUA
+X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA0NCBTYWx0ZWRfXxQrIG4TXKTm7
- kJgmDjFNCK38PrsZ7/iZIncsD61bt1wPlYOqhTTJ+TjYQobDKPoagF8+P4FpRFXxw8iiHWCq8jO
- vJ7yEebkb7iqNeYtjjZeX6litoHUPSvfTyPL/llbprPY1F4o3f7I25hJh5Tp8gugrCmTD+8DgbI
- f9abyQiuMzIKDgLir+gy7P/nUHFCMAjZxthq8BY6V+aG3bBtAXKytn/deqt4i36Wt8xN34fHPjI
- iEExOu+ELtxAvmobbfLTy3OCjvPf2dVyPkVwLtVNw2uNAIYT6kk839YcyrH9AxNMAPryU0f9b9a
- +3qCLD7UcPk7iGk9LgUrZeEzVzlWBC/CELouE0rWBwKbViKU+FRrq7QBvdLcj9mQUk6iWCjxoOK
- 3EhwY3Ac9Kiz9DfgXva3HF9C+l6r/uffUa8HJpjdlS/qsQ3jDm8HK9g99o4CaB0DWpgvMojJQml
- faIBDsk9f23sobRPmOg==
-X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abba171 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=YIANAUWjHg1vaRIBkk0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: IS5Q3jFlb55IySXQVDdL7Wgcz21oD-tY
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA0NCBTYWx0ZWRfX69obAp5echqk
- 44bhsbuKdLBxVfDNBI1r2/XghGQ8e/rhHlrGAVrSTh6otrG0BQTXu+Spke7ViQRIug5E6C/WIik
- K/E9syQNz+xCgWH1RqkQ/mZK1ADIR88=
-X-Proofpoint-GUID: HEir2pvLhUj7b05oo2dcFlXWw7a4oYZi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609290044
 
-On Fri, 18 Sep 2026 21:31:24 +0700, Bui Nguyen Nhu Quynh wrote:
-> The kvmppc_gsm_refresh_info() function incorrectly checks for the
-> presence of the fill_info callback instead of refresh_info.
-> 
-> This can lead to:
-> - NULL pointer dereference if refresh_info is NULL but fill_info is present
-> - EINVAL return if refresh_info is present but fill_info is NULL
-> 
-> [...]
+Add support to dirty-ring on dirty_log_perf_test, so we can measure
+performance differences when we change / improve the mechanism.
 
-Applied to powerpc/next.
+One big change in this set is that dirty-ring needs to be enabled 
+after the VM was created, but before any cpu is created, so for that,
+I made a few changes on memstress so it can actually take dirty-ring
+size as a parameter for VM creation. (Patch #1)
+I honestly don't think it's pretty, but I could not think on a
+better way of doing this without messing too much in the code.
 
-[1/1] KVM: PPC: Fix callback check in kvmppc_gsm_refresh_info
-      https://git.kernel.org/powerpc/c/a7ea67879af09438d38032107b89a62739b09e96
+Also added some checks in dirty-ring enable, so an error message on
+ring size is more informative.
 
-cheers
+Please provide feedback :)
+
+Thanks!
+Leo
+
+Changes since RFCv4:
+- Series title 
+- Rebase on v7.3-rc5
+Link: https://lore.kernel.org/all/20260729161519.3778839-2-leo.bras@arm.com/
+
+- Using acquire/release barriers to make sure there is no reorder between
+  incrementing iteration and summing the time spent on cleaning.
+- Improved ring-size checks, although not perfect due to reserved entries
+  affecting minimum size.
+- Do not allocate bitmaps for dirty-ring tests, as they are unused.
+- Improve help text
+- Make sure ret==0 before going back to vcpu_run in dirty-ring case
+Link: https://lore.kernel.org/all/20260708152232.2568907-1-leo.bras@arm.com/
+
+Changes since RFCv2:
+- Added mutex to make sure only a single vcpu is 
+  collecting/cleaning at a time. This gets us the ability to
+  test return values, and not account for kvm.slot_lock waiting time.
+- Stuff reported by Sashiko
+  - Return value always positive, so assert was pointless
+  - Concurrency inflating the time for dirty-ring cleaning
+Link: https://lore.kernel.org/all/20260629105950.1790259-1-leo.bras@arm.com/
+
+Changes since RFCv1:
+- Stuff reported by Sashiko
+  - Fixed elements / byte size wrapping issue
+  - Removed element count due to concurrency
+  - Testing exit_reason instead of ioctl return value
+  - Some nits
+Link: https://lore.kernel.org/all/20260624171656.1737580-1-leo.bras@arm.com/
+
+Leonardo Bras (3):
+  KVM: selftests: memstress: Add option to enable dirty-ring on VM
+    creation
+  KVM: selftests: Check dirty-ring size before enabling
+  KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+
+ .../testing/selftests/kvm/include/memstress.h |   3 +-
+ .../selftests/kvm/access_tracking_perf_test.c |   2 +-
+ .../selftests/kvm/demand_paging_test.c        |   2 +-
+ .../selftests/kvm/dirty_log_perf_test.c       | 128 ++++++++++++++++--
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  21 ++-
+ tools/testing/selftests/kvm/lib/memstress.c   |  34 ++++-
+ .../kvm/memslot_modification_stress_test.c    |   2 +-
+ .../kvm/x86/dirty_log_page_splitting_test.c   |   2 +-
+ 8 files changed, 167 insertions(+), 27 deletions(-)
+
+
+base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+-- 
+2.55.0
+
