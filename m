@@ -1,126 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8AA51589F;
-	Tue, 29 Sep 2026 13:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395E25293E7
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 13:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790688192; cv=none; b=iRaQt4WocKPqT4L1QrZBnMV+7tSc7MrBfzKyo2bRO9jMoaaLe/xMM5Pu7i/e5f41PsAMgCSTA0S0wSRZnpQ9mixxMf+SQJSdzPk/nPdkrJ+XU5XDcwxTpERssd48ZIAX/lTuBCmTSgV8DgiZ3NsC7QSVgbN9+LkQajue+x7qNk4=
+	t=1790688331; cv=none; b=HWJ54EWHY0m6RcfDg/tCnvA5Fo0PX2hJ7HulSJGKDaWGg79jycc+/yN2nqGdnLl7kPvi3meORhZis+Tv0g6tFdTsfncOkGOyA4aE4Gq8a4fja0vuelxsO2foN3u4SCmIZQH4hG2qWl0qYK4ulknBhobBJ7NvrOWum5OJ/W8NySU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790688192; c=relaxed/simple;
-	bh=WhZhvqTid00sGEr6jHmxUxphIyPp2JmfayN14qWNZrU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RhyJ2rS1VTxzHn6A8NEQxdKDt2riyTU6fUiIMca4G73dy2PUsIhMDyscj4rbk8428tI/eeajLq+Q2CdbHtMi78SlQH53Ic0aCR2fhc3dTW+XQ3H3Sq2YxHj3nsSGdTgqBTAg20bEu8Ou6aXz0NYaCY3bf/1elvcgtU25H0Hb2T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NoGTfQTU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790688331; c=relaxed/simple;
+	bh=O5C1v4iBpZaSuH+5H0Sd7SeYRTm4i1+4/GL6VjUykRk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IHB5BAwa2r0BjuVmNlRw3oGqoWYhQeA1rcnuv+zioIj9B39wRajYLukhn0YJBFFlj/eP0nnPyn+sKKPH+98RcqiSW994EkEZQkTNwvvIK7wN70sAd69/zNXgy9Rb7K+eJj8ru5QPjTRr6tUt5WSdvxm9iBcw21KZPWO2xu2fabQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MrT9z+p8; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NoGTfQTU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61431F000FF;
-	Tue, 29 Sep 2026 13:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790688190;
-	bh=cBZ5sMUeIN86VkUHCeicPmRVb3a2MPzoImdcUHqRfJ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NoGTfQTUx2Xl1sqyKbpdFhdMZdJ+noWXSNmnHsfFGXavFZTVe1Cx5urvzLzwqn5nr
-	 7mLn4mK8T8/R1zhpXkZdIIbFBOIvoM8jHFvRE6ejsR/Ks3EXaYbGQOU64qUGrhnvtx
-	 vuhP22+ENXCWO9Aypfd3LyPbBzA+dGwphUQM/mo//I9W/U08USHbFfdsBJMauHQL7y
-	 F0E9osDHf6p6oK2fJ5PQElXUNS3f14H9qI328tei2n9Zj0yX3cnBTCuyWdcGfNSa5J
-	 uPFxCo2svfx4VA//t7fsv62syC3K5WdxJo4K67tFjVV3VdcaBMn1xyyTcOcsGpQ+KK
-	 qk29TkAqSezVg==
-Date: Tue, 29 Sep 2026 16:23:05 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-Message-ID: <20260929132305.GJ563127@unreal>
-References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
- <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
- <607e8903-a979-4d78-bf08-447321c03119@amd.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MrT9z+p8"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 094ED143D;
+	Tue, 29 Sep 2026 06:25:25 -0700 (PDT)
+Received: from [10.57.12.116] (unknown [10.57.12.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C2CA13F85F;
+	Tue, 29 Sep 2026 06:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790688328; bh=O5C1v4iBpZaSuH+5H0Sd7SeYRTm4i1+4/GL6VjUykRk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MrT9z+p8zmAFBUn0ld4/oGHhwhhOXenZRoKpql1JLlZ63gFyuHEBqeuzAxatvor8L
+	 pqcAaD7s/2+uvHN6JiqmzleATCBcXs3Rj5WVzf+iJurLtwiiCAfKemk9eJ/xXsXqdY
+	 CHSCm8UOIrKtX4eYlcM9Vhe2ST1dSINnR3KPHQDU=
+Message-ID: <a3bf2c32-88d9-4fdd-bed5-cb2be108de53@arm.com>
+Date: Tue, 29 Sep 2026 14:25:26 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <607e8903-a979-4d78-bf08-447321c03119@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v20 18/22] KVM: arm64: CCA: Don't expose unsupported
+ capabilities for realm guests
+Content-Language: en-GB
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+ kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>
+References: <20260924160504.853911-1-suzuki.poulose@arm.com>
+ <20260924160504.853911-19-suzuki.poulose@arm.com>
+ <20260924162557.766101F000FF@smtp.kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260924162557.766101F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 11:34:05AM +0200, Christian König wrote:
-> On 9/28/26 13:19, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Exporters keep the &struct p2pdma_provider backing a buffer in their own
-> > private data. An importer cannot reach it, so it has no way to learn how
-> > its own peer-to-peer traffic would be routed before it programs its
-> > hardware.
-> > 
-> > Add an optional @p2pdma_provider callback for an exporter to hand that
-> > provider out, and dma_buf_p2pdma_map_type() for an importer to ask by TLP
-> > class. Exporters keep the provider where it already lives, so this adds an
-> > operation rather than changing any existing signature or structure.
-> > 
-> > Tested-by: Tushar Dave <tdave@nvidia.com>
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  drivers/dma-buf/dma-buf-mapping.c | 39 +++++++++++++++++++++++++++++++++++++++
-> >  include/linux/dma-buf-mapping.h   |  3 +++
-> >  include/linux/dma-buf.h           | 19 +++++++++++++++++++
-> >  3 files changed, 61 insertions(+)
-
-<...>
-
-> > +enum pci_p2pdma_map_type
-> > +dma_buf_p2pdma_map_type(struct dma_buf_attachment *attach,
-> > +			unsigned int tlp_flags)
-> > +{
-> > +	struct dma_buf *dmabuf = attach->dmabuf;
-> > +	struct p2pdma_provider *provider;
-> > +
-> > +	dma_resv_assert_held(dmabuf->resv);
-> > +
-> > +	if (!dmabuf->ops->p2pdma_provider)
-> > +		return PCI_P2PDMA_MAP_NONE;
-> > +
-> > +	provider = dmabuf->ops->p2pdma_provider(dmabuf);
-> > +	if (!provider)
-> > +		return PCI_P2PDMA_MAP_NONE;
-> > +
+On 24/09/2026 17:25, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: arm64: CCA: Realm VCPU features bypass capability allowlist
+> --
 > 
+> commit e303d487e75069060645d8d27a0d2607328fb9fc
+> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> > +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
+> KVM: arm64: CCA: Don't expose unsupported capabilities for realm guests
 > 
-> This function call here *must* be in the exporter and not the DMA-buf framework.
+> Limit the capabilities that are allowed for Realm VMs. Similarly block
+> the vm_ioctls backed by the capabilities.
 > 
-> So clear NAK to putting that here.
+> Repurpose the kvm_pkvm_ioctl_allowed() to support both pKVM and Realm
+> ioctls. Rename the helper to kvm_vm_ioctl_allowed() and move it
+> into arch/arm64/kvm/arm.c. Also add a generic kvm_vm_ext_allowed()
+> to handle pKVM and Realm capability filtering and route them accordingly.
+> 
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index 0e77f59ded6d9..106b52e556e20 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+> [ ... ]
+>> @@ -136,6 +136,49 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+>>   	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+>>   }
+>>   
+>> +static inline bool kvm_vm_ext_allowed(struct kvm *kvm, long ext)
+>> +{
+>> +	/*
+>> +	 * We could be called with kvm as NULL, so can't use kvm_vm_* for pKVM
+>> +	 * flavors
+>> +	 */
+>> +	if (is_protected_kvm_enabled())
+>> +		return kvm_pkvm_ext_allowed(kvm, ext);
+>> +	else if (kvm && kvm_vm_is_realm(kvm))
+>> +		return kvm_realm_ext_allowed(ext);
+>> +	else
+>> +		return true;
+>> +}
+> 
+> [Severity: High]
+> While this patch correctly limits VM-level capabilities and ioctls for Realm
+> VMs, does it miss restricting VCPU-level features during initialization?
+> 
+> Looking at kvm_vcpu_init_check_features() in arch/arm64/kvm/arm.c:
+> 
+> static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+> 					const struct kvm_vcpu_init *init)
+> {
+> 	unsigned long features = init->features[0];
+> 	...
+> 	if (features & ~system_supported_vcpu_features())
+> 		return -EINVAL;
+> 
+> Since system_supported_vcpu_features() only checks global host capabilities,
+> can a malicious userspace process managing the VM enable restricted VCPU
+> features (such as KVM_ARM_VCPU_PMU_V3 or KVM_ARM_VCPU_EL1_32BIT) on a Realm
+> VCPU?
+> 
+> If userspace creates a Realm VM and VCPU, then invokes the KVM_ARM_VCPU_INIT
+> ioctl with restricted features set in init.features[0], this could activate
+> host KVM emulation logic for a Realm. Would this break the intended isolation
+> boundary and lead to inconsistent state or host/RMM crashes when KVM attempts
+> to emulate hardware for a Realm managed by the RMM?
 
-"Look, it is easy to complain you don't like how it looks, but this
-stuff is hard there are lots of competing concerns, if you have a
-better idea now is a good time to present it."
-https://lore.kernel.org/all/20260921130858.GO11599@ziepe.ca/#t
+The host doesn't get to emulate any of this as the RMM can correctly
+handle the Realm VCPU exits. That said, I could restrict the VCPU
+features to the ones that are supported for Realms.
 
-Do you have a viable solution?
+--8>--
 
-Thanks
+
+KVM: arm64: Prevent unsupported vcpu features for VM types
+
+Prevent unsupported VCPU features for the protected VCPUs.
+Realms and pVM do not support 32bit EL1 or NV.
+pKVM doesn't rely on the host vcpu features, but still
+block the vcpu init if we detect incompatible features.
+
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index fbd5784e481b6..2e153b4fc8f62 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1727,11 +1727,12 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, 
+struct kvm_irq_level *irq_level,
+         return -EINVAL;
+  }
+
+-static unsigned long system_supported_vcpu_features(void)
++static unsigned long system_supported_vcpu_features(struct kvm_vcpu *vcpu)
+  {
+         unsigned long features = KVM_VCPU_VALID_FEATURES;
+
+-       if (!cpus_have_final_cap(ARM64_HAS_32BIT_EL1))
++       if (vcpu_is_protected(vcpu) ||
++           !cpus_have_final_cap(ARM64_HAS_32BIT_EL1))
+                 clear_bit(KVM_ARM_VCPU_EL1_32BIT, &features);
+
+         if (!kvm_supports_guest_pmuv3()) {
+@@ -1747,7 +1748,8 @@ static unsigned long 
+system_supported_vcpu_features(void)
+                 clear_bit(KVM_ARM_VCPU_PTRAUTH_GENERIC, &features);
+         }
+
+-       if (!cpus_have_final_cap(ARM64_HAS_NESTED_VIRT))
++       if (vcpu_is_protected(vcpu) ||
++           !cpus_have_final_cap(ARM64_HAS_NESTED_VIRT))
+                 clear_bit(KVM_ARM_VCPU_HAS_EL2, &features);
+
+         return features;
+@@ -1767,7 +1769,7 @@ static int kvm_vcpu_init_check_features(struct 
+kvm_vcpu *vcpu,
+                         return -ENOENT;
+         }
+
+-       if (features & ~system_supported_vcpu_features())
++       if (features & ~system_supported_vcpu_features(vcpu))
+                 return -EINVAL;
+
+
+Suzuki
 
 > 
-> Regards,
-> Christian.
+
