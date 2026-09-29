@@ -1,243 +1,258 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88804175A64
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790645778; cv=pass; b=DwCjbChJUy9GaIOR3xlfdnH2UM00YCRSVax+1GRTbGwmsqUfyDSJF2qwHYk4d67nGsXxJP42ZQuV29+4eOR20UQ0vZKQrDUG3bBKqqHs754XFiVy5h8GF5cTxakSPIMAS1/52nWg0BqIsXln1YIAqV9yVggMZ3RNMTmd/gWCBXM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790645778; c=relaxed/simple;
-	bh=FIwE0Bpd+eoA32YbChPqzcgtv1uYijeu/1Gr3AA0O1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l7P+c3/YMUKgE3Tqu8ktNmhetyV2j/oLuyjgCXD82dNqYYwUckN18gQkOzGdkav9Hv5tgQ8ao3qcLrlVS0wJO79+1cfAediRU5VRNMtUgUzn1cxfIi29rDPcXmVRLfW8WNT7uBdCG3hnuJYttZJm2lpeRTvSZpWnL2A5ISwPEic=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XT6xaMz0; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44623CC7EB
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790646581; cv=none; b=WhdSCbij69wLQ8d8CneGyXZpnsgJWaJx2v2V4eXt266CPZ0rZFMgS+awwqcuAoX4yqo9TNZVHl/2jW2VK12g/fv9x3zADhS0XYaVFUGOH0MF2yAneGpNVjxAwu+VCs2ojKavlvAAFrbBXcrqyTss5gdke25Hpnst27treZnITKo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790646581; c=relaxed/simple;
+	bh=2uXsmCNKJ3fYrAUlJcM4AoeiTbwzMEpZN5UMc742K0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ogYdpP8+q3cLyD9Qzhihk7i+jyBwgyyRJQw8BqBaXrPAcTw0E5Acvr3JdoOqTu0WGTHGeDImfKgQDEtu5DAKIGOH2iIx0Nw2A61aMx6dUDoJ+9kfhDxndwL30EII/MI6crJ7INsoSCysS3tsN8QSAMJbDK/9ofglG2clHS1LpHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tb4O1rEj; arc=none smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XT6xaMz0"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6aaf28a86b9so930227a12.1
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 18:36:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790645775; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jpZp7rZvAtWDRftJd6sG7CaqkDEXt4JJQD0CSmoFOzcEW2p6zzrmX1h6UR07eKuLDB
-         ho122+fVFCB7Uj+PXBPAS1KmVxfM5TgQhCL46lxRJFKw5IOC4VWcVG/8RH+NaVTFsR6s
-         BLmkSTmim2X4FROGqg5JqLElSBMg6XELWlnx+GIdVApYhagrCrT7AhJa48T55AET2f9Z
-         pd3YpAhx/5CrVIOKx4FtHiRzLzGinF5tkjKo+QWwOl4oEd5i6J9nrFyGuYjgXnU6XCKZ
-         Q7uxSSQpd99MTl/mV57vtK8vkaB+mHuz7eFbxEUNDOMOWVxXT2C2NeYZIl87N+I3I+1X
-         zfig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=rs9au1eGA9M7SYgh5SPNLTgJY2xqQlWh6Et+Arr6MM0=;
-        fh=qqnpyLzYKDKE9KOxhmePoUzRHTF6GhynPhu0qyQycEk=;
-        b=Lm6yXOy+Q+F5WbDMSchS8Lk8Slgyv+X3LloaoEx9lL3i8TmOglfHgbCudSn3TNYQvU
-         D1btlRXJk1GKqH3vBsOWkar/6nrfnVzGqHHmnYLs8oKrhmiJcIYGsltIVLgIdvsQNyDT
-         UJWa1kasK3YP6vaiAL7hAd5FOUGL/75wjZ1PcuJiOQIjXp0Y0E9IYaLsahaQ9Dr5rx9Q
-         9FOrL7buSC2rDLFi7TEM6+8EmhYoODwa9t6s5uzh8c6/lEAvO+GK3F4DxHpWvrCF65H0
-         954alajB9jAibFWzjU+bMQ9WlGf87VioiGaaSKWjGB9p166DqZS8TZsWKn0QIKcB45ah
-         2ndw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tb4O1rEj"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-343479e6005so275287eec.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 18:49:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790645775; x=1791250575; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=rs9au1eGA9M7SYgh5SPNLTgJY2xqQlWh6Et+Arr6MM0=;
-        b=XT6xaMz0EcYQzAgA+sdrd8yP94KEbCfplQnttJJ6JvU/fTl71yEro0KYai19Ph2q6W
-         l1jzdfTEFvD3fU8n3x/p/i/0MRAoH5YLGWFZrCXESRsM4YbjyUyZ/bktlx3/RLLVjW3u
-         WwQgoMY6p0sA1eifZt1vOJgjTrfXMcqtuW5ID/L3BdddQrYMN97vkFMNfxH28gxbVhSB
-         JtL+n4OsZiM3eZY4abqWIeiLfnOdAPqRBqaNtgTB7di8jq2voaxlIBpiNpIan52gN3hm
-         PDvZh/mIt2C92eNmZ6kBz+JvOAKQUto86/lnlyT/m0D6PLxdsC72JWJkgp9s3NKjPThy
-         TxSA==
+        d=gmail.com; s=20251104; t=1790646577; x=1791251377; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hUAmCu4dLAGCxw6PilbDzbZb7iwIhzniJHAXg+eRF9A=;
+        b=Tb4O1rEjfylcgc+HRcs8W4FO7UcL01xzzfVCZ8mIQB2V361IynDG+K8bes2xvhAMmP
+         dwtD1C9mbrsTsiUw35MEYyGyE1D/VVSbE+E+fto7CeyifjMeSML7GGFMLeqVIju8dBBG
+         RgBaWH+TLTMPd7UJCfgTBmGxr+c71yc+YqVap2OqjpmEeCv3tz39nLkW45NwtB2gwArA
+         +A6AqG+ci+kKfSbQtv9JZGePk8yRfEPGL5bBVFwaw6JEZCcp312U2W25HbDzERujKtsG
+         0/4levkYtsWI8zmcBGP36ARpJX3D3vR7kSPObcQ//5wK4pKheNs51i5sEJDPf+YWFdBJ
+         Pa3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790645775; x=1791250575;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rs9au1eGA9M7SYgh5SPNLTgJY2xqQlWh6Et+Arr6MM0=;
-        b=BNRY8csdyLnrZ3YApuBzAMX6/MEOOUxzLI0Ld6sUoX/BXA2tsPUUnSME/a2vElObXH
-         5TXz9/BGg7zUxwT9nwrZkEns5JZrmwfDPZ4QFIKSMXDTt3Q3GpEWzn8Alv7Ob8mn76v8
-         q9hvRrkw+e0FrWsqqPVjxU/d5KmeahQL3uHppxEqwP2Yswfp05R3ImBdMEIDPBnUbWB1
-         f14GNsjmVHQpG9Q4DkOjhZLbYSeO+h68kj1qwN7Ua8Dec36S0J6B34MOtppzr4Qp110o
-         KKhER2DtuJriz2cH9Jej3FV/UIEcpErE+SLY2a1rpBvPl6KHtlu8scBUCmqjWyWc8nyn
-         DGsA==
-X-Forwarded-Encrypted: i=1; AKwUvBxoW3q4Hc94a6Eyf/VjlfJ/mZuHqVJl2H3yx37iiNKTluGafqEtJanMTlO7F71tdAycAgM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLH32rJ5lQf4RqUvsliWOGgVqr23wdBCy3g474NVUUNMVD6xiYB
-	Qh3sIB8X7Eal4rZ1EGWgq01GgSYFWdFvSRmRfICwQLDZEM1SBbiwrxCdU82X3/lSZHI5bPAfic8
-	EG/NHdeq2mBtckZmBdud+9QSyTrww7wVdMd9KpUQ=
-X-Gm-Gg: AYBFou0nH2yycPWnOYFSLp0sz7y56LrnlycYp1g2soHcJyYxMIxDtRiMbMLvakfesSj
-	BtRTorTrEmE3dEg6/57vgBHhjKnMp6bYWd6XI4Zb3YJWE3HZNHFISVJ4FbtQxPMXfcJAQm3ov1k
-	rH6cx2dIOgYRk5bemYi8FNkYVQ3SfM1F9F1CPZSYPCNOW5tGRR2tYLtIIB8joaQkMbiaa2j3w9k
-	x2JcidPKmDDnsWvC/KcxPBQYmJ/W98x9lcel71kG9NSGmo3zgzMVXs3/GCSU/lwpHTKIfzkZSUH
-	DLDrwL8niF7COIrR8aMTsIZROcJxlDhWmxiwQ4GwD6EN/gDOtW1vo0I=
-X-Received: by 2002:aa7:d51a:0:b0:6ab:260:6378 with SMTP id
- 4fb4d7f45d1cf-6aca86236a8mr499160a12.11.1790645774380; Mon, 28 Sep 2026
- 18:36:14 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790646577; x=1791251377;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hUAmCu4dLAGCxw6PilbDzbZb7iwIhzniJHAXg+eRF9A=;
+        b=q/PnwFRweojPQPXf47spDUOzzFEcOMJlLtJkLZzLL10miGC2KdbQIH6A3VjOv6o4ty
+         lNX6UOyEuOReHz4vfgcfOXW4dt8IaD6/3L6aaHs/DnpQu/zKMTgpkbOuwy2tZVuKUVaT
+         a1IpKSWBilArOo334NXCeLvXu9cJQsGGI1BW2QYp8zKJkJIC7pORH7W7wj+7bXtV7hJY
+         WdjPF1ZMnwh9AqI0SSl+GLM5Ggiu5UsN0SvM9fryFqEG1nUgXzgJPUndOerNYXRPfywK
+         Bl+NX312Hl/fuoL+CjxPMXOuvSwmcjdl+3Fmh5bA4bNDZB/ooyzLEadh4ewii0AyJS0q
+         tLRg==
+X-Forwarded-Encrypted: i=1; AKwUvByBF0jBdhoDvNrQ36mVkg+BkLBPUSwgC/gzTDRhIL4/UhzqZhiXzZ31x8+xL51h953xZzc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ01MymFNd+5rXGUiXne+z+q0AP8SSlgu16DwWfbIUuEgA2E23M
+	44pgxYR3suoxy+XJMgh2xtChqy9a3vLBTP8mpeZFumWihQGb3SQx6I9n
+X-Gm-Gg: AYBFou1QkIVQVvgrk+Maf4/mBVdKfbghGYceWTI7S9WqTqnPGanKH0VXY8bqPCjKmFF
+	VwmzwZsI1sJXP7qK5fx72YPeKdM0DF5c0rTIDAa1UmR6HvMGPZUe0GE6u8mVt7XKyf2JNoOVnCp
+	o/RkpwMI1aiYbRcBTXAuoioofaEZmTfBA4F2ceHN9aKbOL8yJug8aZv/YLJbkv4qLcng5ws60fo
+	tr91k4DiFpZLUFOKRKLmC7k0Xt2Yz7MbzNMCa2KtG7XKTIEFn5AJMvAHOJEAl5jlAyqh1aBqjGu
+	sgmjHNJU4FyWBEExaUBLeJQeHP1xQRyCzGialnkLCsVFZ/7Cm4vtuTcptZiGi1zh2lPGC92O3Uw
+	WSzACVp4e56mG5Llstulm4rIAHITPMqxkENXfH/KhMJdQEKQPG2LtKl0V7nQ55qqnhHw6/j881D
+	ge3ucjt74ggdg+WJK6HXD4XHpOYhEXyGmm2G2RNkOfntAViTSwms+mfTFXZTzdcG42QhoLU1/0Y
+	Uw5XnflVJEo/g==
+X-Received: by 2002:a05:693c:4195:20b0:332:946c:477a with SMTP id 5a478bee46e88-34af8931057mr1416634eec.16.1790646576536;
+        Mon, 28 Sep 2026 18:49:36 -0700 (PDT)
+Received: from wujing.localdomain ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3434958c3adsm40351662eec.22.2026.09.28.18.49.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 18:49:36 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: Qiliang Yuan <odys.yuan@gmail.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: x86: Clear CR3[63:32] on SMM entry when running on Hyper-V
+Date: Tue, 29 Sep 2026 09:49:27 +0800
+Message-ID: <20260929014927.151141-1-odys.yuan@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260929-kvm-smm-cr3-upper-bits-v2-1-622429d0cd3c@gmail.com>
+References: <20260929-kvm-smm-cr3-upper-bits-v2-1-622429d0cd3c@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260926070057.1234-1-luoyonggang@gmail.com> <20260926070057.1234-47-luoyonggang@gmail.com>
- <aro93NuZBXYGbD33@redhat.com> <87e7c5ae-c78c-4a47-b9ba-9851ce5757d9@oss.qualcomm.com>
- <CAE2XoE8Fp8w4m0WBjEXF3LceFXUqKDcXhdSmhCThgkAM3wRVaQ@mail.gmail.com> <1f46d3a3-1275-4ae0-be07-717c643cf0ae@oss.qualcomm.com>
-In-Reply-To: <1f46d3a3-1275-4ae0-be07-717c643cf0ae@oss.qualcomm.com>
-Reply-To: luoyonggang@gmail.com
-From: Yonggang Luo <luoyonggang@gmail.com>
-Date: Tue, 29 Sep 2026 09:36:00 +0800
-X-Gm-Features: AclHuK_udHvC7oTjEuhilwZdEHpiOvElmXHC3KV0wZOIgddeR19NpS3MIjJMWOE
-Message-ID: <CAE2XoE_fxTRQJPzsDZHS44z65KR0e54cWjVpyZQGtr1sdLOinw@mail.gmail.com>
-Subject: Re: [PATCH v4 46/55] qapi: add query-targets
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
-	qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Fabiano Rosas <farosas@suse.de>, 
-	Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alistair Francis <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, 
-	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
-	qemu-arm@nongnu.org, kvm@vger.kernel.org, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 29, 2026 at 3:11=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@oss.qualcomm.com> wrote:
->
-> On 28/9/26 20:34, Yonggang Luo wrote:
-> > On Mon, Sep 28, 2026 at 6:39=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <
-> > philmd@oss.qualcomm.com> wrote:
-> >>
-> >> On 28/9/26 12:13, Daniel P. Berrang=C3=83=C2=A9 wrote:
-> >>> On Sat, Sep 26, 2026 at 03:00:45PM +0800, Yonggang Luo wrote:
-> >>>> query-targets lists each linked target, including none, with its
-> >>>> arch, endianness, and the machines that target accepts.
-> >>>>
-> >>>> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
-> >>>> ---
-> >>>>    hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
-> >>>>    qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++=
-++
-> >>>>    2 files changed, 65 insertions(+)
-> >>>
-> >>>
-> >>>> diff --git a/qapi/machine.json b/qapi/machine.json
-> >>>> index 6aaa2af709a..d8cdea6203e 100644
-> >>>> --- a/qapi/machine.json
-> >>>> +++ b/qapi/machine.json
-> >>>> @@ -307,6 +307,41 @@
-> >>>>    ##
-> >>>>    { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
-> >>>>
-> >>>> +##
-> >>>> +# @TargetMachines:
-> >>>> +#
-> >>>> +# One registered system target and the machines that can run on it.
-> >>>> +#
-> >>>> +# @arch: the target architecture
-> >>>> +#
-> >>>> +# @endianness: the target endianness
-> >>>> +#
-> >>>> +# @machines: machine type names, not aliases
-> >>>> +#
-> >>>> +# Since: 11.2
-> >>>> +##
-> >>>> +{ 'struct': 'TargetMachines',
-> >>>> +  'data': { 'arch': 'SysEmuTarget',
-> >>>> +            'endianness': 'EndianMode',
-> >>>> +            'machines': ['str'] } }
-> >>>
-> >>> We already have  'QemuTargetInfo' struct which is used
-> >>> with 'query-target', that should also be used with the
-> >>> new 'query-targets' command.
-> >>>
-> >>> We need to add the 'endianness' field to QemuTargetInfo.
-> >>
-> >> Why do we want to expose endianness, and what endianness to
-> >> expose? Endianness is a runtime bit state of CPUs. Sometime
-> >> this bit is hardwired but that is an implementation detail.
-> >>
-> >> See commit 0e2c5647d92 and surrounding for MicroBlaze for
-> >> example.
-> >
-> > Please take a look at
-> > https://gitlab.com/lygstate-qemu/qemu/-/pipelines/2890507627
-> >
-> > I do not have clue to fixes it properly
->
-> What are you asking here? I'm seeing failures on targets supporting
-> dual endianness. I can not try to help you until I understand what
-> your goal is (I asked it multiple times but you don't reply explaining).
-
-Now I can answer the question more clear, it's because the pitfall of commi=
-t
-https://gitlab.com/qemu-project/qemu/-/commit/e934c624f32f6f44f427d73a2e6a6=
-7e983a02ae6
-cause the issue
-
- target-info-stub.c | 2 +-
- target-info.c      | 8 +-------
- 2 files changed, 2 insertions(+), 8 deletions(-)
-
-diff --git a/target-info-stub.c b/target-info-stub.c
-index 8392d81e8f..65220cc782 100644
---- a/target-info-stub.c
-+++ b/target-info-stub.c
-@@ -18,7 +18,7 @@ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) !=3D sizeof(CPUS=
-tate));
-
- static const TargetInfo target_info_stub =3D {
-     .target_name =3D TARGET_NAME,
--    .target_arch =3D SYS_EMU_TARGET__MAX,
-+    .target_arch =3D glue(SYS_EMU_TARGET_, TARGET_ARCH),
-     .long_bits =3D TARGET_LONG_BITS,
-     .cpu_type =3D CPU_RESOLVING_TYPE,
-     .machine_typename =3D TYPE_MACHINE,
-diff --git a/target-info.c b/target-info.c
-index 5a6d728252..a26532f660 100644
---- a/target-info.c
-+++ b/target-info.c
-@@ -24,13 +24,7 @@ unsigned target_long_bits(void)
-
- SysEmuTarget target_arch(void)
- {
--    SysEmuTarget arch =3D target_info()->target_arch;
--
--    if (arch =3D=3D SYS_EMU_TARGET__MAX) {
--        arch =3D qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
--                               &error_abort);
--    }
--    return arch;
-+    return target_info()->target_arch;
- }
-
- const char *target_cpu_type(void)
-
-Look at the diff, the original one is directly parsed from
-target_name(). and the new one
-defines "glue(SYS_EMU_TARGET_, TARGET_ARCH)", but that indeed does not
-match target_name() at all.
-
-And TARGET_ARCH is introduced in commit
-https://gitlab.com/lygstate-qemu/qemu/-/commit/f87f7e145d63f93315e0f0e00fb9=
-ba0b6ee8570f
-for this.
-Hi Richard, is this done for intention or a mistake?
-maybe we should always generate target_arch from target_name()
-in meson.build?
+Some more data on this, in case it helps either the KVM or the Hyper-V
+side.  It is also tracked, with the WSL logs, at
+https://github.com/microsoft/WSL/issues/41709
 
 
+1. Setup
+--------
 
->
+  Host:   Windows 11 Pro 25H2, OS build 26200.9457 (fully up to date
+          through Windows Update), WSL 2.9.3.0, AMD Ryzen 9 7940HX
+  L1:     WSL2 kernel 6.18.35.2-microsoft-standard-WSL2, kvm_amd nested=1
+  L2:     Windows 11 25H2 guest, q35, 4 vCPUs, 8GiB RAM,
+          OVMF_CODE_4M.ms.fd (Secure Boot, SMM), swtpm,
+          QEMU 10.2.1, libvirt 12.0.0
+
+Wei mentioned that this may already be fixed in Hyper-V.  Since it
+still reproduces on the latest released build above, the fix does not
+seem to be in released builds yet.  Which build or channel carries it?
+I am happy to test it.
 
 
---
-         =E6=AD=A4=E8=87=B4
-=E7=A4=BC
-=E7=BD=97=E5=8B=87=E5=88=9A
-Yours
-    sincerely,
-Yonggang Luo
+2. Not a recent regression
+--------------------------
+
+The libvirt log of this guest on the same machine shows the same
+"KVM: entry failed, hardware error 0xffffffff" going back a year:
+
+  WSL kernel                    Period                    Boots  Failures
+  5.15.167.4-microsoft-...      2025-09-01 .. 2025-10-01    127       133
+  6.18.35.2-microsoft-...       2026-09-24 .. 2026-09-28     15        21
+  6.18.35.2 + this patch (v2)   2026-09-29                    1         0
+
+
+3. Testing of v2
+----------------
+
+I applied v2 to the WSL2 6.18.35.2 kernel and traced enter_smm() with
+bpftrace, recording vcpu->arch.cr3 on entry and on return, while the
+guest booted from firmware to the Windows desktop with SMM and Secure
+Boot enabled:
+
+  SMM entries in total:                        7532
+  entries with CR3 above 4GiB before entry:    1185
+  of those, CR3[63:32] cleared on return:      1185
+  VMRUN failures:                                 0
+
+For example:
+
+  vcpu=1 cr3 before=0x13aa12000 after=0x3aa12000
+
+Every one of those 1185 entries would have hit the failure without the
+patch, and the guest returned from SMM normally in all cases.
+
+
+4. The rejected VMCB
+--------------------
+
+To capture the failing state without restarting WSL, I built an
+unpatched kvm.ko/kvm-amd.ko for the same running kernel, loaded them
+with kvm_amd.dump_invalid_vmcb=1 and booted the guest.  It failed at
+SMM entry again, with CR3 above 4GiB.
+
+The relevant fields are exit_code ffffffff, rip 8000 (first instruction
+of the SMI handler), cr0 00050032 (PE=0, PG=0), efer 00001000 (SVME
+only, LMA=0), event_inj 0 (no pending event), and cr3 0000000262906000,
+i.e. CR3[63:32] = 0x2 outside of long mode.  The full dump:
+
+  SVM vCPU1 VMCB 000000004a03e896, last attempted VMRUN on CPU 2
+  VMCB Control Area:
+  cr_read:            0010
+  cr_write:           0010
+  dr_read:            00ff
+  dr_write:           00ff
+  exceptions:         00060042
+  intercepts:         bddc8027 00006e7f
+  pause filter count: 3000
+  pause filter threshold:128
+  iopm_base_pa:       000000034604c000
+  msrpm_base_pa:      00000003d50da000
+  tsc_offset:         ffffbe16edc138b1
+  asid:               8
+  tlb_ctl:            0
+  int_ctl:            01000000
+  int_vector:         00000000
+  int_state:          00000000
+  exit_code:          ffffffff
+  exit_info1:         0000000000000000
+  exit_info2:         0000000000000000
+  exit_int_info:      00000000
+  exit_int_info_err:  00000000
+  nested_ctl:         1
+  nested_cr3:         0000000260eac000
+  avic_vapic_bar:     0000000000000000
+  ghcb:               0000000000000000
+  event_inj:          00000000
+  event_inj_err:      00000000
+  virt_ext:           0
+  next_rip:           0000000000000000
+  avic_backing_page:  0000000000000000
+  avic_logical_id:    0000000000000000
+  avic_physical_id:   0000000000000000
+  vmsa_pa:            0000000000000000
+  allowed_sev_features:0000000000000000
+  guest_sev_features: 0000000000000000
+  VMCB State Save Area:
+  es:   s: 0000 a: 0893 l: ffffffff b: 0000000000000000
+  cs:   s: fb00 a: 0893 l: ffffffff b: 000000007bffb000
+  ss:   s: 0000 a: 0893 l: ffffffff b: 0000000000000000
+  ds:   s: 0000 a: 0893 l: ffffffff b: 0000000000000000
+  fs:   s: 0000 a: 0893 l: ffffffff b: 0000000000000000
+  gs:   s: 0000 a: 0893 l: ffffffff b: 0000000000000000
+  gdtr: s: 0000 a: 0000 l: 00000057 b: ffff9a0133f5ffb0
+  ldtr: s: 0000 a: 0000 l: 00000000 b: 0000000000000000
+  idtr: s: 0000 a: 0000 l: 00000000 b: 0000000000000000
+  tr:   s: 0040 a: 008b l: 00000067 b: ffff9a0133f5e000
+  vmpl: 0   cpl:  0               efer:          0000000000001000
+  cr0:            0000000000050032 cr2:          ffffe7888c4ec690
+  cr3:            0000000262906000 cr4:          0000000000000040
+  dr6:            00000000ffff0ff0 dr7:          0000000000000400
+  rip:            0000000000008000 rflags:       0000000000000002
+  rsp:            ffffbf0c30b864d8 rax:          0000000000000000
+  s_cet:          0000000000000000 ssp:          0000000000000000
+  isst_addr:      0000000000000000
+  star:           0023001000000000 lstar:        fffff801b9ac1840
+  cstar:          fffff801b9ac1300 sfmask:       0000000000004700
+  kernel_gs_base: 000000caa8494000 sysenter_cs:  0000000000000000
+  sysenter_esp:   0000000000000000 sysenter_eip: 0000000000000000
+  gpat:           0007010600070106 dbgctl:       0000000000000000
+  br_from:        0000000000000000 br_to:        0000000000000000
+  excp_from:      0000000000000000 excp_to:      0000000000000000
+  rax:            0000000000000000 rbx:          fffff8014d990018
+  rcx:            00000000000000b2 rdx:          00000000000000b2
+  rsi:            0000000000000200 rdi:          0000000000000218
+  rbp:            ffffbf0c30b86500 rsp:          ffffbf0c30b864d8
+  r8:             0000000000000000 r9:           0000000000000000
+  r10:            0000000000000000 r11:          ffff89fdab000000
+  r12:            ffffbf0c30b86720 r13:          fffff8014d990060
+  r14:            fffff8014d990078 r15:          0000000000000002
+
+And QEMU's view of the same vCPU (it only prints CR3[31:0] here):
+
+  KVM: entry failed, hardware error 0xffffffff
+  EAX=00000000 EBX=4d990018 ECX=000000b2 EDX=000000b2
+  ESI=00000200 EDI=00000218 EBP=30b86500 ESP=30b864d8
+  EIP=00008000 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=1 HLT=0
+  ES =0000 00000000 ffffffff 00809300
+  CS =fb00 7bffb000 ffffffff 00809300
+  SS =0000 00000000 ffffffff 00809300
+  DS =0000 00000000 ffffffff 00809300
+  FS =0000 00000000 ffffffff 00809300
+  GS =0000 00000000 ffffffff 00809300
+  LDT=0000 00000000 00000000 00000000
+  TR =0040 33f5e000 00000067 00008b00
+  GDT=     33f5ffb0 00000057
+  IDT=     00000000 00000000
+  CR0=00050032 CR2=8c4ec690 CR3=62906000 CR4=00000000
+  DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000 DR3=0000000000000000
+  DR6=00000000ffff0ff0 DR7=0000000000000400
+  EFER=0000000000000000
+  Code=00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 <bb> 4d 80 2e a1 38 fb 48 2e 89 07 2e 66 a1 30 fb 2e 66 89 47 02 2e 66 0f 01 17 b8 08 00 2e
+
+
+Thanks,
+Qiliang
