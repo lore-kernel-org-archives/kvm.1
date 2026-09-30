@@ -1,92 +1,153 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B17351EE1E
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C7F30ACF1
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790804619; cv=none; b=jYkaWzi1DYTx7OrlG59KZ38/+hHG2BzrutZJbMcXdjhrPOqTwx+r1orBmt/WppAyUNQKQTFdSmHc+i3mL5OLxTyCb7cWP+UL/dqYRbDPPfhuWyavt6XoJtfZPq7izLY9oPcuh40hPj1tbOjQH/PIMyMYgHHdSSYA6lywigfJlxs=
+	t=1790804857; cv=none; b=qrSt4JpH9t9XmNN24NLC+wrl1olpDdo1eZDwk3+qby32S9yCdHFdwOjzcgUYt8sXqVBYSeLI4QfdEdb8YVgRWhkgku+rY9wD0AAGvHd9PUMg8oe1Hd30ZMSWna5mDgTMrCAtevkApGYEeUBn1OsGjNMxe9778tWQKbNYEIHjPvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790804619; c=relaxed/simple;
-	bh=oAM9BEPdO+2lB0fPevZ8PtTTa5Ne01iPxVrJGPbXQf4=;
+	s=arc-20240116; t=1790804857; c=relaxed/simple;
+	bh=0LfQfK0K5Scm7vjNWwP0JASEHps3cyoSXAMQCQQvW04=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=eMGPl7xRz2LAaYnQ2YkZniYlFgcq2Oi2sS6JgV1y5gzKgIEyBk9SlVdTn7TgJrmnonEroKMOo8qkuSD0qFaDetqChr1FPttn7T5vmoq85HxJ5UJ3+j7AK6fgwuxTL2XE9gOPMW17PzCkmAYDUH45jD1tx1Gr2GYs9h+UEEogyFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZTJHWnl; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WVFHYupVznVrDghb9gqc9LQpqhIMxwN6JuqjGArHYLSIBbRQnELyeZuRLk4pNBkS63FT18v9BAidsoQN3Rl1TI79CNkTPTNBUTxwo2lha3+VA7hE+MYsCcU8EdLL51vlMPlsi3sZkad7ngLLjRvrBbUSITsfFAq/fI6lfsHNUqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=orRweHXg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZTJHWnl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CD51F0089A;
-	Wed, 30 Sep 2026 21:43:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="orRweHXg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC1E1F00899;
+	Wed, 30 Sep 2026 21:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790804617;
-	bh=ziS+bedr7OJIfMgmHKmz6ad9HpLn4MOAGSRAgKreCOs=;
+	s=k20260515; t=1790804856;
+	bh=usI4fxmcjtpEa5oRW5S8BluaPw/OgzqEmpI+tYoaVxM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PZTJHWnlSJo2aAyeKQcoLZTO5NOVG5R5RPWjnuSmPThp/UqYkrCIFSRAM0nuMtX0g
-	 UYoxILGH9Q+nICYCtUu3xQ1iP2SP60m2oUmBG9999cyqARIUEFo4FD0AxnElptkoQI
-	 +z8vAtApj3c2rZkeM+4lP0kaWSEp9GIbgeZxBFno1XbuKVwmTRQqV3a7TMHIWoJred
-	 Dnv8FWN5HE2tak1Gt9ICTdHxgE5s4fP0S/mV6Prl2oLvFA9/iOptCH0MJwhAhqV0P7
-	 Mw0hbRdZULsNXqUjHqHhAOBhYKLzcfVuYoUjhDpTbCR3SOVEegLbkf6cfMv7lOzJ5U
-	 Xk/plSAgGWvaw==
+	b=orRweHXgaCRsJfFAVjf/zsgV47XOXpsGC8owl931xl21N4Idaskv0jRnEkZ6cFcGU
+	 YO/oeWaHs5EQS1vnuR5Psl+UR4yX04y3fq0qO7YE1zpWmY2ne2jEYPcB1UwueFz28B
+	 D0KNo/qipTjq6HF9nQVrKCshGqTZkunSWgGyZCPjgldzHMSk8xXUVn6uXgvKHrmJ09
+	 yhhIT7SBPjQCnCzcSzlVE4au1elsQzqvZagSZtc2UCv6JBO1WbE2G0ryKysGI7E9Fj
+	 c9l2mk4A1z6qicz+lGPbNBj1jrrtPVIWIX/K588EcUjQVsW2AWErZ7ZYb4dIueeZdl
+	 u5iHVnLUQfkuQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 18/20] KVM: x86: Expose APX sub-features to userspace
+Subject: Re: [PATCH v8 11/20] KVM: x86: Handle EGPR index and
+ REX2-incompatible opcodes
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260930210750.1487547-19-chang.seok.bae@intel.com>
+In-Reply-To: <20260930210750.1487547-12-chang.seok.bae@intel.com>
 References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
- <20260930210750.1487547-19-chang.seok.bae@intel.com>
+ <20260930210750.1487547-12-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 30 Sep 2026 21:43:37 +0000
-Message-Id: <20260930214337.90CD51F0089A@smtp.kernel.org>
+Date: Wed, 30 Sep 2026 21:47:35 +0000
+Message-Id: <20260930214736.1FC1E1F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] kvm: x86: Missing cpuid_entry_override for leaf 0x29 exposes unm=
-asked host features
+- [High] x86/kvm: Missing NoRex2 flag on legacy instructions allows REX2-pr=
+efixed execution without #UD
+- [High] x86/kvm: NoRex2 check precedes opcode group expansion making it im=
+possible to #UD nested instructions
 --
 
-commit 93c8fb6f09423dcd87349e9f19f305fc82d6113e
+commit a27108ff09a58dbc37193fd34a249d4d8837decb
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: x86: Expose APX sub-features to userspace
+KVM: x86: Handle EGPR index and REX2-incompatible opcodes
 
-This commit adds CPUID leaf 0x29 sub-leaf 0 to expose APX sub-features
-(New Conditional Instructions, New Data Destination, Flags Suppression)
-to userspace if the APX foundation is available.
+Prepare the emulator for REX2 handling by introducing the NoRex2 opcode
+flag and supporting extended register indices. For the latter, factor out
+common logic for calculating register IDs.
 
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 990ad7ea48186..6c47e0ffedd84 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -1733,7 +1737,8 @@ static inline int __do_cpuid_func(struct kvm_cpuid_=
-array *array, u32 function)
+Link: https://lore.kernel.org/1ebf3a23-5671-41c1-8daa-c83f2f105936@redhat.c=
+om
+
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> index c1b21282187f3..a1a567fd03780 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+[ ... ]
+> @@ -4273,7 +4284,7 @@ static const struct opcode opcode_table[256] =3D {
+>  	I2bvIP(DstDI | SrcDX | Mov | String | Unaligned, em_in, ins, check_perm=
+_in), /* insb, insw/insd */
+>  	I2bvIP(SrcSI | DstDX | String, em_out, outs, check_perm_out), /* outsb,=
+ outsw/outsd */
+
+[Severity: High]
+Should these string instructions (ins/outs) include the NoRex2 flag?
+Without it, could KVM incorrectly emulate them instead of injecting a #UD
+when prefixed with REX2?
+
+>  	/* 0x70 - 0x7F */
+> -	X16(D(SrcImmByte | NearBranch | IsBranch)),
+> +	X16(D(SrcImmByte | NearBranch | IsBranch | NoRex2)),
+>  	/* 0x80 - 0x87 */
+[ ... ]
+> @@ -4297,15 +4308,15 @@ static const struct opcode opcode_table[256] =3D {
+>  	II(ImplicitOps | Stack, em_pushf, pushf),
+
+[Severity: High]
+Does pushf also need the NoRex2 flag since it takes no operands and
+should #UD with REX2? Legacy return instructions (ret) seem to be missing
+this flag as well.
+
+>  	II(ImplicitOps | Stack, em_popf, popf),
+>  	I(ImplicitOps, em_sahf), I(ImplicitOps, em_lahf),
+>  	/* 0xA0 - 0xA7 */
+[ ... ]
+> @@ -4335,17 +4346,17 @@ static const struct opcode opcode_table[256] =3D {
+>  	/* 0xD8 - 0xDF */
+>  	N, E(0, &escape_d9), N, E(0, &escape_db), N, E(0, &escape_dd), N, N,
+
+[Severity: High]
+Since x87 FPU instructions do not support REX2 prefixes, should they have
+the NoRex2 flag here to ensure they raise #UD?
+
+>  	/* 0xE0 - 0xE7 */
+> -	X3(I(SrcImmByte | NearBranch | IsBranch, em_loop)),
+[ ... ]
+> -	I2bvIP(SrcDX | DstAcc, em_in,  in,  check_perm_in),
+> -	I2bvIP(SrcAcc | DstDX, em_out, out, check_perm_out),
+> +	I2bvIP(SrcDX | DstAcc | NoRex2, em_in,  in,  check_perm_in),
+> +	I2bvIP(SrcAcc | DstDX | NoRex2, em_out, out, check_perm_out),
+>  	/* 0xF0 - 0xF7 */
+>  	N, DI(ImplicitOps, icebp), N, N,
+>  	DI(ImplicitOps | Priv, hlt), D(ImplicitOps),
+
+[Severity: High]
+Does hlt need the NoRex2 flag since it takes no operands? (Similarly,
+syscall in twobyte_table appears to be missing it too).
+
+>  	G(ByteOp, group3), G(0, group3),
+[ ... ]
+> @@ -5001,6 +5012,13 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt,=
+ void *insn, int insn_len, int
+>  		opcode =3D opcode_table[ctxt->b];
 >  	}
->  	/* APX sub-features */
->  	case 0x29:
-> -		entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
-> +		if (!kvm_cpu_cap_has(X86_FEATURE_APX))
-> +			entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
->  		break;
+> =20
+> +	/*
+> +	 * Instructions marked with NoRex2 ignore a legacy REX prefix, but #UD
+> +	 * should be raised when prefixed with REX2.
+> +	 */
+> +	if (opcode.flags & NoRex2 && ctxt->rex_prefix =3D=3D REX2_PREFIX)
+> +		opcode.flags =3D Undefined;
+> +
 
-[Severity: Medium]
-Does this code leak unfiltered host CPUID capabilities for leaf 0x29 to the
-guest?
+[Severity: High]
+Does evaluating opcode.flags & NoRex2 here occur too early?=20
 
-If the host supports X86_FEATURE_APX, KVM fails to apply
-cpuid_entry_override(entry, CPUID_29_0_EBX) or explicitly clear the
-unvirtualized registers (eax, ecx, edx) for leaf 0x29 in __do_cpuid_func().
+Since this check precedes the while (ctxt->d & GroupMask) loop that
+expands opcode groups, will nested group instructions (like monitor,
+mwait, or vmcall) bypass this check and fail to raise #UD when given
+a REX2 prefix?
 
-This could bypass the capability mask initialized in
-kvm_initialize_cpu_caps(), violating the KVM invariant that new
-guest-visible features must default off and be explicitly enumerated.
-This might break capability negotiation and live migration between hosts
-with varying hardware support.
+>  	if (opcode.flags & ModRM)
+>  		ctxt->modrm =3D insn_fetch(u8, ctxt);
+>
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930210750.1487=
-547-1-chang.seok.bae@intel.com?part=3D18
+547-1-chang.seok.bae@intel.com?part=3D11
