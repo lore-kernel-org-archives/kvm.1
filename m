@@ -1,44 +1,48 @@
-Received: from mta1.migadu.com (out-150.mta1.migadu.com [95.215.58.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F13CC337
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 09:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.150
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAA336B933;
+	Wed, 30 Sep 2026 09:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790761856; cv=none; b=Ei/jxP5ccMEN4MhtIm0fv6L6yN2WbCfZzdBc53Ak2G2lrMbSyMwkpvsPc0QxE1Q0hOY7QI70fNcowFfrhpK2OtQ30Zvm2bYDdNIiQqYEBq/bRMtM8KDSd7Rco8FH43d825RPIeCAQQQif7zTeNm8RnkuQJkQcCF5RqPdAxbP4cU=
+	t=1790761934; cv=none; b=BoQ/xv66cbTtOq3yWpoexe7cgDn9MjM9xV5YfhHOepvFYYLvTVK98GeC2hcpM2M/J5e8tRK8hLuQvth5zqQsZ/UOajNwncQuYUy5akb20Zi5h5oXFmp/mjIqXCwqDeZI8ouQcBpooDM1SetEeEvQb/plEb2VJOYN8nTVJPEKk80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790761856; c=relaxed/simple;
-	bh=FKMZzLIuMUGPJesWEz83SnTluRLeLp6m+DLV2weSnBc=;
+	s=arc-20240116; t=1790761934; c=relaxed/simple;
+	bh=Hh/kEdyKxDItZL2czsn11te4PfKPTHpLWgBl2v8d60M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AjEwK2zO/qPqKWDekXve25eA/ordk2eZx/wubNWzHaH6c6K2O6LQ0URbOHkYkDaGkfwybVlJqQZh20we1n8yR69hhM3/PVeAkoKwhEtaHBqj6q5xFyCbgeEvDwmcH4BiB7EheoOe58+4ZvwMCHVgLeAY3z6NuG3jkr3QU0dSDqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=evjStU4K; arc=none smtp.client-ip=95.215.58.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=ftwchboFpZXCtrKaXxxZI2jcqYfh+KwDZUOH6MCeKUkAkG5fcjm/c4FhE6V6uYEMASHD7KXnOjO7KznYWC2mY5/1xlCLVjjB65appK5peN+iHovEVHyGQELwesKOxtQ74dz45HHn9LJHOy1CAnoTdqfrgcVEjHkyohyXCI7KjMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cwcKnvvq; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="evjStU4K"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=FKMZzLIuMUGPJesWEz83SnTluRLeLp6m+DLV2weSnBc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790761852; v=1; x=1791366652;
- b=evjStU4Kc4Ya1L24hSEl9sgDdr/c8oLIxlB7fFuu3mnfifVMgzfHnBjWn/HkmXV12UJxkmYW
- WWCgSfJGJIHdni8kkPakWLNVrPmryiEfoi1LXi9yDaQFx27xjZZ1gArjsyhZF3oPXj9ChnoaIoc
- O4qym7tPGBqeQA9BSICka68c=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id e3db653f70d68817;
-	Wed, 30 Sep 2026 09:50:52 +0000
-X-Mizu-Trace-ID: e3db653f70d68817
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 30 Sep 2026 11:50:51 +0200
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Xiang W <wangxiang@iscas.ac.cn>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	pbonzini@redhat.com, thuth@redhat.com
-Subject: Re: [kvm-unit-tests PATCH 2/7] riscv: Add ACPI support for CPU
- initialization
-Message-ID: <bhisbphulilfbeouz2eap5zt6ndissa4bqwpqeksplfgmbhlc4@y6wii5vox7nl>
-References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
- <20260924033945.176581-3-wangxiang@iscas.ac.cn>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cwcKnvvq"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A999497;
+	Wed, 30 Sep 2026 02:52:04 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A35523F86F;
+	Wed, 30 Sep 2026 02:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790761927; bh=Hh/kEdyKxDItZL2czsn11te4PfKPTHpLWgBl2v8d60M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cwcKnvvqIEmedSeZQQhoIZ9dMjD4/8L9sRmwwDRYpF5LBg5tSZ3uGXpFfSzpOWsAE
+	 5QIsULyPjCo/L2kedtkgNo68EQY4Kvo3Bsy16uGAYj2vLK1PKkBxuRmJLMY8KQf31B
+	 vE6J/QkCbSMwI/cvCYa8EsEhr/Y4u7g6ZdL/mC4g=
+Date: Wed, 30 Sep 2026 10:51:53 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v20 1/9] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
+Message-ID: <arzbue4Sdjt61lTu@arm.com>
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-2-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,57 +51,22 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924033945.176581-3-wangxiang@iscas.ac.cn>
+In-Reply-To: <20260929221623.1342076-2-suzuki.poulose@arm.com>
 
-More ACPI naming comments below
-
-On Thu, Sep 24, 2026 at 11:39:40AM +0800, Xiang W wrote:
-> When a DT is not provided, discover harts from the MADT RINTC
-> subtables (ACPI 6.6 type 24) instead of aborting in cpu_init_acpi().
+On Tue, Sep 29, 2026 at 11:16:15PM +0100, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
 > 
-> Parse each RINTC entry for hart_id and ACPI UID, record them in
-> thread_info, and mark the CPU present only if it is Enabled in
-> the RINTC flags and SBI reports the hart as available.
+> The RMM (Realm Management Monitor) provides functionality that can be
+> accessed by SMC calls from the host.
 > 
-> Also add the RINTC MADT structure and the MADT types introduced
-> after GENERIC_TRANSLATOR so the RISC-V interrupt controller
-> entries can be identified.
+> The SMC definitions are based on DEN0137[1] version 2.0-bet3
 > 
-> Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
-> ---
->  lib/acpi.h                | 30 +++++++++++++++++++++++++++++-
->  lib/riscv/asm/processor.h |  1 +
->  lib/riscv/setup.c         | 28 +++++++++++++++++++++++++++-
->  3 files changed, 57 insertions(+), 2 deletions(-)
+> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
 > 
-> diff --git a/lib/acpi.h b/lib/acpi.h
-> index a62cd3a9..a905807d 100644
-> --- a/lib/acpi.h
-> +++ b/lib/acpi.h
-> @@ -226,6 +226,22 @@ struct acpi_madt_generic_translator {
->  	u32 reserved2;
->  };
->  
-> +/* 24: RISC-V Interrupt Controller (RINTC) Structure (ACPI 6.6) */
-> +struct acpi_madt_rintc {
-> +	u8 type;
-> +	u8 length;
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-struct acpi_subtable_header header ?
-
-> +	u8 version;
-> +	u8 reserved;		/* reserved - must be zero */
-> +	u32 flags;
-> +	u64 hart_id;
-> +	u32 uid;
-> +	u32 ext_intc_id;
-> +	u64 imsic_addr;
-> +	u32 imsic_size;
-> +};
-> +
-> +#define ACPI_RINTC_FLAGS_ENABLED	1
-
-We already have ACPI_MADT_ENABLED
-
-Thanks,
-drew
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
