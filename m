@@ -1,186 +1,248 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CD8577E48
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 17:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90052CCF9;
+	Wed, 30 Sep 2026 17:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790789887; cv=none; b=snPMzYEIafueXUMBD2wFfb79G+99rSWTnJvyhuRatJoa0l9Np1ZMbkueBw8E1aNdN8YjUoTGkcq0BascW3rlzsUNblOGqdLBOANXeUq9keMHgXoJojdTDgW5euyfTOWs40PVOPI6q/Eo4Uydn/1jGfbZVqfZBcY7bySeKT4oguo=
+	t=1790789922; cv=none; b=FHZQcQJiCZ6vO6N+qzADMaIL5yt+gPvNYhEVxz5wKY/JrErwtcmilIpOfkKlAcJPq/do7/ZR9bgLzIHU60fA43oR1txNJrmsecOyyI9OfkmrXtj3V8fkPse0hZXeRdeNMUtOiB86ZrGYkKAZ26VUCOiK6T6jNrAKrG+P8Y4jLdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790789887; c=relaxed/simple;
-	bh=QcgaQIxwkGgbDJzektD+2FyTojDiIFPOqWUzYPn9BjM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ut9EBR+3xb9a8uFtqZQICZt7S71mVk933nAbiQ9GdcnvHfdu/CkshNElZII4ztY+TfXgTYswO/jZOSf+6MIM84nhrPRwv9ev7sq4mhfgKVAcUITSCiaY8hFJenuj0xKBDSyYTsuDIYi3utLyTXTT0yxqUmgQIyzecYVncqGh0PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cFXZWzb6; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790789922; c=relaxed/simple;
+	bh=jbtQGsWuQeNHNyd59IagBTjANtHrkRk++LrQwifcpXw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UPMLt6J+VLdKS/FHSUJz6C02bJNbvtwf7WR7kEy5gctfS8xY0QJrveTOgAaS7sqominfddnXy5o0BFPuDjmTKiYZVXxcDo18Unu6JwkV/VEiRpk8oh+7tSBX7huSfRG+09tLudeX0qhyZSWkAK30e5Pl6FQC7T3Ik51wJG5ZBYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O+Zq5v2R; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cFXZWzb6"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc11b5dd54dso8667705a12.3
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 10:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790789885; x=1791394685; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xmhxxYvdvDBJUv8TOCQdJm2ntYWSx2CBx08ozuwPd1U=;
-        b=cFXZWzb6uQDeGFMGY276M4mLZFshA4g5Fz7qXErJZX0698CEUqFeybURSDBqcx1mmN
-         pW/oSBpeoOjsKwDjfZ2q5HcUX+vVm2au2OmYxfzA7xMTeI4TqUBUZjXFb3JGHFccyjuF
-         tL36RZ6NBNy120SAiOe0hQXE+XvJBCT6kkh1sBvjXDhUTElJnlshW8MJSBHTn3JFLh6w
-         siTmCi5zxgXcFFuXd9Fob6ADK7vpwNPqs8afZtgz+ctbPWBbfZF+m7+ywFmRMRFgXBbS
-         nXz5WsZSLJWUtD8Xu3h3HmABh4yO8LsjDYZltqpEQ1FiiWibApGXem9BM+4H+9+NzIvi
-         atiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790789885; x=1791394685;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xmhxxYvdvDBJUv8TOCQdJm2ntYWSx2CBx08ozuwPd1U=;
-        b=ytdB3PqO/pyD52lDgYvV/Q1DNw5568O2U+XMuxuUNNfiIipktE3fnrzwI/kfMNsvYc
-         tF9bD7GwnWfXtccQW3/qF5q0lqFvKX9M+foVrApZyPjT+rme91ldWUcmgJRddtjCo9BX
-         I6qGXxyK694UlvVRv2Jxhrqu8SWxGXQzo6CERDA662Fgl6IlMySKO73c9YSAztSH4bSZ
-         BmFz1zd2RTTOlGuurdPSv/F6UT5fHGMhwfTGe/9RO0H4Mr+N0TVHZ9yQqF9IR7q5p2oh
-         viPxUVKMJBlAWDatqbdOdmLRDwX+Yq6EnT65NbXzEWQ+zoxL7azLSgkWFcwlXzweVIIK
-         zfUw==
-X-Gm-Message-State: AFuF++nY8PTU0EKvIgjHNQHOZq9LzEijEuXr7mTQ9qJiZc0E/e4C15Ux
-	6HXbA7FzHVvfo5HHGyFdIfrIRSxHg5KVbH0M5Kal6qVj5mdNkVzpzOnSAfPfOJQjOv0WRLsowLm
-	8hd0CFQ==
-X-Received: from pgbeu25.prod.google.com ([2002:a05:6a02:4799:b0:cc7:d5c2:b58a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7001:b0:3dd:57bf:7242
- with SMTP id adf61e73a8af0-3de9e02b65bmr2424480637.8.1790789885264; Wed, 30
- Sep 2026 10:38:05 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 10:36:35 -0700
-In-Reply-To: <20260930173635.3362655-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="O+Zq5v2R"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68UE5Slg3203201;
+	Wed, 30 Sep 2026 17:38:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZGyDkV
+	qpQy0Ppi79IbXe0ZSivAY/5QW1/p40R+frxk0=; b=O+Zq5v2R9+OcDPK9Uv6W2F
+	OkhqKt3A1nkLKhbtmxbEC+JKZKqxuDH5PcY5DW/C6lQB1otPl26wZE3RZKcDGiwN
+	le6GR7Sx7vNp3xiPC734noZvj98dc1/syW0bWEdLH+PNSj7Cd4apgByukXo+YuhM
+	PZQVFWHP+mb+mqrP8DUmT0VNOidO3mXI6Vn/esumoS0YdXYKtlMNldrfVwJ1qg5j
+	LdMt1ANG9EICIIXcFBp7/Hl/G9YMvSmq0qLoz/7CC6b72YDwZKnWoo8qrDp6WCeN
+	e86+Qhya5yqDsO5AjfSRhl5AGvDwz9h3Goo+lq5nCgJoEHOxI+wcWX+Bg8HYIW8Q
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j5epqa-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 30 Sep 2026 17:38:25 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68UHYCom3541491;
+	Wed, 30 Sep 2026 17:38:24 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0hfpd06u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Sep 2026 17:38:24 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68UHcIQu25625154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Sep 2026 17:38:18 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 56EDD20043;
+	Wed, 30 Sep 2026 17:38:18 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D3D02004B;
+	Wed, 30 Sep 2026 17:38:14 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.22.150])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 30 Sep 2026 17:38:14 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gautam Menghani <gautam@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        R Nageswara Sastry <rnsastry@linux.ibm.com>,
+        Alexander Graf <agraf@suse.de>, linux-hardening@vger.kernel.org,
+        stable@vger.kernel.org, Avi Kivity <avi@redhat.com>
+Subject: [PATCH v2 1/3] KVM: PPC: Book3S HV: Add SRCU protection for virtual-mode HPT hcalls
+Date: Wed, 30 Sep 2026 23:07:48 +0530
+Message-ID: <20260930173750.56759-2-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260930173750.56759-1-amachhiw@linux.ibm.com>
+References: <20260930173750.56759-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260930173635.3362655-1-seanjc@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930173635.3362655-22-seanjc@google.com>
-Subject: [PATCH v3 21/21] KVM: selftests: Spell out UCALL in nested TSC
- scaling test's enums
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>, Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDA3MCBTYWx0ZWRfX/jUdmMl71D3m
+ iEvlLEWon60TXTG7AAIwsRbO4RzBDL8UZcK5E9Q3YSNyYHEI39Of70aAIrsrRe/izA/thYt3f2J
+ N+gWVbfHAQwrmSfEx9B7qtVMyDNtZbk=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDA3MCBTYWx0ZWRfXxZJwwhHggklo
+ KFYgCSJCfNPn3RtqSTMsbEQZmqx11v5JBhAR9PHrMB409wuhIVc5tUCUUDYw+giALekg3MgL/HI
+ p5GxJgGpRNBdD83L/+wdZ8WpkujZHJj6VWhVy+jgCik4Txti5hwD/2XuSKOEHUWGLDeBD3EazQ5
+ CnmOUX3O/0RIikreJ5nYDnwYUuNQm6BbgwPpBpmqSILc0gyyUQMRc1Lr+l0Xs30ioGzc8mLesYP
+ 6gPu+yLFEcd4L+XUad+3CEbS1x9qJBnxMiBf2+QhRV4Or3d7Defl80m1Qu9bOIpUQH5BV2+750n
+ pLUtXUl3oZ/5zyC4wFkhkWMm6G8RVgn6vF0KPLGl+FPJaB7ag/oofH9VTVdymVSgnHmBiZZLlhB
+ KpFJX5CaWb4/rVhB1IbUtEh+rW6RkEoT9TwPIh1k7tpIkGuxbyjTsXG/JgjurpFWObtuCXBMthi
+ DgUtT88/VO5Tg2lcPwg==
+X-Proofpoint-GUID: UnmTLLQOZdY03eEbC1vMV7GG6POHvdjb
+X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6abd4911 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=DgxhUou5BkHipWTGidQA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: MF5K6I0q-GCCnEmd7ckBx2nBuD_hdjsS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-30_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609300070
 
-Explicitly spell out UCALL instead of prefixing only U in the nested TSC
-scaling test's ucall commands, as it's all too easy to think USLEEP means
-"do usleep()", when it actually means "do sleep() in userspace".
+The virtual-mode HPT hcall handlers (H_ENTER, H_REMOVE, H_BULK_REMOVE,
+H_CLEAR_REF, H_CLEAR_MOD) call into book3s_hv_rm_mmu.c, which accesses
+memslots via kvm_memslots_raw().  kvm_memslots_raw() uses
+rcu_dereference_raw_check() to bypass SRCU lockdep annotation checking.
+This is safe in real mode because the entire guest entry/exit is wrapped
+in srcu_read_lock/unlock inside kvmppc_run_core() and
+kvmhv_run_single_vcpu().
 
-Opportunistically name the enum and take an enum instead of a bare integer
-for the to-be-checked level, to make it more obvious that the fact that
-the level values happen to correspond to '1' and '2' for the nesting level
-is largely coincidental (or perhaps it was intentional, but it's not a hard
-requirement for the test).
+However, since commit 6165d5dd99db ("KVM: PPC: Book3S HV: add virtual
+mode handlers for HPT hcalls and page faults"), these same handlers are
+also executed in virtual mode via kvmppc_pseries_do_hcall(), which runs
+after SRCU has already been released on guest exit.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+A concurrent KVM_SET_USER_MEMORY_REGION deletion or move can therefore
+call synchronize_srcu_expedited() — which does not wait for this thread —
+and then kfree(slot) and vfree(slot->arch.rmap) while the hcall handler
+still holds a raw pointer to the memslot.  lock_rmap() then writes to
+freed vmalloc memory, leading to use-after-free and memory corruption.
+Because kvm_memslots_raw() suppresses lockdep checks, this race is
+entirely silent.
+
+Fix this by factoring out the 7 HPT hcall handlers (H_REMOVE, H_ENTER,
+H_READ, H_CLEAR_MOD, H_CLEAR_REF, H_PROTECT, H_BULK_REMOVE) into a
+helper function, kvmppc_pseries_do_hpt_hcall(), and wrapping its call
+site in srcu_read_lock(&kvm->srcu) / srcu_read_unlock(&kvm->srcu, idx).
+Targeting only the HPT hcalls avoids wrapping non-HPT hcalls that sleep
+(such as H_CONFER, H_REGISTER_VPA, H_PAGE_INIT) or handlers that already
+acquire SRCU internally (such as H_RTAS).
+
+Fixes: 6165d5dd99db ("KVM: PPC: Book3S HV: add virtual mode handlers for HPT hcalls and page faults")
+Cc: stable@vger.kernel.org # v5.14+
+Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 ---
- .../kvm/x86/nested_tsc_scaling_test.c         | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 70 ++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-index b21f79e9ec71..bfb1ff441c78 100644
---- a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-@@ -17,7 +17,7 @@
- static u64 l2_multiplier;
- static u64 l2_offset;
- 
--enum { USLEEP, UCHECK_L1, UCHECK_L2 };
-+enum ucall_cmd { UCALL_SLEEP, UCALL_CHECK_L1, UCALL_CHECK_L2 };
- 
- /*
-  * This function checks whether the "actual" TSC frequency of a guest matches
-@@ -38,7 +38,7 @@ static void host_check_tsc_freq(int level, u64 actual, u64 expected)
- 		    level, actual, thresh_low, thresh_high);
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index dbac3573b2c8..aa51968e206a 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1159,6 +1159,38 @@ static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
+ 	return H_SUCCESS;
  }
  
--static void guest_check_tsc_freq(int level)
-+static void guest_check_tsc_freq(enum ucall_cmd check_level)
++static long kvmppc_pseries_do_hpt_hcall(struct kvm_vcpu *vcpu, unsigned long req)
++{
++	switch (req) {
++	case H_REMOVE:
++		return kvmppc_h_remove(vcpu, kvmppc_get_gpr(vcpu, 4),
++				       kvmppc_get_gpr(vcpu, 5),
++				       kvmppc_get_gpr(vcpu, 6));
++	case H_ENTER:
++		return kvmppc_h_enter(vcpu, kvmppc_get_gpr(vcpu, 4),
++				      kvmppc_get_gpr(vcpu, 5),
++				      kvmppc_get_gpr(vcpu, 6),
++				      kvmppc_get_gpr(vcpu, 7));
++	case H_READ:
++		return kvmppc_h_read(vcpu, kvmppc_get_gpr(vcpu, 4),
++				     kvmppc_get_gpr(vcpu, 5));
++	case H_CLEAR_MOD:
++		return kvmppc_h_clear_mod(vcpu, kvmppc_get_gpr(vcpu, 4),
++					  kvmppc_get_gpr(vcpu, 5));
++	case H_CLEAR_REF:
++		return kvmppc_h_clear_ref(vcpu, kvmppc_get_gpr(vcpu, 4),
++					  kvmppc_get_gpr(vcpu, 5));
++	case H_PROTECT:
++		return kvmppc_h_protect(vcpu, kvmppc_get_gpr(vcpu, 4),
++					kvmppc_get_gpr(vcpu, 5),
++					kvmppc_get_gpr(vcpu, 6));
++	case H_BULK_REMOVE:
++		return kvmppc_h_bulk_remove(vcpu);
++	}
++
++	return H_FUNCTION;
++}
++
+ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
  {
- 	u64 tsc_start, tsc_end, tsc_freq;
+ 	struct kvm *kvm = vcpu->kvm;
+@@ -1174,47 +1206,15 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
  
-@@ -49,17 +49,17 @@ static void guest_check_tsc_freq(int level)
- 	 * be good enough for the purposes of this test.
- 	 */
- 	tsc_start = rdmsr(MSR_IA32_TSC);
--	GUEST_SYNC2(USLEEP, 1);
-+	GUEST_SYNC2(UCALL_SLEEP, 1);
- 	tsc_end = rdmsr(MSR_IA32_TSC);
- 
- 	tsc_freq = tsc_end - tsc_start;
- 
--	GUEST_SYNC2(level, tsc_freq);
-+	GUEST_SYNC2(check_level, tsc_freq);
- }
- 
- static void l2_guest_code(void)
- {
--	guest_check_tsc_freq(UCHECK_L2);
-+	guest_check_tsc_freq(UCALL_CHECK_L2);
- 
- 	/* exit to L1 */
- 	__asm__ __volatile__("vmcall");
-@@ -68,7 +68,7 @@ static void l2_guest_code(void)
- static void l1_svm_code(struct svm_test_data *svm)
- {
- 	/* check that L1's frequency looks alright before launching L2 */
--	guest_check_tsc_freq(UCHECK_L1);
-+	guest_check_tsc_freq(UCALL_CHECK_L1);
- 
- 	generic_svm_setup(svm, l2_guest_code);
- 	svm->vmcb->control.tsc_offset = l2_offset;
-@@ -81,7 +81,7 @@ static void l1_svm_code(struct svm_test_data *svm)
- 	GUEST_ASSERT(svm->vmcb->control.exit_code == SVM_EXIT_VMMCALL);
- 
- 	/* check that L1's frequency still looks good */
--	guest_check_tsc_freq(UCHECK_L1);
-+	guest_check_tsc_freq(UCALL_CHECK_L1);
- 
- 	GUEST_DONE();
- }
-@@ -91,7 +91,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
- 	u32 control;
- 
- 	/* check that L1's frequency looks alright before launching L2 */
--	guest_check_tsc_freq(UCHECK_L1);
-+	guest_check_tsc_freq(UCALL_CHECK_L1);
- 
- 	prepare_for_vmx_operation(vmx_pages);
- 	load_vmcs(vmx_pages);
-@@ -116,7 +116,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
- 	GUEST_ASSERT(vmread(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
- 
- 	/* check that L1's frequency still looks good */
--	guest_check_tsc_freq(UCHECK_L1);
-+	guest_check_tsc_freq(UCALL_CHECK_L1);
- 
- 	GUEST_DONE();
- }
-@@ -167,14 +167,14 @@ static void test_tsc_scaling(u64 l0_tsc_freq, u64 l1_tsc_freq, u64 l2_tsc_freq,
- 			REPORT_GUEST_ASSERT(uc);
- 		case UCALL_SYNC:
- 			switch (uc.args[0]) {
--			case USLEEP:
-+			case UCALL_SLEEP:
- 				sleep(uc.args[1]);
- 				break;
--			case UCHECK_L1:
-+			case UCALL_CHECK_L1:
- 				printf("L1's observed TSC frequency: %lu\n", uc.args[1]);
- 				host_check_tsc_freq(1, uc.args[1], l1_tsc_freq);
- 				break;
--			case UCHECK_L2:
-+			case UCALL_CHECK_L2:
- 				printf("L2's observed TSC frequency: %lu\n", uc.args[1]);
- 				host_check_tsc_freq(2, uc.args[1], l2_tsc_freq);
- 				break;
+ 	switch (req) {
+ 	case H_REMOVE:
+-		ret = kvmppc_h_remove(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5),
+-					kvmppc_get_gpr(vcpu, 6));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_ENTER:
+-		ret = kvmppc_h_enter(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5),
+-					kvmppc_get_gpr(vcpu, 6),
+-					kvmppc_get_gpr(vcpu, 7));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_READ:
+-		ret = kvmppc_h_read(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_CLEAR_MOD:
+-		ret = kvmppc_h_clear_mod(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_CLEAR_REF:
+-		ret = kvmppc_h_clear_ref(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_PROTECT:
+-		ret = kvmppc_h_protect(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5),
+-					kvmppc_get_gpr(vcpu, 6));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_BULK_REMOVE:
+-		ret = kvmppc_h_bulk_remove(vcpu);
++		idx = srcu_read_lock(&kvm->srcu);
++		ret = kvmppc_pseries_do_hpt_hcall(vcpu, req);
++		srcu_read_unlock(&kvm->srcu, idx);
+ 		if (ret == H_TOO_HARD)
+ 			return RESUME_HOST;
+ 		break;
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+2.54.0 (Apple Git-157)
 
