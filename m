@@ -1,43 +1,48 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBBA3F1048
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 11:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ADBB4446F2;
+	Wed, 30 Sep 2026 11:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790766181; cv=none; b=ezWL3apfPhLtIyAPnT1NiRcntPL4XcvheNO8sXNkP+vdByBKJVHRAJ1ILDml3hZiV83Xv1K1iLU+Ty1T7DbLAXwwbWYRNfp4eNCv0cKKD55t1Vz9YvLRdVe6/Ibv2xquJlJ63oj7Cz9ADh7ZNI3bnVpeK13BeFvCl/hGgz2D/OE=
+	t=1790766668; cv=none; b=gwzxLbJA5i1qwN/Yn3Z29G+Ai7LYK+90Jh2iQhf/Cm2KuSmofAdSHJ5TEmCzhdkrLj7l2/Lnpw5qbh+7Fvq/JcrhFWsLa8uSbUEPcf7bPLnUduqxGYxGT8N++PaQvhyN+KeRmESRiro8GbZe/d2zKChCt7U3Oo0j1nBBL2v43+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790766181; c=relaxed/simple;
-	bh=d/ZqsJkhTu9Q1JG0R55H06EvsSQWPRW2DAbAsYcuplE=;
+	s=arc-20240116; t=1790766668; c=relaxed/simple;
+	bh=09jEaArNS417em6ToBSG7qdKHqccds8/fy4zdxtvQ3c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i62w5CKo0LvS3Py3Ol1YHR1Y1z1Si4K28Q1XrekpK86cCmHYjg73kNYrAiOJ+jUbLj4vVbX54XA8xe/up/0bTVksomSdhXX9aPNVL/ffLfbVWY+ElAmjhI35Wrd3UF0OEU6/Bgq20QsQ0vMD6Q6n7PqkQmhb7qCycVv2JbYzRGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=et/efCJQ; arc=none smtp.client-ip=217.140.110.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=KKqwJtDYFBiXYoXTloxaBJGBmhiP5jp671unbLYqmgYSaCWA75h0FK2jHbIGoL5TpPZ3/2zMh6ovK4YhGwM6qDrIZboN9ABsz33QaI9hPzxQEgLfGgrDUxKi/vPsGZM7y0EIU9VtRQTVzgo4RhJeWdRONL5y6r98hTICYm+qcuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hMLeo9c8; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="et/efCJQ"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hMLeo9c8"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B8B2497;
-	Wed, 30 Sep 2026 04:02:46 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D00E8497;
+	Wed, 30 Sep 2026 04:11:01 -0700 (PDT)
 Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D616F3F85F;
-	Wed, 30 Sep 2026 04:02:48 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 758023F86F;
+	Wed, 30 Sep 2026 04:11:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790766169; bh=d/ZqsJkhTu9Q1JG0R55H06EvsSQWPRW2DAbAsYcuplE=;
+	t=1790766665; bh=09jEaArNS417em6ToBSG7qdKHqccds8/fy4zdxtvQ3c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=et/efCJQXCQlPg6gHb8rQgmvT/x/p77iTa1oktgGtlWhzItbU2V/d5w0r8WE4M7M9
-	 EyEL3JDBR1EcqKWnGd48RLTzbpJ8EN6o3pi2I6ntKTm+Hm+dm51eyXgikGAhBk+TuZ
-	 gFmqABZdMfWVc19c+SkZBFNQDUvMm+jm01vlncqk=
-Date: Wed, 30 Sep 2026 12:02:41 +0100
+	b=hMLeo9c82Gy/Wy2abm9knjbpZVruD+1wc6Ju/TC06SrUV3zQ98jhitLXZDTDvGcac
+	 EE7y27oqCNqxVVzA+ROY4AN/V1t2c2Loi/j9tft1p/a1u1uN7sSenO1pHVWXx9svge
+	 PndYOaEjhnAao/piuhts7nsxFTeV7QEAR4LEVfW0=
+Date: Wed, 30 Sep 2026 12:10:51 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Subject: Re: [PATCH v20 2/9] firmware: arm_rmm: Check for RMI support at init
-Message-ID: <arzsUdIEVvafG-S5@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v20 3/9] firmware: arm_rmm: Configure the RMM with the
+ host's page size
+Message-ID: <arzuKMam8IJkjB7T@arm.com>
 References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
- <20260929221623.1342076-3-suzuki.poulose@arm.com>
- <20260929222840.A0E821F000FF@smtp.kernel.org>
- <a2fa2bd1-6888-4ed5-9e2f-233eacb600a5@arm.com>
+ <20260929221623.1342076-4-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,66 +51,21 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a2fa2bd1-6888-4ed5-9e2f-233eacb600a5@arm.com>
+In-Reply-To: <20260929221623.1342076-4-suzuki.poulose@arm.com>
 
-On Wed, Sep 30, 2026 at 09:18:48AM +0100, Suzuki K Poulose wrote:
-> On 29/09/2026 23:28, sashiko-bot@kernel.org wrote:
-> > > diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> > > new file mode 100644
-> > > index 0000000000000..911489b636522
-> > > --- /dev/null
-> > > +++ b/include/linux/arm-rmi-cmds.h
-> > [ ... ]
-> > > +static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
-> > > +{
-> > > +	struct arm_smccc_1_2_regs args = *regs;
-> > > +	long status;
-> > > +	int i = 0;
-> > > +
-> > > +	while (i < RMM_BLOCKED_RETRY_COUNT) {
-> > > +		arm_smccc_1_2_invoke(&args, regs);
-> > > +
-> > > +		status = RMI_RESULT_STATUS(regs->a0);
-> > > +		if (status != RMI_BUSY && status != RMI_BLOCKED)
-> > > +			break;
-> > > +		if (status == RMI_BLOCKED)
-> > > +			i++;
-> > > +		cpu_relax();
-> > > +	}
-> > 
-> > [Severity: High]
-> > Does this sequence create an unbounded spin loop if the firmware continuously
-> > returns RMI_BUSY?
-> > 
-> > If the status returned by arm_smccc_1_2_invoke() is RMI_BUSY, the loop
-> > continues without incrementing the exit counter i. It issues cpu_relax()
-> > but does not yield the CPU (e.g., via cond_resched()) or impose a timeout.
-> > If the RMM firmware remains busy, this could cause the host kernel to lock
-> > up indefinitely.
+On Tue, Sep 29, 2026 at 11:16:17PM +0100, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
 > 
-> This is like "spinlock contention". RMM returns EBUSY when a resource is
-> locked temporarily. We should be able to make progress, unlike the
-> RMI_BLOCKED, which is blocking due to a long running operation.
+> RMM v2.0 brings the ability to set the RMM's granule size. Check the
+> feature registers and configure the RMM so that it matches the host's
+> page size. This means that operations can be done with a granularity
+> equal to PAGE_SIZE.
+> 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-I dug a bit into the RMI_BUSY description in the spec and it's not
-always safe to spin forever. For RMI_{PDEV,VDEV}_COMMUNICATE, for
-example, we need to return to the caller and retry later (for VDEV, the
-spec suggests informing the realm). That's the TSM series, which doesn't
-use the new API yet, but something to be aware of when it's updated.
-
-We may need the spec to bound this spin anyway, or at least give an
-indication that it's not forever, otherwise it affects latency,
-especially in an RT kernel.
-
-There's a generic RMI command return code table in B4.2 that lists
-RMI_BUSY for an imp def reason for the command failing to make progress.
-Does this apply to something like REC_ENTER? In the KVM series we call
-that with IRQs masked.
-
-We might need different APIs here: one for sleepable callers that does
-cond_resched() (or backs off) while retrying, and one that returns
--EBUSY, e.g. for TSM, or for commands like REC_ENTER that we don't
-expect to see RMI_BUSY and don't want to spin on.
-
--- 
-Catalin
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
