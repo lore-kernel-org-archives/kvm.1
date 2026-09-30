@@ -1,76 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74D71DF74F;
-	Wed, 30 Sep 2026 04:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAB13655F0;
+	Wed, 30 Sep 2026 04:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790743793; cv=none; b=AkDXA1Hm+868l7VgIT5Vknvfh3MJrg9sSXEvk3dZp8AfX6nZnp3/BGTW8KFIAbLtdh+BfVMafD2nO6OXppGI6X02okoLcsKxM19foTkgCCjuyeMBMtwipeKM4s5519gQO9jhb2Mmssh/KMq4BzchGfINBRA6ODF+cbrqGrEY8Dc=
+	t=1790744338; cv=none; b=ZN19tMeIbFftCHZvjWQXBwGJ/T2amuSmL1we0dASorfbr4+C5G00a/o7zrYfWC/fNv50xaBp1uDKSArUPLCbaxhBasO18NSNKwO0uhFBBIvkR1YjcLKHINSAyvtyUTlvcApXzvrQThaOMk8NHGYUusYrXRyjabb3OcZdTlVzxoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790743793; c=relaxed/simple;
-	bh=MU4ensMjNKh+l73lxZnM7CqGZ4Z01+mtugEUfP23tAM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZnwoJmfmTSEvJJyfmwShYWEwjUq7pVSWzddgYatMUidbqNrJrDnHcbaHkdTY2CTwggT2Z+OrOogo8zNaO4SFkYUgV79NFCml2fwlsZvY/K9RqgbKIHQo4gL1RqSqLkrqF/nyGCXHr+UalA9ZEpuHRNdCyluq2Cw9wEU1anrEEO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP9ThLFn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790744338; c=relaxed/simple;
+	bh=hsZf5e5VlChxQ4CGYkUa32v3Wq/x9KRIHBAF+yDaivI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=maBQR+XkSu4zM7LbfoXHiFlj/WLrmTv1dSgVLswv5nviJyMwF8n6XR60RRdCgJ4KIveq6kwpo6cpx85tf799WJZlsrkpcKjFQoO2WVt8o4xd52rOSEBy9OS73EkfQNk4i8wYFHJoVQR5ojxA54/6XUn70dpv2yISnFAukhBTxmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DazCyFsq; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP9ThLFn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED0F1F000FF;
-	Wed, 30 Sep 2026 04:49:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790743792;
-	bh=NQGmfD/A6yf35VDVy9GkqnY9NVCb9gygS1h1ssnqxjM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eP9ThLFnYIEr9afJanN0biCKK9Ne7Mr7mBwlVjyETXU120taSNoL4OYs5lyaBsTFD
-	 qJP58pWjVtcVpoK1fz08jx2bDakRTlbE4aMHeUmPYpjX999vM3RJJ0Ds22BELFBA4l
-	 0Nu7x+Pd72uk6/12HBysMSA7DENf8X6iX22uC6zqlORfDG6CTwgBW7PjbmICRvfFUA
-	 75sTOX+oJ+mCp6VIrPX7sgIJ1lcWgzGWJT7lkiAcMkgdeJHSKcoNIvMJZx0ced2Fvg
-	 VhzDFJDSp+DqKe91gMWjEsc79s7q1tZSNLkd0EJFduQTH9MlyhF1btY5qmiD/O1X5p
-	 pAngeMSN5U3Hg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net] vhost/vsock: trim nonlinear SKBs to declared
- payload length
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Daehyeon Ko" <4ncienth@gmail.com>
-Cc: "Eugenio Perez" <eperezma@redhat.com>, kvm@vger.kernel.org, "Michael S.
- Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev
-In-Reply-To: <20260930044147.3818241-1-4ncienth@gmail.com>
-References: <20260930044147.3818241-1-4ncienth@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 30 Sep 2026 04:49:51 +0000
-Message-Id: <20260930044951.EED0F1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DazCyFsq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790744336; x=1822280336;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hsZf5e5VlChxQ4CGYkUa32v3Wq/x9KRIHBAF+yDaivI=;
+  b=DazCyFsqrX8t6Ysfj7MmL+8PpTCJcKXby79MkR+ULaLt6jTok45TILUy
+   b1bnEy8sVchrUh+kuXO7tw6sUe97XzcD+2aJGSKdRN72ZrmD9tzNqadS1
+   DQasyk+isCqUYjeyTLkOiOqN/o1VNwFusNAqsm6T/d3nejueOWN0SiqOo
+   Osau9sqlr6WXpeeL4NRMnCP39iW5DjCNW1WWtZwOMQnCDzbAC9z8HYmP0
+   9Pl85NPGTYMf7WxpRI7aM/dDxcDu+6s9WxrN3NAAYCOOLJZB7yKlvXksR
+   zkD+J8GVU6u/EuHBYS2CsuEyZ5Lei3OR7O0GRuk33QAlH7tJ7WO19XVsU
+   A==;
+X-CSE-ConnectionGUID: KvLmHe7xRYGlZE+4SCD8aA==
+X-CSE-MsgGUID: DPEZDdK+SjiHWwFZYbwJDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91571941"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="91571941"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 21:58:55 -0700
+X-CSE-ConnectionGUID: lD/5/ZTQTdCv4l+AeE3xFA==
+X-CSE-MsgGUID: PLGWriYCTImlgNcZbwGS+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="274186275"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 21:58:35 -0700
+Message-ID: <e5ef8765-5f9b-4784-9272-bc438d148433@linux.intel.com>
+Date: Wed, 30 Sep 2026 12:58:32 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Synthesize SHUTDOWN instead of returning
+ -EIO on unhandled EPT violation
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ James Houghton <jthoughton@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Sashiko Bot <sashiko-bot@kernel.org>
+References: <20260930001127.3170009-1-seanjc@google.com>
+ <20260930001127.3170009-3-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260930001127.3170009-3-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> vhost_vsock_alloc_skb() sizes its skb from the total guest descriptor
-> length, while virtio_vsock_hdr.len independently declares the payload
-> length.  Since commit ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs
-> for handling large receive buffers"), large descriptors use skb fragments.
->=20
-> virtio_vsock_skb_put() currently changes only skb->len for a nonlinear
-> skb, leaving skb->data_len and all fragments attached.  The zero-payload
-> fast path skips the helper entirely.  A guest can therefore retain the
-> full descriptor allocation while receive credit accounts no payload.
->=20
-> On Linux v7.2, 455 zero-payload skbs retained 30,255,680 bytes on a
-> 256 KiB receive buffer while rx_bytes and buf_used remained zero.  A
-> full-payload control retained 265,984 bytes in four skbs.  The existing
-> SKB_TRUESIZE(0) queue budget caps skb count but does not account for these
-> descriptor-sized fragments.
-> [ ... ]
->=20
-> Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling l=
-arge receive buffers")
+On 9/30/2026 8:11 AM, Sean Christopherson wrote:
+> Exit to userspace with KVM_EXIT_SHUTDOWN instead of returning -EIO from
+> KVM_RUN if KVM encounters an EPT Violation due to a guest access to a
+> pending page.  Returning -EIO implies KVM is buggy, and most VMMs will
+> respond by completely terminating the VM, versus rebooting the VM in
+> response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the option of trying to
+> keep the VM (from the end user's perspective) alive.
+> 
+> Ideally, KVM would probably exit with KVM_EXIT_MEMORY_FAULT, but KVM would
+> need to extend run->memory_fault so that userspace knows the fault can't be
+> handled.  This scenario specifically occurs when the guest has deliberately
+> disabled #VEs on unaccepted memory for security purposes, i.e. the guest
+> literally disabled the mechanism that tells it it screwed up.  But, because
+> this is fatal, and the whole point is to NOT try to fixup the fault,
+> jumping through hoops to return MEMORY_FAULT instead of SHUTDOWN doesn't
+> make a whole lot of sense.
+> 
+> Don't bother bouncing through KVM_REQ_TRIPLE_FAULT as
+> tdx_handle_ept_violation() is a top-level exit handler, i.e. there is no
+> need to worry about failing to actually exit to userspace.
+> 
+> Fixes: e6a85781f783 ("KVM: TDX: Detect unexpected SEPT violations due to pending SPTEs")
 > Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+> Cc: James Houghton <jthoughton@google.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Cc: Yan Zhao <yan.y.zhao@intel.com>
+> Cc: Binbin Wu <binbin.wu@linux.intel.com>
+> Cc: Ackerley Tng <ackerleytng@google.com>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930044147.3818=
-241-1-4ncienth@gmail.com?part=3D1
+> ---
+>  arch/x86/kvm/vmx/tdx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 29d4751f37fb..e3723f1222fc 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -1939,8 +1939,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+>  		if (tdx_is_sept_violation_unexpected_pending(vcpu)) {
+>  			pr_warn("Guest access before accepting 0x%llx on vCPU %d\n",
+>  				gpa, vcpu->vcpu_id);
+> -			kvm_vm_dead(vcpu->kvm);
+> -			return -EIO;
+> +			kvm_prepare_shutdown_exit(vcpu);
+> +			return 0;
+>  		}
+>  		/*
+>  		 * Always treat SEPT violations as write faults.  Ignore the
 
