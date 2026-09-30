@@ -1,56 +1,56 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C2051E450
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CA151DDFB
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790803283; cv=none; b=dYgl0kCyW0prlY6ySoyGyYxmy3BgkTRe8BihcEuxV7q+TVsYtKx5vh/oE8B9s2sOoI/KJ70uILwAreYhk4rJcW2lNxJcBOrkv4UKfax8r/AZg7GXH1eciGA+XFwgrHSIKo/4vH9n8JKWhMc0/8vcKV9H/eaOPovRjrqeQPeGPgQ=
+	t=1790803283; cv=none; b=hB3w6hg7ScmKiEu0zHulTOptm5+EDwX+fuRZUfT5ZTORBo9yU/sWR4XOrYqYsB5u5ZHI1pnXmvJuy/29WV5sY0QOKyfch/U38440T+8krIPYWarO4UlPpGj8DUOegaZZpFEeJ0Wqjy7OesmjpFmb3I9U3/84mzQ7gH/3o1JhBf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790803283; c=relaxed/simple;
-	bh=cUym6SM1y+xizCOvVF9uybn+IfnD1Er8+S7CeF88iLA=;
+	bh=KhzCmk5WC8AOQA8Ul45nUPC1/2N85vtoaJQNQF67U3k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kYInnTRslUG5JSFF42pPX8w0aG3RUJvXV6kNZbiUUH1T1YrtJ3nycrXjZn/n14FCmHry1JOD+ZdhnLACqtO3pn7EUXlOKTHKf8Pqv37YAq35kH0fbkec/rkXMTWNCS8xb9PXrkU1MKA36Igw7BSy1dxHHTtYVwtMfzpUFV/KxF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EGdeNSYq; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=LRgUPaUQS3p9NZ2dAI8XNkuCVxncFK//q5y94ZDX577kz9gcarWFJ0ygW5mdtCXfuR5zd9/IA8sUpvRrAJbuj/sKSl4cN4trCNTPEuqdptLLxEYIJrELdkRAgx7xXj8p9d5SaSHOQ1H22dYJVFpUCSm/reqPnNp6LrP3/yu85js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=boqixBvu; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EGdeNSYq"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e2e0bc619fso10854835ad.0
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:21:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="boqixBvu"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3a4aa263a4aso2188149a91.1
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:21:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790803282; x=1791408082; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790803280; x=1791408080; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=nCYSwZa2d4aSXke3tgGXEEYPihdbNPRRzkkGchqKWVs=;
-        b=EGdeNSYq1dhFotAEwkdQxcaRf4RtHWl0fdM+qN/VKNlOoiKmddV9eI9gzxCkwJFyse
-         bScvZI4tn77CCt0FMtjxDr0FHTzNwTgS9DOvgP2ldI/GDuudjNnHSgGe2t13v1oTZGa/
-         bBtl+QqvLv3ApwvYLO2sQ3rCmA8yx1Jlb8cFOa63bXUqqCT/Z4ZtWjFaq1YuVcDTn4/P
-         CjGXPKm+RL6R9z1m+p8MCSAMimK83wQy4kuEI38yKYj28SEZQzwD0gjWqoXKLNHMRp37
-         XJTFxVdvqZ8DWHqyr3E9fA2RGfR9T5A1UpTytEnjk0befCmhfMIlKCrBg02T07KMSBhA
-         ZD6Q==
+        bh=StSfMMKa3bvOgPVEPrc0vegrNiPAcw8xGz3Rd2c57Ac=;
+        b=boqixBvuWFssxpwXlk6D3mNWYlU+ykWOPDVR8xagxGq3jWglPsedXkZc5urJvVrrJW
+         HpInrYFcOIAxYgtWCs1wq85DnS2CIW7NY70mMwJeSRMs6uuIedNcoDLNHlYunG9YmW4H
+         yinX0O2+om5S2OrTKOQ/zgUZ2t8SBwc7YMzG8XzprEwRJ87aNUPsgy6BnPjVSRLjllKB
+         w0RdKAgHHn6yYHFg39cUknVYEtzDmTo+eocfHbFC1Ok9sVfXA3ubepIGkeajUK2nL8D5
+         ipaAqH1Yfmsxe39UHhM6toEAxtUIxbx1x4jw+9k6Iib2r8ySynWp3Lu7w3y/iAabxoOU
+         9upg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790803282; x=1791408082;
+        d=1e100.net; s=20260707; t=1790803280; x=1791408080;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=nCYSwZa2d4aSXke3tgGXEEYPihdbNPRRzkkGchqKWVs=;
-        b=Br61X6Q/ueYRf3NXywgmYGp4v5chIKhRIPomyvdoc/VE6woMExHvVM1VjQ+eseiWoC
-         N9r1qWehbSky1c8cq8cBm6tup40gDJtZV6Sh/ge0N1/unpgmZKmivWDiUEUf+hr/tZP0
-         74pCcf76XmJO18TZmVNm//n5daBSP1JXn2S9rF9dZ/YYNsuVBe/kMYIzjrqSCq97Wmi4
-         AV0vo8NXDqMo04hfXtuEJQ7ZinKq/SJKNlAi4Xgad4Dck3iCwbxFWWx81DiuR2E6s82y
-         3+oYdhjU9tlDC7ayOVuhl4OiuAIclFlR0W1M7WSZIlujMWELWD/0HlhaTGJlFRjHWFVo
-         EteA==
-X-Gm-Message-State: AFq9FYKH7PVUjeGTZK+tbmvlE9nAqp9pa43tFSm9RjoVyA45ANl7fwYW
-	gMJKbU9GZ6RMZe0cgtIRzC0Ka38YspDAH88+7c+EJU90PVf30KMFWc7s3Egrq5m21sEy+wTgHLF
-	X/Llgng==
-X-Received: from pljg24.prod.google.com ([2002:a17:902:fe18:b0:2e1:2a71:d15b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4c7:b0:2dd:ad74:ac2e
- with SMTP id d9443c01a7336-2e2e4a27af9mr20060035ad.23.1790803281439; Wed, 30
- Sep 2026 14:21:21 -0700 (PDT)
+        bh=StSfMMKa3bvOgPVEPrc0vegrNiPAcw8xGz3Rd2c57Ac=;
+        b=cnvcvHX+D3pf2lsRSI/WIL7REDq1selWgRx/D9SlAkxH3CWh8wKQSi/AMc8N5WJKup
+         Sdvad4GzghHqaf88nMuJBWEubAIczFyd5zjTx/Soar4qN0NdHSE0K3gReQYzf8W4iekV
+         a1gJRt4prLOycwfsCO9/C6YsYqI5olQOvcREV2fe6wedyPypqlGrlsBOA8+q4nxHlTYP
+         lVr6DhjKKg30hv2sFb3bpRZM8TXDwPkfK47B4NptE3OS0pEVsxgKEc64foo3ir9d+ta6
+         63VuNUa6wkly5XwCziRlabzLfTzX2jWn0Kmdp2erhgJUyIQ0nvh+zCQZx/UBURnXHUce
+         a2DQ==
+X-Gm-Message-State: AFq9FYJm8C5CDpj5dcDd+26MKLFOZUuZCA+ICo6DBEfbpuF5NQI9OYUD
+	/3qYDz1qGjquoZACKf050JAvw0jD+mbcaNxECULVagLLui4Btl+4ThlLuMA2U77yzgIekm4F+B6
+	5FvNs+Q==
+X-Received: from pgce11.prod.google.com ([2002:a05:6a02:1cb:b0:cc7:84e2:5dfe])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2243:b0:3a0:7d97:37c1
+ with SMTP id 98e67ed59e1d1-3a4d1937927mr1979096a91.59.1790803280115; Wed, 30
+ Sep 2026 14:21:20 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 14:21:13 -0700
+Date: Wed, 30 Sep 2026 14:21:12 -0700
 In-Reply-To: <20260930212114.3500045-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,58 +60,49 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930212114.3500045-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930212114.3500045-5-seanjc@google.com>
-Subject: [PATCH v4 4/5] KVM: selftests: Add module param API to check if
- nested virtualization is enabled
+Message-ID: <20260930212114.3500045-4-seanjc@google.com>
+Subject: [PATCH v4 3/5] KVM: selftests: Rename svm_nested_clear_efer_svme to svm_nested_efer_test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add an API to check if the nested virtualization module param is enabled,
-e.g. so that tests can verify KVM's own enumeration of the corresponding
-CPU feature.  Provide a big warning above the API to make it as obvious as
-possible clear that tests should use "kvm_cpu_has(X86_FEATURE_VMX) ||
-kvm_cpu_has(X86_FEATURE_SVM)" when checking for nested virtualization.  It
-doesn't really matter which method tests use, as KVM is supposed to keep
-"nested" synchronized with VMX/SVM enumeration, but make the comment super
-scary to try and prevent KVM selftests from having two different ways of
-doing the same thing.
+From: Jim Mattson <jmattson@google.com>
 
-Note, the bool vs. int mess is intentional, because KVM's params are
-terrible.  kvm_amd.ko provides an "int", while kvm_intel.ko provides a
-"bool".
+Rename svm_nested_clear_efer_svme.c to svm_nested_efer_test.c so that the
+test can host coverage for other EFER bits whose behavior is tied to nested
+SVM, and so that the name matches the svm_nested_<topic>_test convention used
+by svm_nested_pat_test, svm_nested_shutdown_test, etc.
 
+No functional change intended.
+
+Assisted-by: LLM
+Signed-off-by: Jim Mattson <jmattson@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/x86/processor.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm                        | 2 +-
+ .../{svm_nested_clear_efer_svme.c => svm_nested_efer_test.c}    | 0
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename tools/testing/selftests/kvm/x86/{svm_nested_clear_efer_svme.c => svm_nested_efer_test.c} (100%)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 6e6f70035508..3d3a7d9f2a95 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1472,6 +1472,19 @@ static inline bool kvm_is_lbrv_enabled(void)
- 	return !!get_kvm_amd_param_integer("lbrv");
- }
- 
-+/*
-+ * Do NOT use this to check for nVMX or nSVM support.  Querying kvm_cpu_has()
-+ * for either of X86_FEATURE_{VMX,SVM} is the idiomatic way to check for nested
-+ * virtualization support.  Use this *only* to validate KVM's own enumeration.
-+ */
-+static inline bool kvm_is_nested_virtualization_enabled(void)
-+{
-+	if (host_cpu_is_intel)
-+		return get_kvm_intel_param_bool("nested");
-+
-+	return get_kvm_amd_param_integer("nested");
-+}
-+
- u64 *vm_get_pte(struct kvm_vm *vm, gva_t gva);
- 
- u64 kvm_hypercall(u64 nr, u64 a0, u64 a1, u64 a2, u64 a3);
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 96bab7002d39..2554464d8b96 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -117,7 +117,7 @@ TEST_GEN_PROGS_x86 += x86/state_test
+ TEST_GEN_PROGS_x86 += x86/vmx_preemption_timer_test
+ TEST_GEN_PROGS_x86 += x86/svm_vmcall_test
+ TEST_GEN_PROGS_x86 += x86/svm_int_ctl_test
+-TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
++TEST_GEN_PROGS_x86 += x86/svm_nested_efer_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c b/tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
+similarity index 100%
+rename from tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c
+rename to tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
