@@ -1,146 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602FC4BD780;
-	Wed, 30 Sep 2026 12:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0043BB100
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790770437; cv=none; b=Ws0lcK8GZFyKthLArHc92pGTBV/AdnjeSoiEZRx1y/DBBJ9tta8RPV+auZe0L/ZnlPV+pOoaa/27PPRJXQ1VO+Nc0hYHueFvDMcJSuBBm2zF3CLUXs6l2T9aUtoCkh5vwVYTj6wZaV9goekGjzd39QGQGOdUP0c1JeyFJn0CMj4=
+	t=1790770839; cv=none; b=hidvQTxaNJCXK+s+eyeaC2uUI1jlMHowJn9Oyj+8D21u00D7luDxnNwyW0QZyL4aexglz6QnugQbF54TAtFB4ualx956y7Hiey+27I7E/itpxDZwjh9B0OCdcsxADtAAk2CNndmPVqJqPneBZ068pssy2jfiZkC52j67jkqQK4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790770437; c=relaxed/simple;
-	bh=9zqk1yjGZQmKRl+UKGVN4e5kEOdj6OMfEzrnv6x2WFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mh1966qwiDgHcdpdg4QMMUIxEYeea6MEihdLcavxQmSOEI4HW+qUjlrYflg0UkNH+HcSBn19wzaLJWUbuxlKQqn2g6RErehoPrZZ/Huosyzrf03a6qeN22B7nhv97KWdBVmsksuVJ6pFExmoNNUimyZxXVpe7W0YUMx52N2U9tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzaBatxT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790770839; c=relaxed/simple;
+	bh=mi2j89WwttQiiJ4V5ZnDFMr50yvWkQvf0DWQ4eOlB+8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZObk6q+RTwlrflvqxrzMmUDQcJUcxUdRuXZCRlfiT2jR3+QhsevsuidEJIFo7/rBDlsgG6nFS/9ZwgUjEN9HAARUSSQMlyCe9Y28Op//xdlU6Vlxcp8bauynGE5V7mBZavzMHzGL8FdmatjW3VNpypIxYfGR9bXn+T9ohl4bRoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KI5aVo06; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzaBatxT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483E81F000FF;
-	Wed, 30 Sep 2026 12:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790770432;
-	bh=k6PKVkFFdQkVOzBjY1QQQ7xkTUrcrzdRqFqZ7LnlOYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CzaBatxTnlcDDUj47mqRx04KHNsI5KYUKycPAWgY2lsjGykiTNrDUpWNQpKykJT1P
-	 St1D0g6tWWT/RdpHRf8J6Cwo2jKXUHvdopUINvfFoBAkf/pAuOYeQtsujRzLt2wqBq
-	 VA5YTdK9TX/64HU0gefk46zHkjcSAMhyDevS6rAMZ4USu1UMhmH9hTKD0gowoLP5h/
-	 AejYfAmjlQ5HokTagSwYo4RQTrSsRYeu6gKzBywSIzr38epOZz/KZ5HB1/vtPOIZAD
-	 P2IU3LkydOfpHdNzqZVociHrisqXu2Dre6PDH7st0mXjQNPrz5srdqkeBzYabLs/b+
-	 i9p0CC2ZMg7Tw==
-Date: Wed, 30 Sep 2026 15:13:49 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, fengchengwen <fengchengwen@huawei.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian Konig <christian.koenig@amd.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v13 5/5] RDMA/mlx5: get tph for p2p access when
- registering dma-buf mr
-Message-ID: <20260930121349.GD3401365@unreal>
-References: <20260731211601.3033906-1-zhipingz@meta.com>
- <20260731211601.3033906-6-zhipingz@meta.com>
- <f4ff7ced-63b6-42e6-8e01-9f01d2e59843@huawei.com>
- <CAH3zFs24esHCGA=wPrkiH8oKQCv7SnOwcBbkMxrOEvOVtwstYg@mail.gmail.com>
- <20260924233058.GA163130@ziepe.ca>
- <CAH3zFs2rhg6-b-pVDps1V8LsM4Dn48t4J4LFVyKOZtT4axdY=Q@mail.gmail.com>
- <20260928172939.GK163130@ziepe.ca>
- <CAH3zFs1mCujYjB=5ywo+huAjPJZQoe9u7NM4evNRYr5_ZQbcXQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KI5aVo06"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e2ebeaa0a4so2748875ad.1
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 05:20:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790770837; x=1791375637; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nyn15uH7SjzrTyQYpR4Kf4Qwo/XydgHO+DYB7E91HzI=;
+        b=KI5aVo06dMUFKrpUspotOz7+tG1Sm4puPSG5Re11NDdhHqCU5iqEAzutjP+Lx68D7f
+         J394eu6OW1MDfL+6LvPcrbPxfisuToTjldYm8AyiGs9vs8T5jFUDy64vjDR/Iq7oQWIY
+         i/1ClDn77Jmpjhe/oTp9sjpJrJwcGaAM4JAHiu0MR80nAPJ7NiGvjnz86qTNtSNN+Cfm
+         cQ+s7rnP8p4piEe1puhAb09C4IV4LdEsf51kKPnKh5JP/znMPpM8A+sl1QllYxs3Fr7Z
+         NJik7qfYbjXeadKFZ/dCH+D7t/IjJKezSfEy53xjwj3k6wsn9xVLcjQJ8HR8O46AYITw
+         Nmvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790770837; x=1791375637;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nyn15uH7SjzrTyQYpR4Kf4Qwo/XydgHO+DYB7E91HzI=;
+        b=twDQrZ1JRQzhRzk0rylcADTWc7uL4ZJvHND1EDpdW2ZPKYjD41l77JrC1L20UfFc2E
+         ceplyCnyArE2C3W1g9elzB7G2X59LsCHu6q8hqFpC76kEnaIqjxlBn2NJ+X1a90gPIdN
+         6oUXGH2AJaoT54JIaao8OaDZMqlbF67amXlXTcPDtQ+DhZ82CjlfdteossvNx1TFJ4ut
+         WETg/fHs1Y1HCRSqy8ow4OyXpCc8H7o384axjoQRJUlrVKlR1I//PfZlJ319FZ56oxYw
+         b1KyI7+oEnQsVZahvUikv/6bnVHSD6RwJnmy2XX6yz0hZ9bUHpN83JS7GcfVFf3LQP9V
+         /IDw==
+X-Forwarded-Encrypted: i=1; AKwUvBzCQd0o1A04AesuXC2mj7TSemfLnxy2JGEfLYRPAcTVQaCDcjhCfiZ7jrnOfINf4YNPZvs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcmbJOexR1m4KBOsBew9uVTE5MkGdGST/vzKEAhEAjvKEejekZ
+	iwU9QCDlER+UreZfbC+/f8mEO3hPcZYPOhnLCpJW5qi3MECPCjm14I9KkM1iQyEuN2ZN8CwKuRH
+	CovueoA==
+X-Received: from ploc24.prod.google.com ([2002:a17:902:8498:b0:2cf:bf3e:41f0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f91:b0:2df:b5c7:d0f1
+ with SMTP id d9443c01a7336-2e2e4b5b928mr8752095ad.44.1790770836724; Wed, 30
+ Sep 2026 05:20:36 -0700 (PDT)
+Date: Wed, 30 Sep 2026 05:20:34 -0700
+In-Reply-To: <CAG48ez0zfaEgWoFiLyVLu_ZU8XtJoKVoyMrnxMcLX6e+3j0jgw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH3zFs1mCujYjB=5ywo+huAjPJZQoe9u7NM4evNRYr5_ZQbcXQ@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260810-x86-kvm-setpagedirty-v1-1-85f180892d4f@google.com>
+ <ann8aPLSgLzz_6L_@google.com> <CAG48ez0zfaEgWoFiLyVLu_ZU8XtJoKVoyMrnxMcLX6e+3j0jgw@mail.gmail.com>
+Message-ID: <arz-kvd4jWnEFAoq@google.com>
+Subject: Re: [PATCH] KVM: SEV: Fix page dirtying in sev_gmem_post_populate()
+From: Sean Christopherson <seanjc@google.com>
+To: Jann Horn <jannh@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 28, 2026 at 02:47:46PM -0700, Zhiping Zhang wrote:
-> On Mon, Sep 28, 2026 at 10:30 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+On Wed, Sep 30, 2026, Jann Horn wrote:
+> On Mon, Aug 10, 2026 at 6:29=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> > On Mon, Aug 10, 2026, Jann Horn wrote:
+> > > set_page_dirty() requires that the caller holds some kind of lock to
+> > > ensure that the page's mapping does not concurrently go away.
+> > > That is not the case for a random page we got from get_user_pages_fas=
+t(),
+> > > so use set_page_dirty_lock().
 > >
-> > >
-> > On Thu, Sep 24, 2026 at 11:17:57PM -0700, Zhiping Zhang wrote:
-> > > On Thu, Sep 24, 2026 at 4:31 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > > >
-> > > > >
-> > > > On Wed, Sep 23, 2026 at 11:24:56PM -0700, Zhiping Zhang wrote:
-> > > > > I don't think this belongs in the importer. Every in-tree dma-buf
-> > > > > caller of pci_p2pdma_distance() is the exporter, in its .attach,
-> > > > > clearing attach->peer2peer -- amdgpu_dma_buf.c, xe_dma_buf.c,
-> > > > > habanalabs memory.c. There is no importer-side caller.
-> > > >
-> > > > Right, and they shouldn't be doing that, but it still has to be
-> > > > checked that the st is going directly to the peer device not the host
-> > > > bridge. Not using the distance, but by the PCI_P2PDMA_MAP_BUS_ADDR
-> > > > indication.
-> > > >
-> > > > I fear you will need some of Leon's series to make that happen.
-> > > >
-> > > > So probably the proposed change to dmabuf ops is far too simple.
-> > > >
-> > > > Jason
-> > >
-> > > Hi Jason,
-> > >
-> > > Thanks for the comments.
-> > >
-> > > Agreed -- the tag should not be handed out unless the routing is
-> > > PCI_P2PDMA_MAP_BUS_ADDR. That can be enforced conservatively on 7.3
-> > > with two changes. I can fold both into patch 4.
-> > > ```
-> > > In drivers/pci/p2pdma.c, make pci_p2pdma_map_type() callable from
-> > > tristate VFIO_PCI_CORE:
-> > >
-> > >     EXPORT_SYMBOL_GPL(pci_p2pdma_map_type);
+> > FWIW, I verified that __kvm_gmem_populate() unlocks the destination fol=
+io before
+> > post_populate(), so we shouldn't run into deadlock when in-place conver=
+sion comes
+> > along and userspace does something odd.
 > >
-> > No, that's been rejected several times already.
-> >
-> > > and in drivers/vfio/pci/vfio_pci_dmabuf.c,
-> > > vfio_pci_dma_buf_get_pci_tph() gains:
+> > > Fixes: 97cd21d57e9b ("KVM: SEV: Mark source page dirty when writing b=
+ack CPUID data on failure")
+> > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > ---
+> > > Note that I have only convinced myself that this is a UAF bug by read=
+ing
+> > > the source code, and I have only compile-tested this patch; I do not
+> > > have SEV-SNP hardware to actually test this.
 > > >
-> > >     struct dma_buf_attachment *attach;
-> > >
-> > >     if (list_empty(&dmabuf->attachments))
-> > >         return -EOPNOTSUPP;
-> > >
-> > >     list_for_each_entry(attach, &dmabuf->attachments, node)
-> > >         if (pci_p2pdma_map_type(priv->provider, attach->dev) !=
-> > >             PCI_P2PDMA_MAP_BUS_ADDR)
-> > >                 return -EOPNOTSUPP;
-> > > ```
+> > > This bug was introduced in v7.2-rc1, so if we can get the fix in befo=
+re
+> > > the 7.2 release, this won't require a stable backport.
 > >
-> > Also no, this has to be done via PCI_P2PDMA_MAP_BUS_ADDR which also
-> > enforces putting the determination in the right place in the code
-> > flow..
-> >
-> > > Two properties are worth stating explicitly:
-> >
-> > Ah! AI!
-> >
-> > Jason
-> 
-> Thanks Jason, I see what you meant by Leon's series now:
->   https://lore.kernel.org/all/20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com/
-> 
-> Looking at v8, it seems patches 1-4 can stay functionally unchanged,
-> while patch 5 uses dma_buf_p2pdma_map_type() on its own attachment for
-> both the initial TPH query and revalidation. Is that what you expect?
-> 
-> If so, would you prefer that I wait for Leon's series and rebase the
-> whole stack on it, or split the series so patches 1-4 can land first
-> and patch 5 follows after Leon's series?
+> > Ya, that would be lovely.  Paolo?
+>=20
+> Ping?
+> I still don't see this in mainline or in next.
 
-I would like you to join me there and explain to Christian why the
-importer needs access to the exporter's internals.
+Ha, I *just* pushed it to kvm-x86/fixes yesterday, it should show up in tod=
+ay's
+-next build.
 
-You are already second user for the same functionally.
+  https://github.com/kvm-x86/linux/commit/9e389110fd668958735141af24d04ed04=
+0776235
 
-Thanks
-
-> 
-> Thanks,
-> Zhiping
+Oof, but it looks like Paolo force-pushed to kvm/master (accidentally?), so=
+ I'll
+probably rebase it today.  I.e. the hash is likely going to change (but I'l=
+l
+still send it along for 7.4).
