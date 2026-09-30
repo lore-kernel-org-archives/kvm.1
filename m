@@ -1,139 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0ABEED8;
-	Wed, 30 Sep 2026 00:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EC2244667
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 00:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790727907; cv=none; b=sanGU6i/avOizHKSix94dvzR5RVMBNv66tDgx4t/sQkmgw8BE2LKgbVbi6ZcTD+KZqpADUFFbPrdti6ipEv2cRWxHAlVYdZbD/BsE7PeMUExo40oHLv7HoIfkeuTazPP9g8+Yw2kagJLmaZSgdL2RAOYxbkopWuaT+erTL88oZo=
+	t=1790728281; cv=none; b=ebpY+qsgumDLlLa+nyPpq6sHyIqxwJWSCVYvW3zFDISvirpsA9qCYVQMmPCK/modLJSJekyxKrt/ddXGVjKe7Nio1pwuvqCg2AAHHCENCUrwTlg0zZBbfDSsYO+EXU1M2U0QXItVE2ZL3Pf3rblMsbqPlx6u3EGYwmgfn/PqEFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790727907; c=relaxed/simple;
-	bh=I1qDs9BDbcfwaj01gAmb+tRsK8kiWxN+rVkQEeUsac4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NqdwwSZCtTw/ZctYAOP2Qo24vhQdlxQt1kFuTkFOcZwWdR9V4Eh2nPVi9rctkrlduefPI/b6edQnGVVOtXX60Cu9FqdsxKPEsYFaMR133a8HDlhTT3cJt1S4b+keg7pToAHRoDY5QRLHRSd3ELSNJEFl2JNqypncASyG9fg054s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NC3wN3NI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790728281; c=relaxed/simple;
+	bh=fwU2xGm0fOP4M9PWft4gM/p3oSNJrr/vtk7ValJcvjo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=m9XHHALET02y4tsFYPROTiJs973+tXNnZtfZPZ6wRZlbYLUh3rhtmW0od2JkpEe1mCFSrdjRKjaMZ4OimFx1nmlxQcaC0+CYxBsM0BTsAylVJuaNX08gdegKdrJ4JW1uhzIjM47ScpcXhvO+0at0XkUpabew8adsr0Js9wkaIck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3SeRK7O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NC3wN3NI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811F51F00899;
-	Wed, 30 Sep 2026 00:25:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3SeRK7O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC101F000FF;
+	Wed, 30 Sep 2026 00:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790727905;
-	bh=3qjgKogqDJ4nU3WCcsiVuj/fs6MGqUehEm1aDK84/10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NC3wN3NI6FGYkISLfmTPBTbQQ/lHzXUmcmXJy+yeHqcy3I63kghmoSWxVnM8GqZ1F
-	 QAEuW772CeWzvRKQhjdZLeVNj2WCkTUYSc+Hpf53kInALjM0XRCPzN0SlvVPHSyPdg
-	 19F54EGZI+vUJB+7OLplFQJa5s5EaP22fv6wxSTWS7eK1eKLqH4UGOYT8o8BL5+Cra
-	 CoELMHbRU6v3bl4oXYDPdSsSxw0KcP05Imr7fAdopv+pxcND2/a6JT4rGXxKDT7H/Y
-	 E8+D825YrmbSNdKIq5se6Xu0H2n8GAPUbuTxmcICepRpHCPVIPqowOBLdwsJ3D9Wb9
-	 Ry3E/HpEbNZrg==
-Date: Tue, 29 Sep 2026 17:25:04 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: maz@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	corbet@lwn.net, pbonzini@redhat.com, leo.bras@arm.com,
-	yuzenghui@huawei.com, wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com, caijian11@h-partners.com,
-	liuyonglong@huawei.com, tangchengchang@huawei.com,
-	yezhenyu2@huawei.com, yubihong@huawei.com, linuxarm@huawei.com,
-	joey.gouly@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, fuad.tabba@linux.dev,
-	mark.rutland@arm.com, seanjc@google.com, rdunlap@infradead.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 01/15] KVM: arm64: pgtables: Change write bit from
- S2AP_W to DBM
-Message-ID: <arxW4PUY3qqRkogl@kernel.org>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-2-zhengtian10@huawei.com>
+	s=k20260515; t=1790728280;
+	bh=Lj2sNPrBlbiQWA3MSuqqOJRheGi1DFrXG3MYhu0PMMU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=X3SeRK7O5XqQ2zRBMQidjejH6HNngx+5TFeYQlqsnY4zFGMTlJ0zYft/x1YoBcTST
+	 Iw1NqELrbNxqLwhPntJrnlTTvSTZZfHkn1oLa72UCPpogyoogJQ1lLBBXpwEJEB5hr
+	 /Jo4mpJol1t7brLmMmJ2viV30f9xiUa+xIoCxaCjxKRes77msLv6f1jY+hRqEXynxg
+	 cvOHAXX7644qeQjO6lDOHCPT77GsWvkIfXVAQ7hX6df1yCFzkXCAeXaihG41M5eWc7
+	 Q/3ilQh3zKXr+CFBylipw4Z5yvK5Dh17RaRp71uDCzw58uFNh9Gu+ryGb9e0fvEUfa
+	 ulB3PM2sjYO6g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 4/5] KVM: selftests: Add module param API to check if
+ nested virtualization is enabled
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260930002140.3174449-5-seanjc@google.com>
+References: <20260930002140.3174449-1-seanjc@google.com>
+ <20260930002140.3174449-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 30 Sep 2026 00:31:19 +0000
+Message-Id: <20260930003120.1DC101F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929103655.85107-2-zhengtian10@huawei.com>
 
-Hi Tian,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] kvm: selftests: kvm_is_nested_virtualization_enabled() aborts on=
+ Intel
+- [Low] kvm: selftests: get_common_kvm_vendor_param_bool() returns int inst=
+ead of bool
+--
 
-On Tue, Sep 29, 2026 at 06:36:41PM +0800, Tian Zheng wrote:
-> From: Leonardo Bras <leo.bras@arm.com>
-> 
-> As a first step of changing the encoding for the Stage2 PTE descriptor,
-> introduce the DBM bit, and adapt every usage of writable to use the DBM
-> bit (51) instead of S2AP[1]/Dirty bit (7).
-> 
-> With DBM as the write permission bit and S2AP[1] as the dirty state,
-> the encoding follows the FEAT_S2PIE principle of managing permissions
-> and dirty state independently.
-> 
-> For this step, we convert usages of RW(Dirty) -> WD(DBM|Dirty): every
-> writable mapping sets both bits, read-only mappings clear both, and no
-> behaviour changes.
-> 
-> Link: https://lore.kernel.org/all/20260901171558.2674031-2-leo.bras@arm.com/
-> Signed-off-by: Leonardo Bras <leo.bras@arm.com>
-> [zhengtian: keep the nested walker reading writability from S2AP[1]
-> alone, document why, and reword the commit message]
-> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> ---
->  arch/arm64/include/asm/kvm_pgtable.h | 3 +++
->  arch/arm64/kvm/hyp/pgtable.c         | 7 ++++---
->  arch/arm64/kvm/nested.c              | 5 +++++
->  arch/arm64/kvm/ptdump.c              | 4 ++--
->  4 files changed, 14 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
-> index 41a8687938eb..37baa86d6fd8 100644
-> --- a/arch/arm64/include/asm/kvm_pgtable.h
-> +++ b/arch/arm64/include/asm/kvm_pgtable.h
-> @@ -93,10 +93,13 @@ typedef u64 kvm_pte_t;
-> 
->  #define KVM_PTE_LEAF_ATTR_HI_S2_XN	GENMASK(54, 53)
-> 
-> +#define KVM_PTE_LEAF_ATTR_HI_S2_DBM	BIT(51)
+commit 680296c2620e4e5c37fadd1bdce211406dcc250c
+Author: Sean Christopherson <seanjc@google.com>
+
+KVM: selftests: Add module param API to check if nested virtualization is e=
+nabled
+   =20
+Add an API to check if the nested virtualization module param is enabled,
+e.g. so that tests can verify KVM's own enumeration of the corresponding
+CPU feature. Provide a big warning above the API to make it as obvious as
+possible clear that tests should use "kvm_cpu_has(X86_FEATURE_VMX) ||
+kvm_cpu_has(X86_FEATURE_SVM)" when checking for nested virtualization.
+
+Link: https://lore.kernel.org/all/20260910115414.3015260-2-ewanhai-oc@zhaox=
+in.com
+
+> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/=
+testing/selftests/kvm/include/x86/processor.h
+> index 6e6f70035508a..1608ddb91b6e6 100644
+> --- a/tools/testing/selftests/kvm/include/x86/processor.h
+> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+> @@ -1429,6 +1429,14 @@ static inline bool get_kvm_amd_param_bool(const ch=
+ar *param)
+>  	return kvm_get_module_param_bool("kvm_amd", param);
+>  }
+> =20
+> +static inline int get_common_kvm_vendor_param_bool(const char *param)
+
+[Severity: Low]
+Does this function have a type mismatch? It evaluates vendor-specific boole=
+an
+parameter helpers, but returns an int instead of a bool.
+
+> +{
+> +	if (host_cpu_is_intel)
+> +		return get_kvm_intel_param_bool(param);
 > +
->  #define KVM_PTE_LEAF_ATTR_HI_S1_GP	BIT(50)
-> 
->  #define KVM_PTE_LEAF_ATTR_S2_PERMS	(KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
->  					 KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W | \
-> +					 KVM_PTE_LEAF_ATTR_HI_S2_DBM | \
->  					 KVM_PTE_LEAF_ATTR_HI_S2_XN)
-> 
->  /* pKVM invalid pte encodings */
-> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-> index b74dd5ce1efd..50f4d3a74f77 100644
-> --- a/arch/arm64/kvm/hyp/pgtable.c
-> +++ b/arch/arm64/kvm/hyp/pgtable.c
-> @@ -732,7 +732,7 @@ static int stage2_set_prot_attr(struct kvm_pgtable *pgt, enum kvm_pgtable_prot p
->  		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R;
-> 
->  	if (prot & KVM_PGTABLE_PROT_W)
-> -		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> +		attr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM | KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+> +	return get_kvm_amd_param_bool(param);
+> +}
 
-Hmm... I'd actually like to see this structured where the "write" bit
-could either be S2AP_W or DBM depending on if the system supports
-FEAT_HAFDBS. Look at how HVHE is handled for selecting the right AP
-encoding for the hyp stage-1 page tables.
+[ ... ]
 
-> diff --git a/arch/arm64/kvm/ptdump.c b/arch/arm64/kvm/ptdump.c
-> index 69899797dbad..b0cb8d84a9e9 100644
-> --- a/arch/arm64/kvm/ptdump.c
-> +++ b/arch/arm64/kvm/ptdump.c
-> @@ -40,8 +40,8 @@ static const struct ptdump_prot_bits stage2_pte_bits[] = {
->  		.clear	= " ",
->  	},
->  	{
-> -		.mask	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
-> -		.val	= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
-> +		.mask	= KVM_PTE_LEAF_ATTR_HI_S2_DBM,
-> +		.val	= KVM_PTE_LEAF_ATTR_HI_S2_DBM,
->  		.set	= "W",
->  		.clear	= " ",
->  	},
-> --
-> 2.43.0
-> 
+> @@ -1472,6 +1485,16 @@ static inline bool kvm_is_lbrv_enabled(void)
+>  	return !!get_kvm_amd_param_integer("lbrv");
+>  }
+> =20
+> +/*
+> + * Do NOT use this to check for nVMX or nSVM support.  Querying kvm_cpu_=
+has()
+> + * for either of X86_FEATURE_{VMX,SVM} is the idiomatic way to check for=
+ nested
+> + * virtualization support.  Use this *only* to validate KVM's own enumer=
+ation.
+> + */
+> +static inline bool kvm_is_nested_virtualization_enabled(void)
+> +{
+> +	return get_common_kvm_vendor_param_integer("nested");
+
+[Severity: Medium]
+Will this unconditionally abort the test suite on Intel hosts?
+
+The VMX "nested" module parameter is a boolean exposed via sysfs as "Y\n" or
+"N\n". If this helper uses the integer reader on Intel, it will read "Y\n"
+and pass "Y" directly to atoi_paranoid(), which throws a TEST_ASSERT because
+strtol() fails to parse "Y" as an integer:
+
+tools/testing/selftests/kvm/lib/test_util.c:atoi_paranoid() {
+    ...
+    TEST_ASSERT(num_str !=3D end_ptr,
+                "strtol(\"%s\") didn't find a valid integer.", num_str);
+    ...
+}
+
+> +}
+> +
+>  u64 *vm_get_pte(struct kvm_vm *vm, gva_t gva);
+> =20
+>  u64 kvm_hypercall(u64 nr, u64 a0, u64 a1, u64 a2, u64 a3);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930002140.3174=
+449-1-seanjc@google.com?part=3D4
