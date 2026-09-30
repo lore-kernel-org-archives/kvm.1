@@ -1,56 +1,56 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A497350B8A1
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AA24D4888
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790797015; cv=none; b=gudqAZv07jVV6pM3GFLFvl+onJ5VpzwGqGbGJ/PKR5bKME4gotYbk0po2cgKbEgxqyFHfe8mKaaBoNF4+puiLodHN1fb5S5BMzViIhicaSBQcwK4BSMpj45VKlmlNnHni3L2b1n1G7AFz+iS4StjsGw7YQl7/UV3b3SuOmrSlk8=
+	t=1790797016; cv=none; b=nl/j8zPWyCT1fwLVJK/8zMRcia9+DMzfpeX6bIiIhAfA2bWGtqALqGwZtle8eF3MOBNux4tB1iIDedDaUyUKZzfQMFaBw7vOb6TpodZUUu2p3A/TjYhJJhiZOvIh6lxgYbq6eU4sWVTMyOowZzbIQz7czn/6iIQGa67iJViMlYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790797015; c=relaxed/simple;
-	bh=9/5VYKp+FpTlacyCJ0B7NN+WKgSUpEps0uP+5xXDmOw=;
+	s=arc-20240116; t=1790797016; c=relaxed/simple;
+	bh=Jgndf1FLVPtw1RjeBvHSK/j9YvB+rS6M1T9+7Mb9Hxw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WxRBhGGVRdiThm+WPvBMoxTwhZ783vcZzsGkMqMKWpcxtCK7cLE8pGsQz5kD8S/YCIwum0XeYpW2WC5jMvXgjtsgpGasJFfvq+RiEx40HngiH5ruwNmQg4ynTVrSMHTEFEZ+/Edv2Cv49TZqUSjvV+9t8uPvF+A5Np8LEd7rF7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P3hA6kg+; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=qOjuyy1gFztBIfyZFrKVzrVqF+y7ayabb02l8/oKj7b/rbkdJ4Y86ovxDYZPfF2X7Lb7rpfNMyCO2+Mb9abf5inRntpntpkn3eLU4pidDxMj6vT6+kg4Ui1kresELlPwbIBAw+222GP2foLMTNBHXNIcyeFZWkMm7VIRz3ibTfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vfKuo4hb; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P3hA6kg+"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cfc52ddc55so54423465ad.3
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vfKuo4hb"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d001671a54so57308845ad.2
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790797013; x=1791401813; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790797014; x=1791401814; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=wtnEMbDhnNePMM9FVDMKnptaMxqEpAp14r/XB4S9VOI=;
-        b=P3hA6kg+uz9qmQMrAddosrgvb1+pBzlVQXfiY+12vTMLEitMf0FRpGLseUBUjadcFU
-         vPuvYyKMDAlJU4MLxhLrkM8pWJzocMwvgYHVLZk7cfuU+bZfT84TrTiTuVP+hRSLjgZ0
-         rC5ycAy1ukn3EdUe0dXIt6FVLLc+i+RY61HBKQYwgEaNsmrPepQQdHBtMlS6mTDpZ5ao
-         GgOKJegmD+6Pteaa/QtoetRBgYvLR2i1HIPPNiges0Oz0NN8VMa3kfx00ErDlkvXiE6q
-         abcb52BipNCJFJxnVfC6xYPas8Gh0rduIQM+ACt3c5xm5XOvoRLwKme4zsburN2DmLem
-         ylhg==
+        bh=5ZPdaAVKbCuct+Drs4hq/dXnJoZKDoPUJjaVzhPw8KY=;
+        b=vfKuo4hbwNLfmDjS2UikM8pr8u6kt147HBAnmycH1kXJNtn87sMEc/ZGDnE006fHhc
+         h0uhh5H9R8w6au3DB7qd6Sk4eyqc9gUykZHlvMjvr5qFQ0a/6Wl1lB06/+xrvKS9Xyvf
+         2854Ib1SN9zQT3jXCNS2LlfIMmlI/5mP6fjceUZS+Yegd05ci8blHehgZzhhvrcYQzbP
+         NCXRG7Y0dLQD7jNf1DMsak3UEwxLrGPDxKS2p6pxQ63qatwXWgtv1y/lNd4yfTpJiHQs
+         M9YmE4I0ETPHaaLpXtmg8yBFyVd6nzYebm6zd91ZnD74hq6goqgBckEhtdvd+3+3W8Px
+         X9GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790797013; x=1791401813;
+        d=1e100.net; s=20260707; t=1790797014; x=1791401814;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=wtnEMbDhnNePMM9FVDMKnptaMxqEpAp14r/XB4S9VOI=;
-        b=cpBhCX2pnHEtjeSoVzijizEn+SlQ+8ro81zrP19R6uDbBr27XtbIqV+L46c6Io4TuX
-         a7bggCf7dgtkB5RvOef3leRaW5jEIsl/w+Mk+r1ctgWqMkwwbZZ4gHeGyQ1FKyPCH2Su
-         lO4fuRRrUTWXwtkQYwNdR+LQLt4TrVk8N9x+u86RtnJyEyaush6NBRhdQujpzIvc9clF
-         h6jrRmwxLt7CgH+qHHK9V0rUvx3dgemI3M+qqPP6STx9OU093d8gZIreBqkPyrYzDqHK
-         B8lBH+2qK/ZbxHRCV7Jge4qWpXqVmnTSMzQKn0Tw2oFO5L9o7z0LfzKDP/IRLarfkUzd
-         oGeA==
-X-Gm-Message-State: AFq9FYJliSgN5UIsi3uAfxWYyB2onVBzYDRfJQC5UJhklfrVQVKxqRDu
-	STMtpouHAs++FQ6uDREBBPAtp93ZATquoyKr8IxL7nkpT5aZudl8vPrm4r0K91OTOAN9XyE2EC1
-	aAcwPKA==
-X-Received: from plbjh24.prod.google.com ([2002:a17:903:3298:b0:2e2:f334:4160])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19e3:b0:2e2:e5b2:6451
- with SMTP id d9443c01a7336-2e2e5b26ad8mr21379495ad.36.1790797012040; Wed, 30
- Sep 2026 12:36:52 -0700 (PDT)
+        bh=5ZPdaAVKbCuct+Drs4hq/dXnJoZKDoPUJjaVzhPw8KY=;
+        b=cBbzFv867VWLU1yeoHybAWcEKvS6O5YMPhwewWIP3C8Guo9moJ/rp1Q0oS2EIiiHiN
+         14Hf9jnDKAdAZr+EvzvNVC5LKbQ9RxB1IlPW2eq01n+BeFbVhCAvAUdrfHgVYj2OgeeD
+         XxGUj4O3sidHd24ASFhW1puST2y/y6nMoHzsYOL1oIrRrJCefFlrpS3Kn0+HByMF5noC
+         Ykm8nzw1LwWQcWVg8/Mzp3OX+MVrbIXOjkDgSBG+rM1aBGN0shz22bcHVy+JXdAxyI2+
+         q5ehbkgedU3hQhh3BAtbcSzR9XH9kGEDI++h1x/6K3QW5AJcGZnX5qU65/6kTcSrnbqF
+         uv7g==
+X-Gm-Message-State: AFq9FYKdtK8FIzzdUIw3Obt0QBvZNFzFCfiJsFjXTYIcHLAyZ44iIWQ5
+	9T5RwGcdj400Ixpvu1WKEKF4kUQ8oumV8AAMYmfvKgYGuNt2BMNZblWsMbGF1m0c7DA7fP5yjY6
+	tMpH8BA==
+X-Received: from plaw3.prod.google.com ([2002:a17:902:c783:b0:2e2:f0cb:c185])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:228e:b0:2e2:c459:2ed
+ with SMTP id d9443c01a7336-2e2e4b551bfmr18928225ad.42.1790797014291; Wed, 30
+ Sep 2026 12:36:54 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 12:36:33 -0700
+Date: Wed, 30 Sep 2026 12:36:34 -0700
 In-Reply-To: <20260930193634.3415089-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930193634.3415089-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930193634.3415089-12-seanjc@google.com>
-Subject: [PATCH v6 11/12] KVM: SVM: Add a vCPU-aware helper to get supported
- DEBUGCTL bits
+Message-ID: <20260930193634.3415089-13-seanjc@google.com>
+Subject: [PATCH v6 12/12] KVM: SVM: Add support for virtualizating Bus Lock Detect
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,120 +70,74 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-Replace DEBUGCTL_RESERVED_BITS with a vCPU-aware helper that provides the
-set of supported bits so that KVM can handle bits that are conditionally
-supported based on the vCPU model, e.g. for features like Bus Lock Detect.
+Advertise support for virtualizing Bus Lock Detect and allow the guest to
+enable BUS_LOCK_DETECT if LBR Virtualization is enabled (Bus Lock Detect is
+enabled through MSR_IA32_DEBUGCTLMSR, which context-switched if and only if
+LBR Virtualization is enabled).
 
-No functional change intended.
-
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Co-developed-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-[sean: invert from reserved => supported, massage changelog]
+[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 8 ++++----
- arch/x86/kvm/svm/svm.c    | 6 +++---
- arch/x86/kvm/svm/svm.h    | 7 +++++--
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ arch/x86/kvm/svm/svm.c | 12 ++++++++++--
+ arch/x86/kvm/svm/svm.h |  7 ++++++-
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index c7a69e309a36..af0ef678433d 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -818,7 +818,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
- 		 * svm_set_msr's definition of reserved bits.
- 		 */
- 		svm_copy_lbrs(&vmcb02->save, save);
--		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
-+		vmcb02->save.dbgctl &= svm_get_supported_debugctl(vcpu);
- 	} else {
- 		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
- 	}
-@@ -1207,7 +1207,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- }
- 
- /* Copy state save area fields which are handled by VMRUN */
--void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
-+void svm_copy_vmrun_state(struct kvm_vcpu *vcpu, struct vmcb_save_area *to_save,
- 			  struct vmcb_save_area *from_save)
- {
- 	to_save->es = from_save->es;
-@@ -1234,7 +1234,7 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
- 
- 	if (kvm_cpu_cap_has(X86_FEATURE_LBRV)) {
- 		svm_copy_lbrs(to_save, from_save);
--		to_save->dbgctl &= ~DEBUGCTL_RESERVED_BITS;
-+		to_save->dbgctl &= svm_get_supported_debugctl(vcpu);
- 	}
- }
- 
-@@ -2081,7 +2081,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 
- 	svm->nested.vmcb12_gpa = kvm_state->hdr.svm.vmcb_pa;
- 
--	svm_copy_vmrun_state(&svm->vmcb01.ptr->save, save);
-+	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, save);
- 	nested_copy_vmcb_control_to_cache(svm, ctl);
- 
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 5253c0143666..1e58ad8691e9 100644
+index 1e58ad8691e9..e7c296c52591 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -3210,7 +3210,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 			data &= ~DEBUGCTLMSR_BTF;
- 		}
+@@ -879,7 +879,7 @@ static bool svm_need_lbr_virtualization(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  
--		if (data & DEBUGCTL_RESERVED_BITS)
-+		if (data & ~svm_get_supported_debugctl(vcpu))
- 			return 1;
+-	if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
++	if (svm->vmcb->save.dbgctl & (DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK_DETECT))
+ 		return true;
  
- 		if (svm->vmcb->save.dbgctl == data)
-@@ -5164,7 +5164,7 @@ static int svm_enter_smm(struct kvm_vcpu *vcpu, union kvm_smram *smram)
- 
- 	BUILD_BUG_ON(offsetof(struct vmcb, save) != 0x400);
- 
--	svm_copy_vmrun_state(m_save.map.hva + 0x400, &svm->vmcb01.ptr->save);
-+	svm_copy_vmrun_state(vcpu, m_save.map.hva + 0x400, &svm->vmcb01.ptr->save);
- 	return 0;
- }
- 
-@@ -5204,7 +5204,7 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 	 * used during SMM (see svm_enter_smm())
+ 	return is_guest_mode(vcpu) &&
+@@ -5712,9 +5712,17 @@ static __init void svm_set_cpu_caps(void)
+ 	 * Clear capabilities that are automatically configured by common code,
+ 	 * but that require explicit SVM support (that isn't yet implemented).
  	 */
+-	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+ 	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
  
--	svm_copy_vmrun_state(&svm->vmcb01.ptr->save, m_save.map.hva + 0x400);
-+	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, m_save.map.hva + 0x400);
- 
- 	/*
- 	 * Enter the nested guest now
++	/*
++	 * LBR Virtualization must be enabled to support BusLockTrap inside the
++	 * guest, since BusLockTrap is enabled through MSR_IA32_DEBUGCTLMSR and
++	 * MSR_IA32_DEBUGCTLMSR is virtualized only if LBR Virtualization is
++	 * enabled.
++	 */
++	if (!lbrv)
++		kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
++
+ 	kvm_setup_xss_caps();
+ 	kvm_finalize_cpu_caps();
+ }
 diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ac6160d78e15..c3380d865b75 100644
+index c3380d865b75..6d0242966dc8 100644
 --- a/arch/x86/kvm/svm/svm.h
 +++ b/arch/x86/kvm/svm/svm.h
-@@ -787,7 +787,10 @@ BUILD_SVM_MSR_BITMAP_HELPERS(bool, test, test)
- BUILD_SVM_MSR_BITMAP_HELPERS(void, clear, __clear)
- BUILD_SVM_MSR_BITMAP_HELPERS(void, set, __set)
+@@ -789,7 +789,12 @@ BUILD_SVM_MSR_BITMAP_HELPERS(void, set, __set)
  
--#define DEBUGCTL_RESERVED_BITS (~DEBUGCTLMSR_LBR)
-+static inline u64 svm_get_supported_debugctl(struct kvm_vcpu *vcpu)
-+{
-+	return DEBUGCTLMSR_LBR;
-+}
+ static inline u64 svm_get_supported_debugctl(struct kvm_vcpu *vcpu)
+ {
+-	return DEBUGCTLMSR_LBR;
++	u64 debugctl = DEBUGCTLMSR_LBR;
++
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_BUS_LOCK_DETECT))
++		debugctl |= DEBUGCTLMSR_BUS_LOCK_DETECT;
++
++	return debugctl;
+ }
  
  /* svm.c */
- extern bool dump_invalid_vmcb;
-@@ -877,7 +880,7 @@ void svm_leave_nested(struct kvm_vcpu *vcpu);
- void svm_free_nested(struct vcpu_svm *svm);
- int svm_allocate_nested(struct vcpu_svm *svm);
- int nested_svm_vmrun(struct kvm_vcpu *vcpu);
--void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
-+void svm_copy_vmrun_state(struct kvm_vcpu *vcpu, struct vmcb_save_area *to_save,
- 			  struct vmcb_save_area *from_save);
- void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
- void nested_svm_vmexit(struct vcpu_svm *svm);
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
