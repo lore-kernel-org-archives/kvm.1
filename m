@@ -1,56 +1,56 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3838B5226A0
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 17:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637C65625F3
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 17:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790789867; cv=none; b=e/On3gX6Qxf0jwoKYQUWtrAGoYjiy0TWEyHg0MaK/e1xVSJjbsYPlsIzkP5l9yeKLtIUNwSUkA/Qg7k6QHfh3Bbz16pbxhSkUUZ5Teg3OupBIJgkvFQ56GV692LYG307I9e5aXguYMESWSuQP3B2zWNk5xxx/iWEHuxQKXdK0x4=
+	t=1790789869; cv=none; b=EVxKa3SktUi4M9/p2TKPLpH4aUphqh6FHraIOOJAMzG5aiBx+N4JXMQy4D38t3lSqNGkXKLq5v5349q913eIGPH6K92jZ7qz/RlobpT1vl5O5ewXkk+oSyuq67UNVu7+OUEycU6roIm40ctX4nAAzH51AGMyu+5POTieK8vVN+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790789867; c=relaxed/simple;
-	bh=s/FNBAQBrrnZg52w3efCRljTv+0gOGrUiwNRnigXCdo=;
+	s=arc-20240116; t=1790789869; c=relaxed/simple;
+	bh=F7Q1IXb+CKOZRYm6C5YZ7l5m3GJjGbwm4Y6SzdTYEbQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eZFsjFiTuXtxbgesu04/uoTuDWeLMfnMq5hQ0Qliet4j8QZLnkEU+JDQw+jFH6tc/pal13Vv6aL1ctngNB6gI7RU92lWeI29oh1Dhr58C2EG97IMfqGlaSWI4Eyc6YCcmYRsIa7k2NR97uR1aeQbc9QKhsa/k4nmoS4MIhKCmaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B2i/W5al; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=pq7+NhyJwVjm+I5YYGbCQ9J6ILdHsHrQ5KlNMFCS4mKtVX58XTXwr/n9sSkH+OesCe+46W+78j3J6Tndimd335yb+4bbCepvAwo2Otc/gDfqp9XP4wmc9bTuA2hwQV4FRuUrNLIcDtX+NvrI0P4lPNPnASyAMGC6ZgNhJfwGyKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QUYq5YXN; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B2i/W5al"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1ca15334cso6244877a12.1
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 10:37:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QUYq5YXN"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc7e0321ec1so620640a12.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 10:37:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790789866; x=1791394666; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790789867; x=1791394667; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=T8AuVVtYp6P4fxO8gL9VGm7P7TXbt4y5276FQCXYHVM=;
-        b=B2i/W5algZnxT2qLHaKeQhZXfwdDZg4fF7yhhzHtzTs3Q+11GxA3uxryjp496H5M1Z
-         D/h4WJb31FLnQcG6TuDipTCD1SZUZ9ybUGtqtnf9bVmUmiHu81BPZdgJ0sOpLG0VyDr6
-         JnBMAE+/6LMSVFZKKCkHgIPy5yojgm9nak2fiUhzjBRTFr0md8i6dScJyGKWV7n9QVQ8
-         BMcuwhM22vEsuFeD6QrokJCqEDJpzYWJO5fKYf8nfXayt//23p2UIUjXM79i6lwa5SdG
-         q5Rq4v8v+n/pfIn8ZUjyuTN0Lwfdbz+BcdaTqJJMlqwu3B4bvJiLkSBDbM4X032cOEHt
-         PZCQ==
+        bh=ntIQtv9nBblF51W4pi/NOBUOhOF12Cf69thE16MFD3Q=;
+        b=QUYq5YXNsjOv6m67tfOM9Y7TfC8drd4Ysyv8dfmJ126yxDzvJbBKd0t7BSfV+KU1lm
+         S2/BnLB96iJMBc3P9YE7naoNLA+NkFNJ/SVVm65gE1ZY3sGOJcI7/dc+wNGoWtHrIg3G
+         fEy5HqHGA3UzXWIq6KPxkFxpqdNo5RMFD9xcbuIqLbkc/U9kdp1ISp9RVj1Lrq2TdNvK
+         la6eZHqZpbi78jlchFS3PnMye0RTH2YUjP0IrGMBcUPubhh2H2Ys6oOr6YkzQzRuA0hh
+         wlKdjta2zcsH4qx+ogzllkUJfOA9TGwHowToWjbAus0vElf4ZqlnpKakApdPCVY0wYOr
+         bYuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790789866; x=1791394666;
+        d=1e100.net; s=20260707; t=1790789867; x=1791394667;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=T8AuVVtYp6P4fxO8gL9VGm7P7TXbt4y5276FQCXYHVM=;
-        b=zugFmcf05b1uSTONs5FkzAdZHbY7NkLVKjhQTYP9bBsPFQ9iT7PLk/trE9TAREhKuJ
-         ozHNScIlSPviOLAAeJrTTX2FCSvMpiwCFMvOhq5mV+3Y+UacF440BolvH26ipuBn1QG/
-         O7DH2nAnuBpk7/ReJTE1qJK6olQHS2ioSPNyZHBPKZp3cJ3VE7YvrwlSVeVneohsEgTn
-         U3VzQ0kZvqixvLjQL60CFAYDnSXElzoyoscNwoq054kv1YxYdSArOaWAAXIGAuynsx4W
-         PAuEND0jSuBTyJecENuO1PVELxIkUXRXPZL1qU3EtL7P2OorJ44fuOlgvRjFdijtw22F
-         e6gw==
-X-Gm-Message-State: AFuF++mTOrjGMh/JtSpYWFqBSZPuK1wzvLEcS2MC01q989XLsj+QmQDQ
-	oHjjiRH+fsDTe+x/s5LSjHZmpziXu24OORoLS+hMwFsq2EmAXxTmZSvtm0bxtGLKokw4g9tOBut
-	PP3RABg==
-X-Received: from pgnn4.prod.google.com ([2002:a05:6a02:4f04:b0:cc7:4d12:8a9a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7344:b0:3dd:a196:69e5
- with SMTP id adf61e73a8af0-3de9eb9ea11mr2085012637.64.1790789865397; Wed, 30
- Sep 2026 10:37:45 -0700 (PDT)
+        bh=ntIQtv9nBblF51W4pi/NOBUOhOF12Cf69thE16MFD3Q=;
+        b=Cgwpgu4AwL4W/lx/Stx+B8Sypiper5fP6Hvg4QpXSurLYM+DlW5IZYP99jQls4yHdv
+         B9xu6pP/rPPfFiqe4vV7WxIt4Nmaa4gOTCLidP/sFEKswOjRkHVKPp2VZgLcG7ODDfVl
+         YaDNc9IHyUlwZa/NNctbW7OKDesUVNuudiz21nny0uUsU9Elf7ReLxXpzP40aI+tOqNS
+         jzMcdZpvGOk3G613levg15UZDYD7dUexjF0u5DPRCEnROJXjTyOrw6NwLlyy65dVYf8z
+         jG84/BlMhoTgA9Mkt5hyukiKHhPO+prBZFzh1ya5kBhM9Iy4IdyisJ3C/f4sKPjLEJ1R
+         fliA==
+X-Gm-Message-State: AFuF++nVK3eJ+XPDIrwETm5nlUAR9lbmRqwBN309hkcUoC/oW6onDU17
+	5bMEqZI/VvjyrkFZ1jZ3Wypfz1+PFCQIZ+0hcKFy3PLCwysjYrGV2yhvTI01nJSE3Ii2+ndd7ST
+	oYqZolQ==
+X-Received: from pgdg6.prod.google.com ([2002:a05:6a02:51c6:b0:cc7:d03f:4d50])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2450:b0:3dd:a196:69df
+ with SMTP id adf61e73a8af0-3de9eb42380mr2239156637.58.1790789866526; Wed, 30
+ Sep 2026 10:37:46 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 10:36:21 -0700
+Date: Wed, 30 Sep 2026 10:36:22 -0700
 In-Reply-To: <20260930173635.3362655-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,95 +60,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930173635.3362655-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930173635.3362655-8-seanjc@google.com>
-Subject: [PATCH v3 07/21] KVM: selftests: Randomize L2's scale factor in
- nested TSC scaling test
+Message-ID: <20260930173635.3362655-9-seanjc@google.com>
+Subject: [PATCH v3 08/21] KVM: selftests: Rename TSC freq checkers in nested
+ TSC scaling test
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>, Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Randomize L2's scale factor in the nested TSC scaling test; the test's
-comment that "using a global variable does not work" just means the author
-didn't know how to use sync_global_to_guest().
+Rename the nested TSC scaling test's helpers to clarify which one is used
+by guest code and which one is used by host code, and to make it more
+obvious that the host version *checks* the result and asserts on errors.
+Contrary to what "compare" suggests, the helper doesn't return whether or
+not the actual vs. expected values match.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../kvm/x86/nested_tsc_scaling_test.c         | 21 ++++++++-----------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ .../kvm/x86/nested_tsc_scaling_test.c          | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-index b8b2217b9efa..84312146e93f 100644
+index 84312146e93f..e5fc4c9bb9f9 100644
 --- a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
 +++ b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
-@@ -17,10 +17,9 @@
- #include "kselftest.h"
+@@ -32,7 +32,7 @@ enum { USLEEP, UCHECK_L1, UCHECK_L2 };
+  * measurements, a difference of 1% between the actual and the expected value
+  * is tolerated.
+  */
+-static void compare_tsc_freq(u64 actual, u64 expected)
++static void host_check_tsc_freq(u64 actual, u64 expected)
+ {
+ 	u64 tolerance, thresh_low, thresh_high;
  
- /* L2 is scaled up (from L1's perspective) by this factor */
--#define L2_SCALE_FACTOR 4ULL
-+static u64 l2_scale_factor;
+@@ -45,7 +45,7 @@ static void compare_tsc_freq(u64 actual, u64 expected)
+ 		    actual, thresh_low, thresh_high);
+ }
  
- #define TSC_OFFSET_L2 ((u64)-33125236320908)
--#define TSC_MULTIPLIER_L2 (L2_SCALE_FACTOR << 48)
+-static void check_tsc_freq(int level)
++static void guest_check_tsc_freq(int level)
+ {
+ 	u64 tsc_start, tsc_end, tsc_freq;
  
- enum { USLEEP, UCHECK_L1, UCHECK_L2 };
- #define GUEST_SLEEP(sec)         ucall(UCALL_SYNC, 2, USLEEP, sec)
-@@ -81,7 +80,7 @@ static void l1_svm_code(struct svm_test_data *svm)
+@@ -66,7 +66,7 @@ static void check_tsc_freq(int level)
+ 
+ static void l2_guest_code(void)
+ {
+-	check_tsc_freq(UCHECK_L2);
++	guest_check_tsc_freq(UCHECK_L2);
+ 
+ 	/* exit to L1 */
+ 	__asm__ __volatile__("vmcall");
+@@ -75,7 +75,7 @@ static void l2_guest_code(void)
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+ 	/* check that L1's frequency looks alright before launching L2 */
+-	check_tsc_freq(UCHECK_L1);
++	guest_check_tsc_freq(UCHECK_L1);
+ 
  	generic_svm_setup(svm, l2_guest_code);
  
- 	/* enable TSC scaling for L2 */
--	wrmsr(MSR_AMD64_TSC_RATIO, L2_SCALE_FACTOR << 32);
-+	wrmsr(MSR_AMD64_TSC_RATIO, l2_scale_factor << 32);
+@@ -87,7 +87,7 @@ static void l1_svm_code(struct svm_test_data *svm)
+ 	GUEST_ASSERT(svm->vmcb->control.exit_code == SVM_EXIT_VMMCALL);
  
- 	/* launch L2 */
- 	run_guest(svm->vmcb, svm->vmcb_gpa);
-@@ -116,7 +115,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
- 	vmwrite(SECONDARY_VM_EXEC_CONTROL, control);
+ 	/* check that L1's frequency still looks good */
+-	check_tsc_freq(UCHECK_L1);
++	guest_check_tsc_freq(UCHECK_L1);
  
- 	vmwrite(TSC_OFFSET, TSC_OFFSET_L2);
--	vmwrite(TSC_MULTIPLIER, TSC_MULTIPLIER_L2);
-+	vmwrite(TSC_MULTIPLIER, l2_scale_factor << 48);
+ 	GUEST_DONE();
+ }
+@@ -97,7 +97,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ 	u32 control;
  
- 	/* launch L2 */
- 	vmlaunch();
-@@ -154,15 +153,12 @@ int main(int argc, char *argv[])
- 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_TSC_CONTROL));
- 	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
+ 	/* check that L1's frequency looks alright before launching L2 */
+-	check_tsc_freq(UCHECK_L1);
++	guest_check_tsc_freq(UCHECK_L1);
  
--	/*
--	 * We set L1's scale factor to be a random number from 2 to 10.
--	 * Ideally we would do the same for L2's factor but that one is
--	 * referenced by both main() and l1_guest_code() and using a global
--	 * variable does not work.
--	 */
-+	/* Scale L1 "down" and L2 "up" at a random factor from 2 to 10. */
- 	l1_scale_factor = (kvm_random_u32(&kvm_rng) % 9) + 2;
- 	printf("L1's scale down factor is: %lu\n", l1_scale_factor);
--	printf("L2's scale up factor is: %llu\n", L2_SCALE_FACTOR);
-+
-+	l2_scale_factor = (kvm_random_u32(&kvm_rng) % 9) + 2;
-+	printf("L2's scale up factor is: %lu\n", l2_scale_factor);
+ 	prepare_for_vmx_operation(vmx_pages);
+ 	load_vmcs(vmx_pages);
+@@ -122,7 +122,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ 	GUEST_ASSERT(vmread(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
  
- 	tsc_start = rdtsc();
- 	sleep(1);
-@@ -172,6 +168,7 @@ int main(int argc, char *argv[])
- 	printf("real TSC frequency is around: %lu\n", l0_tsc_freq);
+ 	/* check that L1's frequency still looks good */
+-	check_tsc_freq(UCHECK_L1);
++	guest_check_tsc_freq(UCHECK_L1);
  
- 	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
-+	sync_global_to_guest(vm, l2_scale_factor);
+ 	GUEST_DONE();
+ }
+@@ -201,14 +201,14 @@ int main(int argc, char *argv[])
+ 				l1_tsc_freq = uc.args[1];
+ 				printf("L1's TSC frequency is around: %lu\n", l1_tsc_freq);
  
- 	if (kvm_cpu_has(X86_FEATURE_VMX))
- 		vcpu_alloc_vmx(vm, &guest_gva);
-@@ -212,7 +209,7 @@ int main(int argc, char *argv[])
+-				compare_tsc_freq(l1_tsc_freq,
++				host_check_tsc_freq(l1_tsc_freq,
+ 						 l0_tsc_freq / l1_scale_factor);
+ 				break;
+ 			case UCHECK_L2:
+ 				l2_tsc_freq = uc.args[1];
  				printf("L2's TSC frequency is around: %lu\n", l2_tsc_freq);
  
- 				compare_tsc_freq(l2_tsc_freq,
--						 l1_tsc_freq * L2_SCALE_FACTOR);
-+						 l1_tsc_freq * l2_scale_factor);
+-				compare_tsc_freq(l2_tsc_freq,
++				host_check_tsc_freq(l2_tsc_freq,
+ 						 l1_tsc_freq * l2_scale_factor);
  				break;
  			}
- 			break;
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
