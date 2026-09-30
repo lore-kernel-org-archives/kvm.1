@@ -1,208 +1,152 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B05471410;
-	Wed, 30 Sep 2026 08:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFBF3B47E1;
+	Wed, 30 Sep 2026 08:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790758428; cv=none; b=mSOlZmyYSTY4/aRHKB+RJxYbzuhdsyW48+aNZYAagKU8AtdY4za/3OXQHiEMlFUMjcsX1tW21/+jDjy0A/3H+cIe+09s05fEkdne8oOJaSLRRI1aED5USkFX+8iK4ez1AvD00yR7G0t2HOcfZKxQwoT16TVdEiftPyAlOsuo8rA=
+	t=1790758468; cv=none; b=mnEgI5YW+Klq7I2iK+jJruQM65Z25U8OM8xACXk6vNTR43HPW6jrJtZwAnsclWZzJPDq+aS7ssbp47UZwmgJlZ7tJTZej9CiLb/cqgUiLWn2+DeJak/tGZF0ThAFHn613L/+h7OQSf0A/0IiYPmCvVdWFJBnPTUx9W5jGfGlYqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790758428; c=relaxed/simple;
-	bh=LnomSK7POE15LyEpdzjf0O2g1cDeKGmuEsQmVqZE1qM=;
+	s=arc-20240116; t=1790758468; c=relaxed/simple;
+	bh=/bg6wWvn3UxxefOMsl8JIomiL9mMcf6RS3vUGzzxCZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YtmgD/eRDntrhxGaJ379gYkdOl8b642V9fxSryCdXd8q1InuaAOiKIZplYwR8iI+vUkrmTvl35j4cZEwj+DPW5L7z/AP6not6t3oGWT3kujPZQ+kOpl+lAHWoM/Q3c1lhDwAB1ixzyV3jjHDtzsFtLdYnfP5+sjw/KF80dXulZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rx9ygRXK; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=LsbuHRseMrk9O3C6HL/bKNM5qdpL+C7j9HHIq22WaMu8FEztCP1wZOtyhNdyiVB/Rf703m/DuzCVKj/6MvAXWxTEGwA/jmtDxQAQ4LYdC9BTaStEFCFycOV1ZQK/d+Pv0TB099yHVFbCp7thgXd2O5iS2q8Xu6avBjP+wxbiqYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aJzc5jIL; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rx9ygRXK"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68U7aoAg2367598;
-	Wed, 30 Sep 2026 08:53:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=NhIukOj8BOfFcEqXCoWm3ULcTHuspX
-	E7+r0QvW4z63U=; b=Rx9ygRXK4WPeGJMhbwYHlLYdxios9M47BgGk66SEF6gAMt
-	h0dW1XEo/2YkR5l3mMTR7WJn5zsyBgxIqbOMv+M5EyFozLbTkC/P86WeMMEohjv3
-	isA73RkGrpXKsD0X2vB01phmIwSiI5zWxane0cfeiT/eC5q5KwZ/p+h4NaeLXfCh
-	3Kl/slGriTpnE5ffjkQmytugwlxCFiJuXC8Fu9Jz4xRjXNk4wcNry5gQf+ryi/9T
-	jkWxNrvFXvpKzTdhrMiJaoq1b2383FivMVaTKP1eADYKl+6iSNyehGXHBrf33rDb
-	oqxhDVYDwB/03/5zobKhhepzeE1KbvE8IYXQTe4A==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5ptaysu-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 08:53:17 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68U7lUPa3126451;
-	Wed, 30 Sep 2026 08:53:16 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h0g8e39we-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 08:53:16 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68U8r94338732070
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 30 Sep 2026 08:53:10 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 95C1F20043;
-	Wed, 30 Sep 2026 08:53:09 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A79BE20040;
-	Wed, 30 Sep 2026 08:53:08 +0000 (GMT)
-Received: from osiris (unknown [9.111.12.23])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 30 Sep 2026 08:53:08 +0000 (GMT)
-Date: Wed, 30 Sep 2026 10:53:07 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, kvm@vger.kernel.org,
-        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 16/29] arm64: Share arm64 headers with s390
-Message-ID: <20260930085307.770322-B-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-17-seiden@linux.ibm.com>
- <arqQ2Eat4VUBbl49@arm.com>
- <20260928162345.428362-C-seiden@linux.ibm.com>
- <ars6Jh5DiendDT7G@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
- <arvunF8epgpWh1YT@arm.com>
- <20260930072803.664031-A-seiden@linux.ibm.com>
- <865wzn41h6.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aJzc5jIL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=0UFYYKBUewXLJbGJZ9BEDna7/dDF99emZQefLuG6AWg=; b=aJzc5jIL6ZEo+riFOwoxR1oSNm
+	C2hf1HPOb9+KTK8px2ooi5YPLIeRFxTZoinR6pVkeYDaZKn09QeR00yhVqRRjAPKdAPRJkoIrT7S/
+	hRxVygx6bLPrPlKZSnQKreIhSWLLbwZnFvcJlIoRpu0zHhaZDBm7i980rS/vK3fK3nujDtN/6z8l8
+	fLgOlnTOkOldZJL6u6dcGPuFYD8IOAfYYLYx7hVPjXkwkJJiUSDbMGWUxsizvsvnVwzDCw78nf0AV
+	IzzNDXK6Hdr8Iec9g2P2seZ7jfrgAs9zrZtJEFt/4RzEbuMhSVTPiYHQJ3yrkx4qqkpIjr6CULMaD
+	pmozWVDw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBq4s-0000000B7se-1SQm;
+	Wed, 30 Sep 2026 08:54:14 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D9DFA300673; Wed, 30 Sep 2026 10:54:13 +0200 (CEST)
+Date: Wed, 30 Sep 2026 10:54:13 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
+ encrypted guests
+Message-ID: <20260930085413.GH88198@noisy.programming.kicks-ass.net>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929040256.543767-3-zack.rusin@broadcom.com>
+ <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
+ <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <865wzn41h6.wl-maz@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: hlt5tY_2sa3oCouRCckoYMzdGBgxEcfG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDAzNCBTYWx0ZWRfX4XfLdgpSugRT
- XlKY3BXGec62GjXr1X+q9M67hlS8YubEVWaNhhIhulpnmG2ZHgqFVr+JMnYqgFTwHGBQSjFE70P
- enyCwFTO9Yls0xjnOUrNp4rpLxuGKQjXjVe61sDv0E508eP5Kl0eT4uGQtjZmRCn9luussRqyXS
- EzlTbb2paiO2eythsFkgh5xASzLftBQVwdWS2iCab2oU2b0VyoGKPZGYt2lkW6NXZNWwCrso1Zs
- O/1dOaAoci317V3iqnfv5YDJDl1A+Wm48aElWcKjYrK4D+r+3OwgwHW1rhlp6YGK6Nm5A0mxHrt
- 5IIQ8Yo634NNeCpNVYn0D0RX6SSQ+3UEuj0Tz5WvLOzrPwR/7jos7+6/VyJ5Epib+FCSXZqICWf
- JT4D4Dms5HnS5LOdl74qFsbJSc5NQjEw3jwfhHctbxUryr8H5Q5mTTuBlUT2fftpVBgl2BsbARa
- dnBaT27Kq+ET3ko/vCQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDAzNCBTYWx0ZWRfXx2ydMeHP7FMn
- y172RhPy8DuzoeAapk44jnJfuMot6M4Z8iauGIimm8Ek3ereyYBPrAbiPULWZilGPkoqfRsvDw5
- Kc9CBQQADM1FBkMtHRn018l4K5Atuhk=
-X-Authority-Analysis: v=2.4 cv=EY5d0/mC c=1 sm=1 tr=0 ts=6abccdfe cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=GA_TYQvl0U8dmn4ZWnYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: i_8l7rOMgnEnckEEpZJW-6IXi7e8oe2u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-30_01,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 adultscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609300034
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
 
-On Wed, Sep 30, 2026 at 08:55:49AM +0100, Marc Zyngier wrote:
-> On Wed, 30 Sep 2026 08:28:03 +0100,
-> Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > 
-> > On Tue, Sep 29, 2026 at 06:00:12PM +0100, Catalin Marinas wrote:
-> > > On Tue, Sep 29, 2026 at 06:19:20AM +0200, Andreas Grapentin wrote:
-> > > > On Sep 28 26, Steffen Eiden wrote:
-> > > > > On Mon, Sep 28, 2026 at 05:07:52PM +0100, Catalin Marinas wrote:
-> > > > > > On Fri, Sep 18, 2026 at 03:30:53PM +0200, Steffen Eiden wrote:
-> > > > > > > +# Enable all code shared to s390
-> > > > > > > +KBUILD_CFLAGS	+= -DARM64_S390_COMMON
-> > > > > > > +KBUILD_AFLAGS	+= -DARM64_S390_COMMON
-> > > > > > > +KBUILD_CPPFLAGS	+= -DARM64_S390_COMMON
-> > > > > > 
-> > > > > > Do we actually need these defines? They seem only to be used as markers
-> > > > > > for the awk scripts to extract the definitions. Why do we need the C
-> > > > > > preprocessor involved at all? Could we not just have comment markers:
-> > > > > > 
-> > > > > > /* ARM64_S390_COMMON_BEGIN */
-> > > > > > ...
-> > > > > > /* ARM64_S390_COMMON_END */
-> > > > > >
-> > > > > No technically we do not need those. They could be useful if we find out
-> > > > > that AWK is the wrong tool and move to a C Preprocessor + diff based
-> > > > > approach. 
-> > > > > 
-> > > > > if the ifdev is not closed the compiler will complain, but an 'arm did
-> > > > > not destroy us' verifiaction tool ( I will send one soonish) could do
-> > > > > the same.
-> > > > 
-> > > > iirc the last time we discussed this we didn't think that load-bearing
-> > > > comments were the right tool here. We also briefly floated the idea of
-> > > > using a #pragma region based approach, but in the end we went with the
-> > > > #ifdef preprocessor directives instead, as the least invasive
-> > > > non-comment marker that was available.
-> > > 
-> > > The downside is that the macro affects the preprocessed code. We need to
-> > > ensure they don't leak in uapi headers for example. Not a fan of this
-> > > approach but I don't have a better suggestion either. At least we could
-> > > write them as:
-> > > 
-> > > #if ARM64_S390_COMMON == 1
-> > 
-> > This is a great idea and an improvement. Thanks.
-> > 
-> > @Marc: Shall I sent a v9 of this series or do you want to pick v8 and I
-> > send this as an improvement once picked?
-> 
-> Please send a v9. That's invasive enough that it warrants it.
+On Tue, Sep 29, 2026 at 01:12:45PM -0400, Zack Rusin wrote:
+> On Tue, Sep 29, 2026 at 3:54=E2=80=AFAM Peter Zijlstra <peterz@infradead.=
+org> wrote:
+> > On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
+> > > @@ -1022,11 +1024,13 @@
+> > >   * Note: We use a separate section so that only this section gets
+> > >   * decrypted to avoid exposing more than we wish.
+> > >   */
+> > > -#ifdef CONFIG_AMD_MEM_ENCRYPT
+> > > +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
+> > >  #define PERCPU_DECRYPTED_SECTION                                    =
+ \
+> > >       . =3D ALIGN(PAGE_SIZE);                                        =
+   \
+> > > +     __start_percpu_decrypted =3D .;                                =
+   \
+> > >       *(.data..percpu..decrypted)                                    =
+ \
+> > > -     . =3D ALIGN(PAGE_SIZE);
+> > > +     . =3D ALIGN(PAGE_SIZE);                                        =
+   \
+> > > +     __end_percpu_decrypted =3D .;
+> > >  #else
+> > >  #define PERCPU_DECRYPTED_SECTION
+> > >  #endif
+> >
+> > So you're page aligning something that will get different protection and
+> > will thus shatter large pages?
+> >
+> > That is somewhat uncool. We like large pages, large pages are good.
+>=20
+> I'm a huge large pages fan too. I have a poster in my office and
+> everything... And I never do things that are uncool. I have a wwcdd
+> (what would cool dude do) bracelet and I look at it every time I make
+> a decision, which given that I'm old gets on my wife's nerves a lot.
+> That is to say I'm handsome and innocent.
 
-Will send one ASAP.
+:-)
 
-> 
-> > > It would also be useful for the awk scripts look for the paired #endif
-> > > rather than relying on the comment at the end of the line. Otherwise
-> > > it's not really different from just sticking to comments.
-> > > 
-> > 
-> > Are you suggesting that the AWK scripts should track the #if% and #endif
-> > in the code and warn or reject if the marked endif for the shared code
-> > does not match pairing with the starting #if? That makes sense yes. I'll
-> > investigate and would add this as an improvement later on.
-> 
-> I think the suggestion is to teach the script about the #if/#endif
-> nesting, and therefore to not require the trailing comment on #endif
-> (i.e. the script acts as a normal cpp).
-> 
-> It should only be a matter of counting the #{if,ifdef}s and #endif
-> past the ARM64_S390_COMMON guard.
->
+> The alignment isn't new. It has been there since ac26963a1175
+> ("percpu: Introduce DEFINE_PER_CPU_DECRYPTED") under AMD_MEM_ENCRYPT,
+> which common distro kernels enable. This patch extends it to TDX-only
+> builds and adds the boundary symbols. On bare metal and in ordinary
+> guests nothing changes protection, so no large pages are split.
 
-Yes, countin is what I had in mind. I will deliver this feature (or fix?)
-as an improvement later on. At this point we may actually use the cpp to
-do that for us. This requires some investigation from my side. IMO the
-current implementation is a good first step we can use as a starting
-point for further improvements.
+Right, I saw it is pre-existing, but you made me notice ;-)
 
-	Steffen
+Anyway, the thing that wasn't immediately obvious was that we only
+really change the protection for (sekjoer) guests. This means I mostly
+don't care.
 
+> In confidential guests, yes, converting each CPU's page splits the
+> direct map around it. The alignment doesn't cause that: a large
+
+Nit you could 2M align, so alignment is somewhat related.
+
+> mapping can't be part private and part shared, so a converted page
+> can't stay inside one. The alignment only keeps unrelated per-CPU data
+> out of the shared page. Because that page sits in every CPU's per-CPU
+> unit, each 2M mapping that holds one of them becomes 4K mappings,
+> including the ordinary per-CPU data around it. In the layouts we've
+> tested that's most of the first per-CPU chunk.
+
+So perhaps a little more invasive would be poking at the per-cpu
+allocator and having a whole 'decrypted' pcpu_chunk which is 2M aligned
+or something.
+
+
+Anyway, as long as this is sekjoer guests only, I really could not be
+bothered much. Proceed, but perhaps put on a comment in the
+vmlinux.lds.h to clarify this, for those of us who do not live in
+coconut land?
