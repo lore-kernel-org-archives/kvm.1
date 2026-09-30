@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12BC51DB0D
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DC44D2EFE
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790777411; cv=none; b=MS2pJcNX0L+mYEtFApXlkTZ3Nk/LxsuyZA/waKQybBw1d01LnCiGNNMOIHPaRVAr3sGErlb0P27DDpFhkoxwyUJNkXrLEqR2w2uchcYNA3NbbvTRKbdjIL8di3CMAVWYKG2Ey4FFfwRhgn4VUUoSG7qf2FQd0x4we6b3Ygkcf5E=
+	t=1790777433; cv=none; b=Zv88+gjgMTbA1ZkU6bKXDuJlzfdEmeHof6HwMtkwxt5PpCRYcFYj+MFQoIW0h5Rv9fkibsaSZ0n60YNKP9N2JT1iyNwwO7RJ4baQlrJ1WFpxcqTJYD0ZXsLm1PvNCYYFFW6oIhjlLP0r8AQDoq44Myn0H5eugDive+ear4SZgrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790777411; c=relaxed/simple;
-	bh=ChDbrJBtKwVpjhyNqwXNVijk17LuvlzsmCBx2JvRS48=;
+	s=arc-20240116; t=1790777433; c=relaxed/simple;
+	bh=Jx2dPRIHA4h4yESf8m5wxC6nG+dWMUEuY6w/WT6qrdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMf/N8HA0nkVTjHCsZRjov29GRpq4vMTzKLwnqQ7IAn2pyCblJh9/Af/TO0pC2MdvImrOeOjA28uWQJG/qmyoq9njlMlsuH3VWdWEMHIoQSD8ZqpJ13rYOAX8vZgOPUneJfu3wBugVxXJid4NxPM7FyWZg4OvShrRokKHiiv1Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h+6MEcMr; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=XWK2doXx0Cwd7EcY1vmdPcOTmzyZyRb4vxnKkGRci+yIvqzD4X9MwWokIiFcptGlBnJP9WPa05X5/4vfWhjI/huD0v/GJw7B4i6xicv1ImoBCuvow3SJObPqf0WQjERqd9q+x5GZMaD0ujaUAdt8ZuTE1FYZQL8i62Ai04L2YJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZHI59c6g; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h+6MEcMr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZHI59c6g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790777390;
+	s=mimecast20190719; t=1790777407;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L1hpiA9PSrEgTziY9kUXLTeM8Im79Dj/E5wLN7KEwBw=;
-	b=h+6MEcMrzcHsETN7t+H7efO4rWLv/nFvnJVALWMr9UvhXFLR98fDHfZh0pi62X1B+sCL9u
-	iBlijxS1MZgnGQ+Rd3fp4I7oux+AsFM5DkundCHWs9YBpOg2yi7eiq4tQoSO5F6APT3XBt
-	ADJ8yl6gfzD4LZGCijxZFXabbylEN7U=
+	bh=9lKY5zSooUG9J2WAMt80T6mv1JymFjL65pHqXNpRbZ0=;
+	b=ZHI59c6gvMffHJ5m33w5kRDTOFBwvpqAC3VVv9EY28JsOpI9OskcDg3wjpAiAiVD/9GPkM
+	0oLNJv+izEpgJkS/eHUg1Xrrl03CZ1WXDrPKsuAvlpZy7mi7PTlXZzdhz0fXiJBg4wSGBB
+	JGOupdvwVWWvFTEOJnyCmotnKVVjGuI=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-vG0PtuP-M6KWTOdKg7iCaw-1; Wed,
- 30 Sep 2026 10:09:46 -0400
-X-MC-Unique: vG0PtuP-M6KWTOdKg7iCaw-1
-X-Mimecast-MFC-AGG-ID: vG0PtuP-M6KWTOdKg7iCaw_1790777384
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-1gEACnZ4PZGdvatH_SoJfQ-1; Wed,
+ 30 Sep 2026 10:10:01 -0400
+X-MC-Unique: 1gEACnZ4PZGdvatH_SoJfQ-1
+X-Mimecast-MFC-AGG-ID: 1gEACnZ4PZGdvatH_SoJfQ_1790777399
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 50ECE180214B;
-	Wed, 30 Sep 2026 14:09:44 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2B9DD18001F7;
+	Wed, 30 Sep 2026 14:09:59 +0000 (UTC)
 Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 86EC51956044;
-	Wed, 30 Sep 2026 14:09:40 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 10BCD1956044;
+	Wed, 30 Sep 2026 14:09:54 +0000 (UTC)
 From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 To: bhelgaas@google.com,
 	alex@shazbot.org,
@@ -60,9 +60,9 @@ Cc: johannes@sipsolutions.net,
 	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH 5/7] ath11k: Use VFIO MSI cache when available
-Date: Wed, 30 Sep 2026 16:08:31 +0200
-Message-ID: <20260930140833.576941-6-jtornosm@redhat.com>
+Subject: [PATCH 7/7] ath12k: Use VFIO MSI cache when available
+Date: Wed, 30 Sep 2026 16:08:33 +0200
+Message-ID: <20260930140833.576941-8-jtornosm@redhat.com>
 In-Reply-To: <20260930140833.576941-1-jtornosm@redhat.com>
 References: <20260930140833.576941-1-jtornosm@redhat.com>
 Precedence: bulk
@@ -74,13 +74,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The Qualcomm ath11k firmware requires physical host MSI addresses for
+The Qualcomm ath12k firmware requires physical host MSI addresses for
 interrupt configuration but cannot handle IOVA-based MSI addressing in
 virtualized environments.
 
 When the device is passed through to a VM via VFIO:
 - The guest kernel allocates MSI vectors and sees IOVA addresses
-- The ath11k firmware expects physical host MSI addresses
+- The ath12k firmware expects physical host MSI addresses
 - Providing IOVA to the firmware causes interrupt delivery to fail
 - Result: device is non-functional in VMs
 
@@ -98,25 +98,26 @@ configuration when used with the qcom-vfio-pci driver.
 
 Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
- drivers/net/wireless/ath/ath11k/pci.c | 33 +++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/net/wireless/ath/ath12k/pci.c | 43 +++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/pci.h |  6 ++++
+ 2 files changed, 49 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index c372676b097f..99a3a709831c 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -10,6 +10,7 @@
- #include <linux/of.h>
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 65712486d312..832d3cf652d9 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -8,6 +8,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/msi.h>
+ #include <linux/pci.h>
++#include <linux/qcom_vfio.h>
  #include <linux/time.h>
  #include <linux/vmalloc.h>
-+#include <linux/qcom_vfio.h>
  
- #include "pci.h"
- #include "core.h"
-@@ -463,8 +464,11 @@ static int ath11k_pci_alloc_msi(struct ath11k_pci *ab_pci)
- 	struct ath11k_base *ab = ab_pci->ab;
- 	const struct ath11k_msi_config *msi_config = ab->pci.msi.config;
- 	struct pci_dev *pci_dev = ab_pci->pdev;
+@@ -783,8 +784,11 @@ static int ath12k_pci_msi_alloc(struct ath12k_pci *ab_pci)
+ {
+ 	struct ath12k_base *ab = ab_pci->ab;
+ 	const struct ath12k_msi_config *msi_config = ab_pci->msi_config;
 +	u32 msi_addr_lo = 0, msi_addr_hi = 0;
  	struct msi_desc *msi_desc;
 +	u16 msi_data = 0;
@@ -124,43 +125,77 @@ index c372676b097f..99a3a709831c 100644
 +	int msi_offset;
  	int ret;
  
- 	num_vectors = pci_alloc_irq_vectors(pci_dev,
-@@ -488,6 +492,35 @@ static int ath11k_pci_alloc_msi(struct ath11k_pci *ab_pci)
- 	}
- 	ath11k_info(ab, "MSI vectors: %d\n", num_vectors);
+ 	num_vectors = pci_alloc_irq_vectors(ab_pci->pdev,
+@@ -812,6 +816,39 @@ static int ath12k_pci_msi_alloc(struct ath12k_pci *ab_pci)
+ 
+ 	ath12k_info(ab, "MSI vectors: %d\n", num_vectors);
  
 +	/*
 +	 * Try to get host MSI address from VFIO cache.
-+	 * When running on a VM, the ath11k firmware requires physical host
++	 * When running on a VM, the ath12k firmware requires physical host
 +	 * MSI addresses and cannot handle guest IOVA addresses.
 +	 * qcom-vfio-pci writes host MSI values to extended config space with
 +	 * a magic signature "QMSI" for discovery. Search for it.
 +	 */
-+	msi_offset = qcom_vfio_find_msi_cache(pci_dev);
++	msi_offset = qcom_vfio_find_msi_cache(ab_pci->pdev);
 +	if (msi_offset) {
-+		pci_read_config_dword(pci_dev,
++		pci_read_config_dword(ab_pci->pdev,
 +				      msi_offset + QCOM_VFIO_MSI_ADDR_LO_OFFSET,
 +				      &msi_addr_lo);
-+		pci_read_config_dword(pci_dev,
++		pci_read_config_dword(ab_pci->pdev,
 +				      msi_offset + QCOM_VFIO_MSI_ADDR_HI_OFFSET,
 +				      &msi_addr_hi);
-+		pci_read_config_word(pci_dev,
++		pci_read_config_word(ab_pci->pdev,
 +				     msi_offset + QCOM_VFIO_MSI_DATA_OFFSET,
 +				     &msi_data);
 +
 +		if (msi_addr_lo && msi_addr_lo != 0xFFFFFFFF) {
-+			ab->pci.msi.addr_lo = msi_addr_lo;
-+			ab->pci.msi.addr_hi = msi_addr_hi;
-+			ab->pci.msi.ep_base_data = msi_data;
-+			ath11k_info(ab, "VFIO MSI cache at offset 0x%x: addr_lo=0x%x addr_hi=0x%x data=%d\n",
++			ab_pci->msi_addr_hi = msi_addr_hi;
++			ab_pci->msi_addr_lo = msi_addr_lo;
++			ab_pci->msi_ep_base_data = msi_data;
++			ab_pci->msi_addr_cached = true;
++
++			ath12k_info(ab,
++				    "using host MSI from VFIO at offset 0x%x: addr_lo=0x%x addr_hi=0x%x data=%d\n",
 +				    msi_offset, msi_addr_lo, msi_addr_hi, msi_data);
 +			return 0;
 +		}
 +	}
++	ab_pci->msi_addr_cached = false;
 +
- 	ath11k_pci_msi_disable(ab_pci);
+ 	ath12k_pci_msi_disable(ab_pci);
  
  	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
+@@ -1083,6 +1120,12 @@ void ath12k_pci_get_msi_address(struct ath12k_base *ab, u32 *msi_addr_lo,
+ 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+ 	struct pci_dev *pci_dev = to_pci_dev(ab->dev);
+ 
++	if (ab_pci->msi_addr_cached) {
++		*msi_addr_hi = ab_pci->msi_addr_hi;
++		*msi_addr_lo = ab_pci->msi_addr_lo;
++		return;
++	}
++
+ 	pci_read_config_dword(pci_dev, pci_dev->msi_cap + PCI_MSI_ADDRESS_LO,
+ 			      msi_addr_lo);
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
+index 0e0e2020c6ae..ee3696d40dfb 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.h
++++ b/drivers/net/wireless/ath/ath12k/pci.h
+@@ -129,6 +129,12 @@ struct ath12k_pci {
+ 	/* enum ath12k_pci_flags */
+ 	unsigned long flags;
+ 	u16 link_ctl;
++
++	/* Cached host MSI address for firmware configuration in VMs */
++	u32 msi_addr_hi;
++	u32 msi_addr_lo;
++	bool msi_addr_cached;
++
+ 	unsigned long irq_flags;
+ 	const struct ath12k_pci_ops *pci_ops;
+ 	u32 qmi_instance;
 -- 
 2.55.0
 
