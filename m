@@ -1,56 +1,56 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE8C353A67
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 01:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E3134E75A
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 01:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790730819; cv=none; b=ieOU7pr8pCjRxr/wpBpyQ930/ZJT+CRQc3ixgayxVnebTJjDZU7wCXXTx5Yh3L+9te7RW60Uo4sOUxDXduUT+iG8tMbPLgiwPBshP9rXxSaZWLSf4vJAAyk2UoKYUNWbQg+iSxMxZC92AfU1/9rFCqC9a+aWQybZAvOxO9PUeCg=
+	t=1790730820; cv=none; b=En7WLYJGucJUcpvqpfTx8f1TtZ1ihjZZ0NqMYFai3MTngpt8QxEDthHdpPPcKG7JwuLuRfG5tIc5XHB4ltdHOK1j1mQn6cMeVbfQ+ZfPf6KrcU0ifMlttdqzVT5FCA4zqzxxFV3qv6RckpOCel9NPw04kPp1D52XHBI6HfQT5xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790730819; c=relaxed/simple;
-	bh=6Aco7EOhkiIqZeH5bR7d9zgidb7xSicYOKVcT78vcZI=;
+	s=arc-20240116; t=1790730820; c=relaxed/simple;
+	bh=MSuuc/cocbqG6Hsb1NWDCs84MFsTBnA7k6WbI0Ly02c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S3Tx7Vd8cYG8YnjIqsn98Lrqmlq13aATszc2d/v+skovcWHWC+B3/VnXJTCpbdzmNn5kl2YAkKdei8WO+RAfIegDGrLIl/a1wQ6hMxDlP9y5bpJf+yw8+BA8r5kXofp6ta8Tj80hjP87BnnFbVMksBCwHeGIgzCz0QRL/aqjyuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gH837w8N; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=Hn8yqNMelQifo8RW/IgkC8nsY+YvQ98aYJR8UJHpoXYrUHfTWj1S5zORWpWRtcf3YSW4hdsaz9x+rsZh8tAFVdMjQuTP+Suotkvcv/Ae5r+nCoofs8JYOoZzlvAwKcv0ov9+v7fMA19J4am5VauOkaV9s2PDePCn18bQNEYteJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C02+AWsT; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gH837w8N"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d02df2bf09so33914315ad.0
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 18:13:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C02+AWsT"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39b77130a7fso5095257a91.2
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 18:13:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1790730807; x=1791335607; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=8l2LQZ/K3M62HHlaD3N2qkeE9h03hcQIsVix5OsuQN4=;
-        b=gH837w8NqKwJRPRoMiBLnTaoe1JLDwPeVP0RRez+fme2H2/KtfaDkknO1wc+QB6ylu
-         3BH8u4OSPfl8Dm8P80PfI/RvfNn5rz2kIZHL17l3m2zlksoAGOSqbHDZYxfyc4Ck4sxh
-         CntQgg/TZCOVGorkq1wR5p1LOOEB+Wsa+LbND5zxSQpKq+wgajvJdKVcMTt4fR0wVh+V
-         uXReM50s8+5VmgeBFoCLst99gTLo2G5SbpOQF42vN0LnylNRMtcPezllXdqmLodI7V1y
-         GyLZfG3xybTnTb/QAQsgPciOvCxyhoRk77UWhf6qiTNWLgT65ovMajvyr6ud2yicfzax
-         I0qA==
+        bh=b4O4inbQYDjTuXf1AXWgPFLW4HG4gSKfcYxNlQZJdQM=;
+        b=C02+AWsT+F6IU1Q/cWcLU9pQnMKk8b8Wn7jYPQpX0xbaQoznvSLtVk1LzdMsTgeE9b
+         MKNwZVx6HqaPsag3GH/2mt/0eHsxwvF/dRb178wum52tmxDvUl9nAoi0/FG17XrbhD5t
+         CZNfXRxLNC1mJ3HThTauWFMapCWJcdCZRau+f/Y30jSeCs7HjgrBnDXMn3C7+JUnCLDx
+         wQF9O/6pckvnOhRrHYp4dtx8YHEIFhioGHcSpbFxVkS5EaohZRgXCIgOvxbPhr8r5AuT
+         noqw+3G1ZbInqnrNQVKv6C32VNaonoiIlvEBfNBl5DclMjwjfXz8eSxQ/ItgBBuAsuMr
+         W1pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1790730807; x=1791335607;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8l2LQZ/K3M62HHlaD3N2qkeE9h03hcQIsVix5OsuQN4=;
-        b=Pvz/qinJp73howLMVosKBEwBArSpOL+voyPbd8evKuANw+A9K44DfwGH8zsnIGhgVC
-         1iNlfeiF0G8JK2hnfIr4HxrSqRXEw8X1XuCp6uO0suolkxLO14ivB/mZwZUINIfVnQN9
-         QM7HYYO2FumpraOk4MbsBY5yCzHt9v0ut3rq/qjdrU8UnBicYc4j/6jBGue134kIkRAL
-         gt8FX3cWafog8+reNU9R01LXQWBD3lW8hclCljj7TYDf80UsIf96xl0+AndFqxo0IEfC
-         tkzBR0eF7MYCzrQpMUtWsHTFk29GGdx030gOqI9q6/9vHxb+BGlDDafd3t6MGNVtchTA
-         78eg==
-X-Gm-Message-State: AFq9FYJhph/bnhxlt5W+W2HxJaO6YwYkThFOdVPfHbk8IA/RyqW5xBR+
-	p77pFiVwcdhVI+KgdE1g8QSeU5FYayvjeY9BXqV/Rw0zQuv6abhdXPzVgp5NYOXG5QRkCButXWo
-	qJUTtPA==
-X-Received: from plqs20.prod.google.com ([2002:a17:902:a514:b0:2df:a554:8274])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cccd:b0:2e2:b00f:564f
- with SMTP id d9443c01a7336-2e2de52a888mr6581745ad.18.1790730807329; Tue, 29
- Sep 2026 18:13:27 -0700 (PDT)
+        bh=b4O4inbQYDjTuXf1AXWgPFLW4HG4gSKfcYxNlQZJdQM=;
+        b=ZnJo+EEF9Xtn1Bj0WAhkGPGNE9niFchpKDuVqo7hKUfPv43nSKRWxW40EQrkuc/BZ1
+         kkzadNp8i6RysKnK0aZIxNnYrKm0Zfz2qtnD45f2Vvf3Oo+xHdTHFWYYZq/Gc4rNjzPI
+         Y6vGYMsc+442hOTxT3Z8b0dhOqBAf4L1DVbuK82u9md51wSxdlsLRQ7gptJCYo0U0P7t
+         zUSfREOCd3iRurBpIa5o3BLb21Dc4+IpsnEcq30EQvfYyIaG0Ymr0o0MUN5/mnP6gzkb
+         Hxth5Z4YiNWeHQOMEthrQ97TY/+5ivAYo6so4uEOKtavUNcT/mF1/wlgDxt06YcSvExS
+         U7tA==
+X-Gm-Message-State: AFq9FYIw4AASUq+ELg21QIvJMOG9Mdi3W4B17X7f86SiIVnPjNZeptdH
+	Fdz8edEvjvBip/D/Pnbdn+5mfnlR0Fbwzix3nQdjQrP7kOiMzlPD+uZUbLAtFD+24LQvk6xiVJP
+	u5hkB/Q==
+X-Received: from pgbeu25.prod.google.com ([2002:a05:6a02:4799:b0:cc7:ac48:5288])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5826:b0:3a0:abe7:f0f3
+ with SMTP id 98e67ed59e1d1-3a4bf67a802mr891804a91.0.1790730806186; Tue, 29
+ Sep 2026 18:13:26 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 29 Sep 2026 18:13:11 -0700
+Date: Tue, 29 Sep 2026 18:13:10 -0700
 In-Reply-To: <20260930011313.3197688-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930011313.3197688-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930011313.3197688-11-seanjc@google.com>
-Subject: [PATCH v5 10/12] KVM: nSVM: Don't assume all active-low bits DR6 are fixed-1
+Message-ID: <20260930011313.3197688-10-seanjc@google.com>
+Subject: [PATCH v5 09/12] KVM: nSVM: Open code check on LBR virtualization
+ being enabled in vmcb12
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,47 +71,60 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Now that KVM clears ENABLE_V_LBR if LBR virtualization isn't supported when
+caching vmcb12 control fields, i.e. now that the logic is a simple
+one-liner, open the check and drop the now-superfluous wrapper.
 
-When preparing vmcb02 for nested VMRUN, force only the actual fixed-1 bits
-instead of setting all active-low bits.  The flaw is currently benign, as
-the only active-low bits supported by KVM are RTM (Restricted Transactional
-Memory) and BLD (Bus Lock Detect), neither of which is currently supported
-on SVM, but that's about to change.
+No functional change intended.
 
-Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/regs.c       | 1 +
- arch/x86/kvm/svm/nested.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
-index 0c76cf17e884..3621f1a47d37 100644
---- a/arch/x86/kvm/regs.c
-+++ b/arch/x86/kvm/regs.c
-@@ -784,6 +784,7 @@ unsigned long kvm_get_dr6_fixed_1(struct kvm_vcpu *vcpu)
- 
- 	return fixed;
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_get_dr6_fixed_1);
- 
- int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val)
- {
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index d3f249cd0f2d..c7a69e309a36 100644
+index aca2bbc66f47..d3f249cd0f2d 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -808,7 +808,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
+@@ -738,11 +738,6 @@ static int nested_svm_load_cr3(struct kvm_vcpu *vcpu, unsigned long cr3,
+ 	return 0;
+ }
  
- 	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DR))) {
- 		vmcb02->save.dr7 = svm->nested.save.dr7 | DR7_FIXED_1;
--		svm->vcpu.arch.dr6  = svm->nested.save.dr6 | DR6_ACTIVE_LOW;
-+		svm->vcpu.arch.dr6  = svm->nested.save.dr6 | kvm_get_dr6_fixed_1(vcpu);
+-static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
+-{
+-	return to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR;
+-}
+-
+ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
+ {
+ 	struct vmcb_ctrl_area_cached *control = &svm->nested.ctl;
+@@ -817,7 +812,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
  		vmcb_mark_dirty(vmcb02, VMCB_DR);
  	}
  
+-	if (nested_vmcb12_has_lbrv(vcpu)) {
++	if (control->misc_ctl2 & SVM_MISC2_ENABLE_V_LBR) {
+ 		/*
+ 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
+ 		 * svm_set_msr's definition of reserved bits.
+@@ -1310,7 +1305,7 @@ static int nested_svm_vmexit_update_vmcb12(struct kvm_vcpu *vcpu)
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+ 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
+ 
+-	if (nested_vmcb12_has_lbrv(vcpu))
++	if (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR)
+ 		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
+ 
+ 	vmcb12->control.event_inj	  = 0;
+@@ -1387,7 +1382,7 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 	if (!nested_exit_on_intr(svm))
+ 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+ 
+-	if (!nested_vmcb12_has_lbrv(vcpu)) {
++	if (!(svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR)) {
+ 		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
+ 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
+ 	}
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
