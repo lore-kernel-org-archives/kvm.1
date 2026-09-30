@@ -1,91 +1,86 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232BD3D1AB3;
-	Wed, 30 Sep 2026 07:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63B23B4EBD;
+	Wed, 30 Sep 2026 07:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790753315; cv=none; b=nWZmAKdH395zs8wSV3wtChzKQCHaI/7acN/x1oaUzNr8sa93jInWEJCOt4gep6+ZV3XEu7WaFGmsvF7m0YS9XnlJ9CfnK6yxBeEfArLDseVJt6xlaK2qHRRbnQE7H8szn5QzY1fC7hHr80Cz0HX75anOBPeHmrzhDxMLGd7Zbfc=
+	t=1790753781; cv=none; b=iTL8ZBIedP9db5yA5KPGs66AOA2XVgNHLGX07tpu4lPK5OCg4ocpg2H8uneWBdFokf7nxDV7YmMMr3bsvLF2CmXc1XEuQm2cbq+pJnXqFRdQS7us8INe8FlR/T/E6Pr63DDfHVVeb5EadrhD7SAk3O5G+4BWYWO/H4Ap0IQFW0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790753315; c=relaxed/simple;
-	bh=crfXBi6k42WA+BnhYLAJgvnaGtZorXB2udVsvlHftg8=;
+	s=arc-20240116; t=1790753781; c=relaxed/simple;
+	bh=DipoJ9RjjrXMz5bYKv74hrheEodgN85s4+ClCjBS0Ns=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FAgCVVl9ojr3Rz06wmib3g3CaY6EJ8Jp2koE2r+0VkkAET1lhY0M4sJnmP9tFke6Mp1jy40fFtd/5OR8MEIJ1DkAIjfSsVRVfd2TjU871BNxHM7qnziHXdRdCocqI05eWkcXIyfCK+HkaYQIhEygC07JpL9/G1pmUcaB85gjSyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qyQqJw3n; arc=none smtp.client-ip=148.163.158.5
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqVviSG+eulcNqr7Enu3l8bG+8o+eQpwqd00wZsZIAQ4tLKGNGT0Cd2uUF/jfxdxO3v6L2eheSlbRCMVp7TdIYDhDSqPl1QJkZC3zk9abzbQBfZdxkrBQR2Y6W8/XuuvcIAeMJBv/cDNX3E5hRr5L0whCNN3Po8R/deIDia+i+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rv6Y3Dyz; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qyQqJw3n"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TNZfTl120044;
-	Wed, 30 Sep 2026 07:28:13 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rv6Y3Dyz"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TNZuQ61172224;
+	Wed, 30 Sep 2026 07:36:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=hRgj7Et2mslqCi74mWWVC1UpL1zk3V
-	NNzSJBai5rckM=; b=qyQqJw3nC2zsh7oS8ERyU52BdcKrwVTFljr3BvDbpRd3B0
-	0zPKlWOiZqcAP8lqqFDURkd2yhVvDnlffkj/n4slv1AsrKUOk5PJcib71T0qIsl7
-	vFEguWe7hdEimsi5asqbi69ZCjF8u7AMcBtGVNa+9MyVMhx3uaKGMeZ1KBUKjaDn
-	0AX5KFBUXsBtYy4SsX8EyIsqe+mfqJOKg8pQwXxwydhgKDHvFeFXrq9Qdbb5LCog
-	ia7XEe99DG0ha1Y6NaGbGtug+FFxgE8Px2QXVMyw7/gCufVMbhCLB+JDdxbjLrJl
-	g/XH2u8s24bAkyIjFrbMF2J2lk7AjCs0mxSZqwoQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx4feaqur-1
+	:references:subject:to; s=pp1; bh=LXc5IPA3Ts9jz9cHbi3SGJcANTuikq
+	wfUBg8u2NSd+Y=; b=Rv6Y3DyzUXFOBexDRXVGWc1MCIPgxU6tt24x/Q/hWu1XVb
+	psuSCndSHBLa+h+FEqPK7r4RRNTQOKegxhtWPda32e3Hzs3I/oCwO+0k2x6UTXoC
+	+9nPoQeb6kZ+6xY9+vl0bbjtIE0Q1IiYF0QLx+f9ZDeg9o5kChf/pAE0antM9toI
+	HTmkdFrLh6MTlhEqCabZowDJ8eZWBu6lZv/f6Cdu5QWJ9t4x6yhnwnKfAomTaf4x
+	KyKll4tqNvuJrZDT2aT6NkixPtbNEsxQGsZE6paOeh37N2eyhK6Cha8lC+KIAevi
+	Lo5EhjOufO9zbF+ZzYQ00Ypw89ikyvf2V7lAHncg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx3fkb10m-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 07:28:12 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68U4iFK52606339;
-	Wed, 30 Sep 2026 07:28:11 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxsvhnb27-1
+	Wed, 30 Sep 2026 07:36:07 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68U4rovP2589538;
+	Wed, 30 Sep 2026 07:36:06 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h0g8e326g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 07:28:11 +0000 (GMT)
+	Wed, 30 Sep 2026 07:36:06 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68U7S5dp51380624
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68U7ZxB343057454
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 30 Sep 2026 07:28:05 GMT
+	Wed, 30 Sep 2026 07:35:59 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 470CB20040;
-	Wed, 30 Sep 2026 07:28:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B431E20049;
+	Wed, 30 Sep 2026 07:35:59 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4AD5F20049;
-	Wed, 30 Sep 2026 07:28:04 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C839F2004B;
+	Wed, 30 Sep 2026 07:35:58 +0000 (GMT)
 Received: from osiris (unknown [9.111.12.23])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 30 Sep 2026 07:28:04 +0000 (GMT)
-Date: Wed, 30 Sep 2026 09:28:03 +0200
+	Wed, 30 Sep 2026 07:35:58 +0000 (GMT)
+Date: Wed, 30 Sep 2026 09:35:57 +0200
 From: Steffen Eiden <seiden@linux.ibm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Andreas Grapentin <gra@linux.ibm.com>, kvm@vger.kernel.org,
-        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
         David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 16/29] arm64: Share arm64 headers with s390
-Message-ID: <20260930072803.664031-A-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-17-seiden@linux.ibm.com>
- <arqQ2Eat4VUBbl49@arm.com>
- <20260928162345.428362-C-seiden@linux.ibm.com>
- <ars6Jh5DiendDT7G@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
- <arvunF8epgpWh1YT@arm.com>
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+        Tony Krowiak <akrowiak@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v4 4/6] KVM/vfio: Use file-based reference counting for
+ KVM
+Message-ID: <20260930073557.770322-A-seiden@linux.ibm.com>
+References: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
+ <20260928-vfio-v4-4-e32e226d5932@linux.ibm.com>
+ <20260929195954.3db8f840@p-imbrenda>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,97 +89,131 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arvunF8epgpWh1YT@arm.com>
+In-Reply-To: <20260929195954.3db8f840@p-imbrenda>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=FYWiV5+6 c=1 sm=1 tr=0 ts=6abcba0c cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-ORIG-GUID: hxwnLzwH_8nsXHqSd-L5i4IY_ZXL74SN
+X-Proofpoint-GUID: OnUwbumxm2AOJQpv7S_XRm3D9ULTJsOn
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDAyOCBTYWx0ZWRfX1qP5KKMRMc09
+ N0iUJS8Kqw0bvLrYy6Krq3ViwTlEsEbuncuZtGrLGzrBTkZMShujxIJ1RSpgp7pOkNikaAup50I
+ pfyA570fBhWuqiIvRlLQVRR9lP9ROOw=
+X-Authority-Analysis: v=2.4 cv=Vv62kO2n c=1 sm=1 tr=0 ts=6abcbbe7 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=yUGAwy5nKwvZNSSkddwA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDAyOCBTYWx0ZWRfX3sU+2Dfn/vqZ
- 9s9sMEAwJ/QoIm+wXUoUz+vMRPGFn+7t+mizIFcTMueUC3b+sVfDtayK78vJ/lweMyrYOj751+J
- e2uQYrwjTU5UmQIW6yiFB5Aec8OUzWs=
-X-Proofpoint-ORIG-GUID: _DlkOUTOeH3w63xnnfRbYKXk7OuwWqh_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDAyOCBTYWx0ZWRfX+QA+Jhr/nNEc
- g+1uQImKhn5dkXln+A0VcaP3Q1Z7lr4d2OR7I70b525QnlNe86XXIVCeXQnK64Hr/G3cJrXdDOW
- xarHfa1K54FmWIE84TlPDZSUduNs78AZVpH2ISdcXex054xZJVnqpsHV5M6KmLfEUDMCFr4g3w2
- TdZ0fnb/SBK//8Gm+2G1x9ZB4vSTBm3AJj3EtUN7rknmvx5+hG77220YBDIe/wcYsMZDTXYNXsb
- IKuxgvAh022qpVUXshSpAsOqrwtfVQIokbZtPZ2KwfDkLKhTkTzbL2WJvksNJb1BJy0TlSYUJOu
- i/rKLvzKVpluB1M6QVkX/iv8oemQeHNdLQACH3QwxymFk1JJ2qQiKrpBlmlm4iYK3u3qGnUFwDf
- gWxXFdWjFB9fqKIyN/BttHrHaIA8xN4GnKR+R0oBPspRkW6zK/s1c7suKsbZzlSXV5hbVU5JBa0
- gCooiWNfWe/80bWIEoA==
-X-Proofpoint-GUID: 9uC9FNKzEs4mMhcFIr-EKf_de_z3-bc6
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=Ikd4Dj_1AAAA:8 a=1XWaLZrsAAAA:8 a=cSaYzA00SFW3ExK1YA4A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDAyOCBTYWx0ZWRfX8Xk4QZ+dcaAJ
+ 83P4K1J+Yr4yL2xgRN4vUbejx+Alu4g93CyUgeGO/MNuV5C6vVij/YToAotZ4QmvSoznKVa0ybr
+ P9Ry8U9tsy8Eq4rUfbtFi/4rxDcZHUw0akEI/YFmJA7NaMpUY8SNHSD+goc2MPvnxChjkChA0Hk
+ 1Wa9aDaRN7cezwAGMEZs0NvIeLKQefZ+W5NwJw7sRhlgiuSKQDF6fL5fy6gaQfj9lgkwvyu69GA
+ vcN2iR8xUU5pC+du9H9leyv3F2/M9SjXiydxcukmnZVvO4SSmMuROjFe2vAon/ad7Nf20G4vQAP
+ yRgqnN7D7ivPriKPutl6M5JuoXEynkAgSR6dvzVgzLlgIzB/xsDV7f14rtBWPMFgLvgAuMMss05
+ CmOZ7Nacm0MyYvmnYmlc3joL1fvc+YZFdLD6lbe7uIKbKVXxZlyKrZ8H/E8r+HOkPX2yGjQOQco
+ l8jVK7oZvXMRqGyfGJg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-29_05,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
  definitions=main-2609300028
 
-On Tue, Sep 29, 2026 at 06:00:12PM +0100, Catalin Marinas wrote:
-> On Tue, Sep 29, 2026 at 06:19:20AM +0200, Andreas Grapentin wrote:
-> > On Sep 28 26, Steffen Eiden wrote:
-> > > On Mon, Sep 28, 2026 at 05:07:52PM +0100, Catalin Marinas wrote:
-> > > > On Fri, Sep 18, 2026 at 03:30:53PM +0200, Steffen Eiden wrote:
-> > > > > +# Enable all code shared to s390
-> > > > > +KBUILD_CFLAGS	+= -DARM64_S390_COMMON
-> > > > > +KBUILD_AFLAGS	+= -DARM64_S390_COMMON
-> > > > > +KBUILD_CPPFLAGS	+= -DARM64_S390_COMMON
-> > > > 
-> > > > Do we actually need these defines? They seem only to be used as markers
-> > > > for the awk scripts to extract the definitions. Why do we need the C
-> > > > preprocessor involved at all? Could we not just have comment markers:
-> > > > 
-> > > > /* ARM64_S390_COMMON_BEGIN */
-> > > > ...
-> > > > /* ARM64_S390_COMMON_END */
-> > > >
-> > > No technically we do not need those. They could be useful if we find out
-> > > that AWK is the wrong tool and move to a C Preprocessor + diff based
-> > > approach. 
-> > > 
-> > > if the ifdev is not closed the compiler will complain, but an 'arm did
-> > > not destroy us' verifiaction tool ( I will send one soonish) could do
-> > > the same.
+On Tue, Sep 29, 2026 at 07:59:54PM +0200, Claudio Imbrenda wrote:
+> On Mon, 28 Sep 2026 15:07:05 +0200
+> Steffen Eiden <seiden@linux.ibm.com> wrote:
+> 
+> > Replace manual module reference counting with file-based reference
+> > counting for KVM integration. Previously, VFIO used symbol_get() to
+> > obtain function pointers for kvm_get_kvm_safe() and kvm_put_kvm(),
+> > then manually tracked module references through these symbols. This
+> > approach required storing the put_kvm function pointer in each device
+> > and carefully managing symbol references.
 > > 
-> > iirc the last time we discussed this we didn't think that load-bearing
-> > comments were the right tool here. We also briefly floated the idea of
-> > using a #pragma region based approach, but in the end we went with the
-> > #ifdef preprocessor directives instead, as the least invasive
-> > non-comment marker that was available.
+> > Pass struct file pointers instead of struct kvm pointers throughout the
+> > VFIO-KVM interface, leveraging the kernel's existing file reference
+> > counting via get_file()/get_file_active() and fput(). Convert the x86
+> > page-track API and update s390 vfio to use file_to_kvm_<arch>(). This
+> > simplifies the code.
+> > 
+> > Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> > Co-developed-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > ---
+> >  arch/s390/include/asm/kvm_host_s390.h |  2 +-
+> >  arch/s390/kvm/s390/pci.c              |  9 ++++--
+> >  arch/x86/include/asm/kvm_page_track.h | 10 +++---
+> >  arch/x86/kvm/mmu/page_track.c         | 22 +++++++++-----
+> >  drivers/s390/crypto/vfio_ap_ops.c     | 20 ++++++++----
+> >  drivers/vfio/group.c                  | 11 ++++++-
+> >  drivers/vfio/vfio.h                   | 12 ++++----
+> >  drivers/vfio/vfio_main.c              | 57 +++++++++++------------------------
+> >  include/linux/vfio.h                  |  5 ++-
+> >  virt/kvm/vfio.c                       | 13 +++++---
+> >  10 files changed, 87 insertions(+), 74 deletions(-)
+> > 
+> > diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+> > index 8a7eed5847e1..9519b8028b10 100644
+> > --- a/arch/s390/include/asm/kvm_host_s390.h
+> > +++ b/arch/s390/include/asm/kvm_host_s390.h
+> > @@ -722,7 +722,7 @@ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+> >  void kvm_arch_free_vm(struct kvm *kvm);
+> >  
+> >  struct zpci_kvm_hook {
+> > -	int (*kvm_register)(void *opaque, struct kvm *kvm);
+> > +	int (*kvm_register)(void *opaque, struct file *kvm_file);
+> >  	void (*kvm_unregister)(void *opaque);
+> >  };
+> >  
+> > diff --git a/arch/s390/kvm/s390/pci.c b/arch/s390/kvm/s390/pci.c
+> > index 82892e1e03d9..d79bd3bdc68e 100644
+> > --- a/arch/s390/kvm/s390/pci.c
+> > +++ b/arch/s390/kvm/s390/pci.c
+> > @@ -498,17 +498,22 @@ static void kvm_s390_pci_dev_release(struct zpci_dev *zdev)
+> >   * available, enable them and let userspace indicate whether or not they will
+> >   * be used (specify SHM bit to disable).
+> >   */
+> > -static int kvm_s390_pci_register_kvm(void *opaque, struct kvm *kvm)
+> > +static int kvm_s390_pci_register_kvm(void *opaque, struct file *kvm_file)
+> >  {
+> >  	struct zpci_dev *zdev = opaque;
+> > +	struct kvm *kvm;
+> >  	int rc;
+> >  
+> >  	if (!zdev)
+> >  		return -EINVAL;
+> >  
+> > +	kvm = file_to_kvm_s390(kvm_file);
+> > +	if (!kvm)
+> > +		return -ENOENT;
+> > +
 > 
-> The downside is that the macro affects the preprocessed code. We need to
-> ensure they don't leak in uapi headers for example. Not a fan of this
-> approach but I don't have a better suggestion either. At least we could
-> write them as:
-> 
-> #if ARM64_S390_COMMON == 1
+> the !kvm check (which you remove in this patch) returned -EINVAL, but
+> now we return -ENOENT. Is this intended?
 
-This is a great idea and an improvement. Thanks.
-
-@Marc: Shall I sent a v9 of this series or do you want to pick v8 and I
-send this as an improvement once picked?
-
-Regarding UAPI: We will either import the whole uapi header or noting.
-We will not modify ARM uapi headers for the arm64 on s390 feature.
+Yeah, kind of. This is now another kind of error. Before: if kvm was NULL
+it was somehow not set by pci/kvm. Now: it might be an incorrect file handle as
+file_to_kvm_s390 cheks for this. 
 
 > 
-> so we get an error if someone misspells the macro name (or they leak in
-> uapi headers, vDSO).
-> 
-> It would also be useful for the awk scripts look for the paired #endif
-> rather than relying on the comment at the end of the line. Otherwise
-> it's not really different from just sticking to comments.
-> 
+> is kvm_file always guaranteed to be non-NULL? We checked for !kvm
+> before, why don't we need to check for that now?
+>
 
-Are you suggesting that the AWK scripts should track the #if% and #endif
-in the code and warn or reject if the marked endif for the shared code
-does not match pairing with the starting #if? That makes sense yes. I'll
-investigate and would add this as an improvement later on.
+file_to_kvm_<arch> already tests for !kvm_file before it verifies it is
+the correct file handle (by testing for kvm_fops).
+So kvm_file can be null.
+
+> >  	mutex_lock(&zdev->kzdev_lock);
+> >  
+> > -	if (zdev->kzdev || zdev->gisa != 0 || !kvm) {
+> > +	if (zdev->kzdev || zdev->gisa != 0) {
+> >  		mutex_unlock(&zdev->kzdev_lock);
+> >  		return -EINVAL;
+> >  	}
+> 
+> [...]
 
 	Steffen
-
