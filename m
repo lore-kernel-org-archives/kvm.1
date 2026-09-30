@@ -1,262 +1,206 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E06E3F9A13;
-	Wed, 30 Sep 2026 08:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790757325; cv=fail; b=a9/yBPe4o505DVwOPuZ21Cu4t0NOikc+AcV/yFg6Yj/lz2LoPlShTr4E9Nat/3INDbHiM4zUEfGtqEFOS2ZdF3XjHSMSI4Y2c+3RmHfrOow8XemStVp/JRAFPJE/Ek5Xn+VjHWKmoKX6C2K71ODClwsSOLBFNqjrDvdakcLDFqY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790757325; c=relaxed/simple;
-	bh=tFDAfiLj6ZvUJ6EBTMoFgDtstpJX44EfQDFfN3aF/Ko=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tgDUgPufxaAsikrGrjDtL8pxoacmF5usaYQ280lnBpc/O34S+xO6FvTqtPxNbGog7YKl5VEHEtjvO7WbQvDQFbbyYdtZAvRkv013GMI3i+hTbUM/WKINjDbFWnwxvOYKQX4j3DqCkxkQvQHLg965lOvwpOhcMKTO0Pb4mZ9nGpc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ngRyevEm; arc=fail smtp.client-ip=52.101.56.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08CB470EB1
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 08:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790757915; cv=none; b=DjvcHuKJNJ8DxXgytuc97anYWSEgEuQTa6EeEx9BuRBQL5h11qPvMdY+btgR/sIj3dw+NeCb7qGqU0jWUwUhfw7vplLbBD3CnYgIJFkJELLytkXCxpTKefDD7B7+pqGZ+qLOY+UsyisS/4ImHIU5YfZlP94fV9418kcOnpVEGp4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790757915; c=relaxed/simple;
+	bh=LlMfh49OrB202DnvA3FcBRcY8l4AnsgG8bcahu0coJM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JSRwFCDu21h9QHahK7ZyTpCFF4U5W2R//k9lVr96ICtQHDIZIVfXEljRmtIRmidxe5p7sb4nGXpAvdRfpzkgDy+1KwR2PiZbtgu+PydD2HtXx93zDQxeA3TSaQgJwQEUka5ckDW1jl2+lbac/Fy0vD5bbRwUxcMdtmbTBGLtmIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=WQXyV1lK; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ngRyevEm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l72/qqpBAf2Nv4bgHa7Xu0coNedKBzvWntb/Qt1n85lTMnsO4E3Z3W9gCGkBNaH5mg+Et8MJOcUVY98lkCNJ5RCdUNBVvKv476AJxI7MiDXRSKSwBb//hdd0BSrUI/ubUO+GRy7hMqnsENVJRLj9kKn6mXh0Y1dP+k6VvestNSmN1jFEGuEs2a8mtDtnTGXDY5jJH8ls7OqODDeROOBlG2BisHTm8sX1c9aetQaBD1Z4yO57vlYsMRLef71/g7xWN6qug7S1srS5ydD6q96T5RJbYml0vOX8Hb/wzkD2qUJRSqMVvInypYK6lZ4T/tzyExOsfapIFSFdAlvnS+dR7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yok2iiMapsZLVqqdOeheofsvqokA/lRENlccVX8xceM=;
- b=LNjL6PTSKuK3EK0ai4rWX24v+lkL5YF1s0YkFg1aAeQrOwxn4tXv2HukK1IlZpxQsJWuS2igot5gpCoy02laRdER9ECr3Li4zdD7lY3qYT0bPXFeToNbbLKIWGBW5Et6DTM4S1ftrcF+Gc7mer1kMMW5NHHgCPQOZO/iSLL5xQKLsDsEir6m0SLq3PUBEA9NJHK74pPK7o7rCYw7GmCxsK2sgCke3JtAKk2F6KQXONh3W7NYJh3dZwDrJYvqY7FywkqOiHrbyxj3ZrxhsY53J52ixYsAL4I8xvj8yJliJcyHDRaUAxuPy34hDZoTkA344RZ6qQmdYMY5k2syqrZY0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yok2iiMapsZLVqqdOeheofsvqokA/lRENlccVX8xceM=;
- b=ngRyevEmpXvq/NfwqNenAPhYJvA9VhMQ6m6r3wJECvWFhL6g3JodBbm+QbF112bmDu7sHU0vzSlXSJeiGfNrqOViyZaxYjOwP97O1W4cZHo1+hMxHdwGdB1B+kTlaAe0pD02x0NyqVXZ15E+oTn26bEsP4g3v4pYZojktoROaCM=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DM6PR12MB4154.namprd12.prod.outlook.com (2603:10b6:5:21d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 08:35:11 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
- 08:35:05 +0000
-Message-ID: <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
-Date: Wed, 30 Sep 2026 10:34:56 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
- <logang@deltatee.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, iommu@lists.linux.dev,
- Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
- Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
- Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Sumit Semwal <sumit.semwal@linaro.org>
-References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
- <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
- <607e8903-a979-4d78-bf08-447321c03119@amd.com>
- <20260929132305.GJ563127@unreal>
- <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
- <20260929175737.GK563127@unreal>
- <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
- <20260930081832.GA3401365@unreal>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260930081832.GA3401365@unreal>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BL1PR13CA0420.namprd13.prod.outlook.com
- (2603:10b6:208:2c2::35) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="WQXyV1lK"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BC55143D;
+	Wed, 30 Sep 2026 01:45:02 -0700 (PDT)
+Received: from [10.57.9.178] (unknown [10.57.9.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7877D3F85F;
+	Wed, 30 Sep 2026 01:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790757905; bh=LlMfh49OrB202DnvA3FcBRcY8l4AnsgG8bcahu0coJM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WQXyV1lKlTfAuVQ/7PtouFRJbl6QFhh4roDvpHBFTRl3fY0l91NduM3AJa5rng0Hj
+	 S09u5UgbkNijosE/+5DmPbt6Ybdc5JLXmVj0sQEGRJNOZW71JSJDQJXkNUPs5AZPL4
+	 +fV4DEgrv8LL8lkRfynpk7n5h174mniSCXLbAXa8=
+Message-ID: <e12fb220-505a-44cc-bc43-4bd4ec0e9f7a@arm.com>
+Date: Wed, 30 Sep 2026 09:45:03 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DM6PR12MB4154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a48fb07-a420-4818-b503-08df1ecdb9de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|366016|1800799024|376014|4143699003|10067099003|56012099006|6133799003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	wv1NI5qv0hDFXcq9bKAJUOQSrMmtWA72aJPad5QFeTMDOYaSwrWeTysa8qGVZvEIyUYid3YNp1pCysGGnE3mymDPQQo409mln8uyBQ3WiK1b+f4igKpRPVMss+qKZBcAqErmOF3VxNhhpBZykUVvkc/V94hmDurY0rKF7Kzb4ObS8eDa0Mm6Z+czZvun9gnLLTSmq8m7czewZsS0TPw9+G2LwvLKqUlLe924H9XOB1ha3kJecEKGe4trRfP63Mie7/060dJxW99JmtybcRNcJ9qqsJjJgX5AI/gAgo+Vv6fzCjcKRLVzc882ZENHz8CV7zRYYi2u5/jFwFxRUEiN/gvmWP9YzbH99N0NCipyL2WhBQ00y/XkjfIMxImasZRZI2/0imivpl0mVe/41xzzJ3bKBMes4D3Wl247AXuIUNdEFCjhk9+K+jiiX3RLMuumxPEizrQMDDJQ3MOi7S2TUwKyu0qgGnLU0plt8kw4/xIAbnMux82neCTs6bU4uHO4HcIBXyjV6qRQzXWIrsycUrpQwUPJMEDatLA70KSeGVN1oKFdHipMJvbT9SWZGUFMgN6zOHmY1lns3AQZhBDmLXO6XNT6GVbz1KiGkjEaVeOMCTh8wUMSg+CVRMaZdCmp
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(1800799024)(376014)(4143699003)(10067099003)(56012099006)(6133799003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QVd5S0hhcjNYR1JSbjRmQis3TytmRDk2dS9OZHFoamZBTk8xZWFPQXVtOWtr?=
- =?utf-8?B?bDd1NXRVdU4xSzJXd3hNTDRQc0w5enpOZFBqSkhNQUFvcm1DNTkzOHBrbUhF?=
- =?utf-8?B?YnlUdGxmMzdoZzlyQU9lQm1GK3lsV2owa3czV2JFdGtSU2xtTms0SmlLSWhR?=
- =?utf-8?B?RiszYk1iYldhZzU5R0RGTXVuZGJwdTdLU1QwMnc1ZE14NVlWcHRsRzBVc1F2?=
- =?utf-8?B?S3VBQUtVVEtaTXFSYWo2RDVtYTdRU2kzZTVtbGtPS0ZPTXpPaWtnWFRnTlBW?=
- =?utf-8?B?SDBDT282akM3eklWQXJqUGpnM0FXUzczcnh4U0RjTXBYOW1zRTViZ0dGOU9I?=
- =?utf-8?B?TGVIWjNRNEJIVno0c0d4V2dEUDlPUnUxSkUrL2hMb3ZtdVJBaGFlUi8wbGFJ?=
- =?utf-8?B?Vzg3Y3ZVMTNBMUJHdWhybUtVanNoTEZRRWg1NlBBQTZqV1hINnJZbCtKQU5U?=
- =?utf-8?B?b1VrbWNaT0VxanZaVTA3N0lQUVpOY25sN05NWThJVnNJUStXeWtFQVdQTkZK?=
- =?utf-8?B?VVliSjNGbEhFQnJZYmF6UnUvMzZjQU1WN3ExVkpQV3J5MmRCb2d3bUxTN0pC?=
- =?utf-8?B?SkFOSCtONFI1VGY0ZFhUZm5RSWlBbDVNZG12QTVsdEhCNkJhV04xTUxOZDFM?=
- =?utf-8?B?UWJKNG1YMzRRNkt2a1RqeVRKbGpuNnpzRmNwZFpYUk1pVm54dFJTZk5PUmVP?=
- =?utf-8?B?Rzg0T25pM2lBb2sxV3NtQ0JlaWhXMCsrRDFGaGxlNjlDekEvbit5WU5ybXB4?=
- =?utf-8?B?dS9RUy9UeFM3Z0ZEeDFDQ2p6QkJVZTVFdjFYMnFrbXZBc1lqSWpjd3dSKzdS?=
- =?utf-8?B?V2hmbGRUUmk4U3ZvU2FvRE9rWVZ5RTR5aCtaWEMwRE9rMG1BWERncW40OU5R?=
- =?utf-8?B?V1ptcnhEVlY2WUk3N0VoMHV1SDlrN1dYODllM3dLUllxKzBvdG1MQU0rak1H?=
- =?utf-8?B?ZmJoRUQwTER4SEFpLzBnNzVBYjNMOXlvQkR6UmhIY3NLMWhGRVdXbnhuL09D?=
- =?utf-8?B?YmtNTnRLY2JDU01oNzBaRlBTbjd1T0pHQS84T3JUTERFaXE4d1U4bUsvaXRl?=
- =?utf-8?B?a2UzSThseDViSmNGSTlrK1JwdzJVeGF3UUMvVE5zOGNCd3ZLZUR5MlROVEkz?=
- =?utf-8?B?OVVKQndrdVZXQWpvVGcyMy83YTUybGRPNS83elZBVGE5ZTBxQ0gzNjBUYVBM?=
- =?utf-8?B?c1hlWHpBa0lKV2F1QS9RWTRKMGxHL2lHZXhqR1c1aFFVVlhrNmp2NE4ycm5Y?=
- =?utf-8?B?WnQ2Q1FwN2UzZzBPem1xb29tWFY0VzVzWGo2UE5IaDRKVXdsSWRheVAvRjEv?=
- =?utf-8?B?ZnJvZ3V4bFJMaUNpM2MzR3NWUHRITWNPWllwVEgzU3l6THVNSlBQY3g1c1RC?=
- =?utf-8?B?RVZ0eUovWnJUSXF0S3NkWWlUQ2wwUm12ellGbmpCVWYxUnc1K3VYT2pDTXpl?=
- =?utf-8?B?OEd0VmdBMnZ1TUlvUG1NQUFPL1BMY2RaQ3dkcm5uaElXb1RyWWxHVUxXdm51?=
- =?utf-8?B?bFJ0QjZ2akI5SGM2Vnh0RXZMR0lLVmdRN09aKzArcU0zNjZiYmVjVE9Jc3FZ?=
- =?utf-8?B?WC9yT0FDdVd0blcvVXBhTXYrcTY1RUUyUkI1QnFsaG9TTnN6U2tKMHNYZ0g0?=
- =?utf-8?B?ZXY0eHpRazNlQ3FDb013T3RESndPM1BPYWd5U1g0R0ZYOXZsWG03cDd1TTQr?=
- =?utf-8?B?bHg5UklzUmhOMTIvMjF0d0wrZnV3WEs0SXEycThoeHR1S01PVkNmekhVNU51?=
- =?utf-8?B?Rzk4Ny9RSTE3YnByYjlJSXNIcG50MUJTNUZCRnh2cGp2VjdtQks4cXMxZGJv?=
- =?utf-8?B?L1VablFuUTRZRU5LcmJkUUd1Rk1IRmVBK3lFM2x1Q283M0FVVWM4N1gzRkVr?=
- =?utf-8?B?SjFtLzVaaHRsQmlpRHlrNFBLOXZHMERJdUlHNlljeG9DMzh3dHNPQ1ZRaXJt?=
- =?utf-8?B?VDRpR3BvWlBNb3dlckgyM3hKbGlwei9JdVZ0RWVTRlI3SEEwTTNoc3NGdjIx?=
- =?utf-8?B?TTRqa3c3ZGIyTkNuSnIrdDFLYWJWOE1kMlB0SE1SaHk5VTNXQjRKbUJ1aHhT?=
- =?utf-8?B?SnJCSFdsanV4NWFZWmNFSUdLbzNQSHBwektFdFhEV1VmbzQzcVdTYlAwR0xC?=
- =?utf-8?B?MWxVRVZYUDlxWDdXQUxjV09FWkxiWnM2QTU1OHZ1MmVqOXRhSHZwRW1WcGhj?=
- =?utf-8?B?allNMVhvM0xpQVp3YTA2UE1HZWl4SVNjZ0pnU1ZKY05yVEV5ZjZTdUNDaFI0?=
- =?utf-8?B?Q0F0dnVhVEFjemlsSFpUc0JLU2ZWeEVaWVNuTzdRZldqSDZwTkljcTFEMXFz?=
- =?utf-8?Q?K/GDx71/VLJA8G+MBZ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a48fb07-a420-4818-b503-08df1ecdb9de
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 08:35:04.7312
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N/eu4A24mF/etHqDjdR5G/WkTRxZP/iKz2TRGtq5GM/xfT+KiFEeIRHAIOS0uBQp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4154
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v20 4/9] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, Gavin Shan <gshan@redhat.com>,
+ Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+ Steven Price <steven.price@arm.com>
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-5-suzuki.poulose@arm.com>
+ <20260929223042.681D61F000FF@smtp.kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260929223042.681D61F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 9/30/26 10:18, Leon Romanovsky wrote:
-> On Wed, Sep 30, 2026 at 09:00:57AM +0200, Christian König wrote:
->> On 9/29/26 19:57, Leon Romanovsky wrote:
->>> On Tue, Sep 29, 2026 at 03:39:42PM +0200, Christian König wrote:
->>>> On 9/29/26 15:23, Leon Romanovsky wrote:
->>>>> On Tue, Sep 29, 2026 at 11:34:05AM +0200, Christian König wrote:
->>>>>> On 9/28/26 13:19, Leon Romanovsky wrote:
->>>> ...>>
->>>>>>> +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
->>>>>>
->>>>>> This function call here *must* be in the exporter and not the DMA-buf framework.
->>>>>>
->>>>>> So clear NAK to putting that here.
->>>>>
->>>>> "Look, it is easy to complain you don't like how it looks, but this
->>>>> stuff is hard there are lots of competing concerns, if you have a
->>>>> better idea now is a good time to present it."
->>>>> https://lore.kernel.org/all/20260921130858.GO11599@ziepe.ca/#t
->>>>>
->>>>> Do you have a viable solution?
->>>>
->>>> Ok, that sounds like you haven't understood why I'm rejecting this.
->>>>
->>>> By moving the calls to pci_p2pdma functions into DMA-buf you bypass the NAK to expose those functions to drivers from the DMA maintainers.
->>>
->>> No, you have misunderstood Hellwig's position. His request was to ensure that only
->>> subsystems deal with P2P internals. He was perfectly fine with bringing P2P
->>> complexity into dma-buf, since it is the agreed-upon mechanism for sharing DMA
->>> regions between devices.
->>
->> Thanks for clearing that up, I indeed didn't realized that.
->>
->> But that is pretty much against my standpoint that I don't want any P2P complexity in DMA-buf.
->>
->>>
->>> So this is not a NAK bypass; it is a correct implementation of his request.
->>> He handled P2P-related complexity in the block layer.
->>>
->>> Let's add Christoph to the thread so he can correct me if I'm wrong.
->>>
->>>>
->>>> I unfortunately didn't understood that when the dma-buf-mapping.c code was added and just assumed that you just needed a place to put some common code.
->>>
->>> That is not correct. Devices A and B share a DMA region via the dma-buf
->>> mechanism. Where do you expect the code common to dma-buf to be placed?
->>
->> In the DMA layer!
->>
->>>>
->>>> So as long as that NAK from the DMA maintainers to expose the pci_p2p functions to drivers stand I will push hard to get that stuff removed again from DMA-buf as well.
->>>
->>> Are you seriously suggesting that every dma-buf driver in the world should
->>> have to reimplement this mess?
->>
->> Well I completely agree that this should probably not be replicated into each exporter, but that is the job of the DMA layer and not DMA-buf.
->>
->> The purpose of DMA-buf is to exchange DMA addresses between an exporter and one or more importers and handle things like lifetime and synchronization of accesses. 
->>
->> What the framework should do is to transport the capabilities of the importer to the exporter, e.g. what physical connections we have etc..
->>
->> What the framework can also do is to have additional information from the exporter to the importer regarding addresses and mappings, for example if they are bus, IOVA or some special internal DMA addresses or how to stitch together your PCIe TLP or whatever.
+Hi,
+
+Responses inline.
+
+On 29/09/2026 23:30, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [Medium] arm_rmm: SRO cancellation discards partial progress limit leading to memory corruption
+> - [Medium] arm_rmm: integer overflow in granule clamp bypasses RMM protection
+> - [Medium] arm_rmm: missing validation of block_size_fld leads to division by zero
+> --
 > 
-> At a minimum, exporters need to pass `p2pdma_provider`.
+> commit 44837285c82689401d14180cb932077aa7982b67
+> Author: Steven Price <steven.price@arm.com>
+> 
+> firmware: arm_rmm: Add support for SRO
+> 
+> This commit introduces support for Stateful RMI Operations (SRO), allowing RMI
+> commands to return incomplete and be resumed. It adds SRO state tracking,
+> memory donation and reclaim handling, and wrappers for SRO commands.
+> 
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -14,6 +15,687 @@
+>> +static long rmi_granule_range_delegate(unsigned long base,
+>> +				       unsigned long top,
+>> +				       unsigned long *out_top)
+>> +{
+>> +	struct arm_smccc_1_2_regs regs = {
+>> +		SMC_RMI_GRANULE_RANGE_DELEGATE, base, top
+>> +	};
+>> +	long ret = rmi_sro_execute(&regs);
+>> +
+>> +	if (ret == RMI_SUCCESS && out_top)
+>> +		*out_top = regs.a1;
+>> +
+>> +	return ret;
+>> +}
+> [ ... ]
+>> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+>> +				 unsigned long sro_handle,
+>> +				 unsigned long donatereq,
+>> +				 struct arm_smccc_1_2_regs *out_regs,
+>> +				 gfp_t gfp)
+>> +{
+> [ ... ]
+>> +mem_donate:
+>> +	rmi_op_mem_donate(sro_handle,
+>> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
+>> +			  0, out_regs);
+>> +	donated_size = out_regs->a1 << PAGE_SHIFT;
+>> +
+>> +	if (WARN_ON(donated_size > size))
+>> +		donated_size = size;
+> 
+> [Severity: Medium]
+> Is there a risk of an integer overflow here before the bounds check?
+> 
+> If a buggy or compromised RMM returns a maliciously large value for
+> out_regs->a1, the left shift by PAGE_SHIFT could overflow the 64-bit
+> donated_size variable. This would result in a small value that bypasses
+> the WARN_ON() check.
 
-No, exactly that is a no-go. The neither the framework nor the importer should see the p2pdma_provider.
-
-Only fully translated addresses where the DMA access should happen.
+Fair point, this was due to the removal of donated_granules. I will
+rectify this.
 
 > 
-> If I keep the “dma-buf: Let exporters hand out the P2PDMA provider behind a
-> buffer” patch, I can move the P2P TLP types back into `p2pdma.c` and export
-> only the function that indicates whether ATS is required.
+> The host kernel might then erroneously believe the RMM consumed fewer
+> granules than it actually did, freeing the remaining memory back to the
+> allocator while the RMM is actively using it. This could result in memory
+> corruption.
 > 
-> Is it ok?
+> [ ... ]
+>> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+>> +				    unsigned long sro_handle,
+>> +				    unsigned long donatereq,
+>> +				    struct arm_smccc_1_2_regs *out_regs,
+>> +				    gfp_t gfp)
+>> +{
+>> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long found = 0;
+>> +	unsigned long donated_granules;
+>> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+>> +	unsigned long consumed_blocks;
+> [ ... ]
+>> +	donated_granules = out_regs->a1;
+> [ ... ]
+>> +	consumed_blocks = donated_granules / granules_per_block;
+> 
+> [Severity: Medium]
+> Could an unvalidated block_size_fld lead to a division by zero panic here?
+> 
+> While count and state are explicitly validated against anomalies,
+> block_size_fld from the firmware appears to be blindly trusted. If the
+> firmware returns an out-of-bounds value (e.g., 6), the shift amount in
+> rmi_addr_block_size_to_bytes() can evaluate modulo 64, yielding a block_size
+> smaller than PAGE_SIZE.
 
-What you can do is to forward declare enum pci_p2pdma_map_type and than pass that 1 to 1 from the exporter to the importer.
+This is not possible. The field is a 2bit field and cannot be greater
+than 3. See the RMI_DONATE_BLOCK_SIZE()
 
-Regards,
-Christian.
 
 > 
-> Thanks
+> This would cause granules_per_block to evaluate to 0, triggering a kernel
+> panic when donated_granules is divided by granules_per_block.
 > 
+> [ ... ]
+>> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+>> +{
+>> +	bool cancelled = false;
+>> +	unsigned long sro_handle;
+> [ ... ]
+>> +	if (cancelled)
+>> +		return -ECANCELED;
+>> +
+>> +	return regs->a0;
+>> +}
 > 
->>
->> As long as both the exporter and importer agree on what those values mean I have no problem at all with that.
->>
->> But how those DMA addresses come to be should *absolutely not* be part of DMA-buf! The complexity of that is seriously not something we should have here.
->>
->> Regards,
->> Christian.
->>
->>>
->>> Thanks
->>>
->>>>
->>>> What you try to do here is seriously not ok and I will push back hard on that in the future.
->>>>
->>>> Regards,
->>>> Christian.
->>>>
->>>>>
->>>>> Thanks
->>>>>
->>>>>>
->>>>>> Regards,
->>>>>> Christian.
->>>>
->>>>
->>
+> [Severity: Medium]
+> When an operation is cancelled, does this unconditionally discard the
+> output registers containing the partial progress limit?
+> 
+> If a buggy or compromised RMM returns an unexpected MEMREQ during a non-memory
+> SRO like SMC_RMI_GRANULE_RANGE_DELEGATE, rmi_sro_execute() issues an
+> RMI_OP_CANCEL and unconditionally returns -ECANCELED. This drops the final
+> state in the a1 register.
+
+We already WARN_ON_ONCE(1), when we get a memreq in a non-memory 
+transferring SRO operation. There is nothing we could do in this case
+from the generic helper, than to inform the caller that we had to
+cancel it.
+
+This is a fundamental misbehavior from an RMM implementation. There are
+other ways the RMM could crash the host. e.g., Don't really undelegate
+while reporting success. So, I wouldn't care about such pathological
+cases.
+
+Cheers
+Suzuki
+
+
+> 
+> As a result, callers like rmi_granule_range_delegate() fail to capture
+> the progress limit. The kernel would then undelegate fewer granules
+> than the RMM successfully processed before returning them to the normal
+> allocator, which can lead to fatal Granule Protection Faults when the host
+> later accesses them.
+> 
 
