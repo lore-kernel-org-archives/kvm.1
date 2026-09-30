@@ -1,279 +1,262 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D64351C11
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 08:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790756839; cv=none; b=Zk6tTu5X8W4V1vZAwQvbTOaZ90LPofagwCb7ttExQSqgmtpace4DvniuqrvkIg1CWsV+bE2Sz7CVfOUMxNia3NIfmRu/Pec4O8SjAPeOHH+JlzmXa/jvToDRrTqLakkTpU8kBGPNEze5d/ZSvKY7l9UVesanFL4Pbg0+BEDJx7c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790756839; c=relaxed/simple;
-	bh=w72+kYNnWQafaKAS/FlZpI8K9Ijx/4pBz1PwjLYC5ZA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oKOln2MSIMfCRE7AlO0ZBiYvLvhmQA5OI9Y6pEi2R4DOAX5OlIWYbkT2CGWTcsg8+6+xqFEXH3ROaMAKTEfC95XzRu88LdUmXfZLVu2H2GjrfwlUweFKhVh+/ktPVdfm66FfjUmtpO2QZ62kq9qd0Pvoio8HgzImI1Qsx+cheHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=oAe1w5qb; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E06E3F9A13;
+	Wed, 30 Sep 2026 08:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790757325; cv=fail; b=a9/yBPe4o505DVwOPuZ21Cu4t0NOikc+AcV/yFg6Yj/lz2LoPlShTr4E9Nat/3INDbHiM4zUEfGtqEFOS2ZdF3XjHSMSI4Y2c+3RmHfrOow8XemStVp/JRAFPJE/Ek5Xn+VjHWKmoKX6C2K71ODClwsSOLBFNqjrDvdakcLDFqY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790757325; c=relaxed/simple;
+	bh=tFDAfiLj6ZvUJ6EBTMoFgDtstpJX44EfQDFfN3aF/Ko=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tgDUgPufxaAsikrGrjDtL8pxoacmF5usaYQ280lnBpc/O34S+xO6FvTqtPxNbGog7YKl5VEHEtjvO7WbQvDQFbbyYdtZAvRkv013GMI3i+hTbUM/WKINjDbFWnwxvOYKQX4j3DqCkxkQvQHLg965lOvwpOhcMKTO0Pb4mZ9nGpc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ngRyevEm; arc=fail smtp.client-ip=52.101.56.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="oAe1w5qb"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=vnL5tLdkKlxe+PYYqqEiDNYYSIH09lAMEtW7hHPZpTA=;
-	b=oAe1w5qbYzs+YAW9r7h0tP7s9BBT7T7NPIN8bFYagHEawv35WmLhsHbm3pGvoQJL2wPHpNHJe
-	Ay4mIb8oUchSYngvlds6ydubmEQuA58q20xfPsN1ELhx1SrfKizwsNhmj3vOUGZpVaZCp5ntRFP
-	d6lk8AKMba1b5T3I1tU3fz8=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hvnsz3LhGzcb49;
-	Wed, 30 Sep 2026 16:15:35 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6BAA640577;
-	Wed, 30 Sep 2026 16:27:12 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 30 Sep 2026 16:27:11 +0800
-Message-ID: <66d612c9-7051-4b71-870e-580ea377d2ae@huawei.com>
-Date: Wed, 30 Sep 2026 16:27:11 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ngRyevEm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l72/qqpBAf2Nv4bgHa7Xu0coNedKBzvWntb/Qt1n85lTMnsO4E3Z3W9gCGkBNaH5mg+Et8MJOcUVY98lkCNJ5RCdUNBVvKv476AJxI7MiDXRSKSwBb//hdd0BSrUI/ubUO+GRy7hMqnsENVJRLj9kKn6mXh0Y1dP+k6VvestNSmN1jFEGuEs2a8mtDtnTGXDY5jJH8ls7OqODDeROOBlG2BisHTm8sX1c9aetQaBD1Z4yO57vlYsMRLef71/g7xWN6qug7S1srS5ydD6q96T5RJbYml0vOX8Hb/wzkD2qUJRSqMVvInypYK6lZ4T/tzyExOsfapIFSFdAlvnS+dR7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Yok2iiMapsZLVqqdOeheofsvqokA/lRENlccVX8xceM=;
+ b=LNjL6PTSKuK3EK0ai4rWX24v+lkL5YF1s0YkFg1aAeQrOwxn4tXv2HukK1IlZpxQsJWuS2igot5gpCoy02laRdER9ECr3Li4zdD7lY3qYT0bPXFeToNbbLKIWGBW5Et6DTM4S1ftrcF+Gc7mer1kMMW5NHHgCPQOZO/iSLL5xQKLsDsEir6m0SLq3PUBEA9NJHK74pPK7o7rCYw7GmCxsK2sgCke3JtAKk2F6KQXONh3W7NYJh3dZwDrJYvqY7FywkqOiHrbyxj3ZrxhsY53J52ixYsAL4I8xvj8yJliJcyHDRaUAxuPy34hDZoTkA344RZ6qQmdYMY5k2syqrZY0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Yok2iiMapsZLVqqdOeheofsvqokA/lRENlccVX8xceM=;
+ b=ngRyevEmpXvq/NfwqNenAPhYJvA9VhMQ6m6r3wJECvWFhL6g3JodBbm+QbF112bmDu7sHU0vzSlXSJeiGfNrqOViyZaxYjOwP97O1W4cZHo1+hMxHdwGdB1B+kTlaAe0pD02x0NyqVXZ15E+oTn26bEsP4g3v4pYZojktoROaCM=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DM6PR12MB4154.namprd12.prod.outlook.com (2603:10b6:5:21d::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 08:35:11 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
+ 08:35:05 +0000
+Message-ID: <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
+Date: Wed, 30 Sep 2026 10:34:56 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
+ traffic is routed
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
+ <logang@deltatee.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+ Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+ Chaitanya Kulkarni <kch@nvidia.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
+ <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Sumit Semwal <sumit.semwal@linaro.org>
+References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
+ <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
+ <607e8903-a979-4d78-bf08-447321c03119@amd.com>
+ <20260929132305.GJ563127@unreal>
+ <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
+ <20260929175737.GK563127@unreal>
+ <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
+ <20260930081832.GA3401365@unreal>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260930081832.GA3401365@unreal>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL1PR13CA0420.namprd13.prod.outlook.com
+ (2603:10b6:208:2c2::35) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/15] KVM: arm64: Derive the VM hardware dirty mode
- from dirty logging
-To: <sashiko-reviews@lists.linux.dev>
-CC: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	<kvm@vger.kernel.org>, <kvmarm@lists.linux.dev>, Tian Zheng
-	<zhengtian10@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-13-zhengtian10@huawei.com>
- <20260929111605.4EB631F000FF@smtp.kernel.org>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <20260929111605.4EB631F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DM6PR12MB4154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a48fb07-a420-4818-b503-08df1ecdb9de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|366016|1800799024|376014|4143699003|10067099003|56012099006|6133799003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	wv1NI5qv0hDFXcq9bKAJUOQSrMmtWA72aJPad5QFeTMDOYaSwrWeTysa8qGVZvEIyUYid3YNp1pCysGGnE3mymDPQQo409mln8uyBQ3WiK1b+f4igKpRPVMss+qKZBcAqErmOF3VxNhhpBZykUVvkc/V94hmDurY0rKF7Kzb4ObS8eDa0Mm6Z+czZvun9gnLLTSmq8m7czewZsS0TPw9+G2LwvLKqUlLe924H9XOB1ha3kJecEKGe4trRfP63Mie7/060dJxW99JmtybcRNcJ9qqsJjJgX5AI/gAgo+Vv6fzCjcKRLVzc882ZENHz8CV7zRYYi2u5/jFwFxRUEiN/gvmWP9YzbH99N0NCipyL2WhBQ00y/XkjfIMxImasZRZI2/0imivpl0mVe/41xzzJ3bKBMes4D3Wl247AXuIUNdEFCjhk9+K+jiiX3RLMuumxPEizrQMDDJQ3MOi7S2TUwKyu0qgGnLU0plt8kw4/xIAbnMux82neCTs6bU4uHO4HcIBXyjV6qRQzXWIrsycUrpQwUPJMEDatLA70KSeGVN1oKFdHipMJvbT9SWZGUFMgN6zOHmY1lns3AQZhBDmLXO6XNT6GVbz1KiGkjEaVeOMCTh8wUMSg+CVRMaZdCmp
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(1800799024)(376014)(4143699003)(10067099003)(56012099006)(6133799003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QVd5S0hhcjNYR1JSbjRmQis3TytmRDk2dS9OZHFoamZBTk8xZWFPQXVtOWtr?=
+ =?utf-8?B?bDd1NXRVdU4xSzJXd3hNTDRQc0w5enpOZFBqSkhNQUFvcm1DNTkzOHBrbUhF?=
+ =?utf-8?B?YnlUdGxmMzdoZzlyQU9lQm1GK3lsV2owa3czV2JFdGtSU2xtTms0SmlLSWhR?=
+ =?utf-8?B?RiszYk1iYldhZzU5R0RGTXVuZGJwdTdLU1QwMnc1ZE14NVlWcHRsRzBVc1F2?=
+ =?utf-8?B?S3VBQUtVVEtaTXFSYWo2RDVtYTdRU2kzZTVtbGtPS0ZPTXpPaWtnWFRnTlBW?=
+ =?utf-8?B?SDBDT282akM3eklWQXJqUGpnM0FXUzczcnh4U0RjTXBYOW1zRTViZ0dGOU9I?=
+ =?utf-8?B?TGVIWjNRNEJIVno0c0d4V2dEUDlPUnUxSkUrL2hMb3ZtdVJBaGFlUi8wbGFJ?=
+ =?utf-8?B?Vzg3Y3ZVMTNBMUJHdWhybUtVanNoTEZRRWg1NlBBQTZqV1hINnJZbCtKQU5U?=
+ =?utf-8?B?b1VrbWNaT0VxanZaVTA3N0lQUVpOY25sN05NWThJVnNJUStXeWtFQVdQTkZK?=
+ =?utf-8?B?VVliSjNGbEhFQnJZYmF6UnUvMzZjQU1WN3ExVkpQV3J5MmRCb2d3bUxTN0pC?=
+ =?utf-8?B?SkFOSCtONFI1VGY0ZFhUZm5RSWlBbDVNZG12QTVsdEhCNkJhV04xTUxOZDFM?=
+ =?utf-8?B?UWJKNG1YMzRRNkt2a1RqeVRKbGpuNnpzRmNwZFpYUk1pVm54dFJTZk5PUmVP?=
+ =?utf-8?B?Rzg0T25pM2lBb2sxV3NtQ0JlaWhXMCsrRDFGaGxlNjlDekEvbit5WU5ybXB4?=
+ =?utf-8?B?dS9RUy9UeFM3Z0ZEeDFDQ2p6QkJVZTVFdjFYMnFrbXZBc1lqSWpjd3dSKzdS?=
+ =?utf-8?B?V2hmbGRUUmk4U3ZvU2FvRE9rWVZ5RTR5aCtaWEMwRE9rMG1BWERncW40OU5R?=
+ =?utf-8?B?V1ptcnhEVlY2WUk3N0VoMHV1SDlrN1dYODllM3dLUllxKzBvdG1MQU0rak1H?=
+ =?utf-8?B?ZmJoRUQwTER4SEFpLzBnNzVBYjNMOXlvQkR6UmhIY3NLMWhGRVdXbnhuL09D?=
+ =?utf-8?B?YmtNTnRLY2JDU01oNzBaRlBTbjd1T0pHQS84T3JUTERFaXE4d1U4bUsvaXRl?=
+ =?utf-8?B?a2UzSThseDViSmNGSTlrK1JwdzJVeGF3UUMvVE5zOGNCd3ZLZUR5MlROVEkz?=
+ =?utf-8?B?OVVKQndrdVZXQWpvVGcyMy83YTUybGRPNS83elZBVGE5ZTBxQ0gzNjBUYVBM?=
+ =?utf-8?B?c1hlWHpBa0lKV2F1QS9RWTRKMGxHL2lHZXhqR1c1aFFVVlhrNmp2NE4ycm5Y?=
+ =?utf-8?B?WnQ2Q1FwN2UzZzBPem1xb29tWFY0VzVzWGo2UE5IaDRKVXdsSWRheVAvRjEv?=
+ =?utf-8?B?ZnJvZ3V4bFJMaUNpM2MzR3NWUHRITWNPWllwVEgzU3l6THVNSlBQY3g1c1RC?=
+ =?utf-8?B?RVZ0eUovWnJUSXF0S3NkWWlUQ2wwUm12ellGbmpCVWYxUnc1K3VYT2pDTXpl?=
+ =?utf-8?B?OEd0VmdBMnZ1TUlvUG1NQUFPL1BMY2RaQ3dkcm5uaElXb1RyWWxHVUxXdm51?=
+ =?utf-8?B?bFJ0QjZ2akI5SGM2Vnh0RXZMR0lLVmdRN09aKzArcU0zNjZiYmVjVE9Jc3FZ?=
+ =?utf-8?B?WC9yT0FDdVd0blcvVXBhTXYrcTY1RUUyUkI1QnFsaG9TTnN6U2tKMHNYZ0g0?=
+ =?utf-8?B?ZXY0eHpRazNlQ3FDb013T3RESndPM1BPYWd5U1g0R0ZYOXZsWG03cDd1TTQr?=
+ =?utf-8?B?bHg5UklzUmhOMTIvMjF0d0wrZnV3WEs0SXEycThoeHR1S01PVkNmekhVNU51?=
+ =?utf-8?B?Rzk4Ny9RSTE3YnByYjlJSXNIcG50MUJTNUZCRnh2cGp2VjdtQks4cXMxZGJv?=
+ =?utf-8?B?L1VablFuUTRZRU5LcmJkUUd1Rk1IRmVBK3lFM2x1Q283M0FVVWM4N1gzRkVr?=
+ =?utf-8?B?SjFtLzVaaHRsQmlpRHlrNFBLOXZHMERJdUlHNlljeG9DMzh3dHNPQ1ZRaXJt?=
+ =?utf-8?B?VDRpR3BvWlBNb3dlckgyM3hKbGlwei9JdVZ0RWVTRlI3SEEwTTNoc3NGdjIx?=
+ =?utf-8?B?TTRqa3c3ZGIyTkNuSnIrdDFLYWJWOE1kMlB0SE1SaHk5VTNXQjRKbUJ1aHhT?=
+ =?utf-8?B?SnJCSFdsanV4NWFZWmNFSUdLbzNQSHBwektFdFhEV1VmbzQzcVdTYlAwR0xC?=
+ =?utf-8?B?MWxVRVZYUDlxWDdXQUxjV09FWkxiWnM2QTU1OHZ1MmVqOXRhSHZwRW1WcGhj?=
+ =?utf-8?B?allNMVhvM0xpQVp3YTA2UE1HZWl4SVNjZ0pnU1ZKY05yVEV5ZjZTdUNDaFI0?=
+ =?utf-8?B?Q0F0dnVhVEFjemlsSFpUc0JLU2ZWeEVaWVNuTzdRZldqSDZwTkljcTFEMXFz?=
+ =?utf-8?Q?K/GDx71/VLJA8G+MBZ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a48fb07-a420-4818-b503-08df1ecdb9de
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 08:35:04.7312
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: N/eu4A24mF/etHqDjdR5G/WkTRxZP/iKz2TRGtq5GM/xfT+KiFEeIRHAIOS0uBQp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4154
 
-
-
-On 9/29/2026 7:16 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
-> - [Critical] KVM: arm64: Host kernel panic on nVHE via KVM_REQ_RELOAD_STAGE2
-> - [High] KVM: arm64: HDBSS erroneously enabled for nested VMs
-> - [High] KVM: arm64: Ampere AC03 CPU 38 hardware erratum mitigation bypass
-> - [Medium] KVM: arm64: Data race on kvm->arch.mmu.vtcr
-> --
+On 9/30/26 10:18, Leon Romanovsky wrote:
+> On Wed, Sep 30, 2026 at 09:00:57AM +0200, Christian König wrote:
+>> On 9/29/26 19:57, Leon Romanovsky wrote:
+>>> On Tue, Sep 29, 2026 at 03:39:42PM +0200, Christian König wrote:
+>>>> On 9/29/26 15:23, Leon Romanovsky wrote:
+>>>>> On Tue, Sep 29, 2026 at 11:34:05AM +0200, Christian König wrote:
+>>>>>> On 9/28/26 13:19, Leon Romanovsky wrote:
+>>>> ...>>
+>>>>>>> +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
+>>>>>>
+>>>>>> This function call here *must* be in the exporter and not the DMA-buf framework.
+>>>>>>
+>>>>>> So clear NAK to putting that here.
+>>>>>
+>>>>> "Look, it is easy to complain you don't like how it looks, but this
+>>>>> stuff is hard there are lots of competing concerns, if you have a
+>>>>> better idea now is a good time to present it."
+>>>>> https://lore.kernel.org/all/20260921130858.GO11599@ziepe.ca/#t
+>>>>>
+>>>>> Do you have a viable solution?
+>>>>
+>>>> Ok, that sounds like you haven't understood why I'm rejecting this.
+>>>>
+>>>> By moving the calls to pci_p2pdma functions into DMA-buf you bypass the NAK to expose those functions to drivers from the DMA maintainers.
+>>>
+>>> No, you have misunderstood Hellwig's position. His request was to ensure that only
+>>> subsystems deal with P2P internals. He was perfectly fine with bringing P2P
+>>> complexity into dma-buf, since it is the agreed-upon mechanism for sharing DMA
+>>> regions between devices.
+>>
+>> Thanks for clearing that up, I indeed didn't realized that.
+>>
+>> But that is pretty much against my standpoint that I don't want any P2P complexity in DMA-buf.
+>>
+>>>
+>>> So this is not a NAK bypass; it is a correct implementation of his request.
+>>> He handled P2P-related complexity in the block layer.
+>>>
+>>> Let's add Christoph to the thread so he can correct me if I'm wrong.
+>>>
+>>>>
+>>>> I unfortunately didn't understood that when the dma-buf-mapping.c code was added and just assumed that you just needed a place to put some common code.
+>>>
+>>> That is not correct. Devices A and B share a DMA region via the dma-buf
+>>> mechanism. Where do you expect the code common to dma-buf to be placed?
+>>
+>> In the DMA layer!
+>>
+>>>>
+>>>> So as long as that NAK from the DMA maintainers to expose the pci_p2p functions to drivers stand I will push hard to get that stuff removed again from DMA-buf as well.
+>>>
+>>> Are you seriously suggesting that every dma-buf driver in the world should
+>>> have to reimplement this mess?
+>>
+>> Well I completely agree that this should probably not be replicated into each exporter, but that is the job of the DMA layer and not DMA-buf.
+>>
+>> The purpose of DMA-buf is to exchange DMA addresses between an exporter and one or more importers and handle things like lifetime and synchronization of accesses. 
+>>
+>> What the framework should do is to transport the capabilities of the importer to the exporter, e.g. what physical connections we have etc..
+>>
+>> What the framework can also do is to have additional information from the exporter to the importer regarding addresses and mappings, for example if they are bus, IOVA or some special internal DMA addresses or how to stitch together your PCIe TLP or whatever.
 > 
-> commit 44b8e43689e1fc16603d982a85e0902b833fcf7d
-> Author: Tian Zheng <zhengtian10@huawei.com>
-> Subject: KVM: arm64: Derive the VM hardware dirty mode from dirty logging
+> At a minimum, exporters need to pass `p2pdma_provider`.
+
+No, exactly that is a no-go. The neither the framework nor the importer should see the p2pdma_provider.
+
+Only fully translated addresses where the DMA access should happen.
+
 > 
-> Both HAFDBS and HDBSS flip VTCR_EL2.HD at memslot-update time. Two
-> independent toggles allow an intermediate HDBSS-set/HD-clear state,
-> an illegal combination, and need locking against concurrent updates.
+> If I keep the “dma-buf: Let exporters hand out the P2PDMA provider behind a
+> buffer” patch, I can move the P2P TLP types back into `p2pdma.c` and export
+> only the function that indicates whether ATS is required.
 > 
-> Replace both with kvm_arch_update_hw_dirty_mode(), a pure function
-> of the static capabilities and the number of logging memslots.
+> Is it ok?
+
+What you can do is to forward declare enum pci_p2pdma_map_type and than pass that 1 to 1 from the exporter to the importer.
+
+Regards,
+Christian.
+
 > 
-> Link: https://lore.kernel.org/all/20260901171558.2674031-6-leo.bras@arm.com/
+> Thanks
 > 
->> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
->> index 6eae7e7e2a684..24407194444af 100644
->> --- a/arch/arm64/include/asm/kvm_mmu.h
->> +++ b/arch/arm64/include/asm/kvm_mmu.h
-> [ ... ]
->> @@ -390,6 +390,24 @@ static inline bool kvm_supports_cacheable_pfnmap(void)
->>   	       cpus_have_final_cap(ARM64_HAS_CACHE_DIC);
->>   }
->>   
->> +static inline bool kvm_supports_hafdbs(void)
->> +{
->> +	return IS_ENABLED(CONFIG_ARM64_HW_AFDBM) && has_vhe() &&
->> +		cpus_have_final_cap(ARM64_HW_DBM);
->> +}
->> +
->> +static inline bool kvm_supports_hdbss(struct kvm *kvm)
->> +{
->> +	return system_supports_hdbss() && !kvm_has_nv(kvm);
->> +}
 > 
-> [Severity: High]
-> Does this check reliably gate nested virtualization features if a memslot is
-> created before vCPUs are initialized?
-> 
-> If userspace creates a memslot with dirty logging prior to initializing
-> vCPUs, kvm_has_nv() evaluates to false because KVM_ARM_VCPU_HAS_EL2 is not
-> yet set. This causes HDBSS to be erroneously enabled.
-> 
-> When vCPUs are subsequently initialized, the dirty mode is never
-> re-evaluated, leaving HDBSS active for the nested VM. This bypasses the
-> safety gates and can lead to host panics or data corruption.
-> 
-
-Yes, the timing hole is real. kvm_has_nv() reads kvm-
- >arch.vcpu_features, which is only populated at the first
-KVM_ARM_VCPU_INIT. A memslot created before that derives the mode with
-kvm_has_nv() still false and enables HDBSS, and nothing re-evaluates it
-afterwards.
-
-I'll recompute the mode once kvm_vcpu_set_target() succeeds — features
-are fixed at that point, so a single recompute is complete. INIT always
-precedes KVM_RUN, so the request inside the update is safe:
-
-```
-static int kvm_vcpu_set_target(...)
-{
-	...
-	if (!kvm_vcpu_initialized(vcpu)) {
-		ret = __kvm_vcpu_set_target(vcpu, init);
-		if (ret)
-			return ret;
-
-		/*
-		 * vCPU features have now fixed kvm_has_nv(), which a
-		 * logging memslot created earlier could not have seen.
-		 */
-		kvm_arch_update_hw_dirty_mode(vcpu->kvm);
-		return 0;
-	}
-	...
-}
-```
-
->> +
->> +void kvm_arch_update_hw_dirty_mode(struct kvm *kvm);
->> +
->> +static inline bool kvm_hw_dirty_enabled(struct kvm_s2_mmu *mmu)
->> +{
->> +	return mmu->vtcr & VTCR_EL2_HD;
->> +}
->> +
->>   #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
->>   void kvm_s2_ptdump_create_debugfs(struct kvm *kvm);
->>   void kvm_nested_s2_ptdump_create_debugfs(struct kvm_s2_mmu *mmu);
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index c1e09ba98d48a..17786453c0044 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
-> [ ... ]
->> +void kvm_arch_update_hw_dirty_mode(struct kvm *kvm)
->> +{
->> +	unsigned long cur, target;
->> +	bool logging = atomic_read(&kvm->nr_memslots_dirty_logging) != 0;
->> +
->> +	if (logging && kvm_supports_hdbss(kvm))
->> +		target = VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS;
->> +	else if (logging || !kvm_supports_hafdbs())
->> +		target = 0;
->> +	else
->> +		target = VTCR_EL2_HD | VTCR_EL2_HA;
-> 
-> [Severity: High]
-> Does this bypass the Ampere AC03 CPU 38 hardware erratum mitigation?
-> 
-> kvm_get_vtcr() correctly masks out VTCR_EL2_HA if the erratum is present.
-> However, this code unconditionally sets VTCR_EL2_HA when
-> kvm_supports_hafdbs() is true.
-> 
-> Since the erratum does not remove ARM64_HW_DBM support,
-> kvm_supports_hafdbs() returns true, and this update unconditionally
-> overwrites the mitigation on any memslot update.
-> 
-
-Right, I'll gate it in kvm_supports_hafdbs() so the mode never sets HA
-on systems with an affected CPU:
-
-```
-static inline bool kvm_supports_hafdbs(void)
-{
-	return IS_ENABLED(CONFIG_ARM64_HW_AFDBM) && has_vhe() &&
-	 !cpus_have_final_cap(ARM64_WORKAROUND_AMPERE_AC03_CPU_38) &&
-	       cpus_have_final_cap(ARM64_HW_DBM);
-}
-```
-
-ARM64_HW_DBM is a weak per-CPU cap, so in a mixed system one CPU could
-enable it while the erratum workaround stays system-wide. This keeps
-both checks consistent.
-
->> +
->> +	cur = kvm->arch.mmu.vtcr & (VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS);
->> +	if (cur == target)
->> +		return;
->> +
->> +	kvm->arch.mmu.vtcr = (kvm->arch.mmu.vtcr &
->> +			      ~(VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS)) |
->> +			     target;
-> 
-> [Severity: Medium]
-> Can this plain read-modify-write of kvm->arch.mmu.vtcr cause a data race?
-> 
-> This update is performed under slots_lock, but concurrent page faults
-> locklessly read this value via kvm_hw_dirty_enabled(). This plain C
-> assignment violates the Linux Kernel Memory Model and could lead to
-> load/store tearing and corrupted hardware state.
-> 
-
-Yes, this is a data race in the formal sense — the writer does a plain 
-read-modify-write under slots_lock while kvm_hw_dirty_enabled() reads it 
-locklessly on the fault paths, so KCSAN would flag it.
-
-There's no actual corruption here, though: an aligned unsigned long is 
-single-copy atomic on arm64, so there's no tearing, and a reader that 
-sees the pre-flip value is covered by the reload request and TLBI that 
-come with the flip.
-
-The fix is the usual idiom for a locked writer with lockless readers — 
-annotate both sides with READ_ONCE()/WRITE_ONCE() instead of taking a 
-lock on the fault path:
-
-```
-static inline bool kvm_hw_dirty_enabled(struct kvm_s2_mmu *mmu)
-{
-	return READ_ONCE(mmu->vtcr) & VTCR_EL2_HD;
-}
-```
-
-```
-unsigned long cur, target, vtcr;
-...
-
-vtcr = READ_ONCE(kvm->arch.mmu.vtcr);
-cur = vtcr & (VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS);
-if (cur == target)
-	return;
-
-WRITE_ONCE(kvm->arch.mmu.vtcr,
-	   (vtcr & ~(VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS)) |
-	   target);
-```
-
->> +
->> +	kvm_make_all_cpus_request(kvm, KVM_REQ_RELOAD_STAGE2);
-> 
-> [Severity: Critical]
-> Will this KVM_REQ_RELOAD_STAGE2 request cause a host kernel panic on an
-> nVHE system?
-> 
-> When this request is handled by check_vcpu_requests() at EL1 on an nVHE
-> host, it invokes __load_stage2(), which attempts to write directly to
-> vtcr_el2. Because vtcr_el2 is an EL2-only register, this will trigger an
-> Undefined Instruction exception and crash the host kernel.
-> 
-
-That's right. kvm_arch_update_hw_dirty_mode() is only useful in VHE
-mode, so I'll gate it at the top like this:
-
-```c
-void kvm_arch_update_hw_dirty_mode(struct kvm *kvm)
-{
-	if (!kvm_supports_hafdbs())
-		return;
-	...
-}
-```
+>>
+>> As long as both the exporter and importer agree on what those values mean I have no problem at all with that.
+>>
+>> But how those DMA addresses come to be should *absolutely not* be part of DMA-buf! The complexity of that is seriously not something we should have here.
+>>
+>> Regards,
+>> Christian.
+>>
+>>>
+>>> Thanks
+>>>
+>>>>
+>>>> What you try to do here is seriously not ok and I will push back hard on that in the future.
+>>>>
+>>>> Regards,
+>>>> Christian.
+>>>>
+>>>>>
+>>>>> Thanks
+>>>>>
+>>>>>>
+>>>>>> Regards,
+>>>>>> Christian.
+>>>>
+>>>>
+>>
 
