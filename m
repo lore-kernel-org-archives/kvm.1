@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8EC3B47D9;
-	Wed, 30 Sep 2026 05:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4318A3B6BEB;
+	Wed, 30 Sep 2026 05:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790746869; cv=none; b=JHCS84Bva0QEg0u+OqhyXUepPr3ANfSeV2CSXnb7bRZpP9KBvPCg83HbaG5kFRIQX0xq2iHIVgkzX6sV/dyPHVeGATP97kzQHRkd/LJ68Q7MVXd9LmKXpgSnD76Rzddi0D1xF5I6NYsAJxFq7M/f6lLp4DOEzbDn+k7bVhcKhAg=
+	t=1790746876; cv=none; b=HLDMQFJF/34+cv/yej9CtcIOqFnpxDfpKDZyDHiSmQXvJsKpqi3z7nwzLi2f9sidbQ5pUEGypT+GeGpUvCkcXaOoXUlLSRzdkH7HBWFhGdRoZpTyz2EaMRawEq++u9tEoBfd0yrvxoZmm6Tzzxa7KSWDgZAknoVEfAf951RikKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790746869; c=relaxed/simple;
-	bh=SdQqq/oRL4CEYqQuixCNqv+VHen61iBhlGgfKJxYsKE=;
+	s=arc-20240116; t=1790746876; c=relaxed/simple;
+	bh=akLzHqg0jwPSwxruy5P8AaBz/uOKDnUCRgnL9ASsJjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPglOli1r2vkL35z4XNVcFMu74onpOp+Sx+3hFap4ISXZ1HD7idMORQST3HylaiQdtyRt4bgHL69U5HvPJmYEuBmng6rBjh3pLrMrRbFrIZTZuwX+3jK8qyjQfZ7r2xEfnXQ8Pnwf1k5n3iXQRdUy0E/DNod2NkIBraYjA0oUdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EzhNYH6y; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=eoAEvTqFFahYKSe53Oi2lMUn4AXfHST/i2VSbZodCJUYmahaBPhz6yC+iYsA8xQ3A5i01ymklr6rPx7L4ZAJrErNbM6so614db1HINe8MkqfDBEK1yEz2MmnEFy03H75zTsneEFPqa7Drlw0dr+VxEOLc5urQ7iXs51bnYUOMX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=McnGAMa2; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EzhNYH6y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="McnGAMa2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790746867; x=1822282867;
+  t=1790746868; x=1822282868;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=SdQqq/oRL4CEYqQuixCNqv+VHen61iBhlGgfKJxYsKE=;
-  b=EzhNYH6yG19TwtPPRgqcJM9UU5TWvCNLwLMpptJ8WMdFThbOBg8si/gP
-   dkMRKhUGlLDoPLLRutcp9sOVgdRF12N0O4AYHB4rnCexnfCHXvU3cmenO
-   pWXHZamuRnbJ+JlWsWPnZVbSOpnuoXxYVz/ugX9+Y2Lvd7CdseJArUypA
-   xxSCO/O+1Lrc119TKfQe04s95Ghe8TBDBONo2LZ0Kca9i9lScDAA8VCHF
-   9GAd7t2qg6MaSEaa2Z5HfZVVtF9MLm0/hQu8VHh24IPTE7kfoM5EAgdoP
-   QWq5RkS++IjVojO8khQB/jTt+bq4rabiLXt22x9MkRR3FIiYMyFki6Sv5
-   g==;
-X-CSE-ConnectionGUID: ZzHFE4TVQoetdvmem5C5Gg==
-X-CSE-MsgGUID: SFvca1y9RSiFkbAQKgKh2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="102149096"
+  bh=akLzHqg0jwPSwxruy5P8AaBz/uOKDnUCRgnL9ASsJjU=;
+  b=McnGAMa2Jh10ZwAy46LN523F+Jc7kXheViecMuQWQ42MeA9/HJbKyxiv
+   EYrl0EbuCFauEVGIHAPM3949xMEM+6A6sR80mVN2DYz5l2B3Nm6//Dqdh
+   4qGDOyXDOkC07lhug6U0oGl89Gn9XXVNdI1R6kszzAjvkpY3y78LkAgiH
+   f+7EUILnUeJqHcIHwiMEYJYeLu4Whx/O1JjO0TqtUFUuzDWEeIDUjP/h7
+   cRx7bMiGA3OksHBP3t7IysgZYYV22VZf6oOwA3ylXYuFOvhdzTqnZWwgZ
+   AU/U3NpW2vMlKP9Uha0c4LEtU0/eUK4JfPRiZH5JYmJkeiGNv1MmJglJ9
+   A==;
+X-CSE-ConnectionGUID: Hkcqr4TgSV+PrXXZvFZTNQ==
+X-CSE-MsgGUID: vgtbu7eMRfai8rEV3DuZbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="102149109"
 X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="102149096"
+   d="scan'208";a="102149109"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:41:01 -0700
-X-CSE-ConnectionGUID: SlQ+8CupS9eQy8BTLL3yFA==
-X-CSE-MsgGUID: pyHwcwGQTWi6gsvtqMIYpw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:41:02 -0700
+X-CSE-ConnectionGUID: BY9cx4ewRamOo4z9w9TGug==
+X-CSE-MsgGUID: BYtNGbj3TM2eAQxG4Wk3qA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="278936405"
+   d="scan'208";a="278936416"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:41:00 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 22:41:02 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -59,9 +59,9 @@ Cc: yilun.xu@linux.intel.com,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v3 04/10] x86/virt/tdx: Convert the tdmr metadata reader
-Date: Tue, 29 Sep 2026 22:38:38 -0700
-Message-ID: <20260930053901.22528-5-chao.gao@intel.com>
+Subject: [PATCH v3 06/10] x86/virt/tdx: Convert the handoff metadata reader
+Date: Tue, 29 Sep 2026 22:38:40 -0700
+Message-ID: <20260930053901.22528-7-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260930053901.22528-1-chao.gao@intel.com>
 References: <20260930053901.22528-1-chao.gao@intel.com>
@@ -75,133 +75,84 @@ Content-Transfer-Encoding: 8bit
 
 Continue converting the metadata readers to the table-driven helper.
 
-The "TDMR info" metadata class has two readers: one for the fields that are
-always present, and one for the fields that exist only when the module
-supports Dynamic PAMT.
+Add a table that pairs each field ID with the 'struct
+tdx_sys_info_handoff' member that holds its value, and read all fields by
+walking that table.
 
-Add a table for each, both pairing field IDs with the 'struct
-tdx_sys_info_tdmr' members that hold their values, and read all fields by
-walking the tables.
-
-Annotate both tables as __initconst since they are referenced only during
-init.
-
-AI was used under supervision to review the code and workshop the
-changelog.
+AI was used under supervision to review code and workshop logs
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c                 | 16 ++++++++++
- arch/x86/virt/vmx/tdx/tdx.h                 |  8 +++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 35 ++-------------------
- 3 files changed, 26 insertions(+), 33 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c                 |  9 ++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  3 +++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 13 -------------
+ 3 files changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index c78bb3be6303..24d22d8a2016 100644
+index af4cafdd4c4e..79561312ebfd 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -450,6 +450,22 @@ static const struct field_mapping feature_mappings[] __initconst = {
- 	TDX_SYSINFO_MAP_FEATURES(TDX_FIELD_TDX_FEATURES0, tdx_features0),
+@@ -475,6 +475,13 @@ static const struct field_mapping td_ctrl_mappings[] __initconst = {
+ 	TDX_SYSINFO_MAP_TD_CTRL(TDX_FIELD_TDVPS_BASE_SIZE,	tdvps_base_size),
  };
  
-+#define TDX_SYSINFO_MAP_TDMR(_field_id, _member) \
-+	TDX_SYSINFO_MAP(_field_id, struct tdx_sys_info_tdmr, _member)
++#define TDX_SYSINFO_MAP_HANDOFF(_field_id, _member) \
++	TDX_SYSINFO_MAP(_field_id, struct tdx_sys_info_handoff, _member)
 +
-+static const struct field_mapping tdmr_mappings[] __initconst = {
-+	TDX_SYSINFO_MAP_TDMR(TDX_FIELD_MAX_TDMRS,		max_tdmrs),
-+	TDX_SYSINFO_MAP_TDMR(TDX_FIELD_MAX_RESERVED_PER_TDMR,	max_reserved_per_tdmr),
-+	TDX_SYSINFO_MAP_TDMR(TDX_FIELD_PAMT_4K_ENTRY_SIZE,	pamt_4k_entry_size),
-+	TDX_SYSINFO_MAP_TDMR(TDX_FIELD_PAMT_2M_ENTRY_SIZE,	pamt_2m_entry_size),
-+	TDX_SYSINFO_MAP_TDMR(TDX_FIELD_PAMT_1G_ENTRY_SIZE,	pamt_1g_entry_size),
-+};
-+
-+static const struct field_mapping dpamt_mappings[] __initconst = {
-+	TDX_SYSINFO_MAP_TDMR(TDX_FIELD_PAMT_PAGE_BITMAP_ENTRY_BITS,
-+			     pamt_page_bitmap_entry_bits),
++static const struct field_mapping handoff_mappings[] = {
++	TDX_SYSINFO_MAP_HANDOFF(TDX_FIELD_MODULE_HV, module_hv),
 +};
 +
  #include "tdx_global_metadata.c"
  
  static __init int check_features(struct tdx_sys_info *sysinfo)
+@@ -1402,7 +1409,7 @@ int tdx_module_shutdown(void)
+ 	int ret;
+ 	int cpu;
+ 
+-	ret = get_tdx_sys_info_handoff(&handoff);
++	ret = read_sys_metadata_table(handoff_mappings, &handoff);
+ 	/*
+ 	 * Handoff information is required for proper
+ 	 * shutdown. Refuse to shut down without it.
 diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 87e055a2546c..4faf07925dc0 100644
+index 8bd8928c1802..720e301f599e 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.h
 +++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -65,6 +65,14 @@
- /* Class "TDX Module Info" */
- #define TDX_FIELD_TDX_FEATURES0			0x0A00000300000008ULL
+@@ -78,6 +78,9 @@
+ #define TDX_FIELD_TDCS_BASE_SIZE		0x9800000100000100ULL
+ #define TDX_FIELD_TDVPS_BASE_SIZE		0x9800000100000200ULL
  
-+/* Class "TDMR Info" */
-+#define TDX_FIELD_MAX_TDMRS			0x9100000100000008ULL
-+#define TDX_FIELD_MAX_RESERVED_PER_TDMR		0x9100000100000009ULL
-+#define TDX_FIELD_PAMT_4K_ENTRY_SIZE		0x9100000100000010ULL
-+#define TDX_FIELD_PAMT_2M_ENTRY_SIZE		0x9100000100000011ULL
-+#define TDX_FIELD_PAMT_1G_ENTRY_SIZE		0x9100000100000012ULL
-+#define TDX_FIELD_PAMT_PAGE_BITMAP_ENTRY_BITS	0x9100000000000013ULL
++/* Class "TDX Module Handoff" */
++#define TDX_FIELD_MODULE_HV			0x8900000100000000ULL
 +
  /* TDX page types */
  #define	PT_NDA		0x0
  #define	PT_RSVD		0x1
 diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 3996af787ff8..870caac6a585 100644
+index 30834ecdccab..8ca1cdcf55fe 100644
 --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
 +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -7,37 +7,6 @@
-  * Include this file to other C file instead.
-  */
+@@ -40,19 +40,6 @@ static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_
+ 	return ret;
+ }
  
--static __init int get_tdx_sys_info_tdmr_dpamt(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+-static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff)
 -{
 -	int ret;
 -	u64 val;
 -
--	ret = read_sys_metadata_field(0x9100000000000013, &val);
--	if (!ret)
--		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+-	ret = read_sys_metadata_field(0x8900000100000000, &val);
+-	if (ret)
+-		return ret;
 -
--	return ret;
+-	sysinfo_handoff->module_hv = val;
+-	return 0;
 -}
 -
--static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
--{
--	int ret = 0;
--	u64 val;
--
--	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000008, &val)))
--		sysinfo_tdmr->max_tdmrs = val;
--	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000009, &val)))
--		sysinfo_tdmr->max_reserved_per_tdmr = val;
--	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000010, &val)))
--		sysinfo_tdmr->pamt_4k_entry_size = val;
--	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000011, &val)))
--		sysinfo_tdmr->pamt_2m_entry_size = val;
--	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
--		sysinfo_tdmr->pamt_1g_entry_size = val;
--
--	return ret;
--}
--
- static __init int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
+ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
  {
  	int ret = 0;
-@@ -111,7 +80,7 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 		sysinfo->version.update_version);
- 
- 	ret = ret ?: read_sys_metadata_table(feature_mappings, &sysinfo->features);
--	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
-+	ret = ret ?: read_sys_metadata_table(tdmr_mappings, &sysinfo->tdmr);
- 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
- 	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
- 
-@@ -122,7 +91,7 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 	 * DPAMT but don't expose the metadata.
- 	 */
- 	if (!ret && tdx_supports_dynamic_pamt(sysinfo))
--		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
-+		ret = read_sys_metadata_table(dpamt_mappings, &sysinfo->tdmr);
- 
- 	return ret;
- }
 -- 
 2.52.0
 
