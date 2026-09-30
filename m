@@ -1,145 +1,289 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F184F30FE;
-	Wed, 30 Sep 2026 15:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF26C4F55B5
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 15:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781475; cv=none; b=X6MFdL1LdSMMoOPDGkMN/+bgpB0zEH0VIaiTaI/0j27kZDNy9nqyJ9ClFTOTZgg7Gbx+OxTApD99sv9nwdOVUyDivIyZIDGqW/x/BxMpusWYzmVY5DSc3F0ifkAPJIabrRbCEIywfQBRrRByQxlQv5k5TfzyImaV8OJh/ON4XNE=
+	t=1790781950; cv=none; b=f0TfKYWAqlU0sGl1r3EjtdVR9GGC1F2hh3DxOtbOGBGhP9DzOwMV33eAV0gyl+hrOKTXHWYUsUJX/gMR4Dftf1x4zDiims1dlj1N3GYtpJ7/UYtCdooRRGufeasaUoZ4Nh3ghtmSssinxpuGwM0EcQ/r3F+tXR2CROLa1czQ3So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781475; c=relaxed/simple;
-	bh=IpHiY1hRZ4ZqoNtBptXW5wIqv/+HeqkF2zParF6pE6M=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GBWCzwGgi18uzCRdrpAoLkdJVGmYxs8D/1QnftcmwCLeTWQhoHlfeYFTlb8cXDM9gnpv+uTUkSCddVv1J7b27NQYDaNx8JT2QjuwUlEANbLPQn8Q4S8/E6NZp7MwL6yXgAffgTxqcH8vfZjuXxILCxJgVYp+yMXmaX73rXQaFtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ELHyD1m1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790781950; c=relaxed/simple;
+	bh=tw8VEhkaJLys3VBxozpDegjtznBwhDam2zldl0cUZcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N6vaJjUiJRZQPRB1oPnz9HK2woNyzSF9q+8ocfpIgrf4T0rGh39IfBoZQupR2zsaDkdJ0xI1qgnLsYcc/uqQFtxmW+f6v6QJ0S4kC2RGCfElmYjsH4ym3hKLmAzheDMzvFE9CyWCxn8Z5cOSB83ZsW4QWeF/k8XlPibT/ZYT0v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N8kSnewO; arc=none smtp.client-ip=74.125.228.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ELHyD1m1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE401F00893;
-	Wed, 30 Sep 2026 15:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790781466;
-	bh=UNu5zVZ7xQk/ROVl1xUlzSAPPPInMy0HhdC6GL98V/I=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ELHyD1m1qINrGFl75geurTwbL0VhY90bNmyPqY3PiKjtHzcdj2/GDN1AKkcLGNB0o
-	 pghQ91P62hdv1JQJ+cXxen33tPObPPTtMx/leNzcWaC+jRIOAIgnEm50ZXhMqBCZVS
-	 hBv+iGyCQZ3G2L20Kzmhl+aDOZNRx9hoN9PkdTuJKv+tZal8w57CyBOAYojjdJL0P4
-	 JH/pUfdgpzessKI5Yz5JvBVRmzoyZ/sAhb/nCfQfClR7xnn8NbXznQ61rR3FiNIDBe
-	 6wVda1OdD0lPcKLnK0QN3Fx5jS16PWXBoZND32onk+r9sVYuCzr11LHx9r4hBEDxi5
-	 wi7A591tHLZsQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6/7] ath12k: add PCIe link recovery retry
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jose Ignacio Tornos Martinez" <jtornosm@redhat.com>
-Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260930140833.576941-7-jtornosm@redhat.com>
-References: <20260930140833.576941-1-jtornosm@redhat.com>
- <20260930140833.576941-7-jtornosm@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 30 Sep 2026 15:17:45 +0000
-Message-Id: <20260930151745.DDE401F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N8kSnewO"
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a8b9acbc6so847768266b.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 08:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1790781939; x=1791386739; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=URPVZ5mnqaX/4a/mHP5WDlkoNKbhEPagHNKAx4oZedE=;
+        b=N8kSnewO+QuoyOp/jGJnDBoWii3eREaKYloQ0naCttfWQnlYdXLw38fJuBzfM+tLIi
+         Fk2kOFKUgk4YWK8+i8t2SZ0b5JcISjZyNKJS8mCBB9q3ma3925anbZm+aH6RJpMlCzZv
+         W2tPshVUX8vLcXkm5dWPqE49T5uQ9VI5fGQqJrHsmtQYXJ6cl1l0PknpuNEfN4NtImRe
+         pHrxUhldRvtE5IHSd15d5doXWSd3Gepm7GkxAW7XKzZDMgwUKUXnzLdKF7HVY0JSLEDV
+         yQ9btKC2bUnNkzE5Ixd5MiRAF8FT/11x2KcrDmkSvurj1m5ovf8r2deFH8knFxveO6wD
+         qptQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790781939; x=1791386739;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=URPVZ5mnqaX/4a/mHP5WDlkoNKbhEPagHNKAx4oZedE=;
+        b=zUPMJL0WMp3YQhBIGWEAsUBwbFx0wSDfh0tTikhXdm3Jnr6unWhEgyBWLlETuKs9I4
+         ZIJpQ8USlbcgI6jNgZLK82ByUE3dnIuC2wwVUgHrivyAA5kgev0f5eVq7y7ZhjdYes2z
+         T17e031VBoYyEsLGU+C3qL5QZaf4BtZj3UCJnBxZCwLVTdYyMVBQ0VI14E/DxO2o0SZ/
+         8U+xkWVMdnu29PbxNI0oi5eWJBDbv5GJwCnw6swPgYsw47QR4aCAsAQ+/bsUU4xb0Lmx
+         dbNSS8iHE5RoT+a+4bvkYV0Jnowt6JmDmoPyLWt/VlBPutzRcNmAP81AWxjOS+jkwF3z
+         cz0Q==
+X-Forwarded-Encrypted: i=1; AKwUvByUUxGQglVDWW9CjFrshKM5EGX1rAeIDlTKpfU+ffasJwuXW9rkklMbRfya+PAebzMpJEg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJVJQJGiUxddjHWXQ263Izg0Asenm+fPafCckFA9/0x/DOfHDtI
+	Ks1d67mbX1kmbTr0KN5eSbDwBEWzjI76+J1quR89dv+0AdFoVh/za93lds4V4qvDbjg=
+X-Gm-Gg: AYBFou1pMJB+y67sMPEOsKcCmV+MItQSwpMrGaWECk6qRB+9z1Fz1ixsoIS0sT2WDEI
+	XPmfoGVNgnLZYc/pbs5qFz25/+BzBe1/49QN66c/e4kFJ+kcjhUatX6YBtQdoYPnLXUbZrHzXJU
+	kulR9nD0mZvZw3vwWyayopNdoKy/iqT/xiVxAF1k9MvOpwQMr7UqxsAjmGBZS4m8LRGXE8+SPU0
+	al9zavORHwdj01MKPybKfG2bfHaD5AhlqKaSt2WjTEnpxgE6KJyHMGCN5NztVonXiq4rwJj3KBe
+	N65uKeZRbcdy4K9vl9IWAKwv4qn4zO6+h3BdN717hFM+sXTpJLDrcq2p7YuvUa5cQ1I3yfSvFu4
+	g/Q75uCiWvTZHlfaicWyjXSjlxS9NbakOeLg05NjPRKQQVv4CaLy2x1LV8fzqTcYwD1GH/eyVJF
+	vG8SxiA6UxxUJitlIQZgdQBQmzCaSAC6KyrHVKNPUxP32KyDFkHXZUawrw/OtdctbLWCqHNf1AI
+	Y4=
+X-Received: by 2002:a17:907:6095:b0:c29:5215:b2d8 with SMTP id a640c23a62f3a-c2e23cabf4fmr155306066b.14.1790781938443;
+        Wed, 30 Sep 2026 08:25:38 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.141.193])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31dd955bsm23066166b.70.2026.09.30.08.25.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Sep 2026 08:25:38 -0700 (PDT)
+Message-ID: <8e47bb89-a894-4fd0-9f96-e11b5dea1972@linaro.org>
+Date: Wed, 30 Sep 2026 16:25:36 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 00/22] ARM64 PMU Partitioning
+To: Colton Lewis <coltonlewis@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Fuad Tabba <fuad.tabba@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Zide Chen <zide.chen@intel.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Mingwei Zhang <mizhang@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>, Shuah Khan <shuah@kernel.org>,
+ linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20260924172928.2110956-1-coltonlewis@google.com>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20260924172928.2110956-1-coltonlewis@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] ath12k: infinite loop in panic handler due to jiffies-based timeout
-- [Medium] ath12k: 5-second busy-wait loop using mdelay() causes severe CPU=
- stall
-- [Medium] ath12k: missing post-loop check causes spurious timeouts on pree=
-mption
---
 
-commit 5337b864dac2a64cb78f0c14498962bdb92990b4
-Author: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-ath12k: add PCIe link recovery retry
+On 24/09/2026 18:29, Colton Lewis wrote:
+> This series creates a new PMU scheme on ARM, a partitioned PMU that
+> allows reserving a subset of counters for more direct guest access,
+> significantly reducing overhead. More details, including performance
+> benchmarks, can be read in the v1 cover letter linked below.
+> 
+> There is no longer a kernel command line parameter
+> (`arm_pmuv3.reserved_host_counters`); PMU partitioning is now completely
+> controlled via the KVM API using `KVM_ARM_VCPU_PMU_V3_ENABLE_PARTITION`
+> and `KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS` vCPU device attributes. When
+> partitioning is enabled for a VM, userspace must explicitly configure a
+> guest event counter count strictly less than the maximum general-purpose
+> counters implemented by the PMU (leaving at least one general-purpose
+> counter for the host) prior to calling `KVM_ARM_VCPU_PMU_V3_INIT`. A QEMU
+> patch demonstrating how to use the uAPI is sent separately.
+> 
+> An overview of what this series accomplishes was presented at KVM
+> Forum 2025. Slides [1] and video [2] are linked below.
+> 
+> v9:
+> 
+> * Rebase on top of v7.3-rc4.
+> 
+> * Drop the `arm_pmuv3.reserved_host_counters` module parameter so
+>    partitioning is completely controlled via the KVM vCPU device
+>    attribute uAPI (`KVM_ARM_VCPU_PMU_V3_ENABLE_PARTITION` and
+>    `KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS`), and document the new
+>    attribute and counter allocation rules in
+>    `Documentation/virt/kvm/devices/vcpu.rst` (James Clark).
+> 
+> * Move the dynamic counter allocation mask (`cntr_mask`) from global
+>    `struct arm_pmu` to per-CPU `struct pmu_hw_events` (`cpuc->cntr_mask`)
+>    in a dedicated `drivers/perf` patch, fixing multi-pCPU counter
+>    reservation clobbering on vCPU migration and eliminating the
+>    `cpu_pm_pmu_setup()` cpuidle `WARN_ON_ONCE` (Zide Chen, James Clark).
+> 
+> * Synchronously propagate trapped guest writes to `PMEVTYPER<n>_EL0`
+>    and `PMCCFILTR_EL0` to hardware via `kvm_pmu_apply_single_event_filter()`
+>    when guest-owned, fixing in-guest `perf stat` event count skew across
+>    runs (James Clark, Sashiko AI Review).
+> 
+> * Refactor `armv8pmu_can_use_pmccntr()` and `armv8pmu_get_event_idx()`
+>    to check `cntr_mask` inside `armv8pmu_can_use_pmccntr()` and un-nest
+>    the 64-bit user-access check so cycle events fall back cleanly to
+>    general-purpose counters when `PMCCNTR_EL0` is reserved by a guest
+>    (Robin Murphy).
+> 
+> * Restrict the lazy transition to `VCPU_PMU_ACCESS_GUEST_OWNED` to when
+>    the guest actively enables counting (`PMCR_EL0.E = 1` or setting guest
+>    counter bits in `PMCNTENSET_EL0` / `PMINTENSET_EL1`), preventing guest
+>    boot-time PMU probing from prematurely claiming hardware counters and
+>    triggering spurious host counter preemption warnings (James Clark).
+> 
+> * Fix patch dependency ordering and series bisectability across all
+>    commits, removing intermediate `max_guest_counters` / `hw_cntr_impl`
+>    churn and squashing the selftest exception relaxation into the
+>    Partitioned PMU selftest patch (James Clark).
+> 
+> * Fix compiler warning for `struct arm_pmu` declaration in
+>    `include/kvm/arm_pmu.h` (kernel test robot) and guard
+>    `kvm_pmu_host_counter_mask()` when KVM is compiled in but not active
+>    (wuyifan).
+> 
+> * Track physical CPU PMU residency in `vcpu->arch.pmu.loaded_on_cpu`
+>    separately from `VCPU_PMU_ACCESS_GUEST_OWNED`, and toggle
+>    `MDCR_EL2.HPME` via `kvm_pmu_host_start()` / `kvm_pmu_host_stop()`
+>    instead of `PMCR_EL0.E` when starting/stopping host perf events while
+>    a partitioned guest is loaded.
+> 
+> * Allow `kvm_vcpu_pmu_resync_el0()` to resynchronize VHE EL0 event
+>    filters (`PMEVTYPER<n>_EL0.U`) in process context and order
+>    `kvm_pmu_put()` before `kvm_vcpu_pmu_restore_host()` in
+>    `kvm_arch_vcpu_put()`.
+> 
+> * Address additional Sashiko AI Review findings:
+>    - Check `idx - 1` against `cpuc->cntr_mask` in `armv8pmu_get_chain_idx()`
+>      to prevent 64-bit chained host events from crossing an odd `HPMN`
+>      partition boundary, and use `cpuc->cntr_mask` in
+>      `armv8pmu_enable_user_access()`.
+>    - Latch live hardware `PMOVSSET_EL0` overflow bits for guest counters
+>      with IRQs disabled (`local_irq_save()`) in `kvm_pmu_part_overflow_status()`
+>      and during trapped guest accesses to `PMOVS{SET,CLR}_EL0`.
+>    - Add mandatory `isb()` barriers after control-plane system register
+>      writes (`mdcr_el2`, `pmcntenclr_el0`, `pmintenclr_el1`), preserve
+>      guest `PMSELR_EL0` / `PMUSERENR_EL0` when `MDCR_EL2.TPM == 0`, and
+>      restore host `PMCR_EL0` control flags on `kvm_pmu_put()`.
+> 
+> v8:
+> https://lore.kernel.org/kvmarm/20260612192909.1153907-1-coltonlewis@google.com/
+> 
+> v7:
+> https://lore.kernel.org/kvmarm/20260504211813.1804997-1-coltonlewis@google.com/
+> 
+> v6:
+> https://lore.kernel.org/kvmarm/20260209221414.2169465-1-coltonlewis@google.com/
+> 
+> v5:
+> https://lore.kernel.org/kvmarm/20251209205121.1871534-1-coltonlewis@google.com/
+> 
+> v4:
+> https://lore.kernel.org/kvmarm/20250714225917.1396543-1-coltonlewis@google.com/
+> 
+> v3:
+> https://lore.kernel.org/kvm/20250626200459.1153955-1-coltonlewis@google.com/
+> 
+> v2:
+> https://lore.kernel.org/kvm/20250620221326.1261128-1-coltonlewis@google.com/
+> 
+> v1:
+> https://lore.kernel.org/kvm/20250602192702.2125115-1-coltonlewis@google.com/
+> 
+> [1] https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/Optimizing__itvHkhc.pdf
+> [2] https://www.youtube.com/watch?v=YRzZ8jMIA6M&list=PLW3ep1uCIRfxwmllXTOA2txfDWN6vUOHp&index=9
+> 
+> Colton Lewis (21):
+>    arm64: cpufeature: Add cpucap for HPMN0
+>    KVM: arm64: Reorganize PMU functions
+>    perf: arm_pmuv3: Generalize counter bitmasks
+>    perf: arm_pmuv3: Move counter allocation mask to per-CPU struct
+>      pmu_hw_events
+>    perf: arm_pmuv3: Check cntr_mask before using pmccntr
+>    perf: arm_pmuv3: Allocate counter indices from high to low
+>    KVM: arm64: Add initial scaffolding for Partitioned PMU
+>    KVM: arm64: Set up FGT for Partitioned PMU
+>    KVM: arm64: Add Partitioned PMU register trap handlers
+>    KVM: arm64: Set up MDCR_EL2 to handle a Partitioned PMU
+>    KVM: arm64: Context swap Partitioned PMU guest registers
+>    KVM: arm64: Enforce PMU event filter at vcpu_load()
+>    perf: Add perf_pmu_resched_update()
+>    KVM: arm64: Allow kvm_vcpu_pmu_resync_el0() to resync filters in
+>      process context
+>    KVM: arm64: Apply dynamic guest counter reservations
+>    KVM: arm64: Implement lazy PMU context swaps
+>    perf: arm_pmuv3: Handle IRQs for Partitioned PMU guest counters
+>    KVM: arm64: Detect overflows for the Partitioned PMU
+>    KVM: arm64: Add vCPU device attr to partition the PMU
+>    KVM: selftests: Add find_bit to KVM library
+>    KVM: arm64: selftests: Add test case for Partitioned PMU
+> 
+> Marc Zyngier (1):
+>    KVM: arm64: Reorganize PMU includes
+> 
+>   Documentation/virt/kvm/devices/vcpu.rst       |  42 +-
+>   arch/arm/include/asm/arm_pmuv3.h              |  16 +
+>   arch/arm64/include/asm/arm_pmuv3.h            |   7 +-
+>   arch/arm64/include/asm/kvm_host.h             |  18 +-
+>   arch/arm64/include/asm/kvm_types.h            |   6 +-
+>   arch/arm64/include/uapi/asm/kvm.h             |   2 +
+>   arch/arm64/kernel/cpufeature.c                |  10 +-
+>   arch/arm64/kvm/Makefile                       |   2 +-
+>   arch/arm64/kvm/arm.c                          |   4 +-
+>   arch/arm64/kvm/config.c                       |  49 +-
+>   arch/arm64/kvm/debug.c                        |  41 +-
+>   arch/arm64/kvm/pmu-direct.c                   | 636 ++++++++++++++
+>   arch/arm64/kvm/pmu-emul.c                     | 718 +---------------
+>   arch/arm64/kvm/pmu.c                          | 787 +++++++++++++++++-
+>   arch/arm64/kvm/sys_regs.c                     | 334 ++++++--
+>   arch/arm64/tools/cpucaps                      |   1 +
+>   arch/arm64/tools/sysreg                       |   6 +-
+>   drivers/perf/arm_pmu.c                        |   7 +-
+>   drivers/perf/arm_pmuv3.c                      |  97 ++-
+>   include/kvm/arm_pmu.h                         |  93 ++-
+>   include/linux/perf/arm_pmu.h                  |   2 +
+>   include/linux/perf/arm_pmuv3.h                |  14 +-
+>   include/linux/perf_event.h                    |   3 +
+>   kernel/events/core.c                          |  31 +-
+>   tools/include/perf/arm_pmuv3.h                |  12 +-
+>   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>   .../selftests/kvm/arm64/vpmu_counter_access.c | 129 ++-
+>   tools/testing/selftests/kvm/lib/find_bit.c    |   2 +
+>   28 files changed, 2200 insertions(+), 870 deletions(-)
+>   create mode 100644 arch/arm64/kvm/pmu-direct.c
+>   create mode 100644 tools/testing/selftests/kvm/lib/find_bit.c
+> 
+> 
+> base-commit: 93f51579e7df248780214094418f205253383cc5
 
-This patch modifies ath12k_pci_soc_global_reset() to add a retry loop
-waiting up to 5000ms for the PCIe link to recover after a global reset.
-It returns an error if the link remains down, preventing continued MHI
-initialization with a dead link.
+Hi Colton,
 
-> diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless=
-/ath/ath12k/pci.c
-> index af0e882fd0b51..65712486d3127 100644
-> --- a/drivers/net/wireless/ath/ath12k/pci.c
-> +++ b/drivers/net/wireless/ath/ath12k/pci.c
+Looks good to me, everything seems to be working now:
 
-[ ... ]
+Tested-by: James Clark <james.clark@linaro.org>
 
-> @@ -206,14 +208,29 @@ static void ath12k_pci_soc_global_reset(struct ath1=
-2k_base *ab)
-> =20
->  	mdelay(delay);
-> =20
-> -	val =3D ath12k_pci_read32(ab, PCIE_SOC_GLOBAL_RESET);
-> -	if (val =3D=3D 0xffffffff)
-> -		ath12k_warn(ab, "link down error during global reset\n");
-> +	/* Wait for PCIe link to recover, especially important in VM environmen=
-ts
-> +	 * where timing can vary significantly from bare metal.
-> +	 */
-> +	timeout =3D jiffies + msecs_to_jiffies(5000);
-> +	while (time_before(jiffies, timeout)) {
+There are still a few Sashiko comments though, and one critical one 
+about racing with pseudo-NMI PMU interrupts that looked reasonable. I 
+tried to test it and reproduce an actual issue but couldn't, so maybe 
+it's bogus.
 
-[Severity: High]
-Will this create an infinite loop during a kernel panic?
-
-The panic handler ath12k_pci_panic_handler() executes via the panic notifier
-chain:
-
-ath12k_pci_panic_handler()
-    ath12k_pci_sw_reset()
-        ath12k_pci_soc_global_reset()
-
-Since interrupts are disabled during a panic, jiffies does not advance. If
-the PCIe link fails to recover, which is common during a system crash, does
-this loop evaluate to true indefinitely and prevent kexec or reboot?
-
-> +		val =3D ath12k_pci_read32(ab, PCIE_SOC_GLOBAL_RESET);
-> +		if (val !=3D 0xffffffff) {
-> +			link_recovered =3D true;
-> +			break;
-> +		}
-> +		mdelay(20);
-
-[Severity: Medium]
-Does this busy-wait cause a severe CPU stall?
-
-A 5000ms busy-wait monopolizes the CPU, causing a severe latency spike. In a
-virtualized environment, which this patch targets, it can starve other vCPUs
-or host tasks, and risks triggering RCU stall warnings.
-
-Since mdelay() relies on a spinning loop and actively consumes 100% of the
-CPU instead of yielding, should msleep() or context-aware wait functions be
-used for delays this long outside of atomic contexts?
-
-> +	}
-> +	if (!link_recovered) {
-
-[Severity: Medium]
-Can this cause a spurious timeout if the thread is preempted?
-
-If the thread is preempted or descheduled during or just after the mdelay()
-call, which is common in VM environments due to vCPU scheduling, jiffies may
-advance past the timeout.
-
-When the loop terminates due to time_before() evaluating to false, it retur=
-ns
--ETIMEDOUT without verifying the register one last time. Does this ignore t=
-he
-possibility that the hardware condition was satisfied during the preemption
-window?
-
-> +		ath12k_err(ab, "PCIe link failed to recover - device may need power cy=
-cle\n");
-> +		return -ETIMEDOUT;
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930140833.5769=
-41-1-jtornosm@redhat.com?part=3D6
