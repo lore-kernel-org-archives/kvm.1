@@ -1,63 +1,68 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79953ED13E
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23D73E315C
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790796999; cv=none; b=KlTlr0nTUr7EgC9TJSfgUiasibIndu1cD6x9qqps6mw+Ys+c/9+lL3Dq5fAgvlriUxYDCDP5o3EdAMvEzN3wRKNCzjpJgdlfyeZCg9Rp7ULGTK1+4ZgkNnxTVF1L6li5BnE/V+dYaFx7rujCO54K7vxtcZltgjCF8GHusKnw5/w=
+	t=1790797000; cv=none; b=eWD05dcUm8uAw4/APQg2OKXEHTRe2NFbZIhH/eJc4oD8iDdiMKOwNng2p8pmvV1TCZDtPmi4usMGIRxCOWSB8O1zcPytpl2U2E0J38SzVVGx9T2nk53zmwkUHb4FtEzYDP0dBlCkpkzS3MVUlCqOo3C0mp4vqMIEJZexEe2rCII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790796999; c=relaxed/simple;
-	bh=77cOKYDudr1TEdNRDm2bVnQW7qyEYvzfT9gxriNC6+E=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XfGO7VkkKlws9Q5vmyIKcUd3CT0WO+tUjotdluZ1kpuwkrvryGLKeVCYUixC3bM9/t2PeaRHkXK2aEROuhg5Ea6qX3W+mAXr3D/Thy0wj7KA2+d0zvVAaSo/0CvFjev12TrVVXdXlKRq1JSK5OuEEpSejAuzEF4GSyspXS/uULE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=afMdwT6h; arc=none smtp.client-ip=209.85.215.200
+	s=arc-20240116; t=1790797000; c=relaxed/simple;
+	bh=A/nFV5I8OILCijxu4ThN2Sks1ZObqHSvT04Eu0v4C6Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tmLJNOpZBC08XNmj0hFMe09AObpgsgxcW/9n7X0hIwB9r5NKFShlRRLoYWuBOYSZ8p3FqCMrSdru4WZT7oQv0ihifOVnmlNtUy7VNsrEQdrYzlHpPkNKL2WEMyoNrE4S87HHf9aYTdW8/93o3+N/XlBgXxm+unWlfKql8oPq6KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pcXVhaAY; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="afMdwT6h"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7cc8bffedso2029953a12.3
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pcXVhaAY"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e305755a01so81555ad.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790796997; x=1791401797; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZZeAOsvNrl/bW9BvBMAcm5dlJNIrYZoFS8Ka/3aN/x8=;
-        b=afMdwT6hP3bl7LAHp58XShc7BcsURj8bMXuvJUGeBguMGTYurgTKVY/cBx1/K5IUGn
-         L9hi1B9Vu4DKFmXfC9ItWMRGU5n/wkLW7rBaadZHX+KzH2JFTTQHYVEBJRRmPFEUSeeh
-         eiim6OXK7NmGgLBT4LrITMIufuEN5MoD8ewc/m07+TPg8507XBxKImsYJOkc8QO46gJo
-         nse96dV8ifoqLBcpZFWqFeWy92qedvRyj4UG/Z+KCqLZ1eyC+zFfZQ9C8VW+3LkfEeKX
-         45ge62BZF/+zYu/krNVHLvqEkPwOyvhTuHNTd161oOxA5qMhwHg42S/S1rLSXQlyHfcL
-         Xr3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790796997; x=1791401797;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1790796998; x=1791401798; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ZZeAOsvNrl/bW9BvBMAcm5dlJNIrYZoFS8Ka/3aN/x8=;
-        b=ML1omVV8jaorARxXCvyz+qdn3wAtQdaWFIwtqSih+oED8QBvhKfL4c6TcI0qv4iHT/
-         ixg2+o+aomppHOwTkPCXRTR+RX8vC3XSC46XJE6Z1H2LmjT9spHy8xLd9vRgiLFuG1LC
-         AyVUMIH1BavD6szXxUhj/0h/dQSvk14IL90etMIx+RVDLsGRYL/KFr4eoeEk0+IdWa5p
-         bp8aLEZ1vlcBZ6a2p47PDu50V1frZsIV6Aq9DkLKCm2KqAQl7pwtdf92OmRTOe2v7tgJ
-         zpsbP0YhhVqxPXC7d05bt+T/OxRIm2y2PuDHrIfkFvwk5ggCXD2p7+IT7+W/myEh02Uz
-         ut8Q==
-X-Gm-Message-State: AFuF++kiPX29EhLsetOvtlnnP4P74ikEOS9qGP38EQNL/hApHRRgv1OE
-	FfY0cFE4XU6Zz23Hvcre7QhQVAcs+9cgDBgCHd6w+PvyszPJ6/Q73MJU6D5fDsnK9KNz9DZi2MN
-	nNrvNzQ==
-X-Received: from pgbdv15.prod.google.com ([2002:a05:6a02:446f:b0:cc7:30b4:f06c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7001:b0:3d3:aec2:4dcd
- with SMTP id adf61e73a8af0-3de9e6dc7a9mr2629253637.25.1790796996939; Wed, 30
- Sep 2026 12:36:36 -0700 (PDT)
+        bh=A3HfqFgv58Oe77VJobLdkIke4fLE6/94erxxiYljr/o=;
+        b=pcXVhaAYTG7jONtryJiaD6+6Nq+oCIBi0ieL8tGy0qroGzGGT1o8nD2nNsRyeiCI3p
+         wO0Kubyr8axlglLV2WaJ4lWFERQyPbfvloLNj0vJ56MDSm/JYnC6TGAX0FQvPBqfMdyD
+         Vzn57HdyhPnHuRE1htoLXqvu+J28z1n2qgAWTeNfU7cdiuHQegQ4bWKYw8ziASx7YdLN
+         pl3gdfghhMOuQnzl+y1b4iv7XulaVO3al5wI2AgokcvF61h+LmSgK6zI3Z/adD+kSJ68
+         EHwXS7mPtlG4l9MTl8l8Bw/9LlNUjsDomAxCPU4bpF6QxujqBo6E64js2aZwnAYArZpo
+         sjRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790796998; x=1791401798;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=A3HfqFgv58Oe77VJobLdkIke4fLE6/94erxxiYljr/o=;
+        b=R4f+K8/yCe1K2LLI2FpvcVajXlkItUhyKotb0yuaXXv1nEfNJFZK++yZzlmc9ftiqM
+         /3hBm4AWKWnNR6B8IIDb7Iq/+DTrOwfu/2FkA8kG/q/ekNVJAyuGawQdqbEwXMWrACQx
+         /nMO5vOqzLHp4jeP64NGlLd7Kx/LeTUTZvf6xmjNU2UooYiEfVEhva78e14nQ1vYYKVO
+         FHDGjB5swzsqEwPTBqq75xa02tFxPEL2CxVsp7km+Y0xEpgrH8RG41aGLKt1axnwQwc6
+         XLozHb+CAgyiQGJhIbr64A9NDF7RTsjU2akU3j57I1hpdPEpTavQ9N0+uMhZHAt3ajWL
+         3vfQ==
+X-Gm-Message-State: AFuF++n6zcvf2DGfdTSlDfNIOCt2BlJtMhzncsxqPDkb8gEFBtquRt8b
+	ZWfX2aEd1acOhmmYtwkCKXLhWzyGGotz1c7iiG0c8dNpCrslIDkpx7YcmoQryMRFNWfQ+NMzvhG
+	qUytmcQ==
+X-Received: from plae3.prod.google.com ([2002:a17:902:e0c3:b0:2e2:d9e8:ae73])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2a8f:b0:2e2:d77b:e586
+ with SMTP id d9443c01a7336-2e2e4bbe047mr20545405ad.60.1790796998157; Wed, 30
+ Sep 2026 12:36:38 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 12:36:22 -0700
+Date: Wed, 30 Sep 2026 12:36:23 -0700
+In-Reply-To: <20260930193634.3415089-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260930193634.3415089-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930193634.3415089-1-seanjc@google.com>
-Subject: [PATCH v6 00/12] KVM: x86: Bus Lock Detect fixes and SVM support
+Message-ID: <20260930193634.3415089-2-seanjc@google.com>
+Subject: [PATCH v6 01/12] KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when
+ delivering #DB payload
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -66,86 +71,105 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix KVM's handling of DR6.BLD, and add support for virtualizing BLD on SVM.
-KUT tests: https://lore.kernel.org/all/20260925230003.2362261-1-seanjc@google.com
+Preserve Bus Lock Detect if it isn't present in the payload.  Unlike RTM,
+which is explicitly modified on every #DB,  DR6.BLD is modified if and only
+if the #DB is due to a (coincident) Bus Lock Detect.
 
-v6:
- - Throw in the towel, at least for now, on WARNing if KVM sees a DR6 without
-   all of the fixed-1 bits set. [Sashiko]
+Per Intel's SDM:
 
-v5:
- - https://lore.kernel.org/all/20260930011313.3197688-1-seanjc@google.com
- - Fix the DR6.BLD clobbering bug Sashiko pointed out. [Sashiko]
- - Force-set fixed-1 bits after synchronizing DR6 from the guest (because the
-   guest could set bits that are supposed to be fixed-1 due to virtualization
-   holes).
- - Open code nested_vmcb12_has_lbrv().
- - Fix the Author for Ravi's patch.
- - Add svm_need_lbr_virtualization() to preserve short-circuit logic.
- - Rename kvm_dr6_fixed() to kvm_get_dr6_fixed_1().
- - Invert svm_get_debugctl_reserved_bits() into svm_get_supported_debugctl()
-   to match VMX, and KVM's preferred style.
+  Other debug exceptions do not modify this bit.
 
-v4:
- * Rename nested_vmcb12_has_lbrv() to nested_lbrv_enabled() (Yosry).
- * Drop the redundant !lbrv check and the extra comment (Yosry).
- * Spell out in the changelog what breaks when DR6_BUS_LOCK is forced to 1
-   (Nikunj).
- * Make it a pure NFC macro-to-helper conversion, and move the
-   BUS_LOCK_DETECT gating to patch 5 (Nikunj).
- * Fold in the DEBUGCTLMSR_BUS_LOCK_DETECT gating moved from patch 4.
- * Collect Reviewed-by tags.
+And AMD's APM
 
-v3:
- * https://lore.kernel.org/kvm/20260709082953.69434-1-shivansh.dhiman@amd.com
- * Reworked the single v2 patch into a prep series (patches 1-4) plus the
-   feature.
- * Rewrite svm_update_lbrv() as 'if' statements so the BLD LBRV
-   dependency can be added cleanly (Yosry Ahmed).
- * Sanitize V_LBR in the nested control cache like NP/GMET and drop the
-   redundant X86_FEATURE_LBRV checks (Yosry Ahmed).
- * Use kvm_dr6_fixed() for nested DR6 instead of DR6_FIXED_1 | DR6_RTM.
- * Compute DEBUGCTL reserved bits per-vCPU, gating BUS_LOCK_DETECT on
-   guest CPUID rather than a static macro.
+  All other #DB exceptions leave DR6[BLD] unmodified,
 
-v2:
- * https://lore.kernel.org/kvm/20260629081018.60618-1-shivansh.dhiman@amd.com
- * Rebased on kvm-x86-next-2026.06.24.
- * Used guest_cpu_cap_has() instead of guest_cpuid_has().
+Restore the explicit RTM handling that was clobbered by commit
+9a3ecd5e2aa1 ("KVM: X86: Rename DR6_INIT to DR6_ACTIVE_LOW"), as the
+semantics of any given bit are feature specific, i.e. are obviously not
+consistent for active-high versus active-low.  In other words, while the
+bug was technically introduced when support for Bus Lock Detect was added,
+it's really that attempt to genericize handling of active-low bits that set
+KVM up to fail.
 
-v1: https://lore.kernel.org/all/20240808062937.1149-5-ravi.bangoria@amd.com
+Fixes: e8ea85fb280e ("KVM: X86: Add support for the emulation of DR6_BUS_LOCK bit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/x86.c | 52 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 22 deletions(-)
 
-Ravi Bangoria (1):
-  KVM: SVM: Add support for virtualizating Bus Lock Detect
-
-Sean Christopherson (8):
-  KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when delivering #DB
-    payload
-  KVM: x86: Rename kvm_dr6_fixed() => kvm_get_dr6_fixed_1()
-  KVM: Return an "unsigned long", not "u64" for the fixed-1 DR6 bits
-  KVM: x86: Force fixed-1 bits in DR6 after synchronizing with hardware
-  KVM: x86: Set guest's fixed-1 DR6 bits when delivering #DB payload
-  KVM: x86: Kill off DR6_FIXED_1 to prevent future misuse
-  KVM: SVM: Add helper to query if LBR virtualization needs to be
-    enabled
-  KVM: nSVM: Open code check on LBR virtualization being enabled in
-    vmcb12
-
-Shivansh Dhiman (3):
-  KVM: nSVM: Disable LBRV in nested control cache when unsupported
-  KVM: nSVM: Don't assume all active-low bits DR6 are fixed-1
-  KVM: SVM: Add a vCPU-aware helper to get supported DEBUGCTL bits
-
- arch/x86/kvm/regs.c       |  8 +++---
- arch/x86/kvm/regs.h       | 11 ++++----
- arch/x86/kvm/svm/nested.c | 27 +++++++++-----------
- arch/x86/kvm/svm/svm.c    | 31 +++++++++++++++++------
- arch/x86/kvm/svm/svm.h    | 12 +++++++--
- arch/x86/kvm/x86.c        | 53 +++++++++++++++++++++++----------------
- 6 files changed, 87 insertions(+), 55 deletions(-)
-
-
-base-commit: 7f734412a73e910658dc81ba74f76af789202f58
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index cf3fcdfd8ad2..ea1406c3b260 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -401,30 +401,37 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
+ 	switch (ex->vector) {
+ 	case DB_VECTOR:
+ 		/*
+-		 * "Certain debug exceptions may clear bit 0-3.  The
+-		 * remaining contents of the DR6 register are never
+-		 * cleared by the processor".
++		 * DR6 is a mess.  Reserved/unused bits are fixed-to-1, and so
++		 * to maintain backwards compatibility with existing software,
++		 * features that use previously-reserved bits have active-low
++		 * semantics, i.e. clear the bit when the feature is present in
++		 * the payload.
++		 *
++		 * Further complicating matters, some DR6 bits are preserved by
++		 * hardware, while others are explicitly modified on every #DB.
++		 * The trap bits are always set based on the payload, as is the
++		 * RTM flag (but it's active low).  All other bits are modified
++		 * if and only if a relevant debug exception occurs, e.g. BD,
++		 * BS, and BT are never cleared by hardware, and BLD is never
++		 * set by hardware (when supported, excepting RESET).
++		 *
++		 * Lastly, the payload does NOT have active-low semantics, e.g.
++		 * so that it's compatible VMX's pending debug exceptions and
++		 * qualification fields, and to avoid bleeding the DR6 madness
++		 * into other KVM code.
++		 *
++		 * To compute DR6:
++		 *
++		 *  1. "Reset" the bits that are modified on all #DBs
++		 *  2. Clear active-low bits that are present in the payload.
++		 *  3. Set active-high bits that are present in the payload.
++		 *  4. Clear fixed-0 bits.
++		 *  5. Set fixed-1 bits.
+ 		 */
+ 		vcpu->arch.dr6 &= ~DR_TRAP_BITS;
+-		/*
+-		 * In order to reflect the #DB exception payload in guest
+-		 * dr6, three components need to be considered: active low
+-		 * bit, FIXED_1 bits and active high bits (e.g. DR6_BD,
+-		 * DR6_BS and DR6_BT)
+-		 * DR6_ACTIVE_LOW contains the FIXED_1 and active low bits.
+-		 * In the target guest dr6:
+-		 * FIXED_1 bits should always be set.
+-		 * Active low bits should be cleared if 1-setting in payload.
+-		 * Active high bits should be set if 1-setting in payload.
+-		 *
+-		 * Note, the payload is compatible with the pending debug
+-		 * exceptions/exit qualification under VMX, that active_low bits
+-		 * are active high in payload.
+-		 * So they need to be flipped for DR6.
+-		 */
+-		vcpu->arch.dr6 |= DR6_ACTIVE_LOW;
+-		vcpu->arch.dr6 |= ex->payload;
+-		vcpu->arch.dr6 ^= ex->payload & DR6_ACTIVE_LOW;
++		vcpu->arch.dr6 |= DR6_RTM;
++		vcpu->arch.dr6 &= ~(ex->payload & DR6_ACTIVE_LOW);
++		vcpu->arch.dr6 |= (ex->payload & ~DR6_ACTIVE_LOW);
+ 
+ 		/*
+ 		 * The #DB payload is defined as compatible with the 'pending
+@@ -433,6 +440,7 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
+ 		 * breakpoint), it is reserved and must be zero in DR6.
+ 		 */
+ 		vcpu->arch.dr6 &= ~BIT(12);
++		vcpu->arch.dr6 |= DR6_FIXED_1;
+ 		break;
+ 	case PF_VECTOR:
+ 		vcpu->arch.cr2 = ex->payload;
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
