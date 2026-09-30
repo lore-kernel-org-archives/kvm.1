@@ -1,99 +1,158 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4291E20E334
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 00:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FF3348896
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 01:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790729714; cv=none; b=a4dG/u4ivu+0XjXXz8l5bJHlN05G2TxEp9/5Xe6jMKVYR/QoMjaJQ1OR7IpxR68ghp4KIxpgyS+u0yz4mHuDuI1J+FQxwU4DYbVyr3g8GzHsHfXy/KIkwDbK+S7Or0+LymbY/PhqinuJdFrOK/ESIu+002752vNYsh3OwhcxiLw=
+	t=1790730587; cv=none; b=o2hEIYmfYgB8f0tgL6FRZ+O5dvW8y7drR3wjATVfJljYiW5JDmdinpCeqRKX716ZqNXOLTKo6u2ZZptaqKt22nKbmaovH8vEvFNJLpoFFI4Jm9pCQ1Jo3D0x3P3bOMfirrZ+78YWf3gofvnN4+9uOzspQMsQ55FXa26DTQW39Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790729714; c=relaxed/simple;
-	bh=p2yWYS6720l1AamDkwuIrJ88Ej7lEOXOTezg8g01GzU=;
+	s=arc-20240116; t=1790730587; c=relaxed/simple;
+	bh=SezVP/uFBTMZxwx49txY9QcmGavw70qer/Mr8hN7hi4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O5zYYxkKwQ0lBghYCC5+lbkI3rl/Plondv7jgLYwxfYBMVQkdyQp+WF08fnsQndfVUVa+TCrsssH/DfwPG026B54uGb3NgKZpx2bUCgSoIGpucPwTgalHul8OGiH7eitd4PFl9fC3RMctIlpMqrh94dgM4pCHcFCZ9gi335NwvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=od0E8/xw; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=mE9HcgNv2H0cC9SnpcNAgimVN8RuoysD4jWfpdzUv6qKduaVfF6SXvaoZ0avDIYsERDOZ1Ai5lmdrSxUSPtDcVm2VeLuLjrzUBxU/gdJMYJyN7IAgP9xP4PS8qmkWZfugALQKUCo9SUhno/OtwYOLdHRD4xNpMxUhR53I7ucLUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XkRzdAa3; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="od0E8/xw"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1b6f65dacso3201848a12.1
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 17:55:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XkRzdAa3"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc4fc935a11so3451591a12.0
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 18:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790729713; x=1791334513; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=wAW//sr3pC2NBc7liE6tPMI+ECsOTrk881ZsZeZAzE4=;
-        b=od0E8/xwfyZ2Hbq7WqV7nkIrZYe/ExN/TES3AECQENqTks86xxq5gbGqyWZYQIS5PF
-         UUpWlG7cBCmOCvU+lEXc4D7fmGZp8hXWknenYC8LKBoLDzI3KE2yf/YyXcrMAK10lKNf
-         GoX/GOIpe6+hVapbvkNl2FUD7V2rXC0KnycYEq/o448+TA1aVco/1yoI/tRuVSQQ+REq
-         EhYfr1y6BdKdkK2V4SvBw7VsPs4KtxcqdrKXtQiooAfKRpV6vF9RSExqdO0LPF+zR3za
-         Jjc9CcfjAX0hCTcebeMy/t/IaEkYGPoV+5qX1lKBz94SGuvEu8R/wyb+7g8XFn3ImPTa
-         astA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790729713; x=1791334513;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790730585; x=1791335385; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wAW//sr3pC2NBc7liE6tPMI+ECsOTrk881ZsZeZAzE4=;
-        b=C8Whd7AerZWoztevU1bmzMSCUxyFfaDtgvtuv29VV5/oXCeS86xVDWNGdvdhECWT+U
-         IjMhvQoT/iMWkby1Bzk0EQzcAYp7sAQShvnRBkmECtB/A8YI2aXhkGDAk/MqG729Pguh
-         Fxjng5KzRGcQ1JEGRST62TJJEjWKxGkMJbNImWUrqlwZuZL3NSIxwNqvBeemwp43+jlm
-         dg1/ySgKrngwb3rD88R9IBulUH//rTfya1yEMPDARZssuhb4CYB4Kqa+pPXiXerugO7K
-         CiM+lmkcjjnWapyClaHdFO7+vJ9HeTNtXUxIiYuQGs46SsbuW8Z77Sjz8ciWllqMI84w
-         z1TQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzoc1Zsn8ci8lmgMNj7Qpu0elDJZNkMlTO8HP+diacZJGdxTTtAhdWvpZbjw63XVdLu+fE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nM9nejguffzim7yZxE3dzGX10Ni3cxf57Yjl3SyMSnRsjqNqKg
-	7RfmZ8wJJ2GtslYw30rILXqAAUbVJVhmq8mZVYKnC00l0XUPHUJuGKUJXeMxRr5E0aUhazS77Qo
-	rYhvJ6Q==
-X-Received: from pgbcw4.prod.google.com ([2002:a05:6a02:4284:b0:cc7:b387:6d4b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa5:b0:3de:849f:9053
- with SMTP id adf61e73a8af0-3de9530b969mr741880637.45.1790729712492; Tue, 29
- Sep 2026 17:55:12 -0700 (PDT)
-Date: Tue, 29 Sep 2026 17:55:11 -0700
-In-Reply-To: <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
+        bh=kI5zWnoGu/0SkUW3WJKgj52/D/XlXm6qzd94iamwT1A=;
+        b=XkRzdAa3fOFLYs8NwNpgrmBKMpWsdC+WdkCT/ilnANlrdEOmfuJ5GTtn36IsfU8Gvz
+         PWat/aiWk/tdiLJWMIOxz6yURetbXWrgiHAuYqxn8CW/c5f90qvCQqJZA+xKlXSn6cxQ
+         vy/NXnHaKD8g1C7Zk6oVZBPmKLJfzzZxb/Tdl4eluv2aq8Ze9zt5s35/UZ1T01ZAvEOA
+         L1AfKj2R1LmS8n68hHmkQFPWhFrSr+zdfjM/1wyjLWagkcIDptdvcO84qUaN/36Zmlk5
+         8Jewo6XBhSzgYXWAVg+rUUz0ppJ0Vz5LbWad5AsbfF57dbcNzyZTw7ThJ5aG8K79aPTL
+         zgaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790730585; x=1791335385;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kI5zWnoGu/0SkUW3WJKgj52/D/XlXm6qzd94iamwT1A=;
+        b=Ut0X5znen7FH/NQBt+Ea+WSq9cUvu/uSzbOF9UJ5yBfKc5gw5XVkYjRlqwNMqhX2IQ
+         iShLia1DNY6PzZOX8BZXVPN4flFW8bjFgg9tgVChO03Go+WjWVjW8HNXzF0c+pzSsaRh
+         VQVVfUtKq69q9ewSaVNAJ3L4wT+GgTl1o8jmPjwT8tQ67Mx9ojhfwl7BZ1OQ4BSgqOzr
+         Ih/+53x6ZQxpQZucUZqJ2S/Iy5s0hMNu5KskFs/uuCak/kLoJRmaBwi+sLOnE/d386zu
+         SKdp0uy5kQ26bn/ryW4aK9ALtCveH2yRdto9sGBhXLf7PruXW9N0D52Zk27cHsBZY6ZR
+         OWSw==
+X-Gm-Message-State: AFuF++ns7EOMVddRODwHOIMa1jzRbMmE5uWtvV8fz4CaPbvAcDcfAn/f
+	AvZWOmppLmpFqFobZdjLAZQcO39NNXzsOTYCyFDs0pyVy9+o5mDmGLLFz93wPdH3mXyWAoLtgNX
+	yLsiVYQ==
+X-Received: from pgbdo7.prod.google.com ([2002:a05:6a02:e87:b0:cc7:9970:4594])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:2288:b0:3de:4db6:9805
+ with SMTP id adf61e73a8af0-3de9525222bmr787304637.37.1790730585402; Tue, 29
+ Sep 2026 18:09:45 -0700 (PDT)
+Date: Tue, 29 Sep 2026 18:09:44 -0700
+In-Reply-To: <20260930003120.1DC101F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260930001127.3170009-1-seanjc@google.com> <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
-Message-ID: <arxd78Pn6WWL6TGq@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: TDX: Syntehsize SHUTDOWN on unhandled EPT Violation
+References: <20260930002140.3174449-1-seanjc@google.com> <20260930002140.3174449-5-seanjc@google.com>
+ <20260930003120.1DC101F000FF@smtp.kernel.org>
+Message-ID: <arxhWBSLjT5560mM@google.com>
+Subject: Re: [PATCH v3 4/5] KVM: selftests: Add module param API to check if
+ nested virtualization is enabled
 From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"jthoughton@google.com" <jthoughton@google.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Sep 30, 2026, Rick P Edgecombe wrote:
-> On Tue, 2026-09-29 at 17:11 -0700, Sean Christopherson wrote:
-> > Signal SHUTDOWN instead of -EIO if the guest accesses an unaccepted pag=
-e and
-> > has disabled EPT Violation #VEs on such accesses.=C2=A0 Returning -EIO =
-is all but
-> > guaranteed to mislead the VMM into thinking KVM (or the VMM) messed up,=
- and
-> > will likely result in the VM being terminated instead of rebooted.
->=20
-> I'm pretty sure Yan had a test for this path, and I'd love to see it actu=
-ally
-> exercised. What is the urgency on getting this fix upstream? Can we wait =
-a week?
+On Wed, Sep 30, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Medium] kvm: selftests: kvm_is_nested_virtualization_enabled() aborts on Intel
+> - [Low] kvm: selftests: get_common_kvm_vendor_param_bool() returns int instead of bool
+> --
+> 
+> commit 680296c2620e4e5c37fadd1bdce211406dcc250c
+> Author: Sean Christopherson <seanjc@google.com>
+> 
+> KVM: selftests: Add module param API to check if nested virtualization is enabled
+>     
+> Add an API to check if the nested virtualization module param is enabled,
+> e.g. so that tests can verify KVM's own enumeration of the corresponding
+> CPU feature. Provide a big warning above the API to make it as obvious as
+> possible clear that tests should use "kvm_cpu_has(X86_FEATURE_VMX) ||
+> kvm_cpu_has(X86_FEATURE_SVM)" when checking for nested virtualization.
+> 
+> Link: https://lore.kernel.org/all/20260910115414.3015260-2-ewanhai-oc@zhaoxin.com
+> 
+> > diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+> > index 6e6f70035508a..1608ddb91b6e6 100644
+> > --- a/tools/testing/selftests/kvm/include/x86/processor.h
+> > +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+> > @@ -1429,6 +1429,14 @@ static inline bool get_kvm_amd_param_bool(const char *param)
+> >  	return kvm_get_module_param_bool("kvm_amd", param);
+> >  }
+> >  
+> > +static inline int get_common_kvm_vendor_param_bool(const char *param)
+> 
+> [Severity: Low]
+> Does this function have a type mismatch? It evaluates vendor-specific boolean
+> parameter helpers, but returns an int instead of a bool.
 
-Absolutely.  It can probably wait a month and no one would care.  IIRC, thi=
-s got
-hit by someone (internal to Google) deliberately crashing a guest kernel an=
-d doing
-funky things with kexec.  It showed up on my radar purely because our autom=
-ated
-madness alerted on the resulting assertion (on -EIO) in the VMM.
+That part is intentional.
+
+> > +{
+> > +	if (host_cpu_is_intel)
+> > +		return get_kvm_intel_param_bool(param);
+> > +
+> > +	return get_kvm_amd_param_bool(param);
+> > +}
+> 
+> [ ... ]
+> 
+> > @@ -1472,6 +1485,16 @@ static inline bool kvm_is_lbrv_enabled(void)
+> >  	return !!get_kvm_amd_param_integer("lbrv");
+> >  }
+> >  
+> > +/*
+> > + * Do NOT use this to check for nVMX or nSVM support.  Querying kvm_cpu_has()
+> > + * for either of X86_FEATURE_{VMX,SVM} is the idiomatic way to check for nested
+> > + * virtualization support.  Use this *only* to validate KVM's own enumeration.
+> > + */
+> > +static inline bool kvm_is_nested_virtualization_enabled(void)
+> > +{
+> > +	return get_common_kvm_vendor_param_integer("nested");
+> 
+> [Severity: Medium]
+> Will this unconditionally abort the test suite on Intel hosts?
+
+Ugh, yes.  I had a brain fart and mentally inverted the X86_FEATURE_SVM result,
+i.e. thought I was testing this helper.
+
+> The VMX "nested" module parameter is a boolean exposed via sysfs as "Y\n" or
+> "N\n". If this helper uses the integer reader on Intel, it will read "Y\n"
+> and pass "Y" directly to atoi_paranoid(), which throws a TEST_ASSERT because
+> strtol() fails to parse "Y" as an integer:
+> 
+> tools/testing/selftests/kvm/lib/test_util.c:atoi_paranoid() {
+>     ...
+>     TEST_ASSERT(num_str != end_ptr,
+>                 "strtol(\"%s\") didn't find a valid integer.", num_str);
+>     ...
+
+OMG, I hate KVM.  I'll just do the obvious thing, and then make a mental note to
+call out the semantic "conflict" in the pull request.  *sigh*
+
+/*
+ * Do NOT use this to check for nVMX or nSVM support.  Querying kvm_cpu_has()
+ * for either of X86_FEATURE_{VMX,SVM} is the idiomatic way to check for nested
+ * virtualization support.  Use this *only* to validate KVM's own enumeration.
+ */
+static inline bool kvm_is_nested_virtualization_enabled(void)
+{
+	if (host_cpu_is_intel)
+		return get_kvm_intel_param_bool("nested");
+
+	return get_kvm_amd_param_integer("nested");
+}
