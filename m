@@ -1,149 +1,151 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FB33CB56A;
-	Wed, 30 Sep 2026 19:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79953ED13E
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790795835; cv=none; b=YwhIqpwy5/QiYKGwal/wvDf1xS5qOnl3Xt0I0y2SAOYmoyvVoQy60pMvnnXGZQsa7aQJv+vseAMmVVUpmN04iDD69cfsmy7Xk1e3YgZLyUPXqUEkFctnxYVWYRiDJvPsAqfNMJXemK2RaQCsmS73w936cbbhTK1kImSKHOgfE+4=
+	t=1790796999; cv=none; b=KlTlr0nTUr7EgC9TJSfgUiasibIndu1cD6x9qqps6mw+Ys+c/9+lL3Dq5fAgvlriUxYDCDP5o3EdAMvEzN3wRKNCzjpJgdlfyeZCg9Rp7ULGTK1+4ZgkNnxTVF1L6li5BnE/V+dYaFx7rujCO54K7vxtcZltgjCF8GHusKnw5/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790795835; c=relaxed/simple;
-	bh=9sy2qAbznoyLBvlyj1OFwSgpoBIUXjLMmKAdCHsacJY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RRzltnvM/lXPs7+eIFlEDjtjEQ+fij5YSNSkHCSYdhFSGxpk8t6dyhZEoqOj1aZU/Wh/XbYrRYw1Nl6eIHtzI5RReIhHUxZTGfj+GFSMUSpUx4QM21lLevnTMBZ7/tTLMl9mW81u8wF0Cm530pMEW7WqLrrENPstbSrS4PW42wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FQXBhRW+; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790796999; c=relaxed/simple;
+	bh=77cOKYDudr1TEdNRDm2bVnQW7qyEYvzfT9gxriNC6+E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XfGO7VkkKlws9Q5vmyIKcUd3CT0WO+tUjotdluZ1kpuwkrvryGLKeVCYUixC3bM9/t2PeaRHkXK2aEROuhg5Ea6qX3W+mAXr3D/Thy0wj7KA2+d0zvVAaSo/0CvFjev12TrVVXdXlKRq1JSK5OuEEpSejAuzEF4GSyspXS/uULE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=afMdwT6h; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FQXBhRW+"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68UI5UST1841061;
-	Wed, 30 Sep 2026 19:17:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=L9Ur5P
-	6PkDeQGBnQEP8zSTezBYCW0d+jds49X044s/M=; b=FQXBhRW+r6xF2j/hEv4NoU
-	ycb8TBUfk+ASSA+zzhzl+sRKG4612PttvSTX8gAcLbYgkI00vimzygxUsNmy6/SL
-	yYEdUn6I9zZjVSC7UwOao7sYg2h9GalXOKBVF2YUPS+J7ttAbsP6QgQ/SVgZu8jY
-	mfV3du08LvWc1KQjE8sw6SVXTP1OXqBh4ivniQTjMGrHyELdz5806Gy2mouLQn7y
-	ZMrKJnBdqQI5GQUxSZciW1woB7Bo4/YcszaQuxRpLcYle7SNeSGJEcK0eDRy214U
-	3MFDsMIDglRaRJI2uUBL3wCmwR4rVkj3vFt4sg4Fi0dZboqiSvcHCGO9bsvItDBQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qrf1g8-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 19:17:11 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68UI2MYt3863800;
-	Wed, 30 Sep 2026 19:17:10 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0xcsak8q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Sep 2026 19:17:10 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68UJH9Vr27853360
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 30 Sep 2026 19:17:09 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 203FC5805A;
-	Wed, 30 Sep 2026 19:17:09 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7B53258054;
-	Wed, 30 Sep 2026 19:17:07 +0000 (GMT)
-Received: from [9.61.92.210] (unknown [9.61.92.210])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 30 Sep 2026 19:17:07 +0000 (GMT)
-Message-ID: <d85157b0-1574-4ac5-9fb4-9dc86c2530df@linux.ibm.com>
-Date: Wed, 30 Sep 2026 15:17:06 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="afMdwT6h"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7cc8bffedso2029953a12.3
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790796997; x=1791401797; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZZeAOsvNrl/bW9BvBMAcm5dlJNIrYZoFS8Ka/3aN/x8=;
+        b=afMdwT6hP3bl7LAHp58XShc7BcsURj8bMXuvJUGeBguMGTYurgTKVY/cBx1/K5IUGn
+         L9hi1B9Vu4DKFmXfC9ItWMRGU5n/wkLW7rBaadZHX+KzH2JFTTQHYVEBJRRmPFEUSeeh
+         eiim6OXK7NmGgLBT4LrITMIufuEN5MoD8ewc/m07+TPg8507XBxKImsYJOkc8QO46gJo
+         nse96dV8ifoqLBcpZFWqFeWy92qedvRyj4UG/Z+KCqLZ1eyC+zFfZQ9C8VW+3LkfEeKX
+         45ge62BZF/+zYu/krNVHLvqEkPwOyvhTuHNTd161oOxA5qMhwHg42S/S1rLSXQlyHfcL
+         Xr3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790796997; x=1791401797;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ZZeAOsvNrl/bW9BvBMAcm5dlJNIrYZoFS8Ka/3aN/x8=;
+        b=ML1omVV8jaorARxXCvyz+qdn3wAtQdaWFIwtqSih+oED8QBvhKfL4c6TcI0qv4iHT/
+         ixg2+o+aomppHOwTkPCXRTR+RX8vC3XSC46XJE6Z1H2LmjT9spHy8xLd9vRgiLFuG1LC
+         AyVUMIH1BavD6szXxUhj/0h/dQSvk14IL90etMIx+RVDLsGRYL/KFr4eoeEk0+IdWa5p
+         bp8aLEZ1vlcBZ6a2p47PDu50V1frZsIV6Aq9DkLKCm2KqAQl7pwtdf92OmRTOe2v7tgJ
+         zpsbP0YhhVqxPXC7d05bt+T/OxRIm2y2PuDHrIfkFvwk5ggCXD2p7+IT7+W/myEh02Uz
+         ut8Q==
+X-Gm-Message-State: AFuF++kiPX29EhLsetOvtlnnP4P74ikEOS9qGP38EQNL/hApHRRgv1OE
+	FfY0cFE4XU6Zz23Hvcre7QhQVAcs+9cgDBgCHd6w+PvyszPJ6/Q73MJU6D5fDsnK9KNz9DZi2MN
+	nNrvNzQ==
+X-Received: from pgbdv15.prod.google.com ([2002:a05:6a02:446f:b0:cc7:30b4:f06c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7001:b0:3d3:aec2:4dcd
+ with SMTP id adf61e73a8af0-3de9e6dc7a9mr2629253637.25.1790796996939; Wed, 30
+ Sep 2026 12:36:36 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 30 Sep 2026 12:36:22 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/4] vfio-pci/zdev: Add VFIO FMB device features
-To: Alex Williamson <alex@shazbot.org>, Omar Elghoul
- <oelghoul@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
-        gbayer@linux.ibm.com, pasic@linux.ibm.com
-References: <20260922195141.94548-1-oelghoul@linux.ibm.com>
- <20260922195141.94548-5-oelghoul@linux.ibm.com>
- <20260930125750.7a5bc3a8@shazbot.org>
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260930125750.7a5bc3a8@shazbot.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDA3OCBTYWx0ZWRfX3HXaLWT4j6Ze
- MJW2g4Y7O2yHH/Gta+XAWqw5ZEsqw/lcXr4klKE6aTx7iPPfK7m5TmTmO028MutJn4yCDif9k46
- 8dI/C9HWFIni1OQlrSP4Kh7KA3IyUv+2L9f+DUWGS4TEp7R65tUShljXHxqXNIPRCmFaPeVOSl5
- zfToNr0lHRKpjmVkCCojAGCRs1uauwCVUIPWHCZVd9Krh0LUom4+IqAhGTg3s++QPlOnkIdZzuW
- JFnS1GkzQBJjS6xXuncy8obu5l1zMCyILif/vq1a69WedzCVRQ335sTmFefujop6zsIf7Cd7ZUm
- 115EZeDb3x30hrlcjjc0+VREKGRNpt0ffwPFQ/CozBWa/MhiPsCGEL1VO0kRAF1qi97NjtTGxBw
- hOyzAbi4OFIK9JTTIJK3Doz/7765NVG2DunrH+biEAsQcXT6yI7+SgGBOHP77JJDrPXfKXS+6Ji
- MfXtf3mHkBhDhd9btyg==
-X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abd6037 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=hCghWN36U95Y1TgLiSQA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 8nnwSJ6qE3Q8YvO24gu_vyOax_ONoS5U
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDA3OCBTYWx0ZWRfXxZiy1p1tYkdq
- EPVFGbsZpe+/v+isjyJbk3cg7pP02PihmBaxggQcxEjErQRVg0+gmD25mPlmmKy40HnaV+xUvTe
- kXrLt5UwcbEVtMe6seopMJ47CxUX5eQ=
-X-Proofpoint-GUID: 8nnwSJ6qE3Q8YvO24gu_vyOax_ONoS5U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-30_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609300078
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260930193634.3415089-1-seanjc@google.com>
+Subject: [PATCH v6 00/12] KVM: x86: Bus Lock Detect fixes and SVM support
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Shivansh Dhiman <shivansh.dhiman@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+
+Fix KVM's handling of DR6.BLD, and add support for virtualizing BLD on SVM.
+KUT tests: https://lore.kernel.org/all/20260925230003.2362261-1-seanjc@google.com
+
+v6:
+ - Throw in the towel, at least for now, on WARNing if KVM sees a DR6 without
+   all of the fixed-1 bits set. [Sashiko]
+
+v5:
+ - https://lore.kernel.org/all/20260930011313.3197688-1-seanjc@google.com
+ - Fix the DR6.BLD clobbering bug Sashiko pointed out. [Sashiko]
+ - Force-set fixed-1 bits after synchronizing DR6 from the guest (because the
+   guest could set bits that are supposed to be fixed-1 due to virtualization
+   holes).
+ - Open code nested_vmcb12_has_lbrv().
+ - Fix the Author for Ravi's patch.
+ - Add svm_need_lbr_virtualization() to preserve short-circuit logic.
+ - Rename kvm_dr6_fixed() to kvm_get_dr6_fixed_1().
+ - Invert svm_get_debugctl_reserved_bits() into svm_get_supported_debugctl()
+   to match VMX, and KVM's preferred style.
+
+v4:
+ * Rename nested_vmcb12_has_lbrv() to nested_lbrv_enabled() (Yosry).
+ * Drop the redundant !lbrv check and the extra comment (Yosry).
+ * Spell out in the changelog what breaks when DR6_BUS_LOCK is forced to 1
+   (Nikunj).
+ * Make it a pure NFC macro-to-helper conversion, and move the
+   BUS_LOCK_DETECT gating to patch 5 (Nikunj).
+ * Fold in the DEBUGCTLMSR_BUS_LOCK_DETECT gating moved from patch 4.
+ * Collect Reviewed-by tags.
+
+v3:
+ * https://lore.kernel.org/kvm/20260709082953.69434-1-shivansh.dhiman@amd.com
+ * Reworked the single v2 patch into a prep series (patches 1-4) plus the
+   feature.
+ * Rewrite svm_update_lbrv() as 'if' statements so the BLD LBRV
+   dependency can be added cleanly (Yosry Ahmed).
+ * Sanitize V_LBR in the nested control cache like NP/GMET and drop the
+   redundant X86_FEATURE_LBRV checks (Yosry Ahmed).
+ * Use kvm_dr6_fixed() for nested DR6 instead of DR6_FIXED_1 | DR6_RTM.
+ * Compute DEBUGCTL reserved bits per-vCPU, gating BUS_LOCK_DETECT on
+   guest CPUID rather than a static macro.
+
+v2:
+ * https://lore.kernel.org/kvm/20260629081018.60618-1-shivansh.dhiman@amd.com
+ * Rebased on kvm-x86-next-2026.06.24.
+ * Used guest_cpu_cap_has() instead of guest_cpuid_has().
+
+v1: https://lore.kernel.org/all/20240808062937.1149-5-ravi.bangoria@amd.com
+
+Ravi Bangoria (1):
+  KVM: SVM: Add support for virtualizating Bus Lock Detect
+
+Sean Christopherson (8):
+  KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when delivering #DB
+    payload
+  KVM: x86: Rename kvm_dr6_fixed() => kvm_get_dr6_fixed_1()
+  KVM: Return an "unsigned long", not "u64" for the fixed-1 DR6 bits
+  KVM: x86: Force fixed-1 bits in DR6 after synchronizing with hardware
+  KVM: x86: Set guest's fixed-1 DR6 bits when delivering #DB payload
+  KVM: x86: Kill off DR6_FIXED_1 to prevent future misuse
+  KVM: SVM: Add helper to query if LBR virtualization needs to be
+    enabled
+  KVM: nSVM: Open code check on LBR virtualization being enabled in
+    vmcb12
+
+Shivansh Dhiman (3):
+  KVM: nSVM: Disable LBRV in nested control cache when unsupported
+  KVM: nSVM: Don't assume all active-low bits DR6 are fixed-1
+  KVM: SVM: Add a vCPU-aware helper to get supported DEBUGCTL bits
+
+ arch/x86/kvm/regs.c       |  8 +++---
+ arch/x86/kvm/regs.h       | 11 ++++----
+ arch/x86/kvm/svm/nested.c | 27 +++++++++-----------
+ arch/x86/kvm/svm/svm.c    | 31 +++++++++++++++++------
+ arch/x86/kvm/svm/svm.h    | 12 +++++++--
+ arch/x86/kvm/x86.c        | 53 +++++++++++++++++++++++----------------
+ 6 files changed, 87 insertions(+), 55 deletions(-)
 
 
->> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_READ 15
->> +
->> +struct vfio_device_feature_zpci_fmb_read {
->> +	__aligned_u64 data;
->> +};
->> +
-> 
-> As usual, feature numbers need to be coordinated with the vfio tree.
-> What's the merge plan for this?  Thanks,
-> 
-Looks like some s390 KVM maintainers weren't on CC, added Janosch and
-Claudio (Omar please make sure to include them for next version)...
-
-s390(-kvm) maintainers,
-
-Do you think you would take this via s390-kvm (or s390) with Alex's ack
-on the vfio parts, or vice versa? (Please note: this is not yet the
-final version of this series)
-
-For perspective, the changes are mostly in arch/s390 and the
-s390-specific vfio_pci_zdev code.
-
-s390 changes:
- arch/s390/include/asm/pci.h      |  2 +
- arch/s390/pci/pci.c              | 85 +++++++++++++++++++++++++-------
- arch/s390/pci/pci_debug.c        | 11 ++++-
- drivers/vfio/pci/vfio_pci_zdev.c | 60 ++++++++++++++++++++++
-
-VFIO changes:
- drivers/vfio/pci/vfio_pci_core.c |  4 ++
- drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++
- include/uapi/linux/vfio.h        | 29 +++++++++++
-
-Thanks,
-Matt
-
+base-commit: 7f734412a73e910658dc81ba74f76af789202f58
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
 
