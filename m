@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961EA51FCB6;
-	Wed, 30 Sep 2026 21:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EBA5208D8;
+	Wed, 30 Sep 2026 21:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790804095; cv=none; b=UFWR3VgYifxw8gCV8WFnb+a/0nDHWEQtmLuGZGDuOIPJ/upXokI4Uotu5nOMMYG7iiXWDVqaRebQ0dLGiaaOhMj4MoIbi3HuBBfuNxUZjr8ty77vAhFzdplo9DUeD7Re3fDdSBTNXVoX0iBSdSFb9iqkeYl/E1k63ib6EvpI5aU=
+	t=1790804097; cv=none; b=q39BTxIRBLNABlamHzVGOSv5CkzGxdbdnGAD6ILWiDfcs66jtMpWWqSr+slTHt4fC2q+g/jT+ibziHhC1Im9nqDWwEkO4WpCC3WPWe95QrhhjalGR3R4X8xAgzkMhxV94IF9zlGDgcDOzktN8xqQgBtdq6UO1qeIv+mjv8i3oDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790804095; c=relaxed/simple;
-	bh=YnzqYcVVUEY19KMu/JWzNjn3XoLyROF+I/04Qs77LOY=;
+	s=arc-20240116; t=1790804097; c=relaxed/simple;
+	bh=2LyuxFWn8cLA2R1eEGpuZlCvOfwWaH+mKf09EK/pvRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pum/0gzbJPllomQC50gNMEEP5XGflLquvjCC+0AtqYcXHxocX8f1vLKvXmiUqv+7puGRWfQF/X216FoFYpMCW/OYlacOK6EqWxsQ27rbEuB9Aq3kUKtwmS5nAu6jMjYSyacsw60iofHWq/j+O9KI42n2niTMm5w15v+2lj0Pk/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vs4wwGCS; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=DF0DsbSGMbauyZ36DjFZJiAdrkkxH+WjqEUC93hiOa5UhLkc1/taA1Vwp4E+wV9YtnFP6ISUdj45f2CL9Y2/8qraA/HnNrrSmJY/VhseTAKQDHIUTzRWfRUPcdlicO6L4J3i26Zrnc5DgRIs4/J0a29+7x9nqxE39E6H6oWE2Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dOiNIpc1; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vs4wwGCS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dOiNIpc1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790804093; x=1822340093;
+  t=1790804095; x=1822340095;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YnzqYcVVUEY19KMu/JWzNjn3XoLyROF+I/04Qs77LOY=;
-  b=Vs4wwGCS9wbRGKIx5VPryZkTGMfsANFu0WqA5MrcmqL9GDuZJGFNdbVl
-   /RJVFNkNo4Nnyme9oh28ijybGFG1898ll+w26oEQjFgCOKqWleO6v4OHb
-   d0p1lsXRcNTbj+hI9dvQEfAB6p9vrdN5kucNr3El+Gn10smLR4Dt3MHB/
-   8eA/QGvN/ZBWHJn+I58A+PkYw1dW4I1dVXUPoswI6tXSzb1Z2sol98MHo
-   eHOeX8I7+ByQ2A3x2Stl3dFSBIdTX/9tq5s466DeyuXr+INMyy0CUjeNE
-   dJLJEYYslK+DE8mUGocU7Y0/QuM6OqMXN67ijB9850tI3wslB48agehGh
-   g==;
-X-CSE-ConnectionGUID: eYWkHl5TTIinQTgn6+9Yxg==
-X-CSE-MsgGUID: 5I5YaT7qR+uABwgJOlikHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="94432649"
+  bh=2LyuxFWn8cLA2R1eEGpuZlCvOfwWaH+mKf09EK/pvRQ=;
+  b=dOiNIpc12qHwLy4n280LSE9p66We09nFrkgIcPFlYomzcjFm3gL8KqQ4
+   dhCRCRiUg11wgUDZ8AFBnFOMyfMlr6jHmjHasLShdmCghO+VhxYejZ3q/
+   XsvgpEpa1zF4rSjM/SEnHT+QK2lLM7RvRzhbg1vfMsDRomkK993sjG4Vy
+   I7XbAapPwS6YYhTst26zZrF0eSw6G2lKunVBOLuWFyuX2MRBsZZ4Qx3Wk
+   n5dp272u1Q4rg9PM3Ng8M2eZBCJVYtLtw1kNL70QxroCZa9IuRNej4X6o
+   02IZj/5zb8TxgcvA+yVEzaL7+mEUI8pm3iyZsGUEQXArb4s9QyEstZ+og
+   w==;
+X-CSE-ConnectionGUID: vNrebGk2SNCUHf5WyfK8oQ==
+X-CSE-MsgGUID: 8H3XM3yBQ3CAg7MXG9UO4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="94432654"
 X-IronPort-AV: E=Sophos;i="6.27,133,1787036400"; 
-   d="scan'208";a="94432649"
+   d="scan'208";a="94432654"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 14:34:53 -0700
-X-CSE-ConnectionGUID: Vd9G3hUeTLqVdODhe0T8Dg==
-X-CSE-MsgGUID: 7UVIpgwuTG+ICtd3I1BqEg==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 14:34:54 -0700
+X-CSE-ConnectionGUID: jVbT8p6pTP6jQWj6Nl8fDQ==
+X-CSE-MsgGUID: WdSbcAVUSISXo+p46yWjKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,133,1787036400"; 
-   d="scan'208";a="283867196"
+   d="scan'208";a="283867200"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by fmviesa005.fm.intel.com with ESMTP; 30 Sep 2026 14:34:53 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 30 Sep 2026 14:34:54 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -51,9 +51,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	zhao1.liu@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v8 02/20] KVM: VMX: Save guest EGPRs in VCPU cache
-Date: Wed, 30 Sep 2026 21:07:32 +0000
-Message-ID: <20260930210750.1487547-3-chang.seok.bae@intel.com>
+Subject: [PATCH v8 03/20] KVM: x86: Support APX state for XSAVE ABI
+Date: Wed, 30 Sep 2026 21:07:33 +0000
+Message-ID: <20260930210750.1487547-4-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260930210750.1487547-1-chang.seok.bae@intel.com>
 References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
@@ -65,221 +65,165 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Save and restore the guest EGPRs on VM exit/entry if the system supports
-Advanced Performance Extensions (APX).
+Introduce a facility to copy APX state between the VCPU cache and the
+userspace buffer as the VCPU cache is the single source of truth.
 
-There are two possible ways of handling EGPR accesses: reading them from
-the processor lazily, or switching them in the vmentry/vmexit path and
-accessing them via vcpu->arch.regs.  Prepare for the latter; it does not
-pollute kvm_reg_read/write() with conditionals to treat GPRs vs. EGPRs
-differently, and it allows for future usage of APX registers in the
-kernel.
+The existing fpstate copy functions historically sync all XSTATEs in
+between userspace and kernel buffers [1]. In this regard, any additional
+state handling logic should be consistent with them -- i.e. validation of
+XSTATE_BV against the supported XCR0 mask.
 
-KVM intercepts all XCR0 writes, therefore XCR0 cannot change during the
-execution of VMLAUNCH/VMRESUME. Thus, for a guest that does not set
-XCR0[APX], the EGPR state does not have to be loaded/saved.
+Now with the two copy paths, their invocations require to take care of
+these facts:
 
-The register saving path is placed after SPEC_CTRL is restored, so as
-to avoid any mis-speculation into EGPR accesses when APX is disabled.
+  * When exporting to userspace, the fpstate function should run first
+    since it zeros out the area of components either not present or
+    inactive. Then the VCPU cache function ensures copying APX state.
 
-While saving may be skipped on VM-Fail, it is not worth the added
-complication for a slow path.
+  * On the opposite way, both will copy the state to both storages. This
+    duplication is avoidable by tweaking either the generic function or
+    XSTATE_BV/XCR0. But the optimization while at a slow path looks to
+    rather add complication. So keep the implementation simple.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
+[1] Except for PKRU state, as stored in struct thread_struct.
+
 Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Link: https://lore.kernel.org/adPRA4ZhnvbaXSn0@google.com
 ---
- arch/x86/Kconfig.assembler           |  5 +++
- arch/x86/include/asm/kvm_vcpu_regs.h | 50 ++++++++++++++++++++++++++++
- arch/x86/kvm/Kconfig                 |  2 +-
- arch/x86/kvm/vmenter.h               |  1 +
- arch/x86/kvm/vmx/vmenter.S           | 31 +++++++++++++++--
- arch/x86/kvm/vmx/vmx.c               | 13 ++++++++
- 6 files changed, 99 insertions(+), 3 deletions(-)
+ arch/x86/kvm/cpuid.c | 10 ++++++++
+ arch/x86/kvm/cpuid.h |  2 ++
+ arch/x86/kvm/x86.c   | 61 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+)
 
-diff --git a/arch/x86/Kconfig.assembler b/arch/x86/Kconfig.assembler
-index b1c59fb0a4c9..1a86efb2a239 100644
---- a/arch/x86/Kconfig.assembler
-+++ b/arch/x86/Kconfig.assembler
-@@ -1,6 +1,11 @@
- # SPDX-License-Identifier: GPL-2.0
- # Copyright (C) 2020 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
- 
-+config AS_APX
-+	def_bool $(as-instr64,xor %r16$(comma)%r16)
-+	help
-+	  Supported by binutils >= 2.42 and LLVM integrated assembler >= 18
-+
- config AS_WRUSS
- 	def_bool $(as-instr64,wrussq %rax$(comma)(%rbx))
- 	help
-diff --git a/arch/x86/include/asm/kvm_vcpu_regs.h b/arch/x86/include/asm/kvm_vcpu_regs.h
-index d9f1528fab2b..d6658c9909aa 100644
---- a/arch/x86/include/asm/kvm_vcpu_regs.h
-+++ b/arch/x86/include/asm/kvm_vcpu_regs.h
-@@ -99,6 +99,56 @@
- 	.ifc \r64,%r15
- 	\opd = 15
- 	.endif
-+#endif
-+#ifdef CONFIG_KVM_APX
-+	.ifc \r64,%r16
-+	\opd = 16
-+	.endif
-+	.ifc \r64,%r17
-+	\opd = 17
-+	.endif
-+	.ifc \r64,%r18
-+	\opd = 18
-+	.endif
-+	.ifc \r64,%r19
-+	\opd = 19
-+	.endif
-+	.ifc \r64,%r20
-+	\opd = 20
-+	.endif
-+	.ifc \r64,%r21
-+	\opd = 21
-+	.endif
-+	.ifc \r64,%r22
-+	\opd = 22
-+	.endif
-+	.ifc \r64,%r23
-+	\opd = 23
-+	.endif
-+	.ifc \r64,%r24
-+	\opd = 24
-+	.endif
-+	.ifc \r64,%r25
-+	\opd = 25
-+	.endif
-+	.ifc \r64,%r26
-+	\opd = 26
-+	.endif
-+	.ifc \r64,%r27
-+	\opd = 27
-+	.endif
-+	.ifc \r64,%r28
-+	\opd = 28
-+	.endif
-+	.ifc \r64,%r29
-+	\opd = 29
-+	.endif
-+	.ifc \r64,%r30
-+	\opd = 30
-+	.endif
-+	.ifc \r64,%r31
-+	\opd = 31
-+	.endif
- #endif
- 	.endm
- 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index db1427a8b099..e55462068bed 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -100,7 +100,7 @@ config KVM_INTEL
- 	tristate "KVM for Intel (and compatible) processors support"
- 	depends on KVM && IA32_FEAT_CTL
- 	select X86_FRED if X86_64
--	select KVM_APX if X86_64
-+	select KVM_APX if X86_64 && AS_APX
- 	help
- 	  Provides support for KVM on processors equipped with Intel's VT
- 	  extensions, a.k.a. Virtual Machine Extensions (VMX).
-diff --git a/arch/x86/kvm/vmenter.h b/arch/x86/kvm/vmenter.h
-index 77376812c81b..690c05696824 100644
---- a/arch/x86/kvm/vmenter.h
-+++ b/arch/x86/kvm/vmenter.h
-@@ -7,6 +7,7 @@
- #define KVM_ENTER_VMRESUME			BIT(0)
- #define KVM_ENTER_SAVE_SPEC_CTRL		BIT(1)
- #define KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO	BIT(2)
-+#define KVM_ENTER_EGPR_SWITCH			BIT(3)
- 
- #ifdef __ASSEMBLER__
- .macro RESTORE_GUEST_SPEC_CTRL_BODY guest_spec_ctrl:req, label:req
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 00d807505fc8..02308fb36f0f 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -16,6 +16,7 @@
-  * @flags:	KVM_ENTER_VMRESUME:	use VMRESUME instead of VMLAUNCH
-  *		KVM_ENTER_SAVE_SPEC_CTRL: save guest SPEC_CTRL into vmx->spec_ctrl
-  *		KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO: vCPU can access host MMIO
-+ *		KVM_ENTER_EGPR_SWITCH:	load/store guest EGPRs
-  *
-  * Returns:
-  *	0 on VM-Exit, 1 on VM-Fail
-@@ -46,6 +47,16 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	/* Reload @vmx, _ASM_ARG1 may be modified by vmx_update_host_rsp().  */
- 	mov WORD_SIZE(%_ASM_SP), %_ASM_DI
- 
-+#ifdef CONFIG_KVM_APX
-+	ALTERNATIVE "jmp .Lload_egprs_done", "", X86_FEATURE_APX
-+	testl	$KVM_ENTER_EGPR_SWITCH, (%_ASM_SP)
-+	jz	.Lload_egprs_done
-+	LOAD_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
-+		  %r16, %r17, %r18, %r19, %r20, %r21, %r22, %r23, \
-+		  %r24, %r25, %r26, %r27, %r28, %r29, %r30, %r31
-+.Lload_egprs_done:
-+#endif
-+
- 	/*
- 	 * Unlike AMD there's no V_SPEC_CTRL here, so do not leave the body
- 	 * out of line.  Clobbers RAX, RCX, RDX, RSI.
-@@ -193,8 +204,24 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	mov %_ASM_BX, %_ASM_AX
- 
- 	/* Pop our saved arguments from the stack */
--	pop %_ASM_BX
--	pop %_ASM_BX
-+	pop %_ASM_BX	/* @flags */
-+	pop %_ASM_DI	/* @vmx */
-+
-+#ifdef CONFIG_KVM_APX
-+	ALTERNATIVE "jmp .Lclear_egprs_done", "", X86_FEATURE_APX
-+	test	$KVM_ENTER_EGPR_SWITCH, %_ASM_BX
-+	jz	.Lclear_egprs_done
-+	/*
-+	 * Unlike legacy GPRs, saving could be conditional here on VM-Fail,
-+	 * which however isn't in fastpath. Instead, always save EGPRs.
-+	 */
-+	STORE_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
-+		   %r16, %r17, %r18, %r19, %r20, %r21, %r22, %r23, \
-+		   %r24, %r25, %r26, %r27, %r28, %r29, %r30, %r31
-+	CLEAR_REGS %r16d, %r17d, %r18d, %r19d, %r20d, %r21d, %r22d, %r23d, \
-+		   %r24d, %r25d, %r26d, %r27d, %r28d, %r29d, %r30d, %r31d
-+.Lclear_egprs_done:
-+#endif
- 
- 	/* ... and then the callee-save registers */
- 	pop %_ASM_BX
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 612ab07d4100..cea5c273f149 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -994,6 +994,19 @@ unsigned int __vmx_vcpu_enter_flags(struct vcpu_vmx *vmx)
- 	    kvm_vcpu_can_access_host_mmio(&vmx->vcpu))
- 		flags |= KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO;
- 
-+	/*
-+	 * KVM intercepts XSETBV and thus always tracks the guest XCR0. EGPR
-+	 * save/restore is gated by this flag. The resulting behavior is:
-+	 *
-+	 *  - When the guest enables APX, KVM restores EGPRs (initially zeroed).
-+	 *  - When the guest disables APX, EGPRs are preserved in the VCPU cache.
-+	 *  - When APX is re-enabled, the saved state is restored, which matches
-+	 *    architectural expectations.
-+	 */
-+	if (IS_ENABLED(CONFIG_KVM_APX) && cpu_feature_enabled(X86_FEATURE_APX) &&
-+	    vmx->vcpu.arch.xcr0 & XFEATURE_MASK_APX)
-+		flags |= KVM_ENTER_EGPR_SWITCH;
-+
- 	return flags;
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 851f151efb35..a3f583a376ab 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -60,6 +60,16 @@ void __init kvm_init_xstate_sizes(void)
+ 	}
  }
  
++u32 xstate_size(unsigned int xfeature)
++{
++	return xstate_sizes[xfeature].eax;
++}
++
++u32 xstate_offset(unsigned int xfeature)
++{
++	return xstate_sizes[xfeature].ebx;
++}
++
+ u32 xstate_required_size(u64 xstate_bv, bool compacted)
+ {
+ 	u32 ret = XSAVE_HDR_SIZE + XSAVE_HDR_OFFSET;
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 8d863f45585d..1716f3b6b885 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -66,6 +66,8 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 
+ void __init kvm_init_xstate_sizes(void);
+ u32 xstate_required_size(u64 xstate_bv, bool compacted);
++u32 xstate_size(unsigned int xfeature);
++u32 xstate_offset(unsigned int xfeature);
+ 
+ int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
+ int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 79468ddfe473..0df74422759f 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3141,6 +3141,49 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_KVM_APX
++static void kvm_copy_vcpu_regs_to_uabi(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0)
++{
++	union fpregs_state *xstate = (union fpregs_state *)buf;
++
++	BUILD_BUG_ON(NR_VCPU_GENERAL_PURPOSE_REGS <= VCPU_REGS_R31);
++
++	if (!(supported_xcr0 & XFEATURE_MASK_APX))
++		return;
++
++	memcpy(buf + xstate_offset(XFEATURE_APX),
++	       &vcpu->arch.regs[VCPU_REGS_R16],
++	       xstate_size(XFEATURE_APX));
++
++	xstate->xsave.header.xfeatures |= XFEATURE_MASK_APX;
++}
++
++static int kvm_copy_uabi_to_vcpu_regs(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0)
++{
++	union fpregs_state *xstate = (union fpregs_state *)buf;
++
++	if (!(xstate->xsave.header.xfeatures & XFEATURE_MASK_APX))
++		return 0;
++
++	if (!(supported_xcr0 & XFEATURE_MASK_APX))
++		return -EINVAL;
++
++	BUILD_BUG_ON(NR_VCPU_GENERAL_PURPOSE_REGS <= VCPU_REGS_R31);
++
++	memcpy(&vcpu->arch.regs[VCPU_REGS_R16],
++	       buf + xstate_offset(XFEATURE_APX),
++	       xstate_size(XFEATURE_APX));
++
++	return 0;
++}
++#else
++static void kvm_copy_vcpu_regs_to_uabi(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0) { }
++static int kvm_copy_uabi_to_vcpu_regs(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0)
++{
++	return 0;
++}
++#endif
++
+ static int kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
+ 					 u8 *state, unsigned int size)
+ {
+@@ -3162,8 +3205,15 @@ static int kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
+ 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
+ 		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
+ 
++	/*
++	 * This copy function zeros out userspace memory for any gap from the
++	 * guest fpstate. So invoke before copying any other state, i.e. APX,
++	 * that is not saved in fpstate.
++	 */
+ 	fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu, state, size,
+ 				       supported_xcr0, vcpu->arch.pkru);
++	kvm_copy_vcpu_regs_to_uabi(vcpu, state, supported_xcr0);
++
+ 	return 0;
+ }
+ 
+@@ -3178,6 +3228,7 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+ 					struct kvm_xsave *guest_xsave)
+ {
+ 	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
++	int err;
+ 
+ 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
+ 		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
+@@ -3189,6 +3240,16 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+ 	 */
+ 	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
+ 
++	/*
++	 * This and the following copy functions copy APX state into each
++	 * storage. The VCPU cache is the single source of truth but avoiding
++	 * this redundant copy tends to introduce special-case handling. Since
++	 * this lies in a slow path, keep the implementation simple.
++	 */
++	err = kvm_copy_uabi_to_vcpu_regs(vcpu, guest_xsave->region, kvm_caps.supported_xcr0);
++	if (err)
++		return err;
++
+ 	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
+ 					      guest_xsave->region,
+ 					      kvm_caps.supported_xcr0,
 -- 
 2.53.0
 
