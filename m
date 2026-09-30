@@ -1,119 +1,99 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39C0340298
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 00:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4291E20E334
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 00:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790729540; cv=none; b=hQE4KdM5NM5t0e/3JVA3eeQWVfvzUP1vGJEQGxig5xFhCmGrERpJZydDhSFNBiYdf+sBy/fnR993Fv0OIC8132XjfabD/pH1BL9XqHT1TzzwFWnuydwqL1Bi5kUbe6eoSmO2RLPHbQT9NebtpH3kTTQunjFfUvanThoUVDLIE/0=
+	t=1790729714; cv=none; b=a4dG/u4ivu+0XjXXz8l5bJHlN05G2TxEp9/5Xe6jMKVYR/QoMjaJQ1OR7IpxR68ghp4KIxpgyS+u0yz4mHuDuI1J+FQxwU4DYbVyr3g8GzHsHfXy/KIkwDbK+S7Or0+LymbY/PhqinuJdFrOK/ESIu+002752vNYsh3OwhcxiLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790729540; c=relaxed/simple;
-	bh=vVCpStKwQBNd6wmmES6LAq19FbAIYM5QSaveHdu6a4w=;
+	s=arc-20240116; t=1790729714; c=relaxed/simple;
+	bh=p2yWYS6720l1AamDkwuIrJ88Ej7lEOXOTezg8g01GzU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bfH476J+VQyewsJLlTlqiJu1RPTSkLbJJxgZOuId+uH2PXTBaGC20zHJyx2d2E3vv4uyp409c5NJlKDU29YSCI5ZR5IM9pZdCxmf43k5+AG538QmsHIwkWITqbgo2azb6B3NIR3OmEUE2EgZYbesxspoQpI2qq9WzxrGJqC1M0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kCoExa8N; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=O5zYYxkKwQ0lBghYCC5+lbkI3rl/Plondv7jgLYwxfYBMVQkdyQp+WF08fnsQndfVUVa+TCrsssH/DfwPG026B54uGb3NgKZpx2bUCgSoIGpucPwTgalHul8OGiH7eitd4PFl9fC3RMctIlpMqrh94dgM4pCHcFCZ9gi335NwvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=od0E8/xw; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kCoExa8N"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2dfb24dfedfso29263825ad.2
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 17:52:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="od0E8/xw"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1b6f65dacso3201848a12.1
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 17:55:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790729538; x=1791334338; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oI98Ayhzw4RbFHO2K+V0agJoQQc6JpmcneVnzd6gbtU=;
-        b=kCoExa8NufZGvKDeCG5KjJcv9LkzdSY4JzgTn0jV1vWaRAoBGw5DKCDOaIbpJNblhy
-         1UBKGHm/sMDNTu0zUwE8BA1dZWkeP1R2B8ltrGHsI8ieKQqCypjwdWwqwd3bB4BD3dD+
-         pQY4NxI3rTYr46kLP3qWl81YYEDfHB+X+U05BnJD33vhagQkTzZBJc3tVEhpnYdiqeFX
-         XjnTXWXH0Ow5RpLwAdRg62z/FmXHfPKCpBJfAyy2lZe3DfC+XysS2MQsnNWLQRIVMDT0
-         swDjSXU8pZ2JSj//WvualktmHSQLgKV3fEYSJvfWidtCDllV50wV/cjunHkKbEWTTHqI
-         GATQ==
+        d=google.com; s=20251104; t=1790729713; x=1791334513; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wAW//sr3pC2NBc7liE6tPMI+ECsOTrk881ZsZeZAzE4=;
+        b=od0E8/xwfyZ2Hbq7WqV7nkIrZYe/ExN/TES3AECQENqTks86xxq5gbGqyWZYQIS5PF
+         UUpWlG7cBCmOCvU+lEXc4D7fmGZp8hXWknenYC8LKBoLDzI3KE2yf/YyXcrMAK10lKNf
+         GoX/GOIpe6+hVapbvkNl2FUD7V2rXC0KnycYEq/o448+TA1aVco/1yoI/tRuVSQQ+REq
+         EhYfr1y6BdKdkK2V4SvBw7VsPs4KtxcqdrKXtQiooAfKRpV6vF9RSExqdO0LPF+zR3za
+         Jjc9CcfjAX0hCTcebeMy/t/IaEkYGPoV+5qX1lKBz94SGuvEu8R/wyb+7g8XFn3ImPTa
+         astA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790729538; x=1791334338;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oI98Ayhzw4RbFHO2K+V0agJoQQc6JpmcneVnzd6gbtU=;
-        b=e9wNq47fkCTMKKE5evU0kfZW9+tY7+o0gPAny4Zv7gZUdMc6VF5tDcJmJF7pi+xrRA
-         MN3F+jCY2bNALfG+kY371r61Rzf9gjs1HMya55O7nsAFr1VO3FT4G7uNAxJ957UnKMHC
-         bMlTzBpMe2XjBvjzDy41+XQVjg63Na6F85miYD29iN9woevudq14Hy/5DoGnfwoN7zpn
-         vWGHDlh4Rq5HmtBS78aS3+bRtzQUe1/LsVRIXyepCIjPHCXgP7ej3UFDcAIsDTivL/C+
-         NpfG2ggeHDUJPTtx2Yxj1/ZeJGDXSE7E900SkHq/SAyxHljamgWC0AdoIeJVZPJ4JOyI
-         MN4A==
-X-Forwarded-Encrypted: i=1; AKwUvBzrh0GjnWEJTVD5U+TEdnpKRGZF5F5JNBlCMD/mUO2P8cpGeinjESOjfrE1H6sMfzvdlzA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKp0psLzNHJqnbBilGcejex9oUvPTbQg68WyQ6vj3HAoSVH79Xy
-	dKrM3MUiPopiTsbKyDw5jP/0LE+Vj0/oMniO7xPPPdtNYt19C4Z2uL9P9xFShGibvXvfkOjs2GA
-	vacCCjg==
-X-Received: from pjyp16.prod.google.com ([2002:a17:90a:e710:b0:3a0:d194:5942])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5281:b0:3a4:6f87:c0cf
- with SMTP id 98e67ed59e1d1-3a4c00ced30mr726463a91.53.1790729538108; Tue, 29
- Sep 2026 17:52:18 -0700 (PDT)
-Date: Tue, 29 Sep 2026 17:52:17 -0700
-In-Reply-To: <20260929202434.174501-3-xiaoyao.li@intel.com>
+        d=1e100.net; s=20260707; t=1790729713; x=1791334513;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wAW//sr3pC2NBc7liE6tPMI+ECsOTrk881ZsZeZAzE4=;
+        b=C8Whd7AerZWoztevU1bmzMSCUxyFfaDtgvtuv29VV5/oXCeS86xVDWNGdvdhECWT+U
+         IjMhvQoT/iMWkby1Bzk0EQzcAYp7sAQShvnRBkmECtB/A8YI2aXhkGDAk/MqG729Pguh
+         Fxjng5KzRGcQ1JEGRST62TJJEjWKxGkMJbNImWUrqlwZuZL3NSIxwNqvBeemwp43+jlm
+         dg1/ySgKrngwb3rD88R9IBulUH//rTfya1yEMPDARZssuhb4CYB4Kqa+pPXiXerugO7K
+         CiM+lmkcjjnWapyClaHdFO7+vJ9HeTNtXUxIiYuQGs46SsbuW8Z77Sjz8ciWllqMI84w
+         z1TQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzoc1Zsn8ci8lmgMNj7Qpu0elDJZNkMlTO8HP+diacZJGdxTTtAhdWvpZbjw63XVdLu+fE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nM9nejguffzim7yZxE3dzGX10Ni3cxf57Yjl3SyMSnRsjqNqKg
+	7RfmZ8wJJ2GtslYw30rILXqAAUbVJVhmq8mZVYKnC00l0XUPHUJuGKUJXeMxRr5E0aUhazS77Qo
+	rYhvJ6Q==
+X-Received: from pgbcw4.prod.google.com ([2002:a05:6a02:4284:b0:cc7:b387:6d4b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa5:b0:3de:849f:9053
+ with SMTP id adf61e73a8af0-3de9530b969mr741880637.45.1790729712492; Tue, 29
+ Sep 2026 17:55:12 -0700 (PDT)
+Date: Tue, 29 Sep 2026 17:55:11 -0700
+In-Reply-To: <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260929202434.174501-1-xiaoyao.li@intel.com> <20260929202434.174501-3-xiaoyao.li@intel.com>
-Message-ID: <arxdQWchYIct3TPT@google.com>
-Subject: Re: [kvm-unit-tests PATCH v2 2/2] x86/run: Use separate "-accel"
- option to configure the accelerator
+References: <20260930001127.3170009-1-seanjc@google.com> <3c0ee89f560b0235f293b32019327186785aa795.camel@intel.com>
+Message-ID: <arxd78Pn6WWL6TGq@google.com>
+Subject: Re: [PATCH v2 0/3] KVM: TDX: Syntehsize SHUTDOWN on unhandled EPT Violation
 From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"jthoughton@google.com" <jthoughton@google.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2026, Xiaoyao Li wrote:
-> When configuring accelerator via machine's "accel" property, it cannot
-> pass additional ACCEL_PROPS. For example, it hits following error when
-> configuring KVM with "notify-vmexit":
-> 
->   # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
->   #   qemu-system-x86_64: Property 'pc-i440fx-11.1-machine.notify-vmexit' not found
-> 
-> Switch to use separate "-accel" option to configure the accelerator.
+On Wed, Sep 30, 2026, Rick P Edgecombe wrote:
+> On Tue, 2026-09-29 at 17:11 -0700, Sean Christopherson wrote:
+> > Signal SHUTDOWN instead of -EIO if the guest accesses an unaccepted pag=
+e and
+> > has disabled EPT Violation #VEs on such accesses.=C2=A0 Returning -EIO =
+is all but
+> > guaranteed to mislead the VMM into thinking KVM (or the VMM) messed up,=
+ and
+> > will likely result in the VM being terminated instead of rebooted.
+>=20
+> I'm pretty sure Yan had a test for this path, and I'd love to see it actu=
+ally
+> exercised. What is the urgency on getting this fix upstream? Can we wait =
+a week?
 
-FYI, this breaks the intel_iommu test when running with ACCEL="kvm,kernel-irqchip=on"
-because that's a split-only test:
-
-  qemu_params = -M q35,kernel-irqchip=split -device intel-iommu,intremap=on,eim=off -device edu
-
-and QEMU doesn't munge things together:
-
-  qemu: -device intel-iommu,intremap=on,eim=off: Interrupt Remapping cannot work with kernel-irqchip=on, please use 'split|off'.
-
-Given that I'm pretty sure I'm literally the only person the world that runs KUT
-with ACCEL="kvm,kernel-irqchip=on", I'm going to apply this as-is.  I can filter
-out the failures very easily, and unlike the CET/LAM issue, this doesn't cause
-problems for ACCEL="kvm,kernel-irqchip=split", i.e. there's no loss in coverage.
-
-If this impacts someone else, or someone really wants to figure out how to splice
-all of this together, I'm happy to revisit things.  For now, I just want to
-unblock the notify-vmexit stuff.
-
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
->  x86/run | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/x86/run b/x86/run
-> index dd38f14c871f..a68d469dd1b8 100755
-> --- a/x86/run
-> +++ b/x86/run
-> @@ -43,7 +43,7 @@ fi
->  pit="-global kvm-pit.lost_tick_policy=discard"
->  
->  command="${qemu} --no-reboot -nodefaults $pit $pc_testdev -display none -serial stdio $pci_testdev"
-> -command+=" -machine accel=$ACCEL$ACCEL_PROPS"
-> +command+=" -accel $ACCEL$ACCEL_PROPS"
->  if [ "${CONFIG_EFI}" != y ]; then
->  	command+=" -kernel"
->  fi
-> -- 
-> 2.53.0
-> 
-> 
+Absolutely.  It can probably wait a month and no one would care.  IIRC, thi=
+s got
+hit by someone (internal to Google) deliberately crashing a guest kernel an=
+d doing
+funky things with kexec.  It showed up on my radar purely because our autom=
+ated
+madness alerted on the resulting assertion (on -EIO) in the VMM.
