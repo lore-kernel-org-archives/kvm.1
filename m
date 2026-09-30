@@ -1,25 +1,33 @@
-Received: from out198-23.us.a.mail.aliyun.com (out198-23.us.a.mail.aliyun.com [47.90.198.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD32F3624DB;
-	Wed, 30 Sep 2026 12:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.23
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048512ECD32;
+	Wed, 30 Sep 2026 12:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790771094; cv=none; b=BjNWHxXn0tdyfWZ76ntdN+7zD2myZrGLQDhkANQDMmBH3id+HBsWoVGY+cuyMpUGqovWmaf3nBEFhgB6LwxEbkEviH/u80ts6LRPSKk+6+bgAYSWHjtMIXVMb/cH4bcGSxVosc7Kgv9O7Ut1CGItn16rX/7vPO8BhBzpmDIS0U0=
+	t=1790772477; cv=none; b=u5j8Zj7HiZ3TZX6vUq4vVsUCcmR4CqExQSqFtTsQ+MQqESUyxVjNzWanGMWXa41VDoIuZ0JG7s9OGpS+PWKLNM8mQvjMGotDqu9+2blIdz0/dwj+nmh/0w+giH2qfpv+zXALuViKmlhSqgLT5VXFoEu81UZUg6ta9YG1114c0oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790771094; c=relaxed/simple;
-	bh=oOx89ZkTYto6hTf/g/P9vzE9FciTS9IGNHzImGjKszE=;
+	s=arc-20240116; t=1790772477; c=relaxed/simple;
+	bh=XSxUOWy6/i2pHRQoyR+pRBw8GLAglNiW8ucXPa+ua2g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K1Xc9rj7RPkAT0azWFAh4vi4BoK6UVh8BkocTe8726weWA5et1X1aoc0Yf65VnI2YyW48tJoSoMNsGfEA0fjCcUNR6TSSFUUPrVD8iI+pmj37HQxRe1RWy3VZyElIG354SvgCm+HQVmqQSbQyaFhut64Ke1r88qeKRvBD4W7gOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=47.90.198.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07469621|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.0552072-0.000323851-0.944469;FP=14945158427218365692|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jSMK3gv_1790771069;
-Received: from 192.168.0.110(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jSMK3gv_1790771069 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 30 Sep 2026 20:24:30 +0800
-Message-ID: <ec1fb2e5-87c5-443f-9bd6-6983b96f63d7@open-hieco.net>
-Date: Wed, 30 Sep 2026 20:24:28 +0800
+	 In-Reply-To:Content-Type; b=kONDwtCVJQZLcgLdI+8ASWsrkmSiSCCK2izgw7KuhYEyBGzZMNNC2oI873pAWkXF/GQIuhltSPv11QcdCGbMmM3a/QyiCy/MMnOoIkGU/a/sKdfVkwNn7FTO7YQGVZOysaUm7zVynzwyg7aXG8SHs7sYonFXKJpNxTzQmnPhWB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=sPjyAGUL; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="sPjyAGUL"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8397C497;
+	Wed, 30 Sep 2026 05:47:46 -0700 (PDT)
+Received: from [10.57.9.178] (unknown [10.57.9.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9DBD33F85F;
+	Wed, 30 Sep 2026 05:47:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790772469; bh=XSxUOWy6/i2pHRQoyR+pRBw8GLAglNiW8ucXPa+ua2g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sPjyAGULKD9PkR/+zPN+CoAKsJcaKiFs97aaVMAEhj+whK/A2nwHAqZsBENcqUCWu
+	 ee5jHrvUlzYiKD35l0dRchtPoFvUbg61JriWBcZK4Vv7ktDlVpXveN0+sYo+2pDal2
+	 lMaPN0u/BqkAjoWLofB/apY/534GPeErbDxXtl2g=
+Message-ID: <fee0d1b7-8569-4235-b200-03490b78637e@arm.com>
+Date: Wed, 30 Sep 2026 13:47:45 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -27,92 +35,75 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 5/8] KVM: nSVM: Fetch DecodeAssist bytes for
- synthesized faults
-To: Jim Mattson <jmattson@google.com>, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1790171702.git.zhang_wei@open-hieco.net>
- <b614e927c6c1ce9265cb9a37b296b0b30598da72.1790171702.git.zhang_wei@open-hieco.net>
- <CALMp9eT1qMk7V7=md68LEXvmWH5ecj1YBn-YHoQ-vzJziaP5VA@mail.gmail.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <CALMp9eT1qMk7V7=md68LEXvmWH5ecj1YBn-YHoQ-vzJziaP5VA@mail.gmail.com>
+Subject: Re: [PATCH v20 9/9] firmware: arm_rmm: hotplug: Skip memory added to
+ ZONE_MOVABLE
+Content-Language: en-GB
+To: "David Hildenbrand (Arm)" <david@kernel.org>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+ yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-10-suzuki.poulose@arm.com>
+ <4d3be415-6d51-46f7-81ca-ab2dcf0f0f74@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <4d3be415-6d51-46f7-81ca-ab2dcf0f0f74@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 30/09/2026 13:22, David Hildenbrand (Arm) wrote:
+> On 9/30/26 00:16, Suzuki K Poulose wrote:
+>> If the hotadded memory is in ZONE_MOVABLE, we could allow that to proceed
+>> without the RMM having fine grained tracking, as we won't allocate pages
+>> from there for guest-memfd or kernel allocation
+>>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Changes since v19:
+>>   - New patch in v20, keeping this at the tail to allow for the rest of the
+>>     series to proceed, while this patch gets discussed.
+>> ---
+>>   drivers/firmware/arm_rmm/rmi.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
+>>
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index d4d098448e46e..ef0a171ba9677 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -1043,6 +1043,18 @@ static int rmi_memory_notifier(struct notifier_block *nb,
+>>   	start = PFN_PHYS(arg->start_pfn);
+>>   	end = PFN_PHYS(arg->start_pfn + arg->nr_pages);
+>>   
+>> +	/*
+>> +	 * If the hotplugged memory region is in ZONE_MOVABLE, neither the
+>> +	 * guest-memfd nor the kernel allocations can come from there. So we are
+>> +	 * fine to skip this.
+>> +	 * For boot time memory, we don't allow this discount, as the
+>> +	 * decision to move boot memory pages to ZONE_MOVABLE is purely
+>> +	 * a kernel choice and the firmware must have decided what it covers.
+>> +	 */
+>> +	if (page_zonenum(pfn_to_page(arg->start_pfn)) == ZONE_MOVABLE &&
+>> +	    page_zonenum(pfn_to_page(arg->start_pfn + arg->nr_pages - 1)) == ZONE_MOVABLE)
+>> +		return NOTIFY_DONE;
+>> +
+> 
+> is_zone_movable_page(pfn_to_page(start_pfn)
+> 
+> as used by virtio-mem should be sufficient. Checking only the start pfn is
+> sufficient.
 
+Thanks David, I will update it.
 
-On 9/24/2026 6:20 AM, Jim Mattson wrote:
-> I hadn't anticipated the need for this special-case, and it's more
-> intrusive than just returning the number of bytes read.
-> 
-> I see now that it's complicated to match the behavior of the
-> emulator's __do_insn_fetch_bytes(). You could clamp the number of
-> bytes to read up-front to deal with the end of the address space, but
-> you would still need a second call to handle the wrap.  Something like
-> the following (mangled by my MUA):
-> 
-> static unsigned int __kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr,
->    void *val, unsigned int bytes)
-> {
-> struct x86_exception exception = {};
-> unsigned int bytes_read;
-> u64 access = PFERR_FETCH_MASK;
-> 
-> if (kvm_x86_call(get_cpl)(vcpu) == 3)
-> access |= PFERR_USER_MASK;
-> 
-> kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access,
->    &exception, &bytes_read);
-> return bytes_read;
-> }
-> 
-> unsigned int kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr,
->   void *val, unsigned int bytes)
-> {
-> unsigned int first, bytes_read;
-> bool wraps;
-> u64 avail;
-> 
-> /* An instruction-sized fetch can wrap at most once. */
-> if (WARN_ON_ONCE(bytes > X86_MAX_INSTRUCTION_LENGTH))
-> return 0;
-> 
-> if (!is_64_bit_mode(vcpu)) {
-> addr = (u32)addr;
-> avail = BIT_ULL(32) - addr;
-> wraps = true;
-> } else if (is_noncanonical_address(addr, vcpu, 0)) {
-> return 0;
-> } else if (addr < BIT_ULL(63)) {
-> avail = BIT_ULL(vcpu_virt_addr_bits(vcpu) - 1) - addr;
-> wraps = false;
-> } else {
-> avail = -addr;
-> wraps = true;
-> }
-> 
-> first = min_t(u64, bytes, avail);
-> bytes_read = __kvm_fetch_guest_virt(vcpu, addr, val, first);
-> 
-> if (wraps && bytes_read == first && first < bytes)
-> bytes_read += __kvm_fetch_guest_virt(vcpu, 0, val + first,
->      bytes - first);
-> 
-> return bytes_read;
-> }
-> 
-> I think this solution may be worse than what you have now, but I will
-> defer to Sean. Maybe he will have a better idea. (Maybe my suggestion
-> to return the number of bytes read was misguided.)
-> 
-> Reviewed-by: Jim Mattson<jmattson@google.com>
-> 
-Thanks, Jim, for the suggestion and review.
+Cheers
+Suzuki
 
-Hi Sean, what do you think?
+> 
 
-Thanks,
-Tina
