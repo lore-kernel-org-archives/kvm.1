@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A69521888
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C51509F05
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790804905; cv=none; b=tRII3oAe/xKictf+ZsqZPe/MltXRSPTg++M7mUF7OIh8eIdLh4YzkdSRu3OvbQFIRUNoDDNkIPQ9B5kmC0n3pVkd2KWteKQe3xGDyIyvkq1XDjy3WTBPal4QzcjiG0BDO9NgAqq25zMFK9X/OGptoUpoMalTM1R7miB+xr/hlj4=
+	t=1790805155; cv=none; b=ANivG38+KYCY1D2lHJ+wV71+UCHstYvoAm1eoyJXRG9KfVEBqli2D2DiWIoEttxsSvQXSImSDVVU6cdoT+IhyO5JUxMbvemYb06Ual21xr3LcO1atjB7VVNL4Lx5+UdLxjqyjeaoS2ePb5DxosFktz3en+ghv111IsAYm9FtC94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790804905; c=relaxed/simple;
-	bh=5YxQpGujvWkODCGtB19lxg17dJFqM0rs1GSbbs4qo3c=;
+	s=arc-20240116; t=1790805155; c=relaxed/simple;
+	bh=pqhdxNRhgTxL2QcLDWCKukCjr//v6/Q99+jJMu9TcR0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=J2HyAimNX/O1IY6Cso1Uq00ep/ct8GP1NLRsHUcOw/gOZMu9n88YGSFe/E7Th3KCCy/9abn+naHS+CsCfYjr3CNdvbxSKMu93lUfYT+BgioNUCsj9uI+VO9cdkgkJAAYNDoYAaE91k2C0Wr9VGQzA3h5eVcK4Yrm2+M/lmkYAaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NcS7BwPM; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=pE9joMDHeC9obFfghuDNH5EH9rGVsvOSJVvdzjc/djpkFayZzSGcTY7BwZxWtarZKUGBFUSIn+GUyofRIt3bBcCAH01pXeIF7pL9kWY0HQtdXpUBKTV+bwhZ8RBFWNmgtPtvvzWSWQ7cLp7X2W0ZEJ2snHYh3Ew+fvxiUeQvCDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlSkgjH4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NcS7BwPM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158FB1F00898;
-	Wed, 30 Sep 2026 21:48:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlSkgjH4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E721F000FF;
+	Wed, 30 Sep 2026 21:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790804904;
-	bh=HmNXxbCAcRqbsevfGL+ys9jjDnpPUe1gLVsTQOhkxoE=;
+	s=k20260515; t=1790805154;
+	bh=C5lM4RZ0vELCrs2U74RR2bzBtwVm5eZBSv9kv4J8Ors=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NcS7BwPMEIPGboEvcVPg3eXAsV4qwxp5bYjYovNM1iPQy2lyO5c4XTct33sLOickC
-	 bj3Yb4EJFKzSAR1uirZFCFpHc772xIrfsEO9e+47YMZCWpRqxmzoRgVCSsxEEWr09b
-	 amtCYAB6i9BkDzk1Tq3OWIkrSYGl7H6TDTkj7B6XM3HK6decSiYNYeAEUCD1/yA09x
-	 fl/jVUcfOoB+CilulbJ+ckOlFYS2DtYtEoF944fpfcMqmzapEprla9tc4vEgGzM2sa
-	 Qvg2pKObBLPFTPtuUgsmtsn4YBXwNeaBPXw/gXvTT6/q7nRbxuv223YuL4l2oGv8lp
-	 CE4Rjp7ZkjBiw==
+	b=AlSkgjH4ut9X7i00gjRQNOJUH5urzi6Qr/NiTyVGFHF42DTvJ3B5LqTS/aMkXU1+9
+	 4IJ1doCSsSpkKO6YZVW4unrHq/jx0THC6Xc4rxWW0zD6nCSGszAae3S27STVgeVlZy
+	 Ys6rjreFT9Ml9tjqgk4yWDvBCmLgHLKFy/iuWudWBoakgFTCeNRmw6y73I45s1oqjb
+	 ooyj3RKFvsHqlqKO1J5EZjnVguSLdsH86WKpJ6iTizHffYDkTL/qDJlbKmCNQONSV+
+	 QGXO21ltjuzDZl3862wMuLQHPxtvCh6Th5rbyQBsfRmxp01swApEDPjrtAcWAZXRyx
+	 nzqXDVaiCVfag==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 19/20] KVM: x86: selftests: Add APX state and ABI
- test
+Subject: Re: [PATCH v8 08/20] KVM: VMX: Support instruction information
+ extension
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260930210750.1487547-20-chang.seok.bae@intel.com>
+In-Reply-To: <20260930210750.1487547-9-chang.seok.bae@intel.com>
 References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
- <20260930210750.1487547-20-chang.seok.bae@intel.com>
+ <20260930210750.1487547-9-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 30 Sep 2026 21:48:23 +0000
-Message-Id: <20260930214824.158FB1F00898@smtp.kernel.org>
+Date: Wed, 30 Sep 2026 21:52:33 +0000
+Message-Id: <20260930215234.10E721F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,77 +47,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kselftests: missing volatile in read_egpr() causes spurious test=
- failures
+- [High] kvm: vmx: eVMCS mapping missing for EXTENDED_INSTRUCTION_INFO on A=
+PX hosts
 --
 
-commit 9da537583adffa94be39a84efcfb15a0c9610def
+commit 2d697a70afdaa50d39579af2713731bbc6805336
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: x86: selftests: Add APX state and ABI test
+KVM: VMX: Support instruction information extension
 
-This commit introduces selftests for APX-specific behavior and ABI
-interactions in KVM. It implements guest code to read and write EGPR state
-and verifies the state transitions after userspace updates and APX
-disablement.
+Define the VMCS field offset for the extended instruction information.
+Then, support 5-bit register indices retrieval from VMCS fields.
+Note the APX enumeration alone indicates the extension is available.
 
-> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/=
-testing/selftests/kvm/include/x86/processor.h
-> index 6e6f70035508a..6e3e7d96c571e 100644
-> --- a/tools/testing/selftests/kvm/include/x86/processor.h
-> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+Link: https://lore.kernel.org/aakEsXJgO-3m2xca@google.com
 
+> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+> index 863b08478544f..4a76af6137201 100644
+> --- a/arch/x86/kvm/vmx/vmx.h
+> +++ b/arch/x86/kvm/vmx/vmx.h
 [ ... ]
-
-> @@ -917,6 +919,124 @@ static inline void write_sse_reg(int reg, const sse=
-128_t *data)
->  	}
->  }
+> @@ -714,20 +723,22 @@ static inline bool vmx_guest_state_valid(struct kvm=
+_vcpu *vcpu)
 > =20
-> +static inline unsigned long read_egpr(int reg)
-> +{
-> +	unsigned long data =3D 0;
-> +
-> +	/* mov %r16..%r31, %rax */
-> +	switch (reg) {
-> +	case 16:
-> +		asm(".byte 0xd5, 0x48, 0x89, 0xc0" : "=3Da"(data));
+>  void dump_vmcs(struct kvm_vcpu *vcpu);
+> =20
+> -/* A placeholder to smoothen 64-bit extension */
+>  static inline u64 vmx_get_instr_info(void)
+>  {
+> -	return vmcs_read32(VMX_INSTRUCTION_INFO);
+> +	return vmx_instr_info_extended() ? vmcs_read64(EXTENDED_INSTRUCTION_INF=
+O) :
+> +					   vmcs_read32(VMX_INSTRUCTION_INFO);
+>  }
 
-[Severity: Medium]
-Does read_egpr() need the volatile qualifier on its inline assembly
-statements?
+[Severity: High]
+Is a new eVMCS mapping required here?
 
-Since the asm statements only have an output operand, standard compiler
-optimizations can treat them as pure computations. When called multiple
-times, the compiler might cache the result of the first read and skip
-subsequent executions, leading to stale register reads.
+When KVM runs as L1 on top of Hyper-V (using eVMCS), vmx_get_instr_info()
+unconditionally calls vmcs_read64(EXTENDED_INSTRUCTION_INFO) if the underly=
+ing
+host CPU exposes APX (cpu_feature_enabled(X86_FEATURE_APX)).
 
-[ ... ]
+Because EXTENDED_INSTRUCTION_INFO (0x2406) is not defined in the eVMCS mapp=
+ing
+(vmcs_field_to_evmcs_1 in arch/x86/kvm/vmx/hyperv_evmcs.c), evmcs_read64()
+fails with -ENOENT, triggers a WARN_ONCE, and returns 0.
 
-> diff --git a/tools/testing/selftests/kvm/x86/apx_test.c b/tools/testing/s=
-elftests/kvm/x86/apx_test.c
-> new file mode 100644
-> index 0000000000000..4825003d0616b
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/apx_test.c
+This is reachable by any L2 guest performing a CR access or VMX instruction
+when KVM runs on an APX-capable host under Hyper-V.
 
-[ ... ]
+It causes KVM to incorrectly decode operands for all control-register acces=
+ses
+and nested VMX instructions (defaulting to the RAX register), leading to to=
+tal
+failure of nested virtualization.
 
-> +static void test_userspace_update(void)
-> +{
-> +	/* Userspace updates EGPR state via the KVM XSAVE ABI */
-> +	GUEST_SYNC(USERSPACE_UPDATE);
-> +	GUEST_ASSERT(validate_egprs(USERSPACE_UPDATE));
-
-[Severity: Medium]
-Will compiler hoisting cause this validation to fail spuriously?
-
-This sequence expects the EGPR state to be read strictly after the userspace
-update and the hypercall returns. Because read_egpr() lacks a volatile
-qualifier, the read inside validate_egprs() might be optimized away. This
-could cause the test to use a stale cached value from earlier and trigger a
-spurious failure.
+Note: The related vmcs12 nesting issue raised in the original concern was
+correctly resolved in follow-up patch 9 (commit 50ba47ea51df), but the eVMCS
+issue remains broken through the end of the series.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930210750.1487=
-547-1-chang.seok.bae@intel.com?part=3D19
+547-1-chang.seok.bae@intel.com?part=3D8
