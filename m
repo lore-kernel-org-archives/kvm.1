@@ -1,217 +1,173 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E8C4C33F6
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 13:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790775621; cv=none; b=QkohyVtRk/6a2GhDwojR147GcmXsE5NTl9BTttgMKf6DG4Eg4q/KUyblbHXlkkMJ+s5fE6zIpa+XFBKMFmLKPk1x8nPvHa8p2gb8mvgy8zllQgDrA5hwoXToBWmcrjmU/SN+a9MPtz7asauuvsQwtaYevihIxMHMBmqOiLRRLO0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790775621; c=relaxed/simple;
-	bh=8WlU2Pp4Tblnh0B3ByiJ5CdsMxGlkBAiKBFIr6x6cu8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BOQIk6RC6uxVOMhI1XI1QI5cYLnUWW1FPGaWE+2CUBLk4PlBaUQcZ53svsj8x+qLqU8Pv9pU5qP/pYQI7bejdjT9sqbJ5vfbnQo9RNXyvYC04NyA5pUQqYIzG/6LMmxEf2BLwkv5gIBCq0ltgXScVm/9/BVk2GrlLbFbn3ed6wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a5Ey2+wC; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8958E4A090C
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 13:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790775674; cv=fail; b=ZnXZtDCt2wqblF53UoIAWQ+RDRHHwY68buLE9LekTyLGafwEQ9rIyjoeMnYtBOZT2A7zqa8ChMFxL59YuTwE2oOdw8Cqz1HylnIG2hfeMfFdvPPnXTfUhBC7PXm6aEtPgdJdDKMpCIBYSSnSmgSDyA8ga22TvzZE6Ww9JVi+yw0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790775674; c=relaxed/simple;
+	bh=DfaDh4RNrU+uRWKZAcvnoFJU1uxho35PkzaLlEj+fNE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ltL/dVL7YXTNvvWQMbHPIao7uLQ+oBDU6XKFvIcHAyewZ4xq5+VItGgjLJ6iSlZ2YKKJNiIPkrsScKTS6JpAq8vnwE6fKjZRlImKSHlt4zir6+rFfat3Zbb0VGg7bWGXTRTrP/ASIfpds3KLOFcfCMpfKlRb26lFnlvxhtmX/Wg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OUr9HqpP; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a5Ey2+wC"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a74698972so4393328b3a.0
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 06:40:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790775609; x=1791380409; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TuQ5nRZHbUkS4XwzAQm9tdQMeatdxeR66kmNV9t4zvU=;
-        b=a5Ey2+wC2JSHYPuWs0McBs3LqQgt2e8nmj8+zdnxLeyqUC7e/Aa4bYgCbA8nhTiSOE
-         ihOY4AbOj3dRJekETbmdv1bYTU4yrWNsK6Gb/l4u3uReNYcUGk1j74Ins8rKXQPzUeDv
-         u+h/TVo5w2A4V1oLdL2dSJZlzXrXhdgbULhfcKD0YJfrVjlBSLmS+yI0HQ5K5W1SzAvs
-         heo9sIwjK1v6VSnsSDLU+x7HU9Tu4uxRbcZjDbLzh8KTxnGQq32hK0m+lIHJ6ejUv2K0
-         /e0c/o/3zsZN4ND+YPBXTe3scUZIt3GQSGqo1CdmyMFEZ1m6ydtqNMkvKoEEDLzaKNxD
-         VqsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790775609; x=1791380409;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TuQ5nRZHbUkS4XwzAQm9tdQMeatdxeR66kmNV9t4zvU=;
-        b=gzsQnDMB3B1Y5qv4SAwjUTyepH7JuYQwqm1i6xyTyin3mM98OfyIeIv3cDWDha1fWE
-         EpGnJ3boQ9vpunQHOQQ/eTS6ghwoIt2sUy1+SfQJVvPm9z4mTBkzQdeqZ97rsdCTrS7I
-         RfRezM2JR6NtWu7S5H1bOtDJ2G1/+xFvf5eLEpg3hJZZafd1fTQcqcUb32GjAuQJhMpb
-         aXaH7f292Lgv+Upk4qYvEJ+A+6vmBwyQ0DasZt5RTXICWdlb8w22EDwDMcDE19popM7t
-         SbB8/Ih3pkZiZIG2pGrTy7LAiF4we4oQk6h9/ErVOJ8yzzAgifJiJlhGRhUCVCTYRO5o
-         cwOw==
-X-Gm-Message-State: AFuF++mF0I78pTwZWcMyI1Vh8AbCyJR8YUMudc4VuBJBsmk+0O1R3gYX
-	+IzGPbRc0tdtHL+m9nO+FX9UE5TV6V5EOuBQAZZYEoBoAjoh8gYwd1UIQDSYIr+rgGk8uNNjbUT
-	kKqEakA==
-X-Received: from pgbcs13.prod.google.com ([2002:a05:6a02:418d:b0:cc7:b17d:4d15])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a04:b0:3b4:8880:2089
- with SMTP id adf61e73a8af0-3de9e8444ecmr1290324637.16.1790775608328; Wed, 30
- Sep 2026 06:40:08 -0700 (PDT)
-Date: Wed, 30 Sep 2026 06:40:07 -0700
-In-Reply-To: <ar0KIZ8HQEfIRvVJ@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OUr9HqpP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790775664; x=1822311664;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=DfaDh4RNrU+uRWKZAcvnoFJU1uxho35PkzaLlEj+fNE=;
+  b=OUr9HqpPZGYqPh7neNCGlVPpV6Ab80h2K7igyTYNo2tTziw+oERHDTs/
+   Y47Gpb/kkRvSQgh+k38d2lBCx3xpv4/UDaBNrW0rWWudQBPv7pi3e4quB
+   Kjl/ytYV4dVQF7oHlweJURJ1kSw/gBlLrEPEvDv663XHl+P5aTYT6C0yM
+   wwR1M0VdUC9gRCovoxXTaUmC/o6pwBrgZexyW60y4nJZ0/1YCB9cwVZur
+   NEk7R3Zml8+mawCDVtzMK4G6vwaoqU+Rv0UvaK1Gj5XkoCOnkSkv8e/py
+   aHfpeZsOtyosDoQniXl0eJ+LE0gDHUXFpE7yj7p1A22m54zhYyuCsjOUh
+   Q==;
+X-CSE-ConnectionGUID: jh07j66ISRK85BDCgS2UoQ==
+X-CSE-MsgGUID: +0vyZh0cQ6+1pFQidmh6Xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="113299741"
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="113299741"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:40:59 -0700
+X-CSE-ConnectionGUID: pSkY1F1pTw6aBrhCywXYMQ==
+X-CSE-MsgGUID: cg0HRbx/TNOpfss92t22jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="313624325"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:40:59 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 30 Sep 2026 06:40:59 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 06:40:59 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.52) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 30 Sep 2026 06:40:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=seSBrhzdy/0/SwDJCNwl3WMBJVTkWmwpMCQ8iqz+SfPZJNgFN8/h2Ezt7JQtqBxfoMAN6+k/kjVQGkgYppOMIO7vfo5f9M4F6Laa54aOZopj0oIbAZP9HhiIjDxYePqoJjaLjIMZ/MwW6P5ClkWx3RHdNR3p63Q8JEE0hjUZAqbEz1k/GiGGeJGH54ABxtWLWtJkDh8z1bQsJxvAwqrYyPDZycQi6qbmjzMNa7S04zIg1FHOdBx9Fw+8TN5vJv/VzkFg1n4F4MSFIjaLvkA7s0QI1Mn/g2hgLCh2a8xsQ2yiD1piAblI5wZFUSn3BhRbPW64cC8Wu+RAhM4MlIf53A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YVcWH8osukxhr3oPRrmga9Sx3bOSNIJxp+uVF4LWsj0=;
+ b=SGkFmHIxeV33URB1WQVA9X4aeyPNvno75EpR3tXk+mAYr+4VkRRyJ7fek4E/3RUMsZZfFjhxFReOBvecbB2mupMmLa7vQgNCo/BCONMwdzhn8UOlDLn7kzq5H/V6O7rT8GGSR6aV8kd35VytjdHbuGiRAXqRQ50b7WznPoqouEUSRt8NOcF27tVGWHl121g0Dk9aDaq29c9YMKeFYtEN5XR3zk7zpVWaBaclpHIITOM+1bNMP7hRipD0i4B1PbTB/mHFLXNvcwchPAwUKlGnO6KmEfAeLmj9QrARX4jQGRU3sAhwqNcXdQJ9y76PWvpgaImboSFwTtXAphkjM2Gpsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by SA2PR11MB4987.namprd11.prod.outlook.com
+ (2603:10b6:806:113::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Wed, 30 Sep
+ 2026 13:40:56 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0472.015; Wed, 30 Sep 2026
+ 13:40:56 +0000
+Date: Wed, 30 Sep 2026 06:40:39 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>
+Subject: Re: [PATCH v6 6/6] virt: tdx-guest: Make the Quote buffer size
+ dynamic
+Message-ID: <ar0RVyfvEGykm0_u@intel.com>
+References: <20260930103739.2851980-1-peter.fang@intel.com>
+ <20260930103739.2851980-7-peter.fang@intel.com>
+ <20260930104949.8677A1F00893@smtp.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260930104949.8677A1F00893@smtp.kernel.org>
+X-ClientProxiedBy: SJ0PR13CA0003.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::8) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ar0KIZ8HQEfIRvVJ@sirena.org.uk>
-Message-ID: <ar0RN3FICQ-PEqNW@google.com>
-Subject: Re: linux-next: manual merge of the kvm-x86 tree with the kvm-fixes tree
-From: Sean Christopherson <seanjc@google.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: KVM <kvm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|SA2PR11MB4987:EE_
+X-MS-Office365-Filtering-Correlation-Id: a37abf25-5c4b-49e9-fe04-08df1ef8741e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|4143699003|22082099003|10067099003|11063799006|56012099006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: Ca9bV+CoiSfv0xE+jvt0bDKDGGMO69bjOVrPwAf5Lax4chrn4AjmB8gYTK8xH0ldd55b4mjMp/4ZltKKztYDFwery8ojMn5Wuwjt1w/AhDteAmW6QbckSBJPb88DEKsbpCHS6uzEM5FAm6L7yUAhrUTSKy/zxrAijjsg0xBlFwHFRRztX0C5NT7E6VlaTogEmktzNxsCp4ioLvsnT0sfSvLdnUoGZjgOuDlua3jc7XbMq4mm+5aTb6UCeg01wrojwCxfP6PmsXNz0DKHLc+5c/A+ll5hlFkoIz4YijwPwGNjxyYcDnnxyGqzAeozvytq46zPZPgEzoN8X3aogH0UTWIgZcBTKdawhdb3gTeOQSTMxDVidF+A5iVCtQQr6o6sLWGrR8peBPcq1iYxy7jwqb9viQcr00KdkdQ92bpdqI3gOkQuNhNGZeTTtknp4aOca1ekEQZkTGSYlJIIFVlYylUCzlllIyBbBKYYVxeftpQJ4OaITQQl4F2TmTBKV3O+NBds7xDAqRXEkKq+XlsbB6Up3yyVU6MqTIlNriIuQmuUXYHhzsWQ1RntksY4N1va9+jo7rqQ8xZ00L8YGsSXIEpeefVDnfPeZJDcq3riCY4inkuu668xUtDYdKEN85AZk0VWLkBPQCx0LKuqoq2O9QNEDJQqKFCzowCx24TLgiE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(4143699003)(22082099003)(10067099003)(11063799006)(56012099006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9EF68LfRQbsarPtErLmeTveEt7aw0WTbHxV2FP4C4zRx5uIwgwov3KHQB0YU?=
+ =?us-ascii?Q?As/JmUf+/7eAyShV7h7JVGlbX6Fh43806b/0sPOWzuY5zeHMCZIiG5y7rxAD?=
+ =?us-ascii?Q?yHuf+Rt4A+ksn2EFyTklMNnB4hI2ehR7Y2uoc90k4kyG0ULs6OTOoZWEtowu?=
+ =?us-ascii?Q?VInK+U/31unkIAe5ItMqIcuJKS2KLIhIE6Pnfdi+iC26I8vSRV7kiMkpfvnm?=
+ =?us-ascii?Q?gClOerIfbWRKf3QhMMm1cBfbwd4cGWOj3g7nNTLNL9JATwr0vRVkjSKEfZQ0?=
+ =?us-ascii?Q?I+veJgkJN8uW9U7dfvFUrmIVzpwXMJqx8Ascl92Buvn7X544sUF29987Y2E1?=
+ =?us-ascii?Q?jN2fS/7G/8B/c2oPMbKakVVITIRgfM0Kwzsh+KLTfNl1SyxjwtZrzVSpJmCY?=
+ =?us-ascii?Q?fs86NR1dJsA5j27Vw8ETVoHTk0xnXG8G2nqjWyvm+oc5p/iqpOygEGWrUCx1?=
+ =?us-ascii?Q?FxZOLbpCD4UJFfe/ZABxSmokyiOA8gtg7ZJLO5MIXDsRPvVCtCRDOSIB/VSl?=
+ =?us-ascii?Q?+18B15Qr1qPZhYrLbVX/UjZsRlEapsOXkF+wp9elKEYwhfJpGBkvCZN51+ia?=
+ =?us-ascii?Q?Z+oUClulMRm2B+VrijoWd4+ghyxap+avyaO1s1XUJYeRDUVhf0Gfb6mqekmK?=
+ =?us-ascii?Q?WVV420pqtZ6LnNDbRMkQPVP9+o9b8Yeb5s8LSm9q+djeX6E6gsABHbSlJzz5?=
+ =?us-ascii?Q?2nGDJTy2uoCRk36cMYsq9cqyjeS+Xo3FidVhL5jcXVRtSfMbgSmB/Pn01wt+?=
+ =?us-ascii?Q?Ugr11y6bKKzGDXd8LlWzF9Pd9k/thi2tMfP2H2nb7Zk4Qlrlo+oj0rgmb96u?=
+ =?us-ascii?Q?leH85TKVnHiLSWaQeCuLBhEfuuBlXEvoEx5YdaWM9bk+ICPrZ0qZA4G0C1bV?=
+ =?us-ascii?Q?0Vfi/+JZ7Eklnx7h3R+sO9CNoaSg7Hxqw3yowL+RsItWgzESDi7BMcnasSXy?=
+ =?us-ascii?Q?ovKQ4/JE7vXPKJ8kk0+A/hMBYtJwKpD65xHjMwQ9LWoiU9KZwy/KINiZwzm/?=
+ =?us-ascii?Q?HNQhoUIqYNMF6lGBj6g03xrHDdqDp90+jDiCSGrljUem+d5w0g24edv589u/?=
+ =?us-ascii?Q?YTtP4wah0siE9ipoWeQo0nDOaN2EMWTSYYIW5U2IOpv0Hpk9Bjv+3apw1xYH?=
+ =?us-ascii?Q?lU0g1njde6KGk4jS9c2USwe8mCjQUfOC5kDBLx+kLOeMY6Z2ZsGMRB+t4n8E?=
+ =?us-ascii?Q?mS3d4URuP3sHFAPKAhCZmggfHfJLm1f7DZLwnTB5Gbt37pyh2x5rcR+HpL8X?=
+ =?us-ascii?Q?Y2Ik8FsdO5CpiZsyxuYVJ7GRzY4MG4B0o7vrRMc2d6SDdjzSrkXclU9DMl+B?=
+ =?us-ascii?Q?R4bk6A9POLyRCRxantOKZQ/qaaiAvTf0AhJJPaLmB5ZHbpXckAo9zxkEIBWY?=
+ =?us-ascii?Q?sMDE56X9ugftzB7/sowNF4cMAvx5cXa+nm+ra4lETfJ8mUOv1rwYI2m7zCUJ?=
+ =?us-ascii?Q?LiDZKyWso7ZCkmLPaPO9CkLjDSgQogZQPK1GUyWdn26b61uCLvj32E0lMUn7?=
+ =?us-ascii?Q?e6uvBrYNHRXxQm6j9pBgV6CJ1gmNjIjI4RR47nSQTyiri2l9Cd37+aqVtOOh?=
+ =?us-ascii?Q?INGnOT7AeO6tZ0EyjONO95AqJZT67jPQ3J5jigHiSFGHkEWdPZWudZTHQNNc?=
+ =?us-ascii?Q?DJl8rMOZTsgRB76VEa83Jl3ldBH8BNIF9dvKf4okeYRho0VYFnPi3CL7/qSL?=
+ =?us-ascii?Q?7jqhlED3JiidtFR4IXxzZEonVbY4oYdNqg7yBCVk2X1okNMEJVgN0FtDiNcY?=
+ =?us-ascii?Q?dttWEt8WPg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: LyDud/auHV55Qxvd9BwGqdRourbYDXENs/Edo2bgBEa8EWz9os3NIz4JGdTOF0Uv198r6mJ11O0EF2/oMmNBy7/uIqxkJ9i2bSg8yo0Wfy/LmYeasUa3YAjkxwEHEtZYsN0GITAYFQLfGoO4wOukAV3E0CCgYeeWFGH0PTToOKHSHfCuQ/aPXM+NcXmxeRA5f7K002KnVr3c54pSP631qsQFLz4QtOWZ6tY2s5P+rmGwSvetjAACOYNWw86rvw9yLtDRsZcfXJBOAaupwFtHCrXmUv1k7bDeHLk4zQGKS6gsJ8d7b00PWlPz0LrG+ojse8hokcIosZi25seJuHUsjw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a37abf25-5c4b-49e9-fe04-08df1ef8741e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 13:40:55.9735
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Igy4rtVN594HXJAtO9ME70R+bWJTH4vUjFGDhFc1wCzgsosCxCL82FI3JgWM5iCSbkMDU7gi29J6rNA5se1lsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4987
+X-OriginatorOrg: intel.com
 
-On Wed, Sep 30, 2026, Mark Brown wrote:
-> Hi all,
+On Wed, Sep 30, 2026 at 10:49:49AM +0000, sashiko-bot@kernel.org wrote:
 > 
-> Today's linux-next merge of the kvm-x86 tree got a conflict in:
+> [Severity: High]
+> Can this dynamic evaluation cause an out-of-bounds write or buddy allocator
+> corruption?
 > 
->   tools/testing/selftests/kvm/x86/nested_x2apic_test.c
+> If tdx_get_max_quote_size() fails transiently during initialization when
+> alloc_quote_buf() is called, get_quote_buf_size() will return the default
+> size, and alloc_pages_exact() will allocate a buffer of that size.
+
+Hmm, I don't think TDX code usually handles "fails transiently" on
+SEAMCALLs/TDCALLs. Like mentioned in [1], if attestation fails the TD is
+functionally dead.
+
+[1] https://lore.kernel.org/all/amCv00f5Q6QlztyY@thinkstation/
+
 > 
-> between commits:
+> If a subsequent userspace request triggers tdx_report_new_locked(), and the
+> size query succeeds this time returning a larger size, could the driver write
+> past the end of the allocation?
 > 
->   b630929bcc4c8 ("KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt")
->   b0bc51910f039 ("KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12")
-> 
-> from the kvm-fixes tree and commits:
-> 
->   9b2f8146fcef9 ("KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt")
->   a4bab1c12fd52 ("KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12")
-
-kvm-fixes got force-pushed, which is what's causing the weird conflict.  In a
-tree that hasn't refresh from kvm.git, I see:
-
-  a4bab1c12fd528ccaafee00360e07463873404a9 (kvm/master, kvm/HEAD) KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
-  9b2f8146fcef9faa73f9dc1bad9a8d6c585cfec8 KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt
-
-versus the newer version:
-
-  973ea70393e885e540f714904e51bc6cac80e3d7 (kvm/master, kvm/HEAD) KVM: SEV: Do cache maintenance on the source VM *before* clearing SEV state
-  8abbc76120a74bfba1851bd97528099d715e45c6 KVM: SEV: Nullify "have run CPUs" mask pointer when freeing it
-  b0bc51910f0391fea09c0a1d32352fec2acb2686 KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
-  b630929bcc4c867c9abc8cd5a0ebee3bb5ce5dcd KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt
-
-Ahh, I see the difference.  Paolo fixed up the Author:
-
-  commit 9b2f8146fcef9faa73f9dc1bad9a8d6c585cfec8
-  Author:     Paolo Bonzini <pbonzini@redhat.com>
-  AuthorDate: Sat Sep 26 02:04:03 2026 -0400
-  Commit:     Paolo Bonzini <pbonzini@redhat.com>
-  CommitDate: Sat Sep 26 02:22:15 2026 -0400
-
-versus:
-
-  commit b630929bcc4c867c9abc8cd5a0ebee3bb5ce5dcd
-  Author:     Sean Christopherson <seanjc@google.com>
-  AuthorDate: Sat Sep 26 02:04:03 2026 -0400
-  Commit:     Paolo Bonzini <pbonzini@redhat.com>
-  CommitDate: Mon Sep 28 17:11:47 2026 -0400
-
-> from the kvm-x86 tree.
-> 
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
-> 
-> diff --combined tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-> index ce204ce29a9c0,2ae698c9aa1ce..0000000000000
-> --- a/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-> +++ b/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-> @@@ -61,57 -61,55 +61,57 @@@ static void l1_vmx_code(struct vmx_page
->   		evmcs_enable();
->   	}
->   
->  -	prepare_for_vmx_operation(vmx);
->  +	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
-
-This resolution will probably break the final selftests build?  kvm-x86/next
-moves these asserts into prepare_for_vmx_operation(), load_evmcs(), load_vmcs()
-etc.  I.e. kvm-x86/next should "win".
-
-Regardless, I'll rebase kvm-x86/fixes onto the new kvm/master and rebuild kvm-x86/next,
-so this should go away.
-
->   
->   	if (hv_pages) {
->  -		load_evmcs(hv_pages);
->  +		GUEST_ASSERT(load_evmcs(hv_pages));
->   		current_evmcs->hv_enlightenments_control.msr_bitmap = 1;
->   	} else {
->  -		load_vmcs(vmx);
->  +		GUEST_ASSERT(load_vmcs(vmx));
->   	}
->   
->   	prepare_vmcs(vmx, NULL);
-> - 	GUEST_ASSERT_EQ(vmwrite(GUEST_RIP, (unsigned long)l2_guest_code), 0);
-> + 	vmwrite(GUEST_RIP, (unsigned long)l2_guest_code);
->   
->  -	control = vmread(PIN_BASED_VM_EXEC_CONTROL);
->  +	control = vmreadz(PIN_BASED_VM_EXEC_CONTROL);
->   	control |= PIN_BASED_EXT_INTR_MASK;
->   	vmwrite(PIN_BASED_VM_EXEC_CONTROL, control);
->   
->  -	control = vmread(CPU_BASED_VM_EXEC_CONTROL);
->  +	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
->   	control |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_TPR_SHADOW;
->  -	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
->  +	GUEST_ASSERT_EQ(vmwrite(CPU_BASED_VM_EXEC_CONTROL, control), 0);
->   
->  -	control = vmread(SECONDARY_VM_EXEC_CONTROL);
->  +	control = vmreadz(SECONDARY_VM_EXEC_CONTROL);
->   	control |= SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
->   		   SECONDARY_EXEC_APIC_REGISTER_VIRT |
->   		   SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY;
->   	control &= (rdmsr(MSR_IA32_VMX_PROCBASED_CTLS2) >> 32);
->  -	vmwrite(SECONDARY_VM_EXEC_CONTROL, control);
->  +	GUEST_ASSERT_EQ(vmwrite(SECONDARY_VM_EXEC_CONTROL, control), 0);
->   
->  -	vmlaunch();
->  -	GUEST_ASSERT_EQ(vmread(VM_EXIT_REASON), EXIT_REASON_CPUID);
->  -	vmwrite(GUEST_RIP, vmread(GUEST_RIP) + vmread(VM_EXIT_INSTRUCTION_LEN));
->  +	GUEST_ASSERT(!vmlaunch());
->  +	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_CPUID);
->  +	GUEST_ASSERT_EQ(vmwrite(GUEST_RIP,
->  +			vmreadz(GUEST_RIP) + vmreadz(VM_EXIT_INSTRUCTION_LEN)), 0);
-
-
->   }
->   
->   static void l1_vmx_code_part2(void)
->   {
->   	u64 control;
->   
->  -	control = vmread(CPU_BASED_VM_EXEC_CONTROL);
->  +	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
->   	control &= ~CPU_BASED_TPR_SHADOW;
->  -	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
->  +	GUEST_ASSERT_EQ(vmwrite(CPU_BASED_VM_EXEC_CONTROL, control), 0);
->   
->  -	control = vmread(SECONDARY_VM_EXEC_CONTROL);
->  +	control = vmreadz(SECONDARY_VM_EXEC_CONTROL);
->   	control &= ~(SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
->   			SECONDARY_EXEC_APIC_REGISTER_VIRT |
->   			SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY);
->  -	vmwrite(SECONDARY_VM_EXEC_CONTROL, control);
->  +	GUEST_ASSERT_EQ(vmwrite(SECONDARY_VM_EXEC_CONTROL, control), 0);
->   
->  -	vmresume();
->  -	GUEST_ASSERT_EQ(vmread(VM_EXIT_REASON), EXIT_REASON_CPUID);
->  -	vmwrite(GUEST_RIP, vmread(GUEST_RIP) + vmread(VM_EXIT_INSTRUCTION_LEN));
->  +	GUEST_ASSERT(!vmresume());
->  +	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_CPUID);
->  +	GUEST_ASSERT_EQ(vmwrite(GUEST_RIP,
->  +			vmreadz(GUEST_RIP) + vmreadz(VM_EXIT_INSTRUCTION_LEN)), 0);
->   }
->   
->   static void l1_test_x2apic_intercepts(void)
-
-
