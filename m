@@ -1,56 +1,56 @@
 Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E37336F905
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572C746C4CD
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 19:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790797006; cv=none; b=RkmiW7Ozj4aZukfP7KyOAj5vYjXJfGK+2laGHfq/7TaaUwSwAAMLM/kq5ZDfLPXud+mrdErViq7yHcNS8LY7ny6F1B5b2kUMpMEbjzqIOFzMVeZuWK3RSbTr+5UzmVLrGuLeXtFQCgL88hyX0ZYPZR96LFKyQ5a3mwT5uogS9Gk=
+	t=1790797007; cv=none; b=NipxGhJLIXxGskQoJ1nvVjxeScf1lByk0i52fU1YIqaIWELX9TMnccC7XdLfa4x8u/p6D0ZiEFrI/e50TIwxktbIkkZCXIlYz5dAPdcXsNnYf6Mfe1Hwy2qC0DpfTTtoZSanMDnM2WEfp55qNgmWlCAYc1BrvpJB/MZz1wYExgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790797006; c=relaxed/simple;
-	bh=DulPg7/zXtQerdUkYnqcFrpUyi22iOm3y9XoyUHW5AM=;
+	s=arc-20240116; t=1790797007; c=relaxed/simple;
+	bh=MDASNbgoJfxIWQptpUPAjqRzqDBOHMVhcmtonFQohYk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R2kOUz5rPLzThuwXV3hXVeu5jqAWw4lD994IqMChLPO1yLCTC2/nsFDVnFwFEZd+jA161FPNppDTF+R3+B9fxSdplxDELu7znaV1/d6ex9oLgFOEa693dqU67CbqmQ5wrbcnAvc2G4oyuDnwYWwQ7fHUPRpgJkvffs6GBnJ1DRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VNexnbiO; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=dWHxnhcprjKqhM75DxBUEALAEnV1u9mf4QimbcaHkPktxTftYqo8+JP66X6+wNCYh7y00CQ4742y3BP5PhEChSYv8QQpviEnnhhlVK+4v3ex7J1U0S3dvghbd3TFutE8ZMvOx/bj5JnC/nWm8/cBsIuJ+8KRX+zSpEAtYAU/ees=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MRLiUmZb; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VNexnbiO"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2df375fb9b2so60465065ad.2
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MRLiUmZb"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d02df2bf09so40191745ad.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 12:36:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790797004; x=1791401804; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790797005; x=1791401805; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=sMCpehhuLNfrMqYXSXfBVNBLKe/opomj2fBIBH93FW8=;
-        b=VNexnbiOcgH0SB98AVB6grBShNqxtEMs6fXIAcw+TX9he/juBHZXQ7p/IXc4xfxsLc
-         w40u5ZmqbmLlVuTUD4k55SQTx/3SMFFOsb+fQgYOeqNnZr3wV/1IDA9C5+F3/HvqF1iZ
-         lj2fbsIfrXjsFYr3ZtWlyfNTDQwXzWlHMY7pXCK+ZNvLndJxJq6DSMNKLJh/82d6dZeL
-         AE3qi+379TbMVas+CUyUaHcRWaq6bVqr8MRU3fArOK7lQd5BcAXmDSsu2zrXhFK5WR95
-         jCy7O6pWYmr4BbPvpsHxTFHEYNlM1nznHscCVDOQdiRmiX0hwdDEIrT/qQQhO1VqL7Au
-         FvXA==
+        bh=TO3xUvtUv8iOIewFINcG0bzeMMV0ynS9Llc7pxoXl7U=;
+        b=MRLiUmZbF68nnO/3Crs9JEF6HDlco/NoTseWydoyVLi8xRWXvtRx+V/2LsKAyxXC6L
+         PeTfLPNuMAJpt98/0VGSy9FHUz6HcmSeADyDr3vehFLeEXArZG0lERt8YQYOKEKUH/qS
+         IromQUWXj3GYewLr90cclsr1rFrdHzrah5nJJRwaFsApeS88YszCBMM+FxX8C0pcZFzV
+         KkltCz3nEzVEp0GNsQYt4zbCoUlEkpmPE3GcxxcLqkRIN5isiLOLMZaqXm1k6AFeg3JI
+         S1zn2AoYzzbfp61BghwJpjad4aLoy/fa+lNGgKsHVLxUJDS0FTmZj8XAquV6Z9GaX6i1
+         uN7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790797004; x=1791401804;
+        d=1e100.net; s=20260707; t=1790797005; x=1791401805;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sMCpehhuLNfrMqYXSXfBVNBLKe/opomj2fBIBH93FW8=;
-        b=vtI0F0VZ4w9WjeUcjt8L/uvcCimrejVyXI6CXwS4A0Erq/WIY+ENBJ61TIOezh4Ln3
-         ecNXnp3utuEYx+38PbpNVYhY+8CrE9ExEPFlgcwZmipEubWXHOSvtmrCOHucYpep62iV
-         25GsGDsEWiitywnsPwRJufLNLrAXCidajuenQfpi9VAhQ0qAkE8xi87BYmNB7Q+Jcwn6
-         +pkL5OZIoZm4s8wJ3YnXUKF9TIfEv0ISEsdN/4t+qmMyPyHoVWEa4k4wTL9GDant1Glx
-         YalISN17qZFGfPeIAAFSyda89K8opEQZP0cNtZ2mWw32h4kjMkWRZ1NaXRRYEYmAfE7w
-         VVOg==
-X-Gm-Message-State: AFq9FYLnYJ+8SYLnQUwE1Ty/Uq937cP9SYfxpe6KJKCKy4WNNDJwBZJQ
-	H4G8tj+KDc+yqO8CuA12PAPZQXWE5fJZtJCYPfwPkfmb06O+V5ynmfFZv11z1kIATL9XYmbRYp0
-	LCgP2HQ==
-X-Received: from plec2.prod.google.com ([2002:a17:902:f302:b0:2e2:cd01:aaca])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d590:b0:2dd:ad73:c98c
- with SMTP id d9443c01a7336-2e2e4b4a5bdmr17303485ad.36.1790797003299; Wed, 30
- Sep 2026 12:36:43 -0700 (PDT)
+        bh=TO3xUvtUv8iOIewFINcG0bzeMMV0ynS9Llc7pxoXl7U=;
+        b=EFBLZuPQnIHYlMWkxz81OWvd47xMhMsHr7Qrc80h9w6o4gqrt/g1RJySLbT29oDquS
+         a1eNs6hI1Gf75C7MJKn2I34zHFbHgr+O+Fc0g4JzFo4ILQXit/WDjXWMLNhpSlTlqRNw
+         PLq7sIwNp1yfn8B73pRvas4p9Ju0I7fxyuWOttJd7BfxZihZ50d0mksYbd2s6Q9LeMiN
+         bu92McsRAq66smaFyVKFvUmq3Yk78E+1IOl2p879MnIDkfgdvs4Ltl7rwqFanfQDwxZk
+         um5rFyJEpT9sMI2zdqtssREXe8SrekGeb4dWM3X3tX/IoGoKjgX1MrS8e3Jpm6902yVF
+         uP/A==
+X-Gm-Message-State: AFq9FYJmfRDUNotIfK5LmpEicfX2gUZYx4LJv5aUeTYKtFl51Rb1tJMx
+	SBHxySfycryor6Ot/7j2RvBzXVNK+bFG8Kzt/gwP7rB6Z+83DTYR8pf8kfCWfqh4d+KILJVxq0j
+	vbwnoKQ==
+X-Received: from plec2.prod.google.com ([2002:a17:902:f302:b0:2e1:2dd1:e080])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2303:b0:2df:98a2:a2e2
+ with SMTP id d9443c01a7336-2e2e4b48e3fmr18870695ad.30.1790797004526; Wed, 30
+ Sep 2026 12:36:44 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 12:36:27 -0700
+Date: Wed, 30 Sep 2026 12:36:28 -0700
 In-Reply-To: <20260930193634.3415089-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930193634.3415089-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930193634.3415089-6-seanjc@google.com>
-Subject: [PATCH v6 05/12] KVM: x86: Set guest's fixed-1 DR6 bits when
- delivering #DB payload
+Message-ID: <20260930193634.3415089-7-seanjc@google.com>
+Subject: [PATCH v6 06/12] KVM: x86: Kill off DR6_FIXED_1 to prevent future misuse
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,32 +70,60 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When delivering a #DB payload, set all DR6 bits that are fixed-1 from the
-guest's perspective, not just the host's perspective.  Don't WARN on a
-"bad" payload (or existing DR6) even though KVM itself shouldn't set DR6
-or synthesize a payload without the fixed-1 bits set, as userspace can
-provide a completely arbitrary payload via KVM_SET_VCPU_EVENTS (and
-"hardening" that flow is not worth the effort as there's no benefit in
-practice).
+Now that the only user of DR6_FIXED_1 is kvm_get_dr6_fixed_1(), drop the
+hardcoded macro to force all references to fixed-1 bits to use the vCPU-
+aware helper.
+
+Opportunistically reword the comment about DR6_ACTIVE_LOW to explain why
+treating fixed-1 bits as active-low is correct (barring a *very* egregious
+architectural goof).
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/regs.c |  2 +-
+ arch/x86/kvm/regs.h | 10 ++++------
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 99518e3265b4..816c6df8dcea 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -440,7 +440,7 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
- 		 * breakpoint), it is reserved and must be zero in DR6.
- 		 */
- 		vcpu->arch.dr6 &= ~BIT(12);
--		vcpu->arch.dr6 |= DR6_FIXED_1;
-+		vcpu->arch.dr6 |= kvm_get_dr6_fixed_1(vcpu);
- 		break;
- 	case PF_VECTOR:
- 		vcpu->arch.cr2 = ex->payload;
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index db43ade8ceb1..0c76cf17e884 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -774,7 +774,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_update_dr7);
+ 
+ unsigned long kvm_get_dr6_fixed_1(struct kvm_vcpu *vcpu)
+ {
+-	unsigned long fixed = DR6_FIXED_1;
++	unsigned long fixed = DR6_ACTIVE_LOW & ~DR6_VOLATILE;
+ 
+ 	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_RTM))
+ 		fixed |= DR6_RTM;
+diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+index 3ca5cd8a8d95..97c17b120a57 100644
+--- a/arch/x86/kvm/regs.h
++++ b/arch/x86/kvm/regs.h
+@@ -38,16 +38,14 @@ static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
+ #define DR6_BT		(1 << 15)
+ #define DR6_RTM		(1 << 16)
+ /*
+- * DR6_ACTIVE_LOW combines fixed-1 and active-low bits.
+- * We can regard all the bits in DR6_FIXED_1 as active_low bits;
+- * they will never be 0 for now, but when they are defined
+- * in the future it will require no code change.
++ * DR6_ACTIVE_LOW combines fixed-1 and active-low bits (bits that are currently
++ * fixed-1 are guaranteed to have active-low semantics if they are ever used to
++ * support a new feature).
+  *
+- * DR6_ACTIVE_LOW is also used as the init/reset value for DR6.
++ * Note, DR6_ACTIVE_LOW is also the INIT/RESET value for DR6.
+  */
+ #define DR6_ACTIVE_LOW	0xffff0ff0
+ #define DR6_VOLATILE	0x0001e80f
+-#define DR6_FIXED_1	(DR6_ACTIVE_LOW & ~DR6_VOLATILE)
+ 
+ #define DR7_BP_EN_MASK	0x000000ff
+ #define DR7_GE		(1 << 9)
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
