@@ -1,68 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF57631D375;
-	Wed, 30 Sep 2026 07:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AA145D918;
+	Wed, 30 Sep 2026 07:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790752756; cv=none; b=BjK9KyKRuZcWlqw5yID1iDSe6FSmtiYhCqisu1Ng6gIcExV6fT2kZZj0zAif5i9fcIOsRUr+hWh6dMwVDZfdQNdW+KJ5P9ci7g+KAzIAxukXATglXlkYt7ZhXrJGaYaGseaQpTgHxsh7N6DR8ZxaesjzZIb6vtPHVvA41vhnqvg=
+	t=1790752811; cv=none; b=AeCYtR/Gd7CXaDfngPkUNVH/e1XpkMNJNMg5srOyWWu+Ix+0BDmYoN356UKMJtdeTMfxxbFAssKDn00hhrxbbybPsNyVdXRyww70fWLtStr44532xH2xnikQbaTvpzA+0WlgmJrQWG+0EptO7MGVI2hgZIhIBPVRybCDjToeMJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790752756; c=relaxed/simple;
-	bh=Nak8LEru8v/pcz0CN4nzoZou4RZ80teM2z7CuxUcw1Y=;
+	s=arc-20240116; t=1790752811; c=relaxed/simple;
+	bh=egjbfAklu+VRqBXjxrxcsmzn0NRep85lbIRvHaOg7u0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U0q9iAZQAOXnmRArdBM66TCiWrXx+kPdLwhsgOPbgksx3Xk7Ovp0EEIo/kNqlF9+AvDqSwRD9MEMpqxJpCH9yPAEgQwHCV3rrKdOOT+TLQlfrLXOBwkX1+zyLv0D1h1T4cR+926v1pD3IMbZFVna0MnpqMFc1IAcc8+nPzfeg4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WeItx9m+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=GnDQa3ccON0u/s9q+IP6nc2zivUu/4MrYGxvKWpaoKEL6yBZ6EXSFZYj0UI+iNQ9QSfCCQX+GQ5QcSp4ys4Ta7+Mv2dOcRWQCaEY/mNw1btXtVazS7MsM2Gskuzaq58qJETxndiU9INb1GQEngjrudYVHoC9EW6g5NZVwz/+UTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3tNyKcm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WeItx9m+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E181F000FF;
-	Wed, 30 Sep 2026 07:19:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3tNyKcm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDDD1F00898;
+	Wed, 30 Sep 2026 07:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790752754;
-	bh=Nak8LEru8v/pcz0CN4nzoZou4RZ80teM2z7CuxUcw1Y=;
+	s=k20260515; t=1790752809;
+	bh=aiHKTf8uhlLWd+EaENHzJiUgoWD9yWMgBgu9wtpsmg8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=WeItx9m+i4oA96v81j1W4/PI1RxmUiK8aU/EtyAmg2gEz0b7LlutJAWMkI2ZJ2kJS
-	 e/YBcOuuk2NwNfNbcoQ5sOzljvAgCz0fcKmn1TvkgeLhO5BXYea20i1Xw37S7RuQ8z
-	 bKI86lkKYJBP34KrGEoGrEbKYXnBXdKuZQmA2+HaqieW3wqB4mEK7n/kSZNffYYjpA
-	 F8uqx+Uc5RmfB2OUFZZRj02XPrIaFSP4g6CbgjjEIF0W8tVJBT0SspdLues2U0GMPd
-	 kvHsjLSSjzOXRmi+VsXcPMXjMFMCOoFrzBuFXpO7HnZ+D4hfsJIQrZcsK4rhkVnzSr
-	 awgRFWqSus3HA==
+	b=K3tNyKcmwFqjSCVEPOy659wcqcNlhClI6c/5zo7jZtvC6DVlM7sxOd2DYx+8L6NyP
+	 YBvC+0X5tBB6R9mPiF77hgPQwTG64fcNy/qmwmUVFvrWbmpJusOpYD4ACcihZrXoW7
+	 arKI/PyyJPgvXVUptN3kFefvcRVYf1N0nTfhLT8K7GkSJRJ3mUqZpQrMKSS0itIPnp
+	 fy8gX/qRh0c+9vif5mpqjUkyhhCYmkitrSQ/GIHDhS9zj3rmLpK/1Y7/9FbSZs5+82
+	 AJfUBPVH/IJ/ELEMahz0NCE9IED1P8XXIoouSQdrE4kLZeROEBMdIUS+COdkJv8frj
+	 Pn8Y0/zDu5nuw==
 X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>,
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Jason Herne <jjherne@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Steffen Eiden <seiden@linux.ibm.com>
-Subject: Re: [PATCH v3 2/5] KVM: Add file back-pointer to struct kvm
-In-Reply-To: <yq5afqyruvsf.fsf@kernel.org>
-References: <20260924-vfio-v3-0-4a294307797b@linux.ibm.com>
- <20260924-vfio-v3-2-4a294307797b@linux.ibm.com>
- <yq5afqyruvsf.fsf@kernel.org>
-Date: Wed, 30 Sep 2026 12:49:02 +0530
-Message-ID: <yq5acxtvuryx.fsf@kernel.org>
+	Anthony Krowiak <akrowiak@linxux.ibm.com>
+Subject: Re: [RFC PATCH v6 01/11] vfio: cache KVM VM file references instead
+ of raw struct kvm pointers
+In-Reply-To: <179027891416.104879.7094081421035070060.b4-review@b4>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-2-aneesh.kumar@kernel.org>
+ <179027891416.104879.7094081421035070060.b4-review@b4>
+Date: Wed, 30 Sep 2026 12:49:59 +0530
+Message-ID: <yq5aa4ozurxc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,24 +62,19 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-> Steffen Eiden <seiden@linux.ibm.com> writes:
+>> VFIO currently records struct kvm pointers on vfio_group, vfio_device_file
+>> and the opened vfio_device. Switch VFIO to track the VM's struct file
+>> instead, so VFIO and iommufd can use normal file references for VM lifetime
+>> instead of depending on KVM's internal struct kvm refcounting.
 >
->> Add kvm->file as a no-reference back-pointer to the VM file in struct
->> kvm. The pointer is set at VM creation time and cleared under
->> WRITE_ONCE() in kvm_vm_release() before the file is freed.
->> Callers storing the file must take their own reference.
->>
+> Are these few patches the same as:
+>  https://lore.kernel.org/all/20260924-vfio-v3-0-4a294307797b@linux.ibm.com/
 >
-> I have a series that does something similar and also updates VFIO:
->
-> https://lore.kernel.org/all/20260917140159.1163281-2-aneesh.kumar@kernel.org
->
-> Any suggestions on how we can combine the two efforts? This series has
-> received more feedback from maintainers.
+> Can we align on that series or is there something else here?
 >
 
-I compared the full series and will rebase my work on v4 of this series.
+Yes. I will use v4 of that series as the basis for this patch series.
 
 -aneesh
