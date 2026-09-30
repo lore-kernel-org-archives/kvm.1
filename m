@@ -1,197 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F0045A2A2;
-	Wed, 30 Sep 2026 08:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DF7466B58;
+	Wed, 30 Sep 2026 08:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790755409; cv=none; b=sXlbAeoZL5CK+kLKOtwMqjDonZoCxGe+Hdc1OXMsZDX67qKMMGqDHFS5dIMeDu9D65EvLe9taj6FGd/k+bWZMif5Xx8AbRUdxvnKyeRb7UdRXmPopGcQ5+joNhN8F3lq8nd3VERR0VT263dbo8akDqSgJkQmPb/FbWO202Kyfl8=
+	t=1790756232; cv=none; b=QojQJdq2XQoY9sNvhTQV5smauVkePOKwye3nNf3bO9Vq4BXXkN+gLPqwXOQ38wB0HXvlfZQ4x+dRTdXV4ow5Fovzwvb+oTtPEASIlI4ICuW7lkaE0LnWs9F+LXYJQZC/7IJqiJzokj6xStkDq85nPIzLHxStd0wf2gmqbELy5NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790755409; c=relaxed/simple;
-	bh=LSD0H7hlTgsIK48icru9I/onbn3XKpj8p7mhQiQrTUg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=da5x0MtzXaqEsN9+RBP84ciG7we585oqyajw6E4bbPcyX6tp5YBzmjGZhG/flbgFaINQhqu7IcI8xkyWnuu0OF69KOZaN0ArbmPL6YG1xxqd7QGQFtPhSnZbtw1L8TIOxW60c1OLsg4TBQUATNZua2rlq+8Uz4wCMqhiUP6DfpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hd0+t+cp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790756232; c=relaxed/simple;
+	bh=GNXZa7j1/VTmq7tnRy/t6ruvY0i6WuGqOi1nPlTRzL8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VqtG9V0A3rY9Tv5Gx4A8eigKZKDmm++ZGSQYwFDN3roa2xU7wov5D9pMtClsctk9CCW/F7StGalQTKwEEYMW4juJqCaZw09kgg+IyGMcI9gaDUWqzlgT0Go4AFJhT/QmGeh2WZy/CqvPJkOPSvJFSO2K3SAg5Jbb7LDDbx9+8QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BKFn+Xi7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hd0+t+cp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0567A1F000FF;
-	Wed, 30 Sep 2026 08:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790755407;
-	bh=w9zOxQ2Xp6lP5o/Tko+m/wjgpl8Fwpt+CqNeRAhSwXE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Hd0+t+cpt41c4LYVSklR73f+gLWB9/zmTXMCDWih/gR4ZLXKt8iAOR+aE3Gc2Teqe
-	 MbVmDnkB9qw9pZn7yV8m647PcWIVsAqpNmmQEeaWHpmPX5AaRfPlOa10AlAk3357xy
-	 hfw9SYVlu4iUYm3dfgim6ms7xKQKkO4tyhJxNzLOH3cRdCpXxPs7KidEH5HsFvKJDn
-	 QZA6h6OeSxVWceH7i83IXRUpr9gvM+UF+//IukGuLV0TdSgda17aNzo3owL+1mU+wX
-	 QtG2j0X55ujiANkhhe3JGk05Wo9jpAyusLpGn+IgvikGlEM87PBUfqpu3szeCwdgHx
-	 ljVnnt+0EpOZg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 09/11] iommufd: Add the vdevice TSM request ioctl
-In-Reply-To: <179027891417.104879.282447770434616733.b4-review@b4>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-10-aneesh.kumar@kernel.org>
- <179027891417.104879.282447770434616733.b4-review@b4>
-Date: Wed, 30 Sep 2026 13:33:17 +0530
-Message-ID: <yq5a7bk3upx6.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BKFn+Xi7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1AFC61477;
+	Wed, 30 Sep 2026 01:17:01 -0700 (PDT)
+Received: from [192.168.1.148] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAA463F85F;
+	Wed, 30 Sep 2026 01:17:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790756224; bh=GNXZa7j1/VTmq7tnRy/t6ruvY0i6WuGqOi1nPlTRzL8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BKFn+Xi71PDm13PN8c8mgumEtRVu6FdNVGMRI1NxBTY3+SXllrtsQ3wOiOa9C9yGH
+	 50qcRfxA51AqF4pH++UxpnBh8vGYwXCVwWTAkE001/+beCOgzfLMxE2tz0ga5977lw
+	 wFuOCDVKLSU2T89a1BcDCSroJtJc5QdZ9Gr6OJe0=
+Message-ID: <af49e948-3120-401f-a00d-74c853ee17b9@arm.com>
+Date: Wed, 30 Sep 2026 09:17:00 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
+ for memory
+Content-Language: en-GB
+To: Shanker Donthineni <sdonthineni@nvidia.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+ yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, alpergun@google.com,
+ fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org,
+ enju.kohei@fujitsu.com, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-7-suzuki.poulose@arm.com>
+ <a27970c6-a7d2-4abc-84c3-7e50225f0a1a@nvidia.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <a27970c6-a7d2-4abc-84c3-7e50225f0a1a@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On 29/09/2026 23:29, Shanker Donthineni wrote:
+> Hi Suzuki,
+> 
+> On 9/24/2026 8:52 AM, Suzuki K Poulose wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> From: Steven Price <steven.price@arm.com>
+>>
+>> The RMM maintains the state of all the granules in the system to make
+>> sure that the host is abiding by the rules. This state can be maintained
+>> at different granularity, per page (TRACKING_FINE) or per region
+>> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on 
+>> the
+>> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
+>> all pages in the region must be of the same state, this implies we 
+>> need to
+>> have "fine" tracking for DRAM, so that we can delegate individual pages.
+>>
+>> For now we only support a statically carved out memory for tracking
+>> granules for the "fine" regions. This can be extended in the future to
+>> allow modifying the tracking granularity and remove the need for a
+>> static allocation by the firmware.
 
->> [ ... 95 lines skipped ... ]
->> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
+...
+
+>> +
+>> +/*
+>> + * We do not support creating L1 GPTs yet. So, make sure that
+>> + * all the regions are managed by the firmware.
+>> + */
+>> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, 
+>> phys_addr_t end)
 >> +{
->> +	switch (tvm_arch) {
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
->> +		return true;
->> +	default:
->> +		return false;
->> +	}
->> +}
->
-> Generally speaking we should not do things like this, the viommu
-> object should declare what it supports if we want to have validation
-> on the iommufd side.
->
->> [ ... 140 lines skipped ... ]
->> +#ifdef CONFIG_TSM
->> +/**
->> + * struct tsm_guest_req_info - parameters for a guest-initiated TSM request
->> + * @op: operation for the guest-initiated request
->> + * @tvm_arch: guest TVM architecture
->> + * @req: request data buffer filled by guest
->> + * @req_len: the size of @req filled by guest
->> + * @resp: response data buffer filled by host
->> + * @resp_len: the size of @resp buffer filled by guest
->> + */
->> +struct tsm_guest_req_info {
->> +	enum iommu_vdevice_tsm_guest_req_op op;
->> +	enum iommu_vdevice_tsm_guest_tvm_arch tvm_arch;
->> +	sockptr_t req;
->> +	size_t req_len;
->> +	sockptr_t resp;
->> +	size_t resp_len;
->> +};
->
-> Why is this struct in tsm land?
->
-> I'm not seeing why the iommufd interface should be locked to tsm, as I
-> said other viommus need this kind of command channel too. Can't we
-> have a general one?
->
-> Why would it ever not be tied to userspace pointers? I don't want
-> an in kernel user ever using this kind of struct?
->
+>> +       unsigned long l0gpt_sz;
+>> +       unsigned long next, par_state;
+>> +
+>> +       l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+>> +                                         rmi_feat_reg(1)));
+>> +       start = ALIGN_DOWN(start, l0gpt_sz);
+>> +       end = ALIGN(end, l0gpt_sz);
+>> +
+>> +       while (start < end) {
+>> +               long ret = rmi_gpt_info(start, end, &next, &par_state);
+>> +
+>> +               if (ret != RMI_SUCCESS)
+>> +                       return -ENOMEM;
+>> +
+>> +               if (WARN_ON(next <= start))
+>> +                       return -ENXIO;
+>> +
+>> +               if (par_state != RMI_GPT_PAR_PLAT) {
+>> +                       pr_err("GPT for the region is not managed by 
+>> firmware %llx-%lx\n",
+>> +                               start, next);
+>> +                       return -ENOMEM;
+> 
+> Accepting only RMI_GPT_PAR_PLAT rules out the host ever creating its own
+> L1 GPTs. On NVIDIA platforms the PARs backing system RAM come up as
+> RMI_GPT_PAR_HOST_NOT_CREATED, so this returns -ENOMEM and CCA cannot be
+> enabled at all.
+
+Like I mentioned in the previous response, this is staged upstreaming.
+The dynamic GPT/Tracking will follow after. This also calls for 
+on-demand activation which Catalin requested and can be combined together,
+as we dedicate quite a lot of memory for the metadata and L1GPTs.
 
 
-The previous discussion suggested that another kernel subsystem might
-need to use this low-level TSM interface, although no concrete example
-was identified. In other words, an opaque guest request could be issued
-from either userspace or kernel space. 
+> 
+> With local changes to promote granule tracking via RMI_GRANULE_TRACKING_SET
+> and to create the host L1 GPTs, I was able to boot a Realm with multiple
+> vCPUs and exercise basic boot functionality on NVIDIA silicon.
 
->
->> [ ... 34 lines skipped ... ]
->> +/**
->> + * enum iommu_vdevice_tsm_guest_req_op - operation for guest TSM requests
->> + * @TSM_REQ_VALIDATE_MMIO: Validate MMIO for the TDI
->> + * @TSM_REQ_SET_TDI_STATE: Set TDI state
->> + * @TSM_REQ_SEV_ENABLE_DMA: Enable SEV DMA
->
-> That seems wrong.. The hypervisor should not have control over T=1
-> DMA.
->
+Thanks for the testing !
 
-This was added specifically for AMD SEV, which requires an IOMMU-side
-update to enable DMA.
-
->
->> + * @TSM_REQ_SEV_DISABLE_DMA: Disable SEV DMA
->> + * @TSM_REQ_READ_OBJECT: Read a TSM object
->> + * @TSM_REQ_REGEN_OBJECT: Regenerate a TSM object
->> + * @TSM_REQ_OBJECT_INFO: Read TSM object information
->> + */
->
-> These operations will need alot more commentary. Use kdocs inside the
-> enum below to make that easier.
->
-
-
-I will add kernel-doc comments for the operations used by CCA.
-
-We have gone through several iterations to identify the guest
-passthrough request facility we need. IIUC, both TDX and CCA give the
-hypervisor some control over the request type, while SEV-TIO is more
-opaque.
-
-
->
->> [ ... 10 lines skipped ... ]
->> +/**
->> + * struct iommu_vdevice_tsm_req - ioctl(IOMMU_VDEVICE_TSM_REQ)
->> + * @size: sizeof(struct iommu_vdevice_tsm_req)
->> + * @vdevice_id: vDevice ID the guest request is for
->> + * @op: One of enum iommu_vdevice_tsm_guest_req_op
->> + * @tvm_arch: One of enum iommu_vdevice_tsm_guest_tvm_arch
->> + * @req_len: Size in bytes of the input payload at @req_uptr
->> + * @resp_len: Size in bytes of the output buffer at @resp_uptr
->> + * @req_uptr: Userspace pointer to the guest-provided request payload
->> + * @resp_uptr: Userspace pointer to the guest response buffer
->> + * @tsm_code: TSM-specific result code returned by the TSM implementation
->> + *
->> + * Forward a TSM request to the TSM bound vDevice. This is intended for
->> + * guest TSM/TDISP message transport where the host kernel only marshals
->> + * bytes between userspace and the TSM implementation.
->> + *
->> + * The request operation is guest initiated. The TSM backend validates
->> + * @tvm_arch against its bound TVM architecture assumptions.
->> + *
->> + * The request payload is read from @req_uptr/@req_len. If a response is
->> + * expected, userspace provides @resp_uptr/@resp_len as writable storage for
->> + * response bytes returned by the TSM path.
->> + *
->> + * The ioctl is only suitable for commands and results that the host kernel
->> + * has no use, the host is only facilitating guest to TSM communication.
->> + */
->> +struct iommu_vdevice_tsm_req {
->> +	__u32 size;
->> +	__u32 vdevice_id;
->> +	__u32 op;
->> +	__u32 tvm_arch;
->> +	__u32 req_len;
->> +	__u32 resp_len;
->> +	__aligned_u64 req_uptr;
->> +	__aligned_u64 resp_uptr;
->> +	__aligned_u64 tsm_code;
->
-> out_tsm_code
->
-
-That is required for SEV-TIO.
-
--aneesh
+Cheers
+Suzuki
