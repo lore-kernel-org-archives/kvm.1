@@ -1,120 +1,103 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BA02D3A75
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66C8437448
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790802126; cv=none; b=t2QdoU421qJE1iLSK7JimrnnRsnkk027MP0PsLBekHawIBNyyWZ+rvLgp/gMUFjHkvpd0GNAaL6q7uNDCzr+1gKGp0koO5cewj2pgWXe84iP/ItkeJiM7h87Us7s8lLMdHfnFkEk1EPXwVlmjXTgw4Cyaq7dbteMvIPpBwgaqf0=
+	t=1790802447; cv=none; b=XZJTgkR5N3yv+RSeflUnziiPHgvarBqK2BUd/JUIoAcOQShu3+cqZSTnOazqI3e1BqyhbMW4Ug8A5zWwONUSSCUFNJNZ9+2uURC/5p4obpH2JVz92ZnIMXFk6sg4IqbUoiTzWTXydtNY5nLw+mcTo1NX+/RzwsDpzjFD0WcUf+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790802126; c=relaxed/simple;
-	bh=5tDNiHQlIXO0VTaAZuhrbF+7Wk94q0+Ax3q1B06/5T4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DbaF0P5KL+hWMJITd5/8MW092281K37A+z7u21Yh5EEex0aYjIZ2CHTWwkoHApu8acQm/ri4zNgbR5adEkM1EH9p/n+JMYVlnbFu8OFoYGU1KOe1cngDlxxJdV8eeewbhkSOnPP8u2rlBAh3gS4G3j9WBpmXaPTHnSciHG8i0yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CJ7RcmMz; arc=none smtp.client-ip=209.85.210.200
+	s=arc-20240116; t=1790802447; c=relaxed/simple;
+	bh=93bpceLZlrAkvmaGoE7sfUNLduNSj8klf5sl0EI9qNE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=naOBEkEgYz1NeBGPDBDWVq8ysd0w5JlwJTrPNJYeghhgJIaM8EmgHJtovQAV6ilPWYW21387ngRxdUFGHDnGOLi6iQ3fCB/aqZQUOLN+HZgukuRwXRc5nO/C4s86DP0JqpMkWxOkQ9Xrozf1DUSSS6n/0sTv44uUgergQHAkYtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qqBuqhdB; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CJ7RcmMz"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-882776aae15so3189723b3a.2
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:02:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qqBuqhdB"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1eb205d31so6583059a12.2
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790802124; x=1791406924; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P58W6iAq7OkV6MfhJh5TA/2PljEfSOOqSyRa/aiE9e0=;
-        b=CJ7RcmMz/69XiQ84SIkCrlQ/Yy98ioKXhGErTzzgzfD1SPY9pV1S5m9JFfPBO7KqTX
-         fdJqpsbkuIDSTdP7XFncK2IWnTvZJRIm5RSKYo26UxHWz4ZYnGh18wP5pv5opfX7H74s
-         oq+0k9onNdADwLOOLPVTb2oWvizyjDbJcizWlA9baSrhsI3UrU3NTo92F88zR5LNAVtf
-         xc+zHAMra2WRXq4VzlAwKthSw7PALK9Ie6L0eanpo+uK1oPWB7Zz3wyQWMck/u4lZ2Au
-         jkMYmzZqBXHBd69SHmUVqtC/2gSCugr86Z6dBXTuet+QGtT+lI0F8+nDNDRZ64Vf5iec
-         W2Fg==
+        d=google.com; s=20251104; t=1790802445; x=1791407245; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3E+HmnTRuwa4/8xSFm89S79BjMh+ktjR1OaIYiNyOOk=;
+        b=qqBuqhdBLHlspmri5lqrkiMxb2k/60W6Tf2Nr0h9KFfHEutveiPwSU2CpxSBSsjHfc
+         D0ufg0pdup77pKGeWfomYEuye0bKjubbbFquY0XKydPQC1plgG+zSULAco6vai6skg7q
+         NjF4Y/+Cx6vFN+IST52+KvplN5ZO+3zcK2dXsjTD/K01xi0UM2M48h67Su7GLOczHEz8
+         3YSfd3SP+pv44ejz57N6izjvD9lmATAn8W3sclX0uI9YUJ70d0q6QEoEQlUmb30QolPy
+         PpACWIdw4Lbn6+G2q74F/H2GlBleuSZ936Aqr3oKU7PN5YbKm/rk4IRw8+5tMgI5pnl/
+         pq0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790802124; x=1791406924;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=P58W6iAq7OkV6MfhJh5TA/2PljEfSOOqSyRa/aiE9e0=;
-        b=qujcs0rwNjX4ezgSdYdVxM2SMxtEjZdJz5/VbgQRNOrYj1/gEdEO0tG+D360BhSbco
-         UWR7+FwO/pQ3A6kXGRRA0m35osBdeVwCEMbjlUxzXswa+NFzs1nQ5Gd5kqe5c+hnJRI7
-         RFTgyGcI492/gG1ETKYxObSLH5pqppOEMadzXiMK1y2PLWQASHo1TuApwqJzJAsNBm8J
-         eJAnTnmN7GoCySjy8dguIfWbXdRStK/Tl0rKZQ383No0TCH6ivVG5GNx1mzJhFKdW4SS
-         9TO65jMbS1ytA/L/tPY6LGxbLECcXhQiVFVAckdkF61KDJEbcGR0knzn2AelrLDI6fsv
-         PCaw==
-X-Gm-Message-State: AFuF++mLX4120ufhKhuaI1OcXvztA3v2weXo4n0iKisD5p10NLags0X3
-	mxLV/yNlbbwXo649SnQaTwwZiEzLTHkvra6jdLS/tThxfePjFyuo6dxu9vS2lIHZitsY3GFij4b
-	PXg3YCg==
-X-Received: from pgbcq1.prod.google.com ([2002:a05:6a02:4081:b0:cc7:aca2:c288])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9218:b0:3de:5ce4:9e55
- with SMTP id adf61e73a8af0-3de9e8e0dc0mr2821748637.59.1790802122870; Wed, 30
- Sep 2026 14:02:02 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 14:02:01 -0700
+        d=1e100.net; s=20260707; t=1790802445; x=1791407245;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3E+HmnTRuwa4/8xSFm89S79BjMh+ktjR1OaIYiNyOOk=;
+        b=UWLDI6QYFl7zh2iBCBLuqRel0q5ws6oYGfE2x2iepRBB7Ktd4MRnx98XA8R5nYOtGY
+         R3CkMb29JCUMTrL9g/xciCrKezM42VN6czMF3P5LHDcINKzS1cJt120hsEYEPuHd1ybV
+         ntWRbpV01HHKLdeA1Wsgnczhoyh733aLlOQr3Xkf/AP6yoXghbC7/luAtAzLAIQjmHv9
+         4Ttlc57PUyeeg2qTUDnisF0daSvs0OLZJv/qYeZdUzA8VG2ejFtJTysPSYc3TL2eE1tB
+         NDfpiV1lTYeN1Vw7zYatBzN/x/Nd9NCS6XNQlrOuRyLUjluSimZ+7uk90PDjzKPGR98d
+         FL1A==
+X-Gm-Message-State: AFuF++ku21oMphC9PucKXG8YHiNYC9uhcSQYSf7lGgJubjtxQCsgcymn
+	jO2mPS8MIQl/3p6DlCgHEWvBoqQeDL0uY1PBnnnO7IYPgnXY/ALT22+CbFB+F6GDuwO3Omducjx
+	Z9r5laQ==
+X-Received: from pgvi21.prod.google.com ([2002:a65:61b5:0:b0:cc7:d161:7edb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a04:b0:3de:4542:1a91
+ with SMTP id adf61e73a8af0-3de9e84e310mr2375161637.30.1790802444857; Wed, 30
+ Sep 2026 14:07:24 -0700 (PDT)
+Date: Wed, 30 Sep 2026 14:07:24 -0700
+In-Reply-To: <106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930210201.3482775-1-seanjc@google.com>
-Subject: [kvm-unit-tests PATCH] x86/pmu: Treat all AMD CPUs as having
- instruction/branch overcount errata
+References: <106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com>
+Message-ID: <ar16DP3mAeWTewq8@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/pmu: Add option to raise NMI on overflow
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Sandipan Das <sandipan.das@amd.com>, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Sandipan Das <sandipan.das@amd.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide Chen <zide.chen@intel.com>, 
+	"Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla <manali.shukla@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Apply the instructions and branches overcount errata to all AMD CPUs, which
-count VMRUN as a retired branch instruction in guest context.  I.e. any
-asynchronous #VMEXITs during any measurement will result in an overcount.
+On Mon, Aug 10, 2026, Sandipan Das wrote:
+> Interrupts raised on counter overflow are currently delivered through
+> the PMI_VECTOR as regular maskable interrupts. However, for some
+> configurations, like SVM with PMC virtualization and VNMI enabled, the
+> guest LVTPC is ignored and the interrupts are always delivered as NMIs.
 
-Reported-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- lib/x86/pmu.c | 7 +++++++
- x86/pmu.c     | 7 +------
- 2 files changed, 8 insertions(+), 6 deletions(-)
+IMO, that's a KVM bug.  KVM shouldn't enable PMC virtualization if the guest LVTPC
+is configured for something other than NMI.
 
-diff --git a/lib/x86/pmu.c b/lib/x86/pmu.c
-index 67f3b23e..3231ce2d 100644
---- a/lib/x86/pmu.c
-+++ b/lib/x86/pmu.c
-@@ -72,6 +72,13 @@ void pmu_init(void)
- 			pmu.msr_global_status_clr = MSR_CORE_PERF_GLOBAL_OVF_CTRL;
- 		}
- 	} else {
-+		/*
-+		 * All AMD CPUs overcount instructions and branches retired, as
-+		 * they count VMRUN as a branch instruction in guest context.
-+		 */
-+		pmu.errata.instructions_retired_overcount = true;
-+		pmu.errata.branches_retired_overcount = true;
-+
- 		if (this_cpu_has(X86_FEATURE_PERFCTR_CORE)) {
- 			/* Performance Monitoring Version 2 Supported */
- 			if (this_cpu_has(X86_FEATURE_AMD_PMU_V2)) {
-diff --git a/x86/pmu.c b/x86/pmu.c
-index b262ea59..35f8a818 100644
---- a/x86/pmu.c
-+++ b/x86/pmu.c
-@@ -222,13 +222,8 @@ static void adjust_events_range(struct pmu_event *gp_events,
- 	 * If HW supports GLOBAL_CTRL MSR, enabling and disabling PMCs are
- 	 * moved in __precise_loop(). Thus, instructions and branches events
- 	 * can be verified against a precise count instead of a rough range.
--	 *
--	 * Skip the precise checks on AMD, as AMD CPUs count VMRUN as a branch
--	 * instruction in guest context, which* leads to intermittent failures
--	 * as the counts will vary depending on how many asynchronous VM-Exits
--	 * occur while running the measured code, e.g. if the host takes IRQs.
- 	 */
--	if (pmu.is_intel && this_cpu_has_perf_global_ctrl()) {
-+	if (this_cpu_has_perf_global_ctrl()) {
- 		if (!pmu.errata.instructions_retired_overcount) {
- 			gp_events[instruction_idx].min = LOOP_INSNS;
- 			gp_events[instruction_idx].max = LOOP_INSNS;
+> This causes the test to crash, as seen below, because it does not
+> expect NMIs.
+> 
+>   Unhandled exception 2 #NMI(0) at ip 0000000000400326
+>   error_code=0000      rflags=00000056      cs=00000008
+>   rax=00000000001300c0 rcx=00000000c0010202 rdx=0000000000000000 rbx=0000000001019f58
+>   rbp=0000000001019ee0 rsi=00000000000f4240 rdi=0000000001019f58
+>    r8=ffffffffffffe000  r9=00000000000003f8 r10=000000000000000d r11=0000000000000020
+>   r12=00000000001300c0 r13=ffffffffff6768f0 r14=ffffffffff6768f0 r15=0000000000000001
+>   cr0=0000000080010011 cr2=0000000000000000 cr3=00000000010fe000 cr4=0000000000000020
+>   cr8=0000000000000000
+>           STACK: @400326 400de1 401715 401e51 4001bd
+> 
+> Add an optional "nmi" argument to improve test coverage for such
+> configurations. When passed, the LVTPC has the delivery mode changed to
+> NMI (APIC_DM_NMI) and the overflow handler is installed on the
+> NMI_VECTOR. Otherwise, it keeps using the maskable PMI_VECTOR.
+> 
+> Unlike maskable interrupts, which stay pending until EFLAGS.IF is set,
+> an NMI is not gated by it and arrives as soon as the counter overflows.
 
-base-commit: 5a221342a025948fa7d84f0c404748f6ba57f3ad
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+Hmm, AMD does have GIF though.  What if we conditioned use of NMI on (nested) SVM
+support and thus STGI+CLGI being available?  Then we can largely abstract away
+interrupt masking, and if we wanted, we could even do that in advance of NMI
+support since GIF=0 should block IRQs as well.
