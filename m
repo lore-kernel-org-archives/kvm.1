@@ -1,103 +1,100 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66C8437448
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A4350EBE8
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790802447; cv=none; b=XZJTgkR5N3yv+RSeflUnziiPHgvarBqK2BUd/JUIoAcOQShu3+cqZSTnOazqI3e1BqyhbMW4Ug8A5zWwONUSSCUFNJNZ9+2uURC/5p4obpH2JVz92ZnIMXFk6sg4IqbUoiTzWTXydtNY5nLw+mcTo1NX+/RzwsDpzjFD0WcUf+U=
+	t=1790803117; cv=none; b=NRcwnx77E5+doUxkMGFbJ27Lt5IuLXU3kN2elbCFjx1SOsD2Qg8BNNBv1VIRB+BhYqGcyLqvs+bhTQ7F0C92apAmitTKmBIFTlLshPbrRKqb48EAzpsoqgM8/tFgkKDJcYULZuU7krMwzUefcypiWSJ5idWVvC0mVnzNT1xrRNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790802447; c=relaxed/simple;
-	bh=93bpceLZlrAkvmaGoE7sfUNLduNSj8klf5sl0EI9qNE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=naOBEkEgYz1NeBGPDBDWVq8ysd0w5JlwJTrPNJYeghhgJIaM8EmgHJtovQAV6ilPWYW21387ngRxdUFGHDnGOLi6iQ3fCB/aqZQUOLN+HZgukuRwXRc5nO/C4s86DP0JqpMkWxOkQ9Xrozf1DUSSS6n/0sTv44uUgergQHAkYtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qqBuqhdB; arc=none smtp.client-ip=209.85.215.199
+	s=arc-20240116; t=1790803117; c=relaxed/simple;
+	bh=bBIz71XabS8gsl10MkZY2WdwbNn2woPnnwp8G7PdlC4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=G8SQk/DeqvpS/FrElwhHd9SwkIO87EeM1fFgH+6XVlCtQFCHkRwZ+TdutEHoGPxsoJVyVw4grCtDtZ6gDAbtdbyLPd0x/e3iupRYz9Z45dN6quwAwzsOfVeoSvGcJoqClPBTqDP3rrwSAD+4fOotGIe6O6/8Px/M2CsNvzCedcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d9unN/oq; arc=none smtp.client-ip=209.85.167.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qqBuqhdB"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1eb205d31so6583059a12.2
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:07:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d9unN/oq"
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4b28deb7ee3so9944808b6e.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:18:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790802445; x=1791407245; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3E+HmnTRuwa4/8xSFm89S79BjMh+ktjR1OaIYiNyOOk=;
-        b=qqBuqhdBLHlspmri5lqrkiMxb2k/60W6Tf2Nr0h9KFfHEutveiPwSU2CpxSBSsjHfc
-         D0ufg0pdup77pKGeWfomYEuye0bKjubbbFquY0XKydPQC1plgG+zSULAco6vai6skg7q
-         NjF4Y/+Cx6vFN+IST52+KvplN5ZO+3zcK2dXsjTD/K01xi0UM2M48h67Su7GLOczHEz8
-         3YSfd3SP+pv44ejz57N6izjvD9lmATAn8W3sclX0uI9YUJ70d0q6QEoEQlUmb30QolPy
-         PpACWIdw4Lbn6+G2q74F/H2GlBleuSZ936Aqr3oKU7PN5YbKm/rk4IRw8+5tMgI5pnl/
-         pq0w==
+        d=google.com; s=20251104; t=1790803115; x=1791407915; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=631pnrFuqDRXd3BfizV2s6nQYFa+PIycK6cr0Zp6o9g=;
+        b=d9unN/oq8JFqoulfoY1odb90kkrMFH2Fgy0ZKNdLnzWsARCsIzRJX93qv3aaQ+yBi+
+         6zR/NRw1F1i2xOFaae03qAg3iKByHnww11wA3oRhY7KD+8jBlNV30buToioygXIG8Zok
+         ETEE488jUn3taQVTqDOBZ+K9n9PBez8GDTvdd6Jvz+BUU4MEIpIFvvC/BdXufzm09JAp
+         uf9dBhUVZcXkXYnspYQtC3SaiNmur6uKpRGYTbc1ZOaJTHWwdBLBmCXExHIIWdXXrFew
+         2yotWQgHoMo4yvWXpZGWKp64S0jmLJvN7y1I2qaMtGVWNFnb9xfUjKXj0VYN/rA0ETRf
+         jipw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790802445; x=1791407245;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3E+HmnTRuwa4/8xSFm89S79BjMh+ktjR1OaIYiNyOOk=;
-        b=UWLDI6QYFl7zh2iBCBLuqRel0q5ws6oYGfE2x2iepRBB7Ktd4MRnx98XA8R5nYOtGY
-         R3CkMb29JCUMTrL9g/xciCrKezM42VN6czMF3P5LHDcINKzS1cJt120hsEYEPuHd1ybV
-         ntWRbpV01HHKLdeA1Wsgnczhoyh733aLlOQr3Xkf/AP6yoXghbC7/luAtAzLAIQjmHv9
-         4Ttlc57PUyeeg2qTUDnisF0daSvs0OLZJv/qYeZdUzA8VG2ejFtJTysPSYc3TL2eE1tB
-         NDfpiV1lTYeN1Vw7zYatBzN/x/Nd9NCS6XNQlrOuRyLUjluSimZ+7uk90PDjzKPGR98d
-         FL1A==
-X-Gm-Message-State: AFuF++ku21oMphC9PucKXG8YHiNYC9uhcSQYSf7lGgJubjtxQCsgcymn
-	jO2mPS8MIQl/3p6DlCgHEWvBoqQeDL0uY1PBnnnO7IYPgnXY/ALT22+CbFB+F6GDuwO3Omducjx
-	Z9r5laQ==
-X-Received: from pgvi21.prod.google.com ([2002:a65:61b5:0:b0:cc7:d161:7edb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a04:b0:3de:4542:1a91
- with SMTP id adf61e73a8af0-3de9e84e310mr2375161637.30.1790802444857; Wed, 30
- Sep 2026 14:07:24 -0700 (PDT)
-Date: Wed, 30 Sep 2026 14:07:24 -0700
-In-Reply-To: <106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com>
+        d=1e100.net; s=20260707; t=1790803115; x=1791407915;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=631pnrFuqDRXd3BfizV2s6nQYFa+PIycK6cr0Zp6o9g=;
+        b=UHhHbn9lGq505NSsoDA6dau1TrM+3UyFY04QUbxz7IE4LYw062uvsGv2KcFXpWjZNI
+         Fx8SCSJiehqHB/2WV+GDXmzjFnF3aV6BEUgTui2aaXER1q+uR1C3KA2rWimOxT8m59i3
+         98E5j+WtMEN8YSXBU1yaFSWunEb3Hgj7naXpE8Dp2wjvSOkpC2y9+vJ6rburTTt7ZjaB
+         uFnwuTd9gEmljYMBOZz8NkOEsICpvmCByiqWKBSoiecMDsu0KWR0ugfqlP/joP6pahje
+         lZjXpF49uf6ewGuP3JTOR1VVvtg5HkVVCfPTRou4+jK6IaZnZgy8vg691jFTHgya/I+l
+         Sorg==
+X-Forwarded-Encrypted: i=1; AKwUvByasIZPU98/WJh8Oi1n5qZN6urBIO6VCh6+Fn4IjCLZ5ml4+jMr7yZI3e21Uro/BKq5XLo=@vger.kernel.org
+X-Gm-Message-State: AFuF++npVIBBOkyGAUSdNfanb+yuJ3IyzEF29m3aHiA8oNDm1pVvlzRi
+	uDvi8S9amvgdH51hIEw7J9kYCJ0YpDybWydFTEcByyvKZ+6BAYlfQR5iuIvXuYqPkjy9IYs+JhR
+	2Cv8ElV4sRHLyn+uNS3qDnEMzYA==
+X-Received: from iocrj27.prod.google.com ([2002:a05:6602:a71b:b0:9c7:5b85:f7d6])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:14ca:b0:4d6:92b3:5c8d with SMTP id 5614622812f47-4f1bafb3d3bmr3357156b6e.67.1790803114797;
+ Wed, 30 Sep 2026 14:18:34 -0700 (PDT)
+Date: Wed, 30 Sep 2026 21:18:32 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <106bc3a4660653cb7750f3ae07a4dbca42c2762c.1786356229.git.sandipan.das@amd.com>
-Message-ID: <ar16DP3mAeWTewq8@google.com>
-Subject: Re: [kvm-unit-tests PATCH] x86/pmu: Add option to raise NMI on overflow
-From: Sean Christopherson <seanjc@google.com>
-To: Sandipan Das <sandipan.das@amd.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide Chen <zide.chen@intel.com>, 
-	"Nikunj A . Dadhania" <nikunj@amd.com>, Manali Shukla <manali.shukla@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260930211834.2773546-1-coltonlewis@google.com>
+Subject: [PATCH v2 0/2] KVM: arm64: Handle hidden FEAT_PMUv3 in ID_AA64DFR0_EL1
+From: Colton Lewis <coltonlewis@google.com>
+To: kvmarm@lists.linux.dev
+Cc: maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, 
+	will@kernel.org, pbonzini@redhat.com, linux-arm-kernel@lists.infradead.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Colton Lewis <coltonlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 10, 2026, Sandipan Das wrote:
-> Interrupts raised on counter overflow are currently delivered through
-> the PMI_VECTOR as regular maskable interrupts. However, for some
-> configurations, like SVM with PMC virtualization and VNMI enabled, the
-> guest LVTPC is ignored and the interrupts are always delivered as NMIs.
+When userspace initializes a vCPU with KVM_ARM_VCPU_PMU_V3 and hides
+FEAT_PMUv3 via ID_AA64DFR0_EL1.PMUVer, KVM hits a WARN_ONCE("Unknown PMU
+version 0") during reset_pmevtyper() and continues to expose PMU system
+registers instead of emulating guest accesses as UNDEF.
 
-IMO, that's a KVM bug.  KVM shouldn't enable PMC virtualization if the guest LVTPC
-is configured for something other than NMI.
+Patch 1 handles ID_AA64DFR0_EL1_PMUVer_NI in __kvm_pmu_event_mask() and
+removes the redundant kvm_vcpu_has_pmu() check in reset_pmevtyper().
+Patch 2 updates pmu_visibility() to check ID_AA64DFR0_EL1.PMUVer via
+kvm_has_feat() so PMU registers are marked REG_HIDDEN when FEAT_PMUv3 is
+not advertised.
 
-> This causes the test to crash, as seen below, because it does not
-> expect NMIs.
-> 
->   Unhandled exception 2 #NMI(0) at ip 0000000000400326
->   error_code=0000      rflags=00000056      cs=00000008
->   rax=00000000001300c0 rcx=00000000c0010202 rdx=0000000000000000 rbx=0000000001019f58
->   rbp=0000000001019ee0 rsi=00000000000f4240 rdi=0000000001019f58
->    r8=ffffffffffffe000  r9=00000000000003f8 r10=000000000000000d r11=0000000000000020
->   r12=00000000001300c0 r13=ffffffffff6768f0 r14=ffffffffff6768f0 r15=0000000000000001
->   cr0=0000000080010011 cr2=0000000000000000 cr3=00000000010fe000 cr4=0000000000000020
->   cr8=0000000000000000
->           STACK: @400326 400de1 401715 401e51 4001bd
-> 
-> Add an optional "nmi" argument to improve test coverage for such
-> configurations. When passed, the LVTPC has the delivery mode changed to
-> NMI (APIC_DM_NMI) and the overflow handler is installed on the
-> NMI_VECTOR. Otherwise, it keeps using the maskable PMI_VECTOR.
-> 
-> Unlike maskable interrupts, which stay pending until EFLAGS.IF is set,
-> an NMI is not gated by it and arrives as soon as the counter overflows.
+Changes in v2:
+- Handle ID_AA64DFR0_EL1_PMUVer_NI in __kvm_pmu_event_mask() and drop
+  the kvm_vcpu_has_pmu() check in reset_pmevtyper() (Oliver)
+- Drop Cc: stable@vger.kernel.org (Oliver)
+- Add patch 2 to check ID_AA64DFR0_EL1.PMUVer in pmu_visibility()
+  (Oliver)
+- Link to v1: https://lore.kernel.org/r/20260929220411.3756519-1-coltonlewis@google.com
 
-Hmm, AMD does have GIF though.  What if we conditioned use of NMI on (nested) SVM
-support and thus STGI+CLGI being available?  Then we can largely abstract away
-interrupt masking, and if we wanted, we could even do that in advance of NMI
-support since GIF=0 should block IRQs as well.
+Colton Lewis (2):
+  KVM: arm64: Handle ID_AA64DFR0_EL1.PMUVer == NI in
+    __kvm_pmu_event_mask()
+  KVM: arm64: Check ID_AA64DFR0_EL1.PMUVer in pmu_visibility()
+
+ arch/arm64/kvm/pmu-emul.c | 5 ++++-
+ arch/arm64/kvm/sys_regs.c | 6 +-----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
+
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
+
