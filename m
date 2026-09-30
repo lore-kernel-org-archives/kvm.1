@@ -1,94 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A085B52842B;
-	Wed, 30 Sep 2026 17:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC21651FCA3
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 17:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790790047; cv=none; b=pi7IxUJsZUXfW7EcNnmhxTvVikUu0OvHQpXdoRArVP5hcVXI5PqHuUzjx7pKELrRRGu8wtnEsGv2XWlXUtwRo54NhRHu/vFChxBXoeTfUFoAHbTcDv9xuEGKJQLNsxAF8/ynivj8eVFSboUF28TDV/EGF0DBHoP9fQ45cR1OmkY=
+	t=1790790306; cv=none; b=YvV/ahWPnckQ6awU4jNaCsiMjNitXwBrxuxQj7b6lPLF4ncKVccYxqXG3JrikEmHBUwoXGF0GsQ+1VW7FS6ID/cDTcqpmCneaUYXS9igN/xY7DD0wzu6FEW0m3NcIYG4OdIVKevHGI6gq2e0UgM6nWmKa9jifUQWocIn0iBX9iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790790047; c=relaxed/simple;
-	bh=UFEEaU8VSNcczL2s8tDNC/map7bcN1duSucun+XsqFg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=OBUkEauNNTc+YJIcughPIBlxAecDw6Do7W+XIE98wMykxhgAMbqDJf1JCsczkvNisV0C7uscqC0XpDwMSK/3RI8nCACgG9jYEdTJz8XNKAhmdK2vSqGaifYhz+4rt7AwQId53HNKxXn0O0J1Bb08+JrNmbar37i5Rbg17M2w70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8nND1KS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790790306; c=relaxed/simple;
+	bh=QS5F1n1s9CDwc6oy/33YqVDcDHBHLLzroXk8J+709nk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=bmJb6OVt1RoD7S5NRR2xOGq3aaYc0rVxY0qHhpE0hKyqj00OZlzq+PSx6pqUYIHQgrNuzvettEmdNPKYRPAZfwjjwVwpXfbUPP5jmgDGyq/FkxCp1SiixGIWJeevLXF6F57cLgL8pWBrXqiTrrsW82Snr6siN/BpxU/pHfnTY0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0lMekkC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8nND1KS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62801F00898;
-	Wed, 30 Sep 2026 17:40:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0lMekkC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7738F1F00898;
+	Wed, 30 Sep 2026 17:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790790046;
-	bh=YhVZFG5in0F6n1NwsGrKsPvZtMr7DkwLGnxnIpNEZlg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=V8nND1KSs7ybLY2op+fQghxOr6z/M2H1Wx2fmTCEEARj2nS4gfLwD8IcSVzzOk25W
-	 1s3c7Kv6ko5uPGyMowgWPCi7DSeYS16Kd8gjGCasAP/Q4oK9k5khN6yRZf7nCpEVnw
-	 eACzrS4+Am2jJ32wBEoFAaVqjai/a3GZw7cnE9Uo3uTfK5NFjZcBqVNTlw/ZyV/J8i
-	 MXTTiR40Ozy0RY745BhfMf4zLYSLyIX/dRrYLnmycyX2Bol2DIM2m6GVb8Nbt/yoFD
-	 nBHvuQnycd0xqcc7x1Ge+uDfscqdUpIRGOjSArQSXUbGq9H8KErvE8XfwU6G2eeYvZ
-	 1VzxMQUyWJ9Gw==
+	s=k20260515; t=1790790304;
+	bh=XkkVWaUc8J9qyS7e3/lX6P/rM5N7jo8HEa6ij+DOMV8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=l0lMekkCOBAbowlgpdVb1zphQ3NC+xvdKd2BaUpZ9ALbH1xSwaL6edXH/6p+Gg8cP
+	 GfiTqp58lRfuWJ0NgDKSlshlqstOPt1MkGFYcBBdKlrn1+JpKHG3g9VD9Zs5l05m+W
+	 gODddD6hZA7ytEN+Bbv3Aw2qbYn2ryzOV6qVkytY5qlJr6+fZ7NLRLjvwZJJTt5le2
+	 0SPljaRVqmOFeXdHJAWI8eeJ8BpcfDcuYvhkN6fFKe7DnGJgSzpvwaJoRGVUqdFgQ/
+	 W3KBieicadeqX5nqYftSyYFhvZXFz9mGwguLM+IBdUpMr7C4dzt7Ha0Nt1x/J/JqR4
+	 xL7TZgXuDxN3Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 08/21] KVM: selftests: Rename TSC freq checkers in
+ nested TSC scaling test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260930173635.3362655-9-seanjc@google.com>
+References: <20260930173635.3362655-1-seanjc@google.com>
+ <20260930173635.3362655-9-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 30 Sep 2026 17:45:04 +0000
+Message-Id: <20260930174504.7738F1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 19:40:39 +0200
-Message-Id: <DLSU375MUCEM.QQ89C9WM16H5@kernel.org>
-Subject: Re: [PATCH v2 1/1] vfio/pci: Remove the core dependency on driver
- data
-Cc: <alex@shazbot.org>, <jgg@nvidia.com>, <acourbot@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <kvm@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>, "Alex
- Williamson" <alex.williamson@nvidia.com>
-To: "Simon Song" <xinmengs@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260930143641.4160785-1-xinmengs@nvidia.com>
- <20260930143641.4160785-2-xinmengs@nvidia.com>
-In-Reply-To: <20260930143641.4160785-2-xinmengs@nvidia.com>
 
-On Wed Sep 30, 2026 at 4:36 PM CEST, Simon Song wrote:
-> vfio-pci-core currently has runtime functions that interpret pci
-> driver_data as a pointer to vfio_pci_core_device, and enforce vfio
-> variant drivers must set vfio_pci_core_device to their pci driver_data.
-> This constrains variant drivers' private-data layout, including the
-> typed driver data used by the Rust PCI infrastructure.
->
-> Added VFIO_PCI_CORE_DEFINE_CALLBACKS marcos to generate wrapper code for
-> each vfio variant driver, update vfio variant drivers to store their
-> private strctures in driver_data and use generated wrapper to pass the
-> vfio core device to helpers.
->
-> Select the vga decode callback during vfio_pci_vga_init based on if
-> vfio_vga_disabled, the callback only use pci_dev and does not require
-> driver_data
->
-> Assisted-by: LLM
-> Link: https://lore.kernel.org/all/DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org/
-> Co-developed-by: Alex Williamson <alex.williamson@nvidia.com>
-> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-> Signed-off-by: Simon Song <xinmengs@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] selftests: guest_check_tsc_freq name contradicts commit message sem=
+antics
+--
 
-I like that this moves the PM ops to static initialization. One nit below, =
-but
-either way:
+commit 7c759b101cdd9e99d261e6f3022bcb5096eeadfb
+Author: Sean Christopherson <seanjc@google.com>
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+KVM: selftests: Rename TSC freq checkers in nested TSC scaling test
 
-> @@ -2332,10 +2324,9 @@ void vfio_pci_core_unregister_device(struct vfio_p=
-ci_core_device *vdev)
+This commit renames the nested TSC scaling test helpers to clarify guest vs
+host usage. It aims to emphasize that the host version performs the actual
+assertion check on the result.
+
+> diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c b/=
+tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
+> index 84312146e93f6..e5fc4c9bb9f9b 100644
+> --- a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
+> +++ b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
+
+[ ... ]
+
+> @@ -45,7 +45,7 @@ static void compare_tsc_freq(u64 actual, u64 expected)
+>  		    actual, thresh_low, thresh_high);
 >  }
->  EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_device);
 > =20
-> -pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
-> +pci_ers_result_t vfio_pci_core_aer_err_detected(struct vfio_pci_core_dev=
-ice *vdev,
->  						pci_channel_state_t state)
+> -static void check_tsc_freq(int level)
+> +static void guest_check_tsc_freq(int level)
 
-The state argument is unused. Since this is not installed as a direct PCI
-callback anymore it technically doesn't need to retain its signature.
+[Severity: Low]
+The commit message states the goal is to make it more obvious that the host
+version *checks* the result and asserts on errors. However, renaming the
+guest helper to guest_check_tsc_freq implies it also performs validation,
+whereas it merely measures the frequency and invokes GUEST_CHECK() to pass
+the value back to the host for verification.
+
+Would a name like guest_measure_tsc_freq be more semantically accurate
+given the commit's stated intent?
+
+>  {
+>  	u64 tsc_start, tsc_end, tsc_freq;
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930173635.3362=
+655-1-seanjc@google.com?part=3D8
