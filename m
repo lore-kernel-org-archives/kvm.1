@@ -1,44 +1,44 @@
-Received: from mta0.migadu.com (out-193.mta0.migadu.com [91.218.175.193])
+Received: from mta1.migadu.com (out-150.mta1.migadu.com [95.215.58.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9D33769E4
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 09:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F13CC337
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 09:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790761434; cv=none; b=H41QB2MoV9DSqShXy0zAweTBj63uzapstsAHqpqqIIW6Yxa/QzCe1K61cheNa+b1mgLgIrec9+7aS5v9Z97rkWVo31SMHm2Ieg/o2obc4CyJ0YsY8wuCoXqlPQmkvXazdcqUI93wUGFXLttmmKNbvhkX8Qbb9VVxU1y1d7hVGZ8=
+	t=1790761856; cv=none; b=Ei/jxP5ccMEN4MhtIm0fv6L6yN2WbCfZzdBc53Ak2G2lrMbSyMwkpvsPc0QxE1Q0hOY7QI70fNcowFfrhpK2OtQ30Zvm2bYDdNIiQqYEBq/bRMtM8KDSd7Rco8FH43d825RPIeCAQQQif7zTeNm8RnkuQJkQcCF5RqPdAxbP4cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790761434; c=relaxed/simple;
-	bh=U2M2xlqw/KjGQrWvHSnOVqTKZiyerNMc1PkicikEQzI=;
+	s=arc-20240116; t=1790761856; c=relaxed/simple;
+	bh=FKMZzLIuMUGPJesWEz83SnTluRLeLp6m+DLV2weSnBc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gIPia5HT4nBvhS7/Fw++L8xDNCrzpbsWfLRWwGiAbBYx2Zya8GlVLS8dxPhY6N/9Ksg/f12qfbkVByRAMCwQ0WZRN7jpJIYMuj6Cj+7Q7OCKT8CVL6gRySNnlqiwdSLKN+zDtszlO+8jVAZLukQN1/UmuexShEz2J856ZEdgne0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cN8Xs1J9; arc=none smtp.client-ip=91.218.175.193
+	 Content-Type:Content-Disposition:In-Reply-To; b=AjEwK2zO/qPqKWDekXve25eA/ordk2eZx/wubNWzHaH6c6K2O6LQ0URbOHkYkDaGkfwybVlJqQZh20we1n8yR69hhM3/PVeAkoKwhEtaHBqj6q5xFyCbgeEvDwmcH4BiB7EheoOe58+4ZvwMCHVgLeAY3z6NuG3jkr3QU0dSDqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=evjStU4K; arc=none smtp.client-ip=95.215.58.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cN8Xs1J9"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="evjStU4K"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=U2M2xlqw/KjGQrWvHSnOVqTKZiyerNMc1PkicikEQzI=;
+DKIM-Signature: a=rsa-sha256; bh=FKMZzLIuMUGPJesWEz83SnTluRLeLp6m+DLV2weSnBc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790761430; v=1; x=1791366230;
- b=cN8Xs1J9fe8M9eW1hbhhXVWdp5+swtBBTsDzlOIAjCkTA10yHbRNgwGOXk5lu+LH+LHMOFt1
- YORvW3kHmXvNmquD3C3t6crNr80YamdhVx7a11xQgxxyPlVINVxVHmTk0Kga0NFKbAWxZ+g8dQj
- P1WUeXJPLanc1HX/HQcNq+x0=
+ t=1790761852; v=1; x=1791366652;
+ b=evjStU4Kc4Ya1L24hSEl9sgDdr/c8oLIxlB7fFuu3mnfifVMgzfHnBjWn/HkmXV12UJxkmYW
+ WWCgSfJGJIHdni8kkPakWLNVrPmryiEfoi1LXi9yDaQFx27xjZZ1gArjsyhZF3oPXj9ChnoaIoc
+ O4qym7tPGBqeQA9BSICka68c=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 791cc7bddc75e0eb;
-	Wed, 30 Sep 2026 09:43:50 +0000
-X-Mizu-Trace-ID: 791cc7bddc75e0eb
+Received: by smtp.migadu.com with ESMTPS id e3db653f70d68817;
+	Wed, 30 Sep 2026 09:50:52 +0000
+X-Mizu-Trace-ID: e3db653f70d68817
 X-Migadu-Flow: FLOW_OUT
-Date: Wed, 30 Sep 2026 11:43:46 +0200
+Date: Wed, 30 Sep 2026 11:50:51 +0200
 From: Andrew Jones <andrew.jones@linux.dev>
 To: Xiang W <wangxiang@iscas.ac.cn>
 Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
 	pbonzini@redhat.com, thuth@redhat.com
-Subject: Re: [kvm-unit-tests PATCH 3/7] riscv: Add ACPI support for timer
- frequency discovery
-Message-ID: <2wlouhxdm3owxuybtaizrcncnekhwjscdzeuwvye3hfwautlyu@rpnkw2r5emef>
+Subject: Re: [kvm-unit-tests PATCH 2/7] riscv: Add ACPI support for CPU
+ initialization
+Message-ID: <bhisbphulilfbeouz2eap5zt6ndissa4bqwpqeksplfgmbhlc4@y6wii5vox7nl>
 References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
- <20260924033945.176581-4-wangxiang@iscas.ac.cn>
+ <20260924033945.176581-3-wangxiang@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,112 +47,57 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924033945.176581-4-wangxiang@iscas.ac.cn>
+In-Reply-To: <20260924033945.176581-3-wangxiang@iscas.ac.cn>
 
-On Thu, Sep 24, 2026 at 11:39:41AM +0800, Xiang W wrote:
-> When a DT is not provided, read the system time base frequency from
-> the RHCT instead of aborting in timer_get_frequency().
+More ACPI naming comments below
+
+On Thu, Sep 24, 2026 at 11:39:40AM +0800, Xiang W wrote:
+> When a DT is not provided, discover harts from the MADT RINTC
+> subtables (ACPI 6.6 type 24) instead of aborting in cpu_init_acpi().
 > 
-> RHCT Time Base Frequency is the ACPI equivalent of the DT
-> /cpus timebase-frequency property and is the same for all harts.
-> Keep DT as the preferred path when one is available.
+> Parse each RINTC entry for hart_id and ACPI UID, record them in
+> thread_info, and mark the CPU present only if it is Enabled in
+> the RINTC flags and SBI reports the hart as available.
+> 
+> Also add the RINTC MADT structure and the MADT types introduced
+> after GENERIC_TRANSLATOR so the RISC-V interrupt controller
+> entries can be identified.
 > 
 > Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
 > ---
->  lib/acpi.h        |  9 +++++++++
->  lib/riscv/timer.c | 37 +++++++++++++++++++++++++------------
->  2 files changed, 34 insertions(+), 12 deletions(-)
+>  lib/acpi.h                | 30 +++++++++++++++++++++++++++++-
+>  lib/riscv/asm/processor.h |  1 +
+>  lib/riscv/setup.c         | 28 +++++++++++++++++++++++++++-
+>  3 files changed, 57 insertions(+), 2 deletions(-)
 > 
 > diff --git a/lib/acpi.h b/lib/acpi.h
-> index a905807d..2597e8ce 100644
+> index a62cd3a9..a905807d 100644
 > --- a/lib/acpi.h
 > +++ b/lib/acpi.h
-> @@ -20,6 +20,7 @@
->  #define MADT_SIGNATURE ACPI_SIGNATURE('A','P','I','C')
->  #define SPCR_SIGNATURE ACPI_SIGNATURE('S','P','C','R')
->  #define GTDT_SIGNATURE ACPI_SIGNATURE('G','T','D','T')
-> +#define RHCT_SIGNATURE ACPI_SIGNATURE('R','H','C','T')
->  
->  #define ACPI_SIGNATURE_8BYTE(c1, c2, c3, c4, c5, c6, c7, c8) \
->  	(((uint64_t)(ACPI_SIGNATURE(c1, c2, c3, c4))) |	     \
-> @@ -328,6 +329,14 @@ struct acpi_table_gtdt {
->  	u32 virtual_el2_timer_flags;
+> @@ -226,6 +226,22 @@ struct acpi_madt_generic_translator {
+>  	u32 reserved2;
 >  };
 >  
-> +struct acpi_table_rhct {
-> +	ACPI_TABLE_HEADER_DEF
+> +/* 24: RISC-V Interrupt Controller (RINTC) Structure (ACPI 6.6) */
+> +struct acpi_madt_rintc {
+> +	u8 type;
+> +	u8 length;
+
+struct acpi_subtable_header header ?
+
+> +	u8 version;
+> +	u8 reserved;		/* reserved - must be zero */
 > +	u32 flags;
-> +	u64 timebase_frequency;
-> +	u32 node_count;
-> +	u32 node_offset;
+> +	u64 hart_id;
+> +	u32 uid;
+> +	u32 ext_intc_id;
+> +	u64 imsic_addr;
+> +	u32 imsic_size;
 > +};
 > +
->  /* Reset to default packing */
->  #pragma pack()
->  
-> diff --git a/lib/riscv/timer.c b/lib/riscv/timer.c
-> index 18063b7e..2a18f0e0 100644
-> --- a/lib/riscv/timer.c
-> +++ b/lib/riscv/timer.c
-> @@ -13,24 +13,37 @@
->  #include <asm/smp.h>
->  #include <asm/timer.h>
->  
-> +#ifdef CONFIG_EFI
-> +#include <acpi.h>
-> +#endif
-> +
->  void timer_get_frequency(void)
->  {
-> -	const struct fdt_property *prop;
-> -	u32 *data;
-> -	int cpus, len;
-> -
-> -	assert_msg(dt_available(), "ACPI not yet supported");
-> +	if (dt_available()) {
-> +		const struct fdt_property *prop;
-> +		u32 *data;
-> +		int cpus, len;
->  
-> -	const void *fdt = dt_fdt();
-> +		const void *fdt = dt_fdt();
+> +#define ACPI_RINTC_FLAGS_ENABLED	1
 
-This should be put above 'u32 *data'
-
->  
-> -	cpus = fdt_path_offset(fdt, "/cpus");
-> -	assert(cpus >= 0);
-> +		cpus = fdt_path_offset(fdt, "/cpus");
-> +		assert(cpus >= 0);
->  
-> -	prop = fdt_get_property(fdt, cpus, "timebase-frequency", &len);
-> -	assert(prop != NULL && len == 4);
-> +		prop = fdt_get_property(fdt, cpus, "timebase-frequency", &len);
-> +		assert(prop != NULL && len == 4);
->  
-> -	data = (u32 *)prop->data;
-> -	timebase_frequency = fdt32_to_cpu(*data);
-> +		data = (u32 *)prop->data;
-> +		timebase_frequency = fdt32_to_cpu(*data);
-> +	} else {
-> +#ifdef CONFIG_EFI
-> +		struct acpi_table_rhct *rhct;
-
-Need a blank line here, or just do the find call on the same line.
-
-> +		rhct = find_acpi_table_addr(RHCT_SIGNATURE);
-> +		assert_msg(rhct, "Cannot find ACPI RHCT");
-> +		timebase_frequency = rhct->timebase_frequency;
-> +#else
-> +		assert_msg(false, "ACPI not available");
-> +#endif
-> +	}
->  }
->  
->  void timer_start(unsigned long duration_us)
-> -- 
-> 2.47.3
->
+We already have ACPI_MADT_ENABLED
 
 Thanks,
 drew
