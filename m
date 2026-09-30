@@ -1,56 +1,56 @@
 Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A5551E441
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 17:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB23B51EDEE
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 17:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790789862; cv=none; b=CHmIBqp8GPePQG0W3ntcVYmsVSMsSTL43nnjSZa1gi37HmmJCRJguu5/PYfNHBFp0c0CL0nDtPWsrbihgUS0BMdmqIYLRneoOddAeVAHvvNaw+2ghw/7t0rHO/8otUlWm/4w4yyKeG/aBnNyVrWdm44Kn3vX/dOAfC/X0i+063Y=
+	t=1790789863; cv=none; b=HX8htbKByYW/vF60wNhJ+KOyKFzXtAaL0+Ulq1TUCpl97bcD5nKVRT1H0rAMHZLPanitUB8swNEUqup+krWUF0bZgGDSbTSsOl+yFtaHd8WTVyquFMll96+rzEJfnY3Zovz5Z0AK5x0HZZMz4o7f4B72xK2TOF941FLPE2M1NZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790789862; c=relaxed/simple;
-	bh=58f2QmNNQQdnN/JNPgV03bddp/nVFR8FI3bhho7WoiY=;
+	s=arc-20240116; t=1790789863; c=relaxed/simple;
+	bh=LJyZ3tVj8w6jPsUo69NAPyOWF+WrzCpi4R294IkW+Gc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pzt0f/KBwvbf9S/w2TgqecXXfy7onZRJluxEeysf7v6y7hYd8vB5G7TnFMD9+GV/f3WQVPWFb/YirR86dDUe36J27twqVfzWOHOW1oyFb2gmzncf0Lfm/abDHx5uRlvMueEa9/xGyebzijuuVEh/PaziCTw0fu7/ZhPn8BssT80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UZG23e4B; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=BzEE943AbVK3GEc/wHvsxb2UX9EZ8T0iW0IeZSTf4/7Qm7cYmEMC1dDG3PO8NV7p+pV9dCrfk7dpo3YcgYqxsJn4cG1WPTRPZCo27KtyJgBz+sy7mQZ/cQxwdUvAxbyiUyMRXb+RtIQ8PKd/O33ZCzfgIXj3DJxKFhE9D6VVcWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lfURh0MT; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UZG23e4B"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7361c62b9so4055034a12.3
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 10:37:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lfURh0MT"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc489e7a701so6836547a12.2
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 10:37:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790789860; x=1791394660; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790789861; x=1791394661; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=a6B/yRwv8+Wh9zmaZqZxMYcgxNWMQzfJrOwGAe00Yf8=;
-        b=UZG23e4BuaA1jrms0f8tybwCKSl8eh5I1i5FDbfsKguwIwq/tD/j1b2MDCEh5BlbFX
-         2Rp/NJrJ6xanpYIGgeJCrVrNdBgRLrV1j3fdCjVqgmcZx/moPhDdB6mwsWFRnu4p6A/r
-         +zcxG7MkvP1YGBm4MS6MLe6buRzjr6+oQxPAsZqHA3jKeW/gzstOq3xO/Kpu3Ur4BtM2
-         UbRx1wJ7wivO1mc7Z+riKYa8xuU/PPEk4pqPXYBCsLYB13rYAQfVLbvAtAjE2n1ScdsL
-         NsGd73sCv6rNTe7TyM7Nip8xmKCYPy2ELnMk4e0tPAx7GZyrWLl/CRuUhQFQpV/5AODj
-         ELiQ==
+        bh=YQI7Xhfv1l7vhAWmakkyx6EijkOgxOzytd1BuSHWhHU=;
+        b=lfURh0MTgCh0hWNnc5A2sdHRIdNuozSR5Q2nMl7C9x981kJRQxYU4ucwrZJntTxcIw
+         arZ961Y7u+O/9SKt+fH5AHQFWIylviy/NSh9hLvCWhcQUKd7jU6OdtmTQn9GF9vKXIzH
+         D8XThl62hHY+gFkJlWSJOsRoClsnIkjSPodxFN4syuvYvuk/dEWRnN/SCjzbgdoE6N+A
+         tLi7rxFtIQ/Jw1QZg25g1xOEBfLzh3uZorIpqyw6oB6XA6VjyvBwG976X36fBta/MWX6
+         GlsKWdJSoH7ePuWBjUNeOoJ4rglex39Wfq3RzpYlNtvdqaWZrRqYpmby433jfGOQZWmz
+         +5iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790789860; x=1791394660;
+        d=1e100.net; s=20260707; t=1790789861; x=1791394661;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=a6B/yRwv8+Wh9zmaZqZxMYcgxNWMQzfJrOwGAe00Yf8=;
-        b=X88Q0L1eBRMnHRGfp69i3J1vUZK7zopZGUH4/1TnMZjoKTO9N/6ZUrSThd1JQNl1/2
-         oF0ATIQ9mswSzl+POjLsu2zTtOEv+I2j5wBRUhbnF0xsp9ER2igWoJbblh2o4hvG/StK
-         oaUEGS0uQiqe5hSYmRpG8taUcSjfG3G2fuEnomQ0a8HpjH/w1PRFFTL4OL2rtqqmfvDP
-         ibsM9U6l8ZjaptSAJt5kplOP9tlzbRZ/xehJOTr4J57dALu64m0sdXLK2njTaXiJls4V
-         DNkqLFZqsrhr8+jQ8g9IQ0u7d3hB6KQrCm5UX6PiBM7rGI33/7gaPScVN8QJxzPo+4Lu
-         oZ0A==
-X-Gm-Message-State: AFuF++kSWWB4uFEuRvf/8f94LpNSradhxPGgsTY400PPeTskOROtKAUx
-	XfBiZLg1CzlTSoJFanIyoZLhICyiR0+5sBprCnoj6SATTewW3WoGCyWhB3+ijFmmVGxcQ0axRNu
-	Yc9RDkA==
-X-Received: from pgar16.prod.google.com ([2002:a05:6a02:2e90:b0:cc4:4327:bb52])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7d8b:b0:3da:1e7b:ea27
- with SMTP id adf61e73a8af0-3de9e6e251emr2196880637.21.1790789859619; Wed, 30
- Sep 2026 10:37:39 -0700 (PDT)
+        bh=YQI7Xhfv1l7vhAWmakkyx6EijkOgxOzytd1BuSHWhHU=;
+        b=Ky9u9xMJs2yl9dsK2pboHKq3IOgFhNvi1fzW458QXehgWqFfcbWeEhMDRVair+h6oW
+         RVoWwUhU4Mkd1RgorQOx2jTTWLyrrqJ3rzDypTN4cn6BTjW7B7DnkBiXf2DcNGXchNpW
+         manQ/xkroX7XPa21NqpuPflzsLJAzPU9W6jnpwDSbEVXdS40E2br8qE6wKWJmDWcQUTf
+         UZtm0XmEeV73YCKHAUr9zrOIVlf9MK2pn0k2qm7OTzOwn4TJas4zU/ZDJL+QpNMxruJt
+         Vd5XQCSNbcs+Bs0+jdoLJajACep+lvOItzjT0FhXBxt3iBUKrAO6CMoLeDwcCLSy7g4T
+         6+sw==
+X-Gm-Message-State: AFuF++m+n+Y7qpUH+Bo8n+yOg+ibKheBSHG5jY5rGVwhQOgOWOqlG48b
+	24svWdDLm9bERvREtJTZKLjtiRHAMKjDoJ0N2m63WbmXaFq4wRm9Q0bvvM0HPptYCDleh089Uov
+	83BkNlA==
+X-Received: from pgam11.prod.google.com ([2002:a05:6a02:2b4b:b0:cc7:9b02:9728])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a04:b0:3dd:a196:539c
+ with SMTP id adf61e73a8af0-3de9e87dbe8mr2090543637.62.1790789860786; Wed, 30
+ Sep 2026 10:37:40 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Sep 2026 10:36:16 -0700
+Date: Wed, 30 Sep 2026 10:36:17 -0700
 In-Reply-To: <20260930173635.3362655-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,56 +60,127 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930173635.3362655-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930173635.3362655-3-seanjc@google.com>
-Subject: [PATCH v3 02/21] KVM: SVM: Fallback to the default TSC ratio if KVM
- tries to use a bad multiplier
+Message-ID: <20260930173635.3362655-4-seanjc@google.com>
+Subject: [PATCH v3 03/21] KVM: x86: Allow userspace to set KVM's max supported
+ guest TSC frequency
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>, Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Explicitly WARN and fallback to the default TSC ratio, i.e. run the guest
-at L0's TSC frequency, if KVM tries to program a bad multiplier value.  As
-pointed out by Sashiko, leaving the MSR as-is bleeds state from the vCPU
-that last ran on the pCPU into the likely-misbehaving current vCPU.
+Reject KVM_SET_TSC_KHZ if the incoming frequency is strictly greater than
+KVM's max supported frequency, not if the frequency is greater than *or*
+equal to the max frequency.  The effective off-by-one bug came about via
+(dubious) review feedback, which also subtly collided with a functional
+change in later versions of the original TSC scaling series.
 
-Leaking a vCPU's frequency isn't very interesting, and corrupting KVM's
-cache isn't a big deal either since KVM would only refuse to try to write
-the same bad value in the future, but falling back to the default value is
-trivial, and explicitly WARNing ensures a KVM bug won't slip by silently.
+In v2 of the original TSC scaling series[1], KVM set its absolute min/max
+to [1, UINT_MAX], i.e. allowed any value that would fit in the u32 passed
+to KVM_SET_TSC_KHZ[2].
 
-E.g. because ex_handler_msr() only WARNs once for *all* WRMSRs, it's
-possible for the potentially-fatal-to-the-guest issue to not exhibit any
-visible symptoms in the host.
+  min = max(1ULL,          __scale_tsc(tsc_khz, TSC_RATIO_MIN));
+  max = min(0xffffffffULL, __scale_tsc(tsc_khz, TSC_RATIO_MAX));
 
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260722091414.E842B1F000E9@smtp.kernel.org
+That prompted Avi to suggest rejecting the "equals" case, presumably
+because the check would always succeed given an absolute max of UINT_MAX?
+But even that doesn't hold up to scrutiny, as allowing the actual min/max
+isn't inherently unsafe.  Regardless, that feedback was taken and applied
+to future versions, but only for the maximum, not the minimum.
+
+  > +
+  > +		r = -EINVAL;
+  > +		if (user_tsc_khz<  kvm_min_guest_tsc_khz ||
+  > +		    user_tsc_khz>  kvm_max_guest_tsc_khz)
+
+  <= and >= are probably safer.
+
+v3 of the series[3] then also realized that allowing UINT_MAX would lead to
+undesirable interactions with KVM_GET_TSC_KHZ, which returns a *signed*
+32-bit integer that is implicitly converted into a signed 64-bit value on
+64-bit kernels.  I.e. allowing a value greater than INT_MAX would result
+in userspace observing a negative value when doing KVM_GET_TSC_KHZ after
+KVM_SET_TSC_KHZ.
+
+ /*
+  * Make sure the user can only configure tsc_khz values that
+  * fit into a signed integer.
+  * A min value is not calculated needed because it will always
+  * be 1 on all machines and a value of 0 is used to disable
+  * tsc-scaling for the vcpu.
+  */
+  max = min(0x7fffffffULL, __scale_tsc(tsc_khz, TSC_RATIO_MAX));
+
+  kvm_max_guest_tsc_khz = max;
+
+v3 also dropped the explicit minimum tracking, as both AMD and Intel
+support a minimum *fractional* ratio of 1, i.e. AMD and Intel support a
+minimum frequency of "host / 2^32" and "host / 2^48" respectively.  And
+because KVM_GET_TSC_KHZ (and KVM itself) only supports frequencies that fit
+in a signed 32-bit integer, even AMD's more coarse-grained ratio can scale
+down any host frequency to '1', i.e. KVM can always support a minimum
+frequency of 1KHz.  Rather than explicitly reject a frequency of 1KHz,
+v3 simply dropped the minimum check, i.e. ignored the "<=" suggestion, but
+kept the ">=" side of things.
+
+As a result, KVM now has a bizarre uABI where KVM_SET_TSC_KHZ tops out at
+INT_MAX-1 for no discernible reason.  Fix the off-by-one flaw to provide a
+less weird uABI, and so that KVM_SET_TSC_KHZ accepts the maximum possible
+value that can be returned by KVM_GET_TSC_KHZ (without running afoul of
+casting issues; KVM doesn't actually sanity check that tsc_khz fits in a
+signed 32-bit value, which is a non-issue in practice because the units are
+KHz, not Hz, i.e. KVM_GET_TSC_KHZ is fine until CPUs with a TSC frequency
+greater than ~2.147PHz come along).
+
+Note, in practice, no real world VMM is likely to care.  As above, running
+afoul of the off-by-one issue would mean trying to configure a virtual TSC
+frequency that is three orders of magnitude greater than what current CPUs
+support.
+
+Opportunistically explain *why* KVM restricts KVM_SET_TSC_KHZ to values
+that fit in a signed integer, as it requires far too much spelunking to
+piece together the connection to KVM_GET_TSC_KHZ.
+
+Link: https://lore.kernel.org/all/1300952424-32014-1-git-send-email-joerg.roedel@amd.com [1]
+Link: https://lore.kernel.org/all/1300952424-32014-7-git-send-email-joerg.roedel@amd.com [2]
+Link: https://lore.kernel.org/all/1301042691-22929-7-git-send-email-joerg.roedel@amd.com [3]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kvm/x86.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 0eb1623052c1..2b6888417bc0 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -533,6 +533,15 @@ static int svm_check_processor_compat(void)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 037c7ea5c5a7..1d25ffcf9273 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3718,7 +3718,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		user_tsc_khz = (u32)arg;
  
- static void __svm_write_tsc_multiplier(u64 multiplier)
- {
-+	/*
-+	 * Fallback to the default ratio if KVM is buggy and tries to program
-+	 * an unsupported scaling ratio, e.g. so that the guest has a chance of
-+	 * surviving, so that the cache isn't stale/corrupted, and so that KVM
-+	 * doesn't leak state across VMs.
-+	 */
-+	if (WARN_ON_ONCE(multiplier & SVM_TSC_RATIO_RSVD))
-+		multiplier = SVM_TSC_RATIO_DEFAULT;
-+
- 	if (multiplier == __this_cpu_read(current_tsc_ratio))
- 		return;
+ 		if (kvm_caps.has_tsc_control &&
+-		    user_tsc_khz >= kvm_caps.max_guest_tsc_khz)
++		    user_tsc_khz > kvm_caps.max_guest_tsc_khz)
+ 			goto out;
  
+ 		if (user_tsc_khz == 0)
+@@ -4685,7 +4685,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 		user_tsc_khz = (u32)arg;
+ 
+ 		if (kvm_caps.has_tsc_control &&
+-		    user_tsc_khz >= kvm_caps.max_guest_tsc_khz)
++		    user_tsc_khz > kvm_caps.max_guest_tsc_khz)
+ 			goto out;
+ 
+ 		if (user_tsc_khz == 0)
+@@ -7174,7 +7174,8 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
+ 	if (kvm_caps.has_tsc_control) {
+ 		/*
+ 		 * Make sure the user can only configure tsc_khz values that
+-		 * fit into a signed integer.
++		 * fit into a signed integer, otherwise KVM_GET_TSC_KHZ would
++		 * return a negative value and confuse userspace.
+ 		 * A min value is not calculated because it will always
+ 		 * be 1 on all machines.
+ 		 */
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
