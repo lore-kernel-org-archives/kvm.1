@@ -1,136 +1,168 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DF7466B58;
-	Wed, 30 Sep 2026 08:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC92C4483BE;
+	Wed, 30 Sep 2026 08:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790756232; cv=none; b=QojQJdq2XQoY9sNvhTQV5smauVkePOKwye3nNf3bO9Vq4BXXkN+gLPqwXOQ38wB0HXvlfZQ4x+dRTdXV4ow5Fovzwvb+oTtPEASIlI4ICuW7lkaE0LnWs9F+LXYJQZC/7IJqiJzokj6xStkDq85nPIzLHxStd0wf2gmqbELy5NY=
+	t=1790756320; cv=none; b=iN7Azfzya4U6GeYkqnrGrZl2UmPjQfdzDRP+F4mjpCSusoq1lnmJX9VkJ1N6s2LBpS3VkL2mfAqx+Ou8FQ1qowk1eXcTxJQrK1l2JedF8lxZ8UaPnilqUurN7I1sTSkvFmS2DvWjpLN+s0SIamSkJWibxIsnmhwW9qvK1CjyIlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790756232; c=relaxed/simple;
-	bh=GNXZa7j1/VTmq7tnRy/t6ruvY0i6WuGqOi1nPlTRzL8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VqtG9V0A3rY9Tv5Gx4A8eigKZKDmm++ZGSQYwFDN3roa2xU7wov5D9pMtClsctk9CCW/F7StGalQTKwEEYMW4juJqCaZw09kgg+IyGMcI9gaDUWqzlgT0Go4AFJhT/QmGeh2WZy/CqvPJkOPSvJFSO2K3SAg5Jbb7LDDbx9+8QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BKFn+Xi7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790756320; c=relaxed/simple;
+	bh=R6s8OiKBK+PREbUobOUgjnqt4WFhGHvFtnaErDsUlvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBvgQNZ7C6lfDKpEsh33Jb6XS4adH87T2TYVGvf8TFgy8acjWFTJP9NBQ3zjQ0i0chMNVMnnBxViEl6b3R7IjPYLmGE6DGDOtpR18EWsBDX5YEKD5CMNmXhT9Cp0/utMb2/f7fHjW5b4k3HOo3xXnaMwagJbMub9/a2u2wNEJ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHnWXJca; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BKFn+Xi7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1AFC61477;
-	Wed, 30 Sep 2026 01:17:01 -0700 (PDT)
-Received: from [192.168.1.148] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAA463F85F;
-	Wed, 30 Sep 2026 01:17:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790756224; bh=GNXZa7j1/VTmq7tnRy/t6ruvY0i6WuGqOi1nPlTRzL8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BKFn+Xi71PDm13PN8c8mgumEtRVu6FdNVGMRI1NxBTY3+SXllrtsQ3wOiOa9C9yGH
-	 50qcRfxA51AqF4pH++UxpnBh8vGYwXCVwWTAkE001/+beCOgzfLMxE2tz0ga5977lw
-	 wFuOCDVKLSU2T89a1BcDCSroJtJc5QdZ9Gr6OJe0=
-Message-ID: <af49e948-3120-401f-a00d-74c853ee17b9@arm.com>
-Date: Wed, 30 Sep 2026 09:17:00 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHnWXJca"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9851F000FF;
+	Wed, 30 Sep 2026 08:18:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790756318;
+	bh=Z5uqg8OGV8G3amtZGI+AAjssegRbH2Q3sF6MukzHR4Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KHnWXJca1OG7ubExZjIAsnSkTiQN7MaCsc/vSPXZmsAHD3sKNtk/npmzfYD81IYrg
+	 h8Lj9rd/RPGayQMkU52JzXFhfUWksJ7TlRl7xUB45oYxoOPh21Ar01EXU4zfXbSsDn
+	 Qx8hep+EjuWDQ7wLN1CF7mjbzVWtpSnXHMaK/a3HE/Dy/wL5ni8au2Tr96oPwO0QDT
+	 7B4erMxz79o2iObpm6+t9Njmp8GREh9GgdzEJAOTzh6WnT8jS413WaA+T2HtK6yklN
+	 vciTXZuE1KJL3zD+ZEd4yVEG0DW9bj3eJpVgh6ta2ZvZ8Du4SNIsl3V3mE1ESo/Lkk
+	 juuuE/eX51S/Q==
+Date: Wed, 30 Sep 2026 11:18:32 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
+ traffic is routed
+Message-ID: <20260930081832.GA3401365@unreal>
+References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
+ <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
+ <607e8903-a979-4d78-bf08-447321c03119@amd.com>
+ <20260929132305.GJ563127@unreal>
+ <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
+ <20260929175737.GK563127@unreal>
+ <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-Content-Language: en-GB
-To: Shanker Donthineni <sdonthineni@nvidia.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
- yuzenghui@huawei.com, linux-coco@lists.linux.dev,
- gankulkarni@os.amperecomputing.com, alpergun@google.com,
- fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org,
- enju.kohei@fujitsu.com, sudeep.holla@arm.com,
- jonathan.cameron@oss.qualcomm.com
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-7-suzuki.poulose@arm.com>
- <a27970c6-a7d2-4abc-84c3-7e50225f0a1a@nvidia.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <a27970c6-a7d2-4abc-84c3-7e50225f0a1a@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
 
-On 29/09/2026 23:29, Shanker Donthineni wrote:
-> Hi Suzuki,
+On Wed, Sep 30, 2026 at 09:00:57AM +0200, Christian König wrote:
+> On 9/29/26 19:57, Leon Romanovsky wrote:
+> > On Tue, Sep 29, 2026 at 03:39:42PM +0200, Christian König wrote:
+> >> On 9/29/26 15:23, Leon Romanovsky wrote:
+> >>> On Tue, Sep 29, 2026 at 11:34:05AM +0200, Christian König wrote:
+> >>>> On 9/28/26 13:19, Leon Romanovsky wrote:
+> >> ...>>
+> >>>>> +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
+> >>>>
+> >>>> This function call here *must* be in the exporter and not the DMA-buf framework.
+> >>>>
+> >>>> So clear NAK to putting that here.
+> >>>
+> >>> "Look, it is easy to complain you don't like how it looks, but this
+> >>> stuff is hard there are lots of competing concerns, if you have a
+> >>> better idea now is a good time to present it."
+> >>> https://lore.kernel.org/all/20260921130858.GO11599@ziepe.ca/#t
+> >>>
+> >>> Do you have a viable solution?
+> >>
+> >> Ok, that sounds like you haven't understood why I'm rejecting this.
+> >>
+> >> By moving the calls to pci_p2pdma functions into DMA-buf you bypass the NAK to expose those functions to drivers from the DMA maintainers.
+> > 
+> > No, you have misunderstood Hellwig's position. His request was to ensure that only
+> > subsystems deal with P2P internals. He was perfectly fine with bringing P2P
+> > complexity into dma-buf, since it is the agreed-upon mechanism for sharing DMA
+> > regions between devices.
 > 
-> On 9/24/2026 8:52 AM, Suzuki K Poulose wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> From: Steven Price <steven.price@arm.com>
->>
->> The RMM maintains the state of all the granules in the system to make
->> sure that the host is abiding by the rules. This state can be maintained
->> at different granularity, per page (TRACKING_FINE) or per region
->> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on 
->> the
->> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
->> all pages in the region must be of the same state, this implies we 
->> need to
->> have "fine" tracking for DRAM, so that we can delegate individual pages.
->>
->> For now we only support a statically carved out memory for tracking
->> granules for the "fine" regions. This can be extended in the future to
->> allow modifying the tracking granularity and remove the need for a
->> static allocation by the firmware.
-
-...
-
->> +
->> +/*
->> + * We do not support creating L1 GPTs yet. So, make sure that
->> + * all the regions are managed by the firmware.
->> + */
->> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, 
->> phys_addr_t end)
->> +{
->> +       unsigned long l0gpt_sz;
->> +       unsigned long next, par_state;
->> +
->> +       l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
->> +                                         rmi_feat_reg(1)));
->> +       start = ALIGN_DOWN(start, l0gpt_sz);
->> +       end = ALIGN(end, l0gpt_sz);
->> +
->> +       while (start < end) {
->> +               long ret = rmi_gpt_info(start, end, &next, &par_state);
->> +
->> +               if (ret != RMI_SUCCESS)
->> +                       return -ENOMEM;
->> +
->> +               if (WARN_ON(next <= start))
->> +                       return -ENXIO;
->> +
->> +               if (par_state != RMI_GPT_PAR_PLAT) {
->> +                       pr_err("GPT for the region is not managed by 
->> firmware %llx-%lx\n",
->> +                               start, next);
->> +                       return -ENOMEM;
+> Thanks for clearing that up, I indeed didn't realized that.
 > 
-> Accepting only RMI_GPT_PAR_PLAT rules out the host ever creating its own
-> L1 GPTs. On NVIDIA platforms the PARs backing system RAM come up as
-> RMI_GPT_PAR_HOST_NOT_CREATED, so this returns -ENOMEM and CCA cannot be
-> enabled at all.
+> But that is pretty much against my standpoint that I don't want any P2P complexity in DMA-buf.
+> 
+> > 
+> > So this is not a NAK bypass; it is a correct implementation of his request.
+> > He handled P2P-related complexity in the block layer.
+> > 
+> > Let's add Christoph to the thread so he can correct me if I'm wrong.
+> > 
+> >>
+> >> I unfortunately didn't understood that when the dma-buf-mapping.c code was added and just assumed that you just needed a place to put some common code.
+> > 
+> > That is not correct. Devices A and B share a DMA region via the dma-buf
+> > mechanism. Where do you expect the code common to dma-buf to be placed?
+> 
+> In the DMA layer!
+> 
+> >>
+> >> So as long as that NAK from the DMA maintainers to expose the pci_p2p functions to drivers stand I will push hard to get that stuff removed again from DMA-buf as well.
+> > 
+> > Are you seriously suggesting that every dma-buf driver in the world should
+> > have to reimplement this mess?
+> 
+> Well I completely agree that this should probably not be replicated into each exporter, but that is the job of the DMA layer and not DMA-buf.
+> 
+> The purpose of DMA-buf is to exchange DMA addresses between an exporter and one or more importers and handle things like lifetime and synchronization of accesses. 
+> 
+> What the framework should do is to transport the capabilities of the importer to the exporter, e.g. what physical connections we have etc..
+> 
+> What the framework can also do is to have additional information from the exporter to the importer regarding addresses and mappings, for example if they are bus, IOVA or some special internal DMA addresses or how to stitch together your PCIe TLP or whatever.
 
-Like I mentioned in the previous response, this is staged upstreaming.
-The dynamic GPT/Tracking will follow after. This also calls for 
-on-demand activation which Catalin requested and can be combined together,
-as we dedicate quite a lot of memory for the metadata and L1GPTs.
+At a minimum, exporters need to pass `p2pdma_provider`.
+
+If I keep the “dma-buf: Let exporters hand out the P2PDMA provider behind a
+buffer” patch, I can move the P2P TLP types back into `p2pdma.c` and export
+only the function that indicates whether ATS is required.
+
+Is it ok?
+
+Thanks
 
 
 > 
-> With local changes to promote granule tracking via RMI_GRANULE_TRACKING_SET
-> and to create the host L1 GPTs, I was able to boot a Realm with multiple
-> vCPUs and exercise basic boot functionality on NVIDIA silicon.
-
-Thanks for the testing !
-
-Cheers
-Suzuki
+> As long as both the exporter and importer agree on what those values mean I have no problem at all with that.
+> 
+> But how those DMA addresses come to be should *absolutely not* be part of DMA-buf! The complexity of that is seriously not something we should have here.
+> 
+> Regards,
+> Christian.
+> 
+> > 
+> > Thanks
+> > 
+> >>
+> >> What you try to do here is seriously not ok and I will push back hard on that in the future.
+> >>
+> >> Regards,
+> >> Christian.
+> >>
+> >>>
+> >>> Thanks
+> >>>
+> >>>>
+> >>>> Regards,
+> >>>> Christian.
+> >>
+> >>
+> 
