@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C51509F05
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92848502D4A
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 21:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805155; cv=none; b=ANivG38+KYCY1D2lHJ+wV71+UCHstYvoAm1eoyJXRG9KfVEBqli2D2DiWIoEttxsSvQXSImSDVVU6cdoT+IhyO5JUxMbvemYb06Ual21xr3LcO1atjB7VVNL4Lx5+UdLxjqyjeaoS2ePb5DxosFktz3en+ghv111IsAYm9FtC94=
+	t=1790805176; cv=none; b=RgpYdnkerajhZg6L9rDQWGUrP4N9wJRfinh/+czFFptP8vETBR2Fmy5EFjnclGnmwKBiw35FtKHfibtbnpuJEWa9vojQ0YWsdZRLQ2Hv/tuJFxIOhGDjC7hy4BYdGYgQ2V6CKSJ+u/76eniaNjEG86w7bhOTAJVkL0KwH56pHrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805155; c=relaxed/simple;
-	bh=pqhdxNRhgTxL2QcLDWCKukCjr//v6/Q99+jJMu9TcR0=;
+	s=arc-20240116; t=1790805176; c=relaxed/simple;
+	bh=1PSGlQdySXRQfnvTSNtGcnDv9ZH+lWZ4fAl/oSwYBg4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pE9joMDHeC9obFfghuDNH5EH9rGVsvOSJVvdzjc/djpkFayZzSGcTY7BwZxWtarZKUGBFUSIn+GUyofRIt3bBcCAH01pXeIF7pL9kWY0HQtdXpUBKTV+bwhZ8RBFWNmgtPtvvzWSWQ7cLp7X2W0ZEJ2snHYh3Ew+fvxiUeQvCDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlSkgjH4; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WHHoXJzIPm3Re4byX5Fw5SfbJNpU3vVI7u+ZWyalQdJntFxzcsUoDDxzpKOqdZx8xDi5J1rTVl1Egetuy8+5nt4ht6C8G9TiI2OOuCTPkOmz1lOiJZOlPzrC1pJMbIIp7uXqOc9H3crgAdtzHkumKgmGPIqq2i8u1y47IW6smq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ja/peKED; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlSkgjH4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E721F000FF;
-	Wed, 30 Sep 2026 21:52:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ja/peKED"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6D61F000FF;
+	Wed, 30 Sep 2026 21:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790805154;
-	bh=C5lM4RZ0vELCrs2U74RR2bzBtwVm5eZBSv9kv4J8Ors=;
+	s=k20260515; t=1790805175;
+	bh=vIFCUty7cKnBTEh1Z0Fb17xt1eSVGsZW2QErbX+WErk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AlSkgjH4ut9X7i00gjRQNOJUH5urzi6Qr/NiTyVGFHF42DTvJ3B5LqTS/aMkXU1+9
-	 4IJ1doCSsSpkKO6YZVW4unrHq/jx0THC6Xc4rxWW0zD6nCSGszAae3S27STVgeVlZy
-	 Ys6rjreFT9Ml9tjqgk4yWDvBCmLgHLKFy/iuWudWBoakgFTCeNRmw6y73I45s1oqjb
-	 ooyj3RKFvsHqlqKO1J5EZjnVguSLdsH86WKpJ6iTizHffYDkTL/qDJlbKmCNQONSV+
-	 QGXO21ltjuzDZl3862wMuLQHPxtvCh6Th5rbyQBsfRmxp01swApEDPjrtAcWAZXRyx
-	 nzqXDVaiCVfag==
+	b=Ja/peKEDnMfwOnUs5JPxKO1uc8wi+d/vRYH1Pmh23AUCLGsJ7ubWF6XYAJAuIg7pi
+	 VAzmODJJLK5XduZtLBJ6V4ypHc/ZSNPbygt2ukpm8ZhSSTvBwhVeyUSB/OnJrMnuB9
+	 Jxuzi9cKxZhaEQjNj99HbGC8U0DO/pwjuqVSkvTfuT2AbQ7b/CkuWPsBZfO71XcwpO
+	 jXtQckcvliaOKjpxs04G7IdC4tltWuVSxpgHJLg6c0GnNAB+7QwQhFCVRyn92seOjd
+	 OCb87nsBRJVKeKKdSpMF2f1vM+s4hopv2H7Y/8uuScsrgGHDU1XTTy7nBsdnc+37/1
+	 On3cIOWuy9B8Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 08/20] KVM: VMX: Support instruction information
- extension
+Subject: Re: [PATCH v8 09/20] KVM: nVMX: Propagate extended instruction
+ information
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260930210750.1487547-9-chang.seok.bae@intel.com>
+In-Reply-To: <20260930210750.1487547-10-chang.seok.bae@intel.com>
 References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
- <20260930210750.1487547-9-chang.seok.bae@intel.com>
+ <20260930210750.1487547-10-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 30 Sep 2026 21:52:33 +0000
-Message-Id: <20260930215234.10E721F000FF@smtp.kernel.org>
+Date: Wed, 30 Sep 2026 21:52:54 +0000
+Message-Id: <20260930215254.DC6D61F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,66 +47,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: vmx: eVMCS mapping missing for EXTENDED_INSTRUCTION_INFO on A=
-PX hosts
+- [High] kvm: nvmx: missing eVMCS mapping for EXTENDED_INSTRUCTION_INFO cau=
+ses host DoS
 --
 
-commit 2d697a70afdaa50d39579af2713731bbc6805336
+commit 50ba47ea51df9d3191678e833e5b9efb01e769c0
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: VMX: Support instruction information extension
+KVM: nVMX: Propagate extended instruction information
 
-Define the VMCS field offset for the extended instruction information.
-Then, support 5-bit register indices retrieval from VMCS fields.
-Note the APX enumeration alone indicates the extension is available.
+This commit defines the new extended_instruction_info field in struct vmcs12
+and propagates it to nested VMX. The propagation is gated on the guest APX
+enumeration.
 
-Link: https://lore.kernel.org/aakEsXJgO-3m2xca@google.com
+Link: https://lore.kernel.org/aRvOSnaUt1E+%2FpkC@intel.com
 
-> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-> index 863b08478544f..4a76af6137201 100644
-> --- a/arch/x86/kvm/vmx/vmx.h
-> +++ b/arch/x86/kvm/vmx/vmx.h
-[ ... ]
-> @@ -714,20 +723,22 @@ static inline bool vmx_guest_state_valid(struct kvm=
-_vcpu *vcpu)
-> =20
->  void dump_vmcs(struct kvm_vcpu *vcpu);
-> =20
-> -/* A placeholder to smoothen 64-bit extension */
->  static inline u64 vmx_get_instr_info(void)
->  {
-> -	return vmcs_read32(VMX_INSTRUCTION_INFO);
-> +	return vmx_instr_info_extended() ? vmcs_read64(EXTENDED_INSTRUCTION_INF=
-O) :
-> +					   vmcs_read32(VMX_INSTRUCTION_INFO);
->  }
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 7229934c38bb1..69302b806a98e 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -4773,6 +4773,12 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, =
+struct vmcs12 *vmcs12,
+>  		vmcs12->vm_exit_intr_info =3D exit_intr_info;
+>  		vmcs12->vm_exit_instruction_len =3D exit_insn_len;
+>  		vmcs12->vmx_instruction_info =3D vmcs_read32(VMX_INSTRUCTION_INFO);
+> +		/*
+> +		 * The APX enumeration guarantees the presence of the extended
+> +		 * fields. This CPUID bit alone is sufficient to rely on it.
+> +		 */
+> +		if (guest_cpu_cap_has(vcpu, X86_FEATURE_APX))
+> +			vmcs12->extended_instruction_info =3D vmcs_read64(EXTENDED_INSTRUCTIO=
+N_INFO);
 
 [Severity: High]
-Is a new eVMCS mapping required here?
+Does this unconditional read cause an issue when KVM is running as an L1
+hypervisor on top of Hyper-V?
 
-When KVM runs as L1 on top of Hyper-V (using eVMCS), vmx_get_instr_info()
-unconditionally calls vmcs_read64(EXTENDED_INSTRUCTION_INFO) if the underly=
-ing
-host CPU exposes APX (cpu_feature_enabled(X86_FEATURE_APX)).
+When eVMCS is in use, vmcs_read64() transparently redirects to the eVMCS re=
+ad
+handler. If EXTENDED_INSTRUCTION_INFO is not mapped in vmcs_field_to_evmcs_1
+for eVMCS v1, evmcs_field_offset() will return -ENOENT.
 
-Because EXTENDED_INSTRUCTION_INFO (0x2406) is not defined in the eVMCS mapp=
-ing
-(vmcs_field_to_evmcs_1 in arch/x86/kvm/vmx/hyperv_evmcs.c), evmcs_read64()
-fails with -ENOENT, triggers a WARN_ONCE, and returns 0.
+This missing mapping leads to a host-side warning in get_evmcs_offset()
+firing on nested exits:
 
-This is reachable by any L2 guest performing a CR access or VMX instruction
-when KVM runs on an APX-capable host under Hyper-V.
+    WARN_ONCE(offset < 0, "accessing unsupported EVMCS field %lx\n", field);
 
-It causes KVM to incorrectly decode operands for all control-register acces=
-ses
-and nested VMX instructions (defaulting to the RAX register), leading to to=
-tal
-failure of nested virtualization.
+Because an unprivileged L2 guest could easily trigger these exits, could th=
+is
+be used as a host-side denial of service in environments where panic_on_war=
+n=3D1
+is enabled?
 
-Note: The related vmcs12 nesting issue raised in the original concern was
-correctly resolved in follow-up patch 9 (commit 50ba47ea51df), but the eVMCS
-issue remains broken through the end of the series.
+> =20
+>  		/*
+>  		 * According to spec, there's no need to store the guest's
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930210750.1487=
-547-1-chang.seok.bae@intel.com?part=3D8
+547-1-chang.seok.bae@intel.com?part=3D9
