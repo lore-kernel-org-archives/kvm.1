@@ -1,204 +1,145 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-oi2-f42.google.com (mail-oi2-f42.google.com [74.125.231.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADFB4EDCC3
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 15:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCABF4F85D8
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 15:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781117; cv=none; b=luR11DrXudKwL5X+W8Uojdo8otzPn2fzC1PxuXAyfMJpCJuHKCjefSm2x7UuQYV4xRXpy9buJxdApDIGdqCStrypr5K8awnQxPzeIJw54xSVUg+Q0v4ohk1C/cEnqvFieLdsXa2S4coSSk8KYhmTddSwRgN4xN0rRvbx4cpLlGo=
+	t=1790781163; cv=none; b=qHekypJPveJ3c4y7N/AKKuUkQvgG9EdPVeQkUE5XgrQjQvXHNYp8p6gdbZ5CNHvPiEKCwgwQvUPcPeyactoVOOfmgpZsloR+8t3qjI16wXTeXJ0b7BymG6fBQmJw34lFBlEtLCPFe0x47fGp0lx/t2MmZ8qbZ1q//SPACFFIv98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781117; c=relaxed/simple;
-	bh=aJK56cyRzXZjWpIBAPw5fRHCWxiO1QJ0/pWjo+GWpRQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=s+3gbvhbZs/dDHA5sX2avxh6rrDKSo9UE73yYd1wn2gS6FfertQFBn2iH3dCihSPCcuky8W9WORse0daYrJFT5ap32kkgIL/CXdntVexRMABdo6/Y0MaCyfODpgc6jPC6OxagAT7JuJHUsHV7tjkTOuSEbVuNUOlSC5FvVluIKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wb66/11z; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790781163; c=relaxed/simple;
+	bh=N5TwGmCOg73FQhkQUlqK26vGWZ+6twK0jOc1jidbG9w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=se5A/DY+TNusn38aZU+Srm0i8oupD7AJvmtcQ5ULQkS3MW0s5Trq5Wib7tjVPPBUlR1HVJT3GYDW+j41Xv7O7GdrL45KZqxOKX5xMLrpwSY/CPk1LOr5/djIhCxLeoUAug+YjOAlXW4AJRWUFTMejYs/YumR0KkH6Wp7Iy38mC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=F2LynHut; arc=none smtp.client-ip=74.125.231.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wb66/11z"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2db3d832827so60845245ad.2
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 08:11:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="F2LynHut"
+Received: by mail-oi2-f42.google.com with SMTP id 5614622812f47-4e6e670540fso2286848b6e.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 08:12:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790781105; x=1791385905; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tnYEy85T6L9VUgYpvbipzar1+R2ojY5ljHxm3uRhDeA=;
-        b=wb66/11zVVkg1hhGfYFDt4TsYmICBJphhRh3WZnwfW5BR3TaSwYiyMeWa8LP8geMjT
-         OKwbQuJuyuQ67o3fX2jGCpmJcQZo8zNHXSlptJ+J7kyAeco75LPR1zVIagS3J5c6uem5
-         U4xaefzoaa5uqMehWCCKmr/Jpw3mQ6pEEztOYy2JREQ708hJiXGaGcWbIvSn3EMG9aaG
-         FPrpKo4Yt3RD3fkbuzZeTv3p4LlUDbNRqoK84snlyQhWnJcImEWT66a53cCFxk2hT0hr
-         Jb1thsBHuY97g/e/KyNyLFntEYtlDgblW1gyBGDZDAfQWzdC0F0k1nbDJwojWZk7e/Vq
-         0psA==
+        d=ziepe.ca; s=google; t=1790781152; x=1791385952; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i3zztcZwHv33xTSBhcuuRwUuO/mC2YE/oPR+7vCHXWU=;
+        b=F2LynHutv0ZOmuF8vmFQU0cyqiI4GB5kyNhWNIcFmTm03ZYDlIdoeMvOS1ol6pHe7P
+         1opniFMp9w/1hoNxwBw1abApRh1Po/j0x2ZuaQZgt0r7WvI/GTEHkvv7KKThQRNgUeDk
+         U3vhG4nOcBSBbCwSBzxPAF2/N9kbmWUuQeOCbbHXQ+GZ3OEDXh8iCi7m7OhysGURcFuR
+         MYdYJN3ZhgKPd9PQq1QsBlgi+KBVppXhOjswSN+K42z+R3efFI3SH3JDdd9Kub164vap
+         FKr2jNuW6GBhqs4aVFIb+0YT7DujIACVvy1vKyp41BAFenyWoJ63gl+3RGCO5hghcRCU
+         QQ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790781105; x=1791385905;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tnYEy85T6L9VUgYpvbipzar1+R2ojY5ljHxm3uRhDeA=;
-        b=HliNYuGMs0M7VLHym9H5iawYNcbQ7oRXhfrrzn0IKODJ86t2aLLW9az//FbcIMBYVT
-         axkfnYkXlkmL6AQCwxkNl2JAH1QdH9H843rw723GROqP3jNWh0Ar4sZ2nukQCccO9eJG
-         e0LYijM86xkICGOM9ZakBP92xzf+2PuIUEGOkP/ZNNerh+WOQkyWCEfzM9oBRqNjwe5C
-         Sb+crKfptfZ/9i9RDIJS9oUX6UiV+ojCEV8qYQS9gfDVHOAe0MGF2fzx1WUyVTE0Filk
-         gu0Et8vMxKZjNlNjbMtBk8jAipoW4iOHjlmXXfodsBXqxPz7fLkZ2JW6Wbh4aR7JIMpX
-         vkwg==
-X-Gm-Message-State: AFq9FYJ2ISXN/NoWXaGN9tatTujA53vgSBGyViQANMV9UY4bn9ZqR11p
-	3UMqz4OXcz9S17QvPkfgWhK0YLNY8hTbPt7vMkF44fcqLSeqKshVj2D9qr13e4TUFCkO7VeJDco
-	qxWjSWg==
-X-Received: from plrq18.prod.google.com ([2002:a17:902:b112:b0:2e2:c684:16fc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4b46:b0:2e2:e0c6:1689
- with SMTP id d9443c01a7336-2e2e4bb71d7mr13947915ad.58.1790781104894; Wed, 30
- Sep 2026 08:11:44 -0700 (PDT)
-Date: Wed, 30 Sep 2026 08:11:44 -0700
-In-Reply-To: <f8d5ab37-7bc5-494f-afec-6bd0cb0c412c@sirena.org.uk>
+        d=1e100.net; s=20260707; t=1790781152; x=1791385952;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i3zztcZwHv33xTSBhcuuRwUuO/mC2YE/oPR+7vCHXWU=;
+        b=bj2AsVDqJETiGypadnMj2XEx9uFTPDs6mwnKrNWpfpF7LT+B04jcSDOUJT/25YD1k1
+         UAPoy2rDMsl7k5JMQa3Rf52Drc8m8xcwxymzl6s8lzxmUZKQtoCCqqJrPvgDswQcBL5d
+         hYJrjhzY2SUepQ+vrBSLOVOxUhdCa8BrsBlybBrrDwixwqW4sWoIoZhZk7LfW8NLitvC
+         RjD+z2cbQzW9k9HxO5avzY+ZkDZusiKnamVdHF1+O3VC5w+UoNwWvcFVBIDn9HgNcDw0
+         G4bkj2GCHmncqnVl+ddotiZPJWelNI5tZPmomAEFUb+UaxujhHXm/eARvxbgbY/MUuap
+         Cibw==
+X-Forwarded-Encrypted: i=1; AKwUvBwXCrAlrUVjvY8fmnxan+B6EqiJJ/Ok2AQF9dvqikS6kFnv+Vcjm2vjevRt6on1IYuuzqA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mkd5JsIUgFWHkkEYPfwhlXlcMBsmAgGewiHtojWL3hU0LxAExh
+	CK8scTaQbFD7hBsDkvU2pXc4aEmWQgpyBz1BcCoiCvIh4cZXUnMv08OJffIplSR6hMM=
+X-Gm-Gg: AYBFou1cqjeUjzcBSOqoLxBCydG0vXFgnw4viug0fnO8QlLzd5F5BoB43UteVElRVYl
+	o914MehZ1okOgYIRUA30qs00dZ8GlruuPhAIyallsOLkaqFCTQWspa7dntn//g+IiZAg0QK1TF4
+	R0rcvWCK4QycHkqUsa+xER2roZR2qjwzMvJSAodMnwjOlfLJrXuJirZ/Gwg9MBFzFlcx4py29K3
+	y7n3sWOy4JN1G7BrvROr8z0Gw42+6EOXR/7KGsYiYNeoambmBTa0/3QIaqkQUO5mAX4b7dimHXb
+	Hr7xT9ahEhCSOJv3YV/fNl6r5ATdDXPKu+7IrInfj3xGK1Y+LZIEk7PK9F7pfMhGrCj3075cQJC
+	nZZ+VzfPAkSfu4NV1j9UHYKZ4/wrHH6yGak5oLjax+h//Vz6n++wimrp3lB8YczStoW1NrjDtHN
+	/TYWeNUGEyh0aGiZ8edJzWtOb6kSLaejzQNhGFgDMY6F6O
+X-Received: by 2002:a05:6808:23cd:b0:4d6:90d3:e187 with SMTP id 5614622812f47-4f1b9a4dd1fmr1463609b6e.48.1790781151901;
+        Wed, 30 Sep 2026 08:12:31 -0700 (PDT)
+Received: from ziepe.ca ([130.41.10.202])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4f1b61be7d8sm1076055b6e.17.2026.09.30.08.12.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 08:12:31 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xBvyv-0000000BwZW-3H3V;
+	Wed, 30 Sep 2026 12:12:29 -0300
+Date: Wed, 30 Sep 2026 12:12:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: bhelgaas@google.com, alex@shazbot.org, jjohnson@kernel.org,
+	johannes@sipsolutions.net, mani@kernel.org, yishaih@nvidia.com,
+	skolothumtho@nvidia.com, kevin.tian@intel.com,
+	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/7] vfio/pci: Add qcom-vfio-pci variant driver
+Message-ID: <20260930151229.GR163130@ziepe.ca>
+References: <20260930140833.576941-1-jtornosm@redhat.com>
+ <20260930140833.576941-4-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ar0KIZ8HQEfIRvVJ@sirena.org.uk> <ar0RN3FICQ-PEqNW@google.com> <f8d5ab37-7bc5-494f-afec-6bd0cb0c412c@sirena.org.uk>
-Message-ID: <ar0msIOhuFY0RpCS@google.com>
-Subject: Re: linux-next: manual merge of the kvm-x86 tree with the kvm-fixes tree
-From: Sean Christopherson <seanjc@google.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: KVM <kvm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930140833.576941-4-jtornosm@redhat.com>
 
-On Wed, Sep 30, 2026, Mark Brown wrote:
-> On Wed, Sep 30, 2026 at 06:40:07AM -0700, Sean Christopherson wrote:
-> > On Wed, Sep 30, 2026, Mark Brown wrote:
+On Wed, Sep 30, 2026 at 04:08:29PM +0200, Jose Ignacio Tornos Martinez wrote:
+> Add VFIO variant driver for Qualcomm PCIe devices that require
+> MSI address passthrough for VM operation.
 > 
-> > > between commits:
+> Qualcomm ath11k and ath12k WiFi devices have embedded interrupt
+> controllers that require physical host MSI addresses programmed to
+> device registers. In VMs, the driver only sees virtualized guest
+> addresses, causing firmware initialization to fail.
 > 
-> > >   b630929bcc4c8 ("KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt")
-> > >   b0bc51910f039 ("KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12")
-> 
-> > > from the kvm-fixes tree and commits:
-> 
-> > >   9b2f8146fcef9 ("KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt")
-> > >   a4bab1c12fd52 ("KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12")
-> 
-> > kvm-fixes got force-pushed, which is what's causing the weird conflict.  In a
-> > tree that hasn't refresh from kvm.git, I see:
-> 
-> Ah, I had thought it was an old version of the patch having landed in
-> kvm-x86.  It looked like different versions of the same patch got into
-> each tree so I went with the main fixes branch version as that's what's
-> heading for Linus.  This sort of cherry pick/duplicate stuff is always
-> hard to follow. :(
-> 
-> >   a4bab1c12fd528ccaafee00360e07463873404a9 (kvm/master, kvm/HEAD) KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
-> >   9b2f8146fcef9faa73f9dc1bad9a8d6c585cfec8 KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt
-> 
-> > versus the newer version:
-> 
-> >   973ea70393e885e540f714904e51bc6cac80e3d7 (kvm/master, kvm/HEAD) KVM: SEV: Do cache maintenance on the source VM *before* clearing SEV state
-> >   8abbc76120a74bfba1851bd97528099d715e45c6 KVM: SEV: Nullify "have run CPUs" mask pointer when freeing it
-> >   b0bc51910f0391fea09c0a1d32352fec2acb2686 KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
-> >   b630929bcc4c867c9abc8cd5a0ebee3bb5ce5dcd KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt
-> 
-> IIRC my conflict resolution gitk only showed me the two commits that got
-> duplicated, it is filtered by file though.
-> 
-> > >  -	prepare_for_vmx_operation(vmx);
-> > >  +	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
-> 
-> > This resolution will probably break the final selftests build?  kvm-x86/next
-> > moves these asserts into prepare_for_vmx_operation(), load_evmcs(), load_vmcs()
-> > etc.  I.e. kvm-x86/next should "win".
-> 
-> That's entirely plausible, my kselftest build tests are for arm64 only
-> since that's what's native on the build machine.  Sorry about the mess
-> here.
+> This variant driver:
+> 1. Caches physical host MSI values after allocation
+> 2. Writes them to extended config space with magic signature "QMSI"
+> 3. VM drivers discover and use these values automatically
 
-Ha, no need to apologize, it's our mess.
+You should probably explain a little be more here
 
-> If you send me a confirmed resolution on top of today's -next I
-> can add the fixup, or I'll try to take look tomorrow?
+1) Linux VM driver fills up the normal MSI-X table
+2) HW has some non-MSI-X table registers
+3) Linux VM driver pokes into the interrupt layer and extracts
+   one of the MSX-X table entries addr/data pair
+4) Linux VM driver now programs that copied addr/data pair into #2
 
-Here's the fixup.  I'll make sure to push to kvm-x86/next today with the new
-version of kvm/master, so this should disappear in tomorrow's build.
+This is, of course, all wrong. These days it should be using one of
+our mechanisms to allow devices to have their own private MSI
+registers.
 
-diff --git a/tools/testing/selftests/kvm/x86/nested_x2apic_test.c b/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-index 52959287500d..2ae698c9aa1c 100644
---- a/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-@@ -61,57 +61,55 @@ static void l1_vmx_code(struct vmx_pages *vmx, struct hyperv_test_pages *hv_page
- 		evmcs_enable();
- 	}
- 
--	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
-+	prepare_for_vmx_operation(vmx);
- 
- 	if (hv_pages) {
--		GUEST_ASSERT(load_evmcs(hv_pages));
-+		load_evmcs(hv_pages);
- 		current_evmcs->hv_enlightenments_control.msr_bitmap = 1;
- 	} else {
--		GUEST_ASSERT(load_vmcs(vmx));
-+		load_vmcs(vmx);
- 	}
- 
- 	prepare_vmcs(vmx, NULL);
- 	vmwrite(GUEST_RIP, (unsigned long)l2_guest_code);
- 
--	control = vmreadz(PIN_BASED_VM_EXEC_CONTROL);
-+	control = vmread(PIN_BASED_VM_EXEC_CONTROL);
- 	control |= PIN_BASED_EXT_INTR_MASK;
- 	vmwrite(PIN_BASED_VM_EXEC_CONTROL, control);
- 
--	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
-+	control = vmread(CPU_BASED_VM_EXEC_CONTROL);
- 	control |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_TPR_SHADOW;
--	GUEST_ASSERT_EQ(vmwrite(CPU_BASED_VM_EXEC_CONTROL, control), 0);
-+	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
- 
--	control = vmreadz(SECONDARY_VM_EXEC_CONTROL);
-+	control = vmread(SECONDARY_VM_EXEC_CONTROL);
- 	control |= SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
- 		   SECONDARY_EXEC_APIC_REGISTER_VIRT |
- 		   SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY;
- 	control &= (rdmsr(MSR_IA32_VMX_PROCBASED_CTLS2) >> 32);
--	GUEST_ASSERT_EQ(vmwrite(SECONDARY_VM_EXEC_CONTROL, control), 0);
-+	vmwrite(SECONDARY_VM_EXEC_CONTROL, control);
- 
--	GUEST_ASSERT(!vmlaunch());
--	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_CPUID);
--	GUEST_ASSERT_EQ(vmwrite(GUEST_RIP,
--			vmreadz(GUEST_RIP) + vmreadz(VM_EXIT_INSTRUCTION_LEN)), 0);
-+	vmlaunch();
-+	GUEST_ASSERT_EQ(vmread(VM_EXIT_REASON), EXIT_REASON_CPUID);
-+	vmwrite(GUEST_RIP, vmread(GUEST_RIP) + vmread(VM_EXIT_INSTRUCTION_LEN));
- }
- 
- static void l1_vmx_code_part2(void)
- {
- 	u64 control;
- 
--	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
-+	control = vmread(CPU_BASED_VM_EXEC_CONTROL);
- 	control &= ~CPU_BASED_TPR_SHADOW;
--	GUEST_ASSERT_EQ(vmwrite(CPU_BASED_VM_EXEC_CONTROL, control), 0);
-+	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
- 
--	control = vmreadz(SECONDARY_VM_EXEC_CONTROL);
-+	control = vmread(SECONDARY_VM_EXEC_CONTROL);
- 	control &= ~(SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
- 			SECONDARY_EXEC_APIC_REGISTER_VIRT |
- 			SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY);
--	GUEST_ASSERT_EQ(vmwrite(SECONDARY_VM_EXEC_CONTROL, control), 0);
-+	vmwrite(SECONDARY_VM_EXEC_CONTROL, control);
- 
--	GUEST_ASSERT(!vmresume());
--	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_CPUID);
--	GUEST_ASSERT_EQ(vmwrite(GUEST_RIP,
--			vmreadz(GUEST_RIP) + vmreadz(VM_EXIT_INSTRUCTION_LEN)), 0);
-+	vmresume();
-+	GUEST_ASSERT_EQ(vmread(VM_EXIT_REASON), EXIT_REASON_CPUID);
-+	vmwrite(GUEST_RIP, vmread(GUEST_RIP) + vmread(VM_EXIT_INSTRUCTION_LEN));
- }
- 
- static void l1_test_x2apic_intercepts(void)
+I forget if this is the right way for PCI, but the driver can call
+
+  platform_device_msi_init_and_alloc_irqs()
+
+And directly program the MSI registers with their own special
+interrupts vectors, no copying from MSI-X.
+
+If the driver is fixed to work like this, as it should be, then it
+fully breaks the scheme you propose here. That's not good.
+
+The problem here is not really a qcom problem, and treating it as a
+qcom quirk is why it keeps being stuck, IMHO.
+
+The real issue is that this device MSI scheme does not work in VMs at
+all. It does not work because the VM IRQ design requires the VM to
+trap and modify all the MSI addr/data pairs at the register write.
+
+The technically clean solution is to redo the VMMs so they don't
+require that, ie use interrupt remapping so the VM's view of the
+addr/data pair matches physical. That's super hard and will probably
+never happen.
+
+But! Now that we have these device MSI domains I wonder if there is
+some half option to provide a hypercall so the device MSI domains can
+call out to the hypervisor to get the true physical addr/data pair to
+program?
+
+This is fundamentally an irq layer issue in Linux, not a qcom one.
+
+Jason
