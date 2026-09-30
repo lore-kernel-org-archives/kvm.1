@@ -1,186 +1,169 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2C947142F;
-	Wed, 30 Sep 2026 20:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755074DEC13
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 20:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790798606; cv=none; b=PnamU4TqoEXPsHYXur6tf3cU4FGq5KKu9SV+rSx1mYGhsJmyGKDQFc7zQ2J6Pxo8mHRhEc7RB9/jiH7VM7Eu9zAeuZscW7p0mtPoz4fHFwDDY29+i//aEUY/3i53OQnJ9z7ushwbdlijLO1lvJx3a1SYSLbqOW0b40TB08s19Og=
+	t=1790799523; cv=none; b=fyRNlJYw4eoMiSR4d69j5/3UUQMbwEmJC0xBWyNZwOB8ezAQou20okpnX3zrzrmUiMxo7VhDFgFtLsiEo6u9Qid7J9GkoLIQKe3Q3PXlE0Hb+WVgYjJH5GLIlSEgB1xDwwqbhgpIKDhHsyFmnsmuso5pUHxCaSQnSj6monn0Cpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790798606; c=relaxed/simple;
-	bh=b4lHW1LCNl4l977UJji6Vlrq0/XriYozwix9eJ3RPpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UKKuMBRSfDuYBgrkq/2j1hXhyi2vfoKzXdO3xDzkI1tQhXdKPv1Acw8R5qxySCl8Ox/njJcnTUoAWxpw8JTlZ3ZAaRg+Ys95xzr+Md0yvFZKUkQZJ9bKd6rymnZTu0VGieSKFEQh/DYt96u/cNbRhieZuIiHUuoqp6NUxrVRQ2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=1xtseCEV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZGukP4+v; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1790799523; c=relaxed/simple;
+	bh=98J3iTOOkroP2AjERxRwTN81+QC5MV6UO6aLYjEbneA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u67xCRgEwaVpkqDcsJTc2dp4hND7SUsdbDYSYFqV9iO++p9AERfaVpW29v8IRBs8KEBos4XTFJgXKzXT1Q/Z45FZgivEiD9w0TT/V90POIQmlMWp6o+dgM1QeEeiJMPn66+58rji77Mgls9+5CdXSFbB8i+LZDW9LqOli07MbWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FqZ51BXy; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="1xtseCEV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZGukP4+v"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 9577E1D0003E;
-	Wed, 30 Sep 2026 16:03:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 30 Sep 2026 16:03:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790798602;
-	 x=1790885002; bh=gWdnOYP56Gl0Tx2eQVbFmSUVIgLlJCmI0dANqWx97ZQ=; b=
-	1xtseCEVDgXcf+h+gjbqlzArwxcUsSzjhMLq/NdmNUFr6vUoZDLPkEOPbg1fYDTy
-	i/FkIXiok4RQ4OkJNJbxJFVGBkrIDdDuVH8LPYacL7YkwKgwSbx4M/5NKRGdGc1N
-	AHMlZxWJ7Ujxw+xy2fed2Lfxpmauy1oKXZv1W1B/NoHkkiHX42cDAZhv1VWRkEqN
-	BA5amCWohPNihbtv75l0MVXFb9c/Fv29ZVs8Kz26xYHePbD3DZ3w4vkadclhSjof
-	S6YY7r5rQAEhZQWqaeKyeJaYeRM0S52/OaslQ/hCUE3auJjbK9OrwEQYa9qa1nmd
-	03dcE6NGqywfv/g4YPSTFw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790798602; x=
-	1790885002; bh=gWdnOYP56Gl0Tx2eQVbFmSUVIgLlJCmI0dANqWx97ZQ=; b=Z
-	GukP4+vPlMCkS8rn1diT5Qz+FvaYDJeosnh2pOuKGe2B7jFKLNufLDoSBrHo0t5r
-	4vexxPHJYDHNWIY/2pdZxALuZEBds8jzPTNa5shCyAIIxq8WlbU1W5kfkG+0SU+k
-	OzbfOk+mU9fHrBE6HWu7gsmIoPI+EbZzOlYXCHg/JeVpQdSdX4MPeS0cz9N8iX78
-	7wp3jDEKnFegfQ2D4eMBtKQ72o9Vqk+mBLIx0AJyYcVa466Z8PINsxCE0r9SCnbM
-	eUSVZ7VhXtGafYwYHr1o8xDeET5mXWd1ANXTBJDlLWTG+OjvcMWYgU+tU0wqIR29
-	1DSdnq3VjwU8t6tqqTcyA==
-X-ME-Sender: <xms:Cmu9agsZHfiu_B8e2MFIEMZuzOzjRFcBHQer2DjRTHYxOcxnO2XLOg>
-    <xme:Cmu9aqriP39C4XW3C4-weDXV55pMeOm21Alc5TDCjeuwVSgkU4Sgf4s43X1hKiS6w
-    J736tcFcF9k_iSqGcIElNXYEFAg3zZg0r8vxSmusPDPlOEfYxrodRU>
-X-ME-Received: <xmr:Cmu9agS3R-y86mpP0DDLmf2Xj6gxQTX4hL4luGycb5l27DJ9BtETBEbHkn_wfQ>
-X-ME-Proxy-Cause: dmFkZTEAjaA7dNJNYMrbcuHxhNuPuquE1rdBeKL1p5Z90FuzyUf82tx0F0N7EiU2DY89jP
-    GDkiq0qBlCA9PhvHqVhWyqDppQVMxwviBXlVWRcasolXpP0K5wPm1XQw+wISjkJcSz170i
-    E271Pcx/LP4tQsqjyfYbaQ0hBOUoPm7kNOqj2Yg9H/8GKTGV3qy5EHfIO1MDJvkIJg5KVO
-    YphtgDzYH4qqV/qw8UWbLYLYrPUsnhNvsjyDik017jzknEO/X2zjItkQBTtA8IEh6CxXbJ
-    j19e18ySaPJoaRz+ESyXzDIGC0zhUVDgtWZouvNPN3an9Rq95FM6nVCHdE7kLs6kUEVcHf
-    R5Yw2AGa/Pi0QCDaawLTD74q+9rOT/JwRHiR7OtDryf3KdZ4KJ5IQOmKHij461fYw7b77M
-    SZwfzBAq7h9Yiswu+6OIbhJ7RL1PTIJyO12X66NzngTGPuEzRbJgZ4vyykBpRV3iYvwNlc
-    iKkImF11PXpbPiP91bTbVvAjAho2LFK+zqNd6yCEEMoIXK5pbddmhdW2M4Qo01Di0kOwu/
-    v2JXzQJHplmdY6/NfhdAgV943FamFk4J0JtfFcfG5tWkziPiTqv+VsykrkIFK+H3mEM1lb
-    GZS72uNaeDlqacGqhzGQSRygWhQt8FETxxg11Ojjd9ilsnBV3BQ1h8bxkliA
-X-ME-Proxy: <xmx:Cmu9avaLb06L5uFo3XqGsLJ6FxMA0grRCTqYChJSlOAdsSe38fI5xQ>
-    <xmx:Cmu9ah6Bx14onKzs_68rGjaGvssIU2sHYa-vT6WALYs_nHYX9Uaqvw>
-    <xmx:Cmu9aqeUrGoNp12QpONshZxXMzYqNlEwn3jkWalP3mVcQA3zm56_EA>
-    <xmx:Cmu9aofx9yIJ-H6V5Vk7A8TUUO5afc1ipY1w86HlRg12S68Kc7VZdQ>
-    <xmx:Cmu9aqCW5xOuj56xOTo3Bx1sLgwMqSF8uBKEWWfAGsCznO6YOtlG1JGS>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Sep 2026 16:03:21 -0400 (EDT)
-Date: Wed, 30 Sep 2026 14:03:19 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Omar Elghoul <oelghoul@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
- farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
- frankja@linux.ibm.com, imbrenda@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v7 4/4] vfio-pci/zdev: Add VFIO FMB device features
-Message-ID: <20260930140319.66a27f1c@shazbot.org>
-In-Reply-To: <53c94059-fe7f-48e9-9588-ee07a40d45de@linux.ibm.com>
-References: <20260922195141.94548-1-oelghoul@linux.ibm.com>
-	<20260922195141.94548-5-oelghoul@linux.ibm.com>
-	<20260930125750.7a5bc3a8@shazbot.org>
-	<53c94059-fe7f-48e9-9588-ee07a40d45de@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FqZ51BXy"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2df8484f12cso55778505ad.3
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 13:18:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790799521; x=1791404321; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g5RnSeKm7NovotukVZeykuhmaB+r506gw2FYRO6ls7g=;
+        b=FqZ51BXy8V/tnU9QOOyRvJqFuBFCvv75znByRzGRlsKvXNFphUkYVEkmovtZKBqwi/
+         I4QqPcLj7l0AVGTCuU8c4SC+LtyJ7TPESsEZoqViaCPvbQaeCMp8fMFl7e/AtBiKPlSt
+         LMUbFrJ4TWsLxJq0S++f0OnX+ZEBiwJ/ZCMPw7lpNb+zrtnVLIjVemZre+sFyWy0ikr6
+         c3x6pZmEc2ses3ZnULsLBA/fkCTITt75nKyGLM/3c+mRfeouuktGEEVkT8+fCttZjmz0
+         JUt0RcZ4bj3NAvuzSygRAhkbZn2LAblHHA/R/yofFb02woau4o3CGzTra2MjqOCs/mQX
+         emWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790799521; x=1791404321;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g5RnSeKm7NovotukVZeykuhmaB+r506gw2FYRO6ls7g=;
+        b=dVZSYjuQ//+M7EjCjgKOKdUCc/BLE1IIAlAOq+ittkda51pjfn93yAnsbnK2Kl945m
+         CdrsnW2QTQwXfRwGw8aPHqAKmk503SzMN9S962aiYT5gSNKJ7SZ7F2KxYFIDCjI5YP1T
+         1WEgzb7aDwWifiZWVpjIzijPv47Ahuf0KCgAKFGaDsUrezDyxkT60S3ZBn82pb7bs03V
+         ZbtvDUgTJtdb8S3a71jW5N3T5zZKgRt64Rx8RQJQ+LSmWW9Mo3smIIAR/DO8SO1RasRr
+         1vW2baPg3LEbhZrYudEEVcW+CqNd1tvsYIwy7tIesmlM1h4Rp7Zdr6eGSDg8uIUNn3S+
+         qqPg==
+X-Gm-Message-State: AFq9FYJhJ7MHCTpL23fX+dHI0LXuTFo0K7JSnqHOUtY3yfo5/6TFHBTY
+	p7YII26Rl2Z1Vaw+Ac1U3azbU9JYquyer6Ky1zbyTeLudj8SacGA8RaEILqZEDxDPhVRqUY1/lp
+	IXXpxqg==
+X-Received: from plbd9.prod.google.com ([2002:a17:902:f149:b0:2e1:3498:c5bc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19cc:b0:2dd:c053:82f1
+ with SMTP id d9443c01a7336-2e2e4b6d013mr22071315ad.40.1790799521505; Wed, 30
+ Sep 2026 13:18:41 -0700 (PDT)
+Date: Wed, 30 Sep 2026 13:18:40 -0700
+In-Reply-To: <3bfbf15c22652ba00cf4a16fe9e0a3bfe7071f97.1784096302.git.sandipan.das@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <3bfbf15c22652ba00cf4a16fe9e0a3bfe7071f97.1784096302.git.sandipan.das@amd.com>
+Message-ID: <ar1uoI5Zy7sAQs22@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/pmu: Relax precise count check for
+ emulated instructions on AMD
+From: Sean Christopherson <seanjc@google.com>
+To: Sandipan Das <sandipan.das@amd.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, "Nikunj A . Dadhania" <nikunj@amd.com>, 
+	Manali Shukla <manali.shukla@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 30 Sep 2026 15:40:40 -0400
-Omar Elghoul <oelghoul@linux.ibm.com> wrote:
-
-> On 9/30/26 2:57 PM, Alex Williamson wrote:
-> > On Tue, 22 Sep 2026 15:51:41 -0400
-> > Omar Elghoul <oelghoul@linux.ibm.com> wrote:
-> >> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
-> >> index f47f36314a1c..b028de8e08a4 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_zdev.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
-> >> @@ -219,3 +219,63 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
-> >>   	if (zpci_kvm_hook.kvm_unregister)
-> >>   		zpci_kvm_hook.kvm_unregister(zdev);
-> >>   }
-> >> +
-> >> +int vfio_pci_zdev_feature_fmb_enable(struct vfio_pci_core_device *vdev, u32 flags,
-> >> +				     void __user *arg, size_t argsz)
-> >> +{
-> >> +	struct zpci_dev *zdev;
-> >> +	struct vfio_device_feature_zpci_fmb_enable fmb_enable;
-> >> +	int ret;
-> >> +
-> >> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, sizeof(fmb_enable));
-> >> +	if (ret != 1)
-> >> +		return ret;
-> >> +
-> >> +	zdev = to_zpci(vdev->pdev);
-> >> +	if (!zdev)
-> >> +		return -ENODEV;
-> >> +
-> >> +	if (copy_from_user(&fmb_enable, arg, sizeof(fmb_enable)))
-> >> +		return -EFAULT;
-> >> +
-> >> +	guard(mutex)(&zdev->fmb_lock);
-> >> +
-> >> +	if (fmb_enable.enabled)
-> >> +		return zpci_fmb_reenable_device(zdev);
-> >> +	return zpci_fmb_disable_device(zdev);
-> >> +}
-> >> +
-> >> +int vfio_pci_zdev_feature_fmb_read(struct vfio_pci_core_device *vdev, u32 flags,
-> >> +				   void __user *arg, size_t argsz)
-> >> +{
-> >> +	struct zpci_dev *zdev;
-> >> +	struct vfio_device_feature_zpci_fmb_read fmb_read;
-> >> +	struct zpci_fmb fmb_bounce;
-> >> +	int ret;
-> >> +
-> >> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET, sizeof(fmb_read));
-> >> +	if (ret != 1)
-> >> +		return ret;
-> >> +
-> >> +	zdev = to_zpci(vdev->pdev);
-> >> +	if (!zdev)
-> >> +		return -ENODEV;
-> >> +
-> >> +	if (copy_from_user(&fmb_read, arg, sizeof(fmb_read)))
-> >> +		return -EFAULT;
-> >> +	if (!fmb_read.data)
-> >> +		return -EINVAL;
-> >> +
-> >> +	mutex_lock(&zdev->fmb_lock);
-> >> +	if (!zdev->fmb_enabled) {
-> >> +		mutex_unlock(&zdev->fmb_lock);
-> >> +		return -ENOMSG;
-> >> +	}
-> >> +
-> >> +	memcpy(&fmb_bounce, zdev->fmb, zdev->fmb_length);
-> >> +	mutex_unlock(&zdev->fmb_lock);  
-> > 
-> > A scoped guard would be preferable for consistency with the enable
-> > path.  
+On Wed, Jul 15, 2026, Sandipan Das wrote:
+> check_emulated_instr() expects the retired instruction and branch
+> counts to match the expected values exactly when a global control MSR
+> is available. This does not hold on AMD processors because VMRUN is
+> counted as a retired instruction and branch in guest context. The exact
+> comparison therefore fails, with the surplus varying with how many
+> asynchronous #VMEXITs occur while the measured code runs.
 > 
-> I thought of that too, but then we'd do copy_to_user() while holding the
-> mutex for longer than is necessary, which I think was pointed out in an
-> earlier version.
+> Hence, gate the precise comparison on pmu.is_intel and fall back to the
+> lower-bound check, mirroring how adjust_events_range() already handles
+> the same VMRUN behaviour.
+> 
+> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+> ---
+>  x86/pmu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/x86/pmu.c b/x86/pmu.c
+> index b262ea59..2b8d1b5b 100644
+> --- a/x86/pmu.c
+> +++ b/x86/pmu.c
+> @@ -786,12 +786,12 @@ static void check_emulated_instr(void)
+>  
+>  	// Check that the end count - start count is at least the expected
+>  	// number of instructions and branches.
+> -	if (has_perf_global_ctrl && !pmu.errata.instructions_retired_overcount)
+> +	if (pmu.is_intel && has_perf_global_ctrl && !pmu.errata.instructions_retired_overcount)
+>  		report(instr_cnt.count - instr_start == KVM_FEP_INSNS, "instruction count");
+>  	else
+>  		report(instr_cnt.count - instr_start >= KVM_FEP_INSNS, "instruction count");
+>  
+> -	if (has_perf_global_ctrl && !pmu.errata.branches_retired_overcount)
+> +	if (pmu.is_intel && has_perf_global_ctrl && !pmu.errata.branches_retired_overcount)
+>  		report(brnch_cnt.count - brnch_start == KVM_FEP_BRANCHES, "branch count");
+>  	else
+>  		report(brnch_cnt.count - brnch_start >= KVM_FEP_BRANCHES, "branch count");
 
-Depends how you use it:
+I'd rather treat the AMD behavior as errata, e.g. so that we don't play whack-a-mole
+with thing like measure_for_overflow().  Even with the below, I still see random
+one-off failures in the overflow test (I've been ignoring AMD PMU failures for a
+very long time).  I haven't debugged why, but AFAICT this is still a strict
+improvement:
 
-	scoped_guard(mutex, &zdev->fmb_lock) {
-		if (!zdev->fmb_enabled)
-			return -ENOMSG;
-		memcpy(&fmb_bounce, zdev->fmb, zdev->fmb_length);
-	}
+From: Sean Christopherson <seanjc@google.com>
+Date: Wed, 30 Sep 2026 13:15:18 -0700
+Subject: [PATCH] x86/pmu: Treat all AMD CPUs as having instruction/branch
+ overcount errata
 
-	if (copy_to_user(u64_to_user_ptr(fmb_read.data), &fmb_bounce, zdev->fmb_length))
-		return -EFAULT;
+Apply the instructions and branches overcount errata to all AMD CPUs, which
+count VMRUN as a retired branch instruction in guest context.  I.e. any
+asynchronous #VMEXITs during any measurement will result in an overcount.
 
-Thanks,
-Alex
+Reported-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ lib/x86/pmu.c | 7 +++++++
+ x86/pmu.c     | 7 +------
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/lib/x86/pmu.c b/lib/x86/pmu.c
+index 67f3b23e..3231ce2d 100644
+--- a/lib/x86/pmu.c
++++ b/lib/x86/pmu.c
+@@ -72,6 +72,13 @@ void pmu_init(void)
+ 			pmu.msr_global_status_clr = MSR_CORE_PERF_GLOBAL_OVF_CTRL;
+ 		}
+ 	} else {
++		/*
++		 * All AMD CPUs overcount instructions and branches retired, as
++		 * they count VMRUN as a branch instruction in guest context.
++		 */
++		pmu.errata.instructions_retired_overcount = true;
++		pmu.errata.branches_retired_overcount = true;
++
+ 		if (this_cpu_has(X86_FEATURE_PERFCTR_CORE)) {
+ 			/* Performance Monitoring Version 2 Supported */
+ 			if (this_cpu_has(X86_FEATURE_AMD_PMU_V2)) {
+diff --git a/x86/pmu.c b/x86/pmu.c
+index b262ea59..35f8a818 100644
+--- a/x86/pmu.c
++++ b/x86/pmu.c
+@@ -222,13 +222,8 @@ static void adjust_events_range(struct pmu_event *gp_events,
+ 	 * If HW supports GLOBAL_CTRL MSR, enabling and disabling PMCs are
+ 	 * moved in __precise_loop(). Thus, instructions and branches events
+ 	 * can be verified against a precise count instead of a rough range.
+-	 *
+-	 * Skip the precise checks on AMD, as AMD CPUs count VMRUN as a branch
+-	 * instruction in guest context, which* leads to intermittent failures
+-	 * as the counts will vary depending on how many asynchronous VM-Exits
+-	 * occur while running the measured code, e.g. if the host takes IRQs.
+ 	 */
+-	if (pmu.is_intel && this_cpu_has_perf_global_ctrl()) {
++	if (this_cpu_has_perf_global_ctrl()) {
+ 		if (!pmu.errata.instructions_retired_overcount) {
+ 			gp_events[instruction_idx].min = LOOP_INSNS;
+ 			gp_events[instruction_idx].max = LOOP_INSNS;
+
+base-commit: eae36be65d135b609f22ca72c6ad836f5c2e2699
+-- 
