@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00F626980F
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 01:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9613546FA
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 01:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790730809; cv=none; b=II+UZJOOY4ZtjcxieVP5CqQyhFD0xAJbO9Zd8mNZJK+JmJGjIvkryMbSdIj1N91ORyWPl7+F0PV5OIFdu0J/bbHj1kXo77E617oIGbS3wuhaKVm9ArZv02C9pjawzD1Hi0v/3yxSNCMrlpLELU/RZjFdwqAAsLgiYdimPz/npY8=
+	t=1790730818; cv=none; b=ugWvn2Ef9ju+2REDeBbpalSJR55KLK4ZkwRFB6GG1CgA3E5EDGEHvB/9Fdo7IZur2PUOdbuqmfqskZYBMumdOVmHu1qHt0J9ZMdIM+BX4REWL7x0tXGwmOCRvw+5fwDNIHuSuprBASWDUk6alZ64MdNHXTy3HhFNAA7B5Fk+a/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790730809; c=relaxed/simple;
-	bh=WJS4SSOV19T6Dt7ROA/A7jK4hLXZXWPr57+NbXRProQ=;
+	s=arc-20240116; t=1790730818; c=relaxed/simple;
+	bh=qNaxT1lfEbT1LPSsEVh5+AezcCglRx9kPOdT2poCI4Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CkgsTxeDmiJjNUtsSk9JXid0Whzz0aT0mJo6rX7GIeUt+qGGpz1fWvRUiR60xRSFtM9k8LdycAX0WLnaDFbUddtPSHpsbyFBztYL0YMIur3ZMBm0McabXoZp5oEtxte9aDhQQ7kzZ507fk4uiocD/hhQZw38+j0dhuYf7m/a0HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y+MFe/jc; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=Isk2sc2xs108/bD/AB4Bode8v8p7bLkaWoHCZgeLhohKDHZL5ve00y8cDxreDTjPYAuQESr6PtuB0Q/IKOVK4s6epjcBu08fCRb9NHwMZuLaHAo2SmJ4DEDQPcbApKnQqCH7Vo7+4W8be81P+aynAfPhYNMy3Fl8eKak8hfN7AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hxt/4maw; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y+MFe/jc"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d02df2bf09so33913635ad.0
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 18:13:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hxt/4maw"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dc7337e2a7so45755645ad.0
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 18:13:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790730801; x=1791335601; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790730805; x=1791335605; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=aGX1aS7+VbzdnFj570TKAEc3vWnkvcXC0Vr+dYTn8FA=;
-        b=Y+MFe/jcAn0KQjq3QsApAHzXslTOfTVmkNABntEMzZbqzkhrs9JrGFYrrebDvfM1cp
-         1kb0M4kmGJYVjI3y9eXwkHV3zqoR/2z6KFr2rFCLg3BDA4Z0GE3n7wnAIUgW/HaPhpZn
-         Q7rW+EBTxPGqcU2SBa0gQHDhMu86xvd+GOoBwUgHwkDOtDfF+XRi7brDPenDmqlRyi6x
-         Kb6a/7OTPd7hzqgkjCcUU0jCdUWCO9mDE0rRiDsZXkqxOf0Mbq+cWw5jr5DXFuz+vr2f
-         cTXBQbbMnAES1EdFQLuBHgqv4n1DzkP6dQX2qoV3bBrZIE+V/fp2GZntPLkm37q7AHBi
-         gtuw==
+        bh=vlcl2f6ewwzrBjcQFC4aq+Z9uRrmySkT+V2ro3tMTk0=;
+        b=Hxt/4mawJYjl3cUtn9/4R7/pV8adjVj12k9hjy/nnH3kQXwxnvrbhtrrbNqc1poZpb
+         1Tzhhi9p4rXFC3xxUFBMy0uUxfjhvFvvmP7DZyzmiPizBhS8r6eRgdqJ8kNHrI9BGzzC
+         a02FzqwsychuqMHWPuMtNyJWFEUNEch2TuuVGm3FCE6woHQkhp9hoQWyDJpp+GsgBuSZ
+         jzqFekOhP3tADLohTxtC2faAtJDlm/hVProkACiQGREKJNQt56gZZ+OUFnGxnAn1hkTI
+         ZRcGJXdwTQqbizXMkcBIVHBpsBRiYSB9C7RIQd//el2vZ0XyYMLiv/4NM56jtaqOlh8i
+         E5lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790730801; x=1791335601;
+        d=1e100.net; s=20260707; t=1790730805; x=1791335605;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=aGX1aS7+VbzdnFj570TKAEc3vWnkvcXC0Vr+dYTn8FA=;
-        b=yxPhFT1XSxyWn0X0CAlWKUCarrV8s6hIFiPfWLZaTsC2Tgbm9ARNwFWw/nkSBV32Zb
-         oL706CgKemxQ2x8W9UvaX8n/KiE2y/p1rcolnGZi/Z+4gWoYo6JWEOKk6uHSS+NdlugN
-         RHRSDdKORp0AVKdsQY23prSoVtUsEo5Ulwvn1s7dEwNGVg0gsd8uwOX5hbQvZFQesDlp
-         18O3QQ/yJQFx4zYFwPg8WdgXl6iWbQmOvkiHG0B9u5qYMMHfN11kZ+yiEDj6ivnhj2oK
-         tWTJGBb5j5JP5sLVAVdT/tXWmp5i1dgkFQQFJEF8pQIRolGPtMjYSqeuC5cEvCOdAxua
-         FhCQ==
-X-Gm-Message-State: AFq9FYLEylOLmpURkcCJZiF5TAe9I6TLsEq12o1KwDaogy7RXvk0640r
-	a/dLojcUEL6659ISDcV2snBoYenuixXO8+fNXuTOuS0BFgF7jePaypg9KHPosReWccbS3muI26M
-	TcPaRPQ==
-X-Received: from plbg20.prod.google.com ([2002:a17:902:d1d4:b0:2dd:6c51:6e21])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc87:b0:2db:5f8c:b81c
- with SMTP id d9443c01a7336-2e2de52d09fmr6371215ad.19.1790730801141; Tue, 29
- Sep 2026 18:13:21 -0700 (PDT)
+        bh=vlcl2f6ewwzrBjcQFC4aq+Z9uRrmySkT+V2ro3tMTk0=;
+        b=rft3lkSRF4mz4v8lb958mbMubYOKy8ORb6NLe6BuPQADdt8/L1Vcmxzz1cRmoAgwV6
+         7eTYXLvK35k4AFPm+Hic3XoxQs9d29olnAfn4REU1aiemb1yLVZ9sG/3o9X4Lpe4S5Mo
+         GV/9rGtShfM1/gIS7/dyQ7oDQFqua18fDgLYOI1Afq10pggbZx0JuZeaKjeNpX9XZZif
+         spa4u1oais5rc5EaPp9de3UYoy5k3bPNWxv7fwMVw/tUASWBHcUu7YdPpiEGch2SzC4G
+         VjHEa/5Y/2Qh4DsX+Kz3XRZTY6PJZ5O8L11bP6uV+iB7l5TQcLEZzde/dkgvBX5d9SaB
+         n7dA==
+X-Gm-Message-State: AFq9FYIyW7HmE7OzkzQy0nwMALqlsbMYrYd3H3cYEgKALBqn61G3Ekak
+	eyNP/Yk4R4C6iuRJtmi8I4i7R4gv87vakA//ttICZzBIaIoiqurZxPyRuL/OYaavsjaIhU2rVlp
+	YH4dswA==
+X-Received: from pldu15.prod.google.com ([2002:a17:903:108f:b0:2e1:2a71:d15b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:37cd:b0:2e2:de62:2b22
+ with SMTP id d9443c01a7336-2e2de622b87mr6202935ad.49.1790730804937; Tue, 29
+ Sep 2026 18:13:24 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 29 Sep 2026 18:13:06 -0700
+Date: Tue, 29 Sep 2026 18:13:09 -0700
 In-Reply-To: <20260930011313.3197688-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260930011313.3197688-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930011313.3197688-6-seanjc@google.com>
-Subject: [PATCH v5 05/12] KVM: x86: WARN if fixed-1 DR6 bits aren't already
- set when delivering payload
+Message-ID: <20260930011313.3197688-9-seanjc@google.com>
+Subject: [PATCH v5 08/12] KVM: nSVM: Disable LBRV in nested control cache when unsupported
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,55 +70,72 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-WARN if the fixed-1 bits in DR6 aren't already set when delivering a #DB
-payload, as (stating the obvious) KVM should never clear fixed-1 bits.
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-Opportunistically switch to kvm_get_dr6_fixed_1() instead using the more
-conservative DR6_FIXED_1, to ensure that bits that are fixed-1 from the
-guest's perspective are indeed '1'.  In practice, this aspect should be a
-glorified nop specifically because fixed-1 bits should already be set.
+Clear SVM_MISC2_ENABLE_V_LBR in __nested_copy_vmcb_control_to_cache() when
+the vCPU does not support LBR Virtualization. This lets the cached value be
+consumed directly instead of re-checking X86_FEATURE_LBRV on every access.
 
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/nested.c | 8 +++++---
+ arch/x86/kvm/svm/svm.c    | 2 +-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 99518e3265b4..5b3918a4ed52 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -399,7 +399,9 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
- 		return;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index b61149814acc..aca2bbc66f47 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -527,12 +527,16 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
  
- 	switch (ex->vector) {
--	case DB_VECTOR:
-+	case DB_VECTOR: {
-+		unsigned long dr6_fixed_1 = kvm_get_dr6_fixed_1(vcpu);
+ 	/* Always clear misc_ctl bits that the guest cannot use */
+ 	to->misc_ctl = from->misc_ctl;
++	to->misc_ctl2 = from->misc_ctl2;
+ 	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
+ 		to->misc_ctl &= ~SVM_MISC_ENABLE_NP;
+ 
+ 	if (!gmet_enabled || !guest_cpu_cap_has(vcpu, X86_FEATURE_GMET))
+ 		to->misc_ctl &= ~SVM_MISC_ENABLE_GMET;
+ 
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV))
++		to->misc_ctl2 &= ~SVM_MISC2_ENABLE_V_LBR;
 +
- 		/*
- 		 * DR6 is a mess.  Reserved/unused bits are fixed-to-1, and so
- 		 * to maintain backwards compatibility with existing software,
-@@ -426,7 +428,7 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
- 		 *  2. Clear active-low bits that are present in the payload.
- 		 *  3. Set active-high bits that are present in the payload.
- 		 *  4. Clear fixed-0 bits.
--		 *  5. Set fixed-1 bits.
-+		 *  5. Sanity check (and set, if necessary) fixed-1 bits.
- 		 */
- 		vcpu->arch.dr6 &= ~DR_TRAP_BITS;
- 		vcpu->arch.dr6 |= DR6_RTM;
-@@ -440,8 +442,10 @@ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
- 		 * breakpoint), it is reserved and must be zero in DR6.
- 		 */
- 		vcpu->arch.dr6 &= ~BIT(12);
--		vcpu->arch.dr6 |= DR6_FIXED_1;
-+		if (WARN_ON_ONCE((vcpu->arch.dr6 & dr6_fixed_1) != dr6_fixed_1))
-+			vcpu->arch.dr6 |= dr6_fixed_1;
- 		break;
-+	}
- 	case PF_VECTOR:
- 		vcpu->arch.cr2 = ex->payload;
- 		break;
+ 	to->iopm_base_pa        = from->iopm_base_pa & PAGE_MASK;
+ 	to->msrpm_base_pa       = from->msrpm_base_pa & PAGE_MASK;
+ 	to->tsc_offset          = from->tsc_offset;
+@@ -550,7 +554,6 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	to->event_inj_err       = from->event_inj_err;
+ 	to->next_rip            = from->next_rip;
+ 	to->nested_cr3          = from->nested_cr3;
+-	to->misc_ctl2		= from->misc_ctl2;
+ 	to->pause_filter_count  = from->pause_filter_count;
+ 	to->pause_filter_thresh = from->pause_filter_thresh;
+ 
+@@ -737,8 +740,7 @@ static int nested_svm_load_cr3(struct kvm_vcpu *vcpu, unsigned long cr3,
+ 
+ static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
+ {
+-	return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		(to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
++	return to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR;
+ }
+ 
+ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 775eccfb7b24..5253c0143666 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -882,7 +882,7 @@ static bool svm_need_lbr_virtualization(struct kvm_vcpu *vcpu)
+ 	if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
+ 		return true;
+ 
+-	return is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
++	return is_guest_mode(vcpu) &&
+ 	       (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
+ }
+ 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
