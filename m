@@ -1,120 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF7549620;
-	Wed, 30 Sep 2026 14:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89775187EB
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 14:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790777080; cv=none; b=eN3VFEVcMjVKmTmSq59xOuEf8Le12geIGIvcW8cmoCfxpgF6pWk2GDFrPaIwhXmTFQn7IuPgVj069uEC9pOyq+fJ1mWqhKAIDjv1oRrjZNZ8yWu+YaBF+gR0m2hpmzoeynaylb1lyVPCcDelkdLpDCurB2CdrH6ih6otnm731Zs=
+	t=1790777348; cv=none; b=Fc47i+kIQniN4N+g9QQB1N/Mc0ZCeGWKkDLHxc16nYnVsTaOU7ufx06g0euTE2XuX4Rkrq6TrQ1f+8UoLT+ijUXP2dWo5pdhxyxKhT7lVA/P+JLl/Bp5R9JH9e+FnMVs5JFSntxIBUa9NsOY37qHQsy2vOQ7cRu8tPbRXmg6tf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790777080; c=relaxed/simple;
-	bh=/UyS5PrZ9dFy4qnf/lpFn1MRDCVbyU3hO93UDTitrEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pa4fhx2B+aTS9EHSUDAdCFhk06QAt5YY4ud84tPd7PBwotc5CPy/Q+RtmfI0KegxY+7h8yOpD88GiugV6sj8Gpi7ggkPYAD2kK9AVfgFbumVTWOdXF2ep6hu5G1iGlTxj+kJSBtmCKAjYQgJbepQ5a933BQjWAmtNaJCKrdXCeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yvdjq9oZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790777348; c=relaxed/simple;
+	bh=u/sYFJ0IFoVAn4mTeL9RLHFvHzVSFq6mlMEPEuqFX/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=quMpgEzmkEH9Na5zSfZnG6Yih1tdaHLaiUUVeot/SzLUuup5iA8+iiXchoTMUapKjz3hPYSrRszexwshgsd+9Xdkq/KjnSzG17XcuNpHV5AtL/j1YKYwjgk+3X6WtcgFxOi2UCVQt0tJkkkAePN/1VvEdt3YBPB5Q68DD0LpDeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bNi0/Fjk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yvdjq9oZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4701F00893;
-	Wed, 30 Sep 2026 14:04:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790777067;
-	bh=qDrsdiaQZHHhPeXe5jyxrlwF2+7RvAtBFzgDhXFPP3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Yvdjq9oZV45eCiEN111hi4vet2W/nLS74DMopHuojMM3wMH/N4KAcu2+0mW20EO9c
-	 IDSXxS2tPynj794wBAz2EOOq7Kr3OlGB+B8Ek3jJPJVX2lfyLH8vR9z38Ymfsd0t0S
-	 1dDbmYiQEkrtHddHTxHXUapMTACsYOmOJOpt+34b6pII8Yf2k4tSzSHIgEfRKZ9vBv
-	 1NytRX0mM8j1MpboL6ewdR8epwy+56yA7yIHarrLY0H1ziJQgOjG6dYYH2jb2MaI68
-	 EbFkOONbsAAt13gzGzY3F5AtT+IKqxbSRLXJ3b7VC7xf3HR7EjeHWzEak0OgGM/jrB
-	 4QvhyYzW+jvkw==
-Date: Wed, 30 Sep 2026 15:04:23 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: KVM <kvm@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: linux-next: manual merge of the kvm-x86 tree with the kvm-fixes
- tree
-Message-ID: <f8d5ab37-7bc5-494f-afec-6bd0cb0c412c@sirena.org.uk>
-References: <ar0KIZ8HQEfIRvVJ@sirena.org.uk>
- <ar0RN3FICQ-PEqNW@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bNi0/Fjk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790777328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kog7asmMh6wog1adNQUGIn243OW/BEgANRMVLg38o7k=;
+	b=bNi0/FjkqUktJSiyrqDa8uJSOyrJAanve00go2hRbjbUZpqFP1/TpUPCK4wBBpgvyHVYdg
+	BX7VyCJTDJ0XUeI0u/YXiobjlSZ1EYGQSKydwdQvtNjmI4phoclX5I0F9VppUZtWSSgS9O
+	f/Wg20qwku5xVbxhfb+6VZleZ7uN74M=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-ukPi9VarMwyl1rb-JwJdFw-1; Wed,
+ 30 Sep 2026 10:08:44 -0400
+X-MC-Unique: ukPi9VarMwyl1rb-JwJdFw-1
+X-Mimecast-MFC-AGG-ID: ukPi9VarMwyl1rb-JwJdFw_1790777321
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB63A1955F19;
+	Wed, 30 Sep 2026 14:08:39 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B95001956044;
+	Wed, 30 Sep 2026 14:08:34 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: bhelgaas@google.com,
+	alex@shazbot.org,
+	jjohnson@kernel.org
+Cc: johannes@sipsolutions.net,
+	mani@kernel.org,
+	jgg@ziepe.ca,
+	yishaih@nvidia.com,
+	skolothumtho@nvidia.com,
+	kevin.tian@intel.com,
+	linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] Enable Qualcomm WiFi PCIe passthrough to VMs
+Date: Wed, 30 Sep 2026 16:08:26 +0200
+Message-ID: <20260930140833.576941-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GnQle1IfTViYMuA8"
-Content-Disposition: inline
-In-Reply-To: <ar0RN3FICQ-PEqNW@google.com>
-X-Cookie: (null cookie
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
+This series enables Qualcomm ath11k/ath12k WiFi devices to work in VM
+passthrough scenarios, addressing a long-standing issue where these
+devices fail to initialize when passed through to VMs via VFIO.
 
---GnQle1IfTViYMuA8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Qualcomm ath11k/ath12k WiFi devices have been broken in VM passthrough
+since they were introduced. The devices use an embedded interrupt
+controller that requires physical host MSI addresses programmed to
+device registers, but in VMs the driver only sees virtualized guest
+addresses. This causes firmware initialization to fail with errors like
+"BHI offset: 0xffffffff is out of range".
 
-On Wed, Sep 30, 2026 at 06:40:07AM -0700, Sean Christopherson wrote:
-> On Wed, Sep 30, 2026, Mark Brown wrote:
+Multiple attempts have been made to solve this over the past 2 years:
 
-> > between commits:
+March 2024: Workaround using module parameters [1]
+  - Required manually copying MSI values from host to VM
+  - Rejected by Johannes Berg as too manual, suggested VMM solution
 
-> >   b630929bcc4c8 ("KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt")
-> >   b0bc51910f039 ("KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12")
+August 2024: QEMU + kernel solution by Alex Williamson [2]
+  - Kernel disables MSI virtualization, QEMU intercepts config writes
+  - Uses brute force pattern matching to infer MSI data writes
+  - Stuck as RFC - no progress in 8+ months
 
-> > from the kvm-fixes tree and commits:
+No action from Qualcomm: Despite multiple reports, no vendor solution
 
-> >   9b2f8146fcef9 ("KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt")
-> >   a4bab1c12fd52 ("KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12")
+The solution in this series provides a clean, kernel-only solution that
+addresses the previous concerns.
 
-> kvm-fixes got force-pushed, which is what's causing the weird conflict.  In a
-> tree that hasn't refresh from kvm.git, I see:
+Architecture:
+1. qcom-vfio-pci variant driver caches physical host MSI values and
+   exposes them via extended config space with magic signature "QMSI"
+   In this way, device-specific hardware quirks belong only in kernel
+   drivers, not userspace, independent of the tools used.
+   This follows the established VFIO variant driver pattern used by
+   other drivers like mlx5-vfio-pci (netdev tree) and nvgrace-gpu (platform
+   tree).
+2. VM drivers (ath11k/ath12k) automatically discover and use cached values
+3. PCIe link recovery handles VM timing variations
 
-Ah, I had thought it was an old version of the patch having landed in
-kvm-x86.  It looked like different versions of the same patch got into
-each tree so I went with the main fixes branch version as that's what's
-heading for Linus.  This sort of cherry pick/duplicate stuff is always
-hard to follow. :(
+Thoroughly tested: 3 VMs across 2 WiFi generations, all devices successfully
+initialized and are ready for use.
+- VM1: ath11k (WCN6855)
+- VM2: ath11k (WCN6855)
+- VM3: ath12k (WCN7850)
 
->   a4bab1c12fd528ccaafee00360e07463873404a9 (kvm/master, kvm/HEAD) KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
->   9b2f8146fcef9faa73f9dc1bad9a8d6c585cfec8 KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt
+[1] https://lore.kernel.org/all/20240322104912.94811-1-jtornosm@redhat.com/
+[2] https://lore.kernel.org/kvm/20240812170014.1583783-1-alex.williamson@redhat.com/
+[3] Original problem report:
+    https://lore.kernel.org/all/fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com/
 
-> versus the newer version:
+Jose Ignacio Tornos Martinez (7):
+  PCI: Add pci_find_free_ext_cap_offset() helper
+  vfio: Add qcom_vfio.h header for MSI cache protocol
+  vfio/pci: Add qcom-vfio-pci variant driver
+  ath11k: Add PCIe link recovery retry for VMs
+  ath11k: Use VFIO MSI cache when available
+  ath12k: Add PCIe link recovery retry for VMs
+  ath12k: Use VFIO MSI cache when available
+--
+2.53.0
 
->   973ea70393e885e540f714904e51bc6cac80e3d7 (kvm/master, kvm/HEAD) KVM: SEV: Do cache maintenance on the source VM *before* clearing SEV state
->   8abbc76120a74bfba1851bd97528099d715e45c6 KVM: SEV: Nullify "have run CPUs" mask pointer when freeing it
->   b0bc51910f0391fea09c0a1d32352fec2acb2686 KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
->   b630929bcc4c867c9abc8cd5a0ebee3bb5ce5dcd KVM: selftests: Extend nested x2APIC test to validate disabling x2APIC virt
-
-IIRC my conflict resolution gitk only showed me the two commits that got
-duplicated, it is filtered by file though.
-
-> >  -	prepare_for_vmx_operation(vmx);
-> >  +	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
-
-> This resolution will probably break the final selftests build?  kvm-x86/next
-> moves these asserts into prepare_for_vmx_operation(), load_evmcs(), load_vmcs()
-> etc.  I.e. kvm-x86/next should "win".
-
-That's entirely plausible, my kselftest build tests are for arm64 only
-since that's what's native on the build machine.  Sorry about the mess
-here.  If you send me a confirmed resolution on top of today's -next I
-can add the fixup, or I'll try to take look tomorrow?
-
---GnQle1IfTViYMuA8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq9FuYACgkQJNaLcl1U
-h9BWZwf9FT0rfa9zbY50MuzgJVVd/RnGiurcqZOaldeL5c9hN8b4ZTQUj7DCmR2K
-5pHhIbS4SXVJxSOIZAClX9Kn27Lw7GDlzWenyFNsohU5vT6DuySlhXXd6PTxAq+M
-h2VRa85MZsqIWbn3XVxI4oeRfUPFEarXmMYw4LGbGTYCvcEvV5gWTHQ5QrXD3AvL
-Y01zred9poBzoTqKVXDM4mHDhBUuynW17wbhZzjXuWCVoDw8OWeM78k3UQqUD4b5
-cBw0ORUqqSPj4+YtdDVegZeHV1mHlfczODN9yViGY154yWcEv0xZreZLpDQR+JTp
-HLF5Z+QBnvgu0li+qNRANyhYGo9Yhg==
-=xuDH
------END PGP SIGNATURE-----
-
---GnQle1IfTViYMuA8--
