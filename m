@@ -1,82 +1,44 @@
-Received: from mail-oi2-f42.google.com (mail-oi2-f42.google.com [74.125.231.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCABF4F85D8
-	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 15:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.234
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00231373BF6
+	for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 15:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781163; cv=none; b=qHekypJPveJ3c4y7N/AKKuUkQvgG9EdPVeQkUE5XgrQjQvXHNYp8p6gdbZ5CNHvPiEKCwgwQvUPcPeyactoVOOfmgpZsloR+8t3qjI16wXTeXJ0b7BymG6fBQmJw34lFBlEtLCPFe0x47fGp0lx/t2MmZ8qbZ1q//SPACFFIv98=
+	t=1790781351; cv=none; b=LXPr+mSt9+8IqcYR4cL2yM3fNzSGZgoSBY/WtVuFJ0uu+McYQzdgjZ5m85cL/ZOcBcaNKTSW414S7dP2yJmiFfnW0cQE0K27JheQ1EAw2xBmuPbNxUyPueJjVF7I6xFCKkDWFVlCkVOSQPPj3hlIByhDMYMG38Yfm9hei7HCb0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781163; c=relaxed/simple;
-	bh=N5TwGmCOg73FQhkQUlqK26vGWZ+6twK0jOc1jidbG9w=;
+	s=arc-20240116; t=1790781351; c=relaxed/simple;
+	bh=uYkptGHOhkZ2njHmLCr5cNIbKXL2O554/Yv3adwer90=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=se5A/DY+TNusn38aZU+Srm0i8oupD7AJvmtcQ5ULQkS3MW0s5Trq5Wib7tjVPPBUlR1HVJT3GYDW+j41Xv7O7GdrL45KZqxOKX5xMLrpwSY/CPk1LOr5/djIhCxLeoUAug+YjOAlXW4AJRWUFTMejYs/YumR0KkH6Wp7Iy38mC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=F2LynHut; arc=none smtp.client-ip=74.125.231.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=EtY1DiZ3ijGlC1Oji45Itg9rMDsenhC2RbPMlL+uoS/3U1algr3oUJW205bWe3kJ3StGIAoW2pE9ixZi2H9ZUPm0fftVymZoZxKZS8a7cAJ/gynfB3mA+Pt50C574KoYW6iU1FqQvgX/24YPENmE6C1ijkL7K9/jutRL/VOF77E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BmHbJrVr; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="F2LynHut"
-Received: by mail-oi2-f42.google.com with SMTP id 5614622812f47-4e6e670540fso2286848b6e.0
-        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 08:12:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790781152; x=1791385952; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i3zztcZwHv33xTSBhcuuRwUuO/mC2YE/oPR+7vCHXWU=;
-        b=F2LynHutv0ZOmuF8vmFQU0cyqiI4GB5kyNhWNIcFmTm03ZYDlIdoeMvOS1ol6pHe7P
-         1opniFMp9w/1hoNxwBw1abApRh1Po/j0x2ZuaQZgt0r7WvI/GTEHkvv7KKThQRNgUeDk
-         U3vhG4nOcBSBbCwSBzxPAF2/N9kbmWUuQeOCbbHXQ+GZ3OEDXh8iCi7m7OhysGURcFuR
-         MYdYJN3ZhgKPd9PQq1QsBlgi+KBVppXhOjswSN+K42z+R3efFI3SH3JDdd9Kub164vap
-         FKr2jNuW6GBhqs4aVFIb+0YT7DujIACVvy1vKyp41BAFenyWoJ63gl+3RGCO5hghcRCU
-         QQ9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790781152; x=1791385952;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i3zztcZwHv33xTSBhcuuRwUuO/mC2YE/oPR+7vCHXWU=;
-        b=bj2AsVDqJETiGypadnMj2XEx9uFTPDs6mwnKrNWpfpF7LT+B04jcSDOUJT/25YD1k1
-         UAPoy2rDMsl7k5JMQa3Rf52Drc8m8xcwxymzl6s8lzxmUZKQtoCCqqJrPvgDswQcBL5d
-         hYJrjhzY2SUepQ+vrBSLOVOxUhdCa8BrsBlybBrrDwixwqW4sWoIoZhZk7LfW8NLitvC
-         RjD+z2cbQzW9k9HxO5avzY+ZkDZusiKnamVdHF1+O3VC5w+UoNwWvcFVBIDn9HgNcDw0
-         G4bkj2GCHmncqnVl+ddotiZPJWelNI5tZPmomAEFUb+UaxujhHXm/eARvxbgbY/MUuap
-         Cibw==
-X-Forwarded-Encrypted: i=1; AKwUvBwXCrAlrUVjvY8fmnxan+B6EqiJJ/Ok2AQF9dvqikS6kFnv+Vcjm2vjevRt6on1IYuuzqA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mkd5JsIUgFWHkkEYPfwhlXlcMBsmAgGewiHtojWL3hU0LxAExh
-	CK8scTaQbFD7hBsDkvU2pXc4aEmWQgpyBz1BcCoiCvIh4cZXUnMv08OJffIplSR6hMM=
-X-Gm-Gg: AYBFou1cqjeUjzcBSOqoLxBCydG0vXFgnw4viug0fnO8QlLzd5F5BoB43UteVElRVYl
-	o914MehZ1okOgYIRUA30qs00dZ8GlruuPhAIyallsOLkaqFCTQWspa7dntn//g+IiZAg0QK1TF4
-	R0rcvWCK4QycHkqUsa+xER2roZR2qjwzMvJSAodMnwjOlfLJrXuJirZ/Gwg9MBFzFlcx4py29K3
-	y7n3sWOy4JN1G7BrvROr8z0Gw42+6EOXR/7KGsYiYNeoambmBTa0/3QIaqkQUO5mAX4b7dimHXb
-	Hr7xT9ahEhCSOJv3YV/fNl6r5ATdDXPKu+7IrInfj3xGK1Y+LZIEk7PK9F7pfMhGrCj3075cQJC
-	nZZ+VzfPAkSfu4NV1j9UHYKZ4/wrHH6yGak5oLjax+h//Vz6n++wimrp3lB8YczStoW1NrjDtHN
-	/TYWeNUGEyh0aGiZ8edJzWtOb6kSLaejzQNhGFgDMY6F6O
-X-Received: by 2002:a05:6808:23cd:b0:4d6:90d3:e187 with SMTP id 5614622812f47-4f1b9a4dd1fmr1463609b6e.48.1790781151901;
-        Wed, 30 Sep 2026 08:12:31 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4f1b61be7d8sm1076055b6e.17.2026.09.30.08.12.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 08:12:31 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xBvyv-0000000BwZW-3H3V;
-	Wed, 30 Sep 2026 12:12:29 -0300
-Date: Wed, 30 Sep 2026 12:12:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: bhelgaas@google.com, alex@shazbot.org, jjohnson@kernel.org,
-	johannes@sipsolutions.net, mani@kernel.org, yishaih@nvidia.com,
-	skolothumtho@nvidia.com, kevin.tian@intel.com,
-	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] vfio/pci: Add qcom-vfio-pci variant driver
-Message-ID: <20260930151229.GR163130@ziepe.ca>
-References: <20260930140833.576941-1-jtornosm@redhat.com>
- <20260930140833.576941-4-jtornosm@redhat.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BmHbJrVr"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26DFC497;
+	Wed, 30 Sep 2026 08:15:34 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AEE043F86F;
+	Wed, 30 Sep 2026 08:15:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790781337; bh=uYkptGHOhkZ2njHmLCr5cNIbKXL2O554/Yv3adwer90=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BmHbJrVrGvUQ6nSgYk2xP4TaPo8s7Zlp9mF0y2GhEW7dUf/kgSRTYX33BPp0bGAW4
+	 LPD/nXm7UOIaCPOVdz9r4lglf93cm+gasqhhoNEdYJHls29atAYIvoREwyAGhiMBgW
+	 2y/xgdgHE+nSMWp6qJk/X8IHVNSg8ntmL9JBpcVY=
+Date: Wed, 30 Sep 2026 16:15:30 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v20 7/9] arm64: Block hibernate and kexec while RMM is
+ active
+Message-ID: <ar0nko4Gjj_PlwB5@arm.com>
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-8-suzuki.poulose@arm.com>
+ <20260929222639.997731F000FF@smtp.kernel.org>
+ <8e02fe1d-2011-47f0-97a6-c34d730dee6c@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,61 +47,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260930140833.576941-4-jtornosm@redhat.com>
+In-Reply-To: <8e02fe1d-2011-47f0-97a6-c34d730dee6c@arm.com>
 
-On Wed, Sep 30, 2026 at 04:08:29PM +0200, Jose Ignacio Tornos Martinez wrote:
-> Add VFIO variant driver for Qualcomm PCIe devices that require
-> MSI address passthrough for VM operation.
+On Wed, Sep 30, 2026 at 10:12:36AM +0100, Suzuki K Poulose wrote:
+> On 29/09/2026 23:26, sashiko-bot@kernel.org wrote:
+> > > diff --git a/arch/arm64/kernel/hibernate.c b/arch/arm64/kernel/hibernate.c
+> > > index 424291c547f02..253f544a59731 100644
+> > > --- a/arch/arm64/kernel/hibernate.c
+> > > +++ b/arch/arm64/kernel/hibernate.c
+> > 
+> > [ ... ]
+> > 
+> > > @@ -341,6 +342,11 @@ int swsusp_arch_suspend(void)
+> > >   		return -EBUSY;
+> > >   	}
+> > > +	if (is_rmm_active()) {
+> > > +		pr_err("Can't hibernate: RMM is active.\n");
+> > > +		return -EBUSY;
+> > > +	}
+> > > +
+> > 
+> > [Severity: High]
+> > While this successfully prevents saving a hibernation image, is there a missing
+> > check in the resume path, specifically arch_hibernation_header_restore() in
+> > arch/arm64/kernel/hibernate.c?
+> > 
+> > If a hibernation image is present on disk (e.g., from a prior boot with RMM
+> > disabled, but with a matching uts_version), subsys_initcall(arm64_init_rmi)
+> > activates RMM and delegates memory to the Realm PAS early in boot.
+> > 
+> > Later, late_initcall_sync(software_resume_initcall) restores the image.
+> > Because arch_hibernation_header_restore() lacks an is_rmm_active() check,
+> > the image is accepted. The low-level resume path swsusp_arch_resume() then
+> > blindly overwrites physical memory with the saved image.
+> > 
+> > Without an upstream guard during resume, won't this overwrite newly delegated
+> > Realm PAS memory, triggering a fatal Granule Protection Fault?
 > 
-> Qualcomm ath11k and ath12k WiFi devices have embedded interrupt
-> controllers that require physical host MSI addresses programmed to
-> device registers. In VMs, the driver only sees virtualized guest
-> addresses, causing firmware initialization to fail.
-> 
-> This variant driver:
-> 1. Caches physical host MSI values after allocation
-> 2. Writes them to extended config space with magic signature "QMSI"
-> 3. VM drivers discover and use these values automatically
+> That is a valid point, I have added a check there to bail out if the rmm
+> is active.
 
-You should probably explain a little be more here
+I wonder whether adding something to hibernation_available() would be
+better, though it would have to be a __weak arch_hibernation_available()
+or something similar.
 
-1) Linux VM driver fills up the normal MSI-X table
-2) HW has some non-MSI-X table registers
-3) Linux VM driver pokes into the interrupt layer and extracts
-   one of the MSX-X table entries addr/data pair
-4) Linux VM driver now programs that copied addr/data pair into #2
+I think it blocks both the suspend and resume paths and also hides
+"disk" from /sys/power/state.
 
-This is, of course, all wrong. These days it should be using one of
-our mechanisms to allow devices to have their own private MSI
-registers.
-
-I forget if this is the right way for PCI, but the driver can call
-
-  platform_device_msi_init_and_alloc_irqs()
-
-And directly program the MSI registers with their own special
-interrupts vectors, no copying from MSI-X.
-
-If the driver is fixed to work like this, as it should be, then it
-fully breaks the scheme you propose here. That's not good.
-
-The problem here is not really a qcom problem, and treating it as a
-qcom quirk is why it keeps being stuck, IMHO.
-
-The real issue is that this device MSI scheme does not work in VMs at
-all. It does not work because the VM IRQ design requires the VM to
-trap and modify all the MSI addr/data pairs at the register write.
-
-The technically clean solution is to redo the VMMs so they don't
-require that, ie use interrupt remapping so the VM's view of the
-addr/data pair matches physical. That's super hard and will probably
-never happen.
-
-But! Now that we have these device MSI domains I wonder if there is
-some half option to provide a hypercall so the device MSI domains can
-call out to the hypervisor to get the true physical addr/data pair to
-program?
-
-This is fundamentally an irq layer issue in Linux, not a qcom one.
-
-Jason
+-- 
+Catalin
