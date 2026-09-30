@@ -1,178 +1,312 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD474DD3A2;
-	Wed, 30 Sep 2026 14:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F129D4EB866;
+	Wed, 30 Sep 2026 14:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790779517; cv=none; b=LVYqLSqB+v2L91vWoSaCTy9y76QJ7UX7PRbG2BiXopYh89RfdMuEfFnUZKgIuLNLlPzTePexc+l0PbMF8rjiJTgm2rIIEqtdSAlx8jtoyFjICwbdpKCJfvsKFZs/VyIkbHxUBSeksT3e3DPJKr936M6xIET3rKsrX+hzqhFiX08=
+	t=1790779558; cv=none; b=SSkofh6iebV/dlF5YSh84KuWXAU6kYoBbVvwvMdH2XV5biXkXHf23lh1XNrQomBUC1XbyqEgqiwCxQTcZsTpMR1WhPU62CDqgnPK/+BUqqFeyEJdal8flN5cUj/e4v2Hr0OmVwBm35l0HJycTqeHlLjAN+Yh+6gE0/vgPYOLy5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790779517; c=relaxed/simple;
-	bh=HLlUQWER5GPL4c57fjFMJARLSJZqROvDyga3Zux6cPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P5qNvLu31oX4RkOqXJsEQF+THtvWIJNc9kmXWdI2YEx0Zy+9jFhvmqQIMS4TqLhKP31tJx05VURYVrPs+Hn59Efi9dIVXnKQrP9bnpoWEGT3dhYWQxeGyg/cZKYUadgCs6X+xglCCrd+n4pIgoLnoKkNPFiQP+lrixYR0+r1/Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsUrGiZN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790779558; c=relaxed/simple;
+	bh=ak6ouoSv/CM7ryAwul+PhUJ+L+JLUOgnRGK+43y5IYQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KfymJhmysU7i/9CopSdXTrgV71r+3Vfe26gEENLq0K1ybNXzzbacww2qrP2E5mpJfjNEvmQuQVfABJvpFDguB8VfV5rKb0RpU94Sco8wy7yeKsLZtIly+dPuZy0pi9q7vYWw88Mu6aJplfmERedPBjf6dm3qHIiJ8DQdGgizSns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQthhs0f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsUrGiZN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7A61F00893;
-	Wed, 30 Sep 2026 14:44:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQthhs0f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7A71F000FF;
+	Wed, 30 Sep 2026 14:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790779495;
-	bh=k6UVIhzsdZx5yMbBC0Hj1Zqo66sKEDFFBwKg4yISoQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GsUrGiZNeVEfDds38/qWXHLJJrm/I2CKdi8vnv1FAypbuJjpvIwfMxaiNI8ab7Hz3
-	 4rXJ2AudUts1c0RlsO3FEGCBqRwJ6b8i5Xq0QwNJJio7Xyz6MaLNeazj6xtZBg/6X5
-	 Hl9/Dv8QDXQbWIXNCXVwI7/ZzcL3C/s35dnMMLl1YzUkBdb1M4SKaZ4H70QAu31irJ
-	 mm1nD4kKqLuHwMDOMShiL8OEf/d5hd12bk/e/VRcsqqamB0wfZ0+q5M1r39N4N5R1p
-	 PgjA66UB1FlQ+OjL1OYn+aPt+sKVZg9wzdqqCWa5FOfnPGOnKYoWBi9IZEPQh7PZbv
-	 4GjgvggLJT6CA==
-Date: Wed, 30 Sep 2026 15:44:49 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	Sudeep Holla <sudeep.holla@kernel.org>, will@kernel.org,
-	catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v20 6/9] firmware: arm_rmm: Ensure the RMM has GPT
- entries for memory
-Message-ID: <20260930-judicious-loris-of-will-dea0a3@sudeepholla>
-References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
- <20260929221623.1342076-7-suzuki.poulose@arm.com>
+	s=k20260515; t=1790779545;
+	bh=qqHkRcU5OHYkLfz71VoY5zYBFazAk8P/siXmi1+tzKQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IQthhs0feyh2i3ilgyybMtSySSKtnaWc+vafnHNPYd3sS4HVJrADQwCZn11Ny/Bf/
+	 Dp83WTTP5ibm2+JdN0C8WYAJYUTpJgDo+qb56FXZyqZ6FLOYCKB5JJCa7iwFQ0W/lj
+	 Pe9z2xUgUIMelNX1zatrsFr1EmEfElkIZ6rtDLT6wFPKtNpKIC9OEWB09M4vbAhzJH
+	 wKequOmDeASjgcVmkng0lKlFe+wQTqM5tfz0PdxQ63ek9TjPGezfWSXlU22sss7CSm
+	 Bx/ZEl+WqoNVpkTBEw56iFDd3hCgtL/TWbVXKfQ5UlrJ+1HSShZh596zJsJBATjRLT
+	 d27hAQ55T5qlQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/7] vfio/pci: Add qcom-vfio-pci variant driver
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jose Ignacio Tornos Martinez" <jtornosm@redhat.com>
+Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260930140833.576941-4-jtornosm@redhat.com>
+References: <20260930140833.576941-1-jtornosm@redhat.com>
+ <20260930140833.576941-4-jtornosm@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 30 Sep 2026 14:45:44 +0000
+Message-Id: <20260930144545.1C7A71F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929221623.1342076-7-suzuki.poulose@arm.com>
 
-On Tue, Sep 29, 2026 at 11:16:20PM +0100, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
-> 
-> The RMM maintains the state of all the granules in the system to make
-> sure that the host is abiding by the rules. This state can be maintained
-> at different granularity, per page (TRACKING_FINE) or per region
-> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
-> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
-> all pages in the region must be of the same state, this implies we need to
-> have "fine" tracking for DRAM, so that we can delegate individual pages.
-> 
-> For now we only support a statically carved out memory for tracking
-> granules for the "fine" regions. This can be extended in the future to
-> allow modifying the tracking granularity and remove the need for a
-> static allocation by the firmware.
-> 
-> Similarly, the firmware may create L0 GPT entries describing the total
-> address space. But if we change the "PAS" (Physical Address Space) of a
-> granule, then the firmware may need to create L1 tables to track the PAS
-> at a finer granularity. Linux therefore checks if the platform firmware
-> manages the PAR region. i.e., the firmware is in charge of managing the
-> L1 GPTs (creation and the required memory for the GPT tables - via static
-> carveouts) without host intervention. Support for dynamic GPT creation by
-> the host will be added later.
-> 
-> If the firmware requires us to manage the tracking or GPT memory,
-> deactivate the RMM and reclaim any memory donated at RMM activation.
-> 
-> Apply the same checks when hotplugged memory is brought online.
-> 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
->  Changes since v19:
->    * Wrap comments to 80spaces.
->    * Add a comment on ALIGN_DOWN the end of memory range.
->    * Add is_rmm_active() to indicate if the RMM is active
->    * Switch errors to -ENODEV from -ENOMEM when RMM doesn't manage the region
->    * Print error messages when RMI_GPT_INFO/RMI_GRANULE_TRACKIN_GET fails
->  Changes since v18:
->    * Avoid mixing gotos with __free cleanups for arm64_init_rmi()
->    * Handle buggy RMM to make forward progress for RMI_GPT_INFO and
->      RMI_GRANULE_TRACKING_GET
->    * Make sure the memory ranges are not inverted and reject such ranges.
->    * Move granule_tracking_get/gpt_info wrappers closer to the callers
->      Drop "inline", let the compiler do its job
->  Changes since v17:
->    * Move wrappers that may not be used elsewhere, out of arm-rmi-cmds.h
->  Changes since v16:
->    * Check fine tracking and create L1 GPTs for hotplug-added memory.
->    * Clarify the L1 GPT setup and move the explanatory comment.
->    * Switch to using RMI_GPT_INFO command for checking the GPTs.
->    * Deactivate the RMM and reclaim the memory if we can't proceed.
->  Changes since v15:
->    * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
->    * Handle negative error codes from wrappers.
->  Changes since v14:
->    * Move the implementation into drivers/firmware/arm_rmm.
->  Changes since v13:
->    * Moved out of KVM
-> ---
->  drivers/firmware/arm_rmm/rmi.c | 247 ++++++++++++++++++++++++++++++++-
->  include/linux/arm-rmi-cmds.h   |  18 +++
->  2 files changed, 264 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> index d982cf158f8da..d4d098448e46e 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
+s) to consider:
+- [Critical] vfio/pci: TOCTOU in ioctl double fetch leads to NULL pointer d=
+ereference
+- [High] vfio/pci: hardware corruption via writes to unassigned config space
+- [High] vfio/pci: stale MSI cache across VM reboots due to missing state r=
+eset
+- [Medium] vfio/pci: data truncation and swapped bytes on big-endian hosts
+- [Medium] vfio/pci: sub-dword reads bypass MSI cache and return hardware g=
+arbage
+- [Medium] vfio/pci: data race in MSI cache updates allows reading uninitia=
+lized values
+--
 
-[...]
+commit 6afc81e503658e11a186e8970fd3ac931221f37d
+Author: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: vfio/pci: Add qcom-vfio-pci variant driver
 
-> +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
+Add a VFIO variant driver for Qualcomm PCIe devices (ath11k, ath12k) that
+caches physical host MSI addresses and passes them through via extended
+config space.
+
+> --- /dev/null
+> +++ b/drivers/vfio/pci/qcom/main.c
+[ ... ]
+> +static ssize_t qcom_vfio_pci_read(struct vfio_device *core_vdev, char __=
+user *buf,
+> +				  size_t count, loff_t *ppos)
 > +{
-> +	unsigned long l0gpt_sz;
-> +	unsigned long next, par_state;
-> +
-> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
-> +					  rmi_feat_reg(1)));
-> +	start = ALIGN_DOWN(start, l0gpt_sz);
-> +	end = ALIGN(end, l0gpt_sz);
-> +
-
-Is it guaranteed that end with not be = PASZ ? The spec says RMI_GPT_INFO
-will return RMI_GPT_INFO when top >= pasz. Unlike start, end for good
-reason is aligned up(ceil) instead of aligned down, but that also means
-end will become PASZ when we reach end of memory, no ?
-
-Sorry if I am missing something, trying to understand bits and piece of
-RME still, just getting started.
-
-> +	while (start < end) {
-> +		long ret = rmi_gpt_info(start, end, &next, &par_state);
-> +
-> +		if (ret != RMI_SUCCESS) {
-> +			pr_err("RMI_GPT_INFO failed for %llx-%llx: (%ld)\n",
-> +				start, end, ret);
-> +			return -ENXIO;
+[ ... ]
+> +	if (index =3D=3D VFIO_PCI_CONFIG_REGION_INDEX) {
+> +		ret =3D qcom_vfio_pci_config_rw(qdev, buf, count, offset, false);
+> +		if (ret !=3D -ENOTTY) {
+> +			if (ret > 0)
+> +				*ppos +=3D ret;
+> +			return ret;
 > +		}
-> +
-> +		if (WARN_ON(next <= start))
-> +			return -ENXIO;
-> +
-> +		if (par_state != RMI_GPT_PAR_PLAT) {
-> +			pr_err("GPT for the region is not managed by firmware %llx-%lx\n",
-> +				start, next);
-> +			return -ENODEV;
-> +		}
-> +		start = next;
 > +	}
 > +
-> +	return 0;
+> +	return vfio_pci_core_read(core_vdev, buf, count, ppos);
+
+[Severity: Medium]
+Will this fallback to vfio_pci_core_read() leak hardware garbage to the gue=
+st
+if a sub-dword read bypasses the MSI cache interception? Since
+qcom_intercept_msi_read() strictly matches exact 4-byte or 2-byte sizes,
+unaligned or smaller guest reads will fall through and return -ENOTTY, caus=
+ing
+a real physical read from the unbacked capability gap.
+
+[ ... ]
+> +static long qcom_vfio_pci_ioctl(struct vfio_device *core_vdev,
+> +				unsigned int cmd, unsigned long arg)
+> +{
+> +	struct vfio_pci_core_device *vdev =3D
+> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	struct qcom_vfio_pci_device *qdev =3D to_qcom_vdev(vdev);
+> +	struct vfio_irq_set hdr;
+> +	long ret;
+> +
+> +	ret =3D vfio_pci_core_ioctl(core_vdev, cmd, arg);
+> +
+> +	/*
+> +	 * If SET_IRQS ioctl succeeded for MSI and MSI wasn't cached yet,
+> +	 * cache the MSI descriptor values.
+> +	 * Only intercept MSI index (not INTx, MSI-X, ERR, or REQ).
+> +	 */
+> +	if (ret =3D=3D 0 && cmd =3D=3D VFIO_DEVICE_SET_IRQS) {
+> +		unsigned long minsz =3D offsetofend(struct vfio_irq_set, count);
+> +
+> +		if (copy_from_user(&hdr, (void __user *)arg, minsz))
+
+[Severity: Critical]
+Can this double fetch of the ioctl argument from userspace create a race
+condition leading to a NULL pointer dereference?
+
+The copy_from_user() happens after vfio_pci_core_ioctl() has already
+processed the buffer. A concurrent thread could rewrite hdr.index in usersp=
+ace
+to VFIO_PCI_MSI_IRQ_INDEX after the core validates it. This would cause the
+driver to execute qcom_cache_and_write_msi(), which takes the MSI descriptor
+lock (__msi_lock_descs(dev)) on an unallocated dev->msi.data, resulting in
+a kernel panic.
+
+> +			return ret;
+> +
+> +		if (hdr.index =3D=3D VFIO_PCI_MSI_IRQ_INDEX) {
+> +			pci_dbg(qdev->vdev.pdev,
+> +				 "SET_IRQS: index=3D%u flags=3D0x%x start=3D%u count=3D%u cached=3D%=
+d\n",
+> +				 hdr.index, hdr.flags, hdr.start, hdr.count, qdev->msi_cached);
+> +
+> +			if (!qdev->msi_cached && (hdr.flags & VFIO_IRQ_SET_ACTION_TRIGGER))
+> +				qcom_cache_and_write_msi(qdev);
+
+[Severity: High]
+Does skipping the MSI cache update here break interrupt delivery if a VM is
+rebooted or a new VM attaches to the same device?
+
+Since qdev->msi_cached is initialized to false in qcom_vfio_pci_init_dev()
+but never reset to false when the device is closed (e.g., in
+qcom_vfio_pci_ops), a subsequent VM attachment will see !qdev->msi_cached as
+false. The driver would then silently fail to cache the new MSI allocations,
+leaving the guest with stale MSI addresses from the previous VM execution.
+
+> +		}
+> +	}
+> +
+> +	return ret;
 > +}
 > +
+> +static const struct vfio_device_ops qcom_vfio_pci_ops =3D {
+> +	.name		=3D "qcom-vfio-pci",
+> +	.init		=3D qcom_vfio_pci_init_dev,
+> +	.release	=3D vfio_pci_core_release_dev,
+> +	.open_device	=3D qcom_vfio_pci_open_device,
+> +	.close_device	=3D vfio_pci_core_close_device,
 
--- 
-Regards,
-Sudeep
+[Severity: High]
+This appears to be where a wrapper around vfio_pci_core_close_device would =
+be
+needed to clear qdev->msi_cached back to false when a VM shuts down,
+preventing the stale MSI cache issue mentioned above.
+
+[ ... ]
+> --- /dev/null
+> +++ b/drivers/vfio/pci/qcom/msi_quirk.c
+> @@ -0,0 +1,163 @@
+[ ... ]
+> +void qcom_cache_and_write_msi(struct qcom_vfio_pci_device *qdev)
+> +{
+> +	struct pci_dev *pdev =3D qdev->vdev.pdev;
+> +	struct device *dev =3D &pdev->dev;
+> +	struct msi_desc *desc;
+> +	u32 addr_lo, addr_hi;
+> +	u16 data;
+> +
+> +	if (qdev->msi_cached)
+> +		return;
+
+[Severity: High]
+This early return relies on qdev->msi_cached, which appears to never be
+reset across VM reboots, as noted in qcom_vfio_pci_ioctl().
+
+[ ... ]
+> +	qdev->msi_addr_lo =3D addr_lo;
+> +	qdev->msi_addr_hi =3D addr_hi;
+> +	qdev->msi_data =3D data;
+> +	qdev->msi_cached =3D true;
+
+[Severity: Medium]
+Could this lack of a write memory barrier before setting qdev->msi_cached
+allow a concurrent reader in qcom_intercept_msi_read() to observe
+msi_cached =3D=3D true but read stale or zeroed MSI addresses?
+
+> +
+> +	pci_write_config_dword(pdev, qdev->msi_offset + QCOM_VFIO_MSI_MAGIC_OFF=
+SET,
+> +			       QCOM_VFIO_MSI_MAGIC);
+> +	pci_write_config_dword(pdev, qdev->msi_offset + QCOM_VFIO_MSI_ADDR_LO_O=
+FFSET,
+> +			       qdev->msi_addr_lo);
+> +	pci_write_config_dword(pdev, qdev->msi_offset + QCOM_VFIO_MSI_ADDR_HI_O=
+FFSET,
+> +			       qdev->msi_addr_hi);
+> +	pci_write_config_word(pdev, qdev->msi_offset + QCOM_VFIO_MSI_DATA_OFFSE=
+T,
+> +			      qdev->msi_data);
+
+[Severity: High]
+Are these physical writes to unassigned configuration space safe on PCIe
+hardware?
+
+qdev->msi_offset points to a free capability gap discovered by
+pci_find_free_ext_cap_offset(). PCIe endpoints are not required to implement
+registers in unused gaps, so writing to them using pci_write_config_dword()
+violates the PCIe specification and risks causing Unhandled Request (UR) fa=
+ults
+that can trigger AER cascades and crash the host.
+
+Given that guest reads are emulated by the driver in
+qcom_intercept_msi_read(), do these values actually need to be physically
+written to the hardware?
+
+[ ... ]
+> +static ssize_t qcom_intercept_msi_read(struct qcom_vfio_pci_device *qdev,
+> +				       loff_t pos, char __user *buf, size_t count)
+> +{
+> +	u32 tmp_val =3D 0;
+> +	int msi_magic, msi_addr_lo, msi_addr_hi, msi_data;
+> +
+> +	if (!qdev->msi_offset)
+> +		return -ENOTTY;
+> +
+> +	msi_magic =3D qdev->msi_offset + QCOM_VFIO_MSI_MAGIC_OFFSET;
+> +	msi_addr_lo =3D qdev->msi_offset + QCOM_VFIO_MSI_ADDR_LO_OFFSET;
+> +	msi_addr_hi =3D qdev->msi_offset + QCOM_VFIO_MSI_ADDR_HI_OFFSET;
+> +	msi_data =3D qdev->msi_offset + QCOM_VFIO_MSI_DATA_OFFSET;
+> +
+> +	if (pos =3D=3D msi_magic && count =3D=3D sizeof(u32)) {
+
+[Severity: Medium]
+Will this strict size and position check cause sub-dword guest reads (e.g.,=
+ a
+1-byte read) to fall through and bypass the interception entirely? This rel=
+ates
+to the fallback in qcom_vfio_pci_read() returning hardware garbage.
+
+> +		if (qdev->msi_cached) {
+> +			tmp_val =3D QCOM_VFIO_MSI_MAGIC;
+> +			pci_dbg(qdev->vdev.pdev, "Intercepting MAGIC read at 0x%llx, returnin=
+g 0x%x (QMSI)\n",
+> +				 pos, tmp_val);
+> +		} else {
+> +			return -ENOTTY;
+> +		}
+> +	} else if (qdev->msi_cached) {
+
+[Severity: Medium]
+Does evaluating qdev->msi_cached without a read memory barrier expose the
+driver to race conditions, as mentioned in qcom_cache_and_write_msi()?
+
+> +		if (pos =3D=3D msi_addr_lo && count =3D=3D sizeof(u32)) {
+> +			tmp_val =3D qdev->msi_addr_lo;
+> +			pci_dbg(qdev->vdev.pdev, "Intercepting ADDR_LO read at 0x%llx, return=
+ing 0x%x\n",
+> +				 pos, tmp_val);
+> +		} else if (pos =3D=3D msi_addr_hi && count =3D=3D sizeof(u32)) {
+> +			tmp_val =3D qdev->msi_addr_hi;
+> +			pci_dbg(qdev->vdev.pdev, "Intercepting ADDR_HI read at 0x%llx, return=
+ing 0x%x\n",
+> +				 pos, tmp_val);
+> +		} else if (pos =3D=3D msi_data && count =3D=3D sizeof(u16)) {
+> +			tmp_val =3D qdev->msi_data;
+
+[Severity: Medium]
+Will this zero-extension of the 16-bit msi_data into the 32-bit tmp_val
+cause the subsequent copy_to_user of sizeof(u16) bytes to return zeroes
+instead of the actual MSI data on big-endian platforms?
+
+> +			pci_dbg(qdev->vdev.pdev, "Intercepting MSI_DATA read at 0x%llx, retur=
+ning 0x%x\n",
+> +				 pos, tmp_val);
+> +		} else {
+> +			return -ENOTTY;
+> +		}
+> +	} else {
+> +		return -ENOTTY;
+> +	}
+> +
+> +	if (copy_to_user(buf, &tmp_val, count))
+
+[Severity: Medium]
+Since PCI config space requires a little-endian presentation, does copying =
+the
+host-endian tmp_val directly to userspace here without endianness conversion
+truncate and byte-swap the MSI values on big-endian hosts?
+
+> +		return -EFAULT;
+> +
+> +	return count;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260930140833.5769=
+41-1-jtornosm@redhat.com?part=3D3
