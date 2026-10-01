@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA694C77B4
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 22:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2254DE71E
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 22:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790894808; cv=none; b=LAPgv3pNZ7rQCHLYnSsFiOkmtOXoRKe0W343p9qaEoR1Io+3IdX8yQcw6LbJ04dkydXRqRQPsVbcNe16KT+L1tvD7iocFIT299WTy7of0JVBbzskXF3QjtjbrYb9XLMyIgjtelBFfT6UD4S95xFSfZr8CmrmKJ2/Rh9D7lTMdw4=
+	t=1790894812; cv=none; b=L8umKJxYbSNXVlagKBm4rV05NJGABgVSuQgJ9mTfSE/dKg2ahSO83tlOsC5+TUrOfzUk3CV+H4/DS84OvhjCnI8eHFuFR6K4/uqAqeZO+P1fqToBvw8ZMoxcw05hOE6O9pdm4yo/bmfq+gc4jQ3EKfZISdfHzF7uAPi2PB3T5DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790894808; c=relaxed/simple;
-	bh=I4Eb0TQXvIje7w417a5e7xobqbWORtKJ3XI4af3ycUQ=;
+	s=arc-20240116; t=1790894812; c=relaxed/simple;
+	bh=+ZrMyvypAMHMJwmzcIZVzfzQU/AIsNYo+KFbpNJHSEc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q1f8T43MSmrV7t+J5ORLuPIZZ6DCl2XBkp1AtS26h7qCy8XT1sNtoVRzlR4G96aqgi4hTBFDDGFSBz1E1udAU/qx+0Yk+eawL/PL8dYipuK+rumwkt5y2W/lLahTsQNoodhAyBP3Q/HoWUv8SrthJoqR8qnhNM2fOiYrxnv73Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fEQyV4DG; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=hOUdS69AHCWUcRcnaqn2MoBzaZxDnjge41eJXqhsOq+aa52rlrxz1+D0PJjITQG09juHf7aFs1ElWDBDRnbAEC7mJk2No675Rs0Uhquyte+jQl9JwpFORv15aDBMxVGkC1Is6zwExGI9N3U4AVyxVFSuY9afZgHCfx/DIWP061I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JxUvg7ef; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fEQyV4DG"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8886b1d3242so979296b3a.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 15:46:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JxUvg7ef"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-88629a452e0so2732165b3a.2
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 15:46:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790894806; x=1791499606; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790894809; x=1791499609; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=x0wc41/LqtlI4rj0/ni4k6LG5KAkWTAQw55eEd0Lzvs=;
-        b=fEQyV4DGaWITeMh1P2XQ+dfEXTltnyx6bF0iOcvQCoLZGTCT5UZglhmE2SrRNZjoSi
-         14rOF4fiAcvAIiot5lN3nlLM09sF0DqqrSMh2dxVrShme1bqnjRuh7yA1LwbVVwX/TWs
-         CsmBLlmnwXOFvF0raxZ+Flqh5Jpg4awOh/MTw+1ZwGovCprIq0RVXdLLAX68Kp5TZDOT
-         /5Le/Z5xmfqiUf2ImwLOKSIl718Ge++oo/JD9wfhvZp1hpZld8GpVcywiPWKELhmCA9t
-         83Us6De6+yGoLEYUhHJ2rURY47Y8VLgVUY8DSsbh4VHLrMw+b/P/FO8kTVuKDUgco7MP
-         KpHg==
+        bh=OkzBth2K8luOc5hRw7dwkQ++Ts6T4OZjlz0I1Txn4EY=;
+        b=JxUvg7efOSdmr3iDHJYrn13xO1zANliVqmp5CXf38vIll6iQqU69LzAnitl+tdcLuT
+         hUEnN6kRRwZFEBanaejvqYEVbdlmWRrj8sfAMvktijO4WsCPaaqJBj+mJDRC5L8PTeU2
+         pplAtafaugM9ZlYP8e63Ui3iCKUda+TieqhA1lNwKfIhegjN7J2Bi0NExbseeFjSd6xn
+         29sXM21HzHndGofd/VbtPdo5Djr6mvLGRT65KrLdIc4W0xGpZK9mMuolIttzpWTOlqh7
+         44A2YIyoOTDiSwC3+/3weiElklQRxx1G5T/Y17cr3BiA5LZdxoVYmz68f0EME5bSABUz
+         i/6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790894806; x=1791499606;
+        d=1e100.net; s=20260707; t=1790894809; x=1791499609;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=x0wc41/LqtlI4rj0/ni4k6LG5KAkWTAQw55eEd0Lzvs=;
-        b=0SP+6eRN5FT7L638BBHtMurCzt3hO+glBSFyofzpTlDAgzsh7T8r7CfeBmhNAVhMQV
-         yUdPTGr+g9xqkMoapYG0D7OuEsIBNNPq0qQpsA0iUDj5QcXVfezFM33qh7FoPlE9i2aR
-         kgIfLaRbqkJGh10QJYLvo0IFnNrv5+5bMeSUwCAa/uGbAzRJNNvDr3iGQ9hReeywOHkJ
-         Mx675U8/Cmp4L/4B5b6GTXZbsroGjLkxf3cIQpENQzHNOMxv8feiprTPQ1Xx7LSzCP8q
-         MhHwDDN3Xp+6mYsTB7lT5/F+Fp+skpWcpKSs8FrdL+/LEci1El+s5XHYOHRMczcKceGa
-         a0MA==
-X-Forwarded-Encrypted: i=1; AKwUvBz7QaSrqvI02qWZza7vvJJxAucyTNTrc4xitytmBl/jfVbvRT8G0OaZD/2aNpcI/trrIoA=@vger.kernel.org
-X-Gm-Message-State: AFuF++n5COj34LNIEQ4/O7uwdOYSygNSTRBlwi0rNJy53iPfnsx4tKEW
-	4ojZjJQ42ccQlP2FywBW/xGHYqznFVnCBIoyYfc0kKtnzCM98UGBhTbOvXAl4L/CNBtH61cpsSM
-	fig==
-X-Received: from pgbcs6.prod.google.com ([2002:a05:6a02:4186:b0:cc7:d1fb:4ccd])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a10:b0:3de:8ee8:8306
- with SMTP id adf61e73a8af0-3e0bcfdd8ecmr751775637.31.1790894806215; Thu, 01
- Oct 2026 15:46:46 -0700 (PDT)
-Date: Thu,  1 Oct 2026 22:45:30 +0000
+        bh=OkzBth2K8luOc5hRw7dwkQ++Ts6T4OZjlz0I1Txn4EY=;
+        b=vSwyT0JvSBHLB8Zb+XHOlLKtsautXxW1nSBtwhiFJZr5AhLL1VyPW32sVS80IdzPHw
+         pZBt/Tkp9xpwYVKEVqmugV4dPamblahXP3UBcjL/Am+VD6honIq7Cs314VOpIj2UL2az
+         QGijcXlRMbjIw31FiU7HKYQJunr45HFY9BK1Dci7DaTBm/F4Jt2/kODSZw+wvJ9GSVZj
+         jucjCuyqGwX+FLreUVjGmH94Y6bFG2iaTAFQsCGSwdalTUdw8BJkm4ATIp1vbczkjCXG
+         pib8WHtQdvmevi/oUGi3ozsVyYRkTIubdrY1hM8laHcc4HAnNIV5hXLpoj602Gg6GbII
+         5lPw==
+X-Forwarded-Encrypted: i=1; AKwUvBwsMlDckGrv/mD6+Gp6NuvMSJ5PJlb9vsFz6B7MZxsLKuznajBCbIhZTy2Tbbr47FmE+TA=@vger.kernel.org
+X-Gm-Message-State: AFuF++ltK+2rxu2Akl1aUK4zKxerUpbFmBXjVjMnFeHVuwl5gPI+V3ie
+	Q/Luz8aCpjRvKdsefVAdria9WgER8FTAcwrkkdHQ6lwRc4wT5TGSBZEMGR+jAw6zLd780awX3eB
+	Nhw==
+X-Received: from pfbhu50.prod.google.com ([2002:a05:6a00:69b2:b0:887:3013:c8e7])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1888:b0:886:1119:2cbf
+ with SMTP id d2e1a72fcca58-88af2687915mr858560b3a.5.1790894808625; Thu, 01
+ Oct 2026 15:46:48 -0700 (PDT)
+Date: Thu,  1 Oct 2026 22:45:31 +0000
 In-Reply-To: <20261001224531.765278-1-praan@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261001224531.765278-1-praan@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001224531.765278-7-praan@google.com>
-Subject: [RFC PATCH 6/7] iommufd/selftest: Add observability test for iommu-nr-pages
+Message-ID: <20261001224531.765278-8-praan@google.com>
+Subject: [RFC PATCH 7/7] vfio/selftests: Add observability test for IO page
+ table usage
 From: Pranjal Shrivastava <praan@google.com>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
@@ -74,74 +75,163 @@ Cc: Mostafa Saleh <smostafa@google.com>, Daniel Mentz <danielmentz@google.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Add a test case to validate the iommu-nr-pages fdinfo metric. The test
-maps sparse IOVAs to force page table directory allocations, verifies
-that the metric increments accordingly, and asserts that the count
-remains stranded after unmapping, verifying the current behaviour
-required for future automated reclamation logic.
+Add a new selftest, vfio_nr_pages_test, to validate the iommu-nr-pages
+fdinfo metric across all IOMMU backends (Type 1 and IOMMUFD native/compat).
 
+The test performs a sparse mapping to force the underlying IOMMU driver
+to allocate a deep page table hierarchy. It then asserts that the
+nr_pages metric increases and proves the 'sticky' reclamation behavior
+by verifying the page count does not drop immediately upon unmapping.
+
+The test is skipped when the IOMMU driver does not account its page
+table memory, in which case the metric is not reported.
+
+Co-developed-by: Logan Odell <loganodell@google.com>
+Signed-off-by: Logan Odell <loganodell@google.com>
 Signed-off-by: Pranjal Shrivastava <praan@google.com>
 ---
- tools/testing/selftests/iommu/iommufd.c | 48 +++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ tools/testing/selftests/vfio/Makefile         |   1 +
+ .../selftests/vfio/vfio_nr_pages_test.c       | 119 ++++++++++++++++++
+ 2 files changed, 120 insertions(+)
+ create mode 100644 tools/testing/selftests/vfio/vfio_nr_pages_test.c
 
-diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
-index d44b34b05757..f5f4ef01ea4f 100644
---- a/tools/testing/selftests/iommu/iommufd.c
-+++ b/tools/testing/selftests/iommu/iommufd.c
-@@ -3613,4 +3613,52 @@ TEST_F(iommufd_device_pasid, pasid_attach)
- 	test_cmd_mock_domain_replace(self->stdev_id, self->ioas_id);
- }
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index 2c32c48db509..140ef273e36b 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -13,6 +13,7 @@ TEST_GEN_PROGS += vfio_pci_device_test
+ TEST_GEN_PROGS += vfio_pci_device_init_perf_test
+ TEST_GEN_PROGS += vfio_pci_driver_test
+ TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
++TEST_GEN_PROGS += vfio_nr_pages_test
  
-+TEST_F(iommufd_ioas, iommufd_nr_pages)
+ TEST_FILES += scripts/cleanup.sh
+ TEST_FILES += scripts/lib.sh
+diff --git a/tools/testing/selftests/vfio/vfio_nr_pages_test.c b/tools/testing/selftests/vfio/vfio_nr_pages_test.c
+new file mode 100644
+index 000000000000..aef6b1dd8e19
+--- /dev/null
++++ b/tools/testing/selftests/vfio/vfio_nr_pages_test.c
+@@ -0,0 +1,119 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <stdio.h>
++#include <sys/mman.h>
++#include <unistd.h>
++#include <linux/sizes.h>
++
++#include <libvfio.h>
++
++#include "../kselftest_harness.h"
++
++static const char *device_bdf;
++
++static long read_nr_pages(struct iommu *iommu)
 +{
 +	char path[256];
 +	char line[128];
 +	FILE *f;
-+	long nr_pages_initial = -1;
-+	long nr_pages_mapped = -1;
-+	long nr_pages_final = -1;
++	long val = -1;
++	int fd = iommu->container_fd != -1 ? iommu->container_fd : iommu->iommufd;
 +
-+	if (!self->stdev_id)
-+		SKIP(return, "Needs a device attached for HWPT");
-+
-+	snprintf(path, sizeof(path), "/proc/self/fdinfo/%d", self->fd);
++	snprintf(path, sizeof(path), "/proc/self/fdinfo/%d", fd);
 +	f = fopen(path, "r");
-+	ASSERT_NE(NULL, f);
++	if (!f)
++		return -1;
++
 +	while (fgets(line, sizeof(line), f)) {
-+		if (sscanf(line, "iommu-nr-pages:\t%ld", &nr_pages_initial) == 1)
++		if (sscanf(line, "iommu-nr-pages: %ld", &val) == 1)
 +			break;
 +	}
++
 +	fclose(f);
-+	ASSERT_GE(nr_pages_initial, 0);
-+
-+	/* Map a page at start and one far away */
-+	test_ioctl_ioas_map_fixed(buffer, PAGE_SIZE, self->base_iova);
-+	test_ioctl_ioas_map_fixed(buffer, PAGE_SIZE, self->base_iova + (1UL << 30));
-+
-+	f = fopen(path, "r");
-+	ASSERT_NE(NULL, f);
-+	while (fgets(line, sizeof(line), f)) {
-+		if (sscanf(line, "iommu-nr-pages:\t%ld", &nr_pages_mapped) == 1)
-+			break;
-+	}
-+	fclose(f);
-+	ASSERT_GT(nr_pages_mapped, nr_pages_initial);
-+
-+	test_ioctl_ioas_unmap(self->base_iova, PAGE_SIZE);
-+	test_ioctl_ioas_unmap(self->base_iova + (1UL << 30), PAGE_SIZE);
-+
-+	f = fopen(path, "r");
-+	ASSERT_NE(NULL, f);
-+	while (fgets(line, sizeof(line), f)) {
-+		if (sscanf(line, "iommu-nr-pages:\t%ld", &nr_pages_final) == 1)
-+			break;
-+	}
-+	fclose(f);
-+	ASSERT_EQ(nr_pages_final, nr_pages_mapped);
++	return val;
 +}
 +
- TEST_HARNESS_MAIN
++FIXTURE(vfio_nr_pages_test) {
++	struct iommu *iommu;
++	struct vfio_pci_device *device;
++};
++
++FIXTURE_VARIANT(vfio_nr_pages_test) {
++	const char *iommu_mode;
++};
++
++#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_name) \
++FIXTURE_VARIANT_ADD(vfio_nr_pages_test, _name) { \
++	.iommu_mode = #_name, \
++}
++
++FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES();
++
++FIXTURE_SETUP(vfio_nr_pages_test)
++{
++	self->iommu = iommu_init(variant->iommu_mode);
++	if (!self->iommu)
++		SKIP(return, "IOMMU mode %s not supported", variant->iommu_mode);
++
++	self->device = vfio_pci_device_init(device_bdf, self->iommu);
++	if (!self->device) {
++		iommu_cleanup(self->iommu);
++		SKIP(return, "Failed to initialize VFIO device");
++	}
++}
++
++FIXTURE_TEARDOWN(vfio_nr_pages_test)
++{
++	if (self->device)
++		vfio_pci_device_cleanup(self->device);
++	if (self->iommu)
++		iommu_cleanup(self->iommu);
++}
++
++TEST_F(vfio_nr_pages_test, sparse_mapping_sticky_reclamation)
++{
++	long nr_pages_initial, nr_pages_mapped, nr_pages_final;
++	struct dma_region region1 = {0};
++	struct dma_region region2 = {0};
++
++	if (!self->iommu || !self->device)
++		SKIP(return, "Fixture setup failed");
++
++	nr_pages_initial = read_nr_pages(self->iommu);
++	if (nr_pages_initial < 0)
++		SKIP(return, "iommu-nr-pages not reported by this IOMMU");
++
++	/* Map a page at start */
++	region1.size = SZ_4K;
++	region1.vaddr = mmap_reserve(region1.size, region1.size, 0);
++	ASSERT_NE(MAP_FAILED, region1.vaddr);
++	region1.iova = 0x100000;
++	iommu_map(self->iommu, &region1);
++
++	/* Map another page far away (1GB stride) to force deep page tables */
++	region2.size = SZ_4K;
++	region2.vaddr = mmap_reserve(region2.size, region2.size, 0);
++	ASSERT_NE(MAP_FAILED, region2.vaddr);
++	region2.iova = 0x100000 + SZ_1G;
++	iommu_map(self->iommu, &region2);
++
++	nr_pages_mapped = read_nr_pages(self->iommu);
++	ASSERT_GT(nr_pages_mapped, nr_pages_initial);
++
++	/* Unmap both regions */
++	iommu_unmap(self->iommu, &region1);
++	iommu_unmap(self->iommu, &region2);
++
++	nr_pages_final = read_nr_pages(self->iommu);
++
++	/* Page tables should remain allocated */
++	ASSERT_EQ(nr_pages_final, nr_pages_mapped);
++
++	munmap(region1.vaddr, region1.size);
++	munmap(region2.vaddr, region2.size);
++}
++
++int main(int argc, char *argv[])
++{
++	device_bdf = vfio_selftests_get_bdf(&argc, argv);
++	return test_harness_run(argc, argv);
++}
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
