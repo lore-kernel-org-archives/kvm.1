@@ -1,489 +1,258 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010008.outbound.protection.outlook.com [52.101.201.8])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012037.outbound.protection.outlook.com [40.107.200.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE9B5221D4;
-	Thu,  1 Oct 2026 15:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1EF5304A6;
+	Thu,  1 Oct 2026 15:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790867644; cv=fail; b=H4Fql3i75hKGg1tVC4GgVfBewu6uaJ9Oa9dAKGYFJpua75YL8xzXP8H5b7hD9c2O4WGi8c2z0bABEWQLJRmzvmAVjpjnRWgymNc4XDxRMtjaeZ1elbK8JLMW4pru/DqwQGnoXr8oQTCJUgrXDJP0Sk6Dwio+UfSrKNybJ0nm4Qw=
+	t=1790868030; cv=fail; b=fGEXZ+qdYh6NJ0T1M2r6Y/H7qBLdqpjfAJ4+lXitm+cWB+tW4U7otQfSDA3K37fTpCARqtd9IDjZ/0jBTXi/x6hkH9f0pX1FIVtdWr69TbA9aeDYTTpRzFrUTt6nkV8xpZ/hfEqvCw7IA1SC6DxZ6zzdmXuE3EY7srv6G85nOKc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790867644; c=relaxed/simple;
-	bh=fqPIepnGbm2bs4DWgLiH9+T1Ba2j6NXqy++5Z0mnCV8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZjC84RcpTSGyYAqShTg6ORwmncgxt0fsa7xxs6WI1eR37qJGY2InF0/a5CrhdAtyLOzC/cTttLP6nXMeobmFII/JznKCCokQknOErpOajaySTZoz4715ke1AhVIWoqEyiXgdcTqloy4o9+RJrLE4TK0M6RIjbbss7DXSAJf0Dmc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mKGIP0CO; arc=fail smtp.client-ip=52.101.201.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1790868030; c=relaxed/simple;
+	bh=7QJ7KJnkBA979lqT0EOjc1kxgLYbc3zTCDLM9NOEvNY=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To:MIME-Version; b=qN95oxIYPHQah4jWQrMwV32G8tzwOyt9AjQzp3b3QdJnWlrK0dpBASySLyoJb1tWzByL7HhFLrr25d7NUbSK7WY2sdpnDsz7+NTnb1nYx11O79RtlUDa6VIocQuKIeDjK4wyQjwL2CMcnxmKcailyi0Gw+8lRqF3/uSWLxs4TK8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Fl3LHCQB; arc=fail smtp.client-ip=40.107.200.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mKGIP0CO"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Fl3LHCQB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BifF66+hc1b7NshzGY8zF4uSj5JLI1iMGBit5Tj2kSBIDcmckGBVlBBrZjB+4c9E9KS7OE35R2pPB6pu5R8nyf5zll3xNrZ1/yG/idyexRaUl2Wl63wZPxd6UeeFNVffzmY5hf35T3VKyXGT55CY5rEdLRNv9+uICwTVTFY+/JYXYYdaPOwODajjDuco62RawgRX+xb9zpYZZMAGp/TaR1y8MwA8spy+iyorRP7tZDIwZZd/4hO0S/nMs64t2YmRV3OQ+qNJepaKOyCe61eVDDOV9otCNYkr78IpXUmJ3B1TctQklJf6j0emT0cOQ+M3XRSHjYShLl5X4mXpVgR6/A==
+ b=Mft82P24ROJQJ7BRJZ/lx47/m2yH8qJcgQD+Yg31FeHE3tSga1ahqlpS5ZGVJphqHX27LlNTQV6mQzbZuS+8zNUb/m5aGqGbmYhkpN7ppCiln5e/cDmm2Xc6N9qTdk5Ke9aZ1EydrfqY4u4rJaGwXxfo7Bgbb3DpH7hihkMCWC2U7s3X3Clunhb3PeEZjaGMhF9bJC8HgKhH3G0p2L6arwKfGoGfdWM49ycWM9tl0ku+UM3haGJ+vAVKt6JnpHAzdsHlc16u0DcVHUP0bcy+qMHWebBslNlcVAiEYOEKnkvFWghD8pKAWp3dnFctmSo+tE+ANcBC+mMMu4jf4E/qYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Aaqb4SCkBsFl2GSGl1HoOgcKwL1vvkImXxWgFhJ5nso=;
- b=nnMuRu2i8c2WXWGapHXOg6ES3XtwhHLVIhwVSLCZPZlsHfGdouum3N0ROt2GD8qf+sR1RQoR0ddU9eZXL9//VerdXkYE2C79gmdNSjCfWqmm++tAHuEnKDLQ6ZLGMxhuVYmeSQcSx/xdHwYgOpMgLyhmgeKS8gvD/UVJk3faBaO4kMI+eyA+MMMN34gQ5PCuj6pFiOfuWcAiDZ0pkO0NRYAuot/u5mgqqMwa4wVnZQhDBc2ZwkLGW576HiO6GanrPYrt8eyea3V8deZFTCElo8OcUI5WXIW+Uli2gORL6IpDtpToxLKNDQjwIpC7z5K3twEynCHtXlbMz4WsEZis7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=3YYTZjhEwZJ0TssF+378TwKS+eN8c2aSblt03yjYGts=;
+ b=N6gH5bPztY3IR2R1irbhNu8Y072VuOKTk8zViJ00l+ebyjRq5wLzdWPjl9mXGwv9clVmv9MQFFm3MmBb8ONskDM9OQnjhKyFeVdcuCoGERCtrhmIMM4QAMhX3pS6eDWGcHWw4phF45IUjCFaVos4jL0jgihq+Q+mKadbyUMavnv8hx8hOoW2/rb0bQY78nAs4EWhGKgrBrm1MfOQER9BL4zmnEb96MmEMSArOHID2D7tSlab4SGtQ413KeeOoqgysI9loBIgJeAqrsOEJCBqmbruJLM8ZxxfR2vdyUZmW066kKLYCuCOVSJY6qXFcsgRG0xxyVQD5XWGWdid7djwiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Aaqb4SCkBsFl2GSGl1HoOgcKwL1vvkImXxWgFhJ5nso=;
- b=mKGIP0COgmVXNBhU1tuFxRPKKsSjDB9i83s/Vw9UUnFaeItV1OIb/uuW2RTOZpn3csHR5fufGFOCIBVCUYdfD1NgRt9EgRYiGiVKdnu51h056ao5SeLcbtPOy4XYpFVhHobkybreyt1iesd3xh3tZ0zb/Zmam4ENOVdCWyhdsAA=
-Received: from BN0PR08CA0001.namprd08.prod.outlook.com (2603:10b6:408:142::6)
- by LV3PR12MB9267.namprd12.prod.outlook.com (2603:10b6:408:211::9) with
+ bh=3YYTZjhEwZJ0TssF+378TwKS+eN8c2aSblt03yjYGts=;
+ b=Fl3LHCQBWqKJbFnXWWWxejTowVjxnRbMRIwV1h1qPj1y83DQU6+iy9gATfEhSBNX18H/62tA46KkomoiXmmnp26MvoeQPcF6dxQyUn4ohLzj3gNlUmWLdHayYFIAhjTVIL9SCqx6iMPqefsIHms+t7QMzzLmQmbraQTUSJmrKvhFn4pTkLn1puMeEGP2Bvki+V3LtuYLeXYgYW0bNHYKa/qQqEKo435R7sO4UhfOWWDP+YwsX0uMLQb/lB+GANvD/cG2ufmt664tW0lHfuTEP3cZs71ZKU0SXPmCOUrGueTt4MSZ3A0WzixNbRZELmngA487Mi1/WR8oRFcYKc8kNQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by IA4PR12MB9835.namprd12.prod.outlook.com (2603:10b6:208:54f::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.25; Thu, 1 Oct
- 2026 15:13:15 +0000
-Received: from BL6PEPF00020E60.namprd04.prod.outlook.com
- (2603:10b6:408:142:cafe::15) by BN0PR08CA0001.outlook.office365.com
- (2603:10b6:408:142::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.17 via Frontend Transport; Thu, 1
- Oct 2026 15:13:15 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00020E60.mail.protection.outlook.com (10.167.249.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 15:13:15 +0000
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 1 Oct
- 2026 10:13:12 -0500
-From: Babu Moger <babu.moger@amd.com>
-To: <tony.luck@intel.com>, <reinette.chatre@intel.com>, <bp@alien8.de>,
-	<ben.horgan@arm.com>
-CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<babu.moger@amd.com>, <tglx@kernel.org>, <mingo@redhat.com>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <fenghuay@nvidia.com>,
-	<kas@kernel.org>, <rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>,
-	<rppt@kernel.org>, <dapeng1.mi@linux.intel.com>, <elver@google.com>,
-	<enelsonmoore@gmail.com>, <jlayton@kernel.org>, <kuba@kernel.org>,
-	<ebiggers@kernel.org>, <seanjc@google.com>, <ewanhai-oc@zhaoxin.com>,
-	<binbin.wu@linux.intel.com>, <peterz@infradead.org>, <ashish.kalra@amd.com>,
-	<superm1@kernel.org>, <chang.seok.bae@intel.com>,
-	<prathyushi.nangia@amd.com>, <kim.phillips@amd.com>,
-	<ackerleytng@google.com>, <elena.reshetova@intel.com>, <naveen@kernel.org>,
-	<darwi@linutronix.de>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <eranian@google.com>, <peternewman@google.com>
-Subject: [PATCH v6 16/18] fs/resctrl: Add interface to modify kernel mode via info/kernel_mode
-Date: Thu, 1 Oct 2026 10:10:39 -0500
-Message-ID: <e22be68142d869873532f21e42f049414e1cff99.1790867441.git.babu.moger@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790867441.git.babu.moger@amd.com>
-References: <cover.1790867441.git.babu.moger@amd.com>
+ 2026 15:20:21 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0472.016; Thu, 1 Oct 2026
+ 15:20:21 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 Oct 2026 11:20:17 -0400
+Message-Id: <DLTLQ9NOBV36.1D1MY7SZABEQP@nvidia.com>
+Subject: Re: [PATCH v3 23/40] mm/mlock: clear VMA_LOCKED_MASK over mmap
+ callback
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <selinux@vger.kernel.org>,
+ <linux-sound@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-scsi@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-trace-kernel@vger.kernel.org>,
+ <linux-perf-users@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+ <linux-fsdevel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <kvmarm@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+ <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
+ <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
+ <sparclinux@vger.kernel.org>, <fuse-devel@lists.linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>,
+ "Pedro Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>, "Paul
+ Moore" <paul@paul-moore.com>, "Stephen Smalley"
+ <stephen.smalley.work@gmail.com>, "Jaroslav Kysela" <perex@perex.cz>,
+ "Takashi Iwai" <tiwai@suse.com>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
+ Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Doug
+ Gilbert" <dgilbert@interlog.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, "Jaya Kumar" <jayalk@intworks.biz>, "Simona Vetter"
+ <simona@ffwll.ch>, "Helge Deller" <deller@gmx.de>, "Sebastian Reichel"
+ <sre@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu"
+ <peterx@redhat.com>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Oleg
+ Nesterov" <oleg@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, <x86@kernel.org>, "Arnaldo Carvalho de Melo"
+ <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Rik van Riel" <riel@surriel.com>, "Harry Yoo"
+ <harry@kernel.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent Guittot"
+ <vincent.guittot@linaro.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Will Deacon" <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, "Nick Piggin" <npiggin@gmail.com>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Marc Zyngier"
+ <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Anup Patel" <anup@brainfault.org>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Janosch Frank"
+ <frankja@linux.ibm.com>, "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>, "Gerald Schaefer"
+ <gerald.schaefer@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, "Andreas Larsson" <andreas@gaisler.com>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
+ <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
+ <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Kemeng
+ Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Baoquan
+ He" <baoquan.he@linux.dev>, "Youngjun Park" <youngjun.park@lge.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Michal
+ Hocko" <mhocko@kernel.org>, "Miklos Szeredi" <miklos@szeredi.hu>, "Xu Xin"
+ <xu.xin@linux.dev>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org> <20260917-b4-mmap-prepare-vma-flag-sanify-v3-23-4583d8a23bca@kernel.org>
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-23-4583d8a23bca@kernel.org>
+X-ClientProxiedBy: MN0PR02CA0013.namprd02.prod.outlook.com
+ (2603:10b6:208:530::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E60:EE_|LV3PR12MB9267:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27cd0cee-908d-4dbf-a13f-08df1fce8431
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA4PR12MB9835:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f6be638-2fff-4211-ba76-08df1fcf81f1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|36860700016|82310400026|7416014|376014|10067099003|5023799004|11063799006|56012099006|3023799007|18002099003|22082099003|13003099007;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|921020|4143699003|5023799004|11063799006|56012099006|10067099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	48b+HbR37lFl1lxnrlhnXYb7YowrTLmjJEUAzKVzEzHNHv4lA/NdtWNL07UXWB3KS5m9scgnAw7a6yduKSqs9luGaLZusFj2elhT4VO/a7QiVCzAN1qV1x7iN9dV0IFJ6NJ2Q480P7VkkPMc9zf/3ys9uk2po0mzvGa9Rdsj9/VgVVzIphsnqq01CzOPYuRMzJUHEFp+7Q+5wgF+f93iJME71C4k0QDXFCWs9L1RLqkWxbyhiph6AziNa9ou7nic3IpOBLHnwUQcteyJ+mgYVkzKYd2u/WMBSF7QcQ72lqldrnYVSiH5kzr3xGm5WBRSxvGrpc+4QzIoTqDHHVoJ/urTtNCWMOBzrSyAc3wQhpVyQkdUcfnrZCAEaq4JXI9UwNoN4HEH0aYDA0irnV8ed5VRYo5TkZPqY2gi6Nqt+5OjbdDYfEjjltuo3yV5agheTvmG9ysWRXiWSX71afOr3X+tVGajNMcW5AAiIVij54geU/E3nZN5k9LV9JvTPm03Lr3ykdpd27WPKTOJiGWrRu6BfKz+WMQA7NnpoWxCX1x3JUqm/h0cy+mVruGfgxRvVxNQc16MOmRfUtWvv1DAAvMu8ocHF5MB2/JCx7LM6hTUSUjzBmK2DmG4g2lFUcXUzg7LDb1QpHbvkTts5uox6BkpYNKG+0Btt4u4I33q8He04PwOUgBXcQ33cmLn5QdHgO5h0kSUahv9MzPoeE2YmA==
+	jaggmSVI0Yi/kMtwqe189sppnG6OCckWiwx5CBpo5r1EAvxQyk5XDECHBQE15zN2nk4wPAjnog/l7Mwd77PoH9lIeya28ZvECDZMzI3JPc/Ufd7nUX9LVCCWCUb+BP5So3/CpugHUICE9BCavKHLTrchAnP26Khn4xJWE3y5II499hOR6tRPTvwSEAnUPQPba52K+A/kWGzNimUv2s9ftW5IO/bPIz9q+wgEaXzytmgGCpMG8XjTNP2+h6PleU5qJrXzqsSCiwfvFePGh2GYtVR3seKBgVRRkQupZPCmcaElNPaQf7vhdD1VMNDRUFl3y5zQ63LKy91UIei731uv1fwdpj7FSbX7FS7Kiru/R9rkrzDmF1jRcSw0KvkSOF3Oq+ub7RLmRtgbyL5BsdUmGu2b6c2IMtUZeI2cY5KM/u+wx82GEXIMpdHLExmHriJqknnhN+S0KShDfx+2kCHM+wZKFwcgqrkCcecpLcnzTNJ+nEzEjuIfMH8GM+W8y85aVpU/QAEqRI//vTANA0Lq8IQBVjbsDQ/R7WuvG09uIE5scgKecKkEKpg0Xm9elOyCa6cJmQkynaIbPXhO8xZOWiAcGAS3NG4Gn8BT5UoDHctx/dmGpSysLcuPEucDAuDB+whFc0xvhtscRuKdAcdNNBFY/vrKlqqqk3/Y96rtzi9vNHhdg5kukM2qIQnTgw4Oo28qQsQ6L31HSwqah7EqgQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(36860700016)(82310400026)(7416014)(376014)(10067099003)(5023799004)(11063799006)(56012099006)(3023799007)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(921020)(4143699003)(5023799004)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	U/Nhd71hi1QE0P+Osv8q8W2wE3A/GGXoFeetRSl3VlYeX/BeCQ93q9MoIKPUCbzmkWlLA9WtN6q7VPJRvJ4f4fFuYPnt0fz9s1oMPccbAv4R0yLG43HFvE9AAwkwdQv27hA5wtpNu7eTCMos3kj9ZlKquIkv0fsnpByVwBClXtyKx2T40glKs6ptfEQwLzyQCK2OWldQb3xZJCggMXJACui7En4cZrOnj6kINYTOhCnwGbJuz+zm9gNwBLCUoPzAcb8Ex+AeqbbMm11c4h/PjoR7vrStcV9EUkKJPSPZk+81hRccB1ftA+hJGGAE8UwopZMAtRcH1xpm2Q0+ORjoOTsdJi+fhJ1HoOvPtd9LJmbJ/0px+rbB5KmDdHd2MD3dgETgGltxcudAu6hNEMOUuCp09HUtU+lsJ85UnpEeNTa6Oolz+iBNa6yEse4yMfgk
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 15:13:15.1016
+	=?utf-8?B?SlNwd3ZsSXFyRXNrZS9xTzBGVVhtUVZpMHVzaFhJUG04em9TVjc4Rm4wMlpn?=
+ =?utf-8?B?eTNjUFVKS1JTaGlRYXorV1JtWDdkM3JFOFc5c1BuUUx1V09ZUHc0YWVTaGsv?=
+ =?utf-8?B?eUVYTFg3dmhaNzBjclR3Ny9tVFZYd3JwZmpBQWU2RGN5M0FXSzRnZXlQdWxz?=
+ =?utf-8?B?Y1p6MHhTWVRCbjRzdkdVNEZ0ZVpVeTJiRjA2T1dVU1hVYkl6NnBMRFpyZGl3?=
+ =?utf-8?B?RFpPQXNoYURjMEFHRGhBM0lpQy9ualBrcGVIVU5KOTJOVWxDVmh1S2RmVXF0?=
+ =?utf-8?B?eitYNmF5VDRtL3k5UVhrL2pBS1FLcEY3SFhaQTNqMzJGUmRjNVM4bFo5R0hG?=
+ =?utf-8?B?YzRnU2c2bzZGSEs0WDRVUERRQXZkd0NTQWQyN1NEYXVUUXVOTXdQalJkWjRP?=
+ =?utf-8?B?RS9RK0Rka05sTWxkNnhHWHh6Z2FsZEt3Mk9rYXl5bmNNOXhLL0tHQ2crSkRk?=
+ =?utf-8?B?ZndGM0lFcFhmZG9ZTlFXYlBXeUFCN2ttL0pKWkltUUlwRHBRWnEwUlVXMFE0?=
+ =?utf-8?B?V0lmMmxIbE9OcGdUSDFJZG9KNVFYd01zaURDTVhTS2dUUkJDQkRlVkhqMS93?=
+ =?utf-8?B?QStLbUZBWHVldjlXSDVkU2puZEhQbzAwRWJSLytNSGw3WG5idXEwY2djcTd1?=
+ =?utf-8?B?clVjZjZ3cy9PKzZ4TkZwdHVWWTFUN1p5VVRrMm0raUM3dUpFMS9rN3ByM3o4?=
+ =?utf-8?B?WmtRQXc0MlB3UmlGTDF6MHQxVmZteTE1MHlaaHhlMU0rdy9XVnRrQmdnNTh2?=
+ =?utf-8?B?TXU5REJ6STVIbmNrMVc5RUdyS0dqaEg4V0dIdzZ5MSsyQ05jSFREUHhqNnFu?=
+ =?utf-8?B?UDNobXY0OFZFUUNPYzBzaFh0Wnl1RTBBZ3JpZnQ5WU1SeC94MEpiWmUrbWo4?=
+ =?utf-8?B?eS9GeXRjeDl4WXZWSTh3Z3JrclBGU0pwSExWVHhNMnB2Nkl2WnArMS9pbnV6?=
+ =?utf-8?B?UG5WTTYxWDNKR25sdFRGMXpQSXZ6K21sRjZzT1pMQmxMZzd2TDliMloxQSsv?=
+ =?utf-8?B?Q0UrTnpMOTV6bWlTdEh3YUIxK0tJWFh3b1RkeDBTVFcwY2hiWHd1cTM4WTFU?=
+ =?utf-8?B?WkJYK0hpbnYxTnh5RitLRFFyVmVaVnVJbUw4V25TaW9JZ3QwWjdGbjhQc3pF?=
+ =?utf-8?B?ZVUrcTF6SlBoNHIvWlk3a0dUM2NqK1RhTkIzY1BmbkFLalpENGVQTktYdDMw?=
+ =?utf-8?B?cDdNbEVJRXk5NW5TS0d1NzU3TEdtOWJTQ1RrWXlreUhEbStLZmhtaEtWOHhC?=
+ =?utf-8?B?cUZ0UlIzRS9IcGNtcUZiNmxzNVZrT3lGcVJBUlkxZU1jSVljcmM0M0gwTG9E?=
+ =?utf-8?B?S2JHU25tZVlFc3c1VzVJZXBzOUtxdnF6TUMwRjFGQ1BMK3htWlNLMzA1RG1U?=
+ =?utf-8?B?S2hKMjJUZXBZM1RUbmdVakZLeE1jNThjakw0ZFRNeXUxY1VsbjVsOUNrUGIw?=
+ =?utf-8?B?VlVCK1UxN211YzZBeFo4OGFuTWRzUUJDakx2WDNSNHo2djFscTNsUTlUOE5y?=
+ =?utf-8?B?UjFEaXJlSGdjNzJTMGgwM0lpajNEN25ZQjhxZTFXQ3hkRWlyKzdkb05SUjFZ?=
+ =?utf-8?B?MzR3aldOSTB1R3YxaWxnRXU0NGU5cSt2dzVnNG14anBPRDV6UHdFTjcwTWhM?=
+ =?utf-8?B?Wnp2S2IzcUZrVWdrYU1mNDdQSmxiajBpb2E4cDBRcmdERElwVTZzTlpoaFBC?=
+ =?utf-8?B?aDVDbm4yTXhHbGlRZWZBVVdMMjJsTGxxd1p2RHF6YTlmNWJsQ01CdU15NFY5?=
+ =?utf-8?B?RUtNOFY5M096d2VzU1cyQlN2YUpzeldMb2JiOGZVUnFLZmF5ME9mMjd5YUpn?=
+ =?utf-8?B?cnhsNElGR1MrTlNSK0xMbVRtU1RBbkpndmM1S0h0K2h6OTB3cEZoSUtUMmMw?=
+ =?utf-8?B?ajVNUlVFUlNES3Rqays1ZnI1ZGVHcm00cGtCQWNxMGlyRm0wbitGa0oxa0Z0?=
+ =?utf-8?B?bms1eUxGUXdQTy94VjdSYmJOM1Uxa29MR2g0VkE1aktha3l0Q2hyOE5tb0lF?=
+ =?utf-8?B?YjhnMXdPVTVPa3dFSlF6NFNneDBCM1dIbmFiSDh2N1NxVXBzejRWTE00WjdF?=
+ =?utf-8?B?aEtNdUV0Vk5jTVdzOE9Gdmw0dEcxU1Rac3MyOWFuQzJRNVBKU0JxSElZelR1?=
+ =?utf-8?B?SUE4VEM5L2p6YTVOeFlrd24wWFUreHFJWnlseTh1YWxWSkVMYWVDOFlYb1E2?=
+ =?utf-8?B?STQrOW1ZbzUvZmRZSmgwd0xqNHZ3Qm1MUFdyZStGNDZBYzBNMkRsU3dscGJK?=
+ =?utf-8?B?YTNyWlRRL1pqS01HcFFQY20xd1NJQ092RVcxVFhpbEs0RXFXRFVERHpJQmdv?=
+ =?utf-8?Q?IqSsC3edk8y+16vvja?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f6be638-2fff-4211-ba76-08df1fcf81f1
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 15:20:21.1045
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27cd0cee-908d-4dbf-a13f-08df1fce8431
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E60.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9267
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GKyEl+LchyHI+qS0cD8Tp8KYqsx2vovGmnMCqIhnqBCaRhEMrkFwMWxOOMrt6ov2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9835
 
-Kernel modes determine how resctrl allocation and monitoring associations
-are applied when execution transitions between user mode and kernel mode.
+On Thu Sep 17, 2026 at 12:22 PM EDT, Lorenzo Stoakes (ARM) wrote:
+> Currently there's a confusing mess around VMA_LOCKED_BIT and
+> VMA_LOCKONFAULT_BIT.
+>
+> It is permitted for drivers to set any flags they like, with the VMA
+> already possessing lock flags.
+>
+> This results in the absurd situation of a VMA possessing both
+> VMA_SPECIAL_FLAGS and VMA_LOCKED_MASK flags, which is not permitted.
+>
+> This has resulted in mlock_vma_folio() having a very silly check for this
+> scenario to work around it.
+>
+> There is no need for this - just clear the flags before invoking the hook
+> and reinstate them afterwards if they are required.
+>
+> Nothing relies upon this being set during the mmap operation.
+>
+> mmap_prepare is unaffected by this so requires no fix.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/internal.h |  9 +--------
+>  mm/vma.c      | 14 ++++++++++++++
+>  2 files changed, 15 insertions(+), 8 deletions(-)
+>
+<snip>
 
-Add write support to info/kernel_mode to allow user space to configure the
-active kernel mode and any required resource group associations.
+> +	/* If VMA flags still valid for locked mask, reinstate. */
+> +	if (vma_supports_mlock(vma)) {
+> +		const vma_flags_t mask =3D
+> +			vma_flags_and_mask(&map->vma_flags,
+> +					   VMA_LOCKED_MASK);
+> +
+> +		vma_set_flags_mask(vma, mask);
 
-Document the interface in Documentation/filesystems/resctrl.rst.
+It took me a while to figure out vma_set_flags_mask() is an OR
+operation.
 
-Signed-off-by: Babu Moger <babu.moger@amd.com>
----
-v6: Use flattened resctrl_kmode and global_enable_per_cpu. Omitted
-    parameters keep the values shown by reading the file. Drop the
-    ctrl=inherit;mon=inherit no-op. Parse options with strsep(), as the
-    other resctrl writers do, and split validation out of the write path.
-    https://lore.kernel.org/lkml/3bc39dd7-b7b0-4203-a493-0bd872fdc644@intel.com/
+> +	}
+> +
+>  	map->vma_flags =3D vma->flags;
+> =20
+>  	return 0;
 
-v5: Adapt to the resctrl_kcfg caps and active split. Accept
-    assign_global_enable_per_cpu:ctrl=;mon=;group=<ctrl>/<mon>/ writes.
-    Treat both ctrl=inherit and mon=inherit as a no-op. Use group=// for
-    the default control group. Show associated kmode files through
-    resctrl_hidden_files_set_visible().
-    Added kmode check in rdtgroup_locksetup_enter(), rdtgroup_mode_write()
-    and rdtgroup_rename().
-    Simplify kernel-doc for write and activate helpers.
+Otherwise, LGTM.
 
-v4: Validate input before tearing down the active association so failures
-    retain the previous association. Allow assign_mon on CTRL_MON and MON
-    groups; require a control group when control assignment is inherit.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-v3: New patch to make info/kernel_mode writable.
----
- Documentation/filesystems/resctrl.rst |  28 +++
- fs/resctrl/rdtgroup.c                 | 274 +++++++++++++++++++++++++-
- 2 files changed, 301 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
-index 73ccbb9594f5..bf9d34d6a335 100644
---- a/Documentation/filesystems/resctrl.rst
-+++ b/Documentation/filesystems/resctrl.rst
-@@ -575,6 +575,34 @@ conveyed in the error returns from file operations. E.g.
- 	  [inherit_user]
- 	  global_enable_per_cpu:ctrl=assign;mon=assign;group=//
- 
-+	Writes use the same line format as read, without square brackets and
-+	with a trailing newline.
-+
-+	inherit_user is written without any parameters.
-+
-+	For global_enable_per_cpu, the parameters are optional. An omitted
-+	ctrl=, mon=, or group= keeps the value currently shown. Parameters
-+	may appear in any order. Empty values are rejected.
-+
-+	Selecting a new mode, parameter, or group replaces the active
-+	association. A new global_enable_per_cpu association sets that
-+	group's kmode_cpus to every online CPU. Errors are reported in
-+	"info/last_cmd_status".
-+	Example::
-+
-+	  # mkdir ctrl1
-+	  # echo "global_enable_per_cpu:ctrl=assign;mon=assign;group=ctrl1//" \
-+	         > info/kernel_mode
-+
-+	  # cat info/kernel_mode
-+	  inherit_user
-+	  [global_enable_per_cpu:ctrl=assign;mon=assign;group=ctrl1//]
-+
-+	  # echo "inherit_user" > info/kernel_mode
-+	  # cat info/kernel_mode
-+	  [inherit_user]
-+	  global_enable_per_cpu:ctrl=assign;mon=assign;group=//
-+
- Resource alloc and monitor groups
- =================================
- 
-diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-index dcf9f26540d6..73749e5a4ad0 100644
---- a/fs/resctrl/rdtgroup.c
-+++ b/fs/resctrl/rdtgroup.c
-@@ -1216,6 +1216,277 @@ static void rdtgroup_kmode_global_detach(struct rdtgroup *rdtgrp)
- 	resctrl_kmode.mon = KMODE_ASSIGN;
- }
- 
-+/* Program @rdtgrp on every online CPU and show its kmode_cpus files. */
-+static void rdtgroup_kmode_global_activate(struct rdtgroup *rdtgrp)
-+{
-+	cpumask_copy(&rdtgrp->kmode_cpu_mask, cpu_online_mask);
-+	resctrl_configure_kmode_global(&rdtgrp->kmode_cpu_mask, rdtgrp, true);
-+	resctrl_kmode_global_files_show(rdtgrp->kn, true);
-+}
-+
-+/**
-+ * rdtgroup_by_kmode_path() - Resolve a "<ctrl>/<mon>/" path to an rdtgroup
-+ * @ctrl_name:	CTRL_MON group name, or "" for the default control group.
-+ * @mon_name:	MON group name, or "" to select the control group itself.
-+ *
-+ * Matches the path syntax displayed by resctrl_kernel_mode_show():
-+ *   "//"            - the default CTRL_MON group
-+ *   "<ctrl>//"      - CTRL_MON group @ctrl_name
-+ *   "/<mon>/"       - MON group @mon_name under the default control group
-+ *   "<ctrl>/<mon>/" - MON group @mon_name under control group @ctrl_name
-+ *
-+ * Return: Pointer to the matching rdtgroup, or NULL if no such group exists.
-+ */
-+static struct rdtgroup *rdtgroup_by_kmode_path(const char *ctrl_name,
-+					       const char *mon_name)
-+{
-+	struct rdtgroup *rdtg, *parent = &rdtgroup_default;
-+
-+	if (*ctrl_name) {
-+		parent = NULL;
-+		list_for_each_entry(rdtg, &rdt_all_groups, rdtgroup_list) {
-+			if (rdtg->type != RDTCTRL_GROUP)
-+				continue;
-+			if (!strcmp(rdt_kn_name(rdtg->kn), ctrl_name)) {
-+				parent = rdtg;
-+				break;
-+			}
-+		}
-+	}
-+	if (!parent)
-+		return NULL;
-+
-+	if (!*mon_name)
-+		return parent;
-+
-+	list_for_each_entry(rdtg, &parent->mon.crdtgrp_list, mon.crdtgrp_list)
-+		if (!strcmp(rdt_kn_name(rdtg->kn), mon_name))
-+			return rdtg;
-+	return NULL;
-+}
-+
-+static int resctrl_kmode_parse_state(char *val, enum kmode_state *state)
-+{
-+	if (!strcmp(val, "assign")) {
-+		*state = KMODE_ASSIGN;
-+		return 0;
-+	}
-+	if (!strcmp(val, "inherit")) {
-+		*state = KMODE_INHERIT;
-+		return 0;
-+	}
-+	return -EINVAL;
-+}
-+
-+static int resctrl_kmode_parse_group(char *group, struct rdtgroup **rdtgrp)
-+{
-+	struct rdtgroup *grp;
-+	char *mon, *slash;
-+
-+	slash = strchr(group, '/');
-+	if (!slash) {
-+		rdt_last_cmd_puts("Group must be <CTRL_MON>/<MON>/\n");
-+		return -EINVAL;
-+	}
-+	*slash = '\0';
-+	mon = strim(slash + 1);
-+
-+	slash = strchr(mon, '/');
-+	if (!slash || slash[1] != '\0') {
-+		rdt_last_cmd_puts("Group must be <CTRL_MON>/<MON>/\n");
-+		return -EINVAL;
-+	}
-+	*slash = '\0';
-+
-+	grp = rdtgroup_by_kmode_path(group, mon);
-+	if (!grp) {
-+		rdt_last_cmd_puts("Group not found\n");
-+		return -EINVAL;
-+	}
-+	*rdtgrp = grp;
-+	return 0;
-+}
-+
-+static int resctrl_kmode_parse_parameters(char *params, enum kmode_state *ctrl,
-+					  enum kmode_state *mon,
-+					  struct rdtgroup **rdtgrp)
-+{
-+	char *key, *tok;
-+
-+	while ((tok = strsep(&params, ";"))) {
-+		tok = strim(tok);
-+		if (!*tok)
-+			continue;
-+
-+		key = strsep(&tok, "=");
-+		if (!tok) {
-+			rdt_last_cmd_puts("Empty kernel mode parameters\n");
-+			return -EINVAL;
-+		}
-+		key = strim(key);
-+		tok = strim(tok);
-+		if (!*key || !*tok) {
-+			rdt_last_cmd_puts("Empty kernel mode parameters\n");
-+			return -EINVAL;
-+		}
-+
-+		if (!strcmp(key, "ctrl")) {
-+			if (resctrl_kmode_parse_state(tok, ctrl)) {
-+				rdt_last_cmd_puts("Invalid ctrl= parameter\n");
-+				return -EINVAL;
-+			}
-+		} else if (!strcmp(key, "mon")) {
-+			if (resctrl_kmode_parse_state(tok, mon)) {
-+				rdt_last_cmd_puts("Invalid mon= parameter\n");
-+				return -EINVAL;
-+			}
-+		} else if (!strcmp(key, "group")) {
-+			if (resctrl_kmode_parse_group(tok, rdtgrp))
-+				return -EINVAL;
-+		} else {
-+			rdt_last_cmd_puts("Unknown kernel mode parameter\n");
-+			return -EINVAL;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static int resctrl_kmode_global_validate(struct rdtgroup *rdtgrp,
-+					 enum kmode_state ctrl,
-+					 enum kmode_state mon)
-+{
-+	if (ctrl == KMODE_ASSIGN && !resctrl_arch_alloc_capable()) {
-+		rdt_last_cmd_puts("ctrl=assign is not supported\n");
-+		return -EINVAL;
-+	}
-+	if (mon == KMODE_ASSIGN && !resctrl_arch_mon_capable()) {
-+		rdt_last_cmd_puts("mon=assign is not supported\n");
-+		return -EINVAL;
-+	}
-+	if (mon == KMODE_INHERIT && rdtgrp->type == RDTMON_GROUP) {
-+		rdt_last_cmd_puts("A monitor group requires mon=assign to use its RMID\n");
-+		return -EINVAL;
-+	}
-+	if (rdtgrp->mode != RDT_MODE_SHAREABLE) {
-+		rdt_last_cmd_puts("The group is not in shareable mode\n");
-+		return -EINVAL;
-+	}
-+	if (rdtgrp->type == RDTMON_GROUP &&
-+	    rdtgrp->mon.parent->mode != RDT_MODE_SHAREABLE) {
-+		rdt_last_cmd_puts("The parent group is not in shareable mode\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static void resctrl_kmode_switch(enum resctrl_kernel_mode mode,
-+				 struct rdtgroup *rdtgrp,
-+				 enum kmode_state ctrl, enum kmode_state mon)
-+{
-+	if (resctrl_kmode.rdtgrp)
-+		rdtgroup_kmode_global_deactivate(resctrl_kmode.rdtgrp);
-+
-+	resctrl_kmode.kmode_cur = mode;
-+	if (mode != RESCTRL_GLOBAL_ENABLE_PER_CPU) {
-+		resctrl_kmode.rdtgrp = NULL;
-+		resctrl_kmode.ctrl = KMODE_ASSIGN;
-+		resctrl_kmode.mon = KMODE_ASSIGN;
-+		return;
-+	}
-+
-+	resctrl_kmode.ctrl = ctrl;
-+	resctrl_kmode.mon = mon;
-+	resctrl_kmode.rdtgrp = rdtgrp;
-+	rdtgroup_kmode_global_activate(rdtgrp);
-+}
-+
-+/**
-+ * resctrl_kernel_mode_write() - Set the active kernel mode
-+ * @of:		kernfs open file
-+ * @buf:	write buffer
-+ * @nbytes:	length of @buf
-+ * @off:	unused
-+ *
-+ * Return: @nbytes on success, negative errno on error.
-+ */
-+static ssize_t resctrl_kernel_mode_write(struct kernfs_open_file *of,
-+					 char *buf, size_t nbytes, loff_t off)
-+{
-+	struct rdtgroup *rdtgrp = &rdtgroup_default;
-+	enum resctrl_kernel_mode mode;
-+	enum kmode_state ctrl, mon;
-+	char *params;
-+	int ret = 0;
-+
-+	if (!info_kn_lock(of->kn))
-+		return -ENOENT;
-+
-+	rdt_last_cmd_clear();
-+
-+	if (nbytes == 0 || buf[nbytes - 1] != '\n') {
-+		rdt_last_cmd_puts("kernel_mode: Invalid input\n");
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+	buf[nbytes - 1] = '\0';
-+	buf = strim(buf);
-+
-+	params = strchr(buf, ':');
-+	if (params)
-+		*params++ = '\0';
-+
-+	for (mode = 0; mode < RESCTRL_NUM_KERNEL_MODES; mode++) {
-+		if (!strcmp(buf, resctrl_kmode_str[mode]))
-+			break;
-+	}
-+	if (mode == RESCTRL_NUM_KERNEL_MODES) {
-+		rdt_last_cmd_puts("Unknown kernel mode\n");
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+	if (!test_bit(mode, resctrl_kmode.kmode_sup)) {
-+		rdt_last_cmd_puts("Kernel mode not available\n");
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+
-+	if (mode == RESCTRL_INHERIT_USER) {
-+		if (params) {
-+			rdt_last_cmd_puts("inherit_user has no parameters\n");
-+			ret = -EINVAL;
-+			goto out_unlock;
-+		}
-+		if (resctrl_kmode.kmode_cur != mode)
-+			resctrl_kmode_switch(mode, NULL, KMODE_ASSIGN, KMODE_ASSIGN);
-+		goto out_unlock;
-+	}
-+
-+	/* Omitted parameters keep the values shown by reading the file. */
-+	ctrl = resctrl_arch_alloc_capable() ? resctrl_kmode.ctrl : KMODE_INHERIT;
-+	mon = resctrl_arch_mon_capable() ? resctrl_kmode.mon : KMODE_INHERIT;
-+	if (resctrl_kmode.rdtgrp)
-+		rdtgrp = resctrl_kmode.rdtgrp;
-+
-+	if (params) {
-+		ret = resctrl_kmode_parse_parameters(params, &ctrl, &mon, &rdtgrp);
-+		if (ret)
-+			goto out_unlock;
-+	}
-+
-+	ret = resctrl_kmode_global_validate(rdtgrp, ctrl, mon);
-+	if (ret)
-+		goto out_unlock;
-+
-+	if (resctrl_kmode.kmode_cur != mode || resctrl_kmode.rdtgrp != rdtgrp ||
-+	    resctrl_kmode.ctrl != ctrl || resctrl_kmode.mon != mon)
-+		resctrl_kmode_switch(mode, rdtgrp, ctrl, mon);
-+
-+out_unlock:
-+	info_kn_unlock(of->kn);
-+	return ret ?: nbytes;
-+}
-+
- void *rdt_kn_parent_priv(struct kernfs_node *kn)
- {
- 	/*
-@@ -2230,9 +2501,10 @@ static struct rftype res_common_files[] = {
- 	},
- 	{
- 		.name		= "kernel_mode",
--		.mode		= 0444,
-+		.mode		= 0644,
- 		.kf_ops		= &rdtgroup_kf_single_ops,
- 		.seq_show	= resctrl_kernel_mode_show,
-+		.write		= resctrl_kernel_mode_write,
- 		.fflags		= RFTYPE_TOP_INFO,
- 	},
- 	{
--- 
-2.43.0
+
+--=20
+Best Regards,
+Yan, Zi
 
