@@ -1,119 +1,100 @@
-Received: from mail-dl2-f33.google.com (mail-dl2-f33.google.com [74.125.229.161])
+Received: from mail-pj2-f38.google.com (mail-pj2-f38.google.com [74.125.227.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258451AFE8
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 14:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E52522EE6
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 14:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790864269; cv=none; b=agdozqosy/QwWqhLpndUMpxHIMnA09knl6v3rmYU6BokXX3puoXbh5TTF7JNU8oj810GND1wxQXlSnyKJYsQgACU3u6eOAkaYYd6LamMr7MFLwed8WkLJWgnsFL0dTq07C2weME2OMEdLti/EpMDBkyxbZU0xCcYUSJtDWmO774=
+	t=1790865162; cv=none; b=U+cAiZ8tE/Q9/LrxeT0tRGueW88N05gcKmEoIfFldeL9t36YkVWkn19ES2VmbCPNFFEr8+Oz8ZTCGMobSbTf4aN7sPlkvjxpNO4yyb2xrf80RKG3JzI9jhv6v5rIxQn33XhlnDJUZKS5RfsPFR1Ams21gZPGp5/Kr0gttpI7aQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790864269; c=relaxed/simple;
-	bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oVYV3tbzjb+rkNs6F+dH9FLzg2kINdnMtgGP/8rZWTnlIbLaES5ysmlcVllLy1OdxNgXqstojAqgSfid8/CUpH2w3gRccTdwcIYUK0KOMLeWdEed5w15qah2WwQ7p2PHWAvPDzmvbMG+b6zwGHDRlVDTx2MiOh9aBow8hAGkZss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=BXigv9eW; arc=none smtp.client-ip=74.125.229.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1790865162; c=relaxed/simple;
+	bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fm+Ry+xmy9NCLrsbc1gt6y7GCr0MS9QeZHsKZkxkDsyKfUWZCV/l55QbvCZ/xu5Pb7hlkIH/bmr2PX34r4S8DrGXOo3DHxXL1BeQ8Di+ZPi2GZP1vWuor6WCrrE7njlVXyz9mBzNltFurWNgHM1xprPwZtUfOy/0Q1IAfwfVnAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsZn1cOs; arc=none smtp.client-ip=74.125.227.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="BXigv9eW"
-Received: by mail-dl2-f33.google.com with SMTP id a92af1059eb24-1438e88300cso6808089c88.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 07:17:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsZn1cOs"
+Received: by mail-pj2-f38.google.com with SMTP id 98e67ed59e1d1-3a4c0da0145so1175495a91.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 07:32:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790864266; x=1791469066; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
-        b=BXigv9eW+sYJ2/al5rZthSGvatRRCrx21esZ8DRDlyQzVTzJ1n3lmdW1BXCm34jrdR
-         1sYBYhv1ljlYYb3CUglLDIH5H4KxOBTYBzZHM2ML9L9v1iFjRBkRgF50qfe9ZyE+WSXv
-         VFV0SnGbOT1PyzvYxVnKBLcxIFL+uD4sVYTdKtRFjpDe2YBkJTyo9PzRLTvZyizm8ffW
-         vxsModyQrWZ3UTUnsWemUyyMDw9PnGUSVWN/ToeddRIvjpQxwhU9FIRqaR9eBODMCHt1
-         F5QRRTDbnvJfUI7vhDggC5mOLm1MJFa1OnDlMjpRPZvp2Wcvso3bwCkW/R+ecr+g1Mh8
-         3mrA==
+        d=gmail.com; s=20251104; t=1790865155; x=1791469955; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
+        b=QsZn1cOsGW9gJSBEr3AUiFhi6dDv+lG34xs3Mef8LiBafeYJX+skrBT1NBhIXQBHYU
+         jj6xuMT2tnJjwDESvv86Uw/zRnqEpEafJoeH2K+xv1hper6uzTKGj1f4bL6FcCpfTGd0
+         EvmA2hfwBKytksucyYSD16iM6S8wtFJL25V5FkbDM+tHGtKJRt/slN7TnmiqxYxjtEwe
+         Aroktd7xX0WaeBpkrdLqQNtC1matuazrPpiMuSAnxk5rAWXCrHCszGKMOSI6IAY6ra5g
+         vwnLdPqafMdKVpNxDJ8dtR6+BvmPgvh1Gx/E7/CEG7/YHPzbVreCoEpLY9HVmGM1uoZb
+         z+dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790864266; x=1791469066;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
-        b=PiP/6a7ZVTVQJHj7gWQ+cQda8nSp4PYeFTyCgBMUnv/qkuWR/peyvKJSCpqes14uy9
-         KC3CNcHGDg+INyGA6r+nymtWKHRoOHHT6EpfrRGzrdDoAqfS5Cj4F5f981NorHUp5JkE
-         k5k3fwGicXMhGSjsq09D39oBUk4yxzxpBrUeEbNuhGlLRN+ZJKHw6DjHdzEMyEcy1vhL
-         J9Cuv17JOdvFqzXBg203GanANiHTzUvYKaHvstFEDedWORJKML2/dNdJTj5BWYOOO72V
-         Dd1NA0uaKxY8sKqLx/Pn9Y1QVvkjgr2B6Vjk1p2dH0gxxzCn5SJw1yNC0K7xDdg7IQSr
-         cTBA==
-X-Forwarded-Encrypted: i=1; AKwUvBys5tTzIiUydicOfPZHdMyW5zyCQERZ2uGb+/aw1+krwiRE81X1GDJRwJeO45aPW/Otcl4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kUmC4CAyalTNRpxe4WEgEzGmT6j4P11GM8BADQweZNTWhaCAQr
-	aFHVqR9iUNyXS8r2dSSvx412ThSDXzy9dJq2p+MjpJ2aWCuIJv6TYkDlvMrS4UEjCR4=
-X-Gm-Gg: AYBFou0alYOR3QGcaREnE/Mqz3YQOXumZJ9tdV/8dW26RKL3gwby5zxoHnv36dbnFzC
-	RGrnbYNBI9PM6mkzMVUa28uTHgw2nTFJwTi9xwCNS5s6bS0XdF7+BuNIuFgnbdCaz1SvZPIJQMn
-	JqeSb9fbYkk11oBMLiFD+ICazDwShfPzOnDOlwvRU8QQoo3JxyeGewioXft3pnbsEQ5QxfWK2Kz
-	q7xg4pCu6QMaiZB2lR4TRdG8GAvKLDtIkxjT8kkwvyNLBVD/ISYnE3vxZb3iLRwtnALiSHBoPte
-	fuq7vLA1kZF/SFPdr+ymqIfnqhnLtPc/jPgDinAG7TS5RFQvj5psT0VdH+tHhmIrSNMVe6QjcBn
-	d4HEHj7Swj1Fb+OD+9Q+ha7obfB/C/lvdMM62VMASR72sP0rIEuA854tQablW3eGyMagESec2nl
-	urdPiJTP2JWNmfdbbuJQLE8iv0u+nVEK9GqDnTWqiCpjpKPRiSRoScOcw=
-X-Received: by 2002:a05:7022:ed02:b0:147:5149:d12d with SMTP id a92af1059eb24-14d33f39e14mr4209784c88.18.1790864264892;
-        Thu, 01 Oct 2026 07:17:44 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14df3ed1adcsm6451579c88.10.2026.10.01.07.17.44
+        d=1e100.net; s=20260707; t=1790865155; x=1791469955;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
+        b=y0S8Gkb0PP7bFncr57hniouIvMlchXrLvfTj9f5JTVjDz+/AApRikRksptUJyUbY5z
+         Jog4iBMF7ESl381A/AtuKPOiJSVUJDgxNgEpFemgpvBZ409UOynVBSQ+C2JCpuRReV7Z
+         WT1g2xYSbnbXz3Cj8c/hXK/m5n6zWJcNwpLOqB9zmT1IOkZWFz5UfNFKhnwdoeUklKzh
+         S84X4Q5qbmnStfslJS0G+vLoMLmrosJXqRK8C0Ob4Pf7T/nZLYM3DcmlxHeEYcyBx+yJ
+         cDo/XK20tXy5KvDJC+lWnkvypSbQtsZQAJPlsOmWgQM9dHp8T708bZTbH1h+yULb6/ZO
+         BCSQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxql00ziZ/9f1rMEvhoM29wtQq+hKe59lPzcz8A2mzc6HDXXU/zdWSLnrmuqNwvYZTErGI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLsEcGAMRnEM1eBlCg5F8dT4Z+6JVetWtpFZSKEHmrI72omQ6Oa
+	+bzo8mwuvPsGpGuvDnnyR17cTgw9BzWqkMl3GcAMLNk74V5ToHwDnxaN
+X-Gm-Gg: AYBFou0GXXxFDyQPlgk8LhxTze/WqY9w7oNy+yXeueZwj4OBVTDNope1nWN6cTrwEqR
+	FvKXYDYaMlDOyyf6QWZ8yibCPCXmW6qOF1ET0H3tlFkp5zPEY8/pU+jJBjCyu/gpwGvAiUNZWgG
+	551uF87edsmW0+gOwOpNfhs9GwwxmbFDQdvn09Hzw/IJTw3bpn7DV1ajKSu569BAQDcoasmX3nO
+	jna3OF5A0rjE++1fv4oqS//Lha5vxKQ+r1hXIafJtJfwYjdX9DwrfFjIwvIG+STYK1+dK3IPDx9
+	xrypBgiNfHBgTDig6R+0od1IUGulNhsBMv39O3sLpyNq+ZDFt4BfKcGkBPEHokPsS7EnuslonQj
+	uOMhVeiEKYM0rAY8YgXE2NuG25WydOmRqgwxEU2ayBisCPzcZBG/Q6b64IzGPIu7HCB02Gvt3T0
+	gcz1o8FZ4AGTXWo7KSdIHyauEd11Ohj/SE12opl9dhT86qruMszUWXBLKEGHUkpzDYF60xxvDXR
+	kK3BwZ0VIM=
+X-Received: by 2002:a17:90b:2b44:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-3a4d1509d61mr3979683a91.18.1790865155377;
+        Thu, 01 Oct 2026 07:32:35 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f478e750sm4964487a91.13.2026.10.01.07.32.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 07:17:44 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xCHbT-0000000EHOj-0Nin;
-	Thu, 01 Oct 2026 11:17:43 -0300
-Date: Thu, 1 Oct 2026 11:17:43 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: ackerleytng@google.com, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
-	vannapurve@google.com, erdemaktas@google.com, jxgao@google.com,
-	rientjes@google.com, fvdl@google.com, jthoughton@google.com,
-	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev,
-	Gregory Price <gourry@gourry.net>, yan.y.zhao@intel.com,
-	michael.roth@amd.com, suzuki.poulose@arm.com,
-	Christian Brauner <brauner@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com,
-	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Connor Williamson <connordw@amazon.com>, kernel-team@android.com,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 01/17] mm: shmem: Implement guest_memfd provider
- operations for tmpfs
-Message-ID: <20261001141743.GB3019323@ziepe.ca>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
- <20260925-gmem-tmpfs-backend-v1-1-d36159822d18@google.com>
- <9292b27b8f48c515bee3246cf3b3a60762302186.camel@infradead.org>
+        Thu, 01 Oct 2026 07:32:34 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
+Date: Thu,  1 Oct 2026 23:32:21 +0900
+Message-ID: <20261001143221.3856511-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <179085716831.31693.13222203434770065965@kernel.org>
+References: <20261001121541.2983379-1-4ncienth@gmail.com> <179085716831.31693.13222203434770065965@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9292b27b8f48c515bee3246cf3b3a60762302186.camel@infradead.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 01, 2026 at 02:07:40PM +0100, David Woodhouse wrote:
-> The *consumers* of this memory provider API will include KVM/guestmemfd
-> and IOMMUFD. The latter *might* be through masquerading as dmabuf, or
-> IOMMUFD might treat memory providers as a first class citizen and be
-> taught to consume them directly.
+Thanks. I found this during an LLM-assisted manual source audit of VSOCK
+receive accounting while re-evaluating virtio_transport_read_skb() after
+CVE-2024-50169. I then confirmed it on vulnerable and fixed kernels using a
+connected CID_LOCAL stream and a real SK_SKB/SOCKMAP verdict path.
 
-If we are reinventing a dmabuf improved for these use cases then lets
-just use it directly.
-
-It would be nice if it could handle MMIO and "cachable MMIO" as well.
-
-Jason
+Thanks,
+Daehyeon
