@@ -1,230 +1,275 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013067.outbound.protection.outlook.com [40.93.196.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762D342E8E6;
-	Thu,  1 Oct 2026 03:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790827047; cv=none; b=Cb1W+awvfhVKnrpk8RcgbunKE4z/THBMe3J8/4rbqP4I9SLOT/CiLCCdwngS9lsUrK2jZF0Jpw0BVR/7dZtcE0SPAGXZD7B28wRx9EE5QgKuMBUxG2YrVwhXmv5lh2ssgcuCz3cQm5mGC27JlcrrdlDsQD4i7tzziFs7vxzUpTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790827047; c=relaxed/simple;
-	bh=hQ8NYmadh8Vr9SUtn0nSGku5dnhZbFMbNf/Yo47e5Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vw6uIV/+h6rQeqzFJr3jI2Jmtr7pzFJ9ftM8x+Wvy7MKbamIaHli3X0LsA5rf8KAJ/Ap0MYgUggertZZTcJWYZG1sIEpsL+8UTbDxsUDL3OjytWEjpS824gAkXpPnD3FHJxEdUdLR1gDMiGUPViMaaOExc6qLXybiyfXtlWy2Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rj3iqbLl; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACE9352C54
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 04:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790829864; cv=fail; b=DjCQwGKG5sGlycjSL03DfpC8EZccztei9atWU/Z31/rJ0Ai24BB6/IN0wACJK5pDlJ03cqQSDcRWf/2TWYNl2Xk4FnjJoeR2ZTtlVRzuRmB1jUz9pCDTMD76FNF8PM8IGe9/rRq7PFLlw/SIliH2234jCth4rG7qlMQUhM64bg0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790829864; c=relaxed/simple;
+	bh=N3MBqdCtCSzaB785eOjeg8kI+Wd6yCMdzNyLaPqC6fA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=crF7SQ3IpTcn1UeQNIGP0jnsDjOiHcC9jG+K0KtXvX8P18dNnOqDbCwYPtfJMuTfTy5iMkpzFz3fRbKAP0PnYbUxC3XEjXmuLlQgGIhwH21tvWnLFzzpJRj86wfjf11Gm8Ilsx25c0gYoP60eTpbZjE/zeXeuWKa9jM1PuBDDAU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RKLEBAeS; arc=fail smtp.client-ip=40.93.196.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rj3iqbLl"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69115eZ43277034;
-	Thu, 1 Oct 2026 03:57:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=j3C1jtCzYOB/7ct9Ws2eH5RhJT8FVt
-	vOQDQxv8iP5/A=; b=rj3iqbLlO89Sl6vnzzUsGzN+CzC/8kNzEtBsMPDdQiDjeO
-	6UyzGokWniiMPIbJSqq+uxgveOYqweZmZRFQgUjSRaoPuaPwi86MpPim2TarDQ9L
-	qpuJhUKdpgKx5ztszruVhCjR0/fPuRuZJX4DUYAu6+PLmEvNufusnq3GpNI4HF8S
-	ZKClON2j1CR6ll8XwRYinyYtkibfR+UwvBF58FoDaG7XNJaRfgq/caOWf8bZx/y8
-	zGsIVVdw79LPf7K40EGaKwGFiUSWQE8JsbCSF6i+wt+Ny2ukIfaQiWaZbq/HM79J
-	CQu/DqgT5HHMZXxpN0nMAG5rrorGmqs0I0ZGj34Q==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx4fefwge-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 03:57:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6913le46306270;
-	Thu, 1 Oct 2026 03:57:03 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0hfpeyes-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 03:57:03 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6913uwAW47972792
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 1 Oct 2026 03:56:58 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7EBA420040;
-	Thu,  1 Oct 2026 03:56:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA3092004B;
-	Thu,  1 Oct 2026 03:56:54 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.124.215.84])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  1 Oct 2026 03:56:54 +0000 (GMT)
-Date: Thu, 1 Oct 2026 09:28:56 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Narayana Murty N <nnmlinux@linux.ibm.com>
-Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
-        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
-        amachhiw@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        Timothy Pearson <tpearson@raptorengineering.com>
-Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Avoid spurious interrupts caused
- by LPCR_MER bit
-Message-ID: <ar3ZrgzhSwkgPuZf@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
-References: <20260921111043.49825-1-gautam@linux.ibm.com>
- <ed756a12-182f-4933-8788-8b54a4e8912a@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RKLEBAeS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GRJvgEqMbfztrwEXfu48FMPoCbz9Nbt3MqsWZMTtCN/3JH0AMxctPWcboC+PSiWvcC+GRnBVDdrZArMCOmTR1/GEzMTpDqKEa1okx+lQ1JK9cwuuMNZNwZnnaL93tZbi3LestzRr5Tygp++1MmtiuTGLdVGQrVhn4D9x3EyMuO/SGTpgcBJ9RKvg4WpxedIbksqIvV6Riy2cougew3gmQ6VEgzLB81FaniCGCWQrDP+DFI0WFuaN1DkSIbwcCbmHuioMk9rOpwMuMUa9eYnmZTWc8xsld4i2kADr6d2FMqPY7ZaCDpw7Q42qys9MDqjVT/K1KAWdVKK2VYnMQNT0sA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tDeIgzzsYQRXlul7SA7Em5IZ/+ZI4jSWBskdQpo7lb4=;
+ b=GAI4MM7b1CxsRV6Xw8F76fF455hf6hSbfB/Dm5WwK5RQZfUaO8Kv+kwD1DvtAuAFawJ/tvEaItng5ppYkwB0UOuSU5kAZmvofffNYjFu6Ft0GUbSH+Nm8MCP1WbMwtWt3fwOpiutVg81jAS5qtaBE+uyX1OPSxIqnqdYdoYf/INZ7J3CvIItdgHkZTQToNMAE+KedOoaPxyeUFsiyXibXtVkIny04AUBpFy0DOJD6anXBvfY6BRSfbVghx1boY9Mc/778irMhCkvHHDM2WRXa1D6txzY7g4qL9HutY4T8h90x/XXdHhcHBwlpRWDF2fSh9yQeU6yEs+SBggrxCY2vA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tDeIgzzsYQRXlul7SA7Em5IZ/+ZI4jSWBskdQpo7lb4=;
+ b=RKLEBAeS29VGy46+wnscazbscfueIcmH5tZw5UCMsaKXX/U5bFmhjCWciFl43Xqt1AKSXl6g0Q1uQMJeqWOsdJ7LPcf6B/XOwp3Tdcq7PJVlCIzYJiPW/JLZktKkteCpc+IS2DIlAQWA/NRqYh6BvT3jPlhktBscs4m0dLZlDhs=
+Received: from BN9PR03CA0326.namprd03.prod.outlook.com (2603:10b6:408:112::31)
+ by PH7PR12MB6468.namprd12.prod.outlook.com (2603:10b6:510:1f4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
+ 2026 04:44:14 +0000
+Received: from BN1PEPF00018546.namprd05.prod.outlook.com
+ (2603:10b6:408:112:cafe::3a) by BN9PR03CA0326.outlook.office365.com
+ (2603:10b6:408:112::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.22 via Frontend Transport; Thu, 1
+ Oct 2026 04:44:13 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00018546.mail.protection.outlook.com (10.167.248.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 04:44:13 +0000
+Received: from kenya-2231host.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 23:44:10 -0500
+From: Manali Shukla <manali.shukla@amd.com>
+To: <kvm@vger.kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sandipan Das <sandipan.das@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Dapeng Mi
+	<dapeng1.mi@linux.intel.com>, Mingwei Zhang <mizhang@google.com>, Jim Mattson
+	<jmattson@google.com>
+Subject: [RFC PATCH 0/7] KVM: SVM: Add support for hardware-assisted PMC filtering
+Date: Thu, 1 Oct 2026 04:43:44 +0000
+Message-ID: <20261001044351.50535-1-manali.shukla@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ed756a12-182f-4933-8788-8b54a4e8912a@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=FYWiV5+6 c=1 sm=1 tr=0 ts=6abdda10 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=yKAn6K1XAAAA:8 a=_AprYWD3AAAA:8 a=VnNF1IyMAAAA:8 a=9HMC7dwcUNEby-kk_2AA:9
- a=CjuIK1q_8ugA:10 a=6M1ixcW_PCWoKiWyFx5v:22 a=fKH2wJO7VO9AkD4yHysb:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAxNCBTYWx0ZWRfX0Mwwp8a+mcA+
- kBRtTKDNRB8DfhDmk5KpUFnbXJfo7/81uwd1qUkTj+Reo/NS0D6oE0MHsdbhX9S8nkeZKiaXWWK
- x/M2ILMvWU/iYEwU9xg1R2DcQ/RUQJU=
-X-Proofpoint-ORIG-GUID: b4ol1MZLxroLxsstq4uGJlIotdzkNjSm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAxNCBTYWx0ZWRfX3adJ90NN5pRW
- kH1dhiitnZwaxcGerX+0jbDkISq/9wOKDPg5gMseRkw4mWJvGvWIznIuGfSTZcnEm73vylVs6gW
- JtozuE+THOxtwK2lfsh0mqw3VsPM5iw10OxGmvn9hMtkFj4zLwNe6xdh+KYQabZwQWxed2EzQx6
- 9V7Da6MPirZgsBJGVKLwZQabTnag8j8TRMefljS9WEltgn2Lkr9RS2+eaKtaU1oo3brx/RHKl2a
- AAkvdqOlS+QUmx18z0kpxwnU1QkgQDfnKeUEXy8ulkcyet6jiVtvneigW1VwPPmmTc9IJnD62G7
- ftiR5b8DW+Nh4sz0igqpbfDU6ZFKN4x6pSyPQpcezPSv7KVfqKmE4pB+BcFwyonYEIlnEOdlabm
- AV+EUyL9s0MfdYysW/fwA2l/lY5E6OluTY68k4PW1jzMyeP4/8LMSep8iCpW8xkkzN36gTnlIJf
- Zgueu6JIVWf/S2vjzZw==
-X-Proofpoint-GUID: MLpu277iUP6UEDeVLkicwtUv15akBGR7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-01_01,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2610010014
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018546:EE_|PH7PR12MB6468:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e6b3639-a545-4f58-2ae7-08df1f76a4b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|376014|82310400026|1800799024|18002099003|13003099007|3023799007|10067099003|260925022911599003|260925021911599003|260925021311599003|56012099006|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	ES8iTqYBTvnDubWbMFOoh8RwMoit9RxXTj26kAM+0fMsSkbHSMW/rNgx456EaTSFE87JuyjORFUoh2pllIgjWeZuVF3dQVdtrcYeywZFA300fOiccUi/kQrcdRrqvUz5dXOVnuZ6ji2MR9N9b2wbLcc49fw5eLuxiPVPn1LOEFgHDkhIJV4WvIM7g2WjXjNZVS3Rb9yDTOI/x/nr1Hss9ouINdaDXPb+1bsnRHo1/dZUlG5HeC5JYP71o8Qc8Gz42i4gr/nhKzofZ2hLe4GzDiz5WkrW3ukJfGo8bMaIxDL0ptJYeThB41JhjKbimQwsX8AWbVNH5ybVeSb9azkueHtC4eR6PGDZ9sxZVR75+2G4wScgjqmobsJ0B9zIDZL8YoTZ2neQVPFnKCqF6NgzFiFp4cusWy106Yjby44Y268ab5WhQ/swrb4/jzGJh45aNT+osCARkqS76R4DtJ+Y3vy1NoAH0dkhZr9MmU29Mou+6sWHl9LyNRO2NXFoEJj1guiGCPXiL/Xc4tJIbuANI6cTY485keG+VFupi86gakK8WtwW4Jy+Hpl1G0RNnssG+qOv7x2uJtCwmWLLzI05atO9NvjxZniucBX7K341hi26uKc1sIuGHEqavW6q2r7nXNyS9U9xH1GJamdy5UeX0A==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(82310400026)(1800799024)(18002099003)(13003099007)(3023799007)(10067099003)(260925022911599003)(260925021911599003)(260925021311599003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	xd+10Rh5XvC4yHe1dO/AB381HfbcTJNba26bere4rsrWIa3m6Tm9+p2gAaX6CFa2SFe4Ts1K1xnsp+RsN7kSbSh5yQkT3xIL5ybkNyqrbgsQb36j8jJ7D5UR8yXrBFe5I+5bZIOSWRSVMBw+BBsJok3yhtkbW1h2LbkI3nUVVAFQY7k5dOiITy8R+Av9l5uyy1sUn6e30BiU6d7O90jd3ZAPaqtJyD6w2cBoVFSuDnV6fiCqsXw9Os7CqiUuDOrgakVLSzfW+ZUCJe0CvXfEjd44DMbNV1XvqxqIk+OPc7STCeAZaThgnDQiBMUN0KzCCzYA9WNLdoBZZ2C1NMRMHh4pOTuPr9Y2uXHMTSgXcg1o2bn2IOhbRMwPPNIEqWz3NAYUuefbeSTP7NmYchtWLLn2RYTqmcFMtLc6B85/tN2jEyTnRh9HJ2zCLZcHSr/p
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 04:44:13.9082
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e6b3639-a545-4f58-2ae7-08df1f76a4b0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00018546.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6468
 
-On Wed, Sep 23, 2026 at 09:08:57AM +0530, Narayana Murty N wrote:
-> Hi Gautam,
-> 
-> On 21/09/26 4:40 PM, Gautam Menghani wrote:
-> > A huge number of spurious interrupts can be seen immediately after a KVM
-> > on PowerNV guest boots up in XIVE mode.
-> > 
-> > $ cat /proc/interrupts  | grep SPU
-> > SPU:     223705     192439     273526     147623   Spurious interrupts
-> > 
-> > This bug was introduced by commit ecd10702baae5 ("KVM: PPC: Book3S HV:
-> > Handle pending exceptions on guest entry with MSR_EE"). The root cause
-> > is that once LPCR_MER bit is set, it is supposed to be reset by
-> > software. But when a vCPU starts running with LPCR_MER set, the vCPU does
-> > not exit back to the host until the decrementer expires or there is an
-> > hcall, etc. This is because KVM on PowerNV guests have support for
-> > native XIVE, so they are not dependent on host for interrupt emulation.
-> > Due to this behaviour, a huge number of spurious interrupts are seen
-> > since LPCR_MER continues to be set and LPCR_MER cannot be reset until the
-> > vCPU exits to the host.
-> > 
-> > Fix this behaviour by not using the LPCR_MER bit whenever native XIVE is
-> > available (currently in case of KVM on PowerNV only), as the XIVE hardware
-> > can present interrupts to the KVM guest vCPU directly. So the LPCR_MER
-> > functionality is not required. This reduces the number of spurious
-> > interrupts drastically.
-> > 
-> > Fixes: ecd10702baae5 ("KVM: PPC: Book3S HV: Handle pending exceptions on guest entry with MSR_EE")
-> > Cc: stable@vger.kernel.org # 6.8+
-> > Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
-> > Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
-> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> > ---
-> > v3:
-> > 1. Continue the use of LPCR_MER when kernel-irqchip=off (Sashiko)
-> > 
-> > v2:
-> > 1. Handle the case where xive_interrupt_pending() is true and also the
-> > external exception bit is set. (Narayana)
-> > 
-> >   arch/powerpc/include/asm/kvm_ppc.h | 7 +++++++
-> >   arch/powerpc/kvm/book3s_hv.c       | 2 +-
-> >   2 files changed, 8 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> > index 169ea6a7fbad..580ad2548c2b 100644
-> > --- a/arch/powerpc/include/asm/kvm_ppc.h
-> > +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> > @@ -747,6 +747,11 @@ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
-> >   	return vcpu->arch.irq_type == KVMPPC_IRQ_XIVE;
-> >   }
-> > +static inline bool kvmppc_xive_native_enabled(struct kvm *kvm)
-> > +{
-> > +	return kvm->arch.xive_devices.native;
-> > +}
-> Also, should 'kvmppc_xive_native_enabled()' check the active XIVE
-> device rather than just whether a native device has been created?
-> 
-> 'kvmppc_xive_native_release()' clears 'kvm->arch.xive', but explicitly
-> keeps the 'kvmppc_xive' pointer under 'xive_devices' for reuse. The
-> comment in 'book3s_xive.c' also says that when switching between XICS
-> and native XIVE, the previous KVM device is released before the new one
-> is created.
-> 
-> So 'xive_devices.native != NULL' seems to mean that a native XIVE
-> device has been allocated/cached, rather than that it is currently
-> active.
+Upcoming AMD hardware adds hardware-assisted PMC filtering that lets the
+hypervisor restrict which performance events a guest may program into
+the PMCs.  This is useful both for confining guests to a sanctioned set
+of events and for mitigating PMC-based side-channel attacks.
+
+This series builds on the hardware-switched PMU series [1] and wires the
+hardware allow list into KVM's existing PMU event filter
+(KVM_SET_PMU_EVENT_FILTER), so userspace continues to express policy the
+same way it does for the software filter today.
+
+Any feedback on design is welcomed.
+
+Background
+----------
+Detailed information about the feature can be found at [2].
+
+The feature is advertised via CPUID 0x8000000A ECX[3]
+(X86_FEATURE_PMCFILTER) and is programmed through new VMCB control-area
+fields:
+
+- ALLOWED_PERF_CTL[0..5]  (offset 0x180) - the allowed event list
+- ALLOWED_PERF_CTL_MASK   (offset 0x1C0) - bits compared during matching
+
+To enable hardware-assisted PMC filtering for the VM, the hypervisor
+sets SVM_MISC2_ENABLE_PMC_FILTER (bit 5) in the VMCB misc_ctl2 field
+(offset 0xB8).
+
+With hardware-assisted PMC filtering enabled, the event-select MSRs and
+PerfCntrGlobalCtl are passed through to the guest.  Hardware intercepts
+an event-select write only when it enables an event that does not
+satisfy:
+
+  (PERF_CTLx & ALLOWED_PERF_CTL_MASK) == (ALLOWED_PERF_CTL[0/1/2/3/4/5]
+  & ALLOWED_PERF_CTL_MASK)
+
+and VMRUN fails if an enabled counter's event isn't in the list.
+
+Overview
+--------
+Patches 1-2 add the feature bit and the VMCB fields.
+
+Patches 3-5 maintain the allow list: clear it when the PMU event filter
+changes, add events KVM allows, and reload KVM's copy of the
+passthrough event-selects before using them.
+
+Patch 6 keeps PMC filtering off for SEV-ES/SEV-SNP guests, whose
+event-selects KVM can't access because VMSA is inaccessible to KVM.
+
+Patch 7 enables PMC filtering whenever the hardware-switched PMU is in
+use, the CPU supports it, and nested=0.
+
+Design
+------
+Hardware-assisted PMC filtering lets the CPU enforce KVM's PMU event
+filter directly, instead of KVM trapping and checking each event-select
+write in software.  The guest's event-select and PerfCntrGlobalCtl MSRs
+are passed through, and hardware traps an event-select write only when
+the guest enables an event that is not yet in the list.  On that trap
+KVM runs its usual software filter and, if the event is allowed, adds it
+to the list so the write can proceed.  A denied event leaves the counter
+disabled.
+
+  - Allow list: the list has six slots.  Once an event is allowed it
+    stays listed, so an event that later moves to a different counter
+    doesn't trap again.  An allowed event goes into the first free slot,
+    unless an equal entry is already there.  KVM rebuilds the list from
+    the enabled counters only when it is full, and clears it on every
+    KVM_SET_PMU_EVENT_FILTER, so that an event the old filter allowed
+    but the new one denies is no longer allowed.
+
+  - Stale event-selects: the guest can change allowed events without a
+    VM-exit, so KVM's copies of the event-selects can be out of date.
+    KVM reloads them from the VMCB before using them, e.g. on a trapped
+    PMU MSR write, when userspace reads them, and before counting
+    emulated instructions.  It reloads at most once per VM-exit, so that
+    its own changes that haven't reached the VMCB yet aren't lost.
+
+  - A PerfCntrGlobalCtl write can enable counters without writing their
+    event-selects, so KVM checks all counters again on it.
+
+Limitations
+-----------
+  - TODO: Support for Nested guests.  vmcb02 doesn't enable PMC
+    filtering, and L2 would inherit vmcb01's passthrough event-selects,
+    so currently PMC filtering is enabled only with nested=0.
+
+  - TODO: Hardware-assisted PMC filtering is left disabled for SEV-ES and
+    SEV-SNP guests, because their PMU state lives in the encrypted VMSA,
+    which KVM can't access.
+
+  - Hardware-assisted PMC filtering requires PerfCntrGlobalCtl to be
+    passed through, so the global control and status MSRs are passed
+    through even to PerfMon-v1 and legacy guests, which then don't get
+    a #GP when accessing them.
+
+Performance
+-----------
+The mediated PMU and the hardware-switched PMU intercept the
+event-select (PERF_CTL) MSRs unconditionally, on every write, regardless
+of whether the counter is being enabled or disabled.  Hardware-assisted
+PMC filtering passes those MSRs through and takes a VM-exit only when
+the guest programs an event that is not already in the hardware allow
+list, removing the majority of PMU-related exits.
+
+Guest instance (single vCPU) (all events allowed, no filter set):
+perf stat -e cycles,branches,instructions -- sleep 1
+perf stat -M PipelineL1 -- sysbench --cpu-max-prime=1000 --threads=1 cpu run
+
+Host instance - Count VM-Exits for hardware counter accesses:
+perf stat -e kvm:kvm_msr --filter="((ecx >= 0xc0010000 && ecx <= 0xc0010007) ||
+                                    (ecx >= 0xc0010200 && ecx <= 0xc001020b) ||
+                                    (ecx >= 0xc0000300 && ecx <= 0xc0000303))"
+
+------------------------------------------------------------------------
+|               Type               |     No of exits (kvm:kvm_msr)     |
+------------------------------------------------------------------------
+|           Mediated PMU           |             101,528               |
+------------------------------------------------------------------------
+|              vpmc                |             101,264               |
+------------------------------------------------------------------------
+| Hardware-assisted PMC filtering  |               7,503                |
+------------------------------------------------------------------------
+
+Hardware-assisted filtering reduces PMU MSR exits by ~13x (~93%) for the
+same workload: once an event is allow-listed, the guest's PERF_CTL
+accesses no longer trap.
+
+Testing
+-------
+  - pmu_event_filter_test passes on Hardware-assisted PMC filtering capable
+    hardware.
+  - Guests with PerfMon-v2, PerfMon-v1 and legacy counters, booted with
+    QEMU [3] and a filter denying some events, never count the denied
+    events.
+
+These patches are based on 
+branch:         kvm-x86/next (https://github.com/kvm-x86/linux.git)
+Base commit:    6cf46b37b0356 (kvm-x86-next-2026.08.07) + hardware-switched PMU series [1]
+
+[1] https://lore.kernel.org/kvm/cover.1786345201.git.sandipan.das@amd.com/
+[2] https://docs.amd.com/api/khub/documents/2eieIP7KVNk7sKFJ9Ew~Ng/content
+[3] https://lore.kernel.org/kvm/20250409082649.14733-2-zhao1.liu@intel.com/
+
+Manali Shukla (7):
+  x86/cpufeatures: Add hardware-assisted PMC filtering feature bit
+  KVM: SVM: Add VMCB fields for hardware-assisted PMC filtering
+  KVM: x86/pmu: Clear the hardware PMC filter allow list on filter
+    changes
+  KVM: SVM: Maintain the hardware PMC-filter allow list
+  KVM: x86/pmu: Refresh event-selects before counting emulated events
+  KVM: SEV: Disallow hardware-assisted PMC filtering
+  KVM: SVM: Enable hardware-assisted PMC filtering
+
+ arch/x86/include/asm/cpufeatures.h     |  1 +
+ arch/x86/include/asm/kvm-x86-pmu-ops.h |  2 +
+ arch/x86/include/asm/kvm_host.h        |  7 ++
+ arch/x86/include/asm/svm.h             |  7 +-
+ arch/x86/kernel/cpu/scattered.c        |  1 +
+ arch/x86/kvm/pmu.c                     | 26 +++++++-
+ arch/x86/kvm/pmu.h                     |  2 +
+ arch/x86/kvm/svm/pmu.c                 | 88 ++++++++++++++++++++++++++
+ arch/x86/kvm/svm/sev.c                 |  3 +-
+ arch/x86/kvm/svm/svm.c                 | 48 ++++++++++++++
+ arch/x86/kvm/svm/svm.h                 |  8 +++
+ 11 files changed, 190 insertions(+), 3 deletions(-)
 
 
-In a KVM guest on PowerNV, whatever interrupt mode the guest is booted
-in (XIVE/ XICS), you cannot switch it with kexec. So if
-'xive_devices.native' exists, we can be confident that native XIVE is
-being used. So the code in the patch should be fine.
+base-commit: 6cf46b37b0356b3408f8ba949e10462cc71b533d
+-- 
+2.43.0
 
-> 
-> Would this be more appropriate?
-> 
-> return kvm->arch.xive_devices.native &&
->        kvm->arch.xive == kvm->arch.xive_devices.native;
-> 
-> > +
-> >   extern int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
-> >   					   struct kvm_vcpu *vcpu, u32 cpu);
-> >   extern void kvmppc_xive_native_cleanup_vcpu(struct kvm_vcpu *vcpu);
-> > @@ -782,6 +787,8 @@ static inline bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu) { return
-> >   static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
-> >   	{ return 0; }
-> > +static inline bool kvmppc_xive_native_enabled(struct kvm *kvm) { return false; }
-> > +
-> >   static inline int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
-> >   			  struct kvm_vcpu *vcpu, u32 cpu) { return -EBUSY; }
-> >   static inline void kvmppc_xive_native_cleanup_vcpu(struct kvm_vcpu *vcpu) { }
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index dbac3573b2c8..cb2bb29451a7 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
-> >   			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
-> >   				kvmppc_inject_interrupt_hv(vcpu,
-> >   							   BOOK3S_INTERRUPT_EXTERNAL, 0);
-> > -			else
-> > +			else if (!kvmppc_xive_native_enabled(vcpu->kvm))
-> >   				lpcr |= LPCR_MER;
-> Is the intent here to suppress LPCR_MER only for interrupts that
-> native XIVE can deliver directly?
-> 
-> BOOK3S_IRQPRIO_EXTERNAL is a separate software-pending exception. If
-> MSR_EE is clear it remains pending, so it seems this path should still
-> set MER even when native XIVE is active.
-> 
-> IOW, should the behavior be:
-> 
-> else if (!kvmppc_xive_native_enabled(vcpu->kvm) ||
-> 	 test_bit(BOOK3S_IRQPRIO_EXTERNAL,
-> 		  &vcpu->arch.pending_exceptions))
-> 	lpcr |= LPCR_MER;
-> 
-> so that only the native-XIVE-pending case suppresses MER?
-
-No this would still result in spurious flood. If native XIVE is being
-used, LPCR_MER cannot be set in any case. Software interrupts will
-continue to work in the same way they work in an LPAR.
