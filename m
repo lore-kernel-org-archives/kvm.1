@@ -1,220 +1,239 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011049.outbound.protection.outlook.com [52.101.62.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A925335B4;
-	Thu,  1 Oct 2026 15:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790867563; cv=none; b=D6uWBOJa1e4Kzpii6O4+Az8mPKc/AX9S6/VtjlBXmdgV3GHHr2xrqJpkKdftuMolMX4syEQC1VyZIlqOwylLmjYgiBZtfL4qTC8MalItZNGyIKMcitxmzLWGI2cXjzQKSNjTP/dTTh/CFSrTcQUcEiIKJN68jpgV6EYFw5tc5Qk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790867563; c=relaxed/simple;
-	bh=ozz1C6dVuxbIm7Haps4G3u9mV6Qlp/cJorm0ZFBVOyY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ea+n5XHnswDgCsfXIssBJwfkP2SjzxUH1Kfcq+7jQR5RM7logyb6+oGKMGWW4jGENq6xNNp7EiBED8JDof7Uhx6/KKnbWamqJ6Y4m3jJov6U7+ylod5T/S3rN0bcshhDFLAhZbxnceEt2zUgqblFQWLWR8KT+kdzRZcDrKJJOkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXjsYr3f; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C4C497385;
+	Thu,  1 Oct 2026 15:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790867592; cv=fail; b=d80XeTLYYZgozxeHvBAp2y8lh0hrL6fxbncjqrgY6ua+fRojUrYogimC5Xu+uG/Ye0YF8oVlE+NnfkUOscne2OZeEpaasVZvFrvJ98hZr0f6WQ/Mm+NCRsyxTro+Xgo1veu2dK1EOjjvux8TGbhv8hrBaKhkKaVKx2Ukr56zFAU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790867592; c=relaxed/simple;
+	bh=q15j1XDzx14aDt+dzXExuPTINbIPUiVsSLKb4m4z0V8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ucdyRRWyGZe2MMrF1BISeLv5VIZcdMVXohE+kLSW4eYEr68NPGzipEZym02gNURt/MCfoQPwFWWxTeUnQlkqmOxkI1WAYAK8xAt66R+Gf2rc99HMQtpB/yyu/L8Pra3p6Hn+V2JSZRpTnhf178zmnvOur+wL+plIEd+H8u4xHAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aHLCpcYd; arc=fail smtp.client-ip=52.101.62.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXjsYr3f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C415D1F000FF;
-	Thu,  1 Oct 2026 15:12:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790867561;
-	bh=U+uboDNmd3c4+oklKhah8Yxki5qXO3q5Peg5zVIsILo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EXjsYr3f9pk1lSJ048/qqJa1G/jbortu2tHrJtCudQVO2+7tqauxJ+/+f9p0waRi7
-	 1uY4s7FPFIZu0WxNaYxlUICOcD7sKykQwEypzkeI5xMv3IgVVbq8n4KRsajjb3BIq1
-	 b88p5JWvYfF6QWcNjkrIDL3TLUVbFBDa6UcpTX6N9TSKW4Wc8k1L+3iUF7eH6jCaTg
-	 93jFhVkJQQ2BW9oSyPN7Imk5R9GGZXmy0UdDsnC+aS6gHhq9F2njzzXoDFeXX2TR2i
-	 YRzt/RAjNUg7FFQfVJ2LxzO58lCK6hPoNrThjczfiMz/LtxEDSRuEdMQGzf+KV54Hl
-	 vTFevA+w2d6IQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xCISd-0000000Fqe0-1JUm;
-	Thu, 01 Oct 2026 15:12:39 +0000
-Date: Thu, 01 Oct 2026 16:12:38 +0100
-Message-ID: <86wls1315l.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>
-Subject: Re: (subset) [PATCH v9 00/24] KVM: s390: Introduce arm64 KVM
-In-Reply-To: <20261001132715.108643-A-seiden@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
-	<179085262878.3865846.5787241839391727949.b4-ty@b4>
-	<20261001132715.108643-A-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aHLCpcYd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lEvcWO7pLeaGpDbslSZcitD46z6tzD26O8W3G7KhL06KG63vrzzTJ8WOGmaHIR8XL0ksAUaXzagEoF9CTVVlolXaD5DgrppQJf26UNrOJBh6icUH/HdeYrKIK9LJSA4Nb4EHrtJCtpYPD0oabw8JWtZKOHtmFxCuCj8XSnBHX36wTqo0meFdiXsliaZLMs+EBB2xuzFxw5rj7yCOfz9HZyi+TPRPq1MQWWQVCZ49LiFqZYD+YlvBnclxyZr401zm7mJIeuHTn98F3tTBKZ5xlsKi8nlnYBFDilBllqBXdYaQMblW+DKB6IhX7JOzx7U88QOyrTFOXNKk+8l2N3lcBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EBeiacZSFSik7wGLvnHHrDcNd1AHv5HWIOoEVPL1AE4=;
+ b=RnjVWLLPtMUqo38S7IAadWJF4WpauYnyurnbXp17or2iw90vXjiVCUiBr85O3ANpu2D8lxUWIir8g9b7LFuM/PG5xlKD69Sja6inMgJaI2EbYovXG3ztsNGLwiWymxijTZKZAVww9+7XJh4UunhoQZF98DouN9o2KLxJX5Lqf8qW4pQZdyvfUgFzlxtwTXeGTXrw8tLdHE3E8U7lVXEdNTYRRkFobHC46tVHnO9vqFU2+0UN/dyZu+TV4nk0r+rMZjm73CpTM5/Vs/OF5PCA3UlX7uKLG/5HSknxyyaO5Tuo/gDUTQikyn+rNq4QJe8zjqbk4kDw6jNESG8d9KAKOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EBeiacZSFSik7wGLvnHHrDcNd1AHv5HWIOoEVPL1AE4=;
+ b=aHLCpcYdTFMNMjY5Qu+zcsiS+VJdWk4pT8sIrdDGsSl6OeuILXf7xwpVO2qn3TI9g7y3yJ3kfQg5w71tLuFtTiuwzF84j3n3p1rp0CCn9Hxoe1l2PBuhN1Ma+JqALApvgGmCS0repJRoVJ5JEnlkq/E990IhmK6d3LqfKGxtkZI=
+Received: from BN0PR08CA0008.namprd08.prod.outlook.com (2603:10b6:408:142::30)
+ by BY5PR12MB4259.namprd12.prod.outlook.com (2603:10b6:a03:202::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Thu, 1 Oct
+ 2026 15:12:46 +0000
+Received: from BL6PEPF00020E60.namprd04.prod.outlook.com
+ (2603:10b6:408:142:cafe::56) by BN0PR08CA0008.outlook.office365.com
+ (2603:10b6:408:142::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.17 via Frontend Transport; Thu, 1
+ Oct 2026 15:12:46 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00020E60.mail.protection.outlook.com (10.167.249.21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 15:12:46 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 1 Oct
+ 2026 10:12:43 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <tony.luck@intel.com>, <reinette.chatre@intel.com>, <bp@alien8.de>,
+	<ben.horgan@arm.com>
+CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<babu.moger@amd.com>, <tglx@kernel.org>, <mingo@redhat.com>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <fenghuay@nvidia.com>,
+	<kas@kernel.org>, <rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dapeng1.mi@linux.intel.com>, <elver@google.com>,
+	<enelsonmoore@gmail.com>, <jlayton@kernel.org>, <kuba@kernel.org>,
+	<ebiggers@kernel.org>, <seanjc@google.com>, <ewanhai-oc@zhaoxin.com>,
+	<binbin.wu@linux.intel.com>, <peterz@infradead.org>, <ashish.kalra@amd.com>,
+	<superm1@kernel.org>, <chang.seok.bae@intel.com>,
+	<prathyushi.nangia@amd.com>, <kim.phillips@amd.com>,
+	<ackerleytng@google.com>, <elena.reshetova@intel.com>, <naveen@kernel.org>,
+	<darwi@linutronix.de>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <eranian@google.com>, <peternewman@google.com>
+Subject: [PATCH v6 13/18] fs/resctrl: Deactivate kernel mode associations when a group is removed
+Date: Thu, 1 Oct 2026 10:10:36 -0500
+Message-ID: <e9a2b05b2322acf51e16571d07bc7ee297613b3c.1790867441.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1790867441.git.babu.moger@amd.com>
+References: <cover.1790867441.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E60:EE_|BY5PR12MB4259:EE_
+X-MS-Office365-Filtering-Correlation-Id: c60d77a9-94e0-45ee-20e6-08df1fce7313
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|7416014|376014|23010399003|260925021911599003|10067099003|260925021311599003|260925022911599003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	bQpvgOshNyuVKoSpKkC3R9AXq5/7knmxGVoJIxM7z4PVxc947DFkWWAPfEVHy3FPnzTngZ7qvDJiYPIlXtSUOrpdB0sj2elzqzspaFnv4ftZ7/HaNSPb7P1q6fWrX/VesNdzF/SpZ0MeXxTfL9TVW7FsMneMHOGXqRyux0LgSss5N6WnaAJzAzEmD/XGVpArrZFHWWoQgTQWQgBxGtZ+Ip3MQisf49kHtHumbQg4eounmEomC7KUdXvw4CZoltoVjT26wzZpjvFFoTr7WlNiZiyRLoS/oWdXs/89x96h5mnHlJwKJ6Xm5AtmlnWPr19bAa+7+uyVb/ZHYuHv21K009R5M3RAytid4JXIi7kQgkeaf8neSiaMKj93zwZCGGavA6qQbJWvW5sJBqrmAhC7FQQsPjEC9wurlJB61q6Np2VC3KhNRM9uKOUnii7b1fYrUPBRXiiU60YDxVtpmzYMdlmRDOikiuHiIUCll6ZfEyWRsfoiCstHeLyiFvXg4h+WUwwU+GAP77bWgIp0DLQ2QI4CxPhJ7zJiyIN79XBLdNTIHa0MeASTz/LTn17SBHbVMN1S3NA6nljEwA6Ra3amHa2YtNqMMGlfaw/sSZFuCvscWRU+DzDI7D8sgqZctE0YXz8v9KFnUd2Eq+zNQl7hvw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(7416014)(376014)(23010399003)(260925021911599003)(10067099003)(260925021311599003)(260925022911599003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	1u4bzwptnTF5Mo7sZL6D31Jb6DkNHP9q3MBN1UGak5xU6YC+XEuc4hYaKSb6qInzTLex7DIjhc3TTTSV5AvVGQ2obu2aFb1fnSpoBMgUp9cNvbIiu5mGOQw065UN9XLaiaNiTRYOezJmKvZ3h6y8uIczi5gquQtU2CTwOCRU/l2oHvKBYTS1T/1QwDK+EJIeefWF4xos6zOwctA1aq/RuXIcsa0QqZCI4cKDFHBYROgUmKImQbDhhc8FK6GBrQYn/n49CrX/tYSi/SxrPVmYMgGsvLfGGwTCAOfH3NZfSBpuum0jefVLr8iGGycY70llEN4/NLSaNbXg+AipxTCYNYmYy0t2WzCeRSfN644CJr3y9deHu+YkwZe1rNoHBtoKZ2X9Y1M4v8yxs447ezgLM094HvlrFlqZ4bBfUMFQlepUwiihY68gtPNprFpHpLs1
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 15:12:46.3802
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c60d77a9-94e0-45ee-20e6-08df1fce7313
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00020E60.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4259
 
-On Thu, 01 Oct 2026 14:27:15 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> On Thu, Oct 01, 2026 at 12:04:51PM +0100, Marc Zyngier wrote:
-> > On Wed, 30 Sep 2026 19:34:15 +0200, Steffen Eiden wrote:
-> > > Introduce arm-on-s390. Enable KVM-accelerated ARM CPU virtualisation on s390.
-> > > 
-> > > The new KVM functionally depends on KVM/vfio: Use file-based reference
-> > > counting for KVM [5] The series itself should apply w/o those.
-> > > 
-> > > For the original, now partially outdated, cover letter, have a look at versions
-> > > one to three [1].
-> > > 
-> > > [...]
-> > 
-> > Applied to next, thanks!
-> > 
-> > [05/24] arm64: ptrace: Use constants for compat register numbers
-> >         commit: 295d3df9b1e425099a4eb37954a02c4a08fdb496
-> > [06/24] arm64: sysreg: Convert SPSR_ELx to automatic register generation
-> >         commit: d3d78520068779779e1ed7aa0dd8a3ce63e1ca43
-> > [07/24] KVM: arm64: Access elements of vcpu_gp_regs individually
-> >         commit: 29d92585ab987bb80b1e78d811aaea2a8db86e62
-> > [08/24] KVM: arm64: Use accessor functions for core regs
-> >         commit: 89ed62818f10e38e64fea46d43ee6455a1beb647
-> > [09/24] arm64: Prepare sharing arm64 headers with s390
-> >         commit: df6a70516adec8b7f5fa49e1755d8ee33d980d9c
-> > [10/24] arm64: Share arm64 headers with s390
-> >         commit: c7e18ba462536e870b0ff4deca581babcac9135b
-> > [11/24] KVM: arm64: Share arm64 code with s390
-> >         commit: dcb776bfcccc9662001a75b99dbfbef55f46eb31
-> > 
-> > Note that there were a few conflicts. Please check that I resolved
-> > them correctly.
-> 
-> 
-> After rebasing on those the arm-on-s390 part does not build anymore :( 
+The active kernel mode association is backed by either a CTRL_MON or
+MON group.
 
-Well, that's sort of expected. The kvmarm tree doesn't have the S390
-stuff yet, and contains tons of new stuff.
+When the backing group is removed, or when resctrl is unmounted, clear
+the programmed association and restore the default settings.
 
-> We are missing the definition of
-> static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
-> 
-> 
-> quick fix: 
-> 
-> on top of [10/24]  arm64: Share arm64 headers with s390
-> 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index bf35cbe8ddcb..0708f792c631 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -367,10 +367,13 @@ static __always_inline u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu)
->         return vcpu->arch.fault.esr_el2;
->  }
-> 
-> +#if ARM64_S390_COMMON == 1
->  static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
->  {
->         return esr & ESR_ELx_S1PTW;
->  }
-> +
-> +#endif /* ARM64_S390_COMMON == 1 */
-> 
->  static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
->  {
-> 
-> 
-> 
-> A cleaner solution it to move this defenition just below  
-> void kvm_vcpu_wfi(struct kvm_vcpu *vcpu) in 
-> [09/24] arm64: Prepare sharing arm64 headers with s390
-> and expand the shared region in the following patch.
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+---
+v6: Rewrite changelog (not a bugfix).
+    Shorten the code comments.
 
-I'm redoing the merge and fixing it as follows (note that the
-ARM64_S390_COMMON guards are already present):
+v5: Took care of couple of Sashiko comments on previous patch.
+    https://sashiko.dev/#/patchset/cover.1783461016.git.babu.moger@amd.com?part=10
+    Re-wrote the changelog.
+    Renamed rdtgroup_config_kmode_reset() to rdtgroup_kmode_deactivate().
 
-@@ -336,16 +367,6 @@ static __always_inline u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu)
- 	return vcpu->arch.fault.esr_el2;
+v4: Re-wrote the changelog.
+    Added the call free_all_child_rdtgrp() and rmdir_all_sub()
+    Simplified the code comments.
+
+v3: New patch to handle the kernel_mode clean up.
+---
+ fs/resctrl/rdtgroup.c | 44 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+
+diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+index f5c7790f7970..0cdc868a55b1 100644
+--- a/fs/resctrl/rdtgroup.c
++++ b/fs/resctrl/rdtgroup.c
+@@ -1167,6 +1167,36 @@ static void resctrl_kmode_global_offline_cpu(unsigned int cpu)
+ 	resctrl_configure_kmode_global(cpumask_of(cpu), rdtgrp, false);
  }
  
--static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
--{
--	return esr & ESR_ELx_S1PTW;
--}
--
--static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
--{
--	return esr_trap_is_iabt(esr) && !esr_abt_is_s1ptw(esr);
--}
--
- static inline bool guest_hyp_wfx_traps_enabled(const struct kvm_vcpu *vcpu)
- {
- 	u64 esr = kvm_vcpu_get_esr(vcpu);
-@@ -389,6 +410,12 @@ static inline u64 kvm_vcpu_get_disr(const struct kvm_vcpu *vcpu)
- 	return vcpu->arch.fault.disr_el1;
- }
- 
-+#if ARM64_S390_COMMON == 1
-+static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
++/*
++ * Disable the association on @rdtgrp's kmode_cpu_mask, clear the mask, and
++ * hide the group's kmode_cpus files.
++ */
++static void rdtgroup_kmode_global_deactivate(struct rdtgroup *rdtgrp)
 +{
-+	return esr & ESR_ELx_S1PTW;
++	resctrl_configure_kmode_global(&rdtgrp->kmode_cpu_mask, rdtgrp, false);
++	cpumask_clear(&rdtgrp->kmode_cpu_mask);
 +}
 +
- static inline u32 kvm_vcpu_hvc_get_imm(const struct kvm_vcpu *vcpu)
- {
- 	return kvm_vcpu_get_esr(vcpu) & ESR_ELx_xVC_IMM_MASK;
-@@ -456,6 +483,13 @@ static __always_inline u8 kvm_vcpu_trap_get_fault(const struct kvm_vcpu *vcpu)
- 	return kvm_vcpu_get_esr(vcpu) & ESR_ELx_FSC;
- }
- 
-+#endif /* ARM64_S390_COMMON == 1 */
-+
-+static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
++/*
++ * rdtgroup_kmode_global_detach() - Detach @rdtgrp from the global per-CPU mode
++ * @rdtgrp: Resctrl group being removed or torn down.
++ *
++ * If @rdtgrp backs the active association, disable it, clear kernel mode
++ * state, and restore RESCTRL_INHERIT_USER.
++ */
++static void rdtgroup_kmode_global_detach(struct rdtgroup *rdtgrp)
 +{
-+	return esr_trap_is_iabt(esr) && !esr_abt_is_s1ptw(esr);
++	if (resctrl_kmode.rdtgrp != rdtgrp)
++		return;
++
++	rdtgroup_kmode_global_deactivate(rdtgrp);
++
++	resctrl_kmode.rdtgrp = NULL;
++	resctrl_kmode.kmode_cur = RESCTRL_INHERIT_USER;
++	resctrl_kmode.ctrl = KMODE_ASSIGN;
++	resctrl_kmode.mon = KMODE_ASSIGN;
 +}
 +
- static inline
- bool kvm_vcpu_trap_is_permission_fault(const struct kvm_vcpu *vcpu)
+ void *rdt_kn_parent_priv(struct kernfs_node *kn)
  {
-
-
-Does this work for you?
-
-	M.
-
+ 	/*
+@@ -3228,6 +3258,7 @@ static void free_all_child_rdtgrp(struct rdtgroup *rdtgrp)
+ 
+ 	head = &rdtgrp->mon.crdtgrp_list;
+ 	list_for_each_entry_safe(sentry, stmp, head, mon.crdtgrp_list) {
++		rdtgroup_kmode_global_detach(sentry);
+ 		rdtgroup_unassign_cntrs(sentry);
+ 		free_rmid(sentry->closid, sentry->mon.rmid);
+ 		list_del(&sentry->mon.crdtgrp_list);
+@@ -3265,6 +3296,7 @@ static void rmdir_all_sub(void)
+ 		cpumask_or(&rdtgroup_default.cpu_mask,
+ 			   &rdtgroup_default.cpu_mask, &rdtgrp->cpu_mask);
+ 
++		rdtgroup_kmode_global_detach(rdtgrp);
+ 		rdtgroup_unassign_cntrs(rdtgrp);
+ 
+ 		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP ||
+@@ -3360,6 +3392,7 @@ static void resctrl_fs_teardown(void)
+ 		return;
+ 
+ 	rmdir_all_sub();
++	rdtgroup_kmode_global_detach(&rdtgroup_default);
+ 	rdtgroup_unassign_cntrs(&rdtgroup_default);
+ 	mon_put_kn_priv();
+ 	rdt_pseudo_lock_release();
+@@ -4395,6 +4428,8 @@ static int rdtgroup_rmdir_mon(struct rdtgroup *rdtgrp, cpumask_var_t tmpmask)
+ 	u32 closid, rmid;
+ 	int cpu;
+ 
++	rdtgroup_kmode_global_detach(rdtgrp);
++
+ 	/* Give any tasks back to the parent group */
+ 	rdt_move_group_tasks(rdtgrp, prdtgrp, tmpmask);
+ 
+@@ -4442,9 +4477,18 @@ static int rdtgroup_ctrl_remove(struct rdtgroup *rdtgrp)
+ 
+ static int rdtgroup_rmdir_ctrl(struct rdtgroup *rdtgrp, cpumask_var_t tmpmask)
+ {
++	struct rdtgroup *sentry;
+ 	u32 closid, rmid;
+ 	int cpu;
+ 
++	/*
++	 * A monitor group uses its parent's CLOSID. Detach a child that
++	 * backs the association before that CLOSID is freed.
++	 */
++	list_for_each_entry(sentry, &rdtgrp->mon.crdtgrp_list, mon.crdtgrp_list)
++		rdtgroup_kmode_global_detach(sentry);
++	rdtgroup_kmode_global_detach(rdtgrp);
++
+ 	/* Give any tasks back to the default group */
+ 	rdt_move_group_tasks(rdtgrp, &rdtgroup_default, tmpmask);
+ 
 -- 
-Without deviation from the norm, progress is not possible.
+2.43.0
+
