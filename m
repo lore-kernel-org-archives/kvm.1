@@ -1,82 +1,211 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866FD476CC2;
-	Thu,  1 Oct 2026 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF00C4A3862;
+	Thu,  1 Oct 2026 17:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790872667; cv=none; b=YEHQWrpk74XD3ELWUQA99IGbKvuTvezmQMVi1TCSQ1fRr+i4NlD20agQ4Bz0x9Ag3vSN6BX9QoBQxCUNCmobdLXp/3/zKf5SQm3+1DS/dY11KZX9dlAP0X1Fzvthcil5rs4p+/BESxt+4aQ4tk0tXG8/Tv140Cb1zYvg0rDcjuM=
+	t=1790874162; cv=none; b=AqrTlfxuNWjc9Krx5KRBjv+wMHroIsB3CKr38GQqRABI9aCH28AyYfYfdROjP4VlOrODr8d3YUD+mR+ckDd9ncEUY+kGV/5WZZ6hos6gN/VyXHVcPNLsi19sJ05krha7QIi3T0wQgk+T4mF+ZBI/5lZnGWRMFIYf8kiGh6sKjEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790872667; c=relaxed/simple;
-	bh=K9BrYtciJGkSxMEbrXtvHk2FbFP0IJ/JnLlba9Tczjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dEJbNnqeo/Jrv9hFQyn9Y912VY1kpr43bp7YU4Oa9RFdPg/9gdpE2VFTHK4jxYF2/uAxK6BlyJaEbG6CsPDDFNmdWq0vCDa8L6//gxXv83J7tKD2KZ3mvQD8rHQuO47C+5NhcJgUTOpLdYJ8dL58NOxgu+E/Qh+EK7FGuRw83O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BsV62LOq; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1790874162; c=relaxed/simple;
+	bh=l9dUTRwvgqc1WP+4Zk1aYmL4l0jLZasgEBzCwMrMk+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=U+XYjO/186Fjt7jGvWTEBAngUO6LkG7Nuo/hE0emEPUL8NOc43w967jOPrsF0s5n11nzGak2wrbGzB9quyxLMzvEmCrxy9mUb/qEkOg3abIcOW31eEgCPek2JoWPNOdNIubVk4BN1n905DBL8RSHBz4+YdEaEDBA37q1+kTDaeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Gldmk7Qn; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BsV62LOq"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Gldmk7Qn"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A8D7497;
-	Thu,  1 Oct 2026 09:37:41 -0700 (PDT)
-Received: from [10.57.9.178] (unknown [10.57.9.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8C683F85F;
-	Thu,  1 Oct 2026 09:37:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B440497;
+	Thu,  1 Oct 2026 10:02:27 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CE233F85F;
+	Thu,  1 Oct 2026 10:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790872664; bh=K9BrYtciJGkSxMEbrXtvHk2FbFP0IJ/JnLlba9Tczjs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BsV62LOqI5ja68sCQcFyb5ijD1CAgATdMGzmBFi4PPZQ2Nl1po/USPeOyjARfB1hR
-	 4IW2nKeALWQxil1hxMsJbWCTmjfJWwrfaJRQWTlMxqg8rSgve5w/QmYdvcMHIJ7CR0
-	 apDR+U8DfZ9vBePkOCIe3Wvt8ZYFIpX+pUeF5fiY=
-Message-ID: <c8ea1847-0a92-46b2-a038-37a9d581e8b2@arm.com>
-Date: Thu, 1 Oct 2026 17:37:37 +0100
+	t=1790874150; bh=l9dUTRwvgqc1WP+4Zk1aYmL4l0jLZasgEBzCwMrMk+E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Gldmk7QnRni3aiFeWUUJzLP0btxS+WxJc+KhRKjF95pfna6heJ+SuyuiTsnqZe9WW
+	 u66m1WGr7IK4Ya6urCwRwTegi1ZX+qydSl4wexR4k+xPyiE0FWSSlJ3yJLy0VqWJX2
+	 dMdhcD1y/aXVVETjtrkoiNuKE00k13C9gC/C3WQU=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Josh Hilke <jrhilke@google.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Wu Fei <wu.fei9@sanechips.com.cn>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] KVM: selftests: Check dirty-ring size before enabling
+Date: Thu,  1 Oct 2026 18:02:22 +0100
+Message-ID: <ar6SHjnMYNqiEpVa@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <ar5yW30S75THCfdV@LeoBrasDK>
+References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-3-leo.bras@arm.com> <ar1xne00AHnJ-p_d@google.com> <ar5yW30S75THCfdV@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v20 22/22] KVM: arm64: CCA: Control user register access
- for Realms
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20260924160504.853911-1-suzuki.poulose@arm.com>
- <20260924160504.853911-23-suzuki.poulose@arm.com> <ar6CEXfo-AIYtq1J@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ar6CEXfo-AIYtq1J@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 01/10/2026 16:53, Catalin Marinas wrote:
-> On Thu, Sep 24, 2026 at 05:05:04PM +0100, Suzuki K Poulose wrote:
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> The RMM restricts the access to the register states that the host can
->> read/modify for a given Realm.
->>
->> e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
->>        While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI
->>        requests.
->>        MMIO emulation in the unprotected space.
->>
->> Additionally we use the sysreg configuration to advertise/configure the
->> following Realm parameters, which are required before the Realm Descriptor
->> :w
+On Thu, Oct 01, 2026 at 03:46:51PM +0100, Leonardo Bras wrote:
+> On Wed, Sep 30, 2026 at 01:31:25PM -0700, Sean Christopherson wrote:
+> > On Tue, Sep 29, 2026, Leonardo Bras wrote:
+> > > As of today, trying to enable dirty-ring with a size bigger than the
+> > > maximum will return an "argument list too long" error.
+> > > 
+> > > Change vm_enable_dirty_ring() to get the maximum size, then compare it to
+> > > the desired size before enabling. If the value is invalid, print a more
+> > > precise error message.
+> > > 
+> > > Signed-off-by: Leonardo Bras <leo.bras@arm.com>
+> > > ---
+> > >  tools/testing/selftests/kvm/lib/kvm_util.c | 21 +++++++++++++++++----
+> > >  1 file changed, 17 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+> > > index 9ddc047d5c27..15a671b71553 100644
+> > > --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> > > +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> > > @@ -168,24 +168,37 @@ unsigned int kvm_check_cap(long cap)
+> > >  	ret = __kvm_ioctl(kvm_fd, KVM_CHECK_EXTENSION, (void *)cap);
+> > >  	TEST_ASSERT(ret >= 0, KVM_IOCTL_ERROR(KVM_CHECK_EXTENSION, ret));
+> > >  
+> > >  	kvm_free_fd(kvm_fd);
+> > >  
+> > >  	return (unsigned int)ret;
+> > >  }
+> > >  
+> > >  void vm_enable_dirty_ring(struct kvm_vm *vm, u32 ring_size)
+> > >  {
+> > > -	if (vm_check_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
+> > > -		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL, ring_size);
+> > > -	else
+> > > -		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING, ring_size);
+> > > +	long cap = KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
+> > > +	int max_size = vm_check_cap(vm, cap);
+> > > +
+> > > +	if (!max_size) {
+> > > +		cap = KVM_CAP_DIRTY_LOG_RING;
+> > > +		max_size = vm_check_cap(vm, cap);
+> > > +	}
+> > > +
+> > > +	TEST_ASSERT(max_size > 0,
+> > 
+> > Rather than open code this, which is kinda sorta going to show up in multiple
+> > places, what if we do this as a prep patch?  Then vm_enable_dirty_ring() can use
+> > kvm_get_dirty_ring_cap() (completely untested).
 > 
-> Should use Emacs ;)
+> Sure, if you think it's useful :)
+
+Oh, vm_check_cap() is different than kvm_has_cap()/kvm_check_cap():
+IIUC, the vm* version will check if the extension is enabled in the current 
+VM, while the kvm* version will open a new /dev/kvm fd and check the 
+extension there, probably meaning the CAP is available in the system.
+
+So, maybe we would need a slightly different approach?
+I.E. have the kvm_get_dirty_ring_cap() to use the VM version, and 
+have dirty_ring_supported() to start the new /dev/kvm fd and free it later?
+
+What do you think?
+
+Thanks!
+Leo 
+
+
+
+
 > 
-
-Dang it ;-) I have fixed it in v21. Thanks
-
-Cheers
-Suzuki
-
+> > 
+> > diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
+> > index af5eb0334a74..558a71d631da 100644
+> > --- a/tools/testing/selftests/kvm/dirty_log_test.c
+> > +++ b/tools/testing/selftests/kvm/dirty_log_test.c
+> > @@ -291,8 +291,7 @@ static void default_after_vcpu_run(struct kvm_vcpu *vcpu)
+> >  
+> >  static bool dirty_ring_supported(void)
+> >  {
+> > -	return (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING) ||
+> > -		kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL));
+> > +	return kvm_get_dirty_ring_cap();
+> >  }
+> >  
+> >  static void dirty_ring_create_vm_done(struct kvm_vm *vm)
+> > diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+> > index e3b122719262..c08d1581221e 100644
+> > --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> > +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> > @@ -339,6 +339,17 @@ static inline bool kvm_has_cap(long cap)
+> >  	return kvm_check_cap(cap);
+> >  }
+> >  
+> > +static inline long kvm_get_dirty_ring_cap(void)
+> > +{
+> > +	if (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
+> > +		return KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
+> > +
+> > +	if (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING))
+> > +		return KVM_CAP_DIRTY_LOG_RING;
+> > +
+> > +	return 0;	
+> > +}
+> > +
+> >  /*
+> >   * Use the "inner", double-underscore macro when reporting errors from within
+> >   * other macros so that the name of ioctl() and not its literal numeric value
+> > 
+> > 
+> > > "Dirty-ring not supported in this kernel\n");
+> > 
+> > "this kernel" could be misleading, some architectures simply don't support the
+> > dirty ring.
+> 
+> So, do you suggest keeping it simple by printing "Dirty-ring not supported"?
+> 
+> 
+> > 
+> > > +	TEST_ASSERT(ring_size <= max_size && is_power_of_2(ring_size) &&
+> > > +		    ring_size >= getpagesize(),
+> > > +		    "Invalid dirty-ring size: Should be a power of two "
+> > > +		    "between %lu and %lu entries\n",
+> > 
+> > Don't wrap strings.  The "Invalid dirty-ring size:" part is redudant with the
+> > expressions, just drop that to shorten things.  This should also spit out the
+> > requested ring_size.  Stating the range as a number of entries is also confusing;
+> > as a debugger, I don't want to have to go look at the size of kvm_dirty_gfn to
+> > understand why ring_size is invalid.
+> > 
+> > And maybe split up the asserts?  If the goal is to make it easier for developers
+> > to know when they messed up, might as well make it as easy as possible.  E.g.
+> > leaning on the above diff, something like this?
+> > 
+> > 	long cap = kvm_get_dirty_ring_cap();
+> > 
+> > 	TEST_ASSERT(cap, "Dirty-ring not supported");
+> > 
+> > 	TEST_ASSERT(is_power_of_2(ring_size),
+> > 		    "Dirty-ring size '0x%x' must be a power-of-2", ring_size);
+> > 	TEST_ASSERT(ring_size >= getpagesize(),
+> > 		    "Dirty-ring size '0x%x' must be at least one (host) page", ring_size);
+> > 	TEST_ASSERT(ring_size >= vm_check_cap(vm, cap),
+> > 		    "Dirty-ring size '0x%x' is larger than KVM's limit of '0x%x'",
+> > 		    ring_size, vm_check_cap(vm, cap));
+> > 
+> > 	vm_enable_cap(vm, cap, ring_size);
+> > 	vm->dirty_ring_size = ring_size;
+> > 
+> 
+> Humm, I see the point. 
+> Will do as suggested then, thanks!
+> 
+> Leo
