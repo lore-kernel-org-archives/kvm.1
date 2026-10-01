@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAC75372CF
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 19:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045BA5383F2
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 19:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790883538; cv=none; b=GK33fxcDR6QMOFIsl5AflUmsHHJCuW+nK4IwsNoFe7CPZ1vIdSL5qkFihP3JbdRl24szylSwJER8Tb96le68lxj4PBLN0F2CcnUf3XrK+y89wiVegs7Zz5j8RFeNSinZCWFl//vxO8ToKoBhiZ0kyOqw4mycKikc5+H+WZBpbxI=
+	t=1790883539; cv=none; b=tw2X5995Rb9eroWZjZKBoWGFNUXHr5Tt/rR7AnqvvQKXNdFEgKWM9+D8+18ZwKGGpGgxwsGfAHZzwc8mJ5HUhg2mSsJG8iqHCSXbArfDpRfocpIiZDZ/f6sqnzWFUi1plA/R4WgoQomHJuYeA4n4r6ye1GROtpReRH/rOZNaQyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790883538; c=relaxed/simple;
-	bh=pVh3W7IgL0tb+3VmdaT+bHcGzD3aMg5/8PYinx/HcFs=;
+	s=arc-20240116; t=1790883539; c=relaxed/simple;
+	bh=70yzso9mTpjtAZvDQw6MEGUzLnCLrVD066F6p3Zhl2A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=q+Z5hE05Y3clQ0y+NekGnTFaym8qE06A8GKvrGkFghPMTxbV3m5gzSwP+1nLSUcOE2GrdeHdqPjBTfQIss5ltrE6c0kR2kS4Jiv0tV69+rsz3JSa4BvKJj4rZDl0cYu5gZTLYR6ZbQmWmlTmp0+YvZD/u/TsGJvqPbGzCc1NHU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSpJlzwY; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=Z5HpRhUP+2pRl/L9bzp9sjvuyjw8JJ0j1G1crnqm50xh4qVDrR7/Gsin5x/xJ6dRUUlzJQqRIeNsx5VUfL/ktgvbd9uNYEer9aCjp0ecYLYc3ioYcvMYpacwxK5gy5kglRfynvhG8gOy/QDZ+GI4khi4V7nS65rOky9N8eGgbEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y2TbK0n4; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSpJlzwY"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6f80c76e6so59494945ad.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 12:38:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y2TbK0n4"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39aee9b4cf2so11116252a91.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 12:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790883534; x=1791488334; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790883535; x=1791488335; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6bZLzZb4sU4KEN1U8eHEldtPfXW3XPpsor0ue/9+Hb4=;
-        b=JSpJlzwYAp5u6GIAWdjpVZDDy+vJhKlg2oyTSS1/cI6MFuqg91vuki/lqlwvS14xP+
-         om6CSuODe3Env67dUSGXzN8tHN8gDf63I9KEPbQOJjt/1yFOaoMhNPPqwF58/ce+CmO8
-         S4rtllQdDZiVIM4Rz6X3zzG8gH26xUty78ied9WuYhwLPljpivrcJUmZ3mAOiIG1K8cj
-         17BpEpM1OxgUs9SpD3FhQRdkBx7hcbV5eXbbGHCNZ7Xq0dKT9UpKXYA36yrXa9F+QE9R
-         M+dGp90pL0KYfxk3JDItXobI+Sd6GgNUUcfKsB0zAcFRlZzJrIpFEAvSEEHeqCjh8rz1
-         aqmQ==
+        bh=A4TZAQ6Bf7T7xY4lGMxLLjKedsMydQ7E/lyehw+8438=;
+        b=Y2TbK0n45DVOPvHYGOY2hubox3jAuBv4sXHsAIctUycY7fE5vWnISLob9OkpYVlNN/
+         pSbKPQsxK9XoMS9KHIyjSVIu3JEfSVkE7dLPcgrFikmS1J/9e4bk3dtiB5GDeIu+Lycx
+         6rJky+blnRa3XuExYq+4DxtGOoIh0135zpM/lHg6FaO/z4QE1E3KFyL+xokrjDGPXhlv
+         Isqx4i2/fKfJ27NNXk3Mgt4UpjMdLjwV/VnGmG6P4qAHoo3IM4hBrmcMly5chYbd2B4+
+         mMkWUM1AIbZEUmokpgAsnqQcRA7WxzqBueY8DrtbgUWD9I3q3fqt03AQhXkV0OMZ06q3
+         tb8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790883534; x=1791488334;
+        d=1e100.net; s=20260707; t=1790883535; x=1791488335;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6bZLzZb4sU4KEN1U8eHEldtPfXW3XPpsor0ue/9+Hb4=;
-        b=Whq6eHU5JXwa5+miRT2lOLSuPDN5Vcs5RfJYt4dZXh/+6L4sfs7u32iLgOnWUVAzVl
-         3aBf+SDGDLZGsgV33NcQkG9/jg6LI3Y+Nylu1+UVqcZmZFIwoWBy23+rQPPC4SwBydw7
-         HqEuHova2eX5Wd28mQuclsCqg3v3vtJAtaGuZnjBlYCExBxrkm/IYQ1yfKKYU8QagQaz
-         c2wgsINuzUsMm77uJs6+0VcoL48aEEgO+tvZcAcaV0mej8bAip6b6VT6cQ4JD2MXU0Ro
-         4i7LXUwwRqrwN4Y2keLEEKN5jNeywctcqtTqBJ8XImKcwMuq7TfNTFgRq97aeLAys7+t
-         8tbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzyq1+EbiZFwhz6viT+V/tpycXoeCxnWIorLOQMod4cAB2GP4pNKxVIff8KX6qM2gOX8v8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK859/P8E1A+1sPRExbARQVs80bw5M6jFuzd7+jYLJqsDwRjvt+
-	z3C8UR12wUNfhLQ/gAP8xNnbaAhc/urJzgmvaeYkebuDbJ/QA569ti6EKljBClXIsKWh289whaD
-	bxAjS3Q==
-X-Received: from plble4.prod.google.com ([2002:a17:902:fb04:b0:2e3:3e4f:56e7])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c951:b0:2e3:1ed7:d5d3
- with SMTP id d9443c01a7336-2e49b7f27e2mr3915375ad.67.1790883534303; Thu, 01
- Oct 2026 12:38:54 -0700 (PDT)
-Date: Thu, 01 Oct 2026 19:37:41 +0000
+        bh=A4TZAQ6Bf7T7xY4lGMxLLjKedsMydQ7E/lyehw+8438=;
+        b=j5C/8NkU86Rh/TB5FHEqnSPGp0VmdopG2bsyWlYKVqibhxTbL90WDUNkur18/9dVLr
+         IstJlGJY4qcW70x+2fQj6mnnYCjNyTT1QDy92KnepNZk/07g+qfrDGwHabUsOSoZOej3
+         tbRddgeavENnbm+Ekql9vdhsvDGvVmt+L+D9g+VoTjc+Nr9SdWn1ZZYcg1VNyjbDtFbU
+         qIvzI6bMh7rGJOKSZLwUaU3WY+b7pCZOOFm3Y6VY87PoYM1EOemL0uaLLz9Hy01aDy8d
+         Gubta1UMqBYiC9qsWqPHVOxr0+nu5aPXyK3ae/01FOzsVWW4cLO67JWjfWbbgL6akj3f
+         NQ/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxv83V594RYcbCkkmAmASdCf4Y9tXZYJirwglIOQnB0n0SkT6dtgIpTK2ybXu+j5DG5UZg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJumhHbLbUux+OUhCo+nojO3B7D2JcVRGDpeWkw+zK+km9ZVsbz
+	8RYhGILUKp2EifosWZ6o4AuXvT1SGu5jM7i6YqK3kzoCwC1OeFKvKYClRyNGDZ2c6WU6KGzz58X
+	gfOupYg==
+X-Received: from pjbic4.prod.google.com ([2002:a17:90b:4144:b0:3a4:ddaf:87c4])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1642:b0:3a4:a1f1:fea4
+ with SMTP id 98e67ed59e1d1-3a6ce761d36mr503563a91.26.1790883535257; Thu, 01
+ Oct 2026 12:38:55 -0700 (PDT)
+Date: Thu, 01 Oct 2026 19:37:42 +0000
 In-Reply-To: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,13 +60,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=3422;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=4160;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=j/m+vrnUGb48Imqx0CMR7UIlIq8TwL0A1eGENaF91Kg=; b=DOEcCJY81kvyAGiiQ4zAi43IcAu7/xLkCVUiC3LZZ0sVAKYGxMJiKW3Wf5HTI2FuCEkLprj9h
- 1lTOhqQqdkBB4NtcRKOcK1YgNRU8En3KckALp4hl0HCXLXXuBt7ibpo
+ bh=6uzrO/K0PGoda6MU5XX7QhxZsSju3qRYklqNZ/DxwCk=; b=RMhvLxjHiZg/NAnzEV+4iZSvnKzg391Z6Rf12P7z3bBg4BZXIhza2N6BA9uH87y5RlaEPFRD8
+ nBU9vUy2uxmDkD2JzzqsG8amoq78F2lsZMMiIV6WErqijh6SmMz4Rv0
 X-Mailer: b4 0.14.3
-Message-ID: <20261001-tdx-selftests-v15-14-7c62a5d8a992@google.com>
-Subject: [PATCH v15 14/23] KVM: selftests: Expose function to allocate vCPU stack
+Message-ID: <20261001-tdx-selftests-v15-15-7c62a5d8a992@google.com>
+Subject: [PATCH v15 15/23] KVM: selftests: Call KVM_TDX_INIT_VCPU when
+ creating a new TDX vcpu
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -80,92 +81,124 @@ To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com
 	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
 	Oliver Upton <oupton@kernel.org>
 Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>, 
-	Ira Weiny <iweiny@kernel.org>
+	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
 From: Sagi Shahar <sagis@google.com>
 
-Introduce kvm_allocate_vcpu_stack() to allocate a vCPU's stack
-in preparation for TDX to allocate a vCPU's stack and initialize
-its stack pointer.
+TDX VMs need to issue the KVM_TDX_INIT_VCPU ioctl for each vcpu after
+vcpu creation.
 
-TDX VMs' registers are protected state and cannot be initialized
-using the KVM_SET_REGS ioctl() that is used for normal VMs. A TDX
-vCPU's stack address will be a property of the TDX specific boot code
-that initializes the vCPUs' stack pointers at boot.
+KVM_TDX_INIT_VCPU has a strict prerequisite for the CPUID state. To
+satisfy this requirement, call KVM_TDX_GET_CPUID and KVM_SET_CPUID2 to
+pull the CPUID configuration from the TDCS and commit it into KVM,
+allowing KVM_TDX_INIT_VCPU to succeed.
+
+Additionally, unlike tdx_vm_ioctl(), tdx_vcpu_ioctl() doesn't check
+hw_error. KVM's vCPU-scoped TDX ioctl handlers don't propagate SEAMCALL
+errors into hw_error: the error is handled in the kernel and only an
+errno is returned. Checking the ioctl's return value and errno is
+therefore sufficient.
 
 Signed-off-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- .../testing/selftests/kvm/include/x86/processor.h  |  2 ++
- tools/testing/selftests/kvm/lib/x86/processor.c    | 25 +++++++++++++++++++---
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ .../selftests/kvm/include/x86/tdx/tdx_util.h       | 20 +++++++++
+ tools/testing/selftests/kvm/lib/x86/processor.c    | 48 ++++++++++++++++++----
+ 2 files changed, 60 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 8854ee052d29..1eb380dd216c 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1212,6 +1212,8 @@ static inline void vcpu_clear_cpuid_feature(struct kvm_vcpu *vcpu,
- 	vcpu_set_or_clear_cpuid_feature(vcpu, feature, false);
- }
+diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+index e529c587aeae..f5b2f32f2118 100644
+--- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
++++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+@@ -46,6 +46,26 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
+ 		    (unsigned long long)hw_error);			\
+ })
  
-+gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm);
++#define __tdx_vcpu_ioctl(vcpu, cmd, _flags, arg)			\
++({									\
++	union {								\
++		struct kvm_tdx_cmd c;					\
++		unsigned long raw;					\
++	} tdx_cmd = { .c = {						\
++		.id = (cmd),						\
++		.flags = (u32)(_flags),					\
++		.data = (u64)(arg),					\
++	} };								\
++									\
++	__vcpu_ioctl(vcpu, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
++})
 +
- u64 vcpu_get_msr(struct kvm_vcpu *vcpu, u64 msr_index);
- int _vcpu_set_msr(struct kvm_vcpu *vcpu, u64 msr_index, u64 msr_value);
- 
++#define tdx_vcpu_ioctl(vcpu, cmd, flags, arg)				\
++({									\
++	int ret = __tdx_vcpu_ioctl(vcpu, cmd, flags, arg);		\
++	TEST_ASSERT(!ret, "%s failed, errno: %d (%s)",			\
++		     #cmd, errno, strerror(errno));			\
++})
+ void tdx_init_vm(struct kvm_vm *vm);
+ void tdx_vm_setup_boot_code_region(struct kvm_vm *vm);
+ void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus);
 diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index da430d4e7765..4a753fb43007 100644
+index 4a753fb43007..4af9cbf3fabb 100644
 --- a/tools/testing/selftests/kvm/lib/x86/processor.c
 +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -851,12 +851,31 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
- 	vcpu_regs_set(vcpu, &regs);
- }
+@@ -876,16 +876,48 @@ gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)
+ 		    "__vm_alloc() did not provide a page-aligned address");
+ 	stack_gva -= 8;
  
--struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
-+gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)
- {
- 	struct kvm_mp_state mp_state;
- 	struct kvm_regs regs;
-+	gva_t stack_gva;
- 	struct kvm_vcpu *vcpu;
- 
-+	stack_gva = __vm_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
-+			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
++	return stack_gva;
++}
 +
-+	stack_gva += DEFAULT_STACK_PGS * getpagesize();
++static void tdx_vcpu_init(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++	struct kvm_cpuid2 *cpuid;
 +
-+	/*
-+	 * Align stack to match calling sequence requirements in section "The
-+	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
-+	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
-+	 * 16 when control is transferred to the function entry point.
-+	 *
-+	 * If this code is ever used to launch a vCPU with 32-bit entry point it
-+	 * may need to subtract 4 bytes instead of 8 bytes.
-+	 */
-+	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
-+		    "__vm_alloc() did not provide a page-aligned address");
-+	stack_gva -= 8;
++	cpuid = allocate_kvm_cpuid2(MAX_NR_CPUID_ENTRIES);
++	tdx_vcpu_ioctl(vcpu, KVM_TDX_GET_CPUID, 0, cpuid);
++	vcpu_init_cpuid(vcpu, cpuid);
++	free(cpuid);
++	tdx_vcpu_ioctl(vcpu, KVM_TDX_INIT_VCPU, 0, NULL);
++}
++
++struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
++{
++	struct kvm_mp_state mp_state;
++	struct kvm_vcpu *vcpu;
++	struct kvm_regs regs;
 +
  	vcpu = __vm_vcpu_add(vm, vcpu_id);
- 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
- 	vcpu_init_sregs(vm, vcpu);
-@@ -864,8 +883,8 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+-	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+-	vcpu_init_sregs(vm, vcpu);
+-	vcpu_init_xcrs(vm, vcpu);
  
- 	/* Setup guest general purpose registers */
- 	vcpu_regs_get(vcpu, &regs);
--	regs.rflags = regs.rflags | X86_EFLAGS_FIXED;
--	regs.rsp = vm_alloc_stack(vm, DEFAULT_STACK_PGS);
-+	regs.rflags = regs.rflags | 0x2;
-+	regs.rsp = kvm_allocate_vcpu_stack(vm);
- 	vcpu_regs_set(vcpu, &regs);
+-	/* Setup guest general purpose registers */
+-	vcpu_regs_get(vcpu, &regs);
+-	regs.rflags = regs.rflags | 0x2;
+-	regs.rsp = kvm_allocate_vcpu_stack(vm);
+-	vcpu_regs_set(vcpu, &regs);
++	/*
++	 * Both kvm_get_supported_cpuid() (for legacy VMs) and KVM_TDX_GET_CPUID
++	 * (for TDX VMs) return VM-scoped CPUID. e.g. the APIC ID isn't
++	 * populated per vCPU. This is fine because KVM selftests don't
++	 * currently test CPUID topology enumeration.
++	 */
++	if (is_tdx_vm(vm)) {
++		tdx_vcpu_init(vm, vcpu);
++	} else {
++		vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
++
++		vcpu_init_sregs(vm, vcpu);
++		vcpu_init_xcrs(vm, vcpu);
++
++		/* Setup guest general purpose registers */
++		vcpu_regs_get(vcpu, &regs);
++		regs.rflags = regs.rflags | 0x2;
++		regs.rsp = kvm_allocate_vcpu_stack(vm);
++		vcpu_regs_set(vcpu, &regs);
++	}
  
  	/* Setup the MP state */
+ 	mp_state.mp_state = 0;
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
