@@ -1,109 +1,92 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E009D44E64A
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 23:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240333B4E9E
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 23:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790896312; cv=none; b=AnTgvtJLFLGyxgAeQloBC6yMTSvXsrKwMtniGM+/Z8oUfts+itkgD40Ah/C+nXBCyOxr0V7e3IGdYKUU/1p0PHpQv+fV+yEs9rtV6sdl4YaViNYuARUWhDmwhyDhJ+zsJOCUGobg89TwAhSHU1EGEtH0qk597AVz5iVBBE4pNZQ=
+	t=1790896718; cv=none; b=l5oqa7wWnUpqBNLzxfXzEQXGG07/O2aJuPcB/4+h6uSQHxV1RYPWJnLFDshEirXmJwzsr8UWsiDG0KV8Mi5V3hMkaTlXrU8rFxBn0MxHmmwFX0+VvtDWt/K9w8SmL+xMpUohBez9pQ9EJV9H+B/IIYFrGdhTaPyjly+BQbNo1dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790896312; c=relaxed/simple;
-	bh=TNhmvhGlub+ZzKwtl8RxUpuyaJEUSEHmWLF0hGRFojA=;
+	s=arc-20240116; t=1790896718; c=relaxed/simple;
+	bh=LGswsnZXJUBGkrzTvqTSLcIHT6gzuUHjJgJwgvTE8fM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=knpKA2X2z80DtH/2VtPI9Uk0UpAdDT34syAEbKo9h3vF+NyOJHSwRuaUr2OplyW6HhuRVkNiEf6qvB6KCAB8yLTLzt8ug7OhdC044kSnSktyv7qkMOQ92wglsCfZHs/E+LKLL59YvR44qOQczkwT0zmxdSBXnqIjPW0evJ8DS3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kOx4PSSx; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=MbQRGjdGFGkCS5wLV2mEEpZyppipu032Uypd0lcOSmyuUvZe67uIL9DjkB1NvPdIVFoqePRubeK7KoOkZ/X3bDJOz5vCyu32ApCeGbxKRwaSab6dWuviEGvkQqrXHXIhbh0HEA/9uXwcfz9UzC7LAdcvXisd49K8xlxzPKIq6Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GB6KYFb5; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kOx4PSSx"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d6f80c76e6so60661645ad.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 16:11:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GB6KYFb5"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a0f55a3941so6765400a91.3
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 16:18:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790896310; x=1791501110; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790896716; x=1791501516; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2jnyEHhlGxvnuoA1nvmtdC29EmxOTtThmrSlZkBmHAw=;
-        b=kOx4PSSxJrDKclu38Of1lHUNKmXAZrVmXEggUkkdNSq+6VrWBkzO66qmQbBao1LgR0
-         cT+pPfnqZQFdkv2RSEBfVthzKn4zdyNKIWhGQJw21goMderkeVv+KKMcqt/4yVylr9lm
-         eSzWZlWD5J8DX6tywI1OEOe0kgPNBOr8753Ao80AcBOgH+nlW7AHLecz/6P8kQ1Ujtfc
-         JXhCzmuLYtxdFtByLKpGaSR7JFt+xmFXtAH8YcN57GwxN8tMA8qTj6fg48W14LXeCr5s
-         WBxSBo7D5qgO6dOVXHi7Z305u6f2C1pw8d9s2A0Ppd47EmHWtTXGHXhxDU64ml8VrsRt
-         A2ww==
+        bh=7Bt4FBOS0I71ZeNU1qvl7TVnImsqea9TvROCXfNFv7c=;
+        b=GB6KYFb5OU5KAXaieAWtPW9+eZVxGHI3jLY2OVL4FuPWCUoUtnpGmCzM91pHEfTCMD
+         blI2zKr8HxssevsDsIPu/RINqwx1MB+Yq1XRe1x6hP/omS2JisYjZxtbzMuTgeT5FrX5
+         eHbb74KQPzVMuh6XuIBpvxY7q4vXW5rpmdCKEmvbG04rthycnGxr15sTN9k1UkfkV1oR
+         Gy528AW1i0YUPRl6lF/SIh+3ix6YBcgBI/NadtlMrYDhQdE8eqI7HKIFC/JxZ97n1gew
+         DHWKLgiTu9JGMPx2IwwCSF08HYmgir1S/pYoWsFdF8ffK7N5tU40myZuvkv7kAO9Sy3a
+         gCeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790896310; x=1791501110;
+        d=1e100.net; s=20260707; t=1790896716; x=1791501516;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2jnyEHhlGxvnuoA1nvmtdC29EmxOTtThmrSlZkBmHAw=;
-        b=LBGvnLsrFXfabHqowJwuK4k6J7IwiEAuBJ2okuSSOqm47r5lRC/egyywM36BZc1OTW
-         xLiHMOfeMh6HAMDAs1Z2X4Dqvtf17mhc6V67E6vqWC4WVgkuCZWahNbYoQOC6oNB/ct7
-         3WT8JlmnrhJU1jSqwv/aPxMQXVY1jRHLb7fLaaGR4A8ZUmH18ON/EK074UvMKhw9YZUO
-         AZ3oGjK46h5eu2X2p6ieczRQ5dxsKtQS4PiBLOxN7gXgrwwh0K8uMa5lSU1SPMjk6fDw
-         9mLYRyXFL5i4UN7OtGUDBTpzwofE9zx2D35LK6g3ehnG0K7qA7ZSRtro4JeGFTRbSaVJ
-         mlqw==
-X-Forwarded-Encrypted: i=1; AKwUvByXGa9BmP9PZN68OEDSEd0/ZDJcXGbzX+2fYNPtXSov9pZ9mWi/VqkvpARCgG1Hqn/U9NI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJJ+kkq6tiYiAF+QqYGcJAzJv32Bxy7ibJDj649kNb3sOucVYtB
-	faPbvtxrhfhvGQ43SQpxUkEnJZ6lQpfVnUWRSgBl49MuINj8zGAwFebZehV+LpxqnuWaNH12iZ6
-	jS+OkWg==
-X-Received: from ploc3.prod.google.com ([2002:a17:902:8483:b0:2e1:2697:3947])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5c4:b0:2dd:ad73:5b6b
- with SMTP id d9443c01a7336-2e49b6808f6mr7876695ad.27.1790896309991; Thu, 01
- Oct 2026 16:11:49 -0700 (PDT)
-Date: Thu, 1 Oct 2026 16:11:49 -0700
-In-Reply-To: <e905df55-6d91-40f1-8761-6bcf600d8b7e@amd.com>
+        bh=7Bt4FBOS0I71ZeNU1qvl7TVnImsqea9TvROCXfNFv7c=;
+        b=t6laDlVbaKIp/6SQO+cL0cmuvs+k1dry43nh4aF9jAI/ZJ+HeEUdZ/qJzMObqyizw4
+         xpnZn0mazlvahxFlK/Hso45SX7tvQuwGTjaK380yb12Ala8L3kyo7clNaJ+9uWCaNy6V
+         GQ40mnIRT3rTGlm3IEEQuqfDpK/kTdYKoPQ6g1u/qflz6CQ7A1TSgrsn9yWCrm8Cugh+
+         6wajZ+wBhc4M8ZsyabNouTTKbSA5S7K0NxguaGdJ5XPaj0WHsr4DeSQscK1dQbrLW3Vh
+         uRSanSLqZBxWwJ5VvunWe82rn8Cy56F+fZ0kQQ5e6Zydt6tC7J8CSrdMNFqZW3Xo9PjN
+         oxbg==
+X-Forwarded-Encrypted: i=1; AKwUvBw5tG9S3GJm5EYEiSmpGBg6eF/Nfgq3hk/AlYhbYvzJ7byLOxTQrvmwQiDqSYXpiXsADQg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKxBiYzXGXhzOLJLFRasIRW4HrkKT0J/Pv2mI9t1MRVmxC0pPZ4
+	ETjQgRI+VkOOzyNWGbtYR0LORNVC9D5b5B/rnT8zeMrf4IH1xwrTQlWnXeSrELBRxdOv9S5SnXZ
+	3WyGzQg==
+X-Received: from pjsc18.prod.google.com ([2002:a17:90a:bf12:b0:3a6:dda6:5b44])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58e8:b0:39d:fd82:de0c
+ with SMTP id 98e67ed59e1d1-3a6ce3be283mr769245a91.2.1790896716130; Thu, 01
+ Oct 2026 16:18:36 -0700 (PDT)
+Date: Thu, 1 Oct 2026 16:18:35 -0700
+In-Reply-To: <ar5yW30S75THCfdV@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260721050600.87268-1-shivansh.dhiman@amd.com>
- <arazNV7Y93gnflU2@google.com> <arb9YBIW8C5KXuXK@google.com> <e905df55-6d91-40f1-8761-6bcf600d8b7e@amd.com>
-Message-ID: <ar7otaTgi8SYLUfF@google.com>
-Subject: Re: [PATCH v4 0/5] KVM: SVM: Add Bus Lock Detect support and refactor LBRV
+References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-3-leo.bras@arm.com>
+ <ar1xne00AHnJ-p_d@google.com> <ar5yW30S75THCfdV@LeoBrasDK>
+Message-ID: <ar7qS3PeV_zo93iT@google.com>
+Subject: Re: [PATCH v1 2/3] KVM: selftests: Check dirty-ring size before enabling
 From: Sean Christopherson <seanjc@google.com>
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, 
-	kvm@vger.kernel.org, x86@kernel.org, yosry@kernel.org, jmattson@google.com, 
-	thomas.lendacky@amd.com, nikunj.dadhania@amd.com, ravi.bangoria@amd.com, 
-	santosh.shukla@amd.com
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	David Matlack <dmatlack@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Marc Zyngier <maz@kernel.org>, Josh Hilke <jrhilke@google.com>, Oliver Upton <oupton@kernel.org>, 
+	Wu Fei <wu.fei9@sanechips.com.cn>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Oct 02, 2026, Shivansh Dhiman wrote:
-> On 26-09-26 04:31, Sean Christopherson wrote:
-> (2) BLCKDB=0: DR6.BLD=0 is lost
-> 
-> 	/* KUT test continued from above */
-> 	write_dr6(0xffff07f0);		/* DR6.BLD=0 */
-> 	wrmsr(DEBUGCTL, 0);
-> 	cpuid(0);			/* unrelated #VMEXIT */
-> 	read_dr6();			/* -> ffff0ff0 */
-> 
->   #VMEXIT: exit_code=26, vmcb dr6=ffff0ff0
->   VMRUN:   vmcb dr6=ffff07f0, dbgctl=0, v_lbr=0
->   #VMEXIT: exit_code=7b, vmcb dr6=ffff07f0
-> 
-> KVM loads BLD=0, yet the guest reads BLD=1, so KVM isn't the one setting it.
-> The VMCB still shows BLD=0 at the next #VMEXIT, though.
+On Thu, Oct 01, 2026, Leonardo Bras wrote:
+> On Wed, Sep 30, 2026 at 01:31:25PM -0700, Sean Christopherson wrote:
+> > > "Dirty-ring not supported in this kernel\n");
+> > 
+> > "this kernel" could be misleading, some architectures simply don't support the
+> > dirty ring.
 
-Yep.  This is why I view this as a hardware/ucode flaw.
+Hmm, the counter argument is that this is actually accurate if those architectures
+were to gain support in the future, but someone ran this on an older kernel...
 
-> I wanted to understand the practical side better, since I may well be missing
-> something. My reading of APM 13.1.3.6 is that the processor clears DR6.BLD
-> only for a bus lock #DB (so only while BLCKDB=1), and that system software
-> then sets it back to 1 before returning to the interrupted task. I'm not
-> sure if any software is intended to work by clearing DR6.BLD themselves.
+> So, do you suggest keeping it simple by printing "Dirty-ring not supported"?
 
-It has to, because that's effectively what VMRUN does by loading DR6.  It's not
-as straightforward as MOV DR6 (obviously), but for all intents and purposes it's
-still a software write.
+Yeah, unless you have a better idea.  Actually, even though Kconfig isn't user-
+controllable, it's still there in the .config.  So maybe something like this?
 
-> Are there any flows where a guest can end up with DR6.BLD=0 and BLCKDB=0? That
-> would help me understand where this bites.
+	TEST_ASSERT(cap, "Dirty-ring not supported, check CONFIG_HAVE_KVM_DIRTY_RING?");
 
-In practice, I doubt it will be problematic.  But it's not completely absurd that
-software might do something like temporarily disable DEBUGCTL.BUS_LOCK at the
-start of its #DB handler, before reading DR6.  That would work on bare metal and
-*usually* work in a VM, but would cause the guest to "miss" a Bus Lock #DB if a
-#VMEXIT hit between disabling DEBUGCTL.BUS_LOCK and reading DR6.
+That would at least give the user a breadcrumb to start with.
