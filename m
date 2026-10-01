@@ -1,80 +1,123 @@
-Received: from isrv.corpit.ru (isrv.corpit.ru [212.248.84.144])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697923E3178
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 10:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.248.84.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511ED4ABBD6;
+	Thu,  1 Oct 2026 10:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790848812; cv=none; b=ipcfB8Swoc46bYQbhdagj9nY01Wim0YpPqLen6bHCGGpw3b8Prygv+aY3awLjP/Cl64IuO4P2WP6opptuAynuxRHEzGsWnMXpE7VyUA4w/pc9PluplfFNgalkqp4NnaNiceflBDFlIabHovCxytT7j2A2bs8kvcFn8DsacLuRoQ=
+	t=1790848956; cv=none; b=gk9OQcseiL7QZKYQd7PZXVOGRzS3BRBKu3fZHN6xoyqJerVujZh12jPvb0cY+vx18Mnhosf2Vm5uHe550rJfyh9FhpsCaGE4LLQ7T5yrP9H5CXTEh+s16JV9yo5CYFn7VloAc8ablgybwffbU833jUFgzIpmPj2aE1EQFJSRHeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790848812; c=relaxed/simple;
-	bh=QBZ6t4yffJ51hIWvfXtARjGTROZJoGAvjy+m2Mb/sds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q5zj7ElVA7upLbcP2uC5NfkcNwjjETJ0NPniWHS/IzlWXi3G6WWiHQCond6UD6nI9N+qY1JQ3hn57cXpHjNndrSd4C77yDIymECWi2cNKOAXExlhZqm40nFW5S3msUc+LpiS1fSTANJ34OtX3YezgHatXxr9uwvA3DUQQzcPaCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru; spf=pass smtp.mailfrom=tls.msk.ru; dkim=pass (2048-bit key) header.d=tls.msk.ru header.i=@tls.msk.ru header.b=t1aoSkc2; arc=none smtp.client-ip=212.248.84.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tls.msk.ru
+	s=arc-20240116; t=1790848956; c=relaxed/simple;
+	bh=U32YhQcj4aoDS914TP2l8NWYcgK2AkR8bDR7vHtuex0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nbTmJqgXbW0H1hklyGYn6uhVvy7jGeTw4/9CfRevnmGtHP3jKrNcg99antSFAbLyHdU8J4XoG55tA3oZENcwtRiI5hrs5/mGWykBKrZFbg3A54upYaVF9wJi9g+laUrIscQVJiuruwNCsoJENHriF9/qwc+dSdLxEHeu2nhbxm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Lb0tKi0A; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tls.msk.ru header.i=@tls.msk.ru header.b="t1aoSkc2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tls.msk.ru; s=202602;
-	t=1790848804; bh=QBZ6t4yffJ51hIWvfXtARjGTROZJoGAvjy+m2Mb/sds=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=t1aoSkc2lFMiTYLe6hblQqQZM/8yR31xVXzUURIDkDLz7nM8Wa8EvvcJT7MRoTqWS
-	 KtT+xZ+6Rhn8Qlr071FraP36k0Uqs5DFOFMqswOQB66rQUa/aEADkyR+6vuwaJ8YIK
-	 fGQcnB9ddDQrEx4Ifingv7j18fBkL1jgg+931rQUMFVw4K5v/Q76wAOEgS4hNVSrK6
-	 1tFABmGWj238fi2pcIB1svQJAreGUB3jbZ4ANQ3AIlAayFAekR+9u4BaQjgKKlE2WV
-	 YMjcdFPnziYs982ig+up6wvzbh08EE8xYe9NB+XJCMPknzSwM/5dqbzStnd8EQAF8t
-	 Tv4EmyihPIiwA==
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
-	by isrv.corpit.ru (Postfix) with ESMTP id D04D51DA207;
-	Thu, 01 Oct 2026 13:00:04 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
-	by tsrv.corpit.ru (Postfix) with ESMTP id 009784381AA;
-	Thu, 01 Oct 2026 13:00:03 +0300 (MSK)
-Message-ID: <18ff5158-a515-4659-8388-5bcc074afb94@tls.msk.ru>
-Date: Thu, 1 Oct 2026 13:00:03 +0300
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Lb0tKi0A"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69175WaY1086340;
+	Thu, 1 Oct 2026 10:02:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ZB3m0fyJJhUP/96XQJqgLWHi+TlvJ6Q9QN+j7WYdz
+	Pk=; b=Lb0tKi0A3JFjlWX3DIgSpDOYN73LytWl4AbDojDnQbeK7zYKVZsBV72NT
+	b4sdEVIHbCOc3E6+aH9aRCNnolisKga0fuuUHVM4kRmzZ/U8hF4ukSeimA8/HYNV
+	YB5c2XLxpxI9t3YtZxkJ0BdKAMLbGbX6xBOa20UGRUi9NNgzDncM3jAU+iT7Coeq
+	jvg+0/U1kNC8a/ksmoqE2UFdE8yDkb35A8deiqYtCqcYOwKW1zbFy1My4qkCeEI9
+	wTgvTHEay06uFyG/DZRzou161LqWCVVNjPL6XK1DW0QUgYjR7I+phnv6OSz0Z+kK
+	KkNleJbJ1U+uS+wsS+7brfYcK7Uzg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5s5jefw-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 01 Oct 2026 10:02:17 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69172teX3460494;
+	Thu, 1 Oct 2026 10:02:16 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h0q4petmw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Oct 2026 10:02:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 691A2DEO17367450
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Oct 2026 10:02:13 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3140520065;
+	Thu,  1 Oct 2026 10:02:13 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0D3DA20067;
+	Thu,  1 Oct 2026 10:02:11 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.bl1-in.ibm.com (unknown [9.123.6.5])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  1 Oct 2026 10:02:10 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        amachhiw@linux.ibm.com, harshpb@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Fixes for KVM HV around synchronization and initializations
+Date: Thu,  1 Oct 2026 15:32:03 +0530
+Message-ID: <20261001100208.1271628-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/7] target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu"
- is configured
-To: Sandipan Das <sandipan.das@amd.com>,
- Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
- groug@kaod.org, khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
- den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com
-References: <20251230074354.88958-1-dongli.zhang@oracle.com>
- <20251230074354.88958-2-dongli.zhang@oracle.com>
- <81a1f791-37ef-4d26-bcf7-024eab4cd810@tls.msk.ru>
- <fa8b40df-a35c-4ae3-8eaa-b4b65c546a91@amd.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <fa8b40df-a35c-4ae3-8eaa-b4b65c546a91@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAzOCBTYWx0ZWRfX5RF8kEI6ohHr
+ kyVn8jiLkguh6cfl4cdm6PukUGvRyEv8J9vNk+W8ZDYSBDVc0/KTmPAGF0WrRK+XNO1JF7ASa6r
+ ifGbsKe/whLQXbIfmKnEkzBnLbG9CC4=
+X-Authority-Analysis: v=2.4 cv=HJ5WhYtv c=1 sm=1 tr=0 ts=6abe2faa cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=BB4zp169t_7L_k8pMqwA:9
+X-Proofpoint-GUID: K_flqD8z0vb_NFxw3VmAokeb1c2mK1wm
+X-Proofpoint-ORIG-GUID: JeUiZOM6sB8RCAPxJwKrTI6Nhf9I-QwZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAzOCBTYWx0ZWRfX1Ixorp/QQMuz
+ lnCNreRBWHOW3M0UxZ9+WLkxY3nhbvourQvcYP0QbnDpbc6HzMKLg7+2RRAqVQb4U6KIKDrQqr5
+ keyolMefk4Z0ftA9A9ef7uBOHwzmtNGjxGtIGrCcer74BcG+5yZMZjtLJfXFOeBRjCJ22gJpofu
+ OruxXYLn+6KvQc2WklBGwGxBz68Fely3uVJ7mVenXE2k/Gq+GlF24MbYYsI5+1lAwrYuw5C4jB1
+ ObKWsfDJurqTv/DABF8QA1h2OuwuR9R7BmnP3YwURt4cxpYJUw2+UO+/8ux4r1XGqNsmjIMG8m6
+ gV5iW5pONCGvDNf27vYgLJmvth725CLM7/y6iMQOHvT8iCcfvGdd4h6h1MERYC6hIUg5rFwuiNO
+ H4quP+Fs4D5zV5s2j1apMEKVUUYahXGNYdWuDmAohE3VX3clbIdX8Frt0tIdLrCMRSvaUrpIVah
+ 6T0p/z/5nUgocDGD6rg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-01_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610010038
 
-On 10/1/26 11:54, Sandipan Das wrote:
-> On 01-10-2026 14:02, Michael Tokarev wrote:
-...
+This series contains the fixes for synchronization and initializations
+bugs in the KVM HV code.
 
->> When booting windows11 VM with -cpu EPYC-Rome-v4 -enable-kvm, the
->> guest enters tight CPU loop while displaying a boot screen, before
->> it starts showing up the rotating circle (which shows boot progress).
+Patch 1: Fix for concurrent calls to idr_alloc
+
+Patch 2: Initialize the arch.irq_type correctly for cleanup to work
+
+Patch 3: Add a srcu lock to fix "suspicious usage of
+	 rcu_dereference_check" usage.
 
 
-> What happens if you use "-cpu EPYC-Rome-v4,+pmu"?
+Gautam Menghani (3):
+  KVM: PPC: Book3S HV: Ensure that calls to idr_alloc are synchronized
+  KVM: PPC: Book3S HV: XICS: Update irq_type for cleanup to work
+  KVM: PPC: Book3s HV: Take SRCU read lock around kvmppc_h_page_init()
+    call
 
-With that, it boots fine, just like before this patch.
-I checked current master too - same, +pmu fixes it.
+ arch/powerpc/kvm/book3s_hv.c        |  2 ++
+ arch/powerpc/kvm/book3s_hv_nested.c | 34 +++++++++--------------------
+ arch/powerpc/kvm/book3s_xive.c      |  2 +-
+ 3 files changed, 13 insertions(+), 25 deletions(-)
 
-Thanks,
+-- 
+2.52.0
 
-/mjt
