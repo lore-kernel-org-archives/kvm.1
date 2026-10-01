@@ -1,68 +1,68 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-wr2-f32.google.com (mail-wr2-f32.google.com [74.125.225.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE5C41735B
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 16:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FD03C109B
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 16:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790871562; cv=none; b=dHXekcKjvjBlx07T/UGN84FeohkqHZXSJWiQu920SzZ9R7rbbc2xZnsjNkkkDDzgzDjapJVMW18XpBY4viouEvkd8mL9K+K74VM2sABEf20jJEaEBfixvGccljgclnYw2QWX0N7MctZdyK6p3DJztp9CLVKpnSGMOURSHCUzCJE=
+	t=1790871868; cv=none; b=B2sCaK7PnDXsw2hHRuG/SvMitSbACI51cERZjhmjIMQyk5+KmuiWo+2T+AO3fdjUX5VyrubtYgdlmE0wX+6m7g81PdoM6r8mmrRZ95R9L716yU505q3pNV1omUm8bg/tb+1Ntkm2hEeQDTdjiZIt8VKueBVg+RRVCZfPuB0ctuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790871562; c=relaxed/simple;
-	bh=vdrItP7NNIB5efxVoNcXZS6zdv9F/6GpckExPWjVY50=;
+	s=arc-20240116; t=1790871868; c=relaxed/simple;
+	bh=ZI9o4bTwAFLSUvqfJtnYi+jk/zWeAfwkgSPzM3bOjNU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YTIm+NE3yJVBwisbBGxT3dZr5Om9zufELjrUGc25wizaep7RgnkyL7vSDXza+3+QfmDJ5gdJEafjYnDHdXZLl4XuNUCMSlcZuqkvuDT6khoXvU9X9qU4zco6UWtcycXo1y2wJffBhvDO7C2xHDb0sbzQehGgHFpLI/my0gklPS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=e5R9yb/f; arc=none smtp.client-ip=74.125.225.140
+	 In-Reply-To:Content-Type; b=HeGHVgUSvhqME2pmDizgqA5KVkYOsx5JHHiM/px5Pj/M9DbT82EF6UMq4NasmH0jJyExr9Vw0xOuQikFprboNe5NZwVllnBTxW/eTeOIMDAZ8jSfL0X94Y1UZsQrWVcvytGA+p/idf629icpPaVTzVBy8IMU7OU3O4f5E+maGbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AX7JMAx/; arc=none smtp.client-ip=74.125.225.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="e5R9yb/f"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a01ff8c098so6584975e9.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 09:19:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AX7JMAx/"
+Received: by mail-wr2-f32.google.com with SMTP id ffacd0b85a97d-482f6350f91so3942267f8f.1
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 09:24:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790871559; x=1791476359; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1790871864; x=1791476664; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=vi7SR1DPMZ2IESiCs8hDuzeZjMXZIWPfZzQhtaUi3a0=;
-        b=e5R9yb/f+WfsYhr27bBkJHkYcGkpou46eFxfBEGNMNhUgSYWuehlbEv+cwx3iqvbVQ
-         u+nlXRPDym3ytnMkK8Z+PXUhzmghph1okbVGInaDdw3siq5j164Je7CRFVg65rsIac3H
-         h+z69HZHfPl+r4GhMRJOp5Jc/68uNV6ZFTIH+c10AdfP3sCP9hy334wUU3fW/DkNE2Fc
-         pFotfIgnxC7EbHNT+idDAIaCzMAWEzY0v2EryfoDMKoMnCbSpDtjNoeFLeh9Ar6+s3Te
-         hwdfXeayf4b8ZJUhSfw53xBsuBjBDVTPBMqCRJR5SyHHJ4BHFfUQfzrOZSGkjX8RMa9E
-         YGXQ==
+        bh=HYtyNDhTMSzL7NauOy9LXxOvJvUf8XAKFvjtNEOO43Q=;
+        b=AX7JMAx/iCCKy3KBYoqCVV8ttcZlBtbKECoCfWd6I1RK75t0ZbLSWNRMJuxtrMy6D2
+         UXQS5qWcldf4sDAIiozHBI2lAAdNDlYfkgTCTEyXDLe4PzqNmABLLsp/1aicPxEfkxEZ
+         wXEMPPqE+VTT8CEpEEXyQ0Ho+lE0dl33zOhX6gUWU8QU3DhWqIwjAXEyKHd/VUxppFOD
+         R4NAuZTwYbl1IDHrAe9VHGF8LEnhR+oO38cjG7RNj7OONNQ4Q21jnCtRkUHdXN4BYbdO
+         UJk3ILue2hWlo2PEUhh05xF/g5ndi/0OQBNkPORAFz+/C2fc5owCRnrS7vOSmS6Zsn4p
+         A+ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790871559; x=1791476359;
+        d=1e100.net; s=20260707; t=1790871864; x=1791476664;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=vi7SR1DPMZ2IESiCs8hDuzeZjMXZIWPfZzQhtaUi3a0=;
-        b=dRXJwi/fFc9OGRcQwvzkpxOrpwjVkwIHUCCdvEE5J7iXG4dii5+GxAYb+ItAIwYhwn
-         I9LlplJLH7suzazkiYP2OvytWPNqUbztstPAHDXF45O3OOPr7L7FtWcM3yns7ZEYOdeT
-         vBibAjJEWOiugmm+t92ptbRkoJxDFL8ljnmmYQgiVB+fdosQg9kS9/Ov6XDE8d0qryrT
-         uYXGJEXQUrL90K7IxE4JJL3p7bHoy5gQ4qYQL2a4RlVK897P/76p+52U4/L76lwZL291
-         LXg75dSBatb63CvJG314g6ba1WkSpEQNIAigovqX3mYFHnhzLBEX+Yo4kuCbOAQvtdny
-         MK8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBz8D7UI+NU5A2QUiYsZhXKShnfYVkJLN9diFrWkDNYQVnWr8dmwA+wCiYSRl4LJiQdefN4=@vger.kernel.org
-X-Gm-Message-State: AFuF++mRgjy85XjnHzVGouS1BacKh0E7nrcSHQVzYE5H59aGX8qqbGvE
-	lyP7r6aWN/mCogPx9um+2cY3XGxCavimoND/3Gd2zUIIY6V4MW5VA0/EFbBAk/q6fu8=
-X-Gm-Gg: AYBFou14v2Iwu6CntggtaInXQfUiniDLM+rsKarjmMQkIq5+678j8RADz01DZyN0BYW
-	FiJh6XSXPipmamnGTZ28YUY8sC3fPax2kOVDppzhAUtr0P9tNO98bRnNXFPuGChoSKBuROBax53
-	v1dFwIdqc0rlqNFh6+mM2SZXhGZRqmf/Dh8NDudUhcyBn9HGbY75xqzcgZwPWSJjuHjQ4hbgONW
-	ZEV64Qq32SRssLHMbhsUZqQKM0zdk/vdJRklRxLInY50zCa4EWpbcZ22GIh/E3JqitSmb3YQKBt
-	XYuCXffCEbgMhFv4oS4gPpzHTFBOF4LMOKHSden72/v7Z/Rh0r2H0GhQb9ADtUnymTSC1JfAL5W
-	FDsmxePuxkIbN2wRsv5sn8Lbe+HqCMDDeL2eaC9VWRMhrWXhY0aaJeyvnWzQYgjYp/XDEwCoEaj
-	mm1NE1emAFc8igNlw6+10fcnqoLCxGyThWZa7RSKFNf5BBgXAbkpcrr4moKcXgZHr18Hjsk2QUK
-	mMLo9qFMXp4UR7dtKEXvHRdQFRqfxHy5w==
-X-Received: by 2002:a05:600c:6217:b0:4a0:1ea1:477a with SMTP id 5b1f17b1804b1-4a0276a31b1mr2008765e9.27.1790871559329;
-        Thu, 01 Oct 2026 09:19:19 -0700 (PDT)
+        bh=HYtyNDhTMSzL7NauOy9LXxOvJvUf8XAKFvjtNEOO43Q=;
+        b=s9vvb39TvDzpHWbwiM/cBvDUbXhOCPhYJ6B4lGwqmcTHlGNzoqzWW0i4DaiBKgPiH1
+         o7UO8AmX3OlqDHFaqwgFgSq/7R4Rj9uzdSH26xjBW7pxq1lSweyZCMw1rRDaSIOnrAGp
+         Y354dui/oZYWTNGB5KQjDj7cCX+4MKV70/ys2LQga5prFpL28pauN4HLbZIA9+YnVYog
+         XbtZQwx2TIBpcu90AyXuckBmNG9w93mJuVMnYiEgSFtL6IRJ7YdfcdGrqCFaCkcA+ydj
+         TXQ/3glUb4mR104y37w5B8VtpOerYSEahpX8M7DVkCdW0qG3Kw0XyzWYqgCW3Ihhtkjp
+         mIWg==
+X-Forwarded-Encrypted: i=1; AKwUvBz4RKeYVLR144BbJJJpY+11lJoZ3apV9uwiOEB8dL7evidPKkolfkZT1+sxReEXNdMz57w=@vger.kernel.org
+X-Gm-Message-State: AFuF++mys9g6OT2fFjFKaUrczriwREKaldHwyFranVo1wXwGLgg1lF31
+	WSWsNHJq96IQsc7SMa8cwyAZnXDVK228nVeOmfCRxeEEebB/NZPJt8SIWzK2zxcRuzQ=
+X-Gm-Gg: AYBFou2oDabcw4ZFcJxQR+L/m2TEtLUmGFa2DP7Kd5eMogfibimvqOc3GtnpHSZ9Jtp
+	WtM4A7NQMnymQLHwrE1NB7avuQXiD/IweQAJsBI5mbREGqag5LHicf2HpgYwH1S7Z/FyBeJFALc
+	dGWBu1NPJZv18CMfdYtSOB/ZaqZPgul4zbcgBJy67gS9GzpYBvDrEyCnGUSByEZvedJNDvUSGYZ
+	AJoE4IxAG0NuhWy2l8nVZNK6bHujVVosgV+0TxJeeSMQmBvtXTS0J8ZQllK7xScHJMpP8SyZIs9
+	ItPbeMv5HEVBnmXXgUI70THozHQZ8/J3XsWZZDBLuBj6tVTZdf0vYVLKTdSNnj86fkjX7dGCTDG
+	78Tpceiq2x6xOU6YvyBzGoDqaqqz99PiMBxX5HRActqg8mXZlc8wFHVK28RotVBISjbVuZ4sl2G
+	06AbsLDIkgbCZw1L+1h7vpJadn3J0+yRXRxoW/xocXbP7HOf2W09AJ4953Er6SSk6K75feys+Ni
+	rBpw81DDPqoqWiBsVTYPeA=
+X-Received: by 2002:a05:600c:34cb:b0:49f:c199:e1e2 with SMTP id 5b1f17b1804b1-4a0276ab18amr2182265e9.28.1790871863905;
+        Thu, 01 Oct 2026 09:24:23 -0700 (PDT)
 Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0db6a3b7sm4158135f8f.41.2026.10.01.09.19.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02752aeb3sm3061465e9.0.2026.10.01.09.24.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 09:19:19 -0700 (PDT)
-Message-ID: <0b1f8e58-51f8-4062-ab0e-6cd5b915b49e@suse.com>
-Date: Thu, 1 Oct 2026 19:19:17 +0300
+        Thu, 01 Oct 2026 09:24:23 -0700 (PDT)
+Message-ID: <5fe666c8-55ad-4f06-b853-a532d73c35be@suse.com>
+Date: Thu, 1 Oct 2026 19:24:22 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,18 +70,18 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/10] x86/virt/tdx: Add a helper to read a table of
- metadata fields
+Subject: Re: [PATCH v3 02/10] x86/virt/tdx: Convert the version metadata
+ reader
 To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
 Cc: yilun.xu@linux.intel.com, binbin.wu@linux.intel.com,
  tony.lindgren@linux.intel.com, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
 References: <20260930053901.22528-1-chao.gao@intel.com>
- <20260930053901.22528-2-chao.gao@intel.com>
+ <20260930053901.22528-3-chao.gao@intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -127,48 +127,75 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20260930053901.22528-2-chao.gao@intel.com>
+In-Reply-To: <20260930053901.22528-3-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 30.09.26 г. 8:38 ч., Chao Gao wrote:
-> The metadata field readers get_tdx_sys_info_<class>() in
-> tdx_global_metadata.c were generated by an out-of-tree script. That has
-> not worked out: the JSON file they were generated from is neither stable
-> nor authoritative enough [1].  The goal now is to maintain the readers by
-> hand and to establish one standard way of adding a metadata field.
+> With the helper to read a table of metadata fields in place, the
+> existing metadata readers can be standardized on it.
 > 
-> Take get_tdx_sys_info_version() as an example:
+> Convert the version metadata reader: add a table that pairs each field ID
+> with the 'struct tdx_sys_info_version' member that holds its value, and
+> read all version fields by walking that table.
 > 
->        if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
->                sysinfo_version->minor_version = val;
->        if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
->                sysinfo_version->major_version = val;
->        if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
->                sysinfo_version->update_version = val;
+> Name the field IDs for readability, so the table entries don't carry raw
+> hex literals.
 > 
-> Two patterns stand out: the read-check-store sequence repeats once per
-> field, and the error of each read is chained into the reads that follow.
-> Neither is common in hand-written code.
-> 
-> Prepare to eliminate both with a loop that reads each field, stores the
-> value into its structure member, and returns on the first error.
-> 
-> Add 'struct field_mapping' to describe one field as its ID plus the offset
-> and size of the member that receives its value. Add TDX_SYSINFO_MAP() to
-> build such an entry from a field ID, a structure type and a member name.
-> Add __read_sys_metadata_table() helper to read every field in a table.
-> Annotate that helper __maybe_unused as there is no caller right now.
-> 
-> Following changes will convert the existing readers to use the new helper.
-> 
-> AI was used under supervision to review code and workshop logs. It
-> suggested adding read_sys_metadata_table() macro, which avoids repeating
-> the table name when passing both the table and its size.
+> AI was used under supervision to review code and workshop logs.
 > 
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
+> ---
+> v3:
+>   - Drop the get_tdx_sys_info_*() wrappers to remove an unnecessary layer
+>     of abstraction. [Rick, Dave]
+>   - Shorten the field ID defines from TDX_MD_FIELD_ID_* to TDX_FIELD_*
+>     [Rick]
+> ---
+>   arch/x86/virt/vmx/tdx/tdx.c                 | 15 ++++++++++++---
+>   arch/x86/virt/vmx/tdx/tdx.h                 | 10 ++++++++++
+>   arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 17 +----------------
+>   3 files changed, 23 insertions(+), 19 deletions(-)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 67a80ed86bd3..9d8a55a5da31 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -408,8 +408,8 @@ struct field_mapping {
+>   };
+>   
+>   /* Read each metadata field listed in @mappings[] into @data. */
+> -static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *mappings,
+> -						    int num_mappings, void *data)
+> +static int __read_sys_metadata_table(const struct field_mapping *mappings,
+> +				     int num_mappings, void *data)
+>   {
+>   	int i, ret;
+>   	u64 val;
+> @@ -434,6 +434,15 @@ static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *
+>   	.size		= sizeof_field(_type, _member),		\
+>   }
+>   
+> +#define TDX_SYSINFO_MAP_VERSION(_field_id, _member) \
+> +	TDX_SYSINFO_MAP(_field_id, struct tdx_sys_info_version, _member)
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+nit: I personally dislike adding this level of indirection, albeit 
+rather shallow just so you don't have to repeat 'struct xxxx' in every 
+TDX_SYS_INFO_MAP. Same goes for the rest of the patches. In the past I 
+remember TDX code also suffered from, in my opinion, excessive macro 
+nesting.
+
+Dave, what's your take on this?
+
+> +
+> +static const struct field_mapping version_mappings[] = {
+> +	TDX_SYSINFO_MAP_VERSION(TDX_FIELD_MINOR_VERSION,  minor_version),
+> +	TDX_SYSINFO_MAP_VERSION(TDX_FIELD_MAJOR_VERSION,  major_version),
+> +	TDX_SYSINFO_MAP_VERSION(TDX_FIELD_UPDATE_VERSION, update_version),
+> +};
+> +
+
+<snip>
+
