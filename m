@@ -1,187 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2396B316905;
-	Thu,  1 Oct 2026 06:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790836673; cv=none; b=uSkV+1QeI4ea9fIZyxjIN5jLL7DAp/CjOLKH7s2s6CuyM4vOxsf5ukmeiUf9cBw6d/SjdAK7jbYpTuy8ILMx42kawa/7S3eac91K/F8i0SHUOnLbH8wOAzQbTyhNc6966tITykPJFuXWoIWZ+PzQdMeUfgd9AsN4Qx+j5U2ZYdk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790836673; c=relaxed/simple;
-	bh=VCT1N6hI2ooF+CmtCByw4GpH0V8pynMdUmROqI71U1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fj0srJHERSbxGz7lA3OyAQGj4cOw19vFnzC7/gAgZvknGOWivYZcGRdAAu01UEA9wWLcGjZQuBG0lhNxD2RKQ7qUxzkH6rDqxZ8pF/V8alll0DQhkIbxyf2tijisvGEyypmH190dJ/oB66v9VYuvANAdwbptzRMEK7D82HPKNio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMj51tOD; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3D530BF70
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 06:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790837399; cv=pass; b=uBg7CmrxA8TEJxY8+V9HcZOgbvOEAq5boHKF/XGrntaxVxIM4nbffJxTU0CuszdBoKlMB6yMdQAEBpoFtaxU7kqsLxHBA3OibmoZE/l5F8ueq0NF5mC4tvzZ5/Qr+9bpNXgUajM2LdrX81syvIMv270AN8JXDhNyEA1bKZZyQPM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790837399; c=relaxed/simple;
+	bh=5f79PSE08PBkaNMafHH6+G/l1zxi7gn96hpXQ+wAxkU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uQtR78mjSo3TeQkWpE9LDPSulHH+S566hMKJ77ZaY2AVdmpEpgJJDd3hFr6yA0ZijEdh3xUlvwRK6kcMvVrx8JjXh73OwVI84tpQSqW2QBGuCeK2QgIMOcrPWM4clMeeEPx1Dj9bElH73V4jDQuMtCbE9099DKr215AyPIOKoNU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I6K4U0QN; arc=pass smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMj51tOD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFA41F000FF;
-	Thu,  1 Oct 2026 06:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790836671;
-	bh=X2yG9C10oNzGkh3Q87HvKsn9L3yVCds4Sm/K2JQM8aM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EMj51tODtUfKbgPh4IO5i7MmvgaToTcylrTMg0RILrRDsivA3MJdxfofL4/hF3JhN
-	 LPRGbF6J0rhnXmajfYlkAaf3IfaFyCM9JLycu6mbYtTqlbDkCOjCH9BMAGdxzgKFic
-	 3JAbeh529NFx5rbISpZvuPqTO5mrujoixRvIB2jzSFz4bmzHQaWXq/oga+T8bqIIMa
-	 fls5ZFM8A59T+zDE1f73qjU5FENioHEd12uHY+ggnOU03mm9N4kaqWYlbdev7BFFua
-	 mK9PZMO45uCurwd1tqcPjFAnfEnFtsGa/dIcLcZJYwJqdye860qW3ldcHI/khTHRn7
-	 Lq6iv0ZeBTTKA==
-Date: Thu, 1 Oct 2026 09:37:47 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-Message-ID: <20261001063747.GK3401365@unreal>
-References: <20260929132305.GJ563127@unreal>
- <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
- <20260929175737.GK563127@unreal>
- <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
- <20260930081832.GA3401365@unreal>
- <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
- <20260930114356.GC3401365@unreal>
- <fbdc710d-7be1-4021-83c2-548c798d9d14@amd.com>
- <20260930143237.GI3401365@unreal>
- <b2e766389e57a55da959369c5ad4b9e39e425659.camel@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I6K4U0QN"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5337c7b9937so205931cf.0
+        for <kvm@vger.kernel.org>; Wed, 30 Sep 2026 23:49:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790837397; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GovgBC2DbuMFoxhpjJKT9K46L/YKjAuyyNoV9Jnpv2YtXgax1o72a1eytiL7POz1Z3
+         gfhg/bqYPfBZawYRdWafFj/LrES3QmQ8OWEl/chLnZFp0SDrgtWwqi9r9XcDb8ulQpHK
+         fNZpOyJDwdWuwccyvAJLjRwWkmwBWHG13oUZ2hRYMVJZ5hF8xRKHfFKCkTNbbcbkvqo2
+         6i4asnKBkoyii+W1VqVHhO+KK0EE168QGdmGFAblV9F/COWAzgBRGEFSBSLhf+WAd+pC
+         F7rU/D4AW9JBGPsMeqMV9ViMo1ynVm+3ZrtYbR5DgDAkMYdA7JOoy+fda8OjCJDh4yE6
+         luEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ANNww94QlmRaV8/wIkBwlyMEyhmACv8DyF59iTSMNXI=;
+        fh=k744XNlGxvRge33o8MqiyX6heQPgXoRseKHjaQfteDU=;
+        b=kCGGdCzfVx06KZjhv+wSLrRa/0QUxdnZqKeYRWTxa30aa2pPK+yR/ME56PzHKwlX5p
+         zA9YcrPVUabY25g9wEhivPud6QZ/PfSXH8kFT5yZpB98VQyEn8+YNr8FDXH9OyOVQHbq
+         YGthhIjAvwMDFkm0UXHJ0yspwbsg/JvMfOchJk4mDavptBoHcyKkElVBdq1ugtMBGTud
+         XyYK+QcWkjaZA/jB8dT7zWYXZmw+4yNgZS+Rh0otjxAcv1QqFundl08i4V/qrLyWhLD6
+         ldyMmwL5FP1Q7FHbrKF4FRp9eBDuGDPlMUY+EfNkAkVhKVVf/TYnIdAt5vRG4VJOKe76
+         xRbw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790837397; x=1791442197; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ANNww94QlmRaV8/wIkBwlyMEyhmACv8DyF59iTSMNXI=;
+        b=I6K4U0QN2Ljw/5oUVVipsqXG0s5QszP7HoZTRF+5ITMYs01+2RFqxjLEgpJOhzAjoe
+         DeUxLq85iUaTpzM8dv2ff68P6KSUGPz9bzu1L6sHNMHK93vSCnvPI91nIrmFIBZ2jZ2o
+         yUGcoZvdxhUn6Pjk8vkMmGI263FuPUFqImvo2vcjP5OWKjIy97rZBSWxdAYMhInlkzvf
+         bHH1UQpHUe5WyukQJ5P8hlYWK1d+yuczz2c/IArBKARCidWicyNzmqNviuAeMDhYBWJc
+         aSh8avANt+aM+22KNiXUkz0odtZLYlxBLjdgdCG3xnrbUxmnja+gF12EMwNL25gC6FBf
+         CtEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790837397; x=1791442197;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ANNww94QlmRaV8/wIkBwlyMEyhmACv8DyF59iTSMNXI=;
+        b=nrAB6FNdi6ll3aaf9HcZawGhIyWsHlrwCxOjMHVsAO0kXhM8ZKNpm8Fuc5S8YcRlV1
+         nw3s+h8/0/ipg5BAhufq8yUNdAacmEMxPlxJDaZn3vxro99u1BlYcuoFk6C+TCt4gTdl
+         hedsTYLlJ5HOr50meCQScgdrH+qP6zMKpwVflv4fCV1b9t1d1Bt5k/OYFCTk22dde5fK
+         Poyk2tratZ3Sg4SaTs2lvDYkk9Jw+l4eBDOhseqxmKUp7rqajxAFicnhrnUeeujduEpi
+         vYJcWeMcw1i2oYlpu1CGsm+h2HgK+8R81FYvjesEPitDuecj8QBKWsTF7E6ukIlXVNi4
+         GrOw==
+X-Forwarded-Encrypted: i=1; AKwUvBz3TmrEdBgSXt5TfuGgBEClNx+405InkPJaBWQM2RT3RxNJ9bu2e2nw2UBdnN8eByQRtZY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nkEttZlb8hm3eGZUNHGNN0W59CmJTRCPbflsSfV6KywdC8ITnN
+	HMWIeKBp+DN/XaF1Scmajl4NU9oGB0nPqelo3cNltCLyX/8+fR9sVUJZhAwirNbVrnYWjDCVhQk
+	uaCx7fiAiRBdytuBsx/+UFVURykPIMSRMMYnwX3eO
+X-Gm-Gg: AYBFou3kNeP+8ZTDvUUntrWd7BMo58OkcZ2enAJJTAg2wK0mpk18IxWJePU2MlLghOG
+	c/wWfTPvy8UoB6MPvktC4WwrMBYSFlfUe9PleWz41QgxzqZYiOnULV2bOxXxd2zM9fGZ1a6mfR0
+	yj4Y52VOVoqTnnMGH2W8oCXR3U2bquI/xuJZ+GZlOO4hbsP2SQKRdBBweOdMYSWUUbaISduW73N
+	CJCNKcAuW0Ve6lj6PLr95kh1mNrQq/hndSbzoR2yLvIukw+dW83nJqOz3bMKyS3YY5S1AKNHhl8
+	8mck9Leb0UW19eYml2YKbTCbu9z0A/La3yZBYBeocc7MJmWZYwg0TPSRj+bLTEDnFB1O/52uj3n
+	dgvNnBltIY/Jcdyy4Y//HQlo=
+X-Received: by 2002:a05:622a:6110:b0:532:a17b:9581 with SMTP id
+ d75a77b69052e-533845a628cmr6735861cf.3.1790837396410; Wed, 30 Sep 2026
+ 23:49:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b2e766389e57a55da959369c5ad4b9e39e425659.camel@linux.intel.com>
+References: <20260821093957.1722167-1-binbin.wu@linux.intel.com>
+In-Reply-To: <20260821093957.1722167-1-binbin.wu@linux.intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Wed, 30 Sep 2026 23:49:45 -0700
+X-Gm-Features: AclHuK9dhHQKCtFtugTdvUfdTMSI4UfZzBSmgWLYPu5iC0NMzKBfnF-OSJYnBWY
+Message-ID: <CAGtprH8NqkyCUohpmeP_T_M+ejD7a3Pw6pwTYg35Y4EDC-r-tQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: TDX: Charge misc cgroup before allocating HKID
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com, 
+	pbonzini@redhat.com, kas@kernel.org, rick.p.edgecombe@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 04:57:04PM +0200, Thomas Hellström wrote:
-> On Wed, 2026-09-30 at 17:32 +0300, Leon Romanovsky wrote:
-> > On Wed, Sep 30, 2026 at 01:52:39PM +0200, Christian König wrote:
-> > > On 9/30/26 13:43, Leon Romanovsky wrote:
-> > > > On Wed, Sep 30, 2026 at 10:34:56AM +0200, Christian König wrote:
-> > > > > On 9/30/26 10:18, Leon Romanovsky wrote:
-> > > ...
-> > > > > > 
-> > > > > > At a minimum, exporters need to pass `p2pdma_provider`.
-> > > > > 
-> > > > > No, exactly that is a no-go. The neither the framework nor the
-> > > > > importer should see the p2pdma_provider.
-> > > > > 
-> > > > > Only fully translated addresses where the DMA access should
-> > > > > happen.
-> > > > > 
-> > > > > > 
-> > > > > > If I keep the “dma-buf: Let exporters hand out the P2PDMA
-> > > > > > provider behind a
-> > > > > > buffer” patch, I can move the P2P TLP types back into
-> > > > > > `p2pdma.c` and export
-> > > > > > only the function that indicates whether ATS is required.
-> > > > > > 
-> > > > > > Is it ok?
-> > > > > 
-> > > > > What you can do is to forward declare enum pci_p2pdma_map_type
-> > > > > and than pass that 1 to 1 from the exporter to the importer.
-> > > > 
-> > > > Unfortunately, neither suggestion applies to RDMA NICs. They need
-> > > > to know,
-> > > > before mapping addresses, whether to create the memory region
-> > > > with ATS
-> > > > enabled.
-> > > 
-> > > The design principle here is that the final location and access
-> > > path of the data isn't determined when the buffer is created.
-> > > 
-> > > The importer first need to attach before it can query such
-> > > information from the exporter.
-> > 
-> > In attach yes, this is why importer digs in dma_buf ops to get
-> > p2pdma_provide, however it is before addresses are known.
-> > 
-> > > > The importer needs a way to obtain device information from the
-> > > > exporter so
-> > > > that it can configure itself correctly.
-> > > 
-> > > That won't work with DMA-buf then, the exporter is completely
-> > > opaque to the importer and that is for really good reasons.
-> > > 
-> > > Why in the world does the importer needs to know the information
-> > > from the exporter before the mapping is created?
-> > > 
-> > > It is the exporter who decides how data is accessed by the importer
-> > > and not the other way around.
-> > 
-> > There are several reasons:
-> > 
-> > 1. This is how DMA-BUF MRs are built in RDMA. In mlx5, they rely on
-> > the ODP
-> >    mechanism, which requires an MKEY to be created first. See commit
-> >    90da7dc8206a (“RDMA/mlx5: Support dma-buf based userspace memory
-> > region”).
-> > 2. P2P routing is a property of devices, not memory. It is known and
-> > remains
-> >    stable.
-> > 3. See the VFIO TPH ST discussion, where the requirement to obtain
-> > the
-> >    exporter’s P2P information in the importer was raised again.
-> > 
-> > Thanks
-> 
-> 
-> Returning again to Jason's series. Let's say we'd add just the mapping
-> type infrastructure, converted users of pcie_p2pdma only to use that
-> and then we'd have access to per-mapping-type data. This could actually
-> be done as a prereq for this series and merged separately. It's a
-> couple of patches only.
+On Fri, Aug 21, 2026 at 2:52=E2=80=AFAM Binbin Wu <binbin.wu@linux.intel.co=
+m> wrote:
+>
+> Add a tdx_hkid_alloc() helper that charges the misc cgroup before
+> allocating an HKID, and unwind the charge if HKID allocation fails.
+>
+> __tdx_td_init() currently allocates an HKID before charging the misc
+> cgroup. If the charge fails, the error path calls tdx_hkid_free(), which
+> uncharges a resource that was never successfully charged. This can make
+> the misc-cgroup usage negative.
+>
+> Charge the cgroup before allocating the HKID.  Wrapping both steps in
+> tdx_hkid_alloc() makes it the exact counterpart of tdx_hkid_free(), i.e.
+> keeps resource allocation and release symmetric, and lets __tdx_td_init()
+> simply bail on failure instead of open coding the unwind.
+>
+> Reported-by: sashiko-bot@kernel.org
+> Closes: https://lore.kernel.org/all/20260710040153.D8EA71F000E9@smtp.kern=
+el.org
+> Closes: https://lore.kernel.org/all/20260718020348.3B4221F000E9@smtp.kern=
+el.org
+> Fixes: 7c035bea9407 ("KVM: TDX: Register TDX host key IDs to cgroup misc =
+controller")
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-I afraid that you over optimistic about the amount of work.
-
-> 
-> Jason's match() and finish() callbacks could compute the interesting
-> routes at attach time,  perhaps even condesed to whether IOVA is used
-> and whether ATS translated packages have a direct route (which is what
-> mlx5 care about AFAICT). This information is kept outside core dma-buf
-> and would be specific to the pcie_p2p mapping type (interconnect) only
-> rather than having functions and callbacks bloating the core dma-buf
-> structures.
-> 
-> Then exactly where the cross-subsystem match() and finish()
-> implementations should live I figure remain up for discussion and
-> guidance by Christoph?
-
-Maybe I'm wrong, and everything will work out. However, given Christian's
-feedback to determine the mapping type when the mapping is established, this
-approach won't work for an RDMA exporter.
-
-As I mentioned, mlx5 uses on-demand paging (ODP), creating mappings in
-response to page faults. To handle these faults with reasonable performance,
-mlx5 must create a memory region (MR), with or without ATS, and it is
-needed to be created before first page fault.
-
-I'm afraid we're going in circles, so I'll drop the dma-buf patches for now
-and focus on fixing only the PCI ATS flow.
-
-Thanks
-
-> 
-> Thanks,
-> Thomas
-> 
-> 
-> 
+Reviewed-by: Vishal Annapurve <vannapurve@google.com>
