@@ -1,260 +1,231 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2F54A206E;
-	Thu,  1 Oct 2026 08:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5864A4828
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 08:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790842328; cv=none; b=lw7bM0P/eSd/Pr119gHD5eVq+SYGBGxcC5ZugL0yx2Izm6Yr/SN16H9ERLhMxG07gsVghofEKi2eY65y88kuGOEGaS9Y8B+cZSgyBJf+7xh599fcIftop0BHmN//dWJnjxKH4etoBrpox8xuMcQfEG8M6+AcRRqUGlVQ/PQrV70=
+	t=1790842672; cv=none; b=DY77PL6270ye40xZQCGN16qQ21MKfsXXjm/oKJQStuQNfC4jA4aIV0j3JqnmI52iiDcGNxuNYISC5Li6Hjn8IN1iTQufq3a55epmFsS0rJNhk3JhEIlDUrk+xB4nwvD5iUnw2kFyxdwkYI0twqaTPxHFcRFFU4ah0mMNplq2H9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790842328; c=relaxed/simple;
-	bh=51A+0uGzwTXigzlmR2tcEbHZm+8G4JffQQe6Pb6jmvI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jVSNibcZOKjk90e4/OwgB1prZRL1qMSV/HLO0FGD03/W1N5eeMM/vVh0Sd48eMJIvWz6O5GdpDxOxw1JjYryNjvC54KKOK2UG2V1Moy39rn7+n5YZhDQlVar6jzXIgf9noFWr2UIO1UsqiNYNWBzsI9abLc+iQeXJc5kz4g/X8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LIGfd8vW; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790842672; c=relaxed/simple;
+	bh=TJwc5O7ntGMNZfYYJkuk0LGKcByvcIHqyNd0eoZ3S9g=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YB7ZSPQt7MHPZZNhuprsk8IkWk/ibNjsUs/DTdDeoYJmIgQ/QTLOt6vTrff7ZvIz5CYjktmjodFBHm6ORvcJSvYvhx11IMl7ZIID2HxfVRfKkAiTSR7/1A3A4x5zuGt4/NCMLY3ooOqVLbmIFAjwiv85rVSuUbw8fpwmOibcMfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CewNhKN7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LIGfd8vW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790842325; x=1822378325;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=51A+0uGzwTXigzlmR2tcEbHZm+8G4JffQQe6Pb6jmvI=;
-  b=LIGfd8vWjjz7fO/xiyelABuOPIwXAgQNXzEDGwoyoiJ97U0mPjG6/Gm9
-   hpYyQxnBIaNgj+KwGHau8MxKJcRZg10u04uWr5AliumxfveRRmeyU53eK
-   eayEB15P+FHM6oOIa/qEvw8McAho7i+qiVYo9nuwzLt02zR7kOy6MMPLj
-   tEEppPi6Mc85Icwtsj2eD3Trrw254s1xCYyWJ+TNW1lqsaCB/rhgllylu
-   tD+DPeZ9/tq1G7nvc9bRmv8R4+X4IROa9P3B6YR1OaFPkYy0eFHU7ih5d
-   7IXBohm7iSK7xn0WbZEjfeN9F2InXQR6M3uVqAWMULQu1PtmZBA6ZQsNm
-   g==;
-X-CSE-ConnectionGUID: Psy12l9OScCVY1B03Oo2YQ==
-X-CSE-MsgGUID: FoxiiEzyS8uoT76F0fB8Vw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="90359163"
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
-   d="scan'208";a="90359163"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 01:12:00 -0700
-X-CSE-ConnectionGUID: HwuLrs5LTRKMghWlxeiDhw==
-X-CSE-MsgGUID: jwpBUmWqQJ6IyoRCXZ55Pg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
-   d="scan'208";a="303866842"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO [10.245.244.16]) ([10.245.244.16])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 01:11:54 -0700
-Message-ID: <044e3316569c030a224625151bd80a7333fc2b79.camel@linux.intel.com>
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, Jason
- Gunthorpe <jgg@ziepe.ca>,  "Joerg Roedel (AMD)"	 <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy	 <robin.murphy@arm.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev, Tushar Dave
- <tdave@nvidia.com>, 	linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, 	linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org,  Chaitanya Kulkarni	
- <kch@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens
- Axboe	 <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>, Ankit Agrawal
-	 <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan	
- <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Sumit
- Semwal	 <sumit.semwal@linaro.org>
-Date: Thu, 01 Oct 2026 10:11:51 +0200
-In-Reply-To: <20261001063747.GK3401365@unreal>
-References: <20260929132305.GJ563127@unreal>
-	 <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
-	 <20260929175737.GK563127@unreal>
-	 <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
-	 <20260930081832.GA3401365@unreal>
-	 <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
-	 <20260930114356.GC3401365@unreal>
-	 <fbdc710d-7be1-4021-83c2-548c798d9d14@amd.com>
-	 <20260930143237.GI3401365@unreal>
-	 <b2e766389e57a55da959369c5ad4b9e39e425659.camel@linux.intel.com>
-	 <20261001063747.GK3401365@unreal>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CewNhKN7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BFB6B497;
+	Thu,  1 Oct 2026 01:17:40 -0700 (PDT)
+Received: from [10.57.9.178] (unknown [10.57.9.178])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FA6C3F85F;
+	Thu,  1 Oct 2026 01:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790842664; bh=TJwc5O7ntGMNZfYYJkuk0LGKcByvcIHqyNd0eoZ3S9g=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=CewNhKN7JS2IKfCPqmjxqGA/HGZSmdZau194WtiV0AwU8/0QjE13Noo9pp6XnKP7e
+	 AYh+kAU3AAJEJua+EsH3XguV6rmsCSrnJ8rF0PamnA3sUu+Rurome6qBdPHbVQX2M4
+	 Jb+JZPL47Yj3M4VJhrdptyCuzbosmUTzhGS17YC8=
+Message-ID: <18d2c6d4-55d7-4a9d-992f-fe33fa11c182@arm.com>
+Date: Thu, 1 Oct 2026 09:17:41 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v20 2/9] firmware: arm_rmm: Check for RMI support at init
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oupton@kernel.org>
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-3-suzuki.poulose@arm.com>
+ <20260929222840.A0E821F000FF@smtp.kernel.org>
+ <a2fa2bd1-6888-4ed5-9e2f-233eacb600a5@arm.com> <arzsUdIEVvafG-S5@arm.com>
+ <b4af8478-f02c-4c94-afea-7bd0adbe7b79@arm.com>
+In-Reply-To: <b4af8478-f02c-4c94-afea-7bd0adbe7b79@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2026-10-01 at 09:37 +0300, Leon Romanovsky wrote:
-> On Wed, Sep 30, 2026 at 04:57:04PM +0200, Thomas Hellstr=C3=B6m wrote:
-> > On Wed, 2026-09-30 at 17:32 +0300, Leon Romanovsky wrote:
-> > > On Wed, Sep 30, 2026 at 01:52:39PM +0200, Christian K=C3=B6nig wrote:
-> > > > On 9/30/26 13:43, Leon Romanovsky wrote:
-> > > > > On Wed, Sep 30, 2026 at 10:34:56AM +0200, Christian K=C3=B6nig
-> > > > > wrote:
-> > > > > > On 9/30/26 10:18, Leon Romanovsky wrote:
-> > > > ...
-> > > > > > >=20
-> > > > > > > At a minimum, exporters need to pass `p2pdma_provider`.
-> > > > > >=20
-> > > > > > No, exactly that is a no-go. The neither the framework nor
-> > > > > > the
-> > > > > > importer should see the p2pdma_provider.
-> > > > > >=20
-> > > > > > Only fully translated addresses where the DMA access should
-> > > > > > happen.
-> > > > > >=20
-> > > > > > >=20
-> > > > > > > If I keep the =E2=80=9Cdma-buf: Let exporters hand out the P2=
-PDMA
-> > > > > > > provider behind a
-> > > > > > > buffer=E2=80=9D patch, I can move the P2P TLP types back into
-> > > > > > > `p2pdma.c` and export
-> > > > > > > only the function that indicates whether ATS is required.
-> > > > > > >=20
-> > > > > > > Is it ok?
-> > > > > >=20
-> > > > > > What you can do is to forward declare enum
-> > > > > > pci_p2pdma_map_type
-> > > > > > and than pass that 1 to 1 from the exporter to the
-> > > > > > importer.
-> > > > >=20
-> > > > > Unfortunately, neither suggestion applies to RDMA NICs. They
-> > > > > need
-> > > > > to know,
-> > > > > before mapping addresses, whether to create the memory region
-> > > > > with ATS
-> > > > > enabled.
-> > > >=20
-> > > > The design principle here is that the final location and access
-> > > > path of the data isn't determined when the buffer is created.
-> > > >=20
-> > > > The importer first need to attach before it can query such
-> > > > information from the exporter.
-> > >=20
-> > > In attach yes, this is why importer digs in dma_buf ops to get
-> > > p2pdma_provide, however it is before addresses are known.
-> > >=20
-> > > > > The importer needs a way to obtain device information from
-> > > > > the
-> > > > > exporter so
-> > > > > that it can configure itself correctly.
-> > > >=20
-> > > > That won't work with DMA-buf then, the exporter is completely
-> > > > opaque to the importer and that is for really good reasons.
-> > > >=20
-> > > > Why in the world does the importer needs to know the
-> > > > information
-> > > > from the exporter before the mapping is created?
-> > > >=20
-> > > > It is the exporter who decides how data is accessed by the
-> > > > importer
-> > > > and not the other way around.
-> > >=20
-> > > There are several reasons:
-> > >=20
-> > > 1. This is how DMA-BUF MRs are built in RDMA. In mlx5, they rely
-> > > on
-> > > the ODP
-> > > =C2=A0=C2=A0 mechanism, which requires an MKEY to be created first. S=
-ee
-> > > commit
-> > > =C2=A0=C2=A0 90da7dc8206a (=E2=80=9CRDMA/mlx5: Support dma-buf based =
-userspace
-> > > memory
-> > > region=E2=80=9D).
-> > > 2. P2P routing is a property of devices, not memory. It is known
-> > > and
-> > > remains
-> > > =C2=A0=C2=A0 stable.
-> > > 3. See the VFIO TPH ST discussion, where the requirement to
-> > > obtain
-> > > the
-> > > =C2=A0=C2=A0 exporter=E2=80=99s P2P information in the importer was r=
-aised again.
-> > >=20
-> > > Thanks
-> >=20
-> >=20
-> > Returning again to Jason's series. Let's say we'd add just the
-> > mapping
-> > type infrastructure, converted users of pcie_p2pdma only to use
-> > that
-> > and then we'd have access to per-mapping-type data.=C2=A0This could
-> > actually
-> > be done as a prereq for this series and merged separately. It's a
-> > couple of patches only.
->=20
-> I afraid that you over optimistic about the amount of work.
+On 01/10/2026 07:03, Suzuki K Poulose wrote:
+> On 30/09/2026 12:02, Catalin Marinas wrote:
+>> On Wed, Sep 30, 2026 at 09:18:48AM +0100, Suzuki K Poulose wrote:
+>>> On 29/09/2026 23:28, sashiko-bot@kernel.org wrote:
+>>>>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi- 
+>>>>> cmds.h
+>>>>> new file mode 100644
+>>>>> index 0000000000000..911489b636522
+>>>>> --- /dev/null
+>>>>> +++ b/include/linux/arm-rmi-cmds.h
+>>>> [ ... ]
+>>>>> +static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
+>>>>> +{
+>>>>> +    struct arm_smccc_1_2_regs args = *regs;
+>>>>> +    long status;
+>>>>> +    int i = 0;
+>>>>> +
+>>>>> +    while (i < RMM_BLOCKED_RETRY_COUNT) {
+>>>>> +        arm_smccc_1_2_invoke(&args, regs);
+>>>>> +
+>>>>> +        status = RMI_RESULT_STATUS(regs->a0);
+>>>>> +        if (status != RMI_BUSY && status != RMI_BLOCKED)
+>>>>> +            break;
+>>>>> +        if (status == RMI_BLOCKED)
+>>>>> +            i++;
+>>>>> +        cpu_relax();
+>>>>> +    }
+>>>>
+>>>> [Severity: High]
+>>>> Does this sequence create an unbounded spin loop if the firmware 
+>>>> continuously
+>>>> returns RMI_BUSY?
+>>>>
+>>>> If the status returned by arm_smccc_1_2_invoke() is RMI_BUSY, the loop
+>>>> continues without incrementing the exit counter i. It issues 
+>>>> cpu_relax()
+>>>> but does not yield the CPU (e.g., via cond_resched()) or impose a 
+>>>> timeout.
+>>>> If the RMM firmware remains busy, this could cause the host kernel 
+>>>> to lock
+>>>> up indefinitely.
+>>>
+>>> This is like "spinlock contention". RMM returns EBUSY when a resource is
+>>> locked temporarily. We should be able to make progress, unlike the
+>>> RMI_BLOCKED, which is blocking due to a long running operation.
+>>
+>> I dug a bit into the RMI_BUSY description in the spec and it's not
+>> always safe to spin forever. For RMI_{PDEV,VDEV}_COMMUNICATE, for
+>> example, we need to return to the caller and retry later (for VDEV, the
+>> spec suggests informing the realm). That's the TSM series, which doesn't
+>> use the new API yet, but something to be aware of when it's updated.
+> 
+> Agree. There RMI_BUSY indicates the Pdev is busy with an ongoing
+> communication which could take longer.
+> 
+>>
+>> We may need the spec to bound this spin anyway, or at least give an
+>> indication that it's not forever, otherwise it affects latency,
+>> especially in an RT kernel.
+>>
+>> There's a generic RMI command return code table in B4.2 that lists
+>> RMI_BUSY for an imp def reason for the command failing to make progress.
+>> Does this apply to something like REC_ENTER? In the KVM series we call
+>> that with IRQs masked.
+> 
+> REC_ENTER only tries to lock the REC object. The only other code that
+> tries to lock is the PSCI completion processing to update the "rec"
+> state to runnable. Hence we don't expect a the REC_ENTER to be waiting
+> for the REC object lock and encounter an RMI_BUSY. Also, REC_ENTER
+> locks the object to get a refcount on the granule and the lock is
+> released. So even if the host issued REC_ENTER in parallel, the second
+> one will encounter RMI_ERROR_REC due to the bumped refcount.
+> 
+> That said, I am happy to return to the caller on RMI_REC_ENTER in the 
+> worst case and pretend there was an IRQ and that would allow the KVM
+> to re-enter the guest after servicing the interrupts. I have added the 
+> following changes to the patch where we introduce the REC_ENTER:
+> 
+> +/*
+> + * rmi_smccc_invoke_once: Invoke the RMI call and return the results. 
+> Do not
+> + * retry the command. Let the caller deal with RMI_BUSY or RMI_BLOCKED.
+> + */
+> +static inline void rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *regs)
+> +{
+> +       struct arm_smccc_1_2_regs args = *regs;
+> +
+> +       arm_smccc_1_2_invoke(&args, regs);
+> +}
+> +
+> 
+> ...
+> 
+> 
+> +/**
+> + * rmi_rec_enter() - Enter a REC
+> + * @rec: PA of the target REC
+> + * @run_ptr: PA of RecRun structure
+> + *
+> + * Starts (or continues) execution within a REC.
+> + *
+> + * Return: RMI return code
+> + */
+> +static inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
+> +{
+> +       struct arm_smccc_1_2_regs regs = {
+> +               SMC_RMI_REC_ENTER, rec, run_ptr,
+> +       };
+> +
+> +       rmi_smccc_invoke_once(&regs);
+> +       return regs.a0;
+> +}
+> 
+> 
 
-I was thinking something like this
-https://gitlab.freedesktop.org/thomash/xe-vibe/-/commit/0ab1cefa5c1439701e2=
-a09d2de2d03722b63b509
+And for the record, here is the change in the KVM CCA Driver for 
+handling this case :
 
-Although I have a couple of review comments on the infrastructure, and
-it doesn't include re-negotiation at map-time.
+         if (status == RMI_ERROR_REALM) {
+                 vcpu->run->exit_reason = KVM_EXIT_SHUTDOWN;
+                 return ARM_EXCEPTION_EXIT;
+         }
 
->=20
-> >=20
-> > Jason's match() and finish() callbacks could compute the
-> > interesting
-> > routes at attach time,=C2=A0 perhaps even condesed to whether IOVA is
-> > used
-> > and whether ATS translated packages have a direct route (which is
-> > what
-> > mlx5 care about AFAICT). This information is kept outside core dma-
-> > buf
-> > and would be specific to the pcie_p2p mapping type (interconnect)
-> > only
-> > rather than having functions and callbacks bloating the core dma-
-> > buf
-> > structures.
-> >=20
-> > Then exactly where the cross-subsystem match() and finish()
-> > implementations should live I figure remain up for discussion and
-> > guidance by Christoph?
->=20
-> Maybe I'm wrong, and everything will work out. However, given
-> Christian's
-> feedback to determine the mapping type when the mapping is
-> established, this
-> approach won't work for an RDMA exporter.
+         /*
+          * If a VCPU has been turned on, but the REC state hasn't been 
+updated
+          * we may experience RMI_ERROR_REC. Exit to the userspace with 
+-EAGAIN
+          * for a retry.
+          */
+         if (status == RMI_ERROR_REC)
+                 return -EAGAIN;
 
-I'm not 100% clear as to whether Christian meant the mapping-type would
-be re-negotiated if an agreed mapping type failed, or whether we would
-just allow a transparent fallback to system memory dma-buffers?
-Christian?
++       /*
++        * If the RMI_REC_ENTER encounters RMI_BUSY, treat it as if it was
++        * an IRQ and go back to the run-loop. We don't sync the state back
++        * to the vcpu when status != RMI_SUCCESS.
++        */
++       if (status == RMI_BUSY)
++               return ARM_EXCEPTION_IRQ;
++
+         if (rec_run_ret)
+                 return rec_exit_fatal(vcpu, "Unexpected REC_ENTER status",
+                                       rec_run_ret);
 
-In any case, IMHO the infrastructure must allow for an importer to
-rather fail a mapping if the original attach-agreed mapping type was
-severed at mapping time, and then you'd get the same behaviour as you
-are sketching now? Or you could chose to take an unlikely slowpath to
-perform whatever's necessary to accomodate the new mapping type, even
-if that includes having to re-fault already ODP-faulted memory. Pinning
-would also be an option, I figure.
+         switch (rec->run->exit.exit_reason) {
+         case RMI_EXIT_SYNC:
+                 /*
+                  * HPFAR_EL2_NS is hijacked to indicate a valid HPFAR 
+value,
+                  * see __get_fault_info()
+                  */
+                 vcpu->arch.fault.hpfar_el2 = rec->run->exit.hpfar | 
+HPFAR_EL2_NS;
+                 rec_exit_sync(vcpu);
+                 return ARM_EXCEPTION_TRAP;
+         case RMI_EXIT_IRQ:
+         case RMI_EXIT_FIQ:
+                 return ARM_EXCEPTION_IRQ;
+         case RMI_EXIT_SERROR:
+                 return ARM_EXCEPTION_EL1_SERROR;
+         case RMI_EXIT_PSCI:
+                 rec_exit_hvc(vcpu);
+                 /*
+                  * Queue completion before dispatching the exit through the
+                  * generic HVC handling path. The request will be 
+processed after
+                  * HVC handling has updated the vCPU state and before 
+the next REC
+                  * entry.
+                  */
+                 kvm_make_request(KVM_REQ_RMI, vcpu);
+                 return ARM_EXCEPTION_TRAP;
+         case RMI_EXIT_RIPAS_CHANGE:
+                 return rec_exit_ripas_change(vcpu);
 
-Thanks,
-Thomas
-
-
->=20
-> As I mentioned, mlx5 uses on-demand paging (ODP), creating mappings
-> in
-> response to page faults. To handle these faults with reasonable
-> performance,
-> mlx5 must create a memory region (MR), with or without ATS, and it is
-> needed to be created before first page fault.
->=20
-> I'm afraid we're going in circles, so I'll drop the dma-buf patches
-> for now
-> and focus on fixing only the PCI ATS flow.
->=20
-> Thanks
->=20
-> >=20
-> > Thanks,
-> > Thomas
-> >=20
-> >=20
-> >=20
+Cheers
+Suzuki
