@@ -1,178 +1,151 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1960C17DFFA;
-	Thu,  1 Oct 2026 14:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E5503BE0
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 14:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790863330; cv=none; b=Wp2ddrb4aQUTrTEGP7/ipXkLJQB+qRKkxwKVYcLMAxZrSTAS6LIWDdDsgsFSRhP2apzDQ4wtdXwHpMDQtEIaZp/eqHqCq9CrwiCD+Ept1Wf9P3f88HQQRxA8M7L6BQ7sgZHNFW/UVVbPP6zcd+VnsN48KmGxe2MoHzUqWMEWL4U=
+	t=1790863953; cv=none; b=jsNro2x10Vyr0L8yH1s07TFjlQ4qPKINqr0qQLNqhP3h73rZtk/ACpcQmenZPmVq2VhFvQkgNPJV8Iytemmubh8PQwqeglVDsSQOG5tYOQGWunDQoBENSoMRZB55B08sWMqKvYsbUl05hq9L6wLVGnOx7KlwoVA3t57J6CMaA/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790863330; c=relaxed/simple;
-	bh=NuBbFoZn0niIXRTRmUoG8XEUzNHZKWhfO7cXJXLACCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oVD0uyTZ7NIIozUIcKmIOXeVLUGk3VSze7GhqlI90l1lyoI3nXhyGjvf1WE2q3MMIswuocLoZmOVX3pntWKhegaolNS1hHRg0DS3Shhnaq+r3ayCqfdVXopen4De9I8IV32kr50IBsftPhwZaZixyPy0AzgGO+ESeXFLTKFCY8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=df7l44gt; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790863953; c=relaxed/simple;
+	bh=qHqfBgsCEeljf9vm8b9twmiuzTdhNXvKeLcCrcBZevE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g6yyqmzrGW2GgTulT3WthTDsG+8B3G8gtgeHTzbB7JIRHUStH+ORZFON6EiIUv8Xg2S8CDxHARIRHz0Qda8SiXUg+7+v/qgCUmpR0ZdEDF7F1Hz9mTammbOTO7k44xZ/Qb8hjJR3sqVrWqmeK9KtpnvqgkZ+/oGwuUXplf3ixv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=HIp0zGsF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZhOMb4hv; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="df7l44gt"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 691DasrX1923898;
-	Thu, 1 Oct 2026 14:01:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=4CWBB36TayNRMlA0bYNDKSWCDqNVZq
-	WzsPrGOYHuOQ4=; b=df7l44gtpkxoE90eEdn6vdqzXK9KmnullnWmh/qNI5vm4t
-	HjNdH1gf9IIgbKGYHsnIV6vc0WxHvxk+aQvk1sGSmEyGhJnfmlxQa1tNoFx9TWK/
-	c9gttjp7+bzuQ2cPSFZx/Khug4f3XFPlpgW4wpgvbj0VHXW0ENUZ5x4Ct6reXvWF
-	FLINnHhCcvNg1kF1Cx0QAPfqcP2vyUg1rGY/OkeQVX1lI5DeUI4n0IzdobethxXw
-	wyVHtXpSzG0poavjZDXjH7c7L4RqLRvAqCVDZEmm3U5oapB0WnsSG7pDZSxz/Uph
-	pwj6gFj8QguqwGxamJ4AXyThoJSuXayea6gNQV0g==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j5krem-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 14:01:37 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 691BUcSJ545523;
-	Thu, 1 Oct 2026 14:01:36 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0xcse8np-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 14:01:35 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 691E1V8k56295810
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 1 Oct 2026 14:01:31 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 902FE20043;
-	Thu,  1 Oct 2026 14:01:31 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C1072004B;
-	Thu,  1 Oct 2026 14:01:31 +0000 (GMT)
-Received: from osiris (unknown [9.224.76.185])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  1 Oct 2026 14:01:31 +0000 (GMT)
-Date: Thu, 1 Oct 2026 16:03:36 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>, Lorenzo Stoakes <ljs@kernel.org>
-Subject: Re: [PATCH v9 23/24] KVM: s390: arm64: Implement basic page fault
- handler
-Message-ID: <20261001140336.314717-A-seiden@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
- <20260930173441.66762-24-seiden@linux.ibm.com>
- <e2742ccb-6b91-463c-a148-30b7e2f41e9a@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="HIp0zGsF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZhOMb4hv"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2C140EC016F
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 10:12:30 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 10:12:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790863950;
+	 x=1790950350; bh=ATj4hW1x9LFmtPl4Wl9BUty+fvJ2OV+MQvDPOpVWCE8=; b=
+	HIp0zGsF7637I8t2gHWJ9NXMbg+IxRyQUoXKcE1F+33tiFkNfe9tCTcmvJxQChUw
+	sZrLTQmJPWOVKx7iVub5dOXGKG/IPP/xeRpcTQ1whVln9R6IpHy6lk17BReBjn7O
+	fW5yQCAU34sj7JQA1w1JLKAOqpO99GDhuPD5j363NOUn4GGmkifSO5wo0hL6aNZv
+	v7VU4e8a2YkGdUCL3eSqxgt4hAaMI3d0Gl2XqnTawWgjOKg20fwNSOfrHDV0arZP
+	Rqzarp3+MRBIz+aLp09UWOMkmorfz41yHwbJ6DCtgocSQy3tRUA8VDhwP6Sp2rrk
+	Ri/Ulm3wvpuy5SX2IYz7lA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790863950; x=
+	1790950350; bh=ATj4hW1x9LFmtPl4Wl9BUty+fvJ2OV+MQvDPOpVWCE8=; b=Z
+	hOMb4hvzuky3mGV1EPEZiSKsDlmqI3J/eLh5jlDBSmitAG4dm49YhUqOhPPN4L0R
+	ry2Zyzj8Q1KvWUoXsvbHoe9Z2/j2g3KueNagxDbLEZ0MqsPZW0BuEAfdM/JdqCCz
+	vkPu9phf4VhF89mFkjj4bb58EMKLRqNICMz1HRRxI8UPar33oBIwD02RbAj4W+mJ
+	x5yXHB8E47jB/EI96lBfMf32q4fh+LnO3J0phm6ffuQaiWUAk4EKksCVHHRWu2Cc
+	5i/z8DyXbT6OwmS7JfF6X7aeeJe7Gf3m1bRDTI6xUdPMM4YwG2ixxsWmf1b9KveJ
+	7JKHFx4/CULLHfrlRF5Ow==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790863950; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:U0l2RKpGtbY3zCCvZB2dsziH63e6vkDieWLJZMpf9nNajV0
+	nqhtLsC9uA/huvArrj8ULyiaUBfvy6y5vT6CeKUQ8sVl5rLfIjwMPOnCJiaHmeMl
+	0eA32xlYgdx71CuPfam9CZhQu0IodwdFzCkruxWjxNG1y1Q1Jwvh8+uLPaVggxhr
+	qY+7wyyXjR5MlugzPivj5dHfdCLBfnxNuPV15B8NGz/aVUnt378frm6DA9P6mP5i
+	cEwtDIu7ak70jMvIt0pQ60wYzoOWsX6dVTJXOvXxnupIiIBre+Qw069BIPoR3Jon
+	NJjyKoFrDOtiPGJBzvl+D4BFIkX2zyFScKk6N2A==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:OSrEUGyBkg0M+a65O7qJz0QrO5DVNjdK6k5ba6ssCOs=:qHqfBgsCEeljf9vm8b9twmiuzTdhNXvKeLcCrcBZevE=;
+X-ME-Sender: <xms:TWq-akJ349tD8isl3-KCFtctc5uqNpw8lbKmqEx6Smb6dNAlHN4EWA>
+    <xme:TWq-ah8h9wLRf2x_ieEtZycurmmlRg5hzZnwK4Qh4oIfb3q_mAfaK-4y-Gn5oyE8X
+    tmVjgt7T7jcliFDVaSWZaW9UnpVQtzXdgFmc7OBWqjF1AZaPpYnQDE>
+X-ME-Received: <xmr:TWq-avIp0GLeV9_ihg7nQyVDPxcQARnRXsOki4-X0i-Zjs0XajkNYeg7hArV5A>
+X-ME-Proxy-Cause: dmFkZTENZzRQMMP6NTk/k0Uhoq2oYvTQbTJ2Mi9/DHCC3vPgyVfx4igkBQlVMs5u7PK7Jo
+    S1ok/VqC/2bkgbRqw6H34gXKZm/tnDcbE1glwwdjjwZsneRo6g5xRv6u4BiaNTLYcNDe/g
+    YFmxK0NVoF5M3X33w/TulcQ0kBXp5ABbC40a2C9ofScystrHoXtQ2VZc65RnmEkr9tl2aX
+    QKPpfC6NWNPi24+mKkNukrrPozXi+YQlp0JGtMmbNaPx7t4aVQaG4PMiqQKZcbK6Jgu7S4
+    En/KzlBBF7XhI+nF5zjryWliB41Sc00wN4YEqubseBwZKMVwT1v5EWwOXlEu02J9yDn5Em
+    RSqzTI1bU4iTPdxoqouF/48HDGCwNGWV75sMLMfj2S8Qk+NdvuQHI/nJrph++AP3a76k5R
+    XdOLNLorqRqmRjlznXfr27JgosgAkEiRwlw1ne0c+DVl32HNXZ0Ion58nyHaTZu2HvD7MQ
+    FnXee/AlTuwqk0GhbuqC+vmJ+KBkP7oCbTXvsnc1rnN5jYGkD5xlLIoco6TFZfFdyCLmip
+    pGUcOsmuzuRpDtSCiV2eNDW34ROuWlXNoAqiaaw0ENpj05pH+t0wWNGL5WaZaCe/jPH0Up
+    Re5HNAlKIU3vCOurJyIoVPMtx3VbZwH2G6hFP2V33iZfG8yRjBnbsN7z66Ig
+X-ME-Proxy: <xmx:TWq-aumV_-1K4OPfE-cIN0xWPXndCN5JFJhm-8r-JJpNFjMXAnkwPg>
+    <xmx:TWq-arM9Ob-6M12l71jHDXjCz0mEiFpMRAcyYZnt84wFEPR9Cg3XAA>
+    <xmx:TWq-as39_g7qAAHTb3OdQvdP0w6oW2DV7iSS2-Mqe8ZSyhz3HEgllA>
+    <xmx:TWq-ainRptxxE-j48Jvzjx-XE37nsROuhXBz9Nr3l4nxGNIgLORYPg>
+    <xmx:Tmq-ald2kls5rw2N8N__T59Gnt-q8ncWr1oDDshWHjznq2Mc5ePez2S->
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 10:12:29 -0400 (EDT)
+Date: Thu, 1 Oct 2026 08:12:27 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio: cdev: Reject duplicate bind before updating KVM
+ file
+Message-ID: <20261001081227.18eaba1e@shazbot.org>
+In-Reply-To: <20261001093152.1698474-1-aneesh.kumar@kernel.org>
+References: <20261001093152.1698474-1-aneesh.kumar@kernel.org>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e2742ccb-6b91-463c-a148-30b7e2f41e9a@app.fastmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDA1NCBTYWx0ZWRfX2/tDWrsC+4h/
- J7JgixmCTZUbMByuQTn9ggSNDC97iF9uIgF/eSUgQYdCgNrh5VoxSCEFw/U00e1t9jWUtLTU0QC
- mF8gQMk0R25Zix5+3zTVeWkwno+Qva8=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDA1NCBTYWx0ZWRfX9AmvIZDQZYkR
- LSCt2Lur8c5mkYJZSAvSMEpkS+pKcPMMklBuQfat/VsOjT+KpzybElYTTXpob6/diF/oaDmZeg+
- vuDfBIod0nLx6Jy+M2TYAol8PbVQbFQh1LhZODAka4SaoyxTdDOuvR7AXyBx0LTdSeRP1gO1Zth
- sS6G2xL91nEvMP2+ftByK6YbZk6XXBrsln14+XQnuudeFVMngKXmBaDZiZYW7HWiN3FrBXaYs32
- //sd0lTDNknbdZ7OZCXdoGml7ho/cGjg1vkGGL7f2ZIG3hM3WPTwl9W4I6GyL/uXqfN4okCc+Dq
- paDngM+ufFboslaTBPu9a7lWD/i69h3Q8Us9elQbPJWXrud/lMW+E55x5h7e4YleFJtsvQ4PXyV
- 7maDfiqqm9HtZjnYAGNEVwtiW3YOhJYYsr9xwGhGbtJt8W3umAmMsiFb3DvKZXF0UYMM5bIPpR/
- bbk9udyIKdkJzNmaOHA==
-X-Proofpoint-GUID: L_0ONLFFmcIrsHb4kqzw1Ll-e-2wJL2z
-X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6abe67c1 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=OP9nytA2sT3uWfd1H84A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: q5AY-1AMfiv7u9Rp9EXk8TVRJP4lXiON
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-01_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610010054
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 01, 2026 at 02:10:06PM +0200, Arnd Bergmann wrote:
-> 
-> > +		/*
-> > +		 * Check for a cache maintenance operation. Assume the guest is
-> > +		 * cautious and skip instruction
-> > +		 */
-> > +		if (kvm_is_error_hva(hva) && kvm_vcpu_dabt_is_cm(vcpu)) {
-> > +			kvm_incr_pc(vcpu);
-> > +			ret = 1;
-> > +			goto out_unlock;
-> 
-> Hi Steffen,
-> 
-> [Adding Lorenzo Stoakes to Cc]
-> 
-> I see this function fails to build on top of linux-next, as the 
-> kvm_vcpu_dabt_is_cm() function was removed by commit 18b94675b1fb
-> ("KVM: arm64: Use ESR helpers in guest abort handling").
-> 
-> I used this patch to make it build, but I'm not sure if this is
-> the correct fix:
->
-yes, it is the functional correct fix.
+On Thu,  1 Oct 2026 15:01:52 +0530
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
 
-
-> diff --git a/arch/s390/kvm/arm64/mmu.c b/arch/s390/kvm/arm64/mmu.c
-> index 3c1c8a2def73..7ee157c61d70 100644
-> --- a/arch/s390/kvm/arm64/mmu.c
-> +++ b/arch/s390/kvm/arm64/mmu.c
-> @@ -119,6 +119,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->  	write_fault = kvm_s390_cur_gmap_fault_is_write(vcpu);
->  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-> +		unsigned long esr = kvm_vcpu_get_esr(vcpu);
-move this on top of the function. I need the esr in the function for the
-full pfault handling later anyways.
-
-
->  		ret = -ENOEXEC;
->  		/*
->  		 * The guest has put either its instructions or its page-tables
-> @@ -143,7 +144,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  		 * Check for a cache maintenance operation. Assume the guest is
->  		 * cautious and skip instruction
->  		 */
-> -		if (kvm_is_error_hva(hva) && kvm_vcpu_dabt_is_cm(vcpu)) {
-> +		if (kvm_is_error_hva(hva) && esr_dabt_is_cm(esr)) {
->  			kvm_incr_pc(vcpu);
->  			ret = 1;
->  			goto out_unlock;
+> The cdev path only supports one bound/open device fd, but
+> VFIO_DEVICE_BIND_IOMMUFD only checked the per-file access_granted flag
+> before capturing the KVM file reference. A second fd for the same device
+> could therefore replace device->kvm, fail later in vfio_df_open()
+> because open_count is already nonzero, and then clear the active KVM
+> association during error cleanup.
 > 
+> Reject the bind while holding dev_set->lock if the device is already
+> open, matching the existing cdev single-open rule before touching the
+> device-wide KVM state.
+> 
+> Cc: Alex Williamson <alex@shazbot.org>
+> Cc: kvm@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/vfio/device_cdev.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
+> index 1d9515c967b0..ab46563604ac 100644
+> --- a/drivers/vfio/device_cdev.c
+> +++ b/drivers/vfio/device_cdev.c
+> @@ -124,8 +124,8 @@ long vfio_df_ioctl_bind_iommufd(struct vfio_device_file *df,
+>  		return ret;
+>  
+>  	mutex_lock(&device->dev_set->lock);
+> -	/* one device cannot be bound twice */
+> -	if (df->access_granted) {
+> +	/* The cdev path only supports one bound/open device fd. */
+> +	if (df->access_granted || device->open_count) {
+>  		ret = -EINVAL;
+>  		goto out_unlock;
+>  	}
 
-	Steffen
+This is already addressed by [1], committed as [2].
+
+[1]https://lore.kernel.org/all/20260911170429.1642480-2-alex.williamson@nvidia.com/
+[2]https://github.com/awilliam/linux-vfio/commit/258ba46543abdd36844f04bba8b4022a5731d873
+
+Thanks,
+Alex
