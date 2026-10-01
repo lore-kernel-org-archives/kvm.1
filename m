@@ -1,182 +1,163 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A83E53D9CB
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 19:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E533B9931
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 20:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790883548; cv=none; b=Y5ylVkkBrsud9qkjct6E8ZqiPl1HLXpxVebyGbhOVnNnMIDUPgp2FDv9XLrpwPLJKeYWsOnORP0kmM8edyLYLLpWHOsWBfFqTQS9esQvfyYjNl3V66532HQ40+4FW11PiMOlMdajV/rzXnB7xKgZGYPnt8XLDe0Ie7OYC7G47Eg=
+	t=1790885644; cv=none; b=JVsS9McjXG5ZQQdX+doSbXbGSMVgGhp2gHK86gjp/UzI6ES2SNKvEXDf322Keox7akLbTJUHoozQW8dHdLO6foYcKSqMtgtWmU8uzYJ/Uac/26uv0ULCCdi5icRw983tqHbUv0ZoGkxE6K9eYzBU8/xSEKtSBNrSAhXxEPMF4h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790883548; c=relaxed/simple;
-	bh=M4dXSBge5+OeGOkEPm8tEyn1V45XLSawDxNn3M/5cP8=;
+	s=arc-20240116; t=1790885644; c=relaxed/simple;
+	bh=9jDVroTFpMrKNa4oENyKHz4qYCXvrptO4EqjIDHt7aM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YFIfd7ohrZHnGiKug0Z+Uf8nXsMJ5dL0Mr3YXZRvoBMivOqWtU6NuSQMBRRYoqhpKrj6urTTaiGMDeb9hzh7j7bfO0FI3cPGnARmb5392XDdhkGOEAn/alHpksxRt4eTpegoKKeSzY7Uq7zt4mNNi740fq1EMbHsDu1IWgwsAJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FsgPbx7E; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=H8ezytWnaQ3QetNVVnfWNIn+fcXxTCexiUl8HIXb+b7pN2uXjCw4rLOTTnhPy3eOb+oNi2TBAp/7pTVLDiOnb5RwlxGOvD3pP01NPoB0ZePeSYwhiQJMu4LQDRcwcAvByo0g3N9j7Amf/2p3FZ2JvPhfQKGmyeb2AhanEUEgMx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v9SO+1ig; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FsgPbx7E"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so8166176a91.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 12:39:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v9SO+1ig"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e2d3a3ff86so37590885ad.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 13:14:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790883543; x=1791488343; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790885641; x=1791490441; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kWuVYqccoZ0xuvlXXUJd1igxfZmdeqLxo/EcY9b25x0=;
-        b=FsgPbx7EGcmCQEtmqs8CaWUXQtxOnfFoyzsyffPBnuDBb4mIzofE1i82PiLbSuDtZ6
-         lx1XbgCDij3DiTfRT2CG0wWeyJYNhdzlPE9quNk2ytGhmpz3OSYBcSRREs3s0/n/09Pf
-         zGGqN9KKCia5ZDo6iCuVvecYLMESxwpQK9zQoU1mVbM8OAmv6JvN4n0RSH+H55+bAvtz
-         c+/IVqD2jlqyHoUsSXqheE0opTZtJxzdff5iwiFiojUDsjpYpTGaQZLVUKrH+iWwDunC
-         ykO9MdiHpLQC3UdrhP3Y7PyIa41FctMcQHs/fPfurPrZpYmyU24ooPophNsVGkpUcrWG
-         nJqw==
+        bh=M/30PgqyrtTRCdxPEBiCLZKlSeOkm5OSb0s4OxH0XUk=;
+        b=v9SO+1igpUdqEw0sbQQ2r6J5/pw0frMOBk6SDhmBRmZRot066ZB+P/pUl1bCYQZEyF
+         bFn8XvbiwI6w4RUpNwH4qfEogMhJ7IvKnPxTq6G0dMr6GT8t77kqhm1z+SKkgNNxEz9F
+         3Yy+f2wKq9S+NfQj8npaCk344mO9F/CkwUd1BsF0Oczyko6zm3zQBFp2TKT010X+zzH6
+         Qp8RNJYAPKzBiPfeF72VA1RjkXHH4w96KXYPoqyh8GnjuQs1iBqAl8mAzISXR7pm8zlM
+         OFfgEPzmPqQWn8mQFbYR1MY8j+SGLtPPZPjs+DnfUR6Bz7GFUfX/1o3Nx4gR1RcUonUp
+         fgWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790883543; x=1791488343;
+        d=1e100.net; s=20260707; t=1790885641; x=1791490441;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kWuVYqccoZ0xuvlXXUJd1igxfZmdeqLxo/EcY9b25x0=;
-        b=CXcMRV+OaM2rMSCSDmREfbjfbibGxjPb1fZaw/aKQuXblX4gcjUwOSAWNeIQY3dzR4
-         zqVjYcvbF15VM9F9KvBSpDeXM3chh+TvrqmO3BLB/2gLgzDzFI0rQu8D7yc7gRpu7IV9
-         qgzKwU4doshb1IteBlgC2dTpq8zIuij2xeCD2l3PcJ7xYnJ2e7fquKy1+2n342sMvXMm
-         ZXXI4zA5tUdkPa8EsBx8dRs1+Px4FueFNUTJEL+qX7YKE1nqy6TiamLoaROHFto82mAf
-         qT/zPypPP9Tl04KKB2uAx85iZedlfXTsTE+MoVyqzqIT30zLF1KiARQfYW2sOW6IbcFk
-         AzTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxUd1y+qlyPrj3od3Rg6dF6dEUeZDiKzv8UUstvVWzZgj4XqjJNjTNqri/dvJV/Nri5O/A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ+C7KTC5lSwdfESC/pnPYTtmag8ccNHDJW9r7fuKXXgjydhj3s
-	OML8l0tSFWLkhcTX1FLIdxubBp2tiue/ZW5JhJtOHE8EjfsimM+vcLT2B9ysLMnSGt9vZTpe5Ps
-	Q01jGuw==
-X-Received: from pjbdt7.prod.google.com ([2002:a17:90a:fa47:b0:3a4:f73c:50c4])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2585:b0:3a4:b418:94ce
- with SMTP id 98e67ed59e1d1-3a6ce5fa387mr579569a91.1.1790883542430; Thu, 01
- Oct 2026 12:39:02 -0700 (PDT)
-Date: Thu, 01 Oct 2026 19:37:50 +0000
-In-Reply-To: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
+        bh=M/30PgqyrtTRCdxPEBiCLZKlSeOkm5OSb0s4OxH0XUk=;
+        b=yxm/iV8NJhPAhgsY+k0dffzWQpxWHWuTKqoKV0hfGYGl+6YDuq78f8dNR9Quz8u7w0
+         yrS3WQb2MMYr6HIIYcIDQRUPKW58dIeX7a5x2B2EZyvXFpl9c8m1Y7W0RLZ68aFFyv7a
+         mxUngec3Hp5oeBcIzXO326aHmQx+Q3CTWVhKZSZ8JN4Dip2CBc5cVeO6VWxWRndgIfrI
+         QWfFGrsVgttkaB5ZIn6knWG+mIN326YfPGQyDyT7nQXSS9NrfGsa2/TSLv0oFbh0MycH
+         CGkdYlW5qJ8vzmcoqnUUYOFcUIatzb293RtIAt/DAx7kWMOJXfWRV5O9KTBH+x16c1HP
+         /VmA==
+X-Forwarded-Encrypted: i=1; AKwUvBzt0TsES03tuE6GtWBnHjyiAutonrqwr8kRvO/xZ+O7CnruwECeXNUEVVylgB5VoDBTEi4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKs112BPIO955UEoPlEIxAPXNYAg40JeAo71/s594697xfBTSRd
+	Aab9vaZfqcyuzzY7YPhpAYHs6JDMe5vFRASEcDScAQ5mYo3nYlphy8nRhwxhCyzUAd55mHfOLoz
+	VBRRZXw==
+X-Received: from plbjj13.prod.google.com ([2002:a17:903:48d:b0:2e2:edf1:4104])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f608:b0:2e4:901b:9dc1
+ with SMTP id d9443c01a7336-2e49b6ba182mr4575795ad.50.1790885640512; Thu, 01
+ Oct 2026 13:14:00 -0700 (PDT)
+Date: Thu, 1 Oct 2026 13:13:59 -0700
+In-Reply-To: <20260911191011.528460-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
-X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=3341;
- i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=eahQ/Qg0Jjy4E99ZAgvlDKelpVaZbNc+WKsobSaVqcE=; b=Dwk024wKMQMop0ug36RFw+ZisT1Gxgnh7qxnlmzhTrCyBGcmUvBqXFBld4BObW7rX4ebrGJpP
- Mwwe+dWVRoIC8u0q73KBSPTwOEnU7St2O7f139XS6ZpyMq6h8yR7nMc
-X-Mailer: b4 0.14.3
-Message-ID: <20261001-tdx-selftests-v15-23-7c62a5d8a992@google.com>
-Subject: [PATCH v15 23/23] KVM: selftests: Add TDX lifecycle test
-From: Lisa Wang <wyihan@google.com>
-To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
-Content-Type: text/plain; charset="utf-8"
+References: <aqREBvLRKgD5cGgk@google.com> <20260911191011.528460-1-jmattson@google.com>
+Message-ID: <ar6_B0Cj831UB-wh@google.com>
+Subject: Re: [PATCH] KVM: selftests: Add test for shadow VMCS flush during
+ vCPU teardown
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: James Houghton <jthoughton@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-From: Sagi Shahar <sagis@google.com>
+On Fri, Sep 11, 2026, Jim Mattson wrote:
+> As requested, a half-baked selftest. :)
+> 
+> I dropped stable from the cc list.
+> 
+> When a vCPU is destroyed while L2 is active and VMCS shadowing is
+> enabled, KVM synthesizes a nested VM-Exit. This flushes the cached
+> shadow VMCS12 back to guest memory. However, on process exit, do_exit()
+> calls exit_mm() before closing file descriptors. KVM teardown runs
+> with current->mm == NULL on a borrowed lazy TLB active_mm.
+> Consequently, nested_flush_cached_shadow_vmcs12() writes the shadow
+> VMCS12 into whatever address space is active on that CPU.
+> 
+> Add a selftest to verify this behavior. The test runs a victim process
+> and a nested VMM process on the same physical CPU. The victim process
+> maps a page and fills it with canary bytes. The VMM sets up an L2 guest
+> with VMCS shadowing mapped at the identical host virtual address using
+> MAP_FIXED_NOREPLACE. When the VMM exits with open file descriptors, the
+> victim yields the CPU while the VMM terminates. This scheduling
+> heuristic attempts to hit the race window where VMM teardown runs under
+> the victim's active_mm and flushes the shadow VMCS into the victim's
+> address space.
+> 
+> ---
 
-Add a test to verify TDX lifecycle by creating a simple TDX VM.
+FWIW, diff to get this working on the current kvm-x86/next.  I hacked it to use
+VA=0x1000 for the "bad" mapping as the address picked by the kernel for the victim
+was colliding with an existing allocation in the VMM (I didn't bother trying to
+figure out where the allocation came from, didn't seem interesting).
 
-Signed-off-by: Sagi Shahar <sagis@google.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
- tools/testing/selftests/kvm/Makefile.kvm           |  1 +
- .../testing/selftests/kvm/include/x86/processor.h  |  1 +
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  5 ++++
- tools/testing/selftests/kvm/x86/tdx_vm_test.c      | 33 ++++++++++++++++++++++
- 4 files changed, 40 insertions(+)
-
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 495de8ef8166..14cff95cf291 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -161,6 +161,7 @@ TEST_GEN_PROGS_x86 += x86/triple_fault_event_test
- TEST_GEN_PROGS_x86 += x86/recalc_apic_map_test
- TEST_GEN_PROGS_x86 += x86/aperfmperf_test
- TEST_GEN_PROGS_x86 += x86/guest_memfd_conversions_test
-+TEST_GEN_PROGS_x86 += x86/tdx_vm_test
- TEST_GEN_PROGS_x86 += access_tracking_perf_test
- TEST_GEN_PROGS_x86 += coalesced_io_test
- TEST_GEN_PROGS_x86 += dirty_log_perf_test
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 1eb380dd216c..61ae02d927c1 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -393,6 +393,7 @@ static inline unsigned int x86_model(unsigned int eax)
- #define VM_SHAPE_SEV		VM_TYPE(KVM_X86_SEV_VM)
- #define VM_SHAPE_SEV_ES		VM_TYPE(KVM_X86_SEV_ES_VM)
- #define VM_SHAPE_SNP		VM_TYPE(KVM_X86_SNP_VM)
-+#define VM_SHAPE_TDX		VM_TYPE(KVM_X86_TDX_VM)
+diff --git a/tools/testing/selftests/kvm/x86/vmx_shadow_vmcs_teardown_test.c b/tools/testing/selftests/kvm/x86/vmx_shadow_vmcs_teardown_test.c
+index e0863ef20d3e..fbaba40ceefa 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_shadow_vmcs_teardown_test.c
++++ b/tools/testing/selftests/kvm/x86/vmx_shadow_vmcs_teardown_test.c
+@@ -45,18 +45,15 @@ static void l2_guest_code(void)
  
- #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
+ static void l1_guest_code(struct vmx_pages *vmx_pages)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+-	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+-	GUEST_ASSERT(load_vmcs(vmx_pages));
++	prepare_for_vmx_operation(vmx_pages);
++	load_vmcs(vmx_pages);
  
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-index dcfc62ffbaeb..85791fe16f68 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -11,6 +11,11 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
- 	return vm->type == KVM_X86_TDX_VM;
- }
+ 	/* Prepare the VMCS for L2 execution. */
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
  
-+static inline bool is_tdx_supported(void)
-+{
-+	return !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_TDX_VM));
-+}
-+
- /*
-  * TDX ioctls
-  * Use underscores to avoid collisions with struct member names.
-diff --git a/tools/testing/selftests/kvm/x86/tdx_vm_test.c b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
-new file mode 100644
-index 000000000000..7cdcaf33b585
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/tdx_vm_test.c
-@@ -0,0 +1,33 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "processor.h"
-+#include "kvm_util.h"
-+#include "tdx/tdx_util.h"
-+#include "ucall_common.h"
-+#include "kselftest_harness.h"
-+
-+static void guest_code_lifecycle(void)
-+{
-+	GUEST_DONE();
-+}
-+
-+TEST(verify_td_lifecycle)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+
-+	vm = vm_create_shape_with_one_vcpu(VM_SHAPE_TDX, &vcpu,
-+					   guest_code_lifecycle);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_DONE);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	TEST_REQUIRE(is_tdx_supported());
-+	return test_harness_run(argc, argv);
-+}
-
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+ 	/* Enable VMCS shadowing and set the shadow VMCS link pointer. */
+ 	vmwrite(SECONDARY_VM_EXEC_CONTROL,
+-		vmreadz(SECONDARY_VM_EXEC_CONTROL) | SECONDARY_EXEC_SHADOW_VMCS);
++		vmread(SECONDARY_VM_EXEC_CONTROL) | SECONDARY_EXEC_SHADOW_VMCS);
+ 	vmwrite(VMCS_LINK_POINTER, vmx_pages->shadow_vmcs_gpa);
+ 
+ 	vmlaunch();
+@@ -77,10 +74,10 @@ static bool kvm_cpu_has_shadow_vmcs(void)
+ 
+ static void run_vmm(int pcpu, void *target_hva, int c2_to_c1_fd)
+ {
+-	vm_vaddr_t vmx_pages_gva;
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 	struct vmx_pages *vmx;
++	gva_t vmx_pages_gva;
+ 	void *shadow_hva;
+ 
+ 	pin_self_to_cpu(pcpu);
+@@ -97,12 +94,11 @@ static void run_vmm(int pcpu, void *target_hva, int c2_to_c1_fd)
+ 	 */
+ 	shadow_hva = mmap(target_hva, PAGE_SIZE, PROT_READ | PROT_WRITE,
+ 			  MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED_NOREPLACE, -1, 0);
+-	TEST_ASSERT(shadow_hva == target_hva, "mmap target_hva failed in VMM");
++	TEST_ASSERT_EQ(shadow_hva, target_hva);
+ 	memset(shadow_hva, 0, PAGE_SIZE);
+ 
+ 	/* Add a caller-managed memslot for the shadow VMCS backing page. */
+-	vm_userspace_mem_region_add_caller_managed(vm, shadow_hva,
+-						   SHADOW_VMCS_GPA, 10, 1, 0);
++	vm_set_user_memory_region2(vm, 10, 0, SHADOW_VMCS_GPA, PAGE_SIZE, shadow_hva, -1, 0);
+ 	virt_pg_map(vm, SHADOW_VMCS_GVA, SHADOW_VMCS_GPA);
+ 
+ 	/* Override the shadow VMCS pointers in vmx_pages. */
+@@ -156,7 +152,7 @@ static void run_victim(int pcpu, int ready_fd, int c2_to_c1_fd,
+ 
+ 	pin_self_to_cpu(pcpu);
+ 
+-	victim_hva = mmap(NULL, PAGE_SIZE, PROT_READ | PROT_WRITE,
++	victim_hva = mmap((void *)0x1000ul, PAGE_SIZE, PROT_READ | PROT_WRITE,
+ 			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	TEST_ASSERT(victim_hva != MAP_FAILED, "mmap failed in victim");
+ 	memset(victim_hva, CANARY_BYTE, PAGE_SIZE);
