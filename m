@@ -1,94 +1,96 @@
 Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF7051A725
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 17:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C324A49B5
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 17:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790876386; cv=none; b=JenvXJDeMVNxun+WW6rXIhIiM1qVe4ifKuaRRUdl5ijBvHl6T5qUr5lHxqLt2TZ6UmSkSVRJ2pksu5Yw453ZC11CbQi68m1J4aRMd85BTyZuxSeejrlLDUMlOMUhq1Yl4Fwr6sdEGePwII+jfHC8JRRyhx9tIpQsvsDwgYr3b5E=
+	t=1790876777; cv=none; b=SFOGryxsetM69PxTl8FQkKhd06rHbs9sUsK0ILaLrUqI0IqVROYuGxl33fY0/JRy3sklu7WLCCVSO4onswcxspIfOaQr8b/v5tVjTk+gVEbR1wSmV2pTGAJpVuS2dNBrTyScG7jfGTD/k6Up3avaHBEvR/vZocNLT9IkOcyqTsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790876386; c=relaxed/simple;
-	bh=dK1YC8FLSUXxmYfSB8ouUVvYnUfdNVfIde9XouOn+8A=;
+	s=arc-20240116; t=1790876777; c=relaxed/simple;
+	bh=rnxeMZYf/9z+Xb0KkANecvdRglyjwp/CtJHPxz2f1UM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bU7ws1ggZKowA4oyuEdzqn4mI+/YnHLMv0d19s6TehThCca4zJf01H8LpUDmCnW9cAYb4bVyUHYQJt1FjzKNGA6gDCay4ESIEdZMkPfVk4syTQ32yBH1tNZyi+0FQvi9mBvxXI8ebUn+UEPNvrFTH7iEgexHhq15n7PiC9mHLp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=kdqSq7ON; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tFtwlagK; arc=none smtp.client-ip=103.168.172.140
+	 MIME-Version:Content-Type; b=h3uo4d92sTll4WGTpAo5XDGpMilnjH62976YU4o7C/WGJlaJfn6XYAP6nB2nJBTyJSvzwjqXDMggTlS+PQ245Df7bsMGrcbvZhYlw4j1jcxUKTZcANn59AyLGPz3DmnZpKrhSVcicchVb5gFFESlt7q/XSkbWz7nzE5jXFmJPE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=56a7garZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=W5rQo7gt; arc=none smtp.client-ip=103.168.172.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="kdqSq7ON";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tFtwlagK"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id 892B013803E0
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:39:41 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="56a7garZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="W5rQo7gt"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id C34A61380328
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:46:08 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 01 Oct 2026 13:39:41 -0400
+  by phl-compute-11.internal (MEProxy); Thu, 01 Oct 2026 13:46:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790876381;
-	 x=1790883581; bh=l3aq13J5VX9YHBy+nDgiTWl41JHuJfuq9o7FqdgtotQ=; b=
-	kdqSq7ONSi0lCoc73xVfCf0+TFUtGLQ7rPztnEBFgqNS25kl0UE2ydYW6SAq4qPz
-	EWwWi6Jw3w67qM11Pa6ILzqkKawDmHle7CyFrKqeweES/L5JDCCwVhoMIoa5Bl+B
-	oNBA1N5QyFADEWk155aFKZ36Id6Fd1jvO5V1LWzvxw/aHqgOva1pi5Fimta6GDxK
-	LY+4xoehiYHkLPXhjjjGVnmdBFYJVPqINy0sIbjR5c4jtmMmW1YKE8d5TKF032zk
-	qUZz+OIzpEI76WdwsE3sPpQ/XNIOpG8SJkrWibuxaUMweE/76B17Wr3PFHTqsLSO
-	QO+AJHyDpFCZYfEtR04sUA==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790876768;
+	 x=1790883968; bh=CtQ3WPdADjRa24hJ7cOX4tECd7fd+Masma1XcYGDjzc=; b=
+	56a7garZnY23HpMfZVeSIX9qiczOMX9EtzEqL/bYGbLv1Vr4cGrVfzhP0xXFVYOY
+	/COP40NWJF3UZoWRIJO0+jKtBivI//YLwaCoYcAjRCLws59VsxHy3GaiGVDDLdgm
+	mdY6SLClRvNJ8H+CDd5gL9Qc4NQxfV5ABx57W1BTwjDdjjJC/hqKUcr+HpuuUWd6
+	JtRwF2bCaR2jGb4raqhxqUyRyCaNspKU2nwjPcRt+rVsHJj4Bx9MrPWrEPLWAkwa
+	kIVqLck1aC0Kfl5On5e5Ua6x1jvuTA7/9ooiVSPV90dyHLMe0ZBwbNuLYlb74YuO
+	l3TYNpkg4STm+crf7cdSbQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790876381; x=
-	1790883581; bh=l3aq13J5VX9YHBy+nDgiTWl41JHuJfuq9o7FqdgtotQ=; b=t
-	FtwlagKkqMq92EXRtCIhXFmPZqwc04B6V7Xrod3Y3SE25ilvAQNcvJnHjZSVy7HR
-	5jdBUNSA3RPIe9XvW/RWSEOxDs1yeROoWR06orhQzf5XQQbZkvFoVfEx4M6jgChW
-	BoDlQSfm9w+b/dhDhe/0ikdEIFaUjz1eMao8lio1sPifIu7AfFTiBQ98oDhQ6o/r
-	n4WLrTOF66O+S5JvVkosjThNjh9kXiVnSXH4CZgen49piBSrHmI09weFPAavVWQq
-	APRPkEx3KV5DQFdpif/qhaMTdZeXIj016XBuQEu5mhLa7zfMxZbJhvTznqrJOJi6
-	SDM/8jixveElLhdfeOmjQ==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790876768; x=
+	1790883968; bh=CtQ3WPdADjRa24hJ7cOX4tECd7fd+Masma1XcYGDjzc=; b=W
+	5rQo7gtSetJyyr1A8ZXKvTECrD3bt8TVfZn+Vm2hQhMK736mtLuEvBMp3kzBScrG
+	7N3+NsqGlDNoCukWpYhieOy6eqWoLguwr/lfJbrbaq2L9RB3c0ogz05YVboMJ8Cp
+	zlxv3qrHNiaRt8D36f+V71Tk36Twl4RF5TDrOOwagSqAOq3bpRwNDPhAUf/7fszP
+	kjt/CiCAx4RXA/0NyN9iEH+jmBGdOMm6MfSFcRAHTskhVZEYVtptETwHjqo92Ji5
+	YeQywd04OiWDZQZq43/rmvf5fkn6GcOHyySXRBWnSJY71Df8onseeE4yEBJoWyH8
+	NXtrXvfOY1UspHafNvhgw==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790876381; d=shazbot.org;
+DKIM2-Signature: i=1; m=1; t=1790876768; d=shazbot.org;
 	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:BZT3T7nwWo6NYGqsqN3YaZFcJ9VmdtVazOTm1XvkJpbDMvc
-	RcOzBcRPPEG7nMtgG6kf3A9iV9ga1/oF21/h236S7sXpYF/Kz/zFwoHtrPd0YkVC
-	oD0EnvuHtA63YfPg4J6IILIuhuSfZh7J6w+SHNedL9QHMZHvV01DhcKZQkABRR6p
-	5UO+8r9UCgP2Q4aR+4ZkxXwlNxKRVwaHrQKCuPW7NNN3j63wmkTDBGEijNqAxVI/
-	dQvkI4DulELP+dUfvH+943Odtdn20Ayr2Znk+sMEQcoK0wcF7cKvILZ0HgEDqSVq
-	kd7NVAwpzcDK2wa3XPc0UybiOBrbZaq/vk6bIkg==;
+	s=fm1:rsa-sha256:d9Bq229pT/QCawItvqqnFJ0aiEvONLZ67AADtJigvB41wnn
+	/kpmgKCE+Xot8VShpTIQ/N7wi+iFosIr3U/2EJLGmu/pw3Qe4wx9tiTYNHggYKDM
+	OCyhDWZ7m6TVUEIk3p2705619BRAHVBYig0P9nNn65ewEVkksLwT9zsmQVSKuHy+
+	TNoj2D9Lg2Q2i/ezFN9SiUao/vXgvnvhJnyKoGJINBQ0u/n3opr35pn3oqgo8tZk
+	OTPIS1oYlkzS8YXY49vH5SlZe5hD6aKzDg2qs6JNvyfFK87A93vre9E+yM21Q4Gx
+	LEOO6Z56PJKsqzHkq/W7VnhNsYvdhD61Q/dVvFA==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:z2qhpcc+RzePh3dNm2m2+Knepu4wJdsPJN+T/6bVKtY=:dK1YC8FLSUXxmYfSB8ouUVvYnUfdNVfIde9XouOn+8A=;
-X-ME-Sender: <xms:3Jq-aug3K9pvUYA2R758yEKTaUF6hWItBV3oCBoeYgaGqw1bL-jpUQ>
-    <xme:3Jq-apsyY0eOS2RVEV4MxabJNPqhgVpf8RdKuodXZmIQpYnubLPRtFp_7WU6Q7jDA
-    85yFi2mkP5fQE7m2tp8OGgZXHzivu4iS2RZ0pTQmX0dxM1rHMybG78>
-X-ME-Received: <xmr:3Jq-aqFQYje6EM_ix9p9ipNVzRSwHOuJoq9wYvG8RU6-RecYNr_7OTpC7JoXDQ>
-X-ME-Proxy-Cause: dmFkZTFjMvnoc2ZRA7bRZ4ZKMJykf9Z98u/a2S5rh6yqc8FD4Z2e29OmoZxkc+onHeIyrO
-    dAAb7ujMFpuUmFa0XOLFnfycqmpnr+UIiD5zRwb5uYR2lYv6+v5NCR1bPSqjMBLj2CqaW6
-    bGfvCIuo5XeKSJoFMuhojzwmrcvpaYASjzwRKcIYro0OeFDAHuRae9leb0cb4m7sBGrsmE
-    jCoOsgcuxYpxueCYXFZedkdKyG59g/H4j/0JzaspL9zC72ImcaIHxOZgPV3I9KXiTG0cHv
-    OKxlOLPWD6+O1841nvrr30eav+R/UAz5An5jQuTZz2zK0mCKezUT+eizpE40cUJR7nRiOC
-    XWlYJHtlaMCbCnJt1eiwOL4U34V7yoz/m0dHBpDTvXhSeHaRsWqKRS+kbBH7Idg8tmSPPg
-    3dC7joSgHbDzjQWILZ9lklcXyfU32/naPYE5wnfMlCD6FbjI4Mw6i/84fzJLpUrDG2+n5e
-    A/yg01EdAeC08uEihbbzzhS+G/gMlcNShtLuelgSPD1UUbEVM1ikYZyALm7R+52Qvea4eL
-    tlhfdWJrehWohKCYe9EBF44U576JhWbZNUtrD5Ggu8lWSECAs78EGda4MH2XPU9206tRxT
-    BfXUkX3ZM1nndndcQ1wpG/cZBIpmYWliTlcl/KvwvpB30FB4sRJgKyA08t4A
-X-ME-Proxy: <xmx:3Jq-an9GVRhMCzGmC4bOWS5lTld-0cmumjXLMoKNPTMmoxFG1RUUXQ>
-    <xmx:3Jq-aqiD2bw0KgH2UsuNdkpllbd7MfAGcm9wXb9r8B-s4A--SrmXJQ>
-    <xmx:3Jq-at-UU8G7ITOaH0LYOQiiMrAXOfOqx3qLXxj0kx7u8JijGh2PuA>
-    <xmx:3Jq-amSI7B9o8dIyEjb4yz6gOOlTA-ra5DuJiK0vOTucwDmnY0FH9A>
-    <xmx:3Zq-am7_0KFlHTcvcD3rwRRRNNJcF2umGR6KZWtPiqExSxvFHyXd_6xQ>
+Message-Instance: m=1; h=sha256:mzoQOsQeOsMe7yu+QchXp1gDZTMc9yWC8jTVvXYHafE=:rnxeMZYf/9z+Xb0KkANecvdRglyjwp/CtJHPxz2f1UM=;
+X-ME-Sender: <xms:YJy-apJ9FCs-iuch36jfRecXTc5pxl4kBPcbCJkBwnQlotuZ_w3w_A>
+    <xme:YJy-aiiaonWddKPd0lbc_Zi9-_5NQRyZvuHQri_r61On4tfeVkSUTI-N136uDfsNG
+    ggBBGoV2lwXkWUKkK7BPIHI10dBQLSJeV-94yMyJodkKkIF_eInLXU>
+X-ME-Received: <xmr:YJy-atuHfc7Y4LZn6aVxLEWlITZtk7GeYzO1lfG97ycwxWG06Otpt82GKrI2-w>
+X-ME-Proxy-Cause: dmFkZTGeFOiYRSvqQRzaU9O5PYqcmDoxeyZGLAapC8+oi4sRpdZKAY+lSdXnsz87R/LRsN
+    OAwD0Pix9/dGlidb6OpIQUYllU+qPGUmUMr9RtZkzLhkG8QfXKxnuAfSx+he7ZiQliUm4p
+    fS19xhtT7B0LTzhA7nGIdVYTJY8rISmFadgjpkz7nJ5cCS/ofG7/mVnhD/Ogq1cJO4Bq5v
+    HzaOqDG6yarbzEKNQU4IzTVdy1NR5OGboNIioUq7ivHUWWwQeeI8eVLfBMc+iNHOHR+8Q9
+    rd1bYCqkvxobZISxhV/wnQGymuUJtWZ+DIreaBjkK9eX9AhlsvIQsdSJTzeXBPpLAbClMg
+    kAMQ508m946nM3uG04rxSR/HFEGCsaOuixFXRWmi91SdHjx0fLlp3EmjQuFy5eOJOsXL2P
+    jcD4flgmr3VEOaR4p2M/EftUQ8mUuIsTzlAn5IftslRhcy7LufPXoame2M1FSVdL4SYu3X
+    BnQHIsMv77I6N6JCGPINyuFkyabKF/eAOF9oCy5pkXzjhXkdGsUO7S3gH8CHS4xbUaOdOe
+    wwBrsncYU8LTOihBOIW1WUwkcXuetEutTc1uPN0+zqmINYOLAbdXeOv1C7D+JNu47VjZIO
+    xfq8SngKR0vz7b6Epkdu8SHnXk1OgXkrnVQA7ZTWYxtwWn17Tw8IDCOTmqjA
+X-ME-Proxy: <xmx:YJy-auEcMH1yFAmmedCA70c1CKmTdCqctQhwts2jJAbVsYmEzW-iGQ>
+    <xmx:YJy-ar-9doEDGvIsB1qcb8iBPN1fUXS04NK3VamUPXHJ2nqwrnqVhg>
+    <xmx:YJy-aujJPABC2q67rzOhqGbVXnsbuU_aVeTCg28X-__B6fEkdLl81w>
+    <xmx:YJy-ah_-teYB6dF1k5KZ11i3KFTVcwJ1oAz7OwmM6HIdqwWMs3kgfA>
+    <xmx:YJy-auAkQ8bouM_WLRsuqtmRPbPVO4drjEUgJf9pMILUTDBXtWjZGw8V>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 13:39:38 -0400 (EDT)
-Date: Thu, 1 Oct 2026 11:39:36 -0600
+ 1 Oct 2026 13:46:06 -0400 (EDT)
+Date: Thu, 1 Oct 2026 11:46:05 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Steffen Eiden <seiden@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>,
  David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
@@ -96,8 +98,8 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
  Sven Schnelle <svens@linux.ibm.com>,
  Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>,
@@ -105,15 +107,13 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
  Jason Herne <jjherne@linux.ibm.com>,
  Harald Freudenberger <freude@linux.ibm.com>,
- Holger Dengler <dengler@linux.ibm.com>, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, alex@shazbot.org
-Subject: Re: [PATCH v4 4/6] KVM/vfio: Use file-based reference counting for
+ Holger Dengler <dengler@linux.ibm.com>, alex@shazbot.org
+Subject: Re: [PATCH v4 0/6] KVM/vfio: Use file-based reference counting for
  KVM
-Message-ID: <20261001113936.21bc850a@shazbot.org>
-In-Reply-To: <20260928-vfio-v4-4-e32e226d5932@linux.ibm.com>
+Message-ID: <20261001114605.4167fa97@shazbot.org>
+In-Reply-To: <0c5fe5c2-4ab8-4d1f-a36a-84a8fd136160@linux.ibm.com>
 References: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
-	<20260928-vfio-v4-4-e32e226d5932@linux.ibm.com>
+	<0c5fe5c2-4ab8-4d1f-a36a-84a8fd136160@linux.ibm.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -124,54 +124,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 28 Sep 2026 15:07:05 +0200
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 423ead48aafe..ed96acfa8635 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -472,36 +472,14 @@ void vfio_unregister_group_dev(struct vfio_device *device)
->  EXPORT_SYMBOL_GPL(vfio_unregister_group_dev);
->  
->  #if IS_ENABLED(CONFIG_KVM)
-> -void vfio_device_get_kvm_safe(struct vfio_device *device, struct kvm *kvm)
-> +void vfio_device_get_kvm_safe(struct vfio_device *device, struct file *kvm)
->  {
-> -	void (*pfn)(struct kvm *kvm);
-> -	bool (*fn)(struct kvm *kvm);
-> -	bool ret;
-> -
->  	lockdep_assert_held(&device->dev_set->lock);
->  
->  	if (!kvm)
->  		return;
->  
-> -	pfn = symbol_get(kvm_put_kvm);
-> -	if (WARN_ON(!pfn))
-> -		return;
-> -
-> -	fn = symbol_get(kvm_get_kvm_safe);
-> -	if (WARN_ON(!fn)) {
-> -		symbol_put(kvm_put_kvm);
-> -		return;
-> -	}
-> -
-> -	ret = fn(kvm);
-> -	symbol_put(kvm_get_kvm_safe);
-> -	if (!ret) {
-> -		symbol_put(kvm_put_kvm);
-> -		return;
-> -	}
-> -
-> -	device->put_kvm = pfn;
-> -	device->kvm = kvm;
-> +	device->kvm = get_file(kvm);
->  }
+On Thu, 1 Oct 2026 13:59:49 +0200
+Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
 
-Nit, retaining the "_safe" naming here and through the callers is now
-meaningless and could be dropped.  Otherwise,
+> Am 28.09.26 um 15:07 schrieb Steffen Eiden:
+> > This series switches the KVM-VFIO interface and external consumers over to
+> > standard file-based reference counting, eliminating all external KVM symbol
+> > exports.
+> >   
+> 
+> Paolo, Alex,
+> 
+> I assume this will go over one of your tree? If you want, I can also create a topic branch
+> for you to pick if you prefer that.
 
-Acked-by: Alex Williamson <alex@shazbot.org>
+It's a KVM focused change, vfio is collateral, so I'd defer to Paolo.
+I don't believe I have anything pending that conflicts, it applies
+cleanly against current vfio next branch, but a shared branch is always
+a nice hedge.  Thanks,
 
-Thanks,
 Alex
