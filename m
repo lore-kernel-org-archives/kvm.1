@@ -1,76 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2C641735B;
-	Thu,  1 Oct 2026 17:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF7051A725
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 17:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790875478; cv=none; b=nAFORV2uOIajvA5fDK/E1PR9uoKEP5yDTGVyWhI7yAob864AuLaqXqzBHe1UmXjG4b0XFU3Mdtvd0+U9FuA/P1mHLp6axZS7YSEDhlM1G4YP6tfc7NMWglSNCjyFev+c10Nj55w4QovvGvZDGrouuuNWwMnztGIkBYAzJiI7CbY=
+	t=1790876386; cv=none; b=JenvXJDeMVNxun+WW6rXIhIiM1qVe4ifKuaRRUdl5ijBvHl6T5qUr5lHxqLt2TZ6UmSkSVRJ2pksu5Yw453ZC11CbQi68m1J4aRMd85BTyZuxSeejrlLDUMlOMUhq1Yl4Fwr6sdEGePwII+jfHC8JRRyhx9tIpQsvsDwgYr3b5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790875478; c=relaxed/simple;
-	bh=A7nvrSNhwg7+3eBeRYtFeN2iJrTjFQD/KVzLmBJDqLE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GcWlfKcRwl3LWfJYsGj+yzHHHnn0K7TI7HBameW/fHoEECrWA8+XaJusW7ZgcRHQ6pUkvXMkoKo2cB4b4xUwYfZJFYNE77KIP9npuNVO4jKJsllcJfzRxwN2AOQtB0mg5bnlZlrvyxDtIIQi2ib0Yp4wuBVELpMopTosgjdF5DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQkIcrog; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790876386; c=relaxed/simple;
+	bh=dK1YC8FLSUXxmYfSB8ouUVvYnUfdNVfIde9XouOn+8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bU7ws1ggZKowA4oyuEdzqn4mI+/YnHLMv0d19s6TehThCca4zJf01H8LpUDmCnW9cAYb4bVyUHYQJt1FjzKNGA6gDCay4ESIEdZMkPfVk4syTQ32yBH1tNZyi+0FQvi9mBvxXI8ebUn+UEPNvrFTH7iEgexHhq15n7PiC9mHLp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=kdqSq7ON; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tFtwlagK; arc=none smtp.client-ip=103.168.172.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQkIcrog"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FC21F000FF;
-	Thu,  1 Oct 2026 17:24:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790875477;
-	bh=FE4Cq0CtewOTsCJ/B4fM40TbxadqFwNygwkEhdHMe3I=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YQkIcrognOrL/56Wuw0Bep6M+YV36xMLIMsTOSKPNBqLGF97M6lZ1gWrXGnUYCgNR
-	 j8ri1IV963o3RdMf4+bEe7O/aqxCCw3sveG8GufE7ISjtTyg89XFV8dGZzhxbDqNfo
-	 6yPNrSZO00kidxQEMT7d38j3wAGEDvT44Y21zJ2cEuCOP17goJK/sLGjASdnGR/hq8
-	 ucyq5bXs6lMthZtZQIbcCPJJQHMrOmTfYxMqujZYhIw0Y44EAK7Z4O1Vm1k+zlV3+R
-	 5ILsVzI9nWmBmp5IKXpzDRp9R3Gjh2+PwDpF9Tpj3hO7Ua7mNkrFqS3gbU6qqEYdkl
-	 ExYcT/rFLpTGQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a
- failed PM restore
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jerome Mohm" <jrmmhm.kernel@eldare.de>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, "Eugenio
- Perez" <eperezma@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
-References: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 01 Oct 2026 17:24:35 +0000
-Message-Id: <20261001172436.72FC21F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="kdqSq7ON";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tFtwlagK"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id 892B013803E0
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:39:41 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 01 Oct 2026 13:39:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790876381;
+	 x=1790883581; bh=l3aq13J5VX9YHBy+nDgiTWl41JHuJfuq9o7FqdgtotQ=; b=
+	kdqSq7ONSi0lCoc73xVfCf0+TFUtGLQ7rPztnEBFgqNS25kl0UE2ydYW6SAq4qPz
+	EWwWi6Jw3w67qM11Pa6ILzqkKawDmHle7CyFrKqeweES/L5JDCCwVhoMIoa5Bl+B
+	oNBA1N5QyFADEWk155aFKZ36Id6Fd1jvO5V1LWzvxw/aHqgOva1pi5Fimta6GDxK
+	LY+4xoehiYHkLPXhjjjGVnmdBFYJVPqINy0sIbjR5c4jtmMmW1YKE8d5TKF032zk
+	qUZz+OIzpEI76WdwsE3sPpQ/XNIOpG8SJkrWibuxaUMweE/76B17Wr3PFHTqsLSO
+	QO+AJHyDpFCZYfEtR04sUA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790876381; x=
+	1790883581; bh=l3aq13J5VX9YHBy+nDgiTWl41JHuJfuq9o7FqdgtotQ=; b=t
+	FtwlagKkqMq92EXRtCIhXFmPZqwc04B6V7Xrod3Y3SE25ilvAQNcvJnHjZSVy7HR
+	5jdBUNSA3RPIe9XvW/RWSEOxDs1yeROoWR06orhQzf5XQQbZkvFoVfEx4M6jgChW
+	BoDlQSfm9w+b/dhDhe/0ikdEIFaUjz1eMao8lio1sPifIu7AfFTiBQ98oDhQ6o/r
+	n4WLrTOF66O+S5JvVkosjThNjh9kXiVnSXH4CZgen49piBSrHmI09weFPAavVWQq
+	APRPkEx3KV5DQFdpif/qhaMTdZeXIj016XBuQEu5mhLa7zfMxZbJhvTznqrJOJi6
+	SDM/8jixveElLhdfeOmjQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790876381; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:BZT3T7nwWo6NYGqsqN3YaZFcJ9VmdtVazOTm1XvkJpbDMvc
+	RcOzBcRPPEG7nMtgG6kf3A9iV9ga1/oF21/h236S7sXpYF/Kz/zFwoHtrPd0YkVC
+	oD0EnvuHtA63YfPg4J6IILIuhuSfZh7J6w+SHNedL9QHMZHvV01DhcKZQkABRR6p
+	5UO+8r9UCgP2Q4aR+4ZkxXwlNxKRVwaHrQKCuPW7NNN3j63wmkTDBGEijNqAxVI/
+	dQvkI4DulELP+dUfvH+943Odtdn20Ayr2Znk+sMEQcoK0wcF7cKvILZ0HgEDqSVq
+	kd7NVAwpzcDK2wa3XPc0UybiOBrbZaq/vk6bIkg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:z2qhpcc+RzePh3dNm2m2+Knepu4wJdsPJN+T/6bVKtY=:dK1YC8FLSUXxmYfSB8ouUVvYnUfdNVfIde9XouOn+8A=;
+X-ME-Sender: <xms:3Jq-aug3K9pvUYA2R758yEKTaUF6hWItBV3oCBoeYgaGqw1bL-jpUQ>
+    <xme:3Jq-apsyY0eOS2RVEV4MxabJNPqhgVpf8RdKuodXZmIQpYnubLPRtFp_7WU6Q7jDA
+    85yFi2mkP5fQE7m2tp8OGgZXHzivu4iS2RZ0pTQmX0dxM1rHMybG78>
+X-ME-Received: <xmr:3Jq-aqFQYje6EM_ix9p9ipNVzRSwHOuJoq9wYvG8RU6-RecYNr_7OTpC7JoXDQ>
+X-ME-Proxy-Cause: dmFkZTFjMvnoc2ZRA7bRZ4ZKMJykf9Z98u/a2S5rh6yqc8FD4Z2e29OmoZxkc+onHeIyrO
+    dAAb7ujMFpuUmFa0XOLFnfycqmpnr+UIiD5zRwb5uYR2lYv6+v5NCR1bPSqjMBLj2CqaW6
+    bGfvCIuo5XeKSJoFMuhojzwmrcvpaYASjzwRKcIYro0OeFDAHuRae9leb0cb4m7sBGrsmE
+    jCoOsgcuxYpxueCYXFZedkdKyG59g/H4j/0JzaspL9zC72ImcaIHxOZgPV3I9KXiTG0cHv
+    OKxlOLPWD6+O1841nvrr30eav+R/UAz5An5jQuTZz2zK0mCKezUT+eizpE40cUJR7nRiOC
+    XWlYJHtlaMCbCnJt1eiwOL4U34V7yoz/m0dHBpDTvXhSeHaRsWqKRS+kbBH7Idg8tmSPPg
+    3dC7joSgHbDzjQWILZ9lklcXyfU32/naPYE5wnfMlCD6FbjI4Mw6i/84fzJLpUrDG2+n5e
+    A/yg01EdAeC08uEihbbzzhS+G/gMlcNShtLuelgSPD1UUbEVM1ikYZyALm7R+52Qvea4eL
+    tlhfdWJrehWohKCYe9EBF44U576JhWbZNUtrD5Ggu8lWSECAs78EGda4MH2XPU9206tRxT
+    BfXUkX3ZM1nndndcQ1wpG/cZBIpmYWliTlcl/KvwvpB30FB4sRJgKyA08t4A
+X-ME-Proxy: <xmx:3Jq-an9GVRhMCzGmC4bOWS5lTld-0cmumjXLMoKNPTMmoxFG1RUUXQ>
+    <xmx:3Jq-aqiD2bw0KgH2UsuNdkpllbd7MfAGcm9wXb9r8B-s4A--SrmXJQ>
+    <xmx:3Jq-at-UU8G7ITOaH0LYOQiiMrAXOfOqx3qLXxj0kx7u8JijGh2PuA>
+    <xmx:3Jq-amSI7B9o8dIyEjb4yz6gOOlTA-ra5DuJiK0vOTucwDmnY0FH9A>
+    <xmx:3Zq-am7_0KFlHTcvcD3rwRRRNNJcF2umGR6KZWtPiqExSxvFHyXd_6xQ>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 13:39:38 -0400 (EDT)
+Date: Thu, 1 Oct 2026 11:39:36 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>,
+ Harald Freudenberger <freude@linux.ibm.com>,
+ Holger Dengler <dengler@linux.ibm.com>, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, alex@shazbot.org
+Subject: Re: [PATCH v4 4/6] KVM/vfio: Use file-based reference counting for
+ KVM
+Message-ID: <20261001113936.21bc850a@shazbot.org>
+In-Reply-To: <20260928-vfio-v4-4-e32e226d5932@linux.ibm.com>
+References: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
+	<20260928-vfio-v4-4-e32e226d5932@linux.ibm.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> From: Jerome Mohm <jrmmhm.kernel@eldare.de>
->=20
-> virtio_vsock_vqs_del() frees the virtqueues via del_vqs() but never
-> clears vsock->vqs[]. If a later virtio_vsock_restore() fails to
-> reallocate them (its error path is a bare "goto out" that only unlocks
-> and returns), the driver is left bound with a dangling vqs[]. The next
-> virtio_vsock_vqs_del() - on a second freeze or on remove/unbind - then
-> passes a freed vring_virtqueue to virtqueue_detach_unused_buf(), a slab
-> use-after-free. KASAN on a guest with a virtio-vsock device, after a
-> restore made to fail by fault injection:
->=20
->   BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
->   Read of size 4 at addr ... by task repro
->    virtqueue_detach_unused_buf
->    virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
-> [ ... ]
->=20
-> Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume=
-")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+On Mon, 28 Sep 2026 15:07:05 +0200
+Steffen Eiden <seiden@linux.ibm.com> wrote:
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index 423ead48aafe..ed96acfa8635 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+> @@ -472,36 +472,14 @@ void vfio_unregister_group_dev(struct vfio_device *device)
+>  EXPORT_SYMBOL_GPL(vfio_unregister_group_dev);
+>  
+>  #if IS_ENABLED(CONFIG_KVM)
+> -void vfio_device_get_kvm_safe(struct vfio_device *device, struct kvm *kvm)
+> +void vfio_device_get_kvm_safe(struct vfio_device *device, struct file *kvm)
+>  {
+> -	void (*pfn)(struct kvm *kvm);
+> -	bool (*fn)(struct kvm *kvm);
+> -	bool ret;
+> -
+>  	lockdep_assert_held(&device->dev_set->lock);
+>  
+>  	if (!kvm)
+>  		return;
+>  
+> -	pfn = symbol_get(kvm_put_kvm);
+> -	if (WARN_ON(!pfn))
+> -		return;
+> -
+> -	fn = symbol_get(kvm_get_kvm_safe);
+> -	if (WARN_ON(!fn)) {
+> -		symbol_put(kvm_put_kvm);
+> -		return;
+> -	}
+> -
+> -	ret = fn(kvm);
+> -	symbol_put(kvm_get_kvm_safe);
+> -	if (!ret) {
+> -		symbol_put(kvm_put_kvm);
+> -		return;
+> -	}
+> -
+> -	device->put_kvm = pfn;
+> -	device->kvm = kvm;
+> +	device->kvm = get_file(kvm);
+>  }
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Nit, retaining the "_safe" naming here and through the callers is now
+meaningless and could be dropped.  Otherwise,
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-vsock-rest=
-ore-uaf-send-v1-1-5da60f707506@eldare.de?part=3D1
+Acked-by: Alex Williamson <alex@shazbot.org>
 
+Thanks,
+Alex
