@@ -1,117 +1,77 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27887515886
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39A9517BBE;
+	Thu,  1 Oct 2026 13:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790862229; cv=none; b=I9ELiiPrUhIt9XXlMeh5+i1bMZXPKgheiGJjGB8MlSI5r/A2Exucnnrrk0DX5NY0YSdCDjnapKdytUfOBP/0o11kFbs0IS6zZs6WPmzepdZ9COK+1B+dSmW5pmxDO5HA0692ZirlRdRAnbpTNH/EvgmxMPwQfjbZ+y3JccZrSWw=
+	t=1790862771; cv=none; b=TzBeWYQQa7wVLkqnvBt3ZAw7YAV6IijensB4EjUd9im9QrIfbu2Y0ZSOsjkxctSZgENKkFQ1CDHbkc/GHYnlRKl8I7Mo4WqmGtiNFPrqnDiUnNRKDx/9lz++ceE4PrH1MfpykU0eqSYYJFAVL9kb4ZRxCM96E4DB7QV3x1FDGYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790862229; c=relaxed/simple;
-	bh=k2tGWZBSq6m9m92JJesXcs78oXeXxRsuS4Ph2lEaE88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qxdQmxJez8Jn6euaCyk09wlTRwa4IiITtPllIWfyV78nWdZu3VV1gf5gRlfyhO2Vl34ayQFaDyL262gTGEmQnFt9M7VmlwinSOm9Os80dtpetkajsNOOb1rdzOIVqZh6BYe2DmVi94KOEzWsK1F3EMImQK2i9vH7zMy4RC1219M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=DqZEzPfD; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1790862771; c=relaxed/simple;
+	bh=umMm/lPHi+t6I0OV+oiw1mqotwWKf/PFzTIWE/oehD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MACjUgZzNk6q+fCi/jwsh92zQwbFvBJJXHvo8GKwiEqV5XB42yFIRVxZGWGMKcMGzqBI1Oe8sqkzZQgaXr7M4AYAcOC1992UkxX14NQ/K4g3in6Go63V30pTplaxKPTCbcfXPbantF+VZ9gVborXNDBpaq+Yd6dW5PGW5QTY6+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pby8+liv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="DqZEzPfD"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7d2bb404so12643795e9.1
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 06:43:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790862225; x=1791467025; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9GzyFhoA2S7uios3Q3nexzUQFEC9iru05+QnoGlj3hE=;
-        b=DqZEzPfD04fpWPGHpCTt0gkiU5RVPxaVWzIV6kshqTUIZAhsEGYJWau1rm4ilNcOVV
-         kDYECMPqc808q+3S/wlpfy4Zonr5JdeArGZ64LeZuynhvgIMus4R4su8oGglj1Lm7Q/p
-         xxx0t/Ds/HICjF5naZa3MhdYJ2tCIUveTXkT1kUktpAP7fDBee/DrFA6B2C1G9r2Jj2g
-         5eYtQtWNQIU+buEp98MmqzloVUNOrJN0KKDuaFOJuhAIgLy4U+ZO06buaRmY3e9CuhFo
-         Y0rBd+PaERYcDD4xyDCY8m85jdUwuLOCOlAI8xp9OxbIPPERM7P2dkthIqK0cpQLltUy
-         omdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790862225; x=1791467025;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9GzyFhoA2S7uios3Q3nexzUQFEC9iru05+QnoGlj3hE=;
-        b=azTuoI80n3VCfCP0U9ykrulvbAJ8y143B/aaHHGCBecrc6Dm53jWku8VMgeIq2knKc
-         yKEtNtgX10HywGbhwiJmFjonSldr1A4JrAqiudpRsN4LKpsIcJt99mkqiiEow3VPg4oa
-         Z7J+r4JnimrAZiHuyZ4ZMxp0qGjFULZiU0jwKzkIzyLNmRP8Vq4YI8DCCAlmc/Lpiwzd
-         jvW6zwA4YeZO4g8EVktJoPlT8EPNTWCLvWTGoM1YHqyc9jZl6w0HT170CK5ukDaBfGbw
-         cx1P4ydQKF0+BMivKpLmk4Rr64CS/ESPN17CFzLLG+NVQrekugxQhNlBMvw028molhuI
-         sJIg==
-X-Forwarded-Encrypted: i=1; AKwUvBzbSw/eMMxhfWWeuSJN1/CQ+c3dPdZCq6dPL0ukZV2wOOCdGiIzKRREgczp9Lh5c888wLk=@vger.kernel.org
-X-Gm-Message-State: AFuF++n2ZBFff0XHMcT1LVx/VNA06+LkdrkIsrfBqFc/kHqfQwHGUJVS
-	cwjrUaK8wDuU18KEVMcwj2whRtrE8NyhDjiqU0dRtpBHHUrQ/qU7DEPw4deM4h7ae/s=
-X-Gm-Gg: AYBFou2Rhp+r3wBZySFo0l97Bl0XbWW2WL8sdfDzly81+dSkNQ4z4Pp6/PyBBLe/0bc
-	uSGD2nYUXeHXgcvkzyjU+GVSA/+b4iLlra2PtQBIDEw36MgFkA1KTwhlX7CgcSBE3BPeWToJwig
-	mXAf8qnU4SM0DvwGXWGwJNSRpJnWdXbOF9CW1/0jLpKYy0AqS3MoPuw8EwNAuWVcAjb9f+iFsGh
-	QRR3qfmaxRFCCsiXlXnBFPirxKgAiC2jJI2PRxGRgJnaQ2mkARt6o9N7phSAGb116ErABaLlUrE
-	YkmVk94fB48/evbzJBiOn4bCQCL65b4rKJ+BTnEQzhbWb7bf0frySM7n1gA2dh79oVuacQkilNy
-	/EdLT0fethUOjZNn0WKitZD11Eq1AhyKA67H4tE2iFIzZxx8Paaf2ZXuExJl2omFb2aFvYb1CML
-	YVsK5o2RT7HWzC6FFw11GAjDhTB05kJdDs/gm1v4/NKvc6bTiE93Pj/rdxtpcSQobbz5w=
-X-Received: by 2002:a05:600c:4f52:b0:4a0:22d5:21af with SMTP id 5b1f17b1804b1-4a022d52255mr32632575e9.15.1790862225048;
-        Thu, 01 Oct 2026 06:43:45 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::6:7dd1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a023ecef86sm33062845e9.3.2026.10.01.06.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 06:43:44 -0700 (PDT)
-Date: Thu, 1 Oct 2026 09:43:42 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Shuah Khan <shuah@kernel.org>, vannapurve@google.com, erdemaktas@google.com, jxgao@google.com, 
-	rientjes@google.com, fvdl@google.com, jthoughton@google.com, tarunsahu@google.com, 
-	pratyush@kernel.org, fuad.tabba@linux.dev, David Woodhouse <dwmw2@infradead.org>, 
-	yan.y.zhao@intel.com, michael.roth@amd.com, suzuki.poulose@arm.com, 
-	Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com, 
-	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>, kernel-team@android.com, 
-	kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
- resource (pool) fd
-Message-ID: <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pby8+liv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC831F00898;
+	Thu,  1 Oct 2026 13:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790862762;
+	bh=xzjj40ZRCj8ePrqYusGZlHY502YuOXd8N/PhFe182tg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Pby8+livbzPijUL6F+BG9QMZ0Jf7qAdFX04IyC7J1tg04EpOJCduBgjFntCw9cTBZ
+	 MQsMBXcp8kvZCK90ZwJaphKg48Fm3GYh3Dly1nnEsmzGVrwQjTd/0tGXg+nvtWr5JW
+	 cFtFoicBHelQTw03fS6iB5yeZTOLofhKYD992EGBwv9xKCybGDp/UeB1de0O+qeqMf
+	 ovslBqmMa3NIgjbwIA1JgrBsG2jdpqCinJl7konAvUq38z2rPKLnS1MSc+l588W6qG
+	 XWtIzTvY3pSLtjeHlrnLxWc7iiXRvcSXDWzkJqi9v9rcVOWQUgOPRQh60I1Z9x6bYx
+	 UWH8xdcLYReEQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Artem Dinaburg <artem@trailofbits.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Christoph Schlameuss <schlameuss@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	avi@redhat.com,
+	cotte@de.ibm.com,
+	david@redhat.com,
+	mtosatti@redhat.com
+Subject: Re: [PATCH 6.6.y] kvm: s390: Reject memory region operations for ucontrol VMs
+Date: Thu,  1 Oct 2026 09:52:15 -0400
+Message-ID: <2026-09-30-1-daily-reply-0011-kvm-s390-ucontrol-memregion-6-6@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260930011211.94657-1-artem@trailofbits.com>
+References: <20260930011211.94657-1-artem@trailofbits.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 25, 2026 at 05:50:47PM -0700, Ackerley Tng wrote:
-> + e.g. for tmpfs,
->     + Use mount page size.
->     + Respect mount size limits.
->     + Use guest_memfd mpol and fall back to mount mpol.
->         + Gregory, now you can set mpol upfront on a mount! [3])
+> This one addresses CVE-2024-43819. It rejects memory-region ioctls before a
+> ucontrol VM can dereference its NULL gmap.
 
-I haven't had time to quite give this the read it deserves yet (have
-been traveling this past week), but I think this mpol/mount issue can
-be solved with a new dax driver (which maybe provides this provider
-interface) without needing to involve numa policy at all.
+Queued for 6.6, thanks.
 
-Essentially
-
-fd = open("/dev/cxl_dev", ...); /* backed by anondax driver */
-
-then later when a fault on that fd happens, the driver provides an
-anon-memory allocation that explicitly requests the node associated
-with that device - as opposed to trying to jam this into mempolicy.
-
-If you're planning to be at LPC, happy to discuss this in person, but I
-think this provider pattern is likely much cleaner without mempolicy at
-all if you can just make the provider do that allocation path for you.
-
-~Gregory
+-- 
+Thanks,
+Sasha
