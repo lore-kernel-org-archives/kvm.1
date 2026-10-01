@@ -1,128 +1,134 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B9E2BD022;
-	Thu,  1 Oct 2026 12:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269C23D8121;
+	Thu,  1 Oct 2026 12:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790859525; cv=none; b=QOG0PDH20KEepJyNQfNpzSyhI+Dew6a0kbKFmwQrkJ0TScDHj7lvhbrrxioqFKwA59YZjZp47AiJNoNSxGdHaSV/OZZdVj3EDTzmYTyACAxPIq4K7G0t9Z5MjO2QgA7mER1BHJ/DNV9WMevjM80M3ZmtvWquffCEcUTx+Ip2g8o=
+	t=1790859591; cv=none; b=JZX3X3larjRmca3plEII92LqpsJ1qUUX7w2QSj7VINI2etk9TYENuJNviJrxNtLANcuoTpYx+DlUlhL2BqHQs1asdzewuaGZS9FEUSr1gD9L0GbfNdDbZ34zIEjpc/b/ob7DpjJWePgPgHwVSO3Dt2bh69kVRgc3uTjj/MwuGnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790859525; c=relaxed/simple;
-	bh=weZVC+SDGzZZWfiF/GwygFk7zdR+r8AfKnlAZb1gUMw=;
+	s=arc-20240116; t=1790859591; c=relaxed/simple;
+	bh=+oEEYMyapdfy2MygoVgo6lezDIyzegG2R9t+lllJbIA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fooBBptP9dZSw8/0gx/fg67QhFaoTibV49+2ctimvIkanQzsb6GW+gpWS094Zr1Ii/t9ZulFLHCe7DUmk4ad1nNftDk3jFMa8L9klmf1zZvH768ZXpIpAx9ENI1BwLUuJ7Q+L74ybch1PsWNO3Ui74tTzOCg00NBlzqDiWLf2w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=g9AVJug1; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hRp0bIXDNuskvk6SzK+OoATc6vTZPiK9n44OP02TWWOD/Cf7jkRPRiVQKg0P9+m2ryEEg2qdwDBk8KimB04BqV2O05CAgK+Csn7aQIyQQGbc7iN7LpqIdC0+OKegh/Gurf/0hdq2SxOAUBgJc3ecYW+rUG8qjgIh2HoGXLhzPtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIF/B0EW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="g9AVJug1"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 33A72497;
-	Thu,  1 Oct 2026 05:58:40 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C879F3F85F;
-	Thu,  1 Oct 2026 05:58:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790859523; bh=weZVC+SDGzZZWfiF/GwygFk7zdR+r8AfKnlAZb1gUMw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g9AVJug1MjC/YjRWCqkfe7HbKIGnHgNws/5ZDp00SJD8kp37BFpOu0gXPNauTPfI+
-	 IHxC4kCwwyboG2Lu2OkI3LZQK6RvbGqaG3XlH+R7ITZhN1obN8g7uXZRtOJjmmwuwf
-	 Z38xa3Czv10sIGb7BizmWgDu9Ddek0qyPqXBRfRM=
-Date: Thu, 1 Oct 2026 13:58:38 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v21 8/9] firmware: arm_rmm: Add wrappers for Realm
- related RMI commands
-Message-ID: <ar5Y_pHBUQHbXr85@arm.com>
-References: <20261001084555.1456543-1-suzuki.poulose@arm.com>
- <20261001084555.1456543-9-suzuki.poulose@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIF/B0EW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB11F1F000FF;
+	Thu,  1 Oct 2026 12:59:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790859589;
+	bh=mWEhNC2bx28+yRg0dPmgwrk6vKK8w5OBcpeNy+gKRH4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JIF/B0EWXJ0MDjxeLJZ7yO1RQlpIaMdKbKKNsSXNWszWPJ3PBB4IoBEyGD5DARCr6
+	 EghD/+7Ha3UjceHW9Y7A7cvC/XxmnNWI28uTVunnCjnAZhrBDv5jL1BQBGa3yejDd9
+	 8JtJ9TQEwE9J8Epe8QYSKPF+/imypf3aX6Ku8z3ojDryet26BK6wy/1B+aVsbYEP8A
+	 bCyy3I8sdeW1g+eTaXFkbJPLdBLEP9UbiViiSkgnH4LRiYzLb6taZ99aGK9yoG235C
+	 WMk4EwMOCwp9Tvw37ZZdHse/DBW/9OckkefvsDEBIG7Q+OIcogIXov6gHrykqeG8MO
+	 4GyhjSqX2XKAg==
+Date: Thu, 1 Oct 2026 15:59:44 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+	media-ci@linuxtv.org, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v9 16/18] PCI/P2PDMA: Let a client declare that it
+ selects ATS per mapping
+Message-ID: <20261001125944.GM3401365@unreal>
+References: <20261001-fix-p2p-acs-v4-0-v9-0-1a8e0f50ddd9@nvidia.com>
+ <20261001-fix-p2p-acs-v4-0-v9-16-1a8e0f50ddd9@nvidia.com>
+ <20261001120807.8723F1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20261001084555.1456543-9-suzuki.poulose@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261001120807.8723F1F000FF@smtp.kernel.org>
 
-On Thu, Oct 01, 2026 at 09:45:54AM +0100, Suzuki K Poulose wrote:
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index 5d005054f3c6c..e3503aba646e2 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -53,6 +53,17 @@ static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
->  	}
->  }
->  
-> +/*
-> + * rmi_smccc_invoke_once: Invoke the RMI call and return the results. Do not
-> + * retry the command. Let the caller deal with RMI_BUSY or RMI_BLOCKED.
-> + */
-> +static inline void rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *regs)
-> +{
-> +	struct arm_smccc_1_2_regs args = *regs;
-> +
-> +	arm_smccc_1_2_invoke(&args, regs);
-> +}
+On Thu, Oct 01, 2026 at 12:08:07PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] pci/p2pdma: pure clients cannot set ats_per_mapping because pdev->p2pdma is NULL
+> --
+> 
+> commit f332086fc4a4273d099c81fafb33298021d47d1a
+> Author: Leon Romanovsky <leon@kernel.org>
+> 
+> PCI/P2PDMA: Let a client declare that it selects ATS per mapping
+> 
+> The PCIe ATS Enable bit covers the whole device, so P2PDMA cannot tell
+> from it whether a client will translate a given address. Most devices
+> translate any address once ATS is enabled, but some choose ATS per DMA
+> mapping and can still use bus addresses for the rest.
+> 
+> Add pcim_p2pdma_set_ats_per_mapping() so the driver of such a device can
+> declare that before P2PDMA starts treating clients with ATS enabled as
+> translating everything.
+> 
+> > diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> > index cf190bd572d4a..6a63901c65fb6 100644
+> > --- a/drivers/pci/p2pdma.c
+> > +++ b/drivers/pci/p2pdma.c
+> 
+> [ ... ]
+> 
+> > @@ -1562,6 +1563,32 @@ void pci_p2pmem_publish(struct pci_dev *pdev, bool publish)
+> >  }
+> >  EXPORT_SYMBOL_GPL(pci_p2pmem_publish);
+> >  
+> > +/**
+> > + * pcim_p2pdma_set_ats_per_mapping - Declare per-mapping ATS for a client
+> > + * @pdev: PCI device that initiates peer-to-peer DMA
+> > + *
+> > + * Declare that @pdev issues Translated Requests only for the DMA mappings its
+> > + * driver sets up to use ATS, rather than for any address once ATS is enabled.
+> > + * P2PDMA then routes this client's Requests with the Address Type each query
+> > + * asks about, rather than the one its ATS Enable bit implies.
+> > + */
+> > +void pcim_p2pdma_set_ats_per_mapping(struct pci_dev *pdev)
+> > +{
+> > +	struct pci_p2pdma *p2p;
+> > +
+> > +	p2p = rcu_dereference_protected(pdev->p2pdma, 1);
+> > +	if (!p2p)
+> > +		/*
+> > +		 * ats_per_mapping is a performance optimization,
+> > +		 * if pcim_p2pdma_init() didn't set pdev->p2pdma pointer
+> > +		 * for some reason, let's simply use ATS global settings.
+> > +		 */
+> > +		return;
+> 
+> [Severity: Medium]
+> Will this silently fail for pure P2PDMA clients?
+> 
+> It looks like pdev->p2pdma is only allocated when a device registers as a
+> P2P memory provider via pcim_p2pdma_init():
 
-Nit: I don't think we need to copy to args since there's no retry here.
+Yes, this is exactly for them and no one else.
 
-That said, the SMCCC call clobbers regs->a0. We should write a comment
-in case the caller thinks it can just retry with the same regs.
-Alternatively, we could pass args and res structures separately.
+Thanks
 
-> +/**
-> + * rmi_rec_destroy() - Destroy a REC
-> + * @rec: PA of the target REC
-> + * @sro: Allocated SRO context to be used
-> + *
-> + * Destroys a REC. The REC must not be running.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rec_destroy(unsigned long rec,
-> +				   struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_REC_DESTROY, rec);
-> +}
-> +
-> +/**
-> + * rmi_rec_enter() - Enter a REC
-> + * @rec: PA of the target REC
-> + * @run_ptr: PA of RecRun structure
-> + *
-> + * Starts (or continues) execution within a REC.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
+> 
+> drivers/pci/p2pdma.c:pcim_p2pdma_init() {
+> 	...
+> 	p2p = devm_kzalloc(&pdev->dev, sizeof(*p2p), GFP_KERNEL);
+> 	...
+> }
+> 
+> If a driver for a pure P2PDMA client (e.g., an NVMe initiator without CMB)
+> calls pcim_p2pdma_set_ats_per_mapping() to declare its ATS behavior, won't
+> pdev->p2pdma be NULL since it never called pcim_p2pdma_init()?
 
-Nit: should probably be __always_inline. rmi_rec_destroy() and
-rmi_smccc_invoke_once() as well.
+Only RDMA NICs support that per-mapping thing.
 
-Not for this series but something claude spotted in the integration
-branch - kvm_rec_enter() is noinstr. On this path, we end up in
-arm_smccc_1_1_get_conduit() which is not noinstr (again, that's for the
-other series; here just __always_inline should suffice).
+Thanks
 
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_REC_ENTER, rec, run_ptr,
-> +	};
-> +
-> +	rmi_smccc_invoke_once(&regs);
-> +	return regs.a0;
-
-Should this use RMI_RESULT_STATUS(regs.a0)?
-
-The rest looks fine to me.
-
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> If so, wouldn't this cause the client to silently fall back to suboptimal
+> global ATS routing, as it can never successfully set the ats_per_mapping flag?
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261001-fix-p2p-acs-v4-0-v9-0-1a8e0f50ddd9@nvidia.com?part=16
