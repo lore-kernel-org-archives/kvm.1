@@ -1,57 +1,57 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B0B5304C7
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 20:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C434AD4D6
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 20:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790886179; cv=none; b=M+1bfnaSqQyYzpMnQNYha3lcBfBB6Xnm9vqIQ7ZM1n2cvNvF8IdLtTFpEyI5lEB5+vreUXifIacCzDs23Er/NnTGqAQeG6cxudxlhapZE3xJnD80vihbT+DM2jaSLkW9DWJwiHcUBgOuoO7I1X3o6N14ImbIgU5QDuNsTIDCmlU=
+	t=1790886183; cv=none; b=jTaTYTv220d2c2a+ZzbconY++k+6RnyFkwCAV3VffghrqRpMrEkXbgMFi816bIrHE3xi/i0Jm6pve69QTyJcynzssDrM2CRHccT0/B1sGOKySm4ghoFzZZua8nmpklPu8d6cyaKzwTGoVKuTNXwk+aiXARnGb91LkPNtJMPAyYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790886179; c=relaxed/simple;
-	bh=xWmI4R5U22NJjAIxqajbiTM9PPBEDTvKud9hixV72Kc=;
+	s=arc-20240116; t=1790886183; c=relaxed/simple;
+	bh=Td1moGbe7IfnD+EkJSryXM5j8XMKKATD8IvqdqYqwd4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=htXhTw81T0OcK8niV99ZV6wvqd9A9oxgUJBqxD2MVoB/eDiF7FSGSBb3zMCrjyPxLu38VBLvmaoPyfTki3OQNIfbw2pzW6fURLPsTgW5aiI6ucnghupgGDAY9Rs66E7pdcjMBhihdVuPnGZXN/qZBjHs7Y9AStUq2kWc8sYDh0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bD9lELGM; arc=none smtp.client-ip=209.85.216.70
+	 To:Cc:Content-Type; b=Qf3SJaxAVFDLOkJEkWXC9Ttu1U/rsu/avbKT5PsLqKMqmIWwY+0MGc3AUEj5lXn6rTyIzBjWrTL5BuweXuQ+lCsfmyAaan32zArow0Ex2UgTgnVOcEioFIAQGaTuzvQqXcGnwatvy98CYdCedKOnLYHmnGRkd1vrNUYAvUrQbEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=awaDuUuC; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bD9lELGM"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39533bb224cso9512457a91.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 13:22:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="awaDuUuC"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e8e864ef0so7269700a91.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 13:22:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790886169; x=1791490969; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790886173; x=1791490973; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=odUI0VjKINbAApKe2J4PsRbiL/cueYQz4jU79+gDb2k=;
-        b=bD9lELGMDXUxOUCnN5VTR+kguxiy+a8p0DtnBvKnx+TRRLdsK8NtV08MJdN5zLFJHV
-         puBaSLMjzeJXWY0PBe0g787BILr3O/1n8r4MUpIMakD/PkVRs4kgREytGddJ84LuQH2/
-         IjHCKOElIBOh1kQZuDEKxhz0SIpnurmSZ8eaElvXdZqgBjAOXVhbdiSZJMneaf2aCdf8
-         oTcEU4KmlA+rUZWz2BpH02B9VcPbsm7GAzL+3Q3j+nl1g7PCLCZgbNImSRS32gt7rEDg
-         qUNJVIQFBmDkNSYFxFjF1fzWrc67sYb/23YP7wsTkG5X61aTIw6PiPLyNDOTKq9oYWcd
-         yqNw==
+        bh=O1dYN1wI4HG9y2GFEUVnSNvGtGU2lNVK3HnhJ9Mxy30=;
+        b=awaDuUuC0jdWOwUuGLjfl+YepZ/7P9QzGUfqS/hSRmkc4DFbmn70SPpqfTjsKVrVUu
+         m9mepZU8FlcJLl7TOfqKeNeOkup55NMfxW3m/1+38uunNSld9XF8/5mpwO+22xPK1wrB
+         Qot7mKsMvniluqD25cnz/n6Cn3Hn7BxQpp5gnlP0L9JdaaThrInu7DAA79sWTuu20cf6
+         WaiJxkWkK8xDPzZJi4OAO87xBBa8wUpA8CLEBHZ/yMDB0o0IeoSnRoLNVAKjtEl0dpIv
+         Yt51HekFf8TuE4KBV0uAOGYz67hUdDxjWNs2yPueHrrRCbScdk9zJE09srDr7FvvM+Xw
+         5Odg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790886169; x=1791490969;
+        d=1e100.net; s=20260707; t=1790886173; x=1791490973;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=odUI0VjKINbAApKe2J4PsRbiL/cueYQz4jU79+gDb2k=;
-        b=0z/h3gI7EjsQmxCFwwnh5AvK60VxwxHFwSAA2G9QmhIG+to7og2ITp5w2LGbUgtiSL
-         DHWjTM7u2r+5+ecYipYfx3Fcf0W8bH3AoJqIVjIxF4tD8yDrfcUSdR7poiRqP5sUQS/+
-         vj91AjMHYlfilaAL1W2Rw3IESE3ck0d014kCrUYyO9B60UMOiP2f3+NGQQ7rYhS1Frxu
-         yyPxXMGl//ozJ46ZhYWW2EeHh3trC/pr53F1B9lSnUSzGCDSDfvjapLw5VzKOC/uqDwS
-         8pGSLZVVcf/jOYPqg1yw0DkB9/PhmBxM3tmbYQ0tRVBnH3vURQjVDQgb5g0Wttt4KU8R
-         ge5g==
-X-Forwarded-Encrypted: i=1; AKwUvBwvzFelmXpI7KCkNtdmkSsNIb5vgp3Mh3jfFLfNQXCYL9LFEksWsMPvpZwBOGbK3PUq8I0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ1GPViRVyPQ8f/sUF/EiI5Hn0ZX2V1HkJshHPZprOOOplWduCR
-	dhv3YoDW6kyU9k6LTHmZ66Q33B+nq+Z91WvWuA/c7U4JHecr8QanJp8q3Qx9Ht5F1piojFzoRzc
-	id+YN/A==
-X-Received: from pjxd7.prod.google.com ([2002:a17:90a:c247:b0:3a2:a95e:c620])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:268a:b0:39e:2e79:7ce7
- with SMTP id 98e67ed59e1d1-3a6ce3b937amr517701a91.6.1790886169237; Thu, 01
- Oct 2026 13:22:49 -0700 (PDT)
+        bh=O1dYN1wI4HG9y2GFEUVnSNvGtGU2lNVK3HnhJ9Mxy30=;
+        b=jg+ubjEXKI2Nh9E9FyuojvxEBG2O4y0vDqUdDsgEwg1EBoeelVsI0BiyvfZOg+HDLN
+         FFHJYNQ0/o8MrjDPu70mCMLWxk65E15dqe/gH1Y09+P0mIkZN/1/ynO64dBdpVZd2jbs
+         +JSDhsEjXK4m+QYt6rR8g0xdli7HmMAlh7IV+XBnTPorlyA4orzUT3oDEdJZYEVGEQLO
+         IrDFNclDLkrENjQrb17RvpvJeOQ8hx2tNCCfWLQugzj4P8mxRHh+Txu6fgAbqGCNCSK0
+         o7qzIDSg/KrnadWIYy5duxIJHOYwcdWwNpVTybpvUmO0YNPxI0KmiKH+m0fXjbh/9i2G
+         9l/g==
+X-Forwarded-Encrypted: i=1; AKwUvBzAiyNYS+rDjA0YM6dL/qOW+mQGbO0LvGD6u4Du9gDcmbksVqAfu+PHyeUoBG6MhLIocxQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKxYBxnciXxmMUv7SP7MeWJgB/xA4Y0rKsPkzDPsU6/w7M92qwj
+	kZg6PVf2V8YqICZ3A2Dbx6YVRa2wMMrhTQ3C+Q451iYSVUfsWLmwycZNSSQjyXcz77akdDijdcq
+	j5J7L4w==
+X-Received: from pjbic4.prod.google.com ([2002:a17:90b:4144:b0:3a4:c30b:2845])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a92:b0:3a4:9d98:f973
+ with SMTP id 98e67ed59e1d1-3a6ceab2518mr406933a91.11.1790886172949; Thu, 01
+ Oct 2026 13:22:52 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  1 Oct 2026 13:22:30 -0700
+Date: Thu,  1 Oct 2026 13:22:33 -0700
 In-Reply-To: <20261001202234.3794060-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261001202234.3794060-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001202234.3794060-7-seanjc@google.com>
-Subject: [PATCH v2 06/10] KVM: WARN if KVM attempts to do guest-related
- uaccess with "wrong" process
+Message-ID: <20261001202234.3794060-10-seanjc@google.com>
+Subject: [PATCH v2 09/10] KVM: nVMX: Don't try to load eVMCS12 page when the
+ VM is dying
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -71,30 +71,66 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 	linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that memslots are torn down before kvm_arch_destroy_vm(), i.e. now that
-the massive, unaudited path that is known to have at least one rogue access
-to guest memory should be short-circuited before attempting to access user
-memory, WARN if KVM attempts to do a user access to guest memory with the
-wrong address space.
+Don't try to get/load the eVMCS12 page when KVM can't do uaccesses to guest
+memory, i.e. when the VM dying, as reading/writing guest memory via the
+associated userspace address space is obviously broken if the address space
+is inactive and/or has already been torn down.
 
+Hack-a-fix the eVMCS code even though KVM now protects against bad uaccess
+reads/writes in the core APIs, as doing so will allow adding WARNs in said
+APIs to help detect other buggy code.  Add a TODO to call out that checking
+if KVM can do a uaccess for the VM is a hack; nVMX really needs to stop
+abusing __nested_vmx_vmexit() when destroying a vCPU.
+
+E.g. without the "fix", adding the sanity checks will trigger:
+
+  ------------[ cut here ]------------
+  WARNING: ./include/linux/kvm_host.h:1359 at kvm_read_guest_offset_cached+0x1b0/0x200 [kvm], CPU#14: hyperv_evmcs/27428
+  Call Trace:
+   <TASK>
+   nested_get_evmptr+0x4f/0x80 [kvm_intel]
+   nested_vmx_handle_enlightened_vmptrld+0x2a/0x130 [kvm_intel]
+   __nested_vmx_vmexit+0xbe/0x8e0 [kvm_intel]
+   nested_vmx_free_vcpu+0x36/0x50 [kvm_intel]
+   vmx_vcpu_free+0x73/0x120 [kvm_intel]
+   kvm_arch_vcpu_destroy+0x81/0x1a0 [kvm]
+   kvm_destroy_vcpus+0x9d/0x160 [kvm]
+   kvm_arch_destroy_vm+0x25/0x90 [kvm]
+   kvm_put_kvm+0x342/0x460 [kvm]
+   kvm_vm_stats_release+0x12/0x20 [kvm]
+   __fput+0xfe/0x280
+   __se_sys_close+0x76/0xe0
+   do_syscall_64+0xfe/0x440
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x4a3822
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+Fixes: f5c7e8425f18 ("KVM: nVMX: Always make an attempt to map eVMCS after migration")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/vmx/nested.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index b37cf275ef79..2a88e4ce145e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1352,7 +1352,7 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 8e31eba4d9fa..07ec0dd014b5 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -5091,8 +5091,13 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 		 * Enlightened VMCS after migration and we still need to
+ 		 * do that when something is forcing L2->L1 exit prior to
+ 		 * the first L2 run.
++		 *
++		 * TODO: Drop the explicit check on being able to access guest
++		 *       memory once KVM no longer abuses the nested VM-Exit
++		 *       flow when destroying a vCPU.
+ 		 */
+-		(void)nested_get_evmcs_page(vcpu);
++		if (__kvm_can_do_uaccess(vcpu->kvm))
++			(void)nested_get_evmcs_page(vcpu);
+ #endif
+ 	}
  
- static __always_inline __must_check bool kvm_can_do_uaccess(struct kvm *kvm)
- {
--	return current->mm == kvm->mm;
-+	return !WARN_ON_ONCE(current->mm != kvm->mm);
- }
- 
- #define BUILD_KVM_COPY_USER_WRAPPER(fn, to_user, from_user)				\
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
