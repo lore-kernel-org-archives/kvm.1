@@ -1,56 +1,56 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB6B5335A3
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 19:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EF85349A3
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 19:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790883535; cv=none; b=Ghge2eIcx54nebi+K596wo5Nyrw63papvW3b+C/yVDgnVAaIYqougriGvcrzeD8/jbDDH7azVBplMbjDSgJ2Vh8bB4njPHkhASh5Vg+hO2iT6WAx4FAm9oWw8SOmYKamo5hMT6TuPZWdQBM1zxjkFKpNap4+Lb0rbMuOvqtHo2w=
+	t=1790883536; cv=none; b=Y21Z1dhDo7KyEV+bAIU/zBw6FY94uIgNUNztx623l3rqspYBmVJXQOL5SPMmE9Mu26Mv52mLNUAH6Iwfs0vACLwooPHgSOKmzYiQGFfXuMfejiJYWvtQvc498Uf8ff6otpvJXpY7YLVrfZ+2LW8fpQrhGt9rk2fCTx0uqXavo3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790883535; c=relaxed/simple;
-	bh=GD8eVUHbm2E1vh85lROmRD5KVeuFQfSEqLamn6H/rZk=;
+	s=arc-20240116; t=1790883536; c=relaxed/simple;
+	bh=rVoqZdUCo2KLCZ0DuRpcvKXgw+ek6KfWqB9aZuvQsSE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DsMu0L9LA5aHRFX1aXMHJk+tDfSvg9wPd8a6eSnBVsL14XbC/l97s6g7dggxux6qbFdc6FzWa85ckRJkZg3VjI361PXJefffVZLjuEAOh4t7DfQCDvv2uAqH9iKiI5ijMD2T0VVEQ3i66B7d00X0qS3K1WfIucneHJLgFqXq4RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bsc2/Nh2; arc=none smtp.client-ip=209.85.216.70
+	 To:Cc:Content-Type; b=bjyv+9zvrcrP7oVD5ElXleJ2IVc/4X1Lj1g/Fdnx27PYo4Z7lMv7/tNmSuwY8WKmnU9TWcvvYkjbGwkOtudfNdAuGz8DQG9DhzV0OqS1I1XGOTLQTGPSsGRt1bT8pFj4yF/mgxq8ytOjqqQiOseDSLNQ46+58X7dWVUQy6rzSvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mker/Wte; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bsc2/Nh2"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38dbf293831so10647749a91.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 12:38:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mker/Wte"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39d865b11b4so7321890a91.3
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 12:38:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790883532; x=1791488332; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790883533; x=1791488333; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TnnRJIDUsVUbLKISIXMcfczhIdduLdshUTyAvRHb9LM=;
-        b=Bsc2/Nh21lfoH+sjjD9eMLdYGRTINOb1Ko0f/T2GXy9fi0O0+yX9pWcw/sVf7Uxyp5
-         kfsunsc/q5wrXk6r1IxS8ZNOwMeclwFNxYymCOdZh03HB4YvBLM7UWmunKixUn+qTrfJ
-         ZcwxDNLRsgHxKntUrShVU8jHXD3c2hHQNLay0qRmuaHd6wudgzygJ+LWuYwvOH4CSnQr
-         a3qcgpK20wpJVPqT5/aKKzfzPLUDlTeFKYqInfN9BZfkPWVmfk7e6+rL+FFKgfuKgW6o
-         bxefJWtvbhXQT/GEDYYHbDeMMznIhz5HcaBmu26TNff3f3HDcDQThgaYH4rRrvH4rWsn
-         jsnA==
+        bh=U9nVGqEblihe3RvMwmuzVW7+thHX4Pda1dDAZe/9upo=;
+        b=Mker/WteagJ7zXK23NoxEsvzjzbtdOr9uj9UDem8o+BqlM2kzQNAUIYN1nodnL6Cbd
+         gZlx5XfCWTz2YsAlmh+GUNiACUx3EJ2BHdkfbRXjb0t8z6Tv7AEcVWgnVt2F24zqJeXp
+         rs1PVgi9us5hHy4+xx2nB/LX50PmUiqUPliBt/xpAeYUbA10OSyfdOBQZiIMoLAmA7tx
+         CJMKpQ5JzScCZdujqFrFQjHcE/WzUVEzmGaSdoxCU2kfnwh33LsW9YZs8mFP2KSnfMqA
+         u5funVVNa6LLQtBu2W0sr8oo961pl7kK79CVa8Lj28wlTOaIIWDrTZT2nOi5wvcwGi6/
+         ysOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790883532; x=1791488332;
+        d=1e100.net; s=20260707; t=1790883533; x=1791488333;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TnnRJIDUsVUbLKISIXMcfczhIdduLdshUTyAvRHb9LM=;
-        b=TUWu2SsetHXi2I0ayefuQYqIMYVGX1PVHHO8BKrjqoGVSH57faUFCUPTQZOI15xakg
-         w+0HCRJpSkjG7CGeqv+NRHG6YJZqH4e8wC8ITV5EgfXxTnVgbM03KhaK2/C6EzLJ8806
-         Win4/d1tHUpiCQgg0zif5vbEq3LbcGORO4/LQh9ATnTxODl99HSJ0vrgRi6c3eIhd/gl
-         p02ntHHijExBJn0Kmelxp1wtcvfaYJ9krQwEEWPzDL7cY2JHlCHtFdgjvNTQvpVUQd5j
-         Ram9sx28RaN7WP5q7i2vKweBfJHv3DBe0Qnp7Lg0h0QqHuws2IucUSGNGJjPQ0FHQm55
-         PE1g==
-X-Forwarded-Encrypted: i=1; AKwUvBzOU+XIF+3BcuD8VPlDI6rm9GI+5olH0rZRFwQOQZ3dPMDhXinEvgCkuHj2GPu7Dr+U1wk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIbCZpLmZoVWxZxf44OInSfPp3ME2zmCP6di0nxRyCPriJPSPsA
-	80eZ5PNt5qoJ1dn+1hGZfYzOiJl4C1hkP3d6DHZcGbHmiz8y9+PD2Yb/eCyMTKqgpPI4TNAZWgX
-	nx4O3fQ==
-X-Received: from pjbku19.prod.google.com ([2002:a17:90b:2193:b0:3a4:a466:3257])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33cc:b0:3a4:b6c2:b159
- with SMTP id 98e67ed59e1d1-3a6ceb0535dmr521634a91.34.1790883531608; Thu, 01
- Oct 2026 12:38:51 -0700 (PDT)
-Date: Thu, 01 Oct 2026 19:37:38 +0000
+        bh=U9nVGqEblihe3RvMwmuzVW7+thHX4Pda1dDAZe/9upo=;
+        b=PP4+Ygt+/2PXu5V2A3gHskJdzd4LNDiOsY6fq5Pi4GC2Ho800ynvT02mE4x7I4mYpO
+         eIoXetMqn8OY1Bj8deiNx7G2P1FP7GlDom13szFsO+um/9yxIz77QpPJlwqizOazAPol
+         C5aYEhScFPtACbX0jU6/bbgGN2qVeNyFsDXKjyqVGu5WJSdMor/XavrtRKL10OdMi0+R
+         hwHXqFqBlF9zait9KUL8Uts6GCTFTDa8MoLs5n0WR8YVluII5rcOF540e1h0x3Rhc2Ur
+         2pEesqUbiDfzwshjpCW1XhpDRdy8IQjpD0MGYvIzYNNkw9IlV2nytaow4ApGZH4t9I/O
+         /xsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzKnguoDGLPquPX2qar0z+GH6dfKVhJK6fveao0UPRMYTRQxDyjb99ZT2Dq4J3yam/Nobo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLWm1bYGBK8iFmhEXbtRZEyzlkF7F207VVR+Q5WymicFbsIwodd
+	4n/WLLOlumjQ2BXGR+thXeBs5DDhvpKdnVtr7fVyPl5jzmiLAfV+53l9QH5ZtMALbEhr/eQIUu7
+	Qw+jweg==
+X-Received: from pjbkr14.prod.google.com ([2002:a17:90b:490e:b0:3a0:ab35:7895])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c06:b0:3a4:a2f9:f2f9
+ with SMTP id 98e67ed59e1d1-3a6cec2c079mr518533a91.52.1790883532437; Thu, 01
+ Oct 2026 12:38:52 -0700 (PDT)
+Date: Thu, 01 Oct 2026 19:37:39 +0000
 In-Reply-To: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,14 +60,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=1350;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790883521; l=814;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=GD8eVUHbm2E1vh85lROmRD5KVeuFQfSEqLamn6H/rZk=; b=YFYTIoWEgUhf/GRK2Iz6EQaeyq48ljFzlCso0/5WO5ziGBOVCzKutFUrZsehfwngXTev409nj
- dbjMGq6KjkHCDuGuh5TVwHybQ5r3XmlHNWJTQrL1+SKldNctSsNvPJK
+ bh=rVoqZdUCo2KLCZ0DuRpcvKXgw+ek6KfWqB9aZuvQsSE=; b=XlRY7AWBOUyhMCsHhrBnJ4ws7Y0Oy7c2izI2AnJ10Jo7DjZMksQQ6ELZsUa5n5xjQUGWTnd0d
+ 3EVQL/48+8ZD8BDU8W1EV39wxfLZIL3YsuulJzqoEdiwJIcfVgEqUJi
 X-Mailer: b4 0.14.3
-Message-ID: <20261001-tdx-selftests-v15-11-7c62a5d8a992@google.com>
-Subject: [PATCH v15 11/23] KVM: selftests: Set shared attributes for ucall
- guest_memfd pages
+Message-ID: <20261001-tdx-selftests-v15-12-7c62a5d8a992@google.com>
+Subject: [PATCH v15 12/23] KVM: selftests: Require guest_memfd for TDX VMs
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -84,41 +83,27 @@ Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lis
 	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The default attributes for guest_memfd pages without in-place conversion
-is private. However, the ucall pages need to be shared between the host
-and the guest. Thus, set them as shared.
+Force guest_memfd for TDX VMs.
 
 Signed-off-by: Lisa Wang <wyihan@google.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
- tools/testing/selftests/kvm/lib/ucall_common.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/ucall_common.c b/tools/testing/selftests/kvm/lib/ucall_common.c
-index 029ce21f9f2f..c03dfc763172 100644
---- a/tools/testing/selftests/kvm/lib/ucall_common.c
-+++ b/tools/testing/selftests/kvm/lib/ucall_common.c
-@@ -27,6 +27,7 @@ static struct ucall_header *ucall_pool;
- 
- void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 3f559f207408..7625908caf21 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -482,7 +482,7 @@ void kvm_set_files_rlimit(u32 nr_vcpus)
+ static bool is_guest_memfd_required(struct vm_shape shape)
  {
-+	struct userspace_mem_region *region;
- 	struct ucall_header *hdr;
- 	struct ucall *uc;
- 	gva_t gva;
-@@ -37,6 +38,13 @@ void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
- 	hdr = (struct ucall_header *)addr_gva2hva(vm, gva);
- 	memset(hdr, 0, sizeof(*hdr));
- 
-+	region = vm_get_mem_region(vm, MEM_REGION_DATA);
-+	if (region->region.flags & KVM_MEM_GUEST_MEMFD) {
-+		size_t aligned_sz = align_up(sizeof(*hdr), vm->page_size);
-+
-+		vm_mem_set_shared(vm, addr_gva2gpa(vm, gva), aligned_sz);
-+	}
-+
- 	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
- 		uc = &hdr->ucalls[i];
- 		uc->hva = uc;
+ #ifdef __x86_64__
+-	return shape.type == KVM_X86_SNP_VM;
++	return shape.type == KVM_X86_SNP_VM || shape.type == KVM_X86_TDX_VM;
+ #else
+ 	return false;
+ #endif
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
