@@ -1,125 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from isrv.corpit.ru (isrv.corpit.ru [212.248.84.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632723DAAC2;
-	Thu,  1 Oct 2026 11:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C794F4D07
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 11:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.248.84.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790852698; cv=none; b=DMVCebe0pN6Wbw/z72KXmiw6mLYBFFaE80fXRLJVzkodWz+q7+iLqS3hHxrEtzaM0tkRbMTlRpsRiU7n6c8LmcmSWd9dhx3WFg+cMpvPHwFC6C80XxbDmUzLROEm1lpkZIbKosvtVCE2dsiLnT5dYfCa3C5ySbdaL56iuQ82b9g=
+	t=1790852747; cv=none; b=XkppTygrVIIyl4v8rwA11i9LRMGPk2zSNRrmWB/kk901XZCt3Opi5J343nol05kLoYLSFfRaKr71u3J+n/ayA/G2AI2OQvZ7FKwykV8w4b3AzHdiggd9TAGeNtFzctNBDSr8rp7KJc2jDiu402+cSvsBQr4oNQoPQMGPhrdxrkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790852698; c=relaxed/simple;
-	bh=bXv6GlTIZuDVTw0ZfVU3X7Dp2P4hmqJvr+EzSRPktYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TidlNj9VBQrLcSEsvkWHu6gj11eZCUjgiiAcvYzDx7qE3etZdzNzAuZrcX8ewk3AFDwpIFE2gGQ1W3bK5zlCrGqU1wt5wQwWfq8qTJNr4BOfontpMn0nAxkoTcLJLl3LRRREUz2Tbw4s0kJvSURD3B6CQu2X7H6fQ5wC42Rpk6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd2ritWN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790852747; c=relaxed/simple;
+	bh=mv9nVaZL/XcJQGB+PLdb9m3rmNyVm0E+71o0SrI2qAE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fnTMwP09gCAF7Tk58kgeCzoCoC66UIntlMrDw3N8pAfcByNDo4dhgdEjXp0Y0uLFWGuierQU6a2tjxti/RPUX/R/dfU3MHdg5gQyc3PLrfyQ9BuFZqE4p6/l4nMRKqcd6m3qv/7taRHazDVz/yuL8setdoNYVCeztX+hR/b3KE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru; spf=pass smtp.mailfrom=tls.msk.ru; dkim=pass (2048-bit key) header.d=tls.msk.ru header.i=@tls.msk.ru header.b=ZLDHs0ln; arc=none smtp.client-ip=212.248.84.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tls.msk.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd2ritWN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F191F000FF;
-	Thu,  1 Oct 2026 11:04:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790852697;
-	bh=yDoJGusJjj9fWwjr1asctJ4ruRZGa3Y6b+riH2Zmh94=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vd2ritWNwMl4w47uWROaY+6SWKRnNZIMVEnU/gxN8f+/MzbMikJBnGlkjNMgnwGB5
-	 9AOaC+VY+jvCPHsb62HkbFUbznVc9uq30qgzOngP1WoVIxjBukLD9cv3V8iieB8Vbm
-	 8AceZrqbklsqPcnOBL2ANcgt3wcHd2gdS9XmKFa2tVSWfZRuwt/uy93xXipSokiBNf
-	 td7JjOuiCgojI9IUAjiRG1JZIFwVsFNudjZhBjkwWTMbgZ2Z196rPWft7pHM5i+p3v
-	 JF/sqBcIUbL8M+W8Vhw34DNs+MwGBonM/r3bUQ0OjATWW/rl5mPOcvyDLg/rNiD9CL
-	 ES7HKJRG1lDaQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xCEas-0000000Fjgd-3Ckb;
-	Thu, 01 Oct 2026 11:04:54 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Steffen Eiden <seiden@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>
-Subject: Re: (subset) [PATCH v9 00/24] KVM: s390: Introduce arm64 KVM
-Date: Thu,  1 Oct 2026 12:04:51 +0100
-Message-ID: <179085262878.3865846.5787241839391727949.b4-ty@b4>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260930173441.66762-1-seiden@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=tls.msk.ru header.i=@tls.msk.ru header.b="ZLDHs0ln"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tls.msk.ru; s=202602;
+	t=1790852740; bh=mv9nVaZL/XcJQGB+PLdb9m3rmNyVm0E+71o0SrI2qAE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZLDHs0lnjXHM92bx0JV/Kg7/cdziqhSJR2xqxdddFcp3GgoWCcIM1G5R6aanlMHMe
+	 8UaM2DVSoH601J/PFiJ+yStZz4arjE+FRH6t81IFfdoOcifp4LHFoA/EgVg3aDEnL6
+	 24V8zK//sQgM2P0kEH2wAix8pzm4/0umV2QvA9CjknbdWre65sIID+DXzm1dj5lqcL
+	 3MixcM3NK/uJziH3wy/G41zvX0vvAReTk1q6A2N038oxoBDMpmy0Zyrl2QpTv8TV+Z
+	 fuEANJw1/9/3HZJLOUbq5NXIsilwj4NlMjnIXPJEiulVgIIxMX/NxD/6t0n99MHvB5
+	 BLlbn1surKMEA==
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+	by isrv.corpit.ru (Postfix) with ESMTP id F3BD11DA243;
+	Thu, 01 Oct 2026 14:05:40 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+	by tsrv.corpit.ru (Postfix) with ESMTP id 631F4438200;
+	Thu, 01 Oct 2026 14:05:40 +0300 (MSK)
+Message-ID: <f4a13c82-927b-465c-8ae9-9e7bb0f2e7b1@tls.msk.ru>
+Date: Thu, 1 Oct 2026 14:05:40 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, seiden@linux.ibm.com, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/7] target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu"
+ is configured
+To: Sandipan Das <sandipan.das@amd.com>,
+ Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+ groug@kaod.org, khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+ den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com
+References: <20251230074354.88958-1-dongli.zhang@oracle.com>
+ <20251230074354.88958-2-dongli.zhang@oracle.com>
+ <81a1f791-37ef-4d26-bcf7-024eab4cd810@tls.msk.ru>
+ <fa8b40df-a35c-4ae3-8eaa-b4b65c546a91@amd.com>
+ <18ff5158-a515-4659-8388-5bcc074afb94@tls.msk.ru>
+ <6ee6f858-37f6-4acb-8253-acd3cec584ad@amd.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <6ee6f858-37f6-4acb-8253-acd3cec584ad@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 30 Sep 2026 19:34:15 +0200, Steffen Eiden wrote:
-> Introduce arm-on-s390. Enable KVM-accelerated ARM CPU virtualisation on s390.
-> 
-> The new KVM functionally depends on KVM/vfio: Use file-based reference
-> counting for KVM [5] The series itself should apply w/o those.
-> 
-> For the original, now partially outdated, cover letter, have a look at versions
-> one to three [1].
-> 
-> [...]
+On 10/1/26 13:43, Sandipan Das wrote:
+> On 01-10-2026 15:30, Michael Tokarev wrote:
+>> On 10/1/26 11:54, Sandipan Das wrote:
+>>> On 01-10-2026 14:02, Michael Tokarev wrote:
+>> ...
+>>
+>>>> When booting windows11 VM with -cpu EPYC-Rome-v4 -enable-kvm, the
+>>>> guest enters tight CPU loop while displaying a boot screen, before
+>>>> it starts showing up the rotating circle (which shows boot progress).
+>>
+>>
+>>> What happens if you use "-cpu EPYC-Rome-v4,+pmu"?
+>>
+>> With that, it boots fine, just like before this patch.
+>> I checked current master too - same, +pmu fixes it.
+>>
+> A guest OS cannot expect a functioning PMU if the hypervisor has disabled
+> it. Linux runs a basic sanity test to determine this. See:
+> https://github.com/torvalds/linux/blob/master/arch/x86/events/core.c#L268
 
-Applied to next, thanks!
+So.. what do we do with all this?  :)
 
-[05/24] arm64: ptrace: Use constants for compat register numbers
-        commit: 295d3df9b1e425099a4eb37954a02c4a08fdb496
-[06/24] arm64: sysreg: Convert SPSR_ELx to automatic register generation
-        commit: d3d78520068779779e1ed7aa0dd8a3ce63e1ca43
-[07/24] KVM: arm64: Access elements of vcpu_gp_regs individually
-        commit: 29d92585ab987bb80b1e78d811aaea2a8db86e62
-[08/24] KVM: arm64: Use accessor functions for core regs
-        commit: 89ed62818f10e38e64fea46d43ee6455a1beb647
-[09/24] arm64: Prepare sharing arm64 headers with s390
-        commit: df6a70516adec8b7f5fa49e1755d8ee33d980d9c
-[10/24] arm64: Share arm64 headers with s390
-        commit: c7e18ba462536e870b0ff4deca581babcac9135b
-[11/24] KVM: arm64: Share arm64 code with s390
-        commit: dcb776bfcccc9662001a75b99dbfbef55f46eb31
+I kinda see the intention of the original change, but it results in
+non-bootable systems (linux too, as I think you demonstrate above).
 
-Note that there were a few conflicts. Please check that I resolved
-them correctly.
+hmm.. :)
 
-Cheers,
+Thanks,
 
-	M.
--- 
-Without deviation from the norm, progress is not possible.
-
-
+/mjt
