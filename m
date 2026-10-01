@@ -1,88 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19E93B95E0;
-	Thu,  1 Oct 2026 07:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D040D2F8E90
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 07:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790838569; cv=none; b=KNxQNmtgcOGSZRgy8vK/oI6+qkDHo32fB4pBefNDRtaq8iyiYwzX7+9kTq948NfvLEpAJhHIxggkCWls2tvcb3x66pDpRamcT6sZX+8nLFgAgIqeHp/6zrZUE+/j8GngfuQZcxPwg5/SrGaiNjfbrYupePuxIdnXQI+dTb5qHyQ=
+	t=1790839211; cv=none; b=rTdQ1DTFZnfp/Y9BUxYKZ2VHcnAh1iq+Y7gDIDIqJHjGMB/evTnx22tA0DwbU0E8smYUTJC2cZI4yk1cbmOXvsSBcL9cKo9q5aveTBiRIUUJ4gwwT0Wid9M1hP/BBcS9WdsYPEVPxcfy6RyQY5cmdsgF/ai0dt8TAP1HEeF8I7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790838569; c=relaxed/simple;
-	bh=qcUv6L8ARdJT3lK/k0JCm9RvmGbRcHITaNoSi4wbxLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=p6VXZg6cjV1Hr6OdpUe//ttzAix8EmwlXDopAeq7Eek86NV7xsO/5SaIhK7yVOM1VoiE0uKktGxB64/PMbbNnKnxHcrFkjMicaqC8Wv2TNkx0HzivgQj3wNe544OSDf8vnGPOegPf05l54F0rrE1dJ0p0k+D/DkupleF7tLWivE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVuGX13l; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790839211; c=relaxed/simple;
+	bh=v9FOpcXK4LkHcbJyyNWDWuCMQhtIwmwjXV3fOKhmq0I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o7o4poogM4eMckDqwFVsWB5YD2esbanGPz7lQ2ei1pQ7Vtue/hQ3CpiXptciqpZmePacFdN2XoZuzH/0M/vY20uKZJuXFQLClXrKI5A1p/EyRIAj0HZQCFLpOO2r3dvqrYyB+H9qSCmkVXZdfqyw9fcd3yJK1ooG1Q/xTR5EYBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hapbG2Y2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVuGX13l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6001F00898;
-	Thu,  1 Oct 2026 07:09:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790838568;
-	bh=9NU2htvl1DJjae4CiPKNFq06tVKMq97HSV7gij/9Ohc=;
-	h=Date:From:To:Cc:Subject;
-	b=AVuGX13lGxOFnXfsovN9kDWzX1/QIrP1CwOo12N66QAZIz2mPQVi7Emps6B4mQQTU
-	 GEbsC+5MQw4si9+hJ+1uucjHZGD4MpYqgaVhdO8H64X8JrF3nuI3BVZy5Aml419hQd
-	 9YT4q8FpmUHzC24kcCNBC8FwfVmX6qJIFsP9nUj58fI3XVkoc/Q274RAlBsPfTh9Uc
-	 uDGaPNkd99UfPPr1av47dPHHoSbhkD80ZamJL88iPZ3iuIbOx4LDdKeZL7880rAwuM
-	 1q1JWaZpFX+eJd5IJmGY1MGfwNk9oIYV4/GCa9ym96aIOIy7YKNcM/2GldWGVQ7diT
-	 8JY3WZ+PBgZTQ==
-Date: Thu, 1 Oct 2026 00:09:27 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM/arm64 changes for 7.3, take #3
-Message-ID: <ar4HJw9zON0mG2_t@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hapbG2Y2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790839199;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Bmie9JTdC7GvOREgQKIaVbNDMTF41K5ZHDK/CLSZFA=;
+	b=hapbG2Y2Q7VQbIk4kwLl9G7tsxcPe2rw6SZAlqkp+RuzKZbPewLJ8AyI7R6F1+MgvLjAIJ
+	h1DI7AOer/53P1eQjwBvPMKXR5vrO9z/jMWq2ZMyZvk+l9o8mdCTs0zI761p5MZ10Menry
+	xcGXGfLANExdkaEpFH9pyPBUEXdYpDY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-361-3KcQEm1XMWOnIp_ceFAq8Q-1; Thu,
+ 01 Oct 2026 03:19:55 -0400
+X-MC-Unique: 3KcQEm1XMWOnIp_ceFAq8Q-1
+X-Mimecast-MFC-AGG-ID: 3KcQEm1XMWOnIp_ceFAq8Q_1790839193
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 502561953977;
+	Thu,  1 Oct 2026 07:19:52 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 59D061956089;
+	Thu,  1 Oct 2026 07:19:47 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jgg@ziepe.ca
+Cc: alex@shazbot.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	bhelgaas@google.com,
+	jjohnson@kernel.org,
+	johannes@sipsolutions.net,
+	jtornosm@redhat.com,
+	kevin.tian@intel.com,
+	kvm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mani@kernel.org,
+	skolothumtho@nvidia.com,
+	yishaih@nvidia.com
+Subject: Re: [PATCH 3/7] vfio/pci: Add qcom-vfio-pci variant driver
+Date: Thu,  1 Oct 2026 09:19:45 +0200
+Message-ID: <20261001071945.83116-1-jtornosm@redhat.com>
+In-Reply-To: <20260930151229.GR163130@ziepe.ca>
+References: <20260930151229.GR163130@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hi Paolo,
+Hi Jason,
 
-As promised, the patches I was waiting on have baked and we have another
-batch of fixes for 7.3. Continuing with the trend, the VGIC is getting
-some additional attention, particularly on the handling of a vCPU's AP
-list.
+Thank you for the review.
 
-Unless there's something truly horrible brewing in the next couple of
-weeks, I expect this to be the last fixes pull for 7.3 with Marc taking
-over the tree for 7.4.
+You're right that the commit message should better explain the current
+driver behavior. The flow today is:
 
-Please pull.
+1. Linux allocates MSI-X vectors (standard PCI MSI-X table)
+2. The Qualcomm firmware has its own interrupt controller with
+   private registers that need to be programmed with MSI addr/data
+3. The ath11k/ath12k driver extracts the addr/data from the MSI
+   descriptor and programs the firmware's private registers
+4. In a VM, the driver only sees virtual (IOVA) addr/data, but
+   the firmware's private writes bypass the IOMMU, so they need
+   the physical host values
 
-Thanks,
-Oliver
+I'll improve the commit message.
 
-The following changes since commit bc502b86a3cfd89e6740f877c90d06b02635935d:
+Regarding platform_device_msi_init_and_alloc_irqs(), I agree that
+moving the driver to device MSI domains would be cleaner on the
+driver side. However, even with that change, I think the VM problem
+remains exactly the same: the device MSI domain in the VM would
+allocate virtual addr/data pairs, and the firmware's private interrupt
+controller still needs the physical host values. The problem is not
+how the driver allocates MSI vectors, but that the firmware writes
+to its own registers bypassing the IOMMU.
 
-  KVM: arm64: Use stage-1 leaf size for VM_PFNMAP (2026-09-30 11:03:16 -0700)
+Also, the VFIO variant driver scheme would not fully break if the
+driver moved to device MSI domains. The variant driver caches host
+MSI values from the MSI descriptor, regardless of the allocation
+method. The hook point may need adaptation, but the fundamental
+approach (host caches physical values, VM reads them) remains valid.
 
-are available in the Git repository at:
+Regarding the hypercall idea for device MSI domains, I think that
+would be an interesting direction worth exploring as a generic
+solution, but that's a multi-subsystem effort that will take time to
+design and land. If there is any existing work or design discussion
+in this direction, I'd be happy to look into it and contribute.
+In the meantime, the VFIO variant driver provides an immediate path
+for users with deployed hardware, using an established kernel
+pattern. For now, it could coexist and be replaced later on when
+everything is ready.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git/ tags/kvmarm-fixes-7.3-2
+I completely agree that this could theoretically affect any device
+with private MSI registers. However, in practice, I'm only aware of
+this specific behavior in Qualcomm ath11k/ath12k firmware, where the
+device's interrupt controller requires the host physical MSI
+addresses to be programmed directly. I haven't seen this in other
+devices, which is why I think a device-specific approach seems
+appropriate, and the VFIO variant driver pattern fits well for this,
+following the same pattern as mlx5-vfio-pci and nvgrace-gpu for
+their own device-specific needs. I'd be happy to incorporate any
+ideas or suggestions to improve the approach, make it acceptable,
+and allow finally to use these devices from VMs.
 
-for you to fetch changes up to bc502b86a3cfd89e6740f877c90d06b02635935d:
+It's also worth noting that the PCI reset support for these devices
+has already landed in linux-next (commit 290153d46d1a "PCI: Add
+device-specific reset for Qualcomm devices") [1], solving the
+device reset path for VFIO passthrough. This MSI series is the
+remaining piece, with both in place, these Qualcomm WiFi devices
+would be fully operational in VMs for the first time.
 
-  KVM: arm64: Use stage-1 leaf size for VM_PFNMAP (2026-09-30 11:03:16 -0700)
+[1] https://lore.kernel.org/all/20260721081301.205374-1-jtornosm@redhat.com/
 
-----------------------------------------------------------------
-KVM/arm64 fixes for 7.3, round #2
+Thanks
 
- - Take a reference on the last IRQ loaded into an LR to prevent it
-   from being freed while running the guest (Marc Zyngier)
+Best regards
+Jose Ignacio
 
- - Ensure that the ITS MOVALL command only affects LPIs that were
-   previously affined to the source redistributor (Marc Zyngier)
-
- - Fix + test for honoring the host's trap configuration when running
-   non-protected VMs while KVM is in protected mode (Fuad Tabba)
-
- - Use the host stage-1 mapping granularity for VM_PFNMAP mappings at
-   stage-2 (Mostafa Saleh)
-
-----------------------------------------------------------------
