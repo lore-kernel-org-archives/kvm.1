@@ -1,211 +1,196 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF00C4A3862;
-	Thu,  1 Oct 2026 17:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195193E2ADF;
+	Thu,  1 Oct 2026 17:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790874162; cv=none; b=AqrTlfxuNWjc9Krx5KRBjv+wMHroIsB3CKr38GQqRABI9aCH28AyYfYfdROjP4VlOrODr8d3YUD+mR+ckDd9ncEUY+kGV/5WZZ6hos6gN/VyXHVcPNLsi19sJ05krha7QIi3T0wQgk+T4mF+ZBI/5lZnGWRMFIYf8kiGh6sKjEE=
+	t=1790874826; cv=none; b=hI7tqh+NWTZBTSxtBY1KNkQqZOQtmiq4wrOIzjobU9/G3aRhm7k/s+I76CkoklqH2qofEjyf9bRg1U4LYw/EtN303qnliked8khsgc+ewiPFnn+nAHp6Pzkh3e7gE4ZBzgc2hEz0yZLROZvJfJ2WQROMVPlLueCuW1iTGbOSkvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790874162; c=relaxed/simple;
-	bh=l9dUTRwvgqc1WP+4Zk1aYmL4l0jLZasgEBzCwMrMk+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=U+XYjO/186Fjt7jGvWTEBAngUO6LkG7Nuo/hE0emEPUL8NOc43w967jOPrsF0s5n11nzGak2wrbGzB9quyxLMzvEmCrxy9mUb/qEkOg3abIcOW31eEgCPek2JoWPNOdNIubVk4BN1n905DBL8RSHBz4+YdEaEDBA37q1+kTDaeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Gldmk7Qn; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790874826; c=relaxed/simple;
+	bh=lhq8JKa61aTi2bOedB2Rr/BQnnWBa3OKYCB3YEzC3dc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HyPXwG5VkKkughA55khicV8K6VfMLJeXZa0KbRRSkUj/TiyJsTtiK7ScUckzZ3fWg/XiNEsFwcH/FcjRv3/qk9nLjc/LyIaDGl21M+ilh4cYEYPZ4L/cMby/IEuQcvxQoa0dEKRPCpLKMI0MSxG69J/FthSfaMiBrLeb1EMJXFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pu4Nr4N0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Gldmk7Qn"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B440497;
-	Thu,  1 Oct 2026 10:02:27 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CE233F85F;
-	Thu,  1 Oct 2026 10:02:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790874150; bh=l9dUTRwvgqc1WP+4Zk1aYmL4l0jLZasgEBzCwMrMk+E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gldmk7QnRni3aiFeWUUJzLP0btxS+WxJc+KhRKjF95pfna6heJ+SuyuiTsnqZe9WW
-	 u66m1WGr7IK4Ya6urCwRwTegi1ZX+qydSl4wexR4k+xPyiE0FWSSlJ3yJLy0VqWJX2
-	 dMdhcD1y/aXVVETjtrkoiNuKE00k13C9gC/C3WQU=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Josh Hilke <jrhilke@google.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Wu Fei <wu.fei9@sanechips.com.cn>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/3] KVM: selftests: Check dirty-ring size before enabling
-Date: Thu,  1 Oct 2026 18:02:22 +0100
-Message-ID: <ar6SHjnMYNqiEpVa@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <ar5yW30S75THCfdV@LeoBrasDK>
-References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-3-leo.bras@arm.com> <ar1xne00AHnJ-p_d@google.com> <ar5yW30S75THCfdV@LeoBrasDK>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pu4Nr4N0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 146D6C2BCC7;
+	Thu,  1 Oct 2026 17:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790874825;
+	bh=lhq8JKa61aTi2bOedB2Rr/BQnnWBa3OKYCB3YEzC3dc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Pu4Nr4N0SCi9iwuahSsPUdyfOR56ompJLH+Bhfm1/eFG/ix/XPZD6JJArSmt0gYPx
+	 0OSN1c5VQh4CiC1ZWcR7USgV4SGLLH/P1LvrvfMEQ2lnmbP3C40b697yUI2/NAA7k0
+	 DKWoDz7giesPUpqTnzO9lgEoArUVlUVuq+9wECDdnWbju7PrLr9yyJLS76GQxVOqH8
+	 fxmwqMuiXmQ/grX6JecJF0x3kAdTLSS9s2St5jL7az3Z4jnghisaxDFhFe8c99Cxym
+	 5w7/z/8G0DTvp+IjcXyAACjmQiKrXA7nl9hdghlwUujCbxWUK7BAt/d8orpNDPxepI
+	 4ax8ZceHlJ6Ww==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E308BCA5FD4;
+	Thu,  1 Oct 2026 17:13:44 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Thu, 01 Oct 2026 19:13:29 +0200
+Subject: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a failed
+ PM restore
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QrCMAwAf2Xk2UAzYaK/Ij50bapRaCXpxmDs3
+ +3c4x3crWCswga3bgXlWUxKbkCnDsLL5yejxMbQu34g5whnK+GDylaLMk4+oXGOSClcztcheRo
+ jtPirnGT5j++QucLjkDaNbw51X8K2/QCBE6SYfwAAAA==
+X-Change-ID: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790874824; l=4969;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=OzDITxghnCYWCrZYjn50doFti2WNlSPFkziXexLwJqE=;
+ b=gJV0ZugB4Fep9rZp+kEVHlD38YYd8UmQENkr+fukRe8g1yhWWzWG6WECTSs6uOS/yFvZZY7R9
+ ORFIua46Ha4Aa1Cz94X/RmyKurU7eskGPowCKDtVwxCAjCLjlIM8ofH
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
 
-On Thu, Oct 01, 2026 at 03:46:51PM +0100, Leonardo Bras wrote:
-> On Wed, Sep 30, 2026 at 01:31:25PM -0700, Sean Christopherson wrote:
-> > On Tue, Sep 29, 2026, Leonardo Bras wrote:
-> > > As of today, trying to enable dirty-ring with a size bigger than the
-> > > maximum will return an "argument list too long" error.
-> > > 
-> > > Change vm_enable_dirty_ring() to get the maximum size, then compare it to
-> > > the desired size before enabling. If the value is invalid, print a more
-> > > precise error message.
-> > > 
-> > > Signed-off-by: Leonardo Bras <leo.bras@arm.com>
-> > > ---
-> > >  tools/testing/selftests/kvm/lib/kvm_util.c | 21 +++++++++++++++++----
-> > >  1 file changed, 17 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> > > index 9ddc047d5c27..15a671b71553 100644
-> > > --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> > > +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> > > @@ -168,24 +168,37 @@ unsigned int kvm_check_cap(long cap)
-> > >  	ret = __kvm_ioctl(kvm_fd, KVM_CHECK_EXTENSION, (void *)cap);
-> > >  	TEST_ASSERT(ret >= 0, KVM_IOCTL_ERROR(KVM_CHECK_EXTENSION, ret));
-> > >  
-> > >  	kvm_free_fd(kvm_fd);
-> > >  
-> > >  	return (unsigned int)ret;
-> > >  }
-> > >  
-> > >  void vm_enable_dirty_ring(struct kvm_vm *vm, u32 ring_size)
-> > >  {
-> > > -	if (vm_check_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
-> > > -		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL, ring_size);
-> > > -	else
-> > > -		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING, ring_size);
-> > > +	long cap = KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
-> > > +	int max_size = vm_check_cap(vm, cap);
-> > > +
-> > > +	if (!max_size) {
-> > > +		cap = KVM_CAP_DIRTY_LOG_RING;
-> > > +		max_size = vm_check_cap(vm, cap);
-> > > +	}
-> > > +
-> > > +	TEST_ASSERT(max_size > 0,
-> > 
-> > Rather than open code this, which is kinda sorta going to show up in multiple
-> > places, what if we do this as a prep patch?  Then vm_enable_dirty_ring() can use
-> > kvm_get_dirty_ring_cap() (completely untested).
-> 
-> Sure, if you think it's useful :)
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-Oh, vm_check_cap() is different than kvm_has_cap()/kvm_check_cap():
-IIUC, the vm* version will check if the extension is enabled in the current 
-VM, while the kvm* version will open a new /dev/kvm fd and check the 
-extension there, probably meaning the CAP is available in the system.
+virtio_vsock_vqs_del() frees the virtqueues via del_vqs() but never
+clears vsock->vqs[]. If a later virtio_vsock_restore() fails to
+reallocate them (its error path is a bare "goto out" that only unlocks
+and returns), the driver is left bound with a dangling vqs[]. The next
+virtio_vsock_vqs_del() - on a second freeze or on remove/unbind - then
+passes a freed vring_virtqueue to virtqueue_detach_unused_buf(), a slab
+use-after-free. KASAN on a guest with a virtio-vsock device, after a
+restore made to fail by fault injection:
 
-So, maybe we would need a slightly different approach?
-I.E. have the kvm_get_dirty_ring_cap() to use the VM version, and 
-have dirty_ring_supported() to start the new /dev/kvm fd and free it later?
+  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+  Read of size 4 at addr ... by task repro
+   virtqueue_detach_unused_buf
+   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+   virtio_vsock_remove
+   virtio_dev_remove
+   ... unbind_store
+  Freed by task ...:
+   kfree
+   vp_del_vqs
+   virtio_vsock_freeze          <- the preceding freeze freed the vq
+  Allocated by task 1:
+   vring_create_virtqueue
+   virtio_vsock_vqs_init
+   virtio_vsock_probe           <- original allocation at probe
 
-What do you think?
+The object is the RX vring_virtqueue freed during the freeze;
+vsock->vqs[RX] still points at it. virtqueue_detach_unused_buf() does
+not guard a NULL vq, so a bare NULL-out is not enough on its own.
 
-Thanks!
-Leo 
+Clear vsock->vqs[] after del_vqs() in virtio_vsock_vqs_del(), skip the
+detach loops when a vq pointer is NULL, and also clear the array when
+virtio_find_vqs() fails partway in virtio_vsock_vqs_init() (which can
+leave freed pointers behind). This mirrors virtio_blk
+commit 0739c2c6a015 ("virtio_blk: NULL out vqs to avoid double free on
+failed resume") and virtio_rtc commit 548d2208455f ("virtio: rtc: tear
+down old virtqueues before restore"); virtio_console carries the same
+stale-pointers-after-failed-restore fix.
+
+Testing: reproduced on a private VM with a KASAN fuzz kernel based on
+v7.3-rc5. The restore allocation failure was forced with CONFIG_FAILSLAB
+steered by the fault-injection stacktrace filter to the virtio-vsock
+restore path only; a guest-root program drives a pm_test=devices
+freeze/restore cycle (so .restore returns -ENOMEM) and then unbinds the
+device. The unfixed kernel reports the slab-use-after-free above; with
+this patch the same run makes restore fail identically yet produces no
+KASAN report. checkpatch.pl --strict is clean and the build is
+warning-free. The reproducer is available on request.
+
+Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+ net/vmw_vsock/virtio_transport.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..0553c0641fd2 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -714,8 +714,15 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	atomic_set(&vsock->queued_replies, 0);
+ 
+ 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+-	if (ret < 0)
++	if (ret < 0) {
++		/*
++		 * On a partial failure virtio_find_vqs() can leave freed
++		 * virtqueue pointers in vsock->vqs[]; clear them so a later
++		 * virtio_vsock_vqs_del() does not detach a freed virtqueue.
++		 */
++		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ 		return ret;
++	}
+ 
+ 	virtio_vsock_update_guest_cid(vsock);
+ 
+@@ -782,19 +789,30 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 	virtio_reset_device(vdev);
+ 
+ 	mutex_lock(&vsock->rx_lock);
+-	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+-		kfree_skb(skb);
++	if (vsock->vqs[VSOCK_VQ_RX])
++		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
++			kfree_skb(skb);
+ 	mutex_unlock(&vsock->rx_lock);
+ 
+ 	mutex_lock(&vsock->tx_lock);
+-	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
+-		kfree_skb(skb);
++	if (vsock->vqs[VSOCK_VQ_TX])
++		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
++			kfree_skb(skb);
+ 	mutex_unlock(&vsock->tx_lock);
+ 
+ 	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+ 
+ 	/* Delete virtqueues and flush outstanding callbacks if any */
+ 	vdev->config->del_vqs(vdev);
++
++	/*
++	 * del_vqs() has freed the virtqueues. Clear the stale pointers: if a
++	 * later virtio_vsock_restore() fails to allocate new ones, the driver
++	 * stays bound with a dangling vqs[] and the next virtio_vsock_vqs_del()
++	 * would detach a freed virtqueue (use-after-free). Mirrors virtio_blk
++	 * commit 0739c2c6a015.
++	 */
++	memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ }
+ 
+ static int virtio_vsock_probe(struct virtio_device *vdev)
+
+---
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
 
 
-
-
-> 
-> > 
-> > diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
-> > index af5eb0334a74..558a71d631da 100644
-> > --- a/tools/testing/selftests/kvm/dirty_log_test.c
-> > +++ b/tools/testing/selftests/kvm/dirty_log_test.c
-> > @@ -291,8 +291,7 @@ static void default_after_vcpu_run(struct kvm_vcpu *vcpu)
-> >  
-> >  static bool dirty_ring_supported(void)
-> >  {
-> > -	return (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING) ||
-> > -		kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL));
-> > +	return kvm_get_dirty_ring_cap();
-> >  }
-> >  
-> >  static void dirty_ring_create_vm_done(struct kvm_vm *vm)
-> > diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-> > index e3b122719262..c08d1581221e 100644
-> > --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> > +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> > @@ -339,6 +339,17 @@ static inline bool kvm_has_cap(long cap)
-> >  	return kvm_check_cap(cap);
-> >  }
-> >  
-> > +static inline long kvm_get_dirty_ring_cap(void)
-> > +{
-> > +	if (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
-> > +		return KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
-> > +
-> > +	if (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING))
-> > +		return KVM_CAP_DIRTY_LOG_RING;
-> > +
-> > +	return 0;	
-> > +}
-> > +
-> >  /*
-> >   * Use the "inner", double-underscore macro when reporting errors from within
-> >   * other macros so that the name of ioctl() and not its literal numeric value
-> > 
-> > 
-> > > "Dirty-ring not supported in this kernel\n");
-> > 
-> > "this kernel" could be misleading, some architectures simply don't support the
-> > dirty ring.
-> 
-> So, do you suggest keeping it simple by printing "Dirty-ring not supported"?
-> 
-> 
-> > 
-> > > +	TEST_ASSERT(ring_size <= max_size && is_power_of_2(ring_size) &&
-> > > +		    ring_size >= getpagesize(),
-> > > +		    "Invalid dirty-ring size: Should be a power of two "
-> > > +		    "between %lu and %lu entries\n",
-> > 
-> > Don't wrap strings.  The "Invalid dirty-ring size:" part is redudant with the
-> > expressions, just drop that to shorten things.  This should also spit out the
-> > requested ring_size.  Stating the range as a number of entries is also confusing;
-> > as a debugger, I don't want to have to go look at the size of kvm_dirty_gfn to
-> > understand why ring_size is invalid.
-> > 
-> > And maybe split up the asserts?  If the goal is to make it easier for developers
-> > to know when they messed up, might as well make it as easy as possible.  E.g.
-> > leaning on the above diff, something like this?
-> > 
-> > 	long cap = kvm_get_dirty_ring_cap();
-> > 
-> > 	TEST_ASSERT(cap, "Dirty-ring not supported");
-> > 
-> > 	TEST_ASSERT(is_power_of_2(ring_size),
-> > 		    "Dirty-ring size '0x%x' must be a power-of-2", ring_size);
-> > 	TEST_ASSERT(ring_size >= getpagesize(),
-> > 		    "Dirty-ring size '0x%x' must be at least one (host) page", ring_size);
-> > 	TEST_ASSERT(ring_size >= vm_check_cap(vm, cap),
-> > 		    "Dirty-ring size '0x%x' is larger than KVM's limit of '0x%x'",
-> > 		    ring_size, vm_check_cap(vm, cap));
-> > 
-> > 	vm_enable_cap(vm, cap, ring_size);
-> > 	vm->dirty_ring_size = ring_size;
-> > 
-> 
-> Humm, I see the point. 
-> Will do as suggested then, thanks!
-> 
-> Leo
