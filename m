@@ -1,149 +1,170 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6313469837
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE7736D9FE
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790862009; cv=none; b=vBs507SWlcr6540mHxM7Am4oS0MZNVMEGIrt5OS79UltJftI/oaBg7ZHyI/9xI7oZZFRwkEWlyQ76WURyaE5HygjZns/eEEGbDohX1FBH17F9sGAy5WTWKYKA5SvnV6ADu6PbSPui4jV0uKUZlpx+Qhfj7f39UjXM/K7wrEhaBs=
+	t=1790862163; cv=none; b=Ua1MLmYjxO/phUFjFaWB4Dyj1fPQEt1MVHHCtwaa2CQ43SsTkAsPfhzb0gBjLv7QGvlU/iGG1iXFe9RknDESXEHMk88Ylxnyt4iswwkFtZmzHqYtEtMyH8eWBATKFD7LzgBmy/+J8kdmDoX8inUvsCTug0e41vW2JR+/EeOCwR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790862009; c=relaxed/simple;
-	bh=44EZaq4IayZwFnSEKr7sAoYn1kVxome40EQ9XQHbL/E=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=DMa+UaYk1OS2P0eyLf5aAVan+eakIgsKHuYECqGYzeiuC7741t0iyJa47AONBFw3gtNwry7rxpbhyCokbjtNOiCMKfMH7/fDfRbJFNyezdnZxqUFrRWZLYrzTlegn5L8QShfSieNrnKNOTayCfwBYh1a1xz2CWIH90lFrDnmTP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Vvo60XYF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=yE0Y3aPz; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1790862163; c=relaxed/simple;
+	bh=9/+tCd94iL8kXeGB2Qg2OUOvm2WiWKuY0gLzpz03J7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdZSfKUpfZoda7ld32iIIK7atU4bqOBRjsz4qJDXMTPrI6h6hAU4nXq+fHmjufGrMcpqSRMJqAdqyCoG1K+Ttrqk0krdjdjdBOxqnUoyWGQf54/pylJmlkqu1FTfK/uzqBIwAKbptfXHqiLMto1drvhzkec8jRMjl6nfNQXSLaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QTyyRQ0p; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=i/ur4ZQj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Vvo60XYF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="yE0Y3aPz"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.phl.internal (Postfix) with ESMTP id B1A5CEC01FA
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 09:40:06 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 01 Oct 2026 09:40:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790861991;
-	 x=1790948391; bh=Uwp2ZDOoPY3tI2VNi4uZ1TmL4tpZAymbe2XPjfSWC3g=; b=
-	Vvo60XYFrWy2XPdLwFA9adRkgSN3UVtkoS97ON0g2cGLCnP/r70JvNVCKk02dTpg
-	VDO1wr+/WyiNuQcycIM88DErSPgqbuSU94W8y016zNYI446AuE+uTIftFoiNdWAu
-	FmvLnI1iVuzLIHxP+h5qSkg5dckZO8Nm+09yWalyTUwYhdEIULLSaf49/9ozGQVZ
-	sFcs+noqoxMH57+7ZYpSBQZ0lLPFqII3mpuy1wp6t5FXcrKaQ4PzCYS5EDoFdjVX
-	7PR3k6b2zyNse0qgFebEvb+PQRPXDA8ZQg1bdc1kS+clYqOgRdRJrtxkhy4vxkCH
-	2Hnoq6IBtYmhr2ACmlZdbw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790861991; x=
-	1790948391; bh=Uwp2ZDOoPY3tI2VNi4uZ1TmL4tpZAymbe2XPjfSWC3g=; b=y
-	E0Y3aPzlONuyx97IbQDkB4tJwxI4yrGQ0Uh6wjPCIopZN/XwMX7BiVptHeT2n7J4
-	JHLSu6Lked9EkPyOzQmskgXlQ39Fa+a8Kc4jWz8ZBDEifiqfcnG3CZBJmc77mUYW
-	MDVjwJPSUCXjCOdtDGmo8d75WwK3FXVmYgcrzgHsLNZ+H2fNdkuRJZLrGoxBu1Xl
-	rbu7lhXbIOcKaH6AJyuu9qb/gRwNp1lCsolXgizZ+Jlq1EVFaG/nM2ZkkAeDGWf+
-	PI55JTlT8JMJjNyz7zWPecjxOzglND4gkkRFqQ2nxceOh7z+53xrU5Bi5v9aQdMi
-	gQm+O2J6WY1RlD8L2adRA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790861991; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:pTk9Z9xsTDatC9IdrkyNCyUGJTZALVGwFp0lhM2Uem48Dgt
-	h31RNn7vwhlR9Jlsu1sXGy83I8kb1mc4aDuLTRgL264WNuHHEPn9IAa/8rfxeQrm
-	+TQUawlOilf3R2X02xKIGIdRweJAgVCUNR8nX9AX+4DPhwQfWiu2/nuQILBr2XaK
-	Xv+uY47UY51Y7ERXayKXSXlBB9KAeGOdagr0XTdcTI7n7OgmgAw8tg6A0a/hhmYP
-	SMNso1trLpVTbEMf+mkJmylfiW/PngyeTVMe/rafmG7CLRI/BhPMRQEdY41t7MzJ
-	YjCvqfFmosv8FiyuXAwlEWAHkDa2hI+kLIj9iow==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:BGpLFMCduRgTg7y1aJr8Ihh10vNT6FWHgqI8rrxK5fI=:44EZaq4IayZwFnSEKr7sAoYn1kVxome40EQ9XQHbL/E=;
-X-ME-Sender: <xms:oGK-aqKqS5O8pEqGgKCvh__LvsScmCIsvi5uWnyQVKCo8Zk4lQQwIQ>
-    <xme:oGK-as8GbFf_iRvMnim8wlA19YZROZHMvzVXmocivAHkXrM_d6iXEiGBw6qXEAu1S
-    fE61CGw6T95gOkCwEXVs_MLfrviBAyYn5mk8p9PXCqMwpUGceO2MWTO>
-X-ME-Proxy-Cause: dmFkZTEdx5AqovL1MTEo9qQdIf1UspZIhV2/zxzYRmwyd+bfaXPeYA2sFWVvA4rtnWQssz
-    e/2T3RJgnanif0LUm5IZ4ZAoV5grcdZq8G0huQxY29Y8wRoYp009HNfv+KgK5P0w8gmFDz
-    vuFpNcewv5coXrOM/gbTVyOCjoacUGWKLvFYxLZoD9S9vDqeLMeRitS9iJywkISeFaDiOG
-    9HH2239doQyc+FRdEt6Dz45AR1v0pEqiNZCMXnPubcaWeWH/WeBdO1NtWDppw33wUpE9ib
-    hFCl0FzAh+BwPd/iWfy1e3RgasoKugqSILaqPXGOHF4i0TS2V6y7Ghsg/2kzdADRJ67tFk
-    sAomxwNvOZE3Xl4f/XP3A66f9+z9gspYtzZhE4n76yksZa22YcktB2kJwt0AKSyvWKqBnW
-    uThVg1YEV1xUtXdeifE7P+vxCE6CDd5LJ/7+dXXv+Yf4HAaKsl9TzqphOh6uZSnAtXOjHe
-    kjhUwVDtlG2ldd0RYCQAAvdnkapM11UMiRGoBcZgec6rtl/YDvWJHkkF8HXPtm6zq/s32M
-    RM32kc482Ehq7OcsYWXwZvkFARvGyQVFMaMyJSLOcZsQHNLk6CBbaSwOB+baaHKM2a09ih
-    NBkhZ1o7/ENmZlRpShwI8nt1Qe3hGLG5Hb6dsqZU2wuIFvmIxC7QFcNP0u3Q
-X-ME-Proxy: <xmx:pWK-ak-68vXD1ePX4y31qlVBoKs_NqqSxrJHMUKlKasmB4u1PJxesw>
-    <xmx:pWK-agA8IgXnKSdK4QKof0d01XAqAbnMT9DOVIKV8plUbRPRL6zAmQ>
-    <xmx:pWK-auE1s0-gtqaMocgsUVh5dhVkU53_2Of23DTTKtkiFQiexqfdvg>
-    <xmx:pWK-aq1g8e83K9bz6wyRWDXEDrfkLCMGvfwelPYVnOiv_WIGGc2O2w>
-    <xmx:p2K-ar_Hipd_0Tf2XNyz7_3JwgUuiODDRV-TrdSqE9bmmYkIE4Xc8zHN>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 8214032A008A; Thu,  1 Oct 2026 09:39:44 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QTyyRQ0p";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="i/ur4ZQj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790862147;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cu6OcuQYFoTCH5UaDqxha9ec8EBwkEwB9eRLNdJBaGY=;
+	b=QTyyRQ0pUyBRm8p1rQxc+2zJyFrcRD9DKXhoiz16hFWVcquClWAJoOyujxrgjhbO3amRlY
+	vldD8XQA96kjVWsszxzOf7z0Wke+p0GKRlpDjkN2bxk57cOK2IIwmR2hvPg5BNRL6QeE2Z
+	FN13ORxdrD1b3zKVHg1iJp6UIN92Asc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-KJczQFZMPBKNeM8kIlChOw-1; Thu, 01 Oct 2026 09:42:26 -0400
+X-MC-Unique: KJczQFZMPBKNeM8kIlChOw-1
+X-Mimecast-MFC-AGG-ID: KJczQFZMPBKNeM8kIlChOw_1790862145
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e735659b7so49191335e9.3
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 06:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790862145; x=1791466945; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cu6OcuQYFoTCH5UaDqxha9ec8EBwkEwB9eRLNdJBaGY=;
+        b=i/ur4ZQj65xDkONUTm63ZH3iuOFIQSAz8NPNbrydMr6Mpxm+s8wh/tmZJe91DyTK80
+         d8OsnbqU6cauSnkT4sgkUW7a5sGpul5D6ir0chQrNgzWu2UusOHU2WVTpcyZ+YpRsPtg
+         qMqhcWR2PLzu7YTnRhYO9vYhLtTFYCbQFJOFw1e6L74JBr0WnoRIuzUKJC4c6BGMEjM3
+         g6PVZMMQ7zlx6y+7C6pD8Qq4GrZks8zQlFmpHUVYHpHQeAVmD8ckQkK+Sv8sPofBJAJU
+         iDUla7wmtIJJmv9oTNKx+qelyn5GmkH4vZGt3FiiN1CgB58caIt+a8SV00jgJUFE4OdZ
+         2OOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790862145; x=1791466945;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cu6OcuQYFoTCH5UaDqxha9ec8EBwkEwB9eRLNdJBaGY=;
+        b=plCSFGaO6jZF+KV7bGzFIqcI3GIB7Sb/rZnWXe4FmN8sgZVehmwhgjPQ++q6YM4VFN
+         kp1p3xfPZ1SSiyr6OxCj5TzwVGcdl0P5q55ftgdn65WQeoyWMgyaW7Sm2ENMiPNdN0Xr
+         w3p86BIg6J54+UtWcVbTZ62CuE+DkLsyw/Kwnf4dB6X9ez7f341WKU4vi9D6/lv8Kg5s
+         qn1YwDTXIVzV53SJ5QoUun0FpVBoM/3xcR4AyX5/MUQkxl6eEOsr3OxBEq0/NUdtVCox
+         5vnUIDgR6h2ee4yI6ZjXP4MaJjehkPrukkyDsSrCaCHb3pbf8jJOl7tSRAq/0AkEnEMv
+         neqA==
+X-Forwarded-Encrypted: i=1; AKwUvBzNGfrYRTbIXWprz/5P+w8vPzXbHGYQWdZxBrQSAroy4N7acL4mAQ/qU4gmBLrygpKhX9E=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKsH6rO58llwcxhzIzUD71BhOtxDO8JpmMosrBezfEiWNBbv+9
+	WNys9DQyzGArJnVMIw26S8XqfqBlmN86hpuhG+GF5Xh5/x/9VIMtHx46yB+LTXrY+3YIfzTqlB+
+	yGO0vx5B+OEVkXxQnHJestw72oIt3cMGv5pRLPA/+qD5AUty+QA7tyw==
+X-Gm-Gg: AYBFou0bxOb9tl5ETSzs86TkDa0EmOo9UlD4e6uJwRDAL9H3MwMAV4ZegYYZvBlvJb9
+	pDMRZvqMbKhDHKh2Xz+/rcJYjF4Werdgp0CAiXqCqBHYYVcLew5vak0iScrbjejflltDVxlldZk
+	o/k4gAQLlRxPKQiiNIE71wSWoIK2fMNhx4JI05ZMwDhaH1/xLsFFs/whOkxjHeEtRWWfzOe0/cs
+	6H6dDx+JYPl9EBmFOtt5QuuUWFeXBzmgdR/D8YIkCv67eoq7DkW0LiT7srnk7ldkgD3Dtv1YuCJ
+	jXVe75oH4iuDrRi5411Zz72OVa+7XwiMq+lw4cW8jNDwg5BSavnPGotqn872tlZi4pFfZkqig+V
+	GCQ67KFolFKN5onEyder++cZ3VVXEk6aDcbw=
+X-Received: by 2002:a05:600d:8652:10b0:4a0:25fe:a4f with SMTP id 5b1f17b1804b1-4a025fe0b7cmr6753575e9.26.1790862145211;
+        Thu, 01 Oct 2026 06:42:25 -0700 (PDT)
+X-Received: by 2002:a05:600d:8652:10b0:4a0:25fe:a4f with SMTP id 5b1f17b1804b1-4a025fe0b7cmr6753205e9.26.1790862144781;
+        Thu, 01 Oct 2026 06:42:24 -0700 (PDT)
+Received: from leonardi-redhat ([176.206.38.69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f984d89sm81821335e9.7.2026.10.01.06.42.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 06:42:24 -0700 (PDT)
+Date: Thu, 1 Oct 2026 15:42:21 +0200
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
+Message-ID: <ar5gU4DSSTUuGi8P@leonardi-redhat>
+References: <20261001121541.2983379-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AompHzTHtn-7
-Date: Thu, 01 Oct 2026 15:39:24 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Steffen Eiden" <seiden@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Andreas Grapentin" <gra@linux.ibm.com>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Friedrich Welter" <fritz@linux.ibm.com>,
- "Gautam Gala" <ggala@linux.ibm.com>,
- "Hariharan Mari" <hari55@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Hendrik Brueckner" <brueckner@linux.ibm.com>,
- "Ilya Leoshkevich" <iii@linux.ibm.com>,
- "Janosch Frank" <frankja@linux.ibm.com>,
- "Joey Gouly" <joey.gouly@arm.com>, "Nico Boehr" <nrb@linux.ibm.com>,
- "Nina Schoetterl-Glausch" <oss@nina.schoetterlglausch.eu>,
- "Oliver Upton" <oupton@kernel.org>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Sean Christopherson" <seanjc@google.com>,
- "Suzuki K Poulose" <suzuki.poulose@arm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Ulrich Weigand" <Ulrich.Weigand@de.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>, "Will Deacon" <will@kernel.org>,
- "Zenghui Yu" <yuzenghui@huawei.com>,
- "Fuad Tabba" <fuad.tabba@linux.dev>
-Message-Id: <40dd808c-bddf-4a7a-be81-53c64de2707d@app.fastmail.com>
-In-Reply-To: <20261001132715.108643-A-seiden@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
- <179085262878.3865846.5787241839391727949.b4-ty@b4>
- <20261001132715.108643-A-seiden@linux.ibm.com>
-Subject: Re: (subset) [PATCH v9 00/24] KVM: s390: Introduce arm64 KVM
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261001121541.2983379-1-4ncienth@gmail.com>
 
-On Thu, Oct 1, 2026, at 15:27, Steffen Eiden wrote:
-> On Thu, Oct 01, 2026 at 12:04:51PM +0100, Marc Zyngier wrote:
+Hi,
+
+what about using `vsock/virtio` instead of `vsock`? We are changing
+just the virtio parts of vsock.
+
+On Thu, Oct 01, 2026 at 09:15:41PM +0900, Daehyeon Ko wrote:
+>After a partial stream receive, rx_bytes tracks the unread suffix while
+>buf_used and peer credit still cover the whole packet.
+>virtio_transport_read_skb() dequeues that packet but passes pkt_len for
+>both counters, underflowing rx_bytes.
 >
-> quick fix: 
+>On a connected CID_LOCAL stream with an SK_SKB verdict, a 40-byte read
+>from a 100-byte packet made SIOCINQ report -40, an empty recv return
+>ELOOP, and poll report the empty socket readable.  After verdict detach,
+>receiving 40 bytes wrapped the counter to zero and hid those queued bytes
+>until one more byte arrived.  The fixed run kept the counter balanced
+>and exposed all queued data immediately.
+>
+>Subtract only skb->len minus the VSOCK offset from rx_bytes.  Retain the
+>full packet length for buf_used and peer credit.
+>
+>Fixes: 45ca7e9f0730 ("vsock/virtio: fix `rx_bytes` accounting for stream sockets")
+>Cc: stable@vger.kernel.org
+>Assisted-by: LLM
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
+> net/vmw_vsock/virtio_transport_common.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index f225f53ed4bab..1e762a480df49 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1927,6 +1927,7 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+> 	struct sock *sk = sk_vsock(vsk);
+> 	struct virtio_vsock_hdr *hdr;
+> 	struct sk_buff *skb;
+>+	u32 bytes_read;
+> 	u32 pkt_len;
+> 	int off = 0;
+> 	int err;
+>@@ -1946,7 +1947,8 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+> 		vvs->msg_count--;
+>
+> 	pkt_len = le32_to_cpu(hdr->len);
+>-	virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
 
-Ah, I was about to send the same thing.
+maybe it's worth adding a comment? not a strong opinion.
 
-> I can send the two fixup patches as a reply here for this tomorrow or 
-> later today if you want. 
+>+	bytes_read = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
+>+	virtio_transport_dec_rx_pkt(vvs, bytes_read, pkt_len);
+> 	spin_unlock_bh(&vvs->rx_lock);
+>
+> 	virtio_transport_send_credit_update(vsk);
+>
+>base-commit: e23a64eb244356ee47c0620f0722d51bd88db522
+>-- 
+>2.55.0
+>
 
-My build bot is churning away looking for more corner cases.
-I initially had the wrong base, but with this one and the other
-two I sent, things are starting to look good. I'll keep it
-running over night, but if you don't hear from me for any additional
-build regressions in the next hour, it's probably fine.
+code LGTM!
 
-      Arnd
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+
+Thanks,
+Luigi
+
