@@ -1,46 +1,46 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012026.outbound.protection.outlook.com [40.93.195.26])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010065.outbound.protection.outlook.com [52.101.61.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF78941DDE5
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 04:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C217840B6D4
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 04:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829888; cv=fail; b=tgy5j1BUNqIVGXuoSPvL5sEmf6htuMOkaN/wYqsArZmN3QkYDS1cQCf4onVMJQhoZ1Bpdj0r6oz+udUySaz2EEZ4HSVKpqn+dyKDYqo2Ym79rXs5R0EAW5qwESRQiffdgEWQxW1v9RMnqv9KQGObXah5rTfVxgp5CbCkfg6wOI4=
+	t=1790829891; cv=fail; b=Bo3FNEqI5Tgk6I7Bt1QevfS3tLVLl68uBluu8pQCWQrYRvcW/KUaXQvKnCPUesE1F9IHEhm/yV7oowmfClhcxbBCMcpoMAniaSo8K9s1s4q7AIEbt8M6LVSMcLeDSbdtVec4uBQb5Wt+Bn1HOq/EoSOUEIeSdE6VMqORAQ4fx4Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829888; c=relaxed/simple;
-	bh=qEhCHFOThufFy/UHTxF77XoGZnzucURtKyfjKwUHZxA=;
+	s=arc-20240116; t=1790829891; c=relaxed/simple;
+	bh=0MEKsbeE7SawF0CTBVQcnbmCtLN8SnGXrUNkUnQ1tu8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T4q4Rx6ON0gnbzmTrgGEUHXoXyyEG5Gh2mgVe4EWuGzvWyck6LvwuQL36FABZt69MC2ytC8NmW9mOtOnmw7FhmFYMxkU1PukhJxqa81FK+Gx7uGi9g+HnqyCCj3i59vZ4+/mEIdjE+pGZoBKb0olCLj9b7/KahvvyuwrkNAMsGI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uSwdFow5; arc=fail smtp.client-ip=40.93.195.26
+	 MIME-Version:Content-Type; b=tALSdid9X9a1DiEzmUG/1Y6KdVzefSG++8qh2FXsuw42Aux30ZqlrYgKd19k8xA0VtUROnoA7hC5MDrQCNlaIG5VO4UTPhxMiU7AJ5rgQxgkb8o2eS3dos9pSA/EGt2CJyrN571ywnNHFGqtVefZlWxnKYNiPxBeUAhuJ87k71U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CtNg5WIA; arc=fail smtp.client-ip=52.101.61.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uSwdFow5"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CtNg5WIA"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PuAjfRJj9Ld3iEowMdJ6wH0kmU2tq3rDo95hFYa1R18DAiiOm+tCaccpB16c/sPH1wAg9BoGPH/wumuMYcfAt8RG43G0isutdaq0dBit+E3LmypeRU8DjrQ+E/pCcTVlNr/vUpwxyyX3fSAJsZHJzHnZrKluQmvy/T/jC2z5qbgcYr47Z4FqGLPnr+Aum4LqaIWA5zrJv+ploJU6dHjbKZrSusTBFMUAcgozs6HJe8GyO0dMXFeGoXcMDK8/eWDAVOBRF4ZDDlGYKqqznXsmi2GRndo7ZjXKB4180NyEov/ao9XQuum0xkpLHEsIquiseHBIrt7tiaa1oA6P6sYC7Q==
+ b=fa5zPBl2hFiEH4Gf3Hz8Mu/SvPgB2eGVWpA6hwS70aNMH4/vWYVeDfXiv0iQBrLKlVZkaE4WnQmrKg+/qKAFn4UfQpbvPP7JUMaA/2kOXV1l9cX89Pv6r66X2BQdBzzMfS8pbOHGjISd+W+AWYeA8PY+zbmRagNsEvN6OLAGT5CNVUqM1WgQOTNUl0QxqNe7mbJDk1cROUzbbCAfc/j0XuLf+q+DNpl5Wv238YlsrxsfqpRaiW5cXjCEZh1FXlAPixuGrml3uikgjvzgAs3V9vClp6zZHiHpahF61xUdglS9qHyOgkaI9i+FTlz0m4i9YqLA/zOXTAHXoW5i3dAK5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lshk45VekJwsGBStA9zMK4hQFgPGkrAVLnyyDo/IpuE=;
- b=bp8XP3njvFciiMQooz4APpqhGwKr24SWWO0iIq5p5nk3zhUdphRV2YdS3P3qXWySHgDEGkJT1K0SYAJA0qVMu1HIxb32MiXGyaqboWcPCqUQPMQ0slAi6X2smWnPlf8gHIKQ8TcaxXA1FSlZfvEPTE0YNhKlXl1rMBBT3yl5vyFagD/v5ne6KtLmsdfYNAJw9F1G8LgF5HHdOnI8CCmHVNJSgZLq3xvP32r+wzfKmuEB9uAxetZxDV5rgsQPyBNtfPZtfQqrGIfHPiC1IwK9zVvTHwDYzQszh+mVWQAuEPrHZcmeQqRt/Il3xF+Eqt+II4/9SW5/vrst76XC9u+gtw==
+ bh=1+wV/971+I1vejfgNruLMKrvtbrOlGLc0IkaBWJSKZg=;
+ b=QxQznUbMlISdj0L6qt3iYyqwI0efn4aXUGnoqJkG0vCFjIrUXyx8Ac/5D5VLJwAPVfnPr3pANCDdjEnf9fA3RHdTxQhSBTE8UriJE2WaObTjs27Qr65lKNb5m5kE5cSk70bPnki/8RT0SFoc5TSgHRDQ2GYJRS+wXr3XHa+E1QjegDYZ1+RNZyFDaJa9a6QK3MjpeNWARzEWVq4YdTQlNk14vHlSkR4BkGpiQBqJr4C/yyc3xNhd4Om3olFxG5/eu2gi9T/6h3o0f5J+8CDaN81mpGzJgGDwUQjj9qNdKGK1rUVetll2Z3Ee2RHtuNbhDm0ZGbsuqjj8YpfqkyHJkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lshk45VekJwsGBStA9zMK4hQFgPGkrAVLnyyDo/IpuE=;
- b=uSwdFow5i83CB/TcDc5HVSv+FN9qYhrPsPXn9kmabJ9neHDeJu6WYw3XSDxh91b8x1sZe0XFiB+juHw/MYIfWhVB0VNWSyXR1v5UloXi9S9zKJZyYpcDQ6KmLc8oawJf8EURMMfee+BJp/EwDE5RgX1M/NSebIFeV6Ip78g2sTE=
-Received: from BN9PR03CA0909.namprd03.prod.outlook.com (2603:10b6:408:107::14)
- by SA1PR12MB5669.namprd12.prod.outlook.com (2603:10b6:806:237::6) with
+ bh=1+wV/971+I1vejfgNruLMKrvtbrOlGLc0IkaBWJSKZg=;
+ b=CtNg5WIAsyj3YuVdeiy99wnYLmCqeo8hy7R0vm/TCeaquaOi4psXf5R6oKbjYrhFjDQPlK/a/1tYHGWnODgT6Xgh00oY1gr+LnfhK+cQiupDksOvnoq3bsvyI9KE2Kbe3jQ8hPmGN82gfgcqOua82P53k7yiIDLgq6g5wwZjWgw=
+Received: from BN9PR03CA0907.namprd03.prod.outlook.com (2603:10b6:408:107::12)
+ by IA0PR12MB8328.namprd12.prod.outlook.com (2603:10b6:208:3dd::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
- 2026 04:44:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Thu, 1 Oct
+ 2026 04:44:40 +0000
 Received: from BN1PEPF00018548.namprd05.prod.outlook.com
- (2603:10b6:408:107:cafe::8f) by BN9PR03CA0909.outlook.office365.com
- (2603:10b6:408:107::14) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:408:107:cafe::3e) by BN9PR03CA0907.outlook.office365.com
+ (2603:10b6:408:107::12) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.16 via Frontend Transport; Thu, 1
- Oct 2026 04:44:41 +0000
+ Oct 2026 04:44:40 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,11 +50,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BN1PEPF00018548.mail.protection.outlook.com (10.167.248.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 04:44:41 +0000
+ 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 04:44:39 +0000
 Received: from kenya-2231host.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
- 2026 23:44:31 -0500
+ 2026 23:44:19 -0500
 From: Manali Shukla <manali.shukla@amd.com>
 To: <kvm@vger.kernel.org>
 CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
@@ -62,9 +62,9 @@ CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 	<thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Dapeng Mi
 	<dapeng1.mi@linux.intel.com>, Mingwei Zhang <mizhang@google.com>, Jim Mattson
 	<jmattson@google.com>
-Subject: [RFC PATCH 7/7] KVM: SVM: Enable hardware-assisted PMC filtering
-Date: Thu, 1 Oct 2026 04:43:51 +0000
-Message-ID: <20261001044351.50535-8-manali.shukla@amd.com>
+Subject: [RFC PATCH 3/7] KVM: x86/pmu: Clear the hardware PMC filter allow list on filter changes
+Date: Thu, 1 Oct 2026 04:43:47 +0000
+Message-ID: <20261001044351.50535-4-manali.shukla@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261001044351.50535-1-manali.shukla@amd.com>
 References: <20261001044351.50535-1-manali.shukla@amd.com>
@@ -80,169 +80,130 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00018548:EE_|SA1PR12MB5669:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78dce95c-f61f-4deb-6080-08df1f76b510
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018548:EE_|IA0PR12MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ca6388a-6a85-43cd-6b60-08df1f76b437
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700016|23010399003|11063799006|3023799007|10067099003|5023799004|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|23010399003|82310400026|10067099003|56012099006|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	xbo+JqEkQlCvVewD3OVA5igomo7iRb2xZA+2PI8O2mlIzJbFWDxxVF2NFNUfktf+e/f1ALxUtgVnHgnviDGKRSaHefdZyxwBQoO2fsSwOtTSSDsBRzFTzs8/VUUiB/y7vLcB918UTDR8G84uvcxcxFrBAi5ejWvF+zlNPUCpaJE9AEiNFsG16jI85S2R3xgzCs7ekEnkxWdQkIximanSGej+2iffJAQPurq+I1JrRXLB1RlggXgk68SSzaPn+AQmnFP1i9y8fdbxyYopu8kXfUxUzx/cks5Cj/p8O+gv3GmFaV+jqt5cMlqDVujcacK1fEWvYeJmF16eJdjZesyCPttiD10CnctauD3swIZeg9/8JMkxwSz2XYG/wi5kIOXO/0hu+xvYgTwBeXywMn/pspq9tkHkQRpNJqXM8prLsVO+0yJvuF3sZE25LUm0zDLDJsyKlVOslOh6R9maU7M6VrSQrhFHSYZ3UIa1sjD1ax0w6DogQ9OqIoU9TqFlNf9LD7EhvGuoFNzBvMl01NCgQ/S8F4CUGC7iAl69GgXWs+PwE4vKN8j5JSxrhBPQTEUnagVnjgpqhZmmY6H3KQSj8lAAQQAR+5XrZEbnf8bJY35fGg1Bk2KpyBT9eyMneR83m4KtuZgM1bCWrXCwvYkAV6IwihX4m/FucOAT7pU54MJ3b75mZZOws4oAvmjcIBX1
+	Vmr+bzhRsiieFIK+cBIlWzH50OJwFQfjJ58ZWsop/Dr8wrhKPXAoqjgjt4M8sUuHZTEkFPvFEY5k3GQnWSNAXM9w8UmyXqxsjQ29BPvF/fmii5AFAsOQK7X7R4J+KyPq/lmMza0Q/REsJzp/EaQ6RxyqhqqIGJfnmzrnS73ghUHPldAXjackAN9DDgR1MgEyUDWyDcAb9pYxRLzZYHbXEh/t4SWnlyIPBr4Y9xMB/8bTWBxr+6KFUvrtlInCmqcjSsT7Xz+GSeqO4uS4G3pRlOj9iTeydp8qBI58YZU/dxMSIyy6oeggYHrl6TdO4af9tvUr49LjzE0Gz3qdjKxLlpWchC2AoBUsQyd+OR3CidlqAqF+sZtPBHHr5CU3kpbZy8c7ByvHbnv4zcNweKetQR9djDCB6Kcex9+N4bEEmAvwIPbVbJX6RfMh/ivtmqSBFLgc7JwTrV2atCRJhiItSG0sY+oTIbdW1XLzusXecvrt6xiLMNK306cyaoM+7v/L1SIyuIiw72VlfH9tk17HpufoSm96UJTL+QRxuMLql+t/QcJeW1UXOmglMRHuHR6oro1AnMC8SSfw7u+xjE/sMgXwbZZ6zLRxxyM5ZORbTlPvv0Xc/oxlUgjbP8WAtutGTPztU4/TbHC7chLeVxSC/8/CrYNMfSwiIZIL4vYmMs/rrdBXZ8jbNS8VTAujfZpfTvgwOBm3YWOEkSe2wq7Hew==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(23010399003)(11063799006)(3023799007)(10067099003)(5023799004)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ocr7GiniJYUQ7Qqw3BQgbbSBq7sUtfX/rf7K8H+EKn6EhgelQhl0bKBtqL4/ppWrCW03cqxQvSAVZz6PdvgNl6BTKnU1QkeBmE+K+cG1pdoNVyxF5O7k2Xm/LiOUna7hhbwwdLw1tKf23SG83DZhNfUfmO7EUVdYK7hujf125wrtYkxqEa+g2t3j20xHwVM7et3kY71JsiNt9a3kuUoYgTBzGRXFadgp/Cc46T80o2NT1GAH3TxqojgBTwV7zBzYWCeNbV3Qop8oO2JYbF6hVM7b10O8EllH5HvlA0sA0fD3Twuqj9AwO0feQCMu170yBRj/svjZgwqXGmHzh20PVVcUY9urgCSlrd1fxHuuitdaDsfeSJ4ajE14smiA/HOxgjulSVnKe6XHyZZMOcGG7FvZr8jEvar9QlH8EFbpXGFdqruCiRldgPpB9eF8rUJD
+	BJSjiOjjj1JlTG6VC7mgGbw9/Lc0a3YztSKc5r8xEDlJ6I/+XKTMbFc7+r17fqFWIomvt2tbi88O/Z5ljGd72b3hTXp77lBcWJREWjC8pcMrMpFnFF1CGBNQ+S/hiVhf4w4AIwiTs8iap89apekkQcoVoOQtcJtw8zYGj4ldOaZHFKrVzNktPwGfQ8hyVi94lvi6rP7uFI3jnm+fqGcrjzRKTgBjaBkYN91NGyAM9QhC3KzcZeflEqVkGUg5BEqehJdwNqNE51b1Wp363kJ9Do0vjesK4/LILtGfioV9why0dJOJfKUS2sduXe2b+GEhGZ7tnGcu4SrIb6fRalvzuQZi3pvHhLE8allbEb9u1wE6kOCvMeMxceTkaD3gPKYDdqVJt31UeMd/D3UKohZNzHqPWzYJx0HA1A5Rmbwh4JTzVCPYYhsBEAYjQkJWRjfi
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 04:44:41.3828
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 04:44:39.9604
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78dce95c-f61f-4deb-6080-08df1f76b510
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ca6388a-6a85-43cd-6b60-08df1f76b437
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BN1PEPF00018548.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5669
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8328
 
-To enforce the PMU event filter, KVM intercepts every write to the
-guest's event-selects, which is slow for guests that reprogram their
-counters often.  When the CPU supports PMC filtering, pass the
-event-selects through and let hardware enforce the filter, so that the
-guest can reprogram allowed events without a VM-exit.  The userspace ABI
-is unchanged.
+With hardware-assisted PMC filtering, the VMCB holds a list of the
+events KVM has allowed, and the guest can enable those events without
+KVM seeing it.  When userspace changes the PMU event filter, the list
+can still hold events the new filter denies, so the guest could keep
+counting them.
 
-Hardware-assisted PMC filtering doesn't work when PerfCntrGlobalCtl is
-intercepted, so it has to be passed through.  The event-selects are
-passed through only for the counters the guest was given, but
-PerfCntrGlobalCtl can't be intercepted for only some counters, so it and
-the global status MSRs are passed through in full, even to a guest given
-fewer counters.  PerfMon-v1 and legacy guests also no longer get a #GP
-on them.  Such a guest can set the enable bit of a counter it wasn't
-given, but that counter's event-select stays intercepted, so the guest
-still can't use it.
+Clear the list when the filter changes, so that only events the new
+filter allows get added back.  Re-check all counters in the same pass:
+an enabled counter whose event isn't listed would make VMRUN fail, and
+the counters pending re-check may have been picked before the filter
+change was seen.
 
-Nested isn't supported yet: vmcb02 doesn't enable PMC filtering, so L2
-would run with vmcb01's passthrough event-selects unfiltered.  Enable PMC
-filtering only with nested=0.
+SVM implements clear_hw_pmc_allowlist() later in the series.
 
 Signed-off-by: Manali Shukla <manali.shukla@amd.com>
 ---
- arch/x86/kvm/svm/svm.c | 45 ++++++++++++++++++++++++++++++++++++++++++
- arch/x86/kvm/svm/svm.h |  2 ++
- 2 files changed, 47 insertions(+)
+ arch/x86/include/asm/kvm-x86-pmu-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h        |  7 +++++++
+ arch/x86/kvm/pmu.c                     | 16 +++++++++++++++-
+ arch/x86/kvm/pmu.h                     |  1 +
+ 4 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index a892ead12ae22..4d48286faeb50 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -182,6 +182,15 @@ module_param(enable_mediated_pmu, bool, 0444);
- bool vpmc = true;
- module_param(vpmc, bool, 0444);
+diff --git a/arch/x86/include/asm/kvm-x86-pmu-ops.h b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+index 4a617162d4c08..dcec41ad080a4 100644
+--- a/arch/x86/include/asm/kvm-x86-pmu-ops.h
++++ b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+@@ -27,6 +27,7 @@ KVM_X86_PMU_OP_OPTIONAL(cleanup)
+ KVM_X86_PMU_OP_OPTIONAL_RET0(pmc_is_disabled_in_current_mode)
  
-+/*
-+ * TODO: Support nested.  vmcb02 doesn't enable PMC filtering, so L2 could
-+ * program denied events through vmcb01's passthrough event-selects.
-+ */
-+static bool svm_pmc_filter_supported(void)
-+{
-+	return vpmc && !nested && cpu_feature_enabled(X86_FEATURE_PMCFILTER);
-+}
-+
- static bool __ro_after_init svm_gp_erratum_intercept = true;
+ KVM_X86_PMU_OP_OPTIONAL(write_global_ctrl)
++KVM_X86_PMU_OP_OPTIONAL(clear_hw_pmc_allowlist)
+ KVM_X86_PMU_OP(mediated_load)
+ KVM_X86_PMU_OP(mediated_put)
  
- static u8 rsm_ins_bytes[] = "\x0f\xaa";
-@@ -752,6 +761,27 @@ void svm_vcpu_free_msrpm(void *msrpm)
- 	__free_pages(virt_to_page(msrpm), get_order(MSRPM_SIZE));
- }
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 338df11e2a4df..fea7b65e68331 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -628,6 +628,13 @@ struct kvm_pmu {
+ 	 * redundant check before cleanup if guest don't use vPMU at all.
+ 	 */
+ 	u8 event_count;
++
++	/*
++	 * Flush the hardware PMC filter's allow list on the next reprogram, as
++	 * its entries were vetted under conditions that no longer hold, e.g.
++	 * the old PMU event filter.
++	 */
++	bool filter_changed;
+ };
  
-+static void svm_recalc_pmu_filter_msr_intercepts(struct kvm_vcpu *vcpu)
-+{
-+	bool intercept = !kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_FILTERED);
-+	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-+	int i;
-+
-+	for (i = 0; i < AMD64_NUM_COUNTERS; i++)
-+		svm_set_intercept_for_msr(vcpu, MSR_K7_EVNTSEL0 + i, MSR_TYPE_RW,
-+					  intercept || i >= pmu->nr_arch_gp_counters);
-+
-+	/* The F15h alias exists only if the guest has PERFCTR_CORE. */
-+	intercept |= !guest_cpu_cap_has(vcpu, X86_FEATURE_PERFCTR_CORE);
-+	for (i = 0; i < pmu->nr_arch_gp_counters; i++)
-+		svm_set_intercept_for_msr(vcpu, MSR_F15H_PERF_CTL + 2 * i,
-+					  MSR_TYPE_RW, intercept);
-+
-+	for ( ; i < kvm_pmu_cap.num_counters_gp; i++)
-+		svm_enable_intercept_for_msr(vcpu, MSR_F15H_PERF_CTL + 2 * i,
-+					     MSR_TYPE_RW);
-+}
-+
- static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
- {
- 	bool intercept = !kvm_vcpu_has_mediated_pmu(vcpu);
-@@ -776,6 +806,9 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
- 					     MSR_TYPE_RW);
+ struct kvm_pmu_ops;
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 4c918aa6d6f37..7cc72b3863545 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -721,6 +721,17 @@ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu)
+ 	BUILD_BUG_ON(sizeof(bitmap) != sizeof(atomic64_t));
+ 	atomic64_andnot(*(s64 *)bitmap, &pmu->__reprogram_pmi);
  
- 	intercept = kvm_need_perf_global_ctrl_intercept(vcpu);
-+	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_FILTERED))
-+		intercept = false;
-+
- 	svm_set_intercept_for_msr(vcpu, MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
- 				  MSR_TYPE_RW, intercept);
- 	svm_set_intercept_for_msr(vcpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
-@@ -784,6 +817,8 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
- 				  MSR_TYPE_RW, intercept);
- 	svm_set_intercept_for_msr(vcpu, MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET,
- 				  MSR_TYPE_RW, intercept);
-+
-+	svm_recalc_pmu_filter_msr_intercepts(vcpu);
- }
- 
- static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
-@@ -1273,6 +1308,11 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
- 	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
- 		control->misc_ctl2 |= SVM_MISC2_ENABLE_V_PMC;
- 
-+	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_FILTERED)) {
-+		control->misc_ctl2 |= SVM_MISC2_ENABLE_PMC_FILTER;
-+		control->allowed_perf_ctl_mask = SVM_PMC_FILTER_MASK;
++	/*
++	 * Stale allow-list entries would keep matching in hardware, drop them.
++	 * Every enabled counter's event must then be listed again, so re-vet
++	 * all counters, not just the ones pending.
++	 */
++	if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_FILTERED) &&
++	    xchg(&pmu->filter_changed, false)) {
++		kvm_pmu_call(clear_hw_pmc_allowlist)(vcpu);
++		bitmap_copy(bitmap, pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
 +	}
 +
- 	kvm_make_request(KVM_REQ_RECALC_INTERCEPTS, vcpu);
+ 	kvm_for_each_pmc(pmu, pmc, bit, bitmap) {
+ 		/*
+ 		 * If reprogramming fails, e.g. due to contention, re-set the
+@@ -1370,8 +1381,11 @@ int kvm_vm_ioctl_set_pmu_event_filter(struct kvm *kvm, void __user *argp)
+ 	BUILD_BUG_ON(sizeof(((struct kvm_pmu *)0)->reprogram_pmi) >
+ 		     sizeof(((struct kvm_pmu *)0)->__reprogram_pmi));
  
- 	vmcb_mark_all_dirty(vmcb);
-@@ -5332,6 +5372,8 @@ static int svm_vm_init(struct kvm *kvm)
- {
- 	if (vpmc)
- 		kvm_set_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_SWITCHED);
-+	if (svm_pmc_filter_supported())
-+		kvm_set_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_FILTERED);
+-	kvm_for_each_vcpu(i, vcpu, kvm)
++	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		atomic64_set(&vcpu_to_pmu(vcpu)->__reprogram_pmi, -1ull);
++		if (kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_FILTERED))
++			vcpu_to_pmu(vcpu)->filter_changed = true;
++	}
  
- 	sev_vm_init(kvm);
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_PMU);
  
-@@ -5793,6 +5835,9 @@ static __init int svm_hardware_setup(void)
- 	if (vpmc)
- 		pr_info("PMC virtualization supported\n");
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index 42d33072ece90..4a19b806b8480 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -42,6 +42,7 @@ struct kvm_pmu_ops {
+ 	void (*mediated_load)(struct kvm_vcpu *vcpu);
+ 	void (*mediated_put)(struct kvm_vcpu *vcpu);
+ 	void (*write_global_ctrl)(u64 global_ctrl);
++	void (*clear_hw_pmc_allowlist)(struct kvm_vcpu *vcpu);
+ 	int (*get_vendor_state)(struct kvm_vcpu *vcpu, u32 msr);
+ 	int (*set_vendor_state)(struct kvm_vcpu *vcpu, u32 msr);
  
-+	if (svm_pmc_filter_supported())
-+		pr_info("PMC filtering virtualization supported\n");
-+
- 	svm_set_cpu_caps();
- 
- 	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_CD_NW_CLEARED;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 20c00789b2ae0..3a5e9e4ecaa90 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -862,6 +862,8 @@ static inline void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu,
- 	svm_set_intercept_for_msr(vcpu, msr, type, true);
- }
- 
-+#define SVM_PMC_FILTER_MASK	(AMD64_EVENTSEL_EVENT | ARCH_PERFMON_EVENTSEL_UMASK)
-+
- int svm_skip_emulated_instruction(struct kvm_vcpu *vcpu);
- 
- /* nested.c */
 -- 
 2.43.0
 
