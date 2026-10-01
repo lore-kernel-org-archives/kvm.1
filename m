@@ -1,55 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A800551C071;
-	Thu,  1 Oct 2026 14:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93FB5208D3;
+	Thu,  1 Oct 2026 14:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790865600; cv=none; b=RCQm/YhtJNwIaZnEkaMBHgRCJEdrt30CXM/AyffvqrkdM/wFhgU9AlaJQqzDz3DgcZ9+uHf6sBDnvhOwLN47Ie+LrroqdU8SkwxMa+xz/2ez9QrlBjE0uPrOFyIxaBdxpXdvSH7sVOAeKwC6VBhKgIiQAaM4sNGugN4MP93yS/w=
+	t=1790865624; cv=none; b=AZynMgQzz+LMH2lWJfDg4oCcRjSCoi5GR1RpcB6XuAdsu+gXFn9puSYDh8d2bu5auSPg8oxi61/psulWKbK9fatDpAryfkI8+J4LIW2TUdd0hOkPCgbHF7MR38usgFoCaKvDh4tF5/X+8kvfmMyVxoAodJRW3OqBiu3UZ9UZAUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790865600; c=relaxed/simple;
-	bh=bpX6kvOMvsE3smFK0vsqbL4FwySxtPqXwLTy/Yyx7jw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WtWeGMIzmypJOo9Cms5hS3AqOgfDDFDvCRS3qjShac04My/peJaKYSbQQLEqNp0GscIAVTbAFq3eOuc7aJ4Pm/SaQABOeq4YVnMcDuDZY0iJuHp7SboZVLLqGFxtmbe6odvqDAHyUkPIW0zLk1alqd8md9dIStdSFuuSNe4C+WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2Z+ehIT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790865624; c=relaxed/simple;
+	bh=E1InJ2llnSeZQ/eSTl6l3T94mAZ702T9aQ5sBsYQImI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=LJR0K7h9JYOVHB8Qtva7BJ6P/6bviUvwl6/YCuGWK5juqZ1w/CGCjDubrZSC7r1qC5CMUOx7g5oHB71/PaQHTLSTzz8eP2Y9vp26xDsX4t7I3Xx5Ym+zzjYP+JcTivFZfNsynFCj0JHvf3rkzRSvEmSAO0FG5dBQZlodUV/U0gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=sFhzi1ha; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2Z+ehIT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0887B1F000FF;
-	Thu,  1 Oct 2026 14:39:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790865592;
-	bh=zrZF9htcgFwurGelubRw2y+vGDbhNqUEY9ht2zIj3A4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V2Z+ehITLzlytS6ExkwFAUw1ZyPlXGHmYqb/Cog99vNuqHH7pQPa327No2IEMqHlC
-	 m5E+c1ikFUeLWiWJ9GPG/AXvfcFSfre/22sIJj4SCBEQkP6NFamqaySD/BcG6hmUH3
-	 GiapTECNf1vZjqORXdj3e/tOeqC8HWTrCg5OV6lNYZno68RjPomjOqezvBIqn8lBLX
-	 yJtHwR0QH7GZnmdHgm0tVsWrHyfxWr1jmRMbYNSCaxLBpAGAr7ApLvdzr5ztjoEUGs
-	 bMKobLfCan0nCpOaFh1cgBQGqhZuGQXRpW3QVA/6vnSBcJtAiUNfvuxHK90BkTjZLD
-	 ECbfNxiA3pAFw==
-Date: Thu, 1 Oct 2026 15:39:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Grapentin <gra@linux.ibm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>, 
-	Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>, Gautam Gala <ggala@linux.ibm.com>, 
-	Hariharan Mari <hari55@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Hendrik Brueckner <brueckner@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Nico Boehr <nrb@linux.ibm.com>, Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, 
-	Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v9 23/24] KVM: s390: arm64: Implement basic page fault
- handler
-Message-ID: <ar5wJRdtp6dogT6u@gremlin>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
- <20260930173441.66762-24-seiden@linux.ibm.com>
- <e2742ccb-6b91-463c-a148-30b7e2f41e9a@app.fastmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="sFhzi1ha"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 742AA497;
+	Thu,  1 Oct 2026 07:40:09 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F24893F85F;
+	Thu,  1 Oct 2026 07:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790865612; bh=E1InJ2llnSeZQ/eSTl6l3T94mAZ702T9aQ5sBsYQImI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sFhzi1haYixfTtkJw6O9QcZceOSjpOoy7bBBCaqIl0Vb8lOCnR3RyL//lixYP5SMy
+	 K/PUjH0FR0UQ8Y2Y1uLcd3PG3THVRn2Bmz4WQCSt0OJv5oTi+tKtAAltnCi3Hw9oQr
+	 vbfE5tACUd8NnQhOFQxc/Q02iSyR2UGSg2sp231M=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Josh Hilke <jrhilke@google.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Wu Fei <wu.fei9@sanechips.com.cn>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] KVM: selftests: memstress: Add option to enable dirty-ring on VM creation
+Date: Thu,  1 Oct 2026 15:40:01 +0100
+Message-ID: <ar5wwUsGJc2l8r-W@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <ar1TItRR7o789i6_@google.com>
+References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-2-leo.bras@arm.com> <ar1TItRR7o789i6_@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -58,59 +56,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e2742ccb-6b91-463c-a148-30b7e2f41e9a@app.fastmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 01, 2026 at 02:10:06PM +0200, Arnd Bergmann wrote:
-> Hi Steffen,
->
-> [Adding Lorenzo Stoakes to Cc]
->
-> I see this function fails to build on top of linux-next, as the
-> kvm_vcpu_dabt_is_cm() function was removed by commit 18b94675b1fb
-> ("KVM: arm64: Use ESR helpers in guest abort handling").
->
-> I used this patch to make it build, but I'm not sure if this is
-> the correct fix:
->
-> diff --git a/arch/s390/kvm/arm64/mmu.c b/arch/s390/kvm/arm64/mmu.c
-> index 3c1c8a2def73..7ee157c61d70 100644
-> --- a/arch/s390/kvm/arm64/mmu.c
-> +++ b/arch/s390/kvm/arm64/mmu.c
-> @@ -119,6 +119,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->  	write_fault = kvm_s390_cur_gmap_fault_is_write(vcpu);
->  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-> +		unsigned long esr = kvm_vcpu_get_esr(vcpu);
->  		ret = -ENOEXEC;
->  		/*
->  		 * The guest has put either its instructions or its page-tables
-> @@ -143,7 +144,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  		 * Check for a cache maintenance operation. Assume the guest is
->  		 * cautious and skip instruction
->  		 */
-> -		if (kvm_is_error_hva(hva) && kvm_vcpu_dabt_is_cm(vcpu)) {
-> +		if (kvm_is_error_hva(hva) && esr_dabt_is_cm(esr)) {
->  			kvm_incr_pc(vcpu);
->  			ret = 1;
->  			goto out_unlock;
+On Wed, Sep 30, 2026 at 11:21:22AM -0700, Sean Christopherson wrote:
+> On Tue, Sep 29, 2026, Leonardo Bras wrote:
+> > Dirty-ring should be enabled after the VM is created, but before the
+> > creation of any cpu. To to so, add an option on memstress_create_vm() that
+> > takes dirty-ring size, and enables it at the correct moment.
+> > 
+> > This required a new function memstress_vm_create_with_vcpus() to be
+> > created based on the previously used __vm_create_with_vcpus();
+> 
+> Rather than pile on more params, if I ask really nicely, would you rework
+> memstress_create_vm() and friends APIs to take a "struct memstress_params"?
+> Except for dirty_log_page_splitting_test.c, all of the memstress tests already
+> use a struct, i.e. while tedious, it should be straightforward and won't put
+> undue burden on tests (which is why the core VM creation APIs don't take a struct
+> of params).
+> 
+> Then it will be easier to extend memstress in the future, and I suspect the
+> existing code will come out cleaner as well.  E.g. dirty_log_perf_test.c stores
+> nr_vcpus as a global, despite it being fully contained by main() => run_test(),
+> right alongside the test params...
 
-Thanks for the report!
 
-The original function was:
+Hi Sean, thanks for reviewing!
 
-static inline bool kvm_vcpu_dabt_is_cm(const struct kvm_vcpu *vcpu)
-{
-	return !!(kvm_vcpu_get_esr(vcpu) & ESR_ELx_CM);
-}
+Sure, will convert it to use a struct as well :)
 
-And esr_dabt_is_cm() is:
-
-static __always_inline bool esr_dabt_is_cm(unsigned long esr)
-{
-	return esr & ESR_ELx_CM;
-}
-
-So looks good to me at a glance!
-
---
-Cheers, Lorenzo
+Thanks!
+Leo
