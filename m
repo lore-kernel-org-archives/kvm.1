@@ -1,214 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013050.outbound.protection.outlook.com [40.93.201.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F773B6377
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 10:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790849876; cv=none; b=CxjgIpftMa2i/90j8+M8bHsgEAUZMND33iqp1wlsKKe8WpsqTf1QnaTK6ofXw/zUv80eNmN5I8XVrXw5XfbuwipJFCY4Uk1TT3KG1c8rVUoxGOLz7UFDBZ6ARfrOjlUS9k/4KGEvINALpLTLlxZIL1PhFGSQmq9u6kjEdBy1CBs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790849876; c=relaxed/simple;
-	bh=dUdFDVqTzQDPNI8dPEkhLuVWoA942/H4IpUUxhUFDEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXBxG68p56mpMhZleFUX4FSJpotsqPn7bQv12mfrXsc/40xFbul04DnyisBlj+qOrlXCAWMPiLTLGFx/nHcve1U+YMqAA2zX+gcwBM0T1UlG2+15dq+mK27pZXn5BE4sk0hLAtSnheviSX6PnOp2c2P5wlSlkjkHBrDn6palsOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aEMv44Rz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kfDRs1t4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F339A33937F
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 10:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790851423; cv=fail; b=UFZhX1UGRmf71wrbHlyVrBc/XE6unpdZYsGNzYg/BD9sPaAsVUwJehwhKWH61F5g/nc31vHF/dYi4KgHajTRmp2Twj+WGClJ7dVzX/6XNShCdfWvsW4/Z6+oH+8Z0cDkfalO9jusIG6sFgJ2O6coIVmaE1qDIbdoVgvBjNOucS8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790851423; c=relaxed/simple;
+	bh=wQ3+fddBh6rsA7riyeeeiwTMBg1JBfr/PFqUPGUI6TE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BTwD9C5Ngzyzu0NxHNr4KQBMCj9pXcsO3+mMRrlroGfks9aYM5u5a3ohlzh/vx05D2AfpnMwtBppzC5ZoKymOePsIzoPxO+ULvutwN/FRkPYqeM9y0tPu5ZsDju49xCKmfX/cfSJg0Cl7J36C4cZgutgLsA64mLLQuuw9T1RpkQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xh50RLPK; arc=fail smtp.client-ip=40.93.201.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aEMv44Rz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kfDRs1t4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790849874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
-	b=aEMv44RzZ3gJWt43MIhf9sQWi5964CWP6YxrCUPfCDeXhZZLUvuVlR3hl9geYBwc9LQ1yX
-	nSdfWLehAk0+ycnzxWV3e0mEVs1hk3L3o9p4+HmsBUWmmpcuDa+xKDAClJpUev7kV9Avx5
-	r92XOLJ+cNC+amRRMQwX05HYifBl0aU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-bpp5k3ggNGyT49QbPGUezA-1; Thu, 01 Oct 2026 06:17:53 -0400
-X-MC-Unique: bpp5k3ggNGyT49QbPGUezA-1
-X-Mimecast-MFC-AGG-ID: bpp5k3ggNGyT49QbPGUezA_1790849872
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a022fee32fso3571925e9.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 03:17:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790849872; x=1791454672; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
-        b=kfDRs1t4Mf9cSev35efGkQBBMhJVocdinDTSrtNDS4Xz3G7ibGuHvWg26a5pzmk3yS
-         XeeWMnBdi2x0PvmKrrFzsTW9G9LGrAxht/pxY+VEEsb+d5F1hSOy6m2pvfgxQWkFIxza
-         rGTbSLeHsx+zzRMwrff49a01zbi9ju+LOkoj7wg6DY2q1WC68b1CfKhJZbdye7yMhWsq
-         ALLGLiP/Qc0R666fpVhDjYxQcY8rQatjgTy1gqw9rUOdoZfQUN9/uLlCfw8q5wERcvZO
-         7+PcQDOLBMNiMv2CXpOnMKw1J1hlxADunlDltu0JXdTUQ9v/nn8WPxkD+ZP+QsIx04pA
-         SLww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790849872; x=1791454672;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
-        b=YPQQZ0IPfkPeUlAqt+LrROzL62ZvuiZZX+gupFt9S5KpwzdJozP9+w20f1VAOE+sgp
-         4Gv+a0ayWIKbPNf+vAccs3X8rG5zuMGfdVf4NTDL/SoKjaqAmNvy02UVd6XakJnZq4vC
-         n0pmIZru5J5+MlPNdQE4Lwp7Z4LmpNdNQ8tVOhLCxYLphiX9+xBSB0FmeGpC8ph2PSmX
-         WHaJOiNEZmkN1FVcSCZjB0CV/u7KiZZ2/MBpX+D2mVEAu0y4PO7WR1UiZqQCys1Pk/Qa
-         2NbL9UmUkiL7g4OAZgyjeQNpSWLRtHbqZMJBOlAtLXYXxzZYt2guGabsl1MmidBK4i0Y
-         gXAQ==
-X-Forwarded-Encrypted: i=1; AKwUvByb0LlMyit1VVqrbpawY0a7yHnxXG/VUCZsAKAAmvy9Tb3kokq43qUdrnF2w1sDqH7IpLU=@vger.kernel.org
-X-Gm-Message-State: AFuF++mb5s3lt4xxfvN6UWwl7HmytjBkdgGyfW/sWbrCRSYtxgmUXnGK
-	Rc/zMZApHSRV3a1wT5QMCRLH/0Q3I8c+twxhHbaGSYMYoQdrBYz4vcy4grSJrfnWShJD0wnbQ75
-	paGtn25sg+2qbE1oLUeAT4qlY10gkP9Cp0jLCYaXzhtEQk4eyAS2KOg==
-X-Gm-Gg: AYBFou3hEzlpxnPo36UTTVvU7L0PXiS+Tp2wKsMh4p5OBmhShBCCPuLgqlHALqcAa1n
-	Bca07xsN05jglUQzqqKNuOUs+OQJ70ozlB8+FlnbfXI+oiPddKSLYBgId2nCVwcYRksXhD0c+Iz
-	u1P2LrznEwgKXrwDULTfbS0afFUArpeckc577wvUlRFEfxqMgauN+YZWepzJhxZqsVO6cnsFSoV
-	wrVuzHn0zMFrIBPxiG2qKN2Kd0dd/C1s35fbEiLn/LQ9lv/TVssUrd+sr/JcBCrKh4qVpE9EouH
-	J5b8OUSdoRQLULopUo+lE0grOn2LvBu6FM097FiteL8qqt8kWIdx3iAl41Lm3EPU+kYua2HR0bm
-	t
-X-Received: by 2002:a05:600c:a40a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a01b12384emr64731035e9.27.1790849871592;
-        Thu, 01 Oct 2026 03:17:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:a40a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a01b12384emr64730455e9.27.1790849870881;
-        Thu, 01 Oct 2026 03:17:50 -0700 (PDT)
-Received: from sgarzare-redhat ([5.77.112.40])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0690e721sm5651491f8f.20.2026.10.01.03.17.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 03:17:50 -0700 (PDT)
-Date: Thu, 1 Oct 2026 12:17:45 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vhost/vsock: trim nonlinear SKBs to declared payload
- length
-Message-ID: <ar4xDQliGcCQEfSA@sgarzare-redhat>
-References: <20260930044147.3818241-1-4ncienth@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xh50RLPK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l6mmtpK1/IIGxH9bUuOB856fGfshwzqFM63yrSfvESV9QOT9eojrtca7gXZ0RgueY63hm/Dmk5TRTFyzmMG0qxLpYi5GpH65xisXPzCTmxmxlMH7qYR0xVr76WWo3qheqP9EYmMtaoDcmHL3KAjJQTU8d+rO+R+vgQxnql7zEVh24JU3dhFplp7TTNHlCz+Nlg9SKgbwimC3Ttj3SqF3r4jIB1xI0/xqW1TDFnv9/meDNDMLJDMIkOtgdBZNPWot4YqJW8s0LskoGp32+Fu0tWKvYcEv8b1RN/SjonVT5k3wEQZ+aow2E+B2EOiVouo9DsqLQOlV9I38htSVBi9Yrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Nz+12wPx8qP5UxoeU6RETGqNvk5Ep2MIhAAwx8sKkAA=;
+ b=iqR2byjncPM8yAJDPUyu/Te1sNDnffDBp1p6Nn48K4CcgitXCVK2CQNQUtI9lRbcXjQ2xWSQe1GEa7E8OOyeNcQdZFu/83qrvo94ZNKzwZdTmWAYRLOm1x46VdyQEk+T1LsO/YpDXZBQctVyuTRJ9YPYSgeMpVgnquWiyJXNpMTvPk5XogjV3a7szJI50vR+XWgJluHmwS7bx5UqdXzAb7Jw8litdsGXyTGL7OVghsU8cvIdtWeHcrLhOZMrDGkwoBRwaQ9zNaV/qeaSX3Ix0+4HnbDkrA5IOfrZ6pBGReeuDyBUqjRufqcFSIZPugXVPu3VymuNiyy1Vqpj8NOxSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Nz+12wPx8qP5UxoeU6RETGqNvk5Ep2MIhAAwx8sKkAA=;
+ b=xh50RLPKx5q5eZ9rt/20QIQJZNLM4q5x/2K+nM9BhP25qX9UxHpnvKZBsvfIL/tNxrVN4kwqE85q4LyQ2gpNCylTId7mpkKl0GKSwE6KGuqcXBdpIms1Yx/KLvlDe8wAS3qNlKwj0dKAiRGKPl4/OvV618f2zzrB5IlUhaI1mis=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5712.namprd12.prod.outlook.com (2603:10b6:510:1e3::13)
+ by DS2PR12MB9616.namprd12.prod.outlook.com (2603:10b6:8:275::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 1 Oct
+ 2026 10:43:36 +0000
+Received: from PH7PR12MB5712.namprd12.prod.outlook.com
+ ([fe80::afe1:7dd0:ea71:b7e7]) by PH7PR12MB5712.namprd12.prod.outlook.com
+ ([fe80::afe1:7dd0:ea71:b7e7%4]) with mapi id 15.21.0472.015; Thu, 1 Oct 2026
+ 10:43:36 +0000
+Message-ID: <6ee6f858-37f6-4acb-8253-acd3cec584ad@amd.com>
+Date: Thu, 1 Oct 2026 16:13:26 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/7] target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu"
+ is configured
+To: Michael Tokarev <mjt@tls.msk.ru>, Dongli Zhang <dongli.zhang@oracle.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+ groug@kaod.org, khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+ den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com
+References: <20251230074354.88958-1-dongli.zhang@oracle.com>
+ <20251230074354.88958-2-dongli.zhang@oracle.com>
+ <81a1f791-37ef-4d26-bcf7-024eab4cd810@tls.msk.ru>
+ <fa8b40df-a35c-4ae3-8eaa-b4b65c546a91@amd.com>
+ <18ff5158-a515-4659-8388-5bcc074afb94@tls.msk.ru>
+Content-Language: en-US
+From: Sandipan Das <sandipan.das@amd.com>
+In-Reply-To: <18ff5158-a515-4659-8388-5bcc074afb94@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5PR01CA0039.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d6::12) To PH7PR12MB5712.namprd12.prod.outlook.com
+ (2603:10b6:510:1e3::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260930044147.3818241-1-4ncienth@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5712:EE_|DS2PR12MB9616:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e4ecd86-2169-4134-6af3-08df1fa8d8c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|10067099003|56012099006|4143699003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	bosfeqdYBOfixkNe/llq58p8aBRzTkwj+9AGgIoW4acHE7k7GWPk4rMBVhV1CbDyQZiSBbWae1XpZ2TvqbN9+gSFxhSI9RxCthIcKBltAUmh6XkNBi3MYP6WFlOjY4Wz8kw69tEkMmWT4mERmT2OxKGgxLZIuTZbd+Q+VwaSLeewz32NJ8fUcCxYv4HpbRb3UaCdetd1K/wE/BTaua7AyQ1lG3XLteIaUDUcrzkDB1KJBZIztYAu2Gvr/87JyaT6xXj3RqHpPpO23rvPEXJ39sghy40ZEDgdKHSGLRICJBFncuBlhv3lB6SupekDP56Fi3lCAF9ufKt5ZG/s26SGsnwirFM+Ofk7U4uPLXJeUTZMVGqGOl901zIKyCvz3WNrrCNchxtdE9qhJ4awDkpn5UAvsmeMqAkdXpsugtiTzUoZ6BFnv4uF+vDZ2ldVGD0Pt0IQyd/cHUj4Yjwi5Y/EyiyFL+0sRVf2x+1171c/Z39uxQK/C3znGqfxd44Dpk1hMdQlXRMJZa0dFr6sYAV5/Jcqr4Z0ZySbOKItB1qlEv3bTOg9ty8QWcyNLfQA/YkEgwPbfVxclS0LckVXuNLvH/1tXNT8Nb8oATIJKN62p1FAp5jDSFM8T64kNt400nu5
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5712.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V1A2UGJwYllreHQvNGc4b3RYSG5JWVhXMG14eVJLRzFaRTMrNk5DNXBsbTRX?=
+ =?utf-8?B?NGxOTXlwcmtMWW8wMVBnanZrcmVueXJ3ZnVrdFBVT1BtY2JKOVZsTXh3dEdh?=
+ =?utf-8?B?QXRKaWVTQnVneGFQUktwR09nbnllR3RQWStiTmVTNmtMUkZGdTFpQW9vZFM4?=
+ =?utf-8?B?OHZaUVFlTVVmeVhZZmVLVUtGZUc5WlRuQ2RwcnVDUWhtQ1FyUFZLMUFjaVFz?=
+ =?utf-8?B?OThrS2FWRktUcnBFYWFLVzZGRHpJTWJ5WjNsdHl1RUVscDZ3c29KU2QzcWRv?=
+ =?utf-8?B?T0s1eDlwa2VzazYwcUI4M2hvYzd0Nks0UXpUY3hvdnU5VThvVDJTcm1URVpU?=
+ =?utf-8?B?ZWFwOHRpbDVvbW9WQnRZbkRpNGh1bVF1QUU1VVZQT2ErSDJzdmVvaUl0Wmto?=
+ =?utf-8?B?bHI0STNacEc3dkJ5dFZleTR0WE5pS0w5SEdxdFFiVmdkWDdQQVduR2U4RUh6?=
+ =?utf-8?B?ek90ekZOMENXSGNibG9HcGU0Z1VKWlQ2R1gra2lxZ1NSdGp3MkpOdkZnVVZt?=
+ =?utf-8?B?NHFNUTVWRWFmSWRQWFVodEpnN1lmTGVhSFh5UERWdk92WWEzQ3c1VXdrWkVD?=
+ =?utf-8?B?eVZGbmVMVkZwNEYzdWJTZ3IzQlYxVHZaa1EwREo5VW9pZVJ2aWxPbndWSHBO?=
+ =?utf-8?B?dUJ6Z3B1YklwS3pOUjRQK2xiY2xwK1U1dzFSL1piWDJFR3Exbi9tRkxWNTVC?=
+ =?utf-8?B?V3h5eWhnYVNsNkFkVmQvOGJaZk5VY0JqT0E0SEZCVHFqWHdSa0dYRCs5S2Rl?=
+ =?utf-8?B?ZDNWbUV2R2pxOTNCQmlSc1VydlZ5MVlRK1FmWEhNVTZWbHh1TzJ2VWZBbnox?=
+ =?utf-8?B?QlJISEZpOHhrSkNxblR1MFZqNTUzNytCUGMvYmRxTTNBTWhLdGQxeSszZU1i?=
+ =?utf-8?B?bzBEd0VmNzNGK1VnYkdwcG9ubm54cnJzVk5oSUZMNGhucEZiVlRWT2hpci9j?=
+ =?utf-8?B?SVRob2M0eWF0TGVNcFRIVHVYRlFNV2RGdTEwNjMyUnNSMUdwNWIzcWQ2aW1T?=
+ =?utf-8?B?aEJ4SXUxbldzWXk4SUI1VXBtbnBuOWgrL1l6VFloL2ppTWVrL3VWcUtLbTR3?=
+ =?utf-8?B?bXY4MW4rWmJibEJZdThnL1didDErL3hBOVlCU2h2d2VrTDRZQzRTZmNDbjNy?=
+ =?utf-8?B?eEFmbUJEQXByVXJnMGJmY3NOM1I2TkxNa0k3K28wRlUxb0dDdmVSWkVid3NK?=
+ =?utf-8?B?M3NzbTErbGZQYU12bHRVYjhMUmNkcUh4eWs1eGN0aDNad0pnSVdMditZVzlW?=
+ =?utf-8?B?Rk5aMWpPanpjaVRGcmM1UHBMVjdkZE1QeXJYTGdSeDRCUnVWUGt2MnY0U09l?=
+ =?utf-8?B?cHp2T2xscGc0Rmw0VXZWN014S2xOdk9MWW1DTS8rOTJ0M2tMUDBxWGZkTWNq?=
+ =?utf-8?B?SGhmWGlHbWQ4Y1dWcXhGWUdiMzhKWjlxQ1VoNmRlOUpCdmVUQVJzaFlkUjBs?=
+ =?utf-8?B?RjdTM0lpOEtqMWVwN1orTTZxaWRjVWV4ZnFIVlhMZGUzMGhpQWlINWh2Y1lJ?=
+ =?utf-8?B?ZnZxNHlnVHptTG50VTRaZWpzZTRrRDJuWXAwL25KSVhBVXA0c0FYUGhmT2pC?=
+ =?utf-8?B?Rk1KdkloamhRblc2Mk92ZC9MVWhyOFpkUFJmNmRzeTI0MWpZd1dTaGZsSGti?=
+ =?utf-8?B?SE9HdDVSYWFqbHJMd0FpODh5SVZUaEtOY3VBZjEwQ0FJTVdzN04xaDFLMHBj?=
+ =?utf-8?B?S3VZbVZ1bW5obDF3TE1yQUdvZU1IMzBWU3kzUkN5bU1XMUNhK2s2aGY0d2Zq?=
+ =?utf-8?B?cnliRW1od1NBWGtGS09qUlBuS1NyTndUQnBEMm9ta05aME1ORVVIRmxseXVR?=
+ =?utf-8?B?SGtxQm9WQXl4dFhlQmVjV0FCUkY4VXhwUG9RbzYwQ0tNcWtWSFVEbE00SEtk?=
+ =?utf-8?B?WEt3amtadEpiMjh3VTJ5YisxMjBmVlRZQU83eXJBQ2VhUVNpRCtlN2JzV2x3?=
+ =?utf-8?B?N0dLZHJ6N3AvenMydFJxL3ZlUU8xWW9Db0NqNWlnL1ZWUC9VVTdDTHJwdmRM?=
+ =?utf-8?B?cCtuZU9BRzY2dDFUdzljU2NjMmpWS2d6Qmk1TWdZSlBnTm1OdllZZEUzbTNx?=
+ =?utf-8?B?SmdGSUVwd3VTczB5d0xmVWpvODYyQVU2bXJSV1ZWcnBoNFEwMGs1WlRDVTJk?=
+ =?utf-8?B?ZiswOUNYQVdLQkhkTVBCWE8yUzdUdlhDeFduYUsyYmVjMmpOR08yYWtlM3N5?=
+ =?utf-8?B?MjIySFV1bTBhdy8xMHpvVEVSSzluQjJLSDZLRml0Y24xREpueUJESStXS0x4?=
+ =?utf-8?B?VSszRHgvQkM4V2tLWHNVVmZKaFFlYk5WR04zZXNvVVVRR01IQmNJemVCaG9I?=
+ =?utf-8?Q?UCVs2zEQfRzniVi8el?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e4ecd86-2169-4134-6af3-08df1fa8d8c2
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5712.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 10:43:36.2776
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IlvrkAlTd/XpEw5XLx5iaaBKRqMmmVYDh1JIsY7+2d6+foZxx0HUJOWMwi+fn0mHOVvQx564uvHPeHcXQIyYeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9616
 
-+Cc Will that touched this code recently
-
-On Wed, Sep 30, 2026 at 01:41:45PM +0900, Daehyeon Ko wrote:
->vhost_vsock_alloc_skb() sizes its skb from the total guest descriptor
->length, while virtio_vsock_hdr.len independently declares the payload
->length.  Since commit ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs
->for handling large receive buffers"), large descriptors use skb fragments.
->
->virtio_vsock_skb_put() currently changes only skb->len for a nonlinear
->skb, leaving skb->data_len and all fragments attached.  The zero-payload
->fast path skips the helper entirely.  A guest can therefore retain the
->full descriptor allocation while receive credit accounts no payload.
->
->On Linux v7.2, 455 zero-payload skbs retained 30,255,680 bytes on a
->256 KiB receive buffer while rx_bytes and buf_used remained zero.  A
->full-payload control retained 265,984 bytes in four skbs.  The existing
->SKB_TRUESIZE(0) queue budget caps skb count but does not account for these
->descriptor-sized fragments.
->
->Set skb->len to the fragment length before calling pskb_trim(), then trim
->to the declared payload length.  This releases unused fragments and lets
->skb_condense() reduce truesize.  Move the zero-payload return after the
->helper so zero-length packets are trimmed too.
->
->These skbs are newly allocated, unique, and have no frag_list, so the trim
->does not enter an allocation-bearing path.  Keep a warning for a violated
->caller contract.
->
->The fixed v7.2 image left a one-byte skb with no fragments and reduced
->the zero-payload queue to one 960-byte skb.  The build had no compiler
->warnings, and the run had no sanitizer, WARN, oops, or panic findings.
-
-I think this is a requirement for every patch sent, no?
-Why putting in the commit message?
-
->
->Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
->Cc: stable@vger.kernel.org
->Assisted-by: LLM
->Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
->---
->Required configuration is CONFIG_VSOCKETS, CONFIG_VIRTIO_VSOCKETS_COMMON,
->and CONFIG_VHOST_VSOCK.
->
->The source reproducer is available privately to maintainers and is
->omitted from this public AI-assisted report. It exercises the real
->allocation helper and VSOCK receive queue from an in-kernel module, not
->a live guest virtqueue. Guest control is source-confirmed, but live guest
->end-to-end validation and deliberate host OOM were not performed. No KASAN
->splat is expected or claimed; the oracle is retained truesize and receive
->credit state above.
->
-> drivers/vhost/vsock.c        | 6 ++----
-> include/linux/virtio_vsock.h | 9 ++++++---
-> 2 files changed, 8 insertions(+), 7 deletions(-)
->
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index abed1fbcf66c..fa59456abda9 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -400,10 +400,6 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
->
-> 	payload_len = le32_to_cpu(hdr->len);
->
->-	/* No payload */
->-	if (!payload_len)
->-		return skb;
->-
-> 	/* The pkt is too big or the length in the header is invalid */
-> 	if (payload_len + sizeof(*hdr) > len) {
-> 		kfree_skb(skb);
->@@ -411,6 +407,8 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
-> 	}
->
-> 	virtio_vsock_skb_put(skb, payload_len);
->+	if (!payload_len)
->+		return skb;
->
-> 	if (skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)) {
-> 		vq_err(vq, "Failed to copy %zu byte payload\n", payload_len);
->diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->index f91704731057..31358683e23e 100644
->--- a/include/linux/virtio_vsock.h
->+++ b/include/linux/virtio_vsock.h
->@@ -51,10 +51,13 @@ static inline void virtio_vsock_skb_put(struct sk_buff *skb, u32 len)
-> {
-> 	DEBUG_NET_WARN_ON_ONCE(skb->len);
->
->-	if (skb_is_nonlinear(skb))
->-		skb->len = len;
->-	else
->+	if (skb_is_nonlinear(skb)) {
-
-Would be nice to have a comment here to explain better the reason we are 
-doing this.
-
-Thanks,
-Stefano
-
->+		skb->len = skb->data_len;
->+		if (WARN_ON_ONCE(pskb_trim(skb, len)))
->+			return;
->+	} else {
-> 		skb_put(skb, len);
->+	}
-> }
->
-> static inline struct sk_buff *
->
->base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
->-- 
->2.55.0
->
-
+On 01-10-2026 15:30, Michael Tokarev wrote:
+> On 10/1/26 11:54, Sandipan Das wrote:
+>> On 01-10-2026 14:02, Michael Tokarev wrote:
+> ...
+> 
+>>> When booting windows11 VM with -cpu EPYC-Rome-v4 -enable-kvm, the
+>>> guest enters tight CPU loop while displaying a boot screen, before
+>>> it starts showing up the rotating circle (which shows boot progress).
+> 
+> 
+>> What happens if you use "-cpu EPYC-Rome-v4,+pmu"?
+> 
+> With that, it boots fine, just like before this patch.
+> I checked current master too - same, +pmu fixes it.
+> 
+A guest OS cannot expect a functioning PMU if the hypervisor has disabled
+it. Linux runs a basic sanity test to determine this. See:
+https://github.com/torvalds/linux/blob/master/arch/x86/events/core.c#L268
