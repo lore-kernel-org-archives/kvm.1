@@ -1,100 +1,113 @@
-Received: from mail-pj2-f38.google.com (mail-pj2-f38.google.com [74.125.227.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E52522EE6
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 14:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067E3B2FDF;
+	Thu,  1 Oct 2026 14:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790865162; cv=none; b=U+cAiZ8tE/Q9/LrxeT0tRGueW88N05gcKmEoIfFldeL9t36YkVWkn19ES2VmbCPNFFEr8+Oz8ZTCGMobSbTf4aN7sPlkvjxpNO4yyb2xrf80RKG3JzI9jhv6v5rIxQn33XhlnDJUZKS5RfsPFR1Ams21gZPGp5/Kr0gttpI7aQQ=
+	t=1790865402; cv=none; b=Cr/JbnQLYXOnE8N8wAp6grkXw/d5VL0q2Oy6vhvB+oY1KZy7Y6caE88vwC3URZad4IlEr6W1gO8yzax+zxMjyC/7uTJfdB5vRS4uRorgCGYX0/6ZJ2kEXCFG98g2+1N6h0gwy/vtC5fhQG5RLfKDIbdjKWwtZrqej/Xl3d7a/08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790865162; c=relaxed/simple;
-	bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fm+Ry+xmy9NCLrsbc1gt6y7GCr0MS9QeZHsKZkxkDsyKfUWZCV/l55QbvCZ/xu5Pb7hlkIH/bmr2PX34r4S8DrGXOo3DHxXL1BeQ8Di+ZPi2GZP1vWuor6WCrrE7njlVXyz9mBzNltFurWNgHM1xprPwZtUfOy/0Q1IAfwfVnAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsZn1cOs; arc=none smtp.client-ip=74.125.227.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790865402; c=relaxed/simple;
+	bh=2kxmO6iReapZ9oKKYWiYUJYQSMUSU1Lhiqom05w8dw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kGuek9lkqkzz6+4zJ97jR55NAVWwAnBCxKDBOPQVZV30wcFGYCep7lFnUUXZKfCtykLcfrJYr/Ddr8TYc6F0yjNXT9tFaS3cikddjkhns4Y35lratQEZG9dq6lo5ndZaJnXGuOTlSMt5DtDh47FzbYIu46Mpj4fXnk/bf4ELiJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRA3ndmu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsZn1cOs"
-Received: by mail-pj2-f38.google.com with SMTP id 98e67ed59e1d1-3a4c0da0145so1175495a91.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 07:32:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790865155; x=1791469955; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
-        b=QsZn1cOsGW9gJSBEr3AUiFhi6dDv+lG34xs3Mef8LiBafeYJX+skrBT1NBhIXQBHYU
-         jj6xuMT2tnJjwDESvv86Uw/zRnqEpEafJoeH2K+xv1hper6uzTKGj1f4bL6FcCpfTGd0
-         EvmA2hfwBKytksucyYSD16iM6S8wtFJL25V5FkbDM+tHGtKJRt/slN7TnmiqxYxjtEwe
-         Aroktd7xX0WaeBpkrdLqQNtC1matuazrPpiMuSAnxk5rAWXCrHCszGKMOSI6IAY6ra5g
-         vwnLdPqafMdKVpNxDJ8dtR6+BvmPgvh1Gx/E7/CEG7/YHPzbVreCoEpLY9HVmGM1uoZb
-         z+dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790865155; x=1791469955;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
-        b=y0S8Gkb0PP7bFncr57hniouIvMlchXrLvfTj9f5JTVjDz+/AApRikRksptUJyUbY5z
-         Jog4iBMF7ESl381A/AtuKPOiJSVUJDgxNgEpFemgpvBZ409UOynVBSQ+C2JCpuRReV7Z
-         WT1g2xYSbnbXz3Cj8c/hXK/m5n6zWJcNwpLOqB9zmT1IOkZWFz5UfNFKhnwdoeUklKzh
-         S84X4Q5qbmnStfslJS0G+vLoMLmrosJXqRK8C0Ob4Pf7T/nZLYM3DcmlxHeEYcyBx+yJ
-         cDo/XK20tXy5KvDJC+lWnkvypSbQtsZQAJPlsOmWgQM9dHp8T708bZTbH1h+yULb6/ZO
-         BCSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxql00ziZ/9f1rMEvhoM29wtQq+hKe59lPzcz8A2mzc6HDXXU/zdWSLnrmuqNwvYZTErGI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLsEcGAMRnEM1eBlCg5F8dT4Z+6JVetWtpFZSKEHmrI72omQ6Oa
-	+bzo8mwuvPsGpGuvDnnyR17cTgw9BzWqkMl3GcAMLNk74V5ToHwDnxaN
-X-Gm-Gg: AYBFou0GXXxFDyQPlgk8LhxTze/WqY9w7oNy+yXeueZwj4OBVTDNope1nWN6cTrwEqR
-	FvKXYDYaMlDOyyf6QWZ8yibCPCXmW6qOF1ET0H3tlFkp5zPEY8/pU+jJBjCyu/gpwGvAiUNZWgG
-	551uF87edsmW0+gOwOpNfhs9GwwxmbFDQdvn09Hzw/IJTw3bpn7DV1ajKSu569BAQDcoasmX3nO
-	jna3OF5A0rjE++1fv4oqS//Lha5vxKQ+r1hXIafJtJfwYjdX9DwrfFjIwvIG+STYK1+dK3IPDx9
-	xrypBgiNfHBgTDig6R+0od1IUGulNhsBMv39O3sLpyNq+ZDFt4BfKcGkBPEHokPsS7EnuslonQj
-	uOMhVeiEKYM0rAY8YgXE2NuG25WydOmRqgwxEU2ayBisCPzcZBG/Q6b64IzGPIu7HCB02Gvt3T0
-	gcz1o8FZ4AGTXWo7KSdIHyauEd11Ohj/SE12opl9dhT86qruMszUWXBLKEGHUkpzDYF60xxvDXR
-	kK3BwZ0VIM=
-X-Received: by 2002:a17:90b:2b44:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-3a4d1509d61mr3979683a91.18.1790865155377;
-        Thu, 01 Oct 2026 07:32:35 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f478e750sm4964487a91.13.2026.10.01.07.32.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 07:32:34 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
-Date: Thu,  1 Oct 2026 23:32:21 +0900
-Message-ID: <20261001143221.3856511-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <179085716831.31693.13222203434770065965@kernel.org>
-References: <20261001121541.2983379-1-4ncienth@gmail.com> <179085716831.31693.13222203434770065965@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRA3ndmu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731E11F000FF;
+	Thu,  1 Oct 2026 14:36:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790865397;
+	bh=KqppwbTyT6zkR1AvrZPfMSRvNskOl/Jz4/VeCTg9S+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oRA3ndmuic8x5tRK8Thog7048p9/0q1/4fqTgxaNdxfq2ksuOlOiYGYor6Edw5mFh
+	 gbvysr6lqUVRtSROKKKFcydrUR4RABYSu2qIUBBNEEbKqM1p2z4uKUQHArX06X3jJ6
+	 MFbDk23qOyANQ6TQq68cZYSKJCPBFnzLFV0R9ES5BRxzev1bjVfOz5tZBV3AqnGJ37
+	 AkHkZPtEfhJU+WU+tWgk2Ug6+d9PXdoDBnZtKaMRNnQvgc6gOh6WzgQGIsnMGG8vih
+	 oR/uj2xdHGU8jqPDFk+wEZo3O+KuG2Q9D4/q3JeXQmQSYTJfy5KRO6vlq6A7UTzpMB
+	 O/3vpWAUJQPVQ==
+Date: Thu, 1 Oct 2026 15:36:26 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Grapentin <gra@linux.ibm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>, 
+	Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>, Gautam Gala <ggala@linux.ibm.com>, 
+	Hariharan Mari <hari55@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Hendrik Brueckner <brueckner@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>, 
+	Nico Boehr <nrb@linux.ibm.com>, Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, 
+	Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v9 23/24] KVM: s390: arm64: Implement basic page fault
+ handler
+Message-ID: <ar5udQI9qDAtYrGi@gremlin>
+References: <20260930173441.66762-1-seiden@linux.ibm.com>
+ <20260930173441.66762-24-seiden@linux.ibm.com>
+ <e2742ccb-6b91-463c-a148-30b7e2f41e9a@app.fastmail.com>
+ <e1569c6e-94df-4609-8d94-d6319b4171cf@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e1569c6e-94df-4609-8d94-d6319b4171cf@app.fastmail.com>
 
-Thanks. I found this during an LLM-assisted manual source audit of VSOCK
-receive accounting while re-evaluating virtio_transport_read_skb() after
-CVE-2024-50169. I then confirmed it on vulnerable and fixed kernels using a
-connected CID_LOCAL stream and a real SK_SKB/SOCKMAP verdict path.
+On Thu, Oct 01, 2026 at 03:35:37PM +0200, Arnd Bergmann wrote:
+> Another ones: after 34cfa9b3af17 ("KVM: arm64: Implement
+> KVM_PRE_FAULT_MEMORY"), we are now missing a kvm_arch_pre_fault_allowed()
+> definition in arch/s390/kvm/arm64/mmu.c:
+>
+> ERROR: modpost: arch/s390/kvm/arm64/kvm-arm64.ko: symbol 'kvm_arch_pre_fault_allowed' undefined!
+>
+> I copied the arm64 version without the pkvm reference to make it
+> build for me.
+>
+>      Arnd
+>
+> diff --git a/arch/s390/kvm/arm64/mmu.c b/arch/s390/kvm/arm64/mmu.c
+> index 7ee157c61d70..be16351acaae 100644
+> --- a/arch/s390/kvm/arm64/mmu.c
+> +++ b/arch/s390/kvm/arm64/mmu.c
+> @@ -179,6 +179,14 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  	return ret;
+>  }
+>
+> +int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+> +{
+> +	if (!kvm_vcpu_initialized(vcpu))
+> +		return -ENOEXEC;
+> +
+> +	return 0;
+> +}
+> +
 
-Thanks,
-Daehyeon
+Ah the s390 <-> kvm emulation stuff.
+
+Yep if it's meant to behave like arm64 then that should be correct.
+
+It's odd to me that pre-faulting was not previously implemented for actual-arm64
+but was added as part of the virtualised s390/arm64 thing automatically :)
+
+Not sure if this implementation requires what s390 does with:
+
++int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
++{
++       if (kvm_is_ucontrol(vcpu->kvm))
++               return -EINVAL;
++
++       return 0;
++}
+
+Or both conditions? One for the s390 guys.
+
+--
+Cheers, Lorenzo
