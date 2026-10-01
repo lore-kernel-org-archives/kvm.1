@@ -1,227 +1,140 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A0A3C3C0F
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 21:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5E12DF128
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 21:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790890726; cv=none; b=TxjlLbceO3ArQ5j4U7DWem97XBSZSKnheUiwZS80bNezyXSFwq7VuhZt/hvmPT9oxKjB2fUMPyzciKwDVQm+JAJI2GWhvMG383eIBKPw0h7OtmZso0KAxE7HpbG7JnhymB0xvh0kA72V7CoWsZO+UhajJ81+D9+1ch18gdBCsaM=
+	t=1790890911; cv=none; b=bt9o9yDK1F+VuYYqT19xu1X0GIbTXGmzOef1gFbfTFRxk6lSR8clcUAyOPpI1rNT8Hb9Vtuvfu7J0Pp02AQd0AYuQbSpqhObGVKvJbI+fMRiq8Xo8aHwRZKPFEadh7DkXfATeoA4ZgXiQwPr4nVz2gjBWRGmz381SMW3SzQhY+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790890726; c=relaxed/simple;
-	bh=A3Kob3V4Yu3iHrD9Ak0AoUPAtSE9doe/SGvyKrqKS04=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QG8tqIAgCx3XkKSr3DhOpHmSGvpySO7JoNpFiKk9/CiWTUTKfYom019Jmslg2xzt+rMQhu27jEkvLwCWZa9h8rZseMcMMs5kHl8hO/Vo3JhlS5yJ6tP7N61oyDlG+DFtbSC3PPmR47aYS3qqnYxl1RkDbD7NjKW8PR2FhO4/mno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=No80NpFh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BfTPewuI; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1790890911; c=relaxed/simple;
+	bh=fPmxCx4qpK2t/MvuNp/xRsfzossr1PfbTfKiv5o2cf8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T7dk0pgrSetzho2wjYRO7HVI2flgz8o3s3lrSL9b+G+IHFtp6G+8vaVkqvKiUfSBWzN9rM1fTQ01KZf22GzHF0rIv0Vy6QT3ddEOPMVoSTAlr4NzFm9h/p6UUQ75ilVdFJWSagtXZQuhnK43RC4L3+ms0vi/bW1qkyzsjHK4zPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RX++VI9A; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rjOxJ8dO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="No80NpFh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BfTPewuI"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 017A77A0140
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 17:38:42 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 17:38:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790890719;
-	 x=1790977119; bh=foKCvGIwn36eZyqZp/q9QEf+xEnfIfo5MgV4pCykpWw=; b=
-	No80NpFh9VtJzEPjVzH6YjHk/JHyrKah20k7zCtEejB1VI8Ls9wpDybxcKJ1HQ01
-	pFfAGh6RxSB6ujy81M8t2rLnFBzgf4nGCOK779mWtNG4WfN3ZdVypjuox5TM/Qim
-	Xv/W8uBxFn1HoFp33BeYhidJhO7Eu+0i8v6uWL7S+a+OfKE07V/HUKd+BT+a4Aow
-	PH7kTvz5u3LW0AME/XXhlOkcl52xs6AepBcM9DxzyXelSDLfraFym55q+nIdL6jM
-	jK23jRVT1ozskGTx5zHa03bFEAZts27RHKJk/MRezvBg9aUN3i1NFoX9K5hb8+xt
-	yQv3p4TdGxCguqGIVukPGg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790890719; x=
-	1790977119; bh=foKCvGIwn36eZyqZp/q9QEf+xEnfIfo5MgV4pCykpWw=; b=B
-	fTPewuI9zRNqULFSWOmlXCr6FMXqvafnYUeXrZu13Cosbsm4gu2mZ928ir2BW6fI
-	pdsweg0x7chGqPO4O9x58lbhcO6fr3hgPdL+VY0LMvJecX2v+1ToA8dZsaXXJz+m
-	ffvL4CUvM71yT+Mk5YFPOBw2+zN75SVw3X8KgvbWn5NItZppvPOM3NvtirrD+YTC
-	dgRrn3wvrTLBzggOQpo3dEeLobMocY+mcDeCAIt2mSY+FFHmyxZ22z6AG4MO/m1+
-	DCwDAckefc2w3ELV9bp/TqBuXf5nGGidnpJHKbhdyQtMt/VKHZ2uqFf4dSA5es0Y
-	7I82cPIXckdfC+5RfKxjA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790890719; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:m/1nNkkMBDYMVKs1u1ODuskQaiRnaqDKJ8Mg+13aA4iq+c8
-	tAa7evgJH9Ye6iURsuIgqUNDAiNYwNCPb1rGWpMdfPodh6q0rUbssLyN5JS97/d5
-	ICppXAmCf/n4bTC0w6ITZzxeoj4AVRlsjb6IGLKb3Evf3DzCUkjHEvXKKd3Blci9
-	RcDkn5gaJFDBXHnoLDEqk1Rppfbh2E7ELQdpwPc4EdSN9b5zN2dE6cjtfWRbQhJH
-	pMSs8HchM/Vav3lTWJOMizwtNPG/W0lInYGfYBtAW9erWV1hxuA+57DdEn6AR4x1
-	966qbhZvk47hiRtbHS1UQ1EKtCmxDS7efME7aGg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:nmZX/2Jo9x6oEAom8tVOzN6xUvhAb+27SXfcDDazOMk=:A3Kob3V4Yu3iHrD9Ak0AoUPAtSE9doe/SGvyKrqKS04=;
-X-ME-Sender: <xms:3tK-ahLuGtB7ifDqzbCX8YvLK1FqDI5SnD1y-Fbg6XSYqCKjwKbsew>
-    <xme:3tK-amN_YjvdXPgjoEtLNaEF-IbqN8WQHubA0KGMlYj7mMN-bz_MAjZVtgmmvAgr8
-    8w9GMFuoUDfcP7Ai4gDLnz9912R9JLg-Jxf6BhhoHQIKs--S-sU-Q>
-X-ME-Received: <xmr:3tK-aiyMExU9nP8QcP9Iw876aPvs7PgS-IGXJW-h60HlySoIampFBX4-0Q545A>
-X-ME-Proxy-Cause: dmFkZTGH7Rp125fuiTBE0ZthBe9aERn5bLSNSBdrsSiiYO3UBnkmLsJVXBmJQepqh/shKm
-    +5cqXfcLVfT1zhRzeZ8fhTajDsOs6e+PLlMZQGpC0Y6MdxvdjHAv4K604xkJoTVV9fYqC1
-    mmtNH9CdK6jEua7RIMtBR2PbpBVqLP+1nsR9xjHN+LaP0ypBSQSMFZSSDzbjd3gJGwYwqQ
-    2Bl2O02m0MFuZr7V6XeXMiFcYaFMklhVwkqNqMyeQ4JVgv4YG4RX2A77VLwMEIn3dYNqo3
-    uRrz48p8tZMZWGkBWiEvtlJLArr3o9I3ZcT0S/kzDV7jVehDt/MgUTe1HQlsPUbHRVimlL
-    1EuaWlSCgYvwTo0JUoRcivblyxEsheGLQ69Q6XIqgXkrm95QhVoWAUu2pt6mhsnEVVIBj1
-    8fQ9GoGP7UDobsWtDOhqLHtTryltwXmgSjASkKekXQ5U4MnmhvkWAak3A4/k6R15emG6tu
-    mtrpHTb5Ei2AKxhRCTSjjFoUMpgjTV4CPNn4yHHAsrTZtH0ftKaCBfMdaNHXdWNJe1vpc/
-    71DrgR7qlZFMiDh/3ct8HVu8LjNCxbQPTcXEwH80HLSU5rENNchIEBepJAumJNfxgEgVbG
-    cpz3A2SzME7kxu4arVJZkAJdthhEMqzwgo9EjD3OfxtBMf0t78DjNFqY8oWQ
-X-ME-Proxy: <xmx:3tK-auK1tApIYxv8QbiLFJ_snJ0N0zhvygpROwNE_27wncHkgUgTXg>
-    <xmx:3tK-ahqEiumQaccuT3mJ2kPBSp-NYaA6xVBzQtxW3WlL29H-MeZDiA>
-    <xmx:3tK-aktSUh6hDnyKnaGOfy_AC7cMwdB2qWgSXyUEFx01bX2vXIuaWw>
-    <xmx:3tK-ahJBqPyBEG056ngxcEbETy2P7nNeabtK9fqW5X54yOmpTh5Wwg>
-    <xmx:39K-amoJdlU5be1Kh4XsC_M5aDdEyqUQxRaiNifiMidDvpUNNH7xcnkX>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 17:38:36 -0400 (EDT)
-Date: Thu, 1 Oct 2026 15:38:34 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Logan
- Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>, Pranjal
- Shrivastava <praan@google.com>, Longfang Liu <liulongfang@huawei.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, Alistair
- Popple <apopple@nvidia.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org, Manish
- Honap <mhonap@nvidia.com>
-Subject: Re: [PATCH v7 0/9] vfio/pci: Add mmap() for DMABUFs
-Message-ID: <20261001153834.4a2528a2@shazbot.org>
-In-Reply-To: <20260924152159.49702-1-matt@ozlabs.org>
-References: <20260924152159.49702-1-matt@ozlabs.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RX++VI9A";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rjOxJ8dO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790890908;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oaFDnLPAu8Azz5pGOzAaVOnZU0E7BdpohXF2E62Q87s=;
+	b=RX++VI9AHz5vfn1fXYGsJfzS/rX7vXXI4rJuNUvFppKhaITyoLWRLw9omTUWXFJST5ZtyT
+	mzBMzz7ee/JK7/G2jDNF5l+9qMnoyP8PF8+K814IJTwbhBTnsXywQEQfl0OUSmG/d/W+XY
+	7zdvy1hQhQgvTfOPZ0H2mdJOnWcjwvs=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-408-eLF3nx6TMCmYuDkDMtXUsA-1; Thu, 01 Oct 2026 17:41:47 -0400
+X-MC-Unique: eLF3nx6TMCmYuDkDMtXUsA-1
+X-Mimecast-MFC-AGG-ID: eLF3nx6TMCmYuDkDMtXUsA_1790890906
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc7d2ff0087so2213546a12.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 14:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790890906; x=1791495706; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oaFDnLPAu8Azz5pGOzAaVOnZU0E7BdpohXF2E62Q87s=;
+        b=rjOxJ8dO5ltGvsD28IzEJPTlWVslhMZA3I87ouoh+eHbKd45Qpo5EIr/MGETujaScn
+         +W9w+TZmHWBiPoMMzvJLAbHgKD977QnBgLjgPyOGYjvdM80ipOe7wG4rkrU6oe9he48t
+         HDJHFR4puRanLbzoaV7PLlxSgaTnWz8xojcHIcYSAiFIEiSZVU1UhZVPUcvoJUZfXhFT
+         LQLGsqR2AEQcWsh+GEKFwmg8eJIkx4F/lUa7jDfkJ7U9sruQBII2/HEbXOb9Cvz/LDpi
+         gbuKx9Fhd6m8UjikhLuIE9cnemCFlFKXzLfufF2ovyo01VgRHHIDpS4tEZ/D9yNwYxs3
+         g1cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790890906; x=1791495706;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oaFDnLPAu8Azz5pGOzAaVOnZU0E7BdpohXF2E62Q87s=;
+        b=k+BAimzdancguOQz6/1mhI+yo16J1yIpdsX3A6EAcJdFjGxpgn2whQx5VjbJBRLgQ4
+         rhkC6B3EGb1wjWcrWPgZ/fQ0r6gj/yVbdGaGdSIaOvmNeWS2cOhe3kP6cMpJexyEo1Yr
+         9tAsEvJPsQDOAlQcT+AYwNNQ60E96LNRvE2oNMDq6RBdDpQzPfH27GCU9zG2SmKYWFVZ
+         ira4xapvitPDsoAP+ElUElB7rarThpJ9+fcZhb4dFo2rQ1pis2w/r1PeiCY2SP3Rif3a
+         ejjuFx8D+cyOBEUS2iAA1/vt51OOeoq4wBIaOOKfuai0lj2P+GPzlE8ymD0ibJnyN9tD
+         ERkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxnComvbGF+J2XROccEZTvmBMqvV9og9MLD7LvASGiZjlB9DSoYVN2/F8jIKVsJICXesA0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZbrsYNYZYqOcsltUrw1s0soFYFGRU0kyvwqQMZojWF01/zAFM
+	Kd47wnAUzXPEwXkYfmlboe6PNOVlj/16fSwDcYCOAiGeTRyn37AZwywqS5Rxk9vG0fb09iU6Rz1
+	N1b7MG0OGTvl7Z7M2c6Nr8UCNesuuiEzNlZix3OBIdklVH8I/bMr5oQ==
+X-Gm-Gg: AYBFou0rP5o86oVWkKbwx56ZuFFM1aUoRVA17+OWVFn5BorCr11fui2EWiizXVQ6XaQ
+	Vggy2PfsiczD9tnSLgetogKn5/tDoX0tufB+KyztPLO8n7//94LhtfSgqcFT8QWaz23VuWeyh3w
+	oMYlmcNxoDMPQ5NNX/mmfePRckFpS30WHzHQ2OkeHH6y1IrEg+6V1sKzMCWpzaRuJj7DU3FMrXl
+	PCamyetD1UJbXLm3z6LwPRGAxO/lZ/UAIaETvWSgEIPnI63b2+YXnBifPf0OvTJ6a2Nr0bq5dQK
+	65zrNjtt7pn/Z+toVkxj7k4+3Zll7JU0TA1DIDOMliBmqze5qx69qHoCWFAXsW9JhxuzNqpDtia
+	VZXdlmweZtQeI5LFPNR4uBhv6qnVCz4+u4j6O6ka3GQ==
+X-Received: by 2002:a05:6a00:409a:b0:882:1b4d:1840 with SMTP id d2e1a72fcca58-88af58d4e46mr745874b3a.24.1790890906230;
+        Thu, 01 Oct 2026 14:41:46 -0700 (PDT)
+X-Received: by 2002:a05:6a00:409a:b0:882:1b4d:1840 with SMTP id d2e1a72fcca58-88af58d4e46mr745848b3a.24.1790890905746;
+        Thu, 01 Oct 2026 14:41:45 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0cb72834sm165561b3a.45.2026.10.01.14.41.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2026 14:41:45 -0700 (PDT)
+Message-ID: <1ed590aa-a4bf-4980-82e1-185aee205909@redhat.com>
+Date: Fri, 2 Oct 2026 07:41:37 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Sep 2026 16:21:43 +0100
-Matt Evans <matt@ozlabs.org> wrote:
-> Dear Reviewers,
-> ===============
+Hi Suzuki,
+
+On 10/2/26 7:06 AM, Suzuki K Poulose wrote:
+
+[...]
+
 > 
-> Along the way several related issues came up that warrant more
-> eyes, and I'd be grateful for your input:
+> NOTE: There is a conflict with Fuad's patch to drop the WARN for unknown vm
+> ioctls, that is queued in fixes.
 > 
-> 1. If VFIO fd is opened O_RDONLY, it currently can't be mmap()ed
->    (because PROT_WRITE is rejected in do_mmap(), and PROT_READ alone
->    drops the VM_SHARED so VFIO's mmap rejects it).  BUT it seems we
->    can export a DMABUF from it, and then pass the resulting fd around
->    for P2P writes.
+>    https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev
 > 
->    I don't know if this is intentional/relied on/a known limitation,
->    or a bug?
-
-Seems like a bug.  In practice it's probably not very meaningful, the
-user can still potentially change the device power state and trigger a
-reset, but being able to source a writable dmabuf to a region on the
-device fd that isn't itself writable seems semantically wrong.
- 
->    a) We could reject export w/ -EPERM unless the device fd's f_mode
->       has O_RDWR, to reflect the RW abilities of P2P
-
-This seems sufficient...
-
->    If we agree it's a bug, I want to do this fix (a), as we can now
->    export a DMABUF RW from an O_RDONLY device fd and then succeed to
->    mmap() the DMABUF with RW.  (That said, even with an O_RDONLY
->    device fd, the device state can still be changed/reset.  But it
->    feels cleaner to prevent export for a O_RDONLY device fd, and match
->    the device fd mmap() behaviour.)
+> This series is comprised of (3) and (4) above.
 > 
->    In future, we could consider finer-grained RD/WR if there's a
->    future goal to tie DMABUF permissions to, say, iommufd
->    IOMMU_READ/IOMMU_WRITE permissions:
+> The integration branch has been tested with the following components:
 > 
->    b) Instead of just failing if !O_RDWR, we could limit the
->       get_dma_buf.open_flags to the VFIO device fd's f_mode, such as:
+>    tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 [4]
+>    kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git tag:cca-kvm-v20
 > 
->        VFIO device fd perms:    Export flags:           Result:
->        O_RDWR                   O_RDWR, O_RDONLY        OK
->        O_RDONLY                 O_RDONLY                OK
->        O_RDONLY                 O_RDWR                  -EPERM
->        O_WRONLY                 *			-EPERM
->        *                 	O_WRONLY                -EPERM
+> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
+> [1] Linux firmware RMI v22 https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/fw_rmm/v22
+> [2] Linux GPF Host  https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/host-gpf/v19
+> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v21/integration-v3
+
+This branch doesn't exist. I guess it's "cca/cca-host/kvm-v21/integration-v2" instead?
+
+> [4] https://support.arm.com/documentation/den0137/2-0bet3/
 > 
->      (Skipping WRONLY because a PROT_WRITE-only mmap() won't work,
->       though it probably should be included for P2P.)
 
-Certainly more complete, but I'm not sure there's a use case here that
-really warrants the effort.
+Thanks,
+Gavin
 
-Another angle to the dmabuf permissions is the region permissions
-themselves.  We don't currently hit this since we're only exporting PCI
-BARs, but for instance Manish wants to protect the HDM decoder range in
-the vfio-cxl series[1].  Again, there's probably a simple solution to
-simply consult the excluded ranges list, added in that series, and
-reject dmabuf exports overlapping it.  I don't expect any action item
-for this series though.
-
-[1]https://lore.kernel.org/all/20260916183540.3813685-1-mhonap@nvidia.com/
-
-> 2. The mmap fault handler takes a bunch of locks non-interruptibly,
->    and potentially depends on a lot of DMABUF-related activities
->    completing.  I'd had a go at converting them to
->    interruptible/killable forms, but that revealed there seems to be a
->    wider issue if move/revoke doesn't complete in a timely fashion
->    (due to buggy importers).  Where I got to was that just updating
->    the fault handler won't fix the user experience of an unkillable
->    task, and move()/revocation will need thought too.  I don't intend
->    to fix this here but wanted to start discussion so we can address
->    it in a follow up.  There's now a dependency between mmap_lock in
->    the fault handler and the DMABUF resv (which might take a while to
->    resolve), though revocation will be rare in practice.
-> 
-> 3. vfio_basic_config_write() has an error path if
->    vfio_default_config_write() fails that releases memory_lock but
->    doesn't un-revoke BARs in the case of PCI_COMMAND.MSE being
->    cleared.  When can the write fail, in practice, perhaps surprise
->    removal?
-> 
->    The effect on this series would be: a write of MSE=0 revokes BARs,
->    vconfig[PCI_COMMAND]'s MSE becomes 0, but if the physical write
->    fails then the physical MSE remains 1 and BAR VMAs stay revoked.
-> 
->    This seemed a mess; fixing isn't as simple as un-revoking on the
->    error path since vfio_default_config_write() has already trampled
->    vconfig so that'd need unwinding.  It felt like a catastrophic
->    scenario where BARs staying revoked isn't a bad outcome, but want
->    to hear your experience of the likelihood of this issue.
-
-Our vfio-pci story around surprise removal and DPC is pretty weak, I'm
-hoping that some of our parallel error handling work will shut down the
-device when this occurs.  For now, leaving the dmabuf revoked seems
-like a reasonable thing to do.  In practice, I don't really see this
-coming up other than in testing surprise removal of NVMe drives.
-
-> 4. The exchange of a VFIO fd mmap()'s vma->vm_file with an implicitly
->    created DMABUF's file has implications on LSM.  For example, an
->    mmap will be checked against the policy for a VFIO fd, but a
->    subsequent mprotect() relates to the policy of the DMABUF file
->    (which is anon/unique to the mapping).  This is pretty confusing.
-
-Maybe I'm not seeing the issue, but this seems like correct behavior to
-me.  Policy decisions are made at creation time and later changing
-protections on one object doesn't affect the other.  Thanks,
-
-Alex
