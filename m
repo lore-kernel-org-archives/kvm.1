@@ -1,128 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755953BFE4C;
-	Thu,  1 Oct 2026 08:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE633164D8;
+	Thu,  1 Oct 2026 08:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790843237; cv=none; b=qMqm351hgmSw8vqGyt6x8VSffm99IIKgwSrBN85p8qWy2AFk9a8q7UTVL3pP9AQ2mJfcdORQ2Dz2J7YxTN+UOi8qPT4QEJltyUXDcbwthKQe7lJLqL7gSMExiLgRs9H9U+OKupKQ2vzq9hMJGZ/Me7Dzwg+gNQ9DfxVE6JkGUAU=
+	t=1790843483; cv=none; b=gsB4SGggStOREZ2JZ8EeLW0KL3XMcuZpxFrBmr9aWLqlRjoZT8oCPDequ4vg/n8R0kz945UUhpHn1j32QXPpxMTIkVzJ6FKiRZXE8IAye1WoLMQdV4pTxUC9iIWtVMZOWgz+Tjd98gDcwLYScPDLLCtv+rjsujJ9wwdgfbm2Bj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790843237; c=relaxed/simple;
-	bh=xWrH1Cjj6dY7/bQjODpc5DwgLCudd5ID9+bEGI7C7es=;
+	s=arc-20240116; t=1790843483; c=relaxed/simple;
+	bh=9+N+gmAtMgLHYkLcQGdYJLjC+s7rwmcWD9JNQgFqIkQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ajDZHRNWAybKSW/PdB8WS1p+w1JoD7xL1fiGwnKciVNmgElzZtcSLAzA/6MTZlBUtWHu0YJqgSTNX40pxUorYyT7J8ohGDypNTkMA7XLTD8pHvgAhFFzag10aqAZ8Ly8CIPTPt7rb20o0XPuzpzkR2hnBxzcX1yByz6k6JFyXFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+sXCEEp; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=W/ttNj0YMu4h+LePIJvrBbm6wvZV/8AKUQEZFZjngJxSxie9FqQ8RqwYgyfYNXg5dXWZeeO0fVqBw26Rt1YtjPr3GU/za04WiE2Bempi3mHs2vFYPfVaqugv3QbRcfZprHohBcgyVEQfCyUdrB1VKVimIrntWTqwK23uUl5r7KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRPjT6uE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+sXCEEp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED751F000FF;
-	Thu,  1 Oct 2026 08:27:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRPjT6uE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEE51F000FF;
+	Thu,  1 Oct 2026 08:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790843236;
-	bh=pYcL+VKdq7uxpH1GmJPMynmPVBR+edXOn5WdQI9nPt4=;
+	s=k20260515; t=1790843481;
+	bh=qCO7FheBb0QtZY1aP+C/CKmQeFmIqEIk287fXx6Tx9k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O+sXCEEpjy8KVvZwc5d554sxhR3Ka0HiUCyaDILSzRUPNW5YfZkLHApdEhzGvyMZF
-	 yRF5FT8tkfedcOcVxx0CM7GpE/BwFlqWYy5k59PjJz2/WtvOUxZBznMjNT/hBcslRV
-	 rRHNGEibZMIsl3OEFff5poiB1m63mW9npK4yK8Z16887SV71LvkgE6bv9zPPGs6CqC
-	 cRDIUMezxTaDy3Tz5xEYIdG3Acf5BAbgIdfOe3jvwfKqbnozWBjSyCXPh7Y75NR3T/
-	 v0/XHfSXGMKLjSC3cGvoe1BsWkbFVM8vXBtlalVMRSoRSTah0ZMccpv6Sl3Uvz30S7
-	 wjHi0lRn02RsA==
-Date: Thu, 1 Oct 2026 11:27:10 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-Message-ID: <20261001082710.GL3401365@unreal>
-References: <20260929175737.GK563127@unreal>
- <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
- <20260930081832.GA3401365@unreal>
- <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
- <20260930114356.GC3401365@unreal>
- <fbdc710d-7be1-4021-83c2-548c798d9d14@amd.com>
- <20260930143237.GI3401365@unreal>
- <b2e766389e57a55da959369c5ad4b9e39e425659.camel@linux.intel.com>
- <20261001063747.GK3401365@unreal>
- <918ff7c0-76fe-4f22-b001-830eb5acf836@amd.com>
+	b=RRPjT6uEl8jvYU2BQEX4mFlM3STmFQT82C+soXKo2LGVahgTGWVUThfHMRvPVLSrw
+	 gkRuPV5J3G7nfnBo7GaTmqSWBg6+Y4y1ozODB8JODDsqJImXcd7a8GXYHlpLvhsrOk
+	 83PD2HcCLoOTKUIfKR9QY8HSixYK5vKwgnAxqfbd9l4BmO/HRsBFl9ZIjZkqfZJwUG
+	 JJvu/nNuLgKWmnpIgL0ccLbwlU7zZ0lsimVw0BV1ZhyuiUGwDmK/FjdBOkmQdbJ9hT
+	 HsRXF+gRngLgSn+VGcCbD1YqxEVgIYxdn+qCimtDaBmJZMJDs8xjtL1xJ8ghZBt3w6
+	 RxAiOAN2Wq9IA==
+Date: Thu, 1 Oct 2026 09:31:15 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+	yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v20 6/9] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+Message-ID: <20261001-military-foxhound-of-conversion-d80e7a@sudeepholla>
+References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
+ <20260929221623.1342076-7-suzuki.poulose@arm.com>
+ <20260930-judicious-loris-of-will-dea0a3@sudeepholla>
+ <210c0b27-c7cb-447a-b6ee-bf6b3fb63acc@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <918ff7c0-76fe-4f22-b001-830eb5acf836@amd.com>
+In-Reply-To: <210c0b27-c7cb-447a-b6ee-bf6b3fb63acc@arm.com>
 
-On Thu, Oct 01, 2026 at 09:49:31AM +0200, Christian König wrote:
-> On 10/1/26 08:37, Leon Romanovsky wrote:
-> > On Wed, Sep 30, 2026 at 04:57:04PM +0200, Thomas Hellström wrote:
-> >> On Wed, 2026-09-30 at 17:32 +0300, Leon Romanovsky wrote:
+On Wed, Sep 30, 2026 at 04:55:38PM +0100, Suzuki K Poulose wrote:
+> Hi Sudeep
+> 
+> On 30/09/2026 15:44, Sudeep Holla wrote:
+> > On Tue, Sep 29, 2026 at 11:16:20PM +0100, Suzuki K Poulose wrote:
+> > > From: Steven Price <steven.price@arm.com>
+> > > 
+> > > The RMM maintains the state of all the granules in the system to make
+> > > sure that the host is abiding by the rules. This state can be maintained
+> > > at different granularity, per page (TRACKING_FINE) or per region
+> > > (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+> > > underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
+> > > all pages in the region must be of the same state, this implies we need to
+> > > have "fine" tracking for DRAM, so that we can delegate individual pages.
+> > > 
+> > > For now we only support a statically carved out memory for tracking
+> > > granules for the "fine" regions. This can be extended in the future to
+> > > allow modifying the tracking granularity and remove the need for a
+> > > static allocation by the firmware.
+> > > 
+> > > Similarly, the firmware may create L0 GPT entries describing the total
+> > > address space. But if we change the "PAS" (Physical Address Space) of a
+> > > granule, then the firmware may need to create L1 tables to track the PAS
+> > > at a finer granularity. Linux therefore checks if the platform firmware
+> > > manages the PAR region. i.e., the firmware is in charge of managing the
+> > > L1 GPTs (creation and the required memory for the GPT tables - via static
+> > > carveouts) without host intervention. Support for dynamic GPT creation by
+> > > the host will be added later.
+> > > 
+> > > If the firmware requires us to manage the tracking or GPT memory,
+> > > deactivate the RMM and reclaim any memory donated at RMM activation.
+> > > 
+> > > Apply the same checks when hotplugged memory is brought online.
+> > > 
 > ...
-> >>
-> >> Returning again to Jason's series. Let's say we'd add just the mapping
-> >> type infrastructure, converted users of pcie_p2pdma only to use that
-> >> and then we'd have access to per-mapping-type data. This could actually
-> >> be done as a prereq for this series and merged separately. It's a
-> >> couple of patches only.
+> 
+> > > ---
+> > >   drivers/firmware/arm_rmm/rmi.c | 247 ++++++++++++++++++++++++++++++++-
+> > >   include/linux/arm-rmi-cmds.h   |  18 +++
+> > >   2 files changed, 264 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> > > index d982cf158f8da..d4d098448e46e 100644
+> > > --- a/drivers/firmware/arm_rmm/rmi.c
+> > > +++ b/drivers/firmware/arm_rmm/rmi.c
 > > 
-> > I afraid that you over optimistic about the amount of work.
-> 
-> Yeah, agree. The proposal looked good but there will probably be quite a bunch of work.
-> 
-> >>
-> >> Jason's match() and finish() callbacks could compute the interesting
-> >> routes at attach time,  perhaps even condesed to whether IOVA is used
-> >> and whether ATS translated packages have a direct route (which is what
-> >> mlx5 care about AFAICT). This information is kept outside core dma-buf
-> >> and would be specific to the pcie_p2p mapping type (interconnect) only
-> >> rather than having functions and callbacks bloating the core dma-buf
-> >> structures.
-> >>
-> >> Then exactly where the cross-subsystem match() and finish()
-> >> implementations should live I figure remain up for discussion and
-> >> guidance by Christoph?
+> > [...]
 > > 
-> > Maybe I'm wrong, and everything will work out. However, given Christian's
-> > feedback to determine the mapping type when the mapping is established, this
-> > approach won't work for an RDMA exporter.
+> > > +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
+> > > +{
+> > > +	unsigned long l0gpt_sz;
+> > > +	unsigned long next, par_state;
+> > > +
+> > > +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+> > > +					  rmi_feat_reg(1)));
+> > > +	start = ALIGN_DOWN(start, l0gpt_sz);
+> > > +	end = ALIGN(end, l0gpt_sz);
+> > > +
 > > 
-> > As I mentioned, mlx5 uses on-demand paging (ODP), creating mappings in
-> > response to page faults. To handle these faults with reasonable performance,
-> > mlx5 must create a memory region (MR), with or without ATS, and it is
-> > needed to be created before first page fault.
+> > Is it guaranteed that end with not be = PASZ ? The spec says RMI_GPT_INFO
+> > will return RMI_GPT_INFO when top >= pasz. Unlike start, end for good
+> > reason is aligned up(ceil) instead of aligned down, but that also means
+> > end will become PASZ when we reach end of memory, no ?
 > 
-> Yeah, I feared that you have something like that. At least for the current DMA-buf semantics that is not something which fits into that model.
+> Good point. The RMM spec needs to be fixed to make the condition
 > 
-> Background is that system memory is usually seen as fallback which should always work and you can have really strange combination of use cases.
+>  top > pasz
 > 
-> So what can happen is that you create a mapping and P2P is possible without ATS but then some other device attaches and we suddenly have to use ATS because the buffer is now in system memory.
+> as the top, is really the top the region and is not inclusive.
+> 
+> This is already a known issue, tracked by FENIMORE-1807. The proposed
+> fix is :
+> 
+> pre: UInt(top) > rmm.static.pasz
+> 
 
-The importer reports ATS support on a per-mapping basis. If the exporter
-receives this hint from deviceA but not deviceB, it prepares different
-addresses for the two mappings.
+Ah OK, all good here then. Thanks for update.
 
-The `ats_per_mapping` flag is stored in the importer structure:
-https://lore.kernel.org/linux-rdma/20260928-fix-p2p-acs-v4-0-v8-20-404453b9c435@nvidia.com/
-
-In our example, if the mlx5 and XE importers both attach to the same
-exporter, they receive different mappings.
-
-Thanks
+-- 
+Regards,
+Sudeep
