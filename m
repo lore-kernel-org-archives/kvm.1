@@ -1,57 +1,57 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E74152D2C8
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 20:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B0B5304C7
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 20:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790886179; cv=none; b=Sfklo6LLtg0HKVh3BJCld0B8sLVtpFatLCzm1GFx6kRD9c1cdoGDAAD4y3mOn+SvNq0RVKbcjBPsez+t+Lu+pLmtzGdg5z939bF3bTy/3VJQumMbd5VmNcA8qLZ4VuEaAjjjv67+XcLcblf8eR82BmenwT26TNyeXBfkH5TiQoc=
+	t=1790886179; cv=none; b=M+1bfnaSqQyYzpMnQNYha3lcBfBB6Xnm9vqIQ7ZM1n2cvNvF8IdLtTFpEyI5lEB5+vreUXifIacCzDs23Er/NnTGqAQeG6cxudxlhapZE3xJnD80vihbT+DM2jaSLkW9DWJwiHcUBgOuoO7I1X3o6N14ImbIgU5QDuNsTIDCmlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790886179; c=relaxed/simple;
-	bh=ahVJWHj505qxPz8+R1JEO0RsWMwQJzs+wdjA15BZGzA=;
+	bh=xWmI4R5U22NJjAIxqajbiTM9PPBEDTvKud9hixV72Kc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LN5fVD/d8sAs1ZX0Tz3gl+CQ9ImqlKvryAwq8lQ62pI3uC+U1hk3ZEw57n0JGzfjTfmg4t/AhUwzo05qdfhzk09A3GUmshbkufH8A23JeZuwsPDtNX9biezV/go3A4q9lf/5kV6aSVuYAC438h/FEdc0KU1jpln8PtMS+ORVv5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j5w8b2x+; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=htXhTw81T0OcK8niV99ZV6wvqd9A9oxgUJBqxD2MVoB/eDiF7FSGSBb3zMCrjyPxLu38VBLvmaoPyfTki3OQNIfbw2pzW6fURLPsTgW5aiI6ucnghupgGDAY9Rs66E7pdcjMBhihdVuPnGZXN/qZBjHs7Y9AStUq2kWc8sYDh0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bD9lELGM; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j5w8b2x+"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e2e0bc619fso21831715ad.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 13:22:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bD9lELGM"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39533bb224cso9512457a91.3
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 13:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790886167; x=1791490967; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790886169; x=1791490969; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=qdNDM6n2ZDbcN7ldHmyQd+gWcanpH4YXON8+JKW9Ils=;
-        b=j5w8b2x+nxi73huhKKi8MsMqKd1ltt0WHcY3dCN90KAvQr4liGEdhudhBZYSJHG7Hi
-         SK+3zH7M7F2YXGqDTEYxVXu4N/xvB6r22TjtCTSS8+LYGPiycrsSLws3IU7XcNGmawXX
-         zfg1o7xGzt/4ET+YZ8ZIGovTeTzU2qsG8JJ8gf4np866WoRpMW4hO/Ql4NMDs19zDpIL
-         AlcNDO0AjaJbtGK3EmY5KMs5OUP5Izt//tAXr00VQgeUcm8HfwerRCz5c9pXcN9YTACU
-         ZLjAWmiLb3ZsOkC6b3h7XnO/WvwFLLwron/zE9ESCT/z+hu28T7eDDxjKpKoDLXbeYiB
-         r3ug==
+        bh=odUI0VjKINbAApKe2J4PsRbiL/cueYQz4jU79+gDb2k=;
+        b=bD9lELGMDXUxOUCnN5VTR+kguxiy+a8p0DtnBvKnx+TRRLdsK8NtV08MJdN5zLFJHV
+         puBaSLMjzeJXWY0PBe0g787BILr3O/1n8r4MUpIMakD/PkVRs4kgREytGddJ84LuQH2/
+         IjHCKOElIBOh1kQZuDEKxhz0SIpnurmSZ8eaElvXdZqgBjAOXVhbdiSZJMneaf2aCdf8
+         oTcEU4KmlA+rUZWz2BpH02B9VcPbsm7GAzL+3Q3j+nl1g7PCLCZgbNImSRS32gt7rEDg
+         qUNJVIQFBmDkNSYFxFjF1fzWrc67sYb/23YP7wsTkG5X61aTIw6PiPLyNDOTKq9oYWcd
+         yqNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790886167; x=1791490967;
+        d=1e100.net; s=20260707; t=1790886169; x=1791490969;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=qdNDM6n2ZDbcN7ldHmyQd+gWcanpH4YXON8+JKW9Ils=;
-        b=go/7ArQVnXzsZGmU7dOdcPMK6A0h2qIfEb9tGp1Nl9CjRUyHTa8Q10nIeWsxHZVFNG
-         Yc1nSKACr3fEFzZJkUaQ5IsnEtV9kSbZJ3z1LtyYBiPeYLvAa5Xs4nlkOHs6y3TV+FnH
-         B3SFucifHyKXScGue2rZxNjGqxfcnj/T3ugokkC7vDdYHaUHFHHvnNuMJ1TzFYratQpu
-         g24QUl2+mU/VCMndo9etjh3eRw3heb2bdxAkRlHSKci17Y1nyaVpCRZATtqc+9rAq6lS
-         3m/rk1o2oOwAdisxWKb2O7pgTlNN32HoSx186YbUyi3A9LZcyvqTltUMh7D34mtB/k4v
-         wLYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzTZhN7MGqVEkHl3o+okUx/1tODxL7SbZN3pgZS02F10f4wVKHumrasSRAvaeSGY8NO8t4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIYYRSOWGD8QMCtF5DRQnkBpA2V4lHXt92RKfDRDru3+4UnNeXM
-	xswbD91cbuzASoiRvhnHEkHb1+UuBY+O5W3l/gsOYyjNWLOpywPi7INIPz4Ovto1WT4BTLpDrgd
-	1zf/3Mw==
-X-Received: from plsc13.prod.google.com ([2002:a17:902:b68d:b0:2df:4aa4:16d0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec84:b0:2dd:c100:4259
- with SMTP id d9443c01a7336-2e49b6d1e0fmr4572245ad.61.1790886166440; Thu, 01
- Oct 2026 13:22:46 -0700 (PDT)
+        bh=odUI0VjKINbAApKe2J4PsRbiL/cueYQz4jU79+gDb2k=;
+        b=0z/h3gI7EjsQmxCFwwnh5AvK60VxwxHFwSAA2G9QmhIG+to7og2ITp5w2LGbUgtiSL
+         DHWjTM7u2r+5+ecYipYfx3Fcf0W8bH3AoJqIVjIxF4tD8yDrfcUSdR7poiRqP5sUQS/+
+         vj91AjMHYlfilaAL1W2Rw3IESE3ck0d014kCrUYyO9B60UMOiP2f3+NGQQ7rYhS1Frxu
+         yyPxXMGl//ozJ46ZhYWW2EeHh3trC/pr53F1B9lSnUSzGCDSDfvjapLw5VzKOC/uqDwS
+         8pGSLZVVcf/jOYPqg1yw0DkB9/PhmBxM3tmbYQ0tRVBnH3vURQjVDQgb5g0Wttt4KU8R
+         ge5g==
+X-Forwarded-Encrypted: i=1; AKwUvBwvzFelmXpI7KCkNtdmkSsNIb5vgp3Mh3jfFLfNQXCYL9LFEksWsMPvpZwBOGbK3PUq8I0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ1GPViRVyPQ8f/sUF/EiI5Hn0ZX2V1HkJshHPZprOOOplWduCR
+	dhv3YoDW6kyU9k6LTHmZ66Q33B+nq+Z91WvWuA/c7U4JHecr8QanJp8q3Qx9Ht5F1piojFzoRzc
+	id+YN/A==
+X-Received: from pjxd7.prod.google.com ([2002:a17:90a:c247:b0:3a2:a95e:c620])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:268a:b0:39e:2e79:7ce7
+ with SMTP id 98e67ed59e1d1-3a6ce3b937amr517701a91.6.1790886169237; Thu, 01
+ Oct 2026 13:22:49 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  1 Oct 2026 13:22:28 -0700
+Date: Thu,  1 Oct 2026 13:22:30 -0700
 In-Reply-To: <20261001202234.3794060-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,8 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261001202234.3794060-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001202234.3794060-5-seanjc@google.com>
-Subject: [PATCH v2 04/10] KVM: Disallow setting memslots when the VM is being destroyed
+Message-ID: <20261001202234.3794060-7-seanjc@google.com>
+Subject: [PATCH v2 06/10] KVM: WARN if KVM attempts to do guest-related
+ uaccess with "wrong" process
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -70,34 +71,30 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 	linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that KVM doesn't delete KVM-internal memslots as an unnecessary side
-effect during VM destruction, WARN and reject any attempt to set memslots
-after the VM's refcount has hit 0.  There's obviously no need to CREATE,
-MOVE, or do a FLAGS_ONLY update when a VM is being destroyed, and there
-should be no reason for arch code to manually DELETE a memslot: once KVM
-KVM unregisters its mmu_notifier and does the final kvm_flush_shadow_all(),
-there absolutely must not be any outstanding references to memslots.  I.e.
-if arch code "needs" to manually DELETE a memslot, then it's already buggy.
+Now that memslots are torn down before kvm_arch_destroy_vm(), i.e. now that
+the massive, unaudited path that is known to have at least one rogue access
+to guest memory should be short-circuited before attempting to access user
+memory, WARN if KVM attempts to do a user access to guest memory with the
+wrong address space.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/kvm_host.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 9a24c3064896..f368240aa1cd 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2015,6 +2015,9 @@ static int kvm_set_memory_region(struct kvm *kvm,
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index b37cf275ef79..2a88e4ce145e 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1352,7 +1352,7 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
  
- 	lockdep_assert_held(&kvm->slots_lock);
+ static __always_inline __must_check bool kvm_can_do_uaccess(struct kvm *kvm)
+ {
+-	return current->mm == kvm->mm;
++	return !WARN_ON_ONCE(current->mm != kvm->mm);
+ }
  
-+	if (WARN_ON_ONCE(!refcount_read(&kvm->users_count)))
-+		return -EIO;
-+
- 	r = check_memory_region_flags(kvm, mem);
- 	if (r)
- 		return r;
+ #define BUILD_KVM_COPY_USER_WRAPPER(fn, to_user, from_user)				\
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
