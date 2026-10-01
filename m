@@ -1,140 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5E12DF128
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 21:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAE14779BC
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 21:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790890911; cv=none; b=bt9o9yDK1F+VuYYqT19xu1X0GIbTXGmzOef1gFbfTFRxk6lSR8clcUAyOPpI1rNT8Hb9Vtuvfu7J0Pp02AQd0AYuQbSpqhObGVKvJbI+fMRiq8Xo8aHwRZKPFEadh7DkXfATeoA4ZgXiQwPr4nVz2gjBWRGmz381SMW3SzQhY+E=
+	t=1790891801; cv=none; b=hb3YP1aYcH9AVw4VNiXGTygMsAIoahIxG6gpiRwkIC+kKSrR4FiWfxjv1xxjzF1SXI4tPE8wd+EkWQ5L/nP7k5kK/F0xV/H9U0B/dVrgaR4MVC3sXI857vW0tIAd6xzm6/W6ssF3RXyyVEhKD6W/oIyjAjbQKfAFNBN3fGMTkwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790890911; c=relaxed/simple;
-	bh=fPmxCx4qpK2t/MvuNp/xRsfzossr1PfbTfKiv5o2cf8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T7dk0pgrSetzho2wjYRO7HVI2flgz8o3s3lrSL9b+G+IHFtp6G+8vaVkqvKiUfSBWzN9rM1fTQ01KZf22GzHF0rIv0Vy6QT3ddEOPMVoSTAlr4NzFm9h/p6UUQ75ilVdFJWSagtXZQuhnK43RC4L3+ms0vi/bW1qkyzsjHK4zPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RX++VI9A; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rjOxJ8dO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790891801; c=relaxed/simple;
+	bh=PJkhgsHiHUBvEvna17aTIkDs3O8oEYUtQ4paJax81FY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Xi9uKHhItsadYfHua8bgg0QLrKbHJZxutv+7eZCs9ll9mgP97hvYJXoF1j7mxhh3vxFD2yejhzxKt2eDAC+HXJ53NJdVlsrEE5kcV6nm7z+UdOBFpOVj7RYDqPal+b3dbr2hfx8lEGB0r2TEBdfM73Q8SntxFwdJCXHQ47HuBIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G3V8XTwm; arc=none smtp.client-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RX++VI9A";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rjOxJ8dO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790890908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oaFDnLPAu8Azz5pGOzAaVOnZU0E7BdpohXF2E62Q87s=;
-	b=RX++VI9AHz5vfn1fXYGsJfzS/rX7vXXI4rJuNUvFppKhaITyoLWRLw9omTUWXFJST5ZtyT
-	mzBMzz7ee/JK7/G2jDNF5l+9qMnoyP8PF8+K814IJTwbhBTnsXywQEQfl0OUSmG/d/W+XY
-	7zdvy1hQhQgvTfOPZ0H2mdJOnWcjwvs=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-eLF3nx6TMCmYuDkDMtXUsA-1; Thu, 01 Oct 2026 17:41:47 -0400
-X-MC-Unique: eLF3nx6TMCmYuDkDMtXUsA-1
-X-Mimecast-MFC-AGG-ID: eLF3nx6TMCmYuDkDMtXUsA_1790890906
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc7d2ff0087so2213546a12.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 14:41:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G3V8XTwm"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39512608fb1so11012742a91.1
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 14:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790890906; x=1791495706; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790891800; x=1791496600; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oaFDnLPAu8Azz5pGOzAaVOnZU0E7BdpohXF2E62Q87s=;
-        b=rjOxJ8dO5ltGvsD28IzEJPTlWVslhMZA3I87ouoh+eHbKd45Qpo5EIr/MGETujaScn
-         +W9w+TZmHWBiPoMMzvJLAbHgKD977QnBgLjgPyOGYjvdM80ipOe7wG4rkrU6oe9he48t
-         HDJHFR4puRanLbzoaV7PLlxSgaTnWz8xojcHIcYSAiFIEiSZVU1UhZVPUcvoJUZfXhFT
-         LQLGsqR2AEQcWsh+GEKFwmg8eJIkx4F/lUa7jDfkJ7U9sruQBII2/HEbXOb9Cvz/LDpi
-         gbuKx9Fhd6m8UjikhLuIE9cnemCFlFKXzLfufF2ovyo01VgRHHIDpS4tEZ/D9yNwYxs3
-         g1cw==
+        bh=ahstotXE2MD3z7KL/66fsytb53m57t/MSgEl40ciijM=;
+        b=G3V8XTwmGPy6RggkXwfdjzg0CCbRKnLMfCedvQQe9GoVGVBHsa5PRpDnvW+FFC2FZh
+         C5zpULRLxbRUfzVi1vPO2Igdq0xjktfg0+tPzJX9enNTbOdbAiwAEGYvSGwuy2BxKQMu
+         KKrbdOLLx7mT0XGUWpUcGPDTr3uRC7YoQlkrJUb5QzVacgzMwc/GKGiz1JhEH5LOqcxi
+         zeplo3sXYm7q1gkMZ4oaWO26MjpleY/UzVGH4hdfsvWhY+l7xLcnXYIutlIwVDmhsq76
+         432xLSI6v0GluTW2i/Y5ECqsHhAf6KCnizC+NEcNqFE7Vspobt/Ll9zrB6vWkDw2Dh3c
+         kjew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790890906; x=1791495706;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790891800; x=1791496600;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oaFDnLPAu8Azz5pGOzAaVOnZU0E7BdpohXF2E62Q87s=;
-        b=k+BAimzdancguOQz6/1mhI+yo16J1yIpdsX3A6EAcJdFjGxpgn2whQx5VjbJBRLgQ4
-         rhkC6B3EGb1wjWcrWPgZ/fQ0r6gj/yVbdGaGdSIaOvmNeWS2cOhe3kP6cMpJexyEo1Yr
-         9tAsEvJPsQDOAlQcT+AYwNNQ60E96LNRvE2oNMDq6RBdDpQzPfH27GCU9zG2SmKYWFVZ
-         ira4xapvitPDsoAP+ElUElB7rarThpJ9+fcZhb4dFo2rQ1pis2w/r1PeiCY2SP3Rif3a
-         ejjuFx8D+cyOBEUS2iAA1/vt51OOeoq4wBIaOOKfuai0lj2P+GPzlE8ymD0ibJnyN9tD
-         ERkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxnComvbGF+J2XROccEZTvmBMqvV9og9MLD7LvASGiZjlB9DSoYVN2/F8jIKVsJICXesA0=@vger.kernel.org
-X-Gm-Message-State: AFuF++lZbrsYNYZYqOcsltUrw1s0soFYFGRU0kyvwqQMZojWF01/zAFM
-	Kd47wnAUzXPEwXkYfmlboe6PNOVlj/16fSwDcYCOAiGeTRyn37AZwywqS5Rxk9vG0fb09iU6Rz1
-	N1b7MG0OGTvl7Z7M2c6Nr8UCNesuuiEzNlZix3OBIdklVH8I/bMr5oQ==
-X-Gm-Gg: AYBFou0rP5o86oVWkKbwx56ZuFFM1aUoRVA17+OWVFn5BorCr11fui2EWiizXVQ6XaQ
-	Vggy2PfsiczD9tnSLgetogKn5/tDoX0tufB+KyztPLO8n7//94LhtfSgqcFT8QWaz23VuWeyh3w
-	oMYlmcNxoDMPQ5NNX/mmfePRckFpS30WHzHQ2OkeHH6y1IrEg+6V1sKzMCWpzaRuJj7DU3FMrXl
-	PCamyetD1UJbXLm3z6LwPRGAxO/lZ/UAIaETvWSgEIPnI63b2+YXnBifPf0OvTJ6a2Nr0bq5dQK
-	65zrNjtt7pn/Z+toVkxj7k4+3Zll7JU0TA1DIDOMliBmqze5qx69qHoCWFAXsW9JhxuzNqpDtia
-	VZXdlmweZtQeI5LFPNR4uBhv6qnVCz4+u4j6O6ka3GQ==
-X-Received: by 2002:a05:6a00:409a:b0:882:1b4d:1840 with SMTP id d2e1a72fcca58-88af58d4e46mr745874b3a.24.1790890906230;
-        Thu, 01 Oct 2026 14:41:46 -0700 (PDT)
-X-Received: by 2002:a05:6a00:409a:b0:882:1b4d:1840 with SMTP id d2e1a72fcca58-88af58d4e46mr745848b3a.24.1790890905746;
-        Thu, 01 Oct 2026 14:41:45 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0cb72834sm165561b3a.45.2026.10.01.14.41.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 14:41:45 -0700 (PDT)
-Message-ID: <1ed590aa-a4bf-4980-82e1-185aee205909@redhat.com>
-Date: Fri, 2 Oct 2026 07:41:37 +1000
+        bh=ahstotXE2MD3z7KL/66fsytb53m57t/MSgEl40ciijM=;
+        b=qO+1X5nRG0/B6ZQFgrTW6LXSPExgoiKCUCRY8R/4QSdt9mLhzXQMTuxrw3M5TL3Kwr
+         3gf2sa6RbG6w09b7qtqpCsJNV1dM8+NWTWlNACM4l13c+NP5MDSdVxbQzo8PQaxS2Odh
+         agNrtJgSl0mzXvB4NoXjMbGkqnP//NO7tJH6zSxFrBLmMnPOIKGxIivAucx7S1NN57u/
+         WG+T5Ex3i7BNfyJZM/DHo/vzKlqJe2Ezl0M9xs4rl2OQ/BkF4vLqffGXv5tPScZXM0qu
+         46N2keKQzX/9YI4CKzo5MDbVuQTFyMbOFSsghh8UEFqijufA5ciPRHhcD9/jhIirrF84
+         GQFA==
+X-Forwarded-Encrypted: i=1; AKwUvBy4Ax2E7MUSSDDlMf9TCBSoUVvco9Yr89TwqLbbHoHPYiO4OzbepGmWDbTl6x3cNCqchF4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIl8WYK4nIRi1qp+aJoPojFNKLqSbgDteTmHItzkhIxx5y//Q2o
+	oDYNIKDY2mPIhcLoyAibtxIheLYjnIaU5qaOK9DRcUxYxIX3FccQkmVNvY1K6J/5Ws/hko+/MMP
+	bbo0HMw==
+X-Received: from plad17.prod.google.com ([2002:a17:902:e151:b0:2e2:f199:a1a0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5281:b0:3a4:9f46:83c3
+ with SMTP id 98e67ed59e1d1-3a6cec4fc8fmr743920a91.45.1790891799435; Thu, 01
+ Oct 2026 14:56:39 -0700 (PDT)
+Date: Thu, 1 Oct 2026 14:56:38 -0700
+In-Reply-To: <ar6SHjnMYNqiEpVa@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20261001210703.1597150-1-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-3-leo.bras@arm.com>
+ <ar1xne00AHnJ-p_d@google.com> <ar5yW30S75THCfdV@LeoBrasDK> <ar6SHjnMYNqiEpVa@LeoBrasDK>
+Message-ID: <ar7XFr51N_oK7hN-@google.com>
+Subject: Re: [PATCH v1 2/3] KVM: selftests: Check dirty-ring size before enabling
+From: Sean Christopherson <seanjc@google.com>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	David Matlack <dmatlack@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Marc Zyngier <maz@kernel.org>, Josh Hilke <jrhilke@google.com>, Oliver Upton <oupton@kernel.org>, 
+	Wu Fei <wu.fei9@sanechips.com.cn>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Suzuki,
-
-On 10/2/26 7:06 AM, Suzuki K Poulose wrote:
-
-[...]
-
+On Thu, Oct 01, 2026, Leonardo Bras wrote:
+> On Thu, Oct 01, 2026 at 03:46:51PM +0100, Leonardo Bras wrote:
+> > On Wed, Sep 30, 2026 at 01:31:25PM -0700, Sean Christopherson wrote:
+> > > On Tue, Sep 29, 2026, Leonardo Bras wrote:
+> > > >  void vm_enable_dirty_ring(struct kvm_vm *vm, u32 ring_size)
+> > > >  {
+> > > > -	if (vm_check_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
+> > > > -		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL, ring_size);
+> > > > -	else
+> > > > -		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING, ring_size);
+> > > > +	long cap = KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
+> > > > +	int max_size = vm_check_cap(vm, cap);
+> > > > +
+> > > > +	if (!max_size) {
+> > > > +		cap = KVM_CAP_DIRTY_LOG_RING;
+> > > > +		max_size = vm_check_cap(vm, cap);
+> > > > +	}
+> > > > +
+> > > > +	TEST_ASSERT(max_size > 0,
+> > > 
+> > > Rather than open code this, which is kinda sorta going to show up in multiple
+> > > places, what if we do this as a prep patch?  Then vm_enable_dirty_ring() can use
+> > > kvm_get_dirty_ring_cap() (completely untested).
+> > 
+> > Sure, if you think it's useful :)
 > 
-> NOTE: There is a conflict with Fuad's patch to drop the WARN for unknown vm
-> ioctls, that is queued in fixes.
-> 
->    https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev
-> 
-> This series is comprised of (3) and (4) above.
-> 
-> The integration branch has been tested with the following components:
-> 
->    tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 [4]
->    kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git tag:cca-kvm-v20
-> 
-> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
-> [1] Linux firmware RMI v22 https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/fw_rmm/v22
-> [2] Linux GPF Host  https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/host-gpf/v19
-> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v21/integration-v3
+> Oh, vm_check_cap() is different than kvm_has_cap()/kvm_check_cap():
+> IIUC, the vm* version will check if the extension is enabled in the current 
+> VM,
 
-This branch doesn't exist. I guess it's "cca/cca-host/kvm-v21/integration-v2" instead?
+No, the VM-scoped version checks if the VM *can* support the capability in its
+current configuration, e.g. some capabilities are fundamentally incompatible with
+certain VM types.
 
-> [4] https://support.arm.com/documentation/den0137/2-0bet3/
+> while the kvm* version will open a new /dev/kvm fd and check the 
+> extension there, probably meaning the CAP is available in the system.
 > 
+> So, maybe we would need a slightly different approach?
+> I.E. have the kvm_get_dirty_ring_cap() to use the VM version, and 
+> have dirty_ring_supported() to start the new /dev/kvm fd and free it later?
+> 
+> What do you think?
 
-Thanks,
-Gavin
+It's not necessary in this case.  All KVM_CHECK_EXTENSION calls feed into
+kvm_vm_ioctl_check_extension_generic(), the only difference is that the @kvm
+pointer will be NULL when called on /dev/kvm.  While some capabilities do behave
+differently if @kvm is valid, the majority do not, including the dirty ring ones:
 
+	case KVM_CAP_DIRTY_LOG_RING:
+#ifdef CONFIG_HAVE_KVM_DIRTY_RING_TSO
+		return KVM_DIRTY_RING_MAX_ENTRIES * sizeof(struct kvm_dirty_gfn);
+#else
+		return 0;
+#endif
+	case KVM_CAP_DIRTY_LOG_RING_ACQ_REL:
+#ifdef CONFIG_HAVE_KVM_DIRTY_RING_ACQ_REL
+		return KVM_DIRTY_RING_MAX_ENTRIES * sizeof(struct kvm_dirty_gfn);
+#else
+		return 0;
+#endif
+
+I.e. the VM version and /dev/kvm version will always yield the same result.  Very
+theoretically that could change, but it's unlikely.  And we can always update
+KVM selftests in the unlikely case a specific VM type comes along that doesn't
+support the dirty ring even when the broader architectures does.
