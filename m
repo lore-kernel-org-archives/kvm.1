@@ -1,172 +1,143 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768164718C2
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 06:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FE2381EAF;
+	Thu,  1 Oct 2026 06:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790834618; cv=none; b=LeHV1UtaHBLvd5s5fkMyW6s19hOIo+JLmwKLGhItE9SsSHDNsH6ubM/Qvo/fxyM9sJoZZGZZ9roFRl99VieQjqZDeQcVqkPxfGJLpGBW3/qZRJEUzOD/e4wekko82NZ5Yf+T8amEMLQJbSp/n5EToaoD4xHj9ZFHWpv5NNTv5XE=
+	t=1790835478; cv=none; b=Z8oJsynp6sBr0jiPgcvnmmesbuTZW4uub+FMW4fVIcYsS7chRy1l3ZbRddcNuUJFLRbwhTdsVllZ/bKmxRCxh29oaTmIUvhfLnOCsW5FokiaX25Ol6HxxL3YnC00OWKJt+LJPKuUXtOaPzGWOuizgDJXrnXu6/TgYWVjjnjxPjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790834618; c=relaxed/simple;
-	bh=UmDFYi4VZi44gsY2l5hLW+B+SLS8MCgV2XEE1kTsg04=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PzJeDwqgQJmZ5xMrEx48265ZSa0nshrUn1zAyGtSFalPI8ZF5H9DiDbWo4oRtRTYY64Jrl5pqudxTh9t8de2pCrXn9C/jdwg7xixIe2ZNqcInLsgGVQZOLFXgFbqkN58/6P+KMRK9wgfHnrVjLPZcUglmjB/m/DuCxy00+cl/QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=f2N+hp8k; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790835478; c=relaxed/simple;
+	bh=bdjZ2ksMrimHVAeNkXQXzTtwi9GLiSP/enN5YzvRaeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QblMKd+4FTgh+e/1Yqw3ng2z8B4vyu7MLqAaUbjcwea+k1N5NM0PqEwfyIybRb2Nf7tIZbC0WdqCwWxNJVTNJQNMwFJ8zkvxJE+cTyhaaT1DGEWpbiBZiKoqlkdq64zMFNzq9owsDo/5bioB6gAUWqwTGOrKz2iVW0vkj/eewuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uiy59Iu7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="f2N+hp8k"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8854A497;
-	Wed, 30 Sep 2026 23:03:23 -0700 (PDT)
-Received: from [10.57.9.178] (unknown [10.57.9.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18D783F85F;
-	Wed, 30 Sep 2026 23:03:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790834606; bh=UmDFYi4VZi44gsY2l5hLW+B+SLS8MCgV2XEE1kTsg04=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f2N+hp8kFMkySuRyXVB5soAwjfn6ZommH5+uwNUl+QJAcpICMNmynkGWcZDvkJRfC
-	 StFYKHE44CP58pHq26kBe+5LwI+4bVK54mrd5E9A9j3Tl743spppGpoR1kb7BqEGH6
-	 jp2/y9Ij4YtYG7r2/Al/V0DHN65B9omwas9q1Jlg=
-Message-ID: <b4af8478-f02c-4c94-afea-7bd0adbe7b79@arm.com>
-Date: Thu, 1 Oct 2026 07:03:24 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uiy59Iu7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AC01F000FF;
+	Thu,  1 Oct 2026 06:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790835477;
+	bh=PzeZRK3gY0+Qmg3bEyZe//3N5u+pNkNVRn1dnWCLqAE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Uiy59Iu7dkAPfC5+dQN02uWT3FtS5tIi1Bu/Hml2SIogm+MBBYrhVrawxx4gjJW7i
+	 kep9+QGlBZDlLynjNcLYdzvhCno0eW7ZZtDCje7IAXYWdWjtEHvtQ4ktJpcPXDcg9y
+	 QKepGUrqcPvxI0/e3Os06WyFUjrHiwNs0ilGv8Y7Wvd9WbfAeeT5VVEsTux6YVZWls
+	 gsorZV+cvm3ZjW+pc9iKFENVLt71++wgb7vz8Xhi8OECk7Yp23kGMQOlNryrkm0zfr
+	 Z0/c50xGiUKCoTBHoWMJ8Z6srtBvC19W7YjlHqU5wnPwM35/reXMJ5LMsDSuIG6LwJ
+	 RCiP09TZEDVsQ==
+Date: Thu, 1 Oct 2026 09:17:52 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
+ traffic is routed
+Message-ID: <20261001061752.GJ3401365@unreal>
+References: <20260929132305.GJ563127@unreal>
+ <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
+ <20260929175737.GK563127@unreal>
+ <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
+ <20260930081832.GA3401365@unreal>
+ <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
+ <20260930114356.GC3401365@unreal>
+ <fbdc710d-7be1-4021-83c2-548c798d9d14@amd.com>
+ <20260930143237.GI3401365@unreal>
+ <ed393791-46d5-40ad-998b-4ac0e1e9c6fa@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v20 2/9] firmware: arm_rmm: Check for RMI support at init
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>
-References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
- <20260929221623.1342076-3-suzuki.poulose@arm.com>
- <20260929222840.A0E821F000FF@smtp.kernel.org>
- <a2fa2bd1-6888-4ed5-9e2f-233eacb600a5@arm.com> <arzsUdIEVvafG-S5@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <arzsUdIEVvafG-S5@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ed393791-46d5-40ad-998b-4ac0e1e9c6fa@amd.com>
 
-On 30/09/2026 12:02, Catalin Marinas wrote:
-> On Wed, Sep 30, 2026 at 09:18:48AM +0100, Suzuki K Poulose wrote:
->> On 29/09/2026 23:28, sashiko-bot@kernel.org wrote:
->>>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
->>>> new file mode 100644
->>>> index 0000000000000..911489b636522
->>>> --- /dev/null
->>>> +++ b/include/linux/arm-rmi-cmds.h
->>> [ ... ]
->>>> +static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
->>>> +{
->>>> +	struct arm_smccc_1_2_regs args = *regs;
->>>> +	long status;
->>>> +	int i = 0;
->>>> +
->>>> +	while (i < RMM_BLOCKED_RETRY_COUNT) {
->>>> +		arm_smccc_1_2_invoke(&args, regs);
->>>> +
->>>> +		status = RMI_RESULT_STATUS(regs->a0);
->>>> +		if (status != RMI_BUSY && status != RMI_BLOCKED)
->>>> +			break;
->>>> +		if (status == RMI_BLOCKED)
->>>> +			i++;
->>>> +		cpu_relax();
->>>> +	}
->>>
->>> [Severity: High]
->>> Does this sequence create an unbounded spin loop if the firmware continuously
->>> returns RMI_BUSY?
->>>
->>> If the status returned by arm_smccc_1_2_invoke() is RMI_BUSY, the loop
->>> continues without incrementing the exit counter i. It issues cpu_relax()
->>> but does not yield the CPU (e.g., via cond_resched()) or impose a timeout.
->>> If the RMM firmware remains busy, this could cause the host kernel to lock
->>> up indefinitely.
->>
->> This is like "spinlock contention". RMM returns EBUSY when a resource is
->> locked temporarily. We should be able to make progress, unlike the
->> RMI_BLOCKED, which is blocking due to a long running operation.
+On Wed, Sep 30, 2026 at 04:52:20PM +0200, Christian König wrote:
+> On 9/30/26 16:32, Leon Romanovsky wrote:
+> > On Wed, Sep 30, 2026 at 01:52:39PM +0200, Christian König wrote:
+> ...
+> >>> The importer needs a way to obtain device information from the exporter so
+> >>> that it can configure itself correctly.
+> >>
+> >> That won't work with DMA-buf then, the exporter is completely opaque to the importer and that is for really good reasons.
+> >>
+> >> Why in the world does the importer needs to know the information from the exporter before the mapping is created?
+> >>
+> >> It is the exporter who decides how data is accessed by the importer and not the other way around.
+> > 
+> > There are several reasons:
+> > 
+> > 1. This is how DMA-BUF MRs are built in RDMA. In mlx5, they rely on the ODP
+> >    mechanism, which requires an MKEY to be created first. See commit
+> >    90da7dc8206a (“RDMA/mlx5: Support dma-buf based userspace memory region”).
 > 
-> I dug a bit into the RMI_BUSY description in the spec and it's not
-> always safe to spin forever. For RMI_{PDEV,VDEV}_COMMUNICATE, for
-> example, we need to return to the caller and retry later (for VDEV, the
-> spec suggests informing the realm). That's the TSM series, which doesn't
-> use the new API yet, but something to be aware of when it's updated.
+> I know that patch, but I absolutely don't understand where the problem is.
+> 
+> > 2. P2P routing is a property of devices, not memory. It is known and remains
+> >    stable.
+> 
+> No, absolutely not. You are making completely incorrect assumptions how DMA-buf works.
 
-Agree. There RMI_BUSY indicates the Pdev is busy with an ongoing
-communication which could take longer.
+Maybe, but I understand how the kernel, PCI, and P2P DMA work, and dma-buf
+seems to operate in a parallel reality that is not aligned with any of them.
 
 > 
-> We may need the spec to bound this spin anyway, or at least give an
-> indication that it's not forever, otherwise it affects latency,
-> especially in an RT kernel.
+> Again: What is exported and from which path is up to the exporter and only determined when you create a DMA-buf mapping!
+
+Let's discuss the PCI P2P case, where `p2pdma_provider` is present. In this
+flow, the exporter has a PCI device, and the importer also has one when it
+attaches. The decision about how to construct the addresses is made at that
+point. Note that both the exporter and importer are PCI P2P devices, so the
+importer should make the request.
+
 > 
-> There's a generic RMI command return code table in B4.2 that lists
-> RMI_BUSY for an imp def reason for the command failing to make progress.
-> Does this apply to something like REC_ENTER? In the KVM series we call
-> that with IRQs masked.
+> In most cases you don't even have a single device which is the DMA-buf exporter.
 
-REC_ENTER only tries to lock the REC object. The only other code that
-tries to lock is the PSCI completion processing to update the "rec"
-state to runnable. Hence we don't expect a the REC_ENTER to be waiting
-for the REC object lock and encounter an RMI_BUSY. Also, REC_ENTER
-locks the object to get a refcount on the granule and the lock is
-released. So even if the host issued REC_ENTER in parallel, the second
-one will encounter RMI_ERROR_REC due to the bumped refcount.
+How is it possible for exporter with p2pdma_provider?
 
-That said, I am happy to return to the caller on RMI_REC_ENTER in the 
-worst case and pretend there was an IRQ and that would allow the KVM
-to re-enter the guest after servicing the interrupts. I have added the 
-following changes to the patch where we introduce the REC_ENTER:
+> 
+> Only while creating the mapping the underlying access path is finally determined. It can be that P2P is used, it can be that internal connections are used, it can be that the data is moved to system memory....
 
-+/*
-+ * rmi_smccc_invoke_once: Invoke the RMI call and return the results. 
-Do not
-+ * retry the command. Let the caller deal with RMI_BUSY or RMI_BLOCKED.
-+ */
-+static inline void rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *regs)
-+{
-+       struct arm_smccc_1_2_regs args = *regs;
-+
-+       arm_smccc_1_2_invoke(&args, regs);
-+}
-+
+But we are talking about in-tree exporters: RDMA, VFIO e.t.c
 
-...
+> 
+> That's why we have the distinction between attaching and importer and the importer creating a mapping.
+> 
+> > 3. See the VFIO TPH ST discussion, where the requirement to obtain the
+> >    exporter’s P2P information in the importer was raised again.
+> 
+> As far as I can see there isn't any. The TPH/ST information are just passed through from the exporter to the importer.
+> 
+> We could define a bit better what needs to come first the mapping or the TPH/ST query but for their use case that is actually irrelevant.
 
+They need an access to p2pdma_provider too.
+https://lore.kernel.org/linux-rdma/CAH3zFs2rhg6-b-pVDps1V8LsM4Dn48t4J4LFVyKOZtT4axdY=Q@mail.gmail.com/
 
-+/**
-+ * rmi_rec_enter() - Enter a REC
-+ * @rec: PA of the target REC
-+ * @run_ptr: PA of RecRun structure
-+ *
-+ * Starts (or continues) execution within a REC.
-+ *
-+ * Return: RMI return code
-+ */
-+static inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
-+{
-+       struct arm_smccc_1_2_regs regs = {
-+               SMC_RMI_REC_ENTER, rec, run_ptr,
-+       };
-+
-+       rmi_smccc_invoke_once(&regs);
-+       return regs.a0;
-+}
+Thanks
 
-
-
-
-> We might need different APIs here: one for sleepable callers that does
-> cond_resched() (or backs off) while retrying, and one that returns
-> -EBUSY, e.g. for TSM, or for commands like REC_ENTER that we don't
-> expect to see RMI_BUSY and don't want to spin on.
-
-
-Ack, done.
-
-Suzuki
-
+> 
+> Regards,
+> Christian.
+> 
+> > 
+> > Thanks
+> 
