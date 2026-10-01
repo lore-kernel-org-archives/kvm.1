@@ -1,151 +1,119 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f33.google.com (mail-dl2-f33.google.com [74.125.229.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E5503BE0
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 14:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258451AFE8
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 14:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790863953; cv=none; b=jsNro2x10Vyr0L8yH1s07TFjlQ4qPKINqr0qQLNqhP3h73rZtk/ACpcQmenZPmVq2VhFvQkgNPJV8Iytemmubh8PQwqeglVDsSQOG5tYOQGWunDQoBENSoMRZB55B08sWMqKvYsbUl05hq9L6wLVGnOx7KlwoVA3t57J6CMaA/M=
+	t=1790864269; cv=none; b=agdozqosy/QwWqhLpndUMpxHIMnA09knl6v3rmYU6BokXX3puoXbh5TTF7JNU8oj810GND1wxQXlSnyKJYsQgACU3u6eOAkaYYd6LamMr7MFLwed8WkLJWgnsFL0dTq07C2weME2OMEdLti/EpMDBkyxbZU0xCcYUSJtDWmO774=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790863953; c=relaxed/simple;
-	bh=qHqfBgsCEeljf9vm8b9twmiuzTdhNXvKeLcCrcBZevE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g6yyqmzrGW2GgTulT3WthTDsG+8B3G8gtgeHTzbB7JIRHUStH+ORZFON6EiIUv8Xg2S8CDxHARIRHz0Qda8SiXUg+7+v/qgCUmpR0ZdEDF7F1Hz9mTammbOTO7k44xZ/Qb8hjJR3sqVrWqmeK9KtpnvqgkZ+/oGwuUXplf3ixv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=HIp0zGsF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZhOMb4hv; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1790864269; c=relaxed/simple;
+	bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oVYV3tbzjb+rkNs6F+dH9FLzg2kINdnMtgGP/8rZWTnlIbLaES5ysmlcVllLy1OdxNgXqstojAqgSfid8/CUpH2w3gRccTdwcIYUK0KOMLeWdEed5w15qah2WwQ7p2PHWAvPDzmvbMG+b6zwGHDRlVDTx2MiOh9aBow8hAGkZss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=BXigv9eW; arc=none smtp.client-ip=74.125.229.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="HIp0zGsF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZhOMb4hv"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 2C140EC016F
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 10:12:30 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 10:12:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790863950;
-	 x=1790950350; bh=ATj4hW1x9LFmtPl4Wl9BUty+fvJ2OV+MQvDPOpVWCE8=; b=
-	HIp0zGsF7637I8t2gHWJ9NXMbg+IxRyQUoXKcE1F+33tiFkNfe9tCTcmvJxQChUw
-	sZrLTQmJPWOVKx7iVub5dOXGKG/IPP/xeRpcTQ1whVln9R6IpHy6lk17BReBjn7O
-	fW5yQCAU34sj7JQA1w1JLKAOqpO99GDhuPD5j363NOUn4GGmkifSO5wo0hL6aNZv
-	v7VU4e8a2YkGdUCL3eSqxgt4hAaMI3d0Gl2XqnTawWgjOKg20fwNSOfrHDV0arZP
-	Rqzarp3+MRBIz+aLp09UWOMkmorfz41yHwbJ6DCtgocSQy3tRUA8VDhwP6Sp2rrk
-	Ri/Ulm3wvpuy5SX2IYz7lA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790863950; x=
-	1790950350; bh=ATj4hW1x9LFmtPl4Wl9BUty+fvJ2OV+MQvDPOpVWCE8=; b=Z
-	hOMb4hvzuky3mGV1EPEZiSKsDlmqI3J/eLh5jlDBSmitAG4dm49YhUqOhPPN4L0R
-	ry2Zyzj8Q1KvWUoXsvbHoe9Z2/j2g3KueNagxDbLEZ0MqsPZW0BuEAfdM/JdqCCz
-	vkPu9phf4VhF89mFkjj4bb58EMKLRqNICMz1HRRxI8UPar33oBIwD02RbAj4W+mJ
-	x5yXHB8E47jB/EI96lBfMf32q4fh+LnO3J0phm6ffuQaiWUAk4EKksCVHHRWu2Cc
-	5i/z8DyXbT6OwmS7JfF6X7aeeJe7Gf3m1bRDTI6xUdPMM4YwG2ixxsWmf1b9KveJ
-	7JKHFx4/CULLHfrlRF5Ow==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790863950; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:U0l2RKpGtbY3zCCvZB2dsziH63e6vkDieWLJZMpf9nNajV0
-	nqhtLsC9uA/huvArrj8ULyiaUBfvy6y5vT6CeKUQ8sVl5rLfIjwMPOnCJiaHmeMl
-	0eA32xlYgdx71CuPfam9CZhQu0IodwdFzCkruxWjxNG1y1Q1Jwvh8+uLPaVggxhr
-	qY+7wyyXjR5MlugzPivj5dHfdCLBfnxNuPV15B8NGz/aVUnt378frm6DA9P6mP5i
-	cEwtDIu7ak70jMvIt0pQ60wYzoOWsX6dVTJXOvXxnupIiIBre+Qw069BIPoR3Jon
-	NJjyKoFrDOtiPGJBzvl+D4BFIkX2zyFScKk6N2A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:OSrEUGyBkg0M+a65O7qJz0QrO5DVNjdK6k5ba6ssCOs=:qHqfBgsCEeljf9vm8b9twmiuzTdhNXvKeLcCrcBZevE=;
-X-ME-Sender: <xms:TWq-akJ349tD8isl3-KCFtctc5uqNpw8lbKmqEx6Smb6dNAlHN4EWA>
-    <xme:TWq-ah8h9wLRf2x_ieEtZycurmmlRg5hzZnwK4Qh4oIfb3q_mAfaK-4y-Gn5oyE8X
-    tmVjgt7T7jcliFDVaSWZaW9UnpVQtzXdgFmc7OBWqjF1AZaPpYnQDE>
-X-ME-Received: <xmr:TWq-avIp0GLeV9_ihg7nQyVDPxcQARnRXsOki4-X0i-Zjs0XajkNYeg7hArV5A>
-X-ME-Proxy-Cause: dmFkZTENZzRQMMP6NTk/k0Uhoq2oYvTQbTJ2Mi9/DHCC3vPgyVfx4igkBQlVMs5u7PK7Jo
-    S1ok/VqC/2bkgbRqw6H34gXKZm/tnDcbE1glwwdjjwZsneRo6g5xRv6u4BiaNTLYcNDe/g
-    YFmxK0NVoF5M3X33w/TulcQ0kBXp5ABbC40a2C9ofScystrHoXtQ2VZc65RnmEkr9tl2aX
-    QKPpfC6NWNPi24+mKkNukrrPozXi+YQlp0JGtMmbNaPx7t4aVQaG4PMiqQKZcbK6Jgu7S4
-    En/KzlBBF7XhI+nF5zjryWliB41Sc00wN4YEqubseBwZKMVwT1v5EWwOXlEu02J9yDn5Em
-    RSqzTI1bU4iTPdxoqouF/48HDGCwNGWV75sMLMfj2S8Qk+NdvuQHI/nJrph++AP3a76k5R
-    XdOLNLorqRqmRjlznXfr27JgosgAkEiRwlw1ne0c+DVl32HNXZ0Ion58nyHaTZu2HvD7MQ
-    FnXee/AlTuwqk0GhbuqC+vmJ+KBkP7oCbTXvsnc1rnN5jYGkD5xlLIoco6TFZfFdyCLmip
-    pGUcOsmuzuRpDtSCiV2eNDW34ROuWlXNoAqiaaw0ENpj05pH+t0wWNGL5WaZaCe/jPH0Up
-    Re5HNAlKIU3vCOurJyIoVPMtx3VbZwH2G6hFP2V33iZfG8yRjBnbsN7z66Ig
-X-ME-Proxy: <xmx:TWq-aumV_-1K4OPfE-cIN0xWPXndCN5JFJhm-8r-JJpNFjMXAnkwPg>
-    <xmx:TWq-arM9Ob-6M12l71jHDXjCz0mEiFpMRAcyYZnt84wFEPR9Cg3XAA>
-    <xmx:TWq-as39_g7qAAHTb3OdQvdP0w6oW2DV7iSS2-Mqe8ZSyhz3HEgllA>
-    <xmx:TWq-ainRptxxE-j48Jvzjx-XE37nsROuhXBz9Nr3l4nxGNIgLORYPg>
-    <xmx:Tmq-ald2kls5rw2N8N__T59Gnt-q8ncWr1oDDshWHjznq2Mc5ePez2S->
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 10:12:29 -0400 (EDT)
-Date: Thu, 1 Oct 2026 08:12:27 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] vfio: cdev: Reject duplicate bind before updating KVM
- file
-Message-ID: <20261001081227.18eaba1e@shazbot.org>
-In-Reply-To: <20261001093152.1698474-1-aneesh.kumar@kernel.org>
-References: <20261001093152.1698474-1-aneesh.kumar@kernel.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="BXigv9eW"
+Received: by mail-dl2-f33.google.com with SMTP id a92af1059eb24-1438e88300cso6808089c88.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 07:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1790864266; x=1791469066; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
+        b=BXigv9eW+sYJ2/al5rZthSGvatRRCrx21esZ8DRDlyQzVTzJ1n3lmdW1BXCm34jrdR
+         1sYBYhv1ljlYYb3CUglLDIH5H4KxOBTYBzZHM2ML9L9v1iFjRBkRgF50qfe9ZyE+WSXv
+         VFV0SnGbOT1PyzvYxVnKBLcxIFL+uD4sVYTdKtRFjpDe2YBkJTyo9PzRLTvZyizm8ffW
+         vxsModyQrWZ3UTUnsWemUyyMDw9PnGUSVWN/ToeddRIvjpQxwhU9FIRqaR9eBODMCHt1
+         F5QRRTDbnvJfUI7vhDggC5mOLm1MJFa1OnDlMjpRPZvp2Wcvso3bwCkW/R+ecr+g1Mh8
+         3mrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790864266; x=1791469066;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xDMyZjpmBuMrFbLISKqTNyCUa2kXcFY6ppx5n8yKikE=;
+        b=PiP/6a7ZVTVQJHj7gWQ+cQda8nSp4PYeFTyCgBMUnv/qkuWR/peyvKJSCpqes14uy9
+         KC3CNcHGDg+INyGA6r+nymtWKHRoOHHT6EpfrRGzrdDoAqfS5Cj4F5f981NorHUp5JkE
+         k5k3fwGicXMhGSjsq09D39oBUk4yxzxpBrUeEbNuhGlLRN+ZJKHw6DjHdzEMyEcy1vhL
+         J9Cuv17JOdvFqzXBg203GanANiHTzUvYKaHvstFEDedWORJKML2/dNdJTj5BWYOOO72V
+         Dd1NA0uaKxY8sKqLx/Pn9Y1QVvkjgr2B6Vjk1p2dH0gxxzCn5SJw1yNC0K7xDdg7IQSr
+         cTBA==
+X-Forwarded-Encrypted: i=1; AKwUvBys5tTzIiUydicOfPZHdMyW5zyCQERZ2uGb+/aw1+krwiRE81X1GDJRwJeO45aPW/Otcl4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kUmC4CAyalTNRpxe4WEgEzGmT6j4P11GM8BADQweZNTWhaCAQr
+	aFHVqR9iUNyXS8r2dSSvx412ThSDXzy9dJq2p+MjpJ2aWCuIJv6TYkDlvMrS4UEjCR4=
+X-Gm-Gg: AYBFou0alYOR3QGcaREnE/Mqz3YQOXumZJ9tdV/8dW26RKL3gwby5zxoHnv36dbnFzC
+	RGrnbYNBI9PM6mkzMVUa28uTHgw2nTFJwTi9xwCNS5s6bS0XdF7+BuNIuFgnbdCaz1SvZPIJQMn
+	JqeSb9fbYkk11oBMLiFD+ICazDwShfPzOnDOlwvRU8QQoo3JxyeGewioXft3pnbsEQ5QxfWK2Kz
+	q7xg4pCu6QMaiZB2lR4TRdG8GAvKLDtIkxjT8kkwvyNLBVD/ISYnE3vxZb3iLRwtnALiSHBoPte
+	fuq7vLA1kZF/SFPdr+ymqIfnqhnLtPc/jPgDinAG7TS5RFQvj5psT0VdH+tHhmIrSNMVe6QjcBn
+	d4HEHj7Swj1Fb+OD+9Q+ha7obfB/C/lvdMM62VMASR72sP0rIEuA854tQablW3eGyMagESec2nl
+	urdPiJTP2JWNmfdbbuJQLE8iv0u+nVEK9GqDnTWqiCpjpKPRiSRoScOcw=
+X-Received: by 2002:a05:7022:ed02:b0:147:5149:d12d with SMTP id a92af1059eb24-14d33f39e14mr4209784c88.18.1790864264892;
+        Thu, 01 Oct 2026 07:17:44 -0700 (PDT)
+Received: from ziepe.ca ([130.41.10.202])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14df3ed1adcsm6451579c88.10.2026.10.01.07.17.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 07:17:44 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xCHbT-0000000EHOj-0Nin;
+	Thu, 01 Oct 2026 11:17:43 -0300
+Date: Thu, 1 Oct 2026 11:17:43 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: ackerleytng@google.com, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
+	vannapurve@google.com, erdemaktas@google.com, jxgao@google.com,
+	rientjes@google.com, fvdl@google.com, jthoughton@google.com,
+	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev,
+	Gregory Price <gourry@gourry.net>, yan.y.zhao@intel.com,
+	michael.roth@amd.com, suzuki.poulose@arm.com,
+	Christian Brauner <brauner@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com,
+	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Connor Williamson <connordw@amazon.com>, kernel-team@android.com,
+	kernel-team@meta.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 01/17] mm: shmem: Implement guest_memfd provider
+ operations for tmpfs
+Message-ID: <20261001141743.GB3019323@ziepe.ca>
+References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+ <20260925-gmem-tmpfs-backend-v1-1-d36159822d18@google.com>
+ <9292b27b8f48c515bee3246cf3b3a60762302186.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9292b27b8f48c515bee3246cf3b3a60762302186.camel@infradead.org>
 
-On Thu,  1 Oct 2026 15:01:52 +0530
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+On Thu, Oct 01, 2026 at 02:07:40PM +0100, David Woodhouse wrote:
+> The *consumers* of this memory provider API will include KVM/guestmemfd
+> and IOMMUFD. The latter *might* be through masquerading as dmabuf, or
+> IOMMUFD might treat memory providers as a first class citizen and be
+> taught to consume them directly.
 
-> The cdev path only supports one bound/open device fd, but
-> VFIO_DEVICE_BIND_IOMMUFD only checked the per-file access_granted flag
-> before capturing the KVM file reference. A second fd for the same device
-> could therefore replace device->kvm, fail later in vfio_df_open()
-> because open_count is already nonzero, and then clear the active KVM
-> association during error cleanup.
-> 
-> Reject the bind while holding dev_set->lock if the device is already
-> open, matching the existing cdev single-open rule before touching the
-> device-wide KVM state.
-> 
-> Cc: Alex Williamson <alex@shazbot.org>
-> Cc: kvm@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  drivers/vfio/device_cdev.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-> index 1d9515c967b0..ab46563604ac 100644
-> --- a/drivers/vfio/device_cdev.c
-> +++ b/drivers/vfio/device_cdev.c
-> @@ -124,8 +124,8 @@ long vfio_df_ioctl_bind_iommufd(struct vfio_device_file *df,
->  		return ret;
->  
->  	mutex_lock(&device->dev_set->lock);
-> -	/* one device cannot be bound twice */
-> -	if (df->access_granted) {
-> +	/* The cdev path only supports one bound/open device fd. */
-> +	if (df->access_granted || device->open_count) {
->  		ret = -EINVAL;
->  		goto out_unlock;
->  	}
+If we are reinventing a dmabuf improved for these use cases then lets
+just use it directly.
 
-This is already addressed by [1], committed as [2].
+It would be nice if it could handle MMIO and "cachable MMIO" as well.
 
-[1]https://lore.kernel.org/all/20260911170429.1642480-2-alex.williamson@nvidia.com/
-[2]https://github.com/awilliam/linux-vfio/commit/258ba46543abdd36844f04bba8b4022a5731d873
-
-Thanks,
-Alex
+Jason
