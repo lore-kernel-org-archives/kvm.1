@@ -1,46 +1,46 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011023.outbound.protection.outlook.com [40.93.194.23])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE484BB263
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65144ACC7B
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 13:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790860879; cv=fail; b=b7rZJwxocOkE25pjozz5gw5pw+9YTt6grYKAF0V/20KVH2xzHLONJ6PHTc7q+CvosmQX1HMvWVr1bYbucxUm5+GAahWnza332JxJY6OGWcs//UpH/Co0GZKaZwIgYftKTd+aZhijTRJaPyYqHZ/eGIZJc2QwcUsvyNADJ/7bGoQ=
+	t=1790860890; cv=fail; b=sgWbg7l6a0vnMl4KyVZEtqzIydI0M0O3zRgw+0WSdDo7R7x7oZH36bnNaALNigTUPfBwOgYVGbRsw2FL/jhL2igobO0NZ6IBodX0rivctDXuS57oqXxYyY0651KnA1kBW7E+57c1zJeBkzGusnCkiksbOyFteYzhwkqf83cV3p8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790860879; c=relaxed/simple;
-	bh=u1P33HFPgH28GVl4vtKKR2enGdTVpkGF51xuMS8n1lA=;
+	s=arc-20240116; t=1790860890; c=relaxed/simple;
+	bh=7c3TPavAZ35dQOHVOdC1iK92j/UfBqatoyAvrqF+KYU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZbnXgYFnDY/yhsQ4gbcUZV2m+JbjfQcQ9HfO5gcARrv9IfDApJGo8pVHvathr/xHR9Nz/BocR72n88doV+kS0pdSE7O1UOb+VtOhm7GX9FdrZKuqL0DpdL+BNvI/cnU1pD3uFVA9F0p3Xcf2IeQOWoLPIcOU5K1UFNsc655EK50=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YJyNbsZm; arc=fail smtp.client-ip=40.93.194.23
+	 MIME-Version:Content-Type; b=r5yOLS2SWI+8GMZ2erAK95TA+4+6bLJPjuXWfUv/jQPs3xUoMHMMEMcJhpSN9eWwCaoURIiNrfQzniBZe+PjfSA2aVhaZ2JvyRWG8ybVgV3XFwsH3pnGoRLG5oH92i6a6t5Elx6bfz2lz5badfScpftPVdi7ScOTiF9Vo5wxpOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HY5sxwGP; arc=fail smtp.client-ip=40.93.196.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YJyNbsZm"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HY5sxwGP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R1D0Pl3QcKO0IcRKgSo6AZDjazJEKvDz0IzB3Dpa2WqWLQG1Me7Ui3lgaAccsIdCqX+1G7spHqwZ00FdFzyRdSUo4W/lSdmV+ksBJko53fuqqi01csxaImQQx8nCIw1+6MneJETU3iF6uiqaOrBvgArk/hNixqUt4LZjXyTm00AXzr8J3yRQkRm/ey5KtgZAYuj9h3MvCRcMTMa2IWPzELaE+ENb1biaZRkEWUQdFW2as9zX884Cs253I15K/YeIYAW5u7hr5LF+bGV/XLSr21qa+OgmnJM7AzKKSozsHMMRQ7yMydgUch2NiXK2EJGLLBoHsFx3j1GjT/qXD2ADsg==
+ b=fx+Ol1BgMGzaAPZVOjBIvZQFN5MAhj2FZ27DLtGJZb2ePu8fqt9MgUb63Sf1l2+iou3bu29eE+ro4eKqS4AEqLFuu8ie1vwZhTILGemfGnlIHnvOxKx+8kZt3/zz2Q4p6/CMlpLA4GsTMXXCgsaiGv+dxLEz9+JmZob57KO2vzcmRya8H6SE/dhj+lHwrQ8Dh0les+t3Ef8QcrEmv1POdL8PXV1QzQQO2sAZCAHL9MFSzKhDZZmFN4vPdz527K4R4S/r6m5vu2TFj+7oZzCZx0V04czAvkxBMw6KfVDyJE4jhyN5ISRMhQqoG7Q+iJD9YO43DbZukpOlVEXaw53MpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fNRJ7T7tt964iHwKkEV2A7CAUcyosQggMwmQxKUPXCE=;
- b=e14jP2+A5ZkdETFHjLCmu8WgFvslDdaj7O1iQMCcaboujU2V6jZmGoWztoDUy8Fsx8vmJcl5SzegLMU50790IZPPjLQ//NbtWxIJBV6INQoVSS9RXEIeYb6tPEVaImLzlYYGrZ6HammbPhReHU3e+nYJbMEJdx4UfAR5vqV7fksFOgJgNd9hExZl7Xibi0rEE2irA7Qy3SJ+CnhKo83lzDpe9CVYoxzfYRWIuDyNxHgd4D8TepveXkGdAylcIwc3dkjxfMRGCm6TcgSZ7q+bV2JD8liiT2eTv3+zp8RE7qcwCc//JgTDG8g+z2urgCAyl/ZQvaTcs3TmgRWPmMHq4Q==
+ bh=bisXHmCSAt5R2WpboUp3Gb4SX5wEsv3206QdiP1jtxc=;
+ b=PdDXOTFmfPOyeUlIRHUfQi4/9oSoX8Bb5obDHGnV5g2+8JO+srBZPcGeCrwm9eL69u7SiJbc1/+HgyN+rHEsv0N7+7Y4AjS1puVJanNX8y4BV7MqVORGaYKz/xUpywdrQvM/V+7/UEZIZYeMBAEv7Gh0TB130g1csHnchgT9068wdPW8pT1UQYsBTRIooZAbI38Hu+seP3UB/3z9CPie264eP9Rb0Z7van33ZEB6hQ5H1mb87udAaQRAIgxGpxVxazXvueQre0mV74vVTAZYw0GL0eRJ8HrSF0LDD6hF2anJ5F+xXJYUztnXPsyZAqRfg4lNwbb92Jco8G/vBDbJ6Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fNRJ7T7tt964iHwKkEV2A7CAUcyosQggMwmQxKUPXCE=;
- b=YJyNbsZmsZz/QbdhaPDKzzCOh62g14dbOWB+A1oyyg/REc9DBcg+xrD0oSQi+ik23l2fn7O5iEL63MeR+MN8hV9dbHZA4EdfQ/1H2tbVqITJMVA+l3JW53XWiG00KiMmXs+soMmYC3sn95PjOV4n/vai8FPAdiBYgmYG3KEuw5E=
-Received: from BN9PR03CA0869.namprd03.prod.outlook.com (2603:10b6:408:13d::34)
- by DS4PR12MB9684.namprd12.prod.outlook.com (2603:10b6:8:281::11) with
+ bh=bisXHmCSAt5R2WpboUp3Gb4SX5wEsv3206QdiP1jtxc=;
+ b=HY5sxwGPX5HGyLMccyCwhD84LZYNY3YNk3eNN6AVTIqdEOdMwFbO6ROAYOo+ZFVaLdWVv8b5mH+XJ3b01wKtGtEel6fjwilqyZsfUhtFAzZ2K/wdmWmdIyXEWmp0DziMFQAsoV6irQSR40Vxkp9u4qgbNuzdoTiMyIjfZal4QCc=
+Received: from BN9PR03CA0694.namprd03.prod.outlook.com (2603:10b6:408:ef::9)
+ by CYYPR12MB8961.namprd12.prod.outlook.com (2603:10b6:930:bf::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
- 2026 13:21:14 +0000
-Received: from BN3PEPF00022BCB.namprd03.prod.outlook.com
- (2603:10b6:408:13d:cafe::75) by BN9PR03CA0869.outlook.office365.com
- (2603:10b6:408:13d::34) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 13:21:17 +0000
+Received: from BN3PEPF00022BCA.namprd03.prod.outlook.com
+ (2603:10b6:408:ef:cafe::93) by BN9PR03CA0694.outlook.office365.com
+ (2603:10b6:408:ef::9) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.16 via Frontend Transport; Thu, 1
- Oct 2026 13:21:14 +0000
+ Oct 2026 13:21:17 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF00022BCB.mail.protection.outlook.com (10.167.248.168) with Microsoft
+ BN3PEPF00022BCA.mail.protection.outlook.com (10.167.248.167) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 13:21:13 +0000
+ 15.21.472.14 via Frontend Transport; Thu, 1 Oct 2026 13:21:17 +0000
 Received: from kenya-2231host.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 1 Oct
- 2026 08:21:09 -0500
+ 2026 08:21:13 -0500
 From: Manali Shukla <manali.shukla@amd.com>
 To: <kvm@vger.kernel.org>
 CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
@@ -63,9 +63,9 @@ CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 	<sandipan.das@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Dapeng Mi
 	<dapeng1.mi@linux.intel.com>, Mingwei Zhang <mizhang@google.com>, Jim Mattson
 	<jmattson@google.com>
-Subject: [RFC PATCH 5/9] x86/sev: Forward trapped PMC event-select writes to the hypervisor
-Date: Thu, 1 Oct 2026 13:20:17 +0000
-Message-ID: <20261001132021.254270-6-manali.shukla@amd.com>
+Subject: [RFC PATCH 6/9] KVM: SEV: Add support for hardware-switched PMU
+Date: Thu, 1 Oct 2026 13:20:18 +0000
+Message-ID: <20261001132021.254270-7-manali.shukla@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261001132021.254270-1-manali.shukla@amd.com>
 References: <20261001132021.254270-1-manali.shukla@amd.com>
@@ -81,206 +81,181 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCB:EE_|DS4PR12MB9684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 908d2768-7990-4aa3-31b9-08df1fbede04
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCA:EE_|CYYPR12MB8961:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3571ebee-1582-48bd-5110-08df1fbee03b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|23010399003|10067099003|56012099006|11063799006|260925021911599003|260925022911599003|260925021311599003|6133799003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|376014|23010399003|1800799024|18002099003|22082099003|3023799007|11063799006|10067099003|260925021311599003|260925022911599003|260925021911599003|56012099006|5023799004;
 X-Microsoft-Antispam-Message-Info:
-	nRl8FWv6cXBWwnbzCReAFid8K3KSP5hwxDBP2YR77c+dz8BlxavUHRtZPZoV8V17eWsp6wQAxVT5O0RSTLOBNFTkTole9wwVclpxTJaqdbOIpAuaddXKzu/0xzyQE60LBHkbznV/yAzTxmEhi+PW0/0YdDgY+5rJXmLtReeh2n+zz6WnpfHcVDtB2WmZk2CjuHQemQymdpLZC7zEuO4BW7PJJxDzraT4m79JJE9z2QlnoQxyYgCq+nFeSiC7BI3ntvvM4CYN/hGjMZCyQkbdWPToGxXIpaHo5qy92U9OayUeenHS/x+GVs3ETcLroydIiizPX345bRWGh71MmzEUuJmM8wtrXV+JaHsstSCGRJcTxvYDD/EPSYnKjaQbhXuRbNXKlB5OXpYFDWl4kl7+D6awwbwEm1rNW107nFD1ouRXr+ZsD2K1z4n9zoFbOEbD1PSvwPg99PT5NJurJaJGhHtyl7KjdzxiumntcuOFQJuXI86/tgpNq6GeI8KLvruN9sdqKHoLahCazGco9ZQUqbViCJpf2bapN0miJJfFttB6/U7s44GFQ5hOyjeNI3tAorDQcaS6SMUyU/8lmmK7qKKrgLgd+bQTvVuCpwfAqHi6j+DYMlreUOk3CciWfqBm7jMH1/IBZ1+CytKooTfTqqP0jZ/Prx/MXf8HfxBIjMIKleLlL4r6yNIdN5Sxbb1hrN0ywjs2iQBGx/5RPTkcfQ==
+	dId7VQooir0SrzAzs4d56Ba+gimCc2IJ7cbA4aUjsfXTOaGVD5vjrGt2O5FDGNnx5d5Tk777tirfb9Qz/DwlHCQyv1k0UJC9/5o5vhp7rXv5Z4ybyPsw5a4/TwVYUBXTaCIQdkqonvGK8QcJK6lujTgK08Fl/MnJWM+e9hAsNPA9ZCWd0h1rDJJth0ms2sRkz9iY93gj0Xk3t7BKU7Wo+ovZQeFYSMLC0CuOulMgGEcVnHTpvRPOPNnHJAaJjLEtEnsMblMHWhdeo0QUTZiqYaDlO5HcTUBswqg2ixRcEFcR9y0uUv9ZKe9QFO1t7f8jl/9T1m50wJhu61VfBfkjRYmFPAD4OhgBXAVP/IP/qKEdqRhbZoOXWjn6HCmvURxhLvi3BmiepzzROd+LB1zZnzojbDh7HGJlXMbEmv9AXxKk+4H/omb7Z7nBakqXZq24QikKQb45ajlLv7t5w3lgoFVZO4YXNygEw8oWdhgMGZXmbpRhNu0dNGYVblQase07NMCIU9UZoCb+KQ+iFTo9RrQdeV4FUGYftvT47vU57mwsY1DK3d0Z7CW4wt+M8Mj1YcaHHdcoGV0HQtVVynhZYMCik7PEUDi5XLiSiUN3xrPMBEbVD2xj/XCJf6SW4Zg64nPN3dA4he5935fuHX0c3+wF/iWKU1wkgqlNfTurF2Mqv/TVJN89S6MaZoNid15w/R7zHUHWhlcKPccuzEwyNg==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(23010399003)(10067099003)(56012099006)(11063799006)(260925021911599003)(260925022911599003)(260925021311599003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(23010399003)(1800799024)(18002099003)(22082099003)(3023799007)(11063799006)(10067099003)(260925021311599003)(260925022911599003)(260925021911599003)(56012099006)(5023799004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	o+8Ai1njH+50NWWrClSwO7m5eMAt9uTkycrPBF5dDbuaJ7R1RDckttoSoxlgyabhIEokzIST6MRszmJQFTwOlkIc5VzephRzVUFt1nzoPW35Vx1OVzjVcZt5q9kVWczz9wGH7IqnJdtq1Hfv/3To+6XgS+CSFs2fg8XLIoEFfZBBPNzRKK00M2OIuUhWYq+neZQ6Sid2E9Sf/38Q88Wf+9RDQDwjF2v3VIb+CjUB8m3tB4X/DqtzPnOA3tHskgldjBjWzCqUH14F3TFMl5gZxY3eR4mAtRqZ2j05tH6BFn3mVDJFy60JaEwuGdbO7iXFzhlGsBwpkGuaKu1uPJMYQORsCuIHtdFBpap4eHv67PHkktjI+QwZlCezHK/O82DjxuIzi1MJru0B8wvJ1GI+gJiCHe+Ut34kxGPz7wxJh3zu1shek+xIHinMH4eH2/Ne
+	EzpihH3NPkbYf4UFsK1SbK/ad0CneJwaWIxq3RzEoMZ8WTsVqC8SCKmXjBAvx5fArx7uavVnXExc0kOSqxWbMLb/ppDfMCTrwy/6cTG7iREQW3g87typ2QLendWg0HH9IH5Mz2WVrgf5W4nzwfAvq9qtNembwhC/LGaXXu6Kn6RkPyLaGPJNBMmqaTLzR6BLmQEWYrgslaU+JPIuJpXWP+53UmtzyOaFogc9on/Sw7aoj4RJWAwG8xUXatgTiwE31L33HfZAFyzLjNB6fvOmmboQnOj87YySqKDfqWYJwIajarQoABRLfDGhnFmEexh7SkivWF7DCarpIVfegsW2sAK1TLAhdf+zmTWJU3ab+oOuVREH9vL1D79tzsNCcEdxarDq6Tuc8MpyTweNpuiRpe0Js5NXn4N1b5sNjEAqi9BbJ48lWAGXBGnxvCJgGqYg
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 13:21:13.8218
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 13:21:17.5025
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 908d2768-7990-4aa3-31b9-08df1fbede04
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3571ebee-1582-48bd-5110-08df1fbee03b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BCB.namprd03.prod.outlook.com
+	BN3PEPF00022BCA.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9684
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8961
 
-With PMC virtualization, an SEV-ES or SNP guest writes its event-selects
-directly, and the hypervisor filters events in hardware: a write that
-enables an event missing from its allow list raises a #VC.  Forward such
-writes with SVM_VMGEXIT_PMC_FILTER, along with every event-select, and
-program the value the hypervisor returns.
+From: Sandipan Das <sandipan.das@amd.com>
 
-Write the requested value ANDed with the value the hypervisor returns.
-This way the hypervisor can only turn bits off, e.g. ENABLE for a denied
-event, and never turn bits on.  Turning ENABLE back on for a denied event
-would trap again inside the #VC handler.
+Extend hardware-switched mediated PMU support to SEV-ES and SEV-SNP
+guests. As the guest PMU state resides in the encrypted VMSA, PMC
+virtualization has to be negotiated with the guest through a new SEV
+feature bit, SVM_SEV_FEAT_PERFCTR_VIRT. Don't advertise it yet: a guest
+with PMC virtualization programs its event-selects directly and would
+bypass the PMU event filter.
 
-On a PerfCntrGlobalCtl write, first write each event-select ANDed with
-its returned value, which turns off the counters with denied events,
-then write PerfCntrGlobalCtl.
+The requested VMSA features are only known once the guest has been
+initialized, so set the KVM_MEDIATED_PMU_CAP_HW_SWITCHED capability in
+the guest init path, gated on the feature bit.
 
+Once the VMSA is encrypted, KVM can no longer access the guest PMU
+state. Hence:
+  * Don't load or save the guest PMU state in the VMCB, it lives in the
+    VMSA.
+  * Do not intercept RDPMC, as it cannot be emulated after the VMSA is
+    encrypted.
+
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+[Manali: Keep PMC filtering off and PERFCTR_VIRT unadvertised until KVM
+ can filter the guest's events, don't WARN on a protected vendor state]
 Signed-off-by: Manali Shukla <manali.shukla@amd.com>
 ---
- arch/x86/coco/core.c          |  3 ++
- arch/x86/coco/sev/core.c      |  2 +-
- arch/x86/coco/sev/internal.h  |  1 +
- arch/x86/coco/sev/vc-handle.c | 68 +++++++++++++++++++++++++++++++++++
- include/linux/cc_platform.h   |  8 +++++
- 5 files changed, 81 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/svm.h |  1 +
+ arch/x86/kvm/svm/pmu.c     |  8 ++++++++
+ arch/x86/kvm/svm/sev.c     | 28 ++++++++++++++++++++++++++--
+ arch/x86/kvm/svm/svm.c     |  3 +++
+ arch/x86/kvm/svm/svm.h     |  1 +
+ 5 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index 989ca9f72ba30..d8249a3acb605 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -107,6 +107,9 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
- 	case CC_ATTR_SNP_SECURE_AVIC:
- 		return sev_status & MSR_AMD64_SNP_SECURE_AVIC;
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index 6272ebc955d32..0e4a01e36e54a 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -316,6 +316,7 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
+ #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
+ #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
+ #define SVM_SEV_FEAT_SECURE_TSC				BIT(9)
++#define SVM_SEV_FEAT_PERFCTR_VIRT			BIT(11)
  
-+	case CC_ATTR_GUEST_PMC_VIRT:
-+		return sev_status & MSR_AMD64_SNP_PMC_VIRT;
+ #define VMCB_ALLOWED_SEV_FEATURES_VALID			BIT_ULL(63)
+ 
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index 52da247e23050..3ef05b651de21 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -198,6 +198,10 @@ static int amd_get_vendor_state(struct kvm_vcpu *vcpu, u32 msr)
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+ 	struct kvm_pmc *pmc;
+ 
++	/* A protected guest's PMU state is in the VMSA, there's nothing to do. */
++	if (vcpu->arch.guest_state_protected)
++		return 0;
 +
- 	default:
- 		return false;
- 	}
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 60a0403898e4f..8b89725290af1 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -756,7 +756,7 @@ static void *snp_alloc_vmsa_page(int cpu)
- 	return page_address(p + 1);
+ 	/* MSR_PERF_CNTR_GLOBAL_* */
+ 	switch (msr) {
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+@@ -233,6 +237,10 @@ static int amd_set_vendor_state(struct kvm_vcpu *vcpu, u32 msr)
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+ 	struct kvm_pmc *pmc;
+ 
++	/* A protected guest's PMU state is in the VMSA, there's nothing to do. */
++	if (vcpu->arch.guest_state_protected)
++		return 0;
++
+ 	/* MSR_PERF_CNTR_GLOBAL_* */
+ 	switch (msr) {
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 28bc15def6a2c..1cf2260423573 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -212,6 +212,14 @@ static bool snp_is_secure_tsc_enabled(struct kvm *kvm)
+ 	       !WARN_ON_ONCE(!sev_snp_guest(kvm));
  }
  
--static unsigned int sev_pmc_nr_gp_counters __ro_after_init;
-+unsigned int sev_pmc_nr_gp_counters __ro_after_init;
- 
- static int __init sev_pmc_init(void)
- {
-diff --git a/arch/x86/coco/sev/internal.h b/arch/x86/coco/sev/internal.h
-index b9632c0fc3916..78486007d22ef 100644
---- a/arch/x86/coco/sev/internal.h
-+++ b/arch/x86/coco/sev/internal.h
-@@ -6,6 +6,7 @@
- 
- extern u64 sev_hv_features;
- extern u64 sev_secrets_pa;
-+extern unsigned int sev_pmc_nr_gp_counters;
- 
- /* #VC handler runtime per-CPU data */
- struct sev_es_runtime_data {
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index 96b62b49b2b53..7486762969f63 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -33,6 +33,7 @@
- #include <asm/cpu.h>
- #include <asm/apic.h>
- #include <asm/cpuid/api.h>
-+#include <asm/perf_event.h>
- 
- #include "internal.h"
- 
-@@ -368,6 +369,63 @@ static enum es_result __vc_handle_msr_caa(struct pt_regs *regs, bool write)
- 	return ES_OK;
- }
- 
-+static u32 sev_pmc_eventsel_msr(unsigned int i)
++static bool sev_es_is_perfctr_virt_enabled(struct kvm *kvm)
 +{
-+	if (boot_cpu_has(X86_FEATURE_PERFCTR_CORE))
-+		return MSR_F15H_PERF_CTL0 + 2 * i;
++	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
 +
-+	return MSR_K7_EVNTSEL0 + i;
++	return (sev->vmsa_features & SVM_SEV_FEAT_PERFCTR_VIRT) &&
++		!WARN_ON_ONCE(!sev_es_guest(kvm));
 +}
 +
-+static enum es_result __vc_handle_pmc_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ /* Must be called with the sev_bitmap_lock held */
+ static bool __sev_recycle_asids(unsigned int min_asid, unsigned int max_asid)
+ {
+@@ -534,9 +542,11 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+ 	if (snp_active)
+ 		sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
+ 
++	if (es_active && !sev_es_is_perfctr_virt_enabled(kvm))
++		kvm_clr_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_SWITCHED);
++
+ 	if (es_active)
+-		kvm_clr_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_SWITCHED |
+-					       KVM_MEDIATED_PMU_CAP_HW_FILTERED);
++		kvm_clr_mediated_pmu_caps(kvm, KVM_MEDIATED_PMU_CAP_HW_FILTERED);
+ 
+ 	ret = sev_asid_new(sev, vm_type);
+ 	if (ret)
+@@ -4744,6 +4754,20 @@ void sev_es_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+ 				  !guest_cpuid_has(vcpu, X86_FEATURE_XSAVES));
+ }
+ 
++void sev_es_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
 +{
-+	struct perf_ctls *ctls = (struct perf_ctls *)ghcb->shared_buffer;
-+	u64 eventsels[AMD64_NUM_COUNTERS_CORE];
-+	struct pt_regs *regs = ctxt->regs;
-+	u64 val = lower_32_bits(regs->ax) | ((u64)lower_32_bits(regs->dx) << 32);
-+	unsigned int i, n = sev_pmc_nr_gp_counters;
-+	enum es_result ret;
++	if (!kvm_vcpu_has_mediated_pmu_caps(vcpu, KVM_MEDIATED_PMU_CAP_HW_SWITCHED))
++		return;
 +
 +	/*
-+	 * Disable the counter first, so it doesn't keep running an event the
-+	 * hypervisor removes from its allow list while handling this request.
++	 * RDPMC cannot be emulated after the VMSA is encrypted. If a guest has
++	 * fewer counters than the host, the extra counters will continue being
++	 * readable via RDPMC (no #GP) but they will remain in the init state.
++	 * Access to the extra PERF_CTLs and PERF_CTRs remains intercepted.
 +	 */
-+	if (regs->cx != MSR_AMD64_PERF_CNTR_GLOBAL_CTL)
-+		native_write_msr(regs->cx, val & ~ARCH_PERFMON_EVENTSEL_ENABLE);
-+
-+	ctls->num_counters = n;
-+	for (i = 0; i < n; i++) {
-+		eventsels[i] = native_read_msr(sev_pmc_eventsel_msr(i));
-+		ctls->counters[i].perf_ctl_idx = sev_pmc_eventsel_msr(i);
-+		ctls->counters[i].perf_ctl_val = eventsels[i];
-+	}
-+
-+	ghcb_set_sw_scratch(ghcb, __pa(ctls));
-+	ghcb_set_rcx(ghcb, regs->cx);
-+	ghcb_set_rax(ghcb, regs->ax);
-+	ghcb_set_rdx(ghcb, regs->dx);
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_VMGEXIT_PMC_FILTER, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (regs->cx == MSR_AMD64_PERF_CNTR_GLOBAL_CTL) {
-+		for (i = 0; i < n; i++)
-+			native_write_msr(sev_pmc_eventsel_msr(i),
-+					 eventsels[i] & ctls->counters[i].perf_ctl_val);
-+	} else {
-+		if (!(ghcb_rax_is_valid(ghcb) && ghcb_rdx_is_valid(ghcb)))
-+			return ES_VMM_ERROR;
-+
-+		val &= lower_32_bits(ghcb->save.rax) |
-+		       ((u64)lower_32_bits(ghcb->save.rdx) << 32);
-+	}
-+
-+	native_write_msr(regs->cx, val);
-+
-+	return ES_OK;
++	svm_clr_intercept(to_svm(vcpu), INTERCEPT_RDPMC);
 +}
 +
- /*
-  * TSC related accesses should not exit to the hypervisor when a guest is
-  * executing with Secure TSC enabled, so special handling is required for
-@@ -426,6 +484,16 @@ enum es_result __vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt, bool
- 		if (cc_platform_has(CC_ATTR_SNP_SECURE_AVIC))
- 			return ES_VMM_ERROR;
- 		break;
-+	case MSR_F15H_PERF_CTL0 ... MSR_F15H_PERF_CTR5:
-+		/* Odd MSRs are the counters. */
-+		if (regs->cx & 1)
-+			break;
-+		fallthrough;
-+	case MSR_K7_EVNTSEL0 ... MSR_K7_EVNTSEL3:
-+	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
-+		if (write && cc_platform_has(CC_ATTR_GUEST_PMC_VIRT))
-+			return __vc_handle_pmc_msr(ghcb, ctxt);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-index 559353ad64acb..5b98a357f3e20 100644
---- a/include/linux/cc_platform.h
-+++ b/include/linux/cc_platform.h
-@@ -104,6 +104,14 @@ enum cc_attr {
- 	 * to run SEV-SNP guests with full Secure AVIC capabilities.
- 	 */
- 	CC_ATTR_SNP_SECURE_AVIC,
+ void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm)
+ {
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 4d48286faeb50..ac8f06e1f5a10 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1148,6 +1148,9 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
+ 		svm_set_intercept(svm, INTERCEPT_RDPMC);
+ 	else
+ 		svm_clr_intercept(svm, INTERCEPT_RDPMC);
 +
-+	/**
-+	 * @CC_ATTR_GUEST_PMC_VIRT: SEV-ES/SNP PMC virtualization is active.
-+	 *
-+	 * The hypervisor filters PMC events in hardware, trapped event-select
-+	 * writes must be forwarded to it.
-+	 */
-+	CC_ATTR_GUEST_PMC_VIRT,
- };
++	if (is_sev_es_guest(vcpu))
++		sev_es_recalc_instruction_intercepts(vcpu);
+ }
  
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
+ static void svm_recalc_intercepts(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 3a5e9e4ecaa90..1f3cd12e44c46 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -1001,6 +1001,7 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event);
+ void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm);
+ int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in);
+ void sev_es_recalc_msr_intercepts(struct kvm_vcpu *vcpu);
++void sev_es_recalc_instruction_intercepts(struct kvm_vcpu *vcpu);
+ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+ void sev_es_prepare_switch_to_guest(struct vcpu_svm *svm, struct sev_es_save_area *hostsa);
+ void sev_es_unmap_ghcb(struct vcpu_svm *svm);
 -- 
 2.43.0
 
