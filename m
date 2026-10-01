@@ -1,142 +1,249 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B32D12EE
-	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 23:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0521A6822
+	for <kvm@vger.kernel.org>; Thu,  1 Oct 2026 23:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790897888; cv=none; b=UKEQcPZ5Vza+pTh7mSFRi0vxc1wHVPtbNHe564MYK0obgmK88hSpP/h4Jg+Me5FrN+CoNAHzg3bzXkddHGvNkJHuEwsfaSE6ZbTQ2SkZlnkRRWQbtGeFXHivj0DOL2ebtGYK4S6m34+0c1/zTMJXoWgTrZc2hv8C+J/YtlARb3w=
+	t=1790898157; cv=none; b=rI18jfb0ulsYw6UxeAmHwaykK2bIrI+00jSTemhId4uzZDLoWLlBshK2pix6fapZpvbiLAC+KG+UQdB035V5TfQVydUKxPCC+Ru39azT/qbWFz4VbKi3n49Z2gpj2KeJVGau/TXFni+FVeTwGOq/qxOQMKdm7rkBj4KaxS0nE8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790897888; c=relaxed/simple;
-	bh=fVE8q1hu6cM1+AbWh3Kf6dl1yrDon73waTO3NY+RGWU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h6/xiOSgS/AmOqhidETL3uFKzHZqEtkA8jbRLghV0w76crX9VqEnkNsHC25B0jamGW9G9J29t1jrIIEFJFInCnule0JPD76Rko5/9lBM3J0r95olnqm45SUUTiEiFyIRsjbtMS2VB4IBVaBkQUKJxv2QNtBXw5k3GzYlKiCP9qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cug73maS; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790898157; c=relaxed/simple;
+	bh=Mnj9eQTJq9AbYkMiVW7FLEPJnNChGUp7wHKL5gHsvx4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eoSqYfg341j/8ba2eTaqNNoXCBCGgZywO+R8aOUMLt1B2NZd3IyPb7fR80hj2p2ht5Bf7W35cH46UEMrDrVuiL5WjNVW6vQqoeN6NyxyDJZqaZVW1JozHs6mVr8VdEcjWhXaSg3oVWDJ8uQ1o/lmEuW8YiHuw7jDPQcf/eBfwZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JHsULws3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tPPKWbJU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cug73maS"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc42a07d04aso4920496a12.1
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 16:38:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JHsULws3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tPPKWbJU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790898154;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h1rty/hi1E13diYp3gmh8YwjoDszZTbFvppq31VQMDY=;
+	b=JHsULws3a327/0dvdabsfgKW6zi32GbaIqzjvl++L51NJLCXxbtdEu9L2aFcOxnATAtvYz
+	UmJvBGCNP0DJuFLtz7TLvLII8SuZ1TN75icc1jAsZ4qjnMgxleZYDvfriESwjdKrljjlT6
+	v1h950aa1F7wtYIBh4kq9INatZ2MSqI=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-qlNqmVU8NDGA9xW0gy6qmA-1; Thu, 01 Oct 2026 19:42:33 -0400
+X-MC-Unique: qlNqmVU8NDGA9xW0gy6qmA-1
+X-Mimecast-MFC-AGG-ID: qlNqmVU8NDGA9xW0gy6qmA_1790898152
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a4a0017549so5140074a91.3
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 16:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790897886; x=1791502686; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1790898152; x=1791502952; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6nkYu0dzogE5uOyvmD8EqBPbrotViITXGWpbRHU0KqU=;
-        b=cug73maS73uERNEe9BsRf8b2tBLFqbHIVI9gUVnhObpDQfZV1dBZMDNfW/aj9Sxi+D
-         ouCXzFYZPmS0czY1wHl3OnII8S3+oFBeXLVqxKmMYReUU6cOkRenqdUbShpuZdyt4URR
-         /6el3cofOKpv79HCXJMaJ/K6+AnaaQxX31JEajIg9vfr7wsyVCvxls0sEspqpZwuanXr
-         ed0sqJ07L4TSReCeicOF+OpqQx+xcr7w0kMGELepazCEiMTXIxl/p3hkTYZ1fL8kKzBy
-         OyltQl1Hwtj9jJRSq19aM9HRxRFhJ9b8qt34RCTVN21WW/e7COJWNCxO/F/lq/xYjvX+
-         U5QQ==
+        bh=h1rty/hi1E13diYp3gmh8YwjoDszZTbFvppq31VQMDY=;
+        b=tPPKWbJU3rK8oNWTO3htvZaUuW2b2Es5lnDaCcNL2Ku318HJxUWp5uod1rQ5VjRZba
+         K+RdviQTp61c+ciXbbpsWjfSjeg1hK4FIoO3KOiFqm+KP9IxcAF5svbLUPq18H4VURGC
+         mcNlq3CGmbW+OslqjC0l26suxakR7apnak2+ftQrPETnZEeJY2yKkSEvLWL0vzzE4F0C
+         AKpgXQb09SbKqILpSZUGHZCqkQeG9HJDYRwXwwlvpdfvZGNg5rVAXDF4x+3gpYt4O2Jq
+         a2FaAtu5MfmQwbwWNfiezhV7NTPd/VjGGMuoSz8U0c/3yYpHy2qRFWlS6TflSEdkhhaC
+         FPdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790897886; x=1791502686;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790898152; x=1791502952;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6nkYu0dzogE5uOyvmD8EqBPbrotViITXGWpbRHU0KqU=;
-        b=wBf6GRI3ak2hGo1+PxgEpUHnjWF73ZiOpP1zxRmM06tuP4aSRAT2tIG+Uvt+hvZJv4
-         uokeowMUj+nf+amaBZy/bSKrKswT+H2/7B8h4KMyLztyidLQAvxlohTAmFQDx4WDU0Vf
-         3M4yuYDPM9hiN0QDnxHjPbLpci3Nd64QSXVZCM7EgEhYI9bkGCQgFGhtKHxQSXXGTLYs
-         4DIfWIUMcL2OGs3SFPpx5gZy3NVOX3gx0hr603yPxqAS6QzVymVHKSdqMm3jMtT7rtHL
-         mYCmBdjA+7DHGDtEs8Zku/FXBI+ogyQvfvuccBzDIjv9wo8BpT6We39RiKlfrKICkUgq
-         PNUg==
-X-Forwarded-Encrypted: i=1; AKwUvBxX9ii4SLZy8sXT9MWKbTJ5kw9FpbDLtfuTUKyDGbi5znRgxrcv4a4iHkjYbZIsIyIsS18=@vger.kernel.org
-X-Gm-Message-State: AFuF++kRg+2rdseDTwtIeVS7e1sX7DvVdD3Se3lo1KT39RJ8I2zd7lZK
-	CivHU/cEKIqpaLT6VobT4qRP7bDGvr8mEa1kNXiUTANd/xj6S2BBcf7FqJJpo3HK3gWS/FHEH4+
-	ozge9tQ==
-X-Received: from pgbfq17.prod.google.com ([2002:a05:6a02:2991:b0:cc7:9b89:2a72])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1f89:b0:3dd:a197:7359
- with SMTP id adf61e73a8af0-3e0bd0193b8mr903872637.50.1790897886101; Thu, 01
- Oct 2026 16:38:06 -0700 (PDT)
-Date: Thu, 1 Oct 2026 16:38:05 -0700
-In-Reply-To: <2dd84890-3c21-4942-a9e4-8e07408620d3@amd.com>
+        bh=h1rty/hi1E13diYp3gmh8YwjoDszZTbFvppq31VQMDY=;
+        b=C1W88x9KiXb8VBMj6IteKx5DPJNRITz3Bwwu6YJ+Z/BLA8Z29byFyzMmpWWEJ4MrEb
+         Zv+jgjF97HzILWeYEcufufDd7KDVqfn/OB7l/hKbaPCM/axv3gVjVZ+7xXJq3fYqgyP6
+         QktmII9CLTp90cip7h2kUpf+zdWPebfqdcN/6QBfMH50yJvMjvoVKWvJay/biwxbmBjt
+         axRzXEeyh5upE3hHy5NYivi/dM54i8iGGMjTe8SOfgL3mfJw13OVIwMD8Cto+LhHHSa2
+         gxKGaK8iCKdtA5z8Oj4xXdSMLsaN7GFIKKfy/SCL5turuFCS0xXVHcPpZJDHmjuUIUT9
+         6WYg==
+X-Forwarded-Encrypted: i=1; AKwUvBxSgmPjJ3rgb9aZ1R6yqAEfQvD21+AR6bj9dK0Frewyk4+ur8uBGS+SfK7wCzqvvAW14Cg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJfW3mgwy3BDG67To5Ip9RPc/uIaesaibT5QmoeRmTn5QRvDA1f
+	X0VLMU9PCrNOYI5vz4pw1lgVuNQ1a5K3N1wfScWYpeU2izJ+hLICRDC/A1XLytwvr7za7sSEEhc
+	eNptBuFQ2N81Ekdu7j6LjDCR7Q8psPqWtNs25djTUNcQklXWrc6UYlw==
+X-Gm-Gg: AYBFou1cHWPT0YZgKQ4AWoCeAoZWpKDd0FggVVUw6Lt4j924LP2FVT7PPAFZORWDlY6
+	Hmi8j8h2aq7X7xpBWp8NbxsV/zEaKj4VvPWAmCitLqWWEd3Vm+iWDQjK4gwID9IBYxcyShJNWT4
+	4qxfMO75DXtiPeuQafdKQ5XeCQaao6LbZL63YSwyFnAnDNWhsAj/s3uEAkZ03k+jrvzdMZoAheT
+	VACzEtZBN6Jj2oAHC1V0FZC1eOKses+0SaRzdXHK9kpIyqYtGmaGCAWWV85uDB116aSc+C7npnZ
+	mZnuO1RdKvCGG3wjm1FTPd2hPnp6B8p6IOD604bzfuNsbuQGhO2WrG0LDanX4p2gszeU/mK354o
+	pZb0IHhjsUnhUQnk/8rg+rkvLO/VhVizrIZXIKZ3naA==
+X-Received: by 2002:a17:90b:1c86:b0:3a4:d5c0:f826 with SMTP id 98e67ed59e1d1-3a6ce9b0fe4mr918284a91.65.1790898152000;
+        Thu, 01 Oct 2026 16:42:32 -0700 (PDT)
+X-Received: by 2002:a17:90b:1c86:b0:3a4:d5c0:f826 with SMTP id 98e67ed59e1d1-3a6ce9b0fe4mr918273a91.65.1790898151463;
+        Thu, 01 Oct 2026 16:42:31 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f4709a7csm6244308a91.8.2026.10.01.16.42.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2026 16:42:30 -0700 (PDT)
+Message-ID: <5461472f-8ab2-4549-b04f-85f0030b4b79@redhat.com>
+Date: Fri, 2 Oct 2026 09:42:23 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260930210201.3482775-1-seanjc@google.com> <2dd84890-3c21-4942-a9e4-8e07408620d3@amd.com>
-Message-ID: <ar7u3WBuxUncIzHc@google.com>
-Subject: Re: [kvm-unit-tests PATCH] x86/pmu: Treat all AMD CPUs as having
- instruction/branch overcount errata
-From: Sean Christopherson <seanjc@google.com>
-To: Sandipan Das <sandipan.das@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v4 04/24] target/arm/kvm-rme: Add mechanic to initialize
+ realms
+To: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
+ kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+ peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+ pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ lorenzo.pieralisi@linaro.org, enju.kohei@fujitsu.com
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-5-mathieu.poirier@linaro.org>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20260903193611.1058589-5-mathieu.poirier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 01, 2026, Sandipan Das wrote:
-> On 01-10-2026 02:32, Sean Christopherson wrote:
-> > diff --git a/x86/pmu.c b/x86/pmu.c
-> > index b262ea59..35f8a818 100644
-> > --- a/x86/pmu.c
-> > +++ b/x86/pmu.c
-> > @@ -222,13 +222,8 @@ static void adjust_events_range(struct pmu_event *gp_events,
-> >  	 * If HW supports GLOBAL_CTRL MSR, enabling and disabling PMCs are
-> >  	 * moved in __precise_loop(). Thus, instructions and branches events
-> >  	 * can be verified against a precise count instead of a rough range.
-> > -	 *
-> > -	 * Skip the precise checks on AMD, as AMD CPUs count VMRUN as a branch
-> > -	 * instruction in guest context, which* leads to intermittent failures
-> > -	 * as the counts will vary depending on how many asynchronous VM-Exits
-> > -	 * occur while running the measured code, e.g. if the host takes IRQs.
-> >  	 */
-> > -	if (pmu.is_intel && this_cpu_has_perf_global_ctrl()) {
-> > +	if (this_cpu_has_perf_global_ctrl()) {
-> >  		if (!pmu.errata.instructions_retired_overcount) {
-> >  			gp_events[instruction_idx].min = LOOP_INSNS;
-> >  			gp_events[instruction_idx].max = LOOP_INSNS;
-> > 
+On 9/4/26 5:35 AM, Mathieu Poirier wrote:
+> Initialise an @rme_guest object and install a handler to get notified
+> when the Realm is ready to start.  That way we can finish reading the
+> Realm once we know everything is in place.
 > 
-> Commit 61a7ee521d ("x86/pmu: Handle instruction overcount issue in overflow
-> test") makes measure_for_overflow() always return 1 - LOOP_INSNS (-10000016)
-> when pmu.errata.instructions_retired_overcount is true. For runs without
-> "perfmon-v2" on a Zen 5 system, I see that the overshoot from this preset value
-> is between 125 and 135,
-
-Heh, I was going to say "woah, that's a lot of exits!", then I realized the
-loop does a million runs...
-
-> which makes the following condition in check_counter_overflow() fail.
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> ---
+>   target/arm/kvm-rme.c | 51 ++++++++++++++++++++++++++++++++++++++++++++
+>   target/arm/kvm.c     | 15 +++++++++++--
+>   2 files changed, 64 insertions(+), 2 deletions(-)
 > 
-> 	report(cnt.count == 0xffffffffffff || cnt.count < 7, "cntr-%d", i);
-> 
-> How should we handle this?
-> 
-> Restrict the condition in measure_for_overflow() to return 1 - LOOP_INSNS
-> if (pmu.is_intel && pmu.errata.instructions_retired_overcount)
-> 
-> or, accept a larger overshoot.
+> diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> index 42e1d1e7b859..a4a5e195c196 100644
+> --- a/target/arm/kvm-rme.c
+> +++ b/target/arm/kvm-rme.c
+> @@ -13,6 +13,7 @@
+>   #include "kvm_arm.h"
+>   #include "migration/blocker.h"
+>   #include "qapi/error.h"
+> +#include "qemu/error-report.h"
+>   #include "qom/object_interfaces.h"
+>   #include "system/confidential-guest-support.h"
+>   #include "system/kvm.h"
+> @@ -29,12 +30,62 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+>                                             CONFIDENTIAL_GUEST_SUPPORT,
+>                                             { TYPE_USER_CREATABLE }, { })
+>   
+> +static RmeGuest *rme_guest;
+> +
+> +static void rme_vm_state_change(void *opaque, bool running, RunState state)
+> +{
+> +    if (!running) {
+> +        return;
+> +    }
+> +
+> +    kvm_mark_guest_state_protected();
+> +}
+> +
+> +static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
+> +{
+> +    KVMState *s = KVM_STATE(current_accel());
+> +    static Error *rme_mig_blocker;
+> +
+> +    if (!rme_guest) {
+> +        return 0;
+> +    }
+> +
+> +    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
+> +        error_setg(errp, "VM doesn't support Realms");
+> +        return -ENODEV;
+> +    }
+> +
+> +    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
+> +    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
+> +
+> +    /*
+> +     * The realm activation is done last, when the VM starts, after all images
+> +     * have been loaded and all vcpus finalized.
+> +     */
+> +    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
+> +
+> +    cgs->require_guest_memfd = true;
+> +    cgs->ready = true;
+> +    return 0;
+> +}
+> +
+>   static void rme_guest_class_init(ObjectClass *oc, const void *data)
+>   {
+> +    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+> +
+> +    klass->kvm_init = kvm_arm_rme_init;
+>   }
+>   
+>   static void rme_guest_init(Object *obj)
+>   {
+> +    ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
+> +
+> +    if (rme_guest) {
+> +        error_report("a single instance of RmeGuest is supported");
+> +        exit(1);
+> +    }
+> +    rme_guest = RME_GUEST(obj);
+> +    cgs->allow_convert_in_place = true;
+>   }
+>   
+>   static void rme_guest_finalize(Object *obj)
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index ed99be7fd80c..401a6f669cbb 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -33,6 +33,7 @@
+>   #include "hw/pci/pci.h"
+>   #include "exec/memattrs.h"
+>   #include "system/address-spaces.h"
+> +#include "system/confidential-guest-support.h"
+>   #include "gdbstub/enums.h"
+>   #include "hw/core/boards.h"
+>   #include "hw/core/irq.h"
+> @@ -596,7 +597,8 @@ int kvm_arch_get_default_type(MachineState *ms)
+>   
+>   int kvm_arch_init(MachineState *ms, KVMState *s)
+>   {
+> -    int ret;
+> +    Error *local_err = NULL;
+> +    int ret = 0;
+>       /* For ARM interrupt delivery is always asynchronous,
+>        * whether we are using an in-kernel VGIC or not.
+>        */
+> @@ -610,6 +612,15 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>   
+>       cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+>   
+> +    /* Initialize confidential guest (Realm) if needed */
+> +    if (ms->cgs) {
+> +        ret = confidential_guest_kvm_init(ms->cgs, &local_err);
+> +            if (ret < 0) {
+            ^^^^^
 
-Doesn't it have to be the latter?  Because won't the test fail if the first run
-of __measure() from measure_for_overflow() takes more exits than the second run
-of __measure()?
+            Code alignment issue here.
 
-> diff --git a/x86/pmu.c b/x86/pmu.c
-> index 35f8a8183a..74e30b149d 100644
-> --- a/x86/pmu.c
-> +++ b/x86/pmu.c
-> @@ -584,6 +584,8 @@ static void check_counter_overflow(void)
->                         else
->                                 report(cnt.count == 1, "cntr-%d", i);
->                 }
-> +               else if (pmu.errata.instructions_retired_overcount)
-> +                       report(cnt.count == 0xffffffffffff || cnt.count < 150, "cntr-%d", i);
+> +                error_report_err(local_err);
+> +                return ret;
+> +        }
+> +    }
+> +
+>       /* Check whether user space can specify guest syndrome value */
+>       cap_has_inject_serror_esr =
+>           kvm_check_extension(s, KVM_CAP_ARM_INJECT_SERROR_ESR);
+> @@ -660,7 +671,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>       hw_breakpoints = g_array_sized_new(true, true,
+>                                          sizeof(HWBreakpoint), max_hw_bps);
+>   
+> -    return 0;
+> +    return ret;
+>   }
+>   
+>   unsigned long kvm_arch_vcpu_id(CPUState *cpu)
 
-Do you have any idea where the 0xffffffffffff check comes from?  Commit b883751a
-("x86/pmu: Update testcases to cover AMD PMU") doesn't explain it at all.
+Thanks,
+Gavin
 
-Depending on what's up with the 0xffffffffffff thing, my vote would be to go big
-hammer, and express the overflow as a fraction of loop instructions, e.g. allow
-for an extra 200 exits:
-
-		if (pmu.errata.instructions_retired_overcount)
-			report(cnt.count < N / 5000, "cntr-%d", i);
-		else
-			report(cnt.count == 1, "cntr-%d", i);
-
->                 else
->                         report(cnt.count == 0xffffffffffff || cnt.count < 7, "cntr-%d", i);
-> 
