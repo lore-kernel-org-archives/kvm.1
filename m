@@ -1,168 +1,282 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF353F107E;
-	Thu,  1 Oct 2026 20:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790886601; cv=fail; b=CB3I3aEbmufosmwllqU+zRbIR2Ams6E0CniZdse0GFzLDt/xnl51wntO3jZc8olOPusRxJajdYCrTZ7AmCvTvdvLLZw62VKfUCe4yD1RNrANDhWIbE5oiKydIqf3zr09EQn5YUHNvtslrUMbZ5nUSNwoc1zFR1DahizHCX77AI8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790886601; c=relaxed/simple;
-	bh=1u62YcnQ5m1i8OvHjh8FSqZ1IbyZBu3w7rDKI8e9IpY=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=JjnIncwP9GeIqXObydKdKXRMehUrfRKnM+fdTcI+YOwaAspmtQovRMa1IZGlm5z4OEZpsf0Ft+9hIj4TpXd6aIGaNp4BTYCCaFj5zi60p2UZaec1MaO7teTGx2uclRapOJ96z2lqga1+DBl5/IlnG14KTFP66jwIlgnPv2XnWlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W/oxSZ7i; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5605349C9;
+	Thu,  1 Oct 2026 21:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790888846; cv=none; b=lRbeB3rGqcpIqrXjFDzUbMW46GGtvJ96vb9XBfE+2PHwQqsWccMHxEGbg25wMqfqrKs5YgkRWNVeS/PHx6JN2NWIZfOCINmy+c8tL9rosKzSi1mLlyE49rfDqMcoLt7Ocej3XtSN8lTTpKMP7vHUaJvAhD+suR99+7YoDkSdM0c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790888846; c=relaxed/simple;
+	bh=V3yw2QQzc2tF1bQarluWiqD0HSA5PZFt1Q5+J2/daqc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=V18kAp8pEm+to6OfbV9ZOp73QbPGFQPeEGer2qqOt9aM+AUGxrXGPdK0/8vnCA6x/N9KmQDk2dfAlsZ1lRNJSFpEUUvPXHWDhtjKjyPTRskE67RcGw4MrYNk1UUnBRGAp547a+xW9oi0IlVv8PKdRcHXVpbSGxq8ZWcG4plBe2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Nb3Fy61+; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W/oxSZ7i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790886601; x=1822422601;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1u62YcnQ5m1i8OvHjh8FSqZ1IbyZBu3w7rDKI8e9IpY=;
-  b=W/oxSZ7i3LurQ4QP0cey+7jIyTlspRVDuGXyaATJ/4gYLNcP4QxHU1tG
-   QYA/hxIMMtUL/KoJdJ3wwwzn3ajKeepNg3erun56/IFeVdjZyVQBmtYZU
-   kIzEG9B0by3mxF6Dlbmg1YyFHjs3sUcIhgp8ppBBcQCfEnMH+RzTXAN95
-   +npo3m0/zQwv9VhuPjST54KakBT5DmdRydc5CuRgAfSmwaxBpQFQjrUgU
-   OeyHZMxoZFS6yHIe78T0yQIPK2kTM4RUzvB8+vr0v782vJDH9TU5bJYMb
-   0O+iEOolHs2YFWh3Xz3hqyyTOqUzQg3sEux6hIiFVWu7cS54u7ZezzvTE
-   w==;
-X-CSE-ConnectionGUID: hUD04lwjTyCZLMi5F8emMw==
-X-CSE-MsgGUID: yJfdsPjcSwKF8cmP5+IGFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="90868943"
-X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
-   d="scan'208";a="90868943"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 13:30:00 -0700
-X-CSE-ConnectionGUID: pdHaF0t/RJ6AODn57YQAgA==
-X-CSE-MsgGUID: Gd9ul7f7RxChPQifvAr7Cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
-   d="scan'208";a="274163435"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 13:30:00 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 1 Oct 2026 13:29:59 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 1 Oct 2026 13:29:59 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.47) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 1 Oct 2026 13:29:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LwTm59lRjHWgEscyMlu2KEPfogzbfFqYpl1v/MqkVWrEDi0cHR1eGYsmESGb/LvIPu+cEoAoq1pPuvy2O3bsH7aaQNCSAxX2VRtDuC1xqbn63Xioi6u9MlBAm6ZxixhqUViPMvsYX85F0C8qFAaIEJ4mDvMwQh8GjAYU5mtJqppwPHVHEmIfSxGWOxFUPaOLrAm14l4qI0JucEiB7iEPx1jqhpPDQl57V2s4qMUjmUH+yHJrmyIPFrpbgkRrTvMPSJqGsgCFi/CQl3FZvBZMaEgtKt3WHcBxilCpFj7OpmhtqCQ6Bc4+xyDu2umpH9UWhGUxX/Nt7B6VmY2mq5CXdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LXx7kmeu6IlLMIkuNlJYdEIwp2o/AKtM9MAd01OYPrQ=;
- b=LSzD81MBWclcr71EfLgL48cmlF/2xl4llYsd7kY5WSBr1RWw7A8lLb2i+I6vzNaddBXsgpfL6zuWh0kUk3ILAb9Q1VLZKdHCIiUbucZ2HK7isrqurFQV9O0HQWM9prXywT+yd4o+zB77yDBh+lEwMOON8E47HziUYD5QfO8oejeg+muTXao6KzNh1au3ZUqRnq4oaml6yARkK9Ssp0mCpp6U8heYolQezk4xj/e79mGRCO+GZc4QlWwpcNdlMfSVJWbTxz7hXPz1CkXKORz3aBbjuFFJwTVl87bT8JSMtqU6zmrCJyxjyEJLd+dW4gx36ZGrBuoalPGJSLFZ2OagnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
- BL3PR11MB6411.namprd11.prod.outlook.com (2603:10b6:208:3ba::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.24; Thu, 1 Oct 2026 20:29:56 +0000
-Received: from DS0PR11MB7925.namprd11.prod.outlook.com
- ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
- ([fe80::60af:89a0:65dc:9c84%7]) with mapi id 15.21.0451.026; Thu, 1 Oct 2026
- 20:29:56 +0000
-Message-ID: <a288d79b-5cba-4c9a-940f-984a0b7412ea@intel.com>
-Date: Thu, 1 Oct 2026 13:29:54 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/20] KVM: x86: Enable APX for guests
-To: <pbonzini@redhat.com>, <seanjc@google.com>
-CC: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<zhao1.liu@intel.com>
-References: <20260930210750.1487547-1-chang.seok.bae@intel.com>
-Content-Language: en-US
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-In-Reply-To: <20260930210750.1487547-1-chang.seok.bae@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0233.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::28) To DS0PR11MB7925.namprd11.prod.outlook.com
- (2603:10b6:8:f8::18)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Nb3Fy61+"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40186497;
+	Thu,  1 Oct 2026 14:07:17 -0700 (PDT)
+Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 491793F86F;
+	Thu,  1 Oct 2026 14:07:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790888840; bh=V3yw2QQzc2tF1bQarluWiqD0HSA5PZFt1Q5+J2/daqc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Nb3Fy61+X3ljdCOR4nvlhrWb8D5QrmuSJ9vEw1Q+nIpYmDGRqEURNqkYh6NDhH7de
+	 VMm6DfrLtTLZP6r/XEeK4HZ69S+fFRs3lm8tcyDlU3a6Yl5FuuoumG5pIxum2k9HOM
+	 X56sMikoh5kjnrLccEORhxlUhiTWHqF5vuMjWThg=
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: maz@kernel.org,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH v21 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
+Date: Thu,  1 Oct 2026 22:06:40 +0100
+Message-ID: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|BL3PR11MB6411:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08a8c41d-b5e5-4815-3a9d-08df1ffac1c9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: wgDRGmY4UC7O+s5NF7Nm0zKKVkJqrDfltiny81QECJX2lTc/JH+xbnytml8oM4IZsQLkX58OrQsk46uYoONptq7Gy15MNnfrN5ZA0PF3UFJ50SvOLsjM5f2yNLL/wffjhiqhGM/ewcwk8L6ApDe5ub1Zi16+HrCgYMK6lKl91Iq5116oBL39hqCxCVsI7U8k98PlUBBdWWs7g1Lmka88q1nxycrUPfAFogS9mDP778+5NQSc5Yvx4f6p8ZY88OJhQKGshaQRWkBUXP68rHZpL/EqdBgo1QFLZvn/ok7ondjciuNytexv7HY9pTkaC8Oz2Hz1Y/6tKb1vs637r6H2Fth+rrWSy0hm22fB7qA4X3IXRX45tDdZoJiE9YPHhAOcE0hS4C7dXgyLAvEiw7ysfgI0hIz4kpPGNBNdr8bq1/2dFylz9lGxaDmKpf9zKqopCXCN8AcKlho0uyC11D3XX8MvvJpynww6OQUvIUmMh3ZyD+4uk0VIqUgDTLztACZwRCPpCVjdzXVvBCPI2nIQAHDn8+INX4VuxTeiSuzIesk8fLtUCvTEsf0L1KsY3bk217ktGLNm/M9Ni0mswxpH46qmWz6bdJx+4OJ/99iv4nVTOUxJrrSCkhuk+OXndTKSxq+lKsrxNGghh8HONG2twZpzncOdrNuVeBh4MZvAPHY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OTFYbk5vK29lVy9VVlBsZkJ5SmZjcFVPWitZQ0ZhUzVSNHhTaDJvZ1pKSEZw?=
- =?utf-8?B?QlR3YjNVZ2E1SmZkTG9Qa3pyOThqb3FlN25Vb0pPLzVlbFFqejhsang0RFR1?=
- =?utf-8?B?alBOTHlNYTM3YjBEOVVUang5THUrWlBNL3pIdlp5QjVRWStFazRXNE9xcjNh?=
- =?utf-8?B?c3o5SWNCMFVvcTdlWTlab3pkdi94OGhlS1FGUll5QWVBbjhsTDJ4dmUzSzBv?=
- =?utf-8?B?ZXhOVW0xV2FQSkhkeXdQVUVuK3AyTTdXNHJJV24yZkE1cnpoc3pEc0NmNXRl?=
- =?utf-8?B?QU16NHZzVXBxSEkvWHpCankxN1Y3WVg0Y1IrNUJNRzA0ejFxS3lJeExWbnRV?=
- =?utf-8?B?anJUVjhYRmVMUks3TURsS1Mrc20xemNPdFppOVd5WU1GaUZYVVR6aktlbzYv?=
- =?utf-8?B?SlgzNE80MjU1OVdvNmJLVTEvOWE0Y01Gb3BPMnVHY1o4dmpSRy9tV0t4cXBS?=
- =?utf-8?B?OEcxblYwcSszcEJPTmc3ZERFNC9rN1NUZnhqSE9UdytQd1NQL0QvS0g2STBq?=
- =?utf-8?B?aTJWdngzbVJuYnZwcEw2My9zMUl1ZGpia0o5djdwZVV5TUJkNU5KOC9nK0Ft?=
- =?utf-8?B?THdRRU5DU2VmK1BVSnZKNGl6TUQxcGxLeE9sNStHaVdVUmpRcDcwL1ZPTW9r?=
- =?utf-8?B?d0FpUVlHaW5aMXMzZFdkblBKS3I5VHd6eXdpTXFybUpCQWhmSmozM2ZCMGJ4?=
- =?utf-8?B?blV1bGhJemtJeGhpdnNvTGFtYzhDYlZXOTUvaTZtSmJPbm9nMGd1eW83bDJ4?=
- =?utf-8?B?NG9TYjBHOE9VOElySmxIRzJJWVZvNFZ3S0VzV3lsTVp2bGx5MWphdHlTdVJh?=
- =?utf-8?B?TzcwUGthTm5lTytSU0lXYWF5UjA3TkowbWpaY0pKaHZ2YXFmb1N5VWVORGdq?=
- =?utf-8?B?Q3RwUTd6d1Jvc08yRzVPMlJ0WTZ0RlRzcWRxR3VsOVRKWFNBTjZmNUFZbkRX?=
- =?utf-8?B?WDVCL3VXNE9pbnlkSk5CdHBkRm5PUys2VG00ZXBWa1lleU5rZmNRZWFyVEJj?=
- =?utf-8?B?U1N4bXVLaWN6OUlGdTMrdVhpNGsyS1JyYUc3RUVCazhBaFZlNkNScWpmMVdO?=
- =?utf-8?B?YlJlNTcydTNpOEcyd1RGLzk3MWJPd0dCak5MTllxSUVtZU5PWlFmTTE3Rmo5?=
- =?utf-8?B?OWpuNTc4aXB5SmJOOXluS1krdkJrbmprcjA5MEkzbkJNV1lEcDZ0MzBqZHR2?=
- =?utf-8?B?RTYxR1ZHeFRqaUxqdzhQODV5cWJNWGtFbEdBeUZ1ZHFMRENKOTN6dWdudmgy?=
- =?utf-8?B?RmxmMFVPVlA5MFpyWHk3ODdHVStNb05ELzhNY3RmcUMzRGo2UDU3Mm1OWXB4?=
- =?utf-8?B?Vkd1SE5MWTVVWHpRZzNTK084a1cycVFqSXlKK0VBam5XVEJpNEF6Qll2QW5R?=
- =?utf-8?B?V2xNdmN3eXkzbjVuNTFCNldrbENqSXBnNUYrVnhGcU1pYjNhZW9kc1RKUWg5?=
- =?utf-8?B?S1pzOUJLVDkyV1RGNTdyTDA1dTF0ZXlNQ1ZEWlBwVmlTN0xFVndLVFJxVCtl?=
- =?utf-8?B?SWZtQ1BoUGRVb3B6dkZoUjF4cXFqeFowVmUxNDFWOHM4eFdPWEFrN2tvTEhh?=
- =?utf-8?B?TW1kR3NFODI2amYxUFNMMGtQVVZjd2NVSzFQMTQ5QTdRbXN6ZThnTjBwTUdL?=
- =?utf-8?B?dUJ0U2NtS3pCUWdmQVcxaVNJendRRThPaTc3aEVaRTgwZ0hyZmU4WWU0WVJB?=
- =?utf-8?B?YVRROS9XUnp3SDY4MHJZQ0NwYjJFNFRkVWJGME1FbFBGeXJJWEtBSzJsMDBS?=
- =?utf-8?B?OWNqNnBCczAyZGd2WG11NVVyQU5vNUZIZ3c5RXVWaklVYkdVRjNoa3V4UjFv?=
- =?utf-8?B?YW5tRW9CRDY2cUN6WnpvRHdhT1gwZXFkRGwrZ25MdzJrYStjZVNQZ0VhbGht?=
- =?utf-8?B?TzVwY2VWYXpYWmVaeWZmb01yZ1BmK1EyaWk5YWtnV1R5aUZXVFF0MW9yeENF?=
- =?utf-8?B?eVVkbmFZbHZqMHY1bmNZV1FIMlVNNWJld3RxYzh5b20vNGUyUWNrUkswVDdW?=
- =?utf-8?B?S290WFJld2xXVnpBL2ZqSEg0aTZ6MnhId0dadWZwUWNWZDRxczdCS3ZPaGlF?=
- =?utf-8?B?b2ZYeXZJWDh5aUQ2c04vcEs4OU8wN0l2bW14cXFIb0pscFNuNjBoclV5QjlW?=
- =?utf-8?B?M0RQelk1SXFKSGVMTWZqczNsU3ZTQWY1c0o5c1gzdXJwVGRFUS9KSGt6bFFE?=
- =?utf-8?B?Z2NRVno5U2FmeXpTbkEybmlSbFowRW5xb2FMRjJ1TnFLVndLOHc1OVcwNDVX?=
- =?utf-8?B?NldEVUU2QTBTTXBKdWJaZExwWG1pNnJDVXB2aHRFWmdpcUFreEhwYXljNXg0?=
- =?utf-8?B?cmxQN1ZqWXNnT2x6NXNlSzBGajF5RmwxazlLMHJlRHpXRTRUYm1QUT09?=
-X-Exchange-RoutingPolicyChecked: QCPrrfYjaT3XWMMpnVnNy/nrQlbjgyKIlm7nyk5iSnptyDLlfWDS7PGqqJkRJqvgZO2JRegE7cn5SUd7B/hqkbNooemvqLFPNLPyO1lajCkjLXrq2Ri3WQneaQMWNOxOuqghSPz2ScQ8LKentUKg3YkFXIJK6OhnO9PmmznQA2ldpc5oJCiCnTw9jXpcDKS7FA7avBBL8Zx3/Cpwp5IbpfDFBT6xsOquJFomxwn+4gacIn9rD86TW52v4z3SPPUZm/PgpzgR8r8ChwFLh18dJwhmabM6NEojz7Uk1vCxSEGx1POI4nq3lEc2nz5zjxPrUXkptMTR9oyvOe4LlQnGmQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08a8c41d-b5e5-4815-3a9d-08df1ffac1c9
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 20:29:56.6198
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YyYUHzrNNMJeamhRS+2nkmvzhvA5nzU7B8ZaUaz18hUk2latd2Q7MPraevdM/ncC9egl8o7XT8Lk6jQSP+Cxp7htn6lgYJDkKhYAAbLQE2w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6411
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 9/30/2026 2:07 PM, Chang S. Bae wrote:
-> 
-> I expect Sashiko to reply to a bunch of patches. I previously found some
-> false positives, so I will comment on them again in this posting.
-Okay, I've provided my comments there.
 
-Thanks,
-Chang
+This series is a trimmed down version of the Arm CCA KVM support, previously
+posted here [0]. Like in the v17, we have tried to split the entire series
+into the following chunks.
+
+ 1) Base RMM RMI support under drivers/firmware/arm_rmm -> [1]
+ 2) Linux Host support for handling GPFs - [2]
+ 3) NEW: Enlighten KVM arm64 about the different VM types and use call
+    backs for the VM type, rather than spilling the is_this_type_of_vm()
+    everywhere. Adds VCPU and Stage2 MMU related callbacks with support
+    for the existing VM types. There are other places where we may be
+    able to abstract, but those need careful performance evaluations
+    to make sure they are fit (e.g., vcpu_run)
+
+   With that in place we generalise the predicate "kvm_vm_is_protected()"
+   to cover all  "Confidential" VMs (which includes Protected VM and Realms),
+   allowing us to handle common themes without having to do things like :
+
+     if (kvm_vm_is_protected() || kvm_vm_is_realm())
+
+   Also replaces the code with precise check for a given VM type to
+   avoiding combination of if (). e.g,, kvm_vm_is_unprotected_pkvm(kvm).
+   The checks under arch/arm64/kvm/{nvhe,pkvm} still retain the vm_is_protected()
+   check as pVMs are the only possible protected VMs there.
+   
+ 4) Bare minimal Realm VM support without the actual functionality to
+    run a Realm. This would help the maintainers to review the series in
+    smaller chunks. This doesn't depend on [1] and can be independently
+    merged, without being "functional".
+    This series includes vcpu operations and the s2 vm operations, which
+    do need the RMI driver backend to be meaningful. But the KVM handler
+    is in the right shape. The remaining changes would be added once the
+    RMI firmware library lands. Also covers the SET_ONE_REG/GET_ONE_REG
+
+ 5) Core implementation of the RMI driver for KVM and actual enablement of the
+    Realm support. This depends on (1), (2) and the guest-memfd-in-place
+    conversion series v12 from Ackerley. This is available here at the integration
+    branch [3]
+
+
+NOTE: There is a conflict with Fuad's patch to drop the WARN for unknown vm
+ioctls, that is queued in fixes.
+
+  https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev 
+
+This series is comprised of (3) and (4) above.
+
+The integration branch has been tested with the following components:
+
+  tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 [4]
+  kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git tag:cca-kvm-v20
+
+[0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
+[1] Linux firmware RMI v22 https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/fw_rmm/v22
+[2] Linux GPF Host  https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/host-gpf/v19
+[3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v21/integration-v3
+[4] https://support.arm.com/documentation/den0137/2-0bet3/
+
+Changes since v20:
+ https://lore.kernel.org/all/20260924160504.853911-1-suzuki.poulose@arm.com
+
+ - Allow KVM_ARM_CAP_DEVICE_CTRL for Realms to allow SMCCC filtering
+ - New patch: Deny vcpu features not compatible with protected VMs
+ - Remove suprious ":w" in commit description (Thanks Catalin)
+
+Changes since v19:
+ https://lore.kernel.org/all/20260920212845.707-1-suzuki.poulose@arm.com
+
+ - Collect Reviews from Jonathan, and Tested-by from Gavin - Thank you both!
+ - Add a new patch prepare the the vcpu_set_pauth_traps for the addition of
+   VCPU callbacks. Could have merged with the existing one, but that becomes
+   quite too much to follow.
+ - Add another new preparatory patch to replace vcpu->kvm => new local variable
+   kvm in kvm_handle_guest_abort(), making it also easier for abstracting memory
+   abort handling.
+ - Fix vcpu_is_protected for nvhe hyp code, by using kern_hyp_va() for vcpu->kvm
+ - Use READ_ONCE() to read the host kvm->arch.vm_flavor in EL2 pKVM code
+ - Move the replacement of !kvm_vm_is_protected() in kvm_arch_vcpu_put() with
+   kvm_vm_is_unprotected_pkvm() to this patch
+ - Drop ',' after the end marker in vm_flavor enums
+ - Wrap kvm_arm_vmid_clear_active() in 'vcpu_put_mmu()' to compliment the
+   vcpu_prepare_mmu and call it conditional on !pKVM.
+ - Update the time loading constraints comment to clarify that it only applies
+   for VHE.
+ - Sort the vcpu ops by vm_flavor enum value
+ - Add blank line in kvm_arch_flush_remote_tlbs()
+ - Drop local variable ret and directly return from if...else for kvm_vm_mem_abort
+
+Changes since v18:
+  https://lore.kernel.org/all/20260915160141.3543048-1-suzuki.poulose@arm.com
+
+ - Patch count down by 3, after merging different patches together, see more below
+ - Retain NULL vm_offset for pVMs and move the counter offset flag initialisation
+   to kvm_timer_init_vm() - Marc
+ - Merge widening the scope of kvm_vm_is_protected() to the patch where the
+   flavors are introduced(Marc) and also dropped Fuad's reviewed-by, as the
+   patch is now bigger.
+ - Merge "Use kvm_vm_is_unprotected_pkvm" for !kvm_vm_is_protected to patch
+   where flavor is introuced.
+ - Merge "vgic-v3" mandate and preventing vgic-v2 mappings to a single patch,
+   where kvm_vm_hyp_is_distrusting() introduced - Fuad
+ - Drop kvm_vm_hyp_is_pkvm(), reverting to is_protected_kvm_enabled()
+ - Use is_protected_kvm_enabeld() for pKVM guest flavor checks.
+ - s/PKVM/pKVM for commit descriptions too
+ - Make sure the vm_mem_abort callback is !NULL at init time.
+ - Bail out early for !pKVM && !Realm VMs in kvm_vm_ioctl_allowed(). Use
+   kvm_vm_hyp_is_distrusting()
+ - WARN_ON_ONCE(!kvm) for kvm_vm_ioctl_allowed() as it must be only called with
+   a valid kvm instance and only from kvm_arch_vm_ioctl()
+ - Rename kvm_arch_vm_{ext,ioctl}_allowed => kvm_vm_{ext,ioctl}_allowed - Fuad
+ - Move kvm_realm_ext_allowed() to asm/kvm_rmi.h - Fuad
+ - Don't expose PMCR_EL0 to the userspace until we support PMU
+
+
+Changes since v17:
+https://lore.kernel.org/all/20260908162223.1683432-1-suzuki.poulose@arm.com 
+
+ - Add a patch to fix pKVM handling of SYS_CNTVCT/CNTPCT to override the counter
+   offset (Patch1)
+ - Restrict Realms to VGIC v3 only - New patch
+ - Add kvm_vm_is_unprotected() to replace is_protected_kvm_enabled() &&
+   !kvm_vm_is_protected() - New patch
+ - Use macro to initialize the per-flavor vcpu, s2_vm ops
+ - Add a wrapper to initialise vcpu and s2_vm ops with a BUILD_BUG_ON()
+   for the array size checks against VM flavour types
+ - Drop forward decalaration of the vcpu, s2_vm operations that spoiled the
+   fun ;-)
+ - Remove irrelevant comment about the order of timer loading for !VHE
+ - Use the explicti kvm_call_hyp_nvhe for pKVM specific ops
+ - Don't call nvhe_vcpu_put from pkvm_vcpu_put, open code them
+ - Drop cpu argument for vcpu_load() callback. We set the cpu
+   before the callbacks are invoked
+ - Drop kvm_vm_is_confidential(), instead widen the scope of kvm_vm_is_protected()
+   to cover pVMs and Realms. Add an explicit helper kvm_vm_is_protected_pkvm()
+   for the cases where we need to check for a "pVM on pKVM"
+ - Add kvm_vm_hyp_is_pkvm() for checking if the VM is running on pKVM.
+   covers both unprotected and pvms. But really uses is_protected_kvm_enabled()
+   under the hood
+ - Add kvm_vm_hyp_is_distrusting() to cover pKVM guests (both protected and
+   unprotected) and Realms. Use this for preventing the vgic v2 mapping into
+   Stage2 for a guest
+ - Drop superfluous !kvm check from kvm_vm_ioctl_enable_cap() - Sashiko
+ - Drop KVM_CAP_CREATE_IRQCHIP, as we don't support VGIC_V2 for Realms
+ - Filter out the vm_ioctls that are based on blocked cap.
+ - Repurpose the pkvm plumbing for filtering the caps and ioctl to generic
+   and plumb the Realm support in
+ - s/PKVM/pKVM for the comments
+ - Drop type argument for pkvm_init_host_vm and also drop protected variable,
+   now that we have the vm_flavor to check.
+ - Use kvm_vm_hyp_is_pkvm() to replace is_protected_kvm_enabled() with valid
+   kvm instance
+ - CCA: Merge the GET/SET REG handling patches into a single patch
+ - CCA: Reword the commit description for SVE VL access handling
+ - Reordered the patches to group the Realm realted to changes to the rear end
+
+Jean-Philippe Brucker (2):
+  KVM: arm64: CCA: Expose SVE VL register before VCPU finalization
+  KVM: arm64: CCA: Control user register access for Realms
+
+Steven Price (4):
+  KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+  KVM: arm64: CCA: Introduce Realms
+  KVM: arm64: CCA: WARN on injected undef exceptions
+  KVM: arm64: CCA: Support timers in realm RECs
+
+Suzuki K Poulose (17):
+  KVM: arm64: protected VM: Handle user writes to CNTVCT_EL0/CNTPCT_EL0
+  KVM: arm64: Disable Steal time accounting for protected guests
+  KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  KVM: arm64: Track the type of VM in kvm_arch
+  KVM: arm64: Don't call vcpu_set_pauth_traps for pKVM host
+  KVM: arm64: Refactor the vcpu_load to allow for VM specific callbacks
+  KVM: arm64: Add vcpu load/put call backs for flavors
+  KVM: arm64: Reuse kvm_stage2_unmap_range in kvm_unmap_gfn_range
+  KVM: arm64: Add VM specific callback for S2 MMU operations
+  KVM: arm64: Use a local kvm pointer in kvm_handle_guest_abort()
+  KVM: arm64: Abstract out memory abort handling
+  KVM: arm64: Mandate VGIC v3 for pKVM VMs and Realms
+  KVM: arm64: CCA: Add a new mode for supporting Realm guests
+  KVM: arm64: CCA: Add VCPU load/put for Realms
+  KVM: arm64: CCA: Add bare minimal S2 operations for Realm
+  KVM: arm64: CCA: Don't expose unsupported capabilities for realm
+    guests
+  KVM: arm64: Prevent unsupported vcpu features for VM types
+
+ .../admin-guide/kernel-parameters.txt         |   3 +
+ arch/arm64/include/asm/kvm_emulate.h          |  16 +
+ arch/arm64/include/asm/kvm_host.h             |  98 ++++-
+ arch/arm64/include/asm/kvm_pgtable.h          |  10 +-
+ arch/arm64/include/asm/kvm_pkvm.h             |  25 +-
+ arch/arm64/include/asm/kvm_rmi.h              |  85 ++++
+ arch/arm64/include/asm/virt.h                 |   1 +
+ arch/arm64/kvm/Makefile                       |   2 +-
+ arch/arm64/kvm/arch_timer.c                   |  34 +-
+ arch/arm64/kvm/arm.c                          | 367 ++++++++++++++----
+ arch/arm64/kvm/guest.c                        |  73 +++-
+ arch/arm64/kvm/handle_exit.c                  |   2 +-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                |   6 +-
+ arch/arm64/kvm/hyp/pgtable.c                  |   1 +
+ arch/arm64/kvm/hypercalls.c                   |   4 +-
+ arch/arm64/kvm/inject_fault.c                 |   1 +
+ arch/arm64/kvm/mmio.c                         |   1 +
+ arch/arm64/kvm/mmu.c                          | 219 ++++++++---
+ arch/arm64/kvm/pkvm.c                         |   6 +-
+ arch/arm64/kvm/pvtime.c                       |  14 +-
+ arch/arm64/kvm/rmi.c                          |  18 +
+ arch/arm64/kvm/sys_regs.c                     |  28 +-
+ arch/arm64/kvm/vgic/vgic-init.c               |   2 +
+ include/kvm/arm_psci.h                        |   2 +
+ 24 files changed, 830 insertions(+), 188 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/kvm/rmi.c
+
+-- 
+2.43.0
+
