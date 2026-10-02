@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A4A470456
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745D93B47D0;
+	Fri,  2 Oct 2026 09:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932428; cv=none; b=LVNOuFr3Kqf+eHqmzAyQGZJTnLCPuQ/rmnxIMw3tpbJfmhWacNJ2IMZuL8ZJ6ilM6k3XNME3p1p/VrGKlQaYQWA6/NALdfnf8UOAO3h0bdea04TNNQ4p8JCdyvZogEzWK3pCHdVbUQvs5ujAnSJBcxskMTn5ce1yIUgseNB9Xeg=
+	t=1790932429; cv=none; b=N/NiWjJgZ9ic0oEeqeR68Nnu3qQTJvHkFq1vJuPO/wsVYk/UH3sRfIh4w6M0+9hifeE5IrVEZO0vq8HH/YTYekJsInjfZHAa4L5xbERLpFhHZfRUbrlg0TSC7YD9b/3McikiXjadHgBF6HlYzyaeRKOP6o/V3U/9Pcpz9m0279g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932428; c=relaxed/simple;
-	bh=DOL4k2TlaRP9CsqcxlMaiuFf3pag8tNBE/QuGTtVe1o=;
+	s=arc-20240116; t=1790932429; c=relaxed/simple;
+	bh=u+6y/sHA9bEwoLN/XVzbQULKtLo/nmjfs/1bU8x07Yg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iymX5JJSdOyqFwj2eXS5scLGdRjCAdoAVWOIqQTb4ALiAD+sLSfJ7STI5U+5ZKZTEouYzfdLrRfuagTpUuIDDd44E5Qe1ypC/lsUXO5Qsltn3GssoqnVYFEBl8yIt9Hzq8PMhF53ATIcUcAlkhSxpVtQoeOKeqnu+LkHVrc8aiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9mylHFX; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=CbGateDb7bh7qwdyNEObaeb1zjO/6UfwvfEPc8ggcxiODhqYsT8KqZbA0YQFF2WEVeLYEIj9o0dlzDc4SLSS23uqdyVpiPU67CNOv0v5MNs8vWcvELnxIZM5I1waY94LoIyi0MFrCL9125ANQcJJzj6yp5VOW2EnRKwLkK8CG6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Phjx1Hkj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9mylHFX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630461F00893;
-	Fri,  2 Oct 2026 09:13:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Phjx1Hkj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1769C1F00899;
+	Fri,  2 Oct 2026 09:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790932427;
-	bh=6uGr1e8RSte6V7pThGS8/F/ksvlZ7Tqtk7oiIwQDtrg=;
+	s=k20260515; t=1790932428;
+	bh=Lh9A+TR4VoPNddgYfrzpdItXq1VCAZ0FpSq357jHMJY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=R9mylHFXtgpfItUKHy2+LZpCNp3rDd+8vzfcHHAzIsZV90O0E1BRN00FImJef1XGs
-	 2vCNtdTG+kYMInW3mq5n1YXvdD6Nn+ehFAU3hd8eYiEpQZ5h/4TNyLUvmUBkoQhRVr
-	 fsqd2Z3O1gVRHqmgtMyKoWVp7eEb7wr9WGEfs7Yc6EbOOwygaTsdl+PSE38WBilKp1
-	 ncqkHpfkZ0J8yYB5GAHvioMFFnahntkJqpbCATCSUaqyS9mBkp3RZjq5DUTNqzCu2r
-	 MPVcqLrQBjKeYSA2rRLJpCB77aGyfpP0R6emQbncCSlHXk1Drvfm71bhk+qgorWPQn
-	 /npcdWxmcKTfQ==
+	b=Phjx1HkjgaXSK6khRltoBmAvuY0TTKFa5ig1tiYEfKettPGs5uZQ1n9DRPUK3RTwQ
+	 c69gfijKhArlaLG3+tyscG7Btz9kY13BBfGaWJ5jhON9VI+OJS2QShOwHuhCdXIbhd
+	 qi3l5eW3/hdkCWFsG33qBByOI9pWqTNBOeC5TvWwc/WGKRMaEZaLW3BtzS6i7Qfd/w
+	 yAmILpOt96qFAh3wp2R4KbXKuETb8qv1vMAqzPO90/qLlv54gRgrxRjyGXnKfPJx/u
+	 KyOcc9dENGVeNlA6p9IyR+LWHWDDDiNuKDC3xdiojtXwRWOVBdX37HxgF1SkTJlzJC
+	 1bINf3lPp8Jew==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 05/10] KVM: Destroy memslots immediately after
- mmu_notifiers are unregistered
+Subject: Re: [PATCH v21 18/23] KVM: arm64: CCA: Don't expose unsupported
+ capabilities for realm guests
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261001202234.3794060-6-seanjc@google.com>
-References: <20261001202234.3794060-1-seanjc@google.com>
- <20261001202234.3794060-6-seanjc@google.com>
+To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20261001210703.1597150-19-suzuki.poulose@arm.com>
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+ <20261001210703.1597150-19-suzuki.poulose@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Fri, 02 Oct 2026 09:13:47 +0000
-Message-Id: <20261002091347.630461F00893@smtp.kernel.org>
+Message-Id: <20261002091348.1769C1F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,80 +48,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] kvm: x86/mmu: Kernel panic via NULL pointer dereference in gfn=
-_to_rmap() during VM destruction
+- [Medium] arm64: kvm: KVM_CAP_IRQCHIP incorrectly exposed for Realm VMs
 --
 
-commit 51cc08e54e96c8c842b1348871cdf24648cdd20a
-Author: Sean Christopherson <seanjc@google.com>
+commit af0bceb4971b2a4c5816fbca6500c4f10a51388d
+Author: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-KVM: Destroy memslots immediately after mmu_notifiers are unregistered
+KVM: arm64: CCA: Don't expose unsupported capabilities for realm guests
 
-This commit installs dummy, empty memslots immediately after unregistering
-KVM's mmu_notifier during VM destruction. It aims to harden against
-accessing memory from the wrong address space when tearing down a VM.
+This commit limits the capabilities that are allowed for Realm VMs and bloc=
+ks
+the corresponding vm_ioctls. It repurposes kvm_pkvm_ioctl_allowed() to
+support both pKVM and Realm ioctls and adds a generic kvm_vm_ext_allowed()
+helper for filtering.
 
-> Instally dummy, empty memslots immediately after unregistering KVM's
-
-This isn't a bug, but there is a typo (Instally) here.
-
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index f368240aa1cdd..770a2c3bd4458 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kv=
+m_rmi.h
+> index 44f5c75a27b5b..ea1450e0c8619 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
 [ ... ]
-> @@ -1302,12 +1321,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
->  		kvm->mn_active_invalidate_count =3D 0;
->  	else
->  		WARN_ON(kvm->mmu_invalidate_in_progress);
-> +	kvm_destroy_memslots(kvm);
-> +
->  	kvm_arch_destroy_vm(kvm);
+> @@ -58,4 +60,26 @@ struct realm {
+> =20
+>  void kvm_init_rmi(void);
+> =20
+> +static inline bool kvm_realm_ext_allowed(long ext)
+> +{
+> +	switch (ext) {
+> +	case KVM_CAP_IRQCHIP:
 
-[Severity: Critical]
-Does calling kvm_destroy_memslots() before kvm_arch_destroy_vm() risk a NULL
-pointer dereference?
+[Severity: Medium]
+The commit message states "Drop KVM_CAP_CREATE_IRQCHIP, as we don't support
+VGIC_V2 for Realms". Did you intend to drop KVM_CAP_IRQCHIP from this
+allowlist?
 
-If a user creates a VM, maps memory into it (creating leaf SPTEs),
-and closes the VM file descriptor without terminating the process
-(mm_users remains > 0), mmu_notifier_unregister() is called.
+Because KVM_CAP_IRQCHIP is still explicitly allowed here in
+kvm_realm_ext_allowed(), userspace is falsely advertised VGIC_V2 capability
+via KVM_CHECK_EXTENSION.
 
-However, it does not invoke the release callback because the process's
-mm is still alive.
+This also allows the KVM_CREATE_IRQCHIP ioctl to bypass the
+kvm_vm_ioctl_allowed() check in kvm_arch_vm_ioctl() and attempt to
+instantiate an unsupported VGIC_V2 before being rejected downstream.
 
-As a result, kvm_arch_flush_shadow_all() is skipped and shadow pages
-remain intact.
-
-Next, kvm_destroy_memslots() replaces the active memslots with
-kvm_empty_memslots.
-
-Then, kvm_arch_destroy_vm() tears down the vCPUs via
-kvm_destroy_vcpus(), calling kvm_mmu_unload(), which recursively zaps
-the remaining shadow pages.
-
-When leaf SPTEs are dropped, rmap_remove() looks up the memslot for
-the GFN:
-
-arch/x86/kvm/mmu/mmu.c:rmap_remove() {
-    ...
-    slot =3D __gfn_to_memslot(slots, gfn);
-    rmap_head =3D gfn_to_rmap(gfn, sp->role.level, slot);
-    ...
-}
-
-Since the memslots are now empty, __gfn_to_memslot() returns NULL,
-which is then unconditionally dereferenced by gfn_to_rmap():
-
-arch/x86/kvm/mmu/mmu.c:gfn_to_rmap() {
-    ...
-    idx =3D gfn_to_index(gfn, slot->base_gfn, level);
-    return &slot->arch.rmap[level - PG_LEVEL_4K][idx];
-}
-
-Could this lead to a host kernel panic during VM destruction?
-
->  	kvm_destroy_devices(kvm);
+> +	case KVM_CAP_ARM_PSCI:
+> +	case KVM_CAP_ARM_PSCI_0_2:
+> +	case KVM_CAP_DEVICE_CTRL:
+[ ... ]
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001202234.3794=
-060-1-seanjc@google.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001210703.1597=
+150-1-suzuki.poulose@arm.com?part=3D18
