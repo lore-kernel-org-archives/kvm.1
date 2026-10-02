@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D0B470456
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6CF471414
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932423; cv=none; b=Z+UZxdzmhQXxEAAEPJpIQiLr4u7qDghVbzSbKixCSWnOmUr21prqWfFlN5wtRZE+IiQdllK+s9qqzJpvR4SffD5ujjUfeFZ9CN2bk72/0gggJ7cswaN+WstbFlrIWuswbLCkF9jRbz6HpZeNc3cboVPEux+M4uk65DxsQ69VhfM=
+	t=1790932424; cv=none; b=kLnlhX45gV+M5uM/U1oUCRIu1lvql3Jm0fqodBIeXelQm8MVPJHou19ou45sRilVxxbuDJvoqL3QV3s/lBDyVawFAsMplg7ytAOJOG5OnDu//yThRfRJBN2HqGd1UHXGJ7c03k7AsWyttpN6MMgnsGzr4rymBWKYkS8M8Lj1ZCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932423; c=relaxed/simple;
-	bh=slq9Gy3m4qAtOsurc3gwLfxdzwRbCk5g9ITP/Q+ilX0=;
+	s=arc-20240116; t=1790932424; c=relaxed/simple;
+	bh=+Odf9+yfXn9iDf0FSbH3a+4cQGi3b1tPsua5/4x+52E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FPUSBzfa9emSrx38OQKgsB31qWA1D4kMaVcjCFMqxqadPxCPEw0k+6Q71Hd99fYuTT5GXbRGW0YR64B1bIxfYWLoKnsWy4xtETF0lWRanYryliQFfqbG2HuePYvDWTibkV80EnCgnn2+6fHQnJoSoUNr/MC7X+gWPg1G5B9YyD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDXOuo9X; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=KrwV96INZdgk6ZyAbchJTt4E5JAjyO1CF0bS0f1KUqI61edFeOr405GaNp0ED+aX0UHLGsngKvLWcJGEqIzFg+zYYAnDQllk4EtTvNUh0ZkHunM9s1vO5rYGRCpLfHhaoV1oN6YLKaMReUMuRohzhr6HcFvGTisHB6Q0a1yUOdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FM7Yvyt7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDXOuo9X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50ADA1F000FF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FM7Yvyt7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E3B1F00899;
 	Fri,  2 Oct 2026 09:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790932422;
-	bh=YVLCNMtLrlv88DAadfcLV8Ulbk12fXZFuwgBcdnBm8Y=;
+	s=k20260515; t=1790932423;
+	bh=/zmlTSObAu8HD3YArFH/qPrscwKR+rdTSmyOSDSMMKE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QDXOuo9Xas++SZ/3K5ZMscq9BXnjGZr7QK1Op2f2QDCwz7PVGam/5lWjebufH+xZ/
-	 ZT6S57X4kH9dm6zwAwirQTRVF7yg4gWxLLFjfThgU9rHBnbGH75CadJeSFXmXRUP/n
-	 VtvSaTAmdTsVibNgy+ogB3kvMp01n5BKbAcXP3lwhEYdl28oFk/fLKcEohy9JJgUgK
-	 p3lNtshKkaPD9JPDw/ECc0y//zeIJDyE1kti4h4JaFCQY7bSG8grEvwIHFjiA0cpYc
-	 SK9aWhNctchyNoNJVwaJ4lkGkiaFOkdUve41oxy+tM4AKmj6+04wpyBiPGXoReJiED
-	 jOpjmk71eBPLg==
+	b=FM7Yvyt7L9JgwOVHF1Mq2JKsxAi93zhTmYzxeY00O6yFzSWEsqm9QXwtK3a9y5x2Z
+	 uUIhrgxwP8vddeXxtWyNHh/XTwCa0HL3laBKsvNlfyHq48k0Op3ZlOV9/jC0PLWqqM
+	 o7gtRbsUuR6cwuqJJ5WJELZJNMJnLkih+Su8eWpoRSQuGL7SEhxlgMaGG41fvPSXBS
+	 dKuqg1qbGW1yPswnU8js52d8de5YbnA/+ip7OyWARFrbqAaeoZiE8rxNHJQjLR50gA
+	 2OxL2azTxTzmgM0VecgRDndgrNUS7f+rAusgQtp2gc5kEMBGxSYqawxuDRNfJr2TfI
+	 CzfSPD2psrNIA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 03/10] KVM: x86: Unmap VMAs for KVM-internal memslots
- when the memslot is freed
+Subject: Re: [PATCH v2 10/10] KVM: Pre-check uaccesses in KVM's APIs to
+ read/write guest memory
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261001202234.3794060-4-seanjc@google.com>
+In-Reply-To: <20261001202234.3794060-11-seanjc@google.com>
 References: <20261001202234.3794060-1-seanjc@google.com>
- <20261001202234.3794060-4-seanjc@google.com>
+ <20261001202234.3794060-11-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 02 Oct 2026 09:13:41 +0000
-Message-Id: <20261002091342.50ADA1F000FF@smtp.kernel.org>
+Date: Fri, 02 Oct 2026 09:13:42 +0000
+Message-Id: <20261002091343.02E3B1F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,69 +47,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: double unmap of internal memslot VMA causes host UAF
+- [Medium] kvm: bounds check bypass in kvm_is_guest_access_ok due to intege=
+r truncation and size ignore
 --
 
-commit 120ca6d762cdf95d09e394aff4bb4af6d01288d6
+commit 3b0fbcae79b36e79408bde507ed9fb555ab9f477
 Author: Sean Christopherson <seanjc@google.com>
-KVM: x86: Unmap VMAs for KVM-internal memslots when the memslot is freed
 
-This commit unmaps KVM-created VMAs for KVM-internal memslots when the
-associated memslot is freed directly, instead of using x86's internal API,
-to prevent VMA leaks on teardown.
+KVM: Pre-check uaccesses in KVM's APIs to read/write guest memory
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 79468ddfe4736..e91bd79dd3cc6 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
+This commit adds an early check for user access validity in KVM's guest
+memory APIs. It introduces kvm_is_guest_access_ok() to validate access
+bounds before performing memslot lookups, aiming to catch bugs during VM
+teardown more noisily.
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 770a2c3bd4458..80b19d47840b2 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+[ ... ]
+> @@ -3211,6 +3211,11 @@ static int next_segment(unsigned long len, int off=
+set)
+>  		return len;
+>  }
+> =20
+> +static bool kvm_is_guest_access_ok(struct kvm *kvm, int offset, int len,=
+ int size)
+> +{
+> +	return kvm_can_do_uaccess(kvm) && !WARN_ON_ONCE(offset + len > PAGE_SIZ=
+E);
+> +}
+
+[Severity: Medium]
+Does this helper ignore the provided size parameter?=20
+
+By hardcoding PAGE_SIZE in the WARN_ON_ONCE check, callers that pass a
+smaller boundary (such as ghc->len) will have their custom bounds check
+bypassed. If offset + len exceeds the custom size limit but remains under
+PAGE_SIZE, it appears the access would be incorrectly permitted.
 
 [ ... ]
-
-> @@ -10066,6 +10048,16 @@ void kvm_arch_free_memslot(struct kvm *kvm, stru=
-ct kvm_memory_slot *slot)
->  	}
+> @@ -3294,7 +3299,7 @@ static int __kvm_read_guest_atomic(struct kvm *kvm,=
+ struct kvm_memory_slot *slot
+>  	int r;
+>  	unsigned long addr;
 > =20
->  	kvm_page_track_free_memslot(slot);
-> +
-> +	/*
-> +	 * Free memory regions allocated on behalf of userspace, unless the
-> +	 * memory map has changed due to process exit or fd copying.  Leak the
-> +	 * mapping on failure, e.g. if the task is killed, worst case scenario,
-> +	 * the page(s) will be reclaimed when the process exits.
-> +	 */
-> +	if (current->mm =3D=3D kvm->mm && slot->id >=3D KVM_USER_MEM_SLOTS &&
-> +	    !WARN_ON_ONCE(!slot->npages))
-> +		vm_munmap(slot->userspace_addr, slot->npages * PAGE_SIZE);
->  }
+> -	if (WARN_ON_ONCE(offset + len > PAGE_SIZE))
+> +	if (!kvm_is_guest_access_ok(kvm, offset, len, PAGE_SIZE))
 
-[Severity: High]
-Does this unconditionally unmap the VMA for every freed internal memslot ob=
-ject,
-potentially leading to a double unmap?
+[Severity: Medium]
+Does this silently truncate the len parameter?
 
-In __x86_set_memory_region(), the twin memslot objects are created with the
-exact same userspace_addr for each address space:
+In __kvm_read_guest_atomic(), len is defined as an unsigned long, but
+kvm_is_guest_access_ok() takes len as a signed int.
 
-	for (i =3D 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
-		struct kvm_userspace_memory_region2 m;
+>  		return -EFAULT;
+> =20
+>  	addr =3D gfn_to_hva_memslot_prot(slot, gfn, NULL);
+[ ... ]
+> @@ -3457,7 +3462,7 @@ int kvm_write_guest_offset_cached(struct kvm *kvm, =
+struct gfn_to_hva_cache *ghc,
+>  	int r;
+>  	gpa_t gpa =3D ghc->gpa + offset;
+> =20
+> -	if (WARN_ON_ONCE(len + offset > ghc->len))
+> +	if (!kvm_is_guest_access_ok(kvm, offset, len, ghc->len))
 
-		m.slot =3D id | (i << 16);
-		m.flags =3D 0;
-		m.guest_phys_addr =3D gpa;
-		m.userspace_addr =3D hva;
-...
+[Severity: Medium]
+Similar to the above, len is an unsigned long here, which gets truncated
+when passed to the signed int argument of the helper.=20
 
-When the VM is destroyed or the memslot is deleted, KVM iterates over all
-address spaces and calls kvm_arch_free_memslot() for each memslot object.
+Additionally, ghc->len is passed as the size parameter, which is completely
+ignored by kvm_is_guest_access_ok() in favor of PAGE_SIZE. Will this bypass
+the intended cache length check?
 
-Because vm_munmap() is called here without checking if slot->as_id is 0, co=
-uld
-it unmap the same HVA range multiple times?
-
-If a concurrent thread maps memory between the two unmaps, the new memory
-might be silently unmapped, potentially leading to memory corruption and
-use-after-free in the host.
+>  		return -EINVAL;
+> =20
+>  	if (slots->generation !=3D ghc->generation) {
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001202234.3794=
-060-1-seanjc@google.com?part=3D3
+060-1-seanjc@google.com?part=3D10
