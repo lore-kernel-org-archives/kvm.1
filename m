@@ -1,604 +1,369 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7D13EC6B9;
-	Fri,  2 Oct 2026 06:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790921783; cv=none; b=afM5OVU3k8aAlih7+eDHtLgjM20viLoLmBkCfyxv1Cx+UoMZvFxbW3Op2UQohslnj6drzkCr6jMq1U5aS7vBZKuPxnAapmEIbw9MWaIo+qPAWfB9jCYmlQm38Vnbk2ZxB9MmlsdKEwL1x23jAqC3LPXL+R1ATDgWCaxDuWxQvwQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790921783; c=relaxed/simple;
-	bh=6zvnDqrfUszRdTtm0wMRLqNYreAtWP2K+OC/Ib4dxjg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7y1Bqyxw52ukGA7pbjAkFqtrxZhCW/GpICmzqBp7oIM6feVA34VFMqOr2qHSek5FyJD5ZvwfJPlAvaIuIujqpiRmOY2klC5A6E2MwOQimTBvqU+SPjKKs2rFVo/UQTIp92RmnkfhbEniPn+yaPfll6lo9SqbT32EV76ZPLZdFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lYKhO/LX; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7971282F1E
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 06:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.99
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790923439; cv=pass; b=bU175Zke21zZBuDovL5Vdif0PQ3CPbAX6Exu9p16fnDVUusxgKsdgliYQtrrO7wkGJr1ijr8R1wR2YZXJCzFPpaW+RU1XFscMMgfZNlmq4YcGALHiCKoJrREe45QHC/+3ulFDdY3aQWr6UX5JZh6oTsaP/5AX5cfLK6g+A7LC9g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790923439; c=relaxed/simple;
+	bh=kN/ZfoXigEvjllCLgCtkDiiC554RlGPjYYRHakPpRPw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gPv/N34qXApmAFtr6pqQxz3jd7JrKklX+Bd4jIW9tF8/PYRgoRtEai43TBfmD0bknolAqOiI4CoMb5sOh8dNYqxtFVdDvnIIPky6FXrRA3i+6A7QwTskWVaMahv+WYTbf/UebSyvxUIeJOJZ9Q/uOZebe6W5zqj31lUQCtyOXAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=Jm0MZw7O; arc=pass smtp.client-ip=74.125.225.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lYKhO/LX"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB51C16F8;
-	Thu,  1 Oct 2026 23:16:04 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9D40F3F763;
-	Thu,  1 Oct 2026 23:16:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790921768; bh=6zvnDqrfUszRdTtm0wMRLqNYreAtWP2K+OC/Ib4dxjg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYKhO/LXnEpMJeO44LcWkGQSjOrl7OrRDDgamG2JIUlyOTIxz5gZHwBa994iODHFP
-	 +Xa2n66/64OawsTa0vGNPj+frZj4uhBI7kiziyqG2syG3k4aBshcxgxWUFrYqNyPJj
-	 POQs+Edp5rWOTW+44+RjMfip+L8+BlEE9NSEic5Q=
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: maz@kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v22 09/10] firmware: arm_rmm: Add wrappers for Realm related RMI commands
-Date: Fri,  2 Oct 2026 07:15:05 +0100
-Message-ID: <20261002061507.1600269-10-suzuki.poulose@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261002061507.1600269-1-suzuki.poulose@arm.com>
-References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="Jm0MZw7O"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b0f4efe31so773041f8f.2
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 23:43:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790923436; cv=none;
+        d=google.com; s=arc-20260327;
+        b=j1VW4yroMFD544XR1w8oRh7IyClkKrOCnqq+y+MFR2yLPSNC6EDKYKNHGdRox1d8Ee
+         MxkwBizCsgjablusIPa9ymA36idofz9X9jXIV1n/qYhNPWKf5Pw/VUHnyQGOZ/39W6fz
+         cXwpVr8dPJjdOZ8YGfi22/IoupEECgS2QnWQVoK9GJb6m+w3pgLTm7S9OiiuebbKlfTY
+         ruvE5dXHhwqD8Rndxi0vAxvBlMzLfLS3nLSKU1ECzvp7qRyYcrHSUnC9Fo/vDWIhPi9z
+         FZ7P0pUyOq05ITmFBAQxED2QBKqy4W83kwW0k8G5OcbqrkugTzwuIasjXPt84crZ4Aoi
+         Gy0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=l84c6MY9kr7mtiSyCjFx+8uzC+nw3LEGUJpYcm7QQ/w=;
+        fh=Ly2CowFblez5gIeTtwcfo6dm8THYEQwNiJzzO7/T/yI=;
+        b=Y83g2zT9/Giv0rYWdD0l6OAEdsFByYUufQsdoYoSaRQpQbFYno4uAv7BV37+nUGXdE
+         53W6N1jHQy6pMi9WJl0UDJWEg3pxsCG9E/08m6LW/aAw0fLIRcVjr1o/gN4xW+T70mdC
+         qp3ULmDOtXpGFErkDkVDEcCZ92jNw8gJK2dlKFhZD6tv8UKeHyvgpKwbh6nQpdbrNtDX
+         VRuhZx/Iy2fELMp1vQezU6OO2pYdJxt2BVWw1+VDVGyWDoIe6Y0JuFLfOz1mqc3c5IfM
+         ++xc3nl43SowpDp7c+9GDSSdNd72CZISuSswpH46kLbzT7cvhv2irg3UPTmTs8uZ82uY
+         OKuw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault.org; s=google; t=1790923436; x=1791528236; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=l84c6MY9kr7mtiSyCjFx+8uzC+nw3LEGUJpYcm7QQ/w=;
+        b=Jm0MZw7Olt+htIeokb76e34lufZfrJaAy/5hrLDipMjMTwg/t7WwlnlEJGg2sIjvL2
+         SefuBP/Xa1ziPl6OsbOMxM4ES9bjK3ri2J/l+/Hpqxo2uyE7m97L+NbhLoYj8AXTvdst
+         Z6RhwvXG2LKu2GPszAi+BH2bfcAYf9+gz0kWqg7ISQf+FXq7j5punEA3lmVRglHoEjlG
+         nJGBS6zzH2BOCH98GSVG8/RvV7RajPDoxjEqP2O6r9u5TW+q/U+Su0un9DJhO4rPbVWH
+         GiQuLt5rmF/MtgEJzIhfeemC87kRu+698zxFyaBzv4+7vpjRptlFku0ZzS2YKvojeBQ+
+         qrtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790923436; x=1791528236;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l84c6MY9kr7mtiSyCjFx+8uzC+nw3LEGUJpYcm7QQ/w=;
+        b=fbTi+qISGqDzVp2/k5qBjcrKD5IF7g+a1+7RstHq/UzV93TkNra2pasm9Jy0dupOkL
+         DtLNr1MDxSzw6SBjw2IyX7wSt3qZvt4tfZKPkJmBDXukDzOAHNUlPfdDKXflZIc9/WbL
+         g5JoNbcwEODTuRxiOkuqlNN+cCOiy2s5+LZtfPFxX4PsMUcP6GjtOgMEhyAWgDL78fNF
+         EL9jdxgUozZ50+eDX4l5DW+UPQhc2nkh7NSUjWUU1XUtpT9nmqB6AgisjjbS+Kga+ojW
+         +qnHcPbZ0+/MVQQ0MjyCpxhWx6P/3Z2b7cHR1k2O8FdegP4dkmeJ0yR4ik7TPGLc6Kdm
+         l3fg==
+X-Forwarded-Encrypted: i=1; AKwUvBxD35D7wrovASxMtQYrCRex0eGbASHcF5jozCmMP49tef+Va/tm/n2GXgn9m2s7O+oJbpM=@vger.kernel.org
+X-Gm-Message-State: AFuF++lIzL/IKxWbxrsOzHkwmdQsPAxcfptjk3x97nvhRnkTX6XOUwhH
+	W35XoNDgYEjea9tbHomOpon6Lf6qS7ogjwkzq5179cxMPQupHP8Ih4VlQtW2o06BWESKmrnO7R8
+	/3HgdBVxmrShyxjPilYm4nFi7xc+gvDrfr8otqoCWg2tycBBwVLEMMP8=
+X-Gm-Gg: AYBFou0Qprm1408P1EULRMYeuUaQW1k3plPxdOWz++uAXzCRUf+OKWS20ulOOjXjVxq
+	z3vYmFSCjeB6t6TCdGur7FAtokPtR+94AFXmrmj6TizW8wErV/z2MNQE1UCTZUScoPGu9oN6TZz
+	cA3AFm+7XFRlZPeADOfba52haCCy2zVLSgcuEInapqFwjiwD1uZAGYrDIWZtZDkROP0Mfrsxk1z
+	vz1l+0nnEjnP9xMExzUzxk2Aa71l3KWh3ZQFa7alen7n5S/6pX3JK3zJgXk65qNABI0i3MSktSF
+	ddUnUsUtOK5XquzudeZ8mLrI8mbBkapwGXVRSzSl3hVh8VVUj0GXb+B5RaaXher+FK1ofe+qRGC
+	gMyU0rBgzrqYWUDgcChZBI1a3uMuXe8Uf3s96l33sOGvE2QieOlbhLu1iKFuVIZfB6dK1KMa0N2
+	o=
+X-Received: by 2002:a05:600c:468b:b0:49d:1df8:156d with SMTP id
+ 5b1f17b1804b1-4a0276bfcc8mr30536265e9.18.1790923435973; Thu, 01 Oct 2026
+ 23:43:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <3bb2f519-c70b-6c35-c404-6fbfe8adbeb1@kernel.org>
+ <20260728161449.190058-1-fredwudi0305@gmail.com> <20260728161449.190058-4-fredwudi0305@gmail.com>
+In-Reply-To: <20260728161449.190058-4-fredwudi0305@gmail.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 2 Oct 2026 12:13:43 +0530
+X-Gm-Features: AclHuK8CD08vpUeFLfojAvm02ZvIIAgLzxbiawqJaJUjzDA2zDtrA-_OIsDgSg8
+Message-ID: <CAAhSdy1SdSzBnZp54V_FrG8ccUhmmZOWWBCHxPn0+WPBG=SPAw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] KVM: riscv: Register ptdump with debugfs on guest creation
+To: "Dylan.Wu" <fredwudi0305@gmail.com>
+Cc: paul.walmsley@sifive.com, pjw@kernel.org, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, alex@ghiti.fr, atish.patra@linux.dev, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Steven Price <steven.price@arm.com>
+On Tue, Jul 28, 2026 at 9:45=E2=80=AFPM Dylan.Wu <fredwudi0305@gmail.com> w=
+rote:
+>
+> Implement the gstage page table dumper for RISC-V KVM, which exposes
+> the guest's gstage page tables via debugfs. When
+> CONFIG_PTDUMP_GSTAGE_DEBUGFS is enabled, a "gstage_page_tables" file
+> will be created under each VM's debugfs directory.
+>
+> This reuses the ptdump framework from the kernel page table dumper,
+> with gstage-specific attribute bits and level definitions.
+>
+> Assisted-by: YuanSheng: deepseek-v4-pro
+> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Dylan.Wu <fredwudi0305@gmail.com>
+> ---
+>  arch/riscv/kvm/Kconfig  |  12 +++
+>  arch/riscv/kvm/Makefile |   1 +
+>  arch/riscv/kvm/ptdump.c | 177 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 190 insertions(+)
+>  create mode 100644 arch/riscv/kvm/ptdump.c
+>
+> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+> index ec2cee0a3..6d62b967f 100644
+> --- a/arch/riscv/kvm/Kconfig
+> +++ b/arch/riscv/kvm/Kconfig
+> @@ -37,4 +37,16 @@ config KVM
+>
+>           If unsure, say N.
+>
+> +config PTDUMP_GSTAGE_DEBUGFS
+> +       bool "Present the gstage pagetables to debugfs"
+> +       depends on KVM && DEBUG_KERNEL && DEBUG_FS && PTDUMP_DEBUGFS
+> +       default n
+> +       help
+> +         Say Y here if you want to show the RISC-V KVM gstage guest
+> +         page tables in debugfs under each VM's debugfs directory as
+> +         a file named "gstage_page_tables". This allows inspection of
+> +         the second-stage address translation setup for each guest.
+> +
+> +         If unsure, say N.
+> +
+>  endif # VIRTUALIZATION
+> diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
+> index 296c2ba05..905593d6f 100644
+> --- a/arch/riscv/kvm/Makefile
+> +++ b/arch/riscv/kvm/Makefile
+> @@ -19,6 +19,7 @@ kvm-y +=3D isa.o
+>  kvm-y +=3D main.o
+>  kvm-y +=3D mmu.o
+>  kvm-y +=3D nacl.o
+> +kvm-$(CONFIG_PTDUMP_GSTAGE_DEBUGFS) +=3D ptdump.o
+>  kvm-y +=3D tlb.o
+>  kvm-y +=3D vcpu.o
+>  kvm-y +=3D vcpu_config.o
+> diff --git a/arch/riscv/kvm/ptdump.c b/arch/riscv/kvm/ptdump.c
+> new file mode 100644
+> index 000000000..f436ad48c
+> --- /dev/null
+> +++ b/arch/riscv/kvm/ptdump.c
+> @@ -0,0 +1,177 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2024 SiFive
+> + */
+> +
+> +#include <linux/debugfs.h>
+> +#include <linux/ptdump.h>
+> +#include <linux/seq_file.h>
+> +
+> +#include <linux/kvm_host.h>
+> +#include <asm/kvm_gstage.h>
+> +#include <asm/pgtable.h>
+> +#include <asm/ptdump.h>
+> +
+> +enum gstage_address_markers_idx {
+> +       GSTAGE_GPA_START_NR,
+> +       GSTAGE_GPA_END_NR,
+> +       END_OF_GSTAGE_SPACE_NR
+> +};
+> +
+> +static const struct ptdump_prot_bits gstage_pte_bits[] =3D {
+> +       {
+> +               .mask =3D _PAGE_DIRTY,
+> +               .set =3D "D",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_ACCESSED,
+> +               .set =3D "A",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_GLOBAL,
+> +               .set =3D "G",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_USER,
+> +               .set =3D "U",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_EXEC,
+> +               .set =3D "X",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_WRITE,
+> +               .set =3D "W",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_READ,
+> +               .set =3D "R",
+> +               .clear =3D ".",
+> +       }, {
+> +               .mask =3D _PAGE_PRESENT,
+> +               .set =3D "V",
+> +               .clear =3D ".",
+> +       }
+> +};
+> +
+> +static struct ptdump_pg_level gstage_pg_levels[] =3D {
+> +       { /* pgd */
+> +               .bits =3D gstage_pte_bits,
+> +               .num =3D ARRAY_SIZE(gstage_pte_bits),
+> +               .name =3D "PGD",
+> +       }, { /* p4d */
+> +               .bits =3D gstage_pte_bits,
+> +               .num =3D ARRAY_SIZE(gstage_pte_bits),
+> +               .name =3D "P4D",
+> +       }, { /* pud */
+> +               .bits =3D gstage_pte_bits,
+> +               .num =3D ARRAY_SIZE(gstage_pte_bits),
+> +               .name =3D "PUD",
+> +       }, { /* pmd */
+> +               .bits =3D gstage_pte_bits,
+> +               .num =3D ARRAY_SIZE(gstage_pte_bits),
+> +               .name =3D "PMD",
+> +       }, { /* pte */
+> +               .bits =3D gstage_pte_bits,
+> +               .num =3D ARRAY_SIZE(gstage_pte_bits),
+> +               .name =3D "PTE",
+> +       },
+> +};
 
-Introduce wrappers for the RMI functions needed for creating and
-managing realm guests. This will be used by the KVM to manage the
-Realms.
+As Sashiko pointed, this gstage dumper is already broken
+because:
+1) We cannot assume that all tables at all levels of G-stage are
+of same size. For example, the root G-stage table is 16KB and
+not 4KB
+2) Number of page table levels can vary between two Guests/VMs
+since we allow KVM user-space to change the number GPA bits
+which in-turn changes the number of G-stage levels.
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
-Changes since v21:
-  * Add a comment to note that out_* outputs are only valid on RMI_SUCCESS for
-    rmi_rtt_*_{unmap,map} - For the LLM reports
-  * rmi_smccc_invoke_once() -> Always inline and add a comment about result
-  * Always inline for rmi_rec_enter() and rmi_rec_destroy()
-  * Use arm_smccc_1_2_smc() for rmi_smccc_invoke_once()
-Changes since v20:
-  * Add rmi_smccc_invoke_once() and use that for rec_enter
-Changes since v19:
-  * Use rmi_sro_memxfr_command() for rec_create - Catalin
-Changes since v18:
-  * Convert the last man standing nesting if - Gavin
-  * Pass out_top for RMI_ERROR_RTT for rmi_rtt_destroy()
-Changes since v17:
-  * Avoid nesting if conditions for output populating RMI calls
-  * Clean up comments
-  * Always use arm_smccc_1_2_invoke() for RMI calls.
-Changes since v16:
-  * Split into a separate patch and move away from arch/arm64 to
-    include/linux/.
-  * Also moved into the firmware_rmm series from the KVM CCA support.
-    This is done in a hope to reduce the merge conflicts and make
-    the KVM CCA upstreaming in independent parallel chunks
----
- include/linux/arm-rmi-cmds.h | 477 +++++++++++++++++++++++++++++++++++
- 1 file changed, 477 insertions(+)
+> +
+> +static void gstage_note_page(struct ptdump_state *pt_st, unsigned long a=
+ddr,
+> +                            int level, u64 val)
+> +{
+> +       struct ptdump_pg_state *st =3D container_of(pt_st, struct ptdump_=
+pg_state, ptdump);
+> +
+> +       note_page(pt_st, addr, level, val);
+> +
+> +       if (level >=3D 0)
+> +               st->current_prot =3D val & gstage_pg_levels[level].mask;
+> +}
+> +
+> +static void gstage_note_page_pte(struct ptdump_state *pt_st, unsigned lo=
+ng addr, pte_t pte)
+> +{
+> +       gstage_note_page(pt_st, addr, 4, pte_val(pte));
+> +}
+> +
+> +static void gstage_note_page_pmd(struct ptdump_state *pt_st, unsigned lo=
+ng addr, pmd_t pmd)
+> +{
+> +       gstage_note_page(pt_st, addr, 3, pmd_val(pmd));
+> +}
+> +
+> +static void gstage_note_page_pud(struct ptdump_state *pt_st, unsigned lo=
+ng addr, pud_t pud)
+> +{
+> +       gstage_note_page(pt_st, addr, 2, pud_val(pud));
+> +}
+> +
+> +static void gstage_note_page_p4d(struct ptdump_state *pt_st, unsigned lo=
+ng addr, p4d_t p4d)
+> +{
+> +       gstage_note_page(pt_st, addr, 1, p4d_val(p4d));
+> +}
+> +
+> +static void gstage_note_page_pgd(struct ptdump_state *pt_st, unsigned lo=
+ng addr, pgd_t pgd)
+> +{
+> +       gstage_note_page(pt_st, addr, 0, pgd_val(pgd));
+> +}
+> +
+> +static void gstage_note_page_flush(struct ptdump_state *pt_st)
+> +{
+> +       pte_t pte_zero =3D {0};
+> +
+> +       gstage_note_page(pt_st, 0, -1, pte_val(pte_zero));
+> +}
+> +
+> +static int gstage_ptdump_show(struct seq_file *m, void *v)
+> +{
+> +       struct kvm *kvm =3D m->private;
+> +       gpa_t gpa_size =3D kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels=
+);
+> +       struct addr_marker gpa_markers[] =3D {
+> +               [GSTAGE_GPA_START_NR] =3D { 0, "Guest Physical Address St=
+art" },
+> +               [GSTAGE_GPA_END_NR]   =3D { gpa_size - 1, "Guest Physical=
+ Address End" },
+> +               [END_OF_GSTAGE_SPACE_NR] =3D { -1, NULL },
+> +       };
+> +       struct ptdump_pg_state st =3D {
+> +               .seq =3D m,
+> +               .marker =3D gpa_markers,
+> +               .level =3D -1,
+> +               .pg_level =3D gstage_pg_levels,
+> +               .ptdump =3D {
+> +                       .note_page_pte =3D gstage_note_page_pte,
+> +                       .note_page_pmd =3D gstage_note_page_pmd,
+> +                       .note_page_pud =3D gstage_note_page_pud,
+> +                       .note_page_p4d =3D gstage_note_page_p4d,
+> +                       .note_page_pgd =3D gstage_note_page_pgd,
+> +                       .note_page_flush =3D gstage_note_page_flush,
+> +                       .range =3D (struct ptdump_range[]) {
+> +                               {0, gpa_size - 1},
+> +                               {0, 0}
+> +                       }
+> +               }
+> +       };
+> +       unsigned int i, j;
+> +
+> +       for (i =3D 0; i < ARRAY_SIZE(gstage_pg_levels); i++) {
+> +               gstage_pg_levels[i].mask =3D 0;
+> +               for (j =3D 0; j < ARRAY_SIZE(gstage_pte_bits); j++)
+> +                       gstage_pg_levels[i].mask |=3D gstage_pte_bits[j].=
+mask;
+> +       }
+> +
+> +       if (kvm->arch.pgd_levels < 5)
+> +               gstage_pg_levels[1].name =3D "PGD";
+> +       if (kvm->arch.pgd_levels < 4)
+> +               gstage_pg_levels[2].name =3D "PGD";
+> +       if (kvm->arch.pgd_levels < 3)
+> +               gstage_pg_levels[3].name =3D "PGD";
+> +
+> +       ptdump_walk_pgd(&st.ptdump, kvm->mm, kvm->arch.pgd);
+> +
+> +       return 0;
+> +}
+> +
+> +DEFINE_SHOW_ATTRIBUTE(gstage_ptdump);
+> +
+> +void kvm_arch_create_vm_debugfs(struct kvm *kvm)
+> +{
+> +       debugfs_create_file("gstage_page_tables", 0400,
+> +                           kvm->debugfs_dentry, kvm, &gstage_ptdump_fops=
+);
+> +}
+> --
+> 2.34.1
+>
 
-diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-index 982e30fdf4dec..4d5d4a89135ce 100644
---- a/include/linux/arm-rmi-cmds.h
-+++ b/include/linux/arm-rmi-cmds.h
-@@ -53,6 +53,20 @@ static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
- 	}
- }
- 
-+/*
-+ * rmi_smccc_invoke_once: Invoke the RMI call and return the results. Do not
-+ * retry the command. Let the caller deal with RMI_BUSY or RMI_BLOCKED.
-+ *
-+ * @regs: Input parameters filled in. Updated with the ouptput results
-+ * after the call.
-+ */
-+static __always_inline void rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *regs)
-+{
-+	struct arm_smccc_1_2_regs args = *regs;
-+
-+	arm_smccc_1_2_smc(&args, regs);
-+}
-+
- unsigned long rmi_feat_reg(unsigned int index);
- 
- int rmi_delegate_range(phys_addr_t phys, unsigned long size,
-@@ -104,4 +118,467 @@ static inline bool is_rmi_available(void)
- }
- #endif	/* CONFIG_ARM_RMM_RMI */
- 
-+
-+/**
-+ * rmi_rtt_data_map_init() - Create a mapping at protected IPA, copying contents
-+ *			     from a given non-secure source granule.
-+ * @rd: PA of the RD
-+ * @data: PA of the target granule mapped in the guest
-+ * @ipa: IPA at which the granule @data will be mapped in the guest
-+ * @src: PA of the source granule with contents
-+ * @flags: RMI_MEASURE_CONTENT if the contents should be measured
-+ *
-+ * Create a mapping from Protected IPA space to conventional memory, copying
-+ * contents from a Non-secure Granule provided by the caller.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rtt_data_map_init(unsigned long rd, unsigned long data,
-+					 unsigned long ipa, unsigned long src,
-+					 unsigned long flags)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_DATA_MAP_INIT, rd, data, ipa, src, flags
-+	};
-+
-+	return rmi_sro_execute(&regs);
-+}
-+
-+/**
-+ * rmi_rtt_data_map() - Create mappings in protected IPA range with unknown contents
-+ * @rd: PA of the RD
-+ * @base: Base of the target IPA range
-+ * @top: Top of the target IPA range
-+ * @flags: Flags
-+ * @oaddr: Output address set descriptor
-+ * @out_top: Top address of range which was processed.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code.
-+ * NOTE: out_top is only valid with ret == RMI_SUCCESS
-+ */
-+static inline long rmi_rtt_data_map(unsigned long rd,
-+				    unsigned long base,
-+				    unsigned long top,
-+				    unsigned long flags,
-+				    unsigned long oaddr,
-+				    unsigned long *out_top)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_DATA_MAP, rd, base, top, flags, oaddr
-+	};
-+	long ret;
-+
-+	ret = rmi_sro_execute(&regs);
-+
-+	if (ret == RMI_SUCCESS && out_top)
-+		*out_top = regs.a1;
-+
-+	return ret;
-+}
-+
-+/**
-+ * rmi_rtt_data_unmap() - Remove mappings to conventional memory at a protected
-+ *			  IPA range
-+ * @rd: PA of the RD
-+ * @base: Base of the target IPA range
-+ * @top: Top of the target IPA range
-+ * @flags: Flags
-+ * @oaddr: Output address set descriptor
-+ * @out_top: Returns top IPA of range which has been unmapped
-+ * @out_range: Output address range
-+ * @out_count: Number of entries in output address list
-+ *
-+ * Removes mappings to convention memory with a target Protected IPA range.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ * NOTE: out_top is only valid with ret == RMI_SUCCESS
-+ */
-+static inline long rmi_rtt_data_unmap(unsigned long rd,
-+				      unsigned long base,
-+				      unsigned long top,
-+				      unsigned long flags,
-+				      unsigned long oaddr,
-+				      unsigned long *out_top,
-+				      unsigned long *out_range,
-+				      unsigned long *out_count)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_DATA_UNMAP, rd, base, top, flags, oaddr
-+	};
-+	long ret;
-+
-+	ret = rmi_sro_execute(&regs);
-+
-+	if (ret != RMI_SUCCESS)
-+		return ret;
-+
-+	if (out_top)
-+		*out_top = regs.a1;
-+	if (out_range)
-+		*out_range = regs.a2;
-+	if (out_count)
-+		*out_count = regs.a3;
-+
-+	return RMI_SUCCESS;
-+}
-+
-+/**
-+ * rmi_psci_complete() - Complete pending PSCI command
-+ * @calling_rec: PA of the calling REC
-+ * @status: Status of the PSCI request
-+ *
-+ * Completes a pending PSCI command.
-+ *
-+ * Return: RMI return code
-+ */
-+static inline long rmi_psci_complete(unsigned long calling_rec,
-+				     unsigned long status)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_PSCI_COMPLETE, calling_rec, status,
-+	};
-+
-+	rmi_smccc_invoke(&regs);
-+	return regs.a0;
-+}
-+
-+/**
-+ * rmi_realm_activate() - Activate a realm
-+ * @rd: PA of the RD
-+ *
-+ * Mark a realm as Active, signalling that creation is completed, allowing
-+ * execution of the realm.
-+ *
-+ * Return: RMI return code
-+ */
-+static inline long rmi_realm_activate(unsigned long rd)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_REALM_ACTIVATE, rd,
-+	};
-+
-+	rmi_smccc_invoke(&regs);
-+	return regs.a0;
-+}
-+
-+/**
-+ * rmi_realm_create() - Create a realm
-+ * @rd: PA of the RD
-+ * @params: PA of realm parameters
-+ * @sro: Preallocated SRO context
-+ *
-+ * Create a new realm using the given parameters.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_realm_create(unsigned long rd, unsigned long params,
-+				    struct rmi_sro_state *sro)
-+{
-+	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-+				   SMC_RMI_REALM_CREATE, rd, params);
-+}
-+
-+/**
-+ * rmi_realm_terminate() - Terminate a realm
-+ * @rd: PA of the RD
-+ * @sro: Preallocated SRO context
-+ *
-+ * Terminates a realm, moving it into a ZOMBIE state
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_realm_terminate(unsigned long rd,
-+				       struct rmi_sro_state *sro)
-+{
-+	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-+				   SMC_RMI_REALM_TERMINATE, rd);
-+}
-+
-+/**
-+ * rmi_realm_destroy() - Destroy a realm
-+ * @rd: PA of the RD
-+ * @sro: Preallocated SRO context
-+ *
-+ * Destroys a realm, all objects belonging to the realm must be destroyed first.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_realm_destroy(unsigned long rd,
-+				     struct rmi_sro_state *sro)
-+{
-+	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-+				   SMC_RMI_REALM_DESTROY, rd);
-+}
-+
-+/**
-+ * rmi_rec_create() - Create a REC
-+ * @rd: PA of the RD
-+ * @rec: PA of the target REC
-+ * @params: PA of REC parameters
-+ * @sro: Allocated SRO context to be used
-+ *
-+ * Create a REC using the parameters specified in the struct rec_params pointed
-+ * to by @params.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rec_create(unsigned long rd,
-+				  unsigned long rec,
-+				  unsigned long params,
-+				  struct rmi_sro_state *sro)
-+{
-+	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-+				   SMC_RMI_REC_CREATE, rd, rec, params);
-+}
-+
-+/**
-+ * rmi_rec_destroy() - Destroy a REC
-+ * @rec: PA of the target REC
-+ * @sro: Allocated SRO context to be used
-+ *
-+ * Destroys a REC. The REC must not be running.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static __always_inline long rmi_rec_destroy(unsigned long rec,
-+				   struct rmi_sro_state *sro)
-+{
-+	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_REC_DESTROY, rec);
-+}
-+
-+/**
-+ * rmi_rec_enter() - Enter a REC
-+ * @rec: PA of the target REC
-+ * @run_ptr: PA of RecRun structure
-+ *
-+ * Starts (or continues) execution within a REC.
-+ *
-+ * Return: RMI result
-+ */
-+static __always_inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_REC_ENTER, rec, run_ptr,
-+	};
-+
-+	rmi_smccc_invoke_once(&regs);
-+	return regs.a0;
-+}
-+
-+/**
-+ * rmi_rtt_create() - Creates an RTT
-+ * @rd: PA of the RD
-+ * @rtt: PA of the target RTT
-+ * @ipa: Base of the IPA range described by the RTT
-+ * @level: Depth of the RTT within the tree
-+ *
-+ * Creates an RTT (Realm Translation Table) at the specified level for the
-+ * translation of the specified address within the realm.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rtt_create(unsigned long rd, unsigned long rtt,
-+				  unsigned long ipa, long level)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_CREATE, rd, rtt, ipa, level
-+	};
-+
-+	return rmi_sro_execute(&regs);
-+}
-+
-+/**
-+ * rmi_rtt_destroy() - Destroy an RTT
-+ * @rd: PA of the RD
-+ * @ipa: Base of the IPA range described by the RTT
-+ * @level: RTT level
-+ * @out_rtt: Pointer to write the PA of the RTT which was destroyed
-+ * @out_top: Pointer to write the top IPA of non-live RTT entries, from entry
-+ * at which the RTT walk terminated.
-+ *
-+ * Destroys an RTT. The RTT must be non-live, i.e. none of the entries in the
-+ * table are in ASSIGNED or TABLE state.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code.
-+ */
-+static inline long rmi_rtt_destroy(unsigned long rd,
-+				   unsigned long ipa,
-+				   long level,
-+				   unsigned long *out_rtt,
-+				   unsigned long *out_top)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_DESTROY, rd, ipa, level
-+	};
-+	long ret = rmi_sro_execute(&regs);
-+
-+	switch (RMI_RESULT_STATUS(ret)) {
-+	case RMI_SUCCESS:
-+		if (out_rtt)
-+			*out_rtt = regs.a1;
-+		fallthrough;
-+	case RMI_ERROR_RTT:
-+		if (out_top)
-+			*out_top = regs.a2;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-+ * rmi_rtt_fold() - Fold an RTT
-+ * @rd: PA of the RD
-+ * @ipa: Base of the IPA range described by the RTT
-+ * @level: Depth of the RTT within the tree
-+ * @out_rtt: Pointer to write the PA of the RTT which was destroyed
-+ *
-+ * Folds an RTT. If all entries with the RTT are 'homogeneous' the RTT can be
-+ * folded into the parent and the RTT destroyed.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rtt_fold(unsigned long rd, unsigned long ipa,
-+				long level, unsigned long *out_rtt)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_FOLD, rd, ipa, level
-+	};
-+	long ret = rmi_sro_execute(&regs);
-+
-+	if (ret == RMI_SUCCESS && out_rtt)
-+		*out_rtt = regs.a1;
-+
-+	return ret;
-+}
-+
-+/**
-+ * rmi_rtt_init_ripas() - Set RIPAS for new realm
-+ * @rd: PA of the RD
-+ * @base: Base of target IPA region
-+ * @top: Top of target IPA region
-+ * @out_top: Top IPA of range whose RIPAS was modified
-+ *
-+ * Sets the RIPAS of a target IPA range to RAM, for a realm in the NEW state.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rtt_init_ripas(unsigned long rd, unsigned long base,
-+				      unsigned long top, unsigned long *out_top)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_INIT_RIPAS, rd, base, top
-+	};
-+	long ret = rmi_sro_execute(&regs);
-+
-+	if (ret == RMI_SUCCESS && out_top)
-+		*out_top = regs.a1;
-+
-+	return ret;
-+}
-+
-+/**
-+ * rmi_rtt_unprot_map() - Map unprotected granules into a realm
-+ * @rd: PA of the RD
-+ * @base: Base IPA of the mapping
-+ * @top: Top of the target IPA range
-+ * @flags: Flags
-+ * @oaddr: Output address set descriptor
-+ * @out_top: Top IPA of range which has been mapped
-+ *
-+ * Create mappings to memory within a target unprotected IPA range.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rtt_unprot_map(unsigned long rd,
-+				      unsigned long base,
-+				      unsigned long top,
-+				      unsigned long flags,
-+				      unsigned long oaddr,
-+				      unsigned long *out_top)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_UNPROT_MAP, rd, base, top, flags, oaddr
-+	};
-+	long ret = rmi_sro_execute(&regs);
-+
-+	if (ret == RMI_SUCCESS && out_top)
-+		*out_top = regs.a1;
-+
-+	return ret;
-+}
-+
-+/**
-+ * rmi_rtt_set_ripas() - Set RIPAS for an running realm
-+ * @rd: PA of the RD
-+ * @rec: PA of the REC making the request
-+ * @base: Base of target IPA region
-+ * @top: Top of target IPA region
-+ * @out_top: Pointer to write top IPA of range whose RIPAS was modified
-+ *
-+ * Completes a request made by the realm to change the RIPAS of a target IPA
-+ * range.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ */
-+static inline long rmi_rtt_set_ripas(unsigned long rd, unsigned long rec,
-+				     unsigned long base, unsigned long top,
-+				     unsigned long *out_top)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_SET_RIPAS, rd, rec, base, top
-+	};
-+	long ret = rmi_sro_execute(&regs);
-+
-+	if (ret == RMI_SUCCESS && out_top)
-+		*out_top = regs.a1;
-+
-+	return ret;
-+}
-+
-+/**
-+ * rmi_rtt_unprot_unmap() - Remove mappings within an unprotected IPA range
-+ * @rd: PA of the RD
-+ * @base: Base IPA of the mapping
-+ * @top: Top of the target IPA range
-+ * @flags: Flags
-+ * @oaddr: Output address set descriptor
-+ * @out_top: Top IPA which has been unmapped
-+ * @out_range: Output address range
-+ * @out_count: Number of entries in output address list
-+ *
-+ * Removes mappings to memory within a target unprotected IPA range.
-+ *
-+ * Return: 0 on success, positive RMI result code or negative Linux error code
-+ * NOTE: out_top is only valid with ret == RMI_SUCCESS.
-+ */
-+static inline long rmi_rtt_unprot_unmap(unsigned long rd,
-+					unsigned long base,
-+					unsigned long top,
-+					unsigned long flags,
-+					unsigned long oaddr,
-+					unsigned long *out_top,
-+					unsigned long *out_range,
-+					unsigned long *out_count)
-+{
-+	struct arm_smccc_1_2_regs regs = {
-+		SMC_RMI_RTT_UNPROT_UNMAP, rd, base, top, flags, oaddr
-+	};
-+	long ret = rmi_sro_execute(&regs);
-+
-+	if (ret != RMI_SUCCESS)
-+		return ret;
-+
-+	if (out_top)
-+		*out_top = regs.a1;
-+	if (out_range)
-+		*out_range = regs.a2;
-+	if (out_count)
-+		*out_count = regs.a3;
-+
-+	return RMI_SUCCESS;
-+}
-+
- #endif	/* __LINUX_ARM_RMI_CMDS_H_ */
--- 
-2.43.0
-
+Regards,
+Anup
