@@ -1,90 +1,91 @@
 Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECAC443C08
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515D12C21F7
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975493; cv=none; b=qkfETolNvG0QwzNb13Sj78a7HUgAi+Nl56ruksgkfcdkOmLSbQL9/2zmaZTCtl+QZQHJjHrMlurCYBpqoSVCWnLALiBeTXldqT5VeWwhBNnXHNutIYSrmCvFCblmpD+mhFqXHYy5rGRQaQiPlLLUl0W79BCkKDxv5J1CEtrsk7o=
+	t=1790975499; cv=none; b=I6LMTfan4j0IM42KqDAqji5qY3cWGEHwoPNDcXz8g85kOoGDV+/mnZdc5T+x84IOqw5IElElQhWNxdpqSZJWvUKXS4e5ewjEou10OD/+JlfXwH+0YbcK3fRFyA3a6mT5y3kHXcij7SAkXwwwB+Nl44EseWVzV6HgUO2UVSu+qbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975493; c=relaxed/simple;
-	bh=7HP8j0vRbaMczyRcR6MqI5PEt57F9XkP6W2Sf05zWDY=;
+	s=arc-20240116; t=1790975499; c=relaxed/simple;
+	bh=SbeoSzc8717QD/IqpcZd0l46LWnbezvyajiiws+1ApY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rptY334p7YZ6WPpY8Mgbxz7mK1jY8g8oZC1rOYeKnaEh011Ow8ShUIT+yV5o/tRNxhqNbkQ0qrqzoQ1UFtCJqfgemh1HvQJCDi5987uTDgKiDksPqG5UkrFxOt+lnZ6GdOtXt9SQHt5CQGyXElp2xosdjwZdNQ+dUV7SJpuFLUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GvXriXXj; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=G4VSDCCsKfvYdDucGPj8XWT/RKLkqvFfOOiaVWJ4Y7R0TNlgO38wgl79KNsypmV255vrw68wKCjKOHVLICcfLawTbc3Aa9NtrtDrAi22LmcLw6ZmPj9j5By072bh9lzHTnIoFThpeGhQXkhehwjnLrPlshkbPhYQiimSb0dvDZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oFV2swOR; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GvXriXXj"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4922b7c31so15420a12.1
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:11:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oFV2swOR"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cca35cf9f77so12755a12.2
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975488; x=1791580288; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975492; x=1791580292; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aQy8amvB/kaTOh4AUTfTq9TAn2udFtua6zNz9l0R3d8=;
-        b=GvXriXXjQGgxhW6nuJVImHLTQaJjEJ8ngujesgPjZMc2/5N/tcTV0ESFnNuq6y7FIP
-         S1gFBfyjxUwLBuFuendH9FPI8Q9RcdwwX+G2vJNmZty8bi4y0JFv9YBt/YoTsEDhp6L+
-         2xqaP5dizLVJS3uCg4LSbLyf5XPCsfMM1tPqR27OZIBQrGQj0qXjnpIv0whlMrhdsh05
-         jzGZmLK8Plkh5lZnCf96pRU0hfrrQUL95/wKFQR2qxrHrmw3mRM84EJLc05AMNEUoL0u
-         lyZGPWEIJScORL2LULsTRqd9p7KiKhexya9ucfjB/2Hpt/S0zXl6PM1BFZHHpSszQ2Dv
-         1guA==
+        bh=wShwsJKvODsiktjEQtwHrAPB94R0KVRpk+BGj5cEKBU=;
+        b=oFV2swOR/Zcywc8myCyZ2GnQmITK4lzFf4CizWfJzJZ3x7DFkCVoPPRvQcZP0N8jCp
+         1JP8uv7WfZzK5sBU64OofXfEExyLrLaokCFB6h1ibJeHR2GEKPQhKOJ0RxSwDwuHihyQ
+         V2MhfnhcGYdR2CrObdMIPG6GGEUuUxUU5tpzXNWdDoOmzG88SIz4PDp8aUVvrM8gRxT/
+         AouP7CiKNU99kIuLwaMR6tVCIr3r9G4/8YcUgQ4GwY376LpBff4pk5fenip+js6R6kf6
+         UYh1H7b0dpRnWNCYbzpZvcfxI/lP/ljxAIqk/xR+NhL4pUeNgLC5fXcFZEbyDvVYIzvQ
+         pzXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975488; x=1791580288;
+        d=1e100.net; s=20260707; t=1790975492; x=1791580292;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aQy8amvB/kaTOh4AUTfTq9TAn2udFtua6zNz9l0R3d8=;
-        b=aFY3zVcOX+ia8ZMPfKvdo5CfeIqo9R5FnVmjWKTtc29WQC/nYJgR9WEyX3vB2l8Ev3
-         gGvNvizVY65Og4qkmlami+NkfHoB6vfLFDR4G9ZAcG3wS71JSKAjvWHmkSK55stXlDG5
-         bxGxjTfeaWsV0IcUkMyBnWApTlXvlSHub+8HlkymwuiHtS5o7Csvb6thyk7sIPfi3+rQ
-         R5CFUkLGdZTPpc+UQIRzaehIzx60r5EnUYiBNDN3Juo+dYYjT2GFoB4fx7cx/aYuezmZ
-         ko1+PqrLL/IvGSUG3Q9cgpsEn8/kp4r3rOmbOuo9pI1NYNyRJ0xfN94+lM31tqntj/xL
-         V/Eg==
-X-Forwarded-Encrypted: i=1; AKwUvBzP1obPLkuK5Hsak2Ka+BqILgIiH+FK/DZ5Fxq+GsztzsF/q7O4U6oSJzo1rTBZjmMkTQg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kvOUXkbz9xLHIgNJvqQGUDbmA6BVhZVvAPQ8ZDa1jvN/KEG1pR
-	+Otbndgm86WLPdwKMc1QP7UgP8rzudG8+qCuCGMQsvZH+xZX94XiOOVOrT+YFoD5olEcinjirtP
-	5+7JqaA==
-X-Received: from pfbhu50.prod.google.com ([2002:a05:6a00:69b2:b0:88b:55f8:60eb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:ed0d:b0:3de:5a00:e248
- with SMTP id adf61e73a8af0-3e0bd479eccmr4003281637.76.1790975487779; Fri, 02
- Oct 2026 14:11:27 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:07:32 -0700
-In-Reply-To: <20260923-snp-invalid-input-v2-1-c00e0dd077ca@google.com>
+        bh=wShwsJKvODsiktjEQtwHrAPB94R0KVRpk+BGj5cEKBU=;
+        b=WJYV4rtmmi0PnXU9IUvviIDSM58LlS/sA3oy/d1KpwsSdy/UlXPkG5H45Bdm57O24D
+         lohO4qexGUJv+C+YonaJIxo0lru4sBq9TfTpO6B7rJCxAlfInyfrTsbt6nMq2Sgr56KT
+         Dm7j/8fjgBUmifkY8e9YDs+mw4qvImCMLWWp3ktkiZG2n9tlkMX6R1wdn6T4ctyjrpcb
+         0oEWIpnOHvjDQ+HPORYH2YTA7GT2IKdl+iRn5id5aYDkiMQ0IHUXwBrGMmQASp8I6has
+         JHIDF+YeNxQhN43+FW/LcL9cIoz0rXVRe4x8Va34QRxjH00J1DTym3Easq4RYRQ1Gync
+         2kzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxPkNvY2z5UpD5k0ilVqEMoRH3v+Py51fDcUPfokb7uDPOfiEcezN3lgxVvrLIMemjSqEs=@vger.kernel.org
+X-Gm-Message-State: AFuF++k14siMi0ttQWivtslWfSdFlo30Ull7mnMzRpVAxI1S5ml3WbIi
+	zsMRU0tiW1bMkIMNm+k/7fk1kD7m9P3yN5vUCXcVIoNEyq0X8Tm4dWf9MhBhjqpVC8DpnJAFlaV
+	30lpsZg==
+X-Received: from pfme28.prod.google.com ([2002:aa7:98dc:0:b0:885:6385:6167])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4516:b0:3de:61f3:33f8
+ with SMTP id adf61e73a8af0-3e0bcf64e6fmr3964720637.43.1790975492097; Fri, 02
+ Oct 2026 14:11:32 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:07:34 -0700
+In-Reply-To: <20260903223258.486034-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260923-snp-invalid-input-v2-1-c00e0dd077ca@google.com>
+References: <20260903223258.486034-1-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097473116.4069804.1607082912708388223.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
- access failure
+Message-ID: <179097499601.4081097.16696339000915079689.b4-ty@b4>
+Subject: Re: [PATCH v2] KVM: SVM: Trigger new ASID allocation in both VMCBs on
+ pCPU switch
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, Jacky Li <jackyli@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Jacob Xu <jacobhxu@google.com>, Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 23 Sep 2026 20:18:12 +0000, Jacky Li wrote:
-> Currently, snp_handle_(ext_)guest_req() returns -EIO when
-> kvm_{read/clear}_guest() fails while accessing guest-provided buffers.
-> Returning -EIO causes KVM_RUN to exit to userspace, likely killing the VM.
+On Thu, 03 Sep 2026 22:32:58 +0000, Yosry Ahmed wrote:
+> When the pCPU where the VMCB was mostly recently used is switched, reset
+> the ASID generation in both VMCBs, triggering new ASID allocation for
+> the immediate VMRUN as well as the next VMRUN on the other VMCB.
 > 
-> Fix this by returning GHCB_HV_RESP_MALFORMED_INPUT with sub-error code
-> GHCB_ERR_INVALID_INPUT to the guest and resuming the vCPU.
+> The ASID is shared between vmcb01 and vmcb02, and gets flushed on every
+> nested transition. However, since pCPU tracking is done per VMCB, it is
+> possible for one VMCB to allocate a new ASID when migrated to a new
+> pCPU, and then the other VMCB reuses that ASID on the old pCPU. This can
+> result in the same ASID being used by multiple vCPUs on the old pCPU.
 > 
 > [...]
 
 Applied to kvm-x86 svm, thanks!
 
-[1/1] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer access failure
-      https://github.com/kvm-x86/linux/commit/003892d6e802
+[1/1] KVM: SVM: Trigger new ASID allocation in both VMCBs on pCPU switch
+      https://github.com/kvm-x86/linux/commit/bf260dc9e7b8
 
 --
 https://github.com/kvm-x86/linux/tree/next
