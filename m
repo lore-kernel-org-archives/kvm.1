@@ -1,97 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D663AAF54;
-	Fri,  2 Oct 2026 14:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71554C224C;
+	Fri,  2 Oct 2026 14:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790952995; cv=none; b=qfewKNWBllHv4Z5W3o+gaPBimGHrU349i4loD0QnHpuiVuIv/KRyrcVfYvktbgO2TbIhenvq0rP0SbeH0W8tBlr4d3PuzaBoaV5FlY/mdlUH6XFAsFClEXvKnBfkGbNxMCBSPe0L2T6sdLyJn0khb+x5G0SlQKgzLQ8TuiyWBCQ=
+	t=1790953165; cv=none; b=h94E+oYkIUs4ZO+OaVdOTZWNDnXjkxHvCkwCkOjWCHfvZERhlXYlzNts0Oh5AQXJt2OS8saRb+RqnRLtQVOfo+iKTPGq7DiZiLL0oniru1NTr6ik6sQw+IQ15eKkLqlhLXzYmZQKMDgUkG2W+pQBKUkm50JeKtuhkJxBj3NeVSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790952995; c=relaxed/simple;
-	bh=vNF3N3IxUFgjfHwaXFhoUUdmxvTVJaq2s8vGsZwJrtA=;
+	s=arc-20240116; t=1790953165; c=relaxed/simple;
+	bh=uC2WMN65R+WMH7TyW3YPuGDpRjdHe0WL0w7NTxeyvEE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tDRRoMZwwKDWQFbkBmzzMF7TsPkbSNJfobuF/S+vlifaw7wbrlV3WadnqzQAOyb51aIXuu/XCcsIroOluRnldBWMDT4bS3ZuQk2lL7RCspcvlfDZ1WaqEpYH9NlMKucJZof1YEOVwmtGfHlMak2n4FEl3J8z1e17T68P9P2dMWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdVzgh8v; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=m3xNcQHZqzpzzhH9tNIm+fJueNky8LjcySgis4v+6PR0ya999uDefDhkJOMMTfloAyrbDfYZCBRvy3Ee9d+QkGd7Ov2WDsi/zFmBSiX1NbULvl5SujS1GiJKIXi5kyURhchkIKVjv0zfyO31tX7YPh7sqrHXRB8viTSnU3SgNqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n818Yf6K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdVzgh8v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88791F00893;
-	Fri,  2 Oct 2026 14:56:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n818Yf6K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3C21F000FF;
+	Fri,  2 Oct 2026 14:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790952993;
-	bh=jQuiTsuvfiP4TjKhygdb17Hd1K9/CkYZDyLUI1EBmwE=;
+	s=k20260515; t=1790953162;
+	bh=FQgu8PxLp1TQfnPDbRTV1LqOMQgUeYDEJUcWtV+4kFE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fdVzgh8vzUmdaKUlZe0VUNAIbLSN/FNhbQHH4wzlHFvv+hwCHSicNk7KjrZHYj3Yu
-	 iQlLhsYS9ojqwSku1HQOXWnmdKoCu8CHMkE9A7LZ/DH6hiJQldb++n4ez57oVgBl0V
-	 So8/jwrVJl3CEjbngowiXAkkkl3yvYCSfnXRCFedPo61Fs2XbO15rdcGoISGxqRB8K
-	 jXU4TLmv22BTp6yPLlF2Jpru5HvWTRYFQZfFHeldR1afhWGGXDAezdVopQG8Ave8bR
-	 CZFLT49VpC5WBX0wYA8iUka0IczATo+lcmXmrk2MeXbxiJX2meYd90/doZTa6tYh/0
-	 hugq9t44NIjiw==
-Date: Fri, 2 Oct 2026 15:56:04 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
-Subject: Re: [PATCH v3 15/40] mm/vma: add vma[_flags]_is_kernel_owned()
- predicates
-Message-ID: <ar_CYfkR5Pfb7J9b@gremlin>
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
- <0623ee06-00e5-421e-a24a-ed605abb559b@kernel.org>
+	b=n818Yf6KgkrIEhYlX0R5K1dDKORE86leRSZFLB71TzF3bwxbPYcrfab2Tqx2BGukz
+	 +oOX95ELDW4Atrg/zqeleBuvArpgu+CmQ9LsZ5xE0AMLufEXHS9FBVWGcjbpv8eSBo
+	 0XXIEarH1syA7yEUmRqVqtsGpxwI5i597RJOgMgC6kWCqXkoI0DzVtXbOlHkwEkn15
+	 NwhmQatr/BHdsdIMjRvuaLz5HhhiP4nhJpMvtanBgMfPu3xg0F4OJr5KpcdH222ozV
+	 wbg4fuT0E6+oI4/qwuXSrbFGmUo1IXFgdyuOMX7tdiA6qsXfkZM/z+4D6/7MsnwtmM
+	 +tLFl5u30VGWw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 50DE2198003A;
+	Fri,  2 Oct 2026 10:59:18 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 02 Oct 2026 10:59:20 -0400
+X-ME-Sender: <xms:xca_atBbzmtBPaYrH9WkZ7rCOMTZTCogYmRaEmkMirPqE4b41MOEHg>
+    <xme:xca_avc-RB_ZZYezn9hybRWER_x1Ta-lG7cnalUx--maFQ0VIgFzlcNMjKL56txal
+    O5LPclGrBFa5tMDtM4yBuJokMVt3khfFSZC0_LJK7Ps1vL_L5-NH2E>
+X-ME-Received: <xmr:xca_ahH5ESceGU23-UDnyPhKaF5ZSAf_rd3eRZQ39tsODfCRzXey7H3uLJ4>
+X-ME-Proxy-Cause: dmFkZTGbWoDYYR3Zk3WswxaEEzG9LkXCRWIhP8uvmVR4O6ICqsmW1+0UV8heiACCQUwyua
+    yylCcKg2BVO4Xyocw9MiLLa26H8dbon+aKaaIlvyQes08R2cvnls8HdN5vIXsa3gRLCl6j
+    907yeCGyDaxGW1LpnCzdP2RRZT4rbLPcDrj8zkmACugOAk0aCyMMp/svS2UyiLTUmADNQz
+    1sAHXgEjheCPii99bNRl+V814ThZ9qj5BmB6k5m+xQO+Yrfsk4bUK9DDjPhqOTgQedqB6Z
+    eYxZxgylAAmtih7MoiGlkaCECQ39u+Hy6h2emhK4xf5lzPIehZ07wdo0UQS3r91BbZpjWh
+    LwhxtKRXBhNhjXKgN6PX3c2JIl/e+JXuj+WLoeC3gHZnlBqY8l2Z+OPixePeUg/Cmsh4Ga
+    eBdxXgBaNf3pWlivJ9rqtGSgRyiD5jM66D+3eXEf18IcN6PiCx8B+15ULOgP0uC+64GICl
+    zZQsnkBmo7St5sMhhqidesRXCAVPnb6nqF3/q+34O1yKfopH98zSjMDea1Kwx9ZJfN1Miy
+    Wk6APdINHu+TVUiG0W6ZspTD4YHHzPYtzwcpWCFFaaQuL7D7mfTc/0Xk9qOR70o3kWAhg6
+    qPsmKpYu98IvudnRjBrU9CEwgahE8XtlB6xM5kZL5aWAA1PEbAcA43+cep1w
+X-ME-Proxy: <xmx:xca_ahVj9JOWy5VMxjHh7G8Oc97rD1QNRavdjWBAwmuMyFuuqzmiBg>
+    <xmx:xca_apxgN-y9bmKEbyg4B0YnHHrQ-8DyBz7s-l1gSTgQ9d_R64HJxQ>
+    <xmx:xca_aktceatZN_GXAqNj7cGvDLuC4mIQ7KGCD0wxWqWytwKwqBrtuw>
+    <xmx:xca_aiDUrHpYSdm_lHBFbPuEOPXsKH20tPNJalYnLmSIQF_fHCDlUw>
+    <xmx:xca_aopATSg_O_klyBzafug8UuvJJJ1AuTpdkL3TxqPUIjKXdmE0XTbI>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Oct 2026 10:59:17 -0400 (EDT)
+Date: Fri, 2 Oct 2026 15:59:16 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+Cc: "rdunlap@infradead.org" <rdunlap@infradead.org>, 
+	"corbet@lwn.net" <corbet@lwn.net>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive
+ the UART with TDVMCALLs
+Message-ID: <ar_GLgzxdWUdXn0Z@thinkstation>
+References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
+ <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
+ <arZbBqArD9NqWPry@thinkstation>
+ <c41ffc542bd677b71bcecbe4e2c2e2a3b605ffcf.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -100,155 +77,187 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0623ee06-00e5-421e-a24a-ed605abb559b@kernel.org>
+In-Reply-To: <c41ffc542bd677b71bcecbe4e2c2e2a3b605ffcf.camel@intel.com>
 
-On Thu, Oct 01, 2026 at 02:36:40PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/17/26 18:22, Lorenzo Stoakes (ARM) wrote:
-> > Rather than referring to VMA flags with uncertain meaning, add a new
-> > predicate that explicitly describes what possession of the VMA_PFNMAP_BIT
-> > or VMA_MIXEDMAP_BIT flags mean, and then refer to that function for
-> > determining VMA mergeability.
-> >
-> > Either flag means the contents of the mapping are owned by the kernel,
-> > usually a driver, rather than by the core mm: the memory may be MMIO,
-> > kernel-allocated pages or even ordinary pages the driver maps itself, but
-> > the core must not populate, reclaim, migrate, copy-on-write or merge the
-> > range on its own initiative.
-> >
-> > We initially also include VMA_IO_BIT here, as by implication, these must be
-> > kernel-owned. (mlock() also sets VMA_IO_BIT transiently on ordinary VMAs
-> > while locking them, which is addressed later in this series.)
-> >
-> > However the intent is to in future remove this, as no mapping should be
-> > marked as an I/O mapping without also being marked with VMA_PFNMAP_BIT.
-> >
-> > This forms the basis of further work intended to improve how we express VMA
-> > properties such as this.
-> >
-> > Also update the VMA userland tests to reflect the change.
-> >
-> > No functional change intended.
->
-> Of course I have to bitch about the naming :)
+On Mon, Sep 28, 2026 at 11:07:52PM +0000, Verma, Vishal L wrote:
+> On Fri, 2026-09-25 at 12:30 +0100, Kiryl Shutsemau wrote:
+> 
+> > 
+> > All these #ifdefs in early_printk.c can go. X86_FEATURE_TDX_GUEST is a
+> > disabled feature without CONFIG_INTEL_TDX_GUEST, so
+> > cpu_feature_enabled() folds to zero and the compiler drops the
+> > static_call_update() calls and the wrappers with them.
+> > 
+> > Add stubs for tdx_inb() and tdx_outb() to the #else branch in
+> > <asm/tdx.h> and make the "tdx" case unconditional.
+> 
+> Tried this - it causes an objtool error:
+> 
+>      CC      arch/x86/kernel/early_printk.o
+>    arch/x86/kernel/early_printk.o: error: objtool: bad .discard.annotate_insn entry: 4 of type 1
+>    make: *** [Makefile:248: __sub-make] Error 2
+> 
+> It can be fixed by adding a __used annotation to the wrappers, but is that
+> ok?
+> 
 
-Yup :)
+ANNOTATE_NOENDBR_SYM() is a top-level asm() that references the symbol.
+Once the compiler drops the wrapper, the annotation points at an
+undefined symbol and objtool flags it.
 
->
-> Intuitively: kernel owned vs ... user owned?
->
-> No, it's kernel owned vs core-mm owned.
+__used makes it go away by keeping the dead wrappers in every non-TDX
+kernel, which is the opposite of what dropping the #ifdefs was for.
 
-I would say somebody who does:
+Drop the wrappers instead.
 
-	ptr = malloc(4096);
+Let tdx.c provide the accessors with the serial_in/serial_out signature,
+__noendbr and annotated there, and declare them outside the #ifdef. No
+stubs are needed: the only reference is under cpu_feature_enabled(),
+which folds to zero without CONFIG_INTEL_TDX_GUEST.
 
-Would think of that memory as 'owned' by them in the sense that they
-control the lifetime, they established its attributes, etc.
+Builds with TDX on and off.
 
-So indeed, vs. user-owned.
-
->
-> Which implies core-mm is not part of the kernel?
->
-> Yes, this is confusing. ;)
-
-I think what you're missing here is what _creates_ or _establishes_ the mapping.
-
-Intuitively, if I do:
-
-	ptr = kmalloc(GFP_KERNEL);
-
-I, whether I am in the core kernel, or a driver, or whatever own it in any
-meaningful sense of the word.
-
-I think the issue here is you're confusing this with other things like the
-rmap and refcounting, etc.
-
-
->
-> I assume you're coming from "map_kernel_pages*", but that's rather "kernel
-> memory" and not "kernel owned".
->
-> Usually we say "driver owned" when not talking about pagecache/anon. Or user vs.
-> kernel memory.
-
-I think it would only add confusion:
-
-VDSO/VVAR, perf ring buffers, shmem mapped via PFN map, uprobes, etc. are
-all in this category and I doubt people would consider those driver-owned.
-
->
-> So is it really all about "is this (excluding CoW) no ordinary user memory that
-> we would track through the rmap" ?
-
-VMA_MIXEDMAP_BIT mappings can be refcounted and rmapped so that's not a
-correct description.
-
-The distinction is - who put them there and who's allowed to change them
-and who owns the lifecycle.
-
->
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  include/linux/mm.h              | 56 ++++++++++++++++++++++++++++++++++++++++-
-> >  tools/testing/vma/include/dup.h | 29 ++++++++++++++++++++-
-> >  2 files changed, 83 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 2a92193ac6a5..cab29d6e15c1 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -1612,6 +1612,44 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
-> >  	return is_shared_maywrite(&vma->flags);
-> >  }
-> >
-> > +/**
-> > + * vma_flags_is_kernel_owned() - Do the specified VMA flags indicate that the
-> > + * contents of the VMA are owned by the kernel rather than the core mm?
-> > + * @flags: The VMA flags to test.
-> > + *
-> > + * A kernel-owned mapping is one whose contents are established and controlled
-> > + * by the kernel, typically a driver, rather than by the core mm's fault and
-> > + * rmap machinery.
-> > + *
-> > + * The mapping may be memory-mapped I/O, kernel-allocated pages or ordinary
-> > + * pages the owner has chosen to map itself (shmem via a PFN map, for instance).
-> > + *
-> > + * In all cases the core mm must not populate, reclaim, migrate, copy-on-write
-> > + * or merge it of its own accord.
-> > + *
-> > + * Pages mapped this way are not necessarily reference counted or map counted.
-> > + *
-> > + * Returns: true if the flags indicate a kernel-owned mapping.
-> > + */
-> > +static inline bool vma_flags_is_kernel_owned(const vma_flags_t *flags)
-> > +{
-> > +	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT,
-> > +				  VMA_IO_BIT);
->
-> I thought we have cases where we drivers insert pages and neither set
-> VMA_PFNMAP_BIT nor VMA_MIXEDMAP_BIT.
-
-There were 4 - defio, cmt_speech, uprobes and the bpf arena, and I fixed
-all of them :)
-
-Other than the DAX-only case below of course.
-
-It's not correct behaviour and part of the point of this series is to
-structurally _forbid_ illegal behaviour by drivers.
-
->
-> I assume vmf_insert_page_mkwrite() is fine because it is DAX doing it (should we
-> limit this interface to DAX?).
-
-That is a DAX-only thing and DAX is precisely a case that should not be
-kernel-owned (and isn't!)
-
-This series actually fixes the FUSE case too, restricting this interface to
-DAX only seems like a sensible follow up as well.
-
-I could also add a patch to this series to do that too if you wanted?
-
---
-Cheers, Lorenzo
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index d8887a2a524b..c5e16ea3844d 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -194,23 +194,19 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
+ }
+ EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+ 
+-/**
+- * tdx_inb() - Read a byte from an I/O port without a #VE
+- * @port: I/O port to read from
+- *
+- * Ask the VMM to perform the read with TDG.VP.VMCALL<Instruction.IO>, rather
+- * than executing an IN instruction and having the resulting #VE emulate it.
+- *
+- * Return: the byte read, or 0xFF if the hypercall failed.
++/*
++ * early_printk accessors for a TDX guest. Ask the VMM to do the port I/O with
++ * TDG.VP.VMCALL<Instruction.IO> instead of executing IN/OUT and having the
++ * resulting #VE emulate it.
+  */
+-u8 tdx_inb(u16 port)
++__noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
+ {
+ 	struct tdx_module_args args = {
+ 		.r10 = TDX_HYPERCALL_STANDARD,
+ 		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+ 		.r12 = 1,
+ 		.r13 = TDVMCALL_PORT_READ,
+-		.r14 = port,
++		.r14 = addr + offset,
+ 	};
+ 
+ 	if (__tdx_hypercall(&args))
+@@ -218,20 +214,14 @@ u8 tdx_inb(u16 port)
+ 
+ 	return args.r11;
+ }
++ANNOTATE_NOENDBR_SYM(tdx_serial_in);
+ 
+-/**
+- * tdx_outb() - Write a byte to an I/O port without a #VE
+- * @value: byte to write
+- * @port: I/O port to write to
+- *
+- * Ask the VMM to perform the write with TDG.VP.VMCALL<Instruction.IO>, rather
+- * than executing an OUT instruction and having the resulting #VE emulate it.
+- */
+-void tdx_outb(u8 value, u16 port)
++__noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
+ {
+ 	_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), 1,
+-		       TDVMCALL_PORT_WRITE, port, value);
++		       TDVMCALL_PORT_WRITE, addr + offset, value);
+ }
++ANNOTATE_NOENDBR_SYM(tdx_serial_out);
+ 
+ static void __noreturn tdx_panic(const char *msg)
+ {
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 325dd7c5929f..0bbabcf0791e 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -83,9 +83,6 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
+ 
+ u64 tdx_hcall_get_quote(u8 *buf, size_t size);
+ 
+-u8 tdx_inb(u16 port);
+-void tdx_outb(u8 value, u16 port);
+-
+ void __init tdx_dump_attributes(u64 td_attr);
+ void __init tdx_dump_td_ctls(u64 td_ctls);
+ 
+@@ -98,6 +95,10 @@ static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
+ 
+ #endif /* CONFIG_INTEL_TDX_GUEST */
+ 
++/* Only referenced when X86_FEATURE_TDX_GUEST is enabled, no stubs needed */
++unsigned int tdx_serial_in(unsigned long addr, int offset);
++void tdx_serial_out(unsigned long addr, int offset, int value);
++
+ #if defined(CONFIG_KVM_GUEST) && defined(CONFIG_INTEL_TDX_GUEST)
+ long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
+ 		       unsigned long p3, unsigned long p4);
+diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
+index 194737a3e9a0..04dadcd73b85 100644
+--- a/arch/x86/kernel/early_printk.c
++++ b/arch/x86/kernel/early_printk.c
+@@ -112,23 +112,6 @@ ANNOTATE_NOENDBR_SYM(io_serial_out);
+ DEFINE_STATIC_CALL(serial_in, io_serial_in);
+ DEFINE_STATIC_CALL(serial_out, io_serial_out);
+ 
+-#ifdef CONFIG_INTEL_TDX_GUEST
+-/*
+- * A TDX guest cannot execute port I/O instructions, so ask the VMM to do it.
+- */
+-static __noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
+-{
+-	return tdx_inb(addr + offset);
+-}
+-ANNOTATE_NOENDBR_SYM(tdx_serial_in);
+-
+-static __noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
+-{
+-	tdx_outb(value, addr + offset);
+-}
+-ANNOTATE_NOENDBR_SYM(tdx_serial_out);
+-#endif /* CONFIG_INTEL_TDX_GUEST */
+-
+ static int early_serial_putc(unsigned char ch)
+ {
+ 	unsigned timeout = 0xffff;
+@@ -214,7 +197,6 @@ static __init void early_serial_init(char *s)
+ 	early_serial_hw_init(divisor);
+ }
+ 
+-#ifdef CONFIG_INTEL_TDX_GUEST
+ /*
+  * Use early_serial_base (COM1) and same default baud rate as
+  * "earlyprintk=serial"
+@@ -228,7 +210,6 @@ static __init void early_serial_tdx_init(void)
+ 
+ 	early_serial_hw_init(115200 / DEFAULT_BAUD);
+ }
+-#endif /* CONFIG_INTEL_TDX_GUEST */
+ 
+ static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
+ {
+@@ -448,13 +429,11 @@ static int __init setup_early_printk(char *buf)
+ 			early_serial_init(buf + 4);
+ 			early_console_register(&early_serial_console, keep);
+ 		}
+-#ifdef CONFIG_INTEL_TDX_GUEST
+ 		if (!strncmp(buf, "tdx", 3)) {
+ 			early_serial_tdx_init();
+ 			early_console_register(&early_serial_console, keep);
+ 			break;
+ 		}
+-#endif
+ #ifdef CONFIG_PCI
+ 		if (!strncmp(buf, "pciserial", 9)) {
+ 			buf += 9; /* Keep from match the above "pciserial" */
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
