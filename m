@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EE73EC804;
-	Fri,  2 Oct 2026 06:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F093E7160;
+	Fri,  2 Oct 2026 06:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790921779; cv=none; b=MlH/yPl654cUEzzKFFQ0qDZ85oalqRF/pO1Ok5NYTNe5CCsvj9C2nn11XuxZMFH00nu72Z7Grii4GsLXxQCXU5RM8CI7wPWE56K6RPSggc2hnJ9ClIaNphMXa1R4aC5AV6qqaOJ7OrIGyFRzleni/NQNe+m4NN83qd9eAMRAg4M=
+	t=1790921783; cv=none; b=YAMWYtjUprtb/0dVWEaxMcYVFfIpOXqbjI2DLYHfya/gTPKs7YK6ls9kiWGnf+tnBtCuFpPdaBOznAQyUgN6QjEz5NOxpwCCf8tTxPaouv9mw/yL+KUOXO4a+jO1mvc7pOUU0IhG5pfwhVw0s7SkHdu3qI7YPG+4pmcZK1io+pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790921779; c=relaxed/simple;
-	bh=n2F3ScOdCk4J5EcEF98ICSkibYoMkmmvKMdyQDe7dVc=;
+	s=arc-20240116; t=1790921783; c=relaxed/simple;
+	bh=tnXpJdsvz79ly1HeWLu/5oHQruvLIlQTSjflY77QwYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fd7sRp5glhOjRx3rUjzO3h2zzIYbN8s6lnRpgEWS9YoDxN+1ExZiBFPWumtTfWSaL3G91S2o2XKtsMA2pZ7VZrhgUcQfKaa9ba33D3FScJP84b4qgKSuzcoJEwR9m6Dl7xcllW2YfcOpMDESKUpy+wNd6/dRwXsgaH+uExz3LKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ORIcdL5t; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=Ri9icKhKxXF/+E25cHdBMvknGLJA0lBRXEzwCWS6QeeXKkgVv2c6gSsD+og/qhL3e28tXO6hhQkGcVHrS7zRLWWNQAx0TQLDNvtrPUW8MZQ1fmgaSUtShK/Mintmagpnfbd0y59vQs6DnOwxFJUFbDrJAF7jLj0UWPB+4etSNHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=onyjg9j3; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ORIcdL5t"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="onyjg9j3"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57188169C;
-	Thu,  1 Oct 2026 23:15:57 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 791DB1476;
+	Thu,  1 Oct 2026 23:16:08 -0700 (PDT)
 Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9EF963F763;
-	Thu,  1 Oct 2026 23:15:56 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4BF383F763;
+	Thu,  1 Oct 2026 23:16:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790921760; bh=n2F3ScOdCk4J5EcEF98ICSkibYoMkmmvKMdyQDe7dVc=;
+	t=1790921771; bh=tnXpJdsvz79ly1HeWLu/5oHQruvLIlQTSjflY77QwYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORIcdL5tuE/H3yLMf1awoEeIaYAtuq3bPffTslRCyFDlHEyIyMGg8PAM/SZlTxdM6
-	 UUkgNj0e8USjKNQg8GIuiZbHKsUBt63MfmtRF21gxv0wH7uT5XPbyA/Uf25rWaBJRd
-	 SqwZLTtbCXIi/BvIHE9uFZFRyaiVqJ1XT+z7FS3Q=
+	b=onyjg9j33dQiYYoNArDmlsdmZ/ddqvxPdRKgZLXl5KEctv8CLAWcuqP24CIq52217
+	 KenHwUwgPuMjP2dC5HDNO46rNvoFgD/hP/sDAhypVj1kcWxrt2PudKtg5MdBsR0TvS
+	 P1u7Lm/KFvXF2Stt2LjiNeuvLmr6FtuYIHB4e3jE=
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -52,14 +52,10 @@ Cc: maz@kernel.org,
 	sudeep.holla@arm.com,
 	jonathan.cameron@oss.qualcomm.com,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	linux-pm@vger.kernel.org,
-	Sudeep Holla <sudeep.holla@kernel.org>
-Subject: [PATCH v22 07/10] kernel: hibernate: Add an arch hook for preventing hiberation
-Date: Fri,  2 Oct 2026 07:15:03 +0100
-Message-ID: <20261002061507.1600269-8-suzuki.poulose@arm.com>
+	David Hildenbrand <david@kernel.org>
+Subject: [PATCH v22 10/10] firmware: arm_rmm: hotplug: Skip memory added to ZONE_MOVABLE
+Date: Fri,  2 Oct 2026 07:15:06 +0100
+Message-ID: <20261002061507.1600269-11-suzuki.poulose@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261002061507.1600269-1-suzuki.poulose@arm.com>
 References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
@@ -71,60 +67,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a hook to allow arch code disable hibernation. On arm64, with an RMM active,
-there could be pages that are delegated to the "Realm" security state. Any
-access to them are fatal (e.g., hibernate save image or restoring an image to
-a delegated page). pKVM host also has its restrictions on enabling hibernation.
+If the hotadded memory is in ZONE_MOVABLE, we could allow that to proceed
+without the RMM having fine grained tracking, as we won't allocate pages
+from there for guest-memfd or kernel allocation
 
-Add a weak arch hook to let the architectures have a say.
-
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Pavel Machek <pavel@kernel.org>
-Cc: linux-pm@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@kernel.org>
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 ---
- include/linux/suspend.h  | 1 +
- kernel/power/hibernate.c | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+Changes since v20:
+ - Use is_zone_movable_page() and only check the start_pfn
+---
+ drivers/firmware/arm_rmm/rmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-index b02876f1ae38a..a3815027773c5 100644
---- a/include/linux/suspend.h
-+++ b/include/linux/suspend.h
-@@ -401,6 +401,7 @@ int hibernate_quiet_exec(int (*func)(void *data), void *data);
- int hibernate_resume_nonboot_cpu_disable(void);
- int arch_hibernation_header_save(void *addr, unsigned int max_size);
- int arch_hibernation_header_restore(void *addr);
-+bool arch_hibernation_available(void);
+diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+index c064072690d46..c3c3cf6dad59a 100644
+--- a/drivers/firmware/arm_rmm/rmi.c
++++ b/drivers/firmware/arm_rmm/rmi.c
+@@ -1050,6 +1050,17 @@ static int rmi_memory_notifier(struct notifier_block *nb,
+ 	start = PFN_PHYS(arg->start_pfn);
+ 	end = PFN_PHYS(arg->start_pfn + arg->nr_pages);
  
- #else /* CONFIG_HIBERNATION */
- static inline void register_nosave_region(unsigned long b, unsigned long e) {}
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index d2479c69d71a4..9d9d53828542f 100644
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -106,11 +106,17 @@ bool hibernation_in_progress(void)
- 	return !atomic_read(&hibernate_atomic);
- }
- 
-+__weak bool arch_hibernation_available(void)
-+{
-+	return true;
-+}
++	/*
++	 * If the hotplugged memory region is in ZONE_MOVABLE, neither the
++	 * guest-memfd nor the kernel allocations can come from there. So we are
++	 * fine to skip this.
++	 * For boot time memory, we don't allow this discount, as the
++	 * decision to move boot memory pages to ZONE_MOVABLE is purely
++	 * a kernel choice and the firmware must have decided what it covers.
++	 */
++	if (is_zone_movable_page(pfn_to_page(arg->start_pfn)))
++		return NOTIFY_DONE;
 +
- bool hibernation_available(void)
- {
- 	return nohibernate == 0 &&
- 		!security_locked_down(LOCKDOWN_HIBERNATION) &&
--		!secretmem_active() && !cxl_mem_active();
-+		!secretmem_active() && !cxl_mem_active() &&
-+		arch_hibernation_available();
- }
+ 	ret = rmi_prepare_memory(start, end);
  
- /**
+ 	return notifier_from_errno(ret);
 -- 
 2.43.0
 
