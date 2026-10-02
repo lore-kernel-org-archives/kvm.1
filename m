@@ -1,406 +1,353 @@
-Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0955D3A7F4B
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 05:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8F8374745
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 06:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790919805; cv=none; b=Qhl8ZNjwrkjRaERh8sYu7QjP5RO+NdLMyYR24ew5kzmkHf+EHMLj4rCHo0omTw2i8bCv2s+xhRZg31Ck0V1nGYLuxrCcb7Qivs0JLiJR8mDdOoGtcmWs/D+LHGuRzapET9HdT9AFg5oNUV3yZDUHwqcnFkfYmY6XvFpmU66BwU0=
+	t=1790921198; cv=none; b=r8H1pP5cHjGXxFMHNI7+QA/1HTwbN+hFCFIl6zKboEW1wQ7XCwsBugI6Pnx+iULyP3HyJVq595TPgeWloXxYzrXFuSyTkMVAyia0z+3N+VBqs5iBgcUB+dw6+Re88/sk1JhHcExOqII/iDVKHEZCDl8Mf0gY/1ntPrW2dwFhwAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790919805; c=relaxed/simple;
-	bh=Abom6ETQOi+clD7TO6693EVDx+y8nqVzgaATaa2nDZw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mxo4eM/OAarof7rgoPbgKyxp7XLbmnWHoeHiDOozpXpNlv07cEItMjIoMXImmYdoElG6Z/GsOyE9G3+HJnBNJsBUOvFzOp12g7Dd1K8p1E7KoOE2EdUhbnltHEjpx4twEO7kusb8LUIdL01cxV8ClaocfzQ2/DaNzQU+9B3Wvp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryzome.com; spf=pass smtp.mailfrom=ryzome.com; dkim=pass (2048-bit key) header.d=ryzome.com header.i=@ryzome.com header.b=KrJEkMKy; arc=none smtp.client-ip=185.70.43.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryzome.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryzome.com
+	s=arc-20240116; t=1790921198; c=relaxed/simple;
+	bh=zfDvQPUjOwC73OoCX+xKhnl0/talULMRC2nu9Ck3jYg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I6CrS9WPQLb2pEGgpZMBhhm5LZXmlsYZnkIP3BeKVFI/xBfHX08gVKPIAePHZ7FNeXTp6DdZJdmfu+vYHZ8CQJKj3V/BFxSKU4SvndWjzN1b7ouVNk2TVPqWbRPPYvdZy4bo5mrRujx9BiKmjyuRhJizsDKf6Oltx71lgJtQ8O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=htvVdVhD; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryzome.com header.i=@ryzome.com header.b="KrJEkMKy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryzome.com;
-	s=protonmail; t=1790919795; x=1791178995;
-	bh=ti4cz9fUS1Tb8mbjP9WcPg7vLfJblpNhR/CVM8NmiTE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=KrJEkMKypQSLSb7Y7CuFZ5+FSYpjbP5V7tyRo6dK40hXHYlXvYljKt9H/04v2EdXD
-	 it+kw8Ps4k3DtKDR5CF3SdTHT3q58PH3DQIYAVx9/CCdN3WVZUO5OlPUt9Civn8ieF
-	 +W1yCabwbWj5HUmG7iWEm2g9Qk09grrZpYfLuA53yWaXgtPg5+qJPxFCClOvlC8cu2
-	 hAtCXltCD2VNxVRuOqEUuYwAj8trYvk6eFqzNVXd2VlUrY5Cw4pBCFJvpNU8lAe7o9
-	 TMsqtNXuB+DtumuUJiewbhE2p807QV/OAwVyr53vG40R3j0nSUPZyGyYQif74AKxwf
-	 4nNXoohmP7DWw==
-Date: Fri, 02 Oct 2026 05:43:09 +0000
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-From: Loc Nguyen <loc@ryzome.com>
-Cc: Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, hpa@zytor.com, x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: [PATCH 2/2] KVM: selftests: Add a test for lost nested APF VM-Exits
-Message-ID: <20261002053723.3275202-3-loc@ryzome.com>
-In-Reply-To: <20261002053723.3275202-1-loc@ryzome.com>
-References: <20261002053723.3275202-1-loc@ryzome.com>
-Feedback-ID: 78153448:user:proton
-X-Pm-Message-ID: 50ab911c6077c0bf2d4735ad7de23ad69d5a873e
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="htvVdVhD"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3a0af54af74so3062773a91.3
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 23:06:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790921196; x=1791525996;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wjmVnM/M4a/ablBY4kQxBr0VLdVLcOH/6cgek5qIUBk=;
+        b=CUgUN4c6NcSEdWgZvJwjng84s6vnYcYMB/Nl7dMFPMNYbJxqm40Sv+dIorPxBaNGQ5
+         X1G1fS89CfFaYUqdgqyE45piPbaud0yLI1uGiYBatNZp6PbgxCu5QxD3WR8tzgT5tHJr
+         e4vkonaQES84M7A7ekrk21rCCgd5e/pgqQVwZwgL+A6mskOCx0e+Quq5HWLTAX/P33qn
+         QzzfIAYkf/o+rM8hSDjrk1wmNn5WkSC0gnwuZV+bJLuA5fEWvEIVADBJKOIkWV6JOQJj
+         VoIcNd/lAklG3gKjEjo4GDBdp2J4IRO9q0zdrGEYVuLyY4sGBbZjQCrhrrH7yAriPxFh
+         cmBA==
+X-Forwarded-Encrypted: i=1; AKwUvBxxt2V1gf7gpICgu2YDz02uOkDIzK5sV2V1AsCjtnbxX+6Bv2FH4/pOi3iQmNs0D8O0zaw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLsmrDu80IRUGK+m+gO1ELXrBEhxt5kjqq3nE+5zgOGS/60uQ5Q
+	qpWjkAPChsTao3amHBxDig0ptXGmfsZv681rhd1AYXS5ZaRRQdgDd9Ze4jaLeGoQAyhXOmm1SWt
+	VmcgADmC44jOyuzxAGw/ryxSpnAU9okroExqwSg4/oakyT0QTSH1OGJhWKYmmgCN8N6kVgfthsw
+	hhkHafH8GELgNCXUFAxe0QzLdoY6C6ypS9E7M8VbRvHY4fx2k3gR5Nw9t0wslDtJOiMymQ9uJKU
+	+HL
+X-Gm-Gg: AYBFou3/TLfnKwQomuynbzK1HrjxEJaZqasQ5hNR1XEOSYkuLJN5MVAnaPIoTmJGFco
+	Bb7NHHYyuXaoUms+D/Xv1/qz+aLXy4M5ZjvLc9zbixKGCZARRzjTSdWnrkf4kFXLOryXXUrSwDC
+	ylagnkf7AuDgG+NkJZmagzVLTC11ULlwFTawQbu+ZRu/F0G5dCr/FikRY75GF94T1ZCco5Pzn1x
+	V0ixvNaszUaocctuvRVDRDxjyqN+HPJ+xYHEg3bBFDN3oJD45TqlQ9yP/+Af2DEK5ZhoMNWP/HU
+	YVtRVsWvq1p6p7Fwbko8n42luwUSU1xyNc+A2EIE+g4wq6COCxrxfpDdxMEqjlsGESXsaN6j6mN
+	bCoLB4QJP7/ZikeaC4vWfsEcFPtfplJ+POFG7Rq4uo3000nCio2Fb5axoWjdnxmwwfvb8kAHVRd
+	MJulQE9Q/rkkNIKFzlqNxyRz1QDoD6tJVM
+X-Received: by 2002:a17:90b:3849:b0:3a0:8050:2ed1 with SMTP id 98e67ed59e1d1-3a6ced936bfmr1598129a91.63.1790921195947;
+        Thu, 01 Oct 2026 23:06:35 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a6c97ce20fsm1065833a91.0.2026.10.01.23.06.35
+        for <kvm@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 01 Oct 2026 23:06:35 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1493b09d6bbso3387280c88.0
+        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 23:06:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790921194; x=1791525994; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wjmVnM/M4a/ablBY4kQxBr0VLdVLcOH/6cgek5qIUBk=;
+        b=htvVdVhDsH5Tf8Lul9OcwVkTfbosemINc41I6gRouEulOsJq9LAql6H53Kg9dnc6bi
+         qMlth4fLXpBeEXqZ+zj2h0elPvji6l5WzMv5n1X0KNj+VWWULzUnm6rA9FjwDviomYzU
+         MXQEu/a4MiDBdBnXWG8JSkFhlyyHP/Ldchxa0=
+X-Forwarded-Encrypted: i=1; AKwUvBxHEQ72OPVuyIcn5SmkcXA5D6yX/9nAAj52pm+hRQloNCt0kPvcHlEYXrtUxSYl7Nxb4hg=@vger.kernel.org
+X-Received: by 2002:a05:7022:b88a:b0:14c:1f57:3ea9 with SMTP id a92af1059eb24-14f5bef5190mr1601652c88.26.1790921193873;
+        Thu, 01 Oct 2026 23:06:33 -0700 (PDT)
+X-Received: by 2002:a05:7022:b88a:b0:14c:1f57:3ea9 with SMTP id
+ a92af1059eb24-14f5bef5190mr1601590c88.26.1790921192899; Thu, 01 Oct 2026
+ 23:06:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local> <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
+ <20261001235950.GHar7z9v3zfk8odoTh@fat_crate.local>
+In-Reply-To: <20261001235950.GHar7z9v3zfk8odoTh@fat_crate.local>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Fri, 2 Oct 2026 02:06:16 -0400
+X-Gm-Features: AclHuK-rd5CcQufUaR0BIRz4PquQ50RR10S1_da_RH0Fm436Xl3eZ4up2QGuXdk
+Message-ID: <CABQX2QNE331JieoHixJisyU309A-S_LDuwuZEHQf+AKQs-OyCw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] x86/percpu: Share decrypted storage before guest setup
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com, 
+	linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Jonathan Corbet <corbet@lwn.net>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, linux-doc@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000009e29ed065cd55594"
+
+--0000000000009e29ed065cd55594
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Exercise delivery of an asynchronous page fault from L2 to L1 as a
-synthetic #PF VM-Exit.  Hold L2's backing page missing with userfaultfd
-and bound the critical KVM_RUN with a signal-based timeout.
+On Thu, Oct 1, 2026 at 8:00=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrote=
+:
+>
+> On Tue, Sep 29, 2026 at 01:25:09PM -0400, Zack Rusin wrote:
+> > Partly. So steal time tells Linux how much time a virtual CPU spent
+> > ready to run but waiting for the hypervisor to schedule it.
+> >
+> > For example, during a 100 ms interval, the vCPU might execute for 70
+> > ms and wait for a physical CPU for 30 ms. Reporting those 30 ms helps
+> > kernel:
+> > - account for CPU usage accurately: avoid charging applications for
+> > time when the hypervisor wasn't running their vCPU.
+> > - make fairer scheduling decisions: base task execution accounting on
+> > the CPU time tasks actually received.
+> > - expose host contention: the st field in top and counters in
+> > /proc/stat help explain why a VM is slow even though its applications
+> > don't appear to consume all available CPU time.
+>
+> Aaaha, IOW, that's the "st" column here:
+>
+> $ vmstat
+> procs -----------memory---------- ---swap-- -----io---- -system-- -------=
+cpu-------
+>  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy i=
+d wa st gu
+>  1  0      0 1714852   9748  85300    0    0  3793    51 1445    0  0  1 =
+99  0  0  0
+>
+> In any case, you could keep that helpful explanation in yout 0th message.=
+ :)
 
-On an affected kernel, KVM queues the nested VM-Exit without requesting
-event processing, re-enters L2, and blocks on the same missing page.  The
-test detects the timeout and verifies that L1's APF record still contains
-KVM_PV_REASON_PAGE_NOT_PRESENT.
+Yeah, that's the one. Sounds good, and thanks for the links to the tip
+and submitting-patches docs, I'll follow them for v3.
 
-On a fixed kernel, verify that L1 receives an exception VM-Exit with a #PF,
-error code zero, a nonzero APF token, and a matching page-not-present
-reason.
+> > If options are binary then "no" :) It's not for monitoring tools, it's
+> > for the kernel's own steal-time accounting above, which currently
+> > doesn't work in confidential VMware guests. So the issue is that in a
+> > confidential guest (AMD SEV SNP, Intel TDX) memory is private by
+> > default, so the hypervisor can't read or write it. Any page the
+> > hypervisor has to write must first be converted to shared by the
+> > guest. Linux gives us the address of the steal-time buffer without
+> > converting it. The hypervisor then tries to write into a private page,
+> > which doesn't work. Currently ESXi deliberately powers off the VM when
+> > that happens. That only affects VMs with the steal clock enabled,
+> > which ESXi leaves off by default except for Photon guests. I'll
+> > probably change ESXi to just disable steal time when a guest gives us
+> > a private page, but that only avoids the power-off; steal time still
+> > won't work in these guests without this series.
+> >
+> > KVM has the same need for three of its per-CPU buffers (steal time,
+> > async page faults and PV EOI). It already converts them, but only on
+> > AMD and in its own loop. Kiryl asked on v1 for one common place that
+> > converts all such per CPU buffers early, on both AMD and Intel,
+>
+> Right, why early?
 
-Skip the test when VMX, EPT, the nested APF features, or userfaultfd fault
-handling are unavailable.
+Because on SMP kernels both KVM and VMware hand the boot CPU's buffer
+address to the hypervisor in smp_prepare_boot_cpu(), right after
+setup_per_cpu_areas() and well before mm_core_init(). Sharing a page
+usually means splitting the direct map around it, and
+set_memory_decrypted() needs the page allocator for the new page
+table. To keep that existing registration point, the common code
+needed its own early sharing path, which is most of what patches 4 and
+5 are.
 
-Signed-off-by: Loc Nguyen <loc@ryzome.com>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/x86/nested_apf_event_test.c | 306 ++++++++++++++++++
- 2 files changed, 307 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/nested_apf_event_test.c
+> I mean, I am still trying to see the justification for this diffstat
+>
+>  14 files changed, 247 insertions(+), 51 deletions(-)
+>
+> and whether it is really worth it.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selft=
-ests/kvm/Makefile.kvm
-index b31ee61af284..a882c1f8a5fb 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -92,6 +92,7 @@ TEST_GEN_PROGS_x86 +=3D x86/kvm_pv_test
- TEST_GEN_PROGS_x86 +=3D x86/kvm_buslock_test
- TEST_GEN_PROGS_x86 +=3D x86/monitor_mwait_test
- TEST_GEN_PROGS_x86 +=3D x86/msrs_test
-+TEST_GEN_PROGS_x86 +=3D x86/nested_apf_event_test
- TEST_GEN_PROGS_x86 +=3D x86/nested_close_kvm_test
- TEST_GEN_PROGS_x86 +=3D x86/nested_dirty_log_test
- TEST_GEN_PROGS_x86 +=3D x86/nested_emulation_test
-diff --git a/tools/testing/selftests/kvm/x86/nested_apf_event_test.c b/tool=
-s/testing/selftests/kvm/x86/nested_apf_event_test.c
-new file mode 100644
-index 000000000000..97e23ef91ca6
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/nested_apf_event_test.c
-@@ -0,0 +1,306 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2026, Ryzome
-+ *
-+ * Reproduce a lost nested asynchronous page-fault notification.
-+ *
-+ * L2 faults on a page held missing by userfaultfd.  KVM writes
-+ * PAGE_NOT_PRESENT to L1's APF record and queues a synthetic #PF VM-exit.
-+ * The vulnerable path omits KVM_REQ_EVENT, re-enters L2, and loses the
-+ * notification before L1 can consume it.  A fixed L0 exits to L1 immediat=
-ely.
-+ */
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
-+#include <signal.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+
-+#include <asm/kvm_para.h>
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "test_util.h"
-+#include "vmx.h"
-+
-+#define APF_VECTOR 0xF1U
-+#define RUN_TIMEOUT_SECONDS 3U
-+#define VMX_INTR_INFO_VECTOR_MASK 0xFFU
-+#define VMX_INTR_INFO_TYPE_MASK 0x700U
-+#define VMX_INTR_INFO_HARD_EXCEPTION (3U << 8)
-+#define VMX_INTR_INFO_DELIVER_CODE BIT(11)
-+#define VMX_INTR_INFO_VALID BIT(31)
-+
-+enum test_stage {
-+=09STAGE_APF_ARMED =3D 1,
-+=09STAGE_APF_DELIVERED,
-+};
-+
-+static struct kvm_vcpu_pv_apf_data apf_data __aligned(64);
-+static gva_t l2_target_gva;
-+
-+static void l2_guest_code(void)
-+{
-+=09u64 value;
-+
-+=09value =3D READ_ONCE(*(u64 *)READ_ONCE(l2_target_gva));
-+=09GUEST_FAIL("L2 resumed after the missing page was resolved: %#lx", valu=
-e);
-+}
-+
-+static void l1_guest_code(struct vmx_pages *vmx, gpa_t apf_data_gpa)
-+{
-+=09u64 apf_msr;
-+=09u64 intr_info;
-+=09u64 reason;
-+=09u64 token;
-+
-+=09GUEST_ASSERT(this_cpu_has(X86_FEATURE_KVM_ASYNC_PF));
-+=09GUEST_ASSERT(this_cpu_has(X86_FEATURE_KVM_ASYNC_PF_VMEXIT));
-+=09GUEST_ASSERT(this_cpu_has(X86_FEATURE_KVM_ASYNC_PF_INT));
-+=09prepare_for_vmx_operation(vmx);
-+=09load_vmcs(vmx);
-+=09prepare_vmcs(vmx, l2_guest_code);
-+=09vmwrite(GUEST_RFLAGS,
-+=09=09X86_EFLAGS_FIXED | X86_EFLAGS_IF);
-+
-+=09wrmsr(MSR_KVM_ASYNC_PF_INT, APF_VECTOR);
-+=09apf_msr =3D apf_data_gpa | KVM_ASYNC_PF_ENABLED |
-+=09=09  KVM_ASYNC_PF_SEND_ALWAYS |
-+=09=09  KVM_ASYNC_PF_DELIVERY_AS_PF_VMEXIT |
-+=09=09  KVM_ASYNC_PF_DELIVERY_AS_INT;
-+=09wrmsr(MSR_KVM_ASYNC_PF_EN, apf_msr);
-+
-+=09/*
-+=09 * Let userspace discard and userfaultfd-register the target only after
-+=09 * all L1 setup exits have completed.  The following KVM_RUN therefore
-+=09 * has no pending event request to accidentally deliver the nested APF.
-+=09 */
-+=09GUEST_SYNC(STAGE_APF_ARMED);
-+
-+=09vmlaunch();
-+=09GUEST_ASSERT_EQ(vmread(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
-+
-+=09intr_info =3D vmread(VM_EXIT_INTR_INFO);
-+=09GUEST_ASSERT(intr_info & VMX_INTR_INFO_VALID);
-+=09GUEST_ASSERT_EQ(intr_info & VMX_INTR_INFO_VECTOR_MASK, PF_VECTOR);
-+=09GUEST_ASSERT_EQ(intr_info & VMX_INTR_INFO_TYPE_MASK,
-+=09=09=09VMX_INTR_INFO_HARD_EXCEPTION);
-+=09GUEST_ASSERT(intr_info & VMX_INTR_INFO_DELIVER_CODE);
-+=09GUEST_ASSERT_EQ(vmread(VM_EXIT_INTR_ERROR_CODE), 0);
-+
-+=09token =3D vmread(EXIT_QUALIFICATION);
-+=09reason =3D READ_ONCE(apf_data.flags);
-+=09GUEST_ASSERT(token);
-+=09GUEST_ASSERT_EQ(reason, KVM_PV_REASON_PAGE_NOT_PRESENT);
-+
-+=09/* Release the APF record slot before userspace resolves the page. */
-+=09WRITE_ONCE(apf_data.flags, 0);
-+=09GUEST_SYNC_ARGS(STAGE_APF_DELIVERED, token, reason, 0, 0);
-+}
-+
-+#ifdef __NR_userfaultfd
-+static int register_missing_page(void *hva)
-+{
-+=09struct uffdio_register uffd_register =3D {
-+=09=09.range =3D {
-+=09=09=09.start =3D (uintptr_t)hva,
-+=09=09=09.len =3D PAGE_SIZE,
-+=09=09},
-+=09=09.mode =3D UFFDIO_REGISTER_MODE_MISSING,
-+=09};
-+=09struct uffdio_api uffd_api =3D {
-+=09=09.api =3D UFFD_API,
-+=09};
-+=09int uffd;
-+
-+=09uffd =3D syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+=09if (uffd < 0 && (errno =3D=3D EPERM || errno =3D=3D EACCES))
-+=09=09ksft_exit_skip("userfaultfd is unavailable: %s\n", strerror(errno));
-+=09TEST_ASSERT(uffd >=3D 0, "userfaultfd failed: %s", strerror(errno));
-+
-+=09TEST_ASSERT(ioctl(uffd, UFFDIO_API, &uffd_api) =3D=3D 0,
-+=09=09    "UFFDIO_API failed: %s", strerror(errno));
-+=09TEST_ASSERT(ioctl(uffd, UFFDIO_REGISTER, &uffd_register) =3D=3D 0,
-+=09=09    "UFFDIO_REGISTER failed: %s", strerror(errno));
-+=09TEST_ASSERT(uffd_register.ioctls & (1ULL << _UFFDIO_COPY),
-+=09=09    "userfaultfd does not support UFFDIO_COPY");
-+
-+=09return uffd;
-+}
-+
-+static bool read_missing_page_event(int uffd, void *target_hva)
-+{
-+=09struct pollfd pollfd =3D {
-+=09=09.fd =3D uffd,
-+=09=09.events =3D POLLIN,
-+=09};
-+=09struct uffd_msg msg;
-+=09ssize_t bytes;
-+=09int ret;
-+
-+=09ret =3D poll(&pollfd, 1, 3000);
-+=09if (ret !=3D 1 || !(pollfd.revents & POLLIN))
-+=09=09return false;
-+
-+=09bytes =3D read(uffd, &msg, sizeof(msg));
-+=09if (bytes !=3D sizeof(msg) || msg.event !=3D UFFD_EVENT_PAGEFAULT)
-+=09=09return false;
-+
-+=09return (msg.arg.pagefault.address & ~(PAGE_SIZE - 1ULL)) =3D=3D
-+=09       (uintptr_t)target_hva;
-+}
-+
-+static void resolve_missing_page(int uffd, void *target_hva)
-+{
-+=09struct uffdio_copy uffd_copy =3D {
-+=09=09.dst =3D (uintptr_t)target_hva,
-+=09=09.len =3D PAGE_SIZE,
-+=09};
-+=09void *page =3D NULL;
-+=09int ret;
-+
-+=09ret =3D posix_memalign(&page, PAGE_SIZE, PAGE_SIZE);
-+=09TEST_ASSERT(!ret, "posix_memalign failed: %s", strerror(ret));
-+=09memset(page, 0, PAGE_SIZE);
-+=09uffd_copy.src =3D (uintptr_t)page;
-+
-+=09TEST_ASSERT(ioctl(uffd, UFFDIO_COPY, &uffd_copy) =3D=3D 0,
-+=09=09    "UFFDIO_COPY failed: %s", strerror(errno));
-+=09free(page);
-+}
-+
-+static void alarm_handler(int signal)
-+{
-+=09(void)signal;
-+}
-+
-+static void assert_sync_stage(struct kvm_vcpu *vcpu, u64 expected_stage)
-+{
-+=09struct ucall uc;
-+
-+=09TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+=09switch (get_ucall(vcpu, &uc)) {
-+=09case UCALL_SYNC:
-+=09=09TEST_ASSERT_EQ(uc.args[1], expected_stage);
-+=09=09break;
-+=09case UCALL_ABORT:
-+=09=09REPORT_GUEST_ASSERT(uc);
-+=09=09break;
-+=09default:
-+=09=09TEST_FAIL("Unexpected ucall command %lu", uc.cmd);
-+=09}
-+}
-+
-+static void run_test(void)
-+{
-+=09struct kvm_vcpu_pv_apf_data *apf_hva;
-+=09struct sigaction action =3D {
-+=09=09.sa_handler =3D alarm_handler,
-+=09};
-+=09struct kvm_vcpu *vcpu;
-+=09struct kvm_vm *vm;
-+=09struct ucall uc =3D {};
-+=09sigset_t blocked_signals;
-+=09sigset_t old_signals;
-+=09gva_t nested_gva;
-+=09gva_t target_gva;
-+=09gpa_t apf_gpa;
-+=09void *target_hva;
-+=09u32 stale_reason;
-+=09bool uffd_event;
-+=09bool run_timed_out;
-+=09int run_errno =3D 0;
-+=09int run_ret;
-+=09int uffd;
-+=09u64 ucall_cmd =3D UCALL_NONE;
-+
-+=09vm =3D vm_create_with_one_vcpu(&vcpu, l1_guest_code);
-+=09vm_enable_tdp(vm);
-+=09vcpu_alloc_vmx(vm, &nested_gva);
-+=09target_gva =3D vm_alloc_page(vm);
-+=09tdp_identity_map_default_memslots(vm);
-+
-+=09l2_target_gva =3D target_gva;
-+=09sync_global_to_guest(vm, l2_target_gva);
-+=09apf_gpa =3D addr_gva2gpa(vm, (gva_t)&apf_data);
-+=09TEST_ASSERT(!(apf_gpa & 63U), "APF data GPA %#lx is misaligned",
-+=09=09    apf_gpa);
-+=09apf_hva =3D addr_gva2hva(vm, (gva_t)&apf_data);
-+=09target_hva =3D addr_gva2hva(vm, target_gva);
-+=09vcpu_args_set(vcpu, 2, nested_gva, apf_gpa);
-+
-+=09vcpu_run(vcpu);
-+=09assert_sync_stage(vcpu, STAGE_APF_ARMED);
-+
-+=09TEST_ASSERT(madvise(target_hva, PAGE_SIZE, MADV_DONTNEED) =3D=3D 0,
-+=09=09    "madvise failed: %s", strerror(errno));
-+=09uffd =3D register_missing_page(target_hva);
-+
-+=09TEST_ASSERT(sigaction(SIGALRM, &action, NULL) =3D=3D 0,
-+=09=09    "sigaction failed: %s", strerror(errno));
-+=09sigfillset(&blocked_signals);
-+=09sigdelset(&blocked_signals, SIGALRM);
-+=09TEST_ASSERT(sigprocmask(SIG_SETMASK, &blocked_signals, &old_signals) =
-=3D=3D 0,
-+=09=09    "sigprocmask failed: %s", strerror(errno));
-+
-+=09alarm(RUN_TIMEOUT_SECONDS);
-+=09run_ret =3D __vcpu_run(vcpu);
-+=09run_errno =3D errno;
-+=09alarm(0);
-+=09run_timed_out =3D run_ret < 0 && run_errno =3D=3D EINTR;
-+=09TEST_ASSERT(sigprocmask(SIG_SETMASK, &old_signals, NULL) =3D=3D 0,
-+=09=09    "sigprocmask restore failed: %s", strerror(errno));
-+
-+=09stale_reason =3D READ_ONCE(apf_hva->flags);
-+=09uffd_event =3D read_missing_page_event(uffd, target_hva);
-+=09if (uffd_event)
-+=09=09resolve_missing_page(uffd, target_hva);
-+=09close(uffd);
-+
-+=09if (!run_ret)
-+=09=09ucall_cmd =3D get_ucall(vcpu, &uc);
-+=09if (ucall_cmd =3D=3D UCALL_ABORT)
-+=09=09REPORT_GUEST_ASSERT(uc);
-+=09kvm_vm_free(vm);
-+
-+=09TEST_ASSERT(uffd_event,
-+=09=09    "L2 access did not produce the held userfaultfd fault");
-+=09TEST_ASSERT(!run_timed_out ||
-+=09=09    stale_reason =3D=3D KVM_PV_REASON_PAGE_NOT_PRESENT,
-+=09=09    "KVM_RUN timed out without a stale APF reason: reason=3D%u",
-+=09=09    stale_reason);
-+=09TEST_ASSERT(!run_timed_out,
-+=09=09    "Lost nested APF event: KVM re-entered L2 and blocked; APF reaso=
-n=3D%u",
-+=09=09    stale_reason);
-+=09TEST_ASSERT(!run_ret, "KVM_RUN failed: %s", strerror(run_errno));
-+=09TEST_ASSERT_EQ(ucall_cmd, UCALL_SYNC);
-+=09TEST_ASSERT_EQ(uc.args[1], STAGE_APF_DELIVERED);
-+=09TEST_ASSERT_EQ(uc.args[3], KVM_PV_REASON_PAGE_NOT_PRESENT);
-+=09TEST_ASSERT(uc.args[2], "KVM returned a zero APF token");
-+}
-+#endif
-+
-+int main(int argc, char *argv[])
-+{
-+=09(void)argc;
-+=09(void)argv;
-+
-+#ifndef __NR_userfaultfd
-+=09ksft_exit_skip("__NR_userfaultfd is unavailable\n");
-+#else
-+=09TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX));
-+=09TEST_REQUIRE(kvm_cpu_has_ept());
-+=09TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_KVM_ASYNC_PF));
-+=09TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_KVM_ASYNC_PF_VMEXIT));
-+=09TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_KVM_ASYNC_PF_INT));
-+
-+=09run_test();
-+#endif
-+=09return 0;
-+}
---=20
-2.43.0
+For VMware alone it isn't. But you guys have to decide based on what
+your long-term plan here is.
 
+I'd be happiest if we stayed within the confines of the VMware code.
+That's what v1 of this did (besides the small guard fix outside) and
+I'll only stray from this if I'm explicitly told that a patch/series
+won't be accepted without some cleanups/re-architecture somewhere
+else.
 
+I'm here because internally we've had multiple teams needing various
+bugs/features in the kernel and looking at some parts of our Linux
+kernel code was making me sad so I decided to collect the changes and
+use this opportunity to also cleanup some of our code. (I have three
+other series in my tree, they all touch arch/x86/kernel/cpu/vmware.c
+so I'm trying to push them out in a semi-coherent order.) But this is
+very much a spare time thing. I can guarantee I'll find enough time to
+always review the VMware bits, maintain them and answer questions
+about them, but I can't do the same for other parts of the kernel. So
+the more focused we can keep those patches the easier this is for me.
+
+> > instead of each hypervisor driver doing it. That's patches 2-6.
+> >
+> > Patch 1 fixes an old layout bug in uniprocessor kernels, where these
+> > buffers can share a page with unrelated data. The series also fixes
+> > SEV and SEV-SNP guests on KVM running kernels built with CONFIG_SMP=3Dn=
+,
+> > which currently hang at boot (we reproduced the hang).
+>
+> That should tell you how much we care about UP. We would even love to mak=
+e SMP
+> the default.
+
+hah :) The UP handling was a good chunk of the complexity (patch 1,
+the kernel-image aliases and their kexec teardown), and the simpler
+approach below doesn't need any of it.
+
+> In talking to Peter about it, we were wondering whether this can be made
+> simpler. Like do not touch perCPU but do a normal page for each CPU's ste=
+al
+> time gunk and thus do not split the large page and then that early
+> enc/decrypting of memory I don't like either.
+>
+> Perhaps we should start with the simplest approach first.
+
+Sounds good to me, that's pretty much the smaller fix I'd offered on
+v1. v3 would then be VMware only: if the steal clock is available,
+allocate the steal-time structs for all possible CPUs once the page
+allocator is up, share them with set_memory_decrypted(), and register
+the boot CPU from an early initcall. The existing hotplug callback
+registers the other CPUs as they come up. The memory comes from the
+page allocator, so it's in the direct map and TDX's vmalloc problem
+doesn't come up. No percpu, linker-script or early-conversion changes,
+and KVM stays as it is. This would also move registration for
+unencrypted guests to the initcall.
+
+One small tweak: I'd pack all CPUs into one allocation (64 bytes each)
+rather than use a page per CPU. Sharing a page can still split the
+large direct map mapping around it, so a page per CPU could split one
+large mapping per CPU, while a single allocation concentrates those
+splits in that one allocation. And that only happens in confidential
+guests with the steal clock enabled.
+
+Kiryl, I know this is the opposite of what you asked for on v1, but it
+sounds like Boris and Peter would rather start with the VMware-only
+fix. Shout if you object.
+
+z
+
+--0000000000009e29ed065cd55594
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
+SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
+uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
+Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
+b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
+dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
+BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
+Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
+oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
+A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
+A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
+s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
+SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
+QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
+fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
+iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
+3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
+91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
+06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
+b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
+VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
+VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
+QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIHMv
+yTLPcyN7lWUhT/on8/ToZwnK+q0RgvXIiep/lGIUMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
+HAYJKoZIhvcNAQkFMQ8XDTI2MTAwMjA2MDYzNFowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
+ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
+YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAFsJiP1etuKra7IRbsDCox9oIoW46luETWyadZPG
+/9+VUWkP8aXivckqk369OBsHFJABXJWQE1vT4hDVOncSwlpxmcIKn1TNKt/RtfKpupSzlUej0t2v
+fHZAGLORk2hFfoMgWH1ctmx5o/ssr+f+FbWsinIW1Fyp0ionq1ztT3iw8QRXNimkKo/kgnEMuvwa
+mcTtsq8zD2qb4C2hCH/hvkImuzk4nYQbqNrgxE/R/ro+utG3OmZ0K3FKlqiy60hI/kd4HSSIEyLQ
+Y93bjEpNzrsuP4RIsIpnA1tjPirKL7ixhTVnmZEknnbWJrgiJK7G1Nw3qTngvuoILi6Yodyvlo0=
+--0000000000009e29ed065cd55594--
