@@ -1,224 +1,204 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA8C3F9F3C;
-	Fri,  2 Oct 2026 14:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D016A42E424
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 14:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790949926; cv=none; b=oml66BDHdDG7RaOtFUSs2g3MvmEIjpp6R+wo/B/tXFPNaFTp9NIAon613XTWe8WORxtulW5pklHrSNj6S7/u7xh/THbUK9/lST9QJdMYB1K+QiRpQ0Bx8igftbwxrMVGTXW/Wl8W5/wySi0gWJOilik/g328KD8IbJz4DzJTenc=
+	t=1790950075; cv=none; b=nyzFRjOjdoFZGeWBfaOwibUfgAkOqE3+ooyPpKIsN5enoIjSxYEIMB4Uo2WIGSaF0Z/Pst+2E93ZL1nZl7HUsw87xlsnMaPsMVWI81pIl+UWrIzJwT5VxgeDo6S9Xi4xUsht6uprBWAXOfFjgCvq/qBhkYfvICf5kVbHFYPB4+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790949926; c=relaxed/simple;
-	bh=1vxcTXuBCxqXwoQBIzmW3rqlvuTa07ZNaVeUtHOifdM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=QGpXFjEK6Ys5ufnCbKTY33oR0r2vAbH5xrFiaGHOTMZquMTDJ7GcZZJvvIehfyXbKGPN/7ng5S4V0yNWzN9g1H6INPOeuupAVynXPoagV3uKhUXtX4xpzeawTHmvn2MWig9+icblupIkgnF1Tz5oP3o8nk4hZSgKJlo+ptd070A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=dZhb3mgq; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1790950075; c=relaxed/simple;
+	bh=Z6vWnLaMKsCMtM5OcetmBwSdEYgF0UFBSui8tqPu5IY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rxEKLxHbcbnY+ZE3PJaCec0n3mFjJnN1obhM76H7vTe6XpCo3off5i973ar7ZLopkNpl2yg6FhPd/z60qtMnJQkAMWvzMxPjETAmY+YbbNamB/Dk0i5YKlpEzRnBRh2zGivnjDT/kqB/QWnJQ9W/drWhHDXWNCneYI0Qz8c5hXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GccoYShw; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="dZhb3mgq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1790949882;
-	bh=BAoZsisDnlY0LO+TduzgC6g/Q+8iWDR6OcyZyRZyWNU=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=dZhb3mgqrZGt9We8M7wy4kUi8RDLqBxp+dSeqrnGinNUgE3cp2JCb5g25ZszfRS0/
-	 3OQomL/ZZan98v95D1OLV91MUwsfSec3jzmKoviInvLYlqlKacVZT1GiqhK32xg9XR
-	 gYdceKx7LwwI51NMR/g3I6NMROCse5XRMAc6lO2lI/OSDbXiiZzAhaLAQYS2a4Ke0A
-	 k9lQIs+pvIsTnYyw+8whPYPvnv2FsL8YH1Qw6gKWEds1EM/YtypDZhAZe2jXUa76IP
-	 6WR91iWgzB5042mky/irVF1YtzY5eNSasK1Oy8mRFJw3jgAHLLqRe91tmGqdx21OnK
-	 Z+tWDurs/SNEw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hx9Wh1Pvtz4w1l;
-	Sat, 03 Oct 2026 00:04:31 +1000 (AEST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GccoYShw"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2db8c152622so51288785ad.2
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 07:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790950073; x=1791554873; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WI2zqPTBhJ8GRkUm/HEcbRgAE3CHxE7ecFpI0xjRhAM=;
+        b=GccoYShwNicsxmiesJ1PQ8rKmDJmBI0xj+ONvQVQmZbKT9hHqHtIJeZrCzz+riu8r5
+         8hZrrf3D7Jq8BVbufMDDYx4IKT21aw9U/bGqg6vIVNlu2/I9X+J4S8pW9uH5DC1SbiHJ
+         8OSmO79IovxgVTTOjoJdjoBMs8s3K+IJuAWdepAuwtVxnVQbhK2uME12RlPnXXO4G4o0
+         y+i+9uNs0Akl6e8gaYVrP8V4oJPsxfEGPFlFmvXA3o2Myhg/pcMaasd0eNS2JI6HgPrm
+         0P6d5FrDA4Cye9PJcOnDvnxbuTn3f0KnFbMkGYQwnnWc/bHxBoUs9tEfunrrcCjBoAvt
+         azvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790950073; x=1791554873;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WI2zqPTBhJ8GRkUm/HEcbRgAE3CHxE7ecFpI0xjRhAM=;
+        b=0jFqKtcrIxIy9CZLtSaPe1WBqielp/bsLbu8Qb398hx8OC4tWPQ0dbWACVpkVA5d0D
+         R0FFQYtRIscEOiRQrxgkfOoojukRYEsKwBHngYcbw+Ghv3Gym2Qy3bgudytfsB/5s86a
+         7fGVZ5ARi5gCFB1pXLpo8yn075xK7LzRDDw93rrj4CcGnABZliK6+HYP1xCsI367BHfu
+         GJ9lhkAu/H/OaOkEtqU7IGsDPeKzliThaeQTI4M1PXrFcYgW2ft01gu54nEuk8dE31d3
+         S47b/s6CFTXT5hBCdJD6v/eAM7Ae6GZ/rIUrZIjLBWQsSTThLvHInQgpHmdoogmyNr/0
+         mz+A==
+X-Gm-Message-State: AFq9FYJQ6xErDHfudUYr2oViua2jm1ht6rts2euHOIyxtLHaTU7A7zJP
+	ipipd+5KxvQGR2P1hX9SS9Xb+EkJCpzYBaJcYhwDoMopHCQ1TID/EITUbtYs4Wq9DWRfyU61RSI
+	GEGKKyw==
+X-Received: from plik12.prod.google.com ([2002:a17:903:384c:b0:2e2:afcd:ce93])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d509:b0:2e2:dfe4:adab
+ with SMTP id d9443c01a7336-2e49b61597fmr24447645ad.10.1790950072820; Fri, 02
+ Oct 2026 07:07:52 -0700 (PDT)
+Date: Fri, 2 Oct 2026 07:07:51 -0700
+In-Reply-To: <20261002091347.630461F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v7 0/9] vfio/pci: Add mmap() for DMABUFs
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <20261001153834.4a2528a2@shazbot.org>
-Date: Fri, 2 Oct 2026 15:04:49 +0100
-Cc: Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>,
- Kevin Tian <kevin.tian@intel.com>,
- Pranjal Shrivastava <praan@google.com>,
- Longfang Liu <liulongfang@huawei.com>,
- Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org,
- linux-pci@vger.kernel.org,
- Manish Honap <mhonap@nvidia.com>
+Mime-Version: 1.0
+References: <20261001202234.3794060-1-seanjc@google.com> <20261001202234.3794060-6-seanjc@google.com>
+ <20261002091347.630461F00893@smtp.kernel.org>
+Message-ID: <ar-6t9eJExIEEgGh@google.com>
+Subject: Re: [PATCH v2 05/10] KVM: Destroy memslots immediately after
+ mmu_notifiers are unregistered
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A758FB87-95D3-4CE4-87C8-C50FF0ACE026@ozlabs.org>
-References: <20260924152159.49702-1-matt@ozlabs.org>
- <20261001153834.4a2528a2@shazbot.org>
-To: Alex Williamson <alex@shazbot.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
 
-Hi Alex,
-
-> On 1 Oct 2026, at 22:38, Alex Williamson <alex@shazbot.org> wrote:
+On Fri, Oct 02, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Critical] kvm: x86/mmu: Kernel panic via NULL pointer dereference in g=
+fn_to_rmap() during VM destruction
+> --
 >=20
-> On Thu, 24 Sep 2026 16:21:43 +0100
-> Matt Evans <matt@ozlabs.org> wrote:
->> Dear Reviewers,
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>=20
->> Along the way several related issues came up that warrant more
->> eyes, and I'd be grateful for your input:
->>=20
->> 1. If VFIO fd is opened O_RDONLY, it currently can't be mmap()ed
->>   (because PROT_WRITE is rejected in do_mmap(), and PROT_READ alone
->>   drops the VM_SHARED so VFIO's mmap rejects it).  BUT it seems we
->>   can export a DMABUF from it, and then pass the resulting fd around
->>   for P2P writes.
->>=20
->>   I don't know if this is intentional/relied on/a known limitation,
->>   or a bug?
+> commit 51cc08e54e96c8c842b1348871cdf24648cdd20a
+> Author: Sean Christopherson <seanjc@google.com>
 >=20
-> Seems like a bug.  In practice it's probably not very meaningful, the
-> user can still potentially change the device power state and trigger a
-> reset, but being able to source a writable dmabuf to a region on the
-> device fd that isn't itself writable seems semantically wrong.
+> KVM: Destroy memslots immediately after mmu_notifiers are unregistered
 >=20
->>   a) We could reject export w/ -EPERM unless the device fd's f_mode
->>      has O_RDWR, to reflect the RW abilities of P2P
+> This commit installs dummy, empty memslots immediately after unregisterin=
+g
+> KVM's mmu_notifier during VM destruction. It aims to harden against
+> accessing memory from the wrong address space when tearing down a VM.
 >=20
-> This seems sufficient...
-
-Thanks, I=E2=80=99ll take a look then.  I should=E2=80=99ve said this is =
-cdev-centric=20
-(an explicit open O_RDONLY), as VFIO_GROUP_GET_DEVICE_FD always
-generates the fd with RDWR perms.  The path from container/group open
-through to device fd generation and then export is similarly=20
-semantically weird, but maybe less clear on effort vs benefit to fix.
-
-So, for cdev open it looks like some plumbing, and that it won=E2=80=99t=20=
-
-conflict with this series, so I can look at that separately.
-
->>   If we agree it's a bug, I want to do this fix (a), as we can now
->>   export a DMABUF RW from an O_RDONLY device fd and then succeed to
->>   mmap() the DMABUF with RW.  (That said, even with an O_RDONLY
->>   device fd, the device state can still be changed/reset.  But it
->>   feels cleaner to prevent export for a O_RDONLY device fd, and match
->>   the device fd mmap() behaviour.)
->>=20
->>   In future, we could consider finer-grained RD/WR if there's a
->>   future goal to tie DMABUF permissions to, say, iommufd
->>   IOMMU_READ/IOMMU_WRITE permissions:
->>=20
->>   b) Instead of just failing if !O_RDWR, we could limit the
->>      get_dma_buf.open_flags to the VFIO device fd's f_mode, such as:
->>=20
->>       VFIO device fd perms:    Export flags:           Result:
->>       O_RDWR                   O_RDWR, O_RDONLY        OK
->>       O_RDONLY                 O_RDONLY                OK
->>       O_RDONLY                 O_RDWR                  -EPERM
->>       O_WRONLY                 * -EPERM
->>       *                  O_WRONLY                -EPERM
->>=20
->>     (Skipping WRONLY because a PROT_WRITE-only mmap() won't work,
->>      though it probably should be included for P2P.)
+> > Instally dummy, empty memslots immediately after unregistering KVM's
 >=20
-> Certainly more complete, but I'm not sure there's a use case here that
-> really warrants the effort.
+> This isn't a bug, but there is a typo (Instally) here.
 >=20
-> Another angle to the dmabuf permissions is the region permissions
-> themselves.  We don't currently hit this since we're only exporting =
-PCI
-> BARs, but for instance Manish wants to protect the HDM decoder range =
-in
-> the vfio-cxl series[1].  Again, there's probably a simple solution to
-> simply consult the excluded ranges list, added in that series, and
-> reject dmabuf exports overlapping it.  I don't expect any action item
-> for this series though.
-
-Interesting, thanks.  Reading.
-
-> =
-[1]https://lore.kernel.org/all/20260916183540.3813685-1-mhonap@nvidia.com/=
-
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index f368240aa1cdd..770a2c3bd4458 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> [ ... ]
+> > @@ -1302,12 +1321,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
+> >  		kvm->mn_active_invalidate_count =3D 0;
+> >  	else
+> >  		WARN_ON(kvm->mmu_invalidate_in_progress);
+> > +	kvm_destroy_memslots(kvm);
+> > +
+> >  	kvm_arch_destroy_vm(kvm);
 >=20
->> 2. The mmap fault handler takes a bunch of locks non-interruptibly,
->>   and potentially depends on a lot of DMABUF-related activities
->>   completing.  I'd had a go at converting them to
->>   interruptible/killable forms, but that revealed there seems to be a
->>   wider issue if move/revoke doesn't complete in a timely fashion
->>   (due to buggy importers).  Where I got to was that just updating
->>   the fault handler won't fix the user experience of an unkillable
->>   task, and move()/revocation will need thought too.  I don't intend
->>   to fix this here but wanted to start discussion so we can address
->>   it in a follow up.  There's now a dependency between mmap_lock in
->>   the fault handler and the DMABUF resv (which might take a while to
->>   resolve), though revocation will be rare in practice.
->>=20
->> 3. vfio_basic_config_write() has an error path if
->>   vfio_default_config_write() fails that releases memory_lock but
->>   doesn't un-revoke BARs in the case of PCI_COMMAND.MSE being
->>   cleared.  When can the write fail, in practice, perhaps surprise
->>   removal?
->>=20
->>   The effect on this series would be: a write of MSE=3D0 revokes =
-BARs,
->>   vconfig[PCI_COMMAND]'s MSE becomes 0, but if the physical write
->>   fails then the physical MSE remains 1 and BAR VMAs stay revoked.
->>=20
->>   This seemed a mess; fixing isn't as simple as un-revoking on the
->>   error path since vfio_default_config_write() has already trampled
->>   vconfig so that'd need unwinding.  It felt like a catastrophic
->>   scenario where BARs staying revoked isn't a bad outcome, but want
->>   to hear your experience of the likelihood of this issue.
+> [Severity: Critical]
+> Does calling kvm_destroy_memslots() before kvm_arch_destroy_vm() risk a N=
+ULL
+> pointer dereference?
 >=20
-> Our vfio-pci story around surprise removal and DPC is pretty weak, I'm
-> hoping that some of our parallel error handling work will shut down =
-the
-> device when this occurs.  For now, leaving the dmabuf revoked seems
-> like a reasonable thing to do.  In practice, I don't really see this
-> coming up other than in testing surprise removal of NVMe drives.
-
-OK, cheers.
-
-(Maybe a couple of these bullets are ~rhetorical, just to get a =E2=80=9Ck=
-nown
-wrinkle=E2=80=9D searchable somewhere.)
-
->> 4. The exchange of a VFIO fd mmap()'s vma->vm_file with an implicitly
->>   created DMABUF's file has implications on LSM.  For example, an
->>   mmap will be checked against the policy for a VFIO fd, but a
->>   subsequent mprotect() relates to the policy of the DMABUF file
->>   (which is anon/unique to the mapping).  This is pretty confusing.
+> If a user creates a VM, maps memory into it (creating leaf SPTEs),
+> and closes the VM file descriptor without terminating the process
+> (mm_users remains > 0), mmu_notifier_unregister() is called.
 >=20
-> Maybe I'm not seeing the issue, but this seems like correct behavior =
-to
-> me.  Policy decisions are made at creation time and later changing
-> protections on one object doesn't affect the other.  Thanks,
+> However, it does not invoke the release callback because the process's
+> mm is still alive.
 
-I think this is a change in behaviour re LSM rule, should anyone have
-applied any to VFIO in any fine-grained way, so just flagging that.
+Ha!  Sashiko: 100, Sean: 1
 
-I=E2=80=99ll send v8 shortly, resolving Christian=E2=80=99s request.  As =
-ever, thanks
-for the input!
+mmu_notifier_unregister() invokes the subscription's ->release() callback. =
+ FWIW,
+at one point in the past there was a no_release() variant, but it got dropp=
+ed by
+commit c96245148c1e ("mm/mmu_notifiers: remove unregister_no_release").
 
+  void mmu_notifier_unregister(struct mmu_notifier *subscription,
+			     struct mm_struct *mm)
+  {
+	BUG_ON(atomic_read(&mm->mm_count) <=3D 0);
 
-Matt
+	if (!hlist_unhashed(&subscription->hlist)) {
+		/*
+		 * SRCU here will force exit_mmap to wait for ->release to
+		 * finish before freeing the pages.
+		 */
+		int id;
 
+		id =3D srcu_read_lock(&srcu);
+		/*
+		 * exit_mmap will block in mmu_notifier_release to guarantee
+		 * that ->release is called before freeing the pages.
+		 */
+		if (subscription->ops->release)
+			subscription->ops->release(subscription, mm);   <=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D TAKE THAT SASHIKO
+		srcu_read_unlock(&srcu, id);
+
+		spin_lock(&mm->notifier_subscriptions->lock);
+		/*
+		 * Can not use list_del_rcu() since __mmu_notifier_release
+		 * can delete it before we hold the lock.
+		 */
+		hlist_del_init_rcu(&subscription->hlist);
+		spin_unlock(&mm->notifier_subscriptions->lock);
+	}
+
+	/*
+	 * Wait for any running method to finish, of course including
+	 * ->release if it was run by mmu_notifier_release instead of us.
+	 */
+	synchronize_srcu(&srcu);
+
+	BUG_ON(atomic_read(&mm->mm_count) <=3D 0);
+
+	mmdrop(mm);
+  }
+  EXPORT_SYMBOL_GPL(mmu_notifier_unregister);
+
+> As a result, kvm_arch_flush_shadow_all() is skipped and shadow pages
+> remain intact.
+>=20
+> Next, kvm_destroy_memslots() replaces the active memslots with
+> kvm_empty_memslots.
+>=20
+> Then, kvm_arch_destroy_vm() tears down the vCPUs via
+> kvm_destroy_vcpus(), calling kvm_mmu_unload(), which recursively zaps
+> the remaining shadow pages.
+>=20
+> When leaf SPTEs are dropped, rmap_remove() looks up the memslot for
+> the GFN:
+>=20
+> arch/x86/kvm/mmu/mmu.c:rmap_remove() {
+>     ...
+>     slot =3D __gfn_to_memslot(slots, gfn);
+>     rmap_head =3D gfn_to_rmap(gfn, sp->role.level, slot);
+>     ...
+> }
+>=20
+> Since the memslots are now empty, __gfn_to_memslot() returns NULL,
+> which is then unconditionally dereferenced by gfn_to_rmap():
+>=20
+> arch/x86/kvm/mmu/mmu.c:gfn_to_rmap() {
+>     ...
+>     idx =3D gfn_to_index(gfn, slot->base_gfn, level);
+>     return &slot->arch.rmap[level - PG_LEVEL_4K][idx];
+> }
+>=20
+> Could this lead to a host kernel panic during VM destruction?
+>=20
+> >  	kvm_destroy_devices(kvm);
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001202234.37=
+94060-1-seanjc@google.com?part=3D5
