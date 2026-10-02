@@ -1,65 +1,65 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4C73CE4BE
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 22:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3A14519B6
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 22:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790979386; cv=none; b=Yr9kghZ3WkQDwdRPat84LiGfd9TzqyDFuMh/Lp6fRQOPW+ojRHpQzzJnPaExG7h8vGTkA/xxbJOS53K9ZkP+1+fyg0u9Pv4E0yioKtV11oUp2E8t1jm/UX4l8+jXJwwUPMbgflznAo0SDWo5GXswZCuMwkj2reKa/yhUj68VM50=
+	t=1790979543; cv=none; b=hbX9Xc7lmNH2Um3JbQDdmurifcoQCANicGFisZrpqtBy++R+VJK8N7Y6ik1+ZqJBF0dAXeIQZBsOuJfi4bDo0V9OTKuJwtTm5hGBPVwtSOMy38LQxOQqRq1HlCZ2MVdBZQ+a1K/y8UO7RIc2l0PbpxQ0XAUIYUZTFKIzBcrCQVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790979386; c=relaxed/simple;
-	bh=K9Rjfs4Qr7oUSRMr5nl0YpdYHF+TKIqpiiDrDAgieAo=;
+	s=arc-20240116; t=1790979543; c=relaxed/simple;
+	bh=40qd9siKCBRYB3f3NGKHhJbH3BpIYlDe6X8yX7Hpuwo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EtJVsCNw5yxmgNusxaOHaMXZBYCt2tXnpSsqEaGxZH25g/ayzqZYcYxhghVl8wRAQPvAcxxq3cWdsc+M9nY/TAmlHoNhfQu027OF3o4cQEqNup5RWav9dmR2GJyWGv6dtX1QSqIy99LPWgY+m7EM1j7D9fzT4Aqetu2Z6zxeDbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HngVvTTK; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=ZDI6nfCGFjUG+8i72TIiP1EUeQjsD5N+IeAXLJvDZI8bOcC9CzYp71s6KZruxun4LG0AJ+U4IX1VAIvlYzWaW/wk5CXE2IryP2XcKGcB15oirWdkzTA3X04qsWMlgelXW2FuRO9zbkfZSIiQN+gR5LQ8auB4AotKuXJhVTIiuis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SMLZH8s+; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HngVvTTK"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e2d3a3ff86so1053285ad.0
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 15:16:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SMLZH8s+"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso289844a91.1
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 15:19:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790979384; x=1791584184; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790979542; x=1791584342; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4ZUOmUpFAdn6kAClohBDNQiVlfBYiZoDgK+pqSPmkXA=;
-        b=HngVvTTKyEOnn5b6Sn5FG6cV8XR/RaiIAVRZo3mhMGQntDCRKeDR2t3je5mJ0aHhGT
-         ChjrWqRZOsGBV2H7lL7itN+4yOcnoF+k78j5QQrgODPXkXNTJnworxqg4H+XnF7Ov4pi
-         UZO+Hf5QN3Jtch1LlipCSWUwtLRZoxMIKTqEKEg/J9eb4HH34kt+YoLy7XMYmFunlt02
-         VGSWdPNoloUyIW78c0fitLmEMhkhUuTxnMFwbuj3jlJesEXsrRrnP2qhM2QRugwTMZW8
-         aGLlSJTufswaI7/hiEFQqqscIDC0Hmuvc7w3Q+ixBf+6c6AdYsQzjTGNHSuC5jPElmEA
-         phdg==
+        bh=40qd9siKCBRYB3f3NGKHhJbH3BpIYlDe6X8yX7Hpuwo=;
+        b=SMLZH8s+LCQgFO7oNe4vcV8iJuWUxaQfX4dgY3ghhp+dTzLGGmVw5v/eeIs85vHGip
+         Sa15lgiibSVx5HU/lqpieb+98WbsTIpWBlJC2PyKWxPuN9TJ3mqqdizSuARl1ZwY6Lo3
+         AF0gZcVT9kkBPpvh7N3F7+YJrgrQMp6ClYQaQ6A6GBmTsNxUWD+vr8NpQR47XPLe7/gz
+         P0CwwqXnBzgFni0Zc9dbZ0x4Jt/xviv4JkAe+s4smszurz4casTwUCHFziMd3dpsyFJU
+         uV1gGOL+ob+D4KQXRhnJsyvxrkMbvX2qrFB2WLcjqNOiaw5i9daf6f8Sd9DZ552QG3ba
+         sLLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790979384; x=1791584184;
+        d=1e100.net; s=20260707; t=1790979542; x=1791584342;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4ZUOmUpFAdn6kAClohBDNQiVlfBYiZoDgK+pqSPmkXA=;
-        b=IJ8Vm2n6pyR1sW6LH/cRyuHPa1RaMttXsEkzsszRgsbtbeVT0lsWiJDUH3GIe6/Lng
-         tzRtV2QlbrcC03JGw47Zg0l0f9kgSYXZFFfhQ4qD0mlNtl99ZaMulqZm63B4NVgdcDxI
-         I40bujR/kGLjcpSi8FGUCWI5Ty3GRttm1pP3jyEWhkdlA3ZaM+5IxKPfC+WVj5iijQa6
-         WGqDs6YD/CzwOlwwFp6NJEh7n5ULozuBY4jYzvaJhgHLshkP0/jS7AQav8HoDhlKnCc3
-         uP567d6Pxncmy9TUpUm4uTKuv3eGiwBZSvSrZvbKI00CSYKAzz5Q0G1OHmejgY/LToEI
-         GQrw==
-X-Gm-Message-State: AFq9FYJ+LD7ouycqcpiEn9XTaqbZz+LZFk1kJEKR2fQlbu2FapONnuIb
-	zTX1SfjS6b3gIQXLvpMmQ9dV55TejJ/HSBFbpY5TlaIa8tSCniJbtbEqCKH0eNq1K10yMxc8utn
-	BhiCDHA==
-X-Received: from plbml16.prod.google.com ([2002:a17:903:34d0:b0:2e1:326b:da73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:18e:b0:2e3:1bb4:6113
- with SMTP id d9443c01a7336-2e49b648c41mr42782405ad.26.1790979383748; Fri, 02
- Oct 2026 15:16:23 -0700 (PDT)
-Date: Fri, 2 Oct 2026 15:16:23 -0700
-In-Reply-To: <25cdef9c45a1270dcad7e9c4140e56b6953eb27b.1790101179.git.ritesh.list@gmail.com>
+        bh=40qd9siKCBRYB3f3NGKHhJbH3BpIYlDe6X8yX7Hpuwo=;
+        b=ylrW1EK+PgkTwPMeGlBieruVendCeaxbvKJIg9yocNoLuqdkooMYdm1ruq3zUdv1OL
+         HHGdAp62jiJjK9Xjz+tnCqO8u466icfRX1Q0NV6FbpnhrMu5oVa+aIwmqN/XoYwZMxCu
+         dO22Q2Tfr4VTNPR6s6Ch2q3GC5pFHsK+71Y7iZ+Ipid5ppElQ8augnPbO7hkPaHNhsYO
+         6tDtvm62KmyIFQM+XC1VOnm5dyoGXKnhmbd8xdvYpCZYgQOCvRRiP0Z5ZnnJAzTTKe4O
+         QjLsXf+Nvgt4X5EOrN3b+3FbE3vOzvDsFHEnfyhZGjTj5sHHj6z53G/k1eIho8H3kyu3
+         ijkA==
+X-Gm-Message-State: AFq9FYLhbjgD4NOl+jHcEWoVY5idIzzN+ZvgRXw+rTbd+ZENPnheCSck
+	6QwVTNC1elkJCMtw+r7l/wZLiEelAbGsOzfJD/5EyBc7l7o42RKqAu/pbLYmvQ6MWpXPLGxxe8d
+	Qi6l0FA==
+X-Received: from pjtn8.prod.google.com ([2002:a17:90a:c688:b0:3a0:dee2:7813])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2b48:b0:3a4:71b7:eb63
+ with SMTP id 98e67ed59e1d1-3a6ceab25dbmr1825054a91.10.1790979541549; Fri, 02
+ Oct 2026 15:19:01 -0700 (PDT)
+Date: Fri, 2 Oct 2026 15:19:00 -0700
+In-Reply-To: <db32438dee67a69609e75d8c43cb070f021137b1.1790101179.git.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1790101179.git.ritesh.list@gmail.com> <25cdef9c45a1270dcad7e9c4140e56b6953eb27b.1790101179.git.ritesh.list@gmail.com>
-Message-ID: <asAtNhSQHDy_k0d_@google.com>
-Subject: Re: [PATCH v5 5/9] KVM: selftests: Make kvm_create_max_vcpus tolerate ENOMEM
+References: <cover.1790101179.git.ritesh.list@gmail.com> <db32438dee67a69609e75d8c43cb070f021137b1.1790101179.git.ritesh.list@gmail.com>
+Message-ID: <asAt1NhGFs5HNbvl@google.com>
+Subject: Re: [PATCH v5 6/9] KVM: selftests: Limit the number of VM creates in hardware_disable_test
 From: Sean Christopherson <seanjc@google.com>
 To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, 
@@ -71,37 +71,10 @@ Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Sep 22, 2026, Ritesh Harjani (IBM) wrote:
-> diff --git a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-> index 59ddc3757943..45a9d8b369b5 100644
-> --- a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-> +++ b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-> @@ -20,16 +20,29 @@
->  void test_vcpu_creation(int first_vcpu_id, int num_vcpus)
->  {
->  	struct kvm_vm *vm;
-> -	int i;
-> +	struct kvm_vcpu *vcpu;
-> +	int i, created = 0;
->  
->  	pr_info("Testing creating %d vCPUs, with IDs %d...%d.\n",
->  		num_vcpus, first_vcpu_id, first_vcpu_id + num_vcpus - 1);
->  
->  	vm = vm_create_barebones();
->  
-> -	for (i = first_vcpu_id; i < first_vcpu_id + num_vcpus; i++)
-> -		/* This asserts that the vCPU was created. */
-> -		__vm_vcpu_add(vm, i);
-> +	for (i = first_vcpu_id; i < first_vcpu_id + num_vcpus; i++) {
-> +		vcpu = __vm_vcpu_try_add(vm, i);
-> +		if (vcpu) {
-> +			created++;
-> +			continue;
-> +		}
+> hardware_disable_test forks several VMs (NR_IERATIONS=512). This patch
+> limits that number to 4 when we know that we are running in constraint
+> host environment. The number 4 is just a safe minimum when
+> kvm_arch_vm_create_may_enomem() can be true.
 
-Oof.  I dislike this, to put it very mildly.  Is this the KVM_CAP_PPC_SMT thing
-again, or something else?
-
-Assuming it's KVM_CAP_PPC_SMT, is there really no way userspace can pre-probe the
-"real" limit?  Or modify the test to enable KVM_CAP_PPC_SMT and do the proper
-striding?  Eating -ENOMEM is all kinds of gross, and I really don't want to add
-__vm_vcpu_try_add().
+Please actually explain *why* this is necessary, and where the magic '4' comes.
+I assume there's some system-wide resource at play?
