@@ -1,110 +1,93 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8182C30569F
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB4D3B27F5
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975341; cv=none; b=Yy0M8WRccCKqGWpPa4Nu42CoFf/XT3gty+Ns80SQj6sjioAnIqCEb/N/rTAxQdRoSqloqsPu4W+99jxU7CAT0+WaDuRxD3brjDlR20oySNrFBsnwaxYnjidIisj7bdcoILRqBwrPZh1Ys1c9TZ2Eid5N8k+ap8kC46rRNrtkr9I=
+	t=1790975346; cv=none; b=S8s1y36v7mCSMqGFt68KueMPjLHA0cMd+Ch5KHBXQBSrB1b6aG8J1AZQH7pw6eSUucLOudZXgiL0W7AwhlaxII2fLnDZ+htLBK+nNLyPD5cxVDeSgfZ0NFalHN5uUlbsJU8ccQw7ZhnHDnE5zXgRWyq0/pE0rzoDqATnWmpp6Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975341; c=relaxed/simple;
-	bh=DRhIYyZZN7WiAtU4Ll0e6lnDDxpEQxdAaqhVQan1cfU=;
+	s=arc-20240116; t=1790975346; c=relaxed/simple;
+	bh=gHfKiYTtT/v5kxFFXa+Lgrug1MCLcmb6/+mlODOy62w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LEJiZa5Bi9Ig5GpHXqvEUNxpA8l3jmQxzO98Ger+6V7+TuiUUdc/IcePQInDGFPes7c1DAll1YWaJIfOhWWY/aR9NUVeWB8y0AW2XDYrqa5zg8nYQjzd9MQEWsU1/EI/LUxjIqUyvnpqSBTTu6GtldroqcfbNRGP9qIUIOECXJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sfk8IzpT; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=L3cwwhE5pV2CVY0TSDAb3an9cMqfE3DnuQbe8q6zxGX20tIymBNXpSXiWGuLKJ2yHhWs2VroA9l+lxdoL7cJOpPE8TDl82FyqtbkAa0wFMavBA3kqKsnrVlNc0kRlY76FhiBFkVIENrL2YxHgfYHvcr2zB038LjIRU8wLipindU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iUEWhT+7; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sfk8IzpT"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso16312a12.0
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:09:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iUEWhT+7"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e2e7425601so23016335ad.0
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:09:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975340; x=1791580140; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ttj3sFWSEnF9bKkFFkERtt9KfbPvVDW8TfmnS1SN4Ec=;
-        b=Sfk8IzpTovCmog8QwTh++lgGCEyUw+cFiHfhswmf2rnqRL5zPJ5EmDazK68JuY0Caq
-         trd5E99iLoJGQH3MpMBF7fIW3aDdWcDBdXQ5Z0qLyHd6RpRFPE4/VNrro9e2mfi98xrT
-         lTwU6PpYm7QhZKZmbdOpOfJsPDhUlOXFToRQSAZGV2LEK8ZOpvhkoEIGb8JzwQuRcvT1
-         hUFCBdrS6NBaKzlVTxKIPrdX7EMRc+WQVcy0s9H3npBDqrEpOJmN0DomSNA5I4N7tvSg
-         oNuvPvu15UDNzUQtXILLG+e2fL4awmsjJKOAc5Vc/Ot2otP8S/VQFnHF0Qapm1mKz13K
-         fEgw==
+        d=google.com; s=20251104; t=1790975344; x=1791580144; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0eJMRy6qOdNwpWsXDh5oL9sd7rvMCZHOPdz8rHjoIVs=;
+        b=iUEWhT+7TsqC4240TZbJztTtSAQCJe8RDki27m+2oTVf8RxBcOlPl+oqrpO6YlMbeC
+         l1Cgv8zKVZ5cp1TnSJCZpMaVJibFxuCyxMzr+T+K3FwriPIaeH4bUDtlqIRFy2gMs0F4
+         wKJ4rBC+QWvvW0CG8mponwWMkzWvhs1YLpMI8GGDw9REFsGN4+lEzhy7iWVepG/NwtMw
+         fZVac+u5i5WOFc5htNwcQBubFPXBOC7qQkP3Nm36JXk8Gr+coMZrMxwqGhqXqescw234
+         OKhRw22t5iwuEZuZukGafFIO30fu5GlOKvn024Li8fM6GcLAc8YA/rhSkShx6zsEiQ7K
+         LmgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975340; x=1791580140;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ttj3sFWSEnF9bKkFFkERtt9KfbPvVDW8TfmnS1SN4Ec=;
-        b=XdtO2qyailpvBXEfhFoTDGDmdP6HxdGCFK+mt+4DcqJLNPnPp1oNg2nrPbpTN0lDkw
-         DU9oQFIZZGCAXmUQr/EKUdN5cocFLDPVJJOn7XbcnjRZfJVunxkkTvzN0Y0kcFszDhAw
-         YbMngu2noVpZewQNGsnN8vrYtimvQIDg0IGakx9M+m5EqVsmV1FI7D0I/OVowfiXcRVh
-         Xi5kmUCe8uAIK0SQ85J5iew6R7mawTtpWPrhQZCmpYbXWSLfOTklHs9zgKxl4mGeEcc1
-         +OnZTfVsAzJ5rhC5PMzIde1/vShE3kEbR2Txrr7LX3Ig7/YWjGAmWRXG5dk21TXHi9WO
-         Pezw==
-X-Gm-Message-State: AFuF++ne3u7OEvu6BTTtvHk1aI/0PSlgLBLY/+3apHLFFRHHZyjjw2Ll
-	9DvZQqzuuJDXefUk+zWUtaHzBAOPqMWKDec8tF2PPdz8dc9+gZRaJBikFmnmCEzo49/MqWUKxd2
-	Qug5EbQ==
-X-Received: from pfrg18.prod.google.com ([2002:aa7:9f12:0:b0:886:d067:aa33])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:ed0e:b0:3dd:a196:3091
- with SMTP id adf61e73a8af0-3e0bd42d56amr3863146637.65.1790975339691; Fri, 02
- Oct 2026 14:08:59 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:07:08 -0700
-In-Reply-To: <20260930193634.3415089-1-seanjc@google.com>
+        d=1e100.net; s=20260707; t=1790975344; x=1791580144;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0eJMRy6qOdNwpWsXDh5oL9sd7rvMCZHOPdz8rHjoIVs=;
+        b=GF73bV5oKTXS9Y2/zrZvSogBqnSyA+D/4dCBlNhMAYviYuT4bv/j8l377ZJtBn/rIe
+         iok5aVeq5uxR7A5UTa54Lz9dXgijpWqZgZ95BpM+nFddxvoVuK7tIidtxrdPKTGcIff5
+         z/cWziGCuU5phwU8owEOUjLnRxJ9GtJ42evLK118SPcjJ86C3PBrY+aCTUxDtQp3mOS+
+         gMO9dYcI6qk95ETHFMFhPeAJv0b+MfeYtKkj6nUiaTzPzPkKg8idWBPHVpWb5UTL6J5E
+         M2gYTSmb296kV3DfEvboCwpaR1VyfTxLka4Cc+V7vu56xj0jhUpFG0L0+aRSz3D8JzyJ
+         J5ZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzcldOnCUHra7/ojaqMncwRacg9P8wXtUq/fDivpIh4vbeA4kkO3h8zklaFxa3X3VyQLqY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYeykUisboksQcI0zYBAY+Z1jR+f6I56rjy9N/o/RUOpHIt7t7
+	zWyftFid/K9wkl1wUjJvHNkGOJ1xuQsEm3Jj4r4aoLjVBWD4AiQSDUq8SVHL/CPoVRhT30YEFPt
+	NlMMu7w==
+X-Received: from plco20.prod.google.com ([2002:a17:902:e294:b0:2e2:bc36:1c7b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cece:b0:2e2:c94f:25f7
+ with SMTP id d9443c01a7336-2e2ff90ba99mr44028515ad.5.1790975343900; Fri, 02
+ Oct 2026 14:09:03 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:07:10 -0700
+In-Reply-To: <20260916143310.1909993-2-clopez@suse.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260930193634.3415089-1-seanjc@google.com>
+References: <20260916143310.1909993-2-clopez@suse.de>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097462681.4066567.295128970891612900.b4-ty@b4>
-Subject: Re: [PATCH v6 00/12] KVM: x86: Bus Lock Detect fixes and SVM support
+Message-ID: <179097470556.4068242.12181782174052908076.b4-ty@b4>
+Subject: Re: [PATCH v3] KVM: x86/mmu: Fix NX page unaccounting for TDP MMU pages
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Shivansh Dhiman <shivansh.dhiman@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
+To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vipin Sharma <vipinsh@google.com>, 
+	James Houghton <jthoughton@google.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 30 Sep 2026 12:36:22 -0700, Sean Christopherson wrote:
-> Fix KVM's handling of DR6.BLD, and add support for virtualizing BLD on SVM.
-> KUT tests: https://lore.kernel.org/all/20260925230003.2362261-1-seanjc@google.com
-> 
-> v6:
->  - Throw in the towel, at least for now, on WARNing if KVM sees a DR6 without
->    all of the fixed-1 bits set. [Sashiko]
-> 
+On Wed, 16 Sep 2026 16:33:11 +0200, Carlos L=C3=B3pez wrote:
+> unaccount_nx_huge_page() unconditionally passes KVM_SHADOW_MMU to
+> untrack_possible_nx_huge_page(), which is incorrect, particularly on
+> the path from kvm_recover_nx_huge_pages(), which handles pages from
+> both MMUs.
+>=20
+> Fix this by passing down the MMU type from the callers. Note that
+> __kvm_mmu_prepare_zap_page() is only used for shadow MMU pages.
+>=20
 > [...]
 
-Applied to kvm-x86 misc, thanks!
+Applied to kvm-x86 mmu, thanks!
 
-[01/12] KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when delivering #DB payload
-        https://github.com/kvm-x86/linux/commit/719a1d58bf43
-[02/12] KVM: x86: Rename kvm_dr6_fixed() => kvm_get_dr6_fixed_1()
-        https://github.com/kvm-x86/linux/commit/cc551e8d4f77
-[03/12] KVM: Return an "unsigned long", not "u64" for the fixed-1 DR6 bits
-        https://github.com/kvm-x86/linux/commit/28bb033664ee
-[04/12] KVM: x86: Force fixed-1 bits in DR6 after synchronizing with hardware
-        https://github.com/kvm-x86/linux/commit/7b88577a0983
-[05/12] KVM: x86: Set guest's fixed-1 DR6 bits when delivering #DB payload
-        https://github.com/kvm-x86/linux/commit/c62ffee78db8
-[06/12] KVM: x86: Kill off DR6_FIXED_1 to prevent future misuse
-        https://github.com/kvm-x86/linux/commit/0e2342b02380
-[07/12] KVM: SVM: Add helper to query if LBR virtualization needs to be enabled
-        https://github.com/kvm-x86/linux/commit/7faa73133e40
-[08/12] KVM: nSVM: Disable LBRV in nested control cache when unsupported
-        https://github.com/kvm-x86/linux/commit/5cb0577b7497
-[09/12] KVM: nSVM: Open code check on LBR virtualization being enabled in vmcb12
-        https://github.com/kvm-x86/linux/commit/cab4449bddbd
-[10/12] KVM: nSVM: Don't assume all active-low bits DR6 are fixed-1
-        https://github.com/kvm-x86/linux/commit/39080c3ca8b1
-[11/12] KVM: SVM: Add a vCPU-aware helper to get supported DEBUGCTL bits
-        https://github.com/kvm-x86/linux/commit/cd0e6f4d7cec
-[12/12] KVM: SVM: Add support for virtualizating Bus Lock Detect
-        https://github.com/kvm-x86/linux/commit/62ad461079e7
+[1/1] KVM: x86/mmu: Fix NX page unaccounting for TDP MMU pages
+      https://github.com/kvm-x86/linux/commit/31adfe155db6
 
 --
 https://github.com/kvm-x86/linux/tree/next
