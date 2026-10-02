@@ -1,94 +1,88 @@
 Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0153840A92B
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1B244838C
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975504; cv=none; b=BIzb1c2TLFWJHNQX+Vi1y7GL6Z5gRRtbPexOzNt6fwREXmKJkz2G8p3cQD0+2VOBTWJYgMLEv40s42Z/okGVTtZNyenmbm0D7tR6AQ82F1UJU6JXVUWNwkbh1kcE7lnAtPk0ntEbbMHiX3Gq4z2AZHCYymlCduhMRm9pDdzqZ9w=
+	t=1790975739; cv=none; b=CfxEWSQNqWgNkZiI76hSqu+lZiYptmVKPJUMYBi15kxJ5R16QaDSlqlUi6JqhaWu2srF5+mS0/00tVxCUE50IPQbxKGq+RSSVYQdGlRS0eXwjGCOhdhHcrNoYrgYTsbqfetw2e7AII6PSAOGAq/35gde4X2RsjEELQwn3FU4db4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975504; c=relaxed/simple;
-	bh=m1kgZk/QnnIGSQq94ScRWI4VTjnRh3pMl09wcBzDj1s=;
+	s=arc-20240116; t=1790975739; c=relaxed/simple;
+	bh=I04cdUNXSRv11sYtvtroDjW+zV/3mPPKgJaNsJNvVsE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k4WYXPo4SFditfR7HkfTArv5sMOHwkvGENa4WpZJC+SN1XS6TvCLnpYquGnbHTkiX3Lu8zNcj5iR5uDxNTFATAy6R1y3mBTebbWJRY946fhMiFOSez9MTHX4a3K6ZqANxvmKlM85ro8pztFLaps9yWxkh/4ygiYtqqZjbyLB3cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TK6X8O3w; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=njWFkgQ91e3U3tqfUcTfuhsqWO5ZVI5ZTenUV/jh1Tap8jH25wU6TMB3ZW7Q9wt2Hmsaju98N2GGJ0MnJgzybRlbBkZRAJL6T57XpTeuHzH6ynQcwT4MJZFXvVc6+O5vbF4yv6GWY+ewuYZDHMUtTGOx9XP7RwpF8pQ8oiuwTh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LnNzybQ2; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TK6X8O3w"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a4a053dcadso323915a91.0
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:11:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LnNzybQ2"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so342252a91.3
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975497; x=1791580297; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975734; x=1791580534; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j1MttPZc2WbaNxCbcw+ABVFsYx0hSjd1yRWWbDI1AxA=;
-        b=TK6X8O3w7PHvfTxBzEn1xNRHM3zaQA0YonJesndJSXm5l3EYOZYVb36I3wag0aCtTR
-         yiV8MdiP5y954sybPn488evw3nTJX/tQXObdmqInx6TMfB/Y1hgF08r3/i+7RmLFmWWh
-         dxy88du+76jKfsWBJX+4TavxwtCIvS17ACWCEoBBYNR61cHmrpgLhb7i6MVhj/4RRLD8
-         AZUo1rR8W7KMQkvLGtiExv4djDf32tUlI1k3e83t6gAyKbiOh81MIL3vpd3ssVqndRNr
-         3XPSgTNELMc67v09FkhiMQEkFJgevkuOjrzPYte3/OPYPmiZiK7ghsGN+i86vDL60CZj
-         hNVQ==
+        bh=Bb11Q3X9HLbRPbjZCs9AlV7uo+0Zv9shnGK3DWxdtTQ=;
+        b=LnNzybQ2fCVWBcmqPqbv1rS9HyyVKjPUiPT+tW5Kr34TzALc3vI/brrwKrPuPlaDTO
+         iBr00tVaGGZbryICBckv4g+6i068Ld//uBB5Qe6RYoHJpuA+QTP4aoA/vB3/njJsRaQR
+         +Qav6chacbc06NmwHe/Tk7+ngQA/9MCSrXgXmaGW/FXHqPDeSp9ccl+7+tS93TYAjMEu
+         ZpzBg+muDsyUpqYvdZUrR6MCIopFnmnDS4KHIZ5nwPFG7B2j37evf6loZ+u7CQPHeLs8
+         JN0B+6QsYaz8ryFE/7l10n2anRB9AhaX/EeC9yEZr6HuY3QUoB97R50hFsBFjZP/1pnV
+         +XnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975497; x=1791580297;
+        d=1e100.net; s=20260707; t=1790975734; x=1791580534;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=j1MttPZc2WbaNxCbcw+ABVFsYx0hSjd1yRWWbDI1AxA=;
-        b=H91oDn6x9ZkIyGuyTLLfct6XodYuGSXINXjZ/gNkqXHlKpje5++ue2q9TDCRKVWD4Q
-         RTLM7OOdH6DyF0P11zs8bKa/hApO6S966LxX5JSLKp9/xG2QqPcoTMicQZrqhdJuThMz
-         AJU93cKdx8+e6O3RQy5feeW51llrtW/wWWM2++W/BFZFZ1DS387gkQiM4jd6aeKM4g6R
-         kibPCQjmLJk4FzTiBBB0N2N0Wt8RFiLsbjXakl3okiO6cVEQOxa+aIrpJ1mS1TUeKOrt
-         WqSvob2ZlyBsJ1n13tN3k/Q4TxNo4G/gW7mHZZXofEsaFYnuugrgpgViquG8PqUrqTcM
-         ZelA==
-X-Forwarded-Encrypted: i=1; AKwUvBwXN2tGMSI9YaB0+bikdGyRUToN/In2bHZl5PSQuBEZREEKC04UbtJJV4Kg37+7kqHZzog=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK8t6OjfkzPDt6el1keQHQXhfx8VFcdYS6yM3ZG17ZaOItGfJ9i
-	gCamiwkPsQ8Q6wYTliUXP/qrOWB+DT7jsnRWgR8CsgL9le5yvNQFQUzXXebRDYXLJpVsvVbYyGJ
-	nZcnJOg==
-X-Received: from pjot24.prod.google.com ([2002:a17:90a:9518:b0:3a4:b4f0:b161])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f86:b0:3a4:adea:50c1
- with SMTP id 98e67ed59e1d1-3a6ced92fe9mr3693415a91.62.1790975496840; Fri, 02
- Oct 2026 14:11:36 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:07:36 -0700
-In-Reply-To: <20260820123512.87236-1-duankeqiangcym@gmail.com>
+        bh=Bb11Q3X9HLbRPbjZCs9AlV7uo+0Zv9shnGK3DWxdtTQ=;
+        b=VtJIG6WXOEN4UrVYS7VHTNxwuoOQaz8LwomlvKRk0De23ymB8E1A+/iV7xCT8ijbUV
+         V7L0hhOh1pKgTWlfOpeYjnWf8wiTVRJBsO1PE7GHLZAndGssYVAUEycyQvWh0/Lsayu7
+         KIr5gphXqZ5Q6Xqe5jq4oB+I5zoAxIsgP6KSBKD/mvTQh+qUV/uShw61a12BhWOgJl83
+         JmGexUpflW9X2HPpqvoAQaeiAhSh2bYxJ3iBwPBktIKxHI4eU1/CRUZPhj5L3o4FSuDW
+         AQwqIGTbsINLp3Ct6b8DHh8u45gY6mp8uoTuOwnc5If+DU4PxR0gc24xpz/hnthCYqWx
+         1rDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwE3/WDQlMeGd7R1fKILi1vkDxvlOfBDtRLo3D+W4ZIvnHjmA8V1yn0ZJALG7AxsLqQ6q4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL/fewTEphIrSAW26sgAVEmqPkN1/NxbUBBxk1uMSAyOmiy8HTc
+	H7MOzxmrZsuZrX4fZr3Pb2zDZZRKyyn+8zXUQdXhRnegiIKNWd6bffD/0hZzL94MYngpLzC9w8B
+	m2ekozA==
+X-Received: from pgbfe13.prod.google.com ([2002:a05:6a02:288d:b0:cc9:f7f0:57db])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52:b0:3a4:97ea:f0da
+ with SMTP id 98e67ed59e1d1-3a6cec1421emr3480757a91.17.1790975733662; Fri, 02
+ Oct 2026 14:15:33 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:15:28 -0700
+In-Reply-To: <20260603015831.41664-1-yexun@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260820123512.87236-1-duankeqiangcym@gmail.com>
+References: <20260603015831.41664-1-yexun@linux.alibaba.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097516928.4085781.4004685515336917376.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: x86: Clear hardware HLT state when userspace
- makes a vCPU not-halted
+Message-ID: <179097572261.4090908.4660952008671139268.b4-ty@b4>
+Subject: Re: [kvm-unit-tests PATCH v3] x86/lam: Allocate test page from
+ AREA_LOW instead of AREA_NORMAL
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Keqiang Duan <duankeqiangcym@gmail.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Qinguang Chen <chenqinguang@kuaishou.com>, 
-	Zhiping Du <duzhiping@kuaishou.com>
+To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, yexun <yexun@linux.alibaba.com>
+Cc: binbin.wu@linux.intel.com, chao.gao@intel.com, pbonzini@redhat.com
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 20 Aug 2026 20:35:12 +0800, Keqiang Duan wrote:
-> Force a vCPU out of its hardware-tracked halted state when userspace puts
-> the vCPU into any state other than HALTED via KVM_SET_MP_STATE, i.e. clear
-> VMCS.GUEST_ACTIVITY_STATE if it says the vCPU is halted.  Add an optional
-> kvm_x86_ops hook to do the clearing, as SVM has no equivalent VMCB field.
-> 
-> When HLT-exiting is disabled for a VM (KVM_CAP_X86_DISABLE_EXITS with
-> KVM_X86_DISABLE_EXITS_HLT, e.g. QEMU's "-overcommit cpu-pm=on"), a guest
-> HLT halts the physical CPU instead of exiting to KVM, and hardware saves
-> GUEST_ACTIVITY_STATE=HLT into the VMCS on the next VM-Exit.  That field is
-> sticky: it survives VM-Exit/VM-Enter and is only cleared by vmx_clear_hlt()
-> on event injection, or by vmx_vcpu_reset() on INIT / vCPU creation.
+On Wed, 03 Jun 2026 09:58:31 +0800, yexun wrote:
+> The lam test does not set a guest memory size in x86/unittests.cfg, so
+> QEMU falls back to the default of 128 MiB. AREA_NORMAL starts at PFN
+> BIT(36-12), i.e. physical 64 GiB, which is never initialized in a
+> 128 MiB guest. As a result, alloc_pages_flags(0, AREA_NORMAL) returns
+> NULL and test_lam_user() ends up running its LAM checks against a NULL
+> pointer, which is semantically meaningless even if the metadata-bit
+> arithmetic happens to succeed.
 > 
 > [...]
 
-Applied to kvm-x86 vmx, thanks!
+Applied to kvm-x86 next, thanks!
 
-[1/1] KVM: x86: Clear hardware HLT state when userspace makes a vCPU not-halted
-      https://github.com/kvm-x86/linux/commit/883719f57f5d
+[1/1] x86/lam: Allocate test page from AREA_LOW instead of AREA_NORMAL
+      https://github.com/kvm-x86/kvm-unit-tests/commit/5ce4dcd089c1
 
 --
-https://github.com/kvm-x86/linux/tree/next
+https://github.com/kvm-x86/kvm-unit-tests/tree/next
