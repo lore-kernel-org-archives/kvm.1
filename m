@@ -1,353 +1,109 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8F8374745
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 06:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B393E3169;
+	Fri,  2 Oct 2026 06:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790921198; cv=none; b=r8H1pP5cHjGXxFMHNI7+QA/1HTwbN+hFCFIl6zKboEW1wQ7XCwsBugI6Pnx+iULyP3HyJVq595TPgeWloXxYzrXFuSyTkMVAyia0z+3N+VBqs5iBgcUB+dw6+Re88/sk1JhHcExOqII/iDVKHEZCDl8Mf0gY/1ntPrW2dwFhwAs=
+	t=1790921653; cv=none; b=TgTOb9KWwivqtd62DifjWNjQwgNbhFOuLs3UYgvywkrNjFUCfRGNdPGcjOmQ5c5Xw4UwP6XNJ8Rm6ZiXjnt8okItAfC4CZ+KMdfn3YSxoy4EnPAwwTRQoHraBc5uwUegSxHqYOGq9gWLCfx0eWX6WlEpkR8sCDdNFfGppHgvhrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790921198; c=relaxed/simple;
-	bh=zfDvQPUjOwC73OoCX+xKhnl0/talULMRC2nu9Ck3jYg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I6CrS9WPQLb2pEGgpZMBhhm5LZXmlsYZnkIP3BeKVFI/xBfHX08gVKPIAePHZ7FNeXTp6DdZJdmfu+vYHZ8CQJKj3V/BFxSKU4SvndWjzN1b7ouVNk2TVPqWbRPPYvdZy4bo5mrRujx9BiKmjyuRhJizsDKf6Oltx71lgJtQ8O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=htvVdVhD; arc=none smtp.client-ip=209.85.216.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1790921653; c=relaxed/simple;
+	bh=SsgMdMqkZr1vaFYa2pWzMon3Yxx21LaFdOWhNvtsxHI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nGgOalSHJmw+O9LpxYbkNHPFr3tMITFrK/h/uHefJcaOfjxy/73OL6mM7chE22NiUOj3QJgc/PQPQxfjaMF+7dco5gtRCLmCD5G5CDskNae4UG6Y+BKyyiWGVJuqOGcUgdSr5FxQKZZ4Q67lv1cjarDaFUJsjASFimmg4UYkNEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kHY8wHRu; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="htvVdVhD"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3a0af54af74so3062773a91.3
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 23:06:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790921196; x=1791525996;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wjmVnM/M4a/ablBY4kQxBr0VLdVLcOH/6cgek5qIUBk=;
-        b=CUgUN4c6NcSEdWgZvJwjng84s6vnYcYMB/Nl7dMFPMNYbJxqm40Sv+dIorPxBaNGQ5
-         X1G1fS89CfFaYUqdgqyE45piPbaud0yLI1uGiYBatNZp6PbgxCu5QxD3WR8tzgT5tHJr
-         e4vkonaQES84M7A7ekrk21rCCgd5e/pgqQVwZwgL+A6mskOCx0e+Quq5HWLTAX/P33qn
-         QzzfIAYkf/o+rM8hSDjrk1wmNn5WkSC0gnwuZV+bJLuA5fEWvEIVADBJKOIkWV6JOQJj
-         VoIcNd/lAklG3gKjEjo4GDBdp2J4IRO9q0zdrGEYVuLyY4sGBbZjQCrhrrH7yAriPxFh
-         cmBA==
-X-Forwarded-Encrypted: i=1; AKwUvBxxt2V1gf7gpICgu2YDz02uOkDIzK5sV2V1AsCjtnbxX+6Bv2FH4/pOi3iQmNs0D8O0zaw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLsmrDu80IRUGK+m+gO1ELXrBEhxt5kjqq3nE+5zgOGS/60uQ5Q
-	qpWjkAPChsTao3amHBxDig0ptXGmfsZv681rhd1AYXS5ZaRRQdgDd9Ze4jaLeGoQAyhXOmm1SWt
-	VmcgADmC44jOyuzxAGw/ryxSpnAU9okroExqwSg4/oakyT0QTSH1OGJhWKYmmgCN8N6kVgfthsw
-	hhkHafH8GELgNCXUFAxe0QzLdoY6C6ypS9E7M8VbRvHY4fx2k3gR5Nw9t0wslDtJOiMymQ9uJKU
-	+HL
-X-Gm-Gg: AYBFou3/TLfnKwQomuynbzK1HrjxEJaZqasQ5hNR1XEOSYkuLJN5MVAnaPIoTmJGFco
-	Bb7NHHYyuXaoUms+D/Xv1/qz+aLXy4M5ZjvLc9zbixKGCZARRzjTSdWnrkf4kFXLOryXXUrSwDC
-	ylagnkf7AuDgG+NkJZmagzVLTC11ULlwFTawQbu+ZRu/F0G5dCr/FikRY75GF94T1ZCco5Pzn1x
-	V0ixvNaszUaocctuvRVDRDxjyqN+HPJ+xYHEg3bBFDN3oJD45TqlQ9yP/+Af2DEK5ZhoMNWP/HU
-	YVtRVsWvq1p6p7Fwbko8n42luwUSU1xyNc+A2EIE+g4wq6COCxrxfpDdxMEqjlsGESXsaN6j6mN
-	bCoLB4QJP7/ZikeaC4vWfsEcFPtfplJ+POFG7Rq4uo3000nCio2Fb5axoWjdnxmwwfvb8kAHVRd
-	MJulQE9Q/rkkNIKFzlqNxyRz1QDoD6tJVM
-X-Received: by 2002:a17:90b:3849:b0:3a0:8050:2ed1 with SMTP id 98e67ed59e1d1-3a6ced936bfmr1598129a91.63.1790921195947;
-        Thu, 01 Oct 2026 23:06:35 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a6c97ce20fsm1065833a91.0.2026.10.01.23.06.35
-        for <kvm@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Oct 2026 23:06:35 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1493b09d6bbso3387280c88.0
-        for <kvm@vger.kernel.org>; Thu, 01 Oct 2026 23:06:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790921194; x=1791525994; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wjmVnM/M4a/ablBY4kQxBr0VLdVLcOH/6cgek5qIUBk=;
-        b=htvVdVhDsH5Tf8Lul9OcwVkTfbosemINc41I6gRouEulOsJq9LAql6H53Kg9dnc6bi
-         qMlth4fLXpBeEXqZ+zj2h0elPvji6l5WzMv5n1X0KNj+VWWULzUnm6rA9FjwDviomYzU
-         MXQEu/a4MiDBdBnXWG8JSkFhlyyHP/Ldchxa0=
-X-Forwarded-Encrypted: i=1; AKwUvBxHEQ72OPVuyIcn5SmkcXA5D6yX/9nAAj52pm+hRQloNCt0kPvcHlEYXrtUxSYl7Nxb4hg=@vger.kernel.org
-X-Received: by 2002:a05:7022:b88a:b0:14c:1f57:3ea9 with SMTP id a92af1059eb24-14f5bef5190mr1601652c88.26.1790921193873;
-        Thu, 01 Oct 2026 23:06:33 -0700 (PDT)
-X-Received: by 2002:a05:7022:b88a:b0:14c:1f57:3ea9 with SMTP id
- a92af1059eb24-14f5bef5190mr1601590c88.26.1790921192899; Thu, 01 Oct 2026
- 23:06:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kHY8wHRu"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F89E497;
+	Thu,  1 Oct 2026 23:14:00 -0700 (PDT)
+Received: from [10.57.8.170] (unknown [10.57.8.170])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C13A63F763;
+	Thu,  1 Oct 2026 23:13:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790921643; bh=SsgMdMqkZr1vaFYa2pWzMon3Yxx21LaFdOWhNvtsxHI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kHY8wHRuh7AfhqfmWnl3om0ajgb5AMaYtPbLSREf67cyr9fQzKgGuW6QuNVVep6i+
+	 mx+3mjbUcT9wAfk4c9eN+/NWjYGxVeLoLGD6tiQ0x02zHQvt3k+vGIAywx+gSpoOAN
+	 /cTlusOHXXGyFfN625JjWdDyiYJmPux67oisSA+I=
+Message-ID: <63211ffe-fbf7-490e-940a-f9028f9412f6@arm.com>
+Date: Fri, 2 Oct 2026 07:13:57 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929040256.543767-1-zack.rusin@broadcom.com>
- <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local> <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
- <20261001235950.GHar7z9v3zfk8odoTh@fat_crate.local>
-In-Reply-To: <20261001235950.GHar7z9v3zfk8odoTh@fat_crate.local>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Fri, 2 Oct 2026 02:06:16 -0400
-X-Gm-Features: AclHuK-rd5CcQufUaR0BIRz4PquQ50RR10S1_da_RH0Fm436Xl3eZ4up2QGuXdk
-Message-ID: <CABQX2QNE331JieoHixJisyU309A-S_LDuwuZEHQf+AKQs-OyCw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] x86/percpu: Share decrypted storage before guest setup
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com, 
-	linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
-	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Jonathan Corbet <corbet@lwn.net>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, linux-doc@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000009e29ed065cd55594"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+ <1ed590aa-a4bf-4980-82e1-185aee205909@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <1ed590aa-a4bf-4980-82e1-185aee205909@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---0000000000009e29ed065cd55594
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 01/10/2026 22:41, Gavin Shan wrote:
+> Hi Suzuki,
+> 
+> On 10/2/26 7:06 AM, Suzuki K Poulose wrote:
+> 
+> [...]
+> 
+>>
+>> NOTE: There is a conflict with Fuad's patch to drop the WARN for 
+>> unknown vm
+>> ioctls, that is queued in fixes.
+>>
+>>    https://lore.kernel.org/all/20260914093838.1082637-1- 
+>> fuad.tabba@linux.dev
+>>
+>> This series is comprised of (3) and (4) above.
+>>
+>> The integration branch has been tested with the following components:
+>>
+>>    tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 
+>> [4]
+>>    kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git tag:cca- 
+>> kvm-v20
+>>
+>> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/ 
+>> all/20260803134403.80630-1-steven.price@arm.com
+>> [1] Linux firmware RMI v22 https://git.gitlab.arm.com/linux-arm/linux- 
+>> cca/ cca/cca-host/fw_rmm/v22
+>> [2] Linux GPF Host  https://git.gitlab.arm.com/linux-arm/linux-cca/ 
+>> cca/cca-host/host-gpf/v19
+>> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm- 
+>> v21/integration-v3
+> 
+> This branch doesn't exist. I guess it's "cca/cca-host/kvm-v21/ 
+> integration-v2" instead?
 
-On Thu, Oct 1, 2026 at 8:00=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrote=
-:
->
-> On Tue, Sep 29, 2026 at 01:25:09PM -0400, Zack Rusin wrote:
-> > Partly. So steal time tells Linux how much time a virtual CPU spent
-> > ready to run but waiting for the hypervisor to schedule it.
-> >
-> > For example, during a 100 ms interval, the vCPU might execute for 70
-> > ms and wait for a physical CPU for 30 ms. Reporting those 30 ms helps
-> > kernel:
-> > - account for CPU usage accurately: avoid charging applications for
-> > time when the hypervisor wasn't running their vCPU.
-> > - make fairer scheduling decisions: base task execution accounting on
-> > the CPU time tasks actually received.
-> > - expose host contention: the st field in top and counters in
-> > /proc/stat help explain why a VM is slow even though its applications
-> > don't appear to consume all available CPU time.
->
-> Aaaha, IOW, that's the "st" column here:
->
-> $ vmstat
-> procs -----------memory---------- ---swap-- -----io---- -system-- -------=
-cpu-------
->  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy i=
-d wa st gu
->  1  0      0 1714852   9748  85300    0    0  3793    51 1445    0  0  1 =
-99  0  0  0
->
-> In any case, you could keep that helpful explanation in yout 0th message.=
- :)
+Thanks for flaggging. My bad, I have pushed integration-v3 branch.
+Both integration-v2 and v3 have the same kvm parts, but based on
+different fw-rmm (v21 and v22 respectively, will be posted today).
+So, please use the v3.
 
-Yeah, that's the one. Sounds good, and thanks for the links to the tip
-and submitting-patches docs, I'll follow them for v3.
+Kind regards
+Suzuki
 
-> > If options are binary then "no" :) It's not for monitoring tools, it's
-> > for the kernel's own steal-time accounting above, which currently
-> > doesn't work in confidential VMware guests. So the issue is that in a
-> > confidential guest (AMD SEV SNP, Intel TDX) memory is private by
-> > default, so the hypervisor can't read or write it. Any page the
-> > hypervisor has to write must first be converted to shared by the
-> > guest. Linux gives us the address of the steal-time buffer without
-> > converting it. The hypervisor then tries to write into a private page,
-> > which doesn't work. Currently ESXi deliberately powers off the VM when
-> > that happens. That only affects VMs with the steal clock enabled,
-> > which ESXi leaves off by default except for Photon guests. I'll
-> > probably change ESXi to just disable steal time when a guest gives us
-> > a private page, but that only avoids the power-off; steal time still
-> > won't work in these guests without this series.
-> >
-> > KVM has the same need for three of its per-CPU buffers (steal time,
-> > async page faults and PV EOI). It already converts them, but only on
-> > AMD and in its own loop. Kiryl asked on v1 for one common place that
-> > converts all such per CPU buffers early, on both AMD and Intel,
->
-> Right, why early?
 
-Because on SMP kernels both KVM and VMware hand the boot CPU's buffer
-address to the hypervisor in smp_prepare_boot_cpu(), right after
-setup_per_cpu_areas() and well before mm_core_init(). Sharing a page
-usually means splitting the direct map around it, and
-set_memory_decrypted() needs the page allocator for the new page
-table. To keep that existing registration point, the common code
-needed its own early sharing path, which is most of what patches 4 and
-5 are.
 
-> I mean, I am still trying to see the justification for this diffstat
->
->  14 files changed, 247 insertions(+), 51 deletions(-)
->
-> and whether it is really worth it.
+> 
+>> [4] https://support.arm.com/documentation/den0137/2-0bet3/
+>>
+> 
+> Thanks,
+> Gavin
+> 
 
-For VMware alone it isn't. But you guys have to decide based on what
-your long-term plan here is.
-
-I'd be happiest if we stayed within the confines of the VMware code.
-That's what v1 of this did (besides the small guard fix outside) and
-I'll only stray from this if I'm explicitly told that a patch/series
-won't be accepted without some cleanups/re-architecture somewhere
-else.
-
-I'm here because internally we've had multiple teams needing various
-bugs/features in the kernel and looking at some parts of our Linux
-kernel code was making me sad so I decided to collect the changes and
-use this opportunity to also cleanup some of our code. (I have three
-other series in my tree, they all touch arch/x86/kernel/cpu/vmware.c
-so I'm trying to push them out in a semi-coherent order.) But this is
-very much a spare time thing. I can guarantee I'll find enough time to
-always review the VMware bits, maintain them and answer questions
-about them, but I can't do the same for other parts of the kernel. So
-the more focused we can keep those patches the easier this is for me.
-
-> > instead of each hypervisor driver doing it. That's patches 2-6.
-> >
-> > Patch 1 fixes an old layout bug in uniprocessor kernels, where these
-> > buffers can share a page with unrelated data. The series also fixes
-> > SEV and SEV-SNP guests on KVM running kernels built with CONFIG_SMP=3Dn=
-,
-> > which currently hang at boot (we reproduced the hang).
->
-> That should tell you how much we care about UP. We would even love to mak=
-e SMP
-> the default.
-
-hah :) The UP handling was a good chunk of the complexity (patch 1,
-the kernel-image aliases and their kexec teardown), and the simpler
-approach below doesn't need any of it.
-
-> In talking to Peter about it, we were wondering whether this can be made
-> simpler. Like do not touch perCPU but do a normal page for each CPU's ste=
-al
-> time gunk and thus do not split the large page and then that early
-> enc/decrypting of memory I don't like either.
->
-> Perhaps we should start with the simplest approach first.
-
-Sounds good to me, that's pretty much the smaller fix I'd offered on
-v1. v3 would then be VMware only: if the steal clock is available,
-allocate the steal-time structs for all possible CPUs once the page
-allocator is up, share them with set_memory_decrypted(), and register
-the boot CPU from an early initcall. The existing hotplug callback
-registers the other CPUs as they come up. The memory comes from the
-page allocator, so it's in the direct map and TDX's vmalloc problem
-doesn't come up. No percpu, linker-script or early-conversion changes,
-and KVM stays as it is. This would also move registration for
-unencrypted guests to the initcall.
-
-One small tweak: I'd pack all CPUs into one allocation (64 bytes each)
-rather than use a page per CPU. Sharing a page can still split the
-large direct map mapping around it, so a page per CPU could split one
-large mapping per CPU, while a single allocation concentrates those
-splits in that one allocation. And that only happens in confidential
-guests with the steal clock enabled.
-
-Kiryl, I know this is the opposite of what you asked for on v1, but it
-sounds like Boris and Peter would rather start with the VMware-only
-fix. Shout if you object.
-
-z
-
---0000000000009e29ed065cd55594
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
-SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
-uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
-Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
-b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
-dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
-BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
-Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
-oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
-A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
-A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
-s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
-SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
-QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
-fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
-iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
-3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
-91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
-06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
-b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
-VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
-VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
-QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIHMv
-yTLPcyN7lWUhT/on8/ToZwnK+q0RgvXIiep/lGIUMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
-HAYJKoZIhvcNAQkFMQ8XDTI2MTAwMjA2MDYzNFowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
-ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
-YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAFsJiP1etuKra7IRbsDCox9oIoW46luETWyadZPG
-/9+VUWkP8aXivckqk369OBsHFJABXJWQE1vT4hDVOncSwlpxmcIKn1TNKt/RtfKpupSzlUej0t2v
-fHZAGLORk2hFfoMgWH1ctmx5o/ssr+f+FbWsinIW1Fyp0ionq1ztT3iw8QRXNimkKo/kgnEMuvwa
-mcTtsq8zD2qb4C2hCH/hvkImuzk4nYQbqNrgxE/R/ro+utG3OmZ0K3FKlqiy60hI/kd4HSSIEyLQ
-Y93bjEpNzrsuP4RIsIpnA1tjPirKL7ixhTVnmZEknnbWJrgiJK7G1Nw3qTngvuoILi6Yodyvlo0=
---0000000000009e29ed065cd55594--
