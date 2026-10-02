@@ -1,129 +1,145 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5BC4D2EFA
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 16:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DAF4FECE1
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 17:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790959720; cv=none; b=ugqGgX+XrsK+oRIVDq4zk6xPSIAk540VBFQs4aWRqjNS0nmp5BRLUCML2RSeVQF4DwpkotyCUcIbe+mz4fWu+4Nu0xDMEwAwIcIqZ5s6euNBqx6eUwIrajibiHRB6NZgTzrCVay6dppRti+xeZWHF/h9NXkyU0Dzinsc+X5Gl/0=
+	t=1790961067; cv=none; b=kU9qiL8THk6lPCeqiHp7xoSSRGbIiOgN6nzRaI9XF6DzCL6q8EeL8m4aPXzQr8Ngq4w6xKvakASFSi+m2nM0PMAc56w9rLSUvV46pWI91+atUkE/taOAjDL8d3hk1m3//Pjm6PunS7jHzZCpcCHmfsw04pfZnMHBNLmtu3raS0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790959720; c=relaxed/simple;
-	bh=6ODwo+16pMIfil4k6galug19W/vck29CbEXmoNYWtB4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jCVzk1Hm3jd2/yYZF2chBitQeenVTrsl7lyZhMn3gWF2OL09VpCEyxnuhOCHEkbYLji7m9Snyz7VZ2s784Dc1JMLHkPpjZ+IBRnt6R2c5EIWMBBzG+FXlfQ1RTFcNPksMspOoG65bGgUHqca5+iRXVyx1i6+cEa9O0Cfyz9yKCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VdGSH7Io; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790961067; c=relaxed/simple;
+	bh=mrxPXIId1qTShZKGlHGgNQz6PnSRa6+MIliC3LYulx4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bm2BjJGpjtEEjN2JUm/aSLJ1q4ltX8S+nwmz4Mht1gWCXUaNeGQFvoiwKwChjuju55d1AoL6CcsmAPrBagLOmSUU0HYlWqB7OOox8c+PvlzMxqqM7XRhmfpzhXoJLx5t7a+UMRiERJh8xMOoOlZqOOy48trIWJTU7UMakgTy1O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=jIsrR6ZC; arc=none smtp.client-ip=74.125.229.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VdGSH7Io"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so102849a91.3
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 09:48:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="jIsrR6ZC"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34d2d25127aso1780227eec.1
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 10:10:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790959718; x=1791564518; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IpRTn+KD9NJK57wJTMwL/20JlRBVAu7bzDg4EAe9yBY=;
-        b=VdGSH7IoLKlBqYx/FXjoF4l2/WCyrvC9FQKkflUEiMMgB9AosVQSzSUIEDJ5vHv6e9
-         LFK9w3XqWxkiv+A7Oe9J2TCAqqxJsuqGlhC+8ZbrhLtO+ofZqRYeo40HDgYY9ZQV7uH8
-         2+EtkEwkQoIhgzc3CQZDOmySwYISe6Sv5y6yC5aSK0UUAEvhBiymwEvmcFEixIk2k+bX
-         6jgxl/2vj7krS6i56+vqh3F/JRCydGS+nOkabIB1Vpm1Vz5Id6G4W28Qyfht6Xf4utDO
-         upBFysRpecbWMopzZQtXZjlej9jVtpapWr+v2c7+GiYap7WuwIhUyAwJxDvbzkj1B5KJ
-         rxag==
+        d=ziepe.ca; s=google; t=1790961048; x=1791565848; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BgakvInNsjTIuwI/HruggHJb8c52XKSKFB4qu//ilyk=;
+        b=jIsrR6ZCYoXUg62SeoHiJ6U1qQmTUvfmHWogxM0qjQgpdxTBR38CREigK8nBVg837B
+         KemCEloefIFs0d6V2TsfLG+gXof4Lczn1A3R8NHqVJVEIGVHb/IebK+RpIye8M3zMs8i
+         YTJWrFKclhx7CxJS5QL7+5f//INbWiK4y09jMHkcmwqjDq7GovOeOKTKri8BnYz4SJ/F
+         Wb6KjoEp6g56AjVLR/e/dFRyT7rfM39Ade1CK3Dx+VZ1t0EdbRskxub4VkpZ+yFH9FCS
+         4N5joGr5LsAuBrkxXGtJbCwSMI+3e4PJkLhKF7HnXpwKcgm3GyDvhTJqShefFqKWZr60
+         C7mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790959718; x=1791564518;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=IpRTn+KD9NJK57wJTMwL/20JlRBVAu7bzDg4EAe9yBY=;
-        b=ljD/dagRWPMPiUyBvoGrCs1iyA2N8juRS+7hsP1kG2zuFpj2uKewYOkhK8tYo3CCW0
-         TkWBj7JjoyCgtq06s3EItr4rU9wUeCxyYDbrE8AbkhH2Dc+ju8+7lAhuJhJqEFkrg1Ny
-         dFX6yEvqIsFaF4Yp79E9ClGYdKw8um3sgH0sArGxZ1X3YuUXjj3PBsG7VpNHix0KbyKg
-         7D1Ydubd1lmdN2IlHhxux/xvEYfcVr95zW7pUq2RauULp7T3VWyBVFkI3ijApdF4WV8V
-         iNq4jqvm6WRC2ejdb7EM4qxGxnHd/64q82RTiuBdVD4ybC2OW6ygIQSrgkDW3bs3upgr
-         uLdg==
-X-Gm-Message-State: AFq9FYINXSIBv/3u6746aB4097jD07e4ay382FTVKkkc9V7sx25443wU
-	zaQXrud8Kb7fx4dl2hMJPt6LDlHwE3OTlodGTvCctFX5vmOR5TUWXkOz7pVKVLN+ZjpgLLkcg+7
-	hdUEfBg==
-X-Received: from pgme16-n1.prod.google.com ([2002:a05:6a02:6c90:10b0:cca:4a92:2716])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4f42:b0:39d:f247:bab
- with SMTP id 98e67ed59e1d1-3a6ce5fa392mr2970671a91.6.1790959717666; Fri, 02
- Oct 2026 09:48:37 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  2 Oct 2026 09:47:50 -0700
+        d=1e100.net; s=20260707; t=1790961048; x=1791565848;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BgakvInNsjTIuwI/HruggHJb8c52XKSKFB4qu//ilyk=;
+        b=HjDC8AVTiS5ws77U82wiih321OX3MbnFwNvssidHElmeFp6ZbVYKdQt0DUgVkkQZmx
+         /THAjFBc8rUQ3kHYV5jJCQd2VGMG9ruPwxDqfaAkJl65dbK/ksrMhGoJK6sCbCdxwBkU
+         baeb/7pILImQatlgglvEAGKbT8XQjJg6aYAFbtXAXYV/w2Pg8IQFKeBSBifduGyP6e2p
+         otfcSb9p4jc0QbM6zhn3UPE9SB3EIjXn67/t81GgH7qvJq53f6yZ9Y+CwyJyQf67lT4z
+         U6F7ngraz5THUmsT0zrZ68jRy3vBFpDF2KPQGUEdEh94yZyCb3bS5OjsXk5uoRna35s0
+         GTfg==
+X-Forwarded-Encrypted: i=1; AKwUvBwRokHIKtS2flxRL6YVWKh20ezxl4D26pblmZuSVCLL9IM5QtfvTfFaVTypgjUqzXRToFs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJq+XVbs7c+K6xqpFS5O9a66Q/We7P5/cSwpu/dlT3YF/dKnHzX
+	ii8+Nn0DxhqP4E6BQQRJF7O6lA2uzUJoJfp7rTdZC1al7IQ0Cty+QBHEAQsL89fSF3w=
+X-Gm-Gg: AYBFou3YJLn4NBynvi/RteB2920KmgCc0lEF4YutlB9Xr0K5IMnKic8FcdGbOvc1tC+
+	fbM+M3CR3B4NmQNwKNb8uPuL89wVJ4CE1Ad3lcad6vE/1J+vaS8UpkC0eVa2Zc8+AwEyjkygsHP
+	8dAoAuMdVgO8h/eQkFaHqGO5STqoy+RmJ55WK2rlYacOjR6zc3aL8EoZ8WVOpUHHR51VVL1dcRT
+	uDzrgyadvVhhAPHVNpOb+B5wRdfwYFExcCmOVTEBdupeiASsxw5tTuOmDjisknUN34+GTtaKAIy
+	qwT0RPev9NDjlkc1TSWeIBKNFoILn3so7v3XlZ1Bm2p/FFUcCD4h2Si1GtKdJPIm7mC8gt+Fx5J
+	kJS/xwHUPgNCq5ftUYtlpaSH8/84dHz2X0p01GUsYtl0XeDxo4QcsfLcHn7R/snbP/EK9e3Loxh
+	dJ4vx7LXRLWt7vHuAQ6Vx7oXWwcPe/bo4xoqktn3oDNG9h
+X-Received: by 2002:a05:7300:e5c2:b0:34b:b410:9352 with SMTP id 5a478bee46e88-34f14f18c8cmr3725477eec.1.1790961048034;
+        Fri, 02 Oct 2026 10:10:48 -0700 (PDT)
+Received: from ziepe.ca ([130.41.10.202])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3510850f86bsm4509703eec.11.2026.10.02.10.10.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 10:10:47 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xCgmU-00000000BiY-09Yw;
+	Fri, 02 Oct 2026 14:10:46 -0300
+Date: Fri, 2 Oct 2026 14:10:46 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: alex@shazbot.org, ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org, bhelgaas@google.com,
+	jjohnson@kernel.org, johannes@sipsolutions.net,
+	kevin.tian@intel.com, kvm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+	mani@kernel.org, skolothumtho@nvidia.com, yishaih@nvidia.com
+Subject: Re: [PATCH 3/7] vfio/pci: Add qcom-vfio-pci variant driver
+Message-ID: <20261002171046.GA32083@ziepe.ca>
+References: <20260930151229.GR163130@ziepe.ca>
+ <20261001071945.83116-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261002164750.3981742-1-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: Fixes for 7.3-rc6+
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001071945.83116-1-jtornosm@redhat.com>
 
-Please pull a few more fixes.  These aren't _that_ urgent, so feel free to
-punt these to 7.4 if you think we're throwing too much into late RCs.
+On Thu, Oct 01, 2026 at 09:19:45AM +0200, Jose Ignacio Tornos Martinez wrote:
 
-That said, I'd really like to get the AVIC fix into 7.3 as I very deliberately
-didn't tag it for stable@.  The fix depends on what ended up being the changes
-to hold kvm->lock for all of vCPU creation, which I don't really want to
-encourage folks to backport to LTS kernels.  So, if we squeak the AVIC fix
-into 7.3, which is presumably the next LTS, we'll save a one-off backport.
+> Regarding platform_device_msi_init_and_alloc_irqs(), I agree that
+> moving the driver to device MSI domains would be cleaner on the
+> driver side. However, even with that change, I think the VM problem
+> remains exactly the same: the device MSI domain in the VM would
+> allocate virtual addr/data pairs, and the firmware's private interrupt
+> controller still needs the physical host values.
 
-Thanks!
+Yes, I'm not saying it fixes the problem..
 
-The following changes since commit 973ea70393e885e540f714904e51bc6cac80e3d7:
+> Also, the VFIO variant driver scheme would not fully break if the
+> driver moved to device MSI domains. The variant driver caches host
+> MSI values from the MSI descriptor, regardless of the allocation
+> method. The hook point may need adaptation, but the fundamental
+> approach (host caches physical values, VM reads them) remains valid.
 
-  KVM: SEV: Do cache maintenance on the source VM *before* clearing SEV state (2026-09-28 17:11:49 -0400)
+It breaks because VFIO will only cache *actual* MSI-X table entries,
+it does not have visibility into anything that
+platform_device_msi_init_and_alloc_irqs()
 
-are available in the Git repository at:
+The only reason this works for you at all is because the driver
+hackily copies the vectors from the real MSI-X table so it can look in
+the "cache" to find their true physical versions.
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.3-rc6
+Which is my general objection, I would like to see the driver to use
+platform_device_msi_init_and_alloc_irqs() and don't want to get stuck
+unable to do that because it would break this.
 
-for you to fetch changes up to b3e6212dea2e4328a841ceb37f377583176dc735:
+> Regarding the hypercall idea for device MSI domains, I think that
+> would be an interesting direction worth exploring as a generic
+> solution, but that's a multi-subsystem effort that will take time to
+> design and land.
 
-  KVM: x86: Use active memslots for the per-vCPU MMIO cache (2026-09-30 06:40:49 -0700)
+Yes, but it does actually solve the problem in all its forms..
 
-----------------------------------------------------------------
-KVM x86 fixed for 7.3-rcN
+> I completely agree that this could theoretically affect any device
+> with private MSI registers. However, in practice, I'm only aware of
+> this specific behavior in Qualcomm ath11k/ath12k firmware, where the
+> device's interrupt controller requires the host physical MSI
+> addresses to be programmed directly. 
 
- - If creating a vCPU ultimately fails, clear its entry in the AVIC Physical ID
-   table used by hardware to perform IPI Virtualization and delivered posted
-   IRQs.  I.e. plug the same use-after-free hole related to IPI virtualization
-   and posted IRQs that was fixed for APICv by commit b41f2ca6c0601 ("KVM: VMX:
-   Fix stale PID-pointer table entry left after vCPU free").
+Everyone else seems to know this stuff doesn't work for
+virtualization and doesn't try to do something like that.
 
- - Use set_page_dirty_lock() instead of set_page_dirty() when marking a page
-   dirty after writing back SNP firmware's desired CPUID state to userspace.
-   Using set_page_dirty() is unsafe if the page/folio isn't locked (as pointed
-   out by its function comment's big DANGER warning, which no one reads given
-   the number of bugs of this exact nature).
+> It's also worth noting that the PCI reset support for these devices
+> has already landed in linux-next (commit 290153d46d1a "PCI: Add
+> device-specific reset for Qualcomm devices") [1], solving the
+> device reset path for VFIO passthrough. This MSI series is the
+> remaining piece, with both in place, these Qualcomm WiFi devices
+> would be fully operational in VMs for the first time.
 
- - When checking for an MMIO generation match, use the memslots for the current
-   vCPU context (non-SMM vs. SMM), as a misbehaving guest can coerce KVM into
-   incorrectly identifying a write as MMIO in order to bypass KVM's
-   write-tracking.
+Why do people care so much about this? I always thought it was a bit
+odd?
 
-----------------------------------------------------------------
-Jann Horn (1):
-      KVM: SEV: Fix page dirtying in sev_gmem_post_populate()
-
-Jinu Kim (1):
-      KVM: x86: Use active memslots for the per-vCPU MMIO cache
-
-Naveen N Rao (AMD) (1):
-      KVM: SVM: Clear AVIC Physical ID table entry if vCPU creation fails
-
-Sean Christopherson (2):
-      KVM: SVM: Add paranoid helper for checking if vCPU is AVIC-addressable
-      KVM: SVM: Use "is AVIC-addressable" helper to sanity check load()/put()
-
- arch/x86/kvm/svm/avic.c | 22 ++++++++++++++++------
- arch/x86/kvm/svm/sev.c  |  2 +-
- arch/x86/kvm/svm/svm.c  |  6 +++++-
- arch/x86/kvm/svm/svm.h  |  1 +
- arch/x86/kvm/x86.h      |  4 ++--
- 5 files changed, 25 insertions(+), 10 deletions(-)
+Jason
