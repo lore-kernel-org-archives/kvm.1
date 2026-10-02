@@ -1,89 +1,90 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCBF3C81B9
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EB03B27F5
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975296; cv=none; b=TFS6bMWyRmAZXngVamin43dPzmQruky7bfVQyuOUm09qA6rLW2AEvBqBZvfNSXjAKCmlOy4REH7J23VdsW8Ln8xHzFOgfStTgE1Zk23bY1XkWe4gPU5ng7FokJgeLdafLPM638wo8SVLpxkA8ZEfUlYjEiOKYypbLNEEYD7d/FQ=
+	t=1790975301; cv=none; b=eurFaoiphjf7hjXmmOmn72MI1y7Udx3nTrG9vEr2f8+jVoim7nG/SmpzuKESs3eRul4JhM2pTvca4nxRiRT9WcwzOwcrrjaLevjK31Ubd8ZMemowLHtDGzrxPNfmlJVCJfIow15A/5/z0bhvhq1BR7HZ0Y8NJcGsMPavJubnvN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975296; c=relaxed/simple;
-	bh=kq9QBghL40dkfA1F5V17cYmnpGDV/utwNPq4lbzDp1E=;
+	s=arc-20240116; t=1790975301; c=relaxed/simple;
+	bh=PBAHaD8xQ10qTO5DVYhs5dgCsVz7/DJgL5T+NL3ImSw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XzSSeriAfy518J1u1tuYSWp0uL38juQ5jrxf8XIolRqQTooYOw/wCAbvMhkSUiIZsFtcetdbZOkOw0cDGMFAxVKgCwJFoL7OvZz7IuTXa5tbMcdifutJEgaN2mp8KRuow9kJvRItCp3ybWjUnFswLUlyp/qWIFwjld5gQeJ6Wqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IMvMKvTz; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=A3c/wjhDakf2JZBSov+cf7Upn6W8dwzP49ByB9m4T+TsuyTAb1A4fZpvmBvNXiR6xTGdZuiSH1KiotlWeLFRJGJ9gdnnNlJPlbIpmrDoFUub3qAwQvp5zGWto1O+O0IRPXm4pWr8bUkUzD4kIRNDIYGX2ZRWm5qZ2BrwPSdrN8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tTIn/aEq; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IMvMKvTz"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39de4e72b33so471450a91.2
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:08:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tTIn/aEq"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e2f3251e91so213335ad.1
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:08:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975295; x=1791580095; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975299; x=1791580099; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EIA33Q6ZV2okJc3I0sp5o6bypG+QRL/TeBpUQuge1fg=;
-        b=IMvMKvTzRa4M6lzXYZ99QKWyMvlepxxtHjg3ZeGMSlmuhRSWqOpB8QzQ8Clun8co8r
-         odjGJOvJgKsluF9ZPb7ynj1Pr8yoAFeuz1skGOK2HMivouw2B2qFsUttvm00la/ejAvJ
-         cAOe8S5k/Vtt4BK8l9B8COsFkDg43tOWgKt27F129NS4Yy9XEuX6ICLkWo+N5bVgSHgU
-         FGGbvvXz8AdciXKt/YnclZaXK7YwhipYYM1O9Dhaa60ETvLdTazB/LbTbgEwRE3OVNjc
-         BNVTw692mrq8yVxBxHWiHmkPfaJHKmYOiH6vq32DBuAH1aFb2CWLfgYIPkXDtYnehQ2w
-         MJ/w==
+        bh=+XXwhsFESQJgrRakBtjUjCDlfTD0yj3Lco0tsWkbwp4=;
+        b=tTIn/aEq0/jKXkUpZ+AKFIjW0Y7A5DPDlVnf3yj9WOARXArr0CHrtSunKlD4KQTKg/
+         YGkRRJDTMGEMeGXL2JvhpQwnyx7Htl4NfVqMsnWgYmgUSjoluNnSDjiuQ1wwv7hz6s/Y
+         cef3HJjmGdO4Hj6WQjKnA4SJxYo/tBy1MuLsb9g3PIW6F20/TmNnECLf5F3KFCtJ/tsT
+         4qdhtjrcusJdDd/E8i/YNAPK11TtjKjD0lVHfBozsRjopEwyA1KmpByFKpdyS9DM7XhL
+         Ji9DF5E0qMjQejwjlF9wBcLwVjf+AjMQCeYfslDbPtm17Axc2r6GpbPbf/umMF0UoGad
+         ud7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975295; x=1791580095;
+        d=1e100.net; s=20260707; t=1790975299; x=1791580099;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EIA33Q6ZV2okJc3I0sp5o6bypG+QRL/TeBpUQuge1fg=;
-        b=nDAQvI4fPiMhUqPfDPLbiixhdhihuiOArvDAD8fXbrsFDOg19mOCPLYYoeTgjFu5Um
-         s0X2Fefj6aLPTacx2/xyUulH9AwdshrGxJ7eDKxBXeiTQg7sVrpOUMybahho7uF/kK7l
-         csmECIzy5CppRfpCe7edGJIqmxEYNu1AFfbeeVfKH98/cluwiP8MjS3Fk7h48NVtOhUx
-         NsCA1jslb8AarTDuRAVps6D4ccKXQJCFlTF2lLIqE0Ly5Wkx4RgTM3rjjCd7dHIr/mxM
-         znn6QCCj5Uf4KpkcWuiPP2CuSpQSN7leEMi22+3o2x8eQp/ZnLVJFKVdqmp0ASSFjTgb
-         KZRw==
-X-Forwarded-Encrypted: i=1; AKwUvBzu8KYFAay62Fb+xSsAMSJUEcdvj6u3McD/5wEKPYR/z4QXVfEDrP5LIz5lEXUjXkkYzko=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIHHab2myOwBhhVPKefQau6KVVa4dfI+SluSob1TOuQIczdkbcg
-	QW9iYC4Xkh2TaKASf9Qnz0dShZugolH1olDoLUDzzgMs/f0tVDolwWspNYwkBXTNtgQ1gIGiKNn
-	qMPSI3w==
-X-Received: from pjbmd9.prod.google.com ([2002:a17:90b:23c9:b0:3a6:df94:8170])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:548d:b0:3a0:f0a4:a2c7
- with SMTP id 98e67ed59e1d1-3a6cec13a8emr3789780a91.20.1790975294587; Fri, 02
- Oct 2026 14:08:14 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:06:52 -0700
-In-Reply-To: <20260918054420.338842-1-gokul02k@gmail.com>
+        bh=+XXwhsFESQJgrRakBtjUjCDlfTD0yj3Lco0tsWkbwp4=;
+        b=HLHPF+QzsiV00+dHXoMzCa4wg0hE15ip+rISAq3iO+lhAnNa+OonKJUMLjWioux5Bb
+         GbnUhT5i2qvmVwzNj/VGqASdEtHEO+L+XBHGMzbyxtJMamZonRo1LnpEYQSoaEwJ7AkG
+         BVvtKPrmWPznPqtQHWY0igf7QyvLM3ejMF8PDTES8du0G4rAdrZ7CBDp8Yx2zp8qn/8p
+         PajoIY8ZLbcQPvc1o8+xQBNFWEK9sHrmeln5wHJ5ecJ+EiQHsNlurjoM4qM94AAHlJVE
+         QO/EAG7QlzFg293O12flYk0GgbffoLAAVgrgGx7GH6RMPJlURXRcPWFmqmUHVs97H1iM
+         j6Gw==
+X-Forwarded-Encrypted: i=1; AKwUvBxXY+3FmJfPYs5VrRCe6IsptfCMyM+qnios3dJ/H5MmkKO4fyqIXzCsaLNkRKWfFtNKQlI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJRnHXXJlSzTynM1EkxUZAAIVXgB1ovKIQ5twiwG7wNDDlhIwCt
+	PYY3BDQymqhaZtIg+MMS8pzDPqRe7hYnGoVr76azgsluHOAWLQMFyz/DU6j4bAZ5NgXs52uV7sB
+	cQ17hAA==
+X-Received: from plie14.prod.google.com ([2002:a17:903:378e:b0:2df:ab33:9c53])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fd4b:b0:2dd:c053:d73e
+ with SMTP id d9443c01a7336-2e49b6808ebmr23556415ad.37.1790975298845; Fri, 02
+ Oct 2026 14:08:18 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:06:54 -0700
+In-Reply-To: <20260905090912.40740-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260918054420.338842-1-gokul02k@gmail.com>
+References: <20260905090912.40740-1-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097475934.4071676.12331909604242085588.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: selftests: Move test_read() into elf.c and delete lib/io.c
+Message-ID: <179097515536.4084615.5338363103904700221.b4-ty@b4>
+Subject: Re: [PATCH] Documentation: KVM: SEV: Use the uapi structure names
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Gokul K <gokul02k@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Brijesh Singh <brijesh.singh@amd.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 18 Sep 2026 11:14:20 +0530, Gokul K wrote:
-> lib/io.c has outlived its purpose.  test_read() has exactly one caller,
-> lib/elf.c; test_write() has none at all; and test_seq_read() is a
-> declaration in test_util.h with no definition anywhere in the tree.
-> 
-> Both surviving helpers open with
-> 
-> 	TEST_ASSERT(count >= 0, "Unexpected count, count: %li", count);
+On Sat, 05 Sep 2026 11:09:12 +0200, Karl Mehltretter wrote:
+> The document names struct kvm_sev_launch_update,
+> struct kvm_sev_attestation, struct kvm_sev_launch_send_update_data and
+> struct kvm_sev_launch_receive_update_data. None of them exists in
+> arch/x86/include/uapi/asm/kvm.h; the structures are
+> kvm_sev_launch_update_data, kvm_sev_attestation_report,
+> kvm_sev_send_update_data and kvm_sev_receive_update_data.
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/1] KVM: selftests: Move test_read() into elf.c and delete lib/io.c
-      https://github.com/kvm-x86/linux/commit/3069f4036dff
+[1/1] Documentation: KVM: SEV: Use the uapi structure names
+      https://github.com/kvm-x86/linux/commit/fe02f37155c8
 
 --
 https://github.com/kvm-x86/linux/tree/next
