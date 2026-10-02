@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C30546D095
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D0B470456
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932419; cv=none; b=rmz+egKIKURQ08//D7idBK7h+rVDw63g6wl0RgFuy4ii0rMXoEhY2i5Iz7clBcC8fnAMc55mKi/6fKCb1Ov4Sp8wGiKZ3ZiMsPJ7v7WrQZOWjl0f/2TsDEOTk/N+eYjtXqf7q8Ypq/f3o7YaQVHF7A41wsRTUOrj3KnKuocGRog=
+	t=1790932423; cv=none; b=Z+UZxdzmhQXxEAAEPJpIQiLr4u7qDghVbzSbKixCSWnOmUr21prqWfFlN5wtRZE+IiQdllK+s9qqzJpvR4SffD5ujjUfeFZ9CN2bk72/0gggJ7cswaN+WstbFlrIWuswbLCkF9jRbz6HpZeNc3cboVPEux+M4uk65DxsQ69VhfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932419; c=relaxed/simple;
-	bh=OQczMGseM0o0br7iTW9amuw9p5TQIESXW9AV94hpZQo=;
+	s=arc-20240116; t=1790932423; c=relaxed/simple;
+	bh=slq9Gy3m4qAtOsurc3gwLfxdzwRbCk5g9ITP/Q+ilX0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=puRN53OWOmRBl9j4ofL/EY1gRbE+z9rvgBMbVJmzn/2cafu0Dj4zqq/hwPrmwX6wB7pEht6cR7t13uJrmFljgdkEr6doSwsFZ0hiOwFIaR5+MVtBO6hyBahOZBA+G4MRVST+cNRsDq/jn1YoMyFzYMh9Y4DPlI5WUF5dJ/akL/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NoUF2umi; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=FPUSBzfa9emSrx38OQKgsB31qWA1D4kMaVcjCFMqxqadPxCPEw0k+6Q71Hd99fYuTT5GXbRGW0YR64B1bIxfYWLoKnsWy4xtETF0lWRanYryliQFfqbG2HuePYvDWTibkV80EnCgnn2+6fHQnJoSoUNr/MC7X+gWPg1G5B9YyD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDXOuo9X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NoUF2umi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDF91F0089A;
-	Fri,  2 Oct 2026 09:13:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDXOuo9X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50ADA1F000FF;
+	Fri,  2 Oct 2026 09:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790932417;
-	bh=543DEgjLKoXBgS1i0+O2kITmxQbnhQIDW0cj1ESBHJ4=;
+	s=k20260515; t=1790932422;
+	bh=YVLCNMtLrlv88DAadfcLV8Ulbk12fXZFuwgBcdnBm8Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NoUF2umiTktNrcWu/Z/WMNBPD0Wubyk4sTk78OTkKavgO4Z1a6nhlHcuCQTZhs178
-	 0RZQfPFuCNWWjywE45lEUfG2IV3ttFoxhXV9Zahb8uCGMerhJb8pEoPwJeIXtMkQ09
-	 GklrpqZxqoEp4m/wxeV5agZ4SgyJs8L30PoiRBrhv+Nspl8Ebe3g0zWysKmbapCjK0
-	 uFKg4hr44MU0U2HTwcm464ItGi73Mnt/WdYKecRSwxWDApD0Uc/CT/2JyUW6tIVNQh
-	 +g9kTa+PHU8vgxoh5rbgF6uRN8a2P8iAqn34yf/P1nNkyzflbyiB+AN1dukn144eZm
-	 hi/c5p5cqY1ng==
+	b=QDXOuo9Xas++SZ/3K5ZMscq9BXnjGZr7QK1Op2f2QDCwz7PVGam/5lWjebufH+xZ/
+	 ZT6S57X4kH9dm6zwAwirQTRVF7yg4gWxLLFjfThgU9rHBnbGH75CadJeSFXmXRUP/n
+	 VtvSaTAmdTsVibNgy+ogB3kvMp01n5BKbAcXP3lwhEYdl28oFk/fLKcEohy9JJgUgK
+	 p3lNtshKkaPD9JPDw/ECc0y//zeIJDyE1kti4h4JaFCQY7bSG8grEvwIHFjiA0cpYc
+	 SK9aWhNctchyNoNJVwaJ4lkGkiaFOkdUve41oxy+tM4AKmj6+04wpyBiPGXoReJiED
+	 jOpjmk71eBPLg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v15 22/23] KVM: selftests: Add support for TDX ucalls,
- via TDVMCALL_REPORT_FATAL_ERROR
+Subject: Re: [PATCH v2 03/10] KVM: x86: Unmap VMAs for KVM-internal memslots
+ when the memslot is freed
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Lisa Wang" <wyihan@google.com>
+To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261001-tdx-selftests-v15-22-7c62a5d8a992@google.com>
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-22-7c62a5d8a992@google.com>
+In-Reply-To: <20261001202234.3794060-4-seanjc@google.com>
+References: <20261001202234.3794060-1-seanjc@google.com>
+ <20261001202234.3794060-4-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 02 Oct 2026 09:13:37 +0000
-Message-Id: <20261002091337.9BDF91F0089A@smtp.kernel.org>
+Date: Fri, 02 Oct 2026 09:13:41 +0000
+Message-Id: <20261002091342.50ADA1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,62 +47,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kvm: selftests: ucall global state poisoning breaks mixed-VM tes=
-ting
+- [High] kvm: double unmap of internal memslot VMA causes host UAF
 --
 
-commit 742d058040571d70e8a67c18a52e7026f4abe945
+commit 120ca6d762cdf95d09e394aff4bb4af6d01288d6
 Author: Sean Christopherson <seanjc@google.com>
+KVM: x86: Unmap VMAs for KVM-internal memslots when the memslot is freed
 
-KVM: selftests: Add support for TDX ucalls, via TDVMCALL_REPORT_FATAL_ERROR
+This commit unmaps KVM-created VMAs for KVM-internal memslots when the
+associated memslot is freed directly, instead of using x86's internal API,
+to prevent VMA leaks on teardown.
 
-This commit adds support for performing ucalls on TDX by utilizing the
-TDVMCALL_REPORT_FATAL_ERROR hypercall. It replaces the default ucall
-operations with TDX-specific handlers when a TDX VM is initialized.
-
-> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/=
-selftests/kvm/lib/x86/ucall.c
-> index c003df3c7b8a8..c1cd32d684646 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 79468ddfe4736..e91bd79dd3cc6 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 
 [ ... ]
 
-> @@ -37,6 +57,11 @@ static struct {
+> @@ -10066,6 +10048,16 @@ void kvm_arch_free_memslot(struct kvm *kvm, stru=
+ct kvm_memory_slot *slot)
+>  	}
 > =20
->  void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->  {
-> +	if (is_tdx_vm(vm)) {
-> +		ucall_x86_ops.do_ucall =3D ucall_tdx_do_ucall;
-> +		ucall_x86_ops.get_ucall =3D ucall_tdx_get_ucall;
-> +	}
+>  	kvm_page_track_free_memslot(slot);
 > +
-
-[Severity: Medium]
-Since ucall_x86_ops is a process-wide global struct, does modifying it here
-without an else branch to restore the default handlers break mixed-VM testi=
-ng?
-
-If a process creates a TDX VM and later creates a non-TDX VM, the non-TDX VM
-will inherit these TDX handlers. When sync_global_to_guest() is called, this
-modified state syncs into the non-TDX VM's memory, which might cause the
-guest to incorrectly issue TDCALL for ucalls, leading to an Invalid Opcode
-exception in the non-TDX guest.
-
-Additionally, host-side dispatch via ucall_arch_get_ucall() relies on this
-globally assigned pointer:
-
-void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
-{
-	return ucall_x86_ops.get_ucall(vcpu);
-}
-
-Will this cause the host to dispatch based on the last initialized VM rather
-than dynamically checking is_tdx_vm(vcpu->vm)?
-
->  	sync_global_to_guest(vm, ucall_x86_ops);
+> +	/*
+> +	 * Free memory regions allocated on behalf of userspace, unless the
+> +	 * memory map has changed due to process exit or fd copying.  Leak the
+> +	 * mapping on failure, e.g. if the task is killed, worst case scenario,
+> +	 * the page(s) will be reclaimed when the process exits.
+> +	 */
+> +	if (current->mm =3D=3D kvm->mm && slot->id >=3D KVM_USER_MEM_SLOTS &&
+> +	    !WARN_ON_ONCE(!slot->npages))
+> +		vm_munmap(slot->userspace_addr, slot->npages * PAGE_SIZE);
 >  }
 
+[Severity: High]
+Does this unconditionally unmap the VMA for every freed internal memslot ob=
+ject,
+potentially leading to a double unmap?
+
+In __x86_set_memory_region(), the twin memslot objects are created with the
+exact same userspace_addr for each address space:
+
+	for (i =3D 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+		struct kvm_userspace_memory_region2 m;
+
+		m.slot =3D id | (i << 16);
+		m.flags =3D 0;
+		m.guest_phys_addr =3D gpa;
+		m.userspace_addr =3D hva;
+...
+
+When the VM is destroyed or the memslot is deleted, KVM iterates over all
+address spaces and calls kvm_arch_free_memslot() for each memslot object.
+
+Because vm_munmap() is called here without checking if slot->as_id is 0, co=
+uld
+it unmap the same HVA range multiple times?
+
+If a concurrent thread maps memory between the two unmaps, the new memory
+might be silently unmapped, potentially leading to memory corruption and
+use-after-free in the host.
+
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-tdx-selfte=
-sts-v15-0-7c62a5d8a992@google.com?part=3D22
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001202234.3794=
+060-1-seanjc@google.com?part=3D3
