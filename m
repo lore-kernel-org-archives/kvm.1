@@ -1,339 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012012.outbound.protection.outlook.com [40.107.209.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BA6361DD0;
-	Fri,  2 Oct 2026 21:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790976015; cv=none; b=I43vSK3yJK7COGxKWYdAH+L2CEUfZ8Luxb+aGHwkAg/hWPnEHrgYKkHNff4n2n6heQtW4Y1FJaL5qYjai61PdaXu23sJ4EGijC/G5b8lKQS3GGX73uKiCDGl2jt2JE6KqbFfUU5Ik73ChVJesPOl/p4MieYlTiaqwqnFsbMrSUw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790976015; c=relaxed/simple;
-	bh=gjMR6beaf47rqyf+59d7Z+WV3uMtl8LTVKm2Znj0X8k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ldTebf29bx22htGtlC227/pPXGekURP5BT/9g0M3R2u14lXv8uQfOfT8AqRybWPdDGSygfec8FDlJJvwFUybdByXctiwCo61RPqju2Sn/GD7J082bxXLEDADUPyaTUxebC9agD6GTxqAWgib2K/InYsR4aDy4dRD27ORZybC2Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpvjpYU4; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E993DB325;
+	Fri,  2 Oct 2026 21:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790976426; cv=fail; b=Xg+T+fwH/LJvzUjKE9Fk0Heo+4s4x6jlNkrNV+fkp9o2ApHPiK8KrLk63pNzdYYu+79CvU3u7evq/PsVcsJkd/GEavgQg+mdqbFIq7W/Z+D5JzKfkYZg0qrC5jtco32G38ZqibLfH+DivHkj8C4kC8lP/x9BQthIGTSpIUUA9WQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790976426; c=relaxed/simple;
+	bh=SpO3g5TjvjdyLG4+TvZ3u4ys9q6XsLNXF6O0VVlUeX0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=APBt36s2zMprUlG0UPYvzO/6L6aTwjSS9n6z2x5RkmRDIiAWGEkG38UmATs1csugQBUGeA3AJSaubNCS9SDQFv8DnEyzGvyruKwk2ZGpzXlpyO+ipuf58pZ6INSI5ZHSUu56BcHdme5SB8NGb+DQ/hcrJ4hQHuJ8bwLAUhOtCpk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=D0hQlEVi; arc=fail smtp.client-ip=40.107.209.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpvjpYU4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB781F000FF;
-	Fri,  2 Oct 2026 21:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790976013;
-	bh=6ArV7W8I0LsjTzEAaR1K9jy25JeP2SRH+A96kVSZ90A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cpvjpYU4u7Gff3gvv+3rEhR5eck+vcIRcWyb1Q+dHkN+MSeRORuVtha97iRPXHZ4O
-	 yTDf1hshmkL2uTTLhiDAtOgt3yqg0tyP1YkMh0cjJG2sPfJmCAYYaO3A8NPCrBCetX
-	 kqA9sl0eq3V1GTT9pUwiQSB6aOj923fkGHl2U4UFSSQ1td0kLJkaMLyiFlav0GFQSi
-	 Otf2qD0/FwFUyC1d6asohtioQF6OYgL36unFXzH67FlHCcr1DrF13KgliXj0YG8Gjs
-	 ad70ETZiFPkGz7LnrN7cr9ICaDAtQarsVZuTam8h5Kar59rQHHdHn6vvxNCqptSlwa
-	 63ZT6YTJ6FBvw==
-Message-ID: <83bf4650-7339-4fc9-89a6-378a327f4f6e@kernel.org>
-Date: Fri, 2 Oct 2026 23:19:32 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="D0hQlEVi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RMTReFtu2cPo5MRBBaATIILqteTwznFF9hZ96SACYChqf6bjRSX/4R57Eu8GPPjw5p5QPkMs4ZrKHw/c3meZShIEvqFl5/1xXVcAovnUfbaIbuDE5bfj/j3rMYUTLHSppMO/1Q/i2D/19dUc+mrKKR8wTxV2Zd0Q9nwRhFGDDG0lD6EXROffY70AQEcpcffTwIzW4qCGuUnV573qXO7pEvETyoHEP3hLZVUWBOAyRMbgb5RpVWlQKKMBxGmlvZ5T5hix5a/EE3n4PlLTvtNvlkDwiXO3QD+wCvcPjmb4/Jj8bXcVk//KMTD1N4GL73ok+eCOTxF3MrOWpdBzatEztA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZFNkE9pfDKv2snzywxox0RnyAOtSmwoab855xgIEsWk=;
+ b=PNyf259DRGr825wQ5oNwuBvTqoBQl9RYL7KJ21pI7DQlFKpDJBmizTwPvjsUY4Lwg2ObnXR65E2vzaEPMj3yV0ZVagkVFx095vaWaxmtYau+JKrsT9WQbX9aQHJbZwnMrY14wU2mjYuyhXDMMQtfwLMEHbVJocGQk9i4L9evxUUY5862xbBBijzLvLwdk/GTHnWCLc7oJGPlMWNGkJ4Z1sE3zW5xrtZg6UcEMuDecPhR48IT++8U7nmQH7ujKaSB8kJxDqAh09bynuKx4gl8fB2zZH7Mjmk9TdxCkCk3R7aB8Kae2HmkokqouWFvP/f5kmHK0v5KyrNIZesyR034pQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZFNkE9pfDKv2snzywxox0RnyAOtSmwoab855xgIEsWk=;
+ b=D0hQlEVi4Pb9k6iguIN+fpyaT8oeEhhH9zdVmbNGrE3C3vJfDCJ3q6Da3tu+1Ajryqmv+2TLdhoPDLPagN4am1BDou4xLNBOrV0w+SJ9Kv7TmzTLh7xucL22myl49JHn+jprCIYfuU284iX3rhsQe4kfmwKZf6ifS6BEb6fS8Vc=
+Received: from SJ0P220CA0019.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:41b::35)
+ by PH7PR12MB7306.namprd12.prod.outlook.com (2603:10b6:510:20a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Fri, 2 Oct
+ 2026 21:27:00 +0000
+Received: from SJ1PEPF00002326.namprd03.prod.outlook.com
+ (2603:10b6:a03:41b:cafe::15) by SJ0P220CA0019.outlook.office365.com
+ (2603:10b6:a03:41b::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.19 via Frontend Transport; Fri, 2
+ Oct 2026 21:27:00 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002326.mail.protection.outlook.com (10.167.242.89) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Fri, 2 Oct 2026 21:26:59 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 2 Oct
+ 2026 16:26:58 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <tony.luck@intel.com>, <reinette.chatre@intel.com>, <bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<babu.moger@amd.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<rdunlap@infradead.org>, <tglx@kernel.org>, <mingo@redhat.com>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <kas@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<kvm@vger.kernel.org>
+Subject: [PATCH v3 0/3] x86,fs/resctrl: Keep default MBM mode at boot and fix ABMC
+Date: Fri, 2 Oct 2026 16:26:38 -0500
+Message-ID: <cover.1790976400.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/40] mm/vma: add vma[_flags]_is_kernel_owned()
- predicates
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>,
- Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
- Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
- Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
- linux-sound@vger.kernel.org, bpf@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- fuse-devel@lists.linux.dev
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
- <0623ee06-00e5-421e-a24a-ed605abb559b@kernel.org> <ar_CYfkR5Pfb7J9b@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ar_CYfkR5Pfb7J9b@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
->> Of course I have to bitch about the naming :)
-> 
-> Yup :)
-> 
->>
->> Intuitively: kernel owned vs ... user owned?
->>
->> No, it's kernel owned vs core-mm owned.
-> 
-> I would say somebody who does:
-> 
-> 	ptr = malloc(4096);
-> 
-> Would think of that memory as 'owned' by them in the sense that they
-> control the lifetime, they established its attributes, etc.
-> 
-> So indeed, vs. user-owned.
-
-Right, I read "contents of the VMA are owned by the kernel rather than the core
-mm?" and that confused me, because the opposite of the kernel is to me not core-mm.
-
-Maybe it would be clearer to focus on the opposite direction, then we wouldn't
-have to find a word to describe "not core-mm".
-
-> 
->>
->> Which implies core-mm is not part of the kernel?
->>
->> Yes, this is confusing. ;)
-> 
-> I think what you're missing here is what _creates_ or _establishes_ the mapping.
-> 
-> Intuitively, if I do:
-> 
-> 	ptr = kmalloc(GFP_KERNEL);
-> 
-> I, whether I am in the core kernel, or a driver, or whatever own it in any
-> meaningful sense of the word.
-> 
-> I think the issue here is you're confusing this with other things like the
-> rmap and refcounting, etc.
-
-I think it all weirdly interacts.
-
-In !vma_is_kernel_owned(), would we only expect ordinary folios
-(anon/pagecache/hugetlb/dax, maybe shared zero folio)?
-
-That's my best guess looking at
-
-	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT,
-				  VMA_IO_BIT);
-
-So one option would be to focus instead on that aspect (folios that are managed
-by core-mm vs. random other stuff not managed by core-mm). But thinking about
-it, I'd prefer if we can leave the "folio" bits out, because COW mappings also
-map (some) folios. See below.
-
-> 
-> 
->>
->> I assume you're coming from "map_kernel_pages*", but that's rather "kernel
->> memory" and not "kernel owned".
->>
->> Usually we say "driver owned" when not talking about pagecache/anon. Or user vs.
->> kernel memory.
-> 
-> I think it would only add confusion:
-> 
-> VDSO/VVAR, perf ring buffers, shmem mapped via PFN map, uprobes, etc. are
-> all in this category and I doubt people would consider those driver-owned.
-
-Agreed. They are all special things and won't be folios in the future. (shmem
-mapped through PFN tells us to ignore its folio background and treat it just as
-some PFN range).
-
-> 
->>
->> So is it really all about "is this (excluding CoW) no ordinary user memory that
->> we would track through the rmap" ?
-> 
-> VMA_MIXEDMAP_BIT mappings can be refcounted and rmapped so that's not a
-> correct description.
-> 
-> The distinction is - who put them there and who's allowed to change them
-> and who owns the lifecycle.
-
-Lol, I asked AI for better names and it told me "vma_is_special_mapping()".
-Thanks, I guess.
-
-I assume for the reverse, we really just want to say "just an ordinary core-mm
-vma that you would get from a simple mmap() as long as no weird non-mm drivers
-or subsystems are involved. Core MM fully manages this thing.".
-
-* vma_is_mm_managed()
-* vma_is_mm_controlled()
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002326:EE_|PH7PR12MB7306:EE_
+X-MS-Office365-Filtering-Correlation-Id: dda6e19a-93c1-4fb0-4dfe-08df20cbe4d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|82310400026|376014|7416014|36860700016|56012099006|10067099003|3023799007|260925022911599003|260925021911599003|260925021311599003|11063799006|13003099007|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	VcXNGzTi1Xu0xcEQlPkM+HWKiYU+vtsQdjQd4NoSur6GIbxxRywldbisu9PDAsTeiCz+6Gys/AsfdClweI+7PGNvVjRvKxR7VpHR8tK8iKLhPEy60u+VVx65QMBctOWQTrR+eHJeKoK1JU6FGb5lgNZyMDHP/9hRh2O1P/GPH15HgrJjxkwU9Q+HaTVcd6HUCoFdMKNa1ivMnJMZiwXhDNuuvpm6TPN5fJpzw4iqD8gXoH7zNcm0wsfOhJmotqPz+RgbbgZQ2fbXizSPfOs99k+BGoZwuznKIIsuPBEcLMgEEsTf+BZJgvFzXZ5LigElpbvfmpP6duPBh96VFNHP8Gk2LYd/iVz1aE1OO1LK9pq0/cp+rk+dVAiyw8xbQhf5r5yn3apqmEFZGBMXwZz1cw4KdC+VdnfN9HaK9qkJC50mq7ThiLUouu+ANOrRRmFBnePDaLw/pJHHzP3/i+NaxqYYY69htZXGBIboSb+YIPvDquE5XWSZRDh1IEizQQ9SJzrrHUwFt5ReuWixZ+xi/yyZ6Db1m37hhuU+QDOGfLbsqu/rvKYlYFSpvv2AZR9EUO7atqb/3RiF97cJ2oWbuQ//KCYBAeWRlA3Go5cIXlpLTznWnI89iii9MO/ipa2+bZUhZINgVT0zgmkc5gGZ0g==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(82310400026)(376014)(7416014)(36860700016)(56012099006)(10067099003)(3023799007)(260925022911599003)(260925021911599003)(260925021311599003)(11063799006)(13003099007)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	A0gg80L8QocrkrA257AQB4jRtFoTTMoM+fCWnVbW3WAgzA1y/6vPyE40HTx0vsLYWoSECf+KxGsNJdIKZaipMNLktEU8PvhB5XZ5ry36EkJEy8tl1Qki+3uJvt4IKeuE6b53Mfq7a37+TbOmQQcfoKcImijutVgorlyYjBAOM2SYh/Ga5bR7YuUklv5efPWLRmiVm7mwnNAVJ0qeMP8ZzyJ8agNj1WNEa776qvn7IIZTxFh0/ecAeq3rIyyhtVQ4WYt/DNe5c0MoMjEEMy3yOgC0ZY7Kxem2ekCnk3s6LvwRVhcIZBL2kBG5TqnS3JWEbBekAwTMyETa1LHV8zMLKg4eY75TIN57pUsSwnMKpFN64/lJ0Iw7/CjgmfURBo+90VaOhdqqWxlwthN/Ont6Rx+lDD7kH5uNyjr0JDafR2pwUyD4xOO6WpXe1WNO7Hsl
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 21:26:59.8192
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dda6e19a-93c1-4fb0-4dfe-08df20cbe4d4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002326.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7306
 
 
->>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> ---
->>>  include/linux/mm.h              | 56 ++++++++++++++++++++++++++++++++++++++++-
->>>  tools/testing/vma/include/dup.h | 29 ++++++++++++++++++++-
->>>  2 files changed, 83 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index 2a92193ac6a5..cab29d6e15c1 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -1612,6 +1612,44 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
->>>  	return is_shared_maywrite(&vma->flags);
->>>  }
->>>
->>> +/**
->>> + * vma_flags_is_kernel_owned() - Do the specified VMA flags indicate that the
->>> + * contents of the VMA are owned by the kernel rather than the core mm?
->>> + * @flags: The VMA flags to test.
->>> + *
->>> + * A kernel-owned mapping is one whose contents are established and controlled
->>> + * by the kernel, typically a driver, rather than by the core mm's fault and
->>> + * rmap machinery.
->>> + *
->>> + * The mapping may be memory-mapped I/O, kernel-allocated pages or ordinary
->>> + * pages the owner has chosen to map itself (shmem via a PFN map, for instance).
->>> + *
->>> + * In all cases the core mm must not populate, reclaim, migrate, copy-on-write
->>> + * or merge it of its own accord.
->>> + *
->>> + * Pages mapped this way are not necessarily reference counted or map counted.
->>> + *
->>> + * Returns: true if the flags indicate a kernel-owned mapping.
->>> + */
->>> +static inline bool vma_flags_is_kernel_owned(const vma_flags_t *flags)
->>> +{
->>> +	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT,
->>> +				  VMA_IO_BIT);
->>
->> I thought we have cases where we drivers insert pages and neither set
->> VMA_PFNMAP_BIT nor VMA_MIXEDMAP_BIT.
-> 
-> There were 4 - defio, cmt_speech, uprobes and the bpf arena, and I fixed
-> all of them :)
+Hi All,
 
-Great, that helps to identify these things. I didn't look at all patches yet,
-but we should definitely document that.
+This series restores default MBM assignment mode at boot, assigns counters
+when switching to mbm_event, and fixes ABMC programming for more than 32
+counters.
 
-> 
-> Other than the DAX-only case below of course.
+Commit 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
+enabled ABMC at boot. That breaks the pqos tool from intel-cmt-cat [1],
+which treats a non-numeric event read as zero bandwidth. pqos creates 16
+or more groups and uses two counters per group. On a platform with 32
+counters per domain, that consumes the pool, so further groups read
+"Unassigned" and pqos reports 0 MB/s.
 
-Right, as DAX uses real folios.
+Leaving the mode at "default" does not make pqos correct. pqos still
+treats "Unavailable" as zero. Once the default-mode counter pool is
+exceeded, hardware can re-allocate a counter between reads and pqos can
+report that as a wraparound. That shows up only after the pool is
+exceeded. Default mode uses one counter per monitoring group. On existing
+AMD platforms that pool is 64 counters and may be larger on newer
+hardware, so common deployments stay within it. mbm_event mode uses two
+counters per group, so the same 32 counters cover only 16 groups.
 
->>
->> I assume vmf_insert_page_mkwrite() is fine because it is DAX doing it (should we
->> limit this interface to DAX?).
-> 
-> That is a DAX-only thing and DAX is precisely a case that should not be
-> kernel-owned (and isn't!)
-> 
-> This series actually fixes the FUSE case too, restricting this interface to
-> DAX only seems like a sensible follow up as well.
-> 
-> I could also add a patch to this series to do that too if you wanted?
+mbm_event remains available as an opt-in. Users that need stable
+measurements beyond the default-mode pool should enable it and rotate
+assignments. The limitation of default mode is documented.
 
-We can do a follow up. Not giving others the chance to abuse these interfaces
-would be great.
+Patch 1: widen cntr_id in L3_QOS_ABMC_CFG from 5 bits to 12 bits, and
+limit the enumerated counter count to 4096, which is what that field can
+encode. The APM [2] at [3] will be updated for the expanded cntr_id field.
+
+Patch 2: when switching to mbm_event, assign counters to existing
+groups, including the default group, matching mkdir auto-assignment.
+
+Patch 3: leave mbm_assign_mode as "default" at boot. This seems to be
+the patch that has generated the most discussion. Let me know, if additional
+justification in the documentation would be helpful, I'd be happy to add it.
+
+Based on tip/master:
+
+  1aeb52f7869a Merge branch into tip/master: 'x86/tdx'
+
+[1] https://github.com/intel/intel-cmt-cat/issues/311
+[2] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+    Publication #24593, Revision 3.41, Section 19.3.3.3 "Assignable
+    Bandwidth Monitoring (ABMC)"
+[3] https://bugzilla.kernel.org/show_bug.cgi?id=206537
+
+v3:
+- Patch 1: drop the 32-bit u64 change and the bw_src widening. Cap the
+  enumerated counter count at 4096 instead of truncating the CPUID field.
+- Patch 2: clean up comments. Add Reported-by, Closes, and Cc: stable.
+- Patch 3: document one counter per group in default mode and two counters
+  per group in mbm_event mode. Describe the default-mode pool and the pqos
+  wraparound once that pool is exceeded.
+
+v2:
+- Added patch 2 to address Sashiko's comment regarding the documentation
+  issue. In fact, it exposed a real issue. When switching to mbm_event mode,
+  existing monitoring groups should be assigned counters whenever counters
+  are available. This provides a smooth transition between modes and aligns
+  the behavior with the existing auto-assignment mechanism.
+  https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
+
+- Combine the two v1 patches and add patch 2 (assign existing groups
+  on mbm_event switch; Sashiko review).
+- Keep boot-default separate from the encoding/truncation fixes.
+- Document the default-mode counter-pool limitation.
+
+v1: https://lore.kernel.org/lkml/980f39d3a0e0d9f73925e362f835aeef070a1bc5.1784322818.git.babu.moger@amd.com/
+v2: https://lore.kernel.org/lkml/cover.1788545152.git.babu.moger@amd.com/
+
+Thanks
+Babu Moger
+
+Babu Moger (3):
+  x86/resctrl: Fix ABMC counter programming
+  fs/resctrl: Assign counters to existing groups when enabling mbm_event
+  x86,fs/resctrl: Keep mbm_assign_mode in default mode at boot
+
+ Documentation/filesystems/resctrl.rst  | 57 ++++++++++++++++++--------
+ arch/x86/kernel/cpu/resctrl/internal.h |  4 +-
+ arch/x86/kernel/cpu/resctrl/monitor.c  |  4 +-
+ fs/resctrl/monitor.c                   | 35 +++++++++++++---
+ 4 files changed, 73 insertions(+), 27 deletions(-)
 
 -- 
-Cheers,
+2.43.0
 
-David
