@@ -1,90 +1,90 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015FF4457B6
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25B72E88A4
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975447; cv=none; b=iEPG9vY2BJWnW92vobA+PRUJ9ZrQNqQA/r+cVgBWjFapJ2SPTuFErQdUPkFTMMQ+X6Cf4WFFF5eJ1vWOfFM8+PZFw10LXahP1Tk6qUIHrhrk15D+xzDpj3gCXRH3rmwl3OpGnu4JAXaA8p46H4qXJRc3duQHOZmm1sYqdNVHpPk=
+	t=1790975458; cv=none; b=fSaaDyC4FlM22W0rI5ueEtYf1bLhnPQqcXUCnBW/QCWPaB2X62QInX9dHdbKimjF4dyYUckk8LepR65Go4kzZjJT3H6EigdxXMPpTrtHfakMpqWQUHF7O4VfYM8JAyYKehsfSC0MOlWp1yk1FLc+3XIXF/m6Cedh3oKVSPitqPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975447; c=relaxed/simple;
-	bh=Vzgc4GQ6v8LJBLje/CCPKo/aEGgkQ+V4Jo/F5iolqEM=;
+	s=arc-20240116; t=1790975458; c=relaxed/simple;
+	bh=78V9UClLkgSM+Q096DNl6yANoiNLypQ69ySOW83Ohak=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hfwVB9NJqnCxuz5B4aGwuTD2Xi3DM9lgIPXV/FWnZHtF4Go1hgqQ5z1MWaOOWIYyLqTk77U2+RVI7wgNojtZg4lcILyOicAe5JzQXLAsTSiZpzt6Mc6EK02D833LniQ8GzwU5oDp9Xz9Esi5ih91xLBrwj5ctsMDnjF+RfnZ8a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i4eMFdtP; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=sqZ6hLK50pxi/7jEuycLtzvhe5SP7YS5Zsf4lkc7fN/duRUzsgWBwts/dRVU7xJImZ0/QJnpW3CzkZD3f8lmq7RIXnjwXOffKyhN4SO148FDyO+Gf+RyL5Z2bfTfI8UwL7a5btwyCdAjgpIi0PiG60Dx/RvB/M0w2eO5xxFAtLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WjtVxXao; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i4eMFdtP"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39de4e72b33so474638a91.2
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:10:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WjtVxXao"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e2d3a3ff86so452295ad.0
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975445; x=1791580245; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975456; x=1791580256; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Zj2KoOS6UMT82E67JqicQ3aNNrgjAhnNc2EUzwuzI9Y=;
-        b=i4eMFdtPFH5RKd8FcjqZD3l9jx8Xq4dYjpjGnWJUOY1z62jZ5NxlsdUOTGNonO6fBQ
-         mdkLVf1aV5qBfFaK+6LIxyiazMz9YxsIjWc22kkDqwuTjyOEbJb9e8X9Ojs+cC8+Kucn
-         ltT3mB6Onpt5lKqugwgAHzsLfo8Samwvf1FtRXJLuC4mHeX1C7BHlad0U/GSiYGg738M
-         Y7iEPTaRCqQVwDle/UlGQD34ReuDtX+Tn5PZeKQVbk7tmg96BX68Yrwu0+unQWrTpOQR
-         xDAUJA9b4F5brl49zc0ZDzNaNqH7QPvyfiafS7Tazp1SN1DMb7G4fO0Bv7pWgqLLjWGa
-         Xj+g==
+        bh=Encja9Pa0cINRWL3UIVwC6uU0b6hKnULnXvKZW+DXSs=;
+        b=WjtVxXaotpmjsvLo9VfcEW1MM943DNZ0DvS9VOypyu4ejBEOZY+c7pxTKtqDzznqs+
+         wB8x+BmVNai4Gfkwi58b6aKPzj6vxrNyDSXZi3VxUgTmR0vHSMkLghFcZEsmg+TZiYWw
+         sFlhqhdRO0m22GiG2MSHI7qPkwCbUGJbc7MdV5wjbAnU2L6+m+UXZfEgMaNErnT6y76G
+         DspgHiz8+FfZyA4JO6ixUjHeRw/KPKKmNhz9u0/QMTM7L8AQzmYp6Vkw6qqVnU+l4lDY
+         rkU/YBKy08WcIAkC1fQs3IIvp3tt3ir3Ylch6PPVv5XCjjdPvFHx1J5IYFfAWXdnt3vU
+         3b3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975445; x=1791580245;
+        d=1e100.net; s=20260707; t=1790975456; x=1791580256;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Zj2KoOS6UMT82E67JqicQ3aNNrgjAhnNc2EUzwuzI9Y=;
-        b=AP+2xY6znlEjLQ7Y1GtYy4sbgLPkmjGJMRa25bW6EzyomNEkgX0ZcVIKBvJOZtECus
-         22X2+VMgYX/8ltVNasTdPItJfPA5YcqFWLm4aDfv+Q9QV1Meh96auxFnbifDWZsygVPK
-         Fmjslu3qHrTgFd4JBu5yKJcnyotdfMdFm+IgaNkgU0gN6gzmU7sOnMEX3brLatJFT6TS
-         LcaN4dY+ZeC+mdOL/NK5ukVRT96AKe9bWUSIal8yL1Vs10Gg60J43T+pAJf8lkJGdXsQ
-         htabSEYLKwCHePJXsi9EDebLFo8GAUQ2evmSpUbJUK+pAc053Zxd3pc7vnmBNlbYzfkN
-         ZIvw==
-X-Gm-Message-State: AFq9FYJTDfM5MEaE3+ExTbYZv2rAomzHXSGdpEbpmI26KjTapL3pltSD
-	9dTcHIGkNG1DKgIEbnTbSHAMuqKBfILoxno72l0H9ZcN86R4c/CKKgyvGVj/CT50TTbsYXcrcnf
-	i6+jgbQ==
-X-Received: from pjzr16.prod.google.com ([2002:a17:90b:510:b0:3a4:ac59:c8c1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:dfd0:b0:3a4:f75d:d194
- with SMTP id 98e67ed59e1d1-3a6cec99dacmr3255802a91.36.1790975445008; Fri, 02
- Oct 2026 14:10:45 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:07:22 -0700
-In-Reply-To: <20260923155108.1550622-1-seanjc@google.com>
+        bh=Encja9Pa0cINRWL3UIVwC6uU0b6hKnULnXvKZW+DXSs=;
+        b=fDV7YN8pzk5O/k5WhdxLcVRfTQXBIsXs7nv1mgdyiQ14uew7v9iBi829yvm31l2n+U
+         EJzgNp6H7vHbbau+IBVcNpHL1S4UiS7Uib4MtQ4BMZSAGdCWVywSdvU0hds8yDWv06Fa
+         UQgXlscWPKGGYc/DXKdjVGX2LmJvaYRRrbLXG3l3UV44QsnwY+yktSHYmqhxYz1s2r4u
+         hKHJre12dbVpUHshdaTyZze3DJBUZrpJFEZK0Qeio5DJalApSZ7NJmUMhLOzJ1cptH6o
+         zfgdWWeWkGvK5ufTp33wtnU3TyrS34uRhkq1h5cL+XZ1oZYrpir22sp9eaony/qSYxyY
+         crqg==
+X-Gm-Message-State: AFq9FYJGqohJM6cv1gzMaUaiNLqt39Y7JKoqMnhgnXMtJ9G/VD/RVJzM
+	0FL0DwvKq+OpqiOaE43O4/HhpTHTS10dImaxC9gBMiF0VoXnGw3dKZRiPxxAHpZdo+JPdHoEwlX
+	TYteTlw==
+X-Received: from plic16.prod.google.com ([2002:a17:903:3710:b0:2e4:9be2:d072])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:da83:b0:2df:5a40:3d52
+ with SMTP id d9443c01a7336-2e49b6770abmr36763835ad.34.1790975455961; Fri, 02
+ Oct 2026 14:10:55 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:07:24 -0700
+In-Reply-To: <20260929202434.174501-1-xiaoyao.li@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260923155108.1550622-1-seanjc@google.com>
+References: <20260929202434.174501-1-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097481958.4075691.8656886891917845607.b4-ty@b4>
-Subject: Re: [PATCH v2 0/3] KVM: SVM: Fix AVIC Physical ID table UAF
+Message-ID: <179068806716.2832648.1473072136170287671.b4-ty@b4>
+Subject: Re: [kvm-unit-tests PATCH v2 0/2] x86: Make ACCEL_PROPS work
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Naveen N Rao <naveen@kernel.org>, Atish Patra <atishp@meta.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 23 Sep 2026 08:51:05 -0700, Sean Christopherson wrote:
-> Naveen's fix to clear AVIC Physical ID table entries if vCPU creation fails,
-> to ensure the CPU doesn't access the freed virtual  APIC state.
+On Tue, 29 Sep 2026 20:24:32 +0000, Xiaoyao Li wrote:
+> The goal of this series is to make ACCEL_PROPS work, which needs to use
+> separate "-accel" parameter to configure the accelerator instead of
+> "-machine accel=xxx".
 > 
-> v2: Add prep patches to consolidate the table bounds checks.
-> 
-> v1: https://lore.kernel.org/all/20260903062856.2090499-1-naveen@kernel.org
+> Changes in v2:
+> - Add patch 1 to resolve the incompatibility between "-enable-kvm" and
+>  separate "-accel".
 > 
 > [...]
 
-Applied to kvm-x86 fixes, thanks!
+Applied to kvm-x86 next, with massaged changelogs (typos, and calling out
+the kernel_irqchip => kernel-irqchip quirk).  Thanks!
 
-[1/3] KVM: SVM: Add paranoid helper for checking if vCPU is AVIC-addressable
-      https://github.com/kvm-x86/linux/commit/86a24feec191
-[2/3] KVM: SVM: Use "is AVIC-addressable" helper to sanity check load()/put()
-      https://github.com/kvm-x86/linux/commit/12e0d427c335
-[3/3] KVM: SVM: Clear AVIC Physical ID table entry if vCPU creation fails
-      https://github.com/kvm-x86/linux/commit/88c15bbd43ae
+[1/2] x86: Make cet and lam tests KVM-only
+      https://github.com/kvm-x86/kvm-unit-tests/commit/efb3e010b96a
+[2/2] x86/run: Use separate "-accel" option to configure the accelerator
+      https://github.com/kvm-x86/kvm-unit-tests/commit/69ab2df8fa28
 
 --
 https://github.com/kvm-x86/kvm-unit-tests/tree/next
