@@ -1,159 +1,171 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013054.outbound.protection.outlook.com [40.107.201.54])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD229411689;
-	Fri,  2 Oct 2026 08:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790929162; cv=fail; b=W/nCOv8LxlYgdGkm20FLRLZ0j1YX1DSx+JG8B0Kv9jvTe9mb0zXwgvmxwrmBaJSsG8ei0V2n4Tw/N8AZ9nzIxmIkNi8rNR9NRGhKynbWs2l227Y54cWcQp7tCdgTiU0UlonUKpASQPl4iS9vjmdWB+RzBGXOP5uslNh0q537ebU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790929162; c=relaxed/simple;
-	bh=gj//q+1a+/OeW727QNyGE3wHN7lurV4zIWP8tpmRqBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=k8eZhth15VJ7f34IETeaNyVNkUs/OfBB1T2/b6iA5WxtEYSYksACLU77IpAvyLV9Bv3/SlDD2Ju3Ts44/Wc1ZQHJ+YMCAaH2Yf1goZWwBOM9gI3DSz8RZ8hAHN1nPkeoc/CipImyeRSoQH2cF+tUopfdyHpfTCH1KDnQvjbvCMw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WHbK0TJU reason="signature verification failed"; arc=fail smtp.client-ip=40.107.201.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42CA3E6392
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 08:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790930844; cv=none; b=F9vPaxkjrbPmcC37520HFqdi8C2vktioOM8UkMoO9qXzQdfK8qyEZ0zOW8m2xJR6Sh4H956+hJlyEcRB3dIqulA2kEAWdDyML8cWxT+FDicMF7ilpVx+4/fveHNHYFJVb3d97Eixhp8IZGP8R2klqgxPee+gDPA57VnxAGK9QpA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790930844; c=relaxed/simple;
+	bh=hXFV5+WELtxKEz0g2EtbxcScY/hQNVTx3m+Uv8fbO9U=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=sDds0tfGUtq/Xkmecjy31KvrO5kWScacNAmQgnUs7ATseCzRZYKOEPaMrEeJJsora302vQQb0puCz63vPeaW2uNgSuCvO+HDqXCDxRxHevnHM0Ubpx2m5c0XgKiohfVLBdqfAIL8RQIF+H1w9owIOkhiIwoKP11Kh6CyKlcmNCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=RzCOc46S; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=j1WYQgBj; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WHbK0TJU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s/5BeHV2RcbUsahAove1C/e9yW3bKZ053BdztybQ7jIKDQbf/0jcVsw6K4YoDM2/QehFjAPOeZLBvojZflHU/ZyDbM/Az48LEm4mEYDWzQf1uj43fck8EE/BoUWRume2xCHbfE5MNuAj/36VLOS9h/s1AshPE/Occo3S/e1yA+ZQBPFLFlpuIMEpWBJYyFm9PqfpMJo8oOe/FoshrOdUlhHCgt2/NY1Qb+Ip/igP828jz+a9kagPiOQ1K8fKmDJdA8Wsn0kw6iAU82ylBSjLPC3CWxERXekChmZYU6uNVMLtqUgx7bnnz0g2vCAaEOw7kX0hixYtLSEy2rXRrI1PuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sAHMbd5X85eP2wU1JNvY8QdHR7BXBSEcRd6L7eR/zWQ=;
- b=qus7pOR8YE4hwG90Gun6aingi7hFVxJHxO5UpFgMpOPVrtFzLhPd3m6ocdHs472VYBIeAM4/j83EkmhH9Zhu0zhizBLF+dggplfilVLgwbU1KSEOTofYJUJ7TQK68q3o0wh+zUVomwkExs+xjCy9mwm/HHFWojbqXLaWrkMWdqIQpySlHSkzhcc0iYM0kwCXLFO0Zl/IrbDOSZ+i4t0IprfmJo1s89In4vytZy07SvNBvh38R3/7kWWJj5izvPGH99uIXyr5KltR6HLPZJL5Z5eZTrHT7GhrC75mXwioyZvhf/JofnswBwXggZ+BP3iSjJToON9jqDktikdzFLbkoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sAHMbd5X85eP2wU1JNvY8QdHR7BXBSEcRd6L7eR/zWQ=;
- b=WHbK0TJUTayumdrMB1SRgRRm4SX/F20x4Jpc4LvtcU4hLzX0I4+sCHeng8gki+iuRDBP4LDw7mELJeCrdKKdpFDkZ1eFTkHHA0oXqOuT74pjNWS8BlhzHz5bYwzFBbqXTZIN0xZwwcwjVw+ma62F6HuYylTqiA9FXIq+kK7hStV9J8abej/iPn1z4SKWqj3EBqojA1xxm76MxQtg6jTSOmpS1x+INoCg2ZySwncYD16rM0fPe+ka2fuvy3RrHtVDBUFTHSl/padEDUIXmgd5Ub3w8xV2NbKDLTec9EAPfSkYi7qpPMcGAZ/JY4Yhl56DTV0Nw5iBe49IfOHLlD6EVg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
- by IA0PR12MB8086.namprd12.prod.outlook.com (2603:10b6:208:403::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Fri, 2 Oct
- 2026 08:19:13 +0000
-Received: from MN0PR12MB5977.namprd12.prod.outlook.com
- ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
- ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0472.016; Fri, 2 Oct 2026
- 08:19:13 +0000
-Date: Fri, 2 Oct 2026 18:19:08 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev, Tushar Dave <tdave@nvidia.com>, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org, Chaitanya Kulkarni <kch@nvidia.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>, 
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-Message-ID: <ar9oLsphjPs8NwCj@nvdebian.thelocal>
-References: <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
- <20260929175737.GK563127@unreal>
- <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
- <20260930081832.GA3401365@unreal>
- <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
- <20260930114356.GC3401365@unreal>
- <fbdc710d-7be1-4021-83c2-548c798d9d14@amd.com>
- <20260930143237.GI3401365@unreal>
- <b2e766389e57a55da959369c5ad4b9e39e425659.camel@linux.intel.com>
- <20260930165236.GS163130@ziepe.ca>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260930165236.GS163130@ziepe.ca>
-X-ClientProxiedBy: SY6PR01CA0067.ausprd01.prod.outlook.com
- (2603:10c6:10:ea::18) To MN0PR12MB5977.namprd12.prod.outlook.com
- (2603:10b6:208:37c::22)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="RzCOc46S";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="j1WYQgBj"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B03C97A016A
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 04:47:13 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Fri, 02 Oct 2026 04:47:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790930814;
+	 x=1791017214; bh=TMx5zpWKDtSIizVoX7qO1HTvG8b/bpMheHX3q1LsHSA=; b=
+	RzCOc46SyeXngTkCqKEz05ya2MZWY0A48H46yqPYymljdj71RkK86z43qSs2g4qV
+	GhGg4r1agzNGAcrj4J0My9QOG5Z8S9NVuCMgmTQASJJ4CHXTXXxvQp+WVUIgAaYO
+	Gn08kO1TYX1070P39XP64G0k1U8k0EVXk0VwTyPG/GEXOrHDJjLDmMCMkkZ4XHKL
+	spdShfn1J1DmX+60bFaf7YQOCHxBPqX2s29zYyFKB+DOa8PK26Cj0/1VK0GIMUcG
+	b5QAr7pOc0eogHfD2SqLGazj+rUEiYzuhTIupjVcpYyK102VXxJkruevg46IqsWW
+	pfK18SMyj5a8gLLIo+RILw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790930814; x=
+	1791017214; bh=TMx5zpWKDtSIizVoX7qO1HTvG8b/bpMheHX3q1LsHSA=; b=j
+	1WYQgBjuYBybCLSkou5V1nl/XXjr/3s8sa4Zr3N7Aeru9VblUgtCXnpVoLwvKM/J
+	coV8KAXmAWL2Uc5ric1DJFoPfgSm9YBXgGdW/m/y+3BmzDMZN0T1XiaS09L9Hjdn
+	VtTekv4byWX3YHtSnEtZPNSdjIA2Jp1FsuuhZG+VHD6v2inp/cY9nJt9YKyHaUVq
+	y3uRyB2jLOlp1qIzjp+C/foeop2va2vkXbYZlZisuQxhGTfMmoMfZQzeG5fkp9m8
+	ZfarrG/dPVVSVhPTOnWupOcP3OTyr/aZgSSRvOJJ4btpLuScnFuCSc9eOWCZ8ZXC
+	tmMinmi5v7NQ/qEMDx37A==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790930814; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:YYmFi3Cd/tPnclVWJRSg2ZAGWKssuwJyAUh3eyT3TEo4Okc
+	8i744P9Ql1iJFrdT8eNNdqV4uTrrzM5HvApqyDVfD2LGwTKGpToQMvXVG6n99jL2
+	x7wxsrv2JLP2KrZNTAcQ+N5RHuO+0/cq+VJ/03poDUf3fzAjxnvDmebuh5HUrzJA
+	4yoOHVDCtIzCWyJIZHASmMvH2BUzgmlKuJ267DXopWORN4rYhNAqLLcN2R/MYhEj
+	Cno4EWJ7qjb/VB/vfw+kcFIzciDfl1aIe2uBbWpjlbYgIeSf82N4bUd1EMnjw2tV
+	3XUE58Q3s9iZgj6ocNSOjlVYqyivT7ABjDaFfFw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:zp9p2M12DDOV6tsxuuPUsY4VYzCSp1NgYJfIjQroFvw=:hXFV5+WELtxKEz0g2EtbxcScY/hQNVTx3m+Uv8fbO9U=;
+X-ME-Sender: <xms:dW-_agusuepAi1TSg6P0cZbMq6bONU0mJnV5qYZ_xBByjdDJy3AjVw>
+    <xme:dW-_aoT2UsGTSQ--mCA7YworcmRtciFLMr769nKOwM7O1D2VakXsgtkgOz0bLsul_
+    aJHTFhghTgjvK5XXOp-sycUGfy49izSJa4Gw6ST7CRG4bypF5_-J0sf>
+X-ME-Proxy-Cause: dmFkZTGNYYpzKNIFSp2MsS9/36+tAXSwRx47gvy54pHP33s1WUvxXaS28wpNy7Hm2Ts1Rh
+    zZw7uvnk+hpKrKGxj4+kvsbLNRD6gTKf64CKt757tPDDBL7EwMeIbRDUyRxaM4N7HNR4Vq
+    RkxPWch4Ae+qllTQ6TsIpJR+i5kGdkdIBzlaPi3LrREjLX2n/z2nvAaza2tcMZQ5Uz40u6
+    RGQ1HfZ4nhdiI7bYVJsZQBqvkwNODykZdg2pOw5YGpwcBkuA7wgEXxQH3GueTgYGC1Ahma
+    ar4jdoY03AIr64+L2lM4JbgWU2tTJNw0jG63PnHGUOd0iTqmE5xQJoYe7l9G5iYZgBoXjt
+    p7bHvnU8aaVutTeHIAWm1GjzZBOjm8bXaXQE/5/iyDh9rHSr1Gj1rOGIixZu2j2jGKEU+k
+    xuuH++OKFg53/GgQRn7CxFBWrQZKH80moKzvw7MNJ6QG5h/HQx/X02tXNMDd/wBH+g87Go
+    Gfk+tNXx7MeBWdE+vNE7acLshNIzsK4JhAgoWp41paDoVbB3TfSAeQscrBavbGZNrC4/Mi
+    tw3cBfDJfuuqCRvfqZnKWFBN6z2yFtcsuflZWt93O87+Nnj5J4DYNHFvfGHghY2WAJQd6w
+    N3pMgs97wkWYIlh8uBGvigMSWYqngUpvG9pyIwVxBQwc/2lL+oiHTelCibPA
+X-ME-Proxy: <xmx:em-_ajPxutY8cOb6N7-iQ3nyYZlsJVt_yX2GGJtZbj51JHAdcm6GMQ>
+    <xmx:em-_ahTJKUwpHeLTCyjjynuqtk99OZmHMg4MgOiwWyQyCIoO_ktdoA>
+    <xmx:em-_auGDdKUSvOaYjy03IayCr_EQGyzHoQO165umaUU5FKViSOVhlw>
+    <xmx:em-_aq72u-DUQFc4MPR1IIMDZPnhpeeuK1okwjvZ2CKHFWJ46xKrgg>
+    <xmx:fm-_avkcku59M01ZHSOjUANaFaj7ZR25wo33Y2l7dGtFPFuKsbzwIkFn>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id AEDC232A008A; Fri,  2 Oct 2026 04:46:45 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|IA0PR12MB8086:EE_
-X-MS-Office365-Filtering-Correlation-Id: d842b86b-18b5-41c8-7c09-08df205dd7a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|11063799006|10067099003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	1fiC/2Uqd2f8D2JDB6k2zs2qKNomWcEVdNsoK7ihPz33vqhhBbMy7DRojlMmWQY9T65kJP6h/VZ9S9H9REhp8qa+xMSx11QeEoZA7rxzCA7c7lJNO0/+xAnlm3IGRKu82u0PJogfF0bl4k3s7SVfyAR6kE01oZBa62lgpf+5Nl23qHE8LYQM1EXSpKAhLf4gU/YwNE85I+sdoYOtIHkE0RMYL0nJYD449s2CsqI3osmnCfqyKnus2oROhMTztAsB8udOhRtxFJCbfODPqrwupj+cmQFiExUSVW+9H5O/GhBEqh6E/jIwuIQYH0zsfWZj2C2LghcfMUnFD3KdJ/Zhz6nzdpPg55MP/BmicEGr6Vva4swDZtvTvIX3l7z6Pb+Cx3NEu8/L5dctJCCD5PFakajKMhnR7DtlgMQQK1lW+OWWRvLjUteb62NI4KWpAGZxGvY5jAHNkLGK9GAN91iMLMB6DvdVdhwq0TJkCP7DHblhrOLY8WP8JFlohxO2Jk4gIa0pLnUXnMASGmuz6maS6IiLea3k7IqYEZNOGQBq7p1vmlX9apX/yNEcvXbaUmjD2qjXVNw/DO0hth4CkDi6Nom9LhnkAQG/8uvGaNSNq9JdhNB4SwgEZQjShBHOkdiXypgoYJ8CD87TSkytH9mXK+WaoagpQ80BuPiuX+A/GBE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?EIdqCwbgYeC354o63j+LiaHxw2EgElafXUpCJ3WSfRcmuvX9qfOnmjPnx+?=
- =?iso-8859-1?Q?TyXVrt5R8OYxIKQ7JSdtNc/zz6p+fIBjU4E7NrdS5YJx5AbJPBrIMLJClt?=
- =?iso-8859-1?Q?L13wLLA57K0xOiaLZsJvhe3ppO+JfiA5u20nTHMT6k5GkqpLPDl22Y4h/X?=
- =?iso-8859-1?Q?2QHS9rS+NihE0UYsRyoL0SYwIKAOz4LzlR6Du211wpB9eqORFcfcWjldvx?=
- =?iso-8859-1?Q?n56eH1C99X6LMMxg5gbKXKoqwybmLt0Gk/aVyCYCnM9Um3uzcHik4qQlvc?=
- =?iso-8859-1?Q?cF7DJotJtYPtlLZo1UZzeqYUx+nIsE4JzsDsaa2UKmgonqdMg1voRAyInF?=
- =?iso-8859-1?Q?evi1alurPs5jrggYDSwDgD5xn89perTbZ5KuXqthQyBSIX0n4GYCpHGaML?=
- =?iso-8859-1?Q?AUpbnvUwqxBqCrPBFu2S0MIWpi4GT4TMxnYOZ6hEjUvWvgUGSdIQ1vbFCI?=
- =?iso-8859-1?Q?UwfyncS5+Qtk3PNt2nJ8kN6keYxo8d4fvNrKgewDDAGVQqTH1g6eI7CSig?=
- =?iso-8859-1?Q?fCmhd7fGZ3AWlGsrEzrdyKyBSJYOhtFgqiACbtDdPGFDyf677+SAUX+BXV?=
- =?iso-8859-1?Q?wcWGVDqvpYksW6GzO2eCUxIsKoTtTUNc71/rAmfUTSNsAnJlaSCAYofSQM?=
- =?iso-8859-1?Q?G9pYhxgNqmqnhoxfNcdfUu9zYoUgNPfGwskV+Y0jbA2kAWjGMOKJAthPIX?=
- =?iso-8859-1?Q?qNnpAElnpeLMbPfyYGqsaA5sw+xxf3tYAmkjcaLVxoSOvEZOBTzq5jeONi?=
- =?iso-8859-1?Q?ari7M1A3b2hfSkB4Tm6XIBrMuGB7LTpMghzhcJ+klv1+1dkAC683vzmJf1?=
- =?iso-8859-1?Q?dkRmQsc3K5YJvTV+zWtVW7v3t+P6CZqrl4/g/beChL1GsaQ3MbnRH69hc7?=
- =?iso-8859-1?Q?W+4lCBS8TEcYBrgneX9yMmhVJFkcd6mk/+mYdHstUjANuFCo4WB5OzgZyM?=
- =?iso-8859-1?Q?v6l/fs3csMhUEzHRNzbooBG7uevBfOlXuIwYYBXtIajsMUbCPYZgmg9R/x?=
- =?iso-8859-1?Q?e2/FJyjAt0goB/TSE1ls0FDlU7KHUJAWHimBPNeKVGsGO++J6kFWWRcDmp?=
- =?iso-8859-1?Q?tjDloPhwOy8pFYLxFl8JjTyR5w3ITL49uzzjyuNTRrZ9b8uvvvZmxozDa0?=
- =?iso-8859-1?Q?iWn+QshZPCoF34wz7QKSnCp5dgq1stac/hoThU9g9CimBsthFfgJMYw+j2?=
- =?iso-8859-1?Q?XyQb+rBUsCXW8u4cphRHSFokg2JSCwIGtfGIwTkP5QkRPu+tIAK33fmn8j?=
- =?iso-8859-1?Q?qcJvZT0AaFh20AS/xdSFMt8JmIu6NcT5/BgY8O2h12vQh5RtWdvQ2yjX1Z?=
- =?iso-8859-1?Q?3kX3P2soSFgJftvmDNPs1oHqWgqXmqE2B7ULeqngy3Gp0GCBUg63eYpHDC?=
- =?iso-8859-1?Q?v5FIecDG+8fECoqxnFuPshR+QVGGPDXy3UWGjxqx2x2vFWkdGpFWoc2mWC?=
- =?iso-8859-1?Q?w7GotCelDXdsJFrwavhIiW1eUhfuV54CSw8KEN3KpCGKI0QMcUyyoKu7+M?=
- =?iso-8859-1?Q?foZydYJUJ6aFBQK6H6QgmFFFJvlinEbMIcZRQRNy+R9yTNhO9lgd9w3qz8?=
- =?iso-8859-1?Q?dqkSy026036m4qZ1dLNWlkRvGq3O2JTGPkmOzLoB6SDzApD8K7/n/JGTNA?=
- =?iso-8859-1?Q?i5czxhNqBxSek58R5P3lxjCJ3kn1+i485bUurW+xdIGhc7ylClBzXiODJs?=
- =?iso-8859-1?Q?USqT7HboYBHydP4VPkt93aPB5+f8+vB8+8aMnpogxv20hSQEsafHSv78Tn?=
- =?iso-8859-1?Q?QErUgih54QYzj2mpzQypkLWduHfVD5/iaVukho6wWGndvQN2XoetGbQQVu?=
- =?iso-8859-1?Q?uvOrgU9a8Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d842b86b-18b5-41c8-7c09-08df205dd7a0
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 08:19:13.4577
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Cm7f1AVPUFjzuur8ny70YrV1wn1pn4ECdGFrRWa8t//E0wKYSPIOqMafzD8lFh8G27f1V5f8tdOIfURkborBQw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8086
+X-ThreadId: AompHzTHtn-7
+Date: Fri, 02 Oct 2026 10:46:14 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Steffen Eiden" <seiden@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Andreas Grapentin" <gra@linux.ibm.com>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Friedrich Welter" <fritz@linux.ibm.com>,
+ "Gautam Gala" <ggala@linux.ibm.com>,
+ "Hariharan Mari" <hari55@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Hendrik Brueckner" <brueckner@linux.ibm.com>,
+ "Ilya Leoshkevich" <iii@linux.ibm.com>,
+ "Janosch Frank" <frankja@linux.ibm.com>,
+ "Joey Gouly" <joey.gouly@arm.com>, "Nico Boehr" <nrb@linux.ibm.com>,
+ "Nina Schoetterl-Glausch" <oss@nina.schoetterlglausch.eu>,
+ "Oliver Upton" <oupton@kernel.org>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Sean Christopherson" <seanjc@google.com>,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Ulrich Weigand" <Ulrich.Weigand@de.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>, "Will Deacon" <will@kernel.org>,
+ "Zenghui Yu" <yuzenghui@huawei.com>,
+ "Fuad Tabba" <fuad.tabba@linux.dev>
+Message-Id: <d03bc12e-be69-4c2e-bc5e-f587763e2594@app.fastmail.com>
+In-Reply-To: <40dd808c-bddf-4a7a-be81-53c64de2707d@app.fastmail.com>
+References: <20260930173441.66762-1-seiden@linux.ibm.com>
+ <179085262878.3865846.5787241839391727949.b4-ty@b4>
+ <20261001132715.108643-A-seiden@linux.ibm.com>
+ <40dd808c-bddf-4a7a-be81-53c64de2707d@app.fastmail.com>
+Subject: Re: (subset) [PATCH v9 00/24] KVM: s390: Introduce arm64 KVM
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 2026-10-01 at 02:52 +1000, Jason Gunthorpe <jgg@ziepe.ca> wrote...
-> On Wed, Sep 30, 2026 at 04:57:04PM +0200, Thomas Hellström wrote:
-> 
-> > Returning again to Jason's series. Let's say we'd add just the mapping
-> > type infrastructure, converted users of pcie_p2pdma only to use that
-> > and then we'd have access to per-mapping-type data. This could actually
-> > be done as a prereq for this series and merged separately. It's a
-> > couple of patches only.
-> 
-> I'm happy to say I found someone here to pick it up again, so we
-> should see something on it after LPC!
+On Thu, Oct 1, 2026, at 15:39, Arnd Bergmann wrote:
+> On Thu, Oct 1, 2026, at 15:27, Steffen Eiden wrote:
+>
+>> I can send the two fixup patches as a reply here for this tomorrow or 
+>> later today if you want. 
+>
+> My build bot is churning away looking for more corner cases.
+> I initially had the wrong base, but with this one and the other
+> two I sent, things are starting to look good. I'll keep it
+> running over night, but if you don't hear from me for any additional
+> build regressions in the next hour, it's probably fine.
 
-Yes, I will be picking Jason's series up once I return from LPC. Hopefully I
-might see some of you there!
+No more build failures overnight, but after changing to gcc-10.5.0,
+I get link failures for the namespaced module:
 
- - Alistair
+`__s390_indirect_jump_r1' referenced in section `.text' of arch/s390/kvm/arm64/kvm-namespaced.o: defined in discarded section `.text.__s390_indirect_jump_r1[__s390_indirect_jump_r1]' of arch/s390/kvm/arm64/kvm-namespaced.o
+`__s390_indirect_jump_r4' referenced in section `.text' of arch/s390/kvm/arm64/kvm-namespaced.o: defined in discarded section `.text.__s390_indirect_jump_r4[__s390_indirect_jump_r4]' of arch/s390/kvm/arm64/kvm-namespaced.o
+`__s390_indirect_jump_r14' referenced in section `.text' of arch/s390/kvm/arm64/kvm-namespaced.o: defined in discarded section `.text.__s390_indirect_jump_r14[__s390_indirect_jump_r14]' of arch/s390/kvm/arm64/kvm-namespaced.o
+`__s390_indirect_jump_r1' referenced in section `.text' of arch/s390/kvm/arm64/kvm-namespaced.o: defined in discarded section `.text.__s390_indirect_jump_r1[__s390_indirect_jump_r1]' of arch/s390/kvm/arm64/kvm-namespaced.o
+`__s390_indirect_jump_r4' referenced in section `.text' of arch/s390/kvm/arm64/kvm-namespaced.o: defined in discarded section `.text.__s390_indirect_jump_r4[__s390_indirect_jump_r4]' of arch/s390/kvm/arm64/kvm-namespaced.o
+`__s390_indirect_jump_r14' referenced in section `.text' of arch/s390/kvm/arm64/kvm-namespaced.o: defined in discarded section `.text.__s390_indirect_jump_r14[__s390_indirect_jump_r14]' of arch/s390/kvm/arm64/kvm-namespaced.o
 
-> Jason
+See https://pastebin.com/raw/pJYu8UAb for the .config that triggered it.
+Later compilers get CONFIG_EXPOLINE_EXTERN=y, which avoids the problem,
+so an easy workaround would be to make the module depend on that symbol:
+
+--- a/arch/s390/kvm/Kconfig
++++ b/arch/s390/kvm/Kconfig
+@@ -19,6 +19,7 @@ if VIRTUALIZATION
+ config KVM
+        def_tristate y
+        prompt "Kernel-based Virtual Machine (KVM) support"
++       depends on !EXPOLINE || EXPOLINE_EXTERN
+        select HAVE_KVM_CPU_RELAX_INTERCEPT
+        select KVM_ASYNC_PF
+        select KVM_ASYNC_PF_SYNC
+
+      Arnd
