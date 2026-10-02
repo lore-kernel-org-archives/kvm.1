@@ -1,136 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62154772A6
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932448; cv=none; b=Uk5FDJg37UncQWHqR0sxd8YIAKRxrxHx4Q+ZqicgsMeeDvEbuVeHSKDGb0bFuPS3J/QFAuLGAe4FEmKuV1nQFSGFNZvZ+qx39+5gRBfpv3pdoG6KLuEhM68GdRav1tbYrJGHj44UW5ISscKb7PB5iYBiClFBsQeh4rsoGq7uGx8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932448; c=relaxed/simple;
-	bh=QRq23FGkqgMgnrzRjmQN7GH6Khisn2+E/to1W8EIODY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jlBz89MRhyYQxnwadAVTk3SsLJCwwW+SQm21qDB6mXEURZUa0SkSctqvEOcDSLmXaCdK4gldenS/z7TDKV/m74oFgtgYk9AMeE9yvkb9mC2VvhJRURYoxb9mXu68q7Zh4MlKMbGs8JSnoPu3l0TSvBPVHLMCAOh58NOZqOPKHPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsSmGAEx; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E323938F927
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790932531; cv=pass; b=u/Sm3v0Ui4fgxc0cq/1rXDyiiiJWi1W36NZ0WYJQAklZtBMIboufEZRAwgMA2f+075QLD5PS4RfPTEuGBtXxh2mwtqOgf4mk7NWY0F4//YMNBZ7vrzyqLGa9ek0q/BDfgREtCpx8cq4zVs1TAIILyJ8uweA1NdAb8gvP+00R7gw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790932531; c=relaxed/simple;
+	bh=hWB1QcQGFZjdtaZ+WkrO/eQNuOSYDk3BPt9FwXfnsYM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Veelq2mfWIJL85YD8YU8XAJ6fruRVL5t98K4FjJ7VPPvEecjO9z4A8+6LBHtiEZv2rjXHigcrJXqFXib7cUatDL8f2iB3YeA9NijfrpjUkMQxv2H2TBfDw6zW5YuvfgH3fcWCfRuMcaTXdtm7uhDy6xzuT0Enrb/c8vyQzmHOJs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uUzsD/g3; arc=pass smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsSmGAEx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993B61F00899;
-	Fri,  2 Oct 2026 09:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790932446;
-	bh=aHFsRs62nqYSWB7eHFeeqN6duuRmwZjO5GelOkWuGFU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bsSmGAExv3YOeB4HrInOrtoX/DicETbhmbMvvViCln2vKm9D3p7J8WpPj6kpKS7lR
-	 nyYguXxoIgGMpxufmK+UdC2Vn0geytVn2DJ2zgj9PxmJGA7xbrsmwzQPAb5lUHTAIL
-	 LLssR3KdmGRd/PLvXgX5NWvS4pToHX6CL50Uo6/ONnXJ6aF2kpSNXNGkzdo7G7Mn0t
-	 UhMRmrRlD5mGqhYlOVv1OqjmXB9AoJDJZdjYfkiFT3hh8aelOhkrETF46ddC2TSUPn
-	 X0+ms7rI9IstFHTEmscKhgyovRNWJvEQQSXrwb5tCVNeL3vI1L7K8Dz8Ccn2y5BNTD
-	 3QS3eER+qhxLQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 7/7] vfio/selftests: Add observability test for IO
- page table usage
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pranjal Shrivastava" <praan@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261001224531.765278-8-praan@google.com>
-References: <20261001224531.765278-1-praan@google.com>
- <20261001224531.765278-8-praan@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 02 Oct 2026 09:14:06 +0000
-Message-Id: <20261002091406.993B61F00899@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uUzsD/g3"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5ba40832934so4226e87.1
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 02:15:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790932528; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fLwu0oPdp/rwSV7JOKrgPf0MDkBRMGIieZFHlvmnEmHohY5zhDgvLGks8ENpcRc46m
+         M+9StPUID4MrdZ8Wtx56zZK2Q7yLuLEtQ+XmA4jLAWECVQe/NxTm38frBdPUQdblCSG0
+         BY4db1iKu2WaKeuTwsueiIx90IyeXek0k7+QQJai8gcRVI6HEjwKMoInyHxwaCfvL9Id
+         SVOzTg/jHB2nTlP5L4CVBR9XG8z6B6lzel0S1SYNq56MroKJ8ALIQo7PxGik/re+zn5x
+         gy8azdaIDb897Q0iDf2zqflNULasq7zGHtqx2KP9a4FvQEyx2/HPZgt7tlvbMWVGVeJw
+         Ua+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=hWB1QcQGFZjdtaZ+WkrO/eQNuOSYDk3BPt9FwXfnsYM=;
+        fh=rnIkUf6r+pm8oCQPQDOHPhdYLJEIYxB5Eh3hMNjkNs4=;
+        b=gK+SowkIBW5I1tchv2/UAtInbruxiM8Wi/HWHhgUzlBRnvURu+pMHqlvWe/VfmPdFL
+         +4WOy68e0cQNG3TYW23RYtUIQ8LA7fCawasyYZDvQjl38p5PULGzJpZQzjKi9LAbcUD5
+         dAqUhDd+FAl7ncSCEPP9q89eLnCxYU7HctnxW2Pm08xixRvsmZVRK7jxiGo0U1twkXAk
+         E7/odNv/uyOUXFL6Em95msjEKTIKtXjZxgGkI4Z/JUsg9+cyLclgvx87Dz66L6pElHZC
+         8m70oxWWFN+z/qCQqM0oHcBdMTCaZ23Lj8E4p0Ik4gCYCzfesH1VHuALaxoeSsrBh3wo
+         RWLQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790932528; x=1791537328; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hWB1QcQGFZjdtaZ+WkrO/eQNuOSYDk3BPt9FwXfnsYM=;
+        b=uUzsD/g3ZCSfjiq2wwk+OeHdkmNqrj2XGfzBopsyQtL/HuhTlxgdg1vl4ZpxJP3V7k
+         NvRarQrw9c38y28HeOViljKliPt2YMaNcCzFkq1MV4g6z5fvpMnAg7H+Cz9pNluRtKuH
+         3bvVFPiyfTJKbbGP10Yn7Cx1VaXJN0cXH6abldTN5ex7w1NbqgJ6ka4gobKRkS7Brrhk
+         xkr9W3zRdhrjt9MqEihHv3YqkSctCU2KGSlrJZKuwZk12vj7WZjRWUqk9Q85y/520Gp7
+         3EV7G9Trm8zgSNUePo5QeURb9LoMuKtsRtEf8lMiMeFLoGzcCq//QDQAKENeKqpLs5+E
+         uqPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790932528; x=1791537328;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hWB1QcQGFZjdtaZ+WkrO/eQNuOSYDk3BPt9FwXfnsYM=;
+        b=IRkETNGV6GKgJ0PPtAOOWl1E3eOSKns8VS08ldiw87iREqPWizX3dRuR/1nwKBkxkz
+         YPpwLd/7BDn92OGEfdI1wVWmCrMSbbXfOeeB3YfCiUUpknBcD3cEWd+xV5PkxGXA3nq0
+         Aos4rdOfHYlpkEulswkz5BXfqj7zmC0+RVL14uCIAEigEKJ2K8H8O0dUgjORAPaFttod
+         O7l1OIFcuzh3YpOPlUDJ9zHqMJRHr+Xn2WKB5nggeiS73vKqy21mnHleNxUirS7g9IFM
+         w0SFz+8m3MGHEcnuJPMi4jFXx1rWyXzq5JuMQ0nIhv/Y2+xcfLIxNcUS3Q/cVDsMdMbm
+         4npg==
+X-Gm-Message-State: AFq9FYJbb8UOQHaFfazvqPDF/ygzaExz4aOJqjoxTUGgvhlc5ZjlyjzW
+	Tv4rRRqbDmj3adm4o/6bIpwaikWdXBX3gkHlo4MJLlvgNJJh0Wf0QmXBAFLBeMNLg7FqbBqC76n
+	2GBltRFnxByBx6wmEOwMRQslcmJA9pRBgherKpaVE
+X-Gm-Gg: AYBFou1lXtJVH044KulGvrhcPktZ53i96wHGkChhRYW49GV1gQpf5YFQ1RYiElGS18m
+	9rVm1bbU9+DktpM6DQKDIuTCJeGkDIAAKgABL1enu0sfPtc+xi/hGoxNcw4hNFryJcS+BpmG5nl
+	ZbcpEJIVT3vMkdJzZZgR6ZjxM2WMVGohr2OClbmwGLNILxpSL0oVlwspz5tGso/Kbrm8u4qRbAI
+	Ybh5IHL1V4oYJRmKoiOs44yNwW/Q3mKPx1cFEBjwqLNLz/mNGqpC+1SQacBmA/s33GOfmSZTQnJ
+	4ugKSkw0OgZTRhrdVOpWRJ+M4iZwDHCjZDsA8PJ4j0TzPyQmhmBnihHtLtXUX9ulhIL+522KDVA
+	FVLMxu6UPp6gP9A==
+X-Received: by 2002:a05:6512:1153:b0:5ba:3797:2359 with SMTP id
+ 2adb3069b0e04-5bb7c8d2f8cmr108813e87.2.1790932527310; Fri, 02 Oct 2026
+ 02:15:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com> <20261001210703.1597150-12-suzuki.poulose@arm.com>
+In-Reply-To: <20261001210703.1597150-12-suzuki.poulose@arm.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Fri, 2 Oct 2026 10:14:51 +0100
+X-Gm-Features: AclHuK81_w9T9KTmUVQvA6ovuNEn5Udf2ErB6CaTomYP4-WPob3E-hZqL0sp0qw
+Message-ID: <CA+EHjTwM=5PXPVByVV75AuNVw5TJRiUqu5TNOcFNPOBmTiL-eg@mail.gmail.com>
+Subject: Re: [PATCH v21 11/23] KVM: arm64: Use a local kvm pointer in kvm_handle_guest_abort()
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
+	jonathan.cameron@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] selftests: vfio_nr_pages_test skips IOMMUFD due to zero-initiali=
-zed fd assumption
-- [Medium] selftests: vfio_nr_pages_test crashes when mapping PROT_NONE mem=
-ory
---
+On Thu, 1 Oct 2026 at 22:08, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>
+> kvm_handle_guest_abort() repeatedly obtains the VM from vcpu->kvm.
+>
+> Introduce a local kvm pointer and use it throughout the function. While
+> touching the code, fix the missing whitespace in the
+> kvm_is_nested_s2_mmu() call.
+>
+> Suggested-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-commit d7003d8f6957a90f40b858dea08cd7ccf897ea8b
-Author: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-vfio/selftests: Add observability test for IO page table usage
-
-This commit adds a new selftest, vfio_nr_pages_test, to validate the
-iommu-nr-pages fdinfo metric across IOMMU backends. The test performs
-sparse mappings to force deep page table allocation and checks that the
-metric increases and remains allocated upon unmapping.
-
-> diff --git a/tools/testing/selftests/vfio/vfio_nr_pages_test.c b/tools/te=
-sting/selftests/vfio/vfio_nr_pages_test.c
-> new file mode 100644
-> index 0000000000000..aef6b1dd8e19d
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/vfio_nr_pages_test.c
-> @@ -0,0 +1,119 @@
-
-[ ... ]
-
-> +static long read_nr_pages(struct iommu *iommu)
-> +{
-> +	char path[256];
-> +	char line[128];
-> +	FILE *f;
-> +	long val =3D -1;
-> +	int fd =3D iommu->container_fd !=3D -1 ? iommu->container_fd : iommu->i=
-ommufd;
-
-[Severity: Medium]
-Will this ternary operation erroneously yield 0 instead of the actual
-iommufd file descriptor?
-
-In IOMMUFD mode, iommu->container_fd is implicitly initialized to 0 via
-calloc_assert() in iommu_init(), while iommu->iommufd is initialized to the
-actual file descriptor.
-
-This causes the ternary operator iommu->container_fd !=3D -1 to evaluate to
-true, assigning fd =3D 0.
-
-The test then reads from /proc/self/fdinfo/0, fails to find the metric, and
-silently skips execution for the IOMMUFD backend.
-
-[ ... ]
-
-> +TEST_F(vfio_nr_pages_test, sparse_mapping_sticky_reclamation)
-> +{
-> +	long nr_pages_initial, nr_pages_mapped, nr_pages_final;
-> +	struct dma_region region1 =3D {0};
-> +	struct dma_region region2 =3D {0};
-> +
-> +	if (!self->iommu || !self->device)
-> +		SKIP(return, "Fixture setup failed");
-> +
-> +	nr_pages_initial =3D read_nr_pages(self->iommu);
-> +	if (nr_pages_initial < 0)
-> +		SKIP(return, "iommu-nr-pages not reported by this IOMMU");
-> +
-> +	/* Map a page at start */
-> +	region1.size =3D SZ_4K;
-> +	region1.vaddr =3D mmap_reserve(region1.size, region1.size, 0);
-> +	ASSERT_NE(MAP_FAILED, region1.vaddr);
-> +	region1.iova =3D 0x100000;
-> +	iommu_map(self->iommu, &region1);
-
-[Severity: Medium]
-Does mapping this PROT_NONE region cause the test to crash?
-
-mmap_reserve() provisions memory using mmap() with strictly PROT_NONE
-protections. The test immediately passes this region to iommu_map()
-without calling mprotect() or over-mapping with PROT_READ | PROT_WRITE.
-
-The kernel will attempt to pin these pages using get_user_pages(), which
-will fail with -EFAULT due to lack of read/write permissions.
-
-The iommu_map() wrapper asserts success, causing the test to unconditionally
-crash.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001224531.7652=
-78-1-praan@google.com?part=3D7
+Cheers,
+/fuad
