@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6CF471414
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A4A470456
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932424; cv=none; b=kLnlhX45gV+M5uM/U1oUCRIu1lvql3Jm0fqodBIeXelQm8MVPJHou19ou45sRilVxxbuDJvoqL3QV3s/lBDyVawFAsMplg7ytAOJOG5OnDu//yThRfRJBN2HqGd1UHXGJ7c03k7AsWyttpN6MMgnsGzr4rymBWKYkS8M8Lj1ZCs=
+	t=1790932428; cv=none; b=LVNOuFr3Kqf+eHqmzAyQGZJTnLCPuQ/rmnxIMw3tpbJfmhWacNJ2IMZuL8ZJ6ilM6k3XNME3p1p/VrGKlQaYQWA6/NALdfnf8UOAO3h0bdea04TNNQ4p8JCdyvZogEzWK3pCHdVbUQvs5ujAnSJBcxskMTn5ce1yIUgseNB9Xeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932424; c=relaxed/simple;
-	bh=+Odf9+yfXn9iDf0FSbH3a+4cQGi3b1tPsua5/4x+52E=;
+	s=arc-20240116; t=1790932428; c=relaxed/simple;
+	bh=DOL4k2TlaRP9CsqcxlMaiuFf3pag8tNBE/QuGTtVe1o=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KrwV96INZdgk6ZyAbchJTt4E5JAjyO1CF0bS0f1KUqI61edFeOr405GaNp0ED+aX0UHLGsngKvLWcJGEqIzFg+zYYAnDQllk4EtTvNUh0ZkHunM9s1vO5rYGRCpLfHhaoV1oN6YLKaMReUMuRohzhr6HcFvGTisHB6Q0a1yUOdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FM7Yvyt7; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=iymX5JJSdOyqFwj2eXS5scLGdRjCAdoAVWOIqQTb4ALiAD+sLSfJ7STI5U+5ZKZTEouYzfdLrRfuagTpUuIDDd44E5Qe1ypC/lsUXO5Qsltn3GssoqnVYFEBl8yIt9Hzq8PMhF53ATIcUcAlkhSxpVtQoeOKeqnu+LkHVrc8aiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9mylHFX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FM7Yvyt7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E3B1F00899;
-	Fri,  2 Oct 2026 09:13:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9mylHFX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630461F00893;
+	Fri,  2 Oct 2026 09:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790932423;
-	bh=/zmlTSObAu8HD3YArFH/qPrscwKR+rdTSmyOSDSMMKE=;
+	s=k20260515; t=1790932427;
+	bh=6uGr1e8RSte6V7pThGS8/F/ksvlZ7Tqtk7oiIwQDtrg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FM7Yvyt7L9JgwOVHF1Mq2JKsxAi93zhTmYzxeY00O6yFzSWEsqm9QXwtK3a9y5x2Z
-	 uUIhrgxwP8vddeXxtWyNHh/XTwCa0HL3laBKsvNlfyHq48k0Op3ZlOV9/jC0PLWqqM
-	 o7gtRbsUuR6cwuqJJ5WJELZJNMJnLkih+Su8eWpoRSQuGL7SEhxlgMaGG41fvPSXBS
-	 dKuqg1qbGW1yPswnU8js52d8de5YbnA/+ip7OyWARFrbqAaeoZiE8rxNHJQjLR50gA
-	 2OxL2azTxTzmgM0VecgRDndgrNUS7f+rAusgQtp2gc5kEMBGxSYqawxuDRNfJr2TfI
-	 CzfSPD2psrNIA==
+	b=R9mylHFXtgpfItUKHy2+LZpCNp3rDd+8vzfcHHAzIsZV90O0E1BRN00FImJef1XGs
+	 2vCNtdTG+kYMInW3mq5n1YXvdD6Nn+ehFAU3hd8eYiEpQZ5h/4TNyLUvmUBkoQhRVr
+	 fsqd2Z3O1gVRHqmgtMyKoWVp7eEb7wr9WGEfs7Yc6EbOOwygaTsdl+PSE38WBilKp1
+	 ncqkHpfkZ0J8yYB5GAHvioMFFnahntkJqpbCATCSUaqyS9mBkp3RZjq5DUTNqzCu2r
+	 MPVcqLrQBjKeYSA2rRLJpCB77aGyfpP0R6emQbncCSlHXk1Drvfm71bhk+qgorWPQn
+	 /npcdWxmcKTfQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 10/10] KVM: Pre-check uaccesses in KVM's APIs to
- read/write guest memory
+Subject: Re: [PATCH v2 05/10] KVM: Destroy memslots immediately after
+ mmu_notifiers are unregistered
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261001202234.3794060-11-seanjc@google.com>
+In-Reply-To: <20261001202234.3794060-6-seanjc@google.com>
 References: <20261001202234.3794060-1-seanjc@google.com>
- <20261001202234.3794060-11-seanjc@google.com>
+ <20261001202234.3794060-6-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 02 Oct 2026 09:13:42 +0000
-Message-Id: <20261002091343.02E3B1F00899@smtp.kernel.org>
+Date: Fri, 02 Oct 2026 09:13:47 +0000
+Message-Id: <20261002091347.630461F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,84 +47,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kvm: bounds check bypass in kvm_is_guest_access_ok due to intege=
-r truncation and size ignore
+- [Critical] kvm: x86/mmu: Kernel panic via NULL pointer dereference in gfn=
+_to_rmap() during VM destruction
 --
 
-commit 3b0fbcae79b36e79408bde507ed9fb555ab9f477
+commit 51cc08e54e96c8c842b1348871cdf24648cdd20a
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: Pre-check uaccesses in KVM's APIs to read/write guest memory
+KVM: Destroy memslots immediately after mmu_notifiers are unregistered
 
-This commit adds an early check for user access validity in KVM's guest
-memory APIs. It introduces kvm_is_guest_access_ok() to validate access
-bounds before performing memslot lookups, aiming to catch bugs during VM
-teardown more noisily.
+This commit installs dummy, empty memslots immediately after unregistering
+KVM's mmu_notifier during VM destruction. It aims to harden against
+accessing memory from the wrong address space when tearing down a VM.
+
+> Instally dummy, empty memslots immediately after unregistering KVM's
+
+This isn't a bug, but there is a typo (Instally) here.
 
 > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 770a2c3bd4458..80b19d47840b2 100644
+> index f368240aa1cdd..770a2c3bd4458 100644
 > --- a/virt/kvm/kvm_main.c
 > +++ b/virt/kvm/kvm_main.c
 [ ... ]
-> @@ -3211,6 +3211,11 @@ static int next_segment(unsigned long len, int off=
-set)
->  		return len;
->  }
-> =20
-> +static bool kvm_is_guest_access_ok(struct kvm *kvm, int offset, int len,=
- int size)
-> +{
-> +	return kvm_can_do_uaccess(kvm) && !WARN_ON_ONCE(offset + len > PAGE_SIZ=
-E);
-> +}
+> @@ -1302,12 +1321,10 @@ static void kvm_destroy_vm(struct kvm *kvm)
+>  		kvm->mn_active_invalidate_count =3D 0;
+>  	else
+>  		WARN_ON(kvm->mmu_invalidate_in_progress);
+> +	kvm_destroy_memslots(kvm);
+> +
+>  	kvm_arch_destroy_vm(kvm);
 
-[Severity: Medium]
-Does this helper ignore the provided size parameter?=20
+[Severity: Critical]
+Does calling kvm_destroy_memslots() before kvm_arch_destroy_vm() risk a NULL
+pointer dereference?
 
-By hardcoding PAGE_SIZE in the WARN_ON_ONCE check, callers that pass a
-smaller boundary (such as ghc->len) will have their custom bounds check
-bypassed. If offset + len exceeds the custom size limit but remains under
-PAGE_SIZE, it appears the access would be incorrectly permitted.
+If a user creates a VM, maps memory into it (creating leaf SPTEs),
+and closes the VM file descriptor without terminating the process
+(mm_users remains > 0), mmu_notifier_unregister() is called.
 
-[ ... ]
-> @@ -3294,7 +3299,7 @@ static int __kvm_read_guest_atomic(struct kvm *kvm,=
- struct kvm_memory_slot *slot
->  	int r;
->  	unsigned long addr;
-> =20
-> -	if (WARN_ON_ONCE(offset + len > PAGE_SIZE))
-> +	if (!kvm_is_guest_access_ok(kvm, offset, len, PAGE_SIZE))
+However, it does not invoke the release callback because the process's
+mm is still alive.
 
-[Severity: Medium]
-Does this silently truncate the len parameter?
+As a result, kvm_arch_flush_shadow_all() is skipped and shadow pages
+remain intact.
 
-In __kvm_read_guest_atomic(), len is defined as an unsigned long, but
-kvm_is_guest_access_ok() takes len as a signed int.
+Next, kvm_destroy_memslots() replaces the active memslots with
+kvm_empty_memslots.
 
->  		return -EFAULT;
-> =20
->  	addr =3D gfn_to_hva_memslot_prot(slot, gfn, NULL);
-[ ... ]
-> @@ -3457,7 +3462,7 @@ int kvm_write_guest_offset_cached(struct kvm *kvm, =
-struct gfn_to_hva_cache *ghc,
->  	int r;
->  	gpa_t gpa =3D ghc->gpa + offset;
-> =20
-> -	if (WARN_ON_ONCE(len + offset > ghc->len))
-> +	if (!kvm_is_guest_access_ok(kvm, offset, len, ghc->len))
+Then, kvm_arch_destroy_vm() tears down the vCPUs via
+kvm_destroy_vcpus(), calling kvm_mmu_unload(), which recursively zaps
+the remaining shadow pages.
 
-[Severity: Medium]
-Similar to the above, len is an unsigned long here, which gets truncated
-when passed to the signed int argument of the helper.=20
+When leaf SPTEs are dropped, rmap_remove() looks up the memslot for
+the GFN:
 
-Additionally, ghc->len is passed as the size parameter, which is completely
-ignored by kvm_is_guest_access_ok() in favor of PAGE_SIZE. Will this bypass
-the intended cache length check?
+arch/x86/kvm/mmu/mmu.c:rmap_remove() {
+    ...
+    slot =3D __gfn_to_memslot(slots, gfn);
+    rmap_head =3D gfn_to_rmap(gfn, sp->role.level, slot);
+    ...
+}
 
->  		return -EINVAL;
-> =20
->  	if (slots->generation !=3D ghc->generation) {
+Since the memslots are now empty, __gfn_to_memslot() returns NULL,
+which is then unconditionally dereferenced by gfn_to_rmap():
+
+arch/x86/kvm/mmu/mmu.c:gfn_to_rmap() {
+    ...
+    idx =3D gfn_to_index(gfn, slot->base_gfn, level);
+    return &slot->arch.rmap[level - PG_LEVEL_4K][idx];
+}
+
+Could this lead to a host kernel panic during VM destruction?
+
+>  	kvm_destroy_devices(kvm);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001202234.3794=
-060-1-seanjc@google.com?part=3D10
+060-1-seanjc@google.com?part=3D5
