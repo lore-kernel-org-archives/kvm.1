@@ -1,174 +1,254 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013067.outbound.protection.outlook.com [40.93.201.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC172D0C92;
-	Fri,  2 Oct 2026 14:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790952682; cv=fail; b=OP0Nf6oBcRlfbMJPYKO/+J1+FXlPEvSFWkF/B+q2ZXbiGv7KxdWNTG37uN3hehot4S4oXt6aY74Pe2bxNAbVzUlaL/M5gyBcNSOE2hG04gJxWDcxoDrFo6DjbsuB+j+fKSy5OMvhoMoYi2sMRHtr1e98u0gUIVyMQKJKvKzTnng=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790952682; c=relaxed/simple;
-	bh=JjqFBBYgpGXFW33xIkhlWnGrrOhUwloBLdnGRJiWSS8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PM6R6mg+Y/57ZH3nQVIG0OvOn2Nukm+Ny395H3/VlQm++iM7fDD1I0zLCWv2/+ptLkHi+ybFIxto+op8N2sRz5ph/2NpaZECAMuZFgOou2fLfog34bMIS+3mYlohPcYxg6eIWEm9xd9bctVLcjzO1wtvZmcoPzemGGj2OH52x4A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=inl573lx; arc=fail smtp.client-ip=40.93.201.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D663AAF54;
+	Fri,  2 Oct 2026 14:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790952995; cv=none; b=qfewKNWBllHv4Z5W3o+gaPBimGHrU349i4loD0QnHpuiVuIv/KRyrcVfYvktbgO2TbIhenvq0rP0SbeH0W8tBlr4d3PuzaBoaV5FlY/mdlUH6XFAsFClEXvKnBfkGbNxMCBSPe0L2T6sdLyJn0khb+x5G0SlQKgzLQ8TuiyWBCQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790952995; c=relaxed/simple;
+	bh=vNF3N3IxUFgjfHwaXFhoUUdmxvTVJaq2s8vGsZwJrtA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tDRRoMZwwKDWQFbkBmzzMF7TsPkbSNJfobuF/S+vlifaw7wbrlV3WadnqzQAOyb51aIXuu/XCcsIroOluRnldBWMDT4bS3ZuQk2lL7RCspcvlfDZ1WaqEpYH9NlMKucJZof1YEOVwmtGfHlMak2n4FEl3J8z1e17T68P9P2dMWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdVzgh8v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="inl573lx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M36lFFnc/45hzIXLFZ//xiyazW5opAUAhNCGnLwcI2FiXqcBzFEnYYFuA20RqvGPJUb3eMmJ4MxS0pVNUaI3sscPJbxMr9uDasAwctBvUkh6xqAmQHC9gMA406bjnfkwyoNpQfU4/2vk1jiYrsS4WVZN5neirPWtJ28UP3NeNSeamlkFKHiRyg9DkfyFDwiFb7SVy1C848xLBfWzBRlB6uBX9EnpJ7/+VZYXZzT42FgBxFtmwLpzQRGTnVZaEql+W1RaUjIYPWRTrYLjQxhtNOxxocpLLFJu2Y8Jjls4Mz6UoQ1F+Vhphx1QGFUhxn52+7hX+s4iaVK5Z3VbfbZ+VA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/+/JACs6VWzkJy7PSj7+l2nHHFgpx9QbYRpEIsfkSjQ=;
- b=fy7XZbVBg3b1PUOTzBTlCslQxUG8mSdx7WI54QtIrL9EgbF54QOnD2cxX6YqnwuoKYW4kkk0KKYJQq153nZDnwwwJ98T1YyXiRK+5elcyg/ittvcbu2l6KhCBkGtIM0ZjVnwSwrssAsC5cVZEtEmjQDT1bfwWTS24pI7sOMDK8itIWmv9V6W4SJZn9b8+DM427elRZURzW9o9ARkHUq8E5UZH1J+Hs3e5oRaF8UrXUJbqQVsaOlWu06pNhv/OZpPMdBIpz+SD0kX85h1Kgu2v3M72DTP5M6ZjRURxJvwgH5+5kxDe8/tnMqgYKi4ndsD2b2nIHbAQdl+mzpPDidnLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/+/JACs6VWzkJy7PSj7+l2nHHFgpx9QbYRpEIsfkSjQ=;
- b=inl573lxxDwXVvqiOls+u7QQHKRodFTF/hVshZYkmyHaaFfKiIMwmKfrwAqBDryF8wot+H09XV4KdzS0ylJLH48BNGY9eOihCd+3RAYY1F5DS/3eEHkJSy1huwVULaN9/uHREI/YQqoUxD0xz/S0OnJgznPW0DnVWFWaOkmlJIMvcr/O9Hhfy1zm6MIdelAN2kUOFN0wuCtKwvTRZeebZXSJYUMAEVzOptbSkBi0Eyp6uud2+ejUKj7B5Dwrw+sK4hwHa7ybM84ZGO3fbRvD7TGovFJiGwrR/7jSdpsc15CaWgwjXr6V3RK9I90AFeKEJWN/v3uXcsZdBrnR3kOwIg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by DM4PR12MB7744.namprd12.prod.outlook.com
- (2603:10b6:8:100::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Fri, 2 Oct
- 2026 14:51:10 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0472.016; Fri, 2 Oct 2026
- 14:51:09 +0000
-Date: Fri, 2 Oct 2026 11:51:08 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Matt Evans <matt@ozlabs.org>, Leon Romanovsky <leon@kernel.org>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org,
-	Manish Honap <mhonap@nvidia.com>
-Subject: Re: [PATCH v7 0/9] vfio/pci: Add mmap() for DMABUFs
-Message-ID: <20261002145108.GU1616761@nvidia.com>
-References: <20260924152159.49702-1-matt@ozlabs.org>
- <20261001153834.4a2528a2@shazbot.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261001153834.4a2528a2@shazbot.org>
-X-ClientProxiedBy: DM6PR03CA0075.namprd03.prod.outlook.com
- (2603:10b6:5:333::8) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdVzgh8v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88791F00893;
+	Fri,  2 Oct 2026 14:56:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790952993;
+	bh=jQuiTsuvfiP4TjKhygdb17Hd1K9/CkYZDyLUI1EBmwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fdVzgh8vzUmdaKUlZe0VUNAIbLSN/FNhbQHH4wzlHFvv+hwCHSicNk7KjrZHYj3Yu
+	 iQlLhsYS9ojqwSku1HQOXWnmdKoCu8CHMkE9A7LZ/DH6hiJQldb++n4ez57oVgBl0V
+	 So8/jwrVJl3CEjbngowiXAkkkl3yvYCSfnXRCFedPo61Fs2XbO15rdcGoISGxqRB8K
+	 jXU4TLmv22BTp6yPLlF2Jpru5HvWTRYFQZfFHeldR1afhWGGXDAezdVopQG8Ave8bR
+	 CZFLT49VpC5WBX0wYA8iUka0IczATo+lcmXmrk2MeXbxiJX2meYd90/doZTa6tYh/0
+	 hugq9t44NIjiw==
+Date: Fri, 2 Oct 2026 15:56:04 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 15/40] mm/vma: add vma[_flags]_is_kernel_owned()
+ predicates
+Message-ID: <ar_CYfkR5Pfb7J9b@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
+ <0623ee06-00e5-421e-a24a-ed605abb559b@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DM4PR12MB7744:EE_
-X-MS-Office365-Filtering-Correlation-Id: 789cbe2e-7e9c-4a15-72ea-08df2094986f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|10067099003|56012099006|11063799006|4143699003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	PvnPe1Wwpstlfl8SRK7j6hrHoCJZJPhOti0O/VrAO2ql3rXp2J4D+aUaRghzUQUJenWq73hpoQ2Iw0v+XeM/yhp+WZs33hz7GI2jmiQQtIkBrK1RlvunAlLbkL00BHytx7vysuLqERpeAJz/Of2yRW5WS8fx6khmIdDoVNVgZRnx/yZgsH6FG1k+nuFtZAUGrkHeqGaJMj/L/JlbU/6wVs7OT+paJnuWtTFFEMb5Ke71CWV09yExmi/YkhkRidZsgILoslNZNlSv4yb3TTvpd1wcCqSDU4vEbSyHNZAyKcXJ4Fp1BBMURsA//SGYkEeE23qVP+C9eyyyoo1n9VyMTkl6gwVx7pZ7WgcFOgTRBmTbk8iBvG/ZQeoo2XMi+6n7SrlQArrRKKpzHrqDVGkXLojJEDq+bp0tjht48odDfNyl1XbiFIFeJQIweXgCZnk5ZHugAooqF9WU9ASLJKwgGYVeSuHkL/OAXXEWWuVqRN5wiR4uBAo1PuLDSIsfij9vKAODooPDl3AMwVmP4n2RWmrciQTqDJHeOAc9Qs16vBOVXRZAfQPOYeIT4GqvWJK3eolernFs+MJPRTy0yWrnABqF7/lW2Lpy2y/9gUq7zYuPw9JLz3xUyh4rHiC/83SkartyFxPzmFR9uXFWsdjyZ7UYsoIHnfdg56SynwgzZtM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(10067099003)(56012099006)(11063799006)(4143699003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?n9JH8NHwXVqgiVbof3qoRgpO8tX4koSDlcrlzAIFNJdqd3QqYOH501oRG9lA?=
- =?us-ascii?Q?BS+IH/6ZQdh4uRfmF4wSP65UzMFVe96vRNj3HhsMi0WVXIyTqPPKI/9gEyaf?=
- =?us-ascii?Q?3riulgzyoIpqjj0y8BVw05IOf8GnGabFrO6pmGizckU/msxWNVte9+ChhOyD?=
- =?us-ascii?Q?BtD7sO1uNsBJGblVzxoqz05rw9ZjIq/MKW63KxRfiim/uZNu9CTFqY7JHKvq?=
- =?us-ascii?Q?ayWRA/703VB85PveReO6M1CJP949xXm47puNk66SkexmhipY6a7WXzBFpU+d?=
- =?us-ascii?Q?YaByDuwD7vGtU4xDGjJXjOxk6Sp50ONdvIzN4GldyE3CbyTAThgPatb32fXq?=
- =?us-ascii?Q?09neXxO+kjqJ8Yd0fdJUqUhjS90CJ0l0WC8aW2x30eya+4iXuW7AIf6ZCDb3?=
- =?us-ascii?Q?OgVfxHtv1h0Cxus26Yv+ul9EFIgVNWNVonteKgTWaW/SPkh3h0wcspjDvLJO?=
- =?us-ascii?Q?x5eP5AiIG3Soct8kSL2Smso2bz2lV16SeeRwaqwdNKBprn9KV0XNcAU+C2w4?=
- =?us-ascii?Q?cpNjq/mbujmXXg7m7kj5WI8uZH8Tb7OO7SGYd24qxzuXmJjww3eBqLd7gjBk?=
- =?us-ascii?Q?J8yqyTqDxI1PHMkRPNxrSLJbKRTD/eUNs01Wurtd1Zml8VER+vmafYmIVPJX?=
- =?us-ascii?Q?vv2mgtMnoUdYgfm+XFu8s8hPNz4JGReCk3Uj84pAAWIS7cOyX/PELh0HmZv7?=
- =?us-ascii?Q?UqoHsC804fNH9IGX+jNU7n12Cr5cFHxMtHQltG+KWlNKna+/Sa5kNuulucSh?=
- =?us-ascii?Q?tkgV83NN61FIUzSrfs2LM82gz70Fxqxs39Iv8q7mnTiFav+yxm+XVZbJNe7h?=
- =?us-ascii?Q?hhaYHXhqMrXT5Sa/AUtliV1tNrnKwwI8ZR4KhxNSkhxSwEb8iExfVvlp7uKP?=
- =?us-ascii?Q?5UF830WLnfJ/BXPdBM9f/Gfpaua0v2EuJnn+Ljz8uGijxGZTy+CP1AFvmOYX?=
- =?us-ascii?Q?dpDMUFIFKo62zZSn5G3f5DVw2YceI4Zd34khFyEfnlE7Z+oA4rG5Oucl/phM?=
- =?us-ascii?Q?EAEYzX9TMGA3Jr8WV7ipxShN5hWDmNOeBhzP/umlP6mwCVGd8vLJnxRV9Sxd?=
- =?us-ascii?Q?9ahwMK5I3gSgY+W7U/oqawml/OoAcghwo+kJR/+IFt75NMN0tTf4OHz2g6P+?=
- =?us-ascii?Q?xsxZy1oq/A9j+tzcDbbl1MdANWmu4QjUuvNTUW6oeRfIX5ScvcKyMvsssERA?=
- =?us-ascii?Q?RSc7H2JJov2Ojcnq6/5JITRiOewtO6kNICdWbjACokptIPAZ4Ro6zJSfMROu?=
- =?us-ascii?Q?vECuaFhiBQ/Y/YtPvQ+nDf2HFYnitWr6tRQ/9digJbTHTTIS2K3fBXZedV8Z?=
- =?us-ascii?Q?Ctv+CimHCnOGo5MAeJCVwiOIvWMj/CFEXoBb48WnARo7sC8JcMi9J7ao52H0?=
- =?us-ascii?Q?C4DG6TU5M+4TAaudZ0zb3PAGLF+qKv7AcrM0o+67/mG3CJRi1/SIjFJcsx3Y?=
- =?us-ascii?Q?265aNVEKsvssxnzpTDrOCQUEtyCt1XN70JOhTJ1l0qKr2g2QwIIAuE+iTe0H?=
- =?us-ascii?Q?t9rW5KJ60PVSPIYuqTh6cUglAFk8EsGX3wucZy2I037SLuuIb1XvDsBlyqyh?=
- =?us-ascii?Q?TZWyOhV9WAKGbxBm9WB2OEn9M5luh8yPQKfLNRe+eSPRKfhi5R3lHMkM7Fj1?=
- =?us-ascii?Q?Tl6P2DPT09D2n62XlwWqcqVLkRnpcJ+0VnbGmS9k982LNIiOv9Oh+xYckeU5?=
- =?us-ascii?Q?pRjz354Y8zqDCEym5X6vT28pYcdLEUzy/z51rrmeBao8rb2I?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 789cbe2e-7e9c-4a15-72ea-08df2094986f
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 14:51:09.6676
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6oLkrp3FNsawpPVnYcePwFEU4h4ZeAwK7OIKRBfd2HkP8voLl9iQzFWBjqsjBZIM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7744
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0623ee06-00e5-421e-a24a-ed605abb559b@kernel.org>
 
-On Thu, Oct 01, 2026 at 03:38:34PM -0600, Alex Williamson wrote:
-> On Thu, 24 Sep 2026 16:21:43 +0100
-> Matt Evans <matt@ozlabs.org> wrote:
-> > Dear Reviewers,
-> > ===============
-> > 
-> > Along the way several related issues came up that warrant more
-> > eyes, and I'd be grateful for your input:
-> > 
-> > 1. If VFIO fd is opened O_RDONLY, it currently can't be mmap()ed
-> >    (because PROT_WRITE is rejected in do_mmap(), and PROT_READ alone
-> >    drops the VM_SHARED so VFIO's mmap rejects it).  BUT it seems we
-> >    can export a DMABUF from it, and then pass the resulting fd around
-> >    for P2P writes.
-> > 
-> >    I don't know if this is intentional/relied on/a known limitation,
-> >    or a bug?
-> 
-> Seems like a bug.  In practice it's probably not very meaningful, the
-> user can still potentially change the device power state and trigger a
-> reset, but being able to source a writable dmabuf to a region on the
-> device fd that isn't itself writable seems semantically wrong.
+On Thu, Oct 01, 2026 at 02:36:40PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/17/26 18:22, Lorenzo Stoakes (ARM) wrote:
+> > Rather than referring to VMA flags with uncertain meaning, add a new
+> > predicate that explicitly describes what possession of the VMA_PFNMAP_BIT
+> > or VMA_MIXEDMAP_BIT flags mean, and then refer to that function for
+> > determining VMA mergeability.
+> >
+> > Either flag means the contents of the mapping are owned by the kernel,
+> > usually a driver, rather than by the core mm: the memory may be MMIO,
+> > kernel-allocated pages or even ordinary pages the driver maps itself, but
+> > the core must not populate, reclaim, migrate, copy-on-write or merge the
+> > range on its own initiative.
+> >
+> > We initially also include VMA_IO_BIT here, as by implication, these must be
+> > kernel-owned. (mlock() also sets VMA_IO_BIT transiently on ordinary VMAs
+> > while locking them, which is addressed later in this series.)
+> >
+> > However the intent is to in future remove this, as no mapping should be
+> > marked as an I/O mapping without also being marked with VMA_PFNMAP_BIT.
+> >
+> > This forms the basis of further work intended to improve how we express VMA
+> > properties such as this.
+> >
+> > Also update the VMA userland tests to reflect the change.
+> >
+> > No functional change intended.
+>
+> Of course I have to bitch about the naming :)
 
-I'm shocked O_RDONLY even did *anything*, I never expected this.
+Yup :)
 
-IMHO with these kinds of cdev's we shouldn't do anything in response
-to O_RDONLY. If the core code does something then fine, but I don't
-think we should try to define a semantic what "Read only vfio" even
-should mean.
+>
+> Intuitively: kernel owned vs ... user owned?
+>
+> No, it's kernel owned vs core-mm owned.
 
-> >    a) We could reject export w/ -EPERM unless the device fd's f_mode
-> >       has O_RDWR, to reflect the RW abilities of P2P
-> 
-> This seems sufficient...
+I would say somebody who does:
 
-+1
+	ptr = malloc(4096);
 
-Jason
+Would think of that memory as 'owned' by them in the sense that they
+control the lifetime, they established its attributes, etc.
+
+So indeed, vs. user-owned.
+
+>
+> Which implies core-mm is not part of the kernel?
+>
+> Yes, this is confusing. ;)
+
+I think what you're missing here is what _creates_ or _establishes_ the mapping.
+
+Intuitively, if I do:
+
+	ptr = kmalloc(GFP_KERNEL);
+
+I, whether I am in the core kernel, or a driver, or whatever own it in any
+meaningful sense of the word.
+
+I think the issue here is you're confusing this with other things like the
+rmap and refcounting, etc.
+
+
+>
+> I assume you're coming from "map_kernel_pages*", but that's rather "kernel
+> memory" and not "kernel owned".
+>
+> Usually we say "driver owned" when not talking about pagecache/anon. Or user vs.
+> kernel memory.
+
+I think it would only add confusion:
+
+VDSO/VVAR, perf ring buffers, shmem mapped via PFN map, uprobes, etc. are
+all in this category and I doubt people would consider those driver-owned.
+
+>
+> So is it really all about "is this (excluding CoW) no ordinary user memory that
+> we would track through the rmap" ?
+
+VMA_MIXEDMAP_BIT mappings can be refcounted and rmapped so that's not a
+correct description.
+
+The distinction is - who put them there and who's allowed to change them
+and who owns the lifecycle.
+
+>
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  include/linux/mm.h              | 56 ++++++++++++++++++++++++++++++++++++++++-
+> >  tools/testing/vma/include/dup.h | 29 ++++++++++++++++++++-
+> >  2 files changed, 83 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 2a92193ac6a5..cab29d6e15c1 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -1612,6 +1612,44 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
+> >  	return is_shared_maywrite(&vma->flags);
+> >  }
+> >
+> > +/**
+> > + * vma_flags_is_kernel_owned() - Do the specified VMA flags indicate that the
+> > + * contents of the VMA are owned by the kernel rather than the core mm?
+> > + * @flags: The VMA flags to test.
+> > + *
+> > + * A kernel-owned mapping is one whose contents are established and controlled
+> > + * by the kernel, typically a driver, rather than by the core mm's fault and
+> > + * rmap machinery.
+> > + *
+> > + * The mapping may be memory-mapped I/O, kernel-allocated pages or ordinary
+> > + * pages the owner has chosen to map itself (shmem via a PFN map, for instance).
+> > + *
+> > + * In all cases the core mm must not populate, reclaim, migrate, copy-on-write
+> > + * or merge it of its own accord.
+> > + *
+> > + * Pages mapped this way are not necessarily reference counted or map counted.
+> > + *
+> > + * Returns: true if the flags indicate a kernel-owned mapping.
+> > + */
+> > +static inline bool vma_flags_is_kernel_owned(const vma_flags_t *flags)
+> > +{
+> > +	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT,
+> > +				  VMA_IO_BIT);
+>
+> I thought we have cases where we drivers insert pages and neither set
+> VMA_PFNMAP_BIT nor VMA_MIXEDMAP_BIT.
+
+There were 4 - defio, cmt_speech, uprobes and the bpf arena, and I fixed
+all of them :)
+
+Other than the DAX-only case below of course.
+
+It's not correct behaviour and part of the point of this series is to
+structurally _forbid_ illegal behaviour by drivers.
+
+>
+> I assume vmf_insert_page_mkwrite() is fine because it is DAX doing it (should we
+> limit this interface to DAX?).
+
+That is a DAX-only thing and DAX is precisely a case that should not be
+kernel-owned (and isn't!)
+
+This series actually fixes the FUSE case too, restricting this interface to
+DAX only seems like a sensible follow up as well.
+
+I could also add a patch to this series to do that too if you wanted?
+
+--
+Cheers, Lorenzo
