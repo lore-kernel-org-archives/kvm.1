@@ -1,88 +1,91 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234BB4398F5
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB2E3C81B9
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975236; cv=none; b=KHsBsUATxbkilrK6+tZhCVgJKIU8ev968TL90eZC36HpnSLZXaODYv0NGaKFbw/XC90bTW+7feMkMHVmrr7FGXRVP2ugKpjGBG4XED18hTJPx2JBYMs+gaNXjHWws6bFprv0oIF/SskN6NaoSXLVLBxETLN7gdINLbiaE9/PdBo=
+	t=1790975254; cv=none; b=hQOHW+vbd2pGroqkwwXiN/U24+yUvUqokv0VbiAiKsshmvpGoaeb4BuUif30fRDl+rM9EPOmHwb/HwcuLEQJJbwnEUTwEmfRi5jKXYO1Clh8HruJXznuy4GGoWdT04B8akHcfvqoadRT7QfoY6cLCRzOX9AyB1lhXPSTO9ZTl1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975236; c=relaxed/simple;
-	bh=w1W5J3SALBETF+5OrryW1gx85y5dHHK+OV5TMcQ6fLg=;
+	s=arc-20240116; t=1790975254; c=relaxed/simple;
+	bh=+xl+T0Sx7GPuJ5gjwIw2iwy4OymTW9N3iDiRd4D0bPc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uMK8hbX0ZOKO7qbVirJUHOsfZEXYrXs6FI7b4zPWFb/geYir5uxRWdUCLUZyN+omIpDM2t6NXoclhJaPiyjZOW7m+tMQut9/6q/P/6rdYMGTP0jOODN9zxU5OSU7De1NWD3osCmQ6Em2Esbsr3zwErMUOK7fMtnQtt69a/UZMEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z3EEuDkg; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=JL8MHYFJ2fAGZnRgEvuH01fyrcT8MtnVc4VyWzxZr2XjxCA27XkTTXZRmkkDQLy6dKv4s/L0anL46Jq76LKZArZSCH9R5AelW2g1rhGgK4GJluM0DbNGezoXNzNqP7LD+eswUrW9GBYBw7ndnEdgmGQAxe3I6U0ze5lgXHuilFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nWQrLE+X; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z3EEuDkg"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3a4a0017549so427821a91.3
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:07:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nWQrLE+X"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc72777faa2so16075a12.1
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:07:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975234; x=1791580034; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975250; x=1791580050; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a+a1MIFjkZveTbvQHiVu876qwYJS4kKndW0rOXlUN/c=;
-        b=Z3EEuDkgJ82+ZBKv0yqlrusqvftFFtMEo+RtHjsz/BPMABVajTfOeYgtOTO4ipTdMt
-         EZiBGdtVtkKH7ouFioVpRnvdrSOMdGvUGSarPvrd3cAAWD3uIx8+leTjhjqwE8sNiicf
-         9QM3irPFGyUW8Ifbg2X/f4/TjEz//2uBWYUkMIFigleUndx4A4hoW8C014iOpfZKZ2f6
-         AsaDx7dEsfIHMwBtFncAkUKUhv74q6iRIXkpPqFbkrHSROPxG64iUAV5HAjTSbCqzUpu
-         Y36GS1j0zNFLiXqWqF2OxueCZvro02VcYWJbK6OI8U4ulO8n1h+DES7eb3QRo2vBiLFL
-         tZ4A==
+        bh=nuSQMenX/K36z+uq12eSp70AMhTM9Kpsrje6PFTIDvw=;
+        b=nWQrLE+XViQp+GzSVijIqzvQNsM/wzb92/VP3moq5FH3N6QmAbrA04fQgmWkGwuhIh
+         dsHi/N+Are9+Anb9BinLT1oXUFHGTQGJeiNhdNcCAmCg2biuwVtigJLHHG/5OFI2UxMi
+         Z77mR6ZHxznewBVBFhfPGyxWX0aaaCFcWJimaIxTiyXgY5sS39fBwmX3Clgz1ahoHjda
+         vi9HIkotXTCVqWI0taVbcZ6U742hCTpdnxgUWLZiMbt3YynS15j3sUnilZuGGnrlIjxE
+         opJpNzcp4SFfXjNENPFw3KsjfGff4yOFyVuEPnm86nXGL77cJgbRrBMUVYyrkRYRTIoI
+         n8hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975234; x=1791580034;
+        d=1e100.net; s=20260707; t=1790975250; x=1791580050;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=a+a1MIFjkZveTbvQHiVu876qwYJS4kKndW0rOXlUN/c=;
-        b=n2H51aSiCh2bGeTQlRt8tpz57JyWBTIIfAZ+K5WQ8YpBHH6fr3rduljWvEkFh9KBsa
-         i+Iy0sEPxOEDKRWj32sB0XU1w54rdmbcYTGg7Gg5835kIdfAtYt/7SeW9VmtiOipkoGb
-         BYkTqwxz1JL5+y2GDbLi/Mhx94d1J4+2oQQLu/acVLSlhkOtKwOjcCY9MkCDVCvtj0My
-         C2pltjJX4Q2A6RINZl6GYIXma9VZWY2Mv92tJkd/rZ9D8joYWORYZx5T1+tv5Uk2e1h3
-         lLCae/M114uBQaVpMoWkfoJZZjxrs+yKjTPoyvRDtpLgsn+13E8illobh1Bids0Q0V+e
-         b9zw==
-X-Forwarded-Encrypted: i=1; AKwUvBzxO0+UBDWB6Vlpr3IWzXbOV5xyASBUkHxarj2gg5cJZwZJTSdcxOui/FJe54esTBS3jMg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIrMz4l1gr/mG6qDhpBTizk6QdFk4rWGi/vkDtCYawZO5qKgUVF
-	wOleg47wONWDajbDNkIZgCTbxwlbcQN7DqfO/2vag92BOZbalDcKk0BsLdon2bQSN04R4F3dadQ
-	aYmqrUw==
-X-Received: from pggi24.prod.google.com ([2002:a63:cd18:0:b0:cc7:924e:a5e0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7d2:b0:3a7:8350:49a2
- with SMTP id 98e67ed59e1d1-3a78350537bmr399081a91.33.1790975234122; Fri, 02
- Oct 2026 14:07:14 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:06:42 -0700
-In-Reply-To: <20260928180250.3075584-1-fuad.tabba@linux.dev>
+        bh=nuSQMenX/K36z+uq12eSp70AMhTM9Kpsrje6PFTIDvw=;
+        b=1It2UELgDczdV/rGRmSZQMpyQoXD5cBANTYvtpin8FZsxf6qLS/F2zYcHOVBVwzgn9
+         8SVXiRHKcEeCZa/BqRgewFZXU7KrAJ990yW4Nrg/BexuGSB5m0ruYMlDMubCxn8/mDE1
+         asntwS71hPk9lZDa/+cAznPWa53DwvSPV921f5KRKbOQNaalcyQy4wMouj4Dtizjp/DY
+         TXtbYaoIv+EyHtgZWN1VShlhZTRKq94Ff9gFsp5+QYpQMdjkWXIOOyWhNoV8+/BCg0qZ
+         tzimlECnF/plXKLFKvbpxyiwD/TkFf1uthS7Dr+LU5yVf0vb/HOH1jAKOdUlQvedMnNL
+         HWKw==
+X-Forwarded-Encrypted: i=1; AKwUvBynN8K0A0M/3Xij+y1/4T9fY6EW4UquUQLt1Opn/jQHHvFv+JBOwcwrWiJ0RTeT7jQ082Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++l0f6jSKzeCFL+I2llTh6gkQAbTWsbN2FESxmeNP/u+10Kxv9Go
+	oFafCwmgLWpFBcIG7v8DoHbtZplj+6sFSuqKBaR+R2Y+GlgDPthyUi7ft+ncQqlra+2l2F3OEhO
+	xrqmhrQ==
+X-Received: from pgfd28-n1.prod.google.com ([2002:a05:6a02:655c:10b0:cc9:f7f0:57fc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4324:b0:3cd:9dea:2be1
+ with SMTP id adf61e73a8af0-3e0d6582ee4mr757848637.0.1790975249880; Fri, 02
+ Oct 2026 14:07:29 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:06:44 -0700
+In-Reply-To: <ambEdSPjerZIVN0b@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260928180250.3075584-1-fuad.tabba@linux.dev>
+References: <ambEdSPjerZIVN0b@192.168.1.215>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097474286.4070650.8909923019348377018.b4-ty@b4>
-Subject: Re: [PATCH] KVM: guest_memfd: Fix the in-place conversion documentation
+Message-ID: <179097516574.4085525.16058159685238768229.b4-ty@b4>
+Subject: Re: [PATCH v3] KVM: guest_memfd: Avoid deadlock in error_remove_folio()
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Hao Zhang <hao_zhang_kdev@163.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 28 Sep 2026 19:02:50 +0100, Fuad Tabba wrote:
-> Commit dcde2f853ff46 ("KVM: guest_memfd: Ensure pages are not in use
-> before conversion") added error_offset to struct kvm_memory_attributes2,
-> written back on failure, and a -EAGAIN return. The
-> KVM_SET_MEMORY_ATTRIBUTES2 section of api.rst still lists the old
-> struct, marks it input-only and leaves EAGAIN out of the Errors table.
-> It also refers to KVM_CAP_GUEST_MEMFD_MMAP, which had become
-> KVM_CAP_GUEST_MEMFD_FLAGS before this ioctl was added.
+On Mon, 27 Jul 2026 10:37:41 +0800, Hao Zhang wrote:
+> memory_failure() invokes ->error_remove_folio() while holding the
+> poisoned folio lock.  KVM's guest_memfd callback then takes
+> mapping->invalidate_lock for read before invalidating guest mappings.
+> 
+> This can deadlock with paths that hold mapping->invalidate_lock for write
+> and then try to lock the same folio, e.g. truncation from MADV_REMOVE or
+> FALLOC_FL_PUNCH_HOLE.  Because rwsems are fair, the problem is not limited
+> to guest_memfd punch-hole: a pending writer can also block future readers,
+> so ->error_remove_folio() must not block on the invalidate lock while
+> holding the poisoned folio lock.
 > 
 > [...]
 
-Applied to kvm-x86 coco, thanks!
+(finally) Applied to kvm-x86 coco, thanks!
 
-[1/1] KVM: guest_memfd: Fix the in-place conversion documentation
-      https://github.com/kvm-x86/linux/commit/681f3b68f435
+[1/1] KVM: guest_memfd: Avoid deadlock in error_remove_folio()
+      https://github.com/kvm-x86/linux/commit/ad06cf5338bc
 
 --
 https://github.com/kvm-x86/linux/tree/next
