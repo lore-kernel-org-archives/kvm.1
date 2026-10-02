@@ -1,95 +1,110 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA1A361DD0
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8182C30569F
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975337; cv=none; b=tBHNjtunax7aFwLz4y5L++rmNQ5xojrb+QsqEV2q0O3We9gTh+7a8xMA6hUPO4qfDzKxrm9RVCz+rcgXyzTvMwop015hprxPTrzldTCErOVIVYL1MYDpTzerxDdECPmByqnsCi0W5olHzlgVZwqEdaTeegEMqnaAZpTTgI3tujI=
+	t=1790975341; cv=none; b=Yy0M8WRccCKqGWpPa4Nu42CoFf/XT3gty+Ns80SQj6sjioAnIqCEb/N/rTAxQdRoSqloqsPu4W+99jxU7CAT0+WaDuRxD3brjDlR20oySNrFBsnwaxYnjidIisj7bdcoILRqBwrPZh1Ys1c9TZ2Eid5N8k+ap8kC46rRNrtkr9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975337; c=relaxed/simple;
-	bh=J1R30jkg0z5mEtu/3/sjhv3hwYdqiiO+ATSB6z3JnPE=;
+	s=arc-20240116; t=1790975341; c=relaxed/simple;
+	bh=DRhIYyZZN7WiAtU4Ll0e6lnDDxpEQxdAaqhVQan1cfU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N1fUyTTQvduVqugOzv5IQRnbFYtIqO9I/RBfpPYSbU8zja9v2x7egY9E556gbwgLkOmvBfIT4exfLUEIIDtOmMGyhSvSPpO4UBizYZysEfNK4k8KqNfJZGoo9kOVdqd3P9PRb742GTxVjRvrwJmlCqMwOpbzDowLgHAs71Ij3uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hk1Nrrgu; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=LEJiZa5Bi9Ig5GpHXqvEUNxpA8l3jmQxzO98Ger+6V7+TuiUUdc/IcePQInDGFPes7c1DAll1YWaJIfOhWWY/aR9NUVeWB8y0AW2XDYrqa5zg8nYQjzd9MQEWsU1/EI/LUxjIqUyvnpqSBTTu6GtldroqcfbNRGP9qIUIOECXJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sfk8IzpT; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hk1Nrrgu"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2db8c152622so149615ad.2
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:08:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sfk8IzpT"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso16312a12.0
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975336; x=1791580136; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975340; x=1791580140; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gRJ1bV1gQpquD4wKcD7z9DV/tvZaeEUb6Cg+brGjowY=;
-        b=hk1NrrguEbkDiGJHrwlwhq2EVh5W2srRvZ0dTqZVjy6CZCIYUdXHxrQzCApD43a9Fj
-         0tbhGsDz/Axzd7rv0E+HWmWbDz3LQN3QHs4lZeu5IEWn4pWtofV0hGmlv3BXjJFTzoi9
-         +cNaeKLotWkO54CEYSgbKnuuogT65FRWI5cEK6JLcwQAujjf29OQvUvEUKTlMDkJfhaG
-         wrM3KhdarOhn7BhblzxQ1ln+y4SLjQVb83CzLOqpLm5WQfwQ9GJ/ZtZsmIdfORC7AeEt
-         UKtfd2smXJC0lhgTWe8XaBcpaRPeft1foabsaO9o7NDRrisgnJJZnJV0iFDtOC+m+Ydc
-         QN4w==
+        bh=Ttj3sFWSEnF9bKkFFkERtt9KfbPvVDW8TfmnS1SN4Ec=;
+        b=Sfk8IzpTovCmog8QwTh++lgGCEyUw+cFiHfhswmf2rnqRL5zPJ5EmDazK68JuY0Caq
+         trd5E99iLoJGQH3MpMBF7fIW3aDdWcDBdXQ5Z0qLyHd6RpRFPE4/VNrro9e2mfi98xrT
+         lTwU6PpYm7QhZKZmbdOpOfJsPDhUlOXFToRQSAZGV2LEK8ZOpvhkoEIGb8JzwQuRcvT1
+         hUFCBdrS6NBaKzlVTxKIPrdX7EMRc+WQVcy0s9H3npBDqrEpOJmN0DomSNA5I4N7tvSg
+         oNuvPvu15UDNzUQtXILLG+e2fL4awmsjJKOAc5Vc/Ot2otP8S/VQFnHF0Qapm1mKz13K
+         fEgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975336; x=1791580136;
+        d=1e100.net; s=20260707; t=1790975340; x=1791580140;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gRJ1bV1gQpquD4wKcD7z9DV/tvZaeEUb6Cg+brGjowY=;
-        b=gwfPS+hgAns9mN/5Q2rcNQHr1yZsrBlaeA3ej9GMQ1b3qMCRw5cdtAPpXE6M9w0xSa
-         JsF09s8G+Enca7HxWXcQmxlQ8cJTBkWYoxCL4Zg4eqjHIf7G9acJQhvEVH6NrC/VAbhx
-         2M3hP5aVuUBl0XAu6AoOSTwU9lFlKTPLTaLCFsUgtsUZHveLNHdev2B1cGb1l897NWZY
-         eyxDSkDE5h2yoQZ1a/0N3BvZpjQZCZTlmwMgSfhUTthz6oUxK9Q1n1pOwXy1w1nmRhiv
-         0f+AYPchaJgOJU89QkY/ktSUeKHIcl1lq5C5w1AKE6dpprPhsBGEpZ4mF5TZGenF2JJN
-         cp/Q==
-X-Gm-Message-State: AFq9FYLVCidYE/eyxFvQ4lMCvFVS4vAQCCAhiVYOCH2T9EeaFxHxjPcu
-	U7B9Htx7vThZ9Pr56stuJziC1xm6nQbpqD6/EecEM3i2XgjCiFu4NxgXG0uGx84rDiUAGXav9Zh
-	J3ASK2Q==
-X-Received: from plzw8.prod.google.com ([2002:a17:902:9048:b0:2e5:3340:8b27])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc3:b0:2e3:1d6e:4cc6
- with SMTP id d9443c01a7336-2e4ea1c08bfmr6314055ad.15.1790975335508; Fri, 02
- Oct 2026 14:08:55 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:07:06 -0700
-In-Reply-To: <20260930212114.3500045-1-seanjc@google.com>
+        bh=Ttj3sFWSEnF9bKkFFkERtt9KfbPvVDW8TfmnS1SN4Ec=;
+        b=XdtO2qyailpvBXEfhFoTDGDmdP6HxdGCFK+mt+4DcqJLNPnPp1oNg2nrPbpTN0lDkw
+         DU9oQFIZZGCAXmUQr/EKUdN5cocFLDPVJJOn7XbcnjRZfJVunxkkTvzN0Y0kcFszDhAw
+         YbMngu2noVpZewQNGsnN8vrYtimvQIDg0IGakx9M+m5EqVsmV1FI7D0I/OVowfiXcRVh
+         Xi5kmUCe8uAIK0SQ85J5iew6R7mawTtpWPrhQZCmpYbXWSLfOTklHs9zgKxl4mGeEcc1
+         +OnZTfVsAzJ5rhC5PMzIde1/vShE3kEbR2Txrr7LX3Ig7/YWjGAmWRXG5dk21TXHi9WO
+         Pezw==
+X-Gm-Message-State: AFuF++ne3u7OEvu6BTTtvHk1aI/0PSlgLBLY/+3apHLFFRHHZyjjw2Ll
+	9DvZQqzuuJDXefUk+zWUtaHzBAOPqMWKDec8tF2PPdz8dc9+gZRaJBikFmnmCEzo49/MqWUKxd2
+	Qug5EbQ==
+X-Received: from pfrg18.prod.google.com ([2002:aa7:9f12:0:b0:886:d067:aa33])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:ed0e:b0:3dd:a196:3091
+ with SMTP id adf61e73a8af0-3e0bd42d56amr3863146637.65.1790975339691; Fri, 02
+ Oct 2026 14:08:59 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:07:08 -0700
+In-Reply-To: <20260930193634.3415089-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260930212114.3500045-1-seanjc@google.com>
+References: <20260930193634.3415089-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097462201.4066402.1467939489474042717.b4-ty@b4>
-Subject: Re: [PATCH v4 0/5] KVM: x86: Honor EFER_LMSLE_MBZ
+Message-ID: <179097462681.4066567.295128970891612900.b4-ty@b4>
+Subject: Re: [PATCH v6 00/12] KVM: x86: Bus Lock Detect fixes and SVM support
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>
+	Yosry Ahmed <yosry@kernel.org>, Shivansh Dhiman <shivansh.dhiman@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 30 Sep 2026 14:21:09 -0700, Sean Christopherson wrote:
-> Jim's series to try to clean up the EFER.LMSLE_MBZ mess (and what a mess it is).
-> I (still) didn't touch the KVM patches, and barely touched the selftests, i.e.
-> Jim's testing from v2 should still hold.
+On Wed, 30 Sep 2026 12:36:22 -0700, Sean Christopherson wrote:
+> Fix KVM's handling of DR6.BLD, and add support for virtualizing BLD on SVM.
+> KUT tests: https://lore.kernel.org/all/20260925230003.2362261-1-seanjc@google.com
 > 
-> v4:
->  - Go with a less fancy kvm_is_nested_virtualization_enabled(), because KVM
->    sucks (and not in an ironic Primus Sucks! way). [Sashiko]
+> v6:
+>  - Throw in the towel, at least for now, on WARNing if KVM sees a DR6 without
+>    all of the fixed-1 bits set. [Sashiko]
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/5] KVM: x86: Advertise EFER_LMSLE_MBZ when KVM disallows EFER.LMSLE
-      https://github.com/kvm-x86/linux/commit/192dbad1bc0f
-[2/5] KVM: x86: Honor the guest's EFER_LMSLE_MBZ
-      https://github.com/kvm-x86/linux/commit/7358d13e1f19
-[3/5] KVM: selftests: Rename svm_nested_clear_efer_svme to svm_nested_efer_test
-      https://github.com/kvm-x86/linux/commit/cc2b9cc15ab7
-[4/5] KVM: selftests: Add module param API to check if nested virtualization is enabled
-      https://github.com/kvm-x86/linux/commit/58f4dc83da6e
-[5/5] KVM: selftests: Add coverage for the EFER_LMSLE_MBZ defeature
-      https://github.com/kvm-x86/linux/commit/34f749161dab
+[01/12] KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when delivering #DB payload
+        https://github.com/kvm-x86/linux/commit/719a1d58bf43
+[02/12] KVM: x86: Rename kvm_dr6_fixed() => kvm_get_dr6_fixed_1()
+        https://github.com/kvm-x86/linux/commit/cc551e8d4f77
+[03/12] KVM: Return an "unsigned long", not "u64" for the fixed-1 DR6 bits
+        https://github.com/kvm-x86/linux/commit/28bb033664ee
+[04/12] KVM: x86: Force fixed-1 bits in DR6 after synchronizing with hardware
+        https://github.com/kvm-x86/linux/commit/7b88577a0983
+[05/12] KVM: x86: Set guest's fixed-1 DR6 bits when delivering #DB payload
+        https://github.com/kvm-x86/linux/commit/c62ffee78db8
+[06/12] KVM: x86: Kill off DR6_FIXED_1 to prevent future misuse
+        https://github.com/kvm-x86/linux/commit/0e2342b02380
+[07/12] KVM: SVM: Add helper to query if LBR virtualization needs to be enabled
+        https://github.com/kvm-x86/linux/commit/7faa73133e40
+[08/12] KVM: nSVM: Disable LBRV in nested control cache when unsupported
+        https://github.com/kvm-x86/linux/commit/5cb0577b7497
+[09/12] KVM: nSVM: Open code check on LBR virtualization being enabled in vmcb12
+        https://github.com/kvm-x86/linux/commit/cab4449bddbd
+[10/12] KVM: nSVM: Don't assume all active-low bits DR6 are fixed-1
+        https://github.com/kvm-x86/linux/commit/39080c3ca8b1
+[11/12] KVM: SVM: Add a vCPU-aware helper to get supported DEBUGCTL bits
+        https://github.com/kvm-x86/linux/commit/cd0e6f4d7cec
+[12/12] KVM: SVM: Add support for virtualizating Bus Lock Detect
+        https://github.com/kvm-x86/linux/commit/62ad461079e7
 
 --
 https://github.com/kvm-x86/linux/tree/next
