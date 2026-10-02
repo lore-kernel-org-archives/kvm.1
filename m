@@ -1,91 +1,94 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515D12C21F7
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0153840A92B
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 21:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975499; cv=none; b=I6LMTfan4j0IM42KqDAqji5qY3cWGEHwoPNDcXz8g85kOoGDV+/mnZdc5T+x84IOqw5IElElQhWNxdpqSZJWvUKXS4e5ewjEou10OD/+JlfXwH+0YbcK3fRFyA3a6mT5y3kHXcij7SAkXwwwB+Nl44EseWVzV6HgUO2UVSu+qbQ=
+	t=1790975504; cv=none; b=BIzb1c2TLFWJHNQX+Vi1y7GL6Z5gRRtbPexOzNt6fwREXmKJkz2G8p3cQD0+2VOBTWJYgMLEv40s42Z/okGVTtZNyenmbm0D7tR6AQ82F1UJU6JXVUWNwkbh1kcE7lnAtPk0ntEbbMHiX3Gq4z2AZHCYymlCduhMRm9pDdzqZ9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975499; c=relaxed/simple;
-	bh=SbeoSzc8717QD/IqpcZd0l46LWnbezvyajiiws+1ApY=;
+	s=arc-20240116; t=1790975504; c=relaxed/simple;
+	bh=m1kgZk/QnnIGSQq94ScRWI4VTjnRh3pMl09wcBzDj1s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=G4VSDCCsKfvYdDucGPj8XWT/RKLkqvFfOOiaVWJ4Y7R0TNlgO38wgl79KNsypmV255vrw68wKCjKOHVLICcfLawTbc3Aa9NtrtDrAi22LmcLw6ZmPj9j5By072bh9lzHTnIoFThpeGhQXkhehwjnLrPlshkbPhYQiimSb0dvDZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oFV2swOR; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=k4WYXPo4SFditfR7HkfTArv5sMOHwkvGENa4WpZJC+SN1XS6TvCLnpYquGnbHTkiX3Lu8zNcj5iR5uDxNTFATAy6R1y3mBTebbWJRY946fhMiFOSez9MTHX4a3K6ZqANxvmKlM85ro8pztFLaps9yWxkh/4ygiYtqqZjbyLB3cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TK6X8O3w; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oFV2swOR"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cca35cf9f77so12755a12.2
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:11:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TK6X8O3w"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a4a053dcadso323915a91.0
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 14:11:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790975492; x=1791580292; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790975497; x=1791580297; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wShwsJKvODsiktjEQtwHrAPB94R0KVRpk+BGj5cEKBU=;
-        b=oFV2swOR/Zcywc8myCyZ2GnQmITK4lzFf4CizWfJzJZ3x7DFkCVoPPRvQcZP0N8jCp
-         1JP8uv7WfZzK5sBU64OofXfEExyLrLaokCFB6h1ibJeHR2GEKPQhKOJ0RxSwDwuHihyQ
-         V2MhfnhcGYdR2CrObdMIPG6GGEUuUxUU5tpzXNWdDoOmzG88SIz4PDp8aUVvrM8gRxT/
-         AouP7CiKNU99kIuLwaMR6tVCIr3r9G4/8YcUgQ4GwY376LpBff4pk5fenip+js6R6kf6
-         UYh1H7b0dpRnWNCYbzpZvcfxI/lP/ljxAIqk/xR+NhL4pUeNgLC5fXcFZEbyDvVYIzvQ
-         pzXg==
+        bh=j1MttPZc2WbaNxCbcw+ABVFsYx0hSjd1yRWWbDI1AxA=;
+        b=TK6X8O3w7PHvfTxBzEn1xNRHM3zaQA0YonJesndJSXm5l3EYOZYVb36I3wag0aCtTR
+         yiV8MdiP5y954sybPn488evw3nTJX/tQXObdmqInx6TMfB/Y1hgF08r3/i+7RmLFmWWh
+         dxy88du+76jKfsWBJX+4TavxwtCIvS17ACWCEoBBYNR61cHmrpgLhb7i6MVhj/4RRLD8
+         AZUo1rR8W7KMQkvLGtiExv4djDf32tUlI1k3e83t6gAyKbiOh81MIL3vpd3ssVqndRNr
+         3XPSgTNELMc67v09FkhiMQEkFJgevkuOjrzPYte3/OPYPmiZiK7ghsGN+i86vDL60CZj
+         hNVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975492; x=1791580292;
+        d=1e100.net; s=20260707; t=1790975497; x=1791580297;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wShwsJKvODsiktjEQtwHrAPB94R0KVRpk+BGj5cEKBU=;
-        b=WJYV4rtmmi0PnXU9IUvviIDSM58LlS/sA3oy/d1KpwsSdy/UlXPkG5H45Bdm57O24D
-         lohO4qexGUJv+C+YonaJIxo0lru4sBq9TfTpO6B7rJCxAlfInyfrTsbt6nMq2Sgr56KT
-         Dm7j/8fjgBUmifkY8e9YDs+mw4qvImCMLWWp3ktkiZG2n9tlkMX6R1wdn6T4ctyjrpcb
-         0oEWIpnOHvjDQ+HPORYH2YTA7GT2IKdl+iRn5id5aYDkiMQ0IHUXwBrGMmQASp8I6has
-         JHIDF+YeNxQhN43+FW/LcL9cIoz0rXVRe4x8Va34QRxjH00J1DTym3Easq4RYRQ1Gync
-         2kzQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxPkNvY2z5UpD5k0ilVqEMoRH3v+Py51fDcUPfokb7uDPOfiEcezN3lgxVvrLIMemjSqEs=@vger.kernel.org
-X-Gm-Message-State: AFuF++k14siMi0ttQWivtslWfSdFlo30Ull7mnMzRpVAxI1S5ml3WbIi
-	zsMRU0tiW1bMkIMNm+k/7fk1kD7m9P3yN5vUCXcVIoNEyq0X8Tm4dWf9MhBhjqpVC8DpnJAFlaV
-	30lpsZg==
-X-Received: from pfme28.prod.google.com ([2002:aa7:98dc:0:b0:885:6385:6167])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4516:b0:3de:61f3:33f8
- with SMTP id adf61e73a8af0-3e0bcf64e6fmr3964720637.43.1790975492097; Fri, 02
- Oct 2026 14:11:32 -0700 (PDT)
-Date: Fri,  2 Oct 2026 14:07:34 -0700
-In-Reply-To: <20260903223258.486034-1-yosry@kernel.org>
+        bh=j1MttPZc2WbaNxCbcw+ABVFsYx0hSjd1yRWWbDI1AxA=;
+        b=H91oDn6x9ZkIyGuyTLLfct6XodYuGSXINXjZ/gNkqXHlKpje5++ue2q9TDCRKVWD4Q
+         RTLM7OOdH6DyF0P11zs8bKa/hApO6S966LxX5JSLKp9/xG2QqPcoTMicQZrqhdJuThMz
+         AJU93cKdx8+e6O3RQy5feeW51llrtW/wWWM2++W/BFZFZ1DS387gkQiM4jd6aeKM4g6R
+         kibPCQjmLJk4FzTiBBB0N2N0Wt8RFiLsbjXakl3okiO6cVEQOxa+aIrpJ1mS1TUeKOrt
+         WqSvob2ZlyBsJ1n13tN3k/Q4TxNo4G/gW7mHZZXofEsaFYnuugrgpgViquG8PqUrqTcM
+         ZelA==
+X-Forwarded-Encrypted: i=1; AKwUvBwXN2tGMSI9YaB0+bikdGyRUToN/In2bHZl5PSQuBEZREEKC04UbtJJV4Kg37+7kqHZzog=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8t6OjfkzPDt6el1keQHQXhfx8VFcdYS6yM3ZG17ZaOItGfJ9i
+	gCamiwkPsQ8Q6wYTliUXP/qrOWB+DT7jsnRWgR8CsgL9le5yvNQFQUzXXebRDYXLJpVsvVbYyGJ
+	nZcnJOg==
+X-Received: from pjot24.prod.google.com ([2002:a17:90a:9518:b0:3a4:b4f0:b161])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f86:b0:3a4:adea:50c1
+ with SMTP id 98e67ed59e1d1-3a6ced92fe9mr3693415a91.62.1790975496840; Fri, 02
+ Oct 2026 14:11:36 -0700 (PDT)
+Date: Fri,  2 Oct 2026 14:07:36 -0700
+In-Reply-To: <20260820123512.87236-1-duankeqiangcym@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260903223258.486034-1-yosry@kernel.org>
+References: <20260820123512.87236-1-duankeqiangcym@gmail.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179097499601.4081097.16696339000915079689.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: SVM: Trigger new ASID allocation in both VMCBs on
- pCPU switch
+Message-ID: <179097516928.4085781.4004685515336917376.b4-ty@b4>
+Subject: Re: [PATCH v2] KVM: x86: Clear hardware HLT state when userspace
+ makes a vCPU not-halted
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Stefan Teodorescu <fane@google.com>
+To: Sean Christopherson <seanjc@google.com>, Keqiang Duan <duankeqiangcym@gmail.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Qinguang Chen <chenqinguang@kuaishou.com>, 
+	Zhiping Du <duzhiping@kuaishou.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 03 Sep 2026 22:32:58 +0000, Yosry Ahmed wrote:
-> When the pCPU where the VMCB was mostly recently used is switched, reset
-> the ASID generation in both VMCBs, triggering new ASID allocation for
-> the immediate VMRUN as well as the next VMRUN on the other VMCB.
+On Thu, 20 Aug 2026 20:35:12 +0800, Keqiang Duan wrote:
+> Force a vCPU out of its hardware-tracked halted state when userspace puts
+> the vCPU into any state other than HALTED via KVM_SET_MP_STATE, i.e. clear
+> VMCS.GUEST_ACTIVITY_STATE if it says the vCPU is halted.  Add an optional
+> kvm_x86_ops hook to do the clearing, as SVM has no equivalent VMCB field.
 > 
-> The ASID is shared between vmcb01 and vmcb02, and gets flushed on every
-> nested transition. However, since pCPU tracking is done per VMCB, it is
-> possible for one VMCB to allocate a new ASID when migrated to a new
-> pCPU, and then the other VMCB reuses that ASID on the old pCPU. This can
-> result in the same ASID being used by multiple vCPUs on the old pCPU.
+> When HLT-exiting is disabled for a VM (KVM_CAP_X86_DISABLE_EXITS with
+> KVM_X86_DISABLE_EXITS_HLT, e.g. QEMU's "-overcommit cpu-pm=on"), a guest
+> HLT halts the physical CPU instead of exiting to KVM, and hardware saves
+> GUEST_ACTIVITY_STATE=HLT into the VMCS on the next VM-Exit.  That field is
+> sticky: it survives VM-Exit/VM-Enter and is only cleared by vmx_clear_hlt()
+> on event injection, or by vmx_vcpu_reset() on INIT / vCPU creation.
 > 
 > [...]
 
-Applied to kvm-x86 svm, thanks!
+Applied to kvm-x86 vmx, thanks!
 
-[1/1] KVM: SVM: Trigger new ASID allocation in both VMCBs on pCPU switch
-      https://github.com/kvm-x86/linux/commit/bf260dc9e7b8
+[1/1] KVM: x86: Clear hardware HLT state when userspace makes a vCPU not-halted
+      https://github.com/kvm-x86/linux/commit/883719f57f5d
 
 --
 https://github.com/kvm-x86/linux/tree/next
