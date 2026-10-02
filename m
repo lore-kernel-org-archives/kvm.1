@@ -1,189 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1688636606B;
-	Fri,  2 Oct 2026 13:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB088497B97
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 13:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790948101; cv=none; b=ckX0JPu/Rd1uTERFotDNuMKmcjOX/uQVhCzLv7rpRDUjcEo8ocr6m/ypY8xSA4K4aTu1C3U660k0T73Aas/dNrqyIVoLzAO26wcs4WNsZ6/rV0+IijOsj7QV4LVFwglLvf1HS/zVjAjNOBNaRdMwwGJ+y+73xUkgYkVCYqBFWZA=
+	t=1790948189; cv=none; b=qr6zSjyX4kqWni6sm49cFMEOgnhKGpsNzBj0zUBa5/2lDMaYpS4KrL2PR3qsOPNQOITsbKpAsvpKs+jUmBX1v5sDPQYtigsSHdjaZ8nURmnZxr7kpLu1vmPTUa3EkMT32qCbKWmuw8xRRvGvF2FofYth8dd+plg/Zu8/lPyT4OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790948101; c=relaxed/simple;
-	bh=Tq2eYUKlpdqNpWpmepiwOCFbsrTtrEZz8tntmWE++rc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jYDevxpBRRiRpin4b1hbLTceU0D/8KvauHYlPnEH60/Bbwt1KVtLGdlmKvnb7A+ZyOQCVICNAjHjoonUw/sYKeDcaQjyKCsjPSQ14xl56LU/RUUH/QBdm2Rr9uN7UXAW1L+Jc0Dar99428oVTgko5IAQEjtQwDu4mfmbOrYQxbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKANQyE9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790948189; c=relaxed/simple;
+	bh=QF+V7wNqKGgV7XYoB6glXEczeqS/jN2SsUOlgbKk4Gc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ClsA+Ur7Md9l6rHXHp4JojTrkXCtO1oiaI/EKGfdolG7mT2mqNThZug4t84PTjGqSYUWZdgBu++p3R2qjTOX8NK+cvnlGvvr8kzKZm5M1kYi3AiyoWy/110wOb2Hz887epuaZ+d88n5+znQpEzg4TS+lInc5e+kdN+OibaKy/gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uzgWq7x4; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKANQyE9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF5C1F000FF;
-	Fri,  2 Oct 2026 13:34:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790948099;
-	bh=9KryQpw5PkHuyc0/0g5D/mcNk3FqEeMgZBWUSBcaq/k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IKANQyE9ilWDHNOAl0JIUDDOhhzvcgZTvPAxDlfVacEYAIqsSpwQ0Jq3BkLL5G6/r
-	 llXTF4+sZugQSavVZe6GpaDIdC/0HtLsiOKbxBFT/jEfyld9zddxanwgUsrw4twTm8
-	 /MQ670sIJumFUC+Pf6rB/LFalRxsdCF8q9YROMDKsN9lz92y8gCtbZ1gzFRwstKnHt
-	 eaSwAxPiwMInk/y0pzxMKbxnTIWXVTRixyDyLmE48KyjTIIG7+2zOuy55tdiiwsRwZ
-	 iCnBcV08HczuOzpxXkWwjbSkftPQGxqTUjXvLICj9AEVqSbnVJZN9js9XTYXTY/FQu
-	 1cqPm3d8CibBg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xCdPd-0000000GFBp-26G6;
-	Fri, 02 Oct 2026 13:34:57 +0000
-Date: Fri, 02 Oct 2026 14:34:57 +0100
-Message-ID: <86qzi82pku.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
-In-Reply-To: <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
-	<20261001210703.1597150-6-suzuki.poulose@arm.com>
-	<CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
-	<86se2o2rbs.wl-maz@kernel.org>
-	<CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uzgWq7x4"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso6688926a91.1
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 06:36:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790948187; x=1791552987; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HH7Yz/iMGy273Km5ybMiRdHkxei7Nci6prC81C4z3FM=;
+        b=uzgWq7x4FRxavRBvz8oe7G7hgHNdxJ/NzqzJGlhJAj6nVWYxlo99QY9fYu6PuWIy/4
+         WMRZS4KrffBivpMYyRICWmuOZ5RJ5f/mHQK5OV0unj7njm/+fbyaEKQum6cMAeZN04vW
+         R2PGBGaIEZHCBUJ/r6RRym441nKRQwUwSycZimi2aBPfm96qT7Zl6mOlZW5Ley0L+gmZ
+         Bj2eTRBNUbuku3vqVymXxY8QROyFUqpxIQ4uHDkMxBCvAqdoTumdGolb2vEBubLjOzl7
+         4hwEX3dWh+0CE0lktTxNNz6q9Eos48rUGbhXY6m8J19JlCMebuuf6ZeTcFkkWyCeAxUm
+         +Ezg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790948187; x=1791552987;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HH7Yz/iMGy273Km5ybMiRdHkxei7Nci6prC81C4z3FM=;
+        b=nSVgDpAR/bjgRlv6YaOkAnSQFnbYR7vQNb4Hv/LvF8oVd+3nlBGBl2lPPwoVepMshf
+         nKmzX7l/6zaj8f40o8+Byy1Uyp9+18FA3bv3kT6a51ZOvkY/gn6F+CiYKN2TbZacv4v2
+         RwdKv135iZfP3Xc5RrNcECGhzGWGZBDjfIFt5cJ70VbCYXaC35ukG2GF7fEs/VaInbA3
+         IZQIv7GQ7TZw2SQrdxIZllYT1G7h8q+O72MemBa39W4R4M0EjD2Ny/1Q5qOwPcEUQero
+         zuIm3KR4OW6xCVl1ZQQThGNCimXmqsEFvXa9s7zuOhrIYA9NV5P+7Qla48ckfbskTPZ1
+         mScA==
+X-Gm-Message-State: AFq9FYLlJdamTE9CpjO1CMIgAjEMd/6Dy/F7F/DlPo29W3wOMWZAPhKD
+	c7koyax/J77BDt7aATapS2qrIPWG9cK5nvnBi56++v0Q2A78zadYrA8cJvdJu9wNxVjIxvXXPxG
+	THuy63A==
+X-Received: from pjbic4.prod.google.com ([2002:a17:90b:4144:b0:3a4:e23e:7b0c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:f17:b0:3a6:e159:a22b
+ with SMTP id 98e67ed59e1d1-3a6e159b4demr648478a91.34.1790948186809; Fri, 02
+ Oct 2026 06:36:26 -0700 (PDT)
+Date: Fri, 2 Oct 2026 06:36:25 -0700
+In-Reply-To: <20261002091342.50ADA1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20261001202234.3794060-1-seanjc@google.com> <20261001202234.3794060-4-seanjc@google.com>
+ <20261002091342.50ADA1F000FF@smtp.kernel.org>
+Message-ID: <ar-y8vCZt84a_xm7@google.com>
+Subject: Re: [PATCH v2 03/10] KVM: x86: Unmap VMAs for KVM-internal memslots
+ when the memslot is freed
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, 02 Oct 2026 14:05:17 +0100,
-Fuad Tabba <tabba@google.com> wrote:
+On Fri, Oct 02, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: double unmap of internal memslot VMA causes host UAF
+> --
 > 
-> Hi Marc,
+> commit 120ca6d762cdf95d09e394aff4bb4af6d01288d6
+> Author: Sean Christopherson <seanjc@google.com>
+> KVM: x86: Unmap VMAs for KVM-internal memslots when the memslot is freed
 > 
-> On Fri, 02 Oct 2026 13:57:11 +0100, Marc Zyngier <maz@kernel.org> wrote:
-> [...]
-> > Just to make sure. Is that what you had in mind?
+> This commit unmaps KVM-created VMAs for KVM-internal memslots when the
+> associated memslot is freed directly, instead of using x86's internal API,
+> to prevent VMA leaks on teardown.
 > 
-> A diff is worth a thousand words :) Yes, that's it. With that, every
-> remaining hyp user of vcpu_is_protected() only runs with pKVM, so the
-> kern_hyp_va() case in the macro can go too.
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 79468ddfe4736..e91bd79dd3cc6 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> 
+> [ ... ]
+> 
+> > @@ -10066,6 +10048,16 @@ void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
+> >  	}
+> >  
+> >  	kvm_page_track_free_memslot(slot);
+> > +
+> > +	/*
+> > +	 * Free memory regions allocated on behalf of userspace, unless the
+> > +	 * memory map has changed due to process exit or fd copying.  Leak the
+> > +	 * mapping on failure, e.g. if the task is killed, worst case scenario,
+> > +	 * the page(s) will be reclaimed when the process exits.
+> > +	 */
+> > +	if (current->mm == kvm->mm && slot->id >= KVM_USER_MEM_SLOTS &&
+> > +	    !WARN_ON_ONCE(!slot->npages))
+> > +		vm_munmap(slot->userspace_addr, slot->npages * PAGE_SIZE);
+> >  }
+> 
+> [Severity: High]
+> Does this unconditionally unmap the VMA for every freed internal memslot object,
+> potentially leading to a double unmap?
+> 
+> In __x86_set_memory_region(), the twin memslot objects are created with the
 
-Not just that. The whole macro can go, see below (only tested a with
-non-protected guest).
+Ugh, SMM, which is the "twin" aspect Sashiko is referring to.
 
-	M.
+> exact same userspace_addr for each address space:
+> 
+> 	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+> 		struct kvm_userspace_memory_region2 m;
+> 
+> 		m.slot = id | (i << 16);
+> 		m.flags = 0;
+> 		m.guest_phys_addr = gpa;
+> 		m.userspace_addr = hva;
+> ...
+> 
+> When the VM is destroyed or the memslot is deleted, KVM iterates over all
+> address spaces and calls kvm_arch_free_memslot() for each memslot object.
+> 
+> Because vm_munmap() is called here without checking if slot->as_id is 0, could
+> it unmap the same HVA range multiple times?
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 9e1fa00d96f7c..84703a65bfdd4 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1520,25 +1520,12 @@ struct kvm *kvm_arch_alloc_vm(void);
- #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+Heh, I arrived at the same conclusion before reading this.
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e91bd79dd3cc..e55aa26e26cc 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10050,13 +10050,15 @@ void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
+ 	kvm_page_track_free_memslot(slot);
  
- #define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor >= __VM_PROTECTED)
--/*
-- * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
-- * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
-- * which is populated correctly.
-- */
--#define vcpu_is_protected(vcpu)						\
--	({								\
--		struct kvm *__kvm = READ_ONCE((vcpu)->kvm);		\
--		bool __protected = false;				\
--									\
--		if (__kvm) {						\
--			if (is_nvhe_hyp_code() &&			\
--			    !is_protected_kvm_enabled()) 		\
--				__kvm = kern_hyp_va(__kvm); 		\
--									\
--			__protected = kvm_vm_is_protected(__kvm);	\
--		}							\
--		__protected;						\
--	})
-+
-+#ifdef __KVM_NVHE_HYPERVISOR__
-+#define vcpu_is_protected(vcpu)		BUILD_BUG_ON(1)
-+#else
-+#define vcpu_is_protected(vcpu)		kvm_vm_is_protected(vcpu->kvm)
-+#endif
- 
- #define kvm_vm_is_protected_pkvm(kvm)					\
- 	(is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
-diff --git a/arch/arm64/kvm/hyp/include/nvhe/pkvm.h b/arch/arm64/kvm/hyp/include/nvhe/pkvm.h
-index c904647d2f760..ffc99d25955a1 100644
---- a/arch/arm64/kvm/hyp/include/nvhe/pkvm.h
-+++ b/arch/arm64/kvm/hyp/include/nvhe/pkvm.h
-@@ -57,7 +57,7 @@ pkvm_hyp_vcpu_to_hyp_vm(struct pkvm_hyp_vcpu *hyp_vcpu)
- 
- static inline bool pkvm_hyp_vcpu_is_protected(struct pkvm_hyp_vcpu *hyp_vcpu)
- {
--	return vcpu_is_protected(&hyp_vcpu->vcpu);
-+	return kvm_vm_is_protected(hyp_vcpu->vcpu.kvm);
+ 	/*
+-	 * Free memory regions allocated on behalf of userspace, unless the
+-	 * memory map has changed due to process exit or fd copying.  Leak the
+-	 * mapping on failure, e.g. if the task is killed, worst case scenario,
+-	 * the page(s) will be reclaimed when the process exits.
++	 * Unmap VMAs allocated on behalf of userspace for internal memslots,
++	 * unless the memory map has changed due to process exit or fd copying.
++	 * Do the unmap only for the non-SMM slot, as the same VMA is used for
++	 * both non-SMM and SMM memslots.  Leak the mapping on failure, e.g.
++	 * if the task is killed.  Worst case scenario, the page(s) will be
++	 * reclaimed when the process exits.
+ 	 */
+ 	if (current->mm == kvm->mm && slot->id >= KVM_USER_MEM_SLOTS &&
+-	    !WARN_ON_ONCE(!slot->npages))
++	    !slot->as_id && !WARN_ON_ONCE(!slot->npages))
+ 		vm_munmap(slot->userspace_addr, slot->npages * PAGE_SIZE);
  }
- 
- static inline bool pkvm_hyp_vm_is_protected(struct pkvm_hyp_vm *hyp_vm)
-diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe/switch.c
-index 7318e3e6a5f36..2a3e6d83682d5 100644
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -217,7 +217,7 @@ static const exit_handler_fn pvm_exit_handlers[] = {
- 
- static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu)
- {
--	if (unlikely(vcpu_is_protected(vcpu)))
-+	if (unlikely(vcpu_is_protected_pkvm(vcpu)))
- 		return pvm_exit_handlers;
- 
- 	return hyp_exit_handlers;
-@@ -238,7 +238,7 @@ static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
- 	 * it.  The check below is based on the one in
- 	 * kvm_arch_vcpu_ioctl_run().
- 	 */
--	if (unlikely(vcpu_is_protected(vcpu) && vcpu_mode_is_32bit(vcpu))) {
-+	if (unlikely(vcpu_is_protected_pkvm(vcpu) && vcpu_mode_is_32bit(vcpu))) {
- 		/*
- 		 * As we have caught the guest red-handed, decide that it isn't
- 		 * fit for purpose anymore by making the vcpu invalid. The VMM
-diff --git a/arch/arm64/kvm/hyp/nvhe/timer-sr.c b/arch/arm64/kvm/hyp/nvhe/timer-sr.c
-index 9930657169133..17bd1ff621ab6 100644
---- a/arch/arm64/kvm/hyp/nvhe/timer-sr.c
-+++ b/arch/arm64/kvm/hyp/nvhe/timer-sr.c
-@@ -48,7 +48,7 @@ void __timer_enable_traps(struct kvm_vcpu *vcpu)
- 	 * or running a protected VM (we don't offset anything in this case).
- 	 */
- 	clr = CNTHCTL_EL1PCEN;
--	if (vcpu_is_protected(vcpu) ||
-+	if (vcpu_is_protected_pkvm(vcpu) ||
- 	    !timer_get_offset(vcpu_ptimer(vcpu)))
- 		set |= CNTHCTL_EL1PCTEN;
- 	else
-
-
--- 
-Without deviation from the norm, progress is not possible.
