@@ -1,117 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD953B05A4;
-	Fri,  2 Oct 2026 09:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8525470456
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790931766; cv=none; b=qW17j6Ub4DyrtC/X7EQGKk6lYa4VtJ2ceBYcjpKzVQXDlM+m9/NLWPdKS/2cVZoyMyD5howa8isPfd/hXLmypYluiw3+CweHmVqfVamse0Q76wi9BlAIJV8GY8kWLA3wun8Uf4A8AVtAfjJdbTaT21jasbNfWkwgETyKIUq2wQg=
+	t=1790932411; cv=none; b=YCcTRa+JM2cJTkcFOw1c4Xs1SkrX6rbGMHylIOYwHBW8CU6kj5OTHlELF/hdqEFWy7fScrpnBd+W+VdcMr1lhmP0annoI/TBD+2TfqvyLCKo7VbZ/V8GMuSsrNTcxhZf87JnkMIBX9Fn+ST04pDu1uQS3jeB+ldrrXPfSwr7h9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790931766; c=relaxed/simple;
-	bh=rWcO8KFxXa2PK7YeSRIvLjsJER8mggXQ7JYXtV7+rXM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RHn24qlK4hDRvem01SorU5DYdsd3x8WgbNEWuGGbPMipRa6UrBWvj+NV42tXiEK1n5A+7W8+paGnyhFQOBviDeuMXHHWykE1WuME2b5/pgVi7xeve7OLcFpdQXODd95gEzT6w1BdeZbKud4FTp5MIoq9Qjk+O7FxrwvnLCXvckg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jOqGjIey; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790932411; c=relaxed/simple;
+	bh=tuLKKlOpCUbMDqRioGNIs4+bj67ZW1RzvodU01+mMpc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Ks6CxHWgihgST7GQj2GTQBmOl7zsd/n1vIZADYvpeony5lhxz3FY1RW5HpWU5g9cXevdjy36HM2mSBGnLxvE2oEOaevzoGE3ua0kbmtCLO57VKOQYMMTzIA9R8KTpB7F5x2FAeJT1fpGGkp85LFMLF8RBpKnM00yZzdgFDZ3NSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8EbFIin; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jOqGjIey"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13F41F000FF;
-	Fri,  2 Oct 2026 09:02:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8EbFIin"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBE1F00893;
+	Fri,  2 Oct 2026 09:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790931764;
-	bh=QVMF5xJlxpruAChtkNj1qM1C4rtnjpVNs7oYQB53+ZY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jOqGjIeyGi1TXTU6JwZrpZ7QTHwotBwuHhTo+6TSuWiQCmCCCK7iX0yUflRxnM7PQ
-	 GCFD78clYw1rLgmWRfdO+fFaFVT4YtV+VYGZ1RaSxrS5dhFAYnRv7MpfgPKalyRAUs
-	 bNoR5zcLKTDOJHHaFbaoHyYn+F6JBysnAFCXlnYkp0ZPOdgxqailH7htMyV7Q6tzp4
-	 b/DVfXRgnxCTBijDILV9YDgNmcQOwSawb6OWvHqnny7HCXnrW5EvmoWF6F+wQaiXlg
-	 1abn+ZtjQKNQ9oQm+i+9ft/OSU+2ITCNqxzvn1FGC/JcJxmLBKB7JUXNSLWM2GBMHL
-	 HlFs0KjFMaYSA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xCZAA-0000000G8Wn-28pp;
-	Fri, 02 Oct 2026 09:02:42 +0000
-Date: Fri, 02 Oct 2026 10:02:41 +0100
-Message-ID: <86v77k326m.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>
-Subject: Re: (subset) [PATCH v9 00/24] KVM: s390: Introduce arm64 KVM
-In-Reply-To: <20261002080015.22510-A-seiden@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
-	<179085262878.3865846.5787241839391727949.b4-ty@b4>
-	<20261001132715.108643-A-seiden@linux.ibm.com>
-	<86wls1315l.wl-maz@kernel.org>
-	<20261002080015.22510-A-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1790932409;
+	bh=2dF8I3kDmzcWiM86dZTKaJYmSE6qtyZdl90EDDB5BhA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=I8EbFIin4GGzhxFlM/D2m5K12sSpe3T5nnl2KWAbpG7kXYm1/wpQc8/lMzDZMJQkg
+	 IMPIIVKdW2sJDxqDlYoGZZ/URzUvpGpmBWekdBiogeODSyIKj7M5QOBDyKWfQiCtJ5
+	 PNnV40gWG8zUzkDDeCbYwIyHG+TqlYeHIf55e9p9vNdrFWK5Pna6h4FVagxGVJnCNA
+	 Ayv/fUlhB2w6oHeUmpG8VGl3DXfvPImsudb2JnZAjOvGCIK/f33jQ/yMnsaeb1egvV
+	 JyZaydtL3l/goKquLJNQJ3Y58i5NDWF0wj7t+o6UWPv59eVLnsLT6EVHWzLRl4airg
+	 Udc4e3wvm4k3w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v15 10/23] KVM: selftests: Set up TDX boot parameters
+ region
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Lisa Wang" <wyihan@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261001-tdx-selftests-v15-10-7c62a5d8a992@google.com>
+References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
+ <20261001-tdx-selftests-v15-10-7c62a5d8a992@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 02 Oct 2026 09:13:29 +0000
+Message-Id: <20261002091329.9ACBE1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 02 Oct 2026 09:00:15 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> Yes the positioning of the functions look good. It builds on top of
-> kvmarm/next + this (sightly relocated (line numbes are different) patch
-> + arm on s390 stuff.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] selftests: ineffective TEST_ASSERT due to prior 32-bit truncation
+--
 
-Cool. I've now pushed out the rebuilt kvmarm/next branch with this,
-and hopefully it will make it into -next today.
+commit 818beb22776783ed2680d4f875f92a2f1dad9ff5
+Author: Sagi Shahar <sagis@google.com>
 
-Let me know if anything else is amiss.
+KVM: selftests: Set up TDX boot parameters region
 
-> I'll work on a verification tool for you guys to make this process
-> easier.
+This commit allocates memory for TDX boot parameters and defines the utility
+functions necessary to fill this memory with the boot parameters.
 
-I guess the ultimate verification tool is to build s390 with the rest
-of the patches, which I've just done. This doesn't lead to any error
-that wasn't already reported.
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/t=
+esting/selftests/kvm/lib/x86/tdx/tdx_util.c
+> --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
+[ ... ]
+> @@ -38,6 +39,53 @@ void tdx_vm_setup_boot_code_region(struct kvm_vm *vm)
+[ ... ]
+> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
+> +{
+[ ... ]
+> +	/* Set parameters! */
+> +	params->cr0 =3D kvm_get_default_cr0();
+> +	TEST_ASSERT(vm->mmu.pgd < (1ULL << 32),
+> +		    "PGD must be within 32-bit address space for 32-bit boot code");
+> +	params->cr3 =3D vm->mmu.pgd;
+> +	params->cr4 =3D cr4;
+> +	params->idtr.base =3D vm->arch.idt;
+> +	params->idtr.limit =3D kvm_get_default_idt_limit();
+> +	params->gdtr.base =3D vm->arch.gdt;
+> +	params->gdtr.limit =3D kvm_get_default_gdt_limit();
+> +
+> +	TEST_ASSERT(params->idtr.base < (1ULL << 32),
+> +		    "idt must be within 32-bit address space for 32-bit boot code");
+> +	TEST_ASSERT(params->gdtr.base < (1ULL << 32),
+> +		    "gdt must be within 32-bit address space for 32-bit boot code");
 
-Thanks,
+[Severity: Low]
+Does this assignment silently truncate the 64-bit vm->arch.idt and
+vm->arch.gdt addresses?
 
-	M.
+Since params->idtr.base and params->gdtr.base are 32-bit fields, the
+subsequent TEST_ASSERT checks evaluate the already-truncated values. If a
+test allocates an IDT or GDT address beyond 4GB, the assertions will
+always be trivially true because the upper 32 bits are lost before the
+check.
 
--- 
-Without deviation from the norm, progress is not possible.
+This could lead to confusing test failures during guest execution instead
+of properly failing the assertion here.
+
+Should these assertions check vm->arch.idt and vm->arch.gdt directly
+before assigning them to the base fields?
+
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261001-tdx-selfte=
+sts-v15-0-7c62a5d8a992@google.com?part=3D10
