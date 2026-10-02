@@ -1,267 +1,159 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013054.outbound.protection.outlook.com [40.107.201.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA31E44163B;
-	Fri,  2 Oct 2026 08:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790928053; cv=none; b=uGC57HKVWRxEiUYUZPQDM6VAkC4NAydnv/ZxVSWd+AF+IGony017wV6yjc03w7wz2101guXje2MDvxdRs7Ke0jovAb/Hx7cbjQVrzqVoBTiNCM1wgOsw9/0gxiKWJEDWAxi2HnofScWw3YzjvxO2QbOvd2tWOOuREeest8yOGKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790928053; c=relaxed/simple;
-	bh=hlfqSJkn81Ycv/Ivxi3j4dobgJe1/751DNUgE4YsUis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FEQpV+FaR7ZmciDjGSqobrklwOwzRbEVMBb3gcqszlQyGoP5J3vRsThZi1R+bA6+cgbO3t/jNzWyKObwRmA/OlElNSmefvXPVSntGLxw8pmgDNSiPTGi5X7fMx7wg4LivsMmHICntjYIS6bDnKHS06C78PIpAhvnDZqeHXelxKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=P+Hr4W2T; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD229411689;
+	Fri,  2 Oct 2026 08:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790929162; cv=fail; b=W/nCOv8LxlYgdGkm20FLRLZ0j1YX1DSx+JG8B0Kv9jvTe9mb0zXwgvmxwrmBaJSsG8ei0V2n4Tw/N8AZ9nzIxmIkNi8rNR9NRGhKynbWs2l227Y54cWcQp7tCdgTiU0UlonUKpASQPl4iS9vjmdWB+RzBGXOP5uslNh0q537ebU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790929162; c=relaxed/simple;
+	bh=gj//q+1a+/OeW727QNyGE3wHN7lurV4zIWP8tpmRqBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=k8eZhth15VJ7f34IETeaNyVNkUs/OfBB1T2/b6iA5WxtEYSYksACLU77IpAvyLV9Bv3/SlDD2Ju3Ts44/Wc1ZQHJ+YMCAaH2Yf1goZWwBOM9gI3DSz8RZ8hAHN1nPkeoc/CipImyeRSoQH2cF+tUopfdyHpfTCH1KDnQvjbvCMw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WHbK0TJU reason="signature verification failed"; arc=fail smtp.client-ip=40.107.201.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="P+Hr4W2T"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69265a5c3917135;
-	Fri, 2 Oct 2026 08:00:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=p0PPkDbty7ErKuoX9vz6zdk4YAkVKe
-	+lc5QseNn0Ko8=; b=P+Hr4W2ToLByzLFfZcGMcJHuclV+C763xAeAnzgFOgxWnp
-	pWLXPmnsw02u1WxXUZxY9zYBoYB8w3DnVM/DtSGIsYNaX8Q2XeohWrjId+giqBvL
-	gefs0jZGoTtAzeHQBbtXJ+/yW1oFcrpvEykpu694ZAxfU2b1niFy6swPuEvW2c7L
-	YDEweDjdfXB13qTDl/GeZ+iO7FU90X4PtW0hpeyTY46HytPxl8SMmzko2Bbozbal
-	VjW08M6NriUlINBEYBRGhGW7xUWtQErRbkkbNOMqr6v0wBl5W/UcHsttnx+VV80m
-	GG52oKRiV5zQfey3aLzCBrzzqQ0gcQn4sF3ETU+A==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5s5r2vk-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 02 Oct 2026 08:00:23 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69262eqd2076646;
-	Fri, 2 Oct 2026 08:00:22 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0xcshy6c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Oct 2026 08:00:21 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69280Hvq30212440
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Oct 2026 08:00:18 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D395D2004E;
-	Fri,  2 Oct 2026 08:00:17 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC5EF20043;
-	Fri,  2 Oct 2026 08:00:16 +0000 (GMT)
-Received: from osiris (unknown [9.87.132.225])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  2 Oct 2026 08:00:16 +0000 (GMT)
-Date: Fri, 2 Oct 2026 10:00:15 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>, Fuad Tabba <fuad.tabba@linux.dev>
-Subject: Re: (subset) [PATCH v9 00/24] KVM: s390: Introduce arm64 KVM
-Message-ID: <20261002080015.22510-A-seiden@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
- <179085262878.3865846.5787241839391727949.b4-ty@b4>
- <20261001132715.108643-A-seiden@linux.ibm.com>
- <86wls1315l.wl-maz@kernel.org>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WHbK0TJU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s/5BeHV2RcbUsahAove1C/e9yW3bKZ053BdztybQ7jIKDQbf/0jcVsw6K4YoDM2/QehFjAPOeZLBvojZflHU/ZyDbM/Az48LEm4mEYDWzQf1uj43fck8EE/BoUWRume2xCHbfE5MNuAj/36VLOS9h/s1AshPE/Occo3S/e1yA+ZQBPFLFlpuIMEpWBJYyFm9PqfpMJo8oOe/FoshrOdUlhHCgt2/NY1Qb+Ip/igP828jz+a9kagPiOQ1K8fKmDJdA8Wsn0kw6iAU82ylBSjLPC3CWxERXekChmZYU6uNVMLtqUgx7bnnz0g2vCAaEOw7kX0hixYtLSEy2rXRrI1PuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sAHMbd5X85eP2wU1JNvY8QdHR7BXBSEcRd6L7eR/zWQ=;
+ b=qus7pOR8YE4hwG90Gun6aingi7hFVxJHxO5UpFgMpOPVrtFzLhPd3m6ocdHs472VYBIeAM4/j83EkmhH9Zhu0zhizBLF+dggplfilVLgwbU1KSEOTofYJUJ7TQK68q3o0wh+zUVomwkExs+xjCy9mwm/HHFWojbqXLaWrkMWdqIQpySlHSkzhcc0iYM0kwCXLFO0Zl/IrbDOSZ+i4t0IprfmJo1s89In4vytZy07SvNBvh38R3/7kWWJj5izvPGH99uIXyr5KltR6HLPZJL5Z5eZTrHT7GhrC75mXwioyZvhf/JofnswBwXggZ+BP3iSjJToON9jqDktikdzFLbkoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sAHMbd5X85eP2wU1JNvY8QdHR7BXBSEcRd6L7eR/zWQ=;
+ b=WHbK0TJUTayumdrMB1SRgRRm4SX/F20x4Jpc4LvtcU4hLzX0I4+sCHeng8gki+iuRDBP4LDw7mELJeCrdKKdpFDkZ1eFTkHHA0oXqOuT74pjNWS8BlhzHz5bYwzFBbqXTZIN0xZwwcwjVw+ma62F6HuYylTqiA9FXIq+kK7hStV9J8abej/iPn1z4SKWqj3EBqojA1xxm76MxQtg6jTSOmpS1x+INoCg2ZySwncYD16rM0fPe+ka2fuvy3RrHtVDBUFTHSl/padEDUIXmgd5Ub3w8xV2NbKDLTec9EAPfSkYi7qpPMcGAZ/JY4Yhl56DTV0Nw5iBe49IfOHLlD6EVg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by IA0PR12MB8086.namprd12.prod.outlook.com (2603:10b6:208:403::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Fri, 2 Oct
+ 2026 08:19:13 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0472.016; Fri, 2 Oct 2026
+ 08:19:13 +0000
+Date: Fri, 2 Oct 2026 18:19:08 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev, Tushar Dave <tdave@nvidia.com>, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org, Chaitanya Kulkarni <kch@nvidia.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>, 
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
+ traffic is routed
+Message-ID: <ar9oLsphjPs8NwCj@nvdebian.thelocal>
+References: <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
+ <20260929175737.GK563127@unreal>
+ <eeef5951-825e-459f-b474-bf8c59588446@amd.com>
+ <20260930081832.GA3401365@unreal>
+ <4549640c-f4a5-4dac-9be3-2e5aa127555c@amd.com>
+ <20260930114356.GC3401365@unreal>
+ <fbdc710d-7be1-4021-83c2-548c798d9d14@amd.com>
+ <20260930143237.GI3401365@unreal>
+ <b2e766389e57a55da959369c5ad4b9e39e425659.camel@linux.intel.com>
+ <20260930165236.GS163130@ziepe.ca>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260930165236.GS163130@ziepe.ca>
+X-ClientProxiedBy: SY6PR01CA0067.ausprd01.prod.outlook.com
+ (2603:10c6:10:ea::18) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86wls1315l.wl-maz@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAyMDAzMCBTYWx0ZWRfX6TTjafE+zJw/
- 8IOaDmVbWDcj3fnvYRUKSZmSyPSYC1WIM1utUezfe6ZqcnsDGVAfJmIg8txkrBIouGed3/yEyUA
- +/hGiM5q3QeSXuXvavDUJ84pYEoya/s=
-X-Authority-Analysis: v=2.4 cv=HJ5WhYtv c=1 sm=1 tr=0 ts=6abf6497 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=oxOeRRTydUpBoHNR5nMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: EP_6xC35w4LYshj_KR8G9Ra7L-auzk1s
-X-Proofpoint-ORIG-GUID: ay7HdBwUIxDlv8jnNezyMkEYZ5PrxwQt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAyMDAzMCBTYWx0ZWRfX/zOtryu/PAoy
- u7oRYSKzJ6rwE0J3so7nc3C2XtU+bC4IT68zcOhGHfu2LJQua2RonwGZblhNH16odNb7944nUYS
- oyKyBt10wL3kC82+PL1/o+R047CDaivfNu1pJKM2tqYlL16657qBEONEp+v3FwryrwPuTX0S7tb
- EfGEh7FriG3LXB7MNajU7eKyIA9sl2UscPzMOg8/ZHzlpENYSPOvfUvhVD1pGgJ4PoKURz/U98E
- 16MRnYxnnp9yAIqsoV2wGYiru3TWvr6X6KJt0pchKXd42pxzvW41Hh7cYtOoGHzfcc0Gg8B724N
- IWL1x902hHWn64KuE+EEH7FxrusaC1Q9YqGBQjVjRpmMFXURYbCoMhFRawVj1ELvk5HGAKtOiQ7
- c5ueik/J1ir5to+uydKkTkUYiQLWG4scqJCLlQOhm41nFB1WndowEw7r8NIULOhcfZPJvAnOSf9
- gOpDwkD4W1yXh5UaQPA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-02_02,2026-10-01_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610020030
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|IA0PR12MB8086:EE_
+X-MS-Office365-Filtering-Correlation-Id: d842b86b-18b5-41c8-7c09-08df205dd7a0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|11063799006|10067099003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	1fiC/2Uqd2f8D2JDB6k2zs2qKNomWcEVdNsoK7ihPz33vqhhBbMy7DRojlMmWQY9T65kJP6h/VZ9S9H9REhp8qa+xMSx11QeEoZA7rxzCA7c7lJNO0/+xAnlm3IGRKu82u0PJogfF0bl4k3s7SVfyAR6kE01oZBa62lgpf+5Nl23qHE8LYQM1EXSpKAhLf4gU/YwNE85I+sdoYOtIHkE0RMYL0nJYD449s2CsqI3osmnCfqyKnus2oROhMTztAsB8udOhRtxFJCbfODPqrwupj+cmQFiExUSVW+9H5O/GhBEqh6E/jIwuIQYH0zsfWZj2C2LghcfMUnFD3KdJ/Zhz6nzdpPg55MP/BmicEGr6Vva4swDZtvTvIX3l7z6Pb+Cx3NEu8/L5dctJCCD5PFakajKMhnR7DtlgMQQK1lW+OWWRvLjUteb62NI4KWpAGZxGvY5jAHNkLGK9GAN91iMLMB6DvdVdhwq0TJkCP7DHblhrOLY8WP8JFlohxO2Jk4gIa0pLnUXnMASGmuz6maS6IiLea3k7IqYEZNOGQBq7p1vmlX9apX/yNEcvXbaUmjD2qjXVNw/DO0hth4CkDi6Nom9LhnkAQG/8uvGaNSNq9JdhNB4SwgEZQjShBHOkdiXypgoYJ8CD87TSkytH9mXK+WaoagpQ80BuPiuX+A/GBE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?EIdqCwbgYeC354o63j+LiaHxw2EgElafXUpCJ3WSfRcmuvX9qfOnmjPnx+?=
+ =?iso-8859-1?Q?TyXVrt5R8OYxIKQ7JSdtNc/zz6p+fIBjU4E7NrdS5YJx5AbJPBrIMLJClt?=
+ =?iso-8859-1?Q?L13wLLA57K0xOiaLZsJvhe3ppO+JfiA5u20nTHMT6k5GkqpLPDl22Y4h/X?=
+ =?iso-8859-1?Q?2QHS9rS+NihE0UYsRyoL0SYwIKAOz4LzlR6Du211wpB9eqORFcfcWjldvx?=
+ =?iso-8859-1?Q?n56eH1C99X6LMMxg5gbKXKoqwybmLt0Gk/aVyCYCnM9Um3uzcHik4qQlvc?=
+ =?iso-8859-1?Q?cF7DJotJtYPtlLZo1UZzeqYUx+nIsE4JzsDsaa2UKmgonqdMg1voRAyInF?=
+ =?iso-8859-1?Q?evi1alurPs5jrggYDSwDgD5xn89perTbZ5KuXqthQyBSIX0n4GYCpHGaML?=
+ =?iso-8859-1?Q?AUpbnvUwqxBqCrPBFu2S0MIWpi4GT4TMxnYOZ6hEjUvWvgUGSdIQ1vbFCI?=
+ =?iso-8859-1?Q?UwfyncS5+Qtk3PNt2nJ8kN6keYxo8d4fvNrKgewDDAGVQqTH1g6eI7CSig?=
+ =?iso-8859-1?Q?fCmhd7fGZ3AWlGsrEzrdyKyBSJYOhtFgqiACbtDdPGFDyf677+SAUX+BXV?=
+ =?iso-8859-1?Q?wcWGVDqvpYksW6GzO2eCUxIsKoTtTUNc71/rAmfUTSNsAnJlaSCAYofSQM?=
+ =?iso-8859-1?Q?G9pYhxgNqmqnhoxfNcdfUu9zYoUgNPfGwskV+Y0jbA2kAWjGMOKJAthPIX?=
+ =?iso-8859-1?Q?qNnpAElnpeLMbPfyYGqsaA5sw+xxf3tYAmkjcaLVxoSOvEZOBTzq5jeONi?=
+ =?iso-8859-1?Q?ari7M1A3b2hfSkB4Tm6XIBrMuGB7LTpMghzhcJ+klv1+1dkAC683vzmJf1?=
+ =?iso-8859-1?Q?dkRmQsc3K5YJvTV+zWtVW7v3t+P6CZqrl4/g/beChL1GsaQ3MbnRH69hc7?=
+ =?iso-8859-1?Q?W+4lCBS8TEcYBrgneX9yMmhVJFkcd6mk/+mYdHstUjANuFCo4WB5OzgZyM?=
+ =?iso-8859-1?Q?v6l/fs3csMhUEzHRNzbooBG7uevBfOlXuIwYYBXtIajsMUbCPYZgmg9R/x?=
+ =?iso-8859-1?Q?e2/FJyjAt0goB/TSE1ls0FDlU7KHUJAWHimBPNeKVGsGO++J6kFWWRcDmp?=
+ =?iso-8859-1?Q?tjDloPhwOy8pFYLxFl8JjTyR5w3ITL49uzzjyuNTRrZ9b8uvvvZmxozDa0?=
+ =?iso-8859-1?Q?iWn+QshZPCoF34wz7QKSnCp5dgq1stac/hoThU9g9CimBsthFfgJMYw+j2?=
+ =?iso-8859-1?Q?XyQb+rBUsCXW8u4cphRHSFokg2JSCwIGtfGIwTkP5QkRPu+tIAK33fmn8j?=
+ =?iso-8859-1?Q?qcJvZT0AaFh20AS/xdSFMt8JmIu6NcT5/BgY8O2h12vQh5RtWdvQ2yjX1Z?=
+ =?iso-8859-1?Q?3kX3P2soSFgJftvmDNPs1oHqWgqXmqE2B7ULeqngy3Gp0GCBUg63eYpHDC?=
+ =?iso-8859-1?Q?v5FIecDG+8fECoqxnFuPshR+QVGGPDXy3UWGjxqx2x2vFWkdGpFWoc2mWC?=
+ =?iso-8859-1?Q?w7GotCelDXdsJFrwavhIiW1eUhfuV54CSw8KEN3KpCGKI0QMcUyyoKu7+M?=
+ =?iso-8859-1?Q?foZydYJUJ6aFBQK6H6QgmFFFJvlinEbMIcZRQRNy+R9yTNhO9lgd9w3qz8?=
+ =?iso-8859-1?Q?dqkSy026036m4qZ1dLNWlkRvGq3O2JTGPkmOzLoB6SDzApD8K7/n/JGTNA?=
+ =?iso-8859-1?Q?i5czxhNqBxSek58R5P3lxjCJ3kn1+i485bUurW+xdIGhc7ylClBzXiODJs?=
+ =?iso-8859-1?Q?USqT7HboYBHydP4VPkt93aPB5+f8+vB8+8aMnpogxv20hSQEsafHSv78Tn?=
+ =?iso-8859-1?Q?QErUgih54QYzj2mpzQypkLWduHfVD5/iaVukho6wWGndvQN2XoetGbQQVu?=
+ =?iso-8859-1?Q?uvOrgU9a8Q=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d842b86b-18b5-41c8-7c09-08df205dd7a0
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 08:19:13.4577
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Cm7f1AVPUFjzuur8ny70YrV1wn1pn4ECdGFrRWa8t//E0wKYSPIOqMafzD8lFh8G27f1V5f8tdOIfURkborBQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8086
 
-On Thu, Oct 01, 2026 at 04:12:38PM +0100, Marc Zyngier wrote:
-> On Thu, 01 Oct 2026 14:27:15 +0100,
-> Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > 
-> > On Thu, Oct 01, 2026 at 12:04:51PM +0100, Marc Zyngier wrote:
-> > > On Wed, 30 Sep 2026 19:34:15 +0200, Steffen Eiden wrote:
-> > > > Introduce arm-on-s390. Enable KVM-accelerated ARM CPU virtualisation on s390.
-> > > > 
-> > > > The new KVM functionally depends on KVM/vfio: Use file-based reference
-> > > > counting for KVM [5] The series itself should apply w/o those.
-> > > > 
-> > > > For the original, now partially outdated, cover letter, have a look at versions
-> > > > one to three [1].
-> > > > 
-> > > > [...]
-> > > 
-> > > Applied to next, thanks!
-> > > 
-> > > [05/24] arm64: ptrace: Use constants for compat register numbers
-> > >         commit: 295d3df9b1e425099a4eb37954a02c4a08fdb496
-> > > [06/24] arm64: sysreg: Convert SPSR_ELx to automatic register generation
-> > >         commit: d3d78520068779779e1ed7aa0dd8a3ce63e1ca43
-> > > [07/24] KVM: arm64: Access elements of vcpu_gp_regs individually
-> > >         commit: 29d92585ab987bb80b1e78d811aaea2a8db86e62
-> > > [08/24] KVM: arm64: Use accessor functions for core regs
-> > >         commit: 89ed62818f10e38e64fea46d43ee6455a1beb647
-> > > [09/24] arm64: Prepare sharing arm64 headers with s390
-> > >         commit: df6a70516adec8b7f5fa49e1755d8ee33d980d9c
-> > > [10/24] arm64: Share arm64 headers with s390
-> > >         commit: c7e18ba462536e870b0ff4deca581babcac9135b
-> > > [11/24] KVM: arm64: Share arm64 code with s390
-> > >         commit: dcb776bfcccc9662001a75b99dbfbef55f46eb31
-> > > 
-> > > Note that there were a few conflicts. Please check that I resolved
-> > > them correctly.
-> > 
-> > 
-> > After rebasing on those the arm-on-s390 part does not build anymore :( 
+On 2026-10-01 at 02:52 +1000, Jason Gunthorpe <jgg@ziepe.ca> wrote...
+> On Wed, Sep 30, 2026 at 04:57:04PM +0200, Thomas Hellström wrote:
 > 
-> Well, that's sort of expected. The kvmarm tree doesn't have the S390
-> stuff yet, and contains tons of new stuff.
->
-
-yes, but sometimes I like to dream 
-
-> > We are missing the definition of
-> > static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
-> > 
-> > 
-> > quick fix: 
-> > 
-> > on top of [10/24]  arm64: Share arm64 headers with s390
-> > 
-> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> > index bf35cbe8ddcb..0708f792c631 100644
-> > --- a/arch/arm64/include/asm/kvm_emulate.h
-> > +++ b/arch/arm64/include/asm/kvm_emulate.h
-> > @@ -367,10 +367,13 @@ static __always_inline u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu)
-> >         return vcpu->arch.fault.esr_el2;
-> >  }
-> > 
-> > +#if ARM64_S390_COMMON == 1
-> >  static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
-> >  {
-> >         return esr & ESR_ELx_S1PTW;
-> >  }
-> > +
-> > +#endif /* ARM64_S390_COMMON == 1 */
-> > 
-> >  static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
-> >  {
-> > 
-> > 
-> > 
-> > A cleaner solution it to move this defenition just below  
-> > void kvm_vcpu_wfi(struct kvm_vcpu *vcpu) in 
-> > [09/24] arm64: Prepare sharing arm64 headers with s390
-> > and expand the shared region in the following patch.
+> > Returning again to Jason's series. Let's say we'd add just the mapping
+> > type infrastructure, converted users of pcie_p2pdma only to use that
+> > and then we'd have access to per-mapping-type data. This could actually
+> > be done as a prereq for this series and merged separately. It's a
+> > couple of patches only.
 > 
-> I'm redoing the merge and fixing it as follows (note that the
-> ARM64_S390_COMMON guards are already present):
-> 
-> @@ -336,16 +367,6 @@ static __always_inline u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu)
->  	return vcpu->arch.fault.esr_el2;
->  }
->  
-> -static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
-> -{
-> -	return esr & ESR_ELx_S1PTW;
-> -}
-> -
-> -static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
-> -{
-> -	return esr_trap_is_iabt(esr) && !esr_abt_is_s1ptw(esr);
-> -}
-> -
->  static inline bool guest_hyp_wfx_traps_enabled(const struct kvm_vcpu *vcpu)
->  {
->  	u64 esr = kvm_vcpu_get_esr(vcpu);
-> @@ -389,6 +410,12 @@ static inline u64 kvm_vcpu_get_disr(const struct kvm_vcpu *vcpu)
->  	return vcpu->arch.fault.disr_el1;
->  }
->  
-> +#if ARM64_S390_COMMON == 1
-> +static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
-> +{
-> +	return esr & ESR_ELx_S1PTW;
-> +}
-> +
->  static inline u32 kvm_vcpu_hvc_get_imm(const struct kvm_vcpu *vcpu)
->  {
->  	return kvm_vcpu_get_esr(vcpu) & ESR_ELx_xVC_IMM_MASK;
-> @@ -456,6 +483,13 @@ static __always_inline u8 kvm_vcpu_trap_get_fault(const struct kvm_vcpu *vcpu)
->  	return kvm_vcpu_get_esr(vcpu) & ESR_ELx_FSC;
->  }
->  
-> +#endif /* ARM64_S390_COMMON == 1 */
-> +
-> +static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
-> +{
-> +	return esr_trap_is_iabt(esr) && !esr_abt_is_s1ptw(esr);
-> +}
-> +
->  static inline
->  bool kvm_vcpu_trap_is_permission_fault(const struct kvm_vcpu *vcpu)
->  {
->
-> 
-> Does this work for you?
->
+> I'm happy to say I found someone here to pick it up again, so we
+> should see something on it after LPC!
 
-Yes the positioning of the functions look good. It builds on top of
-kvmarm/next + this (sightly relocated (line numbes are different) patch
-+ arm on s390 stuff.
+Yes, I will be picking Jason's series up once I return from LPC. Hopefully I
+might see some of you there!
 
-I'll work on a verification tool for you guys to make this process
-easier.
+ - Alistair
 
-Thank you.
-
-	Steffen
-
+> Jason
