@@ -1,146 +1,112 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A6A4E06EA;
-	Fri,  2 Oct 2026 15:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D7B2F9D82;
+	Fri,  2 Oct 2026 16:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790955782; cv=none; b=Duvh1h8mnyyEFmzMKWblPkk75Twyxku+ng9z8/lNN8lN2FR3wIO47Ss/a0mybGMVWQtfOHWOpNSyN97prZrFrP62cj2ukvCQ6db9aZxYVUlR0jnCyNiwW6sQzH3P3Dl1HFBcaycdIaVuJOmHYe0AQ8AcXRqptIIxlvC556K/oqM=
+	t=1790957509; cv=none; b=O/hWpWkp2uelyDL39JcFFn5OnvgZBY3sUWAHbHjz+6TdvSy4zRArUvBs5NLfzWZQpNYzovJ3w4bzMnsoWCOzSF8sByD0n2xQCuBDclXleIsqnmSkPV3kagt7Xcty7ZuWIIS32Oy4Y+AIZrxa/RHtcOOyxhJI+sQgz8gGSOqR8iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790955782; c=relaxed/simple;
-	bh=r8+UnxmyfA5EDSuksv2pnxeyK5XiuiA24DSSA+ymriQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cve9XCq0OvziDnLfxZR7J8U5hPhSizaW4GVTgyxsHjiLzVweGXQkoxTPz/lDKoYYaLTxZYWyKfdpkK+rxvaLVtekejbeubQ4D6QYuGsHz2TVUVwUy6yPGz2/f9j8SvGI1z3EoBjn6Z/O9PQatZJAVT0wEYDVhEQ6LAEXvJURIT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Dzh5F1AK; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790957509; c=relaxed/simple;
+	bh=d/BWqh3I+o1TpqkOrGVewyRNzXZFs+ZGIdSCNuZrwAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qm1wylZNTeriuWHvsqSax35Sg4/rAczcIkWofNAwmsK808FEkYeeRy1ygMRe5Sfo++2i2I+LgcRSBBSp7irr0UCC6b4/xBdPRX/FNbAGoH+Nnrcrc+y0RTYQ4NQhtlSqG8yMgOkWOWY38hf2lKbyDN0rI3pna+8GO4D4vwUK6O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlPBNFEO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Dzh5F1AK"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AFC2169C;
-	Fri,  2 Oct 2026 08:42:56 -0700 (PDT)
-Received: from [10.57.8.170] (unknown [10.57.8.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 288203F882;
-	Fri,  2 Oct 2026 08:42:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790955779; bh=r8+UnxmyfA5EDSuksv2pnxeyK5XiuiA24DSSA+ymriQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Dzh5F1AKrpbHWa673YlUnb+QaPBv+ryTwN2qA0v7GExcq5nJEtJAKOdiFHBJNPEFP
-	 pFwajcDOxIV5F67JsKcpzvdtetsme/gidZj8IvCCmDJwCBdfv+qHhDNUFcqS9aqjss
-	 UiKs9r9V+zuQQ5J1dugVGegGFqHZdLdg0ZgZZMCw=
-Message-ID: <87659487-6a77-4b04-907a-859e1738395e@arm.com>
-Date: Fri, 2 Oct 2026 16:42:52 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlPBNFEO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8488D1F000FF;
+	Fri,  2 Oct 2026 16:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790957508;
+	bh=d/BWqh3I+o1TpqkOrGVewyRNzXZFs+ZGIdSCNuZrwAQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KlPBNFEOE0gGia6RZAPeBTgVB7HNktDmiscBZ7dS/dxuvyJV5qZ4EBnMmKRqBWf+p
+	 NlxsjCUCHTgzOy14NdmetFcItytYbmQN/W1Cz9uNprrziSxnI2AwI/H7kvg7pcE0Th
+	 apHw1PmIMxp0r8Tb82ZsCAY6CdcYuqB/iILLMgb+Hd9L8Z04owEifByqirNGM+qtq7
+	 tnLVDa9jv/B19Ic1romkl3FQeHLFBdffX1K2/Z3MGzjcMTPK1VcbUS2u0EawxZYH+y
+	 GpQjr2jGxvYJz4PqGTUmJEW1o60Sr6vup0HAlwN8d+g/2nFyPIqzdSzcGp8to062lR
+	 qxk5wHC7LEjbQ==
+Date: Fri, 2 Oct 2026 17:11:18 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 40/40] mm/vma: introduce and use vma[_flags]_can_gup()
+Message-ID: <ar_WousLPxpyMozt@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-40-4583d8a23bca@kernel.org>
+ <202033a0-ea65-44de-8119-689e0df0b78e@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-To: Marc Zyngier <maz@kernel.org>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
- <20261001210703.1597150-6-suzuki.poulose@arm.com>
- <CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
- <86se2o2rbs.wl-maz@kernel.org>
- <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
- <86pkxs2npx.wl-maz@kernel.org> <10563362-5964-4ef7-b5d7-fe1d67ce4adb@arm.com>
- <86mrsw2jrn.wl-maz@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <86mrsw2jrn.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202033a0-ea65-44de-8119-689e0df0b78e@kernel.org>
 
-On 02/10/2026 16:40, Marc Zyngier wrote:
-> On Fri, 02 Oct 2026 16:15:07 +0100,
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index 0f4e8b71fa85d..9ba86450fe4af 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -2624,7 +2624,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->>>    	hva_t hva, reg_end;
->>>    	int ret = 0;
->>>    -	if (kvm_vm_is_protected_pkvm(kvm)) {
->>> +	if (kvm_vm_is_protected(kvm)) {
->>
->> We have slightly different handling for Realms. The final code for this
->> looks like :
->>
->> 	if (kvm_vm_is_protected(kvm)) {
->> 		if (new &&
->> 		    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)) {
->> 			return -EPERM;
->> 		}
->> 	}
->>
->> 	if (kvm_vm_is_protected_pkvm(kvm)) {
->> 		/* Cannot modify memslots once a pVM has run. */
->> 		if (pkvm_hyp_vm_is_created(kvm) &&
->> 		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
->> 			return -EPERM;
->> 		}
->> 	} else if (kvm_realm_is_created(kvm)) {
->> 		/*
->> 		 * Once the Realm is created, we cannot modify any slots that
->> 		 * could be providing private memory. i.e., guest_memfd backed
->> 		 * slots.
->> 		 * TODO: Handle trusted device private memory slots
->> 		 */
->> 		if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
->> 			return -EPERM;
->> 	}
->>
->>
->> Of course we could invert the checks to detect vm_is_protected_pkvm()
-> 
-> This is how I expect this stuff to be written.
-> 
-> 	if (kvm_vm_is_protected(kvm) && new &&
-> 	    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY))
-> 		return -EPERM;
-> 
-> 	switch (kvm->vm_flavor) {
-> 	case VM_PROTECTED_PKVM:
-> 		/* Cannot modify memslots once a pVM has run. */
-> 		if (pkvm_hyp_vm_is_created(kvm) &&
-> 		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
-> 			return -EPERM;
-> 		break;
-> 	case VM_CCA:
-> 		/*
-> 		 * Once the Realm is created, we cannot modify any slots that
-> 		 * could be providing private memory. i.e., guest_memfd backed
-> 		 * slots.
-> 		 * TODO: Handle trusted device private memory slots
-> 		 */
-> 		if (kvm_realm_is_created(kvm) &&
-> 		    (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new)))
-> 			return -EPERM;
-> 		break;
-> 	default:
-> 		break;
-> 	}
-> 
+On Fri, Oct 02, 2026 at 09:48:14AM +0200, David Hildenbrand (Arm) wrote:
+> Long story short: I wonder whether vma[_flags]_can_gup() is the right
+> abstraction, especially for users that don't actually *use* gup but just want
+> slightly similar semantics (no VM_IO|VM_PFNMAP).
 
-Yep, we can do that.
+OK confirmed off-list that you would prefer this be dropped for now.
 
-Cheers
-Suzuki
-
-
-> We have an enumeration. Make use of it. And the whole "is_created"
-> crap needs to be sorted one way or another.
-> 
-> 	M.
-> 
-
+--
+Cheers, Lorenzo
