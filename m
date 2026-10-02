@@ -1,65 +1,66 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3A14519B6
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 22:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADEC4519B6
+	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 22:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790979543; cv=none; b=hbX9Xc7lmNH2Um3JbQDdmurifcoQCANicGFisZrpqtBy++R+VJK8N7Y6ik1+ZqJBF0dAXeIQZBsOuJfi4bDo0V9OTKuJwtTm5hGBPVwtSOMy38LQxOQqRq1HlCZ2MVdBZQ+a1K/y8UO7RIc2l0PbpxQ0XAUIYUZTFKIzBcrCQVM=
+	t=1790980098; cv=none; b=krTM1Ly7RPb10fYzZQDGkw8MIrJU1JDM2dVsqdPaOe5qTOOTwow7gX4h6LSYvwZBEOOj11v5DfwMXK87NVNnl3arvAgMyP84QFLAC3S3orCmoNiyO9vKi7yxX8Flkb8X3w1dCoHlEuCrYGzx7JbXPw5/5/gOtUpn0MSqFovSeB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790979543; c=relaxed/simple;
-	bh=40qd9siKCBRYB3f3NGKHhJbH3BpIYlDe6X8yX7Hpuwo=;
+	s=arc-20240116; t=1790980098; c=relaxed/simple;
+	bh=viZVgZTEOWBDWo0bJxuaEJyH1pxng8uJPGmDGrWWCXk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZDI6nfCGFjUG+8i72TIiP1EUeQjsD5N+IeAXLJvDZI8bOcC9CzYp71s6KZruxun4LG0AJ+U4IX1VAIvlYzWaW/wk5CXE2IryP2XcKGcB15oirWdkzTA3X04qsWMlgelXW2FuRO9zbkfZSIiQN+gR5LQ8auB4AotKuXJhVTIiuis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SMLZH8s+; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=SD09rt80gIqISzXJk+emsZBQSWWTY3X0dNCSOTBCYnra0rTrRirONRnIY0o4+KNDielAp8Z6uLXSebz/DlNK/+0AqGybRYTMqcY/9Lh7qjBC4DgR+WxxjRnL5A5CfL3SBmO9YrzkY1Sa0L00VRo3gW98XVqqNt4MCPMdUTJ1HKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wMreCSeY; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SMLZH8s+"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso289844a91.1
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 15:19:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wMreCSeY"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-398dcfabbf8so58196a91.0
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 15:28:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790979542; x=1791584342; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790980096; x=1791584896; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=40qd9siKCBRYB3f3NGKHhJbH3BpIYlDe6X8yX7Hpuwo=;
-        b=SMLZH8s+LCQgFO7oNe4vcV8iJuWUxaQfX4dgY3ghhp+dTzLGGmVw5v/eeIs85vHGip
-         Sa15lgiibSVx5HU/lqpieb+98WbsTIpWBlJC2PyKWxPuN9TJ3mqqdizSuARl1ZwY6Lo3
-         AF0gZcVT9kkBPpvh7N3F7+YJrgrQMp6ClYQaQ6A6GBmTsNxUWD+vr8NpQR47XPLe7/gz
-         P0CwwqXnBzgFni0Zc9dbZ0x4Jt/xviv4JkAe+s4smszurz4casTwUCHFziMd3dpsyFJU
-         uV1gGOL+ob+D4KQXRhnJsyvxrkMbvX2qrFB2WLcjqNOiaw5i9daf6f8Sd9DZ552QG3ba
-         sLLw==
+        bh=6cEXwvHyHYypv1TjIMTLjauYp2kWmUbEs4O5rr+p48c=;
+        b=wMreCSeYPjL8f6twIufOEruV7I0Q7H0kmxFqN3arecpg90CUJR/ZFAtkmHglEod34N
+         4UZwwVyRcC3H8CIuWvT6Kc6kaHbVSY4VeNPLM5WJ03tvWYqzPAHNHDxgFx2n7Ulf6i5/
+         lHeOlQ5lbk/zDPhcTQ7NDYDL+tNP1XMm+fWy2/hUYwJ/GQdDNQ/lvk7XsDIZjZADDplA
+         DMooCqGDnFuQVfyjWckMM1FXLLOIpkveOMJwhA8MRIDqZH7fRLChd4i+gwl4ZHtjF+t8
+         Ml4LvUp27XgDNx5LOpA1es0knr2fo2IrC5/kC2WW1LlMzLtVk2hldCikI6ME9uRqWHgd
+         plZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790979542; x=1791584342;
+        d=1e100.net; s=20260707; t=1790980096; x=1791584896;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=40qd9siKCBRYB3f3NGKHhJbH3BpIYlDe6X8yX7Hpuwo=;
-        b=ylrW1EK+PgkTwPMeGlBieruVendCeaxbvKJIg9yocNoLuqdkooMYdm1ruq3zUdv1OL
-         HHGdAp62jiJjK9Xjz+tnCqO8u466icfRX1Q0NV6FbpnhrMu5oVa+aIwmqN/XoYwZMxCu
-         dO22Q2Tfr4VTNPR6s6Ch2q3GC5pFHsK+71Y7iZ+Ipid5ppElQ8augnPbO7hkPaHNhsYO
-         6tDtvm62KmyIFQM+XC1VOnm5dyoGXKnhmbd8xdvYpCZYgQOCvRRiP0Z5ZnnJAzTTKe4O
-         QjLsXf+Nvgt4X5EOrN3b+3FbE3vOzvDsFHEnfyhZGjTj5sHHj6z53G/k1eIho8H3kyu3
-         ijkA==
-X-Gm-Message-State: AFq9FYLhbjgD4NOl+jHcEWoVY5idIzzN+ZvgRXw+rTbd+ZENPnheCSck
-	6QwVTNC1elkJCMtw+r7l/wZLiEelAbGsOzfJD/5EyBc7l7o42RKqAu/pbLYmvQ6MWpXPLGxxe8d
-	Qi6l0FA==
-X-Received: from pjtn8.prod.google.com ([2002:a17:90a:c688:b0:3a0:dee2:7813])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2b48:b0:3a4:71b7:eb63
- with SMTP id 98e67ed59e1d1-3a6ceab25dbmr1825054a91.10.1790979541549; Fri, 02
- Oct 2026 15:19:01 -0700 (PDT)
-Date: Fri, 2 Oct 2026 15:19:00 -0700
-In-Reply-To: <db32438dee67a69609e75d8c43cb070f021137b1.1790101179.git.ritesh.list@gmail.com>
+        bh=6cEXwvHyHYypv1TjIMTLjauYp2kWmUbEs4O5rr+p48c=;
+        b=vW2ktMwhVAEHk6+M6GKyYR632kK4KhSlj1hTGxQiU+gwkdXi7KDxWehrvOUoGoQVyG
+         B5Y9QlGyDYT6zLCf7qvtk7a8ScrQ+ENbiIzi6QYSFuRDkbLtVPhBxBvsP0Cc4YZMslf2
+         hU4VKgXqtFy+nEnS3Qqa+QjJHYIN8E0skzf3brLF17EGg/fvhYNUobFQHDXPRfEGhVm/
+         8u5eFNsZP63MCKlfk6Wydw+zeKbpWfOxY4lkwV3uHjwEa+j9vq/E5NAnV7W1rcMyLaPz
+         hsipHMA9ULAk36BPZSekQqZLbUBlwYS03XO1/LGKSRNrJX99pcEuMlxACSd/3wcukP3S
+         8NtA==
+X-Gm-Message-State: AFq9FYJNhCaINfs3op2/dYWTSCUl7hazrG/Mk8ro9337g24jY9z9Nq0A
+	6y1LMEYLCh32gBHmmUlaRzK7RZiziRCt6Yd88t1xNvvkl0BEDJhv/cdSFs2cfNmvc4gPbO3lVN0
+	cZ6zaOw==
+X-Received: from pjbfr22.prod.google.com ([2002:a17:90a:e2d6:b0:3a0:b207:df5a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f8c:b0:3a4:7730:33dd
+ with SMTP id 98e67ed59e1d1-3a78776199bmr395614a91.58.1790980096162; Fri, 02
+ Oct 2026 15:28:16 -0700 (PDT)
+Date: Fri, 2 Oct 2026 15:28:15 -0700
+In-Reply-To: <55452f6b9bd1dc241d0a9a0781fbda1c2850d2ce.1790101179.git.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1790101179.git.ritesh.list@gmail.com> <db32438dee67a69609e75d8c43cb070f021137b1.1790101179.git.ritesh.list@gmail.com>
-Message-ID: <asAt1NhGFs5HNbvl@google.com>
-Subject: Re: [PATCH v5 6/9] KVM: selftests: Limit the number of VM creates in hardware_disable_test
+References: <cover.1790101179.git.ritesh.list@gmail.com> <55452f6b9bd1dc241d0a9a0781fbda1c2850d2ce.1790101179.git.ritesh.list@gmail.com>
+Message-ID: <asAv__Gozv6r3QWt@google.com>
+Subject: Re: [PATCH v5 9/9] KVM: selftests: Move memslot_perf_test off the
+ 256M ELF load address
 From: Sean Christopherson <seanjc@google.com>
 To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, 
@@ -71,10 +72,16 @@ Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Sep 22, 2026, Ritesh Harjani (IBM) wrote:
-> hardware_disable_test forks several VMs (NR_IERATIONS=512). This patch
-> limits that number to 4 when we know that we are running in constraint
-> host environment. The number 4 is just a safe minimum when
-> kvm_arch_vm_create_may_enomem() can be true.
+> KVM selftests are built with -fno-PIE/-no-pie so the binary uses fixed
+> load addresses.
+> On powerpc64, GNU ld default links at 0x10000000 (256M) which is also
+> the MEM_GPA, so the identity map trips with the error:
+>   PTE already present at level: 4 gva: 0x10000000 pte:0xc00000000002018f
+> 
+> Put the test slots at 512M instead which is past the ELF.
+> e.g. failure w/o this fix:
+> 
+> ./memslot_perf_test -s 514
 
-Please actually explain *why* this is necessary, and where the magic '4' comes.
-I assume there's some system-wide resource at play?
+This, and any other adjustments/fixes to get common test functional on PPC needs
+to land *before* the tests are enabled.
