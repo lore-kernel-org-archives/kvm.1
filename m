@@ -1,126 +1,91 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239B844C66C
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 09:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790933686; cv=pass; b=igSefyRgDFxb3Jzg6qkDAnfvk7XPLF6ovpiiOtgNJJfAFHEZRNly3QEIdYw3pvq/tUCU1HO1906fE1TFudiTS3g6ZjnP1nNcDRUMRvcags2s/6lXSmnzfZP1yKaf/CbZFJQv53RMGdkKpc01NLmHjLfOtVZI8JIodTsrSC0bCvw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790933686; c=relaxed/simple;
-	bh=x9JTFIhcYIzkewGT1y4B5m/45uK/p/cDf2r6ve5Iqn8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZWzPHCghpGnHnsjDMCxZDtpBiSIN5BdmLhRgnGyGmU2t1zNNUD9df3ew7b90q4o5TCRiR90LprWJQWmrWBk8dUW5mGCPmJ8Fj/dMYQLgSMt15aV0fKd0om6OBa8IiiYS6OFpAe5tqkBAeipW0IRtZRpPbhTCYXpdVyJBWdfak2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HxxX6cFJ; arc=pass smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E243B83F9;
+	Fri,  2 Oct 2026 09:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790933804; cv=none; b=ONl9zarnjxGDb5lSW9Hi66vOlem8QpLcOSTmwOQ1kSP5KmD6d374pulgYS/B7jZitlLTvGUaJ2PgZKkhNVEY0HzKqArtLOfbAJ1k0Q/OvdrIujBeKHaED8OcLBPvNE/9MaDk0MZiGA+FjjySUuzZuZkfr9Sn8SK8sP+acFChm7U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790933804; c=relaxed/simple;
+	bh=m6d1llwAmb/6rvyw6Fa3xaMJy1jmVRx3TAvoRSX48u4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=naR0LtcdOencuDQDjEDqjcrMFp5L2Z/Uw+GbrldISCuDdMXE124l9QFVPfSTY6fUqfTP3LMVzXTo4OgNumM9704rcyB4/bIE1IYHOQBJwbKctYXbOV5JNnMEQ+QjJN3qawu7YVNCJtOTwbE5A9GjJBrqvIisgw07RrlXoLvLTi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=S3JF48p0; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HxxX6cFJ"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5ba4065fa07so6487e87.0
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 02:34:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790933681; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Q3JCMW7c5CBnCB7W+CiaQdkIR7m1M7V4baDjMkfnzjCdiRq3aZOK3tTROp5N8WzNDr
-         AZPteczEGGTVh3IVG47Z2Bm1R5IIsHKmRywzioiz+dD+7BgjQRFkjtEvQmO/MXRB87rx
-         DWBQPUwJXXxvGqVzfueohUNBsOvc/n4R1fPBmBBACwgXyBXrxK/BbNE13aUsMK4zoQy7
-         gBMFfkiO1B5fTkEMQ9+CHEhRjtrHztwMciAQxLeyTPFLG9Is/eV758mR7U9cHEBVQnvb
-         h8bK5Hygm9DYdZCUQNe2ikt6ky4FdKIX0z5pzqQaXM3YfuZfFsES6MDitGZWF6PRwkzk
-         mK6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SuyjNGNTaeTrwozTD0DPhcs6tJEVH09iyMIGVlGNB8o=;
-        fh=rnIkUf6r+pm8oCQPQDOHPhdYLJEIYxB5Eh3hMNjkNs4=;
-        b=OxjdUFDzFLpd0RdRnVEN1ZV4ay4UyHXbyylrDpdVUrSInkvCpn/JtaAY1XBoTZQyyM
-         DroQgKuJcvIRaWm8Ysh2VC3fBxu9+FljPV0YoSRFZazhqEq2mfco/XnhVB5WwRxvBt5j
-         Mh45B96Aur3VZeWXs3wtJE/1lc1zOG9vYBAVdyWSRcp7OocY8pU6JVKxdDLC8nmSIZmE
-         emotkaVshcb0RrNs7OkTupy8ZJL4t7JKaH64VwakFmVN+Y3g4qE2WPYO/LVv7w7vGhWF
-         zf50vubv0Ctff6JXSTzVFI9sa8n9BGlj5Nz/ctvP9m6vVnjZX9pZVjma9IHcmWHrRklP
-         RK8Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790933681; x=1791538481; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SuyjNGNTaeTrwozTD0DPhcs6tJEVH09iyMIGVlGNB8o=;
-        b=HxxX6cFJCTw76A3QP5JnbCYmHgzHAqlQq+BJqap6bjOYNNz4yp5siGzjbVQPmqpGXS
-         5PG7GKRNJQmFmAs7CU1UBV9zQpaqkvQStTfPDVJSKYqGcRhOUo/hj3Vo7j/lQvKicKc/
-         S0n1r1ai55iflZ2fYap9xTYUVvxXKzD1qxFm/8nUl2fYpNuOhWMqezG1q0tkHYh4/vD0
-         +6Ubc2Mzx2ycwIHAsNyvTF7E+Ro1Zd9Vb1hIkp+NGAcffBoM4NADpvxAc1fHxKuy+b0D
-         6oImIabVhK7LvWmPTGeDDqI9oYnttVo9paAZNkfRfxjUuBCRXdd77MeETYRKeWFrtTTo
-         xj+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790933681; x=1791538481;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SuyjNGNTaeTrwozTD0DPhcs6tJEVH09iyMIGVlGNB8o=;
-        b=EW2atMDJ76acEFa2wHLElenWnlKKxfcdhsWxy12oDaTHWBAhlBpZx3q4BC2bNXDtG2
-         ik2Czx7mqXj2hjorRswbH3WxbXjP7XQ8CIGYHliRJuIAJfY7NNsRSIBYjM4UI6CbdB3V
-         KTUHW1TnpkMX5dhfHN678XHvIS+b+JDqho+aS2fZLnKKMgTXU7/8LUZrgih0Xv1m4bO4
-         oxF5H17+cLtglghjhBbIWxaUTIqHIUPEDhcdvpefhdybojznlufuM1oaEyYRCZ9yYryb
-         b3AZ/Z86w671JPySz6YYVibkk9Wbfy0vYmKVCuD24mX/JvmuuYJItqE1lROd3LWGHspd
-         vImw==
-X-Gm-Message-State: AFq9FYLu/lwIdQpPrZG4vd8azZA7rQejHTYKu5eSeAoKTC75PdNKcDF9
-	qBvx35wTTSkDabSJXtPgvvXGfmZbwD/fkEQFlrLoIxyXMZcmMe3hhaX8grIve9rRYsq0BYAIobr
-	067zc46aOfSNyqSVPYGI60A/cxZqIWS+7wLAgmI+h
-X-Gm-Gg: AYBFou3EzrjZEVjPKOF4BUMi2A0UTXoew536YYH/f7JN6DZZT2RkTwiCrdnB+tmlrcE
-	ZZoXwFU7hFxAupZVxgVls8RNsfVeRXwgWZkCYD7VZufOqtP8sOcA3Nx2SXvsWAp5Gu1icnWK+SZ
-	hFdOP7XG7CScd77YlA+BGsZlV91hU+BIXM3CTPQDHi/jRQmXTOzcuUo0CcNty8eR3TV8LdtNPoJ
-	rLco1YCLrSYpN2I8EPc6fFo9bYm3sXaJvIwx7DncknZzItT19il7aBQYqCLcF9JlzQnsD7uvZCz
-	xQnDaJOFrQVeXsIybASsjBDm7z3+yJkrI3Mlu4mKtQNd6jAL0sPHpWnQ7vKFKEWiUgWLeSEWgbC
-	tol8wwpjGzta7NQ==
-X-Received: by 2002:a05:6512:6d1:b0:5b8:f20b:350c with SMTP id
- 2adb3069b0e04-5bb7c948658mr120571e87.3.1790933680638; Fri, 02 Oct 2026
- 02:34:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="S3JF48p0"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 99409497;
+	Fri,  2 Oct 2026 02:36:37 -0700 (PDT)
+Received: from [10.57.8.170] (unknown [10.57.8.170])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C3A43F86F;
+	Fri,  2 Oct 2026 02:36:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790933801; bh=m6d1llwAmb/6rvyw6Fa3xaMJy1jmVRx3TAvoRSX48u4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=S3JF48p0f8QJMV6r1pz19sdCCW4wn/aoQsLCt+GMjkj9L4mlxGoCI+0AHLYhunlPo
+	 rktjKpOWNSjJGwMDb+CICRkSDYpuY8WgMA6POjYnD3/Glk3ZDfFYVcM3EMylfzXzGN
+	 H1q3B8QEf/oy491jjkpob+aHb5iGVWUm3x9/WKQU=
+Message-ID: <7c0846df-97ff-4461-98fc-7d094c91ba29@arm.com>
+Date: Fri, 2 Oct 2026 10:36:34 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com> <20261001210703.1597150-19-suzuki.poulose@arm.com>
-In-Reply-To: <20261001210703.1597150-19-suzuki.poulose@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Fri, 2 Oct 2026 10:34:03 +0100
-X-Gm-Features: AclHuK90hdLcclI22eF8PMzgsUup2Pu-fPsPyAyT7zN-k3WxhBppCUIye56E7qo
-Message-ID: <CA+EHjTyyKxW2TT9XpjSDkdjWEuGyWmA_isDpOnoyri8ikxZN4A@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v21 18/23] KVM: arm64: CCA: Don't expose unsupported
  capabilities for realm guests
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
-	jonathan.cameron@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-GB
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com
+References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
+ <20261001210703.1597150-19-suzuki.poulose@arm.com>
+ <CA+EHjTyyKxW2TT9XpjSDkdjWEuGyWmA_isDpOnoyri8ikxZN4A@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CA+EHjTyyKxW2TT9XpjSDkdjWEuGyWmA_isDpOnoyri8ikxZN4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Suzuki,
+On 02/10/2026 10:34, Fuad Tabba wrote:
+> Hi Suzuki,
+> 
+> On Thu, 01 Oct 2026 22:06:58 +0100, Suzuki K Poulose
+> <suzuki.poulose@arm.com> wrote:
+> [...]
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> [...]
+>> +static inline bool kvm_vm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
+> [...]
+>> +       r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
+>> +       if (WARN_ON_ONCE(r < 0))
+>> +               return false;
+> 
+> The fix [1] is in -rc5, so a rebase conflicts here. Please make sure
+> to carry it into this copy, i.e., a plain "if (r < 0)".
 
-On Thu, 01 Oct 2026 22:06:58 +0100, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-[...]
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-[...]
-> +static inline bool kvm_vm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
-[...]
-> +       r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
-> +       if (WARN_ON_ONCE(r < 0))
-> +               return false;
 
-The fix [1] is in -rc5, so a rebase conflicts here. Please make sure
-to carry it into this copy, i.e., a plain "if (r < 0)".
+> 
+> With that:
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-With that:
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Thanks Fuad, like I mentioned, I have flagged this with Marc and he was 
+happy to fix as part of the conflict resolution.
 
-Cheers,
-/fuad
+Suzuki
 
-[1] https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev/
+> 
+> Cheers,
+> /fuad
+> 
+> [1] https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev/
+
