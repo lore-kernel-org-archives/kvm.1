@@ -1,120 +1,90 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ADE4E2F20
-	for <kvm@vger.kernel.org>; Fri,  2 Oct 2026 15:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BF135E92B;
+	Fri,  2 Oct 2026 15:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790954428; cv=none; b=sg+4Vq+4GDMNHhfuUEVdrJgottJ2xOBL88V7eHWu+r//aKAhv/4TYIivNlecstmUDhBNWWL00rBCH7l/QseBXIpeHMnuiDoeVlJYbYD5IoZjn4iJ6pA3VWCSxZdX0cDTzUIVz0X1zNxhHZlP1+874xDVKkOrvP3Df1p4+6ehCdY=
+	t=1790954894; cv=none; b=TzwvmhdhNUkvHIu5wEfn4OuzUl2ks6OTeW/DQ4eA+RAQDO7lDoQxKSh9u7NFxByPyGj6bGg0filR3rAe6Fj8zWcXpgjPjp9wQw+qmW9pVX3CPLfZ+zTnViTTn7oqPbyknoiU2Bp0DmZutRSNSdDkWkiWFQ2byVQyaNagNiDQs6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790954428; c=relaxed/simple;
-	bh=jiRlnQPL/4jn0XA+0EpA4cRvVnRyf76p+dgNnwem+7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mpVjcWDoaiGZJZFLnyS/NKlqNFa25W6coGz9fF4WXbd4d5JLoaja3dAJX8up1Z4gJ6iLo6LsIH35wXyn5hz9G5aHuXRiBByxEi93EngLVesqHmeT8b3rPNzTLTCWzGmmI+Jkf5GLm2674qVA4Z8iJjogp+7KOfHXX6JgFYWRyQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=J++kYhkW; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1790954894; c=relaxed/simple;
+	bh=jSesLRiSeGml5Tnrjg/pe9P+zipvIwJDessg3nPTnYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L0rVs2xP2e3on1M0PBWisNyS5VwAX/ENSds8EL41VPrzh7/AAfUPd6c5tg9qngp1bj7zqo2UEWYZ7XnSQnu57zN1HphgFB1ngimTUfxMsa4uTQMezAFAmSdzUFKb4JPCEV5iAq16IBAgF2fdEsm4vTZD0gfUOl6EqdXjJWmEPf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hAwzBJxk; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="J++kYhkW"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-4a11603310fso103035e9.1
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 08:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790954420; x=1791559220; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DX8YXk9lb+w/GLA7rHIr8s7xKmdQI537LSAHJBywLx0=;
-        b=J++kYhkWj9+SLNiKsoL+D8NzoWCWJcK8iCe5h799Zsazgagvd1VJh30KOQZjZMfH32
-         Xhk15Xt8gNOgkfy3rGrDU4SmjikuAZ+qNtzNxCEO1KEIxZ2DzQdrqBAi1lKCca8DkU6R
-         +bWyFAyajVR96Qe7LGpDi/QvLXXxSLHJh/J9896HEWT1IM8DjZI1Oo+5k7T7kg0lkryJ
-         NtHUCoI91i51ZzH8Q9rD4QgEQ+QUzK0kBVJ49Tavqz8W+Zoh41HPEFPYEohz+pAa6xO/
-         rYbf8Lso19sW1JmbubLRIkotwCRAO6gGfzIEy/BmkK5oy/XZD3n1wPNky2stBSVXluw/
-         CG6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790954420; x=1791559220;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DX8YXk9lb+w/GLA7rHIr8s7xKmdQI537LSAHJBywLx0=;
-        b=CSDnHbsMCB/J0VB98QuF/TNZ5bxinrNvDzgrbw3SGgrUBytqfAcCsz1hm1L76BciTN
-         gyX5tII5bzVwHlQZ+9wfdnUwOhTwuqF96uqgKC7OM7nY/DJ2faH3kdW4jZSXzmPojeVI
-         JCIQBqgbg0gQpAt+tUTVZ6lEkXytyB6knLuSm92JtvPdZfmcBsWOAXjqgrq4Hk3Z50PE
-         iOcnLVVjibmqIfw+qDl7G0igq0wRdiotvShppM6F2Q94405EnvzS/SMOGPrNdWg5AP6C
-         kaml2UE1Jg9IGrWpaOZSJRSDH/qc+HMdpSbSEhW/EEUKlIu3WQYUtBbsdH1TT8SHyE/e
-         sYOw==
-X-Gm-Message-State: AFuF++llR+hwVmQo/yAcw+/Doao9GcjAAfcwFPBh19gGKzPwV7Au/Dug
-	yx527uqG3G1o8qYc4u1hda/gvZfL5MnPvymbq1KDF3hxEUqccDWZLgTY85+7lCGx3bk=
-X-Gm-Gg: AYBFou24u7sW9A0cBroDIgrZQzwmSQL6Vol9OsYABgvQbQW2U/o+Blk1tY6VdJRICOA
-	rBA+MaIGNwETMSchXN+EnZszAD7m9ARLIb8qNSKRRHVkf/S+808yAQ03mBk0VF4svHq01SRUNjK
-	jji93slO6Y29qc9KzsXtPWhyuk921BjhsLWxCbtoNZDYMz+HxaCRnSjudl+KJJO615KwLsUKBNT
-	Fy4WIwqITqSQgVYEXHohW7XvUN1MCprkQ9e1bmwJTOGlOiOMzjXPtfhwq+HfMvoM1v4TRh+xdTZ
-	VmdacjYh6gyGM5QxSZvFQG3fR7eBEUmAZMr0V+6vHy+nMsfEQNB5PLFX/NHh+u4yepcWVV4ru9y
-	aHo8WPQ5B/1K7Cd95LGnE4K51qY7Em1eKOiWYduPxz8BjHjB6751FydAFCxsc8a2QtMaBG+fkse
-	LoOGjIR3J6Vswr3lB9iv43Z4pZHFX+i106+er4P+uFzNGyXkCs9Iz3+Ux5tgyReMfG3mzMXflFe
-	WLzqJ/Z
-X-Received: by 2002:a05:600c:4e13:b0:49c:cee0:e7c1 with SMTP id 5b1f17b1804b1-4a02757999cmr55471925e9.16.1790954420036;
-        Fri, 02 Oct 2026 08:20:20 -0700 (PDT)
-Received: from localhost ([2a02:168:9d56:1:9c5b:8aff:fed1:19b4])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4a03048abc9sm32039625e9.0.2026.10.02.08.20.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2026 08:20:19 -0700 (PDT)
-From: Bruno Produit <bruno.produit@trailofbits.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	x86@kernel.org
-Cc: kvm@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	linux-kernel@vger.kernel.org,
-	Dominik Czarnota <dominik.czarnota@trailofbits.com>,
-	stable@vger.kernel.org,
-	Bruno Produit <bruno.produit@trailofbits.com>
-Subject: [PATCH] KVM: x86: Cancel PIT timer on failed creation
-Date: Fri,  2 Oct 2026 17:19:42 +0200
-Message-ID: <20261002151942.491680-1-bruno.produit@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hAwzBJxk"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3E4D1476;
+	Fri,  2 Oct 2026 08:28:08 -0700 (PDT)
+Received: from [10.57.8.170] (unknown [10.57.8.170])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD2013F85F;
+	Fri,  2 Oct 2026 08:28:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790954892; bh=jSesLRiSeGml5Tnrjg/pe9P+zipvIwJDessg3nPTnYU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hAwzBJxktNKlnMFxSzOnuLVq2YuNzJ/DaM11nCmTz07uIzhDiXOJ79lEd1F5eCV38
+	 mWM79MLDCyjXlTpcX6J6HMTkq9NqYKq1rwVSZVpy6cVbj4X41jX9RDAL1L2gn2q1Tf
+	 Lc6ajo6DhJ6lHPA+rh+V5D68sRn9lbM+X8jl8+GE=
+Message-ID: <1910861a-1188-4ba9-ace9-be82304c95a5@arm.com>
+Date: Fri, 2 Oct 2026 16:28:06 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 09/10] firmware: arm_rmm: Add wrappers for Realm
+ related RMI commands
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-10-suzuki.poulose@arm.com> <ar-QC4vtcULyJ5dW@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <ar-QC4vtcULyJ5dW@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Kyle Zeng <kylebot@openai.com>
+On 02/10/2026 12:05, Catalin Marinas wrote:
+> On Fri, Oct 02, 2026 at 07:15:05AM +0100, Suzuki K Poulose wrote:
+>> +/*
+>> + * rmi_smccc_invoke_once: Invoke the RMI call and return the results. Do not
+>> + * retry the command. Let the caller deal with RMI_BUSY or RMI_BLOCKED.
+>> + *
+>> + * @regs: Input parameters filled in. Updated with the ouptput results
+>> + * after the call.
+>> + */
+>> +static __always_inline void rmi_smccc_invoke_once(struct arm_smccc_1_2_regs *regs)
+>> +{
+>> +	struct arm_smccc_1_2_regs args = *regs;
+>> +
+>> +	arm_smccc_1_2_smc(&args, regs);
+>> +}
+> 
+> Nit: I mentioned on v21 - is the copy to args still needed? Can we not
+> do just:
 
-Cancel the PIT hrtimer if PIT creation fails after registering the PIO
-device. This matches normal teardown and ensures the timer no longer
-uses the PIT before its memory is freed.
+Sorry, yes, you are right. This is a single call and we are fine to
+overwrite the results.
 
-KVM registers the PIT's PIO device before registering the optional dummy
-speaker device.  If speaker registration fails, a vCPU can have already
-programmed channel 0 and armed pit_state.timer through the published PIT
-device. When I/O bus registration became fallible, its cleanup did not
-cancel the timer before freeing the PIT.
+> 
+> 	arm_smccc_1_2_smc(regs, regs);
+> 
+> (no need to respin, I can fix it locally)
 
-Fixes: 090b7aff2712 ("KVM: make io_bus interface more robust")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Bruno Produit <bruno.produit@trailofbits.com>
----
- arch/x86/kvm/i8254.c | 1 +
- 1 file changed, 1 insertion(+)
+Yes please
 
-diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
-index 1982b0077..b7875345f 100644
---- a/arch/x86/kvm/i8254.c
-+++ b/arch/x86/kvm/i8254.c
-@@ -793,6 +793,7 @@ struct kvm_pit *kvm_create_pit(struct kvm *kvm, u32 flags)
- fail_register_pit:
- 	mutex_unlock(&kvm->slots_lock);
- 	kvm_pit_set_reinject(pit, false);
-+	hrtimer_cancel(&pit->pit_state.timer);
- 	kthread_destroy_worker(pit->worker);
- fail_kthread:
- 	kfree(pit);
--- 
-2.53.0
+Suzuki
+
+> 
+
