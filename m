@@ -1,113 +1,128 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BD022D4E9;
-	Sat,  3 Oct 2026 05:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB03318EF4
+	for <kvm@vger.kernel.org>; Sat,  3 Oct 2026 06:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791007050; cv=none; b=tUcEqt+KK7KIT2BHc59u0gX6eWLQjzzWoOnekMJy1lClP9Pj/OoyFDZce7uj3+FiJvMW5d4EU7Sb2+4M2u66z1lBFYqfjh05i9WYiv4y+bQi+uRQ6zbXQ17Q/pJxK9KKTNjNE5Ce8SeB8/YB0L/YdAySOCSM3gRZNcsHmDOivF8=
+	t=1791007254; cv=none; b=TBbSSzu1J3b8GQSSdDHsJXGnt2jPsN1pHQ598NAdG/ku0PxeXl+H0h+3uXnpbKeQHrh9aT+sN2VVE4kpXxEEnz5Lf0OeJ1WRcUkZpg+z3LA/FlCXwPk/3F7J+JkzlbltcX0XU2nB2V+IKRYO0nqeS/zf4tXU0AAkaqYcptMYDbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791007050; c=relaxed/simple;
-	bh=tFDkya3P/yKLJCp1gICFrurPqs3+IzYRZ7NfNR2Iomo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gtg2iDqgt84VJV3wBRTm8PAbTtLILT2xLiGhxE2azrw3+Vlh9qVfmNskP/OpYugfkW+Jm9fbm64P4AKvuOoc6HJp6HAfqpy6G1pdx7Oh0577IouLRhyiIEP6ryEEgwX2TCIQmJzuM2qqDrMIZm77XsLk7RaRsOXhzr4Xe6b9w7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bnit/Ug3; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791007254; c=relaxed/simple;
+	bh=1697bVjmVRQYp3+PmPQ9GBr0rthUU0upfRdLG2/i3nk=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=FoTCJfAQvqv6XrzLeAxIymoNVs+oWA6GnMCzeGxW4lTjyPnjqkPjeoToO78DjSNEcMy7D5yvx7lo+43PlCphKz0Ic7RAiEoNTs9NH5BdUF0iB+AbVJ3Q8Wb8Lg19NFVxQQgpMm961nV60bN7DFyxflXKEfTlC8LR//Ymh7f8D9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BOOWQvLY; arc=none smtp.client-ip=74.125.229.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bnit/Ug3"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD65A2F;
-	Fri,  2 Oct 2026 22:57:23 -0700 (PDT)
-Received: from [10.57.8.170] (unknown [10.57.8.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 89EEB3F85F;
-	Fri,  2 Oct 2026 22:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791007047; bh=tFDkya3P/yKLJCp1gICFrurPqs3+IzYRZ7NfNR2Iomo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bnit/Ug3xfN4z/vm7IHCCvu/yhzCUCP2bfUgXXkrVejTIQk3nwQaE9o+lhUm+0OSB
-	 9pJJtzlOIpii1/BjB6NI+OdW/Tsb9O7Hxz/K6vPWvuJRiV814decK32VCBnJfnL24W
-	 hwCtS+hiUsp1YeQrX9W3rXlmXbrHVgi8SgQiDOlw=
-Message-ID: <b0c3dfcd-d537-4553-a3bb-0dc2d3d3d82c@arm.com>
-Date: Sat, 3 Oct 2026 06:57:18 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BOOWQvLY"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-35118a5991dso29988eec.3
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 23:00:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791007252; x=1791612052; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=BHbeuwzJ3G6xnJ7FZ53NVkGVQtvmx37StvDtCuaGguo=;
+        b=BOOWQvLYBb/Hcw96wx6zB4Mr6n2BkbIT86B7UQL/SNw07dNKjLrIeBqlFy5VAEnmt6
+         ijtlG1Q/6TT76YrF121mdCLsF30CvI++O/BMf4fsFiyzMquSxlZwIB1umzYFBF4jzJrs
+         b1XeuACQfLVBsoyGoZWQ3ut2puVPDg3r2x6w39v5g7yctASxcUDImt34BN9aNvoTDvV2
+         SHPHjyL5yUCXy4StinXvWYz3y4UAT4WpFoKJCBQ+D2iKPp/LI1cB6rJehTGACU1mjPrH
+         IMli9rNoSz+aqNpFQ3aM9p/jna+l+erZhxtU6Xi4gJiPvdfOzfUstsewTywdTW0Pto7P
+         BVgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791007252; x=1791612052;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BHbeuwzJ3G6xnJ7FZ53NVkGVQtvmx37StvDtCuaGguo=;
+        b=ru8UXsDLIqlILD/C9v2XmKZb2biRNl1rZIlPYyiyponHjTEzd8TOOcJ1+nzUs/KTb4
+         dXzZCEYhHZPyY/WhCvdoWIXcCgXtyaPikmMVUOgdxFypjzDztinwJ2QD4AFqaKDMJVHr
+         MgmY/i6sye9Rp6O83IlAkFUNhFiB0D5wWsOfQaspaG15LTarU7I2Uw1QkDmtdbuqkHnN
+         S4AuXSePYEkZQPAl32P0YTmF+xm5amxQzPnMbreIdelIE/ye70fkhKWnT0AUCVpG02Pk
+         n22ndpRR3IQNS1DvsH5a2QSN1HJ4fuabv8A3P9dEFSBAal9CTsB/E9f1lPK3fTGwYxVo
+         xEFA==
+X-Gm-Message-State: AFq9FYLffd/Wh1Aems/vrHTH18bIct9w5jE1YPBGlmPNyJHbLDR22ZJV
+	q77hMhHFPhvzVXhg/z/8z18oqTG4GuXubpGRO3ezA+g2slgdWFRd1tna
+X-Gm-Gg: AYBFou2pPKhqAQK96rId4h/SVa68AJGPyXzP1KIZmV6kUiZ4bOY84V3Ya3DTDELkl1k
+	GSa5bKhXmae+k3uneVfEF87XZConwBUPHTXMfmQoXw2n44SI51vzzk6FREwDRW7E9lRJjfgof01
+	JT4jGsSdSDoeY49CIN8jCAN/AQe3sIm1hDVcLT0vWqC8tojGRlpmQqbObhXTxgari6MLu4Obi+z
+	NtK9h+w0tvCkBzfwrPaylTiyXEpF99VAg8tUiSP+4N3vOHMkpMFsjHmucF/8/rMrxhK8TqbGBe6
+	1AyP2+aIZ2N/tewJTPrmgs8hdAM6MiCyqyLE27axdtTKqVLOnIEJfuoodMwDu5Fqvh88hiqxOtU
+	O40kJst1G3LSJiPVNV6my7KOEVwW8LqgmGFgKe8lk3Q82/C5PiwO3EflDNso2CwJXZUDRVEv87z
+	nnblJszSd+aORODTcpUBDYlWO1QuIKJhtFZVmOPzw3/1fpC8MzO8LtYvIy66oo2dwTX+bekErwx
+	5l/C4cXAtYspDpjCIBMKlHodbsJlmLVduVlOmJAHbo/CHFMGurUSu8=
+X-Received: by 2002:a05:7301:dd91:b0:34b:8ebd:e3b with SMTP id 5a478bee46e88-34f150d946bmr5245863eec.14.1791007251743;
+        Fri, 02 Oct 2026 23:00:51 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f14f9f2afsm25349897eec.18.2026.10.02.23.00.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 23:00:50 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 5/9] KVM: selftests: Make kvm_create_max_vcpus tolerate ENOMEM
+In-Reply-To: <asAtNhSQHDy_k0d_@google.com>
+Date: Sat, 03 Oct 2026 11:15:20 +0530
+Message-ID: <jynzjq1b.ritesh.list@gmail.com>
+References: <cover.1790101179.git.ritesh.list@gmail.com> <25cdef9c45a1270dcad7e9c4140e56b6953eb27b.1790101179.git.ritesh.list@gmail.com> <asAtNhSQHDy_k0d_@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v22 00/10] firmware: arm_rmm: Add RMM v2.0 base RMI
- support
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Will Deacon <will@kernel.org>, maz@kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- jonathan.cameron@oss.qualcomm.com, Fuad Tabba <fuad.tabba@linux.dev>,
- Sudeep Holla <sudeep.holla@kernel.org>, rafael@kernel.org
-References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
- <179096683487.2356212.5555509708136944708.b4-ty@b4>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <179096683487.2356212.5555509708136944708.b4-ty@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 02/10/2026 19:49, Catalin Marinas wrote:
-> On Fri, 02 Oct 2026 07:14:56 +0100, Suzuki K Poulose wrote:
->> This series adds the generic firmware layer for talking to the Realm
->> Management Monitor (RMM), as specified by the RMM v2.0-bet3
->> specification[1]. It is the first part of the Arm CCA host support that
->> was previously posted as part of the larger KVM series.
->>
->> The split allows this RMM support to be used as a base for other work,
->> including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
->>   without depending on the KVM Realm support that will follow as separate
->>   series. (See more on that below)
->>
->> [...]
-> 
-> Applied to arm64 (for-next/fw-rmi), thanks!
-> 
-> Rafael, I took the liberty of merging patch 7 below adding an arch
-> hibernation hook needed for arm64 (I changed the subject as well to
-> PM: ...).
-> 
-> For now the RMI is default off. We should only make it default y when we
-> have a deferred activation gated by kvm rmm option (or PCIe?).
-> 
-> There are a few typo fixes, some reordering of the Kconfig and Makefile
-> entries to preserve a somewhat alphabetical order. No functional change
-> though.
+Sean Christopherson <seanjc@google.com> writes:
 
-Thank you Catalin ! Much appreciated.
+> On Tue, Sep 22, 2026, Ritesh Harjani (IBM) wrote:
+>> diff --git a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
+>> index 59ddc3757943..45a9d8b369b5 100644
+>> --- a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
+>> +++ b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
+>> @@ -20,16 +20,29 @@
+>>  void test_vcpu_creation(int first_vcpu_id, int num_vcpus)
+>>  {
+>>  	struct kvm_vm *vm;
+>> -	int i;
+>> +	struct kvm_vcpu *vcpu;
+>> +	int i, created = 0;
+>>  
+>>  	pr_info("Testing creating %d vCPUs, with IDs %d...%d.\n",
+>>  		num_vcpus, first_vcpu_id, first_vcpu_id + num_vcpus - 1);
+>>  
+>>  	vm = vm_create_barebones();
+>>  
+>> -	for (i = first_vcpu_id; i < first_vcpu_id + num_vcpus; i++)
+>> -		/* This asserts that the vCPU was created. */
+>> -		__vm_vcpu_add(vm, i);
+>> +	for (i = first_vcpu_id; i < first_vcpu_id + num_vcpus; i++) {
+>> +		vcpu = __vm_vcpu_try_add(vm, i);
+>> +		if (vcpu) {
+>> +			created++;
+>> +			continue;
+>> +		}
+>
+> Oof.  I dislike this, to put it very mildly.  Is this the KVM_CAP_PPC_SMT thing
+> again, or something else?
+>
 
-Cheers
-Suzuki
+No, this is not the SMT issue, where PowerPC encodes topology in the id,
+so we cannot use the full MAX_VCPU_ID range without a valid SMT layout.
+That problem we have fixed in Patch-2.
 
+This is resource limitation on L0 Hypervisor for KVM-on-PowerVM
+(nestedv2) case. On nestedv2, KVM_CREATE_VCPU is an hcall to the PowerVM
+hypervisor (H_GUEST_CREATE_VCPU). Now MAX_VCPUS or the MAX_VCPU_ID are
+the max vcpuid range limits, but that is not a promise. L0 can still run
+out of guest management space, i.e. the hcall can fail with
+H_Not_Enough_Resources error as per platform HCALL specification.
+KVM maps this hcall's out of resource error to -ENOMEM.
 
-> 
-> [01/10] firmware: arm_rmm: Add SMC definitions for calling the RMM
->          https://git.kernel.org/arm64/c/9e201043cbd2
-> [02/10] firmware: arm_rmm: Check for RMI support at init
->          https://git.kernel.org/arm64/c/24657f2ce536
-> [03/10] firmware: arm_rmm: Configure the RMM with the host's page size
->          https://git.kernel.org/arm64/c/a0382431a0fe
-> [04/10] firmware: arm_rmm: Add support for SRO
->          https://git.kernel.org/arm64/c/bc1360cabe27
-> [05/10] firmware: arm_rmm: Activate the RMM
->          https://git.kernel.org/arm64/c/fa193c502990
-> [06/10] firmware: arm_rmm: Ensure the RMM has GPT entries for memory
->          https://git.kernel.org/arm64/c/c20b65a03eff
-> [07/10] kernel: hibernate: Add an arch hook for preventing hiberation
->          https://git.kernel.org/arm64/c/5487bff69b85
-> [08/10] arm64: Block hibernate and kexec while RMM is active
->          https://git.kernel.org/arm64/c/fe4a24613bc2
-> [09/10] firmware: arm_rmm: Add wrappers for Realm related RMI commands
->          https://git.kernel.org/arm64/c/c4a16839abb1
-> [10/10] firmware: arm_rmm: hotplug: Skip memory added to ZONE_MOVABLE
->          https://git.kernel.org/arm64/c/06898e5320b5
+> Assuming it's KVM_CAP_PPC_SMT, is there really no way userspace can pre-probe the
+> "real" limit?  Or modify the test to enable KVM_CAP_PPC_SMT and do the proper
+> striding?  Eating -ENOMEM is all kinds of gross, and I really don't want to add
+> __vm_vcpu_try_add().
 
+We already probed for max vcpu id range limit. I don't think userspace
+can probe for anything else here. But let me think about this a bit and
+get back. Maybe I can see if I can drop the helper.
+
+-ritesh
