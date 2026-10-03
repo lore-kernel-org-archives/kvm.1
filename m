@@ -1,78 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFD53ABD88;
-	Sat,  3 Oct 2026 17:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FE83A7D98;
+	Sat,  3 Oct 2026 17:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791050211; cv=none; b=fkE7Ql5GKoMKduy6cS6p5GbKGjZc1DqVUl34GEMHckZRpbfTky9pfvUs8Y/JfcYek5n6GfBJBDyhYOfcK2yQ1JT9yc9NNOoQU9Smanpag91O+SBGhM1B6WluRrQaBMOQp9yRN3gsOaqYReQS+hmUpEPXenOf5dlnEZM2T/mCF6M=
+	t=1791050212; cv=none; b=I8cVH3uwP+esubtZwJBdp/fZELteTCubSs+xeDz9KDt2bkzMy+4oAyUZguPqRo6/n9+84A6cbc2/MyhiM7b9ibZazovWYKIpxb8KaDSfdJuQ4KDdWk9SbPtr9oEeBUqXIzzeoZdhPUv4XsIALD4a9b6gVfoRBwo32+ySMhp0Vjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791050211; c=relaxed/simple;
-	bh=O+VsZj4N/VkqVBY2g9BGjgn5Fpgy386y+4eQWu/+de8=;
+	s=arc-20240116; t=1791050212; c=relaxed/simple;
+	bh=iSVlcTDDIwilpTIFpoJd4dbbYhXAYFyiKbuOnRJzCTQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=n7kE1656thmA92S2pMF5Sbutz5a1DiXQ2hGFsb81u8uNZsp0sl/bZgL2QolwBhAKtOCdFvO8owbC+SZ5KVShcn0tOU0UEglckwTxm44L2bZGv5im/Ex1a2n7IB8YR9oodLYfhcxlIjGuzAnWiBYeDKlMFR3ci2HViSb7Xnt59lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kifP9gYb; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=W6YxGXcxIbhuN4c88XF8TNqmM+2jxb+FVeO++pifq/FAa8g8zrJ1+AHUs5j8kiAFPDZlaV3Ll7airkaAjchzMuPmHKG7Vm1G/8Q2AxfIXZhJ5+6SmULAQmUyPASqGTuNlvdu0nl2oc4LaUuYmZRaKhp9hbVeuepPt7bhqn80P+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8UjPvb0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kifP9gYb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98261F0089B;
-	Sat,  3 Oct 2026 17:56:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8UjPvb0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0B91F008A0;
+	Sat,  3 Oct 2026 17:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791050203;
-	bh=O+VsZj4N/VkqVBY2g9BGjgn5Fpgy386y+4eQWu/+de8=;
+	s=k20260515; t=1791050210;
+	bh=iSVlcTDDIwilpTIFpoJd4dbbYhXAYFyiKbuOnRJzCTQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kifP9gYbNt4dMtF7Zh/2DJ6SZJFwfAASX9y/jK/3eyKGhQIA/cBhxnrh63y7JrQx3
-	 e3t/lMB+basqTEI3j7ux90JpLCL6mYPa3z7Jw++8/k/Idtu1n9ETb/TZWKX7uPgBKw
-	 M2SemTVJ5kUxSdWmedMpEOno5+vAUjg90byy3mSa4rW/AVDQRPnDBmBOCy2UMZgmil
-	 7J0x+gaU3UXv99P5DJj7LFwmpaq78ZEZkCzgSRxGrzF2HPeS5J69QvajJ4YOtJm26r
-	 g27DzpxZyF/kx+3aM0gdT1IEse+Piiju4ez2wP4MdPj/woXwbAxmRqB3Xs6UlT4YSi
-	 UsfI6nesygOwg==
+	b=S8UjPvb0uyFG2SIoLBKdnmLEppjDvwQsuoJsiNJiUqsrrcscO12yTa4/DeE0YGwqi
+	 RDHTsjecBuoyJ5d077/IiCui0EJTgMoXaJeW7Y+wz+3CEuGblujSmDoOXtDAGEtCiG
+	 XO6eEv+lpSNmJi7eL7T6ws1e3nc/+/zKJ+RaKpaQ6n3SquTCjaABkT77gKDOdRM1Lb
+	 NL6uNd5gsYBDXwFHyuBaZ2/+8opsCOj7jxdLmterkVLfM/R+aLlwUMDLKTlP6A7x6j
+	 fQH816Lye5Ud//q63qAFBBIQPQrM2RCXaRUQOICZubydjeDVVOXVRB1KMgBOqlySYQ
+	 0J3FhibLulEWw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 18/38] fbdev: defio: assert FBINFO_VIRTFB, drop
- VM_IO, add VM_MIXEDMAP
+Subject: Re: [PATCH v4 15/38] mm/vma: only allow mmap to clear
+ VMA_MAYWRITE_BIT if not mm-managed
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
-Cc: linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org, kvmarm@lists.linux.dev, "Heiko
- Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, bpf@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Vasily
- Gorbik" <gor@linux.ibm.com>, selinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, linux-perf-users@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-18-a1f052500fd7@kernel.org>
+Cc: linux-s390@vger.kernel.org, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, selinux@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org, kvm@vger.kernel.org, "Marc
+ Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Oliver
+ Upton" <oupton@kernel.org>, linux-trace-kernel@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, dri-devel@lists.freedesktop.org
+In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-15-a1f052500fd7@kernel.org>
 References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
- <20261003-b4-mmap-prepare-vma-flag-sanify-v4-18-a1f052500fd7@kernel.org>
+ <20261003-b4-mmap-prepare-vma-flag-sanify-v4-15-a1f052500fd7@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 03 Oct 2026 17:56:42 +0000
-Message-Id: <20261003175642.A98261F0089B@smtp.kernel.org>
+Date: Sat, 03 Oct 2026 17:56:49 +0000
+Message-Id: <20261003175649.8D0B91F008A0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-> Currently all drivers which use defio allocate system memory. All of them
-> also set FBINFO_VIRTFB, other than ssd1307fb, however this driver allocat=
-es
-> system RAM, so simply failed to set this flag when it ought to.
+> For ordinary files the only way the VMA_MAYWRITE_BIT flag is cleared is if
+> the underlying file is itself read-only.
 >=20
-> This patch sets FBINFO_VIRTFB on ssd1307fb probe, then drops setting VM_IO
-> in fb_deferred_io_mmap() and instead requires FBINFO_VIRTFB to be set,
-> erroring out with a kernel warning if not.
+> This means that mprotect() cannot mark a shared mapping of a read-only fi=
+le
+> as read/write, as doing so would violate the read only attribute, and
+> permit writes.
 >=20
-> The logic requires a page from the driver and since commit 1ecbc7dd2902
-> ("fbdev/deferred-io: Always call get_page() for framebuffer pages") has
-> always required it to be refcounted, so this was implicitly already the
-> case.
+> In general, we do not want file systems to be able to do this for
+> read/write files.
 >=20
-> Finally this patch sets VM_MIXEDMAP, as the logic is mapping
-> kernel-allocated memory so this is appropriate.
+> Doing so would violate fundamental user expectation of file attributes and
+> likely break userspace.
 >=20
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> However, drivers pose a tricky problem here - the /dev/xxx file may be
+> read/write but provide access to a resource which is fundamentally
+> [ ... ]
+> As no driver which clears VMA_MAYWRITE_BIT establishes an mm-managed
+> mapping, no functional change is intended.
+>=20
+> Acked-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261003-b4-mmap-pr=
-epare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org?part=3D18
+epare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org?part=3D15
 
