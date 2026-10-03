@@ -1,372 +1,369 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4492E38887E
-	for <kvm@vger.kernel.org>; Sat,  3 Oct 2026 04:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DB31A9FB7
+	for <kvm@vger.kernel.org>; Sat,  3 Oct 2026 05:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791002516; cv=pass; b=uVeX/aEMYgAznos8NeWrQ8wVN/mKuG5Cyp7IwDLRO3GmAInsWLS0JJwTw8dogrqAX/6DaWm5ouhjAQ03AOWSd3WlAjQR2vJVapOvq1yQpqDXCUpnhKsOWhrxa76ETd1/Lr9Zn4BJ9ZQBZM2lnpJRvoTWBvOwtVHOBO4RiiY+c8M=
+	t=1791004407; cv=pass; b=rI/oE1shhtFR45cbSDL26uOWjyNipvPoAraT8GB3coAfnqJV1ybt6RjFbma5/45VvtXL3nJg1IaRdvo5CqkTyamC8o54a0R8423GrK4b5veBqA/V0WlYLYXEe0KimKBt09WYsUJt6xCwISpikUEHhBlMX5aB9uIY18ceW6iT/UE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791002516; c=relaxed/simple;
-	bh=9HV8ivjSIVJPXUEW8t/GvnA+QnJCmpwHY5r/HcMLJz4=;
+	s=arc-20240116; t=1791004407; c=relaxed/simple;
+	bh=c21Wo+/2g/WjcHOxIjHfoI3SUBjaHXeuY4OLe6Mm0UA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uIUqKYddRq2PKwK+m5PJNvnxB2ROb7ej+HZRUkVfPQEnjevtnKXOX1GVkIxMUi8CJkWrm4IN8Oo6Tw0amKvKZOFcFt8QAMG1/EZlDgCyndLjvLdoMYtnWzZDqI5fsOnC1qRAGJtdJiT+zDGmqqB5u8dq/OEFHb6nRIMZNorhW7c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=tm05Ode4; arc=pass smtp.client-ip=74.125.225.141
+	 To:Cc:Content-Type; b=Cqt2creYdD3Zzw+SgFRBZdn6NJnKBtMAJg4kVvncCbnzTewT3xnGy6C7k3kguI5qYmzc61uQqHa+W/vYkhi09t9F3upwwEfAckmzR6q0p5IipR5LBiI3KI/D4b7FaZ7ekx45qVFQpgUjGX2bq59MzO95f7/f2X489fqStHQ+tRE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=isl6JP1E; arc=pass smtp.client-ip=74.125.225.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="tm05Ode4"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-4a09e2d0f7dso2460215e9.1
-        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 21:41:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791002512; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="isl6JP1E"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b03eb33b2so30045f8f.0
+        for <kvm@vger.kernel.org>; Fri, 02 Oct 2026 22:13:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791004404; cv=none;
         d=google.com; s=arc-20260327;
-        b=iImtoSRJMIspvogqq2hx8q9EwoN0vj9ANTjJtGjCx+sbmZ4VS0+X3kycGU8q4EJSIR
-         TA6FbKFwMlmHBHvHdR893uwShC+q2T1c5O6q4SDXKvIcCGAkF2Mmj7rbgpIe7NOmWJ/Y
-         uu4AJg3Klbr+Z23fGTg/8gAUixcGCCsEEwT785D+gilwhX9s2eFGooQqfz6MQKYObwct
-         jTsnY6H19e7VyL1JXHKGv7sVaSbYrty+zQ+qcnlMiyPk709You2I9YKMZAtORpAgMuKl
-         0xX1LIMShnx9RcH1szic7FmgsVtKZJhMMqBiCR+G90B9f0x57gEPp4IPdjDtGRAp63pZ
-         Qx1w==
+        b=YEIyOSdlxNcwO73s2tNFG/7x/EoF1uob07ao5r2dR5xTSdM6kJPO0843clwi2vnEhQ
+         x+PMQpkutVR8uTHNY0NnHGWKZoyfO0zfD2BQz9WdjmWhhcaWcErziM+COO5CG4G9HKmt
+         3ZWoV/zBGnuZCkHpoWOjgBp5p81VRC8+a20nShaOP4nc4ay212QxrCNzX091Az7Cyvbs
+         ihUFmNqV8gzIb3MZkkhNKAwNAQmYNfM/7lxMob0qvY1Atlf4rbxdQAg0IyAdPwfS8BIl
+         EXy98V8lwrwnAq7DO95wGCNLLNDRC5w5p6/gnHowR/J4XXtieEZG6csS+6QldtJ+40Je
+         NE1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7TeWG7eBfwN9fqcBz2YTPOJ+uEK88CVw5+xe0Jks6Y0=;
-        fh=84ZQ97rrHOWJSwINF3ASjCyGWqbQ9alJiYmQl6iURN8=;
-        b=h6TGRLAW8b6b/4wYsYjiBI9WLd2+LYb1+SGdPPLgfkRpWTujS3wcmgJRIwODFQv0s3
-         j3GlYStTqu8U6VLCxBNnUiHQNXRoC4H42k+ICLqbSfjM9ZnCeCZEQgt4dGhRuXZukDyj
-         ynhaMzXFkEcuPOhciAvWNi8DLdjiyyiUM0At10R1j+3uKBF5UK2Szt2noqdZ5oQgv+nP
-         vluofAZE+DraQeVawvm3+vogdzTMn5PuVlNBXoREza1wB9kpMwWHtiICoVophW09rHKC
-         UpownUISDUrK0e1vRBvbCwTD41cIcb/zvk3tX5sb/qFgPYBAJb5EG3e8oZiShCOmXYFy
-         y5Kw==;
+        bh=ja5/K6y/ZwOjuHXyeMKgCswBU4BMbBpgHHGQKqQjNeY=;
+        fh=ZjhwMn7ojW3/Hdv1FC5Kmeuj5gjJfBsqK1jp4ks5rs4=;
+        b=PLdQ4jJErCSxJ73R5ZQF0sxoFbMoWYxw/buqIEFgrXsHKXQqdCYXDMeffIagOFFhRM
+         AlP2B/6hzavaPK/3T7wXXhREuj59KgthR40nyJDWAgd4OwGYlpr695BSlfwSluS23FSS
+         1Y6j7iTrBrzbctJ63dJyCQni1K+1y2KKzo4aEA9uGHHJu30ujxcSzmbwmbxsoH5PcjNq
+         sYUdkVA18LpySaxObAC+FKETpe3kbtnkL+jJ46HWrTrZlxCNKrmJfFi3IfvTOv2fB3aB
+         +gi4QuC2bjeu59icrmqFylKoy2nDByqee2qUkwnOxG91Iot/nYeByn3OUKwM/iMo4NDE
+         FR7w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1791002512; x=1791607312; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1791004404; x=1791609204; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7TeWG7eBfwN9fqcBz2YTPOJ+uEK88CVw5+xe0Jks6Y0=;
-        b=tm05Ode4HkcpKQiaASruBNYU+sAAxqRfUTEaaWZ9K9EPfiN142WSBgt/mBWYnsE6Of
-         KQl+U8iEysAIIyTNDONth/Sn91mYSna3m6SdYDIAeN6YlmH0Q4SYSGz8UrOS65Ko4AbT
-         DjkL+O53nRd/ft9k25C6D9yBOwvYjiQTf6pq4nMnXnHjKcJ3QL7zuWaoUH6EebuvDFtq
-         oqmrkAb6h0vvasSA/DUFhuB6/LmQLi1+5/VzcMEoJqa/gsrKTnshbn7okPDaUYiYWHXd
-         gBReHrpM9lSPNl7uaqwHKB9DCaX526xM6dxrcGqn6PhnoUzn0uMPUp4h+7odKidrjzSp
-         ulUw==
+        bh=ja5/K6y/ZwOjuHXyeMKgCswBU4BMbBpgHHGQKqQjNeY=;
+        b=isl6JP1EwEGsrR/nNYuwyLfCmUE0f09rU+Eg59ANFPx7W7MonD+MRPqA4q5WJvelXv
+         g+Q+wfNNVcF0y1EUYfgW8JJt70wAnWaemUecBJb3BI0KzuUF+Lw3oAkqI8IYP4Tqr4ax
+         Ndka/zWiWpecmCmjXRTGGX2o1IVwNd7LMIZBmY44icLva72sUT8kgsC/0AfrpvVJwX6e
+         aB0s87pI6VMRxA+fKe5xJYO3E1srxPZl67/JRKoZhbHDdFne5MS2hmm0Ra40oMAcw0Za
+         0XqQ5Xy7dOfSyalsColSFsEL2GRw61P84abjCN0/1j1VKj6embHdNXEOBLpoQkkyr/DG
+         E1qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791002512; x=1791607312;
+        d=1e100.net; s=20260707; t=1791004404; x=1791609204;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7TeWG7eBfwN9fqcBz2YTPOJ+uEK88CVw5+xe0Jks6Y0=;
-        b=svqG/5jskOUFUreLZsFr0ni+duWufpa5ydoCwiu65cLztLUzk2spSYsd0lUuzHny37
-         CzZJpspGeyemq3La28uk2jPosYYWtYZXnL4oKPTQkAQPFDdFDRjB5lo5usrtoSnExSLd
-         i2fZPGVZwZK9A1BdcdCwqJv646etYKU3nIuezCbnbemVRaA/8PK2Kehg/ioIHXFHHU2T
-         ugF8MuzsYBzpdfe1nfSHUkkhBiwQ+dAwPfVBMAu1ETLS0C/r2out7fvnmuCeKzwgsMEm
-         Aa0TIkIQwdfZSqVf5m+pz8H1rXQR9ch87Mu24XlhhFiAMWt1sF4QFNd1c/0OiTrF97d7
-         O2fQ==
-X-Forwarded-Encrypted: i=1; AKwUvBygy1jDyadbkV29zS/V31YYVxC8mG+ue53V5XIa8ZyT1DFzpdDMZnuJKtcw/t3+vhl6DSM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nHOMzIb5rp0yzEDsgIj/fEKOs8l/W1XvVCcSVZvAGqIFQQlaok
-	Z33M1pqaygGFM8k0979BVJxpr6zTwHULjMqJ8bSm7CeSpqMUmiKjvMQ7+L2UBaKdvePgO2bySsl
-	0HpvGOBdamVSN1jCvQBoFuRrppV/YVUWjsknv8vo2OA==
-X-Gm-Gg: AYBFou0DEUxphN5O5l8fE8n7a3xzYZRdY059lPzpK8FjlRSJ8UcYE2yVx7buSnbLf9u
-	/C66+r2wssQ30A5JN6Ei5omU7GTgiHLeRcffMUU2PzEjG6b+v7FTol3ikbeX1ByztNH2XxI6LYL
-	xp4/t+JG3oHey+wPb+F2RI6NOU+nM1IY1CqXSQEksXi105ILBtpFrw0cT7cSjqrmVPG6at//Hqw
-	CCZ11Jaa+2xiIfTttuGLzFb83cWH1uKSYt20eAQqZtJq+dcBxLkwCL9wz1pXcpDTht2XWfEmpum
-	2Jp93Exai6dfTgccWyMi9bjzbGb/sUBIdw78fe8kcqkVfj0nxt9SrFJNk9aTHP9woryKm3pgGZy
-	xotIEsM5A+mqcPPGj9binv51knhyZgK5YAjymNLI/7R++5A2vqtkrl+aTpnmjOf7HxN9ZpBFkfV
-	0=
-X-Received: by 2002:a05:600c:3510:b0:499:9240:9a1c with SMTP id
- 5b1f17b1804b1-4a027559c6fmr81635275e9.15.1791002512235; Fri, 02 Oct 2026
- 21:41:52 -0700 (PDT)
+        bh=ja5/K6y/ZwOjuHXyeMKgCswBU4BMbBpgHHGQKqQjNeY=;
+        b=IR9084qzk9alsfQGA7U0fhbSSpGZW9B71nwaeMKuhzgTv6Dryygq58H9dByzOAQUez
+         G6VmtF4txLe7hUitTKzQURa4tJ4JoxH5Y/bILJ/NCoeH7L+3ARilx5S1qA4l+Rbs+vw/
+         3bIkaY0ojsMBLnS2ceNbrw5ILDN9oB1xQKh5KL0sQMRuFicuQiB6ZsCyuCDKie8ZGcZ5
+         LEaHz/DJOdAkTvsqG8Op84LBHxtg70IhvjRovnug8Muz2bMjHG7lZ7rIxbLHomvYJMIF
+         RHdCOyTHexyXfuzm0dh3hJQhZKqCd7oGEWvdgo/eC40cl8e74r8QyROrqEbZH0gmtRBh
+         +wkA==
+X-Forwarded-Encrypted: i=1; AKwUvBxZLF7Q3n17A7PsjK4iqiSnvlAvyQRIhEe+nZICzL015mXGL8nUzF2zROkqHYFT0KonlaI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIP9rzDj7N7yE4nzeHVd9CcbcHanSFRM4GjKInF01jXZV3peYRo
+	hv8JLP/Ad//cRJ5VDOEtWbqxGCQKhwDR1DTSZPsE+15TqED3EwYPTfX2Qgk6tZy2/iibSp9qlmU
+	CxvODxqi0g8WaEOoCv0Y2qRfaFCIpcp77qAluOQaJQw==
+X-Gm-Gg: AYBFou3EwyAznaMi/yi3Ac7mSlIx4B74237JpFIDdrrMGKcrweVvf5U3UdARu5gdYNq
+	DXHVFKzfYg5JrbxQGtphd1OZNNPnQuN4kafhItK4lPceqSYcwf1y9Km5MFBDFZbibMDhpyh2ebd
+	r7rEzBSILBxPi5NltNG2NYzGxsFNzuIDk8nbYdoZTBYhSnKZbfpYPVIbMs5ThwpVD0s/l9UudNT
+	hLL2ADyGVR5MB+Z4innm84eZWN8Ir+Aza/jkIlrtymdqP7eVAx1H67WPIWpyFUKBPCjY3VVuQzO
+	BqTzJbuJjy+4LmGGkJm9FM9Jzhj2GUf+++ULZiEogUsbwHLLGgW2CwmxE/0OG5NkCdDtvmgk/Xt
+	ZuwSLYacgdgjykw+8faOxgnPn0H7DLzV5hNMDX/PKsNO86cJ7EbJMYXfteHU8nbak1pnt/OxQok
+	8=
+X-Received: by 2002:a05:6000:61a:b0:48c:4a62:9b31 with SMTP id
+ ffacd0b85a97d-48c4a62a7b5mr1221302f8f.5.1791004403595; Fri, 02 Oct 2026
+ 22:13:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805065132.3210346-1-yhchen312@gmail.com>
-In-Reply-To: <20260805065132.3210346-1-yhchen312@gmail.com>
+References: <20260807053227.341700-1-yhchen312@gmail.com> <20260807053227.341700-2-yhchen312@gmail.com>
+In-Reply-To: <20260807053227.341700-2-yhchen312@gmail.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Sat, 3 Oct 2026 10:11:40 +0530
-X-Gm-Features: AclHuK_IXoPpwMtGcEHrcY1efUXEIKHZ22esp61Xf_4MLGY4isIRd8O8F7q5fHw
-Message-ID: <CAAhSdy2v1zL2e3o4m5ofkvby1N6hWLLVUirmz1_kY5+uoj=oWw@mail.gmail.com>
-Subject: Re: [PATCH v3] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to control
- VS-mode WFI trapping
-To: "Yuhang.Chen" <yhchen312@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Quan Zhou <zhouquan@iscas.ac.cn>, kernel test robot <lkp@intel.com>, linux-doc@vger.kernel.org, 
+Date: Sat, 3 Oct 2026 10:43:12 +0530
+X-Gm-Features: AclHuK_pQRRoDWZRfANFMjdOjJ21LWi5Ny6ywTR26TEbK6g2y0ccg6Q7CWbAjRc
+Message-ID: <CAAhSdy3Zfdv3WzFZPPQqjR6_VPvfAGzirx=sXcy1G76TEdJYfg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] RISC-V: KVM: Add PMU event filter support
+To: "Yuhang.chen" <yhchen312@gmail.com>
+Cc: atish.patra@linux.dev, palmer@dabbelt.com, pjw@kernel.org, 
+	aou@eecs.berkeley.edu, alex@ghiti.fr, pbonzini@redhat.com, shuah@kernel.org, 
 	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
 	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	oe-kbuild-all@lists.linux.dev
+	linux-kselftest@vger.kernel.org, zhouquan@iscas.ac.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 5, 2026 at 12:22=E2=80=AFPM Yuhang.Chen <yhchen312@gmail.com> w=
+On Fri, Aug 7, 2026 at 11:02=E2=80=AFAM Yuhang.chen <yhchen312@gmail.com> w=
 rote:
 >
-> Add a kernel command-line option, kvm-riscv.wfi_trap_policy=3Dtrap|auto,
-> that controls whether a WFI executed by a VS-mode guest traps into KVM
-> (HS-mode) or executes natively.
+> Allow userspace to restrict which SBI PMU events a guest is permitted
+> to program via the new VM ioctl KVM_SET_PMU_EVENT_FILTER.  It takes a
+> struct kvm_pmu_event_filter whose events[] array holds SBI PMU event
+> indices encoded as (type << 16) | code.  The action field selects ALLOW
+> (only listed events may be programmed) or DENY (listed events are
+> rejected); nevents =3D=3D 0 clears any active filter.
 >
-> HSTATUS.VTW governs VS-mode WFI: when set, the WFI traps into KVM, which
-> blocks the vCPU through kvm_vcpu_halt() and releases the CPU to other
-> runnable tasks; when clear, the guest runs WFI natively. Because RISC-V
-> WFI is only a hint (it may be a no-op on some implementations), the
-> policy is re-evaluated before each guest entry rather than fixed once
-> at reset.
+> The filter is enforced in kvm_riscv_vcpu_pmu_ctr_cfg_match(), where a
+> disallowed event fails configuration with SBI_ERR_NOT_SUPPORTED.  It
+> governs new counter configuration only and is not retroactive.  The
+> filter lives in struct kvm_arch, read via SRCU on the vCPU run path and
+> replaced under kvm->lock with synchronize_srcu_expedited().  Event
+> indices are masked to their valid bits before comparison, so reserved
+> high bits cannot bypass a DENY filter.
 >
->   trap  : always trap VS-mode WFI into KVM (HSTATUS.VTW=3D1). This is the
->           default and preserves the previous unconditional behavior.
->
->   auto  : clear HSTATUS.VTW so the guest runs WFI natively only when the
->           vCPU is the sole runnable task on the current CPU; otherwise
->           keep trapping. When the vCPU is alone, skipping the
->           virtual-instruction exit cannot starve another task, and on
->           hardware that honors WFI the hart blocks until a VS-mode
->           interrupt. The policy is re-evaluated before every guest entry,
->           so when another task becomes runnable the next entry traps
->           again and KVM blocks the vCPU through kvm_vcpu_halt(), yielding
->           the CPU. The vCPU therefore never monopolizes the CPU the way
->           an unconditional native WFI would: it either blocks through
->           kvm_vcpu_halt(), or runs WFI natively only when no other task
->           needs the CPU.
->
-> Measured on QEMU TCG (-smp 1, -cpu max): wfi_exit_stat delta and guest
-> wake count over a 3 s window. "busy" adds a CPU-bound competitor that
-> shares the vCPU's CPU so that single_task_running() reports false:
->
->   policy  busy  exits  wakes   cpu%  note
->   ------  ----  -----  -----   ----  ------------------------
->   trap    off    286    285    6.5   default; no regression
->   trap    on     291    290  101.0   trap is unconditional
->   auto    off      4    287    5.0   sole task: native WFI
->   auto    on     285    284  101.5   competitor -> traps
->
-> With "auto", WFI exits drop to ~0 when the vCPU is the only runnable
-> task, and rise back to the trap level as soon as a competitor appears,
-> which is the desired dynamic behavior. Host CPU stays low in the
-> sole-task case; the ~101% in the busy cases is the forked competitor,
-> not the vCPU.
+> Advertise the feature with KVM_CAP_PMU_EVENT_FILTER.
 >
 > Assisted-by: YuanSheng:deepseek-v4-pro
 > Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
 > Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> Signed-off-by: Yuhang.Chen <yhchen312@gmail.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202608051354.KYOXP5po-lkp@i=
-ntel.com/
->
+> Signed-off-by: Yuhang.chen <yhchen312@gmail.com>
 > ---
-> Changes in v3:
+>  arch/riscv/include/asm/kvm_host.h |  3 ++
+>  arch/riscv/include/uapi/asm/kvm.h | 20 +++++++++
+>  arch/riscv/kvm/vcpu_pmu.c         | 31 ++++++++++++++
+>  arch/riscv/kvm/vm.c               | 69 ++++++++++++++++++++++++++++++-
+>  4 files changed, 122 insertions(+), 1 deletion(-)
 >
-> - Guard the early_param() parser with #ifndef MODULE. RISC-V KVM is
->   tristate and may be built as a module (CONFIG_KVM=3Dm), but
->   early_param() is only defined for built-in code, so v2 failed to
->   compile as a module. With CONFIG_KVM=3Dm the policy now keeps its
->   default (trap) value, which is safe and regression-free; the rest of
->   the policy logic is unaffected. The kernel-parameters.txt entry now
->   documents that the option is only honored when KVM is built in.
+> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
+vm_host.h
+> index 60017ceec9d2..1cd3d6a11057 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+> @@ -95,6 +95,9 @@ struct kvm_arch {
 >
-> - Re-evaluate the WFI trap policy before each guest entry instead of
->   only in kvm_arch_vcpu_load(). In v2 the policy was checked once when
->   the vCPU was loaded, so between two kvm_arch_vcpu_load() calls
->   HSTATUS.VTW could go stale: if a task of lower or equal priority woke
->   on the vCPU's CPU while the guest was running, the run loop would
->   re-enter the guest without re-checking and without preempting, and a
->   native WFI could then halt the hart and delay the woken task until the
->   next timer tick. Checking before every entry closes this window,
->   because a wakeup arrives through a host interrupt that forces a VM
->   exit, and the next entry re-evaluates and traps.
->
-> Changes in v2:
->
-> - Drop the "notrap" mode, which cleared HSTATUS.VTW unconditionally and
->   so never trapped: the vCPU never reached kvm_vcpu_halt() and could
->   stay busy even while idle.
-> - Add the "auto" mode, which clears HSTATUS.VTW only when the vCPU is
->   the sole runnable task (single_task_running()) and otherwise traps.
->   The policy is applied dynamically from kvm_arch_vcpu_load() instead of
->   once at reset, so a vCPU that stops being the sole runnable task
->   switches back to trapping.
-> - Update the kernel-parameters.txt entry for trap/auto.
->
-> v1: https://lore.kernel.org/all/20260709115610.287420-1-yhchen312@gmail.c=
-om/
-> v2: https://lore.kernel.org/all/20260804024707.2400404-1-yhchen312@gmail.=
-com/
-> ---
->  .../admin-guide/kernel-parameters.txt         | 20 ++++++
->  arch/riscv/kvm/vcpu.c                         | 72 +++++++++++++++++++
->  2 files changed, 92 insertions(+)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
-ion/admin-guide/kernel-parameters.txt
-> index b5493a7f8f22..2ab9eb335e60 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -3254,6 +3254,26 @@ Kernel parameters
->
->                         notrap: clear WFI instruction trap
->
-> +       kvm-riscv.wfi_trap_policy=3D
-> +                       [KVM,RISCV] Control when to set the WFI instructi=
-on
-> +                       trap (HSTATUS.VTW) for KVM VMs. The policy is
-> +                       re-evaluated before each guest entry, not only at
-> +                       reset, since RISC-V WFI is only a hint.
+>         /* KVM_CAP_RISCV_MP_STATE_RESET */
+>         bool mp_state_reset;
 > +
-> +                       trap: always trap VS-mode WFI into KVM (HSTATUS.V=
-TW=3D1)
-> +
-> +                       auto: trap unless the vCPU is the only runnable t=
-ask on
-> +                               the current CPU, in which case clear the =
-trap
-> +                               (HSTATUS.VTW=3D0) and let the guest execu=
-te WFI
-> +                               natively
-> +
-> +                       Defaults to trap, preserving the previous uncondi=
-tional
-> +                       behavior.
-> +
-> +                       Only honored when KVM is built into the kernel
-> +                       (CONFIG_KVM=3Dy); as a module (CONFIG_KVM=3Dm) th=
-e policy
-> +                       stays at its default (trap).
-> +
->         kvm_cma_resv_ratio=3Dn [PPC,EARLY]
->                         Reserves given percentage from system memory area=
- for
->                         contiguous memory allocation for KVM hash pagetab=
-le
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index cf6e231e76e2..8efeb74699cc 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -12,8 +12,10 @@
->  #include <linux/kdebug.h>
->  #include <linux/module.h>
->  #include <linux/percpu.h>
-> +#include <linux/string.h>
->  #include <linux/vmalloc.h>
->  #include <linux/sched/signal.h>
-> +#include <linux/sched/stat.h>
->  #include <linux/fs.h>
->  #include <linux/kvm_host.h>
->  #include <asm/cacheflush.h>
-> @@ -26,6 +28,67 @@
+> +       /* KVM_SET_PMU_EVENT_FILTER */
+> +       struct kvm_pmu_event_filter __rcu *pmu_event_filter;
+>  };
 >
->  static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
+>  struct kvm_cpu_trap {
+> diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/=
+asm/kvm.h
+> index 504e73305343..da4f639fa89f 100644
+> --- a/arch/riscv/include/uapi/asm/kvm.h
+> +++ b/arch/riscv/include/uapi/asm/kvm.h
+> @@ -12,6 +12,7 @@
+>  #ifndef __ASSEMBLER__
 >
+>  #include <linux/types.h>
+> +#include <linux/stddef.h>
+>  #include <asm/bitsperlong.h>
+>  #include <asm/ptrace.h>
+>
+> @@ -396,6 +397,25 @@ struct kvm_riscv_sbi_fwft {
+>  /* One single KVM irqchip, ie. the AIA */
+>  #define KVM_NR_IRQCHIPS                        1
+>
+> +/* for KVM_CAP_PMU_EVENT_FILTER */
+> +#define KVM_PMU_EVENT_ALLOW    0
+> +#define KVM_PMU_EVENT_DENY     1
+> +
 > +/*
-> + * WFI trap policy for VS-mode guests, controllable through the
-> + * kvm-riscv.wfi_trap_policy=3D kernel command-line option.
+> + * For KVM_SET_PMU_EVENT_FILTER: restrict which SBI PMU events a guest m=
+ay
+> + * configure.  Each @events entry is a SBI PMU event index (type in bits
+> + * 19:16, code in bits 15:0).  %KVM_PMU_EVENT_ALLOW permits only listed
+> + * events; %KVM_PMU_EVENT_DENY rejects them.  Enforced at counter
+> + * configuration (SBI PMU COUNTER_CFG_MATCH), not retroactively.
 > + */
-> +enum kvm_riscv_wfi_trap_policy {
-> +       KVM_RISCV_WFI_TRAP,     /* Always trap VS-mode WFI into KVM */
-> +       KVM_RISCV_WFI_AUTO,     /* Trap unless the vCPU is the only runna=
-ble task */
+> +struct kvm_pmu_event_filter {
+> +       __u32 action;
+> +       __u32 nevents;
+> +       __u32 flags;
+> +       __u32 pad;
+> +       __DECLARE_FLEX_ARRAY(__u64, events);
 > +};
 > +
-> +static enum kvm_riscv_wfi_trap_policy kvm_riscv_wfi_trap_policy __read_m=
-ostly =3D
-> +       KVM_RISCV_WFI_TRAP;
-> +
-> +/*
-> + * RISC-V KVM is tristate and may be built as a module, but early_param(=
-) is
-> + * only defined for built-in code (see <linux/init.h>). Guard the comman=
-d-line
-> + * parser accordingly: when CONFIG_KVM=3Dm the policy simply keeps its d=
-efault
-> + * (trap) value, which is the safe, regression-free behavior.
-> + */
-> +#ifndef MODULE
-> +static int __init early_kvm_riscv_wfi_trap_policy_cfg(char *arg)
+
+This definition of kvm_pmu_event_filter does not cover SBI PMU
+RAW and RAWv2 events.
+
+Maybe you can go with something like below:
+
+struct kvm_pmu_event {
+       __u32 pad;
+       __u32 event_idx;
+       __u64 event_data;
+};
+
+struct kvm_pmu_event_filter {
+#define KVM_PMU_EVENT_ACTION_ALLOW    0
+#define KVM_PMU_EVENT_ACTION_DENY      1
+       __u32 action;
+       __u32 nevents;
+       __u32 pad[2];
+       __DECLARE_FLEX_ARRAY(struct kvm_pmu_event, events);
+};
+
+>  #endif
+>
+>  #endif /* __LINUX_KVM_RISCV_H */
+> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+> index bb46dcbfb24d..756040913468 100644
+> --- a/arch/riscv/kvm/vcpu_pmu.c
+> +++ b/arch/riscv/kvm/vcpu_pmu.c
+> @@ -733,6 +733,32 @@ int kvm_riscv_vcpu_pmu_ctr_stop(struct kvm_vcpu *vcp=
+u, unsigned long ctr_base,
+>         return 0;
+>  }
+>
+> +static bool kvm_riscv_pmu_event_allowed(struct kvm *kvm, unsigned long e=
+idx)
 > +{
-> +       if (!arg)
+> +       struct kvm_pmu_event_filter *filter;
+> +       bool in_list =3D false;
+> +       unsigned int i;
+> +
+> +       /* Reserved high bits must not bypass the filter. */
+> +       eidx &=3D SBI_PMU_EVENT_IDX_MASK;
+> +
+> +       filter =3D srcu_dereference(kvm->arch.pmu_event_filter, &kvm->src=
+u);
+> +       if (!filter)
+> +               return true;
+> +
+> +       for (i =3D 0; i < filter->nevents; i++) {
+> +               if ((unsigned long)filter->events[i] =3D=3D eidx) {
+> +                       in_list =3D true;
+> +                       break;
+> +               }
+> +       }
+> +
+> +       /* ALLOW: permit only listed events; DENY: reject them. */
+> +       if (filter->action =3D=3D KVM_PMU_EVENT_ALLOW)
+> +               return in_list;
+> +       return !in_list;
+> +}
+> +
+>  int kvm_riscv_vcpu_pmu_ctr_cfg_match(struct kvm_vcpu *vcpu, unsigned lon=
+g ctr_base,
+>                                      unsigned long ctr_mask, unsigned lon=
+g flags,
+>                                      unsigned long eidx, u64 evtdata,
+> @@ -773,6 +799,11 @@ int kvm_riscv_vcpu_pmu_ctr_cfg_match(struct kvm_vcpu=
+ *vcpu, unsigned long ctr_ba
+>                 goto out;
+>         }
+>
+> +       if (!kvm_riscv_pmu_event_allowed(vcpu->kvm, eidx)) {
+> +               sbiret =3D SBI_ERR_NOT_SUPPORTED;
+> +               goto out;
+> +       }
+> +
+>         /*
+>          * SKIP_MATCH flag indicates the caller is aware of the assigned =
+counter
+>          * for this event. Just do a sanity check if it already marked us=
+ed.
+> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+> index a9f083feeb76..a5a3a2182d1e 100644
+> --- a/arch/riscv/kvm/vm.c
+> +++ b/arch/riscv/kvm/vm.c
+> @@ -53,6 +53,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>  {
+>         kvm_destroy_vcpus(kvm);
+>
+> +       kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->sr=
+cu, 1));
+> +
+>         kvm_riscv_aia_destroy_vm(kvm);
+>  }
+>
+> @@ -187,6 +189,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
+g ext)
+>         case KVM_CAP_MP_STATE:
+>         case KVM_CAP_IMMEDIATE_EXIT:
+>         case KVM_CAP_SET_GUEST_DEBUG:
+> +       case KVM_CAP_PMU_EVENT_FILTER:
+>                 r =3D 1;
+>                 break;
+>         case KVM_CAP_NR_VCPUS:
+> @@ -265,7 +268,71 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct =
+kvm_enable_cap *cap)
+>         }
+>  }
+>
+> +#define KVM_PMU_EVENT_FILTER_MAX_EVENTS        256
+> +
+> +static int kvm_riscv_vm_ioctl_set_pmu_event_filter(struct kvm *kvm,
+> +                                                  void __user *argp)
+> +{
+> +       struct kvm_pmu_event_filter __user *user_filter =3D argp;
+> +       struct kvm_pmu_event_filter *filter, tmp;
+> +       size_t size;
+> +       int r =3D 0;
+> +
+> +       if (copy_from_user(&tmp, user_filter, sizeof(tmp)))
+> +               return -EFAULT;
+> +
+> +       if (tmp.action !=3D KVM_PMU_EVENT_ALLOW &&
+> +           tmp.action !=3D KVM_PMU_EVENT_DENY)
 > +               return -EINVAL;
 > +
-> +       if (strcmp(arg, "trap") =3D=3D 0) {
-> +               kvm_riscv_wfi_trap_policy =3D KVM_RISCV_WFI_TRAP;
-> +               return 0;
+> +       if (tmp.flags)
+> +               return -EINVAL;
+> +
+> +       if (tmp.pad)
+> +               return -EINVAL;
+> +
+> +       if (tmp.nevents > KVM_PMU_EVENT_FILTER_MAX_EVENTS)
+> +               return -E2BIG;
+> +
+> +       size =3D struct_size(filter, events, tmp.nevents);
+> +       filter =3D kzalloc(size, GFP_KERNEL_ACCOUNT);
+> +       if (!filter)
+> +               return -ENOMEM;
+> +
+> +       filter->action =3D tmp.action;
+> +       filter->nevents =3D tmp.nevents;
+> +       filter->flags =3D tmp.flags;
+> +
+> +       if (copy_from_user(filter->events, user_filter->events,
+> +                          flex_array_size(filter, events, filter->nevent=
+s))) {
+> +               r =3D -EFAULT;
+> +               goto cleanup;
 > +       }
 > +
-> +       if (strcmp(arg, "auto") =3D=3D 0) {
-> +               kvm_riscv_wfi_trap_policy =3D KVM_RISCV_WFI_AUTO;
-> +               return 0;
-> +       }
+> +       mutex_lock(&kvm->lock);
+> +       filter =3D rcu_replace_pointer(kvm->arch.pmu_event_filter, filter=
+,
+> +                                    mutex_is_locked(&kvm->lock));
+> +       mutex_unlock(&kvm->lock);
+> +       synchronize_srcu_expedited(&kvm->srcu);
 > +
-> +       return -EINVAL;
+> +cleanup:
+> +       kfree(filter);
+> +       return r;
 > +}
-> +early_param("kvm-riscv.wfi_trap_policy", early_kvm_riscv_wfi_trap_policy=
-_cfg);
-
-FYI, module parameters can also be passed as kernel parameter when the
-module is built-in. There is no reason why WFI trap-policy will not work as=
- when
-KVM RISC-V is a plugabble module.
-
-Convert this to module_param.
-
-> +#endif
 > +
-> +static bool kvm_riscv_vcpu_wfi_should_trap(struct kvm_vcpu *vcpu)
-> +{
-> +       switch (kvm_riscv_wfi_trap_policy) {
-> +       case KVM_RISCV_WFI_AUTO:
-> +               /* Native WFI only when the vCPU is the sole runnable tas=
-k. */
-> +               return !single_task_running();
-> +       case KVM_RISCV_WFI_TRAP:
+>  int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned lo=
+ng arg)
+>  {
+> -       return -EINVAL;
+> +       struct kvm *kvm =3D filp->private_data;
+> +       void __user *argp =3D (void __user *)arg;
+> +       int r;
+> +
+> +       switch (ioctl) {
+> +       case KVM_SET_PMU_EVENT_FILTER:
+> +               r =3D kvm_riscv_vm_ioctl_set_pmu_event_filter(kvm, argp);
+> +               break;
 > +       default:
-> +               return true;
+> +               r =3D -EINVAL;
 > +       }
-> +}
 > +
-> +static void kvm_riscv_vcpu_update_wfi_trap(struct kvm_vcpu *vcpu)
-> +{
-> +       struct kvm_cpu_context *cntx =3D &vcpu->arch.guest_context;
-> +
-> +       if (kvm_riscv_vcpu_wfi_should_trap(vcpu))
-> +               cntx->hstatus |=3D HSTATUS_VTW;
-> +       else
-> +               cntx->hstatus &=3D ~HSTATUS_VTW;
-> +}
-> +
->  const struct kvm_stats_desc kvm_vcpu_stats_desc[] =3D {
->         KVM_GENERIC_VCPU_STATS(),
->         STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
-> @@ -73,6 +136,7 @@ static void kvm_riscv_vcpu_context_reset(struct kvm_vc=
-pu *vcpu,
->         /* Setup reset state of shadow SSTATUS and HSTATUS CSRs */
->         cntx->sstatus =3D SR_SPP | SR_SPIE;
->
-> +       /* Trap VS-mode WFI by default; the run loop reapplies the policy=
- before each entry. */
->         cntx->hstatus |=3D HSTATUS_VTW;
->         cntx->hstatus |=3D HSTATUS_SPVP;
->         cntx->hstatus |=3D HSTATUS_SPV;
-> @@ -936,6 +1000,14 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->                  */
->                 kvm_riscv_local_tlb_sanitize(vcpu);
->
-> +               /*
-> +                * Re-evaluate the WFI trap policy for this entry so that
-> +                * HSTATUS.VTW tracks the current runnable-task count and
-> +                * cannot go stale across guest entries (which would let =
-a
-> +                * native WFI halt the CPU while another task is runnable=
-).
-> +                */
-> +               kvm_riscv_vcpu_update_wfi_trap(vcpu);
-> +
->                 trace_kvm_entry(vcpu);
->
->                 guest_timing_enter_irqoff();
+> +       return r;
+>  }
 > --
 > 2.34.1
 >
