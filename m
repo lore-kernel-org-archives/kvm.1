@@ -1,148 +1,72 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5473C12F585;
-	Sat,  3 Oct 2026 07:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C481C695;
+	Sat,  3 Oct 2026 07:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791011269; cv=none; b=JUnIpQbLCPTFEduslmJJRtlBx6xYw7LS9PsLbHbQEziBRVLvmvJnEjYXrFStBuq2VYZgr6lnGbhCmpmOXNPgfbSFLJ1U1sAedgTVpnmzUA+F+CFJn1KBuaJZofsDxs5rZKzXCJNlPxQb/bYf8gGB6G0Wza0PaOpNfEqFDvxNvZI=
+	t=1791013616; cv=none; b=hyI4BOUIl21bysYiHzvNMneV18h74XgLVBamnsJ6EOX0VyoN+qgXZYOCbR/jlKitd+J4y0LYIGwxS0bPnPrZaG9tZwL2TH6nPDGlLPhuOMmmp71Ah/aIXCh0ekcVPSWahs8vql6bMh9G1axkKBTikRl3myncrIjV47kil8jmJpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791011269; c=relaxed/simple;
-	bh=fcWSRwYqC7iDa1xgy0kg2U7wsZFZJLJk1a4HcvjWK5I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=IvCPUMegmHwzlNU/tAAFcN6KqatMHMAXjVlhrxbSn+1wXcj0yWZy3rdf2L/ballCCOuoX2etV/zNUuk3Zy/3WpDjZfe9D9tpJJhn5geUG7U35WP17ewVSiW3HBdUIXGchNsbdqGoXO2rp/Zy/je84TF2BKipAjGo6OjZKxsqAv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=PPj0gM2R; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791013616; c=relaxed/simple;
+	bh=MbH4LryovLucnGvF7y6S0+Ma8jyoCnPUm3Oed1aNf5c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nfGY19NzDcUzsHOD1m1Y2irbfVIh+XXXOjhrNG08HgQMGAS1SBbODFAMGFZAw27ejpyswUIm89JGETYXoK9OCuLFfL+19J1MgGPSmlF82Y0If/xcarIjqNcwuE+npoTkf6+S3AJRD8uA4Ff4Za5ykNwFvMVcZHEcJMN9wNO2Wx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dPiTXLng; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="PPj0gM2R"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25B942F;
-	Sat,  3 Oct 2026 00:07:43 -0700 (PDT)
-Received: from [10.57.8.170] (unknown [10.57.8.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 163E63F85F;
-	Sat,  3 Oct 2026 00:07:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791011266; bh=fcWSRwYqC7iDa1xgy0kg2U7wsZFZJLJk1a4HcvjWK5I=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=PPj0gM2RRh21a27DM/q2/tyeKO0DsJnY3GH0PWCJS7UVYAEtbBp7Ez9b8ZaULD6Xj
-	 2dnwFTOkOPfgCECZeEJndniLsNWLRZQ+EHqxBlRJDHEgJ740NaFO9F3W9cUZE9u/PJ
-	 y52tz3Ck56R1gHYTC5TcmWjSuYfZE7m4ksWwojiM=
-Message-ID: <d7a398b3-5cbe-4a1c-bdd3-c1c5925dfc33@arm.com>
-Date: Sat, 3 Oct 2026 08:07:39 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dPiTXLng"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579841F0089B;
+	Sat,  3 Oct 2026 07:46:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791013614;
+	bh=MbH4LryovLucnGvF7y6S0+Ma8jyoCnPUm3Oed1aNf5c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dPiTXLngwxcdvLwkmoYnEilVpugd+4a/K08h9B9DydH8paa/lT2ucfJMh0Iwb01eS
+	 VzGGJkfLJsoKEWGNMZGghGS8YqGpJXWB1oEWbDHajldkuUPkO0Rw/mG8Z/+6fpJeUW
+	 euuz1jxiTzKydke5BPVwvLmmsTozhENBIKrv/u3ZP212HqsENtYmuYyAnOBfMJEOfe
+	 wEmL/aeA6PGS8k66o0OUktSO759s/1SwtK7PZZXfJwbjPO7jpq5IE8IqcchA3KDUWq
+	 p/AYlgomCquNMAz8rEVx3l1hPd4eR2fdm1hAVQBS6zTPxkvsj183UOMWOBe1zmiEK6
+	 08LfW5+dRNoig==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/5] vsock: split socket lookup from locked RX
+ processing
+Reply-To: sashiko-reviews@lists.linux.dev
+To: physicalmtea@gmail.com
+Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org, "Eugenio
+ Perez" <eperezma@redhat.com>
+In-Reply-To: <20261002074551.318789-2-physicalmtea@gmail.com>
+References: <20261002074551.318789-2-physicalmtea@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 03 Oct 2026 07:46:53 +0000
+Message-Id: <20261003074654.579841F0089B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 05/23] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Marc Zyngier <maz@kernel.org>, Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
- catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
- gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
- alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
- lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
- jonathan.cameron@oss.qualcomm.com
-References: <20261001210703.1597150-1-suzuki.poulose@arm.com>
- <20261001210703.1597150-6-suzuki.poulose@arm.com>
- <CA+EHjTxtatPyGcyvEyR129cqUiAYcO_cxRVtwZO0ckZsOnD7TA@mail.gmail.com>
- <86se2o2rbs.wl-maz@kernel.org>
- <CA+EHjTwHuJ0u_TTP46zNFKFmBP124XHHLUVhkAUSyfhe92=41w@mail.gmail.com>
- <86pkxs2npx.wl-maz@kernel.org>
- <CA+EHjTy4rb+6z0bqh7sPqACES0EDpURdeoyiFGmdw3p0PENcOQ@mail.gmail.com>
- <86o6dc2ka1.wl-maz@kernel.org> <83e79119-b331-4640-b2c7-cc8135d71c77@arm.com>
-In-Reply-To: <83e79119-b331-4640-b2c7-cc8135d71c77@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 03/10/2026 06:53, Suzuki K Poulose wrote:
-> On 02/10/2026 16:29, Marc Zyngier wrote:
->> On Fri, 02 Oct 2026 15:37:00 +0100,
->> Fuad Tabba <tabba@google.com> wrote:
->>>
->>> Hi Marc,
->>>
->>> On Fri, 02 Oct 2026 15:15:06 +0100, Marc Zyngier <maz@kernel.org> wrote:
->>> [...]
->>>> Honestly, we introduce the flavor stuff to make it easy to match
->>>> things on a particular VM type in a readable way. So why isn't this
->>>> reading:
->>>>
->>>>          if (vcpu->kvm->arch.vm_flavor != VM_PROTECTED_PKVM)
->>>>                  return;
->>>
->>> I know this is a sketch, but just in case: that's inverted. The sync
->>> only applies to non-protected pKVM VMs (EL2 ignores it for protected
->>> ones), so it would be != VM_PKVM.
->>
->> See what I meant about this stuff being completely intractable? I
->> still have no idea what it means! ;-)
->>
-> 
-> Just to be clear: unprotected_pkvm() != (vm_flavor != VM_PROTECED_PKVM).
-> Rather, unprotected_pkvm => (vm_flavor == VM_PKVM).
-> 
-> And the code wanted to bail out early for !unprotected_pkvm(). We can
-> stick in "is_protected_kvm_enabled()" for unprotected_pkvm predicate
-> 
-> But, I can drop the helper and use the vm_flavor check.
+> From: Jia Jia <physicalmtea@gmail.com>
+>=20
+> Split virtio_transport_recv_pkt() so socket lookup is separate from the
+> receive state machine that runs under the socket lock.
+>=20
+> Keep virtio_transport_recv_pkt() on its existing per-packet locking path.
+> Pass the source and destination addresses used for lookup to the locked
+> receive path so they are decoded only once.
+>=20
+> Pass the network namespace and decoded address tuple to the locked receive
+> path through a packet context so later extensions remain cleanly
+> encapsulated.
+>=20
+> Preserve source validation and failure handling. Keep the lookup reference
+> separate from the skb owner reference so a later patch can retain it while
+> processing a bounded run of packets under one socket lock.
+>=20
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 
-FWIW: Here is the diff for the above change. If you are happy
-with the following, I could fold this in.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 90547fbbc8ad7..bcec14c587119 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -772,7 +772,7 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-                 kvm_call_hyp_nvhe(__pkvm_vcpu_put);
-
-                 /* __pkvm_vcpu_put implies a sync of the state */
--               if (kvm_vm_is_unprotected_pkvm(vcpu->kvm))
-+               if (vcpu->kvm->arch.vm_flavor == VM_PKVM)
-                         vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
-         }
-
-@@ -1006,7 +1006,7 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu 
-*vcpu)
-
-         if (is_protected_kvm_enabled()) {
-                 /* Start with the vcpu in a dirty state */
--               if (kvm_vm_is_unprotected_pkvm(vcpu->kvm))
-+               if (vcpu->kvm->arch.vm_flavor == VM_PKVM)
-                         vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
-                 ret = pkvm_create_hyp_vm(kvm);
-                 if (ret)
-diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
-index 384c5d258c7f8..4e16e7d165515 100644
---- a/arch/arm64/kvm/handle_exit.c
-+++ b/arch/arm64/kvm/handle_exit.c
-@@ -490,7 +490,7 @@ static void handle_exit_pkvm_state(struct kvm_vcpu 
-*vcpu, int exception_index)
-  {
-         int exception_code = ARM_EXCEPTION_CODE(exception_index);
-
--       if (!kvm_vm_is_unprotected_pkvm(vcpu->kvm))
-+       if (!is_protected_kvm_enabled() || vcpu->kvm->arch.vm_flavor != 
-VM_PKVM)
-                 return;
-
-         /*
-
-
-
-Cheers
-Suzuki>
-> Cheers
-> Suzuki
-> 
->>     M.
->>
-> 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261002074551.3187=
+89-1-physicalmtea@gmail.com?part=3D1
 
