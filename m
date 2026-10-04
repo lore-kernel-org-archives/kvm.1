@@ -1,225 +1,114 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-pz2-f30.google.com (mail-pz2-f30.google.com [74.125.228.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9BD46EF64
-	for <kvm@vger.kernel.org>; Sun,  4 Oct 2026 17:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791134367; cv=pass; b=ehXOSZfHNj2Rg2HMlDFnQT64+BsPZBTnP3G+jSakDbh9IHVKh2qb1QYlwiXff1GOvttFcTJ492vxN1haak0BLmiGmVFnBbn3DDQZqwqf+7sUHEO7EYpEsM214vLRPtnp4lFaN0Ildj/iXAnY9L1MDYAcem/Pcz+FAhoSkH89ZeY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791134367; c=relaxed/simple;
-	bh=Xs3FYb65sS4Mlx/21+kwkOlIJXqlGZcwdZaObIOhQD8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ptp7e5bQDIZLl785ek4sRUkaMVTp8HhCVkuyp+btmYtVnqNEzF1oQTOu5Hdjb2vrSMg+xO9tv7Z95rCbIbgQtWpfLFbhHIwgczR8WOHenEZkGwHyD8iXOv13USo/aQj1Xgt02rJUBN8J/hhCJgzQyO6b4erU5eXOFnQprLn+VU8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mjrczGUU; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3063DA7CC
+	for <kvm@vger.kernel.org>; Sun,  4 Oct 2026 17:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791134431; cv=none; b=I9i+Eue4eX0EM9+e6sJL/UhBuTRtJPVcBrZgpZH3LTVLgGYpoK3ribHHAK31JfGerOWVvqXtAitkwOUTfca2VoN2XzTJUjr/ASyr1H2Fkx3LTixQH/YkjGn6Qbky42lpD7eOF111dI7kRHnt53zL82slslz4DmxOOuS1pY+jJNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791134431; c=relaxed/simple;
+	bh=KAXZBx+vMoqzIwrf2B+z+XaUwa7q7Z784M6ZiaaYhy0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JnIpEDaTKAc2BEzoSRyCWKdQSxpRJZRAnHt+w2gJwlw/4ceDyGBCPE8AcqwH43+FeWG7WiUDtkixDaCR0VgvM0ZV2uKFWGBSVuRh3dJ8/KjHdMDVHxieGCGDL4YGa2jmZFWz0IlIGsgOa2kkdhaqGCU0zr+58+UoOGE3gN5nhlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=MsdH2Gr0; arc=none smtp.client-ip=74.125.228.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mjrczGUU"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5337fa12431so180621cf.1
-        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 10:19:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791134362; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LSmyYlNn0oSNLymZFqHIXfRrqngWASsigjKsgHiTtunY4ftelupOFYY5sktpYXsT0q
-         4BfZcMOZ0RJQK85sN4xuMULBS2M5w9CZQ7zcUrwxYFTDgUFSlfkEKU4O2gzRTDwi/Rm3
-         iYsjvCGM7mCagivVCEjy/0M6tjrlsNuTt1Iik+6wYJ7YeOmSda4YEPxVYsETl+kiudMB
-         JuiKFkBPTNLgRS/mXd7lSpcgAzzND7MyK3R3h5hUrI4OkBqDtKw6BHPHoZwk2QpHBeL6
-         +0TsGVple/9lSBlvCkVE+OKGVBXLBmS9M4gkR9yMXfWMh0adf0A9EN43ekr9VPF1dMIh
-         2Seg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LB9YQVahVaEWF6zZVDiq8xpdl9rxBex8+tzU6TEVUNY=;
-        fh=wHIRb/0QpbnTVVRUQgbm0AwsRz46IlFQbvggzfHxw70=;
-        b=d+Ah/8kvO1f7OVLpJd6bTeb4S86XK7+ePdHcbf2L9hMlD1vnbE1o3U1ZUnReNiVA4r
-         xG8jcQbh2jK7F3/f/LnRHguuXoVFfIIwn1JodeLeA1IDvGnkDkp4Mf2sG9UM+yQkNOuq
-         6+4xW+oZLNFfAM7hndKBx+AoxXxksM5kwTowxePpiaMHvCknzTPXTE9QfDZK9Yw6Xjcy
-         gGXcJXvrWijjX8mKlSAo2Ebd2i+icDLcIKJ9rrSKta+hvJ8kbEAjJhKDM2pUSWZ87K9v
-         0uN24SBjXXNgvZKfE8Chym+qIeUJCFFHtFFu+KsrOxF5i6wKcMscwhVJ/jAS2gYa/hyN
-         uB7g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="MsdH2Gr0"
+Received: by mail-pz2-f30.google.com with SMTP id d2e1a72fcca58-88c687cf1adso152856b3a.3
+        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 10:20:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791134362; x=1791739162; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LB9YQVahVaEWF6zZVDiq8xpdl9rxBex8+tzU6TEVUNY=;
-        b=mjrczGUUQ9qIw+a6lIyMo7+v4ZR4bOTHEQIXcE52tNEmK+YCOyOhmjWJ6za+B72FiM
-         btNp7NOqAX+Z9tmD2Eog/Sz6+oDJcx3oKZ2A+O6sOdgcz2pjDIuzLCUKqJU1ixe8TcqK
-         JNiIgq1FZWF1dG20M2HV8J5S8mNqsuBH3gDOu1B6gd+v5RrlenqRRnKY8wh3Hw0yaWHH
-         N4xTZ2MNuH+/p6LB6ZiQompDz9pRTrzalf71wvcsTnEvAGqXoZCNpzX9izbsigL3d6Hq
-         aUHjjv/3GEXe5tzZJ6gHNC2Ky2p3A4nMREFq/qXO3EIkuhuTKM25AL3ArZ/b1M+N68rS
-         6RyA==
+        d=snu.ac.kr; s=google; t=1791134425; x=1791739225; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=9llYwK8ATqeQ0l/9KM8Jc4lwes7XVac/+xvUv1fpjIw=;
+        b=MsdH2Gr0t07rStMrr5r2L1mwvjNMWKy6sohb8bwE7Gqyyb+WukYwkhGzZyAcBD+LIY
+         BVsEF2PIH819OEQgiU3ioL7rCO1oBpnxuQw2BmUilf0i8ifjmUeEmRuuhA1HUJuy8mGY
+         F0KdE+byBJ7BjQNyc87fX+Vrtb3eRvFNsZvlc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791134362; x=1791739162;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LB9YQVahVaEWF6zZVDiq8xpdl9rxBex8+tzU6TEVUNY=;
-        b=r0YLm+Tcn1lkjO6Q8corFr/N9b0pjwaA6m3h+vfZ/wDtwcnu+TLYsSGs1zedWpe5Lz
-         35sDmiqVWg1T79ryC/2dTijgO+AkYJvb05WEJqxb8VWdT18G3O+1lRBPY6Wcng/fGKcP
-         cTSmWJif0aQ8sq8RXkfVY1IfTjDfav5FoDinsbcJC2E67rRl8OT2iGFeAH+wcE34Y528
-         H5n77dktoXxvqN6/okaNi79opbKw5YkGBJ18v/smechfC9HgCqD3f+3ooydTq8+tC89r
-         VRdRNW6QJIAieYlgntESUDK6EJRJFscb8RdlTJBX/VoQloyWjrVBs3egai5P2DN2zgNH
-         3LJg==
-X-Forwarded-Encrypted: i=1; AKwUvBzUnNWU07Me01IfBYGmSFLDVvHo0ddTanSSry/Ut3/oWm5DEIa/ho7JzVw3T3ryFBcL1Wc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kA7Rr9+qtFEcTqeeiHWdQ2u9Rastu6pSiuYRHDkhyjXE+KHwwJ
-	YbBt/oImtiFF6OZQhZqGzAnD6nb1QXwWJjIZxrinqiJRMiNVKBz31aXREoFbw/2v86oIb8M/ZmF
-	7V81OAKH6FzHfzbVO9S7OrubHHwWuY4znzmu7Eija
-X-Gm-Gg: AYBFou28e2uty3JV9squ1YaVi6xDGoLZkwOZqdu9eSpCi/3TL5+K1gsdIOp3+OOMpH7
-	7Pl4hdnqNZxuVtH2bH+S5eNEfOxSud5RI2Sf4NuOgoGc4Lsnc7dyZkm2f82K4Bjko09EX4vaUU0
-	bT4hH/ovCLcQgIU5NYN7BGguHtVMG1pNMPkbzLP15kElwwg6bhNbUJmhefQTu5ap+TEMLyWE41G
-	rF/Fs9b7PNkk8xxo3DMlWi8V1fkAgIeeTM+MuK9nCSJFX46y62WXY8D7/9sxiCMZTEDthIgeL9G
-	chsaRLgv1VSrNwTJt3eQSEmSdRUBQKu9gARfDtcK+s6K3mV2B3a2qLLO7w==
-X-Received: by 2002:ac8:5e4d:0:b0:532:8423:1e78 with SMTP id
- d75a77b69052e-535131e75aemr16242571cf.10.1791134361196; Sun, 04 Oct 2026
- 10:19:21 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791134425; x=1791739225;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=9llYwK8ATqeQ0l/9KM8Jc4lwes7XVac/+xvUv1fpjIw=;
+        b=yJP1NyU1ciLJSaHF/cyc5T1DjP6A3CKExrdw3Ff5KQRWdNxvrgLDFzZlH5W04FniOR
+         806+IciQc30NYrzU5ZJA578hvgcbB4AF0QvPsX4zlXbkJj1iYSCEqEYBKmzhmFg8AVHK
+         RfXgdZg0MiroP6TGKuSi6j9hmqoiMywSz79Q81v8Y8k5F5taL/hiqhjIo9k0FmmWxR33
+         tlSHGAxJbGZjsQas5Rne8hPQuoDmKWaxEfhCJRTgy9MI/IWRL7bvNCCt71BFvH9gDz5O
+         7+O41lFQ7xOP6+0wcPMznR7xgrE4uNPLVp6Jfgs37bDQghkvvFbhkcypMcoAJN1ajN5I
+         ngmw==
+X-Gm-Message-State: AFuF++lfbRC0IIswP532K57UrsSbiXsFCoFFjLKkOj9eDGyPHneHusZZ
+	4k0LAQjawYSMgHCp2RE9fNfwevYrGFycP2d5lrU1qPqQ5Tpxw2F4i+TmlBd2y63j7R0=
+X-Gm-Gg: AYBFou0VJMPnftxRDwUs2jq/iESerNc7Bi0uirhGatDRLi1bcr7Pz9WO0lq0FwKD8Px
+	k+ac/UUIw0mvfbFFoS48KzCSKkioO/fF5w/CzvB1+0WT7WMb6CrpXKdyv764qCYncnHQ7O7ESGc
+	tyH/rlzN0UIefPvecwl7QfTeJYu/4mbLiglnEST0HSV3+PgTzsE/z3pg9l5zfgxGpsv0SDPUup/
+	YT/pv/wjRf03h8ko84lKToX77Ki2FFvmEYEDwWbWuNu7y86xBrSLKR0042oSNpB+c2daqZrDFAZ
+	ouDKOP0JiBaNNVWu/+Z2HiFazkg3QAT0kTf70rt7OWfT1GL8G9X7kerhXxSLNKpAM6/7c3ER07I
+	iodjm7I9+WsZRnvse2FXgjHrf+9vcE+jmkPzuZNg8c21wy2s/xplOc2o6trTsiBeQWrsCupUxjA
+	GIhdpjfe8fOsfQAl0H2Ip2ov3u+KYclt0eKPGaBnOiLbcccp3uFEQM8oXKXTh9TTLa
+X-Received: by 2002:a05:6a00:1144:b0:880:5fe5:a818 with SMTP id d2e1a72fcca58-88af8377fb6mr7571704b3a.59.1791134425036;
+        Sun, 04 Oct 2026 10:20:25 -0700 (PDT)
+Received: from [172.19.0.2] ([49.142.45.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88c88759fc5sm1263302b3a.56.2026.10.04.10.20.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 10:20:23 -0700 (PDT)
+From: Seongjun Hong <hsj0512@snu.ac.kr>
+Date: Sun, 04 Oct 2026 17:20:10 +0000
+Subject: [PATCH] vfio/mlx5: Fix boundary check in set_report_output()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
- <20261003-b4-mmap-prepare-vma-flag-sanify-v4-11-a1f052500fd7@kernel.org>
-In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-11-a1f052500fd7@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 4 Oct 2026 10:19:09 -0700
-X-Gm-Features: AclHuK8q5domRMZg3DAHzMyB2slG297Lp1_L7hWmlqEUWco5tu_MI_s_DzFbhWI
-Message-ID: <CAJuCfpGdJM=J+6tkzid_Mu+7nevdhFaTW0E9tbKXoLmzC951Fw@mail.gmail.com>
-Subject: Re: [PATCH v4 11/38] selinux: reject writable opens of policy file,
- drop mmap shared/write check
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261004-vfio-mlx5-fix-boundary-check-v1-1-1d3b8e55e23f@snu.ac.kr>
+X-B4-Tracking: v=1; b=H4sIAMmKwmoC/x3M3wpAMBSA8VfRuXZq5k94FbmY7eCETVtE8u6Wy
+ 199fQ8E8kwB2uQBTycHdjYiSxPQs7ITIZtokEJWmRAFniM73NarxJEvHNxhjfI36pn0gkWdN6Z
+ SpAeSEBe7p1j9+65/3w+PkIRwbgAAAA==
+To: Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Shameer Kolothum <skolothumtho@nvidia.com>, 
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Seongjun Hong <hsj0512@snu.ac.kr>
+X-Mailer: b4 0.13.0
 
-On Sat, Oct 3, 2026 at 6:37=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> The policy file has no write method and is exposed read-only (S_IRUGO in
-> selinux_files[]), yet sel_open_policy() performs no open mode check, so a
-> CAP_DAC_OVERRIDE caller can open it O_RDWR. Reject FMODE_WRITE at open, a=
-s
-> kernfs does.
->
-> The file can then never be mapped with FMODE_WRITE, so do_mmap() always
-> clears VM_MAYWRITE and VM_SHARED for MAP_SHARED mappings and the VM_SHARE=
-D
-> check in sel_mmap_policy() cannot be reached. Remove it.
->
-> This also stops sel_mmap_policy() clearing VM_MAYWRITE on a mapping that =
-is
-> neither a PFN map nor a mixed map, ahead of the core enforcing that only
-> such mappings may do so.
->
-> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Acked-by: Paul Moore <paul@paul-moore.com>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Use > instead of >= on boundary check of recv_buf to avoid the bug which
+the full message in the last slot of recv_buf is ignored even though the
+received data size does not overflow the recv_buf.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Clarify the second boundary condition by removing unnecessary division by
+entry_size. It directly shows that size should be within qp->max_msg_size.
 
+Fixes: 9c7c5430bca3 ("vfio/mlx5: Align the page tracking max message size with the device capability")
+Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
+---
+ drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> ---
->  security/selinux/selinuxfs.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
->
-> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-> index c7d91476971c..545a6f89f9e7 100644
-> --- a/security/selinux/selinuxfs.c
-> +++ b/security/selinux/selinuxfs.c
-> @@ -340,6 +340,9 @@ static int sel_open_policy(struct inode *inode, struc=
-t file *filp)
->         struct policy_load_memory *plm =3D NULL;
->         int rc;
->
-> +       if (filp->f_mode & FMODE_WRITE)
-> +               return -EACCES;
-> +
->         rc =3D avc_has_perm(current_sid(), SECINITSID_SECURITY,
->                           SECCLASS_SECURITY, SECURITY__READ_POLICY, NULL)=
-;
->         if (rc)
-> @@ -424,14 +427,6 @@ static const struct vm_operations_struct sel_mmap_po=
-licy_ops =3D {
->
->  static int sel_mmap_policy(struct file *filp, struct vm_area_struct *vma=
-)
->  {
-> -       if (vma->vm_flags & VM_SHARED) {
-> -               /* do not allow mprotect to make mapping writable */
-> -               vm_flags_clear(vma, VM_MAYWRITE);
-> -
-> -               if (vma->vm_flags & VM_WRITE)
-> -                       return -EACCES;
-> -       }
-> -
->         vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
->         vma->vm_ops =3D &sel_mmap_policy_ops;
->
->
-> --
-> 2.55.0
->
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 5fe0621b5fbd..a49531666e6d 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1644,8 +1644,8 @@ set_report_output(u32 size, int index, struct mlx5_vhca_qp *qp,
+ 	int i;
+ 
+ 	buf_offset = index * qp->max_msg_size;
+-	if (WARN_ON(buf_offset + size >= qp->recv_buf.npages * PAGE_SIZE ||
+-		    (nent > qp->max_msg_size / entry_size)))
++	if (WARN_ON(buf_offset + size > qp->recv_buf.npages * PAGE_SIZE ||
++		    size > qp->max_msg_size))
+ 		return;
+ 
+ 	do {
+
+---
+base-commit: 6addb4f385570ebc11c4eb499a4f1c149f313e84
+change-id: 20261004-vfio-mlx5-fix-boundary-check-4839d6aecbe2
+
+Best regards,
+-- 
+Seongjun Hong
+
