@@ -1,81 +1,81 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BA24756CA
-	for <kvm@vger.kernel.org>; Sun,  4 Oct 2026 17:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6583F223708
+	for <kvm@vger.kernel.org>; Sun,  4 Oct 2026 18:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791136494; cv=pass; b=ur7U8eNXKFtnvsDi3CJgrGxgN6yYBwP1DSXG/PADMeMd95zrLCYXMNJ+p2yXNq+6Gksu9HPtl5NRufk4AUEEaez3TYfoJxGpmOC/OHRO8nsIg+NO3M/ungZRGRF2CHcYk32WPWwHlEI/9T47xBP2tm1j6pGFHvSw7uCbaS9W7K4=
+	t=1791136945; cv=pass; b=Zw72ti3AS1/d5/3e/OC6ps4RhkydXnQKXJ00lMRo1dbZ0U6ABABSwWyAO3MePYEi226NNsaLYq9NeNx+e8l8WudwrlGnkVVUzX54hanLA4+jY5KqBLi4N9/iX801zJeoLgnJ7ROYgrD4Ez6wrjiPyW5l3L1LNAWl1Euxryh1ebM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791136494; c=relaxed/simple;
-	bh=Tl26wLyoh9tGv5TRbuijPTjsBuOcR1pJwTFpPgYIuM0=;
+	s=arc-20240116; t=1791136945; c=relaxed/simple;
+	bh=xOBOM0qU79KZiyR638ux2NLueBV95WtehhE5D+Z2EOA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mclZJmf7lLLMfbMZCDv/ce+Z4YrW+gUoizmefYUdul3rFqnNz5FU2tLrUGxEW3SKafTwGxBXCynY1KPbjfWKl2hX8c2pjWk4CTvsolfASST6j3MAGLoKhfNCFQ3rGHneieGf7s7vJ6ITdDkBc9FDDm2oo9bVeQyaraOP2iUp4tw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R2ZRdr5r; arc=pass smtp.client-ip=209.85.160.180
+	 To:Cc:Content-Type; b=QuiNK9DT7gdeEUvGEhxJ+L/JeA1s18YnSbNNstiRECm2SZF5aHGs9Ds3EZfCOL2MHdyPhPb38Sf66cNQazlng3mDFj5+u1L6znulzgrQ9pc4CUkwm6KBKuuE1NFkm4ZDDcrdLukUfcgcssRDlTyAU44U+2IYZ7iDGZigH7HoAfU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EzRNGhII; arc=pass smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R2ZRdr5r"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5351f9dbfe0so98111cf.1
-        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 10:54:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791136480; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EzRNGhII"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5337fa12431so184081cf.1
+        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 11:02:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791136935; cv=none;
         d=google.com; s=arc-20260327;
-        b=OcKvrm17GzFK/1R7rgJi+wDXUruQoLqQmWfplJ304CeVmQa/XfBt9XgxkpHoG3LqTo
-         7epyzVq2j3Y83hQtIJObXBeNyI2f2gqJVjkx0Nid2GAYK87witUS2VrmzwhCbTzNg28A
-         Z/hiGb5nDV4VyG4jJ5oUkIZH83tzIeJvnl2u8QboF74xjlL85B9llZeM1RZKW6NfX74E
-         8JLIY3wOZ6v+iGVC5DofGE7XLRlZF+KcGkpIB0mWaio7jQAj7XtLkYWOu3O3MgPE2i8U
-         NmRP20r9/5nJDOjrRiYm9rtyJL9uhaGlxSWiUTmRw0PKFDcV9wG+3Gr+YNO9xE3gQM73
-         gYqA==
+        b=q3kAs89bFpaN3V9xB2pUunkBUhDMX2zZkB0hswwJAdEzt9bfHpDWn6mkVH6t651JDn
+         ysZp4Xqasxg7aHarVhEoMkkUGxndjuYgc8Wd4ilOh0brLT1WCDvEM8aHgmksiEzlO49A
+         mtyFEdiL2Q6uJ4Ate7HCMIxQx7oxHz2ElDp5620PXjomsTB3e7AhioV7pP/jU57GfGcq
+         67vJukCMocKdnAGUuekfaV9g/MRdVZQA9j+kZyh5Qe2Eic4Ux0nS+1NWI9qFDdMxeLpT
+         NKtmPFG8XrclpXXTEbhRLgR3CKg3PJmpPB7Hb2n17dY51euizjVgjMMXKcpnwSjB+4b1
+         //eQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Fdcss6XzKw26cI5TyCzpDNu6o5ifWClMegsH9OJNnig=;
-        fh=PJUgFFGnOmJKjrnmj/btM4snosIjnb94m8u4/yoWPpU=;
-        b=m+zaVo42o3yWVMd1u9+3rw9HlWDI9jJy444TOjLT2c7XNCpn+3UNfuPlVlscXzJ5bl
-         su5yKN4qtrXmBtAGLNiMzZZkUdzOPURU5Xtsj6p37mAYc3+ZXZuZqHMtxoWIm1+EcE5G
-         N5yOQ5DQIffwBzIGldfAlxaXiOLsarYFsjofCeYQbtlEocX6e26BzZD65+6zy/44a81C
-         8ae431bmN5+1PiVdA9joYNSH8IeE6Xl0L2yJYHgjayjpom12fu026J3f/kCvtRX+GAro
-         CMOOt9LHHYvHJ61hl3lcMo5+ONshe5781DiFCKs1oDotVSkkLB6QlQ78hdQH8AjzilVh
-         TxjQ==;
+        bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
+        fh=oaNf609jsIRIQDqP7jTQdUUFgYDPBSh74TgyfS/7l7I=;
+        b=LgRUqKNDAUkIAzODA/8uYCHiXiKIqn1sgnvIpU5HNdvUkCWa9FK7GzD0g1AEjtnRL3
+         sz86qO7Q2vBnq2sjrTQbsres+7jlqlybF+tOjFwTQAXU9pSn72FR+8euahcQtVT3w7KK
+         nzs+BX+jossjGzVn/lYf5jiHf72a5sKewIqhGuTgZ16TgYjRsFL/KOMsbduOulNJ78Rq
+         Om6UBgtXJvj5fOcHXhdbw9YWNg9Wt/2fpm+Xf9//BLXkkmk1Jt2/JTUpYLV45vH7WMJr
+         zWFXl7hXnF7RFaqSrmD/LOS4l4Jf4wJAY+0CPvAbXkdkBzKYYhnqHn1qCT5fyFP8Aoxh
+         Yt2g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791136479; x=1791741279; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791136935; x=1791741735; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Fdcss6XzKw26cI5TyCzpDNu6o5ifWClMegsH9OJNnig=;
-        b=R2ZRdr5rB0bF8Ex1X0F1wCRtKxq6dHFCaeKdlIO+0CIQvefdyxwroXGAd4LNn+vSvN
-         RhUzEPFMGuKSK7aA9a3zoDg/q+cgP8Xu4c+SLeUYlXQT8nuBlhsgCHZjODMPe8NMfpJD
-         V40bM4cYJB6di/r6O6l8Y4jhu9Iw4qdFuhNoYgMVtPfcWAFYGaysHc4gnYFO9mj0G9WF
-         0Aqz8Q65tDwoljt2Fw9yJHry/jKvjJRUZxe/IcSAdExTVAQmdLnansDfpHgXx9XDu5ye
-         IUiYNXa/5ZzRK4u+kTowtt0QEoe4/AIMVV6s02EX1XWzjEiulH7zucqc1e1RwUWwFGFl
-         ftRA==
+        bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
+        b=EzRNGhII5r+95roQZlVBkmYNQdaiRDoLFBLNEVDHO+/MdO62rSW77h0jsY0RRI7TOE
+         OGizXIl23WARyeveEsg9A4VKDlhQ107vzXvgKB0/kumOZE0OxLvvTNILxBDSV3YzzO8k
+         qiO7RseqnigoM4JWPrCD0Bqwst28hHQj3ynkIBcst8yxNsMOZSo71JGcgRt/gQfuJBmy
+         aRm3rm9+wZlzJp9JgpetPss9VyFcXkLcrG4rtH3CiCS5OBjpz8pjPDk2RzfpGkkOJU/6
+         LOTv8VmGgUBpxyWljxRzHPYcvYUZO7aEnLg0bU+UMvBTc+Kud1K9PjZyHy1VScuLbj8s
+         CCLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791136479; x=1791741279;
+        d=1e100.net; s=20260707; t=1791136935; x=1791741735;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Fdcss6XzKw26cI5TyCzpDNu6o5ifWClMegsH9OJNnig=;
-        b=xR4gJI8ZNusmDSjXRWA3nBdCkVbI1TZLdMXx5Tl7Kvu9LUnK9AQazdEs5Lf4xX0lBH
-         hdSL+o1dY1H0pnb/781biV8qQJzkHjJjzxaeX0n+hIpGuqD44gD1Z4RE2cOBSbWKGCn8
-         0Bywrl13K1U1TV7DrmDOqnR31NCsQqTsTXvzD6xkERdAsOJCI74jdMvoiHKo7t67gp97
-         eSG73Q0sBhXMdcqdAbnU13tz1vTRQ0R0vkhPbfZg1J88CrqL5Nb2QOl5CAtXKE18ZFXp
-         VzxDYKH788t93+6FhLb2OWPR8z5ROsKp+X5n7/DCxvngC3qQ3xLW0BgpPKGt/OzTbpR4
-         qRLw==
-X-Forwarded-Encrypted: i=1; AKwUvBwRAuqGxHSWueyaPkOqiqNCKBp4a2/0WW2ILrY866OrBZjwtwhh3P/NeMIu+N//pHbQW1o=@vger.kernel.org
-X-Gm-Message-State: AFuF++mbdoxJd/KYoEbTx0u9X2FYsllaHseyY95t9agGcSNHuahYCW7R
-	T9NZhhnRhscpx6xsHb1dfuPCYOpQ/YCGf8SwYXNURfCtf2FZjtDaFSe/SvTUp6UvSRMnGjJpi/i
-	eSANlRZyfq3RMc89Q3NxUfLQE4nxz65/c1ZESB5ab
-X-Gm-Gg: AYBFou0+EcELAxiZIdQ3f4t0XSsa93mZXKGqgQ+jgLSDWpr2g6ideq8zJiM9t+8PVAA
-	nj+gd9li/YCVI1N4uB+ZLYWjZPJntG8y0itLY7FIDgBIfCfwcHpYbcZqGJB1dns6+BSPND0T3z4
-	3kIkcabsTwgEy9TSyar1PazxGZKQKhc/C8DXFNQZPIMOQwX4/wZ257bbtAP+Uskq9Y2uHFTiUyq
-	TiLsU0VErOylS/T4d903gzlYIUxn6YlaKWdDwPx5MZq3dMai1MqfC7qZbYx6vfmJ4kNF0aXo6Pj
-	fRbJ6obIT1oojTcy5k8jIFBAhxs4+VChDNOVkLjoOrAxIQWyyr8nhUWp
-X-Received: by 2002:ac8:7e89:0:b0:534:b7b2:634f with SMTP id
- d75a77b69052e-53514799503mr16690141cf.8.1791136478525; Sun, 04 Oct 2026
- 10:54:38 -0700 (PDT)
+        bh=fxl6gThguTjmryCDwAa1VxSTqh72eFueCyhgsTktke8=;
+        b=LoQ0FstKXBcFHJK2uJycpmVKwcSyAmDv5Dz+IxzH6MyDsrTfh/N9jj2ciCxcwKNXQb
+         EnecbsMBoMXHnRd3Eay9IP97nnOHk+/Di443Bm9JhUniGFAs52e4Mw534Mb7f+ih0CaK
+         NdWMUz0JnzN5gbvzQO8UqW05kxCjiWCpb7G6ivBK4NRy2aZicAm7TQniDCVQ346JbmCD
+         3zCYtUHItlByKHXlF+XtukZbP/tv1ol2OA07DBIloRjVUouE5XcC12u+ZWtD7jUo72HV
+         Gmlv6wV8mGeDk5UGXJ5gVWSiy+DDXdzr7QA0TfPeq5pD6RaIrkjNhacBDnJBMyo7Gzgm
+         iHRg==
+X-Forwarded-Encrypted: i=1; AKwUvByUU3hKARNRtB6lBiSfqlwSK/Vf6xr0tnERk8qzYSOWRVElYUeKEYWdNl/qyK8IFZvO6xE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kMFy00CiIUeq+RJuw6Sp3cg9TwI4QmkQg2QKlhYr/EVQC3GGqi
+	5d5cQoFL6EIH19kOuBBykPCDrUEfPKqN9XxeNokPe081v/6yUrSXLS2pczIIKqrPA7yLt9NlTUw
+	axezCL90Q4o+TGeY7MX0vOUL/Ns0/xh08YuTIojNm
+X-Gm-Gg: AYBFou1+tkMbbHH/3XweEkpaiEn7heB1hHnxvYggrRPbzmYtB3QgnKKK+fV0PKVGqGy
+	CcegbOng1CdDSbqbhcts1Rmn1ug8OFUDvZeC+bHv0o+GE5swDvC2GhHkNnly0iVcFImVb8F9VfR
+	yHX8roUfU47WtoAxbfmJR5wGd6Ec7fpIfLJ1SUyFVXPMjRdcNigpYU2IPnaD1ZkfQSAq95fjunu
+	nVQ1ZmQi13BCDzQ95qIDis5Id4+UDzKgNXo4GbrFzKf9uKBtcVOcbd7GYv4jqV8IEFdo1HTXaFb
+	ib8+kSlVyYOPzyfHgzJbRvI0cvz5rIPzjiMZhtZ3W2jEWEI6rqWBqj5I
+X-Received: by 2002:a05:622a:1b20:b0:530:e335:4ef with SMTP id
+ d75a77b69052e-535113c3cb6mr18023261cf.2.1791136934142; Sun, 04 Oct 2026
+ 11:02:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,13 +83,14 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
- <20261003-b4-mmap-prepare-vma-flag-sanify-v4-17-a1f052500fd7@kernel.org>
-In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-17-a1f052500fd7@kernel.org>
+ <20261003-b4-mmap-prepare-vma-flag-sanify-v4-18-a1f052500fd7@kernel.org>
+In-Reply-To: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-18-a1f052500fd7@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 4 Oct 2026 10:54:27 -0700
-X-Gm-Features: AclHuK-Rg0T0ymL6HRAgNQPZX5D4YqOng-e9RJRoGVP6zixq0eakV-RXfXJpvBY
-Message-ID: <CAJuCfpHM9-VY97TD8yXCEcWirLHik7UPf2_gv5CzqEexD2hbHg@mail.gmail.com>
-Subject: Re: [PATCH v4 17/38] scsi: sg: convert mmap hook to mmap_prepare and rework
+Date: Sun, 4 Oct 2026 11:02:02 -0700
+X-Gm-Features: AclHuK_nOqMX3djeZOdNLjNPymjaWdesvnL51eoG4SJjNhtYox1cB5x1yziRAMs
+Message-ID: <CAJuCfpHiaV6uDCfOMmHJ4tPosUBPRMUF9zjrB0fkCWZG1umG5w@mail.gmail.com>
+Subject: Re: [PATCH v4 18/38] fbdev: defio: assert FBINFO_VIRTFB, drop VM_IO,
+ add VM_MIXEDMAP
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
@@ -157,211 +158,75 @@ Content-Transfer-Encoding: quoted-printable
 On Sat, Oct 3, 2026 at 6:39=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
 g> wrote:
 >
-> Move from the deprecated mmap hook to the new mmap_prepare hook.
+> Currently all drivers which use defio allocate system memory. All of them
+> also set FBINFO_VIRTFB, other than ssd1307fb, however this driver allocat=
+es
+> system RAM, so simply failed to set this flag when it ought to.
 >
-> We are mapping kernel pages here, so use the discontiguous kernel mapping
-> mmap action to do so.
+> This patch sets FBINFO_VIRTFB on ssd1307fb probe, then drops setting VM_I=
+O
+> in fb_deferred_io_mmap() and instead requires FBINFO_VIRTFB to be set,
+> erroring out with a kernel warning if not.
 >
-> Unwind the rather confusing loop and instead map as many pages as we can =
-at
-> one time.
+> The logic requires a page from the driver and since commit 1ecbc7dd2902
+> ("fbdev/deferred-io: Always call get_page() for framebuffer pages") has
+> always required it to be refcounted, so this was implicitly already the
+> case.
 >
-> Note that we do not need to pay attention to rsv_schp->k_use_sg here, as
-> the pages are populated for the length of the buffer at
-> rsv_schp->page_order granularity as compound pages.
+> Finally this patch sets VM_MIXEDMAP, as the logic is mapping
+> kernel-allocated memory so this is appropriate.
 >
-> The discontiguous kernel page mapping logic handles the compound pages fo=
-r
-> us.
->
-> sfp->mmap_called keeps the buffer stable for us. As before it is never
-> cleared, so a failed mmap also leaves it set.
->
-> We also remove some useless vma, vma->vm_file NULL checks - these will
-> always be non-NULL if you reached the mmap hook logic.
->
-> We retain log output for consistency, but change what's output on page
-> mapping to indicate that sg_discontig_get() does the work now.
->
-> Note that we drop the VMA_IO_BIT flag for the VMA here. It was never
-> necessary as we invoke alloc_pages() which gives us refcounted folios tha=
-t
-> are fine for GUP to access (VMA_IO_BIT would prevent that).
->
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-The code looks correct but I must disclaim that I have no experience
-with this driver.
+With the same disclaimer as in previous patch,
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 
 > ---
->  drivers/scsi/sg.c | 115 ++++++++++++++++++++++++------------------------=
-------
->  1 file changed, 51 insertions(+), 64 deletions(-)
+>  drivers/video/fbdev/core/fb_defio.c | 6 +++---
+>  drivers/video/fbdev/ssd1307fb.c     | 2 ++
+>  2 files changed, 5 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-> index 5408f002e6c0..3f9e08725602 100644
-> --- a/drivers/scsi/sg.c
-> +++ b/drivers/scsi/sg.c
-> @@ -1212,85 +1212,72 @@ sg_fasync(int fd, struct file *filp, int mode)
->         return fasync_helper(fd, filp, mode, &sfp->async_qp);
->  }
->
-> -static vm_fault_t
-> -sg_vma_fault(struct vm_fault *vmf)
-> +static int sg_discontig_init(void *vm_private_data, void **private)
+> diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/co=
+re/fb_defio.c
+> index fd00b86e1ae6..fb359ecc3966 100644
+> --- a/drivers/video/fbdev/core/fb_defio.c
+> +++ b/drivers/video/fbdev/core/fb_defio.c
+> @@ -366,13 +366,13 @@ int fb_deferred_io_mmap(struct fb_info *info, struc=
+t vm_area_struct *vma)
 >  {
-> -       struct vm_area_struct *vma =3D vmf->vma;
-> -       Sg_fd *sfp;
-> -       unsigned long offset, len, sa;
-> -       Sg_scatter_hold *rsv_schp;
-> -       int k, length;
-> -
-> -       if ((NULL =3D=3D vma) || (!(sfp =3D (Sg_fd *) vma->vm_private_dat=
-a)))
-> -               return VM_FAULT_SIGBUS;
-> -       rsv_schp =3D &sfp->reserve;
-> -       offset =3D vmf->pgoff << PAGE_SHIFT;
-> -       if (offset >=3D rsv_schp->bufflen)
-> -               return VM_FAULT_SIGBUS;
-> -       SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sfp->parentdp,
-> -                                     "sg_vma_fault: offset=3D%lu, scatg=
-=3D%d\n",
-> -                                     offset, rsv_schp->k_use_sg));
-> -       sa =3D vma->vm_start;
-> -       length =3D 1 << (PAGE_SHIFT + rsv_schp->page_order);
-> -       for (k =3D 0; k < rsv_schp->k_use_sg && sa < vma->vm_end; k++) {
-> -               len =3D vma->vm_end - sa;
-> -               len =3D (len < length) ? len : length;
-> -               if (offset < len) {
-> -                       struct page *page =3D rsv_schp->pages[k] + (offse=
-t >> PAGE_SHIFT);
-> -                       get_page(page); /* increment page count */
-> -                       vmf->page =3D page;
-> -                       return 0; /* success */
-> -               }
-> -               sa +=3D len;
-> -               offset -=3D len;
-> +       const unsigned long req_sz =3D (unsigned long)*private;
-> +       Sg_fd *sfp =3D vm_private_data;
-> +       Sg_scatter_hold *rsv_schp =3D &sfp->reserve;
-> +       int err =3D 0;
+>         vma->vm_page_prot =3D pgprot_decrypted(vma->vm_page_prot);
+>
+> +       if (WARN_ON_ONCE(!(info->flags & FBINFO_VIRTFB)))
+> +               return -EINVAL;
+>         if (!try_module_get(THIS_MODULE))
+>                 return -EINVAL;
+>
+>         vma->vm_ops =3D &fb_deferred_io_vm_ops;
+> -       vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+> -       if (!(info->flags & FBINFO_VIRTFB))
+> -               vm_flags_set(vma, VM_IO);
+> +       vm_flags_set(vma, VM_MIXEDMAP | VM_DONTEXPAND | VM_DONTDUMP);
+>         vma->vm_private_data =3D info->fbdefio_state;
+>
+>         fb_deferred_io_state_get(info->fbdefio_state); /* released in vma=
+->vm_ops->close() */
+> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd130=
+7fb.c
+> index c4fdecafd856..958514a35433 100644
+> --- a/drivers/video/fbdev/ssd1307fb.c
+> +++ b/drivers/video/fbdev/ssd1307fb.c
+> @@ -763,6 +763,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>         info->fix.smem_start =3D __pa(vmem);
+>         info->fix.smem_len =3D vmem_size;
+>
+> +       info->flags =3D FBINFO_VIRTFB;
 > +
-> +       mutex_lock(&sfp->f_mutex);
-> +       if (req_sz > rsv_schp->bufflen) {
-> +               err =3D -ENOMEM;  /* cannot map more than reserved buffer=
- */
-> +               goto out;
-> +       }
-> +       sfp->mmap_called =3D 1; /* Prevents changes to buffer size. */
-> +out:
-> +       mutex_unlock(&sfp->f_mutex);
-> +       return err;
-> +}
-> +
-> +static int
-> +sg_discontig_get(struct discontig_kernel_page_state *state)
-> +{
-> +       Sg_fd *sfp =3D state->vm_private_data;
-> +       Sg_scatter_hold *rsv_schp =3D &sfp->reserve;
-> +       const unsigned int order =3D rsv_schp->page_order;
-> +       const pgoff_t nr_pages =3D state->nr_pages_mapped;
-> +
-> +       if (nr_pages >=3D (rsv_schp->bufflen >> PAGE_SHIFT)) {
-> +               discontig_kernel_map_abort(state);
-> +               return 0;
->         }
+>         fb_deferred_io_init(info);
 >
-> -       return VM_FAULT_SIGBUS;
-> +       SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sfp->parentdp,
-> +                                     "%s: offset=3D%lu, scatg=3D%d\n", _=
-_func__,
-> +                                     nr_pages << PAGE_SHIFT, rsv_schp->k=
-_use_sg));
-> +
-> +       discontig_kernel_map_page(state, rsv_schp->pages[nr_pages >> orde=
-r]);
-> +       return 0;
->  }
->
-> -static const struct vm_operations_struct sg_mmap_vm_ops =3D {
-> -       .fault =3D sg_vma_fault,
-> +static const struct discontig_kernel_page_ops sg_discontig_ops =3D {
-> +       .init =3D sg_discontig_init,
-> +       .get =3D sg_discontig_get,
->  };
->
->  static int
-> -sg_mmap(struct file *filp, struct vm_area_struct *vma)
-> +sg_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -       Sg_fd *sfp;
-> -       unsigned long req_sz, len, sa;
-> -       Sg_scatter_hold *rsv_schp;
-> -       int k, length;
-> -       int ret =3D 0;
-> +       Sg_fd *sfp =3D desc->file->private_data;
-> +       const unsigned long req_sz =3D vma_desc_size(desc);
->
-> -       if ((!filp) || (!vma) || (!(sfp =3D (Sg_fd *) filp->private_data)=
-))
-> +       if (!sfp)
->                 return -ENXIO;
-> -       req_sz =3D vma->vm_end - vma->vm_start;
-> +
->         SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sfp->parentdp,
->                                       "sg_mmap starting, vm_start=3D%p, l=
-en=3D%d\n",
-> -                                     (void *) vma->vm_start, (int) req_s=
-z));
-> -       if (vma->vm_pgoff)
-> +                                     (void *) desc->start, (int) req_sz)=
-);
-> +
-> +       if (desc->pgoff)
->                 return -EINVAL; /* want no offset */
-> -       rsv_schp =3D &sfp->reserve;
-> -       mutex_lock(&sfp->f_mutex);
-> -       if (req_sz > rsv_schp->bufflen) {
-> -               ret =3D -ENOMEM;  /* cannot map more than reserved buffer=
- */
-> -               goto out;
-> -       }
->
-> -       sa =3D vma->vm_start;
-> -       length =3D 1 << (PAGE_SHIFT + rsv_schp->page_order);
-> -       for (k =3D 0; k < rsv_schp->k_use_sg && sa < vma->vm_end; k++) {
-> -               len =3D vma->vm_end - sa;
-> -               len =3D (len < length) ? len : length;
-> -               sa +=3D len;
-> -       }
-> +       vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
-> +       desc->private_data =3D sfp;
->
-> -       sfp->mmap_called =3D 1;
-> -       vm_flags_set(vma, VM_IO | VM_DONTEXPAND | VM_DONTDUMP);
-> -       vma->vm_private_data =3D sfp;
-> -       vma->vm_ops =3D &sg_mmap_vm_ops;
-> -out:
-> -       mutex_unlock(&sfp->f_mutex);
-> -       return ret;
-> +       mmap_action_map_discontig_kernel_pages(desc, (void *)req_sz,
-> +                                              &sg_discontig_ops);
-> +       return 0;
->  }
->
->  static void
-> @@ -1415,7 +1402,7 @@ static const struct file_operations sg_fops =3D {
->         .unlocked_ioctl =3D sg_ioctl,
->         .compat_ioctl =3D compat_ptr_ioctl,
->         .open =3D sg_open,
-> -       .mmap =3D sg_mmap,
-> +       .mmap_prepare =3D sg_mmap_prepare,
->         .release =3D sg_release,
->         .fasync =3D sg_fasync,
->  };
+>         i2c_set_clientdata(client, info);
 >
 > --
 > 2.55.0
