@@ -1,172 +1,224 @@
-Received: from mail-qk2-f27.google.com (mail-qk2-f27.google.com [74.125.230.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3EA35C6AC
-	for <kvm@vger.kernel.org>; Sat,  3 Oct 2026 23:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.219
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791071653; cv=pass; b=A9u/P2NX854KoKOaQjhIQo9q1Cw1TeD6GNaPTW1rSiOZeHQaWwIiMFn4yyKo0ds43WhKKTWwpVIOnDRWywHe7fxplAmVHMg/0SlopQG+gQF0b+v5bVy338OTPqG3QI0wNlftJshNrMn20Ej25+QdvX2d+WYQYs69ln9w/h+zseQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791071653; c=relaxed/simple;
-	bh=tLQXED6TnpPW56Dh+KHvxT+XAjreuYSqEVzU3htBIms=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iK0KYGRm1Kxf9p0VVAAk3AxJ5xbSENxGZfqp3psbJRoGs1wUwH+9f4TuR6QM/ltf/8+GsmjDx8yHAcE1RexgYB10ogZOvI0Ut70PovlyMegsFdMsY917R7pNXp4sY27Euol+1ff4JuJK5BWeWx6QfD/vhsYrrS9jF/jPtdzJj/0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lOTLx3vb; arc=pass smtp.client-ip=74.125.230.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7891E47CC;
+	Sun,  4 Oct 2026 04:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791089866; cv=none; b=BCXp5EBAPPJ/y90gE1PAiC94zl1NM05hkOaVJzycSdhdHXF6TwgrO9JxsGpC/uWwAAXkJLq81CnYwNaDPxeFixOT24YwIK/Pa+oSPiFqPc6GgX7uubuOha8h93sSqsamzBpD0x1Bh3OgTPCuPqGliDOtrRvXYJir8HJ3PnQrfQY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791089866; c=relaxed/simple;
+	bh=Q+Uo68P+lhj5UfkFd8WODPbN3xmadHKb2kEfoFD3NLo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Zomg+kWIkrtYhkiSNR/AGFQGOHtlXVdKWbY3l2vm2eoJbcS2FlG7OJ9wxVKxELXJ/eZA5J5lV1VTvVCpQeVkAT1nRoixG8dhs3o65oDxae114ILc/uG17r7hbNZlKM+24lh7QpgAcqn6p0h8d7fwfVnNBjEPn4ht6htAl/TUYe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxXuqca2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lOTLx3vb"
-Received: by mail-qk2-f27.google.com with SMTP id af79cd13be357-939ca12ab70so62128785a.1
-        for <kvm@vger.kernel.org>; Sat, 03 Oct 2026 16:54:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791071650; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FOCVHYpN6/iwU4WW2FtMDunXZcGaQGvkbnJpq++1AqrtLIiLj+G2YKFts2AmLot+u1
-         bpIZ5fgjnPNlQGyNH1KVG+MXXuIvg5ABzwhnMKQpQv0pMakx9NjT7ZTsIkrfoMvhpQTm
-         ABaOEha2JliTDHc3iEJOJI3KqdQsdV/aomK5vEZC3kCSayOYPuEc+uopkGJsOJ1simkW
-         +VlcGQZ9fDpk/Y68H/KjFZtMc1vcbs9xk/uQaJJVesrNHrjzGnpAwcX32ET7RkYbcquZ
-         qUrXjZynP265F/1ZreuaRjAxreNP+Ij1Dl8Jx7jiFYQyQtOoN+D6h/3UttGlZE9I9gFA
-         pMnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mfJzD8Nrn5OBEx9DAMeICCEetrQp74ti+65lMtrTctk=;
-        fh=SpYrx8jLwIJEny39AU1jhCoRWNGfSLqByKuNmp36dnM=;
-        b=YLfXcsIfEMDopcl0Zwpneg61h/ER8ilg+QmpLaz61V3Qp9mimIouJVsk4sZkX0W3KZ
-         GheamayOqWriyBAh8gsAsrjg/vQ05WvRh0uR9O/3GWdYeODf2iz0ZW1wvwYLjOTSiCzp
-         cFof+yFfHfUSlPPzxbL9BlgkvkAA1B10UGvLjqSAzD01/orkHXWQpCWsHnPUuromXHoF
-         tPjx1Kp7x2x3E6ZamPXhZPIbEUsJ+CONBtsvvPFn69HBqrN+fkVFXZgMtHXwSJm2xcpM
-         +iTUL9tE0O11+6Q0eFaUTxjEfyErO0iRk8vS0+pkcX+FluV31WixzUL4JQesK9Z3ZEsO
-         GKfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791071650; x=1791676450; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mfJzD8Nrn5OBEx9DAMeICCEetrQp74ti+65lMtrTctk=;
-        b=lOTLx3vbCmNNcC61YOW9isx8IwYT2FlJStKtX2jjtwn3yk3NFof4bzqlgAiTswuZ8u
-         R0SHVE8AB2O4ZZLO6Nlfeyp+IZk/C1/kBKK9GfB0YmpjZfjaeKPhQgcBAAFVPAAb5oSj
-         OyblM2t1V4LNbOTWahhiJvUImHrBx2cnqAq8WYRIYZ44Zf/ZK/iumsX1jw3xYaxqSnxD
-         bkmPXSnpvOisx+/z+2j6AuIsXWMBV+kPwzzmHkbWVH/EOpsWcV3b+sA91tX+0JH0ut9G
-         KOq+7Lt00rSec2+WogoxqsSDH5fZpfRD4Nztinav+H8hCxRe2LXE1zODy491OTpohsDN
-         ZxTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791071650; x=1791676450;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mfJzD8Nrn5OBEx9DAMeICCEetrQp74ti+65lMtrTctk=;
-        b=UCr2dfe4nFv5YO1tZq+JBkZRnQaog96SmZlOV6enxMlfB/toBI2z/94z6ne10p/h7F
-         O2zUB1+PPNZcrsA+OvJstoLP5TzLgtVMjIAzd3B7v71pIf/P8/MqqfueFPlpL10H3bcz
-         OWRbzdvfE3TvF/UY3oXxujhtPD6rrm4iGahlayFNW01A6twg2GYQ7Yv0q86Bir5sjldF
-         pMjpKDU61Hqn5giVL2R5TvfLe4mjG3EfgAD/FrEaeXEvozTzdBb9PqiPC9RTyMOhUKvK
-         JYswWrTGgj55jmNvIaePvp2K2UnHjZLgKItkqtEINsu4Y29DnOOwLYQDJ8pA+ZApO4Z6
-         FSMA==
-X-Forwarded-Encrypted: i=1; AKwUvBxB+ohXN+U9znNx14gbf2O8XsI6z+cC1ayCjK1NaMtbe2UdkMPnjb5ah7kWzvHWfiaHHAE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lo2C13iY2Ad2sVxtRmeR6rxQu1IPBshrFbsRuvlGhzTebX9otT
-	GYUqsXy+pV6hkRwGsCdY6aTjU0CG8FcgEkUw+W9SFwjDHnXmAv1r9XWUujyuSLemd8mqq37KBjI
-	bhsbboVE1vsGTplVqOoeDtvgi54bgzYA=
-X-Gm-Gg: AYBFou1iB92fPvpWWCsg+b9EcGeb/yrBBB0qSlroVuvLmLUPin7y1bGNCybaULIGAXt
-	2SLaQ/Z0C10ZzzEuJ5IBT8UIRW2XjjQOBPUdoxMC8bVSaHIp7+DWv+x2Ltz/bGIJiFDmA4U5Hoo
-	isRbEf/Eec0wQuijOiVsJEIdqheZdZF72z+pT0ASvLUJhFXbGuo3Wgf4GYoWMO92d1tmxyRRH1r
-	6mdbY6DFDichp58MM/0UHkG82GTz95+baWj42/z1sH2IEdSejeV0fSymW8Ac2DILfAyquRcWXqc
-	UbuDkNAkFw2kMoVEU/GraZnFWu4zWt8v5xazqchEq8Bpw0vj+Lix0C0=
-X-Received: by 2002:a05:620a:608c:b0:93e:4d60:d389 with SMTP id
- af79cd13be357-93e4d60d772mr857459885a.25.1791071650174; Sat, 03 Oct 2026
- 16:54:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxXuqca2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197091F000FF;
+	Sun,  4 Oct 2026 04:57:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791089864;
+	bh=jqPp+qIXD1dd5/GTvZtypfi8cpUovFkg6nolTGVJjHQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dxXuqca2Noggs731vdDCyUmzRxEohjC+Oy8JVf8YmaryyxmA81lv1AsQtXEW5iJnX
+	 kthZdzFi4H0Zy2CvrusLuaMNnLc1jYYzMRKeawl+FWT/4FdecaQVvll74EiTAkRqTx
+	 X//ajnRnM+45SzgwxWxcqZPxidF5hsf8CRwiArLUN+PdJ6VaT0apgORUVU6y2s6p+d
+	 iiGR5G+1YCq5zlKJINkqFr0nfolXLLoUBTIEhctmyIs7al8SgM395v9EKoNmTObiUG
+	 OSw1miiuHI0rWG1W/lV/GuNacj/DuRPihEhQdyEUd+2fma512Rvn2SbrNfpCQG3sVn
+	 ngLGpnRbPERGQ==
+Subject:
+ Re: [PATCH net] vhost/vsock: trim nonlinear SKBs to declared payload length
+From: netdev-bot+sashiko@kernel.org
+To: 4ncienth@gmail.com
+Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Sun, 04 Oct 2026 04:57:43 +0000
+Message-ID: <179108986364.434549.5339286904514687491@kernel.org>
+In-Reply-To: <20260930044147.3818241-1-4ncienth@gmail.com>
+References: <20260930044147.3818241-1-4ncienth@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002074551.318789-6-physicalmtea@gmail.com> <20261003074657.71AC91F0089C@smtp.kernel.org>
-In-Reply-To: <20261003074657.71AC91F0089C@smtp.kernel.org>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Sun, 4 Oct 2026 07:53:34 +0800
-X-Gm-Features: AclHuK9yiZzs7l16_RtJMlKQwOPOXk2Ehni0GrB9F0m8WE6NLxHkqNqpNjLmApI
-Message-ID: <CAJwVaMLBRYhoZ9krgTt5X2e__AYXMtyJQhW_DEQ8_zqCM7WxZg@mail.gmail.com>
-Subject: Re: [PATCH 5/5] vsock: defer RX readable notifications until batch unlock
-To: sashiko-reviews@lists.linux.dev
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, 
-	Eugenio Perez <eperezma@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Low] vsock: unreachable callback replacement abort logic in batching
-> --
->
-> commit 811453fb266663fdded1db37d3b4cf3bde547c9f
-> Author: Jia Jia <physicalmtea@gmail.com>
->
-> vsock: defer RX readable notifications until batch unlock
->
-> This commit defers vsock RX data-ready notifications until the batch fini=
-shes
-> and releases the socket lock. It records the initial callback to handle
-> mid-batch replacements.
->
-> > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/vi=
-rtio_transport_common.c
-> > --- a/net/vmw_vsock/virtio_transport_common.c
-> > +++ b/net/vmw_vsock/virtio_transport_common.c
->
-> [ ... ]
->
-> > @@ -2015,6 +2040,13 @@ void virtio_transport_recv_pkt_batch(struct virt=
-io_transport *t,
-> >                   vsock_addr_equals_addr(&batch->dst, &dst) &&
-> >                   virtio_transport_recv_pkt_batchable(t, batch->sk)) {
-> >                       sk =3D batch->sk;
-> > +                     defer_data_ready =3D READ_ONCE(sk->sk_data_ready)=
- =3D=3D
-> > +                                        vsock_sk(sk)->default_data_rea=
-dy;
-> > +                     if (batch->data_ready_pending && !defer_data_read=
-y) {
-> > +                             virtio_transport_rx_batch_finish(batch);
-> > +                             goto lookup;
-> > +                     }
-> > +
->
-> [Severity: Low]
-> Can this branch ever execute?
->
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Unless I'm mistaken, this branch can actually be reached.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-> The condition checks if a custom callback was installed (!defer_data_read=
-y)
-> while a default notification is already pending.
->
-> Since custom callback attachments (such as BPF sockmap insertion) require
-> acquiring the exact same socket lock, and the lock is held continuously w=
-hile
-> the batch is active, is it possible for the callback to change from defau=
-lt
-> to custom mid-batch?
->
-> Could this bailout branch be unreachable dead code due to the structural =
-mutual
-> exclusion provided by the socket lock?
->
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The premise that sockmap updates always take lock_sock(sk) applies only to
-the syscall path. When a BPF program calls bpf_map_update_elem(), for examp=
-le
-from SK_LOOKUP or BPF_TRACE_ITER, sock_map_update_elem() takes
-bh_lock_sock(sk),
+- [High] The fix is incomplete.
+- [Medium] On 32-bit hosts, the check `payload_len + sizeof(*hdr) > len`
+  in vhost_vsock_alloc_skb() (drivers/vhost/vsock.c:404) can wrap, and…
 
-The batch reuse path checks sk->sk_prot in
-virtio_transport_recv_pkt_batchable() before reading sk->sk_data_ready. A
-concurrent BPF update can replace both callbacks between those reads while
-the RX worker owns the socket.
+--
 
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261002074551.31=
-8789-1-physicalmtea@gmail.com?part=3D5
+vhost/vsock: trim nonlinear SKBs to declared payload length
+
+This commit changes virtio_vsock_skb_put() so that a nonlinear skb is
+trimmed with pskb_trim() to the payload length declared in hdr->len.
+Previously only skb->len was adjusted. The zero-payload early return in
+vhost_vsock_alloc_skb() now comes after the helper call, so zero-length
+packets are trimmed as well.
+
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index abed1fbcf66cc..fa59456abda97 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -400,10 +400,6 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+>  
+>  	payload_len = le32_to_cpu(hdr->len);
+>  
+> -	/* No payload */
+> -	if (!payload_len)
+> -		return skb;
+> -
+>  	/* The pkt is too big or the length in the header is invalid */
+>  	if (payload_len + sizeof(*hdr) > len) {
+
+[Severity: Medium]
+Can this check wrap on 32-bit hosts? payload_len is a size_t that comes
+from the guest-controlled hdr->len. A value from 0xFFFFFFD4 to 0xFFFFFFFF
+makes payload_len + sizeof(*hdr) wrap to 0..43. Since len is at least
+VIRTIO_VSOCK_SKB_HEADROOM, the check always passes.
+
+Before this patch, the nonlinear branch set skb->len to that huge value.
+skb_copy_datagram_from_iter() then skipped every fragment and returned
+-EFAULT without a warning.
+
+With the new virtio_vsock_skb_put(), skb->len is set to skb->data_len.
+pskb_trim(skb, huge) then does nothing, because len < skb->len is false.
+The skb reaches this call with headlen 0 and a negative int length (for
+example -32):
+
+vhost_vsock_alloc_skb()
+    skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)
+
+In the frag loop of skb_copy_datagram_from_iter(), this evaluates
+0 > -32 and fires:
+
+    WARN_ON(start > offset + len);
+
+copy_page_from_iter() is then called with bytes = (size_t)-32, which
+trips the check in page_copy_sane():
+
+    if (WARN_ON(n > v || v > page_size(head)))
+
+Neither warning is a once-only warning. A guest that posts TX descriptors
+larger than about 32.5 KiB with such hdr->len values would get two host
+WARN splats per packet. With panic_on_warn set, it would panic the host.
+
+The guest-side virtio_transport_rx_work() already uses an overflow-safe
+form of this check. Would it make sense to use it here as well?
+
+    if (unlikely(payload_len > len - sizeof(*hdr))) {
+
+[ ... ]
+
+> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> index f91704731057e..31358683e23e3 100644
+> --- a/include/linux/virtio_vsock.h
+> +++ b/include/linux/virtio_vsock.h
+> @@ -51,10 +51,13 @@ static inline void virtio_vsock_skb_put(struct sk_buff *skb, u32 len)
+>  {
+>  	DEBUG_NET_WARN_ON_ONCE(skb->len);
+>  
+> -	if (skb_is_nonlinear(skb))
+> -		skb->len = len;
+> -	else
+> +	if (skb_is_nonlinear(skb)) {
+> +		skb->len = skb->data_len;
+> +		if (WARN_ON_ONCE(pskb_trim(skb, len)))
+> +			return;
+> +	} else {
+>  		skb_put(skb, len);
+> +	}
+>  }
+
+[Severity: High]
+Does this fully fix the retention described in the commit message?
+vhost_vsock_alloc_skb() still sizes the skb from iov_length(), not from
+hdr->len:
+
+    skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+
+The trim here only frees memory when the whole payload fits in the head
+tailroom. Two cases seem to remain open.
+
+The first case is the linear path. virtio_vsock_alloc_skb() gives any
+descriptor up to about 32448 bytes a linear head of the full descriptor
+size:
+
+    if (size <= SKB_WITH_OVERHEAD(PAGE_SIZE << PAGE_ALLOC_COSTLY_ORDER))
+            return virtio_vsock_alloc_linear_skb(size, mask);
+
+The else branch above still just calls skb_put(skb, len). A zero or small
+payload therefore keeps the whole ~32 KiB head.
+
+The second case is the nonlinear path with a payload larger than the head
+tailroom. That is a few hundred bytes; the 960-byte truesize in the commit
+message suggests about 340. ___pskb_trim() shortens frag[0] and unrefs
+only the frags after it:
+
+    skb_frag_size_set(&skb_shinfo(skb)->frags[i++], len - offset);
+
+    drop_pages:
+    skb_shinfo(skb)->nr_frags = i;
+
+    for (; i < nfrags; i++)
+            skb_frag_unref(skb, i);
+
+The order-3 page behind frag[0] stays pinned. skb_condense() then returns
+early, so truesize is not recomputed:
+
+    if (skb->data_len > skb->end - skb->tail ||
+        skb_cloned(skb) || !skb_frags_readable(skb))
+            return;
+
+virtio_transport_inc_rx_pkt() charges only hdr->len plus this per-skb
+overhead:
+
+    u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+
+For a 256 KiB buf_alloc, that admits about 455 skbs.
+
+The merge and collapse paths don't seem to reclaim these skbs either:
+
+- virtio_transport_can_collapse() refuses any skb with
+  VIRTIO_VSOCK_SEQ_EOM set, and the guest controls hdr->flags.
+- The GOOD_COPY_LEN merge in virtio_transport_recv_enqueue() skips
+  nonlinear skbs, payloads over 128 bytes, and any skb after an EOM skb.
+- Collapse only runs once queue_len reaches queue_max.
+
+So one socket could still pin roughly 455 x ~33 KiB, about 15 MB.
+Meanwhile buf_used stays at zero (linear, zero payload, EOM) or about
+155 KB (nonlinear, 341-byte payloads). A guest can repeat this across
+connections.
+
+The commit message says:
+
+  "Set skb->len to the fragment length before calling pskb_trim(), then
+  trim to the declared payload length.  This releases unused fragments
+  and lets skb_condense() reduce truesize."
+
+Is that accurate for nonlinear skbs whose payload is larger than the head
+tailroom?
+
+Would it work better to read and validate hdr->len first and then allocate
+payload_len + VIRTIO_VSOCK_SKB_HEADROOM? Copying into a right-sized skb,
+or charging the memory actually retained, are other options.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930044147.3818241-1-4ncienth%40gmail.com
