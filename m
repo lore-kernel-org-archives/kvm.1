@@ -1,167 +1,210 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010037.outbound.protection.outlook.com [52.101.61.37])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C179E4D9561;
-	Mon,  5 Oct 2026 18:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791225859; cv=fail; b=gV6z0aJqldo6irY71LBtaXGcY8ITtvIwlOQSY0WDccnoqDAgOUNgA6Xv3078bcEFA+4p+9atD9TKvddiL6FM1saRJ2XxFnGbsZ0zAreNa2Fei+l1pV22pZOCKde35IWXih2pkLo74dKfzUVlb9/CSGQjyAHQlLDK27FVQb7Hm/c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791225859; c=relaxed/simple;
-	bh=LZYI7/F4DtSWR+vEDqzk2zKEVbQ6AusG17ARbZvED6w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m8liwJLkdJYC1ZZRkP72EjWu3BaznVgCYsyBaf0FuIfAC9IXpPbl6WvRr9FaS9eXEm6DLLTRUXdeSORBsNydbmdpP2ZB2m+w2UiYRtmnnSlGSchVj+0b0omhdmVHUnA//2ahbbOC6GGG6jddq9GHDaOAiRFlrtLM0SgFDxOElc4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eMK7JHN4; arc=fail smtp.client-ip=52.101.61.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA94C2247;
+	Mon,  5 Oct 2026 18:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791226345; cv=none; b=Els9gHzouDnJEjv+SRnqk9J/oxKVGQ/x51tI6Na38piL16GExPZkN2yxaIw2R+mLOM3+e5dtuPHhZRsJvYMfzsarR1Xyzr52UnWvCt7PQxWQ3mUJxjrmOFn2T0LZjebcWrQ2JE92iX0fd+DNjtCHXI1lnwgnkbisIq4CTCqrpeA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791226345; c=relaxed/simple;
+	bh=io1ma+FCGtzcTYiMn6NEb1oTjjDWX1Xm5d+C1HlDY7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N6krxq5kDLeyI7zK7zPJMD/17L7gan7pAUQswfOivehueEvCKn0667GVO3JkoKPW2dU14KEo/Nzn92CPn6H5XE5xk6Se4dxobMR6TXMZz9P2y1TXny3dt3dXtFUIcES5X1b+BDgl/+sgKsZFLbnvQmpaCb3wxAEUQHFU+sY5sZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OVGUhC5v; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eMK7JHN4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AjpBSzyOHV2pVTfyJKm8W9pbH6qvDsxyZqivXB07zBItXQKYSPwUzw5KAJ6dlMFCl0oOiBWjD7uYBK+qJObLwQjh9gmKvXXRdgHCa4R59gI+Iwklt+i8V05egVP71dtY9WsrO+vM1Xa/ns+MhvMNXI9NZYEXzH54ePpf34rn70DpZoPUT/1KwIKvd+MXU/p8dNrOeuOle2Midx2gk4kMsxzlWut8Miw3C9YFgBz3RjeEMT85GyDAX0/ff4KcUCHFdBCLFDmuUhTwElTfdBG5eXatCLupytTt/X04k0yHzLqFpEBo2ksRiVBYm2z4UJhQTvTRTFyUXX958MvC78tQPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fdR5kFp2s6s992zptQr5Npnl2AzsI/qNY5TCX+6Yr3Q=;
- b=ddt59f59FlStsHMiKtyBDFpXXv/EZM+pCg4mdHxmAW9i8hQBMUKxAlzbjmNrRgLJ7OVosDFuHKrQssqS2yuSTS/IX9wH+6O0/3UF1dBsAfOcQzJ4g/h+vWiioTkmyD/oAs+oE8axwZsiBUGdj7wYoHKMWRg4AASu95DjcX/k8o7Equ91orNdlrm5uoLpw152suGNgM0mmwf72oYQZoLGzTOT9NwtPNzYhM4AF/SmMbUwngMAJOIVSAqWNP65Bm5FspWEeGP13DgB81XqjyYdmH1jHLKp0Pf3s7pxpjB07eB0vaqFnAlGKi1Ouj1Sbd2gixmMK/vHdS8/QmysGRfG1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fdR5kFp2s6s992zptQr5Npnl2AzsI/qNY5TCX+6Yr3Q=;
- b=eMK7JHN4uVaS9rytd78J0Ok2fq7DjdiQpJK3qJAKdpTxtieKyeIqbD+mDDNTxthYR8Pf6dP+HTtEDQIYiD5P8AAc2/U3Q7enf75FWq2HsUl25xpQJAzc+/RV1/uswOshOrEEjigVspnVkeHCBz+ZANL/X299ILZ/tvRIpaqkUJ4uIFg8fyZCfxBSgZJb0x7fIospyyUH3atUiblPz/7gi9qSjZxhww50zi1F6IZoiqeQFX0Uhq4kgTCU9HX7qbU0MNT7ZnBrbdFGhyHcLWju860JF6pIC+n7gWCe1uBQl0WodSZLGPEXN9LDenICze96HwpnqY8zNdU2Vr6RPRd0iA==
-Received: from DS1PR02CA0015.namprd02.prod.outlook.com (2603:10b6:8:44a::13)
- by IA1PR12MB7616.namprd12.prod.outlook.com (2603:10b6:208:427::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
- 2026 18:43:37 +0000
-Received: from DS8PEPF000000E0.namprd05.prod.outlook.com
- (2603:10b6:8:44a:cafe::1d) by DS1PR02CA0015.outlook.office365.com
- (2603:10b6:8:44a::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Mon, 5
- Oct 2026 18:43:36 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS8PEPF000000E0.mail.protection.outlook.com (10.167.23.203) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Mon, 5 Oct 2026 18:43:36 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
- 2026 11:43:15 -0700
-Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 5 Oct 2026 11:43:13 -0700
-From: Simon Song <xinmengs@nvidia.com>
-To: <alex@shazbot.org>, <jgg@nvidia.com>
-CC: <dakr@kernel.org>, <acourbot@nvidia.com>, <yishaih@nvidia.com>,
-	<skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <jhubbard@nvidia.com>,
-	<ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
-	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
-	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <zhiwang@kernel.org>,
-	<zhiw@nvidia.com>, Simon Song <xinmengs@nvidia.com>
-Subject: [PATCH v3 0/1] vfio/pci: Give drivers control of PCI driver_data
-Date: Mon, 5 Oct 2026 11:42:35 -0700
-Message-ID: <20261005184236.1946167-1-xinmengs@nvidia.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OVGUhC5v"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695HZOBi1256933;
+	Mon, 5 Oct 2026 18:52:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FWYTv8
+	8690CZNQcrfIzt0A7pFkyXKF3PfGE3ZdieKs4=; b=OVGUhC5vIYpLhkWMQrS8lV
+	qSJbe9kafZZw4GzNgBlcaJS8UR915yE/mkw+Y5m2FXlTreuE7VxHhX2x+89l0Ail
+	un/ImjmCfdfKmh2dP3fsH0ZgfMr73BQq39YOt4JpyN++Ji1TmmUypBmGW7Y4UrRq
+	kAjN7vV59JmqYC9wWQuzQFhiYe70foabV/OzMv6crOIsjZdvsn5uWBo4nvg3wJXp
+	8Vw22PWjAcCfrytBNS0nSABWhSmHOqkcSHfMkHVyc9R30a57Wh0c7hEBs9EvkgxS
+	errWwLdGyi5QrfTd3AOu/WauFemw3TUEVh7yEg/8vRIOKdmF8heF5Bg8zHARbzeQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5bxf4-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 18:52:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695HMYX73238815;
+	Mon, 5 Oct 2026 18:52:17 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3c1ppwdj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 18:52:17 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695IqGLU29753860
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Oct 2026 18:52:16 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BE3A5805A;
+	Mon,  5 Oct 2026 18:52:16 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E903558054;
+	Mon,  5 Oct 2026 18:52:14 +0000 (GMT)
+Received: from [9.61.34.243] (unknown [9.61.34.243])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Oct 2026 18:52:14 +0000 (GMT)
+Message-ID: <a88bf7e9-10f3-4c46-a8a3-8f029e555c70@linux.ibm.com>
+Date: Mon, 5 Oct 2026 14:52:14 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 04/15] s390/vfio-ap: Reset migration state in
+ VFIO_DEVICE_RESET ioctl handler
+To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-5-akrowiak@linux.ibm.com>
+ <d3c453ce-6e9f-4c1b-aef7-8d1b1f1be46e@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <d3c453ce-6e9f-4c1b-aef7-8d1b1f1be46e@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS8PEPF000000E0:EE_|IA1PR12MB7616:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99f9dd2a-abfe-4183-9f0a-08df23109103
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|23010399003|1800799024|36860700016|6133799003|18002099003|10067099003|13003099007|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	B1kc9dDrLVbtWxI34hz/wXR5pD2tI34ORYb5yTpt6oHuc5ErXFPU8p6EDyYfk9zEvAYxUdFMufKJgVHBWFnmZvcxxPBxh4Q0eitEfZRtW54mTeR89iZ58y6Hv4HQKkwkMeGsXQhHE+KJrkybjga5ceOU0CqkesDyw0oAINRhfRFODW5RFv2nGOL0QG/6MzY7YshG51AuqsHehKWHzg+V4oju3u6QfdQ7GkM+SeZFQHbLP8ykluowOBV52rVr6se/fHkg/BIvmegWPBalUDMJl6KLamrMOSpwKGm2wsdUhzP6ysy6gxoISTxs2+gQtRAUiolbt8mFk8tl3sWfbVq1H86Sqa2P9uNdpfdYa5qVtS55AA6aFDVleFBSq6HA5+t1VLkWIHaavOYQTxKICWMdRxQFtDIit0LPQdmO3FJcUp79Heu8JaPhOGWb+iEgWj4zSzc0deqITz2ksww3MJmQm22+ouPeTyK6kNmFaFTJR6nJ3/mixR4BSdMJEmcoHE2ghsgD3sSoQc+l2i7Ena4DDkqknYmNU9C7wWicWKDFNh6k0AWTx4EGdS21vuP/tJ4kEpmVHK9VszhXJI+ITNfAkNQW1b8F4gbaX9yVZhIgFNUmMROTIXb7lQlfIdbAdTwLtgxf5YFiXFaeu3/QPeqfzWw2vfuZcLNcgg3LxobPq3XtpuXhLhkSodH4yY28YMbhtOBndzxka+hKOQ92aZb9aw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(23010399003)(1800799024)(36860700016)(6133799003)(18002099003)(10067099003)(13003099007)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	eEp//bUkD9NaboIdQZUBSqGDKe8jaw2sYoqfnGpI91geprHn/LCaSTsFXezql1mv7yQ1Ot9Uugt79CqmVNKx2qGAo/XxxA8ChoVyawbYoNCBY6OoQ0BNiumFiLEcKTHYPzBIB+HuSDqpnH3FAN6qweO816xy9M5WCYZlCJgl5+7fxKMFMrTunFStdj5Ydwh0z8WZTLozNwb9k5VmQ5ovJEx7Kl49HTbUVWYo9Je3y96tjJuTzAL5D2/0m+KfjYDslzMG/s9PlrdLo9Mp6CIF0suAAoNUB69fb5svYjQDWWGPd5RrPgW5PknOz+mkPfG6BWTl1JNcbGGW936w5141ggWi4GrFE16g+YVVCOEc14qLRQugrLOb7mz+mcB2Gg7hKs/jqUveM9l+f9Z/1aPBVCjJj7zUx26nkb2i+1q0BMgn9lJcGbTxVt36urW3cPzR
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 18:43:36.7859
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99f9dd2a-abfe-4183-9f0a-08df23109103
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS8PEPF000000E0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7616
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA3MyBTYWx0ZWRfX9sonKXMyjMsd
+ had47/AcPbdqQIkgIU1VPqilWP90CeOirjyc/O5Mnqvw+rDXN0GkDPU9Epsz4hvpn2FkIs5lpdo
+ D9a5dEVf94KLOtHasEI82fZTMdQvcXY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA3MyBTYWx0ZWRfX9hiXL6fEib5b
+ nf5VlIxBDHY0kzwju2x/Ks+//8uZPJkjYEn6n9RibiOsyh+gB1cUfs8t2VAu4+wXSLHAB9ObILZ
+ DY2HIWXi/hDy3lOfBTXRunZDNtPjPM9LE1eQx0t9nPhhrcRwEg/Lzu2Dxb8Wcj2eqLuANkX3RNI
+ vW2X7JvfGbagNKnTehrN3DGbTrLdj5YC7o50war5Tpr/Rt0BEaHcbDYuf5ilII/O+AKdNfa0m/o
+ zKJCdJWPh/4pInSL3tl+YBfk+T0pWAXKVL13Tefnz/OCklsyS67F3+xgHuMVhm5+7JhyibNirTw
+ CMJm/DdsqxLUiz2Ts3V7fiPTQDnGj7y1yMMkVdiUxToigObQruXjigvBMnsW7z7JTxbJdw2+52D
+ C8hK2V7YtlPRa8qbc6OGkkH/jBkiPaHgBbaV6d+ICKGgWWWZjxcOIGSRHpWNPnQ8htJBO9ZrZCp
+ uG9Nw/evXXVSoNbpr9g==
+X-Proofpoint-GUID: QeQadU53vPfxMm543ZlJagMY5B4sCp8n
+X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac3f1e2 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=y0eLMb8oXC195jKi86oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: QeQadU53vPfxMm543ZlJagMY5B4sCp8n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-05_05,2026-10-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050073
 
-Hi all,
 
-This patch lets VFIO PCI variant drivers store their private structures
-in PCI driver_data, removing the requirement that it point directly to
-struct vfio_pci_core_device. This also accommodates the typed driver data
-used by the Rust PCI infrastructure, as discussed for the proposed Rust
-NVIDIA vGPU VFIO driver [1].
 
-Runtime PM and AER helpers receive an explicit vfio_pci_core_device
-pointer. VFIO_PCI_CORE_DEFINE_CALLBACKS() generates per-driver wrappers
-that retrieve the driver's private data and pass its embedded core device
-to these helpers. Each driver installs its own PM ops table.
+On 8/11/26 1:05 PM, Jason J. Herne wrote:
+>
+>
+> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+>> According to the VFIO migration specifications, userspace must issue a
+>> VFIO_DEVICE_RESET ioctl if a vfio device enters an error state or 
+>> fails a
+>> state transition to recover the device and return its migration state to
+>> RUNNING. This patch adds a function that is called when a 
+>> VFIO_DEVICE_RESET
+>> is issued that releases the migration files and frees the storage 
+>> allocated
+>> for maintaining the migration state.
+>>
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_migration.c | 20 ++++++++++++++++++++
+>>   drivers/s390/crypto/vfio_ap_ops.c       |  4 ++++
+>>   drivers/s390/crypto/vfio_ap_private.h   |  1 +
+>>   3 files changed, 25 insertions(+)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c 
+>> b/drivers/s390/crypto/vfio_ap_migration.c
+>> index cf303d228a0a..1613813124b6 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+>> @@ -238,3 +238,23 @@ void vfio_ap_release_migration_data(struct 
+>> ap_matrix_mdev *matrix_mdev)
+>>       kfree(matrix_mdev->mig_data);
+>>       matrix_mdev->mig_data = NULL;
+>>   }
+>> +
+>> +/**
+>> + * vfio_ap_reset_migration_state - Reset the vfio-ap migration state
+>> + *
+>> + * @matrix_mdev: pointer to the object maintaining the vfio-ap 
+>> device state
+>> + *
+>> + * Called during VFIO_DEVICE_RESET to clean up any active migration
+>> + * state and reset the device to RUNNING state as required by the VFIO
+>> + * migration specification.
+>> + */
+>> +void vfio_ap_reset_migration_state(struct ap_matrix_mdev *matrix_mdev)
+>> +{
+>> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
+>> +
+>> +    if (!matrix_mdev->mig_data)
+>> +        return;
+>> +
+>> +    vfio_ap_release_mig_files(matrix_mdev);
+>> +    matrix_mdev->mig_data->mig_state = VFIO_DEVICE_STATE_RUNNING;
+>> +}
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c 
+>> b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 90b0fce0123b..d05372b50d2f 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+>> @@ -2330,6 +2330,10 @@ static ssize_t vfio_ap_mdev_ioctl(struct 
+>> vfio_device *vdev,
+>>           break;
+>>       case VFIO_DEVICE_RESET:
+>>           ret = vfio_ap_mdev_reset_queues(matrix_mdev);
+>> +        if (ret == 0) {
+>> +            /* Reset migration state per VFIO migration spec */
+>> +            vfio_ap_reset_migration_state(matrix_mdev);
+>> +        }
+>>           break;
+>
+> Why do we only reset migration state when vfio_ap_mdev() returns 0? 
+> Even if this call fails, we are in the VFIO_DEVICE_RESET path and we 
+> need to clean up the migration data, right? Or did I miss something?
 
-VGA initialization selects the decode callback in vfio_pci_vga_init()
-based on vfio_vga_disabled(vdev). Both callbacks use pci_dev directly and
-do not depend on driver_data.
+I think you're right here. After reading through the documentation and 
+doc blocks, it looks like the
+contract on a reset is to do what is necessary to set the migration 
+state back to RUNNING. That
+would include cleaning up the fds etc. Besides, reset status and 
+migration state are two unrelated
+issues.
 
-Changes since v2 [2]:
-- Drop the unused pci_channel_state_t argument from the core AER helper
-  and its callers, preserving the PCI callback signature (Danilo).
-- Wrap each driver's PM ops pointer with pm_ptr() so unused tables can
-  be removed when CONFIG_PM=n (Sashiko).
-
-Changes since v1:
-- Extend VFIO_PCI_CORE_DEFINE_CALLBACKS() to accept the driver's private
-  structure type and the member containing vfio_pci_core_device.
-- Store each variant driver's private structure in PCI driver_data.
-- Select the VGA decode callback in the core and retain the one-argument
-  vfio_pci_core_register_device() interface.
-
-[1] https://lore.kernel.org/all/DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org/
-[2] https://lore.kernel.org/r/20260930143641.4160785-1-xinmengs@nvidia.com/
-
-Thanks,
-Simon
-
-Simon Song (1):
-  vfio/pci: Remove the core dependency on driver data
-
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 27 ++++----
- drivers/vfio/pci/ism/main.c                   | 19 +++---
- drivers/vfio/pci/mlx5/main.c                  | 13 ++--
- drivers/vfio/pci/nvgrace-gpu/main.c           | 19 +++---
- drivers/vfio/pci/pds/pci_drv.c                |  8 ++-
- drivers/vfio/pci/pds/vfio_dev.c               |  5 +-
- drivers/vfio/pci/qat/main.c                   | 12 ++--
- drivers/vfio/pci/vfio_pci.c                   | 33 +++++++++-
- drivers/vfio/pci/vfio_pci_core.c              | 61 +++++++------------
- drivers/vfio/pci/virtio/main.c                |  8 ++-
- drivers/vfio/pci/xe/main.c                    |  8 ++-
- include/linux/vfio_pci_core.h                 | 41 ++++++++++++-
- 12 files changed, 159 insertions(+), 95 deletions(-)
-
--- 
-2.43.7
+>
+>
+>>       case VFIO_DEVICE_GET_IRQ_INFO:
+>>           ret = vfio_ap_get_irq_info(arg);
+>> diff --git a/drivers/s390/crypto/vfio_ap_private.h 
+>> b/drivers/s390/crypto/vfio_ap_private.h
+>> index a2a713f93674..1fbdfcce5a11 100644
+>> --- a/drivers/s390/crypto/vfio_ap_private.h
+>> +++ b/drivers/s390/crypto/vfio_ap_private.h
+>> @@ -175,5 +175,6 @@ void vfio_ap_on_scan_complete(struct 
+>> ap_config_info *new_config_info,
+>>   void vfio_ap_init_migration_capabilities(struct ap_matrix_mdev 
+>> *matrix_mdev);
+>>   int vfio_ap_init_migration_data(struct ap_matrix_mdev *matrix_mdev);
+>>   void vfio_ap_release_migration_data(struct ap_matrix_mdev 
+>> *matrix_mdev);
+>> +void vfio_ap_reset_migration_state(struct ap_matrix_mdev *matrix_mdev);
+>>     #endif /* _VFIO_AP_PRIVATE_H_ */
+>
 
