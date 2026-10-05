@@ -1,152 +1,155 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C7129A9C3
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 06:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4BF37E2EB;
+	Mon,  5 Oct 2026 07:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791180506; cv=none; b=C3sBT4ciFaU60lwC/IKBAbFTjQcmOMhkZJpzO4B5jXkJZ+5dJRA7Kjl5fzQgVkVDGSDxJhcyUK4sEZz3JwBJ12MgqMWU29d/YH5ioaDO+9w3ToZi2m+FlzOQybv6cfoabbQ7MX0xbCLpIZcxaQrR4PjME4HrLF49qOiZDGKJhuA=
+	t=1791185772; cv=none; b=XKwHEVh59U8Lt8Jit+tKy3DzrONx/4e9+5ynVppwLOD8fY3FDFwIUjcb+WT5vsvZnbdHTxOluAvvtYkCx9oxdXnEAwpB8/Yt/nlrv83TwfAehAIIE0ytolhRpQedaCCoR4yDSA7yNteOVK2y5z7NGrFzepZ9cIWRAsWFzMIzTRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791180506; c=relaxed/simple;
-	bh=/szOEFlEuCK8HzH40tWXZI0IjYEZzIV5NiqgkgiQ/q8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GzkNWqttfwfvwRBrn1ulYehzoe+fHEGiOl2x4JEIFERLpf7RsYX8NGx/bMaYgQ5K5UiVyX0oCf2HJh9mGJkP15VuDN00/zI1H2GY2iu233ux6yY8XDMpw+TLeDd6LoyUwmR8WdaleC2/G/GrhPZAWsFLXyEOLZxft9MCvVlpktw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CBzKuRp6; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1791185772; c=relaxed/simple;
+	bh=lWFA/lphBDfFlKdg5ZeH8Da13s7WF/Y+TGpl0iNPuM4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XuFtAKhQhQUsOryug/9aK5I9xTc9Arin6CCCz4evO7JuDevu+6IvLUCajg6Xy1Nj3MZXdFxVwSBPHc7u/6840fvUzkfdo5fHkBY+iQajInajEXjH23+Gs/1t7ZIUBAGHGHidzYFjxfWcOHwHaWKkJpExB+8QLiiWk3AngceL1/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frTp5m5F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CBzKuRp6"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-88b9d8c9e55so1186866b3a.1
-        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 23:08:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791180504; x=1791785304; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IITz2XbwrAyv27W8DNZJyeO2sE+zaKLd0NzyMXZbO5I=;
-        b=CBzKuRp6NUdR1iVhRMhStG+t8DgZsrWN3udvwyk4jhHo8qX2g2yLzD8k8KPaIfnkwo
-         lHwFZbJd2KhjYLkxQG6qD34vAMBcKjjbIJ99dMrYuenovomgB2WDQvjIHe8KtGbJDzMy
-         dwX8duBOLDFMpiMHRgJljxmtXMErfaKBBulzKh8nEBxmdB5CTEayxPtinOrkBLTvXSlp
-         /3TbucqyOD1oNjejh116hgdvC6h1aP3EIRxlpXpOOB9HiWQT42u11EgEBMUeRk3+uGGI
-         vL2bwTHVHjkgrvBplbhysprpArScuLDetpJSIe3EWV4RZg1wGvpxW9zx3vB+w9ha0qm/
-         9bAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791180504; x=1791785304;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IITz2XbwrAyv27W8DNZJyeO2sE+zaKLd0NzyMXZbO5I=;
-        b=P3nhX2HhkG4yk6f3XNHSeqq6Hjs2/17XCE9S+rGCnjt2tkyKgBY/dwmGfsMWiAQLCd
-         FiCTaAyfsFlgoNmI/GXgWc9rzIDVKETdTBhItneFX62Ej9EJzR2LvmyoV1DzpOnZb1xb
-         Om8Gqy6KmMPdze+5E4zntv1rK/8iLbck7F59OtfLwZjhPmA3Z1MObt6Hkpo7oOjyy3NB
-         euDjWUA8e/PWgmmVOwtq4b4Q5MDuE/8IM8Ewku0IB8a3RB4zjQPc1PBw+7yDCNQA716V
-         leexaDrlIq17Q2lg7rfzP9pntfmTuHM1jZ5XXbb4KmCi2z/tBwwZSGw1SyUE8zo9ojGw
-         pYQg==
-X-Gm-Message-State: AFuF++lv7+uKoKQlu8Jgx+KQ6jzEp3lhsFmHty6kOViUTYXhqcNw/Upo
-	cs/3WD3aXoL3XIB6kFNVgVvHnDVzpaEJYDj965gikkvSo9DTl/47h9RRI1UM2bS4y9xzTkvZ3lL
-	JHZ8Y/A==
-X-Received: from pfbga7.prod.google.com ([2002:a05:6a00:6207:b0:87f:22a2:2139])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1da4:b0:884:e190:1b94
- with SMTP id d2e1a72fcca58-887fe2e5855mr8812734b3a.34.1791180504209; Sun, 04
- Oct 2026 23:08:24 -0700 (PDT)
-Date: Sun, 4 Oct 2026 23:08:23 -0700
-In-Reply-To: <fqykkc3j.ritesh.list@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frTp5m5F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F37D1F00893;
+	Mon,  5 Oct 2026 07:36:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791185770;
+	bh=wlE1MxfAOeA6OUdgmn9IID89AexVN0AIyazCIkBDGrY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=frTp5m5FFMiIehoN9KO4h/49gjrqMsWBVS16+FSM4hQstV1Qfe9V9OTxGS6aSTsnL
+	 jVDYI7x9YQE+CEdXEd+EomI6cnaTWjxFJCBz6LVI8kWWFC/vPWSmp+8ayq5XxLRz5r
+	 jveLNMX9g262A2+fcHTN0en0+dvFIyYEfYJwvsGrE1CdGh6QbB9QNx6hnjGKiIB7TY
+	 oc4rl5dfWMHTMM2VZfwtnTzZZ/arMLWSxXsuQS79qkzldjuavox8lUdPwfcvCknLLZ
+	 M1lLFoSRFHa6Zbb8+eNpB4BDYVNG3DK3UYsQXh2cEJAsBgqi9oLGmagg53AFj0UiY6
+	 Kz18bZCDMnxdg==
+Subject:
+ Re: [PATCH net v2] vhost/vsock: size receive SKBs from declared payload
+From: netdev-bot+sashiko@kernel.org
+To: 4ncienth@gmail.com
+Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ will@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Mon, 05 Oct 2026 07:36:09 +0000
+Message-ID: <179118576977.434549.3015022133910830215@kernel.org>
+In-Reply-To: <20261004073419.4039011-1-4ncienth@gmail.com>
+References: <20261004073419.4039011-1-4ncienth@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <cover.1790101179.git.ritesh.list@gmail.com> <pkxwkffc.ritesh.list@gmail.com>
- <asAydfQLscU6rXQL@google.com> <h5j3jn86.ritesh.list@gmail.com>
- <asMN_TAX-1_J3jiP@google.com> <fqykkc3j.ritesh.list@gmail.com>
-Message-ID: <asM-1-ptu1b_URqR@google.com>
-Subject: Re: [PATCH v5 0/9] KVM: selftests: add powerpc support
-From: Sean Christopherson <seanjc@google.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, 
-	Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 
-On Mon, Oct 05, 2026, Ritesh Harjani wrote:
- > I think I'd even prefer to take on an #ifdef (to scope it to PPC if necessary)
-> > over open coding TEST_GEN_PROGS_COMMON.
-> 
-> Sure, so will add this check for kvm_create_max_vcpus()
-> 
-> #ifdef __powerpc64__
->        TEST_REQUIRE(!is_pseries_lpar());
-> #endif 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Or maybe to avoid too many ifdefs, something like:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-  static inline kvm_is_ppc_pseries_lpar(void)
-  {
-          /*
-           * Comment about how this setup has unique limitations and isn't
-           * compatible with tests that create many VMs and/or vCPUs.
-           */
-  #ifdef __powerpc64___
-          return !access("/proc/device-tree/rtas/ibm,hypertas-functions", F_OK);
-  #else
-          return false;
-  #endif
-  }
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Probably redundant naming to some extent, but having "ppc" in there would make it
-super obvious it's a PPC-only check.
- 
-> Actually I was thinking we may as well use the same check for now for
-> skipping hardware_disable_test on pseries. Because there also we suffer
-> from the same resource limitation. Let me know if that sounds ok to you
-> or do you want us to skip kvm_create_max_vcpus() only for now, since it
-> is part of TEST_GEN_PROGS_COMMON?
-> 
-> > LoongArch open coded its full test list
-> > for some reason, and in less than a year it has started missing out on new common
-> > tests.
-> >
-> >> (& maybe few others like vm_types_test) from that in v6.
-> >
-> > What's wrong with VM types test?  That one really should Just Work on all
-> > architectures.  It doesn't run on LoongArch, but I assume that's
-> > oversight?
-> 
-> So the test doesn't fail (it gets skipped). However this cap
-> "KVM_CAP_VM_TYPES" is only supported on x86 and since I was planning to
-> open code all common tests, hence I thought I may as well not add this
-> in the first place.
+- [Medium] The Fixes: tag names the wrong commit.
+- [Low] The commit message presents the new `payload_len > len -
+  sizeof(hdr)` check in vhost_vsock_alloc_skb() (drivers/vhost/vsock.c)…
 
-/facepalm
+--
 
-I completely forgot KVM_CAP_VM_TYPES is x86-only.  FWIW, I'd still say use
-TEST_GEN_PROGS_COMMON if possible.
+vhost/vsock: size receive SKBs from declared payload
 
-> BTW, based on this discussion, I think I will re-arrange the patches in
-> the following order and send a v7. (The Makefile.kvm changes will only
-> get added after the main patch which adds powerpc support).
-> 
-> cfabdb049bd7 2026-10-05 [Ritesh Harjani (IBM)] (HEAD -> feat-ppc-kvm-selftests-new-sean-v7) KVM: selftests: Skip hardware_disable_test on pseries
-> 2b51fab87b95 2026-09-22 [Ritesh Harjani (IBM)] KVM: PPC: selftests: Skip idle-page check when running nested on pseries LPAR
-> f5d1de1be4e9 2026-10-05 [Ritesh Harjani (IBM)] KVM: selftests: Skip kvm_create_max_vcpus on pseries
-> e45ba15cea25 2026-10-03 [Ritesh Harjani (IBM)] KVM: PPC: selftests: Add helper for checking if running nested
+This patch changes vhost_vsock_alloc_skb() to copy the virtio_vsock_hdr
+into a stack object and validate hdr.len before allocating. The skb is
+then sized from the declared payload plus the header, not from the total
+guest descriptor length. A guest can then no longer pin descriptor-sized
+allocations by sending zero or short payloads.
 
-Doesn't this one need to come first?  Or is this different than pseries LPAR?
+> Use payload_len > len - sizeof(hdr) for validation.  This avoids addition
+> overflow on 32-bit hosts and ensures payload_len fits the subsequent
+> int-length copy path.
 
-> 178c9bca0e20 2026-09-22 [Nicholas Piggin] KVM: PPC: selftests: add support for powerpc
-> 22320662e776 2026-09-11 [Ritesh Harjani (IBM)] KVM: selftests: Fix kvm_create_max_vcpus test for powerpc
+[Severity: Low]
+Should this paragraph say that the old check already overflowed on
+32-bit hosts? This patch removes the following check from
+vhost_vsock_alloc_skb():
 
-This should come before "add support for powerpc", and should have a shortlog
-more like "Skip max vCPU IDs test on PPC with <whatever is a good description of the SMT cap>"
+	if (payload_len + sizeof(*hdr) > len) {
 
-> 11b5712b213b 2026-09-22 [Ritesh Harjani (IBM)] KVM: selftests: Move memslot_perf_test off the 256M ELF load address
-> 63c900860b5f 2026-09-22 [Ritesh Harjani (IBM)] KVM: selftests: Don't limit LE dirty-bitmap bitops to s390x
-> 
-> 
-> Please let me know if this sounds ok?
+That check came from 10a886aaed29 ("vhost/vsock: Avoid allocating
+arbitrarily-sized SKBs"), which is Cc: stable. That commit dropped the
+earlier payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE short-circuit and
+kept only the addition.
 
-Ya, works for me!
+VHOST_VSOCK has no 64BIT dependency, so size_t can be 32 bits. If the
+guest sets hdr.len anywhere in [0xFFFFFFD4, 0xFFFFFFFF], then
+payload_len + 44 wraps to a value in [0, 43]. That is below len, so the
+bad length passes the check.
+
+In mainline this seems harmless. virtio_vsock_skb_put() sets skb->len to
+about 4 GiB. skb_copy_datagram_from_iter() then gets a negative int
+length, copies nothing and returns -EFAULT, and the skb is freed.
+
+Trees that have 10a886aaed29 but not ab9aa2f3afc2 still copy the payload
+with:
+
+	copy_from_iter(skb->data, payload_len, &iov_iter)
+
+Wouldn't check_copy_size() hit WARN_ON_ONCE(bytes > INT_MAX) there? On
+32-bit hosts that would be a WARN the guest can trigger, and a host
+panic with panic_on_warn.
+
+This patch fixes that as a side effect. Would it be worth saying so in
+the changelog and adding a Fixes: tag for 10a886aaed29?
+
+> Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
+
+[Severity: Medium]
+Is this the right commit for the Fixes: tag? vhost_vsock_alloc_skb()
+sizes the skb from the descriptor length:
+
+	len = iov_length(vq->iov, out);
+	...
+	/* len contains both payload and hdr */
+	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+
+This sizing seems to date from 71dc9ec9ac7d ("virtio/vsock: replace
+virtio_vsock_pkt with sk_buff"). Before that commit,
+vhost_vsock_alloc_pkt() sized the buffer from the header:
+
+	pkt->buf = kvmalloc(pkt->len, GFP_KERNEL);
+
+Here pkt->len came from hdr.len, which is the behaviour this patch
+restores.
+
+ab9aa2f3afc2 only switched the call from virtio_vsock_alloc_linear_skb(len)
+to virtio_vsock_alloc_skb(len) so that large sizes could be nonlinear. It
+did not change how the size is chosen.
+
+ab9aa2f3afc2 isn't tagged for stable. Trees with 71dc9ec9ac7d and
+10a886aaed29 but not ab9aa2f3afc2 would still have the problem in its
+linear form. That probably includes 6.6.y and 6.12.y.
+
+In those trees, a 64 KiB descriptor with a short payload allocates and
+keeps a kmalloc head of about 128 KiB. Payloads above GOOD_COPY_LEN (128
+bytes) skip the coalescing path in virtio_transport_recv_enqueue(). The
+whole head stays queued, but only the payload bytes count against
+buf_alloc. The changelog itself says "Linear skbs retain their full head",
+which covers this case.
+
+10a886aaed29 already uses Fixes: 71dc9ec9ac7d for the descriptor-sized
+allocation. Should this patch use the same tag, so the stable trees pick
+it up?
+
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004073419.4039011-1-4ncienth%40gmail.com
