@@ -1,195 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F8A4B66E2;
-	Mon,  5 Oct 2026 19:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD71F3033DE
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 19:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791229135; cv=none; b=S5bA3iFRBZLSdJmetmAP0JlxOQJtWiB0xpGPHC5RoBolTMgkVK5z5J3CRCfkcuo8DwzVz/2hUY1J+hoU3v1Itvg+BdlM5IWW9NARF9DUUe+cz7kwVVUve2c3OT1wROiLvC600hILbwSFsbRqP+gD9kNe9WWcWmU5DDwwW9yb99k=
+	t=1791229347; cv=none; b=FdAijkAhNnfY36TJvXWREX1DAJJCwT0sFhMYjIgipQyOUTMFWV2kM7wIncwHXWkKXkST0GPug5EoLjHxIEMbxGdaP3n6XMxm5IADFIVJa0U3cWyaq4QeBBS6pa496XPt9OKoD21v2dvWZMaWDmSvpirQgg+8tHehAfOgn3wEwEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791229135; c=relaxed/simple;
-	bh=skySoc3cmaE4L4KdgTFns/U0q7fcKjW4WK8GaQt8sMk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oA+tHnx2/kfWy5VvlZE0LYC2EdbOiOPk4MB8ojkbGWUueQP/9MEq3CVqNt1sWR1XHU1sGo7CDWUVdaukwLhWyKsmo0nGuoJcmXqUMAwpiAToZqRgng3sW1XSA+9JA2Fa5smhRnABhS+jF/YO8LqfDAOIt6RJDJtfPpAYlaxpq/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHGkoWRH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791229347; c=relaxed/simple;
+	bh=cE6vuGo9Qj/m7nI2WQ4MfKbqxo6/AEANgrmzqFQGJ7Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PmUwLJVzgProuoOcTT33Dz+XnusBQAj5id2ydwgNiPmg7fqUPLUxbfoUF27Xxtih5qHD1go4ePaNWsq80zXfgfeT0xA5ClEh0o6KxgfYrMm1ne5bEq6VdCgyZaA5sH423WDcL8s78xXdDG/6O5qn9Np6qmxj7aibyf7t6SuMjQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=b+AEmUK5; arc=none smtp.client-ip=52.12.53.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eHGkoWRH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50251F000FF;
-	Mon,  5 Oct 2026 19:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791229133;
-	bh=CQV4LqLL4C2laXbdTlS0xjO5svs3sFvzrNnY3x3xYik=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eHGkoWRHZPI7JoApngMpDsn235ukDhvZyKnvqHkeGZBf8/l3GCKN1Y3UkM2cd9tIt
-	 aoL1fapL5gllTG56SRw54p44x9+dQ0x7vxNu7zuOCCsliB4YJoKpeW40zhy3Idd1MH
-	 TrLfxCbIOsFPUyYriqg1A/7GacnPgyT2wQW7xvQeLRwkdlZEdkAwXC9wxJYjTF78p5
-	 kBZzik6pC/EA8xb9Ljashn8iZsGFkUCOPDRznka7eBSrCIVjVQ/2MZ4UTI717/XDLZ
-	 ccp9yVH8G3R2+68Gqv60OCzYPQdf3xPLkPJDGrUmTSu283gQe8ghP+ENz3pknLkgyB
-	 sn24BWoRXVNUA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] KVM: x86: hyper-v: Implement
- HvCallRestorePartitionTime
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mushahid Hussain" <hmushi@amazon.co.uk>
-Cc: kvm@vger.kernel.org, linux-hyperv@vger.kernel.org
-In-Reply-To: <20261005192431.87317-4-hmushi@amazon.co.uk>
-References: <20261005192431.87317-1-hmushi@amazon.co.uk>
- <20261005192431.87317-4-hmushi@amazon.co.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 05 Oct 2026 19:38:53 +0000
-Message-Id: <20261005193853.A50251F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="b+AEmUK5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1791229345; x=1822765345;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=X05L+cGOWHitc8iZGub1E+W5ABl0okO8X1iAwH89lXc=;
+  b=b+AEmUK5nqK68XYYKBZO0Z9ltLH15fFlmnLDj7OhmIjx9Tk2w5j5QjmP
+   BIvLf0JImgYSTC1rTg249nLTDU55DWGXdzg2Y+sA8CLeV78HoQTbOiTLO
+   945I5kgfbmVLIfi2eadkn3CEjvnV8P8JQUKqrNDrkAolf1XyzAw2WPS9f
+   cEC0GFqNPOjNsEVEU2uDbyXMyjGHkX+aCf96ZxokBLPWTyI6wAg/dVhhk
+   /zb+ExCQvt6fV8ks6WmBx+1YxyuOC70ZSC9bgwEmKj5Oj1d7xZGH01QQ9
+   xYXBlAe4076vRHTyix/A9bs0kw9bjrQxHriDUrrj40thDD9X27/+fkFUB
+   g==;
+X-CSE-ConnectionGUID: tnKiq6T9Rba+Td+1SEdyGA==
+X-CSE-MsgGUID: kBikmnN3T4yySf42yRod3A==
+X-IronPort-AV: E=Sophos;i="6.27,142,1787011200"; 
+   d="scan'208";a="30336888"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 19:42:22 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:20514]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.141:2525] with esmtp (Farcaster)
+ id 539ad01c-c153-41d9-9df7-1667452e5eeb; Mon, 5 Oct 2026 19:42:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 539ad01c-c153-41d9-9df7-1667452e5eeb
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Mon, 5 Oct 2026 19:42:22 +0000
+Received: from dev-dsk-hmushi-1a-0c348132.eu-west-1.amazon.com
+ (172.19.124.218) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49; Mon, 5 Oct 2026
+ 19:42:20 +0000
+From: Mushahid Hussain <hmushi@amazon.co.uk>
+To: <qemu-devel@nongnu.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Marcelo Tosatti
+	<mtosatti@redhat.com>, <kvm@vger.kernel.org>, Vitaly Kuznetsov
+	<vkuznets@redhat.com>, <nh-open-source@amazon.com>, <mushi.shar@gmail.com>
+Subject: [PATCH] i386: Hyper-V partition time restore feature
+Date: Mon, 5 Oct 2026 19:40:57 +0000
+Message-ID: <20261005194057.10910-1-hmushi@amazon.co.uk>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D035UWA004.ant.amazon.com (10.13.139.109) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] x86/kvm: Race condition in kvm_vcpu_apply_tsc_generation() causes =
-state corruption
-- [High] x86/kvm: Pre-mature matched TSC count increment permits double-cou=
-nting
-- [Medium] x86/kvm: VM-wide cur_tsc_offset overwritten in per-vCPU loop
---
+A nested Hyper-V that sees the frequency MSRs lets L0 own the
+partition reference time. After a resume from hibernation it issues
+HvCallRestorePartitionTime with the TSC and the reference counter it
+saved. Hyper-V offers hibernation to its root partition only when L0
+advertises CPUID 0x40000004 EAX bit 20 (RestoreTimeOnResume).
 
-commit 3619ce01761243ff0d6db55e73b6eefb9f3cc10b
-Author: Mushahid Hussain <hmushi@amazon.co.uk>
-Subject: KVM: x86: hyper-v: Implement HvCallRestorePartitionTime
+Add 'hv-restore-time-on-resume' for the bit. It requires
+'hv-frequencies'. KVM reports the bit in KVM_GET_SUPPORTED_HV_CPUID
+when it handles the hypercall.
 
-A nested Hyper-V guest can resume from hibernation and use
-HvCallRestorePartitionTime to sync its TSC and reference counter. This comm=
-it
-implements handling for the hypercall in KVM, stepping both clocks in a
-single update. It updates kvm_set_clock_and_tsc() and issues requests to
-write the TSC offset for each vCPU.
+KVM side: https://lore.kernel.org/kvm/20261005192431.87317-4-hmushi@amazon.co.uk/
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 19666a80240a5..c0865468b02e7 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
+The TLFS marks the bit as reserved. The name comes from Microsoft's
+hvdef crate.
 
-[ ... ]
+Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
+---
+ docs/system/i386/hyperv.rst    | 9 +++++++++
+ target/i386/cpu.c              | 2 ++
+ target/i386/cpu.h              | 1 +
+ target/i386/kvm/hyperv-proto.h | 1 +
+ target/i386/kvm/kvm.c          | 8 ++++++++
+ 5 files changed, 21 insertions(+)
 
-> @@ -4354,13 +4354,85 @@ static int kvm_vm_ioctl_get_clock(struct kvm *kvm=
-, void __user *argp)
->  	return 0;
->  }
-> =20
-> -static void __kvm_set_clock(struct kvm *kvm, struct kvm_clock_data *data)
-> +/* Must precede pvclock_update_vm_gtod_copy(), which reads the matched c=
-ount. */
-> +static void kvm_open_tsc_generation(struct kvm *kvm, u64 guest_tsc)
-> +{
-> +	struct kvm_arch *ka =3D &kvm->arch;
-> +	struct kvm_vcpu *vcpu;
-> +	unsigned long i;
-> +
-> +	lockdep_assert_held(&ka->tsc_write_lock);
-> +
-> +	ka->cur_tsc_generation++;
-> +	ka->cur_tsc_write =3D guest_tsc;
-> +	ka->last_tsc_write =3D guest_tsc;
-> +	ka->nr_vcpus_matched_tsc =3D atomic_read(&kvm->online_vcpus) - 1;
+diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
+index e1babffb0f..2224dc2111 100644
+--- a/docs/system/i386/hyperv.rst
++++ b/docs/system/i386/hyperv.rst
+@@ -259,6 +259,15 @@ Existing enlightenments
+ 
+   Recommended: ``hv-evmcs`` (Intel)
+ 
++``hv-restore-time-on-resume``
++  The enlightenment is nested specific, it targets Hyper-V on KVM guests. When
++  enabled, Hyper-V lets L0 (KVM) own the partition reference time and issues
++  HvCallRestorePartitionTime after a resume from hibernation so that the TSC
++  and the reference counter continue from the values it saved. Hyper-V offers
++  hibernation to its root partition only when this enlightenment is present.
++
++  Requires: ``hv-frequencies``
++
+ Supplementary features
+ ----------------------
+ 
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index f3bc6911c1..9fa14f6fab 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -10769,6 +10769,8 @@ static const Property x86_cpu_properties[] = {
+                       HYPERV_FEAT_TLBFLUSH_EXT, 0),
+     DEFINE_PROP_BIT64("hv-tlbflush-direct", X86CPU, hyperv_features,
+                       HYPERV_FEAT_TLBFLUSH_DIRECT, 0),
++    DEFINE_PROP_BIT64("hv-restore-time-on-resume", X86CPU, hyperv_features,
++                      HYPERV_FEAT_RESTORE_TIME_ON_RESUME, 0),
+     DEFINE_PROP_ON_OFF_AUTO("hv-no-nonarch-coresharing", X86CPU,
+                             hyperv_no_nonarch_cs, ON_OFF_AUTO_OFF),
+ #ifdef CONFIG_SYNDBG
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 786957fadd..dab559a3d8 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1487,6 +1487,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define HYPERV_FEAT_XMM_INPUT           18
+ #define HYPERV_FEAT_TLBFLUSH_EXT        19
+ #define HYPERV_FEAT_TLBFLUSH_DIRECT     20
++#define HYPERV_FEAT_RESTORE_TIME_ON_RESUME 21
+ 
+ #ifndef HYPERV_SPINLOCK_NEVER_NOTIFY
+ #define HYPERV_SPINLOCK_NEVER_NOTIFY             0xFFFFFFFF
+diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
+index a9f056f2f3..e420827a68 100644
+--- a/target/i386/kvm/hyperv-proto.h
++++ b/target/i386/kvm/hyperv-proto.h
+@@ -81,6 +81,7 @@
+ #define HV_EX_PROCESSOR_MASKS_RECOMMENDED   (1u << 11)
+ #define HV_ENLIGHTENED_VMCS_RECOMMENDED     (1u << 14)
+ #define HV_NO_NONARCH_CORESHARING           (1u << 18)
++#define HV_RESTORE_TIME_ON_RESUME           (1u << 20)
+ 
+ /*
+  * HV_CPUID_SYNDBG_PLATFORM_CAPABILITIES.EAX bits
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index a72b6e6b74..1b16af7cd4 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1137,6 +1137,14 @@ static struct {
+         },
+         .dependencies = BIT(HYPERV_FEAT_VAPIC)
+     },
++    [HYPERV_FEAT_RESTORE_TIME_ON_RESUME] = {
++        .desc = "partition time restore (hv-restore-time-on-resume)",
++        .flags = {
++            {.func = HV_CPUID_ENLIGHTMENT_INFO, .reg = R_EAX,
++             .bits = HV_RESTORE_TIME_ON_RESUME}
++        },
++        .dependencies = BIT(HYPERV_FEAT_FREQUENCIES)
++    },
+ };
+ 
+ static struct kvm_cpuid2 *try_get_hv_cpuid(CPUState *cs, int max,
+-- 
+2.47.3
 
-[Severity: High]
-Is it safe to pre-increment the matched count globally before the per-vCPU
-updates complete?
-
-If a vCPU executes kvm_synchronize_tsc() before processing the asynchronous
-KVM_REQ_WRITE_TSC_OFFSET, it might see a stale generation, match it, and
-increment ka->nr_vcpus_matched_tsc.
-
-Since the count is pre-incremented here, double-counting could cause
-the total to reach or exceed online_vcpus, permanently breaking the KVM
-masterclock validation (which checks if matched_tsc + 1 =3D=3D online_vcpus=
-).
-
-> +
-> +	kvm_for_each_vcpu(i, vcpu, kvm) {
-> +		if (vcpu->arch.guest_tsc_protected)
-> +			continue;
-> +		ka->last_tsc_khz =3D vcpu->arch.virtual_tsc_khz;
-> +		ka->last_tsc_scaling_ratio =3D vcpu->arch.l1_tsc_scaling_ratio;
-> +		break;
-> +	}
-> +}
-> +
-> +/* Every vCPU reads @guest_tsc at host TSC @host_tsc. */
-> +static void kvm_set_tsc_generation(struct kvm *kvm, u64 host_tsc,
-> +				   u64 guest_tsc, u64 ns)
-> +{
-> +	struct kvm_arch *ka =3D &kvm->arch;
-> +	struct kvm_vcpu *vcpu;
-> +	unsigned long i;
-> +
-> +	lockdep_assert_held(&ka->tsc_write_lock);
-> +
-> +	ka->cur_tsc_nsec =3D ns;
-> +	ka->last_tsc_nsec =3D ns;
-> +	ka->restore_host_tsc =3D host_tsc;
-> +	ka->restore_guest_tsc =3D guest_tsc;
-> +	ka->restore_tsc_nsec =3D ns;
-> +
-> +	kvm_for_each_vcpu(i, vcpu, kvm) {
-> +		if (vcpu->arch.guest_tsc_protected)
-> +			continue;
-> +
-> +		ka->cur_tsc_offset =3D kvm_compute_l1_tsc_offset(vcpu, host_tsc,
-> +							       guest_tsc);
-> +		ka->last_tsc_offset =3D ka->cur_tsc_offset;
-
-[Severity: Medium]
-Could this loop repeatedly overwrite the VM-wide offset, leaving it configu=
-red
-for the last vCPU?
-
-If vCPUs have different TSC scaling ratios (which can be set via
-KVM_SET_TSC_KHZ), the reference frequency is bound to the first valid vCPU =
-in
-kvm_open_tsc_generation() above, while the offset here ends up bound to the
-last vCPU, breaking consistency.
-
-> +		kvm_make_request(KVM_REQ_WRITE_TSC_OFFSET, vcpu);
-> +	}
-> +}
-> +
-> +/* Runs on the vCPU; only the owner writes its TSC offset. */
-> +static void kvm_vcpu_apply_tsc_generation(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_arch *ka =3D &vcpu->kvm->arch;
-> +	unsigned long flags;
-> +	u64 offset;
-> +
-> +	raw_spin_lock_irqsave(&ka->tsc_write_lock, flags);
-> +	offset =3D kvm_compute_l1_tsc_offset(vcpu, ka->restore_host_tsc,
-> +					   ka->restore_guest_tsc);
-> +	vcpu->arch.last_guest_tsc =3D ka->restore_guest_tsc;
-> +	vcpu->arch.this_tsc_generation =3D ka->cur_tsc_generation;
-
-[Severity: High]
-Could a race condition corrupt state tracking here?
-
-If a concurrent write to MSR_IA32_TSC bumps ka->cur_tsc_generation while
-KVM_REQ_WRITE_TSC_OFFSET is queued, the vCPU processing the request will co=
-py
-the newer generation counter here while applying the stale ka->restore_*
-offset data.
-
-This would leave the vCPU claiming synchronization with the new generation
-while actually holding old data, breaking KVM masterclock and TSC
-synchronization.
-
-> +	vcpu->arch.this_tsc_nsec =3D ka->restore_tsc_nsec;
-> +	vcpu->arch.this_tsc_write =3D ka->restore_guest_tsc;
-> +	raw_spin_unlock_irqrestore(&ka->tsc_write_lock, flags);
-> +
-> +	kvm_vcpu_write_tsc_offset(vcpu, offset);
-> +}
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261005192431.8731=
-7-1-hmushi@amazon.co.uk?part=3D3
