@@ -1,267 +1,209 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBE74C33EC;
-	Mon,  5 Oct 2026 15:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791213492; cv=none; b=dpbUw0fn+RWsD87Cc/apg8Gyj323CMvhHQWhvqV/XFXtcO437bHXeYL06RyXFJcsSGY/2+dRjgJ8GH4iYrgEqqDlPqcNhrdmVwkOQB0oORMd+kI/Vj1Ywqz/f70siP4+mNldE7ezfZWlJ/ldMeHFzDE5LglhB1LYrE9bKwTrTdM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791213492; c=relaxed/simple;
-	bh=Jm4aLG3gcpRIf1LQ2iNa975BPCXs2HJoJaAFOiE4ABo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FXjkX07dxpRsJzLjwXGvHoCXFnYHXjR/sIl+KlGOox7Bois3C9+358gYUspflJR+JoGuJnqa2ctP9MFfjEFzCH6/5UzVjTW0oGeOghWweKdWINBjtEm5yvZjzkhLbx7Fcghj6xsrnuEWsU59DMABYSOQB5Z6dOtKCg2qTEeoNL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=E4oJPv/b; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348B04C33DA
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 15:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791213586; cv=pass; b=odjFYsdEBBzzmSz8kkP4C6SxGaANKm1K3W1exxldwS71W2UW7NTTnowpjV1yzzW0Rk/HZuxMNRe687vL+oq6NldATzhk2VrIztHtN3tcy0xoxXeog6EM4VYTQIBikt+kGuW8Y8owVQ3kcfIG+PVocw67+XVAEi2KqZm4VJqJJRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791213586; c=relaxed/simple;
+	bh=UIl4kdhOZ2E8Ywuw71YkjmtzARY2f4WIsxfjGE5sW2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s4SHFkQn192yzKd6aCrXDz+gmhpWwgmwqBpli3onhew72K20CfgubV2fjeUovu9NOBjB3iq8wLOHZycbIwNJ2RW30oBcS9t5jr7HvZ3DvZgc55VwC+4GGVqBVSl8v2STjulJaqESupa2ursYss+Fx0fpPvSk0LE8eH40qYT0QQs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=DB3qFyiP; arc=pass smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="E4oJPv/b"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695EZcYe756380;
-	Mon, 5 Oct 2026 15:18:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+lZqYL
-	im6GgdQX3w1CPozjK91hBLHlv5RTBKE+yHCus=; b=E4oJPv/bhShauXWNJmNigR
-	3npwBq9xAuWOgWck/xXpVn2oIocW/q2FC47mp90vt+PGb2NFIN4z8xdfbKXjIEQ9
-	hTjY2C43cH/OlA2nJHu6At5eXEquBpiLD3/x4MlJvEfqNMepA37xapvhroo1FLAz
-	U1E0l8AyBhAt7ITuo1d0VX+T3VhwKabtRwEpTbLNdKMlHLm+iHLEOn89KpeDP7Qv
-	T0kkRM7dZAkT5+n4SRCuJ0+qD+iUVUqM3xlMnBTCUC4TcVAA2nxCs5h2vVrVw7Fl
-	ru9lJ1OtjwBRBfcBJN2F9DKAH5P4SlVrQnY+nBBCSXhaXGb3tUgCJVthxaLtU2lw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4jjmjn-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 15:18:04 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695EWUoG3092275;
-	Mon, 5 Oct 2026 15:18:04 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3dhgnwry-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 15:18:04 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695FI2Rg7799556
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 15:18:03 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E316F5805A;
-	Mon,  5 Oct 2026 15:18:02 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 504E158054;
-	Mon,  5 Oct 2026 15:18:01 +0000 (GMT)
-Received: from [9.61.34.243] (unknown [9.61.34.243])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 15:18:01 +0000 (GMT)
-Message-ID: <03a49243-cf6c-4aae-9a94-0deb497e869d@linux.ibm.com>
-Date: Mon, 5 Oct 2026 11:18:00 -0400
+	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="DB3qFyiP"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8aca68653e3so4995437b3.3
+        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 08:19:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791213582; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZlBx2wvq2nlRFikOYfHJowdVN+9zzlMrNAE7yywt4QTVihuuvzk0IjVsjynIUi94IK
+         WgPKOu/Zqi++v8yf15SVWUA07hF91bN0QEQcBXdN+vb5Zul5Fr/QxLYNpx4tyLmhbuxo
+         Jh/Dtzc9ViaWdJs0oBbHttHJqmebmXbLC3usZ+0F8Q0tsF0BgyQ38A6PunpJR2RVByaM
+         VimRujx8TbTYMAgOJ8ddxvNqqlZ+tLv+Ik1XU1TcHEque5hkVwpmlhn7yqy1eWkxccYr
+         trlzcV9ysxoPP3LACTYvGbiUBUPem+nYbOIx7tvvtzyQ+lrQ03qGKkpUue8FVdnvH+A8
+         FuFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=T+dMDT3scTIxkiT9pgs5QLVQ4RLiEtpfcAYTaBoUr5g=;
+        fh=W6HxQOwiyR4LU1rnjVgZTG3Ev4iMTTum5Ko9eRehUPo=;
+        b=RFknAyZ8kqViyzmbTXujFItlUmRxuFXJlcjS0SqwwMIWcaocIdnAHGacjgOiEfqOH4
+         SiCGHWFKwpUfVvLuwr+SnXSAqpEGwXSVa0JL+FcFfZDYEnrG1ZuQGvgFJy7jBTRdts6d
+         t09H+tSDfozGrHvJphFyvfSFWPi1IRL3G8csaV0BX8QypdFY8mx0CAUd++z74zjFUBCz
+         maf/87mIG4J9lNeC0wGv5z9soDe+eLKGuwxd3OQjiw9sepfYfxcH4ym47fnqkS5Rq+bn
+         At85508YOLqTVZn/y3EsZVVFYpp8V6qUJ567zeekG3txHZCnG8vY5+dccafc5ykgKb9T
+         m7jw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bitbyteword.org; s=google; t=1791213582; x=1791818382; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T+dMDT3scTIxkiT9pgs5QLVQ4RLiEtpfcAYTaBoUr5g=;
+        b=DB3qFyiPRuQSc6yWtUaXp0WtMEZp1VVcP29Bf/lhUeG9CvIm+9/MrilJAUXa7re+JV
+         eJDsiYUVkiVYmb8nZv80Ig2gTke3bksKtLFzaflVx+1F5EuJ5AdidZfAmnZIR9QT50o5
+         8+1LOJInDtgHVBoclRjjpX4SpzCRIsGvUZA7vgdaNNut0aRP92oyn1eefhvEVx82mf3D
+         vc/6xF5VUclbtfw0f9bAVkG0a4572h2fqNIcNxTOecHqdyhvaOqjjfRdGB5/51MrD+EM
+         dHeq6SI01JKq5P4bkTmJYw6COVzgAHlQ/UwdAC0r/DYqlySJfdgoHZLAOtOt3av6AVbx
+         jHCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791213582; x=1791818382;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T+dMDT3scTIxkiT9pgs5QLVQ4RLiEtpfcAYTaBoUr5g=;
+        b=M70yCFN6MCi/KtMpXY//KBm072Xm3oQ54nKsgqkln4HnWRci78AzIzDpwurCQdU6HD
+         A/CzhfLvPLoL3yboUkjike6R6TeEfE4ony/sBkusbT3JzDo8BOqHOdft1LQxFDpigwTs
+         6bfVksDwGhk3M4DPZ2PNwyGCRunTaQeyGbSYbLDrVOKVi5mezRg4xK75kzc1qFwZijwL
+         MWwZ16vpv0znDxqM+HXyjcd/NURUuaO8tlzBvosA3OuKaqES3rVo2/P+qHT8qFcN2nn8
+         uBrBEmTUQ7YpBPlCJQluY5owakNFpErGx/lOPlhBZZAmLg5ee3bBa1NoMn7VZPCIVMZu
+         0V3g==
+X-Forwarded-Encrypted: i=1; AKwUvBxf7+VgOAGEZFfkwBzgHiI/hKYodsnO3G3CjLaEdIhUGiZOFA64/qb8Mc5rgHwpo/xrICo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIfVXFTIBgQ1nBXp4wn47/iCFq9n5O5jXOK6AqLTGYc8oOylJ6B
+	OVTCQMEasXJw/PZrAzguRR9xxXmnV6NyF8xOC7x0DFkE2YA89e6rs+FNM3D2TLhsSOiSZUFF84Y
+	xKxyBdOr8Ecyka/VXooiMdtkdSuUd2x0Io6sHJctIQQ==
+X-Gm-Gg: AYBFou0JU3Yhwyx5nfLSGC34L8Ynyw3cRLEEd/djFltymn6CGBJTtgs2Adzf/BLq+Fr
+	0WXn5ok8DUcwa1j4cFhIy/qFoQL1ua6GLMdcXxtE3h/7rObLpcuH2uof42tEbV5/Xyh1O9owUeo
+	6NwhV2ZnXnLTo0lqi6DHpxbAjG3qcwPZeKTxffipkWmjVpSQsK5H0HnK2ZJzHBhzKHfosWd2fC1
+	ToNOy/Chz+8uEI2Ol6Ydxu0Bw4aDT0+7VpP9OLi65Gz1708iC5ISjZ3bEL5raZKkNIb69Ni5b5i
+	on58aZ4s/HaEJ4a5cgCG8tLqPa6rdwafkR0YIRPyx/U5duZMadS5+Q==
+X-Received: by 2002:a05:690c:e0c6:20b0:88e:edf8:e375 with SMTP id
+ 00721157ae682-8ae948c7652mr24080357b3.5.1791213581979; Mon, 05 Oct 2026
+ 08:19:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 02/15] s390/vfio-ap: Data structures for facilitating
- vfio device migration
-To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-3-akrowiak@linux.ibm.com>
- <5a18d610-d943-4bc5-bb50-0a4ff037f6b3@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <5a18d610-d943-4bc5-bb50-0a4ff037f6b3@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7b7hq0TtGXU9yGNmWfD4JWb6Z54a6W1O
-X-Proofpoint-GUID: 7b7hq0TtGXU9yGNmWfD4JWb6Z54a6W1O
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA1OSBTYWx0ZWRfX11OiremwUruS
- 4AoQJJiXznhknIgHNTzSsYK5J9wt/55pQ2M8fVbaUyPiouO8I3oJnmo4UdrUB6HSicngAM/tYwm
- CiyFJEX9w+purvccbnwjDbvEu9Eyrmw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA1OSBTYWx0ZWRfX20CXwd3206eE
- PUx7p5GB52qiaQrwa4R+QOBFzwZcBvhyhyKgE7Wt4uOMBmSr+avxTpiy+ajw9hubal5RTZ7uYjd
- 0HNaHg0UtiN0O2+5E+zSI/w1m8OiPLiY61syFflrlGzHwKv4gA3eiPUmPXc3iM4yWEAP9UcmXds
- sXVQ0zA5TTdOWj9BKGzJgmuomiBpRIYhw4NPxuer8OsYY97W1i+3rtWY78w/y6PgvY01RR0iau4
- OEyMxLBQ+N2NbXHVoKavJJ4UWZYrls8dpZx5WznIpAR7kMjoGFtZqQ8XSD5bCIosKYkU/oi/2JM
- YH366faj+Iv68TsSX2z2VEoNMveASU+pkqrGqEqj3dU29MXnzWAjF4INREFv5GVmGO7/RXyVw1/
- plwiXVC1r7WDpPv9Xh4BK0B5Yr6xdHFq5MVpBAGZKuElacXSi79RAsIPPJMnsU8l8snbMMF+vRj
- DLcJP8zNR9Bg2aEKNdw==
-X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac3bfac cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=7DrxliqlWOFhgiiUTFoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_04,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015
- spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050059
+References: <e61df396-356f-4ef2-9c3a-db3c05cb5c52@linux.alibaba.com>
+ <asA7ixFlhNJpANoR@google.com> <CABk29Nu5rnd3wZq8XR5Q3BA2dQzT68hHSv1JihxT3V6GTSyRHw@mail.gmail.com>
+In-Reply-To: <CABk29Nu5rnd3wZq8XR5Q3BA2dQzT68hHSv1JihxT3V6GTSyRHw@mail.gmail.com>
+From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
+Date: Mon, 5 Oct 2026 17:19:29 +0200
+X-Gm-Features: AclHuK-zIbzN8D_HOP9FBWUlLNlIQG4wLIZCCdCvUIczbMj8moj0m1yI42dbwwg
+Message-ID: <CAO7JXPiBZ5xQp1P9taEe3Qpy_pLDCzXgSWtEMbbHNvya93wi+Q@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/kvm: introduce pv idle time
+To: Josh Don <joshdon@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, He Rongguang <herongguang@linux.alibaba.com>, 
+	pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, vkuznets@redhat.com, 
+	geert@linux-m68k.org, sammiee5311@gmail.com, lirongqing@baidu.com, 
+	schuster.simon@siemens-energy.com, kai.huang@intel.com, 
+	shannon.zhao@linux.alibaba.com, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On 8/10/26 9:45 AM, Jason J. Herne wrote:
+On Mon, Oct 5, 2026 at 12:20=E2=80=AFAM Josh Don <joshdon@google.com> wrote=
+:
 >
+> On Sat, Oct 3, 2026 at 1:17=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+> >
+> > +Vineeth and Josh
+> >
+> > On Tue, Jul 21, 2026, He Rongguang wrote:
+> > > Hi, this patch introduces a PV mechanism for guests to publish their
+> > > vCPU idle state and accumulated idle time to the host. This allows
+> > > the host to efficiently determine whether a vCPU is currently in its
+> > > idle loop, and knows vCPU idled for how long. QEMU patch and ARM64
+> > > support patch will follow in a subsequent series.
+> > >
+> > > The guest writes a GPA pointing to a struct kvm_idle_time via
+> > > MSR_KVM_PV_IDLE_TIME. When entering idle, the guest sets the flag fie=
+ld
+> > > to KVM_PV_VCPU_IDLE. On idle exit, it clears the flag back to
+> > > KVM_PV_VCPU_RUNNING and adds the elapsed idle duration to idle_accum
+> > > (in nanoseconds).
+> > >
+> > > The host can read the flag at any time through
+> > > kvm_arch_is_vcpu_pv_idle() to make better scheduling or resource
+> > > allocation decisions. For example, host may overcommit those vCPUs
+> > > which are mostly idle. An in-guest agent may be absent, or may not
+> > > report the status in time.
+> > >
+> > > The accumulated idle time provides visibility into per-vCPU usage for
+> > > monitoring purposes. An in-guest agent can report VM CPU usage, but
+> > > this PV mechanism allows the host to obtain guest CPU usage even when
+> > > no agent is installed. This is especially helpful when the hypervisor
+> > > enables exitless-hlt/mwait (for better guest performance) or when the
+> > > guest uses idle halt-polling, both of which make QEMU vCPU thread usa=
+ge
+> > > deviate from the actual in-guest vCPU usage.
+> > >
+> > > This feature is advertised via KVM_FEATURE_PV_IDLE_TIME in CPUID leaf
+> > > 0x40000001. Guests enable it by writing the appropriate MSR during
+> > > initialization, similar to the existing steal time mechanism.
+> > >
+> > > Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
+> > > ---
+> > > v2:
+> > > - grab kvm->srcu in kvm_arch_is_vcpu_pv_idle() before calling into
+> > >   kvm_read_guest_offset_cached().
+> > > - return KVM_MSR_RET_UNSUPPORTED instead of 1 in MSR handling if
+> > >   !guest_pv_has(feature).
+> > > - in set MSR handling, set vcpu->arch.pv_idle_time.msr_val after
+> > >   kvm_gfn_to_hva_cache_init() return success.
+> > > - in kvm_arch_is_vcpu_pv_idle(), remove ghc->memslot check, let
+> > >   kvm_read_guest_offset_cached() handle it.
+> > > - in kvm_arch_is_vcpu_pv_idle(), no need to use struct kvm_idle_time
+> > >   local variable, it is too big, just use __u64 flag is enough.
+> > > - remove some straightforward code comments.
+> > >
+> > > v1:
+> > > -
+> > > https://lore.kernel.org/kvm/36863cf7-61b9-4885-946d-1608179fcab4@linu=
+x.alibaba.com/T/#u
+> > > ---
+> > >  arch/x86/include/asm/kvm_host.h      |  7 +++
+> > >  arch/x86/include/asm/kvm_para.h      | 19 ++++++++
+> > >  arch/x86/include/uapi/asm/kvm_para.h | 24 ++++++++++
+> > >  arch/x86/kernel/kvm.c                | 68 ++++++++++++++++++++++++++=
++
+> > >  arch/x86/kernel/process.c            |  7 +++
+> > >  arch/x86/kvm/cpuid.c                 |  3 +-
+> > >  arch/x86/kvm/x86.c                   | 69 ++++++++++++++++++++++++++=
+++
+> > >  7 files changed, 196 insertions(+), 1 deletion(-)
+> >
+> > I really, really, reaaaaally don't want to take on any (more) PV schedu=
+ling ABI
+> > in KVM, if possible.  And I definitely don't want to take a bunch of on=
+e-off
+> > hooks, e.g. for idle tracking and then for something else a few months/=
+years
+> > later.
+> >
+> > Vineeth and Josh are working on PV scheduling via sched_ext and I assum=
+e additional
+> > communication channels.  I'm guessing idle state is one of the things t=
+hat'll get
+> > communicated to the host?  I don't know the exact status of their work,=
+ but they've
+> > got a slot in the sched_ext MC at LPC:
+> >
+> > https://lpc.events/event/20/contributions/2482
 >
-> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
->> Creates the data structures used to facilitate state transitions during
->> vfio device migration.
->>
->> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
->> ---
->>   drivers/s390/crypto/Makefile            |   2 +-
->>   drivers/s390/crypto/vfio_ap_migration.c | 113 ++++++++++++++++++++++++
->>   drivers/s390/crypto/vfio_ap_private.h   |   5 ++
->>   3 files changed, 119 insertions(+), 1 deletion(-)
->>   create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
->>
->> diff --git a/drivers/s390/crypto/Makefile b/drivers/s390/crypto/Makefile
->> index e83c6603c858..20f29184825a 100644
->> --- a/drivers/s390/crypto/Makefile
->> +++ b/drivers/s390/crypto/Makefile
->> @@ -34,5 +34,5 @@ pkey-uv-objs := pkey_uv.o
->>   obj-$(CONFIG_PKEY_UV) += pkey-uv.o
->>     # adjunct processor matrix
->> -vfio_ap-objs := vfio_ap_drv.o vfio_ap_ops.o
->> +vfio_ap-objs := vfio_ap_drv.o vfio_ap_ops.o vfio_ap_migration.o
->>   obj-$(CONFIG_VFIO_AP) += vfio_ap.o
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c 
->> b/drivers/s390/crypto/vfio_ap_migration.c
->> new file mode 100644
->> index 000000000000..374d3a67cb21
->> --- /dev/null
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
->> @@ -0,0 +1,113 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Drives vfio_ap mdev migration.
->> + *
->> + * Copyright IBM Corp. 2025
->> + */
->> +#include "vfio_ap_private.h"
->> +
->> +/* Magic number and version for the vfio_ap_config migration blob */
->> +#define VFIO_AP_MIG_MAGIC            0x76666170U  /* "vfap" */
->> +#define VFIO_AP_MIG_VERSION            1U
->> +
->> +/**
->> + * struct vfio_ap_migration_file
->> + *
->> + * This object is used for chunk processing of multiple reads and 
->> writes of
->> + * AP configuration information.
->> + *
->> + * @filp:    file stream used to read or write AP configuration data
->> + * @ap_config:    object used to store AP configuration data between 
->> read or write
->> + *        calls
->> + * @config_sz:    the size (in bytes) of @ap_config
->> + */
->> +struct vfio_ap_migration_file {
->> +    struct file        *filp;
->> +    struct vfio_ap_config    *ap_config;
->> +    unsigned long        config_sz;
->> +};
->> +
->> +/**
->> + * struct vfio_ap_migration_data:
->> + *
->> + * Manages the migration state for the VFIO device that maintains 
->> the AP
->> + * configuration of the guest being migrated.
->> + *
->> + * @mig_state:        the current migration state
->> + * @resuming_mig_file:    the object used to restore the state of 
->> the vfio-ap
->> + *            device on the destination host.
->> + * @stop_copy_mig_file:    the object used to store the AP 
->> configuration of the
->> + *            source guest for transfer to the destination host.
->> + */
->> +struct vfio_ap_migration_data {
->> +    enum vfio_device_mig_state    mig_state;
->> +    struct vfio_ap_migration_file    resuming_mig_file;
->> +    struct vfio_ap_migration_file    stop_copy_mig_file;
->> +};
->> +
->> +/**
->> + * struct vfio_ap_queue_info - the information for an AP queue
->> + *
->> + * @data: contains the queue information returned in GR2 from the 
->> PQAP(TAPQ)
->> + *      command
->> + * @apqn: the APQN of the queue
->> + * @reserved: padding to ensure consistent structure size across 
->> platforms
->> + */
->> +struct vfio_ap_queue_info {
->> +    u64 data;
->> +    u16 apqn;
->> +    u8  reserved[6];
->> +};
->> +
->> +/**
->> + * struct vfio_ap_config:
->> + *
->> + * Stores the state of a guest's AP configuration.
->> + *
->> + * VFIO device migration state transition from STOP to STOP_COPY:
->> + * -------------------------------------------------------------
->> + * When the migration state transitions from STOP to STOP_COPY, the 
->> vfio_ap device
->> + * driver will open a file stream in read-only mode and return the 
->> fd to userspace.
->> + * This fd is used during the STOP_COPY phase to read the current 
->> state of the
->> + * vfio-ap device on the source host. In response, the driver will 
->> store the
->> + * source guest's AP configuration data in a vfio_ap_config object 
->> and copy it to
->> + * userspace.
->> + *
->> + * VFIO device migration state transition from STOP to RESUMING:
->> + * ------------------------------------------------------------
->> + * When the VFIO migration state transitions from STOP to RESUMING,
->> + * the vfio_ap device driver will open a file stream in write-only 
->> mode and
->> + * return the fd to userspace. This fd is used during the RESUMING 
->> phase to
->> + * write the source guest's vfio_ap_config data that was read in 
->> during the
->> + * STOP_COPY phase to the vfio_ap device driver on the destination 
->> host. In
->> + * response, the device driver will copy the data sent from 
->> userspace to a
->> + * vfio_ap_config instance which is then used to update the 
->> destination guest's
->> + * AP configuration.
->> + *
->> + * Since the source and destination hosts may be running different 
->> versions of
->> + * the linux kernel, the vfio_ap_config object provides two fields 
->> (@magic and
->> + * @version) which must be set by the source device driver and 
->> verified by the
->> + * destination device driver to ensure the migration ABI of the 
->> source and
->> + * destination hosts are compatible.
->> + *
->> + * Note: Since a guest's AP configuration could be comprise of a 
->> large number of
->
-> Typo. I think you wanted 'comprised' here.
+> Thanks Sean, yea this looks achievable though the pvsched framework.
+> Note that usage of sched_ext is not a requirement. For something like
+> this idle time tracking, it would be trivial to extend the pvsched
+> guest component, which already tracks guest scheduling state changes
+> via guest context switch.
 
-I did, thanks.
+I also agree, this could be achieved with pvsched. In the latest
+pvsched PoC  (not yet posted upstream), the guest vcpu infact updates
+pvsched shm when it enters idle. Host side of the pvsched(default
+pvsched policy) uses this information to take some actions before the
+vcpu thread sleeps in the host. Idle time accounting is also not yet
+implemented, but it would be trivial to build on top of this
+framework.
 
->
-> Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
->
-
+Thanks,
+Vineeth
