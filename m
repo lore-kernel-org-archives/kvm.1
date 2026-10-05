@@ -1,214 +1,892 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012042.outbound.protection.outlook.com [52.101.48.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CB530C171;
-	Mon,  5 Oct 2026 18:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791225832; cv=none; b=qe47rWKK+2UE4UpUjOBxVyefQz65WpqHkA1/NBuc6qF1Beh9wAaGRj5Uqw05MraF/3df0dX8O65nTsgXsxDcl22Ryzy5UptzT2tlsqZyCpS6747HF5IA1nUPtYxK/W1IyXob9y6EmhDr90i35sM5VmqIFdv5ElKLNaqW5oLoACg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791225832; c=relaxed/simple;
-	bh=cm+HkdPCOJtK7QPsbQl06HJ2V2rSlL74K7WBqCJ3ANY=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=HlT0ngbnrf71CXZJs5Fl5453HF7tIcdWtMA3KQA5PN5Eyug0ELUQVRva9pi+PI/HqLsOd335xYITa71M0KaJgj3dvf0zdk7jgcxg3G5PCTm2wPEqxI7vhhi1hfNQpXlcux/4P56eOk2POhYvl6rIFJq9dIgElCRCByxWWhCcv2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TZTX5FJv; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F054D4896;
+	Mon,  5 Oct 2026 18:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791225839; cv=fail; b=GCLwFEwgeIQWnLhnmv70tm7jbDdByZoQmkQ35E+qNSXALKh1OCQRxoQZhwtO8uS1pzGBbqTW1tRaYm72UsmSYN167kroyyX5VI5inq1peVATAEBxIgYwEg2z9TClnso2mYk1+B/1BZfsCeY0XNjLIh5p8uoeyF3D7OyscU1oeCw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791225839; c=relaxed/simple;
+	bh=cEOkzGCbdi0c4u/WkY+ER3UjiucwprirFzWsIgARnYg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CjSwFVb9K/D87IhAa9o/xLixh8uzsKEEP9poEUPoCKTk2wYB3jKgEeY7rqtRyldlEaPujKNSITDiUpL4Q1nYrGMiTH2PX64gky6+g1zXiVWAtEKEOHg7Q2rSEirlqSWbwlSLUnwageVj72znFQdnvkifCzz/cN+/pu3ocG+3dF8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Vc/a7Qid; arc=fail smtp.client-ip=52.101.48.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TZTX5FJv"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695HZa4d1276501;
-	Mon, 5 Oct 2026 18:43:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=4YxQfr
-	wryjupheZPq+REJTZFiNyDbGSXcUBsjptWDIQ=; b=TZTX5FJvCTcdjv0Tby+szU
-	SgRoSTo1O95wotPzwU//WkKR6xoEZZFCVMABIJ+Jt6+kPTGnIOlEz9k2cmpx5GIQ
-	Mk6/KEP4qx4F34Nt21uR4hZ+dvaEspOW+Kcg62swnxl16uwvpqbtCrZgaV4XHZNK
-	Ek/2MnAMKZLwhoIvG5q2Pl8kMgDi1j8ShwQYWYLvULi6Eze6XO9YnWL3jpp3OPg8
-	32wsqy7el7lns9ocbceeDJezIkdz54vjtp/b8vFPpP25bjQw6SCYl06nQVRiPLE4
-	w1Fdzg+tuQ6nZdKUIpk1wyd2460epUhFsexPxZtvTSZedG8jq6apmPeQVZsmBs4Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2sbv33rd-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 18:43:47 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695HMUro3238793;
-	Mon, 5 Oct 2026 18:43:47 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3c1ppv9k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 18:43:47 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695IhiwD31851170
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 18:43:44 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7387058059;
-	Mon,  5 Oct 2026 18:43:44 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 596F658065;
-	Mon,  5 Oct 2026 18:43:41 +0000 (GMT)
-Received: from [9.111.90.46] (unknown [9.111.90.46])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 18:43:41 +0000 (GMT)
-Message-ID: <91402b62c9325b5cbe1824604f9ea2208bdc5385.camel@linux.ibm.com>
-Subject: Re: [PATCH v8 3/4] s390/pci: Fence FMB enable/disable via debugfs
- for passthrough devices
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, mjrosato@linux.ibm.com,
-        alifm@linux.ibm.com, farman@linux.ibm.com, gbayer@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com
-In-Reply-To: <20261005154557.57801-4-oelghoul@linux.ibm.com>
-References: <20261005154557.57801-1-oelghoul@linux.ibm.com>
-	 <20261005154557.57801-4-oelghoul@linux.ibm.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 05 Oct 2026 20:42:40 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Vc/a7Qid"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r2WiHizqC9YUWhFxdxg1DGRPBotYslULux0ToMDxr2mQJYO8xwQyeraHA3D82cYHbFCosCs1muj8J0PosU1ANAxvGRrtLUwwks5VEWIVIjCoElzlQrl5IpQxxdWaXuBQqqBcO3OitDA2B0HfDK1K6jASQMFeZqOcPD2TbrTp4tbNV7JH4JPqOFP+4+9K2jd+cftsqjusVt/C2SDM2VazN+gcz4TfOiBJwdKFUV/fvAPPVwXezE4EFq2gFr/Oulr08CZNCjidjhQtxUfkAN3AEs2A57xsGJ0E/mDUhGA06B9Xw4xVl56LRBnWdN6JIcrx6JygFPkEQn6ofvaguTFeew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nGLVG0VblESI4wcCcHC3+JlxOhDdr0U4LYXot8DmyiI=;
+ b=cFX3MO08Gxu+SXGGZosQoTnR0qrkCM5Guls/1vLpeJEbOtsJlDO6fBiEyrzEnexpsRH/lncgF0K2OAV6nuQ5PHpMOgUJVPyTxUgebLkVS10aO7NUQk83XfYfP0ppMAlNxIJEoKG/JLBHM9ECXumkwKW6Ss2FxAXqyvTIGXGef/TywN9b7GpariS6wichH+tFAWiIYeYI/8rvtdeVQ83GhPsjkaWqDxZ9Z3N7S51xHKuW4TW7k5lS/GYrLPzTtGIQVNbxc4AI5732Gmq46xEa9eLBpNfdfSMmukJw3fXIIsbGPXcxnBbVv9/Sw0K5V3Xu8vNSjES8TZPQ299Xx339zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nGLVG0VblESI4wcCcHC3+JlxOhDdr0U4LYXot8DmyiI=;
+ b=Vc/a7Qid9lpq47gIAgNVy+9nYzQ41gcKBTk+DtX/E8hers5WGAgojBGPt+qOeXq5IJ0Ds5PrnnFUePZXQ/zjGJGYoSwl+goV/OquRxrLussEl2ANZr3jZF7P7J2gxa8w0O305UEZSoRZcG+4/BmDXfZXfEqy2+0IwPFH5gG3zRL7U859YEw/9/Cxsqb3Xk3XpG5H3GEmkCHowhtntXkoZO3t8hbEYHBduNX9QKFj08/EF6e71BhQwee3Els8XZI4wNshn6aocwpqGd9eyC30Qtw9dSZCy+LOe4z9Oau5bGqOxVOUNdXrlMDq+8fIJRD6hbaxFr1Egzt1HxC4fBhF0w==
+Received: from BN9PR03CA0609.namprd03.prod.outlook.com (2603:10b6:408:106::14)
+ by SJ0PR12MB6943.namprd12.prod.outlook.com (2603:10b6:a03:44b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Mon, 5 Oct
+ 2026 18:43:43 +0000
+Received: from BN3PEPF0000B06A.namprd21.prod.outlook.com
+ (2603:10b6:408:106:cafe::7) by BN9PR03CA0609.outlook.office365.com
+ (2603:10b6:408:106::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Mon, 5
+ Oct 2026 18:43:43 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN3PEPF0000B06A.mail.protection.outlook.com (10.167.243.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.3 via Frontend Transport; Mon, 5 Oct 2026 18:43:43 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
+ 2026 11:43:21 -0700
+Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.231.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 5 Oct 2026 11:43:19 -0700
+From: Simon Song <xinmengs@nvidia.com>
+To: <alex@shazbot.org>, <jgg@nvidia.com>
+CC: <dakr@kernel.org>, <acourbot@nvidia.com>, <yishaih@nvidia.com>,
+	<skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <jhubbard@nvidia.com>,
+	<ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, <zhiwang@kernel.org>,
+	<zhiw@nvidia.com>, Simon Song <xinmengs@nvidia.com>, Alex Williamson
+	<alex.williamson@nvidia.com>
+Subject: [PATCH v3 1/1] vfio/pci: Remove the core dependency on driver data
+Date: Mon, 5 Oct 2026 11:42:36 -0700
+Message-ID: <20261005184236.1946167-2-xinmengs@nvidia.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261005184236.1946167-1-xinmengs@nvidia.com>
+References: <20261005184236.1946167-1-xinmengs@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ZJ3cWmC86IFOIXS73KD6Q4JLCVZJhhWl
-X-Authority-Analysis: v=2.4 cv=KJHPn1Fo c=1 sm=1 tr=0 ts=6ac3efe3 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=ZFlax1m07u7ZzGQ5DBIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ZJ3cWmC86IFOIXS73KD6Q4JLCVZJhhWl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA3MyBTYWx0ZWRfX8PvlQeaP8l9J
- oLsVhD+SRDOS4uPToOy5xM5922dHdCBvlQrU9SXj7XrRsTR8tTCXlS6vtN42syBpU1mQwGUrJ6n
- XfbJoj0TPfTDQGIrKbGO18h5h1TeWR53cLtofPub5Gtml8DdMesQgQqt75Vve5xAK4TjTuomuG4
- gHaOGsSUDszUoyN3NFjXmhXM196/VROuDdLfGOoM10HRORIeLLUkBfbHtV0NIw/BtXnCOPWZnjO
- 95tn6kH0bT/BoPbjqlxp6cTfKGQek0UfXHBcZzhvvUL2m9ZHVv8rFP8nKuVqmItTw/hLQWsbTnV
- /5tl+WzH3PXJ4hLTyUGKv3DtaDb3m6je9Sh3U2vNoODfZIQe3T8sFwKUQ9vr37PD/4MJL/PFlLY
- cBi4D0wYS7BFsypCdlMDd7BAZl81PH9Ggc0bTV64ZwgktOwVN3z2SSywUtGxDgv434Vs0RNg+Rm
- 7AFr0LJm9stQRfHqPwA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA3MyBTYWx0ZWRfX9LShBYr3sWEU
- sJ11Qu66XsZGj1TLsmSPKyaAl4pxwKMYo/5NcGjXhBbbqJZk7SAjxiGoV3qP9QcLy2E0HVdv5s4
- W+M2vSHD1FTs7dBIAj0aLrq0Cy55fok=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_05,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2610050073
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06A:EE_|SJ0PR12MB6943:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60b46b57-b21e-4d12-4035-08df231094c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|23010399003|36860700016|6133799003|22082099003|18002099003|10067099003|13003099007|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	cG/W/DNXT4iQcjXVrgbLIH+IO9tRA1mqiRSw8/0xVPDCwfhwlS4pViQac7fQYwOG+bfZZoCnLrhSzg3VnQeOvxgnOHAIPmeEk+qZCfqhCHOisusnQJHxCdnXu1x9+CkE3dAZMhawYjfdXk9YeSdC8k6et4BJMV6Q/tufF83OxqyLSQAjofOfXCPDj1VVdz3ZA5I7mpMGcCE3vinKcTQ/3lmbIXOuZkdJW1cu/NTayqOsM21FWsqMkEGnH8GM42MH+JiU4L1wg2VkYvHBt0MCm3u+cJ10yGMHA7sDS9hVlQUofGVrPLm+WCcLN+AxelbuXqQyrM30G7ZwoZrlhRjd/hbJWkPmS4OJwnn5fPfvqeux338TlOeAToetjEctU393XsYg0AkwKP9VwJbgAB9/Aw8GH3CRILy35wVceA4PPjOkUi7ObFIXWr2QGl/V1JWafsZJCNcRViGLxA3llOloQqynboj5b2iJD/htsmUVj3A+Pnep8ORwQKSlnwjGRXL65iDohzK6ix2eYZMBexhdJreh1JEwnP6QefZQor3ktJh+Em0RL+Kvxa2rg93XOPczEsIlCMQv5p65e3qlPMzZ6scsW0SdxwEPY66FC4YWxJ3pr6gpZF10EGQd5+F1i8w/TwylpAawh6DHKgn+448BmhfFnS71LZUXvINggAljYV32Fkk3qZjcKuk7difsbZj7anz1RIfWmdAZcZt2tCt6HQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(23010399003)(36860700016)(6133799003)(22082099003)(18002099003)(10067099003)(13003099007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	+BFAN9dbI2T6sjKHMl7MsLIcQ8U9iJnqBVIfbGTfrY1nYBr8Zra2cPHHkFbMXdsgxDiEr9gozSvu8ZI4N915Rt9/QDNY6CiLfsVFa+4QpMSenVQX1JI1EjVtAc4n3J7cjxaHX5WsqL81Dnbg57ROrZclv5zy0n+v/jAEAZeTFpm+4tk6reDp5h5uIMJ9Fq9rzPZZPerG9PAlLGXMRp3CPunq5327jQIj/qk6w27WZM2AP80ikY7GGmGEDW1LcP1S6HflkhITDWb+i9xQR8mabj7R0wFJXm1usGHsdrk5Ypd6KZp5doL20z0QIIVP+jv7humAHOXchB92IwktQKFZKQmzc9kB6AD/xdsIeMH0WjyEI+2Dp/9eswzCEc5ck6nhCyBm2qh3oPW6hRDN/Cy9/JBYZgjzLkK5LnZdYbtAlEMWzWmstFhxQ3atsxEyJ+G3
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 18:43:43.0201
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60b46b57-b21e-4d12-4035-08df231094c0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B06A.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6943
 
-On Mon, 2026-10-05 at 11:45 -0400, Omar Elghoul wrote:
-> Introduce a fence over enabling or disabling FMB via debugfs when the zPC=
-I
-> device is associated with a KVM. This will prevent processes on the host
-> from tampering with the FMB while the guest is still using it, which may
-> cause partial counter resets and inconsistent reads which have no paralle=
-l
-> in the architecture.
->=20
-> For VFIO devices that are not associated with a KVM (i.e., for userspace
-> drivers other than QEMU), this fence does not take effect.
->=20
-> Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
-> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
->  arch/s390/pci/pci_debug.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->=20
-> diff --git a/arch/s390/pci/pci_debug.c b/arch/s390/pci/pci_debug.c
-> index 44f026ead414..afc52bd5271a 100644
-> --- a/arch/s390/pci/pci_debug.c
-> +++ b/arch/s390/pci/pci_debug.c
-> @@ -153,6 +153,12 @@ static ssize_t pci_perf_seq_write(struct file *file,=
- const char __user *ubuf,
->  	if (rc)
->  		return rc;
-> =20
-> +	mutex_lock(&zdev->kzdev_lock);
-> +	if (zdev->kzdev) {
-> +		rc =3D -EPERM;
-> +		goto out_unlock_kzdev;
-> +	}
-> +
->  	mutex_lock(&zdev->fmb_lock);
->  	switch (val) {
->  	case 0:
-> @@ -163,6 +169,9 @@ static ssize_t pci_perf_seq_write(struct file *file, =
-const char __user *ubuf,
->  		break;
->  	}
->  	mutex_unlock(&zdev->fmb_lock);
-> +
-> +out_unlock_kzdev:
-> +	mutex_unlock(&zdev->kzdev_lock);
->  	return rc ? rc : count;
->  }
-> =20
+vfio-pci-core currently has runtime functions that interpret pci
+driver_data as a pointer to vfio_pci_core_device, and enforce vfio
+variant drivers must set vfio_pci_core_device to their pci driver_data.
+This constrains variant drivers' private-data layout, including the
+typed driver data used by the Rust PCI infrastructure.
 
-Looks good, thank!
+Add VFIO_PCI_CORE_DEFINE_CALLBACKS marcos to generate wrapper code for
+each vfio variant driver, update vfio variant drivers to store their
+private strctures in driver_data and use generated wrapper to pass the
+vfio core device to helpers.
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Select the vga decode callback during vfio_pci_vga_init based on if
+vfio_vga_disabled, the callback only use pci_dev and does not require
+driver_data
+
+Assisted-by: LLM
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Suggested-by: Alex Williamson <alex.williamson@nvidia.com>
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/all/DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org/
+Signed-off-by: Simon Song <xinmengs@nvidia.com>
+---
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 27 ++++----
+ drivers/vfio/pci/ism/main.c                   | 19 +++---
+ drivers/vfio/pci/mlx5/main.c                  | 13 ++--
+ drivers/vfio/pci/nvgrace-gpu/main.c           | 19 +++---
+ drivers/vfio/pci/pds/pci_drv.c                |  8 ++-
+ drivers/vfio/pci/pds/vfio_dev.c               |  5 +-
+ drivers/vfio/pci/qat/main.c                   | 12 ++--
+ drivers/vfio/pci/vfio_pci.c                   | 33 +++++++++-
+ drivers/vfio/pci/vfio_pci_core.c              | 61 +++++++------------
+ drivers/vfio/pci/virtio/main.c                |  8 ++-
+ drivers/vfio/pci/xe/main.c                    |  8 ++-
+ include/linux/vfio_pci_core.h                 | 41 ++++++++++++-
+ 12 files changed, 159 insertions(+), 95 deletions(-)
+
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index 86362ec424a5..a5ff79b968d9 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -16,6 +16,9 @@
+ 
+ #include "hisi_acc_vfio_pci.h"
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(hisi_acc_vf, struct hisi_acc_vf_core_device,
++			       core_device)
++
+ /* Return 0 on VM acc device ready, -ETIMEDOUT hardware timeout */
+ static int qm_wait_dev_not_ready(struct hisi_qm *qm)
+ {
+@@ -588,10 +591,7 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 
+ static struct hisi_acc_vf_core_device *hisi_acc_drvdata(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
+-
+-	return container_of(core_device, struct hisi_acc_vf_core_device,
+-			    core_device);
++	return pci_get_drvdata(pdev);
+ }
+ 
+ /* Check the PF's RAS state and Function INT state */
+@@ -1416,9 +1416,8 @@ static int hisi_acc_vf_debug_check(struct seq_file *seq, struct vfio_device *vde
+ static int hisi_acc_vf_debug_cmd(struct seq_file *seq, void *data)
+ {
+ 	struct device *vf_dev = seq->private;
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(vf_dev);
+-	struct vfio_device *vdev = &core_device->vdev;
+-	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_get_vf_dev(vdev);
++	struct hisi_acc_vf_core_device *hisi_acc_vdev = dev_get_drvdata(vf_dev);
++	struct vfio_device *vdev = &hisi_acc_vdev->core_device.vdev;
+ 	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
+ 	u64 value;
+ 	int ret;
+@@ -1445,9 +1444,8 @@ static int hisi_acc_vf_debug_cmd(struct seq_file *seq, void *data)
+ static int hisi_acc_vf_dev_read(struct seq_file *seq, void *data)
+ {
+ 	struct device *vf_dev = seq->private;
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(vf_dev);
+-	struct vfio_device *vdev = &core_device->vdev;
+-	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_get_vf_dev(vdev);
++	struct hisi_acc_vf_core_device *hisi_acc_vdev = dev_get_drvdata(vf_dev);
++	struct vfio_device *vdev = &hisi_acc_vdev->core_device.vdev;
+ 	size_t vf_data_sz = offsetofend(struct acc_vf_data, padding);
+ 	struct acc_vf_data *vf_data;
+ 	int ret;
+@@ -1492,9 +1490,7 @@ static int hisi_acc_vf_dev_read(struct seq_file *seq, void *data)
+ static int hisi_acc_vf_migf_read(struct seq_file *seq, void *data)
+ {
+ 	struct device *vf_dev = seq->private;
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(vf_dev);
+-	struct vfio_device *vdev = &core_device->vdev;
+-	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_get_vf_dev(vdev);
++	struct hisi_acc_vf_core_device *hisi_acc_vdev = dev_get_drvdata(vf_dev);
+ 	size_t vf_data_sz = offsetofend(struct acc_vf_data, padding);
+ 	struct hisi_acc_vf_migration_file *debug_migf = hisi_acc_vdev->debug_migf;
+ 
+@@ -1687,7 +1683,7 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
+ 	if (IS_ERR(hisi_acc_vdev))
+ 		return PTR_ERR(hisi_acc_vdev);
+ 
+-	dev_set_drvdata(&pdev->dev, &hisi_acc_vdev->core_device);
++	dev_set_drvdata(&pdev->dev, hisi_acc_vdev);
+ 	ret = vfio_pci_core_register_device(&hisi_acc_vdev->core_device);
+ 	if (ret)
+ 		goto out_put_vdev;
+@@ -1721,7 +1717,7 @@ MODULE_DEVICE_TABLE(pci, hisi_acc_vfio_pci_table);
+ static const struct pci_error_handlers hisi_acc_vf_err_handlers = {
+ 	.reset_prepare = hisi_acc_vf_pci_reset_prepare,
+ 	.reset_done = hisi_acc_vf_pci_aer_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = hisi_acc_vf_aer_err_detected,
+ };
+ 
+ static struct pci_driver hisi_acc_vfio_pci_driver = {
+@@ -1729,6 +1725,7 @@ static struct pci_driver hisi_acc_vfio_pci_driver = {
+ 	.id_table = hisi_acc_vfio_pci_table,
+ 	.probe = hisi_acc_vfio_pci_probe,
+ 	.remove = hisi_acc_vfio_pci_remove,
++	.driver = { .pm = pm_ptr(&hisi_acc_vf_pm_ops) },
+ 	.err_handler = &hisi_acc_vf_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/drivers/vfio/pci/ism/main.c b/drivers/vfio/pci/ism/main.c
+index f83e09b915ed..cce3bdf1f070 100644
+--- a/drivers/vfio/pci/ism/main.c
++++ b/drivers/vfio/pci/ism/main.c
+@@ -47,6 +47,9 @@ struct ism_vfio_pci_core_device {
+ 	struct kmem_cache *store_block_cache;
+ };
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(ism_vfio, struct ism_vfio_pci_core_device,
++			       core_device)
++
+ static int ism_vfio_pci_open_device(struct vfio_device *core_vdev)
+ {
+ 	struct ism_vfio_pci_core_device *ivpcd;
+@@ -363,7 +366,7 @@ static int ism_vfio_pci_probe(struct pci_dev *pdev,
+ 	if (IS_ERR(ivpcd))
+ 		return PTR_ERR(ivpcd);
+ 
+-	dev_set_drvdata(&pdev->dev, &ivpcd->core_device);
++	dev_set_drvdata(&pdev->dev, ivpcd);
+ 
+ 	ret = vfio_pci_core_register_device(&ivpcd->core_device);
+ 	if (ret)
+@@ -374,12 +377,7 @@ static int ism_vfio_pci_probe(struct pci_dev *pdev,
+ 
+ static void ism_vfio_pci_remove(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device;
+-	struct ism_vfio_pci_core_device *ivpcd;
+-
+-	core_device = dev_get_drvdata(&pdev->dev);
+-	ivpcd = container_of(core_device, struct ism_vfio_pci_core_device,
+-			     core_device);
++	struct ism_vfio_pci_core_device *ivpcd = pci_get_drvdata(pdev);
+ 
+ 	vfio_pci_core_unregister_device(&ivpcd->core_device);
+ 	vfio_put_device(&ivpcd->core_device.vdev);
+@@ -392,12 +390,17 @@ static const struct pci_device_id ism_device_table[] = {
+ };
+ MODULE_DEVICE_TABLE(pci, ism_device_table);
+ 
++static const struct pci_error_handlers ism_vfio_err_handlers = {
++	.error_detected = ism_vfio_aer_err_detected,
++};
++
+ static struct pci_driver ism_vfio_pci_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.id_table = ism_device_table,
+ 	.probe = ism_vfio_pci_probe,
+ 	.remove = ism_vfio_pci_remove,
+-	.err_handler = &vfio_pci_core_err_handlers,
++	.driver	= { .pm = pm_ptr(&ism_vfio_pm_ops) },
++	.err_handler = &ism_vfio_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+ 
+diff --git a/drivers/vfio/pci/mlx5/main.c b/drivers/vfio/pci/mlx5/main.c
+index de306dee1d1a..18a6d224b1fd 100644
+--- a/drivers/vfio/pci/mlx5/main.c
++++ b/drivers/vfio/pci/mlx5/main.c
+@@ -21,6 +21,9 @@
+ 
+ #include "cmd.h"
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(mlx5vf, struct mlx5vf_pci_core_device,
++			       core_device)
++
+ /* Device specification max LOAD size */
+ #define MAX_LOAD_SIZE (BIT_ULL(__mlx5_bit_sz(load_vhca_state_in, size)) - 1)
+ 
+@@ -28,10 +31,7 @@
+ 
+ static struct mlx5vf_pci_core_device *mlx5vf_drvdata(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
+-
+-	return container_of(core_device, struct mlx5vf_pci_core_device,
+-			    core_device);
++	return pci_get_drvdata(pdev);
+ }
+ 
+ static void mlx5vf_disable_fd(struct mlx5_vf_migration_file *migf)
+@@ -1415,7 +1415,7 @@ static int mlx5vf_pci_probe(struct pci_dev *pdev,
+ 	if (IS_ERR(mvdev))
+ 		return PTR_ERR(mvdev);
+ 
+-	dev_set_drvdata(&pdev->dev, &mvdev->core_device);
++	dev_set_drvdata(&pdev->dev, mvdev);
+ 	ret = vfio_pci_core_register_device(&mvdev->core_device);
+ 	if (ret)
+ 		goto out_put_vdev;
+@@ -1443,7 +1443,7 @@ MODULE_DEVICE_TABLE(pci, mlx5vf_pci_table);
+ 
+ static const struct pci_error_handlers mlx5vf_err_handlers = {
+ 	.reset_done = mlx5vf_pci_aer_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = mlx5vf_aer_err_detected,
+ };
+ 
+ static struct pci_driver mlx5vf_pci_driver = {
+@@ -1451,6 +1451,7 @@ static struct pci_driver mlx5vf_pci_driver = {
+ 	.id_table = mlx5vf_pci_table,
+ 	.probe = mlx5vf_pci_probe,
+ 	.remove = mlx5vf_pci_remove,
++	.driver	= { .pm = pm_ptr(&mlx5vf_pm_ops) },
+ 	.err_handler = &mlx5vf_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index d07dcacb76bd..cfb5b7413724 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -72,6 +72,9 @@ struct nvgrace_gpu_pci_core_device {
+ 	int cxl_dvsec;
+ };
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(nvgrace_gpu, struct nvgrace_gpu_pci_core_device,
++			       core_device)
++
+ static void nvgrace_gpu_init_fake_bar_emu_regs(struct vfio_device *core_vdev)
+ {
+ 	struct nvgrace_gpu_pci_core_device *nvdev =
+@@ -1340,7 +1343,7 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		goto out_put_vdev;
+ 
+-	dev_set_drvdata(&pdev->dev, &nvdev->core_device);
++	dev_set_drvdata(&pdev->dev, nvdev);
+ 
+ 	if (ops == &nvgrace_gpu_pci_ops) {
+ 		nvdev->has_mig_hw_bug = nvgrace_gpu_has_mig_hw_bug(pdev);
+@@ -1371,10 +1374,10 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
+ 
+ static void nvgrace_gpu_remove(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
++	struct nvgrace_gpu_pci_core_device *nvdev = pci_get_drvdata(pdev);
+ 
+-	vfio_pci_core_unregister_device(core_device);
+-	vfio_put_device(&core_device->vdev);
++	vfio_pci_core_unregister_device(&nvdev->core_device);
++	vfio_put_device(&nvdev->core_device.vdev);
+ }
+ 
+ static const struct pci_device_id nvgrace_gpu_vfio_pci_table[] = {
+@@ -1406,17 +1409,14 @@ MODULE_DEVICE_TABLE(pci, nvgrace_gpu_vfio_pci_table);
+  */
+ static void nvgrace_gpu_vfio_pci_reset_done(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
+-	struct nvgrace_gpu_pci_core_device *nvdev =
+-		container_of(core_device, struct nvgrace_gpu_pci_core_device,
+-			     core_device);
++	struct nvgrace_gpu_pci_core_device *nvdev = pci_get_drvdata(pdev);
+ 
+ 	nvdev->reset_done = true;
+ }
+ 
+ static const struct pci_error_handlers nvgrace_gpu_vfio_pci_err_handlers = {
+ 	.reset_done = nvgrace_gpu_vfio_pci_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = nvgrace_gpu_aer_err_detected,
+ };
+ 
+ static struct pci_driver nvgrace_gpu_vfio_pci_driver = {
+@@ -1424,6 +1424,7 @@ static struct pci_driver nvgrace_gpu_vfio_pci_driver = {
+ 	.id_table = nvgrace_gpu_vfio_pci_table,
+ 	.probe = nvgrace_gpu_probe,
+ 	.remove = nvgrace_gpu_remove,
++	.driver = { .pm = pm_ptr(&nvgrace_gpu_pm_ops) },
+ 	.err_handler = &nvgrace_gpu_vfio_pci_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/drivers/vfio/pci/pds/pci_drv.c b/drivers/vfio/pci/pds/pci_drv.c
+index 4923f1823126..cf7e33d4d17b 100644
+--- a/drivers/vfio/pci/pds/pci_drv.c
++++ b/drivers/vfio/pci/pds/pci_drv.c
+@@ -16,6 +16,9 @@
+ #include "pci_drv.h"
+ #include "cmds.h"
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(pds_vfio, struct pds_vfio_pci_device,
++			       vfio_coredev)
++
+ #define PDS_VFIO_DRV_DESCRIPTION	"AMD/Pensando VFIO Device Driver"
+ #define PCI_VENDOR_ID_PENSANDO		0x1dd8
+ 
+@@ -118,7 +121,7 @@ static int pds_vfio_pci_probe(struct pci_dev *pdev,
+ 	if (IS_ERR(pds_vfio))
+ 		return PTR_ERR(pds_vfio);
+ 
+-	dev_set_drvdata(&pdev->dev, &pds_vfio->vfio_coredev);
++	dev_set_drvdata(&pdev->dev, pds_vfio);
+ 
+ 	err = vfio_pci_core_register_device(&pds_vfio->vfio_coredev);
+ 	if (err)
+@@ -173,7 +176,7 @@ static void pds_vfio_pci_aer_reset_done(struct pci_dev *pdev)
+ 
+ static const struct pci_error_handlers pds_vfio_pci_err_handlers = {
+ 	.reset_done = pds_vfio_pci_aer_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = pds_vfio_aer_err_detected,
+ };
+ 
+ static struct pci_driver pds_vfio_pci_driver = {
+@@ -181,6 +184,7 @@ static struct pci_driver pds_vfio_pci_driver = {
+ 	.id_table = pds_vfio_pci_table,
+ 	.probe = pds_vfio_pci_probe,
+ 	.remove = pds_vfio_pci_remove,
++	.driver = { .pm = pm_ptr(&pds_vfio_pm_ops) },
+ 	.err_handler = &pds_vfio_pci_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/drivers/vfio/pci/pds/vfio_dev.c b/drivers/vfio/pci/pds/vfio_dev.c
+index be103c74e969..6d2b2dc61a28 100644
+--- a/drivers/vfio/pci/pds/vfio_dev.c
++++ b/drivers/vfio/pci/pds/vfio_dev.c
+@@ -20,10 +20,7 @@ struct device *pds_vfio_to_dev(struct pds_vfio_pci_device *pds_vfio)
+ 
+ struct pds_vfio_pci_device *pds_vfio_pci_drvdata(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
+-
+-	return container_of(core_device, struct pds_vfio_pci_device,
+-			    vfio_coredev);
++	return pci_get_drvdata(pdev);
+ }
+ 
+ void pds_vfio_reset(struct pds_vfio_pci_device *pds_vfio,
+diff --git a/drivers/vfio/pci/qat/main.c b/drivers/vfio/pci/qat/main.c
+index 60ff907b6a67..69448fa57df4 100644
+--- a/drivers/vfio/pci/qat/main.c
++++ b/drivers/vfio/pci/qat/main.c
+@@ -55,6 +55,9 @@ struct qat_vf_core_device {
+ 	struct qat_vf_migration_file *saving_migf;
+ };
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(qat_vf, struct qat_vf_core_device,
++			       core_device)
++
+ static int qat_vf_pci_open_device(struct vfio_device *core_vdev)
+ {
+ 	struct qat_vf_core_device *qat_vdev =
+@@ -623,9 +626,7 @@ static const struct vfio_device_ops qat_vf_pci_ops = {
+ 
+ static struct qat_vf_core_device *qat_vf_drvdata(struct pci_dev *pdev)
+ {
+-	struct vfio_pci_core_device *core_device = pci_get_drvdata(pdev);
+-
+-	return container_of(core_device, struct qat_vf_core_device, core_device);
++	return pci_get_drvdata(pdev);
+ }
+ 
+ static void qat_vf_pci_aer_reset_done(struct pci_dev *pdev)
+@@ -651,7 +652,7 @@ qat_vf_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (IS_ERR(qat_vdev))
+ 		return PTR_ERR(qat_vdev);
+ 
+-	pci_set_drvdata(pdev, &qat_vdev->core_device);
++	pci_set_drvdata(pdev, qat_vdev);
+ 	ret = vfio_pci_core_register_device(&qat_vdev->core_device);
+ 	if (ret)
+ 		goto out_put_device;
+@@ -686,7 +687,7 @@ MODULE_DEVICE_TABLE(pci, qat_vf_vfio_pci_table);
+ 
+ static const struct pci_error_handlers qat_vf_err_handlers = {
+ 	.reset_done = qat_vf_pci_aer_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = qat_vf_aer_err_detected,
+ };
+ 
+ static struct pci_driver qat_vf_vfio_pci_driver = {
+@@ -694,6 +695,7 @@ static struct pci_driver qat_vf_vfio_pci_driver = {
+ 	.id_table = qat_vf_vfio_pci_table,
+ 	.probe = qat_vf_vfio_pci_probe,
+ 	.remove = qat_vf_vfio_pci_remove,
++	.driver	= { .pm = pm_ptr(&qat_vf_pm_ops) },
+ 	.err_handler = &qat_vf_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+index 830369ff878d..e7c012febe91 100644
+--- a/drivers/vfio/pci/vfio_pci.c
++++ b/drivers/vfio/pci/vfio_pci.c
+@@ -223,13 +223,44 @@ static const struct pci_device_id vfio_pci_table[] = {
+ 
+ MODULE_DEVICE_TABLE(pci, vfio_pci_table);
+ 
++static int __maybe_unused vfio_pci_pm_suspend(struct device *dev)
++{
++	struct vfio_pci_core_device *vdev = dev_get_drvdata(dev);
++
++	return vfio_pci_core_runtime_suspend(vdev);
++}
++
++static int __maybe_unused vfio_pci_pm_resume(struct device *dev)
++{
++	struct vfio_pci_core_device *vdev = dev_get_drvdata(dev);
++
++	return vfio_pci_core_runtime_resume(vdev);
++}
++
++static const struct dev_pm_ops vfio_pci_pm_ops = {
++	SET_RUNTIME_PM_OPS(vfio_pci_pm_suspend, vfio_pci_pm_resume, NULL)
++};
++
++static pci_ers_result_t vfio_pci_aer_err_detected(struct pci_dev *pdev,
++					       pci_channel_state_t state)
++{
++	struct vfio_pci_core_device *vdev = pci_get_drvdata(pdev);
++
++	return vfio_pci_core_aer_err_detected(vdev);
++}
++
++static const struct pci_error_handlers vfio_pci_err_handlers = {
++	.error_detected = vfio_pci_aer_err_detected,
++};
++
+ static struct pci_driver vfio_pci_driver = {
+ 	.name			= "vfio-pci",
+ 	.id_table		= vfio_pci_table,
+ 	.probe			= vfio_pci_probe,
+ 	.remove			= vfio_pci_remove,
+ 	.sriov_configure	= vfio_pci_sriov_configure,
+-	.err_handler		= &vfio_pci_core_err_handlers,
++	.err_handler		= &vfio_pci_err_handlers,
++	.driver		= { .pm = pm_ptr(&vfio_pci_pm_ops) },
+ 	.driver_managed_dma	= true,
+ };
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 362c375a0579..f8ed54841723 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -153,6 +153,12 @@ static inline void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
+ }
+ #endif /* CONFIG_VFIO_DEBUGFS */
+ 
++static unsigned int vfio_pci_vga_decode_all(struct pci_dev *pdev, bool single_vga)
++{
++	return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM |
++	       VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM;
++}
++
+ /*
+  * Our VGA arbiter participation is limited since we don't know anything
+  * about the device itself.  However, if the device is the only VGA device
+@@ -161,16 +167,14 @@ static inline void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
+  * has no way to get to it and routing can be disabled externally at the
+  * bridge.
+  */
+-static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
++static unsigned int vfio_pci_vga_decode_novga(struct pci_dev *pdev, bool single_vga)
+ {
+-	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
+ 	struct pci_dev *tmp = NULL;
+ 	unsigned char max_busnr;
+ 	unsigned int decodes;
+ 
+-	if (single_vga || !vfio_vga_disabled(vdev) || pci_is_root_bus(pdev->bus))
+-		return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM |
+-		       VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM;
++	if (single_vga || pci_is_root_bus(pdev->bus))
++		return vfio_pci_vga_decode_all(pdev, single_vga);
+ 
+ 	max_busnr = pci_bus_max_busnr(pdev->bus);
+ 	decodes = VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
+@@ -487,10 +491,8 @@ static int vfio_pci_core_pm_exit(struct vfio_pci_core_device *vdev, u32 flags,
+ }
+ 
+ #ifdef CONFIG_PM
+-static int vfio_pci_core_runtime_suspend(struct device *dev)
++int vfio_pci_core_runtime_suspend(struct vfio_pci_core_device *vdev)
+ {
+-	struct vfio_pci_core_device *vdev = dev_get_drvdata(dev);
+-
+ 	down_write(&vdev->memory_lock);
+ 	/*
+ 	 * The user can move the device into D3hot state before invoking
+@@ -515,11 +517,10 @@ static int vfio_pci_core_runtime_suspend(struct device *dev)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(vfio_pci_core_runtime_suspend);
+ 
+-static int vfio_pci_core_runtime_resume(struct device *dev)
++int vfio_pci_core_runtime_resume(struct vfio_pci_core_device *vdev)
+ {
+-	struct vfio_pci_core_device *vdev = dev_get_drvdata(dev);
+-
+ 	/*
+ 	 * Resume with a pm_wake_eventfd_ctx signals the eventfd and exit
+ 	 * low power mode.
+@@ -536,6 +537,7 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(vfio_pci_core_runtime_resume);
+ #endif /* CONFIG_PM */
+ 
+ /*
+@@ -575,18 +577,6 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+ 	}
+ }
+ 
+-/*
+- * The pci-driver core runtime PM routines always save the device state
+- * before going into suspended state. If the device is going into low power
+- * state with only with runtime PM ops, then no explicit handling is needed
+- * for the devices which have NoSoftRst-.
+- */
+-static const struct dev_pm_ops vfio_pci_core_pm_ops = {
+-	SET_RUNTIME_PM_OPS(vfio_pci_core_runtime_suspend,
+-			   vfio_pci_core_runtime_resume,
+-			   NULL)
+-};
+-
+ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+@@ -2148,20 +2138,27 @@ static void vfio_pci_vf_uninit(struct vfio_pci_core_device *vdev)
+ 
+ static int vfio_pci_vga_init(struct vfio_pci_core_device *vdev)
+ {
++	unsigned int (*set_decode)(struct pci_dev *pdev, bool single_vga);
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	int ret;
+ 
+ 	if (!vfio_pci_is_vga(pdev))
+ 		return 0;
+ 
++	/* VGA access is fixed for the lifetime of this registration. */
++	if (vfio_vga_disabled(vdev))
++		set_decode = vfio_pci_vga_decode_novga;
++	else
++		set_decode = vfio_pci_vga_decode_all;
++
+ 	ret = aperture_remove_conflicting_pci_devices(pdev, vdev->vdev.ops->name);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = vga_client_register(pdev, vfio_pci_set_decode);
++	ret = vga_client_register(pdev, set_decode);
+ 	if (ret)
+ 		return ret;
+-	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
++	vga_set_legacy_decoding(pdev, set_decode(pdev, false));
+ 	return 0;
+ }
+ 
+@@ -2220,10 +2217,6 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
+ 	struct device *dev = &pdev->dev;
+ 	int ret;
+ 
+-	/* Drivers must set the vfio_pci_core_device to their drvdata */
+-	if (WARN_ON(vdev != dev_get_drvdata(dev)))
+-		return -EINVAL;
+-
+ 	/* Drivers must set a name.  Required for sequestering SR-IOV VFs */
+ 	if (WARN_ON(!vdev->vdev.ops->name))
+ 		return -EINVAL;
+@@ -2291,7 +2284,6 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
+ 	 */
+ 	vfio_pci_set_power_state(vdev, PCI_D0);
+ 
+-	dev->driver->pm = &vfio_pci_core_pm_ops;
+ 	pm_runtime_allow(dev);
+ 	if (!vdev->disable_idle_d3)
+ 		pm_runtime_put(dev);
+@@ -2332,10 +2324,8 @@ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev)
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_device);
+ 
+-pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
+-						pci_channel_state_t state)
++pci_ers_result_t vfio_pci_core_aer_err_detected(struct vfio_pci_core_device *vdev)
+ {
+-	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
+ 	struct vfio_pci_eventfd *eventfd;
+ 
+ 	rcu_read_lock();
+@@ -2418,11 +2408,6 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_sriov_configure);
+ 
+-const struct pci_error_handlers vfio_pci_core_err_handlers = {
+-	.error_detected = vfio_pci_core_aer_err_detected,
+-};
+-EXPORT_SYMBOL_GPL(vfio_pci_core_err_handlers);
+-
+ static bool vfio_dev_in_groups(struct vfio_device *vdev,
+ 			       struct vfio_pci_group_info *groups)
+ {
+diff --git a/drivers/vfio/pci/virtio/main.c b/drivers/vfio/pci/virtio/main.c
+index d2e5cbca13c8..123ff5193812 100644
+--- a/drivers/vfio/pci/virtio/main.c
++++ b/drivers/vfio/pci/virtio/main.c
+@@ -18,6 +18,9 @@
+ 
+ #include "common.h"
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(virtiovf, struct virtiovf_pci_core_device,
++			       core_device)
++
+ static int virtiovf_pci_open_device(struct vfio_device *core_vdev)
+ {
+ 	struct virtiovf_pci_core_device *virtvdev = container_of(core_vdev,
+@@ -174,7 +177,7 @@ static int virtiovf_pci_probe(struct pci_dev *pdev,
+ 	if (sup_lm)
+ 		virtiovf_set_migratable(virtvdev);
+ 
+-	dev_set_drvdata(&pdev->dev, &virtvdev->core_device);
++	dev_set_drvdata(&pdev->dev, virtvdev);
+ 	ret = vfio_pci_core_register_device(&virtvdev->core_device);
+ 	if (ret)
+ 		goto out;
+@@ -211,7 +214,7 @@ static void virtiovf_pci_aer_reset_done(struct pci_dev *pdev)
+ 
+ static const struct pci_error_handlers virtiovf_err_handlers = {
+ 	.reset_done = virtiovf_pci_aer_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = virtiovf_aer_err_detected,
+ };
+ 
+ static struct pci_driver virtiovf_pci_driver = {
+@@ -219,6 +222,7 @@ static struct pci_driver virtiovf_pci_driver = {
+ 	.id_table = virtiovf_pci_table,
+ 	.probe = virtiovf_pci_probe,
+ 	.remove = virtiovf_pci_remove,
++	.driver = { .pm = pm_ptr(&virtiovf_pm_ops) },
+ 	.err_handler = &virtiovf_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
+index cbff5af385ef..fa6a29d8dfd2 100644
+--- a/drivers/vfio/pci/xe/main.c
++++ b/drivers/vfio/pci/xe/main.c
+@@ -38,6 +38,9 @@ struct xe_vfio_pci_core_device {
+ 	struct xe_vfio_pci_migration_file *migf;
+ };
+ 
++VFIO_PCI_CORE_DEFINE_CALLBACKS(xe_vfio, struct xe_vfio_pci_core_device,
++			       core_device)
++
+ #define xe_vdev_to_dev(xe_vdev) (&(xe_vdev)->core_device.pdev->dev)
+ 
+ static void xe_vfio_pci_disable_file(struct xe_vfio_pci_migration_file *migf)
+@@ -140,7 +143,7 @@ static void xe_vfio_pci_reset_done(struct pci_dev *pdev)
+ static const struct pci_error_handlers xe_vfio_pci_err_handlers = {
+ 	.reset_prepare = xe_vfio_pci_reset_prepare,
+ 	.reset_done = xe_vfio_pci_reset_done,
+-	.error_detected = vfio_pci_core_aer_err_detected,
++	.error_detected = xe_vfio_aer_err_detected,
+ };
+ 
+ static int xe_vfio_pci_open_device(struct vfio_device *core_vdev)
+@@ -550,7 +553,7 @@ static int xe_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
+ 	if (IS_ERR(xe_vdev))
+ 		return PTR_ERR(xe_vdev);
+ 
+-	dev_set_drvdata(&pdev->dev, &xe_vdev->core_device);
++	dev_set_drvdata(&pdev->dev, xe_vdev);
+ 
+ 	ret = vfio_pci_core_register_device(&xe_vdev->core_device);
+ 	if (ret) {
+@@ -586,6 +589,7 @@ static struct pci_driver xe_vfio_pci_driver = {
+ 	.id_table = xe_vfio_pci_table,
+ 	.probe = xe_vfio_pci_probe,
+ 	.remove = xe_vfio_pci_remove,
++	.driver = { .pm = pm_ptr(&xe_vfio_pm_ops) },
+ 	.err_handler = &xe_vfio_pci_err_handlers,
+ 	.driver_managed_dma = true,
+ };
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 9a1674c152aa..2f3fa2787737 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -8,6 +8,7 @@
+  * Author: Tom Lyon, pugs@cisco.com
+  */
+ 
++#include <linux/device.h>
+ #include <linux/mutex.h>
+ #include <linux/pci.h>
+ #include <linux/vfio.h>
+@@ -16,6 +17,7 @@
+ #include <linux/types.h>
+ #include <linux/uuid.h>
+ #include <linux/notifier.h>
++#include <linux/pm.h>
+ 
+ #ifndef VFIO_PCI_CORE_H
+ #define VFIO_PCI_CORE_H
+@@ -168,7 +170,6 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
+ void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
+ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev);
+ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev);
+-extern const struct pci_error_handlers vfio_pci_core_err_handlers;
+ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+ 				  int nr_virtfn);
+ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
+@@ -193,8 +194,6 @@ int vfio_pci_core_match_token_uuid(struct vfio_device *core_vdev,
+ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev);
+ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev);
+ void vfio_pci_core_finish_enable(struct vfio_pci_core_device *vdev);
+-pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
+-						pci_channel_state_t state);
+ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ 			       void __iomem *io, char __user *buf,
+ 			       loff_t off, size_t count, size_t x_start,
+@@ -260,4 +259,40 @@ vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, unsigned int bar)
+ int vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
+ 				 struct phys_vec *phys);
+ 
++int vfio_pci_core_runtime_suspend(struct vfio_pci_core_device *vdev);
++int vfio_pci_core_runtime_resume(struct vfio_pci_core_device *vdev);
++pci_ers_result_t vfio_pci_core_aer_err_detected(struct vfio_pci_core_device *vdev);
++
++/*
++ * Per-driver PM/AER trampolines. driver_data points to the driver's private
++ * structure, which embeds a struct vfio_pci_core_device.
++ *
++ * @name: prefix for <name>_pm_ops and <name>_aer_err_detected
++ * @drv_type: type of the driver's private structure, including struct
++ * @member: member containing the struct vfio_pci_core_device
++ */
++#define VFIO_PCI_CORE_DEFINE_CALLBACKS(name, drv_type, member)                \
++static int __maybe_unused name##_pm_suspend(struct device *dev)               \
++{                                                                             \
++	drv_type *drvdata = dev_get_drvdata(dev);                             \
++									      \
++	return vfio_pci_core_runtime_suspend(&drvdata->member);               \
++}                                                                             \
++static int __maybe_unused name##_pm_resume(struct device *dev)                \
++{                                                                             \
++	drv_type *drvdata = dev_get_drvdata(dev);                             \
++									      \
++	return vfio_pci_core_runtime_resume(&drvdata->member);                \
++}                                                                             \
++static const struct dev_pm_ops name##_pm_ops = {                              \
++	SET_RUNTIME_PM_OPS(name##_pm_suspend, name##_pm_resume, NULL)         \
++};                                                                            \
++static pci_ers_result_t name##_aer_err_detected(struct pci_dev *pdev,         \
++					     pci_channel_state_t state)       \
++{                                                                             \
++	drv_type *drvdata = pci_get_drvdata(pdev);                            \
++									      \
++	return vfio_pci_core_aer_err_detected(&drvdata->member);              \
++}
++
+ #endif /* VFIO_PCI_CORE_H */
+-- 
+2.43.7
+
