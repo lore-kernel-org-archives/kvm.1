@@ -1,210 +1,142 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA94C2247;
-	Mon,  5 Oct 2026 18:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1F230AAD8;
+	Mon,  5 Oct 2026 19:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791226345; cv=none; b=Els9gHzouDnJEjv+SRnqk9J/oxKVGQ/x51tI6Na38piL16GExPZkN2yxaIw2R+mLOM3+e5dtuPHhZRsJvYMfzsarR1Xyzr52UnWvCt7PQxWQ3mUJxjrmOFn2T0LZjebcWrQ2JE92iX0fd+DNjtCHXI1lnwgnkbisIq4CTCqrpeA=
+	t=1791228024; cv=none; b=HjY0fK5ik9+U5FMnOwY04bv19GtqaqUVlB+zXDMir70oWnq8nv4AJXoIW8Z7Itku5h+MVOi3iSya+VPsXueduv8SCd1Rsn8z77KedG41OiVUjiGaKvleHGuGCLVcjqG3oMChTgzQwJ9Ckt2dUWigBfN1ykGmVbofYioXFhMF96o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791226345; c=relaxed/simple;
-	bh=io1ma+FCGtzcTYiMn6NEb1oTjjDWX1Xm5d+C1HlDY7U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N6krxq5kDLeyI7zK7zPJMD/17L7gan7pAUQswfOivehueEvCKn0667GVO3JkoKPW2dU14KEo/Nzn92CPn6H5XE5xk6Se4dxobMR6TXMZz9P2y1TXny3dt3dXtFUIcES5X1b+BDgl/+sgKsZFLbnvQmpaCb3wxAEUQHFU+sY5sZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OVGUhC5v; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791228024; c=relaxed/simple;
+	bh=SrLUQHaTErXY75ovh1E+cHDPNatBH3CZnT4ipuUVkH0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jN1aGIdnNA4NGi8JOLTvvCT16wYjFBmTOz0qjjPUZD6laupyx2OpV8c0hXTrD+0/gLwSnAtdCUKHoiZwIlhY6YQA7PNoi7d4LzEH0hijiDxSYxdM43rUlx4Z5Wlh4vVOBE3HHNVRYE5qkWpNbRyQM9X4Wlg9SNBziDLW2IA9mV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=efvtBDTE; arc=none smtp.client-ip=52.26.1.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OVGUhC5v"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695HZOBi1256933;
-	Mon, 5 Oct 2026 18:52:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=FWYTv8
-	8690CZNQcrfIzt0A7pFkyXKF3PfGE3ZdieKs4=; b=OVGUhC5vIYpLhkWMQrS8lV
-	qSJbe9kafZZw4GzNgBlcaJS8UR915yE/mkw+Y5m2FXlTreuE7VxHhX2x+89l0Ail
-	un/ImjmCfdfKmh2dP3fsH0ZgfMr73BQq39YOt4JpyN++Ji1TmmUypBmGW7Y4UrRq
-	kAjN7vV59JmqYC9wWQuzQFhiYe70foabV/OzMv6crOIsjZdvsn5uWBo4nvg3wJXp
-	8Vw22PWjAcCfrytBNS0nSABWhSmHOqkcSHfMkHVyc9R30a57Wh0c7hEBs9EvkgxS
-	errWwLdGyi5QrfTd3AOu/WauFemw3TUEVh7yEg/8vRIOKdmF8heF5Bg8zHARbzeQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5bxf4-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 18:52:18 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695HMYX73238815;
-	Mon, 5 Oct 2026 18:52:17 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3c1ppwdj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 18:52:17 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695IqGLU29753860
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 18:52:16 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6BE3A5805A;
-	Mon,  5 Oct 2026 18:52:16 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E903558054;
-	Mon,  5 Oct 2026 18:52:14 +0000 (GMT)
-Received: from [9.61.34.243] (unknown [9.61.34.243])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 18:52:14 +0000 (GMT)
-Message-ID: <a88bf7e9-10f3-4c46-a8a3-8f029e555c70@linux.ibm.com>
-Date: Mon, 5 Oct 2026 14:52:14 -0400
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="efvtBDTE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1791228022; x=1822764022;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=D8mW2fWN8EvSGyuK4guDuczx+whRKJ16nzLe2cDa1pA=;
+  b=efvtBDTEbdzZFUv7l/n0hWXNVnXemAadq3EggfzKqV3Fy9+o3dwsG0kN
+   Snj8I24rgpRT0+moai+rOZIOSi8ij9rsgojXskug/altlqbekF1ZA8eXk
+   wyDxS4532p+5AtT+gIs1DasJBRBDjW/ji2iiwD2tbQ4V02lVIAFjEsZtg
+   HkTykjsQO5KXGEwkI/46CwYl4b1Xi+T6/YOh4SX3SLelRwb4EVtpVMggu
+   +S9Nebsqnnt8JrhKcYMjHlC6foaFtNf2cm7UXGYaxcFjEDTTaYhjTQoRj
+   D60tDfKdPGLL9A/AXTY1wbibifWykHtZnL0P3NH9nysIu/tXSDdcXlP9B
+   g==;
+X-CSE-ConnectionGUID: 1bjJ9ktQRRCDHQXwR29h4A==
+X-CSE-MsgGUID: RsqX0UpATYiF6p36OQis7g==
+X-IronPort-AV: E=Sophos;i="6.27,142,1787011200"; 
+   d="scan'208";a="30507217"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 19:20:19 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:17183]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.24.164:2525] with esmtp (Farcaster)
+ id f12a0637-e7a1-4e4d-a1b9-2d0dafe6d759; Mon, 5 Oct 2026 19:20:19 +0000 (UTC)
+X-Farcaster-Flow-ID: f12a0637-e7a1-4e4d-a1b9-2d0dafe6d759
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Mon, 5 Oct 2026 19:20:19 +0000
+Received: from dev-dsk-hmushi-1a-0c348132.eu-west-1.amazon.com
+ (172.19.124.218) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49; Mon, 5 Oct 2026
+ 19:20:17 +0000
+From: Mushahid Hussain <hmushi@amazon.co.uk>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<nh-open-source@amazon.com>, <mushi.shar@gmail.com>
+Subject: [PATCH] KVM: x86/mmu: Fail nested EPT walks for GPAs beyond the EPT width
+Date: Mon, 5 Oct 2026 19:20:10 +0000
+Message-ID: <20261005192010.66037-1-hmushi@amazon.co.uk>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/15] s390/vfio-ap: Reset migration state in
- VFIO_DEVICE_RESET ioctl handler
-To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-5-akrowiak@linux.ibm.com>
- <d3c453ce-6e9f-4c1b-aef7-8d1b1f1be46e@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <d3c453ce-6e9f-4c1b-aef7-8d1b1f1be46e@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA3MyBTYWx0ZWRfX9sonKXMyjMsd
- had47/AcPbdqQIkgIU1VPqilWP90CeOirjyc/O5Mnqvw+rDXN0GkDPU9Epsz4hvpn2FkIs5lpdo
- D9a5dEVf94KLOtHasEI82fZTMdQvcXY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA3MyBTYWx0ZWRfX9hiXL6fEib5b
- nf5VlIxBDHY0kzwju2x/Ks+//8uZPJkjYEn6n9RibiOsyh+gB1cUfs8t2VAu4+wXSLHAB9ObILZ
- DY2HIWXi/hDy3lOfBTXRunZDNtPjPM9LE1eQx0t9nPhhrcRwEg/Lzu2Dxb8Wcj2eqLuANkX3RNI
- vW2X7JvfGbagNKnTehrN3DGbTrLdj5YC7o50war5Tpr/Rt0BEaHcbDYuf5ilII/O+AKdNfa0m/o
- zKJCdJWPh/4pInSL3tl+YBfk+T0pWAXKVL13Tefnz/OCklsyS67F3+xgHuMVhm5+7JhyibNirTw
- CMJm/DdsqxLUiz2Ts3V7fiPTQDnGj7y1yMMkVdiUxToigObQruXjigvBMnsW7z7JTxbJdw2+52D
- C8hK2V7YtlPRa8qbc6OGkkH/jBkiPaHgBbaV6d+ICKGgWWWZjxcOIGSRHpWNPnQ8htJBO9ZrZCp
- uG9Nw/evXXVSoNbpr9g==
-X-Proofpoint-GUID: QeQadU53vPfxMm543ZlJagMY5B4sCp8n
-X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac3f1e2 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=y0eLMb8oXC195jKi86oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: QeQadU53vPfxMm543ZlJagMY5B4sCp8n
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_05,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050073
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
+Fail the nested EPT walk when the L2 guest-physical address has bits
+above the width of L1's EPT. The width is 48 bits for a 4-level EPT
+and 57 bits for a 5-level EPT. Report no RWX bits in the exit
+qualification, as for a translation that no table entry provides. L1
+then handles the EPT violation itself.
 
+Hardware signals an EPT violation for such an address without a table
+walk. KVM's shadow walker instead indexes the tables with PT_INDEX(),
+which drops the high bits. The walk resolves the aliased address and
+KVM installs a shadow mapping for the alias. The CPU faults on the
+original address again, and KVM repeats the walk without end. L1 does
+not see an EPT violation for the access, and the L2 vCPU is stuck.
 
-On 8/11/26 1:05 PM, Jason J. Herne wrote:
->
->
-> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
->> According to the VFIO migration specifications, userspace must issue a
->> VFIO_DEVICE_RESET ioctl if a vfio device enters an error state or 
->> fails a
->> state transition to recover the device and return its migration state to
->> RUNNING. This patch adds a function that is called when a 
->> VFIO_DEVICE_RESET
->> is issued that releases the migration files and frees the storage 
->> allocated
->> for maintaining the migration state.
->>
->> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
->> ---
->>   drivers/s390/crypto/vfio_ap_migration.c | 20 ++++++++++++++++++++
->>   drivers/s390/crypto/vfio_ap_ops.c       |  4 ++++
->>   drivers/s390/crypto/vfio_ap_private.h   |  1 +
->>   3 files changed, 25 insertions(+)
->>
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c 
->> b/drivers/s390/crypto/vfio_ap_migration.c
->> index cf303d228a0a..1613813124b6 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
->> @@ -238,3 +238,23 @@ void vfio_ap_release_migration_data(struct 
->> ap_matrix_mdev *matrix_mdev)
->>       kfree(matrix_mdev->mig_data);
->>       matrix_mdev->mig_data = NULL;
->>   }
->> +
->> +/**
->> + * vfio_ap_reset_migration_state - Reset the vfio-ap migration state
->> + *
->> + * @matrix_mdev: pointer to the object maintaining the vfio-ap 
->> device state
->> + *
->> + * Called during VFIO_DEVICE_RESET to clean up any active migration
->> + * state and reset the device to RUNNING state as required by the VFIO
->> + * migration specification.
->> + */
->> +void vfio_ap_reset_migration_state(struct ap_matrix_mdev *matrix_mdev)
->> +{
->> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
->> +
->> +    if (!matrix_mdev->mig_data)
->> +        return;
->> +
->> +    vfio_ap_release_mig_files(matrix_mdev);
->> +    matrix_mdev->mig_data->mig_state = VFIO_DEVICE_STATE_RUNNING;
->> +}
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c 
->> b/drivers/s390/crypto/vfio_ap_ops.c
->> index 90b0fce0123b..d05372b50d2f 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
->> @@ -2330,6 +2330,10 @@ static ssize_t vfio_ap_mdev_ioctl(struct 
->> vfio_device *vdev,
->>           break;
->>       case VFIO_DEVICE_RESET:
->>           ret = vfio_ap_mdev_reset_queues(matrix_mdev);
->> +        if (ret == 0) {
->> +            /* Reset migration state per VFIO migration spec */
->> +            vfio_ap_reset_migration_state(matrix_mdev);
->> +        }
->>           break;
->
-> Why do we only reset migration state when vfio_ap_mdev() returns 0? 
-> Even if this call fails, we are in the VFIO_DEVICE_RESET path and we 
-> need to clean up the migration data, right? Or did I miss something?
+Any L2 that references an address at or above 2^48 under a 4-level
+EPT triggers the hang. The easy way to get there is a MAXPHYADDR that
+differs between L1 and the host. Take L1 MAXPHYADDR 48 on a 52-bit
+host with KVM's default allow_smaller_maxphyaddr=0. A PTE bit that L1
+treats as reserved is then valid for the CPU. kvm-unit-tests "access"
+and "vmx_pf_exception_test", run as L2 under an L1 KVM with MAXPHYADDR
+48, hang at the first present PTE with bit 51 set.
 
-I think you're right here. After reading through the documentation and 
-doc blocks, it looks like the
-contract on a reset is to do what is necessary to set the migration 
-state back to RUNNING. That
-would include cleaning up the fds etc. Besides, reset status and 
-migration state are two unrelated
-issues.
+Fixes: 37406aaaeebc ("nEPT: Add EPT tables support to paging_tmpl.h")
+Assisted-by: Claude:claude-fable-5.1
+Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
+---
+Reproducer:
+  L1: KVM, CPUID MAXPHYADDR 48, 4-level EPT.
+  Host: 52-bit MAXPHYADDR, allow_smaller_maxphyaddr=0.
+  L2: kvm-unit-tests "access" and "vmx_pf_exception_test" under QEMU.
+      Both set a PTE with bit 51, which L1 treats as reserved and the
+      CPU treats as an address bit.
 
->
->
->>       case VFIO_DEVICE_GET_IRQ_INFO:
->>           ret = vfio_ap_get_irq_info(arg);
->> diff --git a/drivers/s390/crypto/vfio_ap_private.h 
->> b/drivers/s390/crypto/vfio_ap_private.h
->> index a2a713f93674..1fbdfcce5a11 100644
->> --- a/drivers/s390/crypto/vfio_ap_private.h
->> +++ b/drivers/s390/crypto/vfio_ap_private.h
->> @@ -175,5 +175,6 @@ void vfio_ap_on_scan_complete(struct 
->> ap_config_info *new_config_info,
->>   void vfio_ap_init_migration_capabilities(struct ap_matrix_mdev 
->> *matrix_mdev);
->>   int vfio_ap_init_migration_data(struct ap_matrix_mdev *matrix_mdev);
->>   void vfio_ap_release_migration_data(struct ap_matrix_mdev 
->> *matrix_mdev);
->> +void vfio_ap_reset_migration_state(struct ap_matrix_mdev *matrix_mdev);
->>     #endif /* _VFIO_AP_PRIVATE_H_ */
->
+Without the patch both tests hang at the first such PTE. L1 sees no
+EPT violation.
+
+With the patch L1 receives the EPT violation. Both tests pass with the
+bit-51 cases excluded, as access.c does for MAXPHYADDR >= 52. This holds
+with ept=1 and ept=0.
+
+ arch/x86/kvm/mmu/paging_tmpl.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index 8e350095508c5..6ba4439e56b10 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -378,6 +378,21 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ 	    KVM_BUG_ON(walker->max_level > PT_MAX_FULL_LEVELS, vcpu->kvm))
+ 		goto error;
+ 
++#if PTTYPE == PTTYPE_EPT
++	/*
++	 * EPT translates 48-bit guest-physical addresses with 4-level tables
++	 * and 57-bit ones with 5-level tables; hardware raises an EPT
++	 * violation for an address with bits above that width without
++	 * consulting the tables.  PT_INDEX() drops those bits, so walking
++	 * would resolve the aliased address and the shadow mapping built for
++	 * it can never satisfy the CPU.  Fail the walk the way hardware does.
++	 */
++	if (unlikely(addr >> (PAGE_SHIFT + walker->level * PT_LEVEL_BITS))) {
++		pte_access = 0;
++		goto error;
++	}
++#endif
++
+ 	++walker->level;
+ 
+ 	do {
+
+base-commit: 6bd2905303c58679e303941b7d8ae8c074cd95ce
+-- 
+2.47.3
 
