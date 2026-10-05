@@ -1,70 +1,84 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f1.google.com (mail-lr2-f1.google.com [74.125.230.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8361447CA9C
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 11:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958EC47FB0D
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 12:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791198105; cv=none; b=s5xzdN2opuOmvJAjBE01IgASOkmDTfToQuZdsknjYxSVPKKSSEfinCHBGy2slZFWbdmwvBc3G+q/x4XTzbVoV2/v86glFElr9/S4d6jAmQTWn8SF1WHkU9vyLqG8cieProSf/LNjRDOtfLIQ9qn9dWVCEFwCqk/+UoNng2wXW8s=
+	t=1791203855; cv=none; b=Pv19ihVbMlAMpYY1LDLlNkZ5znJ9+M5NNc9+F5Qjoc2DsR4TmGGU2e9dWaM5W62wX2f807IyR//Y8YWZKeD2NgEz2Go+fYKIyNa0nSoDer9l3SI7O7g2/mJqeF6fVp1Dc68b0Ae7gjfapnIw1/nYxiShR0UsqIvxZL9BAr690Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791198105; c=relaxed/simple;
-	bh=VAKmTovVzb87d5A8hUeHQhkh9HG4yeL7dyz+l+PJrmo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuDTRwhmeK27RsHG6OepKxEDSbKL0ezqRWagwaDZG/x1zTz4QKJE4iVOxe2XnLLZ+kiXu7LJudrziaYcKYyY5rW05taSaKrKqaboBaMN2fyP3eEu8vMMBz4w1cAcBo+bbVbTTym4JAA16Bhs7EasPxBfO4kIadBKcjq3Kcj64NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gCt6UKg4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791203855; c=relaxed/simple;
+	bh=kBexbWtC4+MyoxidFkM/IIOP2Geigs/tBXSpL3HrsRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MgnL1IQNqhz9/o28fRhKlyc7e1KpM872dGVigamCNajrb0byms1TY8OayioALWHgCa+KG+X1pFXe2pvM7VN0RbS8IJQApW9dU5pbjpXPDUrlEWUNVJgwiCJ9WzYf8I2srT2viJCBDgOMV+3EKArOVC5MOiBeV/yEInS3mysufjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qvzL1VD6; arc=none smtp.client-ip=74.125.230.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gCt6UKg4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791198102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VAKmTovVzb87d5A8hUeHQhkh9HG4yeL7dyz+l+PJrmo=;
-	b=gCt6UKg4MyEPKLtVb4PMp0Q2tPtr7DnlwBbdCy/nScQEuDDHE8Bm/fyYJJBlLLUS4aXaPm
-	5x0CE9G65U4Noqi6JLaszqyF8fTFlidLRYzdXLjeVZmXJRdlt8++uyyonFkwuJCKBC/W77
-	OeD33uC7TxqSyFFyxdUj2YavmOdnP4c=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-76-uq9_KcWuNnGBqTT2Pu5KUw-1; Mon,
- 05 Oct 2026 07:01:39 -0400
-X-MC-Unique: uq9_KcWuNnGBqTT2Pu5KUw-1
-X-Mimecast-MFC-AGG-ID: uq9_KcWuNnGBqTT2Pu5KUw_1791198096
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B6521801220;
-	Mon,  5 Oct 2026 11:01:36 +0000 (UTC)
-Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A51F23001D2A;
-	Mon,  5 Oct 2026 11:01:32 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jgg@ziepe.ca
-Cc: alex@shazbot.org,
-	ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	bhelgaas@google.com,
-	jjohnson@kernel.org,
-	johannes@sipsolutions.net,
-	jtornosm@redhat.com,
-	kevin.tian@intel.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qvzL1VD6"
+Received: by mail-lr2-f1.google.com with SMTP id 38308e7fff4ca-3a772511049so13832331fa.0
+        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 05:37:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791203851; x=1791808651; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gt2QZueXCtMYUg/+LdAV+X7CcqwaR0yZcibIjcXuM5k=;
+        b=qvzL1VD6uM0sytgBhyC3jR+W1WlZGDTYiTyunLh2P3wWkp2PzcE4RdfxVwpXld/zLd
+         SoQfOa71Netzo04XfJTOw2ZKUUoO9iX3hJcqNZY0Uq1kOknVYkSoeJs+CyTCw72rIQKJ
+         oynUVidqYa7k+vnuY0eAbd1GcCtlYDPOHD2TJq0d+YSe8NaCLo2zW60+/cvMQAwia7cp
+         2JyiK+M/GJwZU2sGcqUZHDlWtAVPbk+pkBRWUtqytKp+UCI/wwGUtM0sS+Rijxn71pla
+         UQQyIulaUsNADU1RWpxUbWVUQ1YQXsLWnSaFnKMvRWMWErQP1QrHFhi/wTiuQRpQf943
+         kReQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791203851; x=1791808651;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gt2QZueXCtMYUg/+LdAV+X7CcqwaR0yZcibIjcXuM5k=;
+        b=Pk995Czb4uaARRTk7F6IeSEjOzLGf7duM0oh3L782n98YDRpYNmZQHKWPb23fmODHQ
+         cLas4KMwsSu+xGb9GxItW/B+ow8KxiLnXFr6F2YDMmigSVVIbQRgo0tmAPSqXJZSylZc
+         yqTDehAC0Fzk93s0R1Dx3QRtWMWnNtMb1UaXmezi6zEgyEe//nw3NDA0zT1XZVI8s+qc
+         bxh6IZvpgrJ/NakDEC7nDpePp5SD4hETWGYcaPOkRMhjIeUIIKh7GM7k8D7Qv2mO6LAW
+         zwRoscjLoSFAiRBw2nDykBVB+Eil9itEP3vZ3lSO4+6NqN9/Y2tokHJX3DeGRY/WwHSm
+         LaYA==
+X-Forwarded-Encrypted: i=1; AKwUvByeNrDYR3nhIA/lZJokYVCiBQXmnmFMtgJy/qZ532fYabnTkl8wqNzig53pvamJ6aZDa/0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIfZGPgeIFN2tCOKQ9u1fCc6L2A2tx/pbYQebZET6zx9A1CAJ9/
+	ALYzWXv5x5vj6pECOl/GgHsBfnQWR4VzoD0bWAQ3uX/wqQjuHrYiw9Om
+X-Gm-Gg: AYBFou0Qm8df3fTD/5yVk+DhrZDFdTYOZFN+9JzaQhuyeMIWL26P3S3gWccqldA2dtW
+	FknKA8By3Pdigf9ChJ/bzxLds7YK2lLpSw89fjsjp8fZxUI72yc7dInhp72RtAgYezrGMux7QTc
+	/r8kbTxd2uyO6/WbwBu8TErmyHMTvbgLd0Z/JwEklBRG3C4o0da6XxVgpEblBl5GKzmsBSmCOTA
+	EgPsUv9IpAQzyeoZoIkqbgJqeGdEscg2V3wvtmIxIY1WXHM0Kl/WdwSEBFW/Yz6a7/Pj1S/sN/p
+	DmP8ubG/wrvzLW4XvExhe2E9s1gQ7YvcETeqa2r4XXq90UTZUVo5R0M7pGshcS8xMiPNWzF8kyQ
+	XTZLCWPC8BXpaubn4FQL8lpQl7OlC2A0A4ajFgzfswv8kiQTO10OUATRRqrfu4E3IOu0N5KimWU
+	B+Kp3pQZRGKMqH0DMDyWffJ+dI71zl+YV7b8EILVmoUTIQanZ6O4vZRJ4bJlXP8St/ZxgdTW1n/
+	NaugChL+nZs8Yv+
+X-Received: by 2002:a05:6512:688d:20b0:5b8:bc5e:d118 with SMTP id 2adb3069b0e04-5bb9bc2ba85mr2534588e87.66.1791203851108;
+        Mon, 05 Oct 2026 05:37:31 -0700 (PDT)
+Received: from localhost.localdomain ([78.40.184.2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bb7c718f62sm3228393e87.12.2026.10.05.05.37.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 05:37:30 -0700 (PDT)
+From: Roman Demidov <roman.demidov.nn@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	kvm@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	mani@kernel.org,
-	skolothumtho@nvidia.com,
-	yishaih@nvidia.com
-Subject: Re: [PATCH 3/7] vfio/pci: Add qcom-vfio-pci variant driver
-Date: Mon,  5 Oct 2026 13:01:31 +0200
-Message-ID: <20261005110131.84545-1-jtornosm@redhat.com>
-In-Reply-To: <20261002171046.GA32083@ziepe.ca>
-References: <20261002171046.GA32083@ziepe.ca>
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10 1/3] KVM: LAPIC: Advancing the timer expiration on guest initiated write
+Date: Mon,  5 Oct 2026 15:36:58 +0300
+Message-ID: <20261005123705.137028-1-roman.demidov.nn@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -72,81 +86,37 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Jason,
+From: Wanpeng Li <wanpengli@tencent.com>
 
-Thanks for the follow-up.
+commit 35737d2db2f4567106c90060ad110b27cb354fa4 upstream.
 
-> It breaks because VFIO will only cache *actual* MSI-X table entries,
-> it does not have visibility into anything that
-> platform_device_msi_init_and_alloc_irqs()
+Advancing the timer expiration should only be necessary on guest initiated
+writes. When we cancel the timer and clear .pending during state restore,
+clear expired_tscdeadline as well.
 
-You're right, the current hook is on SET_IRQS which is tied to standard
-PCI MSI allocation. If the driver moved to device MSI domains, this specific
-hook would stop working.
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Wanpeng Li <wanpengli@tencent.com>
+Message-Id: <1614818118-965-1-git-send-email-wanpengli@tencent.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: 54b3439c8e70 ("KVM: LAPIC: Also cancel preemption timer during SET_LAPIC")
+Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
+---
+ arch/x86/kvm/lapic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-However, and I was referring to this, the variant driver is a
-self-contained module, it doesn't prevent anyone from moving
-ath11k/ath12k to device MSI domains. If that work happens, the
-variant driver can be adapted to hook the new allocation path, or
-replaced entirely.
-
-> The only reason this works for you at all is because the driver
-> hackily copies the vectors from the real MSI-X table so it can look in
-> the "cache" to find their true physical versions.
->
-> Which is my general objection, I would like to see the driver to use
-> platform_device_msi_init_and_alloc_irqs() and don't want to get stuck
-> unable to do that because it would break this.
-
-I understand the concern, but I haven't seen any active work on
-moving ath11k/ath12k to device MSI domains, and the VM problem would
-remain exactly the same after that move (as you acknowledged). It would
-mean waiting for a refactoring that has no active work or timeline yet,
-while users remain without a working solution.
-
-> Yes, but it does actually solve the problem in all its forms..
-
-From my research, there is currently no existing work on device
-MSI domain virtualization in KVM. Building it would require
-coordinated changes across multiple subsystems (KVM, QEMU, VFIO,
-IRQ core, guest drivers, arch code) and several maintainer trees,
-and there is no KVM hypercall that bridges to VFIO, so the
-architecture would need to be designed from scratch.
-
-In the meantime, the variant driver provides an immediate solution
-using an established kernel pattern, for users with deployed hardware.
-It can coexist and be replaced when a generic mechanism arrives.
-
-That said, I'm open to restructuring the current approach as a more
-generic VFIO mechanism for exposing host-side device metadata to VM
-guests, where MSI address caching would be one quirk type rather than
-a Qualcomm-specific driver. This way the framework would be reusable
-for any device with similar needs. Would that direction be more
-acceptable as an intermediate step?
-
-> Everyone else seems to know this stuff doesn't work for
-> virtualization and doesn't try to do something like that.
-
-The firmware is what it is, and the hardware is deployed. The kernel
-regularly supports devices with non-ideal firmware designs through
-quirks and device-specific drivers, and this is what I am trying to
-do with the VFIO variant driver pattern (as it was previously done
-for other drivers).
-
-> Why do people care so much about this? I always thought it was a bit
-> odd?
-
-WiFi passthrough to VMs is useful for network function virtualization,
-security isolation (running the wireless stack in a separate VM),
-edge computing, and development/testing environments. These are real
-use cases with real users who have this hardware deployed today.
-Qualcomm wireless cards are widely deployed, perform well, and could be
-actively used in these scenarios.
-
-Thanks
-
-Best regards
-Jose Ignacio
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 8b7c3f773d70..0b6fc5395798 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2629,6 +2629,7 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+ 
+ 	apic_update_ppr(apic);
+ 	hrtimer_cancel(&apic->lapic_timer.timer);
++	apic->lapic_timer.expired_tscdeadline = 0;
+ 	apic_update_lvtt(apic);
+ 	apic_manage_nmi_watchdog(apic, kvm_lapic_get_reg(apic, APIC_LVT0));
+ 	update_divide_count(apic);
+-- 
+2.53.0
 
