@@ -1,117 +1,198 @@
-Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640CD4C10F1
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 16:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F4B4D37DA;
+	Mon,  5 Oct 2026 17:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791216998; cv=none; b=EmzRbFTM9S0jTE6dbWnZJqJre0xBcmxidPPcYiOUme/MHzGpWudz14W79jewi409v+jxC4G8Kg3hXqYTVso29q1bQOE4iRp9DDf0/7ys5J6/g9kCJLF3rwgtFFg52+4arKD01hZLyaG1hkM1qF9kUqc6t2JqccT0y/I5mGNdIBI=
+	t=1791221213; cv=none; b=NCAgRKiH0VXw9YiK6bpMKyP++BKjMwRNBZRsildjYiK+55hzrvJ371u3rQA5/hORs4SvAKoWIRM743aAjiZF9UyPzzTb0AmGgwoPrUKqof6FQGDAmt8eT9G6Uk81FiLpjOLJZ7SWEX1mu612dTPWZjg317Ne6dr82ctK2mPKAJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791216998; c=relaxed/simple;
-	bh=RKzP5xYHx7ykUWadWThP1j3Bv7bddgBrpR4XChhQ9Og=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ivbA2R0zEEx5id2sBd4Rz/VT30M56+TFi5rW2reEAMIy/oLsIVJKctiijgofn5E7aNWppOLT6Lh3i/75KbZPiMIbFOh66MwN5RIrzIocRdsqucYcasYF7x1JdSPD2rer5y4/DwobAvg0m2bjC5elsS2mt5NYskIxb40me8zPyX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=FUfxR+Vf; arc=none smtp.client-ip=74.125.227.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+	s=arc-20240116; t=1791221213; c=relaxed/simple;
+	bh=4N6ZXnhILdTijI2h8epOSD16hDy6Wvib2qv1LLfxtQs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T2E5sMEMUirgSWnb8FITt58AmAqbN4nIqbkg+J25NhIsGEhNUGkBEBW63T5Stz4q2xilgM9qbQcC9LtRdviax+lapQ74XTFeaZYWfqlKqrZV2J4pTDNXFs/lc0AXtbyUu7Fnuorpk0TCPFbV6Rs8Xaza8OCUyngf+XzAkZzY2UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmFZU1Gi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="FUfxR+Vf"
-Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a7d725ca09so668470a91.0
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 09:16:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1791216997; x=1791821797; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=9v042JvYwgrOTfMUZGh7htN3q5uPdutTlCAPZEqWoc0=;
-        b=FUfxR+Vfxkx8f4sAk3lSX1Y/+LGNAsVXecR7zzQua+vPSPHBbmkIwDlmopuBxrwUyF
-         3fxu3/Avd+EGom2aINYipK1XsPXQGcMUUcBxvn79K/UMftkB2rruo522RSgtmbOJD2/R
-         DUwWIjBFBtvau6cnN8Q5OHjOcBGwL6rgJZ1/g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791216997; x=1791821797;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=9v042JvYwgrOTfMUZGh7htN3q5uPdutTlCAPZEqWoc0=;
-        b=dETWa1fhMZ+C4FMILAV1DNxhc1GrbK7OA/xDhx45GIvlhkuhODFHEZOzjevYZbztyC
-         20ht2qaVPvKbOs/jWQluuqAoFzFbp1jM7FB5DBH8EbN8XOcSFEbSUWn4b+8cCiTfS/fi
-         SwoYfxSNpvz7Is6l5a4mluOnzEetR/bbG2XdmfwFmT0vg99m4fcqfLz3B1CqKjuFRnnT
-         TAdNjRe6T7bHuJ45z4DYEznaLHUT2KUkozJUbNkWktiFRQYMLMhSMEUHh46NVRWuobv7
-         8Ks+CqXU2KSh4Q7OUJVTequvxEJCy/g5/HxyHoNur9yZ5+5KBex9dxL2WPcEnt+3oP6g
-         ZxXg==
-X-Gm-Message-State: AFq9FYK8WCm+CulBTgFb269CU9fvn58fgoRfCvfwIrNNKJwoTMEs3dEU
-	q122aKpWtPTjI3ftB1ciRTJb81aSmRNCkmDLnyhEv+0i/LTfk7+KcSQ0V9dsg9jlmkM=
-X-Gm-Gg: AYBFou2vUDxC33hk/+YUYoG6yAt8yPf5wTJA5iVKdpKTLNrkk+TMF88N0GvkrAdLNVo
-	boMJyn66jLrVGRmnx2Yh3hggELSCTC95GtePwAxoDbE9oT8NXJ77g7+XJFits4Cc2mjoGM1ODbE
-	w5Ff/brq7HPMHNP49q3TH/aeY6mgoTs9wqKHy8XZ0bREWUNdnDgxSe8czOUjlHTShZgKJ2h47Xh
-	oWgH8EJdd0yNhlnMf925DlLmm82W0orXKGHPi23n8TRzNfVP6fBv3TYWvcvlUYnCvxzMt0TqNiH
-	s6evr+EMfxGXuzC0gZP9hSsi5P4ACA/muxrYLd8875mEANCGRtVeS6zO8ErCoPuL2gl0B/JR7uP
-	87Ts5LKsOz4BF0MilLdciV9JM92HZSdBB0joUsPfO/WIt2ptpF8xIylw0fJQjNzGhgVMzQ2DLuT
-	VOw++NUQb1KslyoSgbeQ3eC7roteSZ390fx6IipTfvpCeIILtR64AdzLGf+DeOxbMC
-X-Received: by 2002:a17:90b:3b84:b0:3a4:948d:9dc3 with SMTP id 98e67ed59e1d1-3a6ce6b409fmr9088604a91.21.1791216996658;
-        Mon, 05 Oct 2026 09:16:36 -0700 (PDT)
-Received: from [172.19.0.2] ([49.142.45.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a853cde769sm130688a91.13.2026.10.05.09.16.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 09:16:36 -0700 (PDT)
-From: Seongjun Hong <hsj0512@snu.ac.kr>
-Date: Mon, 05 Oct 2026 16:16:29 +0000
-Subject: [PATCH v2] vfio/mlx5: Fix boundary check in set_report_output()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmFZU1Gi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125F81F00893;
+	Mon,  5 Oct 2026 17:26:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791221212;
+	bh=onMIxLXihhMQM6gkjGW37CW4bU2QGudgAP0OE2d6biQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NmFZU1GiD4qdh7OoYqQlu614OeDZBKAbMMgeNnZyWRXnG2eszHvpUAGIl4FNdGL/K
+	 HjLYSjQYbVTAKPXd/8rsxi9NIEfT24QMNZJ0qJhlE67YHvdV/QlFQ0PPms1hF7ZdmD
+	 8yVjTl/xxvYuOaJ6bIohpw7EiMYgUp9i/3nirgP5yyA6BZmjPCtf8FMCH4XG9BHrzR
+	 8w55RvZXmk33GH/VczNtzD+tzFKD2CEZp4s+tdePLzHwSXDM174ZvCNs284ntCiEI3
+	 Amw1IUnwK8Pop9NobBT8fK6qvQl8myhgn6+Zxuzgxgk4rkJE1wxN7+h68BqLq21sIi
+	 L8mto4g2rl5ig==
+Subject: Re: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a failed
+ PM restore
+From: netdev-bot+sashiko@kernel.org
+To: jrmmhm.kernel@eldare.de
+Cc: mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
+ xuanzhuo@linux.alibaba.com, stefanha@redhat.com, sgarzare@redhat.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 05 Oct 2026 17:26:50 +0000
+Message-ID: <179122121054.434549.15763347362425052652@kernel.org>
+In-Reply-To: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
+References: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-vfio-mlx5-fix-boundary-check-v2-1-75599d2f4497@snu.ac.kr>
-X-B4-Tracking: v=1; b=H4sIAFzNw2oC/42NTQ6CMBCFr0Jm7RAoP0FX3sOwKO0gE7QlrTQQ0
- rtbOYF5q+/l5XsHeHJMHm7ZAY4Ce7YmgbhkoCZpnoSsE4MoRFsWRY1hZIvv19bgyBsOdjVauh3
- VRGrGuquuupWkBhKQFIujtDr1jz7xxP5j3X6+hfLX/ikOJaboauioaUhU492bNZcqnx30McYvF
- ucc98gAAAA=
-To: Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Shameer Kolothum <skolothumtho@nvidia.com>, 
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Seongjun Hong <hsj0512@snu.ac.kr>
-X-Mailer: b4 0.13.0
 
-Use > instead of >= on boundary check of recv_buf to avoid the bug which
-the full message in the last slot of recv_buf is ignored even though the
-received data size does not overflow the recv_buf.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Fixes: 9c7c5430bca3 ("vfio/mlx5: Align the page tracking max message size with the device capability")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
----
-Changes in v2:
-- Drop the max_msg_size readability change. Keep only the fix.
-- Add Cc: stable@vger.kernel.org.
-- Link to v1: https://lore.kernel.org/r/20261004-vfio-mlx5-fix-boundary-check-v1-1-1d3b8e55e23f@snu.ac.kr
----
- drivers/vfio/pci/mlx5/cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
-index 5fe0621b5fbd..04180035a7fe 100644
---- a/drivers/vfio/pci/mlx5/cmd.c
-+++ b/drivers/vfio/pci/mlx5/cmd.c
-@@ -1644,7 +1644,7 @@ set_report_output(u32 size, int index, struct mlx5_vhca_qp *qp,
- 	int i;
- 
- 	buf_offset = index * qp->max_msg_size;
--	if (WARN_ON(buf_offset + size >= qp->recv_buf.npages * PAGE_SIZE ||
-+	if (WARN_ON(buf_offset + size > qp->recv_buf.npages * PAGE_SIZE ||
- 		    (nent > qp->max_msg_size / entry_size)))
- 		return;
- 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
----
-base-commit: 6addb4f385570ebc11c4eb499a4f1c149f313e84
-change-id: 20261004-vfio-mlx5-fix-boundary-check-4839d6aecbe2
+- [Medium] This patch makes only the RX/TX detach loops in
+  virtio_vsock_vqs_del() (net/vmw_vsock/virtio_transport.c) tolerate a…
+- [Low] The commit message says the change 'mirrors' virtio_rtc commit
+  548d2208455f and that 'virtio_console carries the same stale-pointers-…
 
-Best regards,
+--
+
+vsock/virtio: clear vqs[] to avoid a UAF on a failed PM restore
+
+This patch clears vsock->vqs[] after del_vqs() in virtio_vsock_vqs_del().
+It also clears the array when virtio_find_vqs() fails in
+virtio_vsock_vqs_init(). The RX/TX detach loops are skipped when the vq
+pointer is NULL, so a remove or freeze after a failed restore no longer
+touches freed virtqueues.
+
+> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+> index 4f9aa9c4c3aa5..0553c0641fd28 100644
+> --- a/net/vmw_vsock/virtio_transport.c
+> +++ b/net/vmw_vsock/virtio_transport.c
+
+[ ... ]
+
+> @@ -782,19 +789,30 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+>  	virtio_reset_device(vdev);
+>  
+>  	mutex_lock(&vsock->rx_lock);
+> -	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+> -		kfree_skb(skb);
+> +	if (vsock->vqs[VSOCK_VQ_RX])
+> +		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+> +			kfree_skb(skb);
+>  	mutex_unlock(&vsock->rx_lock);
+
+[ ... ]
+
+>  	/* Delete virtqueues and flush outstanding callbacks if any */
+>  	vdev->config->del_vqs(vdev);
+
+[Severity: Medium]
+The detach loops now handle NULL vqs, but del_vqs() still runs
+unconditionally. Is a second del_vqs() safe on every transport?
+
+On virtio-mmio, vm_del_vqs() always frees the IRQ:
+
+drivers/virtio/virtio_mmio.c:vm_del_vqs() {
+    ...
+	list_for_each_entry_safe(vq, n, &vdev->vqs, list)
+		vm_del_vq(vq);
+
+	if (vm_dev->wake_irq_enabled) {
+		disable_irq_wake(irq);
+		vm_dev->wake_irq_enabled = false;
+	}
+
+	free_irq(irq, vm_dev);
+}
+
+Take the sequence from the commit message:
+
+virtio_vsock_freeze()
+  virtio_vsock_vqs_del()
+    vm_del_vqs()            <- vqs deleted, IRQ freed
+
+virtio_vsock_restore()
+  virtio_vsock_vqs_init()
+    vm_find_vqs()           <- fails
+
+vm_find_vqs() can fail in two ways:
+
+- request_irq() fails, so the IRQ is never re-requested.
+- vm_setup_vq() fails, and vm_find_vqs() calls vm_del_vqs() itself.
+
+Either way the IRQ is no longer held. virtio_device_restore_priv() only sets
+VIRTIO_CONFIG_S_FAILED, so the driver stays bound.
+
+A later virtio_vsock_remove() or a second virtio_vsock_freeze() then reaches
+virtio_vsock_vqs_del() again. The new NULL checks skip the detach loops, but
+vm_del_vqs() calls free_irq(irq, vm_dev) for an IRQ that vm_dev no longer
+owns.
+
+Won't __free_irq() hit WARN(1, "Trying to free already-free IRQ %d") here?
+
+The virtio-pci reproducer doesn't show this because vp_del_vqs() is
+idempotent. Would it be better to skip the transport teardown in
+virtio_vsock_vqs_del() when no vqs are live? An early return, or a flag
+that records whether the vqs were set up, would both work.
+
+> +
+> +	/*
+> +	 * del_vqs() has freed the virtqueues. Clear the stale pointers: if a
+> +	 * later virtio_vsock_restore() fails to allocate new ones, the driver
+> +	 * stays bound with a dangling vqs[] and the next virtio_vsock_vqs_del()
+> +	 * would detach a freed virtqueue (use-after-free). Mirrors virtio_blk
+> +	 * commit 0739c2c6a015.
+> +	 */
+
+[Severity: Low]
+This isn't a bug, but the commit message says:
+
+    This mirrors virtio_blk
+    commit 0739c2c6a015 ("virtio_blk: NULL out vqs to avoid double free on
+    failed resume") and virtio_rtc commit 548d2208455f ("virtio: rtc: tear
+    down old virtqueues before restore"); virtio_console carries the same
+    stale-pointers-after-failed-restore fix.
+
+Are the virtio_rtc and virtio_console references accurate?
+
+Commit 548d2208455f fixes a different problem. viortc_freeze() kept the old
+vqs alive, so that commit calls del_vqs() at the start of viortc_restore().
+It doesn't clear any driver pointers after del_vqs().
+
+virtio_console doesn't seem to have this fix either. remove_vqs() calls
+kfree() on portdev->in_vqs and portdev->out_vqs without clearing them:
+
+drivers/char/virtio_console.c:remove_vqs() {
+    ...
+	portdev->vdev->config->del_vqs(portdev->vdev);
+	kfree(portdev->in_vqs);
+	kfree(portdev->out_vqs);
+}
+
+The free: error path in init_vqs(), which virtcons_restore() reaches, does
+the same.
+
+Only the virtio_blk commit matches what this patch does. Could the other
+two references be corrected?
+
+Also, the new comment in virtio_vsock_vqs_del() hard-codes a commit ID
+("Mirrors virtio_blk commit 0739c2c6a015"). Could that history stay in
+the changelog only?
+
+> +	memset(vsock->vqs, 0, sizeof(vsock->vqs));
+>  }
+
 -- 
-Seongjun Hong
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-vsock-restore-uaf-send-v1-1-5da60f707506%40eldare.de
