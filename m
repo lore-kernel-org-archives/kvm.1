@@ -1,235 +1,127 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B732C4854ED;
-	Mon,  5 Oct 2026 15:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83E14C10F1
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 16:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791215265; cv=none; b=KOhGRcaBqg2kOcV4WnPyBoCnhY40oMTLcsnItXF0aWfjiwp00TCaKqWiHYXNATQZYUIsRwquTtYxaT+yGoWgjmPIKWxEPben/ZHaV0pD/d6ptJ4+P5VAgo0L7IUTH+112j+Tm2gJQnMEWvOpMH2A/31KhWmJZhytZgOljR8FbbA=
+	t=1791216977; cv=none; b=uHaG0O/+hIcTgptg8izxAOlOz30onwvmV7itVJJGUBAROlFsVXui2E88/xaMkz3C9cN+Jq0iX2wL8SKjeMgOhvCWCExd4HIsgKKfi1W0KRmgQYFtpszU8a/f+l3cmHI21th+XgP4pcmaFel3sPPN0KX9yS+paUrLDAwZ1aupp9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791215265; c=relaxed/simple;
-	bh=yh07cLqEdZk9Sw1l0uJeR4b7jf0BAPvbd8MvHOrmWLU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r3g6EXMbyW8aZKaHZgQ406faC+Qh3qnv5F3uszbwqfwHgQEJqLlqstGA80m+XeE7HxXnZFdBGkcxvG0ZtkDZZmKH4LA25jRorc7p5LylGtJOWOwZVVv5CXaS6zhZzvQzm07DI+zGC5VFlnH8HKPKOGurFX5TYZQhj2qIUrgHMi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tO2O3d5E; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791216977; c=relaxed/simple;
+	bh=rh5d2cNKBXKMwPxK3EfMFKvJ8TMXw53ExafPjYEUPHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cmSQ1eG7suQ7IcrMLnUHJewxAQSdAtPytk8rl0qmxPuTCQS1yzsd/T2xnEP+EHsFxmB03vuIe11w3HCsb5lJ6ZpwFhoOodqW0kTHCR78DKGryJ626fbMQtoY7MXU0zciD+k0O/4ghX0FIw0qR9kKLhCwAlYmoIw3FbLy3K/3ebA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=YiYM/PJc; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tO2O3d5E"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695EZakH3876221;
-	Mon, 5 Oct 2026 15:47:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=zuA+m3Ve+yKXr13CA2AYZtkxBuc5aJc3dY3RzdWTZ
-	YI=; b=tO2O3d5Eq1fuJjjcjsDHSguI1M11+jztYXNBfSK6CY31Vt6Z2zISvFryr
-	gEW4rRekYrpcZwhbvSIlCRYqIjXez0hSzRD5mXckrY48Wf+2AVxD10kfMM4tOR1i
-	Re1zxzdCEPS0ol0Mdnsvn3k7W4dNwDdtO1GoDl/HT4Ggc0GqCMoPkCC0x8QgOZE2
-	g5tcxqGjOPGMLCVC8vOantGyhc5kMlJmtbV5/X2XQ7QBb+FCAk8q+0B1AyeV1FlG
-	3l6B1EJQyCU0SH/6nqmtg+w9vMNjvp0ZkpFFtLcO6Wj89KNwitdBoygD56oL3rjA
-	e7qZyY7/kmLz+MXYlTmC2pplNGGaQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4ftj2h-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 15:47:23 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695EWVpv3063876;
-	Mon, 5 Oct 2026 15:47:22 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3eqy5v4a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 15:47:22 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695FlKJG36438628
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 15:47:20 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 45E2B58063;
-	Mon,  5 Oct 2026 15:47:20 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4CEE358055;
-	Mon,  5 Oct 2026 15:47:18 +0000 (GMT)
-Received: from Mac.ibm.com (unknown [9.61.252.89])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 15:47:18 +0000 (GMT)
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: oelghoul@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
-        farman@linux.ibm.com, gbayer@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, frankja@linux.ibm.com, imbrenda@linux.ibm.com
-Subject: [PATCH v8 0/4] vfio-pci/zdev: Improved zPCI Function Measurement Support
-Date: Mon,  5 Oct 2026 11:45:53 -0400
-Message-ID: <20261005154557.57801-1-oelghoul@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="YiYM/PJc"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39dacf053eeso914764a91.2
+        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 09:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=snu.ac.kr; s=google; t=1791216973; x=1791821773; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HZQZn6DIMQDQCLXf+RSqa5fylG7dJYyOrH4B8TI6hz0=;
+        b=YiYM/PJcenPgfbZ/n3Jm3OB9HIB8j4drOB7+froS+kXYkwgEb0VGBa1MaVHSGx5Rhh
+         X79DaJH0fer373z59lKkPyytcx7UP4bc5ZJCkbSj946+C4jbCUp/1W6s45E7IR8Dkv1c
+         e0xQlPQkglpFdoZv8IbOMT1RMO0QCWnolYqrk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791216973; x=1791821773;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HZQZn6DIMQDQCLXf+RSqa5fylG7dJYyOrH4B8TI6hz0=;
+        b=gsCc+Jf+wCe4Ew0WlbFU5D4sT7lr1RrnzKygmj9ee0HYR0LzoekXrx4Q7mFrJzb1Ag
+         yC4we06bI7xwHB61jxdrA0f3uUXOP66ttrKf0RtBEOeQLA0CRsYk/gamugFUfFISXFrO
+         03GGa4m0ZIZgTe/82Mfxz/TSa2QsgNe9RbgxxxrSNRgLYAjWdoDb92T3R793V5vyr6tZ
+         gG/dobncHAwcvGvjwnW4Oso3B0V5JJkebiBVJNm9sdWuJ488xPsQA/fvs/cuV1WdMZ9k
+         qRPaNIF2vwIKcw0AnEIPsktARVK2xx7AP+Efuwi1FViJu2ZZgsUr943GOHpYjHJqFw+P
+         oKSA==
+X-Forwarded-Encrypted: i=1; AKwUvBxnVpNkV7sFsYc3OpJXfHlv1KDT4Fdsb93L1P5779wqTZiWS2uCA340LdsuOTJWZryflss=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJl6bHVsoq9tS13zNZHBgiNm5JFwScEecEIb+NpnQC/IIXFg+Pv
+	kJXFaNvqy1AL9LFEzc4LLTlLfjnuZn3zKYDXMFrEU0St21HIm3uVYg8E9sUzBJQiqNQ=
+X-Gm-Gg: AYBFou2HuAUaAOAksdYFXBUCm6kRJ68Rb1RLVIWsSpgW3ZfG5D84TR6y6xEyiaTnbc2
+	CyR5Lswi0ZXKQoSFONzwshxpH6+x/5K5i7gbk1T6xM0D99jOhEaEmXbDnPgggCZ9wDQvfGfpiOZ
+	O+ybMtrylfDeh2/jAEizIs7VFcOD+et3yb1R9yoYGEXI4C+vAA7K9lsAvAtkNcSFmpAbQkmam+K
+	mQZagglC3HkY200ZfeL0g3mTtG2Ymtj7fSuLfAKONkAda7pNFfvLw2SKvQJHg0O/STvqjNkDCiD
+	iJ7FbzhoJHPi7Imju7xGEiN6xu4Cvuhv2qKmnkBCfgNKAEWaQSiFvxCfxwUdyVNoKaYcX5l9eKf
+	sFdNmpeAjFMbzKY95GvMW6xI4Lf0VgOXZr4TEC5CI/rHw9VUnDqKKgXMtqJxSynaKpYC5NCehj7
+	Ls8w+uXXik0T3jTRe3+igAgcJ70T5yBO9XkePyGiXMj7qKuHovJ+/fnat+wF6nCFbJ
+X-Received: by 2002:a17:90b:2fd0:b0:3a7:a463:54c2 with SMTP id 98e67ed59e1d1-3a7a46356e6mr4340629a91.35.1791216972916;
+        Mon, 05 Oct 2026 09:16:12 -0700 (PDT)
+Received: from 1c1aead48890 ([49.142.45.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6d901981sm1172982a12.14.2026.10.05.09.16.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 09:16:12 -0700 (PDT)
+Date: Mon, 5 Oct 2026 16:16:07 +0000
+From: Seongjun Hong <hsj0512@snu.ac.kr>
+To: Yishai Hadas <yishaih@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, 
+	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vfio/mlx5: Fix boundary check in set_report_output()
+Message-ID: <7fbiirwo2k34dcyza7ehmdevziqmch3foldxp6qeeclr3xjypg@enyyca5445pj>
+References: <20261004-vfio-mlx5-fix-boundary-check-v1-1-1d3b8e55e23f@snu.ac.kr>
+ <d4477773-a95d-4cc4-8d10-edf1f7b215df@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac3c68b cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=5osLMtGHjg6MEC5_PQ4A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA2MSBTYWx0ZWRfX2koCGGQa06kg
- 3kfuQLDDk/cvu7TffnJIXLF7xesOGHNX5k9mOoXUapoz8iLnpe5aVgdJPg6gn6HeJoGChhIgzsQ
- HyYfxvx9owk8jlSHo3DnroL9h6sDDExpkbhj2RivEWWEsxRC0CZQ9BGb3gT8i76xi+s7ueltF6z
- xfyjzHKXAVw1MptNuWEmxqwgmaIKyT256BK2YDt78HK0Q/4Ya5GMLSSWX3XlvSV3ycCnOZynVdX
- 6sIqoQsL8o48hhhW5cf2GjIANiKZdxNmcqkZlTr4TH+tVu+Utmrl1uL+EOZcpd26l+ANLG3nNk8
- f8jK8YGBefQYx3WyufdrTH3RGhn1I/GJKZzrmwMnnhUO8tTghQ6zf+agyAW49OSUUjaXgID1Xi4
- b3c0I3EP+CZmzwsdhtRecHzRg6MtX7W4inR5NMLC+8wOym50fBNKknQOuRhha+2Q7vZMVsKcmdT
- RImcFI0eNI+y1riDvZg==
-X-Proofpoint-GUID: cYVBEVDvki_2AKBGS80ZI0ta55EAPJ-7
-X-Proofpoint-ORIG-GUID: cYVBEVDvki_2AKBGS80ZI0ta55EAPJ-7
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA2MSBTYWx0ZWRfX0Fq6zjVYRpHo
- Vj+oH6U5NHes2UC8OGw2L1EGOAkrVPVyNk3OuKnsCOINRH5A5BSyWzBlU7U7AJmQepct82yE7eh
- TTAKjVDlYs9K4BptNVa8ORv98S1gT7Q=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_04,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050061
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d4477773-a95d-4cc4-8d10-edf1f7b215df@nvidia.com>
 
-Hi,
+On Mon, Oct 05, 2026 at 06:43:08PM +0300, Yishai Hadas wrote:
+> On 04/10/2026 20:20, Seongjun Hong wrote:
+> > Use > instead of >= on boundary check of recv_buf to avoid the bug which
+> > the full message in the last slot of recv_buf is ignored even though the
+> > received data size does not overflow the recv_buf.
+> > 
+> > Clarify the second boundary condition by removing unnecessary division by
+> > entry_size. It directly shows that size should be within qp->max_msg_size.
+> > 
+> > Fixes: 9c7c5430bca3 ("vfio/mlx5: Align the page tracking max message size with the device capability")
+> > Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
+> > ---
+> >   drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+> > index 5fe0621b5fbd..a49531666e6d 100644
+> > --- a/drivers/vfio/pci/mlx5/cmd.c
+> > +++ b/drivers/vfio/pci/mlx5/cmd.c
+> > @@ -1644,8 +1644,8 @@ set_report_output(u32 size, int index, struct mlx5_vhca_qp *qp,
+> >   	int i;
+> >   	buf_offset = index * qp->max_msg_size;
+> > -	if (WARN_ON(buf_offset + size >= qp->recv_buf.npages * PAGE_SIZE ||
+> > -		    (nent > qp->max_msg_size / entry_size)))
+> > +	if (WARN_ON(buf_offset + size > qp->recv_buf.npages * PAGE_SIZE ||
+> > +		    size > qp->max_msg_size))
+> >   		return;
+> >   	do {
+> > 
+> > ---
+> > base-commit: 6addb4f385570ebc11c4eb499a4f1c149f313e84
+> > change-id: 20261004-vfio-mlx5-fix-boundary-check-4839d6aecbe2
+> > 
+> > Best regards,
+> 
+> The patch should include also Cc stable for the first condition.
+> 
+> Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+> 
+> Yishai
+> 
+> 
 
-This patch series improves support for function measurement for zPCI
-passthrough devices on s390.
+Thanks for the review. Done in v2, which also drops the second condition
+change so only the fix goes to stable.
 
-Changelog
-=========
-v7 -> v8:
-* Patch 2/4:
-  - Replace the fmb_enabled bitfield in struct zpci_dev with a dedicated
-    bool to avoid future tearing bugs
-  - Rewrite commit message for a more natural flow
-
-* Patch 4/4:
-  - Replace mutex_lock/unlock() in vfio_pci_zdev_feature_fmb_read() with
-    a scoped_guard()
-
-v6 -> v7:
-* Patch 2/4:
-  - Don't re-enable FMB if it wasn't already enabled
-
-v5 -> v6:
-* Patch 2/4:
-  - Rework the FMB re-enablement code to reuse the same buffer again
-  - Make the FMB buffer persistent once allocated for as long as the
-    device's lifetime to accommodate an architectural quirk
-* Patch 4/4:
-  - Update the liveness check to use the new FMB enabled bool
-
-v4 -> v5:
-* Typo in the cover letter
-* Swap the ordering of patches 3/4 and 4/4 to ease merging (i.e., to
-  ensure the three s390 patches are ordered before the VFIO patch)
-* Patch 2/4:
-  - Drop the refactor of zpci_fmb_enable_device() and the separation of
-    zpci_fmb_clear_iommu_ctrs() and zpci_fmb_do_enable()
-  - Allocate a new buffer in zpci_fmb_reenable_device() rather than
-    reusing the same buffer to avoid firmware edge cases
-
-* Patch 3/4 (previously 4/4):
-  - Avoid reading from userspace while holding kzdev_lock unnecessarily
-
-* Patch 4/4 (previously 3/4):
-  - Drop allowing usercopy of the FMB when initializing the kmem_cache
-  - Avoid copying to userspace while holding fmb_lock unnecessarily
-    - Restore the FMB bounce buffer to achieve this one
-  - Clarify uAPI documentation and ensure it accurately describes the
-    behavior of the VFIO features
-
-v3 -> v4:
-* Patch 2/4:
-  - Replace mutex_lock/unlock in zpci_reenable_device() with a guard
-
-* Patch 3/4:
-  - Allow usercopy of the FMB when initializing its kmem_cache
-  - Move the guard in vfio_pci_zdev_feature_fmb_enable() lower to only
-    protect the FMB
-  - Ensure vfio_pci_zdev_feature_fmb_enable() fails on double-enable for
-    consistency with the documentation
-  - Eliminate the bounce buffer in vfio_pci_zdev_feature_fmb_read()
-  - Replace the void pointer with __aligned_u64 in the FMB read uAPI
-    structure
-
-v2 -> v3:
-* Patch 1/4 (new patch):
-  - Fix race conditions in pcibios_enable/disable_device() with regard to
-    the FMB enable/disable
-  - Assert that fmb_lock is held within zpci_fmb_enable_device() and
-    zpci_fmb_disable_device()
-
-* Patch 2/4 (previously 1/3):
-  - Move the FMB enable logic into a static function zpci_fmb_do_enable()
-    to reduce code duplication between zpci_fmb_enable_device() and
-    zpci_fmb_reenable_device()
-  - Reword commit message to use the imperative voice more consistently
-
-* Patch 3/4 (previously 2/3):
-  - Split the previous VFIO feature into a SET-only and a GET-only feature
-    for enabling/disabling and reading the FMB respectively
-  - Remove FMB definitions from the VFIO uAPI and instead treat it as an
-    opaque structure
-
-* Patch 4/4 (previously 3/3):
-  - Clarify goto label name to reduce misunderstandings
-
-v1 -> v2:
-* Patch 1/3:
-  - Address a possible race condition in zpci_reenable_device() caused by
-    calling zpci_fmb_reenable_device() without holding fmb_lock
-  - Assert that fmb_lock is held within zpci_fmb_reenable_device()
-
-* Patch 3/3:
-  - Address a possible race condition in pci_perf_seq_write() caused by
-    consuming zdev->kzdev without holding kzdev_lock
-
-Motivation
-==========
-The firmware on s390x machines allows for tracking a variety of statistics
-relating to zPCI devices in a function measurement block (FMB). However,
-the kernel currently lacks a structured mechanism of sharing this
-information with userspace, beyond /sys/kernel/debug/pci/ID/statistics.
-This can lead to shortcomings when running a guest on KVM with PCI
-passthrough devices, as QEMU is unable to provide an accurate FMB snapshot
-to the guest.
-
-Proposal
-========
-We propose adding a new VFIO device feature to zPCI passthrough devices,
-allowing userspace programs to read the latest FMB snapshot as it is
-written by the firmware. We ensure that function measurement enablement is
-preserved across device resets on the host. Furthermore, we guard against
-host tampering with the FMB via sysfs when the zPCI device is in
-passthrough to protect the VM's state.
-
-I'd appreciate some feedback on these patches.
-
-Thanks in advance.
-
-Omar Elghoul (4):
-  s390/pci: Hold fmb_lock when enabling or disabling PCI devices
-  s390/pci: Reuse FMB buffer and preserve state in device re-enablement
-  s390/pci: Fence FMB enable/disable via debugfs for passthrough devices
-  vfio-pci/zdev: Add VFIO FMB device features
-
- arch/s390/include/asm/pci.h      |  2 +
- arch/s390/pci/pci.c              | 84 +++++++++++++++++++++++++-------
- arch/s390/pci/pci_debug.c        | 11 ++++-
- drivers/vfio/pci/vfio_pci_core.c |  4 ++
- drivers/vfio/pci/vfio_pci_priv.h | 18 +++++++
- drivers/vfio/pci/vfio_pci_zdev.c | 57 ++++++++++++++++++++++
- include/uapi/linux/vfio.h        | 29 +++++++++++
- 7 files changed, 187 insertions(+), 18 deletions(-)
-
+Best regards,
 -- 
-2.55.0
-
+Seongjun Hong
