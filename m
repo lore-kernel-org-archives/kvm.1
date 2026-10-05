@@ -1,209 +1,159 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348B04C33DA
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 15:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791213586; cv=pass; b=odjFYsdEBBzzmSz8kkP4C6SxGaANKm1K3W1exxldwS71W2UW7NTTnowpjV1yzzW0Rk/HZuxMNRe687vL+oq6NldATzhk2VrIztHtN3tcy0xoxXeog6EM4VYTQIBikt+kGuW8Y8owVQ3kcfIG+PVocw67+XVAEi2KqZm4VJqJJRM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791213586; c=relaxed/simple;
-	bh=UIl4kdhOZ2E8Ywuw71YkjmtzARY2f4WIsxfjGE5sW2E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s4SHFkQn192yzKd6aCrXDz+gmhpWwgmwqBpli3onhew72K20CfgubV2fjeUovu9NOBjB3iq8wLOHZycbIwNJ2RW30oBcS9t5jr7HvZ3DvZgc55VwC+4GGVqBVSl8v2STjulJaqESupa2ursYss+Fx0fpPvSk0LE8eH40qYT0QQs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=DB3qFyiP; arc=pass smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A29C47ECFB;
+	Mon,  5 Oct 2026 15:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791213810; cv=none; b=qd+B0XkQPCMpfwakqP/r0XgMUheriZrtI3ukP6Wlt4zbbfeRgMFPXhenME925WW64AQpd/WPE+BqDwiyzEIOXT3NJhoAD9NebBPkVUb0k8Lb8QiMmXTKZ78UNEcoVQnwGzxlSsyD2QBO4miQ3FHDQS5YzkKs+dYJEzY0O+1gXPI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791213810; c=relaxed/simple;
+	bh=dbxko1Tskh0UHfn8lMh+ZDyKxaEwpceAQxIp+yv4VEc=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=Q3v03owkCbm2gK2tsfkwaLJ/FbMX7ZsBZS7S3ivVBC2TcPkc6MCJZKiInmVQhHQQnbwb8B8hE006NQJDfiUp/jrBYoHxVoMHyXJCy7GkeOpvn5OD3u2dkmoOeliNSImUfklOk8QTbYay8mXhV2f3KrQBNCAyoa6zla4eXSJ7r5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEn/2TGV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="DB3qFyiP"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8aca68653e3so4995437b3.3
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 08:19:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791213582; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZlBx2wvq2nlRFikOYfHJowdVN+9zzlMrNAE7yywt4QTVihuuvzk0IjVsjynIUi94IK
-         WgPKOu/Zqi++v8yf15SVWUA07hF91bN0QEQcBXdN+vb5Zul5Fr/QxLYNpx4tyLmhbuxo
-         Jh/Dtzc9ViaWdJs0oBbHttHJqmebmXbLC3usZ+0F8Q0tsF0BgyQ38A6PunpJR2RVByaM
-         VimRujx8TbTYMAgOJ8ddxvNqqlZ+tLv+Ik1XU1TcHEque5hkVwpmlhn7yqy1eWkxccYr
-         trlzcV9ysxoPP3LACTYvGbiUBUPem+nYbOIx7tvvtzyQ+lrQ03qGKkpUue8FVdnvH+A8
-         FuFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T+dMDT3scTIxkiT9pgs5QLVQ4RLiEtpfcAYTaBoUr5g=;
-        fh=W6HxQOwiyR4LU1rnjVgZTG3Ev4iMTTum5Ko9eRehUPo=;
-        b=RFknAyZ8kqViyzmbTXujFItlUmRxuFXJlcjS0SqwwMIWcaocIdnAHGacjgOiEfqOH4
-         SiCGHWFKwpUfVvLuwr+SnXSAqpEGwXSVa0JL+FcFfZDYEnrG1ZuQGvgFJy7jBTRdts6d
-         t09H+tSDfozGrHvJphFyvfSFWPi1IRL3G8csaV0BX8QypdFY8mx0CAUd++z74zjFUBCz
-         maf/87mIG4J9lNeC0wGv5z9soDe+eLKGuwxd3OQjiw9sepfYfxcH4ym47fnqkS5Rq+bn
-         At85508YOLqTVZn/y3EsZVVFYpp8V6qUJ567zeekG3txHZCnG8vY5+dccafc5ykgKb9T
-         m7jw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bitbyteword.org; s=google; t=1791213582; x=1791818382; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T+dMDT3scTIxkiT9pgs5QLVQ4RLiEtpfcAYTaBoUr5g=;
-        b=DB3qFyiPRuQSc6yWtUaXp0WtMEZp1VVcP29Bf/lhUeG9CvIm+9/MrilJAUXa7re+JV
-         eJDsiYUVkiVYmb8nZv80Ig2gTke3bksKtLFzaflVx+1F5EuJ5AdidZfAmnZIR9QT50o5
-         8+1LOJInDtgHVBoclRjjpX4SpzCRIsGvUZA7vgdaNNut0aRP92oyn1eefhvEVx82mf3D
-         vc/6xF5VUclbtfw0f9bAVkG0a4572h2fqNIcNxTOecHqdyhvaOqjjfRdGB5/51MrD+EM
-         dHeq6SI01JKq5P4bkTmJYw6COVzgAHlQ/UwdAC0r/DYqlySJfdgoHZLAOtOt3av6AVbx
-         jHCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791213582; x=1791818382;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T+dMDT3scTIxkiT9pgs5QLVQ4RLiEtpfcAYTaBoUr5g=;
-        b=M70yCFN6MCi/KtMpXY//KBm072Xm3oQ54nKsgqkln4HnWRci78AzIzDpwurCQdU6HD
-         A/CzhfLvPLoL3yboUkjike6R6TeEfE4ony/sBkusbT3JzDo8BOqHOdft1LQxFDpigwTs
-         6bfVksDwGhk3M4DPZ2PNwyGCRunTaQeyGbSYbLDrVOKVi5mezRg4xK75kzc1qFwZijwL
-         MWwZ16vpv0znDxqM+HXyjcd/NURUuaO8tlzBvosA3OuKaqES3rVo2/P+qHT8qFcN2nn8
-         uBrBEmTUQ7YpBPlCJQluY5owakNFpErGx/lOPlhBZZAmLg5ee3bBa1NoMn7VZPCIVMZu
-         0V3g==
-X-Forwarded-Encrypted: i=1; AKwUvBxf7+VgOAGEZFfkwBzgHiI/hKYodsnO3G3CjLaEdIhUGiZOFA64/qb8Mc5rgHwpo/xrICo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIfVXFTIBgQ1nBXp4wn47/iCFq9n5O5jXOK6AqLTGYc8oOylJ6B
-	OVTCQMEasXJw/PZrAzguRR9xxXmnV6NyF8xOC7x0DFkE2YA89e6rs+FNM3D2TLhsSOiSZUFF84Y
-	xKxyBdOr8Ecyka/VXooiMdtkdSuUd2x0Io6sHJctIQQ==
-X-Gm-Gg: AYBFou0JU3Yhwyx5nfLSGC34L8Ynyw3cRLEEd/djFltymn6CGBJTtgs2Adzf/BLq+Fr
-	0WXn5ok8DUcwa1j4cFhIy/qFoQL1ua6GLMdcXxtE3h/7rObLpcuH2uof42tEbV5/Xyh1O9owUeo
-	6NwhV2ZnXnLTo0lqi6DHpxbAjG3qcwPZeKTxffipkWmjVpSQsK5H0HnK2ZJzHBhzKHfosWd2fC1
-	ToNOy/Chz+8uEI2Ol6Ydxu0Bw4aDT0+7VpP9OLi65Gz1708iC5ISjZ3bEL5raZKkNIb69Ni5b5i
-	on58aZ4s/HaEJ4a5cgCG8tLqPa6rdwafkR0YIRPyx/U5duZMadS5+Q==
-X-Received: by 2002:a05:690c:e0c6:20b0:88e:edf8:e375 with SMTP id
- 00721157ae682-8ae948c7652mr24080357b3.5.1791213581979; Mon, 05 Oct 2026
- 08:19:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IEn/2TGV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563EF1F000FF;
+	Mon,  5 Oct 2026 15:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791213808;
+	bh=g/JAGXLuoKcmjyycPO+efDbYZ+A0Nw5jhE4IlEY1e9Q=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=IEn/2TGVQmVfWJzysBgUUpj6pW/dkCAaE4Dw4bTbGlygIokmqLODmT61CAWHv6ov6
+	 GB3o6iaQDWEtEYnu1SBEAOiyaAMy/H6OGCiiiQV+Ac/dT82KhltC2PVpFKCO22PlNt
+	 fTP11ImSAeHJKKnC0BaKx8mpcJYl4ih7Zgh+acyWBjzek5HUZGNTVYjFx8GUVkKnTW
+	 xm1f38L58kAbjFnXcyr6DQEuVJI2qzdSku3qvijr7z9PlWowrjR67rJ/aWmsUM1qGm
+	 e3FYPKVO/70GF5AjlrD0LuAPQJY6loLKBsKPgCe9wa9mHOfjNY4MpjwqbQ11Oixkdn
+	 AWJ9mpIcaX52A==
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e61df396-356f-4ef2-9c3a-db3c05cb5c52@linux.alibaba.com>
- <asA7ixFlhNJpANoR@google.com> <CABk29Nu5rnd3wZq8XR5Q3BA2dQzT68hHSv1JihxT3V6GTSyRHw@mail.gmail.com>
-In-Reply-To: <CABk29Nu5rnd3wZq8XR5Q3BA2dQzT68hHSv1JihxT3V6GTSyRHw@mail.gmail.com>
-From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
-Date: Mon, 5 Oct 2026 17:19:29 +0200
-X-Gm-Features: AclHuK-zIbzN8D_HOP9FBWUlLNlIQG4wLIZCCdCvUIczbMj8moj0m1yI42dbwwg
-Message-ID: <CAO7JXPiBZ5xQp1P9taEe3Qpy_pLDCzXgSWtEMbbHNvya93wi+Q@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/kvm: introduce pv idle time
-To: Josh Don <joshdon@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, He Rongguang <herongguang@linux.alibaba.com>, 
-	pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, vkuznets@redhat.com, 
-	geert@linux-m68k.org, sammiee5311@gmail.com, lirongqing@baidu.com, 
-	schuster.simon@siemens-energy.com, kai.huang@intel.com, 
-	shannon.zhao@linux.alibaba.com, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 0/3] <linux/mod_devicetable.h> deprecation continues
+From: Nathan Chancellor <nathan@kernel.org>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+ Huacai Chen <chenhuacai@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ Nicolas Schier <nsc@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Takashi Sakamoto <o-takashi@sakamocchi.jp>, 
+ Raag Jadav <raag.jadav@intel.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@kernel.org>, 
+ Josh Poimboeuf <jpoimboe@kernel.org>, 
+ Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>, 
+ Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Alexey Gladkov <legion@kernel.org>, 
+ Hasan Basbunar <basbunarhasan@gmail.com>, Hugh Dickins <hughd@google.com>, 
+ Armin Wolf <W_Armin@gmx.de>, WANG Xuerui <kernel@xen0n.name>, 
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+ Sudeep Holla <sudeep.holla@kernel.org>
+In-Reply-To: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
+References: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
+Date: Mon, 05 Oct 2026 17:23:16 +0200
+Message-Id: <179121379654.1159753.4410832336442519712.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4378; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=dbxko1Tskh0UHfn8lMh+ZDyKxaEwpceAQxIp+yv4VEc=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDFmHD7z4FrFFbNlr2zsC/unFV0/IM9hq/Fjw/K/npB0v5
+ /b6mHT4d5SyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJVOoz/GZ7eeNY9Oc7IUff
+ aWwuYt1yJ4atdiKDqf/pwBD9Y1HmIryMDIsLG954XN9v8ocx4N1d55IXuYuYK/1TZgoYd7zy1wr
+ +zAoA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Mon, Oct 5, 2026 at 12:20=E2=80=AFAM Josh Don <joshdon@google.com> wrote=
-:
->
-> On Sat, Oct 3, 2026 at 1:17=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> > +Vineeth and Josh
-> >
-> > On Tue, Jul 21, 2026, He Rongguang wrote:
-> > > Hi, this patch introduces a PV mechanism for guests to publish their
-> > > vCPU idle state and accumulated idle time to the host. This allows
-> > > the host to efficiently determine whether a vCPU is currently in its
-> > > idle loop, and knows vCPU idled for how long. QEMU patch and ARM64
-> > > support patch will follow in a subsequent series.
-> > >
-> > > The guest writes a GPA pointing to a struct kvm_idle_time via
-> > > MSR_KVM_PV_IDLE_TIME. When entering idle, the guest sets the flag fie=
-ld
-> > > to KVM_PV_VCPU_IDLE. On idle exit, it clears the flag back to
-> > > KVM_PV_VCPU_RUNNING and adds the elapsed idle duration to idle_accum
-> > > (in nanoseconds).
-> > >
-> > > The host can read the flag at any time through
-> > > kvm_arch_is_vcpu_pv_idle() to make better scheduling or resource
-> > > allocation decisions. For example, host may overcommit those vCPUs
-> > > which are mostly idle. An in-guest agent may be absent, or may not
-> > > report the status in time.
-> > >
-> > > The accumulated idle time provides visibility into per-vCPU usage for
-> > > monitoring purposes. An in-guest agent can report VM CPU usage, but
-> > > this PV mechanism allows the host to obtain guest CPU usage even when
-> > > no agent is installed. This is especially helpful when the hypervisor
-> > > enables exitless-hlt/mwait (for better guest performance) or when the
-> > > guest uses idle halt-polling, both of which make QEMU vCPU thread usa=
-ge
-> > > deviate from the actual in-guest vCPU usage.
-> > >
-> > > This feature is advertised via KVM_FEATURE_PV_IDLE_TIME in CPUID leaf
-> > > 0x40000001. Guests enable it by writing the appropriate MSR during
-> > > initialization, similar to the existing steal time mechanism.
-> > >
-> > > Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
-> > > ---
-> > > v2:
-> > > - grab kvm->srcu in kvm_arch_is_vcpu_pv_idle() before calling into
-> > >   kvm_read_guest_offset_cached().
-> > > - return KVM_MSR_RET_UNSUPPORTED instead of 1 in MSR handling if
-> > >   !guest_pv_has(feature).
-> > > - in set MSR handling, set vcpu->arch.pv_idle_time.msr_val after
-> > >   kvm_gfn_to_hva_cache_init() return success.
-> > > - in kvm_arch_is_vcpu_pv_idle(), remove ghc->memslot check, let
-> > >   kvm_read_guest_offset_cached() handle it.
-> > > - in kvm_arch_is_vcpu_pv_idle(), no need to use struct kvm_idle_time
-> > >   local variable, it is too big, just use __u64 flag is enough.
-> > > - remove some straightforward code comments.
-> > >
-> > > v1:
-> > > -
-> > > https://lore.kernel.org/kvm/36863cf7-61b9-4885-946d-1608179fcab4@linu=
-x.alibaba.com/T/#u
-> > > ---
-> > >  arch/x86/include/asm/kvm_host.h      |  7 +++
-> > >  arch/x86/include/asm/kvm_para.h      | 19 ++++++++
-> > >  arch/x86/include/uapi/asm/kvm_para.h | 24 ++++++++++
-> > >  arch/x86/kernel/kvm.c                | 68 ++++++++++++++++++++++++++=
-+
-> > >  arch/x86/kernel/process.c            |  7 +++
-> > >  arch/x86/kvm/cpuid.c                 |  3 +-
-> > >  arch/x86/kvm/x86.c                   | 69 ++++++++++++++++++++++++++=
-++
-> > >  7 files changed, 196 insertions(+), 1 deletion(-)
-> >
-> > I really, really, reaaaaally don't want to take on any (more) PV schedu=
-ling ABI
-> > in KVM, if possible.  And I definitely don't want to take a bunch of on=
-e-off
-> > hooks, e.g. for idle tracking and then for something else a few months/=
-years
-> > later.
-> >
-> > Vineeth and Josh are working on PV scheduling via sched_ext and I assum=
-e additional
-> > communication channels.  I'm guessing idle state is one of the things t=
-hat'll get
-> > communicated to the host?  I don't know the exact status of their work,=
- but they've
-> > got a slot in the sched_ext MC at LPC:
-> >
-> > https://lpc.events/event/20/contributions/2482
->
-> Thanks Sean, yea this looks achievable though the pvsched framework.
-> Note that usage of sched_ext is not a requirement. For something like
-> this idle time tracking, it would be trivial to extend the pvsched
-> guest component, which already tracks guest scheduling state changes
-> via guest context switch.
+Hi Uwe,
 
-I also agree, this could be achieved with pvsched. In the latest
-pvsched PoC  (not yet posted upstream), the guest vcpu infact updates
-pvsched shm when it enters idle. Host side of the pvsched(default
-pvsched policy) uses this information to take some actions before the
-vcpu thread sleeps in the host. Idle time accounting is also not yet
-implemented, but it would be trivial to build on top of this
-framework.
+> this is a next step in the deprecation of <linux/mod_devicetable.h>.
+> scripts/mod/devicetable-offsets.c and scripts/mod/file2alias.c are the
+> only users of that header that use more than a few device-id structs. So
+> their number of lines actually grows when unfolding the needed includes
+> into them. Still it is a reduction in build dependencies.
+> 
+> I suggest to take this via kbuild during the merge window. Would be great to
+> cook in next for a while before.
+> 
+> Best regards
+> Uwe
+> 
+> Uwe Kleine-König (The Capable Hub) (3):
+>   Move struct cpu_feature to <linux/cpufeature.h>
+>   devicetable-offsets: Include the needed device-id headers instead of
+>     the catch-all
+>   file2alias: Include the needed device-id headers instead of the
+>     catch-all
+> 
+>  arch/loongarch/kvm/main.c         |  2 +-
+>  include/linux/cpufeature.h        | 12 ++++++-
+>  include/linux/mod_devicetable.h   | 13 -------
+>  scripts/mod/devicetable-offsets.c | 57 ++++++++++++++++++++++++++++++-
+>  scripts/mod/file2alias.c          | 56 +++++++++++++++++++++++++++++-
+>  5 files changed, 123 insertions(+), 17 deletions(-)
 
-Thanks,
-Vineeth
+My apologies for taking some time to get to this. I was planning on
+building it using my personal test matrix on a local machine at home
+while travelling for Plumbers to avoid tying up my main workstation but
+my home's internet connection has been down for two weeks with very
+little hope of getting it online before I am back...
+
+Sashiko has a few comments that seem relevant (most of them are the same
+issue):
+
+  https://sashiko.dev/#/patchset/cover.1789988540.git.u.kleine-koenig@baylibre.com
+
+I have applied it on top of next-20261005 to see what conflicts are
+looking like. I see a merge conflict with this series from
+
+  d59717cfbe1e ("firmware: arm_scmi: Add SCMI device table alias support")
+
+in the soc tree, which is fairly trivial. There is a semantic conflict
+that results in a build error from
+
+  fe7f2a805443 ("firmware: smccc: Add an Arm SMCCC bus")
+
+in the arm64 tree, which is also trivial but subtle.
+
+  scripts/mod/devicetable-offsets.c:317:2: error: invalid application of 'sizeof' to an incomplete type 'struct arm_smccc_device_id'
+    317 |         DEVID(arm_smccc_device_id);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  scripts/mod/devicetable-offsets.c:62:43: note: expanded from macro 'DEVID'
+     62 | #define DEVID(devid) DEFINE(SIZE_##devid, sizeof(struct devid))
+        |                      ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+  include/linux/kbuild.h:6:62: note: expanded from macro 'DEFINE'
+      6 |         asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
+        |                                                                     ^~~
+  scripts/mod/devicetable-offsets.c:317:8: note: forward declaration of 'struct arm_smccc_device_id'
+    317 |         DEVID(arm_smccc_device_id);
+        |               ^
+  scripts/mod/devicetable-offsets.c:318:2: error: offsetof of incomplete type 'struct arm_smccc_device_id'
+    318 |         DEVID_FIELD(arm_smccc_device_id, func_id);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  scripts/mod/devicetable-offsets.c:64:32: note: expanded from macro 'DEVID_FIELD'
+     64 |         DEFINE(OFF_##devid##_##field, offsetof(struct devid, field))
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  include/linux/stddef.h:16:32: note: expanded from macro 'offsetof'
+     16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
+        |                                 ^
+  include/linux/kbuild.h:6:62: note: expanded from macro 'DEFINE'
+      6 |         asm volatile("\n.ascii \"->" #sym " %0 " #val "\"" : : "i" (val))
+        |                                                                     ^~~
+  scripts/mod/devicetable-offsets.c:317:8: note: forward declaration of 'struct arm_smccc_device_id'
+    317 |         DEVID(arm_smccc_device_id);
+        |               ^
+  2 errors generated.
+
+If you would like this in 7.4-rc1, I am not opposed to sticking your v2
+into -next now but I plan to finalize the Kbuild tree for 7.4 around
+October 15, so we'd only get a week or so of build coverage. If that
+feels like too little, we should defer this until after 7.4-rc1 is out.
+
+-- 
+Cheers,
+Nathan
+
