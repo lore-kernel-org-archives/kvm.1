@@ -1,149 +1,135 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011010.outbound.protection.outlook.com [40.93.194.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9A630E858
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 05:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791178312; cv=none; b=QHypIAYSC/5Glh0badTF+X6HgMPRIDDjyJxbt9zeDmKJYVtY+kEh6BIuhD8uLyU32/38A3JiHCg2SnXptBEIF6h4X1RW/2Hhyz3LZbsrPLlbJTME9mXrTEs0CZIhzkgEEYj0SZDJMIEg/lfhRiHB1h+5NWwoUcRLRYKzgxsww3Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791178312; c=relaxed/simple;
-	bh=POxxjDSxZlHQfyZkrcAnx7XWj0an4MkT8ArD9j0Rkcg=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Bz0DCp+PIDqbNHkgdpHIbMYMNx98tyf+XMtSPluidgAEoF9by428Opa++06J1+MzeTqq9Drhf3V6QRpzcxI+PFkEQh+D+kQa928y6Wshm6G94kZK8H0J5ZiraecFGl5EX+0/WyCzl8HHIvGGs0boqH9Go1OcN+CTz7PvuGZGfpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tHxErgMp; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCF5231839;
+	Mon,  5 Oct 2026 05:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791179219; cv=fail; b=n5BpIf4wg6MFLewcVbsWfkPY1z1nO1Ql6EOLuxsfFlVs6zNWRCbf+de0Mr9+a7ZV9ZnciH5NCEDBFQIRJVBJCjZj6a+iWEV2rgpzWr7j7SPixVWwX5NH+XWfyViKaXTkGbjF72D+L2/AOQecJcsbViCurNyBgECRUcQetgMPfeo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791179219; c=relaxed/simple;
+	bh=9lj0K+HY1TtHn4/X0jlf8kRaNhRPDIBu4iluzKYgamQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qbrIW8LaJTTNNnEtZ8LY3+//JuoSyrV93JP1IfCyJicpvVhNnmTPHkWCIQdk7Ut96rufw4tdevmKRxage5rMUBS66555BrsLFeAUOspv8AQyaJtyZ9aPRBVRJfLYobZzXFTnWQQ5HH/IcZc/JtOu8R87I5Erwgso6CAv1F6KEAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=oRQkjye3; arc=fail smtp.client-ip=40.93.194.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tHxErgMp"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34c0b552ccfso919697eec.3
-        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 22:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791178310; x=1791783110; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=cIbXE6R67m8wmmcQnF+5IRKqUHaCj3Oi7gyWQv3055A=;
-        b=tHxErgMp9X5jGre1UVi3mM0MUN0Rpc1PNllHJYmRU4hEXHbRLeozT1gqMTittgT31W
-         x2sg52MuGMRThqItgnahcV6IQ0aqPViMwrS6EaYSaQrNNq/DeY1NyiwTxDZdiPeIDs8d
-         8RmGfttr0gTc6sU2RVbhFmgxz143RfivFeGB+Izev0X4/aJ3rN3r9iMLSMBiJbW4BPSM
-         UYxdCKYTcjMp+JqF+rlb354/0m3ieqn3bT8UuWBFQQlFC4dOHa5lmP3YoGkzC+aCjtEm
-         VlNv0gEwLoBfi92LaETkFOE2f36zmw+4kuRp3tsJAIfdVdy73OJz/5LRVEgMYinMUA5E
-         KS8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791178310; x=1791783110;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cIbXE6R67m8wmmcQnF+5IRKqUHaCj3Oi7gyWQv3055A=;
-        b=27Wn+P6dREsYgQAI8vkbJ7KlvEUG2IL3wdsGkP/cb1KLjKxb3uP1mZnrI2joNa9F0S
-         T5oNlTKQAwPi4JEsVYsCcdQC3JBmZH7MKcwgsZmck81pATXoAkHMxYPxwDI8MYWSv+Nz
-         C43Qw5tZKlSrMLeYnQGjnCgpw32ERUUXRiU6XYhZ5vnLy+cJRdzp8wqwFqIUh69m8qtu
-         /vnehih8USzINT/QZ/YPTv+65JJS5fWVL4wwn3Cjsz2lijWnLBZeN+A0g+uHOryD8ocu
-         fCj3jWdYj9PgenTA6ySoIYk6uLIPf2TS+5fvQCDMqXeS8sKByYbUMgX1g++yubH+5Kvv
-         fLHQ==
-X-Gm-Message-State: AFuF++ny2QrIoV+ILTkXPjws5Za9ZfbjkqgNLGKuMWWnH3flIimtvuUj
-	s3QSEzB4Pmuyy4tGKy+l8+vqXz/FGllUa+qHaLa+WsP9cCXEf2YRUTT/
-X-Gm-Gg: AYBFou1nmnOHcy5/kyF4e9rfMJeu7fTIc9bEwKE22DlRm8W05EnlCOaMJTR+2OwHJTV
-	xf2qwDHAnaE8/G/ZotNhIu5Fq7RKQoNq70ADARsmF6hl+fvpUhgn0p3EfNv5ABwbW//6chXr9Uh
-	GiGNGtbxYW6ggmuUC0lP5bbSBmj5FbifCQKlEV0PZW2zVjvcI+quCgIVsq7Ymn5mA1alodqAtBP
-	CsvLCxPwdosZJXzkLiIyLvoHLSETQqOrznwPGnwXWPqrvhYH5+J80+DIeq/eksWssgEmCeE0iqm
-	PbME4KyYkH7KcAcP421DRHKiegVAoiFhzyVgNyZdZhJYLBnlkHt7jm4SKj0sBgYgc4QKhqyXyos
-	tZNEHpS99NYiq4C4VU6e3Y+TYxngGHdvKu6I6s0JlHhtaDdU71KD9/1oF1k2iBP8MKTxwzHueCm
-	KPnGtJfEcH/21RUWtJ8eg99sEzAXlJubYKItZ/NvucWMYn2OPcfH8iLCe9SbIJ3UMhrYXkw44t6
-	lKty74Xmkyz2owTsIbXG7vWg/H48bYend6etQ1vIBbStMrufqoZSDbb/II3zrUb
-X-Received: by 2002:a05:693c:69c5:b0:34c:45da:9b5 with SMTP id 5a478bee46e88-34f150c28c4mr12369259eec.20.1791178309882;
-        Sun, 04 Oct 2026 22:31:49 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351271612e9sm10257390eec.12.2026.10.04.22.31.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 22:31:49 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/9] KVM: selftests: add powerpc support
-In-Reply-To: <asMN_TAX-1_J3jiP@google.com>
-Date: Mon, 05 Oct 2026 09:55:36 +0530
-Message-ID: <fqykkc3j.ritesh.list@gmail.com>
-References: <cover.1790101179.git.ritesh.list@gmail.com> <pkxwkffc.ritesh.list@gmail.com> <asAydfQLscU6rXQL@google.com> <h5j3jn86.ritesh.list@gmail.com> <asMN_TAX-1_J3jiP@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="oRQkjye3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ENf8ZClzbfIlZA4WXQzldvSvJmLeQpC/ClYR+TPJiEX2k1NKcZ5Hw1UdcThUuz6qM2B03lu4QC2CqtHYgPtf993Zce6h4pozh8yHRfNDyNIWaN+xnOU3Wds2zwjkci8ug0u9z6hKjO/vsUQmLJCkW14dLWI0cZyIj0nYbxEJOAnbYfjjQGExJ0xrjHu+Dw07SFKsVCZEdGWopqF2prpqVhCcmKSP/KFBTUAz7U/zw/EadM+TjyD9247HTPcwYfbSgfpptJYvQB0ssdZx4x49sPBnRW8N2IlDQDUfcQbJtYJHDfNQJSgtrp9zpnObBmcem/1dSjLChufMUOrfiTK23Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2MoSxWiyAFUxLG2iPB4oyRIK9Q/RCu+p6TLjl3sh4ec=;
+ b=MabxBSBy9dTw+B6FKLH4wbi+DeWcVMCoEcSTZ4C3WuuC4Dy8VrbBEQ+u0j15S/2HjAs4JsNTwpHDBz++5Or/B1/lGsW6aQjjEtiYMQFNmyKMGpQbGreU5Zokw2ANRI0LQmbtqu5ml+4481Q9LdPorVNs+V0ppw40inf/Bz9ffe6BsYSj2zOr0HMwSbnJaAWkeNVyrDW9K5hw3zIhS7kf57L3q2WuGr64HTB6BGH26yiyIHTKjAbkKJmudfGGGJql3wqlIWmqRXuykeo4J/F8wxo/dTs36/au/6+FnQxkQFoXZGprau6XQQjVny4mGPsnbSHDfi9KSeCxAKX9jKW4Mw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2MoSxWiyAFUxLG2iPB4oyRIK9Q/RCu+p6TLjl3sh4ec=;
+ b=oRQkjye3axMuc5EOaiajIw0jS4dsvvU7UELPBja3yr3d0zCDtxzRcvwcDcFWJ3nMzl6tUAxkg+WLkhaPrYV1xVUkI7vnZ/dCqhihgp/pxgLLqcR3tI1UCru9CgTsec/kjed/ooT3e6RNJHQLSZkMcD1p4pS2lwgeJpjkeDO+6M8=
+Received: from BN0PR04CA0191.namprd04.prod.outlook.com (2603:10b6:408:e9::16)
+ by DS7PR12MB6309.namprd12.prod.outlook.com (2603:10b6:8:96::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Mon, 5 Oct
+ 2026 05:46:51 +0000
+Received: from BN3PEPF00022BD0.namprd03.prod.outlook.com
+ (2603:10b6:408:e9:cafe::92) by BN0PR04CA0191.outlook.office365.com
+ (2603:10b6:408:e9::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Mon, 5
+ Oct 2026 05:46:51 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN3PEPF00022BD0.mail.protection.outlook.com (10.167.248.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Mon, 5 Oct 2026 05:46:51 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
+ 2026 00:46:51 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
+ 2026 00:46:51 -0500
+Received: from [192.168.1.2] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Mon, 5 Oct 2026 00:46:47 -0500
+Message-ID: <5d149509-e9dd-479b-9a98-60445dc040c0@amd.com>
+Date: Mon, 5 Oct 2026 11:16:46 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/12] KVM: x86: Bus Lock Detect fixes and SVM support
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yosry Ahmed
+	<yosry@kernel.org>, Shivansh Dhiman <shivansh.dhiman@amd.com>, "Nikunj A
+ Dadhania" <nikunj@amd.com>, Ravi Bangoria <ravi.bangoria@amd.com>, "Tom
+ Lendacky" <thomas.lendacky@amd.com>
+References: <20260930193634.3415089-1-seanjc@google.com>
+ <179097462681.4066567.295128970891612900.b4-ty@b4>
+Content-Language: en-US
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <179097462681.4066567.295128970891612900.b4-ty@b4>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BD0:EE_|DS7PR12MB6309:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c4b8f04-eddf-4ec0-692a-08df22a40e21
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|82310400026|23010399003|1800799024|4143699003|56012099006|11063799006|10067099003|13003099007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	8vcm1w7mxTWBH3fGZux4N294xSzV1bbhVJmDcAmd7a4TM9uh2d7sJyI508wCJS9F1BZCCx4BCUeNg23Trv6+6mXXLEhgAIoFFbq6V5Q5fpVl37wk8YmBwaNsJdfa8p6aioOhwkvHqg4XLoARRLl5i0Gt+ely/AkZci1eCTWTTgVwBhAyhasqG0A96LlE7yzYnZnot0VJmlbkAxyTWmAOYSnc0Gcgr75IY9ks/xlOHV36/RZFI++pwqLcf8GLp+k0+WgvBvhDGxCDUfZzyKTWR8qudRvwZMXK7Xib5ZEtbck5WUNqdGg7wZ4DVbhY3rEzwutbob7eBB7gbRhBZBsGFNQ1RAGk/Jf4WdbYz8OzksHtNI2gmYi5/FqTD+uzs4Wr32Fmcf8/YGwlpmOwB7rQFAizLEpIC1N2Cs9p3LCUQ7Sb/XrVVpSFEGKa7vzkxfGgQDY5B87QSISP6QFxfLegz1DR/SvEvNdpH8ElGgggGoxxQkn2KRKtEKlb+smdiTveU0YU97U4zx09/XefF5yddLQDI7fUtLPu7F0fyxgdftUVlG2qvpVLgN8fmUDXAgro+pHMjH8gqNTzXud3V/kbDdqghsnLJpmX/wRD6tFpR90m2+JhSpak6x/7clYFJC6quWWr2p/4oO5P2t2vkKWWHd7FaAn2sUuckAgs7UhER6+K/Jnl2ZL9m38c6/mqm8TLFkMSiHBfaUYUVB4KcHoiWw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(82310400026)(23010399003)(1800799024)(4143699003)(56012099006)(11063799006)(10067099003)(13003099007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	GKxh/0NwrNgFvMFk9pLT8Ngddynzl1zMIlTwwj1RBsqulP6ig28qa7XKTAJAuSIduhi0+dNCuguzQRYwqWADxQTuIjnCliYRFp8Qs2zrY8zhtNDMorXZ3epawiGL9vElYvwzkimqHqC3uye4kOA/lp2gtNmON9JbTjO0WIAozdW7BcJ2YVFPwBdX5DwIpZxRfjMU4vJjDNCjaaPGykLihazpq0OW9O7t7HavG0wu4WITR9MjZcJQtjn5hUZYCVk1BkQpoCNDJeeS4OMOD5IuIvC1YAF1SPiTckIUFX3fnnrgU+KaqmnFO0lXEY1y6FI7D0qCuPXRbrFAV8eIZanSIg+O0+ZCreHhwOx6mx5Xk9tjTdAEsCWULk3WTBhaPLz6GIqo2CSKnyzQDVZjMG3Qr1yBOZCz8cCUN2GGDwVH19/7hVsFuni77euzHi9K2+NF
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 05:46:51.6529
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c4b8f04-eddf-4ec0-692a-08df22a40e21
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BD0.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6309
 
 
-Hi Sean,
 
-Sorry I didn't see this email before sending out v6.
-I think we can ignore v6, once the discussion here is sorted - I can
-share a v7.
+On 03-10-26 02:37, Sean Christopherson wrote:
+> On Wed, 30 Sep 2026 12:36:22 -0700, Sean Christopherson wrote:
+>> Fix KVM's handling of DR6.BLD, and add support for virtualizing BLD on SVM.
+>> KUT tests: https://lore.kernel.org/all/20260925230003.2362261-1-seanjc@google.com
+>>
+>> v6:
+>>  - Throw in the towel, at least for now, on WARNing if KVM sees a DR6 without
+>>    all of the fixed-1 bits set. [Sashiko]
+>>
+>> [...]
+> 
+> Applied to kvm-x86 misc, thanks!
 
-Sean Christopherson <seanjc@google.com> writes:
+Thanks a lot, Sean, for taking this over, merging it, and adding the KUT
+coverage along the way. Thanks also to Ravi for the original patch, and to
+Yosry, Nikunj and Tom for the reviews.
 
-> On Sat, Oct 03, 2026, Ritesh Harjani wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> Also note - I will open code the TEST_GEN_PROGS_COMMON and will skip the
->> kvm_create_max_vcpus
->
-> Oh, right, kvm_create_max_vcpus is a common test.  Can userspace detect that it's
-> running KVM-on-PowerVM (in a not completely unpleasant way)?  If so, an alternative
-> would be to keep the KVM_CAP_PPC_SMT change in v6 (patch 2) as a prep patch (before
-> adding PPC support to Makefile.kvm), and then add a
-> TEST_REQUIRE(!kvm_is_on_ppc_powervm()) or whatever.
->
-
-So stictly speaking there is no simple check like that - however, I
-think we can skip the test when we are running on pseries LPAR (meaning
-trying to run a nested guest). We already have the check
-is_pseries_lpar() for access_tracking_perf_test. I think we can re-use
-the same check here as well.
-
-> I think I'd even prefer to take on an #ifdef (to scope it to PPC if necessary)
-> over open coding TEST_GEN_PROGS_COMMON.
-
-Sure, so will add this check for kvm_create_max_vcpus()
-
-#ifdef __powerpc64__
-       TEST_REQUIRE(!is_pseries_lpar());
-#endif 
-
-
-Actually I was thinking we may as well use the same check for now for
-skipping hardware_disable_test on pseries. Because there also we suffer
-from the same resource limitation. Let me know if that sounds ok to you
-or do you want us to skip kvm_create_max_vcpus() only for now, since it
-is part of TEST_GEN_PROGS_COMMON?
-
-> LoongArch open coded its full test list
-> for some reason, and in less than a year it has started missing out on new common
-> tests.
->
->> (& maybe few others like vm_types_test) from that in v6.
->
-> What's wrong with VM types test?  That one really should Just Work on all
-> architectures.  It doesn't run on LoongArch, but I assume that's
-> oversight?
-
-So the test doesn't fail (it gets skipped). However this cap
-"KVM_CAP_VM_TYPES" is only supported on x86 and since I was planning to
-open code all common tests, hence I thought I may as well not add this
-in the first place.
-
-
-BTW, based on this discussion, I think I will re-arrange the patches in
-the following order and send a v7. (The Makefile.kvm changes will only
-get added after the main patch which adds powerpc support).
-
-cfabdb049bd7 2026-10-05 [Ritesh Harjani (IBM)] (HEAD -> feat-ppc-kvm-selftests-new-sean-v7) KVM: selftests: Skip hardware_disable_test on pseries
-2b51fab87b95 2026-09-22 [Ritesh Harjani (IBM)] KVM: PPC: selftests: Skip idle-page check when running nested on pseries LPAR
-f5d1de1be4e9 2026-10-05 [Ritesh Harjani (IBM)] KVM: selftests: Skip kvm_create_max_vcpus on pseries
-e45ba15cea25 2026-10-03 [Ritesh Harjani (IBM)] KVM: PPC: selftests: Add helper for checking if running nested
-178c9bca0e20 2026-09-22 [Nicholas Piggin] KVM: PPC: selftests: add support for powerpc
-22320662e776 2026-09-11 [Ritesh Harjani (IBM)] KVM: selftests: Fix kvm_create_max_vcpus test for powerpc
-11b5712b213b 2026-09-22 [Ritesh Harjani (IBM)] KVM: selftests: Move memslot_perf_test off the 256M ELF load address
-63c900860b5f 2026-09-22 [Ritesh Harjani (IBM)] KVM: selftests: Don't limit LE dirty-bitmap bitops to s390x
-
-
-Please let me know if this sounds ok?
-
--ritesh
+-Shivansh
 
