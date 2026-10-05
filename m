@@ -1,264 +1,559 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C4536A367
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 21:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791236012; cv=fail; b=UZPPig0dN/2n9j8IZKbHtGPLoAnzBRRd+zCCU5x3aY2EJzzzDgKvJBvalTg9yd3lgssJPlgXMRZVZrVqbKU65gV6GTg5OuWSRkMbf4YkkGHP/kuwzweI53cbDRrqZctvjuh7VLtAzwLjXFDxF0pOMBnoZqyy7VfNR5W1h9u9BsM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791236012; c=relaxed/simple;
-	bh=02rMi0qsTZ9CbaagY46AZKm77SKpI+WpH1O1AK0qNxs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D3JHQHlyQFKbigqBCOJt1tFHdtxmmV48uBga+faWakoRKE4CKV91pSpNJeoJ0cOxIMDmpl6ZZxftp48oR6JSDn39LjYFQlMEMuLkooEOY0uTyEWCoEajktfA9Qthi6T0h+AVDIPx2Qf78nWcRncDnBgpvl+4jY9SW1/Sn/p3HPQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=ZM6DHvvK; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCC33AFB19;
+	Mon,  5 Oct 2026 21:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791237317; cv=none; b=sSSRzl5hQYDIjKm6QnvS1BC/mDVouQy+RfSRwkFsIyDmN1amXClAlS2MrtmjLk61V+U7yyohHrU07jY3NQ4oYUT2w0zGlpnuod4L6H+Rl2WPjhISKx3flkovURMDoLfySonSymnPjTU7leQGY0je9NhtXEX7JoPH9BUhLXGXoM4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791237317; c=relaxed/simple;
+	bh=KIuHd3IW+yo0ItNReYL7I4RSdvvYBsUEt8jE70Cop1o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fgJOQ+6MSO0cBH+O3o17ZRugCb82jPWS+1GweRl5/Vy/NPy6QjasjZX7UkWIt6S3KvhX+LMT8OUbk5JEpHbjggbLeBtQy77Zlm6y6k74aqSudVi+ztTdScWNEPKqKvYsjbxWrCk9V/3thg2jnHcSEwWPuKCO/LdKh9uLP/NqiqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DJNB1rGU; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="ZM6DHvvK"
-Received: from pps.filterd (m0528007.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695IDCU8019097
-	for <kvm@vger.kernel.org>; Mon, 5 Oct 2026 14:33:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DJNB1rGU"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695HZrl81257970;
+	Mon, 5 Oct 2026 21:55:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=DoTDLnxWo+vyBFg2XZXFvqT0SQiCp8iD3nRLl
-	DuEKK0=; b=ZM6DHvvKxW2/pC1CNOsB1mPJd6PbhZ1d+WNZzXdBrKg698H4Z/JQ5
-	r0k6m6sXmm6aWVzw4PcxIIMpG4KSIKqnAh1JWHxjY4yBbDpwkBvZq8yHY7XYROJW
-	qECJPI6+JWo1ArTnAp5BS2i4q4B0I/v7dabXmzWUc6u58Pz8j/TId07ZUViW5zwE
-	rMwqm7hZdQ2V3Sg7Xx8zTKqtozkoj7nU3DgmRjKjsh4kBdBlB3eL0I+cq4EJADOU
-	4PNzyETYw5o3jQ81IXaTVRrgBpiJ5jVYjWecv1q3ldplR7E9Ohpr5tKJ5mNX7TUu
-	8iYh9fuqG8hTKmdAxXx+qEfUjDlqrbhhA==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h3nqttwww-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 14:33:30 -0700 (PDT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-815f2b1ecc3so3589676a34.2
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 14:33:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791236009; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kC0bdglKUovb4nv8TLAxyCTCTBwNpuXfyK/liwqcTCi8KKJW+5veQsHmzsk5Ud5SdK
-         A2t4JYu07yo7uHFAh9Halk6x1tl7ZP6mCVuoZ8+xbOCrNKeR/KlfW/cVX7U5BmRufmIi
-         CiH6Jlf8OEKdDvF6/Ny3p0w1xhMRllLO2MjOQYUsNw659zezYtuxtlt7UpZF92/0PCSX
-         abTbD0s9roqxxFb7ObgedBoomCPQaIqi3ZnY7TBn2TYOuZA50GVwHA2sePTfaWyAB1iY
-         kgvi7ta2HreNYTkyQZ2WqRInqpFyzWecBiusrhmeSHng49TBD5PwZyjifIOu8WJcAnYz
-         Dbqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=ghbzX0NgXdNhpA6B0OeBfQfvRP9XoL8GQxYtfbQBaKM=;
-        fh=M2gKZW6TMt9fqTYvlbMfN70saHseD8ALrR7VbaTovp8=;
-        b=qM1NTMQk1GaFLsL56d4BSIccK6MndoX38xnvoH+bCKj9smnVLxChOIIGm8+6j2Gzf2
-         9QxeWRNBAyRmMqz0S/aFwJ2dOIgIz7LzNFqYJMoicGg5z/jNxVMZAJhfzk5Re7reIdxL
-         5R+Ml1ZQBEGQzATXmVFJ339+23SML/Gc87rguumwOwB94pymv63ot2rPXpmjLbl0ejIU
-         DSrly5+KAPtJ8TglQFmD3m61SFBxOEWvqt3NG9P5hiZKiittu6DAO9xVJ9LAEz/4Ch4l
-         njRbl1f47htbpmEr0RhE6BC5y727W6GslUoRTTXAj0ZergLkg1ka/95dd62bVLCNGIns
-         PESg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791236009; x=1791840809;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ghbzX0NgXdNhpA6B0OeBfQfvRP9XoL8GQxYtfbQBaKM=;
-        b=s3ETJlU/r1EWCzkZ9xTnJyVdf5jk4PYADH78fjgR/vQrTUJHjuT4kIDivdyyBkTYOd
-         n8dinHaRfVtMqqi4Nfi9lMHddFUuY8ky6L556mpbd1LjyuB4OL5REL7a2WjfvcjcFF+t
-         kRK4QBdmoJINpNN7b/g+mo/uppPWVH8jFfT3TS/EVnG/LAJINUSBDbvZv6XPWoLGZlX8
-         LvWZ8jjKiyvUlQ+mLx8i7ZWduaibQTKY8eDVZF9J+Hys+AavOu1Y34T9X5HMRIHI0uk6
-         BJtq7cPPtIYxvXmVzE+5i92oETywtgoB6nKYs06+fTmMtTyCVCPmUCkIA30En9ofxdMd
-         DmVQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwbdK5yKn+MPBouWihPTyOwqXAY+fYzamkHwNtAlqhs3pTI64qUZH/pVPN7PvFlFLautok=@vger.kernel.org
-X-Gm-Message-State: AFuF++kxI0LnRRi6CBfHU1LckeOtXxYfSoXwbORiPlzusiiLWxUY3a50
-	NzdsxBR67NTQ28r3Z1VdCKYQLLpS+45d1Wezkte1KMhErLBOQdJGMFPqC5IfEgB4a86ZaFLNi3e
-	sDiB3HPLj+uCptjTVZyhcpzL1YXSIsZny7bk67wKefjrtzaGmQc/fldJ3HR9a6td5CZSSBi9k3X
-	ykJpY182dRZuC/3Av38kI0ksdlmNQ=
-X-Gm-Gg: AYBFou2QKaddUs5OBvSdm79IFUsiJ6rsnQoruWHOnfq7TICUbmPbdGLJZ76klwjE8jz
-	YOn3tkepXND4nNzGZ0/x5d5kjqggVZOgngIpkDxFgU+BpSnNKLZjRCvfBb8Vz4wXB+qXlFso6vo
-	PfgEHs2cMbkodZX5qoUnmVUVcY12NqFdkZ6yoyxFr6rbpoGJkKp+VgaQHpW/Wnm8K/D1VYNz3P
-X-Received: by 2002:a05:6830:67d8:b0:81e:bb4b:2324 with SMTP id 46e09a7af769-82285c55c03mr11907168a34.26.1791236009056;
-        Mon, 05 Oct 2026 14:33:29 -0700 (PDT)
-X-Received: by 2002:a05:6830:67d8:b0:81e:bb4b:2324 with SMTP id
- 46e09a7af769-82285c55c03mr11907148a34.26.1791236008493; Mon, 05 Oct 2026
- 14:33:28 -0700 (PDT)
+	:message-id:mime-version:references:subject:to; s=pp1; bh=DUyTjy
+	IC90zgl3h8ubutATsKp084cLeuE/tG8+o98ZU=; b=DJNB1rGUfK4Ie2R9RBRWKS
+	PBxzy9KcBhM4vxSPdLFjFqAbgSkCBxsluompkpFN48RGWQiD6eBHnry8puITCnbw
+	kEtR1oOkdbNxhvVW+c0ab5kQzHWgWWqj9xEzEfDtQ8o0QeU5E70LFN0zmlmu9dtU
+	vdeVFa18qfgADpCeK0PoRBnUNnOonUUx0TtA14bfhyuMjvuaYBNgVRDVysJHvDwi
+	jyiUnjqoh6pk+OixlQcpd1SxncV+Pya752f1Oo/uM4kFW52JW1oz+lxvcGSS2U1t
+	/AZxtLW4WqfuzIe72iBHk9Qcg+J9aa6Zq4byECX2p5VD68oOgv0L/DoyBvzUZKTA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5cmvj-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 21:55:09 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695HMbx83252062;
+	Mon, 5 Oct 2026 21:55:08 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3eqy72wq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 21:55:08 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695Lt7KN20906532
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Oct 2026 21:55:07 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 961C958054;
+	Mon,  5 Oct 2026 21:55:07 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 080A25805A;
+	Mon,  5 Oct 2026 21:55:06 +0000 (GMT)
+Received: from [9.61.34.243] (unknown [9.61.34.243])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Oct 2026 21:55:05 +0000 (GMT)
+Message-ID: <238c3e40-13db-492b-9ed5-517f321ce8b7@linux.ibm.com>
+Date: Mon, 5 Oct 2026 17:55:05 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731211601.3033906-1-zhipingz@meta.com> <20260731211601.3033906-6-zhipingz@meta.com>
- <f4ff7ced-63b6-42e6-8e01-9f01d2e59843@huawei.com> <CAH3zFs24esHCGA=wPrkiH8oKQCv7SnOwcBbkMxrOEvOVtwstYg@mail.gmail.com>
- <20260924233058.GA163130@ziepe.ca> <CAH3zFs2rhg6-b-pVDps1V8LsM4Dn48t4J4LFVyKOZtT4axdY=Q@mail.gmail.com>
- <20260928172939.GK163130@ziepe.ca> <CAH3zFs1mCujYjB=5ywo+huAjPJZQoe9u7NM4evNRYr5_ZQbcXQ@mail.gmail.com>
- <20260930121349.GD3401365@unreal>
-In-Reply-To: <20260930121349.GD3401365@unreal>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Mon, 5 Oct 2026 14:33:17 -0700
-X-Gm-Features: AclHuK9wPVFlctf6gP5X6sNuMnv1YN3Hk2l0PdMFBVaYzDmHBABydld70Lp-gj0
-Message-ID: <CAH3zFs0-5yZzquCAS+RA=jerok3fikWs+hJMnp_91D37ccFtUw@mail.gmail.com>
-Subject: Re: [PATCH v13 5/5] RDMA/mlx5: get tph for p2p access when
- registering dma-buf mr
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, fengchengwen <fengchengwen@huawei.com>,
-        Michael Guralnik <michaelgur@nvidia.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Alistair Popple <apopple@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA4NCBTYWx0ZWRfXxvU+tRsm+sxl
- RjrRJfuxFQ0A5eM6CHrzejIaurJ+/ItrgWX5A22gcYQFJhxg13ES1cR0nrmcRS3T3XfgW4b4t9R
- r7Q7Z/dWT3QwZj7SrW79F5eDjI924W0=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA4NCBTYWx0ZWRfX764SDIU7XKWL
- JkOxAcBJDSDsc1LxQoEbb/UhWYJE0eo+bEGtSpAjLfAbxNtFaaamwe9riwP/yr/vSeCSBEnr9Xv
- 8ebEENolamDkC60vXYjKcAKKcOpgPK6eML5Czu9Lr3cCGZOlHP8Jcjfq2MCC6n5T9WUGdb0A99g
- CmkobYNlUouqc5jgxylI+BzlAnX99+4IKxkYrmW5LqAQ0qhsjAVCSRt2f1eNevz/qZSGF+lJi0u
- bPCKUrTa5fg30UAv0vE2we+h72xmt9YLEuN/NbXuY0SIRfY7TWAaqCjU5WbO0iiuKTiv/wymZFo
- ntMJpdntIkWZ9FKX2yz4/VtSWzlkVGGwkFVeUlOdu7egg99veZNGBdJqLnRlcatITDYrrxWnfyz
- Yo5C+hb8SarGxYzl9Svu7XiNMcmbA3ftqsHFXHV54AJR42VPm0xDT+DFHH4r5NrubA9XrnoUthO
- z1PPkOvNyom/g5W5nBw==
-X-Authority-Analysis: v=2.4 cv=c+o+0h9l c=1 sm=1 tr=0 ts=6ac417aa cx=c_pps
- a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=4h92JMTCafKA-fb_NiOh:22
- a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=9jRdOu3wAAAA:8 a=m_M2Mm9OkLXPgJTOvGkA:9
- a=QEXdDO2ut3YA:10 a=eYe2g0i6gJ5uXG_o6N4q:22 a=ZE6KLimJVUuLrTuGpvhn:22
-X-Proofpoint-ORIG-GUID: OXDl8GAhSvwPod2KJYAjQQzOGLg8lGdp
-X-Proofpoint-GUID: OXDl8GAhSvwPod2KJYAjQQzOGLg8lGdp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 07/15] s390/vfio-ap: File ops called to save the vfio
+ device migration state
+To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-8-akrowiak@linux.ibm.com>
+ <9c69c913-49aa-4934-b46a-1ebddd425f76@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <9c69c913-49aa-4934-b46a-1ebddd425f76@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA4NSBTYWx0ZWRfXw3niMX/xt6ZY
+ /8RvNgn8Bt0V6rLB/t+7N/5+SP/blqnLRy4O54VGD1h4sBi/jVxVjcM0pcFAiTNQSGTGmx9OTHs
+ 7f4Qb4EYzYS9VV2qJm9l2o4MC8z+H+4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA4NSBTYWx0ZWRfX3w/OpZSBpw21
+ cCiT+BVBhM8yPvLNj2JNGiByB8RLV+sMfzSphazEUJ2H1P5j/wZw2vnoK1bykx9AMSMEMhmR2DS
+ eKLwK93jW2bGRu09l+QzKHtEKmISuyNwg7qO/PVMFJO5Lvfv8YYXfYtwXO6vUWnzX1yohmj005q
+ bYCPQuKWl8xeF4/RnC9DRZVcXHeStODcNiZ17txrySbrWpfKtJ97R5AWF/ff5WYc59iUxf+BgCm
+ NH5dcDmWq+vsKgNzY3v8J3Bvr9g0fHroY+ElJMMqn/iJ52GIcTRkZSbZDcfCTg87g3Qgrck1PRC
+ GgefhUtLBxd6kSRHfPJTdS0FB93zwlIaVmyKeyePnbfmObTSnmDgIdgDJOtKB4xFe+uaHw/Q1Vd
+ tnfCXZpLbVAF7+HeJJmy3kTJe6MQtRDBnxGIEMhSUr6mmNolZ4h51IKxltCf6lT6wIUfTwaP7nE
+ XenicV9afubJ8PVJHkw==
+X-Proofpoint-GUID: BFbOJqsDbk1qMRgLqPw3G-rsRRJhT73o
+X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac41cbd cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=xHGZ6dfit4Jw-R03iOAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: BFbOJqsDbk1qMRgLqPw3G-rsRRJhT73o
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-05_05,2026-10-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050085
 
-Hi Leon,
 
-Sure, I'm happy to explain the TPH side. I see you've set the dma-buf
-patches aside for now, so I'll just put the requirement on record
-rather than ask for a particular API.
 
-On the mlx5 ODP path the mkey must exist before the first dma-buf
-mapping, and its ST index and PH are fixed at creation. It's the same
-ordering problem you have with ATS. At that point mlx5 needs the ST/PH
-tuple and an answer to Jason's question, whether its traffic to the
-buffer is routed directly (PCI_P2PDMA_MAP_BUS_ADDR) rather than
-through the host bridge. What mlx5 needs there is the answer, not the
-exporter's p2pdma_provider. Wherever the route gets computed is fine,
-as long as the result comes back for mlx5's own attachment.
-
-In my earlier reply to Jason I said a later attach doesn't change an
-existing importer's route. Christian pointed out in the patch 16
-thread that it can, because the exporter only commits the access path
-when the mapping is created. I was wrong there. The mlx5 patch
-re-queries the ST/PH under dmabuf->resv after each
-ib_umem_dmabuf_map_pages() and fails the fault if it changed; with
-vfio-pci the tuple only changes if the device owner sets a new one.
-The route check belongs in the same two places, which I think is close
-to what Thomas suggested.
-
-Alistair, adding you for visibility since you're picking up the
-mapping-type work after LPC. mlx5 TPH would be the second user of
-whatever lands there. I'm happy to help: I can implement the TPH side
-on top of it and test on a CX-8 and a peer endpoint behind a PCIe
-switch, including analyzer captures of the TLPs, or I can take on a
-piece of the work if that's useful.
-
-Thanks,
-Zhiping
-
-On Wed, Sep 30, 2026 at 5:13=E2=80=AFAM Leon Romanovsky <leon@kernel.org> w=
-rote:
+On 8/13/26 11:08 AM, Jason J. Herne wrote:
 >
-> >
-> On Mon, Sep 28, 2026 at 02:47:46PM -0700, Zhiping Zhang wrote:
-> > On Mon, Sep 28, 2026 at 10:30=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca>=
- wrote:
-> > >
-> > > >
-> > > On Thu, Sep 24, 2026 at 11:17:57PM -0700, Zhiping Zhang wrote:
-> > > > On Thu, Sep 24, 2026 at 4:31=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.=
-ca> wrote:
-> > > > >
-> > > > > >
-> > > > > On Wed, Sep 23, 2026 at 11:24:56PM -0700, Zhiping Zhang wrote:
-> > > > > > I don't think this belongs in the importer. Every in-tree dma-b=
-uf
-> > > > > > caller of pci_p2pdma_distance() is the exporter, in its .attach,
-> > > > > > clearing attach->peer2peer -- amdgpu_dma_buf.c, xe_dma_buf.c,
-> > > > > > habanalabs memory.c. There is no importer-side caller.
-> > > > >
-> > > > > Right, and they shouldn't be doing that, but it still has to be
-> > > > > checked that the st is going directly to the peer device not the =
-host
-> > > > > bridge. Not using the distance, but by the PCI_P2PDMA_MAP_BUS_ADDR
-> > > > > indication.
-> > > > >
-> > > > > I fear you will need some of Leon's series to make that happen.
-> > > > >
-> > > > > So probably the proposed change to dmabuf ops is far too simple.
-> > > > >
-> > > > > Jason
-> > > >
-> > > > Hi Jason,
-> > > >
-> > > > Thanks for the comments.
-> > > >
-> > > > Agreed -- the tag should not be handed out unless the routing is
-> > > > PCI_P2PDMA_MAP_BUS_ADDR. That can be enforced conservatively on 7.3
-> > > > with two changes. I can fold both into patch 4.
-> > > > ```
-> > > > In drivers/pci/p2pdma.c, make pci_p2pdma_map_type() callable from
-> > > > tristate VFIO_PCI_CORE:
-> > > >
-> > > >     EXPORT_SYMBOL_GPL(pci_p2pdma_map_type);
-> > >
-> > > No, that's been rejected several times already.
-> > >
-> > > > and in drivers/vfio/pci/vfio_pci_dmabuf.c,
-> > > > vfio_pci_dma_buf_get_pci_tph() gains:
-> > > >
-> > > >     struct dma_buf_attachment *attach;
-> > > >
-> > > >     if (list_empty(&dmabuf->attachments))
-> > > >         return -EOPNOTSUPP;
-> > > >
-> > > >     list_for_each_entry(attach, &dmabuf->attachments, node)
-> > > >         if (pci_p2pdma_map_type(priv->provider, attach->dev) !=3D
-> > > >             PCI_P2PDMA_MAP_BUS_ADDR)
-> > > >                 return -EOPNOTSUPP;
-> > > > ```
-> > >
-> > > Also no, this has to be done via PCI_P2PDMA_MAP_BUS_ADDR which also
-> > > enforces putting the determination in the right place in the code
-> > > flow..
-> > >
-> > > > Two properties are worth stating explicitly:
-> > >
-> > > Ah! AI!
-> > >
-> > > Jason
-> >
-> > Thanks Jason, I see what you meant by Leon's series now:
-> >   https://lore.kernel.org/all/20260928-fix-p2p-acs-v4-0-v8-0-404453b9c4=
-35@nvidia.com/
-> >
-> > Looking at v8, it seems patches 1-4 can stay functionally unchanged,
-> > while patch 5 uses dma_buf_p2pdma_map_type() on its own attachment for
-> > both the initial TPH query and revalidation. Is that what you expect?
-> >
-> > If so, would you prefer that I wait for Leon's series and rebase the
-> > whole stack on it, or split the series so patches 1-4 can land first
-> > and patch 5 follows after Leon's series?
 >
-> I would like you to join me there and explain to Christian why the
-> importer needs access to the exporter's internals.
+> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+>> Implements the read callback function that was added to the
+>> file_operations structure for the file created to save the state of the
+>> vfio-ap device when the migration state transitioned from STOP to
+>> to the STOP_COPY state.
+>>
+>> This function copies the guest's AP configuration information to
+>> userspace. The information copied is comprised of the APQN of each queue
+>> device passed through to the guest along with its hardware information.
+>> This state data will be transferred to the vfio_ap device driver on the
+>> destination host when the state is transitioned to RESUMING.
+>>
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_migration.c | 287 +++++++++++++++++++++++-
+>>   1 file changed, 277 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c 
+>> b/drivers/s390/crypto/vfio_ap_migration.c
+>> index de693b308925..50781b61f7f1 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+>> @@ -117,9 +117,10 @@ struct vfio_ap_config {
+>>   static void
+>>   vfio_ap_release_stop_copy_file(struct vfio_ap_migration_data 
+>> *mig_data)
+>>   {
+>> -    /* Stub to be implemented when the 
+>> mig_data->stop_copy_mig_file.ap_config
+>> -     * object is allocated.
+>> -     */
+>> +    kvfree(mig_data->stop_copy_mig_file.ap_config);
+>> +    mig_data->stop_copy_mig_file.ap_config = NULL;
+>> +    mig_data->stop_copy_mig_file.config_sz = 0;
+>> +    mig_data->stop_copy_mig_file.filp = NULL;
+>>   }
+>>     static void vfio_ap_release_resuming_file(struct 
+>> vfio_ap_migration_data *mig_data)
+>> @@ -129,13 +130,6 @@ static void vfio_ap_release_resuming_file(struct 
+>> vfio_ap_migration_data *mig_dat
+>>        */
+>>   }
+>>   -static ssize_t
+>> -vfio_ap_stop_copy_read(struct file *, char __user *, size_t, loff_t *)
+>> -{
+>> -    /* TODO */
+>> -    return -EOPNOTSUPP;
+>> -}
+>> -
+>>   static int vfio_ap_release_mig_file(struct inode *file_inode, 
+>> struct file *filp)
+>>   {
+>>       struct ap_matrix_mdev *matrix_mdev = filp->private_data;
+>> @@ -150,6 +144,279 @@ static int vfio_ap_release_mig_file(struct 
+>> inode *file_inode, struct file *filp)
+>>       return 0;
+>>   }
+>>   +/**
+>> + * validate_stop_copy_read_parms: Validate the input parameters to the
+>> + *                                vfio_ap_stop_copy_read function
+>> + *
+>> + * @matrix_mdev: The object device containing the state to be read
+>> + * @filp: Pointer to the file stream used to read the vfio-ap device 
+>> state
+>> + * @pos:  The file offset from which to start reading data
+>> + * @len:  The length of the data to be read
+>> + *
+>> + * Verify the following:
+>> + * - @filp private data is an ap_matrix_mdev instance
+>> + * - @filp is the instance opened when state transitioned from STOP 
+>> to STOP_COPY
+>> + * - @pos + @len does not cause integer overflow
+>> + *
+>> + * Returns: 0 if the parameters pass validation; otherwise returns 
+>> an error
+>> + */
+>> +static int validate_stop_copy_read_parms(struct file *filp, loff_t 
+>> *pos,
+>> +                     size_t len)
+>> +{
+>> +    struct vfio_ap_migration_data *mig_data;
+>> +    struct ap_matrix_mdev *matrix_mdev;
+>> +    loff_t total_len;
+>> +
+>> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
+>> +
+>> +    if (check_add_overflow((loff_t)len, *pos, &total_len))
+>> +        return -EIO;
+>> +
+>> +    /*
+>> +     * matrix_mdev is guaranteed live here: 
+>> vfio_ap_open_file_stream() took
+>> +     * a vfio_device registration reference that is held until
+>> +     * vfio_ap_release_mig_file() runs, so the embedding matrix_mdev 
+>> cannot
+>> +     * be freed while this file descriptor is open.
+>> +     */
+>> +    matrix_mdev = filp->private_data;
+>> +
+>> +    if (!matrix_mdev->mig_data)
+>> +        return -ENODEV;
+>> +
+>> +    mig_data = matrix_mdev->mig_data;
+>> +
+>> +    if (mig_data->stop_copy_mig_file.filp != filp)
+>> +        return -EINVAL;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static size_t vfio_ap_config_size(struct ap_matrix_mdev *matrix_mdev,
+>> +                  int *num_queues)
+>> +{
+>> +    size_t qinfo_size;
+>> +
+>> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
+>> +
+>> +    *num_queues = 
+>> vfio_ap_mdev_get_num_queues(&matrix_mdev->shadow_apcb);
+>> +    qinfo_size = *num_queues * sizeof(struct vfio_ap_queue_info);
+>> +
+>> +    return qinfo_size + sizeof(struct vfio_ap_config);
+>> +}
+>> +
+>> +static int get_hardware_info_for_queue(const char *mdev_name,
+>> +                       struct ap_tapq_hwinfo *hwinfo,
+>> +                       unsigned long apqn)
+>> +{
+>> +    struct ap_queue_status status;
+>> +
+>> +    status = ap_tapq(apqn, hwinfo);
+>> +
+>> +    switch (status.response_code) {
+>> +    case AP_RESPONSE_NORMAL:
+>> +    case AP_RESPONSE_RESET_IN_PROGRESS:
+>> +    case AP_RESPONSE_DECONFIGURED:
+>> +    case AP_RESPONSE_CHECKSTOPPED:
+>> +    case AP_RESPONSE_BUSY:
+>> +        /* For all these RCs the tapq info should be available */
+>> +        return 0;
+>> +    case AP_RESPONSE_Q_NOT_AVAIL:
+>> +        pr_err_ratelimited("vfio_ap_mdev %s: Failed to get hwinfo 
+>> for queue %02lx.%04lx: TAPQ rc=%d",
+>> +                   mdev_name, AP_QID_CARD(apqn), AP_QID_QUEUE(apqn),
+>> +                   status.response_code);
+>> +        return -ENODEV;
+>> +    default:
+>> +        /*
+>> +         * Without a pending async error, the tapq info should be
+>> +         * available
+>> +         */
+>> +        if (status.async)
+>> +            return 0;
+>> +
+>> +        pr_err_ratelimited("vfio_ap_mdev %s:Failed to get hwinfo for 
+>> queue %02lx.%04lx: TAPQ rc=%d",
+>> +                   mdev_name, AP_QID_CARD(apqn), AP_QID_QUEUE(apqn),
+>> +                   status.response_code);
+>> +        return -EIO;
+>> +    }
+>> +}
+>> +
+>> +/**
+>> + * vfio_ap_store_queue_info:
+>> + *
+>> + * Stores the hardware information returned from the PQAP(TAPQ) 
+>> command for each
+>> + * queue device identified in the 'qinfo' field of the a vfio_ap_config
+>> + * object. If there are a large number of queues for which hardware 
+>> information
+>> + * must be retrieved, this function must be called without the 
+>> mdevs_lock
+>> + * held. This should not be a problem since the APQNs in the 'qinfo' 
+>> field
+>> + * should already have been snapshotted prior to calling this function.
 >
-> You are already second user for the same functionally.
+> This warning message is ambiguous. What does large mean? What are the 
+> consequences of holding the lock during a long call? And, "This should 
+> not be a problem..." this whole thing seems to contradict the warning 
+> entirely. Can you clarify the situation? :)
+
+This is one of those issues reported by Sashiko. The problem here is 
+that mdevs_lock prevents
+access to every mdev under the control of the vfio_ap device driver. 
+This means that nothing
+can be done via the sysfs interfaces - i.e., assigning/unassinging 
+adapters, domains and control
+domains which also prevents hot plug of those devices - for as long as 
+the mutex lock is held.
+It also prevents starting any guests to which the mdev supplies an AP 
+configuration or any
+communication between userspace and the vfio_ap driver that is 
+associated with an mdev.
+
+Of course, what large means is dependent upon how long it takes to 
+execute a TAPQ for
+a queue device. The system wide limits for CEX8 cards are up to 60 
+adapters and 85 domains
+for a total of 5100 queues. This is probably highly unlikely since each 
+card has a maximum of
+2 adapters and 16 domains and the total is divided up between the LPARs. 
+I've just convinced
+myself that dropping the lock here is probably unnecessary. I should 
+have looked deeper
+into it rather than relying on AI. I think the lock drop creates a 
+window where the snapshotted
+APQN list can become stale, so I think I'm going to remove it.
+
+I think the answer to all of these performance issues created by a 
+global mdevs lock can
+probably be resolved by redesigning the locking mechanism and maybe 
+creating a
+lock per mdev. That is a major design change which is for another day.
+
 >
-> Thanks
+>> + *
+>> + * @mdev_name:    The name (UUID) of the mediated device to use in 
+>> log messages
+>> + * @ap_config:    A reference to the vfio_ap_config instance in 
+>> which to store
+>> + *        the queue information. It is expected that each APQN 
+>> identifying
+>> + *        a queue device for which hardware information is to be 
+>> retrieved
+>> + *        shall be snapshotted prior to calling this function.
+>> + *
+>> + * Returns:    Zero (0) if the hardware information is retrieved for 
+>> each queue
+>> + *        device in the AP configuration; otherwise, returns an error.
+>> + */
+>> +static int vfio_ap_store_queue_info(const char *mdev_name,
+>> +                    struct vfio_ap_config *ap_config)
+>> +{
+>> +    struct ap_tapq_hwinfo source_hwinfo;
+>> +    unsigned long num_queues;
+>> +    int ret;
+>> +
+>> +    for (num_queues = 0; num_queues < ap_config->num_queues; 
+>> num_queues++) {
+>> +        ret = get_hardware_info_for_queue(mdev_name, &source_hwinfo,
+>> + ap_config->qinfo[num_queues].apqn);
+>> +        if (ret)
+>> +            return ret;
+>> +
+>> +        ap_config->qinfo[num_queues].data = source_hwinfo.value;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int vfio_ap_get_config(struct ap_matrix_mdev *matrix_mdev)
+>> +{
+>> +    struct vfio_ap_config *ap_configuration;
+>> +    unsigned long *apm, *aqm, apid, apqi;
+>> +    const char *mdev_name;
+>> +    size_t ap_config_size;
+>> +    int ret, num_queues;
+>> +
+>> +    lockdep_assert_held(&matrix_dev->mdevs_lock);
+>> +
+>> +    ap_config_size = vfio_ap_config_size(matrix_mdev, (int 
+>> *)&num_queues);
+>> +
+>> +    ap_configuration = kvzalloc(ap_config_size, GFP_KERNEL_ACCOUNT);
+>> +    if (!ap_configuration)
+>> +        return -ENOMEM;
+>> +
+>> +    ap_configuration->magic   = VFIO_AP_MIG_MAGIC;
+>> +    ap_configuration->version = VFIO_AP_MIG_VERSION;
+>> +
+>> +    /*
+>> +     * num_queues must be set before writing qinfo[] elements; the
+>> +     * __counted_by(num_queues) annotation on qinfo[] causes the 
+>> compiler to
+>> +     * insert bounds checks that evaluate against 
+>> ap_configuration->num_queues.
+>> +     * Writing through qinfo[i] with num_queues still 0 would trap.
+>> +     */
+>> +    ap_configuration->num_queues = num_queues;
+>> +
+>> +    apm = matrix_mdev->shadow_apcb.apm;
+>> +    aqm = matrix_mdev->shadow_apcb.aqm;
+>> +    num_queues = 0;
+>> +    for_each_set_bit_inv(apid, apm, AP_DEVICES) {
+>> +        for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
+>> +            ap_configuration->qinfo[num_queues].apqn =
+>> +                AP_MKQID(apid, apqi);
+>> +            num_queues += 1;
+>> +        }
+>> +    }
+>> +    memcpy(ap_configuration->adm, matrix_mdev->shadow_apcb.adm,
+>> +           sizeof(ap_configuration->adm));
+>> +    mdev_name = dev_name(matrix_mdev->vdev.dev);
+>> +
+>> +    /*
+>> +     * Unlock the mdevs_lock so other mdevs are not precluded from 
+>> being
+>> +     * accessed while a potentially long running operation is 
+>> performed.
+>> +     */
+>> +    mutex_unlock(&matrix_dev->mdevs_lock);
+>> +    ret = vfio_ap_store_queue_info(mdev_name, ap_configuration);
+>> +    mutex_lock(&matrix_dev->mdevs_lock);
 >
-> >
-> > Thanks,
-> > Zhiping
+> I'm confused by the locking strategy here. Why is it okay to release 
+> the lock, do stuff, then reacquire the lock? If that's okay, why do we 
+> need the lock at all? What changes are we protecting against? And can 
+> those changes land when we relase the lock to call 
+> vfio_ap_store_queue_info()?
+
+See my comment above.
+
+>
+>> +    if (ret) {
+>> +        kvfree(ap_configuration);
+>> +        return ret;
+>> +    }
+>> +
+>> +    if (!matrix_mdev->mig_data) {
+>> +        kvfree(ap_configuration);
+>> +        return -ENODEV;
+>> +    }
+>> +
+>> +    matrix_mdev->mig_data->stop_copy_mig_file.ap_config = 
+>> ap_configuration;
+>> +    matrix_mdev->mig_data->stop_copy_mig_file.config_sz = 
+>> ap_config_size;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static ssize_t vfio_ap_stop_copy_read(struct file *filp, char __user 
+>> *buf,
+>> +                      size_t len, loff_t *pos)
+>> +{
+>> +    struct vfio_ap_migration_file *mig_file;
+>> +    struct ap_matrix_mdev *matrix_mdev;
+>> +    loff_t read_pos;
+>> +    ssize_t ret;
+>> +
+>> +    /*
+>> +     * This file was opened with stream_open(), so pos should be 
+>> NULL for
+>> +     * sequential read() calls; a non-NULL pointer will be passed only
+>> +     * for positional pread() calls in which case we return an error
+>> +     * indicating broken pipe/illegal seek on a non-seekable file
+>> +     */
+>> +    if (pos)
+>> +        return -ESPIPE;
+>> +
+>> +    mutex_lock(&matrix_dev->mdevs_lock);
+>> +
+>> +    pos = &filp->f_pos;
+>> +
+>> +    ret = validate_stop_copy_read_parms(filp, pos, len);
+>
+> Why pass pos here? Can't validate_stop_copy_read_parms() just read it 
+> from fipl->f_pos?
+
+I suppose we can. I'll have to change validate_stop_copy_read_parms() too.
+
+
+>
+>> +    if (ret) {
+>> +        mutex_unlock(&matrix_dev->mdevs_lock);
+>> +        return ret;
+>> +    }
+>> +
+>> +    matrix_mdev = filp->private_data;
+>> +    mig_file = &matrix_mdev->mig_data->stop_copy_mig_file;
+>> +
+>> +    if (!mig_file->ap_config) {
+>> +        ret = vfio_ap_get_config(matrix_mdev);
+>> +        if (ret) {
+>> +            mutex_unlock(&matrix_dev->mdevs_lock);
+>> +            return ret;
+>> +        }
+>> +    }
+>
+> What's the point of this block? Under what circumstances can we get 
+> here not having set mig_file->ap_config?
+
+I'm using lazy intialization here:
+* vfio_ap_open_file_stream() initializes mig_file->ap_config = NULL
+   and config_sz = 0
+* vfio_ap_get_config() allocates the config, fills it, and stores it in
+   mig_file->ap_config along with config_sz on the first call to
+   vfio_ap_stop_copy_read().
+* The stream_open() file position (filp->f_pos) tracks read offset across
+   calls and the config is freed in vfio_ap_release_stop_copy_file()
+
+I'm going to put a doc block in to explain that
+
+>
+>
+>> +
+>> +    /*
+>> +     * Compute the offset and clamped length fully under the lock so 
+>> that
+>> +     * concurrent read()s on this stream file each see a consistent 
+>> view of
+>> +     * the current position.  *pos is advanced here while we still 
+>> hold the
+>> +     * lock; copy_to_user() then uses the snapshot read_pos. This 
+>> prevents
+>> +     * two threads from calculating the same offset and both copying 
+>> the
+>> +     * same region (or one reading past the end of the buffer).
+>> +     */
+>> +    if (*pos >= mig_file->config_sz) {
+>> +        mutex_unlock(&matrix_dev->mdevs_lock);
+>> +        return 0;
+>> +    }
+>> +
+>> +    len = min_t(size_t, mig_file->config_sz - *pos, len);
+>> +    if (len == 0) {
+>> +        mutex_unlock(&matrix_dev->mdevs_lock);
+>> +        return 0;
+>> +    }
+>> +
+>> +    read_pos = *pos;
+>> +    *pos += len;
+>> +
+>> +    /*
+>> +     * Drop the lock only for the copy_to_user().  The ap_config 
+>> buffer is
+>> +     * stable: it is allocated once in vfio_ap_get_config() and 
+>> freed only
+>> +     * in vfio_ap_release_stop_copy_file() which requires mdevs_lock.
+>> +     * Since we already advanced *pos above, no other thread will 
+>> compute an
+>> +     * overlapping region.
+>> +     */
+>> +    mutex_unlock(&matrix_dev->mdevs_lock);
+>> +
+>> +    if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len))
+>> +        return -EFAULT;
+>> +
+>> +    return len;
+>> +}
+>> +
+>>   static const struct file_operations vfio_ap_stop_copy_fops = {
+>>       .owner = THIS_MODULE,
+>>       .read = vfio_ap_stop_copy_read,
+>
+
