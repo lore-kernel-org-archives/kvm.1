@@ -1,127 +1,117 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83E14C10F1
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 16:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640CD4C10F1
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 16:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791216977; cv=none; b=uHaG0O/+hIcTgptg8izxAOlOz30onwvmV7itVJJGUBAROlFsVXui2E88/xaMkz3C9cN+Jq0iX2wL8SKjeMgOhvCWCExd4HIsgKKfi1W0KRmgQYFtpszU8a/f+l3cmHI21th+XgP4pcmaFel3sPPN0KX9yS+paUrLDAwZ1aupp9Y=
+	t=1791216998; cv=none; b=EmzRbFTM9S0jTE6dbWnZJqJre0xBcmxidPPcYiOUme/MHzGpWudz14W79jewi409v+jxC4G8Kg3hXqYTVso29q1bQOE4iRp9DDf0/7ys5J6/g9kCJLF3rwgtFFg52+4arKD01hZLyaG1hkM1qF9kUqc6t2JqccT0y/I5mGNdIBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791216977; c=relaxed/simple;
-	bh=rh5d2cNKBXKMwPxK3EfMFKvJ8TMXw53ExafPjYEUPHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cmSQ1eG7suQ7IcrMLnUHJewxAQSdAtPytk8rl0qmxPuTCQS1yzsd/T2xnEP+EHsFxmB03vuIe11w3HCsb5lJ6ZpwFhoOodqW0kTHCR78DKGryJ626fbMQtoY7MXU0zciD+k0O/4ghX0FIw0qR9kKLhCwAlYmoIw3FbLy3K/3ebA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=YiYM/PJc; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1791216998; c=relaxed/simple;
+	bh=RKzP5xYHx7ykUWadWThP1j3Bv7bddgBrpR4XChhQ9Og=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ivbA2R0zEEx5id2sBd4Rz/VT30M56+TFi5rW2reEAMIy/oLsIVJKctiijgofn5E7aNWppOLT6Lh3i/75KbZPiMIbFOh66MwN5RIrzIocRdsqucYcasYF7x1JdSPD2rer5y4/DwobAvg0m2bjC5elsS2mt5NYskIxb40me8zPyX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=FUfxR+Vf; arc=none smtp.client-ip=74.125.227.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="YiYM/PJc"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39dacf053eeso914764a91.2
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 09:16:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="FUfxR+Vf"
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a7d725ca09so668470a91.0
+        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 09:16:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1791216973; x=1791821773; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HZQZn6DIMQDQCLXf+RSqa5fylG7dJYyOrH4B8TI6hz0=;
-        b=YiYM/PJcenPgfbZ/n3Jm3OB9HIB8j4drOB7+froS+kXYkwgEb0VGBa1MaVHSGx5Rhh
-         X79DaJH0fer373z59lKkPyytcx7UP4bc5ZJCkbSj946+C4jbCUp/1W6s45E7IR8Dkv1c
-         e0xQlPQkglpFdoZv8IbOMT1RMO0QCWnolYqrk=
+        d=snu.ac.kr; s=google; t=1791216997; x=1791821797; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=9v042JvYwgrOTfMUZGh7htN3q5uPdutTlCAPZEqWoc0=;
+        b=FUfxR+Vfxkx8f4sAk3lSX1Y/+LGNAsVXecR7zzQua+vPSPHBbmkIwDlmopuBxrwUyF
+         3fxu3/Avd+EGom2aINYipK1XsPXQGcMUUcBxvn79K/UMftkB2rruo522RSgtmbOJD2/R
+         DUwWIjBFBtvau6cnN8Q5OHjOcBGwL6rgJZ1/g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791216973; x=1791821773;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HZQZn6DIMQDQCLXf+RSqa5fylG7dJYyOrH4B8TI6hz0=;
-        b=gsCc+Jf+wCe4Ew0WlbFU5D4sT7lr1RrnzKygmj9ee0HYR0LzoekXrx4Q7mFrJzb1Ag
-         yC4we06bI7xwHB61jxdrA0f3uUXOP66ttrKf0RtBEOeQLA0CRsYk/gamugFUfFISXFrO
-         03GGa4m0ZIZgTe/82Mfxz/TSa2QsgNe9RbgxxxrSNRgLYAjWdoDb92T3R793V5vyr6tZ
-         gG/dobncHAwcvGvjwnW4Oso3B0V5JJkebiBVJNm9sdWuJ488xPsQA/fvs/cuV1WdMZ9k
-         qRPaNIF2vwIKcw0AnEIPsktARVK2xx7AP+Efuwi1FViJu2ZZgsUr943GOHpYjHJqFw+P
-         oKSA==
-X-Forwarded-Encrypted: i=1; AKwUvBxnVpNkV7sFsYc3OpJXfHlv1KDT4Fdsb93L1P5779wqTZiWS2uCA340LdsuOTJWZryflss=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJl6bHVsoq9tS13zNZHBgiNm5JFwScEecEIb+NpnQC/IIXFg+Pv
-	kJXFaNvqy1AL9LFEzc4LLTlLfjnuZn3zKYDXMFrEU0St21HIm3uVYg8E9sUzBJQiqNQ=
-X-Gm-Gg: AYBFou2HuAUaAOAksdYFXBUCm6kRJ68Rb1RLVIWsSpgW3ZfG5D84TR6y6xEyiaTnbc2
-	CyR5Lswi0ZXKQoSFONzwshxpH6+x/5K5i7gbk1T6xM0D99jOhEaEmXbDnPgggCZ9wDQvfGfpiOZ
-	O+ybMtrylfDeh2/jAEizIs7VFcOD+et3yb1R9yoYGEXI4C+vAA7K9lsAvAtkNcSFmpAbQkmam+K
-	mQZagglC3HkY200ZfeL0g3mTtG2Ymtj7fSuLfAKONkAda7pNFfvLw2SKvQJHg0O/STvqjNkDCiD
-	iJ7FbzhoJHPi7Imju7xGEiN6xu4Cvuhv2qKmnkBCfgNKAEWaQSiFvxCfxwUdyVNoKaYcX5l9eKf
-	sFdNmpeAjFMbzKY95GvMW6xI4Lf0VgOXZr4TEC5CI/rHw9VUnDqKKgXMtqJxSynaKpYC5NCehj7
-	Ls8w+uXXik0T3jTRe3+igAgcJ70T5yBO9XkePyGiXMj7qKuHovJ+/fnat+wF6nCFbJ
-X-Received: by 2002:a17:90b:2fd0:b0:3a7:a463:54c2 with SMTP id 98e67ed59e1d1-3a7a46356e6mr4340629a91.35.1791216972916;
-        Mon, 05 Oct 2026 09:16:12 -0700 (PDT)
-Received: from 1c1aead48890 ([49.142.45.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6d901981sm1172982a12.14.2026.10.05.09.16.10
+        d=1e100.net; s=20260707; t=1791216997; x=1791821797;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=9v042JvYwgrOTfMUZGh7htN3q5uPdutTlCAPZEqWoc0=;
+        b=dETWa1fhMZ+C4FMILAV1DNxhc1GrbK7OA/xDhx45GIvlhkuhODFHEZOzjevYZbztyC
+         20ht2qaVPvKbOs/jWQluuqAoFzFbp1jM7FB5DBH8EbN8XOcSFEbSUWn4b+8cCiTfS/fi
+         SwoYfxSNpvz7Is6l5a4mluOnzEetR/bbG2XdmfwFmT0vg99m4fcqfLz3B1CqKjuFRnnT
+         TAdNjRe6T7bHuJ45z4DYEznaLHUT2KUkozJUbNkWktiFRQYMLMhSMEUHh46NVRWuobv7
+         8Ks+CqXU2KSh4Q7OUJVTequvxEJCy/g5/HxyHoNur9yZ5+5KBex9dxL2WPcEnt+3oP6g
+         ZxXg==
+X-Gm-Message-State: AFq9FYK8WCm+CulBTgFb269CU9fvn58fgoRfCvfwIrNNKJwoTMEs3dEU
+	q122aKpWtPTjI3ftB1ciRTJb81aSmRNCkmDLnyhEv+0i/LTfk7+KcSQ0V9dsg9jlmkM=
+X-Gm-Gg: AYBFou2vUDxC33hk/+YUYoG6yAt8yPf5wTJA5iVKdpKTLNrkk+TMF88N0GvkrAdLNVo
+	boMJyn66jLrVGRmnx2Yh3hggELSCTC95GtePwAxoDbE9oT8NXJ77g7+XJFits4Cc2mjoGM1ODbE
+	w5Ff/brq7HPMHNP49q3TH/aeY6mgoTs9wqKHy8XZ0bREWUNdnDgxSe8czOUjlHTShZgKJ2h47Xh
+	oWgH8EJdd0yNhlnMf925DlLmm82W0orXKGHPi23n8TRzNfVP6fBv3TYWvcvlUYnCvxzMt0TqNiH
+	s6evr+EMfxGXuzC0gZP9hSsi5P4ACA/muxrYLd8875mEANCGRtVeS6zO8ErCoPuL2gl0B/JR7uP
+	87Ts5LKsOz4BF0MilLdciV9JM92HZSdBB0joUsPfO/WIt2ptpF8xIylw0fJQjNzGhgVMzQ2DLuT
+	VOw++NUQb1KslyoSgbeQ3eC7roteSZ390fx6IipTfvpCeIILtR64AdzLGf+DeOxbMC
+X-Received: by 2002:a17:90b:3b84:b0:3a4:948d:9dc3 with SMTP id 98e67ed59e1d1-3a6ce6b409fmr9088604a91.21.1791216996658;
+        Mon, 05 Oct 2026 09:16:36 -0700 (PDT)
+Received: from [172.19.0.2] ([49.142.45.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a853cde769sm130688a91.13.2026.10.05.09.16.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 09:16:12 -0700 (PDT)
-Date: Mon, 5 Oct 2026 16:16:07 +0000
+        Mon, 05 Oct 2026 09:16:36 -0700 (PDT)
 From: Seongjun Hong <hsj0512@snu.ac.kr>
-To: Yishai Hadas <yishaih@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio/mlx5: Fix boundary check in set_report_output()
-Message-ID: <7fbiirwo2k34dcyza7ehmdevziqmch3foldxp6qeeclr3xjypg@enyyca5445pj>
-References: <20261004-vfio-mlx5-fix-boundary-check-v1-1-1d3b8e55e23f@snu.ac.kr>
- <d4477773-a95d-4cc4-8d10-edf1f7b215df@nvidia.com>
+Date: Mon, 05 Oct 2026 16:16:29 +0000
+Subject: [PATCH v2] vfio/mlx5: Fix boundary check in set_report_output()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d4477773-a95d-4cc4-8d10-edf1f7b215df@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261005-vfio-mlx5-fix-boundary-check-v2-1-75599d2f4497@snu.ac.kr>
+X-B4-Tracking: v=1; b=H4sIAFzNw2oC/42NTQ6CMBCFr0Jm7RAoP0FX3sOwKO0gE7QlrTQQ0
+ rtbOYF5q+/l5XsHeHJMHm7ZAY4Ce7YmgbhkoCZpnoSsE4MoRFsWRY1hZIvv19bgyBsOdjVauh3
+ VRGrGuquuupWkBhKQFIujtDr1jz7xxP5j3X6+hfLX/ikOJaboauioaUhU492bNZcqnx30McYvF
+ ucc98gAAAA=
+To: Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Shameer Kolothum <skolothumtho@nvidia.com>, 
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Seongjun Hong <hsj0512@snu.ac.kr>
+X-Mailer: b4 0.13.0
 
-On Mon, Oct 05, 2026 at 06:43:08PM +0300, Yishai Hadas wrote:
-> On 04/10/2026 20:20, Seongjun Hong wrote:
-> > Use > instead of >= on boundary check of recv_buf to avoid the bug which
-> > the full message in the last slot of recv_buf is ignored even though the
-> > received data size does not overflow the recv_buf.
-> > 
-> > Clarify the second boundary condition by removing unnecessary division by
-> > entry_size. It directly shows that size should be within qp->max_msg_size.
-> > 
-> > Fixes: 9c7c5430bca3 ("vfio/mlx5: Align the page tracking max message size with the device capability")
-> > Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
-> > ---
-> >   drivers/vfio/pci/mlx5/cmd.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
-> > index 5fe0621b5fbd..a49531666e6d 100644
-> > --- a/drivers/vfio/pci/mlx5/cmd.c
-> > +++ b/drivers/vfio/pci/mlx5/cmd.c
-> > @@ -1644,8 +1644,8 @@ set_report_output(u32 size, int index, struct mlx5_vhca_qp *qp,
-> >   	int i;
-> >   	buf_offset = index * qp->max_msg_size;
-> > -	if (WARN_ON(buf_offset + size >= qp->recv_buf.npages * PAGE_SIZE ||
-> > -		    (nent > qp->max_msg_size / entry_size)))
-> > +	if (WARN_ON(buf_offset + size > qp->recv_buf.npages * PAGE_SIZE ||
-> > +		    size > qp->max_msg_size))
-> >   		return;
-> >   	do {
-> > 
-> > ---
-> > base-commit: 6addb4f385570ebc11c4eb499a4f1c149f313e84
-> > change-id: 20261004-vfio-mlx5-fix-boundary-check-4839d6aecbe2
-> > 
-> > Best regards,
-> 
-> The patch should include also Cc stable for the first condition.
-> 
-> Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-> 
-> Yishai
-> 
-> 
+Use > instead of >= on boundary check of recv_buf to avoid the bug which
+the full message in the last slot of recv_buf is ignored even though the
+received data size does not overflow the recv_buf.
 
-Thanks for the review. Done in v2, which also drops the second condition
-change so only the fix goes to stable.
+Fixes: 9c7c5430bca3 ("vfio/mlx5: Align the page tracking max message size with the device capability")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
+---
+Changes in v2:
+- Drop the max_msg_size readability change. Keep only the fix.
+- Add Cc: stable@vger.kernel.org.
+- Link to v1: https://lore.kernel.org/r/20261004-vfio-mlx5-fix-boundary-check-v1-1-1d3b8e55e23f@snu.ac.kr
+---
+ drivers/vfio/pci/mlx5/cmd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 5fe0621b5fbd..04180035a7fe 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1644,7 +1644,7 @@ set_report_output(u32 size, int index, struct mlx5_vhca_qp *qp,
+ 	int i;
+ 
+ 	buf_offset = index * qp->max_msg_size;
+-	if (WARN_ON(buf_offset + size >= qp->recv_buf.npages * PAGE_SIZE ||
++	if (WARN_ON(buf_offset + size > qp->recv_buf.npages * PAGE_SIZE ||
+ 		    (nent > qp->max_msg_size / entry_size)))
+ 		return;
+ 
+
+---
+base-commit: 6addb4f385570ebc11c4eb499a4f1c149f313e84
+change-id: 20261004-vfio-mlx5-fix-boundary-check-4839d6aecbe2
 
 Best regards,
 -- 
 Seongjun Hong
+
