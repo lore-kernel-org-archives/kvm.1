@@ -1,63 +1,63 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0752EF653
-	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 03:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91042DEA93
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 03:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791172075; cv=none; b=r2nT1GuDBKAwkoChWt0Q586F6dpph89pAdjS5QiDij+Gtd1YqouXa8NPkdaNhvuCXhd117bcPwY/0aFoa58sduB+hvBAvCs79Sv4gBAebOAQbpPMzw0TsE+aWj9y3FIWTUHnSUDlmL/ticNY7DJnEVviAT39Gr33qVlTZWWwb5s=
+	t=1791172080; cv=none; b=gtYRRpHzebgNeGVUS43aTmMPThsmUUbbUZgi5MeLLcN7wokWqpMcZ8vbJfCFnJjFnf2in1myipQO7NNnvObmgff68g6gv5wRvHd7z6X04FWXDiTmq3MX7m5W3kS8Ki947il0yvyWI2h1FqEPEkQfAX4Vyj37luLf62Ra51qyfXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791172075; c=relaxed/simple;
-	bh=aSYMiDeMVCO2ZMsNHwEco+yPzqo0ags0E7+MGXeO88U=;
+	s=arc-20240116; t=1791172080; c=relaxed/simple;
+	bh=6K0x5TLULsGiDePBL5sXyC+y3q6f1TV2jirLnbU54ys=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=esoLt11CTIt5y9Z9Wc0ltEEpeojcYKHEHtf5pib+n0qkkAuPsRfIJwzyte46Bef+2FfK1YK4KNlgxZbAc+Sy+oSXcY9nTCQIYe75W0saEC5ELNj3L0RzFG8Hx5d5mahts26sK8om7eCM5RHbo/7P6EINK9gRXkOQSTr3bkjOg8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KsbebVgl; arc=none smtp.client-ip=74.125.229.42
+	 MIME-Version; b=cFZengdImE3ONqM5j9rbWF29PMjobbkfn0Cc/11YKwSqWSUz7nvX04SF87aMAKZvk1A6fIcO04d0ERb1tvRELy4gL9i7bHXVpweeuEAihcRla8fp69ZdZRrRNl0AxW/uIAxHJ1XBSnvWVNIv9tWEZ3NbR6xNFMHi0Tt8QRjJCLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3g+dv3A; arc=none smtp.client-ip=74.125.82.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KsbebVgl"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3512f0ac09bso407506eec.1
-        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 20:47:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3g+dv3A"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-33fb4680717so3957713eec.1
+        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 20:47:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791172072; x=1791776872; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791172078; x=1791776878; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BuztXYMaK66Ygvug6vAZf8NRi0Rh3rDwmnl655YdZxI=;
-        b=KsbebVglCkHCEfzL/nl32Uf3RA1BpM7DP28vP9i2wuh8CU+qgiXjebHQxjlGXXkHtK
-         S6TFtn5fAtpIW7n1mw6djITQ2o+r8L4b0Ov3YUpV7ygghXyu0OMawdKIqMc+3opJf6zF
-         9QIVAHwglaYURkC4dbx2BCbu+smIiet+3f/JXMhoKewoNe5ckr2XZl+saKM5y26JN68M
-         H1D9lnPpQn9aZlg8HgRqoerSgf/qqyt244ZqT3EUapXsWJ1ULWDWFQTW+B5yBhPiHDNn
-         myWXIdwCS+qF1j6ZJqrxUjhhgxajgxr+LWB706nV07ODURNyJ43yrkBxLLnuEMTsQRon
-         EQQg==
+        bh=h1SCblXYMeeDfQwJe65yiAdl+ST+ro3b/dUm5JimbFA=;
+        b=f3g+dv3A2I5pbNNLG5evyYZhFjfoHf0TaeAT7jZGIhD3S2AkN20+AaqdMC3iRmrlPO
+         y5PAEgldTrnzoyC5xnitkfoErAwSjVC60bJBXD1EqwVgi6ClfiDozNd6woXt1CRPk8OZ
+         37zhS4lGCS2eBov9f+ZdEo8mSHn20IOMXM1VaGI1udBWQHvcSahy5/NOZG8hr7lipG4I
+         oupBS/ugZSVgtxJREhDwG+bBgpVdNSb5T40+6gu+efPQwHZbyDMmS//DIYFM5dnuQQz0
+         /wrTNuOIYWhbJyAFffMgWZOHVXr2Iw9s2i6+OwTDVWq3EigazMXYdVMiGq5F+3JxXeAY
+         IA7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791172072; x=1791776872;
+        d=1e100.net; s=20260707; t=1791172078; x=1791776878;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BuztXYMaK66Ygvug6vAZf8NRi0Rh3rDwmnl655YdZxI=;
-        b=cC34lFU8aX0WB5r5gO40hujUIBQ5fWKuyaAlFQmeoIGV6d2vuvMEh2Y8Vb4CW6Impi
-         ofpIargiV7SezsOw+b0K6t4LXwDUhjf5YJw24w04pKerqkOmJRsum/ebdPC2K6JBy/fK
-         zqHIUQuE5cHlRESdiU/wPl9lLqRfcq4c+KDbzx4SXm06JPmfeFV2clmrZqTR47YtuMEk
-         8m27fSbuYc5fyFxueS+67OorRD9SASzVXCJOs06m4ybbmPq0pdG1lG1dlR90inN8Iu6v
-         rvQQ1I0VKHE3WwFQVuJIpYJG5Q8vZHSs0C1vYCiJo0bVygYdESf7BkNnEO7O+C9TmIeB
-         pwNg==
-X-Gm-Message-State: AFuF++n8fUJI0ye46Ns6sGIJq6cpD8ixIKfMN8RAUFun8zmCHZ7cJDcJ
-	LkHaPDkZxBmT1hPmX3jotozZ+1/jEaZNapcGIdfgXlX8kQinx3Tf5svw+HXwIQ==
-X-Gm-Gg: AYBFou1nRD9AKXixygcbsZidEKf7hl/9rukhTBuTxAsx9ormjMF4EJrkYlol0uvgVU5
-	FBTXmiehItVz/gfclZn6gP2AZ6keWvOJuAFoHxQ8lFEIZ+yfnOM3zHLS7F13iPCMj0SktkPx5RD
-	cPZcDBzejBwuSyIiOHP6Z24w9Zhq6zkIsXT1IuMDYHXg1f7ph//x22lTkuY73kADOVfyajpM8bN
-	I58H9Npl5KbUlwVV7eNfOsV9G+ua6DLp3Ew4B2gsWRg4L4YLZeMe4jCEu14tgJh0JSdstwNQcbj
-	yowmK+SXzspmQE01OcArohq2nRBz3+KZ3T9ubT+sglN3vwZmM2khM5aFguY6s+lvssDsNp1RI6v
-	obNzgyGTlfkrlYkJDxC4OhEwYquCvPq/4PeCj++u5J2JamsRWIKD+d186uqrOdzcQHN8zTR2stO
-	TLu9e3q9JVa5zvkhcXEFNsOHfWS7McnMlHV92uTNdU1SlKBjWN7741ZFPq0Vz7rl3OUcyhf0Qkg
-	9a6lpiKO4lILC/y2e7zG5icvTmvRp1T+Xmmj6JmY/v7Acrj5f7vFVKVPCdW
-X-Received: by 2002:a05:693c:829b:10b0:351:1251:dada with SMTP id 5a478bee46e88-3511251dc63mr9052789eec.33.1791172072369;
-        Sun, 04 Oct 2026 20:47:52 -0700 (PDT)
+        bh=h1SCblXYMeeDfQwJe65yiAdl+ST+ro3b/dUm5JimbFA=;
+        b=UbuFQJiCOnsT2prSoIiAU53LewojnwReY53doHS21IyHUrCfqyQMuQpYOHdUTdQQDn
+         Wc42iAAqUURxiRcRrCPTU4uDVyEaXmB4/alsFCwS7Y9tZQUbPcBd2RIyaYjeUfiFhhO9
+         mFKkH9nprwH1JyIqmx+P4FxIKmVDAADgzssMUV8t9oKN0GtzKbnL3T5KmYNKQhXoLhHb
+         mBoVwLGlglo77njxCvpnKt/yq7qmFyHtkwP+G3brLWy0D+6hLdn5FzFPuAlnfFX03DTT
+         4oAUYWxCA0TfSZLw17KpoTmLQSe16uQIhF4sT/9SP8osZUgCiaC3C5dyb1K8E3nehdSp
+         B0Pg==
+X-Gm-Message-State: AFuF++lMMFDlH1OC/U6Mdn0jkKZRsvnX/Cdivzeo8KMIC7XuDx44oT4w
+	7zum6Q/KCW6tPq199Tvt3zKrLfv+2rCd0wVHwTDjhov8PgAmwwpcz93arARk7Q==
+X-Gm-Gg: AYBFou3bShUZJvZB/cwQpFqK6W/YIAtRLMsi+Ot6JSRKKX/wuD17gYKKh0lZom1VBZA
+	EopZu1ZNcKkW1Fb4GlFE3BYENc9ckUn9dpQOQ9RYdB/i3YrOFnMPGTrJ12Te3UUjS15iGvdkVJ1
+	DQx8/NmSP/pvbgaL+ATKPpaXEKAXfwmvkK4r2thJsAnzjedqJ3TtPefo3S6NUi1UU9uul7tKX3c
+	u+UDScfRGZvqxx9OBDF9XAge+LRI6vBQds78kFC754A5j420bMbReQtyO+hTXYXsl71Ry+ZrbVZ
+	EcuK+5p4ae9Qp++V4TbHho3z1TEfU5LI/S1mx7Sz4c9rF1XeYUiRtsTdgK4VnItEIk+1MMLfHYH
+	SktPnDWdWYesIQUEIxEFkIplVgQdQHYNQqDTmsPXxRBM1mH3EOeCIUwf1JCfUmczcPwf4V6Rjmm
+	VMaWj38fyST5mCApjzvcUS438YUObLerA7K7T4O7gI0+0nzr9vi7R0ZTfyNPiZgmnm4av1GDbb2
+	fFMn2KOLV1S8ok383ly7PGzDco34nOMrl1KBFRgQUXh+Hujw4MC+0+B8EB3GFX8VQlwIeTH
+X-Received: by 2002:a05:7300:8282:b0:340:9d9f:a5c with SMTP id 5a478bee46e88-351117064b9mr9289417eec.36.1791172077441;
+        Sun, 04 Oct 2026 20:47:57 -0700 (PDT)
 Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3512718a18esm10840958eec.17.2026.10.04.20.47.47
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3512718a18esm10840958eec.17.2026.10.04.20.47.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 20:47:51 -0700 (PDT)
+        Sun, 04 Oct 2026 20:47:56 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: kvm@vger.kernel.org,
 	Sean Christopherson <seanjc@google.com>
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	linux-kernel@vger.kernel.org,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v6 2/5] KVM: selftests: Move memslot_perf_test off the 256M ELF load address
-Date: Mon,  5 Oct 2026 09:17:25 +0530
-Message-Id: <2affbc2727a4fdae1d187dada40a26e0ab581c4a.1791014924.git.ritesh.list@gmail.com>
+Subject: [PATCH v6 3/5] KVM: PPC: selftests: Add helper for checking if running nested
+Date: Mon,  5 Oct 2026 09:17:26 +0530
+Message-Id: <2f57ae5266c12f34cb12d68c65abb643d2065ef4.1791014924.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1791014923.git.ritesh.list@gmail.com>
 References: <cover.1791014923.git.ritesh.list@gmail.com>
@@ -86,65 +86,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-KVM selftests are built with -fno-PIE/-no-pie so the binary uses fixed
-load addresses.
-On powerpc64, GNU ld default links at 0x10000000 (256M) which is also
-the MEM_GPA, so the identity map trips with the error:
-  PTE already present at level: 4 gva: 0x10000000 pte:0xc00000000002018f
-
-Put the test slots at 512M instead which is past the ELF.
-e.g. failure w/o this fix:
-
-./memslot_perf_test -s 514
-Random seed: 0x423558ef
-Testing map performance with 1 runs, 5 seconds each
-
-==== Test Assertion Failure ====
-  lib/powerpc/processor.c:235: !pte
-  pid=371 tid=371 errno=2 - No such file or directory
-     1  0x0000000010018293: virt_arch_pg_map at processor.c:235
-     2  0x0000000010008b3f: virt_pg_map at kvm_util.h:1325
-     3   (inlined by) virt_map at kvm_util.c:1571
-     4  0x0000000010001cab: prepare_vm at memslot_perf_test.c:353
-     5   (inlined by) test_execute at memslot_perf_test.c:816
-     6   (inlined by) test_loop at memslot_perf_test.c:1062
-     7   (inlined by) main at memslot_perf_test.c:1136
-     8  0x000000001001d713: __libc_start_call_main at libc-start.o:?
-     9  0x000000001001db47: __libc_start_main_impl at ??:?
-  PTE already present at level: 4 gva: 0x10000000 pte:0xc00000000002018f
+access_tracking_perf_test needs detection if we are running nested guests.
+This adds the needed helper.
 
 Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm        | 1 +
- tools/testing/selftests/kvm/memslot_perf_test.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/include/powerpc/processor.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 6e672484a22f..a7ecd7a242a9 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -262,6 +262,7 @@ TEST_GEN_PROGS_powerpc += kvm_binary_stats_test
- TEST_GEN_PROGS_powerpc += kvm_page_table_test
- TEST_GEN_PROGS_powerpc += set_memory_region_test
- TEST_GEN_PROGS_powerpc += memslot_modification_stress_test
-+TEST_GEN_PROGS_powerpc += memslot_perf_test
+diff --git a/tools/testing/selftests/kvm/include/powerpc/processor.h b/tools/testing/selftests/kvm/include/powerpc/processor.h
+index f0ee21a8e2d4..a46f6828991c 100644
+--- a/tools/testing/selftests/kvm/include/powerpc/processor.h
++++ b/tools/testing/selftests/kvm/include/powerpc/processor.h
+@@ -6,6 +6,8 @@
+ #define SELFTEST_KVM_PROCESSOR_H
  
- SPLIT_TESTS += arch_timer
- SPLIT_TESTS += get-reg-list
-diff --git a/tools/testing/selftests/kvm/memslot_perf_test.c b/tools/testing/selftests/kvm/memslot_perf_test.c
-index 844ea9b7bb41..2913a4de4cc9 100644
---- a/tools/testing/selftests/kvm/memslot_perf_test.c
-+++ b/tools/testing/selftests/kvm/memslot_perf_test.c
-@@ -30,7 +30,7 @@
- #define MEM_EXTRA_SIZE		SZ_64K
+ #include <linux/compiler.h>
++#include <unistd.h>
++
+ #include "ppc_asm.h"
+ #include "kvm_util_types.h"
  
- #define MEM_SIZE		(SZ_512M + MEM_EXTRA_SIZE)
--#define MEM_GPA			SZ_256M
-+#define MEM_GPA			SZ_512M
- #define MEM_AUX_GPA		MEM_GPA
- #define MEM_SYNC_GPA		MEM_AUX_GPA
- #define MEM_TEST_GPA		(MEM_AUX_GPA + MEM_EXTRA_SIZE)
+@@ -36,4 +38,9 @@ static inline void cpu_relax(void)
+ 	asm volatile("" ::: "memory");
+ }
+ 
++static inline bool is_pseries_lpar(void)
++{
++	return !access("/proc/device-tree/rtas/ibm,hypertas-functions", F_OK);
++}
++
+ #endif
 -- 
 2.39.5
 
