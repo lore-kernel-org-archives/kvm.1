@@ -1,187 +1,230 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DE02D0605;
-	Mon,  5 Oct 2026 22:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF7C429803;
+	Mon,  5 Oct 2026 22:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791237930; cv=none; b=DjblMdwu4FrWqhr9gwWNepmz9vCidiqKtNxZ8N5N82PMRXYv2RBq41yzk7mtyeWNyaj5EbaUanjbXkkmxSB977pdbybMhZisS0j4AuvxORCXFnrf9HINmwUmm5RRzFCeCHeNpuuFWtWM+L5HeWG+btUkT4PDJrw4eki7Mom9YeU=
+	t=1791239444; cv=none; b=fh7vh5HPfOx4igI3538x4do/auJtLde2rC+1/fdTFl8SgmpOrYfRYlWctlBjStL7kL5k/utopmaX6Qs70DhxLlP8Gp9ej8832+eky3VzOzm7dKgK300yrguzyognzLhOAGPIQPqDFxmvrUJgriW/jSpyu+AZCdFP4YfjMYxTdDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791237930; c=relaxed/simple;
-	bh=tlFKnI+/G46xEVtkZZz6SWIPAQ9LJRHy37Mwk0R9pxI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bCLdDhNb47ACZkjill4Rw4yckrHWA3Ue0XnoPufenRWzTny/gmLP4Wu7Zqd6cFrKsJZyWOFIvNgcXfwa2ky5w2uMdVn/dqo6CdMfGBrxu1nh8zPbA7A7szc6ZBwg0rLroVXyRv9S1dbNNzfuFK9CVcR6NWmYwh0Oq4Om498ZOJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kivosnst; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791239444; c=relaxed/simple;
+	bh=s+YY0U0HL0MztawNIQ0kXGq8MGybj2msROHyL159r3o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bFXhqEAOB81kiWFZaY+XoC7DOdKQMBCoRvfX0vozQH9vGhfa/t3rwrcW0c0pg3jrTBYwAwfA1gs2YUZZSVODZqr7gza/IFrzj12GJjsA00gSNuroBhgTMp8LAvY4lwBbcJ3MiwZwl9jhGpiojuShn0OyCk+eocnmfGjWmuUxbaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=f2bkEur4; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kivosnst"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695Ha76w1132014;
-	Mon, 5 Oct 2026 22:05:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xB8PL/
-	aesM9tEy01+dDwzQohwUSfg/defvtVkjqE5i8=; b=kivosnstkLqKEQgLoa+j0N
-	Idd5+djp6FKo2NxGfCH058vj+w+rNv4U44//QbMdFX+OHo5/6IEWGkS/10Bl0IJ+
-	5hM6KC55XPY6eD62eljPCQlIkutAKBwvUDH5UsYFZ1CdY6tO3CQyROTlOawkolMv
-	wiFo4VBW2u6JYBylLWeqq2/qXEqJ13VOfLJcJ/LlnVTLQFE6o85zRqVV/0j7JYr8
-	W8uRgwbIEKneLB8wpSnYWkfsAwgNwD+lrbsBmZGwpYWFnGOtq33lJrGuGZd34HJA
-	0WeAz1iRGa4b1v2Jt40RFat2gKEZmRbvlda/um+XmX0fcFzJ0n22lBldiHaLwUow
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4jmafw-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 22:05:25 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695LlaVt3238873;
-	Mon, 5 Oct 2026 22:05:25 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3c1pqhrt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 22:05:24 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695M5N0E26608182
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 22:05:23 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 615835805C;
-	Mon,  5 Oct 2026 22:05:23 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C2F9258058;
-	Mon,  5 Oct 2026 22:05:21 +0000 (GMT)
-Received: from [9.61.254.169] (unknown [9.61.254.169])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  5 Oct 2026 22:05:21 +0000 (GMT)
-Message-ID: <a6d35b06-694e-45da-ab3d-12279cacdc8c@linux.ibm.com>
-Date: Mon, 5 Oct 2026 18:05:20 -0400
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="f2bkEur4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6G9J4+68cfekvHCCAkYkT4N9fdUJdU6hJ194oHSMuzY=; b=f2bkEur4jobaGw1XweYbtJm4Gb
+	LPfykX/bP+/il+9fr244GEim/w+d5uUmJfNWFiG4KAeCv49Wht94OiG/d90nbHK3dQWl8fYs9Vzz5
+	7bfATdOmg6gPyzj3FAa6446dzKb0QSSt4zulW6Y604VBzTFWlFBBId5vPfzLMeUV2QctORt5eKUKD
+	ipL7VtEdCdDWUoI/m98m+xY0D0PJozqeaf1U6CIBnL/3fTKuCR9oYpnAbuzZHrlkojt1F4nkc/w87
+	MNG6frI3AYkUXwZ5q/8HqE+2+d1fI/aYDVEp7Tv/YvLRmr01YonM3kcDNkju7SDbPIpQkE76pqO80
+	ELStKSpg==;
+Received: from [54.239.6.189] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xDrCV-00000005Ahu-1ln9;
+	Mon, 05 Oct 2026 22:30:27 +0000
+Message-ID: <28af91279c360774a03458860784772c24ad49ab.camel@infradead.org>
+Subject: Re: [PATCH 3/3] KVM: x86: hyper-v: Implement
+ HvCallRestorePartitionTime
+From: David Woodhouse <dwmw2@infradead.org>
+To: Mushahid Hussain <hmushi@amazon.co.uk>, kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  Vitaly Kuznetsov <vkuznets@redhat.com>, "K . Y .
+ Srinivasan" <kys@microsoft.com>, Haiyang Zhang	 <haiyangz@microsoft.com>,
+ Wei Liu <wei.liu@kernel.org>, Dexuan Cui	 <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, 	linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	nh-open-source@amazon.com,
+ mushi.shar@gmail.com
+Date: Tue, 06 Oct 2026 00:30:26 +0200
+In-Reply-To: <20261005192431.87317-4-hmushi@amazon.co.uk>
+References: <20261005192431.87317-1-hmushi@amazon.co.uk>
+	 <20261005192431.87317-4-hmushi@amazon.co.uk>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-p1x8seIsSlp3f5cK7XBY"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/4] s390/pci: Reuse FMB buffer and preserve state in
- device re-enablement
-To: Niklas Schnelle <schnelle@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, mjrosato@linux.ibm.com,
-        alifm@linux.ibm.com, farman@linux.ibm.com, gbayer@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com
-References: <20261005154557.57801-1-oelghoul@linux.ibm.com>
- <20261005154557.57801-3-oelghoul@linux.ibm.com>
- <023ed9db17d9c7d785dad387fc18dff6bed862d8.camel@linux.ibm.com>
-Content-Language: en-US
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-In-Reply-To: <023ed9db17d9c7d785dad387fc18dff6bed862d8.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -noYHEZDmDrEUdUrV-O_udIDeDP5xVHV
-X-Proofpoint-GUID: -noYHEZDmDrEUdUrV-O_udIDeDP5xVHV
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA4NyBTYWx0ZWRfX9C6pa0h+e+tK
- dORJgCEolNo+DZCqH0UeTBD1RuszfV2FZ9OZrr0z9kIc4xaRJxmX5sH8FaGVbvDj69+rMG4S6Or
- YLNKwwHOkPLx3hN2YiLI5P5idNeQ3/c=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA4NyBTYWx0ZWRfX0HNoKS5Jnxo1
- kb6qmcO8XA7a9ZidioVkb2qnrWq8yVSCtiz1KKoWSoFydNmc+CTmWKFmk7Q3aZ82aw3c/nQPLWi
- kh6XykNJI3KRB6ARmSeCrL6f8ofr1qMLNzILlLvMr6zE94IIrJFTSGVOOuQCGeDKUqP8hrG9S9t
- PizwdmkfQoq3on5T4Fz5R4kCqIGRuNikSlNStGpE+5JGrHFaAx1iG+/a7M5u1UUS5WdJ8RXaJl4
- wMOHkovR89gfH3niVhkeSkJWL2WLfquFQ+kEoXkJVPLLWExi8MtGjn2tsWemRqGmmZjHjLwm7S5
- BywwqQaVQwfOY5t/tbvTPSYybHaQsH79oQbBp5ZUc7ulnF1bgt1m+wusbL/rNwBVVPPIj/tQL3d
- 8euwXUhQSVHpKHPyGflzYZx/QfVaA8O1067IKxNHY19OFfEnXjdCywB8MXfl9VUVniUcBfaLsEh
- W57hxC9Yy1x/WUVkVxQ==
-X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac41f25 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=D4a7Qy6VNviO5TZbTMkA:9
- a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_05,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015
- spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050087
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 10/5/26 3:53 PM, Niklas Schnelle wrote:
-> On Mon, 2026-10-05 at 11:45 -0400, Omar Elghoul wrote:
->> Don't free the FMB buffer when disabling measurement in
->> zpci_fmb_disable_device(). Instead, make the buffer persistent for the
->> lifetime of the device and reuse it across enable/disable cycles. Defer
->> freeing the buffer until teardown in zpci_release_device().
->>
->> To support the persistent buffers, add the fmb_enabled bool to struct
->> zpci_dev to decouple whether FMB is enabled from whether the buffer has
->> been allocated. Audit the only consumer of zdev->fmb as a liveness check
->> and update it to reflect this change.
->>
->> Introduce the function zpci_fmb_reenable_device() to ensure that the FMB
->> is enabled. If it was already enabled, disable it, zero the counters,
->> and re-enable it. This allows the function to be used in both first-time
->> enabling and re-enabling measurement. Call it in zpci_reenable_device()
->> to preserve the FMB enablement if it had been implicitly disabled by
->> firmware in zpci_disable_device().
-> 
-> I think this causes a sequencing error in zpci_hot_reset_device().
-> First the device gets disabled via zpci_disable_device(). This
-> implicitly disables the FMB but keeps zdev->fmb_enabled set. Then we
-> call zpci_fmb_reenable_device() in zpci_reenable_device(). Since zdev-
->> fmb_enabled is set we don't first enable the FMB and instead go
-> directly to disabling it but that is wrong since the FMB is already
-> disabled as a side effect of the CLP Set PCI Function (Disable) in
-> zpci_disable_device().
-> 
-> Also, and I think Gerd mentioned this before, there is a disconnect in
-> semantics between zpci_fmb_reenable_device() and zpci_reenable_device()
-> that is quite confusing. While zpci_reenable_device() re-enables the
-> device with existing interrupts and I/O address translations, after it
-> was disabled, zpci_fmb_reenable_device() on the other hand does a
-> disable and then enable cycle.
-> 
-> I think the idea here is that zdev->fmb_enabled tries to track whether
-> the FMB is supposed to be enabled rather than if it is enabled.  This
-> makes some sense since the FMB can get disabled by the device entering
-> the error state or a zpci_disable_device() and we want to know if we
-> need to re-enable it at the re-enable of the device.
-> 
-> Importantly, unlike the disablement of a device we always initiate the
-> enablement. But then we can't try to disable the FMB without knowing if
-> it was already disabled. I think a possible solution for this would be
-> to have zpci_fmb_reenable_device() mean that we know that the FMB is
-> disabled but should be enabled, which we know when we re-enable the
-> device and zdev->fmb_enabled is set. Of course then it doesn't do a
-> disable but only an enable despite zdev->fmb_enabled already being set,
-> Then zpci_fmb_enable_device() on the other hand sets the flag initially
-> and then uses zpci_fmb_reenable_device() or a shared helper. Of course
-> we would then have to properly document zdev->fmb_enabled as being a
-> the target rather than current state.
 
-I agree with your insight and I'd be happy to follow this approach, but
-I think this can cause FMB consumers to read stale snapshots (e.g. if
-the device was disabled due to an error state or similar but fmb_enabled
-is true). What would you think of leaving fmb_enabled as-is to indicate
-whether FMB is actually enabled, and then introducing a second bool,
-maybe something like fmb_needed, to track the user's intent and whether
-we should call zpci_fmb_reenable_device() from zpci_reenable_device()?
+--=-p1x8seIsSlp3f5cK7XBY
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This way, a successful zpci_fmb_enable_device() sets both flags, and
-zpci_fmb_disable_device() clears both. zpci_disable_device() should
-only clear fmb_enabled and leave fmb_needed as-is, allowing us to track
-the implicit disablement by the firmware. This will make fmb_enabled
-represent the actual firmware truth, and it becomes a reliable liveness
-check for the FMB consumers (debugfs and vfio, for now.)
+On Mon, 2026-10-05 at 19:24 +0000, Mushahid Hussain wrote:
+>=20
+> -static void __kvm_set_clock(struct kvm *kvm, struct kvm_clock_data
+> *data)
+> +/* Must precede pvclock_update_vm_gtod_copy(), which reads the
+> matched count. */
+> +static void kvm_open_tsc_generation(struct kvm *kvm, u64 guest_tsc)
+> =C2=A0{
+> =C2=A0	struct kvm_arch *ka =3D &kvm->arch;
+> -	u64 now_raw_ns;
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned long i;
+> +
+> +	lockdep_assert_held(&ka->tsc_write_lock);
+> +
+> +	ka->cur_tsc_generation++;
+> +	ka->cur_tsc_write =3D guest_tsc;
+> +	ka->last_tsc_write =3D guest_tsc;
+> +	ka->nr_vcpus_matched_tsc =3D atomic_read(&kvm->online_vcpus) -
+> 1;
+> +
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		if (vcpu->arch.guest_tsc_protected)
+> +			continue;
+> +		ka->last_tsc_khz =3D vcpu->arch.virtual_tsc_khz;
+> +		ka->last_tsc_scaling_ratio =3D vcpu-
+> >arch.l1_tsc_scaling_ratio;
+> +		break;
+> +	}
+> +}
+> +
+> +/* Every vCPU reads @guest_tsc at host TSC @host_tsc. */
+> +static void kvm_set_tsc_generation(struct kvm *kvm, u64 host_tsc,
+> +				=C2=A0=C2=A0 u64 guest_tsc, u64 ns)
 
-As for zpci_reenable_device(), it would check fmb_needed and if set,
-call zpci_fmb_reenable_device(), since we'd already know by that point
-that the FMB was implicitly disabled by firmware.
+This series doesn't add a KVM selftest. Please do.
 
-Thanks
+And *if* you're going to do the rework I'm citing here, please do it in
+a preliminary patch, called out separately from the functional
+addition.
 
-> 
-> Thanks,
-> Niklas
+And... *don't* do the rework I'm citing here. Or at least if you must,
+please do it on top of
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
+heads/kvmclock10-part2
 
+But actually, I have a strong suspicion you just want to set the TSC
+and then use a version of KVM_SET_CLOCK_GUEST, *not* KVM_SET_CLOCK?
+
+--=-p1x8seIsSlp3f5cK7XBY
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+ulQlfa0hnSB3YxNw3vDsoSQAAAAAAAA=
+
+
+--=-p1x8seIsSlp3f5cK7XBY--
