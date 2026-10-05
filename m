@@ -1,75 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB61A86341;
-	Mon,  5 Oct 2026 01:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468EE547072
+	for <kvm@vger.kernel.org>; Mon,  5 Oct 2026 02:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791162481; cv=none; b=pL/djs3hV6H4P2m4SFvezQngQBmzcysZmoCHrfzb0vueMIy+GHqOLnFvpABU5pvyy6K3VB/8gj52DVS5cqRaVfWSQdSIRHeVPXineYClh0mu5xMeETcYkIOCcHBKx08Xzti5aH12/g9aUze0HDKwFBByMv2Da9YpAHGX1dMULNY=
+	t=1791168002; cv=none; b=oERuQj4NnRvTCngpaDGTPesqygG1U39qhFzu+HYe168NDNjtBGMENu15gHZh5Q0fV7EwCgTrnnyYN5W8sD0tuUeDHx6hs+JbeV038u23WUOyTz2UMY0JkHi2+r2Jr/Ocx3vaKnuSMplH7JUbpy4E8KXwyGOJ9WUoXI6a5NL0hVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791162481; c=relaxed/simple;
-	bh=8ryb6JL6kW94Yg1qGQQJG52N2mPNvJinaIwGvHdv5jQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kcpoyxpJs+U+YLEcjeJX5wJ3sN2r+09Z/h03tFVia/ui8iAOrfdbmu3AJgQfX8nNlqeq403qFo4WCgsrPVe8B5BLA0N95NkBjGPXZe4rYfQIAE51YZJkqLKArbfTddmnKikq4Gkg8k8AYiEw3vIGVAaIev3NkXVcK+HoT4FnsQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVqt+wq8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791168002; c=relaxed/simple;
+	bh=VOGPZRYZ665kECnYosasWRGv4iW89S9j9spuV8erKuI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HQzC61nUCEUge2A5WcQU6aDn1TFa8l914fzpFoRCNle/0zok2+Uu7+1xxrF9PibtIiAJJ9+X//QLo7Y6jC3n1L+QfGiz2KLOD2LmBRGBL0rTtW//xWUDx47fhIQ2xzNyntsxFjKP41fmu//nDFeVGGcFOAIuWkq3hK666kUUfuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BiUuQq6S; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVqt+wq8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920121F000FF;
-	Mon,  5 Oct 2026 01:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791162479;
-	bh=9nSzsM2bXvDKmKRbZKG5o8K47G+jhti55dzHMV6kV3A=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lVqt+wq8MbgiUCIb9TXjTqiGgHZ5bqPgTWwgZ65K9KoikuOUNgbwmRWzFcjf0ZsIm
-	 tZdsQyTlEudikvBlg2ebFrPcZW3LPb3gGIF4sQCOYAqW5FcGx0oEDkbTiPaHLFhoRX
-	 xphuFbk3fr7mT+4sgr56tmxwxVq2RRI3HDLkDl1pq5rBmIsTSsMd5XlUZA6IP9Vfeg
-	 zWIAXe7zoRTN5G44X5sSDbWkjwrup3VD5UB3AZhy/dqK+PH9gt9Y4KsV8uUIzcwG3Z
-	 k1dF7zO2GF3hyUbXtyWd2VDq3c0jii3blLDhIcc8aRlD8gk9zZRNtN/XUxfnPUyCot
-	 saEcuGeRmdKGA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net v4] vsock: treat TCP_CLOSING as once-established
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Michal Luczaj" <mhal@rbox.co>
-Cc: virtualization@lists.linux.dev, "Eugenio Perez" <eperezma@redhat.com>, kvm@vger.kernel.org, "Michael
- S. Tsirkin" <mst@redhat.com>
-In-Reply-To: <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
-References: <20261005-vsock-connect-reset-closing-v4-0-15d41cfda3ed@rbox.co>
- <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 05 Oct 2026 01:07:59 +0000
-Message-Id: <20261005010759.920121F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BiUuQq6S"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc11b5dd54dso2356188a12.3
+        for <kvm@vger.kernel.org>; Sun, 04 Oct 2026 19:40:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791168001; x=1791772801; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o9HTQO2rUlDTOnGrtLyq1XH041/gAEdrB3b/I0PgRl8=;
+        b=BiUuQq6SL/m686qqvZa/eAw+ANmOIjVLIjpJRHcOGpO1Rr4wxGiI/kjl3RLC7Emw+n
+         ofIrWlUws8hQ2k7EaYF6kv7Sdg6mYDbyuWf9DuS/gp65nDFo0kpsy/vs19rhFqN1YdlC
+         Xtkp3QcBJ7fjztD5m+U8GFzTe7uj7+BBB31Xxz4C8ugHZmUQa2oBosf/NYTTjNFL1tQG
+         c2E16B02FJQujmPx3f4IRQN3vqctN6AMYm9xHyvQUFHjt5JXnbHebUAzQm9iZaD5Xsht
+         moYmD4nD2Ev2Chz23YgcmZDW1wJwyNKbZ2Ofq5moKfASrSJDVqFpJeZjC7bszS8E3sNI
+         cUnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791168001; x=1791772801;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o9HTQO2rUlDTOnGrtLyq1XH041/gAEdrB3b/I0PgRl8=;
+        b=B94bkR8z+XAZSvSjhMvxf+8IrUvHXzPM/5NZkk6IzXGdME4GwOpQCevoT/1VQelNpR
+         NToG2FBJCPTUN7jwF57ButXuDDFy0GZfdQ96KQYPtOYsSs7ruDpMK7a6TpW8Rrl1wLTn
+         1nEfuoLU0GWOYO3SyroZNF4SFoN8RfqDXxSNqn6ch/r+tX/FvY5QcNFDT3VQ9JDOfipD
+         LHiCbYyvs6eR9ESsDtdzBPC+MDsjVfD4eg2qQYi52GRnexvLTeY/R6rP/iofzprNap/j
+         6HTOVCuMdpYpBZEwYVmXUlu3RLL8+mm/ZMR7+8NFmWjxdyldenRYiEfT3JKMxWQBVeii
+         fnIw==
+X-Gm-Message-State: AFuF++leQj0bLEan3tqbKB3SDppbpnPqDLwNBWKCDW9rMejdH7qdmQta
+	7pbjIONOhbm4D1+QhZ7EQPjB8jiQJJK0m4UI3rxkL3Um1cbtNM0soUqJ32t7sdJJu/fhE+LKY0S
+	qxT2cDw==
+X-Received: from pfm17.prod.google.com ([2002:a05:6a00:731:b0:88f:62f8:bdbc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e92:b0:3e0:651a:d150
+ with SMTP id adf61e73a8af0-3e0d6b1e9damr5767266637.43.1791168000327; Sun, 04
+ Oct 2026 19:40:00 -0700 (PDT)
+Date: Sun, 4 Oct 2026 19:39:57 -0700
+In-Reply-To: <h5j3jn86.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <cover.1790101179.git.ritesh.list@gmail.com> <pkxwkffc.ritesh.list@gmail.com>
+ <asAydfQLscU6rXQL@google.com> <h5j3jn86.ritesh.list@gmail.com>
+Message-ID: <asMN_TAX-1_J3jiP@google.com>
+Subject: Re: [PATCH v5 0/9] KVM: selftests: add powerpc support
+From: Sean Christopherson <seanjc@google.com>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, 
+	Anushree Mathur <anushree.mathur@linux.ibm.com>, 
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-> Handle the TCP_ESTABLISHED -> TCP_CLOSING transition on OP_RST, which can
-> race with the connect loop. Immediately break and return 0 on
-> ESTABLISHED/CLOSING. The return value of connect() should reflect what
-> happened up to the point the connection was established or failed. Events
-> that occur afterwards must not affect it. E.g. even if OP_RW has already
-> set sk_err, connect() should still return 0, not ENOBUFS because of it.
-> Adapt the inaccurate comment above signal_pending().
->=20
-> Resetting a socket that is still present in connected_table can lead to
-> memory corruption. The reporter noted lost transports for in-flight skbs,
-> and I have reproduced crashes caused by re-insertion into connected_table.
->=20
->   list_add double add: new=3D, prev=3D, next=3D.
->   kernel BUG at lib/list_debug.c:35!
->   Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-> [ ... ]
->=20
-> Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-> Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-> Link: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+On Sat, Oct 03, 2026, Ritesh Harjani wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> Also note - I will open code the TEST_GEN_PROGS_COMMON and will skip the
+> kvm_create_max_vcpus
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Oh, right, kvm_create_max_vcpus is a common test.  Can userspace detect that it's
+running KVM-on-PowerVM (in a not completely unpleasant way)?  If so, an alternative
+would be to keep the KVM_CAP_PPC_SMT change in v6 (patch 2) as a prep patch (before
+adding PPC support to Makefile.kvm), and then add a
+TEST_REQUIRE(!kvm_is_on_ppc_powervm()) or whatever.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261005-vsock-conn=
-ect-reset-closing-v4-1-15d41cfda3ed@rbox.co?part=3D1
+I think I'd even prefer to take on an #ifdef (to scope it to PPC if necessary)
+over open coding TEST_GEN_PROGS_COMMON.  LoongArch open coded its full test list
+for some reason, and in less than a year it has started missing out on new common
+tests.
 
+> (& maybe few others like vm_types_test) from that in v6.
+
+What's wrong with VM types test?  That one really should Just Work on all
+architectures.  It doesn't run on LoongArch, but I assume that's oversight?
