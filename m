@@ -1,129 +1,92 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0085C3EC820
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 10:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED09F38F935;
+	Tue,  6 Oct 2026 10:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791282630; cv=none; b=phQJOIXb4/bjwe+5tjjrKJRpSqBFWoN1qf+0v6Rg8p/jMmvJZyuipBn87IJhnxdvTywrGmZPTiMDiJF4rxBjEUeZtfPkjWZJAqTs12fcSGaDY+xDSels32bsPzUHGZcUF9YwraRJgQwpmbcqOjfEjEfJLW1V+P5by9NuMO1VG+k=
+	t=1791283029; cv=none; b=jFqZ1OFvrCZgdoDNzNeI73YBanmq2LJssTCdBPzo6qOEl8YnnoVYAhaud7VCBaGv4on2s2Tf7D20GVaK/8aBtps6Qh21wxqSEVdVgCHXtPRBF7X5iYptyjUKJjF7O8vxe1os1I6PUwNviUM0by+uSDlzuVD985kELWdc73zHTnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791282630; c=relaxed/simple;
-	bh=uQmCMZwihw4Qw9mL/HHStendEYwoKyoVWYrwmVDy4n0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=g+/nTKl7XQz89CuT3ZwTc+efJZw3shCY5ohfjwBYwl5L0rVGOorrNo37is2Ytu9MIRENG82JuIy5jK97W8es4YugTVOvdaVx5AjpsuFvKs9bpDqIKYSopIec8LGZk2KjFpw2PQJLTOZ7hk1sK/m3C1R1Ej9+qLwvhc4OyYdrMSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F7CCoq3/; arc=none smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791283029; c=relaxed/simple;
+	bh=7jQqKnJQRfynsLC1aLrSuAZ0vQikfppkGJpYclmeve0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vv4u3J7DAHC96REoEeDUvoCXdSTX9buT4ou1j03osUbtqKBqiy8Od2moocOWhajVj+QkVmKptjwb8V3V4A+AjmgTrP3fMqPhY5u2LdEm58rOA6z61+MnNgZGz9RQLquE63PgqPs1lJWoggEB57D9AX1g5gdV5O969/h7lu/wWHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Xz9tE7q5; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F7CCoq3/"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-34ceab2900eso536129eec.0
-        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 03:30:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791282628; x=1791887428; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EA/0ZEGZrte27R/NKRLHTW1lEfVA+wxAewcBQb4Z8UU=;
-        b=F7CCoq3/mz+ZRKa+w2CJA30W+HqSXy25kQJxdYyuaxxJajZhI7bNezA7KrnvqZul/j
-         xa0Ihe/cJoZHv/z84lKParXsSwlL7PQnTkgC60mq8n5QWO6qBdsdVzyibAlYbfL8cn2D
-         ZxKLCrezDr1ERo6hKjTHQavTCEMqzQLr1NykYrYi1j676uCIKpmH87XJf62Rn3MZk4Ck
-         pTnvw5QLLQrokGKvlNO3LS8cW8Pq1ELUV/Az6NCEROL90kZYFLU95g9q7+Q3G69kyVMi
-         +HBV7G0ct+vnIJ27aSNBP2aeLMDsz1ThDv9WCKcVSbf7Cc0WvxPAY8agkSzu4MQryxlj
-         Fh1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791282628; x=1791887428;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EA/0ZEGZrte27R/NKRLHTW1lEfVA+wxAewcBQb4Z8UU=;
-        b=lGaP0obelRWpNVHPeWbS5ACVbJo7VpHkjXgY29sssYz0UcMC3e/r85R94QEeFd6vEi
-         dteU/OZjwqRN4r67OqYBZShRgGbHKy++lIHY3wkxvEQVMI4BpIoZI1aYYS4v3Bv59dZt
-         XjjNRy9X1t52f2mGVOcAQT0HeRqcp1Eof/BdpA0dtLBM93Y9kIJ2uzcUUEGf7Iu6uw6/
-         PcASlNvtRrqwxlfbwG5zEGQSptHhItVIvP7gVJge2GwWSs1u6rraRDDdVKvBrXvlFIJg
-         LoaUrAjz4El90iHnhOPiihAI81VXS+SxZ1PW+DWrghm07t8hVjB4Jbgx7xnhLr1ITGSh
-         65fA==
-X-Gm-Message-State: AFq9FYKI94km45Oej/Eu1xP/ImDHcIlyG/b0nwx9RSpwcbVbdsgIvscH
-	MZwt5IyByieEdjkn/XcQrWdN82QITqc5zpZdb6Wb2rT+A3EVocQgswE1gKFKr3fU
-X-Gm-Gg: AYBFou0xPi9XB0WU9QABCm7BbMRIfJiWL6Ho/ubGs6kkyElj+q4Pg6oHLqbEn5ISyOP
-	axA/FaX7Gmch1O45fgBWJ2Sf60V0/RjUTO2Syk3DuWN1Nc6MSriQZ3aMDTIWq0H0mC9L68H493J
-	ZbHhRMuvnMxsZLoupnCpaQ/qOELIkaf2tmHCAX88dz4fy6hScGb/xor4SRupwbKZrxCgsPmLNuv
-	4jwgOHvGMcGQ6miaKSzqXpIXK/HxX/d12X2aw9fNm4Vj7VaEmjlKqX9zB1P++ng6Rl6M/99ggvr
-	NZJPqvDqKRT9lAb6liziBnpF5q5H93ni323V95Uk5fQPTqC6L8wPkZqBQuOAnHl5beJ1w3xdvgP
-	ZetnuuKZGs0QzxT426g+Nj56NT1j0F8MQq0QMrLTwL+JOhrIZqbPPPlggX89tmnut3o+dSxZuQo
-	BeojUPEe7aoEp7bLzlypgoYoHJLb8eT4hakHGYzLwWEiE8lGEYouFj5B7hJDgaqca9j4duc+Ref
-	UyCZVQgWFE3rSzXzaOqbwA5gMay05I/aLQO4f/DtzqJ2b8Ja9jX6GG2Ec5R
-X-Received: by 2002:a05:7300:a98e:b0:351:4648:3611 with SMTP id 5a478bee46e88-3514e334d5emr1545061eec.26.1791282627586;
-        Tue, 06 Oct 2026 03:30:27 -0700 (PDT)
-Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351469fa189sm7443970eec.6.2026.10.06.03.30.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 03:30:26 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: kvm@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Anushree Mathur <anushree.mathur@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v7 8/8] KVM: selftests: Skip hardware_disable_test on powerpc pseries LPAR
-Date: Tue,  6 Oct 2026 15:58:42 +0530
-Message-Id: <23f36aab5e9c849719ffeb796e1a74e69eb5d142.1791280439.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1791280439.git.ritesh.list@gmail.com>
-References: <cover.1791280439.git.ritesh.list@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Xz9tE7q5"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C230A1477;
+	Tue,  6 Oct 2026 03:37:02 -0700 (PDT)
+Received: from [10.57.10.233] (unknown [10.57.10.233])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8DE943F86F;
+	Tue,  6 Oct 2026 03:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791283026; bh=7jQqKnJQRfynsLC1aLrSuAZ0vQikfppkGJpYclmeve0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xz9tE7q5AFb2q7YDljNnLJhAaMfmi7qbHlKxdcj2W2QWIC3a1xdwr/frfvgrqAfhj
+	 yUkgGEXCKFTTVhnDSEJ041O6z+ZilugTOb/LapASebPgbTEvEE/5XpAtbx+fJ+J0BB
+	 D3KxfHP0S+TOvDAbmomOdsNdUmD8SvCT8+EKLsDo=
+Message-ID: <089e57c8-93ee-4384-a6d6-978bde917650@arm.com>
+Date: Tue, 6 Oct 2026 12:36:59 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 11/23] KVM: arm64: Add VM specific callback for S2 MMU
+ operations
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
+ catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+ <20261005090754.2140522-12-suzuki.poulose@arm.com>
+ <87a4or2nd5.wl-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <87a4or2nd5.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The test forks 512 children, each of which does KVM_CREATE_VM and then
-SIGKILLs without waiting. On a PAPR LPAR that ioctl is H_GUEST_CREATE
-and unreaped guests may still occupy L0 Guest Management Space, which
-means create can fail with -ENOMEM error.
-Hence, skip the test when we are running on powerpc pseries LPAR.
+On 06/10/2026 10:24, Marc Zyngier wrote:
+> On Mon, 05 Oct 2026 10:07:42 +0100,
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Add VM type specific S2 MMU operation backends which can be initialized per
+>> VM flavor, to keep the handling cleaner.
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Change since v21:
+>>   - Define all vm_s2_ops call back. All calls are mandatory.
+>>   - Define callback for each flavor, disjointing the non-protetcted pKVM and
+>>     normal KVM (VHE & nVHE) and remove the KVM_PGT_FN() hacks.
+> 
+> It is a bit annoying that we still have part of the operations being
+> indirected by kvm_vm_s2_ops, and others by KVM_PGT_FN(), which is
+> still there. I was hoping that we'd have only one indirection. after
+> this patch.
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- tools/testing/selftests/kvm/Makefile.kvm            | 1 +
- tools/testing/selftests/kvm/hardware_disable_test.c | 3 +++
- 2 files changed, 4 insertions(+)
+I agree and I did think about it. The issue is, some of these calls are
+deep burried from the higher leve dispatcher callbacks (e.g.,
+user_mem_abort->kvm_pgtable_stage2_map). We could go all in and remove
+all of them if you are happy with that change. Also, some of the call
+paths aren't valid for certain VM types, that adds quite a lot of dummy
+callbacks (now that they all are mandatory. e.g., pVM or Realms).
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 692bbae44a65..38c3900cac68 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -258,6 +258,7 @@ TEST_GEN_PROGS_loongarch += steal_time
- 
- TEST_GEN_PROGS_powerpc = $(TEST_GEN_PROGS_COMMON)
- TEST_GEN_PROGS_powerpc += access_tracking_perf_test
-+TEST_GEN_PROGS_powerpc += hardware_disable_test
- 
- SPLIT_TESTS += arch_timer
- SPLIT_TESTS += get-reg-list
-diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/testing/selftests/kvm/hardware_disable_test.c
-index 43a36ef3ead8..0104b7e840b5 100644
---- a/tools/testing/selftests/kvm/hardware_disable_test.c
-+++ b/tools/testing/selftests/kvm/hardware_disable_test.c
-@@ -130,6 +130,9 @@ int main(int argc, char **argv)
- 	int s, r, cpu, i;
- 	pid_t pid;
- 
-+	/* PowerPC PAPR L0 cannot guarantee 512 overlapping H_GUEST_CREATE from fork+SIGKILL. */
-+	TEST_REQUIRE(!kvm_is_ppc_pseries_lpar());
-+
- 	kvm_sched_getaffinity(0, sizeof(cpu_set_t), &allowed_cpu_set);
- 
- 	for (i = 0; i < NR_VCPUS && CPU_COUNT(&allowed_cpu_set); i++) {
--- 
-2.39.5
+
+Cheers
+Suzuki
+
+> 
+> 	M.
+> 
 
