@@ -1,267 +1,148 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0384E50BC;
-	Tue,  6 Oct 2026 23:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791329493; cv=fail; b=AVYbBeKnzUspMmY8CYr1flOJ54QInBAUY/ZikskgfW3JVR75I9uVyWDJdqZzxEnf6vG+bJWNeod4pWM4QILBPRZsuW327GMgqld98VaEkHF5H9s/mvVYEd+Jxaph2aUv4GQdULblen8o6SgCM7wdaOmn0Qxj8ePBQQJTYgYV6gU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791329493; c=relaxed/simple;
-	bh=5ZGHQKGUpscKoKM3n34s7kEACCjsntp+Ty1I4FBgKfw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FaFqD7ATGwRJPrY0sPzBty7kQ+QBekBPuQU4Cv3JYsOtvUaEBrKaWcs4Y0JmXUYplxyWrYtoX+W7ja2VvBHXSF0+RnnEMGi6tnI+z7eDje38cDWuPXC0rTYPWkRZrbPqAHcWuHzkrx0FkPYMm1wJ52ZndxqXCVL4edlM1myJ38c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=F2x5BEoq; arc=fail smtp.client-ip=40.93.196.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BEC3CB2E0
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 23:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791329953; cv=none; b=YMjLpadp+68yLwPl7yXk6fK7prC2rkCoVG3W8jzxGx0RtQT1YYcvGXijvddZOmgwQXseWW0M2KsaYALvcO6NkoHWnZNQws2tQ4kw0STJJPZYrdhQds3VfBZndCnz5a+vnPC/JkexKX0PSN9s4+5UM+LlRMv/QWGyg+MwoVxYLp4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791329953; c=relaxed/simple;
+	bh=BWQi6+OUEp/tu9l1mkI7xW4X2+ly+BWbFk1Zcp5roxc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NMl6jtU+atybPoXlCrIC/uMfFXmzyjg4UkFFDVmHLWMga59LiGmyhA4DcHYw5RuxDUDeUD7U86L0KZpxnhzxpnepAqVgPvN20TafLqN88/H/MkMa7gR/9N89wj39HJrCGpPfacM0wqLzdr9Qm8o9v9hiO3CtB7nhhPOzARxCuqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PiofVYFT; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="F2x5BEoq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UATWXz63gnfe4FQINwIK9gVH4++TsDqI6jtjm07Hnraq0B9sGZSRvPbxAWJ+e8i0Kjt0wwElNQNESEveOySb7PRHqE5rFPW4kh78Yr3Kceh0uq9ZKyxwz5Oq4/1JsFLtjjmOBSQDJwgDUvudOreDyYt/zbFlPd8rD4FOXAtWRJTaa1BUmvEA02hY+PlcBsaz5kMrimYAaiiHDEQP5SJEHEXVFDWV2HxTAdKVutAgCITubRAB9oKGBoD2IsDm/hy2kYspUIzRVofYcwYFbEQs7o8dkp+9nDU27Snm9+dhc9GqO9VoS1tfz3C/e0/n6dWTVXsnHufDosyZ02zvu+BtNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8EJKj3f1XYoEf5COtb7I7LvsI8iTutjXI+ACRTobhCo=;
- b=LJjhbS7uGRJBOZIgpJIqAQIABCbV1GwdmUaorr6IEcvwxBLPZ/nYG2koYhDH01RWSN8+5qtxIG610OZpjTwfCuYkvjL+RFvuWF8O5pgtCrsm4l7C6sSD/BBYjZEJGUu9V/CvHVecCbVHDRTZJSZwwX2lOyGyOTXI+D4z+kEVRrGuUwOP7dU5F7XomKpTZsMUphgC4McSyixaGxiuJcUZe/a0j8mbH0DMPY5vScBU+3Uxct/mso4a5/+IERp4abEf1zqvLqEb9dVZPbvxVvU5aGeEi9oJEN/l35rXXNoRcc1J1XSAgdO9moW5UzGLY03+n5azC7yyEuOBQW4CBqQUVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8EJKj3f1XYoEf5COtb7I7LvsI8iTutjXI+ACRTobhCo=;
- b=F2x5BEoq5EpU3kezsEUR03yQnOeGzKRG4JH1JvCVamxDAMouoZnW4MoCWKP6UMlAGo0rfNeuIG528KH84DKmkqiYUd4+gmxYbVCLaCGdLjOI8+PgVFosswYYUngBIz8xqmScFnagGXiiAcU6c+hbQ9nsIGBZgB3NbM4TmS218WiDhrXMBHFAIDzEqrgywRt3v0j4jGnCJSpgIuvrVRocXHo63DYpV4/r2nf0Ug8KH8hVkmQrKPF4r/2H4vkZuOwsACzBuyonqpSVfVYsSfuVfDA0Ri7w1em4JP0ccdfBkHFsk+37QE+bGvCatcOBV/1JPUSzkExSWO/HxhG9Aly/dg==
-Received: from SJ0PR13CA0075.namprd13.prod.outlook.com (2603:10b6:a03:2c4::20)
- by IA0PR12MB7554.namprd12.prod.outlook.com (2603:10b6:208:43e::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 6 Oct
- 2026 23:31:23 +0000
-Received: from SJ5PEPF000001EA.namprd05.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::68) by SJ0PR13CA0075.outlook.office365.com
- (2603:10b6:a03:2c4::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.18 via Frontend Transport; Tue, 6
- Oct 2026 23:31:23 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ5PEPF000001EA.mail.protection.outlook.com (10.167.242.198) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 23:31:22 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
- 2026 16:31:06 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
- 2026 16:31:06 -0700
-Received: from nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
- Transport; Tue, 6 Oct 2026 16:31:04 -0700
-Date: Tue, 6 Oct 2026 16:31:01 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
-	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
-	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
-	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
- Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v5 02/18] iommu: Implement IOMMU Live update FLB callbacks
-Message-ID: <asWEtTcNJSbrY579@nvidia.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-3-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PiofVYFT"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48441a2ba1bso1995658f8f.1
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 16:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791329951; x=1791934751; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=p6vQUbClVDpSCeEbk4enL4LsUUIDighbOrvskTUgMlI=;
+        b=PiofVYFTKU/KAwZeWrVD8/JjW97PY4XEAEDQqplcTZMzg+UCIe1Bvjty8JCErVZ4Hf
+         lKauDFOt/0tjSicNXJeQJ43YZjpP0QDzw6tWnP2Qtm5o7PTRgZ4+NxzcvDMpJJycyS7G
+         cnUkvHz97paXvS+niBBtJPIFOy6Wp9q9elKcDTSi5eF2ZlJbtuatcPPmZp2gtr0rs+rO
+         +r6yA27HI2xH4pf2P2FFsosgMCziKvX5w7bQms8pbFzi8piIvpZie28ad23v2wA7cJw2
+         rT9GrXkVmW69e0IMRjgbjcYVXiLmTL9lY9rK2tXeqqXiYjYmV3WWTXEp5MscgGnGpf65
+         c9iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791329951; x=1791934751;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=p6vQUbClVDpSCeEbk4enL4LsUUIDighbOrvskTUgMlI=;
+        b=DgJoSfC2D9eYtusJbed1NG33utQTGvyZ7KNSpXuD/2zfute9Q7OZA2idpx55oRGByH
+         CAyOS9e7sxGUCBZ4xTk8SAQsdoSzNrSqVJzyHmFsZTzAstUoMiIM1c0E8Y65JJKAlNlc
+         lD3ABgcEyJRpXucOIfzt2P5KGz89UX4YiB5jIY95gUIAHNYWD/wj1ydng1JRpjWT5QSv
+         XWzU65G78kjyJiuN6Q7sEL6uBnrKUv7T6Wqu9BeXGnsY+bJatOIOC9dHZLNGR5j64S8x
+         S9N5MNUT5YQNv1Rfekf7/9OBTN6KfYGcGDlgNTVPPX7A0jfOG1hbdzKrlLkFItvKm2rl
+         SoBg==
+X-Gm-Message-State: AFq9FYLgpOeX4qkvll2fxbZBfecF0WxXvRwjv0jBbrIdXk5g3KYGaSD8
+	Hh6HQn+M6e4G+rWXrhYbRKqUCWuB1ZOLej9kPjjCcBhanBCZNDzJ/i7q
+X-Gm-Gg: AYBFou3XYAnKCoro7ydx1v1Hzd2VWhNi2ZCmDTMNuXo4dlhN5UwgQyiChE+M/qoCVQe
+	MPmfV5c9YihAW5gbnsodr8hhRwMA2WpzhYGeQz5fl1Z8FB3LxrhlfZUni/1Hj7Cfi4O+OvlYX1a
+	gOnvUrnUZRWgL18Rixpo/ihdOmIwUsfAfWvmtmnpi+y4lco4VEPDAxHyg4U4YWQtC9PFqG+LDGz
+	+2yOvFUB6rduCUeCQsBQgk9d/iSIk23D9EakdxCWL8j8z2RSX0S9488xXmyxIt3WI5kjjIpszX3
+	UOUFfDP6CQRJ+uuprkXXgYhyWBx9rvuLk1FO8zsoAukNXZIhd5Gx3PLpRgFnOP0w5lD0biboLVp
+	2faLCYwzFvEshJPAI2mVP8nvO+q8ahs81NWp7z5dzAe9VuH2xRhq15H+1UAKM/jbyi6flFNgiCB
+	4FH+uIZUvTyjynObOMuN6zA+7C8yeoo+aSsYyMD/LJ5GcixtfRmS1D94Tw6q1IapLGEbqPN5Q45
+	vDUMZdhT4e/Xn30RcbUi69vrj1YVwKaVbA43aARUcVIMKcPxCDSR6Uk
+X-Received: by 2002:a05:6000:2585:b0:48a:f8fb:cd49 with SMTP id ffacd0b85a97d-48c72889ca6mr1289357f8f.22.1791329950735;
+        Tue, 06 Oct 2026 16:39:10 -0700 (PDT)
+Received: from [192.168.221.223] ([81.0.216.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c71d10216sm1881368f8f.20.2026.10.06.16.39.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 16:39:10 -0700 (PDT)
+From: Charlie Jenkins <thecharlesjenkins@gmail.com>
+Date: Tue, 06 Oct 2026 16:39:03 -0700
+Subject: [PATCH] riscv: KVM: Fix compilation when CONFIG_RISCV_ISA_V=n
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260921004834.2601285-3-skhawaja@google.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EA:EE_|IA0PR12MB7554:EE_
-X-MS-Office365-Filtering-Correlation-Id: 609bddb1-15e0-4c48-b5bf-08df2401eed2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|82310400026|1800799024|36860700016|376014|22082099003|18002099003|10067099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	+eh8IMJcBr+/BPQhW6MhcInbVoAi99Z6iIZxhd0lOhqi889hNKducq4rUk6dLwXG8M8B2VSDmKC4vS9cSe42pTRNLlBsJkSZ0dChwQ3GlvDSEgmLsOcdLWGunEdiiARcM0dC9xlisLHInWQwoi8ZeLOJQceIBn9Yq0U8i0apFHl7ZirSzoz5E/2bK2ctKjZucyaS3eSdpEDuo9Gv2HaxDHO8+xrrvjTRmo5Z7UOS9FEuGNGx1dAZQ9HYlwy7R3CbBSwY3BvIrd5+KpgvWVhvfwDKiD0FRnp4U8B5psZm6enFtR9McOvAyx175O/6Efmg17+ONO3mAeZj3pwgOnlcVB+VjMqvc1hC5nZz1Fv4NBby4FXS/Ty9pKYv0WqubutX9bkefO+iJYtu17ryc2o3l3sToSFOzpRRX1lGZtB5g4pDHAN0YCIeD65+sNUbsznbDcoT2Kl0MI5HBvfe/EGsF2rfJOER/WeRrD6vs8cL7HTzB7mb8YUalja9bdKEsVJ2q5rKgyb04y/9Fw1MZXn3wFUhoq1FZA6lRTPdJ5poD7CBRQSpklzForEm22LQnUyQY0V59CG0eYnAdVTFKH0w4RJw0DGMaTYgwU5MsPFt57ROMHstnmAUKiEsCLwqucL3XQdecVdMXLG+ukNf1HSEh6DApQ9c5BO6eRXeEtiF8l4MtDJtpCflvfZZvYIAc3bAsWRc1qtkejWmVoOkpQSUdQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(82310400026)(1800799024)(36860700016)(376014)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	2+S7cii6HruVkITiOAqYbDKO9pl2rBeagAFzd7dWR6+TjbLZrLtWCgnhINNAoJOmxGh4LFN3legxiNfQ+xLNk3JNsd7fj8UJNFS/XyRdNaiSQ+yowoBIfroUU+M5RlgZq/bcrXLJzIe0x7Fmp0HzJhXTtH8I3l8QqdmF/kYQQp98YPcAHWgI1o/wYLRmQQsMEMnusmIUwU3q+n5zyw96nhbg4kMe2knOhDsxXE9cSct4AamfumywQskufLMxw2/zLh7gP+ryFvqRErG2HuDtJEVmkHN762ODblUCqnccfqziL+pMKtOyRtWQk6/o9VRjCmanV8+M60Q7VbrvFZVkHZ3eYdhMp910rGm5zBQ+KTvglu73gkFpxGzF4W9yuccAQ3wCzy+8bpjZlW7mpgRaIHMvkaOoa71Hb/p4Uif3orVwezid7VYLkwihIW+3r+cA
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 23:31:22.8908
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 609bddb1-15e0-4c48-b5bf-08df2401eed2
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001EA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7554
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261006-vector_off_fix-v1-1-9e48e654d445@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QpAMBRAf0X32WqjFn5FEtsd14NpYyn5dxeP5
+ 9Q5F0QMhBGa7IKAiSL5lUHlGZh5WCcUZJmhkIVWUmqR0Ow+9N653tEp6rKyWo3K1VIDR1tA1t+
+ w7X6Ox7hw9F7gvh+hxdj4cgAAAA==
+X-Change-ID: 20261006-vector_off_fix-938d61b1f906
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Andy Chiu <tchiu@tenstorrent.com>, 
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
+ =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Charlie Jenkins <thecharlesjenkins@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791329949; l=1885;
+ i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
+ bh=BWQi6+OUEp/tu9l1mkI7xW4X2+ly+BWbFk1Zcp5roxc=;
+ b=fIJD49rfeAewk1vKo3AGACkBEa31o13TCmZF61L5MsBbstc43N/TbELEyoRMR0rhStTq2fWGD
+ hT5PT2sRkL+B6oSNnlTW2Mo4/PGgShIdVRbZ3Yn5vuC3tmu1dzV+Rzw
+X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
+ pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 
-On Mon, Sep 21, 2026 at 12:48:18AM +0000, Samiullah Khawaja wrote:
-> +struct iommu_flb_obj {
-> +	struct mutex lock;
-> +	struct iommu_flb_ser *ser;
-> +
-> +	struct iommu_hw_array_ser *curr_iommu_array;
-> +	struct iommu_domain_array_ser *curr_domain_array;
-> +	struct iommu_device_array_ser *curr_device_array;
-> +};
+Fix the KVM code to use stubbed out versions of vector functions when
+vector is not enabled instead of failing to compile. An alternative
+approach would be to ifdef out the vector code but since a handful of
+the vector code already just uses stubbed functions to tell the compiler
+to drop the implementation, follow the same pattern.
 
-IIUIC, there should be one pair of obj + ser in the entire system:
-  - old kernel has one outgoing obj + ser
-  - new kernel has one incoming obj + ser
-right?
+Fixes: b5060a4aa33d ("RISC-V: KVM: fix vcpu vector context handling for kernel-mode vector")
+Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
+---
+I was reviewing [1] and noticed that when I disabled FPU and tried to
+compile that vector got disabled and the kernel failed to compile.
 
-If so, things in iommu_flb_obj (except ser) are all transient, and
-there is no need to preserve them across the two kernels.
+[1] https://lore.kernel.org/all/20261006075303.205216-1-radim.krcmar@oss.qualcomm.com/
+---
+ arch/riscv/include/asm/kvm_vcpu_vector.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-It also feels redundant to have this iommu_flb_obj structure. Why
-not link liveupdate_flb_op_args directly to the ser? Then, things
-in iommu_flb_obj could be global?
+diff --git a/arch/riscv/include/asm/kvm_vcpu_vector.h b/arch/riscv/include/asm/kvm_vcpu_vector.h
+index 6371d5ea5392..1c9efc6048bb 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_vector.h
++++ b/arch/riscv/include/asm/kvm_vcpu_vector.h
+@@ -11,9 +11,9 @@
+ #define __KVM_VCPU_RISCV_VECTOR_H
+ 
+ #include <linux/types.h>
++#include <asm/vector.h>
+ 
+ #ifdef CONFIG_RISCV_ISA_V
+-#include <asm/vector.h>
+ #include <asm/kvm_host.h>
+ 
+ static __always_inline void __kvm_riscv_vector_save(struct kvm_cpu_context *context)
+@@ -55,6 +55,14 @@ static inline void kvm_riscv_v_exit(void)
+ 
+ struct kvm_cpu_context;
+ 
++static __always_inline void __kvm_riscv_vector_save(struct kvm_cpu_context *context)
++{
++}
++
++static __always_inline void __kvm_riscv_vector_restore(struct kvm_cpu_context *context)
++{
++}
++
+ static inline void kvm_riscv_vcpu_vector_reset(struct kvm_vcpu *vcpu)
+ {
+ }
 
-> +static int iommu_liveupdate_flb_preserve(struct liveupdate_flb_op_args *argp)
-> +{
-> +	struct iommu_flb_obj *obj;
-> +	struct iommu_flb_ser *ser;
-> +	void *mem;
-> +
-> +	/* obj exists only in the current kernel to track preserved state */
-> +	obj = kzalloc_obj(*obj, GFP_KERNEL);
-> +	if (!obj)
-> +		return -ENOMEM;
-> +
-> +	mutex_init(&obj->lock);
-> +
-> +	/* mem is allocated via KHO and will survive the kexec */
-> +	mem = kho_alloc_preserve(sizeof(*ser));
-> +	if (IS_ERR(mem))
-> +		goto err_free_obj;
-> +
-> +	ser = mem;
-> +	obj->ser = ser;
-> +	ser->version = IOMMU_LUO_FLB_VERSION;
+---
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+change-id: 20261006-vector_off_fix-938d61b1f906
 
-As version is per ser, ...
+Best regards,
+--  
+- Charlie
 
-> +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
-> +{
-> +	struct iommu_flb_obj *obj;
-> +	struct iommu_flb_ser *ser;
-> +
-> +	obj = kzalloc_obj(*obj, GFP_KERNEL);
-> +	if (!obj) {
-> +		/*
-> +		 * If retrieve fails, the finish path won't be called as
-> +		 * can_finish() will fail, preventing the restore.
-> +		 */
-> +		return -ENOMEM;
-> +	}
-> +
-> +	/* Data must be present and valid from the previous kernel */
-> +	BUG_ON(!kho_restore_folio(argp->data));
-> +
-> +	mutex_init(&obj->lock);
-> +	ser = phys_to_virt(argp->data);
-> +	obj->ser = ser;
-> +
-> +	obj->curr_domain_array = iommu_liveupdate_restore_array(ser->iommu_domain_array_phys);
-> +	obj->curr_device_array = iommu_liveupdate_restore_array(ser->device_array_phys);
-> +	obj->curr_iommu_array = iommu_liveupdate_restore_array(ser->iommu_array_phys);
-
-... should we validate ser->version before restoring arrays?
-
-> +/**
-> + * enum iommu_type_ser - Type of the IOMMU being preserved
-> + * @IOMMU_INVALID: Invalid type of IOMMU
-> + *
-> + * IOMMU type is stored in the IOMMU HW state to differentiate between various
-> + * IOMMU HWs.
-> + */
-> +enum iommu_type_ser {
-> +	IOMMU_INVALID,
-> +};
-
-Nit: IOMMU_* sounds too generic. Given it's ser-specific, maybe
-IOMMU_SER_TYPE_*?
-
-> +/**
-> + * struct iommu_domain_ser - Serialized state of an IOMMU domain
-> + * @hdr: Common object header
-> + * @top_table_phys: Physical address of the top-level page table
-> + * @top_level: Level of the top-level page table
-> + * @vasz: Virtual Address Size
-
-Since it comes directly from iommupt, why not just reuse:
-    @max_vasz_lg2: Maximum number of bits the VA can contain
-?
-
-> +/**
-> + * struct iommu_dev_map_ser - Serialized mapping between device, domain,
-> + *				    and IOMMU instance.
-> + * @attachment_id: ID of the attachment between device and domain.
-> + * @domain_phys: Physical address of the domain
-> + * @iommu_phys: Physical address of the IOMMU
-> + */
-> +struct iommu_dev_map_ser {
-> +	u64 attachment_id;
-> +	u64 domain_phys;
-> +	u64 iommu_phys;
-> +} __packed;
-
-Hmm, why iommu<->domain?
-
-An attachment (software) is between device and domain.
-
-A device is always behind an IOMMU IOMMU HW (fixed; hardware).
-
-Should iommu_phys be moved under iommu_device_ser directly?
-
-> +/**
-> + * struct iommu_device_ser - Serialized state of a device
-> + * @hdr: Common object header
-> + * @devid: Device ID
-> + * @pci_domain_nr: PCI domain number
-> + * @dma_owner_token: Token to identify the DMA owner of this device
-> + * @domain_iommu_ser: Domain and IOMMU mapping
-> + */
-> +struct iommu_device_ser {
-> +	struct iommu_hdr_ser hdr;
-> +	u32 devid;
-> +	u32 pci_domain_nr;
-> +	u64 dma_owner_token;
-> +	struct iommu_dev_map_ser domain_iommu_ser;
-
-I guess this single attachment_id needs to be fixed in phase 2 for
-PASID?
-
-> +} __packed;
-> +
-> +/**
-> + * struct iommu_hw_ser - Serialized state of an IOMMU instance
-> + * @hdr: Common object header
-> + * @token: Unique token for the IOMMU
-
-Could be clearer:
-@token: Unique token to identify the IOMMU instance
-
-Nicolin
