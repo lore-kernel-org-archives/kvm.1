@@ -1,86 +1,86 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6073286417
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 03:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC16B1E9B3D
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 03:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791256333; cv=none; b=sjEUR6WCxKNwtNI9OMo+OZEwPF59obTy5q5BF5O/KSqEpkwKCTrD1OIns4Y/Ds1R2LOSuNvJrvH4XAfvrip0qqskmhNEF20HJXMVFO7186nvSX1F6iuoWD9usYRIwSNBX7xxqOrTseQ/4hCnwJRaX2BGf4BBBEt7/sr61wqEsu4=
+	t=1791256635; cv=none; b=oOCs0aFxQNTQFhzimy45cxS5e4qP0YiVlwnG3va1FuDtfiQC7s62pZx46JystYeoljfEro8VAsyb9ucbqI5h7QjEjQkvVjd8WKMkBqPeWCjHtwgaLQ058Io+svIP9u3facHegyv1Wa2krt08mWKTUvsSE8tOFckE6otOZteXVrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791256333; c=relaxed/simple;
-	bh=liZcKA5xMSphCw/JtZIGkUglVkn1mh/BgOSx/JkJum4=;
+	s=arc-20240116; t=1791256635; c=relaxed/simple;
+	bh=OCwy2T21o6KZK5vUec+S24BqJgmIfSohdnltBRqhZh4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ChoQXVBq4VgyyW7ZVjKnQbG2r/Mb+ZIr1zaCbIFAV8C1C/vZp8jN9DiKCs8DXAnrlDWP9yVLjmLuUHy+U52nCdMl8zPnudcA0wZkZ+SY9KYRndcJud+gQegJqxQ4V0ESjkglj8wxsJk5EPMLRtfdFd6buC8cigiouT0PipmW9dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BswY/ewp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CcIbm5rT; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=FwWngCzCQCXJ4nDdX/PGYhZaA12oaXMz3SE1UwVrprO4CuTKiK34g+fqrQb1yP+fR/jTI/sXdfYScbZzrGeh+dnczWTjoykBPiCPbqRZRlymP0hVmySRoDGVfO7DI02xs8LutpMaED6sGlYjSeaEWMiyk6mIDWpKNDfV4arBQZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JmRa6+pG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FGEemvMb; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BswY/ewp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CcIbm5rT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JmRa6+pG";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FGEemvMb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791256329;
+	s=mimecast20190719; t=1791256632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kHj1RXYmclP68lBct4KNIr5BPd6z8PeEquooINbDID8=;
-	b=BswY/ewp3QQ0mo4EGVRlV1vA7OtrOaarA1RTwczJxfJKE3Adyg0tbbtUgQhSEx65zZuPmB
-	CB1sjovwhvrE33jH48LLnQcWVLi3DOymQq3DD+hqzcxXN+KZ+c0G5z5XOuk8AYzHf50VD/
-	ieeUJ9JMqUsEEsOpp/zgybjCZYMevkc=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cmIEoaAK9H0I/DObf/8+7Lpe62dBXA5oIjHsrjeoKTg=;
+	b=JmRa6+pG+IfDsTB9eepNfpqWczkdHGUdGggMTuKdZCcorkxOVQklsIna/sgOlxYcPNymWc
+	ddHuqZo1Xk8cuGs9GxmKRpWVNOv98I1IGdxmE8HJfPdGLKK0MzyGmN9xX5ZAgC+oO+Du4+
+	DbQmt6Axb51VYKrsTbJeQjyFL7Ot74I=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-awdu6Y91OhGnpRKXI9ZQew-1; Mon, 05 Oct 2026 23:12:08 -0400
-X-MC-Unique: awdu6Y91OhGnpRKXI9ZQew-1
-X-Mimecast-MFC-AGG-ID: awdu6Y91OhGnpRKXI9ZQew_1791256327
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3a4a0017549so3653451a91.3
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 20:12:08 -0700 (PDT)
+ us-mta-583-TLs9mMcdMaKcGoys_pZk-Q-1; Mon, 05 Oct 2026 23:17:11 -0400
+X-MC-Unique: TLs9mMcdMaKcGoys_pZk-Q-1
+X-Mimecast-MFC-AGG-ID: TLs9mMcdMaKcGoys_pZk-Q_1791256630
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3a47617a0b3so2252315a91.2
+        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 20:17:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791256327; x=1791861127; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1791256630; x=1791861430; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kHj1RXYmclP68lBct4KNIr5BPd6z8PeEquooINbDID8=;
-        b=CcIbm5rTRdwWWvvGvLZ1fq8w0QyLC7ksJaVmEcbrvHTV2RC8ChoteWiA3fisAnxkkQ
-         +IAnO+huisSvusyTwON/QBba3ww31981pdOFpVXQfPqijKyvOTyMYFLSY/4tQGVqAeiA
-         SUzA9SP0d6sF1CNm0mxW7c+9H6LcthJhDr8qPrdVulkl2HORwrd7t9bg3Cf/P1hf0J6k
-         R2oP4lZJP4OH+Y8o6IcBStPzfa4eyj6DLSkmFVXRJUv7eAxbqi+Sw4yvXy9a6gYuxixy
-         SlJUXzq0kyRdBa7qLEiBblQnW9M8ibH4O5ZHftc5IUipYDFC1yp91pgJXBBlMY385Q7g
-         YZiw==
+        bh=cmIEoaAK9H0I/DObf/8+7Lpe62dBXA5oIjHsrjeoKTg=;
+        b=FGEemvMbompPq+Nk/NOUUYMi++roDUYFHTw8BumHn8ORzIY+mcu4tcR2WjqNLTWac1
+         x16aQeuoPkUr4vK9wAI8YtHW7R3FZnxwyQe+iivLkZ6muQDUiCyS/1XlN7roKR4C+j5n
+         RVdoE+XwcHHTH8uzKHAfZtnWnVAyt8kzLtA2KP6msExPoNet91Gj0zf5R0pE5+M1VjkL
+         PMVpKm+8gpbwhzQJ+DuVMxuYPArohSw5uWAL0BugQ5Mq5ejy9Fp0EOqevIar2PxZluAq
+         rDSKG26EKgeH7aOf3StJLwdSLl8WZaUddidK5wr/vBCiXvMivng/w6wOi+Y8xz9dPXXy
+         +5Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791256327; x=1791861127;
+        d=1e100.net; s=20260707; t=1791256630; x=1791861430;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kHj1RXYmclP68lBct4KNIr5BPd6z8PeEquooINbDID8=;
-        b=fPg0+J8O86ZIuyOM5SZzrwtztlCZcrjbhP7noXUXWub2cDKanr7RI0VJxPzme23Kro
-         Lb4SjNCMfL41RNRWDE51U6fm6O1baJZgZfhJUVoxepKcev9pxdGrJYpS3ie2Am4jKQKx
-         WOXiQDvRiZguta2+pGgLGMOunI7h5ebbz0UIVfhiX2XwVBZNtaP3hJ641i5xPA6aUreJ
-         M4cEmuNLzmp7+0238q+XUJj0ye9FHr3/mGQSYm/uUztILSxt9yqngNa/ZfL0EafxxaCo
-         RMke4i+PCRTxtUOaesE1KqoppE/3yx/r9+xvRsB3cv59mJpIZ2ebjJ3pfpcwkjK4E19n
-         zw5g==
-X-Forwarded-Encrypted: i=1; AKwUvBzzub1AQUrfMJx7t9/RBy92eZYkNKURe69IhNVyzNZZsD5EplHD2K+38iGzWJSJSLcXmRk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKJYOgetoplfNeo3LDsqOQVSVVW6OQtcpMvV8J/UR6LXkbZeyxQ
-	0CCCHAepT4jPxgbw0Br3xQ87Pelc7xF8l3VV04WmWG5kgQyb+Ke9Ru2NFOLiXxPwjL8RbdEzFqT
-	rFwyN51ulnIeBAua6aILhPqwYS29RpfuXEinO6nViKENYpF5H4mIOww==
-X-Gm-Gg: AYBFou2sogRkDx5zttGqJt688kXk8tgE/Wn4CvtxB64Ke6lsndHwr+yNpvRVwMA7UMs
-	Depjb9u6gesVYdeBVuuZdqX3/HVXIkT9A10gImKWZ2/cVM0XKnh3RczDEl1oB9zJ4oUbpy7se4v
-	lknCPm13NLlkCn7al6YNZwifOE2edBZ/6c9ji8iAXxyxGOOBBXlHYoJubyrgtDluHDcSEjNywp1
-	XlhHL1o8CYBbMI4jxme2BARCqj0xdzBxHM4KfiBbYEU9ucCMe64O4OcuYKI9hcYNq2tCgjUd0iS
-	8565UYdCYZylC5ClP6F3QsiNjrdyDnomjc+5pmEWx5XKNVtEoeWg6GNshYLHwjcnnXIZ9vPA5zc
-	DyQX9o1a6TpJFhqLV5//MQPk/prFLGLteH8/mON4L9g==
-X-Received: by 2002:a17:90b:2e0b:b0:3a7:8c68:6446 with SMTP id 98e67ed59e1d1-3a8737a34cdmr26429a91.63.1791256327291;
-        Mon, 05 Oct 2026 20:12:07 -0700 (PDT)
-X-Received: by 2002:a17:90b:2e0b:b0:3a7:8c68:6446 with SMTP id 98e67ed59e1d1-3a8737a34cdmr26405a91.63.1791256326616;
-        Mon, 05 Oct 2026 20:12:06 -0700 (PDT)
+        bh=cmIEoaAK9H0I/DObf/8+7Lpe62dBXA5oIjHsrjeoKTg=;
+        b=gH7RDoplAC07JIm3d4/OfyqWzkiFqXW1BHC0Q5Ciz4HVQ5Vcs3Vi7HG8r9zayVyzB9
+         jb1TuZ5nwKwRnIw3eIRFaqQN6IvWtcPdkK0Dhqag/Ya6CUgUSI8t1YAMyap0D264JNd+
+         ez0oZkyGIarc+OMqOtj1zLsnXVLXVScYODY6htPSomOwy2hDzaxRVup++eoI9rj1205A
+         a35uQW7CIofe8FcSc7Ky2rF87kt6yiYOFktILnM4H0/ns80ftoemZkEHcM0K+uFpjFdZ
+         /Kz6knoWzqgZk+tPjn2XSvraAjrzuAaP4o2WaWrV26ffynqKl8H0hPYP0aqeV8F1xwCi
+         nVNQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzy80IPZUjkprFkvRm0pNl/fJO7I5cYsH4EUPEBu1v4W8PI0K6GOabmWWSXS/Pf0LUhzGI=@vger.kernel.org
+X-Gm-Message-State: AFuF++klyEdKsngVH0f5JxUrB3pPL56BAn3UAuxqgv25+mWu1Umuqp+o
+	E4KYFq2w/IYJ91Bk5csqDSgMphtOQ/diTQ6jxN+y6NJcqgXLeKg9Fcf0hvKK3wrFqqJMUXJ5TXO
+	ZnmbklR9Evg4tDfkbB0m1LbBG9FQxkUhTy8Bpw8Tmyz2iIUANuClOxA==
+X-Gm-Gg: AYBFou1TW8vlDDpXEPebQgwPLMYJXIDMqF/q9hkQM1P+ZYcbdiT0DtHa/QsqPlM2mkG
+	9QlSOotXneWq3A788usASc4KxjGRUTJ6zxDaq+8AJPUEHaEpr1zzPlZQSfavspbzcttVKVXli7P
+	s2yR8YSVQsL5xslMm8/SZaWR/TQcqcn/NZw3TyE2cCSOraJ3QxoERvMqu6Zvaz67TLR7U4o4nRT
+	6/VAoTM1qFvxr/khZnNjXCkL6wr63qGqO6RT1o3US1uROxJSWmXq34956Ys3KxMnketCx0OS3k2
+	kamWiC4cMGgfBNOTlWrxvZKgEaWockNP1QNjsGEZT+JnWzWM2lLaiI8uqTb2LNfP5AfY375d4qN
+	RmGnFyGk4TnngSOS0DpukCcy5eRCSI5/jbS6KstAkmA==
+X-Received: by 2002:a05:6300:6698:b0:3de:7bd5:fb47 with SMTP id adf61e73a8af0-3e12474463bmr68479637.39.1791256630139;
+        Mon, 05 Oct 2026 20:17:10 -0700 (PDT)
+X-Received: by 2002:a05:6300:6698:b0:3de:7bd5:fb47 with SMTP id adf61e73a8af0-3e12474463bmr68459637.39.1791256629711;
+        Mon, 05 Oct 2026 20:17:09 -0700 (PDT)
 Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e5a5ee97f3sm15210795ad.66.2026.10.05.20.11.58
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6b358400sm1870050a12.4.2026.10.05.20.17.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 20:12:06 -0700 (PDT)
-Message-ID: <6d290cbf-5dee-40ff-9ca9-af544fdee791@redhat.com>
-Date: Tue, 6 Oct 2026 13:11:56 +1000
+        Mon, 05 Oct 2026 20:17:08 -0700 (PDT)
+Message-ID: <fdc81d01-27df-4557-80bf-80d4527e4bf2@redhat.com>
+Date: Tue, 6 Oct 2026 13:16:59 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -88,8 +88,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v22 15/23] KVM: arm64: CCA: Add a new mode for supporting
- Realm guests
+Subject: Re: [PATCH v22 16/23] KVM: arm64: CCA: Add VCPU load/put for Realms
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -101,24 +100,74 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
  sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
 References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
- <20261005090754.2140522-16-suzuki.poulose@arm.com>
+ <20261005090754.2140522-17-suzuki.poulose@arm.com>
 Content-Language: en-US
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20261005090754.2140522-16-suzuki.poulose@arm.com>
+In-Reply-To: <20261005090754.2140522-17-suzuki.poulose@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
-> Add an explicit mode to support Arm CCA guests.
+> RMM controls the VCPU settings and most are hidden from the KVM, except
+> for the VGIC and timer bits.
 > 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> A later patch would add syncing the VCPU state into the Realm REC related
+> SMC parameters.
+> 
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->   Documentation/admin-guide/kernel-parameters.txt | 3 +++
->   arch/arm64/include/asm/kvm_host.h               | 1 +
->   arch/arm64/kvm/arm.c                            | 5 +++++
->   3 files changed, 9 insertions(+)
+>   arch/arm64/kvm/arm.c | 18 ++++++++++++++++++
+>   1 file changed, 18 insertions(+)
 > 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 6c81fec35ecec..294cea4cc8271 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -802,6 +802,13 @@ static void pkvm_vcpu_load(struct kvm_vcpu *vcpu)
+>   			  &vcpu->arch.vgic_cpu.vgic_v3);
+>   }
+>   
+> +static void realm_vcpu_load(struct kvm_vcpu *vcpu)
+> +{
+> +	kvm_timer_vcpu_load(vcpu);
+> +	kvm_vgic_load(vcpu);
+> +	vcpu_set_wfx_traps(vcpu);
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Why we need to call vcpu_set_wfx_traps(), which updates 'vcpu->arch.hcr_el2'? I don't
+see how 'vcpu->arch.hcr_el2' is affects realm in RMM. Could you please explain in the
+commit log.
+
+> +}
+> +
+>   void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>   {
+>   	vcpu->cpu = cpu;
+> @@ -854,6 +861,12 @@ static void pkvm_vcpu_put(struct kvm_vcpu *vcpu)
+>   	kvm_vcpu_pmu_restore_host(vcpu);
+>   }
+>   
+> +static void realm_vcpu_put(struct kvm_vcpu *vcpu)
+> +{
+> +	kvm_timer_vcpu_put(vcpu);
+> +	kvm_vgic_put(vcpu);
+> +}
+> +
+>   void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>   {
+>   	vcpu->arch.vcpu_ops->vcpu_put(vcpu);
+> @@ -2213,6 +2226,11 @@ static const struct kvm_vcpu_ops pkvm_vcpu_ops = {
+>   	.vcpu_put = pkvm_vcpu_put,
+>   };
+>   
+> +static const struct kvm_vcpu_ops realm_vcpu_ops = {
+> +	.vcpu_load = realm_vcpu_load,
+> +	.vcpu_put = realm_vcpu_put,
+> +};
+> +
+>   #define KVM_VCPU_OPS(flavor, ops)		\
+>   	[(flavor)] = &(ops)
+>   
+
+Thanks,
+Gavin
 
