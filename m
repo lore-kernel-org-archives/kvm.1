@@ -1,186 +1,122 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5CB3B27F9
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 09:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E833D9533
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 09:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791278662; cv=none; b=WIJAg304fwXs11AiyWS9gGyOtpbOKX0gI7OnjQH/MvxXGaBJrYCE/i+RRTxN/fw77gaGstFPu8auKCLddtJ+KNX1wripY3OAgNV11cza5uBg5RavDGm1KNEwk08nldI0TrTFFNOGgHfhwmx/rbs9Ra2gGQWedN+wbiOio+erwWU=
+	t=1791279262; cv=none; b=iH1pfPpPMv1JFxb1ktyAJDuprp+1luihTzBk2/rcdGSAfil6Gije4CwouloB/U6QzvHkejgGs8IOPs+0nbLFDkierPD1bGgKnVnlMFK2zahnjF9Pn3oLOPvbd5/kM8ENFrZKRp5lalfQNMRqRKYsVAUeZYR0RlyKf5YxCuRoOzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791278662; c=relaxed/simple;
-	bh=srB8N8qCbjn8OYCn/cFHQPSvjruCyxi1S8AXEXH/ON4=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=ssTSZAplm7JLzlskBXnpvaiKWUIBPqXzsIe7n2UT8UGBte0P5sKZy5HAyW5sZxlyKvMHPLSt7TXQ+rVvPo5ws0UadRHARP68A7aIjJuEXV9PA1evjLjOEfNbD1vZ+V9pjx1HerIlQZX88Lhklu/VQKN+NJ5fQPPOcU0TzGWZDqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYIQH0Mq; arc=none smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791279262; c=relaxed/simple;
+	bh=+V8uFO8KjUBEZ10FiDGjD6LAJ9EH5zGBb8kX+VfCtOk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mg09Hyuw8Pm3izvVV8fplQ4s0uUWMSc+PqaFY4Q5hhC01s86ASMfvNyqxoQXck3rr4g2+WEkKkfeJDDFDgl82se3jcVgOg8aDEJzZkP3rBUT/Ei1InDukfTj34HdpeBqmyM94o4O2pZm++++WrFHgA0Vc7ZADCRGaKOx/ngT4Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=LDNmFn+v; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYIQH0Mq"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-33e6279a1d7so1447165eec.1
-        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 02:24:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="LDNmFn+v"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48af27fe287so307110f8f.0
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 02:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791278660; x=1791883460; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ohmud8dlW/23qmDZSut2G/bzXusBDFIZZACFjcnqkos=;
-        b=QYIQH0Mqp2AdDZi/sW2pklYv9BKhZvaF/vulbuxItdCqEWdCsBDegt126qtDl5k6cs
-         iqPEIHyBGQC2imrA8VaQjRmgjzw/oD1Fs2ed5W36WNXpouteNCnzKJUSENCI+UOkIn6/
-         OeXIZ/u8QBm+/FGQl1qc4Kls7u0sb+F3P2Pysz37tzGfpjcYsj7VqXopTA34t6CBtpGP
-         ZK7+eTqCxytlVv2/z6uKHhR+WnT58ieKyaGzi0AT2UnfeiYbdzvY4h6Z/P7585o1VNL7
-         Fx1Zu+uyYvrqxCi9kbljH58ljg2CGe1VCBfW+2ICBiOGGR/UCw5WHc3q/lPWTj4axGho
-         nfvQ==
+        d=trailofbits.com; s=google; t=1791279257; x=1791884057; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Jq4MvvelPJmLJTP64CCeQVSZLu/IREWVL/wvvlYXR5M=;
+        b=LDNmFn+vPCgLAHGVEJ5RFSZOerw0K5YsVdDhGYeEEMnDdVbUHEoWvjiDevsA9m+kXY
+         2Smgk0XLv2lLOEgn//z8ypMN5f4k+uEPK+6+oABKIuQ7LaWN0k6zKb9id5PsupUxeBBF
+         EVc5jri1vpOfSJFAXf0Zear4Y/8gKQFeFa6ZmCJoH6pS5waZGuFzE1jH13QLRHBxN/Gb
+         UF9hMpSijvL/dxWTXTb/Zf98ztlelOVbOEozgZU7PxykEwHNxDduRrrxxNHxJd8sJqty
+         THmnl5q1FzkLG71LxZJXFH+BodhXeDXynEo3sDJ1xyaqlnLBPPUyvxYHx3/9hH3+ofaD
+         l53w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791278660; x=1791883460;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ohmud8dlW/23qmDZSut2G/bzXusBDFIZZACFjcnqkos=;
-        b=TAet/w/Piz9IAi+6fQDZ6io+PYrSQwMaW18N8bAaxFmm+7diQSAN/zoNlDvO6cxiUY
-         iheDAwKFOdL6zZynTVY53YhmLGugRe2N0VKtmb7h84ovlerg1/t+e5UThllSLEMVze+I
-         Q/xBLbTsBPbQFo0NSjVbV3giTWq4Q4XExjJrk7yYzVV8STL5aMC/B1hkjvEi1OS8Lv8+
-         42G5W1j/8q/hXu7yGTKVybq2T5jZ8of9R7dAJmlRXAF9Wmd+5iklR4X3oiaVpdkdwlDd
-         O0Y276sHTx7neuoNVGtb8s8UBSqEufd7vwa96/iGB1p5B4dYUhsYVMIUXbCI+k//FyOn
-         CS5g==
-X-Gm-Message-State: AFuF++lw159lalNlYYeKc3aciPWfiJSCnOofEzpFbsImBWCxos91GpY2
-	LXZbJFqHfL5QDSapOuLc3KMZ1aPzXTNI8FmyneXFQjpXdlKkHWxcHBIh
-X-Gm-Gg: AYBFou2BGX488uicEkA0xC0i+ZjSRPE5u7B+3tkwkrJTx3VM4ppW7hLGAE1FUIFj8HE
-	knEBtX1EIKBSiTgU/fPIjZJxUoZ+hw65TGtLMJLJcFWZ1U+Bc+eGy9FYRutMqWJEOTEmBMNZ6lw
-	A5itI7nfsZ8+w937Fl2rcXvMcV9mDmrwSEHCarJWnUevvPIRq0ZPw/zrjuXSJptFivtp6vf5JkU
-	4J/L+z31RhdwMUan71+ubVzsattelzhJo0YH1E8am6cLUKBq9kiKguEe4oDGGY380TCCrWcLfDX
-	NAp6h1CCE4uo5xocpWTysISsxDyWw1v6lix7iiyNL5fPuQKot3L3DxFwEzJyoa771ypYMLIdFje
-	a0yXOy1tpvOCeuuYrNVBqv/SFOkIZtMDsUTH7RlcaE/yZYyI46TTz+kwWkkElHT1z90Zxd84OA3
-	ks2dI7jma41qnzAUIN8Ll22SfgdsPvTs9oxDF+25vQBVoAW8OL5aETr6fUv3EzJOJ5kcIut0plD
-	A3i9Eo3ikssHLlbg6q6aPbJB2+e9wmPtWN6eh+6Rc2CQwcXmW42HQ==
-X-Received: by 2002:a05:7300:51e9:b0:351:52ec:60ee with SMTP id 5a478bee46e88-35152ec672fmr48303eec.28.1791278659872;
-        Tue, 06 Oct 2026 02:24:19 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351469f73fcsm6424655eec.10.2026.10.06.02.24.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 02:24:18 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/9] KVM: selftests: add powerpc support
-In-Reply-To: <asM-1-ptu1b_URqR@google.com>
-Date: Tue, 06 Oct 2026 08:13:01 +0530
-Message-ID: <ece3k0qy.ritesh.list@gmail.com>
-References: <cover.1790101179.git.ritesh.list@gmail.com> <pkxwkffc.ritesh.list@gmail.com> <asAydfQLscU6rXQL@google.com> <h5j3jn86.ritesh.list@gmail.com> <asMN_TAX-1_J3jiP@google.com> <fqykkc3j.ritesh.list@gmail.com> <asM-1-ptu1b_URqR@google.com>
+        d=1e100.net; s=20260707; t=1791279257; x=1791884057;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Jq4MvvelPJmLJTP64CCeQVSZLu/IREWVL/wvvlYXR5M=;
+        b=MNYp/rrGbIUtFThgblF/eGJOf/tSdVaAndD3ilZDlhtbVl+mfSDpUKGaxHkYgo1pay
+         FyN9qpKE9AlnOxh3Tj0Efw0isKnB7Pp8OPyOM8DNWZN/4Sx4XcHf3zvGkHHLhR4cEaw/
+         vt+cFbZyhTwj4fklazF0ks4ogN5Lt5f72+1a62KTAiEIqqfsPKhyOyCszvd5NkmNjv2r
+         CGKfIuyFRKNcCEYYEZI6dRxEAZQZjsAkhnWS/z8qyHWT8zNVwnS65NeWMNRj6eK03nwl
+         nLv+EMHKm2e31dDmjXh3/hiGKrv/FHkOrZEE77PnQbTARTGSq34MMWamnys3iKW2xp2H
+         Y1JQ==
+X-Gm-Message-State: AFq9FYKsL0rQF7iYnGpsHMGDIUrBU1Nnhmoeby+13ZktEHPYNFbPSmzr
+	YdtDO/XtKRl20Id1Wxwgvb11mH0wA+tDAsq+zsqJeyr4ihuU/9F2fypoAKi/ZKLhQKM=
+X-Gm-Gg: AYBFou3DneIlKq5WJ8ALmWMTvOxURCqGvltKtdAnl6ufYkiVCVlkdgx69VArv6qni14
+	fQoa3zWLIXpyVPuMMH6idCiIb0l8wYs3qvU540d6Iqwp5jqzibEDuXEIvywSSQZtc/qaPst6qLk
+	BBzX76PWYVjs4smVBa29GjWsG0UTzdrerWTA4SjNc1b5LKqf8GGfsIr6eiqk0/JtFHsuFVIr4Hq
+	8SZ8NDr2X2SE6t/4U0oZ9YacuZayPtgbyljEbJ3k4/q36hA9cw1uB2Npj48X2TWqtQUJzKjW+P9
+	yLNpydY7UzFddBMLQhcF/iFM8XqvutqdL6GAN0pbUIRDd6lXwFtXxO3VZMbWvMNFJOH02+U5y7M
+	pSiRprqTY002WzTLI6tvYVSCZaGuIpMZW8JAYzPkUBu37nk/xN00hvKYC0KwhyiLIslN1QFmhh1
+	3IQOmrqo+X1eQP3xWwRshi/EX+VkvSfM9bOZiMfDlX+wzv5wVPCsaX3pdY/gdUH4OfqskvCIr5h
+	tZAeXeZew==
+X-Received: by 2002:a05:6000:2210:b0:487:27f9:82c with SMTP id ffacd0b85a97d-48c6d19ba25mr1256715f8f.33.1791279256305;
+        Tue, 06 Oct 2026 02:34:16 -0700 (PDT)
+Received: from localhost ([2a02:168:9d56:1:9c5b:8aff:fed1:19b4])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48c622b4685sm8853347f8f.41.2026.10.06.02.34.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2026 02:34:15 -0700 (PDT)
+From: Bruno Produit <bruno.produit@trailofbits.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org
+Cc: kvm@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	linux-kernel@vger.kernel.org,
+	Dominik Czarnota <dominik.czarnota@trailofbits.com>,
+	Bruno Produit <bruno.produit@trailofbits.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] KVM: x86: Cancel PIT timer on failed creation
+Date: Tue,  6 Oct 2026 11:33:54 +0200
+Message-ID: <20261006093354.590415-1-bruno.produit@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Sean Christopherson <seanjc@google.com> writes:
+Cancel the PIT hrtimer if PIT creation fails after registering the PIO
+device.  This matches normal teardown and ensures the timer no longer
+uses the PIT before its memory is freed.
 
-> On Mon, Oct 05, 2026, Ritesh Harjani wrote:
->  > I think I'd even prefer to take on an #ifdef (to scope it to PPC if necessary)
->> > over open coding TEST_GEN_PROGS_COMMON.
->> 
->> Sure, so will add this check for kvm_create_max_vcpus()
->> 
->> #ifdef __powerpc64__
->>        TEST_REQUIRE(!is_pseries_lpar());
->> #endif 
->
-> Or maybe to avoid too many ifdefs, something like:
->
->   static inline kvm_is_ppc_pseries_lpar(void)
->   {
->           /*
->            * Comment about how this setup has unique limitations and isn't
->            * compatible with tests that create many VMs and/or vCPUs.
->            */
->   #ifdef __powerpc64___
->           return !access("/proc/device-tree/rtas/ibm,hypertas-functions", F_OK);
->   #else
->           return false;
->   #endif
->   }
->
-> Probably redundant naming to some extent, but having "ppc" in there would make it
-> super obvious it's a PPC-only check.
->  
+KVM registers the PIT's PIO device before registering the optional dummy
+speaker device.  If speaker registration fails, a vCPU can have already
+programmed channel 0 and armed pit_state.timer through the published PIT
+device.  When I/O bus registration became fallible, its cleanup did not
+cancel the timer before freeing the PIT.
 
-Sure. So I will get this definition added into kvm_util.h header file.
+Fixes: 090b7aff2712 ("KVM: make io_bus interface more robust")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5.6-sol
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Bruno Produit <bruno.produit@trailofbits.com>
+---
+Sean's proposal, feel free to change the FROM upstream
+see https://lore.kernel.org/all/ar_PNEIvsQMQPMLg@google.com/
+ 
+ arch/x86/kvm/i8254.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
->> Actually I was thinking we may as well use the same check for now for
->> skipping hardware_disable_test on pseries. Because there also we suffer
->> from the same resource limitation. Let me know if that sounds ok to you
->> or do you want us to skip kvm_create_max_vcpus() only for now, since it
->> is part of TEST_GEN_PROGS_COMMON?
->> 
->> > LoongArch open coded its full test list
->> > for some reason, and in less than a year it has started missing out on new common
->> > tests.
->> >
->> >> (& maybe few others like vm_types_test) from that in v6.
->> >
->> > What's wrong with VM types test?  That one really should Just Work on all
->> > architectures.  It doesn't run on LoongArch, but I assume that's
->> > oversight?
->> 
->> So the test doesn't fail (it gets skipped). However this cap
->> "KVM_CAP_VM_TYPES" is only supported on x86 and since I was planning to
->> open code all common tests, hence I thought I may as well not add this
->> in the first place.
->
-> /facepalm
->
-> I completely forgot KVM_CAP_VM_TYPES is x86-only.  FWIW, I'd still say use
-> TEST_GEN_PROGS_COMMON if possible.
->
->> BTW, based on this discussion, I think I will re-arrange the patches in
->> the following order and send a v7. (The Makefile.kvm changes will only
->> get added after the main patch which adds powerpc support).
->> 
->> cfabdb049bd7 2026-10-05 [Ritesh Harjani (IBM)] (HEAD -> feat-ppc-kvm-selftests-new-sean-v7) KVM: selftests: Skip hardware_disable_test on pseries
->> 2b51fab87b95 2026-09-22 [Ritesh Harjani (IBM)] KVM: PPC: selftests: Skip idle-page check when running nested on pseries LPAR
->> f5d1de1be4e9 2026-10-05 [Ritesh Harjani (IBM)] KVM: selftests: Skip kvm_create_max_vcpus on pseries
->> e45ba15cea25 2026-10-03 [Ritesh Harjani (IBM)] KVM: PPC: selftests: Add helper for checking if running nested
->
-> Doesn't this one need to come first?  Or is this different than pseries LPAR?
->
-
-That is correct. The patches are in the reverse order taken from the
-output of: git log --oneline ...
-
-
->> 178c9bca0e20 2026-09-22 [Nicholas Piggin] KVM: PPC: selftests: add support for powerpc
->> 22320662e776 2026-09-11 [Ritesh Harjani (IBM)] KVM: selftests: Fix kvm_create_max_vcpus test for powerpc
->
-> This should come before "add support for powerpc", and should have a shortlog
-
-That is correct. The patches are in the reverse order taken from the
-output of: git log --oneline ...
-
-> more like "Skip max vCPU IDs test on PPC with <whatever is a good description of the SMT cap>"
->
-
-Sure, I will change this to something like:
-
-  KVM: selftests: Skip the max vCPU ID test when KVM_CAP_PPC_SMT is set
-  
-  kvm_create_max_vcpus creates vCPUs from 0..MAX_VCPUS-1, then again
-  with ids at the top of KVM_CAP_MAX_VCPU_ID.
-  
-  On PowerPC the vCPU id is not a flat index: it encodes SMT thread plus
-  core. So on powerpc maximum permitted vCPU ID depends on the VM's SMT
-  mode and the maximum reported by KVM_CAP_MAX_VCPU_ID exceeds a simple
-  non-SMT VM's limit.
-  
-  So, skip that second loop when KVM_CAP_PPC_SMT is non-zero. The cap is
-  0 on other arches, so they still run it. The 0..MAX_VCPUS pass is
-  unchanged.
-
->> 11b5712b213b 2026-09-22 [Ritesh Harjani (IBM)] KVM: selftests: Move memslot_perf_test off the 256M ELF load address
->> 63c900860b5f 2026-09-22 [Ritesh Harjani (IBM)] KVM: selftests: Don't limit LE dirty-bitmap bitops to s390x
->> 
->> 
->> Please let me know if this sounds ok?
->
-> Ya, works for me!
-
-Thanks! Will send v7 shortly with the discussed changes.
-
--ritesh
+diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
+index 1982b0077ddd..33d772c7160b 100644
+--- a/arch/x86/kvm/i8254.c
++++ b/arch/x86/kvm/i8254.c
+@@ -790,6 +790,7 @@ struct kvm_pit *kvm_create_pit(struct kvm *kvm, u32 flags)
+ 
+ fail_register_speaker:
+ 	kvm_io_bus_unregister_dev(kvm, KVM_PIO_BUS, &pit->dev);
++	hrtimer_cancel(&pit->pit_state.timer);
+ fail_register_pit:
+ 	mutex_unlock(&kvm->slots_lock);
+ 	kvm_pit_set_reinject(pit, false);
+-- 
+2.53.0
