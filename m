@@ -1,211 +1,277 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3996F3769E6
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 06:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4818A3A63EF
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 07:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791267841; cv=none; b=oWweVtPWo+m7kduzTiP8pL5RWk7oo/x08JmK37WKiAgLGnXhfgUMm893TpoVlrh7HP6BiBlzM230aia9rW2OwXeQt/2UTT5kpZdRhdD0qrfNHtWtWKIqkGMOKExSKxUci1ZfRq2MNWJ0XT2hwfLgYjeKSBxuah8mj5+kZ0CKiLg=
+	t=1791270927; cv=none; b=AhWx1EHbFhUFrAN9WGIAU4zn5EgQ8Op5k/ZklExGv1gffp1vCEU9xNr3iex1OrTiDusLMTku6wAjPgyDaE/oP7EcIohr0oU/qmgUrqp9HpuBTd39LuuiZ+5dDo3qYOSijSCf4pgx+lEFItpZsy4ybcxOLUliobEHVIQjIGWeTKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791267841; c=relaxed/simple;
-	bh=SMeDTIX8jSBWXiQnBBwSiyWPRzAqbGBsla0efRqXLEM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=krN2kD1WQoO9tLc538BZpNPLUeceIRqgC9geEYSJDVgAD6tGdN8y27keIXyyqYgMuBFzvT05g/D5AKLpLSyz7RujQReF6+F9C8ZSkRTObpZrKf24MfM4Rpt2PZEWey17q52B0gvun+iig2SQmorn96xwBoG9r70dZXlBjKMqcx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d+525Zx7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WhWzaHt6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791270927; c=relaxed/simple;
+	bh=o8zP0pmVKJHK436lt+gwavyyFKfoMnYRsY7gSDGk9mQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VsrXaukwNysuDSiPW15iEfe7I4Em1BEJaHVKb9asf6xiDeFMEGmcyvY1Xgw+Je3HkUdrW/jsRu/VEgGby79Rp2CM634lgFILzn8eDKOn/r6/1O2zUcQx2j3gQc326J5kRMgPzpMxq21FWQcmGkEEPX9T9CzNcv2xGnsUqiEQ+vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r4L3sxuj; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d+525Zx7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WhWzaHt6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791267837;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DLLq1R13uyDoTfMnvHZDH/2dbxOMckf2plTOpZS7OhQ=;
-	b=d+525Zx7h/e+KpJVNOOAPUkoMx0+Y+i3LIadOdKs8TpdkroQ2E2Ub/evfGQa4h6wjrU/XI
-	ZivwCuzVEWoW2StqVvHxcArRMgLT2yVOWa5pngfIUkbo3k7ZmhNy0pPBCYUQJ8oNlbjR3w
-	VMXDHzeCwPViPeKBDq8raqFYrBg8P7s=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-461-A0xEYfG0OqyubIOI6Q0HZg-1; Tue, 06 Oct 2026 02:23:55 -0400
-X-MC-Unique: A0xEYfG0OqyubIOI6Q0HZg-1
-X-Mimecast-MFC-AGG-ID: A0xEYfG0OqyubIOI6Q0HZg_1791267835
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbedbd182f5so468096a12.1
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 23:23:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r4L3sxuj"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a8041a532eso1620998a91.3
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 00:15:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791267835; x=1791872635; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1791270922; x=1791875722; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DLLq1R13uyDoTfMnvHZDH/2dbxOMckf2plTOpZS7OhQ=;
-        b=WhWzaHt6g8uvg7CQ+7kCadvuQ9mX19Hb2OPZ+xguSx5xuAVVSwLzWIIxxPnfWugtvl
-         N7x8iZXvJLDFqnXhXWbIbRDBD7d2c3CrX9/+J38d+sL9v47tS3SRA7rwk+NUr8ySobhS
-         TSxeeYiXBKTBd18GAPv1EIS5wbw2Lthbb58h046q0XzTF0m+n6FyXaDOJ9X8vL+DqCiE
-         hA1HN7I0/R4sbRxJlmY5Pkf6EaIFEpULIiZszOZBjpm2tzQOl4QwcVWzFt/1F2L7t8+C
-         w1LMrJwRQu6mEPM8O+zEU/jYt2hb5ED81Z7gX53zqEQmkoVzxnSKiA2aVEOeoFsc36iD
-         HyAA==
+        bh=AkjMXQJP19zpOzNKOeXflQoWTgmBDI+ZMIE8jzjAz3Q=;
+        b=r4L3sxuj6Bvc+2GOmTlQZHbA9CgUna5v4JGsTy31RUMZLVQo5OqHULR8rRC76IOB+t
+         VH0vjwbeAzjxOTJ1X3gY0tIRqd4VwhRFeaRaHq1DWeslcHm6V5pVMLTZsGTnxXxc24YK
+         qS7qiIqm4uneGhbKsIQrHe8uawQazXMWPSl/W0/BOpxv3FB0iXur9axS8BBxjOIE6ebb
+         fSA1dMIzM426G/f2kxnuWdZ05LRvbjL34RGhl7zSlUhULDMPm0Y8HbG/Hp0EGF84Obl9
+         O+Z5c+HyxYPN8hNo0ddn/0I475OjlTllPzzZpDJmVmn+jkd7mvml2VOGsQLYzDSzTkDm
+         4XcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791267835; x=1791872635;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791270922; x=1791875722;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DLLq1R13uyDoTfMnvHZDH/2dbxOMckf2plTOpZS7OhQ=;
-        b=vQk3JluPpb5yYgKvHB87dNVrp3h+D7NyzQz6Z8x/WNZequWQQL2wLJoTUzpeqnT53+
-         QXgF3B67ht2qNEk+/QjJ/xmiVrXlNgyHB0VQadIqZDRbFkMKKUiLakHL3ruhYY/YVNOL
-         e3VFx26ghiObNttENXgMYA8dAdSSOy//RzPjBp22BRm6N98CKzUbEdPgPMSzXPG7Hi6e
-         wlsT9bv0QEJO0t/X+T8qPmU+c3ad7NMDfqJV9OCb88a3nrMyxPL8xEcjGdGekDIR+Mjl
-         K5CJ+Y7QSXYM2Eirbzs3qrQ/q8kLv9Szp95D7fgzAsrRkkqzaB9X1pq8ogdAE9JGAX+M
-         hl1w==
-X-Forwarded-Encrypted: i=1; AKwUvBxLVSPb/OvfJw6lHCRPtCPbn2ajo+U8TazywL6Hjs16DNxMtocgLYRtBgbgrYMayDU0hlo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIItlGU4jRaVgUNH6f7OfCCrMGb7x1Foa6K0pWISbO+7TIEeFo4
-	xecDEsHAwzjAlxVFHeFBowf945v/gIIB+Xnq3PK466fhhCmzeSawqfv7fk2c2f8e32aNLAmU8rG
-	xiY8WfsVAUZ/exw66PWN9kSA2JSMzwwsu186YtJmTLdNEGbaIesZXpD8wuW2pqw==
-X-Gm-Gg: AYBFou2Lr6xQ/oB7PoWJR9n0LEL5GuCAcChJLU+0uj859GcVJ40jP5c2N+RsUWh5DtD
-	Sq54CZHTTe0p0bVxikUfi5d7+KwDShKQFMtqjYXJ1awY2xWgZlgyD1M/28lTzBwqIFYOkiDGFhk
-	B4WHOXO4IAW4rhwR51u2ZOg/cM2zXDz5nzvMY4wUhmZY+tVJX9ZyqGZ8N/qDgLibnkXmI3K+zxB
-	8fs2p6S6vIJHF85NYti8O6Uy5j8NLjEB2ot7r7ZxWMCxcVV/c2t+5M832R7QKSZs18CLM3qj4wG
-	waWLDyOOJWZNQ9xELdUL8Os/HSBd6fal5omJFID9JRbwNC17mtDytmKAEwrLM0QRLnp+hwQhRVt
-	BCHtGFm9D/avcmicfxYrkxgasq4OqMmk+xJJpyYLggQ==
-X-Received: by 2002:a17:90b:1f92:b0:3a4:e635:a8c3 with SMTP id 98e67ed59e1d1-3a8545cceb1mr1330573a91.20.1791267834658;
-        Mon, 05 Oct 2026 23:23:54 -0700 (PDT)
-X-Received: by 2002:a17:90b:1f92:b0:3a4:e635:a8c3 with SMTP id 98e67ed59e1d1-3a8545cceb1mr1330556a91.20.1791267834199;
-        Mon, 05 Oct 2026 23:23:54 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6f734ae3dsm9932948a91.2.2026.10.05.23.23.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 23:23:53 -0700 (PDT)
-Message-ID: <7bbee080-e8b9-4f8e-a4bd-c24f0b3b815f@redhat.com>
-Date: Tue, 6 Oct 2026 16:23:44 +1000
+        bh=AkjMXQJP19zpOzNKOeXflQoWTgmBDI+ZMIE8jzjAz3Q=;
+        b=pCGNWEMxkSmSg+xZBHAFmPXntkBQl0RQfLx7fJ+y5wKorsKMclZvsjq+OR+SS1BkdY
+         lvWlHWD/TjzQnhIjlxS4sdDFhYtIpv5f+wQURuUohMqNxbR/qjTbzVdqGtT9cocfeRu1
+         nr7txLVoozZmvh8vPvsns2SR/cpSWO4ue6WytDPn+dev+zv6GeWl8hZ53rGAdRxjISP4
+         luJdI63A09fIzSkbZ7qZBD5AfkIokOhj9d2+LBZFXQUs4Ob0cYZj7GcONftVIJrAWij9
+         dRna7sWLvsv6TgrFSJtsy+QuieCfCL2AT8AgoXCrC7ZMAXbfK43ii6MZq5oKq+lHoUmR
+         Twjg==
+X-Gm-Message-State: AFq9FYI48tIErRq4RZzpHmk8Tgz5p708cYjo0yfuxhlJLK1ZIGmDI87y
+	Omw7q5/YXuTd83TPY13i0b3B7T6L1kllwHXXqu2PN3wVL+8aIilRQPRCHfYK4r9cP8+C8Gl9uBo
+	isHwUhg==
+X-Received: from pgbci11.prod.google.com ([2002:a05:6a02:200b:b0:cc7:9970:4594])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580e:b0:3a8:1745:6bfe
+ with SMTP id 98e67ed59e1d1-3a817456d8amr3834023a91.47.1791270921549; Tue, 06
+ Oct 2026 00:15:21 -0700 (PDT)
+Date: Tue, 6 Oct 2026 00:15:20 -0700
+In-Reply-To: <20260428133524.3628482-3-imammedo@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v22 23/23] KVM: arm64: CCA: Control user register access
- for Realms
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
- <20261005090754.2140522-24-suzuki.poulose@arm.com>
- <52e3e45a-751e-40b2-8dd3-3db589ddebee@redhat.com>
- <7b6ed626-eca4-41f2-ae56-0af59a931b29@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <7b6ed626-eca4-41f2-ae56-0af59a931b29@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260428133524.3628482-1-imammedo@redhat.com> <20260428133524.3628482-3-imammedo@redhat.com>
+Message-ID: <asSgCLgeSCKh33_n@google.com>
+Subject: Re: [kvm-unit-tests PATCH 2/2] x86/apic: add retry logic to test_apic_change_mode
+From: Sean Christopherson <seanjc@google.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 10/6/26 4:01 PM, Suzuki K Poulose wrote:
-> On 06/10/2026 06:47, Gavin Shan wrote:
->> On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
->>> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>>
->>> The RMM restricts the access to the register states that the host can
->>> read/modify for a given Realm.
->>>
->>> e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
->>>        While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI
->>>        requests.
->>>        MMIO emulation in the unprotected space.
->>>
->>> Additionally we use the sysreg configuration to advertise/configure the
->>> following Realm parameters, which are required before the Realm Descriptor
->>> is created:
->>>   - SVE Vector Length
->>>   - Number of HW Breakpoints/Watchpoints
->>>   - PMU Counters.
->>>
->>> Thus KVM also additionally allows access to ID_AA64DFR0_EL1 and SVE_VLS for
->>> the configuration of Realm creation parameters. We don't support PMUs for
->>> the Realm VMs yet, so PMCR is not exposed.
->>>
->>> The RMM makes similar restrictions for reading of the guest's registers
->>> (this is *confidential* compute after all), however we don't impose the
->>> restriction here. This allows the VMM to read (stale) values from the
->>> registers which might be useful to read back the initial values even if
->>> the RMM doesn't provide the latest version. For migration of a realm VM,
->>> a new interface will be needed so that the VMM can receive an
->>> (encrypted) blob of the VM's state.
->>>
->>> Reflect the above in KVM_GET_REG_LIST, KVM_SET_ONE_REG calls.
+On Tue, Apr 28, 2026, Igor Mammedov wrote:
+> The APIC timer runs at wall clock time under KVM. If vCPU is stalled for
+> long enough, timer can expire before the guest reads TMCCT or tick well
+> past expected values, causing various false test failures [1].
 > 
->>>   static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
->>>   {
->>>       int size;
->>> @@ -553,6 +572,9 @@ static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
->>>           u64 reg = KVM_REG_ARM64 | KVM_REG_ARM_CORE | i;
->>>           int size = core_reg_size_from_offset(vcpu, i);
->>> +        if (vcpu_is_rec(vcpu) && !kvm_realm_validate_core_reg(i))
->>> +            continue;
->>> +
->>>           if (size < 0)
->>>               continue;
->>> @@ -598,6 +620,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
->>>       if (!vcpu_has_sve(vcpu))
->>>           return 0;
->>> +    if (kvm_vm_is_realm(vcpu->kvm))
->>> +        return 1; /* KVM_REG_ARM64_SVE_VLS */
->>> +
->>>       if (!kvm_arm_vcpu_sve_finalized(vcpu))
->>>           return 1; /* KVM_REG_ARM64_SVE_VLS */
->>>
->>
->> Aren't above two checks conflicting to each other?
+> Add retry attempts with increasing timer period (10ms, 60ms, 700ms)
+> if any test fails, to handle spurious failures due to vCPU stalls.
 > 
-> Do they? We allow SVE_VLS only for the Realms and we allow that
-> before the vCPUs are finalized. For normal VMs, depending on
-> whether the vcpus are finalized, we either send 1 or the full list.
+> 1) Failures we sometimes observe in CI are:
+>   "FAIL: TMCCT should have a non-zero value"
+>   "FAIL: TMCCT should be reset to the initial-count"
+>   "FAIL: TMCCT should not be reset to TMICT value"
+> Seen on both Intel and AMD hosts.
 > 
-
-num_sve_regs() can be called for 3 cases: (a) non-finalized realm vCPU; (b) finalized
-realm vCPU; (c) Other finalized vCPUs, correct? The check "if (kvm_vm_is_realm(vcpu->kvm))",
-which would be "if (vcpu_is_rec(vcpu))", covers (a) and (b). The second check
-"if (!kvm_arm_vcpu_sve_finalized(vcpu))" isn't used. The check here would be something
-as below after this series is applied:
-
-	/*
-	 * Only KVM_REG_ARM64_SVE_VLS is visible on realm vCPUs no matter if
-	 * they have been finalized.
-	 */
-	if (vcpu_is_rec(vcpu))
-		return 1;
-
-Besides, this check "if (vcpu_is_rec(vcpu))" belongs to PATCH[22]. Hope I make myself
-clear :-)
-
->>
->>> @@ -625,6 +650,10 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
->>>           return -EFAULT;
->>>       ++num_regs;
->>> +    /* For Realms only support SVE_VLS */
->>> +    if (kvm_vm_is_realm(vcpu->kvm))
->>> +        return num_regs;
->>> +
->>>       if (!kvm_arm_vcpu_sve_finalized(vcpu))
->>>           return num_regs;
->>
->> Same question here.
+> PS:
+> on most test runs, test completes fine on the 1st iteration.
+> The patch would affect only failure path which will be slowed down
+> due to retries but still fail if there is a bug with benefit of
+> getting rid of false positives caused by vCPU stalls.
 > 
-> As above.
-> 
-> Suzuki
+> PS2:
+> Number of tries and tmict delta comes from analyzing vcpu stalls
+> on heavily overcommited Haswell host with test being bounced between
+> 2 sockets.
+> Typically 2nd iteration (60ms) is enough to get rid of
+> false positives.
 
-Thanks,
-Gavin
+Blech.  I would rather rework the testcases to simply not be flaky.  I don't see
+any value in waiting for the TMCCT to be half of TMICT; just validate that it
+counts down across switches, and that it can wrap in PERIODIC but not in ONESHOT.
+We have a KVM selftest to validate the timer counts at the correct rate, so just
+validate the core functionality here.
 
+E.g. roughly something like this? 
+
+diff --git a/x86/apic.c b/x86/apic.c
+index ed8be25a..1fe6877d 100644
+--- a/x86/apic.c
++++ b/x86/apic.c
+@@ -532,37 +532,6 @@ static void test_physical_broadcast(void)
+ 	report(broadcast_received(ncpus), "APIC physical broadcast shorthand");
+ }
+ 
+-static void wait_until_tmcct_common(uint32_t initial_count, bool stop_when_half, bool should_wrap_around)
+-{
+-	uint32_t tmcct = apic_read(APIC_TMCCT);
+-
+-	if (tmcct) {
+-		while (tmcct > (initial_count / 2))
+-			tmcct = apic_read(APIC_TMCCT);
+-
+-		if ( stop_when_half )
+-			return;
+-
+-		/* Wait until the counter reach 0 or wrap-around */
+-		while ( tmcct <= (initial_count / 2) && tmcct > 0 )
+-			tmcct = apic_read(APIC_TMCCT);
+-
+-		/* Wait specifically for wrap around to skip 0 TMCCR if we were asked to */
+-		while (should_wrap_around && !tmcct)
+-			tmcct = apic_read(APIC_TMCCT);
+-	}
+-}
+-
+-static void wait_until_tmcct_is_zero(uint32_t initial_count, bool stop_when_half)
+-{
+-	return wait_until_tmcct_common(initial_count, stop_when_half, false);
+-}
+-
+-static void wait_until_tmcct_wrap_around(uint32_t initial_count, bool stop_when_half)
+-{
+-	return wait_until_tmcct_common(initial_count, stop_when_half, true);
+-}
+-
+ static inline void apic_change_mode(unsigned long new_mode)
+ {
+ 	uint32_t lvtt;
+@@ -576,64 +545,87 @@ static inline void apic_change_mode(unsigned long new_mode)
+ 			    lvtt & APIC_LVT_TIMER_MASK, new_mode);
+ }
+ 
++static void check_apic_tmcct(unsigned long mode, uint32_t *tmict)
++{
++	/*
++	 * Note, this also covers the case where the timer expired in one-shot
++	 * mode, i.e. if tmcct0 == 0.
++	 */
++	if (tmcct[1] > tmcct[0] && mode == APIC_LVT_TIMER_ONESHOT) {
++		report_fail(...);
++		return;
++	}
++
++	if (tmcct[0] == tmcct[1] &&
++	    (tmcct[0] || mode == APIC_LVT_TIMER_PERIODIC)) {
++		tmcct[1] = apic_read(APIC_TMCCT);
++
++		/*
++		 * Theoretically, this could get a false failure when the timer
++		 * is periodic mode.  In practice, the odds of all three reads
++		 * getting the same value is so absurdly small that it will
++		 * never happen
++		 */
++		if (tmcct[0] == tmcct[1])
++			report_fail(...);
++	}
++}
++
+ static void test_apic_change_mode(void)
+ {
++	unsigned long mode = APIC_LVT_TIMER_ONESHOT;
+ 	uint32_t tmict = 0x999999;
++	uint32_t tmcct[2];
+ 
+ 	printf("starting apic change mode\n");
+ 
++	apic_change_mode(mode);
+ 	apic_write(APIC_TMICT, tmict);
+ 
+-	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
+-
+-	report(apic_read(APIC_TMICT) == tmict, "TMICT value reset");
+-
+-	/* Testing one-shot */
+-	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
+-	apic_write(APIC_TMICT, tmict);
+-	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
+-
+-	wait_until_tmcct_is_zero(tmict, false);
+-	report(!apic_read(APIC_TMCCT), "TMCCT should have reached 0");
+-
+ 	/*
+-	 * Write TMICT before changing mode from one-shot to periodic TMCCT should
+-	 * be reset to TMICT periodicly
++	 * 1. ONESHOT => PERIODIC
++	 * 2. PERIODIC => ONESHOT
++	 * 3. ONESHOT => PERIODIC
++	 * 4. PERIODIC => ONESHOT => PERIODIC (final checks)
+ 	 */
+-	apic_write(APIC_TMICT, tmict);
+-	wait_until_tmcct_is_zero(tmict, true);
+-	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
+-	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
++	for (i = 0; i < 4; i++) {
++		if (apic_read(APIC_TMICT) != tmict)
++			report_fail(...);
++
++		mode ^= BIT(17);
++		apic_change_mode(mode);
++
++		tmcct[0] = apic_read(APIC_TMCCT);
++		do {
++			tmcct[1] = apic_read(APIC_TMCCT);
++			check_apic_tmcct(tmcct);
++		} while (tmcct[1] && tmcct[1] < tmcct[0]);
++
++		tmcct[0] = tmcct[1];
++		tmcct[1] = apic_read(APIC_TMCCT);
++		check_apic_tmcct(mode, tmcct);
++		if (mode == APIC_LVT_TIMER_ONESHOT)
++			apic_write(APIC_TMICT, tmict);
++	}
+ 
+-	/*
+-	 * After the change of mode, the counter should not be reset and continue
+-	 * counting down from where it was
+-	 */
+-	report(apic_read(APIC_TMCCT) < (tmict / 2),
+-	       "TMCCT should not be reset to TMICT value");
+-	/*
+-	 * Specifically wait for timer wrap around and skip 0.
+-	 * Under KVM lapic there is a possibility that a small amount of consecutive
+-	 * TMCCR reads return 0 while hrtimer is reset in an async callback
+-	 */
+-	wait_until_tmcct_wrap_around(tmict, false);
+-	report(apic_read(APIC_TMCCT) > (tmict / 2),
+-	       "TMCCT should be reset to the initial-count");
++	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
++	tmcct[0] = apic_read(APIC_TMCCT);
++	do {
++		tmcct[1] = apic_read(APIC_TMCCT);
++		check_apic_tmcct(APIC_LVT_TIMER_ONESHOT, tmcct);
++	} while (tmcct[1] && tmcct[1] < tmcct[0]);
++
++	if (tmcct[1])
++		report_fail(...);
+ 
+-	wait_until_tmcct_is_zero(tmict, true);
+-	/*
+-	 * Keep the same TMICT and change timer mode to one-shot
+-	 * TMCCT should be > 0 and count-down to 0
+-	 */
+ 	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
+-	report(apic_read(APIC_TMCCT) < (tmict / 2),
+-	       "TMCCT should not be reset to init");
+-	wait_until_tmcct_is_zero(tmict, false);
+-	report(!apic_read(APIC_TMCCT), "TMCCT should have reach zero");
+-
+-	/* now tmcct == 0 and tmict != 0 */
+-	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
+-	report(!apic_read(APIC_TMCCT), "TMCCT should stay at zero");
++
++	/* Switching to PERIODIC mode should NOT re-arm the timer. */
++	tmcct[1] = apic_read(APIC_TMCCT);
++	if (tmcct[1])
++		report_fail(...);
++	else
++	 	report_pass();
+ }
+ 
+ #define KVM_HC_SEND_IPI 10
