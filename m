@@ -1,282 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F1845563B;
-	Tue,  6 Oct 2026 21:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A7A27E1DC;
+	Tue,  6 Oct 2026 21:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791320933; cv=none; b=sBemznu8pfn5XVndMP6Zr7XFkibLE+r4hmZtLVYFZsQiNhlsVvKdP+fPzzZVp9S/xkJx12dfRsyGZ6MiPU8hA7AecP+e3aCWZ2yP/eyqfUBGmXnn4gikg0XufzguTB7g9PwrFUpCx/bR95wM88ip//ldgFI4Rt4ydRH+6mfsTUc=
+	t=1791321382; cv=none; b=cfeJYFQdarYziCFCz7+ebKMBXf3Y9f0tT6eH2E0P8MkTxml2V3DtKQ68+lqBpLOzRbqfiBBwxenm099HBe1tg5no0SgJpZSkOSknnUz12XKMdICMR9dZFK1jBLNPGgADkDKNnoy6U3iq8Ap2+oEZI2cKAKUA8iou4CsmD4u1Gs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791320933; c=relaxed/simple;
-	bh=A5NMQcG6KYExAZ+R0eAkPUOERfHBJAtudPnbnuIDu6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rMpckxsJoMbI9Wa2uA2rqk4Ql2KNJtB2z6pRGQ1xZoy4F8giFBfKRpnemQIDpFIKD+nmkb9kYanPJcdgBskqfAfOazUCAuHjJoc+8jwwxhLA8tmz/OECdPIa0oUypTq+tcdcVw0QO711HqVCy4yV3L93FNxvoLmN32z9P08HwqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmHdlxOu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791321382; c=relaxed/simple;
+	bh=Wt0tSBXm1m5dvm9QmEBo/E9Zi+TYLJV5vVBCCmQ6bkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O1DDOAcp0+5fjtvpLqJCQlecvRpaYv5UFOqGFRtWtrIr/TrYSma6BrWBPesiNHkDt9sT10KUuBqflYHXRSroDF9X/EcO51f++U0DE/aOvCSukLnJbDi2myUenY85DIM/84dBIxwEJ34DpXP7688f5vQ3eykONHTK0dukPO4BRrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=D1TRSTFr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmHdlxOu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18851F0089B;
-	Tue,  6 Oct 2026 21:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791320929;
-	bh=0UqLDiL9RBkK//dPGDGUk1znlzLzG8ly7edRErfMKFM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=WmHdlxOuibxg1xAOVGsQJ6dxM6DrmLSPVOc4NwXwKFtxvoOgwjEJBo/oNNx0XEA4E
-	 lW6BljbKtN6nFNu13HXz5jqwIl0+QgCxh6m5bPWWEpM5FjGxWahFvHFeWjD5fKSJeo
-	 SCGA/bg7h43Xfm2Hx0QNbnuEhug5nM7Xhr/ZVCVjkwqDkFu0/4Ujm2F8pOitqaJFEp
-	 f76WX+5ehGkRSlOk/skcKRW4xFegkBg7xE9fpcFikucDzXj1qaTHOb9knHCoC5RyvS
-	 7ULExcFAoZrWg7RDqKj06x43NSe9OroGjuvH8oESAQELfEuKZ6vcBvS3vPqBgINOTf
-	 SD5kRhJhkiXWg==
-Date: Tue, 6 Oct 2026 16:08:48 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v9 04/18] PCI/P2PDMA: Evaluate ACS controls at the path
- divergence
-Message-ID: <20261006210848.GA712422@bhelgaas>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="D1TRSTFr"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 696I60E4239519;
+	Tue, 6 Oct 2026 21:16:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=On7qUP
+	5YkoFz9cJd80++6TqSdJztSGWW/C7z0XCLUcQ=; b=D1TRSTFryOJQHIHt+qEMrm
+	+G8K+f4fDg7tOhm8gxm+ZppAhI8WHIZLZma0WaW6xwSfcgtdE1usdp9by/8TRJyz
+	8+DqHlOeaoibzxdy5uNoTswMUwB/L6nXJ7cauS6drZ5h/xlpNli7fWLr8JnPO3Ko
+	CoIOCychM5Bd9kqagUpNX7PNVWeNRMNkgMSyIbz80sflKBRSylLPHYjIDupkR0SK
+	ovRwN4Pjs/gcOCDTQptMPdEOxwh6FV435y6nEQxUvxdkWn4j3tGNIzOr8Mah2hxa
+	VZVCnk7o3++/IuPLv6l0tYkz6oYGNCK8F7/03Nd8Zf2IkGwBlTTQaVOIduAbCQ3A
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2sbv9brv-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 06 Oct 2026 21:16:09 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 696KsuKl860842;
+	Tue, 6 Oct 2026 21:16:08 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h58ek0289-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Oct 2026 21:16:08 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 696LG7Ib10420988
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 6 Oct 2026 21:16:08 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 98F035805F;
+	Tue,  6 Oct 2026 21:16:07 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 10D4858059;
+	Tue,  6 Oct 2026 21:16:06 +0000 (GMT)
+Received: from [9.61.78.19] (unknown [9.61.78.19])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  6 Oct 2026 21:16:05 +0000 (GMT)
+Message-ID: <dea9a4d3-f76c-49f7-bb40-d793ebef7da8@linux.ibm.com>
+Date: Tue, 6 Oct 2026 17:16:05 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261001-fix-p2p-acs-v4-0-v9-4-1a8e0f50ddd9@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 14/15] s390/vfio-ap: Add 'migratable' feature to sysfs
+ 'features' attribute
+To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-15-akrowiak@linux.ibm.com>
+ <8b8dc348-ac31-4dbe-a518-9563d5414f09@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <8b8dc348-ac31-4dbe-a518-9563d5414f09@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 75xFoeZZbkCR0bWsXkJo0D4rhFgoFMso
+X-Authority-Analysis: v=2.4 cv=KJHPn1Fo c=1 sm=1 tr=0 ts=6ac56519 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=Bb8CXz_sGeinu_NhX6AA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 75xFoeZZbkCR0bWsXkJo0D4rhFgoFMso
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA2MDA4MyBTYWx0ZWRfX5y8xg3ch+Nl/
+ NM6iG9wBTRLrrjbp6DYz50VjpPQmblv+eUBqYf7X6tF47Oi0FnjHMmGVJ/2fGlIQGD3vuSJ1aw4
+ fLzMPilRB7OuS+/GDMvsXlHb4qjXQi92WDwc95XX9XMwkK6hcY2VnHvh6K4fXf0NEHDLq6EatjN
+ uMwLNGFARtVvYtZINMVPYU7N1rsNJkyYpbQO/PIHvlBKClvhRYa7LrpNkff7d+Abptt6t1EPxps
+ On6bZAY1CsIN+NToNrOk00GdQjjJUB1uLHl3ksbVyuF0KDhV+k68JAdMCE/he0ylnpOQQp5Cn8+
+ TYyMCD3Dt+jfHO8jh82DMNCf4VWPyoTV+0iifuO30nPonYNvy04F7xvkRfXcaJAXiOluup0oQcc
+ 4J7SCKacOwl0HsTijh1C3+V3FjW6c+hFONMqtnDk4yDFm2+i2DbGOP2r0jNWQTFVG0BWcpAOFK2
+ d5puytAAoy57BnDNB+w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA2MDA4MyBTYWx0ZWRfX4s1LSxKpiSZl
+ kQIHJ0riFSAryIL82RKxxfd4IUUtn9XSLUuDqveD0022MfGaBNuy89u81DxllxLXZcXSA6IwSqh
+ 1/vZ97RLTO1CmO2ErJ7EZaE24WWXA3s=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-06_05,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 clxscore=1015
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2610060083
 
-On Thu, Oct 01, 2026 at 02:55:12PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> ACS redirect controls choose between peer and upstream routes only at the
-> path divergence. Applying them below that point rejects valid nested
-> topologies because traffic already has only an upstream route.
 
-I guess the point here is that prior to this patch,
-calc_map_type_and_dist() returned PCI_P2PDMA_MAP_NOT_SUPPORTED in a
-case where it didn't need to?  Can you include an example to make this
-concrete?
 
-It looks like in v7.3, we only return PCI_P2PDMA_MAP_NOT_SUPPORTED if
-a TLP has to go through a host bridge.  Do we mistakenly assume that
-if a bridge has PCI_ACS_RR set, a Request must go all the way to the
-host bridge, even if a bridge closer to the root does not have
-PCI_ACS_RR set?
+On 8/20/26 9:01 AM, Jason J. Herne wrote:
+>
+>
+> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+>> Add the 'migratable' feature to the features provided by the sysfs
+>> /sys/devices/vfio_ap/matrix/feature attribute to indicate that migration
+>> of vfio devices is supported. Since live guest migration is not 
+>> supported
+>> for SE guests, the 'migratable' feature will not be included when the
+>> feature attribute is displayed.
+>>
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_drv.c | 14 +++++++++++++-
+>>   1 file changed, 13 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_drv.c 
+>> b/drivers/s390/crypto/vfio_ap_drv.c
+>> index 8e69ed286bb9..abfb34421d74 100644
+>> --- a/drivers/s390/crypto/vfio_ap_drv.c
+>> +++ b/drivers/s390/crypto/vfio_ap_drv.c
+>> @@ -26,9 +26,21 @@ MODULE_LICENSE("GPL v2");
+>>   struct ap_matrix_dev *matrix_dev;
+>>   debug_info_t *vfio_ap_dbf_info;
+>>   +#define VFIO_AP_DRV_FEATURES    "guest_matrix hotplug ap_config 
+>> migratable"
+>> +#define SE_GUEST_FEATURES    "guest_matrix hotplug ap_config"
+>> +
+>>   static ssize_t features_show(struct device *dev, struct 
+>> device_attribute *attr, char *buf)
+>>   {
+>> -    return sysfs_emit(buf, "guest_matrix hotplug ap_config\n");
+>> +    /*
+>> +     * If the system running is an SE guest, it will support a 
+>> different
+>> +     * set of features; for example, it will not support live guest
+>> +     * migration
+>> +     */
+>> +    if (ap_is_se_guest())
+>> +        return sysfs_emit(buf, "%s\n", SE_GUEST_FEATURES);
+>
+> ap_is_se_guest() is defined like this:
+> is_prot_virt_guest() && ap_sb_available();
+>
+> is_prot_virt_guest() makes sense, this tells is this is actually a 
+> secured guest.
+>
+> But ap_sb_available() "Returns 1 if secure binding facility is 
+> available".
+>
+> What do we want to happen here if is_prot_virt_guest() = TRUE while 
+> ap_sb_available() = FALSE? Have you considered this scenario?
 
-> Evaluate Request controls on the client-side divergence port and Completion
-> Redirect on the provider-side port and reject an unreadable ACS Control
-> register.
-> 
-> Fixes: 52916982af48 ("PCI/P2PDMA: Support peer-to-peer memory")
-> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-> Tested-by: Tushar Dave <tdave@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/pci/p2pdma.c       | 101 +++++++++++++++++++++++++++++----------------
->  include/linux/pci-p2pdma.h |   8 ++--
->  2 files changed, 70 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> index 12612b82d80d..550e6c7346ef 100644
-> --- a/drivers/pci/p2pdma.c
-> +++ b/drivers/pci/p2pdma.c
-> @@ -493,6 +493,7 @@ static struct pci_dev *find_parent_pci_dev(struct device *dev)
->  }
->  
->  enum pci_acs_p2pdma_state {
-> +	PCI_ACS_P2PDMA_NOT_SUPPORTED,
->  	PCI_ACS_P2PDMA_DIRECT,
->  	PCI_ACS_P2PDMA_REDIRECT,
->  };
-> @@ -730,13 +731,13 @@ static unsigned long map_types_idx(struct pci_dev *client)
->   * then to Device B. The mapping type returned depends on the ACS
->   * redirection setting of the ports along the path.
->   *
-> - * The client initiates Requests to provider memory. Check Request Redirect
-> - * on the client path and Completion Redirect for read Completions on the
-> - * provider path.
-> + * The client initiates Requests to provider memory. At the path divergence,
-> + * check Request Redirect and Egress Control on the client-side port, and
-> + * Completion Redirect for read Completions on the provider-side port.
->   *
-> - * If ACS redirect is set on any port in the path, traffic between the
-> - * devices will go through the host bridge, so return
-> - * PCI_P2PDMA_MAP_THRU_HOST_BRIDGE; otherwise return
-> + * If ACS redirects traffic at either divergence port, return
-> + * PCI_P2PDMA_MAP_THRU_HOST_BRIDGE. If the ACS Control register cannot be
-> + * read, return PCI_P2PDMA_MAP_NOT_SUPPORTED. Otherwise, return
->   * PCI_P2PDMA_MAP_BUS_ADDR.
->   *
->   * Any two devices that have a data path that goes through the host bridge
-> @@ -750,10 +751,13 @@ calc_map_type_and_dist(struct pci_dev *provider, struct pci_dev *client,
->  		int *dist, bool verbose)
->  {
->  	enum pci_p2pdma_map_type map_type = PCI_P2PDMA_MAP_THRU_HOST_BRIDGE;
-> +	enum pci_acs_p2pdma_state state = PCI_ACS_P2PDMA_NOT_SUPPORTED;
->  	struct pci_dev *a = provider, *b = client, *bb;
-> +	struct pci_dev *a_child = NULL, *b_child = NULL;
-> +	struct pci_dev *acs_unreadable = NULL;
->  	struct pci_p2pdma *p2pdma;
->  	struct seq_buf acs_list;
-> -	int acs_cnt = 0;
-> +	int acs_redirect_cnt = 0;
->  	int dist_a = 0;
->  	int dist_b = 0;
->  	char buf[128];
-> @@ -768,51 +772,67 @@ calc_map_type_and_dist(struct pci_dev *provider, struct pci_dev *client,
->  	 */
->  	while (a) {
->  		dist_b = 0;
-> -
-> -		if (!pci_acs_p2pdma_ctrl(a, &ctrl) ||
-> -		    pci_acs_p2pdma_completion(ctrl) ==
-> -			    PCI_ACS_P2PDMA_REDIRECT) {
-> -			seq_buf_print_bus_devfn(&acs_list, a);
-> -			acs_cnt++;
-> -		}
-> -
-> +		b_child = NULL;
->  		bb = b;
->  
->  		while (bb) {
->  			if (a == bb)
-> -				goto check_b_path_acs;
-> +				goto check_paths_acs;
->  
-> +			b_child = bb;
->  			bb = pci_upstream_bridge(bb);
->  			dist_b++;
->  		}
->  
-> +		a_child = a;
->  		a = pci_upstream_bridge(a);
->  		dist_a++;
->  	}
->  
-> +	/*
-> +	 * The paths share no upstream bridge, so there is no direct path for
-> +	 * ACS to gate: PCI_P2PDMA_MAP_BUS_ADDR is not reachable here and the
-> +	 * request can only get to the peer through the host bridge.
-> +	 */
->  	*dist = dist_a + dist_b;
->  	goto map_through_host_bridge;
->  
-> -check_b_path_acs:
-> -	bb = b;
-> -
-> -	while (bb) {
-> -		if (a == bb)
-> -			break;
-> +check_paths_acs:
-> +	*dist = dist_a + dist_b;
->  
-> -		if (!pci_acs_p2pdma_ctrl(bb, &ctrl) ||
-> -		    pci_acs_p2pdma_request(ctrl) ==
-> -			    PCI_ACS_P2PDMA_REDIRECT) {
-> -			seq_buf_print_bus_devfn(&acs_list, bb);
-> -			acs_cnt++;
-> +	/*
-> +	 * ACS P2P routing controls apply where a TLP can route toward the peer
-> +	 * or upstream. Below that divergence, its only route toward the other
-> +	 * branch is upstream, so redirect controls do not affect the path.
-> +	 */
-> +	if (a_child && b_child) {
-> +		if (pci_acs_p2pdma_ctrl(a_child, &ctrl))
-> +			state = pci_acs_p2pdma_completion(ctrl);
-> +		if (state != PCI_ACS_P2PDMA_DIRECT) {
-> +			seq_buf_print_bus_devfn(&acs_list, a_child);
-> +			if (state == PCI_ACS_P2PDMA_REDIRECT)
-> +				acs_redirect_cnt++;
-> +			else if (!acs_unreadable)
-> +				acs_unreadable = a_child;
->  		}
->  
-> -		bb = pci_upstream_bridge(bb);
-> +		state = PCI_ACS_P2PDMA_NOT_SUPPORTED;
-> +		if (pci_acs_p2pdma_ctrl(b_child, &ctrl))
-> +			state = pci_acs_p2pdma_request(ctrl);
-> +		if (state != PCI_ACS_P2PDMA_DIRECT) {
-> +			seq_buf_print_bus_devfn(&acs_list, b_child);
-> +			if (state == PCI_ACS_P2PDMA_REDIRECT)
-> +				acs_redirect_cnt++;
-> +			else if (!acs_unreadable)
-> +				acs_unreadable = b_child;
-> +		}
->  	}
->  
-> -	*dist = dist_a + dist_b;
-> -
-> -	if (!acs_cnt) {
-> +	/*
-> +	 * Below a shared upstream bridge, a path whose divergence ports do not
-> +	 * redirect routes the request directly.
-> +	 */
-> +	if (!acs_unreadable && !acs_redirect_cnt) {
->  		map_type = PCI_P2PDMA_MAP_BUS_ADDR;
->  		goto done;
->  	}
-> @@ -821,10 +841,21 @@ calc_map_type_and_dist(struct pci_dev *provider, struct pci_dev *client,
->  		/* Drop the final semicolon; the list is not empty here. */
->  		if (!seq_buf_has_overflowed(&acs_list))
->  			acs_list.buffer[acs_list.len - 1] = '\0';
-> -		pci_warn(client, "ACS redirect is set between the client and provider (%s)\n",
-> -			 pci_name(provider));
-> -		pci_warn(client, "to disable ACS redirect for this path, add the kernel parameter: pci=disable_acs_redir=%s\n",
-> -			 seq_buf_str(&acs_list));
-> +		if (acs_unreadable)
-> +			pci_warn(client, "ACS Control is unreadable for provider %s at %s\n",
-> +				 pci_name(provider), pci_name(acs_unreadable));
-> +		else {
-> +			pci_warn(client, "ACS redirect is set between the client and provider (%s)\n",
-> +				 pci_name(provider));
-> +			pci_warn(client, "to disable ACS controls for this path, add the kernel parameter: pci=disable_acs_redir=%s\n",
-> +				 seq_buf_str(&acs_list));
-> +		}
-> +	}
-> +
-> +	/* An unreadable control does not establish an upstream redirect. */
-> +	if (acs_unreadable) {
-> +		map_type = PCI_P2PDMA_MAP_NOT_SUPPORTED;
-> +		goto done;
->  	}
->  
->  map_through_host_bridge:
-> diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-> index 873de20a2247..dd17501ba1b6 100644
-> --- a/include/linux/pci-p2pdma.h
-> +++ b/include/linux/pci-p2pdma.h
-> @@ -42,10 +42,10 @@ enum pci_p2pdma_map_type {
->  	PCI_P2PDMA_MAP_NONE,
->  
->  	/*
-> -	 * PCI_P2PDMA_MAP_NOT_SUPPORTED: Indicates the transaction will
-> -	 * traverse the host bridge and the host bridge is not in the
-> -	 * allowlist. DMA Mapping routines should return an error when
-> -	 * this is returned.
-> +	 * PCI_P2PDMA_MAP_NOT_SUPPORTED: Indicates no safe mapping is available,
-> +	 * for example because ACS blocks the direct path or the required host
-> +	 * bridge is not in the allowlist. DMA Mapping routines should return an
-> +	 * error when this is returned.
->  	 */
->  	PCI_P2PDMA_MAP_NOT_SUPPORTED,
->  
-> 
-> -- 
-> 2.55.0
-> 
+I have not for two reasons:
+1. The doc block for ap_is_se_guest() states: Check for SE guest with AP 
+pass-through support. Based
+     on that it would seem that both are needed
+2. This is what the author - Harald - told me to use
+
+>
+> Also, the code would be a bit more extendible if you emitted the 
+> static string of always supported features, and then if(se) emit the 
+> string of se support features prepended with a space. Then new feature 
+> updates only have a single string to modify, so no risk of 
+> accidentally missing one.
+
+I'm not sure what you're describing here. SE supported features are a 
+subset of all supported features.
+
+>
+> Also, I'd consider using "migrate" or "migration" as they match 
+> existing feature designations better. We did not use hotpluggable :)
+
+Sure, migration is probably better.
+
+>
+>> +
+>> +    /* Return all features supported by the vfio_ap device driver */
+>> +    return sysfs_emit(buf, "%s\n", VFIO_AP_DRV_FEATURES);
+>>   }
+>>   static DEVICE_ATTR_RO(features);
+>
+
