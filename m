@@ -1,177 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0303CDBBD
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 08:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789C73CD8BF
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 08:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791273899; cv=none; b=q5POFSWQ+dtlmlV2IF9UmSjixGhQgqsm+/IrCmAn2YAJ1eMe+pq2n+aRjLQhUM419xet3JPUFSwE1DIab013h6EJ3zJ7M490Hdi49OpkMM0WtujhIy+700h3WNrdqkqpROuyKlnhc3iUs3HDD0pCsFknOw59aYSii7AhV5Kb4jI=
+	t=1791274921; cv=none; b=Uym/esVldrBOrDyZqaYLdIHfvYmrv7qBX17T08UhJEBetgaBNNrQj1CQFUKcIdxR3iEKMWyN96HtfqW1mYhUJNcJLk2kCRN+Bi2NvjzHScMRL9qcvY+5Axsu+ptUILzHc5gkz1A9UhZrx6MmYC5VgwKZcYBX0U/RaTPBJQHhsvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791273899; c=relaxed/simple;
-	bh=M6drL/u6yWhMUVVk1gO9J8VEeaZKbIbpr3T31bltfNI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=D7BIZNmq+1iptscGu6JR21T4D8T3wrp8A78uPE+Fke21qbG4pnunHrGAyGzcEKQBnFJ6Ir63fTE9YWfyw1OAXa4ts8KV5zvhXtrKCaQ+W7/JtoEMKJ3cr9+40JHvoKnK1+8otWG/wUfxdfmE1FsuRUPQPEnxniuLOHAGbH4iK6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CynL9t94; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791274921; c=relaxed/simple;
+	bh=8obgukGNW7ky7Kk/hIb7Tx1nD/UtTtHjcp92oif6oK4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Fe5/AFzsJuYcPWR+u0ZSIykdfUS+lAxpAAeNqK5jFXWuhmwrI459sArIPIdpGcg+z6ZeiJc7BODgqdiDtlT5s+LqL79dKX1vuf1mRrEW7itXw5aidbuM4Nb3tw4qy+7eoUIPlMpJUOrV+MyTTpLtbzVpAvFFzwj/u2WJENB7RRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m0Xdv1+G; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CynL9t94"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791273893;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qp2lJL9snYnEKuT235PoTU9jnDR3ji5fB4b56J7+nvA=;
-	b=CynL9t94b3GxrEDfZh7VUYAn3j8UmgW6EmBlrITp6T5gbune99b+PzNcgX1m/IB/50p+Qq
-	USQoUwXY9Cts5xvGU27f3o2GSaYIASxMWiECxQvE1DCySPQPqfax4US4Og7/4ba801FLhz
-	qvYRTvfopTgHAXIJqT68OpLShCdQVX8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-255-YdLhlQb2PL2DJIgwqiN7Eg-1; Tue,
- 06 Oct 2026 04:04:49 -0400
-X-MC-Unique: YdLhlQb2PL2DJIgwqiN7Eg-1
-X-Mimecast-MFC-AGG-ID: YdLhlQb2PL2DJIgwqiN7Eg_1791273888
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 174EC184B39D;
-	Tue,  6 Oct 2026 08:04:48 +0000 (UTC)
-Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36BBB1956042;
-	Tue,  6 Oct 2026 08:04:45 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Mushahid Hussain <hmushi@amazon.co.uk>, qemu-devel@nongnu.org,
- linux-hyperv@vger.kernel.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, kvm@vger.kernel.org, nh-open-source@amazon.com,
- mushi.shar@gmail.com, Michael Kelley <mhkelley58@gmail.com>
-Subject: Re: [PATCH] i386: Hyper-V partition time restore feature
-In-Reply-To: <20261005194057.10910-1-hmushi@amazon.co.uk>
-References: <20261005194057.10910-1-hmushi@amazon.co.uk>
-Date: Tue, 06 Oct 2026 10:04:42 +0200
-Message-ID: <kupqzi35k6d.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m0Xdv1+G"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ccca948203aso157305a12.3
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 01:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791274920; x=1791879720; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b8u3Yoco6qaMZId6V3SXGgwbYt0UtNsiNUBPhWK2nhU=;
+        b=m0Xdv1+Gml3S8Z5KJmDNN58lyZP1sgf6qPHbzMbWGTtrSX4ppMxjDzQjjkFitF3Tli
+         Ns0uq3bcJKCyUwIAFFc0o023gVefmmPDOF0KuLA/fY0S2Y9CUK3OupAS2UEkOrCugBkA
+         lIPJp0QmDKg7m+pOgAxbMfo4F+H+L+bo/VtFbNnNfilTYdC1jDKUcjwdR3iiOCyCcwlc
+         rOR3wLipqV1DVQ9P2gy9m2RsBS80kYcYjlghYjLFh0fkmO1635q+wj8Jehkkd1qRsV4w
+         T+pluCfp/ENkK4Nrpvac91SdcY1QYOiI9HQDJIMfxgG107jcGlv5MpMi96M/QRsRgYWS
+         hHzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791274920; x=1791879720;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b8u3Yoco6qaMZId6V3SXGgwbYt0UtNsiNUBPhWK2nhU=;
+        b=V6XmHz4XgwIHEw9c1SgkWmPhym6QByW62w6u1T2AJysXhpHS0bq3JM/6ksHs4otM21
+         RWUrDdV+BPpP6uWhkaaWG+dH0AcrH28kI3ChUn4bgLGG0n9LjHXllFn7scC6Lw5bQ+ro
+         5U3ZnhXAmweEV0fpqOUV+oUHgriGd67EU+4MeTSsTEBSE/6Oshugs+4yFOjRCf0NLxU3
+         o+hXDniMVxrzJCBLDd7ZKazs9dOPeyRkAQzPtjTqWLBXfYCTwI57SBye2umLEFHDXBPC
+         oon5bFX8Von4TrvLQTQgha4SoL99CjswpZIh2575qDZ0tCS67EtkPDbgZEu8aIkaVYDA
+         FAew==
+X-Forwarded-Encrypted: i=1; AKwUvBycTkQfMwMWV/S3D8GLNXHWafLHHgiNIOFFi+3PIGtOzCYLREXzeaPhnF1eLYfhYgHNZxY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2+keDmjzh4g6Ikt7hZmAe0yu7JpAqb9tmpryTd0KS7hFlS5CE
+	IfTFe5TJwxOfN7lgpZ2PvDB2fyqeBnHQv8mK/fwkZPF/NQ3/dGTiyaCx
+X-Gm-Gg: AYBFou37cSPrEd9nQrprb1ZitFx09hYs9JVPNGa4V8pgoB7OtFzC9No/AsPB53lAj8D
+	5q+/lzyB2un8LRaTKHMJnlmshnWIzYXUbKzxvcvCjGHNMjmcafmyayqkuqZAHawNVMUOFXPxFb3
+	O6MELrBs54dBLlNGkyLeVzHIwWDwzwrvsC4E6by7dmnsE/Gw+YWg4Z4GGwQQCVdXjWKItB4Sn9h
+	zQa/myvHzI5sIj9tSabRIR5gA8udmxyg3kcn0g3GV5vUlNRrXvTupyqTBaTTSypOYwb1xIHR3j7
+	ns7jzv9PDCrTMRliwlJX3ZNiFiO5We52JB1LzHQkiI/Z3Y1oE0yH44S4jxYjzMcrkqfLp13v40U
+	dH/s6gf1tWUM8evkxUVj+lSdeEHiDHDVM6GR9n7UMw0TzNAy645iRe0tSdHk6WdYY7ek+WlJSFN
+	V8fDMPgs98tAx8GC7qDF1uqqqbupBmOAgQKeAovRa35zWOkGoYgVlOIQ9WVXykm9Ve4dREfE8=
+X-Received: by 2002:a17:90b:288c:b0:3a2:b036:ed62 with SMTP id 98e67ed59e1d1-3a8733c829cmr301292a91.37.1791274919752;
+        Tue, 06 Oct 2026 01:21:59 -0700 (PDT)
+Received: from gmail.com ([188.253.12.30])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a853cea0f1sm3628152a91.15.2026.10.06.01.21.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 01:21:59 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jia Jia <physicalmtea@gmail.com>
+Subject: [PATCH] vhost-scsi: do not count PI bytes in the data length
+Date: Tue,  6 Oct 2026 16:21:02 +0800
+Message-Id: <20261006082102.27085-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
 
-Mushahid Hussain <hmushi@amazon.co.uk> writes:
+vhost_scsi_handle_vq() moves pi_bytesout and pi_bytesin into the
+protection sgl and subtracts them from exp_data_len.  The length passed
+to TCM is still exp_data_len + prot_bytes.
 
-> A nested Hyper-V that sees the frequency MSRs lets L0 own the
-> partition reference time. After a resume from hibernation it issues
-> HvCallRestorePartitionTime with the TSC and the reference counter it
-> saved. Hyper-V offers hibernation to its root partition only when L0
-> advertises CPUID 0x40000004 EAX bit 20 (RestoreTimeOnResume).
->
-> Add 'hv-restore-time-on-resume' for the bit. It requires
-> 'hv-frequencies'. KVM reports the bit in KVM_GET_SUPPORTED_HV_CPUID
-> when it handles the hypercall.
->
-> KVM side: https://lore.kernel.org/kvm/20261005192431.87317-4-hmushi@amazon.co.uk/
->
-> The TLFS marks the bit as reserved. The name comes from Microsoft's
-> hvdef crate.
+That sum matched an older target path which subtracted prot_length
+again.  sbc_check_prot() now replaces data_length from the CDB only
+when the protect field is non-zero, and only for READ and WRITE.
+target_cmd_size_check() leaves a write's data_length unchanged when the
+CDB size is smaller.
 
-This won't be the first time we use side channels to implement Hyper-V
-features in KVM/QEMU but it's certainly better when feature bits are
-documented and thus backwards compatible.
+MODE SELECT, SET TARGET PORT GROUPS and UNMAP then use data_length as
+the size of t_data_sg.  The PI bytes are not in that sgl.  A parameter
+list that ends on a page is followed by a read of the next physical
+page.
 
-Cc: linux-hyperv list, maybe there's a chance to get TLFS amended.
+Pass the data sgl length.  Protected READ and WRITE still take their
+length from the CDB.
 
->
-> Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
-> ---
->  docs/system/i386/hyperv.rst    | 9 +++++++++
->  target/i386/cpu.c              | 2 ++
->  target/i386/cpu.h              | 1 +
->  target/i386/kvm/hyperv-proto.h | 1 +
->  target/i386/kvm/kvm.c          | 8 ++++++++
->  5 files changed, 21 insertions(+)
->
-> diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
-> index e1babffb0f..2224dc2111 100644
-> --- a/docs/system/i386/hyperv.rst
-> +++ b/docs/system/i386/hyperv.rst
-> @@ -259,6 +259,15 @@ Existing enlightenments
->  
->    Recommended: ``hv-evmcs`` (Intel)
->  
-> +``hv-restore-time-on-resume``
-> +  The enlightenment is nested specific, it targets Hyper-V on KVM guests. When
-> +  enabled, Hyper-V lets L0 (KVM) own the partition reference time and issues
-> +  HvCallRestorePartitionTime after a resume from hibernation so that the TSC
-> +  and the reference counter continue from the values it saved. Hyper-V offers
-> +  hibernation to its root partition only when this enlightenment is present.
-> +
-> +  Requires: ``hv-frequencies``
-> +
->  Supplementary features
->  ----------------------
->  
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index f3bc6911c1..9fa14f6fab 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -10769,6 +10769,8 @@ static const Property x86_cpu_properties[] = {
->                        HYPERV_FEAT_TLBFLUSH_EXT, 0),
->      DEFINE_PROP_BIT64("hv-tlbflush-direct", X86CPU, hyperv_features,
->                        HYPERV_FEAT_TLBFLUSH_DIRECT, 0),
-> +    DEFINE_PROP_BIT64("hv-restore-time-on-resume", X86CPU, hyperv_features,
-> +                      HYPERV_FEAT_RESTORE_TIME_ON_RESUME, 0),
->      DEFINE_PROP_ON_OFF_AUTO("hv-no-nonarch-coresharing", X86CPU,
->                              hyperv_no_nonarch_cs, ON_OFF_AUTO_OFF),
->  #ifdef CONFIG_SYNDBG
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 786957fadd..dab559a3d8 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1487,6 +1487,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->  #define HYPERV_FEAT_XMM_INPUT           18
->  #define HYPERV_FEAT_TLBFLUSH_EXT        19
->  #define HYPERV_FEAT_TLBFLUSH_DIRECT     20
-> +#define HYPERV_FEAT_RESTORE_TIME_ON_RESUME 21
->  
->  #ifndef HYPERV_SPINLOCK_NEVER_NOTIFY
->  #define HYPERV_SPINLOCK_NEVER_NOTIFY             0xFFFFFFFF
-> diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
-> index a9f056f2f3..e420827a68 100644
-> --- a/target/i386/kvm/hyperv-proto.h
-> +++ b/target/i386/kvm/hyperv-proto.h
-> @@ -81,6 +81,7 @@
->  #define HV_EX_PROCESSOR_MASKS_RECOMMENDED   (1u << 11)
->  #define HV_ENLIGHTENED_VMCS_RECOMMENDED     (1u << 14)
->  #define HV_NO_NONARCH_CORESHARING           (1u << 18)
-> +#define HV_RESTORE_TIME_ON_RESUME           (1u << 20)
->  
->  /*
->   * HV_CPUID_SYNDBG_PLATFORM_CAPABILITIES.EAX bits
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index a72b6e6b74..1b16af7cd4 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -1137,6 +1137,14 @@ static struct {
->          },
->          .dependencies = BIT(HYPERV_FEAT_VAPIC)
->      },
-> +    [HYPERV_FEAT_RESTORE_TIME_ON_RESUME] = {
-> +        .desc = "partition time restore (hv-restore-time-on-resume)",
-> +        .flags = {
-> +            {.func = HV_CPUID_ENLIGHTMENT_INFO, .reg = R_EAX,
-> +             .bits = HV_RESTORE_TIME_ON_RESUME}
-> +        },
-> +        .dependencies = BIT(HYPERV_FEAT_FREQUENCIES)
-> +    },
->  };
->  
->  static struct kvm_cpuid2 *try_get_hv_cpuid(CPUState *cs, int max,
+KASAN reports:
 
--- 
-Vitaly
+  BUG: KASAN: use-after-free in spc_emulate_modeselect+0x145/0x380 [target_core_mod]
+  Read of size 1
 
+  spc_emulate_modeselect
+  __target_execute_cmd
+  target_execute_cmd
+  vhost_scsi_write_pending
+  transport_generic_new_cmd
+  __target_submit
+  target_queued_submit_work
+  process_one_work
+  worker_thread
+  kthread
+  ret_from_fork
+  ret_from_fork_asm
+
+Fixes: 9f977ef7b671 ("vhost-scsi: Include prot_bytes into expected data transfer length")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 4f8c0260bc9e..4bd29c2ceed9 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1534,9 +1534,13 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
+ 		 */
+ 		cmd->tvc_vq_desc = vc.head;
++		/*
++		 * exp_data_len is the data sgl. prot_bytes already sit in
++		 * the protection sgl. Protected READ and WRITE replace
++		 * data_length from the CDB in sbc_check_prot().
++		 */
+ 		vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_attr,
+-					    data_direction,
+-					    exp_data_len + prot_bytes);
++					    data_direction, exp_data_len);
+ 		ret = 0;
+ err:
+ 		/*
