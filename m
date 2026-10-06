@@ -1,371 +1,356 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E37E4A0F06;
-	Tue,  6 Oct 2026 17:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791309238; cv=fail; b=ZAw374nFkBU27bOUzkYdOO7Om/jjfpk8Z4bRrLKi6qMSbhHxlF2J2kNS8qoQFh6yZDHXph56oH6Xqpxd5SFwSEBjZ7z5CWTaQ2Xd6aXA06/m/kN3E8hqx7freu5hadt9kjzs7Yv8g6GYrwA6+nUu7O1W42VZshznXh1NIXhktJE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791309238; c=relaxed/simple;
-	bh=a+Etom3flzjdPlx6JMNYTc/p1vVEVL6Ps3AmTZLpNJU=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=N3o7KpB+8X0wR+tjK8p1vc68ETspF6PSOZwqvXUbyPvDn9LQigs9iHwxda6sscsvprwo/5JzS10vL9svTvvDwXhDWQx489uJ4PrLhbdlXduU5RsMNjNc0g+ZzYtYX9Ho+/ZcSs5StOfJ5vMZAEwv+axkYq+fcnwTfulbnFG0dok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FU3aNTxW; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9815D3B71B3
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 18:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791311562; cv=none; b=hbmrOqk+RvHbPeZBZ86VWk3/M8ZQTr7F4sFva9dsn/rWkKwzmT4jlLf5LoTeQgkkO3AjYgaVA0SqnXdsgNufrYscZ/tC6oakgiGVGNrHCudvFX0+VGSaOOdGlo/SPB97ohiyAppxAYc91F/4U1s1oiA2IRFc3XMdPtpz/R8HOKs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791311562; c=relaxed/simple;
+	bh=jgXTxkRGcOxxqXanLWMamOB6WtbqsYhmxTB3JYM/6xg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rOTDGStmGfmH/Hd2HdsBS4akyR+ID5q+HjVbQ5m2pFYENZ20XAOphsXglStfn6ottt4V8wHoE+zAUpd3H7oRjFkkop46hi4o5i1l/PsQNopJd14w4gOkxNn6jxdwi3/S2mjbXG92kXl0nYDaFqPTR8N2pSyB3lXxvYuqXxL3upQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TEWM3orS; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FU3aNTxW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791309233; x=1822845233;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=a+Etom3flzjdPlx6JMNYTc/p1vVEVL6Ps3AmTZLpNJU=;
-  b=FU3aNTxW7nte3pilVtSb1/+G4kq5CgAyLRGwsI/AK4ZGjjnFkc3K9XVm
-   TrroWSXzcydvVcdSBgP0rZMBpPCf4mT/YiAi93eMI/Fvq1/mxei/BtIy7
-   eWpQG37t/nKjz7woQp95Bo9AoPn8D9UChqoO+H6ev7GYDLchvcVoDZByz
-   axMP8UfZ3j5tugdLMcy6uSfsMvv6DN5u62UDzsTYhqABG1txWZMkBbk78
-   DZbVGceD3MlboZ2Wo/yMk+JztQMxB9+rIVehqmh1hkjcJAgbr+vVfKmzP
-   reqY81cCSHNnvGHlqqy0BVV0Ql5XQKsAil2ZV4InWwC21EE0zwrwqqz0O
-   g==;
-X-CSE-ConnectionGUID: T9AxsHbaSLGlyebvBwB6Zg==
-X-CSE-MsgGUID: 204bF6DKTlWwIhFj9cv+Mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="63634"
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="63634"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:53:49 -0700
-X-CSE-ConnectionGUID: UDUSzX+pQBS7yvtt2ugTQA==
-X-CSE-MsgGUID: E+IUJ05AQxyfrNn1QZ+zGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="315239262"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:53:48 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 10:53:47 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 10:53:47 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.66) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 10:53:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eg5cQBmBuysyCxt3EB5VS1BlrYh7umS83LB9n+4JUvUTUBI6arWS3FQXJWGxauZxHMn1MCgQ39Tpw4D4QzxfslEmrPN1Ad4DJMeGChYLtDL7QojZNbJ67u7PQZaXFEVoHh+SOZfoWRLPmZ4t0bRIXKZYAHdkmiHz/VrRHdaBBQwYp9d8jkMcUFpGFaedxC5MecvnbcdG+5Odrn7l1bY6CpheLdxujAbi0Gr/Shm5GG3BBr7KcIAFSBB9tAEvY8j9XlGzXyDXBa4lqxit/eZ7z5RjouqutSUVlacYfMF4DLn7CwC1y+1bB5xnw2JQ9jtpJazN9148OGVx+t6kGruO8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uz/QLAuNPbgglLpxzfwgpkGVVkQEVXWVLDiDn5LkfB8=;
- b=vvZVqq0L5J6gjPl9DAglxcZWdFB59OT+UDdVhHO+UYSScxE3j+slHIV5Hva4aa+OnhKGevsuK4gqVAqyad05Udy6a8xBpzHQpoEHkLsR2QIQMBcQiE9EyMbFhTB4eDRsbAPMxjd6QDxortIeuuKHx3zZicLyd46wRY5mgU9ilWLA1q2h9ahh3yMr9yI88NNs13sMDua8e0bjci/wXDJZ7dhUyk7LWYPbhUbkY3ELGqBDRIE5rIjWbwv84IAOWnSzGk0+AhGri+ZosU3IqS4HpU47RoCwNLBlL0aN8EPc+u9IUaNdslj5b7n+y0qHxnBosh+YLq3tkm2RQgmPZp5BbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB8379.namprd11.prod.outlook.com (2603:10b6:208:488::20)
- by IA4PR11MB9279.namprd11.prod.outlook.com (2603:10b6:208:561::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
- 2026 17:53:45 +0000
-Received: from IA0PR11MB8379.namprd11.prod.outlook.com
- ([fe80::549f:e4b3:e10d:aaa6]) by IA0PR11MB8379.namprd11.prod.outlook.com
- ([fe80::549f:e4b3:e10d:aaa6%6]) with mapi id 15.21.0451.024; Tue, 6 Oct 2026
- 17:53:45 +0000
-Message-ID: <200d21ee-3041-40f2-9032-18e8544a7030@intel.com>
-Date: Tue, 6 Oct 2026 10:53:42 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] x86,fs/resctrl: Keep mbm_assign_mode in default
- mode at boot
-To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
-CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-References: <cover.1790976400.git.babu.moger@amd.com>
- <b969687be3162715e10242424b5a489857d67f2a.1790976400.git.babu.moger@amd.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
-Content-Language: en-US
-In-Reply-To: <b969687be3162715e10242424b5a489857d67f2a.1790976400.git.babu.moger@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0352.namprd03.prod.outlook.com
- (2603:10b6:303:dc::27) To IA0PR11MB8379.namprd11.prod.outlook.com
- (2603:10b6:208:488::20)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEWM3orS"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2e43f3d1fdso446690666b.3
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 11:32:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791311558; x=1791916358; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PbNlJIjJrzwYLlIXsTciTEeuyKiagOAxZiup4TU662M=;
+        b=TEWM3orS/fFprL3/c+CR5zxDF9IlmGLJ0u3iwjVOVuCag5ih/DI18TetyGLhGL6LEQ
+         mMR7gL59E57dHc5eX6DaXVZGf5ITIurWX5eoq21sG7CPw2lNxDXvSSGH+oka+mIolWeg
+         Tk5BM8niqrrklQTmivxke3pDOD7uqY+NnMWDNftekJ05o7JAtYrMNCYdDA82R5GzASAG
+         ND3jOzfBMyj8Vk/v+02h6rCJ/bzT8WLhYBWeSHgN3rJTLLlA4zHqTQMJhJzXAYjrcaag
+         aOHrnlbsEgI/QS+D7nd+hUroK1lb+ikp3J1L1wOEsH1Unj2uX+ZBEj/tCcM+jVRLv2Wo
+         KlyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791311558; x=1791916358;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PbNlJIjJrzwYLlIXsTciTEeuyKiagOAxZiup4TU662M=;
+        b=Usuq/0i/DdpITAQ7I13FBX9a1/oHmj1gJ6ci9J/AEQGc4pVXMarWblqrkIvp+qwge2
+         d+adaVK1O4zPeEcTObUSJQUNN8AQwnLr20e/sYZkXWtFefR9kpkjEePbjZQkYJpXAh8p
+         0ylGn0GsL79LCshcnAgNTNa1omCRId1MKEL8WIvQNIZluF2APNBXPVplRWito+ek5bOQ
+         t/GXjyYskhgvgoYQvitsuC+5DNBAIjbRa8In8/Z8nFpbkMARh26T2WqwdGy9CE/8zEVf
+         p4H4yusRqT41gIFluEYoEkneaGGw9SXICNt78dD8PJgQUundCwjOyd19F02EfnmoRXuD
+         xY8g==
+X-Forwarded-Encrypted: i=1; AKwUvBxg4adnLNu+ggvpgUc6W8/uNtNbrWTpH/PbTjyVaYoTW00D/MQjOxUalQl5PAAr/Ai3WGw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lMeignx6XEAsqzi9MdGsmcJSDpFTmFdBwx/6q3HCQ42zahTbMI
+	qZb9UN7fiHstBP6tJhS7DUTSLAkAn4DBfpbH8aDqOHRJ2oGWC5mkvM1p
+X-Gm-Gg: AYBFou1WlyqgONAVc8ZmoKxNJa08ZJifMDl+RTm41ZO78I4i9/MrwAuHL3bcN4nSBPB
+	X9JEJI/7GuIbr6MnP3itwAVfSddxnPzRDnm55Cko0avbCxmp2TWu7/BTY1SeYaCF+r8PrAwaYfe
+	WmEGoeNdS8UCQvKZ3VKcuRljdl0xxL1MitqEhV2f0bARePa959Vr9X0PAx38Moyg4/4keiWdYcX
+	wNccVnDRIvGbUf06ESybI+vlOT5Lrgl1RiSxpwYqKUq3XGi9zqz513kno1ZxjY8j2MaDWrLSiYP
+	NO7md3Z9sNE2Pjo876Z2XeLyLyYcBejQy64UIFrggehZPjLw0cWIbCFy/AxBocNtKRLNEUfTY3n
+	gqZPuaHvEQaiDlyxW6ZlvmcWs6JohEhsq3pKWRgs7SKU5BWXF6NtN8mu2IfJ4yj/GONqi7ZN7n0
+	4xhNojy35aEBiYbvX68Zt58b/+sxGvQkK9VTBIFfvzr1r0NsAjaYA1G7fT13qbz8rFCXt4Q4gxs
+	oWWqdVjCG8eOYiiirp/F7cRWAG7lukiqag7e1tvntRnEXzaydai3xTEQSow3TNGhb13ik4TnmeF
+	k+Ct8hdD7yWw9IqP0IwJpAiIHK6k0SWKR1/FDrF+hlXrBg==
+X-Received: by 2002:a17:907:d10:b0:c2e:40a0:7978 with SMTP id a640c23a62f3a-c3169f5f01cmr247936866b.9.1791311557634;
+        Tue, 06 Oct 2026 11:32:37 -0700 (PDT)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3158260f7bsm221934866b.6.2026.10.06.11.32.36
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Oct 2026 11:32:37 -0700 (PDT)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
+Date: Tue,  6 Oct 2026 18:32:26 +0000
+Message-ID: <20261006183235.16576-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260720111259.122911-1-dwmw2@infradead.org>
+References: <20260720111259.122911-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB8379:EE_|IA4PR11MB9279:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38ba8429-0057-4d58-29f7-08df23d2c47d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|6133799003|22082099003|18002099003|10067099003|3023799007|260925021911599003|4143699003|260925021311599003|260925022911599003|56012099006|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info: 0RGXbuN7ZixBXw0No7SmD6f+wXAMG+LKdVUaaHe+bmeWHdiSuPZvMoSrQu5sfdxl9so2GzoRVaPewqLrVIp+5RsAwarZDg9OTaKhLhJA9qFAS8lfVi5+WC260zMgwOLr5V4Ab1NgKfumYft8jAtDQzzGVZIKNeILQ+Z2mQJs7HPyn40oUp5lj+OWdn/1jAohwxh+89zvU+cMqpcqiXDYIeCyZu51FV5IhkndN5oU8eVzjaXo9nRxvzyc6b9QH8KQBYhPlWmAqXWF9+daAFAZHSkO9rcFDmUwjmqiSnoWHLTPzsEGNYY3P9PPyhPekbVxOa36a5wTbRu6rrTRBpLA1f5BAZIwBwyzJHRotkbO+QRxVvTTh/jyKHix5aj/kAdkxqqPqfloTDxgYYdsK0Tk/KzJ6RnyvYa5oDJrAGaL5ZCAh7D9cvLCX6iEZEzSzAv/7SJmDOH2vO51FvmiS64Sy7byK59WkjveBHoBLW4Q3k/5NB2DvL7fi80BS0nsOi5TlJQnTLMQY1Ci9budj7aG1n4F3104E1zyk5f2cSGW837pjzyJt+Ribe4hv+RI7QK5aVsOAlnH7gHu1WBU0YMh/5BNhsVJdbDSdG3fzmyjjssxX76gK/TPfmqDR29et8CFuzCCP3yZyEU0RPhvkrkjPMC72SFtXCWQPxO6KWsiWmw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8379.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(6133799003)(22082099003)(18002099003)(10067099003)(3023799007)(260925021911599003)(4143699003)(260925021311599003)(260925022911599003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WUJ4bmR1YjdsTk1oaG5nTFdtYnRnSFgxMlRIK0pwbWFDZUYwV29ORmdxYUpT?=
- =?utf-8?B?L3RqcUN4eFRaOGFKMDlxeFpCQ2hUbzF0WHlIMG9uWUJxcTVmR0Q1YVVycXcx?=
- =?utf-8?B?K1lXa2ZJNHQ3Z0l6cE5JVkRyUlFJcW81bmRkYS80ay9KNGNFYmZmR1FMcVEz?=
- =?utf-8?B?ZndNNWZvbmMyTnhQVnprS2dHMU9UTG52QlkzZkRUbDBDVVFxdUg2UTB5Mm1Y?=
- =?utf-8?B?SFNOcFduRzVVSDdpUmQyZmo4N2gzTDlENEF6MmdZZ25Vamd6K1RtMTZtUEp4?=
- =?utf-8?B?WHF2eFdMYWFCMFVQTjk1citMb1V0Mkkvc2VBVjJlV0c2d2VDOHdYQ2NWZnFa?=
- =?utf-8?B?YUdNZUFSdjc4dWlLMUNBdDFqSDVkOVpPVmhIazNrKzErd296ZTdWRk1HcDFh?=
- =?utf-8?B?QjJoZ0E5cE5XUTltcEFLMnBEMitjSTROaXk2bllPY0FTaVlHT3BZZ2RFVG8v?=
- =?utf-8?B?ejhIWkllOWNRWUl5N21VTE5Ea2pRSThRUnJ4SEZyY01lZjlOZS84WWs0Q01L?=
- =?utf-8?B?NjhwVFlpZmpVbWJtelFHeDdYVms1S3ZBU0VOZW5qdDNwUm5vdjdOdGo2cVE0?=
- =?utf-8?B?UkE2OEh0Y1ZSQkNhMGNNT3ZkRUxCUkxiRnFmellJUDlLaVF4cGVHUkZmMGJG?=
- =?utf-8?B?OU16allXdUdmTlJzcFdjQ3NZN2hNRTNlSkZjaHBIbWNpaXNReW4rTndxY2tx?=
- =?utf-8?B?NWJPQzEvZExqTDJjSVh2eDluOU9IVXErdnJncktLQ1NLcE5GM3Z0c1gxV1lv?=
- =?utf-8?B?TzZwRVhVUGhBWGpOVlBxSTNvdmV5ang3U0FlZzlEOVF1eFI0c1BCMUpVS3ZC?=
- =?utf-8?B?R3cvQW1EZDVha2V1dFh5cHQySXF1cEJacHI3SmszV3d6S0pkSklnRFpFVG1a?=
- =?utf-8?B?NHc5QldXT2JrMy9BeTRZRFEvN3g5NERVQjNYZUVvRjJyeE9CT1JxOXN5TTcz?=
- =?utf-8?B?eERtYmQ1Qlc4ajNLSUNsUnVPbHhwYXNKY2dHU2F4ekc4N3M0VnE5UzdHeDVL?=
- =?utf-8?B?akY1ZEk3dnN3SmRCMGNPZkFFZmUrRk51RmpSQVB0djFWdHp2ZFBwa0FRWnky?=
- =?utf-8?B?eFJBTmRWaHNKWS9MTTRIeHRQUzI4czBrU0xyblY3VEdtcHczMlhPc29EWmF6?=
- =?utf-8?B?YmxDb2JrTTFoZlFITzhneE96STBybjhBV1ZWbU5ZTU5Cc0dpck5JdWxRSHdk?=
- =?utf-8?B?N0U0SWQzSm44U2JyRUF4MUR3THVjYkNTM3ZxMElTYzN4blNkTjZTTE1TZXFI?=
- =?utf-8?B?b2VDTTBOeFB6clE5elVTTTNpR1pDeXFTSnJuU1d4VTVNaWk4dnQvNmtzbHZK?=
- =?utf-8?B?NVk2bmtiSTBLQXRjSlFMbXVYWHVPNk1Gdk1pTjdSTVRpZ2s4OE54NFRSRG1l?=
- =?utf-8?B?MnJGaXRGaEhYMGU2Yjg2MlJTRlh6VzhpYjUwNGhyby9DaEtFT1JOenl2Skd5?=
- =?utf-8?B?dEFacFFpRmp3QlBRdTVqVCtUbEw0VnN4SE84UVZ4QTVuWFV3R21XcU4ydlJS?=
- =?utf-8?B?eFk1Ni9EMDVWSEl6UjdySlJjWnZPbDIxTDhDeFJSL2d6c2RFWTNPc1ZHREFW?=
- =?utf-8?B?TG5rajlmYmNjazdlTG14NlZqVnE3TW5aTWFlYWRaSDZNN0lTYS90L3JBbHZQ?=
- =?utf-8?B?WXhJNit1VWNxMWxzRTZpdkQwSmJPS3hXcEFIbjU5aXZtZVNjUjZtYkMxaHk3?=
- =?utf-8?B?dkJOTmJHOG1nd2xocjJIV0dDVXFMd0ovdkk1ZytMSzZKc01CYUNkRmlkMFYv?=
- =?utf-8?B?R0RzRnhNNmg1S3B6ckhIY25nRm0zK205Q3VyWHlzOFZJSm1lTlNuK1JQNDIx?=
- =?utf-8?B?QWFVMTJYRW1wNnpkK0U0OW5Eb3FhVm9JYkRLWkZtVEk3bXdrQXBxdXhnTTlC?=
- =?utf-8?B?aTRJd2kzbXhncitoeU94SG1xTzdRbXA4UHRFK0FyRUIveVBYd0ZqRXc0T25r?=
- =?utf-8?B?cGJOQjYwcTNrVVNlb3JEOGJFQTJiWmVsTytCSkNwYmZhVE5YYW1WY20wSnh4?=
- =?utf-8?B?YXk3WlQyc3RSVFpWNU53Q0NybGE1dlhDaHphSllhTHFodmgzaFhoRnE1cEgy?=
- =?utf-8?B?dFhOVTBITkNzdmxRYklhbGVBWHM0Z0RBb25yelNDTzlSM2JHWkFHWk9iNUZX?=
- =?utf-8?B?MkJRMXNmVVp4MnFBcFIwOG9PMTZYRW51UVkzWTRJT3VtbGhnMUlNZWR4ZWNy?=
- =?utf-8?B?ODJpSUxqM21yU2ExZ041NlF6QmJKNmNpMHM2MytQS3YyUGRmRHAzMlBaajBF?=
- =?utf-8?B?b3ZQajc4cUQ4SEFabE1jVlkva1ExTFZtRnlJSHF0Yk1LSERQbEFlMTBwYWVK?=
- =?utf-8?B?RXhYR1cwV3pwRmJRRmYvSGJWekpqSUFkTTdobXJkWStIQzZHYzRwYlYxVnNo?=
- =?utf-8?Q?wOxzcLwmyqrWDTwE=3D?=
-X-Exchange-RoutingPolicyChecked: cTB6OC6reMU5Uo/zz2nnCZw58CHYRUfNT/Io0UIiW9IViieW7CC4TfhjiX4Nq5QiGRhyqW2Molj5vpYFt/z28Y7L+2JPjDGe/lAt+ey9e0NuTDhHG6yeuCQw5bA7WtwgASPH7R02n1/QVI3ahA4rvS2xpwSLQON6BxA9PFRrf3E5Gefxh455pkgQSpRN7SSO4Ekgcr67Bf1kjngS47vTsUWsx5GDl77ZCxTZGaOeRsiRe4K5Ms0gjyICuyBn8cfVzRTYJR2Szga2wcClhL11GVyIHpXHgUu5W1w/E00LsMBQrNOPl+1nVsKQaiK/BxYgwklJQdUSE3hIA6aUyi/fRg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38ba8429-0057-4d58-29f7-08df23d2c47d
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8379.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 17:53:45.8260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J6oLX06X3RhQyeUnCJJzJQAZBLaDwGKa8wRqd8UmOIoJ5rCgu2GFWfGCiyrrUrL3IFe77dWQEhPTc+v/fLFL5hS9MAMqAKtseTO9+na7dBU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9279
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Babu,
+From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-On 10/2/26 2:26 PM, Babu Moger wrote:
-> The "mbm_event" mode assigns hardware MBM counters to RMID/event pairs.
-> It is intended for deployments that need to manage counter assignment on
-> platforms where the number of monitoring groups exceeds the available
-> hardware counters. Hardware counters are scarce, so mbm_event mode suits
+Some drivers manage RAM outside the page allocator: a carve-out, device
+memory, or memory that a host component moves between VMs while they
+run. This memory often has no struct page. The driver wants to lend
+pages to a VM and to its devices, and to take any of them back later.
 
-"Hardware counters are scarce" -> "Hardware counters are scarce on these platforms"
-(to make it specific to the context and not a general statement)
+David Woodhouse's series "KVM: Allow alternative providers of
+guest_memfd backed by PFNMAP memory" lets such a driver back a
+guest_memfd through struct kvm_gmem_ops:
 
-> workflows that monitor a subset of groups at a time and rotate
-> assignments as needed.
-> 
-> resctrl enables the "mbm_event" mode by default on hardware that
-> supports it. That breaks the pqos tool [1], which assumes the historical
-> default mode. pqos treats a non-numeric event read as zero bandwidth. It
-> creates 16 or more monitoring groups and uses two counters per group.
-> On a platform with 32 counters per domain, that consumes the pool, so
-> further groups read "Unassigned" and pqos reports 0 MB/s for them:
-> 
->   $sudo pqos -m all:0-4
->   CORE         IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
->      0        0.69         16k       192.0         0.0         0.0
->      1        0.40          3k         0.0         0.0         0.0
->      2        0.44          1k        64.0         0.0         0.0
->      3        0.39          1k        64.0         0.0         0.0
->      4        0.43          1k         0.0         0.0         0.0
-> 
-> Leave mbm_assign_mode in "default" mode during initialization. Default
-> mode uses one counter per monitoring group. On existing AMD platforms
-> that pool is 64 counters and may be larger on newer hardware. The
-> "mbm_event" mode uses two counters per group, so 32 counters cover only
-> 16 groups.
-> 
-> Deployments within that pool receive accurate bandwidth measurements
-> with default mode. The hardware supports 4096 monitoring groups. Beyond
-> that pool, readings may be misleading or "Unavailable", with no
+  https://lore.kernel.org/kvm/20260720111259.122911-1-dwmw2@infradead.org/
 
-At this point I am lost because the word "pool" is used to mean three
-different things. It is used for the number of "ABMC counters" as well  
-as the number of "non-ABMC counters" that exist on the same platform,
-above it seems to be used for number of RMIDs (number of monitoring
-groups) also. Could you please add some context at beginning of
-changelog to introduce the various counts applicable to the description,
-associate unique terms to these counts at that time, and then use
-those unique terms in the rest of the changelog?
+That covers the guest, but not the VM's devices, which his cover
+letter left as an open question. This series adds a small interface in
+mm: the driver that owns the memory becomes a provider, and the code
+that maps it attaches as a consumer. There are two consumers, a
+guest_memfd backend and IOMMU_IOAS_MAP_FILE in iommufd.
 
-> user-visible indication.
-> 
-> Default mode is still limited once the number of monitoring groups
-> exceeds that counter pool. After hardware re-allocates a counter, a
-> read may return "Unavailable". pqos still treats "Unavailable" as zero.
-> Successive reads can be a count, "Unavailable", then another count.
-> pqos treats those jumps as wraparound and can report an inconsistent
-> rate:
-> 
->   $sudo pqos -m all:0-4
->   CORE     IPC      MISSES     LLC[KB]   MBL[MB/s]   MBR[MB/s]
->   0        0.76         60k        32.0         0.0         0.0
->   1        0.45          1k        32.0         0.0         0.0
->   2        1.57        107k        64.0         0.0 17592186044184.9
->   3        1.62        276k      4928.0         3.2         0.5
-> 
-> Users that need stable measurements beyond that pool should use
-> "mbm_event" mode and rotate assignments as needed.
-> Enable it with:
-> 
->   $echo mbm_event > /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
-> 
-> Fixes: 0f1576e43adc ("x86/resctrl: Configure mbm_event mode if supported")
-> Closes: https://github.com/intel/intel-cmt-cat/issues/311
-> Link: https://github.com/intel/intel-cmt-cat # [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
+The series is on top of David's v2 (base 0e35b9b6ec0f). Patch 1 was
+part of the earlier dma-buf RFC. The provider backend depends on it, so
+this series carries it.
 
-See "Ordering of commit tags" in Documentation/process/maintainer-tip.rst
+Why not dma-buf
+===============
 
-> ---
->  Documentation/filesystems/resctrl.rst | 48 ++++++++++++++++++---------
->  arch/x86/kernel/cpu/resctrl/monitor.c |  1 -
->  2 files changed, 33 insertions(+), 16 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
-> index c8507580474a..2efc99223bdc 100644
-> --- a/Documentation/filesystems/resctrl.rst
-> +++ b/Documentation/filesystems/resctrl.rst
-> @@ -354,8 +354,8 @@ with the following files:
->  	::
->  
->  	  # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
-> -	  [mbm_event]
-> -	  default
-> +	  [default]
-> +	  mbm_event
->  
->  	"mbm_event":
->  
-> @@ -363,6 +363,9 @@ with the following files:
->  	pair and monitor the bandwidth usage as long as it is assigned. The hardware
->  	continues to track the assigned counter until it is explicitly unassigned by
->  	the user. Each event within a resctrl group can be assigned independently.
-> +	mbm_event mode uses one counter per event of one RMID. A monitoring group
-> +	can use two counters, one for mbm_total_bytes and one for mbm_local_bytes.
-> +	For example, 32 counters can monitor 16 groups.
+The earlier RFC shared the memory as a dma-buf. Christian König
+rejected that: an importer must not build its own page tables from a
+dma-buf, and the use case should stay out of drivers/dma-buf. I
+acknowledged that and dropped it; this series does not touch dma-buf.
 
-This addition looks redundant to me. "mbm_event mode uses one counter per event of one RMID."
-just repeats earlier "...assign a hardware counter to an RMID, event pair ...", no?
-The example being added ("A monitoring group can use two counters ...") also looks
-to be specific to AMD's usage and including platform specific example as part of generic
-introduction seems unnecessary.
+Why a new interface
+===================
 
->  
->  	In this mode, a monitoring event can only accumulate data while it is backed
->  	by a hardware counter. Use "mbm_L3_assignments" found in each CTRL_MON and MON
-> @@ -376,20 +379,37 @@ with the following files:
->  	"mbm_L3_assignments" after switching to "mbm_event" mode for counter
->  	assignment states of all monitoring groups.
->  
-> -	The mode is beneficial for AMD platforms that support more CTRL_MON
-> -	and MON groups than available hardware counters. By default, this
-> -	feature is enabled on AMD platforms with the ABMC (Assignable Bandwidth
-> -	Monitoring Counters) capability, ensuring counters remain assigned even
-> -	when the corresponding RMID is not actively used by any processor.
-> +	It is intended for deployments that need to manage counter assignment on
-> +	platforms where the number of monitoring groups exceeds the available
-> +	hardware counters. Hardware counters are scarce, so mbm_event mode suits
+kvm_gmem_ops gives KVM a way in. For devices, the only option today is
+a dma-buf plus a private call that iommufd looks up with symbol_get(),
+which is how vfio-pci works. Each new owner would need another such
+lookup, and iommufd would end up knowing each owner by name. With a
+common interface, a provider module only calls into mm, and nothing
+needs symbol_get().
 
-"Hardware counters are scarce" -> "Hardware counters are scarce on these platforms"?
+It also means the provider revokes a range once. The VMM hands the
+same file to KVM and to iommufd; on a revoke the core forwards it to
+every consumer, so KVM clears the range from stage-2, iommufd from the
+IOMMU page tables, and guest_memfd from the VMM's own mapping, all
+before the revoke returns.
 
-> +	workflows that monitor a subset of groups at a time and rotate assignments
-> +	as needed. The mode is beneficial for AMD platforms that support more
+The contract
+============
 
-Text from "The mode is beneficial for AMD ..." does not seem necessary here
-since it just duplicates the text added below?
+For a page of a provider file, get_page() returns the frame, its type
+(RAM or MMIO, read-only or not), and the largest aligned block of frames
+of the same type, so that consumers can use large mappings. A page
+without a frame is a hole.
 
-> +	CTRL_MON and MON groups than available hardware counters. The mbm_event
-> +	mode ensures counters remain assigned even when the corresponding RMID is
-> +	not actively monitored.
->  
->  	"default":
->  
->  	In default mode, resctrl assumes there is a hardware counter for each
-> -	event within every CTRL_MON and MON group. On AMD platforms, it is
-> -	recommended to use the mbm_event mode, if supported, to prevent reset of MBM
-> -	events between reads resulting from hardware re-allocating counters. This can
-> -	result in misleading values or display "Unavailable" if no counter is assigned
-> -	to the event.
-> +	event within every CTRL_MON and MON group. This mode is enabled by default.
-> +
-> +	On AMD platforms that support more CTRL_MON and MON groups than hardware
-> +	counters, hardware dynamically shares a smaller pool of counters among
-> +	RMIDs. One counter from this pool is used per monitoring group and counts
-> +	every MBM event of that group's RMID. The size of the pool is not
-> +	enumerated to software (unlike "num_mbm_cntrs"), and "num_rmids" may be
-> +	much larger. For example, 64 counters in this pool monitor 64 groups.
-> +	Newer hardware may provide a larger pool.
-> +
-> +	While the number of monitoring groups does not exceed that pool, a counter
-> +	stays attached to each RMID and readings remain accurate. Creating more
-> +	groups than the pool can cause hardware to re-allocate those counters
-> +	between successive reads of an event. Bandwidth values may then be
-> +	misleading, or a read may return "Unavailable" if no counter is allocated
-> +	to the RMID. There is no user-visible indication when this begins.
-> +	Users who need stable readings beyond that pool should switch to mbm_event
-> +	mode, if supported, and assign counters to the groups of interest
-> +	(rotating assignments as needed).
->  
+Consumers take no references. A frame stays valid until the revoke that
+removes it returns. To guarantee that, a consumer either holds a lock
+across get_page() and the mapping that its revoke callback also takes,
+or detects a racing revoke and retries.
 
-Above usage of "pool" looks ok since it only uses the term for the "non-ABMC hardware
-counters" while using the accurate terms for the other counts.
+The interface does not deal with folios. The native guest_memfd backend
+and memfd pinning in iommufd handle pages from the page allocator, and
+pages that can move or swap would need references. A backend that needs
+full control over the file can still write its own kvm_gmem_ops.
 
->  	* To enable "mbm_event" counter assignment mode:
->  	  ::
-> @@ -1787,11 +1807,9 @@ View the llc occupancy snapshot::
->  Examples on working with mbm_assign_mode
->  ========================================
->  
-> -a. Check if MBM counter assignment mode is supported.
-> +a. Check if MBM counter assignment mode is supported and enabled.
->  ::
->  
-> -  # mount -t resctrl resctrl /sys/fs/resctrl/
-> -
->    # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->    [mbm_event]
->    default
-> diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-> index 5d0d3b18f9b8..a6a9090c4808 100644
-> --- a/arch/x86/kernel/cpu/resctrl/monitor.c
-> +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-> @@ -472,7 +472,6 @@ int __init rdt_get_l3_mon_config(struct rdt_resource *r)
->  		cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
->  		/* cntr_id is 12 bits and can only encode 4096 counters. */
->  		r->mon.num_mbm_cntrs = min((ebx & GENMASK(15, 0)) + 1, BIT(12));
-> -		hw_res->mbm_cntr_assign_enabled = true;
->  	}
->  
->  	r->mon_capable = true;
+Backends
+========
 
-Rest looks good to me.
+The motivating user is a host-side memory manager. It reserves a region
+of host RAM, lends parts of it to VMs and their devices, moves pages
+between VMs, and has to survive a live update of the host kernel. The
+sample module in this series models it.
 
-Reinette
+Device-DAX could also be a provider: its range never moves, get_page()
+is short, and it only revokes on unbind.  iommufd can map MMIO, but KVM
+takes only RAM, because it picks the guest memory type itself.
+
+Neither consumer keeps state about the provider's frames, which helps
+with live update.  guest_memfd has nothing to save across kexec, since
+KVM refills stage-2 on faults. The provider saves its frames and who
+owns them. Devices cannot fault, so their mappings stay part of the
+existing iommufd live update work, and the provider only has to give
+back the same frames.
+
+Confidential VMs
+================
+
+This series does not support them yet. For now only x86 VMs of type
+KVM_X86_DEFAULT_VM can use a provider.
+
+I don't think a provider should back private pages. Revoking a private
+page loses its contents, and only guest_memfd knows which pages are
+private. The interface could still be useful there later, with
+guest_memfd acting as a provider for its own files so that iommufd only
+maps shared pages. I left that for a later series.
+
+Patches
+=======
+
+  Patch 1 lets a kvm_gmem_ops backend map a page read-only for the
+  guest.  get_pfn() gets a writable output, and a guest write to such a
+  page exits with KVM_EXIT_MEMORY_FAULT. KVM_MEM_READONLY can't be
+  used for this, because guest_memfd slots don't allow it.
+
+  Patch 2 adds the interface and the core, and the FOP_MEM_PROVIDER
+  flag in struct file_operations.
+
+  Patch 3 adds the provider backend to guest_memfd, with the
+  GUEST_MEMFD_FLAG_USE_PROVIDER flag and a provider_fd field.
+  guest_memfd also handles the userspace mapping of the file, if the
+  provider allows it, so providers don't each have to get the fault and
+  revoke handling right.
+
+  Patch 4 prepares iommufd for tracking pages it does not pin. No
+  functional change.
+
+  Patch 5 lets IOMMU_IOAS_MAP_FILE take a provider file. iommufd maps
+  one PAGE_SIZE entry per page and pins nothing. It leaves holes
+  unmapped and honours read-only and MMIO pages. On a revoke, it
+  unmaps the range and maps whatever the provider backs now.
+
+  The PAGE_SIZE entries are deliberate for now: a partial revoke then
+  never has to split a large IOMMU page. Using the block size the
+  provider reports would be better, and needs the revoke to unmap and
+  remap whole blocks. A device that accesses the range between the
+  unmap and the map faults; replacing the entries in place would avoid
+  that, but needs new support in the IOMMU drivers. Both are left for
+  later.
+
+  Patches 6 and 7 add iommufd selftests: two mock-domain queries and a
+  mock provider.
+
+  Patch 8 adds a sample provider. It gives each VM a child file, can
+  move, donate and reclaim pages, and supports read-only pages. A child
+  file is read-only to its holder; the owner changes it through the
+  control device. It only uses the mm interface.
+
+  Patch 9 adds a KVM selftest with one provider and two VMMs. After
+  each change it checks what the guest, the device and the VMM's mapping
+  see.
+
+Testing
+=======
+
+x86_64, in QEMU with KASAN, PROVE_LOCKING and DEBUG_ATOMIC_SLEEP, with
+two ranges hidden from the host with memmap=, one for each sample. No
+KASAN report, lockdep splat or warning in any run.
+
+  - mem_provider_test, the selftest in patch 9: pass.
+  - guest_memfd_test, including the USE_PROVIDER flag check: pass.
+  - iommufd_selftest, iommufd_ioas: the 12 provider tests pass in all
+    four variants. The 4 failures are access_domain_destory, which the
+    series does not touch: it needs hugetlb pages, which this VM has
+    none of.
+  - David's gmem_provider tests, which this series does not change:
+    hugepage, revoke, iommufd and readonly pass; the SNP and vfio-pci
+    tests skip for lack of hardware.
+
+Not tested: arm64, where guest_memfd refuses providers; a real IOMMU,
+since only the mock domain was used.
+
+I wrote most of this series with AI help, and I am posting it as an RFC
+to get feedback on the interface.
+
+Fred Griffoul (9):
+  KVM: guest_memfd: Add a writable result to get_pfn()
+  mm: Add memory providers
+  KVM: guest_memfd: Add a memory provider backing
+  iommufd: Track the domains of pages that are not pinned
+  iommufd: Map memory provider files
+  iommufd/selftest: Add mock-domain IOVA queries
+  iommufd/selftest: Add a mock memory provider
+  samples/kvm: Add a memory provider sample
+  KVM: selftests: Test a memory provider shared by KVM and iommufd
+
+ Documentation/virt/kvm/api.rst                |  45 +-
+ MAINTAINERS                                   |   8 +
+ arch/arm64/kvm/mmu.c                          |  13 +-
+ arch/arm64/kvm/nested.c                       |  16 +-
+ arch/x86/kvm/mmu/mmu.c                        |  18 +-
+ arch/x86/kvm/svm/sev.c                        |  13 +-
+ arch/x86/kvm/x86.c                            |  10 +
+ drivers/iommu/iommufd/Kconfig                 |   1 +
+ drivers/iommu/iommufd/io_pagetable.c          |  37 +-
+ drivers/iommu/iommufd/io_pagetable.h          |  54 +-
+ drivers/iommu/iommufd/iommufd_test.h          |  36 +
+ drivers/iommu/iommufd/pages.c                 | 340 ++++++-
+ drivers/iommu/iommufd/selftest.c              | 286 ++++++
+ include/linux/fs.h                            |   2 +
+ include/linux/kvm_host.h                      |  20 +-
+ include/linux/mem_provider.h                  | 211 +++++
+ include/uapi/linux/iommufd.h                  |  11 +-
+ include/uapi/linux/kvm.h                      |  11 +-
+ mm/Kconfig                                    |   7 +
+ mm/Makefile                                   |   1 +
+ mm/mem_provider.c                             | 177 ++++
+ samples/Kconfig                               |  17 +
+ samples/Makefile                              |   1 +
+ samples/kvm/Makefile                          |   1 +
+ samples/kvm/gmem_provider.c                   |  67 +-
+ samples/kvm/gmem_provider.h                   |  17 +
+ samples/kvm/mem_provider_sample.c             | 855 ++++++++++++++++++
+ samples/kvm/mem_provider_sample.h             | 135 +++
+ tools/include/uapi/linux/kvm.h                |  11 +-
+ tools/testing/selftests/iommu/iommufd.c       | 119 +++
+ tools/testing/selftests/iommu/iommufd_utils.h |  64 ++
+ tools/testing/selftests/kvm/Makefile.kvm      |   2 +
+ .../testing/selftests/kvm/guest_memfd_test.c  |   6 +
+ .../kvm/x86/gmem_provider_readonly_test.c     | 150 +++
+ .../selftests/kvm/x86/mem_provider_test.c     | 582 ++++++++++++
+ virt/kvm/Kconfig                              |   1 +
+ virt/kvm/guest_memfd.c                        | 286 +++++-
+ 37 files changed, 3531 insertions(+), 100 deletions(-)
+ create mode 100644 include/linux/mem_provider.h
+ create mode 100644 mm/mem_provider.c
+ create mode 100644 samples/kvm/mem_provider_sample.c
+ create mode 100644 samples/kvm/mem_provider_sample.h
+ create mode 100644 tools/testing/selftests/kvm/x86/gmem_provider_readonly_test.c
+ create mode 100644 tools/testing/selftests/kvm/x86/mem_provider_test.c
+
+
+base-commit: 0e35b9b6ec0ffcc5e23cbdec09f5c622ad532b53
+prerequisite-patch-id: 2a0016e90f0690baef841a8c34c07b96e3f1b941
+prerequisite-patch-id: c497c1ff1e9de8e9c470c58b163ccbfce4827ae7
+prerequisite-patch-id: a16b61afd172662bde725e5c12805758f76b89fa
+prerequisite-patch-id: 0ddee6c1b48fa853e6a94f2746340e525477d287
+prerequisite-patch-id: 4dc9a395a2eb73283b20b75e2ba763ec72b2e22d
+prerequisite-patch-id: a9758d7f8f6959dae6ad154902fa1269234dbc3c
+prerequisite-patch-id: 0537bcc3ca5e3bb9b86fe7c99a245a9ff9d67831
+prerequisite-patch-id: d5feb18b6630c99973259804418243d856c37ce7
+prerequisite-patch-id: 2a08a105b6b5d46240a69f5bbf646211d44f8412
+prerequisite-patch-id: 760b34834d5d8dcdf1ae1a09cc6aae267dd7760c
+prerequisite-patch-id: dd94ecc7ae9472c2bf005c9cb1c483994eacd163
+-- 
+2.47.3
+
