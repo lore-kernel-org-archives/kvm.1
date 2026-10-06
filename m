@@ -1,65 +1,65 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A784A4856
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 18:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7CC4A8A23
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 18:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791311574; cv=none; b=dK4S0M+5r7ppKwWueAAFqSvgS8b6ZMfembNDiVlDci5uHOSssAJH0kOZtYqKWVLe+Ocm9PfPC/3aFEZrHMKth3lLaMjXdLFbrijcQTn85m8akcm7VzO6qxZyxQCaRsSYTKD2oaJshT5CpaPRwM2gYDZ5zmuV2I0QvTIAODqL/YU=
+	t=1791311573; cv=none; b=iWNV/N+nvd6uDNxUV9ebT+g2eDvKhYZeOZmI5YWIesS7AVJ2i3vHIBuJs01Z9z//LnvZiqFFFua14sJ6D9KUIJaV9/lfLk8jrmY063O/KizF1WpHyhQtubLOTlyquyh5L5Cm4I1qin0i3IEwQLrDTFDGNz6o0/+MmGhjNWXm9Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791311574; c=relaxed/simple;
-	bh=HR8R4ngbcsA3oGQGVLPcFktLLA3qriwWNlLE9nHXOc4=;
+	s=arc-20240116; t=1791311573; c=relaxed/simple;
+	bh=PZoHwLAcac7MRG6rjhbSovKR0ePeapxARS7+LnV4ZIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbHEziy976lLwmbImrxoXsgdFyRdYosQFkLxq+r0N/B/CQgAHge/0nNQdvRlpgeFlomCD/rSRzf+X9QxrpiiwZpjQtwTsxwTGlu60BSTeR5E5funHUOq2Hv5XPjBJlCRaq7HJRj7ysEJq+NfAQp6NCAWDff65+6gWkG8+FCPvcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=spoOBds4; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version; b=U+A7wx8qhGp1o6jlCtj21yVfJzS3K+/Kd5SvovET5omiVXZEfMlNM04ZffXVEG5wkEwLo02qGfGfRAcU4vZcR2imTuM+NBwDHe7TotdcFp6prd8fmyV/Yrv18As2rHR3Y97aU7rxsYVe207/Yz9sBSS1Xtj2Stm9Ij5zhmtRty8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UQKGwkYZ; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="spoOBds4"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2e8c710847so127272666b.0
-        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 11:32:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UQKGwkYZ"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c315729ad50so134312366b.0
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 11:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791311568; x=1791916368; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791311567; x=1791916367; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=teKgoAnZutiypdvXjRT5Q8SK6RKAQZGpxaEXQB1IAug=;
-        b=spoOBds424KZXnIlATe9XjcRLiINybq3koZapAG8RkVuCARMqX+CCeai+UL/Biz/xF
-         IAd8jh8wPoa/kT1FJojsdNPLEQFoHpY433uF/XBUCfcAkAVHbRlVv3LQfenaJVmgK45I
-         Zm9oOWS73sGKvqe9+zu16rhNokGfZqK2OmCHfGS53Ta/gbULOktrmH0M6nRzteBjfBMj
-         5WkcqZ968DL0VzpWHDGw5HNJByhV6DoVa5psljX+QI9XkZ5m1/JVLi5aLgqNfPO+XNGR
-         ZTjYq4ao1KrzXmixDCGfUdbSsfJNxZqPqYLFmtBOdCpqGR9WiRUFLf4QpQVZdbiC4WaR
-         r96w==
+        bh=X/DDLaBldS6BCqOPBQL7QwFwyovqmKt8FALCheekTNg=;
+        b=UQKGwkYZbU5fWG0fyWPiQNAWLasI++YCp6UogLLx45CAG5x+8CZ6zMLQUArhPmPcfJ
+         jK6L4NFQPIYzGg1D5vPcK9vzKU+uyfaGgRZPlIJeS+PsbVKIZiY+R4Evw/RnDnPUNdrv
+         AJgII3N4gGOk2MwMi3bWAWvQ99tPWI6wpnAKYvV/OPXOK4v8JT0y1QgbYHmoIiWbTO8L
+         xFIYIEG8QmD8lKmRhh0moTUC7ZgAnTu3XGrWKFR8rEd5hfjh5HY8JVSOiPa5tXg7hO26
+         wMLiltQQRXiPVM/izwVBD1s46EQq8KnPdaOzgd6zCzoeK+w/YDPvuwzkfbkz6bgL5lGF
+         CuSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791311568; x=1791916368;
+        d=1e100.net; s=20260707; t=1791311567; x=1791916367;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=teKgoAnZutiypdvXjRT5Q8SK6RKAQZGpxaEXQB1IAug=;
-        b=FbhG6Q3UpfwCucHpIbSZOYesmlSdUY4LbLsesyF5n07EtvmsfjWEg0fNjtvUTqPzIX
-         bA2WTShuBsVA7tAtdSJObMpn4qNpgyc1Xy/4kZXkKHabEIXIcQmm2ptHV/t1beFbycQB
-         e4jscosTpI43qysqr0Ee8kHOXeSax4am2vM5qopbVvK1jSyTKWaignGIgeJAeG+CP2E+
-         /wTs8EXTopXhH/JHm2Gl7Y6V9h9N7vs7lo4bsB9pf777lrxWGyIxXZx81DI+SIN+xSm9
-         p7NYcr0hCPPflBt2QI6fUZ4litLO95eKtzW6FBZMtkj2jj0WT3S/h+WptXcH1rz8/cde
-         Emtg==
-X-Forwarded-Encrypted: i=1; AKwUvBy17Cq2fdjth6L/R/tWdj3cxN1AvVwdyrhvttutj0rVNptifcSGXqwsoL3nrasZnMYYv3k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKnndC8dFPEP3WVr3NLsZuRFj6zXJ74Uy6l/CL77d1I0CMyZqGK
-	7mVinEbOFpaa0W0WwHuM8sKtsQyc94MXX89ubxN3BgFHaKiIGoB6Y4+A
-X-Gm-Gg: AYBFou0oG4VSBi13iYV/0+EEuAQik36zcTWruczVuN84mqDD7g7wnBxC9bgg7hSEQjj
-	IoKmLZsBoRSp7f8TgEaSHelWPSdMimox3FVbGUK6UCkSAuTsHbDnT/bGbq1xY8IHtRsqtb4g9mF
-	A/tbH6nizXuMtoAxr5YlEXlm7QLHaOTUDyVI+E9uSXJ91zTlKas295sfrkP1OUKtV8Wa98ofEtO
-	wNptG3H2c1iYUxtGFEPsnFI0G6K3sfyesw9XKxhhD82XEc30Rvd9NIF7Zfvpb9oxU1jX+hqGTmb
-	ywh28ER7n1EuHcq4dTf9UKQmBd+TBwrHAckFqV8a4FA4RzKaEryfM9mNjti10LKy5wndlwireE2
-	srdyWGkUxWiqMq/+u88iDbNhclrtFh3Dd4wtBLp9/cfwqtCu4TAYULa5xoFtvRPCgH0vMOJ2Eg+
-	qo1J62xC3ymBzrMtPryiQGLTBFZm2by1a5/yHAyCzl+/Ue285bONX7vVn0LEsk5NPpLqZ9w6Ma0
-	RWNl498Oe20y6/52QSXxpdA+jd15BVeJbWVitBIPzg9j6gtMJJ73AdRPujp/5SIIY+4U5oOiyeW
-	ftupMkYT/PTJvNwydtw9Otz12+hgbbGcwXXcIDp2Yxnwng==
-X-Received: by 2002:a17:906:c107:b0:c29:f0a4:a4f8 with SMTP id a640c23a62f3a-c317b4bc0b7mr4286266b.0.1791311568135;
-        Tue, 06 Oct 2026 11:32:48 -0700 (PDT)
+        bh=X/DDLaBldS6BCqOPBQL7QwFwyovqmKt8FALCheekTNg=;
+        b=dVE1tZyjyhrthcHMiIxFCb3zsU4Oh29PtCrmHinZ6BZo4N1Ez/6+M1oEv27C0nO+vy
+         h0rpUcMIJC8/l2Jb+n0Utrle2lz69Jw/tB+y8F7s15MK1doWN/U22i3dJmMy91j54vTI
+         xY0OuGwprj9OPWU7KQxFOHiF9jgmLZDzMQYQ0LNf/ZOGdZO+/TYOLRFCCJMEA2oqW5h5
+         stHNwKnHmaOU5+RCYtSvjBDkVMby9Q6jAIX9LEwadRTLIKXKReGewQD0bjptUv5pZxHq
+         UPZ+qHTwlH+QRj41jFuAuz8gnIv2H2gczwBBFd6R8KmcuMt/cvKr7y8CqEBuuWMem+lJ
+         SVDw==
+X-Forwarded-Encrypted: i=1; AKwUvBx1auMXieZofYmeR/5jTFmTGnqh6uTX1ErOz1vRGDXoF/ePxfK6fESIDYJOHpR9TAyflMI=@vger.kernel.org
+X-Gm-Message-State: AFuF++l4Vn0Oq+wALcQ+OKpKgSkUXInQXB/9vfx/+ap7HGmPRbR+VVwT
+	cZ1uILkzkUDLjhLUu+yeUt7hvRfj+jywKo/PMRNCY9070nKc3ozCxCVn
+X-Gm-Gg: AYBFou3KtBdJt+9yvjRaqW86xpwLhQ9Ca2U+Tmh15gWOUDa/mHTp9aPIv+OfPdMu/8W
+	TOu5va/aeYAl/U8+7FTk4qIZqM65Mvls73WJR0c0V5OXbXPuj/WktmITK33Cm4Sa1ZdFrpNNDdV
+	NG7gtVGZJ9h9qUAXwfI58b8fYudSjURQqQ5/f5v6jlKsqF8KMpiP/e2f8WCi/4q3Z9cXkqJuAJa
+	ZufCsN/yf9WJhqpLKBU/CVx9UeEMpVfBq3Tsa9H0GwZIE0UwNAmvQQDsPXWNiAv3A3g0znxOPay
+	mS9rW/FDVr28syUTaAhkqjjKzhtZi3OspE2KzNYCgGWFtV6h01kisUJfnPAAxjuOmrUDsCzFPff
+	jeHFLqZmYW9AieeYVQEWDX2lRn/HMy4seFENlQX/65lTdHO44ZazrkFlFUaBLHVBifV/UBGBNrl
+	scbDN2NkaBpHo+CRWGso2UUXoIFeplq/wiFpcv3LCCvcqJfaM7FQY/cP9iNcmwgktyXOsSjV7Ya
+	dZ92rLJ3QeC89XCCP02lNcXMlrgC6bgxQf4qiDD74mxQCTnOtadYe+zb9kf0LIxNIltcG+wEaw7
+	IuEFYitdNtUUw/9toxrCIJJl6UTvM42nrks=
+X-Received: by 2002:a17:907:72d3:b0:c2e:4488:b8a3 with SMTP id a640c23a62f3a-c316a0bb639mr232794566b.33.1791311566749;
+        Tue, 06 Oct 2026 11:32:46 -0700 (PDT)
 Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3158260f7bsm221934866b.6.2026.10.06.11.32.46
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3158260f7bsm221934866b.6.2026.10.06.11.32.45
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Oct 2026 11:32:47 -0700 (PDT)
+        Tue, 06 Oct 2026 11:32:46 -0700 (PDT)
 From: Fred Griffoul <griffoul@gmail.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
@@ -102,9 +102,9 @@ Cc: David Woodhouse <dwmw2@infradead.org>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH 7/9] iommufd/selftest: Add a mock memory provider
-Date: Tue,  6 Oct 2026 18:32:33 +0000
-Message-ID: <20261006183235.16576-8-griffoul@gmail.com>
+Subject: [PATCH 6/9] iommufd/selftest: Add mock-domain IOVA queries
+Date: Tue,  6 Oct 2026 18:32:32 +0000
+Message-ID: <20261006183235.16576-7-griffoul@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261006183235.16576-1-griffoul@gmail.com>
 References: <20260720111259.122911-1-dwmw2@infradead.org>
@@ -119,465 +119,182 @@ Content-Transfer-Encoding: 8bit
 
 From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-The provider path of IOMMU_IOAS_MAP_FILE needs a provider to test
-against.
+A test of memory that can be taken back or replaced does not know in
+advance which frame a device reaches. IOMMU_TEST_OP_MD_CHECK_MAP only
+compares against a known buffer.
 
-Add a mock provider whose pages can be made holes, read only, MMIO or
-another shared frame, with a revoke after each change. Test that holes
-stay unmapped, that a revoke changes only its range, that new domains
-see the current state, and that provider pages and dirty tracking
-domains cannot share an IOAS.
+Add MD_CHECK_MAPPED, which checks that a range is fully mapped or fully
+unmapped, and MD_IOVA_TO_PHYS, which returns the frame behind an IOVA,
+or 0 if it is unmapped. Both refuse an IOVA outside the domain's
+aperture.
+
+Both hold domains_rwsem for writing so that a userspace unmap cannot
+free a page-table level during the walk.
 
 Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
 ---
- drivers/iommu/iommufd/iommufd_test.h          |  20 ++
- drivers/iommu/iommufd/selftest.c              | 177 ++++++++++++++++++
- tools/testing/selftests/iommu/iommufd.c       | 119 ++++++++++++
- tools/testing/selftests/iommu/iommufd_utils.h |  64 +++++++
- 4 files changed, 380 insertions(+)
+ drivers/iommu/iommufd/iommufd_test.h |  16 ++++
+ drivers/iommu/iommufd/selftest.c     | 109 +++++++++++++++++++++++++++
+ 2 files changed, 125 insertions(+)
 
 diff --git a/drivers/iommu/iommufd/iommufd_test.h b/drivers/iommu/iommufd/iommufd_test.h
-index 28fd9c43edc4..5e5023dc8070 100644
+index 52b78cbcc920..28fd9c43edc4 100644
 --- a/drivers/iommu/iommufd/iommufd_test.h
 +++ b/drivers/iommu/iommufd/iommufd_test.h
-@@ -33,6 +33,17 @@ enum {
+@@ -31,6 +31,8 @@ enum {
+ 	IOMMU_TEST_OP_PASID_CHECK_HWPT,
+ 	IOMMU_TEST_OP_DMABUF_GET,
  	IOMMU_TEST_OP_DMABUF_REVOKE,
- 	IOMMU_TEST_OP_MD_CHECK_MAPPED,
- 	IOMMU_TEST_OP_MD_IOVA_TO_PHYS,
-+	IOMMU_TEST_OP_PROVIDER_GET,
-+	IOMMU_TEST_OP_PROVIDER_SET,
-+};
-+
-+/* Page states of the mock memory provider, IOMMU_TEST_OP_PROVIDER_SET */
-+enum {
-+	MOCK_PROVIDER_BACKED = 0,
-+	MOCK_PROVIDER_HOLE,
-+	MOCK_PROVIDER_READONLY,
-+	MOCK_PROVIDER_OTHER,
-+	MOCK_PROVIDER_MMIO,
++	IOMMU_TEST_OP_MD_CHECK_MAPPED,
++	IOMMU_TEST_OP_MD_IOVA_TO_PHYS,
  };
  
  enum {
-@@ -209,6 +220,15 @@ struct iommu_test_cmd {
- 			__aligned_u64 iova;
- 			__aligned_u64 out_phys;	/* 0 if unmapped */
- 		} iova_to_phys;
+@@ -193,6 +195,20 @@ struct iommu_test_cmd {
+ 			__s32 dmabuf_fd;
+ 			__u32 revoked;
+ 		} dmabuf_revoke;
 +		struct {
-+			__u32 length;
-+		} provider_get;
-+		struct {
-+			__s32 fd;
-+			__u32 state;
-+			__aligned_u64 offset;
++			/*
++			 * 1: every page in [iova, iova+length) must be mapped;
++			 * 0: none of them may be. Mixed is an error.
++			 */
++			__u32 mapped;
++			__u32 __reserved;
++			__aligned_u64 iova;
 +			__aligned_u64 length;
-+		} provider_set;
++		} check_mapped;
++		struct {
++			__aligned_u64 iova;
++			__aligned_u64 out_phys;	/* 0 if unmapped */
++		} iova_to_phys;
  	};
  	__u32 last;
  };
 diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
-index 1f5cd2d00fda..270c41e6dd77 100644
+index af07c642a526..1f5cd2d00fda 100644
 --- a/drivers/iommu/iommufd/selftest.c
 +++ b/drivers/iommu/iommufd/selftest.c
-@@ -10,6 +10,7 @@
- #include <linux/fault-inject.h>
- #include <linux/file.h>
- #include <linux/iommu.h>
-+#include <linux/mem_provider.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/xarray.h>
-@@ -2132,6 +2133,174 @@ static int iommufd_test_md_check_mapped(struct iommufd_ucmd *ucmd,
+@@ -2031,6 +2031,107 @@ static int iommufd_test_dmabuf_get(struct iommufd_ucmd *ucmd,
  	return rc;
  }
  
 +/*
-+ * A mock memory provider.  Each page of the file is backed by its own page of
-+ * RAM, or is a hole, read only, the one page that every page in the OTHER
-+ * state shares, or reported as MMIO.
-+ * IOMMU_TEST_OP_PROVIDER_SET changes the state of a range and revokes it.
++ * True if [iova, iova + length) lies inside the domain's aperture.  Outside
++ * it the page table returns an error code from iova_to_phys(), not 0.
 + */
-+struct iommufd_test_provider {
-+	struct mem_provider_file mpf;
-+	size_t npages;
-+	struct page **pages;
-+	struct page *other;
-+	u8 *state;
-+};
-+
-+static void iommufd_test_provider_free(struct iommufd_test_provider *tp)
++static bool mock_domain_covers(struct mock_iommu_domain *mock,
++			       unsigned long iova, size_t length)
 +{
-+	size_t i;
++	struct iommu_domain_geometry *geo = &mock->domain.geometry;
++	unsigned long last;
 +
-+	for (i = 0; i != tp->npages; i++)
-+		if (tp->pages[i])
-+			__free_page(tp->pages[i]);
-+	if (tp->other)
-+		__free_page(tp->other);
-+	kfree(tp->state);
-+	kfree(tp->pages);
-+	kfree(tp);
++	if (check_add_overflow(iova, length - 1, &last))
++		return false;
++	return iova >= geo->aperture_start && last <= geo->aperture_end;
 +}
 +
-+static int iommufd_test_provider_release(struct inode *inode,
-+					 struct file *file)
++/*
++ * iova_to_phys() walks the page table, so it must not run while an unmap
++ * frees a level of it.  A userspace unmap holds the IOAS domains_rwsem for
++ * reading while it unmaps the domains, so holding it for writing keeps such
++ * unmaps away.  A memory provider or dma-buf revoke unmaps under its pages
++ * mutex only, so tests must not run these queries while a revoke of the
++ * range is in progress.
++ */
++static struct rw_semaphore *
++mock_domain_unmap_lock(struct iommufd_hw_pagetable *hwpt)
 +{
-+	iommufd_test_provider_free(file->private_data);
-+	return 0;
++	return &to_hwpt_paging(hwpt)->ioas->iopt.domains_rwsem;
 +}
 +
-+static struct mem_provider_file *
-+iommufd_test_provider_attach(struct file *file, loff_t size)
++/*
++ * Report the physical address the mock domain resolves @iova to, or 0 if
++ * it is unmapped.  Lets a test check that two IOVAs share one frame, or that
++ * an IOVA moved to another frame, without knowing the frames in advance.
++ */
++static int iommufd_test_md_iova_to_phys(struct iommufd_ucmd *ucmd,
++					unsigned int mockpt_id,
++					unsigned long iova)
 +{
-+	struct iommufd_test_provider *tp = file->private_data;
++	struct iommu_test_cmd *cmd = ucmd->cmd;
++	struct iommufd_hw_pagetable *hwpt;
++	struct mock_iommu_domain *mock;
++	unsigned int page_size;
++	int rc;
 +
-+	if (size > (loff_t)tp->npages * PAGE_SIZE)
-+		return ERR_PTR(-EINVAL);
-+	return &tp->mpf;
-+}
++	hwpt = get_md_pagetable(ucmd, mockpt_id, &mock);
++	if (IS_ERR(hwpt))
++		return PTR_ERR(hwpt);
 +
-+static void iommufd_test_provider_detach(struct mem_provider_file *mpf)
-+{
-+}
-+
-+static int iommufd_test_provider_get_page(struct mem_provider_file *mpf,
-+					  pgoff_t index, unsigned long *pfn,
-+					  int *max_order, u32 *attrs)
-+{
-+	struct iommufd_test_provider *tp =
-+		container_of(mpf, struct iommufd_test_provider, mpf);
-+
-+	*max_order = 0;
-+	switch (READ_ONCE(tp->state[index])) {
-+	case MOCK_PROVIDER_HOLE:
-+		return -EFAULT;
-+	case MOCK_PROVIDER_READONLY:
-+		*attrs = MEM_PROVIDER_ATTR_READONLY;
-+		break;
-+	case MOCK_PROVIDER_OTHER:
-+		*pfn = page_to_pfn(tp->other);
-+		return 0;
-+	case MOCK_PROVIDER_MMIO:
-+		*attrs = MEM_PROVIDER_TYPE_MMIO;
-+		break;
++	page_size = 1 << __ffs(mock->domain.pgsize_bitmap);
++	if (iova % page_size || !mock_domain_covers(mock, iova, page_size)) {
++		rc = -EINVAL;
++		goto out_put;
 +	}
-+	*pfn = page_to_pfn(tp->pages[index]);
-+	return 0;
-+}
-+
-+static const struct mem_provider_ops iommufd_test_provider_ops = {
-+	.attach = iommufd_test_provider_attach,
-+	.detach = iommufd_test_provider_detach,
-+	.get_page = iommufd_test_provider_get_page,
-+};
-+
-+static const struct mem_provider_fops iommufd_test_provider_fops = {
-+	.fops = {
-+		.owner = THIS_MODULE,
-+		.fop_flags = FOP_MEM_PROVIDER,
-+		.release = iommufd_test_provider_release,
-+	},
-+	.ops = &iommufd_test_provider_ops,
-+};
-+
-+static int iommufd_test_provider_get(struct iommufd_ucmd *ucmd, size_t len)
-+{
-+	struct iommufd_test_provider *tp;
-+	struct file *file;
-+	size_t i;
-+	int fd, rc;
-+
-+	len = ALIGN(len, PAGE_SIZE);
-+	if (len == 0 || len > PAGE_SIZE * 512)
-+		return -EINVAL;
-+
-+	tp = kzalloc_obj(*tp);
-+	if (!tp)
-+		return -ENOMEM;
-+	mem_provider_file_init(&tp->mpf);
-+	tp->npages = len / PAGE_SIZE;
-+	tp->pages = kcalloc(tp->npages, sizeof(*tp->pages), GFP_KERNEL);
-+	tp->state = kcalloc(tp->npages, sizeof(*tp->state), GFP_KERNEL);
-+	tp->other = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+	if (!tp->pages || !tp->state || !tp->other) {
-+		rc = -ENOMEM;
-+		goto err_free;
-+	}
-+	for (i = 0; i != tp->npages; i++) {
-+		tp->pages[i] = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+		if (!tp->pages[i]) {
-+			rc = -ENOMEM;
-+			goto err_free;
-+		}
-+	}
-+
-+	fd = get_unused_fd_flags(O_CLOEXEC);
-+	if (fd < 0) {
-+		rc = fd;
-+		goto err_free;
-+	}
-+	file = anon_inode_getfile("[iommufd-test-provider]",
-+				  &iommufd_test_provider_fops.fops, tp, O_RDWR);
-+	if (IS_ERR(file)) {
-+		put_unused_fd(fd);
-+		rc = PTR_ERR(file);
-+		goto err_free;
-+	}
-+	fd_install(fd, file);
-+	return fd;
-+
-+err_free:
-+	iommufd_test_provider_free(tp);
++	down_write(mock_domain_unmap_lock(hwpt));
++	cmd->iova_to_phys.out_phys =
++		mock->domain.ops->iova_to_phys(&mock->domain, iova);
++	up_write(mock_domain_unmap_lock(hwpt));
++	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
++out_put:
++	iommufd_put_object(ucmd->ictx, &hwpt->obj);
 +	return rc;
 +}
 +
-+static int iommufd_test_provider_set(struct iommufd_ucmd *ucmd, int fd,
-+				     unsigned int state, u64 offset, u64 length)
++static int iommufd_test_md_check_mapped(struct iommufd_ucmd *ucmd,
++					unsigned int mockpt_id,
++					unsigned long iova, size_t length,
++					bool mapped)
 +{
-+	struct iommufd_test_provider *tp;
-+	u64 end;
-+	size_t i;
++	struct iommufd_hw_pagetable *hwpt;
++	struct mock_iommu_domain *mock;
++	unsigned int page_size;
++	int rc = 0;
 +
-+	if (state > MOCK_PROVIDER_MMIO)
-+		return -EINVAL;
++	hwpt = get_md_pagetable(ucmd, mockpt_id, &mock);
++	if (IS_ERR(hwpt))
++		return PTR_ERR(hwpt);
 +
-+	CLASS(fd, f)(fd);
-+	if (fd_empty(f))
-+		return -EBADF;
-+	if (fd_file(f)->f_op != &iommufd_test_provider_fops.fops)
-+		return -EINVAL;
-+	tp = fd_file(f)->private_data;
++	page_size = 1 << __ffs(mock->domain.pgsize_bitmap);
++	if (iova % page_size || length % page_size || !length ||
++	    !mock_domain_covers(mock, iova, length)) {
++		rc = -EINVAL;
++		goto out_put;
++	}
 +
-+	if (!length || check_add_overflow(offset, length, &end) ||
-+	    !PAGE_ALIGNED(offset) || !PAGE_ALIGNED(length) ||
-+	    end > (u64)tp->npages * PAGE_SIZE)
-+		return -EINVAL;
++	down_write(mock_domain_unmap_lock(hwpt));
++	for (; length; length -= page_size, iova += page_size) {
++		bool is_mapped =
++			mock->domain.ops->iova_to_phys(&mock->domain, iova) != 0;
 +
-+	for (i = offset / PAGE_SIZE; i != end / PAGE_SIZE; i++)
-+		WRITE_ONCE(tp->state[i], state);
-+	mem_provider_revoke(&tp->mpf, offset, length);
-+	return 0;
++		if (is_mapped != mapped) {
++			rc = -ENOENT;
++			break;
++		}
++	}
++	up_write(mock_domain_unmap_lock(hwpt));
++
++out_put:
++	iommufd_put_object(ucmd->ictx, &hwpt->obj);
++	return rc;
 +}
 +
  static int iommufd_test_dmabuf_revoke(struct iommufd_ucmd *ucmd, int fd,
  				      bool revoked)
  {
-@@ -2252,6 +2421,14 @@ int iommufd_test(struct iommufd_ucmd *ucmd)
- 	case IOMMU_TEST_OP_MD_IOVA_TO_PHYS:
- 		return iommufd_test_md_iova_to_phys(ucmd, cmd->id,
- 						    cmd->iova_to_phys.iova);
-+	case IOMMU_TEST_OP_PROVIDER_GET:
-+		return iommufd_test_provider_get(ucmd,
-+						 cmd->provider_get.length);
-+	case IOMMU_TEST_OP_PROVIDER_SET:
-+		return iommufd_test_provider_set(ucmd, cmd->provider_set.fd,
-+						 cmd->provider_set.state,
-+						 cmd->provider_set.offset,
-+						 cmd->provider_set.length);
+@@ -2143,6 +2244,14 @@ int iommufd_test(struct iommufd_ucmd *ucmd)
+ 		return iommufd_test_dmabuf_revoke(ucmd,
+ 						  cmd->dmabuf_revoke.dmabuf_fd,
+ 						  cmd->dmabuf_revoke.revoked);
++	case IOMMU_TEST_OP_MD_CHECK_MAPPED:
++		return iommufd_test_md_check_mapped(ucmd, cmd->id,
++						    cmd->check_mapped.iova,
++						    cmd->check_mapped.length,
++						    cmd->check_mapped.mapped);
++	case IOMMU_TEST_OP_MD_IOVA_TO_PHYS:
++		return iommufd_test_md_iova_to_phys(ucmd, cmd->id,
++						    cmd->iova_to_phys.iova);
  	default:
  		return -EOPNOTSUPP;
  	}
-diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
-index d44b34b05757..ebf81ca3af18 100644
---- a/tools/testing/selftests/iommu/iommufd.c
-+++ b/tools/testing/selftests/iommu/iommufd.c
-@@ -1627,6 +1627,125 @@ TEST_F(iommufd_ioas, dmabuf_revoke)
- 	close(dfd);
- }
- 
-+TEST_F(iommufd_ioas, provider_simple)
-+{
-+	size_t buf_size = PAGE_SIZE * 4;
-+	__u64 iova;
-+	int pfd;
-+
-+	test_cmd_get_provider(buf_size, &pfd);
-+	test_err_ioctl_ioas_map_file(EINVAL, pfd, 0, 0, &iova);
-+	test_err_ioctl_ioas_map_file(EINVAL, pfd, 0, buf_size + PAGE_SIZE,
-+				     &iova);
-+	test_err_ioctl_ioas_map_file(EINVAL, pfd, 1, PAGE_SIZE, &iova);
-+	test_ioctl_ioas_map_file(pfd, 0, buf_size, &iova);
-+	if (variant->mock_domains)
-+		test_cmd_md_check_mapped(self->hwpt_id, iova, buf_size, true);
-+
-+	/* The mapping keeps the provider file alive */
-+	close(pfd);
-+	if (variant->mock_domains)
-+		test_cmd_md_check_mapped(self->hwpt_id, iova, buf_size, true);
-+	test_ioctl_ioas_unmap(iova, buf_size);
-+}
-+
-+TEST_F(iommufd_ioas, provider_revoke)
-+{
-+	size_t buf_size = PAGE_SIZE * 8;
-+	__u64 phys0, phys1;
-+	__u32 hwpt_id;
-+	__u64 iova;
-+	int pfd;
-+
-+	if (!variant->mock_domains)
-+		SKIP(return, "Needs a mock domain");
-+
-+	test_cmd_get_provider(buf_size, &pfd);
-+
-+	/* A page that is a hole when the file is mapped stays unmapped */
-+	test_cmd_provider_set(pfd, MOCK_PROVIDER_HOLE, PAGE_SIZE, PAGE_SIZE);
-+	test_ioctl_ioas_map_file(pfd, 0, buf_size, &iova);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova, PAGE_SIZE, true);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova + PAGE_SIZE, PAGE_SIZE,
-+				 false);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova + 2 * PAGE_SIZE,
-+				 buf_size - 2 * PAGE_SIZE, true);
-+
-+	/* Give the page back */
-+	test_cmd_provider_set(pfd, MOCK_PROVIDER_BACKED, PAGE_SIZE, PAGE_SIZE);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova, buf_size, true);
-+
-+	/* Take back the middle, and only the middle goes */
-+	test_cmd_provider_set(pfd, MOCK_PROVIDER_HOLE, 2 * PAGE_SIZE,
-+			      4 * PAGE_SIZE);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova, 2 * PAGE_SIZE, true);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova + 2 * PAGE_SIZE,
-+				 4 * PAGE_SIZE, false);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova + 6 * PAGE_SIZE,
-+				 2 * PAGE_SIZE, true);
-+
-+	/* A domain added now sees the same holes */
-+	test_cmd_hwpt_alloc(self->device_id, self->ioas_id, 0, &hwpt_id);
-+	test_cmd_md_check_mapped(hwpt_id, iova, 2 * PAGE_SIZE, true);
-+	test_cmd_md_check_mapped(hwpt_id, iova + 2 * PAGE_SIZE, 4 * PAGE_SIZE,
-+				 false);
-+	test_cmd_md_check_mapped(hwpt_id, iova + 6 * PAGE_SIZE, 2 * PAGE_SIZE,
-+				 true);
-+	test_ioctl_destroy(hwpt_id);
-+
-+	/* Put the same other frame behind two pages */
-+	phys0 = test_cmd_md_iova_to_phys(self->hwpt_id, iova);
-+	test_cmd_provider_set(pfd, MOCK_PROVIDER_OTHER, 0, 2 * PAGE_SIZE);
-+	phys1 = test_cmd_md_iova_to_phys(self->hwpt_id, iova);
-+	ASSERT_NE(0, phys1);
-+	ASSERT_NE(phys0, phys1);
-+	ASSERT_EQ(phys1,
-+		  test_cmd_md_iova_to_phys(self->hwpt_id, iova + PAGE_SIZE));
-+
-+	/* Read-only and MMIO pages stay mapped */
-+	test_cmd_provider_set(pfd, MOCK_PROVIDER_READONLY, 0, buf_size / 2);
-+	test_cmd_provider_set(pfd, MOCK_PROVIDER_MMIO, buf_size / 2,
-+			      buf_size / 2);
-+	test_cmd_md_check_mapped(self->hwpt_id, iova, buf_size, true);
-+
-+	/* A change past the end of the file is refused */
-+	EXPECT_ERRNO(EINVAL, _test_cmd_provider_set(self->fd, pfd,
-+						    MOCK_PROVIDER_HOLE,
-+						    buf_size, PAGE_SIZE));
-+
-+	test_ioctl_ioas_unmap(iova, buf_size);
-+	close(pfd);
-+}
-+
-+TEST_F(iommufd_ioas, provider_dirty_tracking)
-+{
-+	size_t buf_size = PAGE_SIZE * 4;
-+	__u32 hwpt_id;
-+	__u64 iova;
-+	int pfd;
-+
-+	if (!variant->mock_domains)
-+		SKIP(return, "Needs a mock domain");
-+
-+	test_cmd_get_provider(buf_size, &pfd);
-+
-+	/* No dirty tracking domain over provider pages ... */
-+	test_ioctl_ioas_map_file(pfd, 0, buf_size, &iova);
-+	test_err_hwpt_alloc(EOPNOTSUPP, self->device_id, self->ioas_id,
-+			    IOMMU_HWPT_ALLOC_DIRTY_TRACKING, &hwpt_id);
-+	test_ioctl_ioas_unmap(iova, buf_size);
-+
-+	/* ... and no provider pages under a dirty tracking domain. */
-+	test_cmd_hwpt_alloc(self->device_id, self->ioas_id,
-+			    IOMMU_HWPT_ALLOC_DIRTY_TRACKING, &hwpt_id);
-+	test_err_ioctl_ioas_map_file(EOPNOTSUPP, pfd, 0, buf_size, &iova);
-+	test_ioctl_destroy(hwpt_id);
-+
-+	test_ioctl_ioas_map_file(pfd, 0, buf_size, &iova);
-+	test_ioctl_ioas_unmap(iova, buf_size);
-+	close(pfd);
-+}
-+
- FIXTURE(iommufd_mock_domain)
- {
- 	int fd;
-diff --git a/tools/testing/selftests/iommu/iommufd_utils.h b/tools/testing/selftests/iommu/iommufd_utils.h
-index b4928cbd4d9c..d1bd0a283db2 100644
---- a/tools/testing/selftests/iommu/iommufd_utils.h
-+++ b/tools/testing/selftests/iommu/iommufd_utils.h
-@@ -593,6 +593,70 @@ static int _test_cmd_revoke_dmabuf(int fd, int dmabuf_fd, bool revoked)
- #define test_cmd_revoke_dmabuf(dmabuf_fd, revoke) \
- 	ASSERT_EQ(0, _test_cmd_revoke_dmabuf(self->fd, dmabuf_fd, revoke))
- 
-+static int _test_cmd_get_provider(int fd, size_t len, int *out_fd)
-+{
-+	struct iommu_test_cmd cmd = {
-+		.size = sizeof(cmd),
-+		.op = IOMMU_TEST_OP_PROVIDER_GET,
-+		.provider_get = { .length = len },
-+	};
-+
-+	*out_fd = ioctl(fd, IOMMU_TEST_CMD, &cmd);
-+	if (*out_fd < 0)
-+		return -1;
-+	return 0;
-+}
-+#define test_cmd_get_provider(len, out_fd) \
-+	ASSERT_EQ(0, _test_cmd_get_provider(self->fd, len, out_fd))
-+
-+static int _test_cmd_provider_set(int fd, int pfd, unsigned int state,
-+				  __u64 offset, __u64 length)
-+{
-+	struct iommu_test_cmd cmd = {
-+		.size = sizeof(cmd),
-+		.op = IOMMU_TEST_OP_PROVIDER_SET,
-+		.provider_set = { .fd = pfd, .state = state,
-+				  .offset = offset, .length = length },
-+	};
-+
-+	return ioctl(fd, IOMMU_TEST_CMD, &cmd);
-+}
-+#define test_cmd_provider_set(pfd, state, offset, length) \
-+	ASSERT_EQ(0, _test_cmd_provider_set(self->fd, pfd, state, offset, length))
-+
-+static int _test_cmd_md_check_mapped(int fd, __u32 hwpt_id, __u64 iova,
-+				     __u64 length, bool mapped)
-+{
-+	struct iommu_test_cmd cmd = {
-+		.size = sizeof(cmd),
-+		.op = IOMMU_TEST_OP_MD_CHECK_MAPPED,
-+		.id = hwpt_id,
-+		.check_mapped = { .mapped = mapped, .iova = iova,
-+				  .length = length },
-+	};
-+
-+	return ioctl(fd, IOMMU_TEST_CMD, &cmd);
-+}
-+#define test_cmd_md_check_mapped(hwpt_id, iova, length, mapped)		\
-+	ASSERT_EQ(0, _test_cmd_md_check_mapped(self->fd, hwpt_id, iova,	\
-+					       length, mapped))
-+
-+static __u64 _test_cmd_md_iova_to_phys(int fd, __u32 hwpt_id, __u64 iova)
-+{
-+	struct iommu_test_cmd cmd = {
-+		.size = sizeof(cmd),
-+		.op = IOMMU_TEST_OP_MD_IOVA_TO_PHYS,
-+		.id = hwpt_id,
-+		.iova_to_phys = { .iova = iova },
-+	};
-+
-+	if (ioctl(fd, IOMMU_TEST_CMD, &cmd))
-+		return -1;
-+	return cmd.iova_to_phys.out_phys;
-+}
-+#define test_cmd_md_iova_to_phys(hwpt_id, iova) \
-+	_test_cmd_md_iova_to_phys(self->fd, hwpt_id, iova)
-+
- static int _test_ioctl_destroy(int fd, unsigned int id)
- {
- 	struct iommu_destroy cmd = {
