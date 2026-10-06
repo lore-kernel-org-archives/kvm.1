@@ -1,277 +1,177 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4818A3A63EF
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 07:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0303CDBBD
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 08:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791270927; cv=none; b=AhWx1EHbFhUFrAN9WGIAU4zn5EgQ8Op5k/ZklExGv1gffp1vCEU9xNr3iex1OrTiDusLMTku6wAjPgyDaE/oP7EcIohr0oU/qmgUrqp9HpuBTd39LuuiZ+5dDo3qYOSijSCf4pgx+lEFItpZsy4ybcxOLUliobEHVIQjIGWeTKA=
+	t=1791273899; cv=none; b=q5POFSWQ+dtlmlV2IF9UmSjixGhQgqsm+/IrCmAn2YAJ1eMe+pq2n+aRjLQhUM419xet3JPUFSwE1DIab013h6EJ3zJ7M490Hdi49OpkMM0WtujhIy+700h3WNrdqkqpROuyKlnhc3iUs3HDD0pCsFknOw59aYSii7AhV5Kb4jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791270927; c=relaxed/simple;
-	bh=o8zP0pmVKJHK436lt+gwavyyFKfoMnYRsY7gSDGk9mQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VsrXaukwNysuDSiPW15iEfe7I4Em1BEJaHVKb9asf6xiDeFMEGmcyvY1Xgw+Je3HkUdrW/jsRu/VEgGby79Rp2CM634lgFILzn8eDKOn/r6/1O2zUcQx2j3gQc326J5kRMgPzpMxq21FWQcmGkEEPX9T9CzNcv2xGnsUqiEQ+vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r4L3sxuj; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1791273899; c=relaxed/simple;
+	bh=M6drL/u6yWhMUVVk1gO9J8VEeaZKbIbpr3T31bltfNI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=D7BIZNmq+1iptscGu6JR21T4D8T3wrp8A78uPE+Fke21qbG4pnunHrGAyGzcEKQBnFJ6Ir63fTE9YWfyw1OAXa4ts8KV5zvhXtrKCaQ+W7/JtoEMKJ3cr9+40JHvoKnK1+8otWG/wUfxdfmE1FsuRUPQPEnxniuLOHAGbH4iK6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CynL9t94; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r4L3sxuj"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a8041a532eso1620998a91.3
-        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 00:15:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791270922; x=1791875722; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AkjMXQJP19zpOzNKOeXflQoWTgmBDI+ZMIE8jzjAz3Q=;
-        b=r4L3sxuj6Bvc+2GOmTlQZHbA9CgUna5v4JGsTy31RUMZLVQo5OqHULR8rRC76IOB+t
-         VH0vjwbeAzjxOTJ1X3gY0tIRqd4VwhRFeaRaHq1DWeslcHm6V5pVMLTZsGTnxXxc24YK
-         qS7qiIqm4uneGhbKsIQrHe8uawQazXMWPSl/W0/BOpxv3FB0iXur9axS8BBxjOIE6ebb
-         fSA1dMIzM426G/f2kxnuWdZ05LRvbjL34RGhl7zSlUhULDMPm0Y8HbG/Hp0EGF84Obl9
-         O+Z5c+HyxYPN8hNo0ddn/0I475OjlTllPzzZpDJmVmn+jkd7mvml2VOGsQLYzDSzTkDm
-         4XcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791270922; x=1791875722;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AkjMXQJP19zpOzNKOeXflQoWTgmBDI+ZMIE8jzjAz3Q=;
-        b=pCGNWEMxkSmSg+xZBHAFmPXntkBQl0RQfLx7fJ+y5wKorsKMclZvsjq+OR+SS1BkdY
-         lvWlHWD/TjzQnhIjlxS4sdDFhYtIpv5f+wQURuUohMqNxbR/qjTbzVdqGtT9cocfeRu1
-         nr7txLVoozZmvh8vPvsns2SR/cpSWO4ue6WytDPn+dev+zv6GeWl8hZ53rGAdRxjISP4
-         luJdI63A09fIzSkbZ7qZBD5AfkIokOhj9d2+LBZFXQUs4Ob0cYZj7GcONftVIJrAWij9
-         dRna7sWLvsv6TgrFSJtsy+QuieCfCL2AT8AgoXCrC7ZMAXbfK43ii6MZq5oKq+lHoUmR
-         Twjg==
-X-Gm-Message-State: AFq9FYI48tIErRq4RZzpHmk8Tgz5p708cYjo0yfuxhlJLK1ZIGmDI87y
-	Omw7q5/YXuTd83TPY13i0b3B7T6L1kllwHXXqu2PN3wVL+8aIilRQPRCHfYK4r9cP8+C8Gl9uBo
-	isHwUhg==
-X-Received: from pgbci11.prod.google.com ([2002:a05:6a02:200b:b0:cc7:9970:4594])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580e:b0:3a8:1745:6bfe
- with SMTP id 98e67ed59e1d1-3a817456d8amr3834023a91.47.1791270921549; Tue, 06
- Oct 2026 00:15:21 -0700 (PDT)
-Date: Tue, 6 Oct 2026 00:15:20 -0700
-In-Reply-To: <20260428133524.3628482-3-imammedo@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CynL9t94"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791273893;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qp2lJL9snYnEKuT235PoTU9jnDR3ji5fB4b56J7+nvA=;
+	b=CynL9t94b3GxrEDfZh7VUYAn3j8UmgW6EmBlrITp6T5gbune99b+PzNcgX1m/IB/50p+Qq
+	USQoUwXY9Cts5xvGU27f3o2GSaYIASxMWiECxQvE1DCySPQPqfax4US4Og7/4ba801FLhz
+	qvYRTvfopTgHAXIJqT68OpLShCdQVX8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-255-YdLhlQb2PL2DJIgwqiN7Eg-1; Tue,
+ 06 Oct 2026 04:04:49 -0400
+X-MC-Unique: YdLhlQb2PL2DJIgwqiN7Eg-1
+X-Mimecast-MFC-AGG-ID: YdLhlQb2PL2DJIgwqiN7Eg_1791273888
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 174EC184B39D;
+	Tue,  6 Oct 2026 08:04:48 +0000 (UTC)
+Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36BBB1956042;
+	Tue,  6 Oct 2026 08:04:45 +0000 (UTC)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Mushahid Hussain <hmushi@amazon.co.uk>, qemu-devel@nongnu.org,
+ linux-hyperv@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, kvm@vger.kernel.org, nh-open-source@amazon.com,
+ mushi.shar@gmail.com, Michael Kelley <mhkelley58@gmail.com>
+Subject: Re: [PATCH] i386: Hyper-V partition time restore feature
+In-Reply-To: <20261005194057.10910-1-hmushi@amazon.co.uk>
+References: <20261005194057.10910-1-hmushi@amazon.co.uk>
+Date: Tue, 06 Oct 2026 10:04:42 +0200
+Message-ID: <kupqzi35k6d.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260428133524.3628482-1-imammedo@redhat.com> <20260428133524.3628482-3-imammedo@redhat.com>
-Message-ID: <asSgCLgeSCKh33_n@google.com>
-Subject: Re: [kvm-unit-tests PATCH 2/2] x86/apic: add retry logic to test_apic_change_mode
-From: Sean Christopherson <seanjc@google.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Tue, Apr 28, 2026, Igor Mammedov wrote:
-> The APIC timer runs at wall clock time under KVM. If vCPU is stalled for
-> long enough, timer can expire before the guest reads TMCCT or tick well
-> past expected values, causing various false test failures [1].
-> 
-> Add retry attempts with increasing timer period (10ms, 60ms, 700ms)
-> if any test fails, to handle spurious failures due to vCPU stalls.
-> 
-> 1) Failures we sometimes observe in CI are:
->   "FAIL: TMCCT should have a non-zero value"
->   "FAIL: TMCCT should be reset to the initial-count"
->   "FAIL: TMCCT should not be reset to TMICT value"
-> Seen on both Intel and AMD hosts.
-> 
-> PS:
-> on most test runs, test completes fine on the 1st iteration.
-> The patch would affect only failure path which will be slowed down
-> due to retries but still fail if there is a bug with benefit of
-> getting rid of false positives caused by vCPU stalls.
-> 
-> PS2:
-> Number of tries and tmict delta comes from analyzing vcpu stalls
-> on heavily overcommited Haswell host with test being bounced between
-> 2 sockets.
-> Typically 2nd iteration (60ms) is enough to get rid of
-> false positives.
+Mushahid Hussain <hmushi@amazon.co.uk> writes:
 
-Blech.  I would rather rework the testcases to simply not be flaky.  I don't see
-any value in waiting for the TMCCT to be half of TMICT; just validate that it
-counts down across switches, and that it can wrap in PERIODIC but not in ONESHOT.
-We have a KVM selftest to validate the timer counts at the correct rate, so just
-validate the core functionality here.
+> A nested Hyper-V that sees the frequency MSRs lets L0 own the
+> partition reference time. After a resume from hibernation it issues
+> HvCallRestorePartitionTime with the TSC and the reference counter it
+> saved. Hyper-V offers hibernation to its root partition only when L0
+> advertises CPUID 0x40000004 EAX bit 20 (RestoreTimeOnResume).
+>
+> Add 'hv-restore-time-on-resume' for the bit. It requires
+> 'hv-frequencies'. KVM reports the bit in KVM_GET_SUPPORTED_HV_CPUID
+> when it handles the hypercall.
+>
+> KVM side: https://lore.kernel.org/kvm/20261005192431.87317-4-hmushi@amazon.co.uk/
+>
+> The TLFS marks the bit as reserved. The name comes from Microsoft's
+> hvdef crate.
 
-E.g. roughly something like this? 
+This won't be the first time we use side channels to implement Hyper-V
+features in KVM/QEMU but it's certainly better when feature bits are
+documented and thus backwards compatible.
 
-diff --git a/x86/apic.c b/x86/apic.c
-index ed8be25a..1fe6877d 100644
---- a/x86/apic.c
-+++ b/x86/apic.c
-@@ -532,37 +532,6 @@ static void test_physical_broadcast(void)
- 	report(broadcast_received(ncpus), "APIC physical broadcast shorthand");
- }
- 
--static void wait_until_tmcct_common(uint32_t initial_count, bool stop_when_half, bool should_wrap_around)
--{
--	uint32_t tmcct = apic_read(APIC_TMCCT);
--
--	if (tmcct) {
--		while (tmcct > (initial_count / 2))
--			tmcct = apic_read(APIC_TMCCT);
--
--		if ( stop_when_half )
--			return;
--
--		/* Wait until the counter reach 0 or wrap-around */
--		while ( tmcct <= (initial_count / 2) && tmcct > 0 )
--			tmcct = apic_read(APIC_TMCCT);
--
--		/* Wait specifically for wrap around to skip 0 TMCCR if we were asked to */
--		while (should_wrap_around && !tmcct)
--			tmcct = apic_read(APIC_TMCCT);
--	}
--}
--
--static void wait_until_tmcct_is_zero(uint32_t initial_count, bool stop_when_half)
--{
--	return wait_until_tmcct_common(initial_count, stop_when_half, false);
--}
--
--static void wait_until_tmcct_wrap_around(uint32_t initial_count, bool stop_when_half)
--{
--	return wait_until_tmcct_common(initial_count, stop_when_half, true);
--}
--
- static inline void apic_change_mode(unsigned long new_mode)
- {
- 	uint32_t lvtt;
-@@ -576,64 +545,87 @@ static inline void apic_change_mode(unsigned long new_mode)
- 			    lvtt & APIC_LVT_TIMER_MASK, new_mode);
- }
- 
-+static void check_apic_tmcct(unsigned long mode, uint32_t *tmict)
-+{
-+	/*
-+	 * Note, this also covers the case where the timer expired in one-shot
-+	 * mode, i.e. if tmcct0 == 0.
-+	 */
-+	if (tmcct[1] > tmcct[0] && mode == APIC_LVT_TIMER_ONESHOT) {
-+		report_fail(...);
-+		return;
-+	}
-+
-+	if (tmcct[0] == tmcct[1] &&
-+	    (tmcct[0] || mode == APIC_LVT_TIMER_PERIODIC)) {
-+		tmcct[1] = apic_read(APIC_TMCCT);
-+
-+		/*
-+		 * Theoretically, this could get a false failure when the timer
-+		 * is periodic mode.  In practice, the odds of all three reads
-+		 * getting the same value is so absurdly small that it will
-+		 * never happen
-+		 */
-+		if (tmcct[0] == tmcct[1])
-+			report_fail(...);
-+	}
-+}
-+
- static void test_apic_change_mode(void)
- {
-+	unsigned long mode = APIC_LVT_TIMER_ONESHOT;
- 	uint32_t tmict = 0x999999;
-+	uint32_t tmcct[2];
- 
- 	printf("starting apic change mode\n");
- 
-+	apic_change_mode(mode);
- 	apic_write(APIC_TMICT, tmict);
- 
--	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
--
--	report(apic_read(APIC_TMICT) == tmict, "TMICT value reset");
--
--	/* Testing one-shot */
--	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
--	apic_write(APIC_TMICT, tmict);
--	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
--
--	wait_until_tmcct_is_zero(tmict, false);
--	report(!apic_read(APIC_TMCCT), "TMCCT should have reached 0");
--
- 	/*
--	 * Write TMICT before changing mode from one-shot to periodic TMCCT should
--	 * be reset to TMICT periodicly
-+	 * 1. ONESHOT => PERIODIC
-+	 * 2. PERIODIC => ONESHOT
-+	 * 3. ONESHOT => PERIODIC
-+	 * 4. PERIODIC => ONESHOT => PERIODIC (final checks)
- 	 */
--	apic_write(APIC_TMICT, tmict);
--	wait_until_tmcct_is_zero(tmict, true);
--	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
--	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
-+	for (i = 0; i < 4; i++) {
-+		if (apic_read(APIC_TMICT) != tmict)
-+			report_fail(...);
-+
-+		mode ^= BIT(17);
-+		apic_change_mode(mode);
-+
-+		tmcct[0] = apic_read(APIC_TMCCT);
-+		do {
-+			tmcct[1] = apic_read(APIC_TMCCT);
-+			check_apic_tmcct(tmcct);
-+		} while (tmcct[1] && tmcct[1] < tmcct[0]);
-+
-+		tmcct[0] = tmcct[1];
-+		tmcct[1] = apic_read(APIC_TMCCT);
-+		check_apic_tmcct(mode, tmcct);
-+		if (mode == APIC_LVT_TIMER_ONESHOT)
-+			apic_write(APIC_TMICT, tmict);
-+	}
- 
--	/*
--	 * After the change of mode, the counter should not be reset and continue
--	 * counting down from where it was
--	 */
--	report(apic_read(APIC_TMCCT) < (tmict / 2),
--	       "TMCCT should not be reset to TMICT value");
--	/*
--	 * Specifically wait for timer wrap around and skip 0.
--	 * Under KVM lapic there is a possibility that a small amount of consecutive
--	 * TMCCR reads return 0 while hrtimer is reset in an async callback
--	 */
--	wait_until_tmcct_wrap_around(tmict, false);
--	report(apic_read(APIC_TMCCT) > (tmict / 2),
--	       "TMCCT should be reset to the initial-count");
-+	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
-+	tmcct[0] = apic_read(APIC_TMCCT);
-+	do {
-+		tmcct[1] = apic_read(APIC_TMCCT);
-+		check_apic_tmcct(APIC_LVT_TIMER_ONESHOT, tmcct);
-+	} while (tmcct[1] && tmcct[1] < tmcct[0]);
-+
-+	if (tmcct[1])
-+		report_fail(...);
- 
--	wait_until_tmcct_is_zero(tmict, true);
--	/*
--	 * Keep the same TMICT and change timer mode to one-shot
--	 * TMCCT should be > 0 and count-down to 0
--	 */
- 	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
--	report(apic_read(APIC_TMCCT) < (tmict / 2),
--	       "TMCCT should not be reset to init");
--	wait_until_tmcct_is_zero(tmict, false);
--	report(!apic_read(APIC_TMCCT), "TMCCT should have reach zero");
--
--	/* now tmcct == 0 and tmict != 0 */
--	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
--	report(!apic_read(APIC_TMCCT), "TMCCT should stay at zero");
-+
-+	/* Switching to PERIODIC mode should NOT re-arm the timer. */
-+	tmcct[1] = apic_read(APIC_TMCCT);
-+	if (tmcct[1])
-+		report_fail(...);
-+	else
-+	 	report_pass();
- }
- 
- #define KVM_HC_SEND_IPI 10
+Cc: linux-hyperv list, maybe there's a chance to get TLFS amended.
+
+>
+> Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
+> ---
+>  docs/system/i386/hyperv.rst    | 9 +++++++++
+>  target/i386/cpu.c              | 2 ++
+>  target/i386/cpu.h              | 1 +
+>  target/i386/kvm/hyperv-proto.h | 1 +
+>  target/i386/kvm/kvm.c          | 8 ++++++++
+>  5 files changed, 21 insertions(+)
+>
+> diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
+> index e1babffb0f..2224dc2111 100644
+> --- a/docs/system/i386/hyperv.rst
+> +++ b/docs/system/i386/hyperv.rst
+> @@ -259,6 +259,15 @@ Existing enlightenments
+>  
+>    Recommended: ``hv-evmcs`` (Intel)
+>  
+> +``hv-restore-time-on-resume``
+> +  The enlightenment is nested specific, it targets Hyper-V on KVM guests. When
+> +  enabled, Hyper-V lets L0 (KVM) own the partition reference time and issues
+> +  HvCallRestorePartitionTime after a resume from hibernation so that the TSC
+> +  and the reference counter continue from the values it saved. Hyper-V offers
+> +  hibernation to its root partition only when this enlightenment is present.
+> +
+> +  Requires: ``hv-frequencies``
+> +
+>  Supplementary features
+>  ----------------------
+>  
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index f3bc6911c1..9fa14f6fab 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -10769,6 +10769,8 @@ static const Property x86_cpu_properties[] = {
+>                        HYPERV_FEAT_TLBFLUSH_EXT, 0),
+>      DEFINE_PROP_BIT64("hv-tlbflush-direct", X86CPU, hyperv_features,
+>                        HYPERV_FEAT_TLBFLUSH_DIRECT, 0),
+> +    DEFINE_PROP_BIT64("hv-restore-time-on-resume", X86CPU, hyperv_features,
+> +                      HYPERV_FEAT_RESTORE_TIME_ON_RESUME, 0),
+>      DEFINE_PROP_ON_OFF_AUTO("hv-no-nonarch-coresharing", X86CPU,
+>                              hyperv_no_nonarch_cs, ON_OFF_AUTO_OFF),
+>  #ifdef CONFIG_SYNDBG
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 786957fadd..dab559a3d8 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1487,6 +1487,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+>  #define HYPERV_FEAT_XMM_INPUT           18
+>  #define HYPERV_FEAT_TLBFLUSH_EXT        19
+>  #define HYPERV_FEAT_TLBFLUSH_DIRECT     20
+> +#define HYPERV_FEAT_RESTORE_TIME_ON_RESUME 21
+>  
+>  #ifndef HYPERV_SPINLOCK_NEVER_NOTIFY
+>  #define HYPERV_SPINLOCK_NEVER_NOTIFY             0xFFFFFFFF
+> diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
+> index a9f056f2f3..e420827a68 100644
+> --- a/target/i386/kvm/hyperv-proto.h
+> +++ b/target/i386/kvm/hyperv-proto.h
+> @@ -81,6 +81,7 @@
+>  #define HV_EX_PROCESSOR_MASKS_RECOMMENDED   (1u << 11)
+>  #define HV_ENLIGHTENED_VMCS_RECOMMENDED     (1u << 14)
+>  #define HV_NO_NONARCH_CORESHARING           (1u << 18)
+> +#define HV_RESTORE_TIME_ON_RESUME           (1u << 20)
+>  
+>  /*
+>   * HV_CPUID_SYNDBG_PLATFORM_CAPABILITIES.EAX bits
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index a72b6e6b74..1b16af7cd4 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -1137,6 +1137,14 @@ static struct {
+>          },
+>          .dependencies = BIT(HYPERV_FEAT_VAPIC)
+>      },
+> +    [HYPERV_FEAT_RESTORE_TIME_ON_RESUME] = {
+> +        .desc = "partition time restore (hv-restore-time-on-resume)",
+> +        .flags = {
+> +            {.func = HV_CPUID_ENLIGHTMENT_INFO, .reg = R_EAX,
+> +             .bits = HV_RESTORE_TIME_ON_RESUME}
+> +        },
+> +        .dependencies = BIT(HYPERV_FEAT_FREQUENCIES)
+> +    },
+>  };
+>  
+>  static struct kvm_cpuid2 *try_get_hv_cpuid(CPUState *cs, int max,
+
+-- 
+Vitaly
+
