@@ -1,78 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F28374E67;
-	Tue,  6 Oct 2026 19:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E287625B0BD
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 20:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791316557; cv=none; b=bwYogpBtXH9JVbf78oa6BgLj8HZ6mJ+PYa73+L5H4N6xiHA5P1fu89pwmZKWsrrfBNmfdCD1raUrjj3oUqRZRCp1LwwmLgSEd0e5Cb0SXRyPrrP/dSp9lbruvnoh/ZwMrEZMPlPZ6HrdCaVBq0FcKj1ZlA2MIjUFIUHTdQ37DzQ=
+	t=1791317406; cv=none; b=g8YkaD6wn0vmQuiROZFMCuHEJycEzPS0qs5FsGkpFThwQuti5iK1IQgg2evr7V3aIiIqTmOfedl+7lVXDdlLa81cv90Yt5KoiZA7RzWPy+oslt0UtySgjGPNTSKbQ/DJ4ogHlWRkIfyrM6BBizfBwzvPWzjwg/4FY0aEaOM3SpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791316557; c=relaxed/simple;
-	bh=aYS18VeFMk3O2cvYj3osOcGXOQOPrte7eUeclVdyyjE=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=u3fxwSwvDd+5lw00GyufVeXVkrlDGgX5IbZyRmoQIzvXQMmKnRI0PflvihGJryZzaj00piwXNRk0/TeM8gjpxnqq63lgfWlxLW/bzCVKGkT/uiKoZjirjZWN7SGy2kK4LXudobzkTYum/62CF6in2ghz2EV/XUPt2Cwcg5iK4f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaZwKJQ3; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaZwKJQ3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CBD81F0089B;
-	Tue,  6 Oct 2026 19:55:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791316555;
-	bh=32tXOzelsXj6KNb13L9MtsbUTLzJ2HjQRseQdrpAnpo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BaZwKJQ3THMbgtlDOf6BSBOM2Gepc+B3NFmejwivVQOVfjaDN7V0DuQJP3Ad/iVf5
-	 CJlCXBT4+BMWwx7b7UNAr4PPKaX+IzNGklYAc4ZZOjjkFYBb2K77d6uVDE3a0PMIGS
-	 GPAj8ZqJDs5pSPoag5IyofM4vNxi3C9y3qmVz59CkoS9hsx5V1luUh2Xd0MIkuh91t
-	 B6paMXq2crKv/WRHMYCoIIjDl3x5BHI8oTqquQxiubekTnGpTi1lMRFqaFJ7zmQT+y
-	 n6FY4eMkUSPDbgTS4agBZkM1LTDT/RphUpcpWOUw6ZDgKx8fmjKw/gTWrcRHUmqik9
-	 U+f1vO3Ky/27w==
-Message-ID: <sashiko-outbox-162416@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 6/9] vfio/pci: Convert BAR mmap() to use a DMABUF
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Matt Evans" <matt@ozlabs.org>
-Cc: media-ci@linuxtv.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, kvm@vger.kernel.org
-In-Reply-To: <20261006193643.76330-7-matt@ozlabs.org>
-References: <20261006193643.76330-1-matt@ozlabs.org>
- <20261006193643.76330-7-matt@ozlabs.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 06 Oct 2026 19:55:54 +0000
+	s=arc-20240116; t=1791317406; c=relaxed/simple;
+	bh=24N0HjdQRbnRFb6gWB57MrVNz0s6bunkbsaTBGnBmIw=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=ZtcGayjhsE42boppRPyDWTUTMpYuOpQdhGdVo0r3WgQuwL0h5KoTs0yWsTqr0WU21/gXnbwxJaGNEYzpuAcfHFE8Fg8boa4qh89ksZiUkQCaSCzA96Qs8N96DOwMdybPhH0e0WxMUxP9LhUbFB1uXIxLeaGY54+gx2S0juOHNnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4fb73e868aaso1266752b6e.0
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 13:10:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791317404; x=1791922204;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2rNUwwQpmDtmJz1qAdQLSEQ4GBC91Yoxo3ntgug7ap8=;
+        b=1/GRDFN0RxPbyaApJXHJ08Heb/tDkaMTipgsY29Ypcsh15/s2gPPk6EZ+hs0I8NeyY
+         b4jLjZl2dfn42pmkq9nikkG98eREFExm0Dl/6JTAvnO1PDydIN59ALuEarJpiG6a0Ioa
+         AnXD/01/ClDIS4HDljtmuRyl1VtfgOpTIBBBatKgLqoHUNUs4/4ISqTpNbaQPHik9du0
+         2J9pGHT0TDgyIPAet0yZy69wbcRvgJQ19yrbhcX04i1ncUXcbvP68QlL2ONwmEd4aJR1
+         k0IFhkg4BgtPC6Dpq1WWbcj4C0ZklHdYu4S9Dsqtid2SL3BgaU3Y9j03KF1xvq0iCAL8
+         oQKA==
+X-Gm-Message-State: AFuF++nAaGktg7yWbDo92RVW0MbA5x24PK/N1y2DakLBHNCSp35wsfbd
+	Al5flBz6rEWWa/fixBlVMgehS9nw11pJ8Zowgstue5F/VYQCqku/4TLvD6kMSJVZ6OLcjlaqdQj
+	ApA3W7IFdxq3iX1AuEza2HpbZNjnCSRBbGyPqjRgARj9zTWTNF+G4FlLGM8k=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:2e43:b0:4e6:6079:c33d with SMTP id
+ 5614622812f47-4fc45d5e78dmr292803b6e.10.1791317403890; Tue, 06 Oct 2026
+ 13:10:03 -0700 (PDT)
+Date: Tue, 06 Oct 2026 13:10:03 -0700
+In-Reply-To: <asT5m8OClUbYT8ZX@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ac5559b.9ad129c8.3ce5b3.000a.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING in kvm_vcpu_pre_fault_memory
+From: syzbot <syzbot+db7bd0f41c2a7e82d4ba@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-> Convert the VFIO device fd fops->mmap to create a DMABUF representing
-> the BAR mapping, and make the VMA fault handler look up PFNs from the
-> corresponding DMABUF.  This supports future code mmap()ing BAR
-> DMABUFs, and iommufd work to support Type1 P2P.
->=20
-> First, vfio_pci_core_mmap() uses the new
-> vfio_pci_core_mmap_prep_dmabuf() helper to export a DMABUF
-> representing a single BAR range.  Then, the vfio_pci_mmap_huge_fault()
-> callback is updated to understand revoked buffers, and uses the new
-> vfio_pci_dma_buf_find_pfn() helper to determine the PFN for a given
-> fault address.
->=20
-> Now that the VFIO DMABUFs can be mmap()ed, vfio_pci_dma_buf_move()
-> zaps PTEs (used on the revocation and cleanup paths).
->=20
-> CONFIG_VFIO_PCI_CORE now unconditionally selects
-> CONFIG_DMA_SHARED_BUFFER.  The CONFIG_VFIO_PCI_DMABUF feature
-> conditionally includes support for VFIO_DEVICE_FEATURE_DMA_BUF,
-> depending on the availability of CONFIG_PCI_P2PDMA.
->=20
-> When the DMABUF feature is not present, DMABUFs are used internally
-> for the BAR mappings.  In this case, DMABUF attach is prohibited (and
-> the requirement for a P2PDMA provider is relaxed).
->=20
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
+Hello,
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261006193643.7633=
-0-1-matt@ozlabs.org?part=3D6
+Reported-by: syzbot+db7bd0f41c2a7e82d4ba@syzkaller.appspotmail.com
+Tested-by: syzbot+db7bd0f41c2a7e82d4ba@syzkaller.appspotmail.com
 
+Tested on:
+
+commit:         69f80fef Merge tag 'ata-7.3-rc7' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13eca715580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=23e5acac5c98285f
+dashboard link: https://syzkaller.appspot.com/bug?extid=db7bd0f41c2a7e82d4ba
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=12169ff5580000
+
+Note: testing is done by a robot and is best-effort only.
