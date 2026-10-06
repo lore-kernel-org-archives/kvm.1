@@ -1,92 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F749E5D2
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 16:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DBD46EC79;
+	Tue,  6 Oct 2026 16:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791303366; cv=none; b=c4CsgUoEOLliu6bePQDunkHC40t8lzBxAKZPOBqU9YYKtRBn7YMWaHl1bwNw2y5+Mwbwt0v2PqbCDCnTUo2Fg52GfyAevKFMyxyR7KMGlhVDZcnGl+kTKDmzzcWjf16SslX4K1zBECw4nlahR5Ahyl7D61WNLnDMr5SPh9HAv6E=
+	t=1791303529; cv=none; b=F68of6GRgzLz68Xruurnz06twIs4qq9g8luJFHB290nI+w58Fea3JiMg1qsUPzhjkk9jkL4KT9vMFcVgczX8k8M/pXrIOKSBk7DRzIPJiMEsJbmXE2W+FEarDBQyxzusmozKQcK/UpuVQSjXo6YC0crcxcouyVjwdogWO9AjogI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791303366; c=relaxed/simple;
-	bh=HKk6ziAXN1Ypc99k3IKDs5ke0WrgufeEXm7jTYiCOgM=;
+	s=arc-20240116; t=1791303529; c=relaxed/simple;
+	bh=Cq2bQQ8IA5ZWFAuXyRj/p0MR14DM59UVKYROUBiiRuE=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=DM7gZDowhCcgRvULrBb0gUSEqSc0OBcEB+mIYRDs2vzdJfHHOqHJU1mv61m0xzXL3hH4IwOu38XJmD2Wo2PnzDJR4rNY0TFJ5mRTd1j0lfsbbGPgDH4wnVAwv6VX2B0HC9I10xnmFu03mrl5DNQQn5vrKvo9wO0ShZY8RYu5TGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kN1FCvhR; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=OU7BFAUl2pKmAZUe2juj9mHIS8NMaP+n5aF+4gpKy6lemyUc4amc7tCsJcqIl/G4pbrhA8nR6bYvtrp3MH6eVNZk1bfFKeSUNxhB0lpFbsuFbpow4Cm2rJ+0FbFzf33asiR7TMWNecnNgo1HC/HpEojgq9mawjEzC5BIbXqvcPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMUOB1JW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kN1FCvhR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA0E1F0089B;
-	Tue,  6 Oct 2026 16:16:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMUOB1JW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3BE1F0089B;
+	Tue,  6 Oct 2026 16:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791303364;
-	bh=L6/yKBCd7cMj2Zv3CRFNGBRR+U4fCvYTjxawzfBiPqk=;
+	s=k20260515; t=1791303528;
+	bh=Cq2bQQ8IA5ZWFAuXyRj/p0MR14DM59UVKYROUBiiRuE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kN1FCvhRr4g3QADRz8yH7GuQmoEFERpdnrzkCuCkJaKou9Nw+HuRFnGkSGF4hK0fI
-	 JJmWiUmcZi82dPW4BQRI1fl1mr17+BfcbtXZ43oIfW8zx3ZV9DaDbFnqN52lwtTsZr
-	 XI8w89dPVC3JKPkyAhwjpIgho6hkBS3nyITJpakcHYsvx7B552Y3c4Cf9yrbxR9Gpd
-	 5is7dcHcIpJjnOhJT4meDnBwXC8mhWszDAMCBDBNQO6N+foqfNoxFHGCCnaSAz6Vih
-	 xVlYzDQExoHH+mDeIEODxfnmzgID+481xcCU5N57w0k5qy0E1UfhI9ApgG/nK7+6/L
-	 aag2U91fQT1cg==
-Message-ID: <sashiko-outbox-162228@kernel.org>
+	b=RMUOB1JWt/U2R4Y6GrDCqeR8P4m59O61ed7XaL+OAg9rK0qy0avfSUjpYVkxUauDW
+	 prFzSFDpIMsBKN7fUYbWj2BP2E+Qzsv9RCAB/CK+pYadRiyV3dePkVuGbS6CLi8LYh
+	 3025taLe4ZPdlo5IGmSlHzElySVpiqW/cXuGvb7HXgmCTvPleI7xHKAy7TI4Ak5LmS
+	 3ZjAluLka8Aiv2M5ROqGMhnUTk1OWGhnvOaHb/VBssmRdUTCnVPUMbyGnZ6uS0Wf6f
+	 EFSds4vJpV8nw1jXqndehc9e2I8zlLyWUdkO8z/VHXajN0QTXxFEaQnnxCaGeeNxcd
+	 M2+f7WZqNGbYA==
+Message-ID: <sashiko-outbox-162237@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 7/8] KVM: selftests: Only warn for idle-page checks
- on powerpc pseries LPAR
+Subject: Re: [PATCH v8 4/4] vfio-pci/zdev: Add VFIO FMB device features
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <0227000da4e6fe69b278dc971b74b3f65b73ead9.1791280439.git.ritesh.list@gmail.com>
-References: <cover.1791280439.git.ritesh.list@gmail.com>
- <0227000da4e6fe69b278dc971b74b3f65b73ead9.1791280439.git.ritesh.list@gmail.com>
+To: "Omar Elghoul" <oelghoul@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20261005154557.57801-5-oelghoul@linux.ibm.com>
+References: <20261005154557.57801-1-oelghoul@linux.ibm.com>
+ <20261005154557.57801-5-oelghoul@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 06 Oct 2026 16:16:03 +0000
+Date: Tue, 06 Oct 2026 16:18:47 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] selftests: typo 'explicitely' in comment
---
+> Introduce new VFIO features for zPCI devices to provide FMB passthrough to
+> userspace.
+>=20
+> Allow the user to enable or disable the FMB using the SET-only feature
+> VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE. Likewise allow the user to read the
+> latest FMB using the GET-only feature VFIO_DEVICE_FEATURE_ZPCI_FMB_READ
+> in the case when the FMB is enabled.
+>=20
+> Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
 
-commit 87fed9598d0ceb8998ad38373e71f38a0d2446ab
-Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-
-KVM: selftests: Only warn for idle-page checks on powerpc pseries LPAR
-
-This commit updates the access tracking selftest for KVM to only warn on
-idle-page checks when running nested on powerpc pseries LPAR. It uses a new
-kvm_is_ppc_pseries_lpar() check to detect this condition because nested KVM
-on powerpc does not explicitly flush the TLB for access bit updates.
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/access_tracking_perf_test.c b/to=
-ols/testing/selftests/kvm/access_tracking_perf_test.c
-> index 4415c94b28660..eb6939065e793 100644
-> --- a/tools/testing/selftests/kvm/access_tracking_perf_test.c
-> +++ b/tools/testing/selftests/kvm/access_tracking_perf_test.c
-> @@ -471,6 +471,16 @@ static int access_tracking_unreliable(void)
->  		return 1;
->  	}
->  #endif
-> +	/*
-> +	 * PowerPC: Nested KVM (pSeries LPAR) can hide accessed/idle, since KVM
-> +	 * doesn't explicitely flush the TLB for access bit update. L0 keeps
-
-[Severity: Low]
-This isn't a bug, but there appears to be a typo here. Should explicitely be
-spelled explicitly?
-
-> +	 * translations cached so the guest won't see the idle bit cleared.
-> +	 */
-> +	if (kvm_is_ppc_pseries_lpar()) {
-> +		puts("Skipping idle page count sanity check, because the test is run n=
-ested");
-> +		return 1;
-> +	}
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1791280439.gi=
-t.ritesh.list@gmail.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261005154557.5780=
+1-1-oelghoul@linux.ibm.com?part=3D4
+
