@@ -1,49 +1,49 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5DF199947;
-	Tue,  6 Oct 2026 04:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BF62853FD;
+	Tue,  6 Oct 2026 04:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791261158; cv=none; b=LXgKHZ3HqsqbXqyQFsCZdM3kPhX3U3iQbXfcDMX6SvPXR+d03myZ43ACfaFZB+6ir2vGs1nXLZVscm8Xyf1iCpTyM2aNd6m3yaVoWtZtN6dSfBEj8TIT0piu6Oga8QZFC1t5XYIiD+L0NCAEV9HkjfVkJt7h4PPSXi4nLZyiqgs=
+	t=1791261421; cv=none; b=Fy6ioIsZ04PnNZ4E9GuxU3h1vZjxKLeh72K6ew4eAVyp1/jnSnOJMd5eOpZosTJMq5zG1+d0bu3rMvgDlI7Fez97G0jFSNIQinVQvna7uzZPqPoZkcwupkwRk8b9q415GUpAQrWJ4+/TBF4yi8YmVHMHd/mmBWe+dJsyToCInH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791261158; c=relaxed/simple;
-	bh=JPU8qK8R86MxrTAJNmhAhrY3LXObu+xyI/OZL4t93TA=;
+	s=arc-20240116; t=1791261421; c=relaxed/simple;
+	bh=WTL2BeKNotzn/h1QPZkSobi2zJginBeztB+bKqv7qaI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TNGeyiJcBbJ1q9pDTMOe0hD2Pb6Z3apAstaY7naS33wsUIxCE40OLAqHmKew9R9FBEbZ5bmLS8lojpjef9nkCOsFIpi9FkaBiLqM+eVRX1RqGHQrr7LCSvPjhIk0DigGq7C0EGbPkMGwUUyTYC67iIcNKD/25hG3zdZPThyrG2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Li57CGY/; arc=none smtp.client-ip=192.198.163.7
+	 Content-Type:Content-Disposition:In-Reply-To; b=NSLGRCY4oy3wGVfw73Ooz4txRnvf15f88uzx8yTmh1AUxpNHB7J/UHkTDih09lddGAKM35onBmjKhCejF7n9lMMPWN1IMSBNNCK7x7ylM4BWMTCLmnftx8c1P4VAwPT+GgrS2R89As7MkOKS/OSOppK/dryrg7f9srJVLByJpXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MhTNmmER; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Li57CGY/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MhTNmmER"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791261156; x=1822797156;
+  t=1791261420; x=1822797420;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=JPU8qK8R86MxrTAJNmhAhrY3LXObu+xyI/OZL4t93TA=;
-  b=Li57CGY/LcVsFiZk/zIcsnrAS8pNKMfbINY6Az93q9zU9NmsGJWcZJYs
-   Zf6X4wk6wpMIlTVOgr7nY8t9l3Vmz1hYs1pRC7bbjIKZb+J5xef3OcDmW
-   mbgxutDb9tM+uabVq6GXC8Y8v/wznDIZyi7ZFTx70f3uoJ42q+eg9gmVP
-   FfBaeNNxqYp7ZXTus/MiZbj1hkF61AliuvxO286rFYZ/eKCXUPBZOm+/O
-   bO1+G+qgyaT5E4z/O8etzYKadHeMOL05P9HbcpJcOmKh8UdWE/e7xDWWa
-   MHEZD0eJvsT2WmDxOQdP8R6ZBeFtja/3Af5orRNdBl06RjSx5I2/e9CCr
+  bh=WTL2BeKNotzn/h1QPZkSobi2zJginBeztB+bKqv7qaI=;
+  b=MhTNmmEROZZAmUDh9VeyPZygqgFmqMea7qdxD1eTenez3sWV88CIjG6l
+   lvOVdUoYuz6//GcPRIowqfIadjWzDzY27FGci4ZbIsJtTySvZMBj6E1Qc
+   gJ8LSr7+FHMe8OFFTNU727dFBXIHpDcQdPbyNuU/s4C4k0KTFzIQv1QGB
+   2K+9UJu307eGsA9i7OrB7B9YjztHTlXJKvPqT/IdQpPMex1c3Dq/nFEIq
+   YABeZcPmPnnLMZBz3PqXI7Qal6L0IXDkUjbrxglaIhKnrMV0gl+eoJjBi
+   5NHxjX0F+qm++FXIRz5PSa7NsTDiJZ4mkNiuobhk/To0LsWqZ843ySfq7
    g==;
-X-CSE-ConnectionGUID: OlhXpDs4TFi4/5ZOZ40NLw==
-X-CSE-MsgGUID: tDJISu8TRKKxkcwg37fQgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="117457963"
+X-CSE-ConnectionGUID: 0N8SiqM3TQCs/qJ4b/3OEg==
+X-CSE-MsgGUID: FNgnj5EWSxaHxyy0fwFttQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="117458466"
 X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="117457963"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 21:32:35 -0700
-X-CSE-ConnectionGUID: UCDyFfUCT2mD4wNZIGKl4g==
-X-CSE-MsgGUID: cFTr4AswToeof00WTmBAHw==
+   d="scan'208";a="117458466"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 21:37:00 -0700
+X-CSE-ConnectionGUID: RYtoPNqiQrWKBuJxouGwZA==
+X-CSE-MsgGUID: OlyfK/cyRzS75K9kVD1HJA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="274825910"
+   d="scan'208";a="315055538"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.96])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 21:32:28 -0700
-Date: Tue, 6 Oct 2026 07:32:25 +0300
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 21:36:53 -0700
+Date: Tue, 6 Oct 2026 07:36:50 +0300
 From: Tony Lindgren <tony.lindgren@linux.intel.com>
 To: Xu Yilun <yilun.xu@linux.intel.com>
 Cc: x86@kernel.org, linux-coco@lists.linux.dev,
@@ -56,11 +56,11 @@ Cc: x86@kernel.org, linux-coco@lists.linux.dev,
 	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
 	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
 	nik.borisov@suse.com
-Subject: Re: [PATCH v3 5/6] x86/virt/tdx: Re-initialize the extensions on
- runtime TDX module update
-Message-ID: <asR52ZRgjUqLfeI5@tlindgre-MOBL1>
+Subject: Re: [PATCH v3 6/6] x86/virt/tdx: Support DPAMT when adding memory
+ for the extensions
+Message-ID: <asR64ovVXEmTVgg6@tlindgre-MOBL1>
 References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-5-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,33 +69,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261006-tdx-module-ext-v3-5-db52cb05b918@linux.intel.com>
+In-Reply-To: <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
 
-On Tue, Oct 06, 2026 at 01:41:49AM +0800, Xu Yilun wrote:
-> Runtime TDX module update introduces a mechanism to update the module
-> firmware while preserving and restoring TDX operations. The extensions
-> functionalities should also be re-initialized as part of the restoration
-> process.
+On Tue, Oct 06, 2026 at 01:41:50AM +0800, Xu Yilun wrote:
+> The TDX module uses Physical Address Metadata Table (PAMT) to track some
+> state for each page of physical memory that it might use. 3 levels of
+> PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
+> Dynamic PAMT (DPAMT) allows saving memory by allocating 4KB PAMT
+> dynamically, while the 1GB and 2MB levels remain allocated on TDX module
+> initialization. The kernel has helpers to install 4K DPAMT.
 > 
-> The TDX architecture supports an update flow which allows updated
-> extensions to consume more memory than their original boot-time
-> requirement. So the arch defines the extensions re-initialization flow
-> the same as boot-up initialization: the host queries TDX module how much
-> additional memory needed, allocates it, adds it to the module via
-> TDH.EXT.MEM.ADD, then re-initializes the extensions via TDH.EXT.INIT.
+> Although the memory for the extensions is tens of megabytes and the host
+> allocates it in a large chunk, the TDX module accepts it at 4K
+> granularity. Thus the host has to install 4K DPAMT for each page of it.
 > 
-> Linux runs the updates in stop_machine() context, which prevents memory
-> allocation. So for Linux, a compatible update must not install updated
-> extensions that require additional memory.
+> Call tdx_pamt_get() for each page before adding it to TDX module.
+> Normally, these operations should not fail, and if they do,
+> intentionally keep the error handling as simple as before - leak all
+> pages, including the installed 4K DPAMT metadata.
 > 
-> Given that the memory for the extensions must not increase, the
-> re-initialization skips the memory adding steps. It is simplified as:
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+> v3:
+>  - New patch
+> ---
+>  arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
->   - Check if the extensions are supported via TDX_FEATURES0_EXT. If not,
->     skip the extensions re-initialization.
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 5d5f9da1ab02..27a7039ee443 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1330,8 +1330,15 @@ static __init int tdx_ext_mem_setup(void)
+>  		struct page *chunk = page + added_pages;
+>  		unsigned int i;
+>  
+> -		for (i = 0; i < chunk_pages; i++)
+> +		for (i = 0; i < chunk_pages; i++) {
+> +			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
+> +			if (ret) {
+> +				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
+> +				goto out_free_hpa_list;
+> +			}
+> +
+>  			hpa_list->phys[i] = page_to_phys(chunk + i);
+> +		}
+>  
+>  		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
+>  		if (ret) {
 > 
->   - Re-initialize the extensions via TDH.EXT.INIT. The SEAMCALL leaf
->     will fail if the updated extensions require more memory, which
->     indicates the update image is not compatible.
 
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+How about just fold this change in into patch 3/6?
