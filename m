@@ -1,418 +1,145 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0AE3E8C77
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 13:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEA23E5EF1
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 13:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791291794; cv=none; b=bMZrZupliUMJqjUXw8CYaTImNcqeXzY/aS2B+A3sUv1ibFyWdJqiOv46RciF8YfWF8fRMmt1O87HC9zuC/mbWGpcGylXMGfyezTBxtQWANxJrB6TOcnlVe0SvJyqj5GtrI2dXvGjElHLJSLL2t7ohjCUeZMayNU44bulbqZwo30=
+	t=1791293854; cv=none; b=QihX6j/LSeP7mKsWnzEFEMIpvn0bI+C2lXxM8eGp7ePKRD7k3pAwD+mK49I65ojOkQpSmDxWf7R2ngbvgn0BsH5XG9gMFWSKOba+CJbZ4V8bvh13h8KdBnUWqoQU2Zat33J6HDXi0r5EaKQOuO2fmHH5DC+I+WXUUXtE9G/FFWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791291794; c=relaxed/simple;
-	bh=81cdW/4qtYUyjoBl7Y8qltlWWRjfQ8jOvEacjiw2lVs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=K2TtZGnd0VGhhrN8++EyLZcSiu0PHqpmKkOHJVPUQHyasWdMYWKg7FCA3fbIdGrNRele+tKXLLUBftgapSJUP0vkb2wn/9MrDfYzwNGq4DXRkv3hZPsS3pdlWmlCqCKnX/INf87uMm4d9TRl1KZVl81NEzFtXr5h6J1qvCUtmjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [127.0.0.1] (unknown [122.194.100.201])
-	by APP-01 (Coremail) with SMTP id qwCowACnfvKH8cRq5rwHCg--.25418S2;
-	Tue, 06 Oct 2026 21:03:04 +0800 (CST)
-Message-ID: <99cec8f9d34edcc11b16d12cf47454c49e175dd5.camel@iscas.ac.cn>
-Subject: Re: [kvm-unit-tests PATCH 7/7] riscv: Add BRS SBI requirement tests
-From: Xiang W <wangxiang@iscas.ac.cn>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, pbonzini@redhat.com,
- 	thuth@redhat.com, sunilvl@oss.qualcomm.com
-Date: Tue, 06 Oct 2026 21:03:03 +0800
-In-Reply-To: <atbvvaynwqhdljjus6jnmcsnugh5oniwke7c3k77q2kgqkbun4@cxhqnhj6mvul>
-References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
-	 <20260924033945.176581-8-wangxiang@iscas.ac.cn>
-	 <atbvvaynwqhdljjus6jnmcsnugh5oniwke7c3k77q2kgqkbun4@cxhqnhj6mvul>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	s=arc-20240116; t=1791293854; c=relaxed/simple;
+	bh=DDCZ9Mqu1FH9Osr7KFh+7vfu+BuP+rNmjrrGNJm6z/c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Y6wtOKZYUyej32kVVcVDfbYqVbpj2AdGj/YGivO0RXyVeG9Y7FjNYGpgaB8MlRrNtlD2rzVrty7t5uQRC1fAjon6PCa8RniW4DO4sdUJ7gqV4EqDLKEu1AmSdNsf9rkNiRWspBstJ2dw8ai+SZS/yu0MD5K0PEZfJoPJ6qToNp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iFQSMZ4I; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iFQSMZ4I"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ccca9481fb6so1721925a12.3
+        for <kvm@vger.kernel.org>; Tue, 06 Oct 2026 06:37:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791293853; x=1791898653; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F/qBmMLuBmnpwWTygvTCZyx4zAAU2cLGG3mNQcChlaE=;
+        b=iFQSMZ4IZmrbzp2B5rwy6YUFa70v0vVTsKRP6H6DNrFSRRgVNVzAMpLHfGHHU+PxG8
+         3CLiPouQvVhcJYVOJwAsIG5yNKB4eF317kmYFewFgGqd+dYgnzWxTEV0XjIEz4zc1BSc
+         U0oqZYArWgPT/gRG6xk/psizyAbrsc1PIn9RfcMtROSDjpi4TgKocNwk+Yp4gg+7+dJd
+         IOhQ1rmicFbZDMHlm2N65dy8Phtkf+pJfDdssYM6fygW+HzQbYkdOotTqfch2PUz8blH
+         FXtIw84OCGwwU8n2q34RLgNx2v+dt0p81PCTQU6HZ+Qq0sbJeMkR7o70evkzx/XrNwWd
+         b4wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791293853; x=1791898653;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F/qBmMLuBmnpwWTygvTCZyx4zAAU2cLGG3mNQcChlaE=;
+        b=Mve/5GXfSnFi7GBTETpHIZvVa1CodOtRhF62nYRKdmTBLG73h1H2ULs1DtJhezZIlU
+         ZkZXtaPIEMfdZ1GULV8hub06Pt00VzLwKFSUv/voinl7UT2BUMtxipEBWf708dYOHz5o
+         0Sn6xSTWhcWjOH1ygOqdxFF5lJ2WzQK+l3dfoQILFs9t+b32ur37/WE4yOxEqUwAF+29
+         hByjr/cdoEsUMA+tEgu+8S2rGxfJURNvcjgFA5vs9XOBQrXXS3futiCNwLvprLsqXrCM
+         bbm00HzjSw6URF1XF7J0lMoJyDv4CaE7vVvr2D8LGMxMMeuC2HFfL0aNIRYTNCposmMo
+         yB0A==
+X-Gm-Message-State: AFuF++miXXeILsWDaTxjHcnBWkgoh/ZI8uvmVAIDAul4etJtpOVLHpaa
+	7DummdO+LvN/OXFZXA8nxO/vd4a2xfn/t4Eb3iX0tAGA5JrIHcdCUoIimL8BhOyeyxNniWkouFz
+	sonYoGQ==
+X-Received: from pgp20-n1.prod.google.com ([2002:a05:6a02:62d4:10b0:cc7:9e1d:7d45])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1014:b0:3dd:a006:7b31
+ with SMTP id adf61e73a8af0-3e1247894f7mr1269961637.48.1791293852598; Tue, 06
+ Oct 2026 06:37:32 -0700 (PDT)
+Date: Tue, 6 Oct 2026 06:37:31 -0700
+In-Reply-To: <6ac316c7.01314a6c.556a8.000d.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-CM-TRANSID:qwCowACnfvKH8cRq5rwHCg--.25418S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3CF1kuF1rKF45Ar4xtFykAFb_yoWDCrW8pF
-	ykGFZ0kF95JFyxAw1SyF4DWF9Fvr1FqrnF9r1UK3W5ta9FkrZ3tryqgr909rW8Xr4rGr1v
-	9wn3Wrnxu3Z3G3DanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCY02Av
-	z4vE14v_Xr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1D
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIb
-	4SUUUUU
-X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
+Mime-Version: 1.0
+References: <6ac316c7.01314a6c.556a8.000d.GAE@google.com>
+Message-ID: <asT5m8OClUbYT8ZX@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING in kvm_vcpu_pre_fault_memory
+From: Sean Christopherson <seanjc@google.com>
+To: syzbot <syzbot+db7bd0f41c2a7e82d4ba@syzkaller.appspotmail.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="us-ascii"
 
-=E5=9C=A8 2026-09-30=E4=B8=89=E7=9A=84 13:19 +0200=EF=BC=8CAndrew Jones=E5=
-=86=99=E9=81=93=EF=BC=9A
-> On Thu, Sep 24, 2026 at 11:39:45AM +0800, Xiang W wrote:
-> > Add a riscv-brs unit test for the SBI rules in the RISC-V Boot and
-> > Runtime Services specification:
-> >=20
-> > =C2=A0 SBI_010=C2=A0 spec version must be v2.0 or later
-> > =C2=A0 SBI_020=C2=A0 HSM must be implemented
-> > =C2=A0 SBI_030=C2=A0 TIME is required unless Sstc is present
-> > =C2=A0 SBI_040=C2=A0 IPI is required unless Ssaia is present
-> > =C2=A0 SBI_050=C2=A0 RFENCE is required unless Ssaia is present
-> > =C2=A0 SBI_060=C2=A0 PMU is required unless Smcsrind, Sscsrind, Smcdele=
-g
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 and Ssccfg=
- are all present
-> > =C2=A0 SBI_070=C2=A0 DBCN is required when ACPI SPCR Interface Type is =
-0x15
-> >=20
-> > Parse the extra ISA names used as skip conditions, and add the RFNC
-> > and PMU extension IDs needed to probe those extensions.
-> >=20
-> > Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
-> > ---
-> > =C2=A0lib/riscv/asm/isa.h |=C2=A0=C2=A0 5 ++
-> > =C2=A0lib/riscv/asm/sbi.h |=C2=A0=C2=A0 2 +
-> > =C2=A0lib/riscv/isa.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 14 +++-
-> > =C2=A0riscv/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> > =C2=A0riscv/riscv-brs.c=C2=A0=C2=A0 | 171 +++++++++++++++++++++++++++++=
-+++++++++++++++
-> > =C2=A0riscv/unittests.cfg |=C2=A0=C2=A0 4 ++
-> > =C2=A06 files changed, 195 insertions(+), 2 deletions(-)
-> > =C2=A0create mode 100644 riscv/riscv-brs.c
-> >=20
-> > diff --git a/lib/riscv/asm/isa.h b/lib/riscv/asm/isa.h
-> > index fb3af67d..8a124881 100644
-> > --- a/lib/riscv/asm/isa.h
-> > +++ b/lib/riscv/asm/isa.h
-> > @@ -13,7 +13,12 @@
-> > =C2=A0 * by name not tracked here with cpu_has_extension_name()
-> > =C2=A0 */
-> > =C2=A0enum {
-> > +	ISA_SMCDELEG,
-> > +	ISA_SMCSRIND,
->=20
-> I'm not sure we should expect machine level ISA extensions to be in the
-> S-mode ISA string.
->=20
-> Indeed the spec says
->=20
-> """
-> The Performance Monitoring Extension (PMU) MUST be implemented, if the
-> counter delegation-related S-Mode ISA extensions (Sscsrind [13] and Ssccf=
-g [14])
-> are not present.
-> """
->=20
-> So I'm not sure why you're looking for the M-mode extensions at all.
-https://github.com/riscv-non-isa/riscv-brs/blob/main/brs_tests.adoc
-OE_SBI_060_010:
-  . If Smcsrind,Sscsrind,Smcdeleg,Ssccfg extensions were present(See ME_HR_=
-010_010). ..
-  Report Smcsrind,Sscsrind,Smcdeleg,Ssccfg was present and Skip the test. .=
- Else ..
-  Probe the presence of PMU extension by sbi_probe_extension(). ..
-  Verify that the result is true.
->=20
-> > +	ISA_SSAIA,
-> > +	ISA_SSCCFG,
-> > =C2=A0	ISA_SSTC,
-> > +	ISA_SSCSRIND,
-> > =C2=A0	ISA_MAX,
-> > =C2=A0};
-> > =C2=A0__static_assert(ISA_MAX <=3D __riscv_xlen, "Need to increase thre=
-ad_info.isa");
-> > diff --git a/lib/riscv/asm/sbi.h b/lib/riscv/asm/sbi.h
-> > index 289a6a24..c92a66dc 100644
-> > --- a/lib/riscv/asm/sbi.h
-> > +++ b/lib/riscv/asm/sbi.h
-> > @@ -45,8 +45,10 @@ enum sbi_ext_id {
-> > =C2=A0	SBI_EXT_BASE =3D 0x10,
-> > =C2=A0	SBI_EXT_TIME =3D 0x54494d45,
-> > =C2=A0	SBI_EXT_IPI =3D 0x735049,
-> > +	SBI_EXT_RFNC =3D 0x52464E43,
-> > =C2=A0	SBI_EXT_HSM =3D 0x48534d,
-> > =C2=A0	SBI_EXT_SRST =3D 0x53525354,
-> > +	SBI_EXT_PMU =3D 0x504D55,
-> > =C2=A0	SBI_EXT_DBCN =3D 0x4442434E,
-> > =C2=A0	SBI_EXT_SUSP =3D 0x53555350,
-> > =C2=A0	SBI_EXT_FWFT =3D 0x46574654,
-> > diff --git a/lib/riscv/isa.c b/lib/riscv/isa.c
-> > index b0257979..f5e2a61b 100644
-> > --- a/lib/riscv/isa.c
-> > +++ b/lib/riscv/isa.c
-> > @@ -39,8 +39,18 @@ static void isa_bit(const char *name, int len, void =
-*data)
-> > =C2=A0{
-> > =C2=A0	struct thread_info *info =3D (struct thread_info *)data;
-> > =C2=A0
-> > -	if (isa_match("sstc", name, len))
-> > -		set_bit(ISA_SSTC, info->isa);
-> > +#define ISA_MATCH_AND_SET(ext) \
-> > +	if (isa_match(#ext, name, len)) \
-> > +		set_bit(ISA_##ext, info->isa)
-> > +
-> > +	ISA_MATCH_AND_SET(SMCDELEG);
-> > +	ISA_MATCH_AND_SET(SMCSRIND);
-> > +	ISA_MATCH_AND_SET(SSAIA);
-> > +	ISA_MATCH_AND_SET(SSCCFG);
-> > +	ISA_MATCH_AND_SET(SSCSRIND);
-> > +	ISA_MATCH_AND_SET(SSTC);
-> > +
-> > +#undef ISA_MATCH_AND_SET
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static void isa_parse(const char *isa_string, int len, struct isa=
-_info *info)
-> > diff --git a/riscv/Makefile b/riscv/Makefile
-> > index 348a30a7..7da7526f 100644
-> > --- a/riscv/Makefile
-> > +++ b/riscv/Makefile
-> > @@ -15,6 +15,7 @@ tests +=3D $(TEST_DIR)/sbi.$(exe)
-> > =C2=A0tests +=3D $(TEST_DIR)/selftest.$(exe)
-> > =C2=A0tests +=3D $(TEST_DIR)/sieve.$(exe)
-> > =C2=A0tests +=3D $(TEST_DIR)/isa-dbltrp.$(exe)
-> > +tests +=3D $(TEST_DIR)/riscv-brs.$(exe)
-> > =C2=A0
-> > =C2=A0all: $(tests)
-> > =C2=A0
-> > diff --git a/riscv/riscv-brs.c b/riscv/riscv-brs.c
-> > new file mode 100644
-> > index 00000000..0d4a8f47
-> > --- /dev/null
-> > +++ b/riscv/riscv-brs.c
-> > @@ -0,0 +1,171 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + *=C2=A0 RISC-V BRS SBI requirement tests
-> > + *
-> > + * Copyright (C) 2026, Institute of Software, CAS., Xiang W <wangxiang=
-@iscas.ac.cn>
-> > + */
-> > +
-> > +#include <libcflat.h>
-> > +#include <devicetree.h>
-> > +#include <asm/sbi.h>
-> > +#include <asm/isa.h>
-> > +#include <asm/smp.h>
-> > +
-> > +#ifdef CONFIG_EFI
-> > +#include <acpi.h>
-> > +#endif
-> > +
-> > +static void check_sbi_010(void)
-> > +{
-> > +	struct sbiret ret;
-> > +
-> > +	report_prefix_push("SBI_010");
-> > +
-> > +	ret =3D sbi_get_spec_version();
-> > +	if (ret.error) {
-> > +		report_fail("sbi_get_spec_version failed with %ld", ret.error);
-> > +		report_prefix_pop();
-> > +		return;
-> > +	}
-> > +
-> > +	report_info("SBI spec version %lu.%lu",
-> > +		=C2=A0=C2=A0=C2=A0 (ret.value >> SBI_SPEC_VERSION_MAJOR_SHIFT) &
-> > +		=C2=A0=C2=A0=C2=A0 SBI_SPEC_VERSION_MAJOR_MASK,
-> > +		=C2=A0=C2=A0=C2=A0 ret.value & SBI_SPEC_VERSION_MINOR_MASK);
-> > +
-> > +	report(ret.value >=3D sbi_mk_version(2, 0),
-> > +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "SBI spec version is v2.0 or lat=
-er");
-> > +
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +static void check_sbi_020(void)
-> > +{
-> > +	report_prefix_push("SBI_020");
-> > +	report(sbi_probe(SBI_EXT_HSM), "HSM extension is implemented");
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +static void check_sbi_030(void)
-> > +{
-> > +	report_prefix_push("SBI_030");
-> > +
-> > +	if (cpu_has_extension(smp_processor_id(), ISA_SSTC)) {
-> > +		report_skip("Sstc is present, TIME is not mandated");
-> > +		report_prefix_pop();
-> > +		return;
-> > +	}
-> > +
-> > +	report(sbi_probe(SBI_EXT_TIME), "TIME extension is implemented");
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +static void check_sbi_040(void)
-> > +{
-> > +	report_prefix_push("SBI_040");
-> > +
-> > +	if (cpu_has_extension(smp_processor_id(), ISA_SSAIA)) {
->=20
-> I'm not sure this is a sufficient check. IIRC, the IMSIC is an optional
-> feature of the AIA and the BRS rule states:
->=20
-> """
-> The S-Mode IPI Extension (sPI) MUST be implemented, if the Incoming MSI
-> Controller (IMSIC, [12]) is not available.
-> """
->=20
-> I think we should check both ISA_SSAIA and ensure each hart has a nonzero
-> acpi_madt_rintc.imsic_size. (And, unless, I'm mistaken, the BRS SBI rules
-> apply to both BRS-I and BRS-B, so we should implement a DT equivalent
-> IMSIC check too.)
->=20
-https://github.com/riscv-non-isa/riscv-brs/blob/main/brs_tests.adoc
-OE_SBI_040_010:
-  . If Ssaia extension was present(See ME_HR_010_010) .. Report Ssaia was=
-=20
-  present and Skip the test. . Else .. Probe the presence of sPI extension=
-=20
-  by sbi_probe_extension(). .. Verify that the result is true.
->=20
-> > +		report_skip("Ssaia is present, IPI is not mandated");
-> > +		report_prefix_pop();
-> > +		return;
-> > +	}
-> > +
-> > +	report(sbi_probe(SBI_EXT_IPI), "IPI extension is implemented");
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +static void check_sbi_050(void)
-> > +{
-> > +	report_prefix_push("SBI_050");
-> > +
-> > +	if (cpu_has_extension(smp_processor_id(), ISA_SSAIA)) {
-> > +		report_skip("Ssaia is present, RFENCE is not mandated");
-> > +		report_prefix_pop();
-> > +		return;
-> > +	}
-> > +
-> > +	report(sbi_probe(SBI_EXT_RFNC), "RFENCE extension is implemented");
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +static void check_sbi_060(void)
-> > +{
-> > +	int cpu =3D smp_processor_id();
-> > +	bool skip =3D true;
-> > +	bool has_ext;
-> > +
-> > +	report_prefix_push("SBI_060");
-> > +
-> > +	has_ext =3D cpu_has_extension(cpu, ISA_SMCSRIND);
-> > +	if (!has_ext)
-> > +		report_info("Smcsrind is not present");
-> > +	skip &=3D has_ext;
-> > +
-> > +	has_ext =3D cpu_has_extension(cpu, ISA_SSCSRIND);
-> > +	if (!has_ext)
-> > +		report_info("Sscsrind is not present");
-> > +	skip &=3D has_ext;
-> > +
-> > +	has_ext =3D cpu_has_extension(cpu, ISA_SMCDELEG);
-> > +	if (!has_ext)
-> > +		report_info("Smcdeleg is not present");
-> > +	skip &=3D has_ext;
-> > +
-> > +	has_ext =3D cpu_has_extension(cpu, ISA_SSCCFG);
-> > +	if (!has_ext)
-> > +		report_info("Ssccfg is not present");
-> > +	skip &=3D has_ext;
-> > +
-> > +	if (skip) {
-> > +		report_skip("Smcsrind, Sscsrind, Smcdeleg and Ssccfg are present, PM=
-U is not mandated");
-> > +		report_prefix_pop();
-> > +		return;
-> > +	}
-> > +
-> > +	report(sbi_probe(SBI_EXT_PMU), "PMU extension is implemented");
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +static void check_sbi_070(void)
-> > +{
-> > +	report_prefix_push("SBI_070");
-> > +
-> > +#ifdef CONFIG_EFI
-> > +	if (!dt_available()) {
-> > +		struct spcr_descriptor *spcr;
-> > +
-> > +		spcr =3D find_acpi_table_addr(SPCR_SIGNATURE);
-> > +		if (spcr) {
-> > +			report_info("SPCR interface type is %#x", spcr->interface_type);
-> > +			if (spcr->interface_type =3D=3D 0x15) {
-> > +				report(sbi_probe(SBI_EXT_DBCN), "DBCN extension is implemented");
-> > +				report_prefix_pop();
-> > +				return;
-> > +			}
-> > +			report_skip("SPCR interface type is not 0x15, DBCN is not mandated"=
-);
-> > +			report_prefix_pop();
-> > +			return;
-> > +		}
-> > +		report_skip("SPCR is not present, DBCN is not mandated");
-> > +		report_prefix_pop();
-> > +		return;
->=20
-> nit: could use a goto to get rid of the repeated
->=20
-> =C2=A0 report_prefix_pop();
-> =C2=A0 return;
->=20
-> lines.
->=20
-> > +	}
-> > +#endif
-> > +	report_skip("ACPI not available, DBCN is not mandated");
-> > +	report_prefix_pop();
-> > +}
-> > +
-> > +int main(int argc, char **argv)
-> > +{
-> > +	report_prefix_push("riscv-brs");
-> > +
-> > +	check_sbi_010();
-> > +	check_sbi_020();
-> > +	check_sbi_030();
-> > +	check_sbi_040();
-> > +	check_sbi_050();
-> > +	check_sbi_060();
-> > +	check_sbi_070();
-> > +
-> > +	return report_summary();
-> > +}
-> > diff --git a/riscv/unittests.cfg b/riscv/unittests.cfg
-> > index 9e9f58d9..990f03db 100644
-> > --- a/riscv/unittests.cfg
-> > +++ b/riscv/unittests.cfg
-> > @@ -22,3 +22,7 @@ groups =3D sbi
-> > =C2=A0[dbltrp]
-> > =C2=A0file =3D isa-dbltrp.flat
-> > =C2=A0groups =3D isa sbi
-> > +
-> > +[riscv-brs]
-> > +file =3D riscv-brs.flat
-> > +groups =3D riscv-brs nodefault
-> > --=20
-> > 2.47.3
-> >=20
->=20
-> Thanks,
-> drew
-drew
-  Sorry, my previous reply went only to you. Resending to the list.
+On Sun, Oct 04, 2026, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    ce1e0223d8ad Merge tag 'devicetree-fixes-for-7.3-2' of git..
+> git tree:       upstream
+> console+strace: https://syzkaller.appspot.com/x/log.txt?x=1353dbf5580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=9d4242cb1c54cdf7
+> dashboard link: https://syzkaller.appspot.com/bug?extid=db7bd0f41c2a7e82d4ba
+> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14cdf6c9580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12cdf6c9580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/217b0c1b14ee/disk-ce1e0223.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/335343cc5803/vmlinux-ce1e0223.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/760ef2f39df0/bzImage-ce1e0223.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+db7bd0f41c2a7e82d4ba@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> r == 0 || r == -EIO
+> WARNING: arch/x86/kvm/../../../virt/kvm/kvm_main.c:4389 at kvm_vcpu_pre_fault_memory+0x45d/0x470 virt/kvm/kvm_main.c:4389, CPU#1: syz-executor267/8523
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 8523 Comm: syz-executor267 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/16/2026
+> RIP: 0010:kvm_vcpu_pre_fault_memory+0x45d/0x470 virt/kvm/kvm_main.c:4389
+> Code: fe ff ff e8 85 2e 88 00 90 0f 0b 90 e9 0d ff ff ff e8 77 2e 88 00 e8 42 85 f3 ff eb 8f e8 6b 2e 88 00 eb 05 e8 64 2e 88 00 90 <0f> 0b 90 e9 a7 fe ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90
+> RSP: 0018:ffffc900024dfc28 EFLAGS: 00010293
+> RAX: ffffffff813fe025 RBX: ffffc900024dfe00 RCX: ffff88807fcc0000
+> RDX: 0000000000000000 RSI: ffffffff8eaf6510 RDI: fffffffffffffffb
+> RBP: dffffc0000000000 R08: ffff88807fcc0000 R09: 0000000000000002
+> R10: fffffffffffffffb R11: 0000000000000000 R12: ffffc900024dfe00
+> R13: ffff88807fcc0000 R14: 1ffff1100ff98000 R15: fffffffffffffffb
+> FS:  00007f9c411186c0(0000) GS:ffff888124dc7000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f9c4116312d CR3: 0000000026a4a000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  kvm_vcpu_ioctl+0x8a6/0xfd0 virt/kvm/kvm_main.c:4668
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f9c4118db49
+> Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d0 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f9c411181d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 00007f9c4123bb88 RCX: 00007f9c4118db49
+> RDX: 0000200000000100 RSI: 00000000c040aed5 RDI: 0000000000000005
+> RBP: 00007f9c4123bb80 R08: 38203a6b63617473 R09: 38203a6b63617473
+> R10: 38203a6b63617473 R11: 0000000000000246 R12: 00007f9c4120b858
+> R13: 0000200000000118 R14: 0000200000000100 R15: 0000200000000600
+>  </TASK>
+
+#syz test
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 108d42c5c1d6..31aba0c6f883 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4386,10 +4386,7 @@ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 		}
+ 
+ 		r = kvm_arch_vcpu_pre_fault_memory(vcpu, range);
+-		if (WARN_ON_ONCE(r == 0 || r == -EIO))
+-			break;
+-
+-		if (r < 0)
++		if (WARN_ON_ONCE(!r) || r < 0)
+ 			break;
+ 
+ 		range->size -= r;
 
