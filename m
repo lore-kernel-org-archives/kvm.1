@@ -1,60 +1,86 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27CD2E719B;
-	Tue,  6 Oct 2026 03:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B3731E82B
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 03:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791257272; cv=none; b=j7oY+07a6k4tG86zRjEAwThgUJW2M4ktxzhqVpTERmMyiH4ZD2AQXIFrlfSvNsbuFMAj/7uODieOmkHJCqqb/I6okrkoKsnfVddd7A1iR2rz+K9gheSdRhNCwAmmhtnPaGPA66A6rAzI2Htf+2rxNe58uc+J578OoserMkbirBU=
+	t=1791258174; cv=none; b=O6ifFyTHBeaY/EA9a8RryLmOkilG1SoEgOsR4MF4eYpvyJ3UwQVYLAI/y57L75x2/GBYxkBvXenqMOUEQ1Q8jpwy3O0aqs1/bjncj7Pqm35LivLd21W1Ddwemo4AnjuQt+qjNzZUTPE4vVe0PVsE2dM/eg/hG0iTkAx0Vn+rviM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791257272; c=relaxed/simple;
-	bh=UC1y/SJZ04sdQPQMl5rNLHky3N/saXcS6OaAx6C6r24=;
+	s=arc-20240116; t=1791258174; c=relaxed/simple;
+	bh=ewL6r4+WUG3zvSaf1v33KUoNnFiMKovzld70FKrMj7E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iE8rhTqn6N9TEmY4FBjXtd9uuYDOsbPmcyXi8b3wbp0nDEgtqJCwlb2PMztiJhpD17OrtqPNQkJbFS2flx5EHBHkJDdNyeGJTsviqY903IaYV4o+KDeHzj3ycFJyLzNiBps/PJPwCfWMdnarmWLc9Nve/sWgEJZ4q+5OZaIAyeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IvuHiY9a; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=NF8jhjeaekLhWys7rd1gTopxFdL72NM6IDsJacx/ADkPrsCTuqbnxDYYgwQBe6CkzBdYxHcTLbzJqo4g6OzsMuFDJn2pPPKn2V0TTAC5YTfdUKsG5IaTJw17TZef/7ztfYKnJjhNfvHPHajXAv2kMfHhzzKrsDpXVa+zM5y8eb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SzSL4ZVt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=l/NTFriw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IvuHiY9a"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695HZju91257718;
-	Tue, 6 Oct 2026 03:27:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0lBM0v
-	UcupH/Y5YqGK9t8/tFQRI3XfjB4q1QDdrszOc=; b=IvuHiY9aXOdgNLogatOE3m
-	UfSlFo63cZLFOvhQYSYA2tRUryUUXOryRlndVIAJ/PIVZElKBZa83DBpBCDkMKEv
-	7JJ/bKS1kTf+5i+neLCNdWMX/3iZUB66k0TEWQfozDHi6LJipRcXEkABIrKI+FDq
-	8H/+uVH864z0TqoRS2hMeHwKln0VtFItsltCJVHweilsYiQd+eQnNyZmf6Ng1esk
-	oBHOa33VbfOVDLAUddk8htd+avEJtbzyWF25jBpDdRVVdyauFC8+WxDeU7hoFWp9
-	zvyMP+6YZ15j+orsKR2EJFv0X9tHF+obEXqxz9304Z740JPQwuNpaipGm7C41B2A
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5dphe-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 06 Oct 2026 03:27:34 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6963HV4u3924960;
-	Tue, 6 Oct 2026 03:27:33 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3dhgr5ar-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Oct 2026 03:27:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6963RSfU48497038
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Oct 2026 03:27:29 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA88820043;
-	Tue,  6 Oct 2026 03:27:28 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 99B3220040;
-	Tue,  6 Oct 2026 03:27:24 +0000 (GMT)
-Received: from [9.124.213.110] (unknown [9.124.213.110])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  6 Oct 2026 03:27:24 +0000 (GMT)
-Message-ID: <f5243a5c-a611-43a8-8350-7418b0dfd864@linux.ibm.com>
-Date: Tue, 6 Oct 2026 08:57:23 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SzSL4ZVt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="l/NTFriw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791258172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ciyrU+oMiPwGK5aZ+ysyOdFUKDXGXj8SaQGvfUaxVI=;
+	b=SzSL4ZVtnOgWxgW+Sc8lI62BiquJcdntraIk3q9uipWIi34VW7vRyMReJCU8dCG8aSmqzk
+	tY46IQbhQvZwkzx/TgSO8wSAn460BlQEnqxrxXtHwf1jHoSMF/L7VClKwXMD489RkJwZHO
+	BhO5d2puaTfidFgHmOMUmwmkI19aRAk=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-qgDilz9UMQOy37SPA5oHpA-1; Mon, 05 Oct 2026 23:42:50 -0400
+X-MC-Unique: qgDilz9UMQOy37SPA5oHpA-1
+X-Mimecast-MFC-AGG-ID: qgDilz9UMQOy37SPA5oHpA_1791258170
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38dbf293831so4343870a91.3
+        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 20:42:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791258170; x=1791862970; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6ciyrU+oMiPwGK5aZ+ysyOdFUKDXGXj8SaQGvfUaxVI=;
+        b=l/NTFriwGYNqvbzSsEhrRb5pT92oYAe8m38nGoUynJ3SxlOc44z7k8eiUyippkEIIK
+         eXDElz3kIK9f6yCKQpIHdhU1nY31QRO3M4E6zTlbS+FQ0E8JUmAcDzuw1zlExnrPx/2Q
+         EZep/wv6uSm/Ogs4lOJGvYd1awH/QchBy2SfCIGWkLE75sXIzi27XAQsK9QcJ5077F/w
+         pBabnIcUWh3MjvuPrNV/Sa47pXRis8YGh3nb7UCtOc4x/0LXEXYYXKhKBONk77toVzeR
+         wp2SFc5QBvvIE4X4q/9uq+B2q90oT2PMY9fwWTwTGtsxH6CEr2+dDJdNOYaR9zCffROq
+         7+aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791258170; x=1791862970;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6ciyrU+oMiPwGK5aZ+ysyOdFUKDXGXj8SaQGvfUaxVI=;
+        b=uMmfHEK8MX33la0b+iCKAUB9fyTlao+9WUwPJd6qQ3WxaQ13jzxIR3IfJ/2R5GPehO
+         QietGEol/Eha5gYXt20S0jGM00Jn7/0EnXw9y+Ia2cZBiKwWChFwzo6CNcglXzHupUnd
+         FBiO5PvhuPikyePpf3bd8ciX+F2jUCZUB9/BzRDvlDKeldkjkSZgz4N32slxDwxEWU5R
+         ZRy2gAzRcvlD714u5iknDPXtAIdBz2x88fs8Eo6BO1Kq8T0n+50pvcSQx533IOeh7yzu
+         nblMcMs1mn3Ee0Ygi3bZCsIYkDdGarI67EsDVlgztxVz8hsM7UCAjQUAKl/eR2/J4Roi
+         K6ww==
+X-Forwarded-Encrypted: i=1; AKwUvByBxlnvLkcZ0L4G1TEvdmc4w3Uzdk6Fp1bim5xgQ6l0kIkROKg5EDnYSexlCBG1f85FxQU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK81FeCQwpuiGgHUe99+xtYztlNKKhlfQ6XbOkB71uAQaVqf5Ec
+	fcfiiXm3rWWAMeGEu5cbXKmhxTBBqtc93CjNXzp5DCj23O8tDX3ToBBoWumSvsnAPikxH/orMH4
+	g/V1pCZyYkcpkAxt6vkRj69mE+qTnhCqVeEE8aARPxA4vpionw33Sfw==
+X-Gm-Gg: AYBFou1LSkAV/r3ISBi2rMvt6wimTg9npj8ZtvdHbXvkpuXe+KUHZqTjLXXDc1WJBpn
+	RXx8vs2YgBYVQ7LLUYGGJgWzcGlUQb95YIa0QtFOhVCsgu1xtvvMuXi0nFNq18nixu5z+aRADYL
+	zIDOKF9dYFokLalrLcQqGDQcWPwoVD02p6Sr1SMFG/qUtNS1YCG2HHgXAz9Gi5XqITdp49utVVN
+	+jwsZX55Kr78mWE+4qgxNC2OtM8wRHahateCo1oaYdUUA8vUz8FAPQBPUWU0hrVe9UNQpqq3Nia
+	AxIhcnShjP1BliYE1PoO5CTIgsj1T3vVa2N7ctxUb+m0eUMfZPkkvvM0y759awLr8r8irMhIDf1
+	hon/T2e2vuV6JkBec6qNJSdj05xqCUA57cNWrVL/94g==
+X-Received: by 2002:a17:90b:2886:b0:3a8:2c7e:8986 with SMTP id 98e67ed59e1d1-3a82c7e90c0mr3024690a91.17.1791258169456;
+        Mon, 05 Oct 2026 20:42:49 -0700 (PDT)
+X-Received: by 2002:a17:90b:2886:b0:3a8:2c7e:8986 with SMTP id 98e67ed59e1d1-3a82c7e90c0mr3024671a91.17.1791258168948;
+        Mon, 05 Oct 2026 20:42:48 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a7e4b00de6sm5567281a91.1.2026.10.05.20.42.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Oct 2026 20:42:47 -0700 (PDT)
+Message-ID: <9bbb3b3c-522f-4deb-9f32-0fcf731dd0bb@redhat.com>
+Date: Tue, 6 Oct 2026 13:42:38 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,108 +88,326 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] KVM: PPC: Fix get_d_signext() 12-bit displacement
- for paired-single D-form
-To: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman
- <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        R Nageswara Sastry <rnsastry@linux.ibm.com>,
-        Alexander Graf <agraf@suse.de>, linux-hardening@vger.kernel.org,
-        stable@vger.kernel.org, Avi Kivity <avi@redhat.com>
-References: <20260930173750.56759-1-amachhiw@linux.ibm.com>
- <20260930173750.56759-4-amachhiw@linux.ibm.com>
+Subject: Re: [PATCH v22 18/23] KVM: arm64: CCA: Introduce Realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+ <20261005090754.2140522-19-suzuki.poulose@arm.com>
 Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <20260930173750.56759-4-amachhiw@linux.ibm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20261005090754.2140522-19-suzuki.poulose@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA2MDAxMiBTYWx0ZWRfX3ObukXk0g2oB
- cUQXCoIBNSF/qFooWLyuauD0+zVH+11FE0mTaPvdVcrlpD7APOvS/yvtAIBsj2aFz9irCFDp74v
- Bx5C1F9ylkIl1low78ONPxodZOLhXaM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA2MDAxMiBTYWx0ZWRfX406dayzh01wP
- 3GlwoVlzfyWnsf802olNfZqRvbPQ2oPgy8s7fuz139p9OBXT69s/7XIj4vY7F0gwEJroEmu4h67
- aGuHXGopq1uMlWy0NXmwrhK7vBdnR+FqeCJ4DBa8v1N+SDd67s+LxUJiABPVWUddbQp88/t1Yju
- mCwNP7IznH4evBiu8usaa5YOeohylx0XiExnA+448fVY/+4yu2NBae0zKhOy/WNpb6ovkaX8Jvz
- lpXEhiBfFIaOgmvW1JZ6Kavgm+jbaBnUMq53uCtBLO2bpfcoBgkq5lsaEwyLiQkKFHzgRBoVBF3
- Ti+4Zj38jFVbTN06xExkpPaAs2LkuYmUeDs4fV5GcsiiDsYGqszQ8C5SQRqaSMBGYX2yxfpHzVu
- PkjfLjGm4qP3A84ou/x6cfZQhzAu4gfwEcKRG0rbMFz0B5EJLPN/ustnXCGK1S8Tjboztg9C06K
- vIxjbBQ8M16B+jqYj2Q==
-X-Proofpoint-GUID: rOW8sFFNC8rKqa3XTsPI_t-ZQX-Mrsuy
-X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac46aa6 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=WMBJgkUnEH5UdlDH4cMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: PFNW8yP3hAGxY9v5rrxxnGVNiHZyOODw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_05,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610060012
+Content-Transfer-Encoding: 7bit
 
-
-
-On 9/30/26 11:07 PM, Amit Machhiwal wrote:
-> get_d_signext() has two compounding bugs since its introduction in 2010:
+On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
+> From: Steven Price <steven.price@arm.com>
 > 
-> 1. The extraction mask 0x8FF silently drops bits 8-10 of the 12-bit D
->     field (PPC ISA bits 21-23), corrupting any displacement that has any
->     of those bits set.
+> Add foundational work for supporting Realms.
+>   - Add a new VM flavor.
+>   - At KVM init, check if the KVM can support Realms (though not functional
+>     yet) and will be advertised by static key kvm_rmi_is_available. This
+>     will be turned on in a later patches, once we have all the bits and
+>     pieces ready. For now check if we are blessed with KVM_MODE_RMM.
+>   - Add realm specific tracking in kvm_arch. Since Realm and protected pKVM
+>     states are mutually exclusive, move them into a union.
 > 
-> 2. The sign-magnitude idiom "-(d & 0x7ff)" is wrong for two's-complement:
->     for D=0xFFC (encoding of -4) it returns -252 instead of -4.
+> Please note that we cannot create Realm VMs yet. This requires further
+> changes to the UABI and core RMI driver support, which will come later.
 > 
-> Together these errors produce a wrong effective address for psq_l, psq_lu,
-> psq_st, and psq_stu whenever the displacement is negative or is a positive
-> value >= 0x100 with bits 8-10 set — essentially any real-world paired-
-> single stack-relative access.
-> 
-> The D field occupies the bottom 12 bits of the instruction word (confirmed
-> by the adjacent W and I extractions via inst_get_field(inst,16,16) and
-> inst_get_field(inst,17,19)). Replace the open-coded logic with the standard
-> sign_extend32(inst & 0xfff, 11), which correctly performs two's-complement
-> sign extension from 12 bits to 32 bits.
-> 
-> Fixes: 831317b605e7 ("KVM: PPC: Implement Paired Single emulation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->   arch/powerpc/kvm/book3s_paired_singles.c | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
+>   arch/arm64/include/asm/kvm_emulate.h | 16 ++++++++
+>   arch/arm64/include/asm/kvm_host.h    | 19 ++++++---
+>   arch/arm64/include/asm/kvm_rmi.h     | 61 ++++++++++++++++++++++++++++
+>   arch/arm64/include/asm/virt.h        |  1 +
+>   arch/arm64/kvm/Makefile              |  2 +-
+>   arch/arm64/kvm/arm.c                 |  6 +++
+>   arch/arm64/kvm/mmu.c                 |  1 +
+>   arch/arm64/kvm/rmi.c                 | 18 ++++++++
+>   8 files changed, 118 insertions(+), 6 deletions(-)
+>   create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+>   create mode 100644 arch/arm64/kvm/rmi.c
 > 
-> diff --git a/arch/powerpc/kvm/book3s_paired_singles.c b/arch/powerpc/kvm/book3s_paired_singles.c
-> index bc39c76c9d9f..532f96293de0 100644
-> --- a/arch/powerpc/kvm/book3s_paired_singles.c
-> +++ b/arch/powerpc/kvm/book3s_paired_singles.c
-> @@ -479,12 +479,7 @@ static bool kvmppc_inst_is_paired_single(struct kvm_vcpu *vcpu, u32 inst)
->   
->   static int get_d_signext(u32 inst)
->   {
-> -	int d = inst & 0x8ff;
-> -
-> -	if (d & 0x800)
-> -		return -(d & 0x7ff);
-> -
-> -	return (d & 0x7ff);
-> +	return sign_extend32(inst & 0xfff, 11);
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index a3c1928bdf743..d360a8b05b8bf 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -793,4 +793,20 @@ static inline void kvm_reset_vcpu_psci(struct kvm_vcpu *vcpu,
+>   	vcpu_set_reg(vcpu, 0, reset_state->r0);
 >   }
 >   
->   static int kvmppc_ps_three_in(struct kvm_vcpu *vcpu, bool rc,
+> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+> +{
+> +	return READ_ONCE(kvm->arch.realm.state);
+> +}
+> +
+> +static inline void kvm_set_realm_state(struct kvm *kvm,
+> +				       enum realm_state new_state)
+> +{
+> +	WRITE_ONCE(kvm->arch.realm.state, new_state);
+> +}
+> +
+> +static inline bool kvm_realm_is_created(struct kvm *kvm)
+> +{
+> +	return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+> +}
+> +
+>   #endif /* __ARM64_KVM_EMULATE_H__ */
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index dfa9d4ec61a76..3debffef638a4 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -27,6 +27,7 @@
+>   #include <asm/fpsimd.h>
+>   #include <asm/kvm.h>
+>   #include <asm/kvm_asm.h>
+> +#include <asm/kvm_rmi.h>
+>   #include <asm/vncr_mapping.h>
+>   
+>   #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+> @@ -334,6 +335,7 @@ enum kvm_arm_vm_flavor {
+>   	VM_PKVM,		/* Normal guests on pKVM */
+>   	MARKER(__VM_PROTECTED),
+>   	VM_PROTECTED_PKVM,	/* Protected VM */
+> +	VM_REALM,		/* CCA */
+>   	VM_FLAVOR_MAX
+>   };
+>   
+> @@ -450,11 +452,14 @@ struct kvm_arch {
+>   	/* Count the number of VNCR_EL2 TLBs */
+>   	atomic_t vncr_tlb_count;
+>   
+> -	/*
+> -	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+> -	 * the associated pKVM instance in the hypervisor.
+> -	 */
+> -	struct kvm_protected_vm pkvm;
+> +	union {
+> +		/*
+> +		 * For an untrusted host VM, 'pkvm.handle' is used to lookup
+> +		 * the associated pKVM instance in the hypervisor.
+> +		 */
+> +		struct kvm_protected_vm pkvm;
+> +		struct realm realm;
+> +	};
+>   
+>   #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+>   	/* Nested virtualization info */
+> @@ -1565,6 +1570,10 @@ struct kvm *kvm_arch_alloc_vm(void);
+>   		(__kvm && kvm_vm_is_protected_pkvm(__kvm));		\
+>   	})
+>   
+> +
+> +#define kvm_vm_is_realm(kvm)		((kvm)->arch.vm_flavor == VM_REALM)
+> +#define vcpu_is_rec(vcpu)		kvm_vm_is_realm((vcpu)->kvm)
+> +
 
-If the intent was just to get the signed value based on bit11 (0 based index)
-then patch looks right.
+vcpu_is_rec() isn't safely called in nVHE hyp stub. So do we need add something
+similiar to what we had for vcpu_is_protected(vcpu) in PATCH[05]?
 
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+#ifdef __KVM_NVHE_HYPERVISOR__
+/* vcpu_is_rec() isn't expected to called in nVHE hyp stub */
+#define vcpu_is_rec(vcpu)	BUILD_BUG_ON(1)
+#else
+#define vcpu_is_rec(vcpu)	kvm_vm_is_realm((vcpu)->kvm)
+#endif
+
+
+>   #define kvm_vm_hyp_is_distrusting(kvm)	((kvm)->arch.vm_flavor >= __VM_DISTRUSTING_HYP)
+>   
+>   int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> new file mode 100644
+> index 0000000000000..44f5c75a27b5b
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -0,0 +1,61 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2023-2026 ARM Ltd.
+> + */
+> +
+> +#ifndef __ASM_KVM_RMI_H
+> +#define __ASM_KVM_RMI_H
+> +
+> +/**
+> + * enum realm_state - State of a Realm
+> + *
+> + * Mirrors the RMM's Realm lifecycle states where they are meaningful to KVM,
+> + * with REALM_STATE_DYING being a KVM-internal state used to prevent further
+> + * requests while teardown is in progress. KVM does not track REALM_SYSTEM_OFF
+> + * or REALM_ZOMBIE separately as they naturally lead to teardown.
+> + */
+> +enum realm_state {
+> +	/**
+> +	 * @REALM_STATE_NONE:
+> +	 *      Realm has not yet been created. rmi_realm_create() has not
+> +	 *      yet been called.
+> +	 */
+> +	REALM_STATE_NONE,
+> +	/**
+> +	 * @REALM_STATE_NEW:
+> +	 *      Realm is under construction, rmi_realm_create() has been
+> +	 *      called, but it is not yet activated. Pages may be populated.
+                                                      ^^^^^
+Granule instead of page is the term applicable to RMM. Lets use a generic
+term 'memory' here. Also, lets mention the name of the function used to
+populate the memory (granules), which is consistent to the comments for
+REALM_STATE_ACTIVE.
+
+	Memory may be populated by rmi_rtt_data_map_init().
+
+
+> +	 */
+> +	REALM_STATE_NEW,
+> +	/**
+> +	 * @REALM_STATE_ACTIVE:
+> +	 *      Realm has been created and is eligible for execution with
+> +	 *      rmi_rec_enter(). Pages may no longer be populated with
+> +	 *      rmi_data_create().
+> +	 */
+> +	REALM_STATE_ACTIVE,
+
+rmi_data_create() is an invalid function name.
+
+	Memory can't longer be populated using rmi_rtt_data_map_init().
+
+> +	/**
+> +	 * @REALM_STATE_DYING:
+> +	 *      Realm is in the process of being destroyed or has already been
+> +	 *      destroyed.
+> +	 */
+> +	REALM_STATE_DYING,
+> +	/**
+> +	 * @REALM_STATE_DEAD:
+> +	 *      Realm has been destroyed.
+> +	 */
+> +	REALM_STATE_DEAD
+> +};
+> +
+> +/**
+> + * struct realm - Additional per VM data for a Realm
+> + *
+> + * @state: The lifetime state machine for the realm
+> + */
+> +struct realm {
+> +	enum realm_state state;
+> +};
+> +
+> +void kvm_init_rmi(void);
+> +
+> +#endif /* __ASM_KVM_RMI_H */
+> diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/virt.h
+> index b546703c3ab9a..92cec42952f42 100644
+> --- a/arch/arm64/include/asm/virt.h
+> +++ b/arch/arm64/include/asm/virt.h
+> @@ -87,6 +87,7 @@ void __hyp_reset_vectors(void);
+>   bool is_kvm_arm_initialised(void);
+>   
+>   DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
+> +DECLARE_STATIC_KEY_FALSE(kvm_rmi_is_available);
+>   
+>   static inline bool is_pkvm_initialized(void)
+>   {
+> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> index 59612d2f277c1..ed3cf30eb06e7 100644
+> --- a/arch/arm64/kvm/Makefile
+> +++ b/arch/arm64/kvm/Makefile
+> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
+>   kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>   	 inject_fault.o va_layout.o handle_exit.o config.o \
+>   	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
+> -	 vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+> +	 vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
+>   	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+>   	 vgic/vgic.o vgic/vgic-init.o \
+>   	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 294cea4cc8271..37ef2ba4e43e2 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -42,6 +42,7 @@
+>   #include <asm/kvm_nested.h>
+>   #include <asm/kvm_pkvm.h>
+>   #include <asm/kvm_ptrauth.h>
+> +#include <asm/kvm_rmi.h>
+>   #include <asm/sections.h>
+>   #include <asm/stacktrace/nvhe.h>
+>   
+> @@ -112,6 +113,8 @@ long kvm_get_cap_for_kvm_ioctl(unsigned int ioctl, long *ext)
+>   	return -EINVAL;
+>   }
+>   
+> +DEFINE_STATIC_KEY_FALSE(kvm_rmi_is_available);
+> +
+>   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
+>   
+>   DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_base);
+> @@ -2239,6 +2242,7 @@ static const struct kvm_vcpu_ops *arm64_vcpu_ops[] = {
+>   	KVM_VCPU_OPS(VM_VHE, vhe_vcpu_ops),
+>   	KVM_VCPU_OPS(VM_PKVM, pkvm_vcpu_ops),
+>   	KVM_VCPU_OPS(VM_PROTECTED_PKVM, pkvm_vcpu_ops),
+> +	KVM_VCPU_OPS(VM_REALM, realm_vcpu_ops),
+>   };
+>   
+>   static void kvm_init_vcpu_ops(struct kvm_vcpu *vcpu)
+> @@ -3192,6 +3196,8 @@ static __init int kvm_arm_init(void)
+>   
+>   	in_hyp_mode = is_kernel_in_hyp_mode();
+>   
+> +	kvm_init_rmi();
+> +
+>   	if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
+>   	    cpus_have_final_cap(ARM64_WORKAROUND_1508412))
+>   		kvm_info("Guests without required CPU erratum workarounds can deadlock system!\n" \
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 58bc6a85f48b4..697f1ba6667a9 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -2927,6 +2927,7 @@ static const struct kvm_vm_s2_ops *arm64_vm_s2_ops[] = {
+>   	KVM_VM_S2_OPS(VM_NVHE, kvm_default_vm_s2_ops),
+>   	KVM_VM_S2_OPS(VM_PKVM, pkvm_vm_s2_ops),
+>   	KVM_VM_S2_OPS(VM_PROTECTED_PKVM, protected_pkvm_vm_s2_ops),
+> +	KVM_VM_S2_OPS(VM_REALM, realm_vm_s2_ops),
+>   };
+>   
+>   static int kvm_vm_init_vm_s2_ops(struct kvm *kvm)
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> new file mode 100644
+> index 0000000000000..5ecc8b3498698
+> --- /dev/null
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023-2026 ARM Ltd.
+> + */
+> +
+> +#include <linux/kvm_host.h>
+> +
+> +#include <asm/virt.h>
+> +
+> +void kvm_init_rmi(void)
+> +{
+> +	if (kvm_get_mode() != KVM_MODE_RMM)
+> +		return;
+> +
+> +	/* TODO: Check if the RMI is available */
+> +
+> +	/* Future patch will enable static branch kvm_rmi_is_available */
+> +}
+
+Thanks,
+Gavin
+
