@@ -1,114 +1,109 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6404282F05
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 05:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DE5199947;
+	Tue,  6 Oct 2026 05:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791264191; cv=none; b=qEoWEUAjqlNQNn1x44kUVoQXcRf3XgCWtWFiIpwtI3l74YKooA2QkRGUxySGdqod9BPcUjThSEyIUYQz/wHxN6wOjT2dWb6rgtZeeOKj/OXdEvGBWbbvNbrC3tFI9oSLV2v/XVC0aMFP6HwHrjkFE3LJf+1FthK2eqEDMlVEML4=
+	t=1791264364; cv=none; b=KBck3+qy4F6Vdld/Vp2gLo+NjX73lKga5kJ5+ZJkwJqJ3pbEWVLxQl0b7Je+dg+p1ugbaGGrYtHcOON4T+HQZeAlPHyK1XiVc7ry/D9E9L1e4qXZHuBWOQKJOWDGYcqWRN/QmLBKa9UiflasdfcBBvFdIbeKXSVqVSqk6nZCJUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791264191; c=relaxed/simple;
-	bh=5CvX4CaLAI1cl5Ua4CFmGWcyr0aXnSoTcPE3NaoLL2E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kzZ+zGtJRExdRYcX3Vei4icjTfa6F6hMyOrZXMZpzHffjaXiED7aihFPck2+dHPFzBjl6DB0wAFrPmYjWbJrZb38iEEiWhdKKL/oKLWl2G3LQf0nHEPFFzxs3/iX5A1oxPkbEbfan9BymH0jA1oWL14/ffzRtal1EKuwav5LCkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V2zPOYjU; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1791264364; c=relaxed/simple;
+	bh=T27n/CS63jvcAJPIpOTMHb6o5n0o35jyMs3J5GrsRf0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LCI+w3NFhg2NHEUcArtvhfT5PQHUO4ULWXTkuscPnxfmstUQ/OOChb2xk/XJkiGzwRiGS6MkMbFNiBFCzUybyDRO/3RqgrMfEn4gp2rK3ryoPAkKrLuLcUKAIYH0MUGXGU4LbD0G3l4RFWHzrT8u6enf/kKuKPiSAf8Mp9B2grQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZOHKzYey; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V2zPOYjU"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-395543dc382so2489806a91.0
-        for <kvm@vger.kernel.org>; Mon, 05 Oct 2026 22:23:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791264190; x=1791868990; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ayb5/D9Gva1Fg3zHF+BlyoDquA39jM9u/UjlBSYX5c4=;
-        b=V2zPOYjUtPMOnmXGNST0GoXI/9qIV/2tNWiDIJqWuKuSgDXWCuCh0XKESnSHBAJZzI
-         4aa+q90B/eWJuh/qq7ohKc9O4ftQAJydwIjWFL/JvVTZkr3ocNmliBtXgyGY3ZaYCH1p
-         oW80c85Eja0DdPUci7QfQgFx4OIABykHi0QMcuN1z/We6mR4290jhoxhYkUr1jNkX4Xn
-         +dDO+BgGOvrA/BT6TInKa/gWCa8WHEUrkyYNYfh7/BDjQVHjgmidKTaLTWPjqhyXtsWx
-         /OVv44hi/zMWTIIL9aX8fUZZPKU+60gITDZtVlmGHVB64I5hgATUE2/AVadobPL2eYxv
-         y2ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791264190; x=1791868990;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ayb5/D9Gva1Fg3zHF+BlyoDquA39jM9u/UjlBSYX5c4=;
-        b=AOKZhD2/RUFJUYglO5o798KamAcLFcQToC4pFIOaHJdqzaHRsdpoL7FmuJcQhmmTq+
-         tLF+Awf8MoT6JqkFqPpJTZki98XgEjylMwTTsYaC1MrIMvLzGqVdTZXtUdXsYamarnrY
-         9P2JrA5zB6gtl42AkI0DOgO/KlG8RUsKnHYd0NmTnUf0dn4raFCPXvUspDy7sd0edOc7
-         bbAelNBXgEur6wODggP8K7bjOWLCpP63npXEYl2yWzB86WJilh71ryZXARogoo6bX5Ys
-         +Gctd8Ke9MrumOHzcD7gVpmQ1opRwVL4H5RgD3lsRkrw2K5A6L8650/7stqtk6rjxd9Z
-         rS/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwoGFIAkRg8Mx0ReQrha8iIcRjBZ9SN3YLaxemXUGaZve2PKr5YGPF+oleHqvagGn+reaE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJmMpAV9h+CP/XB/Yk/U/IXYLjt3o+OLuFBEdkriwPoVkJyu2gb
-	XEv03Xs6Fg1STYgB065ZcFgjKAuvYtK15vKI/Gtr0WgTo+IWG8639QgT5m1OxdOXFzMCJNR9v0d
-	uEmFqDg==
-X-Received: from pjbgw6.prod.google.com ([2002:a17:90b:a46:b0:3a2:ae7b:1cbe])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1846:b0:3a0:c276:1ec2
- with SMTP id 98e67ed59e1d1-3a873505c1bmr107106a91.19.1791264189395; Mon, 05
- Oct 2026 22:23:09 -0700 (PDT)
-Date: Mon, 5 Oct 2026 22:23:08 -0700
-In-Reply-To: <20261005192010.66037-1-hmushi@amazon.co.uk>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZOHKzYey"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9664C143D;
+	Mon,  5 Oct 2026 22:25:59 -0700 (PDT)
+Received: from [10.57.10.233] (unknown [10.57.10.233])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 047533F763;
+	Mon,  5 Oct 2026 22:25:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791264363; bh=T27n/CS63jvcAJPIpOTMHb6o5n0o35jyMs3J5GrsRf0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZOHKzYeyr5pX4PXgwPjbv5swyyCShOtBM3F7PorhIUACLRNa6afD1gd34KGVUSMvH
+	 yLeH9ABhsdHbazhWnOJyZOKqaqIJpYxADcWkcM6mFFw8TPBJCbMKFzVVINsbqd8vR9
+	 rV+VBMmlOlhIWlwrbiUTNkzXXfJkUZ5+22UDGmVk=
+Message-ID: <32f0b0f6-bea4-49b1-a735-f9786cfc6e52@arm.com>
+Date: Tue, 6 Oct 2026 07:25:57 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261005192010.66037-1-hmushi@amazon.co.uk>
-Message-ID: <asSFvLmurPm2O8wY@google.com>
-Subject: Re: [PATCH] KVM: x86/mmu: Fail nested EPT walks for GPAs beyond the
- EPT width
-From: Sean Christopherson <seanjc@google.com>
-To: Mushahid Hussain <hmushi@amazon.co.uk>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nh-open-source@amazon.com, mushi.shar@gmail.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v22 13/23] KVM: arm64: Abstract out memory abort handling
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261005090754.2140522-1-suzuki.poulose@arm.com>
+ <20261005090754.2140522-14-suzuki.poulose@arm.com>
+ <d8bdfcaf-3b4f-4ab1-9b73-597c60bbb60b@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <d8bdfcaf-3b4f-4ab1-9b73-597c60bbb60b@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 05, 2026, Mushahid Hussain wrote:
-> Fail the nested EPT walk when the L2 guest-physical address has bits
-> above the width of L1's EPT. The width is 48 bits for a 4-level EPT
-> and 57 bits for a 5-level EPT. Report no RWX bits in the exit
-> qualification, as for a translation that no table entry provides. L1
-> then handles the EPT violation itself.
+On 06/10/2026 04:07, Gavin Shan wrote:
+> On 10/5/26 7:07 PM, Suzuki K Poulose wrote:
+>> Move the memory abort handling under VM specific s2 operation.
+>>
+>> Tested-by: Gavin Shan <gshan@redhat.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Changes since v21:
+>>   - Rename protected_vm_mem_abort => protected_pkvm_mem_abort for 
+>> consistency
+>>     with the other callbacks.
+>> ---
+>>   arch/arm64/include/asm/kvm_host.h |  2 ++
+>>   arch/arm64/kvm/mmu.c              | 33 ++++++++++++++++++-------------
+>>   2 files changed, 21 insertions(+), 14 deletions(-)
+>>
 > 
-> Hardware signals an EPT violation for such an address without a table
-> walk.
-
-No, hardware does not do that.  See commit b628cb523c65 ("KVM: x86: Advertise
-max mappable GPA in CPUID.0x80000008.GuestPhysBits").
-
-> KVM's shadow walker instead indexes the tables with PT_INDEX(),
-> which drops the high bits. The walk resolves the aliased address and
-> KVM installs a shadow mapping for the alias. The CPU faults on the
-> original address again, and KVM repeats the walk without end. L1 does
-> not see an EPT violation for the access, and the L2 vCPU is stuck.
+> One nitpick below. In either way:
 > 
-> Any L2 that references an address at or above 2^48 under a 4-level
-> EPT triggers the hang. The easy way to get there is a MAXPHYADDR that
-> differs between L1 and the host. Take L1 MAXPHYADDR 48 on a 52-bit
-> host with KVM's default allow_smaller_maxphyaddr=0.
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-Which isn't supported when allow_smaller_maxphyaddr=0.  And allow_smaller_maxphyaddr=1
-is basically a failed experiment.
+Thanks Gavin !
 
-> A PTE bit that L1 treats as reserved is then valid for the CPU.
-> kvm-unit-tests "access" and "vmx_pf_exception_test", run as L2 under an L1
-> KVM with MAXPHYADDR 48, hang at the first present PTE with bit 51 set.
+...
+
+>> +static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+>> +{
+>> +    struct kvm_vcpu *vcpu = s2fd->vcpu;
+>> +
+>> +    VM_WARN_ON_ONCE(kvm_vcpu_trap_is_permission_fault(vcpu) &&
+>> +            !kvm_is_write_fault(vcpu) &&
+>> +            !kvm_vcpu_trap_is_exec_fault(vcpu));
+>> +
+>> +    if (kvm_slot_has_gmem(s2fd->memslot))
+>> +        return gmem_abort(s2fd);
+>> +    else
+>> +        return user_mem_abort(s2fd);
+>> +}
 > 
-> Fixes: 37406aaaeebc ("nEPT: Add EPT tables support to paging_tmpl.h")
-> Assisted-by: Claude:claude-fable-5.1
-> Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
-> ---
-> Reproducer:
->   L1: KVM, CPUID MAXPHYADDR 48, 4-level EPT.
->   Host: 52-bit MAXPHYADDR, allow_smaller_maxphyaddr=0.
+> The "if...else" block is moved from kvm_handle_guest_abort(), but it 
+> might be
+> clearer if we have:
+> 
+>      if (kvm_slot_has_gmem(s2fd->memslot))
+>          return gmem_abort(s2fd);
+> 
+>      return user_mem_abort(s2fd);
 
-As above, this is an unsupported, invalid configuration.
+This was chosen based on another review comment. So, lets stick with 
+this now.
 
->   L2: kvm-unit-tests "access" and "vmx_pf_exception_test" under QEMU.
->       Both set a PTE with bit 51, which L1 treats as reserved and the
->       CPU treats as an address bit.
+Cheers
+Suzuki
