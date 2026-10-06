@@ -1,300 +1,249 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30AA370AFD
-	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 17:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791307817; cv=none; b=lUZsxOLseZfjxSjE+o9avaJlTOhgj0Ss26bFKGaueEwvz4FqoGOsryIMG9wpdN7NBP1/udCy9f+HeE4E8tqTfrCDZAhxq167ZLOvSH/y3BbIdsj+/E5J8Pj+CY1gUVheRHnympAichMRzrFyhWVDjr16Kjzh5nTX8Ih4r6TZ0FE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791307817; c=relaxed/simple;
-	bh=Ct8VAHl/hM82xbdX47l8wyLUbt6IPB8r2AdW6zNCCa8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ti7PFjlmz3Xx0lYw9/5d2yAw1W/jbvI/NuNHPnOmqXnSlc8vgsbxLbhZ0HjGMvTEQhbYtA2Ak7kL5QWPpQRJ7E3Rgs1iQqXZ3tFi4SJIOUyj91PT/0FKu+u7prT1NKx6jOln9pFt9sa9k9oVQankWeOAhYGVRwEBvykFq9xwaQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=bXx46Z1i; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A8037269C;
+	Tue,  6 Oct 2026 17:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791308876; cv=fail; b=h9x3HEr/Bx9XRFQ8k5/MvI0Qlp8K14N+opJ4KuxTFLdmTRGlJTTyVulv0VOeJCjF7Vm6ALuzuWSxWBDBauvR9Jm8KqW0m6Q/ud5FSLSvgULhYfmM1W7Wf50+BCXZSgibH+7ZN612tqlOaA4UQkWKE+nzOE2mPgLl3R5FoE4oC60=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791308876; c=relaxed/simple;
+	bh=TrE5YxL36yA9qjXFDvr6ge7u94jiqJK0J13k+wUpVwg=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EMvyLQqDh+vibtfh0dfn/UHWN5gjeETRsElt0Oo6lFr47K7lHq8GRrLRLZ2OZhQfZeUWYLb7gTgHh+VlE8vtABubqQ3UcFa3OV21Gg9RGvpGRuBQMk96TInNryVERZOEJKYkEqfUq3A0fgOuzKRQIW3TMoIXVjo2hpFqkceiMBQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P9B3zSEh; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="bXx46Z1i"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hzjv64L8nzMlSt;
-	Tue, 06 Oct 2026 19:30:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1791307810;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GV8jgIcB8pZm9MBhFcBJ5WcCPuYfQK8KFlSYKQxEF8U=;
-	b=bXx46Z1ig/eP8n6dxqpbndXms9m05E4Cnl0e4mbpEle8VNQqc6Z8SeBQQNnx7VFwxLTdTJ
-	ty1u+3fAmX867Vul7K4OBz/wLjwYTgWzg1Si64S4VPun362wzud9n8Dl8QlcCjqnC2k5h1
-	8Xi+npMgF8nh1T/zLaGM7eJWtRU1TspNl1Vde+HwDCB9N9WsEP+oijPhspyrTxX79zlmeF
-	r32121Z6xzArPgeSIVW2MAC7giQ20/Wey/z5Yn4C290DCXV1UphKEry9wRGQZE/D457op3
-	+nJ128EhJKx0dek5r9rG8r/mh6prpSrNfF7UgWI3/Si/e7Mfpn2y1NYGDez8Sg==
-Date: Tue, 6 Oct 2026 19:29:55 +0200
-From: SimonP <simonp.git@mailbox.org>
-To: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-Subject: [REGRESSION 7.2, BISECTED] KVM: x86: Starting Windows guest triggers
- UBSAN: array-index-out-of-bounds
-Message-ID: <asUqYEisPp9MJ8mQ@rika.bernkas.tel>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P9B3zSEh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791308872; x=1822844872;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=TrE5YxL36yA9qjXFDvr6ge7u94jiqJK0J13k+wUpVwg=;
+  b=P9B3zSEhW9LNPdWWqvsRAfgiyyByIjjUZx835oEcHAxDE6P76fLDPrKC
+   3Ywp5pRSBUarUOB+DBgQl7xt+0O38C9yi5x6B1LgI6C4vU7lB7U8bBgJf
+   W+TiO1MLQAYpLcLJrtqmKzEFR5dmskwm6Dc5pBPOJNjbCYJkcE0Yr1JDE
+   EgR5bZS3l0X0hNQNpteGaIoM4CEJMkPkgURRAUb2tFwCCw1BKsdel6PYk
+   TPJ+2Ha4IidnOWj6UEE0WL7L1LQPTFtjcHHksnYpYWzOTnAz14GKqixkf
+   MnHZbtOctoFIaW97nod0l+RBDsavlngjcK75rshtiFM96Nf8aUUOSOz1z
+   Q==;
+X-CSE-ConnectionGUID: Bswu4OyOSQmiEUu6XM/fsA==
+X-CSE-MsgGUID: QAsp+DzqQb+rsYKXhEanHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="102171229"
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+   d="scan'208";a="102171229"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:47:50 -0700
+X-CSE-ConnectionGUID: dkP7RP3HQcWWzn1K7Ih2Pg==
+X-CSE-MsgGUID: AQ/CN+VMTt25XWPS2BTXtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+   d="scan'208";a="282006802"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 10:47:50 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 10:47:49 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 10:47:49 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.63) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 10:47:48 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ICjbMxPI68BxyT8aGCvj7wUPjb8SWGMj4cBwLuVs4EqLuXPAHndlwLbNotCkdbNbQ7BkCWQcHnkHYQBtTNli5GTByzSdEqmcqk2nBFwbkFCWxKLuJcsNeiEvlQqTDCV4gBIUZRKCECLa5x/G7CYHkRS5dZnhH1bPMGdhQXm5HA6U+++YAz9ojKDXu33iqDqJJhiVhGsXTQJUHB/EiO8Cj1cRYergQd32svBs3U/LaJkf9uV0yWdlW7rIFdgtrgw+kw5c0iNHUMBsHdIePtEe2pHJEeFCNAABxqMyLGZhCntHGyE7m0KLPKh2IQUWgO8LoRjDqlFl9gNyDntxnKiS2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2n62hRN7zu6iYDrMx/itdm5A0K2vSZJAT/39D7s8BKI=;
+ b=qib0VNfygg7Tmk7evlIY4glmtzmQ3EARmMNcHtOc5sJxDWllyvQV5DJryxLQbswaCYUrZR5LwLYfq9K8T0hYbxaH6t6N1AdYO+YrddAjHRLSd/Ktg2CqH7y1sns67gCZ74Rwao37WoVYscaigBtVPfwvETa8W9wfcQRAL7kDEcF68QFS87TOmnS78H7BlUZ9eqHPVzQQjz4zaAMpUvbHY+aNewJZwzoJ4vTj64u+jqGATDvwGNWpxRqHsizfOWAujkydtjH8AFP8AAaKRC4w73ieTcpGpklYowO4TD5+5zpW8aOMB+lEjhZBUIr/n1go90gIWMwHAYGLDJ42bMoU5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB8379.namprd11.prod.outlook.com (2603:10b6:208:488::20)
+ by SA3PR11MB808482.namprd11.prod.outlook.com (2603:10b6:806:531::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
+ 2026 17:47:39 +0000
+Received: from IA0PR11MB8379.namprd11.prod.outlook.com
+ ([fe80::549f:e4b3:e10d:aaa6]) by IA0PR11MB8379.namprd11.prod.outlook.com
+ ([fe80::549f:e4b3:e10d:aaa6%6]) with mapi id 15.21.0451.024; Tue, 6 Oct 2026
+ 17:47:39 +0000
+Message-ID: <f4a82716-5107-4f39-8c9f-94374f188857@intel.com>
+Date: Tue, 6 Oct 2026 10:47:34 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] x86/resctrl: Fix ABMC counter programming
+To: Babu Moger <babu.moger@amd.com>, <tony.luck@intel.com>, <bp@alien8.de>
+CC: <x86@kernel.org>, <Dave.Martin@arm.com>, <james.morse@arm.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+References: <cover.1790976400.git.babu.moger@amd.com>
+ <95bbc2e322ac18e2566c4963b7e6d13ac8485e20.1790976400.git.babu.moger@amd.com>
+Content-Language: en-US
+From: Reinette Chatre <reinette.chatre@intel.com>
+In-Reply-To: <95bbc2e322ac18e2566c4963b7e6d13ac8485e20.1790976400.git.babu.moger@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0298.namprd04.prod.outlook.com
+ (2603:10b6:303:89::33) To IA0PR11MB8379.namprd11.prod.outlook.com
+ (2603:10b6:208:488::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-ID: c9298bf3598b253f42f
-X-MBO-RS-META: wh3o18h5yxnf1t8nc7hd8woui8kbfyms
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB8379:EE_|SA3PR11MB808482:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14639330-c5a9-4e89-248b-08df23d1e9d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|22082099003|18002099003|4143699003|56012099006|6133799003|3023799007|10067099003|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info: xq1rvrFArymfu5nGdiY0HCgDCAJG22KmjZHgfsy3Xo8Qr7C4gtpoiB1sLTg0R19/dyFHksZZyHYQQ8ZhbXrEqPON5E9GTDNWX1fR96xScN80+dp0i+zUsivhebAJsUis0TmTPtjMEFYOc3r3eooYJ5D4is2sKyGQjMd1RMoQEJRVdkTx7Pjd3vR4kxctSl+SePoBaz6jyThFYY7ItSH3iFdci57Tl+fk+RPz+qvAIwHJfcXy61eNb+l5oVQ1FkOYBY55EzrHBsa21JcdEjUZN8yG4tMHsU1F/nki9O8CPQPO8IHPpEyfYFFrFZKh3M+NvILgzZIYXguh01B+VkZ25leXDFcTEAvZ1tQcDNdRPBcAzOe1O0xG+TGfe8bPhH74fmHggbbqHOSQKAdPtdloEXLreH5ZgrNmDOvZz5+WXO6/R6y2A0MTyeVXJJ0POGwknzASPOIC6UKImWLcdq42BDMgzGFl6rtrFzXt0qeM3ijDzXC5tPbhlbkpK9Ocxuse956oz7mNrU2e1PWKcM32+S+KqOeeyso17PHG+5gi4JNOPp/tqqW5vQP9T1aYraUbhK6gIVrCfpuLRigl73YUAsa9Okri6RwljziR390VxfdbsV6u17KsqYlNY+geUbxpRowg/Ri7q/9IfFY0+SmS1CsxoyoZgwrDtxSAURaucUY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8379.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(22082099003)(18002099003)(4143699003)(56012099006)(6133799003)(3023799007)(10067099003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eFZxMlhaMDF6YllTVlRpZW1rUEc2Sm5pZjM5V1JZdUNzOXpFUEpZNi9VdW9B?=
+ =?utf-8?B?QkFHUjRBMWtudFJHb3ZLekVaTWQxam0reGl6V0FjM3VPVzR0WEh0dHV2dmZV?=
+ =?utf-8?B?U0lwRmd0Wk1IVFg1d0N0TldZeHhyWUFHTitrUkd2eVZZc2R1SWJjcnhyUzd4?=
+ =?utf-8?B?a3p5eHFzTGJNNUpGWC92R3RxNUsxRXN2Y0Rnck9LR1VWSzBFSTdZc0pQeFpt?=
+ =?utf-8?B?VUNCV2I5cFVOdTFKU2pvZVdGeFhpR1k4VjNURWQ3WU1sQU1wcStNOUVjbTE3?=
+ =?utf-8?B?UjQ3SnU1Ym1HaTlreERMSFlxTlprTm5lWXBsSC82V1RyOVZJU3dleExWSnFO?=
+ =?utf-8?B?SVZvU0lGMnRVMnoya2JEYTBmZmFLdkwyQmdJUjRia1A2L1kvY0NibXd4dlJV?=
+ =?utf-8?B?RUU1cjBERE5mM3ovL2tZZVV0eUNOSlJxc1c4SEpKN3dUVVZ4a2ZGYXBkME1B?=
+ =?utf-8?B?K05sY3hXZ0toUkZhMUNleDlJbTBXa1RnQmc4Y3BlZ3RDYUh3b1ljNnBFS3Z6?=
+ =?utf-8?B?TW92OUlJRlYzUFJ6dEYrVytJRmdrK2xuV1J0NGhRcmtMbUwwU05QSlkxalBU?=
+ =?utf-8?B?OGlxcUJuWmRGYmREOFFrT2VSSzVBOTRGdjhDY0Q1cmxtTForaEp1RWlQeHdQ?=
+ =?utf-8?B?eXZmNVRpNnYyUWZwNWcxRWdrQnl2eWVNc0JIMkVwN1lSR05qWW5FaEI5NUll?=
+ =?utf-8?B?bkxoL3VFK0ZXYmJrcHY3RW56ZUlOU2ZZZXgzT3pqYkFNQlBuRlVOV2Ftbm55?=
+ =?utf-8?B?TnpvS0ErQk5meHlXYll4cnVqcmNzdzRrbytrYkE0U3h4NnZQWHRrUjIrZEcv?=
+ =?utf-8?B?WXRyV0Jrbnl3cDl3bjNUWHc5WVllRnYzTlVQa1ZmaG9QUktxTVZobXpHb05Q?=
+ =?utf-8?B?NmVtek9WZXFDdHN5S2MzRVpHdkFCbmZnRHdyL1g5Zjc3WVl4TnJRbDhMTktV?=
+ =?utf-8?B?UFRQdVdFRlVUMTZIL3kxWnQ0Ync0SXIrYXNhM3M5WUtDNXg1UFFWbFdNcmpK?=
+ =?utf-8?B?bG90NjYvUThHb2xFd01aSXlvVXNhNHFuSERRWGFBVG43M01xSUtvMHpTMm50?=
+ =?utf-8?B?Q3RwOFltL0Y4TUFCdjVHVy91Z3lIWUx4UklzN2djTm9la0htcy9xUzV2NkRo?=
+ =?utf-8?B?eHRZOWxGbGc5QzNsZDJ2c3dsdlAzZGNhWmtJOHhvTWsraXhvUytYbVBNYm9C?=
+ =?utf-8?B?RDNONlZSa0c4SjBtYTkvdmFoZUI4ck91K01qSnZJbFVmNUhnMUhKN013Nk1r?=
+ =?utf-8?B?V2VBYlMwK2tVT2VEa1Z3UExRazdPVU5VZXkxSUVDemhVMmJxVXAwNTFyMkky?=
+ =?utf-8?B?RG0wZ0s4TmxzZzVTbUpQNVZ4VWVzcm5COGJJbVlhNmp0NGNRSjk3MGp4TVAx?=
+ =?utf-8?B?cTR1RWpqZ0xid1crWXZ3MGZGdTA3RlRtaEszN0l0WWl5eXRscGc4ZlZZeUdi?=
+ =?utf-8?B?ckE4Q1BlVjZhUDkxZ0VGUG9HTHNGN1d3SWtsWTdrQm9ZYnJBLzRldnFxZWF6?=
+ =?utf-8?B?MTA3bXBNNG9UNFE5QjNROFBpbjFHb1BSNVdNQUxKcXBoWVBlczBBc3dpblRk?=
+ =?utf-8?B?cnErY2hCRUl2ZVV0K0VMV09KcjFQL0Q3T1ZsM3RLMkEzdCs0amNMQmcxbUdC?=
+ =?utf-8?B?ak9UQlVESGNjRDNpZTBITWhiSThOU2hoR0lnT2EydkJxbXZyOENTR0dOZVRq?=
+ =?utf-8?B?UjlVUzVhSE1STzhqdGxzSXZ0akVZS2toczFiVU44MzhDS1JWNXFPNXZ5WG9N?=
+ =?utf-8?B?U2Q1ckx1eHJGaUlNK3hLWlVsYlVzTExEK3dvL2U5MnRFUGJIa2pYaEFwUENM?=
+ =?utf-8?B?Y2szckhzNXoxMXIzU0xFSWJhMDRBQS8vaTFveWZ4WmZCeUZyUGpkVGJsWThU?=
+ =?utf-8?B?VWZ5NXlvbW9Tdk5JR1FQcGo4WVB1RzBwZWNRb0lScGZ2cGsvYnlWcW5LejFp?=
+ =?utf-8?B?bDhsVERoaU8rbVcrak4ybHAyRlFRZW5qck5xc0doN29Rb0d6VjZmeDVsdHBm?=
+ =?utf-8?B?NzhibFFuWnF4eWNkYzl4MDVuVnZnWm4wMzN3TjhhWHVGOFR3b3lJT1lxN29I?=
+ =?utf-8?B?NW9qOE5rL2Z0K21QdVk0TzhTOERiY2oyd3VUQlJoWlhidStKNTJEMEdCZ2tS?=
+ =?utf-8?B?TnZVOW5IcWtqZVI0RG00Z0U5SHdqVFlqTGNXQWxGSzRDak83R1NCU3VzZkcv?=
+ =?utf-8?B?MG0wVVNHMmR5UlZzWWd4U0F5cjFLeFdsYWpmQWl0LzVXb01EaXM1a0xYRWFW?=
+ =?utf-8?B?ZGdVTjNhZGtrOE1yWERqRzBqT1VyVGdKQUNFYnBSVG9ybysrUkxMS3F6QVZG?=
+ =?utf-8?B?QjFIblN0RnQzWFFiWCthTXpxeW1sV2FtTHJFK1RXTDM4UWtXWThRTGxpcVdx?=
+ =?utf-8?Q?DX4U9HbssccFkR3g=3D?=
+X-Exchange-RoutingPolicyChecked: e+cNgRDIPv1cK28e0NOZ8XO2DHUGJHcQuA5/ox6q7B4Vnzo83vtgALJ+WHV4HWWPOUjqWiCyg+Vr9c8qY8m/jj4N/LcQzs5HAqSwJglEkajBX2AINcJsTdYACkufwDRmIyQtHlXSFwzKFctrMj7QBsbsfPEgU7098Fk5C6NOZ/N1vCvPy6jJOWVux6BvScyqjuTbYndVTwiefOQFlHpsTUVjgyURMUMf3/pI6NcCCIlwdtB3F7eo61KtIUGzPhDVk5EpZYvpC0YhbAAkI+Gki/zcmcUU9o6Zkc+paHixfxJQHtthwlDOLuEkVZ25hupnd9SCcfEMv13qWuqO++Vl7Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14639330-c5a9-4e89-248b-08df23d1e9d4
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8379.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 17:47:39.0259
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vEYmOEKjHyhBEZ0Am9TnVbyfGWP2mEyauNtH/KgwlnIsbpTn6nvr+/CpZ/1bXFyrVK8tY38UyDsugoBZ+S8iuaKsegUeaJaCTy/jx5q1LMw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB808482
+X-OriginatorOrg: intel.com
 
-Hello,
+Hi Babu,
 
-See subject. Happens in permission_fault() on line:
+On 10/2/26 2:26 PM, Babu Moger wrote:
+> AMD's Assignable Bandwidth Monitoring Counters (ABMC) are configured via
+> MSR_IA32_L3_QOS_ABMC_CFG. The architecture [1] received an update that
+> expands the counter ID field (l3_qos_abmc_cfg.split.cntr_id) from 5 to 12
 
-	fault =3D (mmu->permissions[index] >> pte_access) & 1;
+This describes an architecture change as a code change (l3_qos_abmc_cfg)?
 
-Some output from a printk I added, not spammed but keeps happening:
+The subject also claims a "fix" but above establishes this just as an update because
+of architecture change without making clear what the problem needing fixing is.
+using the tip guidance when writing changelog will ensure that problem description
+is always clear.
 
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 68, index =3D 34, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 68, index =3D 34, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 68, index =3D 34, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 68, index =3D 34, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 68, index =3D 34, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 68, index =3D 34, not_smap =3D 0
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
-kvm: permission_fault(): pfec =3D 70, index =3D 39, not_smap =3D 1
+> bits.
+> 
 
-Full dmesg spew below. The guest works but this seems not great. Not
-fixed as of 7.2.9.
+> Use the updated field width. The number of supported counters is enumerated
 
-I bisected the bad commit to 687ee95c1b6d7509a25bbc661e62801aa06cc2ae
-but as this is just an enablement commit it seems more likely that
-something is incomplete or went wrong in other commits in the series.
+The second sentence of above paragraph seems out of place as it seems to add
+in a bit of additional context as part of the rest of the paragraph that describes
+the fix.
 
-Regards,
-Simon
+> separately. Mark this as a fix to the original ABMC support to avoid
 
-dmesg:
+Tag can speak for itself, just focus on describing the problem being fixed.
 
-kernel: UBSAN: array-index-out-of-bounds in arch/x86/kvm/mmu.h:225:27
-kernel: index 34 is out of range for type 'u16 [16]'
-kernel: CPU: 7 UID: 64055 PID: 13695 Comm: CPU 12/KVM Not tainted 7.2.9+deb=
-14-amd64-simonp #1 PREEMPT(lazy)  Debian 7.2.9-1sp=20
-kernel: Hardware name: To Be Filled By O.E.M. X570 Taichi/X570 Taichi, BIOS=
- P5.80 03/24/2026
-kernel: Call Trace:
-kernel:  <TASK>
-kernel:  dump_stack_lvl+0x4d/0x70
-kernel:  ubsan_epilogue+0x5/0x2b
-kernel:  __ubsan_handle_out_of_bounds.cold+0x4e/0x58
-kernel:  paging64_walk_addr_generic+0xc24/0xce0 [kvm]
-kernel:  paging64_page_fault+0x84/0x9a0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __pfx_paging64_page_fault+0x10/0x10 [kvm]
-kernel:  kvm_mmu_do_page_fault+0x140/0x240 [kvm]
-kernel:  kvm_mmu_page_fault+0x9c/0x880 [kvm]
-kernel:  ? kvm_vcpu_read_guest+0x52/0xa0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? nested_svm_merge_msrpm+0xc8/0x1c0 [kvm_amd]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __svm_vcpu_run+0x145/0x240 [kvm_amd]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? rcu_note_context_switch+0x57/0x530
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  npf_interception+0xb2/0x2c0 [kvm_amd]
-kernel:  kvm_arch_vcpu_ioctl_run+0x69b/0x20e0 [kvm]
-kernel:  kvm_vcpu_ioctl+0x367/0xac0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? select_task_rq_fair+0x9b5/0x2670
-kernel:  __x64_sys_ioctl+0xb9/0x100
-kernel:  ? kvm_vcpu_ioctl+0x2ed/0xac0 [kvm]
-kernel:  do_syscall_64+0xdd/0x5f0
-kernel:  ? __smp_call_single_queue+0xd6/0x190
-kernel:  ? kvm_vcpu_ioctl+0x2ed/0xac0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? ttwu_queue_wakelist+0x144/0x230
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? try_to_wake_up+0x300/0x8b0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? kvm_on_user_return+0x1e/0xe0 [kvm]
-kernel:  ? __x64_sys_ioctl+0xd4/0x100
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? wake_up_q+0x4c/0xa0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? futex_wake+0x117/0x270
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __x64_sys_futex+0x12a/0x220
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? do_syscall_64+0x116/0x5f0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? kvm_vcpu_ioctl+0x2ed/0xac0 [kvm]
-kernel:  ? __x64_sys_futex+0x12a/0x220
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __x64_sys_futex+0x12a/0x220
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __seccomp_filter+0x86/0x6e0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? do_syscall_64+0x31e/0x5f0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? write_ibpb+0x21/0x50
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? do_syscall_64+0x94/0x5f0
-kernel:  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-kernel: RIP: 0033:0x7f38d6202f5b
-kernel: Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 4=
-8 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d=
- 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
-kernel: RSP: 002b:00007f359d9fe280 EFLAGS: 00000246 ORIG_RAX: 0000000000000=
-010
-kernel: RAX: ffffffffffffffda RBX: 000000000000ae80 RCX: 00007f38d6202f5b
-kernel: RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 000000000000003a
-kernel: RBP: 00005575017a2550 R08: 0000000000000000 R09: 0000000000000000
-kernel: R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-kernel: R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000000
-kernel:  </TASK>
-kernel: ---[ end trace ]---
-kernel: ------------[ cut here ]------------
-kernel: WARNING: arch/x86/kvm/mmu.h:227 at paging64_walk_addr_generic+0x8e4=
-/0xce0 [kvm], CPU#7: CPU 12/KVM/13695
-kernel: Modules linked in: vhost_net vhost vhost_iotlb tap tun nft_masq nf_=
-conntrack_netbios_ns nf_conntrack_broadcast nf_conntrack_tftp nft_fib_inet =
-nft_fib_ipv4 nft_fib_ipv6 bridge nft_fib stp llc nft_reject_inet nf_reject_=
-ipv4 nf_reject_ipv6 snd_seq_dummy nft_reject snd_hrtimer nft_ct snd_seq snd=
-_seq_device nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4=
- nf_tables uinput btrfs libblake2b nfsd auth_rpcgss nls_ascii nfs_acl nls_c=
-p437 lockd raid6_pq xor vfat grace fat binfmt_misc xfs sunrpc snd_hda_codec=
-_alc882 amdgpu snd_hda_codec_realtek_lib snd_hda_codec_generic snd_hda_code=
-c_atihdmi snd_hda_codec_hdmi snd_hda_intel amd_atl intel_rapl_msr intel_rap=
-l_common drm_buddy vfio_pci amdxcp vfio_pci_core drm_ttm_helper edac_mce_am=
-d vfio_iommu_type1 ttm jc42 vfio drm_exec snd_intel_dspcfg drm_panel_backli=
-ght_quirks kvm_amd snd_hda_codec gpu_sched drm_suballoc_helper ee1004 wmi_b=
-mof snd_hda_core joydev kvm evdev igb drm_display_helper snd_hwdep irqbypas=
-s i2c_algo_bit snd_pcm cec dca rapl sg pcspkr k10temp
-kernel:  snd_timer video snd soundcore i2c_piix4 button wmi i2c_smbus nvme_=
-fabrics efi_pstore configfs ext4 crc16 mbcache jbd2 crc32c_cryptoapi dm_cry=
-pt hid_generic sd_mod usbhid hid ahci libahci xhci_pci nvme libata xhci_hcd=
- nvme_core nvme_keyring scsi_mod usbcore nvme_auth sp5100_tco scsi_common c=
-cp usb_common watchdog dm_mirror dm_region_hash dm_log dm_mod nct6775 nct67=
-75_core ntsync hwmon_vid i2c_dev msr efivarfs autofs4 aesni_intel gf128mul
-kernel: CPU: 7 UID: 64055 PID: 13695 Comm: CPU 12/KVM Not tainted 7.2.9+deb=
-14-amd64-simonp #1 PREEMPT(lazy)  Debian 7.2.9-1sp=20
-kernel: Hardware name: To Be Filled By O.E.M. X570 Taichi/X570 Taichi, BIOS=
- P5.80 03/24/2026
-kernel: RIP: 0010:paging64_walk_addr_generic+0x8e4/0xce0 [kvm]
-kernel: Code: f9 1f 0f 87 d6 ad 01 00 44 89 c2 d3 ea 23 54 24 18 83 e2 03 8=
-9 d1 f7 d9 83 e1 20 83 c9 01 85 d2 0f 95 c2 09 d0 e9 3f fe ff ff <0f> 0b e9=
- 26 fe ff ff 8b 44 24 20 45 8b 7e 04 4c 89 64 24 18 4c 89
-kernel: RSP: 0018:ffffc98d85b9b5f0 EFLAGS: 00010202
-kernel: RAX: 0000000000000000 RBX: 60000001274000e3 RCX: 000000000000000b
-kernel: RDX: 0000000000000022 RSI: 0000000000000001 RDI: ffffffffa5ad965d
-kernel: RBP: 0000000000000000 R08: 0000000000000000 R09: ffff892f725bd5f0
-kernel: R10: 00000000274000e3 R11: e000000100000023 R12: ffff892f725bd1d8
-kernel: R13: ffff892f725bd760 R14: ffffc98d85b9b6b8 R15: 0000000000118c71
-kernel: FS:  00007f359d9ff6c0(0000) GS:ffff893b97d6b000(0000) knlGS:0000000=
-000000000
-kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-kernel: CR2: 0000000000000000 CR3: 00000001c382b000 CR4: 0000000000f50ef0
-kernel: PKRU: 55555554
-kernel: Call Trace:
-kernel:  <TASK>
-kernel:  paging64_page_fault+0x84/0x9a0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __pfx_paging64_page_fault+0x10/0x10 [kvm]
-kernel:  kvm_mmu_do_page_fault+0x140/0x240 [kvm]
-kernel:  kvm_mmu_page_fault+0x9c/0x880 [kvm]
-kernel:  ? kvm_vcpu_read_guest+0x52/0xa0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? nested_svm_merge_msrpm+0xc8/0x1c0 [kvm_amd]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __svm_vcpu_run+0x145/0x240 [kvm_amd]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? rcu_note_context_switch+0x57/0x530
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  npf_interception+0xb2/0x2c0 [kvm_amd]
-kernel:  kvm_arch_vcpu_ioctl_run+0x69b/0x20e0 [kvm]
-kernel:  kvm_vcpu_ioctl+0x367/0xac0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? select_task_rq_fair+0x9b5/0x2670
-kernel:  __x64_sys_ioctl+0xb9/0x100
-kernel:  ? kvm_vcpu_ioctl+0x2ed/0xac0 [kvm]
-kernel:  do_syscall_64+0xdd/0x5f0
-kernel:  ? __smp_call_single_queue+0xd6/0x190
-kernel:  ? kvm_vcpu_ioctl+0x2ed/0xac0 [kvm]
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? ttwu_queue_wakelist+0x144/0x230
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? try_to_wake_up+0x300/0x8b0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? kvm_on_user_return+0x1e/0xe0 [kvm]
-kernel:  ? __x64_sys_ioctl+0xd4/0x100
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? wake_up_q+0x4c/0xa0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? futex_wake+0x117/0x270
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __x64_sys_futex+0x12a/0x220
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? do_syscall_64+0x116/0x5f0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? kvm_vcpu_ioctl+0x2ed/0xac0 [kvm]
-kernel:  ? __x64_sys_futex+0x12a/0x220
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __x64_sys_futex+0x12a/0x220
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? __seccomp_filter+0x86/0x6e0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? do_syscall_64+0x31e/0x5f0
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? write_ibpb+0x21/0x50
-kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-kernel:  ? do_syscall_64+0x94/0x5f0
-kernel:  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-kernel: RIP: 0033:0x7f38d6202f5b
-kernel: Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 4=
-8 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d=
- 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
-kernel: RSP: 002b:00007f359d9fe280 EFLAGS: 00000246 ORIG_RAX: 0000000000000=
-010
-kernel: RAX: ffffffffffffffda RBX: 000000000000ae80 RCX: 00007f38d6202f5b
-kernel: RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 000000000000003a
-kernel: RBP: 00005575017a2550 R08: 0000000000000000 R09: 0000000000000000
-kernel: R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-kernel: R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000000
-kernel:  </TASK>
+The problem and fix are fused together making it difficult to see what is being
+fixed here. Placing problem in its own paragraph helps to make this clear.
+
+> misconfigurations caused by truncating counter IDs on hardware that
+> supports a large number of counters.
+> 
+> Also limit the number of supported counters to the maximum value that can
+> be represented by the 12-bit cntr_id field if hardware reports more than
+> 12 bits.
+
+This is the actual fix though but is added as an afterthought?
+
+> 
+> The AMD64 Architecture Programmer's Manual [1], available at [2], will be
+> updated in a future revision to document the expanded cntr_id field.
+
+
+Consider an example changelog like below that aims to follow the x86 changelog
+guidelines:
+
+AMD's Assignable Bandwidth Monitoring Counters (ABMC) are configured via
+MSR_IA32_L3_QOS_ABMC_CFG; MSR_IA32_L3_QOS_ABMC_CFG.cntr_id selects which counter
+the configuration applies to. The number of counters a platform supports (the
+number of possible values written to MSR_IA32_L3_QOS_ABMC_CFG.cntr_id) is
+enumerated separately via CPUID.
+
+On a platform that enumerates more than 32 counters, writing a counter ID
+through the current 5-bit encoding truncates the ID and misprograms ABMC.
+
+The AMD64 Architecture Programmer's Manual [1], available from [2], has been
+updated to widen MSR_IA32_L3_QOS_ABMC_CFG.cntr_id from 5 bits to 12 bits (the
+published revision 3.41 does not yet reflect this; a future revision will). The
+CPUID enumeration reports the maximum counter ID in a 16-bit field and can
+still report more counters than a 12-bit MSR_IA32_L3_QOS_ABMC_CFG.cntr_id
+can address.
+
+Widen MSR_IA32_L3_QOS_ABMC_CFG.cntr_id to 12 bits to match the architecture. Cap
+the enumerated counter count at BIT(12) so every counter ID resctrl uses can be
+written to MSR_IA32_L3_QOS_ABMC_CFG.cntr_id without truncation.
+
+
+> 
+> [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming,
+>     Publication #24593, Revision 3.41, Section 19.3.3.3 "Assignable
+>     Bandwidth Monitoring (ABMC)"
+> 
+> Fixes: 84ecefb76674 ("x86/resctrl: Add data structures and definitions for ABMC assignment")
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> Cc: stable@vger.kernel.org
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
+> ---
+Patch looks good to me.
+
+Reinette
+
