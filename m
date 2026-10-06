@@ -1,165 +1,92 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBAB25A655;
-	Tue,  6 Oct 2026 16:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F749E5D2
+	for <kvm@vger.kernel.org>; Tue,  6 Oct 2026 16:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791302507; cv=none; b=Wn+988rRwuYVmuEW6f1erO7HMGyaaDtLGCZkjuIn2UfdMMLEXj0i1yGjKZ6LjFSvUUxkloB/WP+2Ru6iTIscIoMtqh92+rQMry+wkWKjnYZsO6uC6n39B+a50AdGJ8A2VCwZA59XfQxlOvelKA9Rhb32gZ4D/u2Dy9Tx1sBL+vY=
+	t=1791303366; cv=none; b=c4CsgUoEOLliu6bePQDunkHC40t8lzBxAKZPOBqU9YYKtRBn7YMWaHl1bwNw2y5+Mwbwt0v2PqbCDCnTUo2Fg52GfyAevKFMyxyR7KMGlhVDZcnGl+kTKDmzzcWjf16SslX4K1zBECw4nlahR5Ahyl7D61WNLnDMr5SPh9HAv6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791302507; c=relaxed/simple;
-	bh=Z7SJm5BLDpFT1yMsjuZV0gnbWj6B9rkgFethNha7LX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dCYUSbw2KXeR31AYLriDYvn5JU6lpcNa364j3WdiAtl4uGjxUjZ8ATZKxFyxNRLG0JhZtCc0Ll4hovHPre090aOc//o/d7wUQk3T/oYFdBRT+MGltrlhA4Qe0ILLCk/B5dFhVOpOgsVpqIcrPJmvPN3dmV0JVjD9jyRlUDA3yiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UQtzC2Pv; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791303366; c=relaxed/simple;
+	bh=HKk6ziAXN1Ypc99k3IKDs5ke0WrgufeEXm7jTYiCOgM=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=DM7gZDowhCcgRvULrBb0gUSEqSc0OBcEB+mIYRDs2vzdJfHHOqHJU1mv61m0xzXL3hH4IwOu38XJmD2Wo2PnzDJR4rNY0TFJ5mRTd1j0lfsbbGPgDH4wnVAwv6VX2B0HC9I10xnmFu03mrl5DNQQn5vrKvo9wO0ShZY8RYu5TGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kN1FCvhR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UQtzC2Pv"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 696EZLEF4058898;
-	Tue, 6 Oct 2026 16:01:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:sender:subject:to; s=pp1; bh=SHlhYNKJPS9VrHsEuKrVizy
-	o6znmQw1por4XuWFVGL0=; b=UQtzC2PvuBcrxMRqa8c2EEgAuXu1u7FX80+Vhr6
-	7//VBDKHIN4Xl53pScviC9u6xe+eHDTp9M6Mi0WnT6nqsR4xZqGq5PISpw8+vRs9
-	qgVG3Pid45s0a9KSDaUU+JreHSr57tRDKjBYAWzJQXWMgklfPEEfGYGIPbfx+LjL
-	j8dOd+1pv89Oa2yyv+uQCF0sIDgxaf5q86cH4caiUysfL5UXKelnlzhBEPpIo1Ph
-	bxESFkUnHwfCH1B79iugp9h7MFIDcE70IHAN24stXDLjFrXB8m9XlFAYBEICrHJ0
-	WDQ5wyGX5WE0uvjJK61FYprmK7OtFN9dCTcO/L5xLfu2lZQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74s0sr-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 06 Oct 2026 16:01:20 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 696EHYm33343589;
-	Tue, 6 Oct 2026 16:01:19 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3e8gae5h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Oct 2026 16:01:19 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 696G1FiR29164164
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Oct 2026 16:01:15 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 711B22004E;
-	Tue,  6 Oct 2026 16:01:15 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F4192004D;
-	Tue,  6 Oct 2026 16:01:15 +0000 (GMT)
-Received: from vela (unknown [9.111.1.151])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  6 Oct 2026 16:01:15 +0000 (GMT)
-Received: from brueckner by vela with local (Exim 4.99.5)
-	(envelope-from <brueckner@linux.ibm.com>)
-	id 1xE7bO-00000000tiM-3XTP;
-	Tue, 06 Oct 2026 18:01:14 +0200
-Date: Tue, 6 Oct 2026 18:01:14 +0200
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v9 02/24] KVM: Move architecture capability Kconfigs to
- header defines
-Message-ID: <asUbSjNMqf2snLNJ@linux.ibm.com>
-References: <20260930173441.66762-1-seiden@linux.ibm.com>
- <20260930173441.66762-3-seiden@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kN1FCvhR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA0E1F0089B;
+	Tue,  6 Oct 2026 16:16:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791303364;
+	bh=L6/yKBCd7cMj2Zv3CRFNGBRR+U4fCvYTjxawzfBiPqk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kN1FCvhRr4g3QADRz8yH7GuQmoEFERpdnrzkCuCkJaKou9Nw+HuRFnGkSGF4hK0fI
+	 JJmWiUmcZi82dPW4BQRI1fl1mr17+BfcbtXZ43oIfW8zx3ZV9DaDbFnqN52lwtTsZr
+	 XI8w89dPVC3JKPkyAhwjpIgho6hkBS3nyITJpakcHYsvx7B552Y3c4Cf9yrbxR9Gpd
+	 5is7dcHcIpJjnOhJT4meDnBwXC8mhWszDAMCBDBNQO6N+foqfNoxFHGCCnaSAz6Vih
+	 xVlYzDQExoHH+mDeIEODxfnmzgID+481xcCU5N57w0k5qy0E1UfhI9ApgG/nK7+6/L
+	 aag2U91fQT1cg==
+Message-ID: <sashiko-outbox-162228@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 7/8] KVM: selftests: Only warn for idle-page checks
+ on powerpc pseries LPAR
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <0227000da4e6fe69b278dc971b74b3f65b73ead9.1791280439.git.ritesh.list@gmail.com>
+References: <cover.1791280439.git.ritesh.list@gmail.com>
+ <0227000da4e6fe69b278dc971b74b3f65b73ead9.1791280439.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 06 Oct 2026 16:16:03 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930173441.66762-3-seiden@linux.ibm.com>
-Sender: Hendrik Brueckner <brueckner@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: Uk2b7HaGQ38dTbtCU9DkrQCab_71a3R-
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA2MDA2MiBTYWx0ZWRfX7ZTpHKTr9Gd7
- VsRMbnGfdUbPWq5Agr64CDEu7EIwNBASkueQr5RTs5SsCpPfHMxcMfOnBU/M1V5px07uoVZNTlL
- bnJUOdFSLkGe16hHy8fT4SPYzJKF8/8=
-X-Proofpoint-GUID: UA3t0xK88c6-8lHonjKH3cXitZpW-HHG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA2MDA2MiBTYWx0ZWRfX9UoPq4Sebe89
- jp5knOE3JTwJsHTzkRL2RLESHYJfSZhPageyY8KfMaHhXtUC5vK9WspNRSZP8ZKGRDvWK/I76Bt
- ERt86IUqC6HbLp6uR+uCLlW340vTma3kvWvLoE3QyS9BCWFFzNuq9jxI7dwaJk9uz6a4Ry69aJ+
- oTYlU+3Q+inLZ8oKqs9smI2rzkxWt5dGlqSnzURIpIvC+phVZKxfv+PpuWTxPVGbdPcXICGM/QX
- PVYNwdYR4hwprOjvuPGB2I61Kk7hVnX6+mUQM/7hMgD8GInNP1NEsGGQ36GBoOSHGo4119STTv4
- +eDFghZHoK5MlwHsIKfvwbTkkN8hlnmdIivDOPyXd6zErWGBo6840rvwgoQTV2NViUyTMqbdKwJ
- VrBHDUr0dM8ANYbSGtCh/lY6geTUwli5ukavMne795rWyFeJ3Lv2TjLPyAcet+KtyK7iPVmtZYe
- 9KzmPCKYwRGflUbZd6g==
-X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac51b50 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=hrijWW3zfvV0ByoAMhMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-06_04,2026-10-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610060062
 
-On Wed, Sep 30, 2026 at 07:34:17PM +0200, Steffen Eiden wrote:
-[...]
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -750,7 +750,11 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
->  #ifndef kvm_arch_has_readonly_mem
->  static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
->  {
-> -	return IS_ENABLED(CONFIG_HAVE_KVM_READONLY_MEM);
-> +#ifdef KVM_READONLY_MEM
-> +	return true;
-> +#else
-> +	return false;
-> +#endif
->  }
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] selftests: typo 'explicitely' in comment
+--
+
+commit 87fed9598d0ceb8998ad38373e71f38a0d2446ab
+Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+KVM: selftests: Only warn for idle-page checks on powerpc pseries LPAR
+
+This commit updates the access tracking selftest for KVM to only warn on
+idle-page checks when running nested on powerpc pseries LPAR. It uses a new
+kvm_is_ppc_pseries_lpar() check to detect this condition because nested KVM
+on powerpc does not explicitly flush the TLB for access bit updates.
+
+[ ... ]
+
+> diff --git a/tools/testing/selftests/kvm/access_tracking_perf_test.c b/to=
+ols/testing/selftests/kvm/access_tracking_perf_test.c
+> index 4415c94b28660..eb6939065e793 100644
+> --- a/tools/testing/selftests/kvm/access_tracking_perf_test.c
+> +++ b/tools/testing/selftests/kvm/access_tracking_perf_test.c
+> @@ -471,6 +471,16 @@ static int access_tracking_unreliable(void)
+>  		return 1;
+>  	}
 >  #endif
+> +	/*
+> +	 * PowerPC: Nested KVM (pSeries LPAR) can hide accessed/idle, since KVM
+> +	 * doesn't explicitely flush the TLB for access bit update. L0 keeps
 
-Minor style nit: maybe remove the preprocessor "noise" from within the function by
-defining two versions of them.  Looks a bit cleaner then:
+[Severity: Low]
+This isn't a bug, but there appears to be a typo here. Should explicitely be
+spelled explicitly?
 
-	#ifdef KVM_READONLY_MEM
-	static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
-	{
-		return true;
-	}
-	#else
-	static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
-	{
-		return false;
-	}
-	#endif
+> +	 * translations cached so the guest won't see the idle bit cleared.
+> +	 */
+> +	if (kvm_is_ppc_pseries_lpar()) {
+> +		puts("Skipping idle page count sanity check, because the test is run n=
+ested");
+> +		return 1;
+> +	}
 
-However, both versions are fine with me.
-
-Acked-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1791280439.gi=
+t.ritesh.list@gmail.com?part=3D7
