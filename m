@@ -1,46 +1,46 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010041.outbound.protection.outlook.com [52.101.85.41])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011032.outbound.protection.outlook.com [40.107.208.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88DB43E4B0
-	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 13:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577334A64DB
+	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 13:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791380812; cv=fail; b=mr1+2LcDPV8Oa7gLGTRWnjrdOIokimv6smiwTlioy/C/lSwCOhKto9+qFArcXNYAooHQGtzdnDdBQTNSqwQzNSmEXYrCz9TyuvCZSSBYX6iZ78ISk7FozrNL24aAABLU6OCBsxbn20Sckguv3Fh5kxdgNdtmwZYsU2R2jPES5UU=
+	t=1791380828; cv=fail; b=WPYpen0r5EdtOOS0B0NW3gndi+PcDXvgQW09AJNKcRiGa5FdQ91OFfiHgLLLddqrzoZrt9VVYJc5tRcAj+srHl1lZlDsaYaE8Rvm7Nb7vcXHb1xnkUFjMpaHaG69JgfiuhxgVCdf2Gl4LY4i7Y5NGhN0Rxu3pTcrJvh0K3E3Wf0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791380812; c=relaxed/simple;
-	bh=7UpFpvvOC8o2+d3xCpoo2lOIRN+4c8juMgg+lCt2wyI=;
+	s=arc-20240116; t=1791380828; c=relaxed/simple;
+	bh=LQYq9WJvI60qmqc7BGeP/TQo6KvSrmZN5sJOY7y0BfU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tIv/eR+NJaLtSgpzFQGLYjEHjN/0ww/0HM/jNK4AXcmaEUKa6pUf5H3lc3Vxe/pP4Ir+WPm+Rt8pHgh3dTwcWriApwNJM+5T4hK0jcy91b2vQ2VbkVz0SGFYoyBiOawvb5wf5h0QgH/9vWMbAdkGJKpZPN/bLplU9tnwcHHQn/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ue2PGPuC; arc=fail smtp.client-ip=52.101.85.41
+	 MIME-Version:Content-Type; b=LPQ9lYp6pDqKKlRN/TvPNaRbsrEORBMD+lkSFTcojBgKJxkXGnqHQLw+mITlTObEs4v5J2H+TKczWfccL11jEmcKFdHJMtpXI/mZZMOMmevLM65Dkj9LWgxmXufCD8YTTIJoNYNAYP3rGQVAR4TEnm2MtFqH/+SJhoFuOxnIzcc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=i0AiZroS; arc=fail smtp.client-ip=40.107.208.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ue2PGPuC"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="i0AiZroS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E5I8TkPG/u862eaawmp+lPAi+C4LwfwnxMeCKeW1XaRIZWgdijf54wOo2GAJNeXuKU0LKJNFHWccj/kPr7DnIF87bqpb5NhOGDgOGYWyXiMGTfO/gqYGZtX3HQiC4c0mhn9UptroLQBKMkfPYYOuH4SN51KE8oBaUbvxR4JRZkdtJ2HP84ObXZMai25Fr74+eUkq6N80lI0DtWHF8jU6p6LHfkWAhG7PvB1SUdwFtDGEO3QhypTBl7/uSOsLTfgfti4simWC6bdZASPiXFzrWQSlKDeT2zbyCB7AfGhErsS2sAQyaXbRgD4+7mtnXcfw6pRJ4+ZpDJp7Sxl+5BHb2g==
+ b=lbfGSSirErQmylAVCY98mLdlq7KGncC16ftZ89zyq7YdXtZAqr13dd8GbVuCRw4N4SQwOz3LGhyWkje52p5EDlCCos1ZzfmbH4gZ7/WlXO8fLnPITmnJ9LEF09sJSCkQrKKfgfHeZUcYnwWCiC7jLAYXqZCDvatDrwPM9W23ZbibtsaFEMTHNrWyeVHL/rywUWYxBdaXgun+1lhbwTK5PwF2MxoP/POc06HTILIDg6aVEyMqR//f19sKkVuOAlo6OqVpGvoCKj412hE/x6iagHilsH7VvGFkdCYYV9LLS2M/XQ69UNkuyAvZk4SxXbRroF8aUcqWIK5QqgaJX3uBVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=08W+qOfxSiVpnrkG3f4AOwAJyCz9pkXeSpWG+oYjHr4=;
- b=f9O+b0airs5IxpI/95B9EJ9sALdqPlX8PgW8ZBI2EelI478NSXHLXWB8RM9iiSBOjzFTVBIrv3BIlXy7L3CMkmgEZkQpXJ9C00nxSJIMqFtmNiYg/Vf1Xu5aqjbAZsB4/itQYf+Roc4fo7cBqyv8VReFEtVlbO1wfVydcP5cWco0lZdOY/3TTMFOfsWsdiCVfKpV9Cxcwft51XHu0/qMD6A+jPISK3ADfcfeVo6aiQv8Qj2kj83FYkFMUy4KOSqrkw/sxgJmbsihi4DYsNRf1oN+1QizHX8Yt0qrBufOe8qvpfYQa5quKTcr7q9U7Cy3N+Xuf7njfeXSTYq51VlJtg==
+ bh=knK6nGIDZ1AfqKIwDkPZq2quvP7gU2pwPedJrM/SGjk=;
+ b=bweL/2jmTBoVv97HgucrCuiyDepp85aorNhwfmeOD1x+77KE32YRQMta6k8KaLTvmgDrjxhvNX2zNMGG3VW9y8WHQ8MK/rI+YhLvIMaqIHNHqaMYvnWo9dd5XZci2jv1pVpHZoet5PIsgkzKyBxTexJi/4N/aGHlG1QXhm2kJ+XkCeyopHZoW5U8bP7BKQ5B6VaalwXRKbfGrxmP8fP4U4/5h9HWDGkoxaVcX+M9zBZPfqTbVaxfat4HWoOYWjH99k24lIRO4INrLN1rbZTlfptmRKxzVJqsLWuA9NRhj67U0DNYKxIpUTSxasokJZvL1v9muhTWMNCcp/ae/DT6QQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=08W+qOfxSiVpnrkG3f4AOwAJyCz9pkXeSpWG+oYjHr4=;
- b=ue2PGPuCmH5S/m+ilS6qDqCNuerKyF1qwRN4DcRGpHWQLJFZpDkcakVfZoJ2zSyzCvlvb9ljT4GrMDPGzDI9QnIA5VOOe7r0Yj0H45iLgIcWmdN3UWpF/FjP4ZZlFt2nvEskY58Y6s+Aqug9JAbsHAYkgKh7tF9F78daNapM4Xc=
-Received: from MW4PR04CA0246.namprd04.prod.outlook.com (2603:10b6:303:88::11)
- by SA5PPF8ECEC29A9.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d5) with
+ bh=knK6nGIDZ1AfqKIwDkPZq2quvP7gU2pwPedJrM/SGjk=;
+ b=i0AiZroS5EqZbwkjPNpOk9sX2QQRp4sV99wIQk0751PaLht8q1bpqkZgB4ijTSRlFUKCXKJrlqHTaXsW3OPZzRP2tYFzA4tYwvGZCIVdaocxyvx6uYRdYLrqlk3dSymxDkiP0PrZYhwbf4b/YIF7880v5EF1SEf2AK8lIC/kajc=
+Received: from MW4PR04CA0254.namprd04.prod.outlook.com (2603:10b6:303:88::19)
+ by LY0PR12MB736177.namprd12.prod.outlook.com (2603:10b6:404:20e::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
- 2026 13:46:34 +0000
+ 2026 13:46:55 +0000
 Received: from BY1PEPF000264AF.namprd02.prod.outlook.com
- (2603:10b6:303:88:cafe::1a) by MW4PR04CA0246.outlook.office365.com
- (2603:10b6:303:88::11) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:303:88:cafe::4f) by MW4PR04CA0254.outlook.office365.com
+ (2603:10b6:303:88::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Wed, 7
- Oct 2026 13:46:34 +0000
+ Oct 2026 13:46:55 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,20 +50,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BY1PEPF000264AF.mail.protection.outlook.com (10.167.242.116) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 13:46:33 +0000
+ 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 13:46:55 +0000
 Received: from localhost (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 08:46:31 -0500
+ 2026 08:46:51 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <kvm@vger.kernel.org>, <pbonzini@redhat.com>, <berrange@redhat.com>,
 	<armbru@redhat.com>, <pankaj.gupta@amd.com>, <xiaoyao.li@intel.com>,
 	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ashish.kalra@amd.com>,
 	<ackerleytng@google.com>, <lpieralisi@kernel.org>
-Subject: [PATCH v3 16/19] i386/sev: Update CPUID failure handling for in-place conversion
-Date: Wed, 7 Oct 2026 08:41:40 -0500
-Message-ID: <20261007134323.1606088-17-michael.roth@amd.com>
+Subject: [PATCH v3 17/19] accel/kvm: Disable discard for in-place conversion
+Date: Wed, 7 Oct 2026 08:41:41 -0500
+Message-ID: <20261007134323.1606088-18-michael.roth@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261007134323.1606088-1-michael.roth@amd.com>
 References: <20261007134323.1606088-1-michael.roth@amd.com>
@@ -79,69 +79,85 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF000264AF:EE_|SA5PPF8ECEC29A9:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c1a508f-5efe-4f04-e016-08df2479666b
+X-MS-TrafficTypeDiagnostic: BY1PEPF000264AF:EE_|LY0PR12MB736177:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93b6962a-13a6-46ab-03dd-08df2479732f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|7416014|36860700016|1800799024|376014|10067099003|18002099003|22082099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|376014|7416014|1800799024|10067099003|56012099006|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	NjvSMUNr8d5L1Ubza2HX/h898BB/PtRqWRU4H+VlJroJZnAdoKCXjBEAMBShfSF5p5G6YeV0ezZG1zYAAQ8BVRMY1imCF68hot6WJ3wl6zup9wDvlTp2TLS1ZX3ISs2+OaVMb/HAeHY9msYJpkl6gLMSJtaGoQa/vJRI7g3q4J0iz6l3mJqEb10im3fSstSO717kFyl8sesJkOmH2/q3ksWOG+pja/otdAN2EmegO/720OfNeO4oK6dgAv0bA+m/T1tqLIwVtToNdGcUUMv9Jj5wvG4iCHDtW87CLno4eDuuC/FmlTRg2wjA3FznOFt2gjQBd6KZF8vJcBwkAD35l2r64CzcPeIL79JfFs/I/vdDr9TZktrQSB33AOrd8JggemzI43vTb78btXNSnc/9euQrlee8p1Uy/s0K6fZ/811KmNxXTvwbpt2TbF/PVnZvOd6+QmEdnBcXtDepFg5bPPkTUD0Fvi9caad5aDxKQERUqpt7PZny3YcrA9ZmZx8es6F6kqEaTvJ7HxVU7h83Bcudr3R4cLvAdkxWXrLq9HSgN5tT7t6YCyexyGg7qcyZE1NgYZ3Ia989Ci5PVXWMZT/cMyOAa8rYwFvZHhG9n2Hcjzv/J9G4b54VbuuQlhXid44NqfUh6qvfCbFkXfYwWtVifIXrJq/nvgC5XG4KWoHoaWSNt0qaRu7IvM08iRJC8HlVWMtv6o/oGIoxAuLfDQ==
+	3gKVBW0p4PNkFsK4Y87kvv2ixGXeFO1j5HoHK74KykxmkofblZw6qEaLIUUjJPOiPAa/OJCK9cRbGTQhQ95alU3WjetqjOnDoZRmIU7q4oEh8M7zvh2rwAf+q/3GjGioXTFi0USlhn5Z7GanRNf1SrVqDmh6/hnjeGkqSsR2WyG1jsqYkNRE4Lk18a6I0qhmK0/Fouu72GWHgMxMQbJeXFc6ezPr360Qxtwa+ZAIMEB8s6oJzjt/RIunhtY/CsVD0Uh9ig9lcy7fxr7QGAyLJOCxUX2xshBMhsT0IBtDG35aH10hAY1kvgDjyhZ55PqvCYgYN+ZtESZTChkMy8hSB6WuhVsx7z4QDePcdKNEF8eDm8cMyHTS5QVHBpwv3GHN8llXn/LBQQ5MUnKSjZT7z+HaAuRD7XoDyLmExEHAUfR9bGy/ldgXuW+YRTdmRK8GXsRlDCSJDWvT3BPLAgQVaNLAV2HVZW+idyQ7QYp0dFUlDUOo0F4QAk3/C5JBRYDkTLi3k/Oz/ZVtEbongLbex54AWLLEH8iURtb4/8HmucFAcF+o09v5mYPdbpkQHN4YrIJ/uQ5AMou498XJjOfrtMdv2OT84ReDVJhcA26fgGCS/a6mzSjad+pqqQnOCfHICqkzfmufppRObcu/rCAPIet9pN0wOrnKWlMaWUpOy871VuHfSGK9iNDeyrsUqr2uhNt2cxbZQRKrfdI+LRXqAw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(7416014)(36860700016)(1800799024)(376014)(10067099003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(376014)(7416014)(1800799024)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	4sp4IICQQpHkfQOzo6binf6RTmsC7FkJGgU9vj6HDNnwBrcupIdfEoeACm+rnogmPFS/hBobG8EkCbYjQvYZTKl/r72qdHgYgdTl6gGUigH9pwMICTuP5ip18oEOJXUHPetr7KNW01+6Ek8iF8lemDevq7RniH8WMX5LNrApcdsk7Voe1Kh3xjoz38NPCpIu6cVNLTJA+jQiWDfExspmwWvA4y+xRqNIo52xOgHImMiFHMe+U2C9vPaE28uhsL+Pb435i5SG/N8Xvt1c7IFWPer/+hR/9erqm8rtKy9EW4S6yKsD/KqSdMPcnRh5N3UdNydpI62K7MhL14YaWKcVnt3izvo8of0TzWW6kYAZwdr/1jImZ/wN5iWX6o/ZS2hqKu/W1tR918TuC9nWoA2aw5NlxOdE9dLOWMomMz9fAnkeAVhFkjkU6Q+r4F/5Ioqc
+	7BtH2RhoTHOm+LGveXBMz2+s+9DoIV2ut8/vx3APyJiBIc5+EB/ZJUyZ3UVlw8MFRs3ipcGErHwMS1hYcigjbXRkSvxv0SG2kOkTuHWkd3HpXxa0D8edFV9yyDYH8M7XATNvm9ATEgeSdLSYtW7/brG48+O5ee7cm8zRpKJlPnu3F53YAZKgWS04aU/Xc44thyB+huUPmjjK83vvAZOFTX/AYmdLfLuHK3eThq7AljjqntZRwZeFEkOLnfzRrLuwdwmkUdaaaG2u7q2Tt46nkBaOUe5m8UJ9nOSuwfG11maSwVwOiWF0Fz4ZzXyUw032cZh1uYmvZ4+zXFtIOEWq4rjlabYt2c7TJGYQidulTtvKyH18OWBkIQCp+abZioschZ6g3k5BHrQiHf/oEV8wfQRwiU+/fBIVSe0JDru7PjqOfAxLFeCWxaTm+VeuK9zn
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 13:46:33.6613
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 13:46:55.0730
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c1a508f-5efe-4f04-e016-08df2479666b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93b6962a-13a6-46ab-03dd-08df2479732f
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BY1PEPF000264AF.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF8ECEC29A9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LY0PR12MB736177
 
-When SNP_LAUNCH_UPDATE fails to update the CPUID page, the CPUID page
-data passed in will be re-written with metadata about what CPUID fields
-didn't match with what trusted firmware expected. In the case of
-in-place conversion, this will have been the same page that was
-initially passed to SNP_LAUNCH_UPDATE, and so it will have been put in
-a private state prior to making the call.
-
-Make sure to switch it back to shared before accessing it for
-error-reporting, otherwise this path will generate a bus error.
-
-While here, sneak in a typo fixup for the error message that gets
-printed immediately afterward.
+When using in-place conversion, there is no need to discard memory after
+conversion because the same memory will continue to be used after the
+conversion to back the same GPA. Discarding it would only cause
+unnecessary reallocation of memory after each conversion. Instead, only
+enable it for non-in-place conversions.
 
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 ---
- target/i386/sev.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ accel/kvm/kvm-all.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index b28a31b7bf..e15e23c78d 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -1278,8 +1278,14 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
-                          ret, fw_error, fw_error_to_str(fw_error));
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index bfb8b4a190..dfcfb3b5cc 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3588,7 +3588,7 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
+     ram_addr_t offset;
+     RAMBlock *rb;
+     void *addr;
+-    int ret;
++    int ret = 0;
  
-             if (data->type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
-+                if (convert_in_place &&
-+                    kvm_set_memory_attributes_shared(data->gpa, data->len)) {
-+                    error_report("SEV-SNP: unable to access CPUID page to "
-+                                 "check failure reasons");
-+                    goto out;
-+                }
-                 sev_snp_cpuid_report_mismatches(&snp_cpuid_info, data->hva);
--                error_report("SEV-SNP: failed update CPUID page");
-+                error_report("SEV-SNP: failed to update CPUID page");
-             }
-             break;
+     addr = memory_region_get_ram_ptr(mr) + section->offset_within_region;
+     rb = qemu_ram_block_from_host(addr, false, &offset);
+@@ -3611,17 +3611,19 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
          }
+     }
+ 
+-    if (to_private) {
+-        if (rb->page_size != qemu_real_host_page_size()) {
+-            /*
+-             * shared memory is backed by hugetlb, which is supposed to be
+-             * pre-allocated and doesn't need to be discarded
+-             */
+-            return 0;
++    if (!machine_require_guest_memfd_convert_in_place(current_machine)) {
++        if (to_private) {
++            if (rb->page_size != qemu_real_host_page_size()) {
++                /*
++                 * shared memory is backed by hugetlb, which is supposed to be
++                 * pre-allocated and doesn't need to be discarded
++                 */
++                return 0;
++            }
++            ret = ram_block_discard_shared_range(rb, offset, size);
++        } else {
++            ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+         }
+-        ret = ram_block_discard_shared_range(rb, offset, size);
+-    } else {
+-        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+     }
+ 
+     return ret;
 -- 
 2.43.0
 
