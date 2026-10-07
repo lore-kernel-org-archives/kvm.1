@@ -1,136 +1,178 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA183FF886
-	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 19:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844C93DAAD2;
+	Wed,  7 Oct 2026 19:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791400041; cv=none; b=F26zITXoakCr74VzYRHelV6cvD6sD/eRzt+VPIlEUGwfm2gyW9/c1aMY/xCoB7/XOgfzIqoB8b3UqbrMAlCeNWbSGyF06BtGKy0QpXJ+F69cawMBBwDiGVWYolvY2zlgrOjN7YXYvEgzGbPDKFWFUU4Bb04azDa7XEsUUhE1Q4s=
+	t=1791400957; cv=none; b=LrbEr2LwHA7ekSlGKBgnjXF+m0yl+1GjVQC2JCGGwmX6vAQpJ2/E7fSlrTnOfOf6eRtKk8wd9yE72GtNtCcCnLhenhzouNAfVR3h0Zm8qGdegY2Y1/mkT5b0z/RbpvXAha9QoWRRa37K+jG9SjOPMx4hd0nBSZRZjcKepobfuAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791400041; c=relaxed/simple;
-	bh=Ykg5vHgeEHWQd7nv6+S7HdDvP8w3znf9GlqBCmXgna0=;
+	s=arc-20240116; t=1791400957; c=relaxed/simple;
+	bh=EBv+bmpOjW84niDSOeA22RRBhR28nmW1Gk9EMDEwYz4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kiM0yeblXJJg3yeybuyztGHGeCej9kqT8pRNUkOTOfvaaReJu3fBwP+gGLZKdDOo7bm6FCbxjR4aSDa1iwunD36Muwp/CxSJ2AoxntgQEFtmeAkwcW45Deu5sLMu92B3zIucL+OVRWanUMtpx9ekZJn1y7DuCIiCkiCyt/mhKco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rR58Un0I; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=amYvfrNtuGjjK0VjhBlsDjkyDUL4PicH4njAsGzgHIkJ956Kef/837PnXgtJIK7i3ppQIiGfpXfIowe4ndB8bFOlpg46ts1B9vYMLhT1BAjf21X0r/7p995v0bZOkffZ/ORuennPyq9qQWkDRqt13Du6CytdJZpHZixuRhJoJe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XknvvGxo; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rR58Un0I"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2db33db4de9so12575ad.0
-        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 12:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791400039; x=1792004839; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZpO++Lww0t5scaL6GXCwbq0i6uN65L3PPvCT34stxvw=;
-        b=rR58Un0IVli6NQBIwRb688bFqc8W+ZrVL1UsE9iDWp0Tp66K0t4fAwovi6yOF4adRL
-         WSdYonkVkfNU4GRgOtD+d3KlYuHNem3dg+aK/nZIUKFxE5/tmUmNfOPO/T97YrWmB65N
-         q3y6hiuNVvvcmkNA44PDA5z9AyIE4jcK9qNKLwNifE1+MvABAjBNFEinnUOlQfjLDpSk
-         ATmEuphhieTZQXefda1RDvog0q/UiNg2A1O2pMe0bYHNcwZuNJVUNoyrmF4tw1wfoFEP
-         h7XkVQG4t7bo5biwMDx33iT/xFuVhghI2iGgbmyU9Vw24R93hmo52o1zseDmi+b7uFSb
-         318A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791400039; x=1792004839;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZpO++Lww0t5scaL6GXCwbq0i6uN65L3PPvCT34stxvw=;
-        b=ZshJP8K0uRmwr+HaR1JXBSCMfdLRP2GRW3u/t7JgCNsydI1ti+C4hFzZiSh3P/11h3
-         Uvq3pR1vEBc/a/gTL8TfmzbZxm68GyUIOALm63AAO9bUudLNHhkvTGNwPii06aQobW7+
-         zEeyUMdbi8tHOtYnJz7rP1fYH1zhpAdnrbOQHgI91lBS0a5b89H9ZV63OI4wB4cbNAas
-         tI3rFzdRy18SNvf6BFKQXgNpG7aYZe0SEy1OM5sFHpIYw02l/F75g05z1pyfTahD5Jl+
-         KHwFvc2j5MLEPC+8sfCRBaYKS7DcsEsA86VZw+FXvHEYAyz3x3S5Y3QLC7/H4fhRF9m0
-         CsKw==
-X-Gm-Message-State: AFq9FYKXh1VDsn8wu7lQ75EmJaMWsu58c/+s+lbsJMoPc2JhNisvZueF
-	QSb1t4j0GJc45uyZ3rGy6G5Lk6km1xU7lSUn4wsUQyLcC52EyhipKfa9v+drmanKSFk5TYO4pmh
-	GqBffUw==
-X-Gm-Gg: AYBFou0SpB+o1jauQz1CYQ1ftO8Q/6Fz/oAPb4q+n/iZWRfuiLJyn13gGQrBF8zAqS9
-	orsD1fqLxKaENZ7EeWVeeruzpod6zhRW/O2Li/0/TBaEcGPcox98oSa+yOU5aAu5tUMe7eT4yBp
-	wmv6bFzUyOxxPsxEVZ8D2Seu9LStxt0X5vVU20m4CO0sWsfQ2KnXNM94V8LXsyi6z9BsrACSWN2
-	Qsz7nh+B+AyiSZVvNV/zN9taPDwJ1JRsigPUbOogbjbv/kKmZPNQ6DW04fQ7uSYp58Ow6U8D5zu
-	lGPZ83urGqHWQSqq/J+1IBqk8iCJveFh9colETKl2+SNTGk8XsetKvabNZFx5UNEOBFyFGlgtsg
-	fRoyt8ITA87V2aDPTYKbOgZk1xn3JMoZBpXGpwfC3bzo0W1oWKypKy6FQzOtoGpzo5VhKNiaLQj
-	j6Xo45WSBC+m8ilK3xxiw2gxpZIIfRy2SugUrd0dgm50f4bnoWUA1P8y9M8co/D5MznmfDmFZyl
-	Qtpk0QNFS3l56nwJsW1Xp2dwk+Y6fU4
-X-Received: by 2002:a17:903:40c6:b0:2e6:f400:5655 with SMTP id d9443c01a7336-2e7ff4c6f84mr638965ad.3.1791400038714;
-        Wed, 07 Oct 2026 12:07:18 -0700 (PDT)
-Received: from google.com (230.0.127.34.bc.googleusercontent.com. [34.127.0.230])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a9ba4f24sm2048447a12.23.2026.10.07.12.07.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 12:07:15 -0700 (PDT)
-Date: Wed, 7 Oct 2026 19:07:11 +0000
-From: Lisa Wang <wyihan@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XknvvGxo"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697IZPjx3356409;
+	Wed, 7 Oct 2026 19:22:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+oPKf8
+	szb4wyjb8A3Cm41T1jdnmda4EAW9uO9NKDYVk=; b=XknvvGxoX47la9pjYEGJGC
+	/SSNDzLDZUO4BDL+JtXhDxEVzAFsUKW3YbezOEWjdR95vnW5CxckqPTxK+sM9ygb
+	pavxAIy8QCUkYhIH5W3RjhRNhlRY83TzDhaJL6nIbsfLIT6ABzl/idVloDE7Yqtm
+	I5Ftjh1Bhr7HoJw1NurevUtpAHweYfc1Aer6tXEzVI/U2iEqtZGItBVLhVmqnHbN
+	AnL32eqG8HfpgMPH/m3XX6slUHFkI5E7GifU1uiLBS4cZx9AgbqhY4AZjnL/ya3c
+	toX/NlFReaXSklO1Q4yf40yeMM33pk8LsMVyv01xklYAsJ53KzTV8XAUDbfx4G1A
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74yjw2-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 19:22:35 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697IHelu2265523;
+	Wed, 7 Oct 2026 19:22:34 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h58ek4a63-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 19:22:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697JMVpF12255672
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 19:22:31 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E8F8020043;
+	Wed,  7 Oct 2026 19:22:30 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 162CA20040;
+	Wed,  7 Oct 2026 19:22:30 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  7 Oct 2026 19:22:29 +0000 (GMT)
+Date: Thu, 8 Oct 2026 01:00:43 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
 To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v15 16/23] KVM: selftests: Load per-vCPU guest stack in
- TDX boot parameters
-Message-ID: <asaYX9uk48uWISHx@google.com>
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-16-7c62a5d8a992@google.com>
- <20261002091336.EA00B1F00899@smtp.kernel.org>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] KVM: PPC: Book3S HV: Add preempt_disable() around
+ virtual-mode HPTE bit-lock users
+Message-ID: <20261008005700.c78e5a18-dc-amachhiw@linux.ibm.com>
+Mail-Followup-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+References: <20261007182116.12479-1-amachhiw@linux.ibm.com>
+ <20261007182116.12479-3-amachhiw@linux.ibm.com>
+ <sashiko-outbox-163301@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20261002091336.EA00B1F00899@smtp.kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-163301@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: T4PTW3pnENmozDTc5dlJAS-ZpNw5mqjT
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA3NiBTYWx0ZWRfX1Nok+YejS322
+ uXiOJ4vXaXfpWtnfBF9QdR5wtV8jkOFy32El7iTlMWso8NznqysZkuZwomKjs2M2SmxMUnH60ML
+ xGcwuakyEkdA3sZ7MpZF+Qrz/XpARZ8=
+X-Proofpoint-GUID: T4PTW3pnENmozDTc5dlJAS-ZpNw5mqjT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA3NiBTYWx0ZWRfX5ipEONDjzex+
+ NbYMXeqD+ZXy9VLeQ4URx3loB0tzq1GLoVbQMZhrsV5xlEXq39j0jOVGZi+JyeISw7PTDo2x2N+
+ 5azIFBKxx24o52GekwTRj1gxAYAKXjVWqY5O1Vi6p6yWwIEoJ50q0yOc2wl0Q8QXy0LvJ/vNFph
+ j9AFArkHpxKWJmIn+8MGgFVYY3Z+csP0Qr+DOQ9N/lE5Ui0sUsbraFRMiZgG3HUjShjBDhMfrQ+
+ 4fpWkFvk0fVLkqRd0MWy6pJW7zYVZQwTIq9wFSV92WS+ZdNUQIHLfEX55EoisKmjcgeWMN8RK/S
+ kw0WmHHHv4MznIOb7NnqbBw+pko2K32YzrRqn7GzPxW/97aAHgqf1mi+f0XrGSistz1v0yrC3Mo
+ LMZkJYYvj0FqWOWM9FGC9Jp0NZwHRe/pgAgO0nOQOauQGmtJXPeu2dwd71O48pWmkMwboY4RWcf
+ cOan0dHVo+oqfsS6qrg==
+X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac69bfb cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=8nJEP1OIZ-IA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=DKcAYAtLK8KsSAPX9gUA:9 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_06,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070076
 
-On Fri, Oct 02, 2026 at 09:13:36AM +0000, sashiko-bot@kernel.org wrote:
-> > +void tdx_vcpu_load_boot_parameters(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct td_boot_parameters *params =
-> > +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
-> > +	struct td_per_vcpu_parameters *vcpu_params =
-> > +		&params->per_vcpu[vcpu->id];
+On 2026/10/07 06:47 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: deadlock in kvm_test_age_rmapp() due to missing preempt_disable()
+> --
 > 
-> [Severity: Medium]
-> Will this lead to an out-of-bounds array access in
-> tdx_vcpu_load_boot_parameters() if a test uses a sparse vcpu->id?
+> commit 6b1add31442320e6307f450d080fd72f64ee2368
+> Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 > 
-> The boot parameters region appears to allocate memory for exactly
-> nr_runnable_vcpus instances of struct td_per_vcpu_parameters in
-> tdx_vm_setup_boot_parameters_region():
+> KVM: PPC: Book3S HV: Add preempt_disable() around virtual-mode HPTE bit-lock users
 > 
->     size_t boot_params_size = sizeof(struct td_boot_parameters) +
->         nr_runnable_vcpus * sizeof(struct td_per_vcpu_parameters);
+> This commit enforces that threads acquiring HPTE or RMAP bit-locks run with
+> preemption disabled to prevent CPU hangs. It adds preempt_disable() and
+> preempt_enable() pairs around various bit-lock acquisition paths.
 > 
-> Since vcpu->id represents the KVM vCPU ID (which can be the APIC ID on x86)
-> and can be larger than or equal to nr_runnable_vcpus, could this write beyond
-> the allocated bounds and corrupt adjacent host memory and guest physical pages?
+> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > index 2ccb3d138f46c..e8f73c8f97803 100644
+> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > @@ -890,6 +913,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+> >  
+> >  	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
+> >   retry:
+> > +	preempt_disable();
+> >  	lock_rmap(rmapp);
+> >  	if (*rmapp & KVMPPC_RMAP_REFERENCED) {
+> >  		*rmapp &= ~KVMPPC_RMAP_REFERENCED;
 > 
-> This could be triggered if a selftest creating a TDX VM specifies a sparse
-> vcpu->id that is larger than or equal to the total number of runnable vCPUs
-> passed to vm_create().
+> [Severity: High]
+> Does kvm_test_age_rmapp() also need to disable preemption before acquiring
+> the rmap lock?
+> 
+> Looking at arch/powerpc/kvm/book3s_64_mmu_hv.c:kvm_test_age_rmapp():
+> 
+> 	lock_rmap(rmapp);
+> 	if (*rmapp & KVMPPC_RMAP_REFERENCED)
+> 		goto out;
 
-In KVM selftests, VMs already create vCPUs sequentially with vcpu->id
-(via __vm_create_with_vcpus()). TDX selftests will not test sparse vCPU
-IDs either, because TDH.VP.INIT always initializes %esi to the sequential
-0-based vCPU index.
+This is not an issue on powerpc; here is why.
 
-> > +
-> > +	vcpu_params->esp_gva = kvm_allocate_vcpu_stack(vm);
-> > +	TEST_ASSERT(vcpu_params->esp_gva < (1ULL << 32),
-> > +		    "ESP GVA must be within 32-bit address space for 32-bit boot code");
-> 
-> [Severity: Medium]
-> Does this bounds check in tdx_vcpu_load_boot_parameters() actually work, or is
-> the value silently truncated before the check?
-> 
-> Because kvm_allocate_vcpu_stack() returns a 64-bit gva_t, assigning it
-> to vcpu_params->esp_gva truncates the value to 32 bits since esp_gva is
-> declared as a u32.
-> 
-> The TEST_ASSERT then evaluates the already truncated 32-bit value against
-> (1ULL << 32), which will always be true. Could this bypass the intended
-> safety check and cause silent stack corruption and test failures instead of
-> an explicit assertion failure?
-> 
-> This could be triggered if a selftest allocates enough memory such that the
-> guest stack virtual address exceeds 4GB.
+kvm_test_age_rmapp() has exactly one call site:
 
-Yes, will fix in the next series.
+    kvm_test_age_gfn_hv()                 [book3s_64_mmu_hv.c:1020]
+      <- kvm_test_age_gfn()               [book3s.c:896]
+        <- kvm_mmu_notifier_test_young()  [virt/kvm/kvm_main.c:864]
+
+Inside kvm_handle_hva_range(), the handler is invoked only after
+KVM_MMU_LOCK(kvm) at kvm_main.c:626, which on powerpc expands to
+spin_lock(&kvm->mmu_lock).  mmu_lock is a spinlock_t
+(include/linux/kvm_host.h:774), and spin_lock() calls preempt_disable()
+internally.  By the time kvm_test_age_rmapp() acquires lock_rmap(), preemption
+is already disabled by the outer mmu_lock acquisition.
+
+The lockless path in kvm_handle_hva_range() (line 625, gated on
+CONFIG_KVM_MMU_LOCKLESS_AGING) would bypass KVM_MMU_LOCK and reach the handler
+with preemption still enabled.  However, CONFIG_KVM_MMU_LOCKLESS_AGING is
+selected only by x86 and s390; powerpc does not select it, so this branch is
+dead code on powerpc at compile time.
+
+No additional preempt_disable() is needed in kvm_test_age_rmapp().
+
+~ Amit
+
+> 
+> This MMU notifier callback still acquires the KVMPPC_RMAP_LOCK_BIT without
+> disabling preemption.
+> 
+> If a thread is preempted while holding this bit-lock, and another thread on
+> the same CPU begins spinning for the same lock with preemption disabled
+> (such as in the newly patched paths), couldn't this result in a permanent
+> CPU hang?
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261007182116.12479-1-amachhiw@linux.ibm.com?part=2
