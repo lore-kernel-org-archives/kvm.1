@@ -1,90 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-251.mta1.migadu.com [95.215.58.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C48749DB98;
-	Wed,  7 Oct 2026 10:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAFF48EC8B
+	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 10:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791370297; cv=none; b=ucWu3TH6emHWLUlXYtwnWp3VkVxiz2jL/jmZuDwTOCuZMq7S5Yeze5k4oYjmvDZhq0ggvXIebE24E1QN+hsUDs4YU3f3WTB8F7RVbrprfWaSd8LagMs44xWhg4fx5xwwZt3pmgSPk6MZKa/JvvAfR7hNPGjRWPJ9v1UiAFbq6ic=
+	t=1791370369; cv=none; b=OTESHcqw+UNvcEAdRT8XgJ0RlP7hc5E/CYjlL+EBGDVpMxAsGAPWAWZhrqX/m0wcxPwevKL78CQ54CsW0y4dAvj/MXYQk5CBeFmKNdvyHYZsmC+j6TXCQZOQbjRpKunaTUmC3cQGLLiJWIvlZD5bZELoba9ahmmpnNqKEf8/3V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791370297; c=relaxed/simple;
-	bh=J+DFMDnlZ3G9MVUQd4T8u6HsYYM3KMhWI8aLB4phSgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PzVNRhsRYQNCFQIdiVId3n9sffvqzy3o8S4F62py5bEHvA+WaNm3oB5Y62t/5ph3qs96S/QybuapxvNT/WMalF1JISmBLo6GMmg85UY+zYg+t/F+lePzXgUaadZZf32jeIx4TJ5mWlScHETkQYRsxg4axc8shRok1nbBSz1GAr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aB0CPojg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791370369; c=relaxed/simple;
+	bh=IYj7GJMoI4iyh7cvdiMZ7m7A/3iJ5WzI14Ui9Zh8zRE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X/zNwq7to902ksj5oBjLgvIRxbRckGAx5Yo8C0IBeaUxy8fjiyTBnx/2FAuYD4Zp7FhHbleBYk/zjcVil7xA1vsknZI/qmqww+4htTxWqVzlDOZ4ZyeAuSIzwm6dTMW21eA4WTpSZNtKnscp2Szn3YIqZ1BNV0gLLDKSZrSERrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LxvogiQv; arc=none smtp.client-ip=95.215.58.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aB0CPojg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D201F0089B;
-	Wed,  7 Oct 2026 10:51:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791370268;
-	bh=weSi5GskMQcEeS2NiW1uUS0DljvEtWiOygax9Ns7zp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aB0CPojga/mp5PJnUHNynUO3VHoezNfPEjLWND7BpXC8J4A+Z4VctOV0EybFyiCXA
-	 LlYp+FK1nbqf0as+ZbN6Tco7T6z4qAB/edMjNHhgXQLk3WDy3+/9RYGLamn/UHJ+Pp
-	 ZvLlvcbTDFnXxNsYhj+fHc24kE1SenB9XFzDFjNDvZ5EQI6v5LFoC1yibaRNzuHplB
-	 nBKlna6sthqpyLF2Tss+WOBkeYgO+5N12aegqpOwKWgyeVLO4QbzHaORjfSK8R82Rm
-	 mx+WM6PP8z8AH0dvvVRwbAyph4bkrTOMGqFmFAVWepY6r/5+2/mVscuFGz5Re0tPOD
-	 1k9ZJmr0mZRvw==
-Date: Wed, 7 Oct 2026 13:51:04 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v9 04/18] PCI/P2PDMA: Evaluate ACS controls at the path
- divergence
-Message-ID: <20261007105104.GD7822@unreal>
-References: <20261001-fix-p2p-acs-v4-0-v9-4-1a8e0f50ddd9@nvidia.com>
- <20261006210848.GA712422@bhelgaas>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LxvogiQv"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=IYj7GJMoI4iyh7cvdiMZ7m7A/3iJ5WzI14Ui9Zh8zRE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791370337; v=1; x=1791975137;
+ b=LxvogiQv21xsbxJN0eZXyL96QF3EnVfTo0Leotc6UI2EabcKXarJRubm5ctOB+4KNERIfgul
+ b2RA1v1vqBzYRPwa/tumO7TPkI1rHUpgvCv5SJY3x6JkfzqydQv7lF+ebuotfUe8pASWNpjbG3K
+ elu7xmGV8+e8mj3vRBfwTOg4=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 88c28ddec8e8da56;
+	Wed, 07 Oct 2026 10:52:17 +0000
+X-Mizu-Trace-ID: 88c28ddec8e8da56
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5ba40832934so5683e87.1
+        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 03:52:15 -0700 (PDT)
+X-Gm-Message-State: AFq9FYJjnFPhVP+zsLuLUNUau5zquw+v7DDi6aVUBrc23CUDCWUld3Lu
+	CbgPfPDbnw+5WTPA/EgE6wPugv6dqS/BAp5eKdG4hawrqjWyASYWLCMskBy4OOOAvLWJjEgvTl2
+	3VZfyu3USpV/2uA/AwkYrMFx9Qnp5f+Q2XhdAMdxk
+X-Received: by 2002:a05:6512:a89:b0:5b8:f20b:350c with SMTP id
+ 2adb3069b0e04-5bcca123ca8mr312158e87.3.1791370334717; Wed, 07 Oct 2026
+ 03:52:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006210848.GA712422@bhelgaas>
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com> <20261007073537.2454351-3-suzuki.poulose@arm.com>
+In-Reply-To: <20261007073537.2454351-3-suzuki.poulose@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 7 Oct 2026 12:51:38 +0200
+X-Gmail-Original-Message-ID: <CA+EHjTyb3-QoLa6P-dGXVdMh9E_vO3p8HceH3TH8h8gPJSd1Kw@mail.gmail.com>
+X-Gm-Features: AclHuK9KvLpSDQrj6i2mZweuyXItR2scaGR6GbHNtuuSCxJB5qE1qI3r7GdrQYA
+Message-ID: <CA+EHjTyb3-QoLa6P-dGXVdMh9E_vO3p8HceH3TH8h8gPJSd1Kw@mail.gmail.com>
+Subject: Re: [PATCH v23 02/14] KVM: arm64: Disable Steal time accounting for
+ protected guests
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
+	jonathan.cameron@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 06, 2026 at 04:08:48PM -0500, Bjorn Helgaas wrote:
-> On Thu, Oct 01, 2026 at 02:55:12PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > ACS redirect controls choose between peer and upstream routes only at the
-> > path divergence. Applying them below that point rejects valid nested
-> > topologies because traffic already has only an upstream route.
-> 
-> I guess the point here is that prior to this patch,
-> calc_map_type_and_dist() returned PCI_P2PDMA_MAP_NOT_SUPPORTED in a
-> case where it didn't need to?  Can you include an example to make this
-> concrete?
+On Wed, 7 Oct 2026 at 09:35, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>
+> PVTIME support is advertised by KVM_CAP_STEAL_TIME, which doesn't take into
+> account the kvm instance. Even with that, a VMM could skip the CAP check
+> and proceed to configure the PVTIME as we don't do further check on the
+> DEVICE_CTRL. Tighten this up by passing the KVM instance around wherever
+> possible and catch things early.
+>
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-One possible example I had in mind while preparing the presentation [1] was
-ability to connect devices to different switches. Despite devices and switches
-support P2P, but from the P2P subsystem's point of view, traffic between them
-was not P2P (see slide 4).
+Someone beat you to it. This is already in kvmarm/next as a5b0f36a045e :)
 
-This support will become even more important when we reach the point of
-enabling P2P inside a VM. It will allow us to hide the underlying PCI
-topology from the VM.
-
-Thanks
-
-[1] http://lpc.events/event/20/contributions/2508/
+Cheers,
+/fuad
