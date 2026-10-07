@@ -1,64 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409823BB9F3;
-	Wed,  7 Oct 2026 16:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842A42673AA;
+	Wed,  7 Oct 2026 17:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791391514; cv=none; b=lHjCbJGEqG1XwY/ermTwYWf4Gad8imJDIAjqfoagArw9owqhgdZS1BSQ3Hbys1Q7fl5H81nbbaolAAQqUMMMBvMHuucnWXw/Qz7TdBFMRhnuq0JhD2XhHRXIXFhTmTEoNToooOhM8BIyLbpRjSQ0yVBOqYjr6spJuqyzf8B7Yn4=
+	t=1791393551; cv=none; b=XRxKELKBh+2X3eeMhYVoJa/0XNTNpJTmInwh1LBLULDiEFmCM7jgy+JkDRFhJdUJlPQGXgp/80NF5sBVrTswb+31xHAXTEjKoruJthL67lS2LhzegaJAgdXEPqt5YRf7LCC9tPzF2/7iTPIVZ9SVNrB0bqr5IK90+MsTwXVKrLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791391514; c=relaxed/simple;
-	bh=2Bj6OyhyZCNvbCvpjkwoOzG6IZPWMw42ipzCILNXO6Y=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=qTnt04hdiZ/O1abACyJMziWw/QHztrAf2Z5VwlzkByGbCsdbDu/he1NfO8u3IZ1OwA7yrplELYN8TxgKjSTnHkXLKRdSjFvzo9baYmLIqOs8oc966Vnrj3EPtxbv5K3gjU6cZPUxafhSGBfje8aF3lsklghCEmIIiW16krkdQlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8nTSAF8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791393551; c=relaxed/simple;
+	bh=QFUZT4cZVyuL8haEG6rnP7VCFw7K75QKxT40XH5Z+t0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i2aLNFhnIwBCP+UqzP+x4dxIPXHT1zKCpi4t3LOhBypNHBchJN6ZjP3o3uEpbnoeitCp4/9Ld39FevAF8u1NhovfAcas8l0Xcn9TYnTaIejEyDM5BaAcTJZu+yVMj29gxqTvNURWI94n7IY/AFlzADPujlchrCEJXloOFRcTJ/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EJAanf+F; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8nTSAF8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D318C1F000FF;
-	Wed,  7 Oct 2026 16:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791391512;
-	bh=2Bj6OyhyZCNvbCvpjkwoOzG6IZPWMw42ipzCILNXO6Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=N8nTSAF8O1YV3YYeOhpgGOn0/xK2aole9oWnc6en/MPidwYvLneYMTT0nJjUZTCm2
-	 73jnFuQItrav5bjPqBAFk2FSnHIEj30DM+G3kmaOse2Ybx36/JV9ALZtdGQIf00Wlz
-	 rRWShJpH3ChRHVf3TlaB/p6MtuB9IDExWbUa3Ygo/Q3M9sCBO6yGNCj5qFPWCV67+b
-	 u3LvmAqBNFzYX/g/Ga185DCGsMkvoFy8NyuJtJKneBZNoR9G2YpAlmPzQlH/aIam+N
-	 MO9kK6cm9GtpdRgis+2FiHW3p8I8J5umu7ZnCzEj/ZrUXbGQrsW9wS0Dom4KCGxr6c
-	 DSO5CVwPHN9jg==
-Message-ID: <sashiko-outbox-163204@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vhost-scsi: use FOLL_PIN for DMA page pinning
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Karthikeyan KS" <karthiproffesional@gmail.com>
-Cc: virtualization@lists.linux.dev, "Eugenio Perez" <eperezma@redhat.com>, kvm@vger.kernel.org, "Michael
- S. Tsirkin" <mst@redhat.com>
-In-Reply-To: <20261007163716.707102-1-karthiproffesional@gmail.com>
-References: <20261007163716.707102-1-karthiproffesional@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 07 Oct 2026 16:45:11 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EJAanf+F"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697F5MlL2822857;
+	Wed, 7 Oct 2026 17:18:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=QFUZT4cZVyuL8haEG6rnP7VCFw7K75
+	QKxT40XH5Z+t0=; b=EJAanf+FDxcZ1+lTVLY7D6iYjJV/2TbEG79oyurdefaXxw
+	c/JH56mcI13FdcucbrVTO7OA/61xQcc30kKwOdhnet68+Bo8NLAfKETsc7gzIvUH
+	FZBJbiteKTT+0U6ddDglWvasiE8F649qtHWsC5Nc6RDaOeel8AQRRcmHqHApJ34u
+	1pq+P2x3NY42Hcl+9ivJ3nTLet40S3h9mjt33D5n1rUyuX1m3xssP9v702dklEsY
+	4rH5rn9CuR1jnfHTNvPEaNlaGsEciyiJJCa2J6PPtoDGAhSmGfyaylFla45FpYuq
+	dKxRYpVqnLK5gLqz3jxUZTR7/FZ1mPuZ1MUIrakQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5ps53-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 17:18:49 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697F2Yuo802348;
+	Wed, 7 Oct 2026 17:18:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h5f3ttjbg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 17:18:48 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697HIjJu37749200
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 17:18:45 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 10B7D20043;
+	Wed,  7 Oct 2026 17:18:45 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1DC720040;
+	Wed,  7 Oct 2026 17:18:41 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.124.215.154])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  7 Oct 2026 17:18:41 +0000 (GMT)
+Date: Wed, 7 Oct 2026 22:48:38 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/8] KVM: selftests: add powerpc support
+Message-ID: <asZoDVHc1hHlS6BO@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
+References: <cover.1791280439.git.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1791280439.git.ritesh.list@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA2NyBTYWx0ZWRfXzLAOHUMgXth0
+ WVSIBAjIrKGetdYyPMdiILEoh47DQDAAeaVWUIIQP1Hp/AtIdXzgJDBX6YKVgYwTEbG4c4GEMgP
+ KbMoNNd0p9BurjSv8XOPJLCn7KJ1SCc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA2NyBTYWx0ZWRfX6GTIAxdRK3GQ
+ MtMkRAyHVlSsj7GUZNbWqWhmp9Wfe3kZQgtlg1JDWSylbv2+iVDXpg8YRV+17M+t08Nd6rKnnNP
+ aZY4XXHscJ+AA6Hn43PR0rp8munn0t4b7dFmvzJiOZhA8dH/jr4dy+fRzAl7G25q7fa1gdX6j+x
+ /Yz2g9VS4kPWtPZVMR2P9Z8jCTOiGwHm1NvrfZG3WTrQuswcF7qYLIDsfTevFAZexs4Qk2ZbCPr
+ heqaXuxfDadwt9yQj9yxqJkbMgVVZoddwtXw6KaiRtrmSJdMeDlj7guwiMnKIGJl0BsJluCP0bJ
+ FuYFVZVYsc+KISucHP30+Q4y3C9jpmyqbU709IL5hYKi0hSKZN8X0h90I3BRsVSxKmFjw08E6xx
+ XomxcCqYpK7USfatdvOV6W6wqtwR/ReZQuLesxmmNpeFfze43xpkh1sQ3qkfZdrpoNiYdli2LFQ
+ NDhojPDUOcnNmXzaWCw==
+X-Proofpoint-GUID: piZ2NJeF4gcuBPiLh--2VNqd_b3rsgTU
+X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac67ef9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=IjqmoBHoaWwW2uD4uXkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: ANO0DObG1HFpe5l6Y4i2vM5qxQj7L76O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_05,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070067
 
-> vhost_scsi_map_to_sgl() pins guest buffer pages via
-> iov_iter_get_pages2() (FOLL_GET), which does not prevent
-> copy-on-write or page migration while DMA is in flight. Switch to
-> iov_iter_extract_pages() (FOLL_PIN), which does.
->=20
-> Cc: Jason Wang <jasowangio@gmail.com>
-> Cc: Mike Christie <michael.christie@oracle.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: virtualization@lists.linux.dev
-> Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
+Hi Ritesh,
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+The series LGTM. I also tested it on KVM on LPAR and KVM on PowerNV
+systems (both L1 and L2).
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261007163716.7071=
-02-1-karthiproffesional@gmail.com?part=3D1
+Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
 
+Thanks,
+Gautam
