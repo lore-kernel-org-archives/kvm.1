@@ -1,162 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C92948FF8B
-	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 12:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791374742; cv=pass; b=C+A1tneJzLZzZlmp1THc1EZZ51ClBIOGWSuXL+42m8e6Sq0SOdvJYQhMmJKne9orTMhcZZ/hvRX+aWfu8qyDKqdQ8bunUHHqRG0aOqgdaO0u3epWZyUw2XCOclu7h02gz+3CrEyu5vrpw9mnkWZ2Gmq2PankiSzR3u7MkVP2kSc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791374742; c=relaxed/simple;
-	bh=dgDkNP42S8yAyp5fESFUXhsuKZ5enHVJU+M+6HEcSN8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YvYIh6gF/lSymsiEIiS4AF/bh1O7XMxEHggAcjBJ/PGXiGBiIL4GEBKIsAsI/fBZRgQxkfz0RcjRP1Thha5FKyGRqQwuYdRf/GHzdhWJxb4FW26lN4dgfpoNiCtVdV0WjM/YgKrNqbZxzTJ65rIpxkXxkxXk0oW3Mrgp3AaSc14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OSUt0tyr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qCIxOi/3; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F25F4119F4;
+	Wed,  7 Oct 2026 12:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791374808; cv=none; b=oiC+TfELL/dT02ATVk2mjeaTcjHrpfLMdxM9czKCAC17XPDbWMpBvaPXGa5gjRYUjiz+SHYlukBHPdIahk/1amWcANatCjOWVzBROFfIxiMepppWrom3enMhK9fIEnfu4TFj+Ih46NpqJJG8C3bCsHL6Be7SvRYN6rsTlhVRt1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791374808; c=relaxed/simple;
+	bh=wKlJ2DHRqIhAdaST3wmyUh3jO4bx9A65bBiPfUs5SF4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k7YmW0+usy0wuBaw7AIjEK8Df/SRMRqrM6hfJ7JetV3oegRuXRemNiY5hqWNtJfiFnv/tZtzlj1HdxfQC6q4asSxyXQBEesVHt8fvSg4E5xcPZP8jQQnHd4I/cvCRQoRmekAKLqGSG5edcOdVpJOJMQ2DPhbrgrfvxBsdMrvvdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nY8gB82m; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OSUt0tyr";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qCIxOi/3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791374732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EpfwXVRlOin+tq2YsuSqD/pQTBJRbFbnWGb/A3VMuf0=;
-	b=OSUt0tyr0CbvxUG16yCuITYxae0fJ0nZ8kTVnq6kWcHs6R/BescDq6f0/4hqPZju+ILWFM
-	KcsYSkXQaHQl3cn1DvhrCMP5sAp0pVxOHeBlqFOJyHXmyqGkqa6Jvd2TM25g4H0nRUMXeu
-	cvtyTc+SI6DRjpoDzh72AhGU+WgO/5M=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-MxldyOIgMeeNQfByoVOzyw-1; Wed, 07 Oct 2026 08:05:28 -0400
-X-MC-Unique: MxldyOIgMeeNQfByoVOzyw-1
-X-Mimecast-MFC-AGG-ID: MxldyOIgMeeNQfByoVOzyw_1791374728
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48c50ed05abso2973174f8f.0
-        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 05:05:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791374727; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kNTsVjlPMiIGVbDLBrpebKjDlz+3aTiG1REYVWRZkh/oMZlWXjN15EOAhDv39mFiS6
-         HW6KqtzskkkvfEy7RFWsd/NWEX24dVR68Wy5EXRDRB2PQR4VjcJD3bMTASfz6MZEz8qv
-         9x6c9H2BQlYiBnuCEcXJcSl7Yy6l0yAd/R48G9pmNAzrUijVpJKf/gAT6MQQ/wPbBF6x
-         NYcs9CDurz1Ckp/x/SKQRw+6qUG6/6dqWwg2J/kGM27j0g4ifZEXad3UV/CfCDJg8mbw
-         +ppmEjZtBWFMtQI9oY4v/DfP2cznisyA+oi8bI6ZuCTNBar1boAZbULnDraYMYK/N4zc
-         ON1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EpfwXVRlOin+tq2YsuSqD/pQTBJRbFbnWGb/A3VMuf0=;
-        fh=BCeWSOj/6YsxKTAZvRe2ti21nvNdnmMTutYsCY1bCRY=;
-        b=AnZ9YNPuiOjHvQhKmso9kWO7OiVjJw6UwFNlswo4QI/NW4EgqbSHUUn0Usxr4LuAio
-         g0vmoAqOg2Czz6/9JpgtIsziEgF6QXHGm0Ka2yZhqslu+cHeyHDw08u85kpHdYqfr56G
-         aeDo8TYpiTXaW03GvMrUV5otYrSKsQOBF3qe5hvLvPYs4ijXBI1tGQEBlDuYcj0+XzuJ
-         Yc5WKe2Y63jQj2WEHdjK2bvgdB9bROeQE0Fqdu1LkSD74vT/WExK8HzK7QfrX+u3uwFO
-         JpKoLQLN+fnmunya5zjcbIaAbBHZbOEomk4JHG4C12JC3Da0hkE9rZAhBfEptNaYLKSw
-         vXCQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791374727; x=1791979527; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EpfwXVRlOin+tq2YsuSqD/pQTBJRbFbnWGb/A3VMuf0=;
-        b=qCIxOi/3PkxgSdGk7zROfQ1RsaJNA7K5goq6DNTCPRrIecKNm2oC+a013VKRBMNu5w
-         bcSwXdnbgrouMTI09V+C7Bm7ItlJDGYLyDzjvcbtZHuq0Xv4wHaz58g3Xn69TkCbW4uc
-         dyN9tjR1kA9VB36JQYXfmbR9wU5au1o04i3plbatcfAQm7kGZgiVngIDe8NaV8IbWJsf
-         3KaAdPTaj5N1bXmrMtZh8kBhbqfBGL7i+KhSs0fByoIQJbANccx6oslThcbsixI/dUf+
-         iW6lI6rKGNXsvhpeWPcYG0q/9C4dLdTw7xtlgYdspMv1FRTd+U5DhlwoPz5bZtRtysi8
-         wMuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791374727; x=1791979527;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EpfwXVRlOin+tq2YsuSqD/pQTBJRbFbnWGb/A3VMuf0=;
-        b=fPuaZFG552pXxTxqqjzFxsq/Qg2ImZMPcETn+NS1E8WQAxuwP+fk0aCQIOm4RCDZBc
-         WdabjIMpulzF/VPKW78IiIrgGSgEWX90xeSInT0e9mJIayhzQ0/XyCwQ6pRo+X8bX57x
-         DKMRGLFTlC305oj8buHyNBQSbR2vEFwqhs314Pj/OfDEm7fKrdq+4ug9YeD0jko7LnHB
-         lGbqK+4Sr/ohgle2G5BqC8gMCbDhSmUOxLQDXB1a/wHHPvqGfae7z1eqOtYT4S/xkMYt
-         B6vxleGA9U9IgvZ0PJnHTEKYpINFPohEhMoi9E1TPx1QTDhsnc31Od/RZBhKdj9P/APP
-         h5cQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwP29wS8Pjgf48swUUHN1DdiDi1tw9WMXV4DxYnc1zQ8mqzPZViNKTPlUJk+YENrcY5qbg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJJz5x0KvBhMsntZAOd3VjOGAn2Q1ya0u5EsYj0mGUlhvtPahZU
-	310nfgwcisNePGOkFa6Oi+8klaQMUDP8E32hQ5TsBHo7dRQ0I01EpX/Byak0YvPGF2YUdZC/gOi
-	00OtHOFFJojgz5A+OGmowZwx0RWQzh4DWwV7Nx06EWetL/it70GBXxQ68fbTq+JqeFCrg8gulXh
-	Pcn1JalrgQwJ5s/Dg6qKCrOdJNY/hJ
-X-Gm-Gg: AYBFou3i4lAw355HXaGDJgz/LDxsFPr+Asn5RW1JUWVZjO7jNXODQlr/2cRyUENQKD3
-	e3D+oDV8F2u6FyKs3WNhWAsHsD8IQu63amWZqJLeu8NyynZ6FstGUdnfz0pFeNskBjqAfpOGIfM
-	FldSPmDKeweVTRX4UjD9JEqxBhEi3PVzwhb+VU9QMBo8LM/hEgubOXMPH2M9kPvDv5QOaDhx8ry
-	iWND6qhPGndYDDkKRn+msGLmxwPvEqvTfJj9EsSlKk6KKnP3M9xbSUfims=
-X-Received: by 2002:adf:f001:0:b0:48a:fbcf:6f43 with SMTP id ffacd0b85a97d-48c72897157mr2889201f8f.54.1791374727559;
-        Wed, 07 Oct 2026 05:05:27 -0700 (PDT)
-X-Received: by 2002:adf:f001:0:b0:48a:fbcf:6f43 with SMTP id
- ffacd0b85a97d-48c72897157mr2889153f8f.54.1791374726934; Wed, 07 Oct 2026
- 05:05:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nY8gB82m"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697BZw1U597192;
+	Wed, 7 Oct 2026 12:06:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aHl/f0
+	PxPOIXzHvjNa4odrw4F9RL3GJE/YaGipHz4b0=; b=nY8gB82meMmTOa0VlPxwqB
+	K759TAqpHozvq2V4vl0/9zY3qmX5pIlfd3HvvG9TsftaNvtMSBTBlwaIEOMCcXl9
+	FTqVFvUuc6xfu9FIsSmqH/J0O0CrfTD2bMqON7DBXwgBO9jBvUG6rq0y0f83LlFq
+	e3OgFEhJ+fdlZKKqOpW/PDpR3qDjsh79ef9pBAQ0TOIMp8u4ziqituh/1oEuWQx0
+	prJmnAZS7Y2gecuJjUfdix4kZKeIEbnMz//n5SBHIhswzCfZPMz+mdPNWi5wVHLk
+	rZW64k017ni/sNZRbTScjNWUaSJabKpmtdBMMhazldVAJ8ndtF7D5cnOai9eVmbA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2scrn8n2-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 12:06:29 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697BlaWg1808466;
+	Wed, 7 Oct 2026 12:06:28 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3cdvxj2j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 12:06:28 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697C6RZj18940464
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 12:06:27 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44E495806C;
+	Wed,  7 Oct 2026 12:06:27 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A838658066;
+	Wed,  7 Oct 2026 12:06:25 +0000 (GMT)
+Received: from [9.61.89.182] (unknown [9.61.89.182])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Oct 2026 12:06:25 +0000 (GMT)
+Message-ID: <f50d6afd-a54d-4bd9-a745-6bced1e6e86a@linux.ibm.com>
+Date: Wed, 7 Oct 2026 08:06:25 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <asUqYEisPp9MJ8mQ@rika.bernkas.tel> <CABgObfah3a03qwB8vsVNA67ffiHAYRHGjgCxydZzgqpWeXqduA@mail.gmail.com>
- <asYw47C3kHRtrzk8@mailbox.org>
-In-Reply-To: <asYw47C3kHRtrzk8@mailbox.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 7 Oct 2026 14:05:15 +0200
-X-Gm-Features: AclHuK_Z03ujIQiOF-7TRNWQCnrBuxkAj8rPGfOtnF0oirqxDAMT1PCbQRT6hqI
-Message-ID: <CABgObfasfsz8ALzFjLTVn+YCe2qXyfjTqc-mQYJ6se8zhxJLXA@mail.gmail.com>
-Subject: Re: [REGRESSION 7.2, BISECTED] KVM: x86: Starting Windows guest
- triggers UBSAN: array-index-out-of-bounds
-To: SimonP <simonp.git@mailbox.org>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 14/15] s390/vfio-ap: Add 'migratable' feature to sysfs
+ 'features' attribute
+To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-15-akrowiak@linux.ibm.com>
+ <8b8dc348-ac31-4dbe-a518-9563d5414f09@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <8b8dc348-ac31-4dbe-a518-9563d5414f09@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA0OCBTYWx0ZWRfXyWGCSb1DwN4B
+ W43Me398UhcyI1+tt/pyMh3PDkvI20RcpiOOKamD783aPQMQlErKwHFSD/3T9FFJ3TvD4X/z0vE
+ eKxM8qekhtiBuivO4StsiwU94DPfbb8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA0OCBTYWx0ZWRfX1pZr28jah2fO
+ SGA78iSjdQdtYcpso/efUJR3++MMXWDZPIKiSskHr6HqIIThJ07kRR2lyfJOX4yXBu9zuBTAQtM
+ SwrULto+sKOwRMnIoW9/HqjcPrxvwVfToJoQj3Xrcy6zmXtX4IL3PMy4gfnLEY6Qde5J0NddZ4p
+ YllUIOCwBG9RAlcI1VswWnDcR8Bt00M/KodaGgkGiO4YDYwo6BKtRPKcdqTGWtmIjY1VOQkoKXk
+ +urqu32Z0B2tXhL6in9hwAXxLldmn+tD22/JLPRfL5BC7XTx43XQ7+PLIOwe3IxcVbyMCM7DPKr
+ lqE2pBbquk/VqQBF+dRbrEUT/8Comfs2Xw/Eb3hnrNHfdN15n92dVi6193M4WiMvV/cF1X0iab9
+ 9N+rv4zsGH5mQXTyd8gwrJRCVFTTm8yIyNjfWiBBr95VYSGMLlMkNgEi8WVJ1+KBwfY8MyjVYFv
+ EGRnfdNdhexYDSZN+BQ==
+X-Proofpoint-GUID: F7R09YOK10rAc8pjJIWzD_wfBnm8eEAm
+X-Proofpoint-ORIG-GUID: F7R09YOK10rAc8pjJIWzD_wfBnm8eEAm
+X-Authority-Analysis: v=2.4 cv=B7osQ+tM c=1 sm=1 tr=0 ts=6ac635c5 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=qnWB845URLmzp39-Ai4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_04,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070048
 
-On Wed, Oct 7, 2026 at 1:47=E2=80=AFPM SimonP <simonp.git@mailbox.org> wrot=
-e:
+
+
+On 8/20/26 9:01 AM, Jason J. Herne wrote:
 >
-> On Wed, Oct 07, 2026 at 01:16:32PM +0200, Paolo Bonzini wrote:
-> > On Tue, Oct 6, 2026 at 7:37=E2=80=AFPM SimonP <simonp.git@mailbox.org> =
-wrote:
-> > > Hello,
-> > >
-> > > See subject. Happens in permission_fault() on line:
-> > >
-> > >         fault =3D (mmu->permissions[index] >> pte_access) & 1;
-> > >
-> > > Some output from a printk I added, not spammed but keeps happening:
-> > >
-> > > kvm: permission_fault(): pfec =3D 70, index =3D 35, not_smap =3D 0
-> >
-> > Can you confirm you are using nested virtualization, and if so what is
-> > the L1 hypervisor and L2 guest combination? Also what is the processor
-> > model?
-> >
-> > The issue is weird; it is caused by the SS bit which is apparently set
-> > in the #NPF exitcode; but it shouldn't be unless bit 4 is set in the
-> > misc_ctl field, and KVM never sets it. Can you check if the attached
-> > patch fixes it (modulo the fact that it shouldn't happen in the first
-> > place)?
 >
-> Will test the patch when I can but for now increment the weird counter
-> because there is no nesting, this is on a bare-metal hypervisor. The
-> guest is Windows 11. $(lscpu) is below.
+> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+>> Add the 'migratable' feature to the features provided by the sysfs
+>> /sys/devices/vfio_ap/matrix/feature attribute to indicate that migration
+>> of vfio devices is supported. Since live guest migration is not 
+>> supported
+>> for SE guests, the 'migratable' feature will not be included when the
+>> feature attribute is displayed.
+>>
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_drv.c | 14 +++++++++++++-
+>>   1 file changed, 13 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_drv.c 
+>> b/drivers/s390/crypto/vfio_ap_drv.c
+>> index 8e69ed286bb9..abfb34421d74 100644
+>> --- a/drivers/s390/crypto/vfio_ap_drv.c
+>> +++ b/drivers/s390/crypto/vfio_ap_drv.c
+>> @@ -26,9 +26,21 @@ MODULE_LICENSE("GPL v2");
+>>   struct ap_matrix_dev *matrix_dev;
+>>   debug_info_t *vfio_ap_dbf_info;
+>>   +#define VFIO_AP_DRV_FEATURES    "guest_matrix hotplug ap_config 
+>> migratable"
+>> +#define SE_GUEST_FEATURES    "guest_matrix hotplug ap_config"
+>> +
+>>   static ssize_t features_show(struct device *dev, struct 
+>> device_attribute *attr, char *buf)
+>>   {
+>> -    return sysfs_emit(buf, "guest_matrix hotplug ap_config\n");
+>> +    /*
+>> +     * If the system running is an SE guest, it will support a 
+>> different
+>> +     * set of features; for example, it will not support live guest
+>> +     * migration
+>> +     */
+>> +    if (ap_is_se_guest())
+>> +        return sysfs_emit(buf, "%s\n", SE_GUEST_FEATURES);
+>
+> ap_is_se_guest() is defined like this:
+> is_prot_virt_guest() && ap_sb_available();
+>
+> is_prot_virt_guest() makes sense, this tells is this is actually a 
+> secured guest.
+>
+> But ap_sb_available() "Returns 1 if secure binding facility is 
+> available".
+>
+> What do we want to happen here if is_prot_virt_guest() = TRUE while 
+> ap_sb_available() = FALSE? Have you considered this scenario?
+>
+> Also, the code would be a bit more extendible if you emitted the 
+> static string of always supported features, and then if(se) emit the 
+> string of se support features prepended with a space. Then new feature 
+> updates only have a single string to modify, so no risk of 
+> accidentally missing one.
 
-No, I mean nesting another hypervisor *inside* KVM; do you have
-Hyper-V enabled in your Windows VM? The stack trace has both
-npf_interception and paging64_page_fault, which doesn't really happen
-without nesting.
+Is this what you had in mind?
 
-If you are using QEMU, you can use "info stats vcpu guest_mode" from
-the QEMU monitor to tell you more. If you're using libvirt, likewise,
-that would be
+#define VFIO_AP_BASE_FEATURES "guest_matrix hotplug ap_config"
+#define VFIO_AP_SE_EXCLUDED_FEATURES "migration"
 
-   virsh qemu-monitor-command ID --hmp 'info stats vcpu guest_mode
+if (ap_is_se_guest)
+     sysfs_emit(buf, "%s\n", VFIO_AP_BASE_FEATURES);
+else
+     sysfs_emit(buf, "%s %s\n", VFIO_AP_SE_EXCLUDED_FEATURES);
 
-Thanks,
 
-Paolo
+>
+> Also, I'd consider using "migrate" or "migration" as they match 
+> existing feature designations better. We did not use hotpluggable :)
+>
+>> +
+>> +    /* Return all features supported by the vfio_ap device driver */
+>> +    return sysfs_emit(buf, "%s\n", VFIO_AP_DRV_FEATURES);
+>>   }
+>>   static DEVICE_ATTR_RO(features);
+>
+>
 
