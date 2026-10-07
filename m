@@ -1,83 +1,103 @@
-Received: from mta1.migadu.com (out-251.mta1.migadu.com [95.215.58.251])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAFF48EC8B
-	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 10:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B35422E3F;
+	Wed,  7 Oct 2026 10:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791370369; cv=none; b=OTESHcqw+UNvcEAdRT8XgJ0RlP7hc5E/CYjlL+EBGDVpMxAsGAPWAWZhrqX/m0wcxPwevKL78CQ54CsW0y4dAvj/MXYQk5CBeFmKNdvyHYZsmC+j6TXCQZOQbjRpKunaTUmC3cQGLLiJWIvlZD5bZELoba9ahmmpnNqKEf8/3V4=
+	t=1791370460; cv=none; b=VZFXpxYjXSiKoMi8KegcoL9ao+3VFXZrVMTlBrZIyC/udSeVR6xIx5XbrAXjYgyKgmzp5y6sxw+0cRSAkuwb9q8DxzYisB4qwdDpaNbeO9596ig5nj53ZREGdmkhcL/eHZ8qjRB81wfV47QB1r/7RzCpt9xlu7Q6lAOlkx5senE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791370369; c=relaxed/simple;
-	bh=IYj7GJMoI4iyh7cvdiMZ7m7A/3iJ5WzI14Ui9Zh8zRE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X/zNwq7to902ksj5oBjLgvIRxbRckGAx5Yo8C0IBeaUxy8fjiyTBnx/2FAuYD4Zp7FhHbleBYk/zjcVil7xA1vsknZI/qmqww+4htTxWqVzlDOZ4ZyeAuSIzwm6dTMW21eA4WTpSZNtKnscp2Szn3YIqZ1BNV0gLLDKSZrSERrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LxvogiQv; arc=none smtp.client-ip=95.215.58.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791370460; c=relaxed/simple;
+	bh=00v227q9t89fagNZ3tVtT+t9gL52AQ9XUBQNxCLtrPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CsJTNeiEeOuDsVqpW5AsPihG5Fo9VM6nRKOw8z614Yt2MH7fOTFJBzAVZojQoT6aUtr+zmyVw4gNevV7HPdQt2g3ltiz1Z5b1R/wNRiiGIU5Ddsn4byTj+AdfxSsMQ6XrsXYXrc8ZD1Rd/vPuI2Ca4qxD/mctb+ucqXKRSTWL9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuJJKRLM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LxvogiQv"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=IYj7GJMoI4iyh7cvdiMZ7m7A/3iJ5WzI14Ui9Zh8zRE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791370337; v=1; x=1791975137;
- b=LxvogiQv21xsbxJN0eZXyL96QF3EnVfTo0Leotc6UI2EabcKXarJRubm5ctOB+4KNERIfgul
- b2RA1v1vqBzYRPwa/tumO7TPkI1rHUpgvCv5SJY3x6JkfzqydQv7lF+ebuotfUe8pASWNpjbG3K
- elu7xmGV8+e8mj3vRBfwTOg4=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 88c28ddec8e8da56;
-	Wed, 07 Oct 2026 10:52:17 +0000
-X-Mizu-Trace-ID: 88c28ddec8e8da56
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5ba40832934so5683e87.1
-        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 03:52:15 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJjnFPhVP+zsLuLUNUau5zquw+v7DDi6aVUBrc23CUDCWUld3Lu
-	CbgPfPDbnw+5WTPA/EgE6wPugv6dqS/BAp5eKdG4hawrqjWyASYWLCMskBy4OOOAvLWJjEgvTl2
-	3VZfyu3USpV/2uA/AwkYrMFx9Qnp5f+Q2XhdAMdxk
-X-Received: by 2002:a05:6512:a89:b0:5b8:f20b:350c with SMTP id
- 2adb3069b0e04-5bcca123ca8mr312158e87.3.1791370334717; Wed, 07 Oct 2026
- 03:52:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuJJKRLM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60BD1F0089D;
+	Wed,  7 Oct 2026 10:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791370432;
+	bh=VzPwMVRHnsua+MMPFAPSMptThMMCWGE2wdCA+XcJT2Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PuJJKRLM7po6vyyXkFG7qLIRflQp3azbcSUtERQiwtLbFsRj6KYzl35/iV8F7CrHg
+	 S4T0tQyoWiYLlZkeRUMyNC8eUoKxyXFzXs67f77Ahpg9ByYyY79rT/7xEdNXZvgdnc
+	 I7kJmEv0uUW4NetvZ9h1PJG2rDZvjwKkw8W7VcwQMb8aIaOzHX76h1Z/Uu6JQjjI8g
+	 8gqmiG5i5MRVm75Ct6YlAlOe56TagG7QAGX2m2mIF2bR8eglwATAR/O0tZfLdUhqKJ
+	 oF6wSCGhQJz4K0+YpLvu5Ii8yGtMR/aUUdYwS9mgywgBULkFl0I88rP7zATDcIZye6
+	 tKRI2+unduEMQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xEPHS-00000000Edx-3Cur;
+	Wed, 07 Oct 2026 10:53:50 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Will Deacon <will@kernel.org>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] KVM: arm64: timers: Program CVAL from the current count when the hardware won't apply the offset
+Date: Wed,  7 Oct 2026 11:53:47 +0100
+Message-ID: <179137042025.697424.15256970902221447316.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261007074343.324269-1-fuad.tabba@linux.dev>
+References: <20261007074343.324269-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261007073537.2454351-1-suzuki.poulose@arm.com> <20261007073537.2454351-3-suzuki.poulose@arm.com>
-In-Reply-To: <20261007073537.2454351-3-suzuki.poulose@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 7 Oct 2026 12:51:38 +0200
-X-Gmail-Original-Message-ID: <CA+EHjTyb3-QoLa6P-dGXVdMh9E_vO3p8HceH3TH8h8gPJSd1Kw@mail.gmail.com>
-X-Gm-Features: AclHuK9KvLpSDQrj6i2mZweuyXItR2scaGR6GbHNtuuSCxJB5qE1qI3r7GdrQYA
-Message-ID: <CA+EHjTyb3-QoLa6P-dGXVdMh9E_vO3p8HceH3TH8h8gPJSd1Kw@mail.gmail.com>
-Subject: Re: [PATCH v23 02/14] KVM: arm64: Disable Steal time accounting for
- protected guests
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
-	jonathan.cameron@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, zenghui.yu@linux.dev, gankulkarni@os.amperecomputing.com, will@kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 7 Oct 2026 at 09:35, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->
-> PVTIME support is advertised by KVM_CAP_STEAL_TIME, which doesn't take into
-> account the kvm instance. Even with that, a VMM could skip the CAP check
-> and proceed to configure the PVTIME as we don't do further check on the
-> DEVICE_CTRL. Tighten this up by passing the KVM instance around wherever
-> possible and catch things early.
->
-> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+On Wed, 07 Oct 2026 08:43:40 +0100, Fuad Tabba wrote:
+> Changes since v1 [1]:
+>   - Patch 3 programs the new case's CVAL as an absolute value near the
+>     wrap instead of a negative TVAL, so a host stall between the
+>     counter and timer writes can't make it fire. (Sashiko)
+> 
+> A guest timer can fail to fire, or fire early, once the guest's counter
+> is far enough from the host's. Where the hardware won't apply the
+> offset itself (the physical timer without CNTPOFF_EL2, a CNTPOFF_EL2
+> host while TGE is set, the virtual timer on x1e), KVM adds it to CVAL
+> and lets the hardware compare the sum against the raw counter. The
+> timer condition is an unsigned compare, and adding the offset to both
+> sides of it preserves it only while both sums wrap or neither does: a
+> guest whose counter is ahead of the host's by more than CVAL has an
+> expired timer that never fires, and one behind it can have a far-future
+> timer fire at once.
+> 
+> [...]
 
-Someone beat you to it. This is already in kvmarm/next as a5b0f36a045e :)
+Applied to next, thanks!
+
+[1/3] KVM: arm64: timers: Compute an offset-applied CVAL from the current count
+      commit: 49930b1b557ceb698e0ab7f985ea41c99dc8bf22
+[2/3] KVM: arm64: nv: Read a guest hypervisor's CNTV_CVAL_EL0 from memory on x1e
+      commit: 1dbb5a2b5a21a62a223a2a2a0d775d417dca4242
+[3/3] KVM: arm64: selftests: Test a timer set past the counter's wrap
+      commit: 46e0f2c9d7d6f99a8f16290d4d4e2f3129edfa54
 
 Cheers,
-/fuad
+
+	M.
+-- 
+Without deviation from the norm, progress is not possible.
+
+
