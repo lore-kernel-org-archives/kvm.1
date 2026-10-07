@@ -1,177 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010029.outbound.protection.outlook.com [52.101.61.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C70941835E
-	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 20:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791404020; cv=none; b=sFTi+J61Unisg5n1y9tjfjkARwVKbG2guhR9h/mcmUgUyeSlT1mqaIhIj582oDxLljCALM2UsJRIZllj9TPuAgz00T2qCYQCneGKKFAsKCpk4SiFjBijsuhCs5t7t1UZRmQ8ggW3ni88KNl1FIaqqhz8/ftamsAiQg5hlEhBnZ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791404020; c=relaxed/simple;
-	bh=bDPPL+xSN7wVBevHoijfjwkusUQp4WhupxbSvPfKm08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cv0Qmr6Zx7cECvWzA5ZU/K1GEp8X+7vlmK4zP/L5IsD0n4eoXAXpparxxrS1RdLn6T55h3lWdXj2WDnEKSZrgEttcMo04BfMYM1DEf+FkCsEs0/9bH6K3UcStRMUaX+HsXDrdJ6nI8y6xcXcMD2gT3KT3FQO1JgfPL6NOlgnmF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Co/dwFtI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=A4IX89F0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579F0547054;
+	Wed,  7 Oct 2026 20:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791404307; cv=fail; b=iCdCn7Yl74ZRt+c1pE2J/hgKbZQCsjSZ9oI2AwU93ophjRTlfKL3ThzJ4NROLV42JCssOJ3iDgZYlgUqD6qfpiIwhGREW6xazp8MKBz2gNpqiCxLmwDbUkr9jpL5mw1/3G8wAOfLZDwwEByxROrtzPc0dMnKYslpxNe4iA+KOmA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791404307; c=relaxed/simple;
+	bh=vuAc5c57T7/wMIYyWz7P5G+qNZS5RcsnbQFD7rMF/A8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hbUFRwiVD8v1+eimfGoIgoFtHMmVQwRBzpAovpFh4YM2SpOw9H5lWlrH7pnnk3HYngWSTbxK8db8K9nD7zWTDiQ6cRPlIEhkm96jV6st9KzYkHQt4Ts6Ogg3Y3xupqHBRJjY9bt2l54GVxPtS8Hbxk22a6tFRaqsd2ObbsIs8Ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nrtsK0VD; arc=fail smtp.client-ip=52.101.61.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Co/dwFtI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="A4IX89F0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791404018;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=//UQkCEcyIPeEhEWoYggzeyvma2oUE5PLsh7lydCoVs=;
-	b=Co/dwFtIG9INfrgJ+iaaSQYN+XEoq8KpUnCW0G+W4JJSqMtMRUaIwBAYFb8UEthXNuobpC
-	Sz49A1JVkrfglTMq+l1a/4Ap1rHDTLJpCNtNk2xWNtP3E8r8nef8Xf8bvYns+IRGCJuxPq
-	4cyJI5IYm8D+38N9o3+ZGR7UHIRLrdE=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-WVygRSmaNuW5ukidrEBg7w-1; Wed, 07 Oct 2026 16:13:36 -0400
-X-MC-Unique: WVygRSmaNuW5ukidrEBg7w-1
-X-Mimecast-MFC-AGG-ID: WVygRSmaNuW5ukidrEBg7w_1791404015
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a082c014aso90021885a.0
-        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 13:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791404015; x=1792008815; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=//UQkCEcyIPeEhEWoYggzeyvma2oUE5PLsh7lydCoVs=;
-        b=A4IX89F0gL1gmQy7dgDzFnoCvIBKxLM/qZyJPzvqm0MYHCT4fHS86RVD0mpN6Fkrmp
-         U5Z+cdJBXD5VJKYeh06n5Rv4yFKtp1n+rQmoq7j7jHdtXziiAfy4fMCUfhDPPtXCnSlS
-         4/CcBz1kZYY3b/FNKPQeVBIWR17lOzZj8qBlDn5MbOAd6YuUrTfpWc127Fzp9VTun37R
-         7SdcuL1Had/wUoDIMaiP2OS/BbZcXV6zMzWq4uFYeb8/l5y/ZJmTo5N571bnqtmlFtrD
-         yCU7ZQYeZWtp8bhFyaHCBdhZ8swr6Yq+FwSxiB9s3tJUCf+OvvsziazDarGBBcnA2uFX
-         A+yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791404015; x=1792008815;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=//UQkCEcyIPeEhEWoYggzeyvma2oUE5PLsh7lydCoVs=;
-        b=sIIWNEm465xE1Xw8ACEYOTcxPdc9o1mS6U0BlhJhm9yAdxXx9zZse7p52bN8g98mjx
-         raif+qeIZtQvSb/WAXssR/WaMqzpjL1WpMsyRlZ7LLrvEX/wv9BaWVcFgi0UIw/g1CjS
-         h0TCA/0MCcdcgKHIHVl0+5bVf1Lqa6h5f5eLCEYDDnFNyrJtVtVS8Rs7KykUUlXrkozU
-         OEDKWsrT9kGw2K5/1hsdNm5tKNz2xtmGwHLptA1VGnbMtHPIn+CaictEHN/PXrA5axJr
-         Te8c2v1tYJpkQ4e0pPPcjD9QlrAp9b479E9tomZurmlC0hHKtILFkJyzUqVBkFOR+Uo/
-         FJSw==
-X-Forwarded-Encrypted: i=1; AKwUvByLBTtyLMbhHzARemlW/y2LOu59LNr7SIw3iKQbDZ1SA4F16SDiUYc2aS1qJhmcXfWi74Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++myEIdHm8BpdCuk/FQGJBCH/x38B5Q+26e8eLkY7BhXyTkPUiLi
-	57UT2+AjKmd5fEp3JmFigwEbcstG5xH6ke9NkiumqFcRTE+zA9PJ6WHnVQ8eH+Ax6IpDzU0K96u
-	v9A/aCC8AiOrnRc4MqOVXenFmx96yRmpH6xa20uAj9jSD1nMQ2sCfbg==
-X-Gm-Gg: AYBFou1+5Q++LTKvHRdVx5BeXcFv9u00fM/aY3wQatVgf8O2CXTteu1BZFp69K6QUOh
-	jvjEfM43QyyTmiP85dfPJhvB/EGbutYFBPb98+G+9e60EmocUS5J8Wn9VtfAJ5enFEzDgpeNxSN
-	GHAryrI6zv8UVFQ1yXvh77idewmModKtmWFmgVMbtmhBFoZzpRy5IXN5pvkH2uL5hzoPeaF45PL
-	G1IMqvYtlJg41pFBe6y/qhF0ItU9+zmPXwtABUtJhgB29otjZ7rJ8VJEhuIZoK6leYX/A0x97OZ
-	ieDMwLuspJJyRrbGLWuSVJs9yjxsqVcT5tSnpyya0lyKcjic9o05TgDZ03cesKQ+K6FJ/wE=
-X-Received: by 2002:a05:620a:2911:b0:93e:9808:2e1b with SMTP id af79cd13be357-93eab1d6bcamr49959085a.40.1791404015141;
-        Wed, 07 Oct 2026 13:13:35 -0700 (PDT)
-X-Received: by 2002:a05:620a:2911:b0:93e:9808:2e1b with SMTP id af79cd13be357-93eab1d6bcamr49950185a.40.1791404014547;
-        Wed, 07 Oct 2026 13:13:34 -0700 (PDT)
-Received: from localhost ([142.188.212.246])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93e991ef47bsm292631285a.42.2026.10.07.13.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 13:13:33 -0700 (PDT)
-Date: Wed, 7 Oct 2026 16:13:32 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: Artem Bityutskiy <dedekind1@gmail.com>,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] Add KVM API for confidential guest live
- migration
-Message-ID: <asan7ETOVEZqRehY@zhexu-thinkpadt14gen5.rmtcaon.csb>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
- <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <a4ec3af5-5494-4fb4-bf66-e3a8b67325e3@intel.com>
- <arRGYbvXgq8LLYQH@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <9fa229ea-818c-4ba9-81c6-be7ead5cb60a@intel.com>
- <araC0YkwLVPhGfy0@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <784c4ecc-da9d-44b8-9adc-1d1e92d20ae3@intel.com>
- <ar10Ncg2-GhzgBR9@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <30006d88-6679-4274-87fe-f1ce8732577c@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nrtsK0VD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eUjyQBe8n2quevaZcij6zMJfj5S30ZJshMoQ0TCjoMkQcjlluGEkDgRsshjdijV/nWW1bsaf/FIfaJqj8Mh9aM/s+dOZSDBG28E4q5QPfUJj9PjEem/sx+Hxhf6IKc4TdNBP1VPcZ6gXnrXUb2NhzEZCNpk2eKqiWxcfhucjlhwKzp1n27YcOX+MfMEdcKowe5CtJT/MCjr2PGOAN2CpMNx9AQt6UWxAJ9wEmIWEbWbWbxu2sKXe82xDJqukw2FRz9SZYd9fEC7t57qlKWkBHQb++qf03h1KvusjJsc5APvOmQsAA9Lu7QPLe1qvNUVnx1FkmI6QSuR30723nR93XQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9zeMijoPUBTctuNIPymPjqlMt9Lrq4OIe2peFUwF79g=;
+ b=eCwwaMIRSygfnfjjC+icS1bYEsWruKGAUBbjxiLcsICEfPWcd4/8/AJ/+fyBAYVF1EFUNQj16h/fTYm4MKlCMZWHaXInBc5/Ylqkc+L1QqcbdAdyJeXtDsvvlU1uJGyhwW7PzwKPqr0It/8N5vYfhDL3V9kPQ528WRhMqS37X0R4SpGOZTzLQ/3hD+orvLsPgjhVJtYmnNm60EMO7OQoSp0ANs345iCkYXxRhYpwy2waUgtOsbqhBfYsOJ+KSv44pFJXNjGVrbzSd25uukgE7HN4zgGUSAf3L543WE0BRizw93TJuWhdHo2C6xEIbbMsQrkPr2ytAtZq6hS4d0JQXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9zeMijoPUBTctuNIPymPjqlMt9Lrq4OIe2peFUwF79g=;
+ b=nrtsK0VDROhKBz0LZBWvAR7yYZxBVKCuXot4ivLCWxG3Ff6oZxFzMxd5h/JKURv9hcRnTDxAIK1HuT4/NubkQewWf8a5q8QyIOnM0ay+lcene+Gkz0mQdQOKLI0YP0imwq9OXAClsScESOsb29Ii9gPPAurFuvm6a0sV092WcG5Hf+cgy4l1xF2poOyn2sUqzW8vQMJtBV28Md38GMjMv8cqZbVpKo4/UQxLLYyWZ8LUhfuG8yw8n3CXtt5OFlFXlwoN6dqNFdZBT5UQ8y3Rr4YnGwjXSnhk7aHZgFBv0kRHWqAbkubhi7yYbjW+gQ2ll2WEZ9TiffD1ca2g1wY7IQ==
+Received: from BN0PR02CA0034.namprd02.prod.outlook.com (2603:10b6:408:e5::9)
+ by SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Wed, 7 Oct
+ 2026 20:18:08 +0000
+Received: from BN1PEPF0000468B.namprd05.prod.outlook.com
+ (2603:10b6:408:e5:cafe::4b) by BN0PR02CA0034.outlook.office365.com
+ (2603:10b6:408:e5::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 7
+ Oct 2026 20:18:07 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN1PEPF0000468B.mail.protection.outlook.com (10.167.243.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 20:18:07 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
+ 2026 13:17:37 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
+ 2026 13:17:36 -0700
+Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
+ Transport; Wed, 7 Oct 2026 13:17:35 -0700
+Date: Wed, 7 Oct 2026 13:17:32 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
+	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
+	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu
+	<zhuyifei@google.com>, Pranjal Shrivastava <praan@google.com>, Robin Murphy
+	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
+	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
+	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
+ Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v5 14/18] iommufd: Implement ioctl to mark HWPT for
+ preservation
+Message-ID: <asao3APyx7fkL1TN@nvidia.com>
+References: <20260921004834.2601285-1-skhawaja@google.com>
+ <20260921004834.2601285-15-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <30006d88-6679-4274-87fe-f1ce8732577c@intel.com>
+In-Reply-To: <20260921004834.2601285-15-skhawaja@google.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468B:EE_|SA3PR12MB7901:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d0331a1-ccc2-495e-27d0-08df24b019ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|23010399003|1800799024|7416014|82310400026|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	h1NYFRU/QSLoW9kUEYvKes5q9lxsrHK7WfJkLiZB2RKRJ+yai7uc8sPgmAe+dUhpYqJbAoYj4/9inxZI8ST5Iz59wbvBbIYGWgtU67ORB8CZaVEHitjn+CLZPVIISjNxrLLjeiResOX4Yf1Ubd8GVgRbOZB/KWMsJi8if9lo7JWYiahHqsjBV1OrO1+kAC/4YgWzXsHFpsGS7iJAAq27/q+hjgX68SLvohl+6qOUftPO7P3Ha/sDsmzDEIR8mcWZ2NfU7p2mbpOM6RvTRcDHMlUXTmtY2vBAGhyylBur/FVZYJ2j37GK2fShfwqDeNwNOZrZkNYqBMr80PxmPMDcCSQ/ftj9HzwYN85mXdmiWEuu5QmHTlL30sMzsftlYq5GoDcg0p0ZlfBruFq9Cjkb4MzsfOO78FQeGCmqlgtNfXKlGe5A8i5C2LcAwhMmd3/E5HjQT+o4wtHCvfyvBB/X/owaw3q6LyUnJtdC/WPs2JI+5d8C/lMz6rLzQcQL11YgTngy1nurJPuHsbSpO97LLO/Z5o3gpVc9dULodX0yoclha3QVSC9uRm36jteGCY/jYrLukKNmACiT/TkW9J7jF2t9j9+EZV275U/rlv9sYdN6Hw6W8CMRe0Oci3rbbYhGvTBYQSGJRsOVWLpkf6k0qJK1v7Fp+g0oabrasFPA9h1cAijkJ0KLPbjCdoSyJILsQMI1JpKsKBFvM3sDrid3cw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(23010399003)(1800799024)(7416014)(82310400026)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Pckpze12GBqKjl49SP11pQag5jhAEgGBaZPAGtk4uBFcH/AQPCGiUx4XvBr+FblikZ3ov+32s4FBNWPBr1JVQVgZc17bemuP2M9hCQKxLDiNodngjYUmoGeRXkSK0aESaRFm9eHVUBUjk58DJ401MY8LhC/cqMRKjLDx9Qo54n1Q/LOIuZojRCsTV2oZ4uQ28VDb0gpxS6kFcDu7MoBs5qbgnZKDPFYaJ74VTCt6QWbHTxM52E0SvsOxfyl+AxB7pZ6TF46nMCHVm7j8Wu/kH6jovzCQcq+xITOHZYIilVyn3zJhyiohYYtVCZlNWqBEyMAOrPXj5y761jAcCvmrrmC2Nm3tFt+Vl9St80dvv2kgtgmrBR5GlcPXQLx79h25628KmdR9st38mNAKBhPeFL3TP+QkjABBMQ7Q91d3Iy3sGlNFRD3Lfeko0+9t2hYg
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 20:18:07.5979
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d0331a1-ccc2-495e-27d0-08df24b019ee
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000468B.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7901
 
-On Tue, Oct 06, 2026 at 09:27:47PM -0700, Kishen Maloor wrote:
-> Hi Peter,
+On Mon, Sep 21, 2026 at 12:48:30AM +0000, Samiullah Khawaja wrote:
+> +int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
+> +{
+> +	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
+> +	struct iommufd_hwpt_paging *hwpt_target;
+> +	struct iommufd_hwpt_paging *hwpt_paging;
 
-Hi, Kishen,
+I'd move hwpt_paging inside xa_for_each_marked() and rename it to
+"hwpt_marked". Then, hwpt_target can be simply "hwpt".
 
-[...]
+> +
+> +/**
+> + * struct iommu_hwpt_liveupdate_mark_preserve - ioctl(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE)
+> + * @size: sizeof(struct iommu_hwpt_liveupdate_mark_preserve)
+> + * @hwpt_id: Iommufd object ID of the target HWPT
 
-> > Especially, MEM.IMPORT seems trickier to me: MEM.EXPORT even if described
-> > in in GPA address space, can be converted to other address spaces at will,
-> > as long as QEMU has full knowledge of the mappings.  MEM.IMPORT, OTOH, may
-> > not trivially work in GPA terms, if memory mappings can overlap.
-> 
-> I can appreciate that. Working in GPA terms assumes that a GPA reference is
-> unambiguous over the duration of migration, which holds true in the TDX case.
-> 
-> But it would break if another backend is able to point a mapped GPA at a
-> different protected page while keeping both pages valid -- essentially
-> the PAM case on regular VMs.
-> 
-> One option that comes to mind is to add a 2nd optional identifier to
-> kvm_memory_transfer consisting of a guest_memfd fd and an offsets array.
-> That would be at parity with QEMU's block+offset and directly reference
-> specific storage units. Then QEMU and KVM backends for a platform would
-> decide what identifier to use.
-> 
-> The value might be that a bundle could be accepted by a backend for
-> storage that isn't currently mapped in a memslot.
-> 
-> OTOH, slot+offset as an identifier might face the same problem as GPA in
-> this case when a particular RAMBlock's storage isn't mapped at the time
-> on the destination.
-> 
-> Not sure if this idea is viable or even makes sense; this is mostly
-> for discussion, but would appreciate your thoughts.
+HW pagetable ID to preserve for liveupdate
 
-Yes, I would think (gmemfd, [array of fd offsets]) a nice interface.
-
-If we say gmemfd is the container of data in KVM world, then if it can
-provide all data accessors it feels all natural and fit.  And yes, it also
-works for overlapped.
-
-Said that, it's a matter of if, TDX or any other solution, will use GPA to
-be part of attestation process when loading the data.  My intepretation is
-GPA was part of TDX MEM.IMPORT workflow and required, but now since you
-proposed gmem for indexing pages, maybe I was wrong.  In this case, I'd be
-more than happy if I was wrong..
-
-Thanks,
-
--- 
-Peter Xu
-
+Nicolin
