@@ -1,140 +1,246 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010029.outbound.protection.outlook.com [52.101.61.29])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579F0547054;
-	Wed,  7 Oct 2026 20:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791404307; cv=fail; b=iCdCn7Yl74ZRt+c1pE2J/hgKbZQCsjSZ9oI2AwU93ophjRTlfKL3ThzJ4NROLV42JCssOJ3iDgZYlgUqD6qfpiIwhGREW6xazp8MKBz2gNpqiCxLmwDbUkr9jpL5mw1/3G8wAOfLZDwwEByxROrtzPc0dMnKYslpxNe4iA+KOmA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791404307; c=relaxed/simple;
-	bh=vuAc5c57T7/wMIYyWz7P5G+qNZS5RcsnbQFD7rMF/A8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hbUFRwiVD8v1+eimfGoIgoFtHMmVQwRBzpAovpFh4YM2SpOw9H5lWlrH7pnnk3HYngWSTbxK8db8K9nD7zWTDiQ6cRPlIEhkm96jV6st9KzYkHQt4Ts6Ogg3Y3xupqHBRJjY9bt2l54GVxPtS8Hbxk22a6tFRaqsd2ObbsIs8Ts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nrtsK0VD; arc=fail smtp.client-ip=52.101.61.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D1D3D300E;
+	Wed,  7 Oct 2026 20:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791404341; cv=none; b=KffU8DFPIzmrIfGqVVr6kAfErahN6I9DKwC6rBJ4Le8J+D/DlPjEpC6jxOnUpne5WeidXbFFXLMR4EzYljWfwZ4tJx1dtulhIR+t541AjDJz3JOK92pEff0OAIDolxiHuBG5rqS6tWrud+jJM+ihFfo+RK3aN7X9lcKxxHCCw1A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791404341; c=relaxed/simple;
+	bh=jaGjbCX30IP5gcZuGZBSN6s16ZJT+L28jz5NfrXrq10=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N2NdDwpUv90jTFFifv7EgsH6kASto9s0S4scPjj+7tTg41pVT7N+fAiXBlpTi+B5zFkbRfv37o+79zaQBRLAj3dX31ubFoJkTBYRJ4aZh9ri5TIQoOoW4TiIrv8Gh3EWIPlRowmBebabf3UFWO63W+gGTEdYWIzyyquM3KjKgV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IJ2A46Gr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nrtsK0VD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eUjyQBe8n2quevaZcij6zMJfj5S30ZJshMoQ0TCjoMkQcjlluGEkDgRsshjdijV/nWW1bsaf/FIfaJqj8Mh9aM/s+dOZSDBG28E4q5QPfUJj9PjEem/sx+Hxhf6IKc4TdNBP1VPcZ6gXnrXUb2NhzEZCNpk2eKqiWxcfhucjlhwKzp1n27YcOX+MfMEdcKowe5CtJT/MCjr2PGOAN2CpMNx9AQt6UWxAJ9wEmIWEbWbWbxu2sKXe82xDJqukw2FRz9SZYd9fEC7t57qlKWkBHQb++qf03h1KvusjJsc5APvOmQsAA9Lu7QPLe1qvNUVnx1FkmI6QSuR30723nR93XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9zeMijoPUBTctuNIPymPjqlMt9Lrq4OIe2peFUwF79g=;
- b=eCwwaMIRSygfnfjjC+icS1bYEsWruKGAUBbjxiLcsICEfPWcd4/8/AJ/+fyBAYVF1EFUNQj16h/fTYm4MKlCMZWHaXInBc5/Ylqkc+L1QqcbdAdyJeXtDsvvlU1uJGyhwW7PzwKPqr0It/8N5vYfhDL3V9kPQ528WRhMqS37X0R4SpGOZTzLQ/3hD+orvLsPgjhVJtYmnNm60EMO7OQoSp0ANs345iCkYXxRhYpwy2waUgtOsbqhBfYsOJ+KSv44pFJXNjGVrbzSd25uukgE7HN4zgGUSAf3L543WE0BRizw93TJuWhdHo2C6xEIbbMsQrkPr2ytAtZq6hS4d0JQXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9zeMijoPUBTctuNIPymPjqlMt9Lrq4OIe2peFUwF79g=;
- b=nrtsK0VDROhKBz0LZBWvAR7yYZxBVKCuXot4ivLCWxG3Ff6oZxFzMxd5h/JKURv9hcRnTDxAIK1HuT4/NubkQewWf8a5q8QyIOnM0ay+lcene+Gkz0mQdQOKLI0YP0imwq9OXAClsScESOsb29Ii9gPPAurFuvm6a0sV092WcG5Hf+cgy4l1xF2poOyn2sUqzW8vQMJtBV28Md38GMjMv8cqZbVpKo4/UQxLLYyWZ8LUhfuG8yw8n3CXtt5OFlFXlwoN6dqNFdZBT5UQ8y3Rr4YnGwjXSnhk7aHZgFBv0kRHWqAbkubhi7yYbjW+gQ2ll2WEZ9TiffD1ca2g1wY7IQ==
-Received: from BN0PR02CA0034.namprd02.prod.outlook.com (2603:10b6:408:e5::9)
- by SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Wed, 7 Oct
- 2026 20:18:08 +0000
-Received: from BN1PEPF0000468B.namprd05.prod.outlook.com
- (2603:10b6:408:e5:cafe::4b) by BN0PR02CA0034.outlook.office365.com
- (2603:10b6:408:e5::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 7
- Oct 2026 20:18:07 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN1PEPF0000468B.mail.protection.outlook.com (10.167.243.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 20:18:07 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 13:17:37 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 13:17:36 -0700
-Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
- Transport; Wed, 7 Oct 2026 13:17:35 -0700
-Date: Wed, 7 Oct 2026 13:17:32 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu
-	<zhuyifei@google.com>, Pranjal Shrivastava <praan@google.com>, Robin Murphy
-	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
-	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
-	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
- Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v5 14/18] iommufd: Implement ioctl to mark HWPT for
- preservation
-Message-ID: <asao3APyx7fkL1TN@nvidia.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-15-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IJ2A46Gr"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697IZneP2078525;
+	Wed, 7 Oct 2026 20:18:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=F/w4Ei
+	7m1ijZDtGV38HNzmkRzX9bVVn03kEKk6+et2k=; b=IJ2A46GrFJd7H2DOb8ebNs
+	lc+daCxsTUkstT2jpyk9n7EYk6vd6F+3Y/dp3erZFX36MsMh6qZizP7SOuywqw3/
+	8JrM7fOBBQVZc8cwCnmISLotos7xx8v11OJ5D5LYVxVeQp9chwDuCbcWpYH7qBUa
+	zB+AM9mS7kYDk/BHTHwo6iMfvBkrgHWZvI0o9YzTgquxXCOosl26wJb9sazUqMiW
+	TGYsw9GNB1wM/t0AdOEfPoFrPms7DYxfarpx1MuZPfbt+OiE5gKC6txt42XiK2NY
+	unsbEFpN5yTf1t03oVyjphFk8laUyeWitnHXv8ccMD7PhbzpWOctQYEqSMyyoSvw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4g6uvw-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 20:18:45 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697IHapf2245375;
+	Wed, 7 Oct 2026 20:18:45 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h58d5mhhm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 20:18:45 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697KIi4Y66585066
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 20:18:44 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 353B55804B;
+	Wed,  7 Oct 2026 20:18:44 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4472E58063;
+	Wed,  7 Oct 2026 20:18:43 +0000 (GMT)
+Received: from [9.61.89.182] (unknown [9.61.89.182])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Oct 2026 20:18:43 +0000 (GMT)
+Message-ID: <694c1e08-820f-4275-988e-2be331070766@linux.ibm.com>
+Date: Wed, 7 Oct 2026 16:18:42 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260921004834.2601285-15-skhawaja@google.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468B:EE_|SA3PR12MB7901:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d0331a1-ccc2-495e-27d0-08df24b019ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|23010399003|1800799024|7416014|82310400026|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	h1NYFRU/QSLoW9kUEYvKes5q9lxsrHK7WfJkLiZB2RKRJ+yai7uc8sPgmAe+dUhpYqJbAoYj4/9inxZI8ST5Iz59wbvBbIYGWgtU67ORB8CZaVEHitjn+CLZPVIISjNxrLLjeiResOX4Yf1Ubd8GVgRbOZB/KWMsJi8if9lo7JWYiahHqsjBV1OrO1+kAC/4YgWzXsHFpsGS7iJAAq27/q+hjgX68SLvohl+6qOUftPO7P3Ha/sDsmzDEIR8mcWZ2NfU7p2mbpOM6RvTRcDHMlUXTmtY2vBAGhyylBur/FVZYJ2j37GK2fShfwqDeNwNOZrZkNYqBMr80PxmPMDcCSQ/ftj9HzwYN85mXdmiWEuu5QmHTlL30sMzsftlYq5GoDcg0p0ZlfBruFq9Cjkb4MzsfOO78FQeGCmqlgtNfXKlGe5A8i5C2LcAwhMmd3/E5HjQT+o4wtHCvfyvBB/X/owaw3q6LyUnJtdC/WPs2JI+5d8C/lMz6rLzQcQL11YgTngy1nurJPuHsbSpO97LLO/Z5o3gpVc9dULodX0yoclha3QVSC9uRm36jteGCY/jYrLukKNmACiT/TkW9J7jF2t9j9+EZV275U/rlv9sYdN6Hw6W8CMRe0Oci3rbbYhGvTBYQSGJRsOVWLpkf6k0qJK1v7Fp+g0oabrasFPA9h1cAijkJ0KLPbjCdoSyJILsQMI1JpKsKBFvM3sDrid3cw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(23010399003)(1800799024)(7416014)(82310400026)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Pckpze12GBqKjl49SP11pQag5jhAEgGBaZPAGtk4uBFcH/AQPCGiUx4XvBr+FblikZ3ov+32s4FBNWPBr1JVQVgZc17bemuP2M9hCQKxLDiNodngjYUmoGeRXkSK0aESaRFm9eHVUBUjk58DJ401MY8LhC/cqMRKjLDx9Qo54n1Q/LOIuZojRCsTV2oZ4uQ28VDb0gpxS6kFcDu7MoBs5qbgnZKDPFYaJ74VTCt6QWbHTxM52E0SvsOxfyl+AxB7pZ6TF46nMCHVm7j8Wu/kH6jovzCQcq+xITOHZYIilVyn3zJhyiohYYtVCZlNWqBEyMAOrPXj5y761jAcCvmrrmC2Nm3tFt+Vl9St80dvv2kgtgmrBR5GlcPXQLx79h25628KmdR9st38mNAKBhPeFL3TP+QkjABBMQ7Q91d3Iy3sGlNFRD3Lfeko0+9t2hYg
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 20:18:07.5979
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d0331a1-ccc2-495e-27d0-08df24b019ee
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468B.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7901
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 07/15] s390/vfio-ap: File ops called to save the vfio
+ device migration state
+To: sashiko-reviews@lists.linux.dev
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Vasily Gorbik
+ <gor@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-8-akrowiak@linux.ibm.com>
+ <20260807223752.4A6F21F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260807223752.4A6F21F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac6a925 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=c9lllFr1qAdO0OxGiBcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA4MCBTYWx0ZWRfX7/HVTDstNQiy
+ dOdaP2yZDuDjPYr1nKsXL2u8+tZ+YKCEgHPaItzMNw5fx7qMEJw/gt99YvHaNWOF7vM03RfzYrd
+ LCGX3p8C3rOOhYva17x6+J21y4R2EBAWUbCrD33VWSa832ws2fOpk4DrExe3PVMrhx1i0I3E7rM
+ Z0hXPSrdtbT4NHbRu9RtgeNq2egVH7BX2er1CtwJU38gihWxSDZ0qD94C131zdNhocfcRBRomc0
+ yYSwaOiLq42hmUq2JkybNLulV7jcC/gbJzuTkyDqGosyKZOrgdf+D3MeEff9Fr1b+5CaRDxPOBh
+ VlKOiN9mMhhWXokZ8ayuQYKG6iKacx/lgwAFDv4zrbVEpsbP8whJc1kLz/5l+v8GdpBAJ1EIYxU
+ wVIwS1mGNhb/Eeb+IyA7aGTDw+lzCgg5i/5mvblbpPjZyxGRmDTaT2D36TgCoiwk4VY1wBvwfQO
+ 7HhFvpHzSawLkm4I0Bw==
+X-Proofpoint-GUID: 0KAoQC5oYcB86BVxjRotqwTvFp24cF5A
+X-Proofpoint-ORIG-GUID: 0KAoQC5oYcB86BVxjRotqwTvFp24cF5A
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA4MCBTYWx0ZWRfXzvQqT/SDDPoe
+ yytbFJRbkrhD7MbUNHs/HePQDJ/1x2TeHxbcbyyN+ncnHakzjOCOGRN0p54qFM3YfYJta2sedT5
+ 3/aH0N8a0pwFz/LNe/d3AVfou93f9Ow=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_06,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070080
 
-On Mon, Sep 21, 2026 at 12:48:30AM +0000, Samiullah Khawaja wrote:
-> +int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
-> +{
-> +	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
-> +	struct iommufd_hwpt_paging *hwpt_target;
-> +	struct iommufd_hwpt_paging *hwpt_paging;
 
-I'd move hwpt_paging inside xa_for_each_marked() and rename it to
-"hwpt_marked". Then, hwpt_target can be simply "hwpt".
 
-> +
-> +/**
-> + * struct iommu_hwpt_liveupdate_mark_preserve - ioctl(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE)
-> + * @size: sizeof(struct iommu_hwpt_liveupdate_mark_preserve)
-> + * @hwpt_id: Iommufd object ID of the target HWPT
+On 8/7/26 6:37 PM, sashiko-bot@kernel.org wrote:
 
-HW pagetable ID to preserve for liveupdate
+All three findings were consequences of the lock-drop around 
+|vfio_ap_store_queue_info()|and the 
+unlock-before-|copy_to_user()|pattern, both of which were removed.
 
-Nicolin
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> index de693b308925d..50781b61f7f18 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+
+All three findings below are consequences of the lock-drop around
+vfio_ap_store_queue_info() and the unlock before copy_to_user()
+pattern. The mdevs_lock will be held for the duration of the
+vfio_ap_stop_copy_read() function in the next version of
+the series.
+
+> [ ... ]
+>> @@ -150,6 +144,279 @@ static int vfio_ap_release_mig_file(struct inode *file_inode, struct file *filp)
+>>   	return 0;
+>>   }
+> [ ... ]
+>> +static int vfio_ap_get_config(struct ap_matrix_mdev *matrix_mdev)
+>> +{
+> [ ... ]
+>> +	ap_configuration = kvzalloc(ap_config_size, GFP_KERNEL_ACCOUNT);
+>> +	if (!ap_configuration)
+>> +		return -ENOMEM;
+> [ ... ]
+>> +	/*
+>> +	 * Unlock the mdevs_lock so other mdevs are not precluded from being
+>> +	 * accessed while a potentially long running operation is performed.
+>> +	 */
+>> +	mutex_unlock(&matrix_dev->mdevs_lock);
+>> +	ret = vfio_ap_store_queue_info(mdev_name, ap_configuration);
+>> +	mutex_lock(&matrix_dev->mdevs_lock);
+>> +	if (ret) {
+>> +		kvfree(ap_configuration);
+>> +		return ret;
+>> +	}
+>> +
+>> +	if (!matrix_mdev->mig_data) {
+>> +		kvfree(ap_configuration);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	matrix_mdev->mig_data->stop_copy_mig_file.ap_config = ap_configuration;
+> [Severity: High]
+> Can two concurrent reads cause a memory leak here?
+>
+> Since mdevs_lock is temporarily dropped above, both threads might observe
+> that ap_config is NULL in vfio_ap_stop_copy_read(), and both would allocate
+> an ap_configuration buffer.
+>
+> When they reacquire the lock here, they will both blindly overwrite
+> matrix_mdev->mig_data->stop_copy_mig_file.ap_config with their respective
+> allocations, permanently leaking the buffer allocated by the first thread.
+>
+>> +	matrix_mdev->mig_data->stop_copy_mig_file.config_sz = ap_config_size;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static ssize_t vfio_ap_stop_copy_read(struct file *filp, char __user *buf,
+>> +				      size_t len, loff_t *pos)
+>> +{
+> [ ... ]
+>> +	matrix_mdev = filp->private_data;
+>> +	mig_file = &matrix_mdev->mig_data->stop_copy_mig_file;
+>> +
+>> +	if (!mig_file->ap_config) {
+>> +		ret = vfio_ap_get_config(matrix_mdev);
+> [Severity: High]
+> Could the cached mig_file pointer become stale and cause a use-after-free?
+>
+> Because vfio_ap_get_config() temporarily drops mdevs_lock, a concurrent
+> thread could potentially free and reallocate the mig_data structure. When
+> vfio_ap_get_config() returns, the stack-cached mig_file pointer might still
+> point to the old, freed mig_data structure.
+>
+>> +		if (ret) {
+>> +			mutex_unlock(&matrix_dev->mdevs_lock);
+>> +			return ret;
+>> +		}
+>> +	}
+>> +
+>> +	/*
+>> +	 * Compute the offset and clamped length fully under the lock so that
+>> +	 * concurrent read()s on this stream file each see a consistent view of
+>> +	 * the current position.  *pos is advanced here while we still hold the
+>> +	 * lock; copy_to_user() then uses the snapshot read_pos.  This prevents
+>> +	 * two threads from calculating the same offset and both copying the
+>> +	 * same region (or one reading past the end of the buffer).
+>> +	 */
+>> +	if (*pos >= mig_file->config_sz) {
+>> +		mutex_unlock(&matrix_dev->mdevs_lock);
+>> +		return 0;
+>> +	}
+>> +
+>> +	len = min_t(size_t, mig_file->config_sz - *pos, len);
+>> +	if (len == 0) {
+>> +		mutex_unlock(&matrix_dev->mdevs_lock);
+>> +		return 0;
+>> +	}
+>> +
+>> +	read_pos = *pos;
+>> +	*pos += len;
+>> +
+>> +	/*
+>> +	 * Drop the lock only for the copy_to_user().  The ap_config buffer is
+>> +	 * stable: it is allocated once in vfio_ap_get_config() and freed only
+>> +	 * in vfio_ap_release_stop_copy_file() which requires mdevs_lock.
+>> +	 * Since we already advanced *pos above, no other thread will compute an
+>> +	 * overlapping region.
+>> +	 */
+>> +	mutex_unlock(&matrix_dev->mdevs_lock);
+>> +
+>> +	if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len))
+> [Severity: Critical]
+> Is it safe to access mig_file and its ap_config here without the lock?
+>
+> Once mdevs_lock is dropped, a concurrent thread could close the VFIO device
+> or issue a reset, which acquires mdevs_lock and frees both the ap_config
+> buffer and the mig_data struct.
+>
+> If that happens before or during copy_to_user(), it could result in reading
+> freed kernel memory and leaking it to userspace, or crashing the kernel.
+>
+>> +		return -EFAULT;
+>> +
+>> +	return len;
+>> +}
+
