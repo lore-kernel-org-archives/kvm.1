@@ -1,46 +1,46 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013007.outbound.protection.outlook.com [40.93.196.7])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010030.outbound.protection.outlook.com [52.101.46.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E32748A8A7
-	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 13:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AAF4B0484
+	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 13:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791381026; cv=fail; b=YsRqBKUeowjA0W6cgwju4dzMTcSR7Lkk4olRKY5Vbc5ZHUogrZlJw2fLBTpu4F/B6A6o4YtD09nuzG7qac27bcfRW4y6fKH3dYwA34mo3JITELZ/KLRInjMH6Jz7G0MtqgCKx+FHUinbnV7sbBzQe9TnDJ/nb5RE+MMTjWqsvr8=
+	t=1791381040; cv=fail; b=r/uraOD6nDWg219zhM6VhHU06wIPfT4REN1GWn5dCGDeRXTknlo+nRW1KVKycUI8L4eRDVnROBLR9THxJqm6oYXpHVJo8UTSRxvkJ/5pN5nu2tx6ybQ+I7MLHMRq4v2Xwgj22I5MBVscCv5kvcmhnrlb6kjrZkOBcB3A9CNfUAg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791381026; c=relaxed/simple;
-	bh=DSAXvoTxcRnvI8T81A+dzPO3jP+WOQqvSqOWIFHE8aE=;
+	s=arc-20240116; t=1791381040; c=relaxed/simple;
+	bh=KJNAcI4FTrZwrdQC6WZ71AUPS9Ufccwx2YT8jon4plg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hdsSNuG/UkvsbSkl7WwGc01wvyCpwt33926IVXY3oQLHc9KTi2ROktZhsj/zuGajcepj8soYb8H9TEnaKEyv90+u+W1+isLFzJQYkPdtYCQnJKWmyKOKOnb3fyi90YQDHpOlqXrK25wa+sPYFrWSEKq8suptuybi6aN9zp2Jmws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jgZCRsTj; arc=fail smtp.client-ip=40.93.196.7
+	 MIME-Version:Content-Type; b=X7qmjyB5VZwSe1ObvwPyHK35atfyUyx1mg0YfUeCz3VngxEbsxiIB2KreQSE00lHtBeUaTpUoGkoRnmYSptkRu9TT1yA9etn18r7Vjx+sQGbMhd2d192BD8tQ/Uxo/ReqFNmmCdtDdi/b5GOZMFHTmrCzhnuptGCc1Sow54zhrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cfhseGK/; arc=fail smtp.client-ip=52.101.46.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jgZCRsTj"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cfhseGK/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K/d20TlEfjTKCq2Uijz5asFPjpOYvE8vP6DPE7gvmWOki+8GbYtc4nKgzNYxMz2UwRfNhWJcjhvHiFp1EQdT2DtK1PH2Glh3+ckDQlb6/RONjHIuetoEaRR0y205DgIOljzHBH7GGm3/avLU/ARWolVfma+5heoZ/i8SsYnFIVkJpDcCsylqEUultMheyDb5bKEgdQPCBg4913FwmnEe4Awtmnp8qDZ1xcXfdwrimh0P/1yJ9zstKma3urCHvQEawuWwghhA5k48ysPFEatgoPDO0K2c8wyk5ycAOpFcWwe68Dyl3u2dtmbVB0oh5kKuqFc7RB9wtk3urqV97LBZaw==
+ b=bjrvcPeQLgGviGCG7FPnCuCFlZuKo8iwjEfGJdMqsE7Vub7BJmw/Aws08rkRdw1de1nrTvVscAeTZZPT0K2cbhYUmSe7TJNJRyPTS/18cxzbVilCVgRc7tzI041ovhPXPvrfrR7eHSzpgv4RNQzqIVfR0dBa4cf8ZYkdDbIscn1dSl31qEdtYTEGWtovwoWUJWwioYw18XUU1UNrr/QMaUhCEdy0djI/UySUFPY2NVVA12alw8q99aBwH/i4P7r/5ZZN0Cf9dZqooztF8DC3mAysWZyAmjx3l1wmFqCYV+XqlpHlCJVUZDXQ93nzt2lwuPjE6fTnU7DS5xQHtwT5rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zGE0IdfZoqVvqp3ybB5dYyjRe2En2t0XaFBRYaxlgfs=;
- b=uWNkuc4p+kEPUZ479z5+1kuYf+djEo62jINIZxNT3M+Do33bIWrOcNqtScfap1fFjxdSrL72GxsUApnJUr8qNOHXNwTqf5oMERdkn1sIv1X0jnjCtiyG7cLMl0IokJmmVFm7xCxbNJ4no/ACj5UBelmUaNriT1Kaq2f+dbdhyL9QHUPanEGhrYIesCbTEfEgS+cNh6Pds6yOhRBCEFg+STApJJP0+pfDljOtIr56JRFLSzqPMHU4w3Z0ixlmX37Dgedh/AWd15VJjA8Ud3X5i4CDY3uFso+8zyUwDBRDRqYV1rQvZto/QQVx1zOm8G/1g8x301/lmGJjcxOZ+syiUQ==
+ bh=P8FrZ3+Fy2e196Kcifl/Kgnvomb1xROz6PQEKbm3QSA=;
+ b=wqN4zZ0XW/oFlY0Kbl1HOu0MQTjKl+cfSMLynr6sBBXnTq4Ru6WZMh73iliQsRid2nrRV+ua9QH5CdZN29MHk0A2dOzXzPydeaxNp9aUEB0FeZrYrXz9AyoRD71ONqJzQSxU4exLS09cYs8ybGSDCg7MzafcW4N2CZyGstuAcfMWuyZYocHrzOIEhgF0nYyRBa7byBd+iWWYqTMpjD7YMIaxzTZfFk1kC5bxkfCxtZ6w7jLdsa5A9D1OHOCOHVKWMr08mSt+Vd8L6zcDQj0gwqZDLt5cMWmnC3dr6ubZKQV0zntYT9a+vEq7kwLZRNuF/NRDUxyw7bFmEm8naUZ3ZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zGE0IdfZoqVvqp3ybB5dYyjRe2En2t0XaFBRYaxlgfs=;
- b=jgZCRsTj7iL3Mqmq4oU5r1DnYpuUoJG17aoSZRBzW/NJi8ZLbQT82YhWW0ipv7FfhzjrwQlM7b0USOCL9lo7wcxdSuYgWNs55Ng2jpfH8phLKXRfPPW6kS+QpoLPPCiT0kAejajIvYgxXA51xiZVkYxt4tFQ671bzA7AnvBwMpM=
-Received: from MW4PR04CA0034.namprd04.prod.outlook.com (2603:10b6:303:6a::9)
- by DS7PR12MB8232.namprd12.prod.outlook.com (2603:10b6:8:e3::12) with
+ bh=P8FrZ3+Fy2e196Kcifl/Kgnvomb1xROz6PQEKbm3QSA=;
+ b=cfhseGK/Nt5IHW3qSe+eQXSI5dOiGTon6vQxGVAIlmfjK/MKusV3Xscj16nckTfuGnu89ivM1LqWb9HAx78z48KX7+b1EgVR9SbUL/z/SjeZfidWrB8UFB6PnWjJIURhr4NNmhhIbryrP3Um3frpJ5MjmAuu7aSGOYxz80C2qAA=
+Received: from CH0PR03CA0408.namprd03.prod.outlook.com (2603:10b6:610:11b::9)
+ by CHXPR12MB999245.namprd12.prod.outlook.com (2603:10b6:610:2fc::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Wed, 7 Oct
- 2026 13:50:08 +0000
-Received: from BY1PEPF000264B3.namprd02.prod.outlook.com
- (2603:10b6:303:6a:cafe::46) by MW4PR04CA0034.outlook.office365.com
- (2603:10b6:303:6a::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
+ 2026 13:50:26 +0000
+Received: from BL6PEPF00022570.namprd02.prod.outlook.com
+ (2603:10b6:610:11b:cafe::46) by CH0PR03CA0408.outlook.office365.com
+ (2603:10b6:610:11b::9) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 7
- Oct 2026 13:50:08 +0000
+ Oct 2026 13:50:25 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,22 +48,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BY1PEPF000264B3.mail.protection.outlook.com (10.167.242.120) with Microsoft
+ BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 13:50:08 +0000
+ 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 13:50:25 +0000
 Received: from localhost (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 08:50:03 -0500
+ 2026 08:50:23 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <kvm@vger.kernel.org>, <pbonzini@redhat.com>, <berrange@redhat.com>,
 	<armbru@redhat.com>, <pankaj.gupta@amd.com>, <xiaoyao.li@intel.com>,
 	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ashish.kalra@amd.com>,
 	<ackerleytng@google.com>, <lpieralisi@kernel.org>
-Subject: [PATCH v3 07/19] accel/kvm: Add CGS flag to control in-place conversion support
-Date: Wed, 7 Oct 2026 08:41:31 -0500
-Message-ID: <20261007134323.1606088-8-michael.roth@amd.com>
+Subject: [PATCH v3 08/19] system/memory: Re-use memory-backend-guest-memfd inode for private memory
+Date: Wed, 7 Oct 2026 08:41:32 -0500
+Message-ID: <20261007134323.1606088-9-michael.roth@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261007134323.1606088-1-michael.roth@amd.com>
 References: <20261007134323.1606088-1-michael.roth@amd.com>
@@ -79,140 +79,171 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF000264B3:EE_|DS7PR12MB8232:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5d4a8a2b-ff6c-49ef-5a0f-08df2479e62d
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|CHXPR12MB999245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e86a633-6656-4ffa-f0d8-08df2479f050
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|1800799024|23010399003|6133799003|22082099003|18002099003|10067099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|1800799024|23010399003|22082099003|18002099003|10067099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	Bv9ir1E5rShqDLVDVf0ONSrnbriPqb0GIqwODgpa3HUpONnNiYTjy4ENar0/THBd72/TerKwywyBCJKx3OvgFVNkk4vFtTQOgxnGYMkUSC4hJFK1a+qUP8+wMu9xn7mAQb/r4wAZMWeE3L3gNJ7U3fDKOaGun7wS98PToMf5m824GTv+DZEJLsCDvEvRpbkkOQlFyp0op3zhe9DTG4cIEE2v1auENQxDJuKAlaxLtFJ4S8P/HDuGLW+ZGageBNfSvZV0f2+K/p8SH0c68SBLnIq39RCbtFPwyJvsSpbMNnMMGNKv2Xx9guSYeMO2jEYvYVMYez5tqdFy3rIbOHXW2mjnEYHl8nT7TiSLip+DIvEd9EHJkIzSz+hXcn8dw6Vxjp1G48L/uU5ymf4zTuMEqmxwG8eeVRhTIvjfzbqXNVO5DNbK67gKFN44DMT1o73op2C1zGz++rn6V5lOTjD0LFRm/xfoBUuzECvDhTdFI53X47wTRXefm9FKjA3qYyqRpDXR9C/7lOVHKM7Y5E4zW60U1+rP89JLvVpMQ7219AlhjluW61inCmTo5265eV6LmkvU3zP1W7GjCrzQTSMBVeAdELYt+xiub7g2W815jysW2wKa6cNdHGeQbFF7UDh3QymF4UzxE6eARI9tYuZU91oBrX/P6QzN6g8YmwUzPUkvKchdoGmUE/goegs1piBSzL8Mtlir/DR0lDp8JX/1+g==
+	CLerRd/DHar0X55FyKqH+o9KP3wawEJAt/OsRIOluD1nk2TZMN3Qa08rJS1UoxTxpwUh7wY1cK7llefZqi6vTc1ymzKUbFYpUDjppU4PueDJqax7lqOCg/dVuIBVPaV+L0C+D2a1xGY9c+7EMgp5skYfUDIEeqxlVbGskxKSyrFVol+F1C4XHokfMveZGnBmJFSJ2yILRx+8CdmUSr06rzbO7HRiRBtESqUEFwRLt7ckwSxLjsDybDjfkfzIl/RfPd49kpV6Cra3JJnwtxnFTLBfY4dFU9GtjD2pO9FIM8F0HZ6ovL4JbBMOtvkgXcOjGeT0hXlnwUcUzq24+/NRyAZ2a26cj+wlHBbYQU182fsIp+/ckFSoDB3EWWpHRXPjTD9R55yKxZ4myZAYba5EbiOUX4N3rFcDUTaQnpB59fjB+t9cA8bgPHYfImWPZa2xe7lS3tSCRCOuN94NI8z9NjTVG46508M3NA5okUnufV/iGmZG24tU1AC9wnDLOhmUBkQXNvYjxJC0wYJwOCUCd7F+dI4qec2WggXGrnZNQiNTPgtofj4QOxytUfo3GPqRAhA2WGdVvAQ2PAGbzqB9idco3ew1JThbdUC7K9rv2PvHaEAg/5IurXiPB8e7yhu12mv3AKdxHZw7PseslHPVK3V40OU2w43smSSjPwLKRtz8kOERbh5YbtMbupNTzO0FyuVX2WcMRfJaRTXbwN62BQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(1800799024)(23010399003)(6133799003)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(1800799024)(23010399003)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	1h45aBFqYbzI6qqHKLsAMUk8KqUwR2vf5cqKdU7xTC7ILDhcTk2TqF2jS3mDFl4+QxJQKThCTY4vgowztExfU8Uwy7WeTxQcZNo/jxiDrALzs9k6mZE6qnqwFU1wSgzL7ddA2lgvc0HgxfjDnbqutqg0QkghdlmUwBFX4ywG6xKgANLoyIlTGwd11amjVuBkWvStbYhtgLI93wPNLPIXBfsmVvmdep0UIsFgg1zHOC3YTEWiKjFhidV0uPmj1kCj2h6H2rSNz/gdkEqSOeFsMrgtU1aRPF8XFahW9DvWN2FHwle/Bx1H/YZFtYnShhQuT3DGoPeIaOw4WBT1pL/XiIXQba863yb7gex3cpW0ffBDs4gsNZ3zLzXnZUrGzV2Iks/ldInSJwYlWXXbDrw5Gf2MEtUsNXcnUxf69PjJpOgYhfrW4b5VHlSveQ/a5mEl
+	zX5xyAsk52ALaAGpVTDF5mI5Zr7+06keD7ne0VEJCb9eAZw+MYnXmNJvuCqfVqUd/lePN6rqDsK8n5Mj+NfvBQn/Idb7WAZ0HkmurCa6NCbekWM7G7pMTtVqBwLX2W4w0KZzFlKobklgg5B0HnQQtuHoJaNnLktjxtcjUUy+gQJHWTdEUJkjBWraTndpNUxlutc+6GttUnWJkTzZXOzCQv579w+l0hMm6+CHgnlFHcGFn9utoAyIb/6+3dXcOA5sd/gTSwn7G8dso7Zb3faIOtOau14W+itO1bmkOF56ki+GoEVjDqRO+XM1S1oY7gWQ0G0ruuD0c5qMqcEZj0uR8UDH0LbIqsCdf/W2SDGeSpmVfEbKLoNGv6o4L2CIyKnKJo+xILy4FcqQaV1hZZjyadVwRS2xMzOAS7bRDdLm5buVBn2+3ASST0cFV3JU5n5w
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 13:50:08.0013
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 13:50:25.0933
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d4a8a2b-ff6c-49ef-5a0f-08df2479e62d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e86a633-6656-4ffa-f0d8-08df2479f050
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF000264B3.namprd02.prod.outlook.com
+	BL6PEPF00022570.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8232
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHXPR12MB999245
 
-For confidential guests, guest_memfd is currently used only for private
-guest memory, and normal guest memory comes from the configured memory
-backend just as it does for a non-confidential guest. It is now possible
-to use the same physical memory to back a particular GPA regardless of
-whether it is in a shared or private state. This avoids the need to
-rely on discarding memory between shared/private conversions (to avoid
-doubled memory usage), and is intended to be the primary mode of using
-guest_memfd for confidential guests moving forward, and future features
-like hugepage support will likely require it.
+When convert-in-place=true, the guest_memfd instance created by
+memory-backend-memfd (when guest-memfd=on option is specified) should
+also be used internally for private memory.
 
-Add an internal flag to enable this support. Since
-ConfidentialGuestSupport is already used to track some
-guest_memfd-related functionality (e.g.  whether it is required for the
-configured machine), similarly introduce this flag as a member of
-the ConfidentialGuestSupport object.
+Do this by dup()'ing the guest_memfd FD provided by the backend so the
+separate cleanup paths for shared vs. private FDs can be managed in the
+same way they are currently for convert-in-place=false (where shared
+memory must come from something other than guest_memfd).
 
-Also add the KVM-specific checks to enable this support, but leave the
-option disabled so that required changes can first be implemented for
-CGS variants that intend to make use of KVM's in-place conversion
-support.
+Introduce a new RAM_GUEST_MEMFD_SHAREABLE flag that can be used to
+limit this dup()'ing to specific backend types like
+memory-backend-memfd.
 
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 ---
- accel/kvm/kvm-all.c                         | 18 ++++++++++++++++++
- hw/core/machine.c                           |  5 +++++
- include/hw/core/boards.h                    |  1 +
- include/system/confidential-guest-support.h | 12 ++++++++++++
- 4 files changed, 36 insertions(+)
+ backends/hostmem-memfd.c |  1 +
+ include/system/memory.h  |  7 ++++++
+ system/physmem.c         | 50 +++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 55 insertions(+), 3 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f1deb458ec..862539aed4 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3074,6 +3074,24 @@ static int kvm_init(AccelState *as, MachineState *ms)
-     kvm_guest_memfd_flags_supported =
-         kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD_FLAGS);
+diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
+index 666593ff6c..c1ea6eefbd 100644
+--- a/backends/hostmem-memfd.c
++++ b/backends/hostmem-memfd.c
+@@ -90,6 +90,7 @@ have_fd:
+     backend->aligned = true;
+     ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
++    ram_flags |= RAM_GUEST_MEMFD_SHAREABLE;
+     ram_flags |= backend->guest_memfd_private ? RAM_GUEST_MEMFD_PRIVATE : 0;
+     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
+                                           backend->size, ram_flags, fd, 0, errp);
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 027ca81bd2..ef6c767021 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -274,6 +274,13 @@ typedef struct IOMMUTLBEvent {
+  */
+ #define RAM_PRIVATE (1 << 13)
  
-+    if (machine_require_guest_memfd_convert_in_place(ms)) {
-+        uint64_t guest_memfd_supported_memory_attributes;
++/*
++ * RAM is backed by a guest-memfd instance that supports being used as shared
++ * memory (as opposed to RAM_GUEST_MEMFD_PRIVATE which, by itself, entails
++ * the guest-memfd instance can only ever be used for private memory).
++ */
++#define RAM_GUEST_MEMFD_SHAREABLE   (1 << 14)
 +
-+        guest_memfd_supported_memory_attributes =
-+            kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES);
+ static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
+                                        IOMMUNotifierFlag flags,
+                                        hwaddr start, hwaddr end,
+diff --git a/system/physmem.c b/system/physmem.c
+index 86046d46df..b9b4864a94 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -59,6 +59,7 @@
+ #include "system/hostmem.h"
+ #include "system/hw_accel.h"
+ #include "system/xen-mapcache.h"
++#include "system/confidential-guest-support.h"
+ #include "trace.h"
+ 
+ #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+@@ -2187,6 +2188,8 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+     if (new_block->flags & RAM_GUEST_MEMFD_PRIVATE) {
+         int ret;
+ 
++        assert(current_machine->cgs);
 +
-+        if (!(guest_memfd_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+            ret = -EINVAL;
-+            error_report("In-place conversion is only supported if private "
-+                         "memory attributes can be set via guest_memfd. "
-+                         "Please ensure the 'gmem_in_place_conversion' KVM "
-+                         "module parameter is set to 1.");
-+            goto err;
+         if (!kvm_enabled()) {
+             error_setg(errp, "cannot set up private guest memory for %s: KVM required",
+                        object_get_typename(OBJECT(current_machine->cgs)));
+@@ -2211,9 +2214,44 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+             goto out_free;
+         }
+ 
+-        new_block->guest_memfd_private =
+-            kvm_create_guest_memfd_private(new_block->max_length, errp);
++        /*
++         * If both shared/private memory are handled by guest_memfd, make sure
++         * to re-use the guest_memfd inode that should have already been created
++         * for handling shared memory.
++         */
++        if (machine_require_guest_memfd_convert_in_place(current_machine)) {
++            if (!(new_block->flags & RAM_GUEST_MEMFD_SHAREABLE)) {
++                error_setg(errp, "configured memory backend is not compatible"
++                                 " with in-place conversion");
++                ram_block_coordinated_discard_require(false);
++                qemu_mutex_unlock_ramlist();
++                goto out_free;
++            }
++            assert(new_block->fd >= 0);
++
++            /*
++             * Current logic calculates guest_memfd_offset on the assumption
++             * that offset 0 corresponds to the first GPA that is backed by the
++             * RAM block/backend. For cases where the guest_memfd is only used
++             * for private memory and created internally as-needed this is
++             * always the case, but when re-using a guest_memfd that's also
++             * usable for shared memory (e.g. via memory-backend-guest-memfd)
++             * it's possible that guest_memfd might be mmap()'d starting at some
++             * non-zero offset. For now, this isn't a reachable condition, but
++             * assert this in case this ever changes and the logic needs to be
++             * updated to account for this.
++             */
++            assert(new_block->fd_offset == 0);
++
++            new_block->guest_memfd_private = qemu_dup(new_block->fd);
++        } else {
++            new_block->guest_memfd_private =
++                kvm_create_guest_memfd_private(new_block->max_length, &err);
 +        }
 +
-+        kvm_supported_memory_attributes = guest_memfd_supported_memory_attributes;
+         if (new_block->guest_memfd_private < 0) {
++            error_propagate(errp, err);
++            ram_block_coordinated_discard_require(false);
+             qemu_mutex_unlock_ramlist();
+             goto out_free;
+         }
+@@ -2323,7 +2361,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
+     assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
+                           RAM_PROTECTED | RAM_NAMED_FILE | RAM_READONLY |
+                           RAM_READONLY_FD | RAM_GUEST_MEMFD_PRIVATE |
+-                          RAM_RESIZEABLE)) == 0);
++                          RAM_RESIZEABLE | RAM_GUEST_MEMFD_SHAREABLE)) == 0);
+     assert(max_size >= size);
+ 
+     if (xen_enabled()) {
+@@ -2835,6 +2873,12 @@ int ram_block_rebind(Error **errp)
+ {
+     RAMBlock *block;
+ 
++    if (machine_require_guest_memfd_convert_in_place(current_machine)) {
++        error_setg(errp,
++                   "rebind support is not yet enabled for in-place conversion");
++        return -1;
 +    }
 +
-     if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
-         s->kernel_irqchip_split = mc->default_kernel_irqchip_split ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
-     }
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index d9ac4b419a..e9cc6c2420 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1346,6 +1346,11 @@ bool machine_require_guest_memfd_private(MachineState *machine)
-     return machine->cgs && machine->cgs->require_guest_memfd;
- }
+     qemu_mutex_lock_ramlist();
  
-+bool machine_require_guest_memfd_convert_in_place(MachineState *machine)
-+{
-+    return machine->cgs && machine->cgs->convert_in_place;
-+}
-+
- static char *cpu_slot_to_string(const CPUArchId *cpu)
- {
-     GString *s = g_string_new(NULL);
-diff --git a/include/hw/core/boards.h b/include/hw/core/boards.h
-index d0e4ad9820..9ea124b224 100644
---- a/include/hw/core/boards.h
-+++ b/include/hw/core/boards.h
-@@ -44,6 +44,7 @@ int machine_phandle_start(MachineState *machine);
- bool machine_dump_guest_core(MachineState *machine);
- bool machine_mem_merge(MachineState *machine);
- bool machine_require_guest_memfd_private(MachineState *machine);
-+bool machine_require_guest_memfd_convert_in_place(MachineState *machine);
- HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machine);
- void machine_set_cpu_numa_node(MachineState *machine,
-                                const CpuInstanceProperties *props,
-diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
-index 5dca717308..2c9a9ff217 100644
---- a/include/system/confidential-guest-support.h
-+++ b/include/system/confidential-guest-support.h
-@@ -92,6 +92,18 @@ struct ConfidentialGuestSupport {
-      * so 'ready' is not set, we'll abort.
-      */
-     bool ready;
-+
-+    /*
-+     * CGS implementations will use this to indicate whether or not
-+     * to enable in-place conversion for guest-memfd.
-+     *
-+     * If set, the machine re-uses physical pages when converting
-+     * between shared/private (as opposed to using different
-+     * physical pages depending on the access type, which is the
-+     * default mode when 'require_guest_memfd' is set without
-+     * additionally setting this flag).
-+     */
-+    bool convert_in_place;
- };
- 
- typedef struct ConfidentialGuestSupportClass {
+     RAMBLOCK_FOREACH(block) {
 -- 
 2.43.0
 
