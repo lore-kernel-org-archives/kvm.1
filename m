@@ -1,190 +1,313 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011013.outbound.protection.outlook.com [52.101.52.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0C247D454;
-	Wed,  7 Oct 2026 19:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791402145; cv=none; b=MNvNhVZPKb7owggGUDlXjY74M97dkVgzshp3Jbin9S73qURq4eXyF8+huVK2/89eonGiTt8L4GeA5rkTTLZohKw/8vAfG4f1T6V8DZLcdESDSf6jrRm3bCSO/L32X5R5ErKqFa08tS2INaW1D3kwf3l2VRR2fEQU8tfb9ERaeaw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791402145; c=relaxed/simple;
-	bh=n47OzpwVnKMmzgYhLxaai5DyGsXjV8OoPxKpEXyI0d4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bDAbrfSJrOOwcU/ymt4Y8wbWMA0AxbQgs3FrNMRIZjKUYRs8VZ1egCtHjKpg6ZbWGZSZ7AqVKMPzN7hLWcvOURSx6xrktsw3vdyWIC5mZq7hwusmIX5m1pQKiaeVULgHzPHdMNHt+5nB7FZGn7NBJGdUK69RugCnFa9IByr9QDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JDHs9JvI; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF344E1408;
+	Wed,  7 Oct 2026 19:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791402306; cv=fail; b=m9ZJoAckZqNpIObHU07hePPapLTeiBrpy+QJz/kFjKrEmNmBkK5Ztie/al6cojYIRi9mnFpFA4WTWI61Gv/Ng+86U1Zhr2rEaGjCdMptmH755HHnC2J7AekB8my84+FglNf0KgVMPTjNLl0MoI/KnMObvLb5Mv3guRYEfusp3pQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791402306; c=relaxed/simple;
+	bh=bEiCMPfXrmZ+UJ2TjpgHrg06T1IqeD4i4XVhiCcZReg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FG1Cf5WU85NELqX+Zm1w5oU9VvN9qvUvmdPrMKxlphWUlITjP2YL7yAyK4RrcngBPw4UBj0DZhLp041TWfOTZ7GZLbalMWBg53xqNUQaJYxPLt/Ovg46sXLSPsgSrQLIfH/kUUSGVlFuqEF2SIo1hs6Mioj/i/uCeVVNXqih8/M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B+qFssXA; arc=fail smtp.client-ip=52.101.52.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JDHs9JvI"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697IZXvd2078170;
-	Wed, 7 Oct 2026 19:42:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gUXtr1
-	hZNl0XvBj6rUEtr6liOsrV/6rwrVDCslRPg6o=; b=JDHs9JvIpt7gljOCLUvk2X
-	pu8EVt4U1TIb085vJ+Cw8tVqnsvuM7S5w2kEvbTB9UWHk+wAQGM5O4Gy2H2oq6Py
-	CYsnYS2bTZ0L/8vOfVzmqOgk+pRoopsFTCSTUYwaZtjZj6z4MI+P4OrhHz9T7upg
-	voMWUcN4kFCZYwFEgDiQtQ+U8qP7GkmU4LDGzu+Gm1gvq5bW4CwhG1FLRc38OVlb
-	qfLAXrJf205EhIcPNg3uXdY37kY1xaRPdb+SiaDHZCZPeyZXq8+ifBW9GHXXjW8z
-	mx47HfsgL0gccxggfEWekEP1cy9SRnPW7+/n6lIekMMg5LSMvu7dT5TYwPDEr1hQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4g6pc8-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 19:42:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697IHYt62245356;
-	Wed, 7 Oct 2026 19:42:16 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h58d5mdbe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 19:42:16 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697JgFmh31195770
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Oct 2026 19:42:15 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A9B3B58059;
-	Wed,  7 Oct 2026 19:42:15 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1076D58063;
-	Wed,  7 Oct 2026 19:42:14 +0000 (GMT)
-Received: from [9.61.89.182] (unknown [9.61.89.182])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  7 Oct 2026 19:42:13 +0000 (GMT)
-Message-ID: <be89f54f-c2fc-419b-8415-d4dfcc57a58e@linux.ibm.com>
-Date: Wed, 7 Oct 2026 15:42:13 -0400
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B+qFssXA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=onjJVMNA+YF1JwyxTe7kO1390v47iicUoRKOf8aM8+iVxSSBeY8JJw4OwhHiDgZklkmcjZPkoyoYZ3soMPXjqwAoHTjOaXDCtTtXJS+zC5DYkIb3/fEYCYPzq1dvwZqpoFnRnLQBt7a6UqDIpoFdRZZQD1tDHQaPBCVSM9HPmirmJd3U8g+yMu6vfUEgototbLAIb5CKpSNTCHUFoxkHuCb1HqVxPbii+thpc9evi5J2DXB6uH/gJLnMf5X7Uo5J4PGxb4EcpC3XvermJ0wiC+ayGOlaqUx9xfzjI/4QkQbDrINaIsOjAIFsVQMXw/DhtEdUhO87ALWdkNCxaLq9WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J0t0/2x45Uwu3oL0pEL0/crmRnJUcXSjt8g0SKNyXmw=;
+ b=Ima8HY1+MfO3TtjvTs3jX1f+KuKmmG13VWbQSbPIifAlItVyiemt39aeOWM2zwod0XElEG6M7KfkParq4aaImYlDQOwJRKAu0+qFvUmWDZH+FFoTcsavwkM/bMqld5BCAldepGzWFZtfXgfP8PCwhWD6mfjFo+sWypn8MuJ2eznc2XWCApwxZu6tCTMEa08aBhrdEj60paBQSozF9Lw+cDqXl1OO4qAIUmNEk6DgJ/C2nEXQY+86ycBE1Hr7jgHE++kWyqzrVGo55Dr5l1aAKJeI7LVQ4JGgJBie5EWzZ0dhE7hyfOnLyhXN/yGpWuA88P5I8xApsiHh6f/AdRfLUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J0t0/2x45Uwu3oL0pEL0/crmRnJUcXSjt8g0SKNyXmw=;
+ b=B+qFssXAWQIoPjuiAdxddA8j/uZtX0Vy/3xXoClo5LlphLjCAJiyApNoAhjgqbxIWqTVBJqzOBYVXkc3zjR8xgT1o8UPVUZZfwH47FelXcUII3OFvM7xa48IQq+UqvLZAsGAWUglxfNGzWoYQ3GG+Bml9SCLsoQjW0+A4XC8yB/fX32rfO3sGQnjnlEZ9wmIuEgLym39QiRZQ9YaH0Oqmv7PEA4N6KUf2YQ0OjtTmvRee5UmKDDUKR89TGDzRs+X4+qKVeDZQgWq4l9+FgHK9Im4TA3+3dODbNoJcvlcJeJpV4GOpeyFGEoBGHe1x9cJt02e/8xyYnzuDOu3hyGaLQ==
+Received: from MN0P222CA0024.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:531::26)
+ by CY8PR12MB7313.namprd12.prod.outlook.com (2603:10b6:930:53::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
+ 2026 19:44:57 +0000
+Received: from BL2PEPF000352CD.namprd02.prod.outlook.com
+ (2603:10b6:208:531:cafe::4d) by MN0P222CA0024.outlook.office365.com
+ (2603:10b6:208:531::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.21 via Frontend Transport; Wed, 7
+ Oct 2026 19:44:57 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL2PEPF000352CD.mail.protection.outlook.com (10.167.249.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 19:44:56 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
+ 2026 12:44:35 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 7 Oct 2026 12:44:34 -0700
+Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
+ Transport; Wed, 7 Oct 2026 12:44:33 -0700
+Date: Wed, 7 Oct 2026 12:44:31 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
+	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
+	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
+	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
+	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
+	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
+ Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v5 11/18] iommu: Restore and reattach preserved domains
+ to devices
+Message-ID: <asahH/NfWZGdvIsE@nvidia.com>
+References: <20260921004834.2601285-1-skhawaja@google.com>
+ <20260921004834.2601285-12-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/15] s390/vfio-ap: Transition device migration state
- to STOP
-To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
-        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-12-akrowiak@linux.ibm.com>
- <971d827a-c342-461c-8c05-929b02df6807@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <971d827a-c342-461c-8c05-929b02df6807@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac6a099 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=lWXgboQppWcC2sr743cA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA3OCBTYWx0ZWRfXwNA2Juu147E/
- kUXYKDZSe4AZREtY6TGMwPnJpr2k7Kb7kRid83eufOVDlc+9Ut4fuLAhMNTeXKThRNrAQ5I42y5
- TnXyJOalspoVoHO0R3rXBjcVXQHD3Hq+fB8LfnEF3YViXPXfo1n1XdAQTw9LRnNMky84r7eL54m
- 2ZuhGPm1QeNZ+3gfOd7Ucx9YkDo/AcdhG2SRCJUcU99lypGtRRJQCfLFEw/okND3qnfGHbSCi6J
- VmgiLCqujDb3d+7IOZdDHgiPLjtCz9J+5bAmxHRGHCy5u9iCo9/BhagcFoQBp/KiEQXaRpk5DeV
- 0deaZcU+wVvTIPSrnjpum2fTA2b5wFhdxNqNDcJcjWxXdUmfrcgTyFbMaR1CFxwp3jzYiwsc0DS
- W88FHZtVNSeRFjnc9fY0jIik6uuoUYe+XQ/Le+fSSO6yN/sL50gFpWFVx22kAHD1SKm0klMYtq3
- Vzd3Z7O0waaMjC1wCPw==
-X-Proofpoint-GUID: fNmcIuWw-mSBrP0fJ8-TPFmpNAW0zNyK
-X-Proofpoint-ORIG-GUID: fNmcIuWw-mSBrP0fJ8-TPFmpNAW0zNyK
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA3OCBTYWx0ZWRfX50fmFZegkqe9
- Kftl1uf0u3dRVqthR4+1LizN3SCGlQ0qO8/MxywFZXD5Iu2h65/E6w/fk6vS5z4QOOz2XPk56MZ
- We2tioDtSevT72P9vFRDmnwSjEvf6NI=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-07_06,2026-10-06_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070078
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260921004834.2601285-12-skhawaja@google.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL2PEPF000352CD:EE_|CY8PR12MB7313:EE_
+X-MS-Office365-Filtering-Correlation-Id: df3adf60-13db-4c8a-dbed-08df24ab777d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|82310400026|7416014|36860700016|1800799024|18002099003|10067099003|22082099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	UckYY5OS6FDB2hal9Hp1XuN3cWHPWf5FSaZSzJiMMnns7Vhzyh0EPxDGoV1XrF33gvUCQnc9Vq3YM39Em1ldrgMGamdCNyNoZtKxlgk0XS+u2ExpHaYHmSpLrO5fjxGSmsspKSGlwR3oLO52eXDqUi2OQqbvOjn8HbpW8rrMIRufOsD127tiBUmkjm04fEDonMNQwTqDnXOaZTRCcy7KV3zveQeQujsIO7Uki9mlVHwITk7rACj4nxx6bA7kIchfOGtDAQTK4j6qUCJ2VHwGnW7vvRyPQG6YHZq5TIRMaEX+M/cBQklqnRLcb/yEKruAmA3o1HNX4niHRSeBJ6xrCM3G/WN21CpMniw7tLLHQ2JPfQ//gBdfIO9hkWhJPas80v/4L8fKARn41YseEqyXUNMdjuYkIsT+ZuIRIm7pg9zM4B32dh0Qw0zVEyW/2uEVCJQN/kD+x8//gXwBElgccqc1g4/fAvI+Nnc6J7vbNcwG16Y8OwckqEhCawKdrbxL2x1TYgGXOr1xh+G1p2SHUhaoPN9mQF5FxdDtRdUyQgLnMgTYWLcarIyFVB33FAVICNm1ECxCH+cEit/JUrKX+V0N6k7xRR0SJszQHxqm4vNAKXHPz+hjKTli7Xn2jki05DYQaWWldR0onxQDkeuvsq+8VIniuwlDwP8UDlUmeUdzhNKeMYjoh6qSDu6RBLmVRWIQjgbwcWQhX1L88lb12g==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(376014)(82310400026)(7416014)(36860700016)(1800799024)(18002099003)(10067099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	uVB4KE0tqBUj9+97BBGfQ/mtvnbvXad0Fbb0qJ50l0bgkSHmmd36hLMjONYzwf4auzAPZ/gje9m8MaSguvtTBiQYYtwO6Z75kt3f22/jyA+lKEyiwd9rRKEid8hUadeBvEBx1FFIUoG8o9Oq+5gNEKk67WZ7OwDuzLggcp5S4WpPwaWQESwKXQ0VwMBBmE20YGI/yWtPqw746ma/O4xxOn6OUK1jeriH/jjqYDvig4iOsV76bu3lMYyBm8Ad3oFtYH1KcGVdH8hVjr1djJD3zup9dUnXoj24Jwj2HaJ/SHOIIpROCzifPkmBjHvzsG0dcne1TDCnVQgNF7jSqWGR0ly/rxZtIWm0QLdGu+4qhLLqCjQ4q+CI05OktYzxCrubr2miHF18OLhtqLpR8KraHeYKbT3hoGaOSyTylnRx40whwi4H577oM8kGf341cbyE
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 19:44:56.9695
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: df3adf60-13db-4c8a-dbed-08df24ab777d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL2PEPF000352CD.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7313
 
+On Mon, Sep 21, 2026 at 12:48:27AM +0000, Samiullah Khawaja wrote:
+> @@ -694,7 +700,8 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+>  	}
+>  
+>  	for_each_group_device(group, gdev2) {
+> -		if (dev_iommu_preserved_state(gdev2->dev)) {
+> +		if (dev_iommu_preserved_state(gdev2->dev) ||
+> +		    dev_iommu_restored_state(gdev2->dev)) {
+>  			ret = -EBUSY;
+>  			goto err_free_gdev;
 
+Maybe it should -EBUSY on a group that already has a device so it
+wouldn't end up with a multi-device group.
 
-On 8/20/26 8:43 AM, Jason J. Herne wrote:
->
->
-> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
->> Typically at this point, interrupt processing for the device, DMA and 
->> other
->> changes to the device's external state must be prohibited. For VFIO AP,
->> there is no physical DMA device virtualized by the vfio-ap device . It
->> merely manages the guest's AP configuration that identifies the devices
->> passed through to the guest, but does not have access to any of them. 
->> Those
->> AP devices are passed through and controlled exclusively by the SIE 
->> program
->
-> SIE is an instruction, not a program. It might be clearer to say:
-> pass-through AP devices are controlled by the hardware.
+> @@ -2211,6 +2242,7 @@ static int __iommu_attach_device(struct iommu_domain *domain,
+>  	ret = domain->ops->attach_dev(domain, dev, old);
+>  	if (ret)
+>  		return ret;
+> +
+>  	dev->iommu->attach_deferred = 0;
+>  	trace_attach_device_to_domain(dev);
+>  	return 0;
 
-The SIE control block is used to pass through the AP devices via the 
-CRYCB which
-I assume is processed by the SIE instruction. After that, vfio_ap has 
-nothing to do
-with the AP devices other than to handle interrupt enable/disable when the
-PQAP(AQIC) instruction is intercepted. The vfio_ap driver does not 
-manage I/O
-between the guest and device memory like other devices using VFIO to 
-pass them
-through. It's sole purpose in life is to manage the AP configuration for 
-the guest
-to which an mdev is attached.
+Unnecessary change.
 
-I'll make a change to this comment.
+> @@ -3175,6 +3207,62 @@ int iommu_fwspec_add_ids(struct device *dev, const u32 *ids, int num_ids)
+>  }
+>  EXPORT_SYMBOL_GPL(iommu_fwspec_add_ids);
+>  
+> +static struct device *__iommu_group_restored_device(struct iommu_group *group)
+> +{
+> +	struct group_device *gdev;
+> +
+> +	lockdep_assert_held(&group->mutex);
+> +	for_each_group_device(group, gdev) {
+> +		if (!dev_is_pci(gdev->dev))
+> +			continue;
+> +
+> +		if (dev_iommu_restored_state(gdev->dev))
+> +			return gdev->dev;
 
->
->
-> I'm not sure there is much benefit to having this as a separate patch 
-> at all. You could simply roll this into the patch where this logic is 
-> originally constructed and skip this patch entirely.
+list_first_entry instead of for_each_group_device since there's a
+singleton enforcement.
 
-Already addressed with response to 12/15 review comment you made.
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static int __iommu_group_restore_domain(struct iommu_group *group)
+> +{
+> +	struct iommu_device_ser *device_ser;
+> +	struct iommu_domain *domain;
+> +	struct device *dev;
+> +	void *owner;
+> +	int ret;
+> +
+> +	lockdep_assert_held(&group->mutex);
+> +	if (group->domain)
+> +		return -EBUSY;
+> +
+> +	dev = __iommu_group_restored_device(group);
+> +	device_ser = dev_iommu_restored_state(dev);
+> +	if (!device_ser)
+> +		return -ENOENT;
+> +
+> +	ret = __iommu_group_alloc_blocking_domain(group);
+> +	if (ret)
+> +		return ret;
+> +
+> +	domain = iommu_restore_domain(dev, device_ser, &owner);
+> +	if (WARN_ON(IS_ERR(domain)))
+> +		return PTR_ERR(domain);
+> +
+> +	/* The restored domain is attached with the restored device. */
+> +	ret = __iommu_group_set_domain(group, domain);
+> +	if (ret)
+> +		return ret;
 
->
->
->> used to start the guest. There  only thing to do at this point is return
->> NULL to the caller since the file streams and associated data will get
->> cleaned up as a result of the VFIO migration framework releasing the 
->> files.
->>
->> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
->> ---
->>   drivers/s390/crypto/vfio_ap_migration.c | 9 +++++++--
->>   1 file changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c 
->> b/drivers/s390/crypto/vfio_ap_migration.c
->> index 4dd7373c3d9d..30160e3ddded 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
->> @@ -1511,12 +1511,17 @@ vfio_ap_transition_to_state(struct 
->> ap_matrix_mdev *matrix_mdev,
->>           return filp;
->>       }
->>   +    /*
->> +     * Terminates the data transfer session of the vfio-ap device state
->> +     * between the source and target hosts. Since the vfio-ap device 
->> does
->> +     * not virtualize a DMA device, there is no internal device 
->> state to
->> +     * incorporate into the vfio-ap device on the target.
->> +     */
->>       if ((cur_state == VFIO_DEVICE_STATE_RESUMING &&
->>            new_state == VFIO_DEVICE_STATE_STOP) ||
->>           (cur_state == VFIO_DEVICE_STATE_STOP_COPY &&
->>            new_state == VFIO_DEVICE_STATE_STOP)) {
->> -        /* TODO */
->> -        return ERR_PTR(-EOPNOTSUPP);
->> +        return NULL;
->>       }
->>         if ((cur_state == VFIO_DEVICE_STATE_STOP &&
->
+If (ret), how about the restored domain by iommu_restore_domain()?
 
+> +	/*
+> +	 * Ownership of groups with preserved devices is set during boot. These
+> +	 * will be reclaimed later by the entity (iommufd) that preserved them.
+> +	 */
+> +	WARN_ON(group->owner);
+> +	group->owner = owner;
+> +	group->owner_cnt = 1;
+> +	return ret;
+> +}
+> +
+>  /**
+>   * iommu_setup_default_domain - Set the default_domain for the group
+>   * @group: Group to change
+> @@ -3233,6 +3321,16 @@ static int iommu_setup_default_domain(struct iommu_group *group,
+>  
+>  	/* We must set default_domain early for __iommu_device_set_domain */
+>  	group->default_domain = dom;
+> +
+> +	/* Preserved devices need to be attached to the restore domain */
+> +	if (__iommu_group_restored_device(group)) {
+> +		ret = __iommu_group_restore_domain(group);
+
+__iommu_group_restored_device is called twice: here (outside) and
+inside __iommu_group_restore_domain.
+
+Perhaps change to:
+	dev = __iommu_group_restored_device(group);
+	if (dev)  {
+		ret = __iommu_device_restore_domain(dev);
+	...
+?
+
+> +void iommu_init_device_preserved_data(struct device *dev)
+> +{
+> +	struct iommu_device_ser *device_ser = NULL;
+
+"= NULL" doesn't seem necessary.
+
+> +	struct iommu_device_array_ser *array;
+> +	struct iommu_flb_obj *flb_obj;
+> +	int ret, idx;
+> +
+> +	if (!dev_is_pci(dev))
+> +		return;
+> +
+> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
+> +	if (ret)
+> +		return;
+> +
+> +	mutex_lock(&flb_obj->lock);
+> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
+> +	iommu_liveupdate_for_each_arr(array) {
+> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
+> +			if (match_device_ser(device_ser, to_pci_dev(dev))) {
+> +				device_ser->hdr.flags |= IOMMU_SER_FLAG_INCOMING;
+> +				goto out;
+> +			}
+> +		}
+> +	}
+> +
+> +	device_ser = NULL;
+> +out:
+> +	WRITE_ONCE(dev->iommu->device_ser, device_ser);
+
+dev->iommu->device_ser is NULL after kzalloc.
+
+So, maybe drop "device_ser = NULL" and move WRITE_ONCE() into the
+loop (under match_device_ser)?
+
+> +	mutex_unlock(&flb_obj->lock);
+> +	liveupdate_flb_put_incoming(&iommu_flb);
+
+Hmm, you might want to check the lifecycle of this flb thing.
+
+dev->iommu->device_ser points to something inside the flb, which
+might be freed somewhere?
+
+> +struct iommu_domain *iommu_restore_domain(struct device *dev,
+[...]
+> +	domain_ser = phys_to_virt(ser->domain_iommu_ser.domain_phys);
+> +	if (domain_ser->restored_domain) {
+> +		*owner = ser;
+> +		domain = domain_ser->restored_domain;
+> +		goto out;
+> +	}
+> +
+> +	domain_ser->hdr.flags |=  IOMMU_SER_FLAG_INCOMING;
+
+Drop the extra space before "IOMMU".
+
+> +/**
+> + * dev_iommu_restore_did() - Get restored domain ID for a device
+> + * @dev: Target device
+> + * @domain: Target domain
+> + *
+> + * Fetches the domain ID preserved for @dev and @domain across Live Update.
+> + *
+> + * Return: Domain ID or -1 on error.
+> + */
+> +static inline int dev_iommu_restore_did(struct device *dev, struct iommu_domain *domain)
+
+"did" is an intel thing..
+
+> +{
+> +	struct iommu_device_ser *ser = dev_iommu_restored_state(dev);
+> +
+> +	if (ser && iommu_domain_restored_state(domain))
+> +		return ser->domain_iommu_ser.attachment_id;
+
+... so, it could be just dev_iommu_restored_attachment_id()?
+
+Nicolin
