@@ -1,242 +1,273 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012015.outbound.protection.outlook.com [40.107.209.15])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2553A0B3F;
-	Wed,  7 Oct 2026 21:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791408749; cv=fail; b=PYIcC/VlRN3/arviHjKRW6087Xb9tuROfZ4lHOp+RmWp89BRIHF6r8MmE5PMdFdIG0MvN9LIS43mOTW7bgFbrLz3O8MyKXWE1Uo6+WJ9toVSjZ+LtVvms6LDalpdkf5R6wvIMk+gyaSFBT8C+yNyW2TYjGc+61C/B+lXENPH4os=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791408749; c=relaxed/simple;
-	bh=6zJLz89EP8MCzcvemEKMR3gIs67RESBVAjhxPhiHimQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dtIqujLGn20mBVJE/j/bOHuCUGZ8r1gK9l27IEVO5nkGxH3gmAszitE/vaKBte7LL2WOnetEzqMMYrR5Sk2hmBQe6VsigbRSj2Wm8HOFqzl0UIzAZKYRYvFSgStbLsoz3EAsVBNGGr8nCHCuNXQvxWqoCfur6AOhuZTcdx1ZP28=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K+Hg1Wb0; arc=fail smtp.client-ip=40.107.209.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FE43D6690;
+	Wed,  7 Oct 2026 21:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791409802; cv=none; b=nOqAPf3WAuw46qDxe6LiQUQ0ZwXckNvWfqIUyBidOdTJ6g5oqNILEcGL55L5pgEgEa5vG5Bb9Vhe26AFAC23iVb2pLumTUBeqnW+yOU6Zw94kF6cLxqG1kd/wTS3bNSdjpYKZWMgf8lzsOIln2GmYBLu7H8k/xL8EyLY2ddn7Q8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791409802; c=relaxed/simple;
+	bh=/GC6QauhpyYqXDU3b3DCofG+sF1iN/cvT2by7GGEi9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eZvhAC/DWGbAsL1zTT/NXOSKa2wWVbbLBOhF0y/dt8GPFgyyxJfY9PyOZz1ZDK7gMPtsFJ8i83cPCt/CZEpUe8qOZpM5y3My4ZCXTX1VzzOtGqBVbmBz7fjkJzWtVdKRstAmqiwNgJajtg7bVV8iUwNrRq3IuoHR7D1360FpIiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cZeIDxDd; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K+Hg1Wb0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zQgeqsPYIvuOAUHPCEDk/3Gfkfw6UXEP/N3xiMdi5ros5b5sGacUMz4cLNH3gQExTm2W+Y6gJCaYv7XNwzezv0EidLwtKsJujhT0TaKiB5RViBTrmJonFczTdQKosfY4ROL0cI4Xl/SncRC3GriK9CajEcszmvRF/Sv/9SOHelTTgwoLubsCBfHhBCEnzAGBIpvzbm4rgR83o0EreFlf/DSTvVKM9IJGzqYFL9Qxc/8iaz4ZUTbeGhxCxmdfpbzzWrinoNN0+FmlCPP9ZaA1g+gBR5r7lC/qcX6V0Lw2yq8nmV6BYhjM0u3pHijBjpjFbKmb2WAzFMLeSevgVugqlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=550O7TyUcyThvPjjLxpyYTBC8yEk6ILUkCULHID716M=;
- b=h2NIJic0gSCddc1Av1y0v6uNiEDoshNAFUP2CpKJAvrenn+bQ4UR76nSU3R70tZl5ia+Jsnap/DKlwZ3PU0r6lCEKh58+A0qwCXbYDTOhRGuoQsNQ/XnNabCec7nnKe08LE3CUPboY+12K0e6OGS8ALi4SvbuvXNfR42xEpVoht7evmpqo9uOU+/ZLwca6PMfvl8afANrtYgkhbjjwEg/kmUbXMF47Cc3jp13D6Bj3+piwoix8G9TvvMKpzuyDxXsUK0dGaNFW1o9s1E+PbMgEHZiejiFLoT9/gaurxQK/Sl6rYseAk+LijMnRPs8PO6nwywzB6UtuHL3pmlw0EEjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=550O7TyUcyThvPjjLxpyYTBC8yEk6ILUkCULHID716M=;
- b=K+Hg1Wb0ZlBxfH0nIFYU4/Sq2SmOwb31lNrtsdHPBqXcP/0m/1H71s1aCzZLN4KGwBR/shU2plf/ITmqgEM3lCEZ8F9l1bEZFfcUrDeqoEusO7m7n4IxTjvXPHM8/gjJcLnXiOaBPJ6cRqZHlBGkkBZDZEYrt/+HP9e4AEIarbtbb6HXxFUn9U+60wACntx2ABeRYwrF1E4kWr893eKhMeB15aGc/3YSOjP8B3fMcggHMmSb44OmloUTlQMNikPAAYweOiFXlI/OYGOpGeeVTGQxftnsTRN48pDKrtoZcXWf69dIDe9GPgwRT7W1nAKXKEnsNzrcVbs21NW/SArIUA==
-Received: from BN0PR04CA0201.namprd04.prod.outlook.com (2603:10b6:408:e9::26)
- by SJ1PR12MB6218.namprd12.prod.outlook.com (2603:10b6:a03:457::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Wed, 7 Oct
- 2026 21:32:20 +0000
-Received: from BN5PEPF0004698A.namprd02.prod.outlook.com
- (2603:10b6:408:e9:cafe::3a) by BN0PR04CA0201.outlook.office365.com
- (2603:10b6:408:e9::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Wed, 7
- Oct 2026 21:32:19 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN5PEPF0004698A.mail.protection.outlook.com (10.167.245.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 21:32:19 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 14:31:51 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 14:31:50 -0700
-Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
- Transport; Wed, 7 Oct 2026 14:31:49 -0700
-Date: Wed, 7 Oct 2026 14:31:47 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu
-	<zhuyifei@google.com>, Robin Murphy <robin.murphy@arm.com>, Kevin Tian
-	<kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, Shuah Khan
-	<shuah@kernel.org>, <iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>,
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v5 15/18] iommufd: Persist iommu hardware pagetables for
- live update
-Message-ID: <asa6Q4t1pqn9gz3P@nvidia.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-16-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cZeIDxDd"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697LZUjZ3628784;
+	Wed, 7 Oct 2026 21:50:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UcX2zV
+	kYeiN/yci9+ngSsc7wJ65G2UirwwZaxntU2pQ=; b=cZeIDxDdmpVCeyL+zDud3f
+	ZlwAN1LIpV034efm2BR1BGvAgzz+qpADrjsGW536sWe6LKjuM31san5qH4BY/JH7
+	UnYmjh96Wb2QfldXFfmZu9eA2nZSmX09sOUVyJ2m1HH6duqCPUH9VY4KU9tZRiVr
+	k4dprLZlD3oQFn7lVzxHKGLHns62sq1yqp78WRpdzzSDj4Ehi9YjatsqaXhsOXvi
+	1QRJ6d7psNOsdyMB4SNsYzhKs/at/AiJNusfHI5XtwWPxoRFrVVE7LReFxfXl54P
+	AuUeEhjT09bY/707knHccSVga+MHIgF648hJ6baq4pSnhE8b00AWI/imCUTV9tzw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2se5r2y7-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 21:49:59 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697LlOLF2476247;
+	Wed, 7 Oct 2026 21:49:59 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h5s34s95y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 21:49:59 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697Lnvi37144442
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 21:49:57 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C1E6C58055;
+	Wed,  7 Oct 2026 21:49:57 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 21E095804B;
+	Wed,  7 Oct 2026 21:49:57 +0000 (GMT)
+Received: from [9.61.89.182] (unknown [9.61.89.182])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Oct 2026 21:49:57 +0000 (GMT)
+Message-ID: <14a9fc54-d1be-47dc-8f60-5e99c44f8ddf@linux.ibm.com>
+Date: Wed, 7 Oct 2026 17:49:56 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260921004834.2601285-16-skhawaja@google.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN5PEPF0004698A:EE_|SJ1PR12MB6218:EE_
-X-MS-Office365-Filtering-Correlation-Id: a91283bd-b1e0-4361-3620-08df24ba7795
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|82310400026|376014|23010399003|36860700016|22082099003|18002099003|4143699003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	1oRmPBk5hPYxH8xETMS+70KmLmsxuiBYB82GWCLVGDAmbIvfkpRw7GEZrW8XqXgByTjZro1d7+8KszfDF4ya1o2cEXrA+mG9RPKJ3AU89zTSZ92ZC+6t+wCqo/YnJ4Oi/jOrOlDNKRZUm5gVj6Nv+VJ7u6MSDYqTHpVDDmxklhyPQAJx3N1sZ7U7nlFOO2pGrjpnQ67Y2p1E4jBEBkL5nb6W1ReQTo7ddnm5zwH2XXucGhh4iEW0KCcjsv53DBn4wc/O4/vpzlogd/HVnZ7adxLpXbbs4SmZ2pI2njx6Hd7IWS3sFpA2O5QmGU33S3j1qbXyb77jGZm+l/+At2ULwAOz1GUKWK6fXMMh1EPvXGE2icQwbxIz/heKaVXZEqvfeLZFfDFWq9CqkoZT0sRVK2HMCeak6HrYiVczz6D25vUg36DhWJ6loPZPGUAZtrysBzKPhDIF8zAt2ifKHyvsmEpuGgZFtTzpn0LFaOSiAkMncs3fADPJA9urTl36hnYWeCdTjvGxYcW5GU54GpUhOSH9it8I087jJQNoWVnGz+ohZHGwp+/+H6HyoI612hTU4HsHMKCli/V6QX2/dsjfCvYqzJDg0PuxREgf1fU9ArWB56RC59IsfFFjDkHMjHzI+FL1mMv793GT0ekzabHvvwpfCQYH9yPmA5AxmQMi4fCmfeKEYAXgghVwI/Jj4G8eAZpUE+5X2/1wcxjT78vPEQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(82310400026)(376014)(23010399003)(36860700016)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	89uerwcTIOH8oiiVppNeHxagbckpqviJeUBK+JTdotaB7rBc3KYmiK3bGdCmDhaeJIRaO9A8WUd+cFvktO9diCSq/EsCJh+X3pgu67oJ3A05M3E1H2BL8KQaCuJPV3PJxjQ/0WDbQEJhJL4GuYB1/lDnnqALstiKiQqKB5pqgv4+hbGMKXSe6yqBqjKwlXmT7AKlJQIz0VjM4g81lELltj6UUVVCYoP3hZehUGLScW2DKKjG0cWnoDzPekdscdUjifm4lFgXkjwHMqDJxdSwZNlhWN/QvKquHUU2dXP7V5e4FuarI1Y2otcMlD+iXKeMzJP7YwaS0MtxW78lwEOjuUBWEH5WykvjbXuXxH4FjFc1Kt3F2tovHkAC4mmjH4bgWp43u7e4YWCS5qJrjUKzpEqdZbaDEsrzwZpInrBKMr8ZrnXiN6E4WzXCk3sG1PeM
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 21:32:19.6813
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a91283bd-b1e0-4361-3620-08df24ba7795
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN5PEPF0004698A.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6218
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 03/15] s390/vfio-ap: Functions to initialize/release
+ vfio device migration data
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        kvm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-4-akrowiak@linux.ibm.com>
+ <20260807223840.4FCA41F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260807223840.4FCA41F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA4NiBTYWx0ZWRfX3AKLNrHhPTON
+ QtQsUFczSqz8Mg63HWPYmHBkQLfQ+4QUfVwlCIOEx3nSiA2GnLH4WDJ8fNhPpFng6dq1fyBfDhW
+ sFEKlGe/63R2KRICdte6ea4g9SZ2Yck=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA4NiBTYWx0ZWRfX1xvg8OaFZGX/
+ OYk1e1d/jnQ1mNKfIhLLqtRbGS4CM4NJZbIbxfyZ7q4jmBFl5Lo51UFSb1miK5Rus8Vyo8I8p3V
+ 4gYgcS+tZp2Dx77ZEy1v01tU/58zogaGRFQm60g8monJ3gX3if5QkNFr7V/ZgNQKNV2874d4ZxP
+ N8WA55nqMVcTuoprODFH7C0bDul6L3jAXO7mWAujoFfcorrb15HlhXqGsjBG/7nvmyhXlc/gqRO
+ A0+4RJG+KbcDoUmpU+YjLv/t9Uzqhb3gqeu77WaFg5c6KwEYwRbDNGinwnGx0wrXcz812R+f8ol
+ 734mI54GOh+roYFNFowG4Wmsxkhy6aaAnfOHen6oewKZ2gmM/H901OjAexJZZGomao38BoRW+J7
+ Q64n2ni0Rmvgi4GiyEFOsM0GXZbnqXFkdU/SlEGxAy8WBL/he1sWU0vWSmAoPJTxLjTVJRg6eJ3
+ ez6WSq0yCaca8qePbsQ==
+X-Proofpoint-GUID: iTXmfkd1I1UQyNPAUkABhtlxNnRUmvD7
+X-Authority-Analysis: v=2.4 cv=UNRIjyfy c=1 sm=1 tr=0 ts=6ac6be87 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=uomwIFa1Vr5aimEL9vgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: iTXmfkd1I1UQyNPAUkABhtlxNnRUmvD7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_07,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070086
 
-On Mon, Sep 21, 2026 at 12:48:31AM +0000, Samiullah Khawaja wrote:
-> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-> index a33b32708afa..a4ddc29ec5ae 100644
-> --- a/drivers/iommu/iommufd/iommufd_private.h
-> +++ b/drivers/iommu/iommufd/iommufd_private.h
-> @@ -98,6 +98,9 @@ struct io_pagetable {
->  	/* IOVA that cannot be allocated, struct iopt_reserved */
->  	struct rb_root_cached reserved_itree;
->  	u8 disable_large_pages;
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +	u32 nr_preserved_domains;
-> +#endif
 
-In iommufd, "num_" is used more often than "nr_".
 
->  	unsigned long iova_alignment;
->  };
->  
-> @@ -398,6 +401,7 @@ struct iommufd_hwpt_paging {
->  	bool enforce_cache_coherency : 1;
->  	bool nest_parent : 1;
->  #ifdef CONFIG_IOMMU_LIVEUPDATE
-> +	bool liveupdate_preserved;
->  	u64 liveupdate_token;
->  #endif
->  	/* Head at iommufd_ioas::hwpt_list */
+On 8/7/26 6:38 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review fosund 4 potential issue(s) to consider:
+>
+> New issues:
+> - [High] The patch exposes the VFIO_MIGRATION_STOP_COPY capability to userspace before the actual migration data transfer logic is implemented, causing silent migration failures.
+> - [High] An open migration FD can access a newly allocated migration session if the VFIO device is closed and reopened, bypassing the intended `NULL` check.
+>
+> Pre-existing issues:
+> - [High] Unconditional NULL assignments to `req_trigger` and `cfg_chg_trigger` in `probe` can overwrite valid eventfd contexts set by concurrent ioctls, causing a memory leak and breaking interrupts.
+> - [High] The mediated device is exposed to userspace before it is fully initialized and added to the driver's tracking lists, allowing multiple mdevs to attach to the same KVM guest.
+> --
+>
+> --- Patch [3]: [PATCH v7 03/15] s390/vfio-ap: Functions to initialize/release vfio device migration data ---
+> commit 04c1b466fec62cf9e53c2d6610cde9ecbf5fefad
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Functions to initialize/release vfio device migration data
+>
+> This commit provides the initialization and release functions for the data
+> structures used during live guest migration of vfio-ap devices. It introduces
+> stubs for the migration operations that will be fully implemented in
+> subsequent patches.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> index 374d3a67cb214..cf303d228a0a5 100644s
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> [ ... ]
+>> +static struct file *vfio_ap_set_state(struct vfio_device *vdev,
+>> +				      enum vfio_device_mig_state  new_state)
+>> +{
+>> +	return NULL;
+>> +}
+> [ ... ]
+>> +void vfio_ap_init_migration_capabilities(struct ap_matrix_mdev *matrix_mdev)
+>> +{
+>> +	if (ap_is_se_guest())
+>> +		return;
+>> +
+>> +	matrix_mdev->vdev.migration_flags = VFIO_MIGRATION_STOP_COPY;
+>> +	matrix_mdev->vdev.mig_ops = &vfio_ap_migration_ops;
+>> +}
+> [Severity: High]
+> Will advertising the VFIO_MIGRATION_STOP_COPY capability to userspace before
+> the actual migration data transfer logic is implemented cause silent failures?
+>
+> If vfio_ap_set_state() returns NULL for the VFIO_DEVICE_STATE_STOP_COPY
+> transition, won't the VFIO core interpret this as a successful transition
+> that does not require a data stream? This could cause QEMU to silently
+> succeed on the source side without transferring any device state, leaving
+> the AP subsystem broken for the guest on the target side.
 
-> +static inline bool iopt_liveupdate_immutable(const struct io_pagetable *iopt)
-> +{
-> +	return iopt->nr_preserved_domains > 0;
-> +}
+This is just one of a series of 15 patches that implement VFIO migration of
+vfio-ap devices. The rest of the series fills in the blanks.
 
-It's used in io_pagetable file only. I'd move it out of the header:
+>
+>> +/**
+>> + * vfio_ap_release_mig_files:
+>> + *
+>> + * Free the ap_config buffers for any open migration FDs. Although a
+>> + * migration FD may still be held open by userspace, it is safe to free
+>> + * mig_data here because:
+>> + *
+>> + *   1. matrix_mdev remains valid for the lifetime of any open migration
+>> + *      FD via the vfio_device registration reference taken in
+>> + *      vfio_ap_open_file_stream() and dropped in
+>> + *      vfio_ap_release_mig_file().
+>> + *
+>> + *   2. mig_data is only accessed by the migration file ops
+>> + *      (vfio_ap_stop_copy_read, vfio_ap_resuming_write) under
+>> + *      mdevs_lock. Once mig_data is set to NULL by the caller, those
+>> + *      paths will see NULL and return -ENODEV before dereferencing it.
+>> + *
+> [Severity: High]
+> Does this lifecycle design handle the case where the VFIO device is closed
+> and reopened while a migration FD is kept open?
+>
+> If userspace keeps the migration FD open, closes the VFIO device, and then
+> reopens it, vfio_ap_mdev_open_device() will allocate a new mig_data. When the
+> old migration FD subsequently performs read or write operations, won't it
+> bypass the NULL check and incorrectly access the mig_data belonging to the
+> new session?
 
-static inline bool iopt_liveupdate_immutable(const struct io_pagetable *iopt)
-{
-	bool immutable = false;
+This patch (03/15) introduces the initialization and teardown functions
+for the migration lifecycle, while subsequent patches in the series
+implement the full data streaming operations and validation checks:
 
-	lockdep_assert_held(&iopt->domains_rwsem);
+- Patch 07/15 ("s390/vfio-ap: File ops called to save the vfio device
+   state") implements validate_stop_copy_read_parms().
+- Patch 10/15 ("s390/vfio-ap: File ops called to resume the vfio device
+   state") implements validate_resuming_write_parms().
 
-#ifdef CONFIG_IOMMU_LIVEUPDATE
-	/* iopt becomes immutable once liveupdate preservation starts */
-	immutable = iopt->num_preserved_domains;
-#endif
-	return immutable;
-}
+In those handlers, both read and write operations verify under mdevs_lock
+that the passed struct file * matches the active migration stream
+pointer for the current session (mig_data->stop_copy_mig_file.filp or
+mig_data->resuming_mig_file.filp).
 
-> diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
-> +static bool ioas_set_immutable(struct iommufd_ioas *ioas, bool set)
-> +{
-> +	bool was_immutable;
-> +
-> +	down_write(&ioas->iopt.domains_rwsem);
-> +	was_immutable = ioas->iopt.nr_preserved_domains > 0;
-> +	if (set)
-> +		ioas->iopt.nr_preserved_domains++;
-> +	else if (!WARN_ON(!was_immutable))
-> +		ioas->iopt.nr_preserved_domains--;
-> +
-> +	up_write(&ioas->iopt.domains_rwsem);
-> +
-> +	return was_immutable;
-> +}
+When the device is closed and reopened, open_device allocates a fresh
+mig_data with NULL file pointers. If a stale migration FD from a
+previous session attempts to perform read or write operations, the
+equality check against the current session's filp fails (-EINVAL or
+-ENXIO), safely preventing access to the new session's mig_data.
 
-Since it has to handle refcount, an unset doesn't really unset the
-flag, which is confusing.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 36786d70a88f5..90b0fce0123b5 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>> @@ -797,13 +809,28 @@ static int vfio_ap_mdev_probe(struct mdev_device *mdev)
+>>   	if (IS_ERR(matrix_mdev))
+>>   		return PTR_ERR(matrix_mdev);
+>>   
+>> +	/*
+>> +	 * Migration capabilities must be initialized before calling
+>> +	 * vfio_register_emulated_iommu_dev; otherwise, the VFIO core
+>> +	 * will see mig_ops as NULL during the registration. This could
+>> +	 * prevent the VFIO core from properly setting up migration
+>> +	 * infrastructure like debugfs entries.
+>> +	 *
+>> +	 * This must be done before acquiring mdevs_lock to avoid an ABBA
+>> +	 * deadlock: vfio_register_emulated_iommu_dev() acquires dev_set->lock
+>> +	 * internally, while vfio_ap_mdev_open_device() is called by the VFIO
+>> +	 * core with dev_set->lock already held and then acquires mdevs_lock.
+>> +	 */
+>> +	vfio_ap_init_migration_capabilities(matrix_mdev);
+>> +
+>>   	ret = vfio_register_emulated_iommu_dev(&matrix_mdev->vdev);
+>>   	if (ret)
+>>   		goto err_put_vdev;
+>> +
+>> +	mutex_lock(&matrix_dev->mdevs_lock);
+>>   	matrix_mdev->req_trigger = NULL;
+>>   	matrix_mdev->cfg_chg_trigger = NULL;
+> [Severity: High]
+> This is a pre-existing issue, but does exposing the device to userspace
+> before setting these triggers to NULL introduce a race condition?
+>
+> If userspace immediately opens the device after
+> vfio_register_emulated_iommu_dev() and configures interrupts, it will
+> allocate and set valid eventfd contexts for req_trigger and cfg_chg_trigger.
+> When the probe thread continues and overwrites these with NULL, won't it leak
+> the eventfd contexts and break guest interrupts?
 
-Maybe just:
-  iopt_inc_num_preserved_domains
-  iopt_dec_num_preserved_domains
+This was fixed with commit 7fa61c29850d in response to this same comment
+in another review. 7fa61c29850d
 
-> +static int check_iopt_pages_preserved(struct liveupdate_session *s,
-> +				      struct iommufd_hwpt_paging *hwpt)
+>
+>>   	dev_set_drvdata(&mdev->dev, matrix_mdev);
+>> -	mutex_lock(&matrix_dev->mdevs_lock);
+>>   	list_add(&matrix_mdev->node, &matrix_dev->mdev_list);
+> [Severity: High]
+> This is also a pre-existing issue, but does calling
+> vfio_register_emulated_iommu_dev() before list_add() allow multiple mediated
+> devices to attach to the same KVM guest?
+>
+> If two mdevs are probed and opened concurrently before they are added to
+> mdev_list, won't they bypass the conflict detection logic in
+> vfio_ap_mdev_set_kvm() and violate KVM uniqueness invariants?
 
-static int iopt_validate_preserved_memory(struct io_pagetable *iopt,
-					  struct liveupdate_session *s)
+This will be fixed with a standalone patch since it is not related to this
+series.
 
-> +{
-> +	u32 req_seals = F_SEAL_SEAL | F_SEAL_GROW | F_SEAL_SHRINK;
-> +	struct iopt_area *area;
-> +	int ret = 0;
-> +
-> +	down_read(&hwpt->ioas->iopt.iova_rwsem);
-> +	for (area = iopt_area_iter_first(&hwpt->ioas->iopt, 0, ULONG_MAX); area;
-> +	     area = iopt_area_iter_next(area, 0, ULONG_MAX)) {
-> +		struct iopt_pages *pages = area->pages;
+>
 
-Move req_seals inside the for loop.
-
-> +static int iommufd_liveupdate_preserve(struct liveupdate_file_op_args *args)
-[...]
-> +	iommufd_ser = mem;
-> +	iommufd_ser->nr_hwpts = nr_hwpts;
-> +
-> +	/* Preserve HWPTs */
-> +	i = 0;
-> +	xa_lock(&ictx->objects);
-> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
-[...]
-> +	}
-> +	xa_unlock(&ictx->objects);
-> +
-> +	/* Store the actual number of HWPTs that are preserved */
-> +	iommufd_ser->nr_hwpts = i;
-
-iommufd_ser->nr_hwpts is set twice. First one seems redundant.
-
-> +++ b/include/linux/kho/abi/iommufd.h
-> +/**
-> + * struct iommu_hwpt_ser - IOMMUFD HWPT serialized state
-> + * @domain_data: Physical address of the serialized state of associated domain
-
-Then, it could be domain_ser_phys?
-
-> + * @token: User provided token
-> + * @reclaimed: Whether the HWPT is reclaimed
-
-Once the hwpt is reclaimed, could we clear domain_data to indicate
-"it is reclaimed" instead of a separate field?
-
-Nicolin
