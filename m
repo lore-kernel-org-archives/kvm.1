@@ -1,235 +1,249 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010028.outbound.protection.outlook.com [52.101.193.28])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D03E63AC;
-	Wed,  7 Oct 2026 18:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791397022; cv=fail; b=VFKqbZd/CjrotGxMpClLKmXZTWx3O5zE7w3x7KTsIguCX5mLizUeN3XXhy4F+8OzkteY7criGFoS9ZaUBYgIptyW4Wac9PO+4f6IOXHM+dXWqd4PtYNaAI9j879Ivtkl5iTAjAtYdcN2Lyyyo1s130JscI3laAsXQ8tHhe9gfjw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791397022; c=relaxed/simple;
-	bh=LfGvB7jXfZXSyW6TzrxEQ0owGskRe/xspqKX8UvbaBw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nDf/sWrTDYhPsUyOZ8MAKfeWc8nfGPoUOZaCsBx23qN2mLKVT6XC6RL13+uogR2fwduXUesZ8j8uQpPUun0Eu8DJ566OPtWWqxV+eFDn7RIvevsVLIDHa1R09K/6vzdTCrVfniNNBHLTLcN56Soy02ERFJu6m+xm1lYndTEFX30=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ld/2v0gf; arc=fail smtp.client-ip=52.101.193.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AD23E63AC;
+	Wed,  7 Oct 2026 18:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791397316; cv=none; b=lQ04y4yd3m8VUyMrOukJAXXpp0gr4YyE0JvEUPYyCRcIiZyHjJRvWthQrqHCI083bXNT3OVUJtqs+iYv5uKbBnuj9frhW+v3r5K3y0zOr5eb7AGlBHDxyaks387Z+74EBTjzPzzHIW8Mt+F47Y+Zyrji7T610DnsEirLI/ZbARg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791397316; c=relaxed/simple;
+	bh=B1NfG8Pffpg63TdiooG4exsohH6Byj/eXiQ6W/idYws=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IANtdz3DX1uqHNQVgeGmXGoajGgVzzGyyF0iKZ5VGJQc8yGEHwlUc162dRpfhAWslSMP7UB00oQE7/EObm/kvamd2r39i6o50ewfnYgZNMaTl5Li95nNkfPAIGmnj7VoHAGbZkXaWkMViS/Ve5etFOhU4fYKLPhRZOSb09OO7l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QVUg9VHg; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ld/2v0gf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JSIMSc5qVvcHz2L/YTpk/D7Fi9bhKEhbKdOT9ine3ceL4QguMgmZnKzxlWA99I6F2nEHjOAgcGGKkPeSX7Hr8HbcuPwn+oIpZH6No2coNrhpX2DcODXPtLDRJJL3b4Iwi0VtzuKIIAkNOWiEyCBCrX5AkUiCRGnVTG4YeX49HGHZXCBqaTAL4PvrWZMN6P6Aktbf+WGONQZTDUanlYMi3vOIzVD9Gvtb4NxPFEsM0ItbTi6kN+V+l8OLAOIyvlW0U8OkKAH1/Xh+5UZRdkosqCe5b1dWUmC4tNileccuu399qpnGZJSqJV6WwRiCqOjroupvrYOoPSgyBrtxMap46Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zh79xDfY4U9dkCq8Iu8GxppgDnhflkxs3/XJIXWkBHM=;
- b=xOhDPRhBWMno2vrhRjr4t9RF2v1GBocx89K9/JnQRJgxIcpUJJzNREgwUGFsPBSZiu5nAtjUawTr5rWJ7sDYUIENrD+o8I0HwkSOxxLlbr5YOEnHFzVf4Za2iLJcDkCm0BqSVC5SzusCCZFC12DoLHejd5fFxkVEXvQUhLW/TmMiYhhiZlTw3u+FXU4k71dZctSiO9cJj101CjKz5Uh9TqrQhfzY8pVDr3/Y5QutbMbESr55XdPbBDPZDOINg7vLp4kC69sMSt8RYW9UThCnDTPcv11RHAgcuYbyOaM97LWj8bIlHie7sbziBIys7rNV2fYYiW5gys5ItIHPiuvtJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zh79xDfY4U9dkCq8Iu8GxppgDnhflkxs3/XJIXWkBHM=;
- b=Ld/2v0gfVB1P4SNsvzDM3J22taarL+w9dk6NrV79y8xUi710KoaCenvQoecAImBnYm3NbqKlpe2Jh7zOcQ3mMDcOtpNbM+oqq4JZAARpHKoR/ysbkM5RZqu1w8psuRYvIXm8Q+OFjhbWT8qnph86qoxzwxpo5WBwmatXs8gA/80=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by IA0PR12MB8253.namprd12.prod.outlook.com (2603:10b6:208:402::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Wed, 7 Oct
- 2026 18:16:34 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0496.015; Wed, 7 Oct 2026
- 18:16:32 +0000
-Message-ID: <d40a16dd-2e3f-49b4-a36e-33b0ca8adf3f@amd.com>
-Date: Wed, 7 Oct 2026 13:16:30 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] fs/resctrl: Assign counters to existing groups
- when enabling mbm_event
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de
-Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <cover.1790976400.git.babu.moger@amd.com>
- <09f0e27da685476211c43fa8ed85b49646305078.1790976400.git.babu.moger@amd.com>
- <4afdd80e-45cd-4d42-b871-fb25e1fd5fa9@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <4afdd80e-45cd-4d42-b871-fb25e1fd5fa9@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL1PR13CA0202.namprd13.prod.outlook.com
- (2603:10b6:208:2be::27) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QVUg9VHg"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697F6Lwt2849847;
+	Wed, 7 Oct 2026 18:21:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5PT3Fw
+	A4ChHnjEa+xr3xDXd780D+F0Ni80fRcedI2C0=; b=QVUg9VHgql1MnxIWOoczA9
+	t83WpozkKRY4aD982oVcgkG91j+/8arYIjABC9walIvm51wzSXU+qOAp7eYa0nLa
+	/0OhUSlIkfwQ7T7PbHTMSpeg5Co9xZyGj0JAOzN7Ta+YBPMXxlTPSaKF/8FH6l2d
+	YKoEl9lsvnS7ol0vr90d4ueW3SMWOJGZ9rsLo9q2Uz9sOsLvt1zrLfAUI8TU7Vi4
+	L2N5IBTJh8iwg5/S7yzADiaZ/ykSSkyG1g4rYldMhljAJPO2GXBvPd0A+QXLGjYr
+	/jC63UsFm9/DqGeOOv9uvIbIloUJ1wUsGj46wfTL4r5k1QrSQSpNIg2tXXcWsYaw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2sbve3vt-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 18:21:36 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697IHYrN2245348;
+	Wed, 7 Oct 2026 18:21:36 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h58d5m419-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Oct 2026 18:21:36 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697ILUor17105400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Oct 2026 18:21:30 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EEFCC20040;
+	Wed,  7 Oct 2026 18:21:29 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81CCB2004D;
+	Wed,  7 Oct 2026 18:21:25 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.25.208])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Oct 2026 18:21:25 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gautam Menghani <gautam@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        R Nageswara Sastry <rnsastry@linux.ibm.com>,
+        Alexander Graf <agraf@suse.de>, linux-hardening@vger.kernel.org,
+        stable@vger.kernel.org, Avi Kivity <avi@redhat.com>
+Subject: [PATCH v4 1/3] KVM: PPC: Book3S HV: Add SRCU protection for virtual-mode HPT hcalls
+Date: Wed,  7 Oct 2026 23:51:13 +0530
+Message-ID: <20261007182116.12479-2-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261007182116.12479-1-amachhiw@linux.ibm.com>
+References: <20261007182116.12479-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|IA0PR12MB8253:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d8974d2-c803-4a69-b04f-08df249f1d94
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|7416014|260925022911599003|260925021911599003|11063799006|6133799003|260925021311599003|10067099003|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	luq6jfiulj3oXDCzSW4uRzbNcXZmzTVsumhiiYyULtGTnrxMIMcvPyT/SJESCUjmVFvVPgXUP0WgOxgiBLahwxxd7nUUcGEYhUdw/+4wHtusj5q+LC6vwTWTYFX4Jyzecxu1d8BX/jOZM463TjmH+Ig3UVMwOQVrQuJFD6TUbky4FyAQPKxI7DWpN7b+Ix4m5pekZ7LIgFrdN4m7Bb3dlAoaonORT9yHz4iT/ZJ/dt0xF5t5fWyMDUPh5+y9i6awxieEOn1QSILCpVwY4FAulsdE/BlVYX9TMrelHgsGyoUZxKhQ1+6XIKpD28iBOJvg1p8xTRNrbCUREMPkajUkmA+AkOV1PqqzKGxpVf4yRvgZmpe3f7dKYK14w6yTO+q9W0rVMoliN+TA/CuOjjU1HKcJaMYurE3DYxOjWEkvZrzPJTyhqvmU8O01ye6ra3EAzES0/jffeSRWtcYugzZ1w6M2CnyK47eRglpLYlBZLttnV3Xd7nLTGBhGUoeG2zFNtuK4vFtwTJQs9usEv+xSPAa/3GslHMTi+SLk+zz2t4r2sjxo0DquafynGfqSLCeDFAfvKBwnQi5y1PGfVY3a1TT/UIRnkcp4KgEmyxAYhJk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(7416014)(260925022911599003)(260925021911599003)(11063799006)(6133799003)(260925021311599003)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?djZQS0hMWHNwcG4yR25udkRUenp4c3lCNytTVWR1cExMcjcyeXhGdlRKYnpl?=
- =?utf-8?B?eTIybUt0N2dla21BOStHUW8vWFVKNDROWTd2TlBDRGxheWpvMTBXUFBSdWF6?=
- =?utf-8?B?MEwzalZqUWo2ZVpGZEdBSjhQSVdhOXhpNVlhNWtDZVlkR2lCbHJZTGpGOWxR?=
- =?utf-8?B?SUQzMzNIZTlLcEo1T2hycEdJNXZDMEovVEJaRUM4aFJXM3I0WmI3ZDIwTW4r?=
- =?utf-8?B?OHdyY3FrNFp6dWNHMDFSSG4raTJGZ2NVMXlUMGhjaUlRTVEwYjRKN0dKTXlW?=
- =?utf-8?B?SUlySzQzYmIxSXowdXZrMWJ5WnRhSWRXMndIdDVMUlRuQUhPMnh5blUreFpM?=
- =?utf-8?B?dDJPbjVvZXdHYlozeFJFZG1RbWZpQmlaTk5KUnV3TGlwQUlTZkhLMkNFQmpQ?=
- =?utf-8?B?Lzk1em40S29KZVBXVDBZMFlmTmphVUFocGQxanUwc2wvQlI2UTlyRSs2UStj?=
- =?utf-8?B?RUNTZzg1RHNjaTFZd09HUFlQNittTTFPRGpZYTEvMjNIZkF3anAyaG43SXhL?=
- =?utf-8?B?bFJlZSttMEtNQjhIc25uaVk0WDdPQlkzR283d1MvRFUwbk5oZk1qRFJFOWRV?=
- =?utf-8?B?U01Oamg5ek1TVE1saFIvRDZNUlp2Zk9raWQ5c05ZRHBLaDJUa1FDdDdpbkpD?=
- =?utf-8?B?MmFhRW16bmRvZkt0SVh0alVRUXdGZXBnR2RFVVhZd2dwdEF2WHFNMzhCRFhM?=
- =?utf-8?B?SmwvcXNvMVVSeU54ZC9DRjBVSVZjdHowV24rbXJhYlZUcVZxWG9Ya1BSMHRo?=
- =?utf-8?B?VkR0V1lSM2pNS2JaRXBNRDUyVG9jYmQ5YS9xbmY1ZU95VkowUTVqWHRjZHZo?=
- =?utf-8?B?cmErcEd2dGxIY3I0YXFhQWJ3ZzJwc0gyR3J0b0FuREI1K2JlWUZIUDFmTkpa?=
- =?utf-8?B?dXhldTNZWEE5WEVoODFVcURhc3g5b2hobHkzWFN4V2JMOGx5ZlpSM1dRSUVU?=
- =?utf-8?B?SkVGc1J2OW5mWjBQcHI0ayt0T1ZVTjgrbVRBait2NEU4eUk3VUpBWDJ4ZFNJ?=
- =?utf-8?B?anNPdzg2UzNuY0d0ZkFoRHQ5Z0VKYTR5ellSaGlxazhSMVBWV3hIcVRPQzE2?=
- =?utf-8?B?WmZEZVRWN1NDRlROR2kzcFZnREJrOURIQnpOUngyNURBR0paWm9JQmVkeVcx?=
- =?utf-8?B?WFdOaWdUd3Y4L3p0OEg4ejNPQS85MUR3WFIrY3VnRlFUVVUrNXFEMmdJdkow?=
- =?utf-8?B?SU1JY1B5ZkdVcGdCNk43OCt2cnB5WDNWMUtESjlVMUordTFEOXhnNmFub2VF?=
- =?utf-8?B?elpTWTVDdDBFWHF4ZEp5ME0yNDVtdjVwSTU4eTZkM0hNQ0dJcE5NTjNtM3Bu?=
- =?utf-8?B?Nk9QbTU5ZFRKUXNvUVVHVTFDV29jMDVoVFpUbmFrVllZekUzVCtobkJ6Skhj?=
- =?utf-8?B?VGtkZjVYTlI4SzJXVFZnZnYxMFdVM2JEZFY4MitQWFFYNmlCbnF4eDVxVGpH?=
- =?utf-8?B?eHpxazJET1ZlMXpWWjEvdXBvTXVnWDF5bG80ZitnOHh1dXJtenU1T0lxY3RB?=
- =?utf-8?B?RG4xVk9QYkdwZkRkakJVZ3ZQUCswSDVIRy9kUmhhMytUVkNHd1F1OUhqa1ds?=
- =?utf-8?B?OXdvb09TTGVheWF1dHcxSDZwVjVxVi9lTEh0UnhXMlFQNkN0dzh6YUZ6anpD?=
- =?utf-8?B?cGRqVWRrWVlGVWNEVXMxWk5MdjZlVGx1emRtOU1kWktMdGNiNlYwRS9qTE8z?=
- =?utf-8?B?eDJydUFYT0dyamplQXE1cEdRSzdubWF3eWMyeWlUcEFKamJwMDhFYW00T0U5?=
- =?utf-8?B?NmZJRmk3RmJKOVBCb1VvZWhkZTlPQjJZOWNVaFNiVmNYallpbVVMWmZQZzVP?=
- =?utf-8?B?cDR6MWJCbXI1WkdjTEtQWkRQTXBYNzQ5L0NxWlpFNk9kUEEwZVp3NDZBYlpq?=
- =?utf-8?B?cmZLbWN0OHZoQ2RYbkNPTWlXU3IzLzI5OFE2cnpiU1JCYnBScVg4L0t2cm8v?=
- =?utf-8?B?SlRReGh6YlhMeFJZalhvT0RDNGVCenpKbWFnTDl3QnJQUGJKcERRbTZWQWov?=
- =?utf-8?B?NzNmbkluVC9JTUZjSTR3OHJ2S0NRMkRLM0VHQmVkU2RVN0R0S0xEdUQzR29Y?=
- =?utf-8?B?VmhSRHBpUEo4LzFtdXZuNW1qZ0J2WnNFa09DWXZpdHFOS01oaXdES0lqdXJO?=
- =?utf-8?B?cEpZb0Z6cEZVVm9FQlBhQTZldVdnSFg0a2hmWEZqc0ZybnRNeGh6SWVsOG8r?=
- =?utf-8?B?QVpTWkhuR04xTXVkanFXYUFONyt5Y3liek9HSUlVMTFKb3k5MjUreUV2WXk2?=
- =?utf-8?B?Q1BESWVpQ0hXcDJLMUJoZEcyQ083WWY3VytOb2tJRXNSd1JwZGQrTGdiNk56?=
- =?utf-8?Q?tn/2fSeeadtDILYq4m?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d8974d2-c803-4a69-b04f-08df249f1d94
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 18:16:32.5923
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RMn76K0/k/geVl4EIsUZZrNGcGuTqi9TuGMUiE13//GGn062hvgwWdy1cH7cniF7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8253
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: w8sOdD_9Q_XMQzvlEmbz-UBTd3Ctkjrr
+X-Authority-Analysis: v=2.4 cv=KJHPn1Fo c=1 sm=1 tr=0 ts=6ac68db1 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=DgxhUou5BkHipWTGidQA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: QTIGVwiSTBXUnKCONl30bYo-JJZbtQbw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA3MiBTYWx0ZWRfX1YsBmj/13ue/
+ VRtJ1topMdxoZkK8ZkTY/MTyaH9qiiajgyHAPEgIMQOMimhC/gWRPI1CFbhq/f6dRhvQI5Y5vjc
+ ia/v22zsYkyRZ1jZjW0V/DLL6LhGB/mOyLHJ2XC5fWGgxNsGp8VyPKfF2JrRWOruTyez9bYktm1
+ PWcZ+pO2cPWOn3Kig9OqsC3KRw5PjEDXOEDNOT1CHeWnfkPuHj0a0i8u9Ms0ztWVpdDmwyTyQvi
+ XagX6oBNRxaJCxLtGD5HXzwoYfyf7YIdrq1j5Vyvw+wxpZan6qD7WfWT1XgfsDEK9deVUEYaouH
+ 8s3EQahMpXk2TfgPb64ITtLj5hJSml37zFhTCcFHO6Ee+OfpSpB0Z0mlsEtR0hVZOTLVO1l/Uqm
+ U9HTuFLB3V+Qxetjx1h4/L/IlCl8XyMVtY0/T872MCFGURP830h9LyK7BvsezGS24RRY5laZiBY
+ n1A7ZJS/8PeABLo5/pQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA3MiBTYWx0ZWRfX7rkf/yDvQuVd
+ vR7GjA9JB161OOyiy+iFU60pV2/x/lfCLv0QOqbJm8MIf8FCVeuAh10Nrh2THvUAkvz2RAweMfz
+ 3ak5qQzuLNr2prdxNwCujO6tHtEhKq4=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_05,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 clxscore=1015
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2610070072
 
-Hi Reinette,
+The virtual-mode HPT hcall handlers (H_ENTER, H_REMOVE, H_BULK_REMOVE,
+H_CLEAR_REF, H_CLEAR_MOD) call into book3s_hv_rm_mmu.c, which accesses
+memslots via kvm_memslots_raw().  kvm_memslots_raw() uses
+rcu_dereference_raw_check() to bypass SRCU lockdep annotation checking.
+This is safe in real mode because the entire guest entry/exit is wrapped
+in srcu_read_lock/unlock inside kvmppc_run_core() and
+kvmhv_run_single_vcpu().
 
-On 10/6/26 12:51, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/2/26 2:26 PM, Babu Moger wrote:
->> When the user enables counter assignment mode by writing "mbm_event"
->> to /sys/fs/resctrl/info/L3_MON/mbm_assign_mode, resctrl resets all
->> monitoring state and sets mbm_assign_on_mkdir for subsequent mkdir, but
->> does not assign counters to groups that already exist, including the
->> default group created at mount. The counters of those groups return
->> "Unassigned" until the user assigns counters by hand.
-> 
-> Above summarizes the context and then below follows with the change,
-> what makes this deserve a "Fixes:" tag? What is the issue needing fixing?
-> 
-> 
-> Consider, for example:
-> 
->        When the user switches counter assignment mode by writing
->        "mbm_event" to /sys/fs/resctrl/info/L3_MON/mbm_assign_mode,
->        resctrl frees all assignable counters, resets per-domain RMID
->        state, and enables counter auto-assignment exposed to user space
->        as mbm_assign_on_mkdir.
-> 
->        Even though counter auto-assignment is enabled, groups that
->        already exist at the time of the switch, including the default
->        group created at mount, are not assigned a counter. All MBM
->        events read "Unassigned" until the user assigns a counter by hand.
-> 
->        Walk every existing CTRL_MON and its MON children after the reset
->        and assign counters to their MBM events. Enabling "mbm_event" now
->        leaves the same per-group state that auto-assignment would have
->        produced. There may be fewer available counters than MBM events
->        across the existing groups; in that case stop assignment when no
->        counters remain. Events in the remaining groups read "Unassigned",
->        matching the behavior of creating a group when no counters are
->        available.
-> 
+However, since commit 6165d5dd99db ("KVM: PPC: Book3S HV: add virtual
+mode handlers for HPT hcalls and page faults"), these same handlers are
+also executed in virtual mode via kvmppc_pseries_do_hcall(), which runs
+after SRCU has already been released on guest exit.
 
-Looks good. Thanks
+A concurrent KVM_SET_USER_MEMORY_REGION deletion or move can therefore
+call synchronize_srcu_expedited() — which does not wait for this thread —
+and then kfree(slot) and vfree(slot->arch.rmap) while the hcall handler
+still holds a raw pointer to the memslot.  lock_rmap() then writes to
+freed vmalloc memory, leading to use-after-free and memory corruption.
+Because kvm_memslots_raw() suppresses lockdep checks, this race is
+entirely silent.
 
->>
->> Enable mbm_assign_on_mkdir and assign counters, while there are some
->> available, to existing CTRL_MON and MON groups so the switch matches
->> mkdir auto-assignment. An event left without a counter reads
->> "Unassigned".
->>
->> Fixes: 8004ea01cf63 ("fs/resctrl: Introduce the interface to switch between monitor modes")
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Closes: https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
->> Cc: stable@vger.kernel.org
-> 
-> tip tag order places "Cc:" after author's SoB.
+Fix this by factoring out the 7 HPT hcall handlers (H_REMOVE, H_ENTER,
+H_READ, H_CLEAR_MOD, H_CLEAR_REF, H_PROTECT, H_BULK_REMOVE) into a
+helper function, kvmppc_pseries_do_hpt_hcall(), and wrapping its call
+site in srcu_read_lock(&kvm->srcu) / srcu_read_unlock(&kvm->srcu, idx).
+Targeting only the HPT hcalls avoids wrapping non-HPT hcalls that sleep
+(such as H_CONFER, H_REGISTER_VPA, H_PAGE_INIT) or handlers that already
+acquire SRCU internally (such as H_RTAS).
 
-ack.
+Fixes: 6165d5dd99db ("KVM: PPC: Book3S HV: add virtual mode handlers for HPT hcalls and page faults")
+Cc: stable@vger.kernel.org # v5.14+
+Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+ arch/powerpc/kvm/book3s_hv.c | 70 ++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 35 deletions(-)
 
-> 
->> Signed-off-by: Babu Moger <babu.moger@amd.com>
->> ---
-> 
-> 
->> diff --git a/fs/resctrl/monitor.c b/fs/resctrl/monitor.c
->> index 73413cb128ea..fca0734bf346 100644
->> --- a/fs/resctrl/monitor.c
->> +++ b/fs/resctrl/monitor.c
->> @@ -1300,8 +1300,7 @@ static int rdtgroup_assign_cntr_event(struct rdt_l3_mon_domain *d, struct rdtgro
->>   }
->>   
->>   /*
->> - * rdtgroup_assign_cntrs() - Assign counters to MBM events. Called when
->> - *			     a new group is created.
->> + * rdtgroup_assign_cntrs() - Assign counters to MBM events.
-> 
-> This patch adds another caller of rdtgroup_assign_cntrs() and above thus correctly
-> updates the function comments to not just mention the original caller ...
-> 
->>    *
->>    * Each group can accommodate two counters per domain: one for the total
->>    * event and one for the local event. Assignments may fail due to the limited
-> 
-> ... but the detailed function comments trimmed here still considers original
-> caller as the only use case and uses original caller to justify why it does not
-> need to return an error.
-> 
-How about this?
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index de05d721edc4..46dd550115a4 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1159,6 +1159,38 @@ static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
+ 	return H_SUCCESS;
+ }
+ 
++static long kvmppc_pseries_do_hpt_hcall(struct kvm_vcpu *vcpu, unsigned long req)
++{
++	switch (req) {
++	case H_REMOVE:
++		return kvmppc_h_remove(vcpu, kvmppc_get_gpr(vcpu, 4),
++				       kvmppc_get_gpr(vcpu, 5),
++				       kvmppc_get_gpr(vcpu, 6));
++	case H_ENTER:
++		return kvmppc_h_enter(vcpu, kvmppc_get_gpr(vcpu, 4),
++				      kvmppc_get_gpr(vcpu, 5),
++				      kvmppc_get_gpr(vcpu, 6),
++				      kvmppc_get_gpr(vcpu, 7));
++	case H_READ:
++		return kvmppc_h_read(vcpu, kvmppc_get_gpr(vcpu, 4),
++				     kvmppc_get_gpr(vcpu, 5));
++	case H_CLEAR_MOD:
++		return kvmppc_h_clear_mod(vcpu, kvmppc_get_gpr(vcpu, 4),
++					  kvmppc_get_gpr(vcpu, 5));
++	case H_CLEAR_REF:
++		return kvmppc_h_clear_ref(vcpu, kvmppc_get_gpr(vcpu, 4),
++					  kvmppc_get_gpr(vcpu, 5));
++	case H_PROTECT:
++		return kvmppc_h_protect(vcpu, kvmppc_get_gpr(vcpu, 4),
++					kvmppc_get_gpr(vcpu, 5),
++					kvmppc_get_gpr(vcpu, 6));
++	case H_BULK_REMOVE:
++		return kvmppc_h_bulk_remove(vcpu);
++	}
++
++	return H_FUNCTION;
++}
++
+ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm *kvm = vcpu->kvm;
+@@ -1174,47 +1206,15 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 
+ 	switch (req) {
+ 	case H_REMOVE:
+-		ret = kvmppc_h_remove(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5),
+-					kvmppc_get_gpr(vcpu, 6));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_ENTER:
+-		ret = kvmppc_h_enter(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5),
+-					kvmppc_get_gpr(vcpu, 6),
+-					kvmppc_get_gpr(vcpu, 7));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_READ:
+-		ret = kvmppc_h_read(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_CLEAR_MOD:
+-		ret = kvmppc_h_clear_mod(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_CLEAR_REF:
+-		ret = kvmppc_h_clear_ref(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_PROTECT:
+-		ret = kvmppc_h_protect(vcpu, kvmppc_get_gpr(vcpu, 4),
+-					kvmppc_get_gpr(vcpu, 5),
+-					kvmppc_get_gpr(vcpu, 6));
+-		if (ret == H_TOO_HARD)
+-			return RESUME_HOST;
+-		break;
+ 	case H_BULK_REMOVE:
+-		ret = kvmppc_h_bulk_remove(vcpu);
++		idx = srcu_read_lock(&kvm->srcu);
++		ret = kvmppc_pseries_do_hpt_hcall(vcpu, req);
++		srcu_read_unlock(&kvm->srcu, idx);
+ 		if (ret == H_TOO_HARD)
+ 			return RESUME_HOST;
+ 		break;
+-- 
+2.54.0 (Apple Git-157)
 
-/*
-  * rdtgroup_assign_cntrs() - Assign counters to MBM events.
-  *
-  * Each group can accommodate two counters per domain: one for the total
-  * event and one for the local event. Assignments may fail due to the 
-limited
-  * number of counters. However, it is not necessary to return failure.
-  * Users have the option to modify the counter assignments later if needed.
-  */
-
-Thanks
-Ban
