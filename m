@@ -1,178 +1,154 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844C93DAAD2;
-	Wed,  7 Oct 2026 19:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D377A4D7950;
+	Wed,  7 Oct 2026 19:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791400957; cv=none; b=LrbEr2LwHA7ekSlGKBgnjXF+m0yl+1GjVQC2JCGGwmX6vAQpJ2/E7fSlrTnOfOf6eRtKk8wd9yE72GtNtCcCnLhenhzouNAfVR3h0Zm8qGdegY2Y1/mkT5b0z/RbpvXAha9QoWRRa37K+jG9SjOPMx4hd0nBSZRZjcKepobfuAs=
+	t=1791401320; cv=none; b=nOOsdMbSowoCDFSDNujwtsnBprwnOQbL5j2qg+QavUUV7h49ieuXVvOpAki4vfKLOXJDVKzC60+Qp0wRHclochg5Tfx4DdyT7MQY++ghVb7chmZpLEADVekup/wh3JGTeRuMbKKhMTuaNELUo4LpRhWEMySeLVOR7mCpjykY774=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791400957; c=relaxed/simple;
-	bh=EBv+bmpOjW84niDSOeA22RRBhR28nmW1Gk9EMDEwYz4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=amYvfrNtuGjjK0VjhBlsDjkyDUL4PicH4njAsGzgHIkJ956Kef/837PnXgtJIK7i3ppQIiGfpXfIowe4ndB8bFOlpg46ts1B9vYMLhT1BAjf21X0r/7p995v0bZOkffZ/ORuennPyq9qQWkDRqt13Du6CytdJZpHZixuRhJoJe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XknvvGxo; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1791401320; c=relaxed/simple;
+	bh=71vo2jjzcOL+V5enHzqEG4+BeyCGaRVAjj1ZkjrHpVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VI6yTm6lz4WlUGwl/46BuAj8tCsiH41RNB4iT2JQADQo6+Gbt69dhC9JdJti7ZLYCvE8tmeH7rGpFFXzgLDMcncklQFrI9G5ZeTXHxBztxGbGu/dHSdaBQDPES8O7O3o6Y4/XPVxQWdh0yIBCUdmBlrcwCyMOw1I0Avj6h0Qclk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ciNFnLzN; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XknvvGxo"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697IZPjx3356409;
-	Wed, 7 Oct 2026 19:22:35 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ciNFnLzN"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 697IZWJb3153088;
+	Wed, 7 Oct 2026 19:28:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+oPKf8
-	szb4wyjb8A3Cm41T1jdnmda4EAW9uO9NKDYVk=; b=XknvvGxoX47la9pjYEGJGC
-	/SSNDzLDZUO4BDL+JtXhDxEVzAFsUKW3YbezOEWjdR95vnW5CxckqPTxK+sM9ygb
-	pavxAIy8QCUkYhIH5W3RjhRNhlRY83TzDhaJL6nIbsfLIT6ABzl/idVloDE7Yqtm
-	I5Ftjh1Bhr7HoJw1NurevUtpAHweYfc1Aer6tXEzVI/U2iEqtZGItBVLhVmqnHbN
-	AnL32eqG8HfpgMPH/m3XX6slUHFkI5E7GifU1uiLBS4cZx9AgbqhY4AZjnL/ya3c
-	toX/NlFReaXSklO1Q4yf40yeMM33pk8LsMVyv01xklYAsJ53KzTV8XAUDbfx4G1A
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BeQ8or
+	IWhaDfoy54B8h56dzMLwkRrjRpmhD9C2qlKe8=; b=ciNFnLzN5JhFt7Ir9XUQrU
+	guoNuQgHitl/crFt6Nbs+d0bdnl2TXiJd/Kjf5hHc8YY3FRvmq2B+jY2np0Vd+o8
+	EddqrD8ZBrF2s73LuoFkqoQy7Ns8g3xj+lD1cdWW64wpc0T1t4TCvN/ixt2/uHkD
+	e5SaRdVhL5EiE91/YiC7W+maOTipdYxEMsg1Ol0YAl+WExzjt3n+m0HZoqgc+nqk
+	WAaXPocLlna7oKvSXxRMQrv6ZNTTL1hr1l0CBVakHiDKEDX4Q51eDVp5r68qcGzr
+	DwUbie3v4Fb4mFyo3c3bfleorx75+EIGu7+rTwpHK3/pRj5Z6xn6JlHew1sen/PQ
 	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74yjw2-1
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4jxw2n-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 19:22:35 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697IHelu2265523;
-	Wed, 7 Oct 2026 19:22:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h58ek4a63-1
+	Wed, 07 Oct 2026 19:28:33 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 697IHWWr2307797;
+	Wed, 7 Oct 2026 19:28:33 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3dhh02a2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Oct 2026 19:22:34 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697JMVpF12255672
+	Wed, 07 Oct 2026 19:28:33 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 697JSVre22348444
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Oct 2026 19:22:31 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E8F8020043;
-	Wed,  7 Oct 2026 19:22:30 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 162CA20040;
-	Wed,  7 Oct 2026 19:22:30 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  7 Oct 2026 19:22:29 +0000 (GMT)
-Date: Thu, 8 Oct 2026 01:00:43 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] KVM: PPC: Book3S HV: Add preempt_disable() around
- virtual-mode HPTE bit-lock users
-Message-ID: <20261008005700.c78e5a18-dc-amachhiw@linux.ibm.com>
-Mail-Followup-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-References: <20261007182116.12479-1-amachhiw@linux.ibm.com>
- <20261007182116.12479-3-amachhiw@linux.ibm.com>
- <sashiko-outbox-163301@kernel.org>
+	Wed, 7 Oct 2026 19:28:32 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B93DD58055;
+	Wed,  7 Oct 2026 19:28:31 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CE815804B;
+	Wed,  7 Oct 2026 19:28:30 +0000 (GMT)
+Received: from [9.61.89.182] (unknown [9.61.89.182])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Oct 2026 19:28:29 +0000 (GMT)
+Message-ID: <1c8aa018-1342-48e5-8896-6d18667e5b12@linux.ibm.com>
+Date: Wed, 7 Oct 2026 15:28:29 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 12/15] s390/vfio-ap: Transition device migration state
+ from STOP to RUNNING and vice versa
+To: "Jason J. Herne" <jjherne@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
+        alex@shazbot.org, kwankhede@nvidia.com, fiuczy@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        agordeev@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com
+References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
+ <20260807221834.562851-13-akrowiak@linux.ibm.com>
+ <8fcac646-b33c-44e2-90db-b517419f8f76@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <8fcac646-b33c-44e2-90db-b517419f8f76@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-163301@kernel.org>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: T4PTW3pnENmozDTc5dlJAS-ZpNw5mqjT
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA3NiBTYWx0ZWRfX1Nok+YejS322
- uXiOJ4vXaXfpWtnfBF9QdR5wtV8jkOFy32El7iTlMWso8NznqysZkuZwomKjs2M2SmxMUnH60ML
- xGcwuakyEkdA3sZ7MpZF+Qrz/XpARZ8=
-X-Proofpoint-GUID: T4PTW3pnENmozDTc5dlJAS-ZpNw5mqjT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA3NiBTYWx0ZWRfX5ipEONDjzex+
- NbYMXeqD+ZXy9VLeQ4URx3loB0tzq1GLoVbQMZhrsV5xlEXq39j0jOVGZi+JyeISw7PTDo2x2N+
- 5azIFBKxx24o52GekwTRj1gxAYAKXjVWqY5O1Vi6p6yWwIEoJ50q0yOc2wl0Q8QXy0LvJ/vNFph
- j9AFArkHpxKWJmIn+8MGgFVYY3Z+csP0Qr+DOQ9N/lE5Ui0sUsbraFRMiZgG3HUjShjBDhMfrQ+
- 4fpWkFvk0fVLkqRd0MWy6pJW7zYVZQwTIq9wFSV92WS+ZdNUQIHLfEX55EoisKmjcgeWMN8RK/S
- kw0WmHHHv4MznIOb7NnqbBw+pko2K32YzrRqn7GzPxW/97aAHgqf1mi+f0XrGSistz1v0yrC3Mo
- LMZkJYYvj0FqWOWM9FGC9Jp0NZwHRe/pgAgO0nOQOauQGmtJXPeu2dwd71O48pWmkMwboY4RWcf
- cOan0dHVo+oqfsS6qrg==
-X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac69bfb cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=8nJEP1OIZ-IA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
- a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=DKcAYAtLK8KsSAPX9gUA:9 a=3ZKOabzyN94A:10
- a=wPNLvfGTeEIA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-ORIG-GUID: 6Y9cS8qFSGLhzCfiKXz0B-SOMZ3VBOd7
+X-Proofpoint-GUID: 6Y9cS8qFSGLhzCfiKXz0B-SOMZ3VBOd7
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDA3NiBTYWx0ZWRfX1RXZMe1eIbT+
+ W18d+6wv3sZWOJKX49sfpcKRIDCG+y4w5cgp1UqDhpzW0BcZPxHOXs5aCBUQ3F6Bcpygy48CFI8
+ 0TF2uQJew/UNJmKhO/uDfKu4HHC5ioY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDA3NiBTYWx0ZWRfX19IsLFXJ8BKZ
+ xi/BC6W4OTtMirAuhNNMIO/ya2B84xR4jm713Awedo6nUIt7sw+/igwvGCT2Pc5fIRghft71DKQ
+ hVZ9QlZgntnmOGKq1Uw3qlmrT2TlTKoqjI5+IeDSfTwLdJjBMZsDFL/Io05S7MbuFl0Z4HgZLha
+ hHiKJa/VawG5nRJlPi/SVK/EsPigsP6HQtHce7KaAkryr8Y77WkLYQ1vIjt3taZAdcjKCIZA2UM
+ USqKnL++PQzlsHm7ogH4P+TY5oGU4uSmJg3t6fbp0ktC4nMoJNPwyTtbm4u4Knb2UDHn7lfx9WX
+ 8MhViKUvTW0tA1XSur4iMX2emWFvzoIWVDlsM23Ds4LqhyB8/P3IPI0pJBiM7Q0RbyJZq99rjRs
+ u7+HRTlghmCWdZNNtW9MiFUbr7SJT/GCqWdEemwdyQSe5gBYbeL/ng/wrJH5EiTSame2lXwQFV6
+ IV8UJ+M1aYPKAqB6lsA==
+X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac69d61 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=QXbWHM80TDR-pc_dJdcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-07_06,2026-10-06_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070076
 
-On 2026/10/07 06:47 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] kvm: deadlock in kvm_test_age_rmapp() due to missing preempt_disable()
-> --
-> 
-> commit 6b1add31442320e6307f450d080fd72f64ee2368
-> Author: Amit Machhiwal <amachhiw@linux.ibm.com>
-> 
-> KVM: PPC: Book3S HV: Add preempt_disable() around virtual-mode HPTE bit-lock users
-> 
-> This commit enforces that threads acquiring HPTE or RMAP bit-locks run with
-> preemption disabled to prevent CPU hangs. It adds preempt_disable() and
-> preempt_enable() pairs around various bit-lock acquisition paths.
-> 
-> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > index 2ccb3d138f46c..e8f73c8f97803 100644
-> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > @@ -890,6 +913,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
-> >  
-> >  	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
-> >   retry:
-> > +	preempt_disable();
-> >  	lock_rmap(rmapp);
-> >  	if (*rmapp & KVMPPC_RMAP_REFERENCED) {
-> >  		*rmapp &= ~KVMPPC_RMAP_REFERENCED;
-> 
-> [Severity: High]
-> Does kvm_test_age_rmapp() also need to disable preemption before acquiring
-> the rmap lock?
-> 
-> Looking at arch/powerpc/kvm/book3s_64_mmu_hv.c:kvm_test_age_rmapp():
-> 
-> 	lock_rmap(rmapp);
-> 	if (*rmapp & KVMPPC_RMAP_REFERENCED)
-> 		goto out;
 
-This is not an issue on powerpc; here is why.
 
-kvm_test_age_rmapp() has exactly one call site:
+On 8/20/26 8:45 AM, Jason J. Herne wrote:
+> On 8/7/26 6:18 PM, Anthony Krowiak wrote:
+>> The transition from STOP to RUNNING and vice versa indicates that
+>> the vfio device is operating normally and migration is not
+>> currently taking place. In this case, just set the new state.
+>>
+>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_migration.c | 9 +++++++--
+>>   1 file changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c 
+>> b/drivers/s390/crypto/vfio_ap_migration.c
+>> index 30160e3ddded..24955f70e13e 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+>> @@ -1524,12 +1524,17 @@ vfio_ap_transition_to_state(struct 
+>> ap_matrix_mdev *matrix_mdev,
+>>           return NULL;
+>>       }
+>>   +    /*
+>> +     * These states indicate migration has either not been initiated or
+>> +     * has completed and the vfio-ap device is operating normally. 
+>> Since the
+>> +     * vfio-ap device does not virtualize a DMA device, there is no 
+>> internal
+>> +     * device state to incorporate into the vfio-ap device on the 
+>> target.
+>> +     */
+>>       if ((cur_state == VFIO_DEVICE_STATE_STOP &&
+>>            new_state == VFIO_DEVICE_STATE_RUNNING) ||
+>>           (cur_state == VFIO_DEVICE_STATE_RUNNING &&
+>>            new_state == VFIO_DEVICE_STATE_STOP)) {
+>> -        /* TODO */
+>> -        return ERR_PTR(-EOPNOTSUPP);
+>> +        return NULL;
+>>       }
+>>         /* vfio_mig_get_next_state() does not use arcs other than the 
+>> above */
+>
+> I'd argue to integrate this one into the earlier patch and drop this one.
 
-    kvm_test_age_gfn_hv()                 [book3s_64_mmu_hv.c:1020]
-      <- kvm_test_age_gfn()               [book3s.c:896]
-        <- kvm_mmu_notifier_test_young()  [virt/kvm/kvm_main.c:864]
+It's a reasonable argument so I'll make it happen.
 
-Inside kvm_handle_hva_range(), the handler is invoked only after
-KVM_MMU_LOCK(kvm) at kvm_main.c:626, which on powerpc expands to
-spin_lock(&kvm->mmu_lock).  mmu_lock is a spinlock_t
-(include/linux/kvm_host.h:774), and spin_lock() calls preempt_disable()
-internally.  By the time kvm_test_age_rmapp() acquires lock_rmap(), preemption
-is already disabled by the outer mmu_lock acquisition.
-
-The lockless path in kvm_handle_hva_range() (line 625, gated on
-CONFIG_KVM_MMU_LOCKLESS_AGING) would bypass KVM_MMU_LOCK and reach the handler
-with preemption still enabled.  However, CONFIG_KVM_MMU_LOCKLESS_AGING is
-selected only by x86 and s390; powerpc does not select it, so this branch is
-dead code on powerpc at compile time.
-
-No additional preempt_disable() is needed in kvm_test_age_rmapp().
-
-~ Amit
-
-> 
-> This MMU notifier callback still acquires the KVMPPC_RMAP_LOCK_BIT without
-> disabling preemption.
-> 
-> If a thread is preempted while holding this bit-lock, and another thread on
-> the same CPU begins spinning for the same lock with preemption disabled
-> (such as in the newly patched paths), couldn't this result in a permanent
-> CPU hang?
-> 
-> -- 
-> Sashiko AI review � https://sashiko.dev/#/patchset/20261007182116.12479-1-amachhiw@linux.ibm.com?part=2
