@@ -1,313 +1,246 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011013.outbound.protection.outlook.com [52.101.52.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF344E1408;
-	Wed,  7 Oct 2026 19:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791402306; cv=fail; b=m9ZJoAckZqNpIObHU07hePPapLTeiBrpy+QJz/kFjKrEmNmBkK5Ztie/al6cojYIRi9mnFpFA4WTWI61Gv/Ng+86U1Zhr2rEaGjCdMptmH755HHnC2J7AekB8my84+FglNf0KgVMPTjNLl0MoI/KnMObvLb5Mv3guRYEfusp3pQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791402306; c=relaxed/simple;
-	bh=bEiCMPfXrmZ+UJ2TjpgHrg06T1IqeD4i4XVhiCcZReg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FG1Cf5WU85NELqX+Zm1w5oU9VvN9qvUvmdPrMKxlphWUlITjP2YL7yAyK4RrcngBPw4UBj0DZhLp041TWfOTZ7GZLbalMWBg53xqNUQaJYxPLt/Ovg46sXLSPsgSrQLIfH/kUUSGVlFuqEF2SIo1hs6Mioj/i/uCeVVNXqih8/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B+qFssXA; arc=fail smtp.client-ip=52.101.52.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FA542DA3D
+	for <kvm@vger.kernel.org>; Wed,  7 Oct 2026 20:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791403216; cv=none; b=H0JVE7CJA0BNBUe+bjWnSXvVpfBVb+L90psaXxAkab6MH/3jgWboWP52A+TmakBc3LzjPQGcRKeGRX8OD0DdNzrHH1vkoBRdzPN//IX/Hufsdb78LNye0jP8u89XahTZ2l1ZPpgdlPCILo2GoQhFBNfMonZJ8dTJe7H7Gklesb0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791403216; c=relaxed/simple;
+	bh=YcSOKcacwBj4EMKRyE5hRbXzeo/h9a40jv0Tg1OUgjk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t+mxVYXS/1zgOVQqzUFYyZNrkwdl+t8KuyGW1n91tKAyUgzPxri598jaLrH4uTbEiFiW3tEssqZGWni+uz4Mo9ShhuTMyrnE8TSqZiiQP9q0w+r81S0BG/8zLI/XdE5fQtSlQpQ5t7tK7OGjytFf41cWMZpL4PkSAsYa0xr63L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MF7Jl77A; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cl0HEKX4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B+qFssXA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=onjJVMNA+YF1JwyxTe7kO1390v47iicUoRKOf8aM8+iVxSSBeY8JJw4OwhHiDgZklkmcjZPkoyoYZ3soMPXjqwAoHTjOaXDCtTtXJS+zC5DYkIb3/fEYCYPzq1dvwZqpoFnRnLQBt7a6UqDIpoFdRZZQD1tDHQaPBCVSM9HPmirmJd3U8g+yMu6vfUEgototbLAIb5CKpSNTCHUFoxkHuCb1HqVxPbii+thpc9evi5J2DXB6uH/gJLnMf5X7Uo5J4PGxb4EcpC3XvermJ0wiC+ayGOlaqUx9xfzjI/4QkQbDrINaIsOjAIFsVQMXw/DhtEdUhO87ALWdkNCxaLq9WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J0t0/2x45Uwu3oL0pEL0/crmRnJUcXSjt8g0SKNyXmw=;
- b=Ima8HY1+MfO3TtjvTs3jX1f+KuKmmG13VWbQSbPIifAlItVyiemt39aeOWM2zwod0XElEG6M7KfkParq4aaImYlDQOwJRKAu0+qFvUmWDZH+FFoTcsavwkM/bMqld5BCAldepGzWFZtfXgfP8PCwhWD6mfjFo+sWypn8MuJ2eznc2XWCApwxZu6tCTMEa08aBhrdEj60paBQSozF9Lw+cDqXl1OO4qAIUmNEk6DgJ/C2nEXQY+86ycBE1Hr7jgHE++kWyqzrVGo55Dr5l1aAKJeI7LVQ4JGgJBie5EWzZ0dhE7hyfOnLyhXN/yGpWuA88P5I8xApsiHh6f/AdRfLUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J0t0/2x45Uwu3oL0pEL0/crmRnJUcXSjt8g0SKNyXmw=;
- b=B+qFssXAWQIoPjuiAdxddA8j/uZtX0Vy/3xXoClo5LlphLjCAJiyApNoAhjgqbxIWqTVBJqzOBYVXkc3zjR8xgT1o8UPVUZZfwH47FelXcUII3OFvM7xa48IQq+UqvLZAsGAWUglxfNGzWoYQ3GG+Bml9SCLsoQjW0+A4XC8yB/fX32rfO3sGQnjnlEZ9wmIuEgLym39QiRZQ9YaH0Oqmv7PEA4N6KUf2YQ0OjtTmvRee5UmKDDUKR89TGDzRs+X4+qKVeDZQgWq4l9+FgHK9Im4TA3+3dODbNoJcvlcJeJpV4GOpeyFGEoBGHe1x9cJt02e/8xyYnzuDOu3hyGaLQ==
-Received: from MN0P222CA0024.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:531::26)
- by CY8PR12MB7313.namprd12.prod.outlook.com (2603:10b6:930:53::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
- 2026 19:44:57 +0000
-Received: from BL2PEPF000352CD.namprd02.prod.outlook.com
- (2603:10b6:208:531:cafe::4d) by MN0P222CA0024.outlook.office365.com
- (2603:10b6:208:531::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.21 via Frontend Transport; Wed, 7
- Oct 2026 19:44:57 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BL2PEPF000352CD.mail.protection.outlook.com (10.167.249.135) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 19:44:56 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 12:44:35 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 7 Oct 2026 12:44:34 -0700
-Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.181)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
- Transport; Wed, 7 Oct 2026 12:44:33 -0700
-Date: Wed, 7 Oct 2026 12:44:31 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
-	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
-	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
-	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
- Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v5 11/18] iommu: Restore and reattach preserved domains
- to devices
-Message-ID: <asahH/NfWZGdvIsE@nvidia.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-12-skhawaja@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MF7Jl77A";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cl0HEKX4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791403213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ewc9H7FWlns+uwpkCHiWlx0H/3jVFSNz6XK7sSj7XLo=;
+	b=MF7Jl77AefVxNxz94ln31X+naMCl5jMvQUdnvkFsmDE8UmKrKJWRhEkueZZHE59um2IR5Z
+	cTCPCPlB35MghtaEqiZ9ic2N1DZKmm1LwAxrcMUF5pM81Y01CJBGaTIAXNdOlohocKuUvd
+	VgG9EULlLYbkePpcMGFWOOFr9tYkUxU=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-uiQIxs2IMWSiNvYn61aUfw-1; Wed, 07 Oct 2026 16:00:12 -0400
+X-MC-Unique: uiQIxs2IMWSiNvYn61aUfw-1
+X-Mimecast-MFC-AGG-ID: uiQIxs2IMWSiNvYn61aUfw_1791403212
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93ce7a85f04so841275785a.0
+        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 13:00:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791403212; x=1792008012; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ewc9H7FWlns+uwpkCHiWlx0H/3jVFSNz6XK7sSj7XLo=;
+        b=Cl0HEKX42qz0rFr1M/IUZjBiItxEmyuswZ2N5qJSjgYw1Ho/jmm/PeIwztXdZsDC29
+         f834uEVvkuWkKFBgrBEdIOSBjIVhCrKvB6HNltSkJq8GrnAyozdfRsr1r/pw+uAH6wvg
+         CefNzDo8hxM35zD/KLq/8d+MN75WRcxNDu+B/UAbEyO+bERAJh1WWPM3WS5R2C3Oowt9
+         4jh8GwzQULv596rPAFUTYcC353qz7OLxsTE8BMaMsA/SJB5U6RHTL9A50/IPVzRqPf90
+         a7R/osvLZxpdskIUiWgdA5nP8E0l1RtucJjTuySCNEo+eYL6wNmoVGvpIqdej3YGfU/J
+         mrVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791403212; x=1792008012;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ewc9H7FWlns+uwpkCHiWlx0H/3jVFSNz6XK7sSj7XLo=;
+        b=Xpu6+ok93KpO4saOx8b5M4B7Ai0jGGI6mQiGaUVMw/Z3YW9iuuLNa6AqpWRcTx9SbY
+         7S7db0aNf8dh/Xjf1zkzJiRh60CTy1FMWEqnNFn4U5cOB0S+OlFCsi0XW5XrRF4IlHmv
+         Tv7p7qAfTWZwUwDxBcmPVlhRL/jSAo5xSIwAqDbTRtDwFP5K+1JxhcqBbFbgUkape0Pz
+         LDbggCWaKsYXwiXdRNIvaAZKUf/loTRHS5RMAc8/WaCPXqF/uRD8tTCUf+KzDJhzld3T
+         Wfhl6txHu61gsV17bLOpI7dXFC0Zl4KVrmm17Ey+LGyts5RiBA/yP7HtoyqSX2Msruyr
+         6Qmw==
+X-Forwarded-Encrypted: i=1; AKwUvBwpFkUAJOtuKSSTEZ6M/267kOgKJ9y13E5NWdbueHK5lsxeaSmJngNMFaFWKroGVVwDmQY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mF9XE/5qRq4TXQya6pzlqAIu3jmy2RDDH89D5vI5P2arzA6U0a
+	mOtI7zZznF7RB17xmhNfOOKRwqSATU63SAVNuJ5BBIxAYqtlwMvH43TJDzk4kGCCe0I4qjtw1aw
+	N/uHxzE4w8p0J65QVg38pww3hbt9CxTWjNQL4b60acnzJhpsY/M+g6g==
+X-Gm-Gg: AYBFou0ttg9iyns6t0PpPs6Hb5ff1y3ZwODTZLkXpTqoLfNQGN/DVXaigK0zNVkL6IW
+	D38l5KriDz+0whyI+okpAvJWTTpLQ9mTQnswlyW11Vb5NeJA/X26Pyf3/CdBj3UjoZabnHt6sxY
+	E0oFHPLLnftVsWPpotf611q6kz9G0iVSr3PAvyRPxzy4gFI8fyDCmH7wWTQP+P0dc54LcjFl2ik
+	SJVDYnLTjTt1hKchLs5IRvpXzzK32e3FVpPpC6d5uRNtPb8q3ZzyL0tC9psUiKpyQrSxhd6/dKv
+	ve5TrryzeLhRY/6rR4xaz3SKx40dqq8re+OqEtPR7RYpafOBI0R5FJbjBQ0TjGTYXS5d5Zo=
+X-Received: by 2002:a05:620a:2981:b0:93e:70cd:e428 with SMTP id af79cd13be357-93e9b836095mr604920885a.66.1791403211396;
+        Wed, 07 Oct 2026 13:00:11 -0700 (PDT)
+X-Received: by 2002:a05:620a:2981:b0:93e:70cd:e428 with SMTP id af79cd13be357-93e9b836095mr604911385a.66.1791403210586;
+        Wed, 07 Oct 2026 13:00:10 -0700 (PDT)
+Received: from localhost ([142.188.212.246])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93e991580d2sm294004185a.21.2026.10.07.13.00.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 13:00:09 -0700 (PDT)
+Date: Wed, 7 Oct 2026 16:00:08 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Artem Bityutskiy <dedekind1@gmail.com>
+Cc: Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Kishen Maloor <kishen.maloor@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/4] Add KVM API for confidential guest live
+ migration
+Message-ID: <asakyIs1beS_I-o_@zhexu-thinkpadt14gen5.rmtcaon.csb>
+References: <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
+ <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <f2889dd6e44333b2a5bbd4bd32a4557c3b50a3cc.camel@gmail.com>
+ <arLwnNyM4Tkr-Oh3@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <97c6ab9a9d5527776a580a242b6c8033cf1e9a36.camel@gmail.com>
+ <arWT9fwpCkFneDKn@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <59384511c6070abfd048b37f5ec2831e5f8bb715.camel@gmail.com>
+ <arwoEgUjYR82OrLO@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <c7d5adf38d6338857f73bb4b3f014a500b4c2fe1.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260921004834.2601285-12-skhawaja@google.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL2PEPF000352CD:EE_|CY8PR12MB7313:EE_
-X-MS-Office365-Filtering-Correlation-Id: df3adf60-13db-4c8a-dbed-08df24ab777d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|82310400026|7416014|36860700016|1800799024|18002099003|10067099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	UckYY5OS6FDB2hal9Hp1XuN3cWHPWf5FSaZSzJiMMnns7Vhzyh0EPxDGoV1XrF33gvUCQnc9Vq3YM39Em1ldrgMGamdCNyNoZtKxlgk0XS+u2ExpHaYHmSpLrO5fjxGSmsspKSGlwR3oLO52eXDqUi2OQqbvOjn8HbpW8rrMIRufOsD127tiBUmkjm04fEDonMNQwTqDnXOaZTRCcy7KV3zveQeQujsIO7Uki9mlVHwITk7rACj4nxx6bA7kIchfOGtDAQTK4j6qUCJ2VHwGnW7vvRyPQG6YHZq5TIRMaEX+M/cBQklqnRLcb/yEKruAmA3o1HNX4niHRSeBJ6xrCM3G/WN21CpMniw7tLLHQ2JPfQ//gBdfIO9hkWhJPas80v/4L8fKARn41YseEqyXUNMdjuYkIsT+ZuIRIm7pg9zM4B32dh0Qw0zVEyW/2uEVCJQN/kD+x8//gXwBElgccqc1g4/fAvI+Nnc6J7vbNcwG16Y8OwckqEhCawKdrbxL2x1TYgGXOr1xh+G1p2SHUhaoPN9mQF5FxdDtRdUyQgLnMgTYWLcarIyFVB33FAVICNm1ECxCH+cEit/JUrKX+V0N6k7xRR0SJszQHxqm4vNAKXHPz+hjKTli7Xn2jki05DYQaWWldR0onxQDkeuvsq+8VIniuwlDwP8UDlUmeUdzhNKeMYjoh6qSDu6RBLmVRWIQjgbwcWQhX1L88lb12g==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(376014)(82310400026)(7416014)(36860700016)(1800799024)(18002099003)(10067099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	uVB4KE0tqBUj9+97BBGfQ/mtvnbvXad0Fbb0qJ50l0bgkSHmmd36hLMjONYzwf4auzAPZ/gje9m8MaSguvtTBiQYYtwO6Z75kt3f22/jyA+lKEyiwd9rRKEid8hUadeBvEBx1FFIUoG8o9Oq+5gNEKk67WZ7OwDuzLggcp5S4WpPwaWQESwKXQ0VwMBBmE20YGI/yWtPqw746ma/O4xxOn6OUK1jeriH/jjqYDvig4iOsV76bu3lMYyBm8Ad3oFtYH1KcGVdH8hVjr1djJD3zup9dUnXoj24Jwj2HaJ/SHOIIpROCzifPkmBjHvzsG0dcne1TDCnVQgNF7jSqWGR0ly/rxZtIWm0QLdGu+4qhLLqCjQ4q+CI05OktYzxCrubr2miHF18OLhtqLpR8KraHeYKbT3hoGaOSyTylnRx40whwi4H577oM8kGf341cbyE
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 19:44:56.9695
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: df3adf60-13db-4c8a-dbed-08df24ab777d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL2PEPF000352CD.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7313
+In-Reply-To: <c7d5adf38d6338857f73bb4b3f014a500b4c2fe1.camel@gmail.com>
 
-On Mon, Sep 21, 2026 at 12:48:27AM +0000, Samiullah Khawaja wrote:
-> @@ -694,7 +700,8 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
->  	}
->  
->  	for_each_group_device(group, gdev2) {
-> -		if (dev_iommu_preserved_state(gdev2->dev)) {
-> +		if (dev_iommu_preserved_state(gdev2->dev) ||
-> +		    dev_iommu_restored_state(gdev2->dev)) {
->  			ret = -EBUSY;
->  			goto err_free_gdev;
+On Fri, Oct 02, 2026 at 10:57:46PM +0300, Artem Bityutskiy wrote:
+> On Tue, 2026-09-29 at 17:05 -0400, Peter Xu wrote:
+> > > Here is how I saw this, but I may be missing something (my excuse is that I
+> > > am still new to the team and still learning).
+> > > 
+> > > 1. QEMU has a bitmap of shared pages in RAMBlockAttributes, so it can
+> > >    distinguish shared pages.
+> > > 2. In general, QEMU does not distinguish private vs unaccepted pages, so
+> > >    unaccepted pages are treated as private pages.
+> > 
+> > Yes, the latter seems uncontroversial.
+> > 
+> > The 1st one is true, and it just reminded me if the conversion is
+> > synchronous and one step requires the hypercall to QEMU, then indeed
+> > background conversion can be avoided by some form of userspace locking.
+> > 
+> > Perhaps, a rwlock suites, each vCPU takes it for write whenever page
+> > conversion requested from the guest (private <-> shared; nothing about
+> > "accepted" that matters).  Then the migration threads, one or multiple,
+> > take the read lock, lookup the bit, do MEM.EXPORT, unlock.
+> > 
+> > Then it seems fine in general, except that I donno if things can still go
+> > wrong when there are multiple versions of "if this page is private or
+> > shared".  Say, minimum of three?
+> > 
+> >   (a) QEMU maintains the bitmap in RAMBlockAttributes, each bit represents
+> >       if the page is shared or private
+> > 
+> >   (b) KVM should maintain one, looks to me, kvm->mem_attr_array
+> > 
+> >   (c) Hardware / Firmware may maintain its own, in case of TDX, is that one
+> >       bit on the SEPT pgtable?
+> > 
+> > They don't change together, AFAIU, they change in order, I believe
+> > (c)->(a)->(b) if my above understanding is correct.
+> 
+> It looks like in terms of which layer saves the page type change first:
+> 
+> - Private->Shared: TDX -> KVM  -> QEMU
+> - Shared->Private: KVM -> QEMU -> TDX
+> 
+> In both cases the TD initiates the change. This ends up with a TD exit,
+> followed by KVM exiting to QEMU. QEMU calls kvm_convert_memory(), which
+> calls back into KVM (KVM_SET_MEMORY_ATTRIBUTES). At this point SEPT did not
+> change yet.
+> 
+> Private->Shared:
+> - KVM first removes the page from SEPT, so TDX sees the change first.
+> - KVM updates own data (kvm->mem_attr_array). So KVM "gets" the change
+>   second.
+> - QEMU updates RAMBlockAttributes, so QEMU "gets" the change last.
+> 
+> Shared->Private:
+> - KVM removes the page from the shared EPT, updates own data
+>   (kvm->mem_attr_array).
+> - QEMU updates RAMBlockAttributes, discards backing storage.
+> - Back to TD, which accepts the page. This causes an EPT violation, and
+>   KVM adds the page to SEPT (TDH.MEM.PAGE.AUG).
 
-Maybe it should -EBUSY on a group that already has a device so it
-wouldn't end up with a multi-device group.
+Oh, this reminded me that ram_block_attributes_state_change() is done after
+the ioctl(KVM_SET_MEMORY_ATTRIBUTES); I believe I didn't notice this detail
+and assumed the other way round.  In that case, yes, KVM's page status will
+always change before QEMU's.
 
-> @@ -2211,6 +2242,7 @@ static int __iommu_attach_device(struct iommu_domain *domain,
->  	ret = domain->ops->attach_dev(domain, dev, old);
->  	if (ret)
->  		return ret;
-> +
->  	dev->iommu->attach_deferred = 0;
->  	trace_attach_device_to_domain(dev);
->  	return 0;
+> 
+> > Then, what if they report different things?
+> > 
+> > Say, during migration the guest wants to convert a page from shared to
+> > private.  (c) can be already done saying one page "private" now for TDX,
+> > (a) tries to mark it "private" too, but now assuming page being accessed
+> > (read lock held), it may be trying to take a write lock and sleep, which
+> > means (b) will be "shared" so far.
+> > 
+> > So what happens is, QEMU thinks this page "shared" because the conversion
+> > hasn't take place waiting for the write lock, however at least TDX may
+> > think it already "private" instead.
+> > 
+> > Then QEMU logically can access HVA of that page, with (a)=shared,
+> > (b)=shared, (c)=private.
+> > 
+> > Would it cause trouble?
+> 
+> (c) should see it as private only after KVM and QEMU do.
+> 
+> But I am not sure about the entire idea. Holding the read lock around the
+> export ioctl means that a vCPU requesting a conversion waits until the
+> export finishes. One export call may cover many MiB of crypto work, so the
+> vCPU stalling may be significant, right?
+> 
+> Let's check the 2 cases.
+> 
+> Private -> Shared
+> 
+> QEMU calls the export ioctl for a page that it thinks is private, but
+> meanwhile it became shared. In this case, if the semantics of the export
+> ioctl is that such pages are skipped, we should be fine, right? QEMU will
+> just handle this page during the next round.
 
-Unnecessary change.
+Yes, this should be benign as long as conversion of page status set the
+dirty bit; QEMU guarantees to clear the D-bit before reading the page, then
+it must read it again later.
 
-> @@ -3175,6 +3207,62 @@ int iommu_fwspec_add_ids(struct device *dev, const u32 *ids, int num_ids)
->  }
->  EXPORT_SYMBOL_GPL(iommu_fwspec_add_ids);
->  
-> +static struct device *__iommu_group_restored_device(struct iommu_group *group)
-> +{
-> +	struct group_device *gdev;
-> +
-> +	lockdep_assert_held(&group->mutex);
-> +	for_each_group_device(group, gdev) {
-> +		if (!dev_is_pci(gdev->dev))
-> +			continue;
-> +
-> +		if (dev_iommu_restored_state(gdev->dev))
-> +			return gdev->dev;
+> 
+> Shared -> Private
+> 
+> QEMU tries to migrate a shared page, which meanwhile became private. Reading
+> it would result in zeros or some stale data, right? Would it help if QEMU
+> used a lock-check_if_still_shared-copy-release, and the same lock around
+> kvm_convert_memory()?
 
-list_first_entry instead of for_each_group_device since there's a
-singleton enforcement.
+AFAIU, this should SIGBUS QEMU, which is the major issue, that should be
+what happens in current linux tree, where now only INIT_SHARED is available
+for fault() processing.
 
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static int __iommu_group_restore_domain(struct iommu_group *group)
-> +{
-> +	struct iommu_device_ser *device_ser;
-> +	struct iommu_domain *domain;
-> +	struct device *dev;
-> +	void *owner;
-> +	int ret;
-> +
-> +	lockdep_assert_held(&group->mutex);
-> +	if (group->domain)
-> +		return -EBUSY;
-> +
-> +	dev = __iommu_group_restored_device(group);
-> +	device_ser = dev_iommu_restored_state(dev);
-> +	if (!device_ser)
-> +		return -ENOENT;
-> +
-> +	ret = __iommu_group_alloc_blocking_domain(group);
-> +	if (ret)
-> +		return ret;
-> +
-> +	domain = iommu_restore_domain(dev, device_ser, &owner);
-> +	if (WARN_ON(IS_ERR(domain)))
-> +		return PTR_ERR(domain);
-> +
-> +	/* The restored domain is attached with the restored device. */
-> +	ret = __iommu_group_set_domain(group, domain);
-> +	if (ret)
-> +		return ret;
+I also think that's the plan for afterwards, but still worth check kernel
+tree with TDX migration integrated: kvm_gmem_fault_user_mapping() should
+decide what happens..
 
-If (ret), how about the restored domain by iommu_restore_domain()?
+-- 
+Peter Xu
 
-> +	/*
-> +	 * Ownership of groups with preserved devices is set during boot. These
-> +	 * will be reclaimed later by the entity (iommufd) that preserved them.
-> +	 */
-> +	WARN_ON(group->owner);
-> +	group->owner = owner;
-> +	group->owner_cnt = 1;
-> +	return ret;
-> +}
-> +
->  /**
->   * iommu_setup_default_domain - Set the default_domain for the group
->   * @group: Group to change
-> @@ -3233,6 +3321,16 @@ static int iommu_setup_default_domain(struct iommu_group *group,
->  
->  	/* We must set default_domain early for __iommu_device_set_domain */
->  	group->default_domain = dom;
-> +
-> +	/* Preserved devices need to be attached to the restore domain */
-> +	if (__iommu_group_restored_device(group)) {
-> +		ret = __iommu_group_restore_domain(group);
-
-__iommu_group_restored_device is called twice: here (outside) and
-inside __iommu_group_restore_domain.
-
-Perhaps change to:
-	dev = __iommu_group_restored_device(group);
-	if (dev)  {
-		ret = __iommu_device_restore_domain(dev);
-	...
-?
-
-> +void iommu_init_device_preserved_data(struct device *dev)
-> +{
-> +	struct iommu_device_ser *device_ser = NULL;
-
-"= NULL" doesn't seem necessary.
-
-> +	struct iommu_device_array_ser *array;
-> +	struct iommu_flb_obj *flb_obj;
-> +	int ret, idx;
-> +
-> +	if (!dev_is_pci(dev))
-> +		return;
-> +
-> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
-> +	if (ret)
-> +		return;
-> +
-> +	mutex_lock(&flb_obj->lock);
-> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
-> +	iommu_liveupdate_for_each_arr(array) {
-> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
-> +			if (match_device_ser(device_ser, to_pci_dev(dev))) {
-> +				device_ser->hdr.flags |= IOMMU_SER_FLAG_INCOMING;
-> +				goto out;
-> +			}
-> +		}
-> +	}
-> +
-> +	device_ser = NULL;
-> +out:
-> +	WRITE_ONCE(dev->iommu->device_ser, device_ser);
-
-dev->iommu->device_ser is NULL after kzalloc.
-
-So, maybe drop "device_ser = NULL" and move WRITE_ONCE() into the
-loop (under match_device_ser)?
-
-> +	mutex_unlock(&flb_obj->lock);
-> +	liveupdate_flb_put_incoming(&iommu_flb);
-
-Hmm, you might want to check the lifecycle of this flb thing.
-
-dev->iommu->device_ser points to something inside the flb, which
-might be freed somewhere?
-
-> +struct iommu_domain *iommu_restore_domain(struct device *dev,
-[...]
-> +	domain_ser = phys_to_virt(ser->domain_iommu_ser.domain_phys);
-> +	if (domain_ser->restored_domain) {
-> +		*owner = ser;
-> +		domain = domain_ser->restored_domain;
-> +		goto out;
-> +	}
-> +
-> +	domain_ser->hdr.flags |=  IOMMU_SER_FLAG_INCOMING;
-
-Drop the extra space before "IOMMU".
-
-> +/**
-> + * dev_iommu_restore_did() - Get restored domain ID for a device
-> + * @dev: Target device
-> + * @domain: Target domain
-> + *
-> + * Fetches the domain ID preserved for @dev and @domain across Live Update.
-> + *
-> + * Return: Domain ID or -1 on error.
-> + */
-> +static inline int dev_iommu_restore_did(struct device *dev, struct iommu_domain *domain)
-
-"did" is an intel thing..
-
-> +{
-> +	struct iommu_device_ser *ser = dev_iommu_restored_state(dev);
-> +
-> +	if (ser && iommu_domain_restored_state(domain))
-> +		return ser->domain_iommu_ser.attachment_id;
-
-... so, it could be just dev_iommu_restored_attachment_id()?
-
-Nicolin
