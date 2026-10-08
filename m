@@ -1,130 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3543485925
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 09:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086BC239E9B
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 09:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791450956; cv=none; b=rFhpMR+Byi4Zw+xF2c18I6EJrMAX37PPoSSHpjppNpEAs351arChlTU1Xtf4eLI1uJaoKdo6H4sehRkbzt9uV0HtyLF0RtZdaADk9f9eKojwBCmPSzidOEcpVa7b//bjTPLCsBBMTlAZl7BQcYXL7FPjP8iPZR0Lyvz35ZV9UEc=
+	t=1791451356; cv=none; b=rmLT2I4gcxOSYQs5xpUiD/VwOmLWmegCknBhaxbkEuyzVWfANpvVAS67VwUVOqvWINY65wGMpnLPX6dDrznRVedeMoWUpvc/t+9pWm9MMoZyOJmdnL4wL02zYf/cvCFMEN6SdfDT0Y/bs60wykb9O7KL11XohPGwAHLSPREfDmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791450956; c=relaxed/simple;
-	bh=MlLCPrd4NEnT2SJxbUQirubHp0v6gtxgd/wMafuCeUU=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=nYE1W2THjWVvBmNMW7r5KAw4IBuJjJ9N1TYLRTt2AoluzEseJ/uHjlHsGPISEUK2k1MUmeCO6ATtaGiOI9IsxrsyiHzXDQWIMcONUHX2XC6QoTeomgnftiQ8FgenykdFusFxgm3rtsrWv5KhjWsltSDwTTkCZ1ZJ1QcplVGGu6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxtNKA+W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791451356; c=relaxed/simple;
+	bh=YmEgyo5dcFgxLPOo6cFg4GPczO7trT8msi81FHbTvDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=faOzDpR5olAHCRCNROx0MbgEf7TftX1c2DmcakrFftmfP78SvPg4xo4Id7F5fcmX2+hzEwxFv7yauYWUlpXJoOA7cf2/1QVywlVhgXC3kyXVuZhDZr3QPefe6ROeorPYWrHuWSuPnVGUsoils/uwy9iHBAdKPO9ze8jAHNqD/5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DX1B58ch; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxtNKA+W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C85A1F000FF;
-	Thu,  8 Oct 2026 09:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791450945;
-	bh=PDlhtniwqdMX3pA9pkJPxeP3mg4DptcoSFocNMpjS+0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QxtNKA+WJBbjlz8ZwEAIYVdHvS4z+cH8uL8n9Ku4Dku74f3rM7TijcobFZ9D6CKyZ
-	 PrgOlGaB5L+Zu4V9KblHelvhw8+qnSggtscHfPP34EOMOEKMtjEV8bqr5OtuqtqlpZ
-	 rRCYe4PcWxqOmI96DtIm0fOdZK9qpbKsY9+1jmP1s2rwQipkoNkItGEbQt8uWqS/Lw
-	 odgai4aDbrFZB8EezTJkr3k5gcNd4RcffHgH9DYJ/6PAI+9DnKKXWhVzrRURWcQELy
-	 5uQS6Y3OS6MwXZom+z+UiQ9pqWiVddH5gPacyJodwy16ToPGSkDjCiU9T56XnD56dO
-	 FWmlJ6WMBC7Nw==
-Message-ID: <sashiko-outbox-163910@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86: Guard against division by zero in
- adjust_lapic_timer_advance()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Peng Hao" <flyingpenghao@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261008090037.86931-1-flyingpeng@tencent.com>
-References: <20261008090037.86931-1-flyingpeng@tencent.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 09:15:44 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DX1B58ch"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791451351; x=1822987351;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YmEgyo5dcFgxLPOo6cFg4GPczO7trT8msi81FHbTvDM=;
+  b=DX1B58chGjQKgZGaJQfLC4ofxtg3ValV8p8RbNUYDrhxRzGX9VDKoe3E
+   baIp2yRWXHTGRx0sZxH6IusGH0JfAMbKNbPMjXEV5LpTjaawpeDdRtZJD
+   YhE6vLLeNOCVWpalr7wy+B7JzZg53gfSPc6jvkxd+8G0p4b8SP60j3oxi
+   ZAqmvNtD5tZoVFDkdQl8ewViIgZCnXxBbkohVmsN9T94JqVrioYR6ec83
+   DHJlWbGx2xj5ui9eN9X67JlY/aZ4CYhq/T3lXhcWYF3/dCfPqibxI/mpF
+   CpgVadIm5oP9v2QhWPTxSL1SES7vNhqHPC3R2npf2uUbf5s1nls2cL4xq
+   g==;
+X-CSE-ConnectionGUID: YZQcEM4SRyG5SkcCinLR6A==
+X-CSE-MsgGUID: 8Oy60V9uSTCMvofz7oYHKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="123115"
+X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
+   d="scan'208";a="123115"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 02:22:30 -0700
+X-CSE-ConnectionGUID: fp1tF/wbQju1m90di+2vMg==
+X-CSE-MsgGUID: jiRY4M51TjexkEwxPf0Rmw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
+   d="scan'208";a="99036"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.189])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 02:22:22 -0700
+Date: Thu, 8 Oct 2026 12:22:19 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	mathias.brossard@arm.com
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <asdgy2sGInTGZn59@tlindgre-MOBL1>
+References: <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+ <ab3c9e32-ab34-49bf-937a-4d3d736fb4dc@intel.com>
+ <arDHbjcwaRFcHb08@tlindgre-MOBL1>
+ <arDVIEobkRr3E7yS@tlindgre-MOBL1>
+ <ae22e1df-c09c-4f8a-8010-41e542e4c663@intel.com>
+ <arIfu_A1e6KEokWI@tlindgre-MOBL1>
+ <288de298-2773-4fa5-8020-21b61bbcad67@intel.com>
+ <arN20-sGytS6BlZc@tlindgre-MOBL1>
+ <b6afcf8b-5cde-4c70-93fc-86127d1884e1@intel.com>
+ <arTOBQXhqcVVSyr7@tlindgre-MOBL1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arTOBQXhqcVVSyr7@tlindgre-MOBL1>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] kvm: x86: divide by zero in __wait_lapic_expire() with nested TSC =
-scaling
---
+On Thu, Sep 24, 2026 at 10:15:17AM +0300, Tony Lindgren wrote:
+> On Wed, Sep 23, 2026 at 10:34:14PM -0700, Kishen Maloor wrote:
+> > On 9/22/26 11:50 PM, Tony Lindgren wrote:
+> > > Based on what we've discussed, my preference is the following:
+> > > 
+> > > Keep the current buf naming. For the EXPORT/IMPORT type functions the use
+> > > should be obvious from the transfer type. 
+> > > 
+> > > Reserve enough space for a separate output buffer or results buffer or
+> > > whatever it might get called if such a use case ever pops up.
+> > 
+> > Reserved space can be named later without changing sizeof, so either way
+> > works. I'd mildly prefer to declare the second kvm_transfer_buffer just
+> > because declaring both would settle the second buffer's semantics now. Not
+> > something I'd push hard on though if you prefer reserving.
+> 
+> Let's just use buf and reserved space then. There is no known usecase
+> needing separate in and out buffers for EXPORT or IMPORT. And the separate
+> in and out buffers would have to be needed the same time rather than first
+> in and then out..
+>  
+> > > Add the datasize to struct kvm_transfer_buffer like you suggested and
+> > > rename size to bufsize.
+> 
+> And to recap, with the bufsize and datasize in the buffer, the needs we
+> discussed for separate in and out buffers went away.
 
-commit 615a870f84e9397c4bfba8db0f187034794e3d9e
-Author: Peng Hao <flyingpenghao@gmail.com>
+Based on the ARM CCA live migration presentation at LPC by Mathias
+Brossard, we now have a user for a separate metadata buffer. Adding
+Mathias to Cc.
 
-KVM: x86: Guard against division by zero in adjust_lapic_timer_advance()
+Page 8 of the presentation at [0] below lists it under feedback. And see
+also page 10 for feedback.
 
-When TSC calibration fails, vcpu->arch.virtual_tsc_khz is zero. This patch
-adds a check to avoid division by zero in adjust_lapic_timer_advance().
+Probably best to make the buffer a userspace array with an arch specific
+define for the number of buffers. So far looks like two buffers for ARM,
+and one might be enough for x86.
 
->     When TSC calibration fails and userspace never programs a tsc khz,
->     vcpu->arch.virtual_tsc_khz stays zero, but the lapic timer's
->     software-mode expiry path still calls adjust_lapic_timer_advance()
->     unconditionally on every timer expiration (unlike
->     __wait_lapic_expire(), this path is not gated on tsc_scaling_ratio).
+Looks like we should have a separate SETUP command to query the buffer
+sizes for cmd, memory and vCPU transfers.
 
-[ ... ]
-
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index 48b019114c196..dc4a669d1d460 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -1978,6 +1978,9 @@ static inline void adjust_lapic_timer_advance(struc=
-t kvm_vcpu *vcpu,
->  	    abs(advance_expire_delta) < LAPIC_TIMER_ADVANCE_ADJUST_MIN)
->  		return;
-> =20
-> +	if (unlikely(!vcpu->arch.virtual_tsc_khz))
-> +		return;
-> +
-
-[Severity: High]
-Does __wait_lapic_expire() need this same check?
-
-The commit message mentions __wait_lapic_expire() is safely gated by
-tsc_scaling_ratio, but is that description accurate when nested
-virtualization is enabled?
-
-An L1 guest can enable nested virtualization and set a custom tsc_multiplier
-in VMCS12 for its L2 guest. KVM computes vcpu->arch.tsc_scaling_ratio to th=
-is
-non-default value:
-
-arch/x86/kvm/vmx/nested.c:prepare_vmcs02_early() {
-    ...
-	vcpu->arch.tsc_scaling_ratio =3D kvm_calc_nested_tsc_multiplier(
-			vcpu->arch.l1_tsc_scaling_ratio,
-			vmx_get_l2_tsc_multiplier(vcpu));
-    ...
-}
-
-If host TSC calibration failed and virtual_tsc_khz is 0, when the LAPIC tim=
-er
-expires during L2 execution, __wait_lapic_expire() takes the else branch
-because tsc_scaling_ratio !=3D default_tsc_scaling_ratio:
-
-arch/x86/kvm/lapic.c:__wait_lapic_expire() {
-    ...
-	if (vcpu->arch.tsc_scaling_ratio =3D=3D kvm_caps.default_tsc_scaling_ratio=
-) {
-		__delay(min(guest_cycles,
-			nsec_to_cycles(vcpu, timer_advance_ns)));
-	} else {
-		u64 delay_ns =3D guest_cycles * 1000000ULL;
-		do_div(delay_ns, vcpu->arch.virtual_tsc_khz);
-		ndelay(min_t(u32, delay_ns, timer_advance_ns));
-	}
-    ...
-}
-
-Can an untrusted L1 guest use this path to reliably crash the host with a
-divide-by-zero panic?
-
->  	/* too early */
->  	if (advance_expire_delta < 0) {
->  		ns =3D -advance_expire_delta * 1000000ULL;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008090037.8693=
-1-1-flyingpeng@tencent.com?part=3D1
+[0] https://lpc.events/event/20/contributions/2476/attachments/2235/4909/LPC2026_CCA_Live_Migration.pdf
