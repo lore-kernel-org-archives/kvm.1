@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A81F41A8F
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 00:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3359225771
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 00:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791419429; cv=none; b=MFzyYefEmEGLrQ3O9pO/DFyOSlDb2QZ1g2zltku2YqjmCU+SbFvIkmzaUNHB/w3P0vdHrjif578472xeiWzc1Lef+5UUVkofr92AF8BB223twRR4HyHhvW9SOFunS0+9VMFMjp/yK9VjthTfHTHG9vWF5gIuBaNh71/oTHDJLes=
+	t=1791419596; cv=none; b=Am732+e/Yepqhj18zjjHt8pYY8ZeiSxYDtWQWx3CjHrwD8IRtOkR7O9vKdBPJZ48+G1xn5i4fDxgQeAK0t3UO2FFwI2HzmGv01VofhYDYug3uwdcEyBGWTLQHc3EHABOeLaU9Y5CZIoyimPiIysxc2qzAnlxHm0zZnf2HyRIenM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791419429; c=relaxed/simple;
-	bh=aeBvEzJzsgGIFKUoR+FHCaUKjiMDEOzEb2s71FImJMo=;
+	s=arc-20240116; t=1791419596; c=relaxed/simple;
+	bh=qCMzvUGg5F5V3yCKYr5h+K/I5z2Y+WxlEnDISScs65o=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=ZBcXrGtmyYXJ4TYEIz/BsTzxPLRMBvGHwgjJ424lMXCsouCQF5ME6Eb2e3Ea3hzyxes2TOg+pZamyxtbF/pXnr710dJYwTBu3WpCoUdonqOUtLUROnYZ1Gri3/ri4KPUowWQy638Gi0+cUqv9WbWfsz29AABrWKGVRo6dRToZ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdevCi+b; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=IeGOP6Z/wvLXp/p2fXUZgtyiTDMMQjk2TymDCyBUdHZ+1nt+Wscy4OOGMu5yVEY69DqrsZSkBF2C87CFOGxcdn1Tl5VFF8CLRVTtURIEQ8hNdqLoPT3rHMJT4pAKFhQS8Da1dEHKHyUUiFO00+oSCNGsd2VOavw0xjD9q65durA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPQEMNJV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdevCi+b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138A11F00898;
-	Thu,  8 Oct 2026 00:30:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPQEMNJV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE8A1F000FF;
+	Thu,  8 Oct 2026 00:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791419428;
-	bh=1uYCJLVF5hGsss2MvSDS+WwKz0ViotsHCOTPOpnDb1s=;
+	s=k20260515; t=1791419594;
+	bh=f9XMQj9oGCFB+If613ksSy7aZj338SryGIt+h1q+RRY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kdevCi+buT/Zr+im9zlUT+znSzljtGw+cVDoN7JqRVJ0CKHDsu/NOpECBQ7jTggA1
-	 pCb4LPesDrB5LTKSwg+dpm5NRZSVP78T6lwNERFojwzt3lhGDDP28AocVgvJJPdQL3
-	 orLYa99blEc/3oOQ1RGtWRDrF91nV6kYcto09Q7E5gjh6+AFCofT3i2HuaQJrwbuhF
-	 qd4MtT1XySumWGaz3bPlCTjZZuweyYIuTCGEHJQwrzBUYDR8otExHb67x4KyAPAAPt
-	 VG7oI2SNf0qWFsqEfdNmL88OdexnPTmNmkUFYcc4IwYj1238pBTDaPVM1JnP+IpNJF
-	 SPTS5rsHCYBEw==
-Message-ID: <sashiko-outbox-163472@kernel.org>
+	b=LPQEMNJVCAaVweXqYgpS+9U7MfVwFRd1TRuFI0fqUddm++bDFp27a+I6gW1OQf5df
+	 37OU2OAjEbw3zbWt73iRV+PUTkGSIdfsgt8PoCR1/VjELG5/BgofnpzZuOdzJ3Gjbp
+	 T3jb3giRqikHPd3azCZQ5df4yVM9LtbTGtNt09qat60PStV87L3i18k44HACmxln1f
+	 IlKmtClmRb5AMXRCk8iWbRe4T0QU3HFhRAAHjUhfgwYj8UbobTrrZA0CccgDdemrES
+	 JJPYy9zk2voymKXEgjeYjXPv7X7PdSNGTJYGssFb1eWOVa7SDGQ89HA5zmbcCcB7kf
+	 U+dCa677b/KVQ==
+Message-ID: <sashiko-outbox-163474@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 03/29] KVM: VMX: Generalize VPID allocation to be
- vendor-neutral
+Subject: Re: [PATCH v2 11/29] KVM: SVM: Only flush the fallback ASID when
+ used by a different vCPU
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yosry Ahmed" <yosry@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261008001425.2458927-4-yosry@kernel.org>
+In-Reply-To: <20261008001425.2458927-12-yosry@kernel.org>
 References: <20261008001425.2458927-1-yosry@kernel.org>
- <20261008001425.2458927-4-yosry@kernel.org>
+ <20261008001425.2458927-12-yosry@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 00:30:27 +0000
+Date: Thu, 08 Oct 2026 00:33:14 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,85 +47,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kvm: x86: memory leak of tlb_tags.bitmap on TDX setup failure
+- [Low] kvm: data race on sd->fallback_asid_vcpu between pre_svm_run and sv=
+m_vcpu_free
 --
 
-commit e4dabbc78aa00d0293ef8965888f054d5ea676ef
+commit aa8eca89b8d60f642d17b3f8439f52f2e1ae951d
 Author: Yosry Ahmed <yosry@kernel.org>
 
-KVM: VMX: Generalize VPID allocation to be vendor-neutral
+KVM: SVM: Only flush the fallback ASID when used by a different vCPU
 
-This commit generalizes the VMX VPID allocation code to a common TLB
-tags allocator and allocates the bitmap dynamically. It also bounds the
-number of allowed tags to VMX's hardware cap and introduces wrapper
-functions for initialization and destruction.
+This commit optimizes the fallback ASID flushing logic by only flushing
+when the last vCPU that used the fallback ASID on the pCPU changes. It
+adds a per-CPU tracker fallback_asid_vcpu to determine when this occurs.
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index aadd5bdc2c97a..97d49247d9d82 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 8f27722bc4faf..0dbb1962d32b6 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+
 [ ... ]
-> @@ -8178,6 +8178,84 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
->  		vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread);
->  }
+
+> @@ -1422,6 +1424,11 @@ static void svm_vcpu_free(struct kvm_vcpu *vcpu)
+>  	svm_vcpu_free_msrpm(svm->msrpm);
 > =20
-> +static struct {
-> +	spinlock_t	lock;
-> +	unsigned long	*bitmap;
-> +	unsigned int	nr;
-> +} tlb_tags;
+>  	free_asid(svm->asid);
 > +
-> +int kvm_init_tlb_tags(unsigned int nr)
-> +{
-> +	/*
-> +	 * Limit the number of TLB tags to VMX's hardcoded maximum of 0x10000
-> +	 * to avoid wasting memory for the bitmap in the unlikely scenario the
-> +	 * CPU supports an inordinate number of ASIDs (on AMD).  If userspace
-> +	 * wants to concurrently run tens of thousands of vCPUs, they'll likely
-> +	 * need a solution that works for both Intel and AMD.
-> +	 */
-> +	const unsigned int MAX_NR_TLB_TAGS =3D VMX_NR_VPIDS;
-> +
-> +	if (!nr)
-> +		return 0;
-> +
-> +	if (nr > MAX_NR_TLB_TAGS) {
-> +		pr_warn_once("Number of TLB tags capped (%u instead of %u)\n",
-> +			     MAX_NR_TLB_TAGS, nr);
-> +		nr =3D MAX_NR_TLB_TAGS;
+> +	for_each_possible_cpu(cpu) {
+> +		sd =3D per_cpu_ptr(&svm_data, cpu);
+> +		cmpxchg(&sd->fallback_asid_vcpu, vcpu, NULL);
 > +	}
-> +
-> +	tlb_tags.bitmap =3D bitmap_zalloc(nr, GFP_KERNEL);
-> +	if (!tlb_tags.bitmap)
-> +		return -ENOMEM;
+>  }
 
-[Severity: Medium]
-Does this code leak the tlb_tags.bitmap on TDX setup failure?
+[ ... ]
 
-The patch converts the static VPID bitmap to a dynamically allocated
-tlb_tags.bitmap in kvm_init_tlb_tags(), which is called by
-vmx_hardware_setup().
+> @@ -3884,8 +3892,11 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
+>  	if (is_sev_guest(vcpu))
+>  		return pre_sev_run(svm, vcpu->cpu);
+> =20
+> -	if (unlikely(svm->vmcb->control.asid =3D=3D fallback_asid))
+> +	if (unlikely(svm->vmcb->control.asid =3D=3D fallback_asid &&
+> +		     sd->fallback_asid_vcpu !=3D vcpu)) {
+>  		vmcb_set_flush_asid(svm->vmcb);
+> +		sd->fallback_asid_vcpu =3D vcpu;
 
-In arch/x86/kvm/vmx/main.c:vt_hardware_setup(), it sequentially calls
-vmx_hardware_setup() and then tdx_hardware_setup():
+[Severity: Low]
+Will this concurrent access to sd->fallback_asid_vcpu trigger a KCSAN data
+race splat?
 
-arch/x86/kvm/vmx/main.c:vt_hardware_setup() {
-	ret =3D vmx_hardware_setup();
-	if (ret)
-		return ret;
+In svm_vcpu_free(), when a vCPU is being destroyed, it iterates over all
+physical CPUs and modifies sd->fallback_asid_vcpu via cmpxchg() across CPUs.
 
-	return enable_tdx ? tdx_hardware_setup() : 0;
-}
+Concurrently, another vCPU running on one of those CPUs will execute
+pre_svm_run() and perform plain reads and writes of its local
+sd->fallback_asid_vcpu.
 
-If tdx_hardware_setup() returns an error, vt_hardware_setup() returns the
-error directly without invoking vmx_hardware_unsetup() to undo
-vmx_hardware_setup()'s allocations.
+Per the LKMM (C11 memory model), if an atomic RMW is used on one side
+of a concurrent access, at least one side must use READ_ONCE() or
+WRITE_ONCE() to prevent the compiler from fusing loads or reordering
+plain stores.
 
-KVM's generic module initialization explicitly skips calling
-ops->hardware_unsetup() if ops->hardware_setup() fails.
+Should the reads and writes in pre_svm_run() use READ_ONCE() and
+WRITE_ONCE() to avoid this race?
 
-Does this permanently leak the newly dynamically allocated tlb_tags.bitmap?
+> +	}
+> =20
+>  	return 0;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008001425.2458=
-927-1-yosry@kernel.org?part=3D3
+927-1-yosry@kernel.org?part=3D11
