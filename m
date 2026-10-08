@@ -1,146 +1,294 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010003.outbound.protection.outlook.com [52.101.201.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2D48F825;
-	Thu,  8 Oct 2026 09:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791453600; cv=fail; b=MqFfDOxTzMHAZdXl0iIz3P9/tGg7ghcSQv27sVm63bYtxu5VYNXm0o1T4hbE5X7aaYUylvL498as2TizVu4OwQocdYJQgJd+yu+xLn5+hdAp3Q9npk4mkxBse5xjQXdgFDnYV6BB6C1GtaBfpUaQJug68ICciYu6dd02plbyuOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791453600; c=relaxed/simple;
-	bh=axgRTAQOk96PfEwH7j1B2Zx4cLiqo/jTHxZQw9m7yJ0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KF+ftLkNZld6wi1m3vqpOncTatUwEzKNMwfXvj3n1pkSwyU9ILtqub/9ylLQFwxczQvTks1pbJuyD5vzkQNdDnVYkSsn9qVQX8dP8+iuFxKPu7G2QVrn/S4xw8VyhillRyZ0KciNopFiWsxWksP/sGY2t0+efYurHmohelgEbS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=h3lQnUli; arc=fail smtp.client-ip=52.101.201.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA148486437
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 10:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791453821; cv=none; b=ti6ll+FicM42jbWRlZRtVi7jYEK5Xyp/j4s0EOyRxOGVMwYoKcG6fs7lWW8egrqXi0HQol7qH2RGr7EXhymvYQ331QWWlJecPnQ/cSPCFyEX4Z3mffGfdNFW+h1yaYnsvoKJXSbXs6RgxR42YH682TAH8hT6knEEMhP/k9Fx2tY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791453821; c=relaxed/simple;
+	bh=Ch2ZRMuUNav0DKxiyIXv9xpHzd1Sxiz2bITxOICneYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rBGH1zZDZ1aKOx3OPmeFRbfBmg2Kt6A0QuCZfOr9nUOJY4TzQrAsJpH1/+47aPcudQyFnijoX7O/TW5TozZpbMu3EU2zASzLbtnDb9DnoWFdb1YnUmEEcWhgKoI7GO3OSFJeWHQ7rgdgVGkN6EKXH4U0J6ibfcPS7HQowVnLYgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KGBen8qF; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="h3lQnUli"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PTgwK1ig4BMLFi8bXzV/0uN7xX+pQbU4ZMEVviWpdOxbIAKC5bpyWMX0gRCO3+ez4qIwpu6VmtgXe+2ytxgmUCDhFae9cldtxE3pBcPWAxKvYYehsVbSFVdBUA7UT0t4jAOWujEZFjaAwwMPmx6RrIGibBo5Y/H/NE35h4XMaREs0vO6+4csKhUKUluy37jqTwWqxlCW0nTei2oBgIJic4q/tDXvqoJltfftSt+nduvWSgor2mpDKVObJZ4Ac5GAXSXDFqdNj+Or5BLn6iskbKpg0eEHlVllWA9Y2ng6t7brI5cyP1t1gfotIiqN1/WJnJUu0u7YlJ0/eEZRPbLODg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OoB9+8XVJHzGyCna6cDgDNU0VLG0oGZB/qwoVR0qCIg=;
- b=KJQGOpct3tWzp2SitSpGpNacjWf9p1myqarK4TRIqrv3m5Gu+jfrLUXvD2xZQm3XdyGltxq6oUkbq4r7dWQa9ZAP3zUHjRUvLZeGADM2548B/Qofq4ikXbLcTDYsSotkErkwxBMaYjtM+lgsqefN3Z1ukKBKenmgPli4VqWEYniNo9dhHC3nBGT1AFWBWjZptMF4wnuP1X/1nLPuftsJwPrPmyJwWTwh+obWyfOFjpiSwSca3ePT8j/ExKA2O5Ayio0+wQSIJfjp6TxDkQ6yKaNsL7yPpVIqeab2KLqcAq+fHA07gHq/g7JbJ+RLlkSbhqmZjaFqR4xyiDA4M6y0EA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OoB9+8XVJHzGyCna6cDgDNU0VLG0oGZB/qwoVR0qCIg=;
- b=h3lQnUliaslh1x65zk+mb8vFtiMBvzqNOE+N6lxcNDF3Rr0a7PKitC1VNS9jel6zPnH7n4sHIpy84FCDf86WP+eBmt8CdBjAHv/Hj9UWR31ie5gWNmVSroQ8OAu+z0u7Kp+wHpVsGOLPHjU6jgHLvdBh8JhAkcp6aDv/sBq7bUk=
-Received: from BN9PR03CA0153.namprd03.prod.outlook.com (2603:10b6:408:f4::8)
- by PH7PR12MB8121.namprd12.prod.outlook.com (2603:10b6:510:2b5::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 09:59:54 +0000
-Received: from BN1PEPF0000468C.namprd05.prod.outlook.com
- (2603:10b6:408:f4:cafe::37) by BN9PR03CA0153.outlook.office365.com
- (2603:10b6:408:f4::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Thu, 8
- Oct 2026 09:59:53 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF0000468C.mail.protection.outlook.com (10.167.243.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Thu, 8 Oct 2026 09:59:53 +0000
-Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 8 Oct
- 2026 04:59:46 -0500
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-doc@vger.kernel.org>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<nikunj.dadhania@amd.com>, <shivansh.dhiman@amd.com>
-Subject: [PATCH] Documentation: KVM: x86: Update nested live migration status on AMD
-Date: Thu, 8 Oct 2026 09:59:35 +0000
-Message-ID: <20261008095935.1237325-1-shivansh.dhiman@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KGBen8qF"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc4aa02a269so2280858a12.2
+        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 03:03:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791453819; x=1792058619; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DJ56dwwrQG11TNvoG9xsUsgIQZrW4ujejx9VXM0v1qc=;
+        b=KGBen8qFBc6FMcaZOZ3sKhpDRUJlSktbMkn0SU8j1HFJAtMKFNtY1n/oYh3uvdAuYx
+         sG4uXlDPFsohgNy0TAwYH0zLQOJjGLdXpPiBpdWm4J/kT+AUGkUG0mAhBGkIQr0k0N05
+         LvSgn9ye1u5os9sJnx6ep6WXu3pTaL6p/W1U9c8X/sxvj+8YlUuLfzm7GCo8EMcxv7Gx
+         px1/ariyr5TGNDb1bN2B/Eqt/PjrTaHduh7brcUUEPNLVURIkwnPb0b/4YglfN75Hd3b
+         ZOPnbefvnduXVJqWfOvGFuFASfvyTv8e9ys5MQLAg61GDgTGl9ZLe97M05iyrgx/mLiv
+         n1fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791453819; x=1792058619;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DJ56dwwrQG11TNvoG9xsUsgIQZrW4ujejx9VXM0v1qc=;
+        b=OM/oVdtydC9yHCprQP2k/YdaBhGGYxABzXP4MjUBDSsc/msr5Q+VHOf5QF2lgdU9U5
+         BwMs24M2em6Rtq/VPmLb2Jdy2k12veuFKmODTsx/6nVM8xFQPUwcBLuOdpQsJvCz4p/j
+         nijWXGPynn6olRtZo8zSNW7h/1UMp7vvnWIxi8Fu2xE+LRsPwqKUJP9hFBzHA0q8hxYp
+         r+UY+poab/0u3L/PHRHQdMir1f6ptTMRi6zllJmX+AFzrSwKNLEPaDNIctuzegdoW6rZ
+         b9Bggh3oWrsolCgYb9ZlX8g8caTitLVPp7uED2gBs7PxJsFauI/jwwRWO2AOgNcX5tNP
+         wD2w==
+X-Gm-Message-State: AFq9FYKn2eeCG15jt5NWoBKe/8/NJy1/VGGjbqSlk9Awtz7eTtk+DShJ
+	HBeMlLGwdj71ztfJ4WUAq05sRBR3N11KQlz7YFOLP8/4WiamXAdZg5KPM3C+SRbrQw==
+X-Gm-Gg: AYBFou0FCl1yeyau484FFX8bYe9juwYdmp5NtaJuYuZvETXv6HWQVeNV8XWKFra8LlL
+	Fh0xa/lFoh7a/D7QI5AuAkbXgNjImqE1MwdgWGFjSzVbPqJLNZ3LqBH03myb6Mka9zD/Sur8Bfk
+	7ZsUp8PIC9JRpmH+8oX2Q58xBdMiKMUUwHyWUVp1N8j0Dy63DuKaxOV0h/KVUoUXHRNqNc+nwji
+	T0wZEhAv69D0KOIY/1IMrU9To/qc7H8SviGl7Q0DC3tRUuNbUGmIO2sFAKl6KdS457gyS9BB5v1
+	89sqPnL7F5ocYUgF9sXcykgRQ91+eGTsUrXdXer/Ai/SN3CnvnimytZIpxNXDe8pAToDaBr82N7
+	o4OiDvDNuwz+lBnyhriWexBO//FRUBrShQ1kJGP/7P2nzW5na9gCxfJNZwqU8AW8QNwOZpsAK2E
+	ojU87FBwTmGL8980LkjC+qxHuLGOvF1Y83mIi3Fv/SykRFZ0iDfL41WiUqmrnS5/BXy58OJqrDE
+	2f6Hdpds0mquBZYoCbAruL3U6GgUyvVjIQ=
+X-Received: by 2002:a17:90b:37d0:b0:3a4:8c41:fab6 with SMTP id 98e67ed59e1d1-3a8a1bca9e8mr4140380a91.46.1791453818299;
+        Thu, 08 Oct 2026 03:03:38 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9f1d10867sm4013056a91.13.2026.10.08.03.03.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 03:03:37 -0700 (PDT)
+Date: Thu, 8 Oct 2026 10:03:33 +0000
+From: David Matlack <dmatlack@google.com>
+To: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
+Subject: Re: [PATCH v3 3/4] vfio: selftests: Add memfd test to
+ vfio_dma_mapping_perf_test
+Message-ID: <asdqdb0uTPT25Qj9@google.com>
+References: <20260910153326.3085937-1-aaronlewis@google.com>
+ <20260910153326.3085937-4-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468C:EE_|PH7PR12MB8121:EE_
-X-MS-Office365-Filtering-Correlation-Id: b40dc215-ba48-42f0-ccbb-08df2522e682
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|23010399003|376014|82310400026|56012099006|11063799006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	rqx1QGT3npT+YAAfGvHe0F9GDYbjfSbRYcRlzk8VYSh4iS43MOieHjKRIZ8ZyNF4bqWXYZUVrvH/My3ac1vPPiU1TNgyIx2BLXhHWCNkn7Kbsp3FHq0qWM1jJ8RrOfRYMC1ZdMhUESPWJs7lxg22+CT10V20LdV36jAb6/Rps3zTgc01lbie3IkYxdyAMLk0dZ8qo0VpiN3cK9/oWdY6DkqS3SJGRCfAnRxJPyrfyeyytousdWbqdUuqR4aWOTA5zOtNEpvTHqRhUemcs2z6xmTj/x/wzwarrO2iYonKZsdHhlVaMN6+es+EqB374a6bq3eTJchq5EjoFSSnkzbA6lJHzhlYipH5ziNDqEtXj7R55VgCtUiXLpyuhS0v64pqmvKW+mAEfw0uzYqL9e6rf5qFIKNRU+91aWrfiqMNvfhupxuRUxKqSguBfDknUeRJ8mD7lwoI55yY326YETowiExihz9j2aKpmwFh+7/n2lPOIS47NO/A9lFY9xUBXQj2xRQb/4cX2eZTjG4g7Wj5/TFhDDG+xgKBN8LQebGzmtKKOiNeRBeO+d3xf50iYKHWANQW8UOJ8Z6mFeJyNOcr1YL4GzfQrVX3gGRhSNVyEeHekNiWsoJl4JFUYzoFEY+NqBudxezYcrFi48j9mTPC4feCn3U7+xy6X5Vz6GGqOBxc62j8bsjSodOwPrfMpKhQmFkJ4V7xfPkGLB0/p2nL1A==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(23010399003)(376014)(82310400026)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	J2A0hIy85GjcUR8afnD7haFfSjRA7wyrxfXcKR7iCAVFOiz2ksYc4JZJN3y12J+D0H4qpdbykFGEPODkHYwIuapUmCq1ROHVRjHZjIIQVrzgvi19l1wAK1E6d/d6btc9tKvyt07id2LeI3V7OTZBXVclLC/TExcsyoXq8WUU/NA4FYj1YvFFwZGug1/03XKxSDqQmdmL0CatFJhITej8gB+WvBDjJb2tTgVD2AJ3iw+uso7FEV342PGCImV4eSyqJHyVQ1qL6gBqa2e1NPoaxwzdXkCwzN3GitjaclpXXAHXbj5IFJqVJgNiiH81DLhRJX0iSVmivQ4/VPqkO6PcwJlg4l4YDeCQ4c/GpuU02reRiT7/wpeC/h92tURpI9LBeEIgLa2lopHiXzy/bWCTXkioJBtAzN0Q2emUCmgBTAMooHJSXWELHBfmJ3JeDemD
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 09:59:53.5924
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b40dc215-ba48-42f0-ccbb-08df2522e682
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468C.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8121
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910153326.3085937-4-aaronlewis@google.com>
 
-The "Live migration with nested KVM" section is stale for AMD systems
-and needs an update.  Migrating an SVM L1 guest with a live L2 guest in
-it works, and has been tested with Linux 7.2 and QEMU 11.1.0.  So,
-replace the AMD-specific caveats accordingly.
+On 2026-09-10 03:33 PM, Aaron Lewis wrote:
+> Add a second test to "vfio_dma_mapping_perf_test" to evaluate memfd
+> latencies. A key motivator for adding this test is to demonstrate that
+> the IOMMU_IOAS_MAP_FILE ioctl is significantly faster than other methods
+> of mapping DMA regions. While this performance difference is not fully
+> apparent with the test's current capabilities, it will become evident
+> as more features are introduced later in the series.
 
-Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
----
- .../virt/kvm/x86/running-nested-guests.rst       | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+nit: Don't refer to series in commit messages. Prefer something like
+"subsequent commit".
 
-diff --git a/Documentation/virt/kvm/x86/running-nested-guests.rst b/Documentation/virt/kvm/x86/running-nested-guests.rst
-index 87326413d5c7..e41a50816058 100644
---- a/Documentation/virt/kvm/x86/running-nested-guests.rst
-+++ b/Documentation/virt/kvm/x86/running-nested-guests.rst
-@@ -186,21 +186,11 @@ Live migration with nested KVM
- 
- Migrating an L1 guest, with a  *live* nested guest in it, to another
- bare metal host, works as of Linux kernel 5.3 and QEMU 4.2.0 for
--Intel x86 systems, and even on older versions for s390x.
--
--On AMD systems, once an L1 guest has started an L2 guest, the L1 guest
--should no longer be migrated or saved (refer to QEMU documentation on
--"savevm"/"loadvm") until the L2 guest shuts down.  Attempting to migrate
--or save-and-load an L1 guest while an L2 guest is running will result in
--undefined behavior.  You might see a ``kernel BUG!`` entry in ``dmesg``, a
--kernel 'oops', or an outright kernel panic.  Such a migrated or loaded L1
--guest can no longer be considered stable or secure, and must be restarted.
--Migrating an L1 guest merely configured to support nesting, while not
--actually running L2 guests, is expected to function normally even on AMD
--systems but may fail once guests are started.
-+Intel x86 systems, and even on older versions for s390x.  On AMD x86
-+systems, it works with Linux kernel 7.2 and QEMU 11.1.0, or later.
- 
- Migrating an L2 guest is always expected to succeed, so all the following
--scenarios should work even on AMD systems:
-+scenarios should work:
- 
- - Migrating a nested guest (L2) to another L1 guest on the *same* bare
-   metal host.
+Also this sentence is extremely vague. How about:
 
-base-commit: 6bd2905303c58679e303941b7d8ae8c074cd95ce
--- 
-2.43.0
+  This performance difference is more apparent with larger memory
+  regions, which will be added in a subsequent commit.
 
+> 
+> To support this, add IOMMU_IOAS_MAP_FILE ioctl support to the VFIO
+> selftest library via iommufd_map_file().
+> 
+> Signed-off-by: Aaron Lewis <aaronlewis@google.com>
+
+Aside from the minor comments,
+
+Reviewed-by: David Matlack <dmatlack@google.com>
+
+> ---
+>  .../vfio/lib/include/libvfio/iommu.h          |   9 ++
+>  tools/testing/selftests/vfio/lib/iommu.c      |  24 +++++
+>  .../vfio/vfio_dma_mapping_perf_test.c         | 101 ++++++++++++++++++
+>  3 files changed, 134 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+> index 5c77875240f4..2336dcebce5c 100644
+> --- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+> @@ -22,6 +22,8 @@ struct dma_region {
+>  	void *vaddr;
+>  	iova_t iova;
+>  	u64 size;
+> +	int fd;
+> +	u64 fd_offset;
+>  };
+>  
+>  struct iommu {
+> @@ -35,6 +37,13 @@ struct iommu {
+>  struct iommu *iommu_init(const char *iommu_mode);
+>  void iommu_cleanup(struct iommu *iommu);
+>  
+> +int __iommufd_map_file(struct iommu *iommu, struct dma_region *region);
+> +
+> +static inline void iommufd_map_file(struct iommu *iommu, struct dma_region *region)
+> +{
+> +	VFIO_ASSERT_EQ(__iommufd_map_file(iommu, region), 0);
+> +}
+> +
+>  int __iommu_map(struct iommu *iommu, struct dma_region *region);
+>  
+>  static inline void iommu_map(struct iommu *iommu, struct dma_region *region)
+> diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
+> index b6f3c5c84e01..a0a3dc4b968c 100644
+> --- a/tools/testing/selftests/vfio/lib/iommu.c
+> +++ b/tools/testing/selftests/vfio/lib/iommu.c
+> @@ -97,6 +97,30 @@ iova_t iommu_hva2iova(struct iommu *iommu, void *vaddr)
+>  	return iova;
+>  }
+>  
+> +int __iommufd_map_file(struct iommu *iommu, struct dma_region *region)
+> +{
+> +	VFIO_ASSERT_TRUE(iommu->iommufd, "IOMMU_IOAS_MAP_FILE is an IOMMUFD IOCTL.");
+> +
+> +	struct iommu_ioas_map_file args = {
+> +		.size = sizeof(args),
+> +		.flags = IOMMU_IOAS_MAP_READABLE |
+> +			IOMMU_IOAS_MAP_WRITEABLE |
+> +			IOMMU_IOAS_MAP_FIXED_IOVA,
+> +		.ioas_id = iommu->ioas_id,
+> +		.fd = region->fd,
+> +		.start = region->fd_offset,
+> +		.iova = region->iova,
+> +		.length = region->size,
+> +	};
+> +
+> +	if (ioctl(iommu->iommufd, IOMMU_IOAS_MAP_FILE, &args))
+> +		return -errno;
+> +
+> +	list_add(&region->link, &iommu->dma_regions);
+> +
+> +	return 0;
+> +}
+> +
+>  static int vfio_iommu_map(struct iommu *iommu, struct dma_region *region)
+>  {
+>  	struct vfio_iommu_type1_dma_map args = {
+> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> index 4d41fecf2372..4113a20127de 100644
+> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> @@ -83,6 +83,107 @@ TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
+>  	TIME("munmap", ASSERT_EQ(0, munmap(region.vaddr, size)));
+>  }
+>  
+> +FIXTURE(vfio_dma_mapping_perf_memfd_test) {
+> +	struct iommu *iommu;
+> +	struct vfio_pci_device *device;
+> +	struct iova_allocator *iova_allocator;
+> +};
+> +
+> +FIXTURE_VARIANT(vfio_dma_mapping_perf_memfd_test) {
+> +	const char *iommu_mode;
+> +	int mmap_flags;
+> +	int memfd_flags;
+> +};
+> +
+> +#define FIXTURE_VARIANT_ADD_MEMFD_MODE(_name, _mmap_flags, _memfd_flags)      \
+> +FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, iommufd ## _ ## _name) {\
+> +	.iommu_mode = MODE_IOMMUFD,					      \
+
+Do not put constants in the fixture variant.
+
+> +	.mmap_flags = MAP_SHARED | MAP_POPULATE | (_mmap_flags),	      \
+> +	.memfd_flags = (_memfd_flags),					      \
+> +}
+> +
+> +FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd, 0, 0);
+> +FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_2mb,
+> +				    MAP_HUGETLB | MAP_HUGE_2MB,
+> +				    MFD_HUGETLB | MFD_HUGE_2MB);
+> +FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
+> +				    MAP_HUGETLB | MAP_HUGE_1GB,
+> +				    MFD_HUGETLB | MFD_HUGE_1GB);
+> +
+> +#undef FIXTURE_VARIANT_ADD_MEMFD_MODE
+> +
+> +FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
+> +{
+> +	self->iommu = iommu_init(variant->iommu_mode);
+> +	self->device = vfio_pci_device_init(device_bdf, self->iommu);
+> +	self->iova_allocator = iova_allocator_init(self->iommu);
+> +}
+> +
+> +FIXTURE_TEARDOWN(vfio_dma_mapping_perf_memfd_test)
+> +{
+> +	iova_allocator_cleanup(self->iova_allocator);
+> +	vfio_pci_device_cleanup(self->device);
+> +	iommu_cleanup(self->iommu);
+> +}
+> +
+> +static void *setup_memfd(int *fd, u64 size, int mmap_flags, int mfd_flags)
+> +{
+> +	void *buf = MAP_FAILED;
+> +	TIME("memfd_create",
+> +	     *fd = memfd_create("vfio_dma_mapping_perf_memfd_test", mfd_flags));
+> +	if (*fd < 0)
+> +		return MAP_FAILED;
+> +
+> +	if (ftruncate(*fd, size))
+> +		goto out;
+> +
+> +	TIME("mmap",
+> +	     buf = mmap(NULL, size, PROT_READ | PROT_WRITE, mmap_flags, *fd, 0));
+> +
+> +out:
+> +	if (buf == MAP_FAILED)
+> +		close(*fd);
+> +
+> +	return buf;
+> +}
+> +
+> +static void teardown_memfd(int fd, u64 size, void *vaddr)
+> +{
+> +	TIME("munmap", VFIO_ASSERT_EQ(0, munmap(vaddr, size)));
+> +	TIME("close", VFIO_ASSERT_EQ(0, close(fd)));
+> +}
+> +
+> +TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
+> +{
+> +	const u64 size = SZ_1G;
+> +	const int mmap_flags = variant->mmap_flags;
+> +	struct dma_region region;
+> +	int fd;
+> +
+> +	ksft_print_msg("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
+> +
+> +	region.vaddr = setup_memfd(&fd, size, mmap_flags, variant->memfd_flags);
+> +
+> +	/* Skip the test if there aren't enough HugeTLB pages available. */
+> +	if (mmap_flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
+> +		SKIP(return, "setup_memfd() failed: %s (%d)\n", strerror(errno), errno);
+> +	else
+> +		ASSERT_NE(region.vaddr, MAP_FAILED);
+> +
+> +	region.iova = iova_allocator_alloc(self->iova_allocator, size);
+> +	region.size = size;
+> +	region.fd = fd;
+> +	region.fd_offset = 0;
+> +
+> +	TIME("IOMMU map", iommufd_map_file(self->iommu, &region));
+
+Should this be "IOMMU map file"?
+
+> +	ASSERT_EQ(region.iova, to_iova(self->device, region.vaddr));
+> +
+> +	TIME("IOMMU unmap", iommu_unmap(self->iommu, &region));
+> +
+> +	teardown_memfd(fd, size, region.vaddr);
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+>  	device_bdf = vfio_selftests_get_bdf(&argc, argv);
+> -- 
+> 2.55.0.1003.g10538fe699-goog
+> 
