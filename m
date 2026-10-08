@@ -1,124 +1,88 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31123472F74
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 10:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AED3C10AB
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 11:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791455447; cv=none; b=H2Xq/P6owcvmecWUNshInpr1JKIdSINsTUvIdKW8zp/QN9pZ/5dtVXXENt2VQRCqsRH0JijLhCdxEuPntpGUYPWF6j6v14RFN0B8l2iK13Q6dM2JxvHqJwfljVndMDak5od09JyQUn/XEGClyqACb6xPzDBhbRt6apHyI+0mHyE=
+	t=1791458300; cv=none; b=m5g2vKx4CX0fZjh0m3+WxqE5NAml6Am90AC0XuKLrmZapq4U1EsrINaM3xdQKqHiIRtAtT1WoztQnAFaCPqKrsLpxKInPCtDbTbSe9/93wRBnQ9joIv6WKuVFpoiS4dDLG8X8AZYXrMIKimxk7ROtxNPaHLiREj4VdAh3NpBZ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791455447; c=relaxed/simple;
-	bh=rDS6BdX+EbByd2l4EUb5bRG5V9IxQDRsbRW1jLQQ+qQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VfO2Z4xUDfy6V3oJ7IRomuSfsgJ6LREWmw9eJmTX3RJPSfVxKcs7xZ4sOCaryVk5clBX1HJZGz4LasO56KsEZN4dokRCpl8c4tEfuyZ0abuWe12Stu5MxP2GtmnWrx3E9UxuVlt7xkOH6Re3GB8tjzY/QT6ogeVCJf1nlvw9Yog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dTAKnmZ6; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1791458300; c=relaxed/simple;
+	bh=RZDQiChJc4BLUjPTC5GATFlDtxZirW0FNEhzwWirWTc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UX9A2Qy7qWTyIHTEqsjQRjSrU+iFezMpqCTQmPBxOlxX8RvmelASJOEEEYghlyM5hMnkOOgk920JxSgeKYTIa1F+fUuIdwEkxmfz5YotGdHLGJOrgl/upsUVY7RHNLk7UikVz4kZ0TBgTkwaND4nuiSaF98NE2Yqdhk/srJKPoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fRazBe5Q; arc=none smtp.client-ip=95.215.58.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dTAKnmZ6"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc50ad2d650so1737015a12.1
-        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 03:30:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791455445; x=1792060245; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=D/PrLkJqH6eNdn4uSZzb8qrmiJsHXO2a6FS8B1i/DfY=;
-        b=dTAKnmZ6tDK7V6OrPFcZ7/ZKXvoQMkMpmgAsP6uKhU4SnVvLmRspRkgyZ/hEJLK57e
-         AMmQQ54zPRuYvnH2zZqG53brSAfZQTGVHY0nd6YQJlqJUY5dQ81CcS24CbDOY3VPRO2I
-         x2cnOk/eXUS3RG+JxmX8u4Jt18HvxkygQLABJ6rJ1IbHi0K3Z1p14yEzV8+BG9q2Mz/n
-         B7NO6Bu/xqh5fiSvN1ABTvPH65cyhWfITosyqOlghrx2xoxIP4d9qoNzgoRzccZh+Ezz
-         mURxRffDk847cHOhwmKCEGLQLHHhp2dNgSOorhLpZl7Zt5CB4ueDhC3UubM0bhw+CWU5
-         iTLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791455445; x=1792060245;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D/PrLkJqH6eNdn4uSZzb8qrmiJsHXO2a6FS8B1i/DfY=;
-        b=oInHXu/t4LhBhBnTohlwb8SoEAbRKFTNovf17oLheaBQ25Z51w9LCwOAz6rbFQfTb3
-         mbPvXzrtJOCwJbC7V7ydTY+rBFQ59UkqSyK3Wj694l+ZEYwXYfRszJqIJ2iGnnNCK5Er
-         PgPmD5zLttRp/xuBs7v91ae3E7+EZXg3LUKNt/zf/928TQf4KrDFaa6n0Q5ZlCgoLBWp
-         NNJlEd+1BwnKly4VLasbIIuvvfEjIqo6vRQHRs8a9OfMBiLMEV0DTSElYD9qikOz1GfX
-         j/+G9R7VI01q+UG2OXH1AXmqB7iV6b3UxlbxRgt/i2R4CiQbFx74hkqKRUXTGLE499QI
-         wnAQ==
-X-Gm-Message-State: AFq9FYKqTjNg3coabv+GEqKFhbJpzcNVC0Lv0Lm6fa+F9KnzldQSOwHZ
-	40xwiJ64D2Ro7scppQvwj40Ndt/dhbc8Mg7KoCjWqJTTy7y6MVPkIIxkY4Hfb/Q4wQ==
-X-Gm-Gg: AYBFou3h5EMRW4G8bCgimLGsV549Jxgvn8BU7CYEQhu9bCxDT/GdQMzw6D1iDxzsGCM
-	+Nd5X3hPSzUO7AgDxSOuY7POpEFa7zyrw2sSZyaaNEOIRRS/Ccf+0meQcPZ7MGVX9EdUdrBsZxY
-	EHbUuoRtpoKp1VBCBsbnkDfr8gALK1zdpXNydGpeYpzlBWhEd3pLEDPVjUB7E0OSF7oLoQrsPvu
-	mkpBaidfj5pWKoOyi9nWrSwj9pdFTvUEHt2HCXG75A+E4n4L2zX9bNu5MLKgqzbK6EclVhlpVNq
-	K8TdUwrKk5PoPKBFM541HqCXMi9+mPdkMO9NB0qn3aaDtiNdtH1OD3Da2oQRGOYye3fyI8TeK3o
-	p9hOHV1UqOz60ilXNodH92P95U1tvs36LCVBfkXW5wq7FU97xTcQikRm6O/87bkrBI632biuSeL
-	WmrdjpYVRKYdSbRVjo5esS2TEbh+ShSpqmj1TfSjpZmBEUeOieNQZbbb2EnPbxOitncS5bIJPwN
-	ZMNu+76J6wYTN4JpPxus/12DPNNBlJiZ+Q=
-X-Received: by 2002:a17:90b:1d0d:b0:3ab:c80:9370 with SMTP id 98e67ed59e1d1-3ab0c80f010mr606371a91.20.1791455444714;
-        Thu, 08 Oct 2026 03:30:44 -0700 (PDT)
-Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a8b0616esm2814569a12.6.2026.10.08.03.30.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 03:30:43 -0700 (PDT)
-Date: Thu, 8 Oct 2026 10:30:40 +0000
-From: David Matlack <dmatlack@google.com>
-To: Aaron Lewis <aaronlewis@google.com>
-Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
-Subject: Re: [PATCH v3 0/4] Introduce vfio_dma_mapping_perf_test
-Message-ID: <asdw0Mep7etyQvrE@google.com>
-References: <20260910153326.3085937-1-aaronlewis@google.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fRazBe5Q"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=RZDQiChJc4BLUjPTC5GATFlDtxZirW0FNEhzwWirWTc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791458296; v=1; x=1792063096;
+ b=fRazBe5QaLm2PdugOLlam3NU3qsy5I1whvW77qa99OgeE1xMTCMZoY5CPzq+zw7sx9PDkYu7
+ dO2oQN16vZSUx4gqYwXIBiTIqQFx/PK/wN1V/YRBckxw3bqw3ZgZDdalbPmW43dm1IgZK6/TD84
+ cP/JkXcEnPB3KIG/7Ts1WIZw=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 0230fb560ee3de94;
+	Thu, 08 Oct 2026 11:18:16 +0000
+X-Mizu-Trace-ID: 0230fb560ee3de94
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bcbb378fc9so7273e87.0
+        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 04:18:12 -0700 (PDT)
+X-Gm-Message-State: AFq9FYLK7JPTXIx+6zrDgyLNrsaNZa283W9LEdRY+FDsJ6l9i9qy7Kn2
+	oA5XQefEoC6s13hOpqD+MHPS0YENuQzAOVNGDaOK8Zzx5dL7mnWFfkXnqa5AFtfX2MpzLK+TQ5p
+	Fc6o/aGhuAeMsM0NpQBDm+/rD22AnvR0UtM0VKY/J
+X-Received: by 2002:a05:6512:2315:b0:5b8:cc2e:2fe6 with SMTP id
+ 2adb3069b0e04-5bcd41a3c42mr122649e87.5.1791458291477; Thu, 08 Oct 2026
+ 04:18:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260910153326.3085937-1-aaronlewis@google.com>
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
+ <20261007073537.2454351-14-suzuki.poulose@arm.com> <CA+EHjTy_1EekD472UH=CDSpC7oksdy3eS8AP0rPxKkhQ_PyXdg@mail.gmail.com>
+ <4cdd882b-832f-4968-9838-dcc29a899121@arm.com>
+In-Reply-To: <4cdd882b-832f-4968-9838-dcc29a899121@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 8 Oct 2026 13:17:34 +0200
+X-Gmail-Original-Message-ID: <CA+EHjTyg7QM9+XtbQfAf77zpyNGh0rvEjMBm=mD0694Dtk=rGA@mail.gmail.com>
+X-Gm-Features: AclHuK8P2lsNGbFWtbI77W6PCd57-smcbil7-006btPRzP0RGDfW9UFPgF16p5I
+Message-ID: <CA+EHjTyg7QM9+XtbQfAf77zpyNGh0rvEjMBm=mD0694Dtk=rGA@mail.gmail.com>
+Subject: Re: [PATCH v23 13/14] KVM: arm64: Mandate VGIC v3 for pKVM VMs and Realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
+	jonathan.cameron@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-09-10 03:33 PM, Aaron Lewis wrote:
-> Add a new VFIO selftest, vfio_dma_mapping_perf_test, to provide a
-> configurable tool for measuring DMA mapping and unmapping latencies.
-> 
-> This selftest introduces command-line parameters to provide a convenient
-> way to tune the test for specific situations. For example, it can be used
-> to observe the lengthy unmap times of the Type 1 IOMMU on large memory
-> regions, or to compare DMA mapping performance between the Type 1 IOMMU
-> and IOMMUFD. These scenarios can now be easily configured and run via the
-> command line.
-> 
-> Changes in v3:
->  - Replaced raw printf() calls with ksft_print_msg()
->  - Updated the TIME macro to preserve errno
->  - Added 'fd' and 'fd_offset' to struct dma_region
->  - Simplified teardown_memfd() by removing redundant error checks
->  - Replaced the command-line argument passthrough (-a "...") approach with
->    first-class support in kselftest_harness.h
+Hi Suzuki,
 
-This looks a lot better, thanks for making the change!
+On Thu, 08 Oct 2026 09:51:56 +0100, Suzuki K Poulose
+<suzuki.poulose@arm.com> wrote:
+[...]
+> But the second part of the changes are required for pKVM today, right ?
+> and you requested that here. The check as such is useful, except that
+> it is using kvm_vm_hyp_is_distrusting() rather than
+> is_protected_kvm_enabled(). I don't see this as a problem as this is
+> not a hotpath anyway.
 
->  - Added collision validation in optstring_append_custom() to prevent custom
->    options from overlapping with built-in harness options.
->  - Switched test_enabled() to match exact option characters rather than
->    tolower(opt), ensuring custom options that differ only by case (such as
->    'R') do not mistakenly match built-in single-case options like '-r'.
-> 
-> Aaron Lewis (4):
->   vfio: selftests: Assert the region was unmapped in iommu_unmap()
->   vfio: selftests: Introduce vfio_dma_mapping_perf_test
->   vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
->   vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
-> 
->  tools/testing/selftests/kselftest_harness.h   |  86 +++++-
->  tools/testing/selftests/vfio/Makefile         |   1 +
->  .../selftests/vfio/lib/include/libvfio.h      |  31 +++
->  .../vfio/lib/include/libvfio/iommu.h          |  14 +-
->  tools/testing/selftests/vfio/lib/iommu.c      |  24 ++
->  .../vfio/vfio_dma_mapping_perf_test.c         | 263 ++++++++++++++++++
->  .../selftests/vfio/vfio_dma_mapping_test.c    |  11 +-
->  7 files changed, 406 insertions(+), 24 deletions(-)
->  create mode 100644 tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> 
-> -- 
-> 2.55.0.1003.g10538fe699-goog
-> 
+pKVM already gets the -ENODEV at KVM_CREATE_DEVICE: protected mode
+never sets can_emulate_gicv2, so the check just above yours in
+kvm_vgic_create() rejects a GICv2. The new check only changes
+behaviour once a Realm can set the flavor, which is why I think it
+belongs in the Realm series.
+
+That said, my tag stands, and I don't have a strong preference.
+
+Cheers,
+/fuad
