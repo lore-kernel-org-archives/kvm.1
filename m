@@ -1,68 +1,67 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABE136E48C
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 19:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84A33242BA
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 19:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791487935; cv=none; b=ZEPCZaZFNtmSwULFb4BhpJeAz/z5tXs+h93iJk5I44gqmu79QsWXOCtk2fVBOP0DXjo3Iexj32yzfJRkaZucLOv8fWEKPVaT4hp8RbfPpf4dtBR/6pgmaKWUPPmj5FdJrnim2ZKr+7+OEiXWoEOrdkAffd2hqlFunVhtI3ssaUc=
+	t=1791488302; cv=none; b=f04qbale8AKIyJAzhFCc5VmXdLUd0WeeEQcX2NxShYKHGwX3X4KesbwPniWb4yg1x2atuSG/IssVmFrqxrzmpWms1F43ZT8YGt0JGqGS0hb9Yu0/vs97ov1MF9uU3wJ+8CPEstvAOiNtW5vGoW8fGd3VZ9lx4dzkfvjoHAP3wxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791487935; c=relaxed/simple;
-	bh=ih1JtM7Z+Fcv8FJCiDhnaor7p5/rX/PNyTaBfJvEo6w=;
+	s=arc-20240116; t=1791488302; c=relaxed/simple;
+	bh=NruCxccqYa4WnllkTR/ySgyMG7iljIwgkVM72ZrRuZ4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TAPbxUllTJqZEjDtCqxN0BZQweEPJLptB0jGuMSXbWwogDLIoRx2BqRvGph7BSGMt1BK4CK1G9tzDdS3N0bewJWI1yGFYuOFmHXG2UaHlOQHiqK5PPzFmaj4K3nIj20lwSJQ/TwJ2bhxjcQsM8UrajmD9dAJosg+7mv9ck+9ULU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eg6pvOZh; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=D9cMcLGp+WSMnfPZ+3yQ72wLXC+qT09boCj7akUk2LDO0gWmVr3Td0wqXyzL5GaBmMprZkxqW18pnheyzo+IRQc/EPAsPeWsef5S0v29pCmfHaYMNqRhWsphdLxLj2oX2gS43u0OqROShld3iA4wCwKfqKYTiFZhK6GEJeDoO94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I+RUE2So; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eg6pvOZh"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc4922b7c31so4221106a12.1
-        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 12:32:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I+RUE2So"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3a7fa5e0442so6860754a91.0
+        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 12:38:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791487933; x=1792092733; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791488301; x=1792093101; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zlBSbycgqhKXLo8mgxN6MxQbS9RlUEzSvbMwcgSitw0=;
-        b=Eg6pvOZhdFihRhVOzq2MPo/lm3wZq5hBToSXgfhNNIKTKJGHj/pacBMUTpNULgV7pA
-         XtXogxQTbYxZW+OYxmzEa/wmVVP+Y0Ii9zVfkxsghKDWHBB9Ielf+QcTtiWrzBum6i9R
-         TWXawiK6TtFKO5ecEGwv5uA+CptcsU4+7j850ivWo13t3/SWXh9l8Kqger59irywaBiG
-         KahUaCuUU8G6fDPuDoa4GvrGhsfeLYEjwoFUHpIZItBeuPRTHuFkmp5+sIqQsx2zhW+6
-         +A7SBDaf9JqAE1EW7R3RI70X22WP3EjxAuxouitpMz74jma95wn/UIWNPdvA3qj6huGe
-         q/nA==
+        bh=zcp9URpSHfjRRNAT7YkMh3EnVtR1YkqcNhRFJnkm2/w=;
+        b=I+RUE2SoCe9HwkdIBBSczEKnXUgpppHbXQMOkfp0z7lamMOhSbYqwNLzdDQJuSlSRT
+         BH09fXmJwMOzwtVTPBuHdrqdqQ+m4rZZgXxJ/sM15BQ6t39jIqc04SlKZEoyAxnamOge
+         vdCRi+71GhMvRM/gGRZJxfvKs/DW2jkCW+dbDCtdWeIO1tqhte++mZu9OFrQydlh7PsC
+         pJH83bwnSS1Ap4+YOCLUQx+49BksllPLkXSb0s/P+Y3YzAO9X1LXe4nlfCV2hAjRP/VA
+         aY/B+aEC2fF4+2UMWqgzCcsQi0919yrLBp2DAcmCDat35q/89S+cWQsuey2o6eO6SmjW
+         81+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791487933; x=1792092733;
+        d=1e100.net; s=20260707; t=1791488301; x=1792093101;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zlBSbycgqhKXLo8mgxN6MxQbS9RlUEzSvbMwcgSitw0=;
-        b=DijTiFIdxkibImfiNd9JMcwRdJwPfQyUeSURI7CHAuw70HS8pwH3yUql54hF9JO35V
-         9kEzclkjzW1RsuS1y8t8pNoC414D9PJLhhBxCYVcMWj10AVgnjdFoLybFTCh5O9XF7Xt
-         +xKdH31U3fId2hUQ0vgNBJbHXs0x0JKbqEup2Smv3qYtNM0//RAhYVFGA5YaBG51kOLR
-         aalzdFRDI90VpFW9zoarL/sdQxqPQmQtcplQ+KAJREbRcthekPIL2gdbLaqw2edPOfkH
-         QrNXczjoNIm+pXqZWaWp4MZocGLmYRcSypnynKmhDhWeKVOZ0fWE6TfC0UfLE8sMnciA
-         G3Xg==
-X-Forwarded-Encrypted: i=1; AKwUvBwSCv5JPAvEbms1S+mBh+hxKf7pWRm5t8SOfRo3ogK7PEVObN8k8/u4/wxtboZhghpCZ5U=@vger.kernel.org
-X-Gm-Message-State: AFuF++lxSeOkHm/66Md1bAvx9qT0ZT/WD5vEi4zur6QgdoGkXSueFlVK
-	g2Q0aVYzBahK1xwTSDTxIw8aoZ4Vn8J7hFk+rb3MT4U3frlNk3tt6zhBUwRLx56hO5LpfOh/IBJ
-	W0ynaEwG6TpzwaQ==
-X-Received: from pgaa1-n1.prod.google.com ([2002:a05:6a02:6481:10b0:cc7:a34e:6ed3])
+        bh=zcp9URpSHfjRRNAT7YkMh3EnVtR1YkqcNhRFJnkm2/w=;
+        b=MgdRuBrIhUH9RmJCpBSlCdTyw6Bmw0Tc/NfhgrABGz0TnNf0sGvF7ZcPbXTa2GMTjv
+         nRSmXRBAkTi6sucY+Gg8p3nBYscojwfcQlilN45cI+1E/vzdO/oE2iPyYx/Qe/yixMWV
+         RFpXOn7dEfQqmAP1ZZGHfg4Acfxwa/lYvd9WgcSOqJCvzMH7Z4opsvV6frsv8vIck23x
+         l74xVBRQPILZbXD2AJ1QNNu9FeIN6E/cl1sRJqUFPJloDmrkShPZCOQeB9VtTUnA4wmE
+         O2L7PPGF2UoCXrPfddVFv5qJD9VOYLoMK9GMB0dE/TD/qc7PQVNRLm/D0GY33BtEq1Wu
+         HGEg==
+X-Forwarded-Encrypted: i=1; AKwUvByvxvRXWq/eiyssSdc8y024zp+Bbrj1SuEweYz9t8/4/N64yVpph64wXhNxvPtlJi7oFpk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLZB3b3QIG6Dbwe3jpx6FJm2C5O3L56Hd631yH6sYYPZIx3WTPi
+	acgdjZH4iFtADyHQcpoaFq/6WSvCoO9Yp9h2hfxtHg1L8YIpPdu8OyUH5q2CIc8ojcV3YPj5oFz
+	iOx/RasT7dXUTuQ==
+X-Received: from pgfd21-n1.prod.google.com ([2002:a05:6a02:6555:10b0:cc7:84e0:e066])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6004:b0:3e1:2a89:db18 with SMTP id adf61e73a8af0-3e164e1fdecmr215228637.88.1791487933066;
- Thu, 08 Oct 2026 12:32:13 -0700 (PDT)
-Date: Thu,  8 Oct 2026 12:32:04 -0700
-In-Reply-To: <20260310060022.15120-8-manali.shukla@amd.com>
+ 2002:a17:90b:5486:b0:3a4:9c30:425 with SMTP id 98e67ed59e1d1-3a8a117a9e4mr5551973a91.44.1791488300805;
+ Thu, 08 Oct 2026 12:38:20 -0700 (PDT)
+Date: Thu,  8 Oct 2026 12:38:15 -0700
+In-Reply-To: <20260310060022.15120-9-manali.shukla@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260310060022.15120-1-manali.shukla@amd.com> <20260310060022.15120-8-manali.shukla@amd.com>
+References: <20260310060022.15120-1-manali.shukla@amd.com> <20260310060022.15120-9-manali.shukla@amd.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261008193208.832031-1-jmattson@google.com>
-Subject: Re: [PATCH v3 7/9] perf/x86/amd: Enable VPMU passthrough capability
- for IBS PMU
+Message-ID: <20261008193818.839995-1-jmattson@google.com>
+Subject: Re: [PATCH v3 8/9] perf/x86/amd: Remove exclude_guest check from perf_ibs_init()
 From: Jim Mattson <jmattson@google.com>
 To: Manali Shukla <manali.shukla@amd.com>
 Cc: Jim Mattson <jmattson@google.com>, seanjc@google.com, pbonzini@redhat.com, 
@@ -72,54 +71,51 @@ Cc: Jim Mattson <jmattson@google.com>, seanjc@google.com, pbonzini@redhat.com,
 	Sandipan.Das@amd.com, Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 10, 2026 at 06:00:19AM +0000, Manali Shukla wrote:
-> IBS MSRs are classified as Swap Type C, which requires the hypervisor
-> to save and restore its own IBS state before VMENTRY and after VMEXIT.
->
-> To support this, set the ibs_op and ibs_fetch PMUs with the
-> PERF_PMU_CAP_MEDIATED_VPMU capability. This ensures that these PMUs are
-> exclusively owned by the guest while it is running, allowing the
-> hypervisor to manage IBS state transitions correctly.
->
+On Tue, Mar 10, 2026 at 06:00:20AM +0000, Manali Shukla wrote:
+> Currently IBS driver doesn't allow the creation of IBS event with
+> exclude_guest set. As a result, amd_ibs_init() returns -EINVAL if
+> IBS event is created with exclude_guest set.
+
+s/amd_ibs_init()/perf_ibs_init()/
+
+> With the introduction of mediated PMU support, software-based handling
+> of exclude_guest is permitted for PMUs that have the
+> PERF_PMU_CAP_MEDIATED_VPMU capability.
+
+This software-based handling applies only while a vCPU with a mediated
+PMU is loaded (perf_load_guest_context() through perf_put_guest_context()).
+The core PMU also sets AMD64_EVENTSEL_HOSTONLY for exclude_guest events,
+so the hardware excludes guest execution in all other cases. IBS has no
+equivalent, and nothing in the IBS driver or in KVM stops an IBS event
+while a guest without a mediated PMU runs (for example, when
+kvm_amd.enable_mediated_pmu=0, or when the VM is created with
+KVM_PMU_CAP_DISABLE). After this patch, perf_ibs_init() accepts
+exclude_guest=1 in those cases, but the event does not exclude the guest.
+This seems like a problem.
+
+> Since ibs_op and ibs_fetch pmus has PERF_PMU_CAP_MEDIATED_VPMU
+> capability set, update perf_ibs_init() to remove exclude_guest check.
+
+s/pmus has/PMUs have/
+
+As I said on patch 7/9, please squash this patch with patch 7/9.
+
 > Signed-off-by: Manali Shukla <manali.shukla@amd.com>
 > ---
->  arch/x86/events/amd/ibs.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  arch/x86/events/amd/ibs.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
 > diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-> index 6d230e417b61..e075c5ed136c 100644
+> index e075c5ed136c..47f4dc0b6341 100644
 > --- a/arch/x86/events/amd/ibs.c
 > +++ b/arch/x86/events/amd/ibs.c
-> @@ -978,6 +978,7 @@ static struct perf_ibs perf_ibs_fetch = {
->  		.stop		= perf_ibs_stop,
->  		.read		= perf_ibs_read,
->  		.check_period	= perf_ibs_check_period,
-> +		.capabilities	= PERF_PMU_CAP_MEDIATED_VPMU,
-
-At this point in the series, perf_ibs_init() still rejects events with
-exclude_guest set, so every IBS event is an "include guest" event, as
-defined by is_include_guest_event(). With this capability:
-
-- If any IBS event exists, perf_create_mediated_pmu() returns -EBUSY, so
-  KVM cannot create a vCPU in a VM with a mediated PMU.
-
-- If any VM with a mediated PMU exists, mediated_pmu_account_event()
-  returns -EOPNOTSUPP, so no IBS event can be created.
-
-Patch 8/9 removes the exclude_guest check. Please squash patches 7/9 and
-8/9 together, so that the series does not have this regression at any
-commit.
-
-Do we really want to set this capability when the CPU does not support IBS
-virtualization (or when kvm_amd.vibs=0)? In that case, the guest cannot use
-IBS, but host IBS events that do not set exclude_guest still block mediated
-PMU VMs, and vice versa.
-
-When the guest context is loaded, perf_load_guest_context() schedules
-out the exclude_guest IBS events through perf_ibs_stop(). On hardware
-with IBS_CAPS_DIS, perf_ibs_stop() does not clear IbsFetchEn or IbsOpEn.
-See my comment on patch 6/9.
-
->  	},
->  	.msr			= MSR_AMD64_IBSFETCHCTL,
->  	.msr2			= MSR_AMD64_IBSFETCHCTL2,
+> @@ -327,8 +327,7 @@ static int perf_ibs_init(struct perf_event *event)
+>  		return -EOPNOTSUPP;
+>
+>  	/* handle exclude_{user,kernel} in the IRQ handler */
+> -	if (event->attr.exclude_host || event->attr.exclude_guest ||
+> -	    event->attr.exclude_idle)
+> +	if (event->attr.exclude_host || event->attr.exclude_idle)
+>  		return -EINVAL;
+>
+>  	ret = validate_group(event);
