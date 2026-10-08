@@ -1,140 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365003BFE24;
-	Thu,  8 Oct 2026 06:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173983C0606
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 06:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791440102; cv=none; b=qZ1EObd/XWhNfQ4CT2n+Fo2r+qLdSscNPvAtvLaGUzIPSX/U7Y55yjHy8ffCJZB0F9SB6OSQuI+Cr4c24gH+Q5r3qLhsolVHiHiG8qoAe0BIu8xIZu0/1K8RG/Q6vj9/LEDb0R99mZb4U3EbyUgvduegKyj/9QYSlZ0KwZkhd4g=
+	t=1791440106; cv=none; b=uX70tduyjzsk9KUxs9tS8XqmCMSqzhZhuojXXiEGsg26iJ4pbIXX0HESdNdp3XbR+8H0cg/Kda6/JvpmCqJpuzRlOiu+vFhfJ9FoIuNgMfGEmvoRsG8zXm9a08GmqX4JlojMzNQQqsW8PA1zkIVFHPGU2v1XKbYImMnYwWFqIXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791440102; c=relaxed/simple;
-	bh=8pOatxKJF/3Yj3BLIg/B0+CMVQPYWE3JHtVzO0jlSS4=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=ex6RznVC2v6T1PYRJNbADEnLVhVYgZOwMw0a4IFXi4ffJB0tVk2+0f9yCVCE3i8G2iad6nxRVu1HwtnQuVa3Vg/2RaEkuDfeLciD7/JBScbfCiWCicUm5ZmjVHq8OV3BKQKom3NziBh3d8coq2MMq7uqYtSu3j6LvPXJdboNmRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hV9xVGso; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791440106; c=relaxed/simple;
+	bh=iZlvBhiQYHPEqa6L9KAd+g8PQotaI7euFSjW5CVhJtc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WrSGWUM8XwJDtfGJOvDzJ9TOPc5VsTWvsQ3LYCqV2brudPYh5rJvtlldGOaEHX4nKFzyRUNSL78ACDVJXNxyI6K0sUTG5uSeQMgPQHxUc41hhl8Zm1QS+Z4G0MM5E0FGzSJ8iVDnk/w2LF67P9MR/mjTfEpUNyMgmtTpe32u7bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ahz39jf4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hV9xVGso"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12161F000FF;
-	Thu,  8 Oct 2026 06:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791440100;
-	bh=TdDTX7ULALDFhFjGMhgkC9jDr9HhwKF/marGrwYH8Ls=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hV9xVGsofdTrbQ0DaxGOoPGQTnxznZ0SbmuNwiN5H//5A9dAWBGE7dITNJxYMRkn5
-	 +BXV8DN9ZUWPeK3LLmMKQ/xNZH2AExOSBw5rX79m4Frtp6ilFaqfrb7skcbNG+JLQN
-	 8zqAYojPwPFXCs7NDNhCa9+TDSulaQtN/Bhc9Sfl+nwVBusCYbHbwCxHyHNnmLpYAA
-	 nxxgsb1MwFLpvXJTqe4vs2FwejP3JmkqePzXvMfm2Kw05lCWPCrjaXMSSZPmcOcA4U
-	 Ocyg2GAm9aQItX+OVwG2eQ7hDCUi99qdZFFjlDs8DRbXAAQnx9EPJcgVD/pRI1+kkk
-	 HLjAvv7CTrKOQ==
-Message-ID: <sashiko-outbox-163673@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 09/16] tsm: Remove the device from lookup before PCI
- teardown
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261008055955.4014342-10-aneesh.kumar@kernel.org>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-10-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 06:15:00 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ahz39jf4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791440103;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V7lR3YC/gBBURr2+yOaKT5TXCdHLjx5Uu46t8DzfHSU=;
+	b=ahz39jf4+oIN0J6mAP4RHZYHALeGxaUHIgziskJzthVxvX6gKGJSHLADU3y8SgNpBZ7Tsl
+	PwTSbCKlGCzTh8KqnR3X9rx3grDdPKpD9R2I9RKPqhIYzOyTkch+JmOswYEQvKpLl9HHPs
+	KwM2JkQZ8gSDmNtLr8aBkRKaPbdd900=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-160-kSF5cEt7PA-P98KxWrGqfQ-1; Thu,
+ 8 Oct 2026 06:15:00 +0000
+X-MC-Unique: kSF5cEt7PA-P98KxWrGqfQ-1
+X-Mimecast-MFC-AGG-ID: kSF5cEt7PA-P98KxWrGqfQ_1791440099
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 912BB180B5EE;
+	Thu,  8 Oct 2026 06:14:58 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D5BC21956040;
+	Thu,  8 Oct 2026 06:14:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 73A2421E6A04; Thu, 08 Oct 2026 08:14:25 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: <qemu-devel@nongnu.org>,  <kvm@vger.kernel.org>,  <pbonzini@redhat.com>,
+  <berrange@redhat.com>,  <pankaj.gupta@amd.com>,  <xiaoyao.li@intel.com>,
+  <chao.p.peng@linux.intel.com>,  <david@kernel.org>,
+  <ashish.kalra@amd.com>,  <ackerleytng@google.com>,
+  <lpieralisi@kernel.org>
+Subject: Re: [PATCH v3 19/19] hostmem: Automatically select set
+ guest-memfd=on for in-place conversion
+In-Reply-To: <20261007134323.1606088-20-michael.roth@amd.com> (Michael Roth's
+	message of "Wed, 7 Oct 2026 08:41:43 -0500")
+References: <20261007134323.1606088-1-michael.roth@amd.com>
+	<20261007134323.1606088-20-michael.roth@amd.com>
+Date: Thu, 08 Oct 2026 08:14:25 +0200
+Message-ID: <87h5iwpvlq.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] tsm: race in tsm_register() error path leads to UAF and NULL poi=
-nter deref
---
+Michael Roth <michael.roth@amd.com> writes:
 
-commit f9b77b7469552ae6078c3a47333908a88eec2474
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> When in-place conversion is enabled, both the shared memory and private
+> memory must come from the same guest_memfd instance. Thus, the
+> memory-backend-memfd options must in turn correspond to a guest_memfd
+> instance, e.g. guest-memfd=on must be specified. Since there is no
+> use-case for enabling in-place conversion without setting
+> guest-memfd=on, just set it automatically if in-place conversion is
+> enabled (unless guest-memfd has been explicitly set to 'off', in which
+> case generate an informative error message).
+>
+> Also update the 'guest-memfd' documentation to note this behavior.
+>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-tsm: Remove the device from lookup before PCI teardown
+[...]
 
-This commit modifies the teardown flow to remove the TSM device from
-lookup before tearing down the PCI state. It also adjusts the setup
-flow in tsm_register() to handle PCI registration failures differently.
+> diff --git a/docs/system/guest-memfd.rst b/docs/system/guest-memfd.rst
+> index d62a214a91..4477756424 100644
+> --- a/docs/system/guest-memfd.rst
+> +++ b/docs/system/guest-memfd.rst
+> @@ -53,6 +53,27 @@ exposed as an experimental for the time being:
+>   * guest_memfd does not currently support the hugetlb=on option
+>   * guest_memfd does not currently support Transparent Huge Pages
+>  
+> +In-place conversion
+> +-------------------
+> +
+> +Newer kernels now support using a guest-memfd instance for both
+> +private and shared memory at the same time by re-using the same
+> +physical backing pages if a guest converts a GPA range between
+> +shared and private. This is known as "in-place conversion".
+> +
+> +For some confidential computing architectures, like SEV-SNP and
+> +TDX, this mode offers better performance due to not needing to
+> +deallocate/reallocate between 2 separate pools of shared vs. private
+> +memory every time the guest converts memory between shared/private.
+> +For other architectures, this is the only supported mode of
+> +operation.
+> +
+> +When in-place conversion is enabled, it is necessary to use the
+> +memory-backend-memfd backend with guest-memfd=on as shown in the
+> +"Usage" section. Because of this, guest-memfd=auto (which is the
 
-> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
-> --- a/drivers/virt/coco/tsm-core.c
-> +++ b/drivers/virt/coco/tsm-core.c
-> @@ -56,26 +56,25 @@ static struct tsm_dev *alloc_tsm_dev(struct device *p=
-arent)
-[ ... ]
-> -static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
-> -						 struct pci_tsm_ops *pci_ops)
-> +static int tsm_register_pci(struct tsm_dev *tsm_dev, struct pci_tsm_ops =
-*pci_ops)
->  {
-[ ... ]
->  	tsm_dev->pci_ops =3D pci_ops;
->  	rc =3D pci_tsm_register(tsm_dev);
->  	if (rc) {
-> +		tsm_dev->pci_ops =3D NULL;
+Recommend to make this a link.
 
-[Severity: Medium]
-Does this unprotected write to tsm_dev->pci_ops introduce a race condition?
+> +default) will result in the parameter being automatically enabled
+> +if the confidential guest type enables in-place conversion.
+> +
+>  References
+>  ----------
+>  
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index 84166c2457..5d66e67087 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -756,8 +756,9 @@
+>  # @guest-memfd: if 'on', use guest-memfd to back the memory region.
+>  #     See the :doc:`/system/guest-memfd` documentation for more
+>  #     details.  If 'auto', the option will default to 'off'
+> -#     currently, but in the future it may result in the option being
+> -#     set to 'on' for QEMU configurations that explicitly require it.
+> +#     unless the QEMU configuration explicitly requires it to be set,
+> +#     e.g. if in-place conversion is enabled for confidential guest
+> +#     types like sev-snp-guest.
+>  #     (default: auto, since: 11.2)
+>  #
+>  # Features:
 
-If pci_tsm_register() returns an error early (e.g. if a driver incorrectly=
-=20
-provides both link_ops and devsec_ops, returning -EINVAL before acquiring=20
-pci_tsm_rwsem), a concurrent userspace write to the connect sysfs attribute=
-=20
-might trigger connect_store().
+QAPI schema
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
-If connect_store() evaluates is_link_tsm() concurrently, this lockless=20
-assignment to NULL on the error path could cause the compiler to reload the=
-=20
-pointer after the NULL check. Could this lead to a NULL pointer dereference=
-=20
-when accessing ->link_ops.probe?
-
->  		dev_err(tsm_dev->dev.parent,
->  			"PCI/TSM registration failure: %d\n", rc);
-> -		device_unregister(&tsm_dev->dev);
-> -		return ERR_PTR(rc);
-> +		return rc;
->  	}
-[ ... ]
-> @@ -96,15 +95,22 @@ struct tsm_dev *tsm_register(struct device *parent, s=
-truct pci_tsm_ops *pci_ops)
->  	if (rc)
->  		return ERR_PTR(rc);
-> =20
-> -	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
-> +	rc =3D tsm_register_pci(tsm_dev, pci_ops);
-> +	if (rc) {
-> +		device_del(dev);
-
-[Severity: Medium]
-Can this error path lead to a use-after-free if PCI registration fails?
-
-Since device_add() is called prior to tsm_register_pci() in tsm_register(),=
-=20
-the device is already exposed via class_find_device(). If a concurrent=20
-connect_store() finds the device and proceeds to pci_tsm_connect() before=20
-this error path cleans it up, it will attach the PCI context to tsm_dev.
-
-When this error path calls device_del() and returns, the __free(put_tsm_dev=
-)=20
-guard at the top of tsm_register() will drop the primary reference to=20
-tsm_dev, freeing its memory.
-
-Because the attached PCI context stores the pointer without taking an=20
-additional device reference, wouldn't this leave a dangling pointer in the=
-=20
-PCI context, resulting in a use-after-free on subsequent accesses?
-
-> +		return ERR_PTR(rc);
-> +	}
-> +	return no_free_ptr(tsm_dev);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008055955.4014=
-342-1-aneesh.kumar@kernel.org?part=3D9
