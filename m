@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3359225771
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 00:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABDAB640
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 00:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791419596; cv=none; b=Am732+e/Yepqhj18zjjHt8pYY8ZeiSxYDtWQWx3CjHrwD8IRtOkR7O9vKdBPJZ48+G1xn5i4fDxgQeAK0t3UO2FFwI2HzmGv01VofhYDYug3uwdcEyBGWTLQHc3EHABOeLaU9Y5CZIoyimPiIysxc2qzAnlxHm0zZnf2HyRIenM=
+	t=1791419737; cv=none; b=HMY3tE4ds42xzyVU4m7D8ciIAezzguNzAL8TXwedxkvwaFCU5f7f5zie7Z31jFVu3PHilwSbdRik5kL/2b8u00wsCrnGUHsBI7oOW2WA0CJSpOOnZqMuPGqnaoUQaPUlT6jHG24kKYeIowjV7u4tOdEEt/n+lChvBVnWj8DYDjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791419596; c=relaxed/simple;
-	bh=qCMzvUGg5F5V3yCKYr5h+K/I5z2Y+WxlEnDISScs65o=;
+	s=arc-20240116; t=1791419737; c=relaxed/simple;
+	bh=IegumqAal+rvV7/Vn78p5m6CGfv4B3HwSf9Vfhlx7n8=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=IeGOP6Z/wvLXp/p2fXUZgtyiTDMMQjk2TymDCyBUdHZ+1nt+Wscy4OOGMu5yVEY69DqrsZSkBF2C87CFOGxcdn1Tl5VFF8CLRVTtURIEQ8hNdqLoPT3rHMJT4pAKFhQS8Da1dEHKHyUUiFO00+oSCNGsd2VOavw0xjD9q65durA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPQEMNJV; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=rMe9BA9cbZdXgk4gdBN1cqzRtZwr/+xGaBh0eHYCej+L5Is83c+vhep8gpxMcY4DZLyaUxjQC8//1zE/FZJ36oc7Y+S5iDTr5dPW0E9qnSAwl51N5DEhnF+FWWdzaYpL+vaic+4m06VDuy7J5jvhVO8ka/9l67RRo/9wUoowEs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCUXGl1E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPQEMNJV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE8A1F000FF;
-	Thu,  8 Oct 2026 00:33:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCUXGl1E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A091F000FF;
+	Thu,  8 Oct 2026 00:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791419594;
-	bh=f9XMQj9oGCFB+If613ksSy7aZj338SryGIt+h1q+RRY=;
+	s=k20260515; t=1791419736;
+	bh=tkB0Q8zPbh0rg2iB5SSfGFkRy9RF2znmPSXJHWkxhF4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LPQEMNJVCAaVweXqYgpS+9U7MfVwFRd1TRuFI0fqUddm++bDFp27a+I6gW1OQf5df
-	 37OU2OAjEbw3zbWt73iRV+PUTkGSIdfsgt8PoCR1/VjELG5/BgofnpzZuOdzJ3Gjbp
-	 T3jb3giRqikHPd3azCZQ5df4yVM9LtbTGtNt09qat60PStV87L3i18k44HACmxln1f
-	 IlKmtClmRb5AMXRCk8iWbRe4T0QU3HFhRAAHjUhfgwYj8UbobTrrZA0CccgDdemrES
-	 JJPYy9zk2voymKXEgjeYjXPv7X7PdSNGTJYGssFb1eWOVa7SDGQ89HA5zmbcCcB7kf
-	 U+dCa677b/KVQ==
-Message-ID: <sashiko-outbox-163474@kernel.org>
+	b=aCUXGl1ESBpBYjbDV48cbhjvGYwlYOzsrtlqL3O7RS94YxMvOZNio58GhhUc6cKy8
+	 pk5qIzM/jr7ob50nQ3Q0b0gFq5oQKCNh46lXwnoVmgcGQPfvL/FdjVdzLFhYBLT9rw
+	 y8oJ+S7UAC/VKw+z7OsywbWowmj1J2YN5AoYcSieiiq2+wta+HkOAb/OCCHTfW8V+I
+	 kjynCN6euypWoru5fPLcXy37mhitRpv0sXjAcahM46zSF1D40NVXAqofpCgpim+o11
+	 OYsGQzTcLXbVfTrOug8bqonwEvXwb5emviXe+DtOtZJldaZr4tDjEJdIsqwIb8Ae8z
+	 QuDjXUyfPXDaw==
+Message-ID: <sashiko-outbox-163475@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 11/29] KVM: SVM: Only flush the fallback ASID when
- used by a different vCPU
+Subject: Re: [PATCH v2 29/29] KVM: selftests: Add a test for nested TLB
+ flushes
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yosry Ahmed" <yosry@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261008001425.2458927-12-yosry@kernel.org>
+In-Reply-To: <20261008001425.2458927-30-yosry@kernel.org>
 References: <20261008001425.2458927-1-yosry@kernel.org>
- <20261008001425.2458927-12-yosry@kernel.org>
+ <20261008001425.2458927-30-yosry@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 00:33:14 +0000
+Date: Thu, 08 Oct 2026 00:35:35 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,73 +47,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] kvm: data race on sd->fallback_asid_vcpu between pre_svm_run and sv=
-m_vcpu_free
+- [Medium] kvm: selftests: missing memory clobber in invlpga() allows reord=
+ering
 --
 
-commit aa8eca89b8d60f642d17b3f8439f52f2e1ae951d
+commit c21865242d0952d01a007708f2fbf08ce2550486
 Author: Yosry Ahmed <yosry@kernel.org>
 
-KVM: SVM: Only flush the fallback ASID when used by a different vCPU
+KVM: selftests: Add a test for nested TLB flushes
 
-This commit optimizes the fallback ASID flushing logic by only flushing
-when the last vCPU that used the fallback ASID on the pCPU changes. It
-adds a per-CPU tracker fallback_asid_vcpu to determine when this occurs.
+Add a test that exercises most common scenarios for TLB flushes. The
+test is split into guest-triggered and KVM-triggered TLB flushes.
 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 8f27722bc4faf..0dbb1962d32b6 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-
+> diff --git a/tools/testing/selftests/kvm/include/x86/svm.h b/tools/testin=
+g/selftests/kvm/include/x86/svm.h
+> index c8539166270ea..7644e37c7042c 100644
+> --- a/tools/testing/selftests/kvm/include/x86/svm.h
+> +++ b/tools/testing/selftests/kvm/include/x86/svm.h
 [ ... ]
-
-> @@ -1422,6 +1424,11 @@ static void svm_vcpu_free(struct kvm_vcpu *vcpu)
->  	svm_vcpu_free_msrpm(svm->msrpm);
+> @@ -316,4 +316,9 @@ struct __attribute__ ((__packed__)) vmcb {
 > =20
->  	free_asid(svm->asid);
+>  #define SVM_CR0_SELECTIVE_MASK (X86_CR0_TS | X86_CR0_MP)
+> =20
+> +static inline void invlpga(unsigned long addr, u32 asid)
+> +{
+> +	asm volatile("invlpga %0, %1" : : "a"(addr), "c"(asid));
+> +}
 > +
-> +	for_each_possible_cpu(cpu) {
-> +		sd =3D per_cpu_ptr(&svm_data, cpu);
-> +		cmpxchg(&sd->fallback_asid_vcpu, vcpu, NULL);
-> +	}
->  }
+>  #endif /* SELFTEST_KVM_SVM_H */
 
+[Severity: Medium]
+Does this inline assembly need a "memory" clobber?
+
+Unlike the VMX counterparts invvpid and invept introduced in this patch, th=
+is
+inline assembly lacks a "memory" clobber. This might allow the compiler to
+reorder prior memory stores past the TLB flush instruction.
+
+> diff --git a/tools/testing/selftests/kvm/x86/nested_tlb_flush_test.c b/to=
+ols/testing/selftests/kvm/x86/nested_tlb_flush_test.c
+> new file mode 100644
+> index 0000000000000..fb32b7bf6b19f
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/nested_tlb_flush_test.c
 [ ... ]
+> +static void l1_guest_code(void *data)
+> +{
+> +	gpa_t gpa;
+> +	int i;
+> +
+> +	prepare_l2(data, l2_guest_code);
+> +
+> +	/*
+> +	 * Alternately switch the PTE (or TDP PTE) mapping TEST_VADDR between
+> +	 * two pages containing VAL1 and VAL2, flush TLBs, and verify that L2
+> +	 * reads the expected value.
+> +	 */
+> +	for (i =3D 0; i < NR_ITERATIONS; i++) {
+> +		gpa =3D test_gpa[i % 2];
+> +
+> +		*pte_gva &=3D ~PHYSICAL_PAGE_MASK;
+> +		*pte_gva |=3D gpa & PHYSICAL_PAGE_MASK;
+> +
+> +		WRITE_ONCE(l2_expected_val, (i % 2 =3D=3D 0) ? VAL1 : VAL2);
+> +		run_l2(data, i =3D=3D 0);
 
-> @@ -3884,8 +3892,11 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
->  	if (is_sev_guest(vcpu))
->  		return pre_sev_run(svm, vcpu->cpu);
-> =20
-> -	if (unlikely(svm->vmcb->control.asid =3D=3D fallback_asid))
-> +	if (unlikely(svm->vmcb->control.asid =3D=3D fallback_asid &&
-> +		     sd->fallback_asid_vcpu !=3D vcpu)) {
->  		vmcb_set_flush_asid(svm->vmcb);
-> +		sd->fallback_asid_vcpu =3D vcpu;
+[Severity: Medium]
+Can the compiler execute the *pte_gva assignments after the TLB flush inside
+run_l2()?
 
-[Severity: Low]
-Will this concurrent access to sd->fallback_asid_vcpu trigger a KCSAN data
-race splat?
+Because the invlpga() inline assembly lacks a "memory" clobber, and there i=
+s no
+other compiler barrier between the assignment and invlpga(), the compiler is
+legally permitted to reorder the memory store to execute after the invlpga()
+instruction.
 
-In svm_vcpu_free(), when a vCPU is being destroyed, it iterates over all
-physical CPUs and modifies sd->fallback_asid_vcpu via cmpxchg() across CPUs.
-
-Concurrently, another vCPU running on one of those CPUs will execute
-pre_svm_run() and perform plain reads and writes of its local
-sd->fallback_asid_vcpu.
-
-Per the LKMM (C11 memory model), if an atomic RMW is used on one side
-of a concurrent access, at least one side must use READ_ONCE() or
-WRITE_ONCE() to prevent the compiler from fusing loads or reordering
-plain stores.
-
-Should the reads and writes in pre_svm_run() use READ_ONCE() and
-WRITE_ONCE() to avoid this race?
-
-> +	}
-> =20
->  	return 0;
->  }
+If this reordering occurs, the hardware will flush the TLB while the old PT=
+E is
+still in memory, which could allow a speculative hardware page walk to re-c=
+ache
+the old PTE before the store completes. When L2 resumes, it may use the sta=
+le
+TLB entry, causing the test to spuriously fail. The "memory" clobber in the
+run_guest() wrapper only ensures both operations complete prior to VM-entry=
+; it
+does not enforce their relative execution order.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008001425.2458=
-927-1-yosry@kernel.org?part=3D11
+927-1-yosry@kernel.org?part=3D29
