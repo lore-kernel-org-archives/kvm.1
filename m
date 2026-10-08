@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABDAB640
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 00:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FE323E358
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 00:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791419737; cv=none; b=HMY3tE4ds42xzyVU4m7D8ciIAezzguNzAL8TXwedxkvwaFCU5f7f5zie7Z31jFVu3PHilwSbdRik5kL/2b8u00wsCrnGUHsBI7oOW2WA0CJSpOOnZqMuPGqnaoUQaPUlT6jHG24kKYeIowjV7u4tOdEEt/n+lChvBVnWj8DYDjs=
+	t=1791419783; cv=none; b=OhXLOb/nwG5IFoTd/A2sc6iRbZ/8r5NvZWRnv0UvRiziwv9ovqbOACRkuwo4olXUF7ReH1TBqE2VhsKZln+Jh5uHuJiS5OShzZkAI9sQ7QTrCI3vsvf6BbKUifFsiuekMfd2UiSEYHUN98D50w+DaztW3Ewpfp29ve70PAr0zzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791419737; c=relaxed/simple;
-	bh=IegumqAal+rvV7/Vn78p5m6CGfv4B3HwSf9Vfhlx7n8=;
+	s=arc-20240116; t=1791419783; c=relaxed/simple;
+	bh=aFx54mfCfv/zvmMBXZ0fWHhVs+p/NITVM9bTxmI+WZ0=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=rMe9BA9cbZdXgk4gdBN1cqzRtZwr/+xGaBh0eHYCej+L5Is83c+vhep8gpxMcY4DZLyaUxjQC8//1zE/FZJ36oc7Y+S5iDTr5dPW0E9qnSAwl51N5DEhnF+FWWdzaYpL+vaic+4m06VDuy7J5jvhVO8ka/9l67RRo/9wUoowEs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCUXGl1E; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=HBEfuo8KTXkBpwDdlF37Jkl/o0K+T8/LO1GDWmFf0uOImdaZ2XVVySJEyhDNri1I7eEtaqZ7UICwmvR1UWT2H9Oxjha1Ze2bQqxetF0PwZUtuQs8LQNauVVufgeb4MgqpLGsdF6hzG7Gsp5EmEiQRma1Ev1DOORlRjk5kpPrY7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7Km2Hxf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCUXGl1E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A091F000FF;
-	Thu,  8 Oct 2026 00:35:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7Km2Hxf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E214E1F00893;
+	Thu,  8 Oct 2026 00:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791419736;
-	bh=tkB0Q8zPbh0rg2iB5SSfGFkRy9RF2znmPSXJHWkxhF4=;
+	s=k20260515; t=1791419782;
+	bh=aFx54mfCfv/zvmMBXZ0fWHhVs+p/NITVM9bTxmI+WZ0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aCUXGl1ESBpBYjbDV48cbhjvGYwlYOzsrtlqL3O7RS94YxMvOZNio58GhhUc6cKy8
-	 pk5qIzM/jr7ob50nQ3Q0b0gFq5oQKCNh46lXwnoVmgcGQPfvL/FdjVdzLFhYBLT9rw
-	 y8oJ+S7UAC/VKw+z7OsywbWowmj1J2YN5AoYcSieiiq2+wta+HkOAb/OCCHTfW8V+I
-	 kjynCN6euypWoru5fPLcXy37mhitRpv0sXjAcahM46zSF1D40NVXAqofpCgpim+o11
-	 OYsGQzTcLXbVfTrOug8bqonwEvXwb5emviXe+DtOtZJldaZr4tDjEJdIsqwIb8Ae8z
-	 QuDjXUyfPXDaw==
-Message-ID: <sashiko-outbox-163475@kernel.org>
+	b=G7Km2HxfXAzrJ/pcXvoEqgRGGQF1s13VdSOaP4CdyrTeTP0OisET47WFQytczisK8
+	 3wChAZ9AlbKCGTqJeQWuyzQeJNhbqHz/xUWmzL7Wwc0TlLzJHV8oNd12TaLwPIrDka
+	 r/i33fgL7L1hp2GSTMStPP+dPYQwYz9ZH0zEMH8NyLAI5NsEnzXM3RlHmujPT3J7ep
+	 /ARXJckVx8+uej0Tt1s1X2eTRlXffRKRHLxHozaWefoJYB9igI0MyUZDBk/ZTo6BLg
+	 hy7BJ8l8FIL9hf6U2GH/neC2cOWsDlFf4WmHxl53s4t0fPjRui9aOl6mPS6XWXnRMi
+	 Cv4G+X40w51qw==
+Message-ID: <sashiko-outbox-163476@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 29/29] KVM: selftests: Add a test for nested TLB
- flushes
+Subject: Re: [PATCH v2 21/29] KVM: nSVM: Handle nested TLB flush requests
+ through TLB_CONTROL
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yosry Ahmed" <yosry@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261008001425.2458927-30-yosry@kernel.org>
+In-Reply-To: <20261008001425.2458927-22-yosry@kernel.org>
 References: <20261008001425.2458927-1-yosry@kernel.org>
- <20261008001425.2458927-30-yosry@kernel.org>
+ <20261008001425.2458927-22-yosry@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 00:35:35 +0000
+Date: Thu, 08 Oct 2026 00:36:21 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,92 +47,43 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kvm: selftests: missing memory clobber in invlpga() allows reord=
-ering
+- [High] kvm: nSVM: Failure to clear vmcb12->control.tlb_ctl on nested VMRU=
+N causes sticky flushes
 --
 
-commit c21865242d0952d01a007708f2fbf08ce2550486
+commit a1eb425c937534a8aa46b2b08b4187a40adeac38
 Author: Yosry Ahmed <yosry@kernel.org>
+Subject: KVM: nSVM: Handle nested TLB flush requests through TLB_CONTROL
 
-KVM: selftests: Add a test for nested TLB flushes
+This commit handles L1 requests to flush L2 TLBs using the TLB_CONTROL
+field of VMCB12. It triggers ASID flushes and NPT syncs on nested VM-Enter
+or VM-Exit depending on the type of flush requested.
 
-Add a test that exercises most common scenarios for TLB flushes. The
-test is split into guest-triggered and KVM-triggered TLB flushes.
+[Severity: High]
+According to the AMD APM Volume 2, Section 15.15.1, the VMRUN instruction
+processes the TLB_CONTROL field of the VMCB and then clears it to zero.
 
-> diff --git a/tools/testing/selftests/kvm/include/x86/svm.h b/tools/testin=
-g/selftests/kvm/include/x86/svm.h
-> index c8539166270ea..7644e37c7042c 100644
-> --- a/tools/testing/selftests/kvm/include/x86/svm.h
-> +++ b/tools/testing/selftests/kvm/include/x86/svm.h
-[ ... ]
-> @@ -316,4 +316,9 @@ struct __attribute__ ((__packed__)) vmcb {
-> =20
->  #define SVM_CR0_SELECTIVE_MASK (X86_CR0_TS | X86_CR0_MP)
-> =20
-> +static inline void invlpga(unsigned long addr, u32 asid)
-> +{
-> +	asm volatile("invlpga %0, %1" : : "a"(addr), "c"(asid));
-> +}
-> +
->  #endif /* SELFTEST_KVM_SVM_H */
+Looking at the implementation in arch/x86/kvm/svm/nested.c, specifically
+within nested_svm_entry_tlb_flush() at line 710, the new logic requests
+KVM_REQ_MMU_SYNC_ALL_ROOTS and KVM_REQ_TLB_FLUSH_GUEST whenever
+svm->nested.ctl.tlb_ctl is not TLB_CONTROL_DO_NOTHING.
 
-[Severity: Medium]
-Does this inline assembly need a "memory" clobber?
+However, it appears KVM never clears tlb_ctl to 0 in vmcb12 during the
+nested entry sequence, nor during VM-Exit in
+nested_svm_vmexit_update_vmcb12() at line 1582 where other
+hardware-cleared fields like event_inj are reset.
 
-Unlike the VMX counterparts invvpid and invept introduced in this patch, th=
-is
-inline assembly lacks a "memory" clobber. This might allow the compiler to
-reorder prior memory stores past the TLB flush instruction.
+Because KVM fails to emulate the hardware behavior of clearing the field,
+will L1 hypervisors that rely on hardware to clear it unknowingly reuse
+vmcb12 with tlb_ctl permanently stuck at a non-zero value?
 
-> diff --git a/tools/testing/selftests/kvm/x86/nested_tlb_flush_test.c b/to=
-ols/testing/selftests/kvm/x86/nested_tlb_flush_test.c
-> new file mode 100644
-> index 0000000000000..fb32b7bf6b19f
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/nested_tlb_flush_test.c
-[ ... ]
-> +static void l1_guest_code(void *data)
-> +{
-> +	gpa_t gpa;
-> +	int i;
-> +
-> +	prepare_l2(data, l2_guest_code);
-> +
-> +	/*
-> +	 * Alternately switch the PTE (or TDP PTE) mapping TEST_VADDR between
-> +	 * two pages containing VAL1 and VAL2, flush TLBs, and verify that L2
-> +	 * reads the expected value.
-> +	 */
-> +	for (i =3D 0; i < NR_ITERATIONS; i++) {
-> +		gpa =3D test_gpa[i % 2];
-> +
-> +		*pte_gva &=3D ~PHYSICAL_PAGE_MASK;
-> +		*pte_gva |=3D gpa & PHYSICAL_PAGE_MASK;
-> +
-> +		WRITE_ONCE(l2_expected_val, (i % 2 =3D=3D 0) ? VAL1 : VAL2);
-> +		run_l2(data, i =3D=3D 0);
+If so, does this introduce a regression that traps the VM in a persistent
+loop of heavy MMU root syncs and TLB flushes on every single subsequent
+VMRUN, resulting in severe performance degradation for the nested VM?
 
-[Severity: Medium]
-Can the compiler execute the *pte_gva assignments after the TLB flush inside
-run_l2()?
-
-Because the invlpga() inline assembly lacks a "memory" clobber, and there i=
-s no
-other compiler barrier between the assignment and invlpga(), the compiler is
-legally permitted to reorder the memory store to execute after the invlpga()
-instruction.
-
-If this reordering occurs, the hardware will flush the TLB while the old PT=
-E is
-still in memory, which could allow a speculative hardware page walk to re-c=
-ache
-the old PTE before the store completes. When L2 resumes, it may use the sta=
-le
-TLB entry, causing the test to spuriously fail. The "memory" clobber in the
-run_guest() wrapper only ensures both operations complete prior to VM-entry=
-; it
-does not enforce their relative execution order.
+Could we add a step to clear tlb_ctl in vmcb12 to prevent these sticky
+flushes?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008001425.2458=
-927-1-yosry@kernel.org?part=3D29
+927-1-yosry@kernel.org?part=3D21
