@@ -1,162 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010043.outbound.protection.outlook.com [52.101.56.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713A23C1D76;
-	Thu,  8 Oct 2026 06:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791440840; cv=none; b=f3u8FSC/VVAEy7aJ9vquEdmVgxIU89tqEZ+dJjAGl+Qz2WS5/NZAy8LBRXAQQseiyKTSOHkv6tGaAItFbQ32LMDbxbjPpQsxo6dMFsciQ6j9xgR2bYWW5qs4WXJowhXZnt9Kic96b7O4haiO3Nb6fiO8R7IkcU5HSjXObIr2Ri8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791440840; c=relaxed/simple;
-	bh=Jrw91qcEJRqfJtA4yFThPK8yCWe6l97xZe4SSxiCIKw=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=aNcF2WaJUP1ZWZy4TtfAmQA28E+Qnp8D5LyBmppaVU65lvSukJCI/wVtp+6E0D1DTDupW59DzKmb7Wx7mdV1P8ELbaIoRONdJY50HkmCSoI/V3RplZDlHgyewMsSs8v5i56cwjQlYfJy+WXqh61BHH7GBPzRlk/o7dslUQVJmHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOUYRpDc; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C17387566
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 06:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791440849; cv=fail; b=LfKN8qe/M9TQKKzNjUgxjLQKxzrl2NhlH7Ggf4h5ILgeeFELOa6BSMkSFppirLu3GGHqDHhSaWfgnA4M/+wGJROAIxToTBRcbqi0x1zjTnu6Ioza27TY+sMnDzftYFc0aC2Xh54KPCQmeXDj0diwevQZnX5xiAQnySJCclgq6fs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791440849; c=relaxed/simple;
+	bh=/r5qZXHbq0A3Jm17oZL9Yg42VZ91MgSOvc52lV2OUEo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c76IjWcaY5Pi6KDMQP6zxUPDbNtePINFESQqltMPoH9kjJwsazy/cVFZTULZvv0TeiBF4fTn1tE1x03jQHTel3ZIR+Q7zX9qBZTOVxiHcI/3T6pb+EM9RMko3HA5MKkA9g/+NoBOXiSkVv9/z2br2c2f/1J0iOfTI607mg8KIKM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TTcF1pug; arc=fail smtp.client-ip=52.101.56.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOUYRpDc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5311F00893;
-	Thu,  8 Oct 2026 06:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791440833;
-	bh=hxUFojCl5cG86MeBCZaYdnoHG8wxs+FufUnUZFJV+FI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EOUYRpDc4ZIqVJijkO8WLJK5/V2+WMzZyay1p2gSbKEGpvgA03uegA+Gzm0U+jf92
-	 bm2XZEahURWUun/IbWQrts7aEVhnfo4Z5UjGxzPeh0Cg1Kux5xpbh8E/A5LR00pXcp
-	 SMebxu0xJlyvP8x1ZnWvnY1nkJwEywf3NuOj3TOUaiccN6J24WR+dt7k+6Vlt8wM+9
-	 fH5TlNzA6AlrpYSmniDOwu/yKwVD/nTGgRZ5Y6mLE8IqFX7JsXQze4NnVOxoKjf9/G
-	 vrpCgfmXdU1Cz826JKfPbEJAk0IcT+3CtHH73zutGSakXNTqi7Dn22DRT7waRwkMn7
-	 DAmaklcmDJIsw==
-Message-ID: <sashiko-outbox-163690@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 13/16] iommufd/viommu: Select vIOMMU operations
- before allocation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261008055955.4014342-14-aneesh.kumar@kernel.org>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-14-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 06:27:12 +0000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TTcF1pug"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jiiT7FXk6kMDeQpQoEh31ym4aQRSzmT9gM0TBF8LvRh8iGjN1xSfsPJjOTXsSb3kl2lcZ7h22NzyfSQpIUpJMTxavSx1eWYSGoP6F+RJum/lIbBUhs/htOknLwuUReObz0KszgxHuP2yvtQVIXQpb6FOM8zbY5A+9nymlbx3sALN+XQXHscRUpc2WUNUXBbNxcW9VjNY0qezBcxldWw/Eq2gFMjk1/xO/Yijd7mjkf0dEJE3zauRX23JUyTG36XAPZmgYFiT5eK051Ek84eKkkcbiGtKZlcJfFTkQ2b6fPhhldb8O52JsOwlc91XU5GbABUbbKSmtZcGW5q4yH42Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zy594U2nuqwQW37tR/MUQDOOHUA5oaXAxCxlmtXvzPc=;
+ b=NJyQbFl5UCppL49kgZU24TTggcTqibZ+y1PzNmTvdAaQ1GRFfNrAmkwZRbY48EbsT4A8cclyTJ02W7GHZcgbc/O5e/YM49nm2/oIJFods+Zc7Fah/lkV98ZROr46YnV6Xvy0QCuEJqP+oZvQZqfRnCvXFLdlKKZCVqREmenaRRlfhXFmgFbI7zf2wMvxewHrq0FSqBo9b5eOhgSIrc1my0jbBWIvwzzp3YTqoZs9ZO+K5Ee0MMLD9xFVrBi4XMEm4p5OtSwfKinfpHgH4zNvqAJo9XqlNG6IxEXU7chMS7Kq+hd16thkV02sUzIJL4qW1yjwIWIPGU1/QurhZT+V/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zy594U2nuqwQW37tR/MUQDOOHUA5oaXAxCxlmtXvzPc=;
+ b=TTcF1pugD39InPb7simeT7gFqeJxlRZPxur9xwyq9uiJw3thOwIdSf4lHC9ptpXF32gIW7jOVzsQC1lmdg2XGktv0d5wE1qEETi5acNFl0ydTwPpzVD5DM/+eBZ5spWD6pAspY5vwVN3s5OOX2DM+Rk0ysC3OWy4B9tCCOtCANA=
+Received: from BY5PR03CA0028.namprd03.prod.outlook.com (2603:10b6:a03:1e0::38)
+ by DS0PR12MB999080.namprd12.prod.outlook.com (2603:10b6:8:2fe::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Thu, 8 Oct
+ 2026 06:27:22 +0000
+Received: from BY1PEPF0001AE19.namprd04.prod.outlook.com
+ (2603:10b6:a03:1e0:cafe::a9) by BY5PR03CA0028.outlook.office365.com
+ (2603:10b6:a03:1e0::38) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Thu, 8
+ Oct 2026 06:27:22 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BY1PEPF0001AE19.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Thu, 8 Oct 2026 06:27:22 +0000
+Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 8 Oct
+ 2026 01:27:17 -0500
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>
+CC: <kvm@vger.kernel.org>, <x86@kernel.org>, <thomas.lendacky@amd.com>,
+	<nikunj.dadhania@amd.com>, <santosh.shukla@amd.com>,
+	<shivansh.dhiman@amd.com>
+Subject: [PATCH v2] KVM: SVM: Clear VMCB save area instead of entire VMCB on shutdown intercept
+Date: Thu, 8 Oct 2026 06:26:43 +0000
+Message-ID: <20261008062643.1183018-1-shivansh.dhiman@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE19:EE_|DS0PR12MB999080:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7b0a45d-54ff-4ca7-cfd0-08df2505361a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|1800799024|13003099007|11063799006|10067099003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	5TzC1G2Q4xkMn3LuFjVS4/SSnIOrCVJUvKbh2D4X07equqSXFnE7ehsvKtH45KOf0ZGTjDUiFW9UJkEX1yHQLRCafH7i+Hi8CSBa3qImlVm3cYy3AnYHbLjsI3Ep5Q4DsKbUEnEXyQDdkaoGlKa2UEylhko6VnjQYiwf4HH9pO56A3yWNlvZ0VVqKBLwzmCC+c0IoLhx7Cqxkw7TPUpzq3zT+L0wFBAfyiK56yiCOmZtzn9PrDdg/O+Br72HybjbKj9hOl5/wTtjDsaRUgbcxXGgha8lV5lqCWbDEoOlEmyH/FMouk0gZI5qre9EIwKJACUmwc+sG/LLuFv7e2FYFtMEscMJCVsPZkt+5Q54dbCw6bpI/SDS3fPQhSzqLKXgrmnkMCpjZwQ0KC1PZRvMsm4djMIRaOCyWtCP7xIkkwENT0W7Ga0XsLQ/Okwvh32Bn7A85pnHPWc9V6shx8QeOMRSjHneL8hUpa7tThy7AfjhnoXfmPn9JbbjZEqfGODLB64XBlU0euR30SHcZigoIbPS2m+1iKynKC7KmZHSxmn8JekRuzPiRHCCdwD7OG58l+jFj0zomeW47iasJLzPmJstYWzvBlKBjkRyoZC/qH79E3rSple1RI2SeCb25oy7+9K9iR2ucmYMYxGsHEJUQCyMXDo0ROInhQLu6emB/1qDnWPGRcweEeRr+d/YhttOTuj1WsPqxIurX2tN5htSlg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(1800799024)(13003099007)(11063799006)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	97Fx9o5hj/wdARcFrpGCgNfoPe4v7MPAg1WXPt94rLj6Vr7oXXn/3cGXY9mqrCwAcfh9gHA5tiEfO5Bs6t7KSYfhaVRDWHCVkDxTq8WIGrYjzezQlvpSuNHVgrksHMjnZQlXHXHh5b3ycCrq676DI/VQnhX5sTNqqzowjO6tmqu67pP1twKDoO3QMs9qRVAy+aB3UFbMqcIvQIQw7VBsbzaQR1q4WQ33Uq5Ih9eI43BKj+maYmuHcQnfr3Oo/pv0wSrW2zFWHpnh6TRF5wPT/BLHiRUpBYwI8kri9Ca2BHe840FjFVGmPIh4TF+zYxvpgWiOATpnZuQO2iJnjA0xAQMNMMWVlsgWKSdNmCU2v+aGVWt+sWOxeKgdACcSryevx5D+0m0uEsvQioEACeHS6cy2bASgSZzchERlPRDQ7sX0OpOaKW8KtBWZ/DPZcCWS
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 06:27:22.1413
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7b0a45d-54ff-4ca7-cfd0-08df2505361a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE19.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999080
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Critical] iommu: type confusion in iommufd_viommu_alloc_ioctl() parent d=
-omain
-- [High] iommu: dead code because amd_iommu_alloc_domain_nested is not assi=
-gned
-- [Low] iommu: missing viommu_type validation in amd_iommufd_get_viommu_ops
---
+The AMD APM previously stated that after an intercepted shutdown, the
+entire VMCB state is undefined. In practice, only the save area is
+undefined and most of the control area remains valid. Revision 3.45 of
+the APM now makes this explicit:
 
-commit ea74b8b169fc38edaee15fa883c362684ddec72d
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-Subject: iommufd/viommu: Select vIOMMU operations before allocation
+  "After an intercepted shutdown, the VMCB control area is valid (with
+   the exception of offsets 60h, 61h, and 68h) and the VMCB state save
+   area is undefined."
 
-This commit introduces a new get_viommu_ops callback to select vIOMMU
-operations based on the device and requested type before allocation. It
-moves the size and initialization callbacks into iommufd_viommu_ops and
-converts multiple physical IOMMU drivers to use the new interface.
+KVM zeroes the entire VMCB before INITing the vCPU based on the old
+wording, discarding control area state that hardware preserves.
 
-> diff --git a/drivers/iommu/amd/iommufd.c b/drivers/iommu/amd/iommufd.c
-> index 52300b867c1f2..c1e132382adc7 100644
-> --- a/drivers/iommu/amd/iommufd.c
-> +++ b/drivers/iommu/amd/iommufd.c
-> @@ -32,13 +32,21 @@ void *amd_iommufd_hw_info(struct device *dev, u32 *le=
-ngth, enum iommu_hw_info_ty
->  	return hwinfo;
->  }
-> =20
-> -size_t amd_iommufd_get_viommu_size(struct device *dev, enum iommu_viommu=
-_type viommu_type)
-> +static size_t amd_iommufd_get_viommu_size(struct device *dev,
-> +		enum iommu_viommu_type viommu_type)
->  {
->  	return VIOMMU_STRUCT_SIZE(struct amd_iommu_viommu, core);
->  }
-> =20
-> -int amd_iommufd_viommu_init(struct iommufd_viommu *viommu, struct iommu_=
-domain *parent,
-> -			    const struct iommu_user_data *user_data)
-> +const struct iommufd_viommu_ops *
-> +amd_iommufd_get_viommu_ops(struct device *dev, enum iommu_viommu_type vi=
-ommu_type)
-> +{
-> +	return &amd_viommu_ops;
-> +}
+Clear only the save area and the three undefined control area fields
+(int_ctl[15:0] and int_state) in line with the updated APM.
 
-[Severity: Low]
-Does this function need to validate the requested viommu_type?
+Also explicitly clear EVENTINJ. Hardware clears it on #VMEXIT, but only
+if VMRUN fully entered the guest. Clearing it here should be
+unnecessary, since a shutdown can only happen if the guest actually ran.
+Do so anyway, as there is no reason to carry a stale event across the
+vCPU reset, and the cost is negligible.
 
-Currently, amd_iommufd_get_viommu_ops() unconditionally returns the ops
-structure without checking the type argument. If a user requests an arbitra=
-ry
-type like IOMMU_VIOMMU_TYPE_ARM_SMMUV3 on an AMD device, the core iommufd
-framework might track the vIOMMU under a mismatched architectural type
-identifier.
+Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+---
 
-The ARM and selftest backends appear to validate this argument against their
-supported hardware types before returning the operations.
+Changes in v2:
+* Explicitly clear EVENTINJ and EVENTINJ_ERR (Sean Christopherson).
+* Rebased on kvm-x86/next.
 
-[ ... ]
+v1: https://lore.kernel.org/all/20260824131824.6040-1-shivansh.dhiman@amd.com
 
-> @@ -73,5 +79,7 @@ static void amd_iommufd_viommu_destroy(struct iommufd_v=
-iommu *viommu)
->   * struct iommufd_viommu_ops - vIOMMU specific operations
->   */
->  static const struct iommufd_viommu_ops amd_viommu_ops =3D {
-> +	.get_viommu_size =3D amd_iommufd_get_viommu_size,
-> +	.viommu_init =3D amd_iommufd_viommu_init,
->  	.destroy =3D amd_iommufd_viommu_destroy,
->  };
+---
+ arch/x86/kvm/svm/svm.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-[Severity: High]
-Is the alloc_domain_nested callback missing from this operations structure?
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 136069dfcd44..09ca864e5a38 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2213,18 +2213,31 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
+ 
+ 
+ 	/*
+-	 * VMCB is undefined after a SHUTDOWN intercept.  INIT the vCPU to put
+-	 * the VMCB in a known good state.  Unfortuately, KVM doesn't have
+-	 * KVM_MP_STATE_SHUTDOWN and can't add it without potentially breaking
+-	 * userspace.  At a platform view, INIT is acceptable behavior as
+-	 * there exist bare metal platforms that automatically INIT the CPU
+-	 * in response to shutdown.
++	 * The VMCB save area is undefined after a SHUTDOWN intercept, as are
++	 * control area offsets 60h, 61h, and 68h (int_ctl[15:0] and int_state).
++	 * INIT the vCPU to put the VMCB in a known good state.  Unfortunately,
++	 * KVM doesn't have KVM_MP_STATE_SHUTDOWN and can't add it without
++	 * potentially breaking userspace.  At a platform view, INIT is
++	 * acceptable behavior as there exist bare metal platforms that
++	 * automatically INIT the CPU in response to shutdown.
+ 	 *
+ 	 * The VM save area for SEV-ES guests has already been encrypted so it
+ 	 * cannot be reinitialized, i.e. synthesizing INIT is futile.
+ 	 */
+ 	if (!is_sev_es_guest(vcpu)) {
+-		clear_page(svm->vmcb);
++		struct vmcb_control_area *control = &svm->vmcb->control;
++
++		memset(&svm->vmcb->save, 0, sizeof(svm->vmcb->save));
++		control->int_ctl &= ~GENMASK(15, 0);
++		control->int_state = 0;
++
++		/*
++		 * EVENTINJ is cleared on #VMEXIT, but only if VMRUN fully
++		 * entered the guest.  Manually clear the fields even though it
++		 * should be redundant, as there is no downside to doing so.
++		 */
++		control->event_inj = 0;
++		control->event_inj_err = 0;
+ #ifdef CONFIG_KVM_SMM
+ 		if (is_smm(vcpu))
+ 			kvm_smm_changed(vcpu, false);
 
-The commit message and comments in amd_iommu_alloc_domain_nested() indicate
-it should be assigned to the viommu operations. However, it is omitted here.
+base-commit: 6bd2905303c58679e303941b7d8ae8c074cd95ce
+-- 
+2.43.0
 
-If a user attempts to allocate an AMD nested domain using IOMMU_HWPT_ALLOC,
-won't the core framework reject it with -EOPNOTSUPP because
-viommu->ops->alloc_domain_nested is NULL?
-
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viomm=
-u.c
-> index f3d5b5a7eb4a4..e95138ae71d5b 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-[ ... ]
-> @@ -103,16 +105,12 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd =
-*ucmd)
->  	 */
->  	viommu->iommu_dev =3D iommu_dev;
-> =20
-> -	rc =3D ops->viommu_init(viommu, hwpt_paging->common.domain,
-> +	rc =3D ops->viommu_init(viommu, idev->dev,
-> +			      hwpt_paging->common.domain,
->  			      user_data.len ? &user_data : NULL);
-
-[Severity: Critical]
-Is there a missing check to ensure the domain is owned by the same driver
-before passing it to viommu_init?
-
-In iommufd_viommu_alloc_ioctl(), hwpt_paging->common.domain is passed direc=
-tly
-to the device driver's viommu_init callback. Unlike in
-iommufd_hw_pagetable_alloc() which checks if parent->common.domain->owner
-matches the ops, this check appears to be omitted here.
-
-If a user allocates a paging HWPT for a mock device, and then calls
-IOMMU_VIOMMU_ALLOC passing an AMD device ID but the mock HWPT ID, could the
-receiving driver blindly cast the mismatched domain? For instance, AMD's
-viommu_init uses to_pdomain() on the parent domain. This looks like it could
-lead to type confusion and out-of-bounds accesses on the domain structure.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008055955.4014=
-342-1-aneesh.kumar@kernel.org?part=3D13
