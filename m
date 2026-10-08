@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB93381EB1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D0538643B;
 	Thu,  8 Oct 2026 00:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791418493; cv=none; b=qu0fZcrPGuWi9rAaR3PNG0atzrUsy6NPGHO5IgRbLQlS1/6HMhOzoponKdsCQFyy+HkgoFwqRc/rKNOaVFfQZfgj2jQYRFhSti7hfEuY/8gJ/7vdB6t6NFBkOnl/nVkDxMT/+OZy23S6pB1FU4yo7EpKYvRhpUa0vPEyUl3fiYE=
+	t=1791418494; cv=none; b=YQs4BxE7wzGhNau4m58DWDR3209Edyoa0gNEk5IuiBF7TUXcZccLqYFhLtGeQlNpbURZo4eDBGQDkgRzJfEUpjUfGIG2C9RXV/mPXosQg9clXU0OsVFY66Xjeue9C8H3vAsZKVsdYHYH/Ftgyz9h8bBJzdTZ+MSS/ccgV0Lg0yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791418493; c=relaxed/simple;
-	bh=jzTBNuQYePMYzWL6AMfy5zNz+TJV4q0sBwhvElEgARk=;
+	s=arc-20240116; t=1791418494; c=relaxed/simple;
+	bh=qzfDAdG9F5/+MT34KnB8ZEVwjtEhBqZj3/0qSyttFEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf5b/uHphN7yp+p9Npy5zucvNmZpwPHf5KrXL8XpCDOZQSc3Fy3X3VvIokgPtM33PHVDoBHET3+Nkyq4SGTXGNi9M4qiC3G7RWoN8JXxXiqFiSEyfIl91+qwKqb3Vadk+U3QvTTNVNQVInnkioRJWVu18/3PkG+L5Y2MIXEMguE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfPS2Ihc; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=lW9O/2KvYwryrYe3ke5Pq+Xl+HcDOCVKoITm7RRS/GzLWVTplQlMxHx15dYjJxEdF6f2HxbpmXRhx4J9H4rJRjQTivrSuFRI8ylRvFIluvfW8n68piVi5HwvnfKZmsDu4UQdTim9Z/L19s/+nNhMylVvusxm7t8+lPKFn165UMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VIMSW9ah; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfPS2Ihc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF581F0089A;
-	Thu,  8 Oct 2026 00:14:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VIMSW9ah"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D55B1F000FF;
+	Thu,  8 Oct 2026 00:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791418492;
-	bh=O9KdHNHutDV+JQ59rRSBVNijPi9fkvprm9/+/9dn/es=;
+	bh=OxIM5R51kGQ3j8xVhYRG4N9G6AyDg3hg5o4yxz8kTRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QfPS2Ihc1eaqGRhWGCfb+7ozBh6fMwtSYJcVQwL+9aaCpBKGzTW6kyqBU0b0OjKWF
-	 8MRFTiyAngPp7R9gO+ck+6GyOABCzZSeOg2PqaIg72GvKiGHsQ09I0EzUHxQnkTaQ0
-	 tE+L3w8nspCWopAWGR76TlnXxhRgY4+Y7F7QuH4LBACqhQOTt1UK0+gKL90UYEqjpH
-	 5mW7Bz2PiRnA5W6/aYwbeMvNTwI0+ybM8wmzS4t34MACKuF6otzA6fqoknql4Lb2Js
-	 YeotiaUyaUpPxpQ59FVPw5ElTPQV4yTiOeCg8/AHwyWL6ys/nAPA7K/Tl//t7HXwdL
-	 O1ruJ6bfQTG2w==
+	b=VIMSW9ah9iW2s+OcDdCNKdD5ryIuWF8yyk3r5VqnZUX8GDcgmKMrnzOpJngdiKCNQ
+	 BHOuFBm1QyxyrUU8VsSPF7dOiAk1WZ3JDiqxdpcQg+vormtFL7KpEEdyUThwsOzh8d
+	 822jHtfJXAiPrbF3pBbHVce30SXtwrvXesQJsU9wbDCqnI7Kfm4IgXHC6zYqIqgikq
+	 RETrdcEm3oWM4qRyOyqgEEm15KWjXWX7aff/SlJI4wFckFybIRPKF0YLky87az1/oW
+	 4vmnjg2Ul9a7piIzTLeI0EYnYxJ0OiaCRPTK6C0O+rB5RpPXiZMFQ7SxFYVKbVfstq
+	 8JfqB1romhnjA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 27/29] KVM: nSVM: Flush the ASID on nested transitions if shared by L1 and L2
-Date: Thu,  8 Oct 2026 00:14:23 +0000
-Message-ID: <20261008001425.2458927-28-yosry@kernel.org>
+Subject: [PATCH v2 28/29] KVM: nSVM: Use different ASIDs for L1 and L2
+Date: Thu,  8 Oct 2026 00:14:24 +0000
+Message-ID: <20261008001425.2458927-29-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
 In-Reply-To: <20261008001425.2458927-1-yosry@kernel.org>
 References: <20261008001425.2458927-1-yosry@kernel.org>
@@ -50,60 +50,125 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If L1 and L2 use the same ASID in hardware, always flush it on nested
-transitions to avoid using L1 TLB entries for L2 or vice versa, since
-from L1's perspective they are two different TLB domains.
+Now that TLB flushes are properly handled and tracked for L1 vs L2
+ASIDs, allocate a separate new ASID for L2 for each vCPU, similar to how
+VMX handles VPIDs. Drop the unconditional flushes and syncs on nested
+transitions.
 
-This is currently always the case, but KVM will start using separate
-ASIDs for L1 and L2 in most cases soon.
+L1 and L2 can now only share an ASID in two cases:
+- KVM runs out of ASIDs and uses the fallback ASID for both L1 and L2.
+- SEV VMs always use the same ASID for SEV-specific requirements.
 
-Note that KVM_REQ_TLB_FLUSH_CURRENT is required here, not
-KVM_REQ_TLB_FLUSH_GUEST (used for L1 TLB flush requests). This is
-because KVM could be switching between different NPT roots on the same
-ASID. While this generally requires an ASID flush in the VMCB, which is
-done by both KVM_REQ_TLB_FLUSH_CURRENT and KVM_REQ_TLB_FLUSH_GUEST, it
-also requires a hypercall to specifically flush NPT mappings when
-running on Hyper-V, which is only done with KVM_REQ_TLB_FLUSH_CURRENT
-(as KVM_REQ_TLB_FLUSH_GUEST is only meant to flush translations created
-by the guest).
+WARN if the ASID is shared otherwise.
 
-Note that this is currently a noop as KVM requests
-KVM_REQ_TLB_FLUSH_CURRENT unconditionally on nested transitions, but
-this will soon be removed in favor of conditional flushes.
+Initialize last_asid to 0, such that the L2 ASID is always flushed on
+first nested VM-Enter after it's allocated.
+
+On SEV VM migration, free the L2 ASID on the destination vCPU (if nested
+was already initialized) before overwriting it with the SEV ASID.
+
+On a Turin CPU, this results in 8-15% performance boost in CPUID rate
+microbenchmark [1] and netperf TCP_RR latency/throughput.
+
+[1] https://lore.kernel.org/kvm/20231109180646.2963718-1-khorenko@virtuozzo.com/
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kvm/svm/nested.c | 32 +++++++++++++++++++++++---------
+ arch/x86/kvm/svm/sev.c    |  6 ++++--
+ 2 files changed, 27 insertions(+), 11 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 738ec1f2ec869..4ffc10bf9232e 100644
+index 4ffc10bf9232e..6fe68f2ae282d 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -723,6 +723,13 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
- 		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
- 	}
- 
-+	/*
-+	 * If L1 and L2 share the same ASID in hardware (when using the fallback
-+	 * ASID for both, or for SEV guests), flush it on nested transitions.
-+	 */
-+	if (svm->asid == svm->nested.asid02)
-+		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
-+
- 	/* TODO: optimize unconditional TLB flush/MMU sync */
- 	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
- 	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
-@@ -738,6 +745,9 @@ static void nested_svm_exit_tlb_flush(struct kvm_vcpu *vcpu)
- 	if (svm->nested.ctl.tlb_ctl == TLB_CONTROL_FLUSH_ALL_ASID)
- 		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
- 
-+	if (svm->asid == svm->nested.asid02)
-+		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
-+
- 	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
- 	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+@@ -711,6 +711,10 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
+ 	 * context is not tagged by the ASID, so the shadow NPTs cannot be
+ 	 * reused across different L2 ASIDs.
+ 	 *
++	 * Note, last_asid is initialized as 0, so the first nested VM-Enter
++	 * after setting EFER.SVME will always flush the TLB to avoid using
++	 * stale entries.
++	 *
+ 	 * If L1 requested a full TLB flush for all ASIDs (including its own),
+ 	 * L1's own ASID is also flushed on nested VM-Exit, before running L1.
+ 	 *
+@@ -727,12 +731,10 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
+ 	 * If L1 and L2 share the same ASID in hardware (when using the fallback
+ 	 * ASID for both, or for SEV guests), flush it on nested transitions.
+ 	 */
+-	if (svm->asid == svm->nested.asid02)
++	if (svm->asid == svm->nested.asid02) {
++		WARN_ON_ONCE(svm->asid != fallback_asid && !is_sev_guest(vcpu));
+ 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+-
+-	/* TODO: optimize unconditional TLB flush/MMU sync */
+-	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
+-	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
++	}
  }
+ 
+ static void nested_svm_exit_tlb_flush(struct kvm_vcpu *vcpu)
+@@ -747,9 +749,6 @@ static void nested_svm_exit_tlb_flush(struct kvm_vcpu *vcpu)
+ 
+ 	if (svm->asid == svm->nested.asid02)
+ 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+-
+-	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
+-	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+ }
+ 
+ /*
+@@ -1566,7 +1565,20 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+ 	svm->nested.vmcb02.ptr = page_address(vmcb02_page);
+ 	svm->nested.vmcb02.pa = __sme_set(page_to_pfn(vmcb02_page) << PAGE_SHIFT);
+ 
+-	svm->nested.asid02 = svm->asid;
++	svm->nested.asid02 = allocate_asid(&svm->vcpu);
++
++	/*
++	 * KVM uses a fallback ASID when out of ASIDs, and fails vCPU creation
++	 * if there's no fallback ASID. ASID allocation must succeed here.
++	 */
++	KVM_BUG_ON(!svm->nested.asid02, svm->vcpu.kvm);
++
++	/*
++	 * Clear last_asid to ensure that the ASID is flushed on the first
++	 * nested VM-Enter. Otherwise, stale TLB entries from a previous life of
++	 * the ASID (e.g. different vCPU or even different VM) could be used.
++	 */
++	svm->nested.last_asid = 0;
+ 
+ 	return 0;
+ 
+@@ -1583,6 +1595,8 @@ void svm_free_nested(struct vcpu_svm *svm)
+ 	if (WARN_ON_ONCE(svm->vmcb != svm->vmcb01.ptr))
+ 		svm_switch_vmcb(svm, &svm->vmcb01);
+ 
++	free_asid(svm->nested.asid02);
++
+ 	svm_vcpu_free_msrpm(svm->nested.msrpm);
+ 	svm->nested.msrpm = NULL;
+ 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index b2e6acfbb081f..646108e70e21a 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2043,10 +2043,12 @@ static void sev_vcpu_migrate_asid(struct vcpu_svm *dst_svm,
+ 	dst_svm->asid = asid;
+ 
+ 	/*
+-	 * If nested is already initialized on the destination vCPU, also update
+-	 * the nested ASID to match the new SEV ASID.
++	 * If nested is already initialized on the destination vCPU, also free
++	 * the previous ASID (in case it was non-SEV) and update the nested ASID
++	 * to match the new SEV ASID.
+ 	 */
+ 	if (dst_svm->nested.vmcb02.ptr) {
++		free_asid(dst_svm->nested.asid02);
+ 		dst_svm->nested.asid02 = asid;
+ 		dst_svm->nested.vmcb02.ptr->control.asid = asid;
+ 	}
 -- 
 2.56.0.360.g66cac248cb-goog
 
