@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4A32F8E8F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B021E520A;
 	Thu,  8 Oct 2026 00:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791418486; cv=none; b=pUWBWiWwpV8UrSVQsCH6505Zr89go1B/rXOH/28w0Aj3huL0TnFM9osqZYR3r60uEmdaSjv1OyfOV/fzeV4Rr1LmZ+WPfiGay4dPoo/W8n1srMILCEYl6T2SxCTns/ByyGkDN739qh53I3yNk1IwcKo/It5x5AArSUh+eotTyZM=
+	t=1791418487; cv=none; b=GP9nvcI6SSfRHOyWs6W45I+HcUgttKM/f5W3IadWVN4RZCsGF6xJm+GSplK5jn5QHxSt5mjUGbBcxq3v2LUkF/CdRolitAfrSLEncajqh9VzvBiwi3zMJg3MUa4HxQter2M09cSi8gqGchrdKOUJbPUSyPeeH07tV0DvPd4j0SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791418486; c=relaxed/simple;
-	bh=IkauTFcXMJFn7zmj0pSmwP08l5D59Bdnltpff8wExWY=;
+	s=arc-20240116; t=1791418487; c=relaxed/simple;
+	bh=h/O0T8tLKn7Kylu6Hn9z1LrXmldJOfu40xtoOb/ndAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNvJJhG9USMg27qCCNEVBpgxIv9p1Wl8XlvysGJ45W4S4hBtCD3TXIut99Jzr2BFy0AE4WJraTh89pTvGcnpolBArEBm1fOsfb5kuQexPjgrL95xhDge1zTLk1IhgTVIE+/PUEwqccNUTMo4z0Zvdu2Fq7geHoUAqL6KtqijUFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBxY23cp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=S3TtCjQw8PMfmHvwjfVraHITojB1Ik522hzRmBCoIwcMbyVUu8Tj06TFdt/FMNM8afP2fHtRxiSZaR2zNlpZ4JJO8oNfGXHxleIzpc5f+XEdyKwRZAEs7PTizKTy7k43Y6kLMxPAmoAK8YkxNx0tagSwQhRK6G9NHRozhrYz/2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QY+W7s7P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBxY23cp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76841F0089A;
-	Thu,  8 Oct 2026 00:14:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QY+W7s7P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290191F000FF;
+	Thu,  8 Oct 2026 00:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791418485;
-	bh=/3kZ+4TQe6kQuRcrM6kiRDWv2X7dQbKK3orqZ9tn4qE=;
+	bh=002/sRYfv41jvwze0nIu5/O77W7aB+ssFSWUTMLy0bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QBxY23cpzAYlvqmaHMDaPpzql5hWw1LawEffaoKGiQ/RF//wwERrSyZa0c7uIIUDo
-	 sBijelz6ZOo56l21+UDQzl5QnJqbKWCQK465KoeYmVi8osLlgGSGw2cRv4N8oFpFoH
-	 iD/2AnznRMgjV09Dcmh2WHz9gqBJcsGuf3dk/dkRywIh4/eG7HuBmrLQI+SogUbGMv
-	 ZKylyrQz/EolvzyG0aiWO17fbAt5tPQ8c0peArRLTkG8cb6lKol93z3cwKkrJjGxbB
-	 rySLeKerbLN0GrhKHbmL1dF4wXgdkMnK7RFmzbPKf2PMN6AD8h/XatDAc81lb5GcTd
-	 iZk1PFBfN4uuQ==
+	b=QY+W7s7PtzF5ike6iLTW0Gy7hslSiv4zVatnk/gB2DmrsBfgyPpZD8NOGZQTFHlES
+	 j8/SagNsniO13H4R7DDFdlWX3x/JX6ww+goKzo2OyUWSz5TOjwEX9yDjzQJ4bzn6Nd
+	 UIgqFytuNXXJJW6qCJl5LMI6ll0+/3So9962f4L2poY3oV8Izzw1GN+DadIi8G4HtE
+	 +nfAg7jESkSaNUfZcqUwt9j2aNzJu6Zln/iDI0XGqrz1XfG9KlKBnu83bw2zqjwBXe
+	 miJp7zJ+x0JQSpNT9FusEJrZEW/E0B+gzfdrJ6CvrwKdhAIgbvprBEAPBc/I+hz6M3
+	 tgVoxb0i+UmAQ==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 12/29] KVM: nSVM: Drop svm->nested.initialized
-Date: Thu,  8 Oct 2026 00:14:08 +0000
-Message-ID: <20261008001425.2458927-13-yosry@kernel.org>
+Subject: [PATCH v2 13/29] KVM: nSVM: Add a placeholder ASID for L2
+Date: Thu,  8 Oct 2026 00:14:09 +0000
+Message-ID: <20261008001425.2458927-14-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
 In-Reply-To: <20261008001425.2458927-1-yosry@kernel.org>
 References: <20261008001425.2458927-1-yosry@kernel.org>
@@ -50,88 +50,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Do NULL checks on svm->nested.vmcb02.ptr instead of using a dedicated
-proxy 'initialized' field.  Make sure svm->nested.vmcb02.ptr is
-correctly set to NULL on initialization failures, as it is currently
-left as a dangling pointer.
+In preparation for introducing a separate ASID for L2, introduce a
+'placeholder' ASID that is still the same as L1's ASID. This will
+facilitate future changes that need to distinguish L1 and L2's ASIDs,
+before actually using a different ASID for L1 and L2.
 
-This makes it possible to directly do a NULL check on
-svm->nested.vmcb02.ptr before using it, instead of checking a different
-field, which is less error-prone.
+On SEV VM migration, copy the new SEV ASID into asid02 and vmcb02, in
+case nested was already initialized on the destination vCPU before
+migration.
+
+No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 14 ++++++--------
- arch/x86/kvm/svm/svm.h    |  2 --
- 2 files changed, 6 insertions(+), 10 deletions(-)
+ arch/x86/kvm/svm/nested.c | 5 +++--
+ arch/x86/kvm/svm/sev.c    | 9 +++++++++
+ arch/x86/kvm/svm/svm.h    | 2 ++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 5d63ae47ebb6c..bfb297b7d71ab 100644
+index bfb297b7d71ab..780132725bb79 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1142,7 +1142,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 		return ret;
- 	}
+@@ -701,7 +701,6 @@ static void nested_svm_transition_tlb_flush(struct kvm_vcpu *vcpu)
+ 	 *  - Honor L1's request to flush an ASID on nested VMRUN
+ 	 *  - Sync nested NPT MMU on VMRUN that flushes L2's ASID[*]
+ 	 *  - Don't crush a pending TLB flush in vmcb02 on nested VMRUN
+-	 *  - Flush L1's ASID on KVM_REQ_TLB_FLUSH_GUEST
+ 	 *
+ 	 * [*] Unlike nested EPT, SVM's ASID management can invalidate nested
+ 	 *     NPT guest-physical mappings on VMRUN.
+@@ -936,7 +935,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 	else
+ 		vmcb02->control.bus_lock_counter = 0;
  
--	if (WARN_ON_ONCE(!svm->nested.initialized))
-+	if (WARN_ON_ONCE(!svm->nested.vmcb02.ptr))
- 		return -EINVAL;
+-	vmcb02->control.asid = vmcb01->control.asid;
++	vmcb02->control.asid = svm->nested.asid02;
  
- 	vmcb12_gpa = kvm_rax_read(vcpu);
-@@ -1489,21 +1489,21 @@ int svm_allocate_nested(struct vcpu_svm *svm)
- {
- 	struct page *vmcb02_page;
+ 	/* Overwritten later if necessary.  */
+ 	vmcb_clr_flush_asid(vmcb02);
+@@ -1504,6 +1503,8 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+ 	svm->nested.vmcb02.ptr = page_address(vmcb02_page);
+ 	svm->nested.vmcb02.pa = __sme_set(page_to_pfn(vmcb02_page) << PAGE_SHIFT);
  
--	if (svm->nested.initialized)
-+	if (svm->nested.vmcb02.ptr)
- 		return 0;
- 
- 	vmcb02_page = snp_safe_alloc_page();
- 	if (!vmcb02_page)
- 		return -ENOMEM;
--	svm->nested.vmcb02.ptr = page_address(vmcb02_page);
--	svm->nested.vmcb02.pa = __sme_set(page_to_pfn(vmcb02_page) << PAGE_SHIFT);
- 
- 	svm->nested.msrpm = svm_vcpu_alloc_msrpm();
- 	if (!svm->nested.msrpm)
- 		goto err_free_vmcb02;
- 
- 	svm->nested.vmcb02.cpu = -1;
--	svm->nested.initialized = true;
-+	svm->nested.vmcb02.ptr = page_address(vmcb02_page);
-+	svm->nested.vmcb02.pa = __sme_set(page_to_pfn(vmcb02_page) << PAGE_SHIFT);
++	svm->nested.asid02 = svm->asid;
 +
  	return 0;
  
  err_free_vmcb02:
-@@ -1513,7 +1513,7 @@ int svm_allocate_nested(struct vcpu_svm *svm)
- 
- void svm_free_nested(struct vcpu_svm *svm)
- {
--	if (!svm->nested.initialized)
-+	if (!svm->nested.vmcb02.ptr)
- 		return;
- 
- 	if (WARN_ON_ONCE(svm->vmcb != svm->vmcb01.ptr))
-@@ -1533,8 +1533,6 @@ void svm_free_nested(struct vcpu_svm *svm)
- 	 * When the vmcb02 is freed, this optimization becomes invalid.
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 99577859e1aab..b2e6acfbb081f 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2041,6 +2041,15 @@ static void sev_vcpu_migrate_asid(struct vcpu_svm *dst_svm,
  	 */
- 	svm->nested.last_vmcb12_gpa = INVALID_GPA;
--
--	svm->nested.initialized = false;
+ 	free_asid(dst_svm->asid);
+ 	dst_svm->asid = asid;
++
++	/*
++	 * If nested is already initialized on the destination vCPU, also update
++	 * the nested ASID to match the new SEV ASID.
++	 */
++	if (dst_svm->nested.vmcb02.ptr) {
++		dst_svm->nested.asid02 = asid;
++		dst_svm->nested.vmcb02.ptr->control.asid = asid;
++	}
  }
  
- void svm_leave_nested(struct kvm_vcpu *vcpu)
+ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
 diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index d386f2a4f72d7..2e1b5481ddd92 100644
+index 2e1b5481ddd92..ed67c18e2b900 100644
 --- a/arch/x86/kvm/svm/svm.h
 +++ b/arch/x86/kvm/svm/svm.h
-@@ -234,8 +234,6 @@ struct svm_nested_state {
+@@ -234,6 +234,8 @@ struct svm_nested_state {
  	 */
  	struct vmcb_save_area_cached save;
  
--	bool initialized;
--
++	kvm_tlb_tag_t asid02;
++
  	/*
  	 * Indicates whether MSR bitmap for L2 needs to be rebuilt due to
  	 * changes in MSR bitmap for L1 or switching to a different L2. Note,
