@@ -1,297 +1,273 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A539395ACE;
-	Thu,  8 Oct 2026 19:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD071CDFCA
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 19:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791486522; cv=none; b=NkEvx6Pk/kFXEEtdx8Ferji7Hv5Kx83Kyvl+CY3WMBwbA33Wqe8LIj6zNz5QHPWewOsDNyFqhTtBSu9f3RANZq2n4QYxdgDXpfF2opSiL4oisKUmb2d5BEcZZ/50gvLmgmEKnwgvidgr/VeDx591q0UIVkbrWAyrE3KvtWCFfn0=
+	t=1791487196; cv=none; b=lr+Er6eklrqvJs2rL3nocr/bW3IxfDclYg8cVdmeyb8d7lVCK3noMqrGJ0jpLFAXGLa2gQyQ7rSXkHPW4VHkZwmKvzFI8LQQZlBgLLLMziLnJDzB3xEuy5qNIR99b8YCK0meYyrBVl49B6eWV9hMb/P5FY/J0ODVXKA19S5SIN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791486522; c=relaxed/simple;
-	bh=StYwcVJ1alVLddXICE5IoIrpTLyz9IaJC9WC49McDrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QXjXQFfdYayGrYH9xxxvZaA9Xq2UyjXB+r/bLD5V2PSeZ884Zc+ILYRd7PuMtZVJjJp8V2Z39IB3jJt9tNexd27/3QDsoGYJu86Uc92KTPr6Q1sPrtcD+94BKC6GDg+8Cqtk+IqQbdcd08xMX8wIOCPua0xJoy5js75tOTkZk4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=g7CNWEiz; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791487196; c=relaxed/simple;
+	bh=umaJHrZtq+wJcQ0KI+QpDg+Y6QU0FpjPZqRdsh49IhM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=csqof28+ULmBlfr9EUrM5t2T+Be9DqxrnWnTXsfNBSApVT5mZhQ3j/rcQ5vtQ05iunM5yAj3lMr4M5amx83co+MQVSJZuapjWagz3R9JbG2Y4JVkX92kNcx8y60oBpeVsV43eIElPEgE+YuTCzi8sxFrx12FGQLcwhmS1JUjWzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nIV12DNn; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="g7CNWEiz"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 698HZYjO784902;
-	Thu, 8 Oct 2026 19:08:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PcwPW0
-	aWVeE1fuJOObLYpYRuT0P35/KbPbBsjsP+03k=; b=g7CNWEizla0wEiyd7x8Yhr
-	Hq2WiOafiapR9X+OWZDhoDRg0MC2/UaMHUZkzRE7860uJH1jb+Q51EAP+LHJBfyd
-	o3CoVn0l+r8/RnnxF+OQ/z9fAgvvtSE2DCKeXOaf8CzaCYBJfdwSf3s7NFdz781v
-	FtytlLRqPxvXV5ArbTo5FxMs6SxtOr2IMY+e++rv6bBKqW1iaMtR0aWvcHvn3Vfa
-	DRJ8iwHAA93k5fvZ4sl9gE39mJ2k4XBT8nJR7baBZD20edOhnAXkHH7RJ0Pi5BOw
-	2bFNxNE4G1VhT54YddCtCAuiUIHZ9VLrFq73FqNuBfaWTLhvKW20Y9zBwlVo36Dw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xk1dmng-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 19:08:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 698HWgNp3783100;
-	Thu, 8 Oct 2026 19:08:39 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h58d5s2vn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 19:08:39 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 698J8bG929229624
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Oct 2026 19:08:38 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D5E8A58055;
-	Thu,  8 Oct 2026 19:08:37 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2BC9F58043;
-	Thu,  8 Oct 2026 19:08:37 +0000 (GMT)
-Received: from [9.61.89.182] (unknown [9.61.89.182])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Oct 2026 19:08:37 +0000 (GMT)
-Message-ID: <4cce992d-6fa4-414a-9889-23d8ac9f1098@linux.ibm.com>
-Date: Thu, 8 Oct 2026 15:08:36 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nIV12DNn"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-88629a452e0so4485272b3a.2
+        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 12:19:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791487194; x=1792091994; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/xRvvpsSt2FNzWJp1C+ROE9vNYxXKO75+47iMojJNco=;
+        b=nIV12DNnTCuCtwGstnNuWBT9AicO/VPjFJOXurDkh0qjsZW+vK89r6Nkn3XCT7wUyT
+         BvBi1U5ETky3vAqTktM8NxmJA6V6zASh709MtDbbIsy1XPBxb6+/0OQx1+90qmvmNr7p
+         jozLr6j6xdnZO18bDVnfRIaTU7/OuoPvqyNgt8yQqP6rxf7EdmXFci9Vwqvscpa/xxXw
+         T8HXouawTITaSRBqi2R2p6DVB4M+VJWhebbc82HIA/2r7SAPgltO83pNX0HnanDjErQ7
+         ZRndr0IOc6xkZfWkaLS5bHdlhrnZu8/OjsLWYRKmNq79cgsLejNUmAbxaZLTKlsmgfEr
+         ahEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791487194; x=1792091994;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/xRvvpsSt2FNzWJp1C+ROE9vNYxXKO75+47iMojJNco=;
+        b=2YKoHXf5g6evoAQ3DlTrzEWTJXm0X3GnHxy6Yc2NiCNeH+EvD5gs5D4i6qhrrNrxcg
+         FyPSk3V4mceNqVlP33tQwP5PYdLid9B1h4pFWy7c71TCknysiX3pIejxBLo4LTK8KcPY
+         aAKC0RNlRoq4nYj4ddy/DXL2s2lyHVkA9pbAAtEYIEkyjV/Ab8RdFc7Ee3J6SRBNx0ja
+         AAHhBeacjXY1EzIw+0fIe+7eeJyX7pQFtbZzo6h1uYqFWDOeBrHFwo6ZwiynE8ihITB7
+         DMPK+ZaRF0i+0NqfsjN+E+umzsNW6prVkh56zDvXLi18mWj80daPfWY5uijTTA3eJsi6
+         sR8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxk2+oc/VQNfw8mRs2Y+jIDNFwp/r6rff1cCfUnh7MmIPVW7phIbKXaMGlr77xB4U5uD/M=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI7tppUl2TUTaE7Z4In4gPfWnv+koAhpsrJMLB4RWBoobZR0d5z
+	lW3z493gzLpSwzbYUTBddm/gSRPXsHmXHUfp/xUe9XL73Os3od/SoxQ6yBbJgrsfXhn+048EBFC
+	EfXvCT81c8ZhBtg==
+X-Received: from pfbdh20.prod.google.com ([2002:a05:6a00:4794:b0:887:5ba8:7334])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:331b:b0:881:cbb0:6a9c with SMTP id d2e1a72fcca58-891b167b93cmr6124484b3a.32.1791487194112;
+ Thu, 08 Oct 2026 12:19:54 -0700 (PDT)
+Date: Thu,  8 Oct 2026 12:19:45 -0700
+In-Reply-To: <20260310060022.15120-7-manali.shukla@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/15] s390/vfio-ap: Transition device migration state
- to STOP
-To: sashiko-reviews@lists.linux.dev
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Vasily Gorbik
- <gor@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20260807221834.562851-1-akrowiak@linux.ibm.com>
- <20260807221834.562851-12-akrowiak@linux.ibm.com>
- <20260807225402.D7DB01F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260807225402.D7DB01F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=YtCa1IYX c=1 sm=1 tr=0 ts=6ac7ea37 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=8s1LejCmVXr28qEsvwkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA4MDA3NiBTYWx0ZWRfX+9vuQIz9mr3L
- 1agjdxcGFV6Zta0Vti0u5BGZs+jJZ31ZjEr4Ao9T4HGmZj+abukoqyPczmSfEtPf31Om1YNn8fa
- V4qpY+CxRnhUXt/thWLg60pD8Dgyg2jkECzKTLwN+/7Be73eEuoAaYOky8gIfWv76yOGGVcxsC4
- veK3RixSU+Dr0vhnJXo0Xur3vUqPUkWrDWBJikQxWjTSv0WL37LJOVGNdgmp9KTewfFtN66muB7
- ijaODPQZapZk9/G2TWBQjqxc+/6PwY7ryVszYEaQfq9ey0CbdyQM0BDSTM/1RbiZf+zDFb0QyZ2
- dz8Va8P7N54tXfqP/gQZ6I0zn+KU2DoBs5o/478WXBKtTPy+rHtEjEX2i6pNhNf9pPeHgygXOjD
- bagJyQOl3U7h+S+CdUjf4Gds+5cixPZZTDdeRLXhtYPz+D8o8yXJvBOnl1F22t8Kmk42QNJxLbu
- 9WysNPYTzUb3XXNm6kg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA4MDA3NiBTYWx0ZWRfX9VUpdM6Juyij
- e57hBYAQP5rCnQTPXoYfhBEfmISP77L2RdVwI9xcdQKdLArZNcyIXC2SFXcRs34fR/AWWrsUIBd
- XUM2g5AW2vAs1iSUxhweLtLlQ16m6LA=
-X-Proofpoint-GUID: soWSRSutXb43V7-ufQgzmYsei86o9OWe
-X-Proofpoint-ORIG-GUID: soWSRSutXb43V7-ufQgzmYsei86o9OWe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-08_06,2026-10-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610080076
+Mime-Version: 1.0
+References: <20260310060022.15120-1-manali.shukla@amd.com> <20260310060022.15120-7-manali.shukla@amd.com>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261008191950.816113-1-jmattson@google.com>
+Subject: Re: [PATCH v3 6/9] KVM: SVM: Add support for IBS Virtualization
+From: Jim Mattson <jmattson@google.com>
+To: Manali Shukla <manali.shukla@amd.com>
+Cc: Jim Mattson <jmattson@google.com>, seanjc@google.com, pbonzini@redhat.com, 
+	mingo@redhat.com, bp@alien8.de, kvm@vger.kernel.org, x86@kernel.org, 
+	santosh.shukla@amd.com, nikunj.dadhania@amd.com, Naveen.Rao@amd.com, 
+	dapeng1.mi@linux.intel.com, ravi.bangoria@amd.com, peterz@infradead.org, 
+	Sandipan.Das@amd.com, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Mar 10, 2026 at 06:00:18AM +0000, Manali Shukla wrote:
+> From: Santosh Shukla <santosh.shukla@amd.com>
+>
+> IBS virtualization (VIBS) allows a guest to collect Instruction-Based
+> Sampling (IBS) data using hardware-assisted virtualization. With VIBS
+> enabled, the hardware automatically saves and restores guest IBS state
+> during VM-Entry and VM-Exit via the VMCB State Save Area.
+>
+> IBS-generated interrupts are delivered directly to the guest without
+> causing a VMEXIT.
+>
+> VIBS depends on mediated PMU mode and requires either AVIC or NMI
+> virtualization for interrupt delivery. However, since AVIC can be
+> dynamically inhibited, VIBS requires VNMI to be enabled to ensure
+> reliable interrupt delivery. If AVIC is inhibited and VNMI is
+> disabled, the guest can encounter a VMEXIT_INVALID when IBS
+> virtualization is enabled for the guest.
 
+APM vol. 2, section 15.38, disagrees. Without virtualized interrupt
+delivery, "an IBS interrupt occurring in the guest will not be delivered to
+either the guest or the hypervisor."  The only VMEXIT_INVALID that section
+15.38 describes is for VMRUN of an SEV-ES or SEV-SNP guest with IbsFetchEn
+or IbsOpEn set.
 
-On 8/7/26 6:54 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
->
-> New issues:
-> - [High] Memory leak and silent transmission of stale device state due to missing buffer cleanup on FSM STOP transition.
-> - [High] Migration data file descriptors allow out-of-band manipulation of the active AP configuration.
->
-> Pre-existing issues:
-> - [Critical] Unprotected concurrent ioctls cause Use-After-Free, Double Free, and Memory Leaks during migration reads/writes.
-> - [High] RESUMING state machine is permanently broken by an incomplete reset.
-> --
->
-> --- Patch [11]: [PATCH v7 11/15] s390/vfio-ap: Transition device migration state to STOP ---
-> commit e7e2429c70da0ea0a7016c096567e78834fcc351
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
->      s390/vfio-ap: Transition device migration state to STOP
->      
->      This commit updates the VFIO AP migration state machine to handle
->      transitions to the STOP state from RESUMING or STOP_COPY. It returns
->      NULL instead of an error, stating that the VFIO migration framework
->      will clean up file streams and associated data when releasing files.
->
->> There  only thing to do at this point is return
->> NULL to the caller since the file streams and associated data will get
->> cleaned up as a result of the VFIO migration framework releasing the files.
-> [Severity: High]
-> Is this assumption about the file streams and associated data getting cleaned
-> up accurate?
->
-> Looking at the file release callback:
->
-> vfio_ap_release_mig_file() {
->      ...
->      vfio_device_put_registration(&matrix_mdev->vdev);
->      return 0;
-> }
->
-> The callback only releases the VFIO registration reference and does not free
-> the state buffers like stop_copy_mig_file.ap_config or
-> resuming_mig_file.ap_config.
->
-> Could this lead to a memory leak and the silent transmission of stale device
-> state to the destination host on subsequent migration attempts, for instance
-> if we skip allocating and fetching a fresh configuration in
-> vfio_ap_stop_copy_read() because ap_config was leaked and left populated?
->
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index 4dd7373c3d9d9..30160e3dddedd 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
->> @@ -1511,12 +1511,17 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev *matrix_mdev,
->>   		return filp;
->>   	}
->>   
->> +	/*
->> +	 * Terminates the data transfer session of the vfio-ap device state
->> +	 * between the source and target hosts. Since the vfio-ap device does
->> +	 * not virtualize a DMA device, there is no internal device state to
->> +	 * incorporate into the vfio-ap device on the target.
->> +	 */
->>   	if ((cur_state == VFIO_DEVICE_STATE_RESUMING &&
->>   	     new_state == VFIO_DEVICE_STATE_STOP) ||
->>   	    (cur_state == VFIO_DEVICE_STATE_STOP_COPY &&
->>   	     new_state == VFIO_DEVICE_STATE_STOP)) {
->> -		/* TODO */
->> -		return ERR_PTR(-EOPNOTSUPP);
->> +		return NULL;
-> [Severity: High]
-> Does returning NULL here successfully change the FSM state without clearing
-> the active filp pointers in mig_data?
->
-> If userspace keeps the migration file descriptor open (or duplicates it)
-> during an FSM transition to RUNNING, and then issues a write on the stale
-> file descriptor, could this allow out-of-band manipulation of the KVM guest's
-> AP configuration while the guest is actively running?
->
-> The file operations like validate_resuming_write_parms() appear to only check
-> if the incoming filp pointer matches the stored pointer:
->
-> validate_resuming_write_parms() {
->      ...
->      if (filp != resuming_mig_file.filp)
->          return -ENXIO;
->      ...
-> }
->
-> This happens without ensuring the FSM is actually in the RESUMING state,
-> potentially permitting writes during RUNNING.
+> Because IBS state is classified as swap type C, the hypervisor must
+> save its own IBS state before VMRUN and restore it after VMEXIT. It
+> must also disable IBS before VMRUN and re-enable it afterward. This
+> will be handled using mediated PMU support in subsequent patches by
+> enabling mediated PMU capability for IBS PMUs.
 
-The concern is legitimate. This will be fixed by calling
-vfio_ap_release_mig_files() on both the RESUMING→STOP and
-STOP→RUNNING transitions. This sets resuming_mig_file.filp to
-NULL, so any write on a stale migration fd will fail the filp
-equality check in validate_resuming_write_parms() with -ENXIO.
-Since STOP is the only intermediate state between RESUMING and
-RUNNING, every arc back to RUNNING will have cleared the filp
-before it is reached.
+On hardware with IBS_CAPS_DIS, perf_ibs_stop() does not clear IbsFetchEn or
+IbsOpEn. perf_ibs_disable_event() only sets CTL2[Dis], and
+IBS_{FETCH|OP}_CTL[En] stays 1. Section 15.38 says that these bits must be
+0 at VMRUN of an SEV-ES or SEV-SNP guest with IBS virtualization enabled
+(otherwise VMRUN fails with VMEXIT_INVALID), and that they should be 0 for
+other guests, "to prevent host IBS interrupts from leaking across a world
+switch."  Section 15.38 does not say that CTL2[Dis]=3D1 is sufficient. Is i=
+t?
+If not, the host must also clear En before VMRUN on hardware with
+IBS_CAPS_DIS.
 
+> More details about IBS virtualization can be found at [1].
 >
-> [Severity: High]
-> This is a pre-existing issue, but does a reset or an aborted RESUMING phase
-> leave the RESUMING state machine permanently broken?
+> [1]: https://bugzilla.kernel.org/attachment.cgi?id=3D306250
+>      AMD64 Architecture Programmer=E2=80=99s Manual, Vol 2, Section 15.38
+>      Instruction-Based Sampling Virtualization.
 >
-> When vfio_ap_release_resuming_file() is called, it frees
-> resuming_mig_file.ap_config but fails to clear resuming_config_buf.filled:
+> Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
+> Co-developed-by: Manali Shukla <manali.shukla@amd.com>
+> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+> ---
+>  arch/x86/include/asm/svm.h |  2 ++
+>  arch/x86/kvm/svm/svm.c     | 73 +++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 74 insertions(+), 1 deletion(-)
 >
-> vfio_ap_release_resuming_file() {
->      kvfree(mig_data->resuming_mig_file.ap_config);
->      mig_data->resuming_mig_file.ap_config = NULL;
->      mig_data->resuming_mig_file.config_sz = 0;
->      mig_data->resuming_mig_file.filp = NULL;
-> }
+> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+> index 4296efc1dafe..17aa6bf76bce 100644
+> --- a/arch/x86/include/asm/svm.h
+> +++ b/arch/x86/include/asm/svm.h
+> @@ -226,6 +226,8 @@ struct __attribute__ ((__packed__)) vmcb_control_area=
+ {
 >
-> If userspace initiates a new RESUMING phase, validate_resuming_write_parms()
-> will evaluate this condition as true:
+>  #define SVM_INT_VECTOR_MASK GENMASK(7, 0)
 >
->      if ((resuming_config_buf.filled && !resuming_mig_file.ap_config) ||
->          (!resuming_config_buf.filled && resuming_mig_file.ap_config))
->          return -EFAULT;
->
-> Would this unconditionally reject all subsequent writes with -EFAULT?
+> +#define SVM_MISC_ENABLE_V_IBS BIT_ULL(2)
+> +
 
-This is already fixed in the next version of the series in response to
-review comments made by Jason.
-The two-phase allocation design — including the resuming_config_buf
-staging struct, the filled flag, and the invariant check in
-validate_resuming_write_parms() — hve been removed.
-validate_resuming_write_parms() will be simplified to check only
-the filp equality and bounds against a single pre-allocated
-worst-case buffer, eliminating the stale filled/ap_config
-inconsistency described.
+This bit is in misc_ctl2, not misc_ctl. Please name it SVM_MISC2_ENABLE_V_I=
+BS
+and place it after SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE.
 
->
-> [Severity: Critical]
-> This is a pre-existing issue, but are the migration reads and writes protected
-> against concurrent ioctls?
->
-> For example, in vfio_ap_resuming_write(), mdevs_lock is dropped before
-> copying data from userspace and interacting with set_new_ap_configuration():
->
-> vfio_ap_resuming_write() {
->      ...
->      mutex_unlock(&matrix_dev->mdevs_lock);
->
->      if (copy_from_user((char *)ap_config + write_pos, buf, write_len)) {
->      ...
->      ret = set_new_ap_configuration(matrix_mdev, ap_config, cfg_sz);
->      ...
->      if (!new_allocation)
->          kvfree(ap_config);
->      ...
-> }
->
-> If a concurrent VFIO_DEVICE_RESET ioctl occurs while the lock is dropped,
-> could set_new_ap_configuration() assign a locally allocated ap_config into
-> the now-NULL resuming_mig_file.ap_config?
->
-> Would the outer function then call kvfree(ap_config), leaving a dangling
-> pointer in the device state that could subsequently be used and double-freed?
->
-> Similarly, in vfio_ap_stop_copy_read(), the lock is dropped before
-> copy_to_user():
->
-> vfio_ap_stop_copy_read() {
->      ...
->      mutex_unlock(&matrix_dev->mdevs_lock);
->
->      if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len))
->          return -EFAULT;
->      ...
-> }
->
-> Could a concurrent reset free mig_file->ap_config before or during the copy,
-> leading to an information leak of freed kernel memory to userspace?
+[...]
 
-The concern is legitimate. Both races will be fixed by holding
-locks for the full duration of the read and write operations.
-
+> @@ -779,6 +782,26 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm=
+_vcpu *vcpu)
+>  				  MSR_TYPE_RW, intercept);
+>  }
 >
->>   	}
->>   
->>   	if ((cur_state == VFIO_DEVICE_STATE_STOP &&
+> +static void svm_recalc_ibs_msr_intercepts(struct kvm_vcpu *vcpu)
+> +{
+> +	bool intercept =3D !(guest_cpu_cap_has(vcpu, X86_FEATURE_IBS) &&
+> +			   kvm_vcpu_has_mediated_pmu(vcpu));
+> +
+> +	if (!enable_mediated_pmu || !vibs)
+> +		return;
+> +
+> +	svm_set_intercept_for_msr(vcpu, MSR_AMD64_IBSFETCHCTL, MSR_TYPE_RW, int=
+ercept);
 
+For SEV-ES and SEV-SNP guests, section 15.38 says that IBS virtualization
+is enabled by bit 12 of SEV_FEATURES in the VMSA, not by bit 2 at offset
+B8h in the VMCB. This patch sets only the VMCB bit, but it disables these
+intercepts for every vCPU that has X86_FEATURE_IBS and a mediated PMU,
+*including* SEV-ES guests.  IBS virtualization is not enabled for SEV-ES
+guests, so they will be able to read and write the host's IBS MSRs!
+
+Since nested_vmcb02_prepare_control() does not set SVM_MISC_ENABLE_V_IBS in
+vmcb02->control.misc_ctl2, nested SVM has a similar problem. If L1 does not
+set INTERCEPT_MSR_PROT in vmcb12, vmcb02 uses vmcb01's msrpm, which
+disables these MSR intercepts. Because VIBS is disabled in vmcb02, L2 can
+read and write the host's physical IBS MSRs.
+
+OTOH, if L1 sets INTERCEPT_MSR_PROT in vmcb12 and clears the IBS MSR
+intercept bits in msrpm12, nested_svm_init_msrpm_merge_offsets() does not
+include the IBS MSRs in merge_msrs[], so msrpm02 still intercepts them, and
+L0 injects #GP into L2 on accesses to IBS_FETCH_CTL, IBS_OP_CTL, etc.
+
+Furthermore, the guest's IBS state is in the VMCB save area, but userspace
+has no way to save or restore it. The IBS MSRs are not in msrs_to_save[],
+and svm_get_msr() and svm_set_msr() reject them, so KVM_{GET,SET}_MSRS will
+fail. Hence, the IBS state is lost on suspend/resume.
+
+[...]
+
+> @@ -2880,6 +2904,27 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, stru=
+ct msr_data *msr_info)
+>  	case MSR_AMD64_DE_CFG:
+>  		msr_info->data =3D svm->msr_decfg;
+>  		break;
+> +
+> +	case MSR_AMD64_IBSCTL:
+> +		if (guest_cpu_cap_has(vcpu, X86_FEATURE_IBS))
+> +			msr_info->data =3D IBSCTL_LVT_OFFSET_VALID;
+> +		else
+> +			msr_info->data =3D 0;
+> +		break;
+
+Before this patch, KVM synthesized a #GP when a guest without
+X86_FEATURE_IBS read MSR_AMD64_IBSCTL. Now it returns 0.
+
+The condition should also test for kvm_vcpu_has_mediated_pmu(vcpu).
+
+> +
+> +
+
+Nit: there is an extra blank line above.
+
+> +	/*
+> +	 * When IBS virtualization is enabled, guest reads from
+> +	 * MSR_AMD64_IBSFETCHPHYSAD and MSR_AMD64_IBSDCPHYSAD must return 0.
+> +	 * This is done for security reasons, as guests should not be allowed t=
+o
+> +	 * access or infer any information about the system's physical
+> +	 * addresses.
+> +	 */
+> +	case MSR_AMD64_IBSDCPHYSAD:
+> +	case MSR_AMD64_IBSFETCHPHYSAD:
+> +		msr_info->data =3D 0;
+> +		break;
+> +
+
+These new cases should be conditional. Before this patch, KVM synthesized
+a #GP for a guest without X86_FEATURE_IBS. Now it returns 0.
+
+But, is this even necessary? APM vol. 2, section 15.38, says that when IBS
+virtualization is enabled in the VMCB, the processor returns 0 on guest
+reads from IbsFetchPhysAd and IbsDcPhysAd and ignores guest writes to
+them. Can't we just disable interception of these MSRs when VIBS is enabled
+for the vCPU, and let the hardware handle them?
+
+>  	default:
+>  		return kvm_get_msr_common(vcpu, msr_info);
+>  	}
+> @@ -3171,6 +3216,16 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, stru=
+ct msr_data *msr)
+>  		svm->msr_decfg =3D data;
+>  		break;
+>  	}
+> +	/*
+> +	 * When IBS virtualization is enabled, guest writes to
+> +	 * MSR_AMD64_IBSFETCHPHYSAD and MSR_AMD64_IBSDCPHYSAD must be ignored.
+> +	 * This is done for security reasons, as guests should not be allowed t=
+o
+> +	 * access or infer any information about the system's physical
+> +	 * addresses.
+> +	 */
+> +	case MSR_AMD64_IBSDCPHYSAD:
+> +	case MSR_AMD64_IBSFETCHPHYSAD:
+> +		return 1;
+
+Returning 1 does not "ignore" the write; it induces a #GP. But, see the
+point I made above.
+
+[...]
+
+> @@ -4678,6 +4733,11 @@ static void svm_vcpu_after_set_cpuid(struct kvm_vc=
+pu *vcpu)
+>  	if (guest_cpuid_is_intel_compatible(vcpu))
+>  		guest_cpu_cap_clear(vcpu, X86_FEATURE_V_VMSAVE_VMLOAD);
+>
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_IBS))
+> +		svm->vmcb->control.misc_ctl2 |=3D SVM_MISC_ENABLE_V_IBS;
+> +	else
+> +		svm->vmcb->control.misc_ctl2 &=3D ~SVM_MISC_ENABLE_V_IBS;
+> +
+
+The condition should also check kvm_vcpu_has_mediated_pmu(vcpu), as in
+svm_recalc_ibs_msr_intercepts().
