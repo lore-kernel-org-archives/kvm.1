@@ -1,74 +1,71 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6F3B9D9E
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 10:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31123472F74
+	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 10:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791455262; cv=none; b=RK4O2jqFPunw/JWQ0F3LGHhww0+P77X/BgSJxVsi6C0nf3A54YKE8/fw4HS9C8XegxAXDoiisOjC9ux9emmOhQct0GCC+emGsxAHMEHITq/5Cj2ZmYAiAStZTmZrkrptYU+V651pvNKOgJ8G1nOo733TkAwsCqWL7fLQzbEvKcY=
+	t=1791455447; cv=none; b=H2Xq/P6owcvmecWUNshInpr1JKIdSINsTUvIdKW8zp/QN9pZ/5dtVXXENt2VQRCqsRH0JijLhCdxEuPntpGUYPWF6j6v14RFN0B8l2iK13Q6dM2JxvHqJwfljVndMDak5od09JyQUn/XEGClyqACb6xPzDBhbRt6apHyI+0mHyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791455262; c=relaxed/simple;
-	bh=pzV0KGEfnPWlNsLZ6eZNdp6rz39Mcz4Br4ntsTsOTUM=;
+	s=arc-20240116; t=1791455447; c=relaxed/simple;
+	bh=rDS6BdX+EbByd2l4EUb5bRG5V9IxQDRsbRW1jLQQ+qQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oA4f3OdturXt2LryWJ1vQ7r6xo3/1ZWf3gOyMaO+EFg+buANVwlafKWeQf88f8HpOIEd9QvaziCt40la95CclXcr5mhNYLe7OEE/lbKpk8iQhEk+gH1daUA0N2wB4ddulJIL2t30fxW6hojRgDyHS8081cpakIFjMdDCVKP92I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLf9IHVL; arc=none smtp.client-ip=209.85.215.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=VfO2Z4xUDfy6V3oJ7IRomuSfsgJ6LREWmw9eJmTX3RJPSfVxKcs7xZ4sOCaryVk5clBX1HJZGz4LasO56KsEZN4dokRCpl8c4tEfuyZ0abuWe12Stu5MxP2GtmnWrx3E9UxuVlt7xkOH6Re3GB8tjzY/QT6ogeVCJf1nlvw9Yog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dTAKnmZ6; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLf9IHVL"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc4aa02a269so2290834a12.2
-        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 03:27:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dTAKnmZ6"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc50ad2d650so1737015a12.1
+        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 03:30:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791455260; x=1792060060; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791455445; x=1792060245; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0UCVwsFbfHG4fUQmCEChejx1MkBmDCHujMtoBrNi4SU=;
-        b=nLf9IHVLwVBDev9RGYhfjmKYZZv8k2EG07MKTJEQQgAiwRUfNP8J3CbWXSyd8jrIoM
-         l0m7pnWidRpWBOgvHZII4U1xHV6jOBO1/CldPHTJvoD6RIrihwym7S8B80jGO/V2/GDu
-         1xFLjWlc2ZyiIUNKWUyZ5VM2zwobCIIiEw7Yrs/odK0O+YpqoJQaeC18oEXWclJUemVK
-         D0u2aMaj8yRFZ3qyl/UI1O8JnQMEKDGWYfQCnwtr8T9WehYl/UviVXMimqPlOs5ajPYd
-         VQDz26OFaApGPoLE2x5tC37sokLKGDPTBDDp/vy60TDnvKs5vT3kEEw4W7Nw23LeI8zD
-         4YKg==
+        bh=D/PrLkJqH6eNdn4uSZzb8qrmiJsHXO2a6FS8B1i/DfY=;
+        b=dTAKnmZ6tDK7V6OrPFcZ7/ZKXvoQMkMpmgAsP6uKhU4SnVvLmRspRkgyZ/hEJLK57e
+         AMmQQ54zPRuYvnH2zZqG53brSAfZQTGVHY0nd6YQJlqJUY5dQ81CcS24CbDOY3VPRO2I
+         x2cnOk/eXUS3RG+JxmX8u4Jt18HvxkygQLABJ6rJ1IbHi0K3Z1p14yEzV8+BG9q2Mz/n
+         B7NO6Bu/xqh5fiSvN1ABTvPH65cyhWfITosyqOlghrx2xoxIP4d9qoNzgoRzccZh+Ezz
+         mURxRffDk847cHOhwmKCEGLQLHHhp2dNgSOorhLpZl7Zt5CB4ueDhC3UubM0bhw+CWU5
+         iTLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791455260; x=1792060060;
+        d=1e100.net; s=20260707; t=1791455445; x=1792060245;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0UCVwsFbfHG4fUQmCEChejx1MkBmDCHujMtoBrNi4SU=;
-        b=mKDzHUOgTypx1Uw1He4CZ8uGni0/cgsozHi1072tYP8/W/SkPZQLtGh6i8ZMOpACUf
-         tAjZM9iUekczyuJd8mqsI7NmwvWWxx+QpMBOoYK9RZb9cuh2JlX924zUeEIBZhRIrbRJ
-         tgThaX0LpBpzHxli07nJ//v6oqlwh2Bo5FniLO7svuvXQT1yRZmQcb8Zek8kZ9YyNVt7
-         unmqB5xiQxKZi7saApInxyT25Py47yk/xwKHhP4yPpGycqLrI6ln2+HupA6WU18ZftFg
-         gHWz1YlHBjg9Q03u7w2bAaPEuc+/D1Ymd6yqZRGakoIEas3QumD1gMnYlyaaoMNfhfQi
-         9z4w==
-X-Gm-Message-State: AFq9FYKSNRmhv0h0sOZurgUkMNEJj/iw53kdcGWfOFzZCme2rWI2hTmW
-	JHoLOGaFTcUPxfgkaFQIQuSZQBpkNqv3D7lCFBDE/U1pprROIICaNHkWgXueJ+9fN6diuCWKSvi
-	V6whY4Q==
-X-Gm-Gg: AYBFou3nyB/v12C4w3yOJZLKDfqxSVRBSFlIWq5EysRyYhthR3v+m2JebfAamHk/7NP
-	bsKWXVS5+nbd2/qxbzbwBVOgZ4FiV4bL+Z8WqCM4zy7R/D6xN7PnbmIgUZ+Lk/YHqX7rfdm7c6/
-	Rov7sGRp7Do/5JDxENDkZ4bKjKUwLop0rwCe44iu0wyZJ/YwszcsMlxt7W0Wncxnpb9qPzQiyS6
-	k7R3jm/piey1WSfPtgd0QHeTX2o6WlLNTLLTlNnPKPQOWzdHNAFxobM1wBOS9Jx7jV5MCzikrYW
-	NVZPgpalBXzKwTn4dy6C5JiHJb267on60mUQfBPDnojEqSh/fpBW68jWqoDSoGCA2LoN/N7pSs5
-	oNGu3ZN8yBmAtO0WZqLZ8h7q80IL4g2CB2i0ZwyNDawIgFuOOkb83cDr8n/1+flxdRh7F15n6Lv
-	amumVUji2HhBtgBL7nvl4Y5NovN4iJrIAA+ZLTFVytcd43zah1RfkwdUlbkQ8kF1w/+4ZanfPyE
-	rzmD9qAloUwUROgcQwBFrLAguV+pIoGWNM=
-X-Received: by 2002:a17:90b:3148:b0:39e:21a7:5df5 with SMTP id 98e67ed59e1d1-3a8a1abf904mr4348992a91.24.1791455259695;
-        Thu, 08 Oct 2026 03:27:39 -0700 (PDT)
+        bh=D/PrLkJqH6eNdn4uSZzb8qrmiJsHXO2a6FS8B1i/DfY=;
+        b=oInHXu/t4LhBhBnTohlwb8SoEAbRKFTNovf17oLheaBQ25Z51w9LCwOAz6rbFQfTb3
+         mbPvXzrtJOCwJbC7V7ydTY+rBFQ59UkqSyK3Wj694l+ZEYwXYfRszJqIJ2iGnnNCK5Er
+         PgPmD5zLttRp/xuBs7v91ae3E7+EZXg3LUKNt/zf/928TQf4KrDFaa6n0Q5ZlCgoLBWp
+         NNJlEd+1BwnKly4VLasbIIuvvfEjIqo6vRQHRs8a9OfMBiLMEV0DTSElYD9qikOz1GfX
+         j/+G9R7VI01q+UG2OXH1AXmqB7iV6b3UxlbxRgt/i2R4CiQbFx74hkqKRUXTGLE499QI
+         wnAQ==
+X-Gm-Message-State: AFq9FYKqTjNg3coabv+GEqKFhbJpzcNVC0Lv0Lm6fa+F9KnzldQSOwHZ
+	40xwiJ64D2Ro7scppQvwj40Ndt/dhbc8Mg7KoCjWqJTTy7y6MVPkIIxkY4Hfb/Q4wQ==
+X-Gm-Gg: AYBFou3h5EMRW4G8bCgimLGsV549Jxgvn8BU7CYEQhu9bCxDT/GdQMzw6D1iDxzsGCM
+	+Nd5X3hPSzUO7AgDxSOuY7POpEFa7zyrw2sSZyaaNEOIRRS/Ccf+0meQcPZ7MGVX9EdUdrBsZxY
+	EHbUuoRtpoKp1VBCBsbnkDfr8gALK1zdpXNydGpeYpzlBWhEd3pLEDPVjUB7E0OSF7oLoQrsPvu
+	mkpBaidfj5pWKoOyi9nWrSwj9pdFTvUEHt2HCXG75A+E4n4L2zX9bNu5MLKgqzbK6EclVhlpVNq
+	K8TdUwrKk5PoPKBFM541HqCXMi9+mPdkMO9NB0qn3aaDtiNdtH1OD3Da2oQRGOYye3fyI8TeK3o
+	p9hOHV1UqOz60ilXNodH92P95U1tvs36LCVBfkXW5wq7FU97xTcQikRm6O/87bkrBI632biuSeL
+	WmrdjpYVRKYdSbRVjo5esS2TEbh+ShSpqmj1TfSjpZmBEUeOieNQZbbb2EnPbxOitncS5bIJPwN
+	ZMNu+76J6wYTN4JpPxus/12DPNNBlJiZ+Q=
+X-Received: by 2002:a17:90b:1d0d:b0:3ab:c80:9370 with SMTP id 98e67ed59e1d1-3ab0c80f010mr606371a91.20.1791455444714;
+        Thu, 08 Oct 2026 03:30:44 -0700 (PDT)
 Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3aaee881786sm1459203a91.0.2026.10.08.03.27.37
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a8b0616esm2814569a12.6.2026.10.08.03.30.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 03:27:37 -0700 (PDT)
-Date: Thu, 8 Oct 2026 10:27:33 +0000
+        Thu, 08 Oct 2026 03:30:43 -0700 (PDT)
+Date: Thu, 8 Oct 2026 10:30:40 +0000
 From: David Matlack <dmatlack@google.com>
 To: Aaron Lewis <aaronlewis@google.com>
 Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
-Subject: Re: [PATCH v3 4/4] vfio: selftests: Allow a size for
- vfio_dma_mapping_perf_test
-Message-ID: <asdwFZdtp4Tqj82p@google.com>
+Subject: Re: [PATCH v3 0/4] Introduce vfio_dma_mapping_perf_test
+Message-ID: <asdw0Mep7etyQvrE@google.com>
 References: <20260910153326.3085937-1-aaronlewis@google.com>
- <20260910153326.3085937-5-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,389 +74,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260910153326.3085937-5-aaronlewis@google.com>
+In-Reply-To: <20260910153326.3085937-1-aaronlewis@google.com>
 
 On 2026-09-10 03:33 PM, Aaron Lewis wrote:
-> Allow the user to specify a DMA region size via the command line for
-> vfio_dma_mapping_perf_test.
+> Add a new VFIO selftest, vfio_dma_mapping_perf_test, to provide a
+> configurable tool for measuring DMA mapping and unmapping latencies.
 > 
-> Because the selftest harness parses command-line parameters, adding
-> custom options directly to individual tests requires the test harness
-> to recognize them.
+> This selftest introduces command-line parameters to provide a convenient
+> way to tune the test for specific situations. For example, it can be used
+> to observe the lengthy unmap times of the Type 1 IOMMU on large memory
+> regions, or to compare DMA mapping performance between the Type 1 IOMMU
+> and IOMMUFD. These scenarios can now be easily configured and run via the
+> command line.
 > 
-> Add support to kselftest_harness.h for custom command-line options via
-> struct test_harness_cli_opts and test_harness_run_opts(). Then use this
-> interface in vfio_dma_mapping_perf_test to introduce a new '-b' option to
-> specify the DMA region size.
+> Changes in v3:
+>  - Replaced raw printf() calls with ksft_print_msg()
+>  - Updated the TIME macro to preserve errno
+>  - Added 'fd' and 'fd_offset' to struct dma_region
+>  - Simplified teardown_memfd() by removing redundant error checks
+>  - Replaced the command-line argument passthrough (-a "...") approach with
+>    first-class support in kselftest_harness.h
+
+This looks a lot better, thanks for making the change!
+
+>  - Added collision validation in optstring_append_custom() to prevent custom
+>    options from overlapping with built-in harness options.
+>  - Switched test_enabled() to match exact option characters rather than
+>    tolower(opt), ensuring custom options that differ only by case (such as
+>    'R') do not mistakenly match built-in single-case options like '-r'.
 > 
-> For example, both the test size and test harness options can now be
-> passed together naturally:
+> Aaron Lewis (4):
+>   vfio: selftests: Assert the region was unmapped in iommu_unmap()
+>   vfio: selftests: Introduce vfio_dma_mapping_perf_test
+>   vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+>   vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
 > 
->   ./vfio_dma_mapping_perf_test -b 16G -v vfio_type1_iommu_memfd_hugetlb_1gb
+>  tools/testing/selftests/kselftest_harness.h   |  86 +++++-
+>  tools/testing/selftests/vfio/Makefile         |   1 +
+>  .../selftests/vfio/lib/include/libvfio.h      |  31 +++
+>  .../vfio/lib/include/libvfio/iommu.h          |  14 +-
+>  tools/testing/selftests/vfio/lib/iommu.c      |  24 ++
+>  .../vfio/vfio_dma_mapping_perf_test.c         | 263 ++++++++++++++++++
+>  .../selftests/vfio/vfio_dma_mapping_test.c    |  11 +-
+>  7 files changed, 406 insertions(+), 24 deletions(-)
+>  create mode 100644 tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
 > 
-> Assert if the custom options string is problematic (e.g. conflicting with
-> built-in options or exceeding the buffer limit). This should only happen
-> when developing a test, and asserting makes the issue immediately obvious
-> to the developer.
-> 
-> Signed-off-by: Aaron Lewis <aaronlewis@google.com>
-> ---
->  tools/testing/selftests/kselftest_harness.h   | 86 ++++++++++++++++---
-
-Please split out the kselftest_harness.h change into its own commit. We
-need to get that commit acked by the selftests maintainers.
-
->  .../vfio/vfio_dma_mapping_perf_test.c         | 86 +++++++++++++++++--
->  2 files changed, 151 insertions(+), 21 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-> index 29a19bc87084..5065eb7144bc 100644
-> --- a/tools/testing/selftests/kselftest_harness.h
-> +++ b/tools/testing/selftests/kselftest_harness.h
-> @@ -54,6 +54,7 @@
->  #define _GNU_SOURCE
->  #endif
->  #include <asm/types.h>
-> +#include <assert.h>
->  #include <ctype.h>
->  #include <errno.h>
->  #include <linux/unistd.h>
-> @@ -76,6 +77,18 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
->  		memset(s, c, n);
->  }
->  
-> +/**
-> + * struct test_harness_cli_opts - Custom command-line options for test harness
-> + * @optstring: getopt option string; must not conflict with harness options.
-> + * @handler: Callback to handle custom options; returns KSFT_PASS or KSFT_FAIL.
-> + * @help: Optional callback to print custom option help text.
-> + */
-> +struct test_harness_cli_opts {
-> +	const char *optstring;
-> +	int (*handler)(int opt, char *optarg);
-> +	void (*help)(void);
-> +};
-> +
->  #define KSELFTEST_PRIO_TEST    20000
->  #define KSELFTEST_PRIO_XFAIL   20001
->  
-> @@ -1097,11 +1110,36 @@ static void test_harness_list_tests(void)
->  	}
->  }
->  
-> -static int test_harness_argv_check(int argc, char **argv)
-> +#define OPTSTRING_LEN 128
-> +
-> +static void optstring_append_custom(char *optstring, size_t size,
-> +				    const struct test_harness_cli_opts *opts)
->  {
-> +	const char *c;
-> +
-> +	if (!opts || !opts->optstring)
-> +		return;
-> +
-> +	assert(strlen(optstring) + strlen(opts->optstring) < size);
-> +
-> +	for (c = opts->optstring; *c; c++) {
-> +		if (isalnum(*c))
-> +			assert(!strchr(optstring, *c));
-> +	}
-> +
-> +	strncat(optstring, opts->optstring, size - strlen(optstring) - 1);
-> +}
-> +
-> +static int test_harness_argv_check(int argc, char **argv,
-> +				   const struct test_harness_cli_opts *opts)
-> +{
-> +	char optstring[OPTSTRING_LEN] = "dhlF:f:V:v:t:T:r:";
->  	int opt;
->  
-> -	while ((opt = getopt(argc, argv, "dhlF:f:V:v:t:T:r:")) != -1) {
-> +	optstring_append_custom(optstring, sizeof(optstring), opts);
-> +
-> +	optind = 1;
-> +	while ((opt = getopt(argc, argv, optstring)) != -1) {
->  		switch (opt) {
->  		case 'f':
->  		case 'F':
-> @@ -1118,7 +1156,6 @@ static int test_harness_argv_check(int argc, char **argv)
->  			ksft_debug_enabled = true;
->  			break;
->  		case 'h':
-> -		default:
->  			fprintf(stderr,
->  				"Usage: %s [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]\n"
->  				"\t-h       print help\n"
-> @@ -1139,7 +1176,14 @@ static int test_harness_argv_check(int argc, char **argv)
->  				"include all tests from variant 'bla'\n"
->  				"but not test 'foo' specify '-T foo -v bla'.\n"
->  				"", argv[0]);
-> -			return opt == 'h' ? KSFT_SKIP : KSFT_FAIL;
-> +			if (opts && opts->help)
-> +				opts->help();
-> +			return KSFT_SKIP;
-> +		default:
-> +			if (opts && opts->handler &&
-> +			    opts->handler(opt, optarg) == KSFT_PASS)
-> +				break;
-
-If this fails it should still print the help message to match the
-previous behavior.
-
-> +			return KSFT_FAIL;
->  		}
->  	}
->  
-> @@ -1149,31 +1193,39 @@ static int test_harness_argv_check(int argc, char **argv)
->  static bool test_enabled(int argc, char **argv,
->  			 struct __fixture_metadata *f,
->  			 struct __fixture_variant_metadata *v,
-> -			 struct __test_metadata *t)
-> +			 struct __test_metadata *t,
-> +			 const struct test_harness_cli_opts *opts)
->  {
->  	unsigned int flen = 0, vlen = 0, tlen = 0;
-> +	char optstring[OPTSTRING_LEN] = "dF:f:V:v:t:T:r:";
->  	bool has_positive = false;
->  	int opt;
->  
-> -	optind = 1;
-> -	while ((opt = getopt(argc, argv, "dF:f:V:v:t:T:r:")) != -1) {
-> -		if (opt != 'd')
-> -			has_positive |= islower(opt);
-> +	optstring_append_custom(optstring, sizeof(optstring), opts);
-
-Can the full optstring be constructed once and then passed into
-test_enabled()? That would also eliminate the duplicate hard-coded
-opt-string.
-
->  
-> -		switch (tolower(opt)) {
-> +	optind = 1;
-> +	while ((opt = getopt(argc, argv, optstring)) != -1) {
-> +		switch (opt) {
->  		case 't':
-> +		case 'T':
-> +			has_positive |= islower(opt);
->  			if (!strcmp(t->name, optarg))
->  				return islower(opt);
->  			break;
->  		case 'f':
-> +		case 'F':
-> +			has_positive |= islower(opt);
->  			if (!strcmp(f->name, optarg))
->  				return islower(opt);
->  			break;
->  		case 'v':
-> +		case 'V':
-> +			has_positive |= islower(opt);
->  			if (!strcmp(v->name, optarg))
->  				return islower(opt);
->  			break;
->  		case 'r':
-> +			has_positive = true;
->  			if (!tlen) {
->  				flen = strlen(f->name);
->  				vlen = strlen(v->name);
-> @@ -1262,7 +1314,8 @@ static void __run_test(struct __fixture_metadata *f,
->  			      diagnostic ? "%s" : NULL, diagnostic);
->  }
->  
-> -static int test_harness_run(int argc, char **argv)
-> +static int test_harness_run_opts(int argc, char **argv,
-> +				 const struct test_harness_cli_opts *opts)
->  {
->  	struct __fixture_variant_metadata no_variant = { .name = "", };
->  	struct __fixture_variant_metadata *v;
-> @@ -1274,7 +1327,7 @@ static int test_harness_run(int argc, char **argv)
->  	unsigned int count = 0;
->  	unsigned int pass_count = 0;
->  
-> -	ret = test_harness_argv_check(argc, argv);
-> +	ret = test_harness_argv_check(argc, argv, opts);
->  	if (ret != KSFT_PASS)
->  		return ret;
->  
-> @@ -1283,7 +1336,7 @@ static int test_harness_run(int argc, char **argv)
->  			unsigned int old_tests = test_count;
->  
->  			for (t = f->tests; t; t = t->next)
-> -				if (test_enabled(argc, argv, f, v, t))
-> +				if (test_enabled(argc, argv, f, v, t, opts))
->  					test_count++;
->  
->  			if (old_tests != test_count)
-> @@ -1301,7 +1354,7 @@ static int test_harness_run(int argc, char **argv)
->  	for (f = __fixture_list; f; f = f->next) {
->  		for (v = f->variant ?: &no_variant; v; v = v->next) {
->  			for (t = f->tests; t; t = t->next) {
-> -				if (!test_enabled(argc, argv, f, v, t))
-> +				if (!test_enabled(argc, argv, f, v, t, opts))
->  					continue;
->  				count++;
->  				t->results = results;
-> @@ -1324,6 +1377,11 @@ static int test_harness_run(int argc, char **argv)
->  	return KSFT_FAIL;
->  }
->  
-> +static inline int test_harness_run(int argc, char **argv)
-> +{
-> +	return test_harness_run_opts(argc, argv, NULL);
-> +}
-> +
->  static void __attribute__((constructor(KSELFTEST_PRIO_TEST))) __constructor_order_first(void)
->  {
->  	__constructor_order_forward = true;
-> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> index 4113a20127de..84a973a53b8c 100644
-> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> @@ -1,4 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> +#include <ctype.h>
->  #include <limits.h>
->  #include <stdio.h>
->  #include <sys/mman.h>
-> @@ -17,7 +18,78 @@
->  
->  #include "kselftest_harness.h"
->  
-> -static const char *device_bdf;
-> +static struct {
-> +	u64 size;
-> +	const char *device_bdf;
-> +} test_params = {
-> +	.size = SZ_1G,
-> +};
-> +
-> +/*
-> + * Parses "[0-9]+[kmgt]?".
-> + */
-> +static u64 parse_size(const char *size)
-> +{
-> +	int shift = 0;
-> +	char *scale;
-> +	u64 base;
-> +
-> +	VFIO_ASSERT_TRUE(size && isdigit(size[0]),
-> +			 "Need at least one digit in '%s'.", size);
-> +
-> +	base = strtoull(size, &scale, 0);
-> +
-> +	VFIO_ASSERT_TRUE(base != ULLONG_MAX, "Overflow parsing size!");
-> +
-> +	switch (tolower(*scale)) {
-> +	case 't':
-> +		shift = 40;
-> +		break;
-> +	case 'g':
-> +		shift = 30;
-> +		break;
-> +	case 'm':
-> +		shift = 20;
-> +		break;
-> +	case 'k':
-> +		shift = 10;
-> +		break;
-> +	case 'b':
-> +	case '\0':
-> +		shift = 0;
-> +		break;
-> +	default:
-> +		VFIO_FAIL("Unknown size letter '%c'.", *scale);
-> +	}
-> +
-> +	VFIO_ASSERT_TRUE((base << shift) >> shift == base,
-> +			 "Overflow scaling size!");
-> +
-> +	return base << shift;
-> +}
-> +
-> +static void opt_custom_help(void)
-> +{
-> +	fprintf(stderr,
-> +		"\nCustom options:\n"
-
-It shouldn't be on every test to print a header and leading newline like
-this for their custom options. kselftest_harness.h should provide this.
-
-e.g.
-
-  if (opts && opts->help) {
-          fprintf(stderr, "\nCustom options:\n");
-	  ops->help();
-  }
-
-> +		"\t-b bytes Specify the size of the DMA region to be mapped\n"
-> +		"\t         and unmapped. e.g. 16M or 8G, (default: 1G)\n");
-> +}
-> +
-> +static int opt_custom_handler(int opt, char *optarg)
-> +{
-> +	if (opt == 'b') {
-> +		test_params.size = parse_size(optarg);
-> +		return KSFT_PASS;
-> +	}
-> +	return KSFT_FAIL;
-> +}
-> +
-> +static const struct test_harness_cli_opts opts = {
-> +	.optstring = "b:",
-> +	.handler = opt_custom_handler,
-> +	.help = opt_custom_help,
-
-nit: "custom" seems unnecessary. And to align the naming it should be
-opts not opt.
-
-> +};
->  
->  FIXTURE(vfio_dma_mapping_perf_test) {
->  	struct iommu *iommu;
-> @@ -45,7 +117,7 @@ FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, MAP_HUGETLB | MAP_HUG
->  FIXTURE_SETUP(vfio_dma_mapping_perf_test)
->  {
->  	self->iommu = iommu_init(variant->iommu_mode);
-> -	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-> +	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
->  	self->iova_allocator = iova_allocator_init(self->iommu);
->  }
->  
-> @@ -58,7 +130,7 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_perf_test)
->  
->  TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
->  {
-> -	const u64 size = SZ_1G;
-> +	const u64 size = test_params.size;
->  	const int flags = variant->mmap_flags;
->  	struct dma_region region;
->  
-> @@ -115,7 +187,7 @@ FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
->  FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
->  {
->  	self->iommu = iommu_init(variant->iommu_mode);
-> -	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-> +	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
->  	self->iova_allocator = iova_allocator_init(self->iommu);
->  }
->  
-> @@ -156,7 +228,7 @@ static void teardown_memfd(int fd, u64 size, void *vaddr)
->  
->  TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
->  {
-> -	const u64 size = SZ_1G;
-> +	const u64 size = test_params.size;
->  	const int mmap_flags = variant->mmap_flags;
->  	struct dma_region region;
->  	int fd;
-> @@ -186,6 +258,6 @@ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
->  
->  int main(int argc, char *argv[])
->  {
-> -	device_bdf = vfio_selftests_get_bdf(&argc, argv);
-> -	return test_harness_run(argc, argv);
-> +	test_params.device_bdf = vfio_selftests_get_bdf(&argc, argv);
-> +	return test_harness_run_opts(argc, argv, &opts);
->  }
 > -- 
 > 2.55.0.1003.g10538fe699-goog
 > 
