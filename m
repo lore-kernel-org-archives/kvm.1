@@ -1,76 +1,75 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA88C377AB3
-	for <kvm@vger.kernel.org>; Thu,  8 Oct 2026 03:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B56A28F5;
+	Thu,  8 Oct 2026 04:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791430182; cv=none; b=mYZOeyIsraFnPZzeW0zQGLf21DQL2Rx1/8T4qB9v5ZRLVC/D9yRBicfsGpPVT8G0/uUApVDKoak4IEPP0MIMeZgU+3KXMMUBgZmbuuMzlESGyjG9KLfEItM2fkd8ECl7x+sxoqcemEp0Da0jvtRuWB3dwRWn35uCgyZGIdtu7OU=
+	t=1791433310; cv=none; b=fZEcuejhC0X/PlX9ZZeYzHNriXN7a7aoxVN+0M9aOMEJrtZPMbEZBcr1+Cd4Gi2RcHL+IpWpIyAOkhJ01qlIMUhvhPQdpSgB2xvL9o6CO3EIsQYjqMbCnqx4w3JjImoy0YbNlxx6c3Z9lBy6y2+CnLVmZ3+qsIxRqkEWl3s0x4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791430182; c=relaxed/simple;
-	bh=fCovleAd76xKxSIKL0gR0UyoCvGwErIcUGSaO7MBn14=;
+	s=arc-20240116; t=1791433310; c=relaxed/simple;
+	bh=72t8kjnmtlHayJXabWx7qkj7uN9CNyIrQorr5EX/XD4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AW05fQliz28MYQltsXSVMyINDvencNujzUm/ojj439Xpy4RC6Am0FbYkMCFm5BE3nW7v1BPolxIghiTXyYwoNijnpl9ON6Bwt3wVpUhdWu9Z3lYwNmdfWrB06waK3JopgXmQfWgjVBnEdMiCWcrXtGKMUQQiBonSmdkyDNrZBFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InYbj/Xm; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZpZTLBN8DrEet4gBKvzfwrY+YdF7g291vTS0mY4cfxtvSMxRblkvVLnm5XhKYQhMLc+WoIjUj9cZAK6RQvrLZoQNvUwzzNlvZbJ9nz6tugXo0w9xsx1TayEcgdC8sF/0bNmABcCoDIFPqMuGlYfqVtBBgQo1gse74D/5uujbV4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bI18DeG9; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InYbj/Xm"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3282db206d3so128824eec.0
-        for <kvm@vger.kernel.org>; Wed, 07 Oct 2026 20:29:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791430180; x=1792034980; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gwq5f+ZLCgN7QGo4Ox3rF7+nf5ThQJje9jM+CC6wfhE=;
-        b=InYbj/Xm7x9QrtNGd1WIKKvTEzJdNyz0ygi6UwwFN9QD+3iIWBVbHkYLBFWI3alt4F
-         rRaebarRFuiHzB8o1dvia/RQuhFgFoyGxhrsoawOXl9ci+2fz64ppfg3f253tJ0aO1zC
-         yNbBgqgJpi3CsNLENWoYPFEBtawxtZ5fLeZMgfrqovCLw2zxXHif310Poi/X381tIh/o
-         e2b7ma78ghIhPyR6pYmDs0KBr4MDZDo/WV9CU7CTGKTRuS9ZX7199aXeZHRm09vKbKPe
-         xKVED9mfhtiA+GUqrVBU+fXKxo5K9I2dtIHKtzcD7qWEMRgcs3R5KZT3AtP2t6WCl9AQ
-         bmfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791430180; x=1792034980;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gwq5f+ZLCgN7QGo4Ox3rF7+nf5ThQJje9jM+CC6wfhE=;
-        b=nIyiGae2MAlmsNjLSvuzIFYBL7d0gZVUnrSvvX4jBqbCgsU2PGZt0Bgu9nPaEd6sTg
-         DZ0jeArJ0cWg5pHiKsi0Pn7YOSaULAj5TVPNzicQmZtRJuKdRgKl9stAzOfhMmnOnrH0
-         MkTbbdbonL/9UP0P8oBmGHfIrznZQAj1Zk+fhFHluun6y/6Mr52POt1c13kW47EPo7QX
-         j5HOqVDAu3mjHyeFOEl4B7JETC+MBJ9+Bn4K/Vn1KjcMRA4S+VrZk0TO1EG4aaDkztBx
-         fIIrs2g+2CfxGrG/HwjuEybkJkOGHIT/PJ1FWjzvJ+TK31XYFehNu/LEnAsznQoC1HuX
-         XQ1A==
-X-Forwarded-Encrypted: i=1; AKwUvByzSfGpxRF5/LYVf/3nGG8rgT7Z5IDfeRD6Xt8jXQUFp/XAmk+97rfzJjT2C+yq3VqfE2E=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlu0ArH34ryN+fUx+yGCGodpUrmP0YHcUj4Y5OLH3jmozpRx+U
-	aSWUzuDByW9YzCSbJmIAEiTK+yhFEXVSVsj8rZfMKD/5bmsSxIedDDAT
-X-Gm-Gg: AYBFou0e5F3cTvsXJpEmF/mBiu3nXpg78ziGmHkmsiG0xNZ/SmAPzVl27S0dJa4Hzo+
-	KVAdgcr+jpjfROj0AAGXQDe9EJH7d18f4b4kUm11fppylet76yKIsS5m1EAfPXd6N5HKLHRJQ0G
-	sQYGtqGhVqoWSIl66aISxsp/8KBuBv1RHKMCVmCrMU80p5/N3JU4diSKk6HgEwsN3/oiylbG0JI
-	utdEZM0OF3S7t7MQKu4u2LOJo80cptRYwdt/JXlDcEVir1BcgeejIE3FJJl31Zf1DaJrgedbVn5
-	Dsk8yUbQOyDjMjkbZZg4vSRKrgqtVBMEl8TPnkLfgVDPn+j3qqvIDttuQ4mkHUbmFRtHP5WjjKk
-	8hrLcrJCnTW0mawZ9J6SGer3fJv9q9oUBhChkuKTkhHtqsWNxSa7EmqoNMPp4V6bFMtgEjLHhah
-	Pn3nZfpjqrJRYCHz4kjrPB802wp9pajzI0QgAA6tHapkflw8HbFzu4qaFy6MBYEP6zmyuojjCox
-	yiWN4GWu03wrUcaxRZRYHDGOSeG
-X-Received: by 2002:a05:7301:4208:b0:351:1b39:9e49 with SMTP id 5a478bee46e88-3515dd83c6fmr4928603eec.8.1791430179747;
-        Wed, 07 Oct 2026 20:29:39 -0700 (PDT)
-Received: from localhost ([47.254.74.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515afa61e8sm12939658eec.22.2026.10.07.20.29.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 20:29:39 -0700 (PDT)
-Date: Thu, 8 Oct 2026 11:29:35 +0800
-From: Lai Jiangshan <jiangshanlai@gmail.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 20/29] KVM: x86: Add KVM_REQ_MMU_SYNC_ALL_ROOTS
-Message-ID: <ascM1BxXKhGqA8n7@U-YXDQC754-96.local>
-References: <20261008001425.2458927-1-yosry@kernel.org>
- <20261008001425.2458927-21-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bI18DeG9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791433308; x=1822969308;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=72t8kjnmtlHayJXabWx7qkj7uN9CNyIrQorr5EX/XD4=;
+  b=bI18DeG935pvf2gmg7b6+7pV+Qz1cO7ks7kQAqieXuM3pZMGYzMth3vl
+   tuQ22CwqDSN3aApUH1BWr9DokCUacUucJBpJvzddH2p8rZKUo4YMA0QSl
+   ju4hWQhkeuw6dK5Gz16nyDjknSJFTzG9ICAZb7sqtdvZlhyZG/CH4BzGx
+   BD5PuijIcOU5M7VyQiF+41ExbfACfeffbPkTj9krd5J2xsPtiLVUuSVMY
+   ojp1mqbsjvd0Ckec+FyxzLfcyF0oNRF73qtVrwYmjmHBOGBrrFYK29szO
+   Xo7VH4ywuSAztx336XVL/2exCLpE+73wy7TMyjRgDe0QUSc5KzEvNRg7Z
+   A==;
+X-CSE-ConnectionGUID: R3Td3kqASf+ko6n+8RFrwg==
+X-CSE-MsgGUID: J8Jwrby8RpWNzo/BTMxiag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="89787"
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="89787"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 21:21:48 -0700
+X-CSE-ConnectionGUID: ijIX/gW5Q9+QS8t15kW+Mg==
+X-CSE-MsgGUID: ZMwSeSVDTranw+w5fx6dCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="4524"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa001.fm.intel.com with ESMTP; 07 Oct 2026 21:21:43 -0700
+Date: Thu, 8 Oct 2026 12:18:33 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>
+Subject: Re: [PATCH v3 2/6] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <ascZmXRuxiiAAv2+@yilunxu-OptiPlex-7050>
+References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-2-db52cb05b918@linux.intel.com>
+ <51a0f0e33d523fa652b3c664ea1083a9459bd323.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,37 +78,101 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261008001425.2458927-21-yosry@kernel.org>
+In-Reply-To: <51a0f0e33d523fa652b3c664ea1083a9459bd323.camel@intel.com>
 
-On Thu, Oct 08, 2026 at 12:14:16AM +0800, Yosry Ahmed wrote:
-> Add a new x86 request to sync all roots, current and previous. This will
-> be used when syncing the shadow NPTs on nested VMRUN when an ASID flush
-> (or new ASID) is requested by L1, as all physical translations in all
-> roots should be sync'd (since shadow mappings are not tagged with an
-> ASID).
+On Tue, Oct 06, 2026 at 11:56:23PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-10-06 at 01:41 +0800, Xu Yilun wrote:
+> > The TDX architecture identifies some features that are off by default
+> > but can be enabled by the host during TDX module initialization. They
+> > are classified as add-on features because enabling them affects existing
+> > TDX systems: they may change existing feature behavior, or reserve more
+> > memory.
+> > 
+> > The TDX module extends TDH.SYS.CONFIG with a new register argument to
+> > specify which add-on features to enable. This new argument is a bitmap
+> > that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
+> > is an exception: although it is an add-on feature, it is controlled via
+> > a legacy, dedicated register argument [1].
+> > 
+> > The kernel needs to enable these add-on features when it supports them.
 > 
-> Refactor syncing all roots (currently only done by
-> kvm_vcpu_flush_tlb_guest()) to a helper, and use it to handle the
-> request.
+> I made a similar comment on v1:
+> https://lore.kernel.org/lkml/41f5a558ca67e2895fcb114c418f0e453e933974.camel@intel.com/
 > 
-> Clear KVM_REQ_MMU_SYNC when handling KVM_REQ_MMU_SYNC_ALL_ROOTS as the
-> latter is a superset. Do not do so inside kvm_mmu_sync_all_roots(), to
-> avoid any subtle behavioral changes from kvm_vcpu_flush_tlb_guest()
-> clearing KVM_REQ_MMU_SYNC. It makes sense to always clear it when
-> syncing the MMU, but there might be weird dependencies on the sync only
-> happening before the actual vCPU run, and kvm_vcpu_flush_tlb_guest() is
-> called in other code paths than handling KVM_REQ_TLB_FLUSH_GUEST before
-> vCPU run.
+> It is up to the kernel to decide if it wants to enable these features, when it
+> supports them. The sentence sounds like there is some hard requirement to enable
+> them when possible. I think the reasons to enable them based solely on available
+> support could be:
+>  1. They don't take significantly more memory or CPU resources, and limiting
+> possible configs reduces kernel complexity.
+>  2. It would be rare that people don't want them on.
 > 
-> No functional change intended.
+> Maybe we tweak this to be?
+> 
+> Despite that these features can be add-ons due to introducing some overhead to
+> TDX runtime, the impact of the first features will be low enough to pursue a
+> simple approach of just enabling them when supported. If a feature with a very
+> high overhead appears in the future, this can be revisited.
 
-Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
+Good to me. I'll include it in v4.
+
+[...]
+
+> > @@ -1056,6 +1066,15 @@ static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
+> >  		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
+> >  	}
+> >  
+> > +	/*
+> > +	 * Use SEAMCALL version 1 that supports add-on features if any are
+> > +	 * requested. Otherwise use version 0 for backward compatibility.
+> > +	 */
+> > +	if (addon_features0) {
+> > +		args.r9 = addon_features0;
+> > +		args.version = 1;
+> 
+> This is a slightly silly pattern:
+> args.r9 = 0;
+> if (addon_features0 != 0)
+> 	args.r9 = addon_features0;
+> 
+> ...could just be:
+> args.r9 = addon_features0;
+
+Yes, that's workable.
 
 > 
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> ---
->  arch/x86/include/asm/kvm_host.h |  1 +
->  arch/x86/kvm/mmu.h              |  7 +++++++
->  arch/x86/kvm/x86.c              | 11 ++++++++---
->  3 files changed, 16 insertions(+), 3 deletions(-)
+> It could actually set args.version a similar branchless way.
+
+Not sure how?
+
+I don't think just "args.version = 1" can work. It will fail older
+modules which doesn't support add-on features & doesn't recognize
+TDH.SYS.CONFIG v1.
+
+How about:
+
+	struct tdx_module_args args = {
+		.rcx = __pa(tdmr_pa_array),
+		.rdx = nr_tdmr_pa,
+		.r8 = global_keyid,
+		.r9 = addon_features0,
+	};
+
+	...
+
+	if (args.r9)
+		args.version = 1;
+
+> 
+> But I think the version in this patch is super obvious about what is happening
+> and has a nice place for the comment. And this is extremely far from a
+> performance critical path.
+> 
+> 
+> > +	}
+> > +
+> >  	return seamcall_prerr(TDH_SYS_CONFIG, &args);
+> >  }
+> >  
+> > 
 > 
