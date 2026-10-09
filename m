@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5E4D98EF;
-	Fri,  9 Oct 2026 13:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AC43CE489;
+	Fri,  9 Oct 2026 13:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791552783; cv=none; b=G0Rf+mJbBu14KLSVOWOIWCPYDhVmeyRRDjWZ8qZhSr/sMlrBWhjI82F0ke6zRbra8mZenvnWCgimCcgGDjkmqJWDFkmNAx8HqTBA5OFA1SKmx/WJ73iJwYJRl4dHdqup6+vUXFs2iwDX5Uu1qK3TIYl0amnFyqPGVTOesp7ToZo=
+	t=1791552888; cv=none; b=a4V+doTlJDqHaAMm2W78QcSN5YeNYTLEzmMY2iiTYk+7B+fXN1HRp0Ybmt9W6/piA8d5GKIud4qU5BGTvrssChqafK+srxLHuOQiOUng0Y6NVaIw11ccMsR7fZnK9HGizJxqcjpQwillOHpoKJxEmONClasI6UDE/lgU2ASa5aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791552783; c=relaxed/simple;
-	bh=WvmolwwrU2Uh/T6wngbddJ+1APU+26EM1WIWvtOFCqk=;
+	s=arc-20240116; t=1791552888; c=relaxed/simple;
+	bh=LxKg62PlmNx0MlHe1txpm2hxz+NCk7C1AJusvi2WtXQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rk2tLTSFl1Wh5L5AweFJGpWNDPjCiXZrQLIdRD9tHgvaN2ZgDrISYvoftJ6Tq3AexJ6v59iHvA0D7r+WzW4Kc/PQCpe7g8TZwGhcN1EXJvsT2jqJdwJszIx/E8z5WK7Y76FdVFFWKAqqF210UltNB/UcS1JcbpBqBQcGEWzWkxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXVaLJ98; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=By8I2GwPi8ueBsY1BqDeIMczGqXRdWJBUgIIpJfJGuo87PZlbV4Q5s7KobuAaamKORPUKr9LlumuFGdVZyq1U54VmgxYeXfV8CFGyguc5bDEPb9s8xAcRTejDox94FgnjrNYg5gA7Dr3LEpBilDk7oREbpgepzmKGon+YotKkN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIDAvzPQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXVaLJ98"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF821F00898;
-	Fri,  9 Oct 2026 13:33:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIDAvzPQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852891F00893;
+	Fri,  9 Oct 2026 13:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791552781;
-	bh=vtNGdwX9226oKEHJSuxKWx/vJU3Syo0UVvzCZlo2IdA=;
+	s=k20260515; t=1791552886;
+	bh=TtF3DxvUhanuYnXt1YXLAj9lwWZRC5yyEKdizcebdSY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DXVaLJ98u2plTIRnoMSLXP6GaMuOLWVBYCu0VJHJinRngPwu3iVMGSCGu89MUhdzz
-	 m3VfNipI5ap+B7IuSD2lRkBJzLt3c1Ve+hds6+sN/i8u2937w0rxc+S33dd1IZKPNX
-	 C4R+cIF3BA7hHzaeN17XXnr2YhgjNUI4FWBkuBZqnRX257zZihvI6Gxi8qPvaLyUsW
-	 K0ew0ofmD0nIaZaeA55wIfzSetqxvmDWzIjFkADgji2d1Apra+L472/tQVtBdhsW7F
-	 YurNQyGsXVVcgQkPtL+uSOHx8iqlddx5pyOemEDdQJPfo01ECMb3zEVRdRyr0Qml3j
-	 avxDOPCKndsDg==
+	b=RIDAvzPQUtTEZoD28PiqD0bSNS1a5fzKGcBTYJ3JhB5VOKR4UvzXr5cRsiX+O9Rft
+	 v6njrea3Q9DlBrAwnGtbc5K2EC0yJ9olaq+9SDbP/r5VThLmubMUPwKfOIBwM7LPVY
+	 arLDpTYS9H0dE+PBUaUPrxBVtGbicRNGX2l1CFZLJvvjCyoHeo2FTI8X44qVpCBN/o
+	 LrcWXCcZrB++mzj5sUxTkah6CInb1tASHyFWvL3WcaK5pFZtqPpECmtU7M25LwhePC
+	 3gKW4ROfZU15+poeAdh4W4Jct1PAqWno9Uk/TtaSQVSJLVMc+fUKKuemniST0YnQGA
+	 LupsDS4Greg6w==
 Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id D77EB198003A;
-	Fri,  9 Oct 2026 09:32:55 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 09 Oct 2026 09:32:59 -0400
-X-ME-Sender: <xms:B-3IavDYWapYa4R9AL0TheQkw5fZ37FN1Juc-WdeYXo2AeD8lY64eg>
-    <xme:B-3IahuqDUFfV8YS4hKmbjGJmIVKpVpwT4J86j-YdR2CYoOjQQ7P8sSDu7oj2n_Sc
-    0RlJ5fQGFAp-xXPxQ3s3j8iXWtujq7-5M6Y1yBJZZtW5Yn5CZSe6G4>
-X-ME-Received: <xmr:B-3IahsWWjmBL6J1pyXJmhtL5-YD4n1Nuq7bZrTK-f6r3fBSTaHrVWLJJLE>
-X-ME-Proxy-Cause: dmFkZTGw5XdlRQm/UeDPoFIjeNbXbPnx8bZKK8wNLgIIkenoSYaYluSVDqoEtJ7YJfkXfj
-    SF5QA7JmvJ9TnpnZhEaMV8E47/6fNOjKjdatHIQMop5uOCvBJUg2GdWfbRpwKtQZlyDb1f
-    4iFi8iyEOVZZFFNaKbdrMf2XxrNJ20vHjA4tZwOHtkkvYbwzu/TQc701nBG+0ekAOQTZ0Q
-    6DTBpW2EAKK6yn0F9DJDIuzmgUpDFbYYIg9WOBs3vffRv+G6WvdqO7aLd/wJn6Qto4n2O3
-    GIPlzUI9UjhLX+lnWUzv29Op846XeT2pHUzppVGFFBRWZ9006vKdxFMdVcoI/iO0EisgYZ
-    Uo251Ymb9JuVBFuN3P/glhQuS9xPQFqXlrJz8ybhu/nhOkkZkkfZxDmNZ0xxfgwH5pEb/R
-    ZRHqqFXz+hfr1hOJL6gbXXQiuiSNCc9S8plaIzU3E/yZp7kLVr3yvKbg94dlDggfHXw4YH
-    Dz1W+zdubZR72kyPpLMbJa1FOTlwE9IGYESfK5UO1pON7ECrpjd/bc++WeCDY6rvdBn36n
-    YmtuuRkxpxA64ez22ZbNKf/hHorKk6D6IrmKbLQETbMimo1IQxFQz4m5KOkWqzpquigV/s
-    C58c+92/Hf2J0g1U19bke7hs2nhzxRY+y87580Ly9x7QgFLne+3tbJrih9xw
-X-ME-Proxy: <xmx:B-3IatUNpxT7jersF2Lo_1r2tRa1JSy5SADLGdzIoAQOmJv2IQ5I7w>
-    <xmx:B-3IalnhXTk9w1DHF-PccOfqwvgnStAkKXlJEWzxadKKkHzsynvDGA>
-    <xmx:B-3IaqC-N-PU8V-gbBDB_tE8bQpw1WL0gDwYRm24TrXI1eECxrIw7g>
-    <xmx:B-3Iav4cbeyaxwyfHbX5v5FbkAkLZsA8yBZpEggYQVSmeY0fSPC3Dg>
-    <xmx:B-3IarWOEcCgZXwBox3_dok7oZArWkXrl8s2BeMaMYqvBBGd-_VOs1Ca>
+	by mailfauth.ams.internal (Postfix) with ESMTP id EDF13198003A;
+	Fri,  9 Oct 2026 09:34:40 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 09 Oct 2026 09:34:44 -0400
+X-ME-Sender: <xms:cO3IatkjrceH2Dfvd612El9oBRB_OmDZDWX8wUoNY84ehDv_AHjpGw>
+    <xme:cO3IalDlna-WLPFXdToT6HUyyyo6idcgY-x-Zw-ERqVsATMIPIrgvUX0FpHNenY6u
+    NYLhP3ayhZNctUecnSNBBfz8az7h1XLSdReJdiEFPTzjwLiu_tspQ>
+X-ME-Received: <xmr:cO3Iaqzp0GyhmLBWxlSmoc5FEHGRNTzpoKqwLp76ZDC_7jqaFCkPzZkH7ic>
+X-ME-Proxy-Cause: dmFkZTFZKR9ZI/CjT/olIIhYNnBN/AlfFyEQ1++yoCcEcTeUFS2I0EHbFo/1rsNiYswRBJ
+    nSG6QvgUhQASsuG1w6uheR+aViCkE4kIXigJXlIkba7/rbkrsS8K/K/xP7pIdR51u6MfKy
+    pjtTqnScid/gHM1kgJJNt3m4hXPtExGyb285G1jrYEXsbfQPDA5waONmqNtyJnwN1VmXx1
+    O2Md23mRCmTgOvJPS5CWRl6jlJ9i8Cmh/f/rMUXj+5pDIbggrn97MTjy0Lo0sDpkONUuxX
+    xzv8AO6dSO+veYf9kUaLdAxs0X1XGCMrQMasjXsb+RqicYAZ4mKUjYZOx6Wz42/YEK+PSG
+    GPIGFT669z3tCl8zJ5aa8M0lRsD36xWtG11UIxpZqZJXy+pWq7JwTOKyTa4sejJNnGvGGg
+    TUhXJtLOOaCGvj1kUZxz91b+b32TPrSQv4/H02Fo1PwQuvrPNYggOQpQ1b+Y5QktxSAa4r
+    qWYLUNZEMk32LA36q9WkZaxTeVdsulsifpl14x06XfyPJA9ojyUjf+BTfVnNHTCtaiHj0Y
+    OeFAjP3pOZ+67XWofs/s/GcwvUF+JWB084IiOrJIXucOyPBXcU35nwjYAtU5YYFitHws1G
+    5AjyK7EU4eViMXpoeW+5boxl+71n4C8dH2+1Byl0ySID7ayJXAPIHBAdfciQ
+X-ME-Proxy: <xmx:cO3IapJo_4ezpAdPK-fkhby-BNDMzX-XoWrGrGvdkMEmIQpMGzZ6zQ>
+    <xmx:cO3IatJRvkPseABvDmUMQ8kZPsdmGrXUqsm_tZzb7OLhopHOSe2nGw>
+    <xmx:cO3IaiVY4JCebb5JjGJOQUi2jaPkmb-12hRRoERsND-8K2AKZkct5A>
+    <xmx:cO3Iap_4vzMXxr_SoYmeBla_3_9Q_W1j5iSEOTgIw4p8w3Acz4bqIA>
+    <xmx:cO3IakK4F6Zj8e1EEjN9oMYLmJ9hyD8AFDWy84FZuk5ZqgidyoXaPsdz>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 09:32:54 -0400 (EDT)
-Date: Fri, 9 Oct 2026 14:32:53 +0100
+ 9 Oct 2026 09:34:39 -0400 (EDT)
+Date: Fri, 9 Oct 2026 14:34:38 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Xu Yilun <yilun.xu@linux.intel.com>
 Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
@@ -63,11 +63,11 @@ Cc: x86@kernel.org, linux-coco@lists.linux.dev,
 	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
 	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
 	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-Subject: Re: [PATCH v3 4/6] x86/virt/tdx: Make TDX module initialize the
- extensions
-Message-ID: <asjs-TIxKELIVH1v@thinkstation>
+Subject: Re: [PATCH v3 5/6] x86/virt/tdx: Re-initialize the extensions on
+ runtime TDX module update
+Message-ID: <asjtU41QEND7lcTu@thinkstation>
 References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-4-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-5-db52cb05b918@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,21 +76,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261006-tdx-module-ext-v3-4-db52cb05b918@linux.intel.com>
+In-Reply-To: <20261006-tdx-module-ext-v3-5-db52cb05b918@linux.intel.com>
 
-On Tue, Oct 06, 2026 at 01:41:48AM +0800, Xu Yilun wrote:
-> TDX module extensions need memory for their execution environment
-> to serve SEAMCALL leafs. Several add-on features depend on the
-> extensions to execute their SEAMCALL leafs.
+On Tue, Oct 06, 2026 at 01:41:49AM +0800, Xu Yilun wrote:
+> Runtime TDX module update introduces a mechanism to update the module
+> firmware while preserving and restoring TDX operations. The extensions
+> functionalities should also be re-initialized as part of the restoration
+> process.
 > 
-> After providing all required memory to the TDX module, initialize TDX
-> module extensions via TDH.EXT.INIT, then those add-on features can use
-> their SEAMCALL leafs normally.
+> The TDX architecture supports an update flow which allows updated
+> extensions to consume more memory than their original boot-time
+> requirement. So the arch defines the extensions re-initialization flow
+> the same as boot-up initialization: the host queries TDX module how much
+> additional memory needed, allocates it, adds it to the module via
+> TDH.EXT.MEM.ADD, then re-initializes the extensions via TDH.EXT.INIT.
+> 
+> Linux runs the updates in stop_machine() context, which prevents memory
+> allocation. So for Linux, a compatible update must not install updated
+> extensions that require additional memory.
+> 
+> Given that the memory for the extensions must not increase, the
+> re-initialization skips the memory adding steps. It is simplified as:
+> 
+>   - Check if the extensions are supported via TDX_FEATURES0_EXT. If not,
+>     skip the extensions re-initialization.
+> 
+>   - Re-initialize the extensions via TDH.EXT.INIT. The SEAMCALL leaf
+>     will fail if the updated extensions require more memory, which
+>     indicates the update image is not compatible.
 > 
 > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
