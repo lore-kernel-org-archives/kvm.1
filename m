@@ -1,116 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E743DEC7
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0604D9F9A
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791551498; cv=none; b=RuD4+uwhPSjjiiyK83kW+ksTbWPow2KeG4ce7rpFCHtpS15TP1rGEoptc+Lukqw++cO/RANm2g7/MaJotJNO4+jH1CFToCpYDrSmIVWgWvLqzyOqSR9WL4RnOqD148ym+15/woozbll3p6AYVfDNRFmlOizcGW2MadedWXgf14c=
+	t=1791551677; cv=none; b=qJNtM4vU1kN9dW+RQ73VSnVyUCh14ebsAfX7A6rXhfmnKWhgLEZKoFqDT1XYj57ob9YIUXJWvdf1eetssn0fIp4ECgqrtm2N56Z1Wnlh0eDHhPCPo+F7QuHEEekBkFdYtcx8NGL/6ZJrBMHAr3zubu5iN4/ORjz6QpAA3ijMdPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791551498; c=relaxed/simple;
-	bh=8WVvmUjTXoMbdyVBpGpz2Dtdzid6a0wSqsgzmGHqCk0=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=K4MATyPBGUEV8O6ht4T/SFBza49T9bjtznpEvZkVFjRpZCG4V03Nw5wUYehAchDjTydxvox8tH6NFTmOSnjuXAF9yiRBjEB7uXYWWQAUZ8OIw5WSX6NY4q4u81ciEUG94V1RzL7QDoG6MwJN7dgPIcgH4ZodIQYZfUQ/sYUHH34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSOYlXPJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791551677; c=relaxed/simple;
+	bh=GGiPjmYE+NR1PvIkMssfxEKbkvELLVmOBOY7rLxdGaI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k6j5LakJJ3TTevg7RY0ShVAX30IQ1uvSmnFrKeWf/c9GhHLswTC6HRydKfgYLkin1ZtflQCtlJylLw8vISoI/I/lbAmSZlzoVYtlTLufR1JgRyDS+YxxfxI2NolQTN18wXMUWM6lk7kZ5ln7WpbucZb/MrBh5/DE9eKD1y/QFLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFnUkr0V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSOYlXPJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3881F00898;
-	Fri,  9 Oct 2026 13:11:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFnUkr0V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38401F00893;
+	Fri,  9 Oct 2026 13:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791551497;
-	bh=L6A9Ek0062NjmD6A2fBTXgz80sgVBRuk+Dc3DvO0meE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VSOYlXPJoYAcUujz8qy1Xqr+N9nuibxwf1NHNIYO16QaZYmzMRgP7m9WTGQDSGQd/
-	 dPA9K+lveZSr893SEMZ7IYHvGFtLAfnv6bA6anDWWcNLZw+Pm9CIHmh1hkFe/2lEh0
-	 5BcmRq/FNiRGvZCPyA0Jc0sZGTh9mKSlcCbvkFKPMOT9NOZC0V4OJfjO4SrqEFDd5e
-	 XYVS6Qhm2Cw3wpeQmPlKe0MwdwlfsUWul9tlLsyKD3tW896qZjnFcdr9u8zJJI06H1
-	 Uxw+KFlpkv7SlI+7jJfpEM3yXs5cNjcgLvwnEmehnOcMyGLXFHe5Gnz8M3JebTzHqk
-	 JY+QXIRLDW+bg==
-Message-ID: <sashiko-outbox-165604@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/5] KVM: selftests: memstress: Add option to enable
- dirty-ring on VM creation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Leonardo Bras" <leo.bras@arm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261009130054.3312154-4-leo.bras@arm.com>
-References: <20261009130054.3312154-2-leo.bras@arm.com>
- <20261009130054.3312154-4-leo.bras@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Oct 2026 13:11:37 +0000
+	s=k20260515; t=1791551676;
+	bh=Vznt9dKT8VJX3ifX04Rk3RYrekgS8ISKuvcW7DeTKU0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dFnUkr0ViZTVyvJlsKZAkP6eiY+T46zALwGw/NGOd+y9kvESpjmLzz7+OVYLZtrPP
+	 TjlAK+KywgiyuVIuM/6dYjTkTiRhFW253mfTLFhWe9uKc6dseDWdvcHudPxL1V3HUy
+	 KiS3y9nl+6uvQq3GxjJZTVlZ5v4VCaqzD4Blji1xrDs1cGucQ+Bj137j/saOTsyaJT
+	 3DMonQDkFg+FtMZ3gVXAsjRHQgDttX7n/TS3m27Ey4Qj90hgYz3pwwekwo95pXA2ER
+	 BrFKbH4s10qNY+Gr/MNuxC8hJLQjP9FnaIkQazt0RA5TNBv70+nbSIfMa/VzYkTuFD
+	 czd5Kfcf1cV+Q==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 02FB6198003A;
+	Fri,  9 Oct 2026 09:14:30 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 09 Oct 2026 09:14:34 -0400
+X-ME-Sender: <xms:tujIaoc-FMNtQ_-aCD0rYXqbXOzmB373QHkMlXRH6OGGCjWyZcutCw>
+    <xme:tujIahdQEPsPRICPQGZeyeN2zFF-jG1sTyNxGn3m9a1olI_6kNfUIP1SsulNgN3SH
+    UfhJeYNgf1Tyl-wbkYRWQiMc6HeYmuYh7Z8BWfNmKqK713HnFxa6Tm4>
+X-ME-Received: <xmr:tujIaiEmpkPJf_uZ1kd4hU88IgM4Y4GyQaPN1tqXyS_1EQqpns5Hc__dhAg>
+X-ME-Proxy-Cause: dmFkZTEFoiks0RpXD6KY5YBSVURWpSabqnLZxqpKlNYFdzKfMs28BotY23zVK8hQkxcYht
+    ew/a4BEUHagbfij7D5Fj3M3oBGfEHzyEMx1FuPT2V85p1X/6rgqqkJm4nUgQnoKuiGaz7C
+    dRCvoMnuhsL33YwGQ5WoP4nVVjvK4rutvcSH7hCVic0ZfQYe5lnjPJcM+fPpj79QET05gN
+    MLMtfmPZ/jonYCuCe4MUP8s3gnU2W9F54sx/S+SzY3adfMPNzeqoL1Hl27Eu61EyqkIJFc
+    m6TVpSfih24c7nk9VVTeW8q4S4aj6DfFUoa38qz5YmRwQV7UaNLgr/rhN8og4AqAul/lop
+    OE9O2DvUyFv+Gx0xWZORkvaKiitH9lsBIE4YbeQ03OpGhYpLdpQwz7/VkrwTuH5jORG5uz
+    tK7xySguBsRhrJkUHU+pAIzzjKaNBjhXChHvj9GfnKx8N0WnVCkW+ZKPhogX+9WBuJ82E3
+    E290us7FNntIVm9EaI0PO9/iMSqpGo4QjeDCm+M+qSa/uKdnyt9X85I45Ye5u3+uOE2HO1
+    2mx/1/BC+fuXEz666slp05QBvIOCD7g4bhs08KSypTXGl73a45Un1SRlwExQn8yE8Drcjn
+    qrCkxBxLEeYMHM3Qloje1BCV5Z+98AgdzOHz5B5mway1ornHEo94FOnDDCrg
+X-ME-Proxy: <xmx:tujIarWB37laLvM3E_V-l9Pi1-V2aDbPPqDr0k0DgHQ50LulH4KEVA>
+    <xmx:tujIasytS62b-fr0Gg8C1lEDNM7Yc0JbX0CwJlDkMtf6p0-XM-eZlA>
+    <xmx:tujIarp6W4Q5gZ57dysLFMlSaaMjPHuKog072bkB9bNEJIIX8v3eAg>
+    <xmx:tujIasFfFgqf4xXlunus3reTfxjLw6lKsXQIl0mPJAynxAFnJ3Ykxw>
+    <xmx:tujIahBiqdesN9UhxiuFY_FA-u93dec4HARM3EN3c37I8i9957TvBXAJ>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Oct 2026 09:14:29 -0400 (EDT)
+Date: Fri, 9 Oct 2026 14:14:28 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, kvm@vger.kernel.org, yilun.xu@intel.com, 
+	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
+	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+Subject: Re: [PATCH v3 2/6] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <asjopeR6IOk1aDgc@thinkstation>
+References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-2-db52cb05b918@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006-tdx-module-ext-v3-2-db52cb05b918@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] kvm: selftests: missing KVM_MAX_VCPUS bounds check in memstress_vm=
-_create_with_vcpus()
---
+On Tue, Oct 06, 2026 at 01:41:46AM +0800, Xu Yilun wrote:
+> The TDX architecture identifies some features that are off by default
+> but can be enabled by the host during TDX module initialization. They
+> are classified as add-on features because enabling them affects existing
+> TDX systems: they may change existing feature behavior, or reserve more
+> memory.
+> 
+> The TDX module extends TDH.SYS.CONFIG with a new register argument to
+> specify which add-on features to enable. This new argument is a bitmap
+> that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
+> is an exception: although it is an add-on feature, it is controlled via
+> a legacy, dedicated register argument [1].
+> 
+> The kernel needs to enable these add-on features when it supports them.
+> Add a get_tdx_usable_addon_features0() helper to return the bitmap of
+> the add-on features that the module & kernel both support. Initially,
+> this helper returns 0. It will be updated to return specific feature
+> bits as full kernel support lands. Pass this bitmap as an argument to
+> TDH.SYS.CONFIG.
+> 
+> The TDX module requires SEAMCALL leaf version 1 for TDH.SYS.CONFIG when
+> passing the new bitmap argument. A previous change [2] supports the
+> versioned SEAMCALL leafs by adding a "version" field in
+> struct tdx_module_args. Set the version field to 1 if the new bitmap
+> argument is used to enable any add-on feature, otherwise keep the
+> version as 0. This retains backward compatibility with older modules
+> that don't recognize version 1.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> Link: https://lore.kernel.org/all/20260904215841.303070-10-rick.p.edgecombe@intel.com/ # [1]
+> Link: https://lore.kernel.org/all/20260921-seamcall-version-v7-1-cf05fe76b467@linux.intel.com/ # [2]
 
-commit 8f8ed5a2bb5936b315dc077d1f97ad188346d5a2
-Author: Leonardo Bras <leo.bras@arm.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-KVM: selftests: memstress: Add option to enable dirty-ring on VM creation
-
-This commit adds an option to memstress_create_vm() to take a dirty-ring si=
-ze
-and enables it before vCPU creation. It introduces a new function
-memstress_vm_create_with_vcpus() to handle this setup correctly.
-
-> diff --git a/tools/testing/selftests/kvm/lib/memstress.c b/tools/testing/=
-selftests/kvm/lib/memstress.c
-> index 880657df65e9e..b1f13499e85f4 100644
-> --- a/tools/testing/selftests/kvm/lib/memstress.c
-> +++ b/tools/testing/selftests/kvm/lib/memstress.c
-> @@ -121,6 +121,27 @@ void memstress_setup_vcpus(struct kvm_vm *vm, int nr=
-_vcpus,
-
-[ ... ]
-
-> +static struct kvm_vm *memstress_vm_create_with_vcpus(struct memstress_pa=
-rams *params,
-> +						     u64 extra_mem_pages)
-> +{
-> +	struct kvm_vm *vm;
-> +	int i;
-> +
-> +	TEST_ASSERT(params->nr_vcpus > 0, "Invalid number of vCPUs (%d)",
-> +		    params->nr_vcpus);
-> +
-> +	vm =3D __vm_create(VM_SHAPE(params->mode), params->nr_vcpus, extra_mem_=
-pages);
-> +
-> +	if (params->dirty_ring_size)
-> +		vm_enable_dirty_ring(vm, params->dirty_ring_size);
-> +
-> +	for (i =3D 0; i < params->nr_vcpus; ++i)
-
-[Severity: High]
-Can this loop overflow the statically sized vcpus array?
-
-The vcpus array is bounded by KVM_MAX_VCPUS (512). When a user runs a
-memstress-based test with an argument greater than 512 on a host kernel whe=
-re
-KVM_CAP_MAX_VCPUS is greater than 512, or runs mmu_stress_test on a host wi=
-th
-more than ~682 physical cores, the option parser checks against
-KVM_CAP_MAX_VCPUS but not against KVM_MAX_VCPUS.
-
-Passing this unbounded params->nr_vcpus value to
-memstress_vm_create_with_vcpus() will blindly write past the end of the vcp=
-us
-array, causing memory corruption and crashing the selftest.
-
-> +		vcpus[i] =3D vm_vcpu_add(vm, i, memstress_guest_code);
-> +
-> +	kvm_arch_vm_finalize_vcpus(vm);
-> +	return vm;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261009130054.3312=
-154-2-leo.bras@arm.com?part=3D2
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
