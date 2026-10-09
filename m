@@ -1,438 +1,186 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D8C4E1C6E;
-	Fri,  9 Oct 2026 13:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB89338E8D8
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791550910; cv=none; b=YVJlDUlWsH8XcYVqe23Kjf7otf5j2o25pgDhK7sQVfJ64Y/oWFRJlLeLzCi6sCu/GPnCCzzh5+92LnwvGzoaU4rQyRdwD6JBkYybwrY0IqmbRA8ho/1h9DNhvqSPysCUszLT/eYI1LTb0JrMfE6Rp4cPwX9E4Unl6YQfKsSpVWg=
+	t=1791551098; cv=none; b=b+RhvQo1jZ1nSsg/x3YgsO2g1Cpa50d90w6rGuwLg/fBmeIZWVHPCv+WkV7NurFk9ft97GM2/rP4gLYLgdEy0K4Qjl3S/UmZcDOFeWPt9QXitOPTySe1BdRhRRgpZCy0VA00Oux7PyPdwxnYmex9U4GqK9YEPkVmvtzFU4F4kfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791550910; c=relaxed/simple;
-	bh=g8mjQv3RxJZM1b8fNm8NX9EnJzHG9iPM36USNlkNBo0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s91pqeL8yDFEbIPD8EMnb7w3E5xXKDjFXwkKTJhTDbvuOY0LArX7TsxynCo9aa9e/wnfyC+4t87BmP6dxB1L7vhIlE/mIVnYay2bBpBwjo6yRcCcVc6xPTYEmwShiTvwlLIg4sFnqzd7zA0+Yx1UkRRi0e//Mj68Urc+YjsBS4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Npod1ZWp; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791551098; c=relaxed/simple;
+	bh=wu7qPu0I/hvfIuP8Kg+HVnLAD157Z9fBDyj65s9OurM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EMquEw/iIVLBZzP+Vn+dA73vld3WeTXc/rtqKmXH2GwdXEpXbua8/4WzLaPd/3pQD6e+0+hsFEh7s9prqv3S61oQx4AjjNpdw7z4nbOzaC4fHkrLTwxitDt0+VKD+qadMeNlcZbe7pqCxZULD51Th1GimYRRTkXIm7jSYLLXSlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UPcfc9+S; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BegyF0xa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Npod1ZWp"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0694E1E5E;
-	Fri,  9 Oct 2026 06:01:45 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 424AD3F66F;
-	Fri,  9 Oct 2026 06:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791550908; bh=g8mjQv3RxJZM1b8fNm8NX9EnJzHG9iPM36USNlkNBo0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Npod1ZWpwqXjr87wCAVkqUZZmQ+E9droxUgabpcMnxkfXqH5Ud043GPCg+1OHgxEY
-	 pYxR70vnEwtPyrTqBXBc0ZEjMjt3zTOavFZk2ZCG8jqSjiVQverqgq0ieo30a8H7Rq
-	 1a5SC6riwhTwlDzQ9MhStjDccLHhemDdwwOi32cM=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Oliver Upton <oupton@kernel.org>,
-	Leonardo Bras <leo.bras@arm.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Josh Hilke <jrhilke@google.com>,
-	Wu Fei <wu.fei9@sanechips.com.cn>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
-Date: Fri,  9 Oct 2026 14:00:50 +0100
-Message-ID: <20261009130054.3312154-7-leo.bras@arm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UPcfc9+S";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BegyF0xa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791551095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5K/NbHjKEBWTtJ1boI870+SFHYfqVm2UR2n7LXcsi08=;
+	b=UPcfc9+SbzvReIoB8QAgaD7KrvOi7zTfrpwYMhz5pEDYpREW2qu6bH9gEbZN69OnvQ9NXj
+	MH260T9clSgxew0ZGJWZUjeM2S838B2vcozgbEouUJ8H90RncJRxR/vdae8qNj8NrYw57H
+	nlicYM7O1TLnZJOMPA4qm3Et2Rvs/Hs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-201-Wjs5Y7RVMcevWnBDB3LO1w-1; Fri, 9 Oct 2026 13:04:54 +0000
+X-MC-Unique: Wjs5Y7RVMcevWnBDB3LO1w-1
+X-Mimecast-MFC-AGG-ID: Wjs5Y7RVMcevWnBDB3LO1w_1791551093
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a16fefb7acso41998025e9.0
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 06:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791551093; x=1792155893; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5K/NbHjKEBWTtJ1boI870+SFHYfqVm2UR2n7LXcsi08=;
+        b=BegyF0xaO0mqr6bUbjy8CsAv8S57jP+KSPDm2vhw8JYYVaiAbUP8Bf6mMFDxzikAhy
+         H7fH71JHuG4bFpxax++ms5vzrrF/CVkZSCLzu4FM0c4L/R2gyBAZeJHrO4b+WYFgCQG8
+         5Xmjg6n4593LFiyme74ETXzT9ymp9+GBKp15CNB+2WRlHj1PDLIWAFq5D2VKtT+RcDLn
+         Hz7CptwwmByWRQ+FA7BjINioCcO9fEl1H1KwmT+yOPtuum9x77MAfggEgofA0rveVflz
+         1nRDZ9hcfZeCMj+x1noEYUbvoxnkt7vedR0hgTPAi7Lv2a7j58r0zVkN2MCw5zA+Pb3j
+         FdsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791551093; x=1792155893;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5K/NbHjKEBWTtJ1boI870+SFHYfqVm2UR2n7LXcsi08=;
+        b=ctnSnVpiAVAeGTuoLQEbfPS4HHz2Qo8xQWDyZ94n7rLHPErbP/u1MMgm4Wd6muLOE6
+         +muv2lJuhQkXGQnGPvZzbpIF5c/k+ax3TsmsJIWw21Fj6/GlH+1Shay1D/jIRE1c+DC6
+         rBgiWx0vC6PJUqlJu+0LrhQ6VUzzHhYMvn9h7kc1HvnQ8XDa6+h/XmVZ/TpFnL2c/KX/
+         EU84bKgbwCGos73ukN2ROzA8DQ3q6kVwm6h6OAb9gVIavJP8gYM4JyMLVr30z0VI5CHu
+         Ep9AFqMdufeFhxoPtBP3tvC2OtAgC+flYHcRQr0sOZx59Ie6FdNliQwZMmN0VIjVo0ve
+         HI5A==
+X-Forwarded-Encrypted: i=1; AKwUvBwlBcJLxiWoQ9/m9pJnQBo/iDxkoTQmTcmp8BhL/lcnPiOLerdQ/7B5kXzEJJR++39waTY=@vger.kernel.org
+X-Gm-Message-State: AFuF++k2owGURAFCn/YbttjQNeOWAiTQ0EYFXFntN0+fTaoTH8OpS8TN
+	GCOJd26kwRdYnBimBvvAQFFceFb5rfG+pipEvMZvCd9o7iYw3rW0BZsRFMsH2/huvrQ6CWy6CYe
+	BhFMLSgztNUfHLVzEUniOkYMAerjB2g8cKg0CPPVtP7a+hdJt8kvMRA==
+X-Gm-Gg: AYBFou2zPCdamrWMRe7o/i9ko94jY9DpjO68yL++8IdaRdtzf1AyOw80dizZxaaURm2
+	0CZkwS9CthNlvUnfAB3ISgCQkxnX6FnS/s9tmzSSKcnK3KGt4Py4C6zMGJbodKkfEo1W/hrNVmp
+	pdReB1VwYzy2MhK8bdd6yeAfdS9JQQWbyISkz7yhtH4ySpwxYc5atGfBmmAwEBxOOBMH+gBV1iB
+	fIj82CAbEvlO6bJ8YohtQ4alk0CYaMsdCt4NihrNI0FaAGJSvfWPrUjmOCXffYcHfYLqe9Pq5Mx
+	y2JgCf4l6PteuKqgxWJemfaJh0UuNRx/o3ppCdTii0y1tnRQqZvpxl5LLYpm/wSELm14hHxZSPC
+	VWcIoRChqSuTCqpRjQG6SpQRORem2y0QIUFEMoQoYHx2VGZrCSjU9t+aJuipF7WOFQMPXOt4q+4
+	MtdzqU
+X-Received: by 2002:a05:600c:3b0a:b0:4a1:779c:dc8e with SMTP id 5b1f17b1804b1-4a18e4a01b7mr35867335e9.10.1791551092752;
+        Fri, 09 Oct 2026 06:04:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b0a:b0:4a1:779c:dc8e with SMTP id 5b1f17b1804b1-4a18e4a01b7mr35866325e9.10.1791551092103;
+        Fri, 09 Oct 2026 06:04:52 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.232.249])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm93839695e9.9.2026.10.09.06.04.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 06:04:51 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: SimonP <simonp.git@mailbox.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes
+Date: Fri,  9 Oct 2026 15:04:50 +0200
+Message-ID: <20261009130450.361690-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261009130054.3312154-2-leo.bras@arm.com>
-References: <20261009130054.3312154-2-leo.bras@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13195; i=leo.bras@arm.com; h=from:subject; bh=g8mjQv3RxJZM1b8fNm8NX9EnJzHG9iPM36USNlkNBo0=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLJOPG30k8qprNZVW8t6y/kt36L/kw+sc31gceZ2Sjsz4 4W4A6aaHaUsDGJcDLJiiiyyj+av4vk+JePIlR8LYOawMoEMYeDiFICJ6J1k+MW0WprF6Pyh5xuM Vk44W1jOuE/p5l4+hu2+a1vZfMouR3xh+O+obNk72VVdeKnhpWuJG44KZoo/9bycm1K0tWbL2kl HzdgA
-X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
 Content-Transfer-Encoding: 8bit
 
-dirty_log_test supports both dirty-bitmap and dirty-ring as dirty-page
-tracking mechanisms, while dirty_log_perf_test only supports dirty-bitmap.
+When running Hyper-V from Windows 11, KVM is seeing the SS bit set
+in nested page fault error codes produced for shadowed NPT.  The AMD
+manual is unclear about when SS is set, including whether it can be set
+when SupervisorShadowStackEn (bit 6) is not set in the MISC_CTL field
+of the VMCB; in fact, bisection shows that while SHSTK was available
+to guests since Linux 6.18, this started happening with commit
+687ee95c1b6d ("KVM: nSVM: enable GMET for guests"), which seems unrelated.
 
-Add support to dirty-ring on dirty_log_perf_test so it can be used to
-compare performance between changes in the mechanism.
+Nevertheless, the unexpected SS bit causes out of bounds accesses in
+permission_fault(), seen as either WARNs or UBSAN reports:
 
-vcpu_last_completed_iteration now needs smp_load_acquire/smp_store_relase()
-for iterations >0 (after populating) as dirty-ring will save per-cpu time
-spent on cleaning, and we can't have that reordered, as it may break the
-summing-up.
+  kernel: UBSAN: array-index-out-of-bounds in arch/x86/kvm/mmu.h:225:27
+  kernel: index 34 is out of range for type 'u16 [16]'
 
-smp_load_acquire(&vcpu_last_completed_iteration) is not needed on iteration
-zero (populating) as dirty-logging should not be enabled, and we do not
-access it from the run_test thread.
+(in this case, the page fault error code is 34*2=0x44, i.e. SS|U; the
+report shows SS|U|W happening as well).  Fix the handling of unknown
+error codes by dropping SS and (with a WARN) any bits not among those
+that permission_fault() expects to receive.
 
-Signed-off-by: Leonardo Bras <leo.bras@arm.com>
+At the same time, given the uncertainty about when hardware sets SS,
+follow the processor's behavior when constructing the fault's error
+code, and preserve the SS bit as passed to FNAME(walk_addr_generic).
+While the behavior is surprising, there's a possibility that Hyper-V
+expects it (Hyper-V does not even enable CET unless it finds MBEC/GMET!),
+so retain the information when reflecting the fault to L1 instead of
+unconditionally discarding it.
+
+Note that, even though KVM always tries to run L1 with GMET enabled, it
+copies the GMET-enable bit of the VMCB12 to the VMCB02 when L1 requests
+usage of NPT.  Therefore, if the theory suggested by the bisection result
+is correct and GMET enables setting the SS bit as well, this would not
+affect hypervisors that enable NPT but not GMET.
+
+Reported-by: SimonP <simonp.git@mailbox.org>
+Fixes: 687ee95c1b6d ("KVM: nSVM: enable GMET for guests")
+Cc: stable@vger.kernel.org # 7.2+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .../selftests/kvm/dirty_log_perf_test.c       | 127 ++++++++++++++++--
- 1 file changed, 114 insertions(+), 13 deletions(-)
+ arch/x86/kvm/mmu.h             | 16 ++++++++++++----
+ arch/x86/kvm/mmu/paging_tmpl.h |  2 +-
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-index 173f750344f4..247302b7cd4e 100644
---- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-@@ -6,68 +6,134 @@
-  *
-  * Copyright (C) 2018, Red Hat, Inc.
-  * Copyright (C) 2020, Google, Inc.
-  */
- 
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
- #include <pthread.h>
- #include <linux/bitmap.h>
-+#include <asm/barrier.h>
- 
- #include "kvm_util.h"
- #include "test_util.h"
- #include "memstress.h"
- #include "guest_modes.h"
- #include "ucall_common.h"
- 
- /* How many host loops to run by default (one KVM_GET_DIRTY_LOG for each loop)*/
- #define TEST_HOST_LOOP_N		2UL
- 
- static int nr_vcpus = 1;
- static u64 guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
- static bool run_vcpus_while_disabling_dirty_logging;
- 
- /* Host variables */
- static u64 dirty_log_manual_caps;
-+static u32 dirty_ring_size;
- static bool host_quit;
- static int iteration;
- static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-+static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
-+
-+static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-+				struct timespec *ts)
-+{
-+	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
-+	struct timespec start;
-+	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
-+	u32 idx = *ring_idx;
-+	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
-+	int cleared, count;
-+
-+	pthread_mutex_lock(&collect);
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+
-+	while (true) {
-+		struct kvm_dirty_gfn *cur;
-+
-+		cur = &dirty_gfns[idx % ring_size];
-+		if (smp_load_acquire(&cur->flags) != KVM_DIRTY_GFN_F_DIRTY)
-+			break;
-+
-+		smp_store_release(&cur->flags, KVM_DIRTY_GFN_F_RESET);
-+		idx++;
-+	}
-+
-+	count = idx - *ring_idx;
-+	*ring_idx = idx;
-+
-+	cleared = kvm_vm_reset_dirty_ring(vcpu->vm);
-+
-+	/* Cleared pages should be the same as collected, as KVM is supposed to
-+	 * clear only the entries that have been harvested, and a single vcpu will
-+	 * harvest at time.
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 40dcbcbae173..36a3a42e0b18 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -275,8 +275,18 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+ 				  unsigned pte_access, unsigned pte_pkey,
+ 				  u64 access)
+ {
+-	/* strip nested paging fault error codes */
+-	unsigned int pfec = access;
++	/*
++	 * Of the error codes that do not contribute to the index in
++	 * fmt->permissions, PK is not included in EPT violation bits and
++	 * not supported by shadow paging, and RSVD faults are handled
++	 * elsewhere.  SS however is included in the NPT exit code.
 +	 */
-+	TEST_ASSERT(cleared == count, "Reset dirty pages (%u) mismatch "
-+		    "with collected (%u)", cleared, count);
++	unsigned int pfec = access & ~PFERR_SS_MASK;
++	if (WARN_ON_ONCE(pfec & ~(PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
++				  PFERR_USER_MASK | PFERR_FETCH_MASK)))
++		pfec &= (PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
++			 PFERR_USER_MASK | PFERR_FETCH_MASK);
 +
-+	*ts = timespec_add(*ts, timespec_elapsed(start));
-+
-+	pthread_mutex_unlock(&collect);
-+}
- 
- static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
- {
- 	struct kvm_vcpu *vcpu = vcpu_args->vcpu;
- 	int vcpu_idx = vcpu_args->vcpu_idx;
- 	u64 pages_count = 0;
- 	struct kvm_run *run;
- 	struct timespec start;
- 	struct timespec ts_diff;
- 	struct timespec total = (struct timespec){0};
- 	struct timespec avg;
-+	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
-+	u32 ring_idx = 0;
- 	int ret;
- 
- 	run = vcpu->run;
- 
- 	while (!READ_ONCE(host_quit)) {
- 		int current_iteration = READ_ONCE(iteration);
-+		struct timespec collect = (struct timespec){0};
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
--		ret = _vcpu_run(vcpu);
-+
-+		do {
-+			ret = _vcpu_run(vcpu);
-+			if (!use_dirty_ring)
-+				break;
-+
-+			dirty_ring_collect(vcpu, &ring_idx, &collect);
-+		} while (!ret && run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
-+
- 		ts_diff = timespec_elapsed(start);
- 
-+		if (use_dirty_ring) {
-+			ts_diff = timespec_sub(ts_diff, collect);
-+			vcpu_dirty_ring_collect[vcpu_idx] = collect;
-+		}
-+
- 		TEST_ASSERT(ret == 0, "vcpu_run failed: %d", ret);
- 		TEST_ASSERT(get_ucall(vcpu, NULL) == UCALL_SYNC,
- 			    "Invalid guest sync status: exit_reason=%s",
- 			    exit_reason_str(run->exit_reason));
- 
- 		pr_debug("Got sync event from vCPU %d\n", vcpu_idx);
--		vcpu_last_completed_iteration[vcpu_idx] = current_iteration;
-+		/*
-+		 * Make sure vcpu_last_completed_iteration write happens before
-+		 * updating current iteration.  Pairs with run_test, after populating..
-+		 */
-+		smp_store_release(&vcpu_last_completed_iteration[vcpu_idx],
-+				  current_iteration);
- 		pr_debug("vCPU %d updated last completed iteration to %d\n",
- 			 vcpu_idx, vcpu_last_completed_iteration[vcpu_idx]);
- 
- 		if (current_iteration) {
- 			pages_count += vcpu_args->pages;
- 			total = timespec_add(total, ts_diff);
- 			pr_debug("vCPU %d iteration %d dirty memory time: %ld.%.9lds\n",
- 				vcpu_idx, current_iteration, ts_diff.tv_sec,
- 				ts_diff.tv_nsec);
- 		} else {
-@@ -117,44 +183,48 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 	struct timespec clear_dirty_log_total = (struct timespec){0};
- 	int i;
- 
- 	struct memstress_params ms_par = {
- 		.mode = mode,
- 		.nr_vcpus = nr_vcpus,
- 		.vcpu_memory_bytes = guest_percpu_mem_size,
- 		.slots = p->slots,
- 		.backing_src = p->backing_src,
- 		.partition_vcpu_memory_access = p->partition_vcpu_memory_access,
-+		.dirty_ring_size = dirty_ring_size,
- 	};
- 
- 	vm = memstress_create_vm(&ms_par);
- 
- 	memstress_set_write_percent(vm, p->write_percent);
- 
- 	guest_num_pages = (nr_vcpus * guest_percpu_mem_size) >> vm->page_shift;
- 	guest_num_pages = vm_adjust_num_guest_pages(mode, guest_num_pages);
- 	host_num_pages = vm_num_host_pages(mode, guest_num_pages);
- 	pages_per_slot = host_num_pages / p->slots;
- 
--	bitmaps = memstress_alloc_bitmaps(p->slots, pages_per_slot);
-+	if (!dirty_ring_size)
-+		bitmaps = memstress_alloc_bitmaps(p->slots, pages_per_slot);
- 
- 	if (dirty_log_manual_caps)
- 		vm_enable_cap(vm, KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2,
- 			      dirty_log_manual_caps);
- 
- 	/* Start the iterations */
- 	iteration = 0;
- 	host_quit = false;
- 
- 	clock_gettime(CLOCK_MONOTONIC, &start);
--	for (i = 0; i < nr_vcpus; i++)
-+	for (i = 0; i < nr_vcpus; i++) {
- 		vcpu_last_completed_iteration[i] = -1;
-+		vcpu_dirty_ring_collect[i] = (struct timespec){0};
-+	}
+ 	unsigned long rflags = kvm_x86_call(get_rflags)(vcpu);
  
  	/*
- 	 * Use 100% writes during the population phase to ensure all
- 	 * memory is actually populated and not just mapped to the zero
- 	 * page. The prevents expensive copy-on-write faults from
- 	 * occurring during the dirty memory iterations below, which
- 	 * would pollute the performance results.
- 	 */
- 	memstress_set_write_percent(vm, 100);
- 	memstress_set_random_access(vm, false);
-@@ -185,30 +255,45 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 	while (iteration < p->iterations) {
- 		/*
- 		 * Incrementing the iteration number will start the vCPUs
- 		 * dirtying memory again.
- 		 */
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		iteration++;
+@@ -301,8 +311,6 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+ 	kvm_mmu_refresh_passthrough_bits(vcpu, w);
  
- 		pr_debug("Starting iteration %d\n", iteration);
- 		for (i = 0; i < nr_vcpus; i++) {
--			while (READ_ONCE(vcpu_last_completed_iteration[i])
-+			while (smp_load_acquire(&vcpu_last_completed_iteration[i])
- 			       != iteration)
- 				;
- 		}
+ 	fault = (fmt->permissions[index] >> pte_access) & 1;
+-
+-	WARN_ON_ONCE(pfec & (PFERR_PK_MASK | PFERR_SS_MASK | PFERR_RSVD_MASK));
+ 	if (unlikely(fmt->pkru_mask)) {
+ 		u32 pkru_bits, offset;
  
- 		ts_diff = timespec_elapsed(start);
- 		vcpu_dirty_total = timespec_add(vcpu_dirty_total, ts_diff);
- 		pr_info("Iteration %d dirty memory time: %ld.%.9lds\n",
- 			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index dc0155ed1cbf..a1afe2ae28ca 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -504,7 +504,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ 	return 1;
  
-+		if (dirty_ring_size) {
-+			struct timespec iteration_sum = (struct timespec){0};
-+
-+			for (i = 0; i < nr_vcpus; i++)
-+				iteration_sum = timespec_add(iteration_sum,
-+							     vcpu_dirty_ring_collect[i]);
-+
-+			pr_info("Iteration %d clear dirty ring time: %ld.%.9lds\n",
-+				iteration, iteration_sum.tv_sec, iteration_sum.tv_nsec);
-+
-+			clear_dirty_log_total = timespec_add(clear_dirty_log_total,
-+							     iteration_sum);
-+			continue;
-+		}
-+
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		memstress_get_dirty_log(vm, bitmaps, p->slots);
- 		ts_diff = timespec_elapsed(start);
- 		get_dirty_log_total = timespec_add(get_dirty_log_total,
- 						   ts_diff);
- 		pr_info("Iteration %d get dirty log time: %ld.%.9lds\n",
- 			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
+ error:
+-	errcode |= write_fault | user_fault;
++	errcode |= access & (PFERR_WRITE_MASK | PFERR_USER_MASK | PFERR_SS_MASK);
+ 	if (fetch_fault && has_pferr_fetch(w))
+ 		errcode |= PFERR_FETCH_MASK;
  
- 		if (dirty_log_manual_caps) {
- 			clock_gettime(CLOCK_MONOTONIC, &start);
-@@ -238,46 +323,53 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 		ts_diff.tv_sec, ts_diff.tv_nsec);
- 
- 	/*
- 	 * Tell the vCPU threads to quit.  No need to manually check that vCPUs
- 	 * have stopped running after disabling dirty logging, the join will
- 	 * wait for them to exit.
- 	 */
- 	host_quit = true;
- 	memstress_join_vcpu_threads(nr_vcpus);
- 
--	avg = timespec_div(get_dirty_log_total, p->iterations);
--	pr_info("Get dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
--		p->iterations, get_dirty_log_total.tv_sec,
--		get_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
-+	if (!dirty_ring_size) {
-+		avg = timespec_div(get_dirty_log_total, p->iterations);
-+		pr_info("Get dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
-+			p->iterations, get_dirty_log_total.tv_sec,
-+			get_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
-+	}
- 
--	if (dirty_log_manual_caps) {
-+	if (dirty_log_manual_caps || dirty_ring_size) {
- 		avg = timespec_div(clear_dirty_log_total, p->iterations);
- 		pr_info("Clear dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
- 			p->iterations, clear_dirty_log_total.tv_sec,
- 			clear_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
- 	}
- 
--	memstress_free_bitmaps(bitmaps, p->slots);
-+	if (!dirty_ring_size)
-+		memstress_free_bitmaps(bitmaps, p->slots);
- 	memstress_destroy_vm(vm);
- }
- 
- static void help(char *name)
- {
- 	puts("");
- 	printf("usage: %s [-h] [-a] [-i iterations] [-p offset] [-g] "
- 	       "[-m mode] [-n] [-b vcpu bytes] [-v vcpus] [-o] [-r random seed ] [-s mem type]"
--	       "[-x memslots] [-w percentage] [-c physical cpus to run test on]\n", name);
-+	       "[-x memslots] [-w percentage] [-c physical cpus to run test on] \n"
-+	       "[-d dirty-ring entries]\n", name);
- 	puts("");
- 	printf(" -a: access memory randomly rather than in order.\n");
- 	printf(" -i: specify iteration counts (default: %"PRIu64")\n",
- 	       TEST_HOST_LOOP_N);
-+	printf(" -d: enable dirty-ring for tracking dirty pages, with given entries count.\n"
-+	       "     If non-zero, will cause dirty-ring to be used instead of\n"
-+	       "     dirty-bitmap. Must be a power of two.\n");
- 	printf(" -g: Do not enable KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2. This\n"
- 	       "     makes KVM_GET_DIRTY_LOG clear the dirty log (i.e.\n"
- 	       "     KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE is not enabled)\n"
- 	       "     and writes will be tracked as soon as dirty logging is\n"
- 	       "     enabled on the memslot (i.e. KVM_DIRTY_LOG_INITIALLY_SET\n"
- 	       "     is not enabled).\n");
- 	printf(" -p: specify guest physical test memory offset\n"
- 	       "     Warning: a low offset can conflict with the loaded test code.\n");
- 	guest_modes_help();
- 	printf(" -n: Run the vCPUs in nested mode (L2)\n");
-@@ -309,42 +401,51 @@ int main(int argc, char *argv[])
- 	int max_vcpus = kvm_check_cap(KVM_CAP_MAX_VCPUS);
- 	const char *pcpu_list = NULL;
- 	struct test_params p = {
- 		.iterations = TEST_HOST_LOOP_N,
- 		.partition_vcpu_memory_access = true,
- 		.backing_src = DEFAULT_VM_MEM_SRC,
- 		.slots = 1,
- 		.write_percent = 100,
- 	};
- 	int opt;
-+	u64 tmp;
- 
- 	/* Override the seed to be deterministic by default. */
- 	kvm_random_seed = 1;
- 
- 	dirty_log_manual_caps =
- 		kvm_check_cap(KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2);
- 	dirty_log_manual_caps &= (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE |
- 				  KVM_DIRTY_LOG_INITIALLY_SET);
- 
- 	guest_modes_append_default();
- 
--	while ((opt = getopt(argc, argv, "ab:c:eghi:m:nop:r:s:v:x:w:")) != -1) {
-+	while ((opt = getopt(argc, argv, "ab:c:d:eghi:m:nop:r:s:v:x:w:")) != -1) {
- 		switch (opt) {
- 		case 'a':
- 			p.random_access = true;
- 			break;
- 		case 'b':
- 			guest_percpu_mem_size = parse_size(optarg);
- 			break;
- 		case 'c':
- 			pcpu_list = optarg;
- 			break;
-+		case 'd':
-+			tmp = parse_size(optarg);
-+			TEST_ASSERT(tmp, "Dirty-ring size should be > 0");
-+			TEST_ASSERT(tmp <= UINT32_MAX / sizeof(struct kvm_dirty_gfn),
-+				    "Dirty-ring size (%lu) is too large.", tmp);
-+			dirty_ring_size = tmp * sizeof(struct kvm_dirty_gfn);
-+			dirty_log_manual_caps = 0;
-+			break;
- 		case 'e':
- 			/* 'e' is for evil. */
- 			run_vcpus_while_disabling_dirty_logging = true;
- 			break;
- 		case 'g':
- 			dirty_log_manual_caps = 0;
- 			break;
- 		case 'h':
- 			help(argv[0]);
- 			break;
 -- 
 2.55.0
 
