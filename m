@@ -1,171 +1,137 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A060E49CF5A;
-	Fri,  9 Oct 2026 16:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791563823; cv=none; b=VU/v9evmsRzA/ej7hS5lhCMLjxaWuAcrNcVo00Lr6KN7kdPZbyvNUt24MZVNUd+VhaDrJf/j0L9UBAAkAGhNdkIywEvol4CHe1DHn/QrZ2KqLw9DnT1A9SOYmEDaW60ZJaF9g1SVoN1vowzjOniUNov6sP6aLDIUgyYLXaDPY64=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791563823; c=relaxed/simple;
-	bh=HXQm1yIIk6ZATMF8yluVVTZ0cPl4OWEyf7Jd7xP3Bcs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sDci4Jny4dxNI7Ww4L5V72L4OEOab3Gb2y8m72xuETVSWkRGrKP5pAVcpBF/z+BR4qKgT93CazoRKkk+BSjI4chI4D9Ffw6KT8HVZDUvbs8flOYgfoNiue4/EqZmppu0dQLanCyDWNv3Somcm9dB8G0Wyc1w+ry5vnF56qOVDbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tlCI2tSr; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30E84F054D
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 16:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791563850; cv=pass; b=cYCKCICVU6d5yAhAFu/oieoo0lYizFN8QX/dnKCUiQfKejTsCkeKSlwbVC5rO4R5WbDoXSthLrfbaVOWzxUSYbesMwUebOzEbeWJSqB9iR7uusk2kTEtM5iaIy+rNdjFAPfDmkHl+or4nlc8J2gU3FLvgASeko9ScPwtsI/nXvE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791563850; c=relaxed/simple;
+	bh=ZcD3lWBEn/k5gS7QyncQIx9YliZr40hzwE5JijjRb3o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GAakEa6fClMvINUQxKYJWWeMO/1TgSbFDKi5jVCH2wHEyj5ddLqrxWe8i57kSJWvnT1k7fB6o7OtLz2aAP9DAoi0UaqyDNEBZg/x2vJupWKpQgizmT+63T5RYPWhJDycBhIEjT6BhCHUL9IWIASslY0P4SuYmsR1v9KV5TwW25A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=F3VIz5qE; arc=pass smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tlCI2tSr"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 699GZcXm609394;
-	Fri, 9 Oct 2026 16:36:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=wzRV2L
-	mBjQPiyC0I7dkq9CqMPgpGE0TcAMPtnS8sWcI=; b=tlCI2tSroZPXCt9vY1rwYB
-	KFp+o/UuoIp3Va+shPyDbcJqko8R9TcdGhOyjPKdi2YG2AErXmwSdthXAogJ2F0j
-	bqCNtCBKQz7zCdDfq+CmdnntxTyLhI9laHRDfaLNxOhJNOYx+ZBTzwcAnASYgXJq
-	4rXw1yHAoKHZAIsiC61oI2xJjNzwQVDgMbmulFiMRDC52+kr4gk3r6AauvlB1Jiv
-	VxfxNslr0kIMiF3YV0OVEvIWw+vlkFeQB5+mr3LvQddOcpo4WYoO0ccnrPvecMZ2
-	+kC0aFI+fZdmsTegjdYI09lWPGI90k816etV0biJXi2dJFWZrjst4ah38Vqc6ECQ
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="F3VIz5qE"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48dc202a60eso75186f8f.3
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 09:37:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791563845; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rC9TK703q68NQNBvVilsVw1INr461ZVt1nI336k2a9WviFuvqQvhhhXPVAMeJV62Kq
+         dhoiWE+ALMx84ickQ1ygkNbcOtFeQ+9eda2vt+oFMeB7MiMh92cZaxijg2Eg7il0ytMy
+         XzlaIVrmBOkgdmod6Afz4eIdzfCAQF+Sc0Fiof9DM+FTgagmfPX/k5Hac2it8ygte7wU
+         4USMpTnTHnjPncptCeQM+pC0VRsnaCPw0zgGEKBadnPl82ost2aTrShISyqDJDVGnPfB
+         9Uo1t8FMEC/WWj0GlMv8JAdL3sSNLCcKh59QE2/nsC/y+RWwqISYsY9OxpgOLBVK4GB1
+         t/Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZcD3lWBEn/k5gS7QyncQIx9YliZr40hzwE5JijjRb3o=;
+        fh=r5FvWTLZbj2uFvdt+GsHqk7MzszOyUc6ITwaBWpUQr8=;
+        b=rm1TyXoTaWBt1IixHbYX4oEOkCnScNlrfZHD7q7ptUhq5q0jQOrinVxhl8yS8BXZU1
+         yInh8Gvv/ysQTsHeIlvdcUqTRzt8dmlIDcdW1KXjmieGuw8LFEjJL96XNbhkf+QhT3WJ
+         dqH2IYM6BJUscrbp8DZnDx5nsLv5Suhm76D6T0vOeCerdg9VP1od4ZnAnt/pj/w9PaNc
+         e/xRfOlUJh1AkU8SwYdwRcdiqesRAyj/MiEW3O5vihrvh+dfmJxJ1giSgrgYv3cNf867
+         L9wsLM7R0ODZzZbhHKmKgFwpNcPRYuPR/KZKgZz0h1CNm2dXeFv24BbRpQXk0Oa6ly4T
+         tjAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault.org; s=google; t=1791563845; x=1792168645; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZcD3lWBEn/k5gS7QyncQIx9YliZr40hzwE5JijjRb3o=;
+        b=F3VIz5qE3aWHrSSf/Dd33psysfSfCUO2kYtVI6N9FN6L6jBjHyIclYT97aROmKujAE
+         c63KczfxmI1hmN2Jin5nrs9kejp0WV76pRfwJm+atDJ7YtluS6sOqJYd7POa9m0vyZTx
+         PdlfC0BGOrvsexXdcHjNsomEtgYsml4IMhJB7nyynVwW68yu58Xqu26ufvQ4qv1mAgAX
+         Y9MiWUFiuuPcZZF2sLfa/RuTevPMq6iPHHiglmiqBWVuvI360FiJ/bUOUDcxQVGvMbgk
+         4esbvjhM8n9F+1WFa8kJ3JeLCgkis83pRAGcQh0L7EqV5VHNo4vEHnK+ZBQvAn+4I3Hf
+         FoBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791563845; x=1792168645;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZcD3lWBEn/k5gS7QyncQIx9YliZr40hzwE5JijjRb3o=;
+        b=KoyrIfxf5qQbia8UhFOflLrAjWFwIuAzqAtS0RMRYl15B4GXxjjEMwk49/+NkY7Rt5
+         iAmw20WpkNk/Z7EwRKMDzN2yl4k1RcqQ8R4RFHHRF/iO7VkqPmUOMbrO2LF+3HXf4IJZ
+         GwSktjDXIJJ+VaN2WJBnBHIJzbAy4gyrRgke6wCFX8lIXS1ic47zGAv2GQEfRXk9PkLL
+         90f2NFf/1spTzt3es7m9e55/FR29mU8DtPKlgvvMJ7xqJg9j/WWnX8SvS1A2P2jn1hOu
+         8gkXkBWINdqGzaWBlmfU5N7eNqHsAviuW97RUdtxrH47xsvdWCRssVpz53tGfjk9DCP0
+         bYFQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxR7Qwu6T8JLzo/6/RFNDACvdBYnoRhHsmnTmbn63k0M8Lam1EEAIQrfhgNYYRVIFaLJHI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJw1JYIB/ZGLgC38wtE8Em3oB60oyd6Y/c8yJhTZDYKFMmSjsHo
+	EpQu60ovFWvuCIlZHeB/463B1pymgGCUGHnYK9o4iVk78Qe9g3NfWG5Dnt0HwnqtyDJv9tg5yP3
+	0AlAuqaILnVolh+Y+7O9bR+C9ZNFst4eXndWpoLhskQ==
+X-Gm-Gg: AYBFou2TNfwdipJPij3c8XCFGyeQggT9dJRA1YmYX1+sQzAdJf0L3XNDURtItxvdSrl
+	LS5dK0qqkPR8WvaFOsrrwBbnwfX9FrCfRNWs1VEGFSqHpihcmhFmLZ9jCQ4Z67/rlWgL7ZLeM7j
+	dlJPqhCcPK2pp1V5wR7lFEvPdduytAgjWrbYiu/SN9UljfcOfkTG6bISvbWDb/KHlcgDzyzaYKg
+	RPCT5wNYTrjazbeNQO4cEjcNyBaLgGNJE+ofjprdSK7mZxxtXyZTWMObU28eO+R/SHK78wt2tSO
+	98+Zv4FCX0pDDSIS11AOgLGu72yrRMcEIzp8zdDgI1cBxetXTQJDxzUvH13/ZmN+mJDAL4dMSyj
+	iHjyMethVFWQqHSpYfi+xT7vRNZletbSP8mEbzzse4QtOaFViiROkYwwY50hBeY8crdFH/27kcw
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xjvu0v1-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 09 Oct 2026 16:36:36 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 699GJOVF4068808;
-	Fri, 9 Oct 2026 16:36:35 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h5f3u3pw7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Oct 2026 16:36:35 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 699GaVW539452940
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Oct 2026 16:36:31 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5FA1B2004E;
-	Fri,  9 Oct 2026 16:36:31 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8782D20043;
-	Fri,  9 Oct 2026 16:36:27 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.124.216.129])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Oct 2026 16:36:27 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org, Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
-        stable@vger.kernel.org
-Subject: [PATCH 1/2] tracing: Do not initialize tracefs work if tracing is disabled
-Date: Fri,  9 Oct 2026 22:05:56 +0530
-Message-ID: <20261009163557.88467-2-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261009163557.88467-1-amachhiw@linux.ibm.com>
-References: <20261009163557.88467-1-amachhiw@linux.ibm.com>
+X-Received: by 2002:a05:6000:46db:b0:48c:652b:9694 with SMTP id
+ ffacd0b85a97d-48dbaadd069mr3527485f8f.14.1791563844566; Fri, 09 Oct 2026
+ 09:37:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: gsTwizmPPHxLngfgsVTtuy7lAWmPjDT2
-X-Proofpoint-ORIG-GUID: T4OUPycY_YGqHVLkw9TSmHJMaISgaHUS
-X-Authority-Analysis: v=2.4 cv=FoOQbGrq c=1 sm=1 tr=0 ts=6ac91814 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=1LvLzkQZAlE5ysvQTrIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA2NiBTYWx0ZWRfX0s8DsKQD1la/
- IOKTMk9kypq/yixVH5pMBJOniKaspWa6E+1a7S4yCx20M/Yc0ESKo4suEkrdhjy7By1+JG2o9rZ
- jFWJiM+cjgh0r44vMYWWjEOMDawQ0jM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA2NiBTYWx0ZWRfX6Vl3wBXpiBQ9
- EZuUv1AatBWnkNbmdWp50pMouL9d6EI1ZpQe4jk2iOEFDiWEVTcXB0G9RSQF/jVw5nL9ghbmWia
- TPk0UV8crCUMAPPUExfsl2MF4ujZsvk+5GYE4ufTHEr6J2jqU5wyNCfTejzmNn01HrKH/WoxqYV
- bS3MBOdxxQ/P9aj0oGFIJXkNdQYulphPZxb+PiTtEdxy27dCVdXBGdLgf8pUSHjwgqisznAbcTA
- n2vEDGj/xU/L259d+h+OPNI7WSMltJGIfQzIzEhKC91CEo41xUl8nLImH3/gtGQ36d5+nA5pr85
- vqHngKjNYe4p5brfUrMi08zqJleV4iooN2p0QNbNbNdh51mHyC9IhaRbUx3GgIa8ws75uflT1+R
- grU/p5qCFi3xX7V1oMoYgtMoa/ZZJV2ozr8fjeXtUEF3TMOERDetpjytVnvfOnf3GqURRnnpt1X
- Gi31lRfBgxuxhLi4Iqw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-09_04,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610090066
+References: <20260925155116.465203-1-andrew.jones@oss.qualcomm.com>
+ <CAAhSdy0Y8kQ=gsiX0QX6Ntq=fL89METhA0s7G3niBBJrHpue7A@mail.gmail.com> <7zy352odf4hekcibmio3atunubffzxfcsqnn55q6sfkksnynfj@5bx263nnizdm>
+In-Reply-To: <7zy352odf4hekcibmio3atunubffzxfcsqnn55q6sfkksnynfj@5bx263nnizdm>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 9 Oct 2026 18:37:13 +0200
+X-Gm-Features: AclHuK8vtPQ4aaw6JsQ85iwGdZHaeULxx6XNPczP994xQTrZFbfymhhY5wrwX9c
+Message-ID: <CAAhSdy2mAs6UgTk-hbGd3DX_1242Jpy9WLnOp6kmPvVVtABWHw@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Use a raw lock for IMSIC wakeup state
+To: Andrew Jones <andrew.jones@oss.qualcomm.com>
+Cc: kvm-riscv@lists.infradead.org, atish.patra@linux.dev, pjw@kernel.org, 
+	palmer@dabbelt.com, kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If trace buffer allocation fails during early boot (e.g.  in
-early_trace_init() -> allocate_trace_buffers()), tracing_disabled is
-left set to 1 and the global trace array events list remains
-uninitialized.
+On Fri, Oct 9, 2026 at 3:44=E2=80=AFPM Andrew Jones
+<andrew.jones@oss.qualcomm.com> wrote:
+>
+> Hi Anup,
+>
+> On Fri, Oct 09, 2026 at 01:45:20PM +0200, Anup Patel wrote:
+> > On Fri, Sep 25, 2026 at 5:51=E2=80=AFPM Andrew Jones
+> > <andrew.jones@oss.qualcomm.com> wrote:
+> > >
+> > > kvm_riscv_vcpu_aia_imsic_put() can run from the scheduler preemption
+> > > notifier while the raw runqueue lock is held. Taking vsfile_lock, an
+> > > rwlock_t, there violates the lockdep wait-context rules.
+> > >
+> > > Protect the CPU/HGEI pair with a separate raw spinlock. All updates t=
+o
+> > > that pair retain vsfile_lock and take the new lock, while scheduler-o=
+ut
+> > > uses only the new lock around the HGEIE update. This keeps the wakeup
+> > > setup serialized with VS-file publication and release without bringin=
+g
+> > > wider IMSIC operations into a raw critical section.
+> >
+> > Instead of introducing another lock, why not replace
+> > read_lock_irqsave(&imsic->vsfile_lock, flags) with
+> > write_lock_irqsave(&imsic->vsfile_lock, flags) in
+> > kvm_riscv_vcpu_aia_imsic_put() ??
+>
+> Unfortunately, write_lock_irqsave() has the same PREEMPT_RT issue, since
+> rwlock_t is sleepable on RT in both modes.
+>
 
-Later during boot, tracer_init_tracefs() (invoked via fs_initcall)
-queues tracerfs_init_work asynchronously without checking if tracing was
-disabled.  When tracer_init_tracefs_work_func() runs, it calls
-event_trace_init() and init_tracer_tracefs(&global_trace, NULL)
-unconditionally.  This leads to __find_event_file() dereferencing an
-uninitialized tr->events list, causing an early boot NULL pointer
-dereference Oops:
+I am not fond of nested locking, why not convert vsfile_lock into raw
+spinlock ??
 
-  BUG: Kernel NULL pointer dereference on read at 0x00000010
-  Faulting instruction address: 0xc000000000485be0
-  Oops: Kernel access of bad area, sig: 7 [#1]
-  ...
-  NIP [c000000000485be0] __find_event_file+0x70/0x3c0
-  LR  [c000000000448874] init_tracer_tracefs+0x274/0xc80
-  Call Trace:
-   init_tracer_tracefs+0x274/0xc80
-   tracer_init_tracefs_work_func+0x50/0x320
-   process_one_work+0x1e8/0x5c0
-   worker_thread+0x1dc/0x3d0
-   kthread+0x194/0x1b0
-   start_kernel_thread+0x14/0x18
-
-Check tracing_disabled at the beginning of tracer_init_tracefs_work_func()
-and return immediately if tracing is disabled or failed to initialize,
-preventing the crash.
-
-Fixes: 6621a7004684 ("tracing: make tracer_init_tracefs initcall asynchronous")
-Cc: stable@vger.kernel.org
-Reported-by: Michal Suchánek <msuchanek@suse.de>
-Closes: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
----
- kernel/trace/trace.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index e4a490d3d08c..7ac9e1c92702 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -9287,6 +9287,12 @@ static struct notifier_block trace_module_nb = {
- 
- static __init void tracer_init_tracefs_work_func(struct work_struct *work)
- {
-+	/*
-+	 * Do not attempt to initialize tracefs if tracing was disabled or
-+	 * failed to allocate
-+	 */
-+	if (tracing_disabled)
-+		return;
- 
- 	event_trace_init();
- 
--- 
-2.54.0 (Apple Git-157)
-
+Regards,
+Anup
