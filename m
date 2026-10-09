@@ -1,132 +1,189 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F39049C4C4
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 10:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791540696; cv=pass; b=mxOIq2KVccM8i6amC2jdQeXEGswrEXGDFOMW005VNI395zN3w+acnFGLuyFeOmRdC6X+9KILg9Qmgk3Jyo55oo3HLxTL8feDc5Q5F7Rtm3mrbj3kEl63HrXv1rnbdeNKgq/+kc6bSJZXtzkxhsxgCaMkeTxWZxHbe1jEdt7WMm0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791540696; c=relaxed/simple;
-	bh=jO2JB94/A3Hvfgi2+EqsO7+q4h2Kbsj1cn+DHY7QLyI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YFxDnLM5jZ0CsHW2/58ZMeElrhotpf2zUbImrux0fygaZXLg5kZ1ulxP4w+o30BoLFxTsI62cETl/LdDKXvWr6VgIKQoqBOsyov7p3Ox50H5hJmddRzEsXa/JWzQMPEW9QZNCE2pPZ/08k/lIIszGOZJ2JbA6LVafhGekhgpzP8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eSROX79p; arc=pass smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13B744E65F
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 10:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791540928; cv=none; b=g+D4XZNW3q6vlKUak5eGsKD10EwKB0hBao0WgaGM3mAVzdTcFZDQcLrqdAzc0QaB9mgcwLLPc9YSBd5FvTXO3Q9k6VmhDcfkP4eGn7v1mgtP7EsQdfW7RszN9FrUZGN5IzQPZSjVGZjNtMobBJBm8NwXbxfjEitB/xRQBQicocY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791540928; c=relaxed/simple;
+	bh=jyDEhNWEktcDeVA66O0x0HheikRt8+3NMW3l44bD31Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G90VKOuhQQGu3ZuidjFwDGV97QQErfKHyPegpeRTI4RMOEs3e4M/WQOz20Eeao70IelrlsCcHXTjzJO5NkRggjRAYc7Q/Qj1RTgqrSH3pR8zvuC1qJCyHiJJV/X8qoOjeBmLEuSX+lWQnoiybqxmvxUPsw8XzK3nrcMssusq+0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YR9lUCsA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1AHSraY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eSROX79p"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5ba429b64c5so5795e87.1
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 03:11:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791540692; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mYEM/k04W75BeTNNoK8lUG1OsVNa+eg1OgPi2wcNdpQyUyYbrP/e90SJHijZSSLQBO
-         gH2q72Ct+IIEP228ehBuC3OxXQN1nxY/RiLKcmvRy+Rnz/c+5dZMdUAFNJLmdzeMHklz
-         PJHtbbEfuaU5ZZMNM00enyQ9Jk5vsV3COsZThQDEDkMq0LAkQoNEpQO6mXAWCn4EfyCE
-         7HnRdMWkH9LBfPT8LV0gQsYR0XSXdG0jHQh9AzX+bQU2A//teXM8sZ0sHcMIct6TZ5ja
-         5b6+iicNbogAaIUJQ374Ud3h54F+cyimjfpG92REGIoH3YhxVhPoDHvH67qDBtK2dnBW
-         XhFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=X91Ea0i/B9gu1Cdd3wVY7vcLKA2e9/BIdZO5hwAmvwA=;
-        fh=HG7/9ury7/gtna/+22du057I5FNhKE+YEOQPTUIx/Qw=;
-        b=LJURKC7cjxSh+tOvHp+M4T4aUd2Zm5ag+U2EjMrRhexUBSx3WBQO5qJyDNhVrOLO+A
-         4CUzRBhJiNlphueD64QGLEw0hHHnfBLv4i2E8VBmwxEifVpSbo44s/hPRubHF5JGuFeV
-         kKR951WeZOcq10Zu2K5zKY4k8D3rXRohm+pbe9yubznaLb9syqUJL4kHcAttBEbMyJnE
-         zGX4pUeEXGM9lUfvV6mp5tUlgR+yTSo0v0WTQHTiND7M2vWSSf5s2sGiMaCdml3b0r7B
-         5ZG2R66BNSFXseHk06veNtkpuCBRdK5bYsLCWJK5wvFDdPWoPZGPckdEgEKo++QJWoJv
-         pZpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YR9lUCsA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1AHSraY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791540923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8qjpcfD3LG1eZs8VSpA9jEQmEOMfOU2B/T9s4mzaz2E=;
+	b=YR9lUCsAExcPNjoNYfo2P79M1+v6Q6fA40V3z5ir7T6I5ynYnrKTqloRtWlyy6HosSqV1n
+	syvhZ8qCNUpv9ObcG3YMd2xYxzjq8MOwpvPXYPgsiuMlaYCgzaKdF2GaOJ3maDwAuQthb5
+	ey5W3LjJ5MAp9g80RxGm5U+pKF/v8nQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-652-eZ5r-REiPKWo73cj-L7pTQ-1; Fri, 09 Oct 2026 06:15:22 -0400
+X-MC-Unique: eZ5r-REiPKWo73cj-L7pTQ-1
+X-Mimecast-MFC-AGG-ID: eZ5r-REiPKWo73cj-L7pTQ_1791540921
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c511d9e97so3556437f8f.0
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 03:15:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791540692; x=1792145492; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X91Ea0i/B9gu1Cdd3wVY7vcLKA2e9/BIdZO5hwAmvwA=;
-        b=eSROX79pzkn4hyu7u8sLvL6KKUZYTIFCTxGR45qbMbaDVBNMqAOqZ7IyntCcI/BVr3
-         LdN4pF+L1SfV1gL8qgPpFBRSS2QFEhBm4uxUx5+lXKDDnBQYlpno8Zjd8sSKBXPMIcdU
-         BoQoUZ1DFCt+9C0F/yCymSUQSymhOGHP4dv++kRKDlFsifGWnaWIRc4P93pJZko6d3VO
-         4tFpa+OKIjP46BPCD50Snk3SxwUWend8pYkQ/cMJ7SXteOam9d+8QXKFW2C4dH0ZB8lS
-         vEN5QDvtSd1pp6RBfoCpcgMZuVIoRORLx0c/lN9dsFD/Nuj7KPBZ1tFg6cVO7LDx4mu3
-         1Y2Q==
+        d=redhat.com; s=google; t=1791540921; x=1792145721; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8qjpcfD3LG1eZs8VSpA9jEQmEOMfOU2B/T9s4mzaz2E=;
+        b=L1AHSraYh9niilCYyPHgdz+agimXgXdkuvF+nfeJvFTY9Vwc+LkRnH//WkHPbN3Rfc
+         8XRLW4ifCjHzYObphmzK9dbpTstUmIa6qD/MktdetcLknEYgcqrYXRvdN3ccPPmzRtVE
+         0fV8omREyNef3RBHyuzupt6kbl1/Z234uQVST7OXva2uAKWJe7V8u6v8mSzyLFe6ouBy
+         RiooAEswAN6o44N/j/9a8yhvk01D/Jg0Lpsp8GR7h7b8bXaZaq2J3zPDLwdVZHqPmX+e
+         XhcdkXAYaIiyqSMSdG3Dc5gklxFRdbw1ApPMg9OKLj/7nGhygi4D/JZLJGJsfKz+QUN4
+         IBkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791540692; x=1792145492;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=X91Ea0i/B9gu1Cdd3wVY7vcLKA2e9/BIdZO5hwAmvwA=;
-        b=dNMa3mi1uHOcPCD0n1Yv3+bb9RI0wxACQa9SaxBcxJWhdYG8hS0wO6H174o94fY1fz
-         N6lbFThpAh9W4q2EJwwA5nU1IWhUE0NqkIEBEtsYtUWhQkXHy9dMwaD/xIP9bua+y6dr
-         a3U0hQIQGDRpKuPTXaGLi1Mdrfz01BtragGENRb3WJrK8snMuwzaxpqnR+VjpR3G0GAL
-         yQC5j7q3u5nVZ518A8bJiJk5jIKXZBzl/1St6Z6c961s8f0OtlGsXpTkbsLKs7xJvZmu
-         eoz8c4DJpnkOy2MlsrB3UfKOuzCCDl/QIaLI3AcBh6e9mxyKEJQdODIiC2c6qj9oEY7x
-         RfWg==
-X-Forwarded-Encrypted: i=1; AKwUvBw8x6vd2yaIBvq4TVFpq5aoZr+DE3aJFF9dEjqKCgPzsWs30g+pPfX87sohFQrsGGcgcwk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKwJydzzYMDmgFVesxNJ1VZ2j7wO6p3WEGy9HtxeVUMh0lZTLPM
-	0La87QMR4cTW7b/IUvU5ODzWH4Oyk2TFFcVK+WebTmtep79DE9bd4WDAVT9YLLO+Jer4j1tJZA8
-	0yzAiiDhaXrfV8Wki8nsR/UC7+AKoiGLp13LoRbgqG0ZjPdUHkUK9s6M1mVw=
-X-Gm-Gg: AYBFou0axMRILMVWAP9SwtHpXSXZWZrpStK4RecJIt8/OM6sFANL7s7ZGUBJGRi8IUj
-	StHaSGDu87i+bPlwX3ieFMIc/QFo4d0qA8nj93tq5r82M9Q/0CFGwHDGiOYjcmoXP1A9ozsSYN0
-	wsGq9qbzgAQsUzLUssQsRySzMJHHVxXtMVQ5rSH2RD6HozN87/rtkEQu9mf8Eem6rW0MBWCMniP
-	ekF2cI43bK43H7y+V1WUjDCTQuk6l+XiBOizMU8LARflZxRNSdgTZvHadbuZJB6grTAHm6A4tc5
-	rluwxiPDLE3EhXKA0WL20DIHm8MGjddEEZKST81f5BvfHSBZsb+KJLP2Joc8G99APrDhzX91r0N
-	TNRurmkPTmjT99g==
-X-Received: by 2002:a05:6512:6619:b0:5ba:4293:fa55 with SMTP id
- 2adb3069b0e04-5bcdd5286e0mr89466e87.3.1791540691538; Fri, 09 Oct 2026
- 03:11:31 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791540921; x=1792145721;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8qjpcfD3LG1eZs8VSpA9jEQmEOMfOU2B/T9s4mzaz2E=;
+        b=iwC1cFN8pZxpogNvv1Cg0GILqkihwrWGpIuKuN3Z3kePNQGqicwI7JVHTUe2oElY2J
+         tIZmZn0OC6xs/ecwUv4r0v0TLBZU2o7kTNQHrAorK06KhHoKYfyAQ4QVdTTnkLuBvpS9
+         Zlwma5etPsD1j9SnANnQIviLN69W8uPwBHdpUYE29RmK5z99EjwH9eeB+aAKUSN6BYxJ
+         pyNBlfYgwUGFi/QNOEz1yMZgOYA6ENRwdJIm4zHTnpl3mPhJ7fXSMaNaRQ7J7ZtO8gtE
+         Yq6WsN/e/lmwk+6X5y7vfv0+jGxvzpVDvy+Wk6tfsnzOuMUZPU9sOxL7y55cVApFMe1F
+         jq/g==
+X-Forwarded-Encrypted: i=1; AKwUvBzUU9BcIWFQWI4lmgt4yf8TTf9a4UvZ17KqCNfHGPhngJjozCv0dzU5jPEPOQReUy4z0LI=@vger.kernel.org
+X-Gm-Message-State: AFuF++l4Cz1zKfd78BZj8gZUSOedX4I+yFiOPKQ3B3oX5/qApzgqjZ0f
+	8RQELolco47WTqbSUlrNppDYoxrLumpU0QDwNPqbze/6sRhO1dAPzZDSd3S8Iog8DFjtdxF6xBv
+	6GpjNbXnguQ6g63AkxJGLIj0KN9fXIXog6MDnK+UoVIkzc8EwzRfOjA==
+X-Gm-Gg: AYBFou2lHFUwH4+WsjquVmwQe0Ng7ySmFoqD9muzQrO+aitBSaGh3f9kIfkUOPlpHWw
+	NZK0Tx5rWN1cfjYSPji/RjTHS8zjt5akXB63+rcofu175BHLHGzrc4YwC5k/lhCnsNBjNr3li4y
+	AGkglfW9/9+rYrXe7vKLKhfmZVPhmCaMsYNSzg/iKPIlUhq8szfhpgw9CZWBWd1b/grjmIzIEqE
+	2AnOAEwGRhjZwfE02bjQTtry51W8A+IIFq9HZD9cRsOkwwDJvAqv617LDOR3X/WZoAMlPNDFGjw
+	YzduZWQm2pKKJIp34goM8YO3gSuHpb0IGxgvNc7ahkHwR9nQ7u1610FZeZ5bWSCq+BTkOJ3tX1J
+	J
+X-Received: by 2002:a05:600c:6989:b0:4a0:1f9e:5f7d with SMTP id 5b1f17b1804b1-4a18e4a0030mr24138425e9.7.1791540921024;
+        Fri, 09 Oct 2026 03:15:21 -0700 (PDT)
+X-Received: by 2002:a05:600c:6989:b0:4a0:1f9e:5f7d with SMTP id 5b1f17b1804b1-4a18e4a0030mr24137885e9.7.1791540920563;
+        Fri, 09 Oct 2026 03:15:20 -0700 (PDT)
+Received: from sgarzare-redhat ([5.11.115.77])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm80901885e9.9.2026.10.09.03.15.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 03:15:19 -0700 (PDT)
+Date: Fri, 9 Oct 2026 12:15:16 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Eric Dumazet <edumazet@kernel.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Hyunwoo Kim <imv4bel@gmail.com>
+Subject: Re: [PATCH net v4] vsock: treat TCP_CLOSING as once-established
+Message-ID: <asi-oV3fF1erjxVs@sgarzare-redhat>
+References: <20261005-vsock-connect-reset-closing-v4-0-15d41cfda3ed@rbox.co>
+ <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
- <20261007073537.2454351-15-suzuki.poulose@arm.com> <CA+EHjTx-niYPnnRDvAAiY3MXLpSYau_PhiBTCiE9mOYUChASPQ@mail.gmail.com>
- <86a4on2qxz.wl-maz@kernel.org>
-In-Reply-To: <86a4on2qxz.wl-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Fri, 9 Oct 2026 11:10:55 +0100
-X-Gm-Features: AclHuK9LIRInATLITNjOUiJu1KjVGIe10ULmW_HxdmRBfJcwxXlgGARzP-Th6tA
-Message-ID: <CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
-Subject: Re: [PATCH v23 14/14] KVM: arm64: Prevent unsupported vcpu features
- for VM types
-To: Marc Zyngier <maz@kernel.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, 
-	jonathan.cameron@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
 
-Hi Marc,
-
-On Fri, 09 Oct 2026 09:55:52 +0100, Marc Zyngier <maz@kernel.org> wrote:
-[...]
-> A rebase would be a terrible idea. This thing *must* go on its own
-> branch, and not depend on anything else.
+On Mon, Oct 05, 2026 at 02:26:22AM +0200, Michal Luczaj wrote:
+>Handle the TCP_ESTABLISHED -> TCP_CLOSING transition on OP_RST, which can
+>race with the connect loop. Immediately break and return 0 on
+>ESTABLISHED/CLOSING. The return value of connect() should reflect what
+>happened up to the point the connection was established or failed. Events
+>that occur afterwards must not affect it. E.g. even if OP_RW has already
+>set sk_err, connect() should still return 0, not ENOBUFS because of it.
+>Adapt the inaccurate comment above signal_pending().
 >
-> I can however fix things at merge time. is something like this what
-> you had in mind? It compiles, and is therefore perfect...
+>Resetting a socket that is still present in connected_table can lead to
+>memory corruption. The reporter noted lost transports for in-flight skbs,
+>and I have reproduced crashes caused by re-insertion into connected_table.
+>
+>  list_add double add: new=, prev=, next=.
+>  kernel BUG at lib/list_debug.c:35!
+>  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+>  Workqueue: vsock-loopback vsock_loopback_work
+>  RIP: 0010:__list_add_valid_or_report+0x11f/0x130
+>  Call Trace:
+>   vsock_insert_connected.cold+0xe/0x13
+>   virtio_transport_recv_pkt+0x10e9/0x1460
+>   vsock_loopback_work+0x305/0x480
+>   process_one_work+0xe4c/0x1560
+>   worker_thread+0x4f1/0xd60
+>   kthread+0x36e/0x470
+>   ret_from_fork+0x47b/0x6b0
+>   ret_from_fork_asm+0x1a/0x30
+>
+>This fix is supplementary to commit 002541ef650b ("vsock: Ignore
+>signal/timeout on connect() if already established"). Details under Link.
+>
+>Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+>Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+>Link: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
+> net/vmw_vsock/af_vsock.c | 17 ++++++++---------
+> 1 file changed, 8 insertions(+), 9 deletions(-)
 
-Yes, that's what I had in mind, but please keep the PSCI 0.2 check
-from kvm_vcpu_init_check_features():
 
-        /* EL2 implements PSCI 1.1; the host must not dispatch as 0.1. */
-        if (vcpu_is_protected(vcpu) &&
-            !test_bit(KVM_ARM_VCPU_PSCI_0_2, &features))
-                return -EINVAL;
+LGTM! Thanks!
 
-Folding the allowed set into the mask covers the rest of the block you
-dropped, but a mask can only reject a feature, not require one.
-Without the check a protected vCPU can init without PSCI_0_2, and the
-host then dispatches the forwarded calls as PSCI 0.1, while EL2
-returns 1.1 to the guest.
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Cheers,
-/fuad
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 9b71479a2b29..14fe24b05f9c 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -1834,23 +1834,22 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+> 		timeout = schedule_timeout(timeout);
+> 		lock_sock(sk);
+>
+>-		/* Connection established. Whatever happens to socket once we
+>-		 * release it, that's not connect()'s concern. No need to go
+>+		/* Connection was established. Whatever happens to socket once
+>+		 * we release it, that's not connect()'s concern. No need to go
+> 		 * into signal and timeout handling. Call it a day.
+> 		 *
+> 		 * Note that allowing to "reset" an already established socket
+> 		 * here is racy and insecure.
+> 		 */
+>-		if (sk->sk_state == TCP_ESTABLISHED)
+>-			break;
+>+		if (sk->sk_state == TCP_ESTABLISHED ||
+>+		    sk->sk_state == TCP_CLOSING) {
+>+			err = 0;
+>+			goto out_wait;
+>+		}
+>
+> 		/* If connection was _not_ established and a signal/timeout came
+> 		 * to be, we want the socket's state reset. User space may want
+>-		 * to retry.
+>-		 *
+>-		 * sk_state != TCP_ESTABLISHED implies that socket is not on
+>-		 * vsock_connected_table. We keep the binding and the transport
+>-		 * assigned.
+>+		 * to retry, so we keep the binding and the transport assigned.
+> 		 */
+> 		if (signal_pending(current) || timeout == 0) {
+> 			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
+>
+>-- 
+>2.56.0
+>
+
