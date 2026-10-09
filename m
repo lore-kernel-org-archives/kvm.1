@@ -1,131 +1,114 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B463B3D1A9A
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 20:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C815D3DE43D
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 20:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791578159; cv=none; b=twneaxe61t5Dqqh5WJkAWj3mL2iajpNezNMnzqzU1JfiQTjWQBIJ+QkZH6dt8egxO7+lnbUYpC44cLdB1assKYQnOGnLRedi31nn02O9omWXsDiZEMdcF1u8eQSmPBYQVXskhl19p2CxythIq98JMfI2n5KORF/65diyzmuiZy8=
+	t=1791579046; cv=none; b=euK/KxomoA03JEQeqR5NbZzjCzAnyceLp7P22idofHQJLVChAWWBAEETx4B6soHnx8leKqtfxhJA22VJa1s+R//sg/1DcX5QDQlYLC1Pp58Pzo3Z9/Ml4hHakA48v8+fQVkA9200rUmal0k7Zopteay7B1BeQ0/N3lGOk4cXizU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791578159; c=relaxed/simple;
-	bh=PfTAicrEoNLDkm42IQNl9ACSlpLIoq43+6AwdL4QLtw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PbeXtY7DxFm5ywEE7+AQKcK6wnXU2WZ4EsrJyHPpdnVl4/ryzlJxeyQsNoOiWoYtz3EmblNiZVb/mGB1N8CTCFPEX9FGpj9BLG6VAm5SO8d4NejCrJYGVGDuzn6ahv660/rNc54v/qzOsjqYLWRx3eURyGSBofi3bTa1e2q90Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WdO//9nc; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1791579046; c=relaxed/simple;
+	bh=8Gs1d740/WG62XMlf0EOI35ECZVTTmQ0jDWyGyhy+FE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oC34nEP8M4qX/iA/cKJqZLIU+bgDipCqadCc/aJ/OfKJpnE7/QF1Pt9urWa9PT/8DbQcMZDzl10BXSgdRt7TK94y7Gt3Unzfknqcc9rAaXzE+46uXB98/4883ZLC7symSp3SD9m1mVaM6YLLSzMcVwyBb+y2/6G1QURXugeDlCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FDLkKNP5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WdO//9nc"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39e3c10ac70so181231a91.2
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 13:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791578158; x=1792182958; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KUNz7LmSPiGppLW+FVXC0WJz4DIhuCD6pA3Tczcp2kQ=;
-        b=WdO//9nc6uIhm9o3uCMdkqSMviZOfBNoznixvAjSU3MuQHLnu3wvwAAZe+15BEIvIw
-         ul3kaZ1DqKz79bxrLCUnNOT/nAVLp7vBHyoJrYKlf+DqF2HHA5eInNqV0tZDY6tshT+S
-         Qhu9rOol1HHVnEaT3o3Vm9KkKzZyqpvAkWYFmXW7dicnChPMV/dce3r0XwhIAtfgOGyz
-         dXNeN7KC88x4GXDDCu3bgjXonNpWeq2MFpf3srt6vy4n0fCjpEQ+nPTBkELP+k6YFWpQ
-         Kdl+Q3Dry6szGE6GzycNy6is+2d39yZjscdLTYT+Z6Z9Awd1Hk5QgnpIaX7LyQrTpUPA
-         BcBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791578158; x=1792182958;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KUNz7LmSPiGppLW+FVXC0WJz4DIhuCD6pA3Tczcp2kQ=;
-        b=nXW42T8QX4i6T57v7BoCfewHwP/eGgW/ftwWJUBUdegSPjF9cF3g3xpz5WU+qs7OCs
-         uCE1xoEr1tW8uUlSwEnyQ2lUgoIvq9QgtWdvG+pslxc49gAPyNphjj5gdTkgMiJDNj3C
-         V394KUwtdKz6vjqqbFBosFUzT4UDfulYfj28fhzfsoGLx4xuojjq2X82mSQp9AlFgmU1
-         m1sQx0UAMIPeGJWPVMS90jgo6vzbF5JZsuH0HjAjCrIBI804/jQKhT8u3UIev/dThBVG
-         2eDWwh6PONotpWoliScFor5oG2r8AX1z8U6G7CCOOQiLV3E5Pmmcr/0qRQ0PCJpHaZpB
-         mzoQ==
-X-Forwarded-Encrypted: i=1; AKwUvByRyV0oqyvmq0nnd958ur+iab84/h3ufkUYU+uH+DGqz9via7V97abQifcKuBx5317I5zc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKbtCeN/X065vXXYlEPflPPUY+QNTyS68LOK+LuLbn2HbCcjZrX
-	wt0TdVbRYAGg4h+6ObOOovffHbnhVWExWTcV3w0AVnbq03qTrnyBqj2CLi9k8rhQi6ZYtKn+q/V
-	jzNartw==
-X-Received: from pjbsj2.prod.google.com ([2002:a17:90b:2d82:b0:3ab:4cf:7b95])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1844:b0:3ab:188b:c5bf
- with SMTP id 98e67ed59e1d1-3ab3a955af4mr2571263a91.18.1791578157882; Fri, 09
- Oct 2026 13:35:57 -0700 (PDT)
-Date: Fri, 9 Oct 2026 13:35:57 -0700
-In-Reply-To: <20261008090037.86931-1-flyingpeng@tencent.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FDLkKNP5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791579043;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=goJ42vVa/6g/ckeQD9hR1HE5AR+RatDSYAG7UDCyL6U=;
+	b=FDLkKNP5J08NjcVgcD9Bz8GE05d8hwzfhc2CzzV0gAxT15y6rF36ciyGvdpzXY+bRnLadX
+	5E33MsQP/1cPEu2OHBaK2k5BPdhxv2LSOtpXaxSu/Thl/KkzjRAZK4rm1bbXMQ7Q2MXB6S
+	wPOtfTSn182GeR4j2a87WgFnX0HNSuA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-HFsqf8mNMJy1kjSxIem0uA-1; Fri,
+ 9 Oct 2026 20:50:42 +0000
+X-MC-Unique: HFsqf8mNMJy1kjSxIem0uA-1
+X-Mimecast-MFC-AGG-ID: HFsqf8mNMJy1kjSxIem0uA_1791579041
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3FA3719540FC;
+	Fri,  9 Oct 2026 20:50:41 +0000 (UTC)
+Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3ED6E18004D4;
+	Fri,  9 Oct 2026 20:50:40 +0000 (UTC)
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: kvm@vger.kernel.org
+Cc: x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Maxim Levitsky <mlevitsk@redhat.com>
+Subject: [PATCH 2/2] KVM: nVMX: avoid losing the posted notification interrupt when exiting L2
+Date: Fri,  9 Oct 2026 16:50:36 -0400
+Message-ID: <20261009205036.672523-3-mlevitsk@redhat.com>
+In-Reply-To: <20261009205036.672523-1-mlevitsk@redhat.com>
+References: <20261009205036.672523-1-mlevitsk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261008090037.86931-1-flyingpeng@tencent.com>
-Message-ID: <aslQLXcK1VXSkrVo@google.com>
-Subject: Re: [PATCH] KVM: x86: Guard against division by zero in adjust_lapic_timer_advance()
-From: Sean Christopherson <seanjc@google.com>
-To: Peng Hao <flyingpenghao@gmail.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Thu, Oct 08, 2026, Peng Hao wrote:
-> When TSC calibration fails and userspace never programs a tsc khz,
-> vcpu->arch.virtual_tsc_khz stays zero, but the lapic timer's
-> software-mode expiry path still calls adjust_lapic_timer_advance()
-> unconditionally on every timer expiration (unlike
-> __wait_lapic_expire(), this path is not gated on tsc_scaling_ratio).
-> Both the "too early" and "too late" branches do_div() by
-> virtual_tsc_khz, so a zero khz crashes the host with #DE as soon as
-> the timer advance drifts outside the adjust window.
-> 
-> Bail out before either division.
-> 
-> Signed-off-by: Peng Hao <flyingpeng@tencent.com>
-> ---
->  arch/x86/kvm/lapic.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index 13e32c4915e2..4dcbc66c8e07 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -1991,6 +1991,9 @@ static inline void adjust_lapic_timer_advance(struct kvm_vcpu *vcpu,
->  	    abs(advance_expire_delta) < LAPIC_TIMER_ADVANCE_ADJUST_MIN)
->  		return;
->  
-> +	if (unlikely(!vcpu->arch.virtual_tsc_khz))
-> +		return;
+While delivering a nested posted interrupt notification
+(see vmx_deliver_nested_posted_interrupt), KVM assumes that,
+as long as the target vCPU is in the guest mode, KVM can send the
+special POSTED_INTR_NESTED_VECTOR, which will either trigger APICv ucode
+to inject all interrupts into L2 or cause a VM exit, after which
+vmx_complete_nested_posted_interrupt is supposed to finish the job.
 
-Ugh.  I'd rather reject KVM_CREATE_VCPU, even though there is a rather surprising
-amount of code in KVM that does indeed play nice with tsc_khz == 0.  I don't see
-how the guest can possibly function with virtual_tsc_khz==0.
+However, a third case is possible: if the target vCPU is about to exit
+to L1, the posted notification interrupt must be instead injected
+to L1' APIC, but KVM doesn't do this.
 
-vcpu->arch.virtual_tsc_{shift,mult} will also be left as zero (to avoid #DE there
-as well):
+Detect this case in the nested VM exit path and act accordingly.
 
-	/* tsc_khz can be zero if TSC calibration fails */
-	if (user_tsc_khz == 0) {
-		/* set tsc_scaling_ratio to a safe value */
-		kvm_vcpu_write_tsc_multiplier(vcpu, kvm_caps.default_tsc_scaling_ratio);
-		return -1;
-	}
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+---
+ arch/x86/kvm/vmx/nested.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-	/* Compute a scale to convert nanoseconds in TSC cycles */
-	kvm_get_time_scale(user_tsc_khz * 1000LL, NSEC_PER_SEC,
-			   &vcpu->arch.virtual_tsc_shift,
-			   &vcpu->arch.virtual_tsc_mult);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 2142e25c9b6c..4d8bb7f7fcd4 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -2445,7 +2445,7 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
+ 			 ~PIN_BASED_VMX_PREEMPTION_TIMER);
+ 
+ 	/* Posted interrupts setting is only taken from vmcs12.  */
+-	vmx->nested.pi_pending = false;
++	WARN_ON_ONCE(vmx->nested.pi_pending);
+ 	if (nested_cpu_has_posted_intr(vmcs12)) {
+ 		vmx->nested.posted_intr_nv = vmcs12->posted_intr_nv;
+ 	} else {
+@@ -5162,6 +5162,14 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 	kvm_clear_exception_queue(vcpu);
+ 	kvm_clear_interrupt_queue(vcpu);
+ 
++	if (lapic_in_kernel(vcpu) && vmx->nested.pi_pending) {
++		vmx->nested.pi_pending = 0;
++		if (!WARN_ON_ONCE(vmx->nested.posted_intr_nv == -1)) {
++			kvm_lapic_set_irr(vmx->nested.posted_intr_nv, vcpu->arch.apic);
++			kvm_make_request(KVM_REQ_EVENT, vcpu);
++		}
++	}
++
+ 	vmx_switch_vmcs(vcpu, &vmx->vmcs01);
+ 
+ 	kvm_nested_vmexit_handle_ibrs(vcpu);
+-- 
+2.54.0
 
-and so nsec_to_cycles() will always return zero due to multiplying by zero.  That
-means things like the APIC timer will always fire immediately:
-
-	apic->lapic_timer.tscdeadline = kvm_read_l1_tsc(apic->vcpu, tscl) +
-		nsec_to_cycles(apic->vcpu, deadline);
-
-The first instance of this goes back to 03ba32cae66e ("VMX: x86: handle host TSC
-calibration failure"), and every "fix" since then has been to avoid #DE.
-
-> +
->  	/* too early */
->  	if (advance_expire_delta < 0) {
->  		ns = -advance_expire_delta * 1000000ULL;
-> -- 
-> 2.43.7
-> 
