@@ -1,118 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0604D9F9A
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4C44C64D
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791551677; cv=none; b=qJNtM4vU1kN9dW+RQ73VSnVyUCh14ebsAfX7A6rXhfmnKWhgLEZKoFqDT1XYj57ob9YIUXJWvdf1eetssn0fIp4ECgqrtm2N56Z1Wnlh0eDHhPCPo+F7QuHEEekBkFdYtcx8NGL/6ZJrBMHAr3zubu5iN4/ORjz6QpAA3ijMdPI=
+	t=1791552031; cv=none; b=O5SO7ugs5bP0BtpLDp7SDkkC2p3HXkwSRVWuqk6MFgL8W+remI9RvNTsM4lZQ86GwOTUrrfDRNsUIGU6RYlvlWKOfzZqQGm2f6GvM8GWB9tfePSjSc7ikAtHqlY0gpBEJVnCi68Q3EiyxC7Pf2x4PG9hfqFz6TV+Ey7ABo4hzc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791551677; c=relaxed/simple;
-	bh=GGiPjmYE+NR1PvIkMssfxEKbkvELLVmOBOY7rLxdGaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k6j5LakJJ3TTevg7RY0ShVAX30IQ1uvSmnFrKeWf/c9GhHLswTC6HRydKfgYLkin1ZtflQCtlJylLw8vISoI/I/lbAmSZlzoVYtlTLufR1JgRyDS+YxxfxI2NolQTN18wXMUWM6lk7kZ5ln7WpbucZb/MrBh5/DE9eKD1y/QFLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFnUkr0V; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791552031; c=relaxed/simple;
+	bh=/aJpO/9o6TjCbRsqjyeurZ6YdGXhoqiTuue1T1XHao0=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=rTb+BBJwZ2rWy1TGXtx8Tj6Z91gn3dhXE4K3au50ND92OwpiwzFwq6BhU1vUSM6aN1eg5L31mw9ul50J9Q4tUi+In14kfxSNbAPCrxq1bg4dfr5fjzieJXGfTnupRTXUs1iAhSF4kXURCMbcHGfafzJS2b5kBa/s+KdKfYqO6qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muFjkIU7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFnUkr0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38401F00893;
-	Fri,  9 Oct 2026 13:14:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muFjkIU7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B941F000FF;
+	Fri,  9 Oct 2026 13:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791551676;
-	bh=Vznt9dKT8VJX3ifX04Rk3RYrekgS8ISKuvcW7DeTKU0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dFnUkr0ViZTVyvJlsKZAkP6eiY+T46zALwGw/NGOd+y9kvESpjmLzz7+OVYLZtrPP
-	 TjlAK+KywgiyuVIuM/6dYjTkTiRhFW253mfTLFhWe9uKc6dseDWdvcHudPxL1V3HUy
-	 KiS3y9nl+6uvQq3GxjJZTVlZ5v4VCaqzD4Blji1xrDs1cGucQ+Bj137j/saOTsyaJT
-	 3DMonQDkFg+FtMZ3gVXAsjRHQgDttX7n/TS3m27Ey4Qj90hgYz3pwwekwo95pXA2ER
-	 BrFKbH4s10qNY+Gr/MNuxC8hJLQjP9FnaIkQazt0RA5TNBv70+nbSIfMa/VzYkTuFD
-	 czd5Kfcf1cV+Q==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 02FB6198003A;
-	Fri,  9 Oct 2026 09:14:30 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 09 Oct 2026 09:14:34 -0400
-X-ME-Sender: <xms:tujIaoc-FMNtQ_-aCD0rYXqbXOzmB373QHkMlXRH6OGGCjWyZcutCw>
-    <xme:tujIahdQEPsPRICPQGZeyeN2zFF-jG1sTyNxGn3m9a1olI_6kNfUIP1SsulNgN3SH
-    UfhJeYNgf1Tyl-wbkYRWQiMc6HeYmuYh7Z8BWfNmKqK713HnFxa6Tm4>
-X-ME-Received: <xmr:tujIaiEmpkPJf_uZ1kd4hU88IgM4Y4GyQaPN1tqXyS_1EQqpns5Hc__dhAg>
-X-ME-Proxy-Cause: dmFkZTEFoiks0RpXD6KY5YBSVURWpSabqnLZxqpKlNYFdzKfMs28BotY23zVK8hQkxcYht
-    ew/a4BEUHagbfij7D5Fj3M3oBGfEHzyEMx1FuPT2V85p1X/6rgqqkJm4nUgQnoKuiGaz7C
-    dRCvoMnuhsL33YwGQ5WoP4nVVjvK4rutvcSH7hCVic0ZfQYe5lnjPJcM+fPpj79QET05gN
-    MLMtfmPZ/jonYCuCe4MUP8s3gnU2W9F54sx/S+SzY3adfMPNzeqoL1Hl27Eu61EyqkIJFc
-    m6TVpSfih24c7nk9VVTeW8q4S4aj6DfFUoa38qz5YmRwQV7UaNLgr/rhN8og4AqAul/lop
-    OE9O2DvUyFv+Gx0xWZORkvaKiitH9lsBIE4YbeQ03OpGhYpLdpQwz7/VkrwTuH5jORG5uz
-    tK7xySguBsRhrJkUHU+pAIzzjKaNBjhXChHvj9GfnKx8N0WnVCkW+ZKPhogX+9WBuJ82E3
-    E290us7FNntIVm9EaI0PO9/iMSqpGo4QjeDCm+M+qSa/uKdnyt9X85I45Ye5u3+uOE2HO1
-    2mx/1/BC+fuXEz666slp05QBvIOCD7g4bhs08KSypTXGl73a45Un1SRlwExQn8yE8Drcjn
-    qrCkxBxLEeYMHM3Qloje1BCV5Z+98AgdzOHz5B5mway1ornHEo94FOnDDCrg
-X-ME-Proxy: <xmx:tujIarWB37laLvM3E_V-l9Pi1-V2aDbPPqDr0k0DgHQ50LulH4KEVA>
-    <xmx:tujIasytS62b-fr0Gg8C1lEDNM7Yc0JbX0CwJlDkMtf6p0-XM-eZlA>
-    <xmx:tujIarp6W4Q5gZ57dysLFMlSaaMjPHuKog072bkB9bNEJIIX8v3eAg>
-    <xmx:tujIasFfFgqf4xXlunus3reTfxjLw6lKsXQIl0mPJAynxAFnJ3Ykxw>
-    <xmx:tujIahBiqdesN9UhxiuFY_FA-u93dec4HARM3EN3c37I8i9957TvBXAJ>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 09:14:29 -0400 (EDT)
-Date: Fri, 9 Oct 2026 14:14:28 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, kvm@vger.kernel.org, yilun.xu@intel.com, 
-	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
-	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-Subject: Re: [PATCH v3 2/6] x86/virt/tdx: Configure add-on features on TDX
- module init
-Message-ID: <asjopeR6IOk1aDgc@thinkstation>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-2-db52cb05b918@linux.intel.com>
+	s=k20260515; t=1791552030;
+	bh=/LoZp1WJsfwlykkg9/2ZvpkwVZI+W92cffe6ASmOWOA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=muFjkIU7Pwt1MPGftJJGG7qGJO+WHMF6KhLuq4R6SxBS8UV5GhDNj0KvcHGki/S7Q
+	 ZvfS8AThLF/aN+mpls3AKtQaB0u/uSTqlBnJQTka6sGp47Z0Ks69rdOJTdTOjygLGj
+	 cioZQhysqktaKUBKgd9jkblArjsgHt9qdw2XxTVLx1OCF3IIMHM/TdwQDVTdMUf6EP
+	 G1k//Nq/Ned7p453xSgTmgSduiU5fDwvrp0nZvwpkgGoL/gtFuPlfeQDDVhKR7cw8V
+	 4UmPrhp8tNB8S1laM0vgKvyAeaZFA48viAxJ1Amy+yqpBE4x1kCo83/9cYQeV7Piu+
+	 oJeoyTVhxtQuQ==
+Message-ID: <sashiko-outbox-165619@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF
+ exit codes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261009130450.361690-1-pbonzini@redhat.com>
+References: <20261009130450.361690-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 09 Oct 2026 13:20:29 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006-tdx-module-ext-v3-2-db52cb05b918@linux.intel.com>
 
-On Tue, Oct 06, 2026 at 01:41:46AM +0800, Xu Yilun wrote:
-> The TDX architecture identifies some features that are off by default
-> but can be enabled by the host during TDX module initialization. They
-> are classified as add-on features because enabling them affects existing
-> TDX systems: they may change existing feature behavior, or reserve more
-> memory.
-> 
-> The TDX module extends TDH.SYS.CONFIG with a new register argument to
-> specify which add-on features to enable. This new argument is a bitmap
-> that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
-> is an exception: although it is an add-on feature, it is controlled via
-> a legacy, dedicated register argument [1].
-> 
-> The kernel needs to enable these add-on features when it supports them.
-> Add a get_tdx_usable_addon_features0() helper to return the bitmap of
-> the add-on features that the module & kernel both support. Initially,
-> this helper returns 0. It will be updated to return specific feature
-> bits as full kernel support lands. Pass this bitmap as an argument to
-> TDH.SYS.CONFIG.
-> 
-> The TDX module requires SEAMCALL leaf version 1 for TDH.SYS.CONFIG when
-> passing the new bitmap argument. A previous change [2] supports the
-> versioned SEAMCALL leafs by adding a "version" field in
-> struct tdx_module_args. Set the version field to 1 if the new bitmap
-> argument is used to enable any add-on feature, otherwise keep the
-> version as 0. This retains backward compatibility with older modules
-> that don't recognize version 1.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Link: https://lore.kernel.org/all/20260904215841.303070-10-rick.p.edgecombe@intel.com/ # [1]
-> Link: https://lore.kernel.org/all/20260921-seamcall-version-v7-1-cf05fe76b467@linux.intel.com/ # [2]
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] kvm: x86/mmu: WARN_ON_ONCE triggered by PFERR_GUEST_RMP_MASK in pe=
+rmission_fault()
+- [Low] build: unused variable user_fault in walk_addr_generic
+--
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+commit 41b1ccbf9309dd89dc82f560f60a35e3cca23942
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Subject: KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+This commit modifies kvm's handling of page fault error codes to drop the SS
+bit and warn on unexpected bits. It intends to fix out-of-bounds accesses in
+permission_fault() seen when running Hyper-V from Windows 11. The SS bit is
+also preserved when reflecting the fault to L1.
+
+> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+> index 2ae7f9ed4cf86..8e991e02c954e 100644
+> --- a/arch/x86/kvm/mmu.h
+> +++ b/arch/x86/kvm/mmu.h
+> @@ -275,8 +275,18 @@ static inline u8 permission_fault(struct kvm_vcpu *v=
+cpu, struct kvm_pagewalk *w,
+>  				  unsigned pte_access, unsigned pte_pkey,
+>  				  u64 access)
+>  {
+> -	/* strip nested paging fault error codes */
+> -	unsigned int pfec =3D access;
+> +	/*
+> +	 * Of the error codes that do not contribute to the index in
+> +	 * fmt->permissions, PK is not included in EPT violation bits and
+> +	 * not supported by shadow paging, and RSVD faults are handled
+> +	 * elsewhere.  SS however is included in the NPT exit code.
+> +	 */
+> +	unsigned int pfec =3D access & ~PFERR_SS_MASK;
+> +	if (WARN_ON_ONCE(pfec & ~(PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
+> +				  PFERR_USER_MASK | PFERR_FETCH_MASK)))
+
+[Severity: High]
+Does this strict whitelist introduce a way for unprivileged nested guests
+to panic the host?
+
+When running nested VMs on amd hardware with sev-snp support, a guest can
+intentionally trigger an rmp violation, for example by attempting an
+unauthorized access to an rmp-protected page. The hardware generates a nest=
+ed
+page fault and sets PFERR_GUEST_RMP_MASK (bit 31) in the exitinfo1 error
+code.
+
+The npf_interception() function intercepts the nested page fault and passes
+the full error code into kvm_mmu_page_fault(). During shadow page table
+walking, walk_addr_generic() propagates the error code down as the access
+argument to permission_fault().
+
+Because pfec is defined as an unsigned int, bit 31 survives the initial
+bitwise truncation. Since bit 31 is not in this whitelist, the check fails
+and triggers the WARN_ON_ONCE, which allows an unprivileged nested guest to
+consistently trigger a host kernel panic on panic_on_warn hosts.
+
+> +		pfec &=3D (PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
+> +			 PFERR_USER_MASK | PFERR_FETCH_MASK);
+> +
+>  	unsigned long rflags =3D kvm_x86_call(get_rflags)(vcpu);
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
+l.h
+> index 8e350095508c5..54b3172e84bff 100644
+> --- a/arch/x86/kvm/mmu/paging_tmpl.h
+> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
+> @@ -489,7 +489,7 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
+er *walker,
+>  	return 1;
+> =20
+>  error:
+> -	errcode |=3D write_fault | user_fault;
+> +	errcode |=3D access & (PFERR_WRITE_MASK | PFERR_USER_MASK | PFERR_SS_MA=
+SK);
+
+[Severity: Low]
+Does this change leave user_fault unused?
+
+Because user_fault is declared at the top of FNAME(walk_addr_generic):
+
+    const int user_fault  =3D access & PFERR_USER_MASK;
+
+Removing its only usage here seems to trigger a -Wunused-variable compiler
+warning, which breaks the build under CONFIG_WERROR. Since this file is a
+template included multiple times, the error repeats for each instantiation.
+
+>  	if (fetch_fault && has_pferr_fetch(w))
+>  		errcode |=3D PFERR_FETCH_MASK;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261009130450.3616=
+90-1-pbonzini@redhat.com?part=3D1
