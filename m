@@ -1,189 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13B744E65F
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 10:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791540928; cv=none; b=g+D4XZNW3q6vlKUak5eGsKD10EwKB0hBao0WgaGM3mAVzdTcFZDQcLrqdAzc0QaB9mgcwLLPc9YSBd5FvTXO3Q9k6VmhDcfkP4eGn7v1mgtP7EsQdfW7RszN9FrUZGN5IzQPZSjVGZjNtMobBJBm8NwXbxfjEitB/xRQBQicocY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791540928; c=relaxed/simple;
-	bh=jyDEhNWEktcDeVA66O0x0HheikRt8+3NMW3l44bD31Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G90VKOuhQQGu3ZuidjFwDGV97QQErfKHyPegpeRTI4RMOEs3e4M/WQOz20Eeao70IelrlsCcHXTjzJO5NkRggjRAYc7Q/Qj1RTgqrSH3pR8zvuC1qJCyHiJJV/X8qoOjeBmLEuSX+lWQnoiybqxmvxUPsw8XzK3nrcMssusq+0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YR9lUCsA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1AHSraY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7B53DA5AB
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 10:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791541632; cv=pass; b=HyrUWkaLH/FgSX6RinpkLs7Li5q9SV6fxIWY6JdNhxRtaQo2QxuG2NEQ89p0gA+bu838NE1hsRTMTI8p/GkaLCRBqN6XMnOy4jLwrvsUuH0ojyp56EIatpY+UumvKiT6gd8fkwYeM50SGjVa341+tas5MRaj3bkhdBpaOWKtkMA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791541632; c=relaxed/simple;
+	bh=BdaaMK+iBtICxCq6a9i0L30gyCEkbvIoF4KCFr8YBlw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CooiHBrJrJfsfJwxitzjH1bQa2LCdsiT9Zl4iPFkjdKaneb4r2jRqNFQv3+NvbSQnDMu9aq3rnHGoHF0HY+qvhhGf84SWqgkTjIaLALNHojekdL39K5loIHGrZndkMw+/o2BZdvYYUx7PGJqie4CMI94t1PKEDYgZidZ/MMMYoo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=IaOgcPCs; arc=pass smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YR9lUCsA";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1AHSraY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791540923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8qjpcfD3LG1eZs8VSpA9jEQmEOMfOU2B/T9s4mzaz2E=;
-	b=YR9lUCsAExcPNjoNYfo2P79M1+v6Q6fA40V3z5ir7T6I5ynYnrKTqloRtWlyy6HosSqV1n
-	syvhZ8qCNUpv9ObcG3YMd2xYxzjq8MOwpvPXYPgsiuMlaYCgzaKdF2GaOJ3maDwAuQthb5
-	ey5W3LjJ5MAp9g80RxGm5U+pKF/v8nQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-eZ5r-REiPKWo73cj-L7pTQ-1; Fri, 09 Oct 2026 06:15:22 -0400
-X-MC-Unique: eZ5r-REiPKWo73cj-L7pTQ-1
-X-Mimecast-MFC-AGG-ID: eZ5r-REiPKWo73cj-L7pTQ_1791540921
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c511d9e97so3556437f8f.0
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 03:15:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="IaOgcPCs"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a1880e1bf1so11467185e9.1
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 03:27:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791541629; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ljat508vXU8hOEG8EciNvOAp/hmuNoscHqRIwNCs0+gJH8VdCmnqyxOnz/duA1xT8o
+         wN+J/Vi1UGMIFYrq1UmwxD2odE5XqMQ2CZ1jZ2UI89cuPdu0RJM24X43uT1N1yPLmbmE
+         CrsQgMuHRwlra5a1OEmObXzknKXVuM6cbHMZs9uEpnx5XGxsLPt5l3NKlNVT2wWdrmXg
+         1TCsTx8ps992pLu7yawuExIZcRcF33QW5artM2TMwfoDatkFXqtL/tyrQyrhvmL2RDHn
+         +o8IdQ4iOl8ZaQ0BIFN3nKN1EdQiH/DnuHW6ndjxUcr1LGS066ew8lbrlgnxXENU8URU
+         DoTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+kGfL6IKmzWaR6v/xkH3Bv8Esmb1CJCtQQioJT43pkY=;
+        fh=ZFXKXVjKUDKthxlF1pfEONnYvxs5ZvCNYrchZzqmq/Q=;
+        b=nbO69MCOQdX3ewbWxbMDLXoJlb8JDEzD46ETAEMs8IO4+9OgNnY4msjDShb+6pjeuI
+         20wB8YTRJDGj3CZRVPlrRUUImhK/zvTeyYdyDCSiqG5UEPz2J3hGwdFpvFSfgJBZNUsI
+         /8C4OLW/WRseDgfIRSdxxOTIuhHk8XuFY5JcTwcpVSKkrOmPl9RjYdLJ15X4nA0S8OSF
+         eW2mZFPidaFpYmFyLZ7QkWCLg/R1TuV3UT29/955p06pnuQO58o1MSzjGQptjG0SUDfD
+         cybG0GE5ukk6s+gARI9lUfNGJP8353g1dBL/HkBAx33HtWnxT2jN8inLa0memVI21cQi
+         f/RA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791540921; x=1792145721; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=brainfault.org; s=google; t=1791541629; x=1792146429; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8qjpcfD3LG1eZs8VSpA9jEQmEOMfOU2B/T9s4mzaz2E=;
-        b=L1AHSraYh9niilCYyPHgdz+agimXgXdkuvF+nfeJvFTY9Vwc+LkRnH//WkHPbN3Rfc
-         8XRLW4ifCjHzYObphmzK9dbpTstUmIa6qD/MktdetcLknEYgcqrYXRvdN3ccPPmzRtVE
-         0fV8omREyNef3RBHyuzupt6kbl1/Z234uQVST7OXva2uAKWJe7V8u6v8mSzyLFe6ouBy
-         RiooAEswAN6o44N/j/9a8yhvk01D/Jg0Lpsp8GR7h7b8bXaZaq2J3zPDLwdVZHqPmX+e
-         XhcdkXAYaIiyqSMSdG3Dc5gklxFRdbw1ApPMg9OKLj/7nGhygi4D/JZLJGJsfKz+QUN4
-         IBkQ==
+        bh=+kGfL6IKmzWaR6v/xkH3Bv8Esmb1CJCtQQioJT43pkY=;
+        b=IaOgcPCsn+vt4J42WgryTbeTglVzrjtfbuljPdJ5t5bRPFFTesmrCBjKhFH0xiCoQq
+         ANS4+/JcNJmWkF5jzBr82mv86Rk6wO53BLkg/OT++17hcMNneWiY56YnyBKnbTRxbXNL
+         UUw9oP8hzJNLXAcDT2D9v3KSiUFNPW0R2WYGkYEAWhVzveodVX3K8VfC/1JH076u4bWb
+         ATBVINcXZLev3i8xz9qKcXwVcOPOLFIV7Zu2Qi9CKYrzUz6FDKbBSW6AmOUUjJYZ/fk5
+         UMmAHsJuuuqj8cX5i8VbJKiYUI9fgWd69L4arhrVggbjfkmMa5vU7df92CdOlwJ5yBkN
+         V7fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791540921; x=1792145721;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1791541629; x=1792146429;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8qjpcfD3LG1eZs8VSpA9jEQmEOMfOU2B/T9s4mzaz2E=;
-        b=iwC1cFN8pZxpogNvv1Cg0GILqkihwrWGpIuKuN3Z3kePNQGqicwI7JVHTUe2oElY2J
-         tIZmZn0OC6xs/ecwUv4r0v0TLBZU2o7kTNQHrAorK06KhHoKYfyAQ4QVdTTnkLuBvpS9
-         Zlwma5etPsD1j9SnANnQIviLN69W8uPwBHdpUYE29RmK5z99EjwH9eeB+aAKUSN6BYxJ
-         pyNBlfYgwUGFi/QNOEz1yMZgOYA6ENRwdJIm4zHTnpl3mPhJ7fXSMaNaRQ7J7ZtO8gtE
-         Yq6WsN/e/lmwk+6X5y7vfv0+jGxvzpVDvy+Wk6tfsnzOuMUZPU9sOxL7y55cVApFMe1F
-         jq/g==
-X-Forwarded-Encrypted: i=1; AKwUvBzUU9BcIWFQWI4lmgt4yf8TTf9a4UvZ17KqCNfHGPhngJjozCv0dzU5jPEPOQReUy4z0LI=@vger.kernel.org
-X-Gm-Message-State: AFuF++l4Cz1zKfd78BZj8gZUSOedX4I+yFiOPKQ3B3oX5/qApzgqjZ0f
-	8RQELolco47WTqbSUlrNppDYoxrLumpU0QDwNPqbze/6sRhO1dAPzZDSd3S8Iog8DFjtdxF6xBv
-	6GpjNbXnguQ6g63AkxJGLIj0KN9fXIXog6MDnK+UoVIkzc8EwzRfOjA==
-X-Gm-Gg: AYBFou2lHFUwH4+WsjquVmwQe0Ng7ySmFoqD9muzQrO+aitBSaGh3f9kIfkUOPlpHWw
-	NZK0Tx5rWN1cfjYSPji/RjTHS8zjt5akXB63+rcofu175BHLHGzrc4YwC5k/lhCnsNBjNr3li4y
-	AGkglfW9/9+rYrXe7vKLKhfmZVPhmCaMsYNSzg/iKPIlUhq8szfhpgw9CZWBWd1b/grjmIzIEqE
-	2AnOAEwGRhjZwfE02bjQTtry51W8A+IIFq9HZD9cRsOkwwDJvAqv617LDOR3X/WZoAMlPNDFGjw
-	YzduZWQm2pKKJIp34goM8YO3gSuHpb0IGxgvNc7ahkHwR9nQ7u1610FZeZ5bWSCq+BTkOJ3tX1J
-	J
-X-Received: by 2002:a05:600c:6989:b0:4a0:1f9e:5f7d with SMTP id 5b1f17b1804b1-4a18e4a0030mr24138425e9.7.1791540921024;
-        Fri, 09 Oct 2026 03:15:21 -0700 (PDT)
-X-Received: by 2002:a05:600c:6989:b0:4a0:1f9e:5f7d with SMTP id 5b1f17b1804b1-4a18e4a0030mr24137885e9.7.1791540920563;
-        Fri, 09 Oct 2026 03:15:20 -0700 (PDT)
-Received: from sgarzare-redhat ([5.11.115.77])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm80901885e9.9.2026.10.09.03.15.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 03:15:19 -0700 (PDT)
-Date: Fri, 9 Oct 2026 12:15:16 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Eric Dumazet <edumazet@kernel.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Hyunwoo Kim <imv4bel@gmail.com>
-Subject: Re: [PATCH net v4] vsock: treat TCP_CLOSING as once-established
-Message-ID: <asi-oV3fF1erjxVs@sgarzare-redhat>
-References: <20261005-vsock-connect-reset-closing-v4-0-15d41cfda3ed@rbox.co>
- <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
+        bh=+kGfL6IKmzWaR6v/xkH3Bv8Esmb1CJCtQQioJT43pkY=;
+        b=nNG8Uja8oYQAFNo8JzEBVvqGXfYvSElc5mxl8q+T/y0FlSaDmQVxCDI4k2N1VaA5HK
+         GhFwd0YXEU+2ie3AXUv/pKU8zRf/DEBd3Y2IQB2ugmyjxvGMHpqie3j3e7Ouxhs491rc
+         AfHrQQRos+Q4t32LZItVX4ZNUak0fvP/07Qh4gGhY0r6lh47huqMSfC5hn5+be7ySlKt
+         eUejqC4VKswzd2tLe51yhuAnkP9VTGaGy6rlw+ThanJ+lEA8lqmxGME79Iw7DokIROzp
+         Q4LJvs6qiqypICnVr1KaJkqMbC5/y0xWya+z1B77aDcc7AmrPAg3SZJKlELDbUWAKCdh
+         IKyA==
+X-Forwarded-Encrypted: i=1; AKwUvBwUW1O3HFhFwL28Lwb0pmSHwsPER1dfq1Ykk1Kn66HdjbQ1ASWFOGHcFjGSVWQUc/CYMkw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mxKXTl8ByFJM9QEIx0sOMm1XiascuUVXH36Hh6pz6d2L1MUPsq
+	gpMPMJenNNdes3Veu3s0oREkw9iuCbaOF5eQHMjS95mZoiLfr0rGp7b0EPXKis6jU3+/s555wVY
+	tKcOTB63qFxu9If3APP1Ole4ptjEYj5jNx1hdM7ngvA==
+X-Gm-Gg: AYBFou3WqWol6o66I83D0FTjqOe5rxCLuun7gXnlrkuWM1s3cwYHY4M9L8/kRiDBDeO
+	/KWSh93Gr9zfbn9CsqXJpCoK6nPZuWU4dB3OqFvQrgstHM2IgwKPNpysVCzo0/dF0T3g/CbHsl+
+	nrgWAAFvltOpzCbQN0RAP5eOTESZZ3uxrRUfZgV/U4XLjGo3t1bBTVITH2yiMcZlq4OdGzRJaK8
+	7q3EnYE9m9URz6GK8B+O5srJ7b6yhGXSYIqdDyuYguiG2RvLJh/NMm3wR9F2JYoMdoEdTqkFU7L
+	Ym1YcOYrU6tdLXpOY3Pl59cJQRgGKNErGnix2ZDHdv/+4cqx0rk5/Ngo6aPqfTxYwAxXSp1kU1V
+	H1p0GcUisORxNuX0M76pUBjKQVL7BNeGN80JKyGT3JAMTsR810y4ovpaQcEGdh5kwqO3qRltTEg
+	==
+X-Received: by 2002:a05:600c:4f46:b0:49f:cbf1:e77b with SMTP id
+ 5b1f17b1804b1-4a18e4a5355mr31129155e9.10.1791541629095; Fri, 09 Oct 2026
+ 03:27:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
+References: <20260925160300.467884-1-andrew.jones@oss.qualcomm.com>
+In-Reply-To: <20260925160300.467884-1-andrew.jones@oss.qualcomm.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 9 Oct 2026 12:26:57 +0200
+X-Gm-Features: AclHuK-pEq92e8PF3NtgM83whKL9xC8DLhFEcuppkWWmzGxqa0y5mveDAWbf6kU
+Message-ID: <CAAhSdy2xu2MAKwOfPNRPG68XbtQsa-CT66phvTZe_XD_3Rk3Qg@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Reject vCPU creation after AIA initialization
+To: Andrew Jones <andrew.jones@oss.qualcomm.com>
+Cc: kvm-riscv@lists.infradead.org, atish.patra@linux.dev, pjw@kernel.org, 
+	palmer@dabbelt.com, kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 05, 2026 at 02:26:22AM +0200, Michal Luczaj wrote:
->Handle the TCP_ESTABLISHED -> TCP_CLOSING transition on OP_RST, which can
->race with the connect loop. Immediately break and return 0 on
->ESTABLISHED/CLOSING. The return value of connect() should reflect what
->happened up to the point the connection was established or failed. Events
->that occur afterwards must not affect it. E.g. even if OP_RW has already
->set sk_err, connect() should still return 0, not ENOBUFS because of it.
->Adapt the inaccurate comment above signal_pending().
+On Fri, Sep 25, 2026 at 6:03=E2=80=AFPM Andrew Jones
+<andrew.jones@oss.qualcomm.com> wrote:
 >
->Resetting a socket that is still present in connected_table can lead to
->memory corruption. The reporter noted lost transports for in-flight skbs,
->and I have reproduced crashes caused by re-insertion into connected_table.
+> AIA initialization sets up per-vCPU IMSIC state by iterating over all
+> online vCPUs. Creating another vCPU afterwards leaves it without
+> initialized IMSIC state, but KVM currently permits that sequence.
 >
->  list_add double add: new=, prev=, next=.
->  kernel BUG at lib/list_debug.c:35!
->  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
->  Workqueue: vsock-loopback vsock_loopback_work
->  RIP: 0010:__list_add_valid_or_report+0x11f/0x130
->  Call Trace:
->   vsock_insert_connected.cold+0xe/0x13
->   virtio_transport_recv_pkt+0x10e9/0x1460
->   vsock_loopback_work+0x305/0x480
->   process_one_work+0xe4c/0x1560
->   worker_thread+0x4f1/0xd60
->   kthread+0x36e/0x470
->   ret_from_fork+0x47b/0x6b0
->   ret_from_fork_asm+0x1a/0x30
+> Reject KVM_CREATE_VCPU once AIA initialization succeeds. Both paths are
+> serialized by kvm->lock, so checking the initialized state from
+> kvm_arch_vcpu_precreate() freezes the vCPU set used by AIA.
 >
->This fix is supplementary to commit 002541ef650b ("vsock: Ignore
->signal/timeout on connect() if already established"). Details under Link.
->
->Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
->Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
->Link: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
-> net/vmw_vsock/af_vsock.c | 17 ++++++++---------
-> 1 file changed, 8 insertions(+), 9 deletions(-)
+> Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irq=
+chip")
+> Signed-off-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
 
+LGTM.
 
-LGTM! Thanks!
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Queued this patch for Linux-7.4
 
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 9b71479a2b29..14fe24b05f9c 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -1834,23 +1834,22 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
-> 		timeout = schedule_timeout(timeout);
-> 		lock_sock(sk);
->
->-		/* Connection established. Whatever happens to socket once we
->-		 * release it, that's not connect()'s concern. No need to go
->+		/* Connection was established. Whatever happens to socket once
->+		 * we release it, that's not connect()'s concern. No need to go
-> 		 * into signal and timeout handling. Call it a day.
-> 		 *
-> 		 * Note that allowing to "reset" an already established socket
-> 		 * here is racy and insecure.
-> 		 */
->-		if (sk->sk_state == TCP_ESTABLISHED)
->-			break;
->+		if (sk->sk_state == TCP_ESTABLISHED ||
->+		    sk->sk_state == TCP_CLOSING) {
->+			err = 0;
->+			goto out_wait;
->+		}
->
-> 		/* If connection was _not_ established and a signal/timeout came
-> 		 * to be, we want the socket's state reset. User space may want
->-		 * to retry.
->-		 *
->-		 * sk_state != TCP_ESTABLISHED implies that socket is not on
->-		 * vsock_connected_table. We keep the binding and the transport
->-		 * assigned.
->+		 * to retry, so we keep the binding and the transport assigned.
-> 		 */
-> 		if (signal_pending(current) || timeout == 0) {
-> 			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
->
->-- 
->2.56.0
->
+Thanks,
+Anup
 
+> ---
+>  arch/riscv/kvm/vcpu.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> index e062ca19f9d8..ccf2def834f1 100644
+> --- a/arch/riscv/kvm/vcpu.c
+> +++ b/arch/riscv/kvm/vcpu.c
+> @@ -138,6 +138,9 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcp=
+u, bool kvm_sbi_reset)
+>
+>  int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+>  {
+> +       if (kvm_riscv_aia_initialized(kvm))
+> +               return -EBUSY;
+> +
+>         return 0;
+>  }
+>
+> --
+> 2.43.0
+>
