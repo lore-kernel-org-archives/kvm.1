@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3690B4DE735;
-	Fri,  9 Oct 2026 13:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6E24E06FF;
+	Fri,  9 Oct 2026 13:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791550905; cv=none; b=iILyOD2uU/wGN49lfOZcUpRgDdYeYy+uEUSuEaT7gi2imMXN+YlsAJLeIV9RzP3+U0EReUUJIGjHwiA/ocaqqPYO6ayyl5T3jX4aqoaHFBzvKKpVh08EGM4UnULxP38cnjkt32BjuuJZColOJ4GJWtQFq9ksfXNdmjWYiC8wBfM=
+	t=1791550908; cv=none; b=aM7Phk8kLTuOivOmnIjQNnE7KhsHwwbeQlEMw9IXWIfEB4d44Eu4tGWKvDghsLSgolnMygyH9SBTB/DNQXikx+tMB/FJmvQGqo8jjAtsySSqufOM09JohujSWKgpUQq9AQIga3VQz5+BA3aSxwxP1sPnb0iPGP2jdxp3nqlg4EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791550905; c=relaxed/simple;
-	bh=hpA3yq1dtgYCQ1gEHC6AyIkyBLcI/2NeWdwfPF4ppdg=;
+	s=arc-20240116; t=1791550908; c=relaxed/simple;
+	bh=DApXm/g1Dtg73I8PDC2dA4PYJOzC97JRvsUungOi/5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4eLMvMxk7fNKDhkpygkGv9fEVGVeAivOnUVPVdlfKFMsqrVGGo5TCF3dMQ34rIpTo1N6DGoflq4yPFInXRvfbx8Vm/82+CfadTXLx1zhTMnLsg1AEsP+KP9l8AsS+cucOjHIuK5KfN2wz6Wid8JbB94Ws17G+WSwWHLrZBKl8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fGFeIfJX; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=cDNR2yX4bU9TWaMKTq82N6WPY1Ps9vC3IDCaGdvak7rqiFjXbZJeyguty3iMfedWYNmzC1UEcJgP/oihjfZSmoFuGjhAhkb6X3s4H/oLlJExq4D2RMdcJiKygJ0Vy3co/pTua8D15Y9svM2mxvsRIXeH849KqQuciggvOmX6sRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dUn7MKhT; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fGFeIfJX"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dUn7MKhT"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 33F781E32;
-	Fri,  9 Oct 2026 06:01:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96BBD1E4D;
+	Fri,  9 Oct 2026 06:01:42 -0700 (PDT)
 Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DA023F66F;
-	Fri,  9 Oct 2026 06:01:41 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D18363F66F;
+	Fri,  9 Oct 2026 06:01:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791550903; bh=hpA3yq1dtgYCQ1gEHC6AyIkyBLcI/2NeWdwfPF4ppdg=;
+	t=1791550905; bh=DApXm/g1Dtg73I8PDC2dA4PYJOzC97JRvsUungOi/5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGFeIfJXQRmU/jcH8SgkDdZQYvRARaj7OLc3K91O3RjMSHlwZ0B1Ci7n9mK5gZtla
-	 hW/U9Q5H+1nyEpXNQH2ktXYQqDxcffT0HW29RvrwGeh890X1PLNHki/E6+qjzMhHkv
-	 HP31XSNCSj959is0fhTLAZsIDUtf+7KZuCqEzE5g=
+	b=dUn7MKhTj/26AbVPn34UeYbM9/qhAMj+DyNYw+m8YpSkP7RIbglu1Mlfo/D7r6w/q
+	 KlKB9O5S8W0oiGGkXCOXjRSoI74luTqUgt4YEJdXyz5tXI2KDOrgOyFwXhjSwiegTi
+	 QKbx7lWAyWMQVRghZyZk2EDOQ7OJolVn9chFFy6Q=
 From: Leonardo Bras <leo.bras@arm.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -44,9 +44,9 @@ To: Sean Christopherson <seanjc@google.com>,
 Cc: kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/5] KVM: selftests: Introduce kvm_get_dirty_ring_cap()
-Date: Fri,  9 Oct 2026 14:00:48 +0100
-Message-ID: <20261009130054.3312154-5-leo.bras@arm.com>
+Subject: [PATCH v2 4/5] KVM: selftests: Check dirty-ring size before enabling
+Date: Fri,  9 Oct 2026 14:00:49 +0100
+Message-ID: <20261009130054.3312154-6-leo.bras@arm.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261009130054.3312154-2-leo.bras@arm.com>
 References: <20261009130054.3312154-2-leo.bras@arm.com>
@@ -56,85 +56,67 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2758; i=leo.bras@arm.com; h=from:subject; bh=hpA3yq1dtgYCQ1gEHC6AyIkyBLcI/2NeWdwfPF4ppdg=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLJOPG2o0fTf0+KtsNrgoEvUv/40mdeXt9n1hzBvtm27k 2U7K5qpo5SFQYyLQVZMkUX20fxVPN+nZBy58mMBzBxWJpAhDFycAjAR070M/71q17HOcU0IMe2Z vz1Qbcu0iU0t+zreye3j6EyeUcNb5sDI0G+0y2DqkeWXVszzfl/kMtNn1cY1JxvWTp2yMWSNnte daB4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2116; i=leo.bras@arm.com; h=from:subject; bh=DApXm/g1Dtg73I8PDC2dA4PYJOzC97JRvsUungOi/5A=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLJOPG3okLpdEOW3wfjj/qkqP09267ScmD1xetKfmb2qj imphyZqdZSyMIhxMciKKbLIPpq/iuf7lIwjV34sgJnDygQyhIGLUwAmMmsmwz/tZhGtF1O1inb4 +4RWBl7STF9+oPJZw7WWb482nT/xvC2a4X/N69+l+8RZH9zfO0/yueqf82zZXNFKrJqOM5zt63Z lp7MDAA==
 X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
 Content-Transfer-Encoding: 8bit
 
-In a preparation to introduce dirty-ring support in dirty_log_perf_test,
-add a helper to detect the Dirty-ring capability and replace the checking
-of individual capabilities in the dirty_log_test.
+As of today, trying to enable dirty-ring with a size bigger than the
+maximum will return an "argument list too long" error.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Change vm_enable_dirty_ring() to get the maximum size, then compare it to
+the desired size before enabling. If the value is invalid, print a more
+precise error message.
+
 Signed-off-by: Leonardo Bras <leo.bras@arm.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h | 11 +++++++++++
- tools/testing/selftests/kvm/dirty_log_test.c   |  3 +--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 5a7a455b5387..a89758e66a68 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -300,20 +300,31 @@ static inline int get_kvm_param_integer(const char *param)
- 	return kvm_get_module_param_integer("kvm", param);
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 9ddc047d5c27..fbd0aaa679d6 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -168,24 +168,36 @@ unsigned int kvm_check_cap(long cap)
+ 	ret = __kvm_ioctl(kvm_fd, KVM_CHECK_EXTENSION, (void *)cap);
+ 	TEST_ASSERT(ret >= 0, KVM_IOCTL_ERROR(KVM_CHECK_EXTENSION, ret));
+ 
+ 	kvm_free_fd(kvm_fd);
+ 
+ 	return (unsigned int)ret;
  }
  
- unsigned int kvm_check_cap(long cap);
- 
- static inline bool kvm_has_cap(long cap)
+ void vm_enable_dirty_ring(struct kvm_vm *vm, u32 ring_size)
  {
- 	return kvm_check_cap(cap);
+-	if (vm_check_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
+-		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL, ring_size);
+-	else
+-		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING, ring_size);
++	long cap = kvm_get_dirty_ring_cap();
++	int max_size;
++
++	TEST_ASSERT(cap, "Dirty-ring not supported, check CONFIG_HAVE_KVM_DIRTY_RING");
++
++	TEST_ASSERT(is_power_of_2(ring_size),
++		    "Dirty-ring size '0x%x' must be a power-of-2", ring_size);
++	TEST_ASSERT(ring_size >= getpagesize(),
++		    "Dirty-ring size '0x%x' must be at least one (host) page", ring_size);
++
++	max_size = vm_check_cap(vm, cap);
++	TEST_ASSERT(ring_size <= max_size,
++		    "Dirty-ring size '0x%x' is larger than KVM's limit of '0x%x'",
++		    ring_size, max_size);
++
++	vm_enable_cap(vm, cap, ring_size);
+ 	vm->dirty_ring_size = ring_size;
  }
  
-+static inline long kvm_get_dirty_ring_cap(void)
-+{
-+	if (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
-+		return KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
-+
-+	if (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING))
-+		return KVM_CAP_DIRTY_LOG_RING;
-+
-+	return 0;
-+}
-+
- /*
-  * Use the "inner", double-underscore macro when reporting errors from within
-  * other macros so that the name of ioctl() and not its literal numeric value
-  * is printed on error.  The "outer" macro is strongly preferred when reporting
-  * errors "directly", i.e. without an additional layer of macros, as it reduces
-  * the probability of passing in the wrong string.
-  */
- #define __KVM_IOCTL_ERROR(_name, _ret)	__KVM_SYSCALL_ERROR(_name, _ret)
- #define KVM_IOCTL_ERROR(_ioctl, _ret) __KVM_IOCTL_ERROR(#_ioctl, _ret)
- 
-diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
-index af5eb0334a74..558a71d631da 100644
---- a/tools/testing/selftests/kvm/dirty_log_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_test.c
-@@ -284,22 +284,21 @@ static void default_after_vcpu_run(struct kvm_vcpu *vcpu)
- 
- 	TEST_ASSERT(get_ucall(vcpu, NULL) == UCALL_SYNC,
- 		    "Invalid guest sync status: exit_reason=%s",
- 		    exit_reason_str(run->exit_reason));
- 
- 	vcpu_handle_sync_stop();
- }
- 
- static bool dirty_ring_supported(void)
+ static void vm_open(struct kvm_vm *vm)
  {
--	return (kvm_has_cap(KVM_CAP_DIRTY_LOG_RING) ||
--		kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL));
-+	return kvm_get_dirty_ring_cap();
- }
+ 	vm->kvm_fd = _open_kvm_dev_path_or_exit(O_RDWR);
  
- static void dirty_ring_create_vm_done(struct kvm_vm *vm)
- {
- 	u64 pages;
- 	u32 limit;
+ 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_IMMEDIATE_EXIT));
  
- 	/*
- 	 * We rely on vcpu exit due to full dirty ring state. Adjust
- 	 * the ring buffer size to ensure we're able to reach the
+ 	vm->fd = __kvm_ioctl(vm->kvm_fd, KVM_CREATE_VM, (void *)vm->type);
 -- 
 2.55.0
 
