@@ -1,171 +1,83 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AA23D0C07;
-	Fri,  9 Oct 2026 07:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162F03BB134
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 07:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791532588; cv=none; b=uMFgKxbaOkUOwKZPfFjilERSKZl8m/Izn5sBdf6I9Zkboalzbm9qGFU8rVwTut+fVlO/iVnoUD6fYH3uoj2Ztuy9G3UxlUSMED0vEe7GU3tXV/yd6i6xJ/2qeluEtKRH01XZ8x1MGmtNumj+TksfWNtZT5Nivmc9EZQUAsQdJzw=
+	t=1791532719; cv=none; b=L2jE3ySZo3kLZk5cbRHfsA0sA+03hvcPrEV/emwoA4HYx/M+nR1R1re2woeeqMOyTAP57PahtT2roJQLHsHl6FxQNypssSiVNK2vzmoglDo5NWaVgDq+yFWac8R0jgkfzDIWORWGlw0NJ9dGrK/nUP5dGcMvcIOkf3o4r+S6bW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791532588; c=relaxed/simple;
-	bh=sPWIgIslsKPQhJmnIZvKwIQh5gs4LqMjsZ/nweAkSI8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oAV7YGgZRmiJM0F772OWZCxd8MQmMnSB+rMkqQqZkT/TPhJiWSiuFKq1/SEfsCvHxqwiY0/wB2jY/NIbunggxSntl/apGu4Kry3MZ49uXZ6GF5hIhpPGkXPH+udfqf78VKahtTHL/t+jSVZxTS4XfQg/CkoaI+BKI3dp6evDKtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Po20U1ay; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791532719; c=relaxed/simple;
+	bh=HOVfYS51lkukawzGBUztER+emMA6ntCgIQIvA0pUhsU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jfVhGn+3ko5rtPGWXDygGRbH5M537eMzHirEPmVowU289GgqDNWW4eQBM+v0N0igsri7m0018h2DhtX7Fq/GoJfIgm9csH/uAKwMwZhzM5ivF602Sz+DDnLUuXJ/4k8q9EFB28jioFyYUh6CWwrC4H/rte1fSJvDrjZA1Zm5Xuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rSUZcRFy; arc=none smtp.client-ip=95.215.58.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Po20U1ay"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791532586; x=1823068586;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sPWIgIslsKPQhJmnIZvKwIQh5gs4LqMjsZ/nweAkSI8=;
-  b=Po20U1ayB/9RrHHp84JRzVRjFhC2wn82nATMQmkYLBTcqFv1XprLC5vI
-   OofIsq2ZnmjAf3aOVnxQxxxMqhOBF9n7BHrAvfakhOaLbYsegwNqVmAwO
-   l5yMtpxjdKHaOqyVtygfM2NIraOcgC6ixubTHhdBqdWwVKXKAKnf7zIbP
-   fobtDhkOMKJ+IhgbBOpkWtt9gWTjjVzbtQ87bFJLYWNKFeF9HxeUtA1pS
-   /unoSvltFlw48e5V/+fjqfnZUSEGnz/D+eYSq+XOLD8ssnojuBgWcqnPb
-   SK/x0k9g0lvKwGneJtWhVgcLYyAOTALBTWFp2+1q/sdVjC66aOenX37qv
-   A==;
-X-CSE-ConnectionGUID: xG1CTexaTN2ylXeKnp9MWQ==
-X-CSE-MsgGUID: zH/VmiA3TrWPqe1FgVasXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="223679"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="223679"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 00:56:25 -0700
-X-CSE-ConnectionGUID: fChR7mKfSvemT8ZXZsNggA==
-X-CSE-MsgGUID: +/MVYvWARc+nBmlm4c251w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="199840"
-Received: from yizheliu-ivm.ccr.corp.intel.com (HELO [10.238.208.114]) ([10.238.208.114])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 00:56:18 -0700
-Message-ID: <b2143700-da36-418c-af63-0b50b33f080e@intel.com>
-Date: Fri, 9 Oct 2026 15:56:15 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rSUZcRFy"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HOVfYS51lkukawzGBUztER+emMA6ntCgIQIvA0pUhsU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791532713; v=1; x=1792137513;
+ b=rSUZcRFyZL1Q6Aih7nKyp6YCoB9RVxhLUK5KWevCJeI2jlZanH+LM4X3bgOb+g1fCEvsithM
+ 4cdlKf9M+6vNFLBw6dIRh9I7/mqo+3eKsHBpb6z7+1gMQ4JuodbWjkCeSJeEirQPGwWpnoRjms+
+ UtKIVN7dAMO8ewOLTxgclPTA=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a0a40b8ad170843f;
+	Fri, 09 Oct 2026 07:58:33 +0000
+X-Mizu-Trace-ID: a0a40b8ad170843f
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5ba429b64c5so4961e87.1
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 00:58:33 -0700 (PDT)
+X-Gm-Message-State: AFq9FYIFj7YOvo+IUl337HYsXiMbaui2/zmeqM6t+Sji9vULnV2qjIAp
+	SzwFh+DF61+xIg77hnyt2p3i2knOq4KAQW2o3+h9+Z00ZafIxla8nxOeI9vpnEskKFowGkL26kO
+	Yvz2FLVnJ7c5lVzC49yCE6o3w79os9Q7lmfaU+KRV
+X-Received: by 2002:a05:6512:3b2b:b0:5b8:d830:be30 with SMTP id
+ 2adb3069b0e04-5bcdf978106mr42003e87.16.1791532712487; Fri, 09 Oct 2026
+ 00:58:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 14/23] KVM: selftests: Expose function to allocate
- vCPU stack
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-14-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-14-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260831192406.1341841-1-fuad.tabba@linux.dev>
+ <CA+EHjTwBXEVp_fJp+SvXqrfab2NGdnCXy6L9n=aW2yeTUUOniQ@mail.gmail.com> <asidn0tpusz-MZRp@willie-the-truck>
+In-Reply-To: <asidn0tpusz-MZRp@willie-the-truck>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 9 Oct 2026 08:57:56 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyHKLZ8fJ4dEmrx1XLe9=XdhYytMFzn9pTRMaJGoa=FTg@mail.gmail.com>
+X-Gm-Features: AclHuK9PqZbjeow1kT94C7mAFJI1dY9tubORoAFM4lnPAOqIjEyuT7gh9MDDRW0
+Message-ID: <CA+EHjTyHKLZ8fJ4dEmrx1XLe9=XdhYytMFzn9pTRMaJGoa=FTg@mail.gmail.com>
+Subject: Re: [PATCH kvmtool 0/5] Fix diagnostics and capability probes for
+ protected VMs
+To: Will Deacon <will@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Julien Thierry <julien.thierry.kdev@gmail.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Andre Przywara <andre.przywara@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
-> 
-> Introduce kvm_allocate_vcpu_stack() to allocate a vCPU's stack
-> in preparation for TDX to allocate a vCPU's stack and initialize
-> its stack pointer.
-> 
-> TDX VMs' registers are protected state and cannot be initialized
-> using the KVM_SET_REGS ioctl() that is used for normal VMs. A TDX
-> vCPU's stack address will be a property of the TDX specific boot code
-> that initializes the vCPUs' stack pointers at boot.
-> 
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
->  .../testing/selftests/kvm/include/x86/processor.h  |  2 ++
->  tools/testing/selftests/kvm/lib/x86/processor.c    | 25 +++++++++++++++++++---
->  2 files changed, 24 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-> index 8854ee052d29..1eb380dd216c 100644
-> --- a/tools/testing/selftests/kvm/include/x86/processor.h
-> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
-> @@ -1212,6 +1212,8 @@ static inline void vcpu_clear_cpuid_feature(struct kvm_vcpu *vcpu,
->  	vcpu_set_or_clear_cpuid_feature(vcpu, feature, false);
->  }
->  
-> +gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm);
-> +
->  u64 vcpu_get_msr(struct kvm_vcpu *vcpu, u64 msr_index);
->  int _vcpu_set_msr(struct kvm_vcpu *vcpu, u64 msr_index, u64 msr_value);
->  
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index da430d4e7765..4a753fb43007 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -851,12 +851,31 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
->  	vcpu_regs_set(vcpu, &regs);
->  }
->  
-> -struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
-> +gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)
+On Fri, 9 Oct 2026 at 08:54, Will Deacon <will@kernel.org> wrote:
+>
+> On Fri, Oct 09, 2026 at 08:10:55AM +0100, Fuad Tabba wrote:
+> > Gentle ping on this series. Marc has merged the pKVM core series into
+> > kvmarm/next, including the KVM_GET_ONE_REG -EPERM that patch 1
+> > handles, and all five patches have Suzuki's Reviewed-by.
+>
+> I usually wait for the patches to land in Linus' tree before I update
+> kvmtool (although I may be fishing when that happens).
 
-Besides what Sashiko pointed out[1], this patch was just messed up during the
-rebase and it even doesn't compile.
+>  (although I may be fishing when that happens).
 
-[1] https://lore.kernel.org/all/20261002091331.BA23F1F00893@smtp.kernel.org/
+Took me a while to understand that part :D
 
->  {
->  	struct kvm_mp_state mp_state;
->  	struct kvm_regs regs;
-> +	gva_t stack_gva;
->  	struct kvm_vcpu *vcpu;
->  
-> +	stack_gva = __vm_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
-> +			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
-> +
-> +	stack_gva += DEFAULT_STACK_PGS * getpagesize();
-> +
-> +	/*
-> +	 * Align stack to match calling sequence requirements in section "The
-> +	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
-> +	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
-> +	 * 16 when control is transferred to the function entry point.
-> +	 *
-> +	 * If this code is ever used to launch a vCPU with 32-bit entry point it
-> +	 * may need to subtract 4 bytes instead of 8 bytes.
-> +	 */
-> +	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
-> +		    "__vm_alloc() did not provide a page-aligned address");
-> +	stack_gva -= 8;
-> +
->  	vcpu = __vm_vcpu_add(vm, vcpu_id);
->  	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
->  	vcpu_init_sregs(vm, vcpu);
-> @@ -864,8 +883,8 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
->  
->  	/* Setup guest general purpose registers */
->  	vcpu_regs_get(vcpu, &regs);
-> -	regs.rflags = regs.rflags | X86_EFLAGS_FIXED;
-> -	regs.rsp = vm_alloc_stack(vm, DEFAULT_STACK_PGS);
-> +	regs.rflags = regs.rflags | 0x2;
-> +	regs.rsp = kvm_allocate_vcpu_stack(vm);
->  	vcpu_regs_set(vcpu, &regs);
->  
->  	/* Setup the MP state */
-> 
+No rush, and enjoy the fishing.
 
+/fuad
+
+>
+> Will
+>
