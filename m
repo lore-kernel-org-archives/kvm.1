@@ -1,247 +1,215 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010001.outbound.protection.outlook.com [52.101.193.1])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2A4469829;
-	Fri,  9 Oct 2026 19:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791575015; cv=fail; b=fLy12h1v5dbC4i+4D4M9df8vXK2C6hfPBqVoaBih/bhytbLJ0ua+otOngaMC4zn5oTDmm3f11VYaZ0OvGWi9y0f1RE8zc8wpeTythZB+SudusAAliEvv7UUh+pIeziepB9UQOMTB+fJF+qj20hMI2+QTIqya979KcVgGJClVUMA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791575015; c=relaxed/simple;
-	bh=XHjNtyc1777xH+wz4V/LkyifA0p7x/w8kZQqM+k+t1s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jbqe9IJTqYDUa7bfLLAFyO3DVpbebiu+SBky9Ro7eBQ6tM9NM4T+g6AUcbz9vsalC/wyM5XiPzpWqZYu5QWKeu7vgx028VD6GmHSiSvlofjC+ghVkDk2zQ9IIZeX+E6ATzzcH02EnE+xHWbM6AsYN7AKPzUgeCrBk1rTbRsTNPs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xXCLD/cN; arc=fail smtp.client-ip=52.101.193.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157FD4FDE41
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 19:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791575536; cv=none; b=VSu6ZEu+0z+fPqKjNswGmPVqJzHd+P6COyxmHSVIyGB8xZdtMfuXuc67JqZnfxjs1gSWgXW22LVxzIiQhCUSeX23azPzRAG5jnshSefyM1D5indBLV/gYsPa76gc1EgtZEGdUkVUlYb6oWkZ+MSMqbDxcrnZvK4izCqind1IUrc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791575536; c=relaxed/simple;
+	bh=2dO3jhPiXoWuEJOubq3f0+uDHGWe68stZOsl++yRYnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sDMnZFPvA19G7g6vXVKLprBTUDpJBD/mpi6r1dGgMG4eJFjQMsvAgEVEUbRM+q+Na4lg+nLbHQWv7Gu9eWT89plpj0At2sqrmZNSAtSbmDaLxXhr12enknLgkzSUHQ281wB/eCsoIz0pje5+G9qTMGxnmOsPDOZx9m1nfSiVvOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=wdibMF1q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dNtiO8zd; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xXCLD/cN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iUNeGFAPCGHG+EYs0Q7+RYs2kFxSuxqU+BLUnKKvTlkrMPxWQ4Q5Q5+ZTBTnyNTG1p74pISJpbLFCi+Dhn8AKfe2qy+11Xn/aL/VD0e5gl/4ydGJlmcRa+t6yVUvQF7Isqykfz9Ccv9EKE/JAtLUVB8gMa5THQL6NLaUORoP6DheXkupSeTdvXThr8Y5I3f2lzRmnuf5dmqg+57Zz7bLh7Dz6mKI4YtdTkWUmd/PS7xm+XvYPyewcuaRnWe3sAtWVLX6E2LwQJP4Sjxii1fxCS2sPESeBsN+rV9sG3uQ35yZdGATmu9BTDGnFAr17dCP9h6Qmh1gpHho+skAPuF0xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H12U52iiEmghhPgLKnyhAIQMPNU5SV0jfovlWwgzZHo=;
- b=djdKgAsirYIDLecnAnakNXI14CWOhK5cgmDr32xdzeZcvU/dvplXvkEFpop9nsqlJGVw13g16zK4W5CgsccAzDkmg4V1cTNlpwNuqNx8yWW45P7TcmnL1rqkejsAJ2cBnUSPlhbCItNwiLaD3Yd9CqEjr3mMYJVHy/Bfnr20ZC8tFkm6nwyOckLut+o6YXrDVI3JKqfWhA/N7yoex2yazE6XgTGnGBN/98zeiYtaVyLP/0uolir7YD6hjI9jPrKpbH8IUrWRa6cyD3WAysyOJrkAN0WPWPzN6hhL9Mlp8xkKpJjAhIsSdDwKzyL2BK3v8msni5SqnHnkAgD8JDf7tA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H12U52iiEmghhPgLKnyhAIQMPNU5SV0jfovlWwgzZHo=;
- b=xXCLD/cN9LYR3OBILDY+YYznnYIpDB/csj3sUVfr123n2J0D7ZSybO6mKL9X8/ePFBfP8wOoI1TXOr+5Q6azBfwIbICHiGnPCqPtafWBvhTejoSOjPJXRksuTffQN9LZQCEUfQP6uKt5X5fsGE8boNa1l0HgfgOb0Zvvz1OqSaA=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ1PR12MB6217.namprd12.prod.outlook.com (2603:10b6:a03:458::6)
- by CH3PR12MB8877.namprd12.prod.outlook.com (2603:10b6:610:170::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Fri, 9 Oct
- 2026 19:43:21 +0000
-Received: from SJ1PR12MB6217.namprd12.prod.outlook.com
- ([fe80::bdbb:19b0:4f1b:44e5]) by SJ1PR12MB6217.namprd12.prod.outlook.com
- ([fe80::bdbb:19b0:4f1b:44e5%6]) with mapi id 15.21.0451.034; Fri, 9 Oct 2026
- 19:43:20 +0000
-Message-ID: <15395e61-7da0-4904-bea0-24f88de95d61@amd.com>
-Date: Fri, 9 Oct 2026 15:43:16 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 3/4] x86/sev: Add guest support for Enhanced SMT
- Protection
-To: Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, seanjc@google.com, pbonzini@redhat.com,
- kim.phillips@amd.com, nikunj@amd.com, michael.roth@amd.com,
- ashish.kalra@amd.com
-References: <cover.1791302373.git.prsampat@amd.com>
- <92a1de684bfb5d8633c2de0ed8511f33282a0d70.1791302373.git.prsampat@amd.com>
- <3511498b-d72c-4fab-aafe-5d05d9d3f460@amd.com>
-Content-Language: en-US
-From: "Pratik R. Sampat" <prsampat@amd.com>
-In-Reply-To: <3511498b-d72c-4fab-aafe-5d05d9d3f460@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR02CA0009.namprd02.prod.outlook.com
- (2603:10b6:610:4e::19) To SJ1PR12MB6217.namprd12.prod.outlook.com
- (2603:10b6:a03:458::6)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="wdibMF1q";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dNtiO8zd"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1DE35140013D
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 15:52:08 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Fri, 09 Oct 2026 15:52:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1791575528;
+	 x=1791661928; bh=E7AWcJX7TLChvl9+qNbThRKCUMFRT4ZevpHDsMG4dTA=; b=
+	wdibMF1qDeM0MOL8A1H3dKv+GPU3Vp63YWzxxnys1g9DTNu3A4a09sHsY2o1MuIR
+	CuVOO7PYj6TIC8ehoPm6e87rroXgWilLFcROtLqraGcOcDSlz6JRMgNayhTSRn9g
+	DgBcMhqs8uTYnmuhCpoKJFqsyJQzhnLm3wvePublwFCI8jMBnAjjR8R9vE19xfll
+	9KEfMjedYi6hLHHv1PNmI9lYEJTq6uQhzb3q4IJAxEnwEWdtlFfsL60Au9TxgPc2
+	73UocksW2GWvg8md3BWx5PMl+AhEDxLaB9N1oyZDKKc/XVXVeTbL7EbFsG9XGtdF
+	jtvR1exkC8TBEvYtNrPKpg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791575528; x=
+	1791661928; bh=E7AWcJX7TLChvl9+qNbThRKCUMFRT4ZevpHDsMG4dTA=; b=d
+	NtiO8zdgGLFJWhstPSMBSxCGHLcJZwGeND5lUD4CNhuIP1dN/2uZyjlrn3sjS6gE
+	Z3JKiwsIgWYyVS4hPGxUJTMBiIrZ6ukVHkXtHDK6BZ8HoPxGJLbWqMl5nAkyovL6
+	ncWwfG1Rd7KfUNkYjcdruK/d4eSeKOasR+x08mlaioCUPslOP8orlnO5SjMAF4Sx
+	oqGoWGyiT1Xkt7Bww8tORKGRWEihmbM8ARrPzKjigpyMlTgW+H3mshH/eym1qnvM
+	EURza6fKX5Pujlxgh4Agpem+pSqHhqlB3kIH8aEztjIQKvQzCrDdhjFiFuJQlie2
+	qKz73AbVQi3zBJ/QF/XBg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791575528; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:EO44XFuHLHHoLEGaILNR2Y5E2FTxezMCmbgQ9uR/PdTee/c
+	i+e+sY455VsbXf25TkTc73QjncoFEFjDiagRkIXTpEFTpjWOKZ/gssDGRjafyZNw
+	RJ4GRjS6CkTQvtpxB/numGCMNHDB1L7HK6Cbtlq66z+Kga87F4R9+7qOgrXTwr+O
+	kqXqLQA8K6O826Exs2OP6TD17PfxKarBoW++a9Vstqri7atfNLybB6pcI9lS/O6l
+	fSQbUo8PFOjEStP9uUuQNdwMN+IEGrYqj2kc0R4y5prpxHY4+x6bnyfvZdmhd/z3
+	LDc7Kvp7mdC8EQluWvAKHwkyyNHsMI311mUPUsw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:GagB7DSpORsm164V2HeSC1xqvVWZEehqRM9fYNyXmtY=:2dO3jhPiXoWuEJOubq3f0+uDHGWe68stZOsl++yRYnQ=;
+X-ME-Sender: <xms:50XJajoLrT5UxQpvJzIRmL9vr_bCHR8ACmXDY0yplbfufiH-POOOoA>
+    <xme:50XJapi2IMTVFxwiDIhKVXfgW3ID6SOISNiiRkQCBWzNv8jSR2IN5Z7L19DOAshDv
+    1cEqc4rhENH42ddybrx7t8RCYt5XXfgJ2zy0GLjsb05GmldmoedzsE>
+X-ME-Received: <xmr:50XJatNp5dkz5XByZU82sD9MvEiqEt7XV3Tto_xdcveEVa0HkFjAXLW9oK_GHg>
+X-ME-Proxy-Cause: dmFkZTF3z8iCFEOwQ+sOPxZrCCdowTEVc6VTcM6Pq5NhWOiO27IhlwefIcXLgnfcSyr3rz
+    DShoK3NdERzm40z9FoLGTl0/znQOuOVWzCgs0gfpDasu+Cnn0T1G5b1A5TvT2p5iK/s+dp
+    49SOcbK6VgMr+w0FpEZBygAVjxzxAdpVsfUWlHquizAd2edm0kNqw39jAEt+vTYg+UjmSL
+    5W5DocJ/bKkhJ/paQtzvBiPCi2ZNlQYX4/cVXNfBaabZJ16tW7CQpRiXY78hljxayGrBZo
+    hlBxvBbFYif7rRpzTnBjzfvwd69O8qbUNm2gw887VZtYJruFlaZZBQdIQIZvbGXSI6H1pe
+    dLu4RTVg+8/n30iexpjoHJKhQ6OPzmzcm6zs2fYdQQRf9YtMqKKrZKr7Ypz/Ozr7t52ZN7
+    M4Stn6aF4xXHyTEJ6Vg6JXHLvCJ45ENsLO2PK5FgjytBIwLw7tWfSEeci0Ycsemp1X4yS7
+    ne2IX2V5M0CBExJlSDeNwcPFjswHZ3eKyjZAGPrt3gwbw8IN/QITfKXkF6Eo8FGKyw9mOi
+    ExkawsOqDbARw12K9oHuIcdctd4dVA6iR4p99Bb9BlXqafJ0RsHKElFP7sZCUis96jDFQJ
+    4qWCSocsKosU5zF5BbrMoh6QkxsFVcJ3R7kvPGbWrWJI5DbxGzgp1UKdmqAQ
+X-ME-Proxy: <xmx:50XJarwLdykLgCfYt4Jw_-Bzz1P4Thp2Eu7y1DZFCpETf-psf77t_Q>
+    <xmx:50XJanog3D05b34OiUTsf2Qd55mUaXhGTuQj8pVIybz2aXiI5F5Gsw>
+    <xmx:50XJajOtDQvnhvYVcsWN4UlCNujhJZh7eqMMI-aNmetWlF9EQ85tDQ>
+    <xmx:50XJajcn_Sl9X9_DNirXDVXm8AujCmivU86pVypzMFPiiEXuINzhQQ>
+    <xmx:6EXJaqz-t3MbO6VZig7-P7AAc0SDGhhtEQKQudUX-gNibfAm0Jw9lMDv>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Oct 2026 15:52:06 -0400 (EDT)
+Date: Fri, 9 Oct 2026 13:52:03 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Andrea Parri <parri.andrea@gmail.com>, Ankit Agrawal <ankita@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
+ <kevin.tian@intel.com>, Jiaqi Yan <jiaqiyan@google.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [PATCH] vfio/nvgrace-gpu: Skip PFN registration for empty
+ memory regions
+Message-ID: <20261009135203.33f3806d@shazbot.org>
+In-Reply-To: <20260925161024.189771-1-parri.andrea@gmail.com>
+References: <20260925161024.189771-1-parri.andrea@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR12MB6217:EE_|CH3PR12MB8877:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5784fb6-4077-4397-05d1-08df263d92dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|56012099006|11063799006|10067099003|18002099003|22082099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	erYMCQwj6ZZc9c2VXS85XYmypNdOynpJg2Yl/wUKSc839OnU5BABtm0XalvgQkyGkWqCGDjEv0TXiEVNPnf/kkNg9jXX+OZtbdt5n8p/aQLNh4q//lHU70fi1I50Yb3EawsogYb9iN8nCOHiEM0+M3MZe+TXPql/jAIAiLfJ5P+/Wi17uEWU/iuYtan55bkzB9OhWdbcM+4abwk/P4zcGEvgwi7Q06ZfjafM2UAzI/DnNJhKfRkHl+pJUIsfV4rRpyW5J2egIwXA0wxPT0E6u4PR2FGfLe5XhxcIv/pnwZwZ3o8PIBmxF/o1Nuvxy5K8Org/A0vVzjlRCO5ZX0fitaCada1SrES8g6IQRLvH9Qf1k/arxojXF3+d4S702TKoy1YP6N2oIZMUB5FBDTSjL4LybeLonxs6o4NtvwWpdif5jLjmhBHxa1QLsLgt0NrEPe85tSS7bXmvGtXJtdJSKb374vKc64//AkSc+i87qzOakWQIBmiIU3jZPyCQKOdNKBN5qNoG75uBOBbiUuvcdpTTL/FIOGcfHrC0m/fP4SobK4KklDWGxsHmIYZoJl+sAB0SwfD8/43R0u3nyWU0Uzh42Vcv0JRl1/aOPxoITY00SnKdZBK+eeAStg1Ca0UwrVnxCS+PwZPSQ30MFVFZSACYEobJoar8YJvca+ycKKA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6217.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ckM4YVJqZFpCZUwxWXdad1FJSnV0Z3JidHFUdGNaZjhkV0FRYXFCWmFkUzZZ?=
- =?utf-8?B?UlEySVp2WUZPVmduUGNxdnhJMWthY1FySXhNQWxQM212K1dUYTZZN3E2RXVM?=
- =?utf-8?B?MnlGY0QybkJBZm1FbDdLd1V0S0lJdjh3bnNvMG9QVjVSQXdUMGlwTUpyb1d3?=
- =?utf-8?B?ZjhQeTJ1SldpWmZ5QzE3b0hhNmhHbkhUT3JGc2dLUkdGeldXR211eGdDM0FC?=
- =?utf-8?B?dnBuQkFjRVhzejJxUUV2RzV6WVVscENkSzRZMlRXUVk1ckpvTm1YbVp1K3Ni?=
- =?utf-8?B?NXhncVlmMmdMMndHVVRTTkZPenNIbi8zenJrdHRWanNkRXhuRndsaENPQmVr?=
- =?utf-8?B?K0ttblA1dHQ2UlcwVVdXQUQ0M2JtMUV3NzU0VnpyUWhpc1RCQ0NaQ3FNMTlI?=
- =?utf-8?B?Tk12MjIyMHc3Sm1JTnVkTExVODhpa3RMc25RVk9yeUNXRXlTVU9SSi9MYnE5?=
- =?utf-8?B?V2tpYXlyUm1oMy9acnhGMitmTy9raTdHNGNVQlVPZCttQ1ZzcThLR1lJUTFX?=
- =?utf-8?B?Z2c1S1NCN3kvbVBBU2VlNnFRbWs5OEZXQ0p3RENJcjloc1FuK0xGdU5mbldR?=
- =?utf-8?B?WjFGYjlLQkExZU4xUnNncmpEMGFEaytKdE5VZU1LQ2h4Q0E0cDA1TWpaUCt2?=
- =?utf-8?B?UVZZbnZwT2h2TzBNL3pGemtXRkJ0NmtuMTJoQnpqQzJpNUYyaVp3M21SaXN1?=
- =?utf-8?B?c2xDWGNmNUhuR3pqdUtuV0plWUZJR1NQRUtDTmFkYmpRajlhc0VzNkhYaWVk?=
- =?utf-8?B?VEhDR0VzcnhKTkQ0aUJDSUIxanE4RkUxSkhxcms3S2VEa3cxdktxWmI4MDVE?=
- =?utf-8?B?WHJMU2NXMm9MQU96QWMwQkEyYURkeEc2ZHJCUThjendURlJtU2xwOFRDYmZT?=
- =?utf-8?B?U0dSRTB3Zk5hSFZ4U1BOZjhPUCtDalFTOWhUN2t6VTJ2Q25NSXdHWHVVejhz?=
- =?utf-8?B?RXB5SjE5VlJWNDhFS2E1djhpK2hxQ2lBMWkvSzA2b2RDTnpiRjVxTkJmVHZ5?=
- =?utf-8?B?am1Uekszc002ZmVUZ2hGVVJ1WG1RQWFBWW04OHl1VGpzcmdSZmVENEZKYlJk?=
- =?utf-8?B?ME9CWjZrU2liU2htdERNa0pJaXdYUHRES2FnU3dKQUNlMllwUWtrSGlkRXVT?=
- =?utf-8?B?YTFmTGh0S1ZBaWxlVWcxNXkweC9IdGh4QUR3Y1lHRHdoVDd3M2tvZURHUTlZ?=
- =?utf-8?B?Wk9Sd1NGbEJQbmxnNnp2U3hXZnUyWFE5aXhqdXVqQldTR2ZtNkNnUGpKMGtu?=
- =?utf-8?B?K3RGK2o3WGY0VUU1TmQ2eDdmZ2xGbWVlZk03NDZhbXBrSlMzVFg2cVhQNlJi?=
- =?utf-8?B?V3luZzR1VXl3SzJCbnNtNUd4RkJBK1p6RnF5ejhJa3BlaXgyR1hzU045dzl1?=
- =?utf-8?B?WS9YS05aMVZxTk1NdWFuMnZpdlBCcWZmdUtpZ1NDZE44UERwYWcwTXNrYmFi?=
- =?utf-8?B?bEwvNFdZL2lYcFYvUjZwSnJ6Z0ZZRmUwS253akVwekQ1VlhpQWpuU3F6MkQ4?=
- =?utf-8?B?QzBLeS80QWo5Ukx2U0VGNENibHVVdE12WVdEVkFjSHFEYTluWW1BN3lkbnVq?=
- =?utf-8?B?V1ZNSHAwYzVEWVlSWTNEZU9BNUNORCtmNlBRZWxrOTBzbStIS2VVeFg2OW5J?=
- =?utf-8?B?QUV1UHZ2dVNEOW14SG95ZWtSN0IwdnlOdjNrZXVTYzh2VFFYQmlXM0dhYXBK?=
- =?utf-8?B?S3ZncEU5a0VFQU9LdVFyeGlGYmlaaU9pekxaYzFwbFlhY09lL0xCRG5hL2Zo?=
- =?utf-8?B?NEhaWndKMHZuM1FPdFY0cU9JMUR5cHRHVE91MVZ4QmN3OFVQYW93WnN4Tnln?=
- =?utf-8?B?cTBWa1RnQU1qUndWS0hkT1F0Y0U3WXB3RDdZS3Q4UjVNS1ZzODg2STMrMUZ5?=
- =?utf-8?B?TWJsUCtJVnA0dVB3ZVFGaE1pclk4Uk4vTTluYm5OT3pjbmZzNXIvanJyVFVr?=
- =?utf-8?B?ZVJ4QWE2ZjJFVFI4amtldFhFTEplM1VDQUtabk9OMkJuVDR5WG5KZFVmRkds?=
- =?utf-8?B?cXAwWWJUQlR4K3pkRlBDTmxWaTkxcElXc2IzcFBUYXRlU2VIUWdzMWhUNkR4?=
- =?utf-8?B?azE2WDN2OFRucFNFck5qWUJSM2xZWDlndk83Ti9YQVpFK0JGQjlIUXhhaDZ0?=
- =?utf-8?B?eXVrRTRvUTlNOE5LN0ZmZWNhU1lOaGNQWmRETkh1Y0w2aldXQWpZeEJ4OUYy?=
- =?utf-8?B?bkltUmhMdXcxUjhSK0l6Zm5ZR0plYzhjUTBjWlhWQnhJMTZLMHc0aUZ6a2FT?=
- =?utf-8?B?UUhRaGk1d21ZYVg4azhGSE95U0t5TEVTWkM2dlBZbFpGbkh1K1dqYjB1VC9K?=
- =?utf-8?Q?IATAnJ5Qxm5/vfK8qY?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5784fb6-4077-4397-05d1-08df263d92dd
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6217.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 19:43:20.9483
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YvkfL6Z/3ctr/+OWN+/EZjh7dFIG7wkRmRmPIh4O/yRvKfb85pnzorIj4ymYZsGiUPr2RQpw4leRpSiiIhQhFQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8877
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Fri, 25 Sep 2026 18:10:16 +0200
+Andrea Parri <parri.andrea@gmail.com> wrote:
 
+> nvgrace_gpu_open_device() registers nvdev->resmem only when it has a
+> length, but registers nvdev->usemem unconditionally.  In fallback mode,
+> where the ACPI memory properties are missing or the C2C link is down,
+> usemem.memlength is zero, so the empty region is still registered.
+> 
+> register_pfn_address_space() then inserts a node covering
+> [0, ULONG_MAX].  Nothing removes it, because the fallback device table
+> closes through vfio_pci_core_close_device() rather than
+> nvgrace_gpu_close_device().  A second open fails with -EBUSY, and once
+> the device is unbound the node outlives the nvdev that contains it, so a
+> later registration or a memory-failure event walks freed memory.
+> 
+> The node also captures every memory-failure report for a PFN with no
+> struct page.  The callback rejects every VMA of the fallback device, so
+> no process is killed, but the failure is logged as MF_RECOVERED rather
+> than MF_IGNORED.
+> 
+> Guard the usemem registration with its length, matching the resmem
+> handling.  Fallback mode then registers nothing and the existing close
+> path is correct.  Guard the unregistration the same way.
+> 
+> On the unfixed tree a second open after unbind reports:
+> 
+>   BUG: KASAN: slab-use-after-free in interval_tree_iter_first+0x209/0x310
+>   ...
+>    interval_tree_iter_first+0x209/0x310
+>    register_pfn_address_space+0x97/0x100
+>    nvgrace_gpu_open_device+0x21c/0x730
+>    vfio_df_open+0x213/0x520
+>   ...
+>   Allocated by task 152:
+>    _vfio_alloc_device+0x3a/0x500
+>    nvgrace_gpu_probe+0xcb/0x660
+> 
+> The fix should be safe because memlength already decided whether the
+> range was meaningful: full mode always has a nonzero usemem.memlength,
+> and fallback mode never calls nvgrace_gpu_close_device().  The guard
+> only skips a registration that could never have been unregistered.
+> 
+> Fixes: e5f19b619fa0 ("vfio/nvgrace-gpu: register device memory for poison handling")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+> ---
+> Tested on x86-64 under virtme-ng with KASAN, not on Grace hardware. The
+> driver was bound through driver_override to a QEMU cxl-type3 function,
+> whose CXL Device DVSEC reports the memory as valid and active, so probe
+> takes the fallback path; the device was opened through a noiommu VFIO
+> cdev. Without the patch the second open fails with -EBUSY and, after
+> unbind and rebind, the next open hits the KASAN report quoted above.
+> With the patch neither happens.
+> 
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index 963fd8ded20d1..326b991732148 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -207,9 +207,12 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
+>  			goto error_exit;
+>  	}
+>  
+> -	ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->usemem);
+> -	if (ret && ret != -EOPNOTSUPP)
+> -		goto register_mem_failed;
+> +	if (nvdev->usemem.memlength) {
+> +		ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev,
+> +							      &nvdev->usemem);
+> +		if (ret && ret != -EOPNOTSUPP)
+> +			goto register_mem_failed;
+> +	}
+>  
+>  	vfio_pci_core_finish_enable(vdev);
+>  	nvdev->bar0_base = io;
+> @@ -235,7 +238,8 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
+>  	if (nvdev->resmem.memlength)
+>  		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
+>  
+> -	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
+> +	if (nvdev->usemem.memlength)
+> +		unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
+>  
+>  	/* Unmap the mapping to the device memory cached region */
+>  	if (nvdev->usemem.memaddr) {
+> 
+> base-commit: f49a343b305c0b6c19a3b50c0bbf10bcd0e2e8fd
 
-On 10/9/26 3:18 PM, Tom Lendacky wrote:
-> On 10/6/26 11:55, Pratik R. Sampat wrote:
->> Enhanced SMT Protection requires every VMSA to carry the vCPU's identity
->> and the mask of SMT siblings it may co-run with. The guest builds the
->> VMSA itself when bringing up an AP, so populate both fields there, before
->> the page is turned into a VMSA and while it is still writable.
->>
->> Fully set the sibling mask so that all threads of the same guest trust
->> each other.
->>
->> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
-> 
-> Minor comment below, but otherwise:
-> 
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> 
->> ---
->> v1..v2:
->> * Add ESMTP to SNP_FEATURES_IMPL and SNP_FEATURES_IMPL_REQ  
->> ---
->>  arch/x86/boot/compressed/sev.c   |  6 ++++--
->>  arch/x86/coco/sev/core.c         | 13 +++++++++++++
->>  arch/x86/include/asm/msr-index.h |  4 +++-
->>  3 files changed, 20 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
->> index c6512f2ea31e..4e0fa5a5f70b 100644
->> --- a/arch/x86/boot/compressed/sev.c
->> +++ b/arch/x86/boot/compressed/sev.c
->> @@ -188,7 +188,8 @@ bool sev_es_check_ghcb_fault(unsigned long address)
->>  				 MSR_AMD64_SNP_RESERVED_BIT13 |		\
->>  				 MSR_AMD64_SNP_RESERVED_BIT15 |		\
->>  				 MSR_AMD64_SNP_SECURE_AVIC |		\
->> -				 MSR_AMD64_SNP_RESERVED_BITS19_22 |	\
->> +				 MSR_AMD64_SNP_ESMT_PROT |		\
->> +				 MSR_AMD64_SNP_RESERVED_BITS20_22 |	\
->>  				 MSR_AMD64_SNP_RESERVED_MASK)
->>  
->>  #ifdef CONFIG_AMD_SECURE_AVIC
->> @@ -204,7 +205,8 @@ bool sev_es_check_ghcb_fault(unsigned long address)
->>   */
->>  #define SNP_FEATURES_IMPL	(MSR_AMD64_SNP_DEBUG_SWAP |	\
->>  				 MSR_AMD64_SNP_SECURE_TSC |	\
->> -				 SNP_FEATURE_SECURE_AVIC)
->> +				 SNP_FEATURE_SECURE_AVIC |	\
->> +				 MSR_AMD64_SNP_ESMT_PROT)
->>  
->>  u64 snp_get_unsupported_features(u64 status)
->>  {
->> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
->> index cc292d7c6fd1..730cff2700d4 100644
->> --- a/arch/x86/coco/sev/core.c
->> +++ b/arch/x86/coco/sev/core.c
->> @@ -89,6 +89,7 @@ static const char * const sev_status_feat_names[] = {
->>  	[MSR_AMD64_SNP_VMSA_REG_PROT_BIT]	= "VMSARegProt",
->>  	[MSR_AMD64_SNP_SMT_PROT_BIT]		= "SMTProt",
->>  	[MSR_AMD64_SNP_SECURE_AVIC_BIT]		= "SecureAVIC",
->> +	[MSR_AMD64_SNP_ESMT_PROT_BIT]		= "ESMTProt",
->>  	[MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT]	= "IBPBOnEntry",
->>  };
->>  
->> @@ -849,6 +850,18 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip, unsigned
->>  	vmsa->vmpl		= snp_vmpl;
->>  	vmsa->sev_features	= sev_status >> 2;
->>  
->> +	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) &&
->> +	    (sev_status & MSR_AMD64_SNP_ESMT_PROT)) {
-> 
-> You're using sev_status for ESMT_PROT, might as well use it for SNP, too,
-> instead of calling cc_platform_has().
-> 
+Ankit, any comments?
 
-Sure, will do.
+It seems to me though that the reason this bug exists is because
+nvgrace_gpu_pci_core_ops.open_device is trying to handle both real
+nvgrace devices, where usemem.memlength cannot be zero, alongside
+non-nvgrace devices where that can easily be forgotten.
 
-Thank you!
---Pratik
+The above patches the failure of that model, but maybe the better
+approach is to split them such that the failures like this cannot
+occur, ie. a core-only wrapper that just calls vfio_pci_core_enable()
+and vfio_pci_core_finish_enable(), or some other refactor such that the
+core-only path never handles the nvdev.  Thanks,
 
-> Thanks,
-> Tom
-> 
->> +		vmsa->vcpu_id = apic_id;
->> +		/*
->> +		 * The mask fully set puts every vCPU in one group, so any two
->> +		 * of them may be co-resident. A legal ESMTP sibling must
->> +		 * also match on ASID, so the sibling of a vCPU in guest mode is
->> +		 * always either another vCPU of this same guest or idle.
->> +		 */
->> +		vmsa->vcpu_sibling_mask = U32_MAX;
->> +	}
->> +
->>  	/* Populate AP's TSC scale/offset to get accurate TSC values. */
->>  	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC)) {
->>  		vmsa->tsc_scale = snp_tsc_scale;
->> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
->> index fbcb3313e946..6fd26151d146 100644
->> --- a/arch/x86/include/asm/msr-index.h
->> +++ b/arch/x86/include/asm/msr-index.h
->> @@ -745,7 +745,9 @@
->>  #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
->>  #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
->>  #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
->> -#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
->> +#define MSR_AMD64_SNP_ESMT_PROT_BIT	19
->> +#define MSR_AMD64_SNP_ESMT_PROT	BIT_ULL(MSR_AMD64_SNP_ESMT_PROT_BIT)
->> +#define MSR_AMD64_SNP_RESERVED_BITS20_22 GENMASK_ULL(22, 20)
->>  #define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
->>  #define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
->>  #define MSR_AMD64_SNP_RESV_BIT		24
-> 
-
+Alex
