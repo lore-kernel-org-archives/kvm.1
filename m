@@ -1,142 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4C44C64D
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BDB1A2545;
+	Fri,  9 Oct 2026 13:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791552031; cv=none; b=O5SO7ugs5bP0BtpLDp7SDkkC2p3HXkwSRVWuqk6MFgL8W+remI9RvNTsM4lZQ86GwOTUrrfDRNsUIGU6RYlvlWKOfzZqQGm2f6GvM8GWB9tfePSjSc7ikAtHqlY0gpBEJVnCi68Q3EiyxC7Pf2x4PG9hfqFz6TV+Ey7ABo4hzc0=
+	t=1791552490; cv=none; b=ID0qT0BB48iybArCOzIZlhOCosIJl3IHTk/Sz6GSAhs1DD5NnKNiZ0N/YlsgpS9mrJfJbSYvWvAry8XDwTLM8tMFhD20kImLwjd+J8mAnaue5U6zWt6huQyYZPdrG4dD1/6h1rESmYKqwfiWtrPnBkZchaLHLJ6TzT3I2KLArH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791552031; c=relaxed/simple;
-	bh=/aJpO/9o6TjCbRsqjyeurZ6YdGXhoqiTuue1T1XHao0=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=rTb+BBJwZ2rWy1TGXtx8Tj6Z91gn3dhXE4K3au50ND92OwpiwzFwq6BhU1vUSM6aN1eg5L31mw9ul50J9Q4tUi+In14kfxSNbAPCrxq1bg4dfr5fjzieJXGfTnupRTXUs1iAhSF4kXURCMbcHGfafzJS2b5kBa/s+KdKfYqO6qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muFjkIU7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791552490; c=relaxed/simple;
+	bh=qzhNhLe6iKtk1HTEiboaXIMGu0mlnyagHwlCN1tVzRk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kbg/u1yACZLURTbKP5l3+1e+m52Qfo+4O7gfFo/2H2p7oeHHhz3bKkdEFBBIG78ibS+jj9IfqnUbLqfrRCMKPXte7rXzduCG/T734Sv5DFDuDISxJERYnSvxX8VPGLPOVEMn7cuXC3k+OFhBdxY7PvKfI7m0CfK9wMj95bnSAHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kpVVbJo8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muFjkIU7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B941F000FF;
-	Fri,  9 Oct 2026 13:20:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kpVVbJo8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A221F000FF;
+	Fri,  9 Oct 2026 13:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791552030;
-	bh=/LoZp1WJsfwlykkg9/2ZvpkwVZI+W92cffe6ASmOWOA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=muFjkIU7Pwt1MPGftJJGG7qGJO+WHMF6KhLuq4R6SxBS8UV5GhDNj0KvcHGki/S7Q
-	 ZvfS8AThLF/aN+mpls3AKtQaB0u/uSTqlBnJQTka6sGp47Z0Ks69rdOJTdTOjygLGj
-	 cioZQhysqktaKUBKgd9jkblArjsgHt9qdw2XxTVLx1OCF3IIMHM/TdwQDVTdMUf6EP
-	 G1k//Nq/Ned7p453xSgTmgSduiU5fDwvrp0nZvwpkgGoL/gtFuPlfeQDDVhKR7cw8V
-	 4UmPrhp8tNB8S1laM0vgKvyAeaZFA48viAxJ1Amy+yqpBE4x1kCo83/9cYQeV7Piu+
-	 oJeoyTVhxtQuQ==
-Message-ID: <sashiko-outbox-165619@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF
- exit codes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261009130450.361690-1-pbonzini@redhat.com>
-References: <20261009130450.361690-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Oct 2026 13:20:29 +0000
+	s=k20260515; t=1791552489;
+	bh=ssvjJnzGgYY6LCenFj5kMursu0y4wTQOtcvA+OHJhM0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kpVVbJo8KPnVDzW8Jo0dSP0/W8OB9yaicomwY1PZNXH2uBybGHoy9EmH8CeJp/sMI
+	 zrEmi24Aq0xrHX6qtGWSxbb/oer9MaJaBSv2XrtGOlvrl30/JyOqGrRUb7AWPKHHLR
+	 BiMhSmX2FaqIfNVfLqU7r1JMfQkKiE8xIqAEAbPWxY8x6u7GVIAWKKa2TlSAGl+lm5
+	 wsgvSRci0xHVEdOwwwaXedS8NA7RJTMpvWpLsrS0nT5BjO54PeVz4Lp5YxgGvEJ1RZ
+	 PnUg9aN0jlK5a/lB+80ysB3V4iTnmOQf6HaKZpsrYqRu88lfMFtBJDljeUZOY82yOl
+	 Wy8/EvMpI16hw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xFAdr-00000001179-0PYe;
+	Fri, 09 Oct 2026 13:28:07 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	jonathan.cameron@oss.qualcomm.com,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Sudeep Holla <sudeep.holla@kernel.org>
+Subject: Re: [PATCH v23 00/14] KVM: arm64: CCA: Add basic plumbing for Realms
+Date: Fri,  9 Oct 2026 14:28:03 +0100
+Message-ID: <179155224299.829527.1733164520192309991.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261007073537.2454351-1-suzuki.poulose@arm.com>
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, suzuki.poulose@arm.com, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, jonathan.cameron@oss.qualcomm.com, fuad.tabba@linux.dev, sudeep.holla@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] kvm: x86/mmu: WARN_ON_ONCE triggered by PFERR_GUEST_RMP_MASK in pe=
-rmission_fault()
-- [Low] build: unused variable user_fault in walk_addr_generic
---
+On Wed, 07 Oct 2026 08:35:23 +0100, Suzuki K Poulose wrote:
+> This is a trimmed down and updated version of the v22 of Arm CCA basic
+> plumbing series [0]. I have dropped the CCA specific bits for the sake keeping
+> them separate. This series now only contains the framework for handling
+> different VM types and lay down the path for adding Realm as one of the
+> protected VMs. The full support for running Realms under KVM is available as
+> an integration branch at [1].
+> 
+> [...]
 
-commit 41b1ccbf9309dd89dc82f560f60a35e3cca23942
-Author: Paolo Bonzini <pbonzini@redhat.com>
-Subject: KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes
+Applied to next, thanks!
 
-This commit modifies kvm's handling of page fault error codes to drop the SS
-bit and warn on unexpected bits. It intends to fix out-of-bounds accesses in
-permission_fault() seen when running Hyper-V from Windows 11. The SS bit is
-also preserved when reflecting the fault to L1.
+[01/14] KVM: arm64: protected VM: Handle user writes to CNTVCT_EL0/CNTPCT_EL0
+        commit: 3d736a339e9cbeec3841da1a821f56fb3230fd68
+[03/14] KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+        commit: 22adb9c3543cc702516c18f0a28e3a8dfcdbeecc
+[04/14] KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+        commit: 0c4063f89bfdf204112651f45620ef0c5a691e6b
+[05/14] KVM: arm64: Track the type of VM in kvm_arch
+        commit: 762ad274c03a13686192d75ef9a354b96114b503
+[06/14] KVM: arm64: Don't call vcpu_set_pauth_traps for pKVM host
+        commit: 42a4026b435e49af4d5eaae58afe7103ca740c30
+[07/14] KVM: arm64: Refactor the vcpu_load to allow for VM specific callbacks
+        commit: 8252f74f9188b9148ec93438e53b8e1b865ffb7b
+[08/14] KVM: arm64: Add vcpu load/put call backs for flavors
+        commit: 0cb16544ccaceba4c5e8beb2e8ae896278dcf018
+[09/14] KVM: arm64: Consolidate stage2 unmap range into kvm_stage2_unmap_range
+        commit: fb3926af9d0d5e2e2f58a1f4b2252f529fbe23bf
+[10/14] KVM: arm64: Add VM specific callback for S2 MMU operations
+        commit: 68933203edddc092b30dd1039167b3262a40a326
+[11/14] KVM: arm64: Use a local kvm pointer in kvm_handle_guest_abort()
+        commit: 4ee1b583589781bfd47b28da3ce216b2fb51dac5
+[12/14] KVM: arm64: Abstract out memory abort handling
+        commit: b44a8c32f0116aba0a934c3068628bacda3cd3a3
+[13/14] KVM: arm64: Mandate VGIC v3 for pKVM VMs and Realms
+        commit: 37d7ea3f81bbe61f1e895b6c87decadbfe8799eb
+[14/14] KVM: arm64: Prevent unsupported vcpu features for VM types
+        commit: a467f39afc2a149f9f5efbb7238fb531ade8a86e
 
-> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-> index 2ae7f9ed4cf86..8e991e02c954e 100644
-> --- a/arch/x86/kvm/mmu.h
-> +++ b/arch/x86/kvm/mmu.h
-> @@ -275,8 +275,18 @@ static inline u8 permission_fault(struct kvm_vcpu *v=
-cpu, struct kvm_pagewalk *w,
->  				  unsigned pte_access, unsigned pte_pkey,
->  				  u64 access)
->  {
-> -	/* strip nested paging fault error codes */
-> -	unsigned int pfec =3D access;
-> +	/*
-> +	 * Of the error codes that do not contribute to the index in
-> +	 * fmt->permissions, PK is not included in EPT violation bits and
-> +	 * not supported by shadow paging, and RSVD faults are handled
-> +	 * elsewhere.  SS however is included in the NPT exit code.
-> +	 */
-> +	unsigned int pfec =3D access & ~PFERR_SS_MASK;
-> +	if (WARN_ON_ONCE(pfec & ~(PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
-> +				  PFERR_USER_MASK | PFERR_FETCH_MASK)))
+FWIW: I've dropped patch #2, which was a duplicate of an equivalent pKVM
+change, kept patch #13 (we can simplify things down the line), and hacked
+the patch #14 merge so that we don't have to describe things twice.
 
-[Severity: High]
-Does this strict whitelist introduce a way for unprivileged nested guests
-to panic the host?
+Of course, mmu.c is where the crap happens, so anyone with any interest
+in this stuff being halfway sane, please review the conflict resolution.
 
-When running nested VMs on amd hardware with sev-snp support, a guest can
-intentionally trigger an rmp violation, for example by attempting an
-unauthorized access to an rmp-protected page. The hardware generates a nest=
-ed
-page fault and sets PFERR_GUEST_RMP_MASK (bit 31) in the exitinfo1 error
-code.
+Cheers,
 
-The npf_interception() function intercepts the nested page fault and passes
-the full error code into kvm_mmu_page_fault(). During shadow page table
-walking, walk_addr_generic() propagates the error code down as the access
-argument to permission_fault().
+	M.
+-- 
+Without deviation from the norm, progress is not possible.
 
-Because pfec is defined as an unsigned int, bit 31 survives the initial
-bitwise truncation. Since bit 31 is not in this whitelist, the check fails
-and triggers the WARN_ON_ONCE, which allows an unprivileged nested guest to
-consistently trigger a host kernel panic on panic_on_warn hosts.
 
-> +		pfec &=3D (PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
-> +			 PFERR_USER_MASK | PFERR_FETCH_MASK);
-> +
->  	unsigned long rflags =3D kvm_x86_call(get_rflags)(vcpu);
-
-[ ... ]
-
-> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
-l.h
-> index 8e350095508c5..54b3172e84bff 100644
-> --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> @@ -489,7 +489,7 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
-er *walker,
->  	return 1;
-> =20
->  error:
-> -	errcode |=3D write_fault | user_fault;
-> +	errcode |=3D access & (PFERR_WRITE_MASK | PFERR_USER_MASK | PFERR_SS_MA=
-SK);
-
-[Severity: Low]
-Does this change leave user_fault unused?
-
-Because user_fault is declared at the top of FNAME(walk_addr_generic):
-
-    const int user_fault  =3D access & PFERR_USER_MASK;
-
-Removing its only usage here seems to trigger a -Wunused-variable compiler
-warning, which breaks the build under CONFIG_WERROR. Since this file is a
-template included multiple times, the error repeats for each instantiation.
-
->  	if (fetch_fault && has_pferr_fetch(w))
->  		errcode |=3D PFERR_FETCH_MASK;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261009130450.3616=
-90-1-pbonzini@redhat.com?part=3D1
