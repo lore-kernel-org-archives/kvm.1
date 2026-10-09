@@ -1,74 +1,71 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5134A4EE2
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 11:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6C64BEE53;
+	Fri,  9 Oct 2026 11:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791545551; cv=none; b=hOV5w2XfzChH02pzQDcDEcTOYRw9ixqMuI89gSClQIJw5M5KrsB4X42BStGJvXdgj4X/JYXoydcWfsMjEHxyaNcYRE+2ObCaQ4ymT2Hej61NPX1iW4uupkX3EIk1K6UOFUWHEVHKykBJXevVnmoukX/R7GNL0X8tF/gTdGh83JM=
+	t=1791546185; cv=none; b=e9qxwIIFAsKFTL0+szzt56Ivp6UzhI09qHvca8JrxvxiyRcN1OUf8phV1Q9wm6Vx1Q9I0ITbkf2e6nKCpKS903qJINW+Io6kxRN97mU/lwfIbM9icClcfaTlzpBgmYDc2UtapleVuU3lnMygoV7O75Ft0GGW5+fSj1iO4r711AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791545551; c=relaxed/simple;
-	bh=JOfTL5sJbEeKUPqnV8GkeCHd+99LXw7TYpKTV4o3L18=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FEHP0GrBnnXQC3HGYWS9E8HDkG80antJ2fIjfCApmEiMMPyP0aHhEzOpJXZO1hhobVhz6qg90LsURp82lBq6s2xnqNP8GgvGdW1PHpH+haidUyiytbX7u7P9OO1MgoB7PTUe0O1UnmuUsp9aEupRrV8Px2pOaoXNks/s2t+n2a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/eXhsNR; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791546185; c=relaxed/simple;
+	bh=3p8V/XNcz4UBA0nSuVVCscnSVjVAp1ZSkXhCGsx8pkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U+c5SX/+PjTZxGmNUPgkphr3BX/RSTA+qCT03+ooaikA+GZF65M2iMLLaLN+ADWBjKwU3OI++pyvqvTHc5ndtOwIEGu1Pf/kvX+6NnoOOD7LHYCjAmVxjUm89mfVgSp0fQgwtdMUuASPoydG91G4pyGpYrnw4DHzJ0dJgP1vYHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AcjHC8zB; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/eXhsNR"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-34c4a0868b6so5778086eec.0
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 04:32:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791545540; x=1792150340; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5bMlxewub9p/T2xvh3MjzZ66gKld4I4neePTrZHO9Yw=;
-        b=k/eXhsNR+usBjAXoyI5R3hSe/Tls1hLcb1FDLXE8BloAjRwR9NnUoowy4K0J4VaY+2
-         IPRF1OHh048i2B2/zHyy39954hSnu+A3kkF0or0OgBdkM0uKwI55NE7bMBEpMKcfXhe7
-         cmGrnX/2bKOTt1aSnJN8WvB9dFrf1iamKPwQyExe8oY3q+7kwg4ZpGSwj6sdsoASO7DT
-         EmHK4dQTchqXroWSTorMQEm2sjx/tYbC2lvvBmNVIbUMhpLWhaSmKt6/w2vaCtwfiDoL
-         wBcKmliggW4a54Ia3Fvbxj2fd/vhNmAWgk2yWuzwd+w/ybh/qjx7wEX1z8k9MmJQlLh1
-         inSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791545540; x=1792150340;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5bMlxewub9p/T2xvh3MjzZ66gKld4I4neePTrZHO9Yw=;
-        b=zQ4uqHrovAb8nOSiv/uWtNHne6A3DtckivADJTJx55gUcYMC6RKOfG2uQ+9dlYjrVZ
-         BVLCPaBPZSfGwQS47l9I0CuiWRr94G1KQBBzNwn4mvr24ThqlysMvf1Nk36mOW9iVHZp
-         S73bfQTnR70KmYzrNV7RmYo/qN9dk11TgQVA3UPRLgpevjf5b4qaSvzZYxtvtxyR5SMY
-         Nl+SnqktH7OGiw9uHcsqAJGMWw+FyNHlrOf5sHewHVUvtDiHZ1IyPIHf7h/Or8lsRrfK
-         V5kMjUGvcQjSeHJg2bLFuPd01buklAaiGA4ykUB4rj2AbGI2TqkoxzQiipnCi6XQKbkP
-         At2w==
-X-Forwarded-Encrypted: i=1; AKwUvByuQ5+hkUXKhgraugHjQbHO/MPtcEs4XC9PEDTFwgaeS5UKs6DkI9TK2c2mXqU+jKr+594=@vger.kernel.org
-X-Gm-Message-State: AFuF++nM03Sk6xbtdMC+pL8cDOW7PrPXbzZSUnVS7FISLHzA/cwepnec
-	Aw5XZNnSmGLV36wQxXEwQpUKFjlaoS4ByeTPxkng3RGTNN/5BSv5vxMb
-X-Gm-Gg: AYBFou3AgXnuroISpr0tKionUzsZIWa8n0xrTF32GGqMO6TZqkynTxLwdsd2HerubtX
-	mljsVt+k9Mx4nKQuUGBtassBPQlnIWDzE6UapfhcMPxJs7LlvHZUWOuPDBFsbWa/M1XhuyPyzdC
-	fP5yiIfm+TvTdJhzXyTneXxfXF2FTsQI8WyWdJVGd4BmFy5i1Qq8wFYX28aX1K1upRjnutLDVdi
-	18McGBbApuywIMzOGwQengXvGG4LWnINO853xrADNPWdHrN4ePhLAGZ82aHCSugxyt+wLx4SSJW
-	k6NM8qqU1v1/xVk17ZUQLtviB8mKZsecURSNjZZ6/UNm2FWCqEEMx6dYc77UC12GJZa7vZJgbEy
-	E+N4pfRQ+ifV9z0vrVf5gLiqwGRqREHFej/CrV9W2OqTkvLCBe0V7oR3gd817rDA80nOIIoPUo5
-	xy4L0eKe0io/cT3hAaHj+AP2vB/2hisa7BNQJtdyGNf9ofRBiLTPvmQweS64n1f4UVaHHvKN3p4
-	xsZXAlF
-X-Received: by 2002:a05:7301:dd95:b0:353:58b7:b5fa with SMTP id 5a478bee46e88-3535f48136amr3132590eec.1.1791545539457;
-        Fri, 09 Oct 2026 04:32:19 -0700 (PDT)
-Received: from amd.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm7529934eec.17.2026.10.09.04.32.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 04:32:19 -0700 (PDT)
-From: Priyanka Mani <priyankamani2100@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Ivan Orlov <iorlov@amazon.com>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: selftests: Fix ndata size check in test_mmio_during_vectoring
-Date: Fri,  9 Oct 2026 11:30:17 +0000
-Message-ID: <eef6bc34bdf7391c5d3eb4b1ba5e97819e22ae8f.1791542392.git.priyankamani2100@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AcjHC8zB"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6998ZUh82596149;
+	Fri, 9 Oct 2026 11:42:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=aauzIxXtBl2bDuudZ
+	bSB3Ge7IrUQGG2lpugijlw/b20=; b=AcjHC8zBh3o/VdP+EsLeRWURA+XmDLxo4
+	p87+ZcV738b27tc4Jvs3DpOmBHL6R4DUBDJd1/nA+WJpPyzgoGnJgyyDhQzn1iGD
+	n812jagUCf53EpZxpPp84l4NDFQn6EG4FjY8rUefsDCdU/kfktA4tGTqVkJqm41/
+	4iFSM4+tIhnmQCPREBZrms1pJv+cxRjKmileIzkjIRIKQofCYxlSQz0VBOSPVy7r
+	lQpkOJlbF4Mr7udALkaBdqrZe+HQL1eTJ7VlE92X9EE0+syb9Ad5tJuorWKwO6Fr
+	mb6453P6h76Nc/RdFFHhvb6MBrhixRX1/wTfyyCqfJAB26Ckn+bIw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xk1hn4k-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 11:42:52 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6998I51Q3538395;
+	Fri, 9 Oct 2026 11:42:51 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h5f3u2ruw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 11:42:51 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 699Bgoc030868178
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Oct 2026 11:42:51 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D51758045;
+	Fri,  9 Oct 2026 11:42:50 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E9DB658052;
+	Fri,  9 Oct 2026 11:42:48 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.159.45])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Oct 2026 11:42:48 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH v8 02/15] s390/vfio-ap: Data structures for facilitating vfio device migration
+Date: Fri,  9 Oct 2026 07:42:31 -0400
+Message-ID: <20261009114244.1213173-3-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261009114244.1213173-1-akrowiak@linux.ibm.com>
+References: <20261009114244.1213173-1-akrowiak@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,40 +73,205 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=YtCa1IYX c=1 sm=1 tr=0 ts=6ac8d33c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=q7H8pZeb9lwjMWFkImUA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA0NiBTYWx0ZWRfX+FLm61yDEvr2
+ h85pG6BSoAD3Fc5PfCYbL6nc9hxjZWDTgJHtKOR7b/ycT6hliGU73Z77/i3o3NQnLku4X7awutl
+ +5kVrV56RnhhwvGMU0In+QipqO4zs8W3X9eVijUu8CAKmvKBoefpQedS35AlidHPmAe/zc2qnY8
+ aO/TKS4XZgGA+6kJh05im5jk0vnbXUeOjMzpD5LxR8twABsAipP5PykbXrGjKGiqSPXLCg/3l11
+ BTn9CMox7bpDV93Fxx1H8vxbxxt7v4Bf28inNLK313U5qFIXMm8NTZCnbthswsJR9jogV3X8n6u
+ H6Hs7xdleRnQDe1+Re4HwvLXyPf4UOSffVn8i9Bv7FjGCk2B3MSd3ZyJ88o6s/v+6RWKChH3rTM
+ TFlhKREu3g0noj8iSw7AsRM+0w1lWyeRqfJ+plwX7Oo/PQLQDxaKMu+cuzKBrPQiZ1JgyXyY5Hj
+ uAAlviqNLENsYB05sYw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA0NiBTYWx0ZWRfXwT6wiIR0q4/l
+ qYLi3n352394srm5rV2EfloXtcQ7wF+CR4XYGbr4/2c3ynoEyzGF82C2496Ucq+38wTx2PXM9/p
+ QlSKi+bBoeqiQwvbUaV6UWURqoyu6r4=
+X-Proofpoint-GUID: rxw0o4NDhL-blZ1jgnkA_I6NzrlDqqRp
+X-Proofpoint-ORIG-GUID: rxw0o4NDhL-blZ1jgnkA_I6NzrlDqqRp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-09_03,2026-10-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610090046
 
-test_mmio_during_vectoring() verifies that KVM reports the faulting GPA in
-run->internal.data[3] when an emulated MMIO access occurs during event
-vectoring.  kvm_prepare_event_vectoring_exit() always fills five entries
-(info2, reason, info1, gpa, last_vmentry_cpu), i.e. internal.ndata is 5.
+Creates the data structures used to facilitate state transitions during
+vfio device migration.
 
-The test, however, checks "ndata != 4" before dereferencing data[3].  That
-predicate does not actually validate the array size: it passes for ndata ==
-3, where data[3] is out of bounds yet is read just below, and it spuriously
-fails if ndata were ever exactly 4.  It only happens to work today because
-KVM returns 5.
-
-Assert the real expected size, ndata == 5, so that the subsequent data[3]
-access is properly guarded and the test enforces the exit's contract.
-
-Fixes: 62e41f6b4f36 ("KVM: selftests: Add test case for MMIO during vectoring on x86")
-Signed-off-by: Priyanka Mani <priyankamani2100@gmail.com>
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
 ---
- tools/testing/selftests/kvm/set_memory_region_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/crypto/Makefile            |   2 +-
+ drivers/s390/crypto/vfio_ap_migration.c | 113 ++++++++++++++++++++++++
+ drivers/s390/crypto/vfio_ap_private.h   |   5 ++
+ 3 files changed, 119 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/s390/crypto/vfio_ap_migration.c
 
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
-index dffe9654f45b..627ebc2ba024 100644
---- a/tools/testing/selftests/kvm/set_memory_region_test.c
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c
-@@ -606,7 +606,7 @@ static void test_mmio_during_vectoring(void)
- 	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_INTERNAL_ERROR);
- 	TEST_ASSERT(run->internal.suberror == KVM_INTERNAL_ERROR_DELIVERY_EV,
- 		    "Unexpected suberror = %d", vcpu->run->internal.suberror);
--	TEST_ASSERT(run->internal.ndata != 4, "Unexpected internal error data array size = %d",
-+	TEST_ASSERT(run->internal.ndata == 5, "Unexpected internal error data array size = %d",
- 		    run->internal.ndata);
+diff --git a/drivers/s390/crypto/Makefile b/drivers/s390/crypto/Makefile
+index e83c6603c858..20f29184825a 100644
+--- a/drivers/s390/crypto/Makefile
++++ b/drivers/s390/crypto/Makefile
+@@ -34,5 +34,5 @@ pkey-uv-objs := pkey_uv.o
+ obj-$(CONFIG_PKEY_UV) += pkey-uv.o
  
- 	/* The reported GPA should be IDT base + offset of the GP vector */
+ # adjunct processor matrix
+-vfio_ap-objs := vfio_ap_drv.o vfio_ap_ops.o
++vfio_ap-objs := vfio_ap_drv.o vfio_ap_ops.o vfio_ap_migration.o
+ obj-$(CONFIG_VFIO_AP) += vfio_ap.o
+diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+new file mode 100644
+index 000000000000..f76d151a5cce
+--- /dev/null
++++ b/drivers/s390/crypto/vfio_ap_migration.c
+@@ -0,0 +1,113 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Drives vfio_ap mdev migration.
++ *
++ * Copyright IBM Corp. 2025
++ */
++#include "vfio_ap_private.h"
++
++/* Magic number and version for the vfio_ap_config migration blob */
++#define VFIO_AP_MIG_MAGIC			0x76666170U  /* "vfap" */
++#define VFIO_AP_MIG_VERSION			1U
++
++/**
++ * struct vfio_ap_migration_file
++ *
++ * This object is used for chunk processing of multiple reads and writes of
++ * AP configuration information.
++ *
++ * @filp:	file stream used to read or write AP configuration data
++ * @ap_config:	object used to store AP configuration data between read or write
++ *		calls
++ * @config_sz:	the size (in bytes) of @ap_config
++ */
++struct vfio_ap_migration_file {
++	struct file		*filp;
++	struct vfio_ap_config	*ap_config;
++	unsigned long		config_sz;
++};
++
++/**
++ * struct vfio_ap_migration_data:
++ *
++ * Manages the migration state for the VFIO device that maintains the AP
++ * configuration of the guest being migrated.
++ *
++ * @mig_state:		the current migration state
++ * @resuming_mig_file:	the object used to restore the state of the vfio-ap
++ *			device on the destination host.
++ * @stop_copy_mig_file:	the object used to store the AP configuration of the
++ *			source guest for transfer to the destination host.
++ */
++struct vfio_ap_migration_data {
++	enum vfio_device_mig_state	mig_state;
++	struct vfio_ap_migration_file	resuming_mig_file;
++	struct vfio_ap_migration_file	stop_copy_mig_file;
++};
++
++/**
++ * struct vfio_ap_queue_info - the information for an AP queue
++ *
++ * @data: contains the queue information returned in GR2 from the PQAP(TAPQ)
++ *	  command
++ * @apqn: the APQN of the queue
++ * @reserved: padding to ensure consistent structure size across platforms
++ */
++struct vfio_ap_queue_info {
++	u64 data;
++	u16 apqn;
++	u8  reserved[6];
++};
++
++/**
++ * struct vfio_ap_config:
++ *
++ * Stores the state of a guest's AP configuration.
++ *
++ * VFIO device migration state transition from STOP to STOP_COPY:
++ * -------------------------------------------------------------
++ * When the migration state transitions from STOP to STOP_COPY, the vfio_ap device
++ * driver will open a file stream in read-only mode and return the fd to userspace.
++ * This fd is used during the STOP_COPY phase to read the current state of the
++ * vfio-ap device on the source host. In response, the driver will store the
++ * source guest's AP configuration data in a vfio_ap_config object and copy it to
++ * userspace.
++ *
++ * VFIO device migration state transition from STOP to RESUMING:
++ * ------------------------------------------------------------
++ * When the VFIO migration state transitions from STOP to RESUMING,
++ * the vfio_ap device driver will open a file stream in write-only mode and
++ * return the fd to userspace. This fd is used during the RESUMING phase to
++ * write the source guest's vfio_ap_config data that was read in during the
++ * STOP_COPY phase to the vfio_ap device driver on the destination host. In
++ * response, the device driver will copy the data sent from userspace to a
++ * vfio_ap_config instance which is then used to update the destination guest's
++ * AP configuration.
++ *
++ * Since the source and destination hosts may be running different versions of
++ * the linux kernel, the vfio_ap_config object provides two fields (@magic and
++ * @version) which must be set by the source device driver and verified by the
++ * destination device driver to ensure the migration ABI of the source and
++ * destination hosts are compatible.
++ *
++ * Note: Since a guest's AP configuration could be comprised of a large number of
++ *	 AP queue devices, a vfio_ap_config object should be allocated using
++ *	 kvzalloc.
++ *
++ * @magic:	identifies this as a valid vfio_ap_config migration blob;
++ *		must equal VFIO_AP_MIG_MAGIC
++ * @version:	layout version; must equal VFIO_AP_MIG_VERSION
++ * @num_queues:	the number of queues passed through to the guest
++ * @reserved:	padding to ensure proper alignment of @adm
++ * @adm:	bitmap specifying the control domains in the AP configuration
++ * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
++ *		queue information for a queue passed through to the guest
++ */
++struct vfio_ap_config {
++	u32				magic;
++	u32				version;
++	u32				num_queues;
++	u8				reserved[4];
++	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
++	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
++};
+diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
+index 12d7d240addd..172471793e22 100644
+--- a/drivers/s390/crypto/vfio_ap_private.h
++++ b/drivers/s390/crypto/vfio_ap_private.h
+@@ -91,6 +91,9 @@ struct ap_queue_table {
+ 	DECLARE_HASHTABLE(queues, 8);
+ };
+ 
++/* Forward declaration for migration data structure */
++struct vfio_ap_migration_data;
++
+ /**
+  * struct ap_matrix_mdev - Contains the data associated with a matrix mediated
+  *			   device.
+@@ -110,6 +113,7 @@ struct ap_queue_table {
+  * @aqm_add:	bitmap of APQIs added to the host's AP configuration
+  * @adm_add:	bitmap of control domain numbers added to the host's AP
+  *		configuration
++ * @mig_data:  vfio device migration data
+  */
+ struct ap_matrix_mdev {
+ 	struct vfio_device vdev;
+@@ -125,6 +129,7 @@ struct ap_matrix_mdev {
+ 	DECLARE_BITMAP(apm_add, AP_DEVICES);
+ 	DECLARE_BITMAP(aqm_add, AP_DOMAINS);
+ 	DECLARE_BITMAP(adm_add, AP_DOMAINS);
++	struct vfio_ap_migration_data *mig_data;
+ };
+ 
+ /**
 -- 
-2.43.0
+2.53.0
 
