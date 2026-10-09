@@ -1,128 +1,143 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7532A2D8378;
-	Fri,  9 Oct 2026 16:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70894CE69E;
+	Fri,  9 Oct 2026 17:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791564992; cv=none; b=elEOgTtEHsPhwjmcjbQep2msLS/L+KTzU4uVeWecuz+Tk7AQU+E93GTQoGXA2kxAzKKaXIRA/afUyQlA/o9NrXFYpDsz3lesUcs/X9hNHR+XQ+RQyY3WwIXHDpoI3OsgutVqDFWaZ6SDVXBQTlTHW4RFvGYejBq0bDnkL+12WJM=
+	t=1791567787; cv=none; b=L/f3YYSRDFjNdXMITwPtSQJ5VtKbvudNduxd3qj08Gq3FyVGxrt2hQpO/EDHwCc9JG2WBvGpS3EDfo72kybUtgvPgzF95FmtaLN7V7nxQ3mzf9g3Ra1H9GkGcTVHSut2HQOAr5llK7kVu78rRpafYVFtz9mvAh56o3t8Rd4aaaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791564992; c=relaxed/simple;
-	bh=Gsc13vUDcqHhR9WqLn+uEOJ3bL2AXkQlfX0gpVkBRts=;
+	s=arc-20240116; t=1791567787; c=relaxed/simple;
+	bh=mLiQqzGLzW31eYbHCnl2GntdGqvBueCmcEVKVxHtV3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MkvG/1pLRqmKNPgkDjWOd+M2g2fz3TDtk49oOlUHUdVn96aty4ScJ6PblUBstN+NcMwmtEoa0RfWT9hpXFio6RF0m7tWe5JTU1O2J0NJII8pn0waq0LXE0axgTItNb+SkByVBBnslwEb28h/8Nenj6UzPP8um5c4a0lx/WhTP7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUsl9XnU; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=kj4QlkqSQobDbIAFOvqthedtZfy5TzVlg97S1DCdyMpTso7TzZl9Y8A064OoV8OjxEOJoJIC9cLbSPHAsACdCVIWspA5WnaKVYGd5+uB2YuQT1yX1slEXdxDTrsji1eS/ss86ZoN8mxscN8sHyR9tycCK/xpqjyTLryQyqhRk8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCpHTy2k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUsl9XnU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2421F000FF;
-	Fri,  9 Oct 2026 16:56:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dCpHTy2k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB21D1F000FF;
+	Fri,  9 Oct 2026 17:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791564991;
-	bh=fE0OAfD+VvZZQlsp7SZETT3KsGTWZ99jT3uHHIgYDkQ=;
+	s=k20260515; t=1791567786;
+	bh=U0s03iNrq790So+pbxwkgjCu207XK/E0NIw4uR3r3S4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RUsl9XnUQdex4hYDI/nvqZumtgOTjlWiX0N56fVGal9ZXTElbzreII28hFeRkApJB
-	 NHo6FTkv1s0R1SKHMxFh2yoyGgEj94FI2YTZ5R2m7lwDx9O3N5/dtVzHCZ7rRFHg+b
-	 AtSEfYi+n++t5xP6H8VImwwnXKYhoLn2R1W0Koa99MOWI+o8HHqK2kIurxPlAU0Yri
-	 ygANXuDjupNkgl+uor72EiN8FZ3fmo02D0/KSu5wQ2x84hwaNSlHgKIyyR/PugD/c9
-	 1rQuaM8k2AyO9mDtnEOKbWctVlZ0WY0IhSQdg1dl1SdQIKXtdsg79DgnHAMkLcGLF5
-	 UTDY8ujTUNlMg==
-Date: Fri, 9 Oct 2026 17:56:08 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
-Subject: Re: [PATCH v4 07/38] mm: add mmap action for discontiguous kernel
- page mapping
-Message-ID: <askajMD6aWnRZzwK@gremlin>
-References: <20261003-b4-mmap-prepare-vma-flag-sanify-v4-0-a1f052500fd7@kernel.org>
- <20261003-b4-mmap-prepare-vma-flag-sanify-v4-7-a1f052500fd7@kernel.org>
- <CAJuCfpGj2Q092+zB=Z-d1iAOD6n1_HXVZQAL+YM6x_CeUEMpcw@mail.gmail.com>
+	b=dCpHTy2kRayrBM7jKK+ewjW+/1nlHlYFvCNzUWHvIu4BhDEB40Ckb1z6CuG6HTcHP
+	 k0R5edj57wikOJaKKbUpz/U6Uj2TkOq3otUC/mhhMHhIX1qtO+Abkqvj1HGZ1Suwsb
+	 9gv70Q5NfRUrjEy02QyerM0P1NLHA9bxKt0wf6Gwfz+6DPhCjog6Gzf+m6XKDFMWVz
+	 4V63bvdWNQqHPqcGFyl3Cja06HwpnTIU2Ppi+uVZvAm12V1aM7HOlI1P/OJDDrZFuK
+	 vza8KWGlZrphMiubCqZL0OEZzyaXsLrJGdfDm4YSvNuV+YQn7ap18HyVVtuVFDiDku
+	 ptjFns74hSqpw==
+Date: Fri, 9 Oct 2026 20:43:01 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v9 02/18] PCI/P2PDMA: Derive routing from directional ACS
+ controls
+Message-ID: <20261009174301.GC11438@unreal>
+References: <20261007063227.GC7822@unreal>
+ <20261007204045.GA783967@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpGj2Q092+zB=Z-d1iAOD6n1_HXVZQAL+YM6x_CeUEMpcw@mail.gmail.com>
+In-Reply-To: <20261007204045.GA783967@bhelgaas>
 
-On Sun, Oct 04, 2026 at 10:11:18AM -0700, Suren Baghdasaryan wrote:
-> On Sat, Oct 3, 2026 at 6:35 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+On Wed, Oct 07, 2026 at 03:40:45PM -0500, Bjorn Helgaas wrote:
+> On Wed, Oct 07, 2026 at 09:32:27AM +0300, Leon Romanovsky wrote:
+> > On Tue, Oct 06, 2026 at 03:49:47PM -0500, Bjorn Helgaas wrote:
+> > > On Thu, Oct 01, 2026 at 02:55:10PM +0300, Leon Romanovsky wrote:
+> > > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > > 
+> > > > pci_bridge_has_acs_redir() treats Request and Completion Redirect as
+> > > > interchangeable. On asymmetric fabrics, a control for only the reverse TLP
+> > > > direction can unnecessarily force P2PDMA through the host bridge.
+> > > 
+> > > Does "the reverse TLP direction" refer to Completions?
+> > 
+> > In general, the P2P code treats TLPs flowing from device A to device B the
+> > same as TLPs flowing from device B to device A.
+> > 
+> > However, in the context of this commit message, yes: completions flow in the
+> > opposite direction from the device's perspective.
+> 
+> And I guess asymmetric fabrics must mean fabrics where Request
+> Redirect and Completion Redirect are not set the same way?
 
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 448342883e9d..45b21bb04a18 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
+Yes, in some of our systems, deviceA to deviceB is going through
+different route than deviceB to deviceA.
 
-> > +static void __map_kernel_pages_prepare(struct vm_area_desc *desc)
-> > +{
-> > +       if (vma_desc_test(desc, VMA_MIXEDMAP_BIT))
-> > +               return;
-> > +
-> > +       VM_WARN_ON_ONCE(mmap_read_trylock(desc->mm));
->
-> Sorry I missed this before and it is pre-existing code but is this a
-> weird way of asserting that mmap_lock is write-locked? If so, why not
-> just use mmap_assert_write_locked()?
+> 
+> > > > Evaluate Request Redirect for client Requests and Completion Redirect for
+> > > > provider read Completions. Continue treating enabled Egress Control
+> > > > conservatively as a Request redirect.
+> > > 
+> > > Completion Redirect is intended to avoid ordering rule violations
+> > > between Completions and Requests when Requests are redirected (PCIe
+> > > r7.0, sec 6.12.1.1).  I assume this patch preserves the ordering rule,
+> > > but does the commit log need to say something about that?  I don't
+> > > know enough about P2P DMA for it to be obvious to me.
+> > 
+> > I don't think so, i didn't change anything related to ordering.
+> 
+> I don't think there's anything in this whole series that changes any
+> ACS settings, so I shouldn't have wondered about *preserving* the
+> ordering rule.
+> 
+> But I asked about ordering because it sounds like this patch expects
+> to encounter asymmetric fabrics where Request Redirect and Completion
+> Redirect may not be set the same way, and the spec implies that
+> asymmetry may result in ordering violations.
 
-Ah yeah, this weirdness is duplicated from the existing code. Will fix up on
-resin!
+My guess is that the hardware and system architects have ensured this
+doesn't happen. At least, I haven't received any complaints about this
+series during internal testing.
 
---
-Cheers, Lorenzo
+> 
+> > > Not really a question for this series, but p2pdma.c and p2pdma.rst
+> > > refer to "clients" and "providers", neither of which are mentioned in
+> > > the PCIe spec.  In this case it sounds like a client is a Requester
+> > > and a provider is a Completer in spec terms.  Is that always the case?
+> > > If so, "client" and "provider" in this paragraph are not adding any
+> > > information.
+> > > 
+> > > If "client" is not the same concept as "Requester" and "provider" not
+> > > the same as "Completer", maybe p2pdma.rst could explain the
+> > > difference?
+> > 
+> > Client vs. provider are actual target vs. initiator. They express the
+> > device role in the flow.
+> 
+> I'd rather use "Requester" and "Completer" when possible because they
+> have specific meanings in the PCI spec and they correspond to the ACS
+> control bits.  Client, provider, target, initiator are all from the
+> outer world that makes use of PCIe constructs, but they don't mean
+> anything inside the PCIe world.
+
+These names come from p2p users such as dma-buf and NVMe. I didn't want
+to rename them as they already exists and is in use inside p2p code.
+
+Thanks
+
+> 
+> Bjorn
