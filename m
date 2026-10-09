@@ -1,166 +1,141 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547174DD3A8;
-	Fri,  9 Oct 2026 12:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328D22931F7;
+	Fri,  9 Oct 2026 13:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791549093; cv=none; b=YD/9vEU5thVSdlgjqPtLPGVNe3oCSO9P0eHO9xkKtSiGu6hV/r6OVSvSKL4N6nAQ6vkX7+lY9thiaNgT2LuIkRNndRNbhNKVpw3bdZWGcvIhlLDBYNxX/nHAq4rwwjJF7CR+qqom1CRi0AjSf75Ry6MRySf0fj9zoIbXmEqA4YA=
+	t=1791550900; cv=none; b=EGAmE4Rv/fm32t/d0AEnoDztic+9bhknDGg8YXOcWi8sv2qbsmdAsz+Tk2b+ClUEMU7SeAkINLZJvZd/cz4ff82ZzmK3vSR4T7G8AF+8aVVjh3x+eUeglnE4mSMex4NiWo/ywyWSiL0LevIWpteenJYR+bTmiT8i60KZcV3sn1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791549093; c=relaxed/simple;
-	bh=PwDdFd5UTrauZBeUJBIFLaXhys5wIXRZpCcMuFtcH+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuYkoZeyF8ZcFaR0dvgxv4EmwnznJzTCTx/yPHcH8MPt0iv6ViS4To+3fymzuOjujzYQpIU7rz6CdwbyglIfw3NQxO0EuL7KghDreRbcyRzu8s8kBKwMLXh7PywgQh/HTUsXeXN2c0+dxtq9maGO+a/qvF1L+VV7oYlqVL8+NAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ar4QZoYs; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791550900; c=relaxed/simple;
+	bh=Yr0csg8n11gSHouKR25AWi4XRz98sjteLRNEiNNgFHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NXCiY11Z196ZD382ymYLh1qL2ufTBehh+RVB0Kr3DoXbskiEdx8zRa0NfE7CgpmNdbpvGl+mMfZoCw1Vkl15t+DCn+beu0TFcZMdE9qrTvKqLiRFrRdDFX6ZfSXG26HA5axEEEBl0ZaWKamXKvAIROos1sxaslKTY7wIPvBUAqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QiaEZSoU; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ar4QZoYs"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6998ZpW43814405;
-	Fri, 9 Oct 2026 12:31:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=a1/mGcTiaN92a/deh
-	7MBXbRTvV+R4Xy9kQfBiyfbg0A=; b=Ar4QZoYsMnWmgOPgmg9Clndf9ewoIHD0l
-	VcDaCk0xGVAvQB0zI3jovsPep7LPE4C2FV+/9CNyl1Q70qCxyKeto4jp3pU09O6u
-	VXbfQmotUU4I5PeGAf3QD+SlIWg30A6m88Zr0XpBsQ9L04jR4kBd9FGbT5pwaLKa
-	kClDFPJxdjihCxoDl0J5VrVq9Td/tMdemY938/Z6vQ7dIeL7UB8BMqxaGzRjHC+L
-	zbyjEsP5t0xJWE7hRZMHPYWOb9loKQm6UQLonRhV4BKC8v5ghRKUdBWgLwVDEiFV
-	i1RkM7T71w7K7xNTGxk5q/eqRfjSMlikBINJlJi6XseDx4z+vDKyg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xjvsv1c-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 09 Oct 2026 12:31:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6999s7WP724098;
-	Fri, 9 Oct 2026 12:31:08 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h6x1y8gqy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Oct 2026 12:31:08 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 699CV5Gf31326544
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Oct 2026 12:31:05 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DD222004B;
-	Fri,  9 Oct 2026 12:31:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54D4F20040;
-	Fri,  9 Oct 2026 12:31:02 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibmuc.com (unknown [9.39.27.243])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Oct 2026 12:31:02 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
-        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
-        amachhiw@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v2 4/4] KVM: PPC: Book3s HV: Take SRCU read lock around kvmppc_h_page_init() call
-Date: Fri,  9 Oct 2026 18:00:33 +0530
-Message-ID: <20261009123035.157770-5-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261009123035.157770-1-gautam@linux.ibm.com>
-References: <20261009123035.157770-1-gautam@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QiaEZSoU"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D2DBB1D14;
+	Fri,  9 Oct 2026 06:01:32 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16E293F66F;
+	Fri,  9 Oct 2026 06:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791550896; bh=Yr0csg8n11gSHouKR25AWi4XRz98sjteLRNEiNNgFHE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QiaEZSoUY3bacjAXWE8bvvHJR1nA7UlDRrWbL1smyctutQkasEHvSwcS63RvYiaxm
+	 2ktEh2CIGkVHlTOX5NJZnySVUDB3Ty5lORy7x9K3QAp8H5x5f9gc6Ni+mzurGr8D6K
+	 /P5q8L3qAQ0G6rfA2jVNoUqGD9BW/grWDcSGbzk4=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Oliver Upton <oupton@kernel.org>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Josh Hilke <jrhilke@google.com>,
+	Wu Fei <wu.fei9@sanechips.com.cn>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] KVM: selftests: Add support for dirty-ring on dirty_log_perf_test
+Date: Fri,  9 Oct 2026 14:00:45 +0100
+Message-ID: <20261009130054.3312154-2-leo.bras@arm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3485; i=leo.bras@arm.com; h=from:subject; bh=Yr0csg8n11gSHouKR25AWi4XRz98sjteLRNEiNNgFHE=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLJOPC28c+XfDqWD71OYOnUk1ne2ley9ob3tvsjxC9O/t 8gV/N/b0FHKwiDGxSArpsgi+2j+Kp7vUzKOXPmxAGYOKxPIEAYuTgGYSPUcRobN3Sbi3Nt3lS2U Pr+k40oZkz/7QftbDiWm51Ze8vX58/IxI8P/xSGinPftNjSy90Qlr5mnNsXkTnHaShH5szueb3N UOM8MAA==
+X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: xDEVNNTP9HqtwVRUmW-KA9M5Gm_kjEPG
-X-Proofpoint-ORIG-GUID: -0kbYwW1_rhhTYnSK3O_35-6gbp0mthK
-X-Authority-Analysis: v=2.4 cv=FoOQbGrq c=1 sm=1 tr=0 ts=6ac8de8d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=8qrm3ZJ1U5mLyAqmLJwA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA0OCBTYWx0ZWRfXzb4sAc1fho7e
- jFngrTOINX71oZX9j/LsI1GHQqDFqPH3Jsds/38e55fWLsP6OszHN8jQSxA4dl8x0NMGyglDVdP
- y4tQ1WzJrvQoNM8OhiMI7suozXk34t4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA0OCBTYWx0ZWRfX4xTsgG/RDy5W
- byocwY2K/QzEtqFQ3c6sypwkzREjH+ciaX3vnpRLOsj/R72xneB+tU/3jraqih2DBsr6/U9NkBk
- Eysgs6DU5oRpB74bX3Dlrt0AdU0tGCNXdfDRF68xsmBWL6Md/OG7Rby7ckp/yMxts4i7yqvx5fE
- rlFxck7HMmr+xtaLKfdqSdrOND8+5zRhIOu0T82okxyEzNXpfsjZ3zG9Z572S+TYYw52pQQoCDL
- BFx1yBddNUeLDDgoabtukZqv131hKlRdHFSfd7KQXDnht1hwSwZmJXsyt25zw/CYJ8CBiK+Li/N
- Y0/i1ZNbQSkZuUes4w2YLvjJ6xOrPVBeS4tWnWG9MyubdPKDFM0NqkBfikXzBFc+UmrBS4FUUic
- ueUezChu/tVgNoSzOBqkw/RSdAYZK07c7vq19HeL3qUTD3QTUoEFOe9gNoWbo4l5xNpMDdOKtJ4
- ilXs6JUf8VMufIX3Ing==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-09_03,2026-10-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610090048
 
-Since there is no srcu read lock around kvmppc_h_page_init(), a
-"suspicious rcu_dereference_check() usage" can be triggered by running
-host linux with CONFIG_PROVE_RCU=y and the following code in the guest:
+Add support to dirty-ring on dirty_log_perf_test, so we can measure
+performance differences when we change / improve the mechanism.
 
-plpar_hcall_norets(H_PAGE_INIT, H_ZERO_PAGE, phys_addr, 0);
+One big change in this set is that dirty-ring needs to be enabled
+after the VM was created, but before any cpu is created, so for that,
+I made a few changes on memstress so it can actually take dirty-ring
+size as a parameter for VM creation. (Patches #1 & #2)
 
- =============================
- WARNING: suspicious RCU usage
- 7.0.0-dirty #227 Not tainted
- -----------------------------
-./include/linux/kvm_host.h:1074 suspicious rcu_dereference_check() usage!
+Also added some checks in dirty-ring enable, so an error message on
+ring size is more informative.
 
-other info that might help us debug this:
+Please provide feedback :)
 
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by qemu-system-ppc/2093:
- #0: c000000354197ab0 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x10c/0xaf0
+Thanks!
+Leo
 
-stack backtrace:
-CPU: 30 UID: 0 PID: 2093 Comm: qemu-system-ppc Not tainted 7.0.0-dirty #227 PREEMPT(full)
-Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.60 (NH1060_158) hv:phyp pSeries
-Call Trace:
-[c00000033e1bf430] [c000000001b3dbd4] dump_stack_lvl+0xc8/0x130 (unreliable)
-[c00000033e1bf470] [c0000000003da964] lockdep_rcu_suspicious+0x1f4/0x290
-[c00000033e1bf520] [c000000000231424] gfn_to_memslot+0x1b4/0x1c0
-[c00000033e1bf560] [c00000000023637c] kvm_clear_guest+0x9c/0x110
-[c00000033e1bf5c0] [c0000000002714a4] kvmppc_h_page_init+0x160/0x1a0
-[c00000033e1bf610] [c00000000026c040] kvmppc_pseries_do_hcall+0x1930/0x1940
-[c00000033e1bf6d0] [c00000000026fb18] kvmppc_vcpu_run_hv+0x268/0x800
-[c00000033e1bf7a0] [c000000000246b30] kvmppc_vcpu_run+0x30/0x50
-[c00000033e1bf7c0] [c000000000241ed4] kvm_arch_vcpu_ioctl_run+0x364/0x530
-[c00000033e1bf860] [c00000000022b870] kvm_vcpu_ioctl+0x1b0/0xaf0
-[c00000033e1bfa50] [c0000000009b4514] sys_ioctl+0x144/0x190
-[c00000033e1bfab0] [c000000000034330] system_call_exception+0x170/0x370
-[c00000033e1bfe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+Changes since v1: 
+- Converted memstress to take a memstress_params struct instead of a lot of 
+  parameters, so it could be more easily extended in the future (Sean)
+- Moved dirty-ring cap detection to a helper, so it could be used instead 
+  of open-coded options (Sean)
+- Improved the error messages in case the dirty-ring fails to setup, with
+  a more specific message on what went wrong (Sean)
+Link: https://lore.kernel.org/all/20260929113711.2064390-1-leo.bras@arm.com/
 
-Fix this by taking a srcu read lock around kvmppc_h_page_init().
+Changes since RFCv4:
+- Series title 
+- Rebase on v7.3-rc5
+Link: https://lore.kernel.org/all/20260729161519.3778839-2-leo.bras@arm.com/
 
-Fixes: 2d34d1c3bbfd ("KVM: PPC: Book3S HV: Implement virtual mode H_PAGE_INIT handler")
-Cc: stable@vger.kernel.org # 5.2+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv.c | 2 ++
- 1 file changed, 2 insertions(+)
+- Using acquire/release barriers to make sure there is no reorder between
+  incrementing iteration and summing the time spent on cleaning.
+- Improved ring-size checks, although not perfect due to reserved entries
+  affecting minimum size.
+- Do not allocate bitmaps for dirty-ring tests, as they are unused.
+- Improve help text
+- Make sure ret==0 before going back to vcpu_run in dirty-ring case
+Link: https://lore.kernel.org/all/20260708152232.2568907-1-leo.bras@arm.com/
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index de05d721edc4..4153edd49475 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1386,9 +1386,11 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 			ret = kvmhv_copy_tofrom_guest_nested(vcpu);
- 		break;
- 	case H_PAGE_INIT:
-+		kvm_vcpu_srcu_read_lock(vcpu);
- 		ret = kvmppc_h_page_init(vcpu, kvmppc_get_gpr(vcpu, 4),
- 					 kvmppc_get_gpr(vcpu, 5),
- 					 kvmppc_get_gpr(vcpu, 6));
-+		kvm_vcpu_srcu_read_unlock(vcpu);
- 		break;
- 	case H_SVM_PAGE_IN:
- 		ret = H_UNSUPPORTED;
+Changes since RFCv2:
+- Added mutex to make sure only a single vcpu is 
+  collecting/cleaning at a time. This gets us the ability to
+  test return values, and not account for kvm.slot_lock waiting time.
+- Stuff reported by Sashiko
+  - Return value always positive, so assert was pointless
+  - Concurrency inflating the time for dirty-ring cleaning
+Link: https://lore.kernel.org/all/20260629105950.1790259-1-leo.bras@arm.com/
+
+Changes since RFCv1:
+- Stuff reported by Sashiko
+  - Fixed elements / byte size wrapping issue
+  - Removed element count due to concurrency
+  - Testing exit_reason instead of ioctl return value
+  - Some nits
+Link: https://lore.kernel.org/all/20260624171656.1737580-1-leo.bras@arm.com/
+
+Leonardo Bras (5):
+  KVM: selftests: memstress: Add struct memstress_params, make
+    memstress_create_vm() use it
+  KVM: selftests: memstress: Add option to enable dirty-ring on VM
+    creation
+  KVM: selftests: Introduce kvm_get_dirty_ring_cap()
+  KVM: selftests: Check dirty-ring size before enabling
+  KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+
+ .../testing/selftests/kvm/include/kvm_util.h  |  11 ++
+ .../testing/selftests/kvm/include/memstress.h |  15 +-
+ .../selftests/kvm/access_tracking_perf_test.c |  12 +-
+ .../selftests/kvm/demand_paging_test.c        |  12 +-
+ .../selftests/kvm/dirty_log_perf_test.c       | 140 ++++++++++++++++--
+ tools/testing/selftests/kvm/dirty_log_test.c  |   3 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  20 ++-
+ tools/testing/selftests/kvm/lib/memstress.c   |  68 +++++----
+ .../kvm/memslot_modification_stress_test.c    |  14 +-
+ .../kvm/x86/dirty_log_page_splitting_test.c   |  12 +-
+ 10 files changed, 247 insertions(+), 60 deletions(-)
+
+
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
 -- 
 2.55.0
 
