@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C815D3DE43D
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 20:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D853E9C1A
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 20:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791579046; cv=none; b=euK/KxomoA03JEQeqR5NbZzjCzAnyceLp7P22idofHQJLVChAWWBAEETx4B6soHnx8leKqtfxhJA22VJa1s+R//sg/1DcX5QDQlYLC1Pp58Pzo3Z9/Ml4hHakA48v8+fQVkA9200rUmal0k7Zopteay7B1BeQ0/N3lGOk4cXizU=
+	t=1791579046; cv=none; b=q1GQ4gtge5L/kR02NctEDBntBzNSaungl6t+gZddpKH8DuFmj3NdMQaLg9WFLL+aZwBh0IkJCyPNOMU96M7LJz8MJbqCZ1THKn5cYBPZsATx0JGdwwzn6w4Lmnnt5v/3+ZwtF8FCG71ZMy9jyc74GyMeclbiB+nRlTWTxaZA2FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791579046; c=relaxed/simple;
-	bh=8Gs1d740/WG62XMlf0EOI35ECZVTTmQ0jDWyGyhy+FE=;
+	bh=lm9y59s9QUCct3bwQXRUuFWBGJM3yHKkxi7/XtkH1cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oC34nEP8M4qX/iA/cKJqZLIU+bgDipCqadCc/aJ/OfKJpnE7/QF1Pt9urWa9PT/8DbQcMZDzl10BXSgdRt7TK94y7Gt3Unzfknqcc9rAaXzE+46uXB98/4883ZLC7symSp3SD9m1mVaM6YLLSzMcVwyBb+y2/6G1QURXugeDlCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FDLkKNP5; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=VIusAFsV6jOmQWypz8CckN3C8HG6manG0fMzvJ+D/pdyCdKblco+tHfzLmLh9p52L9tpllw5w7ZtWIDL1dywdtATQmWzYyAzjBq9bcLg/OM8VXxSZ77QMuO0y15OKdnicBGrWtH73aubvU33Yd8d1+l+ikBwc/DUUOzSs70UzqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbkvyjFF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FDLkKNP5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbkvyjFF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791579043;
+	s=mimecast20190719; t=1791579044;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=goJ42vVa/6g/ckeQD9hR1HE5AR+RatDSYAG7UDCyL6U=;
-	b=FDLkKNP5J08NjcVgcD9Bz8GE05d8hwzfhc2CzzV0gAxT15y6rF36ciyGvdpzXY+bRnLadX
-	5E33MsQP/1cPEu2OHBaK2k5BPdhxv2LSOtpXaxSu/Thl/KkzjRAZK4rm1bbXMQ7Q2MXB6S
-	wPOtfTSn182GeR4j2a87WgFnX0HNSuA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=TUFhx0GbPPget1SdFI2jKKBx59ydAAm1+QrBW1wqlM0=;
+	b=NbkvyjFFAkxt7bCjloXUrJdiHePrzlfgkkCiH1CfJCrmOBn0QFtjW9gFifhczQUCrFuFU0
+	Emx0iyegCn0CwgCbr/xth0izB5lGR73QovHssRg7hu0mfqsWH8DmZ7GS4l1RsmhJQ1ku4E
+	kG3HG0OGtXo3/Re60ifskGtrxYba8MA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-HFsqf8mNMJy1kjSxIem0uA-1; Fri,
- 9 Oct 2026 20:50:42 +0000
-X-MC-Unique: HFsqf8mNMJy1kjSxIem0uA-1
-X-Mimecast-MFC-AGG-ID: HFsqf8mNMJy1kjSxIem0uA_1791579041
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-kD1_XAVGMkOCZm2wbF9kJw-1; Fri,
+ 9 Oct 2026 20:50:41 +0000
+X-MC-Unique: kD1_XAVGMkOCZm2wbF9kJw-1
+X-Mimecast-MFC-AGG-ID: kD1_XAVGMkOCZm2wbF9kJw_1791579040
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3FA3719540FC;
-	Fri,  9 Oct 2026 20:50:41 +0000 (UTC)
-Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3ED6E18004D4;
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 08F02182F55B;
 	Fri,  9 Oct 2026 20:50:40 +0000 (UTC)
+Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EDF1C1800299;
+	Fri,  9 Oct 2026 20:50:38 +0000 (UTC)
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: kvm@vger.kernel.org
 Cc: x86@kernel.org,
@@ -49,9 +49,9 @@ Cc: x86@kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Maxim Levitsky <mlevitsk@redhat.com>
-Subject: [PATCH 2/2] KVM: nVMX: avoid losing the posted notification interrupt when exiting L2
-Date: Fri,  9 Oct 2026 16:50:36 -0400
-Message-ID: <20261009205036.672523-3-mlevitsk@redhat.com>
+Subject: [PATCH 1/2] KVM: nVMX: don't check PIR.ON when processing nested posted interrupts
+Date: Fri,  9 Oct 2026 16:50:35 -0400
+Message-ID: <20261009205036.672523-2-mlevitsk@redhat.com>
 In-Reply-To: <20261009205036.672523-1-mlevitsk@redhat.com>
 References: <20261009205036.672523-1-mlevitsk@redhat.com>
 Precedence: bulk
@@ -63,52 +63,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-While delivering a nested posted interrupt notification
-(see vmx_deliver_nested_posted_interrupt), KVM assumes that,
-as long as the target vCPU is in the guest mode, KVM can send the
-special POSTED_INTR_NESTED_VECTOR, which will either trigger APICv ucode
-to inject all interrupts into L2 or cause a VM exit, after which
-vmx_complete_nested_posted_interrupt is supposed to finish the job.
+Despite the suggestion to test and set the PIR.ON and avoid sending
+a posted interrupt if it is already set, there is no requirement
+for this bit to be set for posted interrupt processing to happen
+when the target CPU receives the posted notification vector.
 
-However, a third case is possible: if the target vCPU is about to exit
-to L1, the posted notification interrupt must be instead injected
-to L1' APIC, but KVM doesn't do this.
+See section 30.6 POSTED-INTERRUPT PROCESSING:
 
-Detect this case in the nested VM exit path and act accordingly.
+   "The processor clears the outstanding-notification bit in
+    the posted-interrupt descriptor. This is done atomically so as to leave
+    the remainder of the descriptor unmodified
+    (e.g., with a locked AND operation)."
+
+Apparently Windows' implementation of APICv does exactly this:
+it sets bits in PIR, without bothering to also set the PIR.ON.
 
 Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
 ---
- arch/x86/kvm/vmx/nested.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/nested.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 2142e25c9b6c..4d8bb7f7fcd4 100644
+index 151873407abd..2142e25c9b6c 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -2445,7 +2445,7 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
- 			 ~PIN_BASED_VMX_PREEMPTION_TIMER);
+@@ -4041,8 +4041,11 @@ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
  
- 	/* Posted interrupts setting is only taken from vmcs12.  */
--	vmx->nested.pi_pending = false;
-+	WARN_ON_ONCE(vmx->nested.pi_pending);
- 	if (nested_cpu_has_posted_intr(vmcs12)) {
- 		vmx->nested.posted_intr_nv = vmcs12->posted_intr_nv;
- 	} else {
-@@ -5162,6 +5162,14 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
- 	kvm_clear_exception_queue(vcpu);
- 	kvm_clear_interrupt_queue(vcpu);
+ 	vmx->nested.pi_pending = false;
  
-+	if (lapic_in_kernel(vcpu) && vmx->nested.pi_pending) {
-+		vmx->nested.pi_pending = 0;
-+		if (!WARN_ON_ONCE(vmx->nested.posted_intr_nv == -1)) {
-+			kvm_lapic_set_irr(vmx->nested.posted_intr_nv, vcpu->arch.apic);
-+			kvm_make_request(KVM_REQ_EVENT, vcpu);
-+		}
-+	}
-+
- 	vmx_switch_vmcs(vcpu, &vmx->vmcs01);
+-	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
+-		return 0;
++	/*
++	 * Don't test the value of PID.ON.
++	 * It is valid to trigger a posted interrupt without setting this bit
++	 */
++	pi_clear_on(vmx->nested.pi_desc);
  
- 	kvm_nested_vmexit_handle_ibrs(vcpu);
+ 	max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
+ 	if (max_irr > 0) {
+@@ -4209,8 +4212,7 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
+ 	if ((max_irr & 0xf0) > (vppr & 0xf0))
+ 		return true;
+ 
+-	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
+-	    pi_test_on(vmx->nested.pi_desc)) {
++	if (vmx->nested.pi_pending && vmx->nested.pi_desc) {
+ 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
+ 		if (max_irr > 0 && (max_irr & 0xf0) > (vppr & 0xf0))
+ 			return true;
 -- 
 2.54.0
 
