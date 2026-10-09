@@ -1,206 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C17B392C50
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 15:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791561501; cv=pass; b=H9EvBJoKi5p5Vb+wxPXM7skz0PSKWyVA1bDCokUTL9zP3o7Rt5hrzSSClPrw3rt3RinEORO6xUBTJKfbNbzqvl5vWX5hDeNH9bsGhoyHEUjo9tvzlVBE6rWQ2N0VXgX4OHbtlmlWWwFw30MYkzy62Ie1zZPgoboAKZ9sSjagZi4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791561501; c=relaxed/simple;
-	bh=H5HgyIlsw0FH+q0vPjCvMUxollTUJgEt/Obula8tczI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BdHo23fV/1d3SaEiFX1vp1kz2iK2c9+TMe7p4LJRaiaRGcnLn4UVEsLQDjkl44krvWVtviT+aW73l6++ZRQDZc8C2oxdfwVQJ+Z79WoHzDXgaFeOTLHXvNVOYbulbCaz1gD0yh5kHjIsjh+sHu90py77u0F8DcFS5TxOBHfrfkk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X8+ED2jM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oTyom0ns; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FD746A5E5
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 16:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791561987; cv=none; b=cNcWYw9daPC8zEvFiFAn6shdi8yhgSObHPAPzYDmchi6wkviE/D7zzqI58w9Q2x0eYxpPzYcKpvvFxMxKV5m/jmRnvqCRn+7X7kWFp8gLuzkAXytUGkxt1l0bCehafZ1PYJvRmi3BYl7Ie0VjSkKr8V3KvIVuI+tdTURApme018=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791561987; c=relaxed/simple;
+	bh=WHf77Yd5DASFhOAaaOdf6g+ghry/Kw8R/boOFhyWaRE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qR4P5cO3YKCtOhV6YGV1MmQj9Pz/mkq6R+UhhVnrXytiddjYNHXrbIsRc1bmXlz7JqJ8vgZfgWfN9SGaLI8eGR9g5d3pH0biRYKEKmvamtACisd0KEvX/lfg16hEDqtusqAfA9s2E0You9LIJY3CYVxwiB55Wy3XlRNjj3SDwG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UKgLYkPe; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X8+ED2jM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oTyom0ns"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UKgLYkPe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791561499;
+	s=mimecast20190719; t=1791561985;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bsWl+jQaevR81Yppcc5u0OX8FaKpUFiecTztMLcffMY=;
-	b=X8+ED2jMM4A1tTESmjXGhdUXMHxfjdFrifL7M+JlcYDsHBb/ayC2Q/BaFBOFW5xV9I/wiY
-	zJRfTB/sQICshLtWG9viWVb7AUTpYDpWturBlBk/lJlRHEyL+1+E8rChAeITXsWYYQiX++
-	lh0MQlu0+OXyZTDhHliGO33lsEP0pxI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-118-2sRLzWPQNTuBh_E7xFtmpg-1; Fri, 9 Oct 2026 15:58:17 +0000
-X-MC-Unique: 2sRLzWPQNTuBh_E7xFtmpg-1
-X-Mimecast-MFC-AGG-ID: 2sRLzWPQNTuBh_E7xFtmpg_1791561497
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48af4046a3bso5497694f8f.2
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 08:58:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791561496; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kVEmhROsPiuFOx9MnWIYCbgc8BRUqtm+kqXEm3XDeki2A0JxSuTDIXBpoE1zXOeIUV
-         +m9yotL2H+n7Ba6+gNVQrzb1uGEhAPtFBTht57HbSVVguVutkV0c1hXiGaA4rztx/7e4
-         2ecjhesdDBehxMqnt2hfSOSTSkb6SSNpV0+PYU6Okp/TvEAUEu7/mWlVrQtqIF7cgi8+
-         mUM2Uq7XYTC6au0ManH/79ho+NnH9c1gJom/P3tk+X1RtGvHvpw/xy24L1JPnfm5XUzi
-         RWLQ+bevuNCIbOAjuOi0kpRyoQW9NVDCzl2fgTpmVTKeiVyXv3c5x65aq84NY5CcKlvV
-         NJ4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bsWl+jQaevR81Yppcc5u0OX8FaKpUFiecTztMLcffMY=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=pCGiP2/V3jiwli2fPEn9OSSxUA0pCM6edxGiyYuNlqDx7fpHFt2XeNGaXlLctH5t2p
-         N6HOV6TktsWH3/Fyvz9KzFCjGLa6o5CGv9unExFAl+83FyzVzHVimSNL7sW/qaqBPsMd
-         FCeXsoLp/ELIvFwy+4mo0kPaXWF1ahXNO45R7b1iJKgOuQ9dTIl+jXkBNT7rbgcUH2YR
-         afdwcL79+3r69L8wdRIOuHe/fHa7CzJ5Ck3bXDGX8i3RWI0e+tJ1Tbo0yIPClwOlpzKR
-         p9nsHJ/kql26Kt5kEcHdOUWl1AePeiAEg/dkun2UtoRLDwujBkMB3lLAp5XxnhfOgsfq
-         eloQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791561496; x=1792166296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bsWl+jQaevR81Yppcc5u0OX8FaKpUFiecTztMLcffMY=;
-        b=oTyom0nsapgbl+rqUAHhPlu4x/0kKE0XcYU4VNQ1wT7hiu2FBpBj5As5Oga52cF8S/
-         2lxjgbXxlx4ICHufpjk/HQFqK0nGk+Kb7VWJWN6V2o7W9TwwWM964VimQGafI3XPQiqL
-         3suUs8ZRo5e0Nfyw+wev5GgRB+XCa7WBDUFMjuDRoaKmp2xxmOllkhw0Cc4jQDhfo11b
-         pnVkscej8EzPt91g52FWpKIbr3Pi2DwbinSCLRGR8bqletpTTCJ5x3t86zlFGkjrBk5v
-         zbm5TKZ6mxCmdWzQ9nw4RNSAMVevsn8ul9XI3kIDQJluLguorxiJ9KdypiXCiPBeOfkJ
-         cXbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791561496; x=1792166296;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bsWl+jQaevR81Yppcc5u0OX8FaKpUFiecTztMLcffMY=;
-        b=hZgAPkKS6BsB3mXvN499d7L62jZrvL/GYSwf4kWgNcSMifHme38PteZzaZqa5ZoOap
-         4KqT2k2+H1FHWHcozGEyCqTdMemucO2bVxyjkbOFZMSrJD/yNbbiprfpN89c6rUzsz5K
-         kFF71ccigZzHO+Lycia+VpTZlcgzO2AsmD5/nWruDE3PkYyAQTA8OeIqz+Dd2XhJntWe
-         6yY8u98rSijSkJ8f22Zww9evaP8p0+NAoBJMEDe0cYu7voovPxUyNcFumW3yqWs/qw93
-         BZU5ocLPrYc1z9h0Pt6zZX7oEolgf9eof1q1sZiqaVhCAwLuG/AlpWt7MvcnGsqbfbrC
-         0Tiw==
-X-Gm-Message-State: AFq9FYKn22T5cKYebeP2nerOuPH5k1h9xZDa+9HpVpm2VMyCtN9NBAap
-	O/jM7Jn6Gcz7Pr2vDGuqw1hkW93Xas295rnF0k92AcPeMJYsBiqGtsKlvO5Ph+u3wFus8g7LZwA
-	yRIe0xtiw6zSL3tEi3gxnwU74ZkBC+17Euk8xHpmGWzZcT1Je9Ggjl9uN6hJbDt21akSK8mcJBC
-	/q0St3LlCMDvlXqpV5KGeOdScWo5S//ANJIjLM
-X-Gm-Gg: AYBFou12hlVQ+TR/CtaVa7MfgGTBUvdG6tf3MXns5DHQ8bKSbSeh4eUU9l9LXgJP1km
-	JFK3Rr/5drbOf0/A3M1kZhrMZ/Ll2VnWs6ofHuohucjHZ47pY8+IIoOJREkLB6xCvPI2POv/uUY
-	xGgSKfi91h82aT5RfpP76vZ1LhA15DyrLJTYSbk5VGYe4o9jErCcPx/IyAfUEe2HDT18bDM9vU8
-	nqja3WiQaKcAC8t7J7TO9peQmNmugGRDux5CVL7K3AhjyHPfB14OWTNMNsDGw==
-X-Received: by 2002:adf:f88d:0:b0:48b:6bb:6d37 with SMTP id ffacd0b85a97d-48dbaade236mr3490750f8f.25.1791561496594;
-        Fri, 09 Oct 2026 08:58:16 -0700 (PDT)
-X-Received: by 2002:adf:f88d:0:b0:48b:6bb:6d37 with SMTP id
- ffacd0b85a97d-48dbaade236mr3490726f8f.25.1791561496196; Fri, 09 Oct 2026
- 08:58:16 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UWLmuV+VOitmDREu5SKD8TR8ZykYME/n6JVVWgUeAEU=;
+	b=UKgLYkPeB6rraFuwuFgjGB5xMuIUerZzujlB9YxzYkb9JW3x8iHq2IK4jpzkaCjyutTuwZ
+	mqRFGcO1jzHRMAyTJopAYThV3zMKuOxFZtwbXTJ0y86j2W6ks9jC5wLlXI6K/ALtRNT2wC
+	zzf8xXuvo23jQhVwUc3dny9vXW/lo7k=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-fPBwmwcGP_-ruLyfe5J9dQ-1; Fri,
+ 9 Oct 2026 16:06:21 +0000
+X-MC-Unique: fPBwmwcGP_-ruLyfe5J9dQ-1
+X-Mimecast-MFC-AGG-ID: fPBwmwcGP_-ruLyfe5J9dQ_1791561978
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 89F4F18021EA;
+	Fri,  9 Oct 2026 16:06:18 +0000 (UTC)
+Received: from [100.90.56.12] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9DB3A1956042;
+	Fri,  9 Oct 2026 16:06:16 +0000 (UTC)
+Message-ID: <4944d4a4-cb8d-4c46-aa84-c0050991cffb@redhat.com>
+Date: Fri, 9 Oct 2026 18:06:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002164750.3981742-1-seanjc@google.com>
-In-Reply-To: <20261002164750.3981742-1-seanjc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL 4/6] KVM/vfio: Use file-based reference counting for
+ KVM
+To: sashiko-reviews@lists.linux.dev,
+ Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: kvm@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
+References: <20261009142749.186650-1-borntraeger@linux.ibm.com>
+ <20261009142749.186650-5-borntraeger@linux.ibm.com>
+ <sashiko-outbox-165746@kernel.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 9 Oct 2026 17:58:02 +0200
-X-Gm-Features: AclHuK-7M2P1s3vmGyha3Gb1Dl0I5jX9wU2nbwFTblAHJjssh915xjEcJupkhJ8
-Message-ID: <CABgObfbVST40ndfetLvBfj3m7PACQOcA3BC8j6zYnJvGjTUB-Q@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: x86: Fixes for 7.3-rc6+
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <sashiko-outbox-165746@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Fri, Oct 2, 2026 at 6:48=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> Please pull a few more fixes.  These aren't _that_ urgent, so feel free t=
-o
-> punt these to 7.4 if you think we're throwing too much into late RCs.
->
-> That said, I'd really like to get the AVIC fix into 7.3 as I very deliber=
-ately
-> didn't tag it for stable@.  The fix depends on what ended up being the ch=
-anges
-> to hold kvm->lock for all of vCPU creation, which I don't really want to
-> encourage folks to backport to LTS kernels.  So, if we squeak the AVIC fi=
-x
-> into 7.3, which is presumably the next LTS, we'll save a one-off backport=
-.
->
-> Thanks!
->
-> The following changes since commit 973ea70393e885e540f714904e51bc6cac80e3=
-d7:
->
->   KVM: SEV: Do cache maintenance on the source VM *before* clearing SEV s=
-tate (2026-09-28 17:11:49 -0400)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.3-rc6
->
-> for you to fetch changes up to b3e6212dea2e4328a841ceb37f377583176dc735:
->
->   KVM: x86: Use active memslots for the per-vCPU MMIO cache (2026-09-30 0=
-6:40:49 -0700)
+On 10/9/26 16:56, sashiko-bot@kernel.org wrote:
+>> -static void vfio_device_file_set_kvm(struct file *file, struct kvm *kvm)
+>> +static void vfio_device_file_set_kvm(struct file *file, struct file *kvm)
+>>   {
+>>   	struct vfio_device_file *df = file->private_data;
+>> +	struct file *old;
+>> +
+>> +	if (kvm)
+>> +		get_file(kvm);
+> 
+> [Severity: Critical]
+> Does taking a strong reference to the KVM file here create a circular
+> reference cycle?
+> 
+> When userspace adds a VFIO device to a KVM VM, kvm_vfio_file_add() takes a
+> reference to the VFIO file. If vfio_device_file_set_kvm() then takes a
+> reference to the KVM file, both files hold references to each other.
+> 
+> Because both file descriptors hold each other's references, their f_count
+> will never reach 0 when userspace closes the FDs, permanently leaking the
+> KVM VM and the VFIO structures.
 
-Pulled, thanks.
+False positive, the reference to VFIO is in the KVM-VFIO device file and 
+not in the KVM file descriptor itself.  Using variable names, there is 
+one reference from kvf to vfio and one from vfio to kvm.
+
+(Right? :))
 
 Paolo
 
-> ----------------------------------------------------------------
-> KVM x86 fixed for 7.3-rcN
->
->  - If creating a vCPU ultimately fails, clear its entry in the AVIC Physi=
-cal ID
->    table used by hardware to perform IPI Virtualization and delivered pos=
-ted
->    IRQs.  I.e. plug the same use-after-free hole related to IPI virtualiz=
-ation
->    and posted IRQs that was fixed for APICv by commit b41f2ca6c0601 ("KVM=
-: VMX:
->    Fix stale PID-pointer table entry left after vCPU free").
->
->  - Use set_page_dirty_lock() instead of set_page_dirty() when marking a p=
-age
->    dirty after writing back SNP firmware's desired CPUID state to userspa=
-ce.
->    Using set_page_dirty() is unsafe if the page/folio isn't locked (as po=
-inted
->    out by its function comment's big DANGER warning, which no one reads g=
-iven
->    the number of bugs of this exact nature).
->
->  - When checking for an MMIO generation match, use the memslots for the c=
-urrent
->    vCPU context (non-SMM vs. SMM), as a misbehaving guest can coerce KVM =
-into
->    incorrectly identifying a write as MMIO in order to bypass KVM's
->    write-tracking.
->
-> ----------------------------------------------------------------
-> Jann Horn (1):
->       KVM: SEV: Fix page dirtying in sev_gmem_post_populate()
->
-> Jinu Kim (1):
->       KVM: x86: Use active memslots for the per-vCPU MMIO cache
->
-> Naveen N Rao (AMD) (1):
->       KVM: SVM: Clear AVIC Physical ID table entry if vCPU creation fails
->
-> Sean Christopherson (2):
->       KVM: SVM: Add paranoid helper for checking if vCPU is AVIC-addressa=
-ble
->       KVM: SVM: Use "is AVIC-addressable" helper to sanity check load()/p=
-ut()
->
->  arch/x86/kvm/svm/avic.c | 22 ++++++++++++++++------
->  arch/x86/kvm/svm/sev.c  |  2 +-
->  arch/x86/kvm/svm/svm.c  |  6 +++++-
->  arch/x86/kvm/svm/svm.h  |  1 +
->  arch/x86/kvm/x86.h      |  4 ++--
->  5 files changed, 25 insertions(+), 10 deletions(-)
->
+
+
+> [ ... ]
+> 
+>> diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
+>> index 6cdc4e9a333a3..19548a4309426 100644
+>> --- a/virt/kvm/vfio.c
+>> +++ b/virt/kvm/vfio.c
+>> @@ -144,6 +144,7 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
+>>   {
+>>   	struct kvm_vfio *kv = dev->private;
+>>   	struct kvm_vfio_file *kvf;
+>> +	struct file *kvm_file __free(fput) = NULL;
+>>   	struct file *filp __free(fput) = NULL;
+>>   
+>>   	filp = fget(fd);
+>> @@ -154,6 +155,10 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
+>>   	if (!kvm_vfio_file_is_valid(filp))
+>>   		return -EINVAL;
+>>   
+>> +	kvm_file = get_file_active(&dev->kvm->file);
+> 
+> [Severity: High]
+> Does struct kvm contain a member named 'file'? Looking at
+> include/linux/kvm_host.h, it doesn't appear to exist, which would cause a
+> compilation error here.
+> 
+>> +	if (!kvm_file)
+>> +		return -ENOENT;
+>> +
+>>   	guard(mutex)(&kv->lock);
+>>   
+>>   	list_for_each_entry(kvf, &kv->file_list, node) {
+>> @@ -168,7 +173,7 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
+>>   	kvf->file = get_file(filp);
+>>   	list_add_tail(&kvf->node, &kv->file_list);
+>>   
+>> -	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
+>> +	kvm_vfio_file_set_kvm(kvf->file, kvm_file);
+> 
+> [Severity: Critical]
+> This is where KVM takes its strong file reference on the VFIO device file,
+> which completes the reference cycle discussed above.
+> 
 
