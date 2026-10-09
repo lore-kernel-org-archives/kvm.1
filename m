@@ -1,144 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05DE3BF660
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 21:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99710331EDD
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 21:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791579897; cv=none; b=AvSdEaG8/Uk0eGpd7v8EzaTV4s9Uti7krilk33f/NUJo8JEFx1/cOyAMGS7qZFaILYv8ViBSl3RDnVjjiDvgwEU1Gi7aMr9h1d9ucQkr0FgeRpXKJZHo7IEdUmoHCDmCl7VVXRmlYZjq8iFjfmYtMQRBhhfNi5rzUFMpcWPpO6Y=
+	t=1791580432; cv=none; b=P6RCeYWcLGBg9J2/YpV+FRPGKg7UNRsyezSaJIca62zwxdm3l29W9Ib8RrgnKnIotYX4KEYAfgColli5o88/3urCRygru3beO3pXNih8K2CwDOw6hVa/uYLe1l1t5LAz71QiQxTh9ebk+zyH5jmtHzd71w7plxzXTgwlpu+o5CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791579897; c=relaxed/simple;
-	bh=30c3dRa15nHBEqPfGiE9F0+qBMdKUJmV4tgKK2Z1cu0=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=B55DOl6i3RaHY8xaVZMolcwuSBITtq9LTFxCDmpI9sUgZTSf1wflqbMQJ0k3DwTQPvGz4nOr7L3oiPiuWH3qheJwRLg9wfVfnkaCGT5q1ZodpBAbiQURc6Y6CUPEvD8WArKhPAKa48zRtpoFLZF5vGfHOrWqjM3LENkYOkBxq60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAi3Dhma; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791580432; c=relaxed/simple;
+	bh=f2/MICLCErTodlF6SfyHDMCXCSRgLawKzwcMBFedg/0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Nc7gSziz3V0RULms+0se5QL/swXK5myzZvjeRPqAjdTtMbNpB+HkPMxMKPsaZOvHn3J5hYargCRADdA/t3NuwAAFBYQcXSFFiY2W4EcMTGm1YzG/WYhk4zSX/VpDo2Dk/qf/nvx4X/sObaKm9yNatiNZkttUjMSIaMTdQZQ5WI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ubI5L0GP; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAi3Dhma"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4171F000FF;
-	Fri,  9 Oct 2026 21:04:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791579896;
-	bh=XYYbNr4PpSMmhZrTjv/0sPptCKCM4NgDdDCzMu/wujo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NAi3Dhma9nwSRsxAc6cNDeP4G9ZIeagO5ZaLpoB6e5bIoyiDkme3LjB14ODFL1CRk
-	 1a7Dff7PkXr8ovOEvbZ8CAZeSysmwMm/XxcFPvh0ppPH9Nq7x0OEnxQUrKdWhl+FNz
-	 Cs7wLPxNsskszdU5JdImDfnnf1zEgzXihGSiXFcihUTMBfUImzEk0aTDTnl5PGAy5h
-	 0eNhxajEs0aOQHip4PHqloIjT+hSzL3ezrKl64TFvqqRBcOUdz0WAD4SS5ecONfSeb
-	 H1+Z94HzCbFB0shWfCUbojGMyYWHnr6bWEXCpX1yCENCFt+x6hbLoAPoRV3xRuM/77
-	 V7Kjs4zqBUilg==
-Message-ID: <sashiko-outbox-166078@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] KVM: nVMX: don't check PIR.ON when processing
- nested posted interrupts
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Maxim Levitsky" <mlevitsk@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261009205036.672523-2-mlevitsk@redhat.com>
-References: <20261009205036.672523-1-mlevitsk@redhat.com>
- <20261009205036.672523-2-mlevitsk@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Oct 2026 21:04:55 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ubI5L0GP"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e818ca61bfso1024335ad.2
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 14:13:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791580431; x=1792185231; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f2/MICLCErTodlF6SfyHDMCXCSRgLawKzwcMBFedg/0=;
+        b=ubI5L0GPFSQwrzWccGT9khVWqh5E++pF0JOt4x4YirBubEqEieyrA++qcWW2hnartk
+         doBCCNuhzkDbL6Ij3DvAD9qGPZKLHaWSREY0E9/OYcWTL5Uca+YUpg4U6X8sV0+mVWwc
+         B184VeLSE/nr8iMVnV8SCSsXR2nSN4F8DYnzpnLkscqf6yj0BBJsH+8H/Tl04O/tIIvm
+         FZ+4RQ5KDCnwdCPXayLnB1HlX19XXxTtIUqv6vf3UWMb6zdSNcvMQcmJCKfwIc5XtKGC
+         41g3GfVWKhHAJkvGQPSqGiMefvzdpxWM7rpZGGOSUFFD1aaCE4u7XOU3+ISLtAvg90en
+         uB5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791580431; x=1792185231;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=f2/MICLCErTodlF6SfyHDMCXCSRgLawKzwcMBFedg/0=;
+        b=CEAV0RdM6UcwkcMyxZrIOTuplUwPcelr5EjI/ZK68xyM3SvLqfnNolUN8VC1Nc44EI
+         CdvDwc8vtUTCpdyeNcsvr5m1+kcCdoDgBkZqKDnnC7J8rnAHsJ93xwgu3rYZz146+aXF
+         yvKoUinmcsCvCDlcpKNq3FWTUPuiETmF3glCZztNL13807/sZmFH+ZEx49SJHOrLLWg9
+         ztHfukvu433LX/fQQsPxckFToheeasjJI2kBFIe/ZTdDObb252lceLMrboRVRCeC6zcZ
+         Wb2no+ylClm1BOrnjRibNEZrJ77u8QGe/DuiMvk4poOf8GQVD+ccCE7i+0B3INcExewb
+         u4nw==
+X-Gm-Message-State: AFq9FYKB1GSY2FrHXuvzQ43o/XozVt5/Yzo9L2wqzDpAm0GBZEfOeV8e
+	O0ggF9wsVs+e1ygS0fHdp6w//u1s2SJT0UsuyXRHWyOGbwWOgXDzRAHwbQyh9Se7BibLJLw3rbH
+	lZTaXSA==
+X-Received: from plri10.prod.google.com ([2002:a17:903:32ca:b0:2e5:9357:4fc1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e849:b0:2e8:4ef1:6fd8
+ with SMTP id d9443c01a7336-2e84ef177e6mr20615815ad.60.1791580430759; Fri, 09
+ Oct 2026 14:13:50 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri,  9 Oct 2026 14:13:49 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261009211349.112524-1-seanjc@google.com>
+Subject: [ANNOUNCE] PUCK Agenda - 2026.10.14 and 2026.10.21 - CANCELED
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] kvm: spurious vector 255 injected due to TOCTOU race in PIR update
-- [High] KVM: nVMX: missing compiler barrier after pi_clear_on() leads to l=
-ost L2 interrupts
---
-
-commit 3c2cccabb927f653f71a7a79b1d1600d4fb5f728
-Author: Maxim Levitsky <mlevitsk@redhat.com>
-
-    KVM: nVMX: don't check PIR.ON when processing nested posted interrupts
-
-This commit modifies nested posted interrupt processing to no longer require
-the PIR.ON bit to be set. It achieves this by replacing the conditional
-pi_test_and_clear_on() check with a direct pi_clear_on() call.
-
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index ddf6df7bee93b..11362aad2bc8a 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -4033,8 +4033,11 @@ static int vmx_complete_nested_posted_interrupt(st=
-ruct kvm_vcpu *vcpu)
-> =20
->  	vmx->nested.pi_pending =3D false;
-> =20
-> -	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
-> -		return 0;
-> +	/*
-> +	 * Don't test the value of PID.ON.
-> +	 * It is valid to trigger a posted interrupt without setting this bit
-> +	 */
-> +	pi_clear_on(vmx->nested.pi_desc);
-
-[Severity: High]
-Does this change introduce a missing compiler barrier that could result
-in lost L2 interrupts?
-
-Replacing pi_test_and_clear_on() (which uses test_and_clear_bit(),
-providing a full memory and compiler barrier) with pi_clear_on() (which
-uses clear_bit()) removes the implicit compiler barrier. On x86,
-clear_bit() uses inline assembly without a memory clobber, providing
-no compiler barrier.
-
-Without an explicit smp_mb__after_atomic(), could the compiler reorder the
-earlier vmx->nested.pi_pending =3D false store to after the ON bit is
-cleared?
-
-If reordered, the CPU could execute the PIR read inside
-pi_find_highest_vector() before committing the pi_pending =3D false store.
-If a concurrent software IPI triggers
-vmx_deliver_nested_posted_interrupt() on another CPU during this window:
-
-- It will set the new PIR bit.
-- It will set the ON bit.
-- It will assert vmx->nested.pi_pending =3D true.
-
-The delayed pi_pending =3D false store would then silently overwrite the
-concurrent true signal. Since the PIR was already read prior to the new
-bit being set, KVM would miss and permanently lose the interrupt.
-
-> =20
->  	max_irr =3D pi_find_highest_vector(vmx->nested.pi_desc);
->  	if (max_irr > 0) {
-
-[ ... ]
-
->  		__kvm_apic_update_irr(vmx->nested.pi_desc->pir,
->  			vapic_page, &max_irr);
->  		status =3D vmcs_read16(GUEST_INTR_STATUS);
->  		if ((u8)max_irr > ((u8)status & 0xff)) {
->  			status &=3D ~0xff;
->  			status |=3D (u8)max_irr;
->  			vmcs_write16(GUEST_INTR_STATUS, status);
->  		}
-
-[Severity: High]
-Could this execution path erroneously inject a spurious interrupt vector
-255 into the L2 guest?
-
-By removing the pi_test_and_clear_on() gate, the code now unconditionally
-falls through to __kvm_apic_update_irr() whenever max_irr > 0 and
-pi_pending is true.
-
-If an L1 guest concurrently modifies its PIR/IRR memory structures during
-L2 posted interrupt processing, clearing the PIR and IRR in guest memory,
-__kvm_apic_update_irr() can update max_irr to -1.
-
-When max_irr is -1, the code subsequently casts it to u8:
-((u8)(-1) =3D=3D 255)
-
-Since 255 is typically greater than the current RVI, KVM would write 255
-to GUEST_INTR_STATUS. Can this cause L2 guest crashes or undefined
-behavior by injecting vector 255?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261009205036.6725=
-23-2-mlevitsk@redhat.com?part=3D1
+PUCK is canceled for the next two weeks as I'll be offline/traveling.
