@@ -1,106 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64794478869;
-	Fri,  9 Oct 2026 07:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20C53AD51F;
+	Fri,  9 Oct 2026 07:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791531536; cv=none; b=Aj1b/1pw3E+Nq5VJegX4W7BXl2kJQ0vNs1kw9sw9W1mYDpKsg+nfeWO0lfEbI3/urpWRPDyFo9VVHclATc1bnOEQP3K1hb37Jrzwio6yRijmavQvQsuvO8w7BciueDhaXbbyyIY3ggp2RHqyjYREU+LNa2QO0G3tTbUrs7jJIt4=
+	t=1791532455; cv=none; b=scPEy/a/JcCbzwP6mzLuyhoee4i6k1Lbt1sRtPQtwe7jmEmnDqt+2UggSwffC1zycGAzZXM3+Ud3H1Oj6RQl7TGhPuyppHLumukAqP8K54LIlXo+MOcFLcqv9GN8fCzpVjyUuAJyi393Nyq7OK1q/J1ZTuN1Y3e1nQTjNE9U6BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791531536; c=relaxed/simple;
-	bh=Otfcuv5e8JjcFt2LTFU0o+BbtMCAXdqbUvGGmcSnXmA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BN0LgenSYmyWYdrPlWnV/vHzCTi4nZO1qPE+iesMlZs9lbQIK9q227Cyzv1vgiQ7ggKZxpBK2Xl3Dd0y7MT6M6ooa0KZ84ZX6Sxv9pHom/nHfh5jX7QIFzK6c9vZ5ODeZDJaroHySN3kca442ziptmUEtQd/+NtMu4K4lMSQgPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JwHuEKax; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791532455; c=relaxed/simple;
+	bh=tE3GOa1bzQYmLci/uinKcz9hq53UUxXOStqlM98g8ME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j4GMEh5BaYP9Ds1QxQxn18myhkisVflXhGPwgMV31FMuEEXLUSLmkf9iLo3JihEK8jOf5P7l0su6CnZ8kdmNyoNL5FH85zyzkjeg76xNk8nPvHw9vBJ1Li7/K0rewpWbafqiHfaXBLkHLTPvyTvx2kUe3Tk0r6QxjKw8L8C7Po4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+h+Soyw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JwHuEKax"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791531533; x=1823067533;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Otfcuv5e8JjcFt2LTFU0o+BbtMCAXdqbUvGGmcSnXmA=;
-  b=JwHuEKaxvLdgyvs72XjXfzj/vtl4+Pvuyu3pN4S4UKRRg+Q4Qn+mAF2Y
-   nCBswkDSnCTzf0xw1zihmSK1Kw5kGVIj9Kv30IOiMXI4b9qCtlGExb1zu
-   vqaYdKnPsvJDiRAGwYYmkG50T59l0InLmMW466nnrvPGO0NwZ2aY/q1lX
-   WXeJMjj8ITH3JyP6defCTSiQ7P2Ol+dAItcit7Tjkmvei6j0KpAnwnGKM
-   FkZ/yt/pLFs+2HnjpsyTt2skouShSGps+ebtOVOiOY8+KUCt5Le1UrOOK
-   qvBHD0ozqrhsYyyfvtot5fhgv1ZSDwKE/QhX+WggH+Cu2NdkK0tcLfHVK
-   w==;
-X-CSE-ConnectionGUID: VGMG28Z5Sz6/sNnsQMsFNg==
-X-CSE-MsgGUID: qP+TI2I3T42ph53W2jQUPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="331794"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="331794"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 00:38:53 -0700
-X-CSE-ConnectionGUID: n40WNNUYSoqZ+qIwWXGuow==
-X-CSE-MsgGUID: BjHEI2hdSlSJzs42ryzYGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="573718"
-Received: from yizheliu-ivm.ccr.corp.intel.com (HELO [10.238.208.114]) ([10.238.208.114])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 00:38:48 -0700
-Message-ID: <0caa7f40-7522-4cce-aff2-912a2c5b1cec@intel.com>
-Date: Fri, 9 Oct 2026 15:38:45 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+h+Soyw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9EC1F000FF;
+	Fri,  9 Oct 2026 07:54:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791532452;
+	bh=tE3GOa1bzQYmLci/uinKcz9hq53UUxXOStqlM98g8ME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=g+h+Soyw+HgmIxzntY/594uEIbgmuEFV+tmD9csdsQad1z9b+YaY02BZdfcFsD9f+
+	 KMGpoqtSVXb1PWsSLXbQZCmMXVZwDIjjYn1cYV20oP5OPcVTj3PNShJx52ZIJoYtpb
+	 VXzQJtlcNKbztVX9eqP4mZUKpkbUvtc0HdsiOOhGydOAMG6H8YzKvx7klVFpMvxMWW
+	 cqHmWY58o+Leznpc1Nj5REb1fQSL1DmRh0nupH55y+hBOMOZwgYeA9DOp2l507ll0j
+	 GI1Anx3LJiStqxZryfZ4EZqad42vufbRnmuA4vziyjvdi839Cz/vCwUlnABGd6BM82
+	 SRNivJ/yhaiyw==
+Date: Fri, 9 Oct 2026 08:54:07 +0100
+From: Will Deacon <will@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Julien Thierry <julien.thierry.kdev@gmail.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH kvmtool 0/5] Fix diagnostics and capability probes for
+ protected VMs
+Message-ID: <asidn0tpusz-MZRp@willie-the-truck>
+References: <20260831192406.1341841-1-fuad.tabba@linux.dev>
+ <CA+EHjTwBXEVp_fJp+SvXqrfab2NGdnCXy6L9n=aW2yeTUUOniQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 12/23] KVM: selftests: Require guest_memfd for TDX VMs
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-12-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-12-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+EHjTwBXEVp_fJp+SvXqrfab2NGdnCXy6L9n=aW2yeTUUOniQ@mail.gmail.com>
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> Force guest_memfd for TDX VMs.
-> 
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+On Fri, Oct 09, 2026 at 08:10:55AM +0100, Fuad Tabba wrote:
+> Gentle ping on this series. Marc has merged the pKVM core series into
+> kvmarm/next, including the KVM_GET_ONE_REG -EPERM that patch 1
+> handles, and all five patches have Suzuki's Reviewed-by.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+I usually wait for the patches to land in Linus' tree before I update
+kvmtool (although I may be fishing when that happens).
 
-> ---
->  tools/testing/selftests/kvm/lib/kvm_util.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index 3f559f207408..7625908caf21 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -482,7 +482,7 @@ void kvm_set_files_rlimit(u32 nr_vcpus)
->  static bool is_guest_memfd_required(struct vm_shape shape)
->  {
->  #ifdef __x86_64__
-> -	return shape.type == KVM_X86_SNP_VM;
-> +	return shape.type == KVM_X86_SNP_VM || shape.type == KVM_X86_TDX_VM;
->  #else
->  	return false;
->  #endif
-> 
-
+Will
