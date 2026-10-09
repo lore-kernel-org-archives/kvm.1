@@ -1,126 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900C53CE489
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E743DEC7
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 13:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791551305; cv=none; b=TV7pR1QoirqQ0FkEGLSCyFyRJK5Yz0/+f9M94Z6iCgOWit7PItzeLfoaZqtnS/gioly7M8sxL41/eQYBOmZQOoKlapAT652b37YHosmCiAO8C4aDhBSa/0jMHiHYiPTDfV8vuSI/V+hm7giyz2eC/r+t0pk85XSGPCgr92p3t2s=
+	t=1791551498; cv=none; b=RuD4+uwhPSjjiiyK83kW+ksTbWPow2KeG4ce7rpFCHtpS15TP1rGEoptc+Lukqw++cO/RANm2g7/MaJotJNO4+jH1CFToCpYDrSmIVWgWvLqzyOqSR9WL4RnOqD148ym+15/woozbll3p6AYVfDNRFmlOizcGW2MadedWXgf14c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791551305; c=relaxed/simple;
-	bh=yhTc7H+0IqN4frsO9baGH1rCR17Pji1FxlEXnUH5cBg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a1a91Eujv/3U/82fjMn4DuiLgNbz6bkCd2joyS58fIkFE4a8bXa+hSLKlFuugooaJxJq88RhQvBdNPneW8dPuhjO9kqvoVtj5NsTNk4lCfeeIb9MH9ElcyyopxckSpp1Xm3RqVNtuokctOmf4PGtjMkcFfkVheUCy/dAhty1UWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2qqCgv0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791551498; c=relaxed/simple;
+	bh=8WVvmUjTXoMbdyVBpGpz2Dtdzid6a0wSqsgzmGHqCk0=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=K4MATyPBGUEV8O6ht4T/SFBza49T9bjtznpEvZkVFjRpZCG4V03Nw5wUYehAchDjTydxvox8tH6NFTmOSnjuXAF9yiRBjEB7uXYWWQAUZ8OIw5WSX6NY4q4u81ciEUG94V1RzL7QDoG6MwJN7dgPIcgH4ZodIQYZfUQ/sYUHH34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSOYlXPJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2qqCgv0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416191F00898;
-	Fri,  9 Oct 2026 13:08:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSOYlXPJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3881F00898;
+	Fri,  9 Oct 2026 13:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791551303;
-	bh=FpUIQG2ildfJUJXlKIPJfIgmZEi5bWUOemoR8HcahF4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c2qqCgv0D58/0e+k9zxI9o6dg3GYpDAHOtqCZbpcGXac3qwbIvxYpa3bQHSmqrAyV
-	 VsbnWIASJih0kFuAw4OTbBagMheW9GxPXdx7eadF0QUvCJ7NM2xmMlSZ0qprbBTc/K
-	 n20YP9NzuQfludLWwDvLQjdb6QoK3liPhRuyryMZHAyPbZs9AAR4Px0k1NL88KQp9u
-	 UxYSlHPSPJvYXRhzh37T9CMKT8VZVA9w3hFuCqZVVCu9jX6FPCT7ecTe605nzua1sr
-	 biOTq+gYuahC7BnenqIHkldbrWfR2yghlxyKT0NuYKmSdqfectrWBgw2AirTZ9L/f5
-	 k1njNHyfO800Q==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 92507198003A;
-	Fri,  9 Oct 2026 09:08:16 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 09 Oct 2026 09:08:19 -0400
-X-ME-Sender: <xms:P-fIajBkki790Caehe3DTmvhDY-2WDVcOvDkZdaUGk9ejDcosdz3Dg>
-    <xme:P-fIagwvaFs17JgJc6_4-W7UbnqQzsF00tXRD44Ft0Mpp3sF00kmWh0Z59Kxq7Hnd
-    rmJaBJp73yKvYu3vIy-zqeVTfQMwnZm1yehbW3roBzX6WbUpYs9YlXq>
-X-ME-Received: <xmr:P-fIanIyPDsDm4HxWS_Ml4co6ihgNtYzg3RKCqcIjKXd1hLONamUEkACkww>
-X-ME-Proxy-Cause: dmFkZTFj6c6YPtf1RuC5ge2DhrVWepaKzhdu396taV7DKjafJHPQen98eiWB0+ajyHRDBo
-    V9e4R6BapcDruKkFzt7wbLaUPtObKYs7i9noBdPNd/Q6HdaKBiK7wc4jCqMfUhvS89D9zD
-    6H8Qa2Lh150MpeNHzv+CKjV1NHARmiVAuljI7sPclv0uj2VaIlohhugxZpGz+KzF2cLXXD
-    aw9miqNb9hjy9GUg6ZWhHJkCKHUPOnumFVmQYAyIbqyiR9vu2DTsyIAAhfPUlXZgZ4aiFu
-    QOaOGft0y6E/laBs0cB6CcqW5Ibby+5XmFvevcK3EPGURVWQnT6jrlijFDsdGYcPZOA3gT
-    mvvTl13TDo8h6/vmkHXJs1G7Ql6NxAv+Ch5hGDhY70m3VIQ9uhGLUoy9F7cLI/eJu4b/nH
-    lZHFRwYYsu8dWgU8q3poX6OpVnmzbYLjMIAvFBb07hNoBj1OAiC7+LOJNVo0Wlqf709ua/
-    unpiNAskSwxOrVmfClu4Wi6a5hNXGTwKeZao5bkjWPxcs5imNSE0IINWKBTC4avlAQQbZ3
-    AMAI7l/Pat2dhWY2egMZFwwCy61AKkUl32pYmptN5sGsIrbFue5WT2TB2Y5QPmTWSaFT7q
-    dOeSzIVEOjElCH6Rc9LqzfHAEcPBk6BUIy5wGHyo0tpH6H2v3Ux0jgPpbRAQ
-X-ME-Proxy: <xmx:P-fIajKGf4zhBmdyhwypcQ3169QKNwWnxMm41auc61SakHcDgCHoRw>
-    <xmx:QOfIagXlsaiZSwUyCDE55Ioe3vzwaWNk2BaouJcaTtI-Kf8uBsnZXQ>
-    <xmx:QOfIav8zCruYSxG2TPYpmSt9_vRXpdghozhNXpAW4iJ7KTnDHAg_bA>
-    <xmx:QOfIaiJAi-7lJkBSB5Hj-ngVS49AhBqCuLjBaj271j_CoRja9LoXSQ>
-    <xmx:QOfIal0RcBbcM0t8osyWDiAAsLKGGpsCc6xY5E_m7UlM0spMTe9MHwpK>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 09:08:14 -0400 (EDT)
-Date: Fri, 9 Oct 2026 14:08:13 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, kvm@vger.kernel.org, yilun.xu@intel.com, 
-	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, peter.fang@intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
-	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-Subject: Re: [PATCH v3 1/6] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
- a wrapper
-Message-ID: <asjnNXbMfro4k2t8@thinkstation>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-1-db52cb05b918@linux.intel.com>
+	s=k20260515; t=1791551497;
+	bh=L6A9Ek0062NjmD6A2fBTXgz80sgVBRuk+Dc3DvO0meE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VSOYlXPJoYAcUujz8qy1Xqr+N9nuibxwf1NHNIYO16QaZYmzMRgP7m9WTGQDSGQd/
+	 dPA9K+lveZSr893SEMZ7IYHvGFtLAfnv6bA6anDWWcNLZw+Pm9CIHmh1hkFe/2lEh0
+	 5BcmRq/FNiRGvZCPyA0Jc0sZGTh9mKSlcCbvkFKPMOT9NOZC0V4OJfjO4SrqEFDd5e
+	 XYVS6Qhm2Cw3wpeQmPlKe0MwdwlfsUWul9tlLsyKD3tW896qZjnFcdr9u8zJJI06H1
+	 Uxw+KFlpkv7SlI+7jJfpEM3yXs5cNjcgLvwnEmehnOcMyGLXFHe5Gnz8M3JebTzHqk
+	 JY+QXIRLDW+bg==
+Message-ID: <sashiko-outbox-165604@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/5] KVM: selftests: memstress: Add option to enable
+ dirty-ring on VM creation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leonardo Bras" <leo.bras@arm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261009130054.3312154-4-leo.bras@arm.com>
+References: <20261009130054.3312154-2-leo.bras@arm.com>
+ <20261009130054.3312154-4-leo.bras@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 09 Oct 2026 13:11:37 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006-tdx-module-ext-v3-1-db52cb05b918@linux.intel.com>
 
-On Tue, Oct 06, 2026 at 01:41:45AM +0800, Xu Yilun wrote:
-> In Linux, SEAMCALL wrappers are introduced to avoid broad SEAMCALL
-> access by exposing only a selection of SEAMCALL leafs, but also to
-> abstract the SEAMCALL register ABIs. The abstraction improves
-> readability and reuse for SEAMCALL leafs that are called multiple times.
-> 
-> Some SEAMCALL leafs are not explicitly wrapped because the level of TDX
-> ABI details needed to perform the call is low enough to flow well with
-> the calling code.
-> 
-> For some of the currently unwrapped SEAMCALL leafs, the TDX architecture
-> has evolved the ABI to introduce new leaf versions. The host can select
-> the version to call based on what is supported by the loaded TDX module.
-> When future kernel implements this version selection, more ABI details
-> will leak into the surrounding caller code, which decreases the
-> readability of the caller logic. To keep the ABI details contained, move
-> the SEAMCALL leaf that will need version selection into a wrapper.
-> 
-> When defining the wrapper, the cleanest separation would be to have
-> kernel data types for the SEAMCALL wrapper arguments, and have them
-> marshaled into SEAMCALL leaf ABI types (often u64s) inside the wrapper.
-> This works for many SEAMCALL leafs but becomes cumbersome when the
-> register ABI type is a physical address which points to a buffer for an
-> in-memory ABI. If the SEAMCALL wrapper only accepts kernel data types,
-> it may need duplicate buffer allocation and copies to match the
-> in-memory ABI. Another solution is to define a named helper structure
-> that mirrors the in-memory ABI, populate it in a separate flow, then
-> pass it to the SEAMCALL wrapper. struct seamldr_params is an existing
-> example of this pattern.
-> 
-> TDH.SYS.CONFIG requires a list of TDMR information in the form of a PA
-> array. The PA array is the in-memory ABI. Create a structure for the PA
-> array, use it as the argument when creating the wrapper for
-> TDH.SYS.CONFIG.
-> 
-> For readability, adjust a bit of the existing PA array size calculation:
-> use the new PA array structure's element type instead of hardcoding u64.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] kvm: selftests: missing KVM_MAX_VCPUS bounds check in memstress_vm=
+_create_with_vcpus()
+--
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+commit 8f8ed5a2bb5936b315dc077d1f97ad188346d5a2
+Author: Leonardo Bras <leo.bras@arm.com>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+KVM: selftests: memstress: Add option to enable dirty-ring on VM creation
+
+This commit adds an option to memstress_create_vm() to take a dirty-ring si=
+ze
+and enables it before vCPU creation. It introduces a new function
+memstress_vm_create_with_vcpus() to handle this setup correctly.
+
+> diff --git a/tools/testing/selftests/kvm/lib/memstress.c b/tools/testing/=
+selftests/kvm/lib/memstress.c
+> index 880657df65e9e..b1f13499e85f4 100644
+> --- a/tools/testing/selftests/kvm/lib/memstress.c
+> +++ b/tools/testing/selftests/kvm/lib/memstress.c
+> @@ -121,6 +121,27 @@ void memstress_setup_vcpus(struct kvm_vm *vm, int nr=
+_vcpus,
+
+[ ... ]
+
+> +static struct kvm_vm *memstress_vm_create_with_vcpus(struct memstress_pa=
+rams *params,
+> +						     u64 extra_mem_pages)
+> +{
+> +	struct kvm_vm *vm;
+> +	int i;
+> +
+> +	TEST_ASSERT(params->nr_vcpus > 0, "Invalid number of vCPUs (%d)",
+> +		    params->nr_vcpus);
+> +
+> +	vm =3D __vm_create(VM_SHAPE(params->mode), params->nr_vcpus, extra_mem_=
+pages);
+> +
+> +	if (params->dirty_ring_size)
+> +		vm_enable_dirty_ring(vm, params->dirty_ring_size);
+> +
+> +	for (i =3D 0; i < params->nr_vcpus; ++i)
+
+[Severity: High]
+Can this loop overflow the statically sized vcpus array?
+
+The vcpus array is bounded by KVM_MAX_VCPUS (512). When a user runs a
+memstress-based test with an argument greater than 512 on a host kernel whe=
+re
+KVM_CAP_MAX_VCPUS is greater than 512, or runs mmu_stress_test on a host wi=
+th
+more than ~682 physical cores, the option parser checks against
+KVM_CAP_MAX_VCPUS but not against KVM_MAX_VCPUS.
+
+Passing this unbounded params->nr_vcpus value to
+memstress_vm_create_with_vcpus() will blindly write past the end of the vcp=
+us
+array, causing memory corruption and crashing the selftest.
+
+> +		vcpus[i] =3D vm_vcpu_add(vm, i, memstress_guest_code);
+> +
+> +	kvm_arch_vm_finalize_vcpus(vm);
+> +	return vm;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261009130054.3312=
+154-2-leo.bras@arm.com?part=3D2
