@@ -1,450 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25432D7DDB;
-	Fri,  9 Oct 2026 01:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791510281; cv=none; b=bldn97gNkrZmEn0j5Rr8vkyudE+AX63yauS49QC/gn/boYGLYzIPiS5HAP0D49vrJ88ABA0bVcYMCwoHpIMubIkzvfCSVaYGy9yiZL0hZhoh1VXvAPk4Ly/lbwwHLFpiJw9VF65D1ZFV+SayZYydk3NTRpYFzbq4wPMJV01lSSw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791510281; c=relaxed/simple;
-	bh=JVxlh5mpY5VeOT5/Vjg+uytQbzmKCMej0PHpXO72v+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Slx5oT5Pz+13NdJF3n5vdxmYfFkM37xqpK9YUkjMeCadakRew+b/qn7Q3cO9TuQI+m6R5hg/XMJocyEMpFZUALs3/9gl3XB1Dfb0y35Rpo8YBhOpfVglLj38Nx2cfljIGZit8PNxdg/wh70RxherBN6wa4Ggfkt7lnkXrcFZUsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IYII//k1; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2182D77F5
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 01:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791510913; cv=pass; b=unDDPY+VoMWLKElQGUnmyr2P40NSBk276zIByBkcq5h+s6CL79dqDD9GilHG8IBZua3TWtfPbXQF+UaP+l573Ef9/V6NeWgykbuk3/V26VZVwntq3I+D+C7ALJRfNoHqOJHnLjEJY8DM7pIoOLbuOrnizA19w1NfH1HThwS8CWg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791510913; c=relaxed/simple;
+	bh=7FfE+Gjv/oitWMZfuNkc5CF1K6v6lHM3CtNTQ6IgqBk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kmhOMVbm4bxHWUnp8rTDfNRKvxGCf4MpnRKSJtW8qczyuGcDR7VsMbLfjvj52lVlqYasDVmcaoWRopeAijACjlVbRgk4THkdxOF2R038ABBno5AurycZw4TOQsWIdNya9E1W92CuP6NVcKSiPVJyADJnfaSBczGZYLh6WYzq5Fk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ek6dfgqt; arc=pass smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IYII//k1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791510278; x=1823046278;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JVxlh5mpY5VeOT5/Vjg+uytQbzmKCMej0PHpXO72v+s=;
-  b=IYII//k1sxeEKORkA5FEDAzQUGzuAaT+ICQ6chDY2UweHD/vBOA1fPWI
-   3uwks/4C4i3JTaXD2oWlaKD8i0KV/1H3S+yUgM66k2/Y7/eVjCP69AL6K
-   bdnwSsHzZu7oE6bAZWIpM2AXxoqbNRpc0dEpAtmFiSg6Nob9UtJhM4OK4
-   3mvlODoaqe0GavUt2jpcO73AxXrtFoh2txCIuBuAOkjHkbE3rtAFgcUft
-   9UXJ5ZNtVALd0fuMrartLcT7+JDd/tHvpIj4mlz5xvygdN294UATkWyNd
-   TwGYXnQQxqNxhz7pQTPWt+idSAUngLXUtvDRaRmTpro4cLrAmru64YPhS
-   A==;
-X-CSE-ConnectionGUID: vIZ+SY8dR7S+La3NrkMzgw==
-X-CSE-MsgGUID: hzwmDZfzT3uPFS3YIibM8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="190302"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="190302"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 18:44:37 -0700
-X-CSE-ConnectionGUID: v2+ituUyT7WG7hyWg1wyUA==
-X-CSE-MsgGUID: O7RxfvX2TUqptEv8K74bvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="636667"
-Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 18:44:34 -0700
-Message-ID: <2f42037f-b7b8-4ced-a945-d1d12eb70249@linux.intel.com>
-Date: Fri, 9 Oct 2026 09:44:31 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ek6dfgqt"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93e635220b9so263000085a.2
+        for <kvm@vger.kernel.org>; Thu, 08 Oct 2026 18:55:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791510911; cv=none;
+        d=google.com; s=arc-20260327;
+        b=E26WoKKRNiyFCro2ugL9exIuumrxs7PAddmJQiah4L47KqBkPNPXHXUk4fyh6Vbmmk
+         6J9h+hzZsBSYbcTtAMpIHLzTr+kn7415xWneYR34C/EVcc01V9qAiCo5LYVeClTWPyrN
+         LcByjLg2t6NmIsQEmzRJSqi8kMgehHwAGvzPV+XBCU7fDeMcxbyyRjnCp5MMY1bxz4Ac
+         63qFiORNjVKpJvpcJqnTq2vF1CFTsz/ZBjaKTFGeqsrue/92jpoHOWQP94vQ3j+iKoS1
+         I95ab+MlggBXMjM48L8i2RB8sw4hALVVUWg1xfOIDRJIuGYUHkqDaL5BXYfPfBwETe+V
+         km+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=irH5WtAUt7osstUCIXJbKMQBkmRxwYnXlK49ZN1iZhw=;
+        fh=UKAVRDMurhtTZ+F4vbuN13aVcrPQ0fBIorXRUmeejGU=;
+        b=Lk0EupA0glTN7DceaMFDe1/wkSJzv+MWX8kPpuvyfobrFZZetmucM/PpYCxiNYleWd
+         RBkbuei7kgo1BjKIgvM6fNVLS5aZ+TzbuAVLJy++GBDk18CbturFqYZDJa5VkGxc+yio
+         /7RFh96dkRxwsE2TZwp5DHya4Ysa000nI059vrFlxRVYuzODYVYFLBbPvLxj5autmEi6
+         5rwVbmKJScukTwFogBMiAQ1iv4wd1Or3ubz88U7AqX9DDbqfKUPi32/LNoTE3XNC0Kjo
+         IFJSNvLAQIhTyRDSRAvNpeDxIOK1f/D8onEOhsE6fsvPi0tgYuXLSKULn+me+95JNhqg
+         j0fw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791510911; x=1792115711; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=irH5WtAUt7osstUCIXJbKMQBkmRxwYnXlK49ZN1iZhw=;
+        b=Ek6dfgqtJGMFnOaaZI2ajABVdnx7qHW+nRCj/Ny8PxOnr/xBdhlk1ccFKfpCSKZk3i
+         rU9sWRuxANy3nJJVRb1KX/2Z/+RIlTptDvA1dzkHQZ7G8A2Yj6O6RkAzusiCOsPamDjk
+         3o90/N8gnoKFC6GsvulJwo7wQiQJWCkylqIZ1XIN4humBur0tCBY9hHlV1cX5i0qSIb7
+         4MSITv5Bh4HczFSj/z4P4n4AjWhofNoXw+8lBceQbMC0tTkz1t8LgG+HfzZCFHb3KMSn
+         2YtUYuYtP72hr2Bajyg9h2fclsmYR3fJxy9lYfF/L0PgHPtqkss4bD9oUG3+hLwIjMh4
+         VlCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791510911; x=1792115711;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=irH5WtAUt7osstUCIXJbKMQBkmRxwYnXlK49ZN1iZhw=;
+        b=pZmb9x6rBO+aNjFmBU9Tk15+tO8pFOuVGHuAibZ0EHhxU0iayEF8fQMzeABqfRCO7G
+         5mihoEM0SIRylFJTnmXeQaXClvXl6MgIjjNox71Oaf9Lsale6OD/o7/291wGIW21LOAm
+         V6k/JQYMth6PSD3db5XhZ1YukiJR3EgDVspqlV4qczV2+O1mZrTZzFwMgQpa6A7APC5T
+         IVETC1FL/N74CSxRgHB3FOdg26Ts67cS3DpPVIXLneFjv56prroEnudP048G7YcRag3W
+         MPQWMlYlUdCSH3TbWuQEJ5VYEYwfaFXA5gpEvLNbVHwP6or0DSYRDkUdMBVlF6q7y6rx
+         XFjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBykPWog5mqzjJX6ClveErR1t0pOVtjmf+DRG8iHF6Og0ER9SmbkCUR7yaBZkgnhHbMoRPE=@vger.kernel.org
+X-Gm-Message-State: AFuF++lwvCDA+YJZfYJH+4F1YhQjXQkuSUJAm0tfjeeVGJDOQXolfzbC
+	XCA8RqLrpgzZqcP+IITvrylUgJVi9Atjz0UW/tbBpy5ujhapp9FE2fx/UET7Z53BAtgsVVe3msr
+	+bZFcy1YmxRslPUUEZaVkenzbTRdpN8xXjOr2
+X-Gm-Gg: AYBFou149IP5nx63h1keLYVAa1qLonD2TqYVePlcvU0RDP4h1Aa1e74HXoBLiqPpG/a
+	kP/BWMB5vylTmW26VwP9wAB9qJGkmI2LzvwDsepqCBvMJhHLlU9X/JyTV1m8MyEOIpPQHAYeoO+
+	m/ERGCumcs9EL7d3nTlo1z4xW6CqGpPZ9Yuhj+Te3aSzVICE7dTp3+xNQpmdL8j18AkFw1gdBae
+	pm8Oo0R1HX3A0tHUAEpNzlg/vRqm5GLp+QbwO1TfoZKP+0OwLrC5z+qn0ZrbwRemqbv+4zHNX4G
+	iR1RN/iB/32NRuN40DFl8gFBWLUDb7qoyA/m2RI8GaaY7zTJJzZStZg=
+X-Received: by 2002:a05:620a:4146:b0:93b:d79e:18ff with SMTP id
+ af79cd13be357-93ebd4b3751mr66750985a.66.1791510910201; Thu, 08 Oct 2026
+ 18:55:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-11-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260921004834.2601285-11-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20261006082102.27085-1-physicalmtea@gmail.com> <08e68e3e-172e-4349-825e-13bafda8c365@oracle.com>
+In-Reply-To: <08e68e3e-172e-4349-825e-13bafda8c365@oracle.com>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Fri, 9 Oct 2026 09:54:33 +0800
+X-Gm-Features: AclHuK_8ZpspQbr1VUz--jCkNxAVH4PyEVkIwHKuXxRYnqVazc-zqTuVcZPApWY
+Message-ID: <CAJwVaMJCgJYJP3Mr5V69cxFe9mNGmG+SNAeP6Bv9+cYc0vnr=Q@mail.gmail.com>
+Subject: Re: [PATCH] vhost-scsi: do not count PI bytes in the data length
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/21/26 08:48, Samiullah Khawaja wrote:
-> During boot fetch the preserved state of IOMMU unit and if found then
-> restore the state.
-> 
-> - Reuse the root_table that was preserved in the previous kernel.
-> - Reclaim the domain ids of the preserved domains for each preserved
->    devices so these are not acquired by another domain.
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      | 111 +++++++++++++++++++------------
->   drivers/iommu/intel/iommu.h      |   7 ++
->   drivers/iommu/intel/liveupdate.c |  79 ++++++++++++++++++++++
->   3 files changed, 154 insertions(+), 43 deletions(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 474c926172c5..c5044e834337 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -987,28 +987,30 @@ static void iommu_disable_translation(struct intel_iommu *iommu)
->   	raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
->   }
->   
-> -static void disable_dmar_iommu(struct intel_iommu *iommu)
-> +static void release_dmar_iommu(struct intel_iommu *iommu)
+>
+> On 10/6/26 3:21 AM, Jia Jia wrote:
+> > vhost_scsi_handle_vq() moves pi_bytesout and pi_bytesin into the
+> > protection sgl and subtracts them from exp_data_len.  The length passed
+> > to TCM is still exp_data_len + prot_bytes.
+> >
+> > That sum matched an older target path which subtracted prot_length
+> > again.  sbc_check_prot() now replaces data_length from the CDB only
+>
+> What patch changed this? Did all the drivers except vhost-scsi get fixed?
+>
 
-Can we put the code refactor in a separate patch? Mixing it with a
-feature patch makes it hard for review.
+I had that wrong.  9f977ef7b671 says target would subtract prot_length
+and points at 14ef9200.  That commit is not in the tree, and the target
+code never subtracts prot_length.  The in-tree behavior is
+e2a4f55c6498: if protect is non-zero, sbc_check_prot() sets
+data_length from the CDB.  The vhost add has been there since
+9f977ef7b671, in the same pull.  Nothing later changed it.
 
->   {
-> -	/*
-> -	 * All iommu domains must have been detached from the devices,
-> -	 * hence there should be no domain IDs in use.
-> -	 */
-> -	if (WARN_ON(!ida_is_empty(&iommu->domain_ida)))
-> -		return;
-> +	struct iommu_hw_ser *iommu_ser;
->   
-> -	if (iommu->gcmd & DMA_GCMD_TE)
-> -		iommu_disable_translation(iommu);
-> -}
-> +	iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
-> +	if (!iommu_ser) {
-> +		/*
-> +		 * All iommu domains must have been detached from the devices,
-> +		 * hence there should be no domain IDs in use.
-> +		 */
-> +		WARN_ON(!ida_is_empty(&iommu->domain_ida));
-> +
-> +		if ((iommu->gcmd & DMA_GCMD_TE))
-> +			iommu_disable_translation(iommu);
-> +	}
->   
-> -static void free_dmar_iommu(struct intel_iommu *iommu)
-> -{
->   	if (iommu->copied_tables) {
->   		bitmap_free(iommu->copied_tables);
->   		iommu->copied_tables = NULL;
->   	}
->   
-> -	/* free context mapping */
-> -	free_context_table(iommu);
-> +	/* free context mapping if there is no serialized state. */
-> +	if (!iommu_ser)
-> +		free_context_table(iommu);
->   
->   	if (ecap_prs(iommu->ecap))
->   		intel_iommu_finish_prq(iommu);
-> @@ -1632,12 +1634,19 @@ static int copy_translation_tables(struct intel_iommu *iommu)
->   
->   static int __init init_dmars(void)
->   {
-> +	struct iommu_hw_ser *iommu_ser;
->   	struct dmar_drhd_unit *drhd;
->   	struct intel_iommu *iommu;
->   	int ret;
->   
->   	for_each_iommu(iommu, drhd) {
-> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
->   		if (drhd->ignored) {
-> +			if (WARN_ON(iommu_ser)) {
-> +				ret = -EINVAL;
-> +				goto free_iommu;
-> +			}
-> +
->   			iommu_disable_translation(iommu);
->   			continue;
->   		}
-> @@ -1655,7 +1664,9 @@ static int __init init_dmars(void)
->   		}
->   
->   		intel_iommu_init_qi(iommu);
-> -		init_translation_status(iommu);
-> +
-> +		if (!iommu_ser)
-> +			init_translation_status(iommu);
->   
->   		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
->   			iommu_disable_translation(iommu);
-> @@ -1664,14 +1675,18 @@ static int __init init_dmars(void)
->   				iommu->name);
->   		}
->   
-> -		/*
-> -		 * TBD:
-> -		 * we could share the same root & context tables
-> -		 * among all IOMMU's. Need to Split it later.
-> -		 */
-> -		ret = iommu_alloc_root_entry(iommu);
-> -		if (ret)
-> -			goto free_iommu;
-> +		if (iommu_ser) {
-> +			intel_iommu_liveupdate_restore_root_table(iommu, iommu_ser);
-> +		} else {
-> +			/*
-> +			 * TBD:
-> +			 * we could share the same root & context tables
-> +			 * among all IOMMU's. Need to Split it later.
-> +			 */
-> +			ret = iommu_alloc_root_entry(iommu);
-> +			if (ret)
-> +				goto free_iommu;
-> +		}
->   
->   		if (translation_pre_enabled(iommu)) {
->   			pr_info("Translation already enabled - trying to copy translation structures\n");
-> @@ -1707,7 +1722,10 @@ static int __init init_dmars(void)
->   	 */
->   	for_each_active_iommu(iommu, drhd) {
->   		iommu_flush_write_buffer(iommu);
-> -		iommu_set_root_entry(iommu);
-> +
-> +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
-> +		if (!iommu_ser)
-> +			iommu_set_root_entry(iommu);
->   	}
->   
->   	check_tylersburg_isoch();
-> @@ -1752,10 +1770,8 @@ static int __init init_dmars(void)
->   	return 0;
->   
->   free_iommu:
-> -	for_each_active_iommu(iommu, drhd) {
-> -		disable_dmar_iommu(iommu);
-> -		free_dmar_iommu(iommu);
-> -	}
-> +	for_each_active_iommu(iommu, drhd)
-> +		release_dmar_iommu(iommu);
->   
->   	return ret;
->   }
-> @@ -2136,17 +2152,28 @@ int dmar_parse_one_satc(struct acpi_dmar_header *hdr, void *arg)
->   static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
->   {
->   	struct intel_iommu *iommu = dmaru->iommu;
-> +	struct iommu_hw_ser *iommu_ser;
->   	int ret;
->   
-> +	/* Use IOMMU HW unit MMIO base to identify the preserved state. */
-> +	iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
-> +
->   	/*
->   	 * Disable translation if already enabled prior to OS handover.
->   	 */
-> -	if (iommu->gcmd & DMA_GCMD_TE)
-> +	if (!iommu_ser && iommu->gcmd & DMA_GCMD_TE)
->   		iommu_disable_translation(iommu);
->   
-> -	ret = iommu_alloc_root_entry(iommu);
-> -	if (ret)
-> -		goto out;
-> +	if (iommu_ser) {
-> +		if (WARN_ON(dmaru->ignored))
-> +			return -EINVAL;
-> +
-> +		intel_iommu_liveupdate_restore_root_table(iommu, iommu_ser);
-> +	} else {
-> +		ret = iommu_alloc_root_entry(iommu);
-> +		if (ret)
-> +			goto out;
-> +	}
->   
->   	intel_svm_check(iommu);
->   
-> @@ -2165,23 +2192,23 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
->   	if (ecap_prs(iommu->ecap)) {
->   		ret = intel_iommu_enable_prq(iommu);
->   		if (ret)
-> -			goto disable_iommu;
-> +			goto out;
->   	}
->   
->   	ret = dmar_set_interrupt(iommu);
->   	if (ret)
-> -		goto disable_iommu;
-> +		goto out;
-> +
-> +	if (!iommu_ser)
-> +		iommu_set_root_entry(iommu);
->   
-> -	iommu_set_root_entry(iommu);
->   	iommu_enable_translation(iommu);
->   
->   	iommu_disable_protect_mem_regions(iommu);
->   	return 0;
->   
-> -disable_iommu:
-> -	disable_dmar_iommu(iommu);
->   out:
-> -	free_dmar_iommu(iommu);
-> +	release_dmar_iommu(iommu);
->   	return ret;
->   }
->   
-> @@ -2195,12 +2222,10 @@ int dmar_iommu_hotplug(struct dmar_drhd_unit *dmaru, bool insert)
->   	if (iommu == NULL)
->   		return -EINVAL;
->   
-> -	if (insert) {
-> +	if (insert)
->   		ret = intel_iommu_add(dmaru);
-> -	} else {
-> -		disable_dmar_iommu(iommu);
-> -		free_dmar_iommu(iommu);
-> -	}
-> +	else
-> +		release_dmar_iommu(iommu);
->   
->   	return ret;
->   }
-> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-> index 4feb5bd76b18..3a2cb08c0ac1 100644
-> --- a/drivers/iommu/intel/iommu.h
-> +++ b/drivers/iommu/intel/iommu.h
-> @@ -1308,10 +1308,17 @@ int intel_iommu_preserve(struct iommu_device *iommu,
->   void intel_iommu_unpreserve(struct iommu_device *iommu,
->   			    struct iommu_hw_ser *iommu_ser);
->   void clear_unpreserved_context_entries(struct intel_iommu *iommu);
-> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
-> +					       struct iommu_hw_ser *iommu_ser);
->   #else
->   static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
->   {
->   }
-> +
-> +static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
-> +							     struct iommu_hw_ser *iommu_ser)
-> +{
-> +}
->   #endif
->   
->   #ifdef CONFIG_INTEL_IOMMU_SVM
-> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-> index 501dc0e9cc0a..c9e553379683 100644
-> --- a/drivers/iommu/intel/liveupdate.c
-> +++ b/drivers/iommu/intel/liveupdate.c
-> @@ -272,6 +272,85 @@ static int preserve_iommu_context_tables(struct device_domain_info *info)
->   	return 0;
->   }
->   
-> +static void restore_iommu_context(struct intel_iommu *iommu)
-> +{
-> +	struct context_entry *context;
-> +	int i;
-> +
-> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
-> +		context = iommu_context_addr(iommu, i, 0, 0);
-> +		if (context)
-> +			iommu_restore_pages(virt_to_phys(context));
+> > when the protect field is non-zero, and only for READ and WRITE.
+> > target_cmd_size_check() leaves a write's data_length unchanged when the
+> > CDB size is smaller.
+> >
+> > MODE SELECT, SET TARGET PORT GROUPS and UNMAP then use data_length as
+> > the size of t_data_sg.  The PI bytes are not in that sgl.  A parameter
+>
+> Can you have prot_bytes > 0 with those commands?
 
-Why not use the serialized context_tables_bitmap as the source of truth,
-and check it against the present bits?
-
-> +
-> +		if (!sm_supported(iommu))
-> +			continue;
-> +
-> +		context = iommu_context_addr(iommu, i, 0x80, 0);
-> +		if (context)
-> +			iommu_restore_pages(virt_to_phys(context));
-> +	}
-> +}
-> +
-> +static int _restore_used_domain_ids(struct iommu_device_ser *ser, void *arg)
-> +{
-> +	int id = ser->domain_iommu_ser.attachment_id;
-> +	struct iommu_hw_ser *iommu_hw_ser;
-> +	struct intel_iommu *iommu = arg;
-> +	int ret;
-> +
-> +	if (WARN_ON(!ser->domain_iommu_ser.iommu_phys))
-> +		return 0;
-> +
-> +	iommu_hw_ser = phys_to_virt(ser->domain_iommu_ser.iommu_phys);
-> +	if (iommu_hw_ser->type != IOMMU_INTEL)
-> +		return 0;
-> +
-> +	/* Only allocate domain ID from associated IOMMU HW unit */
-> +	if (iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
-> +		return 0;
-> +
-> +	guard(mutex)(&iommu->did_lock);
-> +
-> +	/*
-> +	 * The domain IDs are reclaimed while the IOMMU HW unit is being
-> +	 * restored and not registered with the IOMMU core. So if the ID already
-> +	 * exists, it is safe to assume that a preserved device sharing the same
-> +	 * domain ID reclaimed it.
-> +	 */
-> +	if (ida_exists(&iommu->domain_ida, id))
-> +		return 0;
-> +
-> +	ret = ida_alloc_range(&iommu->domain_ida, id, id, GFP_KERNEL);
-> +	if (ret < 0)
-> +		return ret;
-
-Commit 12a2ea2d91be ("iommu/vt-d: Handle DID reservation errors when
-copying context tables") on the iommu/next branch introduced a new
-helper named reserve_domain_id() for reserving a domain ID inherited
-from the previous kernel. Could it be reused here?
-
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * intel_iommu_liveupdate_restore_root_table() - Restore root table and reclaim domain IDs
-> + * @iommu: Target IOMMU
-> + * @iommu_ser: Serialized IOMMU hardware state from previous kernel
-> + *
-> + * Restores the preserved root table and context tables for the IOMMU hardware
-> + * instance across Live Update, and reclaims all domain IDs previously allocated
-> + * to preserved devices so they are not reused.
-> + */
-> +void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
-> +					       struct iommu_hw_ser *iommu_ser)
-> +{
-
-This restores the preserved root table without checking the new
-environment. Is it possible that kexec has a different kernel command
-line (say intel_iommu=sm_off) for the new kernel than the previous
-kernel? sm_supported(iommu) will then return a value different from the
-real hardware configuration.
-
-> +	if (!iommu_ser->intel.restored)
-> +		iommu_restore_pages(iommu_ser->intel.root_table);
-> +
-> +	iommu->root_entry = __va(iommu_ser->intel.root_table);
-
-Why does the above line execute no matter the value of
-iommu_ser->intel.restored? It would be more readable if the code looked
-like...
-
-	if (iommu_ser->intel.restored)
-		return;
-
-	iommu_restore_pages(iommu_ser->intel.root_table);
-	... ...
-
-Or I overlooked anything?
-
-> +
-> +	if (!iommu_ser->intel.restored)
-> +		restore_iommu_context(iommu);
-> +
-> +	iommu_ser->intel.restored = 1;
-> +	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
-> +}
-> +
->   /**
->    * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
->    * @dev: Target device
-
-Thanks,
-baolu
+I did not describe this clearly.  MODE SELECT is not where prot_bytes
+comes from.
+With VIRTIO_SCSI_F_T10_PI negotiated, pi_bytesout can be set in
+virtio_scsi_cmd_req_pi, and vhost does not check that the CDB is a
+READ or WRITE. .
+A MODE SELECT sent with that field set hits this.  That is what I ran.
