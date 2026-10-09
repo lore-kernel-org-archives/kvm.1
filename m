@@ -1,75 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B83C4D7968;
-	Fri,  9 Oct 2026 11:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388A42A152;
+	Fri,  9 Oct 2026 12:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791547031; cv=none; b=W6h6d7HazCy5bnXoIBsep6cwhmfTUPQKDwoQZaJOb+lLNLpAqeS8pizKugZMbSvRpn5sj+qO5AqrrOgY79CsRxZLpbfmt+qC7hvLMkA10+kRJ/rbBAK7MYHshSGbXiNiOlBbQYLcKlAZlEFVFvyIgcf92vKWqUTZ1Zpk5jH+zlc=
+	t=1791548227; cv=none; b=dDKcTTS2SKPAMOOLfNcRjgpUWx1m8VZCnaSHDMAkSw9rPQmRAZGpVVkUG+3wKcOcq/6sb1/h3c9ophmTEsFkk5W0UfhWScWDwcFal+xF/5/UglhGXxjfW2NlcaJWCSqScn0nMYjX3hI2xCCz/C4P9i1fpAHyETBF5mF7j6gGRio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791547031; c=relaxed/simple;
-	bh=2YG6XmStZVGSnr6G+gp+hZUVxiT3wwb4dgwUPCEMMXk=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=g06V5Dd4E2+W/F6+ZlNFxcf4sQtMD/GxdhZODSCfavKkI6W8QGBRUUrWbm1A8D7STPbZMO5ePfiLHrtbbBBpClOksILCfrdMfVxhHmjKKuhhmiE14b2Zx6GGEwoKqtoCk+xmRSeJ/foGPEMTidoN7Tow4hloAJcTNyNPKCHrxCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wj+j+Cej; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791548227; c=relaxed/simple;
+	bh=kf9dg50ujd8CthO4zIArtdQ1S9/f19tZLRH75JxQSkE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KuvCsbXQKJ1bTlfIMNvzhLV4sPYEPns98JWbZYYCNBNnXTyLHs0q7yyiHbldMJcDLDGvlHVePzf5YeBC/El1mF3RQ7Mui2eO4f6n9GJQHZjv65k0aCkn5Fy4biACWAze6BM3VD3D/WjU3cdcYq38UY5RXX9oafDyKhZfLXxRPVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PL9IPTYq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wj+j+Cej"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7BB1F00893;
-	Fri,  9 Oct 2026 11:57:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PL9IPTYq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834B91F000FF;
+	Fri,  9 Oct 2026 12:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791547023;
-	bh=2YG6XmStZVGSnr6G+gp+hZUVxiT3wwb4dgwUPCEMMXk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Wj+j+CejTG2H0+D8DIzLmXJeOAVNHRGXC1gf7rDzSkKMRvIydboxzhF958XKO/NPf
-	 t8V6Z/vu+8PKyUGbVaQqoSkxYoa/kjtrLPr5M226Ckrlhi8B1C6QxaZfwPjzd7J/T1
-	 Jyo/ZEMke738b6fno+UhwhGGByj954jcH1cbNt1UhPKwHEV5WclpLHKqFswCtQDp98
-	 iOIwr+Oj72attQ+TSb9DV1XVuAnCrb6l+Fzi5Jyk5aqzC8yUBQZDl+xxAM9523CUWF
-	 ef5I8lA1AFtMAyRkPCTQzf+xpVD6jGS7cKSdMlTPddt/FGRJj8+/s+axzqVThCvTar
-	 2e0FNvWeopWMw==
-Message-ID: <sashiko-outbox-165455@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 06/15] s390/vfio-ap: Transition guest migration state
- from STOP to STOP_COPY
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20261009114244.1213173-7-akrowiak@linux.ibm.com>
-References: <20261009114244.1213173-1-akrowiak@linux.ibm.com>
- <20261009114244.1213173-7-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Oct 2026 11:57:02 +0000
+	s=k20260515; t=1791548220;
+	bh=6/A+on6QTcsynPBLF2wcK5YT384IqIK0ywry4fp4NAo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PL9IPTYqlfvHL+IF9BEowQEj+uuzDibLKxsIj7RBMNCrBx/PdQkyBGqsi9P9NWrWf
+	 X68m6skXLFM4qKc18VNrF8rDSSacoinKTCYD15iSoBkKIbT/Q5n9exe2z42IvNKqON
+	 pXUKAtJmt82QV4EfJDDbNdJX+o4OeJrQG2S22PLdP17PyfptkVlWxlL04uanmVqasy
+	 0C9xFCZ4laTK1J6p10pWLJOzgQLQy64Te5n9pFKsg25loGY2K9vcqtY9wrDW6wR53M
+	 TfvExeqSQUPo1jXgoqfo+VOaGLHWtr9n/l31zaHyuncoJW1kQH1VuqyPm7kKHTy4xf
+	 oGwY+qx3CQy3A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xF9X0-00000000zPz-1ZsQ;
+	Fri, 09 Oct 2026 12:16:58 +0000
+Date: Fri, 09 Oct 2026 13:16:57 +0100
+Message-ID: <868q472hmu.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v23 14/14] KVM: arm64: Prevent unsupported vcpu features for VM types
+In-Reply-To: <CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
+References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
+	<20261007073537.2454351-15-suzuki.poulose@arm.com>
+	<CA+EHjTx-niYPnnRDvAAiY3MXLpSYau_PhiBTCiE9mOYUChASPQ@mail.gmail.com>
+	<86a4on2qxz.wl-maz@kernel.org>
+	<CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-> The transition of the guest migration state from VFIO_DEVICE_STATE_STOP to
-> VFIO_DEVICE_STATE_STOP_COPY begins the process of saving the
-> vfio device state. The vfio device state is comprised of the guest's
-> AP configuration which specifies the adapters, domains and control
-> domains to which the guest will be given access.
->=20
-> To begin the process of saving the vfio device state, the VFIO AP device
-> driver opens a file stream that will be used to read the source guest's
-> AP configuration.
->=20
-> Note:
-> This commit introduces the file operations structure for migration state
-> files with a stub implementation of the read operation. The complete
-> implementation is provided in the subsequent commit.
->=20
-> This incremental approach allows for easier review of the migration
-> infrastructure setup separate from the actual implementation logic.
->=20
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+On Fri, 09 Oct 2026 11:10:55 +0100,
+Fuad Tabba <tabba@google.com> wrote:
+> 
+> Hi Marc,
+> 
+> On Fri, 09 Oct 2026 09:55:52 +0100, Marc Zyngier <maz@kernel.org> wrote:
+> [...]
+> > A rebase would be a terrible idea. This thing *must* go on its own
+> > branch, and not depend on anything else.
+> >
+> > I can however fix things at merge time. is something like this what
+> > you had in mind? It compiles, and is therefore perfect...
+> 
+> Yes, that's what I had in mind, but please keep the PSCI 0.2 check
+> from kvm_vcpu_init_check_features():
+> 
+>         /* EL2 implements PSCI 1.1; the host must not dispatch as 0.1. */
+>         if (vcpu_is_protected(vcpu) &&
+>             !test_bit(KVM_ARM_VCPU_PSCI_0_2, &features))
+>                 return -EINVAL;
+> 
+> Folding the allowed set into the mask covers the rest of the block you
+> dropped, but a mask can only reject a feature, not require one.
+> Without the check a protected vCPU can init without PSCI_0_2, and the
+> host then dispatches the forwarded calls as PSCI 0.1, while EL2
+> returns 1.1 to the guest.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+I think eventually we will have to implement this stuff as a pair of
+masks on a backend basis: one for what is acceptable, one for what is
+mandatory.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261009114244.1213=
-173-1-akrowiak@linux.ibm.com?part=3D6
+In the meantime, I'll fold the above hack in.
 
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
