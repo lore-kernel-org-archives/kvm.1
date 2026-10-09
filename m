@@ -1,101 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF8F36A008;
-	Fri,  9 Oct 2026 15:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C07336B906
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 15:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791560792; cv=none; b=LNopYkHmCl5SGBPsP4cXLw9WW4q4jcvX2j6M7GcrHI5zRpbbGTJV0kwsj82H/Q5xUdvZ74hkBQPEQfMH0QrypYsDC950PRu+RiE7vzNogKgdIYTwjMK9+V1Pkjt7VTiQTvxMXgf0dkBqvJJBBu7wFyANnEY74PLpwiLdO5df+/s=
+	t=1791560812; cv=none; b=KfSK+rRraN+eUwzsDiHX7V/J+YS9BZUnwv+MtyMkYh4U8RvFJy0Zdr/aBvAEsTUSNwoQxeU+n2Lk6UWRb2kWflb4pklgnl+FF9sXgO/mKq6lbilm95D0Ux2/a+q7/IUimEpYdl2a2h80FkYuzk8QU5k+Hvro2u/wQ1clYqdND1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791560792; c=relaxed/simple;
-	bh=aP/7GkrBn3jrEG6AQgFvgj8B9nedRMizD3Vx+hrgWCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mEuoshbeig9nFajbHK0ygIXyt6U59hh3t6o5mCpD1ZU9WnOUXAG0s39fjnA26zttLYGa5VqrUqWyFLRu5o36uvm7/Od+3Cd9BlO5VYk8+pO6oZ/6jI0e4IFiO436hQBdhn0yGn93rnNI0MZRXHrnaYSwoJj75c8SYE+H3Q0g4L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3Rg1HT3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791560812; c=relaxed/simple;
+	bh=UIm2pePcYRi/8Aj5Prr2k7pKSPs+SmbGZFmjTly8otU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HNkHCURStXPOxVm0vzKcli7qFlG9fv6JcajdNfjgRmQS7L75AcBjlkjyEu47BnQai3UWQ7ksdQ+AyyuogWV+WCxpOFWkWSIpE8PlX7aIk+tcy/JsiL5PNrBa/5zfYSw69p1QpHPzyeLONDuGy9dyna7RQ3ZQYXGBqJVKL8fmUXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fd0ElVM6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3Rg1HT3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4CE1F000FF;
-	Fri,  9 Oct 2026 15:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791560790;
-	bh=Adl9oKzEQ1qpTvFbUDgNEZejDAB5DaE0VzXfwBnxvgI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d3Rg1HT3TOCR4bjLIBDaceFeNyJb0u8k5JGM6/Kqyj9/3ZmscBbRJIIt93k5jMz/o
-	 XZqqVI04JKQtCQ0SixRLZHSjpW3XZfawy8bUpLcoR4wgS7sx536an83UKdPfKaAunR
-	 EHiWQifaz3b6xpx2AWWo3qfcx4Zn6le8ZPauC0wrONPUspjGe2glYETIqJGT1S6HYG
-	 nOFogzR0cZMKq/yed3Urtm4dEybJSmvDO+U5oCY7w2ZuEuPZxGcS6rQjbEXRymmq83
-	 uHqoB//Pkmg6+JAerEoGb0V2SlMxnbij7RF7tvMUFVKftpTnLIqVeqiBa349ox0251
-	 EjlB67VX+BeRA==
-Date: Fri, 9 Oct 2026 15:46:29 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v2 21/29] KVM: nSVM: Handle nested TLB flush requests
- through TLB_CONTROL
-Message-ID: <askL_UupgvYqNRKW@google.com>
-References: <20261008001425.2458927-1-yosry@kernel.org>
- <20261008001425.2458927-22-yosry@kernel.org>
- <sashiko-outbox-163476@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fd0ElVM6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791560810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8rY0vC8jvVJKMFFkSI/zD4784A03yPUpYp4C+Q0WhYg=;
+	b=fd0ElVM6NvwhjwX0WzoahcPIV+ZvQFOPQVzW19ZsfYM2BaoIa9uvz3IkcZ55h52Xm/gxFS
+	UkCD/0mw05+rI6LEAggv+aZuGj4yNvWysAw82YfjRfm2jbYWGfvGriuLbhEW9fXlyAOseQ
+	eQ5LqvbtHJvX415Z052UN0I10Q4hwwo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-RQ2khdY6MNGqmr08iW5qEQ-1; Fri,
+ 9 Oct 2026 15:46:48 +0000
+X-MC-Unique: RQ2khdY6MNGqmr08iW5qEQ-1
+X-Mimecast-MFC-AGG-ID: RQ2khdY6MNGqmr08iW5qEQ_1791560808
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CF98D180266C;
+	Fri,  9 Oct 2026 15:46:47 +0000 (UTC)
+Received: from [100.90.56.12] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1809118004D2;
+	Fri,  9 Oct 2026 15:46:46 +0000 (UTC)
+Message-ID: <88e268d7-c55b-4109-9b08-51e1102391e3@redhat.com>
+Date: Fri, 9 Oct 2026 17:46:45 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-163476@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF exit
+ codes
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20261009130450.361690-1-pbonzini@redhat.com>
+ <sashiko-outbox-165619@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <sashiko-outbox-165619@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, Oct 08, 2026 at 12:36:21AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] kvm: nSVM: Failure to clear vmcb12->control.tlb_ctl on nested VMRUN causes sticky flushes
-> --
-> 
-> commit a1eb425c937534a8aa46b2b08b4187a40adeac38
-> Author: Yosry Ahmed <yosry@kernel.org>
-> Subject: KVM: nSVM: Handle nested TLB flush requests through TLB_CONTROL
-> 
-> This commit handles L1 requests to flush L2 TLBs using the TLB_CONTROL
-> field of VMCB12. It triggers ASID flushes and NPT syncs on nested VM-Enter
-> or VM-Exit depending on the type of flush requested.
+On 10/9/26 15:20, sashiko-bot@kernel.org wrote:
+>> +	unsigned int pfec = access & ~PFERR_SS_MASK;
+>> +	if (WARN_ON_ONCE(pfec & ~(PFERR_PRESENT_MASK | PFERR_WRITE_MASK |
+>> +				  PFERR_USER_MASK | PFERR_FETCH_MASK)))
 > 
 > [Severity: High]
-> According to the AMD APM Volume 2, Section 15.15.1, the VMRUN instruction
-> processes the TLB_CONTROL field of the VMCB and then clears it to zero.
+> Does this strict whitelist introduce a way for unprivileged nested guests
+> to panic the host?
 
-I am surprised by Sashiko's inability to correctly parse the manuals,
-this isn't the first time it quoted something that's plain wrong.
+No, SEV-SNP does not support nested virtualization and vice versa.  It 
+would have to be fixed if one supported nesting SEV-SNP VMs into non-SNP 
+hypervisors, but the WARN would still exist and be valuable.
 
-AMD APM Volume 2, Section 15.16.1 (it was 15.15.1 in older versions)
-say:
+>> -	errcode |= write_fault | user_fault;
+>> +	errcode |= access & (PFERR_WRITE_MASK | PFERR_USER_MASK | PFERR_SS_MASK);
+> 
+> [Severity: Low]
+> Does this change leave user_fault unused?
+> 
+> Because user_fault is declared at the top of FNAME(walk_addr_generic):
+> 
+>      const int user_fault  = access & PFERR_USER_MASK;
 
-  The VMRUN instruction reads, but does not change, the
-  value of the TLB_CONTROL field.
+Yes, dropped.
 
-So this is a hallucination AFAICT.
+Paolo
 
-> 
-> Looking at the implementation in arch/x86/kvm/svm/nested.c, specifically
-> within nested_svm_entry_tlb_flush() at line 710, the new logic requests
-> KVM_REQ_MMU_SYNC_ALL_ROOTS and KVM_REQ_TLB_FLUSH_GUEST whenever
-> svm->nested.ctl.tlb_ctl is not TLB_CONTROL_DO_NOTHING.
-> 
-> However, it appears KVM never clears tlb_ctl to 0 in vmcb12 during the
-> nested entry sequence, nor during VM-Exit in
-> nested_svm_vmexit_update_vmcb12() at line 1582 where other
-> hardware-cleared fields like event_inj are reset.
-> 
-> Because KVM fails to emulate the hardware behavior of clearing the field,
-> will L1 hypervisors that rely on hardware to clear it unknowingly reuse
-> vmcb12 with tlb_ctl permanently stuck at a non-zero value?
-> 
-> If so, does this introduce a regression that traps the VM in a persistent
-> loop of heavy MMU root syncs and TLB flushes on every single subsequent
-> VMRUN, resulting in severe performance degradation for the nested VM?
-> 
-> Could we add a step to clear tlb_ctl in vmcb12 to prevent these sticky
-> flushes?
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261008001425.2458927-1-yosry@kernel.org?part=21
