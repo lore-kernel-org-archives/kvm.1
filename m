@@ -1,146 +1,115 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7B53DA5AB
-	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 10:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791541632; cv=pass; b=HyrUWkaLH/FgSX6RinpkLs7Li5q9SV6fxIWY6JdNhxRtaQo2QxuG2NEQ89p0gA+bu838NE1hsRTMTI8p/GkaLCRBqN6XMnOy4jLwrvsUuH0ojyp56EIatpY+UumvKiT6gd8fkwYeM50SGjVa341+tas5MRaj3bkhdBpaOWKtkMA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791541632; c=relaxed/simple;
-	bh=BdaaMK+iBtICxCq6a9i0L30gyCEkbvIoF4KCFr8YBlw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CooiHBrJrJfsfJwxitzjH1bQa2LCdsiT9Zl4iPFkjdKaneb4r2jRqNFQv3+NvbSQnDMu9aq3rnHGoHF0HY+qvhhGf84SWqgkTjIaLALNHojekdL39K5loIHGrZndkMw+/o2BZdvYYUx7PGJqie4CMI94t1PKEDYgZidZ/MMMYoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=IaOgcPCs; arc=pass smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5134A4EE2
+	for <kvm@vger.kernel.org>; Fri,  9 Oct 2026 11:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791545551; cv=none; b=hOV5w2XfzChH02pzQDcDEcTOYRw9ixqMuI89gSClQIJw5M5KrsB4X42BStGJvXdgj4X/JYXoydcWfsMjEHxyaNcYRE+2ObCaQ4ymT2Hej61NPX1iW4uupkX3EIk1K6UOFUWHEVHKykBJXevVnmoukX/R7GNL0X8tF/gTdGh83JM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791545551; c=relaxed/simple;
+	bh=JOfTL5sJbEeKUPqnV8GkeCHd+99LXw7TYpKTV4o3L18=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FEHP0GrBnnXQC3HGYWS9E8HDkG80antJ2fIjfCApmEiMMPyP0aHhEzOpJXZO1hhobVhz6qg90LsURp82lBq6s2xnqNP8GgvGdW1PHpH+haidUyiytbX7u7P9OO1MgoB7PTUe0O1UnmuUsp9aEupRrV8Px2pOaoXNks/s2t+n2a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/eXhsNR; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="IaOgcPCs"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a1880e1bf1so11467185e9.1
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 03:27:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791541629; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ljat508vXU8hOEG8EciNvOAp/hmuNoscHqRIwNCs0+gJH8VdCmnqyxOnz/duA1xT8o
-         wN+J/Vi1UGMIFYrq1UmwxD2odE5XqMQ2CZ1jZ2UI89cuPdu0RJM24X43uT1N1yPLmbmE
-         CrsQgMuHRwlra5a1OEmObXzknKXVuM6cbHMZs9uEpnx5XGxsLPt5l3NKlNVT2wWdrmXg
-         1TCsTx8ps992pLu7yawuExIZcRcF33QW5artM2TMwfoDatkFXqtL/tyrQyrhvmL2RDHn
-         +o8IdQ4iOl8ZaQ0BIFN3nKN1EdQiH/DnuHW6ndjxUcr1LGS066ew8lbrlgnxXENU8URU
-         DoTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+kGfL6IKmzWaR6v/xkH3Bv8Esmb1CJCtQQioJT43pkY=;
-        fh=ZFXKXVjKUDKthxlF1pfEONnYvxs5ZvCNYrchZzqmq/Q=;
-        b=nbO69MCOQdX3ewbWxbMDLXoJlb8JDEzD46ETAEMs8IO4+9OgNnY4msjDShb+6pjeuI
-         20wB8YTRJDGj3CZRVPlrRUUImhK/zvTeyYdyDCSiqG5UEPz2J3hGwdFpvFSfgJBZNUsI
-         /8C4OLW/WRseDgfIRSdxxOTIuhHk8XuFY5JcTwcpVSKkrOmPl9RjYdLJ15X4nA0S8OSF
-         eW2mZFPidaFpYmFyLZ7QkWCLg/R1TuV3UT29/955p06pnuQO58o1MSzjGQptjG0SUDfD
-         cybG0GE5ukk6s+gARI9lUfNGJP8353g1dBL/HkBAx33HtWnxT2jN8inLa0memVI21cQi
-         f/RA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/eXhsNR"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-34c4a0868b6so5778086eec.0
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 04:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1791541629; x=1792146429; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+kGfL6IKmzWaR6v/xkH3Bv8Esmb1CJCtQQioJT43pkY=;
-        b=IaOgcPCsn+vt4J42WgryTbeTglVzrjtfbuljPdJ5t5bRPFFTesmrCBjKhFH0xiCoQq
-         ANS4+/JcNJmWkF5jzBr82mv86Rk6wO53BLkg/OT++17hcMNneWiY56YnyBKnbTRxbXNL
-         UUw9oP8hzJNLXAcDT2D9v3KSiUFNPW0R2WYGkYEAWhVzveodVX3K8VfC/1JH076u4bWb
-         ATBVINcXZLev3i8xz9qKcXwVcOPOLFIV7Zu2Qi9CKYrzUz6FDKbBSW6AmOUUjJYZ/fk5
-         UMmAHsJuuuqj8cX5i8VbJKiYUI9fgWd69L4arhrVggbjfkmMa5vU7df92CdOlwJ5yBkN
-         V7fA==
+        d=gmail.com; s=20251104; t=1791545540; x=1792150340; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5bMlxewub9p/T2xvh3MjzZ66gKld4I4neePTrZHO9Yw=;
+        b=k/eXhsNR+usBjAXoyI5R3hSe/Tls1hLcb1FDLXE8BloAjRwR9NnUoowy4K0J4VaY+2
+         IPRF1OHh048i2B2/zHyy39954hSnu+A3kkF0or0OgBdkM0uKwI55NE7bMBEpMKcfXhe7
+         cmGrnX/2bKOTt1aSnJN8WvB9dFrf1iamKPwQyExe8oY3q+7kwg4ZpGSwj6sdsoASO7DT
+         EmHK4dQTchqXroWSTorMQEm2sjx/tYbC2lvvBmNVIbUMhpLWhaSmKt6/w2vaCtwfiDoL
+         wBcKmliggW4a54Ia3Fvbxj2fd/vhNmAWgk2yWuzwd+w/ybh/qjx7wEX1z8k9MmJQlLh1
+         inSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791541629; x=1792146429;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+kGfL6IKmzWaR6v/xkH3Bv8Esmb1CJCtQQioJT43pkY=;
-        b=nNG8Uja8oYQAFNo8JzEBVvqGXfYvSElc5mxl8q+T/y0FlSaDmQVxCDI4k2N1VaA5HK
-         GhFwd0YXEU+2ie3AXUv/pKU8zRf/DEBd3Y2IQB2ugmyjxvGMHpqie3j3e7Ouxhs491rc
-         AfHrQQRos+Q4t32LZItVX4ZNUak0fvP/07Qh4gGhY0r6lh47huqMSfC5hn5+be7ySlKt
-         eUejqC4VKswzd2tLe51yhuAnkP9VTGaGy6rlw+ThanJ+lEA8lqmxGME79Iw7DokIROzp
-         Q4LJvs6qiqypICnVr1KaJkqMbC5/y0xWya+z1B77aDcc7AmrPAg3SZJKlELDbUWAKCdh
-         IKyA==
-X-Forwarded-Encrypted: i=1; AKwUvBwUW1O3HFhFwL28Lwb0pmSHwsPER1dfq1Ykk1Kn66HdjbQ1ASWFOGHcFjGSVWQUc/CYMkw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mxKXTl8ByFJM9QEIx0sOMm1XiascuUVXH36Hh6pz6d2L1MUPsq
-	gpMPMJenNNdes3Veu3s0oREkw9iuCbaOF5eQHMjS95mZoiLfr0rGp7b0EPXKis6jU3+/s555wVY
-	tKcOTB63qFxu9If3APP1Ole4ptjEYj5jNx1hdM7ngvA==
-X-Gm-Gg: AYBFou3WqWol6o66I83D0FTjqOe5rxCLuun7gXnlrkuWM1s3cwYHY4M9L8/kRiDBDeO
-	/KWSh93Gr9zfbn9CsqXJpCoK6nPZuWU4dB3OqFvQrgstHM2IgwKPNpysVCzo0/dF0T3g/CbHsl+
-	nrgWAAFvltOpzCbQN0RAP5eOTESZZ3uxrRUfZgV/U4XLjGo3t1bBTVITH2yiMcZlq4OdGzRJaK8
-	7q3EnYE9m9URz6GK8B+O5srJ7b6yhGXSYIqdDyuYguiG2RvLJh/NMm3wR9F2JYoMdoEdTqkFU7L
-	Ym1YcOYrU6tdLXpOY3Pl59cJQRgGKNErGnix2ZDHdv/+4cqx0rk5/Ngo6aPqfTxYwAxXSp1kU1V
-	H1p0GcUisORxNuX0M76pUBjKQVL7BNeGN80JKyGT3JAMTsR810y4ovpaQcEGdh5kwqO3qRltTEg
-	==
-X-Received: by 2002:a05:600c:4f46:b0:49f:cbf1:e77b with SMTP id
- 5b1f17b1804b1-4a18e4a5355mr31129155e9.10.1791541629095; Fri, 09 Oct 2026
- 03:27:09 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791545540; x=1792150340;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5bMlxewub9p/T2xvh3MjzZ66gKld4I4neePTrZHO9Yw=;
+        b=zQ4uqHrovAb8nOSiv/uWtNHne6A3DtckivADJTJx55gUcYMC6RKOfG2uQ+9dlYjrVZ
+         BVLCPaBPZSfGwQS47l9I0CuiWRr94G1KQBBzNwn4mvr24ThqlysMvf1Nk36mOW9iVHZp
+         S73bfQTnR70KmYzrNV7RmYo/qN9dk11TgQVA3UPRLgpevjf5b4qaSvzZYxtvtxyR5SMY
+         Nl+SnqktH7OGiw9uHcsqAJGMWw+FyNHlrOf5sHewHVUvtDiHZ1IyPIHf7h/Or8lsRrfK
+         V5kMjUGvcQjSeHJg2bLFuPd01buklAaiGA4ykUB4rj2AbGI2TqkoxzQiipnCi6XQKbkP
+         At2w==
+X-Forwarded-Encrypted: i=1; AKwUvByuQ5+hkUXKhgraugHjQbHO/MPtcEs4XC9PEDTFwgaeS5UKs6DkI9TK2c2mXqU+jKr+594=@vger.kernel.org
+X-Gm-Message-State: AFuF++nM03Sk6xbtdMC+pL8cDOW7PrPXbzZSUnVS7FISLHzA/cwepnec
+	Aw5XZNnSmGLV36wQxXEwQpUKFjlaoS4ByeTPxkng3RGTNN/5BSv5vxMb
+X-Gm-Gg: AYBFou3AgXnuroISpr0tKionUzsZIWa8n0xrTF32GGqMO6TZqkynTxLwdsd2HerubtX
+	mljsVt+k9Mx4nKQuUGBtassBPQlnIWDzE6UapfhcMPxJs7LlvHZUWOuPDBFsbWa/M1XhuyPyzdC
+	fP5yiIfm+TvTdJhzXyTneXxfXF2FTsQI8WyWdJVGd4BmFy5i1Qq8wFYX28aX1K1upRjnutLDVdi
+	18McGBbApuywIMzOGwQengXvGG4LWnINO853xrADNPWdHrN4ePhLAGZ82aHCSugxyt+wLx4SSJW
+	k6NM8qqU1v1/xVk17ZUQLtviB8mKZsecURSNjZZ6/UNm2FWCqEEMx6dYc77UC12GJZa7vZJgbEy
+	E+N4pfRQ+ifV9z0vrVf5gLiqwGRqREHFej/CrV9W2OqTkvLCBe0V7oR3gd817rDA80nOIIoPUo5
+	xy4L0eKe0io/cT3hAaHj+AP2vB/2hisa7BNQJtdyGNf9ofRBiLTPvmQweS64n1f4UVaHHvKN3p4
+	xsZXAlF
+X-Received: by 2002:a05:7301:dd95:b0:353:58b7:b5fa with SMTP id 5a478bee46e88-3535f48136amr3132590eec.1.1791545539457;
+        Fri, 09 Oct 2026 04:32:19 -0700 (PDT)
+Received: from amd.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm7529934eec.17.2026.10.09.04.32.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 04:32:19 -0700 (PDT)
+From: Priyanka Mani <priyankamani2100@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Ivan Orlov <iorlov@amazon.com>,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: selftests: Fix ndata size check in test_mmio_during_vectoring
+Date: Fri,  9 Oct 2026 11:30:17 +0000
+Message-ID: <eef6bc34bdf7391c5d3eb4b1ba5e97819e22ae8f.1791542392.git.priyankamani2100@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260925160300.467884-1-andrew.jones@oss.qualcomm.com>
-In-Reply-To: <20260925160300.467884-1-andrew.jones@oss.qualcomm.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 9 Oct 2026 12:26:57 +0200
-X-Gm-Features: AclHuK-pEq92e8PF3NtgM83whKL9xC8DLhFEcuppkWWmzGxqa0y5mveDAWbf6kU
-Message-ID: <CAAhSdy2xu2MAKwOfPNRPG68XbtQsa-CT66phvTZe_XD_3Rk3Qg@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Reject vCPU creation after AIA initialization
-To: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Cc: kvm-riscv@lists.infradead.org, atish.patra@linux.dev, pjw@kernel.org, 
-	palmer@dabbelt.com, kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 25, 2026 at 6:03=E2=80=AFPM Andrew Jones
-<andrew.jones@oss.qualcomm.com> wrote:
->
-> AIA initialization sets up per-vCPU IMSIC state by iterating over all
-> online vCPUs. Creating another vCPU afterwards leaves it without
-> initialized IMSIC state, but KVM currently permits that sequence.
->
-> Reject KVM_CREATE_VCPU once AIA initialization succeeds. Both paths are
-> serialized by kvm->lock, so checking the initialized state from
-> kvm_arch_vcpu_precreate() freezes the vCPU set used by AIA.
->
-> Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irq=
-chip")
-> Signed-off-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+test_mmio_during_vectoring() verifies that KVM reports the faulting GPA in
+run->internal.data[3] when an emulated MMIO access occurs during event
+vectoring.  kvm_prepare_event_vectoring_exit() always fills five entries
+(info2, reason, info1, gpa, last_vmentry_cpu), i.e. internal.ndata is 5.
 
-LGTM.
+The test, however, checks "ndata != 4" before dereferencing data[3].  That
+predicate does not actually validate the array size: it passes for ndata ==
+3, where data[3] is out of bounds yet is read just below, and it spuriously
+fails if ndata were ever exactly 4.  It only happens to work today because
+KVM returns 5.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+Assert the real expected size, ndata == 5, so that the subsequent data[3]
+access is properly guarded and the test enforces the exit's contract.
 
-Queued this patch for Linux-7.4
+Fixes: 62e41f6b4f36 ("KVM: selftests: Add test case for MMIO during vectoring on x86")
+Signed-off-by: Priyanka Mani <priyankamani2100@gmail.com>
+---
+ tools/testing/selftests/kvm/set_memory_region_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Anup
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index dffe9654f45b..627ebc2ba024 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -606,7 +606,7 @@ static void test_mmio_during_vectoring(void)
+ 	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_INTERNAL_ERROR);
+ 	TEST_ASSERT(run->internal.suberror == KVM_INTERNAL_ERROR_DELIVERY_EV,
+ 		    "Unexpected suberror = %d", vcpu->run->internal.suberror);
+-	TEST_ASSERT(run->internal.ndata != 4, "Unexpected internal error data array size = %d",
++	TEST_ASSERT(run->internal.ndata == 5, "Unexpected internal error data array size = %d",
+ 		    run->internal.ndata);
+ 
+ 	/* The reported GPA should be IDT base + offset of the GP vector */
+-- 
+2.43.0
 
-> ---
->  arch/riscv/kvm/vcpu.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index e062ca19f9d8..ccf2def834f1 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -138,6 +138,9 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcp=
-u, bool kvm_sbi_reset)
->
->  int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
->  {
-> +       if (kvm_riscv_aia_initialized(kvm))
-> +               return -EBUSY;
-> +
->         return 0;
->  }
->
-> --
-> 2.43.0
->
