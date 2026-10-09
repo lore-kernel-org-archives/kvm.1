@@ -1,122 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388A42A152;
-	Fri,  9 Oct 2026 12:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C5A49D59E;
+	Fri,  9 Oct 2026 12:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548227; cv=none; b=dDKcTTS2SKPAMOOLfNcRjgpUWx1m8VZCnaSHDMAkSw9rPQmRAZGpVVkUG+3wKcOcq/6sb1/h3c9ophmTEsFkk5W0UfhWScWDwcFal+xF/5/UglhGXxjfW2NlcaJWCSqScn0nMYjX3hI2xCCz/C4P9i1fpAHyETBF5mF7j6gGRio=
+	t=1791549067; cv=none; b=hOcNP4IeFbFYkEx2885/u2rWwOspTAEGQLUjJl3OgyNea4eaYK9hj5xJCWAeC8zzWx3IEL3QFnl91ZzPzM49n1miHqPGK6BsgBlN31zuzCExVSPDXgPVfkdIFBOo8Ei9DsUFl0lZx7lTgMWGE1w8BF7AO+3ahyF/DyLZAZoL6uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548227; c=relaxed/simple;
-	bh=kf9dg50ujd8CthO4zIArtdQ1S9/f19tZLRH75JxQSkE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KuvCsbXQKJ1bTlfIMNvzhLV4sPYEPns98JWbZYYCNBNnXTyLHs0q7yyiHbldMJcDLDGvlHVePzf5YeBC/El1mF3RQ7Mui2eO4f6n9GJQHZjv65k0aCkn5Fy4biACWAze6BM3VD3D/WjU3cdcYq38UY5RXX9oafDyKhZfLXxRPVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PL9IPTYq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791549067; c=relaxed/simple;
+	bh=qmo1pdq1msZ7h0FHlQk9nYSbAoOmzuftagN6+2GMrxo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dlxp9npMSQ9qrOGmA/Dro3ESaUNB3v5PLyaaHap0+H1Z901OpU11KsFXIZZdRYyYbl2L3uNOTF9aVAkqYBRNw2YV9Zie6mMfUrxgy2/O7dP7EG5xqU6JhGmguTs0XO2jix5lbqENOE9xCcmzx++VNfMj2T4TDADoEezgeAhhUgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AASq1Mtb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PL9IPTYq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834B91F000FF;
-	Fri,  9 Oct 2026 12:17:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791548220;
-	bh=6/A+on6QTcsynPBLF2wcK5YT384IqIK0ywry4fp4NAo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PL9IPTYqlfvHL+IF9BEowQEj+uuzDibLKxsIj7RBMNCrBx/PdQkyBGqsi9P9NWrWf
-	 X68m6skXLFM4qKc18VNrF8rDSSacoinKTCYD15iSoBkKIbT/Q5n9exe2z42IvNKqON
-	 pXUKAtJmt82QV4EfJDDbNdJX+o4OeJrQG2S22PLdP17PyfptkVlWxlL04uanmVqasy
-	 0C9xFCZ4laTK1J6p10pWLJOzgQLQy64Te5n9pFKsg25loGY2K9vcqtY9wrDW6wR53M
-	 TfvExeqSQUPo1jXgoqfo+VOaGLHWtr9n/l31zaHyuncoJW1kQH1VuqyPm7kKHTy4xf
-	 oGwY+qx3CQy3A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xF9X0-00000000zPz-1ZsQ;
-	Fri, 09 Oct 2026 12:16:58 +0000
-Date: Fri, 09 Oct 2026 13:16:57 +0100
-Message-ID: <868q472hmu.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v23 14/14] KVM: arm64: Prevent unsupported vcpu features for VM types
-In-Reply-To: <CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
-References: <20261007073537.2454351-1-suzuki.poulose@arm.com>
-	<20261007073537.2454351-15-suzuki.poulose@arm.com>
-	<CA+EHjTx-niYPnnRDvAAiY3MXLpSYau_PhiBTCiE9mOYUChASPQ@mail.gmail.com>
-	<86a4on2qxz.wl-maz@kernel.org>
-	<CA+EHjTxZM2kEtsG7+pq7zygA8Mhwzai9PL7+ex1K35BPVSt6hQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AASq1Mtb"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6998ZUbv3666265;
+	Fri, 9 Oct 2026 12:30:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=se1fv/0zrPyOXWXtWvXAy03KKez6Xd0Xw9Bw4k4HA
+	jQ=; b=AASq1Mtb6RgpATjFFdBz4HoQ7WJEDkrCpfKcOuOky8UJzTG2ap829znVc
+	OFprN0fs+/YTR7DmnYwbaGEQtLrad/XiWNoaeE+m4CEG3LmaqNEoJOyppUODD8P7
+	QElUmLGmFveZ8vihjcNJ99KiZt27iw8h3gPptzGE+kuV2x0J55GkXFpnu/Y5fMMy
+	a9rz+4AEi07Akqgi3LF3kLJVJYabkl7/Z3WQ6DHp1f1M6S8Fur2PP5G6k6kU0OmD
+	/tqP6e/8UvtJf4sDcZRK0Hk9yYNdxLUSkxTEKA274RZj+/FUTIbMa76IYH8kJvQ8
+	8DpaWPNZxDzGUYZw5o9IFsqld9SUg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xjw9wx0-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 12:30:50 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6999sSlQ724275;
+	Fri, 9 Oct 2026 12:30:49 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h6x1y8gpn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 12:30:49 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 699CUhGm17826052
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Oct 2026 12:30:43 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3C0A920040;
+	Fri,  9 Oct 2026 12:30:43 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 851DE2004B;
+	Fri,  9 Oct 2026 12:30:40 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibmuc.com (unknown [9.39.27.243])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Oct 2026 12:30:40 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        amachhiw@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] Fixes for KVM HV around synchronization and initializations
+Date: Fri,  9 Oct 2026 18:00:29 +0530
+Message-ID: <20261009123035.157770-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA0OCBTYWx0ZWRfX2BAg0WJBSOSp
+ /b9G67FepRJqpKcnUOzQgnBVS2jDliPMZiNTVM81PBNsf+JtzH9BnswhJ+QvqBR1LJ5qJOq78YC
+ LU+99sV0R89eybH7FDIdvu8hybx/zi8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA0OCBTYWx0ZWRfX53FcjSiun0+W
+ ai/sA29Wu5JXp9fF11pgR5I5z/OL/dHQbxEST0MvXGF81Wu7lNBNfhsb2Vrt1zGn3fY450hEkdQ
+ xXgYtTLkYncqYO3Ft5l2C39bvZUyt9adWATwffKtDCH6bCTD4mTgYmcxgPMgDwCcqeID50bZT+m
+ NVtQ+qnkbDCssNF7s+Ov8vguIbrmY6w5MQOEBmC77V2jaY1Iz1/FhPbYP7dpZGIXQ6ybFVvxIKe
+ nivQOmX1b4PjPt6eJY8ALP7uRnYyEoDio8BLRhGL6Y/n3ri1bhu3KV1Yi/Cn34ATVCdpRrIlAYB
+ 1WkFckIp3GVu9d3517QEw5wHpdEtH2x/f3Kd2/rNIaEPZgYrJiu1S+eAFH2PbT7yVE3ePgJlCsY
+ euFADd+u9p4r9gBe4A/uKBO8c2dEsETcpxn4tfdUgxq/0sxwf3CMritHyBW9K0OEPpxdhyuKWBP
+ nBp0H2D/TAhd8zuZNwA==
+X-Proofpoint-GUID: s7n4stqpeOyKnC2vdPMLbwJgZwd-PuZ6
+X-Proofpoint-ORIG-GUID: 5vPQOMual2lPFAUoaZ60g1h8UxgOaoes
+X-Authority-Analysis: v=2.4 cv=XcwcX455 c=1 sm=1 tr=0 ts=6ac8de7a cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=3shF3zVF4xkQSgwXEr4A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-09_03,2026-10-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 spamscore=0 suspectscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610020000
+ definitions=main-2610090048
 
-On Fri, 09 Oct 2026 11:10:55 +0100,
-Fuad Tabba <tabba@google.com> wrote:
-> 
-> Hi Marc,
-> 
-> On Fri, 09 Oct 2026 09:55:52 +0100, Marc Zyngier <maz@kernel.org> wrote:
-> [...]
-> > A rebase would be a terrible idea. This thing *must* go on its own
-> > branch, and not depend on anything else.
-> >
-> > I can however fix things at merge time. is something like this what
-> > you had in mind? It compiles, and is therefore perfect...
-> 
-> Yes, that's what I had in mind, but please keep the PSCI 0.2 check
-> from kvm_vcpu_init_check_features():
-> 
->         /* EL2 implements PSCI 1.1; the host must not dispatch as 0.1. */
->         if (vcpu_is_protected(vcpu) &&
->             !test_bit(KVM_ARM_VCPU_PSCI_0_2, &features))
->                 return -EINVAL;
-> 
-> Folding the allowed set into the mask covers the rest of the block you
-> dropped, but a mask can only reject a feature, not require one.
-> Without the check a protected vCPU can init without PSCI_0_2, and the
-> host then dispatches the forwarded calls as PSCI 0.1, while EL2
-> returns 1.1 to the guest.
+This series contains the fixes for synchronization and initializations
+bugs in the KVM HV code.
 
-I think eventually we will have to implement this stuff as a pair of
-masks on a backend basis: one for what is acceptable, one for what is
-mandatory.
+Patch 1: Fix for concurrent calls to idr_alloc
 
-In the meantime, I'll fold the above hack in.
+Patch 2: Initialize the arch.irq_type correctly for cleanup to work
 
-Thanks,
+Patch 3: In the cleanup function, add a check to avoid NULL ptr
+dereference.
 
-	M.
+Patch 4: Add a srcu lock to fix "suspicious usage of
+         rcu_dereference_check" usage.
+
+v1 -> v2:
+1. Avoid NULL pointer dereference when calling
+kvmppc_xive_cleanup_vcpu(). Split this in a separate patch (patch 3)
+
+Gautam Menghani (4):
+  KVM: PPC: Book3S HV: Ensure that calls to idr_alloc are synchronized
+  KVM: PPC: Book3S HV: XICS: Update irq_type for cleanup to work
+  KVM: PPC: Book3S HV: XICS: Avoid masking VP IPI on init failure
+  KVM: PPC: Book3s HV: Take SRCU read lock around kvmppc_h_page_init()
+    call
+
+ arch/powerpc/kvm/book3s_hv.c        |  2 ++
+ arch/powerpc/kvm/book3s_hv_nested.c | 34 +++++++++--------------------
+ arch/powerpc/kvm/book3s_xive.c      |  5 +++--
+ 3 files changed, 15 insertions(+), 26 deletions(-)
 
 -- 
-Without deviation from the norm, progress is not possible.
+2.55.0
+
