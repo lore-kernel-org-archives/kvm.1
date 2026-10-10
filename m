@@ -1,418 +1,347 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-100.mail.aliyun.com (out28-100.mail.aliyun.com [115.124.28.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00AE2147F9
-	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 02:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D20225403;
+	Sat, 10 Oct 2026 02:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791598168; cv=none; b=bCCrZh+E/KqcGvHPRQNHRq2tv6BEsg42USrAL/lbJ5Q7LrMU8FPg6iAEKoqO/dVXQNwSNvo7kFxjW6m1Soj89eD1DbH4Qa7dY3FmD2z7hsltrbdIMNLoy3mFlz5ABvggrhBe6MNd7TIRHEQowSF48FoEjotA6zgLw0lU1vcyTDc=
+	t=1791598645; cv=none; b=b8RsFWhhFmDM+QM0lY7OEjmk3OcQeMMT5nhOOIio/9UjNgwUsn2DZWewY98O8YcsdPFTgPXbBe0l9N9eGzmLunfEsRsBAzP4dzPLydAQNXG+bYY7dX4871khIuIcAh0pGgGHWdyG/T2TiK4CvnYFrMNnUwDAKoKhQbezqnl0RzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791598168; c=relaxed/simple;
-	bh=d0EDoYHxfrUlr02R+Iw2ZmY9MamAcQ0Y6aKU5ptZvBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X7OO87a2dFsxD8YW1kVEEgfHzeYi9uIoEIv9J5Bej5m8jR1mTLzQOyoyEK2kIxSd+M7GCtSOL7k2CWowF5PnzHLHLoFnVMedFQ7/yjgOeU5VZhYU+BJ8RIssw2IAKbrE2GNOrroerRsTpb+s3tGI0SPEfXBMNIAJA0Y1CneupSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U9PSLapU; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1791598645; c=relaxed/simple;
+	bh=Hhqf2rxMuYAykiBd6rvceywTER/CWyE67mbalSq1aiI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ahNKU7SK2JZ4V+nTP+02OYugaT0Euh+cj0gOqBfmu2YXnLv2KQRGnfAgR175uK0nXO8pe7z//KCwgsvfGfxI5kE9kA1zPUC3TIrwwyF1C5lyuIXw5lz+/K6atvZB4p6GniO2DZ7YhxRYzgJ4StzhiMWT6ldKgUWspT75OTH61JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn; spf=pass smtp.mailfrom=bosc.ac.cn; dkim=pass (2048-bit key) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.b=cgvOnQ2G; arc=none smtp.client-ip=115.124.28.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bosc.ac.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U9PSLapU"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2db33db4de9so9955ad.0
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 19:09:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791598166; x=1792202966; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZckNohU8rxASyti8f1rup11rFGJuPHV9Cw9uToI+h6I=;
-        b=U9PSLapUr+67/xXjOrzm7PU2kzrAUQu3MQ3LF8KZmqXFwlYObqFdoJkNxE3yHnUmRC
-         rp5ry7a5pVBKSZDYqdI1LNKo2+/uOK9sfIe1hIEKS1wbU9iFZQGtEpCb8tiwwI2wNbdY
-         u7WfqkT9PiHojvXMYJv8lfxcem9ClQNaIiODCT7B8yd4jvL0Pjtg5KmYaVyhBG+Yxj+p
-         tTWXTTbR62Zz/8wSvuNI/hg0f14gzoda0isl4bOj+49hX8OQY2YljEd0baejAnhvujZE
-         rE1xluZ9g8f5P5fLLArJS4pfQMcBrW1Itb7AntaZtL3PS2mAcxuGBmnsE1SDnFQIcZab
-         0rNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791598166; x=1792202966;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZckNohU8rxASyti8f1rup11rFGJuPHV9Cw9uToI+h6I=;
-        b=UmUqbVAeualZAyhv3qwGXNGWnzRdKkZwVHv3Erkg0C8RULT7rmWAIhZX8akVQ2Tzid
-         bFc4dtfE/sE3zNDou4H86yAqBKKp6EwLph148gf6Vq+me2lG6OIjiQeSLDXFHLAakuEl
-         swUP9KedSUZg316W96t9hkyQJ+bME8OiJg8laBbH8RvLnsxGFL3K6JD3rnDNciktP2Bd
-         BdeemgKHI6/grK5D7zs95v6k1QPMbjAHgSCpO2XqAlW6n4GZZ93eS35yei9T10WbQq8Q
-         1WiTHyd6jDmol2r0zngUJ1zfsxW/3aj9A2n+Q8nq+x3A2PdYW10mDnQ/nx0LqRt7HGMg
-         eKEA==
-X-Forwarded-Encrypted: i=1; AKwUvBxQvR+xqKNhEVGfCd92ViZfwoYSoKr0Hr0o/dAjRAiHny76GBortfdDtC3ZMFPNQapEhTo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJoo42YQQ98WWkwsKSXmRYBEn11Y4W+XXyFPmEILTN4lrBxPhrP
-	ZKkMudrNvx2OKfcsxclpasvMO596lmuM3LnNhW59QWlB/GJD9eiXQXA549oFSoVtTw==
-X-Gm-Gg: AYBFou1AG+bzKiLnygxt/tp1eYqOw8tncA0aDOYNYANkj+giuaQPJo2K/Jyvj3MRjGn
-	w6KijsGdJ8ma2MFAhYTeWsJ3epPVE/q/pjdRHKJodVPMmOCt+VOQEI2FIO41cGslMOZ/ydZcis5
-	lQ4tYWPyhbQTq43B1ecW45WV1+TnEln/VhAL1gmsSB4J3NZvOkMm47Cw+fFlZdrW4jN2AzNnIFa
-	60v5Kq5QuM6JKF6HSJ5sIgOcpLcVt3OvKbgmsk8WqjVJCLI9wQzzXPO1rOboLT4G/luq3c/Zihr
-	YNGZC/MPc9vdIWe9qgN+PSPlx0IzK6esUuoNLlkvMUdZWAb8NtAZ/brpVrfTfPSLB0U7SYwpA3P
-	ARtngfkVeEJD/d7Za19iQChrmzgdKVvSjtVIFhpcEjqKDVlJBMFA4W7IemK/XSkjB+G0lunpgz4
-	cl8MQjiIJWcGU5EMRbaFt7VTSSNHRwQgzSf55eaoNy60Bzx18LKNnjNHhvO0LleobFuw4IY3HT5
-	NWiHy+jZFDpAODlnwvrBbpxFemUa31kbXIuj3Loby3sHCM0rnOf5WShYGzc0+5mfz0=
-X-Received: by 2002:a17:903:324c:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2e87e2d3f9fmr549055ad.14.1791598165462;
-        Fri, 09 Oct 2026 19:09:25 -0700 (PDT)
-Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422c99b6sm17931255ad.65.2026.10.09.19.09.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 19:09:24 -0700 (PDT)
-Date: Sat, 10 Oct 2026 02:09:21 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v5 12/18] iommu/vt-d: Handle reattach of the restored
- domain
-Message-ID: <asmb0qNsVLfUkIRo@google.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-13-skhawaja@google.com>
- <5be26af3-9d0c-40ce-bf58-9e98ef4a8670@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.b="cgvOnQ2G"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=bosc.ac.cn; s=default;
+	t=1791598637; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=tAaSWg+FiIF+mfiCv0Bf3xGBh5UNq3lj4Ud/0h90OOk=;
+	b=cgvOnQ2GSLWn00BJDIDu0Y6cp4olm6tZgWQvwoi/ftSsXiGw/0fPwLitHtUkvMUPQp4E0OTAih7r4UYdJXQO/QMs31f7zMMoYi8b6NWMwHZigjlXDEa4jkGSdDsh7Pe6r0qmGHuAA9xk2wi/26JceJJCllOGLNwphAL1l9W7g+3Pk84Z64NqFxGTtIjKQscYH7GVTZQv3zEvI0Qxyzt1BDyq9MBr/DcqTfB5btLjmoSq09OMhJIF79tGZcX0JzHF9G1o8yMrcU1muKv+dPMn0BwhZQxoOeSAsURaK6xGOTWW0gGcQqeChcbIRx4JfTZWid2kLkpEbPLRGEFpEz7LSg==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436626|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0123358-5.81746e-05-0.987606;FP=13689178294156477665|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=guoyaxing@bosc.ac.cn;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.jY-HNee_1791598315;
+Received: from 172.28.100.209(mailfrom:guoyaxing@bosc.ac.cn fp:SMTPD_---.jY-HNee_1791598315 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sat, 10 Oct 2026 10:11:56 +0800
+Message-ID: <285419e5-c4fc-4c75-a765-436165bdc8b9@bosc.ac.cn>
+Date: Sat, 10 Oct 2026 10:11:49 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <5be26af3-9d0c-40ce-bf58-9e98ef4a8670@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] RISC-V: KVM: Flush VS-stage TLB before reusing a host CPU
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, majiuyue@bosc.ac.cn, anzoso@outlook.com
+References: <20260817102447.40259-1-guoyaxing@bosc.ac.cn>
+ <CAAhSdy2qwdHE7SB2gRK3_PQ6m_bMSfWpvcuSG-31W2yd3-UTKg@mail.gmail.com>
+From: guoyaxing <guoyaxing@bosc.ac.cn>
+In-Reply-To: <CAAhSdy2qwdHE7SB2gRK3_PQ6m_bMSfWpvcuSG-31W2yd3-UTKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 09, 2026 at 10:24:28AM +0800, Baolu Lu wrote:
->On 9/21/26 08:48, Samiullah Khawaja wrote:
->>Reattach the restored domain to the preserved device using restored
->>domain ID. While reattaching do not setup the context and PASID entries
->>as those are preserved during liveupdate.
+
+
+在 2026/10/10 02:51, Anup Patel 写道:
+> On Mon, Aug 17, 2026 at 12:25 PM Yaxing Guo <guoyaxing@bosc.ac.cn> wrote:
 >>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      |  32 +++++--
->>  drivers/iommu/intel/iommu.h      |  14 +++
->>  drivers/iommu/intel/liveupdate.c | 159 +++++++++++++++++++++++++++++++
->>  3 files changed, 197 insertions(+), 8 deletions(-)
+>> Guest Linux uses mm_cpumask to decide whether an sfence.vma needs to be
+>> local or remote. Under KVM that mask tracks guest CPUs, not the host CPUs
+>> that previously backed a vCPU.
 >>
->>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->>index c5044e834337..6d3cbe0745c9 100644
->>--- a/drivers/iommu/intel/iommu.c
->>+++ b/drivers/iommu/intel/iommu.c
->>@@ -2819,6 +2819,9 @@ static int blocking_domain_attach_dev(struct iommu_domain *domain,
->>  {
->>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>+	if (dev_iommu_restored_state(dev))
->>+		return -EBUSY;
->>+
->>  	iopf_for_domain_remove(info->domain ? &info->domain->domain : NULL, dev);
->>  	device_block_translation(dev);
->>  	return 0;
->>@@ -3187,6 +3190,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
->>  {
->>  	int ret;
->>+	if (dev_iommu_restored_state(dev))
->>+		return intel_iommu_restore_device(domain, dev);
->>+
->>  	device_block_translation(dev);
->>  	ret = paging_domain_compatible(domain, dev);
->>@@ -3317,7 +3323,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
->>  	info->iommu = iommu;
->>  	RB_CLEAR_NODE(&info->node);
->>  	if (dev_is_pci(dev)) {
->>-		if (ecap_dev_iotlb_support(iommu->ecap) &&
->>+		if (!dev_iommu_restored_state(dev) &&
->>+		    ecap_dev_iotlb_support(iommu->ecap) &&
->>  		    pci_ats_supported(pdev) &&
->>  		    dmar_ats_supported(pdev, iommu)) {
->>  			info->ats_supported = 1;
->>@@ -3421,12 +3428,16 @@ static void intel_iommu_release_device(struct device *dev)
->>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>  	struct intel_iommu *iommu = info->iommu;
->>-	iommu_disable_pci_pri(info);
->>-	iommu_disable_pci_ats(info);
->>+	if (!dev_iommu_restored_state(dev)) {
->>+		iommu_disable_pci_pri(info);
->>+		iommu_disable_pci_ats(info);
->>-	if (info->pasid_enabled) {
->>-		pci_disable_pasid(to_pci_dev(dev));
->>-		info->pasid_enabled = 0;
->>+		if (info->pasid_enabled) {
->>+			pci_disable_pasid(to_pci_dev(dev));
->>+			info->pasid_enabled = 0;
->>+		}
->>+	} else {
->>+		intel_iommu_detach_restored_device(dev);
->>  	}
->>  	mutex_lock(&iommu->iopf_lock);
->>@@ -3434,11 +3445,13 @@ static void intel_iommu_release_device(struct device *dev)
->>  		device_rbtree_remove(info);
->>  	mutex_unlock(&iommu->iopf_lock);
->>-	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev) &&
->>+	if (!dev_iommu_restored_state(dev) && sm_supported(iommu) &&
->>+	    !dev_is_real_dma_subdevice(dev) &&
->>  	    !context_copied(iommu, info->bus, info->devfn))
->>  		intel_pasid_teardown_sm_context(dev);
->>-	intel_pasid_free_table(dev);
->>+	if (!dev_iommu_restored_state(dev))
->>+		intel_pasid_free_table(dev);
->>  	intel_iommu_debugfs_remove_dev(info);
->>  	kfree(info);
->>  }
->>@@ -3900,6 +3913,9 @@ static int identity_domain_attach_dev(struct iommu_domain *domain,
->>  	struct intel_iommu *iommu = info->iommu;
->>  	int ret;
->>+	if (dev_iommu_restored_state(dev))
->>+		return -EBUSY;
->>+
->>  	device_block_translation(dev);
->>  	if (dev_is_real_dma_subdevice(dev))
->>diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
->>index 3a2cb08c0ac1..25104644317c 100644
->>--- a/drivers/iommu/intel/iommu.h
->>+++ b/drivers/iommu/intel/iommu.h
->>@@ -1310,6 +1310,9 @@ void intel_iommu_unpreserve(struct iommu_device *iommu,
->>  void clear_unpreserved_context_entries(struct intel_iommu *iommu);
->>  void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->>  					       struct iommu_hw_ser *iommu_ser);
->>+int intel_iommu_restore_device(struct iommu_domain *domain,
->>+			       struct device *dev);
->>+int intel_iommu_detach_restored_device(struct device *dev);
->>  #else
->>  static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
->>  {
->>@@ -1319,6 +1322,17 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
->>  							     struct iommu_hw_ser *iommu_ser)
->>  {
->>  }
->>+
->>+static inline int intel_iommu_restore_device(struct iommu_domain *domain,
->>+					     struct device *dev)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>+
->>+static inline int intel_iommu_detach_restored_device(struct device *dev)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>  #endif
->>  #ifdef CONFIG_INTEL_IOMMU_SVM
->>diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
->>index c9e553379683..6e6707eefc8c 100644
->>--- a/drivers/iommu/intel/liveupdate.c
->>+++ b/drivers/iommu/intel/liveupdate.c
->>@@ -351,6 +351,165 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
->>  	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
->>  }
->>+static void domain_detach_reattached_iommu(struct dmar_domain *domain,
->>+					   struct intel_iommu *iommu)
->
->The naming is ambiguous. How about
->
->	domain_detach_restored_iommu()
->	domain_attach_restored_iommu()
->
->?
+>> This can miss stale VS-stage TLB entries when a vCPU migrates across host
+>> CPUs. For example:
+>>
+>>    - vcpu0 runs on host CPU1 and fills a VS-stage TLB entry.
+>>    - vcpu0 migrates to host CPU0.
+>>    - the guest updates the mapping on vcpu0 and issues a local sfence.vma.
+>>    - later, the guest task runs on vcpu1 while vcpu1 is backed by host CPU1.
+> 
+> When the vcpu0 is brought back to host CPU1, the kvm_riscv_local_tlb_sanitize()
+> will ensure TLB entries associated with Guest/VM are nuked.
+> 
+> By default, kvm_riscv_local_hfence_gvma_vmid_all() will only do HFENCE.GVMA
+> for the associated VMID because most RISC-V H-extension implemenation will
+> tag VS-stage TLB entries with VMID and HFENCE.GVMA must remove both
+> G-stage and VS-stage TLB entries for given VMID.
+> 
+> If your HW does not tag VS-stage TLB enteries with VMID then it buggy
+> / inefficient
+> so you have to set kvm_riscv_vsstage_tlb_no_gpa in
+> kvm_riscv_setup_vendor_features()
+> as work-around.
+> 
+> NACK to this patch from myside.
+> 
+> Regards,
+> Anup
+> 
+Hi Anup,
+   Thanks for the review and clarification.
 
-This looks good to me. Will update.
->
->>+{
->>+	struct iommu_domain_info *info;
->>+
->>+	guard(mutex)(&iommu->did_lock);
->>+	info = xa_load(&domain->iommu_array, iommu->seq_id);
->>+	if (--info->refcnt == 0) {
->>+		xa_erase(&domain->iommu_array, iommu->seq_id);
->>+		kfree(info);
->>+	}
->>+}
->>+
->>+static int domain_reattach_iommu(struct dmar_domain *domain,
->>+				 struct intel_iommu *iommu,
->>+				 struct iommu_device_ser *device_ser)
->>+{
->>+	struct iommu_domain_info *info, *curr;
->>+	struct iommu_domain_ser *domain_ser;
->>+	struct iommu_hw_ser *iommu_hw_ser;
->>+	int restored_did;
->>+	int ret;
->>+
->>+	if (!iommu_domain_restored_state(&domain->domain))
->>+		return -EINVAL;
->>+
->>+	if (!device_ser->domain_iommu_ser.domain_phys ||
->>+	    !device_ser->domain_iommu_ser.iommu_phys)
->>+		return -EINVAL;
->>+
->>+	domain_ser = phys_to_virt(device_ser->domain_iommu_ser.domain_phys);
->>+	if (domain_ser->restored_domain != &domain->domain)
->>+		return -EINVAL;
->>+
->>+	iommu_hw_ser = phys_to_virt(device_ser->domain_iommu_ser.iommu_phys);
->>+	if (iommu_hw_ser->type != IOMMU_INTEL ||
->>+	    iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
->>+		return -EINVAL;
->>+
->>+	restored_did = device_ser->domain_iommu_ser.attachment_id;
->>+	if (!ida_exists(&iommu->domain_ida, restored_did))
->>+		return -EINVAL;
->>+
->>+	info = kzalloc_obj(*info);
->>+	if (!info)
->>+		return -ENOMEM;
->>+
->>+	guard(mutex)(&iommu->did_lock);
->>+	curr = xa_load(&domain->iommu_array, iommu->seq_id);
->>+	if (curr) {
->>+		curr->refcnt++;
->>+		kfree(info);
->>+		return 0;
->>+	}
->>+
->>+	info->refcnt	= 1;
->>+	info->did	= restored_did;
->>+	info->iommu	= iommu;
->>+	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
->>+			  NULL, info, GFP_KERNEL);
->>+	if (curr) {
->>+		ret = xa_err(curr) ? : -EBUSY;
->>+		goto err_unlock;
->>+	}
->>+
->>+	return 0;
->>+
->>+err_unlock:
->>+	kfree(info);
->>+	return ret;
->>+}
->>+
->>+/**
->>+ * intel_iommu_restore_device() - Restore device domain attachment after live update
->>+ * @domain: Restored domain
->>+ * @dev: Restored device
->>+ *
->>+ * Return: 0 on success, or negative error code.
->>+ */
->>+int intel_iommu_restore_device(struct iommu_domain *domain,
->>+			       struct device *dev)
->
->How about renaming it intel_iommu_attach_restored_device() to pair with
->the detach helper?
+   Regarding “When the vcpu0 is brought back to host CPU1”: the failure 
+we hit is not caused by vcpu0 being brought back onto host CPU1. In our 
+case, after vcpu0 has already migrated away, neither vCPU migrates 
+again. The guest process is later scheduled inside the multi-vCPU guest 
+onto vcpu1, which is still running on host CPU1. So the stale TLB is 
+re-hit without any further KVM vCPU migration, and 
+kvm_riscv_local_tlb_sanitize() is not involved on that path.
 
-Agreed. Will update.
->
->>+{
->>+	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
->>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
->>+	struct intel_iommu *iommu = info->iommu;
->>+	unsigned long flags;
->>+	int ret;
->>+
->>+	if (!device_ser)
->>+		return -EINVAL;
->>+
->>+	if (dev_is_real_dma_subdevice(dev))
->>+		return -EOPNOTSUPP;
->
->The vmd subdevices rely on the host endpoint to restore the domain
->attachment, so instead of returning an error, it could return 0,
->indicating nothing to do?
+   My commit message was a bit too terse on this point. The concrete 
+sequence we observed was described earlier in the RFC discussion:
 
-This should never happen, as subdevices are not preserved, so this
-function is never called for them. It is basically dead code, so I will
-drop it.
->
->>+
->>+	ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
->>+	if (ret)
->>+		return ret;
->>+
->>+	info->domain = dmar_domain;
->>+	info->domain_attached = true;
->>+	spin_lock_irqsave(&dmar_domain->lock, flags);
->>+	list_add(&info->link, &dmar_domain->devices);
->>+	spin_unlock_irqrestore(&dmar_domain->lock, flags);
->>+
->>+	ret = cache_tag_assign_domain(dmar_domain, dev, IOMMU_NO_PASID);
->>+	if (ret)
->>+		goto err;
->
->The restored domain is an immutable domain. It could only be freed; no
->map and unmap should happen on it. So why do you need to assign a cache
->tag for it?
+  
+https://lore.kernel.org/kvm/0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.ac.cn/
 
-Interesting.. this is a valid point. I will remove this.
->
->>+
->>+	ret = iopf_for_domain_set(domain, dev);
->
->ATS and PRI are not supported on the preserved devices, so the above is
->dead code, right?
+   In short, the issue is: because vcpu0 migrated away, cpu1 still has 
+stale TLB entries while cpu0 has the new mapping. After that, neither 
+vcpu migrated again, but the process was scheduled from vcpu0 to vcpu1 
+(which is on cpu1), causing it to hit the stale TLB. Consider the 
+following scenario:
 
-Agreed. Will update.
->
->>+	if (ret)
->>+		goto err;
->>+
->>+	return 0;
->>+
->>+err:
->>+	/*
->>+	 * Detach the restored domain from device and iommu on failure, but keep
->>+	 * the hardware state intact.
->>+	 */
->>+	info->domain_attached = false;
->>+	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
->>+	spin_lock_irqsave(&info->domain->lock, flags);
->>+	list_del(&info->link);
->>+	spin_unlock_irqrestore(&info->domain->lock, flags);
->>+
->>+	domain_detach_reattached_iommu(info->domain, iommu);
->>+	info->domain = NULL;
->>+	return ret;
->>+}
->>+
->>+int intel_iommu_detach_restored_device(struct device *dev)
->>+{
->>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>+	struct intel_iommu *iommu = info->iommu;
->>+	struct iommu_domain *domain;
->>+	unsigned long flags;
->>+
->>+	if (!info->domain_attached || !info->domain)
->>+		return -EINVAL;
->>+
->>+	domain = &info->domain->domain;
->>+	if (!iommu_domain_restored_state(domain))
->>+		return -EINVAL;
->>+
->>+	iopf_for_domain_remove(domain, dev);
->>+	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
->>+	info->domain_attached = false;
->>+
->>+	spin_lock_irqsave(&info->domain->lock, flags);
->>+	list_del(&info->link);
->>+	spin_unlock_irqrestore(&info->domain->lock, flags);
->>+
->>+	domain_detach_reattached_iommu(info->domain, iommu);
->>+	info->domain = NULL;
->>+
->>+	return 0;
->>+}
->>+
->>  /**
->>   * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
->>   * @dev: Target device
->
->Thanks,
->baolu
+   1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcpu0 is 
+on cpu1, and a process on it reads a page, which gets cached in the TLB 
+(let's call this the "stale TLB entry").
 
-Thanks,
-Sami
+   2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now on 
+cpu0) does a CoW (copy-on-write) and establishes a new mapping.
+
+   3. Neither vcpu0 nor vcpu1 migrates again. At this point, the process 
+gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads the 
+same page, and hits the stale TLB entry.
+
+   So this is an intra-guest scheduling case onto a vCPU that stayed on 
+the original host CPU, rather than a “vcpu0 returns to host CPU1” case.
+
+   Thanks,
+   Yaxing
+
+>>
+>> Host CPU1 did not observe the guest-local sfence.vma, and KVM can enter
+>> vcpu1 with a stale VS-stage translation left behind by vcpu0.
+>>
+>> The reported failure was seen on a XiangShan RISC-V system. A bash task
+>> ran on vcpu0 while vcpu0 was backed by host CPU1, and a read-only page was
+>> prefetched into CPU1's VS-stage TLB. vcpu0 later migrated to host CPU0,
+>> where the guest triggered COW, updated the mapping, and issued only a local
+>> sfence.vma. The stale VS-stage entry on CPU1 survived. When the same guest
+>> task later ran on another vCPU backed by host CPU1, it hit the stale
+>> translation. The page contained a GOT pointer, and using the stale data led
+>> to a NULL dereference and a userspace segmentation fault.
+>>
+>> The existing local TLB sanitize path flushes G-stage entries when a vCPU
+>> migrates, and flushes VS-stage entries only for implementations selected by
+>> the Andes-specific kvm_riscv_vsstage_tlb_no_gpa static key. That handles a
+>> split two-stage TLB implementation where HFENCE.GVMA does not invalidate
+>> VS-stage entries, but it does not cover the generic guest-local sfence.vma
+>> case above.
+>>
+>> Track, per VM and per host CPU, the last vCPU that entered the guest on
+>> that CPU. Before guest entry, flush the current CPU's VS-stage context for
+>> the VM if either the current vCPU migrated since its last exit, or this
+>> host CPU is switching from another vCPU of the same VM. Keep the existing
+>> HFENCE.GVMA behavior tied to vCPU migration.
+>>
+>> This also subsumes the Andes split-TLB workaround. That workaround was
+>> needed because the migration sanitize path previously relied on
+>> HFENCE.GVMA alone for most implementations, and only issued HFENCE.VVMA
+>> when kvm_riscv_vsstage_tlb_no_gpa was set. The new sanitize path always
+>> issues HFENCE.VVMA when reusing a host CPU for a VM context that may have
+>> missed a guest-local sfence.vma, so it no longer depends on HFENCE.GVMA
+>> invalidating VS-stage entries. The implementation-specific static key and
+>> setup hook are therefore no longer needed.
+>>
+>> Reported-by: Zhizun Wang <anzoso@outlook.com>
+>> Reviewed-by: Jiuyue Ma <majiuyue@bosc.ac.cn>
+>> Signed-off-by: Yaxing Guo <guoyaxing@bosc.ac.cn>
+>> ---
+>>   arch/riscv/include/asm/kvm_host.h |  6 +++---
+>>   arch/riscv/kvm/main.c             | 15 ---------------
+>>   arch/riscv/kvm/tlb.c              | 31 +++++++++++++++++++++++--------
+>>   arch/riscv/kvm/vm.c               | 16 ++++++++++++++++
+>>   4 files changed, 42 insertions(+), 26 deletions(-)
+>>
+>> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+>> index 24585304c..396ac6209 100644
+>> --- a/arch/riscv/include/asm/kvm_host.h
+>> +++ b/arch/riscv/include/asm/kvm_host.h
+>> @@ -91,6 +91,9 @@ struct kvm_arch {
+>>          /* G-stage vmid */
+>>          struct kvm_vmid vmid;
+>>
+>> +       /* Last VCPU that ran on each physical CPU */
+>> +       int __percpu *last_vcpu_ran;
+>> +
+>>          /* G-stage page table */
+>>          pgd_t *pgd;
+>>          phys_addr_t pgd_phys;
+>> @@ -330,7 +333,4 @@ bool kvm_riscv_vcpu_stopped(struct kvm_vcpu *vcpu);
+>>
+>>   void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu);
+>>
+>> -/* Flags representing implementation specific details */
+>> -DECLARE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
+>> -
+>>   #endif /* __RISCV_KVM_HOST_H__ */
+>> diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+>> index 0f3fe3986..b1bbc0835 100644
+>> --- a/arch/riscv/kvm/main.c
+>> +++ b/arch/riscv/kvm/main.c
+>> @@ -10,23 +10,10 @@
+>>   #include <linux/err.h>
+>>   #include <linux/module.h>
+>>   #include <linux/kvm_host.h>
+>> -#include <asm/cpufeature.h>
+>>   #include <asm/kvm_mmu.h>
+>>   #include <asm/kvm_nacl.h>
+>>   #include <asm/sbi.h>
+>>
+>> -DEFINE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
+>> -
+>> -static void kvm_riscv_setup_vendor_features(void)
+>> -{
+>> -       /* Andes AX66: split two-stage TLBs */
+>> -       if (riscv_cached_mvendorid(0) == ANDES_VENDOR_ID &&
+>> -           (riscv_cached_marchid(0) & 0xFFFF) == 0x8A66) {
+>> -               static_branch_enable(&kvm_riscv_vsstage_tlb_no_gpa);
+>> -               kvm_info("VS-stage TLB does not cache guest physical address and VMID\n");
+>> -       }
+>> -}
+>> -
+>>   long kvm_arch_dev_ioctl(struct file *filp,
+>>                          unsigned int ioctl, unsigned long arg)
+>>   {
+>> @@ -172,8 +159,6 @@ static int __init riscv_kvm_init(void)
+>>                  kvm_info("AIA available with %d guest external interrupts\n",
+>>                           kvm_riscv_aia_nr_hgei);
+>>
+>> -       kvm_riscv_setup_vendor_features();
+>> -
+>>          kvm_register_perf_callbacks();
+>>
+>>          rc = kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+>> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+>> index ff1aeac4e..1541d059a 100644
+>> --- a/arch/riscv/kvm/tlb.c
+>> +++ b/arch/riscv/kvm/tlb.c
+>> @@ -8,6 +8,7 @@
+>>   #include <linux/errno.h>
+>>   #include <linux/err.h>
+>>   #include <linux/module.h>
+>> +#include <linux/percpu.h>
+>>   #include <linux/smp.h>
+>>   #include <linux/kvm_host.h>
+>>   #include <asm/cacheflush.h>
+>> @@ -160,12 +161,19 @@ void kvm_riscv_local_hfence_vvma_all(unsigned long vmid)
+>>
+>>   void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
+>>   {
+>> +       bool vcpu_migrated;
+>> +       bool vcpu_switched;
+>>          unsigned long vmid;
+>> +       int *last_ran;
+>>
+>> -       if (!kvm_riscv_gstage_vmid_bits() ||
+>> -           vcpu->arch.last_exit_cpu == vcpu->cpu)
+>> +       last_ran = this_cpu_ptr(vcpu->kvm->arch.last_vcpu_ran);
+>> +       vcpu_migrated = (vcpu->arch.last_exit_cpu != vcpu->cpu);
+>> +       vcpu_switched = (*last_ran != vcpu->vcpu_idx);
+>> +       if (!vcpu_migrated && !vcpu_switched)
+>>                  return;
+>>
+>> +       vmid = READ_ONCE(vcpu->kvm->arch.vmid.vmid);
+>> +
+>>          /*
+>>           * On RISC-V platforms with hardware VMID support, we share same
+>>           * VMID for all VCPUs of a particular Guest/VM. This means we might
+>> @@ -176,16 +184,23 @@ void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
+>>           * To cleanup stale TLB entries, we simply flush all G-stage TLB
+>>           * entries by VMID whenever underlying Host CPU changes for a VCPU.
+>>           */
+>> -
+>> -       vmid = READ_ONCE(vcpu->kvm->arch.vmid.vmid);
+>> -       kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+>> +       if (vcpu_migrated && kvm_riscv_gstage_vmid_bits())
+>> +               kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+>>
+>>          /*
+>> -        * Flush VS-stage TLB entries for implementation where VS-stage
+>> -        * TLB does not cahce guest physical address and VMID.
+>> +        * Guest-local sfence.vma only invalidates VS-stage translations on
+>> +        * the Host CPU currently backing the VCPU. If a VCPU migrates, or
+>> +        * if this Host CPU switches between VCPUs of the same VM, stale
+>> +        * VS-stage entries can be left behind on a Host CPU that missed a
+>> +        * guest-local flush. Flush the current CPU's VS-stage context before
+>> +        * entering the guest.
+>>           */
+>> -       if (static_branch_unlikely(&kvm_riscv_vsstage_tlb_no_gpa))
+>> +       if (kvm_riscv_nacl_available())
+>> +               nacl_hfence_vvma_all(nacl_shmem(), vmid);
+>> +       else
+>>                  kvm_riscv_local_hfence_vvma_all(vmid);
+>> +
+>> +       *last_ran = vcpu->vcpu_idx;
+>>   }
+>>
+>>   void kvm_riscv_fence_i_process(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+>> index 13c63ae1a..2907218a1 100644
+>> --- a/arch/riscv/kvm/vm.c
+>> +++ b/arch/riscv/kvm/vm.c
+>> @@ -9,6 +9,7 @@
+>>   #include <linux/errno.h>
+>>   #include <linux/err.h>
+>>   #include <linux/module.h>
+>> +#include <linux/percpu.h>
+>>   #include <linux/uaccess.h>
+>>   #include <linux/kvm_host.h>
+>>   #include <asm/kvm_mmu.h>
+>> @@ -30,7 +31,9 @@ const struct kvm_stats_header kvm_vm_stats_header = {
+>>
+>>   int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>>   {
+>> +       int *last_ran;
+>>          int r;
+>> +       int cpu;
+>>
+>>          r = kvm_riscv_mmu_alloc_pgd(kvm);
+>>          if (r)
+>> @@ -42,6 +45,17 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>>                  return r;
+>>          }
+>>
+>> +       kvm->arch.last_vcpu_ran = alloc_percpu(int);
+>> +       if (!kvm->arch.last_vcpu_ran) {
+>> +               kvm_riscv_mmu_free_pgd(kvm);
+>> +               return -ENOMEM;
+>> +       }
+>> +
+>> +       for_each_possible_cpu(cpu) {
+>> +               last_ran = per_cpu_ptr(kvm->arch.last_vcpu_ran, cpu);
+>> +               *last_ran = -1;
+>> +       }
+>> +
+>>          kvm_riscv_aia_init_vm(kvm);
+>>
+>>          kvm_riscv_guest_timer_init(kvm);
+>> @@ -54,6 +68,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>>          kvm_destroy_vcpus(kvm);
+>>
+>>          kvm_riscv_aia_destroy_vm(kvm);
+>> +
+>> +       free_percpu(kvm->arch.last_vcpu_ran);
+>>   }
+>>
+>>   int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irql,
+>> --
+>> 2.43.0
+>>
+
