@@ -1,185 +1,251 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E36B26ED37;
-	Sat, 10 Oct 2026 05:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791610507; cv=none; b=IPc1l1xxPk7SznHw3ovWnv6dRiQXj/jk0Buz1FfUr19D7si1VErbWiBl3fe2OYr+V6jEtHAJsDaQiVbw45r9wW+FrQdSgvz9hkaaeRPtzukChKYxUpEzPXERoxbgTaFH2Zw8XvmwrjvXRHIizsMRztixHgZ2WM9ZkVTGQ8MvYqg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791610507; c=relaxed/simple;
-	bh=ZQDwxtggjEdB4DnE5Fo8yTwuShoD9K6UqEbpF93ZvGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZnSr/yyFeH+suhck/U+/zWBrrg/pv3JI5r+RyGFQid8aPwZyDZlcujn4bBaspjePN0y/9Vp0+XXeTjA/wy/aTctqxCUcSJlK2A55yE2ALkNZ+BR9u2VoPZ1UN9PI7ZWtvTtDsyIKe7c1mWYcmeri0jY4ZRM/Q5l6crqfcGSYEtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jLFi7gv+; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0E240A920;
+	Sat, 10 Oct 2026 05:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791611038; cv=fail; b=gORQ0GaOD/vIZq2G3MprFJVscbrXSLmZZJhlIWtvGvWBXqutegor+xccqJfj6IekLiTtm0KuL0OW5/BdApE7i2xJnZ8scx3Ldspsr3z9DdkJHGxYmI9yXNgPRaJgFwIUx53Rx7VO6UyZieTruJxct75TClwEVGqfJvuNF+pZYlk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791611038; c=relaxed/simple;
+	bh=oHXaaczwYM+AQzf4K3ZoJ56jONjq47iI+Esi+nCq3Kg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CXzBAOYZbtNDniTK82WTKrmlMtRLcYk+/2L2MCcoRO17RsbLM+1IihpTtHtRVynNossJu/Il9AyZMPzOeNu235bU0gmdOsfSdmf5AliFwydEWPj68nLTP1W0QyJOE/kSWDM2l5IJuVf2hEr6tsNregDRLW/1lLn24M6/PiYrO7I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OZJthLby; arc=fail smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jLFi7gv+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OZJthLby"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791610503; x=1823146503;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZQDwxtggjEdB4DnE5Fo8yTwuShoD9K6UqEbpF93ZvGA=;
-  b=jLFi7gv+MpfnwQWXNixeEaZAHuDBKnR0QUhFPTUucFb2gAjMg6mvT7Fm
-   qBLBv37H3cwcjeqDRb7hK3G4YfKaNYJMRF7KV4FOfI3egypTemscD+BHA
-   /zOw5aCCBHpn6fSsmloVrbTKvYBV/seeRdlitE/zOtHIKcj8C5hQEqfRQ
-   4G5HibL2RXBtsr6y/LHcnCYgtANGp0axrNMjM0uI8T/glqV4fbPr60sCS
-   VdE/5DNYdwTjAl+EE3jJL7WLQnJJM2HX2outUBHVcB+gzi+i2oDov0IEv
-   JIt1kqA0XsBEiMerssn2vM5nsUcEWrnYXM4HLEnnRhxAyTqfAXkGtCVlU
-   w==;
-X-CSE-ConnectionGUID: niEB62R7RM6IJ2JZletgBQ==
-X-CSE-MsgGUID: /UPu85ovQX+6KBJg1S5l0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="399620"
+  t=1791611036; x=1823147036;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=oHXaaczwYM+AQzf4K3ZoJ56jONjq47iI+Esi+nCq3Kg=;
+  b=OZJthLbyd0CePsCHRu8AreC2BsDF2ha69AYFgLWaAgVgk3DuPMcO/hDq
+   RDY9QpMFboo3O1Mdz7G7Te04ysRVNTidgeul8pxJrrJnCLdUXrBiFt2vW
+   DbmcFFqUWVogo0nr+OYlM5tsYhyVdc0of+h29qTQ1eN8GCKjawbAtg6lJ
+   mKvz/Q+jwVzGoDHIgAv/LC5NZh8OMl6qKgGK18ECgmHJVlLnyyCaQ+Con
+   4k86AtJTIWBCOeZA8COpKR8m9PQV3j2Kqh/WnGxq+oj4t4Av00KP7+LSA
+   3Bok8mooHVNvIwmW96ugSE8EWCFOsT141Tyc1l/Aiqo0faLCzit9cMhbQ
+   Q==;
+X-CSE-ConnectionGUID: Vz8VPPuVTO+Cr1Ua2FGmbQ==
+X-CSE-MsgGUID: 8mkoGDmmSzydIs3y7pYikQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="294490"
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="399620"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 22:35:02 -0700
-X-CSE-ConnectionGUID: FFuVsC+YT+ayZAsUpNlXUQ==
-X-CSE-MsgGUID: oqITX/OdQpOR5wgdC8WQgQ==
+   d="scan'208";a="294490"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 22:43:56 -0700
+X-CSE-ConnectionGUID: X5uAH20ZSK+UXFE8dfxuag==
+X-CSE-MsgGUID: vlPaJx0UQXOBCAP8Y9jXpw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="459731"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 09 Oct 2026 22:35:02 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xFPjW-000000006Xj-2vwY;
-	Sat, 10 Oct 2026 05:34:58 +0000
-Date: Sat, 10 Oct 2026 13:34:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, SimonP <simonp.git@mailbox.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF
- exit codes
-Message-ID: <202610101512.fYgKYoD8-lkp@intel.com>
-References: <20261009130450.361690-1-pbonzini@redhat.com>
+   d="scan'208";a="794916"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 22:43:56 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 9 Oct 2026 22:43:54 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Fri, 9 Oct 2026 22:43:54 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.42) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 9 Oct 2026 22:43:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NeeS6KVf1mHDsxcDUJdApf3kmZjhAUzkShhrw4FA31dA5BkJ70SpuBmJLJa8iWXoatY5XE9mKqrYTDY0tnAO7Pei1EJl0nBKrDXMcw9K8txksgoI2nZIRF8DR26sdi5jrixQq1RqQF1tNSMhbrStufS6dK+yzwdByDgbqZ97dtfvXjJ5JePFH3tyKAtgkhUh7FXIgHW1dDZn8QdyZ2yd1znWmrzK5I7K+r00+6lh/hNX+SKyHfgU/AYhDyevwNQQL7JmzEbNE5rAm3gvDqmPhGw1BnGPIxv1jTgux0XP2VO02O94bZkT0iUgNZ6gYf8Rfr3kbP+7jx4vn2YO5I0fkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I0GoOvwgGlobH6yVUZ1uz94yis3PW1I+HiUkr3qY7Iw=;
+ b=oxp59bwo6O596MmAhipSwTZj8ziZFSaAYTppo4j+NvnGOazAdinH02r/fOO0OK80EFLNAxFMdgL6YmvyhvDnMu4TcIR2PC+VyWTuzOx21TFAQ11ziuMMcQx8LSW/EmaudeOJKCs0zvqxSLhCIK6BohFhGlUfIq5BZGa7C96eUFsGp6dDtaurY0U/IiENgQMfjAM3YujIhnyapgvxTjQcpJx37Guuka/KAGtShCqMPudU2c2z+zCjfSMScYmeXPY0TBiGGHepy+OWnwjipIInjhHLRPu+9rLDLbj8Uf4lDWXH/JdtGEQmJ9QSxJGk7Y82s8CPRljUisH7XNkhNnjAvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB3243.namprd11.prod.outlook.com (2603:10b6:5:e::19) by
+ DM3PPF10DD61CAD.namprd11.prod.outlook.com (2603:10b6:f:fc00::f08) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.19; Sat, 10 Oct
+ 2026 05:43:48 +0000
+Received: from DM6PR11MB3243.namprd11.prod.outlook.com
+ ([fe80::6c83:d3c:7952:3ee1]) by DM6PR11MB3243.namprd11.prod.outlook.com
+ ([fe80::6c83:d3c:7952:3ee1%4]) with mapi id 15.21.0496.015; Sat, 10 Oct 2026
+ 05:43:48 +0000
+Date: Sat, 10 Oct 2026 13:42:55 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "Du, Fan" <fan.du@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Huang, Kai" <kai.huang@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>, "thomas.lendacky@amd.com"
+	<thomas.lendacky@amd.com>, "tabba@google.com" <tabba@google.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "david@kernel.org" <david@kernel.org>,
+	"michael.roth@amd.com" <michael.roth@amd.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Peng, Chao P"
+	<chao.p.peng@intel.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
+	"kas@kernel.org" <kas@kernel.org>, "nik.borisov@suse.com"
+	<nik.borisov@suse.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "sagis@google.com" <sagis@google.com>,
+	"Annapurve, Vishal" <vannapurve@google.com>, "Chen, Farrah"
+	<farrah.chen@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
+	"francescolavra.fl@gmail.com" <francescolavra.fl@gmail.com>, "Miao, Jun"
+	<jun.miao@intel.com>, "jgross@suse.com" <jgross@suse.com>,
+	"pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v4 11/17] KVM: TDX: Honor the guest's accept level
+ contained in an EPT violation
+Message-ID: <asnQX6O+tPwK+7wl@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260928090729.15468-1-yan.y.zhao@intel.com>
+ <20260928091116.15647-1-yan.y.zhao@intel.com>
+ <68f139713ee0adcca0d7a3d30e48a9c6cbc1f4d4.camel@intel.com>
+ <asi04xo+LJWmkkTt@yzhao56-desk.sh.intel.com>
+ <83419a720277e370a2bb96f283272d8ad0adc3f9.camel@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <83419a720277e370a2bb96f283272d8ad0adc3f9.camel@intel.com>
+X-ClientProxiedBy: SI2P153CA0023.APCP153.PROD.OUTLOOK.COM (2603:1096:4:190::6)
+ To DM6PR11MB3243.namprd11.prod.outlook.com (2603:10b6:5:e::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261009130450.361690-1-pbonzini@redhat.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB3243:EE_|DM3PPF10DD61CAD:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c93f74c-24a3-4c94-cdb9-08df2691734d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|1800799024|376014|366016|6133799003|10067099003|22082099003|18002099003|3023799007|261009223027099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: zhJ2YygYqfxA2WG+qgPi3uyyKCGU88t8nznOgfeeVwAsiYezjNkCzB8/hfNNGorfy7nMzeO5WmAFfdsMOoMIJj8St8fQIiWBogP7RvqXpc0i+wFxspgZcm6ZF75GUJlgmWCYPJrYhcaCkAOXPgh85YTBkY6oqVRJWHV/tD5Id9zgA537pEgRzymfsbfnNqZXWVjOqqq8ThMI+QIVSSmWz/9LJ/8we3dcsqQ0CohfgrI/jMHitUNNvDkV2hIpFKF/euZi+eEG0NZsry+oHU/nJNNSKweKBQ4xvfwdl7XIDKfPVZNtmJfTV9G6zxo4KvEr5GkQS+5TZkI8lEdA2TAt5umXY9YkJqNX3pMuJRdNCRrJWYVf15XZbdsToUVdLk1qHTFX8zLq3ZMGG4wezaf72tVllHnlpH9ZgjpGkYUT31k8TCHSDjOq5LFU4RBdsSamMGieCKOO05xFOO21+9q1CCL6zTGXDWd0hkGkN0S1J7ahHUBWiE8erJGikLbeNxZJAHv1n6mVF9rBsUaLQGz9+gFotaWLcZQPxf7sNIFqeCt0GqWgL/Kc+5KZHgwQq495pRUhloijMCr1TSW/TM6AfJFiF/TcmHLWgR9hT+Z88YfCxsdj4DCv80X5ZLfLtCgzdaofXO35BPkjyWiL9PVKNGJ4ujixIo9JtsCivvXxjGA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3243.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(376014)(366016)(6133799003)(10067099003)(22082099003)(18002099003)(3023799007)(261009223027099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3zhR1px6txcN6yq86P7KVLfSeiET8SOznGZgbTFt1hEYsbMEhcVPlJqdq7tr?=
+ =?us-ascii?Q?NHBl7TXmq9dRG+WFT5aJiYBhp2FItUmZHd+b0fFn/bhTi30WaTlgpcPxUU81?=
+ =?us-ascii?Q?hxanT27X8rF6xEtqhXCtlJpTnr60DZhY6GAyVD9Mp/xLm4PmxeZ7i1N0Q9nq?=
+ =?us-ascii?Q?ASBipqpX+gPrWlp6vkudFVnUAc3aju6jKzEyJhQsLyw/Kyft8BhFemDUcg+K?=
+ =?us-ascii?Q?qgMc4ezficO2QWFE7jo+yz+vGNh/yYeZ6qeiDG3FsEoB1szWdnCah/C/CwW7?=
+ =?us-ascii?Q?Tucc/chDQH847CmgQlEMy2YYKiAQvopNXfhJ3FyzH5njvpDq6G0DDFMvGoWV?=
+ =?us-ascii?Q?SdxlknzdbEGpTc8KNPg51RAiXWq9NTgMGxf9fD+yKVTHSwoE4+R2uoWYTO7g?=
+ =?us-ascii?Q?Bp1K2u3ntvM0bsCxWgk7ElqEK2xNYDfm5riZYu8SjWVHekOAalUVbs4LbZkj?=
+ =?us-ascii?Q?7yc2jM2WAxfuxzPBcPfS8rZnxxT6zrWb/eQ6M8WWMKpkoX7BAMCXIkHmCh/f?=
+ =?us-ascii?Q?eV4T7YZmQkHaeFbhc0WLozLPilpIWMoUSKG2tzvoxeP5BF68fT1FYZsAaR6N?=
+ =?us-ascii?Q?dHVvmeJ5hCeD/QVI94leDzfft1Upuk2wBL92VymplaAG1jBtmYcg94JEuBjM?=
+ =?us-ascii?Q?HTjS2eKmhv6JvydV4G1Sc042S6ZmbIUzBQ/jWebTESqhze2ZVNz1gbeblZIy?=
+ =?us-ascii?Q?9WxsX0hub2xXTfr0yU+BV+onbwSC9N4nFK0a20SoLv2cY3vAlXZjK8NdCRhf?=
+ =?us-ascii?Q?7Oa8X75Tc/tyszSXWsU2LZxE6vQM+XeBzgSmiQaYVV/sw7MLKu35DNgxNPA5?=
+ =?us-ascii?Q?bJuEML0g+XKSygklbOUvRHbYdtR0CuAcJk9bmKlBGHWCCx3c/9kVY+tEbH8j?=
+ =?us-ascii?Q?/h32vPKY+C+fsZQwQcGfqRqDMYuqLuZZYSBpdEMGLohduYeBOoc4Dhe2arsj?=
+ =?us-ascii?Q?XmsFNr3EKeSidXHBmkGbgLgFaBVDvxH1ykDqKMv6iQKpFosxWskX2ag+1ycC?=
+ =?us-ascii?Q?//TGkPkSmX6/6lemj9OsTQ5PN5AAMWbJwu/JvvLYd4XtjcElYA3ry3bzf+zA?=
+ =?us-ascii?Q?6zq7YHnv/q/Oos+U8SZFQLWKaB4ZM6jldGS/SIgdpRZxIX34R2bp68ae4p2E?=
+ =?us-ascii?Q?5/Wul4QX9ZWu8beJvU42Xr0u3kfPR+qSfzLIgbf3beN++2By9s1I2Cc9kQ9s?=
+ =?us-ascii?Q?uUMOM1hFPx+2vmeWsDKtDxIdiLFSOgvp2F40V3O1BrC3+9z0fx8erkN1DX5/?=
+ =?us-ascii?Q?zqL/wjl8DuazbrKT9kGZf624gMzZECxvT/s0TRZ7F1uleHdPoJS0zyM/KbTf?=
+ =?us-ascii?Q?rNJsSgLTGos5UkicD69CkC9z2nbGT655t63o8dVvnk7WRlxep2m0YJehVNjL?=
+ =?us-ascii?Q?6yFln+6/S1c48dIGFxI5offxrzgGbgqJQKpX1lbCwRo3bxaXUYGT/b/a9YPd?=
+ =?us-ascii?Q?qiJD79kgbvJYXs7LQifbmoh2WBY4suZHhOfbISOEcADUIitV0Ed5BKxUxCGw?=
+ =?us-ascii?Q?iJ8RLcWHVXQ/siEfex0XFhwhHhZKvYvUOAB2+gdBVftRpuWqLxnoWdCTaIdg?=
+ =?us-ascii?Q?Qw16dl8OQzOEM+mQwiIqPcssTwoxdT8O6vYADTdm4F8cB8Cbkjd9yuSPErm+?=
+ =?us-ascii?Q?g1BBmNnfUQemqrpVIKcitiw95oiI3MbnIfQqJGylICkscXrjTpYGy6D16Z0p?=
+ =?us-ascii?Q?KMM5jL+NOy4YWOVwblBrQhfgDDYRjQTpc9OLiumlbrIuNCmlcnGUxIPXVxha?=
+ =?us-ascii?Q?YpNyHtCl0Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: h7mMWiV9iWEcTt878TB1SeAu8+sgiUvuRo9YQK5sb4Vc6r+qZ2frCirvIlPXk9vP+5qlnOQNyMtXwmX3HFrwBIH13oE1t3H+yjJn6sLCRbm3SxSRm4OOP1yJGC+rSKMjoFvnl7puURku+c3u0WME/Sl6YFALmqmDDFpmjeJ2lujyun/4p4mTTs0Ab00SMgQr5ggbpGuRUWw84BYS+3yin0GTTxpsEZyDf8pfU/hunHcjMOu0dE5MuuUQMnO4PRLHVrljtTky8q3ETxzU7+/KqlBiDojaRCsGL70w0EeqPUoK7L6d1x8foimMC8XRbkwOvvRQ7gmOsX49tpM7+85rag==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c93f74c-24a3-4c94-cdb9-08df2691734d
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3243.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2026 05:43:47.8800
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fb2gQrUF7AG7niMkGKbWOnTRiTib8bpKLsirFa7uaEfLhke6tjVZbEB3CoY6tzBoYHQWSlUWIi77ngesaWuGeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF10DD61CAD
+X-OriginatorOrg: intel.com
 
-Hi Paolo,
+On Sat, Oct 10, 2026 at 06:00:01AM +0800, Edgecombe, Rick P wrote:
+> On Fri, 2026-10-09 at 17:33 +0800, Yan Zhao wrote:
+> > On Thu, Oct 08, 2026 at 09:05:32AM +0800, Edgecombe, Rick P wrote:
+> > > On Mon, 2026-09-28 at 17:11 +0800, Yan Zhao wrote:
+> > > 
+> > > > +
+> > > > +	/*
+> > > > +	 * No TLB flush is required, as the "BLOCK + TRACK + kick off vCPUs"
+> > > > +	 * sequence required by the TDX-Module includes a TLB flush.
+> > > > +	 */
+> > > 
+> > > I think the TLB flush is actually more obvious than the level + 1/2 bits below.
+> > > It is worried about inhibiting 1GB mappings, why?
+> > Hmm, including inhibiting 1GB mappings can make the logic more generic and more
+> > correct in concept. That is, when the guest accept level is 2MB, 1GB mappings
+> > should be inhibited conceptually. This help remove the code dependency on the
+> > assumption that 1GB mappings are impossible with the initial implementation,
+> > given that inhibiting 1GB mappings as well is simple.
+> 
+> I strongly think the code or comments should not prep for 1GB S-EPT pages or
+> promotion. Warning if 1GB S-EPT pages is tried is good. But I don't see how
+> silently handling this particular corner of huge pages helps anything.
+Hmm. I didn't realize inhibiting 1GB S-EPT pages would be regarded as a prep for
+1GB S-EPT pages enabling or promotion.
 
-kernel test robot noticed the following build warnings:
+> If/when we get to 1GB mappings the code could have evolved at that point. So
+> introducing code or comments now will add constraints on other work that is
+> done. We don't want to think about it.
+I'll drop the 1GB inhibition if it causes confusion for the reader.
 
-[auto build test WARNING on kvm/queue]
-[also build test WARNING on kvm/next mst-vhost/linux-next linus/master v7.3-rc6 next-20261008]
-[cannot apply to kvm/linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > > > +	hugepage_set_guest_inhibit(slot, gfn, level + 1);
+> > > > +	if (level == PG_LEVEL_4K)
+> > > > +		hugepage_set_guest_inhibit(slot, gfn, level + 2);
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > If you have a strong opinion to drop inhibiting 1GB mappings for now, I can add
+> > the following diff:
+> > 
+> > @@ -2183,7 +2172,13 @@ static int tdx_handle_guest_accept_ept_violation(struct kvm_vcpu *vcpu, gfn_t gf
+> >                 return 0;
+> > 
+> >         level = tdx_get_ept_violation_level(vcpu);
+> > -       if (level > PG_LEVEL_2M)
+> > +       KVM_BUG_ON(level != PG_LEVEL_2M && level != PG_LEVEL_4K, kvm);
+> > +
+> > +       /*
+> > +        * No need to inhibit 1GB mappings since they are unsupported with
+> > +        * the initial huge page implementation.
+> 
+> This also implies 1GB is coming...
+What about simply commenting as
+"No need to inhibit 1GB mappings since they are unsupported." ?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Paolo-Bonzini/KVM-x86-mmu-Cope-with-the-SS-bit-being-set-in-NPF-exit-codes/20261009-150450
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20261009130450.361690-1-pbonzini%40redhat.com
-patch subject: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes
-config: x86_64-randconfig-1016-20261010 (https://download.01.org/0day-ci/archive/20261010/202610101512.fYgKYoD8-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610101512.fYgKYoD8-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610101512.fYgKYoD8-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/x86/kvm/mmu/mmu.c:5413:
-   arch/x86/kvm/mmu/paging_tmpl.h: In function 'ept_walk_addr_generic':
->> arch/x86/kvm/mmu/paging_tmpl.h:331:19: warning: unused variable 'user_fault' [-Wunused-variable]
-     331 |         const int user_fault  = access & PFERR_USER_MASK;
-         |                   ^~~~~~~~~~
-   In file included from arch/x86/kvm/mmu/mmu.c:5417:
-   arch/x86/kvm/mmu/paging_tmpl.h: In function 'paging64_walk_addr_generic':
->> arch/x86/kvm/mmu/paging_tmpl.h:331:19: warning: unused variable 'user_fault' [-Wunused-variable]
-     331 |         const int user_fault  = access & PFERR_USER_MASK;
-         |                   ^~~~~~~~~~
-   In file included from arch/x86/kvm/mmu/mmu.c:5421:
-   arch/x86/kvm/mmu/paging_tmpl.h: In function 'paging32_walk_addr_generic':
->> arch/x86/kvm/mmu/paging_tmpl.h:331:19: warning: unused variable 'user_fault' [-Wunused-variable]
-     331 |         const int user_fault  = access & PFERR_USER_MASK;
-         |                   ^~~~~~~~~~
-
-
-vim +/user_fault +331 arch/x86/kvm/mmu/paging_tmpl.h
-
-be94f6b71067df4 arch/x86/kvm/paging_tmpl.h     Huaitong Han        2016-03-22  282  
-ac889bdd23df1ee arch/x86/kvm/mmu/paging_tmpl.h Paolo Bonzini       2026-05-10  283  static inline bool FNAME(is_last_gpte)(struct kvm_pagewalk *w,
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  284  				       unsigned int level, unsigned int gpte)
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  285  {
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  286  	/*
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  287  	 * For EPT and PAE paging (both variants), bit 7 is either reserved at
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  288  	 * all level or indicates a huge page (ignoring CR3/EPTP).  In either
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  289  	 * case, bit 7 being set terminates the walk.
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  290  	 */
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  291  #if PTTYPE == 32
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  292  	/*
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  293  	 * 32-bit paging requires special handling because bit 7 is ignored if
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  294  	 * CR4.PSE=0, not reserved.  Clear bit 7 in the gpte if the level is
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  295  	 * greater than the last level for which bit 7 is the PAGE_SIZE bit.
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  296  	 *
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  297  	 * The RHS has bit 7 set iff level < (2 + PSE).  If it is clear, bit 7
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  298  	 * is not reserved and does not indicate a large page at this level,
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  299  	 * so clear PT_PAGE_SIZE_MASK in gpte if that is the case.
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  300  	 */
-d869ff104efb1f2 arch/x86/kvm/mmu/paging_tmpl.h Paolo Bonzini       2026-05-11  301  	gpte &= level - (PT32_ROOT_LEVEL + w->cpu_role.ext.cr4_pse);
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  302  #endif
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  303  	/*
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  304  	 * PG_LEVEL_4K always terminates.  The RHS has bit 7 set
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  305  	 * iff level <= PG_LEVEL_4K, which for our purpose means
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  306  	 * level == PG_LEVEL_4K; set PT_PAGE_SIZE_MASK in gpte then.
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  307  	 */
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  308  	gpte |= level - PG_LEVEL_4K - 1;
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  309  
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  310  	return gpte & PT_PAGE_SIZE_MASK;
-7cd138db5cae0da arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2021-06-22  311  }
-ac79c978f173586 drivers/kvm/paging_tmpl.h      Avi Kivity          2007-01-05  312  /*
-736c291c9f36b07 arch/x86/kvm/mmu/paging_tmpl.h Sean Christopherson 2019-12-06  313   * Fetch a guest pte for a guest virtual address, or for an L2's GPA.
-ac79c978f173586 drivers/kvm/paging_tmpl.h      Avi Kivity          2007-01-05  314   */
-1e301feb079e8ee arch/x86/kvm/paging_tmpl.h     Joerg Roedel        2010-09-10  315  static int FNAME(walk_addr_generic)(struct guest_walker *walker,
-ac889bdd23df1ee arch/x86/kvm/mmu/paging_tmpl.h Paolo Bonzini       2026-05-10  316  				    struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
-5b22bbe717d9b96 arch/x86/kvm/mmu/paging_tmpl.h Lai Jiangshan       2022-03-11  317  				    gpa_t addr, u64 access)
-6aa8b732ca01c3d drivers/kvm/paging_tmpl.h      Avi Kivity          2006-12-10  318  {
-8cbc70696f149e4 arch/x86/kvm/paging_tmpl.h     Avi Kivity          2012-09-16  319  	int ret;
-42bf3f0a1f5a25b drivers/kvm/paging_tmpl.h      Avi Kivity          2007-10-17  320  	pt_element_t pte;
-3f649ab728cda80 arch/x86/kvm/mmu/paging_tmpl.h Kees Cook           2020-06-03  321  	pt_element_t __user *ptep_user;
-cea0f0e7ea54753 drivers/kvm/paging_tmpl.h      Avi Kivity          2007-01-05  322  	gfn_t table_gfn;
-0780516a18f87e8 arch/x86/kvm/paging_tmpl.h     Paolo Bonzini       2017-05-11  323  	u64 pt_access, pte_access;
-0780516a18f87e8 arch/x86/kvm/paging_tmpl.h     Paolo Bonzini       2017-05-11  324  	unsigned index, accessed_dirty, pte_pkey;
-5b22bbe717d9b96 arch/x86/kvm/mmu/paging_tmpl.h Lai Jiangshan       2022-03-11  325  	u64 nested_access;
-42bf3f0a1f5a25b drivers/kvm/paging_tmpl.h      Avi Kivity          2007-10-17  326  	gpa_t pte_gpa;
-86407bcb5c8320a arch/x86/kvm/paging_tmpl.h     Paolo Bonzini       2017-03-30  327  	bool have_ad;
-134291bf3cb434a arch/x86/kvm/paging_tmpl.h     Takuya Yoshikawa    2011-07-01  328  	int offset;
-0780516a18f87e8 arch/x86/kvm/paging_tmpl.h     Paolo Bonzini       2017-05-11  329  	u64 walk_nx_mask = 0;
-134291bf3cb434a arch/x86/kvm/paging_tmpl.h     Takuya Yoshikawa    2011-07-01  330  	const int write_fault = access & PFERR_WRITE_MASK;
-134291bf3cb434a arch/x86/kvm/paging_tmpl.h     Takuya Yoshikawa    2011-07-01 @331  	const int user_fault  = access & PFERR_USER_MASK;
-134291bf3cb434a arch/x86/kvm/paging_tmpl.h     Takuya Yoshikawa    2011-07-01  332  	const int fetch_fault = access & PFERR_FETCH_MASK;
-bb24edbb673f6f3 arch/x86/kvm/mmu/paging_tmpl.h Kevin Cheng         2026-05-22  333  	/*
-bb24edbb673f6f3 arch/x86/kvm/mmu/paging_tmpl.h Kevin Cheng         2026-05-22  334  	 * Note! Track the error_code that's common to legacy shadow paging
-bb24edbb673f6f3 arch/x86/kvm/mmu/paging_tmpl.h Kevin Cheng         2026-05-22  335  	 * and NPT shadow paging as a u16 to guard against unintentionally
-bb24edbb673f6f3 arch/x86/kvm/mmu/paging_tmpl.h Kevin Cheng         2026-05-22  336  	 * setting any of bits 63:16.  Architecturally, the #PF error code is
-bb24edbb673f6f3 arch/x86/kvm/mmu/paging_tmpl.h Kevin Cheng         2026-05-22  337  	 * 32 bits, and Intel CPUs don't support settings bits 31:16.
-bb24edbb673f6f3 arch/x86/kvm/mmu/paging_tmpl.h Kevin Cheng         2026-05-22  338  	 */
-134291bf3cb434a arch/x86/kvm/paging_tmpl.h     Takuya Yoshikawa    2011-07-01  339  	u16 errcode = 0;
-13d22b6aebb000a arch/x86/kvm/paging_tmpl.h     Avi Kivity          2012-09-12  340  	gpa_t real_gpa;
-13d22b6aebb000a arch/x86/kvm/paging_tmpl.h     Avi Kivity          2012-09-12  341  	gfn_t gfn;
-6aa8b732ca01c3d drivers/kvm/paging_tmpl.h      Avi Kivity          2006-12-10  342  
-6fbc277053836a4 arch/x86/kvm/paging_tmpl.h     Xiao Guangrong      2012-06-20  343  	trace_kvm_mmu_pagetable_walk(addr, access);
-92c1c1e85bdd72b arch/x86/kvm/paging_tmpl.h     Takuya Yoshikawa    2011-07-01  344  retry_walk:
-d869ff104efb1f2 arch/x86/kvm/mmu/paging_tmpl.h Paolo Bonzini       2026-05-11  345  	walker->level = w->cpu_role.base.level;
-d9af9341707f67c arch/x86/kvm/mmu/paging_tmpl.h Paolo Bonzini       2026-04-05  346  	pte           = kvm_mmu_get_guest_pgd(vcpu, w);
-d869ff104efb1f2 arch/x86/kvm/mmu/paging_tmpl.h Paolo Bonzini       2026-05-11  347  	have_ad       = PT_HAVE_ACCESSED_DIRTY(w);
-1e301feb079e8ee arch/x86/kvm/paging_tmpl.h     Joerg Roedel        2010-09-10  348  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > +        */
+> > +       if (level == PG_LEVEL_2M)
+> >                 return 0;
+> > 
+> >         if (hugepage_test_guest_inhibit(slot, gfn, level + 1))
+> > @@ -2203,8 +2198,6 @@ static int tdx_handle_guest_accept_ept_violation(struct kvm_vcpu *vcpu, gfn_t gf
+> >          * sequence required by the TDX-Module includes a TLB flush.
+> >          */
+> >         hugepage_set_guest_inhibit(slot, gfn, level + 1);
+> > -       if (level == PG_LEVEL_4K)
+> > -               hugepage_set_guest_inhibit(slot, gfn, level + 2);
+> > 
+> >         return 0;
+> >  }
+> > 
+> 
+> There are a lot of possible things that are not handled if a 1GB mapping sneaks
+> through.
+> 
+> Why not KVM_BUG_ON() if something tries to map 1GB in the appropriate
+> tdx_sept_set_private_spte() sub functions. tdx_sept_split_leaf_spte() should be
+> covered already, but not tdx_sept_map_leaf_spte() looks like.
+Hmm, there's an implicit KVM_BUG_ON() inside tdx_sept_map_leaf_spte() about the
+mapping level: both tdx_mem_page_aug() and tdx_mem_page_add() return error if
+the mapping level is 1GB.
