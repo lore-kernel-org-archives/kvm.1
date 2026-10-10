@@ -1,288 +1,135 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF3D3BCD05
-	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 03:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08973C0621;
+	Sat, 10 Oct 2026 03:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791602297; cv=none; b=iaLR+uW3JQuFWPLZihO42K/QZc/b4jaZN4Z7h17Pp/LicDcUxtcY6INJPheZUeHpAlg3rQeevkAlIPsWt5V5mLXdYADTVHZQtvCoAHfs4GViXQRwqwKdCNROgfDGhgFUI7bsZBT2Vf72U+BDfdIZAtf8J7Au5Tt/p69OYQ5E+bU=
+	t=1791602622; cv=none; b=WMnlB5npZcGdSwl+n9jQE18EbodsTsi6JtagQcIiiCC3sTn4Ul46iQUIKirVjXR7YixfYjisoHKm3xAXAi8VQfOs7jQhYhtsqu+Y2Kgu1HkIwC7Gv+NPnCCh3o+Mtyn46fOiYn3O6I46WU4Wt5Kmtr4iJCB40Z/FutJNjDZEuc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791602297; c=relaxed/simple;
-	bh=Q3Vg1yA9geODvj3ocRmt5LLHOG9WIK/bk89Xu2ISBDM=;
+	s=arc-20240116; t=1791602622; c=relaxed/simple;
+	bh=boeBybVkHR4ylIABwK1fJFz3P6gqUYTFRsppyS7PUio=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QB/6iZVi7VowqTFtYacORcn8ynVmuuxT8SGZ0fwjljmjNVRfC0ofm2XDg7jcNJQxdt+rcUOL1YPe8kdTvQIBizamVzPzInEDUdrpu8TuIegpbe7MmUfmnLBTW3MDoencKDV4nxglg8gpC8o+BHbsa3ufwtNRHsQdDgxCe75haFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rcQlDtv1; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=enpLmlSMCN7xenCQ64Kn45uTdhTTh21KApwnUPycbAmd63QacgYVsA5NBNsmnAY9PrC82Hb9Eg2A9ew5j//ihipGyqjkp6Pk28tp13g+yxZaYL4PgUtZggOTqwFdcm3K+DiFYvHt8O7z4iw2G7+JsVQjtoR3qRW8IEjhwflobu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cUDr5lkZ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rcQlDtv1"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2db33db4de9so11135ad.0
-        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 20:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791602296; x=1792207096; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W8TSuOKAYLfNd5Z9H+xLlnGLDWUhgC3yxJkhYP5eP5c=;
-        b=rcQlDtv1Sq9QUj4K4O212UWAJYpfsVl3QF3DOTTYD8jZL6IRcLYj0qJkIHTZY4mLN6
-         d8Cgy368+Umh5/ALIgjb59h8YJPpMzOKd8qcshcDZaFjM5oCezYxqI11dtbpeFdSXBx1
-         2Ri0+vBo23bYeA2SUvhEK9pVQoz6whjbyfqdMRyc/vuIq2yRsOKNthsz7Ij+FdNOKb+v
-         LAQkBW7DHpiUzTBpuJfnwvOUBz/UiBh2I3wPtrs0HHX3Ry9zxofvFN5cgjbd/Ld/HVcL
-         zhFljWdrS6ogPUSNkUlMDGyvm7Owh94UM+u48zFAuRwQv2Jof73Kyn8rnlARlIbAYyPH
-         v5Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791602296; x=1792207096;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W8TSuOKAYLfNd5Z9H+xLlnGLDWUhgC3yxJkhYP5eP5c=;
-        b=Y5y4jusp2jBQYuxQc68BNq+OCjvCx7z6I+F4/yqXBL/VWpfArIedDKB5htHhC1LHUp
-         epOQlTYoVxpCzL7vS9M9xMy+i49vRpHHFOU9hkONSPlbxjoh+uWuHV9JtRRcGjWlK4Yb
-         vHGqj6wG1UYHhL9KBh0daDd4tKuH+MmnmPGQpoyDk5YepP1PfoqD0GmraZQ6rcv2ibTc
-         kI6VhgCR3akzfTPFTyhQR82t6qq1Zi+Qtu2PiXHUY2GoFK22qT/ikQg/uVp2uMfvjnD+
-         hJCeUifNVLhKIV5kT1NecYIgc3pfDD5fMIrbyyvMJRPVO3KuzoAmMQMDS6wVUCBjODKY
-         BmUA==
-X-Forwarded-Encrypted: i=1; AKwUvBzzz28OdnrdmCqd0VxqTwMpmqgpFLTXt24p3QAo7CPJfLJMQQGTN5n/hXUrvxOUgrc9ep0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIEOmUJx7BLdyuJG4gzUnbfAww/gswkDdjtE/umadOtbQL8Rg0E
-	grS8YyraVrmRTsdPVUyFbHYsc/PfE1NiD41E697dhB/pT//Nm3c/cFAoQXpCUW7J6A==
-X-Gm-Gg: AYBFou11phylC2DtPP1xM1WAf/kS63dAN5LAI+K5Rvn5xgEQdM4MAX6po7TnDax8k3l
-	FZzHQMfeeUjUvQmnKCdUHBPU09CwgbMQAxQqoMlVGetI2+mEOBTrP8C6iVUDOVfvhh6YVxAa+yA
-	GjIgjbrshtTrnweOTfmGBmM4Gr3+72omQR/Pgj1Qb6r8PR0UwA23N+qQg5LDnciz5+GOpn9j4ZE
-	zP/0epB3p0Hq3Yr/S3/JAANOni+nHLnzjiY1uJBV4mNevWoKphOvJOtHyBV+DRSdHHXeSU4enwi
-	LAI539DFry8qfxgEGwmo7JplG6+i0faAb5lGRCU1PufY1TgUmVqlMoTtY75calgoU0bbv+bWsDP
-	WQHcLQmG0+0MqInr/CeuadYQfkKsFcZEVrrX9WsQzNYpjfCrhru8B20H4q9kIOpMfhoYYacgMUP
-	4U8XLEF32pjVKjw2GnErhJAuUsC6mZW898megGb1ZrnRZblixwR8jxrDIPQq9ahy7fEbG+HleE/
-	ffqoDrj4JawujiVyvXDduM9RHABl6vTJYskblvtPfBlVGHq9PHaPPqDbhBTM59g6go=
-X-Received: by 2002:a17:903:324c:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2e87e2d3f9fmr648295ad.14.1791602294963;
-        Fri, 09 Oct 2026 20:18:14 -0700 (PDT)
-Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab3371f748sm3950221a91.1.2026.10.09.20.18.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 20:18:14 -0700 (PDT)
-Date: Sat, 10 Oct 2026 03:18:11 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v5 02/18] iommu: Implement IOMMU Live update FLB callbacks
-Message-ID: <asmj6ErFqQMJe0_u@google.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-3-skhawaja@google.com>
- <asWEtTcNJSbrY579@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cUDr5lkZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791602622; x=1823138622;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=boeBybVkHR4ylIABwK1fJFz3P6gqUYTFRsppyS7PUio=;
+  b=cUDr5lkZFTRpvB8R4UPawiTVuzUjfl3lp8xcPlhBzBCEcSsyQaGekk1E
+   jDgCPoRSLpalLsXcglUJDr0BnSShge0c0qfMWB+a6MKaijt+FHoaWwZgn
+   xCAu+IBab7NdOTub/6vQFeyirVcyOJ2vWi8h9/S2/1ckDcxrFjU5I7Rn9
+   9+m7sRP2vOqGuxyiZ9YxuExwfD7KLXxhAqG9m+5So5mmNjYFkyk/YaPdg
+   brEMxHm0lUsYV8qoq/XRzlDv3V9yYlE96ocv1PScWr0bKIRHxdHmBVvui
+   X2GY2mhNYEkNx+EjlLwYbeDvmX9N5siRgCNdW4TcWlsihi+0GlSbRhFbA
+   g==;
+X-CSE-ConnectionGUID: yoNwdjv0Qoqg0VjV13QvvQ==
+X-CSE-MsgGUID: 4Hqys/m3RXalWOi4tt4gFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="395596"
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="395596"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:23:41 -0700
+X-CSE-ConnectionGUID: wXLdcWPOR7OcB45omJPC5A==
+X-CSE-MsgGUID: Ws8vEc+cRGWOER0ondcQhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="640160"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa001.fm.intel.com with ESMTP; 09 Oct 2026 20:23:36 -0700
+Date: Sat, 10 Oct 2026 11:20:10 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>
+Subject: Re: [PATCH v3 3/6] x86/virt/tdx: Add extra memory to TDX module for
+ the extensions
+Message-ID: <asmu6nwPYKPnZ3jC@yilunxu-OptiPlex-7050>
+References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
+ <20261006-tdx-module-ext-v3-3-db52cb05b918@linux.intel.com>
+ <e6207c3e0443be4ee120ad4ce2b10359f7769964.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <asWEtTcNJSbrY579@nvidia.com>
+In-Reply-To: <e6207c3e0443be4ee120ad4ce2b10359f7769964.camel@intel.com>
 
-On Tue, Oct 06, 2026 at 04:31:01PM -0700, Nicolin Chen wrote:
->On Mon, Sep 21, 2026 at 12:48:18AM +0000, Samiullah Khawaja wrote:
->> +struct iommu_flb_obj {
->> +	struct mutex lock;
->> +	struct iommu_flb_ser *ser;
->> +
->> +	struct iommu_hw_array_ser *curr_iommu_array;
->> +	struct iommu_domain_array_ser *curr_domain_array;
->> +	struct iommu_device_array_ser *curr_device_array;
->> +};
->
->IIUIC, there should be one pair of obj + ser in the entire system:
->  - old kernel has one outgoing obj + ser
->  - new kernel has one incoming obj + ser
->right?
->
->If so, things in iommu_flb_obj (except ser) are all transient, and
->there is no need to preserve them across the two kernels.
+On Fri, Oct 09, 2026 at 06:58:44PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-10-06 at 01:41 +0800, Xu Yilun wrote:
+> > +static __init int tdx_ext_mem_setup(void)
+> > +{
+> > +	unsigned int required_pages, added_pages;
+> > +	struct tdx_sys_info_ext sysinfo_ext;
+> > +	struct tdx_hpa_list *hpa_list;
+> > +	struct page *page;
+> > +	int ret;
+> > +
+> > +	ret = get_tdx_sys_info_ext(&sysinfo_ext);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	required_pages = sysinfo_ext.memory_pool_required_pages;
+> > +
+> > +	/*
+> > +	 * Skip the memory setup if no memory is required. This may happen when
+> > +	 * no add-on features requiring TDX module extensions are configured
+> > +	 * via TDH.SYS.CONFIG.
+> > +	 */
+> > +	if (!required_pages)
+> > +		return 0;
+> 
+> Marshaling this through the struct just to get a set it to required_pages seems
+> a bit silly. But I see required_pages is needed for line length.
+> 
+> Two options:
+> 
+> Make the get_tdx_sys_info_ext() just take an unsigned int pointer arg. When
+> Chao's metadata reading stuff lands, we can keep the struct internal to the
+> helper, to still re-use the macro struct mapper stuff.
 
-The contents of iommu_flb_obj are not preserved. Only the contents of
-iommu_flb_ser are preserved. Other "curr_" structs in iommu_flb_obj are
-only there for quick access to add new iommus, domains and devices.
->
->It also feels redundant to have this iommu_flb_obj structure. Why
->not link liveupdate_flb_op_args directly to the ser? Then, things
->in iommu_flb_obj could be global?
+struct tdx_sys_info_handoff is an existing example so I don't want to
+make it different.
 
-The liveupdate_flb_op_args is linked directly to the ser, but it only
-contains the physical address for the next kernel. Basically LUO
-provides following mechanism to handle FLBs:
+> 
+> Rename memory_pool_required_pages to required_pages to shorten the lines to
+> something manageable and use it directly below.
 
-- data: ser structure for the next kernel.
-- obj: Live object that can be used in the current or next kernel for
-   easy access or staging.
+I prefer the 2nd one. I also want to rename the sysinfo_ext to ext, to
+make the field short enough for direct usage everywhere.
 
-For example here, iommu_flb_obj has pointers to the end of the array
-linked list of each type.
+  struct tdx_sys_info ext ext;
 
-Also note LUO keeps separate incoming and outgoing data and obj for each
-FLB. In the new kernel both can exist at the same time, as the incoming
-one stays until finish and preserving for the next live update creates
-the outgoing one. So keeping these in the obj avoids managing two sets
-of globals and their lifetime in the iommu code.
->
->> +static int iommu_liveupdate_flb_preserve(struct liveupdate_flb_op_args *argp)
->> +{
->> +	struct iommu_flb_obj *obj;
->> +	struct iommu_flb_ser *ser;
->> +	void *mem;
->> +
->> +	/* obj exists only in the current kernel to track preserved state */
->> +	obj = kzalloc_obj(*obj, GFP_KERNEL);
->> +	if (!obj)
->> +		return -ENOMEM;
->> +
->> +	mutex_init(&obj->lock);
->> +
->> +	/* mem is allocated via KHO and will survive the kexec */
->> +	mem = kho_alloc_preserve(sizeof(*ser));
->> +	if (IS_ERR(mem))
->> +		goto err_free_obj;
->> +
->> +	ser = mem;
->> +	obj->ser = ser;
->> +	ser->version = IOMMU_LUO_FLB_VERSION;
->
->As version is per ser, ...
+  ret = get_tdx_sys_info_ext(&ext);
+  if (ret)
+	return ret;
 
-Answered below.
->
->> +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
->> +{
->> +	struct iommu_flb_obj *obj;
->> +	struct iommu_flb_ser *ser;
->> +
->> +	obj = kzalloc_obj(*obj, GFP_KERNEL);
->> +	if (!obj) {
->> +		/*
->> +		 * If retrieve fails, the finish path won't be called as
->> +		 * can_finish() will fail, preventing the restore.
->> +		 */
->> +		return -ENOMEM;
->> +	}
->> +
->> +	/* Data must be present and valid from the previous kernel */
->> +	BUG_ON(!kho_restore_folio(argp->data));
->> +
->> +	mutex_init(&obj->lock);
->> +	ser = phys_to_virt(argp->data);
->> +	obj->ser = ser;
->> +
->> +	obj->curr_domain_array = iommu_liveupdate_restore_array(ser->iommu_domain_array_phys);
->> +	obj->curr_device_array = iommu_liveupdate_restore_array(ser->device_array_phys);
->> +	obj->curr_iommu_array = iommu_liveupdate_restore_array(ser->iommu_array_phys);
->
->... should we validate ser->version before restoring arrays?
+  if (!ext.required_pages)
+	return 0;
 
-Agreed. I will update this.
->
->> +/**
->> + * enum iommu_type_ser - Type of the IOMMU being preserved
->> + * @IOMMU_INVALID: Invalid type of IOMMU
->> + *
->> + * IOMMU type is stored in the IOMMU HW state to differentiate between various
->> + * IOMMU HWs.
->> + */
->> +enum iommu_type_ser {
->> +	IOMMU_INVALID,
->> +};
->
->Nit: IOMMU_* sounds too generic. Given it's ser-specific, maybe
->IOMMU_SER_TYPE_*?
-
-Agreed. Will update in next revision.
->
->> +/**
->> + * struct iommu_domain_ser - Serialized state of an IOMMU domain
->> + * @hdr: Common object header
->> + * @top_table_phys: Physical address of the top-level page table
->> + * @top_level: Level of the top-level page table
->> + * @vasz: Virtual Address Size
->
->Since it comes directly from iommupt, why not just reuse:
->    @max_vasz_lg2: Maximum number of bits the VA can contain
->?
-
-Agreed. Will update.
->
->> +/**
->> + * struct iommu_dev_map_ser - Serialized mapping between device, domain,
->> + *				    and IOMMU instance.
->> + * @attachment_id: ID of the attachment between device and domain.
->> + * @domain_phys: Physical address of the domain
->> + * @iommu_phys: Physical address of the IOMMU
->> + */
->> +struct iommu_dev_map_ser {
->> +	u64 attachment_id;
->> +	u64 domain_phys;
->> +	u64 iommu_phys;
->> +} __packed;
->
->Hmm, why iommu<->domain?
->
->An attachment (software) is between device and domain.
->
->A device is always behind an IOMMU IOMMU HW (fixed; hardware).
->
->Should iommu_phys be moved under iommu_device_ser directly?
-
-Agreed. I will move iommu_phys under iommu_device_ser.
-
-Also I will move this out as a separate structure.
-
-struct iommu_attachment_ser {
-	u64 attachment_id;
-	u64 domain_phys;
-	u64 device_phys;
-	u64 pasid;
-} __packed;
-
-It defines the attachment between device and domain at a pasid. These
-will be kept in separate array like device, domain and iommu.
->
->> +/**
->> + * struct iommu_device_ser - Serialized state of a device
->> + * @hdr: Common object header
->> + * @devid: Device ID
->> + * @pci_domain_nr: PCI domain number
->> + * @dma_owner_token: Token to identify the DMA owner of this device
->> + * @domain_iommu_ser: Domain and IOMMU mapping
->> + */
->> +struct iommu_device_ser {
->> +	struct iommu_hdr_ser hdr;
->> +	u32 devid;
->> +	u32 pci_domain_nr;
->> +	u64 dma_owner_token;
->> +	struct iommu_dev_map_ser domain_iommu_ser;
->
->I guess this single attachment_id needs to be fixed in phase 2 for
->PASID?
-
-I will drop the domain_iommu_ser as per the explanation above.
->
->> +} __packed;
->> +
->> +/**
->> + * struct iommu_hw_ser - Serialized state of an IOMMU instance
->> + * @hdr: Common object header
->> + * @token: Unique token for the IOMMU
->
->Could be clearer:
->@token: Unique token to identify the IOMMU instance
-
-Agreed. Will update this.
->
->Nicolin
-
-Thanks Nicolin for looking into this.
-Sami
+  ...
