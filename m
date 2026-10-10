@@ -1,389 +1,418 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A45737F72D;
-	Sat, 10 Oct 2026 02:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00AE2147F9
+	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 02:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791597912; cv=none; b=elp0QFQbrYMCzymsnt0+JsI1VIKhI5FdVYNdnmw4LUC2YtUDLXF0/3RMccysAxWcTRmaLY3h6q8HOzk2clTEYMlkjxYt4oT7oDFc7w2GjaAnOuz4TaUB+5CF0YkHZV3rGRgeZJhgG4Br2TbxCKvyvBWIwI6PduA+ih2FWlHR4Ik=
+	t=1791598168; cv=none; b=bCCrZh+E/KqcGvHPRQNHRq2tv6BEsg42USrAL/lbJ5Q7LrMU8FPg6iAEKoqO/dVXQNwSNvo7kFxjW6m1Soj89eD1DbH4Qa7dY3FmD2z7hsltrbdIMNLoy3mFlz5ABvggrhBe6MNd7TIRHEQowSF48FoEjotA6zgLw0lU1vcyTDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791597912; c=relaxed/simple;
-	bh=9I23wXfeNydjEbABcHCnbMQ5LG3hAZhYYOwXKTc4oGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xd2Sqs3pRag0Zirk5JYckUN/nB82RhpHtRIu54sxhmt6uNfRQS6zMFATI8NQWQdCoVXYz2ygGtO2dyfqP+eVSe24vhU8sEQeNllVWvg9aNPaUq+moSs/uXW3Njv5VC47dhwnBujQuEn3anwvclPqSvvobQFwvLct3GE+NQy93WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVTnBAUR; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791598168; c=relaxed/simple;
+	bh=d0EDoYHxfrUlr02R+Iw2ZmY9MamAcQ0Y6aKU5ptZvBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7OO87a2dFsxD8YW1kVEEgfHzeYi9uIoEIv9J5Bej5m8jR1mTLzQOyoyEK2kIxSd+M7GCtSOL7k2CWowF5PnzHLHLoFnVMedFQ7/yjgOeU5VZhYU+BJ8RIssw2IAKbrE2GNOrroerRsTpb+s3tGI0SPEfXBMNIAJA0Y1CneupSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U9PSLapU; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVTnBAUR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791597911; x=1823133911;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9I23wXfeNydjEbABcHCnbMQ5LG3hAZhYYOwXKTc4oGM=;
-  b=MVTnBAURyAAbJ/5NSM+bknYtKvxxexqE2o4/7oCX+jL3rV5k3tg8rWcj
-   +74NY9fWCJzB+7E0pDYAxc1jWjlDjnFmXncrkgxe56lEkjb0v6NGhaxtZ
-   1EF4X3XcqRYfWcfF6ypluPYV4sgbxIykn+drjKJg3SAt8PXMCIlNwtiZS
-   WQw5whRMDqiiHV5vk08X6GLdw0G9CLIugJqx27cLIerFqef5hxPFRmyrN
-   +L1TyqG4dssNM7Ah4AaRV46HvBWPRt43VlHuYOM5giJ/+otkc0w+AJu0S
-   vsNiQcbhAsMJ87uw7RYfMp/Hza6G//5dZ8/pfToPNMKJ7EXN+BPQfqMSk
-   g==;
-X-CSE-ConnectionGUID: HDyOqIwpR1mYwJNGE9b0HQ==
-X-CSE-MsgGUID: Q9g2N/rWRmm5M8h51X1c3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="509849"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="509849"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:05:11 -0700
-X-CSE-ConnectionGUID: QQqejKl6SZC1Yv3uZ6HNuQ==
-X-CSE-MsgGUID: 3H1uBa4QR4uqaY5lBts9Cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="412298"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:05:05 -0700
-Message-ID: <dc3ff4f6-0017-45ce-96c4-1e40d91cbfc4@linux.intel.com>
-Date: Sat, 10 Oct 2026 10:05:02 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U9PSLapU"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2db33db4de9so9955ad.0
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 19:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791598166; x=1792202966; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZckNohU8rxASyti8f1rup11rFGJuPHV9Cw9uToI+h6I=;
+        b=U9PSLapUr+67/xXjOrzm7PU2kzrAUQu3MQ3LF8KZmqXFwlYObqFdoJkNxE3yHnUmRC
+         rp5ry7a5pVBKSZDYqdI1LNKo2+/uOK9sfIe1hIEKS1wbU9iFZQGtEpCb8tiwwI2wNbdY
+         u7WfqkT9PiHojvXMYJv8lfxcem9ClQNaIiODCT7B8yd4jvL0Pjtg5KmYaVyhBG+Yxj+p
+         tTWXTTbR62Zz/8wSvuNI/hg0f14gzoda0isl4bOj+49hX8OQY2YljEd0baejAnhvujZE
+         rE1xluZ9g8f5P5fLLArJS4pfQMcBrW1Itb7AntaZtL3PS2mAcxuGBmnsE1SDnFQIcZab
+         0rNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791598166; x=1792202966;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZckNohU8rxASyti8f1rup11rFGJuPHV9Cw9uToI+h6I=;
+        b=UmUqbVAeualZAyhv3qwGXNGWnzRdKkZwVHv3Erkg0C8RULT7rmWAIhZX8akVQ2Tzid
+         bFc4dtfE/sE3zNDou4H86yAqBKKp6EwLph148gf6Vq+me2lG6OIjiQeSLDXFHLAakuEl
+         swUP9KedSUZg316W96t9hkyQJ+bME8OiJg8laBbH8RvLnsxGFL3K6JD3rnDNciktP2Bd
+         BdeemgKHI6/grK5D7zs95v6k1QPMbjAHgSCpO2XqAlW6n4GZZ93eS35yei9T10WbQq8Q
+         1WiTHyd6jDmol2r0zngUJ1zfsxW/3aj9A2n+Q8nq+x3A2PdYW10mDnQ/nx0LqRt7HGMg
+         eKEA==
+X-Forwarded-Encrypted: i=1; AKwUvBxQvR+xqKNhEVGfCd92ViZfwoYSoKr0Hr0o/dAjRAiHny76GBortfdDtC3ZMFPNQapEhTo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJoo42YQQ98WWkwsKSXmRYBEn11Y4W+XXyFPmEILTN4lrBxPhrP
+	ZKkMudrNvx2OKfcsxclpasvMO596lmuM3LnNhW59QWlB/GJD9eiXQXA549oFSoVtTw==
+X-Gm-Gg: AYBFou1AG+bzKiLnygxt/tp1eYqOw8tncA0aDOYNYANkj+giuaQPJo2K/Jyvj3MRjGn
+	w6KijsGdJ8ma2MFAhYTeWsJ3epPVE/q/pjdRHKJodVPMmOCt+VOQEI2FIO41cGslMOZ/ydZcis5
+	lQ4tYWPyhbQTq43B1ecW45WV1+TnEln/VhAL1gmsSB4J3NZvOkMm47Cw+fFlZdrW4jN2AzNnIFa
+	60v5Kq5QuM6JKF6HSJ5sIgOcpLcVt3OvKbgmsk8WqjVJCLI9wQzzXPO1rOboLT4G/luq3c/Zihr
+	YNGZC/MPc9vdIWe9qgN+PSPlx0IzK6esUuoNLlkvMUdZWAb8NtAZ/brpVrfTfPSLB0U7SYwpA3P
+	ARtngfkVeEJD/d7Za19iQChrmzgdKVvSjtVIFhpcEjqKDVlJBMFA4W7IemK/XSkjB+G0lunpgz4
+	cl8MQjiIJWcGU5EMRbaFt7VTSSNHRwQgzSf55eaoNy60Bzx18LKNnjNHhvO0LleobFuw4IY3HT5
+	NWiHy+jZFDpAODlnwvrBbpxFemUa31kbXIuj3Loby3sHCM0rnOf5WShYGzc0+5mfz0=
+X-Received: by 2002:a17:903:324c:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2e87e2d3f9fmr549055ad.14.1791598165462;
+        Fri, 09 Oct 2026 19:09:25 -0700 (PDT)
+Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422c99b6sm17931255ad.65.2026.10.09.19.09.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 19:09:24 -0700 (PDT)
+Date: Sat, 10 Oct 2026 02:09:21 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v5 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+Message-ID: <asmb0qNsVLfUkIRo@google.com>
+References: <20260921004834.2601285-1-skhawaja@google.com>
+ <20260921004834.2601285-13-skhawaja@google.com>
+ <5be26af3-9d0c-40ce-bf58-9e98ef4a8670@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 03/23] KVM: selftests: Initialize the TDX VM
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-3-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-3-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <5be26af3-9d0c-40ce-bf58-9e98ef4a8670@linux.intel.com>
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
-> 
-> Add tdx_init_vm() to handle the mandatory VM-level initialization
-> sequence required for Intel TDX.
-> 
-> For TDX, the VM's CPUID configuration must be "sealed" during
-> KVM_TDX_INIT_VM before any vCPUs are created. This is necessary because
-> the TDX module does not allow the host to create and initialize any
-> vCPUs before the VM's CPUID configuration is accepted and sealed into
-> the TDCS.
-> 
-> Additionally, to satisfy the strict requirements of the TDH.MNG.INIT
-> SEAMCALL, the helper masks the host-supported CPUID
-                                     ^                                
-KVM-supported is more accurate
+On Fri, Oct 09, 2026 at 10:24:28AM +0800, Baolu Lu wrote:
+>On 9/21/26 08:48, Samiullah Khawaja wrote:
+>>Reattach the restored domain to the preserved device using restored
+>>domain ID. While reattaching do not setup the context and PASID entries
+>>as those are preserved during liveupdate.
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      |  32 +++++--
+>>  drivers/iommu/intel/iommu.h      |  14 +++
+>>  drivers/iommu/intel/liveupdate.c | 159 +++++++++++++++++++++++++++++++
+>>  3 files changed, 197 insertions(+), 8 deletions(-)
+>>
+>>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>>index c5044e834337..6d3cbe0745c9 100644
+>>--- a/drivers/iommu/intel/iommu.c
+>>+++ b/drivers/iommu/intel/iommu.c
+>>@@ -2819,6 +2819,9 @@ static int blocking_domain_attach_dev(struct iommu_domain *domain,
+>>  {
+>>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>+	if (dev_iommu_restored_state(dev))
+>>+		return -EBUSY;
+>>+
+>>  	iopf_for_domain_remove(info->domain ? &info->domain->domain : NULL, dev);
+>>  	device_block_translation(dev);
+>>  	return 0;
+>>@@ -3187,6 +3190,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
+>>  {
+>>  	int ret;
+>>+	if (dev_iommu_restored_state(dev))
+>>+		return intel_iommu_restore_device(domain, dev);
+>>+
+>>  	device_block_translation(dev);
+>>  	ret = paging_domain_compatible(domain, dev);
+>>@@ -3317,7 +3323,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
+>>  	info->iommu = iommu;
+>>  	RB_CLEAR_NODE(&info->node);
+>>  	if (dev_is_pci(dev)) {
+>>-		if (ecap_dev_iotlb_support(iommu->ecap) &&
+>>+		if (!dev_iommu_restored_state(dev) &&
+>>+		    ecap_dev_iotlb_support(iommu->ecap) &&
+>>  		    pci_ats_supported(pdev) &&
+>>  		    dmar_ats_supported(pdev, iommu)) {
+>>  			info->ats_supported = 1;
+>>@@ -3421,12 +3428,16 @@ static void intel_iommu_release_device(struct device *dev)
+>>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>  	struct intel_iommu *iommu = info->iommu;
+>>-	iommu_disable_pci_pri(info);
+>>-	iommu_disable_pci_ats(info);
+>>+	if (!dev_iommu_restored_state(dev)) {
+>>+		iommu_disable_pci_pri(info);
+>>+		iommu_disable_pci_ats(info);
+>>-	if (info->pasid_enabled) {
+>>-		pci_disable_pasid(to_pci_dev(dev));
+>>-		info->pasid_enabled = 0;
+>>+		if (info->pasid_enabled) {
+>>+			pci_disable_pasid(to_pci_dev(dev));
+>>+			info->pasid_enabled = 0;
+>>+		}
+>>+	} else {
+>>+		intel_iommu_detach_restored_device(dev);
+>>  	}
+>>  	mutex_lock(&iommu->iopf_lock);
+>>@@ -3434,11 +3445,13 @@ static void intel_iommu_release_device(struct device *dev)
+>>  		device_rbtree_remove(info);
+>>  	mutex_unlock(&iommu->iopf_lock);
+>>-	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev) &&
+>>+	if (!dev_iommu_restored_state(dev) && sm_supported(iommu) &&
+>>+	    !dev_is_real_dma_subdevice(dev) &&
+>>  	    !context_copied(iommu, info->bus, info->devfn))
+>>  		intel_pasid_teardown_sm_context(dev);
+>>-	intel_pasid_free_table(dev);
+>>+	if (!dev_iommu_restored_state(dev))
+>>+		intel_pasid_free_table(dev);
+>>  	intel_iommu_debugfs_remove_dev(info);
+>>  	kfree(info);
+>>  }
+>>@@ -3900,6 +3913,9 @@ static int identity_domain_attach_dev(struct iommu_domain *domain,
+>>  	struct intel_iommu *iommu = info->iommu;
+>>  	int ret;
+>>+	if (dev_iommu_restored_state(dev))
+>>+		return -EBUSY;
+>>+
+>>  	device_block_translation(dev);
+>>  	if (dev_is_real_dma_subdevice(dev))
+>>diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+>>index 3a2cb08c0ac1..25104644317c 100644
+>>--- a/drivers/iommu/intel/iommu.h
+>>+++ b/drivers/iommu/intel/iommu.h
+>>@@ -1310,6 +1310,9 @@ void intel_iommu_unpreserve(struct iommu_device *iommu,
+>>  void clear_unpreserved_context_entries(struct intel_iommu *iommu);
+>>  void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>>  					       struct iommu_hw_ser *iommu_ser);
+>>+int intel_iommu_restore_device(struct iommu_domain *domain,
+>>+			       struct device *dev);
+>>+int intel_iommu_detach_restored_device(struct device *dev);
+>>  #else
+>>  static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
+>>  {
+>>@@ -1319,6 +1322,17 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
+>>  							     struct iommu_hw_ser *iommu_ser)
+>>  {
+>>  }
+>>+
+>>+static inline int intel_iommu_restore_device(struct iommu_domain *domain,
+>>+					     struct device *dev)
+>>+{
+>>+	return -EOPNOTSUPP;
+>>+}
+>>+
+>>+static inline int intel_iommu_detach_restored_device(struct device *dev)
+>>+{
+>>+	return -EOPNOTSUPP;
+>>+}
+>>  #endif
+>>  #ifdef CONFIG_INTEL_IOMMU_SVM
+>>diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+>>index c9e553379683..6e6707eefc8c 100644
+>>--- a/drivers/iommu/intel/liveupdate.c
+>>+++ b/drivers/iommu/intel/liveupdate.c
+>>@@ -351,6 +351,165 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>>  	BUG_ON(iommu_for_each_preserved_device(_restore_used_domain_ids, iommu));
+>>  }
+>>+static void domain_detach_reattached_iommu(struct dmar_domain *domain,
+>>+					   struct intel_iommu *iommu)
+>
+>The naming is ambiguous. How about
+>
+>	domain_detach_restored_iommu()
+>	domain_attach_restored_iommu()
+>
+>?
 
-> (kvm_get_supported_cpuid()) against the "directly configurable"bits
-> reported by KVM_TDX_CAPABILITIES.
-> 
-> Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm           |   1 +
->  .../testing/selftests/kvm/include/x86/processor.h  |   2 +
->  .../selftests/kvm/include/x86/tdx/tdx_util.h       |  37 +++++++
->  tools/testing/selftests/kvm/lib/x86/processor.c    |  21 +++-
->  tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 121 +++++++++++++++++++++
->  5 files changed, 178 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 239bc61ea384..8f514008daa2 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -28,6 +28,7 @@ LIBKVM_x86 += lib/x86/pmu.c
->  LIBKVM_x86 += lib/x86/processor.c
->  LIBKVM_x86 += lib/x86/sev.c
->  LIBKVM_x86 += lib/x86/svm.c
-> +LIBKVM_x86 += lib/x86/tdx/tdx_util.c
->  LIBKVM_x86 += lib/x86/ucall.c
->  LIBKVM_x86 += lib/x86/vmx.c
->  
-> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-> index ed50007e3504..08b7b194f213 100644
-> --- a/tools/testing/selftests/kvm/include/x86/processor.h
-> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
-> @@ -1024,6 +1024,8 @@ static inline void vcpu_xcrs_set(struct kvm_vcpu *vcpu, struct kvm_xcrs *xcrs)
->  	vcpu_ioctl(vcpu, KVM_SET_XCRS, xcrs);
->  }
->  
-> +const struct kvm_cpuid_entry2 *__get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> +						 u32 function, u32 index);
->  const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
->  					       u32 function, u32 index);
->  const struct kvm_cpuid2 *kvm_get_supported_cpuid(void);
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> index f647e6ca6b34..571f7ce4b8fe 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> @@ -11,4 +11,41 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
->  	return vm->type == KVM_X86_TDX_VM;
->  }
->  
-> +/*
-> + * TDX ioctls
-> + * Use underscores to avoid collisions with struct member names.
-> + */
-> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg, hw_err)			\
-> +({									\
-> +	u64 *__hw_err = (hw_err);					\
-> +	int r;								\
-> +									\
-> +	union {								\
-> +		struct kvm_tdx_cmd c;					\
-> +		unsigned long raw;					\
-> +	} tdx_cmd = { .c = {						\
-> +		.id = (cmd),						\
-> +		.flags = (u32)(_flags),					\
-> +		.data = (u64)(arg),					\
-> +	} };								\
-> +									\
-> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> +	if (__hw_err)							\
-> +		*__hw_err = tdx_cmd.c.hw_error;				\
-> +	r;								\
-> +})
-> +
-> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
-> +({									\
-> +	u64 hw_error;							\
-> +	int ret = __tdx_vm_ioctl(vm, cmd, flags, arg, &hw_error);	\
-> +									\
-> +	TEST_ASSERT(!ret,						\
-> +		    "%s failed, rc: %d errno: %i (%s) hw_error: 0x%llx",\
-> +		    #cmd, ret, errno, strerror(errno),			\
-> +		    (unsigned long long)hw_error);			\
+This looks good to me. Will update.
+>
+>>+{
+>>+	struct iommu_domain_info *info;
+>>+
+>>+	guard(mutex)(&iommu->did_lock);
+>>+	info = xa_load(&domain->iommu_array, iommu->seq_id);
+>>+	if (--info->refcnt == 0) {
+>>+		xa_erase(&domain->iommu_array, iommu->seq_id);
+>>+		kfree(info);
+>>+	}
+>>+}
+>>+
+>>+static int domain_reattach_iommu(struct dmar_domain *domain,
+>>+				 struct intel_iommu *iommu,
+>>+				 struct iommu_device_ser *device_ser)
+>>+{
+>>+	struct iommu_domain_info *info, *curr;
+>>+	struct iommu_domain_ser *domain_ser;
+>>+	struct iommu_hw_ser *iommu_hw_ser;
+>>+	int restored_did;
+>>+	int ret;
+>>+
+>>+	if (!iommu_domain_restored_state(&domain->domain))
+>>+		return -EINVAL;
+>>+
+>>+	if (!device_ser->domain_iommu_ser.domain_phys ||
+>>+	    !device_ser->domain_iommu_ser.iommu_phys)
+>>+		return -EINVAL;
+>>+
+>>+	domain_ser = phys_to_virt(device_ser->domain_iommu_ser.domain_phys);
+>>+	if (domain_ser->restored_domain != &domain->domain)
+>>+		return -EINVAL;
+>>+
+>>+	iommu_hw_ser = phys_to_virt(device_ser->domain_iommu_ser.iommu_phys);
+>>+	if (iommu_hw_ser->type != IOMMU_INTEL ||
+>>+	    iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
+>>+		return -EINVAL;
+>>+
+>>+	restored_did = device_ser->domain_iommu_ser.attachment_id;
+>>+	if (!ida_exists(&iommu->domain_ida, restored_did))
+>>+		return -EINVAL;
+>>+
+>>+	info = kzalloc_obj(*info);
+>>+	if (!info)
+>>+		return -ENOMEM;
+>>+
+>>+	guard(mutex)(&iommu->did_lock);
+>>+	curr = xa_load(&domain->iommu_array, iommu->seq_id);
+>>+	if (curr) {
+>>+		curr->refcnt++;
+>>+		kfree(info);
+>>+		return 0;
+>>+	}
+>>+
+>>+	info->refcnt	= 1;
+>>+	info->did	= restored_did;
+>>+	info->iommu	= iommu;
+>>+	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
+>>+			  NULL, info, GFP_KERNEL);
+>>+	if (curr) {
+>>+		ret = xa_err(curr) ? : -EBUSY;
+>>+		goto err_unlock;
+>>+	}
+>>+
+>>+	return 0;
+>>+
+>>+err_unlock:
+>>+	kfree(info);
+>>+	return ret;
+>>+}
+>>+
+>>+/**
+>>+ * intel_iommu_restore_device() - Restore device domain attachment after live update
+>>+ * @domain: Restored domain
+>>+ * @dev: Restored device
+>>+ *
+>>+ * Return: 0 on success, or negative error code.
+>>+ */
+>>+int intel_iommu_restore_device(struct iommu_domain *domain,
+>>+			       struct device *dev)
+>
+>How about renaming it intel_iommu_attach_restored_device() to pair with
+>the detach helper?
 
-hw_error is already u64, why cast it to unsigned long long?
-TDX cases can only be done in x86-64, just use 0x%lx for u64? 
+Agreed. Will update.
+>
+>>+{
+>>+	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
+>>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+>>+	struct intel_iommu *iommu = info->iommu;
+>>+	unsigned long flags;
+>>+	int ret;
+>>+
+>>+	if (!device_ser)
+>>+		return -EINVAL;
+>>+
+>>+	if (dev_is_real_dma_subdevice(dev))
+>>+		return -EOPNOTSUPP;
+>
+>The vmd subdevices rely on the host endpoint to restore the domain
+>attachment, so instead of returning an error, it could return 0,
+>indicating nothing to do?
 
-> +})
-> +
-> +void tdx_init_vm(struct kvm_vm *vm);
-> +
->  #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index 24395a8e654a..b87ba7d8538b 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -829,6 +829,9 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
->  		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
->  	}
->  
-> +	if (is_tdx_vm(vm))
-> +		tdx_init_vm(vm);
-> +
->  	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
->  	TEST_ASSERT(r > 0, "KVM_GET_TSC_KHZ did not provide a valid TSC frequency.");
->  	guest_tsc_khz = r;
-> @@ -1347,8 +1350,8 @@ void kvm_init_vm_address_properties(struct kvm_vm *vm)
->  	}
->  }
->  
-> -const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> -					       u32 function, u32 index)
-> +const struct kvm_cpuid_entry2 *__get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> +						 u32 function, u32 index)
->  {
->  	int i;
->  
-> @@ -1358,11 +1361,21 @@ const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
->  			return &cpuid->entries[i];
->  	}
->  
-> -	TEST_FAIL("CPUID function 0x%x index 0x%x not found ", function, index);
-> -
->  	return NULL;
->  }
->  
-> +const struct kvm_cpuid_entry2 *get_cpuid_entry(const struct kvm_cpuid2 *cpuid,
-> +					       u32 function, u32 index)
-> +{
-> +	const struct kvm_cpuid_entry2 *entry;
-> +
-> +	entry = __get_cpuid_entry(cpuid, function, index);
-> +	if (!entry)
-> +		TEST_FAIL("CPUID function 0x%x index 0x%x not found ", function, index);
-> +
-> +	return entry;
-> +}
-> +
->  #define X86_HYPERCALL(inputs...)					\
->  ({									\
->  	u64 r;							\
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> new file mode 100644
-> index 000000000000..3a8900ff2540
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -0,0 +1,121 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include "processor.h"
-> +#include "tdx/tdx_util.h"
-> +
-> +static const struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
-> +{
-> +	static struct kvm_tdx_capabilities *tdx_cap;
-> +	int nr_cpuid_configs = 4;
-> +	int rc = -1;
-> +	int i;
-> +
-> +	if (tdx_cap)
-> +		return tdx_cap;
-> +
-> +	do {
-> +		nr_cpuid_configs *= 2;
-> +
-> +		tdx_cap = realloc(tdx_cap, sizeof(*tdx_cap) +
-> +					   (sizeof(struct kvm_cpuid_entry2) * nr_cpuid_configs));
-> +		TEST_ASSERT(tdx_cap,
-> +			    "Could not allocate memory for tdx capability nr_cpuid_configs %d\n",
+This should never happen, as subdevices are not preserved, so this
+function is never called for them. It is basically dead code, so I will
+drop it.
+>
+>>+
+>>+	ret = domain_reattach_iommu(dmar_domain, iommu, device_ser);
+>>+	if (ret)
+>>+		return ret;
+>>+
+>>+	info->domain = dmar_domain;
+>>+	info->domain_attached = true;
+>>+	spin_lock_irqsave(&dmar_domain->lock, flags);
+>>+	list_add(&info->link, &dmar_domain->devices);
+>>+	spin_unlock_irqrestore(&dmar_domain->lock, flags);
+>>+
+>>+	ret = cache_tag_assign_domain(dmar_domain, dev, IOMMU_NO_PASID);
+>>+	if (ret)
+>>+		goto err;
+>
+>The restored domain is an immutable domain. It could only be freed; no
+>map and unmap should happen on it. So why do you need to assign a cache
+>tag for it?
 
-Nit: Trailing newline in the message could be dropped.
+Interesting.. this is a valid point. I will remove this.
+>
+>>+
+>>+	ret = iopf_for_domain_set(domain, dev);
+>
+>ATS and PRI are not supported on the preserved devices, so the above is
+>dead code, right?
 
+Agreed. Will update.
+>
+>>+	if (ret)
+>>+		goto err;
+>>+
+>>+	return 0;
+>>+
+>>+err:
+>>+	/*
+>>+	 * Detach the restored domain from device and iommu on failure, but keep
+>>+	 * the hardware state intact.
+>>+	 */
+>>+	info->domain_attached = false;
+>>+	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
+>>+	spin_lock_irqsave(&info->domain->lock, flags);
+>>+	list_del(&info->link);
+>>+	spin_unlock_irqrestore(&info->domain->lock, flags);
+>>+
+>>+	domain_detach_reattached_iommu(info->domain, iommu);
+>>+	info->domain = NULL;
+>>+	return ret;
+>>+}
+>>+
+>>+int intel_iommu_detach_restored_device(struct device *dev)
+>>+{
+>>+	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>+	struct intel_iommu *iommu = info->iommu;
+>>+	struct iommu_domain *domain;
+>>+	unsigned long flags;
+>>+
+>>+	if (!info->domain_attached || !info->domain)
+>>+		return -EINVAL;
+>>+
+>>+	domain = &info->domain->domain;
+>>+	if (!iommu_domain_restored_state(domain))
+>>+		return -EINVAL;
+>>+
+>>+	iopf_for_domain_remove(domain, dev);
+>>+	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
+>>+	info->domain_attached = false;
+>>+
+>>+	spin_lock_irqsave(&info->domain->lock, flags);
+>>+	list_del(&info->link);
+>>+	spin_unlock_irqrestore(&info->domain->lock, flags);
+>>+
+>>+	domain_detach_reattached_iommu(info->domain, iommu);
+>>+	info->domain = NULL;
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>  /**
+>>   * intel_iommu_preserve_device() - Intel IOMMU callback to preserve device state
+>>   * @dev: Target device
+>
+>Thanks,
+>baolu
 
-> +			    nr_cpuid_configs);
-> +
-> +		tdx_cap->cpuid.nent = nr_cpuid_configs;
-> +		rc = __tdx_vm_ioctl(vm, KVM_TDX_CAPABILITIES, 0, tdx_cap, NULL);
-> +	} while (rc < 0 && errno == E2BIG);
-> +
-> +	TEST_ASSERT(rc == 0, "KVM_TDX_CAPABILITIES failed: %d %d",
-> +		    rc, errno);
-> +
-> +	pr_debug("tdx_cap: supported_attrs: 0x%016llx\n"
-> +		 "tdx_cap: supported_xfam 0x%016llx\n",
-> +		 tdx_cap->supported_attrs, tdx_cap->supported_xfam);
-> +
-> +	for (i = 0; i < tdx_cap->cpuid.nent; i++) {
-> +		const struct kvm_cpuid_entry2 *config = &tdx_cap->cpuid.entries[i];
-> +
-> +		pr_debug("cpuid config[%d]: leaf 0x%x sub_leaf 0x%x eax 0x%08x ebx 0x%08x ecx 0x%08x edx 0x%08x\n",
-> +			 i, config->function, config->index,
-> +			 config->eax, config->ebx, config->ecx, config->edx);
-> +	}
-> +
-> +	return tdx_cap;
-> +}
-> +
-> +/*
-> + * Filter CPUID based on TDX supported capabilities
-> + *
-> + * Input Args:
-> + *   vm - Virtual Machine
-> + *   cpuid_data - CPUID fields to filter
-> + *
-> + * Output Args: None
-
-cpuid_data should be Input/Output Arg?
-
-I am not sure Input Args / Output Args / Return needed though.
-It seems the selftests code in kvm/x86 doesn't use this format.
-
-> + *
-> + * Return: None
-> + *
-> + * For each CPUID leaf, filter out unsupported bits based on the capabilities
-> + * reported by the TDX module
-
-KVM filters directly configurable features that it doesn't support.
-The capabilities reported are not the original version reported by the TDX module.
-
-the TDX module -> KVM ?
-
-> + */
-> +static void tdx_filter_cpuid(struct kvm_vm *vm,
-> +			     struct kvm_cpuid2 *cpuid_data)
-> +{
-> +	const struct kvm_tdx_capabilities *tdx_cap;
-> +	const struct kvm_cpuid_entry2 *config;
-> +	struct kvm_cpuid_entry2 *e;
-> +	int i;
-> +
-> +	tdx_cap = tdx_read_capabilities(vm);
-> +
-> +	i = 0;
-> +	while (i < cpuid_data->nent) {
-> +		e = cpuid_data->entries + i;
-> +		config = __get_cpuid_entry(&tdx_cap->cpuid, e->function, e->index);
-> +
-> +		if (!config) {
-> +			int left = cpuid_data->nent - i - 1;
-> +
-> +			if (left > 0)
-> +				memmove(cpuid_data->entries + i,
-> +					cpuid_data->entries + i + 1,
-> +					sizeof(*cpuid_data->entries) * left);
-> +			cpuid_data->nent--;
-> +			continue;
-> +		}
-> +
-> +		e->eax &= config->eax;
-> +		e->ebx &= config->ebx;
-> +		e->ecx &= config->ecx;
-> +		e->edx &= config->edx;
-> +
-> +		i++;
-> +	}
-> +}
-> +
-> +void tdx_init_vm(struct kvm_vm *vm)
-> +{
-> +	struct kvm_tdx_init_vm *init_vm;
-> +	const struct kvm_cpuid2 *tmp;
-> +	struct kvm_cpuid2 *cpuid;
-> +
-> +	tmp = kvm_get_supported_cpuid();
-> +
-> +	cpuid = allocate_kvm_cpuid2(tmp->nent);
-> +	memcpy(cpuid, tmp, kvm_cpuid2_size(tmp->nent));
-> +	tdx_filter_cpuid(vm, cpuid);
-> +
-> +	init_vm = calloc(1, sizeof(*init_vm) +
-> +			 sizeof(init_vm->cpuid.entries[0]) * cpuid->nent);
-> +	TEST_ASSERT(init_vm, "init_vm allocation failed");
-> +
-> +	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
-> +	free(cpuid);
-> +
-> +	init_vm->attributes = 0;
-> +	init_vm->xfam = 0;
-
-May be some comments for setting attributes and xfam to 0.
-Especially why the test doesn't need SEPT_VE_DISABLE?
-
-
-> +
-> +	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
-> +
-> +	free(init_vm);
-> +}
-> 
-
+Thanks,
+Sami
