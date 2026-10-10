@@ -1,142 +1,316 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F863B14C4;
-	Sat, 10 Oct 2026 03:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD7E373BEC
+	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 03:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791603694; cv=none; b=YrOqBfdb4OKHmd3pPlI5dj9tHSDLuqnT2UY8leRReZWQPtslL/spg/2hwpkKDfBXqDm5CdeT2CSWzAS0zsmrORwF82qhWIZqxceH6sSbId6npmlcr0rtxE3jYhpHhbUrQpKQF7Zx6VGlEF2qq4UaRrKi5SO2K7rapjJzOuXLALQ=
+	t=1791604266; cv=none; b=ZsRRXDfpMc4yt3RZz+YSGDvpy/xQYRihVXs/IPYTodMHaXwevNUeAvpTZXCAvuKBQbsH7VT2kXwagSyAj9P8se4aMSUh3Yc2iLlixoSqv6QqeY3iyTSbs2YMmEXodD28dzlWJKjL6j++rBHUgJB+BVG7ThTQMgcvkzA0T6epuWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791603694; c=relaxed/simple;
-	bh=1/SZOvUxJPVAklKg/0T2y39fh1+kBupLWOuf8mMxNTQ=;
+	s=arc-20240116; t=1791604266; c=relaxed/simple;
+	bh=zm0JPF5TWL4gHDuhCuenInnjnMNEm6X/TEf5voqfz6g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RdmXlrg8G5Ku+Wu4uPMQR31os4Z624iVTMWSMapaM4eW/IDA+X1feT6IJZQnXi6nKKTxJflBqusmgzZtaBsv7p5yO4hvJThDPTSL0EujfD0hmpIkdx2o0YsIQQku1i5FoKDBW1J9wv0MVsnoAHcLZ2jZH21Xjbvq1b5hA28+YHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1MtqeH1; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=KivKbRe0kYHk9eFxjQz8GE+1eWRSHfWlqK/XrKssIrfXLmc8UeCfVRlnTPm+9dZcdn0aH31A+2iCVmJapfD81my5ACY5TjWEZjGvJVGpSxM//b+yWCoRV1rdXCB5n9IVoHRxnGJ26G1njoCG8kF4UO0vuhG2cz1FI/J11nHKx9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z/RyHHPY; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1MtqeH1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791603693; x=1823139693;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1/SZOvUxJPVAklKg/0T2y39fh1+kBupLWOuf8mMxNTQ=;
-  b=D1MtqeH14F8InIddLnZZxtTz8FUS/DAdFFjPKvT76eIN72iW1azzqVSD
-   fN85T0JWxTD3w5bN6kytaOjh93Pp/WqqOw9D5zRps8pGSbkBl84LlpABf
-   Pmfnl1FpkJdr3u23qA63Q6bL7XeScyKlvupp4oh6G118ZAKRNQgFArhiA
-   lfWA+1hgoaiY0RjWGlHJ6sIFYqQOyzRT5qPXVOI7zHJ8Z70TlfRcRASew
-   AJri5kDFYCLhYgss6GPK4AEYPYcSs+VIq7C2BR/IBmtnW2uLASbu7TC4g
-   +gmPiVKdLMs5WysBPQBF0G1PGqkI/b01MJf91uC9Ai6n3mbu6vnaDL1om
-   w==;
-X-CSE-ConnectionGUID: LfRvJHsUQLm1+ttsaLvmqg==
-X-CSE-MsgGUID: XohRf/lVT0WoVuFroI+f1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="280863"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="280863"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 20:41:32 -0700
-X-CSE-ConnectionGUID: RolorA4tTGGuCfEP8NrhAA==
-X-CSE-MsgGUID: rOH0JdrxRQi2GpUAw/Vv0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="437819"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa005.jf.intel.com with ESMTP; 09 Oct 2026 20:41:28 -0700
-Date: Sat, 10 Oct 2026 11:38:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com,
-	kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com,
-	sohil.mehta@intel.com, adrian.hunter@intel.com,
-	kishen.maloor@intel.com, peter.fang@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	chao.gao@intel.com, artem.bityutskiy@linux.intel.com,
-	nik.borisov@suse.com
-Subject: Re: [PATCH v3 6/6] x86/virt/tdx: Support DPAMT when adding memory
- for the extensions
-Message-ID: <asmzGnpjrDKmFLLP@yilunxu-OptiPlex-7050>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
- <asR64ovVXEmTVgg6@tlindgre-MOBL1>
- <asceeI8LD5ltEOje@yilunxu-OptiPlex-7050>
- <asjrTLfebkjDzB9F@thinkstation>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z/RyHHPY"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2db33db4de9so11715ad.0
+        for <kvm@vger.kernel.org>; Fri, 09 Oct 2026 20:51:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791604264; x=1792209064; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KMj1EMMi9TApMh2hvVIk1oE7hWCZue2+cChb7ImipdQ=;
+        b=Z/RyHHPYUlBbFl/JtzL+trnCW8ECO5ayV85OoH7n1ROy6O16sRzjdkzMZMPNWTz2D2
+         xx2NFHkAqP5teLWNJP9D9XW5EEfv93Kn/KHdT9slPbKsw2OgGyZpXkb+uZY/vBBLmGJl
+         SLYdMN7fkLpmliYZwDIblngQsl5MmrtnLWm+FAew73IzF/p6OB/tUk18WWtbhcEnUbUi
+         YtpQkd723F98zsIqNeBIFDNW+mo92tPxnx0CubdoeqL5lW8LpS2G+uJCk6hHsZ5gwlQa
+         WWXfBGG0fqCIzfpy6oju/H6VLLd8TIj9nZu9aub2D0S2fOtrDSyXubYROoGTJ2RMbDVg
+         rd7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791604264; x=1792209064;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KMj1EMMi9TApMh2hvVIk1oE7hWCZue2+cChb7ImipdQ=;
+        b=AQtLtjipPiaGyKhrkc8AYE1CFi8oGhtLOY02wrtD2JlmjSj08hDq6Ic7qRkNFXg67P
+         1GMSUCy6Pl+DrS26DPMtlu8vWW1CMfGj3h2NBFabNTfI7yvLkngk4rCtc6p4sHUJrpHM
+         4LAIAJvrCHUFfEyGlTPB/+42xq0RyQDe6KkCVr0nDLxQrUrtQAZ2uVIFOf8uimzNDUfy
+         xMdYQ0fXiMNGz/yBpv6sp84jho9DYToOKtJBMYZkc5bJlBAAM1dnsH5cekm36Nm3dc6q
+         qlVCKla+7hizxQe0XXcGxwLGF6BiDrGq2t9TkS63ynAAFJo30yrUlxS2u+Q/E2TMrcXw
+         nbmw==
+X-Forwarded-Encrypted: i=1; AKwUvBwcd/poxFMqZf6fx1ZH+wNb7VUkI2GSITEjkBx8PBLFvkoGPXkw2wawfXXPi3R1sPRALuY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJAzpAczrpOPH3fBG8y/5nFPWRl2rQ4R84/OHdkblmjf8CV+Rlk
+	7Xx8RhDkDurAzruj64oJqKdTJeBizFx823RbOTsqeShShYCmKoA5jYaMxcxDM+wPpw==
+X-Gm-Gg: AYBFou3Q4g1zkZssRgMgM0jY+7XhJ6cOBfrp7cQZXricd+0MOFxmbJbTnXIqfbj9+vw
+	br3bG9ft8j1S+c/BkIOve5Bp9INMSIuVgjxD1+exL9RLCnqrKeEqbegQRt/K7KE+00M1gmXoX68
+	95tmuHT8Wg3QO2H4ieioAWs9hr8ivzw8F9hy0X+qxD/2tnSRt9o5zg9dMjnfW3RndxJFqsmKNoU
+	wLuzWKumMpO4PcbCRz2TW7ThJqYyy+Biu8x1OQZAFcTVlGUU1REbdAtY8gBycRFZAuUAFqCekwD
+	rq/q6dwjH/G1VGHKLZpCcIb7WGp6WPxGalDAcd5vU+0ziak80Ase491rVD53KsOOkzsY487HD7I
+	YjCyeNhs/DHT1ycZkBMfuQrEn4RnobYfbcvlPScvwPrmz7BQ20904BrR4AAnJ55qHQ05XTOnD1b
+	m8noAq+y7LPKy9p1qvj1eRob338MDHLGlJd3Q6AIxo5CcSysjsUhKxPp/piuquvXWXiv1xA/5JP
+	Vl9xnni0ahPCCCx/AveGzV9U4CEkEm93GZlT6laSohZTyOofaT4LC6PCT6nqLjN5Fg=
+X-Received: by 2002:a17:903:324c:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2e87e2d3f9fmr689975ad.14.1791604263655;
+        Fri, 09 Oct 2026 20:51:03 -0700 (PDT)
+Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd3da0596f9sm1943872a12.31.2026.10.09.20.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 20:51:02 -0700 (PDT)
+Date: Sat, 10 Oct 2026 03:51:00 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v5 11/18] iommu: Restore and reattach preserved domains
+ to devices
+Message-ID: <asmwxf1UqQYeDZ7b@google.com>
+References: <20260921004834.2601285-1-skhawaja@google.com>
+ <20260921004834.2601285-12-skhawaja@google.com>
+ <asahH/NfWZGdvIsE@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <asjrTLfebkjDzB9F@thinkstation>
+In-Reply-To: <asahH/NfWZGdvIsE@nvidia.com>
 
-On Fri, Oct 09, 2026 at 02:28:34PM +0100, Kiryl Shutsemau wrote:
-> On Thu, Oct 08, 2026 at 12:39:20PM +0800, Xu Yilun wrote:
-> > On Tue, Oct 06, 2026 at 07:36:50AM +0300, Tony Lindgren wrote:
-> > > On Tue, Oct 06, 2026 at 01:41:50AM +0800, Xu Yilun wrote:
-> > > > The TDX module uses Physical Address Metadata Table (PAMT) to track some
-> > > > state for each page of physical memory that it might use. 3 levels of
-> > > > PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
-> > > > Dynamic PAMT (DPAMT) allows saving memory by allocating 4KB PAMT
-> > > > dynamically, while the 1GB and 2MB levels remain allocated on TDX module
-> > > > initialization. The kernel has helpers to install 4K DPAMT.
-> > > > 
-> > > > Although the memory for the extensions is tens of megabytes and the host
-> > > > allocates it in a large chunk, the TDX module accepts it at 4K
-> > > > granularity. Thus the host has to install 4K DPAMT for each page of it.
-> > > > 
-> > > > Call tdx_pamt_get() for each page before adding it to TDX module.
-> > > > Normally, these operations should not fail, and if they do,
-> > > > intentionally keep the error handling as simple as before - leak all
-> > > > pages, including the installed 4K DPAMT metadata.
-> > > > 
-> > > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > ---
-> > > > v3:
-> > > >  - New patch
-> > > > ---
-> > > >  arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
-> > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > index 5d5f9da1ab02..27a7039ee443 100644
-> > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > @@ -1330,8 +1330,15 @@ static __init int tdx_ext_mem_setup(void)
-> > > >  		struct page *chunk = page + added_pages;
-> > > >  		unsigned int i;
-> > > >  
-> > > > -		for (i = 0; i < chunk_pages; i++)
-> > > > +		for (i = 0; i < chunk_pages; i++) {
-> > > > +			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
-> > > > +			if (ret) {
-> > > > +				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
-> > > > +				goto out_free_hpa_list;
-> > > > +			}
-> > > > +
-> > > >  			hpa_list->phys[i] = page_to_phys(chunk + i);
-> > > > +		}
-> > > >  
-> > > >  		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> > > >  		if (ret) {
-> > > > 
-> > > 
-> > > How about just fold this change in into patch 3/6?
-> > 
-> > I think patch 3/6 is already quite heavy. Is it good that I put this
-> > patch right after patch 3/6?
-> 
-> But that breaks bisectability, no? Even placed right after 3/6, that
-> commit fails TDX module init on a machine with DPAMT and extensions
-> whenever the module asks for a non-zero pool.
+On Wed, Oct 07, 2026 at 12:44:31PM -0700, Nicolin Chen wrote:
+>On Mon, Sep 21, 2026 at 12:48:27AM +0000, Samiullah Khawaja wrote:
+>> @@ -694,7 +700,8 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+>>  	}
+>>
+>>  	for_each_group_device(group, gdev2) {
+>> -		if (dev_iommu_preserved_state(gdev2->dev)) {
+>> +		if (dev_iommu_preserved_state(gdev2->dev) ||
+>> +		    dev_iommu_restored_state(gdev2->dev)) {
+>>  			ret = -EBUSY;
+>>  			goto err_free_gdev;
+>
+>Maybe it should -EBUSY on a group that already has a device so it
+>wouldn't end up with a multi-device group.
 
-It will not. Any patch for extension-backed features should be applied
-after this series. So the pool will always be zero until something like:
+Agreed. This should make sure that a preserved device does not get added
+into a group that already has a device. Will update.
+>
+>> @@ -2211,6 +2242,7 @@ static int __iommu_attach_device(struct iommu_domain *domain,
+>>  	ret = domain->ops->attach_dev(domain, dev, old);
+>>  	if (ret)
+>>  		return ret;
+>> +
+>>  	dev->iommu->attach_deferred = 0;
+>>  	trace_attach_device_to_domain(dev);
+>>  	return 0;
+>
+>Unnecessary change.
 
- /* List all kernel-supported add-on features0 bits here */
--#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (0)
-+#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (TDX_FEATURES0_QUOTE)
+Will remove.
+>
+>> @@ -3175,6 +3207,62 @@ int iommu_fwspec_add_ids(struct device *dev, const u32 *ids, int num_ids)
+>>  }
+>>  EXPORT_SYMBOL_GPL(iommu_fwspec_add_ids);
+>>
+>> +static struct device *__iommu_group_restored_device(struct iommu_group *group)
+>> +{
+>> +	struct group_device *gdev;
+>> +
+>> +	lockdep_assert_held(&group->mutex);
+>> +	for_each_group_device(group, gdev) {
+>> +		if (!dev_is_pci(gdev->dev))
+>> +			continue;
+>> +
+>> +		if (dev_iommu_restored_state(gdev->dev))
+>> +			return gdev->dev;
+>
+>list_first_entry instead of for_each_group_device since there's a
+>singleton enforcement.
+
+Agreed. Will Update.
+>
+>> +	}
+>> +
+>> +	return NULL;
+>> +}
+>> +
+>> +static int __iommu_group_restore_domain(struct iommu_group *group)
+>> +{
+>> +	struct iommu_device_ser *device_ser;
+>> +	struct iommu_domain *domain;
+>> +	struct device *dev;
+>> +	void *owner;
+>> +	int ret;
+>> +
+>> +	lockdep_assert_held(&group->mutex);
+>> +	if (group->domain)
+>> +		return -EBUSY;
+>> +
+>> +	dev = __iommu_group_restored_device(group);
+>> +	device_ser = dev_iommu_restored_state(dev);
+>> +	if (!device_ser)
+>> +		return -ENOENT;
+>> +
+>> +	ret = __iommu_group_alloc_blocking_domain(group);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	domain = iommu_restore_domain(dev, device_ser, &owner);
+>> +	if (WARN_ON(IS_ERR(domain)))
+>> +		return PTR_ERR(domain);
+>> +
+>> +	/* The restored domain is attached with the restored device. */
+>> +	ret = __iommu_group_set_domain(group, domain);
+>> +	if (ret)
+>> +		return ret;
+>
+>If (ret), how about the restored domain by iommu_restore_domain()?
+
+The restored domain is not leaked and it remains restored and associated
+with the preserved device in FLB and will be reused later if there is
+another rescan.
+>
+>> +	/*
+>> +	 * Ownership of groups with preserved devices is set during boot. These
+>> +	 * will be reclaimed later by the entity (iommufd) that preserved them.
+>> +	 */
+>> +	WARN_ON(group->owner);
+>> +	group->owner = owner;
+>> +	group->owner_cnt = 1;
+>> +	return ret;
+>> +}
+>> +
+>>  /**
+>>   * iommu_setup_default_domain - Set the default_domain for the group
+>>   * @group: Group to change
+>> @@ -3233,6 +3321,16 @@ static int iommu_setup_default_domain(struct iommu_group *group,
+>>
+>>  	/* We must set default_domain early for __iommu_device_set_domain */
+>>  	group->default_domain = dom;
+>> +
+>> +	/* Preserved devices need to be attached to the restore domain */
+>> +	if (__iommu_group_restored_device(group)) {
+>> +		ret = __iommu_group_restore_domain(group);
+>
+>__iommu_group_restored_device is called twice: here (outside) and
+>inside __iommu_group_restore_domain.
+>
+>Perhaps change to:
+>	dev = __iommu_group_restored_device(group);
+>	if (dev)  {
+>		ret = __iommu_device_restore_domain(dev);
+>	...
+>?
+
+I will have to get the group again inside the
+__iommu_device_restore_domain(), but I think that is fine. Will update
+this.
+>
+>> +void iommu_init_device_preserved_data(struct device *dev)
+>> +{
+>> +	struct iommu_device_ser *device_ser = NULL;
+>
+>"= NULL" doesn't seem necessary.
+
+Will remove.
+>
+>> +	struct iommu_device_array_ser *array;
+>> +	struct iommu_flb_obj *flb_obj;
+>> +	int ret, idx;
+>> +
+>> +	if (!dev_is_pci(dev))
+>> +		return;
+>> +
+>> +	ret = iommu_liveupdate_flb_get_incoming(&flb_obj);
+>> +	if (ret)
+>> +		return;
+>> +
+>> +	mutex_lock(&flb_obj->lock);
+>> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
+>> +	iommu_liveupdate_for_each_arr(array) {
+>> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
+>> +			if (match_device_ser(device_ser, to_pci_dev(dev))) {
+>> +				device_ser->hdr.flags |= IOMMU_SER_FLAG_INCOMING;
+>> +				goto out;
+>> +			}
+>> +		}
+>> +	}
+>> +
+>> +	device_ser = NULL;
+>> +out:
+>> +	WRITE_ONCE(dev->iommu->device_ser, device_ser);
+>
+>dev->iommu->device_ser is NULL after kzalloc.
+>
+>So, maybe drop "device_ser = NULL" and move WRITE_ONCE() into the
+>loop (under match_device_ser)?
+
+Will update.
+>
+>> +	mutex_unlock(&flb_obj->lock);
+>> +	liveupdate_flb_put_incoming(&iommu_flb);
+>
+>Hmm, you might want to check the lifecycle of this flb thing.
+>
+>dev->iommu->device_ser points to something inside the flb, which
+>might be freed somewhere?
+
+The lifecycle is bound to the FD that is preserved into LUO. The
+incoming FLB is only freed when that FD is finished, and the device_ser
+will be cleared before finish. That logic is not part of phase 1, as it
+doesn't do the iommufd restore. In phase 1, iommufd's can_finish()
+always returns false, so the FLB is never freed.
+>
+>> +struct iommu_domain *iommu_restore_domain(struct device *dev,
+>[...]
+>> +	domain_ser = phys_to_virt(ser->domain_iommu_ser.domain_phys);
+>> +	if (domain_ser->restored_domain) {
+>> +		*owner = ser;
+>> +		domain = domain_ser->restored_domain;
+>> +		goto out;
+>> +	}
+>> +
+>> +	domain_ser->hdr.flags |=  IOMMU_SER_FLAG_INCOMING;
+>
+>Drop the extra space before "IOMMU".
+
+Will update.
+>
+>> +/**
+>> + * dev_iommu_restore_did() - Get restored domain ID for a device
+>> + * @dev: Target device
+>> + * @domain: Target domain
+>> + *
+>> + * Fetches the domain ID preserved for @dev and @domain across Live Update.
+>> + *
+>> + * Return: Domain ID or -1 on error.
+>> + */
+>> +static inline int dev_iommu_restore_did(struct device *dev, struct iommu_domain *domain)
+>
+>"did" is an intel thing..
+>
+>> +{
+>> +	struct iommu_device_ser *ser = dev_iommu_restored_state(dev);
+>> +
+>> +	if (ser && iommu_domain_restored_state(domain))
+>> +		return ser->domain_iommu_ser.attachment_id;
+>
+>... so, it could be just dev_iommu_restored_attachment_id()?
+
+Yes, this looks good. I will update it.
+>
+>Nicolin
+
+Thanks,
+Sami
