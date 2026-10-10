@@ -1,284 +1,305 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E6049DBBE;
-	Sat, 10 Oct 2026 13:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3245B378824
+	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 14:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791638563; cv=none; b=UBPNStnnooR+3fcIUiZjCZfT0G6UJ6KWv3BT1CH2lzb5xDc8CczyyFYDHcHe+SXT973VhEsT0766nPBHaRU2s9zWBimAy3m/1pjaZmEKF9oxRiQxsW2VSBMYOUi3X8XZW648/DtG2X0NP679qvDkvq5JMp4Q7EmNB26uKW2/C5E=
+	t=1791642203; cv=none; b=QnUM3VAr1UJsSvi/XfL/1b5t88VTLqhTXIZKI4CrlLtBETmr9pHpNflnUXeQfv2X1f+sMFPXATHY+jtTXMI3Chr+V403rJVZRHyKphI/IY5GRuVmZLAY7Ik+k2hqbzaV5BihwZlAbe0ZodNopycHWMkXp9miVEk98R5xhbdrWiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791638563; c=relaxed/simple;
-	bh=kI0LMQId2pijABUOn7EzH7LxEKO5JNnfOsHFnJ0ects=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jxO8TRKcZrRRAzQSaE5yO986McfP6cRhqHsCtT9mDpILoaMJYUb11r7pr/pCcWtUZplO9sgvlqhfr11VFBBKe4WZ7N24YynrpyCNgVNr7Z4vVCL1bkevglGW2MbgMNAU0qqsS9MlZUwDFnjKpjIoFGG73MeFEkJw6xot77TiQWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jeG0Kx0M; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791642203; c=relaxed/simple;
+	bh=4T9nQP9zI8Um0KD02ZgaELtECfj/1eQuGFpZovzAt2c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=EaZDODeOcUHnLYwM1jSU9iQ6ZOCYaZmJAK+gC9ilJlUCqFZXV8w+XMtCGaFmbzqckL9luD331hCQt1kOZqbFa5bt16qKyVDuuoAMtOIHziVX2QqToPdiSnLQahyCcvd7JfFHuzMmwAq9ATzf07rff0YWAaO1NyZBi63iua8u97w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q4rVoxED; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jeG0Kx0M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791638561; x=1823174561;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kI0LMQId2pijABUOn7EzH7LxEKO5JNnfOsHFnJ0ects=;
-  b=jeG0Kx0MP29OCTUSxptsw6+O/vu1asl8LPTSopFRu8CosSPoULcRpNn/
-   Mnu5gGsD9dugcYYqTg2iZ/QL6jYp+f/rDvZ/tNkXUkIcNqvDoXnYv0rtK
-   S6K+Y1G5p3QzRNsjWcfoZEe1sbBE1XGUVIg7NDT5JniDSgyVzFfXH3gjB
-   M5NwvJYaYkGzJ6TOwr5xaUivWuHTeXawECWN/qxbKK/M/T241BzjM2kRT
-   j9j76peI39NjVjzqfrvVZVcTLPciglIf0K85jVVS2hkPOlbSKrmhWWX4H
-   i49Dqzy160+mF7+kLrR87rxvaaxdW+SV3126RzTMrerJHfuQWRg05gS+L
-   A==;
-X-CSE-ConnectionGUID: UYiQXHI+RwCl7Lh8iSTTZA==
-X-CSE-MsgGUID: /Lzq1e7hTb61t4SiXFh+yQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="421501"
-X-IronPort-AV: E=Sophos;i="6.27,150,1787036400"; 
-   d="scan'208";a="421501"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 06:22:41 -0700
-X-CSE-ConnectionGUID: Ra8ixKxZTV+AnIqfpcyipQ==
-X-CSE-MsgGUID: vXjroTTcShOHzPeOAnjgrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,150,1787036400"; 
-   d="scan'208";a="522337"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 10 Oct 2026 06:22:39 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xFX23-000000009ki-40Wf;
-	Sat, 10 Oct 2026 13:22:35 +0000
-Date: Sat, 10 Oct 2026 21:21:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	Maxim Levitsky <mlevitsk@redhat.com>
-Subject: Re: [PATCH 2/2] KVM: nVMX: avoid losing the posted notification
- interrupt when exiting L2
-Message-ID: <202610102131.6oaK34Gm-lkp@intel.com>
-References: <20261009205036.672523-3-mlevitsk@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q4rVoxED"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d560775ca2so2272345ad.1
+        for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 07:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791642201; x=1792247001; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OeL2aIjFwVAv8sSCYCVGfdYfrjImjk5Kbtp5DQOr+I0=;
+        b=Q4rVoxEDEsCvt5eyfhQMlhXFUbLwhXgFYHsRWeMmPJwbsFE11LdwMrnTklEVb5+DKN
+         INOSDksX2BwiCLzp+id279BHRQrPJIKiNIxrTDmapzDJH7Rh85xFcFqZRPO3wFJV5jOl
+         fovvgEw+P8SXb3j1fX52E415BLF4TffBPve2Shx/bV934b1J1hcdpvLBB+Vt3Tql3Awt
+         BAqLl1dKLpm4POYyFPG6BTOyF/2G7UdeQMOVozebUKV9Rj3ZZZkGRbm6b0qbQRfdlrrk
+         VQ/MjK7P/d+pfsI0Pw2eQiRAfTgLdfcJOuPCfNDsEiQ2TYYd1sf3bDHbh4xtZR2ZybhS
+         FArA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791642201; x=1792247001;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OeL2aIjFwVAv8sSCYCVGfdYfrjImjk5Kbtp5DQOr+I0=;
+        b=KI3HWrumNBWZmzNUVrAjTYuizTOSez43x0UPwBG9Eo9RyuPEHO8Tab6kIqolP3EDgM
+         SmxL2Z+OxziWHEpwDTgbJwGStQ3JgBViYuGpEoxxQ8itOXP2Ds4aXCu9W/kAuSX/k/Yh
+         2CHFlRGx/UacXT7IHz47POXjiEX96PfP76/f1+LTqDVM/5NHujNQwNDimb9kVFdFCX4K
+         9xDfYec55DEIebyZf46RdFknj5rW7YaOKqTVr/koAA2eU4r+KKypjIzdTM4vBq0SPTUS
+         vxy0EGbuzZtajuk7IyY12PPTr2mXDXhkdWtB5fH9xUyVipkcuCmhz6pOxaPg7Qg8z5sa
+         T0lQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzo2rcHYza44wYwdCxjaviJk7w45lUGlyouZ8yc6qzjchrCU5MuOA4/kUBqVoOkb8sB2wk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2alHPFAXOEuVmM+pkGkkHA4lPACzftql1jelM94E/XE5EtQZs
+	LzZKCg34733GTU28SmOm0SL+w7PPWWpXtecyVvZEm45+Hatt0hAnd9oc
+X-Gm-Gg: AYBFou2rWawfnIxSqhBN5dfcso6/Xq2lS3CL/lY3IQHUrqCi54KIKnRLSpiVP4Ad4zo
+	SgqNqjY2dt6k5T3CQsc72qDJW48MjMCe9cnZ5zxCC4GPb6uzNytohMTwD6C5FUf65RzEzZ4gSxB
+	6QoBRr1S5PHovX19sDACQhddz2wpalqDFB0t4Z9Jb8S6SFR9JL1HG3GAKXh19fpc9lOn89fii5c
+	coDdu+FqaN5vbwSpab9pV3eD40+mM4CF2C2TOYhl6LxwrMXIuQqNhc1A5LiMMIGQ3GINL7EwxfO
+	/U+EQcZnimJ3YYVgsgzDb3CEt9RtwLNTJIXJoX2W+A7BF90iOnShJw6dqJUGxTfVnR4Es59K+lA
+	zcojd9iBo3/VnDDuQdYw3HcL/ObC3h4uCZMjSkokHJ4dwusmzxgjODYfpJBXGr/i2GeIrNo2peY
+	tUJOVNE2tiZS08Z3ckhzcStUB5a9rcVlpcN1xgJmKOCXZoHEu2rc8fjQWTkXEbu4iMKv4sfvQ=
+X-Received: by 2002:a17:903:1967:b0:2e8:2d05:9780 with SMTP id d9443c01a7336-2e8427f0315mr36579415ad.8.1791642201074;
+        Sat, 10 Oct 2026 07:23:21 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e841a0401esm23676615ad.4.2026.10.10.07.23.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 07:23:20 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Jia Jia <physicalmtea@gmail.com>
+Subject: [PATCH net-next v2 0/5] vsock/virtio: reduce RX per-packet socket overhead
+Date: Sat, 10 Oct 2026 22:22:42 +0800
+Message-Id: <20261010142247.99223-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261009205036.672523-3-mlevitsk@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Maxim,
+This series reduces per-packet socket overhead in the virtio-vsock RX
+worker.
 
-kernel test robot noticed the following build warnings:
+Patch 1: separate socket lookup from locked packet processing.
 
-[auto build test WARNING on kvm/queue]
-[also build test WARNING on kvm/next mst-vhost/linux-next linus/master v7.3-rc6 next-20261009]
-[cannot apply to kvm/linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Patch 2: keep one socket lock across a bounded run of established
+STREAM/RW packets for the same native socket.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Maxim-Levitsky/KVM-nVMX-don-t-check-PIR-ON-when-processing-nested-posted-interrupts/20261009-165035
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20261009205036.672523-3-mlevitsk%40redhat.com
-patch subject: [PATCH 2/2] KVM: nVMX: avoid losing the posted notification interrupt when exiting L2
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20261010/202610102131.6oaK34Gm-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610102131.6oaK34Gm-lkp@intel.com/reproduce)
+Patch 3: reuse the locked socket for later packets with the same
+address tuple.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610102131.6oaK34Gm-lkp@intel.com/
+Patch 4: coalesce default write-space notifications while that
+lock is held.
 
-All warnings (new ones prefixed by >>):
+Patch 5: defer the default readable callback until after the batch
+unlocks.
 
->> arch/x86/kvm/vmx/nested.c:5167:48: warning: result of comparison of constant -1 with expression of type 'u16' (aka 'unsigned short') is always false [-Wtautological-constant-out-of-range-compare]
-    5167 |                 if (!WARN_ON_ONCE(vmx->nested.posted_intr_nv == -1)) {
-         |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~
-   include/asm-generic/bug.h:120:25: note: expanded from macro 'WARN_ON_ONCE'
-     120 |         int __ret_warn_on = !!(condition);                              \
-         |                                ^~~~~~~~~
-   1 warning generated.
+Performance:
 
+Tested on a single-stream vsock connection (one Guest receiver thread on
+CPU0, virtio-vsock IRQ on Guest CPU1, fresh QEMU Guest per state, 16
+balanced AB/BA pairs per payload). The host uses vhost-vsock.
 
-vim +5167 arch/x86/kvm/vmx/nested.c
+For throughput, vsock_perf runs on the host as the
+sender, with a custom single-threaded Guest receiver pinned to Guest CPU0
+using blocking recv(). The fixed-64K table uses a 64K buffer; the matched
+table uses the sender's request size. The virtio-vsock IRQ/RX worker is
+pinned to Guest CPU1. To normalize run times across payloads into a
+bounded, deterministic window and avoid long runs being skewed by host
+background noise or virtualization scheduling jitter, transfer sizes scale
+proportionally with the request size (64B/64M, 256B/256M, etc.), capped at
+2G for 4K–64K. The custom receiver keeps the recv() size and count
+explicit; vsock_perf's receiver uses poll()+read().
 
-  5069	
-  5070	/*
-  5071	 * Emulate an exit from nested guest (L2) to L1, i.e., prepare to run L1
-  5072	 * and modify vmcs12 to make it see what it would expect to see there if
-  5073	 * L2 was its real guest. Must only be called when in L2 (is_guest_mode())
-  5074	 */
-  5075	void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
-  5076				 u32 exit_intr_info, unsigned long exit_qualification,
-  5077				 u32 exit_insn_len)
-  5078	{
-  5079		struct vcpu_vmx *vmx = to_vmx(vcpu);
-  5080		struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
-  5081	
-  5082		/* Pending MTF traps are discarded on VM-Exit. */
-  5083		vmx->nested.mtf_pending = false;
-  5084	
-  5085		/* trying to cancel vmlaunch/vmresume is a bug */
-  5086		kvm_warn_on_nested_run_pending(vcpu);
-  5087	
-  5088		/* Note, "checking" the request also clears the request. */
-  5089		if (kvm_check_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu)) {
-  5090	#ifdef CONFIG_KVM_HYPERV
-  5091			/*
-  5092			 * KVM_REQ_GET_NESTED_STATE_PAGES is also used to map
-  5093			 * Enlightened VMCS after migration and we still need to
-  5094			 * do that when something is forcing L2->L1 exit prior to
-  5095			 * the first L2 run.
-  5096			 */
-  5097			(void)nested_get_evmcs_page(vcpu);
-  5098	#endif
-  5099		}
-  5100	
-  5101		/* Service pending TLB flush requests for L2 before switching to L1. */
-  5102		kvm_service_local_tlb_flush_requests(vcpu);
-  5103	
-  5104		/*
-  5105		 * VCPU_REG_PDPTR will be clobbered in arch/x86/kvm/vmx/vmx.h between
-  5106		 * now and the new vmentry.  Ensure that the VMCS02 PDPTR fields are
-  5107		 * up-to-date before switching to L1.
-  5108		 */
-  5109		if (enable_ept && is_pae_paging(vcpu))
-  5110			vmx_ept_load_pdptrs(vcpu);
-  5111	
-  5112		leave_guest_mode(vcpu);
-  5113	
-  5114		if (nested_cpu_has_preemption_timer(vmcs12))
-  5115			hrtimer_cancel(&to_vmx(vcpu)->nested.preemption_timer);
-  5116	
-  5117		if (nested_cpu_has(vmcs12, CPU_BASED_USE_TSC_OFFSETTING)) {
-  5118			vcpu->arch.tsc_offset = vcpu->arch.l1_tsc_offset;
-  5119			if (nested_cpu_has2(vmcs12, SECONDARY_EXEC_TSC_SCALING))
-  5120				vcpu->arch.tsc_scaling_ratio = vcpu->arch.l1_tsc_scaling_ratio;
-  5121		}
-  5122	
-  5123		if (likely(!vmx->fail)) {
-  5124			sync_vmcs02_to_vmcs12(vcpu, vmcs12);
-  5125	
-  5126			if (vm_exit_reason != -1)
-  5127				prepare_vmcs12(vcpu, vmcs12, vm_exit_reason,
-  5128					       exit_intr_info, exit_qualification,
-  5129					       exit_insn_len);
-  5130	
-  5131			/*
-  5132			 * Must happen outside of sync_vmcs02_to_vmcs12() as it will
-  5133			 * also be used to capture vmcs12 cache as part of
-  5134			 * capturing nVMX state for snapshot (migration).
-  5135			 *
-  5136			 * Otherwise, this flush will dirty guest memory at a
-  5137			 * point it is already assumed by user-space to be
-  5138			 * immutable.
-  5139			 */
-  5140			nested_flush_cached_shadow_vmcs12(vcpu, vmcs12);
-  5141		} else {
-  5142			/*
-  5143			 * The only expected VM-instruction error is "VM entry with
-  5144			 * invalid control field(s)." Anything else indicates a
-  5145			 * problem with L0.
-  5146			 */
-  5147			WARN_ON_ONCE(vmcs_read32(VM_INSTRUCTION_ERROR) !=
-  5148				     VMXERR_ENTRY_INVALID_CONTROL_FIELD);
-  5149	
-  5150			/* VM-Fail at VM-Entry means KVM missed a consistency check. */
-  5151			WARN_ON_ONCE(warn_on_missed_cc);
-  5152		}
-  5153	
-  5154		/*
-  5155		 * Drop events/exceptions that were queued for re-injection to L2
-  5156		 * (picked up via vmx_complete_interrupts()), as well as exceptions
-  5157		 * that were pending for L2.  Note, this must NOT be hoisted above
-  5158		 * prepare_vmcs12(), events/exceptions queued for re-injection need to
-  5159		 * be captured in vmcs12 (see vmcs12_save_pending_event()).
-  5160		 */
-  5161		vcpu->arch.nmi_injected = false;
-  5162		kvm_clear_exception_queue(vcpu);
-  5163		kvm_clear_interrupt_queue(vcpu);
-  5164	
-  5165		if (lapic_in_kernel(vcpu) && vmx->nested.pi_pending) {
-  5166			vmx->nested.pi_pending = 0;
-> 5167			if (!WARN_ON_ONCE(vmx->nested.posted_intr_nv == -1)) {
-  5168				kvm_lapic_set_irr(vmx->nested.posted_intr_nv, vcpu->arch.apic);
-  5169				kvm_make_request(KVM_REQ_EVENT, vcpu);
-  5170			}
-  5171		}
-  5172	
-  5173		vmx_switch_vmcs(vcpu, &vmx->vmcs01);
-  5174	
-  5175		kvm_nested_vmexit_handle_ibrs(vcpu);
-  5176	
-  5177		/*
-  5178		 * Update any VMCS fields that might have changed while vmcs02 was the
-  5179		 * active VMCS.  The tracking is per-vCPU, not per-VMCS.
-  5180		 */
-  5181		vmcs_write32(VM_EXIT_MSR_STORE_COUNT, vmx->msr_autostore.nr);
-  5182		vmcs_write32(VM_EXIT_MSR_LOAD_COUNT, vmx->msr_autoload.host.nr);
-  5183		vmcs_write32(VM_ENTRY_MSR_LOAD_COUNT, vmx->msr_autoload.guest.nr);
-  5184		vmcs_write64(TSC_OFFSET, vcpu->arch.tsc_offset);
-  5185		if (kvm_caps.has_tsc_control)
-  5186			vmcs_write64(TSC_MULTIPLIER, vcpu->arch.tsc_scaling_ratio);
-  5187	
-  5188		nested_put_vmcs12_pages(vcpu);
-  5189	
-  5190		if ((vm_exit_reason != -1) &&
-  5191		    (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx)))
-  5192			vmx->nested.need_vmcs12_to_shadow_sync = true;
-  5193	
-  5194		/* in case we halted in L2 */
-  5195		kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
-  5196	
-  5197		if (likely(!vmx->fail)) {
-  5198			if (vm_exit_reason != -1)
-  5199				trace_kvm_nested_vmexit_inject(vmcs12->vm_exit_reason,
-  5200							       vmcs12->exit_qualification,
-  5201							       vmcs12->idt_vectoring_info_field,
-  5202							       vmcs12->vm_exit_intr_info,
-  5203							       vmcs12->vm_exit_intr_error_code,
-  5204							       KVM_ISA_VMX);
-  5205	
-  5206			load_vmcs12_host_state(vcpu, vmcs12);
-  5207	
-  5208			/*
-  5209			 * Process events if an injectable IRQ or NMI is pending, even
-  5210			 * if the event is blocked (RFLAGS.IF is cleared on VM-Exit).
-  5211			 * If an event became pending while L2 was active, KVM needs to
-  5212			 * either inject the event or request an IRQ/NMI window.  SMIs
-  5213			 * don't need to be processed as SMM is mutually exclusive with
-  5214			 * non-root mode.  INIT/SIPI don't need to be checked as INIT
-  5215			 * is blocked post-VMXON, and SIPIs are ignored.
-  5216			 */
-  5217			if (kvm_cpu_has_injectable_intr(vcpu) || vcpu->arch.nmi_pending)
-  5218				kvm_make_request(KVM_REQ_EVENT, vcpu);
-  5219			return;
-  5220		}
-  5221	
-  5222		/*
-  5223		 * After an early L2 VM-entry failure, we're now back
-  5224		 * in L1 which thinks it just finished a VMLAUNCH or
-  5225		 * VMRESUME instruction, so we need to set the failure
-  5226		 * flag and the VM-instruction error field of the VMCS
-  5227		 * accordingly, and skip the emulated instruction.
-  5228		 */
-  5229		(void)nested_vmx_fail(vcpu, VMXERR_ENTRY_INVALID_CONTROL_FIELD);
-  5230	
-  5231		/*
-  5232		 * Restore L1's host state to KVM's software model.  We're here
-  5233		 * because a consistency check was caught by hardware, which
-  5234		 * means some amount of guest state has been propagated to KVM's
-  5235		 * model and needs to be unwound to the host's state.
-  5236		 */
-  5237		nested_vmx_restore_host_state(vcpu);
-  5238	
-  5239		vmx->fail = 0;
-  5240	}
-  5241	
+Latency uses a custom user-space vsock ping-pong tool.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The measurements below were collected for the RX batching series.
+
+This benchmark does not run vsock_perf on both ends. Instead, it uses
+vsock_perf as the sender on the host (vhost-vsock) side and a custom
+blocking recv() program without poll() on the Guest side, with the receiver
+thread pinned to Guest CPU0 (and the virtio-vsock RX worker pinned to Guest
+CPU1). Plain blocking recv() combined with strict core pinning gives
+audit-level determinism for tracing a single-threaded TID.
+
+I think it is necessary to do further testing on the large I/O throughput
+peak observed at 4K to find the root cause (and rule out anything
+introduced by the measurement method). I used kprobe and temporary
+trace_printk in the source for mechanism diagnostics. The diagnostic
+data shows that lock wait time and contention at 4K both decrease strictly
+monotonically as payload size increases;
+wire-level tracing also confirms that 4K is split into two packets, and
+that all sizes can reach the 64K batching limit.
+
+The nature of the prominent 4K throughput gain most likely lies in it
+sitting exactly at the end-to-end pipeline sweet spot between host and
+guest:
+
+Compared with 1K and smaller payloads: 4K halves the packet intensity, so
+upstream host-side syscall and interrupt injection overhead is no longer
+the bottleneck across the whole path, allowing the host to supply data
+adequately.
+
+Compared with larger 8K to 64K payloads: 4K keeps the payload size
+moderate, and combined with the observed syscall reduction and cycle
+improvement, the batch-draining benefit from notification coalescing is
+fully realized.
+
+As payload size increases further from 8K to 64K, the overall gain shrinks
+smoothly, consistent with Amdahl's law, because system execution time
+shifts toward page copying and VQ processing.
+
+With all patches applied:
+
+End-to-end RX throughput (64K Guest recv() size, SO_RCVLOWAT=1; Gbit/s):
+
+  payload  baseline RX  PATCH RX  throughput change (95% CI)
+           (Gbit/s)      (Gbit/s)
+  64B      0.1065       0.2503    +135.00% [+130.35%, +139.74%]
+  256B     0.5722       1.0286     +79.76% [+75.40%, +84.23%]
+  512B     1.1464       1.9779     +72.53% [+69.50%, +75.63%]
+  1K       2.2714       3.6368     +60.12% [+56.92%, +63.37%]
+  4K       3.9095       7.7160     +97.37% [+92.09%, +102.79%]
+  8K       3.3436       5.3111     +58.84% [+53.49%, +64.38%]
+  16K      3.8876       5.7456     +47.80% [+45.45%, +50.18%]
+  64K      4.0056       5.3590     +33.79% [+29.37%, +38.36%]
+
+Fixed-syscall stress test (receiver recv() size = sender write size;
+Gbit/s):
+
+  payload baseline PATCH    throughput change (95% CI)    recv()
+          RX       RX                                     (base/patch)
+          (Gbit/s) (Gbit/s)
+  64B     0.1259   0.2651   +110.52% [+99.08%, +122.62%]  1048577/1048577
+  256B    0.3790   0.9444   +149.20% [+134.70%, +164.60%] 1048577/1048577
+  512B    0.7768   1.7009   +118.97% [+103.94%, +135.11%] 1048577/1048577
+  1K      1.4886   2.9477   +98.02% [+84.82%, +112.17%]   1048577/1048577
+  4K      2.1129   4.7331   +124.01% [+115.40%, +132.96%] 537436/525524
+  8K      2.8698   5.3683   +87.06% [+80.96%, +93.37%]    276448/264109
+  16K     3.5156   5.8463   +66.30% [+63.10%, +69.55%]    147849/132267
+  64K     4.2459   5.8576   +37.96% [+35.26%, +40.71%]    48447/33144
+
+Request-response latency (Ping-Pong RTT, 10,000 requests):
+
+  payload  baseline mean RTT (us)  PATCH mean RTT (us)  change (95% CI)
+  64B      221.968                  218.144              -1.72%
+                                                        [-4.23%, +0.85%]
+  256B     126.968                  124.541              -1.91%
+                                                        [-3.35%, -0.45%]
+  4K       130.362                  126.664              -2.84%
+                                                        [-5.12%, -0.50%]
+
+Diagnostic Guest CPU1 system-wide cycles (fixed-64K receiver, with perf):
+
+  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+  64B      62.032            52.370          -15.58% [-17.16%, -13.96%]
+  256B     15.287            13.630          -10.84% [-12.51%, -9.14%]
+  512B      7.306             6.611           -9.51% [-10.92%, -8.08%]
+  1K        3.811             3.458           -9.25% [-10.96%, -7.50%]
+  4K        1.850             1.669           -9.75% [-11.78%, -7.67%]
+  8K        1.504             1.363           -9.36% [-12.97%, -5.60%]
+  16K       1.321             1.210           -8.37% [-10.61%, -6.07%]
+  64K       1.342             1.227           -8.57% [-10.87%, -6.21%]
+
+Patch-scope measurements and attribution:
+
+The series was tested cumulatively in two ranges, using the same
+single-stream setup and paired AB/BA runs. The table below shows results
+from patches 1–3 only, before the notification changes in patches 4–5.
+
+  payload  baseline RX  PATCH RX  throughput change (95% CI)
+           (Gbit/s)      (Gbit/s)
+  64B      0.1211       0.2534    +109.26% [+106.34%, +112.23%]
+  256B     0.5671       0.9989     +76.15% [+70.63%, +81.85%]
+  512B     1.1334       1.9000     +67.64% [+64.64%, +70.69%]
+  1K       2.2650       3.5610     +57.22% [+50.91%, +63.79%]
+  4K       3.8331       7.2888     +90.15% [+83.46%, +97.09%]
+  8K       4.8244       7.6636     +58.85% [+53.71%, +64.16%]
+  16K      5.4979       8.2469     +50.00% [+45.57%, +54.57%]
+  64K      3.8875       4.7588     +22.41% [+17.77%, +27.24%]
+
+Fixed-syscall stress test (receiver recv() size = sender write size;
+no perf; Gbit/s):
+
+  payload baseline PATCH    throughput change (95% CI)    recv()
+          RX       RX                                     (base/patch)
+          (Gbit/s) (Gbit/s)
+  64B     0.1397   0.2646   +89.40% [+80.92%, +98.27%]    1048577/1048577
+  256B    0.3960   0.9516   +140.34% [+117.48%, +165.60%] 1048577/1048577
+  512B    0.7541   1.6496   +118.74% [+101.42%, +137.55%] 1048577/1048577
+  1K      1.4903   2.8793   +93.21% [+77.06%, +110.82%]   1048577/1048577
+  4K      2.9466   6.2284   +111.37% [+97.52%, +126.20%]  538192/525220
+  8K      4.0043   6.9249   +72.94% [+60.18%, +86.71%]    276313/263852
+  16K     4.8981   7.5599   +54.34% [+49.77%, +59.06%]    147576/131600
+  64K     5.9294   7.7897   +31.37% [+27.18%, +35.70%]    50207/33014
+
+Ping-Pong RTT (10,000 requests; no perf):
+
+  payload  baseline mean RTT (us)  PATCH mean RTT (us)  change (95% CI)
+  64B      119.688                  119.739              +0.04%
+                                                        [-2.61%, +2.77%]
+  256B     120.603                  124.485              +3.22%
+                                                        [-0.44%, +7.01%]
+  4K       121.921                  122.491              +0.47%
+                                                        [-3.51%, +4.61%]
+
+Guest CPU1 system-wide aggregate cycles (fixed-64K receiver, with perf;
+cycles/byte):
+
+  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+  64B      66.838             60.012           -10.21% [-13.03%, -7.30%]
+  256B     13.446             12.305            -8.49% [-11.23%, -5.66%]
+  512B      6.833              6.317            -7.54% [ -9.52%, -5.52%]
+  1K        3.558              3.434            -3.48% [ -6.02%, -0.87%]
+  4K        1.806              1.686            -6.64% [ -8.69%, -4.54%]
+  8K        1.457              1.403            -3.73% [ -5.64%, -1.78%]
+  16K       1.295              1.279            -1.24% [ -5.21%, +2.89%]
+  64K       1.214              1.198            -1.30% [ -4.06%, +1.53%]
+
+The split-patch tests show that PATCH 2 and PATCH 3 mainly contribute to
+the improvement in I/O Throughput, while PATCH 4 and PATCH 5 mainly
+contribute to the improvements in cycles and RTT latency (although PATCH
+2-3 show no obvious regression here).
+
+---
+v2:
+  - stop a batch after it consumes the last skb metadata slot, sharing the
+    admission predicate with virtio_transport_inc_rx_pkt()
+  - move replacement-callback handoff into vsock, process queued skbs one
+    at a time, and trigger the handoff from vsock_bpf_update_proto() on
+    attach and detach
+  - reduce the packet-context diff in the locked receive helper
+  - keep RX batch counters in the batch state and reset them in the finish
+    path
+  - use the vsock/virtio subject prefix and add the requested measurements
+v1: https://lore.kernel.org/virtualization/20261002074551.318789-1-physicalmtea@gmail.com/
+
+Jia Jia (5):
+  vsock/virtio: split socket lookup from locked RX processing
+  vsock/virtio: amortize RX socket locking for stream packets
+  vsock/virtio: reuse same-flow socket lookup in RX batches
+  vsock/virtio: coalesce RX write-space notifications in lock batches
+  vsock/virtio: defer RX readable notifications until batch unlock
+
+ include/linux/virtio_vsock.h            |  16 ++
+ include/net/af_vsock.h                  |   8 +
+ net/vmw_vsock/af_vsock.c                | 104 +++++++++
+ net/vmw_vsock/virtio_transport.c        |  29 ++-
+ net/vmw_vsock/virtio_transport_common.c | 389 +++++++++++++++++++++++++++-----
+ net/vmw_vsock/vsock_bpf.c               |   2 +
+ 6 files changed, 496 insertions(+), 52 deletions(-)
+
+base-commit: 8df0638138d3e0344fd1fb36cf2d1ca1cf5028f0
+-- 
+2.53.0
