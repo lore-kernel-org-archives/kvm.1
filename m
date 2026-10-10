@@ -1,180 +1,269 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E124421233
-	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 19:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DD91A683D;
+	Sat, 10 Oct 2026 22:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791661717; cv=none; b=p2qeOJmdnpsw2ltOEP2NQs13/JpEhiefhE4Uqy38ODljfrIr7Ih6sHgfcTM0aeuMJuqtjPsyI7b4fsPI1tT2ZZyPcsvSaBteWNPL75YIZoVBwzK4H8iqZZqh8flbQM3/1geCVC88E+dnBOUbyjUjCIlzfPnA3YPwUTm0Yc1DLbY=
+	t=1791669627; cv=none; b=pvoSx4+58RJt/pZ3LW/aDh8aVfcXnvuIsCVf4SMHeUqU03UIF60qOlHr2fBnANy53S5xaYPwrwCaK9vVXDrbYfWO5AZ3riFu3LwKYe/ymIgpa8AJsQtPAcajJPMkUj30jqmLPhKLkSP4AthoXZGWHZoifKuhq5mOzXwjoAht/Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791661717; c=relaxed/simple;
-	bh=Ip47nGqRYuZ9uP7eugq6vHsOVJqhA+tGe0zMcvunU2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTKb3nCh7fk9QI6nQghWE8R/Qq7+5x6LyL3J9jrbOqqX/KDGHCqRbmIJ/xdqISd+3mCxkcWnx1AD8HbYGI8MOd6sU2GcHPNCKEtMKtFq7K2h+Vz95MquWjMZyFLg+kQ1P8gSiSxgT07bZ+M6cSkxx523OEDpLncYxwSOFtoXoOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dFjhU9BB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IOsIZFY5; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1791669627; c=relaxed/simple;
+	bh=uTIIgXvNGRKidYtT9y9d/j9O/uWBWM1pGuwQpiO4cmw=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=LxMbN4FMd8LTIFjiPea+nzZKCbl9pWue4MSjHuNEHXw8edbBTn5aa++6NGrRpEtSCEfwX13SoWeZ2wNQ3RrWp5xUIhhJ+2XPHi7ITvpMZa1z5TZgNagyttUk0wpBrTgKFuexBZfsUQWi2ziBmDZ6ZWxse3V+cxAJqVpfdWWVHLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ffP+TPLt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dFjhU9BB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IOsIZFY5"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 78B061D000B7
-	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 15:48:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Sat, 10 Oct 2026 15:48:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1791661710;
-	 x=1791748110; bh=Mpk8tuq3ZKdRKx7sF2neLgFdiyY8Y71+3ELpGFZGVYQ=; b=
-	dFjhU9BBSsq+SYwRuKmXvJizGAnywZFi1/eB+IKWaddlzr93Ws03rn6hyWP6jAIX
-	L0biiWksuNjaF9MYD3/kOScHXYROWWDVTXy70r0MygraMjJ2Yy1G0DgovEwekKWb
-	2AAYxcvQhU4PFf0aX4rEcaD1vlvtgHS790qySd+VYh9DlkykLblCdKNUCIAt2BbW
-	qdKiiv8Q+dS56f00S7YOeIe5ulQX5a8DTq+5NEBXlszoVIkTOGNN0B2datVSMO58
-	Kfmp82CpqzpZw9e63VcxkZz5Yss4XnTEFYgF9bexeBLnifzlwQuLsugQM1dN9Ihc
-	TDJTIxC+g/pEwe454q4zhQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791661710; x=
-	1791748110; bh=Mpk8tuq3ZKdRKx7sF2neLgFdiyY8Y71+3ELpGFZGVYQ=; b=I
-	OsIZFY58VCST4QRZs3KHsRpq/uen9aRCRa8z2t6KyVsNTNOzImTeMnHyiJWIvxaJ
-	6eMtCdzv0nZHk56e4BGvnTTiXXRAygnlewv3+22cXLyvp7ssUluomO7vZ1PrLZJe
-	y1rrcOrxm1r8o6gajhFsE6FZMjSz8ONvLvbDdr3FaHxrcZQy8zAGye/EXoJUjU1t
-	c8fVgqo64Ep47EaSAVYIwg1mxTWbIFQ72fQTYB68MuUJKC488UvfF4GyAYpugkou
-	mJJkE95yEDsO1aitkpgWq7+kmi1UNh3JhEyxVSvUx51G5Fu39EPiLm0+Mh9MpT2/
-	Jqt/wCU+97H+0Vl7d2ccA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791661710; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:vnmtID0B8Vuy8ySbipdaW5x2Ry7V01KzIrb+Og1XMFIDacC
-	5PJho9gJl8BCX707WKBNBp2hJUPoiBS/dXScuuczISIOGp2NW1jnP9atJOugd8Hy
-	yJjuTt3y4DBDPq3HI0s2yhrI+vufbwj/F7mkGbzF/6mJdkfk6b4k0U+8Z+ZNx90F
-	KwvsbLKLav16Aah4CJwXLTET1LEd5MWIBWjgg8wkxgTA+M26Zn/VSgzCghMkdXF4
-	mUqifwOaUKGDLN9Z9xBg7PsbAbenEfclCp1cf1Q5CNXLULijN8Vd+DrOg648+w/t
-	Od+A4bwjYCSC0ul9/yEA/PXyZOvZmyRzNENJF9A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:JQECRrIdci2KqkwXkXpU46/1WsnESaEY885b570AcOU=:Ip47nGqRYuZ9uP7eugq6vHsOVJqhA+tGe0zMcvunU2E=;
-X-ME-Sender: <xms:jZbKam3LnieqAYm0CkTRcJiGlwhkuyqX6KdbH2lUw7Cm5nXmXlCDNw>
-    <xme:jZbKaqY8rjX0jTnexfrsqKJpqCSwrtSvItTnrZ4mTPkxV_wyMwbqibzgvFQm5eHcx
-    bW1_nEA4QSKFHj7C_XyYNJqf8crjo8pR-NdTzdLSk6E-TaVEMgL1YI>
-X-ME-Received: <xmr:jZbKajj7493WMz4bJ9mvht12sRfpSln34-cmd9GQXbvAqh56-Y5gYnDUGt5Rsg>
-X-ME-Proxy-Cause: dmFkZTGZTlwi8RbFEdb3MRZvUXZMBGNIKNyjY6VEepwpFmCKfXHuxsMoE+NyeflJwrIBhH
-    IOz8Q+AH2x3zxMRSqt/OhPnXZXQhEh8JP+XiW5lxSXWl9nmxYWaL8Tiw9zab7V8YTLFCxO
-    oE6Nd7TBUZklfkBpYEE3+OkCaPfS+Hi2LfcIXGZtE8Rnufb5CTEBTX2C6KD/Txqnpp2suU
-    UdDB/Cc4Vvhxcvm5tCrFeLr2WhDzqG/Yr8r3a7BK0dgvJFczwSOcCmWfnVwkk4+2/mRTyo
-    NCaPQ6SZt1qbWh6n/nWeTPORAaaabRggJeVzaLpx7q49ZRVQpchYcnvlFzZgtP0b2hywBN
-    +2YlZG7EESVGKvez3+5GF07nOO8Su7Vf2oYHqeDaAQ/cqodAS5VXgUmVdJZHH72JX5yTx4
-    0oIxpS00m9JQ4BRNhqBcwLFU1c2UkoQXvgSsmtOlvjK8o+KZRrVYhBSmWtzpXRmdqVm3Nn
-    oVazj5QFHfk0HEkBDUjnL3EuNbufHBzKGOq5HsSmY4axPMBdlhzNA1/ew0zIbvG7EFfQ7/
-    /KVwfYdY84AJZLssQ3VHm8h20j7yc8W4V/RtJkLSOQxUqS5z/jxbfwlKRRRPAozJoeaefw
-    NPoXFelxKjHYNPoiESHmZjCtMmoNsie89aLgrv1YRM9cR8Q1J1Q6zU2T8rvw
-X-ME-Proxy: <xmx:jZbKaqjuISDcq9ZlOAlMS52RWsyY63tvtTkoquijc6wW762u_4cp4A>
-    <xmx:jZbKagAr4yOdSBuKxZ8edWGIsexj0fEvxYUXipShdHyt0idTTwGkRA>
-    <xmx:jZbKai8WyB9d03bD3JijSsuI_bMTOFV7RBnGpE-8gbCfgty8IxJvvg>
-    <xmx:jZbKapDvMVY4HrsLGCiUDtTNHmOaRN6-N-ZNpR9dlc2QqMKzV5Knyw>
-    <xmx:jpbKauew5nhyOsnavNOIn9pdNfOHnqPPDvisgAizHdXOE0xuGqRdFyiB>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 10 Oct 2026 15:48:28 -0400 (EDT)
-Date: Sat, 10 Oct 2026 13:48:26 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Simon Song <xinmengs@nvidia.com>
-Cc: <jgg@nvidia.com>, <dakr@kernel.org>, <acourbot@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <kvm@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v3 0/1] vfio/pci: Give drivers control of PCI
- driver_data
-Message-ID: <20261010134826.55364f0f@shazbot.org>
-In-Reply-To: <20261005184236.1946167-1-xinmengs@nvidia.com>
-References: <20261005184236.1946167-1-xinmengs@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ffP+TPLt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AADC1F000FF;
+	Sat, 10 Oct 2026 22:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1791669625;
+	bh=N2jYfqmPt2es1xuCkTol8NOahRHgRnTcTOUiwhGzkTU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ffP+TPLt1hBG2zdntJGpA4a6eo1Kktyl63gUdmTPWoDV5PB8j6QZDH7O5pu6DND18
+	 83jrFOWryJ2h63yrCPBw+Uh9wavAQ633twrY1q8Eu4fcsINr1B1dFygd9ev9/B+B/N
+	 PiED0VbjIV4o5yPrrgsINTWJg6/2ZfXlko4ls4sM=
+Date: Sat, 10 Oct 2026 15:00:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dennis Dalessandro
+ <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert
+ <dgilbert@interlog.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller
+ <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+ <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Chris
+ Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chengming
+ Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, Miklos
+ Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org,
+ selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, Bert
+ Karwatzki <spasswolf@web.de>, Takashi Iwai <tiwai@suse.de>, Emil Tsalapatis
+ <emil@etsalapatis.com>
+Subject: Re: [PATCH v5 00/38] mm: make VMA flag semantics explicit,
+ eliminate VM_SPECIAL
+Message-Id: <20261010150020.cbd6ce3038e3b6d72e2c92c9@linux-foundation.org>
+In-Reply-To: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
+References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 5 Oct 2026 11:42:35 -0700
-Simon Song <xinmengs@nvidia.com> wrote:
+On Fri, 09 Oct 2026 19:03:54 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-> Hi all,
+> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> properties:
 > 
-> This patch lets VFIO PCI variant drivers store their private structures
-> in PCI driver_data, removing the requirement that it point directly to
-> struct vfio_pci_core_device. This also accommodates the typed driver data
-> used by the Rust PCI infrastructure, as discussed for the proposed Rust
-> NVIDIA vGPU VFIO driver [1].
+> * Is this managed by core mm, or by a driver mapping MMIO, kernel-allocated
+>   pages, or even ordinary pages itself?
+> * Can it be expanded or merged?
+> * Is this a 'weird' case like mlock where migration might race and we
+>   'have' to set invalid flags to notify?
+> * Is it another 'weird' case where we just want to stop GUP from touching
+>   it?
 > 
-> Runtime PM and AER helpers receive an explicit vfio_pci_core_device
-> pointer. VFIO_PCI_CORE_DEFINE_CALLBACKS() generates per-driver wrappers
-> that retrieve the driver's private data and pass its embedded core device
-> to these helpers. Each driver installs its own PM ops table.
+> Driver writers have often been confused about this, and who can blame them?
 > 
-> VGA initialization selects the decode callback in vfio_pci_vga_init()
-> based on vfio_vga_disabled(vdev). Both callbacks use pci_dev directly and
-> do not depend on driver_data.
+> It also interacts badly with the eternal edgecase known as hugetlb - which
+> sets VMA_DONTEXPAND_BIT but doesn't also want to be treated like a
+> 'special' flag.
 > 
-> Changes since v2 [2]:
-> - Drop the unused pci_channel_state_t argument from the core AER helper
->   and its callers, preserving the PCI callback signature (Danilo).
-> - Wrap each driver's PM ops pointer with pm_ptr() so unused tables can
->   be removed when CONFIG_PM=n (Sashiko).
+> Another issue is that we cannot make sensible assumptions about flag
+> use. It's not possible to assume VMA_IO_BIT means iommu because drivers
+> abuse it and mlock abuses it.
 > 
-> Changes since v1:
-> - Extend VFIO_PCI_CORE_DEFINE_CALLBACKS() to accept the driver's private
->   structure type and the member containing vfio_pci_core_device.
-> - Store each variant driver's private structure in PCI driver_data.
-> - Select the VGA decode callback in the core and retain the one-argument
->   vfio_pci_core_register_device() interface.
+> Special is also an overloaded term in mm. VDSO and VVAR mappings are also
+> called 'special' but they're special in a... special way.
 > 
-> [1] https://lore.kernel.org/all/DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org/
-> [2] https://lore.kernel.org/r/20260930143641.4160785-1-xinmengs@nvidia.com/
+> Sometimes things are called special that are a subset of
+> VMA_SPECIAL_FLAGS (VMA_PFNMAP_BIT and VMA_MIXEDMAP_BIT for instance when it
+> comes to zapping or vm_normal_folio()).
 > 
-> Thanks,
-> Simon
+> There's a specific kind of special for THP too, which considers
+> PFN map, mixed map 'special' but DAX not.
 > 
-> Simon Song (1):
->   vfio/pci: Remove the core dependency on driver data
+> It's all rather a mess.
 > 
->  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 27 ++++----
->  drivers/vfio/pci/ism/main.c                   | 19 +++---
->  drivers/vfio/pci/mlx5/main.c                  | 13 ++--
->  drivers/vfio/pci/nvgrace-gpu/main.c           | 19 +++---
->  drivers/vfio/pci/pds/pci_drv.c                |  8 ++-
->  drivers/vfio/pci/pds/vfio_dev.c               |  5 +-
->  drivers/vfio/pci/qat/main.c                   | 12 ++--
->  drivers/vfio/pci/vfio_pci.c                   | 33 +++++++++-
->  drivers/vfio/pci/vfio_pci_core.c              | 61 +++++++------------
->  drivers/vfio/pci/virtio/main.c                |  8 ++-
->  drivers/vfio/pci/xe/main.c                    |  8 ++-
->  include/linux/vfio_pci_core.h                 | 41 ++++++++++++-
->  12 files changed, 159 insertions(+), 95 deletions(-)
-> 
+> This series brings some order to things by both limiting what drivers can
+> do with VMA flags and switching to using predicates that describe
+> behaviour, not arbitrary flags.
 
-I pulled in Dave's topic/pci-vgaarb-rework-2026-10-01, which gives us
-93d41424caf7.  The vfio_pci_core_device is now registered with the vga
-client so we no longer need to derive anything from the pci_dev.  This
-makes all the VGA changes here unnecessary.
+Thanks, I've updated mm-unstable to this version.
 
-Applied to vfio next branch for v7.4 with the VGA chunks (shown in
-the discussion thread) and commit log paragraph describing them dropped.
-Thanks,
+For some reason, new versions of this series aren't applying when I
+drop the new series in place of the old.  I made the same old bunch of
+reject-fixups, so the below interdiff will show if I messed any of them up.
 
-Alex
+> v5:
+> * Applied tags (thanks everybody!)
+> * Updated 3/38 to fix a bug in __mmap_new_file_vma() by zapping + closing
+>   the VMA before setting vma->vm_file NULL to avoid an i_mmap_writable
+>   imbalance. A repro was tested before/after and confirmed fixed.
+> * Updated 7/38 to make __map_kernel_pages_prepare() use
+>   mmap_assert_write_locked() rather than the weird
+>   assert-on-mmap_read_trylock() pattern, as per Suren.
+> * Also update vm_insert_page(), vm_insert_pages() to fix the same pattern
+>   and to use the new VMA API, and converted a BUG_ON to a
+>   VM_WARN_ON_ONCE().
+
+Here's how v5 altered mm.git:
+
+ mm/memory.c                       |   20 +++++++++++---------
+ mm/vma.c                          |   16 ++++++++--------
+ tools/testing/vma/include/stubs.h |    4 ++++
+ 3 files changed, 23 insertions(+), 17 deletions(-)
+
+--- a/mm/memory.c~b
++++ a/mm/memory.c
+@@ -2611,10 +2611,11 @@ int vm_insert_pages(struct vm_area_struc
+ 
+ 	if (!range_in_vma(vma, addr, end))
+ 		return -EFAULT;
+-	if (!(vma->vm_flags & VM_MIXEDMAP)) {
+-		VM_WARN_ON_ONCE(mmap_read_trylock(vma->vm_mm));
+-		VM_WARN_ON_ONCE(vma->vm_flags & VM_PFNMAP);
+-		vm_flags_set(vma, VM_MIXEDMAP);
++	if (!vma_test(vma, VMA_MIXEDMAP_BIT)) {
++		mmap_assert_write_locked(vma->vm_mm);
++		VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT));
++		vma_start_write(vma);
++		vma_set_flags(vma, VMA_MIXEDMAP_BIT);
+ 	}
+ 	/* Defer page refcount checking till we're about to map that page. */
+ 	return insert_pages(vma, addr, pages, num, vma->vm_page_prot);
+@@ -2626,7 +2627,7 @@ static void __map_kernel_pages_prepare(s
+ 	if (vma_desc_test(desc, VMA_MIXEDMAP_BIT))
+ 		return;
+ 
+-	VM_WARN_ON_ONCE(mmap_read_trylock(desc->mm));
++	mmap_assert_write_locked(desc->mm);
+ 	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_PFNMAP_BIT));
+ 	vma_desc_set_flags(desc, VMA_MIXEDMAP_BIT);
+ }
+@@ -2785,10 +2786,11 @@ int vm_insert_page(struct vm_area_struct
+ {
+ 	if (addr < vma->vm_start || addr >= vma->vm_end)
+ 		return -EFAULT;
+-	if (!(vma->vm_flags & VM_MIXEDMAP)) {
+-		BUG_ON(mmap_read_trylock(vma->vm_mm));
+-		BUG_ON(vma->vm_flags & VM_PFNMAP);
+-		vm_flags_set(vma, VM_MIXEDMAP);
++	if (!vma_test(vma, VMA_MIXEDMAP_BIT)) {
++		mmap_assert_write_locked(vma->vm_mm);
++		VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT));
++		vma_start_write(vma);
++		vma_set_flags(vma, VMA_MIXEDMAP_BIT);
+ 	}
+ 	return insert_page(vma, addr, page, vma->vm_page_prot, false);
+ }
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -2631,21 +2631,21 @@ static int __mmap_new_file_vma(struct mm
+ 	map->vm_file = vma->vm_file;
+ 
+ 	if (error) {
+-		struct file *file = vma->vm_file;
+ 		UNMAP_STATE(unmap, vmi, vma, vma->vm_start, vma->vm_end,
+ 			    map->prev, map->next);
+ 
++		if (vma->vm_ops->close) {
++			zap_vma(vma);
++			/* Safe, because VMA zapped. */
++			vma_close(vma);
++		}
++		if (map_same_file(map))
++			fput(map->vm_file);
++
+ 		vma->vm_file = NULL;
+ 		vma_iter_set(vmi, vma->vm_end);
+ 		/* Undo any partial mapping done by a device driver. */
+ 		unmap_region(&unmap);
+-		vma->vm_file = file;
+-		/* Only safe once unmapped. */
+-		vma_close(vma);
+-
+-		if (map_same_file(map))
+-			fput(map->vm_file);
+-		vma->vm_file = NULL;
+ 		return error;
+ 	}
+ 
+--- a/tools/testing/vma/include/stubs.h~b
++++ a/tools/testing/vma/include/stubs.h
+@@ -329,6 +329,10 @@ static inline void vma_close(struct vm_a
+ {
+ }
+ 
++static inline void zap_vma(struct vm_area_struct *vma)
++{
++}
++
+ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+ {
+ 	return 0;
+_
+
