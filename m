@@ -1,271 +1,470 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CF53876DE;
-	Sat, 10 Oct 2026 07:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C7B3515EB
+	for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 07:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791618172; cv=fail; b=p/KTMreZ/3AmfF6Zct2671xNlJuSJuVDtZA2BEs+RXnN0FV9uWyVEGvXQ+H7Zp5B7MHejzA0hz77tZ+VDWIiJJwgob2lSdtKLW50YH1RGN7uOgPoMJawTFgojOz6tLpiRlWcEhrjwmEFJgM7MRniTTPVlaUK1KJmi//GBddY3Dk=
+	t=1791618619; cv=pass; b=MBt3xrxT7CCP82ipVEbKJ7oBhMNsH7zeHGwrh1J2oeFGIqxBxMBYkzgeg8febIOw/NhHsBoAftdgAFnFaUHatcb+MsswTd+7HFTZdnmsN2Z5hqYl51Cq7kgW3TAvMkqBdFVyGwY+iT6ZYit6rc+idFtA7rIuAHV7nVZdb0DmBZ4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791618172; c=relaxed/simple;
-	bh=zrGplkbfIatmQeYXNf7Q54q9lyxU+fM9nndfyMhZVvY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=V8oWQtBJuCH/zmB8Dk4MTKPNW+bJ2CbmeN2HvQYeSS6/rajE/GhDXL+wXku5f8HsZ5dfPPWpTu80LUrvMT7SfBFZaXilRzEcXN1sP4/x8gLIeLopSQ+RYPojWU5ZM38Eb7H8P2qGBvF02dN7sJqZ/3rVBEklVB1pX5hQ5JGZV3U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vq5RaxxQ; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791618619; c=relaxed/simple;
+	bh=IaTY/7ZkiDeWzJcZ3a6UgNrt/MiqzywgDYcZggjuMGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c4HtGvEpTZyralrRYdXMehHkJnaRMJw/K9T97mHQSQASJLvlepEI9U/EN9iWtztq+LKRBaR0/w7jRK4qNQ4LUcNa+N7QFmlgDYt2FWIGSxOfUgpjy+gVm1MS/FwcDlmmIKkwswHf2PQP6t324R189uegSQ+4q7Zm4GzuyzolE+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=Sx4x1bNK; arc=pass smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vq5RaxxQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791618168; x=1823154168;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=zrGplkbfIatmQeYXNf7Q54q9lyxU+fM9nndfyMhZVvY=;
-  b=Vq5RaxxQXz6VqKjBcC7xZn0YQgQP3ZuIkw4hOoG1naQOLl74UdardxGH
-   7hTuocwEPh7osRTbJSRW9BQiQLVYvz2eFlZ9vmYaV7a3eItM1eJvK8CV5
-   grNe1G6MDjYUtMARK45v6gzrpbyQNzgSfgDTN/pOZljKIc4G5NK8XX5MY
-   aOLGx/Chkfd0L2EqIApoUdAToWUaDTzoDBOblZkH9GfQZIrcZ0JkXHC7Z
-   DMXgpmXFd07mIWjSYZMVUQ0ZyqC7oFXDJKUrIqPO+CJSIQRNGPt4Ejmpd
-   DQCjBFKIPXpxCQgpL86ShcjFFJSdqWe1Gv6EdiUq/nnRi8dTt5uwTmIYs
-   Q==;
-X-CSE-ConnectionGUID: D5kN+tT2RXO6Q0gkIRZ/vQ==
-X-CSE-MsgGUID: /jkg7iZGSq26X9VwY2ARLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="519815"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="519815"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 00:42:47 -0700
-X-CSE-ConnectionGUID: 8NZ8eWBcTPeVokBCRYbVfQ==
-X-CSE-MsgGUID: 7s5IMtCzSRuIYJgDyda04w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="945080"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 00:42:47 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sat, 10 Oct 2026 00:42:46 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Sat, 10 Oct 2026 00:42:46 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.40)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sat, 10 Oct 2026 00:42:46 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lxpdCxPczAtwpE+fRCU51U77GTt4sGa3C66z0L09don9VByQek0xyVV5oSPc4sWOuq5jJUP9SgsKqGY00tn+XW0YZl/Al30+JoOsurv4hGgXSe3WlmWldDBXIjYJVQNDL9ZlqcCsi8Cy/513ck/5P3TL5gSaoeuxpkv+exUYJjU54BOIeiOmGPhzF/3nngWVcxHHO0mB4Kc2VEIqBRqKVA7a0+KlYMK6MlDJfc6ttDbeoMYob7eHwT1YXmuS05N1nU9zOTGIWIHtynfOgJ36WOHbZVHL+TCP/uCoCjaC8txryk+fNJd/vUWURB0CFiZOoEMbkkif6yuo6pBSFZ7AKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ukMdyBlzC3MKJzb/49kF2Zhqip1GeurxQg5MULSGFc0=;
- b=Hl/N52ar/zA5vyBztnqMdTU8aPSGKvdy/EsGPDEvgkC6JvFwo9cXTSONzaqF/Rscd9SpSzbk/Jy8+fBlaFJ5scMcqMhHnvnOAWBrlorSIs2brY//xdLQWeN7NOptobMUC7Fc8EZ9bVIa94o0JY4ZY1kE3hcAdbzp9dB/3ZzyGTJ4nQrYaWmApz1+fV0I56+Vv2kp7BpHNjKdUnYNFqZ3bm+6lanDc8FhoZSOYyciYoQiiVLz9rE87oIszlENLcCiUzc9FdVr+kkcaKCdr8cyitXgKc4HYgwMgtXAFN3RcX8q63R6HjwO9L8Qw/aE7EGFYAs2uh34qzU85tLFXa/iJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL0PR11MB3236.namprd11.prod.outlook.com (2603:10b6:208:60::18)
- by SJ1PR11MB6228.namprd11.prod.outlook.com (2603:10b6:a03:459::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Sat, 10 Oct
- 2026 07:42:37 +0000
-Received: from BL0PR11MB3236.namprd11.prod.outlook.com
- ([fe80::b026:a3ba:5162:beb2]) by BL0PR11MB3236.namprd11.prod.outlook.com
- ([fe80::b026:a3ba:5162:beb2%5]) with mapi id 15.21.0496.018; Sat, 10 Oct 2026
- 07:42:36 +0000
-Date: Sat, 10 Oct 2026 15:41:41 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "Hansen, Dave"
-	<dave.hansen@intel.com>, "seanjc@google.com" <seanjc@google.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Du, Fan" <fan.du@intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tabba@google.com"
-	<tabba@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "david@kernel.org"
-	<david@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "michael.roth@amd.com"
-	<michael.roth@amd.com>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Peng, Chao P" <chao.p.peng@intel.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "nik.borisov@suse.com"
-	<nik.borisov@suse.com>, "francescolavra.fl@gmail.com"
-	<francescolavra.fl@gmail.com>, "sagis@google.com" <sagis@google.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "Chen, Farrah"
-	<farrah.chen@intel.com>, "Gao, Chao" <chao.gao@intel.com>, "Miao, Jun"
-	<jun.miao@intel.com>, "jgross@suse.com" <jgross@suse.com>,
-	"pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v4 05/17] KVM: x86/tdp_mmu: Alloc external_spt page for
- mirror page table splitting
-Message-ID: <asnsNc2carZF/vum@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260928090729.15468-1-yan.y.zhao@intel.com>
- <20260928090946.15551-1-yan.y.zhao@intel.com>
- <0e0b2da671574f0f3e776312557794c2e7553e83.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <0e0b2da671574f0f3e776312557794c2e7553e83.camel@intel.com>
-X-ClientProxiedBy: TPYP295CA0016.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::8)
- To SN6PR11MB3245.namprd11.prod.outlook.com (2603:10b6:805:be::32)
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="Sx4x1bNK"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3a98fcbfb1dso3798261fa.1
+        for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 00:50:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791618616; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gm0ZINgR48CK+JDpUh7RdgyWSYgNHxZ6xa0Q/M+kKCdH5gRo75StR90h11VioZIrHe
+         05Y6Fv6Lqv4LLT4Wrg/rIqi8Pa4BmXFEcn3CceEePj6FAbG+1img6G/SN/lyQnzCn95i
+         P9Q1niX3IemaNECR+OgY5R7iSQSKGk6FPaUHxOubNrTE3LyXrVVwG9QswXS7LUDUB14x
+         nDDqwmnos/QBjAXKkKf2tVtFKmMxizkG3eqVA6qAt1l9zktdZw+3n0gr/v341NouCjAA
+         zeQ3Gx5EmzJvkbcqRDmhXkxsw0WnecXmsbYwCutliaBf1Q+mnQRmOFwdO25aSzPdvrMv
+         LB0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=y197klwh/9i8cfiINT6dPdPIVDdwcFwt/BkojcUZ7so=;
+        fh=1XL3slmAo3bVdhJWUtihHRNGmeE4+exEPy/NbbSmco0=;
+        b=kydQFKfXe1IPSOcVC4MHH12B6gZlydqSURAqOjcTL4dsJA4lOreTfVrYZ4slh6I+52
+         tCU1HNSrZG03HHsTd1W+THoOapw/xF9Ps5JgGEh1RblFprzM40JZ7H1mRr9Y3Zg15sXz
+         UENJdM1tE2+n4HVHWyArTeHrlmnLs9UUwImWRXPQLbskPf4yEPawunh2a3HYPvFA1o95
+         ytntHC/cYI8cQHmMhMKPPh6etJ+Is1y9wukcmRJHkuMtLwewG0SDZFHMlPlYB7S2tO5M
+         3sbWp/aoSWTGFIRL33YclpO6b6EmmtPUuUAChkoPiILH9DBlz7036oJaPp4UveykjJmM
+         OPwA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault.org; s=google; t=1791618616; x=1792223416; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=y197klwh/9i8cfiINT6dPdPIVDdwcFwt/BkojcUZ7so=;
+        b=Sx4x1bNK0CS3B8ue64cgJ2afEPs9WLCnqHz+6TnisLG4ZwxNhqT0RUTj4vL/RbVPGf
+         WUdPz9Oe9Xk/WdWuETCftGECM0u4K8o7zkIad6Xf3Vq7kwrZ21zNWPJY69wG94m48pnr
+         dkoQ7S2W/KlLsyi6bKug47HpWUo/f8Z6j1muMrVIXyfjUUBciquUbCeLubvmLezZsRSi
+         YykbKtD5jaIFS5YjPcMF4dCkD6oykYjHFsDNHn80VutZVEG7dbtOrXW9l1c6XSRBSbtT
+         irBwSeXESZisFmEE8vOsaae451hX+o5JY1d8FfAV6C7xeLlnyZwbDoZE8xyHG+NZqbbA
+         Nenw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791618616; x=1792223416;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y197klwh/9i8cfiINT6dPdPIVDdwcFwt/BkojcUZ7so=;
+        b=CPawaX7P96+bVInDEbqXt6/ydIMmzaa0kYUCkX1PlGanfKM5fetFoewdZb+1l9J0Nu
+         tF+6ddnVwsvHjLMUv/AAOTAreKJaAmAlzwv19R0i5O3i4R/Dfc9rp9KlRzMtEPzEiiKG
+         6pzsLPvyczjRf6aPUYILNv8TXIPJ8HTw8+5lZgGvbujEHp2InrKbLtgIMPo8SbW87Dfu
+         pMF6wUgZFO80gWkAJc99Z7BEgt8q0C2L6mowd2QHgzhXcmbzae2KyeE5xePtoF7tM48+
+         gwWY64FhjSXeiiFfs4GkYvhGM1wh9qVVHvQr+HXFzNSm8jSp6HnGs8KfXy9neWrLnIPZ
+         EFew==
+X-Forwarded-Encrypted: i=1; AKwUvBwrziUUYKZb0ejqkEymcmhd2BIxEDxxJ04qMbr/hLTVsL3QV9CUF8eS6GNXME6zUcKWvzE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBfaiBmm+L0t4E0G+HUM3GQDU4XGldjgN4CpbCfoZrsJ9/K+2V
+	kFNud1SRiV8PbaVtkmgfvwIt5U+ir2YmBLxjK9RgQ/Qj4wY9j/gLBLC9CIAR9zYybNEvqlVRA2f
+	pjP2bA3Lyr9DHg6LcMXP6dM9mltlW1hLfQngBChXz0DvPQoLnBTpezFFkoc0V
+X-Gm-Gg: AYBFou1rbCcI+gQhV+dWfg/yrC0sKmLAe+RoSGqVuNbJ52l+/A6+v8xKCgjGzmi7vtx
+	lojWRPzI1hJh40IldPRNx23un2r0KT9pVCFQqU997Rs3THHKZ+QruHBxsjEIMNsGwIXxlaGNoW6
+	pUOtkTbKmgs6RTXuoqgqBnSIhk5wEzwd/fjy9egg/mkg/3l+UQ4tYTlVJVT4lBcYc4VW9EeSDIJ
+	9Ba/61OQ/XW+ybBUc7p0elKeQs1QJYAlbu7jVFwP3V28BpC8wYD+AIuriipOJpzBL0TAAR0+ABD
+	o/F1UPlCnX6j9n6ssHmKlxRylD7NspKa+bLE0XkRCdxjo7SouhMsYtEth8YNMjhXzm02G2K+rqQ
+	UCc3mcr7tg3ZJeBvwYoC6vkA1VeP69n9AENFmtt4CeYR28+L7WYCrCawAExfAhjBQ2BW1z+rSgQ
+	==
+X-Received: by 2002:a05:651c:41c7:b0:3a9:a064:4f75 with SMTP id
+ 38308e7fff4ca-3a9c539ad19mr9134471fa.21.1791618615276; Sat, 10 Oct 2026
+ 00:50:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR11MB3236:EE_|SJ1PR11MB6228:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8611aa0-8028-4faf-0425-08df26a20a80
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|11063799006|261009223027099003|56012099006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: vv9K1YXDXqWKQTLu48Q4cbX2FGnq40+c/Sm8yMSUkXhgavOsaWNkOtkCjPKrhr1jlZcRrxjBHPdOn08dLPSoYI/c97biQqc3O5gupLcVtvlEJ0sZhC/5M1HCBCFJ9UxPjSUB20tjKmPx9nYx886rMyCKBf2FmUm4Onj4rUIAbm3H0ovOYSWt+l5dNvg9tCVblnYcUuoUF2nTlPuPwJ79mdG325W3yw7quirGpF8gw4UPk45j5MM/nDnEwoaIN2WhGP7pnbiLdQnbpJSMdpEPqK3bnm7sKmCBhrdd6hDAgNUaSzKzJiTprS6VwVM+8eMhOPGf6uGAdEARNtVFFUqqV7tBNiYtMj0ntUmQZROP9kUzg/shLAW/KWv/ih8r1ilyqEJm/p5jbKkBC7P2MkQBH9KTLQgQF1Lsfst+/MB3KqNTRJuffsqJ9IbZunk3claP3qwY/FumHXVRUk2bxVTFGGUs0CQ1bQVUWZjeGAvmKHn+RuGLkIr/K8r4MURNcnBiU4XLgds1Li+mnL9I6FOz/+hpC6F44z5JG4sxv1/FijVe/y/cL5GORtBj3BV3ITMLVf7ieLNS0ASGyKXJNKxdmtXA17URpkHXwN9reofq9igScMP4PjS9e8fR5yJNwIhnKkVitf39gay4qzD4GfbBanzDtvWqUIxwhDR6Wxd5JFU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3236.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(11063799006)(261009223027099003)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XwG9on0DxTFbXI+7t0eIDqWTfIJ4AlLXUqdnLaE/22DKVuvLpgBv5o5vtLNe?=
- =?us-ascii?Q?oieuAm+kP1SM0q7kJ0PR5VjqcN9lqRfEmDKTmATGkh8lJbaDp6CC+KvvvKjR?=
- =?us-ascii?Q?utcTD2pzUoJ41NFPmB5EvCCC1SVXg0wN4/TTH5jL9B5gk0xYThGJcaPmRgEr?=
- =?us-ascii?Q?V/UWNXoo1jwJ7wXQkEPyNVjsSyISwPpSfbPHO/ob33i/87h7k/a80FnGp4++?=
- =?us-ascii?Q?YhugrUEuBN5uTCfst5DR9KtMcnyatMahg3tBtOz6D2pw4NAUUGzN9LkB1oLs?=
- =?us-ascii?Q?CP80u1+fWJu3mu1SoqHtoZFRrFN1QC3Jz11csuxoWUn6zBnZ39lavhwjTgFm?=
- =?us-ascii?Q?QRjtwyVyQLiidaxoCOlj/1pM95iRbxpvj7n9TvkTlKxgcZPP70vjs69nIOCb?=
- =?us-ascii?Q?gujt/+4cJqOP/ACQqcHoZF2RImQEH/L1gI174V+XpdQswOOAqU6jcFeD+6y/?=
- =?us-ascii?Q?THWL9bw0+562aeIZh9CRfTO/zLRr+PqPocwwOG7P2qIpEBT5GEplcpqy3mVq?=
- =?us-ascii?Q?iccKYjSFsR8dRyc7DEuA+Ze0XbmvP0y8FJrbOoxxD6n2U9jvf51P+JgagbVX?=
- =?us-ascii?Q?yd3dsGX4ijbV3Iv0gkY66Z9f1kTZ7b1YOmoazTkvaxTd4s5bfd9e7THZ90vt?=
- =?us-ascii?Q?+ky0/YYU+2vvbQvLhxjE2xdkhv9JG+iNb6a/PoaDTb4PSfnj+RRBw8R6tb8e?=
- =?us-ascii?Q?SYyqAFhl4rC7iLt8knS5vGibJUtk0TmvX9WppVC3UWDRr10YhOO0WC8qg1f6?=
- =?us-ascii?Q?7KpFE8gZHlmpjrLYQ0F2WhYB0edrP/Lad0PR9lPnuqT/sGYXEYetJnHuxz5s?=
- =?us-ascii?Q?eViTkiAGvOYjtHnO68i6MsvTxvBiVlQzWqLU9rbQH22BdhueJPnsTyYB3Ue6?=
- =?us-ascii?Q?jS/eJENv9QxVrcBXuikBQ9TwOKsfOSp5AQUJM57wqEz9ooX1va4RnRccwL9p?=
- =?us-ascii?Q?5jr65SM+mOEoMNmdWKzlT8nAg8rtsI6me6dyKK5Qk+jus6fMOBHEYJgFRDOt?=
- =?us-ascii?Q?Dk0CpxGT6QupSkhmif7f0Ur5IOmm/5haF1AEE2vxdiY5H2tI6h2j6GbM6kGZ?=
- =?us-ascii?Q?Q73FCqkBszmAc9lq/savhsLH42X3SMhrDMUvJ5bD/lGhvwOLIQxStJaJvjNV?=
- =?us-ascii?Q?60QDkMFWO24cb14csVE44oivOdly9fa4LZNm3g9NfRbYs+vT7zSWea+bYAOy?=
- =?us-ascii?Q?rzJKaJxcbzI4+p5CnnHOrKLe12x/FYk9+l8VaooAR4NKTGC+pCTA3pPfIhaE?=
- =?us-ascii?Q?xwwoMXj74jfFY3G4xMqudAxhJFDv/jzZWVm7HW39jhh508xU22R4kR9iBHZH?=
- =?us-ascii?Q?BUFAXZGZgM6RAOZtIeNNSKTNwRH/92PniihNZCv4HAnCcikrMffr7TRrKtdE?=
- =?us-ascii?Q?GuYneabS7DThrO1MQRStlYyaqXVo+OryWk3kuaAcr8PV5G380AqOgSe/98XQ?=
- =?us-ascii?Q?G7XYfYOsas/NF6gU5c8ODCkaJbTmVh9ZbFLRFKtUQaAprBetAICoE0fhxNto?=
- =?us-ascii?Q?9gn6uuReYdhnQsPXJLpesFLJzpqiCEL+SxfHKhr9xL0JcXTKIKdeBU+o4/LQ?=
- =?us-ascii?Q?APYuTMRsKu0rJlLwnZYdiX1enDRnsC2EFGOudlblfPkSBFx5kPu4QDMd8UnY?=
- =?us-ascii?Q?n+YGfwx3X9Q3I54LGrXHlYDEKbKDfXICIUfldV0TuPbxyl052n9EMBV7lNum?=
- =?us-ascii?Q?GckF01BKMs4LzJRNNtaRNLX2hGh5zcjfNIAHnPDFh2fBxmCGy5wmWHzl+E+I?=
- =?us-ascii?Q?8LWFvw9ZAg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: SgUXVOg/q3bdtgaZukGYmGi7CiocCc8rHMpIMHVXw0DdEsDmESTctWB1bhHtuk2cvxJzX5+05THoZ09uwbk4xagP9muur/bQKXE24v5wUfa/CTdegn8HwdgizbmiX58fBKlE3U4/7nbvPZqhjyZkIUv/2PBFXTnPLnqY8v1f9sCyIcG4P0XUR1ztdYhg3NUlXwgAg5W/gwADg+7GyJZ5Zbb7KE5BQ/AHjlO/Xry9DqvTk/ECH6IyvhoSYj65RH+P+xVQzbqqX/18tBcElFoLX7DsuNGdpM5HlkDkshLGa6UNUUWR4NauvyJM1SGCbAmc0pVXWDIrxxYTn8mX8VK4sQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8611aa0-8028-4faf-0425-08df26a20a80
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3245.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2026 07:42:36.0436
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aFP6L9xTrKmhNgz85nu6bFQBiOdLTkySa8fSMjF/DAzkFspVDVspEm3lhc05i247dFuI2sSiz8S934iU8pow9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6228
-X-OriginatorOrg: intel.com
+References: <20260817102447.40259-1-guoyaxing@bosc.ac.cn> <CAAhSdy2qwdHE7SB2gRK3_PQ6m_bMSfWpvcuSG-31W2yd3-UTKg@mail.gmail.com>
+ <285419e5-c4fc-4c75-a765-436165bdc8b9@bosc.ac.cn>
+In-Reply-To: <285419e5-c4fc-4c75-a765-436165bdc8b9@bosc.ac.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Sat, 10 Oct 2026 09:50:00 +0200
+X-Gm-Features: AclHuK_TvNc4iLbwjBY-wIHttRn_rbarvz1VtZFwLaCv-bTimyeeImVtpOwoSgw
+Message-ID: <CAAhSdy1Q7a+54qn0xNBQBd1eV2ve+Nzqz9uRsWrGSmTn35z8=A@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Flush VS-stage TLB before reusing a host CPU
+To: guoyaxing <guoyaxing@bosc.ac.cn>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	majiuyue@bosc.ac.cn, anzoso@outlook.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 07, 2026 at 08:33:27AM +0800, Edgecombe, Rick P wrote:
-> On Mon, 2026-09-28 at 17:09 +0800, Yan Zhao wrote:
-> > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > 
-> > Enhance tdp_mmu_alloc_sp_for_split() to allocate a page table page for the
-> > external page table in preparation for splitting the mirror page table.
-> > 
-> > When the mirror page table is split in tdp_mmu_split_huge_page(), the
-> > corresponding external page table also needs to be split. Therefore,
-> > allocate external_spt in tdp_mmu_alloc_sp_for_split() to prepare for the
-> > splitting.
-> > 
-> > The external_spt will be gifted to the TDX module and mapped as a page
-> > table page in the S-EPT during splitting. Since the TDX module will
-> > initialize the page content in the DEMOTE SEAMCALL, there is no need to
-> > zero external_spt.
-> > 
-> > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> > [sean: use __get_free_page(), let is_mirror_root be const and called once]
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
-> > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> > ---
-> > v4:
-> > - "bool mirror" --> "bool is_mirror_sp". (Sean)
-> > - Use __get_free_page() instead of get_zeroed_page(). (Sean)
-> > - let is_mirror_root be const and called once. (Sean)
-> > 
-> > v3:
-> > - Removed unnecessary declaration of tdp_mmu_alloc_sp_for_split(). (Kai)
-> > - Fixed a typo in the patch log. (Kai)
-> > 
-> > RFC v2:
-> > - NO change.
-> > 
-> > RFC v1:
-> > - Rebased and simplified the code.
-> > ---
-> >  arch/x86/kvm/mmu/tdp_mmu.c | 14 ++++++++++++--
-> >  1 file changed, 12 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> > index 001449142d32..f3311317a63a 100644
-> > --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> > +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> > @@ -1466,7 +1466,7 @@ bool kvm_tdp_mmu_wrprot_slot(struct kvm *kvm,
-> >  	return spte_set;
-> >  }
-> >  
-> > -static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(void)
-> > +static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(bool is_mirror_sp)
-> >  {
-> >  	struct kvm_mmu_page *sp;
-> >  
-> > @@ -1480,6 +1480,15 @@ static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(void)
-> >  		return NULL;
-> >  	}
-> >  
-> > +	if (is_mirror_sp) {
-> > +		sp->external_spt = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
-> > +		if (!sp->external_spt) {
-> > +			free_page((unsigned long)sp->spt);
-> > +			kmem_cache_free(mmu_page_header_cache, sp);
-> > +			return NULL;
-> > +		}
-> > +	}
-> > +
-> >  	return sp;
-> >  }
-> >  
-> > @@ -1527,6 +1536,7 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
-> >  					 gfn_t start, gfn_t end,
-> >  					 int target_level, bool shared)
-> >  {
-> > +	const bool is_mirror_root = is_mirror_sp(root);
-> 
-> Nit:
-> 
-> is_mirror_root and is_mirror_sp(root) almost even read the same. And the local
-> var is only every used once even at the end of this series. I wonder about just
-> having tdp_mmu_alloc_sp_for_split(is_mirror_sp(root)), or even just passing the
-LGTM since is_mirror_sp() is a "static inline" function.
+On Sat, Oct 10, 2026 at 4:12=E2=80=AFAM guoyaxing <guoyaxing@bosc.ac.cn> wr=
+ote:
+>
+>
+>
+> =E5=9C=A8 2026/10/10 02:51, Anup Patel =E5=86=99=E9=81=93:
+> > On Mon, Aug 17, 2026 at 12:25=E2=80=AFPM Yaxing Guo <guoyaxing@bosc.ac.=
+cn> wrote:
+> >>
+> >> Guest Linux uses mm_cpumask to decide whether an sfence.vma needs to b=
+e
+> >> local or remote. Under KVM that mask tracks guest CPUs, not the host C=
+PUs
+> >> that previously backed a vCPU.
+> >>
+> >> This can miss stale VS-stage TLB entries when a vCPU migrates across h=
+ost
+> >> CPUs. For example:
+> >>
+> >>    - vcpu0 runs on host CPU1 and fills a VS-stage TLB entry.
+> >>    - vcpu0 migrates to host CPU0.
+> >>    - the guest updates the mapping on vcpu0 and issues a local sfence.=
+vma.
+> >>    - later, the guest task runs on vcpu1 while vcpu1 is backed by host=
+ CPU1.
+> >
+> > When the vcpu0 is brought back to host CPU1, the kvm_riscv_local_tlb_sa=
+nitize()
+> > will ensure TLB entries associated with Guest/VM are nuked.
+> >
+> > By default, kvm_riscv_local_hfence_gvma_vmid_all() will only do HFENCE.=
+GVMA
+> > for the associated VMID because most RISC-V H-extension implemenation w=
+ill
+> > tag VS-stage TLB entries with VMID and HFENCE.GVMA must remove both
+> > G-stage and VS-stage TLB entries for given VMID.
+> >
+> > If your HW does not tag VS-stage TLB enteries with VMID then it buggy
+> > / inefficient
+> > so you have to set kvm_riscv_vsstage_tlb_no_gpa in
+> > kvm_riscv_setup_vendor_features()
+> > as work-around.
+> >
+> > NACK to this patch from myside.
+> >
+> > Regards,
+> > Anup
+> >
+> Hi Anup,
+>    Thanks for the review and clarification.
+>
+>    Regarding =E2=80=9CWhen the vcpu0 is brought back to host CPU1=E2=80=
+=9D: the failure
+> we hit is not caused by vcpu0 being brought back onto host CPU1. In our
+> case, after vcpu0 has already migrated away, neither vCPU migrates
+> again. The guest process is later scheduled inside the multi-vCPU guest
+> onto vcpu1, which is still running on host CPU1. So the stale TLB is
+> re-hit without any further KVM vCPU migration, and
+> kvm_riscv_local_tlb_sanitize() is not involved on that path.
+>
+>    My commit message was a bit too terse on this point. The concrete
+> sequence we observed was described earlier in the RFC discussion:
+>
+>
+> https://lore.kernel.org/kvm/0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.ac.=
+cn/
+>
+>    In short, the issue is: because vcpu0 migrated away, cpu1 still has
+> stale TLB entries while cpu0 has the new mapping. After that, neither
+> vcpu migrated again, but the process was scheduled from vcpu0 to vcpu1
+> (which is on cpu1), causing it to hit the stale TLB. Consider the
+> following scenario:
+>
+>    1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcpu0 is
+> on cpu1, and a process on it reads a page, which gets cached in the TLB
+> (let's call this the "stale TLB entry").
+>
+>    2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now on
+> cpu0) does a CoW (copy-on-write) and establishes a new mapping.
+>
+>    3. Neither vcpu0 nor vcpu1 migrates again. At this point, the process
+> gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads the
+> same page, and hits the stale TLB entry.
 
-> root in.
- 
-> Otherwise:
-> 
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> 
-> >  	struct kvm_mmu_page *sp = NULL;
-> >  	struct tdp_iter iter;
-> >  
-> > @@ -1559,7 +1569,7 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
-> >  			else
-> >  				write_unlock(&kvm->mmu_lock);
-> >  
-> > -			sp = tdp_mmu_alloc_sp_for_split();
-> > +			sp = tdp_mmu_alloc_sp_for_split(is_mirror_root);
-> >  
-> >  			if (shared)
-> >  				read_lock(&kvm->mmu_lock);
-> 
+This cannot happen because in step#2 when mapping was updated the
+Guest OS will do TLB flush for all its VCPUs which means vcpu1 on cpu0
+will also receive TLB flush and the stale TLB will be removed. This means
+when process is moved back to vcpu1 on cpu0, HW will fetch updated
+PTE and new TLB entry will be populated.
+
+>
+>    So this is an intra-guest scheduling case onto a vCPU that stayed on
+> the original host CPU, rather than a =E2=80=9Cvcpu0 returns to host CPU1=
+=E2=80=9D case.
+
+My NACK still holds.
+
+Regards,
+Anup
+
+>
+>    Thanks,
+>    Yaxing
+>
+> >>
+> >> Host CPU1 did not observe the guest-local sfence.vma, and KVM can ente=
+r
+> >> vcpu1 with a stale VS-stage translation left behind by vcpu0.
+> >>
+> >> The reported failure was seen on a XiangShan RISC-V system. A bash tas=
+k
+> >> ran on vcpu0 while vcpu0 was backed by host CPU1, and a read-only page=
+ was
+> >> prefetched into CPU1's VS-stage TLB. vcpu0 later migrated to host CPU0=
+,
+> >> where the guest triggered COW, updated the mapping, and issued only a =
+local
+> >> sfence.vma. The stale VS-stage entry on CPU1 survived. When the same g=
+uest
+> >> task later ran on another vCPU backed by host CPU1, it hit the stale
+> >> translation. The page contained a GOT pointer, and using the stale dat=
+a led
+> >> to a NULL dereference and a userspace segmentation fault.
+> >>
+> >> The existing local TLB sanitize path flushes G-stage entries when a vC=
+PU
+> >> migrates, and flushes VS-stage entries only for implementations select=
+ed by
+> >> the Andes-specific kvm_riscv_vsstage_tlb_no_gpa static key. That handl=
+es a
+> >> split two-stage TLB implementation where HFENCE.GVMA does not invalida=
+te
+> >> VS-stage entries, but it does not cover the generic guest-local sfence=
+.vma
+> >> case above.
+> >>
+> >> Track, per VM and per host CPU, the last vCPU that entered the guest o=
+n
+> >> that CPU. Before guest entry, flush the current CPU's VS-stage context=
+ for
+> >> the VM if either the current vCPU migrated since its last exit, or thi=
+s
+> >> host CPU is switching from another vCPU of the same VM. Keep the exist=
+ing
+> >> HFENCE.GVMA behavior tied to vCPU migration.
+> >>
+> >> This also subsumes the Andes split-TLB workaround. That workaround was
+> >> needed because the migration sanitize path previously relied on
+> >> HFENCE.GVMA alone for most implementations, and only issued HFENCE.VVM=
+A
+> >> when kvm_riscv_vsstage_tlb_no_gpa was set. The new sanitize path alway=
+s
+> >> issues HFENCE.VVMA when reusing a host CPU for a VM context that may h=
+ave
+> >> missed a guest-local sfence.vma, so it no longer depends on HFENCE.GVM=
+A
+> >> invalidating VS-stage entries. The implementation-specific static key =
+and
+> >> setup hook are therefore no longer needed.
+> >>
+> >> Reported-by: Zhizun Wang <anzoso@outlook.com>
+> >> Reviewed-by: Jiuyue Ma <majiuyue@bosc.ac.cn>
+> >> Signed-off-by: Yaxing Guo <guoyaxing@bosc.ac.cn>
+> >> ---
+> >>   arch/riscv/include/asm/kvm_host.h |  6 +++---
+> >>   arch/riscv/kvm/main.c             | 15 ---------------
+> >>   arch/riscv/kvm/tlb.c              | 31 +++++++++++++++++++++++------=
+--
+> >>   arch/riscv/kvm/vm.c               | 16 ++++++++++++++++
+> >>   4 files changed, 42 insertions(+), 26 deletions(-)
+> >>
+> >> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/as=
+m/kvm_host.h
+> >> index 24585304c..396ac6209 100644
+> >> --- a/arch/riscv/include/asm/kvm_host.h
+> >> +++ b/arch/riscv/include/asm/kvm_host.h
+> >> @@ -91,6 +91,9 @@ struct kvm_arch {
+> >>          /* G-stage vmid */
+> >>          struct kvm_vmid vmid;
+> >>
+> >> +       /* Last VCPU that ran on each physical CPU */
+> >> +       int __percpu *last_vcpu_ran;
+> >> +
+> >>          /* G-stage page table */
+> >>          pgd_t *pgd;
+> >>          phys_addr_t pgd_phys;
+> >> @@ -330,7 +333,4 @@ bool kvm_riscv_vcpu_stopped(struct kvm_vcpu *vcpu)=
+;
+> >>
+> >>   void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu);
+> >>
+> >> -/* Flags representing implementation specific details */
+> >> -DECLARE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
+> >> -
+> >>   #endif /* __RISCV_KVM_HOST_H__ */
+> >> diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+> >> index 0f3fe3986..b1bbc0835 100644
+> >> --- a/arch/riscv/kvm/main.c
+> >> +++ b/arch/riscv/kvm/main.c
+> >> @@ -10,23 +10,10 @@
+> >>   #include <linux/err.h>
+> >>   #include <linux/module.h>
+> >>   #include <linux/kvm_host.h>
+> >> -#include <asm/cpufeature.h>
+> >>   #include <asm/kvm_mmu.h>
+> >>   #include <asm/kvm_nacl.h>
+> >>   #include <asm/sbi.h>
+> >>
+> >> -DEFINE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
+> >> -
+> >> -static void kvm_riscv_setup_vendor_features(void)
+> >> -{
+> >> -       /* Andes AX66: split two-stage TLBs */
+> >> -       if (riscv_cached_mvendorid(0) =3D=3D ANDES_VENDOR_ID &&
+> >> -           (riscv_cached_marchid(0) & 0xFFFF) =3D=3D 0x8A66) {
+> >> -               static_branch_enable(&kvm_riscv_vsstage_tlb_no_gpa);
+> >> -               kvm_info("VS-stage TLB does not cache guest physical a=
+ddress and VMID\n");
+> >> -       }
+> >> -}
+> >> -
+> >>   long kvm_arch_dev_ioctl(struct file *filp,
+> >>                          unsigned int ioctl, unsigned long arg)
+> >>   {
+> >> @@ -172,8 +159,6 @@ static int __init riscv_kvm_init(void)
+> >>                  kvm_info("AIA available with %d guest external interr=
+upts\n",
+> >>                           kvm_riscv_aia_nr_hgei);
+> >>
+> >> -       kvm_riscv_setup_vendor_features();
+> >> -
+> >>          kvm_register_perf_callbacks();
+> >>
+> >>          rc =3D kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+> >> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+> >> index ff1aeac4e..1541d059a 100644
+> >> --- a/arch/riscv/kvm/tlb.c
+> >> +++ b/arch/riscv/kvm/tlb.c
+> >> @@ -8,6 +8,7 @@
+> >>   #include <linux/errno.h>
+> >>   #include <linux/err.h>
+> >>   #include <linux/module.h>
+> >> +#include <linux/percpu.h>
+> >>   #include <linux/smp.h>
+> >>   #include <linux/kvm_host.h>
+> >>   #include <asm/cacheflush.h>
+> >> @@ -160,12 +161,19 @@ void kvm_riscv_local_hfence_vvma_all(unsigned lo=
+ng vmid)
+> >>
+> >>   void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
+> >>   {
+> >> +       bool vcpu_migrated;
+> >> +       bool vcpu_switched;
+> >>          unsigned long vmid;
+> >> +       int *last_ran;
+> >>
+> >> -       if (!kvm_riscv_gstage_vmid_bits() ||
+> >> -           vcpu->arch.last_exit_cpu =3D=3D vcpu->cpu)
+> >> +       last_ran =3D this_cpu_ptr(vcpu->kvm->arch.last_vcpu_ran);
+> >> +       vcpu_migrated =3D (vcpu->arch.last_exit_cpu !=3D vcpu->cpu);
+> >> +       vcpu_switched =3D (*last_ran !=3D vcpu->vcpu_idx);
+> >> +       if (!vcpu_migrated && !vcpu_switched)
+> >>                  return;
+> >>
+> >> +       vmid =3D READ_ONCE(vcpu->kvm->arch.vmid.vmid);
+> >> +
+> >>          /*
+> >>           * On RISC-V platforms with hardware VMID support, we share s=
+ame
+> >>           * VMID for all VCPUs of a particular Guest/VM. This means we=
+ might
+> >> @@ -176,16 +184,23 @@ void kvm_riscv_local_tlb_sanitize(struct kvm_vcp=
+u *vcpu)
+> >>           * To cleanup stale TLB entries, we simply flush all G-stage =
+TLB
+> >>           * entries by VMID whenever underlying Host CPU changes for a=
+ VCPU.
+> >>           */
+> >> -
+> >> -       vmid =3D READ_ONCE(vcpu->kvm->arch.vmid.vmid);
+> >> -       kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+> >> +       if (vcpu_migrated && kvm_riscv_gstage_vmid_bits())
+> >> +               kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+> >>
+> >>          /*
+> >> -        * Flush VS-stage TLB entries for implementation where VS-stag=
+e
+> >> -        * TLB does not cahce guest physical address and VMID.
+> >> +        * Guest-local sfence.vma only invalidates VS-stage translatio=
+ns on
+> >> +        * the Host CPU currently backing the VCPU. If a VCPU migrates=
+, or
+> >> +        * if this Host CPU switches between VCPUs of the same VM, sta=
+le
+> >> +        * VS-stage entries can be left behind on a Host CPU that miss=
+ed a
+> >> +        * guest-local flush. Flush the current CPU's VS-stage context=
+ before
+> >> +        * entering the guest.
+> >>           */
+> >> -       if (static_branch_unlikely(&kvm_riscv_vsstage_tlb_no_gpa))
+> >> +       if (kvm_riscv_nacl_available())
+> >> +               nacl_hfence_vvma_all(nacl_shmem(), vmid);
+> >> +       else
+> >>                  kvm_riscv_local_hfence_vvma_all(vmid);
+> >> +
+> >> +       *last_ran =3D vcpu->vcpu_idx;
+> >>   }
+> >>
+> >>   void kvm_riscv_fence_i_process(struct kvm_vcpu *vcpu)
+> >> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+> >> index 13c63ae1a..2907218a1 100644
+> >> --- a/arch/riscv/kvm/vm.c
+> >> +++ b/arch/riscv/kvm/vm.c
+> >> @@ -9,6 +9,7 @@
+> >>   #include <linux/errno.h>
+> >>   #include <linux/err.h>
+> >>   #include <linux/module.h>
+> >> +#include <linux/percpu.h>
+> >>   #include <linux/uaccess.h>
+> >>   #include <linux/kvm_host.h>
+> >>   #include <asm/kvm_mmu.h>
+> >> @@ -30,7 +31,9 @@ const struct kvm_stats_header kvm_vm_stats_header =
+=3D {
+> >>
+> >>   int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+> >>   {
+> >> +       int *last_ran;
+> >>          int r;
+> >> +       int cpu;
+> >>
+> >>          r =3D kvm_riscv_mmu_alloc_pgd(kvm);
+> >>          if (r)
+> >> @@ -42,6 +45,17 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long=
+ type)
+> >>                  return r;
+> >>          }
+> >>
+> >> +       kvm->arch.last_vcpu_ran =3D alloc_percpu(int);
+> >> +       if (!kvm->arch.last_vcpu_ran) {
+> >> +               kvm_riscv_mmu_free_pgd(kvm);
+> >> +               return -ENOMEM;
+> >> +       }
+> >> +
+> >> +       for_each_possible_cpu(cpu) {
+> >> +               last_ran =3D per_cpu_ptr(kvm->arch.last_vcpu_ran, cpu)=
+;
+> >> +               *last_ran =3D -1;
+> >> +       }
+> >> +
+> >>          kvm_riscv_aia_init_vm(kvm);
+> >>
+> >>          kvm_riscv_guest_timer_init(kvm);
+> >> @@ -54,6 +68,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+> >>          kvm_destroy_vcpus(kvm);
+> >>
+> >>          kvm_riscv_aia_destroy_vm(kvm);
+> >> +
+> >> +       free_percpu(kvm->arch.last_vcpu_ran);
+> >>   }
+> >>
+> >>   int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq=
+l,
+> >> --
+> >> 2.43.0
+> >>
+>
