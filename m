@@ -1,193 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A63D23BD06;
-	Sat, 10 Oct 2026 07:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEF03D2FFC;
+	Sat, 10 Oct 2026 07:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791616822; cv=none; b=YTfEaV7svNVlYZR3kUDuLRPtFfo3yWhXCe2jLcnobmyMgmCdqhqaqChBMOkJdMHPybJkx2fvB3c3GhNHU7j7LW/p1TkpnFrD3F4dsnaS1Mfv5RDqnJb02gD9QRLhzmGl0W/uww3oGKXPec7OlBBNM3SJ1kioXZOu/uUlsxbCORY=
+	t=1791617122; cv=none; b=rCwYTtHAw4jLabn6ZazTQodAnZugNNFzyhZEJjHt95Eo1yqX3kMxB+Q4zzga++12zlV8z79zhcH8P3yOmgLXytY8QdLV+0w503FIpEmcxNIV9Q4Tpbw9/bw0/WV+e5n/Vm2bWJKrgkFurY3uzyaqJT36EMSicVrmBrq95JBloi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791616822; c=relaxed/simple;
-	bh=SxZahj2M0pkILz+8LQ66ut8KQqmDtMw1YA4+sXd3cRA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LDlj6pvsywC7l43trUHthuvPkpmwCXk0BdbF2T5vTTMjfrXADpReho60hFg9sdptblIL9nik0TJJ1za10xPY73zNlsq33h6DVB2hKE4lUpo/rGXy/pf+ol66hI2xDZg00j0ulp6dxdXbPX6/5XZ8TqRq7oFLwLZGi03R+4h+ZUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sc1N6Wch; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791617122; c=relaxed/simple;
+	bh=liDgz4q1hO+XrTD5W6oZSJ5ZWPIvvAYajrBlzlN0ODg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LT03mcRnyopIakM5SpKED0c+f0s0LxLAU5VyStgs0jl10EjSlOwE7ETC2nfDa3GikAVWhqBKV41deYvohO+aiRPX5cPoucst6jV5BI/3fN/NI8bVsf+XJg26P3IN07g+7nXtsZGl+bzvN5KPleKLizdfzzRAt2tQp7G2KEdog0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=en5tO9pf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sc1N6Wch"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791616819; x=1823152819;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SxZahj2M0pkILz+8LQ66ut8KQqmDtMw1YA4+sXd3cRA=;
-  b=Sc1N6WchdYZOtyAaOAeJwbA74I9N5yy/Y4L13jflN4VEIzoUS/v+meqr
-   PKfOrQHxRTEtZnWccdWoXtw4TDEfEomlVKDEU9xtn6oupdk0NMomm5F7l
-   z/71158gIxq4Y0WgJa59DeKepKHok7boht+gOWF+jzw1Sg12Ob05w/ghk
-   rqtufLodjDmf97kF0L1fZUG4c1MLHYt3FqLQZ28ik1VndYinIT6U8TFRZ
-   acEDeGgLbk+SBakABmcn2Z0IQJybI2ue5YGl9UYXxdUyl+x5O6z6IrLh2
-   hObOi63PmpPqzcxX/3d01iNZuAEKOe/Xn/Mds7KH2iRnTxfBCS/n9HEvT
-   w==;
-X-CSE-ConnectionGUID: nQCThWgoQn6O8+eDPlZ3XQ==
-X-CSE-MsgGUID: 9gIN8NN0RGGS6ahbKzrteA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="310013"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="310013"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 00:20:19 -0700
-X-CSE-ConnectionGUID: kSgZJGy7R/KW+R6dNA8sMQ==
-X-CSE-MsgGUID: oEunnaLkR2iQtAsvJmKL1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="468770"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2026 00:20:14 -0700
-Message-ID: <7ad0011c-6f8a-4a76-aaec-f73b76bbc517@linux.intel.com>
-Date: Sat, 10 Oct 2026 15:20:10 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="en5tO9pf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41A51F000FF;
+	Sat, 10 Oct 2026 07:25:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791617120;
+	bh=eVXi7g8HKOVzMCfl5QEZOyLNYidl4HZBIIBs5FYyxJg=;
+	h=From:To:Cc:Subject:Date;
+	b=en5tO9pfgaVVYvThk6DVmrg9dtMsYd1HYaUxIdEh+GSUVq81g2FyTK5RLC7eU7cRl
+	 KWZkg+esMR9UtsEMJ5kuDvIqRC59zDdVbGP0KWTUk7o3zjk10xV+NMLC0Tsr8wvIUJ
+	 gfl57eBR9XZnu8rFmC9bydY8slVTK41HZtJZr1JWIf4Fepax0rr+N+Xs1koLnUocyG
+	 UBgW573q6R7r/rHZHlGZIaTR6Nnb9RMp8hFngZmPR+tmz3bgAWYZUklAti70wX470t
+	 HtNIBtDgdB6gzPZeqLRvUw1dM8OmYcCdXVhy7su57LBqZoD5XddwRTsOlcA1et2JIZ
+	 IO0cM07Q9dW9Q==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Will Deacon <will@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Fred Griffoul <griffoul@gmail.com>,
+	iommu@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [RFC PATCH v1 0/6] KVM/VFIO: guest_memfd support for device MMIO resources
+Date: Sat, 10 Oct 2026 12:54:58 +0530
+Message-ID: <20261010072504.536230-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 22/23] KVM: selftests: Add support for TDX ucalls, via
- TDVMCALL_REPORT_FATAL_ERROR
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-22-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-22-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+This series adds a guest_memfd device-resource framework for exposing PCI
+BAR memory to guests. The intended use is confidential device assignment,
+where KVM needs to coordinate private device mappings with shared access
+through VFIO. The Arm CCA backend is provided separately; these patches
+contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Add support for doing ucalls on TDX by abusing TDVMCALL_REPORT_FATAL_ERROR
-> to pass the address of the payload to the host.  The "fatal error" TDVMCALL
-> is perfectly suited for passing information to host userspace, is both the
-                                                                  ^
-                                                                 as
+The guest_memfd framework and Arm CCA backend are available together at:
 
-> TDX Module and KVM allow the guest to pass (almost) all registers to the
-> host, i.e. provide enough of a data payload to make a collision with a real
-> fatal error practically impossible.
-> 
-> TDX can't use port I/O, as the TDX ABI doesn't allow the guest to share
-> arbitrary register state with the host on a port I/O exit, and the port I/O
-> data payload is limited to 4 bytes, i.e. would potentially truncate the
-> ucall address.
-> 
-> Alternatively, TDX could use MMIO, but using a magic emulated MMIO address
-> is fragile (see the TODO in __vm_create()), especially for TDX since TDX
-> doesn't support read-only memslots, i.e. doesn't have line of sight towards
-> addressing the TODO.  E.g. TDX could hardcode the address to something that
-> is all but guaranteed to be unused on x86, e.g. the I/O APIC base address
-> or the HPET address, but that doesn't truly address the fragility concerns,
-> and it's ugly because ucall_arch_init() would completely ignore the passed
-> in @mmio_gpa despite obviously utilizing emulated MMIO.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+  https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-da-gmem-backend
 
-Also one nit below.
+Userspace creates a device-backed guest_memfd using the ordinary VFIO
+device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE,
+GUEST_MEMFD_FLAG_DEVICE and GUEST_MEMFD_FLAG_INIT_SHARED. Eligible BAR
+intervals are registered as guest_memfd memslots. File offsets use the
+existing VFIO region-offset namespace, allowing one guest_memfd to cover
+multiple BAR intervals. Device-backed guest_memfd rejects mmap and
+fallocate; shared guest faults obtain bare BAR PFNs from the provider
+instead of resolving the memslot HVA or allocating folios.
 
-otherwise,
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+IOMMUFD resolves and pins the device's existing vDEVICE for the VM and
+serializes MMIO conversion through its MMIO mutex. VFIO supplies BAR PFNs,
+checks eligible ranges and excludes independent dma-buf exports while a
+guest_memfd provider is attached. VFIO host mmap faults, read/write and
+ioeventfd accesses check the requested range's guest_memfd attributes.
+Conversion revokes cached host mappings and shared guest mappings before
+installing private mappings. Other shared intervals remain accessible.
 
-> ---
->  tools/testing/selftests/kvm/include/x86/tdx/tdx.h |  7 ++++++
->  tools/testing/selftests/kvm/lib/x86/ucall.c       | 27 ++++++++++++++++++++++-
->  2 files changed, 33 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> index d41a1efc8a63..9982aaaba885 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
-> @@ -4,6 +4,13 @@
->  
->  #include <linux/types.h>
->  
-> +/* TDX hypercall Leaf IDs */
-> +#define TDVMCALL_GET_TD_VM_CALL_INFO		0x10000
-> +#define TDVMCALL_MAP_GPA			0x10001
-> +#define TDVMCALL_GET_QUOTE			0x10002
-> +#define TDVMCALL_REPORT_FATAL_ERROR		0x10003
-> +#define TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT	0x10004
-> +
->  u64 __tdvmcall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15);
->  
->  #endif /* SELFTEST_KVM_TDX_TDX_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> index c003df3c7b8a..c1cd32d68464 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> @@ -5,8 +5,28 @@
->   * Copyright (C) 2018, Red Hat, Inc.
->   */
->  #include "kvm_util.h"
-> +#include "tdx/tdx.h"
-> +#include "tdx/tdx_util.h"
->  
-> -#define UCALL_PIO_PORT ((u16)0x1000)
-> +#define UCALL_PIO_PORT		((u16)0x1000)
-> +#define UCALL_TDX_MAGIC		0xabacadabaULL
-> +
-> +static void ucall_tdx_do_ucall(gva_t uc)
-> +{
-> +	__tdvmcall(TDVMCALL_REPORT_FATAL_ERROR, UCALL_TDX_MAGIC, uc, 0, 0);
-> +}
-> +
-> +static void *ucall_tdx_get_ucall(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_run *run = vcpu->run;
-> +
-> +	if (run->exit_reason == KVM_EXIT_SYSTEM_EVENT &&
-> +	    run->system_event.type == KVM_SYSTEM_EVENT_TDX_FATAL &&
-> +	    run->system_event.data[12] == UCALL_TDX_MAGIC)
-> +		return (void *)(run->system_event.data[13]);
+This series depends on:
+* Ackerley Tng's "Allow guest_memfd to be created using a resource (pool)
+  fd" RFC, which provides the tmpfs resource-provider API:
+  https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
+* The IOMMUFD/TSM series, which provides the vIOMMU and vDEVICE interfaces:
+  https://lore.kernel.org/all/20261008055955.4014342-1-aneesh.kumar@kernel.org/
 
-Nit:
-It's more readable to have comment for data[12] and data[13] to
-indicate they are the R12 and R13 passed.
+Notes:
+* While developing this framework, I looked at David Woodhouse's
+  guest_memfd provider work, including the gmem-provider-v3 branch. It
+  was used for comparison and was not merged. The posted RFC v2 is here:
+  https://lore.kernel.org/all/20260720111259.122911-1-dwmw2@infradead.org/
+* Codex assisted with implementation, review and series organization.
 
-> +
-> +	return NULL;
-> +}
->  
->  static void ucall_x86_do_ucall(gva_t uc)
->  {
-> @@ -37,6 +57,11 @@ static struct {
->  
->  void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
->  {
-> +	if (is_tdx_vm(vm)) {
-> +		ucall_x86_ops.do_ucall = ucall_tdx_do_ucall;
-> +		ucall_x86_ops.get_ucall = ucall_tdx_get_ucall;
-> +	}
-> +
->  	sync_global_to_guest(vm, ucall_x86_ops);
->  }
->  
-> 
+Cc: Ackerley Tng <ackerleytng@google.com>
+Cc: Alex Williamson <alex@shazbot.org>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com> 
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Fred Griffoul <griffoul@gmail.com> 
+Cc: iommu@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Aneesh Kumar K.V (Arm) (6):
+  KVM: guest_memfd: attach and bind device resources
+  KVM: guest_memfd: Support private/shared conversion of device memory
+  iommufd: Support MMIO provider attachment to vDEVICEs
+  vfio/pci: Provide guest_memfd backing for PCI BARs
+  KVM/VFIO: Remove device mappings during guest_memfd teardown
+  KVM: Invalidate guest_memfd mappings before removing memslot bindings
+
+ Documentation/virt/kvm/api.rst          |   4 +
+ drivers/iommu/iommufd/viommu.c          |  90 ++++
+ drivers/vfio/device_cdev.c              |   3 +-
+ drivers/vfio/group.c                    |   4 +-
+ drivers/vfio/pci/Kconfig                |  11 +
+ drivers/vfio/pci/Makefile               |   2 +
+ drivers/vfio/pci/vfio_pci.c             |   3 +
+ drivers/vfio/pci/vfio_pci_core.c        |  13 +
+ drivers/vfio/pci/vfio_pci_dmabuf.c      |  10 +
+ drivers/vfio/pci/vfio_pci_gmem.c        | 349 +++++++++++++++
+ drivers/vfio/pci/vfio_pci_gmem.h        |  36 ++
+ drivers/vfio/pci/vfio_pci_gmem_access.c | 138 ++++++
+ drivers/vfio/pci/vfio_pci_rdwr.c        |  13 +-
+ drivers/vfio/vfio.h                     |   8 +
+ drivers/vfio/vfio_main.c                |  34 +-
+ include/linux/guest_memfd.h             |  50 +++
+ include/linux/iommufd.h                 |  33 ++
+ include/linux/kvm_host.h                |  14 +-
+ include/linux/vfio.h                    |   3 +
+ include/linux/vfio_pci_core.h           |  23 +
+ include/uapi/linux/kvm.h                |   1 +
+ virt/kvm/guest_memfd.c                  | 545 +++++++++++++++++++++++-
+ virt/kvm/guest_memfd.h                  |   6 +
+ virt/kvm/kvm_main.c                     |   4 +
+ 24 files changed, 1362 insertions(+), 35 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_gmem.c
+ create mode 100644 drivers/vfio/pci/vfio_pci_gmem.h
+ create mode 100644 drivers/vfio/pci/vfio_pci_gmem_access.c
+
+-- 
+2.43.0
 
