@@ -1,302 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C556D32ED34;
-	Sun, 11 Oct 2026 08:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14594248D7;
+	Sun, 11 Oct 2026 08:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791706049; cv=none; b=cF7sVirt1LYNMQ6HI4EDDtEDQyZLDrB3ow5EUVa8EJIj+CqFzt/gxmoxvlSp0JwwDjDg0y5zQtAlVbF6J8WZQSu8x1olz3egaqVllaeGM5seUP8XpqgFZnIlPJjizgeVqM8znrcr/0ihvHXS54A4TfN22bfhGc7z4znu4TKhCLE=
+	t=1791708525; cv=none; b=t/yA+wbk4hjvlJEQ/nLHs+CdLq3Y4GweCxW5X3kTNoHjEEvpClnuhVhJ2KR8k7ct03IYDCNAR9SES7EogKeQt8U1GG/gD80zxj1FR+iGFRj78HacuCh5fqblmzntiBciafMMF32PIeCGCig5a2g0tjbXHLbwsAxjk8aDfkGYQu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791706049; c=relaxed/simple;
-	bh=vhBLYBayTbCGdJdsLoiRFDXoLngEs6vbsgDoHnI2RUw=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=Y3O6Uo3njKjnSm/4LEfqQR8W63jO9m/lcU57vwdwGKN0XQULu7j+VW4t71KBKH3pPnDRDQ8LGfsii+6ddb3OqyTxg7FWkuF4v+FSrNpNurjzYwKxp40uThaQZWQ6i6NUql90AoJax6UdXbuVOnJR+h7kV5dq3w2oWfA+QHcVjRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WnZfmcQ4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791708525; c=relaxed/simple;
+	bh=PK2/fTVmspjHBocolBh2jrgC7An7V8dAPsC+YJWRdZM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Jn6WLEKNzuZfveaYuiAr4JoNuaFqPT09ab4zsecKgfAYgZn6qDheNbu0MzB4a4bRJ4fScqMZeQ87HWtMBGCx/Xm7qYtO6TlF9fBgOltjAZ4hh8NBlS5H7XA5sIvstkvFzYski7BsGHDdAQtlHglhcLu3U6jW86TkUurYUbQp7pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qK/sKEPO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WnZfmcQ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0751F0089B;
-	Sun, 11 Oct 2026 08:07:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791706047;
-	bh=vb12y1oDzeW+k2aU0A6/EDxhKy7FXd1uRr2geB4QMXA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WnZfmcQ48TfNIy35PU/GGY4eBQgEqjPaGbUjRwEwRAhC2gT+t1Q42JCNfOiCbsj4E
-	 TPGEggefVI7sNnecvV+B4s04M4Lls+OTp9XITf1Z6LeTO+CGjNm60I8OaKMd6GG2Ij
-	 JKOw3JdPeTDIOzTrZdg3szlMCRvJK+SsM0/a+o1CnyTKWRzjP8f3SAmdWcpSmxIDi5
-	 2EC04mEIQSkMT81+3fqu/sVAhdf6f9UzSUyDuaHqfkiv2Cqu4dRenVf59NJ6scenSZ
-	 xGQoQbWTgiyCYufgVh+/63zynTwbYI1eyd2GsawI4pdRsqCf1ulStBus9msBBoxijl
-	 yauQCYWy9kMsA==
-Message-ID: <sashiko-outbox-167119@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/7] vfio/pci: Add qcom-vfio-pci variant driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jose Ignacio Tornos Martinez" <jtornosm@redhat.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261011074514.515894-4-jtornosm@redhat.com>
-References: <20261011074514.515894-1-jtornosm@redhat.com>
- <20261011074514.515894-4-jtornosm@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 11 Oct 2026 08:07:26 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qK/sKEPO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16C80C2BCF7;
+	Sun, 11 Oct 2026 08:48:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1791708525;
+	bh=PK2/fTVmspjHBocolBh2jrgC7An7V8dAPsC+YJWRdZM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=qK/sKEPOBbOpsmXm0PtV5DDtuUXDz9tQnuO/KsK8HOHEm800BWzpyQmmGD9JSIHQn
+	 7uS4gPBTXROZLHbKQwTPcm1A5QF547w7zLho8snps3RoaSjlYHJTHHMOWOXmtStddl
+	 nSqycg5cCxV4J0mOWAixLOYPgWQgzjeMele3hY69WfMcj7YhFlT4SwlVicV4hLr2ZN
+	 91xIOi6vZRBQDKlq+Et/VZjoCKzlBBe3ZD5XH6MBUZZZ7xO7vzyPe+fxErcT7xBcxU
+	 Fod1NJBqrnJ7eL+oY5G64+uc0YJs9FM4URmnsdtGkaEcR4GVOLPz6lO5DOg0NBslRY
+	 M1bQ5lw8I8+6Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E27B1CA9EBD;
+	Sun, 11 Oct 2026 08:48:44 +0000 (UTC)
+From: Linfeng Sun via B4 Relay <devnull+linfeng.sun.dev.gmail.com@kernel.org>
+Date: Sun, 11 Oct 2026 16:48:40 +0800
+Subject: [PATCH] vhost-vdpa: initialize state before publishing cdev
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261011-fix-null-pointer-in-vhost_vdpa_release-v1-1-43ebc225f938@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQrCMBCF4auUWTvQFJXWq4iUSTu1IyEJmTQIp
+ Xc36vJbvP/toJyEFW7NDomLqARfYU4NTCv5J6PM1dC13dW0xuAib/SbcxiD+MwJxWNZg+axzJH
+ GxI5JGe15uCy2H4iohxqLievyd3R//K2bffGUv3U4jg/HsmXpigAAAA==
+X-Change-ID: 20261011-fix-null-pointer-in-vhost_vdpa_release-b495fb89aaa8
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Tiwei Bie <tiwei.bie@intel.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Linfeng Sun <linfeng.sun.dev@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791708522; l=5684;
+ i=linfeng.sun.dev@gmail.com; s=20261010; h=from:subject:message-id;
+ bh=lO63c612f3W01eAQKW8gQ/u7SgviABtFHcPCPVA69xg=;
+ b=2SKvFGyQlpWr3kk1AhzwaEfs1Z00KYut0wXx2gI5Q4v/E6groac6bAUK3wS1EdqSxWBAoZWFH
+ 4Qf467hFPJgBA/wCB8rsLfMKXYh6XGHOZstGX3A09H7cs4z77LpcCIz
+X-Developer-Key: i=linfeng.sun.dev@gmail.com; a=ed25519;
+ pk=IPHLe8L3bTveNcYFP12okRAIWs4eqaVd4jrqSNMj7UU=
+X-Endpoint-Received: by B4 Relay for linfeng.sun.dev@gmail.com/20261010
+ with auth_id=1150
+X-Original-From: Linfeng Sun <linfeng.sun.dev@gmail.com>
+Reply-To: linfeng.sun.dev@gmail.com
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
-- [High] vfio/pci: stale MSI cache on VM soft-reboot
-- [High] vfio/pci: endianness bug exposes corrupted MSI config to big-endia=
-n guests
-- [High] pci: writing virtual MSI configuration directly to unassigned phys=
-ical PCIe space triggers AER UR
-- [High] vfio/pci: qcom: host kernel panic via TOCTOU in qcom_vfio_pci_ioctl
-- [Medium] vfio/pci: unratelimited kernel warning DoS via SET_IRQS
-- [Medium] vfio/pci: missing memory barriers for lockless MSI cache accesses
-- [Medium] vfio/pci/qcom: MSI config cache bypassed by non-exact reads
---
+From: Linfeng Sun <linfeng.sun.dev@gmail.com>
 
-commit a2f13f43e82ecd07210fb028cbc53419856cb4cb
-Author: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: vfio/pci: Add qcom-vfio-pci variant driver
+Initialize the completion and as hash buckets before cdev_device_add()
+makes the device accessible.
 
-Add a VFIO variant driver for Qualcomm PCIe devices (ath11k and ath12k)
-that require MSI address passthrough for VM operation. This driver caches
-physical host MSI values and writes them to a designated extended config
-space offset so the VM can discover them automatically.
+Fixes: 4c8cf31885f6 ("vhost: introduce vDPA-based backend")
+Assisted-by: OpenAI-Codex:GPT-5.6
+Signed-off-by: Linfeng Sun <linfeng.sun.dev@gmail.com>
+---
+I used // because b4 ignores lines starting with #. Please uncomment those 
+lines before reproducing.
+---- reproduce.c ----
+// #include <fcntl.h>
+// #include <pthread.h>
+// #include <stdatomic.h>
+// #include <unistd.h>
 
-Link: https://lore.kernel.org/all/20260930140833.576941-4-jtornosm@redhat.c=
-om/
+// #define THREADS 16
 
-> diff --git a/drivers/vfio/pci/qcom/main.c b/drivers/vfio/pci/qcom/main.c
-> new file mode 100644
-> index 0000000000000..8773661d29a10
-> --- /dev/null
-> +++ b/drivers/vfio/pci/qcom/main.c
-[ ... ]
-> +static void qcom_vfio_pci_close_device(struct vfio_device *core_vdev)
-> +{
-> +	struct qcom_vfio_pci_device *qdev =3D
-> +		container_of(core_vdev, struct qcom_vfio_pci_device, vdev.vdev);
-> +
-> +	qdev->msi_cached =3D false;
+static const char *device_path;
+static const char *sysfs_path;
+static atomic_int stop;
 
-[Severity: High]
-Does this flag also need to be cleared when MSIs are disabled or the device
-is reset?
+static void *open_close(void *unused)
+{
+	(void)unused;
 
-During a VM soft reboot, QEMU typically disables MSIs (SET_IRQS with
-DATA_NONE) and issues VFIO_DEVICE_RESET, but keeps the device file descript=
-or
-open. Because qdev->msi_cached is only cleared on full device close, won't
-a soft reboot leave this flag as true?
+	while (!atomic_load(&stop)) {
+		int fd;
 
-If so, the driver might skip updating the cache and serve stale host MSI
-addresses to the new VM instance.
+		if (access(sysfs_path, F_OK))
+			continue;
+		fd = open(device_path, O_RDWR);
+		if (fd >= 0)
+			close(fd);
+	}
+	return NULL;
+}
 
-> +	qdev->msi_addr_lo =3D 0;
-> +	qdev->msi_addr_hi =3D 0;
-> +	qdev->msi_data =3D 0;
-> +
-> +	vfio_pci_core_close_device(core_vdev);
-> +}
-[ ... ]
-> +static long qcom_vfio_pci_ioctl(struct vfio_device *core_vdev,
-> +				unsigned int cmd, unsigned long arg)
-> +{
-> +	struct vfio_pci_core_device *vdev =3D
-> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> +	struct qcom_vfio_pci_device *qdev =3D to_qcom_vdev(vdev);
-> +	bool is_msi_trigger =3D false;
-> +	struct vfio_irq_set hdr;
-> +	long ret;
-> +
-> +	/*
-> +	 * Pre-fetch SET_IRQS header to avoid TOCTOU from
-> +	 * re-reading userspace after the core ioctl completes.
-> +	 */
-> +	if (cmd =3D=3D VFIO_DEVICE_SET_IRQS) {
-> +		unsigned long minsz =3D offsetofend(struct vfio_irq_set, count);
-> +
-> +		if (!copy_from_user(&hdr, (void __user *)arg, minsz)) {
-> +			is_msi_trigger =3D (hdr.index =3D=3D VFIO_PCI_MSI_IRQ_INDEX &&
-> +					  (hdr.flags & VFIO_IRQ_SET_ACTION_TRIGGER));
+int main(int argc, char **argv)
+{
+	pthread_t threads[THREADS];
+	int i;
 
-[Severity: Medium]
-Can this condition evaluate to true for an MSI disable command?
+	if (argc != 3)
+		return 1;
+	device_path = argv[1];
+	sysfs_path = argv[2];
 
-If userspace passes VFIO_IRQ_SET_DATA_NONE and count=3D0, is_msi_trigger wi=
-ll
-still evaluate to true. Later in qcom_cache_and_write_msi(), msi_first_desc=
-()
-will return NULL, triggering an unratelimited pci_warn().
+	for (i = 0; i < THREADS; i++)
+		if (pthread_create(&threads[i], NULL, open_close, NULL))
+			return 1;
 
-Could this allow an unprivileged user to flood the host kernel log by
-repeatedly disabling MSIs?
+	sleep(45);
+	atomic_store(&stop, 1);
+	for (i = 0; i < THREADS; i++)
+		pthread_join(threads[i], NULL);
+	return 0;
+}
 
-[Severity: High]
-Is there a time-of-check to time-of-use (TOCTOU) race condition here despite
-the pre-fetch?
+---- crash ----
+[   23.959139] BUG: unable to handle page fault for address: fffffffffffffff8
+[   23.959859] #PF: supervisor read access in kernel mode
+[   23.960291] #PF: error_code(0x0000) - not-present page
+[   23.960740] PGD 4869067 P4D 4869067 PUD 486b067 PMD 0 
+[   23.961718] Oops: Oops: 0000 [#1] SMP NOPTI
+[   23.962395] CPU: 1 UID: 0 PID: 126 Comm: poc Not tainted 7.3.0-rc2+ #1 PREEMPT(full) 
+[   23.963059] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   23.963890] RIP: 0010:complete+0x44/0x80
+[   23.964656] Code: 41 d8 01 49 89 c4 8b 03 83 f8 ff 74 05 83 c0 01 89 03 48 8b 53 10 48 8d 43 10 48 39 c2 74 29 48 8b 5b 10 31 d2 be 03 00 00 00 <48> 8b 7b f8 e8 e3 65 fc ff 48 8b 13 48 8b 43 08 48 89 42 08 48 89
+[   23.965679] RSP: 0018:ffffc9000141bc38 EFLAGS: 00000046
+[   23.966109] RAX: ffff888008a678d8 RBX: 0000000000000000 RCX: 0000000000000000
+[   23.966513] RDX: 0000000000000000 RSI: 0000000000000003 RDI: 0000000000000000
+[   23.967005] RBP: ffffc9000141bc50 R08: 0000000000000000 R09: 0000000000000000
+[   23.967483] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000246
+[   23.967896] R13: ffff888008a678d0 R14: 0000000000000000 R15: ffffffff83541780
+[   23.968384] FS:  00007dcd511046c0(0000) GS:ffff8880b94b6000(0000) knlGS:0000000000000000
+[   23.968933] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   23.969398] CR2: fffffffffffffff8 CR3: 0000000009a41000 CR4: 00000000000006f0
+[   23.970091] Call Trace:
+[   23.970735]  <TASK>
+[   23.971266]  vhost_vdpa_release+0x175/0x190
+[   23.971862]  ? __pfx_vhost_vdpa_release+0x10/0x10
+[   23.972298]  __fput+0x1c2/0x520
+[   23.972692]  fput_close_sync+0x6e/0x140
+[   23.973040]  __x64_sys_close+0x51/0xd0
+[   23.973362]  x64_sys_call+0x2680/0x27e0
+[   23.973655]  do_syscall_64+0xbf/0x550
+[   23.973969]  ? restore_fpregs_from_fpstate+0xa1/0x110
+[   23.974322]  ? switch_fpu_return+0xbd/0x190
+[   23.974630]  ? do_syscall_64+0x299/0x550
+[   23.974962]  ? putname+0x7f/0xd0
+[   23.975267]  ? do_faccessat+0x3fe/0x570
+[   23.975583]  ? __sanitizer_cov_trace_cmp4+0x16/0x30
+[   23.975934]  ? fpregs_assert_state_consistent+0x7b/0xc0
+[   23.976272]  ? do_syscall_64+0xfd/0x550
+[   23.976591]  ? __sanitizer_cov_trace_cmp4+0x16/0x30
+[   23.976949]  ? fpregs_assert_state_consistent+0x7b/0xc0
+[   23.977304]  ? do_syscall_64+0xfd/0x550
+[   23.977611]  ? prandom_u32_state+0xd/0x90
+[   23.977933]  ? do_syscall_64+0x31/0x550
+[   23.978248]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   23.978644] RIP: 0033:0x41e94c
+[   23.979296] Code: 0f 05 48 3d 00 f0 ff ff 77 3c c3 0f 1f 00 55 48 89 e5 48 83 ec 10 89 7d fc e8 b0 a5 02 00 8b 7d fc 89 c2 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2c 89 d7 89 45 fc e8 12 a6 02 00 8b 45 fc c9
+[   23.980064] RSP: 002b:00007dcd51104220 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+[   23.980511] RAX: ffffffffffffffda RBX: 00007dcd51104cdc RCX: 000000000041e94c
+[   23.980887] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+[   23.981251] RBP: 00007dcd51104230 R08: 0000000000000000 R09: 00007dcd511046c0
+[   23.981604] R10: 0000000000000000 R11: 0000000000000293 R12: 00007dcd511046c0
+[   23.981960] R13: ffffffffffffffb8 R14: 0000000000000000 R15: 00007ffe8c98a0f0
+[   23.982377]  </TASK>
+[   23.982597] Modules linked in:
+[   23.983036] CR2: fffffffffffffff8
+[   23.983847] ---[ end trace 0000000000000000 ]---
+---
+ drivers/vhost/vdpa.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-The header is read via copy_from_user(), setting is_msi_trigger. Then
-vfio_pci_core_ioctl() is called below, which performs its own
-copy_from_user() on the same userspace memory pointer.
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ff7d90719171..35e2f5b2293b 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1678,17 +1678,16 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
+ 
+ 	cdev_init(&v->cdev, &vhost_vdpa_fops);
+ 	v->cdev.owner = THIS_MODULE;
++	init_completion(&v->completion);
++	for (i = 0; i < VHOST_VDPA_IOTLB_BUCKETS; i++)
++		INIT_HLIST_HEAD(&v->as[i]);
+ 
+ 	r = cdev_device_add(&v->cdev, &v->dev);
+ 	if (r)
+ 		goto err;
+ 
+-	init_completion(&v->completion);
+ 	vdpa_set_drvdata(vdpa, v);
+ 
+-	for (i = 0; i < VHOST_VDPA_IOTLB_BUCKETS; i++)
+-		INIT_HLIST_HEAD(&v->as[i]);
+-
+ 	return 0;
+ 
+ err:
 
-If userspace concurrently changes hdr.index to VFIO_PCI_INTX_IRQ_INDEX
-between the two fetches, the core will configure INTx (which doesn't alloca=
-te
-MSI data structures). However, qcom_vfio_pci_ioctl() will still see
-is_msi_trigger =3D=3D true and execute qcom_cache_and_write_msi().
+---
+base-commit: c69023b5e16e5ffe9368603dca76d85bd544ee57
+change-id: 20261011-fix-null-pointer-in-vhost_vdpa_release-b495fb89aaa8
 
-Because MSI was never enabled by the core, won't __msi_lock_descs()
-dereference a NULL dev->msi.data pointer and cause a host kernel panic?
+Best regards,
+--  
+Linfeng Sun <linfeng.sun.dev@gmail.com>
 
-> +			if (is_msi_trigger)
-> +				pci_dbg(qdev->vdev.pdev,
-> +					"SET_IRQS: idx=3D%u flags=3D0x%x start=3D%u count=3D%u\n",
-> +					hdr.index, hdr.flags, hdr.start, hdr.count);
-> +		}
-> +	}
-> +
-> +	ret =3D vfio_pci_core_ioctl(core_vdev, cmd, arg);
-> +
-> +	if (ret =3D=3D 0 && is_msi_trigger && !qdev->msi_cached)
-> +		qcom_cache_and_write_msi(qdev);
-> +
-> +	return ret;
-> +}
-[ ... ]
-> diff --git a/drivers/vfio/pci/qcom/msi_quirk.c b/drivers/vfio/pci/qcom/ms=
-i_quirk.c
-> new file mode 100644
-> index 0000000000000..b717aff37ffc8
-> --- /dev/null
-> +++ b/drivers/vfio/pci/qcom/msi_quirk.c
-[ ... ]
-> +void qcom_cache_and_write_msi(struct qcom_vfio_pci_device *qdev)
-> +{
-[ ... ]
-> +	qdev->msi_addr_lo =3D addr_lo;
-> +	qdev->msi_addr_hi =3D addr_hi;
-> +	qdev->msi_data =3D data;
-> +	qdev->msi_cached =3D true;
 
-[Severity: Medium]
-Are memory barriers required when setting this flag?
-
-Because this flag is read concurrently in qcom_intercept_msi_read() without
-locks, can the compiler or CPU reorder the store to msi_cached before the
-data stores?
-
-If so, a lockless reader might observe msi_cached =3D=3D true but read
-uninitialized or stale addresses, serving garbage to the guest VM. A
-smp_store_release() here and smp_load_acquire() on the read side might be
-needed.
-
-> +
-> +	pci_write_config_dword(pdev, qdev->msi_offset + QCOM_VFIO_MSI_MAGIC_OFF=
-SET,
-> +			       QCOM_VFIO_MSI_MAGIC);
-> +	pci_write_config_dword(pdev, qdev->msi_offset + QCOM_VFIO_MSI_ADDR_LO_O=
-FFSET,
-> +			       qdev->msi_addr_lo);
-> +	pci_write_config_dword(pdev, qdev->msi_offset + QCOM_VFIO_MSI_ADDR_HI_O=
-FFSET,
-> +			       qdev->msi_addr_hi);
-> +	pci_write_config_word(pdev, qdev->msi_offset + QCOM_VFIO_MSI_DATA_OFFSE=
-T,
-> +			      qdev->msi_data);
-
-[Severity: High]
-Do these writes trigger Unsupported Requests on the physical bus?
-
-Since qdev->msi_offset points to unassigned capability space found by
-pci_find_free_ext_cap_offset(), writing to it on the physical device can
-cause the hardware to return an Unsupported Request (UR) per the PCIe
-specification.
-
-With AER enabled on the host, this could trigger error interrupts, PCIe bus
-resets, or host system crashes. Also, since VM reads are intercepted in
-software, are these physical writes actually necessary?
-
-> +
-> +	pci_info(pdev, "Qualcomm WiFi MSI cached at offset 0x%x - addr_lo=3D0x%=
-x addr_hi=3D0x%x data=3D0x%x (magic=3DQMSI)\n",
-> +		 qdev->msi_offset, qdev->msi_addr_lo, qdev->msi_addr_hi, qdev->msi_dat=
-a);
-> +}
-[ ... ]
-> +static ssize_t qcom_intercept_msi_read(struct qcom_vfio_pci_device *qdev,
-> +				       loff_t pos, char __user *buf, size_t count)
-> +{
-> +	u32 tmp_val =3D 0;
-> +	int msi_magic, msi_addr_lo, msi_addr_hi, msi_data;
-[ ... ]
-> +	if (pos =3D=3D msi_magic && count =3D=3D sizeof(u32)) {
-> +		if (qdev->msi_cached) {
-> +			tmp_val =3D QCOM_VFIO_MSI_MAGIC;
-> +			pci_dbg(qdev->vdev.pdev, "Intercepting MAGIC read at 0x%llx, returnin=
-g 0x%x (QMSI)\n",
-> +				 pos, tmp_val);
-> +		} else {
-> +			return -ENOTTY;
-> +		}
-> +	} else if (qdev->msi_cached) {
-> +		if (pos =3D=3D msi_addr_lo && count =3D=3D sizeof(u32)) {
-> +			tmp_val =3D qdev->msi_addr_lo;
-> +			pci_dbg(qdev->vdev.pdev, "Intercepting ADDR_LO read at 0x%llx, return=
-ing 0x%x\n",
-> +				 pos, tmp_val);
-> +		} else if (pos =3D=3D msi_addr_hi && count =3D=3D sizeof(u32)) {
-> +			tmp_val =3D qdev->msi_addr_hi;
-> +			pci_dbg(qdev->vdev.pdev, "Intercepting ADDR_HI read at 0x%llx, return=
-ing 0x%x\n",
-> +				 pos, tmp_val);
-> +		} else if (pos =3D=3D msi_data && count =3D=3D sizeof(u16)) {
-> +			tmp_val =3D qdev->msi_data;
-
-[Severity: High]
-Will this copy the wrong bytes on big-endian host architectures?
-
-qdev->msi_data is assigned to tmp_val (a native u32). When count=3D2 is
-requested, copy_to_user(buf, &tmp_val, count) will copy the first two bytes
-in memory.
-
-On big-endian hosts, won't this copy the most-significant zero-padding bytes
-of the u32 rather than the actual data? This would cause the guest VM to
-receive corrupted PCI configuration space data. Using cpu_to_le32() and
-cpu_to_le16() before copying to userspace might be required.
-
-> +			pci_dbg(qdev->vdev.pdev, "Intercepting MSI_DATA read at 0x%llx, retur=
-ning 0x%x\n",
-> +				 pos, tmp_val);
-> +		} else {
-> +			return -ENOTTY;
-> +		}
-> +	} else {
-> +		return -ENOTTY;
-> +	}
-
-[Severity: Medium]
-Is it intentional that non-exact read sizes bypass the cache?
-
-If the guest VM reads this gap using unaligned, bulk, or byte-sized reads
-(e.g., count=3D1 or count=3D8), the code returns -ENOTTY. This causes the V=
-FIO
-core to fall back to a physical hardware read.
-
-Since the physical hardware has no implementation at this offset, won't it
-just return 0, breaking the virtualization contract for guests that don't do
-exactly 16-bit or 32-bit aligned reads?
-
-> +
-> +	if (copy_to_user(buf, &tmp_val, count))
-> +		return -EFAULT;
-> +
-> +	return count;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261011074514.5158=
-94-1-jtornosm@redhat.com?part=3D3
