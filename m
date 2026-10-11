@@ -1,153 +1,120 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B201C84A2
-	for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 01:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1573D2F8E90
+	for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 03:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791683321; cv=none; b=bfaV/S9dy5q+P4c7ZnlqpetkkmZBOjUV6bPtnILX0vV/xXiMoTYaphGqIRvcfG89Br/iNOv2UG+lW10ECjSf54V5W2vgOVd8nR8Kek/lrxSwdNXu3eo5NBk6cSMoEdixDqL/BkHJ98sGqoaIK3k7elBh+phGqkF1LyTPv7CvEX8=
+	t=1791690601; cv=none; b=nn5S3uIaRVz0T1L9VRq2zEJ2k0yAsmPSYkFuVfDHp6JpQMvXXPZwt+qsMvkyH5x0OehDKlEviEsBltyuq7H4i6u7hfKhybBc88FOh2NraGZM4i8BAYYorOVL2oW+nJ0lvcOlZF+gUIfx6N42e9PriCHd/DQGyjEKEG371+zMHSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791683321; c=relaxed/simple;
-	bh=iNfEOTki28mG8+E/q+jod6G13cAmJ5gfKHCYNhNQfFo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T9dHqXT4ENwRE7j9JDmM1x+rdqQVCG13vWDpoPZTxQctfYbgftdfTGCYRCpNTy9nEXJHM+K1Fe3G+TLRLk+KXN/o9T3CNKD+i8o+VGj+XguF+Ru473mVX61q9Ov4Hrle79Rsr+NARo03ECuUWuO0vw0mY9zdjL8rES57qdmOEYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hqqv1dPt; arc=none smtp.client-ip=209.85.215.172
+	s=arc-20240116; t=1791690601; c=relaxed/simple;
+	bh=1DpN0+D5ufXyFyAfy3uJmze4fn5FpngK55D6QJU13m0=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=oKMp+AQ2qEcVHiOnFtw5S6BocSx+LLl5gTtp08qg2GKN1kxCBrRH7ZyR87NCZ6AlYF714bzOPBRhfl/JxTYSV2Q98JNREvusKnJyd/4AlXKf+5/vg/SPsyEqD2BKmEKxpM0hHu4+v1qjgCK+J47s243F5BihRH9VcWX08O+iBZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqCnOtDD; arc=none smtp.client-ip=74.125.82.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hqqv1dPt"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc1bc88a20eso552854a12.3
-        for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 18:48:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqCnOtDD"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-33fb4680717so3367680eec.1
+        for <kvm@vger.kernel.org>; Sat, 10 Oct 2026 20:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791683319; x=1792288119; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H4ioZwXLugL7a4JvMdl+hzI1AKbv2zUcDeCQrSIJAnw=;
-        b=hqqv1dPt22TGHPM7i3hEAwK1YSq7U86az3rphZlqO2YpsBR7FMxjU0m0+ZHYOMoqQu
-         jzUq5deRVj+w11S/6D1T6EmVM0MVGQQ+fY3SM399thlP1n/hOab2WBg73JoVoGjmE9vt
-         TbIqngpCkwcztSIArZ4IJURVc3ZMsdVxktpnBoj22ch3f9cStx0W1X9OpS4DBHxjuZUB
-         Bw6xb+rcILHp1VXlDAfuKeDfCofScEppe3CQV/kjk/pf9nvlfmF72z0PK+fkp2gdvZzP
-         IOj4UFWcDaGkUIQLFj2i2+mPCGhV4IfGhFz8gQFpNn3nVO0JO/hHS+mYh92Pr6baBwBv
-         MdIA==
+        d=gmail.com; s=20251104; t=1791690599; x=1792295399; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=FyjOs8U6Ak5u7Fn/oZM+fBDOPJMJH3TRgM8xKhmhhZ0=;
+        b=jqCnOtDDd41ZdVtH5EgO4VmolRbB6ElsyY1gyO+uqnf2mj9hAwXglyb7C/nmFNqUQI
+         NB6FYIHzZDzb+qyTzoZkB5G/qaF5abxbxRTaqbum/EOrrtdd1ayQsXKP6npWGbGD5g/M
+         +BevaTG/SagDHO77Dct9vndImfm1ZW0/K1YkQPBQ5Uen2wOjojgXgSFLEdWXkfzRU6si
+         EjEIMr7xlOE4gMybsEd4OFwS4XNrhu9rC4+44EJKmH/xHRgiRUAuvO5yEuYiriwYssqe
+         FV1ZhVFF8msauHvJ4uCchSmLomF13ZFPGa2A7p0CtFcYRzwqXB1tHn8HhXJCAAmgQJBt
+         1VHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791683319; x=1792288119;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H4ioZwXLugL7a4JvMdl+hzI1AKbv2zUcDeCQrSIJAnw=;
-        b=KtxREvHwWiUwnYWFhvl+A6+ZCtRLkrB+G9t7ZzHJduWByyazhqjPnk10WnTugJfgoY
-         tQ2wjoG5CZB97cC8iyfOGHRZkdW0y/Yzx3bHoPoWN464TQB4ASZkgPxLgpkrzj2i1OdU
-         FRIqEml+p8neNC/TptCztX2kOVR/QWQpOW8milh/FMEK1Fr45ov4dFp8AXD60TvLLl+h
-         /oDHIlRNBjeNMLa8lKgvm6k1WeE/lqFJqZC3JCgzMoKX5oUlY+GYiBKvf6tNHaft64Kl
-         vFXHBouEnItd3QKgjES5LyuRBXB99WlZRGgTaHdIbQX4pQ3gPFfzIaDIrdzKD7DuTJFp
-         JPkg==
-X-Forwarded-Encrypted: i=1; AKwUvBySm83wvsZ1KRQvN+Y30AJb9cvca9XiEQtXr9seawYCJX/JEipLes6hW6rOkyPkXtKgbtI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKvAumbP3E0tIIn8CjUw5Kz0sWeTDszJ7lf8n+SLZbDZsdsWjFC
-	ko6fdIX4VfGBki2dKPgaumZ5tbSgxyDZ7WBQeXm9d9O6tpnzICE+1W9E3TOUqQ==
-X-Gm-Gg: AYBFou1VR9vD15ubdtF/VwjUsgPprY5doO08vHzL6BIB5ulCGVa+02ITLcP/gkbr5dj
-	yB5S3vfLnfcdn5oOEOLQsEEEcj7z5qOCNPJYS9qJedALc+9xipYNNwWa9AajnIx/I/aS1v5W/9S
-	FBTCdn2fI3riCHK41IawwjpQj29ktdgEsIsw4BWSdl5Wz1lu9kPqHwhIjYIU2bgnWXEIPLENyBW
-	kE4MnYV2+90quW5RI1Yxt35BzqIpRxoUXHPE7TpkRSYZcZqAhhT/5/tJLLUqypNRhhvTayuIZnu
-	DTsHcxiwlNj6+uOoQ7oqTMNHRssxkoBdSLGezXPg2VoRuynpNHrSybsDkCbs3J+ScCv+xsigWVi
-	2s/5WtAWWWzPo0Af2O8lcKmXVT6p2v3cuOrr4xyCbjiKAHJYFpHVGh+Yf0Ubfqp0Gm5UVpzqnIY
-	/Ijwnt/IzB+F9fDjG6w5Nf6MMv12Brgqrz+msodZ7OIcDE2US//Cgs24qQk8PbMpKNyo+bBw==
-X-Received: by 2002:a17:90a:d008:b0:3a8:49f2:8ddb with SMTP id 98e67ed59e1d1-3ab3ae36cbcmr5697749a91.60.1791683319116;
-        Sat, 10 Oct 2026 18:48:39 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab55e41eefsm8496023a91.10.2026.10.10.18.48.34
+        d=1e100.net; s=20260707; t=1791690599; x=1792295399;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FyjOs8U6Ak5u7Fn/oZM+fBDOPJMJH3TRgM8xKhmhhZ0=;
+        b=AfcBwj61U5tyE1BX0KqOKLXf9uFHsqbIB/A3XM7+9UgrjOMDcN0rPoCGZqBn5Hu6Qd
+         a3/irGmSqCHrRninTw8/lxMDA2uC1GfieAWeV6yMImb5KAFQhcjOcm3fn+lDAVzDdEyy
+         T4gzPTUwod9YMl52ch25ZlbRolKs7lKyje+MyUHH0tSkejC4bu0ZfA/ka8EvMcEUw47n
+         brHedNAoCduSE7dJayt6vfWSdP7pAF2TZFiIe4nnA+L1DKo6pBVtzzf7WQyf2+DHpTYK
+         e4Svqm/1L7rmvcqP1zKAazimu6UOPvkc1EBKIHfXJuHdQWH2MUo+Of26mfDicW5feoC/
+         VA8w==
+X-Forwarded-Encrypted: i=1; AKwUvBz0tfFs3HIl7FRROLR/8ekIgMwQIvIPhuBvxGP9H8aQ7ZuOeaXUO/W2sV4DWiWQgsDw5ak=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJKDcmoxWx9QstdlfjCjRGYtL6N4d2SFyJ8TB5bAKIQGAzvL8rt
+	eTKE0P0Jtw0QRoBx96gsJEo8cGc8yRouCz3tb0KLCi8o3mR0Gzw4fBT4
+X-Gm-Gg: AYBFou2MaDjuo2h3lk/iDGB23yEzMpDh03xENoIdKkWGNFaTn/mZfJcGN7GaKGGkS90
+	GolEAzF348loeXazBELiwSF/AYkIQTkslRVx+x99idZbaLFJLa0Kt91OQY3Rfw1KNGavoHt3CnO
+	1BbjFPOblnXfONr+92B2Sai7cJg7R1mZB/HxTov/6RhTEVwkuIeQIre1XeB3XT6YzBhGEDPCNaR
+	bl26YudYRDvSPNNCNEpy/9YdBzDHPrBsK2uOf7CZFpuhliazSZGFOeFkmaPh6x3Kvw/rXSbMLK0
+	s1u368SyTH2f+S4kBmGKa79HMxPoAGhxt7HOvfcFMCUAnOm9gaFjFvEC1y6FC1JvA2v4S1Qkn+j
+	8P2AxPcvqBtAMAJ9zQtILpGwLu+9tTNavxcvD5qB/LrVF3oDRZyJi88l6mUi1EzTJX4VbAYQJtc
+	ot1qIvMaaZWlr9VsL6Riy2xCoIM0qxH45F7VKVbLM7WdjkGgRue8Bt7cG7EV2EiUzWp4en
+X-Received: by 2002:a05:7300:2442:b0:351:39db:42db with SMTP id 5a478bee46e88-3537dfe388fmr8395787eec.20.1791690598985;
+        Sat, 10 Oct 2026 20:49:58 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-358de54fe47sm7430579eec.31.2026.10.10.20.49.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 18:48:37 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: Mike Christie <michael.christie@oracle.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jia Jia <physicalmtea@gmail.com>
-Subject: [PATCH v2] vhost-scsi: do not count PI bytes in the data length
-Date: Sun, 11 Oct 2026 09:48:03 +0800
-Message-Id: <20261011014803.100454-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sat, 10 Oct 2026 20:49:58 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gautam Menghani <gautam@linux.ibm.com>, 
+Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com, amachhiw@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] KVM: PPC: Book3S HV: Ensure that calls to idr_alloc are synchronized
+In-Reply-To: <20261009123035.157770-2-gautam@linux.ibm.com>
+Date: Sun, 11 Oct 2026 08:47:35 +0530
+Message-ID: <zewlq628.ritesh.list@gmail.com>
+References: <20261009123035.157770-1-gautam@linux.ibm.com> <20261009123035.157770-2-gautam@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-vhost_scsi_handle_vq() moves pi_bytesout or pi_bytesin into the
-protection sgl and subtracts those bytes from exp_data_len.  The length
-passed to TCM is still exp_data_len + prot_bytes.
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-prot_bytes comes from virtio_scsi_cmd_req_pi.  With
-VIRTIO_SCSI_F_T10_PI negotiated, vhost reads that header and does not
-check that the CDB is a READ or WRITE.  sbc_check_prot() replaces
-data_length from the CDB only when the protect field is non-zero.
-target_cmd_size_check() leaves a write's data_length unchanged when the
-CDB size is smaller, so a command that does not get that replacement
-keeps a data_length larger than the data sgl.
+> Calls to idr_alloc() in __prealloc_nested() are not currently synchronized.
+> According to the documentation [1], the caller should provide their own
+> locking to prevent concurrent modifications to the idr to prevent bugs.
+>
+> Wrap the call to __prealloc_nested() in	a spinlock to prevent concurrent
+> modifications to idr.
+>
 
-The KASAN report is a MODE SELECT whose header had pi_bytesout set.
-The data sgl held only the parameter list.  spc_emulate_modeselect()
-walked data_length and read the next physical page.
+This looks to be the leftover of previous implementation. IMO, the
+commit msg needs fixing.
 
-Pass the data sgl length.  Protected READ and WRITE still take their
-length from the CDB in sbc_check_prot().
+How about this?
 
-KASAN reports:
+Calls to idr_alloc() in __prealloc_nested() are not currently synchronized.
+According to the documentation [1], the caller should provide their own
+locking to prevent concurrent modifications to the idr to prevent bugs.
 
-  BUG: KASAN: use-after-free in spc_emulate_modeselect+0x145/0x380 [target_core_mod]
-  Read of size 1
+Now __prealloc_nested() calls idr_alloc() with GFP_KERNEL which can
+sleep and mmu_lock is a spinlock. So idr_alloc() cannot be moved under
+mmu_lock. In such cases the idr Documentation says:
+    If you need to take a lock while allocating a new ID from the IDR,
+    you may need to pass a restrictive set of GFP flags, which can lead
+    to the IDR being unable to allocate memory.  To work around this,
+    you can call idr_preload() before taking the lock, and then
+    idr_preload_end() after the allocation.
 
-  spc_emulate_modeselect
-  __target_execute_cmd
-  target_execute_cmd
-  vhost_scsi_write_pending
-  transport_generic_new_cmd
-  __target_submit
-  target_queued_submit_work
-  process_one_work
-  worker_thread
-  kthread
-  ret_from_fork
-  ret_from_fork_asm
+Hence preload the idr memory with idr_preload() before taking mmu_lock,
+which allows us to use idr_alloc(..., GFP_NOWAIT) under the spinlock.
 
-Fixes: 9f977ef7b671 ("vhost-scsi: Include prot_bytes into expected data transfer length")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
-v2:
-  - Drop the claim that target used to subtract prot_length.
-    9f977ef7b671 cites 14ef9200, which is not in the tree
-  - prot_bytes comes from virtio_scsi_cmd_req_pi
+This also allows to kill __prealloc_nested() and __add_nested(), as they
+are not needed anymore with idr_preload().
 
- drivers/vhost/scsi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+[1]: lib/idr.c
+<...>
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 4f8c0260bc9e..4bd29c2ceed9 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1534,9 +1534,13 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
- 		 */
- 		cmd->tvc_vq_desc = vc.head;
-+		/*
-+		 * exp_data_len is the data sgl. prot_bytes already sit in
-+		 * the protection sgl. Protected READ and WRITE replace
-+		 * data_length from the CDB in sbc_check_prot().
-+		 */
- 		vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_attr,
--					    data_direction,
--					    exp_data_len + prot_bytes);
-+					    data_direction, exp_data_len);
- 		ret = 0;
- err:
- 		/*
--- 
-2.53.0
+> [1]: lib/idr.c
+>
+> Fixes: c0f00a18e2a8 ("KVM: PPC: Book3S HV Nested: Change nested guest lookup to use idr")
+> Cc: stable@vger.kernel.org # 5.19+
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+Otherwise LGTM. Thanks for taking it ahead and validating this.
+
+-ritesh
