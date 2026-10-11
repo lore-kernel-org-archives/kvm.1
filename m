@@ -1,140 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-194.mta0.migadu.com [91.218.175.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA16388876
-	for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 07:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DB137C91B
+	for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 07:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791703033; cv=none; b=DtMgJ1yhBLR0adBDe4+WehbH/tqtp0Qa25inlM0rpYgvhBTSPZZRTC7mveJMczHfFlHvNNrUPEfe+rANyBACS8AmE6jPTmcqsNhqTVLhb9eq3LTcJcM96zo6+xgoTcdCMk2C3GXr97+9GlcRcC1sG8oSOX+Kwl1GO5NTX6hCuKM=
+	t=1791703587; cv=none; b=OpRW06MLmmGRqT5jN+E8XlJoBohM+CglGPWufLSbfJvwGBcfVi+JAaJzebmYg4RQnb2+KxaRTIDRG/q/eefuSPof4hTiSiL6foac7USBkLRClFe1QKhqlLFcwMnrFanC8mVfuCKKuuvN4ARjaFgqfLfs411OGS/fh3yGHEd6SB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791703033; c=relaxed/simple;
-	bh=ZUK9rcSpEpSUHzdYNfZiRBtcugeL0hHAv5lcPoIRWo8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOMhMNIGjgdgRv388EXO/DgZ/7jCQ8zh8pJBVANLlaU7OZhv7FqgjVNVnT6t1TwIKPpruFUmN53EoE0aPmngVl2K8wNr28VMOMGjRVC5EesGEpRChT49OFwfI1TtJzB+yuKs22pnA+jHbH70cV1d2xEzFLsAAmm8+xLjvzRD3xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MV1iErmA; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791703587; c=relaxed/simple;
+	bh=zeYhOKLAEK6plYt1ei/97MDQNIKutEUyTKAyLEF+q9o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SrDB68VQnCR6ffK5kumYhuaijbWL47/T7YY6laxiKNsDwG/GIVLHtHVkhvvkz7PPDEuX0bw2tSIQ2+hIi5MWim5+wiw/NkXpY58kQFpsaayl8RFooxsjHBBU26WsRk1PJwRDXZmmwhxgH2leAQS/f8e8CUHUTBbpVxStlXbzzZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VO+EyQMf; arc=none smtp.client-ip=91.218.175.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MV1iErmA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791703031;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Po4kqLt9W4SvS9uRrM6O/FVIkG+dWT3ks06Hqz7p2LY=;
-	b=MV1iErmAhcnEYyJ/hfWzeiYMhWdSmxWJBtu1lewaG94pfx+qhBA4hxBORz2AH7HTG3xczc
-	cbGr/MRUkMhyY3ue/46o/09nqbkxlWa3Bbis1YwnvGrf0lTHIImlB4q7szE97FXu6CHV9J
-	cuedMELWfeiaJmYBjwMsUKy0MJxDChk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-C-dfqTKKOqSyT6MWEVKWmA-1; Sun,
- 11 Oct 2026 07:17:07 +0000
-X-MC-Unique: C-dfqTKKOqSyT6MWEVKWmA-1
-X-Mimecast-MFC-AGG-ID: C-dfqTKKOqSyT6MWEVKWmA_1791703026
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 55AD91955F76;
-	Sun, 11 Oct 2026 07:17:06 +0000 (UTC)
-Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 88D0718004D4;
-	Sun, 11 Oct 2026 07:17:04 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: sashiko-bot@kernel.org
-Cc: jtornosm@redhat.com,
-	kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [PATCH 2/7] vfio: Add qcom_vfio.h header for MSI cache protocol
-Date: Sun, 11 Oct 2026 09:17:03 +0200
-Message-ID: <20261011071703.506995-1-jtornosm@redhat.com>
-In-Reply-To: <20260930143149.0F62D1F00893@smtp.kernel.org>
-References: <20260930143149.0F62D1F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VO+EyQMf"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=zeYhOKLAEK6plYt1ei/97MDQNIKutEUyTKAyLEF+q9o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791703583; v=1; x=1792308383;
+ b=VO+EyQMfkdoCAzZRmZ8Q1gzeNbt2A1w1Qihdx9B6DOJ0ha5zWAz8ayJz5O5gcYCqEFXXoa5o
+ 5ulxgtOWHUhYpFPOxVDBF3wyfeRAnt9hbhlCjaweLu+Jvu4vQ321wKPL26A6vRMgYtUsAcIVcbN
+ wa0IwO3jWcHI564/cHO74XrM=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id d7ba55b366af8dc9;
+	Sun, 11 Oct 2026 07:26:23 +0000
+X-Mizu-Trace-ID: d7ba55b366af8dc9
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5ba40832934so2446e87.1
+        for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 00:26:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx0P3h45uTt2iUrQgbIDrFcDlI//8wnNt8cCT1uCgDD2ujpXihxYigfoMPnlRtBXRzb22I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJy1r4L3It3yMLuMimcZOcHKMBmiuwXc1eL9aS8y2HyMkmu7pMy
+	5ncwbcqv+ltj9ZhgdifsGhgMdf9a8zNPYr91WJ1IYJ9mbpbwzPqf114Efa2JbapTRc3XYJCWcm+
+	JCqGgmJzCK+XTG5GkJpZN+ZMHc6zKeL5wk8/st6OZ
+X-Received: by 2002:a05:6512:3b11:b0:5bb:ff6f:b4bd with SMTP id
+ 2adb3069b0e04-5bcea610359mr46362e87.14.1791703578480; Sun, 11 Oct 2026
+ 00:26:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+References: <20260928152507.2116110-1-fuad.tabba@linux.dev>
+ <20260928152507.2116110-4-fuad.tabba@linux.dev> <k6hsxo35ou3b5bcdo5xiew56zo25c4dmxqocnxszjvuqd7ct44@owruwfstprrh>
+In-Reply-To: <k6hsxo35ou3b5bcdo5xiew56zo25c4dmxqocnxszjvuqd7ct44@owruwfstprrh>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Sun, 11 Oct 2026 08:25:42 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTwe73HZ5u3LWgeYjDC2t1n4aLdwF=r-on5hSzCeTg+WPA@mail.gmail.com>
+X-Gm-Features: AclHuK-7n7d2SMrcaEI2aS0U2QLkxfWQsDtE5UfiVO1913-p3Vb7V7WrGlc9y-0
+Message-ID: <CA+EHjTwe73HZ5u3LWgeYjDC2t1n4aLdwF=r-on5hSzCeTg+WPA@mail.gmail.com>
+Subject: Re: [PATCH v1 03/10] KVM: arm64: nv: Don't loop on AT S12E{0,1}{R,W}
+ with an invalid VTCR_EL2
+To: Kajetan Puchalski <kajetan.puchalski@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Jing Zhang <jingzhangos@google.com>, Karl Mehltretter <kmehltretter@gmail.com>, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-> [Severity: Critical]
-> Does using pci_find_free_ext_cap_offset() here risk corrupting active
-> hardware capabilities?
->
-> pci_find_free_ext_cap_offset() relies on a heuristic that assumes the last
-> extended capability is exactly 64 bytes:
->
-> drivers/pci/pci.c:pci_find_free_ext_cap_offset() {
->     ...
->     free_offset = last_cap_start + 64;
->     free_offset = ALIGN(free_offset, 4);
->     ...
-> }
->
-> If the final capability is larger (such as AER, DPC, or VSEC), this
-> allocation would return an offset inside the active capability. Will the
-> host driver physically writing MSI data to this offset silently corrupt the
-> device's hardware capability state?
+  Hi Kajetan,
 
-Already addressed by v2 of patch 1/7. The new zero-scan approach only
-returns genuinely zeroed space, so there is no risk of overlapping
-active capabilities.
+  On Fri, 09 Oct 2026 17:30:59 +0100, Kajetan Puchalski
+<kajetan.puchalski@arm.com> wrote:
+  [...]
+  > Currently we just clear out the upper bits of an address larger
+than the IA size and proceed, but
+  > the architecture requires that to cause a L0 translation fault.
+Not that it's a particularly common case.
+  > That is to say, I'm suggesting something like the following:
+  >
+  > + if (input_size > 48 || input_size < 25 || (ipa >> input_size) ||
+  > +    check_base_s2_limits(vcpu, wi, level, input_size, stride)) {
 
-> [Severity: Medium]
-> Will this loop prematurely terminate and fail to find the MSI cache if the
-> offset is allocated above 0xf00?
->
-> The host driver uses pci_find_free_ext_cap_offset(), which can legitimately
-> return an offset up to 0xff0 in the 4096-byte PCIe extended config space.
-> If the cache block is placed between 0xf04 and 0xff0, the guest driver
-> would silently fail to discover the magic signature.
+  Thanks, I'll add this to v2 as its own patch, since it's a missing
+check rather than the loop this patch fixes. I'll add
+  an at.c test for it too.
 
-Valid, fixed in v2. Changed upper bound to
-PCI_CFG_SPACE_EXP_SIZE - QCOM_VFIO_MSI_SPACE_SIZE to cover the full
-extended config space range. Also replaced hardcoded 0x100 with
-PCI_CFG_SPACE_SIZE.
-
-> [Severity: High]
-> Does blindly reading every DWORD in the extended config space risk bus
-> errors and unintended hardware side effects?
->
-> Iterating through the configuration space without walking the PCIe
-> capability linked list means reading active capability registers
-> arbitrarily. This can trigger unintended read side-effects, such as
-> clearing Read-to-Clear (RC) status bits.
->
-> Furthermore, reading unmapped PCIe configuration space can generate
-> Unsupported Request (UR) bus errors. On some systems, URs escalate to
-> Advanced Error Reporting (AER) faults or system hangs.
-
-Not applicable. qcom_vfio_find_msi_cache() is a VM-side function:
-config reads go through QEMU's VFIO config space virtualization, not
-directly to hardware. No URs or RC bit clearing will occur. Added a
-comment clarifying this in v2.
-
-> [Severity: High]
-> Could this lead to false positive MSI discoveries if active registers or
-> payloads contain this value?
->
-> Since the loop scans the entire config space instead of parsing
-> vendor-specific capabilities, a legitimate device register, statistics
-> counter, or VSEC payload might naturally contain the 32-bit value
-> 0x49534D51 (QMSI).
->
-> If falsely identified, the guest driver would interpret the subsequent 12
-> bytes as physical MSI addresses and mistakenly program invalid addresses
-> into the device firmware.
-
-Extremely unlikely. The magic "QMSI" (0x49534D51) is an ASCII signature
-chosen to avoid collision with real hardware register values. This
-function only runs on known Qualcomm WiFi devices. Even if a false
-positive occurred, downstream addr_lo validation (non-zero and
-!= 0xFFFFFFFF) would catch it.
-
-Will send v2 addressing the above.
-
+  Cheers,
+  /fuad
