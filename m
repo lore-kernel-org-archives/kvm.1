@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A1A457E5D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17DB3EDE78;
 	Mon, 12 Oct 2026 23:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791848217; cv=none; b=UQeM8d0HOiqFh+83fZxvJYnLeFKS/DlsermMSqABxMzLnojOQyx4suZVAprdGOV7fcgOYopnmoNR9LdnlnNeBYOcrhJhi0vY1+DIyD50/Vfuc6rwibu4XlIRtMY6ZHH+JLoD4bYJMy6pYftdB58yQulIppWXBXmtFfmSVrLF0uU=
+	t=1791848217; cv=none; b=lLPawChtS1U7y13H/LTqPWnmyy6k3vCQTrF8rpI+Dnze9m8lJ15rvVdMOOGPLZeYgACWMnQvzw8z5ZAzm+V4jynSFTiB6hbAE9/ZjmocA9VWVVlkCvh8kuRZMRuuGk15QkQanT+p28pYpJcdsZImgGVxCv3vjeFYXa8zx/J9ANw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791848217; c=relaxed/simple;
-	bh=itNalxTC/ZLIXYgiI4pf0d7ZYSV/vaH/D+m2R8WVY5c=;
+	bh=2OoorrjzwdKX/wpptUPJ4j5RFbee5efl17EUsp/jHb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlHgTjpI7TxuISnf68jWF6KEFqFNwxdcWEJJonVY/3pr2YYgqO25pEYhzVPKaJjitifTlRLMNnB9GLBa2XOv5DEdpXNZHgB2IRGm7JLkwTYPBEiqzNoO2H142rYhrglfi1LDQ8AXtSTyYd5xHRy2Nw2VNQbtI9whySqqOflVKXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5Om+NmJ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MZpsFYCleYg+C2Y7gyf6YMrRYaKGNa2vu6kEwwMyljYdJMmyhbGHD27M6432yyHrb5RoxN8tu1yOOzVX0m7ExpFvfsbqgu02mCnRRlS4YuATFp2gIBzJeoo6CH8Exua2aCbQ5D9PZKn4/YUmNm4pL6zfV3AZQ5bC5r5xGwv3YJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQ3JR0Dg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5Om+NmJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09CE1F008A2;
-	Mon, 12 Oct 2026 23:36:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQ3JR0Dg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471751F008A4;
+	Mon, 12 Oct 2026 23:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791848215;
-	bh=ceEvcK626n8aVzVguPxWZdY1bIjqxzTmRdC9fQGzILg=;
+	bh=4xUcXsk8IG7llTl1qXrzu/IpXn3zBoFWpqvkRB7LlEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I5Om+NmJLh0cPOkZw9u8yN+28ty7hJOrPkx0f0wdggcWGpkYsHPkkqSb2qKsy1n4T
-	 wWrmGUG+8Rw8VgnEe6CNVujfiHE2/Dyabwj8FSDjoQBjd0IASWTKy94aFgxvGBLB8A
-	 Ki5dc+3ezRIpywSeIH0K+vBJv6cRGxeoxIE74rmI5olTQwtMayOtA4UtoCj2BN1Uf/
-	 OT8POloRp4oaSro8wnVfv4U1W0ry+dcWog+lB5rKErDjyQx/feKDTWUC8g6XTtfNXx
-	 34Ylx3bKa7T1y2vElTD27oN7yfQDNkFu4/nZ1cbNGtEVrdzaSoQTnu8LCQ+jWn8Gfb
-	 uQC27Er20qz7w==
+	b=YQ3JR0Dg1ACuB3g2X7fkISqayzM6iiSr9qbM0nUIDdASzacl4GzeXJpLBju9LvsvR
+	 fa7hiuUM0tIVwtVVczzMAjpnFWBV0d577JWpgKhYFGHGlTztIlc4lFQ1xZ09fIuZHN
+	 G+19T6ABgI3bO6q3bkpetBb4dBAX/ZqBqf7f4w6M73n0RaFz5EyacRKLU7y5jFH5l8
+	 pw+YNSXZg8NrLgHHhjTEfvQ0OtVYTeDlNcZs8GVVUP42T1lh8rya2KLquFTrua34cI
+	 NByqenQ4vHmE7Hu1Pbq+MitgbkdN2M80QPOkZTv3jfryRmNZBf64VRipYW5EbmudEx
+	 dzoXUzhGbhu8g==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v3 18/27] KVM: nSVM: Split nested_svm_transition_tlb_flush() into entry/exit fns
-Date: Mon, 12 Oct 2026 23:36:29 +0000
-Message-ID: <20261012233638.2546339-19-yosry@kernel.org>
+Subject: [PATCH v3 19/27] KVM: nSVM: Service local TLB flushes before nested transitions
+Date: Mon, 12 Oct 2026 23:36:30 +0000
+Message-ID: <20261012233638.2546339-20-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 In-Reply-To: <20261012233638.2546339-1-yosry@kernel.org>
 References: <20261012233638.2546339-1-yosry@kernel.org>
@@ -50,73 +50,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The handling for the entry and exit TLB flushes will diverge
-significantly in the following changes. Instead of adding an 'is_vmenter'
-argument like nested_vmx_transition_tlb_flush(), just split the function
-into two variants for 'entry' and 'exit'.
+Service pending TLB flushes for a specific context (L1 vs. L2) before
+entering/leaving guest mode, as KVM does not track TLB flush requests
+for L1 vs. L2. This is not currently required as KVM always flushes the
+TLB on nested transitions, but it is a requirement to drop the
+unconditional flushes.
 
-No functional change intended.
+TLB flushes are performed through the VMCB's TLB_CONTROL field, so
+service the flushes before every VMCB switch (except the precautionary
+switch in svm_free_nested()). Servicing flushes may end up purging the
+relevant HV TLB flush FIFO, which is based on guest_mode, so make sure
+local TLB flushes are handled before calling {enter/leave}_guest_mode().
+
+This is conceptually similar to how nVMX calls
+kvm_service_local_tlb_flush_requests(), except that the VMX calls only
+have ordering requirements on {enter/leave}_guest_mode(), and not
+switching the VMCS, because VPID used for TLB flushes depends on
+guest_mode, and flushes are not VMCS-based.
+
+Note that nested_svm_{entry/exit}_tlb_flush() must be called after
+kvm_service_local_tlb_flush_requests(), otherwise the TLB flushes will
+be immediately applied on the outgoing VMCB rather than the incoming
+one.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/nested.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 27f78228a42d5..efe7a39b53656 100644
+index efe7a39b53656..e216818f68372 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -688,7 +688,7 @@ static void nested_save_pending_event_to_vmcb12(struct vcpu_svm *svm,
- 	vmcb12->control.exit_int_info = exit_int_info;
+@@ -1044,6 +1044,20 @@ static void nested_svm_copy_common_state(struct vmcb *from_vmcb, struct vmcb *to
+ 	to_vmcb->save.spec_ctrl = from_vmcb->save.spec_ctrl;
  }
  
--static void nested_svm_transition_tlb_flush(struct kvm_vcpu *vcpu)
-+static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
- {
- 	/* Handle pending Hyper-V TLB flush requests */
- 	kvm_hv_nested_transtion_tlb_flush(vcpu, npt_enabled);
-@@ -708,6 +708,14 @@ static void nested_svm_transition_tlb_flush(struct kvm_vcpu *vcpu)
- 	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
- }
- 
-+static void nested_svm_exit_tlb_flush(struct kvm_vcpu *vcpu)
++static void nested_svm_service_local_tlb_flushes(struct kvm_vcpu *vcpu)
 +{
-+	kvm_hv_nested_transtion_tlb_flush(vcpu, npt_enabled);
++	struct vcpu_svm *svm = to_svm(vcpu);
 +
-+	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
-+	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
++	/*
++	 * TLB flushes are applied to the VMCB, so apply any pending TLB flushes
++	 * on the outgoing VMCB before switching to a new one. A TLB flush could
++	 * purge the relevant HV TLB flush FIFO depending on guest_mode, so make
++	 * sure the VMCB and guest_mode context is consistent.
++	 */
++	WARN_ON_ONCE(is_guest_mode(vcpu) != (svm->vmcb == svm->nested.vmcb02.ptr));
++	kvm_service_local_tlb_flush_requests(vcpu);
 +}
 +
- /*
-  * Load guest's/host's cr3 on nested vmentry or vmexit. @nested_npt is true
-  * if we are emulating VM-Entry into a guest with NPT enabled.
-@@ -858,7 +866,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
- 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -1075,6 +1089,8 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa, bool from_vmrun)
  
--	nested_svm_transition_tlb_flush(vcpu);
-+	nested_svm_entry_tlb_flush(vcpu);
+ 	nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
  
- 	/* Enter Guest-Mode */
- 	enter_guest_mode(vcpu);
-@@ -1434,7 +1442,7 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 	svm->vcpu.arch.dr7 = DR7_FIXED_1;
- 	kvm_update_dr7(&svm->vcpu);
++	nested_svm_service_local_tlb_flushes(vcpu);
++
+ 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+ 	nested_vmcb02_prepare_control(svm);
+ 	nested_vmcb02_prepare_save(svm);
+@@ -1337,6 +1353,8 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
+ 	if (nested_svm_vmexit_update_vmcb12(vcpu))
+ 		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
  
--	nested_svm_transition_tlb_flush(vcpu);
-+	nested_svm_exit_tlb_flush(vcpu);
++	nested_svm_service_local_tlb_flushes(vcpu);
++
+ 	svm_switch_vmcb(svm, &svm->vmcb01);
+ 	leave_guest_mode(vcpu);
+ 	svm_pmu_handle_nested_transition(svm);
+@@ -1549,6 +1567,8 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.nested_run_pending = 0;
+ 		svm->nested.vmcb12_gpa = INVALID_GPA;
  
- 	nested_svm_uninit_mmu_context(vcpu);
++		nested_svm_service_local_tlb_flushes(vcpu);
++
+ 		svm_switch_vmcb(svm, &svm->vmcb01);
+ 		leave_guest_mode(vcpu);
  
-@@ -1553,7 +1561,7 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
- 		 */
- 		__svm_pmu_handle_nested_transition(svm, true);
+@@ -2089,6 +2109,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, save);
+ 	nested_copy_vmcb_control_to_cache(svm, ctl);
  
--		nested_svm_transition_tlb_flush(vcpu);
-+		nested_svm_exit_tlb_flush(vcpu);
++	nested_svm_service_local_tlb_flushes(vcpu);
++
+ 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
  
- 		nested_svm_uninit_mmu_context(vcpu);
- 		vmcb_mark_all_dirty(svm->vmcb);
+ 	if (use_separate_l2_pat)
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
