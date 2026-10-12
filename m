@@ -1,213 +1,283 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326964189C2;
-	Mon, 12 Oct 2026 15:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37C749CF54
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 15:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791818048; cv=none; b=lp6YZR7cG7dtklrqUZ4E+nIDiRLKVDrQWuI5g6sLyN5xgGPZQXAN1mXvM6hXYuwJnRWYVizml3P8MOeSAhe66fDh4tBSyVi6mph68vhZ0lxrd5twungO6u2u1fX3Xvg+16yNgt1WjfwD9wgiHJWC5rvbap36ZeaD6ZGXXEWFOWM=
+	t=1791818782; cv=none; b=XwTjLdzsmXEzmrgsNSkD0U2QC6h85R9nVv3RiAh4WxiCJI/hZXPjQKrSZpTkcgUk+y8r9HWWpZq+UpcuRVlHXHXdcxiEKt4XzdPlVbJ8XSKgUL6NVLIKzvfSOkXl9WlT7ZhHyQSfOJ7e1XeWLaBVQnTbYZGDp8M2Q+vcqEty91Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791818048; c=relaxed/simple;
-	bh=fs4r5qOsQPt0v1Zez1FM9O2IBj2YyRQEaz5hM2RzrrQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Cnpa0lA1KGGTmwlCobAfBfbCV+FxzugMQs4fULacAXFs/jghhpGmz8Jt2mydN1t3yArIcTvtELxiP/3KNaK75G+ezicRGjqk/n/aSxbo9ZpZrPHDGrnuP/U6uOuuOnSVuMvCjdeX0cI6lz4SAnIuyB2GAQWugXTXocWIcUYqsrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=uAC4fOfH; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1791818782; c=relaxed/simple;
+	bh=r4xS8qfNNip730dRIttM9p9vhzXPPetzgmX8Jzhtz04=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bcVyPupMOgoebF6zefzpFr4+yANwTIu150XCn7FyDf/o64hXXTDcg0Ruy3Q0tZrqsy+tGFgXnygsYOkaTP/MWp12NVKPuJpm/ILoQn5miTYWNHscFcgM8vdEnUgWYKZTLKNhF2j8MNR7NAnlhA8Yv2JaYRbxoioJIwi7k1wxEj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XE1UZivP; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="uAC4fOfH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=fs4r5qOsQPt0v1Zez1FM9O2IBj2YyRQEaz5hM2RzrrQ=; b=uAC4fOfHo946zEKI2vBzYkJMSt
-	wI8LGR7CLNFhieeesHMyJTbFkQ8XFRIfpoCiVWMM9wfqNoFdb3mdWZFOeXNzvK2cuFKnPuT6ZCarL
-	plqmlUITPLao0QTNuGBk3T1mYh770oD/rOPUotZ+7F0SYjlmKNggbtkvGkAaMbBWcUER6MMnl7b0O
-	OunetvmEyhkYxfXMf3G3a+1V2KugzMEEgy0xkShxS9Exa2jSQ4Gxldw1wK1QdEbQXeTAHODhWdYYX
-	bwORoprDvsSJTFE/Ttk3zxIBzah/6o8HSeA/TKDQ/QtddCMsqrLQIXws2avYmuqPd1+zzYXyNbl60
-	m+pySQAQ==;
-Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xGHil-00000006M89-2qqt;
-	Mon, 12 Oct 2026 15:13:47 +0000
-Message-ID: <0ae3d92ef99c264cfd76d3c1ddef357e96c98d93.camel@infradead.org>
-Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
-From: David Woodhouse <dwmw2@infradead.org>
-To: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
-  Sean Christopherson	 <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton	 <oupton@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe
- <jgg@ziepe.ca>,  Kevin Tian <kevin.tian@intel.com>, Joerg Roedel
- <joro@8bytes.org>, Will Deacon <will@kernel.org>,  Robin Murphy
- <robin.murphy@arm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"	
- <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <shuah@kernel.org>,  Ackerley Tng <ackerleytng@google.com>, "Aneesh Kumar
- K.V" <aneesh.kumar@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
- <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose
- <suzuki.poulose@arm.com>,  Zenghui Yu <yuzenghui@huawei.com>, Steffen Eiden
- <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org, 	kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, iommu@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Date: Mon, 12 Oct 2026 16:13:45 +0100
-In-Reply-To: <20261012150715.25132-1-griffoul@gmail.com>
-References: <20260720111259.122911-1-dwmw2@infradead.org>
-	 <20261006183235.16576-1-griffoul@gmail.com> <yq5ald8680t2.fsf@kernel.org>
-	 <20261012095800.50250-1-griffoul@gmail.com>
-	 <CAEvNRgF1hMz+4ivH6WhsEOLTJGOegYO9AYK6OByYysPp_nVJ=g@mail.gmail.com>
-	 <20261012150715.25132-1-griffoul@gmail.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-vGwoeEThKsoPFflRbgNj"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XE1UZivP"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so1555408a91.1
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 08:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791818777; x=1792423577; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FuORvPXGU1IelcH358psfnrLkQ757pvSe+rshYdO0wU=;
+        b=XE1UZivPLi+WvufAE+WmhUCqiVPVWoj6P2pxJhhtPYukpGyKlj27X3GZxWydIeUETx
+         pmJiQTn64bM4pbZtb23rafEqyW4XJknl9/UJQ7NUKAC9mgEf3o55+/SxHutm1YRXCQNd
+         Z8P+xhaUWLIk+n5Cuf4oXm9JOt/DaSefu2YSHDeL57QPeh+vjxFBLleMZBIMipJs2ueC
+         obcN61ONM0aV/9lpG6/kcp7JIe6fxwakJC97sglRXe0UzGZ5S2MvhuZNQDkalmes5nZo
+         Xbarjdf4Xw+UoqxVPf7GdgmsTiEy0/de+qnmVE7iBAEq33GdWBONfTBZb7FV+Hj3jp8L
+         c/vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791818777; x=1792423577;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FuORvPXGU1IelcH358psfnrLkQ757pvSe+rshYdO0wU=;
+        b=AKwYUagR0+amThLF/tTtcAYRKB822YtnbIdQqOEDM8BXjcQXV9u4vrmv0vcEWRQQuo
+         msA7nrHUPctY1iEOkOiKCBzpdyMmTptntRGbfHE5tgzOZyIacZCs6icIqGMN56hSn6wx
+         wBvN9SQ/bV0Ps5jRBM2U2PsvJgtwbAs7ZpyMazbkAiQMOZnK+XcXQYqvmoVIRGwsh3Q8
+         gKd+BaBqYIW+/3QrP30tSL3RUknZEPZCzqAfJwQYnlarzk5opA0AZEzSvT7qKUFOsFI2
+         j+EX4tlA/nTf/IWQEPsj6tU1GT7aET1CSlKuE3xuJmmNnToVObp4h0niEKEpW3yWFCeA
+         w6fw==
+X-Forwarded-Encrypted: i=1; AKwUvBxzl2pW7w445RFv8hJrsr4ijaCBmRIdSg0Tkqu8D4LpqiBCNLdudLUWFI4SPtNJzG2xXy8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJkn0zPKyjpi/BpW7uc+FlkP0ETMDR8ifKe2rU5UQ7ItA+RXleH
+	X4LNNu1t2rV/KGDUxAGRa5bEOWq6QSbAglX2wFfSozezISYVkNymNU/IdJtsMQmX5oA5aaFyB1z
+	VqXcSfQ==
+X-Received: from pjbrs15.prod.google.com ([2002:a17:90b:2b8f:b0:3a8:434e:45b0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:da8b:b0:3ac:1c76:61a9
+ with SMTP id 98e67ed59e1d1-3ac1c767e0fmr1361340a91.13.1791818776719; Mon, 12
+ Oct 2026 08:26:16 -0700 (PDT)
+Date: Mon, 12 Oct 2026 08:26:16 -0700
+In-Reply-To: <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-13-15ad654a50db@google.com> <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
+Message-ID: <asz8GKNO9aQANr5E@google.com>
+Subject: Re: [PATCH v14 13/22] KVM: selftests: Support guest_memfd in-place conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+On Tue, Aug 18, 2026, Xiaoyao Li wrote:
+> On 7/23/2026 7:13 AM, Lisa Wang wrote:
+> > diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+> > index 4a48c4b42095..e547ea341ff7 100644
+> > --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> > +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> > @@ -484,8 +484,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+> >   	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+> >   						 nr_extra_pages);
+> >   	struct userspace_mem_region *slot0;
+> > +	u64 gmem_flags = 0;
+> >   	struct kvm_vm *vm;
+> > -	int i, flags;
+> > +	int flags = 0;
 
---=-vGwoeEThKsoPFflRbgNj
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Don't make unnecessary changes.  It's not just a "nice to have" thing, e.g. in
+this case this results in extra conflicts with other changes.
 
-On Mon, 2026-10-12 at 15:07 +0000, Fred Griffoul wrote:
-> =C2=A0Devices are different, because a device may not support
-> faults. So the provider also revokes the range on the target once it
-> owns the frames, and iommufd maps them right away. In other words, a
-> revoke means that the frames behind a range changed, whether they went
-> away or arrived.
+> > +	int i;
+> >   	kvm_set_files_rlimit(nr_runnable_vcpus);
+> > @@ -495,14 +497,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+> >   	vm = ____vm_create(shape);
+> >   	/*
+> > -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+> > -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+> > +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+> > +	 * initialize it as shared if in-place conversion is support, so the
+> > +	 * selftest framework can populate it exactly like other memory
+> > +	 * providers.
+> >   	 */
 
-That would map to the IOMMUFD 'REPLACE' operation that hitlessly
-replaces a PTE, but does anyone actually need that?
+Leave the existing comment as is.  The new comment should be anchored to the code
+below.
 
-As I said, assume that the "crappy devices can't take faults and need a
-scratch patch" issue is dealt with *elsewhere* and not relevant to the
-guest_memfd/memprovider work. That's purely a quirk on a given IOAS
-within iommufd.
+> > -	flags = 0;
+> > -	if (is_guest_memfd_required(shape))
+> > +	if (is_guest_memfd_required(shape)) {
+> >   		flags |= KVM_MEM_GUEST_MEMFD;
+> > +		if (kvm_has_gmem_attributes)
+> > +			gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
+> > +				      GUEST_MEMFD_FLAG_MMAP;
+> > +	}
+> > -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+> > +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags,
+> > +		   -1, 0, gmem_flags);
+> >   	for (i = 0; i < NR_MEM_REGIONS; i++)
+> >   		vm->memslots[i] = 0;
+> 
+> IMO, this diff belongs to the gmem in-place series.
 
---=-vGwoeEThKsoPFflRbgNj
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Yep, you're 100% right.  I pushed this to "coco" for now...
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-/Ukv0WcVn8vRZOszGxWzB3oAAAAAAAA=
+diff --git tools/testing/selftests/kvm/lib/kvm_util.c tools/testing/selftests/kvm/lib/kvm_util.c
+index 3f559f207408..0c67d964a9aa 100644
+--- tools/testing/selftests/kvm/lib/kvm_util.c
++++ tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -494,6 +494,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+        u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+                                                 nr_extra_pages);
+        struct userspace_mem_region *slot0;
++       u64 gmem_flags = 0;
+        struct kvm_vm *vm;
+        int i, flags;
+ 
+@@ -509,10 +510,20 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+         * for CoCo VMs that require GUEST_MEMFD backed private memory.
+         */
+        flags = 0;
+-       if (is_guest_memfd_required(shape))
++       if (is_guest_memfd_required(shape)) {
+                flags |= KVM_MEM_GUEST_MEMFD;
+ 
+-       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
++               /*
++                * Allow mmap() and initialize the gmem instance as SHARED if
++                * in-place conversions are supported, so that the memory can
++                * be populated/initialized like any other memory region.
++                */
++               if (kvm_has_gmem_attributes)
++                       gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED |
++                                     GUEST_MEMFD_FLAG_MMAP;
++       }
++
++       vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+        for (i = 0; i < NR_MEM_REGIONS; i++)
+                vm->memslots[i] = 0;
 
+but the entire in-place conversion series may need to be dropped because there's
+a potential deadlock, and I don't see an obviously non-awful way to fix it.
 
---=-vGwoeEThKsoPFflRbgNj--
+[ 2260.466972] ======================================================
+[ 2260.473150] WARNING: possible circular locking dependency detected
+[ 2260.479329] 7.3.0-smp--ce115a0096358-seanjc-soink #75 Tainted: G     U     O       
+[ 2260.486981] ------------------------------------------------------
+[ 2260.493161] sev_snp_vmsa_pu/24505 is trying to acquire lock:
+[ 2260.498821] ffffffffc01f7900 (sev_cmd_mutex){+.+.}-{4:4}, at: sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.508387] 
+               but task is already holding lock:
+[ 2260.514213] ffff93c9dd1cf070 (mapping.invalidate_lock#4){++++}-{4:4}, at: kvm_gmem_populate+0x18c/0x300 [kvm]
+[ 2260.524275] 
+               which lock already depends on the new lock.
+
+[ 2260.532446] 
+               the existing dependency chain (in reverse order) is:
+[ 2260.539917] 
+               -> #2 (mapping.invalidate_lock#4){++++}-{4:4}:
+[ 2260.546878]        down_read+0x3d/0x160
+[ 2260.550716]        kvm_gmem_fault_user_mapping+0x43/0x180 [kvm]
+[ 2260.556663]        __do_fault+0x3f/0x110
+[ 2260.560588]        do_pte_missing+0x515/0x1000
+[ 2260.565035]        handle_mm_fault+0x7f2/0x1290
+[ 2260.569567]        do_user_addr_fault+0x47d/0x6c0
+[ 2260.574271]        exc_page_fault+0x67/0xa0
+[ 2260.578458]        asm_exc_page_fault+0x26/0x30
+[ 2260.582991] 
+               -> #1 (&mm->mmap_lock){++++}-{4:4}:
+[ 2260.588997]        __might_fault+0x59/0x80
+[ 2260.593096]        _copy_to_user+0x23/0x60
+[ 2260.597197]        sev_ioctl_do_platform_status+0x50/0x80 [ccp]
+[ 2260.603116]        sev_ioctl+0x220/0x2b0 [ccp]
+[ 2260.607560]        __se_sys_ioctl+0x6d/0xb0
+[ 2260.611749]        do_syscall_64+0xfe/0x460
+[ 2260.615933]        entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.621506] 
+               -> #0 (sev_cmd_mutex){+.+.}-{4:4}:
+[ 2260.627426]        __lock_acquire+0x160d/0x2940
+[ 2260.631957]        lock_acquire+0xf1/0x300
+[ 2260.636050]        __mutex_lock+0x8f/0xdf0
+[ 2260.640147]        sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.645982]        sev_gmem_post_populate+0x189/0x230 [kvm_amd]
+[ 2260.651901]        kvm_gmem_populate+0x1ed/0x300 [kvm]
+[ 2260.657066]        snp_launch_update+0x1a7/0x250 [kvm_amd]
+[ 2260.662551]        sev_mem_enc_ioctl+0x371/0x3d0 [kvm_amd]
+[ 2260.668036]        kvm_vm_ioctl+0x52c/0x580 [kvm]
+[ 2260.672761]        __se_sys_ioctl+0x6d/0xb0
+[ 2260.676946]        do_syscall_64+0xfe/0x460
+[ 2260.681133]        entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.686706] 
+               other info that might help us debug this:
+
+[ 2260.694695] Chain exists of:
+                 sev_cmd_mutex --> &mm->mmap_lock --> mapping.invalidate_lock#4
+
+[ 2260.706077]  Possible unsafe locking scenario:
+
+[ 2260.711993]        CPU0                    CPU1
+[ 2260.716520]        ----                    ----
+[ 2260.721052]   lock(mapping.invalidate_lock#4);
+[ 2260.725498]                                lock(&mm->mmap_lock);
+[ 2260.731503]                                lock(mapping.invalidate_lock#4);
+[ 2260.738463]   lock(sev_cmd_mutex);
+[ 2260.741868] 
+                *** DEADLOCK ***
+
+[ 2260.747778] locks held by sev_snp_vmsa_pu/24505: 3, last CPU#35:
+[ 2260.753785]  #0: ffff93c9d54bd3a8 (&kvm->lock){+.+.}-{4:4}, at: sev_mem_enc_ioctl+0x73/0x3d0 [kvm_amd]
+[ 2260.763083]  #1: ffff93c9d54bc0a0 (&kvm->slots_lock){+.+.}-{4:4}, at: snp_launch_update+0x145/0x250 [kvm_amd]
+[ 2260.772991]  #2: ffff93c9dd1cf070 (mapping.invalidate_lock#4){++++}-{4:4}, at: kvm_gmem_populate+0x18c/0x300 [kvm]
+[ 2260.783356] 
+               stack backtrace:
+[ 2260.787718] CPU: 35 UID: 0 PID: 24505 Comm: sev_snp_vmsa_pu Tainted: G     U     O        7.3.0-smp--ce115a0096358-seanjc-soink #75 PREEMPT 
+[ 2260.800310] Tainted: [U]=USER, [O]=OOT_MODULE
+[ 2260.804668] Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.86.0-102 01/25/2026
+[ 2260.818127] Call Trace:
+[ 2260.820579]  <TASK>
+[ 2260.822687]  dump_stack_lvl+0x54/0x70
+[ 2260.826351]  print_circular_bug+0x2e4/0x300
+[ 2260.830537]  check_noncircular+0xf5/0x120
+[ 2260.834553]  __lock_acquire+0x160d/0x2940
+[ 2260.838565]  ? __lock_acquire+0x65e/0x2940
+[ 2260.842664]  ? rcu_is_watching+0x11/0x40
+[ 2260.846587]  ? trace_sched_exit_tp+0x25/0xb0
+[ 2260.850861]  lock_acquire+0xf1/0x300
+[ 2260.854440]  ? sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.859928]  ? lock_is_held_type+0xc7/0x120
+[ 2260.864112]  ? sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.869599]  __mutex_lock+0x8f/0xdf0
+[ 2260.873178]  ? sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.878663]  ? pfn_valid+0x89/0x220
+[ 2260.882155]  ? pfn_valid+0x1fb/0x220
+[ 2260.885736]  ? lookup_address+0x49/0x70
+[ 2260.889577]  sev_issue_cmd_external_user+0x39/0x60 [ccp]
+[ 2260.894890]  sev_gmem_post_populate+0x189/0x230 [kvm_amd]
+[ 2260.900289]  kvm_gmem_populate+0x1ed/0x300 [kvm]
+[ 2260.904938]  ? snp_bind_asid+0xd0/0xd0 [kvm_amd]
+[ 2260.909561]  snp_launch_update+0x1a7/0x250 [kvm_amd]
+[ 2260.914528]  sev_mem_enc_ioctl+0x371/0x3d0 [kvm_amd]
+[ 2260.919493]  kvm_vm_ioctl+0x52c/0x580 [kvm]
+[ 2260.923706]  ? kvm_gmem_ioctl+0x192/0x1e0 [kvm]
+[ 2260.928266]  __se_sys_ioctl+0x6d/0xb0
+[ 2260.931930]  do_syscall_64+0xfe/0x460
+[ 2260.935595]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.940822]  ? trace_irq_disable+0x25/0xc0
+[ 2260.944921]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 2260.949972] RIP: 0033:0x474bdb
+[ 2260.953031] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
+[ 2260.971770] RSP: 002b:00007ffd188ac3f0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[ 2260.979337] RAX: ffffffffffffffda RBX: 0000000028691b30 RCX: 0000000000474bdb
+[ 2260.986468] RDX: 00007ffd188ac4a0 RSI: 00000000c008aeba RDI: 0000000000000007
+[ 2260.993600] RBP: 0000000000135000 R08: 00000000004d50b8 R09: 00000000004e1b78
+[ 2261.000734] R10: 0000000000000002 R11: 0000000000000246 R12: 00007ffd188ac4c0
+[ 2261.007867] R13: 0000000000137000 R14: 0000000028693db0 R15: 0000000000137000
+[ 2261.015001]  </TASK>
