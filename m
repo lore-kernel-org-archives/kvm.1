@@ -1,75 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D3C5A79B;
-	Mon, 12 Oct 2026 10:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A834348C7C;
+	Mon, 12 Oct 2026 11:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791802694; cv=none; b=Ag3kqxy7CQ4QEwSXi9T2ZhbajBON/NRSWEpnbz276AL2QCmtV4NnCvLo0mUWHPye63BpdpfxPpwB6kHwNFlYCrMnddYYfpV7CYdfqIbaqCdQYzKuUJQG4hOu4g9baA9ipGL+/3FO47spCLKxf5iZMJ2laoKL9ZTjBn1xByV3CAg=
+	t=1791802930; cv=none; b=RpEgxO8+f+Mhc9jRcHA0zM1vPLWEFQzfONlI9bGAiDJGp1jau9k8rg83AyFsoD/r1CaKNCr/LL210RCw3Sgs4MwtYBX3VXW/+Oq3XpVvYX5U2Gi+FgcO5CzlYnLe2ROs4INAtxGRt/Yj3NqB/LuZZNHLJJPiGy2JJK3FISFyEk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791802694; c=relaxed/simple;
-	bh=jWCXVBRnw6Ro09IFp+7+93R08arNtiyF1Gy7wYG5gfk=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=XlA5DUii/L+TK14UyamLpls7D2as1nhj1Tc3VhxNdN1BCkPCilozkoklyXMU8ASt9pLtmof6mOezAIlLKX6c9Y9Pb0X7PwuahnvTo3dKSy1rgFIlqLXNrGjJTdSIA/Gt7lHJMLtWoD3PTh19VxENV+6Rv3qUwKytKcdbTStxgj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPXnoH93; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791802930; c=relaxed/simple;
+	bh=aj+gYybFQdwaLzcOujCEl6Ayb88eLjuLhCdZZHUlOxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AlEfr70YbN7dYy3XSTgFaTV+vCxOsMYZFigqOzhbzyG9TrgyMbAiqy0MNFaO1jOwvSpRGjnOSGg2oEfEU6Cp1sVwYtALHO+Y5Xs0s1kqOjIU4g8BaV/LdXAigQRK3NWfI1ATViyARkryRfXYs4eWYVM9JORkzIL6/M2FeR1Ufaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BtvBiCKV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPXnoH93"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19A81F0089B;
-	Mon, 12 Oct 2026 10:58:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BtvBiCKV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1728B1F0089B;
+	Mon, 12 Oct 2026 11:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791802693;
-	bh=zBo646bvUBCMrdKyOfz8JgGTR+qahxfgGoy7njxgB4U=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MPXnoH93GLZx6i9UlvBsUicF1wlw39LcXyI1iPmp6Kt6coocbMAInJ43Kleikd3Dk
-	 8e4xfgb5SvGDoM7IJsuypIEOvNmPoErEXxW9erzkJEyJ+1XPCnUTzwaWSM4PLfsZw2
-	 h2j9MS1y769epBzzq3JTTcyx7Wb8YzaJwn1TqPemAQKvnntCCrrOGb1ZC5OT2o/jLG
-	 2h8/M0Pj7MgbfvMVplHxlBEL8dSEjqt2Teo64TSrk9tRtcce5uSwx/p84R/NP6N+Qu
-	 IxqYS0G/kXu0g319k2a28pkHFVmpxHfxApul/yYVi6O7U4fCGVemMHNkWF+bnNoEN+
-	 K6maGRKz5G+gw==
-Message-ID: <sashiko-outbox-167998@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] vhost-scsi: do not count PI bytes in the data length
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jia Jia" <physicalmtea@gmail.com>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
- Perez" <eperezma@redhat.com>
-In-Reply-To: <20261012103954.136698-1-physicalmtea@gmail.com>
-References: <20261012103954.136698-1-physicalmtea@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 12 Oct 2026 10:58:12 +0000
+	s=k20260515; t=1791802929;
+	bh=MAfYAMjPNeKmn70tZ8yJzw3w1YF8t8B5YaHyVdbC17s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BtvBiCKVAPhg4YheaU0NRTp6NmOfBz71i/2zIRP+ixQZlDRLqv9KZ2Et0goaQhFpF
+	 1adHNcrWs0a7uEmFieyjjaBhTuH/edNCuGf5KUXuHN+d31KNWCXCjrDUDy/uY8IDLj
+	 ao5nVaaGaM3ZuU2zQAZKdppFM3eRolLpwvA45qAEDycS2m7tXyRi46Kzr4N+vK83o0
+	 krr9G8jYOmbF3ozKel1ofXEIzfyqphTOx0GaT0Id1f0N61X9eRhy9mKzsF/zW5S4mF
+	 sUDGOczGxsWpKhIstJfvyoiyO8ynN0redIjjsgQeIiEyNg9T4Pyqk0CnbhM/lWgwV3
+	 vkCX5+ikp0/xg==
+Date: Mon, 12 Oct 2026 14:02:05 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v9 01/18] PCI/P2PDMA: Document the TLP attribute
+ assumptions
+Message-ID: <20261012110205.GD219304@unreal>
+References: <20261001-fix-p2p-acs-v4-0-v9-1-1a8e0f50ddd9@nvidia.com>
+ <20261007201257.GA781492@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261007201257.GA781492@bhelgaas>
 
-> vhost_scsi_handle_vq() moves pi_bytesout or pi_bytesin into the
-> protection sgl and subtracts those bytes from exp_data_len.  The length
-> passed to TCM is still exp_data_len + prot_bytes.
->=20
-> prot_bytes comes from virtio_scsi_cmd_req_pi.  With
-> VIRTIO_SCSI_F_T10_PI negotiated, vhost reads that header and does not
-> check that the CDB is a READ or WRITE.  sbc_check_prot() replaces
-> data_length from the CDB only when the protect field is non-zero.
-> target_cmd_size_check() leaves a write's data_length unchanged when the
-> CDB size is smaller, so a command that does not get that replacement
-> keeps a data_length larger than the data sgl.
->=20
-> The KASAN report is a MODE SELECT whose header had pi_bytesout set.
-> The data sgl held only the parameter list.  spc_emulate_modeselect()
-> walked data_length and read the next physical page.
-> [ ... ]
->   ret_from_fork
->   ret_from_fork_asm
->=20
-> Fixes: 9f977ef7b671 ("vhost-scsi: Include prot_bytes into expected data t=
-ransfer length")
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+On Wed, Oct 07, 2026 at 03:12:57PM -0500, Bjorn Helgaas wrote:
+> On Thu, Oct 01, 2026 at 02:55:09PM +0300, Leon Romanovsky wrote:
+> > From: Leon Romanovsky <leonro@nvidia.com>
+> > 
+> > P2PDMA selects a mapping without receiving the Request's ordering or
+> > Address Type attributes. Its ACS handles only strictly ordered Requests
+> > carrying an Untranslated address.
+> > 
+> > Document that the result is not defined for Relaxed Ordering or
+> > ATS-translated Requests because those TLP attributes can select different
+> > routes through the fabric.
+> > 
+> > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> > Tested-by: Tushar Dave <tdave@nvidia.com>
+> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > ---
+> >  Documentation/driver-api/pci/p2pdma.rst | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/Documentation/driver-api/pci/p2pdma.rst b/Documentation/driver-api/pci/p2pdma.rst
+> > index 63cff9e4d2c9..80f8fec9b0e9 100644
+> > --- a/Documentation/driver-api/pci/p2pdma.rst
+> > +++ b/Documentation/driver-api/pci/p2pdma.rst
+> > @@ -15,6 +15,13 @@ then based on the ACS settings the transaction can route entirely within
+> >  the PCIe hierarchy and never reach the root port. The kernel will evaluate
+> >  the PCIe topology and always permit P2P in these well-defined cases.
+> >  
+> > +This evaluation assumes clients issue strictly ordered Requests carrying an
+> > +Untranslated address. Its result is not defined when clients use Relaxed
+> > +Ordering or issue ATS-translated Requests because those TLP attributes can
+> > +select different routes through the fabric. Unless ACS Translation Blocking
+> > +is enabled, a Port with ACS Direct Translated P2P enabled routes a
+> > +Translated Request directly to the peer regardless of the redirect controls.
+> 
+> This whole paragraph is removed later in the series, so kudos for
+> documenting the current state before it changes :)
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+This may be a leftover from the prerequisite fixes you merged. I'll keep it
+in the series for historical context. :)
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261012103954.1366=
-98-1-physicalmtea@gmail.com?part=3D1
+> 
+> Unrelated to anything in this series, but this doc mentions
+> "p2p_provider", which doesn't exist.  Should it be "p2pdma_provider"?
 
+Yes.
