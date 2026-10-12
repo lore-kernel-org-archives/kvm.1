@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6273EC837;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC6E3EE1D3;
 	Mon, 12 Oct 2026 23:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791848210; cv=none; b=IoOGj2NfHoZBO+TJGCAfeUAWOQ5ySCttszhyEZ96NgaoDaHIzxuN/gFMSPzflGk1dffzsxSKWBkIEYPDCmeCzKx0Dt649p1GvcWaKvTRMc/MTYAsALxEpG/+3XNuwvhai/lM0Xkjk9/7GN7PX8hht+x0qChwJmtGjnZkWaUdG/U=
+	t=1791848211; cv=none; b=ieCn77LDtcgWfJ/UQLBQ+JBjhRL99wuAGz9MTWEcpSMk07h18+/1DwQFbUR5UwnvY/FLBxCYWEJdG1hb9xkz40bm6P8nkR3/V7GBmrciu1OsL5AtWJrJakLFq0MreaxCRMmXgGMKDigheB43HqId7+jJGUtuah5NcOQN4UsSqcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791848210; c=relaxed/simple;
-	bh=oC++HnbNVBPzn9IPIrGkJWmOX63pZeHKYyKqgaP9XEg=;
+	s=arc-20240116; t=1791848211; c=relaxed/simple;
+	bh=Xe8bFSZSnci38DVvP4JJTZfaXBBCIS/CIgG+C0ug2Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhsZ8nbXOMbbWYKHDGYZa/MYuzhed5iYG+W/7QjwJt+HNN+waaGPiBqUu5t1dlU0ZNKx2PRVIobHb2QnkgE1ZGhWh+yLFWYq6rwP3h1bznExt5G8PErOiEBngV0AxEX/OqokxCLiwWILKBra83X435XPcQfdpyc2/2cdyIqDnro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUFUoaUJ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=XgShGMcErTdi4gN2KRJakjFghyfzvsCZNlJIoP/ZKylM5sKq17HAttROgTZrQsoH+7KwjksiW65tKWQxstHCdRgAUAUxmC/weKV3V2CBQYe0V7eTUlw5jMf8TfJli9L84mBtuKAY8wBgZ/0fzWHRqQUNChZN+0AjvC2ksrrO8x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nopFbPuC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUFUoaUJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ACB1F008A2;
-	Mon, 12 Oct 2026 23:36:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nopFbPuC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7311F008A1;
+	Mon, 12 Oct 2026 23:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791848209;
-	bh=nHWs9fdHb10oFLCmMVp5pRkBPVBN0HXSu/aadpWYtKM=;
+	bh=UY5URZ76dLeB2P33iZ/UYXP+PmWH48vQtOfwnmjnAy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CUFUoaUJp17wFfWmbg0LjMacNDJea4oUW1YId4nW/yFtRh+qJ3ToZ/P5igBBZR0hB
-	 jTz+5bLsq10g/fVKfLmifDi3FyuokR7TFgusxCChbt4jkRhft1xos8iFpfR7veTa4x
-	 M1KXuSPIjPWEIe0NWCYqbLvaA6ConMx1UcTGeunX6wiQ7IcAMCX0Y1bbFxSnyzUJq3
-	 EmV5CO6jEZLrgH2SUSjbhs3sLYFoTkD2k0tVP5pRWl7RCZEUk199xZvn75rBBwEbWR
-	 Y89yUtcXl0ILiRpcgkaX2n7tTzvATDl77frdRUVRL0kC0HBm5QOMI6hU+xa4hstQjx
-	 fOM4uR8YAeZ1g==
+	b=nopFbPuCMriT5CJIeYZ3b9OBM0V1TOcHuF+nko3+UD92y1+AATIJn24aniztYM3nj
+	 40IyYZWyb5u0EayamXZiPxykEzjeQQLc/sKAoUi4z9Y3859PRXWQiKI4Lw3J3a/Vsz
+	 +JptIHDyEo1OyqNB7lEhZhOfgygOxQdKOUi4wrozTO5Y8Rj0IcY9ROO0Igl0D1pp7e
+	 RfWwDCPEmK3uELBbeGuovoXO6Z3irrrx+cCwFZqPwxvDkglUKutCLwrs7zm/H+ovDX
+	 yBT4GC65CA1E3pdF5kKW6YaNes8yhivPmovoa/Sbhcts0vf0UTCsGYpc7Bc+3Ru+ks
+	 TN0bsH5wcUL1A==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v3 06/27] KVM: SVM: Fallback to flush everything if FLUSHBYASID is not available
-Date: Mon, 12 Oct 2026 23:36:17 +0000
-Message-ID: <20261012233638.2546339-7-yosry@kernel.org>
+Subject: [PATCH v3 07/27] KVM: SEV: Do ASID initialization at VMCB initialization
+Date: Mon, 12 Oct 2026 23:36:18 +0000
+Message-ID: <20261012233638.2546339-8-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 In-Reply-To: <20261012233638.2546339-1-yosry@kernel.org>
 References: <20261012233638.2546339-1-yosry@kernel.org>
@@ -50,58 +50,42 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, if FLUSHBYASID is not available when performing a TLB flush,
-the fallback is decrementing the ASID generation to trigger allocating a
-new ASID. In preparation for using a static ASID per vCPU (like VMX),
-just fallback to flushing everything if FLUSHBYASID is not available.
-This is probably worse from a performance perspective, but FLUSHBYASID
-has been around for ~15 years and it's not worth carrying the
-complexity.
+The per-vCPU ASID does not change for SEV guests, so move the per-vCPU
+(and per-VMCB) ASID initialization to sev_init_vmcb() to do it once,
+instead of setting it before every VMRUN.
 
-Move the fallback logic into vmcb_set_flush_asid(), as more callers will
-be added and will need the fallback as well. The only other current
-caller is from SEV code, and no CPUs support SEV but not FLUSHBYASID (at
-least according to AI).
+No functional change intended.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c | 5 +----
- arch/x86/kvm/svm/svm.h | 5 ++++-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/sev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ad4f172f170d9..0c3befd9bc850 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4326,10 +4326,7 @@ static void svm_flush_tlb_asid(struct kvm_vcpu *vcpu)
- 	 * unconditionally does a TLB flush on both nested VM-Enter and nested
- 	 * VM-Exit (via kvm_mmu_reset_context()).
- 	 */
--	if (cpu_feature_enabled(X86_FEATURE_FLUSHBYASID))
--		vmcb_set_flush_asid(svm->vmcb);
--	else
--		svm->current_vmcb->asid_generation--;
-+	vmcb_set_flush_asid(svm->vmcb);
- }
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 74c4555a32650..b58e3831b8f05 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3623,9 +3623,6 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
+ 	if (!cpumask_test_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus))
+ 		cpumask_set_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus);
  
- static void svm_flush_tlb_current(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ba5077b9838c0..3b59561d6cc2c 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -482,7 +482,10 @@ static inline void vmcb_set_gpat(struct vmcb *vmcb, u64 data)
+-	/* Assign the asid allocated with this SEV guest */
+-	svm->asid = asid;
+-
+ 	/*
+ 	 * Flush guest TLB:
+ 	 *
+@@ -4889,6 +4886,10 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
+ 	svm->vmcb->control.misc_ctl |= SVM_MISC_ENABLE_SEV;
+ 	clr_exception_intercept(svm, UD_VECTOR);
  
- static inline void vmcb_set_flush_asid(struct vmcb *vmcb)
- {
--	vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
-+	if (cpu_feature_enabled(X86_FEATURE_FLUSHBYASID))
-+		vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
-+	else
-+		vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ALL_ASID;
- }
- 
- static inline void vmcb_clr_flush_asid(struct vmcb *vmcb)
++	svm->asid = sev_get_asid(vcpu->kvm);
++	svm->vmcb->control.asid = svm->asid;
++	vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
++
+ 	/*
+ 	 * Don't intercept #GP for SEV guests, e.g. for the VMware backdoor, as
+ 	 * KVM can't decrypt guest memory to decode the faulting instruction.
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
