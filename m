@@ -1,117 +1,176 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEB33ACEEA
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 16:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791824056; cv=none; b=huHMFRAQwiis8m7qKpajoAaEP2TU/4BbuFQ/OP0jdQJJlL2soUQMBUAVhX6sAMMm7Hd4Yd7dsfp4My4gTzfkW9kt75Xxir3mDqWaHTN9wMPhDTIQNX4LITDAWbsZlUMZYLVeVn6wfyI9k4+9SsJDD8yY/tVn0p7UMCBpKKdFQuA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791824056; c=relaxed/simple;
-	bh=A56OfPZZVFGIDpDQ9XCz9cgezTjnSLv3WNc7P02MjjU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jx5OApOFU30+QqGWnbsGNL+udE7FWxXSDLvkJz+BNacihJx1fzjasjSBeBVcZXCKtSpUTSPJe3HhxK+x0vke89A472fCVf72jLWOyhQxizbWx30KuO/sR2MGVNh4/A/FtAskf+cn3qE/IR50L/EP1E7F8+woLg+aLKcIPlVRH2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jUlJiwTo; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AFC47FAF1
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 16:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791824061; cv=pass; b=GPkoX/oYRhhMLPGdczbZP/uZoCvnOu+x+/XWuMWsj8WUgTmNYd6+Ty2sb2AM/yxnxm+DwIBxJSahZzisUzguEyX7bK0SiVrNMup1KX6o++z0jG1rjOe6pKFjJpf1o4vIps6Vy7dmH2xBVz5ySoA5+V7rpRX9XVkgU16MUViSr5I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791824061; c=relaxed/simple;
+	bh=FF0GEoo8z94QCKgAWxqe4HdlXwZe+F2vajwTpAEkw0Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Zwtd0VX+FkhPJTqZXlxxz/Uhuhc2+4Mt4EQ8vU1+kaIcMM0CNXZBvmKo85l4olsJ2j039xLDcID9Y52m+3t90aHpwFkHOgduyFrViGQMg07bScAtcQljjzwA9zYAo3rygfTkuEBowqRRi9Q3q8nnfK0NmTAmGtZjQNbIDVP1Dfs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OPUUnBQP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jgzg3u13; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jUlJiwTo"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so83055ad.1
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 09:54:14 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OPUUnBQP";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jgzg3u13"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791824058;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NYH3S1JoBPkOp4UPQkopxXaknUWmfyg8ET0Anq8DUUU=;
+	b=OPUUnBQPmZwG4397q7V5pGGo9KimsB6EqQJdSSQtNJ65nTcCTe+diLfbv9dChclOUpPwrr
+	FYapRBKc4rZg8jqbsGyZj2msEEndRH/ywfyvPL8qMes12vtThiCTz5BbjufqUfcj6x4ri3
+	k37V7jq089oWZhlCxVJxVHw8EiH5c98=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-v-7UMZu3OqC_6GND5edMHg-1; Mon, 12 Oct 2026 16:54:16 +0000
+X-MC-Unique: v-7UMZu3OqC_6GND5edMHg-1
+X-Mimecast-MFC-AGG-ID: v-7UMZu3OqC_6GND5edMHg_1791824055
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a17c024b89so19753155e9.1
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 09:54:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791824055; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fwwE1khPbfoVr2TIU4pLYMd2CYm1nFkUszJCd0AetPHRpZOf+A7rt01rHPqD0IDV/O
+         eOEDETmyQbipB91xt8QZ2Vct1pxod1ZNusgMRVjsU8iDIP8hzBNgv0zHZ1ESbUAGmGdo
+         MupElenKQ0W6fdBovh7Zx+6KlpaZ8YP9H6Dh/LA4CqwKtl72M1ELicLV2MNE5PUhFDru
+         SVzz4ReGoHgT9Jm/EFtc3y1u/0/ZgCk1gX7spyfw2/CttRhHv5GF2fgP+Na/G+L0IWGv
+         5tB3vYHnCkqa6knME2gyTILsDvUBR0oZahOWmljaA4NyeHF+VJI6V6j4jTiB8X8o/U/E
+         QOZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NYH3S1JoBPkOp4UPQkopxXaknUWmfyg8ET0Anq8DUUU=;
+        fh=obWBEot0C0KsOiDJm0ugKAs6RMtvlv8VnuRmVQuUNpc=;
+        b=H86hqpVR+2MljZ0j61CYw7XdeV8Zc8QAl/vzMi5SrxLPKDmn3sJ38wlunsiAPtf8DL
+         WRjfPEkhsXiI/xz7+PrWmIZfRU3Pa2Yaun2l+47XUtyYCh9e3sX/gVnwKljLPGfecj9s
+         +wM+gzQda8L1m645iCVHuqbWhxljz96BZtejAL2p9w3smyFLItMkSZVkibHd4n79xyGs
+         bwCxh5T2x0V5yavbc7hXEKSocfYd9LQObsGtEl0oQq0BSMyZQahklDb8hGTsonVQeQZc
+         EpoTwyxYZ39M6Ef9uqbUbD/eX4spgYWTU3NfQF71Lhjo+kmean2a74XMPymwiL6ot8mx
+         QqeQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791824054; x=1792428854; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=redhat.com; s=google; t=1791824055; x=1792428855; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=a0L3N3ZtqaociPWUQTHB7mjZkgiRjSPFirVt2JXOStg=;
-        b=jUlJiwToZneaFf/XGv1R2b7NkTk1TgB+tXTehhHw307Qv2oKSmrHNZet9etW+rUfny
-         I2CMVT85kM5moXip9hbDWl3gXnWNZatvQqcbpcvXksr1k8QhPIXdzO0K7+YsHS6+Y0H3
-         DnkcoK5jzq6ZOVXv6tHPEzo4ictXebQXXxNtRXcoBYkMt4ontokiL6JSZw5Fp2rZ9dws
-         tDcLd05pSJFRxH0/kKxcQZXOeVJ1kGtRlSd9tuREy0KmoslOoccfWJ4GTYHesX6N3H5P
-         jrQIThL6I4gWvyjwwq1oYyLS2oHF2MfUxabg4rPS5x6tTxJqb/rfLH9mzayGn4ZH/3g1
-         jdMA==
+        bh=NYH3S1JoBPkOp4UPQkopxXaknUWmfyg8ET0Anq8DUUU=;
+        b=jgzg3u13BnnevV7IHTcWK7VCztgkY41/GEfp3nPBY98+OBjpeWhcO0oOCt9Yrcwr+u
+         +UV/Z/Zg6sz2iYaTm1bHpHoyB4xGzaw/KY0oxwOGNHpWtU55vkoLz1nFYgGWyaMLyeZC
+         SaypY+oKp2hMemdI9GRDe/mLLGM9GEkEgOstxbabMGpRaybfwNu3Jn4g43zQMAt9ABC5
+         9OphJQ62kLechDi+NGRIrvCechHhNexYMjWqs2eJ+eMLH6Lh+T2Kiwm/Ia4jivUlqwsm
+         4H/fC1MtgjlrnUQj5l8DNHgvWPB1dXltdEmpPNX8D1lZkUfxSiEG9neplJhPLrLFACf6
+         4Oyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791824054; x=1792428854;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1791824055; x=1792428855;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a0L3N3ZtqaociPWUQTHB7mjZkgiRjSPFirVt2JXOStg=;
-        b=NsLukB6knMxJMn9TtIc9Cqw4vfeek22NFCZw4lUfbeK0HM44QSobLJfk1lSwm+Gt6M
-         PPG2Kdp3zL21lBbBxBbCEhDfU+S2fRIua0f5pTGpXlQCTDlV2KgbKDgRP4gZYhLJn+yi
-         lW6kmXfCLSQbIHgdCwnDaDQJVriKYRe9vsHbX7EFDIyBCl+hWZmYxECcpw3keHRaDCVR
-         KgIRZKnCfql2nt/UcHgcTzDvV8H31aQ5bSh7NJ734VvLesGy54PXROsmrYErmGQFwfVL
-         5P/1ncvpAytfaIdaZ6m9DZ2SY5HqdGlYJCfXZV4oGY1NZvA+HH1leRZ/mIYr/f+Xt+O+
-         vhUg==
-X-Forwarded-Encrypted: i=1; AKwUvBzBKTZ0BPprfNrq1ztSuNw9RBEWgLw3KQU3fCII6iSIJsPKfS9SB82EROxw4sX5VmCjhoQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL0D410nun3kFLznOd8A6MOkLZx0gT7rCfAXKq/0359/QyqzyDj
-	5g4Pq03AwTb8hD/i635ryQ1/gFCiAQjvyMroza0kVd8cAQH0WJJgxW58vd8rGp507Q==
-X-Gm-Gg: AYBFou0RdlXbWubmvFMSFFCKEQ2PwS+5AjQhs8EJSQLmPf79JvIFTbywXNCU4RuvoF5
-	VtMu5BeuZbwEfP2koXqcxKdwHTUkSpw2xknNsil+lGauW3NIydoQAEneI42VW1kKvpdK61YC26k
-	MejlgsjcWu6wxjXppUPGP9EVyhNY4a/eddccNtnTbtsHNUZLOcqz563kkXKCrgS6HbN0R68piom
-	zBgW4qtM9pTM1LaE6w/AFn1gch12nuKMuiaqzHJ0KEvgoAIXeMzAyEOD83AeKMIyv2JvCOQNSG5
-	IwvGFh2zNVaUYG/9w+SouDIZj7VFdfC1ZFl3Q2Y5wLOnmJ7dv1J1nSEcPCyuDA+Wu9eQgXx6sIf
-	D5ZCpUjd4KVqzT+RWgJa9HDermQ8gnfYmHTr4QtN7Kz2RiQQosafGJlI3WTPpcyWfvesXCP2Gh6
-	Fd8lVPZfHA0ddzKNhLLwHhCnQ/fA9KDzbhtYFSupoYTuoVtgemQAF0XI9N86SIY4gZa2XQrLlCB
-	BKqyBVV99YfgmaRc4LZSJQcB8x4Hs2E
-X-Received: by 2002:a17:903:390b:b0:2e6:1917:fa with SMTP id d9443c01a7336-2e87e2f872bmr6833435ad.7.1791824053720;
-        Mon, 12 Oct 2026 09:54:13 -0700 (PDT)
-Received: from google.com (75.57.168.34.bc.googleusercontent.com. [34.168.57.75])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab393efd88sm10301280a91.3.2026.10.12.09.54.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 09:54:13 -0700 (PDT)
-Date: Mon, 12 Oct 2026 16:54:09 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v15 11/23] KVM: selftests: Set shared attributes for
- ucall guest_memfd pages
-Message-ID: <as0QsZtRAEEq5Tpw@google.com>
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-11-7c62a5d8a992@google.com>
- <7ca516ea-a931-4497-b3c8-b62110ae006a@intel.com>
+        bh=NYH3S1JoBPkOp4UPQkopxXaknUWmfyg8ET0Anq8DUUU=;
+        b=ZR8je8PtbhBCcveZnten0Xt3gwVPKM/P+i7GQtz0Jtg2+/9y8yRCDrDRgTf/P4VGQY
+         XVvsFdkkDHAk2A8mtv5ONEymUtqRX5fUjnGqeCB5pUf9D8Tw2lmwFsZQZdjf5EN9cWek
+         F8w1pTOVgzTQmhp4+SHeyabpVAl0FYa0sR4HQBfJc2SpgT0G7ZWXZ58u5+1CvO2ffI1j
+         rmwnNeDf5IyLphEd7fAYbLIYemA2TszuikihwXa3OSRXvp3UQ0pKUFeqgJ6tcAsy5+ST
+         CROgU4N6Ra0sBi3kubdcc+UbWPfdtF/vMDcAV696Ek2OZmDHcqOtLgsxFloB6URzld6p
+         1Vgw==
+X-Forwarded-Encrypted: i=1; AKwUvBz/YVnpdN3Qkj36p/pWUiai2RmeFTMvaXzT7D/vWZCqRJZ121OQ8/oiqGMybGHruGPD1Yw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcxzvSritxPNknZmSldzExPN0bsowoS1T+OkkhRTZ/4ul7WDYR
+	aL273TJzqticoFS4gX7RNg+xBTHCY4PGEOrJZgAXOnR2eHGeslhZKetKZsk5FL8eQjJacDJ8z9/
+	r7Yz1MMZK3R+MvGHv7wm1hcFs2Uh09+siBVoWAhWIl4lXgXXcOC7Wle3wSKyNyBUCyGqG57zzjl
+	3WQ9biJM3Ei5YB2uX4paxXS/GBVcgd
+X-Gm-Gg: AYBFou0HdbWST9IXPIJGUUphpqYDy6b2sABe9cDDRfTgBhfFbyX6WW9x6a9ZfJj3YRv
+	bjxlRZLsSSCtQtOc5NLiEdAQDQ1LJNvPuz4qFm2sV6E7IwkpVGDBA7FyA163yuA+Ij3bDLVVclZ
+	OrSxdbk6ppApVW77HMV9acoNte3gOlHtuf1s3O2lPMCnDi3tzvdO3HE3R6Ty4Zm7MP/LnM5u1tO
+	3rwqckCHDFgwRJ6/vZKbi2yN+gk9mXmyrRVUv4krdrMUtuQ44/xuGPE0I6Dxw==
+X-Received: by 2002:a05:600c:870e:b0:4a1:6dca:51e3 with SMTP id 5b1f17b1804b1-4a18e4487ccmr195289425e9.3.1791824055375;
+        Mon, 12 Oct 2026 09:54:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:870e:b0:4a1:6dca:51e3 with SMTP id
+ 5b1f17b1804b1-4a18e4487ccmr195289195e9.3.1791824055037; Mon, 12 Oct 2026
+ 09:54:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ca516ea-a931-4497-b3c8-b62110ae006a@intel.com>
+References: <20261009130450.361690-1-pbonzini@redhat.com> <as0NBfuEY-60pgtz@google.com>
+ <CABgObfY=xYUJJtYvcVhjdTXOah6eofi0O4C3J3sa60KCC+WO6A@mail.gmail.com> <as0PQm_PS3LC9KWc@google.com>
+In-Reply-To: <as0PQm_PS3LC9KWc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 12 Oct 2026 18:53:57 +0200
+X-Gm-Features: AclHuK_qwsSa9vmKTJ15UjQhyDRORe0UQJYVVCybVzQPGOouYVa5WGxdhHqz64A
+Message-ID: <CABgObfbA4YtSX-K_fsWuTjkkfLh5EMQ2673tJzhZaoAoT-028A@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes
+To: Sean Christopherson <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	SimonP <simonp.git@mailbox.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 09, 2026 at 11:44:55PM +0800, Xiaoyao Li wrote:
-> On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> > The default attributes for guest_memfd pages without in-place conversion
-> > is private. 
-> 
-> This is wrong. The default memory attribute is of a @gfn is shared without
-> in-place conversion, i.e., with per-vm memory attribute.
-> 
-> We don't need this patch actually. And I have tested with reverting this patch,
-> with both out of place conversion and in-place conversion. Both worked.
+On Mon, Oct 12, 2026 at 6:48=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
 >
+> On Mon, Oct 12, 2026, Paolo Bonzini wrote:
+> > On Mon, Oct 12, 2026 at 6:38=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > On Fri, Oct 09, 2026, Paolo Bonzini wrote:
+> > > > When running Hyper-V from Windows 11, KVM is seeing the SS bit set
+> > > > in nested page fault error codes produced for shadowed NPT.  The AM=
+D
+> > > > manual is unclear about when SS is set, including whether it can be=
+ set
+> > > > when SupervisorShadowStackEn (bit 6) is not set in the MISC_CTL fie=
+ld
+> > > > of the VMCB; in fact, bisection shows that while SHSTK was availabl=
+e
+> > > > to guests since Linux 6.18, this started happening with commit
+> > > > 687ee95c1b6d ("KVM: nSVM: enable GMET for guests"), which seems unr=
+elated.
+> > >
+> > > It's not unrelated.  As you note below, this is purely because Hyper-=
+V only uses
+> > > CET when GMET is available.
+> >
+> > Indeed, my intended meaning is that bit 1 of MISC_CTL does *not* have
+> > the side effect of reporting SS failures...
+> >
+> > > This is wrong, I reproduced this with the KUT CET test with gmet=3D1.
+> >
+> > ... howver, this makes me wonder if you meant gmet=3D0? Because if you
+> > need gmet=3D1, the Fixes would be fe080f58dec24049 (i.e. when the gmet
+> > module parameter was added).
+>
+> /facepalm
+>
+> I did indeed.  And I quadruple-checked that I could trigger the splat wit=
+h gmet=3D0.
 
-oh yes, I misunderstood the default memory attribute without in-place
-conversion. I will drop this patch in the next series. Thanks!
+No problem, here is new final paragraph to exclude the theory:
 
-Lisa
+---
+Bisection shows that this started happening with commit 687ee95c1b6d
+("KVM: nSVM: enable GMET for guests"), even though SHSTK was available
+to guests since Linux 6.18.  However, this is not because bit 1 of
+MISC_CTL (GMET) somehow enables reporting the SS bit; rather, it's
+simply that Hyper-V never uses CET unless GMET is also present.  The
+WARN is reproducible even with gmet=3D0, with some hacking of
+kvm-unit-tests's cet.c testcase to ensure that the first access to the
+shadow stack triggers a page fault.
+---
+
+BTW, while Simon said that GMET+CET now works properly for him, I
+haven't retested Hyper-V with the MBEC+CET combo yet, and I wouldn't
+bet on it working because there's no path in which EPT violations
+would set PFERR_SS_MASK.
+
+Paolo
+
