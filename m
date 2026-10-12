@@ -1,123 +1,160 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9F83C108D
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 13:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791813538; cv=none; b=Dnegcn8772y1T50Hb8kNdSgY9elgC13svNSnprKEpLERW7Flp1jj0vHKAoFSwFr1imv4J6DsrY5TLHVVFEwTAKDxecODDtSF0KemGWBwME14daJuFu96GdMWiib4pJ/c7ZIXfRUk7/vnQUlUgnb6hIOMSQa3cqoEeOyX4WkrRx0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791813538; c=relaxed/simple;
-	bh=B8fYPQsF3fjjjyxm4tLPdgSy0mdz8Y2/OEmL8RLtKQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H13EEmWOtIiqLqgdNQ4+9Cy6NGpH+mp69tIL4rUF65cfBCbmPXfiATuEDxbzRdpYSvzkZ1xOSBJhHlhDNr9DJciXeiWUGMHAwUkiBR4zr4MSkI/n7OUv7rcSPSiavoD2KpEK3ilt5f0qyFGcwistHbmX3igU7yAv8cpzsBEcRD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oz0MUfSP; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA45B4718D7
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 14:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791814286; cv=pass; b=gkODw8LKfr5o5FqUkR5DB/L5FS+71YmylruJdosK3a3vipukL+jwhHY5c784nuHssry8TDqfLnogKOZgvZf639QL0KqafioefEG+NS+MK2dUSH1G2hgrVAHutvH94vlHMuG18Zz9UREgHPD/HnGF9k647JHAbtwnVDB897El7UQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791814286; c=relaxed/simple;
+	bh=toTfP3XAamHR53tLn5nTeuCeveBATzueww87oO23fhc=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sYhmlT5nwmBhrmKXdmL/pA8UCusIET/nFrBDf1NxfEP0Ao9CTg5sbPHOe6bAsdcqc6jDCfiBbo4UJaOXmmf4NHezma3ZE1yzmpc1w144SF3GwsSTzCoZHeZVlUQDmSUlx9raj6c8JYiWKdjEfUXJfrZhaRymeE3/QY/B0lbenhE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=riuHiHDN; arc=pass smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oz0MUfSP"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a061a13884so16678975e9.3
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 06:58:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="riuHiHDN"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91b54d1e9cdso21111866d6.1
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 07:11:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791814283; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c6qCr8Nw39H2Ubrz1PTFXlWxCihbMRWggQCu+qti9p8U5ZY8RHyiJNKFFp/Z5HJluB
+         sQ6LBXKIf9i1mipQrecLDUcOXKzV2nrOaamA3ojdYO5QYfHRV3cjqIzG/vSIRQMyW6iq
+         QSbih9LzSKi517a0u5fnUVf6j+wmFBhwh3w1/aOiQCC6ZykXM6qKbzeppNunIGkIUHLo
+         M50MP7sK/RCDxWm13M2bq+rPBCcufMhOWW8PC7JoZ5FSv5ary4zJ3vZu+9srZgZdYTZ8
+         fP/usU0fh+pGG7o2xEOgZFPOX4ZlC1w/MnzmO0Lxm1Ewt+C3k+IWREKjLRgMmfG58G3j
+         gtvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
+        fh=NE0w5fZFJqlfxt1gGTjEg0nikvKdLeCF0QEwplxCrhU=;
+        b=h/YxBAD5Js9rEhbfJRQOhWUIhuyEr2WkrsdcvuKzmplFQLXzLSR+ZLgVmx2Xme5JO3
+         H84+qBJKlZ2jkWXlszsBN8ex6TM8KGgycaDUEGwAlxiIDG/DqaYb7oVQM+eWvhuKahvf
+         Uw45+zN9sAeefROwZgnqXNwb8MRPWxsKOfe+l6NCk0v4enczFJYlKAJUa+Ir52B7C+hp
+         zI6FPfTCreiliYoay0Wge7kHi8Ls0Y4E7TpPvSv4YwYQgCzNSCGvl1gDeMqogyDQL3g3
+         7teM/DccPSK51iBGnV4yibPAAhhdEKW0QF+S7/Fns9+RRZoBUpy0mR4gINFU9wmev8cE
+         CxBQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791813535; x=1792418335; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fkfYRiKWPJSEEeybOhY/J1Dk0z/38ebHl0Wzyd5gW/I=;
-        b=oz0MUfSPP3M0yLey3mtfCp0OO8wwoujC1at5Y0AmOCkKRJnkYevY4mF3LYzULmOWMY
-         870gTf0GTs+8texXXFubibHcK76epk/GR5Y5mOrF0ubW0U0h4rZrcuifK56BTPfFcw6W
-         jpuhPgaFOEZmHgUL72XO09pBNp6RozZkCpNlfv+VWmlOk9RJODe4nG86n26mffpmF57O
-         mHDA2z4KE7eeyRN53QUeUXML2fCB2PsciFL6dK2PGvS4eF2t92DibcAXfqbLLHKJ2Lou
-         WxhHqzGbPw/o2ODQ/Gv3khmpdtnNGxqsWf2ntobbuPbeE08uHcVzAcrkl2K/02toixOa
-         Hw4g==
+        d=google.com; s=20251104; t=1791814283; x=1792419083; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
+        b=riuHiHDNI9VbFbKH0rde37/ykIQHmtHxc4wUw4QOAJXPzsnzi8j+1eiNfM0X4MguS4
+         JXwovS5bZUNydRY/IxjZYYmuQpkw+RJvr9LfcZXyjpTz2u87kRr7GiKsTieVmsanIWkL
+         UwjCPacdD2mICgm1V3og5rguoRO5WIdCWYbxD9AijiQXbBYr386NufiBinUAEpfXH4+X
+         jLIJt4F2o9i9m6KcdyFwCTnsW3PD+DSRKDYlvQLjNV08LUFp5TymTaNl5EtsTWwAovql
+         mmu94+cOesk/2rCSd0D/Tg3YDsQ4g2d2FlPJtslOfah444xvgzoWE/Atm/cGEmQbc26u
+         Xw/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791813535; x=1792418335;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fkfYRiKWPJSEEeybOhY/J1Dk0z/38ebHl0Wzyd5gW/I=;
-        b=ZcAXsoAhQdoLQkhb+xUbBFuppJDtF9dAb27SwnJ16zDLjrqYsREjGP/APWBbcpio37
-         npSBQR7IW2apuJ/BJ/ETAXcN4EKooTuiHICRr4iQDY5RehUFoPlGHo2AEb32ZzGl9iDE
-         Xg0ccO8jy6UjL+SozIizmGrLPzqvatKKQ+Bkmggof1R2gD6T34Dehl7R1J2+BP6gLrGQ
-         cA6N1l+g3hgIVewsIOh9mQEQAnVbyxpdj6qfJlfri6PMykZp1vvq8IPnLV6XQ62QHYpn
-         2CcFd61ySzsUbEW8wzfaXgXYNiXwbsmK0q9V1CqRJEX+6g+0tH6WOe+5hfLJa51eARHA
-         doFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBykNFQCwVmeAPl2TTAdssUW0mP6TSex/O9ge4dHykJXj3Zr7CroT9Or3OtokiDhwc7Vmuo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLxClVRrzTGyKN73sc38jlhesLH0wwniONgRIf3iYXM9AzG8IW/
-	9TflR7opoxmilqZ5UDqM7spnRs6cAN2xILrquq2qVFOnDh4qeqdkPivVlcsLDAFB
-X-Gm-Gg: AYBFou1g28pXxBN/MgnzIsickLfk5JDH8h/7ffyfS3hWJ0mGG1EDOrUw8s02hIvDJqO
-	E40Sf4wkQqdLFU7BBnERkyWDKIl6RFITnSb+TJWgx1aQgzPl4hanQJXd21qHzhYrygNfTIZ9jgY
-	eRD0XKtgXFUXUHlbvjXEL7AYk+DhgYKXEwpte+ooyjnvFK4mcNmpu4jqgBYocygllsDPbRuX7yl
-	AvzZjRS7WRQHq/0GH5W7eqfOHSgbvruHT2EbBGLT6T2J4mh/VNAFClJEK5bJ4LOX+IATKHKl3zN
-	ESVX7AVh+tRqmIv7+jwCo3OMfqeV2x1Paph+pGjwHEC8vHsm8qR6AVX1Jo6t2Y2BeITRGlYrW42
-	OEL1LMXQTq3Yp/KnDS6DX8ycepQc3cBQShG5bx26bY9f/0WnAna4+GRo8hmLiYGRFcTnOqvOeCp
-	l9OhIPjwjGPPake+h/6+MY05bCX8gEn3RZRk7r8IwPK56ZnA56x7YDSKmPEVREt2LHKUVTabxHG
-	+QrY1BtYGXWWGP1b/bYsHIItdSOzt2N56EneRrA4QhI
-X-Received: by 2002:a05:600c:4e55:b0:49f:fe39:5bc8 with SMTP id 5b1f17b1804b1-4a18e49c008mr167950485e9.12.1791813534960;
-        Mon, 12 Oct 2026 06:58:54 -0700 (PDT)
-Received: from andreayoga.wind3.hub ([151.76.59.204])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf3e044sm281072835e9.14.2026.10.12.06.58.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 06:58:54 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vfio/nvgrace-gpu: Skip PFN registration for empty memory regions
-Date: Mon, 12 Oct 2026 15:58:41 +0200
-Message-ID: <20261012135842.152928-1-parri.andrea@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261009135203.33f3806d@shazbot.org>
-References: <20260925161024.189771-1-parri.andrea@gmail.com> <20261009135203.33f3806d@shazbot.org>
+        d=1e100.net; s=20260707; t=1791814283; x=1792419083;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
+        b=REZyiFxfnPcpn4RTz4dDjBDdJiKZqJ7LcAEXXNgzMXwgaS+fEBarzjveBfNIe385vz
+         cVdxFpiFGERjkwzGQup2iVmmpTR3vMMvrpbc6nOnGT/e5H/8rhSmndFQfdsE7IMaWU/g
+         VXbNPb7jWOiV+vsfn/9yXow57C2BrupAo7nZEqShqvTOHYak6ZLU2rFTvRtiUneyqMg6
+         iEGEekPpY0DHxtmXn3hOs1ercYXGaf2uML9USI4LEuMTQv4NO2d3tyDLqJsG0+6V91C8
+         Do2fHEyBFJ9G/AVO/36oKMO/pdK79wjZQoxX3LVlxgRMsaN+/QcvUsag0o3U56EZfs7I
+         JqHA==
+X-Forwarded-Encrypted: i=1; AKwUvBwcbSd6nx02syCfQt1zSUu9o6e6KGx3N9m+V5cZ2d0sttGHa7I6X32F8gPeT9mMre+C0oc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBzcy62geGffuSOcKjmeOarVHxNsmsu1eyfQLB3nzoOqKTt15t
+	ViGaTIhIG0A5EQq3QwOqpry/5VFPWOPYynGid3Lo8fPBpbfQca/l6YxVKi64nMCE/pNZbdoPVZd
+	MLUjnpYMP0GoAjsLYhzYuyq7Ldbt1ZKpwQJgwEquV
+X-Gm-Gg: AYBFou0FymM+e3uiOJB2wWFqTyXnVRYHBLDDoLydGXjCa9e96OUwnkdmk+bTnxZN/EZ
+	x89M12ITBd9/dpANGtiyWAmo4RuHK/E3aGTkiB4cQUZo6JIySMos4O6/ZGz7ej7M7zwqTHEOVAK
+	orfj4RGfxusM85B6sM5+HX4rY3MUGkjyR/bmsbLkLrMrg49AdgqcJUh/uk4yLCOqqX47ikHLhME
+	wq4sAVhWWz33yS8E1s/e+4KFtKOFlQzV+mqVv3wgNuJCevETqZn0D5YzXZCPjjCLbMG46oEWIaD
+	aHRaJgABcwl25WuvE42ScYZjq23QhFq0wFyoiDe5pZXTWn3/58iaHYD74+kO98gDUJHTW1YfwYE
+	ihwhWWsRK1ln7MVFf3w9K
+X-Received: by 2002:a05:6214:23ca:b0:91b:8e83:e4b0 with SMTP id
+ 6a1803df08f44-91b8e83f3b3mr19792736d6.20.1791814281518; Mon, 12 Oct 2026
+ 07:11:21 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 12 Oct 2026 07:11:20 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 12 Oct 2026 07:11:20 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
+References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com> <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Mon, 12 Oct 2026 07:11:20 -0700
+X-Gm-Features: AclHuK-GAlH1JSAYNCIS06aJZxJfvunIjbH1E5FXsRqa5lYNWWJsyEqAXZVZwzo
+Message-ID: <CAEvNRgFO5FUFwU2GEEbHogLmT+SXVu1asLe5uzvRte2jqXthUg@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
+ resource (pool) fd
+To: Gregory Price <gourry@gourry.net>
+Cc: Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Shuah Khan <shuah@kernel.org>, vannapurve@google.com, erdemaktas@google.com, 
+	jxgao@google.com, rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
+	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, 
+	David Woodhouse <dwmw2@infradead.org>, yan.y.zhao@intel.com, michael.roth@amd.com, 
+	suzuki.poulose@arm.com, Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com, 
+	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>, kernel-team@android.com, 
+	kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Oct 09, 2026 at 01:52:03PM -0600, Alex Williamson wrote:
-> It seems to me though that the reason this bug exists is because
-> nvgrace_gpu_pci_core_ops.open_device is trying to handle both real
-> nvgrace devices, where usemem.memlength cannot be zero, alongside
-> non-nvgrace devices where that can easily be forgotten.
+Gregory Price <gourry@gourry.net> writes:
+
+> On Fri, Sep 25, 2026 at 05:50:47PM -0700, Ackerley Tng wrote:
+>> + e.g. for tmpfs,
+>>     + Use mount page size.
+>>     + Respect mount size limits.
+>>     + Use guest_memfd mpol and fall back to mount mpol.
+>>         + Gregory, now you can set mpol upfront on a mount! [3])
 >
-> The above patches the failure of that model, but maybe the better
-> approach is to split them such that the failures like this cannot
-> occur, ie. a core-only wrapper that just calls vfio_pci_core_enable()
-> and vfio_pci_core_finish_enable(), or some other refactor such that the
-> core-only path never handles the nvdev.  Thanks,
+> I haven't had time to quite give this the read it deserves yet (have
+> been traveling this past week), but I think this mpol/mount issue can
+> be solved with a new dax driver (which maybe provides this provider
+> interface) without needing to involve numa policy at all.
+>
+> Essentially
+>
+> fd = open("/dev/cxl_dev", ...); /* backed by anondax driver */
+>
+> then later when a fault on that fd happens, the driver provides an
+> anon-memory allocation that explicitly requests the node associated
+> with that device - as opposed to trying to jam this into mempolicy.
+>
+> If you're planning to be at LPC, happy to discuss this in person, but I
+> think this provider pattern is likely much cleaner without mempolicy at
+> all if you can just make the provider do that allocation path for you.
+>
 
-Agreed, that's a better fix.  For v2 I have:
+Nice meeting you at LPC :)
 
-  1/2 gives nvgrace_gpu_pci_core_ops its own open_device, which only
-      calls vfio_pci_core_enable() and vfio_pci_core_finish_enable(),
-      to pair with vfio_pci_core_close_device().  The usemem.memlength
-      guards from v1 are gone.
+I agree with you, I don't mean to require some kind of mempolicy setup
+for every provider.
 
-  2/2 drops the remaining usemem.memlength check in
-      nvgrace_gpu_open_device(), since only devices with the ACPI
-      memory properties reach it now.  Not for stable.
+IIUC you're saying the entire /dev/cxl_dev is some fixed NUMA node, any
+allocations from /dev/cxl_dev is from that NUMA node?
 
-One visible change in fallback mode: open no longer fails when BAR0
-cannot be mapped, the same as vfio-pci.  BAR0 was only mapped there for
-the readiness check, which fallback mode never runs.  Ankit, please
-shout if the fallback path relies on anything else from
-nvgrace_gpu_open_device().
+In that case, if /dev/cxl_dev is used with guest_memfd, guest_memfd's
+configured mpol, as in kvm_gmem_set_policy [1], just can't apply
+then. /dev/cxl_dev fully controls where the memory is allocated.
 
-With 1/2 the reproducer from v1 (QEMU cxl-type3, fallback mode) no
-longer hits the -EBUSY on reopen or the KASAN use-after-free after
-unbind.
+On traditional mounts like HugeTLBfs or tmpfs mounts where the mount
+config supports mpol definitions, we first apply guest_memfd's
+configured mpol, and fallback to the mount's policy if there was no
+configured mpol for guest_memfd.
 
-I'll wait a few days for Ankit's comments before posting v2.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/virt/kvm/guest_memfd.c#n400
 
-Thanks,
-  Andrea
+> ~Gregory
