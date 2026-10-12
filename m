@@ -1,160 +1,206 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA45B4718D7
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 14:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7123F48F006
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 14:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791814286; cv=pass; b=gkODw8LKfr5o5FqUkR5DB/L5FS+71YmylruJdosK3a3vipukL+jwhHY5c784nuHssry8TDqfLnogKOZgvZf639QL0KqafioefEG+NS+MK2dUSH1G2hgrVAHutvH94vlHMuG18Zz9UREgHPD/HnGF9k647JHAbtwnVDB897El7UQ=
+	t=1791816074; cv=pass; b=dcJCjm6GknLEfWoQRbLwxZcJ3MVkd90At3VNcTdPYZgVpbSkPZiKpTKAkXSxw/VbQ2aSwXhlP4vnhEGGXo1GRmURazNSCiyW4MuuUN8ofNsvHR2DxOwDhBJXf4uea1YWceHsZ9mRIgdujpPRmIAh9R0A2aBjbwYRub8F/i6XfaY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791814286; c=relaxed/simple;
-	bh=toTfP3XAamHR53tLn5nTeuCeveBATzueww87oO23fhc=;
+	s=arc-20240116; t=1791816074; c=relaxed/simple;
+	bh=EYFNAc3NwLAUZ6w5n0VWHZN4pBcB2B8Fyu8v+g7OFJM=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sYhmlT5nwmBhrmKXdmL/pA8UCusIET/nFrBDf1NxfEP0Ao9CTg5sbPHOe6bAsdcqc6jDCfiBbo4UJaOXmmf4NHezma3ZE1yzmpc1w144SF3GwsSTzCoZHeZVlUQDmSUlx9raj6c8JYiWKdjEfUXJfrZhaRymeE3/QY/B0lbenhE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=riuHiHDN; arc=pass smtp.client-ip=209.85.219.41
+	 To:Cc:Content-Type; b=b+9on46qqxfywlMhu71nKv7npw32i+XlODfOBXJ5BqwT9kIUlFCv6TTSA6VyN7ty7yLeYB6n3t/qesNT79KrKaTeNgnczWmiUKPFbjLlWM4b7LMqFcLqoJAZbPoSASFdaHZUillDcgHb71S8GzpeFPtOayOzkf540u8DjoWWXP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iVqBC87U; arc=pass smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="riuHiHDN"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91b54d1e9cdso21111866d6.1
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 07:11:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791814283; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iVqBC87U"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91b8b456dbeso6153066d6.2
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 07:41:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791816072; cv=none;
         d=google.com; s=arc-20260327;
-        b=c6qCr8Nw39H2Ubrz1PTFXlWxCihbMRWggQCu+qti9p8U5ZY8RHyiJNKFFp/Z5HJluB
-         sQ6LBXKIf9i1mipQrecLDUcOXKzV2nrOaamA3ojdYO5QYfHRV3cjqIzG/vSIRQMyW6iq
-         QSbih9LzSKi517a0u5fnUVf6j+wmFBhwh3w1/aOiQCC6ZykXM6qKbzeppNunIGkIUHLo
-         M50MP7sK/RCDxWm13M2bq+rPBCcufMhOWW8PC7JoZ5FSv5ary4zJ3vZu+9srZgZdYTZ8
-         fP/usU0fh+pGG7o2xEOgZFPOX4ZlC1w/MnzmO0Lxm1Ewt+C3k+IWREKjLRgMmfG58G3j
-         gtvQ==
+        b=jt9LSSYA31EyC/e8bUS3j9SiaDtjIUuhsiQI47AHFc9ZD+tvbKKTmkd4N7HvowQImS
+         y44mPg8vdhHuJHO2mrieg6cxWu7v7lGXcCaWsjtvknNbKejweFHcEq9ms4yvC0g7RiN0
+         FPcFMKCAfrP/dcL3vZmffs3nJfuBCgC0PJj+8bg9RxNIwYtCnccD4NrMklDNpmsoGkoW
+         ap/3PfnCy4YSBZcogycmZPkcTy3Zue9rdXqjaTn+rvnreJPZqdTCaRBbYX9ZwlWjSkBA
+         +J9J5uBwwxv56vaTkrjos+jEnydUGL2BOeCnH7nMrqt/gry1WXqPy6tBmaGrSCK0E9yg
+         spaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-        fh=NE0w5fZFJqlfxt1gGTjEg0nikvKdLeCF0QEwplxCrhU=;
-        b=h/YxBAD5Js9rEhbfJRQOhWUIhuyEr2WkrsdcvuKzmplFQLXzLSR+ZLgVmx2Xme5JO3
-         H84+qBJKlZ2jkWXlszsBN8ex6TM8KGgycaDUEGwAlxiIDG/DqaYb7oVQM+eWvhuKahvf
-         Uw45+zN9sAeefROwZgnqXNwb8MRPWxsKOfe+l6NCk0v4enczFJYlKAJUa+Ir52B7C+hp
-         zI6FPfTCreiliYoay0Wge7kHi8Ls0Y4E7TpPvSv4YwYQgCzNSCGvl1gDeMqogyDQL3g3
-         7teM/DccPSK51iBGnV4yibPAAhhdEKW0QF+S7/Fns9+RRZoBUpy0mR4gINFU9wmev8cE
-         CxBQ==;
+        bh=EYFNAc3NwLAUZ6w5n0VWHZN4pBcB2B8Fyu8v+g7OFJM=;
+        fh=A2oEMHNmacnlmi77xLZ7X53xhZLxYzwb0ycba/db/bU=;
+        b=I3ORnTJvi5aO4LlLN40P95oOAhhjt2qvuDSYC3th+x+9+tVlasrq7WcNA2RVE9jPJ1
+         MhL6SVGITuOuCiEAtQhc2V74wAFUr0ZFEkfoh4FQ5n+ZRbxAe7Z9ruD8gYxYPbmMPl4P
+         SwiMEd+24Lx5+92JxDqmphtp37RKapMYyhwAy0kJIhZAGd16T4rtoKu/xc7w+BXdsBfF
+         +9ViLVngZScHBi5m159py/mHCTvzT9egXRMHF650r4qIm8v36vJy2jAEBiKBV1XuwOKE
+         kOCZAZENDGlg1vYzS+hnCDBFOTcfXuZgoP1bcKF+EUUegeykvcI+nKTSa2N5UuhhZS1w
+         x68Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791814283; x=1792419083; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791816072; x=1792420872; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-        b=riuHiHDNI9VbFbKH0rde37/ykIQHmtHxc4wUw4QOAJXPzsnzi8j+1eiNfM0X4MguS4
-         JXwovS5bZUNydRY/IxjZYYmuQpkw+RJvr9LfcZXyjpTz2u87kRr7GiKsTieVmsanIWkL
-         UwjCPacdD2mICgm1V3og5rguoRO5WIdCWYbxD9AijiQXbBYr386NufiBinUAEpfXH4+X
-         jLIJt4F2o9i9m6KcdyFwCTnsW3PD+DSRKDYlvQLjNV08LUFp5TymTaNl5EtsTWwAovql
-         mmu94+cOesk/2rCSd0D/Tg3YDsQ4g2d2FlPJtslOfah444xvgzoWE/Atm/cGEmQbc26u
-         Xw/A==
+        bh=EYFNAc3NwLAUZ6w5n0VWHZN4pBcB2B8Fyu8v+g7OFJM=;
+        b=iVqBC87UfhKVwxBFCemVBEoZNcx+72U9iRuM3Y+2FvFaXZrsRzUhhimRf0MAJXuLoO
+         HY/iuZOLKTnZlj4U+dZ7bcv60RgWFS0WPBNPuYggdUKgzQaGQb96jSTNV5n6CiWXf2U5
+         6AY2jSZ9hAqyAWvNnQMIF/i7duHFbweXKMf4H/MrOxPHrO5udePbp1QZvTFxKCtHCmRZ
+         XfSW608QD2EBGdfzJTKL6pYtCBg6R2yjjjV1we5PVKp4iyb+x4lpDjpazmnpdOTCgduf
+         6S9vyarSOoF8aopr5ycGGZzYL23HceO1xHpV6LH6CanG25KDc8M7Kul11p8kXZK/hjcy
+         VOQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791814283; x=1792419083;
+        d=1e100.net; s=20260707; t=1791816072; x=1792420872;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=K2I843zxPr9lME1nSEmz+NsS/OxECT+sAh7A1cwprg8=;
-        b=REZyiFxfnPcpn4RTz4dDjBDdJiKZqJ7LcAEXXNgzMXwgaS+fEBarzjveBfNIe385vz
-         cVdxFpiFGERjkwzGQup2iVmmpTR3vMMvrpbc6nOnGT/e5H/8rhSmndFQfdsE7IMaWU/g
-         VXbNPb7jWOiV+vsfn/9yXow57C2BrupAo7nZEqShqvTOHYak6ZLU2rFTvRtiUneyqMg6
-         iEGEekPpY0DHxtmXn3hOs1ercYXGaf2uML9USI4LEuMTQv4NO2d3tyDLqJsG0+6V91C8
-         Do2fHEyBFJ9G/AVO/36oKMO/pdK79wjZQoxX3LVlxgRMsaN+/QcvUsag0o3U56EZfs7I
-         JqHA==
-X-Forwarded-Encrypted: i=1; AKwUvBwcbSd6nx02syCfQt1zSUu9o6e6KGx3N9m+V5cZ2d0sttGHa7I6X32F8gPeT9mMre+C0oc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLBzcy62geGffuSOcKjmeOarVHxNsmsu1eyfQLB3nzoOqKTt15t
-	ViGaTIhIG0A5EQq3QwOqpry/5VFPWOPYynGid3Lo8fPBpbfQca/l6YxVKi64nMCE/pNZbdoPVZd
-	MLUjnpYMP0GoAjsLYhzYuyq7Ldbt1ZKpwQJgwEquV
-X-Gm-Gg: AYBFou0FymM+e3uiOJB2wWFqTyXnVRYHBLDDoLydGXjCa9e96OUwnkdmk+bTnxZN/EZ
-	x89M12ITBd9/dpANGtiyWAmo4RuHK/E3aGTkiB4cQUZo6JIySMos4O6/ZGz7ej7M7zwqTHEOVAK
-	orfj4RGfxusM85B6sM5+HX4rY3MUGkjyR/bmsbLkLrMrg49AdgqcJUh/uk4yLCOqqX47ikHLhME
-	wq4sAVhWWz33yS8E1s/e+4KFtKOFlQzV+mqVv3wgNuJCevETqZn0D5YzXZCPjjCLbMG46oEWIaD
-	aHRaJgABcwl25WuvE42ScYZjq23QhFq0wFyoiDe5pZXTWn3/58iaHYD74+kO98gDUJHTW1YfwYE
-	ihwhWWsRK1ln7MVFf3w9K
-X-Received: by 2002:a05:6214:23ca:b0:91b:8e83:e4b0 with SMTP id
- 6a1803df08f44-91b8e83f3b3mr19792736d6.20.1791814281518; Mon, 12 Oct 2026
- 07:11:21 -0700 (PDT)
+        bh=EYFNAc3NwLAUZ6w5n0VWHZN4pBcB2B8Fyu8v+g7OFJM=;
+        b=B4T5kdpsoQQweZ26B6JFWOAp9uy43DBiNBX75+4oFxBzrkunQnh4gf/LEQVqIupR22
+         R+S95pswm4etKYi7V7o0J1ptt3earffv28tlA/IPrY1wX3GQMxjs+xnrfr64AL8gPx6T
+         iIZ8UNdGhVwDglqLi4eOlavZou88lCUhxQJxkd13UtfNtBvoLypuOvmX67/PnUXGNAP+
+         0s4GHhkxtduPUF+7IKM55YeYozYwBeEm25pV2+crrqC2Vvhc6KiGNSQUdcuZsscSV4as
+         hsJ4jXvNY3eYis05sbJYDgqadOnpn7Wt0O7pXF4kLf1Rpn7WuYjtD66AHgJy1LT0Q5qe
+         n7hw==
+X-Forwarded-Encrypted: i=1; AKwUvBxTUGLK+dLwsHF7x8TEqPmpa6LF9Gwf5jiqeQLI/s24uxXhO6ihhXosUkBZE6mxE5E6StQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ/sonb0yN6DuT4K/TYDg4eb+mnhO7ckGoObBGMI+TUk7okXc/b
+	21F04lXJoFaZ//np+C4alZjsnZmv/DXeDEAjXCC3hrBAcUCHpHqe8t+0PX9KHIWvzXUic7jwzKi
+	MRk5ZFuToSNnEgvI+4slLGcu6SkiMoC3dLyLSUFnB
+X-Gm-Gg: AYBFou0tZtoeohDO9xcSD9oCu2YkiAu0K44Rguu+BHwoUPo0E2SZ6xIiqG5FG+ZXHvZ
+	/OIfSO8Uh3f2ZCKd6WkMKzMK3u5zjmrvrbKF3X84HkCdvTfRCcdLcCyh+jHRSqLWZcKQlvEy+xg
+	rl1a+c0mb4TSoOOSFBuEBTNaWJePl8NISAF+3Kd72CIZ/hJJEwewWQ/6Wus6Yq2gSnfPQEVuNBa
+	78s0FU04NHaqpDvGHEU8J3zivcTV0rnDLhjfZfB3XkglfcjijtkZIoGAbnKVy88ZPsF64PLJtg+
+	Pp5ObGOjT0q7dOXBVeUQqyrZfB+mEgIVx4zcvJf18R1PG5LFxUOhaeUoIbqyyqOd8X/bbze9hoY
+	m0Y8M4P2zsOM9MRVn/CN3
+X-Received: by 2002:a05:620a:2993:b0:93e:9508:8360 with SMTP id
+ af79cd13be357-93ebd1dd868mr1604359685a.27.1791816071132; Mon, 12 Oct 2026
+ 07:41:11 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 12 Oct 2026 07:11:20 -0700
+ HTTPREST; Mon, 12 Oct 2026 07:41:10 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 12 Oct 2026 07:11:20 -0700
+ HTTPREST; Mon, 12 Oct 2026 07:41:10 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com> <ar5iaaLcyz9dCXQI@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20261012095800.50250-1-griffoul@gmail.com>
+References: <20260720111259.122911-1-dwmw2@infradead.org> <20261006183235.16576-1-griffoul@gmail.com>
+ <yq5ald8680t2.fsf@kernel.org> <20261012095800.50250-1-griffoul@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 12 Oct 2026 07:11:20 -0700
-X-Gm-Features: AclHuK-GAlH1JSAYNCIS06aJZxJfvunIjbH1E5FXsRqa5lYNWWJsyEqAXZVZwzo
-Message-ID: <CAEvNRgFO5FUFwU2GEEbHogLmT+SXVu1asLe5uzvRte2jqXthUg@mail.gmail.com>
-Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
- resource (pool) fd
-To: Gregory Price <gourry@gourry.net>
-Cc: Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Shuah Khan <shuah@kernel.org>, vannapurve@google.com, erdemaktas@google.com, 
-	jxgao@google.com, rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
-	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, 
-	David Woodhouse <dwmw2@infradead.org>, yan.y.zhao@intel.com, michael.roth@amd.com, 
-	suzuki.poulose@arm.com, Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com, 
-	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>, kernel-team@android.com, 
-	kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+Date: Mon, 12 Oct 2026 07:41:10 -0700
+X-Gm-Features: AclHuK-nc_uqkVW8eVTYkrPq_RPqOo6SBs5ABhlJBuD_rVj9OrJECoL16jCBpAc
+Message-ID: <CAEvNRgF1hMz+4ivH6WhsEOLTJGOegYO9AYK6OByYysPp_nVJ=g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
+To: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, tarunsahu@google.com
+Cc: David Woodhouse <dwmw2@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, iommu@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Gregory Price <gourry@gourry.net> writes:
+Fred Griffoul <griffoul@gmail.com> writes:
 
-> On Fri, Sep 25, 2026 at 05:50:47PM -0700, Ackerley Tng wrote:
->> + e.g. for tmpfs,
->>     + Use mount page size.
->>     + Respect mount size limits.
->>     + Use guest_memfd mpol and fall back to mount mpol.
->>         + Gregory, now you can set mpol upfront on a mount! [3])
+> On Sat, Oct 10, 2026, Aneesh Kumar K.V wrote:
+>> I have been working on something similar for confidential computing use
+>> cases. There is likely some overlap between this series and what I posted
+>> at [1].
+>>
+>> I have not reviewed this series in detail yet, but I will compare the two
+>> approaches and identify what can be shared between the use cases. Please
+>> let me know how you would like to proceed.
+>>
+>> [1] https://lore.kernel.org/all/20261010072504.536230-1-aneesh.kumar@kernel.org/
 >
-> I haven't had time to quite give this the read it deserves yet (have
-> been traveling this past week), but I think this mpol/mount issue can
-> be solved with a new dax driver (which maybe provides this provider
-> interface) without needing to involve numa policy at all.
+> Thanks for the pointer. I read your series, and Ackerley's resource fd
+> RFC that it builds on. The use cases differ, but the interfaces overlap,
+> and it would be good to agree on the common parts.
 >
-> Essentially
->
-> fd = open("/dev/cxl_dev", ...); /* backed by anondax driver */
->
-> then later when a fault on that fd happens, the driver provides an
-> anon-memory allocation that explicitly requests the node associated
-> with that device - as opposed to trying to jam this into mempolicy.
->
-> If you're planning to be at LPC, happy to discuss this in person, but I
-> think this provider pattern is likely much cleaner without mempolicy at
-> all if you can just make the provider do that allocation path for you.
+> All three series add a flag and an fd to KVM_CREATE_GUEST_MEMFD. I
+> think one resource_fd is enough, with guest_memfd picking the backend
+> from the kind of file it gets. I am happy to drop provider_fd for
+> Ackerley's flag and field. We also find the provider from the file in
+> three different ways; I would like us to pick one, preferably without
+> a registry.
 >
 
-Nice meeting you at LPC :)
+David brought up many good points at the LPC discussion, I need to wrap
+my head around your model. I'll look closely at Fred and David's
+versions this week.
 
-I agree with you, I don't mean to require some kind of mempolicy setup
-for every provider.
+These thoughts are just from reading this email, hope to get more
+clarification :)
 
-IIUC you're saying the entire /dev/cxl_dev is some fixed NUMA node, any
-allocations from /dev/cxl_dev is from that NUMA node?
+> The main constraint on our side is that the provider stays the authority
+> on which frame backs which page:
 
-In that case, if /dev/cxl_dev is used with guest_memfd, guest_memfd's
-configured mpol, as in kvm_gmem_set_policy [1], just can't apply
-then. /dev/cxl_dev fully controls where the memory is allocated.
+Wait, is there some magic done to make struct pages represent different
+frames, as in PFNs? In your model, the struct page <=> PFN mapping
+doesn't stay constant?
 
-On traditional mounts like HugeTLBfs or tmpfs mounts where the mount
-config supports mpol definitions, we first apply guest_memfd's
-configured mpol, and fallback to the mount's policy if there was no
-configured mpol for guest_memfd.
+> it moves pages between VMs
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/virt/kvm/guest_memfd.c#n400
+Do multiple VMs map the same physical memory at the same time, or is it
+a move like below?
 
-> ~Gregory
+I'm thinking that if guest_memfd wraps your provider, then your provider
+can issue a revocation to guest_memfd (ctrl-f for
+kvm_gmem_provider_revoke in [1]) on the move source guest_memfd inode,
+then wait for an allocation request from the move target guest_memfd
+inode.
+
+[1] https://lpc.events/event/20/contributions/2551/attachments/2047/4693/lpc-2026-gmem-other-backends.pdf
+
+> and has to
+> survive a live update.
+
+guest_memfd is going to support preservation [2]. Tarun's series just
+preserves memory from guest_memfd's default provider (buddy allocator)
+now. For your provider, I imagine the preservation flow would preserve
+whatever metadata in guest_memfd (like the attributes in the maple tree)
+and then go on to notify the provider to preserve some range of PFNs (or
+folios). Your provider would then basically do nothing, since those PFNs
+already survive a live update.
+
+[2] https://lore.kernel.org/all/20260728121138.1103610-1-tarunsahu@google.com/
+
+> What would not work for us is guest_memfd
+> becoming the primary manager of PFN memory, as Ackerley suggests. Your
+> get_pfn() leaves VFIO as the authority for the BAR, so I think we agree
+> there.
+>
+> You refuse dma-buf exports while guest_memfd is attached. That is
+> roughly what the memory provider interface is for: one owner, several
+> users, and one revoke that reaches all of them. A BAR exposed as a
+> provider file could be mapped by both guest_memfd and iommufd.
+>
+
+Will read the rest of this series and reply again :)
+
+> I plan to change the revoke anyway, because iommufd must not leave the
+> device with a hole: it should replace mappings in place instead of
+> unmapping and remapping. Would that fit your case? I suspect it depends
+> on locking, for example whether you have to revoke while holding
+> memory_lock.
+>
+> Shared/private state and the conversion hooks would stay in
+> guest_memfd and the arch code, as in your series.
+>
+> Does that sound reasonable? Ackerley, David, any thoughts?
+>
+> Thanks,
+> Fred
