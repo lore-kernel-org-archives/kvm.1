@@ -1,237 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AC235E944
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 06:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C74E23C51D;
+	Mon, 12 Oct 2026 06:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791787067; cv=none; b=nimGb4sDE6X90vpG4HOlhPOlstVEaa3s74l9MPVbJqdIst3dVmS5c8vrWYpwjS1oSO5X3R5YyFp8OKJNjKowOVkEoz4J1+spls0aRv0q+sGhifoZQDHkW58vBBbghAufvw+bBYunymvdpIiYTLOJZAkpzBDpz8bYSkAM/jSaHjY=
+	t=1791787308; cv=none; b=BQQ3mT73j4Cywyha5Oua9pRP5a34mVUsTa5v1d80nUDL9Xi43v2avjCz/Nt2OQMKWpabfsGP4GGYmAaBJki5jaXsx8hKxxoHw1HJtC+091AV8+1WIqmVs6kH9+pM100FodF5uAySPc2yHDCFHoisX+1DF0jgxAvzLUNMJAbywlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791787067; c=relaxed/simple;
-	bh=Y3S3VK8sM/eNaLuLr33gDAR5girMSkc8/FoweTN6Ru8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DO4Ny8k55pNrd1I6YvcnqdCZQMEpbvAf5Lr7thajQinl3lhq5vbDAa7lCVYrIodXkA6nV/v12krzszJrkOcV29F/yRVP3vc7H4F7jRIQohzS0CnTDLAcYrLBfsFBCtlG+IrPMZmbtM1eAgJ3B7fa6tArCAe+NmKik16lrxQeS5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itYJH3Xo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791787308; c=relaxed/simple;
+	bh=eHivjCKczGzkuQ9uUHMBLdzq+nirecjifqF0uyhgCS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I1UC+NEjVw3bUYbpsexP6HOHETi0wSlyoGw7CGzxH8FyArAkXpwkQdTxc/B8c7kfDhQldPMxEDDn6ytzgrXo35RGok0hj9B7Wr7yHayfOk4rA9BAFn7knmrN29zjxld9I4Y4oisGL3/W7ohfRES84ed1tjzEff8T2v34a0GEsiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DREjDhvs; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itYJH3Xo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1D41F0089C
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 06:37:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791787065;
-	bh=AikhUb3k8PSWeJgGwE14z5CoR9UYFfng1STFIj76CXY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=itYJH3XoE+kuDPBE33Xhx+lJJusmrhNLsKPtCWBXI8Nn9zo9O37X9z6dz+AM9LH/1
-	 vAaVXDUXhkLKdA9Yixc81MH816zcsrqaC+6RFjWGQAUoLwUiP7KB/pql/VfGtx25fE
-	 JASDHgVQBMyxIfZbFjZZz2GcgFqHkDWNFIfFIFwPV+f1tILtLRM3zD1RdsgwaAiesX
-	 OnSDNEXOjiUfm85EIVype0GCRTuNFuxe+itwYruomXl9NB7zoaI8LRAi2hphjkVpHw
-	 NzaWxP7oM4bI1HUFGFjgsNi+GWbnOVjM7oz2eOZM4d4iw0xQpR+6k7mcFP4Y979UaG
-	 y1EIppZALdljg==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so2290785a12.1
-        for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 23:37:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwWUcQ5Fc1RUPZ2D2y0IUF/tOFIYtqiZyMKAK65yv7DqaRr3jZXvusJ49AAVU732jEXPNw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLwyYsH1wdfyZl4clOeZQsDsjdTQ/XrK0crel/oOtuv299CLisY
-	mXYSV5i+Hyz/SyuI1vgaOd5l+NaJwXYFjV6yWewu0UA79mrEdlWlvGu15pPvvsB0Ki++3KuPZ6u
-	heG7cll/EeRxy2KPG7iGosIKCOsVPRiw=
-X-Received: by 2002:a05:6402:1ed4:b0:6b1:ba86:5f55 with SMTP id
- 4fb4d7f45d1cf-6b1ba86636dmr2219044a12.35.1791787063963; Sun, 11 Oct 2026
- 23:37:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DREjDhvs"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C5EUoG3428290;
+	Mon, 12 Oct 2026 06:41:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=PcBuV+5B9AhRqChzjKe031ir1zqSXQ
+	T5AWBsIXAlezs=; b=DREjDhvsTcQVp3uNcc5wEm9IQGMy13a4xo4v1GIej7+syS
+	EJsGHE/FIYs4amzLO5vjuWmovQenU2ynXPAW7HVJUBwkL+KBd8jPVyMDiNXps4ZJ
+	YWCCqq0atnW5tD1P57H5O0XA5qrTiaFYY6lwszxmJyCWpo2oShRuiZEUXTO2QH48
+	J+y7TvQvOVLIGr7wZz88+99e7kDeWVEPJ0yIqJJNll+6Tt19d3w1d3CdvxW9/XN3
+	EihFUfg5ODzuUcjYwPimwFxOZ2Rz1/wSNZwGisN/9csUNPqNC3wl494ZK78eNL1M
+	ibAZkKF89DvMAZPuKXIBu73vhbGFtz7dzDRx+W0w==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv37hwp-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 06:41:35 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69C5596W726899;
+	Mon, 12 Oct 2026 06:41:34 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h80pjm1vj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 06:41:34 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69C6fTEL49414408
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Oct 2026 06:41:30 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCB5520040;
+	Mon, 12 Oct 2026 06:41:29 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 240F32004B;
+	Mon, 12 Oct 2026 06:41:27 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.39.28.91])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 12 Oct 2026 06:41:26 +0000 (GMT)
+Date: Mon, 12 Oct 2026 12:11:24 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, sshegde@linux.ibm.com, amachhiw@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] KVM: PPC: Book3S HV: Ensure that calls to
+ idr_alloc are synchronized
+Message-ID: <asyAu4PJz9fyPWV5@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
+References: <20261009123035.157770-1-gautam@linux.ibm.com>
+ <20261009123035.157770-2-gautam@linux.ibm.com>
+ <zewlq628.ritesh.list@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929102821.36112-1-cui.tao@linux.dev> <20260929102821.36112-5-cui.tao@linux.dev>
- <CAAhV-H5GNKZSjB_MN2Vi7uhbf1q9nqqvsfwqF+THpkwk3dEhGQ@mail.gmail.com>
- <9a59af62-3e8a-12f5-4e6c-38c1953adb37@loongson.cn> <CAAhV-H6cgiMQn=1oct6KHaLADwWQJ7Ow3iT14_Gj5BQxMW22Sg@mail.gmail.com>
- <be33489e-fec4-ba52-45d9-6323b14da593@loongson.cn> <CAAhV-H5yXR8vN0NdiHWRTbGOsrqrVxZFd9g9QdaZGhdLR=BA7A@mail.gmail.com>
- <3aada818-e1e1-a802-2547-b8e41618df32@loongson.cn>
-In-Reply-To: <3aada818-e1e1-a802-2547-b8e41618df32@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 12 Oct 2026 14:37:33 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4YrpPmQw=qsp1GqdD5tyG6k+-tBe4g1Y-HO5kgEyu4dA@mail.gmail.com>
-X-Gm-Features: AclHuK-7fXYykh9eRLkclJYi-Ox_9u0k7E3K67RbFTGL5j7WMd9tYvkXLJd2ipY
-Message-ID: <CAAhV-H4YrpPmQw=qsp1GqdD5tyG6k+-tBe4g1Y-HO5kgEyu4dA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Tao Cui <cui.tao@linux.dev>, gaosong@loongson.cn, zhaotianrui@loongson.cn, 
-	loongarch@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel@xen0n.name, nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <zewlq628.ritesh.list@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: UE0v6LLYTCi9Mii3Wj1COcaWLQ2xA-o1
+X-Proofpoint-ORIG-GUID: XJd1Bxj_Mle-K2cR3qC97U4q0-Oy87cz
+X-Authority-Analysis: v=2.4 cv=aqInmiZV c=1 sm=1 tr=0 ts=6acc811f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=b6S7UqY0JXT-N64pkT4A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDAyNCBTYWx0ZWRfX1Y8iffh/otoC
+ 4e4pxqZimfavlwQWYKivf3Wmn4IDV3N3FOqL5k3vSA+NSjZYTSF1n8ubyVB+PeCBgnh25QaOA82
+ 2NeWtmFL8nETQvikIHKfOTI1UKKrFdo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDAyNCBTYWx0ZWRfXxMTktw37mHP5
+ fSOxIl/U/A3dBir2xUqhvu/NkZkCH4Q5ZLMMIUGm9VEZwAMJiv61gMFq1I9Ymx+w7PB1HQ8TIta
+ K6vdNDlHZ/FbojOrqJ+kRjkg6YIwagjhi/N9wPk8Vgt96suptkZcJ7oHAMyc3LertjyKSmHRkQX
+ fpgTYG1Q/SwQZcK86NWbNQuCoYQTuOSD8iuz5vLKTomrxg8E1hPszSbj9dxR5z90uKZvUnZv6hw
+ VJCd/aX5F8pYvEvUuUEA60a+ok8s6jFPAxzENCIgt0jkKHGOsxbu6zc3pvw70jSY6tY9kkt4mem
+ RAhogQKQSCrqYX58nL+xNGhVo6Ct4LC2uO6WSczAhG3zjxaItKDHVoENSFvL4PThVnsTDrpvpH5
+ tVCsqRjjIqITP+Op4yV6lEVPXQSxJwyGjoyeLB4+rysZEz6aXvsSSoSTXd32a9kypttPtQEBXsA
+ djVQ+zACitw+yalGMDw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_02,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610120024
 
-On Wed, Sep 30, 2026 at 5:03=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
->
->
-> On 2026/9/30 =E4=B8=8B=E5=8D=884:52, Huacai Chen wrote:
-> > On Wed, Sep 30, 2026 at 10:33=E2=80=AFAM Bibo Mao <maobibo@loongson.cn>=
- wrote:
-> >>
-> >>
-> >>
-> >> On 2026/9/30 =E4=B8=8A=E5=8D=8810:24, Huacai Chen wrote:
-> >>> On Wed, Sep 30, 2026 at 9:53=E2=80=AFAM Bibo Mao <maobibo@loongson.cn=
-> wrote:
-> >>>>
-> >>>>
-> >>>>
-> >>>> On 2026/9/29 =E4=B8=8B=E5=8D=888:43, Huacai Chen wrote:
-> >>>>> Hi, Tao,
-> >>>>>
-> >>>>> On Tue, Sep 29, 2026 at 6:29=E2=80=AFPM Tao Cui <cui.tao@linux.dev>=
- wrote:
-> >>>>>>
-> >>>>>> From: Tao Cui <cuitao@kylinos.cn>
-> >>>>>>
-> >>>>>> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
-> >>>>>> invocation: every call overwrites pch_pic_base and registers the s=
-ame
-> >>>>>> kvm_io_device on the MMIO bus at the new address, while
-> >>>>>> kvm_pch_pic_destroy() unregisters only one bus range.  After a rep=
-eated
-> >>>>>> init, MMIO to the stale ranges computes its register offset agains=
-t the
-> >>>>>> new base and silently reads 0 / drops writes, and the leftover bus
-> >>>>>> entries persist until the VM is destroyed.
-> >>>>>>
-> >>>>>> Reject repeated initialization with -EEXIST, tracking the state wi=
-th
-> >>>>>> a has_init flag so the check and the MMIO base update are atomic
-> >>>>>> under slots_lock.  The base is only committed after a successful b=
-us
-> >>>>>> registration, and the real registration error is propagated instea=
-d
-> >>>>>> of being replaced with -EFAULT.
-> >>>>>>
-> >>>>>> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read an=
-d write functions")
-> >>>>>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> >>>>>> ---
-> >>>>>>     arch/loongarch/include/asm/kvm_pch_pic.h |  1 +
-> >>>>>>     arch/loongarch/kvm/intc/pch_pic.c        | 12 ++++++++++--
-> >>>>>>     2 files changed, 11 insertions(+), 2 deletions(-)
-> >>>>>>
-> >>>>>> diff --git a/arch/loongarch/include/asm/kvm_pch_pic.h b/arch/loong=
-arch/include/asm/kvm_pch_pic.h
-> >>>>>> index 887b0431fd20..679132d840e6 100644
-> >>>>>> --- a/arch/loongarch/include/asm/kvm_pch_pic.h
-> >>>>>> +++ b/arch/loongarch/include/asm/kvm_pch_pic.h
-> >>>>>> @@ -53,6 +53,7 @@ struct loongarch_pch_pic {
-> >>>>>>            spinlock_t lock;
-> >>>>>>            struct kvm *kvm;
-> >>>>>>            struct kvm_io_device device;
-> >>>>>> +       bool has_init;
-> >>>>>>            union pch_pic_id id;
-> >>>>>>            uint64_t mask; /* 1:disable irq, 0:enable irq */
-> >>>>>>            uint64_t htmsi_en; /* 1:msi */
-> >>>>>> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kv=
-m/intc/pch_pic.c
-> >>>>>> index 7a704f18880d..a884a043feef 100644
-> >>>>>> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> >>>>>> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> >>>>>> @@ -282,16 +282,24 @@ static int kvm_pch_pic_init(struct kvm_devic=
-e *dev, u64 addr)
-> >>>>>>            struct kvm_io_device *device;
-> >>>>>>            struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
-> >>>>> Why so complicated? The below is enough, no?
-> >>>>>
-> >>>>> diff --git a/arch/loongarch/kvm/intc/pch_pic.c
-> >>>>> b/arch/loongarch/kvm/intc/pch_pic.c
-> >>>>> index 2b63b0c2c7ce..7855d78304b7 100644
-> >>>>> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> >>>>> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> >>>>> @@ -281,6 +281,9 @@ static int kvm_pch_pic_init(struct kvm_device
-> >>>>> *dev, u64 addr)
-> >>>>>            struct kvm_io_device *device;
-> >>>>>            struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
-> >>>>>
-> >>>>> +       if (s->device->ops)
-> >>>>> +               return -EEXIST;
-> >>>> This can work, however I think that it is not a good idea to access
-> >>>> internal structure field about kvm_io_device. If so, there is no use
-> >>>> about API kvm_iodevice_init(), just s->device->ops =3D &kvm_pch_pic_=
-ops is ok.
-> >>> I'm a little not agree. :)
-> >>>
-> >>> I think kvm_iodevice_init() is designed to do more work rather than
-> >>> just set the ops (though it just set the ops now), otherwise its name
-> >>> should be kvm_iodevice_set_ops().
-> >>>
-> >>> In addition, even if kvm_iodevice_init() is really a setter, there is
-> >>> no getter for the ops, so when we need to access ops, we can only
-> >>> open-code it.
-> >> if so, you can try to add kvm_iodevice_get_ops API and check the
-> >> response of KVM community.
-> > There is not a setter, so I don't think a getter is necessary.
-> why setter is necessary, getter is not necessary.
+On Sun, Oct 11, 2026 at 08:47:35AM +0530, Ritesh Harjani wrote:
+> Gautam Menghani <gautam@linux.ibm.com> writes:
+> 
+> > Calls to idr_alloc() in __prealloc_nested() are not currently synchronized.
+> > According to the documentation [1], the caller should provide their own
+> > locking to prevent concurrent modifications to the idr to prevent bugs.
 > >
-> > Moreover, you said "no other architectures directly access ops", but
-> > in fact, __vgic_doorbell_to_its() from arch/arm64/kvm/vgic/vgic-its.c
-> > directly accesses ops.
-> If it is used by others, I have no objection any more. But for me I
-> never write such code.
-OK, Tao, please update your code, drop the 2nd patch and simplify the
-4th one. Thanks.
+> > Wrap the call to __prealloc_nested() in	a spinlock to prevent concurrent
+> > modifications to idr.
+> >
+> 
+> This looks to be the leftover of previous implementation. IMO, the
+> commit msg needs fixing.
+> 
+> How about this?
+> 
+> Calls to idr_alloc() in __prealloc_nested() are not currently synchronized.
+> According to the documentation [1], the caller should provide their own
+> locking to prevent concurrent modifications to the idr to prevent bugs.
+> 
+> Now __prealloc_nested() calls idr_alloc() with GFP_KERNEL which can
+> sleep and mmu_lock is a spinlock. So idr_alloc() cannot be moved under
+> mmu_lock. In such cases the idr Documentation says:
+>     If you need to take a lock while allocating a new ID from the IDR,
+>     you may need to pass a restrictive set of GFP flags, which can lead
+>     to the IDR being unable to allocate memory.  To work around this,
+>     you can call idr_preload() before taking the lock, and then
+>     idr_preload_end() after the allocation.
+> 
+> Hence preload the idr memory with idr_preload() before taking mmu_lock,
+> which allows us to use idr_alloc(..., GFP_NOWAIT) under the spinlock.
+> 
+> This also allows to kill __prealloc_nested() and __add_nested(), as they
+> are not needed anymore with idr_preload().
+> 
+> [1]: lib/idr.c
+> <...>
+> 
 
-Huacai
+Yes this is a miss from my end, will fix in v3.
 
->
+> > [1]: lib/idr.c
 > >
-> >
-> > Huacai
-> >
-> >>
-> >> Regards
-> >> Bibo Mao
-> >>>
-> >>>
-> >>> Huacai
-> >>>
-> >>>>
-> >>>> If adding has_init is redundant, maybe we can set s->pch_pic_base wi=
-th
-> >>>> INVALID_GPA in kvm_pch_pic_create() or some other methods. However I
-> >>>> think directly accessing kvm_io_device::ops is not a good method, no
-> >>>> other architectures do in such way.
-> >>>>
-> >>>> Regards
-> >>>> Bibo Mao
-> >>>>> +
-> >>>>>            s->pch_pic_base =3D addr;
-> >>>>>            device =3D &s->device;
-> >>>>>            /* init device by pch pic writing and reading ops */
-> >>>>>
-> >>>>>>
-> >>>>>> -       s->pch_pic_base =3D addr;
-> >>>>>>            device =3D &s->device;
-> >>>>>>            /* init device by pch pic writing and reading ops */
-> >>>>>>            kvm_iodevice_init(device, &kvm_pch_pic_ops);
-> >>>>>>            mutex_lock(&kvm->slots_lock);
-> >>>>>> +       if (s->has_init) {
-> >>>>>> +               ret =3D -EEXIST;
-> >>>>>> +               goto out;
-> >>>>>> +       }
-> >>>>>>            /* register pch pic device */
-> >>>>>>            ret =3D kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr=
-, PCH_PIC_SIZE, device);
-> >>>>>> +       if (!ret) {
-> >>>>>> +               s->pch_pic_base =3D addr;
-> >>>>>> +               s->has_init =3D true;
-> >>>>>> +       }
-> >>>>>> +out:
-> >>>>>>            mutex_unlock(&kvm->slots_lock);
-> >>>>>>
-> >>>>>> -       return (ret < 0) ? -EFAULT : 0;
-> >>>>>> +       return ret;
-> >>>>>>     }
-> >>>>>>
-> >>>>>>     /* used by user space to get or set pch pic registers */
-> >>>>>> --
-> >>>>>> 2.43.0
-> >>>>>>
-> >>>>
-> >>
-> >>
->
+> > Fixes: c0f00a18e2a8 ("KVM: PPC: Book3S HV Nested: Change nested guest lookup to use idr")
+> > Cc: stable@vger.kernel.org # 5.19+
+> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> > Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> > Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> 
+> Otherwise LGTM. Thanks for taking it ahead and validating this.
+> 
+> -ritesh
+
+Thanks,
+Gautam
