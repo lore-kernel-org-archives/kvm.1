@@ -1,100 +1,180 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1EB35E956;
-	Mon, 12 Oct 2026 05:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791782090; cv=none; b=UaCneJiUf362mOSYhtNPaJHsIUKuWyRlhkLSwfJ9KywYCkDz+TR1SJRlHJ0KCcP5MiwHcFrMJd+HjIQoTuRqRkU6sMh3gifUCLqwqDBXODK5H5mrK2DoR4XLTt/E/VX0R80a9yoJSnFnKw8Fv/Hs/SsNKiPlFvYJO2AjlUk1LGo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791782090; c=relaxed/simple;
-	bh=71R9SW8hqZ8Ya6Z5p9aKH2+aKZc5yLq0MHGcR0Rcx1g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BGHlTq8jjvIkX+JyOEE2feJ/zJ7jnFoqBb9dgDsPTzHvj4PeWJ7jJXVEBt62Xn4syVs551dW1rIxUUax60UeuK8pLCOmi+pT/ANzvfha+bEs5bglO7F2XVPHjZJbk2DHsoZHXG2GOQ/UTW8rp3kp59v4WxefE8/+cLSQM5sEHkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A4OE+H3S; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE7027E049
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 05:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791782260; cv=pass; b=H6kDHjvnr07zIE2uM87cIT4M9g7KC++TyPW076/snO5+7XO6kQU4c0fVJviGrg13RMv3CrfssxtIFlKVZCfcS1CaHvtU7I2yR/rQC7OUyU3x2/UWuWW3CQcihusY7zrcH/aN6s27gWKbMuot3QiuIoMTH+pae7NiiIDUE85+4XE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791782260; c=relaxed/simple;
+	bh=eR+fmL22lupP1pDQ/Am7C6byc7i0RQGsHO+PHaoUMS8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HQt6+HAz8ctdKSNpzS5BcU6k30eYsoLx87+3kGOA80HbKFxJ4OxJ833GogBV43ialqP3DbBASRgWdOyTon2pWxl3EfOzsG6PhFq5AuYZujUcTiol3+K6ayw342PWvKAI1a3kk/9jZHUBvF4ZDSx9RseWsj/bM+89KHZ1FJ1bRJg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lcAmHqGf; arc=pass smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A4OE+H3S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791782088; x=1823318088;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=71R9SW8hqZ8Ya6Z5p9aKH2+aKZc5yLq0MHGcR0Rcx1g=;
-  b=A4OE+H3Ss1rZiwDlfKBRbMNqKfP+mlO6kzw4EOzqEJZjFWKcEbCBc6Yz
-   HNNPOHuPwIh4jAPISssfgYWE93qS0iy+PXOEtXezS3go/Epf5PQ65OqXY
-   DZ8xHsoBNko4PVMco6PkIvX5rKPHW1hc4k9oNYpJVtrHx7BI2xqO8UuBv
-   hn+C8szi1KTlbN2eBb2KRJPaFnpmfS/uWetvLkhpEDV5VLLyJ5Gf2Mfhc
-   H91WlYUKBDDuUEZ+fj4Dwfhc+9ixiV9IF58rZOojVSHZ7q0jKvlaM8K10
-   wCqv2DryOVej2juPPrFakL4f2E52I/oSf64Hswb0clmyLIxiqxAoHZUji
-   w==;
-X-CSE-ConnectionGUID: M95tfasDTqSH64DW0UPKQw==
-X-CSE-MsgGUID: H+NA5LIGRg2eiZzNhA6yrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="473930"
-X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
-   d="scan'208";a="473930"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2026 22:14:47 -0700
-X-CSE-ConnectionGUID: xAWrWkcbTWKejez9zAMjPw==
-X-CSE-MsgGUID: stcO3pRjRjO20dFnz3fxQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
-   d="scan'208";a="737318"
-Received: from unknown (HELO [10.238.3.65]) ([10.238.3.65])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2026 22:14:42 -0700
-Message-ID: <011d148a-4646-4703-b934-aa7ce573070e@intel.com>
-Date: Mon, 12 Oct 2026 13:14:40 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lcAmHqGf"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93a40a9a01aso837607685a.0
+        for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 22:17:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791782258; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SxLcIqvlW2Tht5Lc36FvMGM8WN0uIpI6DC2khdAi1pUDpHbDhBtJK6Gf4K0phVDIvf
+         xoM/Tl5kS1RCFvuOjSG349DP1KOsvABOuqdKVEow+oMJ7yobBC7yoGfFlQvfVTcyGJkU
+         kwCW3ZgcaIqmPYClP45lnYvTvEdPXXrma+zBYWoX4FkLJDcCkeQN70P9x+qtN21zZH08
+         12n64fJSOb9ZrUWzKInJzj2Oh1ir98zneFTdevZQhC0frT2vxLYB+f5PkquWSIPosHHW
+         1N+1kA/LRUHUex4mY63T4Ghnhhe5tIY0G2CNx37UGJqlqH1HoOyqtMbIBn40nAFO8Obw
+         A1Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fgfFsidpQQCyeZD6VQBMcPL9jH+HS8umBdgVKZVkXdA=;
+        fh=OPodQtRfxswI/NbS8A8iGyzkz35O4tFmxXbvZDO5cfw=;
+        b=sHiXde5p5SwLWWL+4zfhBTUEP4Vmlut4x2GUjXBOsOZIDywjULMt6/+e4vCj0jFjZa
+         NFeqB/RwbXexa6Zz0XxuL3G9Dlp1V5T/7XM0cGhkvhLe1gr5W1jbuS+zSXYi5oI2mCmI
+         pnYbRcvPaxGS/fywDv3aSzYvdUJAPMdkoNnT0V7ZGqnty4iUHLwx4ZoCFDrkjKpfAOHv
+         cH7qzg6yzUivS+2tY0a1haInW2gHqWvH4xQs8CTLFbsQu2czD4c11hoD6a9qdaP9g/vm
+         mwv1lmssa0RWF3DuK/lWBsIfaqZihdDQ9yeOFGphxU/yrN6FuVBPgu8M1Efq2/GaLjA7
+         b9Ww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791782258; x=1792387058; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fgfFsidpQQCyeZD6VQBMcPL9jH+HS8umBdgVKZVkXdA=;
+        b=lcAmHqGfTtb5Jssv3FS60q+gS6WbL9qbpJutqX+Fxn0rTukoQXEOxMXicndEY6HKLj
+         DIm/dZRABZla73El/wqEp7KTHEVdF9mOG5Z3egFePj0oQlzt5PRTk0uYMu3sVCuWlp69
+         a+pGSbFyjgoFWKesJchc+aR0o/nOGyHzqYQe+GZTUfaPaDQzyJXpB8yQMY7+Ay0Uurcd
+         2ujNch1ShU52ntYElMTz0cbPNqtKOA2cCME9EnDep+S+0do2zrJrH9BP3EQthVRxgqZ4
+         LtPpvHT6NKne98RNonu6C197aOd0IHJi/Q/viZzmqvNOScn5HGuoMlV1H7GfLEzYXZb0
+         n+TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791782258; x=1792387058;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fgfFsidpQQCyeZD6VQBMcPL9jH+HS8umBdgVKZVkXdA=;
+        b=Fwzkwsp5f1lXmgpGvfF3x4izGy/JZ2XsWsoWV1J1X/mWrOD2YAza6sO8QrK3SJ6wwj
+         fKVf4hCVOjXfY/M/NhuMRwryHYEpYgvKLkHhaW8U0XvMLcCpQ73ZPKsmAmadZgANePzf
+         cvWoirC7xJa3q3eRdinndcYLgL7hl69Yyywil8DBDewfYgmwQL/WPKSFfg+LYUxB1iTi
+         wRQLVDwCzh6565ruMC/1cXynhI5uSnZ+Emiz7KjTPcblTnJqJiEPZ1QWoOw3DyAdbJWG
+         BXUCfjpnaMncVgVzTA5BA1uBbW248wGZwfNiZO4/mu+z43tjkFyor0PqY0S9Oy4GM3s3
+         UPSA==
+X-Forwarded-Encrypted: i=1; AKwUvBwdrD8yEiV2Z45AKIW7imsZUyOwoqNIqxI90pOPc+3K/bVTbVxySCeWXbo7TQqxluVRON0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI7h7c53tAWUpYUJlu+N8GMa6ckTX8FDh6v2iK0iDKHEprpL8r+
+	6B94+1TGQfN3gd61LY2R51WbPcL+1RTmKtrsRkPNhZbE/lPtNuzPfgnyw6m6V0rRCMyomBkMYpw
+	WisvOvQgHHfqo0gXqcUi7SDc1qmTVLwxP6iz9
+X-Gm-Gg: AYBFou2G9+74vV75PS6HDjvExl4MHAXS4c83eBVvZrwyJsL6v6ia8+yJSYwT6ox7RYd
+	6Uk0Q7O6cRsfVwbqhFZFd/UAQmiMKiET+UDG/vofLQgs4bjKka3eRtdfbJIG/2QOv3bO+veAjif
+	+HGSW9/s1/dfj4RqkybZgyTqdqs72HkcE0d+rgygVf6zsxTOpY0h0MPbCEwI2tg2T89QIFYumBj
+	pEco689bc9g2Iit5AX/R03WMtMZDazwpMrqorDu0t5xw6W8ztMS6NAOfNi99O0t7P3GA9cA6see
+	bpenC5DvCi80C4l3nVa/Hu+Vvkf22m9GFy78pBpQkQGvvD4pjKNyz1rcqMR1DeqMrk4=
+X-Received: by 2002:a05:620a:468d:b0:93e:c173:f694 with SMTP id
+ af79cd13be357-93ec173f895mr1213489685a.40.1791782257577; Sun, 11 Oct 2026
+ 22:17:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 18/23] KVM: selftests: Add helpers to init TDX memory
- and finalize VM
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-18-7c62a5d8a992@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20261001-tdx-selftests-v15-18-7c62a5d8a992@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261011014803.100454-1-physicalmtea@gmail.com> <sashiko-outbox-167544@kernel.org>
+In-Reply-To: <sashiko-outbox-167544@kernel.org>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Mon, 12 Oct 2026 13:17:00 +0800
+X-Gm-Features: AclHuK-lnMJpW1Hk4QztCSGXZUH1H-mtHMg6D6LOi_sK5vUMHTywqi2KmYQFORE
+Message-ID: <CAJwVaMK8MOfKjhWHH_MA3WqxxraQkQyeeN1RqUoANxZSnDJ2Dg@mail.gmail.com>
+Subject: Re: [PATCH v2] vhost-scsi: do not count PI bytes in the data length
+To: sashiko-reviews@lists.linux.dev
+Cc: Eugenio Perez <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/2/2026 3:37 AM, Lisa Wang wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> TDX protected memory needs to be measured and encrypted before it can be
-> used by the guest. Traverse the VM's memory regions and initialize all
-> the protected ranges by calling KVM_TDX_INIT_MEM_REGION.
-> 
-> Once all the memory is initialized, the VM can be finalized by calling
-> KVM_TDX_FINALIZE_VM.
-> 
-> Co-developed-by: Erdem Aktas <erdemaktas@google.com>
-> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Co-developed-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Critical] vhost-scsi: missing validation of prot_bytes alignment allow=
+s OOB access
+> --
+>
+> commit a2683cd412935b122ac2e93ce16af9655a892639
+> Author: Jia Jia <physicalmtea@gmail.com>
+>
+> vhost-scsi: do not count PI bytes in the data length
+>
+> This commit updates the expected data length passed to the target core
+> by omitting the protection information (PI) bytes. It adjusts the length
+> so that protected read and write operations take their length directly
+> from the CDB, preventing issues when the data scatterlist is smaller
+> than the total length.
+>
+> > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> > index 885fac5ed042e..8b32caa7ec294 100644
+> > --- a/drivers/vhost/scsi.c
+> > +++ b/drivers/vhost/scsi.c
+> > @@ -1534,9 +1534,13 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, stru=
+ct vhost_virtqueue *vq)
+> >                * vhost_scsi_queue_data_in() and vhost_scsi_queue_status=
+()
+> >                */
+> >               cmd->tvc_vq_desc =3D vc.head;
+> > +             /*
+> > +              * exp_data_len is the data sgl. prot_bytes already sit i=
+n
+> > +              * the protection sgl. Protected READ and WRITE replace
+> > +              * data_length from the CDB in sbc_check_prot().
+> > +              */
+> >               vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_at=
+tr,
+> > -                                         data_direction,
+> > -                                         exp_data_len + prot_bytes);
+> > +                                         data_direction, exp_data_len)=
+;
+>
+> [Severity: Critical]
+> Does this code allow an out-of-bounds access when prot_bytes is not align=
+ed?
+>
+> In vhost_scsi_handle_vq(), prot_bytes is extracted from the virtqueue ele=
+ment:
+>
+>     prot_bytes =3D vhost32_to_cpu(vq, v_req_pi.pi_bytesin);
+>
+> There doesn't appear to be validation ensuring it is a multiple of the 8-=
+byte
+> T10 PI tuple size before it dictates the length of the protection scatter=
+list.
+>
+> When the target core later processes this command, functions like
+> sbc_dif_generate() in drivers/target/target_core_sbc.c loop over the
+> scatterlist length using 8-byte increments:
+>
+>     for (j =3D 0; j < psg->length; j +=3D sizeof(*sdt)) {
+>
+> If psg->length is not a multiple of 8, does the last iteration read or wr=
+ite
+> past the end of the mapped scatterlist element? A malicious guest could p=
+rovide
+> an unaligned pi_bytesin or pi_bytesout length, potentially causing an
+> out-of-bounds access into an adjacent physical page on the host.
+>
+
+This issue is not introduced by the current patch. I have previously
+sent related patches to fix similar issues. I personally believe that
+this kind of issue should not be fixed in the transport layer.
+
+https://lore.kernel.org/all/20261006093338.27342-5-physicalmtea@gmail.com/
+https://lore.kernel.org/all/20261006093338.27342-6-physicalmtea@gmail.com/
+https://lore.kernel.org/all/20261006093338.27342-7-physicalmtea@gmail.com/
+
+> >               ret =3D 0;
+> >  err:
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261011014803.10=
+0454-1-physicalmtea@gmail.com?part=3D1
