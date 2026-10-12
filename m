@@ -1,146 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D1F43031A
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 19:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791832421; cv=none; b=IElEcY0XyK8Vevqxx3aFkZ/EQNHRMCYZ2X/RBnUYO18XsOrmTPvDl+hMm7VgDyF4lT0Ev5yRJ4VYzYaBapaI9a8Z0qc3jAv3e8qMqoGGp0KED8JfPUR3CAOfsb9UCJq6O2FaYnnAqqWBR38V4aWqYdY3MdlalxyKe2QzPDo4rdE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791832421; c=relaxed/simple;
-	bh=+qmz+yBeXRlBRx+OdP1RU/IGoFJLfquctyGFdtp+Fp0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217374B95C1
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 19:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791833379; cv=pass; b=d96pVxCDEJriR4O7RViwqTyEsrT8LYpT9gz0L9IIKteeR69+RDscFAFoUr4nwEpUpxiUg0/FsonygoxVI8WgLd5Mi2TBGQN0uKZUD4UrFYOByGwHMeEZxYDgg6LAhH23tU0TqvR213nAJ0Kj/ot+LQQB1GOqWWIX8n1DCq/4aak=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791833379; c=relaxed/simple;
+	bh=aoPqNjug6jdHt00ush3qNX20F7lS1qZxd63aAzecos4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nZs6nxrZ2r9iCeUzVT61pW1vvnou+mb/Q5HKhH+rCBk/gcmKzfLQGj9SkO27sifk6aSa13ElosXhpuqvzfoud7PzL+NOYNaqxjHbndl7yN29epa+3Jwd1Jw2Fm1oH2GGxqhkrnHwkl9QnwwELBIX6l3c39Ka2A4xGcl/jPDZERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vr9MD9aq; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=mhVwqJRnPZoWR2CdTiQ90MePR+kzx0px5Yb3clFJIKmzfEh2+dbGlMGn3bKxj2JVW7QeBUj+NZAYh1OeztZeIC9oX3DJzfP4GAj6nat7RbsqZs4qn71+EO9AjwPoEgxzYwRLXF8ZgBcahTFJ0DP0UI9OmmlI3X49+MEwOEvg9Zg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Afe/3Zr4; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vr9MD9aq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BD61F008A7
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 19:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791832419;
-	bh=Aps8kHLqi/8jFYidGtO0vryj1o6o4s/CXu0xm5bD3hI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Vr9MD9aq/0c/K8dttGgHbcaFVyWghRXbaJ6aaaKBVDfEno5glVgugPNXPq3k06LIU
-	 SkfY5+HUu7AUNsjPrjRHtb/ZVvXSHEv6wp5MO3yXaaICa/8Amvv6ic3izHhBfbRoyy
-	 Gs6xiftz0Ep5iYn537eYMMrYpxj5DIoN/YPplNJQkwRDEhgorXpfM0nTTY33HFt9p3
-	 Cso4oUrpq4qCfUfPBsNgwp89s2hB+mjjkU6UTC5rPWUoHDacxWmW7YkKAlrixK5Nr1
-	 ahgRCzp979VYn7+1R9S36QMyLpexKe6JWyc5rL3pa0aueoALBqmuLvV/Qi3iBg3s2E
-	 3ArL9oQFRqGBQ==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b2b92065ffso2595739e87.1
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 12:13:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxG8zOUBFGf/40/92DEVdKkZ9xUGEP5JI7CpFWn1wYaWSxdTW6Q7ctbvOYqDGUzPnx8z6M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIPGM/LO7R2fXnBHR5LOEisdEoUUhFAUJmmucihsK3zRR2N1bfj
-	hLTsR43q37COZzphRW2lGT0E4lVcFlwxZPWRUPKRO4P+RJnmkCwAQTntGLgLyoOAO6T/UMclqSD
-	vNyRSNeu67l/8wiDoQegja0U1YcPETgQ=
-X-Received: by 2002:a05:6512:3042:b0:5b8:f125:f48 with SMTP id
- 2adb3069b0e04-5bcde8e2d0cmr3421626e87.57.1791832418176; Mon, 12 Oct 2026
- 12:13:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Afe/3Zr4"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso15145a12.1
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 12:29:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791833376; cv=none;
+        d=google.com; s=arc-20260327;
+        b=V7FyQkZBOsFQvQrZaCNqPRBYM7/r7fJdSyCkU6Pj3YNNghtrMC9kwiCgK7QPl2jnn3
+         sr3iXKmGfjfZK195ieaDbXTS9Xc5GTLDOhIYkjS4o+js+RvldFlt8Wp4bN71Vpma6Bsb
+         HlFzPwB4d9mKvki1edGns7kZnAYeCQHbf8xILI8fYnYWqa1O4x2YMs37gU2gj4NKhKw5
+         FyswDEh1QTGCTJOkiB/TLE7D5khPJB76PRUaXalraiUqv2qoZg9mEQHwpLvpb37Aqhlm
+         vMhU3nms0PLFNKA5bel2yI4qqbHiiSYiw56MwGlJiWli0DnaQWyba04/qpJ5zRnlOXJ5
+         +OsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aoPqNjug6jdHt00ush3qNX20F7lS1qZxd63aAzecos4=;
+        fh=yeX6vePwPO0OIuWIph1dgzE6YevBVO7sMZxy1Yocknk=;
+        b=Ux0EfUpRd7Z+xaLRLiSiLYYBqfbYqBzUIhrAoNGE70SVGAl1AvyYBpmMln0dnqKV5/
+         /ro+rlcopeV0eMzaQw17CfH2EbyExPprDHoSSJ+HO0OZWUGuY38yQCi1OShHyMuICDpT
+         DVmUuzpar52gXWNgfnISBlphyVjf3QQ9ScILT3VlOqBzaa/aV+rlrTOSxMfwv2JBW5Ul
+         w06A1r/jobaekAELSxXtYKz/vTSHG/Nw+9p6twSjyDR9evp4P2kz1UTc+5zZn/dkMyOI
+         gevAVomEbLwcRVol8QdaQYM5f5Im1zKV8jQWAlbJK6MYUcm4ijFFF+WtsBRQ70/0DxXZ
+         knPw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791833376; x=1792438176; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aoPqNjug6jdHt00ush3qNX20F7lS1qZxd63aAzecos4=;
+        b=Afe/3Zr4ZBhFeXjfVNJcs5SlL8kH9Hf4n+lQ9CVzyQqXgqdq27opBUFIMFZdn2VRCP
+         k7yVRUfPkGSbUSMqtxqRmmH8/OXpVZ4uXfJZAbeDOYPxQcJOEYAbB73gJxCGFQc8HJcs
+         FK3N9Kez/I5hywoERU+iTFa9YoLWPiLEKMdnQn5Jzx6f6sTgvP9YHszAr8PWKlbGftEl
+         s6RHPCMOr+ekjfOVGp3kfBSvmttbwYdICha4KSmjOVKRI2h34OQUMguffv7ogVewEae2
+         3YXkRZ13tctZ9CZ3Itwje+mrr3IUm8TnsJEmcTshBjWKi/P4GNtJ10EcSfCDQ/3JtCPy
+         HRUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791833376; x=1792438176;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aoPqNjug6jdHt00ush3qNX20F7lS1qZxd63aAzecos4=;
+        b=xzy73xy5ZUAJ6nbZKV3SoyLLYsX9Ff265QC72/WioJ05V3o8FgTO7R/n82hPFTC6p2
+         518ELgmDfgKwI+Ovdhu5Vx8SDRLqE+wRJXqx3xwN28io5k4/pjfJ7U/oPQ3KqHInGiH7
+         TKQb/GhNhVyzfUj2+rwYkmqpo9Z8tjpShf5il0aANhLwLxUSrGEv8JB5sxydXHPNLspq
+         tdmZiMyioxKjISiKs3w0f8CRf2BxATwIFstb3ut/XNzxlFJVBzjFN0pwOUCxEOI83uty
+         xaPTk7nU6LdU1rgEpL3jQok+AkxEG6WU+6yYedIl921q57mEWDkSFd+kbveonulUKT1m
+         t5+A==
+X-Gm-Message-State: AFq9FYJgoP2TspSOiF0/aO2f45Ufwj+LGrggEbIHBY/halN2LhnHwBgP
+	A6KLWOnQoMilaXU1jVzfY52WrYNJjsm9LzoFG4XsngPf7A211WCGsidX20Nu1fs+xT8IKNEZvun
+	+QbnEwrfkNsMGpq7nQWl2NT/kotrjj0Owgnr6P21g
+X-Gm-Gg: AYBFou2vJ6FtOpBRlhTydHDCjXI217ZtWit6g4v/qESp9ndTUCcvWBqTUoDjOtj6woH
+	ZaENyRH9tptLbDL/1yflKpZSpzR0AAwIBYmiHsNiM4katOnEOKqukBbuJjVMpTJqPe02S4gf3OR
+	QNzYBdQBDKJcQQJNxx8+j6FWQHXndxhQvhihkhWRAKOj/B1jS4oc04WkXxtzmATz9kzF23IQxr9
+	p8KNBrZ3ba7laexaxXq1lnEaACF+BblgSWOESjIgJ7+ljlRpljXHbKD19OlwVFmuroXg/UerpJM
+	DXNsBppWP5hzUEb/5zNKX9QvC0WIrhQnGkgr5wLItGoJOaO26AQ9v64=
+X-Received: by 2002:aa7:d58b:0:b0:6ae:188e:e119 with SMTP id
+ 4fb4d7f45d1cf-6b199a610c8mr109200a12.9.1791833375825; Mon, 12 Oct 2026
+ 12:29:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
- <20261002061507.1600269-8-suzuki.poulose@arm.com> <ar-PiBQGye4_hQa6@arm.com>
-In-Reply-To: <ar-PiBQGye4_hQa6@arm.com>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Mon, 12 Oct 2026 21:11:34 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gqSsA=tdKuQB1uExYas8F0BaxUm+eh8xaxxP6YAFB6cg@mail.gmail.com>
-X-Gm-Features: AclHuK92lB5NiS5iBnplzk_ORuBnuUMmcADY6EqE6mt-4e6s6zZBLocPPGyqu5E
-Message-ID: <CAJZ5v0gqSsA=tdKuQB1uExYas8F0BaxUm+eh8xaxxP6YAFB6cg@mail.gmail.com>
-Subject: Re: [PATCH v22 07/10] kernel: hibernate: Add an arch hook for
- preventing hiberation
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, maz@kernel.org, will@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
-	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, 
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, 
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com, 
-	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>, linux-pm@vger.kernel.org, 
-	Sudeep Holla <sudeep.holla@kernel.org>
+References: <20261005192431.87317-1-hmushi@amazon.co.uk> <20261005192431.87317-2-hmushi@amazon.co.uk>
+In-Reply-To: <20261005192431.87317-2-hmushi@amazon.co.uk>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 12 Oct 2026 12:29:24 -0700
+X-Gm-Features: AclHuK_hh2UTJ_clCzObOqLEy25Uk0BI6IitQI982CcGkWt3YHwLApApzuL7Il4
+Message-ID: <CALMp9eQB_FmUocuEf8hTYVVWoOTZCWzJ1LhHm__BaVoNX8wKMw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] KVM: nVMX: Clear stale vmcs02 sync flag in free_nested()
+To: Mushahid Hussain <hmushi@amazon.co.uk>
+Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, linux-hyperv@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nh-open-source@amazon.com, mushi.shar@gmail.com, 
+	stable@vger.kernel.org, Todd Frederick <tfred@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 2, 2026 at 1:03=E2=80=AFPM Catalin Marinas <catalin.marinas@arm=
-.com> wrote:
+On Mon, Oct 5, 2026 at 12:25=E2=80=AFPM Mushahid Hussain <hmushi@amazon.co.=
+uk> wrote:
 >
-> On Fri, Oct 02, 2026 at 07:15:03AM +0100, Suzuki K Poulose wrote:
-> > Add a hook to allow arch code disable hibernation. On arm64, with an RM=
-M active,
-> > there could be pages that are delegated to the "Realm" security state. =
-Any
-> > access to them are fatal (e.g., hibernate save image or restoring an im=
-age to
-> > a delegated page). pKVM host also has its restrictions on enabling hibe=
-rnation.
-> >
-> > Add a weak arch hook to let the architectures have a say.
-> >
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: Pavel Machek <pavel@kernel.org>
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: Sudeep Holla <sudeep.holla@kernel.org>
-> > Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> free_nested() frees vmcs02 but leaves need_sync_vmcs02_to_vmcs12_rare
+> set. The flag means that the rare guest fields of vmcs12 are valid
+> only in vmcs02. After vmcs02 is freed the flag is wrong.
 >
-> Nit: the subject prefix for kernel/power/ usually is
+> L1 then executes VMXON and loads a vmcs12 with VMPTRLD. The flag is
+> still set, so the first sync copies the rare fields from the new,
+> never launched vmcs02 into vmcs12. This sets TR, LDTR, GDTR, IDTR,
+> the segment registers and the FS/GS bases to zero in guest memory.
+> set_current_vmptr() re-arms the other lazy flags at VMPTRLD. This
+> flag has no such point, so VMXOFF is the place to clear it.
 >
->         PM: hibernate: ....
+> A nested Hyper-V follows this sequence when it resumes from
+> hibernation. It executes VMXOFF before hibernation. On resume, it
+> reloads the VMCS images that winresume restored from the hiberfile.
+> VM-entry fails with exit reason 0x80000021 (invalid guest state) and
+> the guest hypervisor resets the machine. vmx_leave_nested() also goes
+> through free_nested(), so KVM_SET_NESTED_STATE takes the same path.
 >
-> I can fix it locally, no need to respin (and probably the wrap the long
-> lines in the commit log, we tend to keep them shorter).
+> Clear the flag together with the other nested state.
 >
-> > ---
-> >  include/linux/suspend.h  | 1 +
-> >  kernel/power/hibernate.c | 8 +++++++-
-> >  2 files changed, 8 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-> > index b02876f1ae38a..a3815027773c5 100644
-> > --- a/include/linux/suspend.h
-> > +++ b/include/linux/suspend.h
-> > @@ -401,6 +401,7 @@ int hibernate_quiet_exec(int (*func)(void *data), v=
-oid *data);
-> >  int hibernate_resume_nonboot_cpu_disable(void);
-> >  int arch_hibernation_header_save(void *addr, unsigned int max_size);
-> >  int arch_hibernation_header_restore(void *addr);
-> > +bool arch_hibernation_available(void);
-> >
-> >  #else /* CONFIG_HIBERNATION */
-> >  static inline void register_nosave_region(unsigned long b, unsigned lo=
-ng e) {}
-> > diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-> > index d2479c69d71a4..9d9d53828542f 100644
-> > --- a/kernel/power/hibernate.c
-> > +++ b/kernel/power/hibernate.c
-> > @@ -106,11 +106,17 @@ bool hibernation_in_progress(void)
-> >       return !atomic_read(&hibernate_atomic);
-> >  }
-> >
-> > +__weak bool arch_hibernation_available(void)
-> > +{
-> > +     return true;
-> > +}
-> > +
-> >  bool hibernation_available(void)
-> >  {
-> >       return nohibernate =3D=3D 0 &&
-> >               !security_locked_down(LOCKDOWN_HIBERNATION) &&
-> > -             !secretmem_active() && !cxl_mem_active();
-> > +             !secretmem_active() && !cxl_mem_active() &&
-> > +             arch_hibernation_available();
->
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->
-> Raphael, any objection to this patch going in through the arm64 tree? It
-> matches the style of other __weak functions in this file.
-
-No objection, and feel free to add an ACK from me to this one.
-
-Thanks!
+> Fixes: 7952d769c29c ("KVM: nVMX: Sync rarely accessed guest fields only w=
+hen needed")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-fable-5.1
+> Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
+Reviewed-by: Jim Mattson <jmattson@google.com>
