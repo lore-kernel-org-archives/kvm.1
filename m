@@ -1,269 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98DE2D7DF1;
-	Mon, 12 Oct 2026 20:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791837272; cv=none; b=VOAzunI6d97rxMdis1mcKwxePKdAyiMj5uAkpbHgtW8Kfpstd3WpddAYHglQ5camX+1tn/ZPQzkPNwHIpFRgSdsPurQWy+kcOQHrb4yCojZaek+w/ylqMmGptU31kd1uBe3GbFrBqBJFkQZeVPg4EUEtOCSPoQsVN+8/1ZuhLdE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791837272; c=relaxed/simple;
-	bh=mLvfYrEjCPUj6KEWLX5KIVZEqZ6uvmF+kUcBtcGjXS8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=WLnhCpGdSxGdQl1bI13wwqBnPxMVt8GHm4SM0qNd6liU5LRiJAP67x1aPfEsnF4OvUgaJtgNz0z7pm6r2Ss4j3u+8HbGKSAx0AXxDy6g/a0RQMIPLz+svX2SHZz4UyHN6SNnbjH3XU0ldIkxR1+FH7b3ZC800ZooYSU8sjUowjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IunHpEJd; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706914D9F99
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 21:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791840210; cv=pass; b=EigvjKj6UulliwZ7kT9jScnwWPf50z4JhWBWDoALYGq0B/Qi94d5jqJkN9p55JosMHC8IWrhrkSBOcm0mVk0iL4DDD0NiQUJUeDVSl17KnRz9ZJlWk9GBtyFgXq2Ru0MM6CtouhgcYJW9Sfeqwf3CiqXK+yn2fQI7oNssvwKMA4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791840210; c=relaxed/simple;
+	bh=M/ThXiHN1P68R+1YhMAmr597pKOSWjt23LCQQNjErlw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JSdXLpjjFNSkCbpUCDjU/SOU5IDVD6RYA5AJE4WmneMrfNdVXsv2ox5lnzfs+ZpaoJc5BoUkRT+TBS8M3vzFrNzVjXHO/XcAC4h9oHA/TGivn9XQhcWRBwjwMUqvL3KHxguevk5zvmgRhWSFECBywjbpMs09DLekCE38pxiQ3qk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YxyjDzyY; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IunHpEJd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0011F0089B;
-	Mon, 12 Oct 2026 20:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791837270;
-	bh=McoQna29qBqDfcfSexNQ6Y2tR6Jmmbfkwzj7Jotj0ms=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=IunHpEJddXRTQpHnVlBUlx8dLmuOIWKjQN9ETKM0g+PoB4Ibd4gjx6fPLdzX3LPwY
-	 xpayzGi6Z/p7VxE/uNyGHylcn3PnoyXEj2Bji/LPAKByFw3UcuWOWHvZ97c2zgLI63
-	 txIGUVKI7egXxoxTfQmlxcKDt+Hke49rd9ww94IxfpuIb8J0PG18hkodikXFvu0VUu
-	 ZK4Tq8u0J3qGazUTNhjsYB8ylzKtY0iKQW9y1bKsyRTYK//u/uShkt9P6XnjdG7dhO
-	 ZXvPAQtg2ZKjQKAs3FRvzxjJ/cd1FqvrE0d1a8TMLG0pihIz2vES+MQJ3n07nPJUX/
-	 vU8OfSwd/qjmg==
-Date: Mon, 12 Oct 2026 15:34:29 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v7 16/16] PCI/TSM: wait for vdevice contexts before
- removing a DSM
-Message-ID: <20261012203429.GA1381362@bhelgaas>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YxyjDzyY"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so17630a12.1
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 14:23:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791840207; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BeBBoYjAbLkTJ8mV+OdOul9WmIsP5cbCrGPnoWTUhf3y6pFrZt5eU1/jpTYlv0Bh+L
+         dReilyZHt+cWZ/zVFoYAVJuhugub5Cd+yz73duUWrrwtwXosIv1zwN2xK0gwY2KkH1se
+         wWPKOPhFUSdGyUa9EQB2jDTjc/kKRkuhjI4ZVYTwgQ8RSJ0eNRtIML12KbTP9CTd0GHF
+         Y1LsxWwL8w5YP2ci4ViX8I63J8Rb0MMVLq2UlJq+SgWmEkV83ULPlWZrs8mepOcC5ZVF
+         mwVhXDczIKNZwqzdHrb0QKGc7fTJBVc2wmaUTznxV0LApDETw5qw2kg9YW/y7zwMkIsn
+         zxgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Ee4DfkcYbf3IOngkIJrGviVyrMh0yvV16mhd+eYxirU=;
+        fh=KOW2I3kM5MsPOxThYg+YVNOV3PNnHXbIC9maheywIes=;
+        b=gSMELl4dzeaDuxWcFZBFe7X7gTxZOf4ha0Fe+SVgV2UHnrVLnfyhsSBH0Iq3uNWF6x
+         sY5wMsS6rveJdrhTGGSW/gtN38FK2ZhllgLJ0HFIVt5M7bRxjWLJkhPmWSXqulbo9mJ/
+         qOZWXNq/TCah18beleLF78di42NBncvRgtioHZseFu4SXADIHVpk1NerlPL4vQHJiufm
+         aJxF0gvxyt1GW/QdvkVV2yqlkfwYXBLy5lsExgEIxv/dc5xnxLkuR8hgkQ/QGh3l2pr3
+         /PSLgEaWQQ0Ye9AIyF/AjtimPohOEF2Thyni8WgR9tKHQc7rcEKRj+/ZEJIjBehrEbha
+         EnJg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791840207; x=1792445007; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ee4DfkcYbf3IOngkIJrGviVyrMh0yvV16mhd+eYxirU=;
+        b=YxyjDzyYf6cnh0FGlyV4iPCczRMiNCHVZdq6ohQBqN6eDGCRuRPUDnWlsXdkEHzwt0
+         tS5s1EAYYZYZjZ8Zq8XnqwSc7MDU1+7WMrUR6eGLaR8fkT96LOrmcchgTDd4TDn90xc+
+         QXZH+ewhwhNumewH0GMLanH1ZmpBL95gIELragGoWu1RVWJm7py86QkQo6MLlT9qDz/u
+         VqmcK0H9c8KRoZJLR+8JzXoWVE1ET895yQ1dnQ5K+d1RRDNg1ReLwRdBNfXsV+8r1uAN
+         dF9XOSVVpwM5qBr/T110MiMC5saFB1LwOC4ls0+pHu4d1tXvxpMgjlnwoVLSwL5Ls5CI
+         5TXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791840207; x=1792445007;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ee4DfkcYbf3IOngkIJrGviVyrMh0yvV16mhd+eYxirU=;
+        b=vgiFdTeW/ikAahJ0h5Me//7C3uYXGpj0B5JPcTBOcDUS8usXM+PNVSjPYWh1KBn5Kc
+         XH/cr0LcW+cD/RbTP0I7qoI0grqRRn3xpeHvC5d+29A3LBtQ8qZsE7L3ATbBp40Obdm2
+         yjtV2IqV1igHKEpdVprYeCpgRzSRKk/KLRHNt57LgV8rpJN1q8L0gcLJ4z/Lgj9u3EQc
+         O41/ZnKb2SFmwtF36NpxMtHRLHto9XGDqpRh9577BtrsXZTwHsUJOK4bZutI2+3tXMaC
+         ALnW7xqsnYjqgcw8oesVw4u/Ph8i6iN7bPACFSgS8nzPCBKBu8RQ7XTMtcw8QX3t8Gja
+         6Efw==
+X-Gm-Message-State: AFq9FYILuL4YrPEPLmKIvpwVAKHZ7Dx8QJtdM3YD+uVtvRsvG9iDqMbd
+	L+ikmIPLZ2XDy/qux6S6/Ilmhvm3wdL0yr/gpjb2uxCSCt0OAlmd+G7wNZ+jakch4CN+uCPqLYl
+	o05wmxtURMNLAnTpQb+VwGY+x3MczmEnELt0REw/85CAhidH/sVZVRfs3rU8=
+X-Gm-Gg: AYBFou0hRerr5aKjy5Ul/fR9daMZmQH+wjSiKa4X6tg7oau9gp+XIGPDvxnxyVq4IDi
+	LmFR70si0O+2A+dgboC8LUJt+hsEL91vaTJ5yL1fl7DG/u8GSTaa0VUlXg2X+uuEKQBAAHrBy9S
+	ji57weuK2UZM6BalRBbHXby776ztw7oEHtJsiyUVFtt9/z0rhZm7DzbMBjieVKBPHQNmYY7caVA
+	HSVlfhpgfajLZoVxR4O53M7ziBOkId6Td1ClVwhuIm8oDfwP02iOxd5zj9WDRLeYXalVJKE+dJt
+	hdtiLeAPL5M/6RX87tn+XRVShwbUWxu+AvZ70aMVqegP0mJ/oBUz7EE=
+X-Received: by 2002:a05:6402:a203:20b0:6a9:f353:ef65 with SMTP id
+ 4fb4d7f45d1cf-6b1988db8e0mr99917a12.5.1791840206242; Mon, 12 Oct 2026
+ 14:23:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261008055955.4014342-17-aneesh.kumar@kernel.org>
+References: <20261005192431.87317-1-hmushi@amazon.co.uk> <20261005192431.87317-4-hmushi@amazon.co.uk>
+In-Reply-To: <20261005192431.87317-4-hmushi@amazon.co.uk>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 12 Oct 2026 14:23:12 -0700
+X-Gm-Features: AclHuK_0KBTsLrSFa-h9vss0cVbmlNZ4lJ9qkYRPDWcihjTkz5_I3EkMbPan9w4
+Message-ID: <CALMp9eQz2ouQvFhBYv_R33_sUQ+ehxv__-f5iZ=_3aA2Guwy5w@mail.gmail.com>
+Subject: Re: [PATCH 3/3] KVM: x86: hyper-v: Implement HvCallRestorePartitionTime
+To: Mushahid Hussain <hmushi@amazon.co.uk>
+Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, linux-hyperv@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nh-open-source@amazon.com, mushi.shar@gmail.com, 
+	Todd Frederick <tfred@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 08, 2026 at 11:29:55AM +0530, Aneesh Kumar K.V (Arm) wrote:
-> A PF0 DSM can be removed while a sibling function still has a vdevice.
-> The context pins both the pci dev, but those references do not keep the
-> PF0 DOE mailbox alive. Ignoring -EBUSY from link disconnect lets PCI
-> continue to pci_doe_destroy(), leaving the vdevice with a stale mailbox
-> pointer.
-
-  - Please capitalize the subject line to match history:
-      PCI/TSM: Wait for ...
-
-  - Please disambiguate "DSM" from the common "ACPI _DSM", e.g., by
-    spelling out the first use of "DSM".
-
-  - "vdevice" is not a well-known term in drivers/pci/, so please
-    clarify.  The log messages may also benefit from more context,
-    since sysadmins will be reading them.  I assume this is not the
-    pseries, xen, or fusion "vdevice", which are the current upstream
-    uses.
-
-> This follows the VFIO PCI removal model: vfio_unregister_group_dev()
-> prevents new userspace opens and waits for existing users to release the
-> device before teardown proceeds. Likewise, DSM removal rejects new
-> contexts and waits for existing vdevice contexts to drain before
-> destroying the DOE mailbox.
-> 
-> Mark the DSM as removing so no new contexts or subfunctions can attach.
-> Wait for the last context to be released before disconnecting the link,
-> 
-> VFIO PCI also uses an eventfd to notify userspace that the device should
-> be released. This patch does not add an equivalent notification for
-> vdevice contexts; DSM removal waits for userspace to release them. Such
-> a notification can be added later if required.
-> 
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+On Mon, Oct 5, 2026 at 12:26=E2=80=AFPM Mushahid Hussain <hmushi@amazon.co.=
+uk> wrote:
+>
+> A nested Hyper-V that sees the frequency MSRs lets its parent own
+> the partition reference time. After a resume from hibernation it
+> issues HvCallRestorePartitionTime (0x103) with the TSC and the
+> reference counter it saved, and expects both clocks to continue
+> from there. KVM rejected the hypercall. The guest time base stayed
+> inconsistent and the root partition did not run.
+>
+> Restore both clocks in one pvclock update, so no vCPU runs with the
+> new TSC and the old reference time. Each vCPU computes and writes its
+> own TSC offset from the recorded step, so no other vCPU writes its
+> TSC state. kvm_synchronize_tsc() writes the offset of the calling
+> vCPU only. Mark the TSC page as changed by the guest, so it is
+> recomputed even when TSC emulation control is set.
+>
+> The TLFS marks the hypercall, its input and CPUID 0x40000004 EAX
+> bit 20 (RestoreTimeOnResume) as reserved. Microsoft's hvdef crate
+> defines them (hypercall::RestorePartitionTime), and Microsoft's
+> OHCL kernel carries the same C definitions in hvgdk_mini.h.
+>
+> Advertise bit 20 and gate the hypercall on it under
+> KVM_CAP_HYPERV_ENFORCE_CPUID. Hyper-V offers hibernation to its root
+> partition only when the parent sets this bit.
+>
+> Assisted-by: Claude:claude-fable-5.1
+> Signed-off-by: Mushahid Hussain <hmushi@amazon.co.uk>
 > ---
->  drivers/pci/tsm.c       | 63 +++++++++++++++++++++++++++++++++++++++--
->  include/linux/pci-tsm.h |  5 ++++
->  2 files changed, 65 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> index c8603867e09d..8aa74ba31932 100644
-> --- a/drivers/pci/tsm.c
-> +++ b/drivers/pci/tsm.c
-> @@ -10,10 +10,13 @@
->  
->  #include <linux/bitfield.h>
->  #include <linux/iommufd.h>
-> +#include <linux/jiffies.h>
->  #include <linux/module.h>
->  #include <linux/pci.h>
->  #include <linux/pci-doe.h>
->  #include <linux/pci-tsm.h>
-> +#include <linux/pid.h>
-> +#include <linux/sched.h>
->  #include <linux/slab.h>
->  #include <linux/sysfs.h>
->  #include <linux/tsm.h>
-> @@ -354,6 +357,12 @@ struct pci_tsm_context *pci_tsm_context_get(struct pci_dev *pdev,
->  		return ERR_PTR(-ENOMEM);
->  
->  	guard(mutex)(&pf0->lock);
-> +	if (pf0->removing) {
-> +		kfree(context);
-> +		return ERR_PTR(-ENODEV);
-> +	}
-> +	if (!pf0->context_users)
-> +		reinit_completion(&pf0->contexts_drained);
->  	pf0->context_users++;
->  	context->pf0 = pf0;
->  	context->pdev = pci_dev_get(pdev);
-> @@ -368,8 +377,11 @@ void pci_tsm_context_put(struct pci_tsm_context *context)
->  
->  	down_read(&pci_tsm_rwsem);
->  	mutex_lock(&pf0->lock);
-> -	if (!WARN_ON(!pf0->context_users))
-> -		pf0->context_users--;
-> +	if (WARN_ON(!pf0->context_users))
-> +		goto out_unlock;
-> +	if (!--pf0->context_users)
-> +		complete_all(&pf0->contexts_drained);
-> +out_unlock:
->  	mutex_unlock(&pf0->lock);
->  	up_read(&pci_tsm_rwsem);
->  
-> @@ -452,6 +464,9 @@ static ssize_t disconnect_store(struct device *dev,
->  	tsm_dev = pdev->tsm->tsm_dev;
->  	if (!sysfs_streq(buf, dev_name(&tsm_dev->dev)))
->  		return -EINVAL;
-> +	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev) &&
-> +	    to_pci_tsm_pf0(pdev->tsm)->removing)
-> +		return -ENODEV;
->  
->  	rc = pci_tsm_disconnect(pdev);
->  	if (rc)
-> @@ -663,6 +678,9 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
->  			    struct tsm_dev *tsm_dev)
->  {
->  	mutex_init(&tsm->lock);
-> +	init_completion(&tsm->contexts_drained);
-> +	tsm->context_users = 0;
-> +	tsm->removing = false;
->  	tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
->  					   PCI_DOE_FEATURE_CMA);
->  	if (!tsm->doe_mb) {
-> @@ -751,8 +769,44 @@ static void __pci_tsm_destroy(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
->  
->  void pci_tsm_destroy(struct pci_dev *pdev)
->  {
-> -	guard(rwsem_write)(&pci_tsm_rwsem);
-> +	struct pci_tsm_pf0 *pf0 = NULL;
-> +	struct completion *drained;
-> +	bool interrupted = false;
-> +	long rc;
+
+Aside from what Sashiko and David have already said...
+
+> +static u64 kvm_hv_restore_partition_time(struct kvm_vcpu *vcpu,
+> +                                        struct kvm_hv_hcall *hc)
+> +{
+> +       struct kvm_hv *hv =3D to_kvm_hv(vcpu->kvm);
+> +       struct hv_input_restore_partition_time in;
 > +
-> +	down_write(&pci_tsm_rwsem);
-> +	if (pdev->tsm && is_link_tsm(pdev->tsm->tsm_dev) &&
-> +	    is_pci_tsm_pf0(pdev)) {
-> +		pf0 = to_pci_tsm_pf0(pdev->tsm);
-> +		drained = &pf0->contexts_drained;
-> +		mutex_lock(&pf0->lock);
-> +		pf0->removing = true;
-> +		mutex_unlock(&pf0->lock);
+> +       BUILD_BUG_ON(sizeof(in) !=3D 32);
 > +
-> +		/* An unused DSM may never have completed contexts_drained. */
-> +		rc = pf0->context_users ?
-> +			try_wait_for_completion(drained) : 1;
-> +		/* Context release needs the read side of pci_tsm_rwsem. */
-> +		up_write(&pci_tsm_rwsem);
-> +		while (rc <= 0) {
-> +			if (interrupted) {
-> +				rc = wait_for_completion_timeout(drained, HZ * 10);
-> +			} else {
-> +				rc = wait_for_completion_interruptible_timeout(drained,
-> +									       HZ * 10);
-> +				if (rc < 0) {
-> +					interrupted = true;
-> +					pci_warn(pdev, "Task \"%s\" (%d) blocked until vdevices are released\n",
-> +						 current->comm, task_pid_nr(current));
-> +				}
-> +			}
-> +			if (!rc)
-> +				pci_warn(pdev, "TSM connection is in use, waiting for vdevices\n");
-> +		}
-> +		down_write(&pci_tsm_rwsem);
-> +	}
->  	__pci_tsm_destroy(pdev, NULL);
-> +	up_write(&pci_tsm_rwsem);
->  }
->  
->  void pci_tsm_init(struct pci_dev *pdev)
-> @@ -779,6 +833,9 @@ void pci_tsm_init(struct pci_dev *pdev)
->  		 */
->  		if (!dsm->tsm)
->  			return;
-> +		if (is_link_tsm(dsm->tsm->tsm_dev) &&
-> +		    to_pci_tsm_pf0(dsm->tsm)->removing)
-> +			return;
->  
->  		probe_fn(pdev, dsm);
->  	}
-> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> index b27f7cf99f22..3adc317d0f9b 100644
-> --- a/include/linux/pci-tsm.h
-> +++ b/include/linux/pci-tsm.h
-> @@ -1,6 +1,7 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  #ifndef __PCI_TSM_H
->  #define __PCI_TSM_H
-> +#include <linux/completion.h>
->  #include <linux/mutex.h>
->  #include <linux/pci.h>
->  
-> @@ -107,12 +108,16 @@ struct pci_tsm {
->   * @lock: mutual exclustion for pci_tsm_ops invocation
->   * @context_users: live per-function contexts on this PF0; a nonzero count
->   *	blocks link disconnect
-> + * @contexts_drained: completed when the last context is released
-> + * @removing: reject new contexts while the DSM is being removed
->   * @doe_mb: PCIe Data Object Exchange mailbox
->   */
->  struct pci_tsm_pf0 {
->  	struct pci_tsm base_tsm;
->  	struct mutex lock;
->  	unsigned int context_users;
-> +	struct completion contexts_drained;
-> +	bool removing;
->  	struct pci_doe_mb *doe_mb;
->  };
->  
-> -- 
-> 2.43.0
-> 
+> +       if (kvm_vcpu_read_guest(vcpu, hc->ingpa, &in, sizeof(in)))
+> +               return HV_STATUS_INVALID_HYPERCALL_INPUT;
+
+Nit: some validation checks are missing here. Per the TLFS, hypercall
+input parameters must be 8-byte aligned and must not cross a page
+boundary (cf. kvm_hvcall_signal_event()).
+
+> +       if (in.reserved)
+> +               return HV_STATUS_INVALID_HYPERCALL_INPUT;
+> +       if (in.partition_id !=3D HV_PARTITION_ID_SELF)
+> +               return HV_STATUS_INVALID_PARTITION_ID;
+> +
+> +       /* The guest asked for the step; recompute the TSC page as for it=
+s own write. */
+> +       mutex_lock(&hv->hv_lock);
+> +       if (hv->hv_tsc_page & HV_X64_MSR_TSC_REFERENCE_ENABLE)
+> +               hv->hv_tsc_page_status =3D HV_TSC_PAGE_GUEST_CHANGED;
+> +       mutex_unlock(&hv->hv_lock);
+
+I think there's a window here in which another vCPU can consume
+HV_TSC_PAGE_GUEST_CHANGED before kvm_set_clock_and_tsc() steps the
+clocks. If TSC emulation control is enabled,
+kvm_hv_request_tsc_page_update() won't invalidate the resulting stale
+TSC page.
+
+> +       kvm_set_clock_and_tsc(vcpu->kvm, in.reference_time_in_100ns * 100=
+, in.tsc);
+
+When stepping the reference time forward, don't we have to recalculate
+the hrtimer deadlines associated with armed synthetic timers?
+Otherwise, those hrtimers will fire late.
