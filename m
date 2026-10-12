@@ -1,172 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AE9397694;
-	Mon, 12 Oct 2026 09:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D45F3B19C2;
+	Mon, 12 Oct 2026 09:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791797883; cv=none; b=O/pv1z3nzZTan6Xg12qWaglXqB1TQYbbqyM2C7R07VpArRawX2I0pgQ/M8Q8xXkEOdBFH6P+X5cgeM3I75Qfs+Pa59IgExDacLD2ZAUfB0Ge576tt5ElSrKifvZ5QtXoQtBBCaqiWV1BcpqLt53m7MvV9PkrNR1Yfc4VdqoYFZE=
+	t=1791798628; cv=none; b=a8TAmf36AeEGb7nPHmkqnKJrdP0zH/k+0eADzaZ8GCwEvhFrz8HKlx/3MfSsJZVJ4OY5d9Huvs8gLDsyP5/z3kvMzCHaGa865yFyWDofnBIzOrNzaXrF2Gr3dj1dxMudQhc6lQcJN8HwugDJGOvIg4PdCADCvTUfaNs281ahyoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791797883; c=relaxed/simple;
-	bh=/qeI+mcky6POL+dlz67XlDlJlP/m1BDsglDrCc5muCs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rZdJ1/cU5tZHt71ZVJN3b0bOIb/d2k06ZE88rbaEbGQIygwTyL3wHc3kCTwwIpMcsIYnI/ysoqVepkHIcPqQjT/Q8oxXAEYkj9s5Yiq2XRiIPBbQCnsUoz6bVS7zQHX4EV844trci0+g1gW1jr5DpOqAghyIk6expYIwqwaPJO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVUsClFs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791798628; c=relaxed/simple;
+	bh=c7vUApaBRcwqMhGhHH55s+qal+/nDfwHKF2DLYwzsOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RSDvx6JkwVbk74hvxOzV8/J0n3ZWN5zuLWpuj5IkSJfgnYbU6Mf6vP+CM6WOMsTcoMwBaXr66cZ/VktPKkwnVhaq8fNEXTza1fjeMvup3bkcUEYYogkS+qSVcDdgdXSHdhWV1jk4bk+iTdzOz525DUEfkrsLrOnO/4cTqc932CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i1ty/hSK; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVUsClFs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2418B1F0089B;
-	Mon, 12 Oct 2026 09:37:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791797881;
-	bh=0C26uGtxqGDVfiyGSgCVeY4+duEFxvfuAlVAP2wPEcs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=JVUsClFsxTuCO4Jmd/9nLXrOUsWXPkEOYrHSWzLp38vEwjWv6WeveWcOoSAiqD+B7
-	 iX7iS8E2mZWedWmZdX7CIAkLrcRPOWzzHNhK9PviT4ai91qeuWwwwH9FH+yDgS4Hwh
-	 v0AKgicoMJ5QsJxyFN5cBUoNcPr/dx0KskoGKRVv7sD+PjZ+dC54aPEEtzPXT3PnZC
-	 hE2jzEmeYQrptnVWB6sNTpEh+EUjWI2HrWgpnoFqJ5wSn5WJKETtmGBXWr5zTQq8ve
-	 6irzeFMcu1iQTEpLcu9SeEKi23bSH4YEnt2UX60BwUeND8Pnj3R8PTJcAO5JTJWcBI
-	 O+0nwsD7XMWMg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: sashiko-reviews@lists.linux.dev, iommu@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v7 13/16] iommufd/viommu: Select vIOMMU operations
- before allocation
-In-Reply-To: <sashiko-outbox-163690@kernel.org>
-References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
- <20261008055955.4014342-14-aneesh.kumar@kernel.org>
- <sashiko-outbox-163690@kernel.org>
-Date: Mon, 12 Oct 2026 15:07:57 +0530
-Message-ID: <yq5azewj45u2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i1ty/hSK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791798620; x=1823334620;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=c7vUApaBRcwqMhGhHH55s+qal+/nDfwHKF2DLYwzsOs=;
+  b=i1ty/hSKKapm7jUkdeLqocvCzTDoI/Stsk9M+eOP/+/Dt8X8hFAEc52J
+   AvxUpKPxKrtklfHYUVfqig9NTQKUUQ2Zp30N4fTNnRhvfpyYGol2Zktpm
+   KCbY9hGJzc7INjptt78I1DJ+l/lFDhBRD3OyvudrtxZqRLOw8UJC2jmjo
+   vaP8pMbBOBkhbETihVq47nTqn6Hted1feVK072xqyxD1Qg4qxVDNsMhom
+   RgHoV6poTQ4PJNhoauJ6nX776im08EeuPHqWf/94xbnnkQG+0tWkYuZ9p
+   eYEAGHdceo5hX3GnjZ/nyVt1DG3DrMmd+tSX5njNnt7bbInrKsMjKzpCn
+   g==;
+X-CSE-ConnectionGUID: itHDWQY2QYy5HK+Kic0HEw==
+X-CSE-MsgGUID: rRU1LqFtQgS/sC6kJbkGUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11932"; a="387977"
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="387977"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:19 -0700
+X-CSE-ConnectionGUID: h7J3Y6uHS3ef0obSH7zJ/A==
+X-CSE-MsgGUID: 2sgKd1keRs6+/Isu2BnOBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="776813"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 02:50:20 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: yilun.xu@linux.intel.com,
+	chao.gao@intel.com,
+	binbin.wu@linux.intel.com,
+	tony.lindgren@linux.intel.com,
+	rick.p.edgecombe@intel.com,
+	nik.borisov@suse.com,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v4 00/10] TDX: Stop auto-generating the global metadata code
+Date: Mon, 12 Oct 2026 02:47:27 -0700
+Message-ID: <20261012094754.27702-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-sashiko-bot@kernel.org writes:
+This series cleans up the TDX global metadata code. It has two goals:
 
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [Critical] iommu: type confusion in iommufd_viommu_alloc_ioctl() parent domain
-> - [High] iommu: dead code because amd_iommu_alloc_domain_nested is not assigned
-> - [Low] iommu: missing viommu_type validation in amd_iommufd_get_viommu_ops
-> --
->
-> commit ea74b8b169fc38edaee15fa883c362684ddec72d
-> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> Subject: iommufd/viommu: Select vIOMMU operations before allocation
->
-> This commit introduces a new get_viommu_ops callback to select vIOMMU
-> operations based on the device and requested type before allocation. It
-> moves the size and initialization callbacks into iommufd_viommu_ops and
-> converts multiple physical IOMMU drivers to use the new interface.
->
->> diff --git a/drivers/iommu/amd/iommufd.c b/drivers/iommu/amd/iommufd.c
->> index 52300b867c1f2..c1e132382adc7 100644
->> --- a/drivers/iommu/amd/iommufd.c
->> +++ b/drivers/iommu/amd/iommufd.c
->> @@ -32,13 +32,21 @@ void *amd_iommufd_hw_info(struct device *dev, u32 *length, enum iommu_hw_info_ty
->>  	return hwinfo;
->>  }
->>  
->> -size_t amd_iommufd_get_viommu_size(struct device *dev, enum iommu_viommu_type viommu_type)
->> +static size_t amd_iommufd_get_viommu_size(struct device *dev,
->> +		enum iommu_viommu_type viommu_type)
->>  {
->>  	return VIOMMU_STRUCT_SIZE(struct amd_iommu_viommu, core);
->>  }
->>  
->> -int amd_iommufd_viommu_init(struct iommufd_viommu *viommu, struct iommu_domain *parent,
->> -			    const struct iommu_user_data *user_data)
->> +const struct iommufd_viommu_ops *
->> +amd_iommufd_get_viommu_ops(struct device *dev, enum iommu_viommu_type viommu_type)
->> +{
->> +	return &amd_viommu_ops;
->> +}
->
-> [Severity: Low]
-> Does this function need to validate the requested viommu_type?
->
-> Currently, amd_iommufd_get_viommu_ops() unconditionally returns the ops
-> structure without checking the type argument. If a user requests an arbitrary
-> type like IOMMU_VIOMMU_TYPE_ARM_SMMUV3 on an AMD device, the core iommufd
-> framework might track the vIOMMU under a mismatched architectural type
-> identifier.
->
-> The ARM and selftest backends appear to validate this argument against their
-> supported hardware types before returning the operations.
->
-> [ ... ]
->
+1. Replace the generated code with a table-driven metadata reader.
 
-No vIOMMU type has been added for any IOMMU other than Arm. The
-documentation also considers IOMMU_VIOMMU_TYPE_DEFAULT reserved.
+2. Make the existing code easier to read and maintain, and simplify
+   adding new metadata fields.
 
->> @@ -73,5 +79,7 @@ static void amd_iommufd_viommu_destroy(struct iommufd_viommu *viommu)
->>   * struct iommufd_viommu_ops - vIOMMU specific operations
->>   */
->>  static const struct iommufd_viommu_ops amd_viommu_ops = {
->> +	.get_viommu_size = amd_iommufd_get_viommu_size,
->> +	.viommu_init = amd_iommufd_viommu_init,
->>  	.destroy = amd_iommufd_viommu_destroy,
->>  };
->
-> [Severity: High]
-> Is the alloc_domain_nested callback missing from this operations structure?
->
-> The commit message and comments in amd_iommu_alloc_domain_nested() indicate
-> it should be assigned to the viommu operations. However, it is omitted here.
->
-> If a user attempts to allocate an AMD nested domain using IOMMU_HWPT_ALLOC,
-> won't the core framework reject it with -EOPNOTSUPP because
-> viommu->ops->alloc_domain_nested is NULL?
->
+Most of the feedback on v3 was about style and small nits, and eight of
+the ten patches now have Reviewed-by tags. Patches 7 and 10 still need
+review.
 
-It is unclear whether nested domain support is fully integrated for AMD.
-I see amd_iommu_alloc_domain_nested(), but cannot find any callers.
+Dave, if there are no further comments, please consider merging this
+series.
 
->> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
->> index f3d5b5a7eb4a4..e95138ae71d5b 100644
->> --- a/drivers/iommu/iommufd/viommu.c
->> +++ b/drivers/iommu/iommufd/viommu.c
-> [ ... ]
->> @@ -103,16 +105,12 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->>  	 */
->>  	viommu->iommu_dev = iommu_dev;
->>  
->> -	rc = ops->viommu_init(viommu, hwpt_paging->common.domain,
->> +	rc = ops->viommu_init(viommu, idev->dev,
->> +			      hwpt_paging->common.domain,
->>  			      user_data.len ? &user_data : NULL);
->
-> [Severity: Critical]
-> Is there a missing check to ensure the domain is owned by the same driver
-> before passing it to viommu_init?
->
+This series conflicts with the TDX Module Extensions series, which adds
+new metadata fields. If needed, I am happy to provide a patch that
+resolves the conflicts.
+
+Changes since v3:
+=================
+
+The per-class macros are gone. Dave and Nikolay found them to be an
+unnecessary layer, so every table entry now uses FIELD_MAP() directly.
+
+Spelling out the full structure type in each entry would make most
+entries 80-100 columns wide, and two would go over 100. As Yilun
+suggested, FIELD_MAP() now takes only the part of the structure name
+after tdx_sys_info_ and builds the full name from it, which keeps the
+entries readable.
+
+All entries now fit in 80 columns, with two of them wrapped onto a
+second line.
+
+Other changes:
+  - Patch 7: Read the two cpuid_config_values[] entries with two
+    explicit calls instead of an inner loop [Nikolay]
+  - Patch 9: Reword the justification for printing the module version
+    only after a successful read [Rick]
+  - Patch 10: Encode the member size and compare it with the size bits
+    in the field ID, instead of decoding the field ID with shifts and
+    masks [Rick]
+  - Collect Reviewed-by tags from Rick and Nikolay
+  - v3: https://lore.kernel.org/kvm/20260930053901.22528-1-chao.gao@intel.com/
+
+Problem & Solution
+==================
+
+The TDX module reports its capabilities and limits through a set of global
+metadata fields, each read using a 64-bit field ID via TDH.SYS.RD. The
+fields are grouped into classes, and the kernel mirrors each class it
+needs in a sub-structure of struct tdx_sys_info.
+
+Both those structures and the code that fills them were generated by an
+out-of-tree script from a JSON file.
+
+The script was not the first approach.  Kai's first attempt paired each
+field ID with its destination C member in a table and walked the table in a
+loop to read every field.  Two pieces of feedback on it drove everything
+that followed [1]:
+
+  1. Compile-time type checking. Metadata fields have different sizes (u16
+     and u64), so a common helper takes a void * and a size instead of
+     a typed destination.
+
+  2. The check that a field ID's encoded size matches its destination
+     member ran at runtime, although both sizes are known at build time.
+
+The discussion did not converge after several rounds of review. Dave noted
+that, despite the void *, the size check provides the safety that matters:
+it catches mismatched field and member widths [2]. That left one problem:
+moving the size check from runtime to build time.
+
+Before that was settled, the direction shifted to generating the code with a
+script. At the time, the TDX ABI definitions were published as JSON, so
+checking a field ID required consulting a machine-readable file by hand.
+The script parsed the JSON and generated both the structures and their
+readers [3]. Generation also made the size/type check unnecessary. The
+field IDs and destination members came from the same input, so a mismatch
+could only result from a bug in the script, which is less likely than a
+mistake in hand-written code.
+
+Dave concluded that the JSON experiment had failed [4] for two reasons:
+
+  1. The JSON file is not stable. The CPUID config arrays here were once
+     sized for a maximum of 32 entries, which has since increased to 128 [5].
+
+  2. The JSON file is not authoritative enough to write code from by itself.
+
+TDX ABI definitions are now available in human-readable PDF specifications
+[6]. So, stop relying on the out-of-tree script and maintain the code by
+hand.
+
+Yilun later proposed a single table whose entries carry the offset and size
+of each mapped member in struct tdx_sys_info [7]. That design does not
+cover the new handoff metadata because it is not cached in
+struct tdx_sys_info.
+
+This series gives every class its own table: each entry pairs a field ID
+with the member that holds it, and a loop walks the table. This also covers
+handoff metadata, which is read into a local structure rather than into
+struct tdx_sys_info.
+
+The common reader still takes a void *, but each mapping verifies at build
+time that the destination member size matches the size encoded in the field
+ID. A field/member width mismatch therefore fails the build.
+
+AI usage
+========
+
+I used LLM tools to review the patches and refine the wording of the cover
+letter and changelogs from my drafts. I reviewed all suggestions and adopted
+those I agreed with. For example, AI review suggested the
+read_sys_metadata_table() macro, which avoids repeating the table name when
+passing both the table and its size.
 
 
-The viommu_init callback needs to perform this check. For example, the
-Arm implementation does:
-
-	ret = arm_smmu_validate_parent(smmu, parent_domain);
-	if (ret)
-		return ret;
+Testing
+=======
+Built each patch individually and successfully launched TDs.
 
 
+Chao Gao (10):
+  x86/virt/tdx: Add a helper to read a table of metadata fields
+  x86/virt/tdx: Convert the version metadata reader
+  x86/virt/tdx: Convert the features metadata reader
+  x86/virt/tdx: Convert the tdmr metadata reader
+  x86/virt/tdx: Convert the td_ctrl metadata reader
+  x86/virt/tdx: Convert the handoff metadata reader
+  x86/virt/tdx: Convert the td_conf metadata reader
+  x86/virt/tdx: Remove tdx_global_metadata.c
+  x86/virt/tdx: Use early returns in get_tdx_sys_info()
+  x86/virt/tdx: Verify structure member sizes against metadata field IDs
 
-> In iommufd_viommu_alloc_ioctl(), hwpt_paging->common.domain is passed directly
-> to the device driver's viommu_init callback. Unlike in
-> iommufd_hw_pagetable_alloc() which checks if parent->common.domain->owner
-> matches the ops, this check appears to be omitted here.
->
-> If a user allocates a paging HWPT for a mock device, and then calls
-> IOMMU_VIOMMU_ALLOC passing an AMD device ID but the mock HWPT ID, could the
-> receiving driver blindly cast the mismatched domain? For instance, AMD's
-> viommu_init uses to_pdomain() on the parent domain. This looks like it could
-> lead to type confusion and out-of-bounds accesses on the domain structure.
->
+ arch/x86/virt/vmx/tdx/tdx.c                 | 190 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  52 ++++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 154 ----------------
+ 3 files changed, 239 insertions(+), 157 deletions(-)
+ delete mode 100644 arch/x86/virt/vmx/tdx/tdx_global_metadata.c
 
--aneesh
+
+base-commit: 5b8212d45d99b77c84e3ad305a295e9e65d5ef20
+-- 
+2.52.0
+
