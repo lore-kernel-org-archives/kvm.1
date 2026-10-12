@@ -1,129 +1,101 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6314E141D;
-	Mon, 12 Oct 2026 19:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A3A3B83FE
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 20:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791835116; cv=none; b=qy0PFblW0qrpyUcmYPAW5/8F1qcYlzix+dpB2DPtZp423K5kqxcPOIzaLmQ9VhHJjX+funDkGLz0z7+1ARiZgt8a0lQDK1vpWpSjOGiAtBD3BNz3ptQWi7dCSSls8F/6T6B/lmUf447cbicyOOoEHQZxml2V40swmzgDfn0Y9i0=
+	t=1791835759; cv=none; b=OE3pfE5+sYH/662joxeM9csPc8VzPUoehzVs2ABdEHfh3EdWme5mJ8dzp/q05bDckTj61Sd0rKEqSBIHlEtC+rTatAXwlxeVqeOZejGIFpFFSg+FfyjR5TS8TwdexXzXa5x+KZl7eOjyeW31OTmw9QB/CktIyf7VJg1QEw3exFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791835116; c=relaxed/simple;
-	bh=LHDpUqoIUY73agKLC0JPTYyrCYH/uP7gZDbQ0lKiftQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=b8Sjx3bzjRDcfvv0i1epE5Ua8pkWES/XoWNDQkqzrr13Yw3Ce7bqkY1WpWl8QzRd/DtLdmtsEkuNX4emSVb1uSNn429tT89NjzwnEjq1OZrZ+v5dEKc3wK3bw/C+1WcNTZyHQ2qXhBrYnbQUR8JeLApG3ZXnZgpv0qZstqD7WYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NkIVWrnF; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1791835759; c=relaxed/simple;
+	bh=labewT2hV27LB5EpRULnoGnU1thrB4RMmBUKgDB18W8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gDG/tRfDqkfK1fHlM8/xdANOjTcVHWMU4fKgXYSfoZCmwG7LSU9I/76hIYTag/qHptgQDU0GYoyFHWUnV2YE6bl7XRmD44hAQHRGPJOPcIfUs+6yAYDfgWZS3PgeSHIPsWw1Rtq3FS2PQSfhd3eXlPCUe9LJ9w6fKDTpdL7nL64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sRHmF9JE; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NkIVWrnF"
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJO5Ms1953201;
-	Mon, 12 Oct 2026 12:58:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=aySQG+wpA
-	fhuaLrRAC0TXgBqWFy64W/qu6r3MZnQmOs=; b=NkIVWrnF9Mo0Ah2iHKueG4WqA
-	ANIMpNOtxzQLT1j7FxRmsjh+SyePN/OigIKb9u8B33p/Q/LHDQeDhT1VyZ6VSbTh
-	9gzDnRovggCx8636rYKqXQ+6eKUBd//9wi9gMMPSFsSoGIv2wt7giTinkUcVvUJN
-	tNSu9mzPiSxG22soSp2kQmG5JXhbfQSFO7BkaplLt5l8km48yl+nyh8zwzipqxBc
-	X7QNhTHpf+62plkFXlCPRpPoQXMbo4XLrrMVMzywVjnuJdwzFgtVjjU3KzISdQut
-	GABUr/iBOOnoAgG2JR9KlJSGFSLAy/UNoRvf6bnThjsEaelkVII7G4pFdqyJg==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h89yjsmk0-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 12 Oct 2026 12:58:27 -0700 (PDT)
-Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
- (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Mon, 12 Oct
- 2026 19:58:27 +0000
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Mon, 12 Oct 2026 12:58:08 -0700
-Subject: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sRHmF9JE"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e827b3a6b4so32925985ad.2
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 13:09:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791835757; x=1792440557; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0huG8WqQPQs/27VK7Fi+O9rqo6WXAIJK228EBYSdVtE=;
+        b=sRHmF9JEJIqhi8rNrjSDAucB5pRjMmYyreRR0fJdsJUgZ2eD455WltOtwmiPaFqtoB
+         fkazpDsIQsfx6PCDoklcp0+dVAYlY/r69qpAnY6+69+ZLGq8lpyNq9Vp5/WAwbrqfNJx
+         rp2pOcJE1oOZ6Wv8bkRCp6HQsHiGMu3/A+V1y3cyEH2LI5vPGWFR3GLdRdFyBBXNAa7Q
+         I+DYQEsHYgECY245ZyixiqZSylDOM1dIa2RYgLNwT4X/UL6pST6GN1o1N3xej6/trq4d
+         F/tyE9wQCoNjvm4rAvW8SLR+qR/ysG8iSOBdx+Lm8Jh4/kCe+3x2Qs3zGDwtlEbIRfKL
+         OzNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791835757; x=1792440557;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0huG8WqQPQs/27VK7Fi+O9rqo6WXAIJK228EBYSdVtE=;
+        b=lNEVEOY9yJWd9bq2d5RwGM1r6nYTMIaRSSZEVfWvth0y2vO7UUuLScQ4tbbhP0UabG
+         Bxp9vCvUoBnE6K3Ue90GwJoEml2cMpiOY4a00TIpCE/SwEbOHbTsorTDet7b2TRbsIHY
+         wKni6SJ28npEy3imDGqR5ZDPcwr/Dsg6jPCFCv8H/Ej6brjhxfaxG/r++/YeTIUbdmqD
+         IvWmeksK1GDVCMzuwV+EbMgSM3AHXTS/dQ6gx8PVK/2KXQ/E6meONVACer5kf5j4tmqH
+         rWh1FitX0CA2DK8M6gMVHAKmhA9Atg9hUcyo3jHMAhp+2K+ZLcqYfSQax/nGanLLkZ5l
+         Dh/w==
+X-Forwarded-Encrypted: i=1; AKwUvBxu6Did4bPsPvHiVHyn+jZ5f5vWV7iUD1EXYyBZ3i3bhhysxOWqoSlkGb/HEuaIOT1d4Vg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ9WikYke1At/MWVqxXeKtZ+cxUWaSuz6l/pYHVfygFjsC9KeBn
+	AFidXnptTGbnrdTAqyJXEbjZM3w61g//BnsLXq/4Ak2kBDqMqkM7i0DbLaCuvtrSnA+UHHBGoJp
+	DdzDIPg==
+X-Received: from pgdt2.prod.google.com ([2002:a05:6a02:3002:b0:cc8:4927:ea08])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef45:b0:2e8:2f7:4a60
+ with SMTP id d9443c01a7336-2e842cd211emr83473025ad.51.1791835756613; Mon, 12
+ Oct 2026 13:09:16 -0700 (PDT)
+Date: Mon, 12 Oct 2026 13:09:15 -0700
+In-Reply-To: <qyykjxnxek73ddhbdexwz7jabjso33hdqzpf4syhrbrlh4eo5q@f4hwiuluzvgi>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
-X-B4-Tracking: v=1; b=H4sIANA7zWoC/x3MwQmAMAwF0FXCP1uwPRTpKuIh2qg5GKUVEcTdB
- d8A70GVolKR6EGRS6vuhkS+IUwr2yJOMxIhtCH61gfHObuN1U5Wk1LdOEXpOM4cuxEN4Sgy6/2
- PPUxODO/7AaLHUMtmAAAA
-X-Change-ID: 20261012-add-maintainers-bc6e8a6fa68b
-To: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
-        <kvm@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet
-	<edumazet@kernel.org>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        "Michael
- S. Tsirkin" <mst@redhat.com>, <linux-kernel@vger.kernel.org>,
-        Bobby Eshleman
-	<bobbyeshleman@gmail.com>
-CC: Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-GUID: 30UUzFJCRlRT9JyEHzj6nT4uM6MJ5sDW
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA3OSBTYWx0ZWRfX1xOF1rEgGnxV
- Rg50UoHUwXKcQwh9pig03bdolJX6KqA3wCXyaCbzREHr1mqpL6d7mZee+8AMXjMc+zrFwz5+/ON
- TujjMjOMFoax8UiCDEgkQ0N0W7hJvu0=
-X-Authority-Analysis: v=2.4 cv=YaUodARf c=1 sm=1 tr=0 ts=6acd3be3 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22 a=VabnemYjAAAA:8
- a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=YPFdDlkatZT_ntEAilkA:9 a=QEXdDO2ut3YA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA3OSBTYWx0ZWRfXy7ZpZF9Ocwzf
- FePX7xoY9jPRXtsanQ0ZHyAcnidYMUBQSiIAY9lz5DiBHklWo2noNfUNvBcILravUK2QmmR4S1q
- TbvgWp728ApKuhuWEpffX8gWxKWU/ILejvR79Euc+U7KNBWtLVJTWPVcRzHazNTS0bEDUaYNrcd
- UZvr/rWEIO7nAWIrsj8XXVJq1dyma6lqa6USIn2cihoiHn6gkzrb1ILkOiMpLHz34/TzOGd2BrX
- SqDWkVwPg4LTViJw7JEXtOBvm6ygEtNL73ak3XI87K43ejRcG6geARxhBdLbGZotykXjZtaLNjg
- DJRyhogVeMCldDW+NnQ6IyDxD8X1WzDWe8aubro461yc5xsZGsG1KJuBy3E83t4fOpDNNgTnuMt
- zcrNpCVuvTTNm4lzR1xG+uBW2p0PwG+ffaU8czJ3zsvmjZvGsxafYsXflEaeGiUbnCGCPrTaQrR
- Af6ixAlCcEptHzrhN2Q==
-X-Proofpoint-ORIG-GUID: 30UUzFJCRlRT9JyEHzj6nT4uM6MJ5sDW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-12_06,2026-10-09_01,2025-10-01_01
+Mime-Version: 1.0
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-13-15ad654a50db@google.com> <f7b3a63c-7a1d-445f-b062-4cea5343d266@intel.com>
+ <asz8GKNO9aQANr5E@google.com> <as0FedYcvJvdOaq2@google.com> <qyykjxnxek73ddhbdexwz7jabjso33hdqzpf4syhrbrlh4eo5q@f4hwiuluzvgi>
+Message-ID: <as0-ayBpM44YxOHo@google.com>
+Subject: Re: [PATCH v14 13/22] KVM: selftests: Support guest_memfd in-place conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-I've been reviewing vsock via lore+lei for a while now.
+On Mon, Oct 12, 2026, Michael Roth wrote:
+> I don't have a reproducer for the specific ABBA in question though; I'm
+> confused at why sev_ioctl_do_platform_status() / SEV_CMD_PLATFORM_STATUS
+> would trigger a gmem fault (outside of malicious/intentional case) since
+> it is just querying status on behalf of host userspace and storing the
+> result in userspace buffer where there's no reason to use a guest/gmem
+> page. Was this test specifically set up to do this or was this reachable
+> from a normal path? Just trying to see if there are interactions I'm
+> failing to consider here.
 
-Finally adding myself as a formal reviewer, since vsock will continue
-being stuck with me for the foreseeable future.
+I was just running KVM selftests, although I was running all of them at once.
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+The condition doesn't require an actual gmem fault.  The uaccess APIs have a
+__might_fault() to communicate that a page fault may occur, and lockdep is smart
+enough to piece together the problematic chain of locks.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f53047aa8d3c..cc1341f6e15c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28840,6 +28840,7 @@ F:	virt/lib/
- VIRTIO AND VHOST VSOCK DRIVER
- M:	Stefan Hajnoczi <stefanha@redhat.com>
- M:	Stefano Garzarella <sgarzare@redhat.com>
-+R:	Bobby Eshleman <bobbyeshleman@meta.com>
- L:	kvm@vger.kernel.org
- L:	virtualization@lists.linux.dev
- L:	netdev@vger.kernel.org
-@@ -29145,6 +29146,7 @@ F:	drivers/media/test-drivers/vivid/*
- 
- VM SOCKETS (AF_VSOCK)
- M:	Stefano Garzarella <sgarzare@redhat.com>
-+R:	Bobby Eshleman <bobbyeshleman@meta.com>
- L:	virtualization@lists.linux.dev
- L:	netdev@vger.kernel.org
- S:	Maintained
-
----
-base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
-change-id: 20261012-add-maintainers-bc6e8a6fa68b
-
-Best regards,
--- 
-Bobby Eshleman <bobbyeshleman@meta.com>
-
+  -> #1 (&mm->mmap_lock){++++}-{4:4}:
+         __might_fault+0x59/0x80  <===================
+         _copy_to_user+0x23/0x60
+         sev_ioctl_do_platform_status+0x50/0x80 [ccp]
+         sev_ioctl+0x220/0x2b0 [ccp]
+         __se_sys_ioctl+0x6d/0xb0
+         do_syscall_64+0xfe/0x460
+         entry_SYSCALL_64_after_hwframe+0x4b/0x53
