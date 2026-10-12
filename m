@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406E63EEAF8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB76840EB9C;
 	Mon, 12 Oct 2026 23:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791848217; cv=none; b=nQhwuzl/niB9jqSnbjGyPnrG1mIceFGdwjLA5OGHqOKG4IKxzffntl98pc3lt3jNAVlR0ClvNCCPXqwG+Gqf0b7jQ/QsJygSPduDRJLol9AiY6UUnm3w+ij7IJcj2hSOEJa4uTX59FilkXItvWQEh8TEkwkCnP5fbkiKi+zdemc=
+	t=1791848218; cv=none; b=jDw0QQGz+X2m55po1OjqqWydrluUJXLFvIVCbKn2iGurLuQQM5Y8l2EsI4jrEjEF6lPuAacOCJN+ZWU5yGVSSHHvqrkIjeV+0qMbAcsU/v5U/E8JbGKPckp62804yT7vbemEOd/iXJxahMjHjq1ukUjdaEa778Ty6vGhVUoeBVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791848217; c=relaxed/simple;
-	bh=W+J5bPB9ZOGLMOUhX3uKmezZFga013sijQ1MMOgnkSQ=;
+	s=arc-20240116; t=1791848218; c=relaxed/simple;
+	bh=RK84+NcJbrHGHJQX3TD8qn8pfF1WqCdXWi1aNLaLl+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgRQEY6Dd7s0o+9OKSu73yrEyPzlnqxiuPDVYMylCycYROgKoNyRt0BryTp+okI86zSp2mU4H/RIcUaiWPnvLbf1rkqLE1//6rjuX7VSPO/AVRxJoud4Y6N8yPTe1SxhCYNEuLhUEeYWh38Q/aSGOhodM0/W3PvhKrxWSe08huw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ogy6JsJP; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=lJ/9FFd3jPkoHH7txCDgGwSmtevWJSr996iMv6GKK7xBKRTj38ROt7rKhY0Yd1MMGxBPMZHpAfE5a6L+EU7dZ1ZygEMHYXYkBwwg1EO4ARfmjoQIEq+z1Nk7d/5fBKDwK9PiEWOXgKyhAI64VOt+BYCgyYSf6NOyH7fpRyx8Hig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fk8zcMVD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ogy6JsJP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26671F0089B;
-	Mon, 12 Oct 2026 23:36:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fk8zcMVD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BDF1F008A1;
+	Mon, 12 Oct 2026 23:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1791848216;
-	bh=xkw07SqBg5br6PemAhWXBv6MZ5NOm0fsHmoorX0e6GI=;
+	bh=kC7SVf2boZHdqkU+zIbtU4VLCFpmezU+BsFpY40O8V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ogy6JsJPHgvCRSBTQ8lxtlaZjZksbTac/QiaN64pfGlxbO0uOQtMMHHOs7eCDLKCj
-	 ncBhkmSSf3VNu2NcHiU2Ua2Ro38MwBxfJ/4yAMyuSNyFYKJ2wzW6NT7f+gbgfXCQqr
-	 UOUtZGJR7HuFVHj6/OjF6g5ZPD+Mn4bKs5Lb980Jk32VGzuEAofEFdwwoXyZAWc65b
-	 VpzceO2bfluzzedxcVIuaOA/xjXpE2adjxrWCsfCs9xRwPhYWWcYYM1azgRAkx9C7s
-	 SwPkGhLoRabszvMxnIBBnY5WqBk+icmeuk5IVjRBF8CCJ6IR1dORcdUIueqqZ64dnN
-	 ntEss4M83X4fA==
+	b=Fk8zcMVDafLgDoCqLMyuiBIIwzlZZeRXbQ0yBm7AbBFymKTEzGvCd8PNWtTuI/5fT
+	 EiWnMfYYUQ6BB5fNKm/PlKMcj1Dv2SnRtSdiD84udxS8Aoxo9rQ3geECw+s+MMUaFR
+	 t7bYnRtifsRsovNt4QfmyhYxjmY4zTkWgn1YiVnLC3JxG+vfdy3tLJ+MfGd0hPLkcn
+	 hbJMsPCX2tgaj7//y7vdaG1SMkz0lSroAsy6uHSWpaKNBqHlsdGxbc2uVC2kRWYomB
+	 K9QWTGeTsYSaMFsAMY6B++08uROjRkkOK2M4A3tieNluKk+j0T9EV5tH6cwPYlfDk3
+	 fOuZQU0G1/V/Q==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -35,11 +35,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>
-Subject: [PATCH v3 20/27] KVM: x86: Add KVM_REQ_MMU_SYNC_ALL_ROOTS
-Date: Mon, 12 Oct 2026 23:36:31 +0000
-Message-ID: <20261012233638.2546339-21-yosry@kernel.org>
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v3 21/27] KVM: nSVM: Handle nested TLB flush requests through TLB_CONTROL
+Date: Mon, 12 Oct 2026 23:36:32 +0000
+Message-ID: <20261012233638.2546339-22-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 In-Reply-To: <20261012233638.2546339-1-yosry@kernel.org>
 References: <20261012233638.2546339-1-yosry@kernel.org>
@@ -51,94 +50,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a new x86 request to sync all roots, current and previous. This will
-be used when syncing the shadow NPTs on nested VMRUN when an ASID flush
-(or new ASID) is requested by L1, as all physical translations in all
-roots should be sync'd (since shadow mappings are not tagged with an
-ASID).
+Handle L1's requests to flush L2's TLB through the TLB_CONTROL field of
+VMCB12. According to the APM, TLB_CONTROL is not modified by VMRUN, so
+only read the field from VMCB12 but do not clear it.
 
-Refactor syncing all roots (currently only done by
-kvm_vcpu_flush_tlb_guest()) to a helper, and use it to handle the
-request.
+On nested VM-Enter, flush L2's ASID if any flush is specified in
+TLB_CONTROL. This handles TLB_CONTROL_FLUSH_ASID and
+TLB_CONTROL_FLUSH_ASID_LOCAL equally for simplicity.
 
-Clear KVM_REQ_MMU_SYNC when handling KVM_REQ_MMU_SYNC_ALL_ROOTS as the
-latter is a superset. Do not do so inside kvm_mmu_sync_all_roots(), to
-avoid any subtle behavioral changes from kvm_vcpu_flush_tlb_guest()
-clearing KVM_REQ_MMU_SYNC. It makes sense to always clear it when
-syncing the MMU, but there might be weird dependencies on the sync only
-happening before the actual vCPU run, and kvm_vcpu_flush_tlb_guest() is
-called in other code paths than handling KVM_REQ_TLB_FLUSH_GUEST before
-vCPU run.
+On nested VM-Exit, flush L1's own ASID if L1 requested a *full* TLB
+flush (i.e. TLB_CONTROL_FLUSH_ALL_ASID).
 
-No functional change intended.
+Essentially, TLB_CONTROL_FLUSH_ASID[_LOCAL] cause a TLB flush on nested
+VM-Enter only, while TLB_CONTROL_FLUSH_ALL_ASID causes a TLB flush on
+both nested VM-Enter and nested VM-Exit.
 
-Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
+Additionally, sync the nested NPTs on nested VM-Enter on an ASID flush,
+as ASID flushes also invalidate guest-physical translations on SVM
+(unlike VMX, which has separate VPID-based and EPT-based flushing). Sync
+all roots, as shadow mappings are not tagged with an ASID, and there
+could be translations belonging to the outgoing or flushed ASID in
+previous roots.
+
+All TLB_CONTROL values can be handled by KVM regardless of FLUSHBYASID
+support on the underlying CPU, so keep advertising FLUSHBYASID to the
+guest unconditionally.
+
+Note, TLB_CONTROL_FLUSH_ALL_ASID is never propagated from the vmcb12 to
+the vmcb02 (unless FLUSHBYASID is not available), as this gives the
+guest the power to flush the entire physical TLB (including translations
+for the host and other VMs).
+
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/mmu.h              |  7 +++++++
- arch/x86/kvm/x86.c              | 11 ++++++++---
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/nested.c | 31 ++++++++++++++++++++++++++-----
+ arch/x86/kvm/svm/svm.c    |  5 ++---
+ 2 files changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index e2eef7057bd35..1d28bb7e92c7f 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -127,6 +127,7 @@
- 	KVM_ARCH_REQ_FLAGS(33, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
- #define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE \
- 	KVM_ARCH_REQ_FLAGS(34, KVM_REQUEST_WAIT)
-+#define KVM_REQ_MMU_SYNC_ALL_ROOTS	KVM_ARCH_REQ(35)
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index e216818f68372..e04cc4f7669ea 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -690,19 +690,34 @@ static void nested_save_pending_event_to_vmcb12(struct vcpu_svm *svm,
  
- #define INVALID_PAGE (~(hpa_t)0)
- #define VALID_PAGE(x) ((x) != INVALID_PAGE)
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index b443a5083bfb0..b6ad0ff72393e 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -170,6 +170,13 @@ void kvm_mmu_unload(struct kvm_vcpu *vcpu);
- void kvm_mmu_free_obsolete_roots(struct kvm_vcpu *vcpu);
- void kvm_mmu_sync_roots(struct kvm_vcpu *vcpu);
- void kvm_mmu_sync_prev_roots(struct kvm_vcpu *vcpu);
+ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
+ {
++	struct vcpu_svm *svm = to_svm(vcpu);
 +
-+static inline void kvm_mmu_sync_all_roots(struct kvm_vcpu *vcpu)
-+{
-+	kvm_mmu_sync_roots(vcpu);
-+	kvm_mmu_sync_prev_roots(vcpu);
-+}
-+
- void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
- 			 int bytes);
+ 	/* Handle pending Hyper-V TLB flush requests */
+ 	kvm_hv_nested_transtion_tlb_flush(vcpu, npt_enabled);
  
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 12eaeaea51633..a54e9da2ed09e 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2020,8 +2020,7 @@ static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
- 		 * a forced sync of the shadow page tables.  Ensure all the
- 		 * roots are synced and the guest TLB in hardware is clean.
++	/*
++	 * If L1 requested a TLB flush for L2, flush L2's TLB on nested entry
++	 * and sync the nested NPT MMU, as TLB_CONTROL also flushes NPT
++	 * guest-physical mappings. Sync all roots, since the TLB flush is not
++	 * specific to the currently loaded nCR3.
++	 *
++	 * If L1 requested a full TLB flush for all ASIDs (including its own),
++	 * L1's own ASID is also flushed on nested VM-Exit, before running L1.
++	 *
++	 * TLB_CONTROL_FLUSH_ASID and TLB_CONTROL_FLUSH_ASID_LOCAL are handled
++	 * equally for simplicity.
++	 */
++	if (svm->nested.ctl.tlb_ctl != TLB_CONTROL_DO_NOTHING) {
++		if (nested_npt_enabled(svm))
++			kvm_make_request(KVM_REQ_MMU_SYNC_ALL_ROOTS, vcpu);
++		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
++	}
++
+ 	/*
+ 	 * TODO: optimize unconditional TLB flush/MMU sync.  A partial list of
+ 	 * things to fix before this can be conditional:
+ 	 *
+-	 *  - Honor L1's request to flush an ASID on nested VMRUN
+-	 *  - Sync nested NPT MMU on VMRUN that flushes L2's ASID[*]
+ 	 *  - Don't crush a pending TLB flush in vmcb02 on nested VMRUN
+-	 *
+-	 * [*] Unlike nested EPT, SVM's ASID management can invalidate nested
+-	 *     NPT guest-physical mappings on VMRUN.
+ 	 */
+ 	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
+ 	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+@@ -710,8 +725,14 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
+ 
+ static void nested_svm_exit_tlb_flush(struct kvm_vcpu *vcpu)
+ {
++	struct vcpu_svm *svm = to_svm(vcpu);
++
+ 	kvm_hv_nested_transtion_tlb_flush(vcpu, npt_enabled);
+ 
++	/* Flush L1's own ASID if it requested a *full* TLB flush on VMRUN */
++	if (svm->nested.ctl.tlb_ctl == TLB_CONTROL_FLUSH_ALL_ASID)
++		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
++
+ 	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
+ 	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+ }
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 97a5577a25d9f..8f2542357e78d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5645,9 +5645,8 @@ static __init void svm_set_cpu_caps(void)
+ 		kvm_cpu_cap_set(X86_FEATURE_VMCBCLEAN);
+ 
+ 		/*
+-		 * KVM currently flushes TLBs on *every* nested SVM transition,
+-		 * and so for all intents and purposes KVM supports flushing by
+-		 * ASID, i.e. KVM is guaranteed to honor every L1 ASID flush.
++		 * KVM handles all TLB_CONTROL values set by L1, even if the
++		 * underlying CPU does not.
  		 */
--		kvm_mmu_sync_roots(vcpu);
--		kvm_mmu_sync_prev_roots(vcpu);
-+		kvm_mmu_sync_all_roots(vcpu);
- 	}
- 
- 	kvm_x86_call(flush_tlb_guest)(vcpu);
-@@ -8167,8 +8166,14 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			if (unlikely(r))
- 				goto out;
- 		}
--		if (kvm_check_request(KVM_REQ_MMU_SYNC, vcpu))
-+
-+		if (kvm_check_request(KVM_REQ_MMU_SYNC_ALL_ROOTS, vcpu)) {
-+			kvm_mmu_sync_all_roots(vcpu);
-+			kvm_clear_request(KVM_REQ_MMU_SYNC, vcpu);
-+		} else if (kvm_check_request(KVM_REQ_MMU_SYNC, vcpu)) {
- 			kvm_mmu_sync_roots(vcpu);
-+		}
-+
- 		if (kvm_check_request(KVM_REQ_LOAD_MMU_PGD, vcpu))
- 			kvm_mmu_load_pgd(vcpu);
+ 		kvm_cpu_cap_set(X86_FEATURE_FLUSHBYASID);
  
 -- 
 2.56.0.385.gd3acb90ef8-goog
