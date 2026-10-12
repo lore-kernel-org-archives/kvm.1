@@ -1,66 +1,66 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C04C4F85B8
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 21:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CB846EF8D
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 22:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791840867; cv=none; b=Ri/I8mziaxNSz6RzPf9QfEQBSDY2SnwyjzttFipipTds0GnP/eIzNs7RD6VrZ0fsl8ZZVy14vgBN0IhqoYlXnciugasldvl24CS1vJ4AbmBywExbBCjJCY96H+BXqeQOyqy6NYuFwuJSSwJ6JdNIwJEcg5SC1mFr/mjwM2JMHtk=
+	t=1791842579; cv=none; b=rrrDLDGxo/0AVzEUpPGATdmP4wpEHHxFd4A0fYYc7s9YAB35YhBTeFZi/xzwhnY0H43A+nVkRjMWNBuopd9/4ru65MTiUNLFVkDiBMptNSJGHVGMn35f6vUzwuiVDuS2iHLl/VpIlSWLUxMMMMXCuB/YrgydEFM2ERI0ZN0dEvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791840867; c=relaxed/simple;
-	bh=Hc1ijqb78M+KCiboOG1eU95mN0RQFKIJR2c7e4qGr2g=;
+	s=arc-20240116; t=1791842579; c=relaxed/simple;
+	bh=xrEfK09sOgKPL8tRakdgdLoY5A4I63z1FJ2ZQnHI7pc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CL1Yea9iO9lIQG6jgQuLqQvATUzKxkVAtmhGVlmMeLk3j0N3SUKVa8/XzqLnCxPDr33hf/wsFjziNdbKk5RGrkVg2dy9xCXzt7aR38Xe/BfqGubu44euyx5HG05PpH8CGpRtgZvnAg747kp3J9OYeT+ZFb/pqWRjia3fd+/+PTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CSlGCtoJ; arc=none smtp.client-ip=209.85.210.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=nuU1lCcb+wVLfDD06d0bwA7V77mnddshru+McxfMP4a7LqQ7tdn66MTjLxW4fREcelwmK4DvoagAKYFcc37O+ZSObjalWez7hLH5bUXJnL4Wx2vk0W1EYRrNtzFfL8s6Y7S5EPQBgNMd9EdHybGipLUEjtBKe2ZYKUpBLQhvZCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRiydYkw; arc=none smtp.client-ip=209.85.210.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CSlGCtoJ"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-81b54d0cb17so1823693a34.1
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 14:34:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRiydYkw"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-82478760557so2107576a34.3
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 15:02:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791840863; x=1792445663; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791842575; x=1792447375; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Wtcrbd6Cgz3Ugy3PXt8EJcehRCAPru4qEFOiOsw7Yk8=;
-        b=CSlGCtoJY274zs2yLfnnW/EvvrLSzrH1eHdv3PUmD1wSlMEDqWXKa43fEGcacZnapO
-         CTCfBp0oAKfuuA73J86lYpgpMARKxT60b2SOobhTHUaPrQyGOw5bW8J3sPfLrX7T3enk
-         2LTcrpUNAjk+Oh/kpw0LUqe/FfTNbBZGperGCp1kod30d9E+y9lX4ZSFa8TRpHMBCdaU
-         i+SlborerQNhyVrpx4/lUjtKwDYNyoDAUU6WJY4wZPTdE0BOhp7MlvQ5OKCYdVGG+nlE
-         cKzMpXw1JMcgMN8zRtSLWQHglgUj4PuBbhdd/a5MKRaBLPE7iUZHY7oDpunzoFew+YoO
-         8lYA==
+        bh=I34AgC3qXFsIWry2eO2C25CSCiy4N0N7n6VOFiD93pA=;
+        b=kRiydYkwm255TVNGaaXvWy0gF4ej5bPf3TqHDwP3qKW0UQGyjZQ780kY3RNVw4HJup
+         7FWZPEJde/7aULp3ql+ntkK990fXm/oUCr0HaTgLyKms9PnoQVCl2iG/tULiR4UBQFnq
+         ylW+eb1e+rPaNKFkzqApVWG2dHMFnNBsxACTFeCYL0KpzlLT4Qt4jSlpm7i0kcJTWW5B
+         OcOJt6mQwDfU3fUU6Lq/UqZRaBmRZl1o7GcaHzUh6ADz16dTNwoWs8tjvtByTesE2+3L
+         yK8SWpsslmB23wVOL8Y2F4wAyUyFKBBd9gkkuvveLznuZwf6OJLWdIS5W9WXbmvbfrtt
+         SKDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791840863; x=1792445663;
+        d=1e100.net; s=20260707; t=1791842575; x=1792447375;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Wtcrbd6Cgz3Ugy3PXt8EJcehRCAPru4qEFOiOsw7Yk8=;
-        b=ktsGPej3+3LRW5N/azURrNug5ovpBKS2Z1V7Jdq0SjBiR3fDstX3st6NJcmxCmt2CS
-         +kwmoo0pJ9POTQzNGe5ALsFDusihZwYJ/XzqrQpHJUUjz7lA6yTToCmzh9WTCpTPWyPw
-         3rIElNeNxFcFU+A7uJqYTrG+12KmF6+d63htaxg5kyS2c3PVvdfwDRgPalhPSI9KQRDr
-         W4QF9pGF6GBxt2XQFmqvAohxvDbco/CISfSjSnr5y9Ue5SUkl/EJvHbSRoMA4gga0uR3
-         tfxzZRhTHSIxX2rtY8rMPIoI2Q+FF5UzkxF+ZxmBmzmLGkNSelydGIPgUVXRk2eoh57Y
-         KbUg==
-X-Forwarded-Encrypted: i=1; AKwUvBzWokDgvkKSOXB9155WjvUM4gNMaQsLAmKLhnN7tZEFhol2H/3BJ+WxKMPAf+0CNOaR4yg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKk7dqkoYakz0CBxwLFZHJ8dd/24GvoFWysddRnrsR8zKRy+/Fg
-	keQMR8Dfol82z7YDPjytPbhVCoE1KexQQcvbKsl3OoRTxpUbwwtR/DPo
-X-Gm-Gg: AYBFou15h56HZhOGnVCtH3R7ScU9aj2APRPBj0T3V3jOjWt2CthdWkEhaEyB2DgPADC
-	LH3UeKVcAD3S7zsMx/lCGD6uTATyDn+Up7IYFm/FYpunamX8wFlAThXHGBH69CCfE2foosHpAFE
-	Mtgxp5Ki7C2c894SbpxpvkG31NiCl7ooYw5MQHPAPRskXjSj5jeNLb9n4Do+opI/NPE1bTyJUO8
-	4wbqOb68v41sckDwyJMRwnwBNc7t+5GKrLN9+qHOWjYTQ5vCIR63ANIh3geqIb5f3JaZQhNbgaI
-	0eYcLxIdvywsoBEtoKVSaF9OsbTcZ+pZI3QDgWBczGnhYH3vT0ZzSBYmfgC34/Tt3L30wvEdWBM
-	C8W+S0rHfD0ZCVmxE1FV+cK1H9giIkm+EjUSQUM4ARSopXDTAswSVOCk1F5C6pDTmJ6tJtOml82
-	FWVIxp+y5Vmlu/Lm3HFJv/qjATuNqd0fLUm2mhryST0OxXXmuOyG/+O4Tf5aVe6h5sZ1INig320
-	XLRxlrDz8+rylzx7/bp
-X-Received: by 2002:a05:6830:4c0a:b0:80a:b8da:2792 with SMTP id 46e09a7af769-83094e783camr11556972a34.6.1791840863000;
-        Mon, 12 Oct 2026 14:34:23 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:49::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303a515aa9sm11078644a34.25.2026.10.12.14.34.20
+        bh=I34AgC3qXFsIWry2eO2C25CSCiy4N0N7n6VOFiD93pA=;
+        b=pdaWN7g4zDkopWhuB0UT2e1N47hIGLoSKc5uet6KTLfeqdJaLvSi27i+cZ4kPhZK0P
+         T/8GbBSXXqOggS6la0myyK2xHYvGyT2dGPSgC23T91M7CIv5mBs35Frm+ikjXfuumIv/
+         3lvfBoxTskZT6//UV8s7akAH5nG6HBZG2fc6/NnrBUTA8hHsmdo4C7nNLB1oFtSER7HT
+         F9725UMz6LeFflOEst0+g37wZ3ld8f9EV3tUuyxo5QVyqPYTuhpUDKixc+k/oXB0rYow
+         ajUgEWEK+yTOL1G5DiqLFn9Regdn9L4np8Gudp6wGmLkM3oywr9NXEghseYjdi9/NLv9
+         /lLA==
+X-Forwarded-Encrypted: i=1; AKwUvBz5QdqulbTISnngQk/TinRRfaZ+1tZrIl3kTgxfuSzcSsSC2LD5JOBo1xG6JPgjKYWakpY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLfcqOE5HCEggB4O9uXZ1Qo43uUR94lieyeET5lhkRDBHjMeqr0
+	jyBB94HHopGP+PLBsBUNHLEfk7SZjCgjlDdQjfJkUbtyvrcqeZDCr2tA
+X-Gm-Gg: AYBFou3JFHKyPBCpP2JuOnI09zWpcnNyT7nVCFa+y1sP36JaCXfuVxIfg4AGFZIZiPN
+	9JCB6BRwbcaFY9u1U6xZlF1C3ps7FZNK2gcgvK7Lq9FG3JozF8B13ykWFFAGM1LUEcXBxBQrngJ
+	XOVe1AQC+MdKB2aFSJ+gP8HcHcwuG4W+iGLlHQBY2Yxs4D2r0qZyEMp1FK2HrkVrfS1nKlb8MuN
+	1UcfcjugybYGbi81WSkfO4TT7KN+1wb9Dw6vwdI7pcACTm27315afhMwn63BuCWlhB/69eNkZ1v
+	pVyKUbMDULwmkKpCDJ5A95T+1SZbou+gbRW8I3uygdnWYvMLtpsGSrFyZ2WtomwfdN4quxXcUrc
+	Pv/YS0DdfTcrApZFo+vi+pX6W41qap4ecUNz3spt7pVAJKJm1lLRg/ejH/LhpRSCpEWn7fRTEJi
+	3uwBRN3DMd1prG6nqVBmeR7LDsAeMBrNDgGi56cIHkgjRF8WQ6ZHe0T44cvee27sAuhyTH4KBz1
+	q+F32AyA6JV3CbhrhArmZEqUkLpnA==
+X-Received: by 2002:a05:6830:43a0:b0:81c:4784:a5e2 with SMTP id 46e09a7af769-83094e738d8mr9929561a34.6.1791842575557;
+        Mon, 12 Oct 2026 15:02:55 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303494f64csm10655830a34.3.2026.10.12.15.02.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 14:34:21 -0700 (PDT)
-Date: Mon, 12 Oct 2026 14:34:18 -0700
+        Mon, 12 Oct 2026 15:02:53 -0700 (PDT)
+Date: Mon, 12 Oct 2026 15:02:50 -0700
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
 To: Jia Jia <physicalmtea@gmail.com>
 Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
@@ -71,7 +71,7 @@ Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
 	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 Subject: Re: [PATCH net-next v2 1/5] vsock/virtio: split socket lookup from
  locked RX processing
-Message-ID: <as1SWsJw2dSrPYcL@devvm29614.prn0.facebook.com>
+Message-ID: <as1ZCkbya2jn72ip@devvm29614.prn0.facebook.com>
 References: <20261010142247.99223-1-physicalmtea@gmail.com>
  <20261010142247.99223-2-physicalmtea@gmail.com>
 Precedence: bulk
@@ -104,138 +104,9 @@ On Sat, Oct 10, 2026 at 10:22:43PM +0800, Jia Jia wrote:
 >  net/vmw_vsock/virtio_transport_common.c | 139 ++++++++++++++++--------
 >  1 file changed, 96 insertions(+), 43 deletions(-)
 > 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index f225f53..e3e75e5 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -1774,81 +1774,97 @@ static bool virtio_transport_valid_type(u16 type)
->  	       (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
->  }
->  
-> -/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
-> - * lock.
-> - */
-> -void virtio_transport_recv_pkt(struct virtio_transport *t,
-> -			       struct sk_buff *skb, struct net *net)
-> +static void
-> +virtio_transport_recv_pkt_init_addrs(struct sk_buff *skb,
-> +				     struct sockaddr_vm *src,
-> +				     struct sockaddr_vm *dst)
 
-I'd prefer these calls stay inline, there is nothing complex enough here
-to justify abstracting IMHO.
+[...]
 
-Could we move things around so that we don't have the arbitrary move of
-virtio_transport_recv_pkt()? It tends to create noise and makes it
-harder to focus on the more important parts of the patch.
-
->  {
->  	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> -	struct sockaddr_vm src, dst;
-> -	struct vsock_sock *vsk;
-> -	struct sock *sk;
-> -	bool space_available;
->  
-> -	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
-> +	vsock_addr_init(src, le64_to_cpu(hdr->src_cid),
->  			le32_to_cpu(hdr->src_port));
-> -	vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
-> +	vsock_addr_init(dst, le64_to_cpu(hdr->dst_cid),
->  			le32_to_cpu(hdr->dst_port));
-> +}
-> +
-> +static void
-> +virtio_transport_trace_recv_pkt(struct sk_buff *skb,
-> +				const struct sockaddr_vm *src,
-> +				const struct sockaddr_vm *dst)
-> +{
-> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
->  
-> -	trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
-> -					dst.svm_cid, dst.svm_port,
-> +	trace_virtio_transport_recv_pkt(src->svm_cid, src->svm_port,
-> +					dst->svm_cid, dst->svm_port,
->  					le32_to_cpu(hdr->len),
->  					le16_to_cpu(hdr->type),
->  					le16_to_cpu(hdr->op),
->  					le32_to_cpu(hdr->flags),
->  					le32_to_cpu(hdr->buf_alloc),
->  					le32_to_cpu(hdr->fwd_cnt));
-> +}
-
-Any chance we can get rid of this wrapper and just call
-trace_virtio_transport_recv_pkt() directly? Even from multiple call
-sites I don't think this is a big simplification win.
-
->  
-> -	if (!virtio_transport_valid_type(le16_to_cpu(hdr->type))) {
-> -		(void)virtio_transport_reset_no_sock(t, skb, net);
-> -		goto free_pkt;
-> -	}
-> +static struct sock *
-> +virtio_transport_recv_pkt_find_socket(struct sk_buff *skb,
-> +				      struct sockaddr_vm *src,
-> +				      struct sockaddr_vm *dst,
-> +				      struct net *net)
-> +{
-> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +	struct sock *sk;
->  
-> -	/* The socket must be in connected or bound table
-> -	 * otherwise send reset back
-> -	 */
-> -	sk = vsock_find_connected_socket_net(&src, &dst, net);
-> -	if (!sk) {
-> -		sk = vsock_find_bound_socket_net(&dst, net);
-> -		if (!sk) {
-> -			(void)virtio_transport_reset_no_sock(t, skb, net);
-> -			goto free_pkt;
-> -		}
-> -	}
-> +	if (!virtio_transport_valid_type(le16_to_cpu(hdr->type)))
-> +		return NULL;
-> +
-> +	sk = vsock_find_connected_socket_net(src, dst, net);
-> +	if (!sk)
-> +		sk = vsock_find_bound_socket_net(dst, net);
-> +	if (!sk)
-> +		return NULL;
->  
->  	if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
-> -		(void)virtio_transport_reset_no_sock(t, skb, net);
->  		sock_put(sk);
-> -		goto free_pkt;
-> +		return NULL;
->  	}
->  
-> -	if (!skb_set_owner_sk_safe(skb, sk)) {
-> -		WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-> -		goto free_pkt;
-> -	}
-> +	return sk;
-> +}
-
-Similarly here, the unrelated functions blending makes for a harder
-read. Maybe worth moving things around or trying a different diff
-algorithm?
-
-nit: maybe we could just call this virtio_transport_find_socket()? AFAIK
-the tx side doesn't need a socket lookup since we already have the
-socket there, so we can omit the disambiguation if it lends a nicer
-name.
-
->  
-> -	vsk = vsock_sk(sk);
-> +struct virtio_transport_rx_pkt_ctx {
-> +	struct net *net;
-> +	const struct sockaddr_vm *src;
-> +	const struct sockaddr_vm *dst;
-> +};
-
-Let's just pass these directly too...
-
->  
-> -	lock_sock(sk);
 > +/*
 > + * The caller holds sk's socket lock and must free skb if this returns true.
 > + */
@@ -254,13 +125,6 @@ Let's just pass these directly too...
 > -	 * lock_sock (note: listener sockets are not assigned to any transport)
 > +	/* Check after acquiring the socket lock. Listener sockets accept packets
 > +	 * from any source and are not assigned to a transport.
-
-We can probably remove the first sentence since the function-level
-comment already declares we are holding the socket lock.
-
-Best,
-Bobby
-
 >  	 */
 >  	if (sock_flag(sk, SOCK_DONE) ||
 >  	    (sk->sk_state != TCP_LISTEN &&
@@ -319,19 +183,11 @@ Bobby
 > +		.net = net,
 > +		.src = &src,
 > +		.dst = &dst,
-> +	}
+> +	};
 > +	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
->  	release_sock(sk);
->  
->  	/* Release refcnt obtained when we fetched this socket out of the
->  	 * bound or connected list.
->  	 */
->  	sock_put(sk);
-> +	if (free_pkt)
-> +		kfree_skb(skb);
->  	return;
->  
->  free_pkt:
-> -- 
-> 2.34.1
-> 
+
+At this point the socket lookup succeeded with src/dst/net, why not just
+pass sk which already has all of them?
+
+Best,
+Bobby
