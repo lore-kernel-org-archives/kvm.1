@@ -1,160 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D48E3B42EB;
-	Mon, 12 Oct 2026 10:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CF5372EF0
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 10:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791800148; cv=none; b=utXChnyMcmBE1L914/9WIYUYjGj4HHVzsRaZipcC7nCHv+aQSvSIasUWHYTyAplUjZwJYRjquVKJq1tnC+pK/OjtAOK0h4Bfi1CaRvZ5OUd/AwRCabKAdn9GpvUM6nctqRkwej5TdEzFF4U+ez1v7pYrWMIC4fBjcPjk8avTRu4=
+	t=1791801627; cv=none; b=WH7XShQatuG09S/7Ix/TUQOT+nFFfFavz4tMRGDlVqTUwa1x3Rp2pUVooch8CkwSZ8y9n9ln2PgxzzqBjL3GWqxYIlvKQqGrWpgEX/R3lvqng3ckBd5yc9j6QqtaPx76D+urR9x348izAQEjwpd+JDshXAC6PvQnVA6/+QDKhkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791800148; c=relaxed/simple;
-	bh=c2+opAs7689Xtm7az6pn1Q3umq8nZMHupOBrT/9OA1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O33ic9RZn1YWxghKkGvKqXRSbQGGlvKwA4udbsNyKseT3Ouo7gPO9UXDvcnG5+gemjdYoPby+18jvMLg/SvvFb/aSay60TU9dtnR5z8U0sxAcF4lBgSZ0cJE6YsFaF696H5nOBpRNFmeoEM8ksX9eR3SjNKIFCLw3FQ+BAhu/Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMAn2EW7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791801627; c=relaxed/simple;
+	bh=vFkCRtgxGCnpOhlZA7FYzY49jEv/8nkM8zfXlvjQOfQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=faYLlsXM377KMsNh9vMig81jPXG+fX0fsSJuCGUWObUqDdU0yd48qXTP5yVfOBRj+zhiCkdz13h0OyDauqVNpFZH49FT6gJ8xpW80FEhCZYb8LhDuf6eCpK+Wlcqt+v3ciF864onj6eJLOs9+IoPRMtKTy1aqeFTLecb39WMIkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hufXMIw0; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMAn2EW7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C2A1F0089B;
-	Mon, 12 Oct 2026 10:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791800138;
-	bh=wXbaD+hQMnQX0eRYI2JyeZvdwCRWWe83EhQFaLQYbmw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EMAn2EW7w+8NKOsXHFUr61YoUrTd+uc6qArrUsRty2myyjXVQvnPR70IMpgLwWVn4
-	 +FAMLSMpe9+5kiqF5cyHXdpyq8dzlO/XjBu4g3ol/8FL2B6E2EzPgNlhGYHWFdvpTm
-	 Pel0R+7UJeil2q1yKlt7r8fxllnsFrUu6enU+TTR7tMfn4BCdbupGCrbmW8Q6qp8Aa
-	 dS4OARo0M4NIuxIs6XtnTEf2f+23d5YCf2zekQyPzxB5aqZKy0Nf485HFVOCAmv/ZC
-	 Gf6B+dHQZPrS8B31mSjZK+zNdnTWh7h/EsSvzwTi2W5l/T1ASYAL4u0sZ2yzRRMBQT
-	 BuDtFx+ZjVYZQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7F8B2198003A;
-	Mon, 12 Oct 2026 06:15:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 12 Oct 2026 06:15:35 -0400
-X-ME-Sender: <xms:Q7PMakamMHPY94WudpNYO3M0iZZB_q9VtkMW1v8enMosCFlm2EshVg>
-    <xme:Q7PMarlbRqCCz9RBt4NVyAuxbSDspzotNeF28EKJwTiUPTOIcbNAIRPhPSYNdO1m6
-    Ng1X03vnq794TmDver30gatuZlqd0FS_PhrWMOMVLftcuHP3KKdEIIb>
-X-ME-Received: <xmr:Q7PMamGquXW72XXK-8OCYjTt0YR2dSwiA1Z_lLbsPwFsBHlpcqIS24Dk1sw>
-X-ME-Proxy-Cause: dmFkZTFJUuTgkVW20IYinJ69Kh1eak227WB3MS+CRH0dVNTMUQmd305n5KufqVIrrUYxpF
-    TabuSs1h6on93mgtG/nOyKmZlDFwvtLSLnfh0rl7Ja6zaGON2aEATDiKI03rPAOG506JL4
-    efZKMf5w98MqQ32AZ6kmVMGYhbtMAbl7zhXLEv1JmHTYg9gAJllSHIXopuf5MKVCr1WSMV
-    8dRZ7vOrd1vfTeREzff5ToxCenkqsJKuKHOT82v5bDCRxBvwWa9vAUVIYWkRr49wUJH91O
-    RmVvOORx5/dqj0xH3pgHelgtL6GgiNyiN32Bym5/9jaxy7q9SaYnx97z640p3HVfC1XodZ
-    XyjHygbMvr7rg5UZS5u2k3ZNrHpqvMM5kocn5zyJfBndpqDSYIM+/0l6bfUe78d3UbAH6J
-    g7BHxOvXbU50HmsXUNbTFvdOWbdWDkqOlK/vY2ncvR9AcHzw+tVaw0C8Ih0mATguBF0EFp
-    7FBj6J6UtXBfDwP/VhjBrKx6GTWY5/mFpc8whuers2yGcTyqHC0kc+zL4+x2DYqLWcQ2Pb
-    QY9t7VQyrnQNc8sepcH5MUk3bPEu295fjA891IMwYMJbjOi93d+MHEwvXh7Qa7ELEqyky6
-    uH0jJQTE80PXJmIbrH9U5ifx6EATUHp5X4UEgm1XfyHxxkCjD8Tyu/8TAzaw
-X-ME-Proxy: <xmx:Q7PMaqMTGA20vq0SCuvJSpCAnZhGbC_4f8Q9O0-_6vnNWtOiKaIjcA>
-    <xmx:RLPMag9unIqr3nhERYormH0Wpd7ltwem3RSD6OCusZ9ixI4ryOdMmA>
-    <xmx:RLPMah4sDTkiPvFezMtWy_mm-eCt0MBJJmI-7U_YQ0Gs6jooTaDrYQ>
-    <xmx:RLPMaqTv02zoxaOiIBHe7CkCbYMHDoKcQhCxq7phyIXnEKF-DWWfDA>
-    <xmx:RLPMamNjIvK35lz-rVVjZCiDrJqlDXgKDTK9XAvYPr0V-8p7HLyQ5q6->
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 12 Oct 2026 06:15:31 -0400 (EDT)
-Date: Mon, 12 Oct 2026 11:15:29 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, 
-	kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com, 
-	adrian.hunter@intel.com, kishen.maloor@intel.com, peter.fang@intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com, 
-	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-Subject: Re: [PATCH v3 6/6] x86/virt/tdx: Support DPAMT when adding memory
- for the extensions
-Message-ID: <asyy0Y4ZWqHvgQ4u@thinkstation>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-6-db52cb05b918@linux.intel.com>
- <asR64ovVXEmTVgg6@tlindgre-MOBL1>
- <asceeI8LD5ltEOje@yilunxu-OptiPlex-7050>
- <asjrTLfebkjDzB9F@thinkstation>
- <asmzGnpjrDKmFLLP@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hufXMIw0"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33e6279a1d7so459985eec.1
+        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 03:40:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791801626; x=1792406426; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3l61iXys9UAgeiq6Qoow/JEP0G8Esaw8ppQEGcd0fNQ=;
+        b=hufXMIw0EVpInfTHhpYb/QUt24+17FSeX5h06Wfnpgb8Jkqyyg8piXuqxx0i625Ai/
+         d1vDYYMkZ+rRr30gF8oMr/6BYgyg9nnWRXXjq7qrdsMkFBencCoYq0KKVxe4dFuKqDdA
+         duwdxgMF+BUMMevDDeIs/s9YhAgGSLzDgmafK5TY7GcB1laaUuybDctQojzxBOeaoBdN
+         V7kDovVSMCCZs+TYIVIFuBUB7ZLi5fnvzeA/FT0HhRFFbgD6IbZS/j77mtX+TwzxYbJ4
+         RPfwXqe2M2dA8zSmwVeABniRXbFeYUNUG1Pqnk2e2EU+NrxUOc5FgDbkatK5yVGjHi09
+         80mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791801626; x=1792406426;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3l61iXys9UAgeiq6Qoow/JEP0G8Esaw8ppQEGcd0fNQ=;
+        b=p2J5j45cCDw70mVA68qEWz+h/HCZHALXxX6WaGP1MVn+1Ni+ZimDnrQGnh/RBQxU7B
+         h0TEJGyxRZh7X9OAB4hSVUBk7JaPfvIEEer7/3SSKGYssSCMG8tsOt+tw09sld/04vHF
+         SumTrU7kItS5MoYYWdZvrprxXHaLTbvJ3jtkAgcLY6eLJw4E/Mg2ND233XgqgQpxKG6w
+         elgZHQSkUvui+Nv9+lqqNMOUly+lOsxpSFTCTEHrOvquk+Cr2V5c/LvHS3IGafoyF+CH
+         HOlLWW26oDcX7empFNJBpeIMLaEhF5GkL9xnjIvQRpyWLXYHFstHzQvIS2WEpogPxCwb
+         0RjA==
+X-Forwarded-Encrypted: i=1; AKwUvBx6avtBYkXf8D4d4Gcb2eEcmHsIpohLTEX+xWcLXY6FhS2iLY3692wqXo3bphXoZ77hVLM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJBaG/kw+R3TyeqLzC6Uo/ZNjHllkPpTY79rh2QqV2bGePPTnZ8
+	1gx6B2jKbYPjjtKEU1fHdSKl6+sld/30nRJhMdYiCsYQBymx28Y4WQBD
+X-Gm-Gg: AYBFou3s3LHXkO2AwVnEgJd9IwF3IRXErmqtqv35EyybtRkngy0FqgkySBMePo4pLGN
+	mirVwTGBDVSsvMQSq06oL8dJHHHitXYgwA0IQONbNDI4V1HcIzciYD3hDxdnrFixODg4qm/wCht
+	+gjbcfk5kIpQj1mK0YWqBIlcKeT5Ko54ncjrep9A5/axpOKH4oEvI1Fwm6r+4Y0FynQojWoMX1J
+	iP8kZysgwzS+Rye0pez9HI/FCg1OJiUQxXddU+NuV5ZmLZXAmMzMKlI+zF+kypPv6PliTvJfNJ0
+	z4KbaFsGwpEqPgQrbFiINymjUGbOXi/Ivwhs7W0PQI3Dlw520SbnX01kdGqkeAJGVHdUzk2vito
+	e6QyoxtlhvYRi39biQxNTykhR87jpDPTqE6pWU1m9XZcsPjGJURZw2kiE+xEJKgZjlwEVlHTVSo
+	hwqXJGJEAUl5OR8Mext23XwDSbjfk16B61Br+BFN/rFxtguE5R14KlWzskb3t8jdTEcNu/8g==
+X-Received: by 2002:a05:701b:2058:20b0:15c:20b8:7964 with SMTP id a92af1059eb24-16a63386d86mr13548313c88.27.1791801625139;
+        Mon, 12 Oct 2026 03:40:25 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2fd33sm31434866eec.28.2026.10.12.03.40.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 03:40:24 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Nicholas Bellinger <nab@linux-iscsi.org>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jia Jia <physicalmtea@gmail.com>
+Subject: [PATCH v3] vhost-scsi: do not count PI bytes in the data length
+Date: Mon, 12 Oct 2026 18:39:54 +0800
+Message-Id: <20261012103954.136698-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asmzGnpjrDKmFLLP@yilunxu-OptiPlex-7050>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 10, 2026 at 11:38:02AM +0800, Xu Yilun wrote:
-> On Fri, Oct 09, 2026 at 02:28:34PM +0100, Kiryl Shutsemau wrote:
-> > On Thu, Oct 08, 2026 at 12:39:20PM +0800, Xu Yilun wrote:
-> > > On Tue, Oct 06, 2026 at 07:36:50AM +0300, Tony Lindgren wrote:
-> > > > On Tue, Oct 06, 2026 at 01:41:50AM +0800, Xu Yilun wrote:
-> > > > > The TDX module uses Physical Address Metadata Table (PAMT) to track some
-> > > > > state for each page of physical memory that it might use. 3 levels of
-> > > > > PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
-> > > > > Dynamic PAMT (DPAMT) allows saving memory by allocating 4KB PAMT
-> > > > > dynamically, while the 1GB and 2MB levels remain allocated on TDX module
-> > > > > initialization. The kernel has helpers to install 4K DPAMT.
-> > > > > 
-> > > > > Although the memory for the extensions is tens of megabytes and the host
-> > > > > allocates it in a large chunk, the TDX module accepts it at 4K
-> > > > > granularity. Thus the host has to install 4K DPAMT for each page of it.
-> > > > > 
-> > > > > Call tdx_pamt_get() for each page before adding it to TDX module.
-> > > > > Normally, these operations should not fail, and if they do,
-> > > > > intentionally keep the error handling as simple as before - leak all
-> > > > > pages, including the installed 4K DPAMT metadata.
-> > > > > 
-> > > > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > > ---
-> > > > > v3:
-> > > > >  - New patch
-> > > > > ---
-> > > > >  arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
-> > > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > index 5d5f9da1ab02..27a7039ee443 100644
-> > > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > > > @@ -1330,8 +1330,15 @@ static __init int tdx_ext_mem_setup(void)
-> > > > >  		struct page *chunk = page + added_pages;
-> > > > >  		unsigned int i;
-> > > > >  
-> > > > > -		for (i = 0; i < chunk_pages; i++)
-> > > > > +		for (i = 0; i < chunk_pages; i++) {
-> > > > > +			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
-> > > > > +			if (ret) {
-> > > > > +				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
-> > > > > +				goto out_free_hpa_list;
-> > > > > +			}
-> > > > > +
-> > > > >  			hpa_list->phys[i] = page_to_phys(chunk + i);
-> > > > > +		}
-> > > > >  
-> > > > >  		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-> > > > >  		if (ret) {
-> > > > > 
-> > > > 
-> > > > How about just fold this change in into patch 3/6?
-> > > 
-> > > I think patch 3/6 is already quite heavy. Is it good that I put this
-> > > patch right after patch 3/6?
-> > 
-> > But that breaks bisectability, no? Even placed right after 3/6, that
-> > commit fails TDX module init on a machine with DPAMT and extensions
-> > whenever the module asks for a non-zero pool.
-> 
-> It will not. Any patch for extension-backed features should be applied
-> after this series. So the pool will always be zero until something like:
-> 
->  /* List all kernel-supported add-on features0 bits here */
-> -#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (0)
-> +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0   (TDX_FEATURES0_QUOTE)
+vhost_scsi_handle_vq() moves pi_bytesout or pi_bytesin into the
+protection sgl and subtracts those bytes from exp_data_len.  The length
+passed to TCM is still exp_data_len + prot_bytes.
 
-Okay, fair enough. Feel free to use my
+prot_bytes comes from virtio_scsi_cmd_req_pi.  With
+VIRTIO_SCSI_F_T10_PI negotiated, vhost reads that header and does not
+check that the CDB is a READ or WRITE.  sbc_check_prot() replaces
+data_length from the CDB only when the protect field is non-zero.
+target_cmd_size_check() leaves a write's data_length unchanged when the
+CDB size is smaller, so a command that does not get that replacement
+keeps a data_length larger than the data sgl.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+The KASAN report is a MODE SELECT whose header had pi_bytesout set.
+The data sgl held only the parameter list.  spc_emulate_modeselect()
+walked data_length and read the next physical page.
 
-on 3/6 and 6/6.
+Pass the data sgl length.  Protected READ and WRITE still take their
+length from the CDB in sbc_check_prot().
 
+KASAN reports:
+
+  BUG: KASAN: use-after-free in spc_emulate_modeselect+0x145/0x380 [target_core_mod]
+  Read of size 1
+
+  spc_emulate_modeselect
+  __target_execute_cmd
+  target_execute_cmd
+  vhost_scsi_write_pending
+  transport_generic_new_cmd
+  __target_submit
+  target_queued_submit_work
+  process_one_work
+  worker_thread
+  kthread
+  ret_from_fork
+  ret_from_fork_asm
+
+Fixes: 9f977ef7b671 ("vhost-scsi: Include prot_bytes into expected data transfer length")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+v3:
+  - Rewrite the inline comment to distinguish the data and protection
+    SGLs and explain why TCM receives only the data SGL length.
+  - Note the related target-core patches for PI tuple accesses at
+    protection-SGL boundaries:
+    https://lore.kernel.org/all/20261006093338.27342-5-physicalmtea@gmail.com/
+    https://lore.kernel.org/all/20261006093338.27342-6-physicalmtea@gmail.com/
+    https://lore.kernel.org/all/20261006093338.27342-7-physicalmtea@gmail.com/
+
+v2:
+  - Drop the claim that target used to subtract prot_length.
+    9f977ef7b671 cites 14ef9200, which is not in the tree
+  - prot_bytes comes from virtio_scsi_cmd_req_pi
+
+ drivers/vhost/scsi.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 4f8c0260bc9e..4bd29c2ceed9 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1534,9 +1534,17 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
+ 		 */
+ 		cmd->tvc_vq_desc = vc.head;
++		/*
++		 * vhost_scsi_mapal() maps the PI bytes into cmd->prot_table.
++		 * It maps the remaining exp_data_len bytes into cmd->table,
++		 * which is the data SGL passed to the target core.  Its
++		 * expected length must therefore exclude prot_bytes.
++		 *
++		 * sbc_check_prot() derives the data length for protected READ
++		 * and WRITE commands from the CDB.
++		 */
+ 		vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_attr,
+-					    data_direction,
+-					    exp_data_len + prot_bytes);
++					    data_direction, exp_data_len);
+ 		ret = 0;
+ err:
+ 		/*
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.53.0
