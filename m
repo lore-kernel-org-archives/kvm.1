@@ -1,220 +1,269 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC8B4DAF81;
-	Mon, 12 Oct 2026 20:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98DE2D7DF1;
+	Mon, 12 Oct 2026 20:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791836535; cv=none; b=UyC0AVjDv0P4h5GxRqdjrbYEeJhmJ+WGRpSgDsl16NC7J57W+MGBcEgDluhVREdcZzaPO/76mAv2T7RnoUXtBTyrP4vhkLwS84aYKanMtyd5mX0WqeHbn54aLzi49FRX5SJnUvd+Ka6rVMaSYJ6UYoikay62iTDWjgqwzHNPXMw=
+	t=1791837272; cv=none; b=VOAzunI6d97rxMdis1mcKwxePKdAyiMj5uAkpbHgtW8Kfpstd3WpddAYHglQ5camX+1tn/ZPQzkPNwHIpFRgSdsPurQWy+kcOQHrb4yCojZaek+w/ylqMmGptU31kd1uBe3GbFrBqBJFkQZeVPg4EUEtOCSPoQsVN+8/1ZuhLdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791836535; c=relaxed/simple;
-	bh=l0gL9uYEPKSdTQudvp25cNOzTorFUob3Nscc6kfNgP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lp7Ik+MnRRJgFSF79XsN+o1o4bIni90X7Q8DXxUWcR4zxAcPcHF05PFDvqkmOhLCIF7M12HgL5Ahy4JvxEVj5RHSkqFG4bgapmyO+NrnyF1eJmGwMDE8yg2nfzy3ApLalZ7xr2qwHCWjf+6L1xmPUUfqsqOtTjfLtAEHVO1nLAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=P7Kj8cyJ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791837272; c=relaxed/simple;
+	bh=mLvfYrEjCPUj6KEWLX5KIVZEqZ6uvmF+kUcBtcGjXS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=WLnhCpGdSxGdQl1bI13wwqBnPxMVt8GHm4SM0qNd6liU5LRiJAP67x1aPfEsnF4OvUgaJtgNz0z7pm6r2Ss4j3u+8HbGKSAx0AXxDy6g/a0RQMIPLz+svX2SHZz4UyHN6SNnbjH3XU0ldIkxR1+FH7b3ZC800ZooYSU8sjUowjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IunHpEJd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="P7Kj8cyJ"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJiVCQ1149509;
-	Mon, 12 Oct 2026 20:22:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0uAu2A
-	+sYKqnimE0S7xLUlHVun395otI+3Ws4gdQCEw=; b=P7Kj8cyJ1J6tHSrqL2hY/g
-	z4ClRXP2fNOpOhwqwK4nf4J6+yy1jbJqJN3Wci5ZgvKptwk5iwvDGn99rfis2bKa
-	3N/mcwqer5CNeEfrfLWYz9H7gZ9airD2p/m1ElcfSCkOa8EHKwBd0yYlRkt48UdE
-	nmcjJwkDlee8tXNH8NICpjY9WhVCQ256U+7ejwssYB58n+wZFhdJnjKLh75WzUB7
-	2tZD/0TarzrP29+GxRW65xJ2OgLbXb8/UJK2sUn7rthaC+8wCwanyuetRGfFgtCV
-	yjpI5FkDaSc+79gul9eqqovdbMnWiMHHUIEfOhMUx+PlvDtMn5s3Qr6C5t2QT+dg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7e1w2bpx-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 12 Oct 2026 20:22:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJdGaZ1828898;
-	Mon, 12 Oct 2026 20:22:12 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h802vpw5s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Oct 2026 20:22:12 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69CKMBg231195654
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Oct 2026 20:22:11 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B3F95804E;
-	Mon, 12 Oct 2026 20:22:11 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A5F545803F;
-	Mon, 12 Oct 2026 20:22:10 +0000 (GMT)
-Received: from [9.61.159.45] (unknown [9.61.159.45])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Oct 2026 20:22:10 +0000 (GMT)
-Message-ID: <a7e6ff3a-2a64-4057-b9a6-26d80c718c5f@linux.ibm.com>
-Date: Mon, 12 Oct 2026 16:22:10 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IunHpEJd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0011F0089B;
+	Mon, 12 Oct 2026 20:34:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791837270;
+	bh=McoQna29qBqDfcfSexNQ6Y2tR6Jmmbfkwzj7Jotj0ms=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=IunHpEJddXRTQpHnVlBUlx8dLmuOIWKjQN9ETKM0g+PoB4Ibd4gjx6fPLdzX3LPwY
+	 xpayzGi6Z/p7VxE/uNyGHylcn3PnoyXEj2Bji/LPAKByFw3UcuWOWHvZ97c2zgLI63
+	 txIGUVKI7egXxoxTfQmlxcKDt+Hke49rd9ww94IxfpuIb8J0PG18hkodikXFvu0VUu
+	 ZK4Tq8u0J3qGazUTNhjsYB8ylzKtY0iKQW9y1bKsyRTYK//u/uShkt9P6XnjdG7dhO
+	 ZXvPAQtg2ZKjQKAs3FRvzxjJ/cd1FqvrE0d1a8TMLG0pihIz2vES+MQJ3n07nPJUX/
+	 vU8OfSwd/qjmg==
+Date: Mon, 12 Oct 2026 15:34:29 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: iommu@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Steven Price <steven.price@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH v7 16/16] PCI/TSM: wait for vdevice contexts before
+ removing a DSM
+Message-ID: <20261012203429.GA1381362@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 07/15] s390/vfio-ap: File ops called to save the vfio
- device migration state
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-s390@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>, kvm@vger.kernel.org,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20261009114244.1213173-1-akrowiak@linux.ibm.com>
- <20261009114244.1213173-8-akrowiak@linux.ibm.com>
- <sashiko-outbox-165444@kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <sashiko-outbox-165444@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA4MCBTYWx0ZWRfX3IA+tblVZKev
- hNzcJv/fGWlsYXcwNZiwsO4/SihhzXx0+/hhaf0rFy8gWMW7jc90bzIs+oSKvoAm66wIKuemJ+J
- MlXhG/2g5UvfdDaxKc23xWD40jBFzFU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA4MCBTYWx0ZWRfX3MFglDXdxswk
- d9YRZQ3UH6hlSCKGwR3JMMayUjJZQ4RbEYkTdlNFEi3xWsP3EFqirO3NcW311BZf/6LSUKI7gEL
- sWjHa5n1M6jVjOip9LYgZeE/8oiJhSC4n0Fsxk/sqsjApnV9Rlb9LEvWE4wQHfmVWndg3DGqF7s
- wGxMMyid3lEk3JJ7rBQKZ0ydT9KjCgURhj2wkmOSJXOaU52hGmvCZfwd6O6y6KqK0TXypdBQyVz
- DJIdn8G+agsHyg1cLcZ+yIRYeEbMrUpyd1fShX2Q7Xqezl+6+l8kYQvL6dBWsSScgx66bCA8AVy
- teArh0UrW/5RhXYPUTE1otejInpTcO5mtJS91Wn0/kHLxShY0IrAP25Fphobf7EOvGWrNAY8+iQ
- XqXo/70xYPwTh8x4NhuKLPD5XvSRtvmFgiRr4I1GK9802eCmbA/0NVx5CzrMB0OFyNmE0n4NA3H
- oAbM2PY9A+G05DZHkfQ==
-X-Authority-Analysis: v=2.4 cv=E6pYNqdl c=1 sm=1 tr=0 ts=6acd4175 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=WWoxTm97podMns0e3DQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: jkvp92uQrrlPn_-RqU_uL9uUm3Dt-FoU
-X-Proofpoint-GUID: jkvp92uQrrlPn_-RqU_uL9uUm3Dt-FoU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-12_06,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
- spamscore=0 adultscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120080
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008055955.4014342-17-aneesh.kumar@kernel.org>
 
+On Thu, Oct 08, 2026 at 11:29:55AM +0530, Aneesh Kumar K.V (Arm) wrote:
+> A PF0 DSM can be removed while a sibling function still has a vdevice.
+> The context pins both the pci dev, but those references do not keep the
+> PF0 DOE mailbox alive. Ignoring -EBUSY from link disconnect lets PCI
+> continue to pci_doe_destroy(), leaving the vdevice with a stale mailbox
+> pointer.
 
+  - Please capitalize the subject line to match history:
+      PCI/TSM: Wait for ...
 
-On 10/9/26 7:54 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] vfs: stream position permanently advanced on copy_to_user failure
-> - [Low] vfio: missing memory cleanup in vfio_ap_release_mig_file contradicts documented design
-> --
->
-> commit e098ee9f1268fb534553f678f8c768d5b444ac95
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: File ops called to save the vfio device migration state
->
-> This commit implements the read callback function for the file created to
-> save the state of the vfio-ap device when transitioning to the STOP_COPY
-> state. It copies the guest's AP configuration information to userspace.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index bbd007c06a776..0c43f25e2d9ba 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> [ ... ]
->> @@ -150,6 +144,276 @@ static int vfio_ap_release_mig_file(struct inode *file_inode, struct file *filp)
-> [ ... ]
->> +	/*
->> +	 * Lazy initialization: the migration config is generated on the first
->> +	 * read() call. vfio_ap_open_file_stream() initializes ap_config to NULL
->> +	 * and config_sz to 0. On first read, we generate the config by
->> +	 * snapshotting the guest's APQNs from shadow_apcb and retrieving hardware
->> +	 * info via TAPQ for each queue. The result is cached in mig_file->ap_config
->> +	 * for subsequent read() calls. The config is freed when the migration FD
->> +	 * is released (vfio_ap_release_mig_file -> vfio_ap_release_stop_copy_file).
->> +	 */
-> [Severity: Low]
-> The documentation here states the configuration is freed when the migration
-> file descriptor is released by calling vfio_ap_release_stop_copy_file() from
-> vfio_ap_release_mig_file().
->
-> However, looking at the existing vfio_ap_release_mig_file(), it doesn't
-> appear to call vfio_ap_release_stop_copy_file() during cleanup:
->
-> static int vfio_ap_release_mig_file(struct inode *file_inode, struct file *filp)
-> {
-> 	struct ap_matrix_mdev *matrix_mdev = filp->private_data;
->
-> 	/* ... */
-> 	vfio_device_put_registration(&matrix_mdev->vdev);
-> 	return 0;
-> }
->
-> Could this lead to delayed resource reclamation and a dangling pointer since
-> the ap_config buffer isn't actually freed when the file descriptor is closed?
+  - Please disambiguate "DSM" from the common "ACPI _DSM", e.g., by
+    spelling out the first use of "DSM".
 
-You're right, the comment is wrong. vfio_ap_release_mig_file() only drops
-the vfio_device registration reference taken in
-vfio_ap_open_file_stream(); it does not free ap_config.
+  - "vdevice" is not a well-known term in drivers/pci/, so please
+    clarify.  The log messages may also benefit from more context,
+    since sysadmins will be reading them.  I assume this is not the
+    pseries, xen, or fusion "vdevice", which are the current upstream
+    uses.
 
-This is intentional: ap_config is owned by matrix_mdev->mig_data, not by
-the file, and is freed under mdevs_lock by vfio_ap_release_mig_files()
-when the migration session ends (device reset, device close/removal, and
-the transitions back to STOP). Freeing it from the release callback would
-race with stop_copy_read()/resuming_write(), which rely on mdevs_lock
-rather than the file's lifetime to protect mig_data. If userspace closes
-the FD early, the buffer is reclaimed at the next of those events; no
-pointer is left dangling since mig_data keeps ownership throughout.
-
-Since the mention of vfio_ap_release_mig_files() is completely unrelated
-to the code block described by the comment, that will be removed from
-the doc block for the next version of the series.
-
->
-> [ ... ]
->> +	read_pos = *pos;
->> +	*pos += len;
->> +
->> +	/*
->> +	 * Keep mdevs_lock held across copy_to_user() to prevent a concurrent
->> +	 * vfio_ap_reset_migration_state() from freeing ap_config while we are
->> +	 * reading it.  copy_to_user() may fault on a non-resident user page,
->> +	 * but that is legal for a sleeping mutex.  The data transferred is at
->> +	 * most a few KB for any realistic AP configuration, so holding the lock
->> +	 * here is acceptable.
->> +	 */
->> +	if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len)) {
->> +		mutex_unlock(&matrix_dev->mdevs_lock);
->> +		return -EFAULT;
->> +	}
->> +
->> +	mutex_unlock(&matrix_dev->mdevs_lock);
->> +
->> +	return len;
->> +}
-> [Severity: Medium]
-> If copy_to_user() fails and returns -EFAULT, pos has already been permanently
-> advanced by len.
->
-> Will a subsequent read() on this stream start from the advanced offset,
-> skipping over those bytes and breaking the migration data stream?
-
-Yes, that is a bug. *pos was advanced before copy_to_user(), so a fault
-left the position past data that was never delivered, and a retried read()
-would skip it.
-
-mdevs_lock is held from the position read through copy_to_user(), so
-nothing else can observe *pos in between and the early advance (and the
-read_pos snapshot) is unnecessary. In the next version *pos is advanced
-only after copy_to_user() succeeds, so an -EFAULT leaves the position
-unchanged and the read can be retried.
-
->
-
+> This follows the VFIO PCI removal model: vfio_unregister_group_dev()
+> prevents new userspace opens and waits for existing users to release the
+> device before teardown proceeds. Likewise, DSM removal rejects new
+> contexts and waits for existing vdevice contexts to drain before
+> destroying the DOE mailbox.
+> 
+> Mark the DSM as removing so no new contexts or subfunctions can attach.
+> Wait for the last context to be released before disconnecting the link,
+> 
+> VFIO PCI also uses an eventfd to notify userspace that the device should
+> be released. This patch does not add an equivalent notification for
+> vdevice contexts; DSM removal waits for userspace to release them. Such
+> a notification can be added later if required.
+> 
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/pci/tsm.c       | 63 +++++++++++++++++++++++++++++++++++++++--
+>  include/linux/pci-tsm.h |  5 ++++
+>  2 files changed, 65 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> index c8603867e09d..8aa74ba31932 100644
+> --- a/drivers/pci/tsm.c
+> +++ b/drivers/pci/tsm.c
+> @@ -10,10 +10,13 @@
+>  
+>  #include <linux/bitfield.h>
+>  #include <linux/iommufd.h>
+> +#include <linux/jiffies.h>
+>  #include <linux/module.h>
+>  #include <linux/pci.h>
+>  #include <linux/pci-doe.h>
+>  #include <linux/pci-tsm.h>
+> +#include <linux/pid.h>
+> +#include <linux/sched.h>
+>  #include <linux/slab.h>
+>  #include <linux/sysfs.h>
+>  #include <linux/tsm.h>
+> @@ -354,6 +357,12 @@ struct pci_tsm_context *pci_tsm_context_get(struct pci_dev *pdev,
+>  		return ERR_PTR(-ENOMEM);
+>  
+>  	guard(mutex)(&pf0->lock);
+> +	if (pf0->removing) {
+> +		kfree(context);
+> +		return ERR_PTR(-ENODEV);
+> +	}
+> +	if (!pf0->context_users)
+> +		reinit_completion(&pf0->contexts_drained);
+>  	pf0->context_users++;
+>  	context->pf0 = pf0;
+>  	context->pdev = pci_dev_get(pdev);
+> @@ -368,8 +377,11 @@ void pci_tsm_context_put(struct pci_tsm_context *context)
+>  
+>  	down_read(&pci_tsm_rwsem);
+>  	mutex_lock(&pf0->lock);
+> -	if (!WARN_ON(!pf0->context_users))
+> -		pf0->context_users--;
+> +	if (WARN_ON(!pf0->context_users))
+> +		goto out_unlock;
+> +	if (!--pf0->context_users)
+> +		complete_all(&pf0->contexts_drained);
+> +out_unlock:
+>  	mutex_unlock(&pf0->lock);
+>  	up_read(&pci_tsm_rwsem);
+>  
+> @@ -452,6 +464,9 @@ static ssize_t disconnect_store(struct device *dev,
+>  	tsm_dev = pdev->tsm->tsm_dev;
+>  	if (!sysfs_streq(buf, dev_name(&tsm_dev->dev)))
+>  		return -EINVAL;
+> +	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev) &&
+> +	    to_pci_tsm_pf0(pdev->tsm)->removing)
+> +		return -ENODEV;
+>  
+>  	rc = pci_tsm_disconnect(pdev);
+>  	if (rc)
+> @@ -663,6 +678,9 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
+>  			    struct tsm_dev *tsm_dev)
+>  {
+>  	mutex_init(&tsm->lock);
+> +	init_completion(&tsm->contexts_drained);
+> +	tsm->context_users = 0;
+> +	tsm->removing = false;
+>  	tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
+>  					   PCI_DOE_FEATURE_CMA);
+>  	if (!tsm->doe_mb) {
+> @@ -751,8 +769,44 @@ static void __pci_tsm_destroy(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
+>  
+>  void pci_tsm_destroy(struct pci_dev *pdev)
+>  {
+> -	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	struct pci_tsm_pf0 *pf0 = NULL;
+> +	struct completion *drained;
+> +	bool interrupted = false;
+> +	long rc;
+> +
+> +	down_write(&pci_tsm_rwsem);
+> +	if (pdev->tsm && is_link_tsm(pdev->tsm->tsm_dev) &&
+> +	    is_pci_tsm_pf0(pdev)) {
+> +		pf0 = to_pci_tsm_pf0(pdev->tsm);
+> +		drained = &pf0->contexts_drained;
+> +		mutex_lock(&pf0->lock);
+> +		pf0->removing = true;
+> +		mutex_unlock(&pf0->lock);
+> +
+> +		/* An unused DSM may never have completed contexts_drained. */
+> +		rc = pf0->context_users ?
+> +			try_wait_for_completion(drained) : 1;
+> +		/* Context release needs the read side of pci_tsm_rwsem. */
+> +		up_write(&pci_tsm_rwsem);
+> +		while (rc <= 0) {
+> +			if (interrupted) {
+> +				rc = wait_for_completion_timeout(drained, HZ * 10);
+> +			} else {
+> +				rc = wait_for_completion_interruptible_timeout(drained,
+> +									       HZ * 10);
+> +				if (rc < 0) {
+> +					interrupted = true;
+> +					pci_warn(pdev, "Task \"%s\" (%d) blocked until vdevices are released\n",
+> +						 current->comm, task_pid_nr(current));
+> +				}
+> +			}
+> +			if (!rc)
+> +				pci_warn(pdev, "TSM connection is in use, waiting for vdevices\n");
+> +		}
+> +		down_write(&pci_tsm_rwsem);
+> +	}
+>  	__pci_tsm_destroy(pdev, NULL);
+> +	up_write(&pci_tsm_rwsem);
+>  }
+>  
+>  void pci_tsm_init(struct pci_dev *pdev)
+> @@ -779,6 +833,9 @@ void pci_tsm_init(struct pci_dev *pdev)
+>  		 */
+>  		if (!dsm->tsm)
+>  			return;
+> +		if (is_link_tsm(dsm->tsm->tsm_dev) &&
+> +		    to_pci_tsm_pf0(dsm->tsm)->removing)
+> +			return;
+>  
+>  		probe_fn(pdev, dsm);
+>  	}
+> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> index b27f7cf99f22..3adc317d0f9b 100644
+> --- a/include/linux/pci-tsm.h
+> +++ b/include/linux/pci-tsm.h
+> @@ -1,6 +1,7 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+>  #ifndef __PCI_TSM_H
+>  #define __PCI_TSM_H
+> +#include <linux/completion.h>
+>  #include <linux/mutex.h>
+>  #include <linux/pci.h>
+>  
+> @@ -107,12 +108,16 @@ struct pci_tsm {
+>   * @lock: mutual exclustion for pci_tsm_ops invocation
+>   * @context_users: live per-function contexts on this PF0; a nonzero count
+>   *	blocks link disconnect
+> + * @contexts_drained: completed when the last context is released
+> + * @removing: reject new contexts while the DSM is being removed
+>   * @doe_mb: PCIe Data Object Exchange mailbox
+>   */
+>  struct pci_tsm_pf0 {
+>  	struct pci_tsm base_tsm;
+>  	struct mutex lock;
+>  	unsigned int context_users;
+> +	struct completion contexts_drained;
+> +	bool removing;
+>  	struct pci_doe_mb *doe_mb;
+>  };
+>  
+> -- 
+> 2.43.0
+> 
