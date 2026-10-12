@@ -1,130 +1,237 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637DE393DF1;
-	Mon, 12 Oct 2026 06:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AC235E944
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 06:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791786439; cv=none; b=GmyxvWZg4Sj5qRN2L7gRw+4rSRPveeNlPbD+hqZU5SkJSzMNYe+2yJNKYAKz71+9tZ9SCJvz4Yi7IOZ/H5++Y2WVfh8kr3k1a2ow2arSFH0OpHeE7Mt0dv4/g0mc/5EkdVdBYv4bS6eosZfCiCXzeZbzE7y02+TkcuNGxzlMRVM=
+	t=1791787067; cv=none; b=nimGb4sDE6X90vpG4HOlhPOlstVEaa3s74l9MPVbJqdIst3dVmS5c8vrWYpwjS1oSO5X3R5YyFp8OKJNjKowOVkEoz4J1+spls0aRv0q+sGhifoZQDHkW58vBBbghAufvw+bBYunymvdpIiYTLOJZAkpzBDpz8bYSkAM/jSaHjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791786439; c=relaxed/simple;
-	bh=yWb5bwltfss4zISB8mgE9EbcfqTnGziOD4w5WerLJi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BwOCshda8UQ+TupuYMm2E2Qd9fI8reuOYUOWTmtaeRLk5G/P4AH9CTo6Jb85b8CNRQr3S4NVjVALO1+n8Nyk4lAQfA9BCC4SZMIQrZoyhZ6mc0QOdw4WpynMxsl8qZugZvdXpLXgvq4h1k3fNKP7rjdupZkk62oTvUEXGChIQj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIsYZJYD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791787067; c=relaxed/simple;
+	bh=Y3S3VK8sM/eNaLuLr33gDAR5girMSkc8/FoweTN6Ru8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DO4Ny8k55pNrd1I6YvcnqdCZQMEpbvAf5Lr7thajQinl3lhq5vbDAa7lCVYrIodXkA6nV/v12krzszJrkOcV29F/yRVP3vc7H4F7jRIQohzS0CnTDLAcYrLBfsFBCtlG+IrPMZmbtM1eAgJ3B7fa6tArCAe+NmKik16lrxQeS5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itYJH3Xo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIsYZJYD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509791F0089B;
-	Mon, 12 Oct 2026 06:27:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itYJH3Xo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1D41F0089C
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 06:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791786438;
-	bh=3CseviqKwc3wAzIvwt9NHYniqDq3QffXVJkcA0Kx9js=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JIsYZJYDCoFa3Pon8+Oc1DTFqd09qDtMwHcMf/lV4SARJXBu2x5tNlQmbxr8lqnwF
-	 nLnbZPBn9oeKRTreqP74ML7MemI/rTwrQRnagjtkhiZVw1ugPeNb6SQKgpgLYMiJHp
-	 sPSgtAdu6NymWXLHJ38MHt3Avxfm6A9Gd3NHsgIbgURJY7UFxQD2TKXIA46P1QRutL
-	 t+CcwG6rOX/1ojcKfvGmgmTVx+Qpq8k0BCt1gurJO/Sd7jBssGjMekZIGmPZQgeS8L
-	 0I3Bs8jjFwy21xDzbQLGM+WUS7YLDuq5fCJxKsmRe+iYSd6BCRhB59PE/TU3bEM98m
-	 dspDIcYK5+axw==
-Date: Mon, 12 Oct 2026 09:27:13 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v8 3/9] dma-buf: Provide dma_buf_set_name()
-Message-ID: <20261012062713.GE27033@unreal>
-References: <20261006193643.76330-1-matt@ozlabs.org>
- <20261006193643.76330-4-matt@ozlabs.org>
+	s=k20260515; t=1791787065;
+	bh=AikhUb3k8PSWeJgGwE14z5CoR9UYFfng1STFIj76CXY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=itYJH3XoE+kuDPBE33Xhx+lJJusmrhNLsKPtCWBXI8Nn9zo9O37X9z6dz+AM9LH/1
+	 vAaVXDUXhkLKdA9Yixc81MH816zcsrqaC+6RFjWGQAUoLwUiP7KB/pql/VfGtx25fE
+	 JASDHgVQBMyxIfZbFjZZz2GcgFqHkDWNFIfFIFwPV+f1tILtLRM3zD1RdsgwaAiesX
+	 OnSDNEXOjiUfm85EIVype0GCRTuNFuxe+itwYruomXl9NB7zoaI8LRAi2hphjkVpHw
+	 NzaWxP7oM4bI1HUFGFjgsNi+GWbnOVjM7oz2eOZM4d4iw0xQpR+6k7mcFP4Y979UaG
+	 y1EIppZALdljg==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so2290785a12.1
+        for <kvm@vger.kernel.org>; Sun, 11 Oct 2026 23:37:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwWUcQ5Fc1RUPZ2D2y0IUF/tOFIYtqiZyMKAK65yv7DqaRr3jZXvusJ49AAVU732jEXPNw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwyYsH1wdfyZl4clOeZQsDsjdTQ/XrK0crel/oOtuv299CLisY
+	mXYSV5i+Hyz/SyuI1vgaOd5l+NaJwXYFjV6yWewu0UA79mrEdlWlvGu15pPvvsB0Ki++3KuPZ6u
+	heG7cll/EeRxy2KPG7iGosIKCOsVPRiw=
+X-Received: by 2002:a05:6402:1ed4:b0:6b1:ba86:5f55 with SMTP id
+ 4fb4d7f45d1cf-6b1ba86636dmr2219044a12.35.1791787063963; Sun, 11 Oct 2026
+ 23:37:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006193643.76330-4-matt@ozlabs.org>
+References: <20260929102821.36112-1-cui.tao@linux.dev> <20260929102821.36112-5-cui.tao@linux.dev>
+ <CAAhV-H5GNKZSjB_MN2Vi7uhbf1q9nqqvsfwqF+THpkwk3dEhGQ@mail.gmail.com>
+ <9a59af62-3e8a-12f5-4e6c-38c1953adb37@loongson.cn> <CAAhV-H6cgiMQn=1oct6KHaLADwWQJ7Ow3iT14_Gj5BQxMW22Sg@mail.gmail.com>
+ <be33489e-fec4-ba52-45d9-6323b14da593@loongson.cn> <CAAhV-H5yXR8vN0NdiHWRTbGOsrqrVxZFd9g9QdaZGhdLR=BA7A@mail.gmail.com>
+ <3aada818-e1e1-a802-2547-b8e41618df32@loongson.cn>
+In-Reply-To: <3aada818-e1e1-a802-2547-b8e41618df32@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 12 Oct 2026 14:37:33 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4YrpPmQw=qsp1GqdD5tyG6k+-tBe4g1Y-HO5kgEyu4dA@mail.gmail.com>
+X-Gm-Features: AclHuK-7fXYykh9eRLkclJYi-Ox_9u0k7E3K67RbFTGL5j7WMd9tYvkXLJd2ipY
+Message-ID: <CAAhV-H4YrpPmQw=qsp1GqdD5tyG6k+-tBe4g1Y-HO5kgEyu4dA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Tao Cui <cui.tao@linux.dev>, gaosong@loongson.cn, zhaotianrui@loongson.cn, 
+	loongarch@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel@xen0n.name, nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 06, 2026 at 08:36:31PM +0100, Matt Evans wrote:
-> Allow exporters to set the name of buffers, during export or for
-> subsequent updates.  This is useful to express buffer-specific debug
-> information, indicate state particular to the exporter's usage, etc.
-> Only exporters and userspace are expected to set names; it isn't
-> sensible for importers to do it.
-> 
-> Originally, the static dma_buf_set_name() was used for
-> DMA_BUF_SET_NAME ioctls, taking a __user string parameter.  Export
-> this function as a generic set-name helper, taking a kernel-allocated
-> string.  The SET_NAME ioctls now locally duplicate the __user string,
-> and use the new function to set the name.
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> ---
->  drivers/dma-buf/dma-buf.c | 84 +++++++++++++++++++++++++--------------
->  include/linux/dma-buf.h   | 16 +++++---
->  2 files changed, 64 insertions(+), 36 deletions(-)
+On Wed, Sep 30, 2026 at 5:03=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
+>
+>
+>
+> On 2026/9/30 =E4=B8=8B=E5=8D=884:52, Huacai Chen wrote:
+> > On Wed, Sep 30, 2026 at 10:33=E2=80=AFAM Bibo Mao <maobibo@loongson.cn>=
+ wrote:
+> >>
+> >>
+> >>
+> >> On 2026/9/30 =E4=B8=8A=E5=8D=8810:24, Huacai Chen wrote:
+> >>> On Wed, Sep 30, 2026 at 9:53=E2=80=AFAM Bibo Mao <maobibo@loongson.cn=
+> wrote:
+> >>>>
+> >>>>
+> >>>>
+> >>>> On 2026/9/29 =E4=B8=8B=E5=8D=888:43, Huacai Chen wrote:
+> >>>>> Hi, Tao,
+> >>>>>
+> >>>>> On Tue, Sep 29, 2026 at 6:29=E2=80=AFPM Tao Cui <cui.tao@linux.dev>=
+ wrote:
+> >>>>>>
+> >>>>>> From: Tao Cui <cuitao@kylinos.cn>
+> >>>>>>
+> >>>>>> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
+> >>>>>> invocation: every call overwrites pch_pic_base and registers the s=
+ame
+> >>>>>> kvm_io_device on the MMIO bus at the new address, while
+> >>>>>> kvm_pch_pic_destroy() unregisters only one bus range.  After a rep=
+eated
+> >>>>>> init, MMIO to the stale ranges computes its register offset agains=
+t the
+> >>>>>> new base and silently reads 0 / drops writes, and the leftover bus
+> >>>>>> entries persist until the VM is destroyed.
+> >>>>>>
+> >>>>>> Reject repeated initialization with -EEXIST, tracking the state wi=
+th
+> >>>>>> a has_init flag so the check and the MMIO base update are atomic
+> >>>>>> under slots_lock.  The base is only committed after a successful b=
+us
+> >>>>>> registration, and the real registration error is propagated instea=
+d
+> >>>>>> of being replaced with -EFAULT.
+> >>>>>>
+> >>>>>> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read an=
+d write functions")
+> >>>>>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> >>>>>> ---
+> >>>>>>     arch/loongarch/include/asm/kvm_pch_pic.h |  1 +
+> >>>>>>     arch/loongarch/kvm/intc/pch_pic.c        | 12 ++++++++++--
+> >>>>>>     2 files changed, 11 insertions(+), 2 deletions(-)
+> >>>>>>
+> >>>>>> diff --git a/arch/loongarch/include/asm/kvm_pch_pic.h b/arch/loong=
+arch/include/asm/kvm_pch_pic.h
+> >>>>>> index 887b0431fd20..679132d840e6 100644
+> >>>>>> --- a/arch/loongarch/include/asm/kvm_pch_pic.h
+> >>>>>> +++ b/arch/loongarch/include/asm/kvm_pch_pic.h
+> >>>>>> @@ -53,6 +53,7 @@ struct loongarch_pch_pic {
+> >>>>>>            spinlock_t lock;
+> >>>>>>            struct kvm *kvm;
+> >>>>>>            struct kvm_io_device device;
+> >>>>>> +       bool has_init;
+> >>>>>>            union pch_pic_id id;
+> >>>>>>            uint64_t mask; /* 1:disable irq, 0:enable irq */
+> >>>>>>            uint64_t htmsi_en; /* 1:msi */
+> >>>>>> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kv=
+m/intc/pch_pic.c
+> >>>>>> index 7a704f18880d..a884a043feef 100644
+> >>>>>> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> >>>>>> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> >>>>>> @@ -282,16 +282,24 @@ static int kvm_pch_pic_init(struct kvm_devic=
+e *dev, u64 addr)
+> >>>>>>            struct kvm_io_device *device;
+> >>>>>>            struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
+> >>>>> Why so complicated? The below is enough, no?
+> >>>>>
+> >>>>> diff --git a/arch/loongarch/kvm/intc/pch_pic.c
+> >>>>> b/arch/loongarch/kvm/intc/pch_pic.c
+> >>>>> index 2b63b0c2c7ce..7855d78304b7 100644
+> >>>>> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> >>>>> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> >>>>> @@ -281,6 +281,9 @@ static int kvm_pch_pic_init(struct kvm_device
+> >>>>> *dev, u64 addr)
+> >>>>>            struct kvm_io_device *device;
+> >>>>>            struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
+> >>>>>
+> >>>>> +       if (s->device->ops)
+> >>>>> +               return -EEXIST;
+> >>>> This can work, however I think that it is not a good idea to access
+> >>>> internal structure field about kvm_io_device. If so, there is no use
+> >>>> about API kvm_iodevice_init(), just s->device->ops =3D &kvm_pch_pic_=
+ops is ok.
+> >>> I'm a little not agree. :)
+> >>>
+> >>> I think kvm_iodevice_init() is designed to do more work rather than
+> >>> just set the ops (though it just set the ops now), otherwise its name
+> >>> should be kvm_iodevice_set_ops().
+> >>>
+> >>> In addition, even if kvm_iodevice_init() is really a setter, there is
+> >>> no getter for the ops, so when we need to access ops, we can only
+> >>> open-code it.
+> >> if so, you can try to add kvm_iodevice_get_ops API and check the
+> >> response of KVM community.
+> > There is not a setter, so I don't think a getter is necessary.
+> why setter is necessary, getter is not necessary.
+> >
+> > Moreover, you said "no other architectures directly access ops", but
+> > in fact, __vgic_doorbell_to_its() from arch/arm64/kvm/vgic/vgic-its.c
+> > directly accesses ops.
+> If it is used by others, I have no objection any more. But for me I
+> never write such code.
+OK, Tao, please update your code, drop the 2nd patch and simplify the
+4th one. Thanks.
 
-<...>
+Huacai
 
-> @@ -577,8 +549,19 @@ static long dma_buf_ioctl(struct file *file,
->  		return ret;
->  
->  	case DMA_BUF_SET_NAME_A:
-> -	case DMA_BUF_SET_NAME_B:
-> -		return dma_buf_set_name(dmabuf, (const char __user *)arg);
-> +	case DMA_BUF_SET_NAME_B: {
-> +		char *name = strndup_user((const char __user *)arg,
-> +					  DMA_BUF_NAME_LEN);
-> +
-> +		if (IS_ERR(name))
-> +			return PTR_ERR(name);
-> +
-> +		ret = dma_buf_set_name(dmabuf, name);
-> +		if (ret)
-> +			kfree(name);
-
-<...>
-
-> +int dma_buf_set_name(struct dma_buf *dmabuf, char *name)
-> +{
-> +	if (!name)
-> +		return -EINVAL;
-> +
-> +	/* dmabuffs_dname() won't use the string if the length
-> +	 * (including terminator) exceeds DMA_BUF_NAME_LEN:
-> +	 */
-> +	if (strlen(name) >= DMA_BUF_NAME_LEN)
-> +		return -E2BIG;
-
-BTW, in-kernel APIs generally avoid defensive programming, since it adds
-overhead for checks that callers are expected to perform. The caller is
-responsible for ensuring that the name is valid.
-
-Unless you're writing code specifically for out-of-tree use, which is
-also contrary to kernel rules.
-
-Thanks
-
-> +
-> +	spin_lock(&dmabuf->name_lock);
-> +	kfree(dmabuf->name);
-> +	dmabuf->name = name;
-> +	spin_unlock(&dmabuf->name_lock);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(dma_buf_set_name, "DMA_BUF");
+>
+> >
+> >
+> > Huacai
+> >
+> >>
+> >> Regards
+> >> Bibo Mao
+> >>>
+> >>>
+> >>> Huacai
+> >>>
+> >>>>
+> >>>> If adding has_init is redundant, maybe we can set s->pch_pic_base wi=
+th
+> >>>> INVALID_GPA in kvm_pch_pic_create() or some other methods. However I
+> >>>> think directly accessing kvm_io_device::ops is not a good method, no
+> >>>> other architectures do in such way.
+> >>>>
+> >>>> Regards
+> >>>> Bibo Mao
+> >>>>> +
+> >>>>>            s->pch_pic_base =3D addr;
+> >>>>>            device =3D &s->device;
+> >>>>>            /* init device by pch pic writing and reading ops */
+> >>>>>
+> >>>>>>
+> >>>>>> -       s->pch_pic_base =3D addr;
+> >>>>>>            device =3D &s->device;
+> >>>>>>            /* init device by pch pic writing and reading ops */
+> >>>>>>            kvm_iodevice_init(device, &kvm_pch_pic_ops);
+> >>>>>>            mutex_lock(&kvm->slots_lock);
+> >>>>>> +       if (s->has_init) {
+> >>>>>> +               ret =3D -EEXIST;
+> >>>>>> +               goto out;
+> >>>>>> +       }
+> >>>>>>            /* register pch pic device */
+> >>>>>>            ret =3D kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr=
+, PCH_PIC_SIZE, device);
+> >>>>>> +       if (!ret) {
+> >>>>>> +               s->pch_pic_base =3D addr;
+> >>>>>> +               s->has_init =3D true;
+> >>>>>> +       }
+> >>>>>> +out:
+> >>>>>>            mutex_unlock(&kvm->slots_lock);
+> >>>>>>
+> >>>>>> -       return (ret < 0) ? -EFAULT : 0;
+> >>>>>> +       return ret;
+> >>>>>>     }
+> >>>>>>
+> >>>>>>     /* used by user space to get or set pch pic registers */
+> >>>>>> --
+> >>>>>> 2.43.0
+> >>>>>>
+> >>>>
+> >>
+> >>
+>
