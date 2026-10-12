@@ -1,131 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5816E309EEB;
-	Mon, 12 Oct 2026 22:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57D836A03F;
+	Mon, 12 Oct 2026 22:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791845266; cv=none; b=GFuJhNQxopwkjIvj+6ZWrNx5rkjOsy4FVa0xyyURJICsU1IOHF8P9Jmx4foTcnty5en2RVgF3eKPaomC7tX8QExSO1ekmkhGBXAH8y3Y9BlkVErr+WZ4kK3D3PHf00v7KM9oDFCrIl5RnCxubihIaom8iZkm1hrJj2/9Q0Z6AZw=
+	t=1791845383; cv=none; b=VFKIINLz6IMKm4RRzr4axE55Ljhgv7yLS07rdNMuOW7HvXLk/tpO68QMVPzIQG5RxMFvQ8S1tEeT4IVb7yzIdjiaja6Q+4VUEU61+F8++aZb8XUlT9MFNgRnGycaC74NHRBrO0ZHwu0PwlgRd1cJx2HMGrgm31hJS3IgbQNrgZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791845266; c=relaxed/simple;
-	bh=gSzK43xwQsRWvXPMuD0BVIczHX5YfAk2idhvuv52m4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HoMwX3HhjAEsVp49sCYKkhNq3YkKzkbG9tzKZ/Uu1JSXgJRDfA5AcUiBSYP2LlP3cUo6xhTP/Utu30/KcT49RdiZ3/fKQzl9amJR5/bvzISd11QOgFB8VoqwUGBgLr46VUx89t6aVnyeBHvy2LHstNThHBfY3z/PpeiKxCLlZiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKvUZqHn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791845383; c=relaxed/simple;
+	bh=0jln89G9ElqXSr66RTwfyMMDtNjERyslsAOOz+s7yrM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=gjV9nGJtdGTXMctai+Mk/3pP/XJtSCAk6q/kfAUws78s052Qr0ieI03LgpHNvGakulwpDNzq//NaCTIUgy2ssUZWbRw0uPKfqis0OzA6G+I/VwVhurBtVMmUidnZz+ibSUVhtwowlsUPd7sbBlOmM8RymlqmxHboBxso9PU8qHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=MhOua+yZ; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKvUZqHn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA381F0089B;
-	Mon, 12 Oct 2026 22:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791845264;
-	bh=IkZtVdQRBGfsQtRmAVvA981qRKbOGtIeucsyYcy0Vkg=;
-	h=From:To:Cc:Subject:Date;
-	b=AKvUZqHnellwhzCFtmtdw/5kQx/j9X9IbLKswp26pV7TkK7axqJmAu7RDpPS929cT
-	 R1UYAKeFTKjUoYHm8IlrLDSuQ4Lf6n5YhUnJqag9F9504/6WjOj/icXDVJpaUTnuL0
-	 NQdI+AH7gZIgLR1E26kGFGT4T/IHZkCPuGAhgpEjUG+RHYg7OKCxnqCRLLdm67Kja7
-	 vLU1UQIxhSDu1auCHz3ldItagfS43CHmwqWiQ4Sn2rmpfxhuUb/gTzi2a4u75jX0dN
-	 S3p+wMtfdtb9iBRWCktbVJHDG9epDlW1I3TbTyKZBoVBizCx/47JhZs0oE4htYAhvt
-	 wSy8U33Gu2hcQ==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	stable@vger.kernel.org,
-	Stefan Teodorescu <fane@google.com>
-Subject: [PATCH] KVM: SVM: Update tracked pCPU on pCPU switch
-Date: Mon, 12 Oct 2026 22:47:36 +0000
-Message-ID: <20261012224736.2306637-1-yosry@kernel.org>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="MhOua+yZ"
+Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJOTRi1689810;
+	Mon, 12 Oct 2026 15:49:18 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=aiCydZBACRiTylTtXuNEDKMNxk/u3wBKD0iU1
+	9o4WPg=; b=MhOua+yZFf3QA0e9nXNPb8/PFjKDIXoiQo+iA4NX7DOIBFzH1JBs4
+	uPP4IzC5ro7CIr6PTBpZE6TgInXODoT5K/r182uM2xT8dBkbxsywRuhBTcWlNao2
+	rNLnUGXBfq1TgTOXtnGFy6erJ4VZWnkTOJ70rK5kLiEGTGroLNFu0X/ZFFOaJEv6
+	HidOr62dr11jVIJF8Qxukwld4w9N4KX2IZ0VpXARMFXH//3ApYav8kazpkdDJHNw
+	tHgdaBWwPgUzOT/TI4RPoZtomp5S7Nwr0zHrczLqj8XiLPgp19yW3HjAGfoXhWo7
+	r74L+6qKVb/XOcFB1zVv4r1/940nfX0iQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h860hn20e-9
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 12 Oct 2026 15:49:18 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Mon, 12 Oct
+ 2026 22:49:17 +0000
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+Date: Mon, 12 Oct 2026 15:48:34 -0700
+Subject: [PATCH net-next v3 3/7] vsock: pass the netns to
+ ->has_remote_cid()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261012-vsock-guest-ns-v3-3-b32447c66b23@meta.com>
+References: <20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com>
+In-Reply-To: <20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Stefan Hajnoczi
+	<stefanha@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang
+	<jasowangio@gmail.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+        Shuah Khan
+	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+        Donald Hunter
+	<donald.hunter@gmail.com>,
+        Eric Dumazet <edumazet@kernel.org>,
+        Eric Dumazet
+	<edumazet@kernel.org>
+CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <sargun@sargun.me>, <jlinbox@meta.com>,
+        Bobby Eshleman <bobbyeshleman@gmail.com>,
+        Bobby Eshleman
+	<bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA5MCBTYWx0ZWRfX9HM/KZ3L2CSd
+ QfzOUJ41qdNjckSkr6Czrb1TKkt/XE/KmGHlnuyiNBq5aCMpr878CQcjFUNnhEnBgsOohftNMFL
+ gOaXhWdUkxo6c6ucXZ8pIlmEWmJHUi4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA5MCBTYWx0ZWRfX70kiGjcnMn2v
+ IKlcEm3OrfswDWKP7ZqtCNfhDC9GmPX1fyDD8wWvysHDUtlkCRsVjOYWSteBl+3nrWO8lTsH4lp
+ FtkX/fTUtxL8WrJf9csNVApWOcra2UZDRh0S5QSgdEsRwDsv5wewhEcjTemHMOC8q9tHPQlJmM5
+ ONVLuAI1ujNWjsnaD1wmPq+oxfltAk1yTiJaAPaKExHbw6URah3mLp/4D198d8ExqRHTRZcU3LA
+ eUbNx7T7yDukAIcyM8dsyctZpyz2+LKlsmaoykvMigtLHhYdi1an1iYalIfsEnbz/zCnEUnoFt0
+ accRlQZ74+0PH1ZLeNXZEgoC4IykgQY9ymxAKl4oiSUu8UGbPkVoM7NwsJI7x7IscMZxDbTwNPW
+ R+higP/r6nlP4hla7uyNWqS4n550LHxtTLi/L5scIphdPA0q8oo1BBdPN9EMWqjkp+b+b/FRUo8
+ c+yVkKmfKidsNf4op7g==
+X-Authority-Analysis: v=2.4 cv=cJx1IVeN c=1 sm=1 tr=0 ts=6acd63ee cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
+ a=WAnpC6A4wG5u40D751YA:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: ihA2FeNJBJ59zznl91GgtTP9TkVrzVIj
+X-Proofpoint-GUID: ihA2FeNJBJ59zznl91GgtTP9TkVrzVIj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_06,2026-10-09_01,2025-10-01_01
 
-When a pCPU switch is detected in pre_svm_run(), update the tracked pCPU
-and mark all fields dirty in both VMCBs (if nested is initialized), in
-addition to resetting the ASID generation in both VMCBs.
+The transports only use the socket to find its network namespace. Pass
+the namespace instead, so that a later patch can ask whether a CID is
+taken in a namespace without necessarily having a socket on hand. This
+will help with avoiding CID collisions when devices move between
+namespaces.
 
-Commit bf260dc9e7b8 ("KVM: SVM: Trigger new ASID allocation in both
-VMCBs on pCPU switch") reset the ASID generation in both VMCBs on a pCPU
-switch, but only updated the tracked pCPU for the active VMCB to avoid
-unnecessarily dirtying the inactive VMCB. Leaving the inactive VMCB's
-tracked pCPU set to an old pCPU still allows an ASID allocated on one
-pCPU to be used on another:
+No functional change.
 
-- vCPU runs with both vmcb01 and vmcb02 on pCPU A (both track cpu=A).
-- With vmcb01 active, vCPU migrates to pCPU B. vmcb01.cpu is updated to
-B, asid_generation is reset to 0 in both VMCBs, and a new ASID is
-allocated on pCPU B (setting vmcb01.asid_generation = gen_B).
-vmcb02.cpu remains A.
-- vCPU switches to vmcb02 and migrates back to pCPU A before
-pre_svm_run(). Because vmcb02.cpu is still A, no pCPU switch is
-detected, leaving vmcb01 with cpu=B and asid_generation=gen_B.
-Because vmcb02.asid_generation is 0, a new ASID (asid_A) is allocated
-on pCPU A.
-- vCPU switches back to vmcb01 and migrates to pCPU B. Neither a pCPU
-change nor a generation mismatch is detected for vmcb01, so VMRUN on
-pCPU B uses asid_A (allocated on pCPU A), which may collide with
-another vCPU on pCPU B.
-
-Because the per-VMCB cpu tracking is shared between ASID management and
-per-pCPU hardware VMCB clean bits, also mark both VMCBs dirty when
-updating their tracked pCPU so that the inactive VMCB does not run with
-stale clean bits when later entered on the new pCPU.
-
-Fixes: bf260dc9e7b8 ("KVM: SVM: Trigger new ASID allocation in both VMCBs on pCPU switch")
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Teodorescu <fane@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- arch/x86/kvm/svm/svm.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/vhost/vsock.c            | 4 +---
+ include/net/af_vsock.h           | 2 +-
+ net/vmw_vsock/af_vsock.c         | 6 ++++--
+ net/vmw_vsock/virtio_transport.c | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 136069dfcd44f..0a0af0cbb6bba 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3880,7 +3880,8 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index abed1fbcf66c..01f8930ca51f 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -91,10 +91,8 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net)
+ 	return NULL;
+ }
  
- 	/*
- 	 * If the previous VMRUN of the VMCB occurred on a different physical
--	 * cpu, then mark the VMCB dirty as hardware's clean bits are per pCPU.
-+	 * cpu, mark the VMCB dirty and reset the ASID generation, as hardware's
-+	 * clean bits and ASIDs are per pCPU.
- 	 *
- 	 * Reset the ASID generation in both VMCBs. This will lead to assigning
- 	 * a new ASID now, and then again when switching to the other VMCB.
-@@ -3892,13 +3893,22 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
- 	 * - The new VMCB does not detect a pCPU change and runs on pCPU A with
- 	 *   the new ASID allocated on pCPU B, which is potentially used by
- 	 *   another vCPU/VM.
-+	 *
-+	 * Note that dirtying both VMCBs is not strictly needed, but the per-CPU
-+	 * tracking is shared for both ASID and clean bits, and that CPU must
-+	 * match where the ASID was allocated.
+-static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
++static bool vhost_transport_has_remote_cid(struct net *net, u32 cid)
+ {
+-	struct sock *sk = sk_vsock(vsk);
+-	struct net *net = sock_net(sk);
+ 	bool found;
+ 
+ 	rcu_read_lock();
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 370fcd3ddabc..1c38a27fadf2 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -183,7 +183,7 @@ struct vsock_transport {
+ 	 * CIDs via the hypervisor (i.e. supports the fallback overlay). VMCI
+ 	 * does not implement this as it only serves CIDs 0 and 2.
  	 */
- 	if (unlikely(svm->current_vmcb->cpu != vcpu->cpu)) {
--		vmcb_mark_all_dirty(svm->vmcb);
--		svm->current_vmcb->cpu = vcpu->cpu;
-+		vmcb_mark_all_dirty(svm->vmcb01.ptr);
-+		svm->vmcb01.cpu = vcpu->cpu;
- 		svm->vmcb01.asid_generation = 0;
--		svm->nested.vmcb02.asid_generation = 0;
--        }
-+
-+		if (svm->nested.initialized) {
-+			svm->nested.vmcb02.cpu = vcpu->cpu;
-+			svm->nested.vmcb02.asid_generation = 0;
-+			vmcb_mark_all_dirty(svm->nested.vmcb02.ptr);
-+		}
-+	}
+-	bool (*has_remote_cid)(struct vsock_sock *vsk, u32 remote_cid);
++	bool (*has_remote_cid)(struct net *net, u32 remote_cid);
  
- 	if (is_sev_guest(vcpu))
- 		return pre_sev_run(svm, vcpu->cpu);
+ 	/* Read a single skb */
+ 	int (*read_skb)(struct vsock_sock *, skb_read_actor_t);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index f7dbef8cf6e7..8f34bf68f916 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -633,11 +633,13 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 			new_transport = transport_g2h;
+ 		else if (transport_h2g &&
+ 			 (!transport_h2g->has_remote_cid ||
+-			  transport_h2g->has_remote_cid(vsk, remote_cid)))
++			  transport_h2g->has_remote_cid(sock_net(sk),
++							remote_cid)))
+ 			new_transport = transport_h2g;
+ 		else if (sock_net(sk)->vsock.g2h_fallback &&
+ 			 transport_g2h && transport_g2h->has_remote_cid &&
+-			 transport_g2h->has_remote_cid(vsk, remote_cid)) {
++			 transport_g2h->has_remote_cid(sock_net(sk),
++						       remote_cid)) {
+ 			vsk->remote_addr.svm_flags |= VMADDR_FLAG_TO_HOST;
+ 			new_transport = transport_g2h;
+ 		} else {
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..eced6929405d 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -548,7 +548,7 @@ bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
+ static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
+ 					     u32 remote_cid);
+ 
+-static bool virtio_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
++static bool virtio_transport_has_remote_cid(struct net *net, u32 cid)
+ {
+ 	/* The CID could be implemented by the host. Always assume it is. */
+ 	return true;
+
 -- 
-2.56.0.385.gd3acb90ef8-goog
+2.53.0-Meta
 
