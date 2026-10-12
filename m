@@ -1,112 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D8E13A258;
-	Mon, 12 Oct 2026 01:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4D221ABBB;
+	Mon, 12 Oct 2026 03:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791769723; cv=none; b=KTw95yqmoZGfzep9TY8r1/OopcbhqdUYAOgjkYudO7d+xdnk1uDhNaQK1HEzk+7tJVO9H/7O0ONKP2hafuHFIZVoQ0hUMnew6SGRF1SFafLCxxWKO4f5cuyb0DfO2Q+EoemlMwPbBU8cShyeaZz6/JHGQM6Xf3qrZGbPutIl0FY=
+	t=1791775901; cv=none; b=udF+z54BpyMl/CHs9zNOKCVfi4R3SzWbPz2mGo5trc5pGrMy7jwpRTKKDM1hkf9UY28/E5EHf7Oy9TFdC/asNV2VkU83WDYmMFEUe1zKMHIPQdX3zckttkP3xyQtPV63p+Z9XG8tHnvLxYrYhoUy+6H/jAGLGU6QEisVrR4HhFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791769723; c=relaxed/simple;
-	bh=jkLsQRKJYGvk/UUF42MEqe8PifE9uyhXO8/Jw1pw0wk=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=i0kDiSKWoY/nUlAFRs85Nu4jRUV0Cdr0fOePbpaMKJkoaudmq3BBIBvzPK9L8+nRmg0W+P6h56oYiKfL5YvwzfxqpDnOTF1JfQavHvHpqSAb9pXb6IjZNBPWNHHobZOl68bjjXjQpyiPf24qDPZLrLwYl76hMnzgb8IvseDSvqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O15v3zad; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791775901; c=relaxed/simple;
+	bh=S2DhvhBRRlTc1xKKf7vo5Ik5eV/etJY2KRa4JiufX6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mXD/Na72Q0DSppwCl1oASNsYVxZR+H0Gx2trtae+WtLsZlAoHiu6H/81WKtdd5XF4jEAZXfDA/up9zOOkskY28f7U+uE4Xk8abixI/0A4bQhL1oQaarK8vEt0xe6QodWV9faH0HABD4OruXfnkG9YkEI2vxAl8SPI48d3ASNt5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NmvYktia; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O15v3zad"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2481F1F0089B;
-	Mon, 12 Oct 2026 01:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791769721;
-	bh=6RtVqpwPvL4Gf/gOeDTxmKt/KChl7Ra6aa8i1t2U8DE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O15v3zadAHVqBJGg5e5mMFmyareYGQobxDafo3fAzVayi/04fm25LxPgNPcGgIv5M
-	 n59VXfNTykNYKvjVXC4YxkaSPlEa4NoA1eZnjjGR+lUKATfZ6Sw+GkuOoccQuYb9Em
-	 FSpnleAiZl2DMqcSYVwImvUYwffDtP0jmbtNdP2+FjZ+S6WyPlzpxGgymTVZU/yJcz
-	 Bmao1KsmMvjvAhWO9cWQNuH7QWXdZOo7Va3w/gShB/Iu2wDnRrkNoaDtcI+Jxpc9YV
-	 U31SZhXexURWk7uF+OYLGDZyXGgTQmUcOMfO5j/QowerA9Q5cbBn/cOTtBsHR3toQz
-	 Hd/dRU2UDFOuQ==
-Message-ID: <sashiko-outbox-167544@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] vhost-scsi: do not count PI bytes in the data length
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jia Jia" <physicalmtea@gmail.com>
-Cc: "Eugenio Perez" <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev
-In-Reply-To: <20261011014803.100454-1-physicalmtea@gmail.com>
-References: <20261011014803.100454-1-physicalmtea@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 12 Oct 2026 01:48:40 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NmvYktia"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C2EHQ61283967;
+	Mon, 12 Oct 2026 03:31:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=d7JgXl
+	Korf287xaWZYBakWg28EUeEtPgyrnE8F59PQA=; b=NmvYktiaPnAHxHrihqGzgV
+	l9IP8CISCTTb9qk8wT/M65ym9tVncgndulWtwi3Zq7p11kWLGZfvw6az/D6U5STj
+	FZ6YfCI/nQVum7Ds063aoTVaadxtl3XP8kr+ErjwVBrKr2UGukD3fpg+841JmP3N
+	uoxQnUABwO5HJhkC9UmJbsRVOuI08EL7etdv9qUzoqMS31Cs5Yg3s4ywbjrSWPof
+	MVEaWLQAuq2Yflom5KFY62bC9nTYThooaIUE9NYWDNZmu+IKcp5JSW1lBjZhlSs+
+	v4Jx40G7D0NLADVEqEkhnvk4V0yH2Kw6/0zdRtN8veheCBJ0iGo6MX/eLrUUL9/w
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dwh6yww-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 03:31:28 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69C252cS563558;
+	Mon, 12 Oct 2026 03:31:27 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h802vknr9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 03:31:27 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69C3VNwn52232510
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Oct 2026 03:31:23 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 910E520040;
+	Mon, 12 Oct 2026 03:31:23 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52D9C20043;
+	Mon, 12 Oct 2026 03:31:21 +0000 (GMT)
+Received: from Linuxdev.bl1-in.ibm.com (unknown [9.123.8.83])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 12 Oct 2026 03:31:21 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+        Gautam Menghani <gautam@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        "Vaibhav Jain (IBM)" <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Add missing mappings for tracing exits
+Date: Mon, 12 Oct 2026 09:01:20 +0530
+Message-ID: <179177344614.763259.9028932882290464322.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260512115724.59299-1-gautam@linux.ibm.com>
+References: <20260512115724.59299-1-gautam@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDAxMiBTYWx0ZWRfX6jFE1aE59g+Z
+ Cx0krZs2wQT/+4mLmbbhJtDBEUEE5X4/oiAhzrHqfvJgXJd6HEaYWx1Lg+p3M/nGbAEj2bWZECS
+ Xj4aq/URkY5mHhSiNCqgRUYOw+9nw80=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDAxMiBTYWx0ZWRfXyx9/qiVSwi7P
+ jhAH/WAe6XnbDofcppdtijS1/0PsVdRZOviOljNBOhr3Q86u/oOk4bh/8ZI8frDxRgjNHm4LnLh
+ 7/q0bl5Rlgz+up/uFS5w1dg8LGsk+yeUKeZTTETYbWB7srzmiYhe/XHCtQxId2bOJWNTt+ohRPf
+ MqvH2bicK5mpaHIYrtlUlkuWBZOjIOkNL3zpEh2nvfXHsS/uWyaDN0ndjOoC1jTdS/3vLYgI59c
+ KMnZxO8qjsC6bF3vuKqvCiH/rR2tI41rWxHj+F/pAyeXCzdFkvfWV4LSPrcCA+0qKK4Rb6vqCCb
+ ueIEzIb6kJ5eTXa9E4O8oymZAsoAf9ZUof9qGXkmiYEgq5ykAJoH7lPx7IdUBJd+zxTS6dErhlK
+ uMdL3m6PvU2c1GSTnijY/cEgntCFTRP61SZVd8FeuNRdAVEekKAkn3D4HC7e9Ms8BmTGd2DEaH1
+ DtZFsYswLxd8Ef1MMZA==
+X-Proofpoint-GUID: u2XXVp3Cw1y6J2SDCzJqCNGQeUIdBbGc
+X-Authority-Analysis: v=2.4 cv=RoFQvymK c=1 sm=1 tr=0 ts=6acc5491 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=tM1m2YJIrCFxkhTIm4UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: y0PRhc9eZwuL-ZXkrTGGwM5NZFQo-gJf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610120012
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] vhost-scsi: missing validation of prot_bytes alignment allows =
-OOB access
---
+On Tue, 12 May 2026 17:27:24 +0530, Gautam Menghani wrote:
+> The macro kvm_trace_symbol_exit is used for providing the mappings
+> for the trap vectors and their names. Add mappings for H_FAC_UNAVAIL and
+> RETURN_TO_HOST so that trap reasons are displayed as string instead of
+> vector numbers when using the kvm_guest_exit tracepoint.
+> 
+> 
 
-commit a2683cd412935b122ac2e93ce16af9655a892639
-Author: Jia Jia <physicalmtea@gmail.com>
+Applied to powerpc/next.
 
-vhost-scsi: do not count PI bytes in the data length
+[1/1] KVM: PPC: Book3S HV: Add missing mappings for tracing exits
+      https://git.kernel.org/powerpc/c/bda16261848768b8c54bfa22dea369d7133d8241
 
-This commit updates the expected data length passed to the target core
-by omitting the protection information (PI) bytes. It adjusts the length
-so that protected read and write operations take their length directly
-from the CDB, preventing issues when the data scatterlist is smaller
-than the total length.
-
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 885fac5ed042e..8b32caa7ec294 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -1534,9 +1534,13 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct=
- vhost_virtqueue *vq)
->  		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
->  		 */
->  		cmd->tvc_vq_desc =3D vc.head;
-> +		/*
-> +		 * exp_data_len is the data sgl. prot_bytes already sit in
-> +		 * the protection sgl. Protected READ and WRITE replace
-> +		 * data_length from the CDB in sbc_check_prot().
-> +		 */
->  		vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_attr,
-> -					    data_direction,
-> -					    exp_data_len + prot_bytes);
-> +					    data_direction, exp_data_len);
-
-[Severity: Critical]
-Does this code allow an out-of-bounds access when prot_bytes is not aligned?
-
-In vhost_scsi_handle_vq(), prot_bytes is extracted from the virtqueue eleme=
-nt:
-
-    prot_bytes =3D vhost32_to_cpu(vq, v_req_pi.pi_bytesin);
-
-There doesn't appear to be validation ensuring it is a multiple of the 8-by=
-te
-T10 PI tuple size before it dictates the length of the protection scatterli=
-st.
-
-When the target core later processes this command, functions like
-sbc_dif_generate() in drivers/target/target_core_sbc.c loop over the
-scatterlist length using 8-byte increments:
-
-    for (j =3D 0; j < psg->length; j +=3D sizeof(*sdt)) {
-
-If psg->length is not a multiple of 8, does the last iteration read or write
-past the end of the mapped scatterlist element? A malicious guest could pro=
-vide
-an unaligned pi_bytesin or pi_bytesout length, potentially causing an
-out-of-bounds access into an adjacent physical page on the host.
-
->  		ret =3D 0;
->  err:
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261011014803.1004=
-54-1-physicalmtea@gmail.com?part=3D1
+cheers
