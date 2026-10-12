@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC6E3EE1D3;
-	Mon, 12 Oct 2026 23:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF1C3F104F;
+	Mon, 12 Oct 2026 23:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791848211; cv=none; b=ieCn77LDtcgWfJ/UQLBQ+JBjhRL99wuAGz9MTWEcpSMk07h18+/1DwQFbUR5UwnvY/FLBxCYWEJdG1hb9xkz40bm6P8nkR3/V7GBmrciu1OsL5AtWJrJakLFq0MreaxCRMmXgGMKDigheB43HqId7+jJGUtuah5NcOQN4UsSqcI=
+	t=1791848211; cv=none; b=aSbgcQs4ePRyp4LRRKDdzrOtSt48j5hwEhFT28jyLBvGKMO8RX4QV+T3QBd0qVbh4poY2PlvW9wnGSbVBew7l5YEsqT56mCzoNHj7OwXtLX8aJ0oWYejGktTuFdIRhpOshOy7zYcUo189UfUo1e4k70kt73SpNckxc2zkXlPZGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791848211; c=relaxed/simple;
-	bh=Xe8bFSZSnci38DVvP4JJTZfaXBBCIS/CIgG+C0ug2Vw=;
+	bh=ml7DVbGqYfDQg9Hai6j9eyQPHDSUSTpMSUy+WC+phTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgShGMcErTdi4gN2KRJakjFghyfzvsCZNlJIoP/ZKylM5sKq17HAttROgTZrQsoH+7KwjksiW65tKWQxstHCdRgAUAUxmC/weKV3V2CBQYe0V7eTUlw5jMf8TfJli9L84mBtuKAY8wBgZ/0fzWHRqQUNChZN+0AjvC2ksrrO8x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nopFbPuC; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=szl1TRfLKHpofYXt6TX9nw5wLyouiU8ciIfoulw1enHe+k6Tx1J/p9zNnydOXRybppH7koGR7LWW5b1O0B9enQhdZebnJkt0xtTrQLedUjvXCkMMq0BC0WlnF1C5xz39LQQhtyywLr0LLHP5s3rZviLRFcv6r9HpdLTE777pd60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OM3982KB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nopFbPuC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7311F008A1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OM3982KB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B703A1F008A4;
 	Mon, 12 Oct 2026 23:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791848209;
-	bh=UY5URZ76dLeB2P33iZ/UYXP+PmWH48vQtOfwnmjnAy0=;
+	s=k20260515; t=1791848210;
+	bh=/iuMhPTtxyjAD9hNZ5sMpi07jqL28HO+0YnQMKf6wec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nopFbPuCMriT5CJIeYZ3b9OBM0V1TOcHuF+nko3+UD92y1+AATIJn24aniztYM3nj
-	 40IyYZWyb5u0EayamXZiPxykEzjeQQLc/sKAoUi4z9Y3859PRXWQiKI4Lw3J3a/Vsz
-	 +JptIHDyEo1OyqNB7lEhZhOfgygOxQdKOUi4wrozTO5Y8Rj0IcY9ROO0Igl0D1pp7e
-	 RfWwDCPEmK3uELBbeGuovoXO6Z3irrrx+cCwFZqPwxvDkglUKutCLwrs7zm/H+ovDX
-	 yBT4GC65CA1E3pdF5kKW6YaNes8yhivPmovoa/Sbhcts0vf0UTCsGYpc7Bc+3Ru+ks
-	 TN0bsH5wcUL1A==
+	b=OM3982KBuqC0IFB+d86KSAl78p2hnlfu6neCHnif/G/2mvwswr0tLy00Mgq2rILG7
+	 B6GUquQAyi3pvOIp8b+y4hfa/5cIB04IOQRsi+LF7YcKDjHrQ7SqL4HUzYDZtaynx7
+	 /DO/fgvjAbCBIprXawoBUiyTiXsQigRzdPgvVpul6lRSL6UKGG7aSck4KbSlLgrLe6
+	 YTdZwKVSrSIVyVyHts+x0KHQxXTb4H2j8SKfYCNHjNSTW11bA5VX3ct9Mo84sT5lkI
+	 gRCu3zOC1xuc6pCEuZYdIdVRdJHMxZfJtZfmvsWYLREGzgbw43YYF49EhUwWMos5/I
+	 lj46eTtjVURUg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v3 07/27] KVM: SEV: Do ASID initialization at VMCB initialization
-Date: Mon, 12 Oct 2026 23:36:18 +0000
-Message-ID: <20261012233638.2546339-8-yosry@kernel.org>
+Subject: [PATCH v3 08/27] KVM: SEV: Expose sev_get_asid() outside of sev.c
+Date: Mon, 12 Oct 2026 23:36:19 +0000
+Message-ID: <20261012233638.2546339-9-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
 In-Reply-To: <20261012233638.2546339-1-yosry@kernel.org>
 References: <20261012233638.2546339-1-yosry@kernel.org>
@@ -50,42 +50,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The per-vCPU ASID does not change for SEV guests, so move the per-vCPU
-(and per-VMCB) ASID initialization to sev_init_vmcb() to do it once,
-instead of setting it before every VMRUN.
+Move the function definition to svm.h in preparation for using it in
+more SVM code.
 
 No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/sev.c |  5 -----
+ arch/x86/kvm/svm/svm.h | 10 ++++++++++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 74c4555a32650..b58e3831b8f05 100644
+index b58e3831b8f05..706a91db7b44a 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -3623,9 +3623,6 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
- 	if (!cpumask_test_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus))
- 		cpumask_set_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus);
+@@ -315,11 +315,6 @@ static int sev_asid_new(struct kvm_sev_info *sev, unsigned long vm_type)
+ 	return ret;
+ }
  
--	/* Assign the asid allocated with this SEV guest */
--	svm->asid = asid;
+-static unsigned int sev_get_asid(struct kvm *kvm)
+-{
+-	return to_kvm_sev_info(kvm)->asid;
+-}
 -
- 	/*
- 	 * Flush guest TLB:
- 	 *
-@@ -4889,6 +4886,10 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool init_event)
- 	svm->vmcb->control.misc_ctl |= SVM_MISC_ENABLE_SEV;
- 	clr_exception_intercept(svm, UD_VECTOR);
- 
-+	svm->asid = sev_get_asid(vcpu->kvm);
-+	svm->vmcb->control.asid = svm->asid;
-+	vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
+ static void sev_asid_free(struct kvm_sev_info *sev)
+ {
+ 	struct svm_cpu_data *sd;
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 3b59561d6cc2c..14b57c5cdf916 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -432,6 +432,11 @@ static __always_inline bool is_sev_snp_guest(struct kvm_vcpu *vcpu)
+ {
+ 	return ____sev_snp_guest(vcpu->kvm);
+ }
 +
- 	/*
- 	 * Don't intercept #GP for SEV guests, e.g. for the VMware backdoor, as
- 	 * KVM can't decrypt guest memory to decode the faulting instruction.
++static __always_inline unsigned int sev_get_asid(struct kvm *kvm)
++{
++	return to_kvm_sev_info(kvm)->asid;
++}
+ #else
+ static __always_inline bool is_sev_guest(struct kvm_vcpu *vcpu)
+ {
+@@ -446,6 +451,11 @@ static __always_inline bool is_sev_snp_guest(struct kvm_vcpu *vcpu)
+ {
+ 	return false;
+ }
++
++static __always_inline unsigned int sev_get_asid(struct kvm *kvm)
++{
++	return 0;
++}
+ #endif
+ 
+ static inline bool ghcb_gpa_is_registered(struct vcpu_svm *svm, u64 val)
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
