@@ -1,166 +1,129 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CF5372EF0
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 10:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE94741167F;
+	Mon, 12 Oct 2026 10:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791801627; cv=none; b=WH7XShQatuG09S/7Ix/TUQOT+nFFfFavz4tMRGDlVqTUwa1x3Rp2pUVooch8CkwSZ8y9n9ln2PgxzzqBjL3GWqxYIlvKQqGrWpgEX/R3lvqng3ckBd5yc9j6QqtaPx76D+urR9x348izAQEjwpd+JDshXAC6PvQnVA6/+QDKhkI=
+	t=1791802637; cv=none; b=WrZ4Ze4LGcKo3I4G2fsTWH2gfVSXKN3zKFfbW+XzXqpWhulry3UwFQ3zWgWZ1dXZeT8clNr4oZ3u0yIHS0/vW+RTaOGHA95aeMDHJY6qnpSilwtj1fBKK7kBPtT0rA4yqj2OtaiQR5uLNZeH5kg6OK1uVpFCivTSt+t7GVbpQKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791801627; c=relaxed/simple;
-	bh=vFkCRtgxGCnpOhlZA7FYzY49jEv/8nkM8zfXlvjQOfQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=faYLlsXM377KMsNh9vMig81jPXG+fX0fsSJuCGUWObUqDdU0yd48qXTP5yVfOBRj+zhiCkdz13h0OyDauqVNpFZH49FT6gJ8xpW80FEhCZYb8LhDuf6eCpK+Wlcqt+v3ciF864onj6eJLOs9+IoPRMtKTy1aqeFTLecb39WMIkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hufXMIw0; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791802637; c=relaxed/simple;
+	bh=LKhSCJ5F6yxqjFh5cS8xS7fTK9cfNzXKPzVsS6EDDt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hQiVKn5KWoDd9GfFf/zmRY15WimuURvqPSEedXXlAZLyF2/ZVGXtbGmBZAnCVe84ng84PeWp3eqIELXTqWy93guIKgZc0ZgEcmTUftimm6O5dyBq5YYyXcnEm2xOGyXy8cb0jO0ixZqEAeGRYGqp+wjkZQTr4rzUM+fyG1p1a8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ww/TM8pW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hufXMIw0"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33e6279a1d7so459985eec.1
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 03:40:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791801626; x=1792406426; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3l61iXys9UAgeiq6Qoow/JEP0G8Esaw8ppQEGcd0fNQ=;
-        b=hufXMIw0EVpInfTHhpYb/QUt24+17FSeX5h06Wfnpgb8Jkqyyg8piXuqxx0i625Ai/
-         d1vDYYMkZ+rRr30gF8oMr/6BYgyg9nnWRXXjq7qrdsMkFBencCoYq0KKVxe4dFuKqDdA
-         duwdxgMF+BUMMevDDeIs/s9YhAgGSLzDgmafK5TY7GcB1laaUuybDctQojzxBOeaoBdN
-         V7kDovVSMCCZs+TYIVIFuBUB7ZLi5fnvzeA/FT0HhRFFbgD6IbZS/j77mtX+TwzxYbJ4
-         RPfwXqe2M2dA8zSmwVeABniRXbFeYUNUG1Pqnk2e2EU+NrxUOc5FgDbkatK5yVGjHi09
-         80mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791801626; x=1792406426;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3l61iXys9UAgeiq6Qoow/JEP0G8Esaw8ppQEGcd0fNQ=;
-        b=p2J5j45cCDw70mVA68qEWz+h/HCZHALXxX6WaGP1MVn+1Ni+ZimDnrQGnh/RBQxU7B
-         h0TEJGyxRZh7X9OAB4hSVUBk7JaPfvIEEer7/3SSKGYssSCMG8tsOt+tw09sld/04vHF
-         SumTrU7kItS5MoYYWdZvrprxXHaLTbvJ3jtkAgcLY6eLJw4E/Mg2ND233XgqgQpxKG6w
-         elgZHQSkUvui+Nv9+lqqNMOUly+lOsxpSFTCTEHrOvquk+Cr2V5c/LvHS3IGafoyF+CH
-         HOlLWW26oDcX7empFNJBpeIMLaEhF5GkL9xnjIvQRpyWLXYHFstHzQvIS2WEpogPxCwb
-         0RjA==
-X-Forwarded-Encrypted: i=1; AKwUvBx6avtBYkXf8D4d4Gcb2eEcmHsIpohLTEX+xWcLXY6FhS2iLY3692wqXo3bphXoZ77hVLM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJBaG/kw+R3TyeqLzC6Uo/ZNjHllkPpTY79rh2QqV2bGePPTnZ8
-	1gx6B2jKbYPjjtKEU1fHdSKl6+sld/30nRJhMdYiCsYQBymx28Y4WQBD
-X-Gm-Gg: AYBFou3s3LHXkO2AwVnEgJd9IwF3IRXErmqtqv35EyybtRkngy0FqgkySBMePo4pLGN
-	mirVwTGBDVSsvMQSq06oL8dJHHHitXYgwA0IQONbNDI4V1HcIzciYD3hDxdnrFixODg4qm/wCht
-	+gjbcfk5kIpQj1mK0YWqBIlcKeT5Ko54ncjrep9A5/axpOKH4oEvI1Fwm6r+4Y0FynQojWoMX1J
-	iP8kZysgwzS+Rye0pez9HI/FCg1OJiUQxXddU+NuV5ZmLZXAmMzMKlI+zF+kypPv6PliTvJfNJ0
-	z4KbaFsGwpEqPgQrbFiINymjUGbOXi/Ivwhs7W0PQI3Dlw520SbnX01kdGqkeAJGVHdUzk2vito
-	e6QyoxtlhvYRi39biQxNTykhR87jpDPTqE6pWU1m9XZcsPjGJURZw2kiE+xEJKgZjlwEVlHTVSo
-	hwqXJGJEAUl5OR8Mext23XwDSbjfk16B61Br+BFN/rFxtguE5R14KlWzskb3t8jdTEcNu/8g==
-X-Received: by 2002:a05:701b:2058:20b0:15c:20b8:7964 with SMTP id a92af1059eb24-16a63386d86mr13548313c88.27.1791801625139;
-        Mon, 12 Oct 2026 03:40:25 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2fd33sm31434866eec.28.2026.10.12.03.40.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 03:40:24 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: Mike Christie <michael.christie@oracle.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jia Jia <physicalmtea@gmail.com>
-Subject: [PATCH v3] vhost-scsi: do not count PI bytes in the data length
-Date: Mon, 12 Oct 2026 18:39:54 +0800
-Message-Id: <20261012103954.136698-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ww/TM8pW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758B41F0089B;
+	Mon, 12 Oct 2026 10:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791802635;
+	bh=xbC+yf7W/9NgxGXA244OT/ptq9frA+41G9nWB1s/IoE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ww/TM8pWebbCbnXF049H+rr5GcvdFwXDLefJVHvquehv7bwCLS/7dsU0TF1GAQprI
+	 kmiiNk3wePjVKitVm/2wqe197cD5bjwFPdUYRAU0uF+4MjEE6xXnVdOtI+sJbSATqU
+	 /C3h/1fbIAo+n9oQyWo7GBNM7AjgcRJ8cInlz/0OjhJ6H56qbu9/ypRlanmOgv8nXe
+	 OWFb6JuIa8226F5DYNHSHKcSrbpm/PZSWWwOLPdsqyDnQtywvzGe+0KGu9YmjWuNSF
+	 jSslVmt2y4vuW7csg5UndDYBd4bih4gOYdg/sIHzpcsx0nXuK46DBipQkgS2kTxkPr
+	 CREpK16ec3WLQ==
+Date: Mon, 12 Oct 2026 13:57:10 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v9 08/18] PCI/P2PDMA: Route Relaxed Ordering Completions
+ directly
+Message-ID: <20261012105710.GC219304@unreal>
+References: <20261001-fix-p2p-acs-v4-0-v9-8-1a8e0f50ddd9@nvidia.com>
+ <20261006222109.GA719055@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006222109.GA719055@bhelgaas>
 
-vhost_scsi_handle_vq() moves pi_bytesout or pi_bytesin into the
-protection sgl and subtracts those bytes from exp_data_len.  The length
-passed to TCM is still exp_data_len + prot_bytes.
+On Tue, Oct 06, 2026 at 05:21:09PM -0500, Bjorn Helgaas wrote:
+> On Thu, Oct 01, 2026 at 02:55:16PM +0300, Leon Romanovsky wrote:
+> > From: Leon Romanovsky <leonro@nvidia.com>
+> > 
+> > ACS P2P Completion Redirect leaves Completions carrying the Relaxed
+> > Ordering attribute alone. PCIe r7.0 sec 6.12.1.1 redirects only those "that
+> > do not have the Relaxed Ordering Attribute bit set", and sec 7.7.12.5
+> > describes the enable bit as "applicable only to Completions whose Relaxed
+> > Ordering Attribute is clear". P2PDMA reports one answer for every kind of
+> > TLP, so a client whose provider returns such Completions is sent through
+> > the host bridge for a redirect that never happens to it.
+> 
+> I guess pci_acs_p2pdma_completion() returned PCI_ACS_P2PDMA_REDIRECT
+> even for RO Completions?  But that didn't change the hardware
+> behavior -- maybe the caller *thought* Completions were routed through
+> the host bridge, but they actually weren't.
+> 
+> I kind of lost the plot here.  What does the caller do with this
+> information?  I don't think a device is *required* to set RO even when
+> it is enabled, and it may set RO on some transactions but not others.
 
-prot_bytes comes from virtio_scsi_cmd_req_pi.  With
-VIRTIO_SCSI_F_T10_PI negotiated, vhost reads that header and does not
-check that the CDB is a READ or WRITE.  sbc_check_prot() replaces
-data_length from the CDB only when the protect field is non-zero.
-target_cmd_size_check() leaves a write's data_length unchanged when the
-CDB size is smaller, so a command that does not get that replacement
-keeps a data_length larger than the data sgl.
+The mlx5 patch, which is currently on hold, uses the
+PCI_P2PDMA_TLP_RELAXED_CPL TLP flag to dynamically enable or
+disable ATS.
 
-The KASAN report is a MODE SELECT whose header had pi_bytesout set.
-The data sgl held only the parameter list.  spc_emulate_modeselect()
-walked data_length and read the next physical page.
+https://lore.kernel.org/all/20260920-fix-p2p-acs-v4-0-v7-19-ca0828ab697c@nvidia.com/
 
-Pass the data sgl length.  Protected READ and WRITE still take their
-length from the CDB in sbc_check_prot().
+Thanks
 
-KASAN reports:
-
-  BUG: KASAN: use-after-free in spc_emulate_modeselect+0x145/0x380 [target_core_mod]
-  Read of size 1
-
-  spc_emulate_modeselect
-  __target_execute_cmd
-  target_execute_cmd
-  vhost_scsi_write_pending
-  transport_generic_new_cmd
-  __target_submit
-  target_queued_submit_work
-  process_one_work
-  worker_thread
-  kthread
-  ret_from_fork
-  ret_from_fork_asm
-
-Fixes: 9f977ef7b671 ("vhost-scsi: Include prot_bytes into expected data transfer length")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
-v3:
-  - Rewrite the inline comment to distinguish the data and protection
-    SGLs and explain why TCM receives only the data SGL length.
-  - Note the related target-core patches for PI tuple accesses at
-    protection-SGL boundaries:
-    https://lore.kernel.org/all/20261006093338.27342-5-physicalmtea@gmail.com/
-    https://lore.kernel.org/all/20261006093338.27342-6-physicalmtea@gmail.com/
-    https://lore.kernel.org/all/20261006093338.27342-7-physicalmtea@gmail.com/
-
-v2:
-  - Drop the claim that target used to subtract prot_length.
-    9f977ef7b671 cites 14ef9200, which is not in the tree
-  - prot_bytes comes from virtio_scsi_cmd_req_pi
-
- drivers/vhost/scsi.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 4f8c0260bc9e..4bd29c2ceed9 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1534,9 +1534,17 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
- 		 */
- 		cmd->tvc_vq_desc = vc.head;
-+		/*
-+		 * vhost_scsi_mapal() maps the PI bytes into cmd->prot_table.
-+		 * It maps the remaining exp_data_len bytes into cmd->table,
-+		 * which is the data SGL passed to the target core.  Its
-+		 * expected length must therefore exclude prot_bytes.
-+		 *
-+		 * sbc_check_prot() derives the data length for protected READ
-+		 * and WRITE commands from the CDB.
-+		 */
- 		vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_attr,
--					    data_direction,
--					    exp_data_len + prot_bytes);
-+					    data_direction, exp_data_len);
- 		ret = 0;
- err:
- 		/*
--- 
-2.53.0
+> 
+> > Add enum pci_p2pdma_tlp_flags and let a caller state that property.
+> > 
+> > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> > Tested-by: Tushar Dave <tdave@nvidia.com>
+> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > ---
+> >  drivers/pci/p2pdma.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> > index 43e225cc5735..1fadef6d0609 100644
+> > --- a/drivers/pci/p2pdma.c
+> > +++ b/drivers/pci/p2pdma.c
+> > @@ -544,11 +544,15 @@ pci_acs_p2pdma_request(u16 ctrl, unsigned int tlp_flags)
+> >  /*
+> >   * Decide how a peer-to-peer Completion at an ACS-capable ingress port routes.
+> >   * PCIe r7.0 sec 6.12.1.1: no ACS control other than P2P Completion Redirect
+> > - * affects a Completion.
+> > + * affects a Completion, and that one leaves Completions carrying the Relaxed
+> > + * Ordering attribute alone.
+> >   */
+> >  static enum pci_acs_p2pdma_state
+> >  pci_acs_p2pdma_completion(u16 ctrl, unsigned int tlp_flags)
+> >  {
+> > +	if (tlp_flags & PCI_P2PDMA_TLP_RELAXED_CPL)
+> > +		return PCI_ACS_P2PDMA_DIRECT;
+> > +
+> >  	return ctrl & PCI_ACS_CR ? PCI_ACS_P2PDMA_REDIRECT :
+> >  				   PCI_ACS_P2PDMA_DIRECT;
+> >  }
+> > 
+> > -- 
+> > 2.55.0
+> > 
