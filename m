@@ -1,162 +1,145 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C497D48EBC5
-	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 17:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9C74CDA3F
+	for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791825868; cv=none; b=gVviqegWXGt4guqYph6Lx575Fti9xdOIqKjb1Tvj870HBlfdNffbOovCrCOx1TAyIeUTYwiUtezSGqiUwi/eP3PPqV0xOaabA8co+Z6ur2EBWUkpqX2bxw7u1588efHTFm9T8qLrUQ2m8zioIgRv5sQeJBuEAExs3RbUOuFox8M=
+	t=1791826666; cv=none; b=cB9anuULxMwGWXVr8WGzsXKNhmyhBPKVsCM9B4NIxxxb26e1vxhCRKHw0AnpB60w0PNLzF4VpOug7XmdrVj3495KtLeYZuExM71XDm2/lmFFl3IHRwRM5GMBnAXrM6eoLM8JIqSLfPymqIjL/xnH9njDQ8rIEU6pzG8yHFSQm3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791825868; c=relaxed/simple;
-	bh=vdBkv0Ar/k2H9o3Cj5VAA2YQ4375ejbf9nUI5vsOQQg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JIZ80OIx3vLYSKh8uY7gL89IR4an7YxdxGXXU43q5XcddtjLOCULByjtpv2Xx+0orz/NGmXYvQmfU8ErVpoEwoZo0/5Z+dZtfCBC6LupUJ0S3DKHJ+unsx68XI3uD4gGmUIFsTVjad60Ia1Wf45iA+Q19hw/laip94XXKymbw0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hm745Xui; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1c+Q6EG; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1791826666; c=relaxed/simple;
+	bh=ffCb0cZQI1u7Z1o6jBod+XbsTpEbBxvx5EOfB5b28sw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ep6ZKQJ6WGcoHqag03mr3YAk+TU3x8m5/IN5Fby7xR7hXCNdXX8pDon6KeDydcmSYbTdr6JUkr3+Ip9dNe1VlDElPKgCvj/Ws511WlotuYcZKmKjObiM7JaRt9KPJG0+9aJ9zX1gjzn2WYL3wVepxW4w83mGoENb8q6PChC3tjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PjJzSKYf; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hm745Xui";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1c+Q6EG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PjJzSKYf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791825865;
+	s=mimecast20190719; t=1791826662;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5MCinI97TwRTst5/YFDaMtBPJlTzpwg3rQxyfSvYCas=;
-	b=Hm745XuiWiKYNsRdY+iFfvwvAsOj+FDv2M84TIjdGXaiqmRA7PTS/4ZYjSzPMWVc1mvQ6b
-	Ria76eRmGRFknBEPxaMmvQsICGz25gwHD8lQVwzqnVLnglnBvcBEzaNp0CyG6HAl7vesgj
-	v5ZptSNop0M5VAkXrkVIb/g0AP+IFgg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161-75a8GCU4ONyIo1X0f2jUIw-1; Mon, 12 Oct 2026 17:24:23 +0000
-X-MC-Unique: 75a8GCU4ONyIo1X0f2jUIw-1
-X-Mimecast-MFC-AGG-ID: 75a8GCU4ONyIo1X0f2jUIw_1791825863
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01b112fa2so31413025e9.1
-        for <kvm@vger.kernel.org>; Mon, 12 Oct 2026 10:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791825862; x=1792430662; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5MCinI97TwRTst5/YFDaMtBPJlTzpwg3rQxyfSvYCas=;
-        b=c1c+Q6EG27M2iQ9ZUic2TskOh0kl0393uo3KJCHMU7xNi3yS+q9jTrdFYk1gmmgeBq
-         nImlDIAzyfYnMCu56bnU1df3BjPZMlQgDeHStOLznra99D4y7LrbVDhrlc3I9pSgtcOx
-         rYRgj9OP/KlR8Jhhy04Ic3QgccSJju07bxlWka3c1XF0dP9borQIRhnGGPehIATgHym1
-         8jIIOAXbG8NvVxTAj5Xs+nPGK+IbqtI9YvaJbbDRQtYGBqkXeX3M+rkUmAZO2hobVb+/
-         xWHxsVfLXB098kna4FPjgWVZKCrd8LbSuuCFC5L0NJ4iOEIlY5hTHThaKPOhV5ynhpYc
-         kVBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791825862; x=1792430662;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5MCinI97TwRTst5/YFDaMtBPJlTzpwg3rQxyfSvYCas=;
-        b=gvfblKt6EM6JSyotWYlzTh8R/AcUfaYJPPVd1lg0zND3DCG8qXjkXqANk1wisno6gX
-         gl5D/KKvM1GRaoXCUeBaUE/6Na76hv2I0BEhlVOdGNxeIjWuU2GhIGIUpb9ga747GYHQ
-         cblGCZDMMfWd+JT9+X/ZPOGIGVOwqD8xNhTra1Gf2+J4IV7KOrDTDNVIslDqNvUMSvUT
-         C78Cbe5nPLgc9O4T2A5U9EXw0BTAsfnUE++a4LsmeYhoSuVqGWsO90WpvInUB9y0KSIe
-         fngGutPia0t97b7MxY5kfWkstgkHbaxqxvJsXCWkkFrpZe0NI0+nmK/vm4WP/AGAWAee
-         4Ovw==
-X-Forwarded-Encrypted: i=1; AKwUvBwn2JxzR9sCN5UGVpDXSdsq7j8HSsaGGptcSs7SeKn2E/gRcxaeq7OTL4RBmpxEHBl6KhE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLKjSJH9fA2wzugYC1izc7PuiRfHKdu8pmpU62eg1R54Cu6ZwRw
-	wL/NpwA6zV2gFdNpbbDkhMCBLKSztWmahNicUUfhqQHS80SeRUtw467zi//7RWVfuRxWC6z4AmC
-	WsltUyP9+VYzdONrqwaHqTuFVbryUOEUPzR4TqHS4uN7Cq3OMkpJDxQ==
-X-Gm-Gg: AYBFou3T+q7hATZrWOFXqj9gAwiQIHvXrGUpfntLOgd/XyKKv3jGFXpyYrngwoXsTxJ
-	40tm/ew1EjFRkCFSeGHUp3AerDQbluChGasaHSlgaApmzo8nhSdWkiD1deYZfkF6GDeFCkNpjDG
-	M4hAVYDcvqV1e9OJGgcIpQ3mnbdOEP2JZpaRO2g6GfArcjnwe0tpEOMbs6W8npX0qtykAM++AFE
-	o3QQrg5pnGtx0P4YjN+Foowq2sqzTRBedw43UG2HU0WfOroPZYJtwWSY6jO2NDMObCiAq3n5Jxx
-	nwLNGMZ+7FNgVH/FvgWQZhwYt7JSlylW15tRUdnuoltbowLhodccDw5WAWyZ8DxBFAEJiiAQAAR
-	w4XiaSBeuVHfOM/TcKehSHCEr0pAu+6YuEgogrMgG421AR37PzLd3afLhA3Qcwb0VFssx7l8CgG
-	IuN5cP
-X-Received: by 2002:a05:600c:3e07:b0:4a1:8627:aec7 with SMTP id 5b1f17b1804b1-4a18e4987abmr166291535e9.5.1791825862151;
-        Mon, 12 Oct 2026 10:24:22 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e07:b0:4a1:8627:aec7 with SMTP id 5b1f17b1804b1-4a18e4987abmr166291025e9.5.1791825861524;
-        Mon, 12 Oct 2026 10:24:21 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.82.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be97d1esm480677705e9.8.2026.10.12.10.24.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 10:24:20 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM fixes for Linux 7.3-rc8 or final
-Date: Mon, 12 Oct 2026 19:24:19 +0200
-Message-ID: <20261012172419.138525-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=B3vbvBtlNN7GuHBRJgCbx9CjqY4Kc5AW5dSsOofPo7E=;
+	b=PjJzSKYfPN33Qub1CI569BLxKpY6PJcwRftIGagp25lHh/Gai8V194r5hVDCuiMYe2I+bL
+	hKaxSDi8r7i4JR3J4kIugu5HtCQ/SWd5eux2jZPJKGUyTwyvwRfMj5QkZQ0Tk9GyN8UUrE
+	1vaPVv001I4aHKrP13dp2O65Qn1bhak=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-abnZHSFsO7CR5VGg9_ysJw-1; Mon,
+ 12 Oct 2026 17:37:33 +0000
+X-MC-Unique: abnZHSFsO7CR5VGg9_ysJw-1
+X-Mimecast-MFC-AGG-ID: abnZHSFsO7CR5VGg9_ysJw_1791826649
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 482911953990;
+	Mon, 12 Oct 2026 17:37:28 +0000 (UTC)
+Received: from [100.90.56.12] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5F87A1956040;
+	Mon, 12 Oct 2026 17:37:19 +0000 (UTC)
+Message-ID: <e8e2cd2a-5458-431e-977a-2338b0e90f60@redhat.com>
+Date: Mon, 12 Oct 2026 19:37:16 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 03/24] KVM: Replace CONFIG_KVM_MMIO with KVM_NO_MMIO
+To: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ David Hildenbrand <david@kernel.org>, Friedrich Welter
+ <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
+ Gautam Gala <ggala@linux.ibm.com>, Hariharan Mari <hari55@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>,
+ Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Nico Boehr <nrb@linux.ibm.com>,
+ Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+ Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ Zenghui Yu <yuzenghui@huawei.com>
+References: <20260930173441.66762-1-seiden@linux.ibm.com>
+ <20260930173441.66762-4-seiden@linux.ibm.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260930173441.66762-4-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Linus,
+On 9/30/26 19:34, Steffen Eiden wrote:
+> Defining KVM_MMIO is not flexible enough for multi-KVM systems where one
+> KVM implements MMIO but others do not. Therefore, remove KVM_MMIO from
+> the config space and use the macro KVM_NO_MMIO instead.
+> Define KVM_NO_MMIO for KVM/s390 and for selected KVM/powerpc
+> configurations.
 
-The following changes since commit a90ee4305c4a5df72c11b31dacfdc76e00fcf78a:
+...
 
-  Linux 7.3-rc6 (2026-10-04 13:45:25 -0700)
+> +#if !defined(CONFIG_KVM_BOOK3S_32_HANDLER) && \
+> +	!defined(CONFIG_KVM_BOOK3S_PR_POSSIBLE) && \
+> +	!defined(CONFIG_KVM_E500V2) && \
+> +	!defined(CONFIG_KVM_E500MC)
+> +#define KVM_NO_MMIO
+> +#endif
+This can be simplified to
 
-are available in the Git repository at:
+#if defined(KVM_BOOK3S_HV_POSSIBLE) && \
+       !defined(CONFIG_KVM_BOOK3S_PR_POSSIBLE)
 
-  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+which I have done.
 
-for you to fetch changes up to e90ab3669181c6469e3647ef2b30ae408275f496:
-
-  KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes (2026-10-12 18:58:45 +0200)
-
-----------------------------------------------------------------
-More x86 fixes:
-
-- Fix a WARN if the SS bit is set in #NPF exit codes; the AMD manual
-  is unclear about whether it can be set when the guest uses CET but the
-  SupervisorShadowStackEn feature (which KVM does not use) is disabled.
-  However, Hyper-V has started using CET now that KVM supports GMET
-  (it wants the two feature in pairs), and that dissolves all the doubts:
-  the SS bit *is* reported and not clearing it causes a WARN and/or a
-  UBSAN splat.
-
-- If creating a vCPU ultimately fails, clear its entry in the AVIC Physical ID
-  table used by hardware to perform IPI Virtualization and delivered posted
-  IRQs.  I.e. plug the same use-after-free hole related to IPI virtualization
-  and posted IRQs that was fixed for APICv by commit b41f2ca6c0601 ("KVM: VMX:
-  Fix stale PID-pointer table entry left after vCPU free").
-
-- Use set_page_dirty_lock() instead of set_page_dirty() when marking a page
-  dirty after writing back SNP firmware's desired CPUID state to userspace.
-  Using set_page_dirty() is unsafe if the page/folio isn't locked (as pointed
-  out by its function comment's big DANGER warning, which no one reads given
-  the number of bugs of this exact nature).
-
-- When checking for an MMIO generation match, use the memslots for the current
-  vCPU context (non-SMM vs. SMM), as a misbehaving guest can coerce KVM into
-  incorrectly identifying a write as MMIO in order to bypass KVM's
-  write-tracking.
-
-----------------------------------------------------------------
-Jann Horn (1):
-      KVM: SEV: Fix page dirtying in sev_gmem_post_populate()
-
-Jinu Kim (1):
-      KVM: x86: Use active memslots for the per-vCPU MMIO cache
-
-Naveen N Rao (AMD) (1):
-      KVM: SVM: Clear AVIC Physical ID table entry if vCPU creation fails
-
-Paolo Bonzini (2):
-      Merge tag 'kvm-x86-fixes-7.3-rc6' of https://github.com/kvm-x86/linux into HEAD
-      KVM: x86/mmu: Cope with the SS bit being set in #NPF exit codes
-
-Sean Christopherson (2):
-      KVM: SVM: Add paranoid helper for checking if vCPU is AVIC-addressable
-      KVM: SVM: Use "is AVIC-addressable" helper to sanity check load()/put()
-
- arch/x86/kvm/mmu.h             | 16 ++++++++++++----
- arch/x86/kvm/mmu/paging_tmpl.h |  3 +--
- arch/x86/kvm/svm/avic.c        | 22 ++++++++++++++++------
- arch/x86/kvm/svm/sev.c         |  2 +-
- arch/x86/kvm/svm/svm.c         |  6 +++++-
- arch/x86/kvm/svm/svm.h         |  1 +
- arch/x86/kvm/x86.h             |  4 ++--
- 7 files changed, 38 insertions(+), 16 deletions(-)
+Paolo
 
