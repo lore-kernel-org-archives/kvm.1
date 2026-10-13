@@ -1,126 +1,121 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926414825AF
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 17:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8DB3BFACE;
+	Tue, 13 Oct 2026 17:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791912829; cv=none; b=l1SpspNmy2BRkE1MtBEYoLi+piOrqN8QbqPkma/lofl+C3BEtv55Ul6B9K2WLNEQOR4Aji/X9tWlPsSwqEwoCkhN5fAAQDhlBp0eMFtOD/5OVCMZpdxnlo4UlJBeNGeDEDbN/56e9qX1AfXdG9ZNYJCvDWYul5YT/iMkrymDFhY=
+	t=1791912888; cv=none; b=BUySVRZLIKYGIc3jahVOThLsYLLd/bLVVEH4vyhjldz6qi2tF8qj5Og+ldWJScB/DK6C/YvodqEMekuOleNlPVEgUGLQeiKM4EdThCDQnD5F9Gb+LA5iNpGXqdlRjwOjDUHBftwJTw83qHWv2rvW4yjJGRm0p+yQqhUn8cGbeWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791912829; c=relaxed/simple;
-	bh=m+i5mTlUxTCnrCi8WzAtmzzFXQV0rJfs+5MtNGiKS8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b7msHMnpsrjgMNrpztv0PdjPZivxVoHKt9KIpjChrmLaR/c93rVTqtlail472Ln4AZkCf3cdbT6zSS9NUx/oNdm+oeq2Xy/EzbEwhZ3JBCF9E8Dce51LfRpNfYje7TG2/CX+8r3HVpYAQTL1N1/LcDTfawwhJBNyGKSuSOO9q64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L5Vy0NpU; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1791912888; c=relaxed/simple;
+	bh=D3UYt0i5hAKFhi8tFEEKwRghDne3HmZX19J1SbhWdwA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ui6mcEf7qc71jSTEeZ5QMSyadw7GRlWJU2h45y2zluYsWhtRbtsoSshfNqToRH+74pj2gYlppfANVDd62uS3atoNnF83spzJ1p1bEVaB6081/1jIb38bY8l0uz/IgTEzhbSXkdeqJawL7VN/hh1T0k3CtCw5a7PmOsIbrlD6N7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=AeJxApnX; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L5Vy0NpU"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so164695ad.1
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 10:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791912828; x=1792517628; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qsfJHJAdVQ83GKISdOFSgeXuIu/91TZW8ltTQ/2oo/k=;
-        b=L5Vy0NpUII7ewM/cx4UM0kPWRO2ApbVBxPubGhJKJoRK8E4G23eV28CZ5n2zGZgqCT
-         kWH6aZcup0sUVpj7m+mtINUa9yqzqOfc0Vtdrd5Bsxq0iDa1tJ5a0YvV1bJO+QGxcWF6
-         DWSlHUYrim965MKghcbksimcpWRqKQQG0o6DYAw6BUkoidplq7AQbUdXs4AhDtLzTVeh
-         9zQFu7w+bEvc6/vthrZHX0tCPIK/2anhyYgtUN2ySiCFOHQjHNw4xJBYMuI9aBL6UvkX
-         srwM0xJqVYQq7P7jFtgFh5BM8Kt1PMSJdybasoucH8Rayt8/qW2BviKwHa0ZWQP0sJoO
-         cyVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791912828; x=1792517628;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qsfJHJAdVQ83GKISdOFSgeXuIu/91TZW8ltTQ/2oo/k=;
-        b=lkl+U/7hUdlx1fnVgkBPQondUMUOsU2A+/qzDgB7rdDJUFOhR5lClQCUy1vToo6oTi
-         98HRfghC9M4iMez3N1prnv/MxNO8r1l/w9h+IH1C69RQQ4nQbdjv0LbaAuF73H3gqd4K
-         fY/DJgPU2mgNp266L4ak2295o/HE7mB4SZARE5pesZHxwSKNaIzVfDovFoPA6j4pBycj
-         GC4vVargoYybdSsVFgU0Cbr/8ffo8w5ndWFF8udyrEA3yy7Ko/+fQFprpCNpYhZI1b1m
-         mVvxUcDPwxzRnjgl50laFtAdTVXONLGZh4b7uKr81GTkV3tvyj4fCherQ1P1BZxmT9ZU
-         3WwA==
-X-Forwarded-Encrypted: i=1; AKwUvBwvPsgBFYoy2WxFJgoaTy1+hZdFaUcJU1mcd9G8kcOIQnx0Wk/vhiK9ECDV1sMi+1D/2FI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI8xfMwAuNso5v8fexROvri8y4TuOLDfwukhzxuVbrKYER85Hz5
-	CWNnfQMZmqSwaRDUcR/Ucw74HBEFcpZWpsCUVbxd2peqvtuWpT6Xmog9l2vSois8kQ==
-X-Gm-Gg: AYBFou1zolWYhMp92yPxa6DRHAQaS1PYAHzWRYDTpw9lhyF+LArZ1FXNgjKqFg3fy/Y
-	8HHFBYOEEnkwqdefIMNF9bqemOQLNROYCFtSdEBp9HBqHPXU7iXnj2lQFFZqYWu08Sk4fQRnXjk
-	CRHCkSi/9VZkd+AuTTB+oSdpMA9L4IUjKWuwvfeSCjQdqASf0X4YMmE01aTcvpfkCCTUpbQkyqR
-	19cy1zUhbFccrybVGzanRlaq98k75O9ixzdEFC/cv+/VZ8VCue5AxfNsOrt6wJcYdoVfvxnf8Q0
-	sujhP3dvG7RnnPzp6ZUl9B1SawxuP7Iz8LDsRlGMVQP9rT251+7EeAYVsgsXJnelwrjsFJ3MBL6
-	Fosw+OLM/lVrpuT0Oy+AGVLbzKJhlIksbQeqQcDC8K5SdlzwNk3zcOVOLns8bE/84LydICiBPYf
-	FzcOc5UMnQFEPfGnoi9sl4Ul/fVa+Pbf4G2Q7iY4wNwoQHL6Ezbq+2XxB/18I+wofFfffgLB0VJ
-	Jex+E62/mseZa/o2UcIJ4juWdEP86fv
-X-Received: by 2002:a17:902:ebc6:b0:2e2:d665:6ad8 with SMTP id d9443c01a7336-2e87bc2190fmr12955725ad.4.1791912827258;
-        Tue, 13 Oct 2026 10:33:47 -0700 (PDT)
-Received: from google.com (75.57.168.34.bc.googleusercontent.com. [34.168.57.75])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac600a0619sm637262a91.7.2026.10.13.10.33.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 10:33:46 -0700 (PDT)
-Date: Tue, 13 Oct 2026 17:33:43 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org, Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <iweiny@kernel.org>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Subject: Re: [PATCH v15 14/23] KVM: selftests: Expose function to allocate
- vCPU stack
-Message-ID: <as5rd8F3pLmimtGe@google.com>
-References: <20261001-tdx-selftests-v15-0-7c62a5d8a992@google.com>
- <20261001-tdx-selftests-v15-14-7c62a5d8a992@google.com>
- <b2143700-da36-418c-af63-0b50b33f080e@intel.com>
- <932ec219-5951-489b-bda9-1f6e9a605a9b@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="AeJxApnX"
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DH31Na1158838;
+	Tue, 13 Oct 2026 10:34:27 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=LWL/XRN8x3Z/WAwoivm6i1fVHwe3fxfm0cZor
+	ef+30w=; b=AeJxApnXUsz7mSwHpTEM8k99my3aArx+5CsRLETzTtoQj9yegU6AK
+	ghB/sP6YuSGn/oSUHNYIw6KYA9QMKS2Gokzzg5hkYEshs7DyrWvurUdQZhM7MDz4
+	JW6dULZw1HKgDh8olHw+QhkxDrh9AycpnMFOeYzDPvMlp8HrLEdn+uZW1659AzwH
+	tr7QUqt9YP5RlrI+0fk2mzr3yoPpn68OK03+DtnO9WDvFAxEEP75dZbauk2Bd0gy
+	z2MILJ/vsj1WlH+yTelF3WbvveRFDHH7cy62y6Am3ITo2ipKFe4CGqrV6bxZvKtq
+	T1IYGRh5vsa+kPpVmVYJng9Xkk7VYvhQg==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h9hc43xva-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 13 Oct 2026 10:34:27 -0700 (PDT)
+Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
+ (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Tue, 13 Oct
+ 2026 17:34:26 +0000
+Date: Tue, 13 Oct 2026 10:34:26 -0700
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: Daniel Pereira <danielmaraboo@gmail.com>
+CC: <sgarzare@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
+        <skhan@linuxfoundation.org>, <stefanha@redhat.com>, <mst@redhat.com>,
+        <jasowangio@gmail.com>, <xuanzhuo@linux.alibaba.com>,
+        <eperezma@redhat.com>, <shuah@kernel.org>, <rdunlap@infradead.org>,
+        <donald.hunter@gmail.com>, <edumazet@kernel.org>,
+        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <sargun@sargun.me>, <jlinbox@meta.com>
+Subject: Re: [PATCH net-next v3 4/7] vsock: add a netlink command to assign
+ the g2h device to a netns
+Message-ID: <as5roqKrcZ+0WYIj@devvm29614.prn0.facebook.com>
+References: <20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com>
+ <20261012-vsock-guest-ns-v3-4-b32447c66b23@meta.com>
+ <CAMAsx6fKVQaYLzkK34v5DRkmQS5Ym-XqwNh-+Jj_Uue8NJCNUg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <932ec219-5951-489b-bda9-1f6e9a605a9b@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMAsx6fKVQaYLzkK34v5DRkmQS5Ym-XqwNh-+Jj_Uue8NJCNUg@mail.gmail.com>
+X-Authority-Analysis: v=2.4 cv=L86I0OT8 c=1 sm=1 tr=0 ts=6ace6ba3 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=8nJEP1OIZ-IA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=crHB47gyY4rKiduisYu9:22 a=VabnemYjAAAA:8
+ a=IhaVPjiSUfC3lUqgL44A:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA2OSBTYWx0ZWRfXweRN4xWDXlRU
+ QYe3T0G1lTLn8kzE8+h7GJpNcWDizdt2gDMq2z3tkLHOR3BO/csllYNf97Aw8G79kjqnDYWx372
+ 9eHx3+N0IrJoKHmFhGifo1o6WS4qR/A=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA2OSBTYWx0ZWRfX1QZzySfg7Iql
+ zY4V15sByE3oHUpSIIV3Q6s4f4/6Sj2GnR0xww2Mu1pj48pXZ2DnI/Bs48xyuChTigOYIb8Yg5v
+ oJSjFsdMsNNT3fYO+iYQ9oi6QCvFvxj6shYyvnd9XQTU6WWhk+tHBphaC/bn7YdpAcMQ+EN7jpB
+ jkMUMHocjxur1dOxBHRmAlzIcqsty66EfL58I6pq6k568m2Q9MxsQp9gtNbEMspz2rRBaQGu2ly
+ oWAZlq98ZCpTjGtprTUB2yLtOPvvmlpmO7UDoHPpCfEdJhIlP/xHk/c+BGGqzGATB+mFJS7ZY4B
+ bYrWl+/3dgk+OS42jgbLxfSqWWP1fqi9h0rjXsUoIJ4Kd9UsQAW0mkx3ys6CjCF9I9w6E4rtXN9
+ xVz3YLbRDUupyT9yfIIH5hO7No3g9GxGbHTJjBNnXzGWbJ6bD7r4kjklqwVdqNmUuC3rBkIbBpc
+ V4/EsVtkHqo+KLY4Ihg==
+X-Proofpoint-ORIG-GUID: crBcu5j1ETahNAP4cu-GvJGR3AqHg4Mk
+X-Proofpoint-GUID: crBcu5j1ETahNAP4cu-GvJGR3AqHg4Mk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
 
-On Sat, Oct 10, 2026 at 11:54:42AM +0800, Binbin Wu wrote:
-> >>  
-> >> -struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
-> >> +gva_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)
-> > 
-> > Besides what Sashiko pointed out[1], this patch was just messed up during the
-> > rebase and it even doesn't compile.
+On Mon, Oct 12, 2026 at 10:44:55PM -0300, Daniel Pereira wrote:
+> Em seg., 12 de out. de 2026 às 19:51, Bobby Eshleman
+> <bobbyeshleman@meta.com> escreveu:
+> >
+> [...]
+> > + Movement to an unreachable local namespace results in sockets being
+> > + closed with ECONNRESET. Peers are not guaranteed to be notified via
+> > + an RST.
 > 
+> This reads a bit differently from the sysctl documentation in the same
+> patch, which says:
 > 
-> Yes.
+> Connections established before the move, from a namespace that can no
+> longer reach the device, are closed with ``ECONNRESET``.
 > 
-> And since the upstream code already has vm_alloc_stack(), which basically does
-> the same thing.
+> The net.rst wording also covers moving the device back to init_net from
+> a local namespace, which this sentence does not. Maybe use the same
+> wording here:
 > 
-> I think this patch can be dropped. 
+> Connections established before the move, from a namespace that can
+> no longer reach the device, are closed with ECONNRESET. Peers are not
+> guaranteed to be notified via an RST.
 > 
-> > 
-> > [1] https://lore.kernel.org/all/20261002091331.BA23F1F00893@smtp.kernel.org/
+> Daniel
 
-Yes.
+Thanks Daniel, I forgot to update the docs with that change. Your
+rewording sounds good to me.
 
-vm_alloc_stack() can replace kvm_allocate_vcpu_stack(). I will drop this
-patch in the next version.
-
-Thanks!
+Best,
+Bobby
