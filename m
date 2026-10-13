@@ -1,113 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFAD349CF0;
-	Tue, 13 Oct 2026 09:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44302EEE60;
+	Tue, 13 Oct 2026 09:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791882169; cv=none; b=RjPCrMbnGSqE9NIcTuYg9SYosshNFh/8qwN3vdRYqjYC7/Lh40xqasY+DjovrQDigfFUOvQU3fhB8uPuMon1jAIwk5ITO2E1ugJ+j7Kf6Vg6XjyOQjC8CTpu2YcFgaiF77BqpobmH4lB0G/igx1CrtkouklmAxPu75g4i5kfQ2c=
+	t=1791882712; cv=none; b=IVh7W/p78qD6otVp2tF+ugEI4iDV0ePeigqrC3VhUOzs/C8y7Nzr3uyXXwOQSzZCpopRQfR84iWSdXUtu+k0QaEKi7DMS/mBzJm2FSrtI4hH6Dcdfzn69gl/UIWJZyxxm80naPLBIE6zv1rlN8TAlGtsd9+4tC3Adg8e9P62Gvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791882169; c=relaxed/simple;
-	bh=JwYDCNdXLaGhSF1gDAHg9eApC698pRa6SlDj4UwDP8Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gBUWNVS1cSMfFamzpYTP02lKDzrdvQZK7HXgis2Rd83kyKgcNEHpzuWef0GLbN6cvUx5w7IMb/UnXEJC9KjxTb3/1bs4umONdGzmjFnA3ibF5JiJ1TF2hrTRvxk3P1SCQbbepqwiuX85ou+H1xfdwPNKmPoNB9TdDq9bX2yqxJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l2GdCJap; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791882712; c=relaxed/simple;
+	bh=1GDEdYYiTGxrYqK/ynxihYv50FV3RVHXamEOPKTbEmY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=shaZ75owZsU+11C3KYFwVluj2E3kJARwcwnzfE38A0JmRCNTrRJRk2cSZQrgdNq87u4K2aHy1OZVTyzoIQYz2cCd5OGXd2y+rmsgzsXTidQcduY62XbVzZjaA3XABHtx5S/0qpuJX3moLBwYBHSV5bqAJmKjq0S5581k17Y4QY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+CmNDNm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l2GdCJap"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791882167; x=1823418167;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JwYDCNdXLaGhSF1gDAHg9eApC698pRa6SlDj4UwDP8Q=;
-  b=l2GdCJaprQwWyxR5smlc/vBuoJZFwAFrYwiF5NLRMDec2kQc41ULOthj
-   H6ZI+8irHHX7agsP5QaLOKPy/aaXTPNIrbKcvYGf1kWch5B13yj+gD4kg
-   WBHIyKpTpsiXxY/Ssbxh76GmwzyDXBGMr9E/WbzSK/K9SMOB1EOamu3fi
-   /qcpoR3b9d/Qea50/VaZyqvmyc28QgTnODJPPjLNnNMCGMbZElmvyHg14
-   KBZz3/O6PO25aBa72N6+MMzcGZpexi8yki3fKwUHNMIl0fRwNoh+g2MKI
-   /uge8y4qfxqZ7K4W3u2FIIjvO9oGglapwN71iEihXAZD3VeOA+sX7DtQV
-   Q==;
-X-CSE-ConnectionGUID: aQCtzTlDTl2opxQMM55iyQ==
-X-CSE-MsgGUID: jqpL3yGXQwK9B5oppdyKaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="605115"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="605115"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:02:46 -0700
-X-CSE-ConnectionGUID: C7B5YhSgTIKtoU6Rn9SCgg==
-X-CSE-MsgGUID: yHB9gU+8QAynInSmPeF0nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1589486"
-Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:02:43 -0700
-Message-ID: <bd995feb-e8d9-4595-a809-753101b91e48@linux.intel.com>
-Date: Tue, 13 Oct 2026 17:02:40 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+CmNDNm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8591F000FF;
+	Tue, 13 Oct 2026 09:11:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791882711;
+	bh=/dPrLzH4NXCTERzYwyjyTc4ohsgaQKqLbZfNj0bQRMI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=e+CmNDNm3jmp6bRulMaLPV48yxWsHF78sjT3i2w2kVLtU5qiNU03SDD2TVH/RS1gZ
+	 33rOTWPp2Yf4BaGN0qM20fHspQWSIUWXgR0XkY60QNTfcJAAzd6I28HNS3y5+Terbz
+	 HmP1ku4zb9gQbEyKr2zo/f/rz9u3MVx8W86xh0PMOin5dVx5I5vb1zrPAVBxDYBXOf
+	 r/eQ4nVCSUVBwTGTIVxCnG6NXr2kw/u54zcDb7/2QUtWsKVZaUfadFICTXDbD/+B1X
+	 LlGy5RfhOd7TqFepg4Q38Q2V9ZGgH4FyxRDi45NaerpQDJxl07ircU6/ZL6BHuEskC
+	 Z82R2aERMdW2g==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: sashiko-reviews@lists.linux.dev, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v7 13/16] iommufd/viommu: Select vIOMMU operations
+ before allocation
+In-Reply-To: <20261012130516.GL13920@nvidia.com>
+References: <20261008055955.4014342-1-aneesh.kumar@kernel.org>
+ <20261008055955.4014342-14-aneesh.kumar@kernel.org>
+ <sashiko-outbox-163690@kernel.org> <yq5azewj45u2.fsf@kernel.org>
+ <20261012130516.GL13920@nvidia.com>
+Date: Tue, 13 Oct 2026 14:41:46 +0530
+Message-ID: <yq5aik36q819.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/10] x86/virt/tdx: Convert the tdmr metadata reader
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, yilun.xu@linux.intel.com,
- tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
- nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-5-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-5-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 10/12/2026 5:47 PM, Chao Gao wrote:
-> Continue converting the metadata readers to the table-driven helper.
-> 
-> The "TDMR info" metadata class has two readers: one for the fields that are
-> always present, and one for the fields that exist only when the module
-> supports Dynamic PAMT.
-> 
-> Add a table for each, both pairing field IDs with the 'struct
-> tdx_sys_info_tdmr' members that hold their values, and read all fields by
-> walking the tables.
-> 
-> Annotate both tables as __initconst since they are referenced only during
-> init.
-> 
-> AI was used under supervision to review the code and workshop the
-> changelog.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> On Mon, Oct 12, 2026 at 03:07:57PM +0530, Aneesh Kumar K.V wrote:
+>> > Currently, amd_iommufd_get_viommu_ops() unconditionally returns the ops
+>> > structure without checking the type argument. If a user requests an arbitrary
+>> > type like IOMMU_VIOMMU_TYPE_ARM_SMMUV3 on an AMD device, the core iommufd
+>> > framework might track the vIOMMU under a mismatched architectural type
+>> > identifier.
+>> >
+>> > The ARM and selftest backends appear to validate this argument against their
+>> > supported hardware types before returning the operations.
+>> >
+>> 
+>> No vIOMMU type has been added for any IOMMU other than Arm. The
+>> documentation also considers IOMMU_VIOMMU_TYPE_DEFAULT reserved.
+>
+> This is a bug in the AMD driver we need to fix, send a patch? It
+> should only accept DEFAULT, not every type.
+>
 
-[...]
+But the comment says "Reserved"
 
->  
-> @@ -122,7 +91,7 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
->  	 * DPAMT but don't expose the metadata.
->  	 */
->  	if (!ret && tdx_supports_dynamic_pamt(sysinfo))
-> -		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
-> +		ret = read_sys_metadata_table(dpamt_mappings, &sysinfo->tdmr);
+ * @IOMMU_VIOMMU_TYPE_DEFAULT: Reserved for future use
 
-Nit:
-dpamt_mappings is a bit inconsistent with others.
+What is unclear is what using that type on Arm means. Does it imply
+IOMMU_VIOMMU_TYPE_ARM_SMMUV3?.
 
-May be tdmr_dpampt_mappings?
+>
+>> >> @@ -73,5 +79,7 @@ static void amd_iommufd_viommu_destroy(struct iommufd_viommu *viommu)
+>> >>   * struct iommufd_viommu_ops - vIOMMU specific operations
+>> >>   */
+>> >>  static const struct iommufd_viommu_ops amd_viommu_ops = {
+>> >> +	.get_viommu_size = amd_iommufd_get_viommu_size,
+>> >> +	.viommu_init = amd_iommufd_viommu_init,
+>> >>  	.destroy = amd_iommufd_viommu_destroy,
+>> >>  };
+>> >
+>> > [Severity: High]
+>> > Is the alloc_domain_nested callback missing from this operations structure?
+>> >
+>> > The commit message and comments in amd_iommu_alloc_domain_nested() indicate
+>> > it should be assigned to the viommu operations. However, it is omitted here.
+>> >
+>> > If a user attempts to allocate an AMD nested domain using IOMMU_HWPT_ALLOC,
+>> > won't the core framework reject it with -EOPNOTSUPP because
+>> > viommu->ops->alloc_domain_nested is NULL?
+>> >
+>> 
+>> It is unclear whether nested domain support is fully integrated for AMD.
+>> I see amd_iommu_alloc_domain_nested(), but cannot find any callers.
+>
+> There is a series on the list to complete more of this, it is fine the
+> way you have it.
+>
+>
+>> >> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
+>> >> index f3d5b5a7eb4a4..e95138ae71d5b 100644
+>> >> --- a/drivers/iommu/iommufd/viommu.c
+>> >> +++ b/drivers/iommu/iommufd/viommu.c
+>> > [ ... ]
+>> >> @@ -103,16 +105,12 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>> >>  	 */
+>> >>  	viommu->iommu_dev = iommu_dev;
+>> >>  
+>> >> -	rc = ops->viommu_init(viommu, hwpt_paging->common.domain,
+>> >> +	rc = ops->viommu_init(viommu, idev->dev,
+>> >> +			      hwpt_paging->common.domain,
+>> >>  			      user_data.len ? &user_data : NULL);
+>> >
+>> > [Severity: Critical]
+>> > Is there a missing check to ensure the domain is owned by the same driver
+>> > before passing it to viommu_init?
+>> 
+>> The viommu_init callback needs to perform this check. For example, the
+>> Arm implementation does:
+>
+> No, the check is missing. If a domain is being used then the core code
+> needs to check it, not the driver.
+>
+> When the ops is first obtained it should be checked along with the
+> domain to be sure it is compatible.
+>
+> The NULL parent domain on the TSM path should be enforced in the core
+> code since there is nothing to check there.
+>
 
+So, if IOMMUFD_VIOMMU_NO_HWPT is not set, the HWPT must have been
+created with IOMMU_HWPT_ALLOC_NEST_PARENT, and its domain owner must
+match iommu_dev->ops?
 
->  
->  	return ret;
->  }
+Something like:
 
+	idev = iommufd_get_device(ucmd, cmd->dev_id);
+	iommu_dev = iommufd_device_get_iommu_dev(idev);
+
+	if (ops->flags & IOMMUFD_VIOMMU_NO_HWPT) {
+		if (cmd->hwpt_id) {
+			rc = -EINVAL;
+			goto out_put_idev;
+		}
+	} else {
+		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+		if (IS_ERR(hwpt_paging)) {
+			rc = PTR_ERR(hwpt_paging);
+			goto out_put_idev;
+		}
+		if (!hwpt_paging->nest_parent || !iommu_dev ||
+		    hwpt_paging->common.domain->owner != iommu_dev->ops) {
+			rc = -EINVAL;
+			goto out_put_hwpt;
+		}
+	}
+
+-aneesh
