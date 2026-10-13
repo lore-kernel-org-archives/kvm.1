@@ -1,113 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C215187F3
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739BC4F7CA5;
+	Tue, 13 Oct 2026 16:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791907777; cv=none; b=dncyBcXt4ryb75+SxTgUGhYfSF7aGFv6cefw+Wdt/mil7b07mCi2qM0MLcL6sb1tPsPTkvTWZYT0/c3l1SAGkP1iUHg/a3XTeQjSPMzXwWG2PugIr/5uvnkmmdAXGoFYlgLWKEHkUW/nqcIDT1OAVk/w5u4vLZD6pZnWnxROlUo=
+	t=1791908043; cv=none; b=jq5ArdxttOtMmW/oGQM3T68ZQPjx25WFRBsXgC2fC8lfLqR5tG7Hfqtu86WBGLceRJiFhd7lB9idlP3RxAS7qPXLT0+SRhwpWpqTy+fogpzWeWA6bd9vTl80WzU+AsU8w79FeDNsSQKCaO0twTiTOOkv7/EtuFopK4h9hInOLbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791907777; c=relaxed/simple;
-	bh=I68o5gYKqjJpVpdOoELHe4gv1tpEBm64YlxoXNgYMNg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nr3ZFQBrOf7geQnTrbDGJI6hDnVWXuY6iWTLeh8B18DurUpE/I1+9bJ1DMKkAPyC0/3iSCDqr0ClfLbmze136/+iaBgfZvXxyjeR0uYR3M0zPVzg/Ps4Tby8iZjRSYvXEPI7ikG3NLQY+93Vph9YmE9QbKBRR6pPZKNXQMlCgns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=clQMuYyC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791908043; c=relaxed/simple;
+	bh=Te0JuFUGiR3YFM2NiTmT8CoF777bF8HGFLxMcv7KUhc=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=Wt0VJchORZd4GsMXEUNBsizFD6m+hX0g3AGxfT2ackaJ5/2ZLaaQXIQbFL9zBgfqWRL28u8ItLgzLNfRxBfwNM8VjkTQLRtjy/408cSlu5JQ9vubko61z9lGyrMF/B5fK2iiIxhjtgOm2uQFdii4dIVLVsemFkAMNThH1nZtrd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrZZ1VGN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="clQMuYyC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522A01F0089B
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 16:09:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrZZ1VGN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E031F000FF;
+	Tue, 13 Oct 2026 16:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791907776;
-	bh=I68o5gYKqjJpVpdOoELHe4gv1tpEBm64YlxoXNgYMNg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=clQMuYyChATPUv0Ba5ud7nNEnbaMLyii6+fbiLgbmEdsmozHDx1FKcArNXd/lgY/0
-	 oMPxmen/5yHBir4rVc+4gwBfaEhg1cf47I3di4q3eO+kSHDxI2hhF3Hc9xvQ3L0W40
-	 nO8el0241VpmNMrKBcSpAinRbOS7ZD4X4W5Bs5e4ayUjM2R5kiwvojzfmE+Mu6BFMZ
-	 WTNqygghaWeqf2LDt+N4TUSE+ct6fvqzS6tJy8TvaUcfP1s/T8yPOptWLUZ+5t700u
-	 sIgiKTcGswHwPIdr8StEWzfIJQh8d8+t9INZMXDcdE+oGBY6SVYBYXFl4xsma0V6cV
-	 wXRSDqZiD3/LA==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c20ce3c118aso416784966b.0
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 09:09:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxmx6b61CoWdNLl/LJ7XJ+dg/Qzt+J7TP/2hJQ0TtpU8mGUreaPmrSvoxBD423dWqm+xCI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI2YgKIfXmrV/RQeXGpeg4RcmV8tW7k+ARb7Z5yC+RcaYCae1t2
-	zlsLFzTYQg3+OzTzx4qi2u8nrBIO1xyNaUR3X/MvNlM7eXGI101ag+7f6CpQiqIRkvuyJBFceH0
-	TgBJnKDqc2RlZN+M9BAD6avI2iqIrop8=
-X-Received: by 2002:a17:907:3f8e:b0:c31:6c9b:5069 with SMTP id
- a640c23a62f3a-c31a9d6f597mr1316896466b.13.1791907775104; Tue, 13 Oct 2026
- 09:09:35 -0700 (PDT)
+	s=k20260515; t=1791908041;
+	bh=gpUjPc8OfT4N4hzuLGdVqasz3+4fGzOZrTqKV6VCJ/E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mrZZ1VGNsE7C9zSK7OWU251hdZrTDJ4af8JLpZ6kxFmPGJXxjZHbEWvjjqdRiZ6sA
+	 pbv1YN9KN3r5pwQ5xyi4WVPTJqVVanwIp2ZXyiD/tjgPqvr4MVxHyF1REvdOOrtKwM
+	 D/0t50WteKqYSZqApPlru+rk2i2Eqyeq6hyB966Et8qK/IiKpbYcpKjEKTroYAL4wJ
+	 wsgCDRulqxOt4caH+VXzRv1j9PQoWxjWhdFQ24trMXCuLH1cCRZmGcPECFFBYnZ7ur
+	 Kj+CGVHwUfrmmuIpsY4DKYHwfQ2s08z/pVewSrMz4qxavvfHu5HbYKEyfSpWzeJn2Q
+	 2n99nkbvhmGnA==
+Message-ID: <sashiko-outbox-170099@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 11/15] s390/vfio-ap: File ops called to resume the
+ vfio device migration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261013153219.3534306-12-akrowiak@linux.ibm.com>
+References: <20261013153219.3534306-1-akrowiak@linux.ibm.com>
+ <20261013153219.3534306-12-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 13 Oct 2026 16:14:01 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
- <20261013160557.54828-2-itazur@amazon.com>
-In-Reply-To: <20261013160557.54828-2-itazur@amazon.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 13 Oct 2026 09:09:21 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN5bDJLvQiyfNZX2Z2W+sL_txT8c6WhfwyXci19rHsJeA@mail.gmail.com>
-X-Gm-Features: AclHuK9_C_4IWAq2FQn6XicUwnHvllAJw9Hr13X655JabnYqdZ6oL3GbW7fxP2M
-Message-ID: <CAO9r8zN5bDJLvQiyfNZX2Z2W+sL_txT8c6WhfwyXci19rHsJeA@mail.gmail.com>
-Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
-To: Takahiro Itazuri <itazur@amazon.com>
-Cc: Sean Christopherson <seanjc@google.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
-	rientjes@google.com, Roy Patrick <patrick.roy@linux.dev>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
-	Reiji Watanabe <reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
-	Ackerley Tng <ackerleytng@google.com>, Takahiro Itazuri <zulinx86@gmail.com>, cc-open-source@amazon.com, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Gregory Price <gourry@gourry.net>, kvm@vger.kernel.org, 
-	Derek Manwaring <derekmn@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 9:06=E2=80=AFAM Takahiro Itazuri <itazur@amazon.com=
-> wrote:
->
-> On Tue, 13 Oct 2026 08:36:54 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
-> > > 3. ALLOC_UNMAPPED and the mermap
-> > >
-> > > AS_NO_DIRECT_MAP itself works without them, by zapping the direct map
-> > > of each folio. However, guest_memfd will eventually need a temporary
-> > > kernel mapping to populate guest memory via write() [2], because
-> > > folios are already unmapped once they are added to the page cache.
-> [...]
-> >
-> > FWIW, I think the mermap can still be used without ALLOC_UNMAPPED, and
-> > I did have a newer version of the x86 patches repurposing the LDT area
-> > for the mermap, and simplifying the mermap implementation a bit. I can
-> > share them privately if you want to take a look.
->
-> Yes please, that would be very helpful. Thanks!
->
-> Agreed that the mermap can be used without ALLOC_UNMAPPED. To give a
-> bit more context from the guest_memfd side: I can't say anything
-> definite until I've gone through the use cases, but as far as I can
-> see now, guest_memfd needs the mermap only for write() support.
-> write() is an optimization for populating guest memory (e.g. when
-> restoring a snapshot) and isn't functionally required, because
-> userspace can also populate guest memory through its own mapping of
-> guest_memfd. So I currently plan to keep write() support, and with it
-> the mermap, out of the guest_memfd direct map removal series itself.
-> Since ALLOC_UNMAPPED is the main user of the mermap, it may make more
-> sense for the two to land together later.
->
-> One thing I'd like to look into is arm64. Firecracker also runs on
-> arm64, so write() needs to work there too, but the mermap currently
-> relies on the x86 mm-local region, and it sounds like your newer
-> version relies on the LDT area. Kevin, do you happen to have any
-> ideas on how something similar could be done on arm64?
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] fortify: __counted_by() traps on memcpy() of ap_config causing ker=
+nel panic
+- [Low] build: incompatible pointer type warning for num_queues in vfio_ap_=
+get_config()
+--
 
-Small correction: Brendan's version already reworked the LDT area, I
-just reshuffled things and simplified the implementation.
+commit 1f3606fec30cc37e82a55e4d85b768771f43fc2f
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
->
-> Thanks,
-> Takahiro
+s390/vfio-ap: File ops called to resume the vfio device migration
+
+This commit implements the write callback function for the file stream
+created to restore the state of the vfio-ap device on the destination syste=
+m.
+Userspace reads the source guest's saved vfio-ap device state and writes it
+to this file stream. The write callback copies each chunk into a pre-alloca=
+ted
+vfio_ap_config structure and validates it against the destination host's
+configuration.
+
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+
+[ ... ]
+
+> @@ -284,7 +340,7 @@ static int vfio_ap_get_config(struct ap_matrix_mdev *=
+matrix_mdev)
+> =20
+>  	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> =20
+> -	ap_config_size =3D vfio_ap_config_size(matrix_mdev, (int *)&num_queues);
+> +	ap_config_size =3D vfio_ap_config_size(matrix_mdev, &num_queues);
+
+[Severity: Low]
+Is it possible this causes a build failure? vfio_ap_config_size() expects
+an int pointer for its second argument, but num_queues is declared as an
+unsigned int. Passing an unsigned int pointer here introduces an
+incompatible pointer type warning which breaks the build under
+CONFIG_WERROR.
+
+[ ... ]
+
+> +static ssize_t vfio_ap_resuming_write(struct file *filp, const char __us=
+er *buf,
+> +				      size_t len, loff_t *pos)
+> +{
+
+[ ... ]
+
+> +	ret =3D validate_resuming_write_parms(filp, len);
+> +	if (ret)
+> +		goto out_unlock;
+> +
+> +	ap_config =3D matrix_mdev->mig_data->resuming_mig_file.ap_config;
+> +
+> +	memcpy((char *)ap_config + *pos, kbuf, len);
+
+[Severity: High]
+Does this memcpy() trigger a fortify panic? The struct vfio_ap_config
+utilizes the __counted_by(num_queues) annotation for its flexible array.
+During the resuming phase, ap_config is allocated with num_queues initializ=
+ed
+to 0.
+
+Because memcpy() is fortified, it evaluates the maximum size of the
+destination object using __builtin_dynamic_object_size(). At the time of
+this memcpy(), ap_config->num_queues is still 0, so the compiler evaluates
+the destination capacity strictly as the struct header size.
+
+If userspace writes the migration data in a chunk larger than the header
+size, the bounds check will fail before num_queues can be overwritten,
+triggering a panic and crashing the system.
+
+> +	*pos +=3D len;
+> +
+> +	/*
+> +	 * Check whether we have received all the data.  We know the total
+> +	 * expected size once num_queues has arrived, i.e. once *pos is past
+> +	 * the fixed header.  Until then keep accumulating.
+> +	 */
+> +	if (*pos >=3D offsetofend(struct vfio_ap_config, num_queues)) {
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261013153219.3534=
+306-1-akrowiak@linux.ibm.com?part=3D11
