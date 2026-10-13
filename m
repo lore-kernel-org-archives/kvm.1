@@ -1,139 +1,116 @@
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14923EFFAF
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 14:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EA53CB2DC
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 14:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791900231; cv=none; b=SnfVz7JrvqhP1QllHlm1AtIEK1o8Oof6Tr7UeBKO1YtDq1Uii50fgEICUFTWFiDrRKT05e7vYdyR9UW3ArVWklptGCx29ES1eIn8DTwWx9d2aL/+dEjLFigfJ6y7vwZDBe/USXl/l03g/iJxdZ4SeAbfX93sKFcLoiun9Ir99T0=
+	t=1791901528; cv=none; b=VqHj9neuDRYPlYQh+qSVSq0FSFrOaQ5oOrZs/niYdgzeEwxd9oaSWfEiYOSLvjN79+9LkkeBAxooq0HYEUB8pT3ASCJjaxeXUhCYb+LH4bTQ2znwnNE/niLAv1Y36V4zSGua+SdxICGLcaIswClXWwUqkZqMxnpfDq8zOoCT2e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791900231; c=relaxed/simple;
-	bh=UHry0BPkquJw/CuJwnGhyuxl/slkjmr1qnD/xn81qew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5FWVtQVIPnWcESUZ7dwePHHNj0WI8HvFE8CQZIspdYtHg9jJ4ik4aFhY3d0D7mwkgUlV2Ed0pP2deNspvBL7inLcujA1z4n/ifrb/Jfw/xXxUgGXw7ailVSGY+Gec5W2PPfjcX00TzrdIdtNkvWoG+isyGW9widX9m/voijACU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=CBEzo/4j; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1791901528; c=relaxed/simple;
+	bh=W/jSc+WrS1ATArodzscBQo4guiiRlHRB+HWRJS+e0pY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ggGE/OJcbTEsQw+tHkWoGeY15JhAM25bvblyUmwy1ay2LGgtXFflC5xZ0e+X4mdzkLrWuGiR7q5PhX3oz4IwlYmo14pJGdReGP8Rwd03TWTS5qX45YjEcTmdNupUmomhI7BsWoZlaAhjs4vWIcaZWSl82Ga1eOB4ROYDrtOwD1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKMtzjbJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="CBEzo/4j"
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-988c7371716so712254241.1
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 07:03:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1791900229; x=1792505029; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sxRXmPGGOdI1+4/8LW6E01BCp/MjtS9NyfOV1SrhfSY=;
-        b=CBEzo/4jeiz4WlID7U/njZM7AWjCMFsKhRPE2lZcPfdbjT5/IhMC7CPhAthUzS/zjC
-         7JdpJuzrx/MaN0DflF6oAbENcPd/EKLzlkXO3xhW/4F5syHofVyYESUmZBXMOG8P4d/o
-         U0+8nId/s3j8PBkkGKMw9+6JThitqmt/tGl1U5Nh1xq4Hd0djOAhqJt0lU/i0VlyiGGx
-         3lIrp+VrVqteNUBHh72uss+6qHhfv911OjNj/lBhTo0M3tCp5OKbWWQv6+N+m74fPDOO
-         CCafrXkio5dlBgBy0OeRosZpOR483gn1R9Bmc9hfkBJ3Hjq6TdOR8etcp4eTP7mIJR7u
-         MRrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791900229; x=1792505029;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=sxRXmPGGOdI1+4/8LW6E01BCp/MjtS9NyfOV1SrhfSY=;
-        b=hU7BMaq84nziyYwLfQIH8MbXic3Q5FpdnsxtJXxyu+SCxObCGPLvz0aSNiEvLz0z47
-         SQ2XL1iJx3oBD800q/9x2l+6CuPq5mEOKW+a9gNxFhVIlnGwtjAdDyQLmIKtRXI+8ZNy
-         WY8r08UoW1xr94EL+L/NpovfDkQxWuBbHk/qePLkb736QCt/7tX/F4YgFLbOCqwmi8Ax
-         Zlbey9Xdu/qr9KpdrPt1lk6EHpm/JlU1Ypm/D6neLq4YTY5gWy51SwfYBBsTmobcBCPi
-         /5Tj+vQzQsjv9hlpgb/JR7OJX4JBIzTbuSYZSDBntuYdNaO4JhzY9ZaNwLnRBtibwYvW
-         Lu3Q==
-X-Forwarded-Encrypted: i=1; AKwUvBy+cp0HK78cyiXXNL7lLbmItGMS2Nkn7LYefjPw2RM2cjzsRjO+BUb1KzgxTUqsHXtAgag=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLKTwjm9IDcKgt7VnzTtpQ8C5bKseWSgdr3ARTuU/QXTxZfCAsH
-	8I2iJCZkxGTkxpEQSbcmAmXyQKVVp5RWXcSr3LweTl1482kPLIeGuCqsiD1uIOXGufo=
-X-Gm-Gg: AYBFou2gJl4B19DQ/T1NkAqm36lAzQShk9xhKFDrXF+bThyv8XE3m4hg/JMlyhrAKIq
-	PaEsZcENQJxNfXQ//1TZrl4t8zqFn3SW9IjeHlQn7MVwNldgTbS7xhFo1ti5dRkAGBzxdOf1k4S
-	YRA2a3E9SAVPa/MYroAcySKv+aiyawpHPRNjeKekw7JhGe1hRXVcyXRVS58SVl68ogAjzodITgL
-	ViliR8hwfJNJ77cK8fOaay2J4pCQ+fSnKw2YAFpWrSWk8KqJ+cMgiBFNNtbs1hShd5lHM5RUxu/
-	REK6sGNN+bDGw1RH5Xqsa8mOOPNzqC8VjSZXEA+hi0A+dSrOSkw6EqbNgd1PjHx8DKJutcJwSM4
-	zPFS5MuS49sjlhwJ7zt70yuRt7dbi1Qi8TiLAqAEGCxIXj3oISso8Ib2YF11+ERuDxVoAHnM1lv
-	8442gq1pDQn/it5LYFtrKaqPJzpYfmDus9GwNShd1yxNJFr58+fCtKhANo5iGLW1nkU65DOm0Ri
-	3HNiUOTqo0q6+23LR2dw3G7Esct07mY9bnmVnnWmJo1tGw4VJfsAjNsFw==
-X-Received: by 2002:a05:6102:a48:b0:7c3:875e:593b with SMTP id ada2fe7eead31-7cb373fae29mr3183710137.32.1791900228555;
-        Tue, 13 Oct 2026 07:03:48 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97bdfb89sm25903626d6.40.2026.10.13.07.03.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 07:03:47 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xGd6X-00000009i6J-387e;
-	Tue, 13 Oct 2026 11:03:45 -0300
-Date: Tue, 13 Oct 2026 11:03:45 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: alex@shazbot.org, ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org, bhelgaas@google.com,
-	jjohnson@kernel.org, johannes@sipsolutions.net,
-	kevin.tian@intel.com, kvm@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
-	mani@kernel.org, skolothumtho@nvidia.com, yishaih@nvidia.com
-Subject: Re: [PATCH 0/7] Enable Qualcomm WiFi PCIe passthrough to VMs
-Message-ID: <20261013140345.GK14213@ziepe.ca>
-References: <20261011132558.GD14213@ziepe.ca>
- <20261013134317.174234-1-jtornosm@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKMtzjbJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94FC1F000FF
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 14:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791901526;
+	bh=88+HFEK0E176EzbC4QEVRjmLfytSU2OlquqEF4DJOMA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WKMtzjbJSNNJ1SVL9L1NKLqqkQnmDX9JXNTj1JtwCbqQWCOJolfN/QlntsSGE6zaZ
+	 UL5zOcrdSc2/gWROSIVlFzg3f3TS5fA5QlmFjFr0sT6fq3dPOEfbJRkYlZA+OcY0KJ
+	 dS3PMXjrafcvAmQbOAwynx1b33lnwcGY+lmKP33VFcDVHhGUPpwWZ744ef/FxFd0To
+	 bmlO5SALhO5h8bW4lQwiWfHIEWvIh74YhTAKuvcgwUNPfYenOdQ1TYAumD9JcYBpwj
+	 +Ih7vTGfPOxyWAs7onK/YbfE6sDMQRRL2usiYyaPPxEN2tgM3gD/SqstMRGAgekB4U
+	 CJ+8WIW1Z8Nbg==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b1dae0febeso2145198a12.2
+        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 07:25:26 -0700 (PDT)
+X-Gm-Message-State: AFq9FYJmFv/NcJnTf+D7q7mt2LAFbWnB+MUo/43RfdIRVeDovyxx+1N2
+	8PWNDEme1mCM9x5Onk0cJNr1TLwfgQUFWco2olGvvbqgIApEYwqgQDoQaEfbLZKEp3oFbEIyYKE
+	TyiWw0cfKEUy/HNEHAEKDBi/OPdaMmPI=
+X-Received: by 2002:a17:907:d27:b0:c2e:801e:48c8 with SMTP id
+ a640c23a62f3a-c31a9a04df1mr1215213666b.5.1791901525645; Tue, 13 Oct 2026
+ 07:25:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261013134317.174234-1-jtornosm@redhat.com>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-14-yosry@kernel.org>
+ <sashiko-outbox-168763@kernel.org>
+In-Reply-To: <sashiko-outbox-168763@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 13 Oct 2026 07:25:12 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zM-MTNYcAcT_v4gb1YJi+YduSFBudkK6nB9gDoeq-Q8zw@mail.gmail.com>
+X-Gm-Features: AclHuK8UCS2S1Vamwa_ZokuqDc2aH1k3NkAFdmQpRzhMH4KOK2K87H-0Py9YSys
+Message-ID: <CAO9r8zM-MTNYcAcT_v4gb1YJi+YduSFBudkK6nB9gDoeq-Q8zw@mail.gmail.com>
+Subject: Re: [PATCH v3 13/27] KVM: nSVM: Add a placeholder ASID for L2
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 03:43:13PM +0200, Jose Ignacio Tornos Martinez wrote:
-> Hi Jason,
-> 
-> I understand the concern about compatibility implications, but to
-> clarify, my intention is not to create an ABI or a "MSI caching
-> concept". 
+On Mon, Oct 12, 2026 at 5:01=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [High] kvm: nSVM: missing vmcb_mark_dirty() when updating L2 ASID in SE=
+V migration
+> --
+>
+> commit c8f241845a6790f522df58195167e95ce8fea046
+> Author: Yosry Ahmed <yosry@kernel.org>
+>
+> KVM: nSVM: Add a placeholder ASID for L2
+>
+> This commit adds a placeholder ASID for L2 to prepare for future changes
+> where L1 and L2 will use different ASIDs. It also updates the SEV migrati=
+on
+> path to copy the new ASID into asid02 and vmcb02 if nested is already
+> initialized on the destination vCPU.
+>
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index 99577859e1aab..b2e6acfbb081f 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> [ ... ]
+> > @@ -2041,6 +2041,15 @@ static void sev_vcpu_migrate_asid(struct vcpu_sv=
+m *dst_svm,
+> >        */
+> >       free_asid(dst_svm->asid);
+> >       dst_svm->asid =3D asid;
+> > +
+> > +     /*
+> > +      * If nested is already initialized on the destination vCPU, also=
+ update
+> > +      * the nested ASID to match the new SEV ASID.
+> > +      */
+> > +     if (dst_svm->nested.vmcb02.ptr) {
+> > +             dst_svm->nested.asid02 =3D asid;
+> > +             dst_svm->nested.vmcb02.ptr->control.asid =3D asid;
+>
+> [Severity: High]
+> Does this code need a call to vmcb_mark_dirty(dst_svm->nested.vmcb02.ptr,=
+ VMCB_ASID)?
+>
+> If userspace creates a non-SEV VM, runs it in nested SVM (allocating vmcb=
+02
+> and caching it on a physical CPU), and then uses it as the destination fo=
+r
+> an intra-host migration, the migration path updates the ASID here.
+>
+> If the vCPU is scheduled back onto the same physical CPU, pre_svm_run() s=
+kips
+> vmcb_mark_all_dirty(). Since the VMCB_ASID clean bit might still be set f=
+rom
+> the last exit from L2, could the CPU ignore the new ASID in memory and
+> incorrectly reuse the old non-SEV ASID from its internal VMCB cache?
 
-It very much is an ABI, you defined a new ABI in the config space a
-layout between guest and host that we have to maintain forever.
-
-Just for a hacky solution, it is not so nice.
-
-> I can explore converting ath11k/ath12k to
-> platform_device_msi_init_and_alloc_irqs(). However, if I understood
-> correctly, the VM problem remains identical after that change — the
-> firmware still needs physical host addresses, and device MSI domains
-> in the VM would still provide virtual ones.
-
-Yes, but it removes the solution of copying data from the existing
-MSI-X table from consideration, which is the primary hacky thing here.
-
-> I'm happy to do this refactoring if it opens a path to get these
-> devices working in VMs. What VM mechanism would you accept for
-> exposing physical MSI values through device MSI domains?
-
-Once you have a MSI domain you just need a driver wired into it that
-can request and get the physical addresses from the hypervisor. Then
-when that domain is in use the guest will always see true physical.
-
-That part is easy enough, it already exists and you don't need any
-driver changes.
-
-The bit that isn't clear is how you get the domain in the first
-place. I suppose something like a virtio-msi is a good starting point,
-but I don't know enough about ACPI/etc to imagine how to wire it into
-the flow.
-
-IIRC hyperv does this, so maybe there is something to follow there..
-
-> Jeff is escalating to Qualcomm engineering again (thank you for
-> that), but users with deployed hardware need something working in a
-> reasonable timeframe.
-
-Yes, but it has already been years, and Qualcomm doesn't seem to care
-about these uses cases, so I'm not sure I see the urgency to do a bad
-ABI hack..
-
-Jason
+If the migrated SEV has nested enabled, restoring the nested state
+should mark vmcb02 dirty in svm_set_nested_state(). But yeah we should
+probably mark VMCB_ASID dirty here. Not sure if this is worth
+respinning for it tho.
