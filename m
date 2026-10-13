@@ -1,118 +1,149 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE6D3E5A1F;
-	Tue, 13 Oct 2026 10:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAA93E8338
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 10:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791886599; cv=none; b=sEfBE1+Rv8Z3FOS1KYh5ba0NuxRnUaQWHXdXf257W3wbTANsw5sTcJc/lR6zUHMCTr/u4/f9QURNaUWf/zSWSAC8QP9s5DY3jW4WNfjzAONTGvRQnOfG0ZjDdRgTRQKWps8HsauRbKYom1gcPnbn8W84BLK0uGVGvcAlcStyj0c=
+	t=1791886673; cv=none; b=KUoBlcSvcsgyTwvzSmqeYpt047jDcljJFB4REXL4tqrZ+jzNJZMymmzBkqJ1Dfe+C7BVUQ7NoR9b3pNvC77LMo40sd8RmXaUCrTyXI7XrE//CVgZ7VOlCHsY/8hqYGT+94Y1atBc9lQKU32JgiZM2YfLnnVMXUETVwxq/yRLkA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791886599; c=relaxed/simple;
-	bh=ekZQ0q+xdtGkn4NuaxVpvPPHaMamSLGnT/jXWIganUg=;
+	s=arc-20240116; t=1791886673; c=relaxed/simple;
+	bh=mIerHSoA0UPEkltbp9WWAtUXDdAGlSICZDdSK7TN0Gg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pueA5SmnvE7BWlhc1tVwT3WRDeOlrHl/v1jn/MDfqsExwW8yUzezeDiTLVl+IetR4S2VB6Q7AlRR1xY+4xay+ZJchrPuPVMCQWStUYZ4iKbLuZFQOv6VkUcqHMiwOQDUyREcKmzR2GHcZHXWxapSAmQTaAdZKqblLZ3t9lCYl10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FL9Egaw1; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+6FJeefGIzU0r218RT1527ZrIap+/r/BAHtXUc5SBY1qnePH3ukrd2tWAON8NNyjHi4F8n5YYL9hT3kxdza0hogLtd+vVfAHaxOZdC/V2bZ2uKBVgssV7gEs4ApffchiaXNKT2Omw38EWRP9aD9ZxYnw+d2QyCvLkHghIfD2Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hoQeNOv6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GU8qH6o4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FL9Egaw1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791886598; x=1823422598;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ekZQ0q+xdtGkn4NuaxVpvPPHaMamSLGnT/jXWIganUg=;
-  b=FL9Egaw13+Z9uEg6bJ7PdBkyEqZp0JzBU/UCZxw9R+JJZaJ4/nz33d59
-   5YXGehwXJV3tUXdxKhsKQxOo12L3V/7R9uvGZDrgtHP/2RwUtjHKyuRy1
-   Z3hKuKVK90QgB+1Nx0jXlAcZNzwWfcO1lzGpbEdgd2BvpcBGnZLFEoipd
-   VL+OiGkM7iPZgCkjWlkQYvnqVRlH3ipWD/pU64j6GDEkrwBPiVQDilLdS
-   ItxckH8bvwLgV5Y0e8ZKWik871PpQt0BQUvRCg+nmp+XkIBObuSKdSTw+
-   +LMyRIPD1hY4BOxnMCfDg1oppMqpI5IM47MkEZRxzSFmXUoNdhubJV3fu
-   Q==;
-X-CSE-ConnectionGUID: h9DQOjP/Q56D78P2agP4VA==
-X-CSE-MsgGUID: NSt/t21LRKeTE/8lu/4i+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="507549"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="507549"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:16:37 -0700
-X-CSE-ConnectionGUID: J91pIag2Q5+QTWnZtNGMMw==
-X-CSE-MsgGUID: ifDbk/LoRWGR7DQlwV4PeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1099593"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa001.jf.intel.com with ESMTP; 13 Oct 2026 03:16:33 -0700
-Date: Tue, 13 Oct 2026 18:12:40 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>
-Subject: Re: [PATCH v3 5/6] x86/virt/tdx: Re-initialize the extensions on
- runtime TDX module update
-Message-ID: <as4EGEMR2fQqnPMA@yilunxu-OptiPlex-7050>
-References: <20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com>
- <20261006-tdx-module-ext-v3-5-db52cb05b918@linux.intel.com>
- <98326b43a055030bfa4671df5c00a78dfc16322a.camel@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hoQeNOv6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GU8qH6o4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791886670;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQm+7FhyHN6+IiGzitNgRTZSKN6UAw4IPMrNRyYA++I=;
+	b=hoQeNOv6aULh/9QEeCfQ0ehKbAoFVJs09vHbUFncSxR9fiKdv6NBATz+x4KTyG5oJmW1Rc
+	6O/1oujaHjsFiid2YAFPdu+lENtlsVosIfaMPTNSyKkPZsdHpo1JunbAYbe+IIaLZmnTu2
+	pGP4LfVABcBKLX7Lc+DZPHq93PaMBXA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-Yws88rJ4MKiBFMRhcSLoaA-1; Tue, 13 Oct 2026 10:17:49 +0000
+X-MC-Unique: Yws88rJ4MKiBFMRhcSLoaA-1
+X-Mimecast-MFC-AGG-ID: Yws88rJ4MKiBFMRhcSLoaA_1791886668
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-486f9d150c3so1667107f8f.3
+        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 03:17:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791886668; x=1792491468; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TQm+7FhyHN6+IiGzitNgRTZSKN6UAw4IPMrNRyYA++I=;
+        b=GU8qH6o4wR2Oz0Y2zwKYOhV51o3IevFPSmp5nuWzvuy9Kdpf3gqsscKuGMbH+btojk
+         90A4SLFmJape0AqbvsR+Vdc/2kJ/BgcpkRapopph8nkrXUYtYiTf2sOIkVv1C10G0AMY
+         c9U6r1fYLJnw0scbhjPHgDFaFK8YU4hUue5iUzlhKEkEX3fKnYNMF6pUJb3VdkheYKDF
+         dQ81GlD58TKEGpUnrprDiTHM4g5ykbmqRzzkJ+yuTSNdiEPf8QukudCLHEkDZ+yahPqT
+         v3YD0ieqkG+3eAjLhCraHgjF1G+NV9awX4eE0cQlYGnAzZEw+MS2Eo+wdcbigTxgjD/V
+         e0pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791886668; x=1792491468;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TQm+7FhyHN6+IiGzitNgRTZSKN6UAw4IPMrNRyYA++I=;
+        b=1sYJAkIuBz8gEAzjY9s7Zz9sUHNxVbRcwaUeKiY/LH30kvTc6XMXx1MC0ZQnLA+vLu
+         +Z8DIUBzoEeh4bEIw9mrGTJn+675SNLfxu/T07vw2hfzXGO1LeMTAdVZEuZho6UQt8fX
+         dUzri/YbYBzN4Xn0lx3Hh9AuKbrMdfnHgKgFbscGc/1/Pin1MUmR8XpCwb5Eqx2ZoToF
+         1Nog7grtAtLKSHTr3nJg9euCX6WADaiXRV7fjHGiMycE9s0x53Rprok6i0Pwj2u+FmNg
+         MDyZYmFiAHjyrtu+YXMFL1AdPy7PdJctJRmjU3O2rXkUDH7vY5t0lcY4wADsMgYv7VeN
+         9wjQ==
+X-Forwarded-Encrypted: i=1; AKwUvByfTo2xrldq202r7YeGvTDHe/x3WMK9g7ZEZpN6PEmwqMIh9wg7LxlX+3rK5ykMI+3+5zE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcor3A/nzd/apW8yybZAo94FRBPIIFMldPc+Z25nEhbaVKQqKa
+	3VK29dufrCKh1ton3wQfc2lvhxPXTD1OaTLB9JwTn2QZZ9Hyp5YqMfk5MKqXm6Q537qhlTSNLk8
+	w7obmrX+XEAK/fPTvn1e7ZONszw7XZoAHxfj5tFaH7HqkkNRY44N0hw==
+X-Gm-Gg: AYBFou2MB2wj2Iq1b/de+tJhY6iV36IHroIQNPyjq0hPqAr274cGW/aP+W9KcoShINe
+	Un6fyeLeGnZCVomJAp/l2NX6XDYKwZdTXMTC1Ojw1aE3vYDlNgPXsf7LQJWH4owI4NSlV3VF5Te
+	oQEH//2gCm+RXILmJgJbJJP35PgZJM0BOgMLm0MpGTRyFFI4cA3HNRCK0Zz1b2kIRaYme6VD9mD
+	aq2C/KlA++u6IbCgzyQqoGPM0xJ4EJeaAmkSGYA28VfaBHhT7N6m8BBSQSPrVcfEOxJ3kSNaFyc
+	MOjfU+QH2dWDhZv97Oxc+XA6OZp4yVCcT70JKhLbRLByJmrnydT+/BwGo2EQ/v/6/p46oQ==
+X-Received: by 2002:a05:6000:470f:b0:48b:74b:4ce1 with SMTP id ffacd0b85a97d-48dbad00328mr20458005f8f.32.1791886667592;
+        Tue, 13 Oct 2026 03:17:47 -0700 (PDT)
+X-Received: by 2002:a05:6000:470f:b0:48b:74b:4ce1 with SMTP id ffacd0b85a97d-48dbad00328mr20457934f8f.32.1791886667017;
+        Tue, 13 Oct 2026 03:17:47 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc5e0asm4276759f8f.50.2026.10.13.03.17.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 03:17:46 -0700 (PDT)
+Date: Tue, 13 Oct 2026 06:17:43 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>, linux-kernel@vger.kernel.org,
+	Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
+Message-ID: <20261013061724-mutt-send-email-mst@kernel.org>
+References: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <98326b43a055030bfa4671df5c00a78dfc16322a.camel@intel.com>
+In-Reply-To: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 
-On Fri, Oct 09, 2026 at 07:20:05PM +0000, Edgecombe, Rick P wrote:
-> On Tue, 2026-10-06 at 01:41 +0800, Xu Yilun wrote:
-> > Runtime TDX module update introduces a mechanism to update the module
-> > firmware while preserving and restoring TDX operations. The extensions
-> > functionalities should also be re-initialized as part of the restoration
-> > process.
-> > 
-> > The TDX architecture supports an update flow which allows updated
-> > extensions to consume more memory than their original boot-time
-> > requirement. So the arch defines the extensions re-initialization flow
-> > the same as boot-up initialization: the host queries TDX module how much
-> > additional memory needed, allocates it, adds it to the module via
-> > TDH.EXT.MEM.ADD, then re-initializes the extensions via TDH.EXT.INIT.
-> > 
-> > Linux runs the updates in stop_machine() context, which prevents memory
-> > allocation. So for Linux, a compatible update must not install updated
-> > extensions that require additional memory.
-> > 
-> > Given that the memory for the extensions must not increase, the
-> > re-initialization skips the memory adding steps. It is simplified as:
-> > 
-> >   - Check if the extensions are supported via TDX_FEATURES0_EXT. If not,
-> >     skip the extensions re-initialization.
-> > 
-> >   - Re-initialize the extensions via TDH.EXT.INIT. The SEAMCALL leaf
-> >     will fail if the updated extensions require more memory, which
-> >     indicates the update image is not compatible.
-> > 
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+On Mon, Oct 12, 2026 at 12:58:08PM -0700, Bobby Eshleman wrote:
+> I've been reviewing vsock via lore+lei for a while now.
 > 
-> Reviewed-by: Rick Edgecombe <rick.p.edgecome@intel.com>
-                                             ^
-AI said you are edgecombe not edgecome. :)
+> Finally adding myself as a formal reviewer, since vsock will continue
+> being stuck with me for the foreseeable future.
+> 
+> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 
-I fixed them inplace.
+
+Bobby's doing a stellar work.
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+
+
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f53047aa8d3c..cc1341f6e15c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -28840,6 +28840,7 @@ F:	virt/lib/
+>  VIRTIO AND VHOST VSOCK DRIVER
+>  M:	Stefan Hajnoczi <stefanha@redhat.com>
+>  M:	Stefano Garzarella <sgarzare@redhat.com>
+> +R:	Bobby Eshleman <bobbyeshleman@meta.com>
+>  L:	kvm@vger.kernel.org
+>  L:	virtualization@lists.linux.dev
+>  L:	netdev@vger.kernel.org
+> @@ -29145,6 +29146,7 @@ F:	drivers/media/test-drivers/vivid/*
+>  
+>  VM SOCKETS (AF_VSOCK)
+>  M:	Stefano Garzarella <sgarzare@redhat.com>
+> +R:	Bobby Eshleman <bobbyeshleman@meta.com>
+>  L:	virtualization@lists.linux.dev
+>  L:	netdev@vger.kernel.org
+>  S:	Maintained
+> 
+> ---
+> base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
+> change-id: 20261012-add-maintainers-bc6e8a6fa68b
+> 
+> Best regards,
+> -- 
+> Bobby Eshleman <bobbyeshleman@meta.com>
+
