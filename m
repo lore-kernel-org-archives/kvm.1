@@ -1,114 +1,152 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915F23955FE;
-	Tue, 13 Oct 2026 07:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885DC3E5A1F;
+	Tue, 13 Oct 2026 07:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791874864; cv=none; b=ChUvHX1p1k853fZtsuhUG6CgaNK/ZE8GIP7QyDJ5N3P4+pwwLXSAH5bE01TEFUu7TmwPFk/xCP6lkq6dJ+XLdoW9AsKth697m08fsTeVQZ5ykdCxfYqSJaEn0dAi16tHsvsHUDRGC2ltzUDBBt5MNqQZ0NORI/3ZJ+4l2ljC94Y=
+	t=1791875266; cv=none; b=sREQ0XqndGp8W1dv6o8lj8UhfxL+oaR81mSuFE/LbQDLxyuNlNLMOKeq0eS2hI0vKnB8TbKwUGmPNQIlF/YUgZe9Mb0hbd9ENID2FPhHbt57mBJ5pHV4ALN+QZuN/E5pPPn6aAUwIM5+JyocNnAkJ9hkOeRjcHBlK8kx1VzV16c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791874864; c=relaxed/simple;
-	bh=nHwSERJsT6WQQkrnp27DBccwlr2EGr/h0ZD74kUAGC8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c1YmJ2GUz28bVjsEMC5E7kkKPUjfgX/MpgR2nQzmZ5dHHXFu/5mEQ9m5Y/ibbuq1z0XKQI0QFeMcr+FimbeBAyFJwv9r6hgFV692vRhjP7M52FgrR+yc5Wx5MPH5IJooTEKZy+K4l1GESd8G92ufC22SVBhBn32PLLnWBnDOOHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7siIriO; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791875266; c=relaxed/simple;
+	bh=Pn967/eqQwyBVN+GHu2bnfF9gKLN2JEgQ0YBf7kGflo=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=pL/TfMXMy5GFC6Ajt9V6pt/Wp3gLTaKXD4J2NDqsXebm4tPEeYopnuzyDn64cgj6aG6zzThPNMum5ghfwnLYrpVzNR5ZDNHciPbSWED/kvu6fn7Dby2fsEhtxJxxUjv60Dwx1xmj4QQDd2NjLLS8uUAr5N9AMf8Cyx+SrKZGX+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=szFg0u42; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7siIriO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791874863; x=1823410863;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nHwSERJsT6WQQkrnp27DBccwlr2EGr/h0ZD74kUAGC8=;
-  b=I7siIriOMgygrG+J3SR9ESPU8SpFEzXQLIhFib31+gXalvPjRCGtTcHt
-   Bc3vgDbxuputZH6H+oNAx4UcdfjCPUDRLu7+0V70+LWfeGIvf4c1F6SIh
-   84vTmwuxfrXXefa8hhYoBKfdgmHWsQjwBQyWNFCaUewVxf7p7Y+UamjwD
-   LJmmnwp4oaSlgoslhEREorsiZ23IYEyXV5sEdpbeySFLzsC+waeuz9Qp9
-   KtbGrQiyIiVHetSKbnS7PRIWNyKGeA9eJNsmC+zBiKZXgHbt3idcCaeIX
-   zr1eu1QaeOs5qQTdvMguh9NItxQDRn1Dv+AQTDs0I3U5M/gpXnsXSSMtz
-   w==;
-X-CSE-ConnectionGUID: P7VIrN3AS+GqAXoXKxe7hQ==
-X-CSE-MsgGUID: rXQWoMW3TdiGThOo3z2XsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="485839"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="485839"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:01:02 -0700
-X-CSE-ConnectionGUID: 6KC7tvomQmKzCZESbFkwbw==
-X-CSE-MsgGUID: 1bYSzrRgSU24r03BSXEcSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="989803"
-Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:00:58 -0700
-Message-ID: <a34b1dba-a2fc-4152-b766-adb1558e5490@linux.intel.com>
-Date: Tue, 13 Oct 2026 15:00:56 +0800
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="szFg0u42"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=mOgLhHEHoKunpl8nP1FWG7wla8LV0YV8TyE4cUWpqzw=;
+	b=szFg0u42l10gwol62GhAro0lkbYK4Ail0bAtK1wX8+6ssFINYqeolZDNiIatT29ZNTGKOSj1r
+	MGgoiG1RuJaRV/iWqP/c6/9goE8zjJFZ6tBGYAaSCNXrfqWl0tRN0coU8TVS9k61GcaGbeml9rw
+	7xbi33YXVAKIGz2h+fN4NMQ=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4j3lT65KPCzpT0R;
+	Tue, 13 Oct 2026 14:55:06 +0800 (CST)
+Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0B1314057F;
+	Tue, 13 Oct 2026 15:07:40 +0800 (CST)
+Received: from [10.67.121.110] (10.67.121.110) by
+ whupemk100014.china.huawei.com (7.152.184.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 13 Oct 2026 15:07:39 +0800
+Subject: Re: [PATCH v5 1/2] hisi_acc_vfio_pci: fix NULL dereference in
+ reset_prepare on PF passthrough
+To: Alex Williamson <alex@shazbot.org>
+CC: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260923082551.1754351-1-liulongfang@huawei.com>
+ <20260923082551.1754351-2-liulongfang@huawei.com>
+ <20260929155141.24887140@shazbot.org>
+From: liulongfang <liulongfang@huawei.com>
+Message-ID: <81364dc6-71e0-c6e3-7012-0c1cb6a9d157@huawei.com>
+Date: Tue, 13 Oct 2026 15:07:38 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/10] x86/virt/tdx: Add a helper to read a table of
- metadata fields
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, yilun.xu@linux.intel.com,
- tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
- nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-2-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-2-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20260929155141.24887140@shazbot.org>
+Content-Type: text/plain; charset="gbk"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ whupemk100014.china.huawei.com (7.152.184.20)
 
-On 10/12/2026 5:47 PM, Chao Gao wrote:
-> The metadata field readers get_tdx_sys_info_<class>() in
-> tdx_global_metadata.c were generated by an out-of-tree script. That has
-> not worked out: the JSON file they were generated from is neither stable
-> nor authoritative enough [1].  The goal now is to maintain the readers by
-> hand and to establish one standard way of adding a metadata field.
+On 2026/9/30 5:51, Alex Williamson wrote:
+> On Wed, 23 Sep 2026 16:25:50 +0800
+> Longfang Liu <liulongfang@huawei.com> wrote:
 > 
-> Take get_tdx_sys_info_version() as an example:
+>> When a PF is bound to the driver via driver_override and passed
+>> through to a VM, its pf_qm stays NULL. The PCI error handler
+>> reset_prepare() runs during open_device through
+>> pci_try_reset_function(), before the mig_ops gate, and dereferences
+>> the NULL pf_qm for the timeout log, crashing the kernel.
+>>
+>> Move the mig_ops check to the entry of reset_prepare() and
+>> aer_reset_done() so non-migration devices skip the QM_RESETTING
+>> coordination. Also clear set_reset_flag together with QM_RESETTING
+>> in aer_reset_done(); the flag was never cleared before, so a later
+>> timed-out reset could release a foreign lock.
+>>
+>> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+>> Fixes: a22099ed7936f ("hisi_acc_vfio_pci: fix VF reset timeout issue")
+>> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+>> ---
+>>  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 11 ++++++++---
+>>  1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>> index 86362ec424a5..6a09252258b9 100644
+>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>> @@ -1157,6 +1157,9 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
 > 
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
->               sysinfo_version->minor_version = val;
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
->               sysinfo_version->major_version = val;
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
->               sysinfo_version->update_version = val;
+> Rolling back to one more line of context in this function:
 > 
-> Two patterns stand out: the read-check-store sequence repeats once per
-> field, and the error of each read is chained into the reads that follow.
-> Neither is common in hand-written code.
+> 	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
 > 
-> Prepare to eliminate both with a loop that reads each field, stores the
-> value into its structure member, and returns on the first error.
+> As per the commit log, we're trying to fix a problem where pf_qm is
+> NULL and dereferenced, such as in this next line:
 > 
-> Add 'struct field_mapping' to describe one field as its ID plus the offset
-> and size of the member that receives its value. Add FIELD_MAP() to
-> build such an entry from a field ID, a structure type and a member name.
-> Add __read_sys_metadata_table() helper to read every field in a table.
-> Annotate that helper __maybe_unused as there is no caller right now.
+>>  	struct device *dev = &qm->pdev->dev;
+>>  	u32 delay = 0;
+>>  
+>> +	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+>> +		return;
+>> +
+>>  	/* All reset requests need to be queued for processing */
+>>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
+>>  		msleep(1);
 > 
-> Following changes will convert the existing readers to use the new helper.
+> Further context:
 > 
-> AI was used under supervision to review code and workshop logs. It
-> suggested adding read_sys_metadata_table() macro, which avoids repeating
-> the table name when passing both the table and its size.
+>                 if (++delay > QM_RESET_WAIT_TIMEOUT) {
+>                         dev_err(dev, "reset prepare failed\n");
+>                         return;
+>                 }
 > 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
+> So the added test exits before the inline dereference testing
+> QM_RESETTING, but you're relying on the compiler to move the resolution
+> of dev into the branch here.  The dereference bug is not fully
+> resolved, it's only masked by the compiler optimization.
+> 
+> The easy solution is to either move the struct device deref into the
+> branch where it's needed, or (better) just open code &qm->pdev->dev on
+> the dev_err() call.  Thanks,
+>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+OK, your analysis is correct.
+I will directly update the dev_err() call to use &qm->pdev->dev in the next version.
 
+Thanks!
+Longfang.
+
+> Alex
+> 
+>> @@ -1174,12 +1177,14 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
+>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>>  
+>> -	if (hisi_acc_vdev->set_reset_flag)
+>> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
+>> -
+>>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+>>  		return;
+>>  
+>> +	if (hisi_acc_vdev->set_reset_flag) {
+>> +		clear_bit(QM_RESETTING, &qm->misc_ctl);
+>> +		hisi_acc_vdev->set_reset_flag = false;
+>> +	}
+>> +
+>>  	mutex_lock(&hisi_acc_vdev->state_mutex);
+>>  	hisi_acc_vf_reset(hisi_acc_vdev);
+>>  	mutex_unlock(&hisi_acc_vdev->state_mutex);
+> 
+> .
+> 
