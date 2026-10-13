@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1FE5519B3;
-	Tue, 13 Oct 2026 15:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C6455408C;
+	Tue, 13 Oct 2026 15:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791905624; cv=none; b=fGPRKRwZmn+jXG+xr+BrcH83V/af3+GsSm16hZu06kMw4xJenMcHdobw4fIUaFuuR4IVQUoWmkgO1I1ieqYeHtGwKDMWP1EHOCQzKVteA03ZLxinAKGAg3FvfxD5D0q7FWZnTT+9f8xv24fozVCDsqtPj5OcxCKQLTWMS+j1sDc=
+	t=1791905630; cv=none; b=n76vfzPi1Vzu+cWckcBVGV630cN23IWXjCCjGkAv8155Ne0GnRGaHEYA3nqo0qUfO/yMVV7xrSc8VgInmy2WRq6k7RqdQIyoIKvFqdnam6wDjZxirkoiTb00YuQww/iIDkIOaspCXguMj1V5OosieUY2Lry3bI4Vw5Aty1tbc3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791905624; c=relaxed/simple;
-	bh=NXBGysr8e/roHDMx+Sg2xtIH34vty0j3VweYJemxJpA=;
+	s=arc-20240116; t=1791905630; c=relaxed/simple;
+	bh=6okskzGhF7IyZQu2Pt86CN9DoCnmyFlO861rq0PjROo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=j7ELsOojAxwXLLhc6wCGeUxDXBPhYmqTqvchvNnlzMQmoYmjYnANNsjfFn3rinVlViCdfABqPvloJw1zw66Kwj+jaeIUY5gQRvmrFzVSGmyMa6xlEMf24ISBFlGgEifAmXzy50AUjvRmXx8M3Yc1hblDCIeAtZAnkqlcMlzh79c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IWhzGdtH; arc=none smtp.client-ip=192.198.163.17
+	 In-Reply-To:To:Cc; b=Kn5ejvYRbn0UqmBbyMgZIwvbkxfdDbJZXFArvOnoAL25ZWi25/nm1iGeOfYz9OfhtVnCcip63ocyZp2c89ZaAwQ45F4QMOvw2G6SAQCN/I5qX0Fl+L2CAHclza34T4LgvmY1jyJNW1/ZucJayS4CN4cOPEKfQyTC3qMcZDcw8Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQB3aCve; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IWhzGdtH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQB3aCve"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791905623; x=1823441623;
+  t=1791905628; x=1823441628;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=NXBGysr8e/roHDMx+Sg2xtIH34vty0j3VweYJemxJpA=;
-  b=IWhzGdtHeIIMh5bD+hqERu0NvD0P0ZOj4uQwyC9rltoozbVWMC3Uwj3h
-   O7nWAbmiBrQ+EBs+aEX9kZ8KZ36RY8i9M3esE49sqRXwCYdpL/z4qOhxb
-   SzMaQaCtzAI9IMdLQpe+29IOb3KgGysnVllDhLoBujm6MPUHe+M1B97LL
-   cRz+OaASEUdA2sL1A0ml5YkPAZa0SC6efCjx2Sr1I7+IW3lOOWktsrYFo
-   aHhg4nDZFokG9qfWwqGIfAcbzgTrnetRJBSLXMnF+t0auq1bB4gFtFr5x
-   /n+vxXgkbIpECXWhJ8/tJFwHSNiZ9CPdya3rvwja31CMFlqon/GdBh3nU
-   A==;
-X-CSE-ConnectionGUID: JSi4to+bTaW0Z2CTfNJLIQ==
-X-CSE-MsgGUID: DDIvwWnHTti/GuYi4XYgFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="643407"
+  bh=6okskzGhF7IyZQu2Pt86CN9DoCnmyFlO861rq0PjROo=;
+  b=NQB3aCve6Ctfzfp2WywbWQcbgyHoXmTvHfcl+yDWSZ9/TfcQGbDOgTmB
+   HQjnV55RMRBXYcgID71s+CmS0wxSr5yWrHV3mcIj5lcF6V24o8/O0NaJg
+   T36f3c0IuRy0k4Aubt1vmDJY5bDGndMJ70IvMbkCjxpKMOKNhH7Vv6O3g
+   yGISXhFsIHqf7mKb8jaEeZkKmS2MXNBbYc90rc73xM+cDLRSpkbPPCp9s
+   qEg1WxW3TfWdAHnGnPIbDYLS9zo1XOZNrSoEIzsp7qUypCFjM/ZyGbJr8
+   v8ZvTB+HS4hZ2725hFHnG6nAqc/X0KbibcQgaoAVT7tyjV7m8OJkb6Ixf
+   g==;
+X-CSE-ConnectionGUID: 35gmo+AXRtS0sOxSKPQsxg==
+X-CSE-MsgGUID: uG39fzU5TC+HAYRk/JdSZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="643421"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="643407"
+   d="scan'208";a="643421"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 08:33:43 -0700
-X-CSE-ConnectionGUID: R3XEXgYDTlmVRanWrtqfRQ==
-X-CSE-MsgGUID: kQuVz87nTduuufOmGi3tpw==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 08:33:47 -0700
+X-CSE-ConnectionGUID: n12THBhyTkGandqCCOfv4Q==
+X-CSE-MsgGUID: 5cvVgctfRmuOMdTGwVa2xA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1388181"
+   d="scan'208";a="1388225"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
-  by fmviesa001.fm.intel.com with ESMTP; 13 Oct 2026 08:33:38 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 13 Oct 2026 08:33:43 -0700
 From: Xu Yilun <yilun.xu@linux.intel.com>
-Date: Tue, 13 Oct 2026 23:28:53 +0800
-Subject: [PATCH v4 3/6] x86/virt/tdx: Add extra memory to TDX module for
+Date: Tue, 13 Oct 2026 23:28:54 +0800
+Subject: [PATCH v4 4/6] x86/virt/tdx: Support DPAMT when adding memory for
  the extensions
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-tdx-module-ext-v4-3-de5ffac65470@linux.intel.com>
+Message-Id: <20261013-tdx-module-ext-v4-4-de5ffac65470@linux.intel.com>
 References: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
 In-Reply-To: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
 To: x86@kernel.org, linux-coco@lists.linux.dev, 
@@ -69,330 +69,77 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
  peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
  chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10797;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2453;
  i=yilun.xu@linux.intel.com; h=from:subject:message-id;
- bh=NXBGysr8e/roHDMx+Sg2xtIH34vty0j3VweYJemxJpA=;
- b=owGbwMvMwCH2Zztz45IFPbcYT6slMWSd8wvfVu335Xj/fR7WJ/Gryjd+UxHXUy/aeWB2iO7HZ
- xGNylafOjpZGMQ4GAzFFFkWeMxymtI+i2nrp53XYOawMoEMEZapzMwpzdOrKHXIzCtJzdFLzs9l
- 4OIUgKnaUcXIcDLp1JwtgtwpL93+nZWNlJZ/tkvu9i1vcbfpQq8sz79IDWL4H1jwe9n7H7OX3nu
- iWBqqdXqv6cm3Ok5SWn9rhSYHScjO5AMA
+ bh=6okskzGhF7IyZQu2Pt86CN9DoCnmyFlO861rq0PjROo=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWSd84tw6IsvthV7k+Xx5vOOzP+L2JRLrxRcVZDtzzfe6
+ LrB+s6tjk4WBjEOBkMxRZYFHrOcprTPYtr6aec1mDmsTCBDhGUqM3NK8/QqSh0y80pSc/SS83MZ
+ uDgFYKp42Bn+B/G+S+w+Lyjewi5r8r97hv0PD5dvTJw6WTKKap3cp16yMPzPLX+lHs3Od1SNxXj
+ j9ZOphUsLJz3Zb7f975l1/I0lPPFsAA==
 X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
  fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
-TDX module extensions need memory for their execution environment to
-serve SEAMCALL leafs. The TDX architecture implements the extensions
-in such a way that they use the memory outside of SEAM range, so the
-kernel should add the memory upfront at initialization time.
+The TDX module uses Physical Address Metadata Table (PAMT) to track some
+state for each page of physical memory that it might use. 3 levels of
+PAMTs are used to track pages of different sizes - 1GB, 2MB and 4KB.
+The Dynamic PAMT (DPAMT) feature allows saving memory by allocating
+4KB-level PAMT dynamically, while the 1GB and 2MB levels remain
+allocated on TDX module initialization.
 
-Introduce a new memory adding process backed by a new SEAMCALL leaf
-TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
-allocates it, adds it to the module, and never gets it back.
+A previous kernel change [1] enabled the DPAMT feature by default so
+that the kernel must install DPAMT before adding any 4KB pages to the
+TDX module.
 
-The TDX module accepts the memory in the form of an HPA array. This
-array is passed via a single 64-bit SEAMCALL leaf parameter, which
-encodes two values: the PFN of the container page holding the array, and
-the number of entries in the array. Create a helper to encode this
-format and name it after the TDX module term: HPA_LIST_INFO.
+Although the memory for the extensions is tens of megabytes and the
+kernel allocates it in a large chunk, the TDX module accepts it at 4K
+granularity. Thus the kernel has to install DPAMT for each page of it,
+otherwise TDH.EXT.MEM.ADD would fail to execute.
 
-TDX module extensions consume tens of megabytes memory that will never
-be returned to the host. Use contiguous page allocation to isolate these
-large blocks entirely. This is a simple way to avoid permanent memory
-fragmentation: requiring the full size to be contiguous is more
-expensive than needed but should be good during the boot time. Print the
-allocation amount on TDX module extensions initialization for
-visibility.
-
-The TDX module provides a metadata field "required_pages" to indicate
-the required memory size. This metadata is present only when the module
-supports the extensions and is meaningful only after the add-on feature
-configuration. Don't read and cache the metadata in tdx_sysinfo at the
-very beginning of TDX module initialization. Instead read it right
-before allocating memory for the extensions, when it is guaranteed to be
-valid.
+The kernel has helpers to install DPAMT for a 4K page. Call
+tdx_pamt_get() for each extension page before adding it to the TDX
+module. Normally, these operations should not fail, and if they do,
+intentionally keep the error handling as simple as before - leak all
+pages, including the installed DPAMT.
 
 AI was used under supervision to review code and workshop logs.
 
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Link: https://lore.kernel.org/all/20260904215841.303070-1-rick.p.edgecombe@intel.com/ # [1]
 ---
-An alternative solution is to use a loop that gives memory on a memory
-error code - TDX_EXT_MEMORY_POOL_REQUIRED, add one page per iteration
-until TDH.EXT.INIT succeeds. Something like:
-
-	do {
-		ret = tdh_sys_init();
-		if (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
-			tdh_ext_mem_add(); //single page
-	} while (ret == TDX_EXT_MEMORY_POOL_REQUIRED);
-
-This approach is slightly simpler as we don't have to query the module
-for the total memory, no memory pre-allocation or segmentation math.
-But allocating a single 4K page per iteration may cause permanent memory
-fragmentation.
-
 v4:
- - Rename memory_pool_required_pages to required_pages (Rick)
- - Rename local var sysinfo_ext to ext
+ - Explain in changelog that TDH.EXT.MEM.ADD won't work without this
+   patch when DPAMT is on by default. (Tony)
+ - Move this patch right after the one that implements TDH.EXT.MEM.ADD
  - Collect Reviewed-by tags
 
 v3:
- - Merge remaining pre-check operations from the previous patch (Rick)
- - Don't save the metadata in tdx_sysinfo (Rick)
- - Tweak the code comment for memory_pool_required_pages == 0 (Chao)
- - Re-phrase the code comment for struct tdx_hpa_list (Tony)
- - Put the error handling comments on top of memory add loop, to avoid
-   moving them around when DPAMT support is added in the following
-   patch.
- - Print memory size before adding memory; it won't be freed afterward,
-   whether the operation succeeds or fails.
- - Collect Reviewed-by tags
-
-v2:
- - Add code comments for container page allocation (Kiryl)
- - Adjust comments/changelog for contiguous allocation of extensions
-   memory (Kiryl)
- - s/PFN array/HPA array in commit log (Kiryl)
- - State the alternative solution (Rick)
- - Add code comment for struct tdx_hpa_list
-
-v1:
- - Fix return value for SEAMCALL wrappers (Chao)
- - Print SEAMCALL error code for SEAMCALL wrappers (Xiaoyao)
- - Rename local vars to make the ext memory adding loop clear (Rick)
- - Remove input parameters for tdx_ext_mem_setup() (Kevin)
- - Add a Macro for tdh_hpa_list size.
- - Change the SEAMALL wrapper parameter type,
-   struct page *hpa_list => struct tdx_hpa_list *hpa_list
- - changelog & code comments
+ - New patch
 ---
- arch/x86/include/asm/tdx.h                  |   1 +
- arch/x86/include/asm/tdx_global_metadata.h  |   4 +
- arch/x86/virt/vmx/tdx/tdx.h                 |   1 +
- arch/x86/virt/vmx/tdx/tdx.c                 | 138 ++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  14 +++
- 5 files changed, 158 insertions(+)
+ arch/x86/virt/vmx/tdx/tdx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 1fcfaed515fe..89e7628796b0 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -37,6 +37,7 @@
- #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
- #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
- #define TDX_FEATURES0_DYNAMIC_PAMT	BIT_ULL(36)
-+#define TDX_FEATURES0_EXT		BIT_ULL(39)
- 
- #ifndef __ASSEMBLER__
- 
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index 8a3cc1a2a41e..f18e63b671c2 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -47,6 +47,10 @@ struct tdx_sys_info_handoff {
- 	u16 module_hv;
- };
- 
-+struct tdx_sys_info_ext {
-+	u32 required_pages;
-+};
-+
- struct tdx_sys_info {
- 	struct tdx_sys_info_version version;
- 	struct tdx_sys_info_features features;
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index db209541d3cd..2adc5d31d258 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -50,6 +50,7 @@
- #define TDH_SYS_UPDATE			53
- #define TDH_PHYMEM_PAMT_ADD		58
- #define TDH_PHYMEM_PAMT_REMOVE		59
-+#define TDH_EXT_MEM_ADD			61
- #define TDH_SYS_DISABLE			69
- 
- /* TDX page types */
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f08278a47aff..744ef95e448f 100644
+index 744ef95e448f..4908add631fa 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1220,6 +1220,140 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
- 	return 0;
- }
+@@ -1328,8 +1328,15 @@ static __init int tdx_ext_mem_setup(void)
+ 		struct page *chunk = page + added_pages;
+ 		unsigned int i;
  
-+#define TDX_HPA_LIST_MAX_NR_PAGES	(PAGE_SIZE / sizeof(u64))
+-		for (i = 0; i < chunk_pages; i++)
++		for (i = 0; i < chunk_pages; i++) {
++			ret = tdx_pamt_get(page_to_pfn(chunk + i), NULL);
++			if (ret) {
++				WARN(1, "DPAMT setup error for extensions, stranded all pages\n");
++				goto out_free_hpa_list;
++			}
 +
-+/*
-+ * TDX module in-memory ABI to specify the memory being added to the TDX
-+ * module. An array of HPAs, each element points to a 4K page.
-+ */
-+struct tdx_hpa_list {
-+	u64 phys[TDX_HPA_LIST_MAX_NR_PAGES];
-+};
-+
-+static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
-+
-+#define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
-+#define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
-+#define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
-+
-+static __init u64 to_hpa_list_info(struct tdx_hpa_list *hpa_list,
-+				   unsigned int nr_pages)
-+{
-+	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
-+	       FIELD_PREP(HPA_LIST_INFO_PFN, PFN_DOWN(__pa(hpa_list))) |
-+	       FIELD_PREP(HPA_LIST_INFO_LAST_ENTRY, nr_pages - 1);
-+}
-+
-+static __init int tdx_ext_mem_add(struct tdx_hpa_list *hpa_list,
-+				  unsigned int nr_pages)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = to_hpa_list_info(hpa_list, nr_pages),
-+	};
-+	u64 ret;
-+
-+	do {
-+		/*
-+		 * The TDX module overwrites RCX to track progress when this
-+		 * SEAMCALL leaf is interrupted. Use seamcall_ret() to save and
-+		 * pass the updated value back on retry.
-+		 */
-+		ret = seamcall_ret(TDH_EXT_MEM_ADD, &args);
-+	} while (ret == TDX_INTERRUPTED_RESUMABLE);
-+
-+	if (ret != TDX_SUCCESS) {
-+		pr_err("TDH.EXT.MEM.ADD failed: 0x%016llx\n", ret);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static __init int tdx_ext_mem_setup(void)
-+{
-+	struct tdx_hpa_list *hpa_list;
-+	struct tdx_sys_info_ext ext;
-+	unsigned int added_pages;
-+	struct page *page;
-+	int ret;
-+
-+	ret = get_tdx_sys_info_ext(&ext);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Skip the memory setup if no memory is required. This may happen when
-+	 * no add-on features requiring TDX module extensions are configured
-+	 * via TDH.SYS.CONFIG.
-+	 */
-+	if (!ext.required_pages)
-+		return 0;
-+
-+	/*
-+	 * Allocate the container page for the HPA_LIST. tdx_hpa_list is
-+	 * guaranteed to be page-sized by static_assert(), so kzalloc()
-+	 * guarantees the page alignment.
-+	 */
-+	hpa_list = kzalloc_obj(*hpa_list);
-+	if (!hpa_list)
-+		return -ENOMEM;
-+
-+	/*
-+	 * Memory for TDX module extensions is never reclaimed and can be tens
-+	 * of megabytes. Allocating a physically contiguous chunk is a simple
-+	 * way to avoid permanent memory fragmentation: requiring the full size
-+	 * to be contiguous is more expensive than needed but should be good
-+	 * during the boot time.
-+	 */
-+	page = alloc_contig_pages(ext.required_pages, GFP_KERNEL,
-+				  numa_mem_id(), &node_online_map);
-+	if (!page) {
-+		ret = -ENOMEM;
-+		goto out_free_hpa_list;
-+	}
-+
-+	/* Print the amount so users know the cost. */
-+	pr_info("%lu KB allocated for TDX module extensions\n",
-+		ext.required_pages * PAGE_SIZE / 1024);
-+
-+	/*
-+	 * Following TDX operations shouldn't fail, and if they do, things are
-+	 * broken enough that complex error handling isn't worth it.
-+	 * Intentionally leak all pages on failure, including un-added pages.
-+	 */
-+	added_pages = 0;
-+	while (added_pages < ext.required_pages) {
-+		unsigned int chunk_pages = min(ext.required_pages - added_pages,
-+					       TDX_HPA_LIST_MAX_NR_PAGES);
-+		struct page *chunk = page + added_pages;
-+		unsigned int i;
-+
-+		for (i = 0; i < chunk_pages; i++)
-+			hpa_list->phys[i] = page_to_phys(chunk + i);
-+
-+		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
-+		if (ret) {
-+			WARN(1, "TDX module rejected memory for extensions, stranded all pages\n");
-+			break;
+ 			hpa_list->phys[i] = page_to_phys(chunk + i);
 +		}
-+
-+		added_pages += chunk_pages;
-+	}
-+
-+out_free_hpa_list:
-+	kfree(hpa_list);
-+
-+	return ret;
-+}
-+
-+static __init int init_tdx_module_extensions(void)
-+{
-+	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-+		return 0;
-+
-+	return tdx_ext_mem_setup();
-+}
-+
- static __init int init_tdx_module(void)
- {
- 	int ret;
-@@ -1278,6 +1412,10 @@ static __init int init_tdx_module(void)
- 	if (ret)
- 		goto err_reset_pamts;
  
-+	ret = init_tdx_module_extensions();
-+	if (ret)
-+		goto err_reset_pamts;
-+
- 	pr_info("%lu KB allocated for PAMT\n", tdmrs_count_pamt_kb(&tdx_tdmr_list));
- 
- out_put_tdxmem:
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 98ebf17aab1c..9ab4d021017f 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -125,6 +125,20 @@ static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff
- 	return 0;
- }
- 
-+static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
-+{
-+	int ret;
-+	u64 val;
-+
-+	ret = read_sys_metadata_field(0x3100000200000000, &val);
-+	if (ret)
-+		return ret;
-+
-+	sysinfo_ext->required_pages = val;
-+
-+	return 0;
-+}
-+
- static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- {
- 	int ret = 0;
+ 		ret = tdx_ext_mem_add(hpa_list, chunk_pages);
+ 		if (ret) {
 
 -- 
 2.25.1
