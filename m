@@ -1,217 +1,492 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803994F5DFD
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 12:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCE84F7970;
+	Tue, 13 Oct 2026 12:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791893603; cv=none; b=f9PmANNCTssux/DRnOKyMkw/zp4DNKDO5PHSm0NYTbmvPzlMxkbS5eJQiU25TJEjTdePD/RMGpupZDKocbUvBri929IZnkdG0InctBQfcFuc2BOHPqKyex2Xemk9A08cpPtHjSHCwoUjz/1078l4xUOv2qmruKQhE3kddeteEFo=
+	t=1791893668; cv=none; b=hzItQFoL9kNdrJaQzkPpT6+hintINRYgAohEkeGMaZ7bD74x/8CPuXLU8DiR0xGFtnoJnQwDZLtApGucR+9NDv4SVUlvEbv1qdUGaZdIMwMUJpTP8q4iVICZHBF7xgJDPslcsOeYEun3WGOrUh9Xy5aD80rq8BQSwowLvmwtKNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791893603; c=relaxed/simple;
-	bh=GmewS9MX/pMt0TQtYhdFbnW64zOueYVprrsOA812m8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lz0o0vyD94hH88lCcvrhkg+HLM/iEl2kMMshSUK1AvPGW11JvROyaZdNbOIbaomiXmUqGZ1KuM5+R/Tz79jdZUpvtagoaTFdV9Zlbh4sgkuoifaUV5owoeSnoBfVpPg1lGSPm83okAJ4OKS5KUu/aHhoZcxZkcBpxSkD7oeW2zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=e4mdUKVv; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1791893668; c=relaxed/simple;
+	bh=cZ4gkNCXIea2yzFLNkymPOUwaS3JarTJyXSSC9orllQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D88qbiNwo+q+dJ7sS2VQYoBiQy8CKJ5R4IKKvyFxysLi58kyoMCIcPaGOtoncdTY0t5J779wUnAzEYuit/RcELu69eFxD65hJzWMI2Sdg17pMv6oxLJrk1hQlxTf6loXDL05gaB8JM8DFYMo9cislqMhHxnoUJjvnKtMcxFPOCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jSz3vTvK; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="e4mdUKVv"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-486e70f2457so1259812f8f.2
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 05:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791893600; x=1792498400; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=edUU9Hn3hyFtM1ngJWHa9pnhQIwExXlb5OPfjcFEs1c=;
-        b=e4mdUKVvX2QFZFAqZhyS3XKWTDGe5WE/vFc9b8SavFE6tFHsNpAMveofzH8UIR7X6W
-         BUQhPA2FVNP/q7kIY04R3J3S+YgzWfbdD+5GHDag8pGQ92byF9roQhOM38qHvri3NPNm
-         5AWBqxNNVhTLNX4r/hJtnA4OuoV90f2yFjInaMMXjTvg0hyJ+MBF+xoeWyXXhyqh4MW0
-         RutMB6IiwwjaZHWbUOi/fjrCFsBfwlTcMkHdlfBHnEPrPocoW+CuehAmVuPZ9oXJ+N7X
-         NdrHeBqQMG5rW+2FP92Oek8Smiu7aLM7AGhIXuDUNIaRS9Jlk4idLSh8aelDhfHD5fLh
-         188A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791893600; x=1792498400;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=edUU9Hn3hyFtM1ngJWHa9pnhQIwExXlb5OPfjcFEs1c=;
-        b=ch5qkdEoJKCqPC+WJ/jE10REo4MKBY6oppg5kCsfydq+1Y4w0FgnNxUFp3eV0mqRv1
-         zSdcwpn//Y8hEDznxRHI9rzwoXSZE6xL4kOZZ3iysHfGtJCfmomwM1V4vn6AQl+89I/J
-         Gc/x2SBQEloN/JAbzweXWCQyoDetE+EApqp36H/y46zR94noNM2YimUDGXUhsZ6TBouK
-         rOIdrPaXY15+o5UwQdNSoBZsKn397pS9sZQBF5R1AF/n/K90ruSvjAjiKFKp/4GY5Epx
-         c7Y6ELdaKBSWB1u0SygSa6WacLSUNwYd4H0GYZw1Ko3UHJ1UzoweXvST3xqezQWkI9CZ
-         83vg==
-X-Forwarded-Encrypted: i=1; AKwUvBy5PPtXIR5Z6sCq8oByrEM8Zsb9K99Zhss0FiNLULKC45rBM8q3nSj3+1zjZG544qYFivs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKeJvMnY5L3AFoliujld0xXRVpk47PxA/UflmPsf4oawrKoh2FF
-	0jg0sWmhPUrg3XVVT7CAzn25ht3MGltj+HMWQVuEKo0vIQC4YZBpJWc1KRCfRWNYRk8=
-X-Gm-Gg: AYBFou1i3I+q206OkXQs7Jl477O0UNZiL/yg/ctLuQuQJLqEPZbso4TM8SGiTFg1lnX
-	Vc171A5VFIGRnhOrkxpCnlbEGt3AlfmqKrQLcT/uGQJcnF9JNUT7GLXH9ie0UJZ3JaktzIDU1/8
-	VvKDpYszDtmAcJQyyQDL3lPQoWf8tTYmbvULh8qJR4cGv0sYyUU1YMYnxaC/ozatYzzx+uteQ4B
-	nclCAzxipfks7BdUMDXkfArIgpWKW1zBbkXZPc1iz9v/Sm9VnrzuX1tXlpcWZHEBFLAFPAyAuvw
-	2k43LGSx1ubc8/iovd/Z1jefKim9mL3tqHKUD+LgNpSrvYj7Xsq3k7kFjVSjN1rPzdZi87fvXvL
-	TD9+AgzekfOZ/9ro5mZ1k0Lp9UHLKK0kr2mCcH3/mAloXoMWkYNOSHrYs/uR/N26daH6A4NO5JP
-	zm6+V+xCoveR7l0WRA1lTbmJ0ACJSPF173dtSe0ec4cOZQMUYZHeoCX9fHu26RBP6jTklKyrqqw
-	klyXlIHYOEhQG4TNEKljlU=
-X-Received: by 2002:a05:6000:491c:b0:488:8751:e78e with SMTP id ffacd0b85a97d-48dba9bdd09mr25645157f8f.16.1791893599634;
-        Tue, 13 Oct 2026 05:13:19 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab5991sm5087349f8f.29.2026.10.13.05.13.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 05:13:19 -0700 (PDT)
-Message-ID: <69fb13b5-857c-4819-bc8a-b87d1e7a1e28@suse.com>
-Date: Tue, 13 Oct 2026 15:13:17 +0300
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jSz3vTvK"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69D2Exo42017848;
+	Tue, 13 Oct 2026 12:14:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Ykohq2hyalPteRG/N
+	SqfLGIk6uqasw0mmp7z8Gfbo/0=; b=jSz3vTvKhDmemqSfR0HPsHw6oGdc5JLYv
+	f9kZnPFbPNNQPc41eSSA2ILWTm1EEDVZlnBCmFM1E8WZVf0WjHkwV71tPgy+zF/n
+	2HjZiq+dhMCIzb5Idt4SSez0bPLuRtJiB0+z/6nXQYLjj3lksHCYBCLODqgCBlPV
+	ltZQ6dMFq9BMjLthFc+0lXooww8HyYYgFzmLgkWs2MMKSuoG6cyWW8wsItltHKkj
+	goE6nRr0pHeJsoelnO30vzOwtfKbPmJcpAesN0FXs6HI0rUCRGdPrdLRnDY6vnlY
+	y1Wo4q615cX6G98PA3ljFvd77eIaGVjG2Zn9qDL7a+U5ov7Gvdnvw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dugdvvm-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 13 Oct 2026 12:13:59 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69D8UQ7F1440163;
+	Tue, 13 Oct 2026 12:13:58 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h81wg1gh8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Oct 2026 12:13:58 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69DCDoof25821798
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Oct 2026 12:13:50 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BCB5B20049;
+	Tue, 13 Oct 2026 12:13:50 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5E13620040;
+	Tue, 13 Oct 2026 12:13:50 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 13 Oct 2026 12:13:50 +0000 (GMT)
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Steffen Eiden <seiden@linux.ibm.com>
+Subject: [PATCH v10 02/24] KVM: Move architecture capability Kconfigs to header defines
+Date: Tue, 13 Oct 2026 14:13:43 +0200
+Message-ID: <20261013121343.1997112-1-seiden@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260930173441.66762-3-seiden@linux.ibm.com>
+References: <20260930173441.66762-3-seiden@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] x86/tdx: Use TDVMCALLs directly for earlyprintk
-To: Vishal Verma <vishal.l.verma@intel.com>, x86@kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- xsFNBGcrpvIBEAD5cAR5+qu30GnmPrK9veWX5RVzzbgtkk9C/EESHy9Yz0+HWgCVRoNyRQsZ
- 7DW7vE1KhioDLXjDmeu8/0A8u5nFMqv6d1Gt1lb7XzSAYw7uSWXLPEjFBtz9+fBJJLgbYU7G
- OpTKy6gRr6GaItZze+r04PGWjeyVUuHZuncTO7B2huxcwIk9tFtRX21gVSOOC96HcxSVVA7X
- N/LLM2EOL7kg4/yDWEhAdLQDChswhmdpHkp5g6ytj9TM8bNlq9I41hl/3cBEeAkxtb/eS5YR
- 88LBb/2FkcGnhxkGJPNB+4Siku7K8Mk2Y6elnkOctJcDvk29DajYbQnnW4nhfelZuLNupb1O
- M0912EvzOVI0dIVgR+xtosp66bYTOpX4Xb0fylED9kYGiuEAeoQZaDQ2eICDcHPiaLzh+6cc
- pkVTB0sXkWHUsPamtPum6/PgWLE9vGI5s+FaqBaqBYDKyvtJfLK4BdZng0Uc3ijycPs3bpbQ
- bOnK9LD8TYmYaeTenoNILQ7Ut54CCEXkP446skUMKrEo/HabvkykyWqWiIE/UlAYAx9+Ckho
- TT1d2QsmsAiYYWwjU8igXBecIbC0uRtF/cTfelNGrQwbICUT6kJjcOTpQDaVyIgRSlUMrlNZ
- XPVEQ6Zq3/aENA8ObhFxE5PLJPizJH6SC89BMKF3zg6SKx0qzQARAQABzSZOaWtvbGF5IEJv
- cmlzb3YgPG5pay5ib3Jpc292QHN1c2UuY29tPsLBkQQTAQoAOxYhBDuWB8EJLBUZCPjT3SRn
- XZEnyhfsBQJnK6byAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJECRnXZEnyhfs
- XbIQAJxuUnelGdXbSbtovBNm+HF3LtT0XnZ0+DoR0DemUGuA1bZAlaOXGr5mvVbTgaoGUQIJ
- 3Ejx3UBEG7ZSJcfJobB34w1qHEDO0pN9orGIFT9Bic3lqhawD2r85QMcWwjsZH5FhyRx7P2o
- DTuUClLMO95GuHYQngBF2rHHl8QMJPVKsR18w4IWAhALpEApxa3luyV7pAAqKllfCNt7tmed
- uKmclf/Sz6qoP75CvEtRbfAOqYgG1Uk9A62C51iAPe35neMre3WGLsdgyMj4/15jPYi+tOUX
- Tc7AAWgc95LXyPJo8069MOU73htZmgH4OYy+S7f+ArXD7h8lTLT1niff2bCPi6eiAQq6b5CJ
- Ka4/27IiZo8tm1XjLYmoBmaCovqx5y5Xt2koibIWG3ZGD2I+qRwZ0UohKRH6kKVHGcrmCv0J
- YO8yIprxgoYmA7gq21BpTqw3D4+8xujn/6LgndLKmGESM1FuY3ymXgj5983eqaxicKpT9iq8
- /a1j31tms4azR7+6Dt8H4SagfN6VbJ0luPzobrrNFxUgpjR4ZyQQ++G7oSRdwjfIh1wuCF6/
- mDUNcb6/kA0JS9otiC3omfht47yQnvod+MxFk1lTNUu3hePJUwg1vT1te3vO5oln8lkUo9BU
- knlYpQ7QA2rDEKs+YWqUstr4pDtHzwQ6mo0rqP+zzsFNBGcrpvIBEADGYTFkNVttZkt6e7yA
- LNkv3Q39zQCt8qe7qkPdlj3CqygVXfw+h7GlcT9fuc4kd7YxFys4/Wd9icj9ZatGMwffONmi
- LnUotIq2N7+xvc4Xu76wv+QJpiuGEfCDB+VdZOmOzUPlmMkcJc/EDSH4qGogIYRu72uweKEq
- VfBI43PZIGpGJ7TjS3THX5WVI2YNSmuwqxnQF/iVqDtD2N72ObkBwIf9GnrOgxEyJ/SQq2R0
- g7hd6IYk7SOKt1a8ZGCN6hXXKzmM6gHRC8fyWeTqJcK4BKSdX8PzEuYmAJjSfx4w6DoxdK5/
- 9sVrNzaVgDHS0ThH/5kNkZ65KNR7K2nk45LT5Crjbg7w5/kKDY6/XiXDx7v/BOR/a+Ryo+lM
- MffN3XSnAex8cmIhNINl5Z8CAvDLUtItLcbDOv7hdXt6DSyb65CdyY8JwOt6CWno1tdjyDEG
- 5ANwVPYY878IFkOJLRTJuUd5ltybaSWjKIwjYJfIXuoyzE7OL63856MC/Os8PcLfY7vYY2LB
- cvKH1qOcs+an86DWX17+dkcKD/YLrpzwvRMur5+kTgVfXcC0TAl39N4YtaCKM/3ugAaVS1Mw
- MrbyGnGqVMqlCpjnpYREzapSk8XxbO2kYRsZQd8J9ei98OSqgPf8xM7NCULd/xaZLJUydql1
- JdSREId2C15jut21aQARAQABwsF2BBgBCgAgFiEEO5YHwQksFRkI+NPdJGddkSfKF+wFAmcr
- pvICGwwACgkQJGddkSfKF+xuuxAA4F9iQc61wvAOAidktv4Rztn4QKy8TAyGN3M8zYf/A5Zx
- VcGgX4J4MhRUoPQNrzmVlrrtE2KILHxQZx5eQyPgixPXri42oG5ePEXZoLU5GFRYSPjjTYmP
- ypyTPN7uoWLfw4TxJqWCGRLsjnkwvyN3R4161Dty4Uhzqp1IkNhl3ifTDYEvbnmHaNvlvvna
- 7+9jjEBDEFYDMuO/CA8UtoVQXjy5gtOhZZkEsptfwQYc+E9U99yxGofDul7xH41VdXGpIhUj
- 4wjd3IbgaCiHxxj/M9eM99ybu5asvHyMo3EFPkyWxZsBlUN/riFXGspG4sT0cwOUhG2ZnExv
- XXhOGKs/y3VGhjZeCDWZ+0ZQHPCL3HUebLxW49wwLxvXU6sLNfYnTJxdqn58Aq4sBXW5Un0Q
- vfbd9VFV/bKFfvUscYk2UKPi9vgn1hY38IfmsnoS8b0uwDq75IBvup9pYFyNyPf5SutxhFfP
- JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
- d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
- pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20261005-b4-tdx_earlyprintk_tdcalls-v4-0-3f7c56dd568a@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=Cr0q4X4D c=1 sm=1 tr=0 ts=6ace2087 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=43XmKtFRw13_1s8YYrEA:9
+ a=nhjZEc3S35jqr8fL:21
+X-Proofpoint-GUID: i7FZQ7lHiXk1GjyUNtS4cT9-cAL2Anpm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA0OCBTYWx0ZWRfX+TOPaCHhLH7D
+ HvLwr3SBGW3iNMmUi03WkBOE6IRY2iDL2Br+XoKyfaiLi8MS6+ufv7dVUhRCsOIXFYkicKEN5Ko
+ 6779ntLWLjxuSiDHe9Lom8SEevvGZSZALBuR+50jcd0VUJ9RxGH8U9uA/IcaWgQ/ouvO8sduGIV
+ /MxaM6L5F1EkK59+ZH/PevnkGRRcJhbXCvRF12MIhWIyz7ikkUUBPZYHHon1UrOTbBNZhEZgEwv
+ SbD4ze+diLPBTRvbSMRTcln1dB20prg5t1tqnXxLTOsivT6zV8r5w9BAPR3/3s5VSadkyprsi/H
+ K8lnUQ3GdHVJa9W0kjvv5Lejam5z4EqhGH1rmnnqkKgXebUze6cOA7ybIyxCE1i/xmhgGdZwYMG
+ Izc/cS2j7Of8lHcIwt5IN+mWGOaOEKsFmFOevinokkT719GjvYSoXCNtbQgoq+7Uf/9ogt+fJO1
+ Ndvn3bFKTOz2/Cm1+ew==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA0OCBTYWx0ZWRfX3/tAgNiwbArE
+ 5Lp8hMl99DiYlHEx+UJWSNfxZElFp4EWYdB1aLIrHDxfMoL7KpbrW6lsT1JFn2NxOdB+h9usEkX
+ vWWwUZ3iq+kIk9awtJBwIzNgeouy72A=
+X-Proofpoint-ORIG-GUID: mPdSjF0Fcw7oeYIR0q2wdEHqSYMZgt-s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610130048
 
+With s390 hosting multiple independent KVM implementations within the
+same kernel build (native s390 KVM and arm64 on s390), global Kconfig
+selections force both implementations to inherit options that only apply
+to one of them.
 
+Replace global Kconfig options which only apply to one KVM
+implementation with architecture-specific opt-in defines in the
+respective <asm/kvm_host.h>. Only remove Kconfig symbols that would be
+different on both s390 KVM implementations
 
-On 6.10.26 г. 1:50 ч., Vishal Verma wrote:
-> Background
-> ==========
-> 
-> TDX guests have early_printk support, but it is through a roundabout way
-> using a #VE exception as a functional mechanism. The exception handler
-> has to use TDG.VP.VEINFO.GET to find out what faulted, and then issue
-> the TDVMCALL. Simplify this by using a TDVMCALL from the guest which can
-> directly perform the port I/O.
-> 
-> Patch details
-> =============
-> 
-> Patch 1 is a cleanup that moves the port I/O direction constants to
-> arch/x86/include/asm/shared/tdx.h.
-> 
-> Patch 2: Add a new earlyprintk=tdx option, which calls the new
-> tdx_serial_in() / tdx_serial_out() helpers to perform the port I/O
-> directly using TDVMCALLs.
-> 
-> The serial earlyprintk path is left as is - TD guests using this will
-> still take a #VE exception, and the exception handler will perform the
-> I/O.
-> 
-> Testing
-> =======
-> 
-> Added a counter for the number of COM1 port I/O #VEs handled:
-> 
->    no earlyprintk     -  ~63000
->    earlyprintk=ttyS0  -  ~61000
->    earlyprintk=tdx    -  ~35000
-> 
-> The new tdx option nearly halves the number of #VEs handled.
-> 
-> Additionally, ran the usual suite of CI testing, which covers KVM self
-> tests, KVM unit tests, and Avocado KVM tests without any regressions.
-> 
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
-> Changes in v4:
-> - Rename the tdx_inb()/tdx_outb() helpers directly to the serial
->    accessors with __noendbr annotations, and remove the config ifdefs
->    from early_printk.c. (Kiryl)
-> - Rebase to v7.3-rc6
-> - Link to v3: https://patch.msgid.link/20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com
-> 
-> Changes in v3:
-> - Drop the ttySN and baudrate option parsing for earlyprintk=tdx (Dave Hansen)
-> - Link to v2: https://patch.msgid.link/20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com
-> 
-> Changes in v2:
-> - Rebase to v7.3-rc4
-> - Move the TDX hypercall helpers into coco/tdx/tdx.c (Kiryl)
-> - Add a new earlyprintk=tdx option that implements the direct TDVMCALL
->    path (Dave Hansen)
-> - Link to v1: https://patch.msgid.link/20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com
-> 
-> ---
-> Vishal Verma (2):
->        x86/tdx: Move port I/O definitions to a shared header
->        x86/early_printk: Add earlyprintk=tdx to drive the UART with TDVMCALLs
-> 
->   Documentation/admin-guide/kernel-parameters.txt |  8 ++++++
->   arch/x86/include/asm/shared/tdx.h               |  6 ++++
->   arch/x86/include/asm/tdx.h                      |  4 +++
->   arch/x86/boot/compressed/tdx.c                  |  4 +--
->   arch/x86/coco/tdx/tdx.c                         | 37 +++++++++++++++++++++----
->   arch/x86/kernel/early_printk.c                  | 20 +++++++++++++
->   6 files changed, 71 insertions(+), 8 deletions(-)
-> ---
-> base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
-> change-id: 20260903-b4-tdx_earlyprintk_tdcalls-40d1b21a8ba2
-> 
-> Best regards,
-> --
-> Vishal Verma <vishal.l.verma@intel.com>
-> 
-> 
+  - __KVM_HAVE_INVALID_WAKEUPS		(formerly HAVE_KVM_INVALID_WAKEUPS)
+  - __KVM_HAVE_MSI			(formerly HAVE_KVM_MSI)
+  - __KVM_HAVE_NO_POLL			(formerly HAVE_KVM_NO_POLL)
+  - __KVM_HAVE_READONLY_MEM		(formerly HAVE_KVM_READONLY_MEM)
+  - __KVM_HAVE_VCPU_RUN_PID_CHANGE	(formerly HAVE_KVM_VCPU_RUN_PID_CHANGE)
 
-For the whole series :
+This allows each architecture and guest implementation to configure its
+supported capabilities independently in its kvm_host header and eliminates
+adding unnecessary fallback stubs across different KVM targets.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Acked-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+---
 
+Sending this patch alone. All others are OK or already picked.
+
+Changes for v10:
+  - Use __KVM_HAVE_ as prefix
+  - Clarify that this patch touches only selected Kconfig options and
+    not all.
+
+ arch/arm64/include/asm/kvm_host.h     |  3 +++
+ arch/arm64/kvm/Kconfig                |  3 ---
+ arch/loongarch/include/asm/kvm_host.h |  2 ++
+ arch/loongarch/kvm/Kconfig            |  2 --
+ arch/mips/include/asm/kvm_host.h      |  1 +
+ arch/mips/kvm/Kconfig                 |  1 -
+ arch/powerpc/include/asm/kvm_host.h   |  3 +++
+ arch/powerpc/kvm/Kconfig              |  1 -
+ arch/riscv/include/asm/kvm_host.h     |  2 ++
+ arch/riscv/kvm/Kconfig                |  2 --
+ arch/s390/include/asm/kvm_host_s390.h |  3 +++
+ arch/s390/kvm/Kconfig                 |  2 --
+ arch/x86/include/asm/kvm_host.h       |  3 +++
+ arch/x86/kvm/Kconfig                  |  3 ---
+ include/linux/kvm_host.h              | 18 +++++++++++-------
+ virt/kvm/Kconfig                      | 15 ---------------
+ virt/kvm/kvm_main.c                   |  4 ++--
+ 17 files changed, 30 insertions(+), 38 deletions(-)
+
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 1c6632216e32..5c9843338c51 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -32,6 +32,9 @@
+ #include <asm/vncr_mapping.h>
+ 
+ #define __KVM_HAVE_ARCH_INTC_INITIALIZED
++#define __KVM_HAVE_MSI
++#define __KVM_HAVE_READONLY_MEM
++#define __KVM_HAVE_VCPU_RUN_PID_CHANGE
+ 
+ #define KVM_HALT_POLL_NS_DEFAULT 500000
+ 
+diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+index 71233068b7cb..df8e4003f76c 100644
+--- a/arch/arm64/kvm/Kconfig
++++ b/arch/arm64/kvm/Kconfig
+@@ -28,12 +28,9 @@ menuconfig KVM
+ 	select KVM_VFIO
+ 	select HAVE_KVM_DIRTY_RING_ACQ_REL
+ 	select NEED_KVM_DIRTY_RING_WITH_BITMAP
+-	select HAVE_KVM_MSI
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQ_ROUTING
+ 	select HAVE_KVM_IRQ_BYPASS
+-	select HAVE_KVM_READONLY_MEM
+-	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+ 	select SCHED_INFO
+ 	select GUEST_PERF_EVENTS if PERF_EVENTS
+ 	select KVM_GUEST_MEMFD
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index 65d91c3ce313..79d3ce7ad029 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -26,6 +26,8 @@
+ #include <asm/loongarch.h>
+ 
+ #define __KVM_HAVE_ARCH_INTC_INITIALIZED
++#define __KVM_HAVE_MSI
++#define __KVM_HAVE_READONLY_MEM
+ 
+ /* Loongarch KVM register ids */
+ #define KVM_GET_IOC_CSR_IDX(id)		((id & KVM_CSR_IDX_MASK) >> LOONGARCH_REG_SHIFT)
+diff --git a/arch/loongarch/kvm/Kconfig b/arch/loongarch/kvm/Kconfig
+index 15da2d88c0c1..a427429a2b05 100644
+--- a/arch/loongarch/kvm/Kconfig
++++ b/arch/loongarch/kvm/Kconfig
+@@ -23,8 +23,6 @@ config KVM
+ 	select HAVE_KVM_DIRTY_RING_ACQ_REL
+ 	select HAVE_KVM_IRQ_ROUTING
+ 	select HAVE_KVM_IRQCHIP
+-	select HAVE_KVM_MSI
+-	select HAVE_KVM_READONLY_MEM
+ 	select KVM_COMMON
+ 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+ 	select KVM_GENERIC_HARDWARE_ENABLING
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index c14b10821817..d481275f38eb 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -893,5 +893,6 @@ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+ 
+ #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS
++#define __KVM_HAVE_READONLY_MEM
+ 
+ #endif /* __MIPS_KVM_HOST_H__ */
+diff --git a/arch/mips/kvm/Kconfig b/arch/mips/kvm/Kconfig
+index b1b9a1d67758..c24b872afbcb 100644
+--- a/arch/mips/kvm/Kconfig
++++ b/arch/mips/kvm/Kconfig
+@@ -24,7 +24,6 @@ config KVM
+ 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+ 	select KVM_MMIO
+ 	select KVM_GENERIC_HARDWARE_ENABLING
+-	select HAVE_KVM_READONLY_MEM
+ 	help
+ 	  Support for hosting Guest kernels.
+ 
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 2d139c807577..d8ef70c14aad 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -49,6 +49,9 @@
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ 
+ #define __KVM_HAVE_ARCH_INTC_INITIALIZED
++#ifdef CONFIG_KVM_MPIC
++#define __KVM_HAVE_MSI
++#endif
+ 
+ #define KVM_HALT_POLL_NS_DEFAULT 10000	/* 10 us */
+ 
+diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+index b6bc2fc86dca..1fae2de8fa68 100644
+--- a/arch/powerpc/kvm/Kconfig
++++ b/arch/powerpc/kvm/Kconfig
+@@ -232,7 +232,6 @@ config KVM_MPIC
+ 	depends on KVM && PPC_E500
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQ_ROUTING
+-	select HAVE_KVM_MSI
+ 	help
+ 	  Enable support for emulating MPIC devices inside the
+ 	  host kernel, rather than relying on userspace to emulate.
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index a30600579231..e28f058a94d7 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -47,6 +47,8 @@
+ #define KVM_REQ_STEAL_UPDATE		KVM_ARCH_REQ(6)
+ 
+ #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
++#define __KVM_HAVE_MSI
++#define __KVM_HAVE_READONLY_MEM
+ 
+ #define KVM_HAVE_MMU_RWLOCK
+ 
+diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+index ec2cee0a39e0..3cb4f8037300 100644
+--- a/arch/riscv/kvm/Kconfig
++++ b/arch/riscv/kvm/Kconfig
+@@ -22,8 +22,6 @@ config KVM
+ 	depends on RISCV_SBI && MMU
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQ_ROUTING
+-	select HAVE_KVM_MSI
+-	select HAVE_KVM_READONLY_MEM
+ 	select HAVE_KVM_DIRTY_RING_ACQ_REL
+ 	select KVM_COMMON
+ 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+index 9519b8028b10..a00353ba0343 100644
+--- a/arch/s390/include/asm/kvm_host_s390.h
++++ b/arch/s390/include/asm/kvm_host_s390.h
+@@ -34,6 +34,9 @@
+ 
+ #define KVM_INTERNAL_MEM_SLOTS 1
+ 
++#define __KVM_HAVE_INVALID_WAKEUPS
++#define __KVM_HAVE_NO_POLL
++
+ #define KVM_S390_MANAGES_S390_GUEST 1
+ 
+ /*
+diff --git a/arch/s390/kvm/Kconfig b/arch/s390/kvm/Kconfig
+index 8d3ee17a1bcb..9045ae20fd89 100644
+--- a/arch/s390/kvm/Kconfig
++++ b/arch/s390/kvm/Kconfig
+@@ -25,8 +25,6 @@ config KVM
+ 	select KVM_COMMON
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQ_ROUTING
+-	select HAVE_KVM_INVALID_WAKEUPS
+-	select HAVE_KVM_NO_POLL
+ 	select KVM_VFIO
+ 	select VIRT_XFER_TO_GUEST_WORK
+ 	select KVM_MMU_LOCKLESS_AGING
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index e460073ff176..9baafeff1f25 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -47,6 +47,9 @@
+ #define kvm_file_to_kvm_arch x86
+ 
+ #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
++#define __KVM_HAVE_MSI
++#define __KVM_HAVE_NO_POLL
++#define __KVM_HAVE_READONLY_MEM
+ 
+ /*
+  * CONFIG_KVM_MAX_NR_VCPUS is defined iff CONFIG_KVM!=n, provide a dummy max if
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 538ed1e80332..294684b217bb 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -28,7 +28,6 @@ config KVM_X86
+ 	select HAVE_KVM_DIRTY_RING_ACQ_REL
+ 	select HAVE_KVM_IRQ_BYPASS
+ 	select HAVE_KVM_IRQ_ROUTING
+-	select HAVE_KVM_READONLY_MEM
+ 	select VHOST_TASK
+ 	select KVM_ASYNC_PF
+ 	select USER_RETURN_NOTIFIER
+@@ -37,9 +36,7 @@ config KVM_X86
+ 	select PERF_EVENTS
+ 	select GUEST_PERF_EVENTS
+ 	select PERF_GUEST_MEDIATED_PMU
+-	select HAVE_KVM_MSI
+ 	select HAVE_KVM_CPU_RELAX_INTERCEPT
+-	select HAVE_KVM_NO_POLL
+ 	select VIRT_XFER_TO_GUEST_WORK
+ 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+ 	select KVM_VFIO
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index e3035fa1bb53..8f01c2bd9feb 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -750,7 +750,11 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+ #ifndef kvm_arch_has_readonly_mem
+ static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
+ {
+-	return IS_ENABLED(CONFIG_HAVE_KVM_READONLY_MEM);
++#ifdef __KVM_HAVE_READONLY_MEM
++	return true;
++#else
++	return false;
++#endif
+ }
+ #endif
+ 
+@@ -2481,7 +2485,7 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
+ 				   struct kvm_kernel_irq_routing_entry *new);
+ #endif /* CONFIG_HAVE_KVM_IRQ_BYPASS */
+ 
+-#ifdef CONFIG_HAVE_KVM_INVALID_WAKEUPS
++#ifdef __KVM_HAVE_INVALID_WAKEUPS
+ /* If we wakeup during the poll time, was it a sucessful poll? */
+ static inline bool vcpu_valid_wakeup(struct kvm_vcpu *vcpu)
+ {
+@@ -2493,9 +2497,9 @@ static inline bool vcpu_valid_wakeup(struct kvm_vcpu *vcpu)
+ {
+ 	return true;
+ }
+-#endif /* CONFIG_HAVE_KVM_INVALID_WAKEUPS */
++#endif /* __KVM_HAVE_INVALID_WAKEUPS */
+ 
+-#ifdef CONFIG_HAVE_KVM_NO_POLL
++#ifdef __KVM_HAVE_NO_POLL
+ /* Callback that tells if we must not poll */
+ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu);
+ #else
+@@ -2503,18 +2507,18 @@ static inline bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
+ {
+ 	return false;
+ }
+-#endif /* CONFIG_HAVE_KVM_NO_POLL */
++#endif /* __KVM_HAVE_NO_POLL */
+ 
+ void kvm_arch_guest_memory_reclaimed(struct kvm *kvm);
+ 
+-#ifdef CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE
++#ifdef __KVM_HAVE_VCPU_RUN_PID_CHANGE
+ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu);
+ #else
+ static inline int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+ {
+ 	return 0;
+ }
+-#endif /* CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE */
++#endif /* __KVM_HAVE_VCPU_RUN_PID_CHANGE */
+ 
+ #ifdef CONFIG_VIRT_XFER_TO_GUEST_WORK
+ static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index c3c0ee253fc7..f3d7f66746c8 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -50,21 +50,12 @@ config KVM_ASYNC_PF
+ config KVM_ASYNC_PF_SYNC
+        bool
+ 
+-config HAVE_KVM_MSI
+-       bool
+-
+-config HAVE_KVM_READONLY_MEM
+-       bool
+-
+ config HAVE_KVM_CPU_RELAX_INTERCEPT
+        bool
+ 
+ config KVM_VFIO
+        bool
+ 
+-config HAVE_KVM_INVALID_WAKEUPS
+-       bool
+-
+ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
+        bool
+ 
+@@ -79,12 +70,6 @@ config HAVE_KVM_IRQ_BYPASS
+        tristate
+        select IRQ_BYPASS_MANAGER
+ 
+-config HAVE_KVM_VCPU_RUN_PID_CHANGE
+-       bool
+-
+-config HAVE_KVM_NO_POLL
+-       bool
+-
+ config VIRT_XFER_TO_GUEST_WORK
+        bool
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 35880a2c68a4..22627c06a5fa 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4901,7 +4901,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ 	case KVM_CAP_DESTROY_MEMORY_REGION_WORKS:
+ 	case KVM_CAP_JOIN_MEMORY_REGIONS_WORKS:
+ 	case KVM_CAP_INTERNAL_ERROR_DATA:
+-#ifdef CONFIG_HAVE_KVM_MSI
++#ifdef __KVM_HAVE_MSI
+ 	case KVM_CAP_SIGNAL_MSI:
+ #endif
+ #ifdef CONFIG_HAVE_KVM_IRQCHIP
+@@ -5291,7 +5291,7 @@ static long kvm_vm_ioctl(struct file *filp,
+ 		r = kvm_ioeventfd(kvm, &data);
+ 		break;
+ 	}
+-#ifdef CONFIG_HAVE_KVM_MSI
++#ifdef __KVM_HAVE_MSI
+ 	case KVM_SIGNAL_MSI: {
+ 		struct kvm_msi msi;
+ 
+-- 
+2.53.0
 
