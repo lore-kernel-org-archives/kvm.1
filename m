@@ -1,91 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BE63D6CB8;
-	Tue, 13 Oct 2026 09:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FE43E44ED
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 09:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791882838; cv=none; b=BkrepsvEhYF7QXotN09el/mGqLiRGAG/U8A/aDIhMeyivDRqFe0fMcr9HgmZIB3PlxGfkNGZd/b0OfGuyEhS4XfB+RMfypT/FGIMvg/CYWU0GOlYopmy+VRSHQnTuzblcPL2eike7LiXZDvX9vyFUJ51jKECdprQTk0oSTwqvYw=
+	t=1791883153; cv=none; b=nlKiR4Lz5ScQmGzrGdTXJFFdgzIERlLpI0AMT1XpGCIkHQycQW9tr0TB/AXsXWUoEyGOq+bDlKJf6HYx04Y0aamcwo8VQP+KYvt2chySJoQOvgej84r7mthyi1QYqUfjifkyqPiCw72IHAAjdrdM+3puLzjGyh6hPD9QnMDnq6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791882838; c=relaxed/simple;
-	bh=8WuXXltcXDl81c5GBq7j7u58Lm4SbHUwf18VVH4JFtQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R4LOVvNX9eRm2gqXySIQif15bYOU68MLelQufMbpbCbK/62m7MZUhZaoKfu3jgPg48XBgZJEy8/t+1sFuaasLXue+t/fH7idQRRuJGSLS7s6oxuWI2DBHok+o+F7UHcuKBQmzQyAJ6VDzIgBz7WJNxHSBlY+5MwfVb79pwI5C4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=awXUPArX; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791883153; c=relaxed/simple;
+	bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pj91GYLdNzFQnrdrZu36pV7AcQOiPuikqG8kmaKfm7+Kw8NAqttZG5NCpBj1T1gcgoGr0wLl9oEU22oDajpMABiErY/EHs+8BMEqnmdx6DEp6MEvFM/jvo+bTVliMePntxch1nV8QyHbSzcR3/tZseTFjypkXczsjbVrOqCYERc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ov0VuveL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lLtyGA2q; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="awXUPArX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791882838; x=1823418838;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8WuXXltcXDl81c5GBq7j7u58Lm4SbHUwf18VVH4JFtQ=;
-  b=awXUPArXDjlvxXFs0p8uX2eThCLaH9Aosyku1U59aMiwyzYFRDNaDQ0N
-   YzXMH/MQ94OkC2lILEa/VsYgS3YTH42w4CVqito56R/1cAMebFAPy5WFX
-   Qtpd2ogp54FKgnfqBP96bV2Ir4x7iuj660FdFi9ScMtGzRuGmNxgS7kPK
-   Ov1WGzcrvUvTQOQbjqcOASHLucZCnLuELa27APMPQ7FuLCzMNRMZRRqq+
-   VSU8T+MNS9lYLzdkVjEVtZ7r3vR/GZ8AYRWkQ867TJnFfgncX9iO9gE9b
-   4xO4Vs/C0rziJMfqftSHU0KiVLgXfyory/+Kor8XWQbxFLfZKmJpLGatB
-   g==;
-X-CSE-ConnectionGUID: ZR4HleacSxexZl+15JaQ/Q==
-X-CSE-MsgGUID: u54udIpHRRGUwgJXj92cUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="499372"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="499372"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:13:57 -0700
-X-CSE-ConnectionGUID: FHN2UOaXQzuIJaW9MVmLPg==
-X-CSE-MsgGUID: ZElhTNLOTN+PUVVkhqERAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1091783"
-Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:13:38 -0700
-Message-ID: <ea2a2768-5920-4869-9f11-d19f0310b466@linux.intel.com>
-Date: Tue, 13 Oct 2026 17:13:36 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ov0VuveL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lLtyGA2q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791883150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
+	b=Ov0VuveLeObjOwaRB2qWt+D6F5dKBKjkhAlBPOHenH9CoDyOPb1sCNogT+qLPcnB5Rp/P+
+	OgxByoDspTZ5ajLesyi6blBjkU3eoS79i4OKgiVMlcjcfIQn/LrngPdTWHcsIuhsBaF6KD
+	hn5/n8PGOIRnxqdvhe1L2kbF8fEfGp8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-whsyZIUaMA-0dzarWISYrQ-1; Tue, 13 Oct 2026 09:19:07 +0000
+X-MC-Unique: whsyZIUaMA-0dzarWISYrQ-1
+X-Mimecast-MFC-AGG-ID: whsyZIUaMA-0dzarWISYrQ_1791883146
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01c621dc2so21273455e9.2
+        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 02:19:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791883146; x=1792487946; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
+        b=lLtyGA2qfs1FtYCSfcwC6xDHa7fRYIYKmkjAQdzIdRx4KQwBGW0ewSyWLoF37tq0m1
+         FRszzSMj9Q3vTc3cWpVCjEKPgWfvtFcZMPMS7edla2ZbzHZfgQBtBivvY7PO4cd7cRr5
+         9QFHx3WYsoGPvKMAKeKhOOZpq3b9R4Gyty0ta/32T6cPKN1WpTiMZnXldjUdXUf4WebX
+         px0UYBX1NwGsCt23gSu444LRzKa3+sYab2Q+zxqYsYzdJimKGidUBD7HjaAa2wMqCxig
+         /8UMQQ94FPeLFFWf/12EIQ9JwNi7lcJrARSU7P+lvaGlmZBrO5cETSsj+ZRrLqx0af5k
+         g2Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791883146; x=1792487946;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
+        b=qYjomhtApTf29Acr0htcBAH1OwS/Rl2zm7NxLMuo15spShPZOMf8Y3g/BKSmQdOUAT
+         gwLquoOBKYIGzr0iTLxURYgRkU2CSmboOXTnQEjtoFQlcedbef7Ed+HN2doSsE41EZw0
+         EjuwCxx4dtJaBUFTbtA5YIMQLlTAeZfao5dCsGbZx8J2yhJDxGpkky1zduUwWaDHhmlz
+         36bT8yULIIMxUIdtC0ehjxzYsNqbHpnec5hBAVb+5LUUKw7mKlsCV8PBsXUrznlANLgO
+         xOh7JiwZuuIl15VSVJLMvyFdHHYc8GyXOt+xQrAyOKfjk8EwchSo43P5R3YUgTBozuKY
+         u96g==
+X-Forwarded-Encrypted: i=1; AKwUvBz7NH/+cI3QghzkLTyYQg7sDcMMHjkKuVnDS8zx0t0Ip4qZOTBVGc9cUJPeRPEge2r1eno=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJoLHItPlxmi4oYbm8njmsmpEH2o4voRwjaAGbbq66bG+SUkiU1
+	DrbKC3/Wtzi+9l4fBkmGlBMHfYHpnmQRCWDow7hX9WZ6UoPHrA2vxcrsv3o+gXl1sIO0KNsnRbu
+	+EXlvie9e1pT2SWcqMlKFAr4L1prUxGjfYbTq3i44RDzY05LvHM7r1A==
+X-Gm-Gg: AYBFou03rjDRr32hQqLSXBSuaTeCJ2B17oBwWMPTtjvjLsf9WXU5lNijvtXa4+6GxMf
+	+TNkPDvv3Dk4kf57lHF7Ypzoe09B387ILXWHScEsM1ha6P4F/Vq4aKvFHc1jj0Vikr/1KDaWr2L
+	oBeMB7GyyUI9zaspXQyKIk/N6bnOjDkGNIOORJR7Eev/1/gBafSuYCFv9+LfTVFyvEx5WT2L5XH
+	j5DGn0RfVK7s7LvjhBOFWnrxDKFt9USvvahbEyu22WILDdirFv909eMin9UOg0W5D4sVkSPgOH8
+	si47tGp68wGIClVQid6WV8vwc2VW+dJaJyX9YzS974GIvC+GSQZGLl1ZHCbDcBGxUiBTnzvTPKq
+	qyix8cw==
+X-Received: by 2002:a05:600c:4e8a:b0:4a1:78dd:dd28 with SMTP id 5b1f17b1804b1-4a18e4d2b31mr237237675e9.27.1791883146090;
+        Tue, 13 Oct 2026 02:19:06 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e8a:b0:4a1:78dd:dd28 with SMTP id 5b1f17b1804b1-4a18e4d2b31mr237237135e9.27.1791883145585;
+        Tue, 13 Oct 2026 02:19:05 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.127.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm508318675e9.9.2026.10.13.02.19.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 02:19:04 -0700 (PDT)
+Date: Tue, 13 Oct 2026 11:18:59 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	linux-kernel@vger.kernel.org, Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
+Message-ID: <as32zxVBpgdtMUOU@sgarzare-redhat>
+References: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/10] x86/virt/tdx: Convert the td_ctrl metadata
- reader
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, yilun.xu@linux.intel.com,
- tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
- nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-6-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-6-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 
-On 10/12/2026 5:47 PM, Chao Gao wrote:
-> Continue converting the metadata readers to the table-driven helper.
-> 
-> Add a table that pairs each field ID with the 'struct
-> tdx_sys_info_td_ctrl' member that holds its value, and read all fields by
-> walking that table.
-> 
-> Annotate the table as __initconst as it is referenced only during init.
-> 
-> AI was used under supervision to review code and workshop logs
-                                                                ^
-Nit: Missing a period.
+On Mon, Oct 12, 2026 at 12:58:08PM -0700, Bobby Eshleman wrote:
+>I've been reviewing vsock via lore+lei for a while now.
+>
+>Finally adding myself as a formal reviewer, since vsock will continue
+>being stuck with me for the foreseeable future.
 
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Thank you so much for agreeing to help when we met at LPC xD
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+>
+>Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>---
+> MAINTAINERS | 2 ++
+> 1 file changed, 2 insertions(+)
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
