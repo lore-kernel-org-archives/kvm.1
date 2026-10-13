@@ -1,302 +1,130 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190DB3DAC02
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 09:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068364457D3;
+	Tue, 13 Oct 2026 09:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791883899; cv=none; b=qAtp/dEbzQJul0fIqemuA01Ph9VVebVI0T6Bj3NoYOe6zrEDK+Jhbd4id4DBGz0Oyv2bqVon5L6ge/EufV12NCogKseZpkoq/G+QFX2HJs4V8zceTN3tHZuwl+xOu8MgI/jNyOWRxEwBvfDHlVYopfy6mKuXfoDWxvHUCteKCaI=
+	t=1791885446; cv=none; b=XNOvenUnpI8hYqIveHmTXlUaBs8Bt+bWCn8bqQCvnkmCK9Yfgs0R5OGiWiRqVM7aWHsBl8KA5GAVA3PU7aPjS/x6raMWU/P5iDzEA7ztaCOUv0aTFaqOGj3yEbKluDIJUrn5O7/vVSEPUZNEB8fvfoqdZbdznrbbh3X3si977E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791883899; c=relaxed/simple;
-	bh=OqA21yJGURWr+fHR8OGWuJePl6Or9B4i9mUbbo2HePw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yd1FUzXjO7t2/3c5PQhaJ5KBaKrq+sLQcuZeq1vKJ5NwHkOW8p5wa+xo4MaBNX7yTE/EgtYYCfQ3L7/0Zvwz/ffGr2hrQ1KSNOI8Vq0pdy8Ay0ml1ul3ANaZXBLrIyRODtPGEDgPseeTijg96p5ekGahstLlnZFmkaXITbC8EfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KFN/Jucf; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791885446; c=relaxed/simple;
+	bh=wAyQuMPhgE7rIEwhefUVJK9Gj7Sb6CQB4NMZXZ/y73U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JS+Er1X1QWAlefnRzdYyyr0nvlY3JC0x3MY7X+kI8HNX3OEij1xVk+qywJfHAaknPipAjMULatp2YX9ewuCh7zEYb5TE1/l9xibBpxBCcKCT2nW7OrIIZijw/3JNdq8daN4e3iQCDnsE4uit6pwSIGCnv8fyrFoZVmkdgmYl+EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i41BwXJl; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KFN/Jucf"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2FC98169C;
-	Tue, 13 Oct 2026 02:31:32 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B0B4C3F7B4;
-	Tue, 13 Oct 2026 02:31:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791883895; bh=OqA21yJGURWr+fHR8OGWuJePl6Or9B4i9mUbbo2HePw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KFN/JucfaG6tVijFPqugjqklOhToK3tk/lGovkOGhrU5S8A/hBH3mHfEusBBzJPzJ
-	 UyD1cF2qpgw4gHADM2nbeK6S2v6bJ9y95xpv4BpMzEMhH6fCnxZBlMCDLZgKWgQOFe
-	 V1OvHKS+j9QazwgOeLl4Usk+vA/oFiPbdqVmRQz4=
-Date: Tue, 13 Oct 2026 10:31:25 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org,
-	Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: Re: [PATCH 00/21] mm: change behavior of pXdp_get()/pXd_page() in
- compile-time folded pgtable
-Message-ID: <as36bbrMVHOESsLd@e129823.arm.com>
-References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i41BwXJl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791885444; x=1823421444;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wAyQuMPhgE7rIEwhefUVJK9Gj7Sb6CQB4NMZXZ/y73U=;
+  b=i41BwXJlW7jISi1dW+SOi8/3CnUzmoSmFIo9tTF1Ct+rmLumfED1Hrwc
+   RZtz9Grbaaa00qgOnbKQk1ztlt4BLje+G+aOlBCfhfxK/WJzvwwS1le/6
+   tnbLUhn1/rla/3+EJlDi+krg3c3+GN/EiW2/cbfTXXadKnjCRAbncD9I8
+   dazQ+xiN3abkUSqzF89CB2IINlIWaqJrIFDPcUuYuMEcQkc5VDSNJmtVl
+   KyIHJZhAorRWhLmrCyEnpG0J+SEgweogUolRNvscAtuSGCopFUH829778
+   mWwaABW170osG/K6MsPSLQHkZLSoOYfgxMogvxxyfqWKmrarzyAMULRnD
+   g==;
+X-CSE-ConnectionGUID: D+j/ek1mS0SFIhy3NbNrdw==
+X-CSE-MsgGUID: yIaivFhzScGGRLsIujGOTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="503914"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="503914"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:57:23 -0700
+X-CSE-ConnectionGUID: 6mFUfCpoRmmKhwwO3Js6pA==
+X-CSE-MsgGUID: nJkODKsoTUuyfwXkvOtNng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="1055004"
+Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:57:21 -0700
+Message-ID: <4c41933d-b43f-4ae7-8b80-fa97ef4d4623@linux.intel.com>
+Date: Tue, 13 Oct 2026 17:57:18 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/10] x86/virt/tdx: Convert the td_conf metadata
+ reader
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, yilun.xu@linux.intel.com,
+ tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
+ nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
+References: <20261012094754.27702-1-chao.gao@intel.com>
+ <20261012094754.27702-8-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20261012094754.27702-8-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi all,
-
-May I ask there are any further comments on this series?
-
-Thanks!
-
-> Using ptep_get() and its counterparts in common code is suboptimal on
-> kernel configurations with generic compile-time folded page tables.
-> By default, ptep_get() and its friends expands to READ_ONCE(),
-> forcing the compiler to emit a load even when the value is not used afterwards.
+On 10/12/2026 5:47 PM, Chao Gao wrote:
+> Continue converting the metadata readers to the table-driven helper.
 > 
-> This issue was recently reported by Christophe Leroy [1] for ppc32
-> preventing futher code conversion to ptep_get()/pmdp_get()/... helper
-> and the same behavior can also be observed on arm64 when built with
-> 2- or 3-level page tables
+> The "TD Configurability" class holds several scalar fields plus two CPUID
+> arrays. The arrays have a fixed capacity, but the number of entries to
+> read is variable and reported by the num_cpuid_config scalar field.
 > 
-> e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
+> Add a table that pairs each scalar field ID with the 'struct
+> tdx_sys_info_td_conf' member that holds its value, and read those fields
+> by walking that table.
 > 
-> 00000000000052a0 <perf_get_page_size>:
->     ...
->     52dc: d53b4234     	mrs	x20, DAIF
->     52e0: d50343df     	msr	DAIFSet, #0x3
->     ...
->     52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
->     5300: f9403508     	ldr	x8, [x8, #0x68]
->     5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
->     5308: f90007ea     	str	x10, [sp, #0x8]
->     530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
->     ...
->     5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
->     5364: 92746908     	and	x8, x8, #0x7ffffff000
->     5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
->     ...
->     5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
+> Annotate the table as __initconst as it is referenced only during init.
 > 
-> Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
-> READ_ONCE(), there's redundant load for the pud which is folded.
+> Leave the two arrays open coded. 'struct field_mapping' pairs one field ID
+> with one structure member, so describing an array would require a field ID
+> per field plus an entry count that is unknown until num_cpuid_config has
+> been read. That is not worth building for the only two arrays the kernel
+> reads.
 > 
-> To prevent generating suboptimal code, make pXdp_get() return a dummy
-> entry for compile-time folded page tables, make the helpers such as
-> pXd_offset()/pXd_offset_lockless(), set_pXd() validate dummy entries
-> at compile time to catch the wrong usage and prohibit calls to
-> pXd_page() in pgtable-nopXd.h.
+> Read both arrays in a single loop, as both have num_cpuid_config
+> entries. Store each value directly into its array member instead of
+> into a temporary u64 first. The members are u64 already, so the extra
+> copies serve no purpose.
 > 
-> This series does not change the behaviour of existing code that directly
-> manipulates folded page-table levels using set_pgd(), pgd_page_vaddr(), and
-> related helpers. Those helpers continue to behave as before.
+> The inner dimension of cpuid_config_values[] is fixed at 2. Read the
+> two values with two calls instead of an inner loop. This saves a level
+> of indentation and is simpler to read.
 > 
-> The new restrictions only apply to code that adopts the pXdp_get()-based
-> access model for compile-time folded page tables.
+> AI was used under supervision to review code and workshop logs.
 > 
-> As the pXdp_get() can return *dummy* entry, some of code using
-> the stack value where saves the pXdp_get() could be a problematic:
-> 
->   1. Passing address of stack value where saves the pXdp_get() result
->      to pXd_offset() for example:
-> 
->        pud_t *pudp, pud;
->        pmd_t *pmdp;
-> 
->        pud = pudp_get(pudp, address);
->        pmdp = pmd_offset(&pud, pud, address);
-> 
->      (e.g. host_pfn_mapping_level() in loongarch).
-> 
->   2. Using the pXdp_get() result to use as argument of pXd_val() and
->      to check prot without checking pgtable is folded.
->      for example, x86's effective_prot().
-> 
->   3. Using set_pXd() with pXdp_get() will set problematic dummy entry
->      in folded page table like:
-> 
->        set_pXd(pxdp, pXdp_get(pxdp_k));
-> 
->   4. Using pgd_page_vaddr() to get the first-level pgtable.
->      passing dummy pxdp_get() for pgd_page_vaddr() will return wrong
->      address. Therefore, make pgd_page_vaddr() and pXd_pgtable() to
->      trigger the error for improper usage with folded dummy entry in the
->      generic compile-time folded pgtable.
-> 
-> Thanksfully, above cases are rare since (1) most of usage using
-> pXd_offset() with result of upper pXd_offset(), (2) it's extreamely
-> rare to use pXd_val() for non-leaf entry in the kernel,
-> (3) is to handle the vmalloc_fault or set the first level of page table
-> and (4) to setup early page table and etc.
-> 
-> Therefore, properly handle this uncommon and problematic pattern, and
-> document the current design of compile-time folded page tables.
-> 
-> This patch is based on mm-unstable.
-> 
-> Future work
-> ===========
->  - print_bad_page_map() and show_pte() still prints dummy values
->    instead of printing the same content for all generic compile-time
->    folded page tables. We might want to skip printing dummy values later.
-> 
->  - We currently catch abuse of dummy values on the stack at compile-time by
->    relying on constant propagation by the compiler. Usama's work [3] on using
->    distinct types for sw vs. hw PTEs could help here as well."
-> 
->  - Clean up vmalloc fault handling by synchronizing the vmalloc entry on
->    32-bit architectures. This code is almost identical across architectures.
-> 
->  - Unfortunately, the current design of compile-time folded page tables appears
->    to be internally consistent but confusing. For example,
->    when CONFIG_PGTABLE_LEVELS is 2, p4d, pud, and pmd are expected to
->    be folded into pgd. However, the architecture code uses set_pmd()
->    to update the top-level page-table entry, even though it includes pgtable-nopmd.h.
-> 
->    In the future, it would be good to eliminate this source of confusion,
->    possibly by treating all folded upper levels consistently as dummy wrappers
->    around the highest real page-table level:
-> 
->          NOPGD
->    --> +------+           P4D
->        | ptr0 |-------> +------+           PUD
->        +------+         | ptr0 |-------> +-----+
->                         | ptr1 |-        | ptr | -------> ...
->                         | ptr2 | \       | ptr |
->                         | ptr3 |  \        ...
->                           ...      \
->                                     \        PUD
->                                      +----> +-----+
->                                             | ptr | -------> ...
->                                             | ptr |
->                                               ...
-> 
-> Link: [1] https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/
-> Link: [2] https://lore.kernel.org/all/20251113014656.2605447-1-samuel.holland@sifive.com/
-> Link: [3] https://lore.kernel.org/r/74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com
-> 
-> Patch History
-> =============
-> from RFC v3 to v1:
->   - Drop and rebase for CONFIG_X86_DIRECT_GBPAGES and use the Dave's
->     patch (https://lore.kernel.org/all/20260902194718.E1FF3041@davehans-spike.ostc.intel.com/)
->   - Link to RFC v3: https://lore.kernel.org/r/20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com
-> 
-> from RFC v2 to RFC v3:
->   - repasre commit message
->   - move ptdump_pgtable_first_level() into pgalloc.h
->   - skip the huge pud operation when CONFIG_X86_DIRECT_GBPAGES is disabled
->   - docuemtns compile-time folded page table
->   - drop the applied patch.
->   - Link to RFC v2: https://lore.kernel.org/all/20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com/
-> 
-> from RFC v1 to RFC v2:
->   - Restore slient fallback to next pXd in set_pXd() and pXd_pgtable()
->     and add check whether they're called with dummy entry.
->   - Add some comment for returning first entry of pgd in arm with
->     2 pgtable-level
->   - Link to RFC v1: https://lore.kernel.org/all/20260713135614.1618183-1-yeoreum.yun@arm.com/
-> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
 > ---
-> Dave Hansen (1):
->       x86/mm: Introduce helper for checking direct map 1G page support
-> 
-> David Hildenbrand (Arm) (13):
->       ARM: mm: make nommu pgd_t a scalar
->       ARM: mm: make 2-level pgd_t a scalar
->       ARM: mm: remove custom pgdp_get()
->       LoongArch: mm: define pud_leaf() only when PUD exists
->       MIPS: mm: define pud_leaf() only when PUD exists
->       mm/pgtable: define (pgd|p4d|pud)_leaf() for folded page tables
->       mm/pgtable: define (pgd|p4d|pud)_offset_lockless() for folded page tables
->       openrisc/pgtable: drop __pmd_offset()
->       mm/pgtable: optimize pmdp_get() and friends for folded pagetable levels
->       mm/pgtable: catch abuse of folded dummy pgd_t/p4d_t/pud_t
->       mm/pgtable: disallow calling (pgd|p4d|pud)_page, pgd_page_vaddr() and (p4d|pud)_pgtable with dummy
->       mm/pgtable: disallow calling folded set_pgd/set_p4d/set_pud with dummy
->       Documentation: mm: clarify behaviour of compile-time folded page tables
-> 
-> Yeoreum Yun (7):
->       mm: vmscan: remove stack copy address of pud/pmd pass in walk_pud/pmd_range()
->       loongarch: kvm: remove stack copy address of pXd in pXd_offset()
->       riscv: kvm: remove stack copy address of pXd in pXd_offset()
->       riscv: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault()
->       mm/pgtable: redefine PGTABLE_LEVEL enum with ascend order from PGD
->       x86: mm: use pgtable_level enum in effective_prot_pXd()
->       x86: mm: carve out the generic compile-time folded pgtable case in effective_prot()
-> 
->  Documentation/mm/page_tables.rst            | 84 +++++++++++++++++++++++++----
->  arch/arm/include/asm/page-nommu.h           |  4 +-
->  arch/arm/include/asm/pgtable-2level-types.h | 20 +++++--
->  arch/arm/include/asm/pgtable.h              |  2 -
->  arch/arm64/include/asm/pgtable.h            | 23 --------
->  arch/loongarch/include/asm/pgtable.h        |  2 +
->  arch/loongarch/kvm/mmu.c                    | 20 ++++---
->  arch/mips/include/asm/pgtable.h             |  2 +
->  arch/openrisc/include/asm/pgtable.h         |  3 --
->  arch/riscv/kvm/mmu.c                        | 20 ++++---
->  arch/riscv/mm/fault.c                       | 52 +++++++++++-------
->  arch/x86/include/asm/pgtable.h              | 14 +++++
->  arch/x86/kernel/cpu/common.c                |  2 +-
->  arch/x86/kernel/machine_kexec_64.c          |  2 +-
->  arch/x86/mm/dump_pagetables.c               | 18 ++++---
->  arch/x86/mm/init.c                          |  2 +-
->  arch/x86/mm/pat/set_memory.c                |  6 +--
->  include/asm-generic/pgtable-nop4d.h         | 54 +++++++++++++++----
->  include/asm-generic/pgtable-nopmd.h         | 54 +++++++++++++++----
->  include/asm-generic/pgtable-nopud.h         | 56 +++++++++++++++----
->  include/linux/pgtable.h                     | 69 +++++++++++++++++-------
->  mm/vmscan.c                                 |  4 +-
->  22 files changed, 371 insertions(+), 142 deletions(-)
-> ---
-> base-commit: 8d61431ed2607386b427752505379536eb634ce8
-> change-id: 20260722-dummy_ptxp3-3741d78cc70f
-> 
-> Best regards,
-> -- 
-> Sincerely,
-> Yeoreum Yun
 
--- 
-Sincerely,
-Yeoreum Yun
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+> +static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *td_conf)
+> +{
+> +	int ret, i;
+> +
+> +	ret = read_sys_metadata_table(td_conf_mappings, td_conf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * The number of CPUID config entries must not exceed the array
+> +	 * sizes.
+> +	 */
+
+Nit:
+The comment seems to be redundant since the code itself tells it.
+
+> +	if (td_conf->num_cpuid_config > ARRAY_SIZE(td_conf->cpuid_config_leaves) ||
+> +	    td_conf->num_cpuid_config > ARRAY_SIZE(td_conf->cpuid_config_values))
+> +		return -EINVAL;
+> +
+
+[...]
+
