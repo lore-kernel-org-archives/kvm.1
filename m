@@ -1,166 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010015.outbound.protection.outlook.com [52.101.193.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E65187F2;
-	Tue, 13 Oct 2026 14:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791901611; cv=none; b=ZfGNX9RxW5dtxh40W1Lsd+ALeA/AVWnEx4p1+SRmxSZ4FOoJibFczGFNmYs9XD6IA7oNkayY1/GpqItBtC9cej55ggM3aXAXS2b4Tg9owi1mZ1Dlhs36oh5yTCvDOrjlBEhr0OkAbhXRgdi82hWqav2TOq1zwhKoxHQQR2t24FY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791901611; c=relaxed/simple;
-	bh=Zm7YvLjSd928d55gJQhk1qII9rpJSTPjLjNHslHAa1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LLts/z5ZPXHPfrUbWZ0XktrzqA9oKSFf3ZEoRKlaqND7UX/mHiOakVQ57PsEGG5AsAkUnXedBJMxSEi+ecATYh4uJfy0ReFpoXk/ae5oUat/2AoHSYYcA8iN5LWYVmHrru2jnJMuRqkxJ26QGvo2W5Q1xFcwQbudh13auGcrAqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBufTWZr; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6CB2DC32E;
+	Tue, 13 Oct 2026 14:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791901846; cv=fail; b=rMRRkKDTnqe94B/AomZyMvZkO2lMbwcp1d0H4fKaRHDF3cd32hriJERZAfqsH1DaATPols0PrS56GN/HTpCd2cmg1LUw3+Niwe563XCZFhnPKXS5ztnzJ8voclPRK5kuw83+Bapa5YLl/nYDAlW02zQVcX8VUqi2OnrE4fP2iQw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791901846; c=relaxed/simple;
+	bh=SMUuzUeVF+97DhTkAKm5FzXpXtsahIGhl21cIevWioM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cnNu5nhFopiRFtHOnGx2fqKzlaPj2OEQALs0D6Trkz+6fuqqlzel4I3t7tqhK0GCxwZnvbHl44leGPUFOd+gBDt75p6RqUK0EeZK3JVy6yA1hkQchBctiPE9a8S2hyLgwttVSxOolM2btiT8eOpNGr8aGx7bm4uWu+MMRZxgmcA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oCUmIIUA; arc=fail smtp.client-ip=52.101.193.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBufTWZr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13521F0089C;
-	Tue, 13 Oct 2026 14:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791901609;
-	bh=G6+HXzTIsdMXUDkB87K1SqwkQ8xKxvMiZmAMjtsCQwY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OBufTWZrlibOe040ffQmM69yRylTDpkUoxGTJVtEhDmWx+4LCP+4Yg5ltBb7UcZTS
-	 Jy08ZMZVYk/HkcG8EwYDtLR96JATNGtZZpfGT8k/eq/g6Jss6LO6fS0jkunGihzrFl
-	 HyVvHTxNS+GNu7/xgJt58UjBFAexZ5+vzHL0VT+16bPvrkZnwFqyC46DfT5TIpoj8Q
-	 /0T6YW2Z6b64iz/te9Uq+7qi8DZpE+EfQpxLeUl9WG2iLlAGl331JithROmKCSanW6
-	 7bCXOPX7Ig1o/+DkQ8EEp0WYsH26NWoaU41xYFX4ASoL9HwVHZKuC7Tl/1kunRVSKl
-	 qk+I1qbzogTPg==
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org,
-	kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: [PATCH v11 17/19] PCI/P2PDMA: Let a client declare that it selects ATS per mapping
-Date: Tue, 13 Oct 2026 17:25:25 +0300
-Message-ID: <20261013-fix-p2p-acs-v4-0-v11-17-72cf8c96e617@nvidia.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261013-fix-p2p-acs-v4-0-v11-0-72cf8c96e617@nvidia.com>
-References: <20261013-fix-p2p-acs-v4-0-v11-0-72cf8c96e617@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oCUmIIUA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KMk2/qgRY4K/lYLvfEs3nyzSK8T5Ww/VvqVLK/1SZFmqfrDkBABM3To0h4t2bKXT7Sc3sVDp6LcfwuPDOEstfdIcIXAStFUf5pSeD6yYAjPCB9zCirw5dm201GmVnP6w7mQxIzCqEAF2R5E4AWaxZucHseAkQN43I8EbnKHzdHiEoaRo/WJH37JNHqgcEBYoc4NST3M+RRtKrrSQ7F74cLmW3wVbfKaOHHcprSHtAINFcIPzEyAZXzfv+Reajoz44urQvTx4phLFVu0HAZME9Rce9rEji3xBcCeJmKQDp5n2/AjM7hNk8v1lL1F1LP71gShfL1iuioUkNbYpkMv5Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EzZg/RO79YqhzNXGs/puEn75uba5jL83zu64kPjMKm8=;
+ b=ra7WtCFVXVzTAW99JZj+dBy7L0WLIyWJiXll56AN+TzWS4CAdhu3bXMziGWrhc+k2cTVSXIUY4Mp3Oc+huWORpEbsYosUO0RG+zznQ99RyTS1onCwHzlQHBnWDG9o2AO4zfpfMIO6a2hUAEk/WQO6hpApCowtxsHmtGbW00uAk+xx10SVd6L5+kVRrg08uV8ohqTOfhzXYC4wEdJRU68EPqTFzIfn6oSthSw/FFHCylN0hsxpaeqTFzOjcMcmFnHAJSFAqT8lvjz78m9LoIZDPZKPqwwjJEU37pdsKKDGSnQ+O6KVaAVVNAd8IlylPNMjRgHrtelmy/xQw2xaAXmZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EzZg/RO79YqhzNXGs/puEn75uba5jL83zu64kPjMKm8=;
+ b=oCUmIIUAa2eY44jiw6tB1O8AJ1+BImY7ckZYzTHSoXWPeWuSLAM68WNj8XT7+BLW69e2BwuTBoRCpyhpPkvtE+8PBTqkaSDESxH6dGVsZgdKSDJhcx3HfSd8TOwZXQyM7+J88wE5ExZrSnfyIXEOzPuGDU510CwH0FY5gULBu9VeaFnl0l+hO4WCrftAyTQ+akLn1AWLDzYnQYyLrh15FmoLM76EOZGmkQKDLzybykot3qH8lq+zdj+EwAS1uDkZ/NlB0mZGGpqv9ldcnzLEg5KoKp9Hj3PorSamPvJ/TDSx3dsbQBuW0ar+MIk2GiLy72zlWKKLVKwjq2ZUWywE+Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL3PR12MB6548.namprd12.prod.outlook.com (2603:10b6:208:38f::8)
+ by MN2PR12MB4111.namprd12.prod.outlook.com (2603:10b6:208:1de::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 14:30:40 +0000
+Received: from BL3PR12MB6548.namprd12.prod.outlook.com
+ ([fe80::e916:d870:8994:46c0]) by BL3PR12MB6548.namprd12.prod.outlook.com
+ ([fe80::e916:d870:8994:46c0%2]) with mapi id 15.21.0451.026; Tue, 13 Oct 2026
+ 14:30:40 +0000
+Message-ID: <0438ee57-0597-43c2-a1e8-810fc82780b0@nvidia.com>
+Date: Tue, 13 Oct 2026 10:30:34 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/1] vfio/pci: Give drivers control of PCI driver_data
+To: Alex Williamson <alex@shazbot.org>
+Cc: jgg@nvidia.com, dakr@kernel.org, acourbot@nvidia.com, yishaih@nvidia.com,
+ skolothumtho@nvidia.com, kevin.tian@intel.com, jhubbard@nvidia.com,
+ ecourtney@nvidia.com, cjia@nvidia.com, smitra@nvidia.com, kjaju@nvidia.com,
+ alkumar@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
+ kwankhede@nvidia.com, targupta@nvidia.com, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, zhiwang@kernel.org, zhiw@nvidia.com
+References: <20261005184236.1946167-1-xinmengs@nvidia.com>
+ <20261010134826.55364f0f@shazbot.org>
+Content-Language: en-US
+From: Simon Song <xinmengs@nvidia.com>
+In-Reply-To: <20261010134826.55364f0f@shazbot.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0123.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::8) To BL3PR12MB6548.namprd12.prod.outlook.com
+ (2603:10b6:208:38f::8)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-18f8f
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB6548:EE_|MN2PR12MB4111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80682d35-c71f-4845-c470-08df29368e6c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|22082099003|10067099003|18002099003|4143699003|11063799006|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	xq9pjGrZ4LcYpfvC+dxlYXoFMzgkKHkrVhN8r3ir3SFZva8XX22vEKPfieUxCL3WOxqSQ0Rdtx84C+aFDrktNByDHeGzgYTC/apuROgLhJFBwR8b7RjDHt9uBk6z717sB6IC0QWPh96OvH9cj+WxusofyWwCyJo/Qn+FsjYu3NWlh/RFjXBqrNmowliNzmaIhyCPVRiJE6cPUAeS8MWMJ/U1ccGcTxzt+7o+2oCLZUt2p2kWh5LVCf65MKwn2t2y1pX1i+xKEP1nCTT9qIt9UXZbhCljkBE91iNpDa+K4jyya4FAQusTp3ietxyaUkpZ9+RwI4hqOWjeCTT2OSHyCkcTVtNiIj+NBuNuUKdNgMpiO2zrbKSctkR3NR/yaQqLY2xGKnT9s8hXowd/75cPE0rP5xly5ru60HrJabe3+umua4Ftbw/XOkmWORKu8ARig31gi1DtiNK5S0TkRqpDsCN8M/qWeTnnecqsuX+Kaj7CpPXw1oiQcMmz2AOdoni11FMzDvtlmvD2KoHcEiXMcsHaBo/phuHPn0Dqain/ObnsBGm/2fqQpZyCH3fnU8V8J+f2PrUs9L+r5Om/jD7IdjszjhIFo/WY+s0uAvt3nofr5lWNYZ6kcD4+rOY5w8P1cEuaHf//ELmQX2SVN2hdqWnrG1NYoXNR67Yp8ihEjm8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB6548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(22082099003)(10067099003)(18002099003)(4143699003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MTZZb3k5NXNsQngyMVUvMmM3bUdzTGY4Rnk3K1p2QmwrQ1Fsb3F2RDN6bWND?=
+ =?utf-8?B?MkpSdGg5dGVRY3E4UkcyYlU3bHhEUUpEVnM3MWlycmNlZUxiRFlUcXkyVkNI?=
+ =?utf-8?B?S3ROM3NEOGpJQ1FCQW10S2UrbnozV21HcjluSUFSTlUxbXVQZzhrRGJRL01z?=
+ =?utf-8?B?RGl2Yjd2TGdqODJQTU9NR0xXNXIyMkU5YzM5YmlmakdpTHZBdVpyUTN4OXJh?=
+ =?utf-8?B?QjJ2RGZtb2V0bUsxK25zcktxcGU4NEV3OFVPamNmcmljbmVPbVFEdWk2dDhp?=
+ =?utf-8?B?dDhCdGNVMGg2T0hYZVdOQ0NYNDdaYytibklkenByM0FlMElLSnlOVU5XNFRm?=
+ =?utf-8?B?YXRnYU40SEROUFNabjVpMTlaeTVmQ29hbmgrMDdRZGpjVGxhSTRhSGZHY0Ns?=
+ =?utf-8?B?cGVrUUNzbkFrR3pWY1VIUzVPd250d1BzSWJsd0psd1hLdnY2a2dQYmZTT2pw?=
+ =?utf-8?B?VHo4OGdNam9rMzJwTXUyRHNlckJ5ZFpUYUdXRGpPaE5YaXJhY1FUQ0lWM2gv?=
+ =?utf-8?B?cUFGK0pYbXVMR3RuTGttMXgxSVhCNEFFa2pJNjNYS2xQbVphUTAvdEVxRjEr?=
+ =?utf-8?B?WnkyVCtwWExxYlc5NEVNa2lCWVBYNENvWDU4RTB4NTQ0RVZrbEdSYUVEazFK?=
+ =?utf-8?B?ckZScE1RWFIyUlBOdTdwYnJ1WEtDZHNlaGlvTWoyVUNvY01FM0xRVEFlYnMx?=
+ =?utf-8?B?RlFPeXJsZzJ4Q2xBNi9nSlFkWmg1N2MzdzFMbG5XQ0pIVHBxanVCR2dFZUhr?=
+ =?utf-8?B?Z0VBV2gwNmFNL1pJUldlQ2Q1aUpSSUtJQit0U1kwUUUvWmtFcWJ5TWphUUZr?=
+ =?utf-8?B?NTJIZXF3YnV5TVpQTDI4V29yYjRBcXdyS0YyeFZBY2k3YnNvR3ZSSnJESG1o?=
+ =?utf-8?B?VGJaUEI0M3NSSWxQUm9kTXZ6TDZ1Y0Y1RStwOXFCNEJydW1CQXAvMXVqWlUz?=
+ =?utf-8?B?aFB3cnRaYlVvbUhaTWExZ2lZR1VoamRGNTlwSkVtbVRsWGw4YUUzZWFhdkk0?=
+ =?utf-8?B?TFQ2bHBySW1JOEo0MzYwRkR5TExRMVRyODRoTy85cSs2RmhFQ08ydmRHbWUv?=
+ =?utf-8?B?SFlja3hyeGthWU5BS1c1R3hHeWNrcEtzS2pWZUwrb2J0K0MzejdGSHBGY2xl?=
+ =?utf-8?B?MUlGMU5GVkxqVTAzSllnMWVUbTRtUnFnWEpjUFFYUVY0SGRlZ2ZCM1BJeGVq?=
+ =?utf-8?B?bVdjT0hrOGF3STBkMTlOL3V4L21YczVITnpsRDV4dUxGZ1lydm9VbDk3dUtK?=
+ =?utf-8?B?OUc0ais4aE1Zais5T2hxRnFvN2cyM2R0WEhhSnhKS29wUFRzRWIycnlvZEtW?=
+ =?utf-8?B?di9ZSkcwYThsTmVselVSdThrNWtDeG1BV1p3SlppNlBRMlVGVjdHS2lUSFBu?=
+ =?utf-8?B?aVExRWIwTUZDcEVNT0QrTWVqMGI3OVA0V25tRWZMcUtOQ2FTUkpzbEU4dGN5?=
+ =?utf-8?B?RERvQTRqbUVjSE1KSGlkODVPVTdNL2pxMWJUdkdTT3Jua2s5cm1aNnNoaGdL?=
+ =?utf-8?B?TGFmcitDd1dyNGlYTi9FU2FCNjJqUmlEVndkZjBkMWhkTjJ4cTFuR1MyUXBT?=
+ =?utf-8?B?VG81cHlWamNLSmtiZnNRL3FobkRUbFpZR244dEZUd0hQT1dOQlJGSXlFVzdk?=
+ =?utf-8?B?R29VR1pWWjRSRHhnajdyd2lMUGhocWlWdklYYmtLZ2ptMU1IdU9XK0pCSzBn?=
+ =?utf-8?B?Tm5MaC9yZy9tczArVHV0WWxwOW9Wc1FSYU5NcHREeDI5cHFWWEVrZDNTZ3pK?=
+ =?utf-8?B?enBwYzY3U3V4NjUyNDRMV3JoNXg1MTU2ZnY5SzlRREFXaDk2U3FYZUowOG1Z?=
+ =?utf-8?B?WVVCSTNhVEowTEpLTTE1R0JHb3ZsNFB4R2YrdHQvQ3lpQXdrZHJUVjlCbzVm?=
+ =?utf-8?B?SSthcDg4VE9hbVVSVzUrQlhvRU00UEp5TFZmZ0pXYmpFOC8xQVI4MXlWaXBK?=
+ =?utf-8?B?dWY1YStmL2RoOVRKSThBK0FaUWJEYXUvNHNJOEFsZzFMV1lobU1qNHdFNFlh?=
+ =?utf-8?B?VWN0eVBiQkU1S1IyNHBVK09hK01NeDlqRWFvNkdTY0NSaWxINE5GejByOTI5?=
+ =?utf-8?B?elYzYzZ6ek9tTXBPRVBRdmUzZkVqL3FLYzlnNk0xQ3RxSzZrUjd4THJCbU5M?=
+ =?utf-8?B?V0FhaWZiTDVEdkRlajVFQzJ0MWZ1VHJYMFltYlBKSzFaY1NDV2h6cVlHOFl4?=
+ =?utf-8?B?V2xENWZ5QkpPVzduN3g0WHZyMDlPOE5yaThySVJGTXhtSWgwRU1iZXJWZGlj?=
+ =?utf-8?B?eGRPaVhrWlczV0FFcm9qaU9lZEI0Rmh6RHVZUlVnbU55OGRnb2lGRUJhYmxK?=
+ =?utf-8?B?Wk9mbnh5RHZlMWpsajR1K05ZeEg3NVF1R2hDV2dzM2V2U3dVeUVJdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80682d35-c71f-4845-c470-08df29368e6c
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB6548.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 14:30:40.6963
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gt8kN0vIgzwBLVQPVU9VtNDH6zHocSdLsnX4tuLBp3huTXWhAR5gSRdfsvNizy17dCzoxO32VMHIr9WaxnPzAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4111
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On 10/10/2026 3:48 PM, Alex Williamson wrote:
 
-The PCIe ATS Enable bit covers the whole device, so P2PDMA cannot tell
-from it whether a client will translate a given address. Most devices
-translate any address once ATS is enabled, but some choose ATS per DMA
-mapping and can still use bus addresses for the rest.
+> 
+> I pulled in Dave's topic/pci-vgaarb-rework-2026-10-01, which gives us
+> 93d41424caf7.  The vfio_pci_core_device is now registered with the vga
+> client so we no longer need to derive anything from the pci_dev.  This
+> makes all the VGA changes here unnecessary.
+> 
+> Applied to vfio next branch for v7.4 with the VGA chunks (shown in
+> the discussion thread) and commit log paragraph describing them dropped.
+> Thanks,
+> 
+> Alex
 
-Add pcim_p2pdma_set_ats_per_mapping() so the driver of such a device can
-declare that before P2PDMA starts treating clients with ATS enabled as
-translating everything. Keep it in the device's P2PDMA state, which
-already ends with the driver binding.
 
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/pci/p2pdma.c       | 30 ++++++++++++++++++++++++++++++
- include/linux/pci-p2pdma.h |  4 ++++
- 2 files changed, 34 insertions(+)
+Hi Alex,
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 6a05a5019daf..144314ab5fae 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -26,6 +26,7 @@
- struct pci_p2pdma {
- 	struct gen_pool *pool;
- 	bool p2pmem_published;
-+	bool ats_per_mapping;
- 	struct xarray map_types;
- 	struct p2pdma_provider mem[PCI_STD_NUM_BARS];
- };
-@@ -1750,6 +1751,35 @@ void pci_p2pmem_publish(struct pci_dev *pdev, bool publish)
- }
- EXPORT_SYMBOL_GPL(pci_p2pmem_publish);
- 
-+/**
-+ * pcim_p2pdma_set_ats_per_mapping - Declare per-mapping ATS for a client
-+ * @pdev: PCI device that initiates peer-to-peer DMA
-+ *
-+ * Declare that @pdev issues Translated Requests only for the DMA mappings its
-+ * driver sets up to use ATS, rather than for any address once ATS is enabled.
-+ * P2PDMA then routes this client's Requests with the Address Type each query
-+ * asks about, rather than the one its ATS Enable bit implies.
-+ *
-+ * Call it once pcim_p2pdma_init() has succeeded. Without P2PDMA state the
-+ * declaration is dropped and the ATS Enable bit keeps deciding.
-+ */
-+void pcim_p2pdma_set_ats_per_mapping(struct pci_dev *pdev)
-+{
-+	struct pci_p2pdma *p2p;
-+
-+	p2p = rcu_dereference_protected(pdev->p2pdma, 1);
-+	if (!p2p)
-+		/*
-+		 * ats_per_mapping is a performance optimization,
-+		 * if pcim_p2pdma_init() didn't set pdev->p2pdma pointer
-+		 * for some reason, let's simply use ATS global settings.
-+		 */
-+		return;
-+
-+	p2p->ats_per_mapping = true;
-+}
-+EXPORT_SYMBOL_GPL(pcim_p2pdma_set_ats_per_mapping);
-+
- /**
-  * pci_p2pdma_map_type_tlp - Determine the mapping type for P2PDMA transfers
-  * @provider: P2PDMA provider structure
-diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index dd17501ba1b6..ce389e18d023 100644
---- a/include/linux/pci-p2pdma.h
-+++ b/include/linux/pci-p2pdma.h
-@@ -82,6 +82,7 @@ struct scatterlist *pci_p2pmem_alloc_sgl(struct pci_dev *pdev,
- 					 unsigned int *nents, u32 length);
- void pci_p2pmem_free_sgl(struct pci_dev *pdev, struct scatterlist *sgl);
- void pci_p2pmem_publish(struct pci_dev *pdev, bool publish);
-+void pcim_p2pdma_set_ats_per_mapping(struct pci_dev *pdev);
- int pci_p2pdma_enable_store(const char *page, struct pci_dev **p2p_dev,
- 			    bool *use_p2pdma);
- ssize_t pci_p2pdma_enable_show(char *page, struct pci_dev *p2p_dev,
-@@ -138,6 +139,9 @@ static inline void pci_p2pmem_free_sgl(struct pci_dev *pdev,
- static inline void pci_p2pmem_publish(struct pci_dev *pdev, bool publish)
- {
- }
-+static inline void pcim_p2pdma_set_ats_per_mapping(struct pci_dev *pdev)
-+{
-+}
- static inline int pci_p2pdma_enable_store(const char *page,
- 		struct pci_dev **p2p_dev, bool *use_p2pdma)
- {
+Thanks for applying this and handling the rebase, dropping the VGA change looks good with Dave's change.
 
--- 
-2.55.0
+Thanks also to Jason and Danilo for the reviews.
 
+Simon
