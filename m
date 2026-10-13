@@ -1,216 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C8E52D2A2;
-	Tue, 13 Oct 2026 15:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DF9525A81;
+	Tue, 13 Oct 2026 15:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791905190; cv=none; b=T1r8VP1CJAceH7dSOJYbQQKCy24i/KCyH11On1/97jK88bzlRnxhuoXsOa2FIOPuSS7I5yax1/eY8A8YM9Vk6pG2t240QRVBp3iDoXA1cQUMtjW9IkvoOUBTnOR3BFdv04CNeMM8StLtIv+DwUUZ1+hh4WWq+lwrtOHXv73Hckc=
+	t=1791905192; cv=none; b=ut1W/DhovEXVK75redH0YBqmGeoSeYdiONv1QGovMTfEwHsItjp68azcmJXvWWaO9sVU1Q7xfW9KQyCB73eqertARrwMHBHt5a3anReC13aHxqCQZYSIlOuZ5cPoWel018kL7Wh5GRaJ1HVCiPcD+pe13wzCrqZK0AhY76CQAdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791905190; c=relaxed/simple;
-	bh=CGEMQnlTOf3HSf1ca7HiwGzo5wiBm5vCkfKiV5simqA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qr0YRAZEg9hI1JrkFuruFSQDF+cV7zG5vDY8RMp0xmY9oYFcSJ/TDZ9e00iugbL2qjDmWHuW0Vdoi7zxCGc1m6igjZeo5X75t0iYq9dd+ZT8mde4USQoXTOAQxWzJCM34lbcsnI3XhaiFm9xbS9F9BPtBrTg9uD/1Rdbw6AxfQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gzoVtO52; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791905192; c=relaxed/simple;
+	bh=m41TWuEwJE/xRh75rAG2WPfrBRVB2yumdIRDiH0i5tg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e42lWJwSWLRoVxYeQWXwIbi4DZP+yucP6ckzJgUE62OpTRKVQI+wvP39WtZOEHRkO/52PXFVInUBF/jvKXF/cgiENsQP7MBTFGHWr3WssCkE9fSFZs6IFHgayovCcqdY6rKHwWR7EDz1d4OA+ERkFXPqIId9m3BydkiGHPwl5QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=IAkmGGUt; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gzoVtO52"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352C01F00898;
-	Tue, 13 Oct 2026 15:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791905189;
-	bh=nfKSMRwRrChtZv71omqSFoDEDYkiNTw1yN9Lgs5eSEE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gzoVtO52IG+v86EDCc9jjOK3ZpyQBLgQ9SYi/8AD6nkY9wIx8jQmki+yLKtgjBefO
-	 yJWHmOB+Mekm/VGHZ9nnA05ls9ev7L44EbxduL65MdSZSTnPwHKr/hfI7gSGNhNGHL
-	 dVWag5TMkpMdZ4TnBr3J/Mu6YUFS3uDJVRZQ77DjRfAnx32erFNZHQD8Yz3fBM2hdU
-	 4i1KNcV2aEyIFQyVT+tLjYtIohswMekiLIWDZyzbQj4DeNWVNtmXhqWYYnYPkWy+vA
-	 hidJm7k9V9fsX6GO/x2/nbVceUTLmQqgesa/Dr80xOWh0aBkVUToE44HNof7ZBecOx
-	 Oah6TpmSUjMJA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 13 Oct 2026 16:05:19 +0100
-Subject: [PATCH v6 39/39] mm/huge_memory: remove vma_is_special_huge()
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="IAkmGGUt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1791905190; x=1823441190;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=58rhhcexDgMk2SYcHRrbfJU4LmZDNf9c9uP6HmDCZ0M=;
+  b=IAkmGGUt0Xe/jYZo2x1vxV6S4ue2QmzoLby2TnX7Xzza0cz4JjwEC55d
+   uUaDBKg6/tFwqdEuYbVhsEz9no5iXZyjdP86E33dt2gbGMVsay0VpSz5d
+   LWu7hiP97kxR6/RoTKphiHh06qMNqwOGizDa15n/QiySTR8ctpc4Z3+/y
+   zUpuomzPBr7Dys2IWixNpySfLOdTJMkkzDSxHIQtrOfcVetpApryqslp5
+   JPNszm2dPg1bsyEAPGYXjGtU0SXsjfTN5GIoWEeNy16HGdYKlxIjvr68H
+   oeWNqxzIqSKZizKBe7tX6LhD0nr+YoeMgU/ig/01clG1MOdKhFvPHE+4D
+   g==;
+X-CSE-ConnectionGUID: QNr8tit0Su634Je3FESKKw==
+X-CSE-MsgGUID: taFEz58CSvCZwrQ9VLnCQA==
+X-IronPort-AV: E=Sophos;i="6.27,155,1787011200"; 
+   d="scan'208";a="31173283"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 15:26:27 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:10673]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.175:2525] with esmtp (Farcaster)
+ id 13393493-f492-42db-9553-1d180b22329e; Tue, 13 Oct 2026 15:26:27 +0000 (UTC)
+X-Farcaster-Flow-ID: 13393493-f492-42db-9553-1d180b22329e
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Tue, 13 Oct 2026 15:26:27 +0000
+Received: from b0f1d8753182.ant.amazon.com (10.106.82.29) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53;
+ Tue, 13 Oct 2026 15:26:20 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: Yosry Ahmed <yosry@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Brendan Jackman
+	<brendan.jackman@linux.dev>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu
+	<weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+	<ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>, Sumit Garg
+	<sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
+	<rientjes@google.com>, Roy Patrick <patrick.roy@linux.dev>, Andy Lutomirski
+	<luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, Thomas Gleixner
+	<tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, Reiji Watanabe
+	<reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, "Ackerley
+ Tng" <ackerleytng@google.com>, Takahiro Itazuri <zulinx86@gmail.com>,
+	<cc-open-source@amazon.com>, Kevin Brodsky <kevin.brodsky@arm.com>, "Gregory
+ Price" <gourry@gourry.net>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Date: Tue, 13 Oct 2026 16:25:53 +0100
+Message-ID: <20261013152553.39287-2-itazur@amazon.com>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
+References: <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-39-1aa3c9b139f9@kernel.org>
-References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
-In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
- Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
- Xu Xin <xu.xin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
- linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
- fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, 
- Bert Karwatzki <spasswolf@web.de>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2971; i=ljs@kernel.org;
- h=from:subject:message-id; bh=CGEMQnlTOf3HSf1ca7HiwGzo5wiBm5vCkfKiV5simqA=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLOeZxl2b3ax4T7qoBdSue0lL9XZm16LWSy5eScJ1OF2
- Z6d+PxHpaOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATWcDI8Fdueo/Ct6LuhT+3
- TbXrnGSrbPfOMz7Jbl638orMw0uF73EwMtzc/T+yK+jjSxlX+ZNzNintWmS86dwlwScFPFceXf0
- 7YQYzAA==
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC001.ant.amazon.com (10.13.139.241) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-vma_is_special_huge() tests whether either the VMA_PFNMAP_BIT or
-VMA_MIXEDMAP_BIT is set (i.e. whether the VMA is not mm-managed),
-but with a DAX carve-out.
+On Thu, 3 Sep 2026 07:06:02 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
+> > If that work is not already underway,
+> > I would like to respin the AS_NO_DIRECT_MAP introduction and secretmem
+> > adoption as a standalone MM series, separate from ALLOC_UNMAPPED and
+> > mermap.
+[...]
+> Perhaps wait until I send the new version, then we can discuss if we
+> want to split it based on how the feedback looks like. Does this work
+> for you?
 
-DAX however no longer sets VMA_MIXEDMAP_BIT, so this carve-out is no longer
-required.
+Following up on this with an update. Yosry let me know off-list that
+ALLOC_UNMAPPED is on hold for now (quoted with permission):
 
-Therefore test for !vma_is_mm_managed() instead and also drop the
-VMA_IO_BIT check, as it is now redundant since it is enforced that
-mm-managed mappings may not set VMA_IO_BIT.
+> I wanted to give you an update. I was working on v4 of the
+> ALLOC_UNMAPPED series while our team was simultaneously working on
+> integrating that design without internal ASI implementation.
+> Unfortunately, there were multiple complications with that
+> integration, and we will be holding off on sending new versions of the
+> ALLOC_UNMAPPED series until we have higher confidence that this
+> approach will meet ASI's requirements (ideally in a production
+> experiment).
 
-This also eliminates another overloaded use of 'special' within mm.
+Since the integration with Google's internal ASI implementation needs
+more time, Yosry also agreed that I pick up the AS_NO_DIRECT_MAP work
+for guest_memfd, separate from ALLOC_UNMAPPED. Here is how I plan to
+proceed. Feedback is very welcome, especially from Sean on section 2
+below.
 
-No functional change intended.
+1. MM and KVM parts together
 
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/huge_memory.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+I'm withdrawing my earlier proposal to post AS_NO_DIRECT_MAP and the
+secretmem conversion as a standalone MM series first. secretmem
+removes kernel access to its memory entirely, but KVM still needs to
+access some guest memory from the kernel. If the MM part lands first
+and the guest_memfd integration then requires a different design, we
+would have to rework it right after it lands. So I'd like to settle
+the design with guest_memfd as a real user, and post the MM and KVM
+parts together in a single series so that both sides can review the
+whole picture. Once we agree on the overall design, I'm of course
+happy to split it up so that each part can go through the MM and KVM
+trees.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 5b295a7979cd..73575145db7c 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -110,14 +110,6 @@ static inline bool file_thp_enabled(const struct vm_area_struct *vma)
- 	return S_ISREG(inode->i_mode);
- }
- 
--/* If returns true, we are unable to access the VMA's folios. */
--static bool vma_is_special_huge(const struct vm_area_struct *vma)
--{
--	if (vma_is_dax(vma))
--		return false;
--	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
--}
--
- static bool vma_file_bypass_thp_tuneables(const struct vm_area_struct *vma,
- 		enum tva_type type)
- {
-@@ -192,7 +184,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 	/* Check the intersection of requested and supported orders. */
- 	if (vma_is_anonymous(vma))
- 		supported_orders = THP_ORDERS_ALL_ANON;
--	else if (vma_is_dax(vma) || vma_is_special_huge(vma))
-+	else if (vma_is_dax(vma) || !vma_is_mm_managed(vma))
- 		supported_orders = THP_ORDERS_ALL_SPECIAL_DAX;
- 	else
- 		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
-@@ -3065,7 +3057,7 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	orig_pud = pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
- 	arch_check_zapped_pud(vma, orig_pud);
- 	tlb_remove_pud_tlb_entry(tlb, pud, addr);
--	if (vma_is_special_huge(vma)) {
-+	if (!vma_is_mm_managed(vma)) {
- 		spin_unlock(ptl);
- 		/* No zero page support yet */
- 	} else {
-@@ -3221,7 +3213,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		 */
- 		if (arch_needs_pgtable_deposit())
- 			zap_deposited_table(mm, pmd);
--		if (vma_is_special_huge(vma))
-+		if (!vma_is_mm_managed(vma))
- 			return;
- 		if (unlikely(pmd_is_migration_entry(old_pmd))) {
- 			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
-@@ -4764,9 +4756,7 @@ static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct *vma)
- {
- 	if (vma_is_dax(vma))
- 		return true;
--	if (vma_is_special_huge(vma))
--		return true;
--	if (vma_test(vma, VMA_IO_BIT))
-+	if (!vma_is_mm_managed(vma))
- 		return true;
- 	if (vma_is_hugetlb(vma))
- 		return true;
+2. Kernel access to direct-map-removed memory
 
--- 
-2.55.0
+I agree with Sean [1] that the way to access such memory from the
+kernel, whether it ends up as an extension of GUP or a new interface,
+should be generic rather than specific to guest_memfd, so that other
+users of direct-map-removed pages that may come along can use it too.
+It is also still open who should establish the kernel mapping: MM
+could do it transparently, or callers could create one explicitly on
+demand, either with existing MM mechanisms or with a new one like the
+mermap. I don't have a concrete design in mind yet.
 
+As a first step towards that, I'd like to:
+
+  - List the use cases that stop working when GUP rejects
+    AS_NO_DIRECT_MAP mappings. On the KVM side, these are mainly the
+    gfn_to_pfn_cache users (kvmclock and the Xen shared pages) and
+    kvm_vcpu_map() (mostly nested VMX/SVM). Accesses through uaccess,
+    such as kvm_read_guest(), are not affected.
+
+  - Look into each use case and sort out its requirements, e.g.
+    whether it needs only the PFN, a short-lived kernel mapping, or a
+    kernel mapping that stays valid for as long as the vCPU or VM
+    uses it.
+
+and then work out an appropriate design based on those requirements.
+I'd only consider supporting the use cases incrementally where that
+doesn't leave guest_memfd with a list of caveats or an ad hoc
+interface.
+
+3. ALLOC_UNMAPPED and the mermap
+
+AS_NO_DIRECT_MAP itself works without them, by zapping the direct map
+of each folio. However, guest_memfd will eventually need a temporary
+kernel mapping to populate guest memory via write() [2], because
+folios are already unmapped once they are added to the page cache.
+The cost of TLB flushes and direct map fragmentation also matters for
+performance, so I'd like to keep discussing these with folks
+upstream, building on the direct map fragmentation discussion that
+Kevin led at LPC [3].
+
+Thanks,
+Takahiro
+
+[1] https://lore.kernel.org/all/anZfv81jLSU2qY9G@google.com/
+[2] https://lore.kernel.org/all/20251114151828.98165-1-kalyazin@amazon.com/
+[3] https://lpc.events/event/20/contributions/2420/
