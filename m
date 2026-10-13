@@ -1,138 +1,111 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FFE51FCA7
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 20:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924196; cv=pass; b=T64etRA2jw8+uwEwqXLciENc8kBBl0j/seJrorznLhNn6rSD+Euf28Zxupxl2BOJ8yDLTG3KNc4eDTDtrtxKyne++g4LtdrH8MGa68Numa80Isb3Lm/DlR+sVpoWfZsHft4YxF38UvpOVRfubwAiTUwOd210kr3VHocVKwYjUDc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791924196; c=relaxed/simple;
-	bh=aUqSZx5Jyb/Fk1gOVNP06/1f1jP/+rE+8FXc33EN0Jk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nTfgYb7AH4nknqvrJF7GLfP0/X1kBBRcgITUEMFWOq3VAj8/KSSbTPUst68BzNYqNTNznYMxShd5WYUCJHwbqVc3fAnijfElaqa2cSCKxHOW5k6bDJZp0fT7NujIrkwjJuUjgd/l2PiwRj8WgrQKloYHvPdPIsd4gg1RCqLj6Iw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q62+WyGJ; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853F54EECB;
+	Tue, 13 Oct 2026 20:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791924514; cv=none; b=Pvu6rgS4797H1bJzaDUcbbruWEBiUvZ+LhInFqmFgrpKaQK28uYZeeoAq1/imKkyiOlfKc0/roWEuoeq9DTfo+7fB4HKfrPqzGpZU+Y/EdcDSF8k/LG2L5i1jr+ihnUyRU3G1kQiMya7bxyOLwpvK24DzfXwAl9UXKmtiw1U7h8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791924514; c=relaxed/simple;
+	bh=EnhxD+LWNnhWyE9YN2CMbuwe5f1Jhsf7zQTTGO2Dedw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kd7W1GBp1B9nukfRWKJpDBFDUpo75wrQaiKA7Lfladfybv/nioHKYf6/giLNVkLB5MLEgcTIoC2RflAdsh6ONJw8AJnJnvKTay1EU4o/ZI4y9xYfaYvhjbns0vfqNIBMPuDYxm5+oaerwD0kCjsVTUBkFjkBwh+Rwv/e1u2azyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ejH7M4Zs; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q62+WyGJ"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso30973a12.1
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 13:43:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791924193; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LUdIvhIXORt+HSxTPoJZbh1w23BprnAlNFOed93X5pY381qjh2ItMAyg1AaY/zqalP
-         vj12zUinC5m3YiqToFZkRNsoJMdWhpcPRVE1wNGhEr8XYpHX06JmGka9RXk2C2xewZxd
-         /ZY6sb+hGBs5Ypwa2mqxTWJJ3FXK3k5jY+HgEJLryaf0AEG9fwKtRRMme+yrvZZxeLKv
-         shl4nfuKeBk+wuoH/jGlFeRDH7GMwhiCU5Gbsvbt1mhupOB4zlOpm7jNwSUCmUnpQlrd
-         Avz4Y4nerpAknUB24zLW3grozDrLC9K11AGC9hoRro1a2y9g+djSMZqW1RiX5Wg3SGpg
-         6Z2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aUqSZx5Jyb/Fk1gOVNP06/1f1jP/+rE+8FXc33EN0Jk=;
-        fh=mtMNO/Hg0HNYfrs0laNQqLzW26sUWcmnkUh1TbkJHQg=;
-        b=JEX0CS4EOhAStYCrYerfAdn39KTtN3jbmZ5BmZk04LP8OMZG//d/aZiMWiwFBeitK0
-         u7ByyWdhGMqx9xtz5mTgO8SyVU6oCDKalxC2CfKaI7Iwd6p6F3ilzkPMlfKwlqUr+IPC
-         IDjjGXBgwBbsK8iKPxLYP8YBYaHwN+Wy6fkghmHtrVhGV0mSDXkonbSViXPBiLsnLhgT
-         EgWiZB4pPAaBnGxH9V6OwjuPIl8aiRw3tMHyWVyChowTUmcIJxBDbAtNMFNIczdAtbwN
-         dE0PLarImgHic/9fYW7DU+DyExJAmx1xIuxjwBT3+Xvd+acMH/NJVA4oY1nqUamnlMzj
-         5iSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791924193; x=1792528993; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aUqSZx5Jyb/Fk1gOVNP06/1f1jP/+rE+8FXc33EN0Jk=;
-        b=q62+WyGJx0o6+n0bq+ylDWfLrp6hXuGk20MKroxXYG3aPjUXbLfrSx9KM5A3IMUSsF
-         QMffXnolrTBUzbPW4gF05ID0BM7wGRwQ7DrZ/YPL+2V1TLrL/i42Egeta+JFkSd0ldNP
-         h7lC2a7lkJS/1UkOigwg1sJMoBXajFOXBezhglNBOrS97dk0Do9q4NFo4CnMTmPvZy9t
-         AVm4nz538l4GFuIP6rXAqJObXAnZulF4j1fzWjUpNN9QKQR1W+byQH/LAzqz5q/1twsn
-         TSOR0Wkrapnzn8KcpneSuRYXCoR1rQNVeSQYrdzuc6b9aFRy7Nuid1XifvtYYn2qkkCJ
-         BO8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791924193; x=1792528993;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aUqSZx5Jyb/Fk1gOVNP06/1f1jP/+rE+8FXc33EN0Jk=;
-        b=WyxIFqO9ouiDpyxo96/OfIGPJA5IKA6UJUBs7T+jNf/mm1kCc3bXrh5X7+irmVbgVj
-         EH24N3W2FsN3sYKSMIVreQkiDi6je+q2E+i/hFyz8HlAnjrVreoidtHzU0c80kRWBDX/
-         h+BTgk2fsUdKO0q6cR8e8T1NniI+Q8Pc1mzzDzeFW3mmiG/1PfAyFWOFJMLgTeTSEDfR
-         YplyTuDOF+MB1hwADlpe54QPfoHW6d79DQNh/q3Viik/0CcN9q1q5Dg5j4kHe/EbciSJ
-         yUMn7jbjXsInyXPVKyFG3xNcbayRW67Ls8aoyxsy+7lRkbrwavuyVg7lM2ZzXMqa/yyz
-         gxXg==
-X-Forwarded-Encrypted: i=1; AKwUvBwjR1pe7M5rOyAKtqPQsQzvYHxJCMyPUDwjo1LvEcqZXOlo1PgaTa4ION+VogkFH1oiic8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIcPRyhh/sHTYyIjAuKL7mEy1fqoVDLuQggDDT4WQ6Xvj321Msl
-	LM6pswMRWCVm3bNvYNazYY7zQK0P6zTaaqcah9z6Z9KT9y2cFHn2LijqcWRkieI9uKXbrfUTB8q
-	Yh8r22Yw+uARawaviC4O8yqruKPEaeUUFvW5C4/ZsYhJ1CRprmF0QmL0y
-X-Gm-Gg: AYBFou1fNWpo/MbDNeHF5jZUMk6zg4SSi45x9M2yVBL9MPFVnlAde0oXsTCrIEzRiPN
-	Vn9hhM/n3CmEeHNaV93wg/vuJFm8BwRuysrNGotFUfntpKNkQdszskvUm5NWyn5n+Wtv2hA5wWg
-	c52mw7WXghaB5/rGwpDBal3sJZ1vLB12Zt8n6mgT2FBA4SDEmy1SVQ6qg7O3W18pvJfvuS6He/d
-	SCnIAeVtM8IRlotAogZvGy3pcaOxOVCARMBLDRaO6dI2M2vmBbKMROImCE0JWCLqGwaKN1x9crj
-	scVp41WJzkA2N46RFLtUGr4lPbPQ64sQ+JkBHEqEvn9EXZCOPHnIVzI=
-X-Received: by 2002:a05:6402:a593:10b0:6b1:d313:16f8 with SMTP id
- 4fb4d7f45d1cf-6b1d3131c5emr128393a12.0.1791924191858; Tue, 13 Oct 2026
- 13:43:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ejH7M4Zs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=2v5mBlVK392iL/Y43x3cPeO25GmK/+93NMJMoT0UAh0=; b=ejH7M4ZsbUYhoYFjsPnn1k6Jmk
+	I6Bbaoq6l34h1+VP9LtzNd2cpxeqv6AlW08WnzDOKvaluDAwBHrLgD/KQZW8w3JF6dFZZUQCwsn0t
+	CFS9VKQyeNpIFmdWtpzWnmEdJ/R+LvqHu9vtysn3qeIEpFmMur/+Kry6Cf9AE+yCpdETJHcwa46eZ
+	xUzZ7PMYaHij4XaazSMpgfQji7RZNB6sRFlwtOtgcAoVpswoLz3P23uPXzyJKo5U0LL1jRQpIyd+s
+	WCHxwmCfnjHr96y3UQEn7wJDiqMZz1TotA9OlaTi5jGNcH/kpNz+E+idQ52DHv+TKvY8Bobk3a/mc
+	tcUj7ugw==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xGjQB-0000000G4C7-0wr6;
+	Tue, 13 Oct 2026 20:48:28 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xGjQ8-00000001uAU-3rs3;
+	Tue, 13 Oct 2026 21:48:24 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paul Durrant <paul@xen.org>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 08/10] KVM: x86/xen: Don't dirty track "vCPU info" page
+Date: Tue, 13 Oct 2026 21:48:21 +0100
+Message-ID: <20261013204824.454208-9-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261013204824.454208-1-dwmw2@infradead.org>
+References: <20261013204824.454208-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261013195358.163375-1-yosry@kernel.org>
-In-Reply-To: <20261013195358.163375-1-yosry@kernel.org>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 13 Oct 2026 13:42:59 -0700
-X-Gm-Features: AclHuK-YmNn8NSDVLimMh9Yal2P17VNQJ0PnXTL8TAurb31p4J1MK23ZmaxEhr8
-Message-ID: <CALMp9eRDjH=GgeCUe50JngFJtup4Lx2t-uHgpyEwyVB9VjQPVg@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: SVM: Update tracked pCPU on pCPU switch
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Oct 13, 2026 at 12:54=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> When a pCPU switch is detected in pre_svm_run(), update the tracked pCPU
-> and mark all fields dirty in both VMCBs (if nested is initialized), in
-> addition to resetting the ASID generation in both VMCBs.
->
-> Commit bf260dc9e7b8 ("KVM: SVM: Trigger new ASID allocation in both
-> VMCBs on pCPU switch") reset the ASID generation in both VMCBs on a pCPU
-> switch, but only updated the tracked pCPU for the active VMCB to avoid
-> unnecessarily dirtying the inactive VMCB. Leaving the inactive VMCB's
-> tracked pCPU set to an old pCPU still allows an ASID allocated on one
-> pCPU to be used on another:
->
-> - vCPU runs with both vmcb01 and vmcb02 on pCPU A (both track cpu=3DA).
-> - With vmcb01 active, vCPU migrates to pCPU B. vmcb01.cpu is updated to
-> B, asid_generation is reset to 0 in both VMCBs, and a new ASID is
-> allocated on pCPU B (setting vmcb01.asid_generation =3D gen_B).
-> vmcb02.cpu remains A.
-> - vCPU switches to vmcb02 and migrates back to pCPU A before
-> pre_svm_run(). Because vmcb02.cpu is still A, no pCPU switch is
-> detected, leaving vmcb01 with cpu=3DB and asid_generation=3Dgen_B.
-> Because vmcb02.asid_generation is 0, a new ASID (asid_A) is allocated
-> on pCPU A.
-> - vCPU switches back to vmcb01 and migrates to pCPU B. Neither a pCPU
-> change nor a generation mismatch is detected for vmcb01, so VMRUN on
-> pCPU B uses asid_A (allocated on pCPU A), which may collide with
-> another vCPU on pCPU B.
->
-> Because the per-VMCB cpu tracking is shared between ASID management and
-> per-pCPU hardware VMCB clean bits, also mark both VMCBs dirty when
-> updating their tracked pCPU so that the inactive VMCB does not run with
-> stale clean bits when later entered on the new pCPU.
->
-> Fixes: bf260dc9e7b8 ("KVM: SVM: Trigger new ASID allocation in both VMCBs=
- on pCPU switch")
-> Cc: stable@vger.kernel.org
-> Reported-by: Stefan Teodorescu <fane@google.com>
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+From: Sean Christopherson <seanjc@google.com>
+
+Give the Xen per-vCPU info page the same treatment as the per-VM shared
+info page, and never mark it dirty, as KVM clearly relies on userspace to
+assume the page is always dirty.  While the page is marked dirty on writes
+via kvm_xen_inject_pending_events(), it's not marked dirty when written by
+__kvm_xen_set_evtchn_fast().
+
+Furthermore, as was the case with the shared info page, writes in the event
+channel fastpath may be done without an active vCPU, e.g. when called via
+timer callback or irqfd injection.  I.e. attempting to fix the fastpath
+would run afoul of the same issue that was fixed by
+commit 55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info
+not to mark page dirty").
+
+This also covers the pvclock writes kvm_guest_time_update() makes
+through the same cache; userspace assuming the page is always dirty
+covers those equally.
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: LLM
+---
+ arch/x86/kvm/xen.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index f8162914d6c6..ef0d59ebc6a7 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -715,7 +715,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+ 	}
+ 
+-	kvm_gpc_mark_dirty_in_slot(gpc);
+ 	read_unlock_irqrestore(&gpc->lock, flags);
+ 
+ 	/* For the per-vCPU lapic vector, deliver it as MSI. */
+@@ -2448,7 +2447,7 @@ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
+ 
+ 	kvm_gpc_init(&vcpu->arch.xen.runstate_cache, vcpu->kvm);
+ 	kvm_gpc_init(&vcpu->arch.xen.runstate2_cache, vcpu->kvm);
+-	kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm);
++	__kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm, true);
+ 	kvm_gpc_init(&vcpu->arch.xen.vcpu_time_info_cache, vcpu->kvm);
+ }
+ 
+-- 
+2.43.0
+
