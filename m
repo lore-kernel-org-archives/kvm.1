@@ -1,126 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274845172CA;
-	Tue, 13 Oct 2026 15:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F0522691;
+	Tue, 13 Oct 2026 16:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791907152; cv=none; b=coxUGwvCoqP6craEeow9CMeEEPXuUke4/opVzPCTPeqFVeGYl3dKncZgSwUWLmTcp20EnUsaycnpZh1L5SOUBQksYgTtCCAyUFTS7bHmLLIi2y+8HXc24EyJ8q7kngSXjXB+HGtVmXW0thrNNfFrt5ezNBNzyadNaWMVHu/aRqI=
+	t=1791907618; cv=none; b=LNgvONNcGE6n3+/g4SbdA//r0rs66RahE+YgDPK9sf9vgb7z35bSbV00qDtGJxmNbzcv9NtrRtiN+iCt80tTfgSlDyqyn2giwZo0SeLfuXBuBZ2fl6Bn+XT4qVh/8ShXg5RxyAUWpnPAfmPNfxoyTnshiwBAse1Zd/cs9eIyuRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791907152; c=relaxed/simple;
-	bh=ZvgSN9US0SiBg9EUfDBzHteIIuztpRpqPeTqI5DUq6c=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=WNODawc3nf2SKtBw+VC6t5TwG40kAZL4hHGmlldhof1B047Dglw+MxQhZlJytjSp/xVhyTZS8A+/VHSUO5WUTM3GlvSZfVKpproblrSteK8fHnO7fAaVvFC37lQm4sWr9RCIZFhCtXva264Me6aPGJ7i6q7nmFkYyHXpOotP8fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrLYsJRq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791907618; c=relaxed/simple;
+	bh=5RGsatsPAyQIBEtdraUseJGGZDIDfWt4LgToyJkkY0g=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LwEPVTqsaLlR81Mkoz6udBLqrncfgyjXv8jB8daiqAmnO1xuvlkwZXHLqTGSy/ilN6dlCjxFAdLMtk4teUWk3RRMPb67nXpnMb6pSUuB3ndV90woAZT+qfudq4L7AEKR+NA8fv2P/2lHBDvSVd2e0DWCbJQhmI8oRIUTEgnFg+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=itiPWJga; arc=none smtp.client-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrLYsJRq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27581F000FF;
-	Tue, 13 Oct 2026 15:59:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791907151;
-	bh=7ffZuAK4jZs9uvHwAUEPp+hVA5QNiqDZgQy0qT6fVnU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KrLYsJRqe5RRRF6sQjNQND9awP8Vb1cEOBKbvY+b02EcEaHqI5837DuUPCP+lDNP/
-	 bZAVPDBzB1t93cL968YlZhgIXfkgPyiyAL/4KVTtrckgtKEpltQEThhlFeuUUe9S9e
-	 s884C9J81RF4i2QADLkmrYxfGDm4HrF3BOiDdqmKKVAQBBKwvHf5SlzcCIrj7jBrzn
-	 9FYxEhFDd8JGy6Y5+eNULv2TwKvTzXaplKqIcmy+voSMVUxr5JJcyuBwAQVajFugEs
-	 prZIEo5fqazYF5WfZt6t7DcCTOihVR5XyR66iHjRauFn1i5UXu7DU/60iyGRZpLDCG
-	 aUbC4izNSu8bw==
-Message-ID: <sashiko-outbox-170075@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 07/15] s390/vfio-ap: File ops called to save the vfio
- device migration state
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261013153219.3534306-8-akrowiak@linux.ibm.com>
-References: <20261013153219.3534306-1-akrowiak@linux.ibm.com>
- <20261013153219.3534306-8-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 13 Oct 2026 15:59:10 +0000
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="itiPWJga"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1791907616; x=1823443616;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5RGsatsPAyQIBEtdraUseJGGZDIDfWt4LgToyJkkY0g=;
+  b=itiPWJgaFtqSKsAFys0hLcKLcXAlWnhhs5ZPsTf60+/E4wIaw+1/Ca7L
+   qJ9+g1Jee4D1GQww1pkqQHI0aUPke2D31VInJpaqUBRen4G2C7tAh/2Qy
+   UyRk+Kn4MyF/fMNaUSpA1Ouoj9pvGG39eZAMqahfkgi9hQm4iBQpCqO+H
+   yAftk5eArI3F0M0b7xtTkjZ3xnY0P9fx5rcX2Ifexsbi5SnIfNXdV1JPu
+   Ej3I4ZTKkqwsZUt2FCey5JkYDdtMsQu6d6rtavdUygWgxYJGDgokQiCce
+   G4+QZEXkeMCjJWlrarxlH6n3zQsBWrUEYA1hq6CFXw1Y2oFnOhBqjggRn
+   A==;
+X-CSE-ConnectionGUID: EzT8FQ1qRkitCh9eAqylmQ==
+X-CSE-MsgGUID: 0N5fJEVHQK2EpK1JLFPKKQ==
+X-IronPort-AV: E=Sophos;i="6.27,156,1787011200"; 
+   d="scan'208";a="31138648"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 16:06:53 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:15933]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.46:2525] with esmtp (Farcaster)
+ id 95bf7a0b-1374-49ed-916d-f238717f74ff; Tue, 13 Oct 2026 16:06:53 +0000 (UTC)
+X-Farcaster-Flow-ID: 95bf7a0b-1374-49ed-916d-f238717f74ff
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Tue, 13 Oct 2026 16:06:53 +0000
+Received: from b0f1d8753182.ant.amazon.com (10.106.82.29) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53;
+ Tue, 13 Oct 2026 16:06:47 +0000
+From: Takahiro Itazuri <itazur@amazon.com>
+To: Yosry Ahmed <yosry@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Brendan Jackman
+	<brendan.jackman@linux.dev>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Wei Xu
+	<weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+	<ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>, Sumit Garg
+	<sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>,
+	<rientjes@google.com>, Roy Patrick <patrick.roy@linux.dev>, Andy Lutomirski
+	<luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, Thomas Gleixner
+	<tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, Reiji Watanabe
+	<reijiw@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, "Ackerley
+ Tng" <ackerleytng@google.com>, Takahiro Itazuri <zulinx86@gmail.com>,
+	<cc-open-source@amazon.com>, Kevin Brodsky <kevin.brodsky@arm.com>, "Gregory
+ Price" <gourry@gourry.net>, <kvm@vger.kernel.org>, Derek Manwaring
+	<derekmn@amazon.com>
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Date: Tue, 13 Oct 2026 17:05:58 +0100
+Message-ID: <20261013160557.54828-2-itazur@amazon.com>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
+References: <CAO9r8zPOkuRGv0X=nBbAzTUjUyaB7zAJLUigetSXEVPxWpyGxw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] s390/vfio-ap: Undefined hardware state is used when TAPQ returns=
- an async error
---
+On Tue, 13 Oct 2026 08:36:54 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
+> > 3. ALLOC_UNMAPPED and the mermap
+> >
+> > AS_NO_DIRECT_MAP itself works without them, by zapping the direct map
+> > of each folio. However, guest_memfd will eventually need a temporary
+> > kernel mapping to populate guest memory via write() [2], because
+> > folios are already unmapped once they are added to the page cache.
+[...]
+>
+> FWIW, I think the mermap can still be used without ALLOC_UNMAPPED, and
+> I did have a newer version of the x86 patches repurposing the LDT area
+> for the mermap, and simplifying the mermap implementation a bit. I can
+> share them privately if you want to take a look.
 
-commit 449bfb4f03a8737bf9d26180f1c9b9cb38b82556
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+Yes please, that would be very helpful. Thanks!
 
-s390/vfio-ap: File ops called to save the vfio device migration state
+Agreed that the mermap can be used without ALLOC_UNMAPPED. To give a
+bit more context from the guest_memfd side: I can't say anything
+definite until I've gone through the use cases, but as far as I can
+see now, guest_memfd needs the mermap only for write() support.
+write() is an optimization for populating guest memory (e.g. when
+restoring a snapshot) and isn't functionally required, because
+userspace can also populate guest memory through its own mapping of
+guest_memfd. So I currently plan to keep write() support, and with it
+the mermap, out of the guest_memfd direct map removal series itself.
+Since ALLOC_UNMAPPED is the main user of the mermap, it may make more
+sense for the two to land together later.
 
-This commit implements the read callback function to save the state of the
-vfio-ap device during migration. It copies the guest's AP configuration
-information, including queue hardware information, to userspace.
+One thing I'd like to look into is arm64. Firecracker also runs on
+arm64, so write() needs to work there too, but the mermap currently
+relies on the x86 mm-local region, and it sounds like your newer
+version relies on the LDT area. Kevin, do you happen to have any
+ideas on how something similar could be done on arm64?
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index bbd007c06a776..cf3f95e2846cb 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-[ ... ]
-> +static int get_hardware_info_for_queue(const char *mdev_name,
-> +				       struct ap_tapq_hwinfo *hwinfo,
-> +				       unsigned long apqn)
-> +{
-> +	struct ap_queue_status status;
-> +
-> +	status =3D ap_tapq(apqn, hwinfo);
-> +
-> +	switch (status.response_code) {
-> +	case AP_RESPONSE_NORMAL:
-[ ... ]
-> +	default:
-> +		/*
-> +		 * Without a pending async error, the tapq info should be
-> +		 * available
-> +		 */
-> +		if (status.async)
-> +			return 0;
-
-[Severity: Medium]
-When the ap_tapq function returns with an async error (status.async =3D=3D =
-1),
-both the response code and the hardware information returned in general
-register 2 (hwinfo->value) are undefined.
-
-Since we return 0 (success) here, does this cause the caller to save garbage
-data into the migration stream?
-
-Looking at the caller:
-
-vfio_ap_store_queue_info()
-    ret =3D get_hardware_info_for_queue(..., &source_hwinfo, ...);
-    if (ret)
-        return ret;
-    ap_config->qinfo[num_queues].data =3D source_hwinfo.value;
-
-If get_hardware_info_for_queue returns 0 when status.async is true,
-source_hwinfo.value could contain uninitialized data that is then stored in=
-to
-the ap_config and migrated to userspace.
-
-Should this return an error when an async error is pending so that we don't
-migrate uninitialized state data to the destination host?
-
-> +
-> +		pr_err_ratelimited("vfio_ap_mdev %s:Failed to get hwinfo for queue %02=
-lx.%04lx: TAPQ rc=3D%d",
-> +				   mdev_name, AP_QID_CARD(apqn), AP_QID_QUEUE(apqn),
-> +				   status.response_code);
-> +		return -EIO;
-> +	}
-> +}
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261013153219.3534=
-306-1-akrowiak@linux.ibm.com?part=3D7
+Thanks,
+Takahiro
