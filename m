@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068364457D3;
-	Tue, 13 Oct 2026 09:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7E74CC29C;
+	Tue, 13 Oct 2026 09:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885446; cv=none; b=XNOvenUnpI8hYqIveHmTXlUaBs8Bt+bWCn8bqQCvnkmCK9Yfgs0R5OGiWiRqVM7aWHsBl8KA5GAVA3PU7aPjS/x6raMWU/P5iDzEA7ztaCOUv0aTFaqOGj3yEbKluDIJUrn5O7/vVSEPUZNEB8fvfoqdZbdznrbbh3X3si977E0=
+	t=1791885518; cv=none; b=EshjIGg4g9I3BFIr3k3kG6tSUvGywHjXyv+0KnhV1INsTSoXJCI0g2C+sz+Vv6kCotY0CrgE6H8wktxEMjHyNSI3U7tt2SE5au1qcgM4UaOIaSefh/Y5pAFB+xcIiB7sqMy8cu+GsOBhkMX35Yn9zDUf1XRlnKCiYBD01KkgkEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885446; c=relaxed/simple;
-	bh=wAyQuMPhgE7rIEwhefUVJK9Gj7Sb6CQB4NMZXZ/y73U=;
+	s=arc-20240116; t=1791885518; c=relaxed/simple;
+	bh=YXnRSTWAU7IyxFtbn+qxY3qd2/8gPBY2gi/t/qkHSRE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JS+Er1X1QWAlefnRzdYyyr0nvlY3JC0x3MY7X+kI8HNX3OEij1xVk+qywJfHAaknPipAjMULatp2YX9ewuCh7zEYb5TE1/l9xibBpxBCcKCT2nW7OrIIZijw/3JNdq8daN4e3iQCDnsE4uit6pwSIGCnv8fyrFoZVmkdgmYl+EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i41BwXJl; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=Mz/YDr4JJUgUpjDsxi/ay0hIU/hBm3tFyFguvaGGDbQO64jzLO0k8DmlZ8Z1C17Erh5vyFfXw244K6g743+tKQCRi22KYEp22ugtDxx9WqFCS8AmrbrXF3ombPhIfUKs1SJYPVsjdSeT7wr3G+VG528Bv3bwP/L1Yhzv6LWPH78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gyrI4p+h; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i41BwXJl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791885444; x=1823421444;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wAyQuMPhgE7rIEwhefUVJK9Gj7Sb6CQB4NMZXZ/y73U=;
-  b=i41BwXJlW7jISi1dW+SOi8/3CnUzmoSmFIo9tTF1Ct+rmLumfED1Hrwc
-   RZtz9Grbaaa00qgOnbKQk1ztlt4BLje+G+aOlBCfhfxK/WJzvwwS1le/6
-   tnbLUhn1/rla/3+EJlDi+krg3c3+GN/EiW2/cbfTXXadKnjCRAbncD9I8
-   dazQ+xiN3abkUSqzF89CB2IINlIWaqJrIFDPcUuYuMEcQkc5VDSNJmtVl
-   KyIHJZhAorRWhLmrCyEnpG0J+SEgweogUolRNvscAtuSGCopFUH829778
-   mWwaABW170osG/K6MsPSLQHkZLSoOYfgxMogvxxyfqWKmrarzyAMULRnD
-   g==;
-X-CSE-ConnectionGUID: D+j/ek1mS0SFIhy3NbNrdw==
-X-CSE-MsgGUID: yIaivFhzScGGRLsIujGOTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="503914"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="503914"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:57:23 -0700
-X-CSE-ConnectionGUID: 6mFUfCpoRmmKhwwO3Js6pA==
-X-CSE-MsgGUID: nJkODKsoTUuyfwXkvOtNng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1055004"
-Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:57:21 -0700
-Message-ID: <4c41933d-b43f-4ae7-8b80-fa97ef4d4623@linux.intel.com>
-Date: Tue, 13 Oct 2026 17:57:18 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gyrI4p+h"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5801169C;
+	Tue, 13 Oct 2026 02:58:30 -0700 (PDT)
+Received: from [10.0.128.125] (Suzukis-MBP.cambridge.arm.com [10.0.128.125])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 587BB3F7B4;
+	Tue, 13 Oct 2026 02:58:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791885514; bh=YXnRSTWAU7IyxFtbn+qxY3qd2/8gPBY2gi/t/qkHSRE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gyrI4p+h+rg7F7KzN+FY9x9PiD8fijVdOLYuXXJRTseA4OxfHLYYokao4JrlWWDYc
+	 b7TYUZxc1LcIIzSY473gSneYG1BQKVdJSIpkJWp2/mAll6ueBdVaaSiIzgjq0dfLc6
+	 n/vn/bnmlNaqC9t2P2EbLNHqMRTHnuTppuDBHw80=
+Message-ID: <8be050e3-8af1-4f04-902f-9bc01b209dd0@arm.com>
+Date: Tue, 13 Oct 2026 10:58:29 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,79 +35,162 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/10] x86/virt/tdx: Convert the td_conf metadata
- reader
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, yilun.xu@linux.intel.com,
- tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
- nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-8-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-8-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v22 02/10] firmware: arm_rmm: Check for RMI support at
+ init
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-3-suzuki.poulose@arm.com>
+ <2586e689-c27d-4e4c-8c69-03e24259cb96@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <2586e689-c27d-4e4c-8c69-03e24259cb96@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/12/2026 5:47 PM, Chao Gao wrote:
-> Continue converting the metadata readers to the table-driven helper.
+On 13/10/2026 04:53, Gavin Shan wrote:
+> Hi Suzuki,
 > 
-> The "TD Configurability" class holds several scalar fields plus two CPUID
-> arrays. The arrays have a fixed capacity, but the number of entries to
-> read is variable and reported by the num_cpuid_config scalar field.
+> On 10/2/26 4:14 PM, Suzuki K Poulose wrote:
+>> From: Steven Price <steven.price@arm.com>
+>>
+>> Query the RMI version number and check if it is a compatible version.
+>> All RMM feature registers are read and exposed for future code to
+>> use. Also restrict the support to SMC conduit.
+>>
+>> We only support this for Little Endian kernels, the Big Endian kernel
+>> support is anyway marked BROKEN and is being removed.
+>>
+>> Cc: Marc Zyngier <maz@kernel.org>
+>> Cc: Oliver Upton <oupton@kernel.org>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Tested-by: Gavin Shan <gshan@redhat.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
 > 
-> Add a table that pairs each scalar field ID with the 'struct
-> tdx_sys_info_td_conf' member that holds its value, and read those fields
-> by walking that table.
+> [...]
 > 
-> Annotate the table as __initconst as it is referenced only during init.
+>> ---
+>>   MAINTAINERS                       |   2 +
+>>   arch/arm64/Kconfig                |   1 +
+>>   arch/arm64/kernel/cpufeature.c    |   1 +
+>>   arch/arm64/kvm/sys_regs.c         |   2 +
+>>   drivers/firmware/Kconfig          |   1 +
+>>   drivers/firmware/Makefile         |   1 +
+>>   drivers/firmware/arm_rmm/Kconfig  |  25 +++++++
+>>   drivers/firmware/arm_rmm/Makefile |   1 +
+>>   drivers/firmware/arm_rmm/rmi.c    | 112 ++++++++++++++++++++++++++++++
+>>   include/linux/arm-rmi-cmds.h      |  48 +++++++++++++
+>>   10 files changed, 194 insertions(+)
+>>   create mode 100644 drivers/firmware/arm_rmm/Kconfig
+>>   create mode 100644 drivers/firmware/arm_rmm/Makefile
+>>   create mode 100644 drivers/firmware/arm_rmm/rmi.c
+>>   create mode 100644 include/linux/arm-rmi-cmds.h
+>>
 > 
-> Leave the two arrays open coded. 'struct field_mapping' pairs one field ID
-> with one structure member, so describing an array would require a field ID
-> per field plus an entry count that is unknown until num_cpuid_config has
-> been read. That is not worth building for the only two arrays the kernel
-> reads.
+> [...]
 > 
-> Read both arrays in a single loop, as both have num_cpuid_config
-> entries. Store each value directly into its array member instead of
-> into a temporary u64 first. The members are u64 already, so the extra
-> copies serve no purpose.
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>> arm_rmm/rmi.c
+>> new file mode 100644
+>> index 0000000000000..06f5392c982d2
+>> --- /dev/null
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -0,0 +1,112 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2023-2026 ARM Ltd.
+>> + */
+>> +
+>> +#include <linux/arm-rmi-cmds.h>
+>> +#include <linux/cpufeature.h>
+>> +#include <linux/memblock.h>
+>> +#include <linux/slab.h>
+>> +
+>> +#include <asm/memory.h>
+>> +#include <asm/pgtable-hwdef.h>
+>> +
+>> +/* RMM v2.0 defines RmiFeatureRegister0 to RmiFeatureRegister4. */
+>> +static unsigned long rmi_feat_reg_cache[5] __ro_after_init;
+>> +
+>> +static int rmi_check_version(void)
+>> +{
+>> +    unsigned short version_major, version_minor;
+>> +    unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
+>> +                             RMI_ABI_MINOR_VERSION);
+>> +    unsigned long aa64pfr0 = 
+>> read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
+>> +    struct arm_smccc_1_2_regs res = {
+>> +        SMC_RMI_VERSION, host_version,
+>> +    };
+>> +
+>> +    /* If RME isn't supported, then RMI can't be */
+>> +    if (cpuid_feature_extract_unsigned_field(aa64pfr0, 
+>> ID_AA64PFR0_EL1_RME_SHIFT) == 0)
+>> +        return -ENXIO;
+>> +
+>> +    if (arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_SMC)
+>> +        return -ENXIO;
 > 
-> The inner dimension of cpuid_config_values[] is fixed at 2. Read the
-> two values with two calls instead of an inner loop. This saves a level
-> of indentation and is simpler to read.
+> I think we need to ensure SMCCC version is v1.2 or a newer one here? 
+> arm_smccc_1_2_smc()
+> is immediately called by rmi_smccc_invoke() after this check.
 > 
-> AI was used under supervision to review code and workshop logs.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> ---
+>      if (arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_SMC ||
+>              arm_smccc_get_version() < ARM_SMCCC_VERSION_1_2)
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+We could. But I am wondering if that adds any value ? If the RMM
+exists and responds to the RMI_ABI_VERSION, it must be so on a
+platform with v1.2 or greater ? The extra check doesn't hurt.
 
-> +static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *td_conf)
-> +{
-> +	int ret, i;
-> +
-> +	ret = read_sys_metadata_table(td_conf_mappings, td_conf);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * The number of CPUID config entries must not exceed the array
-> +	 * sizes.
-> +	 */
+Suzuki
 
-Nit:
-The comment seems to be redundant since the code itself tells it.
-
-> +	if (td_conf->num_cpuid_config > ARRAY_SIZE(td_conf->cpuid_config_leaves) ||
-> +	    td_conf->num_cpuid_config > ARRAY_SIZE(td_conf->cpuid_config_values))
-> +		return -EINVAL;
-> +
-
-[...]
+>          return -ENXIO;
+> 
+> Thanks,
+> Gavin
+> 
+>> +
+>> +    rmi_smccc_invoke(&res);
+>> +    if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
+>> +        return -ENXIO;
+>> +
+>> +    version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
+>> +    version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
+>> +
+>> +    if (res.a0 != RMI_SUCCESS) {
+>> +        unsigned short high_version_major, high_version_minor;
+>> +
+>> +        high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
+>> +        high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
+>> +
+>> +        pr_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
+>> +               version_major, version_minor,
+>> +               high_version_major, high_version_minor,
+>> +               RMI_ABI_MAJOR_VERSION,
+>> +               RMI_ABI_MINOR_VERSION);
+>> +        return -ENXIO;
+>> +    }
+>> +
+>> +    pr_info("RMI ABI version %d.%d\n", version_major, version_minor);
+>> +
+>> +    return 0;
+>> +}
+>> +
+> 
+> [...]
+> 
+> 
+> 
 
