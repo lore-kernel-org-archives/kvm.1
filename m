@@ -1,220 +1,646 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCCF313267;
-	Tue, 13 Oct 2026 18:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791917176; cv=fail; b=Gn5xOvPa7Ez5VtLBLgB1UFBopmiHyKi6uG1bG3MkUgb7iFl0vqdmTo+qgkRbmTnG/JlaCuVyK7wwv/MbnDM52rScZFDxTaAGcKC4DRxRnpRnFaDkIH3RwxpZdJuw4+Uhd04DQmE8TxY3hBd5Ge0o3yehkVcvCVdRQrffgP/xnVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791917176; c=relaxed/simple;
-	bh=+AR/HyRgNKEI4apiRQX2VmYqRuCyxrkmgTei+9IeIqc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=shX1/BwSLhrl1rgFKLGz4b/HWPv96xAgH/1mdkbxTTQiQHlSZ4uOQxN9oayocblNXdMv422dxwjpfO5+0fVQhoML9doVcyp60lvBypxcl1eek7y86roMs8NC+HLSbTYC1BWcbJ+lhQ69Ak5G0tuWNhGGBVKHHooOg14QmFPi4Vc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ewvSd0AD; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29A15349BE;
+	Tue, 13 Oct 2026 18:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791917447; cv=none; b=d8bTnqNr8MUK65VVVa28XnQNEaMyTkueVEvCQ3AUJYMIKJU95BKO5hMaL4g7p0Zmb69w+pC6QKHIQilDrE9ENo+P6mxuBcb8g/cCJTPD8D1fOZFGebthk+q61gvGrlX+tSJFR+rGnwyyN0RV5yrhzz8pV3HWvsbArdaxq6oGWNE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791917447; c=relaxed/simple;
+	bh=5YZ6xukZNAmqlS94iUDKqh51GxcIvb0XLLdhEY3HqPY=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=GlRHSSJQFvytbuqZbs6pDRthRzDa8FVTHXwTtWhb+WL3sMRh+GtcovyJ50hukuWQe+jHIXkRpFcY7Wd+R7y3XSkHDieLfgjriq0rclhAx+M4IUW1+2hLgdF1PX33Q3NhRwg+HR4PJ9zR9MKcybLbZBemOeZcUQPog56528iqumA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EQ4XU1XC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ewvSd0AD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791917175; x=1823453175;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=+AR/HyRgNKEI4apiRQX2VmYqRuCyxrkmgTei+9IeIqc=;
-  b=ewvSd0ADCuZ7rJCsUqmyFxU9ig2JoAn+bW+RPtR7OMKtikwAQteltmtx
-   E8dAyVAu+Ur5os/GheoPcEFP2BcM7rPM5RHWBTJ8qx1IVLovSD7ZlKhwS
-   5Ev+lvEr34OUbsAWIiuiV7fUpgvcsDU1g28W52jdXA0TppFDwFu8nEvA6
-   RVeoPKKw+P0UZmmxJnSHYYmJhZFDLQ9x+mbTANT/IZQJyvN06cr2iSWAX
-   j3CNmwJHAslTdg+hPC9nxvPccwCdGyY+if79JCeHovlnMtJy0t5ACcZuN
-   F6whVu8ZD0msuBsPmDGLtlr8ouFNjutpb3D9G2Is2ylKPeVBaRnFf1lVa
-   g==;
-X-CSE-ConnectionGUID: TwHaUlhJSdqA50vCp338lQ==
-X-CSE-MsgGUID: OdQHTXlsT5mCCeLIlHyHBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="685578"
-X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="685578"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 11:46:14 -0700
-X-CSE-ConnectionGUID: +oAZdtv2TB6ktxOifddzrw==
-X-CSE-MsgGUID: 9aTrhuyQRxec4u62Dzn8VQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="1324942"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 11:46:15 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 13 Oct 2026 11:46:13 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 13 Oct 2026 11:46:13 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.25) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 13 Oct 2026 11:46:13 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TY6meAeRrsXYbu739EHgxjt+LDiaHnZGOjghOjo2KylYzV1kcfCIdRQwoK/0jzOAiJDqzy+umlfrfaOeudnC4hnBKt53v9kH0LAVv+hcTXlPcyrwAoreJb9zEf+UByPOm7OVm1h9l9DrozQ0XthNGeCZet1LO8POt7UnlyGeVAx3+1Y5ijIGRZeCRmBnkSQrXQmjUi/0RbK3Q1lBM9JqCLFdFO0uN1lAbZiim/tsjYFbZ+vS/QryjodsVxYGWemG0KIvJSMA2ftBD8LQAs9BN4cARtNo1sxpoZf1Lpx6zBL4FIuZ0I+ZK/Lvco14kP0SQS+NGHP6d21tCxggc0kwuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+AR/HyRgNKEI4apiRQX2VmYqRuCyxrkmgTei+9IeIqc=;
- b=ypDaTjNMfbsi8GOFD06qBfcIsg0t9Q37mz8gMI1FHkY+ec4IugvQ65cR9OJw9yJFFv99e77U44sFmPohPwOhdr+mGRZbNTFMofsgfWPFKh3Z3Frc+DVnGfgOqSDcMnJZNfJrayx030tSn8CQdL8syIxALiCMWdmRkdfYPuhGD27uSxEVG2+cXwYFWnJ+TvUDmRJCnfTpLWj7DokkSJgIHwyPSdECBxdexzzqRyHUsVy4KdEfJPJz7A3Zkzg5nnlzlT0jpBiAJxHlqHi/zsYP+Eej7PyuZQq8k98EMp3N9urA3AcE2QCftkN1+ad8Td4IqQGXHht+a7zB5dd7JPkW8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by LV2PR11MB719417.namprd11.prod.outlook.com (2603:10b6:408:413::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Tue, 13 Oct
- 2026 18:46:12 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
- 18:46:11 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Hunter, Adrian"
-	<adrian.hunter@intel.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, "Xu,
- Yilun" <yilun.xu@intel.com>, "artem.bityutskiy@linux.intel.com"
-	<artem.bityutskiy@linux.intel.com>, "nik.borisov@suse.com"
-	<nik.borisov@suse.com>, "Mehta, Sohil" <sohil.mehta@intel.com>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>, "Maloor, Kishen"
-	<kishen.maloor@intel.com>
-Subject: Re: [PATCH v4 3/6] x86/virt/tdx: Add extra memory to TDX module for
- the extensions
-Thread-Topic: [PATCH v4 3/6] x86/virt/tdx: Add extra memory to TDX module for
- the extensions
-Thread-Index: AQHdWyhFTNJTz9rN10eK1lJZytMkobb7z+qA
-Date: Tue, 13 Oct 2026 18:46:11 +0000
-Message-ID: <6a3998e4e4f58995a0d78b5d69b593c2963b7e0a.camel@intel.com>
-References: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
-	 <20261013-tdx-module-ext-v4-3-de5ffac65470@linux.intel.com>
-In-Reply-To: <20261013-tdx-module-ext-v4-3-de5ffac65470@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|LV2PR11MB719417:EE_
-x-ms-office365-filtering-correlation-id: f7a3d7f2-4cb5-4105-83d8-08df295a40a4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|6133799003|10067099003|18002099003|22082099003|11063799006|4143699003|38070700021|56012099006;
-x-microsoft-antispam-message-info: 38TB+5jLBOm0ff1fN+0sftSLwY6MUa4j+icOUlOTDeV3/RIFyud79R6ow6K+etlKda899oi8jRL9B0XUM6crrj4ksaRvYQb1uiSKZKka8VRrxDzOajb9UIjpo4E/KBsEctzvfo41rYxDCkZ/mRILgWj5cN0afPucJYed+jcZ+gowMFO9qZYnyWnfSJm7rO7igM0Ch24EWZXNE+drwzFQqIFJWiyBSoTpaiuUCRq0yhtHnCmicrdsutBF+jP/GabawfClIQndyEdcK32Oy4TlUd4gsBX0CvsHJXalvqDGH/so6VnTtqgslsO7zJo31qtq2eev2bQxd+akxQwVl5faq5ZoqZpwMy/p7E8GSAP3EsuCQbX6qODRNYaCSN07NHg2hbXeRSGHq7ulGXp2hTwANZagAJG7b+X8oOtAkKTJfMMb16xzxLbkrylKv7LBqXz7lC9s0M6GKZmKp6eCUWPGeAL9Crsy2YaJESFJesVJrXrNu/MbLqO5QnB7tS45uZXlcqVur/Cs+sAKEeJvfVJbVr/9SU1jbrMjiz6xPMKvTevtrIJfosJpWvmM9GC5BFzO7aiZR1GpSl6ExJkfA4I12rBVI+XO7CUz6E/ljRUkSpgTc53ja2/9ae4cokL+5UAc6J5um45CHUeCQtXLhNKLaX7ncO3auUoHeNGLpQvYo8eCBeD7jkFaFpBCJkJFe8tXHRRDT6Ijp6Bm/gMMx9pdfScj9+u+0wLNwLvbfhUlsd8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(6133799003)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003)(38070700021)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bS9TdW5waS9yazNuc3lmTWVnMmY2SUl4bTRCRE9kcExKSXRlbGtsS0Z2YUh4?=
- =?utf-8?B?REhJL1J3bEpBc2NyUy8wVUo4amxOM0Y3bU5oVWxKRi9SbUFKdEJ4NEl4L3pK?=
- =?utf-8?B?VklmTTVRSEZ3UnZJRWZ6YVZiMDdaVEZ1OUdaTVhDT1JGQmEza0JKUUg2ek1l?=
- =?utf-8?B?WFJ5VzUrMjFMQTdzUWJGTGVhRkJ2QkVxc2dlS1Y0ZUpOeEc3dzVNVEdRdWlP?=
- =?utf-8?B?R0hKQWhIbXZnUy9nQ3NEZTdlSkxjMGRuV3FreFNCS2tobll1Vi9YTnpuQXl3?=
- =?utf-8?B?V1FFMmtKc2NzdGhtYzF4WW15STRlWi9oRFExWGtQcW9UeFNYMGFNQzErVkc4?=
- =?utf-8?B?OU9ZQ1c5aDE3bEJ0TzlnUVduQTE1MEJoUVVRWm1lR0VaS3VWOGxWZG56VC9G?=
- =?utf-8?B?OUZPWDZHclV2eTd3MzQ2emQ3c1dadDVPbUpBSm0wellCaGhUc0RUWDYxZFc0?=
- =?utf-8?B?ZkMyanczMlpLNGc1QWN4WmEzWURXd2E1VWdzUUdKdWJMT3AzRjMvYWNhMW9w?=
- =?utf-8?B?NVYyaVQ0NytibDByQXlLVXNLY0ZNc3ZMQ3d0SFRDWTh3RDNtV3R2aUtpMlU4?=
- =?utf-8?B?RzJvOENWVjZpV3RLZ2pGbkc3dkdzZ1NSb2l5ZlhUMFU3Z252Ty9lYTZqVThB?=
- =?utf-8?B?N3ZINmZDVGZZSEpzaDk2MEJCcWJaN1Rra1RPV29mdnJPbEljUDRsZE5yMmk0?=
- =?utf-8?B?U1czeVBiWGxzRlg4QkxWNXFuTDJ3TGt2cnhESUkzbjJ1ZDVyL09wekFYN2RU?=
- =?utf-8?B?T3V6OW1pV1N0UkR4UUtvU3ZuYlpBbjd1Nk1XYUtFTDNpZEhmRWs4MHFocTRS?=
- =?utf-8?B?eVl2bGY2REhnVk5xcUFYU2pCdkVzS0FlaGszY2E2UTZLdUcwWXhUN2hDS0dF?=
- =?utf-8?B?eUppZCtISFVpaDdobTZwRENXaXYwNzJVWVZNOThwdFpuRDBnM1hEY2pkZFVO?=
- =?utf-8?B?enpFcUlIWGhEQlRHNGNBc0l0Yk5id1dKOVNOeU44YmRoY1p6OXRNaDUxY0Ft?=
- =?utf-8?B?K0NtbWd0TzdXOHRDR2FPajZlNmErOFd0M0crV0RidHZsWHRmanpNVkQ0TVJE?=
- =?utf-8?B?bnY2cEVHQ2FwSjZyWWVjMUl5Uk5hRDg2QXZKOGs4Sk83d2F4SVE5UFE4eUx4?=
- =?utf-8?B?L0FEdEk5WnVoRkRRRnlQYSt6MzZmMkx0c1NBbUpEbWE4WisvYXVhdS9kTTVW?=
- =?utf-8?B?V1VmdG9KTmxlcENUanNKeTQyY08wWFV6ZUFISFVIMFFMNFBBb1dDUnZCOURZ?=
- =?utf-8?B?eFFiSEdMeG40USsxVEtBTnBLN1pzN0Y0bDFpbWdqL3BsSi8vQTg0WkZrMmRP?=
- =?utf-8?B?NkRXZjlXMWpGV29KN2M1Z2VLdzhGWHFRNUtHR1VrL1FjOGRxKzAwSzRzWlgx?=
- =?utf-8?B?OXptSmRjK1UvTWNwVkhtUjdQNVlVbmtqSnRKb00rVjdMbXA1emhDd2h2MW5Y?=
- =?utf-8?B?SVo3Qk5odXJ5SUk1RUFyQWovWmlWeVFISE5Kdys2Mm1RclZ1R2VHb0ZYUGx4?=
- =?utf-8?B?dG16ZDVZMFkzVHAwSHhacG5pMEFyd2l3WnJLbnJJdTZ6UENPeC9DblNhVjhw?=
- =?utf-8?B?U21oS1ROQTl2NWozOTBxWkZNSkVCbGtqL29xOHAydEdJUmJWdFhYVDRDUTc1?=
- =?utf-8?B?MGFPYWtPT1hrZWswZTgrMXVrZnVEaTByOGpIV0FoWGt1UTl0bEVPZnBlV0N3?=
- =?utf-8?B?SWhxMzV6ajFRaUxtRzQzTGVGQWRyOS8wbDJObVllVFlUSGYwcE5ibEF0K292?=
- =?utf-8?B?S2JSZ2orTS9jMWpmMTRuZnZRUFFYU2NmVUZ5OHdETzEzVlNXd1kyMkY0QTE5?=
- =?utf-8?B?Vm1pWWUwNFh0MnBJbVloOXEyR3dsUjMySTBjclkxSXVWcUc2Z0hnUUFLWFpm?=
- =?utf-8?B?S0FpSHBmdXFpazNsSExEbml1YVJFUnI0U1VsdGZYQW9ZT01Mam4vdzNNTWtj?=
- =?utf-8?B?aHVDazBjb0FXU1YvRXdUcDFlaW80bFVmUllzbVhuRUlXa2JKT0d3TVpPUXRP?=
- =?utf-8?B?ZUc3V1I0SjJRNEpHc3JwWklXNG5PbitzMjNqUEtHZzdITE1mUEo4TDVwaGRn?=
- =?utf-8?B?RW5lNnU3SlZBcHMxV2QxbTVmcUJzZEdHOFZoTzZKNkdjYnhyaFFBNUVuNmlw?=
- =?utf-8?B?R2N0ZEFJcUh4RDBTZXBsV1N0Vm83dk90NkZHQS93TzdHNFJLNkNVVnV0VEJ1?=
- =?utf-8?B?bHBnVGQ1SUFiNmU4YTFpdnVOK0NvY1lwYTM4MURONTNHb3JZNk9PWVRxUmNn?=
- =?utf-8?B?VFMrRWhQUWNENEJ5RllPT2JGOTlpNTRKNzNhc1c0N1JHL2VKNDlObnRGZUcx?=
- =?utf-8?B?cTkzU3JGSmFEL0NGSjVJWGdRbTZjeGZ4REgwVURWTTVYekd5U1N2TUVTM2Qy?=
- =?utf-8?Q?W3VE6V4NCLcqxD+4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9ABE2DB4C65FE84688D60BCDF8AF112D@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EQ4XU1XC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B161F00898;
+	Tue, 13 Oct 2026 18:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1791917444;
+	bh=MuZf8a4s4KeYVJq+WlBcJeJCEq4B3iFccAJsrfXV9NM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=EQ4XU1XCFoj78Yyeld7YNcnP/9noZdX9lN5UCdmZcoKGQgrlrhgFY+A4mTo+auY+J
+	 3Rac6nV/fZjHnfKTsq26wtuqYJMvkhuUDd/fkVCVq1fYNre1356490QbzZy183nF+c
+	 /ycTbc039NpvwigJiKoRCcMhob/ZU3R3AoCJM5Mw=
+Date: Tue, 13 Oct 2026 11:50:40 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dennis Dalessandro
+ <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert
+ <dgilbert@interlog.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, Simona Vetter <simona@ffwll.ch>, Helge Deller
+ <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+ <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Chris
+ Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chengming
+ Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, Miklos
+ Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org,
+ selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev, Ihor Solodrai <ihor.solodrai@linux.dev>, Bert
+ Karwatzki <spasswolf@web.de>, Takashi Iwai <tiwai@suse.de>, Emil Tsalapatis
+ <emil@etsalapatis.com>
+Subject: Re: [PATCH v6 00/39] mm: make VMA flag semantics explicit,
+ eliminate VM_SPECIAL
+Message-Id: <20261013115040.1583b1d8e85c4b5d65a1ae0e@linux-foundation.org>
+In-Reply-To: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
+References: <20261013-b4-mmap-prepare-vma-flag-sanify-v6-0-1aa3c9b139f9@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Ds4mN/ivwBLlDE8VDU8rgLRhSAugetxVxyOikH4em/cUDLmezSn98f43qbdv+XZ2NKT675YBmceWaBEL+koYvVuB6nL45jsnPKLiCg2dkO7Mh8AAsuRwguVfbDpzxNvhRVO8lvSyooZbD1WPV9n5IzzHWKxUwdfJN3KwJ++4+aTmc99S4gVcEe5MnBfzRElVao6wMIc39FMhOSMrmxMohyCUEUefh4GBxkeMPBFratXQT7i8ZttIGUMX2UV0BStGiUVSt/TnBvB6jHYZBkMh6e0sj+Ix10Ea7ZkTbx5H4bltuBQwELF/p7pztiYSucAmWVy7PzAX0GnVCZwnB53hLQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7a3d7f2-4cb5-4105-83d8-08df295a40a4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2026 18:46:11.7940
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0ORtsPPKwOXRL9HAAn1Cg4VMRNVhqKeCx2eIAneb13iXeac5Mk1heKLOsu+HMmYIHUgJ3LadEaeiSI+MfYZzdmJ8UPqLchuSO1YTDuvfFLE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB719417
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-T24gVHVlLCAyMDI2LTEwLTEzIGF0IDIzOjI4ICswODAwLCBYdSBZaWx1biB3cm90ZToNCj4gVERY
-IG1vZHVsZSBleHRlbnNpb25zIG5lZWQgbWVtb3J5IGZvciB0aGVpciBleGVjdXRpb24gZW52aXJv
-bm1lbnQgdG8NCj4gc2VydmUgU0VBTUNBTEwgbGVhZnMuIFRoZSBURFggYXJjaGl0ZWN0dXJlIGlt
-cGxlbWVudHMgdGhlIGV4dGVuc2lvbnMNCj4gaW4gc3VjaCBhIHdheSB0aGF0IHRoZXkgdXNlIHRo
-ZSBtZW1vcnkgb3V0c2lkZSBvZiBTRUFNIHJhbmdlLCBzbyB0aGUNCj4ga2VybmVsIHNob3VsZCBh
-ZGQgdGhlIG1lbW9yeSB1cGZyb250IGF0IGluaXRpYWxpemF0aW9uIHRpbWUuDQo+IA0KPiBJbnRy
-b2R1Y2UgYSBuZXcgbWVtb3J5IGFkZGluZyBwcm9jZXNzIGJhY2tlZCBieSBhIG5ldyBTRUFNQ0FM
-TCBsZWFmDQo+IFRESC5FWFQuTUVNLkFERC4gVGhlIGtlcm5lbCBxdWVyaWVzIFREWCBtb2R1bGUg
-aG93IG11Y2ggbWVtb3J5IG5lZWRlZCwNCj4gYWxsb2NhdGVzIGl0LCBhZGRzIGl0IHRvIHRoZSBt
-b2R1bGUsIGFuZCBuZXZlciBnZXRzIGl0IGJhY2suDQo+IA0KPiBUaGUgVERYIG1vZHVsZSBhY2Nl
-cHRzIHRoZSBtZW1vcnkgaW4gdGhlIGZvcm0gb2YgYW4gSFBBIGFycmF5LiBUaGlzDQo+IGFycmF5
-IGlzIHBhc3NlZCB2aWEgYSBzaW5nbGUgNjQtYml0IFNFQU1DQUxMIGxlYWYgcGFyYW1ldGVyLCB3
-aGljaA0KPiBlbmNvZGVzIHR3byB2YWx1ZXM6IHRoZSBQRk4gb2YgdGhlIGNvbnRhaW5lciBwYWdl
-IGhvbGRpbmcgdGhlIGFycmF5LCBhbmQNCj4gdGhlIG51bWJlciBvZiBlbnRyaWVzIGluIHRoZSBh
-cnJheS4gQ3JlYXRlIGEgaGVscGVyIHRvIGVuY29kZSB0aGlzDQo+IGZvcm1hdCBhbmQgbmFtZSBp
-dCBhZnRlciB0aGUgVERYIG1vZHVsZSB0ZXJtOiBIUEFfTElTVF9JTkZPLg0KPiANCj4gVERYIG1v
-ZHVsZSBleHRlbnNpb25zIGNvbnN1bWUgdGVucyBvZiBtZWdhYnl0ZXMgbWVtb3J5IHRoYXQgd2ls
-bCBuZXZlcg0KPiBiZSByZXR1cm5lZCB0byB0aGUgaG9zdC4gVXNlIGNvbnRpZ3VvdXMgcGFnZSBh
-bGxvY2F0aW9uIHRvIGlzb2xhdGUgdGhlc2UNCj4gbGFyZ2UgYmxvY2tzIGVudGlyZWx5LiBUaGlz
-IGlzIGEgc2ltcGxlIHdheSB0byBhdm9pZCBwZXJtYW5lbnQgbWVtb3J5DQo+IGZyYWdtZW50YXRp
-b246IHJlcXVpcmluZyB0aGUgZnVsbCBzaXplIHRvIGJlIGNvbnRpZ3VvdXMgaXMgbW9yZQ0KPiBl
-eHBlbnNpdmUgdGhhbiBuZWVkZWQgYnV0IHNob3VsZCBiZSBnb29kIGR1cmluZyB0aGUgYm9vdCB0
-aW1lLiBQcmludCB0aGUNCj4gYWxsb2NhdGlvbiBhbW91bnQgb24gVERYIG1vZHVsZSBleHRlbnNp
-b25zIGluaXRpYWxpemF0aW9uIGZvcg0KPiB2aXNpYmlsaXR5Lg0KPiANCj4gVGhlIFREWCBtb2R1
-bGUgcHJvdmlkZXMgYSBtZXRhZGF0YSBmaWVsZCAicmVxdWlyZWRfcGFnZXMiIHRvIGluZGljYXRl
-DQo+IHRoZSByZXF1aXJlZCBtZW1vcnkgc2l6ZS4gVGhpcyBtZXRhZGF0YSBpcyBwcmVzZW50IG9u
-bHkgd2hlbiB0aGUgbW9kdWxlDQo+IHN1cHBvcnRzIHRoZSBleHRlbnNpb25zIGFuZCBpcyBtZWFu
-aW5nZnVsIG9ubHkgYWZ0ZXIgdGhlIGFkZC1vbiBmZWF0dXJlDQo+IGNvbmZpZ3VyYXRpb24uIERv
-bid0IHJlYWQgYW5kIGNhY2hlIHRoZSBtZXRhZGF0YSBpbiB0ZHhfc3lzaW5mbyBhdCB0aGUNCj4g
-dmVyeSBiZWdpbm5pbmcgb2YgVERYIG1vZHVsZSBpbml0aWFsaXphdGlvbi4gSW5zdGVhZCByZWFk
-IGl0IHJpZ2h0DQo+IGJlZm9yZSBhbGxvY2F0aW5nIG1lbW9yeSBmb3IgdGhlIGV4dGVuc2lvbnMs
-IHdoZW4gaXQgaXMgZ3VhcmFudGVlZCB0byBiZQ0KPiB2YWxpZC4NCj4gDQo+IEFJIHdhcyB1c2Vk
-IHVuZGVyIHN1cGVydmlzaW9uIHRvIHJldmlldyBjb2RlIGFuZCB3b3Jrc2hvcCBsb2dzLg0KPiAN
-Cj4gU2lnbmVkLW9mZi1ieTogWHUgWWlsdW4gPHlpbHVuLnh1QGxpbnV4LmludGVsLmNvbT4NCj4g
-UmV2aWV3ZWQtYnk6IFRvbnkgTGluZGdyZW4gPHRvbnkubGluZGdyZW5AbGludXguaW50ZWwuY29t
-Pg0KPiBSZXZpZXdlZC1ieTogS2lyeWwgU2h1dHNlbWF1IChNZXRhKSA8a2FzQGtlcm5lbC5vcmc+
-DQoNClJldmlld2VkLWJ5OiBSaWNrIEVkZ2Vjb21iZSA8cmljay5wLmVkZ2Vjb21iZUBpbnRlbC5j
-b20+DQo=
+On Tue, 13 Oct 2026 16:04:40 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+
+> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> properties:
+> 
+> * Is this managed by core mm, or by a driver mapping MMIO, kernel-allocated
+>   pages, or even ordinary pages itself?
+> * Can it be expanded or merged?
+> * Is this a 'weird' case like mlock where migration might race and we
+>   'have' to set invalid flags to notify?
+> * Is it another 'weird' case where we just want to stop GUP from touching
+>   it?
+> 
+> Driver writers have often been confused about this, and who can blame them?
+> 
+> It also interacts badly with the eternal edgecase known as hugetlb - which
+> sets VMA_DONTEXPAND_BIT but doesn't also want to be treated like a
+> 'special' flag.
+> 
+> Another issue is that we cannot make sensible assumptions about flag
+> use. It's not possible to assume VMA_IO_BIT means iommu because drivers
+> abuse it and mlock abuses it.
+> 
+> Special is also an overloaded term in mm. VDSO and VVAR mappings are also
+> called 'special' but they're special in a... special way.
+> 
+> Sometimes things are called special that are a subset of
+> VMA_SPECIAL_FLAGS (VMA_PFNMAP_BIT and VMA_MIXEDMAP_BIT for instance when it
+> comes to zapping or vm_normal_folio()).
+> 
+> There's a specific kind of special for THP too, which considers
+> PFN map, mixed map 'special' but DAX not.
+> 
+> It's all rather a mess.
+> 
+> This series brings some order to things by both limiting what drivers can
+> do with VMA flags and switching to using predicates that describe
+> behaviour, not arbitrary flags.
+
+Thanks, I've updated mm-unstable to this version.
+
+> v6:
+> * Applied tags (thanks David!)
+> * Added 7/39 to split out the vm_insert_page() / vm_insert_pages()
+>   mmap lock assertions and VMA API changes out into their own patch,
+>   as per David.
+> * Updated 8/39 (was 7/38) to collapse the discontig single page case to
+>   a single one and to rename things, as per David.
+> * Updated 9/39 (was 8/38) to update the discontig docs to reflect the
+>   change.
+> * Updated 23/39 (was 22/38) to put expression on single line, as per David.
+> * Updated 25/39 (was 24/38) to mention the open-coding in the commit
+>   message (fixed in next commit), as per discussion with David.
+> * Updated 26/39 (was 25/38) to clarify the commit message around the
+>   removal of the VMA_IO_BIT check in vma_flags_is_mm_managed(), as per
+>   David.
+> * Updated 30/39 (was 30/38) to no longer exclude droppable mappings from
+>   vma_flags_is_mm_backed(), as it doesn't quite fit into the broader
+>   definition, as per David.
+> * Updated 30/39 (was 30/38) to express vma_flags_can_merge() in terms of
+>   vma_flags_is_mm_backed() (with an explicit hugetlb exclusion), and to
+>   no longer use vma_can_merge() in __thp_vma_allowable_orders().
+> * Updated 31/39 (was 29/38) to use vma_is_mm_backed() (with hugetlb
+>   exclusion) rather than vma_can_merge(), as guard regions have nothing to
+>   do with mergeability.
+> * Updated 32/39 (was 31/38) to retain an explicit droppable check in
+>   vma_can_userfault(), as per David.
+> * Updated 33/39 (was 32/38) to use vma_is_mm_backed() with an explicit
+>   hugetlb exclusion, rather than vma_can_merge() which makes no sense here.
+> * Updated 34/39 (was 33/38) to retain explicit droppable checks in
+>   vma_supports_mlock() and ksm_compatible(), as per David.
+> * Updated 34/39 (was 33/38) to use vma_is_mm_backed() in should_skip_vma(),
+>   based on discussion with David.
+> * Updated 35/39 (was 34/38) to use vma_is_mm_backed() in
+>   lru_gen_look_around(), as per David.
+> * Updated 36/39 (was 35/38) to use vma_is_mm_backed() with an explicit
+>   hugetlb exclusion in migrate_vma_setup(), as per David.
+
+Here's how v6 altered mm.git.
+
+
+ Documentation/filesystems/mmap_prepare.rst |    2 
+ include/linux/mm.h                         |  120 +++++++++----------
+ include/linux/mm_types.h                   |    6 
+ mm/huge_memory.c                           |    7 -
+ mm/internal.h                              |    3 
+ mm/ksm.c                                   |    3 
+ mm/madvise.c                               |   11 +
+ mm/memory.c                                |   16 +-
+ mm/migrate_device.c                        |    4 
+ mm/userfaultfd.c                           |    3 
+ mm/vma.c                                   |    4 
+ mm/vmscan.c                                |    7 -
+ tools/testing/vma/include/dup.h            |   44 +++++-
+ 13 files changed, 128 insertions(+), 102 deletions(-)
+
+--- a/Documentation/filesystems/mmap_prepare.rst~b
++++ a/Documentation/filesystems/mmap_prepare.rst
+@@ -240,7 +240,7 @@ In the ``get`` hook, the user must choos
+   compound pages (if the compound page is bigger than the remaining pages in the
+   VMA, then only those pages that fit will be mapped). For a compound page, the
+   head page must be passed.
+-* ``discontig_kernel_map_page_range()`` - Map an array of pages of a specified
++* ``discontig_kernel_map_pages()`` - Map an array of pages of a specified
+   size. As with a compound page, if more pages are specified than remain in
+   the VMA then only those that fit will be mapped.
+ 
+--- a/include/linux/mm.h~b
++++ a/include/linux/mm.h
+@@ -1695,57 +1695,22 @@ static inline bool vma_is_fixed_mapping(
+ }
+ 
+ /**
+- * vma_flags_can_merge() - Do the specified VMA flags permit the VMA to be
+- * merged with another?
+- * @flags: The VMA flags to test.
+- * Returns: true if the flags permit merging, false otherwise.
+- */
+-static inline bool vma_flags_can_merge(const vma_flags_t *flags)
+-{
+-	/*
+-	 * VMA merging assumes that a VMA's flags and fields completely describe
+-	 * its state.
+-	 *
+-	 * However, mappings which are not mm-managed may have established state
+-	 * upon mapping not embodied in any attribute of the VMA.
+-	 *
+-	 * Additionally, private (CoW) PFN maps encode the source PFN of the
+-	 * range in vma->vm_pgoff, which may otherwise cause spurious merges.
+-	 */
+-	if (!vma_flags_is_mm_managed(flags))
+-		return false;
+-	/* VMA explicitly marked as being unmergeable. */
+-	if (vma_flags_is_fixed_mapping(flags))
+-		return false;
+-
+-	return true;
+-}
+-
+-/**
+- * vma_can_merge() - Do @vma's flags permit it to be merged with another VMA?
+- * @vma: The VMA to test.
+- * Returns: true if the flags permit merging, otherwise false.
+- */
+-static inline bool vma_can_merge(const struct vm_area_struct *vma)
+-{
+-	return vma_flags_can_merge(&vma->flags);
+-}
+-
+-/**
+  * vma_flags_is_mm_backed() - Do the specified VMA flags imply the mapping is
+  * backed by core mm?
+  * @flags: The VMA flags to test.
+  *
+  * An mm-backed mapping is one managed by core mm (see
+- * vma_flags_is_mm_managed()) for which two further things are true:
++ * vma_flags_is_mm_managed()) whose contents are established by core mm's own
++ * fault path rather than a custom ->fault handler.
+  *
+- * 1. Everything mapped was placed there by core mm's fault path (no custom
+- *    ->fault).
+- * 2. What is mapped stays there until it is zapped or unmapped by the user.
+- *
+- * These mappings are the only ones which can be sensibly locked, merged, dumped
+- * or be subject to uffd faulting, as all of these assume core mm and core mm
+- * alone manages these, and that the mappings will remain there.
++ * Mappings not managed by core mm are populated by their owner, and fixed
++ * mappings may be mm-managed but have their contents established by a custom
++ * ->fault handler, so neither are mm-backed. hugetlb mappings are fixed, but
++ * core mm owns them entirely, so they are.
++ *
++ * These are the only mappings which can sensibly be merged, locked, dumped or
++ * be subject to uffd faulting, as all of these assume core mm and core mm
++ * alone manages their contents.
+  *
+  * Returns: true if the flags imply an mm-backed mapping, otherwise false.
+  */
+@@ -1761,11 +1726,7 @@ static inline bool vma_flags_is_mm_backe
+ 	 * by a custom ->fault handler, so core mm cannot assume ordinary fault
+ 	 * semantics over them.
+ 	 */
+-	if (!vma_flags_is_mm_managed(flags) ||
+-	    vma_flags_is_fixed_mapping(flags))
+-		return false;
+-	/* Core mm may discard droppable memory at any time. */
+-	return !vma_flags_test_single_mask(flags, VMA_DROPPABLE);
++	return vma_flags_is_mm_managed(flags) && !vma_flags_is_fixed_mapping(flags);
+ }
+ 
+ /**
+@@ -1782,6 +1743,43 @@ static inline bool vma_is_mm_backed(cons
+ }
+ 
+ /**
++ * vma_flags_can_merge() - Do the specified VMA flags permit the VMA to be
++ * merged with another?
++ * @flags: The VMA flags to test.
++ * Returns: true if the flags permit merging, false otherwise.
++ */
++static inline bool vma_flags_can_merge(const vma_flags_t *flags)
++{
++	/*
++	 * VMA merging assumes that a VMA's flags and fields completely describe
++	 * its state, which is only the case for mm-backed mappings.
++	 *
++	 * Mappings which are not mm-managed may have established state upon
++	 * mapping not embodied in any attribute of the VMA.
++	 *
++	 * Additionally, private (CoW) PFN maps encode the source PFN of the
++	 * range in vma->vm_pgoff, which may otherwise cause spurious merges.
++	 */
++	if (!vma_flags_is_mm_backed(flags))
++		return false;
++	/*
++	 * hugetlb mappings contain per-VMA state, so their flags and fields do
++	 * not completely describe them.
++	 */
++	return !vma_flags_is_hugetlb(flags);
++}
++
++/**
++ * vma_can_merge() - Do @vma's flags permit it to be merged with another VMA?
++ * @vma: The VMA to test.
++ * Returns: true if the flags permit merging, otherwise false.
++ */
++static inline bool vma_can_merge(const struct vm_area_struct *vma)
++{
++	return vma_flags_can_merge(&vma->flags);
++}
++
++/**
+  * vma_kernel_pagesize - Default page size granularity for this VMA.
+  * @vma: The user mapping.
+  *
+@@ -4824,28 +4822,26 @@ discontig_kernel_map_abort(struct discon
+ 
+ static inline void
+ discontig_kernel_map_page(struct discontig_kernel_page_state *state,
+-			  struct page *page)
++		struct page *page)
+ {
+ 	struct folio *folio = page_folio(page);
++	unsigned long nr_pages = 1;
+ 
+ 	if (folio_test_large(folio)) {
+ 		VM_WARN_ON_ONCE(page != folio_page(folio, 0));
+-		state->action = DISCONTIG_KERNEL_PAGE_MAP_COMPOUND_PAGE;
+-		state->__folio = folio;
+-		state->__nr_pages = min(state->nr_pages_remain,
+-					folio_nr_pages(folio));
+-	} else {
+-		state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE;
+-		state->__page = page;
+-		state->__nr_pages = 1;
++		nr_pages = folio_nr_pages(folio);
+ 	}
++
++	state->action = DISCONTIG_KERNEL_PAGE_MAP_CONTIG_PAGES;
++	state->__page = page;
++	state->__nr_pages = min(nr_pages, state->nr_pages_remain);
+ }
+ 
+ static inline void
+-discontig_kernel_map_page_range(struct discontig_kernel_page_state *state,
+-				struct page **page_arr, unsigned long nr_pages)
++discontig_kernel_map_pages(struct discontig_kernel_page_state *state,
++		struct page **page_arr, unsigned long nr_pages)
+ {
+-	state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE;
++	state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGES;
+ 	state->__page_arr = page_arr;
+ 	state->__nr_pages = min(nr_pages, state->nr_pages_remain);
+ }
+--- a/include/linux/mm_types.h~b
++++ a/include/linux/mm_types.h
+@@ -825,9 +825,8 @@ enum mmap_action_type {
+ 
+ enum discontig_kernel_page_action {
+ 	DISCONTIG_KERNEL_PAGE_ABORT,
+-	DISCONTIG_KERNEL_PAGE_MAP_PAGE,
+-	DISCONTIG_KERNEL_PAGE_MAP_COMPOUND_PAGE,
+-	DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE,
++	DISCONTIG_KERNEL_PAGE_MAP_PAGES,	/* Array of individual pages. */
++	DISCONTIG_KERNEL_PAGE_MAP_CONTIG_PAGES,	/* 1..N contiguous pages. */
+ };
+ 
+ struct discontig_kernel_page_state {
+@@ -847,7 +846,6 @@ struct discontig_kernel_page_state {
+ 	enum discontig_kernel_page_action action;
+ 	union {
+ 		struct page *__page;
+-		struct folio *__folio;
+ 		struct page **__page_arr;
+ 	};
+ 	unsigned long __nr_pages;
+--- a/mm/huge_memory.c~b
++++ a/mm/huge_memory.c
+@@ -207,11 +207,10 @@ unsigned long __thp_vma_allowable_orders
+ 	 * khugepaged moves data from VMAs once collapsed, after they have been
+ 	 * faulted in, relying on refaulting for file-backed memory.
+ 	 *
+-	 * Mappings not managed by core mm cannot be reliably reconstructed from
+-	 * page faults, and fixed mappings (including hugetlb) may well be
+-	 * mm-managed - precisely the mappings which cannot be merged.
++	 * Only mm-backed mappings can be reliably reconstructed from page
++	 * faults, and hugetlb mappings cannot be collapsed.
+ 	 */
+-	if (!in_pf && !smaps && !vma_can_merge(vma))
++	if (!in_pf && !smaps && (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma)))
+ 		return 0;
+ 
+ 	/*
+--- a/mm/internal.h~b
++++ a/mm/internal.h
+@@ -1114,6 +1114,9 @@ static inline bool vma_supports_mlock(co
+ {
+ 	if (!vma_is_mm_backed(vma))
+ 		return false;
++	/* Core mm may discard droppable memory at any time. */
++	if (vma_test_single_mask(vma, VMA_DROPPABLE))
++		return false;
+ 	if (vma_is_dax(vma) || vma_is_hugetlb(vma))
+ 		return false;
+ 	return vma != get_gate_vma(current->mm);
+--- a/mm/ksm.c~b
++++ a/mm/ksm.c
+@@ -749,6 +749,9 @@ static bool ksm_compatible(const struct
+ 		return false;
+ 	if (!vma_flags_is_mm_backed(&vma_flags))
+ 		return false;
++	/* Core mm may discard droppable memory at any time. */
++	if (vma_flags_test_single_mask(&vma_flags, VMA_DROPPABLE))
++		return false;
+ 	if (file_is_dax(file))
+ 		return false;
+ #ifdef VM_SAO
+--- a/mm/madvise.c~b
++++ a/mm/madvise.c
+@@ -1069,10 +1069,10 @@ static bool is_valid_guard_vma(const str
+ 		return false;
+ 	/*
+ 	 * Guard regions require a VMA whose page tables are managed solely by
+-	 * the core, which is also what merging requires, so disallow any flags
+-	 * that would prevent a merge.
++	 * core mm, so the VMA must be mm-backed (excluding hugetlb, in which
++	 * guard markers cannot be installed).
+ 	 */
+-	if (!vma_can_merge(vma))
++	if (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma))
+ 		return false;
+ 
+ 	return true;
+@@ -1402,7 +1402,7 @@ static int madvise_vma_behavior(struct m
+ 		new_flags |= VM_DONTCOPY;
+ 		break;
+ 	case MADV_DOFORK:
+-		if (!vma_can_merge(vma))
++		if (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma))
+ 			return -EINVAL;
+ 		new_flags &= ~VM_DONTCOPY;
+ 		break;
+@@ -1424,6 +1424,9 @@ static int madvise_vma_behavior(struct m
+ 		/* Only mm-backed memory can be meaningfully dumped. */
+ 		if (!vma_is_mm_backed(vma))
+ 			return -EINVAL;
++		/* Core mm may discard droppable memory at any time. */
++		if (new_flags & VM_DROPPABLE)
++			return -EINVAL;
+ 		new_flags &= ~VM_DONTDUMP;
+ 		break;
+ 	case MADV_MERGEABLE:
+--- a/mm/memory.c~b
++++ a/mm/memory.c
+@@ -2674,26 +2674,24 @@ int map_discontig_kernel_pages_prepare(s
+ }
+ 
+ static int apply_discontig_action(struct vm_area_struct *vma,
+-				  struct discontig_kernel_page_state *state)
++		struct discontig_kernel_page_state *state)
+ {
+ 	unsigned long nr_pages = state->__nr_pages;
+ 	unsigned long addr = state->addr;
+ 	unsigned long i;
+ 
+-	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGE)
+-		return insert_page(vma, addr, state->__page,
+-				   vma->vm_page_prot, /*mkwrite=*/false);
+-	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE)
++	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGES)
+ 		return insert_pages(vma, addr, state->__page_arr,
+-				    &nr_pages, vma->vm_page_prot);
++				&nr_pages, vma->vm_page_prot);
+ 
+-	/* Compound folio - have to iterate through each page. */
++	VM_WARN_ON_ONCE(state->action != DISCONTIG_KERNEL_PAGE_MAP_CONTIG_PAGES);
++	/* Contiguous pages - have to iterate through each one. */
+ 	for (i = 0; i < nr_pages; i++, addr += PAGE_SIZE) {
+-		struct page *page = folio_page(state->__folio, i);
++		struct page *page = state->__page + i;
+ 		int err;
+ 
+ 		err = insert_page(vma, addr, page, vma->vm_page_prot,
+-				  /*mkwrite=*/false);
++				/*mkwrite=*/false);
+ 		if (err)
+ 			return err;
+ 	}
+--- a/mm/migrate_device.c~b
++++ a/mm/migrate_device.c
+@@ -746,8 +746,8 @@ int migrate_vma_setup(struct migrate_vma
+ 	args->end &= PAGE_MASK;
+ 	if (!vma)
+ 		return -EINVAL;
+-	if (!vma_is_mm_managed(vma) || vma_is_fixed_mapping(vma) ||
+-	    vma_is_dax(vma))
++	/* The migrate_vma page walk has no hugetlb support. */
++	if (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma) || vma_is_dax(vma))
+ 		return -EINVAL;
+ 	if (nr_pages <= 0)
+ 		return -EINVAL;
+--- a/mm/userfaultfd.c~b
++++ a/mm/userfaultfd.c
+@@ -2156,6 +2156,9 @@ static bool vma_can_userfault(struct vm_
+ 	/* Only mm-backed memory can have its faults handled by userspace. */
+ 	if (!vma_is_mm_backed(vma))
+ 		return false;
++	/* Core mm may discard droppable memory at any time. */
++	if (vma_test_single_mask(vma, VMA_DROPPABLE))
++		return false;
+ 	/* The shadow stack should not be written to by userspace. */
+ 	if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
+ 		return false;
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -2654,9 +2654,7 @@ static int __mmap_new_file_vma(struct mm
+ 	 * VMA_LOCKED_BIT and/or VMA_LOCKONFAULT_BIT flags.
+ 	 */
+ 	if (vma_supports_mlock(vma)) {
+-		const vma_flags_t mask =
+-			vma_flags_and_mask(&map->vma_flags,
+-					   VMA_LOCKED_MASK);
++		const vma_flags_t mask = vma_flags_and_mask(&map->vma_flags, VMA_LOCKED_MASK);
+ 
+ 		vma_set_flags_mask(vma, mask);
+ 	}
+--- a/mm/vmscan.c~b
++++ a/mm/vmscan.c
+@@ -3521,8 +3521,7 @@ static int should_skip_vma(unsigned long
+ 	if (!vma_has_recency(vma))
+ 		return true;
+ 
+-	if (vma_test(vma, VMA_LOCKED_BIT) || !vma_is_mm_managed(vma) ||
+-	    vma_is_fixed_mapping(vma))
++	if (vma_test(vma, VMA_LOCKED_BIT) || !vma_is_mm_backed(vma))
+ 		return true;
+ 
+ 	if (vma == get_gate_vma(vma->vm_mm))
+@@ -4462,8 +4461,8 @@ bool lru_gen_look_around(struct page_vma
+ 	if (spin_is_contended(pvmw->ptl))
+ 		return true;
+ 
+-	/* exclude fixed and non-mm-managed VMAs containing anon pages from COW */
+-	if (!vma_is_mm_managed(vma) || vma_is_fixed_mapping(vma))
++	/* exclude non-mm-backed VMAs containing anon pages from COW */
++	if (!vma_is_mm_backed(vma))
+ 		return true;
+ 
+ 	/* avoid taking the LRU lock under the PTL when possible */
+--- a/tools/testing/vma/include/dup.h~b
++++ a/tools/testing/vma/include/dup.h
+@@ -1681,23 +1681,49 @@ static inline bool vma_is_fixed_mapping(
+ 	return vma_flags_is_fixed_mapping(&vma->flags);
+ }
+ 
++static inline bool vma_flags_is_hugetlb(const vma_flags_t *flags)
++{
++	return IS_ENABLED(CONFIG_HUGETLB_PAGE) &&
++	       vma_flags_test(flags, VMA_HUGETLB_BIT);
++}
++
++static inline bool vma_flags_is_mm_backed(const vma_flags_t *flags)
++{
++	/* hugetlb is a fixed mapping, but core mm owns it entirely. */
++	if (vma_flags_is_hugetlb(flags))
++		return true;
++	/*
++	 * Mappings not managed by core mm are populated by their owner.
++	 *
++	 * Fixed mappings may be mm-managed, but their contents are established
++	 * by a custom ->fault handler, so core mm cannot assume ordinary fault
++	 * semantics over them.
++	 */
++	return vma_flags_is_mm_managed(flags) && !vma_flags_is_fixed_mapping(flags);
++}
++
++static inline bool vma_is_mm_backed(const struct vm_area_struct *vma)
++{
++	return vma_flags_is_mm_backed(&vma->flags);
++}
++
+ static inline bool vma_flags_can_merge(const vma_flags_t *flags)
+ {
+ 	/*
+ 	 * VMA merging assumes that a VMA's flags and fields completely describe
+-	 * its state.
++	 * its state, which is only the case for mm-backed mappings.
+ 	 *
+-	 * However, mappings which are not mm-managed may have established state
+-	 * upon mapping not embodied in any attribute of the VMA.
++	 * Mappings which are not mm-managed may have established state upon
++	 * mapping not embodied in any attribute of the VMA.
+ 	 *
+ 	 * Additionally, private (CoW) PFN maps encode the source PFN of the
+ 	 * range in vma->vm_pgoff, which may otherwise cause spurious merges.
+ 	 */
+-	if (!vma_flags_is_mm_managed(flags))
++	if (!vma_flags_is_mm_backed(flags))
+ 		return false;
+-	/* VMA explicitly marked as being unmergeable. */
+-	if (vma_flags_is_fixed_mapping(flags))
+-		return false;
+-
+-	return true;
++	/*
++	 * hugetlb mappings contain per-VMA state, so their flags and fields do
++	 * not completely describe them.
++	 */
++	return !vma_flags_is_hugetlb(flags);
+ }
+_
+
