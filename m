@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853F54EECB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686AE54EECD;
 	Tue, 13 Oct 2026 20:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924514; cv=none; b=Pvu6rgS4797H1bJzaDUcbbruWEBiUvZ+LhInFqmFgrpKaQK28uYZeeoAq1/imKkyiOlfKc0/roWEuoeq9DTfo+7fB4HKfrPqzGpZU+Y/EdcDSF8k/LG2L5i1jr+ihnUyRU3G1kQiMya7bxyOLwpvK24DzfXwAl9UXKmtiw1U7h8=
+	t=1791924515; cv=none; b=epCqqYoBe7DzokVnfMfISpU736pAGsCjX/9UZbYO/0TZlAjnPij+oDyZaYzkHQ+mZhOIBOKJvmxEtBGYx/yQVEcZG7JPGXcd/wugMV2PN3UFm00Muhg5FcvREb0VwfAjgsnhq5pzKrm8D7VUYMzx6UynKeLw5Fr9MehAB/7iTCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791924514; c=relaxed/simple;
-	bh=EnhxD+LWNnhWyE9YN2CMbuwe5f1Jhsf7zQTTGO2Dedw=;
+	s=arc-20240116; t=1791924515; c=relaxed/simple;
+	bh=8om9V/DyETgvuFphhbJVnh9cLn0luWevSfUI5IQwszk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kd7W1GBp1B9nukfRWKJpDBFDUpo75wrQaiKA7Lfladfybv/nioHKYf6/giLNVkLB5MLEgcTIoC2RflAdsh6ONJw8AJnJnvKTay1EU4o/ZI4y9xYfaYvhjbns0vfqNIBMPuDYxm5+oaerwD0kCjsVTUBkFjkBwh+Rwv/e1u2azyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ejH7M4Zs; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=ZjLDNXqsUx3wWOCFtedMGg8z9QCaB6C6jk86XkHkMTmkAywEn4Mlccl3y9y7diUgjY8Q2a825EspEZLW5vhAJeuU8wOpGEvbkT7X+m7/DquKwD2hVv0FPHFjxsFuoljmJoYPUjRWGPBA4Qwm26Kwizaui0Bi6Du4mBcvxEIqLS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pagtNIBK; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ejH7M4Zs"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pagtNIBK"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=2v5mBlVK392iL/Y43x3cPeO25GmK/+93NMJMoT0UAh0=; b=ejH7M4ZsbUYhoYFjsPnn1k6Jmk
-	I6Bbaoq6l34h1+VP9LtzNd2cpxeqv6AlW08WnzDOKvaluDAwBHrLgD/KQZW8w3JF6dFZZUQCwsn0t
-	CFS9VKQyeNpIFmdWtpzWnmEdJ/R+LvqHu9vtysn3qeIEpFmMur/+Kry6Cf9AE+yCpdETJHcwa46eZ
-	xUzZ7PMYaHij4XaazSMpgfQji7RZNB6sRFlwtOtgcAoVpswoLz3P23uPXzyJKo5U0LL1jRQpIyd+s
-	WCHxwmCfnjHr96y3UQEn7wJDiqMZz1TotA9OlaTi5jGNcH/kpNz+E+idQ52DHv+TKvY8Bobk3a/mc
-	tcUj7ugw==;
+	bh=Lnoyd/b7vQkSLPiZQCMZRxDzuqDlmVvMn6HckRCcbl8=; b=pagtNIBKr7qvXJuSJDqDZXUgVI
+	jcgefa3gV0KW8QCwQrrRy5uJGnOicq7w0GOteXfgu6nLI3WFuA5Viz5eNn8lgiCfpSgD8S9GKX2ck
+	vQVEa0JgGllna3xWmmLmUyIOgVZdmTJWtB1zeY8fLnHdT8k6G/bW0CkJmL4lLGHuP6fx2j+UqrSa6
+	1q0rr5kzJiaQo1hBxq56V3Pv0GPGbnTSZh5OprbetMv/siWkWX8pqGxPzOvGmOJeakj+Lu2wn7Djx
+	XvK0rRCMIXR0gr8WUsvzq4o+RbbItPhs8acrJxp2KMZvdQy+1jcMfNLWBw4YXXda61lgZVTy5R2oG
+	Y86WOsrg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xGjQB-0000000G4C7-0wr6;
-	Tue, 13 Oct 2026 20:48:28 +0000
+	id 1xGjQB-0000000G4C5-0wlh;
+	Tue, 13 Oct 2026 20:48:27 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xGjQ8-00000001uAU-3rs3;
+	id 1xGjQ8-00000001uAR-3jXg;
 	Tue, 13 Oct 2026 21:48:24 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -43,9 +43,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH 08/10] KVM: x86/xen: Don't dirty track "vCPU info" page
-Date: Tue, 13 Oct 2026 21:48:21 +0100
-Message-ID: <20261013204824.454208-9-dwmw2@infradead.org>
+Subject: [PATCH 07/10] KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
+Date: Tue, 13 Oct 2026 21:48:20 +0100
+Message-ID: <20261013204824.454208-8-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261013204824.454208-1-dwmw2@infradead.org>
 References: <20261013204824.454208-1-dwmw2@infradead.org>
@@ -61,51 +61,99 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: Sean Christopherson <seanjc@google.com>
 
-Give the Xen per-vCPU info page the same treatment as the per-VM shared
-info page, and never mark it dirty, as KVM clearly relies on userspace to
-assume the page is always dirty.  While the page is marked dirty on writes
-via kvm_xen_inject_pending_events(), it's not marked dirty when written by
-__kvm_xen_set_evtchn_fast().
-
-Furthermore, as was the case with the shared info page, writes in the event
-channel fastpath may be done without an active vCPU, e.g. when called via
-timer callback or irqfd injection.  I.e. attempting to fix the fastpath
-would run afoul of the same issue that was fixed by
+Explicitly mark the Xen shared info page as never being dirty tracked so
+that higher-level gpc APIs can be added to automatically take care of
+things like dirty tracking, without reintroducing the bug fixed by
 commit 55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info
-not to mark page dirty").
+not to mark page dirty").  And because the code _looks_ buggy.
 
-This also covers the pvclock writes kvm_guest_time_update() makes
-through the same cache; userspace assuming the page is always dirty
-covers those equally.
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: LLM
 ---
- arch/x86/kvm/xen.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/xen.c        |  2 +-
+ include/linux/kvm_host.h  | 10 ++++++++--
+ include/linux/kvm_types.h |  1 +
+ virt/kvm/pfncache.c       |  4 +++-
+ 4 files changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index f8162914d6c6..ef0d59ebc6a7 100644
+index a931458f0c71..f8162914d6c6 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -715,7 +715,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
- 	}
- 
--	kvm_gpc_mark_dirty_in_slot(gpc);
- 	read_unlock_irqrestore(&gpc->lock, flags);
- 
- 	/* For the per-vCPU lapic vector, deliver it as MSI. */
-@@ -2448,7 +2447,7 @@ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
- 
- 	kvm_gpc_init(&vcpu->arch.xen.runstate_cache, vcpu->kvm);
- 	kvm_gpc_init(&vcpu->arch.xen.runstate2_cache, vcpu->kvm);
--	kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm);
-+	__kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm, true);
- 	kvm_gpc_init(&vcpu->arch.xen.vcpu_time_info_cache, vcpu->kvm);
+@@ -2469,7 +2469,7 @@ void kvm_xen_init_vm(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.xen.xen_lock);
+ 	xa_init(&kvm->arch.xen.evtchn_ports);
+-	kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm);
++	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true);
  }
  
+ void kvm_xen_destroy_vm(struct kvm *kvm)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 88c1ee37550c..1abd3811b953 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1465,7 +1465,13 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa, const void *data,
+  * immutable attributes.  Note, the cache must be zero-allocated (or zeroed by
+  * the caller before init).
+  */
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm);
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty);
++
++static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++{
++	__kvm_gpc_init(gpc, kvm, false);
++}
+ 
+ /**
+  * kvm_gpc_activate - prepare a cached kernel mapping and HPA for a given guest
+@@ -1987,7 +1993,7 @@ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
+ {
+ 	lockdep_assert_held(&gpc->lock);
+ 
+-	if (!gpc->memslot)
++	if (!gpc->memslot || gpc->never_dirty)
+ 		return;
+ 
+ 	mark_page_dirty_in_slot(gpc->kvm, gpc->memslot, gpa_to_gfn(gpc->gpa));
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..e850adc3f47e 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -94,6 +94,7 @@ struct gfn_to_pfn_cache {
+ 	kvm_pfn_t pfn;
+ 	bool active;
+ 	bool valid;
++	bool never_dirty;
+ };
+ 
+ #ifdef KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 8504e26fa111..0e2c9cfa8056 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -431,7 +431,8 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len, bool wait)
+ 	}
+ }
+ 
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty)
+ {
+ 	rwlock_init(&gpc->lock);
+ 	mutex_init(&gpc->refresh_lock);
+@@ -441,6 +442,7 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
+ 	gpc->active = gpc->valid = false;
++	gpc->never_dirty = never_dirty;
+ }
+ 
+ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
 -- 
 2.43.0
 
