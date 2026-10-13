@@ -1,128 +1,209 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B4E4D9577;
-	Tue, 13 Oct 2026 23:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCE54E020E
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 23:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791934287; cv=none; b=lefhtNMHEhNHtT0GsAavc8z4uRsGm5ozbOFO3oYZqrMielScaq2DJeJuVM1sfxZ/jNKMX2JNqsUe3F2FVaETD68yboSDuEwBqRXEaogpidYLy1GONYUxtdfFTr3D77m+pQk10563DogE27IV2EHIqAvMHfeBkKJsJkwO1kX5R+8=
+	t=1791934573; cv=none; b=WyVfQCcTS2x+59dtZZ2xy30XUd0J/JAhXEFgTWd85t0GGXWdCLZ0OTz7aei9cC3D3lGwayAm70itcMGPd5VevoMT8hWiCTT1a95cggSyMmLBm1GdUaZOwUS8mw9rjjARYthFpe/k9Wlo+j91E9P2M/EHa7HxKa8aVNqYyA1ZwiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791934287; c=relaxed/simple;
-	bh=u1Ha/Si/8J2pD8iT4rc/MZ9ssmdEQ0bjMSk9Wd6XVKM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-Id; b=eBRVYAy9SH73co8A8yY14b91C4h3dXVvpngK4AKYQ24rcbuYsnXIosIMR6h6Gjz6e1EsxIWaEr7ViN0MzOwJQCjbsBYwCkZr8KPzXbozQO95gxzJHw75KHbQrhL6OsQ6+PbGifjYvkNJb+u4RLJ1eXqF0giJzjDOgMl4RpacV48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXSJPJb3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791934573; c=relaxed/simple;
+	bh=gADedZsKcRbfxkB4gErajHcDd5G1aD0r+yZulXMWstA=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=AWe0zE6BC/iH3MIGQ2A2GkZwaHxsyGXVfh98dmQzr4y2pisOh0Qp0hb3bCoSZiNl6NU2yE7XzARb1Sz572pCSqgN4hXXSvWuokXnxOv7QGK8Olu3NgCn7h91lTQihkpx/MTBFf/zho9brHQ97dqkPk3nKnhaaVWTjwNcPfMHX7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aq2+IOJI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXSJPJb3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF091F000FF;
-	Tue, 13 Oct 2026 23:31:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aq2+IOJI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFC81F000FF;
+	Tue, 13 Oct 2026 23:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791934286;
-	bh=APi2ZfgZmahKqfvONReNmB6QiAyaVs+ZKVZwZPGqYh4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PXSJPJb3ZwyaTyYxBAjLq6sUf5snAqcUWFn5362P9BKVrs69z5jtuKBXOK7MgZFhj
-	 vaIbebRCBcIe3qo7EX2QIue+IYOQk85QSc1HSf9sog366F2tvfexS+4+S0Srs9rlY3
-	 tu9PBp5qMgAgFN+zmTzdwu2xBFeDEkwqgrWouzNrV28buHFQbMQrXeYfcVVIMxZgcq
-	 hjnr/maN5XTmY681pZxlgFkAb9xYESxFz0fnpityZ/sHYBe/AIEYgBNRv806/E/nBk
-	 hSVqJ0W5gFuHRjiF+QaIJcH/1crTop/LBq9EC2QpYdFjbiODK4riQu7gxG9kWuUbrU
-	 C3mBPZ7oZAHDw==
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: amachhiw@linux.ibm.com
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, linux-trace-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Amit Machhiwal <amachhiw@linux.ibm.com>,
- Michal =?utf-8?q?Such=C3=A1nek?= <msuchanek@suse.de>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Mark-PK Tsai <mark-pk.tsai@mediatek.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] tracing: Do not initialize tracefs work if tracing is
- disabled
-Date: Wed, 14 Oct 2026 08:31:21 +0900
-X-Mailer: UndineD 0.1
-In-Reply-To: <20261009163557.88467-2-amachhiw@linux.ibm.com>
-References: 20261009163557.88467-1-amachhiw@linux.ibm.com
- <20261009163557.88467-2-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791934566;
+	bh=Zw7IQDy8VgW6NisTbEcXTF2QGSePVuoEg2HJIeuxmso=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Aq2+IOJI1np3GPxjPmAZ8upgUtPYCeOvCuSIU/2e/jIwnOSIGK/pOFXP+VUGpgjiQ
+	 a22IeXj+kBKDSP1MnqjIKZf82FEzNVyjM6wghjtsc6qBtw+oHoGQk1c/nhO1v4svth
+	 oDjJd1Y+d4YcYtZ7jcRJw74CXij2/AnbVUVrqoYdroRWXr+aQgrKJf5Dg3WaymHJED
+	 Z/HmM85LFhkHSsSH5fBDyz40BRqIq/Mj+EKkye1ucxn/aHyCfVwtjfFwCuRw6CMvtg
+	 7EaD2GoHhjJpE4SBekRLh4G8vwMMIv/b+S3XnHKwGIOFPpF0XJ8KvxsNyHeyOo3/hi
+	 +7PyU9rxyov1w==
+Message-ID: <sashiko-outbox-170641@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vfio/pci: read ROM via ACPI _ROM when hardware ROM is
+ unreadable
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <31aa2fb273d7ff7ea535c74e0780e279aa9a119c.1791933554.git.mst@redhat.com>
+References: <31aa2fb273d7ff7ea535c74e0780e279aa9a119c.1791933554.git.mst@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 13 Oct 2026 23:36:05 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-Id: <20261013233123.5FF091F000FF@smtp.kernel.org>
 
-On Fri, 09 Oct 2026 22:05:56 +0530, Amit Machhiwal <amachhiw@linux.ibm.com> wrote:
-> If trace buffer allocation fails during early boot (e.g.  in
-> early_trace_init() -> allocate_trace_buffers()), tracing_disabled is
-> left set to 1 and the global trace array events list remains
-> uninitialized.
->
-> Later during boot, tracer_init_tracefs() (invoked via fs_initcall)
-> queues tracerfs_init_work asynchronously without checking if tracing was
-> disabled.  When tracer_init_tracefs_work_func() runs, it calls
-> event_trace_init() and init_tracer_tracefs(&global_trace, NULL)
-> unconditionally.  This leads to __find_event_file() dereferencing an
-> uninitialized tr->events list, causing an early boot NULL pointer
-> dereference Oops:
->
->   BUG: Kernel NULL pointer dereference on read at 0x00000010
->   Faulting instruction address: 0xc000000000485be0
->   Oops: Kernel access of bad area, sig: 7 [#1]
->   ...
->   NIP [c000000000485be0] __find_event_file+0x70/0x3c0
->   LR  [c000000000448874] init_tracer_tracefs+0x274/0xc80
->   Call Trace:
->    init_tracer_tracefs+0x274/0xc80
->    tracer_init_tracefs_work_func+0x50/0x320
->    process_one_work+0x1e8/0x5c0
->    worker_thread+0x1dc/0x3d0
->    kthread+0x194/0x1b0
->    start_kernel_thread+0x14/0x18
->
-> Check tracing_disabled at the beginning of tracer_init_tracefs_work_func()
-> and return immediately if tracing is disabled or failed to initialize,
-> preventing the crash.
->
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
+- [High] vfio/pci: O(N^2) overhead in ACPI ROM read via recalculating size
+- [High] vfio/pci: infinite loop in ACPI ROM size calculation
+- [High] pci: NULL pointer dereference in vfio_pci_acpi_rom_read() when _RO=
+M returns no object
+- [Medium] vfio/pci: ACPI ROM reads truncated by unreadable physical BAR si=
+ze
+- [Medium] vfio/pci: ACPI ROM reads missing 0xFF padding
+--
 
-Looks good to me.
+commit ef01db8fb34fde6cd15f6043dd6655f51df61bf4
+Author: Michael S. Tsirkin <mst@redhat.com>
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+vfio/pci: read ROM via ACPI _ROM when hardware ROM is unreadable
 
-> Fixes: 6621a7004684 ("tracing: make tracer_init_tracefs initcall asynchronous")
-> Cc: stable@vger.kernel.org
-> Reported-by: Michal Suchánek <msuchanek@suse.de>
-> Closes: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
->  kernel/trace/trace.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> index e4a490d3d08c..7ac9e1c92702 100644
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -9287,6 +9287,12 @@ static struct notifier_block trace_module_nb = {
->  
->  static __init void tracer_init_tracefs_work_func(struct work_struct *work)
+Some GPUs (e.g. NVIDIA Quadro P2000 Mobile in a laptop) have a ROM
+BAR that exists but is unreadable because the GPU was never POSTed
+by the system BIOS. On these systems the VBIOS is available via the
+ACPI _ROM method provided by the platform firmware.
+
+> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci=
+_rdwr.c
+> index df88480876815..9bc0a7df4fd69 100644
+> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+[ ... ]
+> @@ -198,6 +199,112 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core=
+_device *vdev, bool test_mem,
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+> =20
+> +#ifdef CONFIG_ACPI
+> +static int vfio_pci_acpi_rom_read(struct pci_dev *pdev, void *buf,
+> +				  loff_t offset, size_t length)
+> +{
+[ ... ]
+> +	status =3D acpi_evaluate_object(rom_handle, NULL, &rom_args, &buffer);
+> +	if (ACPI_FAILURE(status))
+> +		return -EIO;
+> +
+> +	obj =3D buffer.pointer;
+> +	if (obj->type !=3D ACPI_TYPE_BUFFER) {
+
+[Severity: High]
+If a system's ACPI BIOS is flawed and the _ROM method executes successfully
+but returns no object, acpi_evaluate_object() returns AE_OK but leaves
+buffer.pointer as NULL.
+
+Will this unconditionally assign and dereference a NULL pointer via
+obj->type, crashing the kernel when vfio_pci_acpi_rom_size() is called
+during region info ioctl?
+
+> +		kfree(buffer.pointer);
+> +		return -EIO;
+> +	}
+[ ... ]
+> +size_t vfio_pci_acpi_rom_size(struct pci_dev *pdev)
+> +{
+> +	void *buf;
+> +	size_t size =3D 0;
+> +	int ret;
+> +
+> +	buf =3D kmalloc(0x1000, GFP_KERNEL);
+> +	if (!buf)
+> +		return 0;
+> +
+> +	do {
+> +		ret =3D vfio_pci_acpi_rom_read(pdev, buf, size, 0x1000);
+> +		if (ret > 0)
+> +			size +=3D ret;
+> +	} while (ret =3D=3D 0x1000);
+
+[Severity: High]
+Does this un-bounded loop rely entirely on firmware behavior to terminate?
+If a buggy or malicious ACPI _ROM method ignores the offset parameter and
+always returns a full 4KB buffer, will this cause an infinite loop and a
+kernel soft lockup?
+
+Additionally, this loop evaluates the ACPI method repeatedly in 4KB chunks
+to read the entire ROM just to determine its total size.  Since
+vfio_pci_acpi_rom_size() is called in vfio_pci_bar_rw() on every read,
+will this cause severe performance degradation?  For example, reading a
+128KB ROM in 4-byte chunks would execute the full ROM reading loop
+via ACPI 32,768 times.
+
+> +
+> +	kfree(buf);
+> +	return size;
+> +}
+> +#endif /* CONFIG_ACPI */
+> +
+>  ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *=
+buf,
+>  			size_t count, loff_t *ppos, bool iswrite)
 >  {
-> +	/*
-> +	 * Do not attempt to initialize tracefs if tracing was disabled or
-> +	 * failed to allocate
-> +	 */
-> +	if (tracing_disabled)
-> +		return;
->  
->  	event_trace_init();
->  
-> -- 
-> 2.54.0 (Apple Git-157)
->
+> @@ -215,6 +322,14 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device =
+*vdev, char __user *buf,
+>  		end =3D pci_resource_len(pdev, bar);
 
-Thanks!
+[Severity: Medium]
+This sets the hard limit for reads based on the physical PCI resource lengt=
+h.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+If pci_map_rom() fails later in this function, we fallback to ACPI ROM.
+However, if the ACPI ROM is larger than the unreadable physical ROM BAR siz=
+e,
+will reads beyond the physical BAR size be improperly rejected with -EINVAL,
+even though vfio_pci_ioctl_get_region_info() correctly reported the larger
+acpi_size?
+
+>  	else if (bar =3D=3D PCI_ROM_RESOURCE && pdev->rom && pdev->romlen)
+>  		end =3D roundup_pow_of_two(pdev->romlen);
+> +#ifdef CONFIG_ACPI
+> +	else if (bar =3D=3D PCI_ROM_RESOURCE) {
+> +		end =3D vfio_pci_acpi_rom_size(pdev);
+
+[Severity: High]
+As mentioned above, is it too expensive to invoke this size calculation
+for every user read?  Should the ROM size be cached during region
+initialization instead?
+
+> +		if (!end)
+> +			return -EINVAL;
+> +		end =3D roundup_pow_of_two(end);
+> +	}
+> +#endif
+>  	else
+>  		return -EINVAL;
+> =20
+[ ... ]
+> @@ -235,6 +350,15 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device =
+*vdev, char __user *buf,
+>  			io =3D ioremap(pdev->rom, pdev->romlen);
+>  			x_start =3D pdev->romlen;
+>  		}
+> +#ifdef CONFIG_ACPI
+> +		if (!io) {
+> +			done =3D vfio_pci_acpi_rom_rw(vdev, buf, count,
+> +						    pos, iswrite);
+> +			if (done >=3D 0)
+> +				*ppos +=3D done;
+> +			return done;
+> +		}
+> +#endif
+
+[Severity: Medium]
+When reading past the actual size of the ACPI ROM but within the reported
+roundup_pow_of_two region size, does this bypass the standard VFIO
+padding logic?
+
+If vfio_pci_acpi_rom_rw() returns a short read or 0 (EOF), will this skip
+the vfio_pci_core_do_io_rw() logic that safely pads remaining space with
+0xFF, potentially breaking virtualization software expecting standard
+hardware behavior?
+
+>  		if (!io)
+>  			return -ENOMEM;
+>  		x_end =3D end;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/31aa2fb273d7ff7ea53=
+5c74e0780e279aa9a119c.1791933554.git.mst@redhat.com?part=3D1
