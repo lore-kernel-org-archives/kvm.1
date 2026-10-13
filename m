@@ -1,172 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EC9541E67
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 21:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC64B55295C
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 21:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925458; cv=none; b=k0d5R113rqrJQPlqfM7iq4eym2asWB94WrXZk6QTEIhZJa33RFV1ChLgtfSYD/WmAXiueFpDiA+J73wpRkBuo9zf0rggsWiGWOMSpkbk+HYxHvWnUDcmvTNHIpVkx5qUh5PAZTCNP0hINBkJGvwwESJLQ4F0xOH3solOVsrYoEc=
+	t=1791925622; cv=none; b=axK8WRwm5arkPf/K9DltxHW3if9U1W20Q2RYj4718Fel3vNryCRtb6HIolrcm8IlU/H837pOjuKaQsRwUVuYUBbkyhBC+LRKAgvQjm7E+MpjRD/n0ezlTB1PCBbyJ6ibgbXNhBfSZ0Jdb9dIaE1AGk6a/sJoQ12k4zHXeyMs5Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925458; c=relaxed/simple;
-	bh=+QaT3MleV76sCsJ13YmPn8i14KXQrHhVttLr0/9vNxw=;
+	s=arc-20240116; t=1791925622; c=relaxed/simple;
+	bh=0qEeRvKHfFMFKujpy7sq/LlNpcUeXbYQJpPr7aQU56U=;
 	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=T2ENH9lSVahik/qR6uXeyZrNmcDOUCdglgY4ptmJhtqutPUFoctlmlOrhQIbbdBXReG//HRxiyQ/kbsPnv7vqtXT+TWSQEMzZ2Y62YLTGmd6xIXrcrF6/eNYpaLmys6QlfOY8b6THMCIVf9Ka77X3CFSpHgBFb88Yc3bhhRwvnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnJ6YVXI; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=QQJ/CmAHeEUqbFPhTOUTkVL9117reEwBMMF4KFL27sedZWlvALUb1hI2ZwoQshCVNw61HotSZJu9gi1ZQYaYN22RKPoAm8NsBGoR2Dr4zniNLUFZ9Xzcxt6jMKUI7gav5IDEItn/Xxpe8d9rWn1mQwWNDbPIVIGX4z3C/p9h9dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9poWutR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnJ6YVXI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DC81F000FF;
-	Tue, 13 Oct 2026 21:04:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9poWutR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375941F000FF;
+	Tue, 13 Oct 2026 21:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791925456;
-	bh=Ji9bLAwkiL5VJqrJ/ygqlYq9VB78wCjKIONPlKDcUoA=;
+	s=k20260515; t=1791925619;
+	bh=SQCY8//4gZm0pXjBAr/HgSyFRhsCc/Nv3VCXuTg7DQc=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=AnJ6YVXIStekiYnf2rJ0ig0MidjGOs8YCBf/Qs3JQMtJD7ktzsyRHKtiWOt3HaxyJ
-	 O6Zwy2zwuxYoE9XyUGcmVE/StA6k4wdqsSfdwYugVDSXPrBxAZTTh5+1purgvoiq2M
-	 4YFTgJuRfJPzjXqkRWYrZJFdxI9klxEwjBj2RNijj34PSgnvyvpR8LonF2GHjFj8fP
-	 x/8Q9HySpW1kVN11rU2D0m9F27tXPTeRDeZ0n4w8ONeQ9Q/I5zotJL5cyP8kppOm3S
-	 /jfhlFb5c3iHFhS+MlRWyeyQjr8Ptvz/tUJEjGGK5v2n30hyZvHxTcW9jui4mkmxf+
-	 62Psr0EALuhOw==
-Message-ID: <sashiko-outbox-170507@kernel.org>
+	b=C9poWutRiET8rgQu/tEGeAmgb26owprc64s9+pS+0HoSedc004vdJ8157hL8c+WnA
+	 NzOAzX1GD6tac/n/X4AbmNOHVqpL0iY6h6UB1GPv3gZZG2Ztzgiv107J7xAkcBgdFV
+	 s6H6fR/tiI7YEtYbj/QCrnHzDzsqHnoh3EYyN1dmm8dmgTkF4LlEdGnahGFvT1XZSp
+	 Ae53oyHjzjwytTbf02ZYa3lGS5zqt9NZk9F+PlzkaH0exKVK+xJEy9mKPhYwGgi1bM
+	 p3gNduxiTB61ml48twseHe8/J4nPtrQmCKQgrq+9rDMqQufHfCWVoYIOqO4qqLEbTN
+	 Q82w65XXh5VTQ==
+Message-ID: <sashiko-outbox-170511@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 03/10] KVM: x86/xen: Wait out memslot updates in the Xen
- attribute ioctls
+Subject: Re: [PATCH 04/10] KVM: x86/xen: Don't lose the timer event when
+ delivery fails transiently
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261013204824.454208-4-dwmw2@infradead.org>
+In-Reply-To: <20261013204824.454208-5-dwmw2@infradead.org>
 References: <20261013204824.454208-1-dwmw2@infradead.org>
- <20261013204824.454208-4-dwmw2@infradead.org>
+ <20261013204824.454208-5-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 13 Oct 2026 21:04:16 +0000
+Date: Tue, 13 Oct 2026 21:06:58 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: UAF and lockdep splat in kvm_gpc_check() due to dropped SRCU =
-lock
-- [High] kvm: x86/xen: 3-way AB-BA-CA deadlock between srcu, xen_lock, and =
-slots_lock
+- [High] kvm: x86/xen: infinite vcpu loop when shared_info deactivated
 --
 
-commit 34df3b53ec91de034b47e7637dd9880ba9d6c924
+commit 51f8b9d346d917ad2de67baf6af85e344406d8e0
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: x86/xen: Wait out memslot updates in the Xen attribute ioctls
+KVM: x86/xen: Don't lose the timer event when delivery fails transiently
 
-This patch updates Xen attribute ioctls in KVM to handle memslot updates
-by waiting them out (passing wait=3Dtrue to kvm_gpc_refresh and
-kvm_gpc_activate), instead of returning -EFAULT. It also drops the
-srcu_read_lock sections around activation calls.
+This commit modifies KVM's Xen timer injection to handle transient failures
+from kvm_xen_set_evtchn(). If the event channel set fails with -EAGAIN
+or -EINVAL, it leaves the timer_pending flag set so the delivery can be
+retried on the next entry pass.
 
 > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index fae893cd5762c..76708b8960265 100644
 > --- a/arch/x86/kvm/xen.c
 > +++ b/arch/x86/kvm/xen.c
-> @@ -36,7 +36,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *=
-vcpu, u64 param, u64 *r);
-> =20
->  DEFINE_STATIC_KEY_DEFERRED_FALSE(kvm_xen_enabled, HZ);
-> =20
-> -static int kvm_xen_shared_info_init(struct kvm *kvm)
-> +static int kvm_xen_shared_info_init(struct kvm *kvm, bool wait)
+> @@ -106,13 +106,23 @@ void kvm_xen_inject_timer_irqs(struct kvm_vcpu *vcp=
+u)
 >  {
->  	struct gfn_to_pfn_cache *gpc =3D &kvm->arch.xen.shinfo_cache;
->  	struct pvclock_wall_clock *wc;
-> @@ -44,13 +44,12 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
->  	u32 wc_version;
->  	u64 wall_nsec;
->  	int ret =3D 0;
-> -	int idx =3D srcu_read_lock(&kvm->srcu);
+>  	if (atomic_read(&vcpu->arch.xen.timer_pending) > 0) {
+>  		struct kvm_xen_evtchn e;
+> +		int rc;
 > =20
->  	read_lock_irq(&gpc->lock);
->  	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  		e.vcpu_id =3D vcpu->vcpu_id;
+>  		e.vcpu_idx =3D vcpu->vcpu_idx;
+>  		e.port =3D vcpu->arch.xen.timer_virq;
+>  		e.priority =3D KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
+> =20
+> -		kvm_xen_set_evtchn(&e, vcpu->kvm);
+> +		rc =3D kvm_xen_set_evtchn(&e, vcpu->kvm);
+> +
+> +		/*
+> +		 * Deliberately leave timer_pending set if the memslot is
+> +		 * being updated (-EAGAIN) or the shared_info cache has
+> +		 * been deactivated (-EINVAL); delivery is retried on the
+> +		 * next entry pass.
+> +		 */
+> +		if (rc =3D=3D -EAGAIN || rc =3D=3D -EINVAL)
+> +			return;
 
 [Severity: High]
-Does this code trigger a use-after-free and RCU lockdep splat?
+Does this early return cause an infinite loop in the vCPU run loop if the
+shared_info cache is deactivated by userspace and returns -EINVAL?
 
-Because the srcu_read_lock() was removed above, this loop calls
-kvm_gpc_check() without SRCU protection.=20
+When the vCPU attempts to halt, kvm_vcpu_check_block() evaluates
+kvm_cpu_has_pending_timer(), which returns true because timer_pending is
+still > 0. This aborts the block, immediately returning to vcpu_block().
 
-If we look at virt/kvm/pfncache.c:kvm_gpc_check():
+However, vcpu_block() then checks kvm_arch_vcpu_runnable(), which does not
+consider timer_pending, so it evaluates to false. This causes vcpu_block()
+to return 1, forcing the vcpu_run() loop to spin indefinitely without
+breaking, sleeping, or entering the guest:
 
-bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len)
-{
-	struct kvm_memslots *slots =3D kvm_memslots(gpc->kvm);
-...
+virt/kvm/kvm_main.c:kvm_vcpu_check_block() {
+    ...
+    if (kvm_cpu_has_pending_timer(vcpu))
+        goto out;
+    ...
+}
 
-This dereferences the memslots array and requires SRCU protection. Without =
-it,
-a concurrent memslot update can free the memslots structure before=20
-slots->generation is accessed.
+arch/x86/kvm/x86.c:vcpu_block() {
+    ...
+    if (!kvm_arch_vcpu_runnable(vcpu))
+        return 1;
+    ...
+}
+
+arch/x86/kvm/x86.c:vcpu_run() {
+    for (;;) {
+        if (kvm_vcpu_running(vcpu)) {
+            r =3D vcpu_enter_guest(vcpu);
+        } else {
+            r =3D vcpu_block(vcpu);
+        }
+
+        if (r <=3D 0)
+            break;
+        ...
+    }
+}
+
+With r being 1, the loop unconditionally retries, hits -EINVAL again, and
+spins monopolizing the host CPU until the cache is reactivated. Could we
+avoid this stall by either dropping the event or handling the sleep abort
+differently when shared_info is unavailable?
 
 [ ... ]
 
-> @@ -792,19 +790,15 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kv=
-m_xen_hvm_attr *data)
->  			 * to make the call anyway.
->  			 */
->  			r =3D kvm->arch.xen.shinfo_cache.active ?
-> -				kvm_xen_shared_info_init(kvm) : 0;
-> +				kvm_xen_shared_info_init(kvm, true) : 0;
->  			mutex_unlock(&kvm->arch.xen.xen_lock);
->  		}
->  		break;
-> =20
->  	case KVM_XEN_ATTR_TYPE_SHARED_INFO:
->  	case KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA: {
-> -		int idx;
-> -
->  		mutex_lock(&kvm->arch.xen.xen_lock);
-> =20
-> -		idx =3D srcu_read_lock(&kvm->srcu);
-> -
->  		if (data->type =3D=3D KVM_XEN_ATTR_TYPE_SHARED_INFO) {
->  			gfn_t gfn =3D data->u.shared_info.gfn;
-> =20
-> @@ -813,7 +807,7 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_=
-xen_hvm_attr *data)
->  				r =3D 0;
->  			} else {
->  				r =3D kvm_gpc_activate(&kvm->arch.xen.shinfo_cache,
-> -						     gfn_to_gpa(gfn), PAGE_SIZE, false);
-> +						     gfn_to_gpa(gfn), PAGE_SIZE, true);
-
-[Severity: High]
-Does this code introduce a 3-way AB-BA-CA deadlock between srcu, xen_lock, =
-and
-slots_lock?
-
-With wait=3Dtrue, the thread executes KVM_XEN_HVM_SET_ATTR, acquires xen_lo=
-ck,
-and calls kvm_gpc_activate() which spins in a loop calling cond_resched()
-while waiting for a memslot update to complete.
-
-Meanwhile, a concurrent vCPU thread exiting after a WRMSR to the hypercall =
-page
-MSR might enter kvm_xen_write_hypercall_page() while holding the srcu lock:
-
-arch/x86/kvm/xen.c:kvm_xen_write_hypercall_page() {
-    ...
-	mutex_lock(&kvm->arch.xen.xen_lock);
-
-This vCPU thread blocks waiting for xen_lock, which is held by the ioctl th=
-read
-above.
-
-A third thread performing the memslot update (holding slots_lock) calls
-synchronize_srcu(&kvm->srcu), which blocks waiting for the vCPU thread to
-release its srcu lock.
-
-This creates an unrecoverable 3-way cycle where the ioctl thread waits for =
-the
-memslot update, the memslot update waits for the vCPU thread, and the vCPU
-thread waits for the ioctl thread's xen_lock.
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261013204824.4542=
-08-1-dwmw2@infradead.org?part=3D3
+08-1-dwmw2@infradead.org?part=3D4
