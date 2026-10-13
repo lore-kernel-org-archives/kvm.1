@@ -1,158 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C395451A14D
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 14:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9174E4C4C;
+	Tue, 13 Oct 2026 14:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791902538; cv=none; b=HBVpqPHxO+C7sMK24z0H338fG+3mCakWieJ+2OAS+Cc+6ABVJkHKM3xJZn2o7NZhfRGeGEPxDU32jKBk/kcWGeIfbL7vsObh6sNab7iBKOBzHkEUIzCIItoX0hrkN2DinpbFxpsxPa2boHAlRSU9HRLhahn6hKWtGIl3LJTNHew=
+	t=1791902556; cv=none; b=MMCbkMMDTqDgJ/1DUPcoZ0ld/tK2OSQg+ivuxBqlOmiYHO58d+7s+8CSnuiYtmruEuXtF3Z72nfWCpxNTB1GUHCViTD8/RzdhvC027Q/kYwZGxyJKBXd/LpBKVDYv4pEuQio9Vz+Vkq3zf+CWbw6xpxRyya9LBAbLWnw28tAIXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791902538; c=relaxed/simple;
-	bh=EDID393fC7tukPZfvcocCPsPfhIQrWG/1PsKk2F4FBU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQhAqdj5pLlpnyKSXxnn6dgNfXpPk7lA21wWA/oK/fxwNBWBILzlrULk+nFaJ9rdF+5umsJVxVP4bSBCBUiclMaHvzcKTy7iRgb0gq6Kjvgb4z7mI3uFtI7cc/pEvyKYJkCBt+3U23UngE8qgaWe57JMT1Z5WXIFRTajFMCf7o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvMVnYcD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791902556; c=relaxed/simple;
+	bh=iuXhYjP9Wa9nV0DiqfGY9s4Yv4hL3lLzUHxs2KC0Ylo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V7QJoX7B29t0YO84zFPTrWdgbG/yzKmoKyekA7xqv+33jxzeNSN6gKQrL6UfhRO3SooPhSnN5rxQTwVK3XCAGvO8nbrG7x589Hl4Jpw5D3YDJrIkTPOX9xQClEuEDK2aL/APbSwj4f9xw9HKu97eOMifpaUhknGfsInxe3B4pHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ILImfdsQ; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvMVnYcD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C0D1F00893
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 14:42:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791902537;
-	bh=07oJOGeS5FhE8zN/c2ze/F/oAB3LVitexCPC6Cj5leQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JvMVnYcDyjf5RrQ419cPeGJ4FIYvjLCKrTvdfIooUZM0Mk/5LCnlMc/KQRLoKmo99
-	 m4HFZZ+/LEuv/Qleo/iIuVwQZQo4IblWEPHNMiIAu+HW1V2n9DUBHoqwhzMctz9dmI
-	 0ai4LvhGAkd6Tomw0eFdpJOUEQFqqjqnY5vtG6HZNS4IkHH01Ft6k7GacS8ynGlvNi
-	 kLKz2Su5Ipk1N3v7uTpujzRBiVR7hSLoT8kRWnA5WxbkRbHSAxjRrdj/mJ4McM7XhE
-	 5CF2pGNdYRDWA7Hx9ly4W5w3Qc2NUHoqU1dEYs7mSZLKdmt/HYU8h/MsrtN1VlFxeg
-	 HDtPZRxNcO/wg==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-930c0f9c1b1so312852085a.1
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 07:42:17 -0700 (PDT)
-X-Gm-Message-State: AFq9FYL0GmPOvJvBk5aGl/AXW0FItms7/lp/oy47B/a1mhK3x1dF6ALH
-	avYSY37vyMs3h25paUMQ9la80Wo/vwbnRKZsWzfWosXO7CTwga0+/3rqmkkRo9tjjw83oheJ0WB
-	3UICwScb5we3cUP2RPTJK52UnDyqOKEY=
-X-Received: by 2002:a05:620a:8389:b0:93b:d79a:c463 with SMTP id
- af79cd13be357-93ebd26b5e0mr2066173285a.59.1791902536734; Tue, 13 Oct 2026
- 07:42:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ILImfdsQ"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DD3MrB2017508;
+	Tue, 13 Oct 2026 14:42:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=cq6ZBJeQDKSIMUUSHarYeDzvFbY0ja299oCaNxXqR
+	dE=; b=ILImfdsQ8gtPOW6lUhZQlLJEgcEjOYBUGSITtwj5VDWEqAKLp0ewcT5Dq
+	PL1Yao8oCkc03ufUCydsrCyMfM++FahryMHoiNWnHyKN6D5fnKUq4Fqyr/x4tlaZ
+	NcL91M9+BEOOeRhxxtOOpqZCFtishdD2vowuhgBCEWxh6/XGDr3tr6Qtep8MdByT
+	dliLRKrmbS0gUIwtes/H9KAtW79T4WaKr5Eor8/eMCJmVrMI8Jx03XGFX1d/7Ab6
+	5XqNoO5ScjlA/mSF5Tim4V6b5bD7ooEIQmNpojn5ykhdlyxh6r3IB19F7H5a5mmC
+	9gklcaVvEcY+C+gZIERgRdl0md9gQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dugermu-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 13 Oct 2026 14:42:31 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69DCUbY22667561;
+	Tue, 13 Oct 2026 14:42:30 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h802vtgg4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Oct 2026 14:42:30 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69DEgTo664094502
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Oct 2026 14:42:29 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11DEB5806A;
+	Tue, 13 Oct 2026 14:42:29 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AE9B158067;
+	Tue, 13 Oct 2026 14:42:26 +0000 (GMT)
+Received: from t83lp65.lnxne.boe (unknown [9.87.84.240])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 13 Oct 2026 14:42:26 +0000 (GMT)
+From: Gautam Gala <ggala@linux.ibm.com>
+To: borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: david@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com, pbonzini@redhat.com,
+        seanjc@google.com, shuah@kernel.org
+Subject: [PATCH 0/2] KVM: s390: fix ESSA addressing exception injection in migration mode
+Date: Tue, 13 Oct 2026 16:42:23 +0200
+Message-ID: <20261013144225.8885-1-ggala@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-16-yosry@kernel.org>
- <sashiko-outbox-168758@kernel.org>
-In-Reply-To: <sashiko-outbox-168758@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 13 Oct 2026 07:42:02 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNTeScHRbhJjHBtpOXbfGhs81S7tOb9H4xNLzFC4JO+CQ@mail.gmail.com>
-X-Gm-Features: AclHuK85-y1lkn532bqr0UIR87iPcHfYX8c1ypiqANOa5r9BBRqaBCSnuNm_l4M
-Message-ID: <CAO9r8zNTeScHRbhJjHBtpOXbfGhs81S7tOb9H4xNLzFC4JO+CQ@mail.gmail.com>
-Subject: Re: [PATCH v3 15/27] KVM: x86: hyper-v: Allow purging all TLB flush FIFOs
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=Cr0q4X4D c=1 sm=1 tr=0 ts=6ace4357 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=OLYqng0F8Bf9Jdo386UA:9
+X-Proofpoint-GUID: KHikQuOI6SO5TP6TvSSg8tNq6dw79Zto
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA1NiBTYWx0ZWRfX8MtkDzvjbtuO
+ srtlmR/pUh9E2CBeNYCDJKD/BOVR2tr5NIi5nRMc22gaUxIjcED1K9o20NIkeQxJv8jTQYP2gjO
+ RCNGszfk3otFao9LFL/XDzUrH+zyrc4v7WT7tTudZOCdFVyK0fE/uP/6tIB6HAmg2NevAmta3S8
+ AA7eZ+pdzRX/vlNhA4YAncpwYC1hMkjnHUGyfBR6LW94gVA1TwDvRUtEkug3elwwfzy0mqylzk5
+ +CI1l1MBKAsdbPYzX5BV20NXjBionj/e8Pi62xs2zKr6UXyXn4De4FXvsXsAnn/HlYcxNP9bTMs
+ pxlYaFAPtIiVbIGTX6GYQVYpIeJ0dnBNJLlFuTdx4nTB4wn7vDjguUHEkHOMZZYRaZ3CiM6waOc
+ h8HBZsrs+hINm8TeirULnTBjDuZFKf6HtImzZ1evzYNmBYy++fDMJFwmdDSn7d9uxz3PLFEzXo1
+ 1F5bw6zClsBo111AHxA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA1NiBTYWx0ZWRfX3+peAP7Q9v/6
+ tfqvFBdyfE+8QYv4pLN7pBTWcoTjOqKacrZi/nmjdwW7+9SV5GUOaPBtXHNLQH6iTqa6Qj81ayf
+ b3INHntHrMX4p21qJ+zu83Zn4352uQY=
+X-Proofpoint-ORIG-GUID: XwPoNiH0iyWSN6mnJBxa_3GZ_MceteqB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610130056
 
-On Mon, Oct 12, 2026 at 4:56=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Low] x86/kvm: redundant guest TLB flush due to uncleared KVM_REQ_HV_TL=
-B_FLUSH
-> --
->
-> commit fd7f6324f98d1c559f015e78c148b1f3ca58d78f
-> Author: Yosry Ahmed <yosry@kernel.org>
->
-> KVM: x86: hyper-v: Allow purging all TLB flush FIFOs
->
-> This commit refactors kvm_hv_purge_tlb_flush_fifo() by introducing an
-> inner helper __kvm_hv_purge_tlb_flush_fifo() to allow purging a specific
-> FIFO or all FIFOs. The refactoring delegates the KVM_REQ_HV_TLB_FLUSH
-> request check to the inner helper, which is now skipped if no FIFO is fou=
-nd.
->
-> > diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
-> > index 03cc65f8cc52d..a23ef05c1075c 100644
-> > --- a/arch/x86/kvm/hyperv.h
-> > +++ b/arch/x86/kvm/hyperv.h
-> [ ... ]
-> > @@ -312,18 +312,29 @@ static inline struct kvm_vcpu_hv_tlb_flush_fifo *=
-kvm_hv_get_tlb_flush_fifo(struc
-> >       return &hv_vcpu->tlb_flush_fifo[i];
-> >  }
-> >
-> > -static inline void kvm_hv_purge_tlb_flush_fifo(struct kvm_vcpu *vcpu)
-> > +/* Purge pending TLB flushes in @fifo, or in all FIFOs if @fifo is NUL=
-L */
-> > +static inline void __kvm_hv_purge_tlb_flush_fifo(struct kvm_vcpu *vcpu=
-,
-> > +                                              struct kvm_vcpu_hv_tlb_f=
-lush_fifo *fifo)
-> >  {
-> [ ... ]
-> > +static inline void kvm_hv_purge_tlb_flush_fifo(struct kvm_vcpu *vcpu)
-> > +{
-> > +     struct kvm_vcpu_hv_tlb_flush_fifo *fifo;
-> >
-> > -     kfifo_reset_out(&tlb_flush_fifo->entries);
-> > +     fifo =3D kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode(vcpu));
-> > +     if (fifo)
-> > +             __kvm_hv_purge_tlb_flush_fifo(vcpu, fifo);
-> >  }
->
-> [Severity: Low]
-> Does this change inadvertently leave the KVM_REQ_HV_TLB_FLUSH bit unclear=
-ed
-> when fifo is NULL?
->
-> Prior to this patch, kvm_hv_purge_tlb_flush_fifo() unconditionally evalua=
-ted
-> and cleared kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu) before returnin=
-g
-> early if the vCPU lacked an initialized Hyper-V state.
->
-> With this update, if a Hyper-V VM-wide TLB flush sets the request bit on =
-a
-> vCPU without initialized Hyper-V state, kvm_hv_get_tlb_flush_fifo() retur=
-ns
-> NULL. The helper __kvm_hv_purge_tlb_flush_fifo() is skipped entirely,
-> meaning the request bit remains uncleared.
->
-> If a standard guest TLB flush request arrives and triggers the purge path
-> in kvm_service_local_tlb_flush_requests(), the uncleared Hyper-V request =
-bit
-> will still be pending when execution reaches vcpu_enter_guest():
->
-> arch/x86/kvm/x86.c:vcpu_enter_guest() {
->         ...
->         if (kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu) &&
->             kvm_hv_vcpu_flush_tlb(vcpu))
->                 kvm_vcpu_flush_tlb_guest(vcpu);
->         ...
-> }
->
-> Since kvm_hv_vcpu_flush_tlb() fails (returns -EINVAL) for a vCPU without
-> Hyper-V state, would this fallback path execute a second, redundant
-> kvm_vcpu_flush_tlb_guest() operation?
+ESSA emulation in migration mode silently dropped addressing exceptions
+when the guest page-table walk failed, so the guest never received the
+expected PGM_ADDRESSING interrupt during live migration.
 
-Yes, this one seems to be real, although it's not a big deal IIUC.
+Patch 1 fixes dat_perform_essa() to return -PGM_ADDRESSING on a walk
+failure, and __do_essa() to inject the program interrupt for that return
+value.
 
-I defaulted to checking hv_vcpu first as to skip the expensive request
-check if it's NULL:
+Patch 2 adds a regression test integrated into the existing cmma_test
+selftest.
 
-if (!hv_vcpu || !kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu))
+Gautam Gala (2):
+  KVM: s390: fix ESSA addressing exception injection in migration mode
+  KVM: s390: selftests: add ESSA migration mode PGM_ADDRESSING
+    regression test
 
-But I think we need to do the opposite to maintain the existing behavior, i=
-.e.:
+ arch/s390/kvm/gmap/dat.c                     |  5 +-
+ arch/s390/kvm/s390/priv.c                    |  4 +-
+ tools/testing/selftests/kvm/s390/cmma_test.c | 79 ++++++++++++++++++++
+ 3 files changed, 86 insertions(+), 2 deletions(-)
 
-if (!kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu) || !hv_vcpu)
+-- 
+2.55.0
 
-I won't respin for this for now, will wait for more feedback. It can
-also be folded in probably.
-
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261012233638.25=
-46339-1-yosry@kernel.org?part=3D15
