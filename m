@@ -1,141 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA96B4D17B3;
-	Tue, 13 Oct 2026 11:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743CB4E36C9;
+	Tue, 13 Oct 2026 11:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889844; cv=none; b=tW1G5HtooSPPMiZxUBVptCLDCxn9fID42q/riSyDbEOhu4iCvLe7N2F5PeUTlN4zVK6DRh/xWIvmA0kq6zi68L+JM/cu4xJCX5kgn/ubFUHvpCevaRPgHxiCe89UPafUc7bP4c1vqisJP+ia8ATErfRVUX/DCe7jS3ujXvZLZPo=
+	t=1791890990; cv=none; b=erqx2cpp9La55wYKGLF9SsJixAQa5DSBJUtUAr7zYdcQSbDmNA3XyXIDALPjiGSZKEeME2b17uTyLaqd2AkEfmjFi7kGQVPuQ/Hg9LyUaHjUWAlyF3mgo1rBHu9jGhjBYa26YzAOQH0SRRlD7FXxZs4xXEr0o2JDcfEV5uB4in4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889844; c=relaxed/simple;
-	bh=hAz9P8ZFLCz2wZjxPDxhsbn9sAAtthpWjPZtM6f+q1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WguS5j+yNjfkVciKvXS8t3yFDc8evWEIeojVDPpKJWXBIiv/ypFd2clnt+igHs4bS9LpONby1c68ZOW6+ZWDo8v2YXzCAIieH6V9WCg/gk1ibjtapyf1/iQx9nK7VzXPvd/pog01jQIVopQNKXuUG1i7w4UULWp1vNibvCZ/Sf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NGCxcYgA; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791890990; c=relaxed/simple;
+	bh=hcGq33lvY9rVtSOYs+BB1JK/Pze/KCvmsRz+ajmuwnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hgwhhjKkRZloQzMyGCP5hfJuFovuK7Fc2EdZhSGgyn+PfYT7pKbXcRnCO68jZAEa60PHV7ebqlTg04BAKpjoFr+5aoe/71xJaY5UHFlhxNxOpONlVZVXwaXUrFJbxZqQguQcreTnLX85MwG9o/37rbmoYWLrIpzx/AgevloQm+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5XSCDOi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NGCxcYgA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791889843; x=1823425843;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hAz9P8ZFLCz2wZjxPDxhsbn9sAAtthpWjPZtM6f+q1w=;
-  b=NGCxcYgAUzvA8ze8Ch2Z4b20BoxStu9X20ktBpgMNujMploy2NTqGxf1
-   aih9iOeEwZRu/c6WAevgniBLTX7Y6ILpQUA09rjxH4gZEXiqiwDJTCCbB
-   vcYP82Jk6/VXI/koFkwjpiaTAhGBpuHgJ+LNrJrZkeySvcbUprIia0M6K
-   1cQi6AokdDypclPiH44fbWd3JG0IRhLLBNgWh8koeo9PoBpeNj2BkaeDC
-   rkNi53cDnolXBG9QDECDD4QYfF1KrpqoNWJbA7g8SOffYC8X4gvobPqcE
-   2YTI+/cWA3uJr592RXehCKs26gzka7gts2KLGpRedTR0aFvqfM8rP4KSq
-   g==;
-X-CSE-ConnectionGUID: abIrf1GCTC6w05yHdxK5tA==
-X-CSE-MsgGUID: SOOsHy4sSh6CrS5pi7dBww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="618135"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="618135"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 04:10:42 -0700
-X-CSE-ConnectionGUID: 3TznrqCeQJya91LY1E6G2w==
-X-CSE-MsgGUID: KWZSP4yoSumYmWPzo2y0Hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1110377"
-Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 04:10:40 -0700
-Message-ID: <94be5e5e-808d-469e-bf72-e1d9b7c7c879@linux.intel.com>
-Date: Tue, 13 Oct 2026 19:10:36 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5XSCDOi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908C11F000FF;
+	Tue, 13 Oct 2026 11:29:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791890989;
+	bh=6XqjA/BTi0UimOJRXPoyDY9jgW+xNcOyj9nBVG0M9QA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Q5XSCDOiMCkxmNBt3Wahjw3f3gX93ZDCSa9CdYxuU9X0hN6bEVTNB4IELta63m0QB
+	 dEMhDlXbRQUfz3Ev8UIUCG0TeY/DE8JmQVCgJ1HlzvrcE0UJhAAPV4W0EvcgheF2lB
+	 j6DYhxROXPlPjm+pidXFCm8wvv8jdGcSC7oNJZLDlhqrlBEsbRerhPIg47miiV6xt6
+	 1smY9LeY4AAu8C5wf0CqHWMfUWbyMAjGj9pGtHRbexb2hn9pCr3gWJ0CI7ByXeA/VU
+	 b2CZVSAsoNG/Lq++tK5RDQ5VuXnlI4jkuiBgwHsD8MmEsVf5mMFDl6K+DSaVvOmynM
+	 jiz20RE12a6sw==
+Date: Tue, 13 Oct 2026 12:29:16 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Bert Karwatzki <spasswolf@web.de>
+Subject: Re: [PATCH v5 31/38] mm/uffd: use predicates for userfaultfd checks
+Message-ID: <as4PHg2OaE_UULTg@gremlin>
+References: <20261009-b4-mmap-prepare-vma-flag-sanify-v5-0-923b70125b1e@kernel.org>
+ <20261009-b4-mmap-prepare-vma-flag-sanify-v5-31-923b70125b1e@kernel.org>
+ <b8a6a344-ad2c-4355-adbe-be7325e7371d@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/10] x86/virt/tdx: Verify structure member sizes
- against metadata field IDs
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, yilun.xu@linux.intel.com,
- tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
- nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-11-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-11-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b8a6a344-ad2c-4355-adbe-be7325e7371d@kernel.org>
 
-On 10/12/2026 5:47 PM, Chao Gao wrote:
-> The TDX module reports its capabilities and limits as a set of metadata
-> fields, each identified by a field ID, and TDH.SYS.RD reads one field by
-> its ID. TDH.SYS.RD returns the value as a u64, but metadata fields are not
-> all 64 bits wide. A field ID therefore encodes the field's size into
-> bits 33:32.
-> 
-> The kernel mirrors these fields in C structures, and each member's size
-> must match the size encoded in the field ID. FIELD_MAP() stores the member
-> size and uses it to decide how many bytes to copy from the value returned
-> by TDH.SYS.RD. The size in the field ID is never consulted, so any mismatch
-> goes unnoticed. Declaring a u32 member for a 64-bit field, for example,
-> would silently store only its low 4 bytes.
-> 
-> Add a build-time check that the size encoded in each field ID matches the
-> size of the corresponding C structure member. A wrongly typed member then
-> fails the build with no runtime cost.
-> 
-> BUILD_BUG_ON() cannot be used in a structure initializer, so use
-> BUILD_BUG_ON_ZERO() and add its zero result to the .size initializer. This
-> performs the build-time check without changing the stored size.
-> 
-> An alternative would be to leave the size bits out of the field ID
-> definitions and construct the IDs from the member sizes, which makes a
-> mismatch impossible. But the TDX module ABI definitions list the full field
-> IDs, and definitions with the size bits stripped would match nothing in the
-> docs, making them harder to verify. Keep the IDs exactly as documented and
-> check the size they encode against the C type instead.
-> 
-> AI was used under supervision to review code and workshop logs. It
-> suggested moving the size check into its own macro to keep the .size line
-> short. Rick also used AI to write TDX_FIELD_SIZE_CODE(), which converts a
-> member size to the size encoding in the field ID.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
+On Mon, Oct 12, 2026 at 08:48:04PM +0200, David Hildenbrand (Arm) wrote:
+> On 10/9/26 20:04, Lorenzo Stoakes (ARM) wrote:
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index 949017e60608..f33b04700838 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
 
-One nit below.
+> > @@ -2146,10 +2152,11 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+> >  {
+> >  	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+> >
+> > -	if (vma->vm_flags & (VM_DROPPABLE | VM_SHADOW_STACK))
+> > +	/* Only mm-backed memory can have its faults handled by userspace. */
+> > +	if (!vma_is_mm_backed(vma))
+> >  		return false;
+>
+> Again, for both I would prefer keeping the droppable check separate.
 
-[...]
+Ack as per discussion on other thread, will separate out for v6!
 
->  
-> +/*
-> + * The size encoded in the field ID and the size of the destination C
-> + * member must agree.
-> + */
-> +#define TDX_FIELD_SIZE_CHECK(_field, _type, _member)		\
-> +	BUILD_BUG_ON_ZERO(((_field) & TDX_FIELD_SIZE_MASK) !=	\
-> +		TDX_FIELD_SIZE_CODE(sizeof_field(_type, _member)))
-> +
->  #define __FIELD_MAP(_field, _type, _member)			\
->  {								\
->  	.field_id	= _field,				\
->  	.offset		= offsetof(_type, _member),		\
-> -	.size		= sizeof_field(_type, _member),		\
-> +	.size		= sizeof_field(_type, _member) +	\
-> +			  TDX_FIELD_SIZE_CHECK(			\
-> +				_field, _type, _member),	\
->  }
->  
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Nit:
+Thanks!
 
-This doesn't cover the TDX_FIELD_CPUID_CONFIG_LEAVES and
-TDX_FIELD_CPUID_CONFIG_VALUES.
-
-Not sure it's worth to add static_assert() in get_tdx_sys_info_td_conf(). But if
-not, maybe it can be mentioned it in the changelog.
+--
+Cheers, Lorenzo
