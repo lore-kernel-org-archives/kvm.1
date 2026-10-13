@@ -1,121 +1,167 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8DB3BFACE;
-	Tue, 13 Oct 2026 17:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791912888; cv=none; b=BUySVRZLIKYGIc3jahVOThLsYLLd/bLVVEH4vyhjldz6qi2tF8qj5Og+ldWJScB/DK6C/YvodqEMekuOleNlPVEgUGLQeiKM4EdThCDQnD5F9Gb+LA5iNpGXqdlRjwOjDUHBftwJTw83qHWv2rvW4yjJGRm0p+yQqhUn8cGbeWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791912888; c=relaxed/simple;
-	bh=D3UYt0i5hAKFhi8tFEEKwRghDne3HmZX19J1SbhWdwA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ui6mcEf7qc71jSTEeZ5QMSyadw7GRlWJU2h45y2zluYsWhtRbtsoSshfNqToRH+74pj2gYlppfANVDd62uS3atoNnF83spzJ1p1bEVaB6081/1jIb38bY8l0uz/IgTEzhbSXkdeqJawL7VN/hh1T0k3CtCw5a7PmOsIbrlD6N7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=AeJxApnX; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9840A52ED34
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 17:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791914101; cv=pass; b=oNcL6FuYhuGsyqIGsAhHsl0y6yHMcisa/4H0LYqui2wQ4kDnDXw2dH7pOgHVymRE/ElKU9ckTF5e/gttILlggbKNK2/ObZObuDYS914W16WlmEP31XsTcmKp0q1XUP7Y/bCglyCZBxx5ParuuEFdjN4ddlUkzzqlALv3FFx59Lg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791914101; c=relaxed/simple;
+	bh=BMSS1jckBQ2e870f/uI3vrk/j+iBZv6E/rBVCsIo22k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oz5B+kk2BiQ+GxnSo6+CkGeMQES/YSPiIEEWTOSpnyxUaUoMMsVHR+tWnjV7AK1zBSKYkxp4ep6DkJrQ+RzUgOa+TtYucgNGtHs4lMfGcfEL4EhbwiSnwfQZliSDBg05tL+c9v86dXmq3q8YO+c4KO3wWQf1K5iwy2/sDIrfNSA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TdzfnWTJ; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="AeJxApnX"
-Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DH31Na1158838;
-	Tue, 13 Oct 2026 10:34:27 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=LWL/XRN8x3Z/WAwoivm6i1fVHwe3fxfm0cZor
-	ef+30w=; b=AeJxApnXUsz7mSwHpTEM8k99my3aArx+5CsRLETzTtoQj9yegU6AK
-	ghB/sP6YuSGn/oSUHNYIw6KYA9QMKS2Gokzzg5hkYEshs7DyrWvurUdQZhM7MDz4
-	JW6dULZw1HKgDh8olHw+QhkxDrh9AycpnMFOeYzDPvMlp8HrLEdn+uZW1659AzwH
-	tr7QUqt9YP5RlrI+0fk2mzr3yoPpn68OK03+DtnO9WDvFAxEEP75dZbauk2Bd0gy
-	z2MILJ/vsj1WlH+yTelF3WbvveRFDHH7cy62y6Am3ITo2ipKFe4CGqrV6bxZvKtq
-	T1IYGRh5vsa+kPpVmVYJng9Xkk7VYvhQg==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h9hc43xva-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 13 Oct 2026 10:34:27 -0700 (PDT)
-Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
- (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Tue, 13 Oct
- 2026 17:34:26 +0000
-Date: Tue, 13 Oct 2026 10:34:26 -0700
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Daniel Pereira <danielmaraboo@gmail.com>
-CC: <sgarzare@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
-        <skhan@linuxfoundation.org>, <stefanha@redhat.com>, <mst@redhat.com>,
-        <jasowangio@gmail.com>, <xuanzhuo@linux.alibaba.com>,
-        <eperezma@redhat.com>, <shuah@kernel.org>, <rdunlap@infradead.org>,
-        <donald.hunter@gmail.com>, <edumazet@kernel.org>,
-        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <sargun@sargun.me>, <jlinbox@meta.com>
-Subject: Re: [PATCH net-next v3 4/7] vsock: add a netlink command to assign
- the g2h device to a netns
-Message-ID: <as5roqKrcZ+0WYIj@devvm29614.prn0.facebook.com>
-References: <20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com>
- <20261012-vsock-guest-ns-v3-4-b32447c66b23@meta.com>
- <CAMAsx6fKVQaYLzkK34v5DRkmQS5Ym-XqwNh-+Jj_Uue8NJCNUg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TdzfnWTJ"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so28735a12.0
+        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 10:54:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791914098; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WZxCM5ClyHwJJ/7FzhgS0A7KZLLhad/AFNtPKgYSSM7jyX4XnrOQVX2oIwggGsYCCt
+         gt4cbv72UmeHDyxW0msTS595CwvqTb9pFGpX0zQLtZEEju0MeaTpQBwFfl7VpKRQucoF
+         +woeB2d7l945B5DGjXlZUDb4yeX01AIXscSkrVrLuU1CWb0y7cu+zXEu9/2qJxe4ZQlR
+         wfOBMYvyidN4C2EyNvIjvl2QHpeEbxzSBnvjqycM+6fIr43yD2WFmoBcz3QAbEl5Qm6J
+         7TqMovrVB1P3NRI9VYyWgXhuWOYt7jaBnHKEXZ3xybVuDkLVWAZvEDLQICcY7wARm4Rr
+         N0gQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SRtjnC1p7Gi1e00oi/1sIVluDFzpjss9Zq5iLpeEpPQ=;
+        fh=jVhk0Se/m4VVi3M/SlyXMqJJaF3n0g3aI8fXF/fePJk=;
+        b=JG2gyTmUCxXkFDG5KxfPZEbxirCg0N6chGF/YMWAXnsMQ9/lIDzCZqxTTS2LpXmKY3
+         RzIO2rcZogjULuq+tPeque4Acu5IQh7vkuEHLJxog26soJNnm0Fwg96gsSerqRVoTNxx
+         paVelb7Eko307sbaiSMiM5lmMLQ44brI6m76WOc5Hh219kXEqe57hue4hdmMtiGU512l
+         d8272LoKUX2ASRx4zsufM+z6MwAh1rgokBiGxmqyr+c6d3hhLtDYRQWZEVZywD57AaOJ
+         xgetw5rl7TmjjGTn0nX9DD5zeskVkYUvUvROkcWLafjkZm3EUQx5Yc/2Ryd3xCyrDyh/
+         YcOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791914098; x=1792518898; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SRtjnC1p7Gi1e00oi/1sIVluDFzpjss9Zq5iLpeEpPQ=;
+        b=TdzfnWTJ0JE4/RKyDdhY635Wlr0PdD+bTTKkJhom5yLAE/BFvIk2t5NwioHKhupKQJ
+         Sfp+OcN2pW4OI1AEHHMoVEAs8vvAgMX7MDKKy7RKj2Oo13oEDrgj2+PbgmW49ppQyiIz
+         NVqVlu6s6A/VgYlcZlqPS8CW2WLnr202X9VMSCnS2flGKOvd3eIZ5hX2quvDMqR8smEJ
+         YdHQCl3mRnjZwyt5CkulHrslCszA2udgoU5PGQyUhY9CaOUZ1/oPx7xdzcde3qwTVEln
+         2SX4/8G9SZu9gRhq2n15tsjDrYy+6lt43T0obPvRKoSU9ropeaESFA3BnfsRa8y0O3Vh
+         af3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791914098; x=1792518898;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SRtjnC1p7Gi1e00oi/1sIVluDFzpjss9Zq5iLpeEpPQ=;
+        b=qLMIi1xYWNhNcwUqVjC2kO3uElt55N0s/EhC7NKzhDMetcVIHmFsC6+QkRn3Dxm+hq
+         uOkBLCqPh/co/FHgvV8AetiFeydCUN8Nuc8VNyGLJInyEG4CSNSkoXTkr32RQneuvLcM
+         FIEvl+RqN8mUUflUYMxCQuPsY88gl9NqO1dTWi3IQifqRdA6h+/oP7p/YD+6ZZYoGzOR
+         HC81TO8rfxxDeknnPu/TU9MOPqs2GHcUpOnZ0k4L/yAouvKSyErhS93qCG7okjGpAYIz
+         h32/J+Lzd3wy8EFAK15BjvCkQ4ld81YJj7qOOtKq9wfqjCAhiv9XaQp1Nia/8e2Hacqx
+         yukw==
+X-Forwarded-Encrypted: i=1; AKwUvBx+t+6ZQvksnGENRjqxZM9opN1a46JJObaj5GsleuW/pWfxEWrQnfBH5SmoivqLEQfT3jM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL9F3BJTfBFhsGc++IPt4N070GIv7SySwhQrDYbdvsZ9YkkJBhn
+	9NHMWg2dpuz77y4pUqn6U0tuTccG9PSt88ZDPfoxJgY3OwS/UbraXpzp6WE1t5z+nQbvkNE9NjW
+	YzkdHEC/cREzaWyjU7vSolkEfl9SclXcgqDX4lqjM
+X-Gm-Gg: AYBFou0y4vhBp1b5XQd5c7bXXC3yG5VTfhetYAaBLgMCn9/Av0S0BflPhLf8b1mgHh0
+	aHOGao3rZkOWHEaTbZzpelL9YPzmh2edo0guwpimmTZ/RjbwKtKv0j+pVqe6cybNaGkg4+s88Ws
+	1qKiFKNbljLQZ6vKtpoe7uHrOLDxXKqktbdp3DEHqo0mm7bMOIczIolj60c0mUF0Gw9AzOX/QCu
+	/yOTwCZtR4q7nHQTH0BFE/5xjDgXn7ZM2RjXpdUv2qFL6Y/NV9sCyfipOrANwd2ZDr0ul791Vcx
+	B3zoWygkJXFCLiNGP0oFfHpvSd3ETd4cLKi09/P7F2p4PgVhPF1sPwc=
+X-Received: by 2002:a05:6402:150a:b0:6b1:b3bd:1576 with SMTP id
+ 4fb4d7f45d1cf-6b1b3bd200fmr133982a12.8.1791914097201; Tue, 13 Oct 2026
+ 10:54:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMAsx6fKVQaYLzkK34v5DRkmQS5Ym-XqwNh-+Jj_Uue8NJCNUg@mail.gmail.com>
-X-Authority-Analysis: v=2.4 cv=L86I0OT8 c=1 sm=1 tr=0 ts=6ace6ba3 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=8nJEP1OIZ-IA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=crHB47gyY4rKiduisYu9:22 a=VabnemYjAAAA:8
- a=IhaVPjiSUfC3lUqgL44A:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA2OSBTYWx0ZWRfXweRN4xWDXlRU
- QYe3T0G1lTLn8kzE8+h7GJpNcWDizdt2gDMq2z3tkLHOR3BO/csllYNf97Aw8G79kjqnDYWx372
- 9eHx3+N0IrJoKHmFhGifo1o6WS4qR/A=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA2OSBTYWx0ZWRfX1QZzySfg7Iql
- zY4V15sByE3oHUpSIIV3Q6s4f4/6Sj2GnR0xww2Mu1pj48pXZ2DnI/Bs48xyuChTigOYIb8Yg5v
- oJSjFsdMsNNT3fYO+iYQ9oi6QCvFvxj6shYyvnd9XQTU6WWhk+tHBphaC/bn7YdpAcMQ+EN7jpB
- jkMUMHocjxur1dOxBHRmAlzIcqsty66EfL58I6pq6k568m2Q9MxsQp9gtNbEMspz2rRBaQGu2ly
- oWAZlq98ZCpTjGtprTUB2yLtOPvvmlpmO7UDoHPpCfEdJhIlP/xHk/c+BGGqzGATB+mFJS7ZY4B
- bYrWl+/3dgk+OS42jgbLxfSqWWP1fqi9h0rjXsUoIJ4Kd9UsQAW0mkx3ys6CjCF9I9w6E4rtXN9
- xVz3YLbRDUupyT9yfIIH5hO7No3g9GxGbHTJjBNnXzGWbJ6bD7r4kjklqwVdqNmUuC3rBkIbBpc
- V4/EsVtkHqo+KLY4Ihg==
-X-Proofpoint-ORIG-GUID: crBcu5j1ETahNAP4cu-GvJGR3AqHg4Mk
-X-Proofpoint-GUID: crBcu5j1ETahNAP4cu-GvJGR3AqHg4Mk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+References: <20261012224736.2306637-1-yosry@kernel.org> <CALMp9eT6eJSDaJVJ_1mrn8-sP6F88q-OcGrEgUWy-YpAkuA9vg@mail.gmail.com>
+ <CAO9r8zMsih9vRJFWgbE=bgWAqBzwPO3KJiAyBVA_hJBgjPp6mQ@mail.gmail.com>
+In-Reply-To: <CAO9r8zMsih9vRJFWgbE=bgWAqBzwPO3KJiAyBVA_hJBgjPp6mQ@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 13 Oct 2026 10:54:44 -0700
+X-Gm-Features: AclHuK8WC6fCM25ehSI8d6hZUp_f28nDxtHAyGF1VNE9tdU9vNWCl9URQ28bhU0
+Message-ID: <CALMp9eRRb_8vbm3YM9dw7XbDsnjQ1wRYK10oNq4JAgkUZdpFLg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: SVM: Update tracked pCPU on pCPU switch
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 10:44:55PM -0300, Daniel Pereira wrote:
-> Em seg., 12 de out. de 2026 às 19:51, Bobby Eshleman
-> <bobbyeshleman@meta.com> escreveu:
+On Tue, Oct 13, 2026 at 7:49=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Mon, Oct 12, 2026 at 4:58=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
 > >
-> [...]
-> > + Movement to an unreachable local namespace results in sockets being
-> > + closed with ECONNRESET. Peers are not guaranteed to be notified via
-> > + an RST.
-> 
-> This reads a bit differently from the sysctl documentation in the same
-> patch, which says:
-> 
-> Connections established before the move, from a namespace that can no
-> longer reach the device, are closed with ``ECONNRESET``.
-> 
-> The net.rst wording also covers moving the device back to init_net from
-> a local namespace, which this sentence does not. Maybe use the same
-> wording here:
-> 
-> Connections established before the move, from a namespace that can
-> no longer reach the device, are closed with ECONNRESET. Peers are not
-> guaranteed to be notified via an RST.
-> 
-> Daniel
+> > On Mon, Oct 12, 2026 at 3:47=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+[ ... ]
+> > > @@ -3892,13 +3893,22 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
+> > >          * - The new VMCB does not detect a pCPU change and runs on p=
+CPU A with
+> > >          *   the new ASID allocated on pCPU B, which is potentially u=
+sed by
+> > >          *   another vCPU/VM.
+> > > +        *
+> > > +        * Note that dirtying both VMCBs is not strictly needed, but =
+the per-CPU
+> > > +        * tracking is shared for both ASID and clean bits, and that =
+CPU must
+> > > +        * match where the ASID was allocated.
+> >
+> > Is dirtying both VMCBs not strictly needed?
+> >
+> > Per APM vol. 2 (rev. 3.45), section 15.15.2:
+> >
+> > > The hypervisor must clear the entire VMCB [Clean] field to 0 for a gu=
+est, under the following circumstances:
+> > > ...
+> > >  - The hypervisor executes the guest on a different CPU core than one=
+ used the last time that guest was executed.
+> > > ...
+> > > Failure to clear the VMCB Clean bits to zero in these cases may resul=
+t in undefined behavior.
+> >
+> > Suppose vmcb02 runs on pCPU A, migrates to (and runs on) pCPU B, and
+> > then migrates back to pCPU A with some clean bits set. At the next
+> > VMRUN, pCPU A will happily load stale state for anything marked clean.
+> >
+> > At some point before that VMRUN, something has to clear the clean bits!
+>
+> Dirtying both VMCBs is not needed in all cases covered with the new
+> code here. IIUC, clean bits are VMCB-specific, unlike the ASID here
+> which is shared.
+>
+> Because ASID is shared, we have to reset the ASID generation for both
+> VMCBs when a new ASID is allocated through either, and update the cpu
+> variable tracking which pCPU allocated that ASID. Since that cpu
+> variable is also shared for tracking which pCPU ran the VMCB last, we
+> also need to clear the clean bits every time we updated. IOW, if we
+> had two variables, asid_cpu and vmcb_dirty_cpu, we would need to
+> update asid_cpu on pCPU migration for both VMCBs, but only update
+> vmcb_run_cpu for the current VMCB.
+>
+> This is all annoying and confusing, but that should go away in the
+> static ASIDs series, and we should go back to only updating pCPU
+> tracking, flushing the ASID, and clearing the clean bits only for the
+> current VMCB.
 
-Thanks Daniel, I forgot to update the docs with that change. Your
-rewording sounds good to me.
+I haven't read the static ASIDs series, but in any case, this patch
+should stand on its own, in case that series never gets committed or
+gets committed much later.
 
-Best,
-Bobby
+My complaint is with the claim, "dirtying both VMCBs is not strictly
+needed," which seems to imply that dirtying the inactive VMCB here is
+optional. In fact, once you update vmcb02.cpu/vmcb01.cpu for both
+VMCBs, dirtying both *is* strictly needed so the inactive VMCB doesn't
+later miss a pCPU switch.
