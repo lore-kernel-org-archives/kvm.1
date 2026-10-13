@@ -1,143 +1,186 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E975372F0;
-	Tue, 13 Oct 2026 15:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D2348489D;
+	Tue, 13 Oct 2026 15:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791905583; cv=none; b=pcssRlVZ4blF5LLK/bhDxX5ihl9EpVmMVpnDnmmX0vwwtSmnfSjA/m67DOz4iQzWdLr6bU65e/I75m8g7lECVtkIjvk0wNTSfIKiS7n6GSUqMQ39PUtlTtgIaH5pepeDNqafnKMHMVoHmMCIzBzcyTUwXZFD3bCO90HTCIfDx9g=
+	t=1791905612; cv=none; b=W8fqfa6Y7qJkihR/9Lt3LFy3Fz938m47QNudIqC5s8cf7EA+eKdz2wGByOZRnvGD55FrYw1SB53pCehPcF7rC7fHr5zDSUbnOGk7weS9q/5BbA+BPrfGFy7AGXd4+lbLlM3DAPagn4wNvnFCdOm/7yl9kILn/vr5H+kQujgNkpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791905583; c=relaxed/simple;
-	bh=1MNpwmfcMiZlbww9F5T8qk/Y3A+K5cCykLmyyzbsxII=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4ffK4rYcAfYmVFcV35MH/+DqPXJ2fERNWS56QU5h1Am98ebRLFUGbYV2lM1YDini+86agQJaeGC86pJ2xBy+P4LZ4n5WPmNKemzbbHMkRl2E4o8G+EEKH8V9u1BT1p0hhpP2Ig5Eh9hrBp89rrPUmvg6Tw1hRqS2bJuqcDttYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=batOYBlA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791905612; c=relaxed/simple;
+	bh=M/Z6BSJlgL/L9aE/tWq/2GIxmVEo2nKwJ+b1XudSKMs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hDQ+S3xSyyCuPvZUkow32MS/TOf6mVDzmUjo2vWLTUvd4HzS2w6uTcxuAMRrDQYF3dFiMUHvggbMlvoxZEylbAe1xs6W35tnH4iNRD7WtrrYHNXlQTDqLWmMrxeSDVnPxMfA9J4PaUou/svGal28MBpcEVZsYvx7l7Awoj6TL80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGVGFAu8; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="batOYBlA"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DCtlXH2016607;
-	Tue, 13 Oct 2026 15:32:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=qg4VdgFKzBFMkL6A+
-	koKUiGfjurci+RSLcEK9fmi54k=; b=batOYBlAta4258so7bVLjtaLcPKqW92lS
-	cBQPLWvjUy4x+pl3LgjFDh+b7j3U0tKNnmR4ORfIpnLLoOlgDxwMhYYQF0UQMjEt
-	DPTZr1TNkLOLgpCObVcRRvbjANAeFySMGUeuzGKL5gu5iN/5yLS5qaXmbgq5pqiu
-	/OcQT9uB8nidvlRwGxPc60zwkwA0Id5L+uVMIcEaVrhG9tYEMkGQn6PaX5vWnar7
-	aIrRpDbtFQQrNmZVQqGeowwyFYN7/OiJ+53dpknME36CqEYCgqpf56XE7pusMwzT
-	fZ+VWFFsso8NPjI+DoRk07eIte+okxsCPav+kiia6Rvtis/FPEblw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dugf2pv-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 13 Oct 2026 15:32:49 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69DFWD3r2709367;
-	Tue, 13 Oct 2026 15:32:48 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h816h2jug-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Oct 2026 15:32:48 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69DFWl4E23528138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Oct 2026 15:32:47 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6C4F158055;
-	Tue, 13 Oct 2026 15:32:47 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CC8585804B;
-	Tue, 13 Oct 2026 15:32:45 +0000 (GMT)
-Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.17.246])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Oct 2026 15:32:45 +0000 (GMT)
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
-        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com
-Subject: [PATCH v9 14/15] s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
-Date: Tue, 13 Oct 2026 11:32:18 -0400
-Message-ID: <20261013153219.3534306-15-akrowiak@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261013153219.3534306-1-akrowiak@linux.ibm.com>
-References: <20261013153219.3534306-1-akrowiak@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGVGFAu8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791905610; x=1823441610;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=M/Z6BSJlgL/L9aE/tWq/2GIxmVEo2nKwJ+b1XudSKMs=;
+  b=HGVGFAu8siSMUG24bc5HgUnA4DpdHHlu6ev3Tfeg8QUD4rTS1qijTA2l
+   yrT2Tpdr2/YBu9gYFwZUlW8zkBVK1rWxHd2F5zmU6dRJMznZaRa+xKAhr
+   UUvU389kyr7uNOXrxGj9k0aBZLQV9iTCk0wbNDtA2tbrvg2giRyCjXoMe
+   DzaAAaaW9AMuxghTwxzs/jzLIX3qQYsbkCypVXydQSLvVutaFZZTPG2ez
+   5wO6BXyM/osmNbpAJfpkxHH/3Q6BtGeBqVam+aXC2jVbaEA5+XbOO2KDq
+   0RUyCtM5RQ4gWXi0TAEJXzaaeWEqsl+tGgVzljdasrYc7lUREjq2uEx73
+   Q==;
+X-CSE-ConnectionGUID: CLelcdDjQMKzi08vmboJMw==
+X-CSE-MsgGUID: ph2u2+1sQ42KmlMVlfzekA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="643361"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="643361"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 08:33:28 -0700
+X-CSE-ConnectionGUID: Eg9g7xNbSS+kqrZRuC1dBg==
+X-CSE-MsgGUID: eI4y4nYoTESqWQ0lu6H3RA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="1388077"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO [127.0.1.1]) ([10.239.47.46])
+  by fmviesa001.fm.intel.com with ESMTP; 13 Oct 2026 08:33:24 -0700
+From: Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH v4 0/6] Enable TDX module extensions
+Date: Tue, 13 Oct 2026 23:28:50 +0800
+Message-Id: <20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Cr0q4X4D c=1 sm=1 tr=0 ts=6ace4f21 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=mmLkksitYsIcdlCVxmsA:9
-X-Proofpoint-GUID: mKdguggnKv5vA9ikB1JyaGYnzXGeAixX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA2MCBTYWx0ZWRfX9Nk1UZqQSMVx
- 6DONiNntCo61hW5+QUd9Vzbr8s4+2d/t0kLwmda9p6E1ULxNRWSsBIhcZXTpDRKpNw7laAbYE3p
- on+sLr/ZrvB+eR9/iqXYDei6pIisLeyxcLK6u2w0ztkFdzeawgtJVdX4ecFwd8CCbdqpkDJBGH2
- 1REy2Sqc02BDWvYsWjxCVHWJYb9oTBYHanrbRYOMz2QEcv2H/vVBW7QWDDRKhRqvug16U04A7Pq
- JirXa4RA/k+w9byt5iXgWo2C/QLgZ7Ts/STIjolmht6r8Va0XLC8rDr1AIZ60rAYqy/S8T1szA8
- plq4CqBqlXdwjA3/5rwqu5vJB80+MFyM3mDtnK+PMCtwspNgzplkPSM9IHRcyqfTumFYxfv+b52
- ZKjcykU2MKBQi8s0JANK/c5lE0VP0L+4Lobqo36sgIPNlg3zyiw3ijbgyPhGG7NcC8HJO15jmz9
- aH2IX7V4assROarNe9A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA2MCBTYWx0ZWRfX3g7wB0RzFPEL
- 0ZZ/d9Y//roQEz2CGr/lyaPbz3l08e30lf64xgb/AYRnxA33ydUk1Clfz+4tTEodD9bPipA5DYm
- /mrjwB2d2ivSr8VOBHHh91YEEO0XZEE=
-X-Proofpoint-ORIG-GUID: mKdguggnKv5vA9ikB1JyaGYnzXGeAixX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610130060
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADJOzmoC/2WPQW6DMBBFr4K87qCxjQFn1XtUWdh4KJYAt8Ygo
+ oi7xyFdVMpq9DX6T+/f2ULR08IuxZ1F2vziw5xD9VGwbjDzN4F3OTOBokbNa0huhym4dSSgPYE
+ zXEvspeywYrn0E6n3+wn8uubcxzBBGiKZ/xjF81Vt2XCJjQYONz+uc7mvn6Of1730c6Kx7ML0h
+ 4z0u2a19OIyaxaC/J18uhTKtoILVymntW2arq1IGidRGaEVaaqVU9QLZE+dwS8pxNs5d5Mn7Kn
+ EEd+WbRIQnFWis6is5u2b2/U4jge1CmnkQQEAAA==
+X-Change-ID: 20260916-tdx-module-ext-da1930f33c04
+To: x86@kernel.org, linux-coco@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com, 
+ kvm@vger.kernel.org, yilun.xu@intel.com, yilun.xu@linux.intel.com, 
+ xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+ chao.gao@intel.com, artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4414;
+ i=yilun.xu@linux.intel.com; h=from:subject:message-id;
+ bh=M/Z6BSJlgL/L9aE/tWq/2GIxmVEo2nKwJ+b1XudSKMs=;
+ b=owGbwMvMwCH2Zztz45IFPbcYT6slMWSd8wvbPY03SPrRtykCVwN3zInese/A5UvBv77y/ZB//
+ WPaiwl1tzo6WRjEOBgMxRRZFnjMcprSPotp66ed12DmsDKBDBGWqczMKc3Tqyh1yMwrSc3RS87P
+ ZeDiFICpKixiZDhfrPTjo8CzJ8IqhyfHRW2dml9//3Gwur/0/55fLd+LnjcwMvTrXWOd4fxL3/3
+ Fbf1i69A5n7/IMK+89bxN2d5oU+yPpYwA
+X-Developer-Key: i=yilun.xu@linux.intel.com; a=openpgp;
+ fpr=A612D44FA98BA699FECC642BE2C8D72186AC3949
 
-Add the 'migration' feature to the features provided by the sysfs
-/sys/devices/vfio_ap/matrix/feature attribute to indicate that migration
-of vfio devices is supported. Since live guest migration is not supported
-for SE guests, the 'migration' feature will not be included when the
-feature attribute is displayed.
+Hi,
 
-Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+There is no open issue remain from v3. Most of the changes are small
+nits and minor tweaks to the changelog. Most patches have collected 2+
+Reviewed-by tags, but patch 4 (the last patch in v3) only has 1 RB so
+still need more review from TDX developers/reviewers.
+
+== Changes ==
+
+Tony pointed out that the DPAMT support should be merged into patch 3
+which adds memory for the extensions. Yilun answered patch 3 is already
+quite heavy for review, so better move the DPAMT support to patch 4.
+Tony then suggested adding a note to the changelog that patch 3 can't
+work with DPAMT without patch 4. We've agreed on that.
+
+Rick pointed out that copying the sysinfo_ext.memory_pool_required_pages
+to a dedicated local var is redundant, except that the long name is hard
+to fit in 80 columns. Rename the field to ext.required_pages and delete
+the local var.
+
+Other changes:
+  - Patch 1: Cut the redundant opening words in the 1st paragraph (Rick)
+  - Patch 2: Add explanation why kernel enables add-on features solely on
+	     available support in the changelog. (Rick)
+  - Patch 5: Specify what TDH.EXT.INIT is doing in the changelog (Rick)
+
+v3: https://lore.kernel.org/r/20261006-tdx-module-ext-v3-0-db52cb05b918@linux.intel.com
+
+v2: https://lore.kernel.org/all/20260915102658.713079-1-yilun.xu@linux.intel.com/
+
+v1: https://lore.kernel.org/all/20260821032920.256225-1-yilun.xu@linux.intel.com/
+
+Quoting v2: https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+Quoting v1: https://lore.kernel.org/all/20260522034128.3144354-1-yilun.xu@linux.intel.com/
+
+== Overview ==
+
+To date, SEAMCALL execution must either complete quickly to avoid
+stalling the host, or yield quickly at pre-defined interrupt
+checkpoints. This is acceptable for the existing SEAMCALL leafs,
+which perform simple, bounded operations.
+
+However, some new features such as attestation and TD migration require
+higher level security protocols inside the TDX module, which cannot fit
+within that constraint. TDX solves this by making those operations
+inherently preemptible and resumable like OS tasks. TDX provides a
+separate SEAMCALL execution environment - the TDX module extensions -
+for those operations.
+
+This capability allows for higher-level SEAMCALL ABI design - like
+"create a DICE-based attestation quote". Several new features, such as
+DICE-based attestation, TDISP and TD migration, use SEAMCALL leafs
+backed by the TDX module extensions.
+
+The TDX module extensions need memory for their execution environment
+to serve these SEAMCALL leafs, so they need extra setup steps during TDX
+module initialization. The bulk of this series implements these setup
+steps.
+
+At runtime, the host invokes these SEAMCALL leafs just as normal ones -
+if interrupted, simply re-invoke the leaf to resume.
+
+For more information on TDX module extensions, please refer to [1].
+
+[1] https://lore.kernel.org/lkml/20260618081355.3253581-1-yilun.xu@linux.intel.com/
+
+== Branch stack ==
+
+This is based on tip x86/tdx. You can find the full branch stack at [2].
+The DICE part is in the full branch as an example for extensions. But it
+does not include the other DICE feedbacks.
+
+The full branch contains:
+
+  This series: Patch 1~7: This series, including this cover-letter.
+  Use case:    Patch 8~N: The old DICE part as an example.
+
+[2] https://github.com/intel-staging/tdx/tree/tdx-module-ext
+
 ---
- drivers/s390/crypto/vfio_ap_drv.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Xu Yilun (6):
+      x86/virt/tdx: Move TDH.SYS.CONFIG operations into a wrapper
+      x86/virt/tdx: Configure add-on features on TDX module init
+      x86/virt/tdx: Add extra memory to TDX module for the extensions
+      x86/virt/tdx: Support DPAMT when adding memory for the extensions
+      x86/virt/tdx: Make TDX module initialize the extensions
+      x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
 
-diff --git a/drivers/s390/crypto/vfio_ap_drv.c b/drivers/s390/crypto/vfio_ap_drv.c
-index 8e69ed286bb9..c63a050a2356 100644
---- a/drivers/s390/crypto/vfio_ap_drv.c
-+++ b/drivers/s390/crypto/vfio_ap_drv.c
-@@ -26,9 +26,21 @@ MODULE_LICENSE("GPL v2");
- struct ap_matrix_dev *matrix_dev;
- debug_info_t *vfio_ap_dbf_info;
- 
-+#define VFIO_AP_BASE_FEATURES	"guest_matrix hotplug ap_config"
-+#define VFIO_AP_SE_EXCLUDED_FEATURES "migration"
-+
- static ssize_t features_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
--	return sysfs_emit(buf, "guest_matrix hotplug ap_config\n");
-+	/*
-+	 * SE guests do not support live guest migration; emit only the base
-+	 * feature set for them.
-+	 */
-+	if (ap_is_se_guest())
-+		return sysfs_emit(buf, "%s\n", VFIO_AP_BASE_FEATURES);
-+
-+	/* Non-SE: base features plus those not available on SE guests */
-+	return sysfs_emit(buf, "%s %s\n", VFIO_AP_BASE_FEATURES,
-+			  VFIO_AP_SE_EXCLUDED_FEATURES);
- }
- static DEVICE_ATTR_RO(features);
- 
+ arch/x86/include/asm/tdx.h                  |   1 +
+ arch/x86/include/asm/tdx_global_metadata.h  |   4 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 250 ++++++++++++++++++++++++++--
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  14 ++
+ 5 files changed, 257 insertions(+), 14 deletions(-)
+---
+base-commit: 5b8212d45d99b77c84e3ad305a295e9e65d5ef20
+change-id: 20260916-tdx-module-ext-da1930f33c04
+
+Best regards,
 -- 
-2.53.0
+Xu Yilun <yilun.xu@linux.intel.com>
 
