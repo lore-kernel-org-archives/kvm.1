@@ -1,139 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011057.outbound.protection.outlook.com [52.101.62.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC64B55295C
-	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 21:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925622; cv=none; b=axK8WRwm5arkPf/K9DltxHW3if9U1W20Q2RYj4718Fel3vNryCRtb6HIolrcm8IlU/H837pOjuKaQsRwUVuYUBbkyhBC+LRKAgvQjm7E+MpjRD/n0ezlTB1PCBbyJ6ibgbXNhBfSZ0Jdb9dIaE1AGk6a/sJoQ12k4zHXeyMs5Dc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925622; c=relaxed/simple;
-	bh=0qEeRvKHfFMFKujpy7sq/LlNpcUeXbYQJpPr7aQU56U=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=QQJ/CmAHeEUqbFPhTOUTkVL9117reEwBMMF4KFL27sedZWlvALUb1hI2ZwoQshCVNw61HotSZJu9gi1ZQYaYN22RKPoAm8NsBGoR2Dr4zniNLUFZ9Xzcxt6jMKUI7gav5IDEItn/Xxpe8d9rWn1mQwWNDbPIVIGX4z3C/p9h9dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9poWutR; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA1353E2E4;
+	Tue, 13 Oct 2026 21:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791926033; cv=fail; b=Vg8faqnI2Ewj4zfyHTreXfM10F0rvCV4SbrDgNUJVX5mucgRon0mW02JOstdH6gW+R5L89N7R8ZChW+ZkXmwtxxx1oHeXu5rJk64Cz9Ejn2aaU3aPpoN/auaCj96VoSH1apR+s8B4gWxqvrmID+cVGezlu3LzMLX0KTyje25MDU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791926033; c=relaxed/simple;
+	bh=7ODyk2w7+7ifoUt9M6MCcY5QDmg0b/pGbqdvMVmONe0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DY1MJe60G9/j5OhPp5fcUiESj8GmzeL9Eib9xkfR//geLHkRrhd5I8zYabJ/stGSMn0k6/bs7gFXizbyxzELh1JUsQGrweDMbsto0+ZH54I5ohyRdTvAV3ye27zxK0YMULnTz9UPexApPGox1TdtRXs+H6qwAAZmkvCQiKrs1Gg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EZKhJvzO; arc=fail smtp.client-ip=52.101.62.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9poWutR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375941F000FF;
-	Tue, 13 Oct 2026 21:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791925619;
-	bh=SQCY8//4gZm0pXjBAr/HgSyFRhsCc/Nv3VCXuTg7DQc=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=C9poWutRiET8rgQu/tEGeAmgb26owprc64s9+pS+0HoSedc004vdJ8157hL8c+WnA
-	 NzOAzX1GD6tac/n/X4AbmNOHVqpL0iY6h6UB1GPv3gZZG2Ztzgiv107J7xAkcBgdFV
-	 s6H6fR/tiI7YEtYbj/QCrnHzDzsqHnoh3EYyN1dmm8dmgTkF4LlEdGnahGFvT1XZSp
-	 Ae53oyHjzjwytTbf02ZYa3lGS5zqt9NZk9F+PlzkaH0exKVK+xJEy9mKPhYwGgi1bM
-	 p3gNduxiTB61ml48twseHe8/J4nPtrQmCKQgrq+9rDMqQufHfCWVoYIOqO4qqLEbTN
-	 Q82w65XXh5VTQ==
-Message-ID: <sashiko-outbox-170511@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 04/10] KVM: x86/xen: Don't lose the timer event when
- delivery fails transiently
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261013204824.454208-5-dwmw2@infradead.org>
-References: <20261013204824.454208-1-dwmw2@infradead.org>
- <20261013204824.454208-5-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 13 Oct 2026 21:06:58 +0000
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EZKhJvzO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=effe9uk1lT6NrDjpcWY65WgViE41jaNsEcyDxc3NHsWasQGr8ltec8XC1o3K+hAVnvupwM96KrtnEQq7sT/46byGMksSjE+V5Uaa84JveW2VOeUyAHJhNATFshjbZekQwaZ0bSBzrU+1T5A0rpvJLJKGxH1h6pBedoK16/EN0Bq12XKpVAhJJTST7zGjOm8jJGQqdnmonopyE3hdzXobGrunWKLSdF+EyqxMLChoNZQ8lq3+GP77SE60cJ0tet6UNea0wdB84riyKucgyG8Jr9Yq+954S7avsgVQ8czYX4SEfuSsVKKNDSyfg4cD//cArjjc9wmQteWjpoJfIhm8HA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qCzf3nigzmj9p9zdvUwt7iy2Q/41o0sV7RMj8YsmQ6o=;
+ b=vn635V38g5eSWZidtUjbvR540U9Zt3iNMjuN5jchefQfNyYuzoE75mGe4NLETDf9A7A9i6e6GodLcUSUwkxrOZIxhmYkk+oWqaA737lfVvaUPmRID8zpXM/kwWyH8kq2ZsNAYvvBBvs7zg8V9McioY5Kfw5gniZzFodGO/n3DrsK46McXg1EoymR4doGRR8aF4e8l9GBJIwmdlgf32nEcOd9FkIsRo9qQ9lxb2be2j1xsJVnllJfn903gJdYQKl99vNq4ty6mvQjULxp5z6xvSZD0Cfau3hC+pB2vAf8AklnhQ3m9hxlU45rr7HC40iMEF0RbNucZ7pdRjqHAEo2bQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qCzf3nigzmj9p9zdvUwt7iy2Q/41o0sV7RMj8YsmQ6o=;
+ b=EZKhJvzOH5KXPWi/nJQUqcC+mvioTDf0nR3PHc0mJQFUw8hHEoTuGKGRa66hVF6hzD/JFgY6DWzYpJ2AIxdSYMPACnsm8nsDzcQ9XXBcBVUmzdk0qn14TytsEvqkPNKwiALvLTxN6xf4842PjRapXM0JmKdifdgo4UoCQlGGy3orDucSR0xZjCGzguvXvDdoY4lJ5aO0k3hiLy34QJeVcQQxZIdiGBSIJfnkvFAA/2wS0m24HVLThpIKn5wnQ/8J5UWNfxMv6raqXxu1MbkWiYZ7HqSGCkRZDf5q+mm1GQQL7qW81ywVGfixmcJwfIFWzhVqMQNvxb5GSxxL3RQFRA==
+Received: from CH5P221CA0020.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::11)
+ by CH2PR12MB4182.namprd12.prod.outlook.com (2603:10b6:610:ae::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Tue, 13 Oct
+ 2026 21:13:36 +0000
+Received: from BL6PEPF0006C3DB.namprd02.prod.outlook.com
+ (2603:10b6:610:1f2:cafe::16) by CH5P221CA0020.outlook.office365.com
+ (2603:10b6:610:1f2::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Tue,
+ 13 Oct 2026 21:13:36 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL6PEPF0006C3DB.mail.protection.outlook.com (10.167.249.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Tue, 13 Oct 2026 21:13:36 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 13 Oct
+ 2026 14:13:08 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 13 Oct
+ 2026 14:13:07 -0700
+Received: from nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
+ Transport; Tue, 13 Oct 2026 14:13:05 -0700
+Date: Tue, 13 Oct 2026 14:13:03 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+CC: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
+	<baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
+	<will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy
+	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
+	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
+	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
+ Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v5 02/18] iommu: Implement IOMMU Live update FLB callbacks
+Message-ID: <as6e39WDQYmbW5Jn@nvidia.com>
+References: <20260921004834.2601285-1-skhawaja@google.com>
+ <20260921004834.2601285-3-skhawaja@google.com>
+ <asWEtTcNJSbrY579@nvidia.com>
+ <asmj6ErFqQMJe0_u@google.com>
+ <as16hl29Kepg9AcT@nvidia.com>
+ <as6YpZ7ShALy5dd_@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <as6YpZ7ShALy5dd_@google.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0006C3DB:EE_|CH2PR12MB4182:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a109ba4-476a-4ef1-9368-08df296ed89c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|23010399003|7416014|1800799024|82310400026|56012099006|11063799006|4143699003|22082099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	kwvQY8faNH9vm/jQDsSwSMrgLc5weh6AqeJ8UWLP7vd/wTmvqMyPlhcrD9hbSnXow0bObS0O8p2N6OsRWYOFigJ8YOgRndlOgWLGT7PRhdtuvt3jPboukdSXXF1b+iDqOyvonp+M9/VK4qhnaS0L5st+IFWzPegMCEgibnfM9/bsIjvP+MHOKynlLNLAwD43O4g7/apiqxlKOKDm+fPmEdKbg1s8mp9Tpzi5jsrK4/v8q2tWADby6h0bLPKLt7rE/HLoPBjGaNR8tYuTWFOXZGrLQ7QfaLkwFaCM9Kc4etBnBpHfjjTLOLHofTkmPGRJPT9S6i9sABAGAvGKKfQooXyiPJ8RGl4BNEF7ceFPQqhZbbC8PU019+tj0jhnk9abXfWGgiBCVVn2LXKxYNaXHln9VrLLFowGrW/ogUHXil58yAETx+NbVYuuRuBkJadEL50SC0dpYuTnhkGeeQHapRspxR/2qrkwQzVajSGaBxphPcJ5COG2eh9AC9Dfeo+VZkf/ODHaCXUctYM+t6m6hbztvtD9DduP432I5Ay/VMARKl5qszG7QPvgyNERjfp/u4ug8iiiippDmGGU74yz23C32gQWMWZAIC9iOlACgz2TDhEpdosXioVvRiAzKFU0wr11bc+JXHcYA/I7YH/FN9psTAiPMnV1laKd+Wcxi1NdnwbtQhd2d0z/11TVQ34W3NyLdXLqXlRYKKQbbhDXwQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(23010399003)(7416014)(1800799024)(82310400026)(56012099006)(11063799006)(4143699003)(22082099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	XrM6IvCLkQUbA5Hu8GaaW3n0UFrfIxVB0mCTiuAlohiJ9jgJ7NnZK9T3Hr4gA3dHr5dgkieQ5GyZZIhQiI7u1gVyyZpyNhf0mwm3DYNYmEIWk7A1mlx+jUHyj64RIQ2B1zWfCwDF10b/Ajuz+oKCa0GDKs+ZV4oRrhQshukspDtKPjZXENvL2Dhei/5DsCZu2CYqPjIykHqSjofZ/0Pst9nM46/NhiEpzya2A6ZoC6BjWTA5xvFM8aIvWiTFTfOblU+GgVc2xmScdLeiVQYr7VFrdzBkUm9jo0RUERwbWGI1TUHwIO+U63ApA8kV/s3QjJne0Hu+0zdmOSjtOsINEgKK+W6bdEJuMntwGvTHvWeJ/N10IC8DbFV3fAZWNVSXIuQaERbPDW8xxkNVNJ0NUhADm6lAksH121e2to+CdHs05+Nf9ZG5Vl8v4pD1MMYG
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 21:13:36.5757
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a109ba4-476a-4ef1-9368-08df296ed89c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0006C3DB.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4182
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] kvm: x86/xen: infinite vcpu loop when shared_info deactivated
---
+On Tue, Oct 13, 2026 at 08:57:05PM +0000, Samiullah Khawaja wrote:
+> On Mon, Oct 12, 2026 at 05:25:42PM -0700, Nicolin Chen wrote:
+> > Could incoming and outgoing objects exist in the same time?
+> > 
+> > Correct me if I am wrong: I expect the lifecycle of an incoming
+> > object will end once liveupdate completes, and the outgoing one
+> > can only exist after that?
+> 
+> LUO can have incoming and outgoing at the same time. The incoming FLB
+> stays until all the sessions from the previous kernel that use it are
+> finished, and the outgoing FLB is created when the first FD that uses it
+> is preserved in the current kernel. So if a new preservation starts
+> before all the incoming sessions are finished, both exist.
+> 
+> Generally, it should be rare, as after the live update the userspace
+> orchestrator (like systemd) would probably finish all the sessions. At
+> the FD level it is mutually exclusive, but at the FLB level it is
+> possible.
 
-commit 51f8b9d346d917ad2de67baf6af85e344406d8e0
-Author: David Woodhouse <dwmw@amazon.co.uk>
+OK. It doesn't sound practically possible. Yet, fine if it's a
+common practice to have separate objs for LUO.
 
-KVM: x86/xen: Don't lose the timer event when delivery fails transiently
-
-This commit modifies KVM's Xen timer injection to handle transient failures
-from kvm_xen_set_evtchn(). If the event channel set fails with -EAGAIN
-or -EINVAL, it leaves the timer_pending flag set so the delivery can be
-retried on the next entry pass.
-
-> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> --- a/arch/x86/kvm/xen.c
-> +++ b/arch/x86/kvm/xen.c
-> @@ -106,13 +106,23 @@ void kvm_xen_inject_timer_irqs(struct kvm_vcpu *vcp=
-u)
->  {
->  	if (atomic_read(&vcpu->arch.xen.timer_pending) > 0) {
->  		struct kvm_xen_evtchn e;
-> +		int rc;
-> =20
->  		e.vcpu_id =3D vcpu->vcpu_id;
->  		e.vcpu_idx =3D vcpu->vcpu_idx;
->  		e.port =3D vcpu->arch.xen.timer_virq;
->  		e.priority =3D KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
-> =20
-> -		kvm_xen_set_evtchn(&e, vcpu->kvm);
-> +		rc =3D kvm_xen_set_evtchn(&e, vcpu->kvm);
-> +
-> +		/*
-> +		 * Deliberately leave timer_pending set if the memslot is
-> +		 * being updated (-EAGAIN) or the shared_info cache has
-> +		 * been deactivated (-EINVAL); delivery is retried on the
-> +		 * next entry pass.
-> +		 */
-> +		if (rc =3D=3D -EAGAIN || rc =3D=3D -EINVAL)
-> +			return;
-
-[Severity: High]
-Does this early return cause an infinite loop in the vCPU run loop if the
-shared_info cache is deactivated by userspace and returns -EINVAL?
-
-When the vCPU attempts to halt, kvm_vcpu_check_block() evaluates
-kvm_cpu_has_pending_timer(), which returns true because timer_pending is
-still > 0. This aborts the block, immediately returning to vcpu_block().
-
-However, vcpu_block() then checks kvm_arch_vcpu_runnable(), which does not
-consider timer_pending, so it evaluates to false. This causes vcpu_block()
-to return 1, forcing the vcpu_run() loop to spin indefinitely without
-breaking, sleeping, or entering the guest:
-
-virt/kvm/kvm_main.c:kvm_vcpu_check_block() {
-    ...
-    if (kvm_cpu_has_pending_timer(vcpu))
-        goto out;
-    ...
-}
-
-arch/x86/kvm/x86.c:vcpu_block() {
-    ...
-    if (!kvm_arch_vcpu_runnable(vcpu))
-        return 1;
-    ...
-}
-
-arch/x86/kvm/x86.c:vcpu_run() {
-    for (;;) {
-        if (kvm_vcpu_running(vcpu)) {
-            r =3D vcpu_enter_guest(vcpu);
-        } else {
-            r =3D vcpu_block(vcpu);
-        }
-
-        if (r <=3D 0)
-            break;
-        ...
-    }
-}
-
-With r being 1, the loop unconditionally retries, hits -EINVAL again, and
-spins monopolizing the host CPU until the cache is reactivated. Could we
-avoid this stall by either dropping the event or handling the sleep abort
-differently when shared_info is unavailable?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261013204824.4542=
-08-1-dwmw2@infradead.org?part=3D4
+Nicolin
