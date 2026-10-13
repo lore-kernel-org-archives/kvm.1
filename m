@@ -1,123 +1,82 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333E7515970;
-	Tue, 13 Oct 2026 15:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DAA52269C
+	for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 15:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791907070; cv=none; b=uHTYVhvZhbc/15Y5DCkgmO5eyvSORzwnbgMr2Op/ottjDP+AFSyqwIPO+i7Vxvj/oqur8axwF1sS+Rmw/7/4YBtXIXLknG6BaVMAmW/O9z0++CJctPoF2pM/FM4N4yvsc3l9MisQjUQIRQgxnIdEXIQ3ZSZleLq3NHfxWzKGwIY=
+	t=1791907133; cv=none; b=WzBPRml3A9HJn5vZktH6cxal6dfB0414ckGU5ZNHHUeqxZD3lmg0nmkCZK48PvVpVm2OYVpX9wr1sQ5IkyngdJWaUCB0dn+3mX88yBYVb70Z/kgIlq4IHa3n5pJyZzwrRUKfzk66F73fqNGzu+47mYo9mrBYYo9+Uqx4UC7llfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791907070; c=relaxed/simple;
-	bh=BmgPBft1Gui7lL5HNj3ekId/21AIbJJtYcfNQBDYfy8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NIkVOwHPZhmdkJMBE3bFWZXKKRZI5vVnWoqC3NWfjNYZCrhBsq0iCYaCbyXiDnqAn7XuuUR1auwAUHfAq3ZZw8+4lf6zniZQ44I7JgNAwHcBHMHuv4L4TlDc06Iyo4//VU4PayroVHB2oNIV7OEKvXg+X5CsHI10e2E71kSwmvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=L2uvIf2n; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791907133; c=relaxed/simple;
+	bh=we7GQLW48ewpf7gL0yHQpSstUw9okwSRbE2uUcRtOAs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oY91fMeQ11EL9/Fn7+yhLw8xJ0I1ltCtYHe+4tPjhPb7InoB7yBD1mVwguezjz6EYrohCLJW41+siwToX6EMGzEGKDNAGhBZQFqerugfq6qvQv3H7mmECknVwy/14SqBOn/9hVJDTmzY27rpHLePPLik7DTLv56g1dtc8cxLA9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OXZcinze; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="L2uvIf2n"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4666C1650;
-	Tue, 13 Oct 2026 08:57:45 -0700 (PDT)
-Received: from [10.2.212.8] (e134344.arm.com [10.2.212.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C0C43F673;
-	Tue, 13 Oct 2026 08:57:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791907068; bh=BmgPBft1Gui7lL5HNj3ekId/21AIbJJtYcfNQBDYfy8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L2uvIf2niOedfNr+LE8u9qeU+als8GL5sn6Fk+M/CRaWLhK8PQ2znJpimWKJLv/yd
-	 +tTdLYlNH2gzYaMJc6Cxw6toOfO+oSrGE9RgNjvRUHg84XCogxrTaRIsFOuQo2Tonx
-	 piT3fnXMwEWhPZenzeqH8AeABXyesoqVf5BlOhiM=
-Message-ID: <f79c5f94-3c5e-4c64-9b6f-95f186e1bdd7@arm.com>
-Date: Tue, 13 Oct 2026 16:57:44 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OXZcinze"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a813204f87so2841680a91.3
+        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 08:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791907131; x=1792511931; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0CcaGc7x43Lmmf57o9kW270RkoQygwK0STsr2qKvChI=;
+        b=OXZcinzenbp3yyjpFxI7UiRWX6paM5ixDafNOUwSar+Ce3wVOp7EmRpF3JK3qHode1
+         VWXjSyhh+BwY6dYSDpGmzMysAu+A53Com65dLkJKS0vCyDJ6pXxTFrAnAk9ibUHTLHNx
+         jTp4mtto8tf2/unqgIgaJkmyBORQNIzBMQwee95gYrC2Q6RDp41t+aooIG8pj1wHWwd1
+         +Z2LJvSHbYn8GGSbidxR6GcIRkboUZsuMvJLJZZ35j00f1xyP0gW/lToN66l3ZbbTqg8
+         G+LXlBGt1P0miyvQea49eyWvuiatpNuLKtP4hfoqwNpihynmfBvgfkOV9VQGdz6th8BD
+         RGag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791907131; x=1792511931;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0CcaGc7x43Lmmf57o9kW270RkoQygwK0STsr2qKvChI=;
+        b=d/kVQpQ6Ho+Vr5Gp2QvcGuFtWzAobCgHb2baBkhApFUrwZgBQq3+2uu5prJTlNe22G
+         78vVbgj4R/yf8xZX/OJRtPhsVuNDWPoB5WeOy/XdxMwmworK70sHM76/tuM473EofAl0
+         yyZbp3gPPP9Bkl5lf9HrB5nBYm3rJdBn9UzzdbzAGsFUJrS+o0rpnDIDYpBIpilYVjPB
+         BnuIlpQq4WqYaAoyCakQ6BhLkNCa0XsS4NdlWFlb84O4gfpEr5IDEp6Pj5Ke765eAcN1
+         UP2NVmpSfrN2Ny626ZKsHloj0IzMm9gnbOIdFDRj/E/PMOy3QXqwTOAZuHldwXCF5QFZ
+         MF1w==
+X-Forwarded-Encrypted: i=1; AKwUvByVCalq8zdn1ZFiGwNstEVGeZiFvxsPcW/XNds+9vFQkswtx7XBxOg2tBidHpXR8wZsf8k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL6y74RpqJjKlSn8T8VdaEYjxSpzpFCQwcvdPLZ0CKmGVCDtNY9
+	R77DMtLuGGe8MFORMvRbalAonKmm/Prz929l5j5wWDNlAmPTRbqzmCZRRla2MlPC6bE6eMlLYFn
+	ceP03gg==
+X-Received: from pjbbt14.prod.google.com ([2002:a17:90a:f00e:b0:3aa:fddd:36cc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d44d:b0:3a0:b312:1fbe
+ with SMTP id 98e67ed59e1d1-3ab3a911731mr10196421a91.23.1791907131101; Tue, 13
+ Oct 2026 08:58:51 -0700 (PDT)
+Date: Tue, 13 Oct 2026 08:58:50 -0700
+In-Reply-To: <d0d23c2b-493a-40f2-839e-45d8e1d9d833@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] fs/resctrl: Assign counters to existing groups
- when enabling mbm_event
-To: Babu Moger <babu.moger@amd.com>, tony.luck@intel.com,
- reinette.chatre@intel.com, bp@alien8.de
-Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <cover.1791589412.git.babu.moger@amd.com>
- <3d966ae2e051ef54e1aedb1a2839c812ab880bcb.1791589412.git.babu.moger@amd.com>
-Content-Language: en-US
-From: Ben Horgan <ben.horgan@arm.com>
-In-Reply-To: <3d966ae2e051ef54e1aedb1a2839c812ab880bcb.1791589412.git.babu.moger@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <cover.1790171702.git.zhang_wei@open-hieco.net>
+ <b614e927c6c1ce9265cb9a37b296b0b30598da72.1790171702.git.zhang_wei@open-hieco.net>
+ <CALMp9eT1qMk7V7=md68LEXvmWH5ecj1YBn-YHoQ-vzJziaP5VA@mail.gmail.com>
+ <ec1fb2e5-87c5-443f-9bd6-6983b96f63d7@open-hieco.net> <d0d23c2b-493a-40f2-839e-45d8e1d9d833@open-hieco.net>
+Message-ID: <as5VOtJ6sItowUnt@google.com>
+Subject: Re: [PATCH v8 5/8] KVM: nSVM: Fetch DecodeAssist bytes for
+ synthesized faults
+From: Sean Christopherson <seanjc@google.com>
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Babu,
-
-On 10/10/2026 00:44, Babu Moger wrote:
-> When the user switches counter assignment mode by writing "mbm_event" to
-> /sys/fs/resctrl/info/L3_MON/mbm_assign_mode, resctrl frees all assignable
-> counters, resets per-domain RMID state, and enables counter auto-assignment
-> exposed to user space as mbm_assign_on_mkdir.
+On Tue, Oct 13, 2026, Tina Zhang wrote:
+> Hi Sean,
 > 
-> Even though counter auto-assignment is enabled, groups that already exist
-> at the time of the switch, including the default group created at mount,
-> are not assigned a counter. All MBM events read "Unassigned" until the user
-> assigns a counter by hand.
-> 
-> Walk every existing CTRL_MON and its MON children after the reset and
-> assign counters to their MBM events. Enabling "mbm_event" now leaves the
-> same per-group state that auto-assignment would have produced. There may be
-> fewer available counters than MBM events across the existing groups; in
-> that case stop assignment when no counters remain. Events in the remaining
-> groups read "Unassigned", matching the behavior of creating a group when no
-> counters are available. Also revise the rdtgroup_assign_cntrs() function
-> comments to account for the new callers.
-> 
-> Fixes: 8004ea01cf63 ("fs/resctrl: Introduce the interface to switch between monitor modes")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> Cc: stable@vger.kernel.org
-> ---
-> v4: Changelog update (Reinette's input).
->     Function comment update for rdtgroup_assign_cntrs().
-> 
-> v3: Changelog update.
->     Code comment cleanup.
->     Added Cc to stable.
->     Added Reported-by and Closes tags.
-> 
-> v2: New patch.
->     This patch addresses the Sashiko comment about documentation issue where
->     counters are not assigned automatically when mode is switched to mbm_event.
->     https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
->     In fact, it exposed a real issue. When switching to mbm_event mode, existing
->     monitoring groups should be assigned counters whenever counters are available.
->     This provides a smooth transition between modes and aligns the behavior with
->     the existing auto-assignment mechanism.
+> Just a gentle ping on this. I'd appreciate your thoughts when you have a
+> chance.
 
-
-Given the name of the option is 'mbm_assign_on_mkdir' I expected the auto assignment to only occur
-on the creation of ctrl groups or monitor groups. That's not my concern though. As you are now
-treating this as more of a general auto assignment should the assignment also be done when a resctrl
-domain is brought back online.
-
-For illustration on an MPAM model I see:
-
-/sys/fs/resctrl# cat mbm_L3_assignments
-mbm_total_bytes:2=e;3=e
-
-# offline one domain
-/sys/fs/resctrl# for i in $(seq 0 3); do echo 0 > /sys/devices/system/cpu/cpu$i/online; done
-/sys/fs/resctrl# cat mbm_L3_assignments
-mbm_total_bytes:3=e
-
-# bring the domain back online
-/sys/fs/resctrl# cat mbm_L3_assignments
-mbm_total_bytes:2=_;3=e # Would it be better, or worse, for auto-assignment to occur here?
-
-Thanks,
-
-Ben
-
+This is on my TODO list, but it will be at least a week before I get to it (merge
+window and other horrors).  Sorry :-(
