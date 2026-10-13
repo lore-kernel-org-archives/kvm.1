@@ -1,100 +1,298 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA4A54146A;
-	Tue, 13 Oct 2026 22:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA7E55D895;
+	Tue, 13 Oct 2026 22:51:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791930465; cv=none; b=JlgvSKnNwgHu4KnH4CjBNA1mqMondAN3Ot1lPQASOYFHG6VN7Zws+bKfnOf5wl1BpfjIYW2xZPLvNcCDM7EyV/r/ECjWG+D7dBmUz6C2kkI+HGLDbFgNEeaYzbKUqzBFYuJH9F9nu3iypABITQDbOygaluaUqkwIKmtN75Lmtxs=
+	t=1791931925; cv=none; b=DMfoKs9WRO2QnNmVJG6ke7HCnIwhon/TvE+JdPz6opmiqHrMtdSe0Mub5Qceoz7puSGev167R2r4AbC5kEtVIfJcsIiqyqjU5GAeEWwSkcg18uZjAqk4tdU7Ba2d/uW4tCufTMdedOI2sdgsUSj0jOjYTbjGM1pNIMXEPqifUuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791930465; c=relaxed/simple;
-	bh=MYH/6BTWP4WBym5dOVKu8AGvlq8RGdvDGlhtonURdeo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AM7eXiZcojZfWW7kxHHpP7FyOcDsDPhBwZH3k/5J24lmGkVk4FwrrJ9u9+92VHHW+5k8dHTCpjBLJUWeaEu5sEK2X4wyuAnJhc87eH95tp3rXTo59YEwIQgnIwPYhy0me1+gOCDhhcwgU+uEUeJ8qzRECI5YYy5H4LIFgQZMb/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=A8JKDyN7; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1791931925; c=relaxed/simple;
+	bh=CCVIN8tDxFjyce8Qxi3ujZwuOTphI4nRXCsdICLjqTQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M8exj/xgdgULt7DQFzJnP8De4D2yppNgP636F2XNWkMLkhF9ZR7waOUx69eDWrHCqAybPey4l53RwR/NwrW8luzlyboeLNlnmzkVYIxy/4S7O5gRa64umXa6/UeFbuPoeBQIn+DkDq5WgRymgJjfZZmgR67HM8rRrU1jyRmo2Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgY35Fiy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="A8JKDyN7"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CEFF540E015B;
-	Tue, 13 Oct 2026 22:27:33 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id p5hBXKBQD4ff; Tue, 13 Oct 2026 22:27:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1791930450; bh=gWFz/4FQAxsI4drfvLMDt4B9p5wLm1FIioKwPsbSOQ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A8JKDyN7x9fBLPybMZn4shIOOO6NXKB+T0e8QvbdPsV6MCXCJIqo9A0t4Lnj31Fdk
-	 lPbEaCaW4ywn3TxcXM3t8hpTQ2otiF0n+oq4QlAEcAF88rHomI1GvyxT/1DkiXlzaJ
-	 ZKNyYBpY4hQixZY8TGWNrh5ZniOwfEPTzDiRphMsxEgz0TNNEqpP8auAMcDfh1HeHY
-	 FVSeNJYtqSQDcjsvT1vGKponTTAT/AI/ycl4/6cZtf37tqfIyEPdvrezJUhtvv4Gwb
-	 uFekqi4fEXVgtpYC4mnN+oF45y8PPI66M3bm5ho8mugd+oLJGMIcYbh8ED3h2KLiwl
-	 oqwFrHRMQhbA1oe2y8gIaBxrj+6iUVeqoxeXcLPXzO2Eq6Xw1eQPYtZrLd7bTUqVdH
-	 F6v9AInZbb2jebIfyqJ2by+kAiUnWHBQ5ojdjlwCP/ksTL03+ZkRYRm9Q0r8EFZeFJ
-	 96A/hKzt4n60p5BaticYommv2pWH6J5aq1Qj6AqiHx5ZNon8rk1AXbPdpexlCNNd4K
-	 stpCFJ/ulWaz3HhETQ8xBbI+WeisLD/7SlKGElCJAAPZTlDzJpVMbHcQwKuHITonUv
-	 jgSYLKbD43j3YLW0EOr/IxBMnf5MIFnGQV7HWbcPl/XZegGeOTWIri/7TmbO91nZXy
-	 Qq+cLoKejsPSS9jqnauSFqZw=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8A89D40E02B0;
-	Tue, 13 Oct 2026 22:26:56 +0000 (UTC)
-Date: Tue, 13 Oct 2026 15:26:53 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH 1/2] x86/sev: Clear RMPOPT when segmented RMP is disabled
- by firmware
-Message-ID: <20261013222653.GAas6wLTEwIw9Te240@fat_crate.local>
-References: <cover.1791905953.git.ashish.kalra@amd.com>
- <24ec806222fb8cda660269d3360780687403d150.1791905953.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgY35Fiy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356E41F000FF;
+	Tue, 13 Oct 2026 22:51:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791931917;
+	bh=ihtthPd1qtSs1WqvN2e62G8drpORFvU+QPjdaQHYU1I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EgY35Fiy4gFlNd/j2QzMrfvZOmCd1Mow8KC4gkJuxPq0As1NPJTKrMYqAIGHbaIOS
+	 WxPEdEuXrFqZmxczkmTC5afQqTsY9qap0A/vcPAZznhqcC/pwt48j22bZodK7wkIho
+	 mLDU9zBXfFq8lI7vLrgb6yti2rM9LsL7ywQ0N32ejy5oxCQHpX5dXOvg2lQjNUH/YO
+	 pAdJ+RGGi0pjG/Yi3jVU4ha3U4GVd6sXhn/1mxdL+jwarwFL0+mrX2GEa3a2b2IHkk
+	 WApXmNWLuPkQ6+ZKj/JwnB1WiXeyHQrwSbPvD0e0+TQNbLS+Iz/rm2HXRiuX0Yf29X
+	 JV1ZDQ7gV3JYQ==
+Subject: Re: [PATCH net-next v3 4/7] vsock: add a netlink command to assign
+ the g2h device to a netns
+From: netdev-bot+sashiko@kernel.org
+To: bobbyeshleman@meta.com
+Cc: sgarzare@redhat.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, stefanha@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ shuah@kernel.org, rdunlap@infradead.org, donald.hunter@gmail.com,
+ edumazet@kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
+ bobbyeshleman@gmail.com
+Date: Tue, 13 Oct 2026 22:51:55 +0000
+Message-ID: <179193191574.434549.17107426250790354528@kernel.org>
+In-Reply-To: <20261012-vsock-guest-ns-v3-4-b32447c66b23@meta.com>
+References: <20261012-vsock-guest-ns-v3-4-b32447c66b23@meta.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <24ec806222fb8cda660269d3360780687403d150.1791905953.git.ashish.kalra@amd.com>
 
-On Tue, Oct 13, 2026 at 03:44:18PM +0000, Ashish Kalra wrote:
-> snp_probe_rmptable_info() only clears X86_FEATURE_RMPOPT when the platform
-> does not advertise X86_FEATURE_SEGMENTED_RMP, or when the segmented RMP
-> table probe fails.  It misses the case where the platform advertises
-> segmented RMP but the firmware has it disabled (MSR_AMD64_RMP_CFG's
-> SEG_RMP_ENABLED bit is clear)
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-What does that mean: "the platform advertises segmented RMP"?
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-The CPUID bit is still set?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Or anything else?
+- [Medium] Take a namespace that cannot reach the assigned G2H device, on
+  a system with vhost-vsock (H2G) and vsock_loopback loaded.
+- [Medium] `vsock_g2h_reset_unreachable()` in net/vmw_vsock/af_vsock.c
+  resets sockets without lock_sock() while the device stays live.
+- [Low] No in-tree transport sets the new capability at this commit.
+- [Low] `vsock_g2h_net_assign()` in net/vmw_vsock/af_vsock.c sends the
+  success reply before it commits the assignment.
 
-How do you create this configuration?
+--
 
-Thx.
+vsock: add a netlink command to assign the g2h device to a netns
+
+This patch adds a vsock generic netlink family with two commands.
+VSOCK_CMD_DEV_NETNS_SET moves the guest's G2H vsock device into the
+caller's network namespace, and VSOCK_CMD_DEV_NETNS_GET reports where the
+device is. After a move, connected sockets that can no longer reach the
+device are closed with ECONNRESET, and the assignment holds a reference on
+the target namespace.
+
+Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+
+> diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+> index fe43e85959583..9276479004c0f 100644
+> --- a/Documentation/admin-guide/sysctl/net.rst
+> +++ b/Documentation/admin-guide/sysctl/net.rst
+> @@ -529,6 +529,43 @@ their hosts. The behavior of VSOCK sockets in a network namespace is determined
+
+[ ... ]
+
+> +Support is transport dependent. A G2H transport that does not implement the
+> +move refuses the command with ``EOPNOTSUPP``. Of the in-tree guest transports,
+> +only virtio-vsock implements it.
+
+[Severity: Low]
+This is a minor point. Is this sentence accurate at this commit?
+
+No in-tree transport sets netns_assign_allow yet, so this check in
+vsock_g2h_net_assign() always fails:
+
+	if (!vsock_net_assignable(transport_g2h)) {
+
+As a result, VSOCK_CMD_DEV_NETNS_SET returns -EOPNOTSUPP (or -ENODEV) for
+every G2H transport. The new exports vsock_g2h_net_get(), vsock_g2h_net_eq()
+and vsock_maybe_set_connected() also have no callers yet.
+
+The next patch in the series, "vsock/virtio: support guest device network
+namespace", adds .netns_assign_allow = true to virtio_transport and calls
+those helpers. So the mismatch only exists at bisect points between the two
+patches. Could this sentence move into that patch?
+
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index 8f34bf68f9164..e663be3bbfa0b 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+
+[ ... ]
+
+> @@ -564,7 +632,12 @@ static bool vsock_use_local_transport(unsigned int remote_cid)
+>  		return true;
+>  
+>  	if (transport_g2h) {
+> -		return remote_cid == transport_g2h->get_local_cid();
+> +		u32 cid = __vsock_registered_transport_cid(&transport_g2h, net);
+> +
+> +		/* The device may be unreachable from @net, in which case
+> +		 * @remote_cid is not the local CID.
+> +		 */
+> +		return cid != VMADDR_CID_ANY && remote_cid == cid;
+>  	} else {
+>  		return remote_cid == VMADDR_CID_HOST;
+>  	}
+
+[Severity: Medium]
+Suppose the G2H device has been assigned to a local mode namespace, and
+vhost-vsock and vsock_loopback are also loaded. What happens in a namespace
+that can no longer reach the device?
+
+In that namespace, IOCTL_VM_SOCKETS_GET_LOCAL_CID in vsock_dev_do_ioctl()
+gets VMADDR_CID_ANY from transport_g2h and falls back to transport_h2g:
+
+	cid = vsock_registered_transport_cid(&transport_g2h, net);
+	if (cid == VMADDR_CID_ANY)
+		cid = vsock_registered_transport_cid(&transport_h2g,
+						     net);
+
+vhost_transport_get_local_cid() returns VHOST_VSOCK_DEFAULT_HOST_CID, so the
+namespace is told its local CID is 2. __vsock_find_cid(net, 2) is also true
+through the transport_h2g && cid == VMADDR_CID_HOST check, so bind() to
+CID 2 succeeds.
+
+A connect() to CID 2 then enters the transport_g2h branch above, because the
+pointer is non-NULL. It returns false because cid is VMADDR_CID_ANY, so the
+remote_cid == VMADDR_CID_HOST loopback fallback in the else branch is never
+reached.
+
+vsock_assign_transport() then picks transport_g2h for
+remote_cid <= VMADDR_CID_HOST and fails at the new check:
+
+	if (vsock_g2h_unreachable(new_transport, sock_net(sk))) {
+		ret = -ENETUNREACH;
+
+Should an unreachable G2H transport be treated the same as an absent one
+here, so that connecting to the namespace's own reported CID uses loopback?
+The later virtio patch in the series makes this path reachable and does not
+change this logic.
+
+[ ... ]
+
+> @@ -742,8 +823,267 @@ bool vsock_find_cid(unsigned int cid)
+
+[ ... ]
+
+> +/* Close every connected socket of @t that can no longer reach the g2h device.
+> + */
+> +static void vsock_g2h_reset_unreachable(const struct vsock_transport *t)
+> +{
+> +	struct vsock_sock *vsk, *tmp;
+> +	struct sock *sk;
+> +	int i;
+> +
+> +	lockdep_assert_held(&vsock_register_mutex);
+> +
+> +	spin_lock_bh(&vsock_table_lock);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(vsock_connected_table); i++) {
+> +		list_for_each_entry_safe(vsk, tmp, &vsock_connected_table[i],
+> +					 connected_table) {
+> +			sk = sk_vsock(vsk);
+> +
+> +			if (vsk->transport != t ||
+> +			    sk->sk_state == TCP_CLOSE ||
+> +			    vsock_g2h_reachable_sk(vsk))
+> +				continue;
+> +
+> +			/* If close has already been scheduled for this socket,
+> +			 * we can skip.
+> +			 */
+> +			if (vsk->close_work_scheduled)
+> +				continue;
+> +
+> +			sk->sk_state = TCP_CLOSE;
+> +			sk->sk_err = ECONNRESET;
+> +			sk_error_report(sk);
+> +
+> +			__vsock_remove_connected(vsk);
+
+[Severity: Medium]
+Can these writes race with the socket's own state machine?
+
+Only vsock_register_mutex and vsock_table_lock are held here, and neither
+one excludes lock_sock() holders. close_work_scheduled is read the same way.
+
+The existing lockless resets, virtio_vsock_reset_sock() and
+vhost_vsock_reset_orphans(), only run when the device is going away. Here
+the device keeps running, so its RX path can work on the same socket at the
+same time.
+
+With the later virtio patch, virtio_transport_rx_work() checks
+vsock_g2h_net_eq(net) for each packet but does not synchronize with the
+swap. That patch's commit message also notes that an assign can land while
+rx_work is draining a batch:
+
+CPU1 (assign)                      CPU2 (rx_work)
+                                   vsock_g2h_net_eq(net) returns true
+vsock_g2h_net_swap()
+                                   virtio_transport_recv_pkt()
+                                     lock_sock(sk)
+                                     sk_state is TCP_ESTABLISHED
+vsock_g2h_reset_unreachable()
+  sk->sk_state = TCP_CLOSE
+  sk->sk_err = ECONNRESET
+  __vsock_remove_connected(vsk)
+                                     virtio_transport_recv_connected()
+                                       virtio_transport_do_close()
+                                         sk->sk_state = TCP_CLOSING
+
+If an incoming SHUTDOWN or RST arrives at that point, doesn't the socket end
+up in TCP_CLOSING with ECONNRESET set and outside the connected table?
+
+There is a similar window on the send side. vsock_connectible_sendmsg() may
+already have passed its sk_err check and could enqueue one more chunk
+through the device after the sweep. KCSAN would also likely report these
+unannotated stores against the locked writers.
+
+Refcounting looks balanced, because vsock_remove_connected() re-checks table
+membership. So the effect appears to be limited to inconsistent socket
+state.
+
+[ ... ]
+
+> +static int vsock_g2h_net_assign(struct net *net, struct sk_buff *msg,
+> +				struct genl_info *info)
+> +{
+
+[ ... ]
+
+> +	ret = -EMSGSIZE;
+> +	hdr = genlmsg_iput(msg, info);
+> +	if (!hdr)
+> +		goto unlock;
+> +	genlmsg_end(msg, hdr);
+> +
+> +	ret = genlmsg_reply(msg, info);
+> +	msg = NULL;
+> +	if (ret)
+> +		goto unlock;
+> +
+> +	old = vsock_g2h_net_swap(net, &old_tracker);
+> +
+> +	/* See vsock_maybe_set_connected() comment about synchronizing with
+> +	 * connecting sockets.
+> +	 */
+> +	vsock_g2h_reset_unreachable(transport_g2h);
+
+[Severity: Low]
+Is this ordering intended? The success reply goes out before
+vsock_g2h_net_swap() and vsock_g2h_reset_unreachable() run.
+
+This means userspace can see VSOCK_CMD_DEV_NETNS_SET succeed while
+vsock_g2h_net still points at the old namespace and the established sockets
+there are still open. Those sockets' send and receive paths take lock_sock(),
+not vsock_register_mutex, so the mutex does not hold them off.
+
+The move also depends on the reply being delivered. genlmsg_reply() does a
+MSG_DONTWAIT unicast, so if the requester's receive buffer is full it
+returns -EAGAIN and the swap is skipped. Neither the commit message nor the
+docs mention this failure mode.
+
+Could the swap and the sweep run first, with the reply sent after them?
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-vsock-guest-ns-v3-0-b32447c66b23%40meta.com
