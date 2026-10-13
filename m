@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4E13C3443;
-	Tue, 13 Oct 2026 10:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC374B95BD;
+	Tue, 13 Oct 2026 10:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791886723; cv=none; b=XWY6bT3nPDgRaubJTAT+iuRFjJoli/h52jfECS+6ZPN+xGubikNtlvOt5Z2Ar3ltDVACVnslCkB8UAdcpeahM5JFzWFG9+khPNl2hWf7Czcp3mv6oWHgowdIODBRcJ3jH06jZmK9rpTe4DxgNLSg+t2VvkVO5hMpXwdzm9g0EKY=
+	t=1791887615; cv=none; b=Zy5sW96+yjYxRa4o8vCOnGH6YeRiW8h4D50i3RD185vcBXqFOUBc3drHpi4NSC7EPRN4reNv7DuBnQalg5HI08XJ7C5lIolZH1SLFyNBm1x81R1WCJnncK/scm78rAwa+sSRNSdP/d07U7+sQgLVMJ1fIQpEwtGnNYhAk9TS/VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791886723; c=relaxed/simple;
-	bh=lKt1qElPyYS2iInFY1JoDCNqs5vMC6nGwRBDANiHges=;
+	s=arc-20240116; t=1791887615; c=relaxed/simple;
+	bh=v/JLR1k7vDq5gemTKx0rWQ8eRukOJycBoxATbt53WRk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rRMTj8Sg+F0As5i5BW1GKuqprxdHKOaj8pmncB1vFhiMgZR+R1j2/SFNKCr8fgy2MSLIMfnDV/ADcFmNPT/W+JwKMDmFZdNG+gWPZJ4Z99Br4LwQSkfLHB7mPl7H8ZqoGEnlt/ssWlMq0QrvQrEU3uIbhix3M/564+MviZvMoiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S1JfAlgf; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=e0mamQD45dO3gYtHkBikwe2KyFeadVH5dACnbUQjnlR/+n3Y/jninVi4Hm0yzOAomR6adeRV1/XU5hJO5m85Lk/hyhqoxCgKN+a3tWhfKB9ZQ7eVVz1LZ5kpQ/xOet4Bvx+G4eZJkauWSoGoBwxXzwnUqKMbV60buWsyVNl+Brk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAu/I+8T; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S1JfAlgf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAu/I+8T"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791886722; x=1823422722;
+  t=1791887613; x=1823423613;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=lKt1qElPyYS2iInFY1JoDCNqs5vMC6nGwRBDANiHges=;
-  b=S1JfAlgfl+pZ/0I+rq0oK1skMB6nrajLPpy9BdAMQuUqfCcr3lIemMNq
-   XoQhCcOz1pUJXmi3VLj2niYmCGaY2NP5SyFsnQ1yXQlWszSue26/wZa1t
-   Y0Rm5ofW5pPRPGE8+l59SyjSBANh0Qw2fhEmCGoPL9TeMdeyZS4astLRx
-   acKDCUgSOZWue+Wa9TdpMaeJCBrC8ZoPl0+FgEbBeIpHxAr8nWKxRJ6sM
-   9lqCZRz3S7b3XKRVkb1VnQy9XYtTHi0pUGQoZMln8rwBM6q5dm74UfXmR
-   j5eAhJncvSqKuHDAdKisW6z6Jwk2N7dyXMYLMaq0bLK9PWj1GUG4F3jcx
-   g==;
-X-CSE-ConnectionGUID: MED74EPmTMepdh7y6Lx53A==
-X-CSE-MsgGUID: 2SMLjqrGTyaV+ior+S0xig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="617018"
+  bh=v/JLR1k7vDq5gemTKx0rWQ8eRukOJycBoxATbt53WRk=;
+  b=lAu/I+8T2Z46LrUTwptpvQDoRXpKUR4PE0DzsRiz4+KigILihaDhsks6
+   BB4+HIOFtbrBgHixLXajsABGQMPvYLTMFXHVfQSAeYJ00doE0p54FANfs
+   Ds0NqOSrG7fpGfjT5nD2k7XmwNet5L1c9kX2madIZsEJNxWRt8gCXzcEG
+   5+dBVM9wtfkt+RKojTnnD0swZsgTYwrN1zqicuwqNVMrMz8q7kXr1FAtV
+   scN+VfUmGs3H4xqg7h2DfOF4qCFdNdglF8p6ySNVpGxIBwzdA0zHXbfB9
+   IlAyZgFUU70Lok8QWnuam5gf+AFcqIrLh1Ar8G6dygo85AieNTgpyjEGI
+   w==;
+X-CSE-ConnectionGUID: 4ddLK11zSQaQGEzbxMF9mw==
+X-CSE-MsgGUID: DahE/FG9QW20fFGim27hhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="504751"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="617018"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:18:41 -0700
-X-CSE-ConnectionGUID: DEY0xYCFTUiLwKHN8s/pKA==
-X-CSE-MsgGUID: 3D02l4zsQ8aQNraV1GeqZA==
+   d="scan'208";a="504751"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:33:33 -0700
+X-CSE-ConnectionGUID: LuxTilyERgG79q6+TJlAKw==
+X-CSE-MsgGUID: 3KdVQ1pBSpu0IhMeeBwiGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1574262"
+   d="scan'208";a="2966398"
 Received: from unknown (HELO [10.238.2.98]) ([10.238.2.98])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:18:38 -0700
-Message-ID: <d87f51ac-d485-4b99-a573-d0c9fcf2058a@linux.intel.com>
-Date: Tue, 13 Oct 2026 18:18:35 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 03:33:29 -0700
+Message-ID: <f98c219d-61c5-4355-8dd7-6c4d4e20f8e7@linux.intel.com>
+Date: Tue, 13 Oct 2026 18:33:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/10] x86/virt/tdx: Remove tdx_global_metadata.c
+Subject: Re: [PATCH v4 09/10] x86/virt/tdx: Use early returns in
+ get_tdx_sys_info()
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  kvm@vger.kernel.org, yilun.xu@linux.intel.com,
@@ -62,25 +63,27 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
 References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-9-chao.gao@intel.com>
+ <20261012094754.27702-10-chao.gao@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20261012094754.27702-9-chao.gao@intel.com>
+In-Reply-To: <20261012094754.27702-10-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/12/2026 5:47 PM, Chao Gao wrote:
-> tdx_global_metadata.c held the script-generated metadata readers,
-> deliberately kept in their own file so that generated code stayed separate
-> from hand-written code. It cannot be compiled on its own because it lacks
-> the low-level SEAMCALL wrappers, so tdx.c #includes it directly.
+> get_tdx_sys_info() was generated by a script. It chains its metadata reads
+> with:
 > 
-> Including one C file into another is unusual, and now that the readers are
-> maintained by hand there is nothing left to isolate. get_tdx_sys_info() is
-> the only function still in the file.
+>       ret = ret ?: get_tdx_sys_info_foo(...);
 > 
-> Move get_tdx_sys_info() verbatim into tdx.c and delete
-> tdx_global_metadata.c along with its #include.
+> The function is maintained by hand now. Use conventional early returns
+> instead.
+> 
+> Print the module version only after its metadata has been read
+> successfully. The "ret ?:" chain has no early exit, so the pr_info() after
+> the version read prints a partially read or all-zero version when that read
+> fails. That is harmless, but once every other read returns on error, a
+> print after a failed read would look like a bug.
 > 
 > AI was used under supervision to review code and workshop logs.
 > 
@@ -88,4 +91,3 @@ On 10/12/2026 5:47 PM, Chao Gao wrote:
 > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
