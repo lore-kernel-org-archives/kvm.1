@@ -1,111 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE0A484251;
-	Wed, 14 Oct 2026 07:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4A748F842
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 07:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791962898; cv=none; b=ORqoFNsPhl/v5Be+a1of0w6azLA8JNXkiTumTTEYPsORN0ZSq/GGT7Hn5jMDmI96z8BlfRJoG3eaN2qwu9rGaOkO6Zuc9zILbglKt2Fj9AazB1glmGx+k+xANU6W+KQP3R65qXa89bOe0DMb+/RMesVZNFzz/56pw49+Xrdheuo=
+	t=1791963461; cv=none; b=FYmZV8DaxmgU4PeR3d5AD5hXbSCWBEt0Nqe1NcdfoZkPjyEFdMDMhixCKOydt2Am/3AlYG86VC18CU2WTpr1bm0CDt21I7gNVGAL9dTi10eViyv8jQ/WiMlxiej3p8MDB+17AA3JAgaT/1OmEFiI1URa8y0cNPKnY6XKeOdg2HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791962898; c=relaxed/simple;
-	bh=VRJm0GX5gGNZeeJU6SH/WjPWrGtrvWc6z4YP4cWfhsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bV9kMZvONpnnUINKXVkwbp4P3KgmTesV0TzqOo/dw/ysl2enHvnpPEnO9QMHYALMf+ujfaEnIUV8vaSlN98scBrMnvmv8BCzdBg9vl3vh4N2C0OPIwSZXJvdkjvCgqyNwu5NzDyHONplyGALpDxAMgkX9VM0KzSujJKQS7V/XXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PaKKFrV9; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791963461; c=relaxed/simple;
+	bh=2Y9fbE9O7p8liEj4nGLfJ12MalMVV+gFP3WAl48R2RE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BsUOBlEJGoEVIylxRAqZDAyUwdws2scFJ5CwnWtiafbXCKZxirLFpVfXcrAgBN+TTv0gRss5T6hLttBynG5mh4Wy33Vi7qXqtcrpq5ZTQ+g+Xdqx8NXYhbsUCDtjg0JGam/eWGaeHPMnhM4msbHxJJt4B4wYgS+tt7OfW+RbrhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCmlq9Rx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PaKKFrV9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791962896; x=1823498896;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VRJm0GX5gGNZeeJU6SH/WjPWrGtrvWc6z4YP4cWfhsA=;
-  b=PaKKFrV9bkB0B5ZFNNWzQ9dtgDz/dd2Ccevjaf308b/RzFjUUoO6IPsk
-   wPRPVAvQNUkVKMEN63aaFmQPBmFIc+/UmrIDdfqkkxgHLEyz5+OUhnr9Q
-   NF1k+q8mvtQoSvn1HSHQr9mXFQznbJX90f3QOpRdD9fHthAkoDRUPrYpr
-   XaDV4tGyPMtl1XfHes5WnvKAGyTHGJ5utqX/uuYelGFxyUkym/P3P1Hi7
-   fCsO0HG7DXTnWJbTMn0OFZ47NJBaj/enbPE0ZA/WlLmZB5S0sZU4cTe5g
-   Hd/QJBHRTM+RJOnwSlfpLdMTXhytYHD8Uhwt7HGHjAQejdP75SJgOMZDg
-   w==;
-X-CSE-ConnectionGUID: mLIbrJVyT4ywE010VQqlAg==
-X-CSE-MsgGUID: rQPGf1gPSc2ftUrwtEtNbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="586671"
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="586671"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 00:28:15 -0700
-X-CSE-ConnectionGUID: WBidRpaJQ2axOUOeUS4+qw==
-X-CSE-MsgGUID: ExeeW0IvQZSpgMeP60pB/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="1817895"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2026 00:28:11 -0700
-Date: Wed, 14 Oct 2026 15:24:10 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com,
-	tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
-	nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH v4 01/10] x86/virt/tdx: Add a helper to read a table of
- metadata fields
-Message-ID: <as8uGpCMhxEvQZm+@yilunxu-OptiPlex-7050>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-2-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCmlq9Rx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4553F1F0089D
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 07:37:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791963459;
+	bh=GD+/Ha2/u4ZZXBCqFxIO50aJrY9gSr7+woMCBtv2vvw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QCmlq9RxZwZDnDSaQtL4l5SsOSSVWHNdqYeVB8POHxJJj8qMKyTmGIyowGQhn2g+z
+	 C5apiUXipQI519XKCt1Tpb3q24ONuzrGel99EK6VOcz6+Y+4D4ogZdNan4ivHp6C30
+	 EkGXg4zXnEPGKasmv1/2JsxVyulveXbL/OEijk2jxNLOAeeCSWULY+HL7mibiM5nwO
+	 rVwiuHIp9Awhs7QCLvjyUgeslA/eKklPXVr2+bCSzTtDid3P6Dw6SsvRJ8L+gB1dze
+	 XaAcy/5ntvXjGK7uOTsOmPQ4adW0Imj9tGs3wVRcTEOw5SwJXnsXb1W4HmXCvSPX5o
+	 yAXMPR5NY345Q==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so5435021a12.1
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 00:37:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy+GPxmegjtrQsAQpil/P7rOlD2RXPLw7Ch/W9++NWkLWd0bNX+NYPAJ2qQ0rDDggPuLEo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJFKmBa6pRTF/CVtAjBmzm6iOm4MygIgQu4qky/0xm+YHOXnRHf
+	MjxsXainJyT7JhWyhPWocZsgReX+QpamdS/1fhBKC2JwJacJERkaP6QXJPjE2HSiwnawNE6e8Wk
+	iELlq7PfMGLYmqfhkgGL6HvKmKkB+Uf8=
+X-Received: by 2002:a05:6402:21c9:b0:6b1:d9ac:b757 with SMTP id
+ 4fb4d7f45d1cf-6b1d9acc3e6mr4316643a12.6.1791963457821; Wed, 14 Oct 2026
+ 00:37:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012094754.27702-2-chao.gao@intel.com>
+References: <20261014052933.723303-1-cui.tao@linux.dev> <20261014052933.723303-4-cui.tao@linux.dev>
+In-Reply-To: <20261014052933.723303-4-cui.tao@linux.dev>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 14 Oct 2026 15:37:26 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
+X-Gm-Features: AclHuK9Ksa7VlvS-kSklI6Uruo2KF9go6WI1OnUs-g3EqUPWxpjWce4dC5vPHww
+Message-ID: <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
+To: Tao Cui <cui.tao@linux.dev>
+Cc: maobibo@loongson.cn, gaosong@loongson.cn, zhaotianrui@loongson.cn, 
+	loongarch@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel@xen0n.name, nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 02:47:28AM -0700, Chao Gao wrote:
-> The metadata field readers get_tdx_sys_info_<class>() in
-> tdx_global_metadata.c were generated by an out-of-tree script. That has
-> not worked out: the JSON file they were generated from is neither stable
-> nor authoritative enough [1].  The goal now is to maintain the readers by
-> hand and to establish one standard way of adding a metadata field.
-> 
-> Take get_tdx_sys_info_version() as an example:
-> 
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
->               sysinfo_version->minor_version = val;
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
->               sysinfo_version->major_version = val;
->       if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
->               sysinfo_version->update_version = val;
-> 
-> Two patterns stand out: the read-check-store sequence repeats once per
-> field, and the error of each read is chained into the reads that follow.
-> Neither is common in hand-written code.
-> 
-> Prepare to eliminate both with a loop that reads each field, stores the
-> value into its structure member, and returns on the first error.
-> 
-> Add 'struct field_mapping' to describe one field as its ID plus the offset
-> and size of the member that receives its value. Add FIELD_MAP() to
-> build such an entry from a field ID, a structure type and a member name.
-> Add __read_sys_metadata_table() helper to read every field in a table.
-> Annotate that helper __maybe_unused as there is no caller right now.
-> 
-> Following changes will convert the existing readers to use the new helper.
-> 
-> AI was used under supervision to review code and workshop logs. It
-> suggested adding read_sys_metadata_table() macro, which avoids repeating
-> the table name when passing both the table and its size.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Link: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [1]
+Hi, Tao,
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+On Wed, Oct 14, 2026 at 1:30=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
+>
+> From: Tao Cui <cuitao@kylinos.cn>
+>
+> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
+> invocation: every call overwrites pch_pic_base and registers the same
+> kvm_io_device on the MMIO bus at the new address, while
+> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
+> init, MMIO to the stale ranges computes its register offset against the
+> new base and silently reads 0 / drops writes, and the leftover bus
+> entries persist until the VM is destroyed.
+>
+> Reject repeated initialization with -EEXIST, using the initialized
+> state of the kvm_io_device as the indicator.  The MMIO base is only
+> committed after a successful bus registration, and the real
+> registration error is propagated instead of being replaced with
+> -EFAULT.
+>
+> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write=
+ functions")
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>  arch/loongarch/kvm/intc/pch_pic.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
+pch_pic.c
+> index 51e4a6a39dc0..7979466de729 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -281,16 +281,22 @@ static int kvm_pch_pic_init(struct kvm_device *dev,=
+ u64 addr)
+>         struct kvm_io_device *device;
+>         struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
+>
+> -       s->pch_pic_base =3D addr;
+>         device =3D &s->device;
+> +       mutex_lock(&kvm->slots_lock);
+Why move the mutex_lock()?
+
+Huacai
+
+> +       if (s->device.ops) {
+> +               ret =3D -EEXIST;
+> +               goto out;
+> +       }
+>         /* init device by pch pic writing and reading ops */
+>         kvm_iodevice_init(device, &kvm_pch_pic_ops);
+> -       mutex_lock(&kvm->slots_lock);
+>         /* register pch pic device */
+>         ret =3D kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_=
+SIZE, device);
+> +       if (!ret)
+> +               s->pch_pic_base =3D addr;
+> +out:
+>         mutex_unlock(&kvm->slots_lock);
+>
+> -       return (ret < 0) ? -EFAULT : 0;
+> +       return ret;
+>  }
+>
+>  /* used by user space to get or set pch pic registers */
+> --
+> 2.43.0
+>
