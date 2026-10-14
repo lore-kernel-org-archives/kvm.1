@@ -1,137 +1,246 @@
-Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0729E39AD2A
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 08:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC5637A840;
+	Wed, 14 Oct 2026 08:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791967072; cv=none; b=iv+y416RKLQ6rD2j8p1o7iIRKIgTaYeuj8ZqFuOr/Jqh6/hVGsLq4RZYERJAnWYqrHkvs4fLIk8+mk5vbATPgK04qzn6dqfJWsa38LXhNJe9oTtbA3RkkXXb0Xw2Oq4J7Sw2pyOB6aCMcBMoc4F6iWtIBTCngl1h2Chl+Ks6hhk=
+	t=1791967095; cv=none; b=qtffXDcT90EPLorlCOi1arNOwJ6GuKx4c/k84f+CoAwNw2tAYEuuVeWDbXNM8I01I10EubnKVAvvao986sw0ycLNaQFplRXF0gZtVidoklGZhuDfNtB/TsTaio5f9IeMU537htmyWQYYaq+JXFB3Etf8DSvI3C96q7SszfFRvm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791967072; c=relaxed/simple;
-	bh=ARdqFFr4feuZC36L7tKPeV266TwXot48jPTDPet42oE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LEV76UZ4s2gVODdbS1wLvNbClxG3CeD0rLSejEK+bG5Hh/D0FMX23FBtgb7z0T0GHIujXnnswoqEDREDul0V3Oop3j9934g1q9sSCWTOZtWL5K+e+hc30QgCTXqb2Hmgyz3265wcuCYkotpxkTunC5o6mn9zszoWX8vhxHBkm/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hmk7vOvd; arc=none smtp.client-ip=95.215.58.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791967095; c=relaxed/simple;
+	bh=YyHDUboAl8DGIwqb8WSL+sGNujn8F87tNepM8aGf6uY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AeaWQTCv+8dhKTShVQSRuW8Ybk+xRas+IDXd2FyswbKfjEsxE7QXocu46gdp5hyInHA/jqbldWTSdn4vDFYC45pBDTaI4kGCv/ybFyjhvmfkASwynsiEAdC4BhB7vn9/K+C7SIDDw6BJzKge4U5PLcNeiZMGkkYZDKZmQaEbY4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBkdOjI5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hmk7vOvd"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ARdqFFr4feuZC36L7tKPeV266TwXot48jPTDPet42oE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791967068; v=1; x=1792571868;
- b=hmk7vOvdFEyokWRFjV3eQIMh47nnjuIxIMVXbtMc2YSVjosbUB9aUu2Cmvj0Qa6AmMlgyoMS
- vbBHCzRR7bs3l7kmIbtUMploGxCBIuHCHNg24WSqWCW3FDTMf14C9P13eUdFSMOIXQX+jcn8JYi
- BrTB+N9/UBBUpRCjIoGg4Tt0=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 30b45cd5fa8450ca;
-	Wed, 14 Oct 2026 08:37:48 +0000
-X-Mizu-Trace-ID: 30b45cd5fa8450ca
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <4c6f8e4a-93c9-4ba7-b66b-b294ffd70bf9@linux.dev>
-Date: Wed, 14 Oct 2026 16:37:44 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBkdOjI5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22CE1F000FF;
+	Wed, 14 Oct 2026 08:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791967094;
+	bh=YyHDUboAl8DGIwqb8WSL+sGNujn8F87tNepM8aGf6uY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZBkdOjI5xFHLM/lUIbuC1rvH1kdnsHjIlxqalBInWP+3FvNSchmjKTmg5JwB47uWb
+	 lEsyz90U9qVC3roXg5+59U2YKl4Q/eS32I7+EGZ9+8HziCTHZDrHSUqXjxpmGXqjfP
+	 6ZRONkjp2lFXVMgpbbYPRq8HT+CkX7xnAmbcelbSgurdI82dsTOrIFjEbmY8KO1wAh
+	 W5XxVs/TjxaryAGuRP6E8DRq1+rs2gZzLbmHmlvPoo3+rrGB9cMD8DL7LHsnG3guQR
+	 uIj1zsJ7IYy/Rq63L7fXIuJuHZhMZmC8/Y28mUlSs3R2AS+zt85OQWIhB3bqunw7Dr
+	 /Krsj9P8fmdVg==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Alex Williamson <alex@shazbot.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Will Deacon <will@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Fred Griffoul <griffoul@gmail.com>, iommu@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/6] KVM/VFIO: guest_memfd support for device
+ MMIO resources
+In-Reply-To: <CAEvNRgFC6U4er0QhcwVOqWyz657WWWtidkNu0hKS5go4A3cP4g@mail.gmail.com>
+References: <20261010072504.536230-1-aneesh.kumar@kernel.org>
+ <CAEvNRgFC6U4er0QhcwVOqWyz657WWWtidkNu0hKS5go4A3cP4g@mail.gmail.com>
+Date: Wed, 14 Oct 2026 14:08:04 +0530
+Message-ID: <yq5a7bjky8wj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: maobibo@loongson.cn, gaosong@loongson.cn, zhaotianrui@loongson.cn,
- loongarch@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@xen0n.name,
- nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-References: <20261014052933.723303-1-cui.tao@linux.dev>
- <20261014052933.723303-4-cui.tao@linux.dev>
- <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi, Huacai
+Ackerley Tng <ackerleytng@google.com> writes:
 
-在 2026/10/14 15:37, Huacai Chen 写道:
-> Hi, Tao,
-> 
-> On Wed, Oct 14, 2026 at 1:30 PM Tao Cui <cui.tao@linux.dev> wrote:
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>
+>> This series adds a guest_memfd device-resource framework for exposing PCI
+>> BAR memory to guests. The intended use is confidential device assignment,
+>> where KVM needs to coordinate private device mappings with shared access
+>> through VFIO. The Arm CCA backend is provided separately; these patches
+>> contain the guest_memfd, VFIO and IOMMUFD interfaces it uses.
 >>
->> From: Tao Cui <cuitao@kylinos.cn>
+>
+> Thank you Aneesh!
+>
+> I definitely like this since it builds upon [1], the model where
+> guest_memfd coordinates zapping during conversions for the
+> provider. Please see comparison with the alternative at [2].
+>
 >>
->> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
->> invocation: every call overwrites pch_pic_base and registers the same
->> kvm_io_device on the MMIO bus at the new address, while
->> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
->> init, MMIO to the stale ranges computes its register offset against the
->> new base and silently reads 0 / drops writes, and the leftover bus
->> entries persist until the VM is destroyed.
+>> [...snip...]
 >>
->> Reject repeated initialization with -EEXIST, using the initialized
->> state of the kvm_io_device as the indicator.  The MMIO base is only
->> committed after a successful bus registration, and the real
->> registration error is propagated instead of being replaced with
->> -EFAULT.
->>
->> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
->> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
->> ---
->>  arch/loongarch/kvm/intc/pch_pic.c | 12 +++++++++---
->>  1 file changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
->> index 51e4a6a39dc0..7979466de729 100644
->> --- a/arch/loongarch/kvm/intc/pch_pic.c
->> +++ b/arch/loongarch/kvm/intc/pch_pic.c
->> @@ -281,16 +281,22 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
->>         struct kvm_io_device *device;
->>         struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
->>
->> -       s->pch_pic_base = addr;
->>         device = &s->device;
->> +       mutex_lock(&kvm->slots_lock);
-> Why move the mutex_lock()?
-> 
+>
+> I have questions:
+>
+>> Userspace creates a device-backed guest_memfd using the ordinary VFIO
+>> device fd as resource_fd, with GUEST_MEMFD_FLAG_USE_RESOURCE,
+>> GUEST_MEMFD_FLAG_DEVICE
+>
+> With the model described at [1][2][3], I was thinking that the VFIO fd
+> would be the resource fd. I'm hoping that there wouldn't be a need for
+> GUEST_MEMFD_FLAG_DEVICE.
+>
+> The plan [3] was for resource fd to represent just the resource but not
+> provide any way to access the underlying resource, so that after
+> .attach(), guest_memfd's fd should be the way userspace would access the
+> underlying resource.
+>
+> For tmpfs, the example in [1], fsmount() returns an fd that has no
+> .mmap/.read/.write ops, which fits the plan above perfectly. It tells
+> guest_memfd about the resource, but does not give userspace access to
+> the resource.
+>
+> In VFIO's case, vfio_device_fops does implement .mmap()/.read/.write,
+> and I don't think there's a better existing fd that represents a single
+> device.
+>
 
-Thanks for the question.
+With VFIO, after attachment we can reject new mmap() calls by checking
+the attachment status in vfio_pci_core_mmap(). During attachment, we can
+reject the operation if the VFIO fd already has an mmap. But I guess
+read(), write(), and VFIO_DEVICE_IOEVENTFD should still operate through
+the VFIO fd, or are you suggesting that all of them operate through
+guest_memfd?
 
-The intent is to keep the repeated-init check mutual-excluded with the
-bus registration.  The set_attr ioctl path holds no other lock, so with
-the check outside slots_lock, two concurrent CTRL_INIT calls could both
-see device.ops == NULL and both register the same device on the MMIO
-bus.  Holding the lock across the check, the registration and the base
-commit makes them exclusive.
+I am not sure we want to move the ioeventfd ioctl out of VFIO. If it
+remains there, userspace needs write access to shared BAR regions via
+vfio fd, so it would make sense to continue allowing read() and write()
+as well. If we allow read() and write(), should we also allow mmap()?
 
-That said, if you prefer the check before the lock, I can respin --
-please let me know.
+I agree that keeping userspace mappings(mmap) under guest_memfd rather
+than VFIO simplifies conversion. The conversion then becomes:
 
-Thanks,
-Tao
+unmap_mapping_pages(inode->i_mapping, start, nr_pages, true); //unmap user mapping
+kvm_gmem_invalidate_start(inode, start, start + nr_pages, KVM_FILTER_SHARED); // stage2 unmap
 
-> Huacai
-> 
->> +       if (s->device.ops) {
->> +               ret = -EEXIST;
->> +               goto out;
->> +       }
->>         /* init device by pch pic writing and reading ops */
->>         kvm_iodevice_init(device, &kvm_pch_pic_ops);
->> -       mutex_lock(&kvm->slots_lock);
->>         /* register pch pic device */
->>         ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
->> +       if (!ret)
->> +               s->pch_pic_base = addr;
->> +out:
->>         mutex_unlock(&kvm->slots_lock);
+
+Both are now under guest_memfd control, so no VFIO callback is needed.
+
+>
+>> and GUEST_MEMFD_FLAG_INIT_SHARED. Eligible BAR
+>> intervals are registered as guest_memfd memslots. File offsets use the
+>> existing VFIO region-offset namespace, allowing one guest_memfd to cover
+>> multiple BAR intervals. Device-backed guest_memfd rejects mmap and
+>> fallocate; shared guest faults obtain bare BAR PFNs from the provider
+>> instead of resolving the memslot HVA or allocating folios.
 >>
->> -       return (ret < 0) ? -EFAULT : 0;
->> +       return ret;
->>  }
->>
->>  /* used by user space to get or set pch pic registers */
->> --
->> 2.43.0
->>
+>
+> The model I have in mind is kind of opposite from above. Instead of the
+> guest_memfd rejecting mmap(), I'm thinking that the VFIO fd should be
+> the one that rejects mmap(), read() and write() once guest_memfd
+> attaches to it.
+>
+> If userspace needed to mmap() the VFIO fd, it should instead mmap() the
+> guest_memfd fd. guest_memfd doesn't support read() and write() now, but
+> support can be added. The read/write for guest_memfd just forwards to
+> vfio if the offset range is shared and blocks if the range is
+> private.
+>
+> For mmap(), for regular memory, mmap() is always allowed, but faulting
+> dependsd on shared/private status. It would be nice if the same logic
+> could apply to guest_memfds that wrap VFIO.
+>
+> I prefer the userspace accesses to go through guest_memfd to VFIO so
+> that the shared/private-ness can be enforced from guest_memfd.
+>
 
+Sure, I can implement this. I guess read(), write(), and ioeventfd will
+continue to go through the VFIO fd?
+
+>
+>
+> Is GUEST_MEMFD_FLAG_DEVICE there because GUEST_MEMFD_FLAG_USE_RESOURCE
+> tells guest_memfd to look up
+> resource_inode->i_sb->s_op->gmem_provider_ops but for VFIO,
+> gmem_provider_ops can't be stored in super_operations? If that's the
+> only reason, that's a very good reason to store gmem_provider_ops in
+> file_operations for gmem_provider_ops to serve different kinds resources
+> and include VFIO.
+>
+
+I can use the same approach for VFIO. I kept the current implementation
+simpler by using a registration framework on the VFIO side.
+
+I can switch to gmem_provider_ops if we are comfortable adding the
+device-specific callbacks to guest_memfd_provider_operations. Since the
+VFIO core supports multiple backend drivers, such as vfio-pci, the
+superblock operations would essentially forward the calls to the
+appropriate backend driver. That is a VFIO-specific detail that
+guest_memfd can ignore.
+
+>
+> I also noticed the need to guest_memfd_register_device_fops, so that
+> guest_memfd knows the device supports being attached to?
+>
+> What do you think of this: we have a common attach function for all VFIO
+> fds in file_operations that would look up the struct vfio_device to
+> determine if guest_memfd can attach to the vfio device? Actually, which
+> devices would not support attaching? Wouldn't all devices support
+> attaching? I'm thinking that using a device that is all-shared via
+> guest_memfd should be no different from using the device directly. All
+> operations should flow through to the device.
+>
+
+>
+> Regarding conversions, I would like to check: with Confidential IO, are
+> conversions at runtime actually necessary?
+>
+
+They occur at runtime after the guest starts, but are infrequent. The
+entire region starts shared. The guest validates the interface report and
+requests that the BAR regions be mapped private. They remain private until
+the host converts them back to shared during the TDISP unlock operation.
+
+>
+> Is the only "conversion" the one when the guest accepts a device? If so,
+> maybe that "conversion" can be implemented by replacing memslots.
+>
+> Pre-accept, mmap() the vfio fd directly, set it up in memslots.
+>
+> Post-accept, remove the old memslot, wrap the vfio fd with guest_memfd,
+> set up the guest_memfd statically with shared/private ranges as the TDI
+> report requested and never allow conversions, replace the pre-accept
+> memslot.
+>
+
+Is there a reason to use two different flows here? Why can't we always
+use guest_memfd? We could attach the device at startup and use
+guest_memfd before acceptance, while the BAR is mapped shared. We would
+not need mmap() unless userspace requires it for another reason; the VM
+fault handler could fault in those PFNs.
+
+During device acceptance, we convert those BARs to private. On CCA, we
+also create the stage2 mappings at that point, since private BAR regions
+do not support fault handling.
+
+>
+>> IOMMUFD resolves and pins the device's existing vDEVICE for the VM and
+>> serializes MMIO conversion through its MMIO mutex. VFIO supplies BAR PFNs,
+>> checks eligible ranges and excludes independent dma-buf exports while a
+>> guest_memfd provider is attached. VFIO host mmap faults, read/write and
+>> ioeventfd accesses check the requested range's guest_memfd attributes.
+>> Conversion revokes cached host mappings and shared guest mappings before
+>> installing private mappings. Other shared intervals remain accessible.
+>>
+>>
+>> [...snip...]
+>>
+>
+> [1] https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com/
+> [2] https://lore.kernel.org/all/CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com/
+> [3] https://lpc.events/event/20/contributions/2551/attachments/2047/4693/lpc-2026-gmem-other-backends.pdf
+
+-aneesh
