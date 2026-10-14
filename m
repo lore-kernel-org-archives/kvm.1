@@ -1,175 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796BF2641FC
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 05:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309142EEE90;
+	Wed, 14 Oct 2026 06:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791956576; cv=none; b=hrEzy/iT+VCPolBTXlcne5XuY0Quk7wyeC/CAGJ8zD7Gy/VuCPZZE5pnjd9D4pKeuJumjFD/aMXhpYP1HPzmCvqIzXNfn0RpIVSw88disq7CfTKi2h4XrQtaTYpU5KzAlbilfIdaSlKCMI8AvpDUZprFR+4Ih3hOc8KtTXc9Gbw=
+	t=1791959588; cv=none; b=VvaDQMFeRq2YUmzLLCcVhqcnNo7MobI61wYt3ROXWcb3cdWt2RoipgA1mVTM530kfB7Epm/zrC+iCLrVTccReVNidBQpTqP8J5PGjpbp83NGFmqtpb3kStTxcwYeDMMBcBpNDu78VxtlVFYpkNKCNYyY1QeALrMT73OJba4x6tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791956576; c=relaxed/simple;
-	bh=d02zNtUO+5FtTf5siuQqNfsH5GUsKZAiLI9HCKNW+fM=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=UJBsjo/PqI7IbN4AG4NfzkFrwUhGa93UQElNJ2LO26UaJxRWNf/jPUi9MTQa1lkMSmUkn0RxqLBI3TJo2y4yMqqr2n+481BUkXKG8OexDvWepjPhrjYQx7eL9KhCAN9vKDjMXMkT0pPlluvnTvffBLDnwvdK7bWzZuMsdf2Cz8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMVVVH/G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791959588; c=relaxed/simple;
+	bh=hZnXdS8AanEZIIEST8OIJ05dTsAd0Sx5h8VsoTQYJy8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G1PvfL/93JB/Wet2CutIE+c8TQqcxZ3Z8hGIv6kYk1KDvuM126x+F+chxytYDk4KbYIttYKwSPzzzJ6/iZbsTIRl+4SGT07DiBMY8locxV61/TRCk9P4hltqSDcBK4+6mFGZu97RT2Kt5CpCBmNxIV1mqWDXCUxrUlYBuQqJFNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAdv62mk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMVVVH/G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DC61F000FF;
-	Wed, 14 Oct 2026 05:42:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAdv62mk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A051F1F000FF;
+	Wed, 14 Oct 2026 06:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791956575;
-	bh=PoK0hVS/GeRKWyLyUlGGfN7tPVhtNwXT1R8hln8LvXk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XMVVVH/G77JixejyJqR4WrOWNZgKfKHv43hZXjpnlKo6ci539lT2NVWsuAboJujxl
-	 oLVDP0Jsb5iRCFpRzaGc4Gc7IOU7J9H54PDhKmvGQQEsGCt0EgFeb0mA9dsjRk6Rmb
-	 j7gn+mcGJUnFBYe4bNa8JjvMenkbJQ6ElV85uCO1t50O5W6Kq1yLOkXk/Gw7YU361F
-	 DMBwkrRZb0iFVFNPFIng4ZBwNBquNeraGskGetSAprphHHYDTCou1nPh3+eIj50xPY
-	 d35CGly1P8iO6dJpevjB6L5ksWUFyReyRdCE/An4YfzQNhZvi6GwzFst/Hwv22wM0R
-	 CmQ7CnocaE4tw==
-Message-ID: <sashiko-outbox-170842@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/3] LoongArch: KVM: Clear device pointer in irqchip
- destroy callbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261014052933.723303-2-cui.tao@linux.dev>
-References: <20261014052933.723303-1-cui.tao@linux.dev>
- <20261014052933.723303-2-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 14 Oct 2026 05:42:54 +0000
+	s=k20260515; t=1791959581;
+	bh=bz7UsijxJT419pdB7TAHe5DRpQqHR9oPLis11GxsW8A=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SAdv62mk3hJ0WgjjHtxTuAcC5tvg06ypH1BURi+MjJZw8A6JV4dCdRfdmhMY8sL/f
+	 lxF8TgAbAqwrb4psqcRkaq7y45KlGzNthUwyYTuMcIUFpDvufRDikUPYV3nad/tqrg
+	 bM1fvLp4aPKRWx+PzdJAZWe5oalGqNC2T7BzHAg2HMGFoQXTOoPOcxaqbQq8LaLf77
+	 j0qsCcj4J2tpGBqbkJk+nKSXLcHYWnKD0/aQpKlBfbGdwSLm+hTvmHZYEor9IGQFFA
+	 dSBWE9xwK0vBt1hjvvcCz9sCr9cngfNIRmjxINZDQMJJKW/Q2TPRMSSsppDRGeuBTt
+	 lrGHLnEPQa//Q==
+Subject: Re: [PATCH net-next v3 2/4] vsock/virtio: amortize RX socket locking
+ for stream packets
+From: netdev-bot+sashiko@kernel.org
+To: physicalmtea@gmail.com
+Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 14 Oct 2026 06:33:00 +0000
+Message-ID: <179195958017.434549.14764784523092696104@kernel.org>
+In-Reply-To: <20261013063112.168321-3-physicalmtea@gmail.com>
+References: <20261013063112.168321-3-physicalmtea@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] kvm: UAF window in dmsintc due to kfree before pointer clear
-- [High] kvm: TOCTOU UAF and NULL deref in lockless IRQ injection
-- [High] kvm: loongarch: unsynchronized device teardown leads to NULL point=
-er dereference in irq injection
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
+
+Low priority / nit picks for your consideration:
+
+- [Low] The patch is presented as a pure performance optimization
+  ("amortize RX socket locking for stream packets").
+
 --
 
-commit adcfcba3d5e2b9e1058d8d66cd600edc9fa04efd
-Author: Tao Cui <cuitao@kylinos.cn>
+vsock/virtio: amortize RX socket locking for stream packets
 
-LoongArch: KVM: Clear device pointer in irqchip destroy callbacks
+The virtio-vsock RX worker now keeps the socket lock and the lookup
+reference held across a bounded run of STREAM/RW packets for one socket.
+A batch is capped at 64 packets or 64KB of payload. It ends on control
+packets, a flow change, or a change in socket state or protocol. Two new
+exported functions are added, virtio_transport_recv_pkt_batch() and
+virtio_transport_rx_batch_finish().
 
-This commit aims to fix a dangling pointer vulnerability by explicitly
-clearing device pointers in the destroy callbacks for LoongArch KVM irqchip
-devices.
-
-> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
-dmsintc.c
-> index bb7285c49df3a..4bd98b888e3f1 100644
-> --- a/arch/loongarch/kvm/intc/dmsintc.c
-> +++ b/arch/loongarch/kvm/intc/dmsintc.c
-[ ... ]
-> @@ -166,6 +166,7 @@ static void kvm_dmsintc_destroy(struct kvm_device *de=
-v)
->  		return;
-> =20
->  	kfree(dev->kvm->arch.dmsintc);
-> +	dev->kvm->arch.dmsintc =3D NULL;
-
-[Severity: High]
-Since the pointer is explicitly freed before it is set to NULL, does this
-leave a race window for concurrent lockless readers?
-
-If anon_inode_getfd() fails during device creation, this destroy callback
-runs while the VM is still active. A concurrent interrupt injection could
-read the pointer right after the kfree() but before it is cleared to NULL,
-leading to a use-after-free.
-
->  	kfree(dev);
->  }
-> =20
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 8a930bc42fdc3..bfe40ecf0b2f0 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
 
 [ ... ]
 
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> index 84d84bd432d74..9a8498c5deb9d 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-[ ... ]
-> @@ -675,6 +675,7 @@ static void kvm_eiointc_destroy(struct kvm_device *de=
-v)
-> =20
->  	kvm =3D dev->kvm;
->  	eiointc =3D kvm->arch.eiointc;
-> +	kvm->arch.eiointc =3D NULL;
->  	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_vext);
->  	mutex_unlock(&kvm->slots_lock);
->  	kfree(eiointc);
-
-[Severity: High]
-Could clearing the pointer and freeing the device here without SRCU
-synchronization lead to a use-after-free or NULL pointer dereference in
-lockless IRQ injection paths?
-
-If a concurrent thread is injecting interrupts (e.g., via KVM_IRQ_LINE) whi=
-le
-the device is being destroyed, it drops kvm->irq_srcu and locklessly calls
-pch_msi_set_irq() or similar helpers. If it evaluates
-kvm_arch_irqchip_in_kernel() before the pointer is cleared, it might pass
-the dangling eiointc pointer to eiointc_set_irq(), which then blindly
-dereferences it. Without a call to synchronize_srcu(&kvm->irq_srcu) before
-freeing, this appears to result in a use-after-free.
-
-Similarly, if the injection path reads the pointer exactly after it is set
-to NULL, it passes a NULL pointer to eiointc_set_irq(), which will crash
-when calling spin_lock_irqsave(&s->lock, flags).
-
->  	kfree(dev);
->  }
+> @@ -1909,6 +1945,128 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
 
 [ ... ]
 
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index e7b77705c516a..5d046a1cab4e2 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> +	if (batch->sk) {
+> +		vsk = vsock_sk(batch->sk);
+> +		if (vsock_addr_equals_addr(&src, &vsk->remote_addr) &&
+> +		    dst.svm_port == vsk->local_addr.svm_port &&
+> +		    vsock_net_check_mode(sock_net(batch->sk), net) &&
+> +		    virtio_transport_recv_pkt_batchable(t, batch->sk)) {
+
 [ ... ]
-> @@ -480,6 +480,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
-v)
-> =20
->  	kvm =3D dev->kvm;
->  	s =3D kvm->arch.pch_pic;
-> +	kvm->arch.pch_pic =3D NULL;
->  	/* unregister pch pic device and free it's memory */
->  	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
->  	mutex_unlock(&kvm->slots_lock);
->  	kfree(s);
 
-[Severity: High]
-Does unsynchronized device teardown here lead to a similar NULL pointer
-dereference in the IRQ injection path?
+> +		}
+> +
+> +		virtio_transport_rx_batch_finish(batch);
+> +	}
+> +
+> +	sk = virtio_transport_find_socket(skb, &src, &dst, net);
 
-If KVM_IRQFD or KVM_IRQ_LINE is called concurrently, kvm_set_irq() looks up
-the routing and calls kvm_set_pic_irq(). The helper unconditionally reads
-kvm->arch.pch_pic and passes it to pch_pic_set_irq():
+[ ... ]
 
-arch/loongarch/kvm/irqfd.c:kvm_set_pic_irq() {
-        pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
-        ...
-}
+> +	lock_sock(sk);
+> +	/*
+> +	 * Sockmap removal restores the native protocol under sk_callback_lock.
+> +	 * Serialize this initial eligibility check with that update.
+> +	 */
+> +	read_lock_bh(&sk->sk_callback_lock);
+> +	start_batch = virtio_transport_recv_pkt_batchable(t, sk);
+> +	read_unlock_bh(&sk->sk_callback_lock);
+> +
+> +	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &src, &dst,
+> +						    net,
+> +						    start_batch ? &batchable : NULL);
+> +	if (start_batch && batchable) {
+> +		/* Keep the lookup reference until the batch is released. */
+> +		batch->sk = sk;
+> +		return;
+> +	}
 
-If the pointer was just cleared to NULL by this destroy callback, it results
-in a deterministic NULL pointer dereference when pch_pic_set_irq()
-immediately calls spin_lock(&s->lock). Should there be synchronization
-against concurrent IRQ routing here?
+[Severity: Low]
+Is there data showing this is a net win? The subject says it will
+"amortize RX socket locking for stream packets". The commit message
+gives no throughput, latency or CPU-cost numbers.
 
->  	kfree(dev);
->  }
+Take interleaved RW traffic from two or more stream flows (A, B, A, B,
+...). The cached-flow check above fails on every packet, so each packet
+goes through:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261014052933.7233=
-03-1-cui.tao@linux.dev?part=3D1
+virtio_transport_recv_pkt_batch()
+    virtio_transport_rx_batch_finish()   /* release_sock + sock_put */
+    virtio_transport_find_socket()
+    lock_sock()
+    read_lock_bh(&sk->sk_callback_lock)
+    virtio_transport_recv_pkt_batchable()
+    read_unlock_bh(&sk->sk_callback_lock)
+    virtio_transport_recv_pkt_locked()
+        virtio_transport_recv_pkt_batchable()
+
+Every step of the old per-packet path is still done. On top of that,
+each packet pays for the read_lock_bh()/read_unlock_bh() pair, two
+predicate checks, and the batch bookkeeping in
+virtio_transport_rx_work(). No batch ever grows past one packet.
+
+The socket lock from the previous flow also stays held while
+virtio_transport_rx_work() runs virtqueue_get_buf(), tap delivery and
+header parsing for the next packet.
+
+The added cost is small next to lock_sock() and the socket lookup. Could
+the commit message include measurements, and mention this
+interleaved-flow trade-off?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013063112.168321-1-physicalmtea%40gmail.com
