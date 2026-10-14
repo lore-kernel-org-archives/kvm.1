@@ -1,36 +1,37 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047AC4A64E6;
-	Wed, 14 Oct 2026 22:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6109F4B2055;
+	Wed, 14 Oct 2026 22:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792015514; cv=none; b=lqVscuY9TrOsl5AO21DJHHROdNufVfXggcIbFcsz50arYoUlQNa6D6R1CYo/CNtAGlz0wW/j3bAazMlSzAs7OhC/5d4BG9Jzm+/jzH2fKhecXP9ZxpzI0CH3qgd9YK2cQRKpoPqRG4B9YXccOvwYyZAan2HL1DnhDyrfdNWlQtE=
+	t=1792015516; cv=none; b=CHB5QYu3cPvbvkEHg6x+xBk9MtGUUTfxfNWL6schGWpchOGQSXmu7BQtFpAgciysgv75jZxuZWOS4AL+/Q97gMpCylxLqGbhr6lwqr0lzz81BazI1OMlQymhv7klqrfBDWhsTuphaGiYtTFnOfPXGOT55JNi4iX6PTUjYEkWgQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792015514; c=relaxed/simple;
-	bh=V1iTvCXW2pTewaGpcZtipqZJZe+75afBE3Xt9YmkWPs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FVQFNfnwGPY+sPTEbpPw7DBNUrvbfFQ/OCgdqFsH2DJf+qGGR48KaZW36B5MagFhN1X0mv3u4vLc8U5mnLuPyHMtfZG/OCl1O9GGCH83ON8wV27ar6DUE1Ch4N4iGTv/TdgmwZXLZKXvQ6Hf3uVdrEEv5j/r8V3Pm1BJLul3nL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=D8nLODs4; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1792015516; c=relaxed/simple;
+	bh=nrT8rnwLX7FEwzpOG1YjtUE+SGJmPCH306xlTGwr+Qg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m3OmA6rGEKCoyCrl5VOmBXxFi1UB+93MMDPk342vfPZcK0OuLyL6GBaFj+glSbHy/6/61ABCZz5uCeJCF09I3C4qb9KtrBWwX0GEiKA+hqGzZCUT96I1I+FCSJY7NyfWCSacK/FhFCEJCFCb3nFy20JrJHA5O29HoUM1czHnaWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LeCKQ+P0; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="D8nLODs4"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LeCKQ+P0"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=1vwpDJ4914ok9gUhOxc71djJYebqKElYUPJ1ysR1XRc=; b=D8nLODs4n4LUKhMWlouaZbHMkJ
-	OC9lUm3RxeZF2IHxaiP9O5Yt3FkbmL7+9aQ+4x8jqK35Hut98u7FkHAvu/2UAJJ+7X+BMwBjwngaL
-	mOY5KFOmTH+nCGInIFOGME0QymJPjlsTwnjdAA8Tn3cuyE3AbB0PcXvmgvahzuWpg+SwxY+9TwihX
-	NXAscbfV7I2qAUw4V8jB6A8zBw+ZjuPYjz4AolAWJ5Nsrq1Cd0HAkfb07CGA0lB162KSmwJRLk4Fx
-	T1+E89DCwMeh+fsy98f6bptDZpRztBjE++aqs64XuY41yCNOsGkMOl71DFrN4fQ5e4CQkAchmAFKJ
-	sJm7uNew==;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=afh7PvDa6u9yTDXTZzXANDjYMT9nGCt3D9mxK2ecVXk=; b=LeCKQ+P0wGT2du6ZksTSB9OAKg
+	lh6liK337wrfXsIJzHp4vqRHX0UpwzXvpCDkHrJNMhQHRAfSgOFQ8t9vqvKeGRb6+p5i4QycXpsF3
+	37W9J1nhcNUSlEbuGZJES8sf15LszRVUi2iTrRQ6k7luL5cPJrGfiBxoKA80D1sUwgFatsfAj6HDM
+	s584B4N8KsDOuYJU/UsYz1PDj/rdfR8neDrZH1rakFfdOpWQwHCKWe67YTL86YAS1JT6V3YREa2lf
+	3GVJOqI32ScZCf9nkVfWFG33PuoUeOR49HjUoZbcMXs43PIgIR1K61CIGT+ZS07ZeIb+MZdaMkzuN
+	FaUo2hDQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xH75w-00000007ibe-1hcT;
-	Wed, 14 Oct 2026 22:05:08 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xH75y-0000000HFAH-454G;
+	Wed, 14 Oct 2026 22:05:11 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xH75w-00000002AxQ-0dNG;
+	id 1xH75w-00000002Axw-2yLO;
 	Wed, 14 Oct 2026 23:05:08 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -42,124 +43,117 @@ Cc: linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 00/11] KVM: x86/xen: Don't drop event deliveries which race memslot updates
-Date: Wed, 14 Oct 2026 23:04:56 +0100
-Message-ID: <20261014220508.518772-1-dwmw2@infradead.org>
+Subject: [PATCH v2 08/11] KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
+Date: Wed, 14 Oct 2026 23:05:04 +0100
+Message-ID: <20261014220508.518772-9-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261014220508.518772-1-dwmw2@infradead.org>
+References: <20261014220508.518772-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Sean Christopherson <seanjc@google.com>
 
-Sashiko analysis and torture testing of the upcoming conversion of the
-gfn_to_pfn_cache from rwlock to atomic SRCU¹ highlighted a pre-existing
-problem: refreshing a cache can fail while a memslot is briefly marked
-KVM_MEMSLOT_INVALID during a memslot update. The Xen event channel and
-timer delivery paths silently dropped events when they hit that window.
+Explicitly mark the Xen shared info page as never being dirty tracked so
+that higher-level gpc APIs can be added to automatically take care of
+things like dirty tracking, without reintroducing the bug fixed by
+commit 55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info
+not to mark page dirty").  And because the code _looks_ buggy.
 
-Return -EAGAIN from __kvm_gpc_refresh() to distinguish the transient
-case from a genuinely unbacked GFN, and add a retry loop for the common
-case callers which can just wait for the memslot update to complete, as
-well as dealing with the corner cases which can't:
+No functional change intended.
 
- - The Xen attribute ioctls wait, so userspace never sees the
-   transient state.
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: LLM
+---
+ arch/x86/kvm/xen.c        |  2 +-
+ include/linux/kvm_host.h  | 10 ++++++++--
+ include/linux/kvm_types.h |  1 +
+ virt/kvm/pfncache.c       |  4 +++-
+ 4 files changed, 13 insertions(+), 4 deletions(-)
 
- - Timer delivery leaves ->arch.xen.timer_pending set and retries from
-   kvm_xen_inject_timer_irqs() on the next vCPU entry.
-
- - The guest's own EVTCHNOP_send hypercall runs under vcpu_run's
-   kvm->srcu read section — the very reader the memslot update is
-   waiting for — so it cannot wait. Leave the hypercall uncompleted
-   without advancing RIP, so the guest re-executes it. This is how
-   Xen itself restarts preempted hypercalls.
-
-Patch 3 steps the hypercall page MSR write out of the vCPU's kvm->srcu
-read section around xen_lock, so an ioctl waiting out a memslot update
-while holding that lock cannot deadlock it.
-
-Patches 7-10 are pulled forward from the SRCU series because they stand
-alone:
-
- - Three from Sean², extracting vcpu_info delivery into a separate
-   helper and taking the shared_info and vcpu_info pages out of dirty
-   tracking. Rebased: his series had first converted the GPC locks to
-   read_trylock(), which this one doesn't carry.
-
- - Requesting the guest TLB flush from record_steal_time() itself, as
-   a standalone cleanup in preparation for converting that to GPC.
-
-The final patch adds a selftest racing a guest EVTCHNOP_send loop
-against a tight memslot delete/recreate loop. Tested with that and
-xen_shinfo_test; an instrumented run showed 10 of its 4000 sends
-hitting the update window and re-executing.
-
-Based on kvm/next (d4b7fb647204).
-
-v2: https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-eagain-v2
- - Take kvm->srcu around the kvm_gpc_check() loop and the wallclock
-   write in kvm_xen_shared_info_init(), which had lost it.
- - New patch 3: don't block on xen_lock within the vCPU's kvm->srcu
-   read section (three-way deadlock against a waiting ioctl and a
-   memslot update). Document the rule at the lock's definition.
- - On -EINVAL (deactivated shared_info, or an invalid port), clear
-   timer_pending but keep timer_expires: a halted vCPU would
-   otherwise spin aborting its own block, and the event is still
-   reported as pending through KVM_XEN_VCPU_GET_ATTR.
- - Drop the wait argument from kvm_xen_inject_timer_irqs(); neither
-   caller may wait.
- - Extend the KVM_GET_DIRTY_LOG note in api.rst to the vcpu_info area.
- - Teach lockdep that the wait functions as a synchronize_srcu(), so
-   it reports any lock held across it which a kvm->srcu read section
-   can take.
- - Comment fixes; drop a leftover cosmetic hunk.
-
-Thanks to the Sashiko review bot for finding three of those on v1.
-
-v1: https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-eagain
-    https://lore.kernel.org/kvm/20261013204824.454208-1-dwmw2@infradead.org/
-
-¹ https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-srcu-v2
-² https://lore.kernel.org/kvm/20260529165114.748639-1-seanjc@google.com/
-
-David Woodhouse (8):
-  KVM: pfncache: Return -EAGAIN for a lookup which hits an invalid memslot
-  KVM: pfncache: Add a 'wait' argument to the refresh and activate functions
-  KVM: x86/xen: Don't block on xen_lock within the vCPU's kvm->srcu section
-  KVM: x86/xen: Wait out memslot updates in the Xen attribute ioctls
-  KVM: x86/xen: Don't lose the timer event when delivery fails transiently
-  KVM: x86/xen: Retry event channel delivery which races a memslot update
-  KVM: x86: Request the guest TLB flush from record_steal_time()
-  KVM: selftests: Add Xen evtchn vs memslot-update race test
-
-Sean Christopherson (3):
-  KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
-  KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
-  KVM: x86/xen: Don't dirty track "vCPU info" page
-
- Documentation/virt/kvm/api.rst                |   5 +-
- arch/x86/include/asm/kvm_host.h               |   4 +
- arch/x86/kvm/msrs.c                           |   2 +-
- arch/x86/kvm/x86.c                            |  28 +-
- arch/x86/kvm/xen.c                            | 341 ++++++++++++------
- include/linux/kvm_host.h                      |  27 +-
- include/linux/kvm_types.h                     |   1 +
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/xen_evtchn_memslot_race_test.c    | 178 +++++++++
- .../selftests/kvm/x86/xen_shinfo_test.c       |  11 +-
- virt/kvm/pfncache.c                           | 137 +++++--
- 11 files changed, 564 insertions(+), 171 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c
-
-base-commit: d4b7fb647204f0c81dfeae2d1a708e4d858e0c94
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 8491b4adaf51..df72ab95658b 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -2500,7 +2500,7 @@ void kvm_xen_init_vm(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.xen.xen_lock);
+ 	xa_init(&kvm->arch.xen.evtchn_ports);
+-	kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm);
++	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true);
+ }
+ 
+ void kvm_xen_destroy_vm(struct kvm *kvm)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 9031f4e3f4e1..debce84f4177 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1465,7 +1465,13 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa, const void *data,
+  * immutable attributes.  Note, the cache must be zero-allocated (or zeroed by
+  * the caller before init).
+  */
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm);
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty);
++
++static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++{
++	__kvm_gpc_init(gpc, kvm, false);
++}
+ 
+ /**
+  * kvm_gpc_activate - prepare a cached kernel mapping and HPA for a given guest
+@@ -1988,7 +1994,7 @@ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
+ {
+ 	lockdep_assert_held(&gpc->lock);
+ 
+-	if (!gpc->memslot)
++	if (!gpc->memslot || gpc->never_dirty)
+ 		return;
+ 
+ 	mark_page_dirty_in_slot(gpc->kvm, gpc->memslot, gpa_to_gfn(gpc->gpa));
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..e850adc3f47e 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -94,6 +94,7 @@ struct gfn_to_pfn_cache {
+ 	kvm_pfn_t pfn;
+ 	bool active;
+ 	bool valid;
++	bool never_dirty;
+ };
+ 
+ #ifdef KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 0e700c337f5a..8498abb746ad 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -437,7 +437,8 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len, bool wait)
+ 	}
+ }
+ 
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty)
+ {
+ 	rwlock_init(&gpc->lock);
+ 	mutex_init(&gpc->refresh_lock);
+@@ -447,6 +448,7 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
+ 	gpc->active = gpc->valid = false;
++	gpc->never_dirty = never_dirty;
+ }
+ 
+ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
 -- 
 2.43.0
 
