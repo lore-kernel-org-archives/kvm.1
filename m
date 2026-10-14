@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0454948CD52;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044933A7F6B;
 	Wed, 14 Oct 2026 22:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792015513; cv=none; b=bA6hNXbRLf8nKn0O1BiHgE3ekQIR+Q/lqBAbPvWwHtZHuRxi+4QSldKrFjzA+6rhBt9AzL/wQNPbGWzvsJJximAEDtG2f0zxxtaFXNtsAKhAoRhEaGuyeBpYspwATJgIYudyuHTzH8cdVPO6DbR7qP45QteF1ZwMqN6lJZ5XMwE=
+	t=1792015514; cv=none; b=aIfq+fyj40DJ8X0sqlzDVo5AJa8PyI2XVfLUA990/S3lc0nhvb6PXhr2X9BpQqvluZ/bGURJ/07BK7GlQpV+VSNEoWkU/LqI83a/4LkXhEc9kl/ndffU5/eM0j8w7x92XWx/dQAFhHLuneiv8J6qV68eAin2zfZ1wUuIL0yo0/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792015513; c=relaxed/simple;
-	bh=JIQYfSl4FHO7RBWGs+X9PTpxL/QlAOxSwIT/tiEcNng=;
+	s=arc-20240116; t=1792015514; c=relaxed/simple;
+	bh=RNm75VPUgXUFsnNHOhj4j/o7bxzsniT4e8J5xvQohHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oHFrMPs5QoeKnKCWcMbGRcQR23dMW06LLmlJise0r+c76y9KMHgV61jrTRm2cM56sQGRUTg0avHhWeg62NToIA3lsv5Iba35APnRqmCiwRAJQeXJLzGxsniY6w3lHtg47w2sFMOxWf5Lv3eOJ04Fh3bluCzjEL3vh5xy4/NanNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ROGSwJ/Z; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version:Content-Type; b=RwNLzUXl/qtqp+dSH9azNFay/qfREqcInOCs6fMYTln8hbq/Wr27t5CjyZNbWFhVL0wGvoK/W/lHG0Dqx8HbI9WFi5pSNUkyxLYufx+RqGnpJ/Sy1k3WqsjSyH/zjUgEnaqBKjN1dHTf56tgyOMqW2ztk+CMYfij9Hkh0a0wIcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JHRySz07; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ROGSwJ/Z"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JHRySz07"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=Fqo6lpO9UQiTdCHFymA7Pg1AUf+HpjLRc+2WggDizO8=; b=ROGSwJ/Zwo93tKsUpT/4CllhMY
-	8y/ahO9V9IBxe83K7sYx8zxjaQYkshOXt2zubpvIhmdvkGzNBxxXLnw2GNQyuUh/gwT4GQesIqHv2
-	QqCu8vQxaAXYFxdBHedR/mcutEtM+wuL65W4LUuMeTt/g62pr2L7134Ao9Ewl2O8fAABUPJV+DYmo
-	FC6gbtGq1E/ZEA3YHzeDRGBuL93O2uaip1k+LWWhFaPEg2NdFs6vB7VG41rt0ybLkci5eLuE2CeSg
-	07FoIbG7um+Y0+toFra1jxD9EQb43AtzBjr+czrfSJ2kiOOfUcq5crQ9cq/hRANc3xnFUdMkfFiBJ
-	7Btqyj1w==;
+	bh=DIcpISVtX4G18jKcKzICpbmqpqKjAAbjrvauxLcgW+8=; b=JHRySz079N+MvM7LQarn3OKS4d
+	mQ51IeaHNbn+G6CrsW4Nh+fy0eHu5m+LjU19zB/6VamGgIkmJqAkNOCVZ4/xnzj77l7bqTMz6KPfB
+	SE4NcLLDatAOQXsK9pUe/Sr/c+ycLES2oYasNdKyolJsPdQZFOaLg//P73Un+/GijE47hApde3yCg
+	3k5yPUTmGkdw9+47Ac4+nANZlZATXOiovkBsQqLuefw8sB4evs0PtVSf/QndnoeYMyV6oGD1aSxvj
+	py/eagta1MsP3g+saFqWYYquAEPgUhs99iUf+YvjsZ1fTlAz5QlrdpN+xOHKd6BR1+uIl6C7dzMIK
+	cRqqgHuA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xH75x-00000007ibu-0Ez5;
-	Wed, 14 Oct 2026 22:05:09 +0000
+	id 1xH75w-00000007ibf-2Bw2;
+	Wed, 14 Oct 2026 22:05:08 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xH75w-00000002AyB-3dJ7;
+	id 1xH75w-00000002AxX-1Fbx;
 	Wed, 14 Oct 2026 23:05:08 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -43,9 +43,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 11/11] KVM: selftests: Add Xen evtchn vs memslot-update race test
-Date: Wed, 14 Oct 2026 23:05:07 +0100
-Message-ID: <20261014220508.518772-12-dwmw2@infradead.org>
+Subject: [PATCH v2 02/11] KVM: pfncache: Add a 'wait' argument to the refresh and activate functions
+Date: Wed, 14 Oct 2026 23:04:58 +0100
+Message-ID: <20261014220508.518772-3-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261014220508.518772-1-dwmw2@infradead.org>
 References: <20261014220508.518772-1-dwmw2@infradead.org>
@@ -62,218 +62,400 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Race a guest EVTCHNOP_send loop against a host thread which deletes
-and recreates the shared_info memslot. Delivery which hits the update
-window now returns -EAGAIN and the hypercall is re-executed; if KVM
-instead waited in the vCPU's exit-handling context — under vcpu_run's
-kvm->srcu read section — it would deadlock against
-kvm_swap_active_memslots() waiting out that reader, and this test
-livelocks within seconds.
+A caller which does not hold kvm->srcu may now pass wait=true to
+kvm_gpc_refresh() or kvm_gpc_activate() to wait out a concurrent
+memslot update instead of receiving -EAGAIN, looping with
+cond_resched() until the lookup resolves or a fatal signal is
+pending. (An HVA-based cache never consults the memslots, so
+kvm_gpc_activate_hva() keeps its signature.)
+
+The refresh now takes its own kvm->srcu read lock for each attempt, so
+callers no longer need to hold it. Holding it with wait=true would
+deadlock — the wait would block the memslot update from completing —
+as would taking any lock held across the wait within a kvm->srcu read
+section. The wait therefore functions as a synchronize_srcu() to
+lockdep, via srcu_lock_sync(), making both cycles reportable.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: LLM
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/xen_evtchn_memslot_race_test.c    | 178 ++++++++++++++++++
- 2 files changed, 179 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c
+ arch/x86/kvm/msrs.c      |   2 +-
+ arch/x86/kvm/x86.c       |   2 +-
+ arch/x86/kvm/xen.c       |  24 ++++----
+ include/linux/kvm_host.h |  18 +++++-
+ virt/kvm/pfncache.c      | 119 +++++++++++++++++++++++++++++----------
+ 5 files changed, 117 insertions(+), 48 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 96bab7002d39..e7e17d19d6cb 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -144,6 +144,7 @@ TEST_GEN_PROGS_x86 += x86/xss_msr_test
- TEST_GEN_PROGS_x86 += x86/debug_regs
- TEST_GEN_PROGS_x86 += x86/tsc_msrs_test
- TEST_GEN_PROGS_x86 += x86/vmx_pmu_caps_test
-+TEST_GEN_PROGS_x86 += x86/xen_evtchn_memslot_race_test
- TEST_GEN_PROGS_x86 += x86/xen_shinfo_test
- TEST_GEN_PROGS_x86 += x86/xen_vmcall_test
- TEST_GEN_PROGS_x86 += x86/sev_dbg_test
-diff --git a/tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c b/tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c
-new file mode 100644
-index 000000000000..2b6974d3d464
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c
-@@ -0,0 +1,178 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+index dd3bb04878ca..4c0fbba6e7ae 100644
+--- a/arch/x86/kvm/msrs.c
++++ b/arch/x86/kvm/msrs.c
+@@ -1280,7 +1280,7 @@ static void kvm_write_system_time(struct kvm_vcpu *vcpu, gpa_t system_time,
+ 	/* we verify if the enable bit is set... */
+ 	if (system_time & 1)
+ 		kvm_gpc_activate(&vcpu->arch.pv_time, system_time & ~1ULL,
+-				 sizeof(struct pvclock_vcpu_time_info));
++				 sizeof(struct pvclock_vcpu_time_info), false);
+ 	else
+ 		kvm_gpc_deactivate(&vcpu->arch.pv_time);
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 79468ddfe473..eadcaeee651a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1727,7 +1727,7 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
+ 	while (!kvm_gpc_check(gpc, offset + sizeof(*guest_hv_clock))) {
+ 		read_unlock_irqrestore(&gpc->lock, flags);
+ 
+-		if (kvm_gpc_refresh(gpc, offset + sizeof(*guest_hv_clock)))
++		if (kvm_gpc_refresh(gpc, offset + sizeof(*guest_hv_clock), false))
+ 			return;
+ 
+ 		read_lock_irqsave(&gpc->lock, flags);
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 6aa00f746cba..d64630a417a7 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -50,7 +50,7 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
+ 		read_unlock_irq(&gpc->lock);
+ 
+-		ret = kvm_gpc_refresh(gpc, PAGE_SIZE);
++		ret = kvm_gpc_refresh(gpc, PAGE_SIZE, false);
+ 		if (ret)
+ 			goto out;
+ 
+@@ -161,7 +161,7 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
+ 	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
+ 		read_unlock_irqrestore(&gpc->lock, flags);
+ 
+-		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock));
++		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock), false);
+ 		if (r)
+ 			return r;
+ 
+@@ -435,7 +435,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 		if (atomic)
+ 			return;
+ 
+-		if (kvm_gpc_refresh(gpc1, user_len1))
++		if (kvm_gpc_refresh(gpc1, user_len1, false))
+ 			return;
+ 
+ 		read_lock_irqsave(&gpc1->lock, flags);
+@@ -488,7 +488,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 			 * 64-bit mode, the second GPC won't have been set up.
+ 			 */
+ 			if (kvm_gpc_activate(gpc2, gpc1->gpa + user_len1,
+-					     user_len2))
++					     user_len2, false))
+ 				return;
+ 
+ 			/*
+@@ -669,7 +669,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+ 		read_unlock_irqrestore(&gpc->lock, flags);
+ 
+-		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info)))
++		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info), false))
+ 			return;
+ 
+ 		read_lock_irqsave(&gpc->lock, flags);
+@@ -757,7 +757,7 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ 		if (in_atomic() || !task_is_running(current))
+ 			return 1;
+ 
+-		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info))) {
++		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info), false)) {
+ 			/*
+ 			 * If this failed, userspace has screwed up the
+ 			 * vcpu_info mapping. No interrupts for you.
+@@ -813,7 +813,7 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
+ 				r = 0;
+ 			} else {
+ 				r = kvm_gpc_activate(&kvm->arch.xen.shinfo_cache,
+-						     gfn_to_gpa(gfn), PAGE_SIZE);
++						     gfn_to_gpa(gfn), PAGE_SIZE, false);
+ 			}
+ 		} else {
+ 			void __user * hva = u64_to_user_ptr(data->u.shared_info.hva);
+@@ -960,7 +960,7 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 				break;
+ 
+ 			r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_info_cache,
+-					     data->u.gpa, sizeof(struct vcpu_info));
++					     data->u.gpa, sizeof(struct vcpu_info), false);
+ 		} else {
+ 			if (data->u.hva == 0) {
+ 				kvm_gpc_deactivate(&vcpu->arch.xen.vcpu_info_cache);
+@@ -990,7 +990,7 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 
+ 		r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_time_info_cache,
+ 				     data->u.gpa,
+-				     sizeof(struct pvclock_vcpu_time_info));
++				     sizeof(struct pvclock_vcpu_time_info), false);
+ 		if (!r)
+ 			kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
+ 		break;
+@@ -1023,7 +1023,7 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 		/* How much fits in the (first) page? */
+ 		sz1 = PAGE_SIZE - (data->u.gpa & ~PAGE_MASK);
+ 		r = kvm_gpc_activate(&vcpu->arch.xen.runstate_cache,
+-				     data->u.gpa, sz1);
++				     data->u.gpa, sz1, false);
+ 		if (r)
+ 			goto deactivate_out;
+ 
+@@ -1034,7 +1034,7 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 			sz2 = sz - sz1;
+ 			BUG_ON((data->u.gpa + sz1) & ~PAGE_MASK);
+ 			r = kvm_gpc_activate(&vcpu->arch.xen.runstate2_cache,
+-					     data->u.gpa + sz1, sz2);
++					     data->u.gpa + sz1, sz2, false);
+ 			if (r)
+ 				goto deactivate_out;
+ 		}
+@@ -2011,7 +2011,7 @@ static int kvm_xen_set_evtchn(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 			break;
+ 
+ 		idx = srcu_read_lock(&kvm->srcu);
+-		rc = kvm_gpc_refresh(gpc, PAGE_SIZE);
++		rc = kvm_gpc_refresh(gpc, PAGE_SIZE, false);
+ 		srcu_read_unlock(&kvm->srcu, idx);
+ 	} while(!rc);
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 3dd04605f2e5..9031f4e3f4e1 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1474,16 +1474,24 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm);
+  * @gpc:	   struct gfn_to_pfn_cache object.
+  * @gpa:	   guest physical address to map.
+  * @len:	   sanity check; the range being access must fit a single page.
++ * @wait:	   wait out a concurrent memslot update instead of returning
++ *		   -EAGAIN. May not be used while this task holds any kvm->srcu
++ *		   read section, and no lock held across the wait may ever be
++ *		   taken within one: the update's synchronize_srcu() would
++ *		   deadlock against the wait. Lockdep checks both.
+  *
+  * @return:	   0 for success.
+  *		   -EINVAL for a mapping which would cross a page boundary.
+  *		   -EFAULT for an untranslatable guest physical address.
++ *		   -EAGAIN if the memslot is being updated (only with
++ *		   wait == false, or on a fatal signal while waiting).
+  *
+  * This primes a gfn_to_pfn_cache and links it into the @gpc->kvm's list for
+  * invalidations to be processed.  Callers are required to use kvm_gpc_check()
+  * to ensure that the cache is valid before accessing the target page.
+  */
+-int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len);
++int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len,
++		     bool wait);
+ 
+ /**
+  * kvm_gpc_activate_hva - prepare a cached kernel mapping and HPA for a given HVA.
+@@ -1499,7 +1507,8 @@ int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len)
+  * The semantics of this function are the same as those of kvm_gpc_activate(). It
+  * merely bypasses a layer of address translation.
+  */
+-int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long hva, unsigned long len);
++int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long hva,
++			 unsigned long len);
+ 
+ /**
+  * kvm_gpc_check - check validity of a gfn_to_pfn_cache.
+@@ -1524,10 +1533,13 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len);
+  *
+  * @gpc:	   struct gfn_to_pfn_cache object.
+  * @len:	   sanity check; the range being access must fit a single page.
++ * @wait:	   as kvm_gpc_activate().
+  *
+  * @return:	   0 for success.
+  *		   -EINVAL for a mapping which would cross a page boundary.
+  *		   -EFAULT for an untranslatable guest physical address.
++ *		   -EAGAIN if the memslot is being updated (only with
++ *		   wait == false, or on a fatal signal while waiting).
+  *
+  * This will attempt to refresh a gfn_to_pfn_cache. Note that a successful
+  * return from this function does not mean the page can be immediately
+@@ -1535,7 +1547,7 @@ bool kvm_gpc_check(struct gfn_to_pfn_cache *gpc, unsigned long len);
+  * still lock and check the cache status, as this function does not return
+  * with the lock still held to permit access.
+  */
+-int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len);
++int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len, bool wait);
+ 
+ /**
+  * kvm_gpc_deactivate - deactivate and unlink a gfn_to_pfn_cache.
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 17aaebd76db8..0e700c337f5a 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -378,23 +378,63 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
+ 	return ret;
+ }
+ 
+-int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
 +/*
-+ * xen_evtchn_memslot_race_test
-+ *
-+ * A guest EVTCHNOP_send whose delivery races a DELETE/re-CREATE of the
-+ * memslot holding the shared_info page. The delivery path runs in the
-+ * vCPU's exit-handling context, under vcpu_run's kvm->srcu read
-+ * section; if it waits there for the memslot update to complete, it
-+ * deadlocks against kvm_swap_active_memslots()'s
-+ * synchronize_srcu_expedited() waiting out that very read section.
-+ * Regression test for that deadlock: KVM must defer the delivery to
-+ * the next guest entry rather than spin in exit context.
-+ *
-+ * The guest sends events in a tight loop; a host thread deletes and
-+ * recreates the shared_info slot in a tight loop. On a broken host
-+ * this livelocks within a second or two (the test then dies by
-+ * timeout); on a fixed host every send eventually delivers and the
-+ * test completes N iterations.
++ * One refresh attempt, under the caller's refresh_lock. Takes a kvm->srcu
++ * read section for the attempt, as the memslot lookups consult the active
++ * memslots.
 + */
-+#include <pthread.h>
-+#include <stdatomic.h>
-+
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+
-+#include <stdint.h>
-+
-+#define SHINFO_REGION_GPA	0xc0000000ULL
-+#define SHINFO_REGION_SLOT	10
-+
-+#define EVTCHN_PORT		15
-+#define TEST_ITERATIONS		4000
-+
-+#define EVTCHNOP_send		4
-+#define __HYPERVISOR_event_channel_op	32
-+
-+#define XEN_HYPERCALL_MSR	0x40000000
-+
-+#define EVTCHNSTAT_ipi		5
-+
-+struct evtchn_send {
-+	uint32_t port;
-+};
-+
-+static void guest_code(void)
-+{
-+	struct evtchn_send s = { .port = EVTCHN_PORT };
-+	int i;
-+
-+	for (i = 0; i < TEST_ITERATIONS; i++) {
-+		/*
-+		 * The delivery may legitimately fail while the shared_info
-+		 * slot is mid-churn (between DELETE and re-CREATE there is
-+		 * no slot at all, which is -EFAULT, not a transient). The
-+		 * failure mode under test is the vCPU never coming back at
-+		 * all (deadlock -> timeout), not the hypercall rc.
-+		 */
-+		__xen_hypercall(__HYPERVISOR_event_channel_op, EVTCHNOP_send, &s);
-+		GUEST_SYNC(i);
-+	}
-+
-+	GUEST_DONE();
++static int gpc_refresh_locked(struct gfn_to_pfn_cache *gpc, gpa_t gpa,
++			      unsigned long uhva)
+ {
+-	unsigned long uhva;
++	int idx, ret;
+ 
+-	guard(mutex)(&gpc->refresh_lock);
++	idx = srcu_read_lock(&gpc->kvm->srcu);
++	ret = __kvm_gpc_refresh(gpc, gpa, uhva);
++	srcu_read_unlock(&gpc->kvm->srcu, idx);
+ 
+-	if (!kvm_gpc_is_valid_len(gpc->gpa, gpc->uhva, len))
+-		return -EINVAL;
++	return ret;
 +}
 +
-+static atomic_bool churn_stop;
-+
-+static void *memslot_churn(void *arg)
++int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len, bool wait)
 +{
-+	struct kvm_vm *vm = arg;
++	unsigned long uhva;
++	int ret;
+ 
+ 	/*
+-	 * If the GPA is valid then ignore the HVA, as a cache can be GPA-based
+-	 * or HVA-based, not both.  For GPA-based caches, the HVA will be
+-	 * recomputed during refresh if necessary.
++	 * The wait completes only after a memslot update's
++	 * synchronize_srcu(&kvm->srcu), so it functions as one for lockdep:
++	 * taking any lock held across it within a kvm->srcu read section
++	 * is reported as the deadlock it would be.
+ 	 */
+-	uhva = kvm_is_error_gpa(gpc->gpa) ? gpc->uhva : KVM_HVA_ERR_BAD;
++	if (wait)
++		srcu_lock_sync(&gpc->kvm->srcu.dep_map);
 +
-+	while (!atomic_load(&churn_stop)) {
-+		vm_mem_region_delete(vm, SHINFO_REGION_SLOT);
-+		vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+					    SHINFO_REGION_GPA,
-+					    SHINFO_REGION_SLOT, 2, 0);
-+	}
-+	return NULL;
-+}
++	for (;;) {
++		scoped_guard(mutex, &gpc->refresh_lock) {
++			if (!kvm_gpc_is_valid_len(gpc->gpa, gpc->uhva, len))
++				return -EINVAL;
 +
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	pthread_t thread;
-+	struct ucall uc;
-+	int done = 0;
-+	int r;
++			/*
++			 * If the GPA is valid then ignore the HVA, as a cache
++			 * can be GPA-based or HVA-based, not both.  For
++			 * GPA-based caches, the HVA will be recomputed during
++			 * refresh if necessary.
++			 */
++			uhva = kvm_is_error_gpa(gpc->gpa) ? gpc->uhva : KVM_HVA_ERR_BAD;
 +
-+	int xen_caps = kvm_check_cap(KVM_CAP_XEN_HVM);
-+
-+	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_SHARED_INFO);
-+	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_EVTCHN_SEND);
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    SHINFO_REGION_GPA, SHINFO_REGION_SLOT, 2, 0);
-+
-+	struct kvm_xen_hvm_config hvmc = {
-+		.flags = KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL |
-+			 KVM_XEN_HVM_CONFIG_EVTCHN_SEND,
-+		.msr = XEN_HYPERCALL_MSR,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_CONFIG, &hvmc);
-+
-+	struct kvm_xen_hvm_attr lm = {
-+		.type = KVM_XEN_ATTR_TYPE_LONG_MODE,
-+		.u.long_mode = 1,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &lm);
-+
-+	struct kvm_xen_hvm_attr ha = {
-+		.type = KVM_XEN_ATTR_TYPE_SHARED_INFO,
-+		.u.shared_info.gfn = SHINFO_REGION_GPA / PAGE_SIZE,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &ha);
-+
-+	struct kvm_xen_vcpu_attr vi = {
-+		.type = KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO,
-+		.u.gpa = SHINFO_REGION_GPA + 0x40,
-+	};
-+	vcpu_ioctl(vcpu, KVM_XEN_VCPU_SET_ATTR, &vi);
-+
-+	/* Loop the port back to this vCPU as an IPI. */
-+	struct kvm_xen_hvm_attr evt = {
-+		.type = KVM_XEN_ATTR_TYPE_EVTCHN,
-+		.u.evtchn.send_port = EVTCHN_PORT,
-+		.u.evtchn.type = EVTCHNSTAT_ipi,
-+		.u.evtchn.flags = 0,
-+		.u.evtchn.deliver.port.port = EVTCHN_PORT,
-+		.u.evtchn.deliver.port.vcpu = vcpu->id,
-+		.u.evtchn.deliver.port.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL,
-+	};
-+	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &evt);
-+
-+	r = pthread_create(&thread, NULL, memslot_churn, vm);
-+	TEST_ASSERT(!r, "pthread_create() failed: %d", r);
-+
-+	while (!done) {
-+		vcpu_run(vcpu);
-+
-+		/*
-+		 * In the window where the shared_info slot is fully deleted
-+		 * (between the churn thread's DELETE and re-CREATE), the
-+		 * delivery fails with -EFAULT and the hypercall bounces to
-+		 * userspace as KVM_EXIT_XEN. Complete it with an error
-+		 * result and keep going; the failure mode under test is
-+		 * the vCPU never coming back (deadlock -> timeout), not
-+		 * the hypercall rc.
-+		 */
-+		if (vcpu->run->exit_reason == KVM_EXIT_XEN &&
-+		    vcpu->run->xen.type == KVM_EXIT_XEN_HCALL) {
-+			vcpu->run->xen.u.hcall.result = -EFAULT;
-+			continue;
++			ret = gpc_refresh_locked(gpc, gpc->gpa, uhva);
 +		}
 +
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_SYNC:
-+			break;
-+		case UCALL_DONE:
-+			done = 1;
-+			break;
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+		default:
-+			TEST_FAIL("Unexpected ucall %lu", uc.cmd);
-+		}
++		if (ret != -EAGAIN || !wait || fatal_signal_pending(current))
++			return ret;
+ 
+-	return __kvm_gpc_refresh(gpc, gpc->gpa, uhva);
++		/*
++		 * Wait with refresh_lock dropped: a kvm->srcu reader blocked
++		 * on it must be able to proceed and quiesce, or the memslot
++		 * update being waited for could never complete.
++		 */
++		cond_resched();
 +	}
+ }
+ 
+ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+@@ -410,36 +450,51 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ }
+ 
+ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
+-			      unsigned long len)
++			      unsigned long len, bool wait)
+ {
+ 	struct kvm *kvm = gpc->kvm;
+ 
+ 	if (!kvm_gpc_is_valid_len(gpa, uhva, len))
+ 		return -EINVAL;
+ 
+-	guard(mutex)(&gpc->refresh_lock);
++	/* As in kvm_gpc_refresh(): the wait is a synchronize_srcu() to lockdep. */
++	if (wait)
++		srcu_lock_sync(&kvm->srcu.dep_map);
+ 
+-	if (!gpc->active) {
+-		if (KVM_BUG_ON(gpc->valid, kvm))
+-			return -EIO;
++	for (;;) {
++		int ret;
+ 
+-		spin_lock(&kvm->gpc_lock);
+-		list_add(&gpc->list, &kvm->gpc_list);
+-		spin_unlock(&kvm->gpc_lock);
++		scoped_guard(mutex, &gpc->refresh_lock) {
++			if (!gpc->active) {
++				if (KVM_BUG_ON(gpc->valid, kvm))
++					return -EIO;
+ 
+-		/*
+-		 * Activate the cache after adding it to the list, a concurrent
+-		 * refresh must not establish a mapping until the cache is
+-		 * reachable by mmu_notifier events.
+-		 */
+-		write_lock_irq(&gpc->lock);
+-		gpc->active = true;
+-		write_unlock_irq(&gpc->lock);
++				spin_lock(&kvm->gpc_lock);
++				list_add(&gpc->list, &kvm->gpc_list);
++				spin_unlock(&kvm->gpc_lock);
 +
-+	atomic_store(&churn_stop, true);
-+	pthread_join(thread, NULL);
++				/*
++				 * Activate the cache after adding it to the
++				 * list, a concurrent refresh must not
++				 * establish a mapping until the cache is
++				 * reachable by mmu_notifier events.
++				 */
++				write_lock_irq(&gpc->lock);
++				gpc->active = true;
++				write_unlock_irq(&gpc->lock);
++			}
++			ret = gpc_refresh_locked(gpc, gpa, uhva);
++		}
 +
-+	kvm_vm_free(vm);
-+	return 0;
-+}
++		if (ret != -EAGAIN || !wait || fatal_signal_pending(current))
++			return ret;
++
++		cond_resched();
+ 	}
+-	return __kvm_gpc_refresh(gpc, gpa, uhva);
+ }
+ 
+-int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len)
++int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len,
++		     bool wait)
+ {
+ 	/*
+ 	 * Explicitly disallow INVALID_GPA so that the magic value can be used
+@@ -448,15 +503,17 @@ int kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long len)
+ 	if (WARN_ON_ONCE(kvm_is_error_gpa(gpa)))
+ 		return -EINVAL;
+ 
+-	return __kvm_gpc_activate(gpc, gpa, KVM_HVA_ERR_BAD, len);
++	return __kvm_gpc_activate(gpc, gpa, KVM_HVA_ERR_BAD, len, wait);
+ }
+ 
+-int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long uhva, unsigned long len)
++int kvm_gpc_activate_hva(struct gfn_to_pfn_cache *gpc, unsigned long uhva,
++			 unsigned long len)
+ {
+ 	if (!access_ok((void __user *)uhva, len))
+ 		return -EINVAL;
+ 
+-	return __kvm_gpc_activate(gpc, INVALID_GPA, uhva, len);
++	/* An HVA-based cache never consults the memslots, so never waits. */
++	return __kvm_gpc_activate(gpc, INVALID_GPA, uhva, len, false);
+ }
+ 
+ void kvm_gpc_deactivate(struct gfn_to_pfn_cache *gpc)
 -- 
 2.43.0
 
