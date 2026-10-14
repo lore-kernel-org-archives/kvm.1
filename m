@@ -1,279 +1,282 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38EA39FCDD
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 04:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791951482; cv=pass; b=BDdco9Il96UT+t4kR5JLG13kbpWFcsAE4Ts3NMkGAmwhOzTPyV70okDAZgGU+Lz9xYqaczZ2/J83fAuUZZHEvJ/IaIIWi8+hWmqaYNGtQClnKUtkjA8Wsz7ht66dKGc3RAENVbNi5hEP+4omxSPz1s6jm4ezVAd41jbvM2Wxu3o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791951482; c=relaxed/simple;
-	bh=FCFoyOy4qvXMnUzHelNH4AHBinUUgJXQyV47QXx+bBQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D740355055
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 04:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791952231; cv=none; b=WQEpqTvoTv14Vmtj32XbafWheCravqgcHNnrnALM7VeMlHeKd+FbhRc0X05wtw4//Jtbw3NnHvTz5wAUsV4YtQFtdA5PMvR3qTdDcAuKWTY98gNrLCnlrHFljNu/X+zC/7NrG/3d0VJO27+dkM4sVYnLvzcCN5JQM1VrlO4gStw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791952231; c=relaxed/simple;
+	bh=IZRPpgBU9ru84OPiInX27uPC+b8bHkdgmq8waLknuZw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sS2D3ai0YLiG4goMMHBqY0HKR7ehGNkqJACMmuWGkSo+g2B8ZTuodmpijj3jsdHbxNBUL642GJ3KJhZBfP1AmcQheBEDfDGFg8XfJ5n4olofO4OMQhSjOM4k1h9djkhp/OeBL7k6NdOeOzb8Q05fvuD/r9ysCRTKnOoZRlaromU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SdI2p6LC; arc=pass smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Xb4cRR0DVl2DqoqbNBK11GfmYWZ61v/unCEqvzlz5/25sBxzZ5FmadYo7PJL7EjkzmIzjhH+0cNWxt58VXzE1o6+M/rbWdLf1RaHz+z4/O2Yr8fhr0wSdwLQxRnOk5gh3VxYxnHtA6f6yD9z9UCOuR/Mi9ujsTzNJPx4Fu1uPOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=il9fRqWo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SdI2p6LC"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91791ec1b83so30908406d6.1
-        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 21:18:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791951479; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pOA0tk/huFVF7SYJub69Ow8lTJXoiT/woJfUzNKhuaTvenunauUqnLGjD40bmoO4b9
-         btfSnGFXn15ows1LSEQgiEnfNpGdKtifJWhWbB2D/Cg60hPl3VvmL4EewIodGSrKamha
-         rnUH1R3lR2dOGcRO2dJMnI2ORnrQ+43y58td8iNFwZmMCZotxP7/PoevN9+iij44zPCY
-         nj5BXYfCLuHhYtekjZAdP/Jjuh44/1KafGoKZ4laXkQPmsqE9xZduLjb6zaBBw5H0BOF
-         JpJ7CmONZQa6W5mMBso1mjCYbK4qjXXIqtdTLKl0z3B/1d/jv9UUXs7UiJFAK4vdh9Np
-         tmKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5ZCjIb9MTs997peH+Jf+AEs7X4vp3T30edvZQYk3nBA=;
-        fh=oLvcvXCut8qTwflHLc/HqXyp/4i6X1KHRoA/Qrkt1Vc=;
-        b=kgWK0GauzxvWdKipPRmAYNjB/1jPGskorP/rpAxnv62QGYR+BAjsbaeT+iQVm1HqHm
-         svjiJKEkelIkZngu1sF4fcBi3JHN9a2KgIKyI/SqN5SMvfZtt6+d8fPaBFYqPERGeYlv
-         4L0yJwQA27G3oeDOpGAs1f8f1TixU2+TewOOzBwoj62i6GZs55WuXkkVTBIhosShZwEq
-         uRZEdO/qdd+GhL02X7agpDswuHBy9aoiqtZEG4yX9LcaihAdmIAXxQrjhhndUkZPOZma
-         KLm4uZC9ESZ+6FAMRGpdAYVyFGu1vsgAecQdIupEVWV8/adWSYDdeClMkhuSADOscqQ4
-         h8hg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791951479; x=1792556279; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5ZCjIb9MTs997peH+Jf+AEs7X4vp3T30edvZQYk3nBA=;
-        b=SdI2p6LCQ4aWaQPT6dillp92RI21bwsURrLkqh9CawHgTGt5ayFDz9YWLEYw+caXN6
-         bTiaZhpDOG9II7LcivZaGyhxCF/Thd/6I9z7+R5vOPKcGAcXtZ0fPJLAslYG+p1tZXR7
-         +NGiiP+A0bMWJtThoWCsVUpB5vveeEB9YM1RTB0tFMq8FNHvDwuZRywH8etLN1VzuD6a
-         +AAaaORC27I23AXDgY9K+YNqlS4hRoUX7d90LU1GugjnmvZgbpjQzo0dCTDnxgPSQ9m9
-         w9S3M9EAYyAkRCchj1URaqUEbYehTc7s/YnKtgT/DNv3RMfBcFcRTlu+9OQeV5DEAOnt
-         UaGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791951479; x=1792556279;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5ZCjIb9MTs997peH+Jf+AEs7X4vp3T30edvZQYk3nBA=;
-        b=JpMWNKFCJP+gf1SB2aYL3lRpOl1RG9pQcFHLfojjXxv3UtXyfxitbrMijduh7DRjbT
-         BxcZCIVRBC79Xi74luW+tJShUTZwHxyl2rZrzQsj7PElM93tgTzZZbL6ffhVUt6d/QJ8
-         os5d0d4wbQ9maa9kg1RFwo3axjvAiA/nYCdtaErB3Aq32h+JEW8/Mk3JsiOIHgtKgjjv
-         E6XF/NKC3F2m9uTSX0qRjk2mqZjaTTgdsMaJ32xo3Xc52+W0N7pcvTxQ9s8OWjTk9lQs
-         DQR4A33QX/legZACuW8ZPwcY/K1kOQ41lRdWWFAOnugkuI0oDq5JATkQWhFS9OrEPz2P
-         /85w==
-X-Forwarded-Encrypted: i=1; AKwUvByU3a8DwPiirkFgVl/1a7m6YQ5hcqZDGruTSoEJcM07COgqsgGUANIPFeWVMaJD84X60nY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJwzP8lofTPWr5LFs0cYHLyZTSz63wedJxEblc1cBnpn3bMiGMi
-	OKi/IGx/9bclJ8oQllzUxTE6HHL/lW+7bXP0vmg3y0GVMMOpOvaGEEQLW9q/px7dTluYtErf8ou
-	/lS+S/mO51gsQPZdjkvVHo4/o1i038og=
-X-Gm-Gg: AYBFou1zgouWB2d7k/LjXf83Oe6RvDwUKfZRdd71DidQiQth8gPSGMrLcPKiRWQDTvC
-	9+YWsf1kaP9gWOLp7eGQ58OOdB61GfhIhf5vWlBrNQ4b14gty+vCK+vZ2QFHtItFTC24V519jgE
-	2FoLsuufbtggqEaA2SrlJ0tiS/lD3Pwk6FUz+yB+Qv+Bx2gmThGS9QgzZnsEOGnybkp8FxYXQVa
-	wqc8qN/EEVKjTbryor7Bo+q5J8zcIxmkwtqYFyxqoa4HkyUwse7d9LEKuz+VIx7fVl2BIFClf9N
-	ODksOc5CytyJBrwlohBChjG70Q0Zjbx+wupr+H0Pe8hnM/Dd+d587eM=
-X-Received: by 2002:a05:620a:4449:b0:93b:e9db:1bab with SMTP id
- af79cd13be357-93ebd27cc75mr2258515585a.56.1791951478672; Tue, 13 Oct 2026
- 21:17:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="il9fRqWo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99451F00893
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 04:30:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791952228;
+	bh=6GlT1qNrSlF8ti4czw9hlM88sHfivRTAFu6pOYVX2Zs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=il9fRqWoA/6wcpsHFfPB3XVqp4kbxMt5LhzX1JTmrhpRGOT2f7YI7nAXfOia9Sgax
+	 qxrzm9ZBN9PF5dkmndz0soz4HQRoshNHDfQheRzZeboGdI35dZtHDQknmyUANFjyS9
+	 lGwqWOfsQhbKbfRRHUOBVGFLUE+2YLy6mOE2iuZt/tFThwNxJXBA/Q4y0uCPI5QGbE
+	 Qsl9UIV3pfNnC6UiiZaR2rqHBYycISRC/SKNX06tRzJae+4YkiSsxbNmkMVL60JPQ/
+	 dED6Tz5TJMMN+OkpjzqLw6NP6oeHyOrM2GpxevbQb9qHV11Z1B73visPB81IWTQXI1
+	 G5g1rw5g6n7lA==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6af9a9451daso5735593a12.0
+        for <kvm@vger.kernel.org>; Tue, 13 Oct 2026 21:30:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwskolI9qruG15QdVrd0gi2tIjYLGnGAM1uwLhKrHd+0+6+kIpMHYvf6VNPq02Kbm8wUco=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKogdQztA1hg8SkBA4T4OTwVMq+Ngp2SJe/AH+a/7e5uopOCV+j
+	eZ1oVWGliOwYFvvBudIF9gMG5boH45s1oHUYbjGHfKsFg+QPoDZ9+lofUW0yNrkLovnPbV78t8b
+	3scicGZL8QN/fvLNK8WjCSqXnujZATgY=
+X-Received: by 2002:a05:6402:3547:b0:6af:8a4b:7aad with SMTP id
+ 4fb4d7f45d1cf-6b17c29f7cdmr13405638a12.28.1791952227373; Tue, 13 Oct 2026
+ 21:30:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261010142247.99223-1-physicalmtea@gmail.com>
- <20261010142247.99223-2-physicalmtea@gmail.com> <as1ZCkbya2jn72ip@devvm29614.prn0.facebook.com>
- <CAJwVaMJL4FFYLq523VY014oa4u7RWD0WUY0+seP1xh3GY5peiQ@mail.gmail.com> <as5nfI0qfqD64dc1@devvm29614.prn0.facebook.com>
-In-Reply-To: <as5nfI0qfqD64dc1@devvm29614.prn0.facebook.com>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Wed, 14 Oct 2026 12:17:22 +0800
-X-Gm-Features: AclHuK-Tjj0vL8jiV-17JnHCHultMYwdnuqEsTpaVilZ25EnMCMFZNG1gR08W4M
-Message-ID: <CAJwVaM+SHuidjUeKD8-MX2ErbkaBUKE8cPYH2fzNJR+jH-oWZw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/5] vsock/virtio: split socket lookup from
- locked RX processing
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com, 
-	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260909085350.2046788-1-maobibo@loongson.cn> <CAAhV-H5uz3SM=tYG02Lz3WiN9stJocY7MQJFSKmVbNrNnz+9Gw@mail.gmail.com>
+ <82f2c59a-59f5-8e49-f0c5-dc6feb4070df@loongson.cn> <CAAhV-H4U_-u-Tb1Hn69ahmS3gstDVswrmjby2QfHYvPtLo5cXQ@mail.gmail.com>
+ <f86ec356-898b-1ff5-c2d3-182d3eaed14f@loongson.cn>
+In-Reply-To: <f86ec356-898b-1ff5-c2d3-182d3eaed14f@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 14 Oct 2026 12:30:16 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H51k23-1Bd+70kmmrF+OiLA=8x=z7PoKLzsz+ebhn4uEA@mail.gmail.com>
+X-Gm-Features: AclHuK9WrmoCHrxortkbZXw7u9H2FmANIoALDhEPrnGke8LeKX3OxdYwbM6nx-8
+Message-ID: <CAAhV-H51k23-1Bd+70kmmrF+OiLA=8x=z7PoKLzsz+ebhn4uEA@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Add hypercall crash support
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Mon, Oct 12, 2026 at 8:55=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
 >
-> On Tue, Oct 13, 2026 at 11:26:38AM +0800, Jia Jia wrote:
-> > >
-> > > On Sat, Oct 10, 2026 at 10:22:43PM +0800, Jia Jia wrote:
-> > > > Split virtio_transport_recv_pkt() so socket lookup is separate from=
- the
-> > > > receive state machine that runs under the socket lock.
-> > > >
-> > > > Keep virtio_transport_recv_pkt() on its existing per-packet locking=
- path.
-> > > > Pass the source and destination addresses used for lookup to the lo=
-cked
-> > > > receive path so they are decoded only once.
-> > > >
-> > > > Pass the network namespace and decoded address tuple through a pack=
-et
-> > > > context to the locked receive path.
-> > > >
-> > > > Preserve source validation and failure handling. Keep the lookup re=
-ference
-> > > > separate from the skb owner reference so the locked receive path ca=
-n manage
-> > > > the two lifetimes independently.
-> > > >
-> > > > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> > > > ---
-> > > >  net/vmw_vsock/virtio_transport_common.c | 139 ++++++++++++++++----=
-----
-> > > >  1 file changed, 96 insertions(+), 43 deletions(-)
-> > > >
-> > >
-> > > [...]
-> > >
-> > > > +/*
-> > > > + * The caller holds sk's socket lock and must free skb if this ret=
-urns true.
-> > > > + */
-> > > > +static bool
-> > > > +virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> > > > +                              struct sk_buff *skb, struct sock *sk=
-,
-> > > > +                              const struct virtio_transport_rx_pkt=
-_ctx *ctx)
-> > > > +{
-> > > > +     const struct sockaddr_vm *src =3D ctx->src;
-> > > > +     const struct sockaddr_vm *dst =3D ctx->dst;
-> > > > +     struct vsock_sock *vsk =3D vsock_sk(sk);
-> > > > +     struct net *net =3D ctx->net;
-> > > > +     bool space_available;
-> > > >
-> > > > -     /* Check if sk has been closed or assigned to another transpo=
-rt before
-> > > > -      * lock_sock (note: listener sockets are not assigned to any =
-transport)
-> > > > +     /* Check after acquiring the socket lock. Listener sockets ac=
-cept packets
-> > > > +      * from any source and are not assigned to a transport.
-> > > >        */
-> > > >       if (sock_flag(sk, SOCK_DONE) ||
-> > > >           (sk->sk_state !=3D TCP_LISTEN &&
-> > > > -          !vsock_check_source(vsk, &t->transport, &src))) {
-> > > > +          !vsock_check_source(vsk, &t->transport, src))) {
-> > > >               (void)virtio_transport_reset_no_sock(t, skb, net);
-> > > > -             release_sock(sk);
-> > > > -             sock_put(sk);
-> > > > -             goto free_pkt;
-> > > > +             return true;
-> > > >       }
-> > > >
-> > > >       space_available =3D virtio_transport_space_update(sk, skb);
-> > > >
-> > > >       /* Update CID in case it has changed after a transport reset =
-event */
-> > > >       if (vsk->local_addr.svm_cid !=3D VMADDR_CID_ANY)
-> > > > -             vsk->local_addr.svm_cid =3D dst.svm_cid;
-> > > > +             vsk->local_addr.svm_cid =3D dst->svm_cid;
-> > > >
-> > > >       if (space_available)
-> > > >               sk->sk_write_space(sk);
-> > > > @@ -1875,12 +1891,49 @@ void virtio_transport_recv_pkt(struct virti=
-o_transport *t,
-> > > >               break;
-> > > >       }
-> > > >
-> > > > +     return false;
-> > > > +}
-> > > > +
-> > > > +/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's=
- vq->mutex
-> > > > + * lock.
-> > > > + */
-> > > > +void virtio_transport_recv_pkt(struct virtio_transport *t,
-> > > > +                            struct sk_buff *skb, struct net *net)
-> > > > +{
-> > > > +     struct virtio_transport_rx_pkt_ctx ctx;
-> > > > +     struct sockaddr_vm src, dst;
-> > > > +     struct sock *sk;
-> > > > +     bool free_pkt;
-> > > > +
-> > > > +     virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
-> > > > +     virtio_transport_trace_recv_pkt(skb, &src, &dst);
-> > > > +
-> > > > +     sk =3D virtio_transport_recv_pkt_find_socket(skb, &src, &dst,=
- net);
-> > > > +     if (!sk) {
-> > > > +             (void)virtio_transport_reset_no_sock(t, skb, net);
-> > > > +             goto free_pkt;
-> > > > +     }
-> > > > +
-> > > > +     if (!skb_set_owner_sk_safe(skb, sk)) {
-> > > > +             WARN_ONCE(1, "receiving vsock socket has sk_refcnt =
-=3D=3D 0\n");
-> > > > +             goto free_pkt;
-> > > > +     }
-> > > > +
-> > > > +     lock_sock(sk);
-> > > > +     ctx =3D (struct virtio_transport_rx_pkt_ctx) {
-> > > > +             .net =3D net,
-> > > > +             .src =3D &src,
-> > > > +             .dst =3D &dst,
-> > > > +     };
-> > > > +     free_pkt =3D virtio_transport_recv_pkt_locked(t, skb, sk, &ct=
-x);
-> > >
-> > > At this point the socket lookup succeeded with src/dst/net, why not j=
-ust
-> > > pass sk which already has all of them?
-> > >
+>
+>
+> On 2026/10/11 =E4=B8=8B=E5=8D=8810:06, Huacai Chen wrote:
+> > On Thu, Oct 8, 2026 at 9:50=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> w=
+rote:
+> >>
+> >>
+> >>
+> >> On 2026/10/3 =E4=B8=8B=E5=8D=8812:02, Huacai Chen wrote:
+> >>> Hi, Bibo,
+> >>>
+> >>> On Wed, Sep 9, 2026 at 5:01=E2=80=AFPM Bibo Mao <maobibo@loongson.cn>=
+ wrote:
+> >>>>
+> >>>> Now generic pvpanic is supported in Linux kernel which will notify V=
+MM
+> >>>> with VM crash event. There is some limitations with pvpanic, such as=
+ it
+> >>>> requires good kernel stack or CPU hardware context and panic() C fun=
+ction
+> >>>> is in health state.
+> >>>>
+> >>>> Sometimes CPU hardware context or kernel/irq stack is corrupted. Hyp=
+ercall
+> >>>> code is more direct and low-level crash method, which is useful in
+> >>>> exception entry with assmble language, here add one hypercall code t=
+o
+> >>>> support VM crash function, so that VMM can capture CPU crash context
+> >>>> in time.
+> >>>>
+> >>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> >>>> ---
+> >>>>    arch/loongarch/include/asm/kvm_host.h      |  1 +
+> >>>>    arch/loongarch/include/asm/kvm_para.h      | 15 +++++++++++++++
+> >>>>    arch/loongarch/include/uapi/asm/kvm.h      |  1 +
+> >>>>    arch/loongarch/include/uapi/asm/kvm_para.h |  1 +
+> >>>>    arch/loongarch/kvm/exit.c                  | 11 +++++++++++
+> >>>>    arch/loongarch/kvm/vm.c                    |  3 ++-
+> >>>>    6 files changed, 31 insertions(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/=
+include/asm/kvm_host.h
+> >>>> index 65d91c3ce313..96f9f1317cad 100644
+> >>>> --- a/arch/loongarch/include/asm/kvm_host.h
+> >>>> +++ b/arch/loongarch/include/asm/kvm_host.h
+> >>>> @@ -168,6 +168,7 @@ enum emulation_result {
+> >>>>    #define LOONGARCH_PV_FEAT_MASK         (BIT(KVM_FEATURE_IPI) |   =
+      \
+> >>>>                                            BIT(KVM_FEATURE_PREEMPT) =
+|     \
+> >>>>                                            BIT(KVM_FEATURE_STEAL_TIM=
+E) |  \
+> >>>> +                                        BIT(KVM_FEATURE_CRASH) |   =
+    \
+> >>>>                                            BIT(KVM_FEATURE_USER_HCAL=
+L) |  \
+> >>>>                                            BIT(KVM_FEATURE_VIRT_EXTI=
+OI))
+> >>>>
+> >>>> diff --git a/arch/loongarch/include/asm/kvm_para.h b/arch/loongarch/=
+include/asm/kvm_para.h
+> >>>> index fb17ba0fa101..3b183bb1aaa8 100644
+> >>>> --- a/arch/loongarch/include/asm/kvm_para.h
+> >>>> +++ b/arch/loongarch/include/asm/kvm_para.h
+> >>>> @@ -14,6 +14,7 @@
+> >>>>    #define KVM_HCALL_CODE_SERVICE         0
+> >>>>    #define KVM_HCALL_CODE_SWDBG           1
+> >>>>    #define KVM_HCALL_CODE_USER_SERVICE    2
+> >>>> +#define KVM_HCALL_CODE_CRASH           3
+> >>>>
+> >>>>    #define KVM_HCALL_SERVICE              HYPERCALL_ENCODE(HYPERVISO=
+R_KVM, KVM_HCALL_CODE_SERVICE)
+> >>>>    #define  KVM_HCALL_FUNC_IPI            1
+> >>>> @@ -22,6 +23,7 @@
+> >>>>    #define KVM_HCALL_SWDBG                        HYPERCALL_ENCODE(H=
+YPERVISOR_KVM, KVM_HCALL_CODE_SWDBG)
+> >>>>
+> >>>>    #define KVM_HCALL_USER_SERVICE         HYPERCALL_ENCODE(HYPERVISO=
+R_KVM, KVM_HCALL_CODE_USER_SERVICE)
+> >>>> +#define KVM_HCALL_CRASH                        HYPERCALL_ENCODE(HYP=
+ERVISOR_KVM, KVM_HCALL_CODE_CRASH)
+> >>>>
+> >>>>    /*
+> >>>>     * LoongArch hypercall return code
+> >>>> @@ -161,6 +163,19 @@ static __always_inline long kvm_hypercall5(u64 =
+fid,
+> >>>>           return ret;
+> >>>>    }
+> >>>>
+> >>>> +static __always_inline long kvm_hypercall_crash(void)
+> >>>> +{
+> >>>> +       register long ret asm("a0");
+> >>>> +
+> >>>> +       __asm__ __volatile__(
+> >>>> +               "hvcl "__stringify(KVM_HCALL_CRASH)
+> >>>> +               : "=3Dr" (ret)
+> >>>> +               : : "memory"
+> >>>> +               );
+> >>>> +
+> >>>> +       return ret;
+> >>>> +}
+> >>> Why this function has no caller?
+> >> Currently we directly modify guest kernel and hard-code the hypercall
+> >> instruction to debug. This inline function is only example for howto
+> >> usage, the normal usage such as checking KVM_FEATURE_USER_HCALL featur=
+e
+> >> + kvm_hypercall_crash() is too complicated in exception entry assemble
+> >> language.
+> > There are no examples for KVM_HCALL_SWDBG and KVM_HCALL_USER_SERVICE,
+> > I think KVM_HCALL_CRASH is no special.
 > >
-> > If I understand this correctly, a successful lookup is not enough to
-> > recover all of this from sk. The lookup may fall back from the
-> > connected table to the bound
-> > table, so the packet source must still be validated under the socket
-> > lock; otherwise that check would become ineffective. The packet
-> > destination is also needed after
-> > a transport reset, and the RX namespace used for a reset reply is not
-> > necessarily sock_net(sk) in global mode. I=E2=80=99ll remove the contex=
-t
-> > struct and pass src, dst, and
-> > net directly.
->
-> True that the lookup may fallback to the bound table, but this begs the
-> question, why bother with the bound table here? If a socket hasn't
-> landed in the connected table yet, then OP_RW is -EINVAL and we respond
-> with RST anyway... so I'd guess we shouldn't even be trying to batch for
-> those sockets.
->
-> For connected sockets, the sk has the destination (vsk->remote_addr)
-> needed by the reset. And yes, sock_net(sk) does not necessarily equal
-> the net ptr used for a reset reply in global mode, but we don't really
-> expect that for global mode in vsock, we only expect that
-> vsock_net_check_mode() rules are followed. In this case where
-> !net_eq(n0, n1), the RST reply will be routed correctly across
-> namespaces following global mode rules.
->
-> I could certainly be missing something and happy to be pointed to an
-> instance of sk being insufficient here. In general, I think its nice to
-> avoid new data structures if possible.
->
+> > So if you agree, I will remove this example when applying.
+> Removinge the example usage with KVM_HCALL_CRASH is fine to me.
+Now all KVM patches for 7.4 is merged to loongarch-kvm. You can test
+it if you want.
 
-You're right. Although virtio_transport_recv_pkt_batchable() requires
-TCP_ESTABLISHED and excludes other states from batching, the
-bound-table fallback is
-unnecessary there; batch admission can use only the connected lookup
-and leave a miss to the normal path.
 
-I also overlooked what the existing vsock_net_check_mode(sock_net(sk),
-net) check guarantees. If the namespaces differ and the lookup
-succeeds, both are
-in global mode, so sock_net(sk) is sufficient for routing the RST. The
-extra context is therefore unnecessary. Thanks for pointing this out.
+Huacai
 
-I'll update this in the next version.
-
-> Best,
-> Bobby
+>
+> Regards
+> Bibo Mao
+> >
+> >
+> > Huacai
+> >
+> >>
+> >> Regards
+> >> Bibo Mao
+> >>>
+> >>>
+> >>> Huacai
+> >>>
+> >>>> +
+> >>>>    #ifdef CONFIG_PARAVIRT
+> >>>>    bool kvm_para_available(void);
+> >>>>    unsigned int kvm_arch_para_features(void);
+> >>>> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/=
+include/uapi/asm/kvm.h
+> >>>> index cd0b5c11ca9c..b222bfc48042 100644
+> >>>> --- a/arch/loongarch/include/uapi/asm/kvm.h
+> >>>> +++ b/arch/loongarch/include/uapi/asm/kvm.h
+> >>>> @@ -106,6 +106,7 @@ struct kvm_fpu {
+> >>>>    #define  KVM_LOONGARCH_VM_FEAT_PTW             8
+> >>>>    #define  KVM_LOONGARCH_VM_FEAT_MSGINT          9
+> >>>>    #define  KVM_LOONGARCH_VM_FEAT_PV_PREEMPT      10
+> >>>> +#define  KVM_LOONGARCH_VM_FEAT_CRASH           11
+> >>>>
+> >>>>    /* Device Control API on vcpu fd */
+> >>>>    #define KVM_LOONGARCH_VCPU_CPUCFG      0
+> >>>> diff --git a/arch/loongarch/include/uapi/asm/kvm_para.h b/arch/loong=
+arch/include/uapi/asm/kvm_para.h
+> >>>> index d28cbcadd276..bf1a0c826ca6 100644
+> >>>> --- a/arch/loongarch/include/uapi/asm/kvm_para.h
+> >>>> +++ b/arch/loongarch/include/uapi/asm/kvm_para.h
+> >>>> @@ -16,6 +16,7 @@
+> >>>>    #define  KVM_FEATURE_IPI               1
+> >>>>    #define  KVM_FEATURE_STEAL_TIME                2
+> >>>>    #define  KVM_FEATURE_PREEMPT           3
+> >>>> +#define  KVM_FEATURE_CRASH             4
+> >>>>    /* BIT 24 - 31 are features configurable by user space vmm */
+> >>>>    #define  KVM_FEATURE_VIRT_EXTIOI       24
+> >>>>    #define  KVM_FEATURE_USER_HCALL                25
+> >>>> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
+> >>>> index 4f58e6e2cf86..3b6daa946c76 100644
+> >>>> --- a/arch/loongarch/kvm/exit.c
+> >>>> +++ b/arch/loongarch/kvm/exit.c
+> >>>> @@ -911,6 +911,17 @@ static int kvm_handle_hypercall(struct kvm_vcpu=
+ *vcpu, int ecode)
+> >>>>                   vcpu->run->hypercall.ret =3D KVM_HCALL_INVALID_COD=
+E;
+> >>>>                   ret =3D RESUME_HOST;
+> >>>>                   break;
+> >>>> +       case KVM_HCALL_CRASH:
+> >>>> +               if (!kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_CRAS=
+H)) {
+> >>>> +                       kvm_write_reg(vcpu, LOONGARCH_GPR_A0, KVM_HC=
+ALL_INVALID_CODE);
+> >>>> +                       break;
+> >>>> +               }
+> >>>> +
+> >>>> +               vcpu->run->exit_reason =3D KVM_EXIT_SYSTEM_EVENT;
+> >>>> +               vcpu->run->system_event.type =3D KVM_SYSTEM_EVENT_CR=
+ASH;
+> >>>> +               vcpu->run->system_event.ndata =3D 0;
+> >>>> +               ret =3D RESUME_HOST;
+> >>>> +               break;
+> >>>>           case KVM_HCALL_SWDBG:
+> >>>>                   /* KVM_HCALL_SWDBG only in effective when SW_BP is=
+ enabled */
+> >>>>                   if (vcpu->guest_debug & KVM_GUESTDBG_SW_BP_MASK) {
+> >>>> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+> >>>> index 6dabb227a732..e5d10ceb5e67 100644
+> >>>> --- a/arch/loongarch/kvm/vm.c
+> >>>> +++ b/arch/loongarch/kvm/vm.c
+> >>>> @@ -49,8 +49,9 @@ static void kvm_vm_init_features(struct kvm *kvm)
+> >>>>                   kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_F=
+EAT_PMU);
+> >>>>
+> >>>>           /* Enable all PV features by default */
+> >>>> -       kvm->arch.pv_features |=3D BIT(KVM_FEATURE_IPI);
+> >>>> +       kvm->arch.pv_features |=3D BIT(KVM_FEATURE_IPI) | BIT(KVM_FE=
+ATURE_CRASH);
+> >>>>           kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_I=
+PI);
+> >>>> +       kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_CRASH)=
+;
+> >>>>           if (kvm_pvtime_supported()) {
+> >>>>                   kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PREEMPT=
+);
+> >>>>                   kvm->arch.pv_features |=3D BIT(KVM_FEATURE_STEAL_T=
+IME);
+> >>>>
+> >>>> base-commit: df2908090cda368b01ff43709f51890076c56157
+> >>>> --
+> >>>> 2.39.3
+> >>>>
+> >>>>
+> >>
+>
