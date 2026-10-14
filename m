@@ -1,210 +1,99 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011008.outbound.protection.outlook.com [40.93.194.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8BA1DDC38;
-	Wed, 14 Oct 2026 08:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791965925; cv=fail; b=nR0hdTO74kxm+7MR/CvalPnY4OxkOE7IzNR0PW5j6cB+8mzvTtR7DQ9W1GYfgTzkc3dxOgVB9EdUdayX5uw9i9P/eSqproqM1reS13cnp7SpPw55/I9QApewo27oFIdDt2C0f/AzssGPKJ7EPs6zXJV9QcMTk2Yd0is4/LeO+6o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791965925; c=relaxed/simple;
-	bh=pZuKXL+/CjMooqGp5Hh5+kCSsAKZYzHwzsgyT7jkLF8=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Me7feii75cHVBdafyXi43JccdRMD/s4yPux2wljls9fbkuoZX83wmQQpp6QlM2LjAVe+PGou5oYQtvgcESwqfgrRrZ0nsHZxMshPZ9vbpzo0ZQFF64oGupxK9+UvNKTOMbaCFIhl+s+ZR1FRtml0GxFygYdjqWNV2kkR+u1alWw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=x0W3CTep; arc=fail smtp.client-ip=40.93.194.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6379A376469;
+	Wed, 14 Oct 2026 08:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791966071; cv=none; b=oQjFm12YaHNShJXk8sTAlN7REseIHwqJGDgGVGryko1qdYA/rg/dVgRrJpb9d1H8kErzt/ESlCtQ6TWkaU7dyJe6Gwmci2faYdqqe6J5V2seKYvM2QKJ4GUJozuWYBE811S/lpEbQQaDu0/6VIGiLe0FXv8U+/OZDMfLLhG6qI8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791966071; c=relaxed/simple;
+	bh=ntdtHGzc4P4C2hE8SKRB4l3l5Ta8M5kzmu5KCWyt3i4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ehbol6O3sSMYE/BP1+baj/M1Zz4bLZWHxrbWx9c/NavogrMKCnhvwiCuFkTbewO4DdZwzHRqZAwNW9ZtZp6ioQJGxgxgmfE/2YJKmOFRfBOWoG/Ct0iaoVATfg2Tk4yJBUc9fO4V79y1Eu/F7xzPj3C99Q+ysoVqobzqBluqDCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUyZlaXq; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="x0W3CTep"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mk0I2KYY4brVYkRiVaEkPYi6HeOEQ4gQ+Vc7Durlch9LzBIvJGkTUtr9F6xvUzbH8NNLGpTHjwrAtl1SMxLkUdOJIJPqfcQWuB3febllDDE06ejbnSqGAqxEHd85H1RkGw0zy3UVFcyGQt54XKMaixeDt6wSWQra1rucSowYdQKjaOnn8anMGN+DkR91tq8SyjOPOU1/ITVB8bPBAjbTwP5E7yumrhxH8NWeUI7Wzyk4LJ+Z4neYO4JEOCBKO7wylQtRTailGETCthtB5GNR3oDALbCiLGDL5jUSAvjqB1jA4oZPGPUDm5uif6ojHjhcC5iGRm4TI9mfymZBTIEOSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B/O6P/5Mykn6grmjNggrSRIITjQ1hZN2/tusJ7WQk0I=;
- b=k8JeDCYWX9r8SlVwxnpxsxxibo9DufkK8wo5a82yYpbdDs1EKqsercGZGYTMfQgOAjfI42xw8KZT24LOIGk7rRCW5T72Mvvuvwjj+YuhTv51mTKVbo/VuE+nbZwFmV40bcYjA9sR1mNkIq1Rc+gfqTgqiVJ103RHMdP3TbjPXxCiCjds5GZJy5bwSWshxDMyuwqpJhuXSbvgovzEbTpLm5Ww9vVyg7kcjPVo/pzMngWUM/eYDwTL39cnOszoT2aGikEBQAm9ZGrxqB+FaZmJKy5WWtechp63o7VfrXzKL3x1ZGrZLC+zpqgrEBG0HY2fpiequ0rSJL9llc+v2xtbEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B/O6P/5Mykn6grmjNggrSRIITjQ1hZN2/tusJ7WQk0I=;
- b=x0W3CTepWnJgzEAVBsyan4wnQqFsTDhO6in1fe5iRWYo8DjYm9rZU0uJ+y8cXTX9wSJLqrXdqvTta4dJn2uibj+1RAVfax/8LQYM8QjeSmaJ8WXOjvn7EwmYktjmBU/bS/C+GAyyJJBx+hkWZ3TIybcKCgVyOaND2wV25/YGfhU=
-Received: from SJ0PR13CA0111.namprd13.prod.outlook.com (2603:10b6:a03:2c5::26)
- by PH7PR12MB9223.namprd12.prod.outlook.com (2603:10b6:510:2f2::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
- 2026 08:18:38 +0000
-Received: from SJ1PEPF000037A9.namprd03.prod.outlook.com
- (2603:10b6:a03:2c5:cafe::86) by SJ0PR13CA0111.outlook.office365.com
- (2603:10b6:a03:2c5::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Wed, 14
- Oct 2026 08:18:38 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000037A9.mail.protection.outlook.com (10.167.244.182) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Wed, 14 Oct 2026 08:18:37 +0000
-Received: from [10.85.37.249] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 14 Oct
- 2026 03:18:23 -0500
-Message-ID: <98ce2887-7df0-47e4-b1f6-4dba2442126f@amd.com>
-Date: Wed, 14 Oct 2026 13:48:16 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUyZlaXq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791966070; x=1823502070;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ntdtHGzc4P4C2hE8SKRB4l3l5Ta8M5kzmu5KCWyt3i4=;
+  b=IUyZlaXq3r3IbpHNCyShCURO5JY6UVqw8eERPiKl/rFgS9aM5jypxJ0T
+   3D/6eDH8kZArtOv45cwSXRsEKEb/l+AwuhDT2Le6wmBt174Y7j74VphYB
+   jXaV09ABlWTgqUJGgF/SAl+ZRBXZQ9H1JmQfZwXXzogS7OBQjVEQuTsMT
+   UkVmTYDJuC3uklBnwLplE7gzKl6ecQURzN74TIGL03qPwjVv5UiRSS/SH
+   3bs/1cdoAEsSDBebifaWsJsWvE/BYnrGd4CDnQcsHAyQhfB0OnXX2O9RU
+   Uo5QTZkdinAukLDOj+Qh099F52H6afrYTblaxQWpAwMjr6rl9yQO4tPbT
+   w==;
+X-CSE-ConnectionGUID: qbP22jiJR9u8EDiJWoslFw==
+X-CSE-MsgGUID: kXchYE8NT8qzydOFFqo0XA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="810506"
+X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
+   d="scan'208";a="810506"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 01:21:09 -0700
+X-CSE-ConnectionGUID: 1Llk6vUITmSY7KxL7fXF5g==
+X-CSE-MsgGUID: q9BBuaPRT/eeH4zKrpE6Cg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
+   d="scan'208";a="3131505"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa012.fm.intel.com with ESMTP; 14 Oct 2026 01:21:05 -0700
+Date: Wed, 14 Oct 2026 16:17:04 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, binbin.wu@linux.intel.com,
+	tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
+	nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v4 09/10] x86/virt/tdx: Use early returns in
+ get_tdx_sys_info()
+Message-ID: <as86gM3kUwRrVY4X@yilunxu-OptiPlex-7050>
+References: <20261012094754.27702-1-chao.gao@intel.com>
+ <20261012094754.27702-10-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <sarunkod@amd.com>
-Subject: Re: [PATCH v4 6/7] KVM: SVM: Add support for AMD IOMMU Guest APIC
- Physical Processor Interrupt (GAPPI)
-To: Vasant Hegde <vasant.hegde@amd.com>, "Borislav Petkov (AMD)"
-	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)"
-	<joro@8bytes.org>, "Paul E. McKenney" <paulmck@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Breno Leitao <leitao@debian.org>, "Christian
- Brauner" <brauner@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, Eric Biggers <ebiggers@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, Kiryl Shutsemau <kas@kernel.org>, Li RongQing
-	<lirongqing@baidu.com>, Marco Elver <elver@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Robin
- Murphy" <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>,
-	"Shuah Khan" <skhan@linuxfoundation.org>, Suravee Suthikulpanit
-	<suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, "Will
- Deacon" <will@kernel.org>, <iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-References: <20260821055611.27138-1-sarunkod@amd.com>
- <20260821055611.27138-7-sarunkod@amd.com>
- <bdf29f6c-9f2e-4230-b5f5-5f25827f5b7a@amd.com>
-From: Sairaj Kodilkar <sarunkod@amd.com>
-Content-Language: en-US
-In-Reply-To: <bdf29f6c-9f2e-4230-b5f5-5f25827f5b7a@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000037A9:EE_|PH7PR12MB9223:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe97b226-96ed-4475-914e-08df29cbbfa8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|23010399003|36860700016|921020|56012099006|11063799006|4143699003|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	x0mCN7IgDrXaghCoGHC8EOOtM8J9EznMQ5iRwYmRp5yf7WuNBtJgF8oJ6lNTAlVGQT048kBC15ZMn/tUhbuaBA4jrrsRQQZc03AjEREekTcRVUatJ5f3/rZWdi1Aor+5ortiiX3PHIgjT34MJFHo3akPBAG7FcXyA6beB6narutttyAtyOxnr/jQOtUtxMVsxlK2g5sGvp+4B4Luxa5fGlicuDOCm1flvrM1I5cBq79ZWtG47wHQLSilkjchlvV8IuGSvS6JTq65eZ+P6VYXdnPV3Q58xpKQ4iYS2RChAowuWRKKD16puSfAC+Buv912NUpGtmhiftWSUDI6CC7ANthOuyZqnL1VGXccI3nvgtEslBXK6Asje6NVFrGfDsmWcyGCJ/WKwSLM2DnzpRb8Fa9sxXjK/q7YsY/78AxKYeLSCms3hLkEznAFNGHlpiKMAmTu+TrJlVBFhhWBEzA2FrD3WG3v4qDYNoXv18nlTw2nRQY+UYUxQOn3BOvAUG2MCQ9pLLQkt70SA3Tpm32fh8H/BbahAbyTFcHTQOwvec1tHEhuFrRvBAog35IXV1icuzbf+ZGCgTI1ldy9xzldrl0pRBqSrowUAmEwGnQ3T9rFFH9kvNk8w74oMKbN5eRSJaMT0JvFvlPVoPAeNecp0hVNn82pEc0yM40oAYYyEyx5jh8c8XCEJURqrBHAXSjE4byoXAY/nuLOXtg9Pht9XxSEGdc/ERSVdBcw7vv/585KlvZzY8rskQwyvzAEUOja
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(23010399003)(36860700016)(921020)(56012099006)(11063799006)(4143699003)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	MHYhb8X9cbYSojlSMYY+HfWhsiQsq9YRiZ5FqVTR1WzQhsPZG8ys6P5XadM0WMefVwmFId5fZxnjtCZNM15JcILg8Rad8YWzG0xhcGrIcaVLKdy512HsrLWAEf5Nt91zBindduNSI/dVwcyByDACQY7d1N0f6t7mKUtlKLYDoskxKfhEqjZiUtJ8/N/5H2HOQnyAV5tomJUXKQW3KHJCzQNpluUEl6b5arec9Ntwv8Mj/NwmjwShSDmgfcgxHc4MytPGnste6QdTNx8GD9oHyId4fzNgrellsHtpfyIWUg/XNra5Id5ZDcMtLgeNiFMGIu1hnPOnhaOGmoo4VagoA1kflfwcBE+dg60KTVJehZvlM6umKFTndO0rF6LQ4KYCPJAqdF2rCg+Qocer2ExKbqPYW1yNANbMlBu99SOuFUcLmAXiC4Kn7VjcrY91GsOr
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 08:18:37.9234
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe97b226-96ed-4475-914e-08df29cbbfa8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000037A9.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9223
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012094754.27702-10-chao.gao@intel.com>
 
-
-
-On 8/21/2026 9:45 PM, Vasant Hegde wrote:
+On Mon, Oct 12, 2026 at 02:47:36AM -0700, Chao Gao wrote:
+> get_tdx_sys_info() was generated by a script. It chains its metadata reads
+> with:
 > 
+>       ret = ret ?: get_tdx_sys_info_foo(...);
 > 
-> On 8/21/2026 11:26 AM, Sairaj Kodilkar wrote:
->> With AVIC guest-mode interrupt remapping, device interrupts are posted into
->> the guest vAPIC backing page by the IOMMU. When the vCPU is not running
->> (IRTE[IsRun] = 0), KVM must still be notified to schedule it. The legacy
->> path uses the GA log.
->>
->> GAPPI (Guest APIC Physical Processor Interrupt) is an alternative to the
->> GA log mechanism provided by the AMD IOMMU. With GAPPI enabled, the IOMMU
->> still updates the vAPIC backing page IRR, but the host wakeup notification
->> is delivered as a physical APIC interrupt to IRTE[Destination], using
->> IRTE[GATag][7:0] as the vector (POSTED_INTR_WAKEUP_VECTOR).
->>
->> SVM follows the Intel posted-interrupt wakeup model. Each pCPU maintains
->> a list of blocked vCPUs that may be woken by a GAPPI delivery to that CPU.
->> When a vCPU blocks while waiting for an interrupt, SVM enqueues it on the
->> wakeup list of the pCPU on which it was previously running and passes that
->> same pCPU's physical APIC ID to the IOMMU to program IRTE[Destination].
->> The rationale is that the vCPU is likely to run again on the same pCPU,
->> which is common when vCPUs are pinned; targeting GAPPI notifications there
->> reduces unnecessary VMEXITs from GAPPI deliveries on other CPUs. SVM
->> registers the GAPPI handler via kvm_set_posted_intr_wakeup_handler(). On
->> delivery, it walks the local vCPU list and wakes vCPUs with a pending IRR.
->>
->> All GAPPI logic is gated on amd_iommu_gappi. Without it, KVM and the IOMMU
->> falls back to the legacy GA log mechanism for vCPU wakeup.
->>
->> Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
->> ---
->>  arch/x86/kvm/svm/avic.c | 72 ++++++++++++++++++++++++++++++++++++-----
->>  arch/x86/kvm/svm/svm.c  |  3 ++
->>  arch/x86/kvm/svm/svm.h  |  5 +++
->>  3 files changed, 72 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
->> index dd497530d365..18ac24ef40e1 100644
->> --- a/arch/x86/kvm/svm/avic.c
->> +++ b/arch/x86/kvm/svm/avic.c
->> @@ -874,6 +874,8 @@ int avic_init_vcpu(struct vcpu_svm *svm)
->>  	INIT_LIST_HEAD(&svm->ir_list);
->>  	raw_spin_lock_init(&svm->ir_list_lock);
->>  
->> +	svm->gappi_cpu = -1;
+> The function is maintained by hand now. Use conventional early returns
+> instead.
 > 
-> Can we initialize it to CPU0?
+> Print the module version only after its metadata has been read
+> successfully. The "ret ?:" chain has no early exit, so the pr_info() after
+> the version read prints a partially read or all-zero version when that read
+> fails. That is harmless, but once every other read returns on error, a
 
-Yeah, I think we can do this, I was worried about passing gappi_cpu=0 to
-kvm_pi_disable_wakeup_handler() when vCPU is not in list but I think it
-should be safe because of list_empty() check.
+I would not say this is harmless, my version FYR:
 
->> +
->>  	if (!enable_apicv || !irqchip_in_kernel(vcpu->kvm))
->>  		return 0;
->>  
->> @@ -886,6 +888,20 @@ int avic_init_vcpu(struct vcpu_svm *svm)
->>  	return ret;
->>  }
->>  
->> +void avic_destroy_vcpu(struct vcpu_svm *svm)
->> +{
->> +	if (amd_iommu_gappi && svm->gappi_cpu != -1) {
-> 
-> Redundant amd_iommu_gappi check?
+  That is wrong but not fatal. But once every ... a print after a
+  failed read is an obvious bug.
 
-I am not sure if we should call kvm_pi_disable_wakeup_handler() outside
-amd_iommu_gappi check. Although it is safe to do so, I want to have this
-call inside amd_iommu_gappi check.
+> print after a failed read would look like a bug.
+> 
+> AI was used under supervision to review code and workshop logs.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-Thanks
-Sairaj.
+Otherwise
 
-> 
->> +		unsigned long flags;
->> +
->> +		local_irq_save(flags);
->> +
->> +		kvm_pi_disable_wakeup_handler(&svm->vcpu, svm->gappi_cpu);
->> +		svm->gappi_cpu = -1;
-> 
-> Redundant assignement?
-> 
-> -Vasant
-> 
-
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
