@@ -1,280 +1,601 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012070.outbound.protection.outlook.com [40.107.200.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002A52E7398;
-	Wed, 14 Oct 2026 12:32:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981171; cv=fail; b=ku7+4BqSyn1pIDAZybSP4t26Kv51KWhdhX0pjRjlUTU+XR5Yla9ZNgtJyFjRTbpJLV38oytevQkZrpFQc4mKD56VYcS0OaznvCZlTLhhtLXtGQy97yzoA2l2BUAcNuDIVMWZMXEuu+4Q1OVmkCnCqEe47BO6hiuO+4CaR6n80jk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981171; c=relaxed/simple;
-	bh=9KERG6xQcApiAhUUZI5PKkNFJ/+Z9/AKbc70aMg7fts=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qgSWb+QOsr4RyIpWyW7Tw7USmP15bwggGIafR2tke8Rq3By8ES0nybIWVRcMmGmOL1f/MY7sfVcWCtnkmeSIAXAK4X/vk3GOuVmSecmucpD2Pbx44cLqxER+o6QK7Nh1Ord+XWx+7k6Q6vxgt2RmJ0LASqlglG+pGBuG6e/ZznA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PfE0xPQX; arc=fail smtp.client-ip=40.107.200.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794894E73A4
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 12:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791981608; cv=none; b=G+ouGUkJ88dhIBWx+8kqJcVbVYfGrlIO1DohnQpTooZMEDTU7jQsRZ4PnZRjJ3pCYHSFzB6mP6lzLvgkfsEpvWlPhbkc/90NhWSktS+BHYN617cS7EQze3BJFPfvRGehOMpoifg7BsKGd625MTB51KVOABkYjE0lS80kzt4P/QM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791981608; c=relaxed/simple;
+	bh=HDbb/LoeoKuyuZ2Y9QVMcTDl0GIdJsLHQbtoQy+mFQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nV64KX+yCbd7eHAwpaoWSC/SrQbyS2JbJZdpN6ugmIxehUEMqw19X0L+EgXrNzYcVBQhqE9dHDwyGWElkYB5d0pcZsLh/ntzIUvtlyUSI85FDJJmGLRC0fM4K4DcaIXVv7QYTJvGhZWye5EJhCWbeoIxp+xOlHRhZJC6xbmpBE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oCiuZlcd; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PfE0xPQX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d2CCTAt1qY06Cx4QRQc5AuDvSkE8SN8A6pObjwsKKhea5K2YfpsmQKYp+DdGASbubtLf5xHbqMfl0QstET7cVH9FnYVvpTUZx68BB10dTE+82xj1vu0e+cILAF9sOKSPMyrO2r6Y0sTZl7R9Qmm4vFMS5jW9h43XTzGf8dw7GrDncaga0/AfKc9gFYkLFiurDqjDIXZq+0asT4bjugVHTaLHj3vVvlFKJPeT3+MaAfzs48Z8uSMVylpPzsDB1mzGE96duPcjYJFzBhSPhzkUKMCT9XldvlLRk3yyPqotC+DODGbp1wPtuXfrYKmsIU6u7h3OxXiG8C1NgEBUksd0Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ALdwyK5oUCDKRVgrdTE7V4blHCwNjGgjYQinNHlyMuE=;
- b=JEAugojueUA0KidJFIdPRBqawuM9yF9+d1R5SF1fD0C+3OMP/oCLZbKqA713mzFBsncdecI2Y1Vo84ZLkjbuca/QXf5vc1L9/40mpeFwt5fWqbdWj4obLMEVDlv1AqmlyVKgJFByW4yiOK1BBrEl/MTDhp+jDUPbPL6z1Z+/6r8QhRrcQwsStOMYl0Yo6di4GikA+Qt3Bo1WU+7QGivMU08ZC+ThQ66IOSk+7ViUEsKxcHNAC/7Gj2aKqKgmtjg2llFRKyiU12ekkmoNACREAMdszxBfhRuEA1ZNXGznQK1gl1e9/f+8e88JjVgjbZlw2FXWRET0b+JwfMg8k5nc6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ALdwyK5oUCDKRVgrdTE7V4blHCwNjGgjYQinNHlyMuE=;
- b=PfE0xPQXM4M5thO3vD1ZxGM/CgWrXsnm/GyYaKAab7L7F2iinrBk1LlbP2pIxOFLkT6t8jGZA05Ov3Hc6M67d1rNgpJnM/4OjCBgqkEFxHLBHezkXBQ7WsQ5gp9ylAyCTfr2viM5q3Z0bCmIpL1tQEgZAtVX3rS3E18jrW5+hVI=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by SA1PR12MB999108.namprd12.prod.outlook.com (2603:10b6:806:4a2::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Wed, 14 Oct
- 2026 12:32:45 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
- 12:32:44 +0000
-Message-ID: <6aca748d-f1c4-4646-8df2-bda17e33041a@amd.com>
-Date: Wed, 14 Oct 2026 07:32:37 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] fs/resctrl: Assign counters to existing groups
- when enabling mbm_event
-To: Reinette Chatre <reinette.chatre@intel.com>,
- Babu Moger <babu.moger@amd.com>, Ben Horgan <ben.horgan@arm.com>,
- tony.luck@intel.com, bp@alien8.de
-Cc: x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <cover.1791589412.git.babu.moger@amd.com>
- <3d966ae2e051ef54e1aedb1a2839c812ab880bcb.1791589412.git.babu.moger@amd.com>
- <f79c5f94-3c5e-4c64-9b6f-95f186e1bdd7@arm.com>
- <171f92a3-fa2e-44fb-b0d1-1250c72e31d1@amd.com>
- <4af177a1-7602-4b0a-a8ba-81575f1ec80f@intel.com>
- <655152e8-2076-4558-916c-d55f88f0f1ed@amd.com>
- <e91c9cc1-02cf-41ad-b636-8356e93b5dcc@intel.com>
- <9202bea3-7746-4a24-8070-3f472198d3cd@amd.com>
- <aff2576f-adbf-4775-9aa7-e9f20844da86@intel.com>
-Content-Language: en-US
-From: "Moger, Babu" <bmoger@amd.com>
-In-Reply-To: <aff2576f-adbf-4775-9aa7-e9f20844da86@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:806:2d3::14) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oCiuZlcd"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48c4207ac26so3839347f8f.0
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 05:40:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791981603; x=1792586403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Lsjn3LV7JBpZW2IxCjuKF63c/Yth+tJQr8znBD2cPwE=;
+        b=oCiuZlcdyjVozoz43r0TBSp9f1eKCoipRn5N48Y2TYslT/6cEJx0dLzQux6CmepdIC
+         YgBGRT8/POOsQnADtC0Z0zwRm4QcjQu/aUMaY9fhogqUujgZ73kkcfvds0clC0/k7TFm
+         t/1s9UVkjRV14A4zlu7/7AyJPWUugZbAjdhWTo0zmzA+6CfCNz2IZEbNdeBEFzNtBqrd
+         ZXjK8mUB7Q2nB6D7ipN3ihBJZO3vsc+3j0NPXj3Zg/TsRUmqbqUsQp6QUMTFsf+psVrl
+         x6k4na+GasFrbhvpln6dXSPH+rZk34E6NNLK5XSXXKMa9KfrZFmayt4xaExlBHCQKxaG
+         DI3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791981603; x=1792586403;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Lsjn3LV7JBpZW2IxCjuKF63c/Yth+tJQr8znBD2cPwE=;
+        b=he/FfHkia0vnGDNr8fnRxmJ8Lgq0DJSVGVPtdetliDzZrMMG1WulLazme9boGa7EPS
+         WSA0nYRIhSNh1sFClPhUZOdo/psQV4kQU1cTHYRB6/Bjys/YePBCJ2BI2dHrF7/FoLI3
+         wzsPoIqL2JMcaAMp4koCdDUpa96lJLao1vWerfIkPhaZcUjyrvds1I6RyPpSnTbS4Atc
+         OVpgNvIaBEj+b/UDul6Jz44HkBBnQAVv+Fg6A1h0EqSPLfcdpoDLQf5X/8BejX962clp
+         STL/38Pk1ovfX44kKN53bJAnGF/hJUUyp0YUPsJZa71brhKhOgAtCz9rhU7CQ/QknWb+
+         7R9g==
+X-Forwarded-Encrypted: i=1; AKwUvByZM3gRXI+DmWMW9eTnGl3uVzVJm3PTB1228+HQwYyd41V4GQ8Pvze7efkT5ZucBla/lpI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2APWnnr2lET0BIK2mhffBPJyDyKK/cCY01QeyRoslazJk+8Ad
+	K6KA5ryf6Oqvf4HFm1IA+RIozUOR0ijbZtWXvY8wkHD2ssRB+VR3TXhz
+X-Gm-Gg: AYBFou22tpMLn6lUqhDs7FNRzODAeA8Ha7nBypitg9mTGdRmosZKFMfZoTwoncsb4oK
+	iAes5UzvUEpK88o84o0lEt9hDySZeaduJuldSL3QmUybjDvyU1OsbEEoawZtS9aQM4wa7e/gYP8
+	fddl7QHnyl3kRFIEsvjECvKlszmKkky3p0i6GfbJb65tsKTdp2OIsihKy263LEl8P+rKddkd6WL
+	Duqc6fMt/w4BHUtCMpUy7rmhHwUF3ZZItdp+j5u/1nwVNM7c4Wxtj4dOcKvJ8nrqZdvRI3BZqn3
+	VS+Zc7bXSaZsuDzThSM61YRqSl2fH3OO/psXSHQGDHD46IhwLfjzOrHKe47+dEzPyVW5fjZ0GFh
+	onp8586HrBRA3y3XC3JQwvQvIYO0Exa6qoYfSK97LMU4uypudAh82U9/8uPGy6KoyCn8etafDPL
+	8KBh9p6oJQPQZ8xPf4+umVEKxzAXAj0km0MMwcYSTgXLvpXw/TxH6cqZDtcIS2cPWa+OedONq3O
+	Xet8AqYJ+Vm1z7TOGC11k7HnwwKObPjrvv+s4MH5fRCpQ==
+X-Received: by 2002:a5d:588c:0:b0:48b:5083:96ae with SMTP id ffacd0b85a97d-48ddff64e46mr12217126f8f.15.1791981603132;
+        Wed, 14 Oct 2026 05:40:03 -0700 (PDT)
+Received: from sfomberg-mac.redhat.corp ([2a06:c701:7925:8a00:fca2:9f5c:1c03:33ff])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc6b82sm12029945f8f.51.2026.10.14.05.40.01
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 14 Oct 2026 05:40:02 -0700 (PDT)
+From: Shmuel Fomberg <shmuelfomberg@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	zhao1.liu@intel.com,
+	mtosatti@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com,
+	kvm@vger.kernel.org,
+	Shmuel Fomberg <shmuelfomberg@gmail.com>
+Subject: [PATCH] Adding support for hyper-v enlightments hv-extcalls and hv-memory-hint (hypercall HvExtCallMemoryHeatHint)
+Date: Wed, 14 Oct 2026 15:39:54 +0300
+Message-ID: <20261014123954.95181-1-shmuelfomberg@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|SA1PR12MB999108:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98fd7e6e-19a6-42ef-5447-08df29ef3f1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|23010399003|56012099006|11063799006|4143699003|261009223027099003|260925021311599003|260925021911599003|260925022911599003|10067099003|22082099003|18002099003|6133799003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	t38RP7WWTlkHBeXNdHwr478A9J6MR0dsHD2G4ihKfBk/mvJvyeXwFsAofjkFyp57FSlm1WeLO70kqty/+dgHhrasS7pMMzXuEGlk+9Y4V4smFYz+YnQzsg/XvhEvHiJrqUvsYLgVUirRRDLOCK9AvfRqWC/yA8LS5JYi3lYBhqrdhIbblzYc5S+7CnxKzMh3VE9iVbsg7kkNh+XduV+6/ATR3g2XlwgQmAhl8ZwPFNDy4dnthjCipwUtsmyqFQV9bgPhqxIoejHSK83XIwlXhvEOxjo8PRJAhipt38jD8Lp/Ky4AN01pOE59hf/bO+RPECdKzv0s+7GLpSE6YKh54ZCGkuVhM+XSNGpaAWz5tEDLUd+14BwX2ZBGFxaKMvHMVFsW3wXHTyTy/UDyW8Rtey98VoaWl+A3fEo+6bNY79SHPFeLQgknqI1bc4Ymgoy/xtpXm+9Yi8M5IxaO04P7mnCEbUNyQGnowmseKumy/yzR+QI3c5lieNVbSnVGFTskun79VD3k4+44Fs6tuTzs74zeorTxW6qKD+0yuyqVlOokeDjUnOm8eub/A1nzNGshVN0ftQ09qZsefogjjsnr+2aL0Y+JuAREWgb3lQAjKxU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(23010399003)(56012099006)(11063799006)(4143699003)(261009223027099003)(260925021311599003)(260925021911599003)(260925022911599003)(10067099003)(22082099003)(18002099003)(6133799003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VzFBNHJ2cFZML01wbmxnbmtsYkpHQzBaZjJ1L2dlVWJQZVcxZEl5N0JVYVRE?=
- =?utf-8?B?U1J4QXkrS0RoVnZjbkJuckpORk9Yc0ZDRVNZanY2ZmtxSTk0aVVQQnh4TnR4?=
- =?utf-8?B?eEJFM1owWlRwV3BMZHVBcE92bWZWMVZTRSszem5BaHRKK2wyWmlid3JZZVRJ?=
- =?utf-8?B?ejJkTm9DRkx5NEhyZjVXWmpjbjJBR09EVkluL2hTRlFKaVVQWHhnQWJzQnQ3?=
- =?utf-8?B?Qm4wUUdvSXJBT3k5V3Q3aFNWZUdRdTYwcnllbjFqQXVYd3c0Q29GbDJHUnJQ?=
- =?utf-8?B?TGV4d2dqQmQvT0wySk9vM3d6eUFkb0xlaU5lSk9CR3FxVmpHMnQwZEhmY04v?=
- =?utf-8?B?UEpCWXJFaE5RWnZHNGpsOFdZdCtacUFaMnkzank2OVpvVTZVVFMwa2g1d3Fp?=
- =?utf-8?B?RSt2UVZzaWFtU0xHK0pjVGJYdFFlWXZaSnduRVhDZEhYbUNINXBmWUJDSU16?=
- =?utf-8?B?ODBkS2NSOWR2Y0J3QnZHTTFLK0pSZjd0SEJMWlFOWURMNFhFYVRNbzltRDZV?=
- =?utf-8?B?NVRiUHQ0R2U5U1RTVW1iTVhiWHB5Q0xQamRaQkNwc2pnOEYwWStjTjNVMWJW?=
- =?utf-8?B?QVlaeVZmcE5JdmhDQUxMN3F1NEpKTjNUTHRQZlRWRUQweEVFeGNmdTlmYmpC?=
- =?utf-8?B?UFZLK21tRndTanVKaTdKZjFhNnVtYWF2K2tlQXBnSlduelZvMUVQL0lVdnBL?=
- =?utf-8?B?Tkg0V0ZnditUa3o5N2Y4eWVsaGJ5K0ZwWm1MbEFoRllrTG5IOWtSWFVNZ0I0?=
- =?utf-8?B?eHYvb0VwVjVhSmFzZGtVTFRkcGg2NVo4OUJSM0k2Wko1NGtPa0UvWnV3WEdT?=
- =?utf-8?B?Tm40RjZVK3UrTXZCNHpLTnF4bmlYUWFEcTJrdFltUEJIa05DeFhjYjk4dFg0?=
- =?utf-8?B?cEYzRnNjKzhGS01IaW44NkpSSWZxcDg4Ykt2WkRuMy9zK0lyb3VwMDRDbEdL?=
- =?utf-8?B?UU54dXl1RzhGeTVGT0RIMC9FcXcrVlVQQmh3OWJSVEVIV0RUYVhPVWtxSzJ6?=
- =?utf-8?B?eGpqWUU4K01yT1MzelJqYXA4Qjc3VTg3aTNvekZiWHBoWDBFRi9sSm0rV05w?=
- =?utf-8?B?VVFxWmt1amE1N3Avd1FDUEN0bit5a0VTWnBHYXo0aDBpS0w3d0ZOVTFDRHpQ?=
- =?utf-8?B?Mm5Eakg1cUhic3l1RVlsOExpTEJsSUVsV3FBVVRGRGxXMVdrVkdDaEN5QkpN?=
- =?utf-8?B?eFdjZlFLMGVDK1VFQVpUNmpsZ3p3VEh4a01nVytKbmN5cElrZ1oxeC9tV3hH?=
- =?utf-8?B?a2dpZFA3enNzRTBGWWwzQnhhQ2F1RUQ4RDBMQXc2K3gwQktzNWdUOFV5SFYv?=
- =?utf-8?B?NFk5YjlpUWhCTlVHd2ZUUjVKVlFjaE1wWElrbjNOc296NmVOTVpmNXd1RTVh?=
- =?utf-8?B?YTQ5Y09iaG1uQk5ZQi9Hdi9vQWYrcjZyTTlFaWlkeGZPeTMraVd5SFNHWEpm?=
- =?utf-8?B?L2dFSjBuQ1JXbk0vejFRdENENnBIUkNJS29neFpHYktOK1BZQUNXNW50T3Nh?=
- =?utf-8?B?WnN1M09zS1NpbklsbWNMK01Xejg5V1psOUhsWWViTXRzK240Q2RzS3hDY09Q?=
- =?utf-8?B?dHgyUHIxY3hTWS94OXNoeUNWVllaTTkyN3Bhd0p2REg3ZGhKSWJFSGNwTTlr?=
- =?utf-8?B?ZDk0M29vSTFKZFdTTm56RzNFb0VTTW4wdzBTdmJwYVVySFlKZWNROUEwQ0hy?=
- =?utf-8?B?WXpXbGc1cnpodjBUaklQeHFYeW9kNGpucUY0S1IwdWtWYzFNK2JSS3JBanQ5?=
- =?utf-8?B?UWFmN1ZSV0Z0NnVNL05nYkw0UVFacS9yRklRV1BweEFTSDVoa3JVREUrRUdV?=
- =?utf-8?B?cmFObDc0SnJvTXFaM0Q5Y25EYkpHU0dYZVpoM2ExTzVUS29tMms1ekYxUVA2?=
- =?utf-8?B?YTdzalMyNFozS1ZyTEQxRDFxOG9rN1EzdmJnbVBXdHZsYitQTmRtd2k0d0Ri?=
- =?utf-8?B?WVFoT211WjNEV1Y1VU82dE81UHZ3YkZkZTBFclRYb1plcHozbndXN2E3bEls?=
- =?utf-8?B?UklIYXV1eHBSUVpESGJSeTRoQkpRWHdIM1RwZStnTlFEaUhIRFdLVnRpSmo3?=
- =?utf-8?B?ektqVE1GYnhhaW9qZ3MrZGJWRFdQWGJrR0crVDljYWZ5blhUMUtET2NmSFJq?=
- =?utf-8?B?bWpzczVleWpJUFJqSlhFeUFYZzUxZitLL1lWcUZmS1BUSDhMcUo5THA0MlVa?=
- =?utf-8?B?Z0YxcU01UDRpOWpqa0xEMVBCL1NrVnAzUjFRbDRNMElzY05OVkxnTVRlZmo4?=
- =?utf-8?B?ZDQ0cXpzeXhqZDc4MjhnNjhyUDZ6UGc1T2RqbjRkaXQrejF1cFc0U1pFbmwz?=
- =?utf-8?Q?jeFrYlQJ37aB/YVhSC?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98fd7e6e-19a6-42ef-5447-08df29ef3f1c
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 12:32:44.3833
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TbV8LVtvWYmrzJXpKGecJNdOhC3uVsLhF7MSDL58vcIFqidbnInzoRE9tccnnEVD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999108
+Content-Transfer-Encoding: 8bit
 
-Hi Reinette,
+Signed-off-by: Shmuel Fomberg <shmuelfomberg@gmail.com>
+---
+ hw/hyperv/hv-gpa-range.c                      |  59 ++++
+ include/hw/hyperv/hv-gpa-range.h              |  52 ++++
+ .../functional/x86_64/test_hyperv_extcalls.py | 101 +++++++
+ tests/unit/test-hv-gpa-range.c                | 271 ++++++++++++++++++
+ 4 files changed, 483 insertions(+)
+ create mode 100644 hw/hyperv/hv-gpa-range.c
+ create mode 100644 include/hw/hyperv/hv-gpa-range.h
+ create mode 100644 tests/functional/x86_64/test_hyperv_extcalls.py
+ create mode 100644 tests/unit/test-hv-gpa-range.c
 
-On 10/13/2026 6:23 PM, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/13/26 4:05 PM, Moger, Babu wrote:
->> On 10/13/2026 3:25 PM, Reinette Chatre wrote:
->>> On 10/13/26 11:52 AM, Babu Moger wrote:
->>>> On 10/13/26 13:22, Reinette Chatre wrote:
->>>>> On 10/13/26 9:51 AM, Babu Moger wrote:
->>>>>> On 10/13/26 10:57, Ben Horgan wrote:
->>>>>>> On 10/10/2026 00:44, Babu Moger wrote:
->>>>>>>> When the user switches counter assignment mode by writing "mbm_event" to
->>>>>>>> /sys/fs/resctrl/info/L3_MON/mbm_assign_mode, resctrl frees all assignable
->>>>>>>> counters, resets per-domain RMID state, and enables counter auto-assignment
->>>>>>>> exposed to user space as mbm_assign_on_mkdir.
->>>>>>>>
->>>>>>>> Even though counter auto-assignment is enabled, groups that already exist
->>>>>>>> at the time of the switch, including the default group created at mount,
->>>>>>>> are not assigned a counter. All MBM events read "Unassigned" until the user
->>>>>>>> assigns a counter by hand.
->>>>>>>>
->>>>>>>> Walk every existing CTRL_MON and its MON children after the reset and
->>>>>>>> assign counters to their MBM events. Enabling "mbm_event" now leaves the
->>>>>>>> same per-group state that auto-assignment would have produced. There may be
->>>>>>>> fewer available counters than MBM events across the existing groups; in
->>>>>>>> that case stop assignment when no counters remain. Events in the remaining
->>>>>>>> groups read "Unassigned", matching the behavior of creating a group when no
->>>>>>>> counters are available. Also revise the rdtgroup_assign_cntrs() function
->>>>>>>> comments to account for the new callers.
->>>>>>>>
->>>>>>>> Fixes: 8004ea01cf63 ("fs/resctrl: Introduce the interface to switch between monitor modes")
->>>>>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>>>>>>> Closes: https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
->>>>>>>> Signed-off-by: Babu Moger <babu.moger@amd.com>
->>>>>>>> Cc: stable@vger.kernel.org
->>>>>>>> ---
->>>>>>>> v4: Changelog update (Reinette's input).
->>>>>>>>         Function comment update for rdtgroup_assign_cntrs().
->>>>>>>>
->>>>>>>> v3: Changelog update.
->>>>>>>>         Code comment cleanup.
->>>>>>>>         Added Cc to stable.
->>>>>>>>         Added Reported-by and Closes tags.
->>>>>>>>
->>>>>>>> v2: New patch.
->>>>>>>>         This patch addresses the Sashiko comment about documentation issue where
->>>>>>>>         counters are not assigned automatically when mode is switched to mbm_event.
->>>>>>>>         https://sashiko.dev/#/patchset/8cb66e18e32e4087a9712c1e68ee6da614efe244.1784322818.git.babu.moger%40amd.com
->>>>>>>>         In fact, it exposed a real issue. When switching to mbm_event mode, existing
->>>>>>>>         monitoring groups should be assigned counters whenever counters are available.
->>>>>>>>         This provides a smooth transition between modes and aligns the behavior with
->>>>>>>>         the existing auto-assignment mechanism.
->>>>>>>
->>>>>>>
->>>>>>> Given the name of the option is 'mbm_assign_on_mkdir' I expected the auto assignment to only occur
->>>>>>> on the creation of ctrl groups or monitor groups. That's not my concern though. As you are now
->>>>>>> treating this as more of a general auto assignment should the assignment also be done when a resctrl
->>>>>>> domain is brought back online.
->>>>>>>
->>>>>>> For illustration on an MPAM model I see:
->>>>>>>
->>>>>>> /sys/fs/resctrl# cat mbm_L3_assignments
->>>>>>> mbm_total_bytes:2=e;3=e
->>>>>>>
->>>>>>> # offline one domain
->>>>>>> /sys/fs/resctrl# for i in $(seq 0 3); do echo 0 > /sys/devices/system/cpu/cpu$i/online; done
->>>>>>> /sys/fs/resctrl# cat mbm_L3_assignments
->>>>>>> mbm_total_bytes:3=e
->>>>>>>
->>>>>>> # bring the domain back online
->>>>>>> /sys/fs/resctrl# cat mbm_L3_assignments
->>>>>>> mbm_total_bytes:2=_;3=e # Would it be better, or worse, for auto-assignment to occur here?
->>>>>>>
->>>>>> Interesting.
->>>>>>
->>>>>> We don't know the previous state. What if it looked like this before the CPU was taken offline?
->>>>>>
->>>>>> /sys/fs/resctrl# cat mbm_L3_assignments
->>>>>> mbm_total_bytes:2=_;3=e
->>>>>>
->>>>>> In that case, forcing auto-assignment may not be the right thing to do.
->>>>>> Since we don't know the previous state, we can only speculate.
->>>>>>
->>>>>> It may be best to leave this decision to the user.
->>>>> I think this raises an important point. To get a better idea I looked back at the original
->>>>> bug report referenced by the "Closes:" tag and I do not think this is a relevant fix for
->>>>> that bug.
->>>>>
->>>>> Let me elaborate ...
->>>>>
->>>>> The bug reported by Sashiko was in response to the patch that added a step to
->>>>> "Examples on working with mbm_assign_mode" to switch to mbm_event mode from default
->>>>> mode. The rest of the example was not changed to accommodate the assign mode change
->>>>> and the documentation thus reflected the state of a system that was in mbm_event mode when
->>>>> the resource groups were created, not in the new default mode.
->>>>>
->>>>> In this new version of the series the documentation change looks different - it does
->>>>> not imply that the system started out in default mode and thus does not imply any
->>>>> mode under which those resource groups were created.
->>>>>
->>>>> I agree with your final statement "It may be best to leave this decision to the user.".
->>>>> It is not possible for resctrl to know how user intends to assign counters. Why not just
->>>>> leave them all unassigned when switching to mbm_event mode?
->>>>>
->>>>
->>>> That is a good point. We can do that.
->>>>
->>>> Should we treat the default group as a special case and handle it differently?
->>> I am missing why the default group is special here. As I understand user space
->>> can allocate counters to the events belonging to the default group just the same
->>> as any other group. Could you please elaborate what sets the default group apart here?
->>>
->>
->> As you know, the default group is the "catch-all" container for the
->> system, and users may expect it to report valid bandwidth
->> measurements. That said, I'm not sure those considerations alone
->> justify giving it guaranteed counter assignment.
-> 
-> The current documentation states following about impact of switching to mbm_event mode:
-> - "Changing the mode may cause all counters on the resource to reset."
-> - "Moving to mbm_event counter assignment mode requires users to assign the counters
->     to the events. Otherwise, the MBM event counters will return 'Unassigned' when read."
-> 
-> The second is clear about expected behavior and there is no "except default group" caveat.
-> 
-> At this point I do not see a motivation to change the existing behavior.
-> 
-> My vote is for this patch to be dropped.
-
-Sure. Will drop this patch.
-
-Thank you,
-Babu
-
-
+diff --git a/hw/hyperv/hv-gpa-range.c b/hw/hyperv/hv-gpa-range.c
+new file mode 100644
+index 0000000000..e6d3d3eb42
+--- /dev/null
++++ b/hw/hyperv/hv-gpa-range.c
+@@ -0,0 +1,59 @@
++/*
++ * Hyper-V extended memory heat-hint GPA range helpers.
++ *
++ * Copyright (c) 2015-2018 Virtuozzo International GmbH.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "hw/hyperv/hv-gpa-range.h"
++#include "hw/hyperv/hyperv-proto.h"
++
++bool hv_decode_gpa_page_range(uint64_t raw, hwaddr *gpa, hwaddr *len)
++{
++    uint64_t pages = (raw & HV_GPA_PAGE_RANGE_ADDITIONAL_MASK) + 1;
++
++    if (raw & HV_GPA_PAGE_RANGE_LARGEPAGE) {
++        if (raw & HV_GPA_PAGE_RANGE_PAGE_SIZE_1GB) {
++            *gpa = raw & HV_GPA_PAGE_RANGE_1G_GPA_MASK;
++            *len = pages << 30;
++        } else {
++            *gpa = raw & HV_GPA_PAGE_RANGE_2M_GPA_MASK;
++            *len = pages << 21;
++        }
++    } else {
++        *gpa = raw & HV_GPA_PAGE_RANGE_4K_GPA_MASK;
++        *len = pages << 12;
++    }
++
++    return *len != 0;
++}
++
++bool hv_madvise_walk_step(hwaddr *gpa, hwaddr *len,
++                          hwaddr section_start, hwaddr section_size,
++                          hwaddr *out_gpa, hwaddr *out_len)
++{
++    hwaddr skip;
++
++    /*
++     * A hole with no memory region makes the section start past the
++     * cursor; a zero-size section means there is nothing left to find.
++     * Either way, stop -- do not advise or advance past the gap.
++     */
++    if (!section_size || section_start < *gpa) {
++        return false;
++    }
++
++    skip = section_start - *gpa;
++    if (skip >= *len || section_size > *len - skip) {
++        return false;
++    }
++
++    *out_gpa = section_start;
++    *out_len = section_size;
++
++    *gpa = section_start + section_size;
++    *len -= skip + section_size;
++    return true;
++}
+diff --git a/include/hw/hyperv/hv-gpa-range.h b/include/hw/hyperv/hv-gpa-range.h
+new file mode 100644
+index 0000000000..b1cf6664b8
+--- /dev/null
++++ b/include/hw/hyperv/hv-gpa-range.h
+@@ -0,0 +1,52 @@
++/*
++ * Hyper-V extended memory heat-hint GPA range helpers.
++ *
++ * These are small, dependency-free helpers factored out of hyperv.c so
++ * that the bit-decoding and walk-cursor bookkeeping can be exercised
++ * directly by unit tests (see tests/unit/test-hv-gpa-range.c) without
++ * requiring a real MemoryRegion/MemoryRegionSection or any KVM/system
++ * emulation plumbing.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef HW_HYPERV_HV_GPA_RANGE_H
++#define HW_HYPERV_HV_GPA_RANGE_H
++
++#include "exec/hwaddr.h"
++
++/*
++ * Decode one HV_GPA_PAGE_RANGE qword (as found in
++ * struct hyperv_memory_heat_hint.ranges[]) into a GPA and byte length.
++ *
++ * Returns false if the decoded length is zero (nothing to do for this
++ * range); true otherwise, with *gpa and *len filled in.
++ *
++ * Visible for testing.
++ */
++bool hv_decode_gpa_page_range(uint64_t raw, hwaddr *gpa, hwaddr *len);
++
++/*
++ * Validate a MemoryRegionSection found by memory_region_find() for the
++ * current walk cursor (*gpa, *len), and advance the cursor past it.
++ *
++ * @section_start/@section_size are the section's
++ * offset_within_address_space and size, as returned by
++ * memory_region_find().
++ *
++ * On success, returns true and fills in @out_gpa/@out_len with the GPA
++ * and length that the caller should actually act upon (e.g. madvise()),
++ * and advances *gpa and *len past the section.
++ *
++ * Returns false, without touching *gpa or *len, if the section does not
++ * fit within the remaining [*gpa, *gpa + *len) range -- e.g. because
++ * memory_region_find() skipped over a hole and returned a section that
++ * starts past the cursor, or a section that runs past the requested
++ * range. The caller should stop walking in that case.
++ *
++ * Visible for testing.
++ */
++bool hv_madvise_walk_step(hwaddr *gpa, hwaddr *len,
++                          hwaddr section_start, hwaddr section_size,
++                          hwaddr *out_gpa, hwaddr *out_len);
++
++#endif /* HW_HYPERV_HV_GPA_RANGE_H */
+diff --git a/tests/functional/x86_64/test_hyperv_extcalls.py b/tests/functional/x86_64/test_hyperv_extcalls.py
+new file mode 100644
+index 0000000000..c48f59d554
+--- /dev/null
++++ b/tests/functional/x86_64/test_hyperv_extcalls.py
+@@ -0,0 +1,101 @@
++#!/usr/bin/env python3
++#
++# Validation of the hv-extcalls / hv-memory-hint CPU properties.
++#
++# hv-extcalls gates the Hyper-V extended hypercalls (HV_ENABLE_EXTENDED_
++# HYPERCALLS, HV_CPUID_FEATURES.EBX bit 20); hv-memory-hint additionally
++# gates whether HvExtCallQueryCapabilities advertises, and
++# HvExtCallMemoryHeatHint accepts, the memory heat-hint calls.
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++
++from qemu_test import QemuSystemTest
++
++
++class HypervExtCallsProps(QemuSystemTest):
++    """
++    Validation of the hv-extcalls and hv-memory-hint CPU properties.
++    """
++
++    def get_cpu_prop(self, prop):
++        cpu_path = self.vm.cmd('query-cpus-fast')[0].get('qom-path')
++        return self.vm.cmd('qom-get', path=cpu_path, property=prop)
++
++    def launch_with_cpu_props(self, cpu_props):
++        self.set_machine('pc')
++        self.vm.add_args('-S')
++        self.set_vm_arg('-cpu', 'qemu64' + cpu_props)
++        self.vm.launch()
++
++    def test_defaults_off(self):
++        """
++        Neither property is requested: both must default to off, in
++        particular hv-extcalls (which was deliberately made default-off
++        so that enabling the extended hypercalls is an explicit opt-in).
++        """
++        self.launch_with_cpu_props('')
++        self.assertFalse(self.get_cpu_prop('hv-extcalls'),
++                         'hv-extcalls must default to off')
++        self.assertFalse(self.get_cpu_prop('hv-memory-hint'),
++                         'hv-memory-hint must default to off')
++
++    def test_hv_extcalls_on(self):
++        """
++        hv-extcalls=on by itself must not implicitly turn on
++        hv-memory-hint.
++        """
++        self.launch_with_cpu_props(',hv-extcalls=on')
++        self.assertTrue(self.get_cpu_prop('hv-extcalls'),
++                        'hv-extcalls=on must be reflected on the CPU')
++        self.assertFalse(self.get_cpu_prop('hv-memory-hint'),
++                         'hv-extcalls=on must not imply hv-memory-hint')
++
++    def test_hv_memory_hint_on(self):
++        """
++        hv-memory-hint=on without hv-extcalls must still parse/boot (the
++        combination is a no-op at runtime -- kvm_hv_handle_exit() gates
++        *all* extended hypercalls, including the capabilities query, on
++        hv-extcalls -- but QEMU must not reject it at CPU-realize time).
++        """
++        self.launch_with_cpu_props(',hv-memory-hint=on')
++        self.assertFalse(self.get_cpu_prop('hv-extcalls'))
++        self.assertTrue(self.get_cpu_prop('hv-memory-hint'),
++                        'hv-memory-hint=on must be reflected on the CPU')
++
++    def test_both_on(self):
++        """
++        The intended "fully enabled" configuration: both properties on.
++        """
++        self.launch_with_cpu_props(',hv-extcalls=on,hv-memory-hint=on')
++        self.assertTrue(self.get_cpu_prop('hv-extcalls'))
++        self.assertTrue(self.get_cpu_prop('hv-memory-hint'))
++
++
++class HypervExtCallsModelExpansion(QemuSystemTest):
++    """
++    Confirm hv-extcalls/hv-memory-hint are discoverable via
++    query-cpu-model-expansion, the mechanism management layers (e.g.
++    libvirt) use to probe which CPU properties/features are supported
++    before adding them to a domain definition.
++    """
++
++    def test(self):
++        self.set_machine('none')
++        self.vm.add_args('-S')
++        self.vm.launch()
++
++        model = {'name': 'qemu64',
++                'props': {'hv-extcalls': True, 'hv-memory-hint': True}}
++        e = self.vm.cmd('query-cpu-model-expansion', model=model,
++                        type='full')
++        props = e['model']['props']
++
++        self.assertIn('hv-extcalls', props)
++        self.assertIn('hv-memory-hint', props)
++        self.assertTrue(props['hv-extcalls'])
++        self.assertTrue(props['hv-memory-hint'])
++
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
+diff --git a/tests/unit/test-hv-gpa-range.c b/tests/unit/test-hv-gpa-range.c
+new file mode 100644
+index 0000000000..70196f271b
+--- /dev/null
++++ b/tests/unit/test-hv-gpa-range.c
+@@ -0,0 +1,271 @@
++/*
++ * Unit tests for the Hyper-V extended memory heat-hint GPA range helpers
++ * (hw/hyperv/hv-gpa-range.c).
++ *
++ * These exercise:
++ *  - hv_decode_gpa_page_range(): decoding of the HV_GPA_PAGE_RANGE qwords
++ *    found in a HvExtCallMemoryHeatHint[Async] input buffer.
++ *  - hv_madvise_walk_step(): the walk-cursor bookkeeping used by
++ *    hv_madvise_gpa_range() to turn a sequence of memory_region_find()
++ *    results into the correct set of (host, len) madvise() targets, in
++ *    particular across holes in the GPA space.  This directly covers the
++ *    "madvise walk can log/act on the wrong GPA" regression.
++ *
++ * Copyright (c) 2015-2018 Virtuozzo International GmbH.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "hw/hyperv/hyperv-proto.h"
++#include "hw/hyperv/hv-gpa-range.h"
++
++#define KiB (1024ULL)
++#define MiB (1024 * KiB)
++#define GiB (1024 * MiB)
++
++/*
++ * ---------------------------------------------------------------------
++ * hv_decode_gpa_page_range()
++ * ---------------------------------------------------------------------
++ */
++
++static void test_decode_4k_single_page(void)
++{
++    hwaddr gpa, len;
++    /* pfn = 5, additional_pages = 0 -> one 4K page at GPA 0x5000 */
++    uint64_t raw = (5ULL << 12);
++
++    g_assert_true(hv_decode_gpa_page_range(raw, &gpa, &len));
++    g_assert_cmphex(gpa, ==, 5 * 4 * KiB);
++    g_assert_cmphex(len, ==, 4 * KiB);
++}
++
++static void test_decode_4k_additional_pages(void)
++{
++    hwaddr gpa, len;
++    /* pfn = 7, additional_pages = 3 -> 4 consecutive 4K pages */
++    uint64_t raw = (7ULL << 12) | 3;
++
++    g_assert_true(hv_decode_gpa_page_range(raw, &gpa, &len));
++    g_assert_cmphex(gpa, ==, 7 * 4 * KiB);
++    g_assert_cmphex(len, ==, 4 * 4 * KiB);
++}
++
++static void test_decode_4k_max_additional_pages(void)
++{
++    hwaddr gpa, len;
++    /* additional_pages field is 11 bits: max value 0x7ff -> 2048 pages */
++    uint64_t raw = (1ULL << 20) | HV_GPA_PAGE_RANGE_ADDITIONAL_MASK;
++
++    g_assert_true(hv_decode_gpa_page_range(raw, &gpa, &len));
++    g_assert_cmphex(len, ==, 2048 * 4 * KiB);
++}
++
++static void test_decode_2m_large_page(void)
++{
++    hwaddr gpa, len;
++    /* pfn (2M units) = 3, additional_pages = 1 -> two 2M pages */
++    uint64_t raw = (3ULL << 21) | HV_GPA_PAGE_RANGE_LARGEPAGE | 1;
++
++    g_assert_true(hv_decode_gpa_page_range(raw, &gpa, &len));
++    g_assert_cmphex(gpa, ==, 3 * 2 * MiB);
++    g_assert_cmphex(len, ==, 2 * 2 * MiB);
++}
++
++static void test_decode_1g_large_page(void)
++{
++    hwaddr gpa, len;
++    /* pfn (1G units) = 2, additional_pages = 0 -> one 1G page */
++    uint64_t raw = (2ULL << 30) | HV_GPA_PAGE_RANGE_LARGEPAGE |
++                   HV_GPA_PAGE_RANGE_PAGE_SIZE_1GB;
++
++    g_assert_true(hv_decode_gpa_page_range(raw, &gpa, &len));
++    g_assert_cmphex(gpa, ==, 2 * GiB);
++    g_assert_cmphex(len, ==, 1 * GiB);
++}
++
++static void test_decode_masks_strip_low_bits(void)
++{
++    hwaddr gpa, len;
++    /*
++     * For a 2M large page, everything below bit 21 other than the
++     * LARGEPAGE flag (bit 11) and additional_pages (bits 0-10) must not
++     * leak into the decoded GPA.
++     */
++    uint64_t raw = (5ULL << 21) | HV_GPA_PAGE_RANGE_LARGEPAGE | 0x3ff;
++
++    g_assert_true(hv_decode_gpa_page_range(raw, &gpa, &len));
++    g_assert_cmphex(gpa, ==, 5 * 2 * MiB);
++    g_assert_cmphex(gpa & ((2 * MiB) - 1), ==, 0);
++}
++
++/*
++ * ---------------------------------------------------------------------
++ * hv_madvise_walk_step()
++ * ---------------------------------------------------------------------
++ */
++
++static void test_walk_full_match(void)
++{
++    hwaddr gpa = 0x1000, len = 0x1000;
++    hwaddr out_gpa, out_len;
++
++    /* memory_region_find() returned exactly the requested range */
++    g_assert_true(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x1000,
++                                       &out_gpa, &out_len));
++    g_assert_cmphex(out_gpa, ==, 0x1000);
++    g_assert_cmphex(out_len, ==, 0x1000);
++    g_assert_cmphex(gpa, ==, 0x2000);
++    g_assert_cmphex(len, ==, 0);
++}
++
++static void test_walk_partial_section_no_skip(void)
++{
++    /* Section starts exactly at the cursor but is smaller than @len */
++    hwaddr gpa = 0x1000, len = 0x3000;
++    hwaddr out_gpa, out_len;
++
++    g_assert_true(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x1000,
++                                       &out_gpa, &out_len));
++    g_assert_cmphex(out_gpa, ==, 0x1000);
++    g_assert_cmphex(out_len, ==, 0x1000);
++    /* cursor must advance past exactly the found section, nothing more */
++    g_assert_cmphex(gpa, ==, 0x2000);
++    g_assert_cmphex(len, ==, 0x2000);
++}
++
++/*
++ * Regression test for "the madvise walk can log/act on the wrong GPA":
++ * memory_region_find() skips over a hole and returns a section that
++ * starts *past* the walk cursor.  The reported/advised GPA must be the
++ * section's real start, not the stale search cursor, and the hole must
++ * be consumed without being advised.
++ */
++static void test_walk_hole_before_section(void)
++{
++    /* Looking for RAM in [0, 0x3000); nothing mapped until 0x1000 */
++    hwaddr gpa = 0, len = 0x3000;
++    hwaddr out_gpa, out_len;
++
++    g_assert_true(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x1000,
++                                       &out_gpa, &out_len));
++    /* Must report the section's actual GPA, not the original cursor (0) */
++    g_assert_cmphex(out_gpa, ==, 0x1000);
++    g_assert_cmphex(out_len, ==, 0x1000);
++    /* Cursor must account for the 0x1000 hole *and* the 0x1000 section */
++    g_assert_cmphex(gpa, ==, 0x2000);
++    g_assert_cmphex(len, ==, 0x1000);
++}
++
++/*
++ * Drive two consecutive steps the way hv_madvise_gpa_range()'s while loop
++ * does: a hole, then a directly-adjacent section, then end of range.
++ * Confirms the cursor neither double-processes the boundary nor drifts.
++ */
++static void test_walk_hole_then_adjacent_section(void)
++{
++    hwaddr gpa = 0, len = 0x3000;
++    hwaddr out_gpa, out_len;
++
++    /* Step 1: hole [0,0x1000), section [0x1000,0x2000) */
++    g_assert_true(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x1000,
++                                       &out_gpa, &out_len));
++    g_assert_cmphex(out_gpa, ==, 0x1000);
++    g_assert_cmphex(gpa, ==, 0x2000);
++    g_assert_cmphex(len, ==, 0x1000);
++
++    /* Step 2: section starts exactly at the new cursor, no further skip */
++    g_assert_true(hv_madvise_walk_step(&gpa, &len, 0x2000, 0x1000,
++                                       &out_gpa, &out_len));
++    g_assert_cmphex(out_gpa, ==, 0x2000);
++    g_assert_cmphex(out_len, ==, 0x1000);
++    g_assert_cmphex(gpa, ==, 0x3000);
++    g_assert_cmphex(len, ==, 0);
++}
++
++static void test_walk_section_past_requested_range(void)
++{
++    /* Section is larger than what's left to process -> stop, don't act */
++    hwaddr gpa = 0x1000, len = 0x1000;
++    hwaddr out_gpa = 0xdead, out_len = 0xdead;
++
++    g_assert_false(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x2000,
++                                        &out_gpa, &out_len));
++    /* cursor and outputs must be left untouched on failure */
++    g_assert_cmphex(gpa, ==, 0x1000);
++    g_assert_cmphex(len, ==, 0x1000);
++    g_assert_cmphex(out_gpa, ==, 0xdead);
++    g_assert_cmphex(out_len, ==, 0xdead);
++}
++
++static void test_walk_section_before_cursor(void)
++{
++    /* Defensive case: section starts before the cursor -> stop */
++    hwaddr gpa = 0x2000, len = 0x1000;
++    hwaddr out_gpa, out_len;
++
++    g_assert_false(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x1000,
++                                        &out_gpa, &out_len));
++    g_assert_cmphex(gpa, ==, 0x2000);
++    g_assert_cmphex(len, ==, 0x1000);
++}
++
++static void test_walk_zero_size_section(void)
++{
++    hwaddr gpa = 0, len = 0x1000;
++    hwaddr out_gpa, out_len;
++
++    g_assert_false(hv_madvise_walk_step(&gpa, &len, 0, 0, &out_gpa, &out_len));
++    g_assert_cmphex(gpa, ==, 0);
++    g_assert_cmphex(len, ==, 0x1000);
++}
++
++static void test_walk_skip_equals_len(void)
++{
++    /* The whole remaining range is a hole; section starts right at the end */
++    hwaddr gpa = 0, len = 0x1000;
++    hwaddr out_gpa, out_len;
++
++    g_assert_false(hv_madvise_walk_step(&gpa, &len, 0x1000, 0x1000,
++                                        &out_gpa, &out_len));
++    g_assert_cmphex(gpa, ==, 0);
++    g_assert_cmphex(len, ==, 0x1000);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    g_test_add_func("/hv-gpa-range/decode/4k-single-page",
++                    test_decode_4k_single_page);
++    g_test_add_func("/hv-gpa-range/decode/4k-additional-pages",
++                    test_decode_4k_additional_pages);
++    g_test_add_func("/hv-gpa-range/decode/4k-max-additional-pages",
++                    test_decode_4k_max_additional_pages);
++    g_test_add_func("/hv-gpa-range/decode/2m-large-page",
++                    test_decode_2m_large_page);
++    g_test_add_func("/hv-gpa-range/decode/1g-large-page",
++                    test_decode_1g_large_page);
++    g_test_add_func("/hv-gpa-range/decode/masks-strip-low-bits",
++                    test_decode_masks_strip_low_bits);
++
++    g_test_add_func("/hv-gpa-range/walk/full-match",
++                    test_walk_full_match);
++    g_test_add_func("/hv-gpa-range/walk/partial-section-no-skip",
++                    test_walk_partial_section_no_skip);
++    g_test_add_func("/hv-gpa-range/walk/hole-before-section",
++                    test_walk_hole_before_section);
++    g_test_add_func("/hv-gpa-range/walk/hole-then-adjacent-section",
++                    test_walk_hole_then_adjacent_section);
++    g_test_add_func("/hv-gpa-range/walk/section-past-requested-range",
++                    test_walk_section_past_requested_range);
++    g_test_add_func("/hv-gpa-range/walk/section-before-cursor",
++                    test_walk_section_before_cursor);
++    g_test_add_func("/hv-gpa-range/walk/zero-size-section",
++                    test_walk_zero_size_section);
++    g_test_add_func("/hv-gpa-range/walk/skip-equals-len",
++                    test_walk_skip_equals_len);
++
++    return g_test_run();
++}
+-- 
+2.54.0 (Apple Git-157)
 
