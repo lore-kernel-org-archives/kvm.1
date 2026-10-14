@@ -1,145 +1,134 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619D53D9E3;
-	Wed, 14 Oct 2026 14:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CAB37F72F;
+	Wed, 14 Oct 2026 14:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791988988; cv=none; b=NazAXNrIU+4HHgSeC7Z1+RQ2qrgr//rZFpW3yW+3lheuw4c73Lun9ZgP9VmuFs/Rl39vDlC4ykVFAC9aED7DQD4WDj5MHbfInjza8ytjc4gzFZ5iFVlfMwKRt4AENp7sFPV5KftrW0tRflE+FtuHnWGFQHnA8VHauN/JY7I1j7s=
+	t=1791989418; cv=none; b=eOqd3MOlc+Sex+kJWFgbT6lrHUSGMG2W0jIQ+XRfi+s+UaJXL9/CTeJHM23J/SrArpd6RRb0/sirwqxSYOp03l25Gn0ysqSMV8weqz1ukr8ZbFXf6qxu1Zr+C9m2LbZWfoDHLZdKUZfePbl8OiEtVSaLeULK1bwpNEMsPKyEPSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791988988; c=relaxed/simple;
-	bh=slTLN+HTnyPRDcPUmB57Ei1RxAqdQ9VfazOYgqTzQcY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UgjhyGwQVr706WWe8lamc3oNOW1mO5o4sttyEo3+T3BiSzAc3Gk41NTDRrIxRN7IqijfeWLP9qTjj26OFML+7bXXggx2/NlL3Dijb+4TBDtxP2MF5y2V8wjLw9lhDLh5rBop88Eslej2mx9loaNRqs+pt1UAC+l6SBTBRUW/Ghg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=hKxNDQ+M; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1791989418; c=relaxed/simple;
+	bh=1ZGFJL3aWBxdpm2daJRhOsohwWnF9u/jnnIW8uUSFdI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=XBIeaKuEJ5ed0tp3tPqnmwHoae2MxjP+LJ1lZqf43Y9y0N9GBiUK5+iapYakOZSR9ol1doqJPyQ8euaSj4xZTIKWibL6+RcDiKQY0DldxoA+mjfXERKbj1h/jW2xyip/xdFk4r2iyLviIf8GF5UhHNCNnkwmM+KDKhniyTMY3xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BM+UwMfH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="hKxNDQ+M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=hcluCPw1guoo6eTwrCk1DCm8wcF/REa2+vS/gGt+sB4=; b=hKxNDQ+Mxr8X0fXgQst
-	/YjlCa98braEHiObqAQKG+I7vG6ASme9WEz7OHdIuQoBQ7mS/yKw92c7UfFjYRlkM/SX9Elk64WQl
-	0/ybId+BHOwJm25kPFfLmOrrxG/DAnuIgXvag/SiF22z4RCcS2pTdRWnYq3fKXh5qr2aAf8E1RRKh
-	B3xoVHiWYuUjjdZsAy0kefl7DJ2lLt//dRyehTGyoUNkkCb4WrnreGcmv0xP+X+sbEbsyOSrm92UC
-	i4P4L6LPwv0RU40qqChiewDx25NGPpTnyEQGqizEOU6mKIY2CsMbmvnbWr/R1VTz7P7o7d7DXsQ1a
-	meV6BVNBgwjMF2g==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xH08B-005A8J-1T;
-	Wed, 14 Oct 2026 16:42:31 +0200
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Wed, 14 Oct 2026 16:42:22 +0200
-Subject: [PATCH v2 2/2] mm/huge_memory: deposit a page table for a special
- PMD copied by fork
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BM+UwMfH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0002F1F000C4;
+	Wed, 14 Oct 2026 14:50:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791989414;
+	bh=NdWDzbW7Y26htAfpjZvTCflFdSCpG0s8lhU2ZneTFLQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=BM+UwMfHAZjW9N+hXqGXqJO9+J70Tu+8At5e5U9AabuLJPkoU+OY5Q1tGeuDSRar7
+	 h+ueY9Vo+zchRUUDgnBlJpJjetO+qPXf++oPOSRIyP/PLLyvuOMCgyJOlm++Hbpw60
+	 91hK/nZUCLHOb407EzR1u0TPmbD+57P+JLtsy0JLqNWJLg6hPEMYNaJhx/1+SxKz0d
+	 SO9dytJU49vKpXLjbMQzrDTGL+wUdcHlbtIZVVNCRud1aDPerhS0f2Ud7adqwIcLSQ
+	 +H4U30KC2ow3o0gXS5ee0f1ShRWTDgZpMUZXwUlPNsa0ImzI79zjWNk1pRc+3suPXr
+	 gOVfAi3aygJUg==
+Received: from stl-compute-04.internal (stl-compute-04.internal [10.204.2.64])
+	by mailfauth.stl.internal (Postfix) with ESMTP id 04A4D780043;
+	Wed, 14 Oct 2026 10:50:12 -0400 (EDT)
+Received: from stl-imap-11 ([10.204.2.102])
+  by stl-compute-04.internal (MEProxy); Wed, 14 Oct 2026 10:50:13 -0400
+X-ME-Sender: <xms:pJbParDoKmXnnnpeCXDM-T7ZQy3mvEAFl8leKVWTW8fxLoSHruK5UQ>
+    <xme:pJbPasUGIp5Y-WerYrbOqfCqOomhS8YNkL3QSuUtKHjrt1PtIhP5Tu_WX_moXYsdi
+    sbHexPhmB_BmED0e-qA-2512EZv-PGP1oM7DEoJZYvBXbW1hOGKzMw>
+X-ME-Proxy-Cause: dmFkZTEBp4CSFP+oEygyR/ha7jJPYfJMSPM5LgWWD6WbfqNZUsOvuFcngQ6E2/sdCMTQyy
+    HijyMuq/lh8owh49Uvpdcd1Ra8UygobWNKOnsEZkYTkmkHBveua5QlCVL0sCLNdxkZT+w3
+    DLhzUNIRhU4ZpiQON0x0kMLOeVf1NUWdQo8JyVcvXXYMchFoGUAJI+xNE/ThwwUpa6FP20
+    cODEKLQFrG3geSG9+uwSFuaKXh/2ud2Hqj5zJA8H7nV9YIwFspm4XSoh0NWLuXc9SN7nF+
+    M0GU0dQmTpL8asKz2BQ4XwgO2/Sbpm/VnJLXVHzZvHTjDZHcObiXGKyIKkXuB2XL3tAzYg
+    g5OGTBD8KSmGCXSDu0gnl3UHb3Lp0SpglQkUX+piCkkNEgINFXYTsBjDIeCtd2BdV9QJQ3
+    mTfP+iSHHMJzo+KhWjJukhVQ8api1RFiaA7pywTevfwudi7iFEWHwbF3fD5qNbbxrYH6AU
+    uYTVm5lCHKo9KUELmKH5bJ67yzCta8QTOKdU30qDP+TjTRIjQ+yKitK4LMuJrfSdbT2I9F
+    XD2Zr3H2f1O2VvIbU3//Z6dHBXNQw8Z3KtlE1yB8wGuWJDbUxnRMiVGCy3EYOa2136W6Bm
+    7OdRD5lAU7SoYDdBdbK4z9I3J6kegvsNGaHYnREsjFZCq7Mj6bavvPFXsDFw
+X-ME-Proxy: <xmx:pJbPansXMvJtbNWVaV-mNd-qlczn-gGt_SH9XPSu00VX_1SCUwMIlg>
+    <xmx:pJbPavaCY2nnNd54zW53nb1b3n4NiW-6Jz-Ae3Sgp4IwUoSeeyOUxQ>
+    <xmx:pJbPahNykOFC4DtN7tXyMI1gDyWwjUYT8QfRvRRh_Su1dkRJTn2MGA>
+    <xmx:pJbPakut9LU5_6VoGmrV77P8-_f8MaRAa1YriFmU-18E2Z6zPqispA>
+    <xmx:pJbPapJayEVieuXZFLVJRdxfrNSvTiCPGOlJqmlWP5cgxmEZki4NOH5n>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.stl.internal (Postfix, from userid 501)
+	id 90E9119C0067; Wed, 14 Oct 2026 10:50:12 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Date: Wed, 14 Oct 2026 17:49:53 +0300
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Bjorn Helgaas" <helgaas@kernel.org>
+Cc: "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Logan Gunthorpe" <logang@deltatee.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Joerg Roedel" <joro@8bytes.org>,
+ "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+ "Tushar Dave" <tdave@nvidia.com>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+ "Chaitanya Kulkarni" <kch@nvidia.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Jens Axboe" <axboe@kernel.dk>, "Alex Williamson" <alex@shazbot.org>,
+ "Ankit Agrawal" <ankita@nvidia.com>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Randy Dunlap" <rdunlap@infradead.org>,
+ "Sumit Semwal" <sumit.semwal@linaro.org>
+Message-Id: <eb8e0edd-4c4d-402e-9875-bdbc6d191edf@app.fastmail.com>
+In-Reply-To: <20261014132353.GA1625948@bhelgaas>
+References: <20261014132353.GA1625948@bhelgaas>
+Subject: Re: [PATCH v11 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-2-e1548488fa68@virtuozzo.com>
-References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com>
-In-Reply-To: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v2-0-e1548488fa68@virtuozzo.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
- =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, 
- dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Sashiko <sashiko-bot@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2320;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=slTLN+HTnyPRDcPUmB57Ei1RxAqdQ9VfazOYgqTzQcY=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBqz5TVF9flfaIoTBYEiUAWlbx9oilAi3NU4+UWI
- atXUxHOcduJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCas+U1QAKCRBRlgpH+WFc
- KjwfD/9U0aEkzB3l6KdM/Gq9P4U7CV+cgd/WlsK1UMK9FIbgJK5laBYK4Ck5WwwgRBu9UZ3HtKf
- dD7edkPu8wofgeRbl1WdoRIqbuXUG0I25ZocjDd/bU92I4JWUTAgDBVT3MfWlF8qzL9k1dB2v/x
- 2jUSNletnpdxeWXf3f2Pfs3ir7L0eWLWKyzIb6FjMSLYyuWUkyGc3UoxTgezkHBDEfrsmB3MDHP
- Mzml9YdTYFrhlm5uLMDQIRz7tw1/tyXwaKXB5Hspr53+rZX2exiKHT7YSXiIQplnc4hSGYGt7bD
- 5OdsSBg/x8Em5EoTBZyXjEBZ2E9e6FQfIeFs/8TFGdsZs9bABelVioMTVAw8k6qtI3Pvs8hkF+u
- +lgubCv6nAg80h7jbyf73ScVaQ/q8A7eoDKvlwq0AWIjpCr+qUExs7+xoYiWDiEn6xwKnBu8MVh
- fKyARguMKFEU5frQbxbblhR5ZEZiTj4lCfHourTERhuUCcLcZhsYpoHjJvlUJUi+Z5ca2jkmtQv
- f0qsdex4TvgJzEF2NEaHT4FGMDkywzg6MTIzEFOTVmB+/LVcA77yPvXH7IlaNSM+rI5k5Cs/Ed7
- /hkF7GUMKFLVY+hCE6Owk4FqZF5P1H5FQOWL1zOyU/h6clHjiV+CZAuv5Hva7D33XDc/5Vi5FkJ
- yiWyJbgY4OozYGA==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
 
-Where arch_needs_pgtable_deposit() is true, every huge PMD needs a
-deposited page table. ppc64 in hash mode keeps the hash slot array of
-the huge page in it, so vmf_insert_pfn_pmd() deposits one for each
-special PMD it maps.
 
-copy_huge_pmd() copies a special PMD into the child without a table.
-The child then dereferences a NULL table:
 
-- on the first hash fault on the PMD, in __hash_page_thp();
-- on the zap at munmap() or exit, in hash__pmdp_huge_get_and_clear().
+On Wed, Oct 14, 2026, at 16:23, Bjorn Helgaas wrote:
+> On Wed, Oct 14, 2026 at 09:53:47AM +0300, Leon Romanovsky wrote:
+>> On Tue, Oct 13, 2026 at 05:25:08PM +0300, Leon Romanovsky wrote:
+>> > PCI P2PDMA applies Request and Completion Redirect throughout both paths.
+>> > This misclassifies asymmetric and nested switches, and reports one answer
+>> > for every kind of TLP.
+>> > 
+>> > Three ACS controls act on TLP attributes the Requester chooses rather
+>> > than on the topology: Translation Blocking and Direct Translated P2P act on
+>> > a Request's Address Type, and Completion Redirect skips Completions carrying
+>> > Relaxed Ordering.
+>> > 
+>> > Evaluate each direction at the path divergence, decide every class from the
+>> > one walk, and treat a client with ATS enabled as translating unless its
+>> > driver declares per-mapping ATS.
+>> > 
+>> > This completes the P2PDMA side; dma-buf and mlx5 follow separately.
+>> > 
+>> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+>> > ---
+>> > Changes in v11:
+>> 
+>> 
+>> Bjorn,
+>> 
+>> Could you please save me from the AI-bot attack? Every rebase seems to
+>> uncover another bizarre pre-existing issue. It never ends.
+>
+> Can you elaborate?  I'm not sure what you'd like me to do here.  I
+> don't control the Sashiko reviews, and I thought Sashiko was recently
+> changed to put pre-existing issues in a database but not in the email
+> responses.
 
-Allocate a table before taking the page table locks and deposit it
-with the copy, as insert_pmd() does.
+AI reviews are not deterministic and every resubmission gives us slightly different result, which is in this phase of submission is  full of hallucinated flows not applicable to the upstream.
 
-Fixes: d1503aa9ab805 ("powerpc/64s: Add support for huge pfnmaps")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com?part=1
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
- mm/huge_memory.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+In addition to upstream Sashiko, i run everything through local one with slightly better models which hallucinating even more.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index fcea98f0d8865..d53db73f52676 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1961,6 +1961,11 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	pmd = pmdp_get_lockless(src_pmd);
- 	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
- 		     !is_huge_zero_pmd(pmd))) {
-+		if (arch_needs_pgtable_deposit()) {
-+			pgtable = pte_alloc_one(dst_mm);
-+			if (unlikely(!pgtable))
-+				goto out;
-+		}
- 		dst_ptl = pmd_lock(dst_mm, dst_pmd);
- 		src_ptl = pmd_lockptr(src_mm, src_pmd);
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-@@ -1974,6 +1979,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		if (unlikely(!pmd_present(pmd) || !pmd_special(pmd))) {
- 			spin_unlock(src_ptl);
- 			spin_unlock(dst_ptl);
-+			if (pgtable)
-+				pte_free(dst_mm, pgtable);
- 			return -EAGAIN;
- 		}
- 		/*
-@@ -1983,6 +1990,10 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		 * wrongly write to the backend MMIO.
- 		 */
- 		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
-+		if (pgtable) {
-+			mm_inc_nr_ptes(dst_mm);
-+			pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+		}
- 		goto set_pmd;
- 	}
- 
+I would ask you to merge the series so it gets real exposure in addition to my kunit and specific hw setup.
 
--- 
-2.43.0
+Thanks 
 
+>
+> Bjorn
