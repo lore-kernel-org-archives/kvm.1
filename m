@@ -1,254 +1,232 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012018.outbound.protection.outlook.com [52.101.43.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8949E418346;
-	Wed, 14 Oct 2026 19:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792006414; cv=fail; b=QZw3ZkD8Y27ZnATH44eB8leDURlO1YqP/4052AJH+hodLvGaQeIcFOMr+pjgkIDbJITE7Fmg1/zG11Isi1PqdFWnB5sXMf1Q1VYCAajp7MybuLNWHtEt4AqfD2xvcg44666eMnu8rhqjZRPEeJYR+FHF5wRWy36Os0kHAV9qnjc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792006414; c=relaxed/simple;
-	bh=8gVHgDm1ycbyat5G7Ovw3fG0SiRNLIHLaqEWT+9Ska4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Va/IgWnQegKLZ0v9zzVfhy6LgXm8dO7YXyCLQFdU2iAxJuWjs0clFZOG9bPUxzC4KY8mJ5dBIo9WV5xlUfhx+M6nvh3CpQrgMxav8UhMPJLBVHuM71oxVYSesM9WzfZeVWvzWXosz8ysB/NEb5NOn2XIJWjHBJOSVdvdEsgzit4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lw1GCEv6; arc=fail smtp.client-ip=52.101.43.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9885837E5D7;
+	Wed, 14 Oct 2026 19:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792007617; cv=none; b=CKM4ktFKUVcpdkEFli89Pr2PnK01RFAg17NKxz6sB5pRacHm/QK8xzyu5pkbp4MDQMNhh6SZs7q98yY2hhgx1z83/QqEMYRX4LCqUlOLylQzBVO+SU3KN7HtnWJCCjVZcRa+TJXt2yWs6by5XT+pjtltyjmaexKFwhmLMJf0xsU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792007617; c=relaxed/simple;
+	bh=VTAoWVOCdIp/EVRjNBbfSU0WcCjzISApELWwH9sb07o=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=UWwV8p7cbnuGALyEqnS8dHJxyUEX3bgTT/CP8njCWBgQKdB/2TdXu8OueOsjaoiLs4I1kNez0EJmXXC8BKpBqYoGYsbhmppJFgGQ5EQpxN5EuMFZPnm52ByJeLoSLVDvoz7vfgW2J4XNsYHpTDvbB5YRLZB9amYg+FRjDv0V9ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jRtNLkKg; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lw1GCEv6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B/OHLYcgcTwF9TdH5bVyn3vTllDG3qeZzIlFkluMYi7Zfm6xUaSFIb/+gi9sxDj2zWRWoG8sT7HacaiyAX3qXQ53+jDPUXtiqfap1flrKRSYHmwpK5rlrb0dwOEXU1Gc4rrYn+I1Q++6XIACiVr7kmTVFKfC4tZ4iW8oaG85oJXzmLlLITOpCGmfowvIxn2XYMpoyQfEpZl8806faIOfk+vuKVzrRSdMMm/SBFwL7HFxjlh2FykudijQJbZqTK7xloEe8sFt075IydXPrB0owHU5djs+3nXEUZzgKQ7wjwUB406zTDTd8g9caE3wrd93WBhvXpMRCgcIDsjvT9VvbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dlIUr+jKklOP5V0YF0Qbm88nubKrpkEpZrHG4Hzm/h0=;
- b=WYip3WU+Hc2dfw18aiy+pfJf9DrymUpwF/dkunOgkY//6AH8hkxMtBshR9v4muAAdUSvjukoZ+Mv30bkuiJuKVc5sPy36ES5wbu3i/Nu52aBUHe1VZDH20BZtcSuGvWW45RmBjt0xoBHV5FeA/WvP2eXxrFHHw4KorLLUHHl6wXnmmKEBwkQTqvmjrylksdW6V0w92w9rl3kL/nmAIj4IpE5gWQjymqUykJ1rYW2ixkpzZV1cu8yKZZdnqNDrDxWBxLeZ0VuRBB46bUdg+PlHLngatE091ikGR/vE4gp7MIKrQ9uwBQDA2KrE2Y/32AgSEwHNWorDFwfR8pCB1FcZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dlIUr+jKklOP5V0YF0Qbm88nubKrpkEpZrHG4Hzm/h0=;
- b=lw1GCEv6dqBRBXWkUYQsnFqMkNTTirhAs1M5DBlgOOMoSzfUfwHBGtzmFxgEFvtWzI+Oyf9uEkD7pWlFoPxixN4oSyknYhLofGR4MftkMkUd0zc3d9WPyuGV8YN2kwf5fyw5KNJcTibHFiIzw44KZMG1e9OjdqAEGD4puJ6tzG4=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by DM4PR12MB9069.namprd12.prod.outlook.com (2603:10b6:8:b8::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Wed, 14 Oct
- 2026 19:33:30 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%4]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
- 19:33:29 +0000
-Message-ID: <9f16cbfe-7864-4733-b4d3-4da03d731d7a@amd.com>
-Date: Wed, 14 Oct 2026 14:33:18 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/sev: Only announce RMPOPT optimizations when SNP
- is enabled
-To: Tom Lendacky <thomas.lendacky@amd.com>, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1791905953.git.ashish.kalra@amd.com>
- <11df35266257afcad3825a8e89c965bb0cf7cf34.1791905953.git.ashish.kalra@amd.com>
- <a66f932d-4ca2-402d-9f76-628ef53a1107@amd.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <a66f932d-4ca2-402d-9f76-628ef53a1107@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CY5PR18CA0046.namprd18.prod.outlook.com
- (2603:10b6:930:13::8) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jRtNLkKg"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69EEiUWt695300;
+	Wed, 14 Oct 2026 19:53:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=osQWi+
+	x3dCVtRDk5d4sxyNoA2fuvURWOk0pEbZ6z7Bk=; b=jRtNLkKgRZTDolUhmh/Otg
+	8TA6z/j0obnIyMgBRkvOKnt+b1LVR4Wk80zkRy3HeSLbfQZbnrexvk7ShtLNyYR9
+	v1ethDm9SO8lD9eHN1nI9Kcg/g+Xbp56eiUQgbTRx6q/IznZjKbRz5KibuoSKRHv
+	BP3hYUga43/+YFi+1Zk/gxl5yooGLJ8pePvrlIlpmAAMsrGRGPg2QTYfubjWjr6e
+	fO8IIkd2068wNGzHkA5aq01H8boQ75pIy+NANtQ28IM/y2nuWI0SiSxqKyXyIxwa
+	vnfJiC4PdwyfJqgzI9gqkmMppCKs0JXNP+r79MrJFXGlq2GJLERL+CuaJlL1lBaw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dwhpfud-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 14 Oct 2026 19:53:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69EIYQJJ3639707;
+	Wed, 14 Oct 2026 19:53:34 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h9wvg47kk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Oct 2026 19:53:34 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69EJrXit31523348
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 Oct 2026 19:53:34 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1E4258055;
+	Wed, 14 Oct 2026 19:53:33 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4104158059;
+	Wed, 14 Oct 2026 19:53:33 +0000 (GMT)
+Received: from [9.61.132.24] (unknown [9.61.132.24])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 14 Oct 2026 19:53:33 +0000 (GMT)
+Message-ID: <f0195620-30c2-4dbf-8c38-b6343a92c9f9@linux.ibm.com>
+Date: Wed, 14 Oct 2026 15:53:32 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|DM4PR12MB9069:EE_
-X-MS-Office365-Filtering-Correlation-Id: 772719cf-1564-4a7a-3a06-08df2a2a05ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|18002099003|22082099003|6133799003|10067099003|4143699003|11063799006|261009223027099003|921020|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Cjw9wSaocTTeGonGcmP1+LbQH25pjFmoYFKpxU58fckY6Hvd0pja9XIZGPS/yL+1wjhdN6Y4m+hVuL5+yjwpXCJ0mWUB3ffnG8ckxITyWxbhI+9o4Zn/psl7GQ+4+5kpCKiW0ZUQppmyTw9FUFnfLoie1rrelDTahzrgD8uL69TSrSKoLhn3uvoNewmroWzYIa27xb4JT1XWvfFksjlyExBQqP2enRzZbPPGoqQnhCCabHOvgWh6kO+ZSFKb4SfOkuZCKCRPyG0l7geRoV5b8J/LgPZ0TrzElEvfQzOwjbtV1aihCZrll6LOkpUCU5TVKN8W7rJUBFQBocDoCMJIA2f/miMM6Row91QMfh0r+L/YFUqePTu9a20//iSY31hJaLBW7SDWk87FD7uS0/mr+ykg1Fm4JGYy/qKwLuOh7MWs79JzgYLGyIYYO1TTCwAJfdaO3cLcZOCH6m2yLJLYT/q2UUNmTZiDxhCnbxRDOaJmpsN1z4ECpLUDeFcy2RHLr+D+GIE+cQLgRKxLQ2q2QhEi1gp3WuZ6N61ASRMyqglc+a0oxHhV/rXAR1evNAcP9JMtqUp8lJeUaSJoqpqWxHTCIeC1NLF8Z0KKZl2iHw478kbhzmmhMCLMQpgUX1MjQ+9gWu9HYWe54AtRyZiN6cVelt2g5akvvJyRnHqGIxPK+8+aYHZytOD1XRw36Ii3XJ+oEYLwp+SuznTzsR/lWQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(18002099003)(22082099003)(6133799003)(10067099003)(4143699003)(11063799006)(261009223027099003)(921020)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUdnMGdnL0NvQ0R2ZHAzK1FOYnE5OHBKWGo0SmU4QWtvV052K3pwVmpFZkVq?=
- =?utf-8?B?RnNRTzVEZDl6R04rUVRYdW9GK1hWT21tY0dTb2REYnQwZlNFcVIra3RrZGcw?=
- =?utf-8?B?QkJMNEZGOTNLdFFocUxxbjNpaFFmQm9YdG9FbHJwcjF4cC9wZDVLV1lxRS8x?=
- =?utf-8?B?MWFVdHlPK2ZWTzFoWWtSc0xqWjhMU3FiY3VNWmliQytxNnhDaStvaDFSYnAw?=
- =?utf-8?B?MEhzblJMRHE4UGFKWTd3c005TjE2OXQzQlRiVXZNcXFiVk5PajVYQS9WRnNF?=
- =?utf-8?B?NUVmazdvM2NUbVZoQ2Eyc1lsL0xBVWxjSVFsT2RmZHo0eUVZTSsxdlZjYmFH?=
- =?utf-8?B?QlkvSDdyTndhU0NLbDhFSHB4S0NQS1FDV0Y4VU93aXJrU2Y5cEd5Y0l6UW44?=
- =?utf-8?B?ck0rSExhZ2U3MHVia05nU2ZoVVpoTUNSL2lmZWlCMGpPMldmTjF1YjAyVSts?=
- =?utf-8?B?eVdLUDNUTndFaW9RZzJwVlV5OHJuUk1XZVp3OG1ZNWxPcFhPUk9PekY0RU9x?=
- =?utf-8?B?cERJcVQyRzVGSmhFMFRvdnVXMmI5aDFRY0lTZElxZ2tVWmxyRnpsaE53RnVL?=
- =?utf-8?B?NDZPQXpweDNmakdXRWZsOXU4cnYwbnB1d0prSkZhbnhMWmUvRlR0d2Rka0Yy?=
- =?utf-8?B?WTcwOHJjVDlGdG9TYkEyQm5BdDZBK1NGY3FZRm9UM1djU2h3ZnJ4bDRRSXJz?=
- =?utf-8?B?a2NSZm1PQTJOdmFFYjI4MTQ2SFd0K2daWnhodzFWM3B1QjFUK0hBQmFBWE1T?=
- =?utf-8?B?ZU13MDIyL3RHdnVWRWVDMHdVMmo2YTJWUUh6NUp5eE0wWWtnM3pKcG5VSUVw?=
- =?utf-8?B?dk9nRllxS0UzZlBMS0dNYVc3RGRqTkVqVHRtRkxJUFluS1hyRUlCNWdOWHJ4?=
- =?utf-8?B?Z1c0VjVzOGRaWUc5UUVwMmcvdVZUUzFLUFR0MWVwU2d5L0o2eE9LbDA4TFRX?=
- =?utf-8?B?ellvSHZyT1NyTTlwem54THYwWUhCZC9VN1l5NGhhTFd5YTVjNHJpRmZISnh2?=
- =?utf-8?B?Y0ZoYXVFdnE0YXFaNzN3K2JEVi8vYXZPbE9kVGxianUzNHRjc3dEbW1nS2lt?=
- =?utf-8?B?YWFxQlNoakZ5RGpjRnR1RzNua0ZPTjcxeW9UOGIzYWRaYzlySGhLOGNObzl4?=
- =?utf-8?B?bnRldVJ1RWhWdGhZZS80VGttOGlHTjltQlU4N0xsYjQ1ZDNXTU5FRGRkUDJx?=
- =?utf-8?B?UnJpK0lNd1Q1enZZK1N3aDZ5MHZ5Q3NNVDlISUQ2OTVpOTR2eGVzZ2RoNXg4?=
- =?utf-8?B?Qk1MM1ViSllhems3YlBiRlZERmwvbU1YdVFjbmhmRzRVbHJ4aEpwQmt1czlZ?=
- =?utf-8?B?cVY0NUQ5UG9ZczJYOTA2Q0I5ZGtvMzVheDRaakZhc3NqNlc2NmRTVWdXdzl0?=
- =?utf-8?B?UlU0Vlpyc0FBZVdUZURPanI3aGtiNXMwd3BIcFdsZlczZ2p2Ly9EbDJrcTVp?=
- =?utf-8?B?UzZHSG1HM3MvZUQ3eFJIaHVITDlIN1YvSEF4NFF6aUFCekpERnd3WGF1dTRT?=
- =?utf-8?B?TTd4cFcyR0ZTaWUyR2dJY1lIdG56aUhsZ0lmWGQwOERMR1p4aHhyUk5FeFJN?=
- =?utf-8?B?bC9naXM1SjEyYklJS0FpK0o1MUVqK2ZQb2pOckw2TVIxdFdDWXVNNEZ6b3Jh?=
- =?utf-8?B?cWdsNERWWUpCcUZsUWZIUHBycWdEWk0rbERDQnFLZ0o0L0xXcGdsQTRRTktF?=
- =?utf-8?B?aHgzOFJFMDdqa211a1JPZmE3UERkTWFTUkxOYm9lajRzTXRYOVhiWFU3emlK?=
- =?utf-8?B?aTczNXpWenZQOERxZVV1ajFnVGZhc2JDM2NiOWsyNFNGSnJlR1Nyby9NQ0Ji?=
- =?utf-8?B?QlRHM1ZhdnpEa085SVJFWk1vR292Q1lWdjRuREJnTnE2K3pjcHJaMXZWdUFF?=
- =?utf-8?B?QThDYjJlaDJ0Z3VVN1RkUE5ZdFUzYSt6cHlhMXNwRWFQZ0hhNFRtYjFFaFh2?=
- =?utf-8?B?bWJDb1AybXVlTFpBV0hQV3JsM2JUNzNMWm1hT3ZIV051eHY4YnErVFhYSFUr?=
- =?utf-8?B?QWRvQXA0K1JscHhHYVg2dzlFN1BidTZ0Yi9GOGdEWVZLT1pLWjh3S0hMck92?=
- =?utf-8?B?RlJWU1dzZDBQYzNOcjhxR2RkVFZrdXR5UW5kRGdxS2dudWt3QVBMUzk1NWhT?=
- =?utf-8?B?NEpJeXJOZ1FTUEhwOFZGN016MlVidHMwWTJwT25KSjZJTjdXRjFTS05TRmJq?=
- =?utf-8?B?NUVwR0FGNnFYOW5iN0pScVJHVysvdDdTaThzeHFTMjN3WW1FbGJyaWJqUlBK?=
- =?utf-8?B?Q05aeDFmRVBCc25WT25NZWZDdTFvNGRwa1EyaWZFODFXa08vQjBQVTJKbVJr?=
- =?utf-8?Q?hCP0z6RJzZon4abvdc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 772719cf-1564-4a7a-3a06-08df2a2a05ce
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 19:33:28.9641
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2GMeg354a0nWpz4SDjYDT4TP0h/wZhAamU7VY6auIcZ+wXYTtsz6IAUlk6R2KMEvYq+PQswXZ1zhcyEZalxYbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9069
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 11/15] s390/vfio-ap: File ops called to resume the vfio
+ device migration
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20261013153219.3534306-1-akrowiak@linux.ibm.com>
+ <20261013153219.3534306-12-akrowiak@linux.ibm.com>
+ <sashiko-outbox-170099@kernel.org>
+ <35a8a596-ffe8-4b7a-89cc-f82465a9dd26@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <35a8a596-ffe8-4b7a-89cc-f82465a9dd26@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDA3OCBTYWx0ZWRfX5igSh93F5sED
+ /1cHu/FbyhhyocUwrPSeWx+ThNgdf2R0OaGi6Q6+egqnHBPW3Ur3a1Y0PWvN/dinbAWAQYBA3S1
+ mODcdKkieTrbZwdiVP30V0TLyNSM9ug=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDA3OCBTYWx0ZWRfX/J6AapGvwdm+
+ HnW1s5Z5PrJkM7C8GMwvipP/cNbv21BKRcOJhR4spP1MG3dA57GSOgHdvhoWY7RwmCCOTN/Dj1L
+ 9kAWs/rZWilcSVqgCAXpz10DjT8ARHuiTy/UsZK12wKt7wK/tTkbjUNVPzVKXUjbbuXeIwafCmi
+ tM/rAf+enRrC9pRFsry71CXTgqS0My9xAGyPRTmcoyZyZEChjfDTKWjRjFV7NCMZC3jLR78Tbqt
+ /jTGaTnz/4zI9rRoBXhqHr1rMVhQLElvD723q3K+gHnzyQoq52xLXiHr1IYmflJ3v+GmFqmu2T2
+ 4IurcP2hhrDqUzc6lkzEFc3niP875FMw0Nsax0l4EAmOS3A29qoKFKWdliZTHitfAtPutorv9Gm
+ dR3Xyv8oSrBaY2QOIhxWrBSJZdNKttWdw+kyBku7IOSHT0fg/JaCNVR2XLoqeqwYwP4/jC6xj66
+ Ly39CIENa4nGsWakffw==
+X-Proofpoint-GUID: f40qlw7HclvtUX9o6rBt_CsE2PWIlE6a
+X-Authority-Analysis: v=2.4 cv=RoFQvymK c=1 sm=1 tr=0 ts=6acfddbf cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=YTg-7m8nlAKSPyv0w3QA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: f40qlw7HclvtUX9o6rBt_CsE2PWIlE6a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610140078
 
 
-On 10/14/2026 8:24 AM, Tom Lendacky wrote:
-> On 10/13/26 10:44, Ashish Kalra wrote:
->> From: Ashish Kalra <ashish.kalra@amd.com>
+
+On 10/14/26 3:08 PM, Anthony Krowiak wrote:
+>
+>
+> On 10/13/26 12:14 PM, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 2 potential 
+>> issue(s) to consider:
+>> - [High] fortify: __counted_by() traps on memcpy() of ap_config 
+>> causing kernel panic
+>> - [Low] build: incompatible pointer type warning for num_queues in 
+>> vfio_ap_get_config()
+>> -- 
 >>
->> rmpopt_init() prints "RMPOPT optimizations enabled" gated only on
->> X86_FEATURE_RMPOPT, which is a CPUID bit advertised independently of
->> whether SNP is active.  On a system where SNP is disabled in the BIOS the
->> message is still printed at boot even though RMPOPT is never actually used
->> (snp_enable_rmpopt() bails out on !CC_ATTR_HOST_SEV_SNP), which is
->> misleading.
+>> commit 1f3606fec30cc37e82a55e4d85b768771f43fc2f
+>> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 >>
->> rmpopt_init() is only the software setup (workqueue and the delayed work);
->> the capability that matters for the message - an active SNP host - is
->> checked in snp_enable_rmpopt().  Move the announcement there, as a
->> pr_info_once(), so it is emitted only when RMPOPT is actually enabled on an
->> SNP host.
+>> s390/vfio-ap: File ops called to resume the vfio device migration
 >>
->> Fixes: c6c6f156d192 ("x86/sev: Perform RMP optimizations asynchronously")
->> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->> ---
+>> This commit implements the write callback function for the file stream
+>> created to restore the state of the vfio-ap device on the destination 
+>> system.
+>> Userspace reads the source guest's saved vfio-ap device state and 
+>> writes it
+>> to this file stream. The write callback copies each chunk into a 
+>> pre-allocated
+>> vfio_ap_config structure and validates it against the destination host's
+>> configuration.
 >>
->> Note: in the posted series the pr_info_once() lived in
->> snp_enable_rmpopt() (SNP-gated); when applied, c6c6f156d192 moved it to
->> rmpopt_init() (feature-only-gated) as a plain pr_info().  This restores the
->> original placement.
->>  arch/x86/virt/svm/sev.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+>> [ ... ]
 >>
->> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
->> index 43e4945e6cdf..6f5f4ee821d0 100644
->> --- a/arch/x86/virt/svm/sev.c
->> +++ b/arch/x86/virt/svm/sev.c
->> @@ -656,8 +656,6 @@ static int __init rmpopt_init(void)
-> 
-> Should the check at the start of rmpopt_init() just be
-> 
-> if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP) ||
->     !cpu_feature_enabled(X86_FEATURE_RMPOPT))
-> 
-> so that you don't even bother setting up the workqueue, etc.?
-> 
+>>> @@ -284,7 +340,7 @@ static int vfio_ap_get_config(struct 
+>>> ap_matrix_mdev *matrix_mdev)
+>>>         lockdep_assert_held(&matrix_dev->mdevs_lock);
+>>>   -    ap_config_size = vfio_ap_config_size(matrix_mdev, (int 
+>>> *)&num_queues);
+>>> +    ap_config_size = vfio_ap_config_size(matrix_mdev, &num_queues);
+>> [Severity: Low]
+>> Is it possible this causes a build failure? vfio_ap_config_size() 
+>> expects
+>> an int pointer for its second argument, but num_queues is declared as an
+>> unsigned int. Passing an unsigned int pointer here introduces an
+>> incompatible pointer type warning which breaks the build under
+>> CONFIG_WERROR.
+>
+> The async bit in the AP queue status word indicates that the response
+> code was reported asynchronously. Per the architecture, the only
+> response code for which GR2 (hwinfo) is guaranteed to be populated
+> is AP_RESPONSE_NORMAL (0x00). For all other response codes, including
+> AP_RESPONSE_DECONFIGURED, AP_RESPONSE_CHECKSTOPPED, and any code with
+> the async bit set, the architecture states that all fields except the
+> response-code field are set to zeros, so hwinfo is not valid.
+>
+> AP_RESPONSE_BUSY and AP_RESPONSE_RESET_IN_PROGRESS are transient
+> conditions; the function will be updated to retry up to 5 times with
+> a 10ms delay between attempts, consistent with how other vfio_ap
+> operations handle these response codes. All other non-NORMAL response
+> codes will return -EIO. The async path in the default branch that
+> returned 0 will be removed.
 
-Thanks, that's cleaner, and gating on X86_FEATURE_SEV_SNP avoids the workqueue setup entirely on a non-SNP host. 
+The above response was intended for patch 07/15.
+The signature for vfio_ap_config_size() will change the type of the 
+num_queues
+parameter to unsigned int. This will be done, however, in patch 07/15 where
+the function is introduced.
 
-Will add this and post a v2, keeping the pr_info() in rmpopt_init().
+>
+>>
+>> [ ... ]
+>>
+>>> +static ssize_t vfio_ap_resuming_write(struct file *filp, const char 
+>>> __user *buf,
+>>> +                      size_t len, loff_t *pos)
+>>> +{
+>> [ ... ]
+>>
+>>> +    ret = validate_resuming_write_parms(filp, len);
+>>> +    if (ret)
+>>> +        goto out_unlock;
+>>> +
+>>> +    ap_config = matrix_mdev->mig_data->resuming_mig_file.ap_config;
+>>> +
+>>> +    memcpy((char *)ap_config + *pos, kbuf, len);
+>> [Severity: High]
+>> Does this memcpy() trigger a fortify panic? The struct vfio_ap_config
+>> utilizes the __counted_by(num_queues) annotation for its flexible array.
+>> During the resuming phase, ap_config is allocated with num_queues 
+>> initialized
+>> to 0.
+>>
+>> Because memcpy() is fortified, it evaluates the maximum size of the
+>> destination object using __builtin_dynamic_object_size(). At the time of
+>> this memcpy(), ap_config->num_queues is still 0, so the compiler 
+>> evaluates
+>> the destination capacity strictly as the struct header size.
+>>
+>> If userspace writes the migration data in a chunk larger than the header
+>> size, the bounds check will fail before num_queues can be overwritten,
+>> triggering a panic and crashing the system.
+>
+> The memcpy() destination is (char *)ap_config + *pos — a char * into
+> the raw allocation, not an access through the flexible array member
+> qinfo[]. The __counted_by annotation on qinfo[] constrains accesses
+> expressed as ap_config->qinfo[i]; it does not restrict a char * byte
+> copy into the same allocation.
+>
+>>
+>>> +    *pos += len;
+>>> +
+>>> +    /*
+>>> +     * Check whether we have received all the data.  We know the total
+>>> +     * expected size once num_queues has arrived, i.e. once *pos is 
+>>> past
+>>> +     * the fixed header.  Until then keep accumulating.
+>>> +     */
+>>> +    if (*pos >= offsetofend(struct vfio_ap_config, num_queues)) {
+>
+>
 
-Thanks,
-Ashish
-
-> Thanks,
-> Tom
-> 
->>  	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
->>  		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
->>  
->> -	pr_info("RMPOPT optimizations enabled\n");
->> -
->>  	rmpopt_soft_init = true;
->>  
->>  	return 0;
->> @@ -690,6 +688,8 @@ void snp_enable_rmpopt(void)
->>  
->>  	mod_delayed_work(rmpopt_wq, &rmpopt_delayed_work,
->>  			 msecs_to_jiffies(RMPOPT_WORK_TIMEOUT));
->> +
->> +	pr_info_once("RMPOPT optimizations enabled\n");
->>  }
->>  EXPORT_SYMBOL_FOR_MODULES(snp_enable_rmpopt, "ccp,kvm-amd");
->>  
-> 
