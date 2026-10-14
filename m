@@ -1,81 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED92853445B;
-	Wed, 14 Oct 2026 13:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D96545D96
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 14:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791985987; cv=none; b=agqJ+2UrPO29QBE6h4UtFqL7U+2RKrVjrM2QByNdfl5oMpBU/vZ3h5A5/Nl56kvYtAl6QbY74EwAsDOkVfX9hwtsiu1XO0D17sXyUi09mVlF9aowI8o+Sxirx8OrH89UtahGeRGUspO/zH+1o3NisrPDRPd04hXk1pzPgqwSvOo=
+	t=1791988074; cv=none; b=kkN/sw9bA93vXB8nlyNHX8QsyTNZz35pClepuW2FY2F29gFtRoPCs6vOKtUzc4U4hTYlxXpHBUFrD2Bdjpok8tsXaYZ1MOrMwYAMXlMVAXZGo5x0H1JcTYcxN7/iiBO8br9rZZR6+e0668boKA6cB+5/avIIzi+G1hU85/x/OBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791985987; c=relaxed/simple;
-	bh=YX3oKQFid4+2wlIQM4M+cUy+JgcjW23uXS4Jv7bE5d4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=des4qQDYdwjJk5DM3Nv/lgjqtXvi/lbdpCLRLvkBBVJJTmyLeXMecTmbD8+yaMerr5KnM/eQj9pGqP8vwUCwEdJ0jqbcS7gOj/+eDERjGDudsCVIIHtAF76CBzxU6wnLclr8qxybRdeNmDVBbKDb23vlym9Ot7Q89jOwcIA2snc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6UV0s6N; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791988074; c=relaxed/simple;
+	bh=+4O3dgN8JnALS0J6zduu4TMiDSliF7CUQObkJt1qiAw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Df21pCBfxjj9jhU5bivzXh7OeBKJSgxbekUcQQu7L1jimnsJio54mabK79JWOyK2/cdSB5ZjJ0qLqaRar5ydx9I1D9GJ+XtVrJXEzLmaJkQIobCqUNUSGEv0i0D0ZnqwDxWdTjQswXXoudKMRklSEHsBBFJR7BxkF69Hi1ftGtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUloKktd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6UV0s6N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ED41F00A2F;
-	Wed, 14 Oct 2026 13:52:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUloKktd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C311F000C7
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 14:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791985984;
-	bh=YX3oKQFid4+2wlIQM4M+cUy+JgcjW23uXS4Jv7bE5d4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m6UV0s6NCYtNAyc6gKXbw6p9xcuxFVBgz5sETFnNcoD0b1VSadNMRLxMSDoEp2R0Z
-	 ayMNY2TEmre09azqpKckR2WqLRK6xI1sh0wse7E66Lbl1T1BIVN3UHs+zoSnMvZn+G
-	 smIZ7v01RFqJzpD0xouqoSw1WA6HZSMOfXW3qZHSVx+nmeONzvToNNiwdGZBMT1AJ+
-	 VPtgfE1NfwAl2DfNA93srycj8qJkEmFXS02M+zWFA5otycQ3r2ZEz3EXXi9PaCLWzm
-	 bVlKEGMeias/1TNIwPaTh9Cnu9Hlkolp95ua3rzDNdpFsKtBOqkz/3/XiiiV2Slwv8
-	 SehyAc2HzLzSg==
-Date: Wed, 14 Oct 2026 14:52:51 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Mark Rutland <mark.rutland@arm.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v4 01/14] KVM: Allow architectures to disallow pre-fault
-Message-ID: <as-I8TN27Kz6HS1Q@gremlin>
-References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org>
- <20260923-kvm-arm-prefault-v4-1-d4b0b4dfa8c3@kernel.org>
- <CA+EHjTzDYSuBVEc+SMdDa41sq-ET=m_oWW0gL9dYf+AumPYPUg@mail.gmail.com>
- <as-H1zaslO-Bwf5q@gremlin>
+	s=k20260515; t=1791988068;
+	bh=lfFmxhOLuqgGJZO0laFSH8+WRQc34Bzenr5qGk/rifc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=BUloKktdx0X1kz3N13CNNeB1e/9uIP6grtYTSFnxPG3470gzPMMq67w+1lZpD+69t
+	 VkJUWMGtKmgJ/pyKi4MQMZ50xL0EdetHz9N2S4YnLamvK1XtCGH9z8VCrhuOyRpn+4
+	 pSlv+6c1kv9jETnRTOmoMbR7Y27zzIGvGVV+uNLfe25riQtsic6xFVhmqLECbnQpoT
+	 nq4JU7pJQBYE/QoRADjfXhX/wETmu7ggy03zVTdMMqqPHxWyM9IWOft1eFxdZLmXUW
+	 s/buOSDOwlmkMAIyeDGurjoeSE0XW4HQJzDV1A2huKhOTYJZNQ45RaiH7YJzPKgIrS
+	 sKuTjwTaS8pmg==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c31a34de844so157006066b.3
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 07:27:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzAiOXWmgyWSm+V0BzbfzsH4ojsOLG5xncDKYpMpoFhatEbbYKdwoG1yZOaYrt8GTFkZoY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKDOzfYlMTg+AGT/bxMJgUQnZfgODe34COIUBIT1mXp5q6I6BpH
+	j0vx5Sr4YRLqdppzBbZaTjBt30Kxu6ZqxyUapydhcO63XnWZ+h1lhsPHS1j8ITSxaHhGnrDyiK5
+	qeskKKRUKihGNWDFu/ie4DCrk+WIv0ok=
+X-Received: by 2002:a17:907:608d:b0:c21:1b58:fa96 with SMTP id
+ a640c23a62f3a-c31a9a28c37mr1538562066b.3.1791988067406; Wed, 14 Oct 2026
+ 07:27:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <as-H1zaslO-Bwf5q@gremlin>
+References: <20261013231728.883001-1-yosry@kernel.org> <20261013231728.883001-2-yosry@kernel.org>
+ <CALMp9eQ3mz_EiV4AcmMC2CQZ47s_uf7XCbhnn7pfvVjHwsXdTA@mail.gmail.com>
+In-Reply-To: <CALMp9eQ3mz_EiV4AcmMC2CQZ47s_uf7XCbhnn7pfvVjHwsXdTA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 14 Oct 2026 07:27:34 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMYj=Bxc_8bWh=G__2C0ouiarg-WMtVCdziCvccZTugPw@mail.gmail.com>
+X-Gm-Features: AclHuK_WnIfbB2X-l5-gNuHe8WwlUpAJyDk8vl1lfYcYLbz5Ja5imyuXhMgyRJg
+Message-ID: <CAO9r8zMYj=Bxc_8bWh=G__2C0ouiarg-WMtVCdziCvccZTugPw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] KVM: x86/mmu: WARN, don't BUG, when walking a cached
+ root with a PAE MMU
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 02:48:02PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 23, 2026 at 07:52:27PM +0100, Fuad Tabba wrote:
-> > nit: the comment above the smp_rmb() in tdx_sept_map_leaf_spte() still
-> > says pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory(),
-> > but after this patch it's read here.
+On Wed, Oct 14, 2026 at 5:48=E2=80=AFAM Jim Mattson <jmattson@google.com> w=
+rote:
 >
-> Ack, will chase that up!
+> On Tue, Oct 13, 2026 at 4:17=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > Replace the BUG_ON() in shadow_walk_init_using_root() that guards again=
+st
+> > walking a cached (previous) root while the MMU is configured for PAE
+> > paging with a WARN_ON_ONCE(), and terminate the walk if the WARN fires.
+> > Walking a cached root with a PAE MMU is a KVM bug, as PAE roots are nev=
+er
+> > cached, but there's no need to bring down the host, as KVM can simply
+> > bail from the walk.
+> >
+> > Note, the BUG_ON() is currently reachable by a guest if TDP is disabled=
+,
+> > as KVM walks cached roots even if they were created for a different MMU
+> > context, e.g. if L2 executes INVLPG while using PAE paging, L1 doesn't
+> > intercept INVLPG, and L1's 64-bit root is cached.
+> >
+> > Add a common error label for terminating the walk, and use it for the
+> > existing invalid/dummy root check as well.
+> >
+> > Fixes: 7eb77e9f5fcf ("kvm: x86: Add a root_hpa parameter to kvm_mmu->in=
+vlpg()")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: LLM
+> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > ---
+> >  arch/x86/kvm/mmu/mmu.c | 13 ++++++++-----
+> >  1 file changed, 8 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index aadd5bdc2c97a..126faef5a6476 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -2558,10 +2558,8 @@ static void shadow_walk_init_using_root(struct k=
+vm_shadow_walk_iterator *iterato
+> >         iterator->addr =3D addr;
+> >         iterator->shadow_addr =3D root;
+> >
+> > -       if (WARN_ON_ONCE(!VALID_PAGE(root)) || kvm_mmu_is_dummy_root(ro=
+ot)) {
+> > -               iterator->level =3D 0;
+> > -               return;
+> > -       }
+> > +       if (WARN_ON_ONCE(!VALID_PAGE(root)) || kvm_mmu_is_dummy_root(ro=
+ot))
+> > +               goto error;
+> >
+> >         iterator->level =3D vcpu->arch.mmu->root_role.level;
+> >
+> > @@ -2575,7 +2573,8 @@ static void shadow_walk_init_using_root(struct kv=
+m_shadow_walk_iterator *iterato
+> >                  * prev_root is currently only used for 64-bit hosts. S=
+o only
+> >                  * the active root_hpa is valid here.
+> >                  */
+>
+> Can you please rewrite this poorly worded comment that now explains
+> your code below? What do 64-bit *hosts* have to do with this
+> bug/warning? I assume that should be 64-bit *guests*. But, even that's
+> imprecise. Aren't prev_roots tied to 4- or 5- level paging (i.e. long mod=
+e)?
 
-Oops disregard!
+I believe it should say that PAE roots are not cached, so only the
+current root should reach here. Right?
 
-My mail client managed to confuse me :P I see that Marc already fixed this up.
+I can reword when I respin.
 
---
-Cheers, Lorenzo
+>
+> > -               BUG_ON(root !=3D vcpu->arch.mmu->root.hpa);
+> > +               if (WARN_ON_ONCE(root !=3D vcpu->arch.mmu->root.hpa))
+> > +                       goto error;
