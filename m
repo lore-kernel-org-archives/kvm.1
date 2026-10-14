@@ -1,294 +1,184 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail-24420.protonmail.ch (mail-24420.protonmail.ch [109.224.244.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF3B38655A;
-	Wed, 14 Oct 2026 18:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B109930F803;
+	Wed, 14 Oct 2026 18:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792003979; cv=none; b=FQowq+V0qvArQKcULXWx7ta1b+jXJncr/rei0Tuj6EDRcT7fhOJ6k7T3syV1N5d3VN3Opz7kUQWiFhumepGSWg3FrUEX0KSmm/Gm7T3IdCwwmWbLfWXDxcfcOHZlgco5Sdd0xtMmijOW63hu0YPg+iQEE2RLr+v0X7StC/xEu3I=
+	t=1792004267; cv=none; b=fd2Tem/DEjNU0Em5GYaJkMTZ2iOF0AwB4x1eTJC/jTQ7uJBfHiCkapyj0NaF9Z+rdmUJY7z3HJNFWe9uARkE/dEN9aXmS6peZI5oTpWyHWzFBbGPaBIpyJFPRlxMv8i5hjapg8aZDlGL9ro89sgyXdgpjFnH0yG0njRv8VtJN7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792003979; c=relaxed/simple;
-	bh=NtXXmUFh4yEcf5lZeCGSfPecnP0mif1ljL2uiN80xfU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ESss654t7Z3T+9j1flw+uhyHaH572TZ4CKxraBuq7sReeC92hKDwOOI5dxvOCO5Hxsg2gBwD0+S08XDJ8cuod5Qv3lECLf9a7NXV6OS9XEm8gp6NiFAJ1FmTik9CluUz8z+9gzPXZWi88T/DI3cvAhJcToNPEYi95fTDXHliqO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YEaKUVGw; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1792004267; c=relaxed/simple;
+	bh=2ky2JEHkf5oo9nqbXUOOwx5CR5R9dikAiDNnQyDS/x0=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Iek3LnyV6FlispRq4vEXLX+cVX77LKxkWjUgk2f0JnJXjUN8oPKvDDpi3NN12QjZKsmfRGq9iIOEYHdJWkSt60nseqTfE81iz3OorjWb0Xg6SDTGuDncN+kdEQD3YHUuNaMDzJnj2ZFD8ls16Vf/TzselV0O4cOusu1Iw3YKS8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=davidbq.me; spf=pass smtp.mailfrom=davidbq.me; dkim=pass (2048-bit key) header.d=davidbq.me header.i=@davidbq.me header.b=G9ozIUeQ; arc=none smtp.client-ip=109.224.244.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=davidbq.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidbq.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YEaKUVGw"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69EEiGuL695126;
-	Wed, 14 Oct 2026 18:52:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=f8KsDhg9pm4bCQDb3ubPaEk/2DRbxsFtwc6KrYfMi
-	3Y=; b=YEaKUVGwcffdWAbPunpGiF7HEz0HVD3TRk7oQVmFvhAWYXX5cvMozD96/
-	MYW0nKcZs0Xsg++/0INRrxsSbP1uNnP9363m6bEPejaf46qm/9W4eEz+IGkkZ4qe
-	gcBpLN8HhiiIy3mUTtWZj5sXMdnpfE4NzYpL23VNGw3Sk9GTVaVynvrP2cP68A98
-	QDJQvqqRIBJ5xw1mDVep5pdVIAIuDCIPh6M8uqL/LRMAnHEn571fqfi5eWzgu54Y
-	u5j+fRgCgPcl7AeJD8u12jYJ8RS95pSGHQaHMF+3OoY/+e8NEqyMemT+KoWSXVHN
-	i+7Wax51N3Q9e1LDn9WNE7BezW7Rw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dwhp79y-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 14 Oct 2026 18:52:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69EIl1rE669873;
-	Wed, 14 Oct 2026 18:52:33 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h9ypq3mth-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Oct 2026 18:52:33 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69EIqTqI14615038
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Oct 2026 18:52:29 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C80320049;
-	Wed, 14 Oct 2026 18:52:29 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F1E5120040;
-	Wed, 14 Oct 2026 18:52:24 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.39.30.160])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 14 Oct 2026 18:52:24 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Alexander Graf <agraf@suse.de>, Avi Kivity <avi@redhat.com>,
-        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        R Nageswara Sastry <rnsastry@linux.ibm.com>,
-        linux-hardening@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] KVM: PPC: Book3S HV: Disable preemption around host-side HPT lock users
-Date: Thu, 15 Oct 2026 00:22:15 +0530
-Message-ID: <20261014185215.71832-1-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=davidbq.me header.i=@davidbq.me header.b="G9ozIUeQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=davidbq.me;
+	s=protonmail; t=1792004256; x=1792263456;
+	bh=9cPE8sJgvAuIuDlgjPyOglvFdNvaO2sHV9bRLSkaJc8=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=G9ozIUeQiW0+5rgkhEKi2pyjKpWNm1SAkTCW2sSOjTfqSlAF5YOz8l7fkCQ/dQHGI
+	 68+syymC0Qeqr87Gyk4p3TG0gDd/rswW93f715odCqCvLSU4/rAuFs3sYyzikw2z4L
+	 DjWBQJCzAQmrRI0Y9GjZQoKdyg+QNmMraPxkQQCdSjmLXd0ZjIGkDTP/m+2uix1jHM
+	 pGxSUeiptcPr30QZbbNNiXEeRPJe77dYcvaI4wg9bmhUlrOVjGdhUZ9b0s03Q6xtMa
+	 JDT6uUt98LFkE1Vfcsu0yPKqUyzu+/6Snw8eGATazgdro7nHHQMdu9ZWmJY1OHdC7j
+	 dhAZvertO7gGA==
+Date: Wed, 14 Oct 2026 18:57:25 +0000
+To: Sean Christopherson <seanjc@google.com>
+From: David Ballesteros <linux@davidbq.me>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: KVM: ioapic RTC EOI tracking wedges on non-FIXED delivery modes
+Message-ID: <20261014185709.58592-1-linux@davidbq.me>
+Feedback-ID: 221125243:user:proton
+X-Pm-Message-ID: 3a57efbd88323e4def158ee51814ed7c258edcf1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDA3NCBTYWx0ZWRfX/rpnX+F4eBgz
- z5lT9nz+ksuhkq+gv7WXD/aY8F6rDEs3tC2JlhC50cpDtahxXaHau+6KRBVUy+J7PQMr9H4Et2c
- iUjtanx5svSKKQYiN1EwPQH4mzVfnvE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDA3NCBTYWx0ZWRfX5VGGHo4MHb1W
- fuXPLSrUIbAtR+aIjkopl2hLro0/nkvlAg9dCNrwH0d3kKO4kZa3UwVBFr66rrV7khFhOjZfn/i
- pW+3OtrbA1hHs3ugAXRYpGzxcdi/g8uEGGsL76MXsrW4ti88VaDNlu8Jz6mlFi9wfbK5nhUG45O
- jY2N4+SdIIuQvvfFn1F/9eXE5Z9vVIcWUdAT/r1JnQv4bAkN9Y4B91pjJiCkRbddnq2E8FaSA/c
- rRhhHJqyW4ox2S5EL1cs/WOfb4/bTG+PnFQMQZ9VvE/HbonjM0GA8/vdBBN7+NZRCoOX7DQbxqw
- Lt5qAqzhlmej1jJlz4pjgDiVT+vRJTOMZJnSSuQKEMC1zBLA4v2kUpsJohjajEyNfa3OTDfZJP/
- ImzfWRXl0fFgVcygUmoA79Mws67JNo+DH3KkfD8szQlyWsbYLzNXs9GYCK+MEZM+JmqOQjvgmG9
- DHDVfsoSrcnFyg6slQg==
-X-Proofpoint-GUID: C7-rivORfCE_a47V-oulqYAVOzzDM0CZ
-X-Authority-Analysis: v=2.4 cv=RoFQvymK c=1 sm=1 tr=0 ts=6acfcf72 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=bIpB81lF2ro1xIxEYW0A:9
-X-Proofpoint-ORIG-GUID: EHiEmg6MJkJBDjBwUsu5bPi_G4yvROIy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 bulkscore=0
- impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610140074
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-A previous change ("KVM: PPC: Book3S HV: Add preempt_disable() around
-virtual-mode HPTE bit-lock users") at [1] added preempt_disable() around
-guest vCPU HPT hcalls and page fault handlers executed in virtual mode.
-This ensures vCPU threads cannot be preempted while holding
-HPTE_V_HVLOCK or the reverse-map lock.
+Hi Sean, Paolo,
 
-However, several host-side virtual-mode paths in book3s_64_mmu_hv.c also
-acquire HPTE_V_HVLOCK and lock_rmap() in process context with preemption
-enabled.  Specifically, kvm_unmap_rmapp() and kvm_age_rmapp() take both
-locks during MMU notifier callbacks and memslot flushes, while
-resize_hpt_rehash_hpte() acquires HPTE_V_HVLOCK during HPT resizing.  If
-a host thread is preempted while holding either bit-lock, any guest vCPU
-thread scheduled on the same CPU spinning for the same lock with
-preemption disabled will never yield, resulting in a permanent CPU hang.
+It was your tripwire in cc3d0e1afd10 ("KVM: x86: WARN (once) if RTC pending
+EOI tracking goes off the rails") that led me here. While auditing the
+ioapic RTC EOI tracking logic with its arithmetic invariants in mind, I
+found that the check cannot fire for the failure mode it was hunting for.
+It turns out there's a third desync state, silent and permanent, where
+rtc_status.pending_eoi > 0 while rtc_status.map is empty.
 
-Fix this by disabling preemption across these host-side critical
-sections.
+With in-kernel irqchip, a guest-kernel source that performs two MMIO writes
+to the guest IOAPIC (0xFEC00000; reachable only from guest kernel mode) to
+write a non-FIXED delivery mode into the RTE of the RTC GSI permanently
+wedges the tracking. Every later RTC IRQ of that VM is then silently
+dropped, and the VM loses its timer. To be fair though, no host boundary is
+crossed since a guest can only freeze its own VM, so I'm reporting this as
+a correctness bug on the normal channel.
 
-For kvm_unmap_rmapp() and kvm_age_rmapp(), place preempt_disable()
-before lock_rmap() so that both the rmap chain lock and the subsequent
-HPTE_V_HVLOCK bit-lock are held under a single non-preemptible window.
-To preserve the ABBA lock ordering between the two locks, re-enable
-preemption after dropping the rmap lock on any retry or early-exit path
-before spinning on cpu_relax(), allowing the lock holder to be
-scheduled.
+The root cause lies in an asymmetry: ioapic_service() counts any accepted
+delivery into pending_eoi (arch/x86/kvm/ioapic.c:491), but
+__apic_accept_irq() only sets map bits for FIXED/LOWEST modes
+(lapic.c:1433-1438). As a result, modes like NMI, INIT, STARTUP, SMI, and
+EXTINT return result > 0 without touching rtc_status at all. By design none
+of these receive an EOI, so no ISR bit is ever established for the paired
+decrement.
 
-For kvm_htab_write(), the HPT migration restore path, replace the direct
-calls to kvmppc_do_h_remove() with kvmppc_virtmode_do_h_remove(), a thin
-wrapper that brackets kvmppc_do_h_remove() with preempt_disable() and
-preempt_enable(), mirroring the existing kvmppc_virtmode_do_h_enter()
-helper.
+When RTE 8 (RTC) has delivery_mode !=3D FIXED/LOWEST, the next tick causes
+ioapic_service() to count N accepted deliveries into pending_eoi while the
+map stays empty. Both sides of the invariant hold from each side's own
+bookkeeping; the system is simply counting two different things. Then every
+later tick gets discarded in ioapic_set_irq() before ioapic_service() even
+runs (ioapic.c:225-229: gate on rtc_irq_check_coalesced()), so pending_eoi
+never gets re-assigned. The WARN_ON_ONCE sits inside the RTC branch, one
+call below that gate, which means it can only fire if ioapic_service()
+actually reaches pin 8 with a stale count. In the stuck state, the gate
+closes the signal before the WARN can evaluate it.
 
-For resize_hpt_rehash_hpte(), place preempt_disable() before the
-try_lock_hpte() spin loop and preempt_enable() after unlock_hpte() at
-the function exit.
+I verified this statically on mainline 0fcb05b72344, v6.1.74, and a
+hardened 7.2-rc5 build (the git history confirms no commit since cc3d0e1
+touches this logic). Dynamically, the same reproducer showed the identical
+stuck state (pending_eoi =3D 1, map =3D 0x0 observed live with kprobes) on =
+both
+hardened 7.2-rc5 and upstream v6.1.74. On the hardened build carrying
+cc3d0e1, the warning never fired across 6 runs with clean dmesg. To keep
+the claims straight on the other two trees: that observation is
+dynamic-only on the hardened build, since that is the only tree carrying
+cc3d0e1afd10 I could run on; on mainline it follows statically from the
+gate analysis above (the WARN is unreachable in the stuck state), and
+v6.1.74 predates the commit, so there is no WARN there. Rewriting the RTE
+back to fixed-mode does not recover the timer. A same-harness run with a
+fixed-mode RTE delivers 100/100 ticks normally. Causality closed when a
+build with the fix delta made the same reproducer behave correctly (ticks
+flow, no coalescing).
 
-[1] https://git.kernel.org/powerpc/c/abbbe5ff83e7c9ed3a4d61b73011f1df7bf87907
+I'm keeping the reproducer off-list; the tarball is packaged and ready, so
+I can send it in a single reply. All run hashes and a pre-registered
+prediction record are available on request, and I can also re-run on an
+upstream mainline build on request.
 
-Fixes: 6165d5dd99db ("KVM: PPC: Book3S HV: add virtual mode handlers for HPT hcalls and page faults")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+The fix I believe is right is to count into rtc_status only deliveries
+that participate in EOI pairing. Concretely, in ioapic_service(), take the
+RTC branch (and its pending_eoi =3D ret assignment) only when the RTE's
+delivery_mode is FIXED or LOWEST. This preserves the current gate
+semantics without forcing __apic_accept_irq() to populate the map for modes
+that architecturally won't receive an EOI the kernel can associate back. I
+validated it on the same rig: 3/3 runs post-fix show every tick delivered,
+coalesced =3D 0, and the observed rtc_status stays consistent (map populate=
+d
+whenever pending_eoi is armed). Normal fixed/lowest path remains
+unaffected (100/100 delivered, EOIs paired).
+
+Separately, the tripwire itself could be extended to catch this class
+directly (WARN if pending_eoi !=3D hweight(map)), though I left it as-is in
+the patch.
+
+The minimal patch with explanatory comments is inlined below. If this
+direction works, I'll send it through the normal patch flow. It carries
+Fixes: 2c2bf0113697 ("KVM: Use eoi to track RTC interrupt delivery status",
+Yang Zhang, 2013-04-11). The coalescing gate, the pending_eoi =3D ret
+assignment, and the paired decrement all trace back to that commit, so the
+fixed/lowest-only asymmetry is as old as the tracking itself. I haven't
+found any historical change that validated delivery_mode on this pin.
+
+Thanks,
+David
+
+-- ----[ fix patch ]---- --
+
+KVM: ioapic: only track RTC IRQs that can receive an EOI
+
+Only count RTC IRQs into the RTC EOI tracking when they can actually
+receive an EOI, i.e. those with the FIXED and LOWEST delivery modes;
+treat every other delivery mode on the RTC GSI as a plain IRQ with no
+RTC book-keeping.
+
+The tracking counts every accepted IRQ into rtc_status.pending_eoi,
+but __apic_accept_irq() populates rtc_status.map only for FIXED and
+LOWEST delivery.  Any other mode (NMI, SMI, INIT, STARTUP, ExtINT)
+accepts the IRQ without establishing an ISR bit, so no later EOI can
+pair with the count armed at that moment.  A guest can trigger this
+by writing a non-fixed delivery mode into the RTE of the RTC GSI
+through MMIO; the tracking then wedges (pending_eoi > 0 with an empty
+map) and every later RTC IRQ of the VM is coalesced, until the ioapic
+is reset or the irqchip is reloaded.
+
+Fixes: 2c2bf0113697 ("KVM: Use eoi to track RTC interrupt delivery status")
+Assisted-by: Claude-Code:GLM-5.3-flash KASAN kprobes
+Signed-off-by: David Ballesteros <linux@davidbq.me>
 ---
-Changes in this version:
-- Separated host-side fixes in book3s_64_mmu_hv.c into a standalone patch
-  (guest-side paths were merged from v1 resend).
-- Previous discussion: https://lore.kernel.org/all/20261007182116.12479-3-amachhiw@linux.ibm.com/
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -477,7 +477,23 @@
+ =09if (irqe.trig_mode =3D=3D IOAPIC_EDGE_TRIG)
+ =09=09ioapic->irr_delivered |=3D 1 << irq;
+=20
+-=09if (irq =3D=3D RTC_GSI && line_status) {
++=09if (irq =3D=3D RTC_GSI && line_status &&
++=09    (irqe.delivery_mode =3D=3D APIC_DM_FIXED ||
++=09     irqe.delivery_mode =3D=3D APIC_DM_LOWEST)) {
++=09=09/*
++=09=09 * Track only RTC IRQs that can actually receive an EOI.
++=09=09 * The EOI tracking in __apic_accept_irq() sets a map bit
++=09=09 * and a vector for FIXED and LOWEST delivery only; every
++=09=09 * other delivery mode (NMI, SMI, INIT, STARTUP, ExtINT)
++=09=09 * accepts the IRQ without establishing an ISR bit for the
++=09=09 * vector, so no EOI can ever pair with the count armed
++=09=09 * here.  Counting those accepted IRQs into pending_eoi
++=09=09 * wedges the RTC status: pending_eoi stays > 0 with an
++=09=09 * empty map, rtc_irq_check_coalesced() suppresses every
++=09=09 * subsequent RTC IRQ, and rewriting the RTE back to fixed
++=09=09 * delivery does not recover (restore_all runs only at
++=09=09 * inject-all/reset/restore time, not on RTE rewrite).
++=09=09 */
+ =09=09/*
+ =09=09 * pending_eoi cannot ever become negative (see
+ =09=09 * rtc_status_pending_eoi_check_valid) and the caller
 
- arch/powerpc/kvm/book3s_64_mmu_hv.c | 33 +++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+-- ----[ end of fix patch ]---- --
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-index 2ccb3d138f46..8d85ce3440ae 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-@@ -47,6 +47,9 @@
- static long kvmppc_virtmode_do_h_enter(struct kvm *kvm, unsigned long flags,
- 				long pte_index, unsigned long pteh,
- 				unsigned long ptel, unsigned long *pte_idx_ret);
-+static void kvmppc_virtmode_do_h_remove(struct kvm *kvm, unsigned long flags,
-+				unsigned long pte_index, unsigned long avpn,
-+				unsigned long *hpret);
- 
- struct kvm_resize_hpt {
- 	/* These fields read-only after init */
-@@ -308,6 +311,22 @@ static long kvmppc_virtmode_do_h_enter(struct kvm *kvm, unsigned long flags,
- 
- }
- 
-+/*
-+ * Virtual-mode H_REMOVE. kvmppc_do_h_remove() is also called from real mode,
-+ * where preempt_disable() is not usable, so the guard stays here. The function
-+ * spins on HPTE_V_HVLOCK and then lock_rmap() (via remove_revmap_chain());
-+ * preemption must be disabled across both bit-locks so that spinning callers
-+ * holding preempt_disable() can make forward progress.
-+ */
-+static void kvmppc_virtmode_do_h_remove(struct kvm *kvm, unsigned long flags,
-+				unsigned long pte_index, unsigned long avpn,
-+				unsigned long *hpret)
-+{
-+	preempt_disable();
-+	kvmppc_do_h_remove(kvm, flags, pte_index, avpn, hpret);
-+	preempt_enable();
-+}
-+
- static struct kvmppc_slb *kvmppc_mmu_book3s_hv_find_slbe(struct kvm_vcpu *vcpu,
- 							 gva_t eaddr)
- {
-@@ -810,9 +829,11 @@ static void kvm_unmap_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 
- 	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
- 	for (;;) {
-+		preempt_disable();
- 		lock_rmap(rmapp);
- 		if (!(*rmapp & KVMPPC_RMAP_PRESENT)) {
- 			unlock_rmap(rmapp);
-+			preempt_enable();
- 			break;
- 		}
- 
-@@ -826,6 +847,7 @@ static void kvm_unmap_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 		if (!try_lock_hpte(hptep, HPTE_V_HVLOCK)) {
- 			/* unlock rmap before spinning on the HPTE lock */
- 			unlock_rmap(rmapp);
-+			preempt_enable();
- 			while (be64_to_cpu(hptep[0]) & HPTE_V_HVLOCK)
- 				cpu_relax();
- 			continue;
-@@ -834,6 +856,7 @@ static void kvm_unmap_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 		kvmppc_unmap_hpte(kvm, i, memslot, rmapp, gfn);
- 		unlock_rmap(rmapp);
- 		__unlock_hpte(hptep, be64_to_cpu(hptep[0]));
-+		preempt_enable();
- 	}
- }
- 
-@@ -890,6 +913,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 
- 	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
-  retry:
-+	preempt_disable();
- 	lock_rmap(rmapp);
- 	if (*rmapp & KVMPPC_RMAP_REFERENCED) {
- 		*rmapp &= ~KVMPPC_RMAP_REFERENCED;
-@@ -897,6 +921,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 	}
- 	if (!(*rmapp & KVMPPC_RMAP_PRESENT)) {
- 		unlock_rmap(rmapp);
-+		preempt_enable();
- 		return ret;
- 	}
- 
-@@ -912,6 +937,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 		if (!try_lock_hpte(hptep, HPTE_V_HVLOCK)) {
- 			/* unlock rmap before spinning on the HPTE lock */
- 			unlock_rmap(rmapp);
-+			preempt_enable();
- 			while (be64_to_cpu(hptep[0]) & HPTE_V_HVLOCK)
- 				cpu_relax();
- 			goto retry;
-@@ -931,6 +957,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 	} while ((i = j) != head);
- 
- 	unlock_rmap(rmapp);
-+	preempt_enable();
- 	return ret;
- }
- 
-@@ -1219,6 +1246,7 @@ static unsigned long resize_hpt_rehash_hpte(struct kvm_resize_hpt *resize,
- 	if (!(vpte & HPTE_V_VALID) && !(vpte & HPTE_V_ABSENT))
- 		return 0; /* nothing to do */
- 
-+	preempt_disable();
- 	while (!try_lock_hpte(hptep, HPTE_V_HVLOCK))
- 		cpu_relax();
- 
-@@ -1346,6 +1374,7 @@ static unsigned long resize_hpt_rehash_hpte(struct kvm_resize_hpt *resize,
- 
- out:
- 	unlock_hpte(hptep, vpte);
-+	preempt_enable();
- 	return ret;
- }
- 
-@@ -1868,7 +1897,7 @@ static ssize_t kvm_htab_write(struct file *file, const char __user *buf,
- 			nb += HPTE_SIZE;
- 
- 			if (be64_to_cpu(hptp[0]) & (HPTE_V_VALID | HPTE_V_ABSENT))
--				kvmppc_do_h_remove(kvm, 0, i, 0, tmp);
-+				kvmppc_virtmode_do_h_remove(kvm, 0, i, 0, tmp);
- 			err = -EIO;
- 			ret = kvmppc_virtmode_do_h_enter(kvm, H_EXACT, i, v, r,
- 							 tmp);
-@@ -1897,7 +1926,7 @@ static ssize_t kvm_htab_write(struct file *file, const char __user *buf,
- 
- 		for (j = 0; j < hdr.n_invalid; ++j) {
- 			if (be64_to_cpu(hptp[0]) & (HPTE_V_VALID | HPTE_V_ABSENT))
--				kvmppc_do_h_remove(kvm, 0, i, 0, tmp);
-+				kvmppc_virtmode_do_h_remove(kvm, 0, i, 0, tmp);
- 			++i;
- 			hptp += 2;
- 		}
-
-base-commit: 129f5d395fd66b6587a5ac156b232cca060d6512
--- 
-2.54.0 (Apple Git-157)
 
