@@ -1,95 +1,94 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBA03D6CCF
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 23:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604224ED199
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 23:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792020953; cv=pass; b=e9/SEHA/SO1mKtaUVNLce3Cugb3M24FtHqw6gxN69R2VLP9Gq1ecaIvLqbWJ0rsxxazvo6DN8sy4GF5HBPoofkSPtvLf2YjEstEQIZg8jk9ekFx2IIcd7ZTP2p92IXQUo0wcg8eo3gqVyNmEc0iBzwyUzY/2aUbhOCsjunYZvFM=
+	t=1792022056; cv=pass; b=uBLTwDLHQguRuuhxOJh3wfegFmboKzZ3kUlUprn2mwEm30lOoz64wOyygMkhwKs4Ydwuwj4HwbSV9qV2vmicEqwUdT68SAUtbZAeqek5uOghw5UuihGSqhyEiax9PgCEZeVoA8wpcuK/NFjgg6iO/L/7K6wSCUmseEUyX/cg/PE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792020953; c=relaxed/simple;
-	bh=0yKhwzqNgG/9SN/cpZkK6K7qmkrl/RC/A3uF/TuJVLI=;
+	s=arc-20240116; t=1792022056; c=relaxed/simple;
+	bh=4H0Bgva3Ydel0kL3mvgFhxMi1gLUgRSwy7ED0ZLa5xA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CKeIDOUj/rm1TvV1vxsI5SsSz1TCGE77EtVmB4l1M0tKap0cfZrbFmPhPNnwjlylTEwuLJwIEgfkrBrHrEbFvrbEFR1dOJxc3xP3VNKkMd7Sn04barM6FB+FZkCFi5UcE+Hfy7B1jdpUv6LMZ8BZN818KACJFdzZdSFabmknBCU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pMOkPojq; arc=pass smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=AupAY0HEfwsZ6uaIC2kxhXIqUYLW+fvivtX19b/qHFvYWynGfWLTTzyNaqXJaPPIDWeqEIXudK4fIpIvc+KHji6LVJFpWIr6WN+Soa+vFuVQhgaO3wcRIx5x+NE56KPIBfLEiQmRxc+Yvb1FAgXQSEFhmFytbMlYRt5FO7ybhHI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X/mNh6m9; arc=pass smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pMOkPojq"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso1165a12.0
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 16:35:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792020951; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X/mNh6m9"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so1229a12.1
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 16:54:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792022051; cv=none;
         d=google.com; s=arc-20260327;
-        b=RuQphvUj2TCNBlkCnerDsFYaRDE3XGldF3DYypEYyv7fv/BEry/AglcrOzqBw/rTks
-         u5AXWPEtc4p//2tN4t1DWH20yi7JHFQTBOc8w7c20241JzM38K3IujnC8bpYP7z+mg1g
-         gM+W+1J00QOs0a/H7eQm2pSWe3q/znCOcOzE7FwI99ptP12mttok38LaiV04WgAeEWF+
-         6fot0cCqG9/OWYbi0nZJgnjmx/lO2LxKrtx4l0HUXSt56yy0b2CHhy3Bws073urhf0js
-         1K10ylaEcqFI+/h108GX9sdBA6a8ZF6Js97B60htXlAoM/uEvpgkHBXRLADsXIV7Ly7k
-         ZfaA==
+        b=P87nYdYcsUelEU8gRvh/sLAmn5/xzRYj8z8N4ipeStnJP0TJ2diCOTCUih8zGe9+tx
+         cmGA6suX75lQBVBQojA6WeZ/oxgi7a7y0gv8ZmULWB7R/iReckCaAFQQh45eYWZ6Ewu6
+         uA1LMrXQJzKYSSFFZm9uNpF7pkl/P0gDjPzS3247WY8IFCx/04huVyjMaHjTFJaHzFQC
+         8Miy4ilHsg37XgqZQJx57K2APNDC+x9vTkarpZky+gVWwp9dBh2B/bEFGaRTDiX+5k8b
+         ZJZbWEobaPe6rCpUQiddTv7RAIVDhXVb0rCrqibrP1cWA9nPHyl1h8/Cf1wba6cwQVuK
+         HHwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=0yKhwzqNgG/9SN/cpZkK6K7qmkrl/RC/A3uF/TuJVLI=;
-        fh=o1OZt/7jWXKnFydvM4UDmL4c5itllRE/x/Xm5yFuegY=;
-        b=fMcrcUwK3LRWP0B896U8bG7byjdP+ixmb4wlLUdxAw3grBbIhAGDotQmeBZFIQSbfQ
-         6Rn+q8Th4MUkInT5En8Os2CdpCWt9uHXHrLPyGCDO5TN+S7LyWswnwFGIs0bgCRjw1X/
-         sec/UET0tdItXfRWtn+WZsfpuJzLyQaAQClxlSJcbs7lhqahdHlVgGwTxfrVQ49XJjiP
-         p8Pkrigyn52Vb2zDYY9eISRafZBQ48xz3O0GGK+ZJGtahV7Hrdsuzsx3qoWTcNIxSva1
-         LqBbghyWgkUbslKRVSf0/EqlQ9BHyRL3A4Xn7YJXmMPDpbqYOPQYHeWjNUdIztMVSUa3
-         2wVw==;
+        bh=03x45p4Sm/ofaAJEtxKDi9izKZVyf4Piq/s/1arfqh8=;
+        fh=m8Iqm5mfcU4eBNEgOmQSJ9Wc/bZpQ4mNUAScZ4uRvCI=;
+        b=KQbyiD05p2Q0M6XlTdlxYizZH0nI/YwISAa60GGwDusOgmGos+X8EDgt90yHLErisG
+         KNRTp6iDdtmr7krh/8dsXTpCnxzrMhHdjO+0YDWdgbdGXL2T8LZJ20qV0pjxIAYId7ny
+         /9tuN2Bq+Mq4gkiL4LokwrsLM81u8qUtyNS8G64ZxAl6ig1xFmPhk7BNTqyIAGck+xzR
+         0oXdAgzR2w2afMbaMs0UAg/VX0YP12VDT7zohVyt/TH4bWS7e0ygMsCSpo/M6wg9il8z
+         bHTyMTWc5GnivUXmCFd/I5miUNj+KSec1OZxgSFrkaZypj/ev8SFyK3xz85gFdqMuO6y
+         wCdQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792020951; x=1792625751; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792022051; x=1792626851; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0yKhwzqNgG/9SN/cpZkK6K7qmkrl/RC/A3uF/TuJVLI=;
-        b=pMOkPojqivPh9Tx3iAbYQvyofZxKnOLlzLDo9j6tEYPbuABURRdrv4oLu16N+wsZ9J
-         OLJsr+56wogXCRAnChTBQo77H/ycfImmJrJdc67P4zyVPa5cYbKpvXwVf4Ne/skCRQdm
-         IkNHyUKMx6nh285tdLK8hjlIrTuMB8+W8TIycW9sdidlboaPwmtqfzl7JJ2NKBIowqTQ
-         /ABi7u/i5e3ROd/FHvHYBf1aKiochyWyvt5BY+RqRHDOXgTrSzA8xgOXfcFgikVZHoNE
-         U0TVbchnujQAPK5qMzE28D79iuPFkIcklBXnMkVF7v69qz1ufiCdpwe7939JJi2D2Paf
-         lvRg==
+        bh=03x45p4Sm/ofaAJEtxKDi9izKZVyf4Piq/s/1arfqh8=;
+        b=X/mNh6m9o1A4Kg52ztKPG2Q0b1vwmhmjFPabBoSig0SbT0EqnwmAPEJxc4/XbO7RWN
+         nMuZ+Q+Og/cj74I/qlxdPXyxVfarmKf5BLy0eZhHYsINwMcfVtuIGxdaVuA/vpsLFpNO
+         CObGolVO8+ixXs7zTVUX5Bfc7MSFgjg+7FLCOe2cvrzkcZjAYOJVNfJcfnlMoJrj4bUC
+         HHwprheWCMTPXKpU4yv4FkefxubG+RXouA0ddlE10vXgTZmsuveb8ehtmLorZAIpqqNR
+         SNa5DDAj7u+TM9wODSsd5ZUKvg7WyrHc+LLlViaPjqgsdwqkmdD5Ec5gGN/Sz7QKPZr8
+         JVKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792020951; x=1792625751;
+        d=1e100.net; s=20260707; t=1792022051; x=1792626851;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0yKhwzqNgG/9SN/cpZkK6K7qmkrl/RC/A3uF/TuJVLI=;
-        b=OIpKwNkxJH+jidkYy5BbiYWv13OD7zoBXCwvwTtEob6ZTiu0LqzyDFmHXAml/SkWqH
-         XWTrw9SJiT2Pca8edjGdFxsH+xj43Hpo/B44sHKC3GqdPtrfCG4FVO3bgeMvKGuHNL5k
-         PSrSAV2peXTXQf0ut2ypq2fnGXoFZqL9U34M/RDNSZ1eR98SLxvvC7I1QngpRaZANoV2
-         CPVnrC+1Ukh76X4ivB69H+u2Oz/ciUxK9r8KISak4l4iHQXXv0iE5xCSNayOKP7wEEVd
-         7oQ01PGHcr9gfneBXx/0ZcS+KdPiym7vMpunAZEUF6kfMrOiVxYOZEUW9Q1mNgdtyjZH
-         OLWg==
-X-Forwarded-Encrypted: i=1; AKwUvBw0uxteu1BcGd3n132alEZlrqu1Td5P53siiDNUOLUl47tUJlWCaUbyEmreiBbK+nOo+2I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6iixtQE6lyxffQzpEMPw1uR3bpseJXexpYgCjmC8mIh1yILFf
-	9Rl1onpKP31nOyCxraqOcOr4aI8oypx4mOKuQMEl0xZQWcOF4ThUy65krBysXRMpdHhxsCjifmO
-	1jwn0uaGiUVSm4k63/NB/lxnLSI5/K0vRfkdUm3WXKrrA2H8m30CHQ350
-X-Gm-Gg: AYBFou1qwnHRXMHmusHDTuk4CNF6BxalwB9Q2/apf1VsRpKsoWM4k8f3BPoVj7AdAzo
-	ghE1uQ51iQF2RLoUgDiayK8nhny1AcR835FciaiKaUD06hjTwevVMt76qCL72g2XZC68Y71EleK
-	W8UTl3m6102hz1Ny3LOwRWuHhKynADcprSIZ81P85vbjVKjTweZvXt3VriY1tLscdetT1etYg9Y
-	X1ev31nrkxKcTNxJg/3duWCtvVEoLQLHC+Pmn0Sibz2Sq+yoGloJtEEF7dO9Ra0ZotTbYfLePgK
-	P89dd+D9AKzZK+dxGcynudHf35iwwCTu93e/NXB85anOksChlR2vUCY=
-X-Received: by 2002:a05:6402:20c5:20b0:6b1:bc48:2238 with SMTP id
- 4fb4d7f45d1cf-6b333845c12mr1302a12.11.1792020950237; Wed, 14 Oct 2026
- 16:35:50 -0700 (PDT)
+        bh=03x45p4Sm/ofaAJEtxKDi9izKZVyf4Piq/s/1arfqh8=;
+        b=2bfZ26xc/MlOnFl3eizod0yj3ytIy37b/i1ufqHgX61T95e4XzfRmJ1IIsNMS3ZvLx
+         y5ZW+s3cS9bbVWO4RMt2YviAXGLzZrhnV9GYTd3z4qpaZTBCvxgrkrjgvq4gA3L1ihT2
+         jur0HpEhk+LUAHOTepohMM1A0Pji6eizBNuTcVCfYZ//uRbWj3aSFO5WNMf8URPq0fHl
+         7ycnj3saYSvmw6WHGk1cqO59NMcVSUCQj5g4cePAskuaok8NWo7Tx7EEtjXDCBWf0MYS
+         jFiXBsnStVr5a/V0YvBmRJZDkf65TagNq5zztkOG5Dw3u4RtGBlWxTtiNJf9xZnhpHB3
+         WbaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxb+RABQyXX+Kuq9cDsPJeE0wbUsAigGR/j2L7liT0X1D00BNMkeLVVZHshT4lnnA/emIM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIebhwgswKBK/4lYrmIDGx5ULX/h3Cd1lnLLFyOfaEdrwFOIAd5
+	EaBeo6A1Za9EknEQZrjBJHyu1J+Ow5wDWzWGwz1bUy/s4LykzeMVrvV3sA9SPw7M9UMC26hitSa
+	c6gboaMe6dax8n9ADu95V6eCJHUr1stjvGWmknJvw
+X-Gm-Gg: AYBFou34nrFHC3EicO6rtDyxUjbvdRqUrP5wFpMzy/Tg50BXKM6ZAmqPFbEqoRc4Wqt
+	LLm+LF64Cf0Puhkh5EFX7Fk7v5D1KJsC4n+zHhOaPDDLPpntXvZO/EFK+BmzDPFroWOS6LNXMm0
+	O9dHP2tzFH0QGUn4lyUQRfcsYNHl7ESjzw5zLZaRz8ZSMcl13vModgBc9LQvZHHsHXRHcehLMB2
+	NJ/q1jn4OO5ism4W1a+4nFXOGPtnIgaBoUHnB4G/lYg0z1O7sa29xDLhW5S2zl4aI7oNg09Wem6
+	PMRMUwei4Av0HB+Z72K0/XeR7Xn2bmPkUTGotRPXuPHNY1fpCJIBuGQ=
+X-Received: by 2002:a05:6402:a2c9:10b0:6ac:bd5c:9e2e with SMTP id
+ 4fb4d7f45d1cf-6b33387e2eemr4330a12.6.1792022051078; Wed, 14 Oct 2026 16:54:11
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-10-yosry@kernel.org>
-In-Reply-To: <20261012233638.2546339-10-yosry@kernel.org>
+References: <20261008001425.2458927-1-yosry@kernel.org> <20261008001425.2458927-11-yosry@kernel.org>
+In-Reply-To: <20261008001425.2458927-11-yosry@kernel.org>
 From: Jim Mattson <jmattson@google.com>
-Date: Wed, 14 Oct 2026 16:35:37 -0700
-X-Gm-Features: AclHuK_FXjJZ3HVfOv9pAjNjOL2oKXm2cI4TAVw_4LY2M-i3V-HQJYD81Lzkplk
-Message-ID: <CALMp9eSJThPYPrmtnu1kQ13Pq4V=heMNj9PCJLng0nXuC+28pw@mail.gmail.com>
-Subject: Re: [PATCH v3 09/27] KVM: SEV: Explicitly initialize the per vCPU
- ASID on SEV VM migration
+Date: Wed, 14 Oct 2026 16:53:58 -0700
+X-Gm-Features: AclHuK8iHkRx3rLAQYnS_QgUQR8LswtkxfUo75oQKZHQFZ5tImcdhWen3PD54ok
+Message-ID: <CALMp9eTE4DB7Ek4BiHheD-Jr_GjwhiFpcQNHco4uYKQvMbBvWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 10/29] KVM: SVM: Use a static ASID per vCPU
 To: Yosry Ahmed <yosry@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
@@ -97,24 +96,116 @@ Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+On Wed, Oct 7, 2026 at 5:14=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrote=
+:
 >
-> Explicitly initialize svm->asid on the destination vCPUs as part of SEV
-> VM migration, before calling sev_init_vmcb() to make sure the per-vCPU
-> ASID is initialized before the VMCB. This is currently unnecessary as
-> sev_init_vmcb() initializes the per-vCPU ASID anyway, but will be needed
-> when the ASID initialization is moved to vCPU creation.
+> Switch from dynamic ASID allocation to a static per-vCPU ASID.  The
+> dynamic ASID allocation logic is now only effectively used when running
+> out of ASIDs on a CPU (uncommon on modern hardware), or switching CPUs.
 >
-> Add a helper function for the ASID migration as more changes will be
-> needed with incoming changes.
+> The per-VMCB ASID generation is initialized to 0, which never matches the
+> per-CPU ASID generation (bumped every time a CPU is enabled for
+> virtualization). This leads to a TLB flush of the ASID on the first VMRUN=
+,
+> allocating a new ASID, and bumping the per-VMCB generation to match the
+> per-CPU generation. The ASID remains static until one of the following:
 >
-> Note that svm->asid is left as-is on the source vCPUs, even though the
-> ASID now belongs to the destination VM. Clearing it would be a nice
-> hardening measure, but it is not as simple as clearing src_svm->asid, as
-> the source and destination VMs do not necessarily have the same number
-> of vCPUs (e.g. for non SEV-ES), so NULL-handling would be needed in a
-> couple of places. Leave it alone for now.
+> - The vCPU runs on a new CPU, in which case KVM resets the generation of
+>   both VMCBs to allocate a new ASID on the new CPU.
+>
+> - KVM hits the maximum ASID on a CPU and increments the per-CPU ASID
+>   generation, at which point all vCPUs on this CPU will allocate a new
+>   ASID.
+>
+> - The CPU is re-enabled for virtualization (e.g. after CPU hotplug), at
+>   which point the per-CPU generation is bumped and all vCPUs that
+>   previously ran on it will allocate a new ASID.
+>
+> Drop the complexity and make the ASID static for each vCPU.  This makes
+> SVM's handling of ASIDs closer to VMX's handling of VPIDs, and
+> simplifies the code. It also completely avoids full TLB flushes (i.e.
+> TLB_CONTROL_FLUSH_ALL_ASID) on systems with FlushByAsid.  Full flushes
+> previously happened when updating the generation, so not so common, but
+> should generally be avoided as they cause a VMRUN to invalidate the TLB
+> entries for other VMs as well as the host.
+>
+> When a vCPU is migrated to a new physical CPU, flush the (now static)
+> ASID instead of allocating a new one. This might cause extra TLB flushes
+> when switching CPUs (compared to just using a new ASID), but odds are
+> that the TLB is cold on the new CPU anyway.
+>
+> Static ASIDs also make the following fixes to the dynamic ASID
+> allocation scheme unnecessary, so drop them:
+>
+> - Bumping the per-CPU generation when enabling virtualization on a CPU,
+>   added by commit 25f744ffa0c8 ("KVM: SVM: Bump asid_generation on CPU
+>   online to avoid ASID collision after hotplug").  A vCPU can no longer
+>   run with an ASID that is (re)assigned to another vCPU.
+>
+> - Resetting the generation of both VMCBs on a CPU switch, added by
+>   commit bf260dc9e7b8 ("KVM: SVM: Trigger new ASID allocation in both
+>   VMCBs on pCPU switch").  An ASID is now owned by the same vCPU on all
+>   CPUs, so a VMCB that misses a CPU switch can no longer end up using an
+>   ASID owned by another vCPU on that CPU.
+>
+> - Tracking a pending full flush per-CPU (i.e. flush_all_asids), added by
+>   commit 60d93c27859f ("KVM: SVM: Preserve TLB control (i.e. pending TLB
+>   flush) on failed VMRUN").  The full flush on generation wraparound was
+>   needed on behalf of all vCPUs on the CPU, as their ASIDs were about to
+>   be recycled, so it had to be tracked per-CPU instead of in the VMCB of
+>   the vCPU that happened to trigger the wraparound.  With static ASIDs,
+>   TLB flushes are only needed for the vCPU's own ASID, so tracking them i=
+n
+>   the VMCB is sufficient, and a pending flush in the VMCB is still
+>   preserved on a failed VMRUN.
+>
+> As using ASIDs cannot be disabled like VPIDs, allocate a fallback ASID
+> to be shared by all vCPUs after running out of ASIDs (and flushed on
+> every vCPU run, for now).  If a fallback ASID cannot be allocated, fail
+> vCPU creation (for non-SEV guests), but do not fail SVM initialization,
+> to allow for allocating all ASIDs for SEV (if at all possible).
+>
+> For SEV, the same ASID continues to be used by all vCPUs in a VM. Move
+> svm->asid initialization from SEV-specific VMCB initialization to vCPU
+> creation, such that svm->asid is always initialized on vCPU creation for
+> both SEV and non-SEV vCPUs. This makes the logic simpler to follow, and
+> makes it easier to hide it in allocate_asid() and free_asid() helpers.
+> Decide whether to free an ASID based on the ASID range rather than the
+> VM type, as an SEV VM's vCPUs may stop being SEV vCPUs (or vice versa)
+> as a result of SEV VM migration.
+>
+> Keep the ASID initialization in sev_init_vmcb(), even though it's
+> already done in init_vmcb(), to handle SEV VM migration.  svm->asid is
+> already reinitialized on destination SEV VMs during migration before
+> VMCB initialization, so the ASID ends up correctly in the VMCB.
+> Additionally, free any existing non-SEV ASID on the destination vCPU
+> before overwriting it, to avoid leaking ASIDs when creating vCPUs then
+> migrating an SEV VM onto them.
+>
+> Note: A nice side-effect is reading the min/max ASIDs once during
+> initialization, instead of once per-CPU.
 >
 > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+> ---
+>  arch/x86/kvm/svm/nested.c |  4 +-
+>  arch/x86/kvm/svm/sev.c    |  7 +++-
+>  arch/x86/kvm/svm/svm.c    | 79 +++++++++++++++------------------------
+>  arch/x86/kvm/svm/svm.h    | 25 +++++++++----
+>  4 files changed, 55 insertions(+), 60 deletions(-)
+>
+
+[ ... ]
+
+> @@ -1375,6 +1370,12 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+>                 goto error_free_avic;
+>         }
+>
+> +       svm->asid =3D allocate_asid(vcpu);
+> +       if (!svm->asid) {
+> +               err =3D -EINVAL;
+
+It seems like -ENOSPC is more appropriate, and would make triaging
+this failure easier.
+
+> +               goto error_free_msrpm;
+> +       }
