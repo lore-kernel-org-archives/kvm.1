@@ -1,151 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCD235E952;
-	Wed, 14 Oct 2026 09:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6E94BEE30
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 09:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791971690; cv=none; b=idmOTewuvoIUZHRfeYK+vQFzLJr81X0zD8p40kf+CYS2z9QR4VPuLC0LxPu1mKM792xMGwNTCD5bHV3TAQCiVhCOLXYHdkZ4H1n1eYV2VWVJamiPQMaa2ibcRpH50cEEQ/vMLZ8vS5CB71oKQ91KnFNH1vbHQ5eETyrOzPPij1g=
+	t=1791971829; cv=none; b=PvlktGSGHqNlN7L7rWJOLT+Z2/zyFdKEjxpusdq34o67PuKyJCKcTku4GoJeouTjHJleBNieWNqcsY7KPeab+7TeH3Xv3opET/mhneuk6d3xEm6UNKJihkGB6I7juvncScicHNXpUgPNb1df0ORgBBQf/v6c61GRZ2sF/TgRlzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791971690; c=relaxed/simple;
-	bh=by9HS27Hk35QV7L5B10RxxLWISde+0aTPFaY6mRSkFM=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=KfwjWw5jV4ZXjJxSMRPAphmgm+470kNJm41vLDZwlaBbwNIZtpKWxxqYBxy8edenFVVlVOnyI30qQ1FM+kpaV/izfDd5Gx7Wl82V9ypMjH0C9cUDH+gMz3J7vA3Zma/925BQqyRK9Rl0TVMubI0ZpcFJj4UwNe6mgDJdogAueR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WS0D7JEA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791971829; c=relaxed/simple;
+	bh=qA69ri66dsMoSQKZKokr8N+gVHGTbzuvnNDHG21QYWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VuDlj3p5otCgfK2ZHNU8loLLOktB6MXPJ7rGGqpNEKuKdkF/OppaIrdPay2ncSrWhWkY5ipdhT4WA4U1DjhqTygEvnZb4XyAiI6pyLUlHZ+w70Qbl+Rk9flPjjsJQEXkNZ//pVquPNkR5cBJvjGWA0E8jItbPJY5yKRQLa7/8AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dc59VUkB; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WS0D7JEA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FD11F000FF;
-	Wed, 14 Oct 2026 09:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791971688;
-	bh=pg5/1a/r7w84WCoZomj2AxxKYJZ6sPpaMM9WUP5HdHc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WS0D7JEAkz75c9YGPZCOkXsNWLX+F/ZLjJQuVu5NFbpRJYrP3q5/TACG7Ji2pQlEO
-	 EuelI91UT2IUj1fsIaWhFw/pYdnzPR7w+yJuUAid3r/gsXCovoAYKA8fzzoPR9UOUm
-	 u1qQUG661tdOjTyWUg+KYbiMQfBkrDOd8O3usjIvCJYBC7yEstapxxWVKShQXfIuqR
-	 hLnES47412Jbnz0DRMH0fOvjJIYuu4Oib0/oucAaR+W2E3ccMjFdNOse1tzMpoiGrb
-	 PEIBPhYEjPC/vhP3udEbtBB9jEv16ch2eHvWF5ACFEFxtXjPxKq+xPbOUC32eb0bMC
-	 1JND5dR4b2CZw==
-Message-ID: <sashiko-outbox-171101@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 08/11] iommufd/selftest: Add mock-domain IOVA
- queries
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Fred Griffoul" <griffoul@gmail.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20261014093733.90312-9-griffoul@gmail.com>
-References: <20261014093733.90312-1-griffoul@gmail.com>
- <20261014093733.90312-9-griffoul@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 14 Oct 2026 09:54:47 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dc59VUkB"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48b042c0759so2941909f8f.2
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 02:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791971824; x=1792576624; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JhQ5yirY83poEzPx8x3H8aN7RnWItIKkuGofgEQwLq8=;
+        b=Dc59VUkBcSJFKU18k1Zdcfw9Tf8Ab9IjtxWZ1jGUTSdA1hd5a4N8uqA2K4v57Wv4nY
+         V8ekyZ8hhlwFrY4vnrZY4HGRoPDeJrKaU30YxzNdlsp8lpynXfhtD3xqnmAhFA9rSFBO
+         8Wd2cX+4PO9Byo5uk+aIRM+jGSeYDbdyAOI3zrabmZ+5Xng1YNHjUZxItGtqIEKyKc2/
+         Sf/j8su775EkNfg9ODWxCVCdwtxK9WsGVmsEGcferUQizct8kDgI0lcEF76Zi5pg72XZ
+         li1szsWIVM6I6UKuPhRImv5uHFNVC3/uPopohVohBuToxHsaqtg0vbq3XCsNRZ+FS0Yo
+         n6pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791971824; x=1792576624;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JhQ5yirY83poEzPx8x3H8aN7RnWItIKkuGofgEQwLq8=;
+        b=SxCvhwUCl+aPYGyum75DHYmza4EiVXP22JH44JTYTP9fEbKy20H+yRoOHAzNQTA4J2
+         M8Y7zNYUmad4L6q+ffnNRfZGZAYFua8bjmhuI5q1iUdp1uDiHYRY02m2kJl4MUdvRiaL
+         GXc/f1QqXALYffnpIseJXnlWUEMIGedadEOk7Z/9BLyRL209ehAx1GCMr9CLcfpYeJPB
+         9W/FAB2LV4xKaER1BVdYR810UUAz204zShbW77DVZJrFxG+a9EpTNXVW/zMlRyfuwL3L
+         LBvFY42tW7aDq2/J+fmn5KMGkM6pHveV0BGM+mPku7hrgDSVW+ZthtyD201X5o4Ppruc
+         K4fg==
+X-Forwarded-Encrypted: i=1; AKwUvBxBnIp2Hulnz1JF7j8x1jWAGG2FpR8RhiIUewfE+d1hZeRIi4bKCdFoGv7PGc2b7xfU/kQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLHUjFbsKnj5wleCay74PNa2Muo7wbaqgW5BWvgo7cSRaYjfDsq
+	CGWyF+uxg9eV61TQbFr2qfYxXq9xBoF7HbkPVxFr+9oyRpXy4Fpy6kn7
+X-Gm-Gg: AYBFou1/f6gHTWjbYTq+I7eX0dBZDcdNmz6rw/lJG6StapRAuerxARxQDMBOqxRsf0K
+	abFDH9eI3OREcNVjHleKtyL0GKUz1YX0G5y0YcPCfPJhC9jy+lBeWGEhCVOTYyyyeUaM0SGie3t
+	tUMzwwOWRHspJtVE7P7wsOntnvgIs9BYpvnLiGfK/6KKwwIFemLZLUCLV0RM9GqUnrltrRjkH+p
+	fpO5PlQwBEorK8b9P31JObEFPG7CFvIVoygNh2peGEihXafl7IAuU1Tm4nasKvx6tnZ/TedWH4G
+	rnYxRq6L+X/pt8UOew5r/t871njwFLmoKQs/pP964ec1sP+GQqNuSjgVDR3W53RBILW5XFnAZDx
+	gTxpKXhTK6WvDnNnxCrIOX1DwmZSKPh6R4FWT4Rw7AF1EjzlPR4ntudc0oY+x/GBDLjZNuIWSN9
+	xwGmBeJMt7HmgsUSVkEUf8EzkUl1am9nRVjYiHCrbiHhBKdOfsJOd9OAFtxkg91Lb7ZG4hdCr+7
+	2YdFMRfDgsF9030In1DaTKDnLH2PBvhOCkTfoL64gpSmm+3gZHsgYZu3ZW7sjgTBDP57JbeY4oR
+	zYyXSYfByvJrws0Dxa9q71hNle+AdYFhlNc9
+X-Received: by 2002:a05:600c:4747:b0:4a1:80d8:aed0 with SMTP id 5b1f17b1804b1-4a18e4a9862mr311763425e9.15.1791971824195;
+        Wed, 14 Oct 2026 02:57:04 -0700 (PDT)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ac5257sm11206338f8f.42.2026.10.14.02.57.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 14 Oct 2026 02:57:03 -0700 (PDT)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Ackerley Tng <ackerleytng@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
+Date: Wed, 14 Oct 2026 09:57:02 +0000
+Message-ID: <20261014095702.39676-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com>
+References: <20260720111259.122911-1-dwmw2@infradead.org> <20261006183235.16576-1-griffoul@gmail.com> <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] iommufd: soft lockup in iommufd_test_md_check_mapped loop
-- [Medium] iommufd: UAF race between mock page table walk and dma-buf revoke
---
+Ackerley Tng <ackerleytng@google.com> writes:
 
-commit 64ca9f35d00cc158de5f4700e220a39eb8a04615
-Author: Fred Griffoul <fgriffo@amazon.co.uk>
+> When the provider wants to revoke the page, the notifications/function
+> calls flow this way, the last [ENTITY] in the chain actually does the
+> zapping.
+>
+> + [PROVIDER] -> [KVM]
+> + [PROVIDER] -> [DMABUF] -> [IOMMU]
+> + [PROVIDER] -> [GUEST_MEMFD] -> [USERSPACE] (AFAICT this was not
+>   implemented in the RFC.)
 
-iommufd/selftest: Add mock-domain IOVA queries
+Thanks for going through it. I have just posted v2:
 
-A test of memory that can be taken back or replaced does not know in
-advance which frame a device reaches. IOMMU_TEST_OP_MD_CHECK_MAP only
-compares against a known buffer.
+  https://lore.kernel.org/all/20261014093733.90312-1-griffoul@gmail.com/
 
-Add MD_CHECK_MAPPED, which checks that a range is fully mapped or fully
-unmapped, and MD_IOVA_TO_PHYS, which returns the frame behind an IOVA,
-or 0 if it is unmapped. Both refuse an IOVA outside the domain's
-aperture.
+It changes two of these chains. dma-buf is gone: iommufd attaches to
+the provider file itself, through a small interface in mm. And
+guest_memfd now maps the file into userspace from the provider's
+frames, so a revoke also zaps the VMM's mapping:
 
-> diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/sel=
-ftest.c
-> index af07c642a5260..1f5cd2d00fda8 100644
-> --- a/drivers/iommu/iommufd/selftest.c
-> +++ b/drivers/iommu/iommufd/selftest.c
-[ ... ]
-> +static int iommufd_test_md_iova_to_phys(struct iommufd_ucmd *ucmd,
-> +					unsigned int mockpt_id,
-> +					unsigned long iova)
-> +{
-> +	struct iommu_test_cmd *cmd =3D ucmd->cmd;
-> +	struct iommufd_hw_pagetable *hwpt;
-> +	struct mock_iommu_domain *mock;
-> +	unsigned int page_size;
-> +	int rc;
-> +
-> +	hwpt =3D get_md_pagetable(ucmd, mockpt_id, &mock);
-> +	if (IS_ERR(hwpt))
-> +		return PTR_ERR(hwpt);
-> +
-> +	page_size =3D 1 << __ffs(mock->domain.pgsize_bitmap);
-> +	if (iova % page_size || !mock_domain_covers(mock, iova, page_size)) {
-> +		rc =3D -EINVAL;
-> +		goto out_put;
-> +	}
-> +	down_write(mock_domain_unmap_lock(hwpt));
-> +	cmd->iova_to_phys.out_phys =3D
-> +		mock->domain.ops->iova_to_phys(&mock->domain, iova);
+  [PROVIDER] -> [GUEST_MEMFD] -> [KVM], [USERSPACE]
+  [PROVIDER] -> [IOMMU]
 
-[Severity: Medium]
-Could this page table walk race with a concurrent dma-buf revoke or memory
-provider unmap?
+> IIUC guest_memfd conversions was not illustrated in the RFC: what
+> happens on a shared -> private conversion?
 
-Since those unmap operations run under their own pages mutex instead of
-domains_rwsem, it seems possible for a concurrent unmap (for instance,
-triggered by a fuzzer or concurrently running test) to free a page table
-level while iova_to_phys() is still walking it, potentially leading to a
-use-after-free.
+There are none yet. Only VMs of type KVM_X86_DEFAULT_VM can use a
+provider, so all their memory is shared.
 
-> +	up_write(mock_domain_unmap_lock(hwpt));
-> +	rc =3D iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-> +out_put:
-> +	iommufd_put_object(ucmd->ictx, &hwpt->obj);
-> +	return rc;
-> +}
-> +
-> +static int iommufd_test_md_check_mapped(struct iommufd_ucmd *ucmd,
-> +					unsigned int mockpt_id,
-> +					unsigned long iova, size_t length,
-> +					bool mapped)
-> +{
-[ ... ]
-> +	down_write(mock_domain_unmap_lock(hwpt));
-> +	for (; length; length -=3D page_size, iova +=3D page_size) {
-> +		bool is_mapped =3D
-> +			mock->domain.ops->iova_to_phys(&mock->domain, iova) !=3D 0;
+> Does your provider need to know if some memory was transitioned between
+> shared/private states? The provider can be notified too, if
+> necessary. If not, then isn't guest_memfd doing all the coordination
+> better than going via the provider?
 
-[Severity: Medium]
-Can this loop run for an unbounded amount of time and cause a soft lockup?
+Our provider does not need to know, and I agree: once there is private
+memory, guest_memfd converts the pages, so it should tell the others
+what to zap.
 
-Since the test ioctl interface allows very large values for length, and
-page_size can be as small as 4096 bytes, this loop could iterate trillions
-of times without yielding.
+I think the two models meet there, and the v2 cover letter now says so.
+The iommufd side of v2 does not pin and keeps no references: it asks for
+the frame behind each page, treats a page with no frame as a hole, and
+maps again on a revoke. guest_memfd can offer that for its own file:
+shared pages return their frames, private pages are holes, and
+guest_memfd revokes a range whenever it converts it, in either
+direction. That is your [GUEST_MEMFD] -> [IOMMU], and it should work for
+folio-backed guest_memfd without memfd_pin_folios() or refcounts, as
+long as guest_memfd also revokes a range before it frees its folios.
 
-Because it holds domains_rwsem for writing, would this stall the CPU and
-starve other users of the semaphore?
+The one difference is that v2 also lets iommufd map a provider file
+directly. Going through guest_memfd would add nothing without private
+memory: it would only pass each revoke on. And memory that only devices
+use, such as MMIO, does not go through guest_memfd at all. Both paths
+would use the same iommufd code.
 
-> +
-> +		if (is_mapped !=3D mapped) {
-> +			rc =3D -ENOENT;
-> +			break;
-> +		}
-> +	}
-> +	up_write(mock_domain_unmap_lock(hwpt));
-> +
-> +out_put:
-> +	iommufd_put_object(ucmd->ictx, &hwpt->obj);
-> +	return rc;
-> +}
+> Does the revocation model work for you? If it helps, I can rebuild the
+> sample provider to illustrate how the revocation can be done.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261014093733.9031=
-2-1-griffoul@gmail.com?part=3D8
+Yes, the revocation model works for us. v2 replaces David's sample
+with one that moves, donates and makes pages read-only, and a selftest
+that checks the guest, the device and the VMM's mapping after each
+change. It may be a good base if you want to try guest_memfd as the
+provider for iommufd on top of it.
+
+> 4. [DIRECTMAP] Kernel direct map.
+
+Agreed, that is separate. The memory we have in mind is a range hidden
+from the host with memmap=, so it is not in the direct map.
+
+Thanks,
+Fred
