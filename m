@@ -1,116 +1,125 @@
 Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7845388E68
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 15:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4249454281B
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 15:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791990165; cv=pass; b=VyyOinkv9yZ9SNn+rVI29feYag4g95lOxiAfpWwarK62Vpreq7yV6ARFZtCK9uDjtMSTahifLPUB/U2vojBhepNfFjbktSiNOjX2SB6v9Ue7ZQSGBgPeekkUUaX5zLiW1Wi0aEwWzz+mWaYq9sQCTl6Q3h960oY6qvWL662Fdo4=
+	t=1791990468; cv=pass; b=c0lI3xCBJKH3ip9pT1niWdouYfOLPMx7BpUV5JjFvm7/k/7rZsp+5dQ00KJwoja3MW+0B3k07LPjCPOSpGyDbr7vqvOjDIZFCgvuAkKdPWQxdn8PVSBPofn/1ZG0HYaXO2Sv00F0LGH9FKmuyLHiwNjiF7BjZmyuW2TwqTjBGaI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791990165; c=relaxed/simple;
-	bh=peUQ9Y2a5XEmnKO7ViaOJtAdf4c17RcSOD9PNqTPBgI=;
+	s=arc-20240116; t=1791990468; c=relaxed/simple;
+	bh=5bNzJeuDWgzOabLsmNCJ0zffQhzs+dofJPQ9U1sBXvg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kgQ4tjJzu+j7k0ZvxBWCAo6bY3loU0KLowdMuhA6pBFZGWBflpbI2jVPLNh+rmO7izn69BN0HnJwq763+YWTcDcxZhYnarr8DtGxNLn9qkXsWAs6Ri6SFTitflRkuBS7YomCHio8WlT0vki/FLEtGgf/JZq9NcZEe7hooOWGJMw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nMB+WnaT; arc=pass smtp.client-ip=209.85.208.43
+	 To:Cc:Content-Type; b=LokBMi92fGxPl9r4yCOT5b25B9jwhzJaon/W5neBIouiILtZ1jN5J+scMUclGD6K+YO3wSH71GdTQZgNo6/Xev19CtWFfYaRPt9Jg5/46iEso4ounqyy7LL/dFvrejVzJX18LmDUa2rb55KXlUdz4B91ztp3fwNbrIVIM+6dnNw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O1WKl78u; arc=pass smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nMB+WnaT"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so43602a12.1
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 08:02:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791990162; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O1WKl78u"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so43728a12.1
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 08:07:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791990461; cv=none;
         d=google.com; s=arc-20260327;
-        b=hEWh6TGoGfNe/pJepSBOVws+3ilg8Lg/o7TqzDwbQSXvlctzCzbH+d7mAulwmsDWv6
-         8cj6b6NYk+SUbviBzrKbtEnYXrgrW2JTfUjQp2Xfv7qWE4BzpPucYce5S4IDLBLfVE2b
-         J/6A6a/YhOQtllOKaXHu7XqQtS065JvqkYyj98cI52ogccwGtz1qwrwXmcfIE+yc/89M
-         7COvK5b9SCjV7PKyA5S7CDlGjaCNcHl7rCxPnIc1IVN4k/C7ZHrgktNl6ByZga2jVR2P
-         Y935zLdDGwFHzvXD/K+ZqRGc8ogJp0QMCHNFbm3Vcs8iB+3OKUBbDQ5TzwrNAMVXRLt9
-         3eCQ==
+        b=Zzu1Ns93aKzyMolOTtx6hPpaIl5AvLcL0MmKZC26w32bydt9mtz+jR69R+As8wW43+
+         QTbtm5d7nuVqefZCbk4FnJIYuhimlLp+r4bVl2uL0Z/irZ05BVnBcIklQMuX+u8UvYXv
+         0VmIP4noL24luCd5Je0DLA/RJ2I8CkUwaieMQYYTKLi/KsGUmm7/Wi+BdvhAVQv8GEIP
+         2eCi631A3Sa68Vw+7FIIF4pW8qtvySkdnfbGVKhs4WNm6TyHJffjFRUKzC0xxbCXHiBv
+         CWKlq409V0SzDwGt5ywSfUCfxvpW0mngmkdAqB+Pp5IY+NYiPAfEdGjERzBdk6Ie4zD4
+         GxlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=peUQ9Y2a5XEmnKO7ViaOJtAdf4c17RcSOD9PNqTPBgI=;
-        fh=2cLRW4M9T+hETI4xASgfSy0o9g4ozEI7OjcKG6WesvM=;
-        b=YD+++RWRsiq80+B6otHp56lyYJ/Zks/4ix2a0o4Vvt9dB1+cYiEcSKA6KxJeK2gzup
-         1oKiQ59hVFygQHqM9DSe0oovrxRiy1CdatSnPtPfLk7uE9DSUF1LwIF1xaX8tKDXCHTe
-         Wjzll4TRdcaEZCywhjr3TEReFrz4J/RXUzRd5/nUmM4HOfvf9NJhGkaHXAUibXUP+6Ub
-         qzQvZKlZYAN5ovPZxBqXIarBw4Xi1ydGSmO69ZL2RK5TPHTfy47CZe8zM5VOSAE8IACF
-         +YkJ36SIb0YEhnWhiBnOsgIzi2FlOnVdrdFE8Y9p9BSmb7N83TS8MOAaLzrUVp3wmWCY
-         m//A==;
+        bh=5bNzJeuDWgzOabLsmNCJ0zffQhzs+dofJPQ9U1sBXvg=;
+        fh=PAQE8Z6Wy3xvun/q1qPwUL/7kftBazTbE1+7c6S0cAg=;
+        b=XYZ30RwSRAxZLGvBZuyuNfWSYMoh7fyfNzdWAZNa4y0OQwuvF46aDaKp3MqqTWCDMX
+         7a9+6gccxm39AzGny9a2YpRLSLIhwY2KJXPiDPkMFAihXNT6naZ/B0A80sXoWhzdumtF
+         pcgx8o3gupIV/RJscfgi77AVUzCtNTmQFFZW0uW6YEdxuSwi26XtwTxgCkp3XEuXNFOe
+         2a/iBXhQcMq8e+edtF+t5zjKQARev5wAxkm2vKmCdtplgVvA22Y1ySAl9RNZb/DlR2FO
+         ZJrs5KU5/4XNf9KW0LThZJMw1blv1XQ/j6NyFtefqT8lIwWlQ/Oadrpe8QNQ2lJoe7LB
+         cxzw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791990162; x=1792594962; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791990461; x=1792595261; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=peUQ9Y2a5XEmnKO7ViaOJtAdf4c17RcSOD9PNqTPBgI=;
-        b=nMB+WnaTXoFFghnw3y+ZLz2ymntwqyozoB1+GuCz13Sd4tNMIktmzoMTniQuYBCuYQ
-         9nK5h+c4kzs6KTpDtMSj/R6zsSRvwaWIfHXJl3RnMCqmWDeGXRzWsTCzhgeyAOV1mdp/
-         g7RA3KXwg0f6yq72zmR+8dNw3PdiSzxVoaO0CVufThA8X55e2uK7Ey5BRAG+nBUg8i/E
-         nz/Z2IiGZrQCFs9boJ8jMKBH2Whqpf/iZMCEreB+00AvfJhpiu+iNejxaEpr5mWJDWxc
-         0vvzZTVEETfE2Z1j6ekgqD+Jy09+t2y6LJJCg9C0jkWaR/i7cCYkTNM5f101sQqMUfkw
-         UNig==
+        bh=5bNzJeuDWgzOabLsmNCJ0zffQhzs+dofJPQ9U1sBXvg=;
+        b=O1WKl78u4l0pg/uAvepPUynw1yanWeiT48sDPOZQkw8pWVSLOCK5PCClh4VtNRlmM3
+         FPdAj7sdUuM3AviK9kKLZDBFl4auB/YddbjbkklwS3EYALLUVmAe2SEmpUl6R+b72EvR
+         ANzf4soCQsHZZ+5JI5Hllv6mAQcjOAVUVgPL4HZC9nAPmrjJrOIxGKnpY2Vfs6mWjijn
+         bqo7pp1SfajmBSPDsuBWNglhWUsBeU7iDT9wxWbRIXj/Bm0XvesSbrxoyRvANBFDNRu+
+         lMMFWrUiSiIHCnNRvLrWg4nWxh0cz5MpN6otmtlge5xLdU/s9pvdtkpBs7vt1rZorzMa
+         0ENQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791990162; x=1792594962;
+        d=1e100.net; s=20260707; t=1791990461; x=1792595261;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=peUQ9Y2a5XEmnKO7ViaOJtAdf4c17RcSOD9PNqTPBgI=;
-        b=Zj651FEfDdnmiwhFlpH0NzuI68Gp6rIx0OUYMzN8mGS7WN/rgoXuG5FxcgFCsz+WSo
-         meuNnBZ083BsSTrriJRB+KqcBzn4RQ3WI5+dhPrCSohQeEN28EfuDMqUrrhC+yVlrssd
-         spIqHsmdLWBc/nuni07ueKA4yHzIhJEvCVOxrpprrjOTy89lm7QWendVVtuOtO6XN8NY
-         LbKbbDzajT3z7Pik/tMWHzCUf/MABwZYPJiBvQlzN+XbKHJZyMnFH8lIOa/0cAZ9soWa
-         XlUnE6JpcmkREvyG5QhNOVO7vLv+C3k9eyT41Mgwh1254pdaWR8CaAYkUngOQH6GKqyI
-         umvQ==
-X-Forwarded-Encrypted: i=1; AKwUvByVyT/oAShY80wKwAHy2vklI/JlmiKXqcXTNc9OwS5EBWfAdHZNFQsxa3DzaqStMkuheTM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIrYPXoHt6ylt4NNw/Oqy5lF1tWF4445EnPKWWv4lxzA7binbUS
-	lIugnn4eyAgLRxwfUg62x2qC9eyYvusdtqjJbWji0Hr397+uBkK24mF8/N07FP0xGg9dM2M024G
-	Mi5IYJEPRVkwZz3a4cSCOKIJOfNynTgrkRZiWpzcc
-X-Gm-Gg: AYBFou3ASpitfbFnwRNzSF2CqrhPipjfeL/+XwfdMzd+6b3K1+UTkqzCrOmjWZcL4SW
-	6j3oqulnM+rDZHUK/D7u7u32+IDniQwuY6PQwEZqr4bCSHUjtqCIKcyLrP0mvkiVW+ea7MAi4W8
-	qxGqYHayvfibRNjcI6a7Q//ztu77BDzfdv/QpqjO3eSD1HDSjWh/RWwnxYOx2pspzqW3eUKuI1w
-	YMiTGG+mVA6Y2TbAr5IICBcdCGmsTneGDh7uj+v1vd32qng9DSiaX4pMsDi27pVSvGrrokKfiOy
-	RWq8v76j6zTnKRQ5d4YgTh3huyk+um+HH9QJNuGF5/Au9ZYfZ6lE5c0=
-X-Received: by 2002:aa7:d407:0:b0:6b1:b607:a5db with SMTP id
- 4fb4d7f45d1cf-6b20976e77emr47828a12.3.1791990160901; Wed, 14 Oct 2026
- 08:02:40 -0700 (PDT)
+        bh=5bNzJeuDWgzOabLsmNCJ0zffQhzs+dofJPQ9U1sBXvg=;
+        b=Osf1btTyMGtCYY9MogpEy4cuoeEWpzKhTHoXkhY35z09GBcC0VdLbPHg1WL+h5/a2a
+         08LXdVf3L/8MLWfLYOBmz2RREW/iDGj6wotEguZeDfdYC50d9g/V8JJpHgY0lOz58+pj
+         zBD9A79fqf+ieEMy3T9Gz63uf6xEoGgobitkJoSIYRrA2ylysoH1luHwUkPKEf0I2W0n
+         IX0KCqm7nxxaBRccGH7oOSfnyl3mh4XSx+s/Bhk92Ewd3rmrHCbd8vVRSCtbIVK905Qq
+         nTLTKMqplnuJMrrwkDWcbL2/6sUI6xUVuwEGDgKtHJsBMnYVBFr8AcXSNtAOqBbFOH5I
+         hCuw==
+X-Forwarded-Encrypted: i=1; AKwUvBzBtKJn4Jb29xZhucdM618cSKrqCytifyLgbeglQeXL0TpFbp51TwgbQiRWRVsMJcYgB7g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLtdoBUfGBm308dd3GCdZ6m3s6IqO+SFvEvgnu0IqJWc/IExVTE
+	ZFFan3oIx2eXtP6ZKFNKwub9pifxANL/d+WLPMffjHOU+4V9KwYE/38ZPlKhl2Dp/c1ulS5tdkX
+	fgrkFufrDmJTS30HRqIUAdQBWRaKiKQpk7jheYdJl
+X-Gm-Gg: AYBFou2V0CAbrnCG4pkiIH3G2Zqd/reK9MhC3thaS7fLdQuQdnH4dbZB2bnNFaY7wJ6
+	XvUnoKIclyHkaiSv7ZM4fQlazJyVkrNDX5CeCHuDC86w4VbJH8679koi6A30ZCUiJkNGpaiwm7q
+	M/tvvH88SpTwws4b1i298W6wkG6fBy+aiYOHMr5U35sEub+AeJYDIyTlJ/CRrIFl/nc/feJEY/z
+	mWtjqa8N3QA5y38mdaqaqKyg+PR6hO3CdJWpqSLdNbTlu+oUjmV2iY+7XhPNHATg2euLDSKqo4d
+	6oS3MrFM+bOJIoSUR4WM57jts4BBD6AM5jZ57UDvmxCbpni1SMXobPg=
+X-Received: by 2002:aa7:c74f:0:b0:6b1:a517:5bce with SMTP id
+ 4fb4d7f45d1cf-6b20ab1840amr40855a12.16.1791990460751; Wed, 14 Oct 2026
+ 08:07:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-2-yosry@kernel.org>
-In-Reply-To: <20261012233638.2546339-2-yosry@kernel.org>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-3-yosry@kernel.org>
+In-Reply-To: <20261012233638.2546339-3-yosry@kernel.org>
 From: Jim Mattson <jmattson@google.com>
-Date: Wed, 14 Oct 2026 08:02:28 -0700
-X-Gm-Features: AclHuK_yhR3qanMwsfhsd_KJEDCodUKEAzljmDfv-F-Yz96nQUzINa-EzATGdNc
-Message-ID: <CALMp9eSoidVrzHqTrq09LB1SCwsf5DuwAcys_q7o0TyrKM1Ciw@mail.gmail.com>
-Subject: Re: [PATCH v3 01/27] KVM: nSVM: Flush the TLB after forcefully
- leaving nested
+Date: Wed, 14 Oct 2026 08:07:28 -0700
+X-Gm-Features: AclHuK8NO6iuYgw8VyNnfWDxbKtdNmhMVsNN1b0pfwT8hRS29kl-cyJUsaZsV2E
+Message-ID: <CALMp9eSgc-aWT7j9Hqd0a-tBy9Su7dVSx36pC9T3nLa4Mt9q5g@mail.gmail.com>
+Subject: Re: [PATCH v3 02/27] KVM: SVM: Document number of ASIDs CPUID setting
 To: Yosry Ahmed <yosry@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
 e:
 >
-> KVM flushes the TLB on nested VM-Enter and nested VM-Exit, but not when
-> forcefully leaving nested. In this case, L2 TLB entries can leak into
-> L1. Flush the TLB after forcefully exiting L2, similar to nested
-> VM-Exits.
+> KVM arbitrarily advertises 8 ASIDs in KVM_GET_SUPPORTED_CPUID for
+> historical reasons. Advertising a small number of ASIDs to L1 is
+> currently harmless, as KVM (L0) uses the same ASID for both L1 and L2,
+> and flushes that ASID on nested transitions.
 >
-> Note that vmx_leave_nested() handles this correctly, as it reuses
-> nested_vmx_vmexit(), which handles the necessary TLB flushes on an L2 ->
-> L1 transition.
-
-Fixes: ???
-> Cc: stable@vger.kernel.org
+> However, following changes will add proper ASID emulation and a separate
+> ASID for L2, minimizing the TLB flushes on nested transitions. At that
+> point, a full TLB flush from a KVM guest (L1) would flush both L1 and L2
+> ASIDs, so should be avoided as much as possible by advertising more
+> ASIDs to L1.
+>
+> Increasing the value advertised by KVM is tricky, because a VMM copying
+> the number of ASIDs from KVM_GET_SUPPORTED_CPUID may perceive a new VM
+> with a higher number of ASIDs as incompatible with older KVM (which is
+> not true).
+>
+> Avoid changing the value advertised by KVM, but document that it is
+> essentially meaningless and does not represent a limit or a hint. Also,
+> more-or-less encourage userspace to advertise a higher value to avoid
+> potential unnecessary TLB flushes from an L1 hypervisor.
+>
+> Suggested-by: Jim Mattson <jmattson@google.com>
 > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 Reviewed-by: Jim Mattson <jmattson@google.com>
