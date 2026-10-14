@@ -1,239 +1,350 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F93F2116
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 18:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792002191; cv=pass; b=gtZTo3EOCxIF/mErgEo/YIP8C+hbJVkXmeYc4Hcnc7Fa5RCBEXUZ4yuUKqdEzdv84mpqB4TjXzpLdc1Zp6wEhCC7BkKotrKCC94hLFQtT/k21rcHV+WOh2XezBrc3HzwZyyaiUnNBbR2xcCmQsAFSAQCzvPTRsNDLK19BFmupec=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792002191; c=relaxed/simple;
-	bh=daC6Np6jItX8zMXhvHljrTUGGtEHMDpaRWwp+FcyC8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jyftHye0uQ9x4Db2vvzgXG8FVpa8ckqFUyE+pskXfUn6dGtpo/a1OurfEVLHDUm3IupPNYE+KCTIkxb/vJyCgZoY/aKZhHTMZUT0a0YsvLLGHjEIi8Nw45st7qBC9hD+zj/0ow5ftzBqEM8vC5neyEXSUYcyHLyru7ni6NJJ8wk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=incjS1a2; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610F83FA5E4;
+	Wed, 14 Oct 2026 18:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792002356; cv=none; b=n04A2shcQKhv07vwfGOFvV1SRvY1plpdxrw7rU6Y8rh4BGeUsoSX2k1vhdlJaR5pmitJFDQWdScAucyR0pmtr7BOgaxzd3UNBPcpnspaKIbDncllbidOt7cMmyfhavZssJJ0TDkeHQ7wMgaCkAY3oPM6Eb5VytD5g0QATt0dXJA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792002356; c=relaxed/simple;
+	bh=KPdBKjIBiEuL5BghjVzWj/jKPudY6CIm8IerwDmbPHw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qg2fuDXSclEbSqBU4UwkmLPe9Ky7XB8US8hyzJDl/obCNOxYdktH9Hbzon2o8gKo4fhSOduTub3dRRnxfERlJwoe7HUSEgDFlodHRyRxOPzN4IPR8tHlsxWt/7eOWjL2AL+AQXLlyYwuU7zU2BaYBH04gomVcrDyFdLZzJEMT+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=tJLtW8zy; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="incjS1a2"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso44322a12.0
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 11:23:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792002188; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LA+KNWcJxGIDyRaMZwW06DZJW1bEqEzh3H0J29LhHCrei+PWtSRzoEUjO05pOGDCUi
-         8DW3dx8udYhS9kBVRuUGRwYOMNfcXSJrTGqVzMxO69tyrNBVE2LwZkZpIgJRmS5gH1Af
-         Vvyfld2g1lXv16F/a7XCrJ1iFIc7Vp2xlqTjMbtkRAeLfIkKLZWlnSM+6HOe8I5AoZ8J
-         5++DkmvXVo95oqZXPQak9ARinYrsg7WSDWZccB0UhMzurzX+kxXE0q58uN+WwzK9VCmR
-         NC2GI16XpKoeNnRtkjZN9jbR8uFfuvRg3av3nkET0ZXNjth3Ua+/LA8o9sl8tIGPohS7
-         bCHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3cIDC3M1HgJGR6Kt8HLb6Rz3q+5uL2WMcMIITpCwQMU=;
-        fh=0kH4hzBllp172VRwzI+Ux+sMvtP17N0LQLsQcrOGxeA=;
-        b=IA4hMqSbhAeli8+lAynNDxAEMuiQ3Gs1GktaT8VEitRGvTYrM0fH/jK/AAatbd9dfR
-         cZ3PMFlkBs44KY7fbaftWgLKH34eGnstQxd0oZgd2795kyG0zgf6FQwdL2uQ+E7nSZk2
-         GqnwHaUxCVc0seS7kKsJ0yiVDhv/F+t5onEnGKZCfa97AlmydEDJLdS4X65K84LM5/yL
-         IyYRSNAWSW7h+c1rWtHNxu+0o3+3TGqnd21W3DJnxFnM3lzxLbZYGWelOGChruVex4RD
-         XIW/1pmw0bEpV7pYukIOKDxiK7KgQ1PiowtOAKDBZ09l8nJ/GYTSMmpqWos/fjX/bahc
-         P8vg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792002188; x=1792606988; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3cIDC3M1HgJGR6Kt8HLb6Rz3q+5uL2WMcMIITpCwQMU=;
-        b=incjS1a267HQlQbT37P51deaIfHJf8JYZjPX5DsWTRbpLkJRfhonQH+pOBNNabTi3s
-         Y7fuuJ4Ilp55+41tjMX+YxKpcY033qUaC1VyRL73dCTXGxxVHneuAIUWiEz4Hs8rdIPq
-         o1u2oGGFOTbLhq1nFe52CerUNc6mC7WHNxMUelwgXb3Xan0xNMXu4EVbpn03qqAb+MfZ
-         snIgE59LlWTUid/FhCpwQjtzEW8SGh5Y3tnPaweCEe0reTY1uqv46wG4/l3FLp+NGmwR
-         2hQItU5V+R4baabQfEaFu/INpK/V9QDIju9yM/T6jKkCMMlg8TAQiAXnixNorgSfQohg
-         TYWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792002188; x=1792606988;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3cIDC3M1HgJGR6Kt8HLb6Rz3q+5uL2WMcMIITpCwQMU=;
-        b=RwYsnroZlvZM0wmRMeLuJWipd6lZZqmTnsEh1alt8xQO9Uh4kv08qX8bzZRoQAHyBY
-         1vrjC3OqRcw1cf3g6D+m5kCce0UmQvPCNi2MjFdp5XMblS2hcUuHPw2Fg1NKyIjT5iNm
-         j4+RLnayQG6m9/PrYtllZ/1lBl5FTKLp1Ru961mPL59wMiEjtVAYY7aw7t4pHtE/Ev4A
-         R7gD+v620Qjc1W4yIYLkDgrGpX6FOfnop7Hq0/DxnsidhKO6P1tgbz1iZ3IWkxXCsd2z
-         ZHXUNDaJ+/WAASYva8mxiwe4owHKrr/fKf5yHONvnW7VofkP488BZV6Zj5Quf6LD9pgQ
-         JWdg==
-X-Forwarded-Encrypted: i=1; AKwUvBwm6Jvnub3Rw16OiPj65RGRn+toJmRvkqH9gn9fUDc12RIK1jYLvU4viVPvKrVj9LHzsLg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKVgMV8SOZ55tuwRrpnnOYeW/VmSNczEAnqycP/D+NGq9+ekqmo
-	ObQJphpYyBoDK0WW9+lelhA6BMFqQ94WbhgtIhd+ocqV4Kt16VvYgJ2LqWG0lIYBeP3yBJF6LWR
-	NszlIsoN1c7RCECjLUAdOx55p4a/xY7GXMOvxEavY
-X-Gm-Gg: AYBFou3m2eNkPCf+TGqSEZf1sjsmBoWkO4RMFBofQhYPXDf7MvAm2P+BKr2L7+8HLdo
-	DrVfr8PPvnksNkDusQXFShcYD2YOgJWhKTmhspv9yytr76Pja75BHOHcDHR/KKYuVvB3gTW08U7
-	d+heBYtKQ80NQywbyGNMA8/7RlpoDyp+P3y8maMTGsWlG0finDg8RdPt0VPeWWANIxjsSCLIUnb
-	RXuTVN3oIxQCFgnZM0cjlVhMQXuwJoJqmc2dXUVxxFl3nbpmhY6GunRQNTTnwZKuHM4id6mZGa/
-	45WKqmxCQKCXTLrR9wgbdtFTtLZRpcoMA9WDIwgnl1VAwa0okOSg8bo=
-X-Received: by 2002:a05:6402:3041:10b0:6a9:d188:2374 with SMTP id
- 4fb4d7f45d1cf-6b2095cb26bmr60699a12.1.1792002187767; Wed, 14 Oct 2026
- 11:23:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="tJLtW8zy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1792002350;
+	bh=sHgmmvVMprfoOGRefY82u23D8embvuDtkJUdhu4IrFc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tJLtW8zyYA7xZPbSgycHPwaPvXJOXBZorLUEAUXc1BI7o/a8xBOvnavMqTw1h0w0G
+	 MSQfcvcGScxH1C1vsTEtKr7ecTG/n+MwM2x7cNBqdtmD2l05jFwCDohnrOwmIjy93J
+	 eSCN1M0GsENTvt/ba6s77GCPlBPCn6RcqLAIbN8MeM93xM/zghkOPXwbfM/SKdiPax
+	 TLl5KzV27028WSymNrOjdm+vAtqjSWQ6oH3EzZPq4vy5n/Hh/lt5GdyE0+3UZGGWY8
+	 +6pUOO9xw+rM0IaZOsad2JbE5A8n8983ND4cS0USm5QnpSaPYVnJlN5y0ZK3zKesFP
+	 xFeAHFRwN751g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4j4flW3d1Zz4wCp;
+	Thu, 15 Oct 2026 05:25:43 +1100 (AEDT)
+Message-ID: <a4ee75df-1ee2-4cbd-87c9-5913cb4c4456@ozlabs.org>
+Date: Wed, 14 Oct 2026 19:25:39 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-4-yosry@kernel.org>
-In-Reply-To: <20261012233638.2546339-4-yosry@kernel.org>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 14 Oct 2026 11:22:53 -0700
-X-Gm-Features: AclHuK_dYKWxgMdHL-LfYRKVT3UfIDrazaPSYDC3-1DeyQV983cJnvDOicujLDg
-Message-ID: <CALMp9eT9xOFKSFnOg5OeXgmXV0pr-4-yJdBFFMORPx22BgHnHw@mail.gmail.com>
-Subject: Re: [PATCH v3 03/27] KVM: VMX: Generalize VPID allocation to be vendor-neutral
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 4/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Kevin Tian <kevin.tian@intel.com>,
+ Pranjal Shrivastava <praan@google.com>, Longfang Liu
+ <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20261006193643.76330-1-matt@ozlabs.org>
+ <20261006193643.76330-5-matt@ozlabs.org>
+ <20261013171406.7dc8ba03@shazbot.org>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20261013171406.7dc8ba03@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> In preparation for sharing with SVM, generalize the VMX VPID allocation
-> code and move it to common code as a TLB tags allocator. Parameterize
-> the TLB tags allocator by the number of tags, and allocate the bitmap
-> dynamically. Opportunisitcally use guards to acquire the lock instead of
+Hi Alex,
 
-s/Opportunisitcally/Opportunistically/
+On 14/10/2026 00:14, Alex Williamson wrote:
+> On Tue,  6 Oct 2026 20:36:32 +0100
+> Matt Evans <matt@ozlabs.org> wrote:
+> 
+>> Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
+>> find a PFN.
+>>
+>> This supports multi-range DMABUFs, which typically would be used to
+>> represent scattered spans but might even represent overlapping or
+>> aliasing spans of PFNs.
+>>
+>> Because this is intended to be used in vfio_pci_core.c, we also need
+>> to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
+>>
+>> This move also adds a new member, vma_pgoff_adjust; this is consumed
+>> by vfio_pci_dma_buf_find_pfn(), but will be set in a future commit.
+>> Add it now to reduce the number of functions touched by later commits.
+>>
+>> Signed-off-by: Matt Evans <matt@ozlabs.org>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_dmabuf.c | 166 ++++++++++++++++++++++++++---
+>>   drivers/vfio/pci/vfio_pci_priv.h   |  21 ++++
+>>   2 files changed, 174 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> index 847ee5cc78e7..9f10b10fc436 100644
+>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> @@ -9,19 +9,6 @@
+>>   
+>>   MODULE_IMPORT_NS("DMA_BUF");
+>>   
+>> -struct vfio_pci_dma_buf {
+>> -	struct dma_buf *dmabuf;
+>> -	struct vfio_pci_core_device *vdev;
+>> -	struct list_head dmabufs_elm;
+>> -	size_t size;
+>> -	struct phys_vec *phys_vec;
+>> -	struct p2pdma_provider *provider;
+>> -	u32 nr_ranges;
+>> -	struct kref kref;
+>> -	struct completion comp;
+>> -	u8 revoked : 1;
+>> -};
+>> -
+>>   static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
+>>   				   struct dma_buf_attachment *attachment)
+>>   {
+>> @@ -106,6 +93,159 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
+>>   	.release = vfio_pci_dma_buf_release,
+>>   };
+>>   
+>> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_core_device *vdev,
+>> +			      struct vfio_pci_dma_buf *priv,
+>> +			      struct vm_area_struct *vma,
+>> +			      unsigned long fault_addr,
+>> +			      unsigned int order,
+>> +			      unsigned long *out_pfn)
+>> +{
+>> +	/*
+>> +	 * Given a VMA (start, end, pgoffs) and a fault address,
+>> +	 * search the corresponding DMABUF's phys_vec[] to find the
+>> +	 * range representing the address's offset into the VMA, and
+>> +	 * its PFN.  vdev must be the device that the DMABUF priv was
+>> +	 * exported from; vdev->dmabuf_lock must be held, and priv
+>> +	 * must not be revoked.
+>> +	 *
+>> +	 * The phys_vec[] ranges represent contiguous spans of VAs
+>> +	 * upwards from the buffer offset 0; the actual PFNs might be
+>> +	 * in any order, overlap/alias, etc.  Calculate an offset of
+>> +	 * the desired page given VMA start/pgoff and address, then
+>> +	 * search upwards from 0 to find which span contains it.
+>> +	 *
+>> +	 * On success, a valid PFN for a page sized by 'order' is
+>> +	 * returned into out_pfn.
+>> +	 *
+>> +	 * Failure occurs if:
+>> +	 * - A hugepage would cross the edge of the VMA,
+>> +	 * - A hugepage isn't entirely contained within a range
+>> +	 *   (including where it straddles the boundary between
+>> +	 *   ranges),
+>> +	 * - We find a range, but the final PFN isn't aligned to the
+>> +	 *   requested order.
+>> +	 *
+>> +	 * Upon failure, -ERANGE is returned and the caller is
+>> +	 * expected to try again with a smaller order, which will
+>> +	 * eventually succeed.
+>> +	 *
+>> +	 * It's suboptimal if DMABUFs are created with neighbouring
+>> +	 * ranges that are physically contiguous, since hugepages
+>> +	 * can't straddle range boundaries.  (The construction of the
+>> +	 * ranges should merge them in this case.)
+>> +	 *
+>> +	 * Finally, vma_pgoff_adjust is used with a DMABUF created for
+>> +	 * a VFIO BAR mmap: a BAR mapped with vm_pgoff > 0 creates a
+>> +	 * DMABUF such that byte 0 of the VMA corresponds to byte 0 of
+>> +	 * the DMABUF and byte 'vm_pgoff << PAGE_SHIFT' into the BAR.
+>> +	 * To avoid double-offsetting in this scenario, subtracting
+>> +	 * vma_pgoff_adjust from this (non-zero) vm_pgoff generates
+>> +	 * the effective offset.  This also removes the VFIO region
+>> +	 * index encoded in vm_pgoff for VFIO BAR mmaps.
+>> +	 */
+>> +
+>> +	const unsigned long pagesize = PAGE_SIZE << order;
+>> +	unsigned long vma_off = (vma->vm_pgoff - priv->vma_pgoff_adjust) <<
+>> +				 PAGE_SHIFT;
+>> +	unsigned long rounded_page_addr = ALIGN_DOWN(fault_addr, pagesize);
+>> +	unsigned long rounded_page_end = rounded_page_addr + pagesize;
+>> +	unsigned long fault_offset;
+>> +	unsigned long fault_offset_end;
+>> +	unsigned long range_start_offset = 0;
+>> +	unsigned int i;
+>> +	int ret;
+>> +
+>> +	if (unlikely(!vdev))
+>> +		return -ENODEV;
+>> +
+>> +	/* This prevents the dmabuf revocation state from changing under us */
+>> +	lockdep_assert_held(&vdev->dmabuf_lock);
+>> +
+>> +	if (unlikely(priv->vdev != vdev || priv->revoked))
+>> +		return -ENODEV;
+> 
+> All but the lockdep here smells a bit like the hardening Leon mentions
+> in the previous patch.  There's only one caller of this, we'd segfault
+> there if vdev were NULL and the caller justifies how it knows vdev is
+> not NULL.  vdev is derived from priv->vdev, so the inequality can never
+> be true. 
 
-> spin_{lock/unlock}().
->
-> Keep the number of allowed tags capped at VMX's hardware cap, to avoid
-> allocating a huge bitmap if L0 advertises a huge number of ASIDs to an
-> L1 KVM. Realistically, the number of actual hardware ASIDs wouldn't be
-> that large so there is no benefit.
->
-> Initialize the TLB tags allocator during hardware setup/unsetup, and
-> reserve tag=3D0 during initialziation, similar to how VPID=3D0 is current=
-ly
+Well, okay.  And to your point, I'd stated these entry requirements at 
+the start of the comment, and I can't see this fn being (mis)used by any 
+other caller any time soon.  I'll remove them.
 
-s/initialziation/initialization/
+> The lockdep annotation is good, but that also indicates the
+> caller is responsible for holding the revocation state stable, which
+> they've already checked.  I won't draw a hard line on these, but they
+> seem a bit pedantic.
 
-> reserved in the VMX-specific bitmap during hardware setup.
->
-> Allow nr=3D0 to allow allocating all ASIDs to SEV on AMD without failing
-> hardware setup, if at all possible, in which case any tag allocation
-> fails (SEV won't use the tag allocator).  The number of tags includes
-> tag=3D0, which is not usable. The interface is a little confusing in that
-> regard, but this will be changed soon when reserved tags are explicitly
-> introduced.
->
-> Keep allocate_vpid() and free_vpid() as wrapper that check enable_vpid
-> to avoid checking at all callsites, and add init_vpids() and
-> destroy_vpids() to wrap init/destroy calls as well.
->
-> No functional change intended.
+I'd added the lockdep annotation (and revocation check) in v6 following 
+your https://lore.kernel.org/all/20260729115210.753ab8ce@shazbot.org/ 
+suggestion.  I'll keep the annotation.  The revoked check isn't strictly 
+necessary (being that unrevoked is stated as a requirement in the 
+comment, and already tested in the caller) so will remove that too.
 
-I don't think that's really true. If it is, then you failed. For
-example, the new -ENOMEM when the bitmap can't be dynamically
-allocated.
+Cheers,
 
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> ---
->  arch/x86/kvm/mmu.h     |  8 +++++
->  arch/x86/kvm/mmu/mmu.c | 78 ++++++++++++++++++++++++++++++++++++++++++
->  arch/x86/kvm/vmx/vmx.c | 40 +++++-----------------
->  arch/x86/kvm/vmx/vmx.h | 28 ++++++++++++---
->  4 files changed, 119 insertions(+), 35 deletions(-)
->
-> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-> index 2ae7f9ed4cf86..de79e002edf8f 100644
-> --- a/arch/x86/kvm/mmu.h
-> +++ b/arch/x86/kvm/mmu.h
-> @@ -410,4 +410,12 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm,=
- gfn_t gfn)
->  {
->         return gfn & kvm_gfn_direct_bits(kvm);
->  }
-> +
-> +typedef unsigned int kvm_tlb_tag_t;
-> +
-> +int kvm_init_tlb_tags(unsigned int nr);
-> +void kvm_destroy_tlb_tags(void);
-> +kvm_tlb_tag_t kvm_alloc_tlb_tag(void);
-> +void kvm_free_tlb_tag(kvm_tlb_tag_t tag);
-> +
->  #endif
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index aadd5bdc2c97a..97d49247d9d82 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -8178,6 +8178,84 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
->                 vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread);
->  }
->
-> +static struct {
-> +       spinlock_t      lock;
-> +       unsigned long   *bitmap;
-> +       unsigned int    nr;
-> +} tlb_tags;
+Matt
 
-Can we statically initialize this to avoid the call to spin_lock_init()?
+> 
+>> +
+>> +	if (rounded_page_addr < vma->vm_start || rounded_page_end > vma->vm_end) {
+>> +		if (order > 0)
+>> +			return -ERANGE;
+>> +
+>> +		/* A fault address outside of the VMA is absurd. */
+>> +		dev_warn_ratelimited(
+>> +			&vdev->pdev->dev,
+>> +			"Fault addr 0x%lx outside VMA 0x%lx-0x%lx\n",
+>> +			fault_addr, vma->vm_start, vma->vm_end);
+>> +		return -EFAULT;
+>> +	}
+>> +
+>> +	/*
+>> +	 * fault_offset[_end] is the span within the DMABUF
+>> +	 * corresponding to the faulting page:
+>> +	 */
+>> +	if (unlikely(check_add_overflow(rounded_page_addr - vma->vm_start,
+>> +					vma_off, &fault_offset) ||
+>> +		     check_add_overflow(fault_offset, pagesize,
+>> +					&fault_offset_end)))
+>> +		return -EFAULT;
+>> +
+>> +	/*
+>> +	 * Iterate over ranges in the buffer, summing their lengths:
+>> +	 * range_start_offset represents the current range's starting
+>> +	 * offset in the buffer (from 0 upwards).
+>> +	 *
+>> +	 * A failure for order == 0 is unexpected, and triggers a
+>> +	 * fault/warn.
+>> +	 */
+>> +	ret = (order == 0) ? -EFAULT : -ERANGE;
+>> +
+>> +	for (i = 0; i < priv->nr_ranges; i++) {
+>> +		size_t range_len = priv->phys_vec[i].len;
+>> +
+>> +		/* Early exit if range starts after the page end */
+>> +		if (fault_offset_end <= range_start_offset)
+>> +			break;
+>> +
+>> +		if (fault_offset >= range_start_offset &&
+>> +		    fault_offset_end <= range_start_offset + range_len) {
+>> +			/*
+>> +			 * The faulting page is wholly contained
+>> +			 * within the span represented by this range,
+>> +			 * so validate PFN alignment for the order.
+>> +			 * The if() condition ensures the pfn
+>> +			 * arithmetic won't overflow.
+>> +			 */
+>> +			unsigned long pfn =
+>> +				((fault_offset - range_start_offset) +
+>> +				 priv->phys_vec[i].paddr) >> PAGE_SHIFT;
+>> +
+>> +			if (IS_ALIGNED(pfn, 1 << order)) {
+>> +				*out_pfn = pfn;
+>> +				ret = 0;
+>> +			}
+>> +			/*
+>> +			 * Else order > 0; ERANGE retries with smaller
+>> +			 * order
+>> +			 */
+>> +			break;
+>> +		}
+>> +		range_start_offset += range_len;
+>> +	}
+>> +
+>> +	if (order == 0 && ret != 0)
+>> +		/*
+>> +		 * The address fell outside of the span represented by
+>> +		 * the (concatenated) ranges.  As setup of a mapping
+>> +		 * ensures that the VMA is <= the total size of the
+>> +		 * ranges this should never happen.  If it does, warn
+>> +		 * and SIGBUS.
+>> +		 */
+>> +		dev_warn_ratelimited(
+>> +			&vdev->pdev->dev,
+>> +			"No range for addr 0x%lx, order %d: VMA 0x%lx-0x%lx pgoff 0x%lx, %u ranges, size 0x%zx\n",
+>> +			fault_addr, order, vma->vm_start, vma->vm_end,
+>> +			vma->vm_pgoff, priv->nr_ranges, priv->size);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>>   /*
+>>    * This is a temporary "private interconnect" between VFIO DMABUF and iommufd.
+>>    * It allows the two co-operating drivers to exchange the physical address of
+>> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+>> index 4e7162234a2e..786df3a81d9d 100644
+>> --- a/drivers/vfio/pci/vfio_pci_priv.h
+>> +++ b/drivers/vfio/pci/vfio_pci_priv.h
+>> @@ -23,6 +23,20 @@ struct vfio_pci_ioeventfd {
+>>   	bool			test_mem;
+>>   };
+>>   
+>> +struct vfio_pci_dma_buf {
+>> +	struct dma_buf *dmabuf;
+>> +	struct vfio_pci_core_device *vdev;
+>> +	struct list_head dmabufs_elm;
+>> +	size_t size;
+>> +	struct phys_vec *phys_vec;
+>> +	struct p2pdma_provider *provider;
+>> +	u32 nr_ranges;
+>> +	struct kref kref;
+>> +	struct completion comp;
+>> +	unsigned long vma_pgoff_adjust;
+>> +	u8 revoked : 1;
+>> +};
+>> +
+>>   bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
+>>   void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
+>>   
+>> @@ -123,6 +137,13 @@ static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
+>>   	return (pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA;
+>>   }
+>>   
+>> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_core_device *vdev,
+>> +			      struct vfio_pci_dma_buf *priv,
+>> +			      struct vm_area_struct *vma,
+>> +			      unsigned long address,
+> 
+> Nit, address in the prototype here is fault_addr in the actual function
+> definition.  Thanks,
+> 
+> Alex
+> 
+>> +			      unsigned int order,
+>> +			      unsigned long *out_pfn);
+>> +
+>>   #ifdef CONFIG_VFIO_PCI_DMABUF
+>>   int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+>>   				  struct vfio_device_feature_dma_buf __user *arg,
+> 
 
-... tlb_tags =3D {
-        .lock =3D __SPIN_LOCK_UNLOCKED(tlb_tags.lock),
-};
-
-> +
-> +int kvm_init_tlb_tags(unsigned int nr)
-> +{
-> +       /*
-> +        * Limit the number of TLB tags to VMX's hardcoded maximum of 0x1=
-0000
-> +        * to avoid wasting memory for the bitmap in the unlikely scenari=
-o the
-> +        * CPU supports an inordinate number of ASIDs (on AMD).  If users=
-pace
-> +        * wants to concurrently run tens of thousands of vCPUs, they'll =
-likely
-> +        * need a solution that works for both Intel and AMD.
-> +        */
-> +       const unsigned int MAX_NR_TLB_TAGS =3D VMX_NR_VPIDS;
-> +
-> +       if (!nr)
-> +               return 0;
-> +
-> +       if (nr > MAX_NR_TLB_TAGS) {
-> +               pr_warn_once("Number of TLB tags capped (%u instead of %u=
-)\n",
-> +                            MAX_NR_TLB_TAGS, nr);
-> +               nr =3D MAX_NR_TLB_TAGS;
-> +       }
-> +
-> +       tlb_tags.bitmap =3D bitmap_zalloc(nr, GFP_KERNEL);
-> +       if (!tlb_tags.bitmap)
-> +               return -ENOMEM;
-> +
-> +       /*
-> +        * 0 is the host's TLB tag for both VMX's VPID and SVM's ASID, an=
-d is
-> +        * returned on failed allocations (e.g. no more tags left).
-> +        */
-> +       __set_bit(0, tlb_tags.bitmap);
-> +
-> +       tlb_tags.nr =3D nr;
-> +       spin_lock_init(&tlb_tags.lock);
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_init_tlb_tags);
-> +
-> +void kvm_destroy_tlb_tags(void)
-> +{
-> +       bitmap_free(tlb_tags.bitmap);
-> +       tlb_tags.bitmap =3D NULL;
-
-For consistency and future-proofing, it might be wise to clear tlb_tags.nr =
-here.
-
-> +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_destroy_tlb_tags);
