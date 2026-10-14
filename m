@@ -1,54 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824572FD696;
-	Wed, 14 Oct 2026 06:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC04D32A3FF;
+	Wed, 14 Oct 2026 06:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791960832; cv=none; b=tULKElxlCB5bzSghcqgFNQXs+q/z0Fwuyp5gAKMpVWG9cpaDiyN/sW24PwJCrjy3JWmkZczDZxWaj+hXm/FbLKNPSJD9B6FVgXtbSjmoGlwAXxJvyNkcdkeoIbAOIj6/cBGiJCfSxI0GHiytkaQ+cQUJpJ7Gay4Ye6Ac9vOc9X8=
+	t=1791960855; cv=none; b=OJqaXbedaMfA9kiVoRtFe9h8l1jPMt/JnR8naB5nyf/dk+NlNXRjinp2btl8yCLmDfQQJaK5pzfTfS2knWJgFmj0OYL0xcVLATkqrH+2M0prajhoODmHH4uZQoYW91DThEc7yWbHND4jPkp1GdU73etR7bQP0JNij0RlKhyPzP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791960832; c=relaxed/simple;
-	bh=ioauh8jEjcNN0oXjWVsLxXk+ksMjmNDCMR6ErAColhs=;
+	s=arc-20240116; t=1791960855; c=relaxed/simple;
+	bh=fNngd8KePR1FTyyCY6KCV4rPdszc7+Y50zawYC2sR7g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q6sBbwKgGRYVTs3ggXwI80U7zoWwikRkK5efYRtmzawH+8jB4a9z/7U36zbcbg628GTcwiuaStMXiHkqfeneIkaQYDFGVWESj9vc5MywpPSkW7s6ftMJt0pYj8ZSqfHDV66KdSAGKz45Ylxsu26Z79wtDbTYHEcgGOVuXyv+GMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQon1WRC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=KDaV8zxgCOzA2S6oqbTyO0vRxn24KYnLh3RvEMBLSW7IphLHcf3fjbf/Q5dSpVsrsQ3KwJ56hVOsFbDXVRi3iReq/59zCabFCXUBmUrGo3S0AI0MWlYgrqgnubkOTK7yW06cJgqBEZzYiSRN2kKbE+UvCZj23uZJWfyRbAYc7Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXe+VZ4t; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQon1WRC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8941F000FF;
-	Wed, 14 Oct 2026 06:53:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791960831;
-	bh=wJBG1yc6nHxcLlJB5Xe3WD+42x4ELJs97WwmBWzAW7k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gQon1WRCQUKmhwaRgO1mq76qgm8/r+H1pT/Ft/j+xOYOjF5zDwdetwmlHqKvilzq/
-	 KTh3TIak5Mj2bN7plOyk9GGgphftr9mGHc1SnZ8lcICnoRV49QdLjJB/EPSKR9Tf7u
-	 1n6knDThQzYyNOaNuoXKYQnYa+57YmNU6ZjlXvc4qerq9/Rok53HUtyPkv3Zc6bpOv
-	 UGdkuW+v1UQZ4j6q+2vdiNWmTG8zXfAmmm689xz8SK9tHO5tgPK3aHh3zeU+M4aDTk
-	 VI5FQMibAD4k9v+W8953u0FR4ZPzq5V3YlgtAzmJo9S+H12oTh5foLjimVgBPJ+OV/
-	 10Qj5KfCHB5AQ==
-Date: Wed, 14 Oct 2026 09:53:47 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Logan Gunthorpe <logang@deltatee.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v11 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
-Message-ID: <20261014065347.GW219304@unreal>
-References: <20261013-fix-p2p-acs-v4-0-v11-0-72cf8c96e617@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXe+VZ4t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791960852; x=1823496852;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fNngd8KePR1FTyyCY6KCV4rPdszc7+Y50zawYC2sR7g=;
+  b=PXe+VZ4tQHXiHheHYjhFLxzNlERyJGtBvN1LnsnDOlqbUXnUL0u1JZvh
+   /F5cDo9yIhoJ/2XFZkYYjygdXcQcOp7gVE0pItGzFPE5le8ZRrBye8ccd
+   7tFwWeUPHVS8MA8PAjSkQgYEY7Ygye7d2ypNKtG2uyk7vYWns3C+1Fa6q
+   YQ5Lr9mCLIUw5WUZdd3JS0TlhLKPNKHVeN5nEsE7PELgoswUBtqFoJjeA
+   Dl7lnINg040ccQVz+p7FfAOwCsir6wPwjciqa/mZpcfsJkSvBpLrBnTkW
+   M0V6RzH1ETkBF6BY+Gba4bbqSy8S8/NG0+Z23Ysf/y40bGP2m9swP0N1+
+   A==;
+X-CSE-ConnectionGUID: RzH7UW/GS0axv6TAqP/WWg==
+X-CSE-MsgGUID: p4HXhXm2TjyqJbPSdEpSBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="707765"
+X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
+   d="scan'208";a="707765"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 23:54:03 -0700
+X-CSE-ConnectionGUID: N7lmUT8FQ8OHMbicy4QgZw==
+X-CSE-MsgGUID: qwEYQ/XZQ9uiB+08YKL5FQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
+   d="scan'208";a="1428713"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa006.jf.intel.com with ESMTP; 13 Oct 2026 23:53:56 -0700
+Date: Wed, 14 Oct 2026 14:49:56 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
+	nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v4 02/10] x86/virt/tdx: Convert the version metadata
+ reader
+Message-ID: <as8mFF14lnvnLhyO@yilunxu-OptiPlex-7050>
+References: <20261012094754.27702-1-chao.gao@intel.com>
+ <20261012094754.27702-3-chao.gao@intel.com>
+ <f7e1e51c-e353-49ad-8ad5-9a5689f46f79@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,76 +67,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261013-fix-p2p-acs-v4-0-v11-0-72cf8c96e617@nvidia.com>
+In-Reply-To: <f7e1e51c-e353-49ad-8ad5-9a5689f46f79@linux.intel.com>
 
-On Tue, Oct 13, 2026 at 05:25:08PM +0300, Leon Romanovsky wrote:
-> PCI P2PDMA applies Request and Completion Redirect throughout both paths.
-> This misclassifies asymmetric and nested switches, and reports one answer
-> for every kind of TLP.
+On Tue, Oct 13, 2026 at 04:22:37PM +0800, Binbin Wu wrote:
+> On 10/12/2026 5:47 PM, Chao Gao wrote:
+> > With the helper to read a table of metadata fields in place, the
+> > existing metadata readers can be standardized on it.
+> > 
+> > Convert the version metadata reader: add a table that pairs each field ID
+> > with the 'struct tdx_sys_info_version' member that holds its value, and
+> > read all version fields by walking that table.
+> > 
+> > Name the field IDs for readability, so the table entries don't carry raw
+> > hex literals.
+> > 
+> > AI was used under supervision to review code and workshop logs.
+> > 
+> > Signed-off-by: Chao Gao <chao.gao@intel.com>
+> > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > 
-> Three ACS controls act on TLP attributes the Requester chooses rather
-> than on the topology: Translation Blocking and Direct Translated P2P act on
-> a Request's Address Type, and Completion Redirect skips Completions carrying
-> Relaxed Ordering.
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > 
-> Evaluate each direction at the path divergence, decide every class from the
-> one walk, and treat a client with ATS enabled as translating unless its
-> driver declares per-mapping ATS.
+> One nit below.
 > 
-> This completes the P2PDMA side; dma-buf and mlx5 follow separately.
+> [...]
 > 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
-> Changes in v11:
-
-
-Bjorn,
-
-Could you please save me from the AI-bot attack? Every rebase seems to
-uncover another bizarre pre-existing issue. It never ends.
-
-Thanks
-
-<...>
-
-> ---
-> Leon Romanovsky (19):
->       PCI/P2PDMA: Honor device-specific ACS redirection
->       PCI/P2PDMA: Document the TLP attribute assumptions
->       PCI/P2PDMA: Derive routing from directional ACS controls
->       PCI: Reject unreadable ACS controls in isolation checks
->       PCI/P2PDMA: Evaluate ACS controls at the path divergence
->       PCI/P2PDMA: Document directional ACS routing
->       PCI/P2PDMA: Collect the path's ACS controls before deciding
->       PCI/P2PDMA: Answer routing per TLP class
->       PCI/P2PDMA: Route Relaxed Ordering Completions directly
->       PCI/P2PDMA: Reject Translated Requests blocked by Translation Blocking
->       PCI/P2PDMA: Route Translated Requests under Direct Translated P2P
->       PCI/P2PDMA: Log detailed ACS routing diagnostics
->       PCI/P2PDMA: Add KUnit tests for the ACS routing decisions
->       PCI/P2PDMA: Test the ACS P2P routing walk
->       PCI: Add KUnit coverage for ACS isolation checks
->       PCI/P2PDMA: Document TLP-class routing
->       PCI/P2PDMA: Let a client declare that it selects ATS per mapping
->       PCI/P2PDMA: Evaluate the ATS path for clients with ATS enabled
->       PCI/P2PDMA: Test the routing of clients with ATS enabled
+> > @@ -437,6 +437,12 @@ static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *
+> >  #define FIELD_MAP(_field, _type, _member)	\
+> >  	__FIELD_MAP(_field, struct tdx_sys_info_##_type, _member)
+> >  
+> > +static const struct field_mapping version_mappings[] = {
+> > +	FIELD_MAP(TDX_FIELD_MINOR_VERSION,	version, minor_version),
+> > +	FIELD_MAP(TDX_FIELD_MAJOR_VERSION,	version, major_version),
+> > +	FIELD_MAP(TDX_FIELD_UPDATE_VERSION,	version, update_version),
+> > +};
 > 
->  Documentation/admin-guide/kernel-parameters.txt |   11 +-
->  Documentation/driver-api/pci/p2pdma.rst         |  105 ++
->  drivers/pci/Kconfig                             |   15 +
->  drivers/pci/Makefile                            |    1 +
->  drivers/pci/p2pdma.c                            |  942 +++++++++++++++--
->  drivers/pci/pci.c                               |    8 +-
->  drivers/pci/pci.h                               |   57 ++
->  drivers/pci/pci_acs_test.c                      | 1225 +++++++++++++++++++++++
->  drivers/pci/quirks.c                            |    8 +-
->  include/linux/pci-p2pdma.h                      |   12 +-
->  10 files changed, 2292 insertions(+), 92 deletions(-)
-> ---
-> base-commit: 36038f0e8377ef316b723d0d85b1510bc64069ab
-> change-id: 20260821-fix-p2p-acs-v4-0-e72455e3a261
+> Nit:
+> I personally prefer the version provided in
+> https://lore.kernel.org/kvm/ar-e8WzRS7IUKWgH@intel.com
+> The full types keep the code greppable and __FIELD_MAP() could be dropped.
 > 
-> Best regards,
-> --  
-> Leon Romanovsky <leonro@nvidia.com>
+> Also, it is a bit weird that FIELD_MAP() use _type as the name for the second
+> input, but the shortened one is not really a type.
+
+I think if we see the mapping array as a mirror of the table in
+global_metadata.pdf, then this short pattern is easier to review. In
+this case is it clearer we rename FIELD_MAP()'s args to use the same
+terms in the SPEC? like the following:
+
+	FIELD_MAP(_id, _class, _field)
+
+
+BTW: I still think "without field id macro" makes the pattern even
+clearer:
+
+	FIELD_MAP(0x0800000100000003ULL, version, minor_version)
+
+Direct and easier to map to global_metadata.pdf. Only leave 2 special
+cases - CPUID_CONFIG_LEAVES/VALUES - but they are special enough anyway.
+
+I'm still OK with the current patch. With or without macro is trivial.
+
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> 
 > 
