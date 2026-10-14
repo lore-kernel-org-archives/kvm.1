@@ -1,84 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10DC4CEE53;
-	Wed, 14 Oct 2026 12:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C9B4E01E4
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 12:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791979532; cv=none; b=qUGJLs7nj1Pcf7t/GS0PsecTqhoWzBYy0hc6GIVPqHmx7fizo5oN5azwTMTmsHhsnYjaSurgtt3HuxxhoAda256uup/eyEPhPHiEpE5IQ7X7Y2Ri2d0j9T9LSqVBxmDFRaXUELNm+ip/kYtcpzlruYqPPdTymgR9W2n3XXzv1Q0=
+	t=1791980105; cv=none; b=IcD4B69NjLqk0PW5t5ynoyYIZqH4NWOnKXnxZ+J7DZjkeCYNCqYqu13kkqScjCzqtnCrUzvR/K/weDxrFE8Csi2bS9P4qFUFTVC9Lds47REPF310Qv2+9cdcgXh0+iVvKNNLXQE27bZRlxU4yyu+7ANvfxq77QMwGRYjDsfVu/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791979532; c=relaxed/simple;
-	bh=EwLyOUmKTq+Pgq4Fgui+4muIQaVAEfUm1kjOFtEVhZo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lEFW3h9YAQLpmf0kiEPSkJoXP4B+MH3gy8ZBdx36SHXhwr31pBO/V6KkR/j9BwQSydCN/GkExg+My7mFYgF1Ww0+DuNs4yqLDqSgHZOQSyl+lyzGvC9C/1JniuAY3pd7am1GXBuygx45/FSfKJPcry86Ib7QuTDJT+04GcxN3FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=INvyDbEa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791980105; c=relaxed/simple;
+	bh=qqtGbHAFY4FZchnmFJDsSU1O21vNogY5dkBsucMfGWo=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=rxNn46Btl4UrPtaiAJ+2wAQbxhSTom0Ol5C09+cv5NrTT2P7KrNMJgYKfA4qQe6cM9N0xhRRG0L2adK4ZdginCnhEcGPmZEq4+gwSjwG6LW/+yPI1fGnY/rfMC20tK2cyX9fJhbE+Fwlvp92jr8n70GtFWG0TuJI9jr8CU2AXHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+ELTsfO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="INvyDbEa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42C91F000FF;
-	Wed, 14 Oct 2026 12:05:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+ELTsfO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1671F000FF;
+	Wed, 14 Oct 2026 12:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791979531;
-	bh=l3CyP6bumUd+D8iOczfm5+884GmGnnwhG0Qdoxeuly4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=INvyDbEa9+m4JQN5I3onIIUR1JZdRzUwHnkegHqxYhI7XoO+yiOFOD63um0yVj00T
-	 +nhEsQg4JWQ1Sb3NgMhBZRmRlBGILXERpnuj0WXPRgz+TRCSGiq4Zsig7iWxjNYgEZ
-	 F/blt2tWfCQqhltr12FM4lq3VEe+1cTd4yD5cNhp3Irinkkf1ocY2uV7z/WnLFBNtZ
-	 HQH7ZqekWIoMHsdTRETNLmJZNBzeIPhQNPWVujn3QN+f8jmRJTwBm8FgmXEU1DPVNm
-	 FwA3m26nDE9MPQlwUBOknpv2XyzL4inWVuvtGevWs4riCXNcetjHbTsdVXVYTOAZVm
-	 g3BJ3Y291x8pA==
-Date: Wed, 14 Oct 2026 13:05:25 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org,
-	Sudeep Holla <sudeep.holla@kernel.org>, kvmarm@lists.linux.dev,
-	maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v22 02/10] firmware: arm_rmm: Check for RMI support at
- init
-Message-ID: <20261014-victorious-prompt-kelpie-cf3a87@sudeepholla>
-References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
- <20261002061507.1600269-3-suzuki.poulose@arm.com>
- <2586e689-c27d-4e4c-8c69-03e24259cb96@redhat.com>
- <8be050e3-8af1-4f04-902f-9bc01b209dd0@arm.com>
- <3fbd4739-a4eb-4428-95ae-ead22e7cf9f2@redhat.com>
- <799fb810-c33e-4d0e-9a70-7092c0a681ff@arm.com>
- <0ceda99f-0352-474b-a30a-c5e79b817c2d@redhat.com>
- <ade8dd16-4f09-47d0-a821-636ca4c62565@arm.com>
+	s=k20260515; t=1791980103;
+	bh=Xw+uJwKhhgmiJPZk192FQIQdI+iU6jvIfKrqQj996rk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=f+ELTsfOkZuv2kYDZ89ZGqu8KA+pYppIjlPTe3C4nvW9L4+hcm4H1PXVZs8EYfpJt
+	 yGdAiPx58E3AODqvz61YFYq7gnd5FDRjrRNsmRjeacd28ndHQz8bMJBJr0N0jWHPj1
+	 kOJKYZQoF6Rg3FTR5ivAF6ZndXTBVcQ4yuah/Aw5FZo6qroZ0KsYB8ZbJorTfIUXZ6
+	 qF+vOa4bZ+B69a6BLJw4f7JX6Nzvy0ljQr/QFTjxPq6Ipzb+0ar/bSB+65IwLrU/DC
+	 M0M2cDsqR8xWdaROl6id0XcAUo3rDeLV5ffpgc2xZaFVj+mo01lRJeQXXIzVZ8t9fi
+	 n21WYlEBTulWw==
+Message-ID: <sashiko-outbox-171250@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/huge_memory: recheck a special PMD under the lock in
+ copy_huge_pmd()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Konstantin Khorenko" <khorenko@virtuozzo.com>
+Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com>
+References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 14 Oct 2026 12:15:02 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ade8dd16-4f09-47d0-a821-636ca4c62565@arm.com>
 
-On Wed, Oct 14, 2026 at 12:06:54PM +0100, Suzuki K Poulose wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm: NULL pointer dereference in zap_huge_pmd() for special PMDs on=
+ PowerPC
+--
 
-[...]
+commit 5100f57130de5473973d1370273238b4778fae24
+Author: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-> 
-> Then it is RMM's problem if it doesn't check that the right level of
-> SMCCC version is not implemented by the EL3. Also, where do we stop
-> the checks ? e.g., We need SMCCC >= v1.3, when SVE is supported.
-> And >= v1.4 if SME is supported. Shouldn't we leave this to the RMM
-> to verify on init and fail the init ? I can raise this with the
-> tf-RMM team.
+mm/huge_memory: recheck a special PMD under the lock in copy_huge_pmd()
 
-Fair enough for v1.3+/SME/SVE checks, but RMI interface relying on more
-that 8 input registers for one or more of it's interfaces (e.g.
-RSI_ATTESTATION_TOKEN_INIT, RSI_MEASUREMENT_EXTEND, ...etc) indicate
-it can't work with SMCCC v1.1 or below
-.
-So IMO check for v1.2+ is completely justified here.
+copy_huge_pmd() reads the source PMD without the page table lock and,
+for a special PMD, installs that value in the child without reading it
+again under the lock. This commit reads the PMD again under the lock to
+ensure it wasn't cleared concurrently by unmap_mapping_range().
 
--- 
-Regards,
-Sudeep
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 1e5d68acf62a5..fcea98f0d8865 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1965,13 +1965,22 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struc=
+t mm_struct *src_mm,
+>  		src_ptl =3D pmd_lockptr(src_mm, src_pmd);
+>  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+>  		/*
+> -		 * No need to recheck the pmd, it can't change with write
+> -		 * mmap lock held here.
+> -		 *
+> -		 * Meanwhile, making sure it's not a CoW VMA with writable
+> -		 * mapping, otherwise it means either the anon page wrongly
+> -		 * applied special bit, or we made the PRIVATE mapping be
+> -		 * able to wrongly write to the backend MMIO.
+> +		 * The mmap and VMA write locks of the source keep faults
+> +		 * out, but unmap_mapping_range() does not take the mmap
+> +		 * lock and may have cleared the pmd since the lockless
+> +		 * read. Let copy_pmd_range() skip it then.
+> +		 */
+> +		pmd =3D pmdp_get(src_pmd);
+> +		if (unlikely(!pmd_present(pmd) || !pmd_special(pmd))) {
+> +			spin_unlock(src_ptl);
+> +			spin_unlock(dst_ptl);
+> +			return -EAGAIN;
+> +		}
+> +		/*
+> +		 * Make sure it's not a CoW VMA with writable mapping,
+> +		 * otherwise it means either the anon page wrongly applied
+> +		 * special bit, or we made the PRIVATE mapping be able to
+> +		 * wrongly write to the backend MMIO.
+>  		 */
+>  		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
+>  		goto set_pmd;
+
+[Severity: High]
+Does this code cause a NULL pointer dereference on PowerPC when a special
+PMD is unmapped by the child?
+
+Because the jump to set_pmd bypasses pgtable allocation and deposition
+for the child process's new special PMD, no pgtable is deposited.
+Later, when the child unmaps the VMA or exits, zap_pmd_range() calls
+zap_huge_pmd().
+
+On architectures like PowerPC (hash mode) where
+arch_needs_pgtable_deposit() is true, this leads to:
+
+mm/huge_memory.c:zap_huge_pmd() {
+    ...
+    if (has_deposit)
+        zap_deposited_table(mm, pmd);
+    ...
+}
+
+This will unconditionally assume a deposited table exists and try to
+withdraw it. Then in zap_deposited_table():
+
+mm/huge_memory.c:zap_deposited_table() {
+    ...
+    pgtable =3D pgtable_trans_huge_withdraw(mm, pmd);
+    pte_free(mm, pgtable);
+    ...
+}
+
+Since no page table was ever deposited, pgtable_trans_huge_withdraw()
+returns NULL, and passing NULL to pte_free() leads to a kernel crash.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261014-b4-prep-vs=
+tor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.co=
+m?part=3D1
