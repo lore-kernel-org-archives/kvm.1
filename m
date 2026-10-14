@@ -1,115 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AB736B906
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 22:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2A421FF2A
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 22:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792016668; cv=none; b=CdLsQBA/7xPrFdmZD/5Ip4UQSmwrpprEV7kvF5DqqVapKQVFb9goITlIVcDygp37YaWU7ioevjXlCMwXa5XPZHzxbW5tTl9FtP5Ewbq8+RG1yPAq5aGOmFqcgMTzv1VyfgjF7hRj+nGS/WaRfsZP/Q5kujn+h2M2WVm3o4Ede8A=
+	t=1792016750; cv=none; b=IySpZeuGh4TSDzpyI+HZC05Ixkwq0ssLjffULCiPS2kcoint157sXUfqIuG0Oq0dnLC4uY0xOji16cWQME9vamFGKuOmYDjI+4Ai6lh0xZiYYAO8kZq9aLlQ4rP54VPhbu7fAGI53goPbEgE8FXJE2aiQeu18BRDe4RElA2h4AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792016668; c=relaxed/simple;
-	bh=wZFf1lLb0RKRlB0m19hXdRImJYHOmu4dWMzcXH9VIGs=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=TZ9fWup+H9dIxlLawsxd3AyV06JVwJj+BrXRcow9ISXrprAGPSW6Axo+Ad/wIQoNezYAw0vBwl+dktNNYK2tJxbo5xqn+AlBGSG1W82zuhl7QzX5iXIc6ZEGtSNWYuJ+BM4MXOLVv1r86okNhTfc1lM+9AdGVeI89d+hbtrJmRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eK7+/Vkl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792016750; c=relaxed/simple;
+	bh=TcjZw94PKcWZj5E2V8Ve/zaBIXnoYpu+tzsew7JkeMQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PgA/aVKcyEewCiShkoYFcY/F5OSPEqSK4oBPvSVEbJmHwx/u+XWSz/DWX5Y6LPh3QNOdJiG73lTwzVWt6kgpwLcJDecCi/r7hcuvlP1ICmtB/yH5vM0XuacTjSUeAG8tYb/rO6agwdGXDugcx5QxVmDbH2Cjcrnl2knVsMEA4Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kB3gngrB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eK7+/Vkl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3911F000C4;
-	Wed, 14 Oct 2026 22:24:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kB3gngrB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4921E1F000C7
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 22:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792016667;
-	bh=mRPhTiGpr6b/m30MQStUlf874dqnDK5mvAqebat84So=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=eK7+/VklObrsNngRSlqtE6VYcE3jyhrqmIqKqBqRGpM/s4VuNSZb7W4BbchuLdytY
-	 J9UGJ7Hbj+DvPMd5ceegouixBrzZbH4M6UlxIxVvzAJ90P6lGp3lltfvbKIB2ZYP+6
-	 xPfMdIaCJAlB0G/o9DKedyJeThgeMeO45Yt5rMwsGvKeq2wjyOTUG2b6Z3JkbM6wSv
-	 1+/ScNmUAugKPNVNIXzaR6Ka4uI9SsOP2LxEQ8Zn7e1CtMLmQce5y+jydpespwLKmC
-	 fzwQd1taMe0JonFFzD+1U7TeMNfdZAIVGDifjNaqnmm6reGfuBSm1nC7N4D8pp611t
-	 YMxnNm/UvTAJA==
-Message-ID: <sashiko-outbox-171969@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 04/11] KVM: x86/xen: Wait out memslot updates in the
- Xen attribute ioctls
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261014220508.518772-5-dwmw2@infradead.org>
-References: <20261014220508.518772-1-dwmw2@infradead.org>
- <20261014220508.518772-5-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 14 Oct 2026 22:24:26 +0000
+	s=k20260515; t=1792016749;
+	bh=1Ht1WZ3tHnehlbechAROaSWrsWVBjwNhjaGlSlzbygw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kB3gngrBe9+yDJa9/7UtlMgKsaI5uSTagMOJYwFKfaQ0OMcKJfmDEpaXV9+V9z2WO
+	 ATqPfgsbeI1UtXqUTnywGKz1nWCDo6BxRSegwyxkxLijR7VG+viRQE+aoepcUC9mk7
+	 tJvTeAJiYZfdnAIV5rSyYeUIYTGRxRYr/nOwc0W9/MQwjBga1LEKJqexLoHW2dp4S4
+	 rAdPtgLr9l39k2cQWxDo7dLgb2z5fS8I/tWJeh315N+mpUbf1XMJrhZk1DHNBTNtA0
+	 vWe7x4rbrR2UVwqZxvc1qSEBsDHZI4KgsIScnQdmYOEk4a4BXe14ofkxYBRkXzQEeX
+	 EAXBh7aRbpnjw==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c315729ad50so763470266b.0
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 15:25:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByoSCQBwHt/GgWXXRGt8sMA8AeKXhe0rNkDq/AXBry5OiptYNIzphHV0J+uvxh6I5E8iko=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIwfzIEMzJ70GKgAb40JtQFnfNEEp5TjAe4JEqT99GSci4aXEwT
+	AQuSS6IVqkCLDVs/L/IVHCoQGQqhcE9Dcaqo3bxgVV9vnb+GmB3FIQrPjDUa6+jHqd0FbFgsuM+
+	WixJcqPILEy8pIes1Br1ekg/lMNpIelo=
+X-Received: by 2002:a17:907:9686:b0:c1f:983f:d8a with SMTP id
+ a640c23a62f3a-c31aa017261mr1750877966b.24.1792016748234; Wed, 14 Oct 2026
+ 15:25:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-6-yosry@kernel.org>
+ <CALMp9eSWazT=0tXKvGb9UNWBv62di33QgugQHOa+Bo2sq0qUCQ@mail.gmail.com>
+ <CAO9r8zPPR9LMtcwhH=D8gJLjmC6800mJdyV+nKT83TnMti7wJw@mail.gmail.com> <CALMp9eTyzxwjKnWXem=dAGiwJsUsArssQTcQhg56HVd+js5pSQ@mail.gmail.com>
+In-Reply-To: <CALMp9eTyzxwjKnWXem=dAGiwJsUsArssQTcQhg56HVd+js5pSQ@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 14 Oct 2026 15:25:36 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNx-CUVeN8gfhnFxAUP9RBLnLV=eAFHhtW8FqTvhNEXFQ@mail.gmail.com>
+X-Gm-Features: AclHuK--o7h_Stui5Fi9tI83gJakdf715k8lQZciJzbWTb26-VroCnbYjkfDf6c
+Message-ID: <CAO9r8zNx-CUVeN8gfhnFxAUP9RBLnLV=eAFHhtW8FqTvhNEXFQ@mail.gmail.com>
+Subject: Re: [PATCH v3 05/27] KVM: SVM: Add helpers to set/clear ASID flush in VMCB
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] kvm: unprotected kvm_memslots() dereference in kvm_xen_start_timer=
-() due to missing srcu_read_lock()
---
+> > > > +static inline void vmcb_set_flush_asid(struct vmcb *vmcb)
+> > > > +{
+> > > > +       vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
+> > > > +}
+> > > > +
+> > > > +static inline void vmcb_clr_flush_asid(struct vmcb *vmcb)
+> > >
+> > > The name of this function makes it sound like the inverse of
+> > > vmcb_set_flush_asid(), which it isn't. Maybe vmcb_clr_tlb_ctl()?
+> >
+> > Why not? vmcb_set_flush_asid() sets FLUSH_ASID and
+> > vmcb_clr_flush_asid() clears it, right?
+>
+> Not exactly. The tlb_ctl field is not a boolean.
 
-commit 4fa2fbe5b2a708cc92e83f1efa33364d90021a44
-Author: David Woodhouse <dwmw@amazon.co.uk>
+Right, but the current implementation treats it as such (with the
+exception of falling back to FLUSH_ALL_ASID, but that becomes
+transparent to the callers).
 
-KVM: x86/xen: Wait out memslot updates in the Xen attribute ioctls
+>
+> vmcb_set_flush_asid() sets tlb_ctl to 3 (flush current ASID).
+> vmcb_clr_flush_asid() sets tlb_ctl to 0 (do not flush).
+>
+> Other legal values are 1 (flush entire TLB) and 7 (flush non-global
+> entries of current ASID).
+>
+> And, in fact, these values were chosen so that older hardware would
+> see both 3 and 7 as "flush entire TLB."
+>
+> So, it's a little more nuanced than set and clear "flush by ASID."
 
-Activating a shared_info, vcpu_info, pvclock or runstate cache can fail if =
-it
-races a memslot update: previously with -EFAULT, now with -EAGAIN. These
-ioctls may sleep, so pass wait and let the activation ride the update out.
-The overarching SRCU read sections around the activation calls are removed
-to prevent deadlocks against memslot updates.
+I agree, I chose to abstract it as a boolean, but I understand it can
+be confusing.
 
-> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index 74dad6789e428..cd1063d659cc5 100644
-> --- a/arch/x86/kvm/xen.c
-> +++ b/arch/x86/kvm/xen.c
+>
+> Maybe vmcb_set_flush_asid() and vmcb_set_flush_nothing()?
 
-[ ... ]
-
-> @@ -937,7 +938,6 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, stru=
-ct kvm_xen_vcpu_attr *data)
->  	int idx, r =3D -ENOENT;
-> =20
->  	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
-> -	idx =3D srcu_read_lock(&vcpu->kvm->srcu);
-> =20
->  	switch (data->type) {
->  	case KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO:
-
-[Severity: High]
-With the overarching SRCU read lock removed here, are there paths in the
-switch statement that still require the lock but were missed?
-
-For example, in the KVM_XEN_VCPU_ATTR_TYPE_TIMER case:
-
-arch/x86/kvm/xen.c:kvm_xen_vcpu_set_attr() {
-    ...
-    case KVM_XEN_VCPU_ATTR_TYPE_TIMER:
-        ...
-        if (data->u.timer.port && data->u.timer.expires_ns)
-            kvm_xen_start_timer(vcpu, data->u.timer.expires_ns, false);
-    ...
-}
-
-This calls down into xen_get_guest_pvclock() and kvm_gpc_check(), which
-then accesses kvm_memslots(gpc->kvm):
-
-virt/kvm/pfncache.c:kvm_gpc_check() {
-    struct kvm_memslots *slots =3D kvm_memslots(gpc->kvm);
-    ...
-}
-
-Accessing kvm_memslots() triggers a srcu_dereference_check() that fails
-without the SRCU lock held, and could result in a use-after-free if
-kvm->memslots is freed concurrently.
-
-Will this path now result in a lockdep splat ('suspicious RCU usage') and
-potential use-after-free when a userspace process calls the
-KVM_XEN_VCPU_SET_ATTR ioctl with KVM_XEN_VCPU_ATTR_TYPE_TIMER?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261014220508.5187=
-72-1-dwmw2@infradead.org?part=3D4
+I would prefer vmcb_set_flush_asid() and vmcb_set_no_flush().
