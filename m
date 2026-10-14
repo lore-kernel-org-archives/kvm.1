@@ -1,180 +1,201 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DF855D889
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 16:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791995472; cv=pass; b=OLkExvEEKEOkTaLAJyqS4RWwh6YKMU9pH39eZW8dKTWqwmH48wZf4GadIXJv5qQdI3yOR5CekBNQ3AzQY1i+26EUnBqFxQtO/bU6yhfPlXyYGzCrBg4p7vjPgREiyNA7UkO9pTVZpAynp9R01apjsccRka0Nu3uk+WZGm21hkyQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791995472; c=relaxed/simple;
-	bh=zy4EIi1Qm5ZXQfZQEHtR5SJYjCSsE5RsXuRQofIIUDs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CyxzppAAB31qqDStGS8u2Zn5xD/4yZ42II2e9s3rBjkPOADTPQsCpzGqeKv93okrvUPEZuMAjBuD/8tAG7nvecCjCXUEMyRMetLd1Ec0J7pUbv4h6muwv3ePUKZEEacD9wl8n4T5+9ZbkYtlwsBmWWrD/AJS4z8fZ2hESC18IZw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OtEdRiEM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NcxhrX8w; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC407559CB5;
+	Wed, 14 Oct 2026 16:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791996762; cv=none; b=T2vGvtguV22KRJ6/bLs7A2kHE0jbjU+SFDjVOnRco6f6K7UM7C3nC8G1yr5cw9r69ijlyyynGMmhpce0pALKQ22FLGgh2ISmTTTIkvDZoVQFzxSX/FAkPhoFQ6YUP1US9HKYEHdXcB6lU5XBxIwHTHZAFubtSOno0pDBz3BqL2o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791996762; c=relaxed/simple;
+	bh=QjtKvWW3Y7GCMZzZoiJ0A3WNAE4EFJyJqs5BjRIzd9g=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aZ8JSdTkWJW+DvGdIKrzQcy8tmr4TOSW8L0881qm3L7qqoOzyczNXo0NommI8vSWe8J3YTcQIeRwdaDh8uCYEPhAouwVe5d4HGHrWmHYqVf1klK4aYVLMHeRdzH6yK0zVuijydihNvNX4w1SoJ3TWx1jKL0UH9K5/rYalA8xhLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hCywxsXE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OtEdRiEM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NcxhrX8w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791995468;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k+0bbYBp5vS6Wzy92SxhIlT3F+PvYBDU5sICwVgEKDw=;
-	b=OtEdRiEM/q3OoCkRiLtmYcXFc/3q4v/Cv0KwuqdgpIu0gJFdOmofg41YqQYHJ56AY+vDHu
-	kPbulanFmQ+4AE4/UAMi8djtmRPTG/0N2Bjy7y3mrC4vJsnGP7p02YMlIKOQtivKB6lpQ8
-	tfCtyCTaaQFweVntt9bpnmXHu3WfnX0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-WebXUadwNCSB-j0j3CMpiA-1; Wed, 14 Oct 2026 16:31:07 +0000
-X-MC-Unique: WebXUadwNCSB-j0j3CMpiA-1
-X-Mimecast-MFC-AGG-ID: WebXUadwNCSB-j0j3CMpiA_1791995466
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b00febba3so3416930f8f.1
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 09:31:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791995466; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z39FzPwdQXk7BmGi7JTwVZTLUGRo1Vb3kDaFvzK2fw6JoleKNzCPjnhFaEYqsbuM6O
-         sXWWyyjit0FER1fHTv8bFN5SHHBC4xk+2SypAVKlvm/cpXHY7jrUkRYJM44cTD7uOC0u
-         SKDJLyeZDcPsBMCIw2llGDzyJ7OIW86c0PqShWfYRGg/IDgtNt0mSy/RL/9wfl44AgZq
-         k+vY/6sp5Zr4unV6KGasF31feirkIM3GbW6RAfSyosuB1CNt1nh56DLYMcJV0HynlU0b
-         g3w9funN68Oq2cdyQQ9Y67lhxgltM+xSC/VsNZf/APkcEaHENq0oeGu7OxYA468pdRb/
-         hAYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=k+0bbYBp5vS6Wzy92SxhIlT3F+PvYBDU5sICwVgEKDw=;
-        fh=ZqMldv1TbIRfU5ACuuZbUQND7Pfzyo4kQrK6BOG8oPM=;
-        b=Pu1g89kbymNX7IV4STLRz+SEu8hyXi1WuKKKFWAVyLaG0rQScObOKOwRRUHxVBSUeR
-         wz9PrFq6DdKNNNR6R7ins+WrY7JSsJ5+X9yCWOkVEXHKP7vc5lJIioksInWEpUxYSoDy
-         4ibv5twQd7CifZmcrQLg9yV1XmL3WZq5hJeUKtopnhG8p7h3b0PMcYqMgPNIBWic9R9U
-         IcIIgHDv1+d0cG/Hf5AqDn/2z+qhr7lM2D9L23cHX2Bsd7sqsHT3DTfWKWx3qOLd64jt
-         3yqJnyPuBnV7SoKJklRsi1/RtjiYmebLgxSICuZjiW1dql8j/OSB8c1gCdtYtJj0aGf1
-         3rbA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791995466; x=1792600266; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=k+0bbYBp5vS6Wzy92SxhIlT3F+PvYBDU5sICwVgEKDw=;
-        b=NcxhrX8wMBKw/1wSsC2g2NlOPh3Uz6SgaFnrYVAF9wMJfPOR+e97tS7k2PiBL+ArH0
-         5hgr181qm5Er5qVQmzWTkNqsQbFq/6koKUSbTOd1RjTmjUVHdzNIJ55HjgN7MCSjKb9R
-         tcoRMGyBLiWfK1s15dm1/4Nf65nfJkSeMh48T1sm2nBYZpsN8z7m0j1+ZFFIwvW1eAvb
-         LFqFYEJTQcjI8v/Cif/+UiEWyQJGP/WkTTB+3eLDzarlhp3B0SH37y32JZhxgxuVsCld
-         Cxvf5TpxZ+bsQpDiMPxbO9JItAVOmT8J2VMvyb7zo8PUyGMuEVwYPxK+R5qj8QQffSNH
-         XQNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791995466; x=1792600266;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=k+0bbYBp5vS6Wzy92SxhIlT3F+PvYBDU5sICwVgEKDw=;
-        b=cJTWdlHKuGbLRWdZAWhcxmPAWdDLLotLu5PN8b1Spcb1EGaoxVNTnLft2yGowEu2oA
-         YKeJgbHOAnK2Oc6Vg5TerYuXUB8unKQQRrXt7hN15QrjCxy6jOZWFHJmVpyeI6DqjZap
-         fIWYVewdXSJMPrLj1m+xj5//04N20RzE9V9DXErt+BlkfRz+qw98IyZRtEMi0hFYv02b
-         4VHkCV7kpcXwyOeMuJCxYTFm54R9zKzWrHXRCgTt1dvjPOqsPdhFxHUsvB6pFXPN2NLj
-         v/Q6KJz1q0FAwuCL+qR7AubC5subBkb4Qmk+Quezt2/zsGkXO4wluTCyf/GR0lVi02Gx
-         MTxg==
-X-Forwarded-Encrypted: i=1; AKwUvByT75taEyvuknOrULztdrq7zJMumcXUdRB35sNaavzMZUcAVAf04McOgtqMW6r2kxSa7WE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJrhAhxjPmPW2iiNQxCINqCVhAWirOyeja7wXmE5GsnXy1ms3qh
-	Gb8FNso0ifBeso+fhEcGL0ULQEZQKd0TNryirmnGcRuFZDNwGrLM8DJyq3axG7FpBL9wUpja3Ew
-	FHUbh0mxTklz2xrtM+4CQc9cXg5STHXCDaL2otGunk1oXCviWIQYSDtAHSzq0hRfuXXhC3M/Qtz
-	mXyny8+YNevoOyOa5nTkFhqN0Z4lrz
-X-Gm-Gg: AYBFou0YtwzpYVo0he5YPUtg3dbSOgnw5RTNXsKiP3X0guGoomLo9zZrlVLop2cLRUc
-	27vczok009JrNVLyOUt8RV9rRewyH9ypGZHehI6dQPh+utM6MCjf97ZkzJ41T8OwvDkwI/lIMZI
-	xhxddjSXU3XsMM+fxuTQx7sbAuBimNOYHnTXRSX7Bb7y42aiKczYYrz/o9JeeVdAl6+DpTfcTjy
-	CMwmrpnGDv92Nclh5v9mJs03t4AbGl3tJ0OApdXblfmv+u+PH5JV9IGM554vA==
-X-Received: by 2002:a05:600c:34c4:b0:4a1:b027:99dc with SMTP id 5b1f17b1804b1-4a1b027a161mr98308805e9.18.1791995466240;
-        Wed, 14 Oct 2026 09:31:06 -0700 (PDT)
-X-Received: by 2002:a05:600c:34c4:b0:4a1:b027:99dc with SMTP id
- 5b1f17b1804b1-4a1b027a161mr98308215e9.18.1791995465797; Wed, 14 Oct 2026
- 09:31:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hCywxsXE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8F31F000C4;
+	Wed, 14 Oct 2026 16:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791996761;
+	bh=BErtQRFzc28J9pgEsMybjJSr+36WI01qEf+DOn7B0yY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hCywxsXEnPJlW+x8oGO5bEkYhy/yOq8plTJdsB44Sap2xa56QGln2WFxIZc6Elx1s
+	 ZKrksgpt0yydUNxA6GcjXvQpOUZEEitKC3XZm6Qts1u4LNogdBfiFu4LlRffDDxM41
+	 K2ARXU7WXn/urGAZ3iabW+BLR2g8+e+v2mGbKAmGOjvnWScKOC3r1zmudq6z3HBQcy
+	 jHRXJlgXUjiJEWadUB9Pwm0rMDnysoI4DKGrzvMODkbFqAVZwDz0+eFaiZDCfHygOn
+	 BWq/e5sjNRHM/PEJwfnrdLl/2uPNgRMGhwIGGexw+tXQafsQ/NULK1+7OCYP+auPqb
+	 rRcJaLdflEPtw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xH2DW-00000002xcC-2Y10;
+	Wed, 14 Oct 2026 16:52:38 +0000
+Date: Wed, 14 Oct 2026 17:52:37 +0100
+Message-ID: <86qzhs1ay2.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Colton Lewis <coltonlewis@google.com>,
+	Eric Auger <eauger@redhat.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Gokul K <gokul02k@gmail.com>,
+	Hemanth Selam <hemanth.selam@gmail.com>,
+	Hiroyuki Katsura <hk590@cam.ac.uk>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
+	Jack Thomson <jackabt@amazon.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+	Jonathan Davies <jonathan.davies@nutanix.com>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Like Xu <likexu@tencent.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sebastian Ene <sebastianene@google.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Shen Yongchao <grayhat@foxmail.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Stefan Teodorescu <fane@google.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Steven Price <steven.price@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tharit Tangkijwanichakul <tharitt97@gmail.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Wang Han <wanghan@linux.alibaba.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Yuan Yao <yaoyuan@linux.alibaba.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Subject: Re: [GIT PULL] KVM/arm64 updates for Linux 7.4
+In-Reply-To: <CABgObfYVHtFGopM=vCY2vt2N-CON=_5BN4YFiZknwvyrgP5mfw@mail.gmail.com>
+References: <20261014162126.964330-1-maz@kernel.org>
+	<CABgObfYVHtFGopM=vCY2vt2N-CON=_5BN4YFiZknwvyrgP5mfw@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261014162126.964330-1-maz@kernel.org>
-In-Reply-To: <20261014162126.964330-1-maz@kernel.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 14 Oct 2026 18:30:50 +0200
-X-Gm-Features: AclHuK-uduyx1V7w8xPq5hTQncfjGaYTAtLpmbc_jG8-KYLjkOQH5FYBRTis6z4
-Message-ID: <CABgObfYVHtFGopM=vCY2vt2N-CON=_5BN4YFiZknwvyrgP5mfw@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/arm64 updates for Linux 7.4
-To: Marc Zyngier <maz@kernel.org>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Colton Lewis <coltonlewis@google.com>, Eric Auger <eauger@redhat.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Gautam Menghani <gautam@linux.ibm.com>, 
-	Gavin Shan <gshan@redhat.com>, Gokul K <gokul02k@gmail.com>, 
-	Hemanth Selam <hemanth.selam@gmail.com>, Hiroyuki Katsura <hk590@cam.ac.uk>, 
-	Itaru Kitayama <itaru.kitayama@fujitsu.com>, Jack Thomson <jackabt@amazon.com>, 
-	Jiaqi Yan <jiaqiyan@google.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>, 
-	Jonathan Davies <jonathan.davies@nutanix.com>, Karl Mehltretter <kmehltretter@gmail.com>, 
-	Leonardo Bras <leo.bras@arm.com>, Like Xu <likexu@tencent.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Oliver Upton <oupton@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Sascha Bischoff <sascha.bischoff@arm.com>, 
-	Sean Christopherson <seanjc@google.com>, Sebastian Ene <sebastianene@google.com>, 
-	Sebastian Ott <sebott@redhat.com>, Shen Yongchao <grayhat@foxmail.com>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, Stefan Teodorescu <fane@google.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Steven Price <steven.price@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tharit Tangkijwanichakul <tharitt97@gmail.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	Wang Han <wanghan@linux.alibaba.com>, Wei-Lin Chang <weilin.chang@arm.com>, 
-	Will Deacon <will@kernel.org>, Yuan Yao <yaoyuan@linux.alibaba.com>, 
-	Zenghui Yu <zenghui.yu@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, amachhiw@linux.ibm.com, catalin.marinas@arm.com, coltonlewis@google.com, eauger@redhat.com, fuad.tabba@linux.dev, gautam@linux.ibm.com, gshan@redhat.com, gokul02k@gmail.com, hemanth.selam@gmail.com, hk590@cam.ac.uk, itaru.kitayama@fujitsu.com, jackabt@amazon.com, jiaqiyan@google.com, joey.gouly@arm.com, jonathan.cameron@oss.qualcomm.com, jonathan.davies@nutanix.com, kmehltretter@gmail.com, leo.bras@arm.com, likexu@tencent.com, ljs@kernel.org, broonie@kernel.org, nsg@linux.ibm.com, oupton@kernel.org, rdunlap@infradead.org, sascha.bischoff@arm.com, seanjc@google.com, sebastianene@google.com, sebott@redhat.com, grayhat@foxmail.com, xueshuai@linux.alibaba.com, fane@google.com, seiden@linux.ibm.com, steven.price@arm.com, rostedt@goodmis.org, suzuki.poulose@arm.com, tharitt97@gmail.com, vdonnefort@google.com, wanghan@linux.alibaba.com, weilin.chang@arm.com, will@kernel.org, yaoyuan@linux.alibaba.com, zenghui.yu@linux.dev, yuzenghui@huawei.com, kvmarm
+ @lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Oct 14, 2026 at 6:21=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote=
-:
->
-> Paolo,
->
-> Here's the set of KVM/arm64 updates for 7.4. After a couple of
-> releases mostly focused on mopping the AI wave, we're back to merging
-> new code, and there is a lot of it. Given the size and the conflicts
-> that this generates (see below), I've decided to send the pull request
-> early.
->
-> Details are as usual in the tag below, but there is a few things to
-> call out:
->
-> - a lot of pKVM updates, finally delivering on the isolation promises,
->   thanks to Fuad's work on upstreaming this stuff.
->
-> - the first stab at sharing code with s390... More fun to come, but
->   that's a start
->
-> - More GICv5 code. As always with the GIC, it is huge... But for once,
->   the code is much simpler than the previous iterations, and also
->   comes with a bunch of selftests from the beginning.
->
-> As a consequence, the diffstat is a gold-plated pig.
->
-> Things to note:
->
-> - this drags the kvmarm-fixes-7.3-1 tag as a way to resolve bad
->   conflicts with some of the patches
->
-> - there is some additional conflicts with 7.3-rc6, due to
->   kvmarm-fixes-7.3-2 landing a bit late. I have stashed a resolution
->   here [1], which you can either apply if you're basing the merge on
->   -rc6, or mention to Linus as you send your own PR. For everybody to
->   enjoy, I also add the resolution at the end of this email.
+On Wed, 14 Oct 2026 17:30:50 +0100,
+Paolo Bonzini <pbonzini@redhat.com> wrote:
+>=20
+> On Wed, Oct 14, 2026 at 6:21=E2=80=AFPM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > Paolo,
+> >
+> > Here's the set of KVM/arm64 updates for 7.4. After a couple of
+> > releases mostly focused on mopping the AI wave, we're back to merging
+> > new code, and there is a lot of it. Given the size and the conflicts
+> > that this generates (see below), I've decided to send the pull request
+> > early.
+> >
+> > Details are as usual in the tag below, but there is a few things to
+> > call out:
+> >
+> > - a lot of pKVM updates, finally delivering on the isolation promises,
+> >   thanks to Fuad's work on upstreaming this stuff.
+> >
+> > - the first stab at sharing code with s390... More fun to come, but
+> >   that's a start
+> >
+> > - More GICv5 code. As always with the GIC, it is huge... But for once,
+> >   the code is much simpler than the previous iterations, and also
+> >   comes with a bunch of selftests from the beginning.
+> >
+> > As a consequence, the diffstat is a gold-plated pig.
+> >
+> > Things to note:
+> >
+> > - this drags the kvmarm-fixes-7.3-1 tag as a way to resolve bad
+> >   conflicts with some of the patches
+> >
+> > - there is some additional conflicts with 7.3-rc6, due to
+> >   kvmarm-fixes-7.3-2 landing a bit late. I have stashed a resolution
+> >   here [1], which you can either apply if you're basing the merge on
+> >   -rc6, or mention to Linus as you send your own PR. For everybody to
+> >   enjoy, I also add the resolution at the end of this email.
+>=20
+> I've done the unspeakable and pulled kvmarm-fixes-7.3-2 into kvm/next
+> so that this PR will go on top; that conflict is too much to send to
+> Linus. Please check in kvm/queue that I copied your resolution
+> correctly. As soon as you confirm I'll move it to kvm/next.
 
-I've done the unspeakable and pulled kvmarm-fixes-7.3-2 into kvm/next
-so that this PR will go on top; that conflict is too much to send to
-Linus. Please check in kvm/queue that I copied your resolution
-correctly. As soon as you confirm I'll move it to kvm/next.
+Looks pretty good to me:
 
-Paolo
+$ git diff kvmarm/next-7.4+fixes-7.3-2  kvm/queue arch/arm64/
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm=
+_host.h
+index 1c6632216e327..5c9843338c510 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -32,6 +32,9 @@
+ #include <asm/vncr_mapping.h>
+=20
+ #define __KVM_HAVE_ARCH_INTC_INITIALIZED
++#define __KVM_HAVE_MSI
++#define __KVM_HAVE_READONLY_MEM
++#define __KVM_HAVE_VCPU_RUN_PID_CHANGE
+=20
+ #define KVM_HALT_POLL_NS_DEFAULT 500000
+=20
+diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+index 71233068b7cb6..48d531e302d33 100644
+--- a/arch/arm64/kvm/Kconfig
++++ b/arch/arm64/kvm/Kconfig
+@@ -22,18 +22,14 @@ menuconfig KVM
+        select KVM_COMMON
+        select KVM_GENERIC_HARDWARE_ENABLING
+        select HAVE_KVM_CPU_RELAX_INTERCEPT
+-       select KVM_MMIO
+        select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+        select VIRT_XFER_TO_GUEST_WORK
+        select KVM_VFIO
+        select HAVE_KVM_DIRTY_RING_ACQ_REL
+        select NEED_KVM_DIRTY_RING_WITH_BITMAP
+-       select HAVE_KVM_MSI
+        select HAVE_KVM_IRQCHIP
+        select HAVE_KVM_IRQ_ROUTING
+        select HAVE_KVM_IRQ_BYPASS
+-       select HAVE_KVM_READONLY_MEM
+-       select HAVE_KVM_VCPU_RUN_PID_CHANGE
+        select SCHED_INFO
+        select GUEST_PERF_EVENTS if PERF_EVENTS
+        select KVM_GUEST_MEMFD
 
+which is what I'd expected. It even builds, so it is obviously
+perfect. Go ahead!
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
