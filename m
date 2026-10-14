@@ -1,148 +1,165 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54D03630BF
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 16:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791997018; cv=pass; b=Fj2QDFAuFGj1mKvs8c5Q6uPtPMV3X/2yNZKC7rgFxs1oUku1UwJJd3eVKjM8GemPfO/kKRat4N+Kph7rekp61SAvLM19pshf0s2Ms+80efgkiimzkTriLTp3QLW6xyLDMt9Q/I0gCr+Y3cu3j6pivsIPT1DhoBsqroBQ9Zs72YU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791997018; c=relaxed/simple;
-	bh=lBbwIvFL38lVOZots084p2b19l+FJ0sPwwv5pZU2vv0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=olnFCzjE/2mazSmFraNIcaKCBYl0aYcxZ3wXJ+WRCF5uZn3YC0Iq+IvqBMOlKa9JrryaczjGAp7vftcesuW8J/kXam09gvEQT4rl5+5mB9OX69HN9l3IndKSLmT7bzRyhUBL7OwNU1LWkp/CHZkPdM8EsDco7Al/TbjvbvGfXbc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UMsih2rl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JJ82wy84; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4A9563288;
+	Wed, 14 Oct 2026 16:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791997112; cv=none; b=MyZ8Av1SsuTGS1eRE507Ff6OtnQb8vFu8gqTvFeuZa5UDT7RBdZyL2mWGj+oQZ0tJ3XYP6evpJush+PPcE1GhAYC3uTLjIjHLue/TPsZJ8NDipgVyIlQfkcPbo6VOZuuIqwZ81+1UiwpY/WYO6N37CFIPHJSIzHTPCX2fr6aKk0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791997112; c=relaxed/simple;
+	bh=SWMfrCIO4YtH5M5e+HBbAjTtGT/8z2eh56CZQAT9lsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=AAKrpP03MAAMtxfwFttEljEVUHmaeX/gqtWE9a5prlnILYqMUVJ7OCieFylOmOXY/U9VDCyanvO/8ihMHxE75r4NYb/U4l7rHDdN1sXhZu71CK0gaEZrsOEuXAa7RQJpL2ystvnNgV0cIPK1byMB8WT18t/9l+oysp30yHulBR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6ri6WzS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UMsih2rl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JJ82wy84"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791997015;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBbwIvFL38lVOZots084p2b19l+FJ0sPwwv5pZU2vv0=;
-	b=UMsih2rl4o9TGA6dDeXu+seD6kcwyUGevgQiMOJn9lAokkyGWEyjuOKKsT0HnjxBm6AO8w
-	EJp1+GNDt3hNIa6x0Q54MvMaaIXYkEOqSeu4gbohra3IQnZo+WTSEZkmwWQde1KPjFZx+8
-	2yeSbW3iUG7omeW2ol0jks+p7yzZ7tA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-eYBeOkGpNz6IPCzvMFs0hw-1; Wed, 14 Oct 2026 16:56:54 +0000
-X-MC-Unique: eYBeOkGpNz6IPCzvMFs0hw-1
-X-Mimecast-MFC-AGG-ID: eYBeOkGpNz6IPCzvMFs0hw_1791997013
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48dee35b50aso669462f8f.2
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 09:56:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791997013; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kl2rLpUJVDOj6QCoBg7U59I/RUIl7i/Z+tds4uIdcm5xK07oavwsIytRmPL5Lo5GsM
-         MwjADQuX1/y3LWH2TKp7JTOvxyBM98mcIJcwvGJFuf5P38kQ+Xr/VoBaJ4F9cxLTp/ig
-         Y/nrdYJWInj25/wpFllOrTf3MtQzEo79BnJOgj7q9fJ4Pk/ntkmZuJgGXZPs+Skf0UNG
-         WKGf7V5DgYjvo0zlEJW2Zygwe3VAcxrH9iTLNBH0N5YvgIi1esL+DeDyR/mCaDfY+V2G
-         CCZtwxJIk7jIz8rSnjiV+TqZPvJ0k9LP+ytzIBiLxpi3WXR6mM9fhwcOIXKxN+Kw5OeS
-         TOtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lBbwIvFL38lVOZots084p2b19l+FJ0sPwwv5pZU2vv0=;
-        fh=hb/N4lcfpBYhRW5IKk/FgFCEoe7Q9L9U2LP4LeymmLc=;
-        b=EkrY7033N5hiBM5oatOW6AR6mzDa91wNNvReoyT+KutS8Xg2bh+XOU9cYDFENvYEYg
-         UkAA0radtvYoYewOW4BYnvBVrS5zbe8sVpytFjz1x0dmUoQrEw9MxPrkfsw6qKUTUp/x
-         h9YGJWaiuGDI+y8vlF5ONdZchvtWiqS9nLztrX11T6raeN7rldfNCfhKuNJJ9S3+U98L
-         HSM+tEXKELZ6CSBGrZWlur+Z4eUlsTaiVBTHXifeQZC+LVz/g6eSwDXXPmnFnKyPMr2Y
-         W4sCXl/WAX8lT1VBovnOd7l9oKV+BMgHllDveJNfEQ5HB9sb8EjzQXnW1C1DkEFz7ovx
-         PDLQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791997013; x=1792601813; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lBbwIvFL38lVOZots084p2b19l+FJ0sPwwv5pZU2vv0=;
-        b=JJ82wy84ILqFNMyVzLkKIUPhIEVaSckw1ACzJlORzcVZzW3ei9fZSIk5DpWGFBr7hG
-         ag8HRExwPmCa0wzfrEFX8s+Bp0qJAlVb0vnzn8YbNB1iVEB0cSrz8kd664gdFJy+2n26
-         q3RCNjywD2GFCtusOfCNiR9abky+dvAAsNgpnxa53M6kpr64mGzq+DZdBPVDzgXVVyQL
-         XzkgCU/FPekt3bsvr9QBzWVnnIoxHroFb8wO/Gt3FbxCl/doNoPhM25T8eldIUQk0JUr
-         vqE6DgwoHcB4eA6GNXeSuBX1S5EMDYQ1VfznuuuHmZi2QyaHyT7z4GMFsi8LB0kLgrMR
-         WsYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791997013; x=1792601813;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lBbwIvFL38lVOZots084p2b19l+FJ0sPwwv5pZU2vv0=;
-        b=dOW4x86y7/O9RbLsz7BkERA6FP8tEeq7ASQ/SlqV8iJz7vnxJ0UgbV0phD1BvwIN/0
-         KZvXaEwRK5SgAYUfFQGeyqsLohXPkzjvRaMJMip8TBY5nvi7vlr2ogfmTvtDyJaNbAvM
-         LPBIoJj7UhHL4D03FAPd7kTFzYwRKnhUoLztmj2/yYv1BYEdNJeLoVdiN/NESClW5vZB
-         L54cH1UMIn0risiJm8hSuQTuWNzbGRN4LS/DWvpba/VZvt+aokejKDy3g7D7fRLi+cBX
-         W1VZWsCkFQX37kXREpDL7z3iiceDsRYHLg7lpPYfhzUHvJJjEV5hYd2V2AiH5Cd6cyXq
-         5L4w==
-X-Forwarded-Encrypted: i=1; AKwUvBzE+jiBKlcwCJfTVPPBX+ayOtI2dBpZIVgtHEKF2TTu9BdT6T7FX5DrsEmjk7jGISBCy+s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKTZDnZQiqkoLYjxFRHvWlHhQvl9RmW9nj3WKaZ/R3aTHKKKfqO
-	CNO8y1ZynDhKIeNsCycuMgJHAgIrr4GIqvrOKk57Mxqwx0HI0Bnb/TApMOZIMj7caLW84RH3hSC
-	NO184na6tj2KxDbcF04/217yAqv8gbfoYOkCd0OtAog2GtuUWnFK+D6vGNN0LTN5CswWK+l/fhA
-	LDWG2GW5TpceOBH+VIXaCEzC4WHQDM
-X-Gm-Gg: AYBFou2d4BAXyCpszzaIB2hSLyp6BbiS/FVXKT7icYGNMTH6zimtQIYXmmR+0sLOZam
-	3BdR7KxpHAj1fk0Gjhoa8m2bzswBqqlY0axKDRRpxbO15Cc7jReD/8mMxx3y7sF4atlpvZIn2IQ
-	eim3LweTdexAOUoyaDJlqEwEQ6D19d3xTlnIdCieU2DPf3g/VRxDpOT8B+ga31Peykl2j8JXKas
-	xs2TPSQys8NycJbZP7up2aILf2q6NpKTD8stZ7uMr7tN/HSLEFWDFbHA9cfSg==
-X-Received: by 2002:a05:6000:98d:b0:48c:4a62:9af7 with SMTP id ffacd0b85a97d-48dbaae9e03mr28722518f8f.28.1791997013275;
-        Wed, 14 Oct 2026 09:56:53 -0700 (PDT)
-X-Received: by 2002:a05:6000:98d:b0:48c:4a62:9af7 with SMTP id
- ffacd0b85a97d-48dbaae9e03mr28722461f8f.28.1791997012865; Wed, 14 Oct 2026
- 09:56:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6ri6WzS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5721F000C4;
+	Wed, 14 Oct 2026 16:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791997110;
+	bh=pC10JpWaZK5q2nplJQQ/7Ng9MIH1WaCTPiIEoz3L6+4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=a6ri6WzS7o+KWbVhLNAerubNn8eACMbiby8b3bioPlA4QdWHkcT/EIZTBMeZruyOz
+	 uFIDz8t6NrFuh5yk2shxhD7OT1DfrWP19ss8/TBCBNVCaQj+pCvW3494pdTaAvuUdB
+	 W4FyN9YXYOlr5UInPQ5d4cf8+sFaXMJlnSYGfHPzNIg7PnGm5FBsZYSxoi0Z2jGpwf
+	 z7j2twiYiukHuc5EnkNzB9fsY7g1qECKtF6Fc2CJAOfCm/4xRrXTCmZhBfEGyjG2r7
+	 g8FGdd9RuTqcqb8sHYSW3kEXBRv4RLmwxnCpTz3W7ekkgUVuxDHfFHf6P9vsYTuZmn
+	 S8oAqGYUm2bEQ==
+Date: Wed, 14 Oct 2026 11:58:29 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: bhelgaas@google.com, alex@shazbot.org, jjohnson@kernel.org,
+	johannes@sipsolutions.net, mani@kernel.org, jgg@ziepe.ca,
+	yishaih@nvidia.com, skolothumtho@nvidia.com, kevin.tian@intel.com,
+	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/7] ath11k: add PCIe link recovery retry
+Message-ID: <20261014165829.GA1636877@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261014162126.964330-1-maz@kernel.org> <CABgObfYVHtFGopM=vCY2vt2N-CON=_5BN4YFiZknwvyrgP5mfw@mail.gmail.com>
- <86qzhs1ay2.wl-maz@kernel.org>
-In-Reply-To: <86qzhs1ay2.wl-maz@kernel.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 14 Oct 2026 18:56:40 +0200
-X-Gm-Features: AclHuK9xgAQ0ZLzEzprl5qRpMX_n6sDrLGVAFdnCLrhAZow3Alf-LuTpAdZdNuU
-Message-ID: <CABgObfbkbEY_MuD7Y=Y1GYSrHjp=nKfE8-Vy+QHqKMyCVurJ9Q@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/arm64 updates for Linux 7.4
-To: Marc Zyngier <maz@kernel.org>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Colton Lewis <coltonlewis@google.com>, Eric Auger <eauger@redhat.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Gautam Menghani <gautam@linux.ibm.com>, 
-	Gavin Shan <gshan@redhat.com>, Gokul K <gokul02k@gmail.com>, 
-	Hemanth Selam <hemanth.selam@gmail.com>, Hiroyuki Katsura <hk590@cam.ac.uk>, 
-	Itaru Kitayama <itaru.kitayama@fujitsu.com>, Jack Thomson <jackabt@amazon.com>, 
-	Jiaqi Yan <jiaqiyan@google.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>, 
-	Jonathan Davies <jonathan.davies@nutanix.com>, Karl Mehltretter <kmehltretter@gmail.com>, 
-	Leonardo Bras <leo.bras@arm.com>, Like Xu <likexu@tencent.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Oliver Upton <oupton@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Sascha Bischoff <sascha.bischoff@arm.com>, 
-	Sean Christopherson <seanjc@google.com>, Sebastian Ene <sebastianene@google.com>, 
-	Sebastian Ott <sebott@redhat.com>, Shen Yongchao <grayhat@foxmail.com>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, Stefan Teodorescu <fane@google.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Steven Price <steven.price@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tharit Tangkijwanichakul <tharitt97@gmail.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	Wang Han <wanghan@linux.alibaba.com>, Wei-Lin Chang <weilin.chang@arm.com>, 
-	Will Deacon <will@kernel.org>, Yuan Yao <yaoyuan@linux.alibaba.com>, 
-	Zenghui Yu <zenghui.yu@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930140833.576941-5-jtornosm@redhat.com>
 
-On Wed, Oct 14, 2026 at 6:52=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote=
-:
->
-> On Wed, 14 Oct 2026 17:30:50 +0100,
-> Looks pretty good to me:
+On Wed, Sep 30, 2026 at 04:08:30PM +0200, Jose Ignacio Tornos Martinez wrote:
+> When ath11k devices are passed through to VMs via PCIe passthrough,
+> the PCIe link may not stabilize immediately after global reset due to
+> virtualization layer timing variations. This causes MHI initialization
+> to fail with "BHI offset: 0xffffffff is out of range" errors because
+> the device is read before it's ready.
+> 
+> Currently, ath11k_pci_soc_global_reset() just warns if the link is
+> down but continues anyway, leading to inevitable MHI failures.
+> 
+> This patch adds:
+> 1. A retry loop (up to 5000ms) to wait for the PCIe link to recover
+>    after global reset (similar to the existing ath12k LTSSM retry logic)
+> 2. Proper error propagation to prevent continuing with a dead link
+> 
+> This is especially important for VM environments where timing can vary
+> significantly from bare metal.
+> 
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+>  drivers/net/wireless/ath/ath11k/pci.c | 39 ++++++++++++++++++++++-----
+>  1 file changed, 32 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+> index 7114eca8810d..4fc6aaf036c1 100644
+> --- a/drivers/net/wireless/ath/ath11k/pci.c
+> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+> @@ -190,8 +190,10 @@ static void ath11k_pci_restore_window(struct ath11k_base *ab)
+>  	spin_unlock_bh(&ab_pci->window_lock);
+>  }
+>  
+> -static void ath11k_pci_soc_global_reset(struct ath11k_base *ab)
+> +static int ath11k_pci_soc_global_reset(struct ath11k_base *ab)
+>  {
+> +	unsigned long timeout;
+> +	bool link_recovered = false;
+>  	u32 val, delay;
+>  
+>  	val = ath11k_pcic_read32(ab, PCIE_SOC_GLOBAL_RESET);
+> @@ -211,14 +213,29 @@ static void ath11k_pci_soc_global_reset(struct ath11k_base *ab)
+>  
+>  	mdelay(delay);
+>  
+> -	val = ath11k_pcic_read32(ab, PCIE_SOC_GLOBAL_RESET);
+> -	if (val == 0xffffffff)
+> -		ath11k_warn(ab, "link down error during global reset\n");
+> +	/* Wait for PCIe link to recover, especially important in VM environments
+> +	 * where timing can vary significantly from bare metal.
+> +	 */
+> +	timeout = jiffies + msecs_to_jiffies(5000);
+> +	while (time_before(jiffies, timeout)) {
+> +		val = ath11k_pcic_read32(ab, PCIE_SOC_GLOBAL_RESET);
+> +		if (val != 0xffffffff) {
+> +			link_recovered = true;
+> +			break;
+> +		}
+> +		mdelay(20);
+> +	}
+> +	if (!link_recovered) {
+> +		ath11k_err(ab, "PCIe link failed to recover - device may need power cycle\n");
+> +		return -ETIMEDOUT;
+> +	}
 
-Good, applied (I idly wonder what the x86 maintainers would think of
-KVM growing a memory allocator...).
+Link down is a PCIe reset of the endpoint, which should clear all
+PCIe-specific state, e.g., BAR values.  Is that restored somewhere?
 
-Paolo
-
+>  	/* Restore window register as its content is cleared during
+>  	 * hardware global reset, such that it aligns with host cache.
+>  	 */
+>  	ath11k_pci_restore_window(ab);
+> +
+> +	return 0;
+>  }
+>  
+>  static void ath11k_pci_clear_dbg_registers(struct ath11k_base *ab)
+> @@ -373,8 +390,10 @@ static void ath11k_pci_force_wake(struct ath11k_base *ab)
+>  	mdelay(5);
+>  }
+>  
+> -static void ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
+> +static int ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
+>  {
+> +	int ret;
+> +
+>  	mdelay(100);
+>  
+>  	if (power_on) {
+> @@ -387,8 +406,12 @@ static void ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
+>  
+>  	ath11k_mhi_clear_vector(ab);
+>  	ath11k_pci_clear_dbg_registers(ab);
+> -	ath11k_pci_soc_global_reset(ab);
+> +	ret = ath11k_pci_soc_global_reset(ab);
+> +	if (ret)
+> +		return ret;
+>  	ath11k_mhi_set_mhictrl_reset(ab);
+> +
+> +	return 0;
+>  }
+>  
+>  static void ath11k_pci_init_qmi_ce_config(struct ath11k_base *ab)
+> @@ -818,7 +841,9 @@ static int ath11k_pci_power_up(struct ath11k_base *ab)
+>  
+>  	ab_pci->register_window = 0;
+>  	clear_bit(ATH11K_FLAG_DEVICE_INIT_DONE, &ab->dev_flags);
+> -	ath11k_pci_sw_reset(ab_pci->ab, true);
+> +	ret = ath11k_pci_sw_reset(ab_pci->ab, true);
+> +	if (ret)
+> +		return ret;
+>  
+>  	/* Disable ASPM during firmware download due to problems switching
+>  	 * to AMSS state.
+> -- 
+> 2.53.0
+> 
