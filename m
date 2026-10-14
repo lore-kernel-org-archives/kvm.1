@@ -1,165 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4A9563288;
-	Wed, 14 Oct 2026 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D183F312836;
+	Wed, 14 Oct 2026 17:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791997112; cv=none; b=MyZ8Av1SsuTGS1eRE507Ff6OtnQb8vFu8gqTvFeuZa5UDT7RBdZyL2mWGj+oQZ0tJ3XYP6evpJush+PPcE1GhAYC3uTLjIjHLue/TPsZJ8NDipgVyIlQfkcPbo6VOZuuIqwZ81+1UiwpY/WYO6N37CFIPHJSIzHTPCX2fr6aKk0=
+	t=1791997525; cv=none; b=qqNVDf3bh3HO435DbsQbsQm0muprfTKY179wF8KZqGm+W4wLPWrCB2LCeK881JvcFCj+yqanQADOGNvSGMuPbO4SAGO4EU/4dtWvvHvnlEAKIfWFrq8FayT3U+GkNTqSAAlCNT6NR8087yu7y/b0uPfroDhbgboNHFXm0tETJOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791997112; c=relaxed/simple;
-	bh=SWMfrCIO4YtH5M5e+HBbAjTtGT/8z2eh56CZQAT9lsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=AAKrpP03MAAMtxfwFttEljEVUHmaeX/gqtWE9a5prlnILYqMUVJ7OCieFylOmOXY/U9VDCyanvO/8ihMHxE75r4NYb/U4l7rHDdN1sXhZu71CK0gaEZrsOEuXAa7RQJpL2ystvnNgV0cIPK1byMB8WT18t/9l+oysp30yHulBR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6ri6WzS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791997525; c=relaxed/simple;
+	bh=K4HuCa8pf8xrqn9rXvfyZ/q/BmmFDWbWFPvYP+fiExM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pybGXs56fDorIv0aAwvt5a6kzSz+v1iLscY+7fUp17GLNZnvX7+3qJ+vDoteJJE8wnZnSzcD6bYhbHhhqAR6M/4Jd5O/guQAArzHcpL0JLpCCjpFyMxeHgktZcNCET2y8MnPVQO6DNV+lOOpQ/iAFCDnjdeNK5XDKjfXzDoFkHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqQ7Pzbg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6ri6WzS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5721F000C4;
-	Wed, 14 Oct 2026 16:58:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqQ7Pzbg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D931F000C4;
+	Wed, 14 Oct 2026 17:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791997110;
-	bh=pC10JpWaZK5q2nplJQQ/7Ng9MIH1WaCTPiIEoz3L6+4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=a6ri6WzS7o+KWbVhLNAerubNn8eACMbiby8b3bioPlA4QdWHkcT/EIZTBMeZruyOz
-	 uFIDz8t6NrFuh5yk2shxhD7OT1DfrWP19ss8/TBCBNVCaQj+pCvW3494pdTaAvuUdB
-	 W4FyN9YXYOlr5UInPQ5d4cf8+sFaXMJlnSYGfHPzNIg7PnGm5FBsZYSxoi0Z2jGpwf
-	 z7j2twiYiukHuc5EnkNzB9fsY7g1qECKtF6Fc2CJAOfCm/4xRrXTCmZhBfEGyjG2r7
-	 g8FGdd9RuTqcqb8sHYSW3kEXBRv4RLmwxnCpTz3W7ekkgUVuxDHfFHf6P9vsYTuZmn
-	 S8oAqGYUm2bEQ==
-Date: Wed, 14 Oct 2026 11:58:29 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: bhelgaas@google.com, alex@shazbot.org, jjohnson@kernel.org,
-	johannes@sipsolutions.net, mani@kernel.org, jgg@ziepe.ca,
-	yishaih@nvidia.com, skolothumtho@nvidia.com, kevin.tian@intel.com,
-	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/7] ath11k: add PCIe link recovery retry
-Message-ID: <20261014165829.GA1636877@bhelgaas>
+	s=k20260515; t=1791997523;
+	bh=bpY9JtnGzcvzPu6O4P0Dx+xFkkQyMIXI5/iH9ew2AVQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=LqQ7PzbgsznEMCrl2lw649ci+U8Zw7Q3jiKYim1jfBrAGBIUfl44JMeDbILpFyOdh
+	 sZjp49YXLOwWMxK0zcfly6oioYJomjj5V3kFQaDvZoZ0SP8O8CyuUv4nHjHb26SdwA
+	 zM/d8OE3CGyIwrWdjQASdukDOW1qC/eOn49S3TAUjAHPXA0JKcy8x85OVRJCav93OG
+	 NaWdL5I3p9KtjVHUslG+BMd0iMueSMWioIoMbqYx8I8Stg0B0+/ZIpDjgEOhltJtF/
+	 92PdiIHAcMPA3MrvG6Sp+WeqwqsLZaPUTpg1p6d4Xx24SCEs98zeeZyRy66W7oEdHO
+	 7dujPvhUZ6v6g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xH2Pp-00000002xwS-0lN5;
+	Wed, 14 Oct 2026 17:05:21 +0000
+Date: Wed, 14 Oct 2026 18:05:20 +0100
+Message-ID: <86pkxc1acv.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Colton Lewis <coltonlewis@google.com>,
+	Eric Auger <eauger@redhat.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Gokul K <gokul02k@gmail.com>,
+	Hemanth Selam <hemanth.selam@gmail.com>,
+	Hiroyuki Katsura <hk590@cam.ac.uk>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
+	Jack Thomson <jackabt@amazon.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+	Jonathan Davies <jonathan.davies@nutanix.com>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Like Xu <likexu@tencent.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sebastian Ene <sebastianene@google.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Shen Yongchao <grayhat@foxmail.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Stefan Teodorescu <fane@google.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Steven Price <steven.price@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tharit Tangkijwanichakul <tharitt97@gmail.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Wang Han <wanghan@linux.alibaba.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Yuan Yao <yaoyuan@linux.alibaba.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Subject: Re: [GIT PULL] KVM/arm64 updates for Linux 7.4
+In-Reply-To: <CABgObfbkbEY_MuD7Y=Y1GYSrHjp=nKfE8-Vy+QHqKMyCVurJ9Q@mail.gmail.com>
+References: <20261014162126.964330-1-maz@kernel.org>
+	<CABgObfYVHtFGopM=vCY2vt2N-CON=_5BN4YFiZknwvyrgP5mfw@mail.gmail.com>
+	<86qzhs1ay2.wl-maz@kernel.org>
+	<CABgObfbkbEY_MuD7Y=Y1GYSrHjp=nKfE8-Vy+QHqKMyCVurJ9Q@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930140833.576941-5-jtornosm@redhat.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, amachhiw@linux.ibm.com, catalin.marinas@arm.com, coltonlewis@google.com, eauger@redhat.com, fuad.tabba@linux.dev, gautam@linux.ibm.com, gshan@redhat.com, gokul02k@gmail.com, hemanth.selam@gmail.com, hk590@cam.ac.uk, itaru.kitayama@fujitsu.com, jackabt@amazon.com, jiaqiyan@google.com, joey.gouly@arm.com, jonathan.cameron@oss.qualcomm.com, jonathan.davies@nutanix.com, kmehltretter@gmail.com, leo.bras@arm.com, likexu@tencent.com, ljs@kernel.org, broonie@kernel.org, nsg@linux.ibm.com, oupton@kernel.org, rdunlap@infradead.org, sascha.bischoff@arm.com, seanjc@google.com, sebastianene@google.com, sebott@redhat.com, grayhat@foxmail.com, xueshuai@linux.alibaba.com, fane@google.com, seiden@linux.ibm.com, steven.price@arm.com, rostedt@goodmis.org, suzuki.poulose@arm.com, tharitt97@gmail.com, vdonnefort@google.com, wanghan@linux.alibaba.com, weilin.chang@arm.com, will@kernel.org, yaoyuan@linux.alibaba.com, zenghui.yu@linux.dev, yuzenghui@huawei.com, kvmarm
+ @lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Sep 30, 2026 at 04:08:30PM +0200, Jose Ignacio Tornos Martinez wrote:
-> When ath11k devices are passed through to VMs via PCIe passthrough,
-> the PCIe link may not stabilize immediately after global reset due to
-> virtualization layer timing variations. This causes MHI initialization
-> to fail with "BHI offset: 0xffffffff is out of range" errors because
-> the device is read before it's ready.
-> 
-> Currently, ath11k_pci_soc_global_reset() just warns if the link is
-> down but continues anyway, leading to inevitable MHI failures.
-> 
-> This patch adds:
-> 1. A retry loop (up to 5000ms) to wait for the PCIe link to recover
->    after global reset (similar to the existing ath12k LTSSM retry logic)
-> 2. Proper error propagation to prevent continuing with a dead link
-> 
-> This is especially important for VM environments where timing can vary
-> significantly from bare metal.
-> 
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
->  drivers/net/wireless/ath/ath11k/pci.c | 39 ++++++++++++++++++++++-----
->  1 file changed, 32 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-> index 7114eca8810d..4fc6aaf036c1 100644
-> --- a/drivers/net/wireless/ath/ath11k/pci.c
-> +++ b/drivers/net/wireless/ath/ath11k/pci.c
-> @@ -190,8 +190,10 @@ static void ath11k_pci_restore_window(struct ath11k_base *ab)
->  	spin_unlock_bh(&ab_pci->window_lock);
->  }
->  
-> -static void ath11k_pci_soc_global_reset(struct ath11k_base *ab)
-> +static int ath11k_pci_soc_global_reset(struct ath11k_base *ab)
->  {
-> +	unsigned long timeout;
-> +	bool link_recovered = false;
->  	u32 val, delay;
->  
->  	val = ath11k_pcic_read32(ab, PCIE_SOC_GLOBAL_RESET);
-> @@ -211,14 +213,29 @@ static void ath11k_pci_soc_global_reset(struct ath11k_base *ab)
->  
->  	mdelay(delay);
->  
-> -	val = ath11k_pcic_read32(ab, PCIE_SOC_GLOBAL_RESET);
-> -	if (val == 0xffffffff)
-> -		ath11k_warn(ab, "link down error during global reset\n");
-> +	/* Wait for PCIe link to recover, especially important in VM environments
-> +	 * where timing can vary significantly from bare metal.
-> +	 */
-> +	timeout = jiffies + msecs_to_jiffies(5000);
-> +	while (time_before(jiffies, timeout)) {
-> +		val = ath11k_pcic_read32(ab, PCIE_SOC_GLOBAL_RESET);
-> +		if (val != 0xffffffff) {
-> +			link_recovered = true;
-> +			break;
-> +		}
-> +		mdelay(20);
-> +	}
-> +	if (!link_recovered) {
-> +		ath11k_err(ab, "PCIe link failed to recover - device may need power cycle\n");
-> +		return -ETIMEDOUT;
-> +	}
+On Wed, 14 Oct 2026 17:56:40 +0100,
+Paolo Bonzini <pbonzini@redhat.com> wrote:
+>=20
+> On Wed, Oct 14, 2026 at 6:52=E2=80=AFPM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > On Wed, 14 Oct 2026 17:30:50 +0100,
+> > Looks pretty good to me:
+>=20
+> Good, applied (I idly wonder what the x86 maintainers would think of
+> KVM growing a memory allocator...).
 
-Link down is a PCIe reset of the endpoint, which should clear all
-PCIe-specific state, e.g., BAR values.  Is that restored somewhere?
+If x86 ever grows something like pKVM, I have no doubt that this will
+be a requirement, just like the whole caretaker thingy will eventually
+grow into a full-blown hypervisor.
 
->  	/* Restore window register as its content is cleared during
->  	 * hardware global reset, such that it aligns with host cache.
->  	 */
->  	ath11k_pci_restore_window(ab);
-> +
-> +	return 0;
->  }
->  
->  static void ath11k_pci_clear_dbg_registers(struct ath11k_base *ab)
-> @@ -373,8 +390,10 @@ static void ath11k_pci_force_wake(struct ath11k_base *ab)
->  	mdelay(5);
->  }
->  
-> -static void ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
-> +static int ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
->  {
-> +	int ret;
-> +
->  	mdelay(100);
->  
->  	if (power_on) {
-> @@ -387,8 +406,12 @@ static void ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
->  
->  	ath11k_mhi_clear_vector(ab);
->  	ath11k_pci_clear_dbg_registers(ab);
-> -	ath11k_pci_soc_global_reset(ab);
-> +	ret = ath11k_pci_soc_global_reset(ab);
-> +	if (ret)
-> +		return ret;
->  	ath11k_mhi_set_mhictrl_reset(ab);
-> +
-> +	return 0;
->  }
->  
->  static void ath11k_pci_init_qmi_ce_config(struct ath11k_base *ab)
-> @@ -818,7 +841,9 @@ static int ath11k_pci_power_up(struct ath11k_base *ab)
->  
->  	ab_pci->register_window = 0;
->  	clear_bit(ATH11K_FLAG_DEVICE_INIT_DONE, &ab->dev_flags);
-> -	ath11k_pci_sw_reset(ab_pci->ab, true);
-> +	ret = ath11k_pci_sw_reset(ab_pci->ab, true);
-> +	if (ret)
-> +		return ret;
->  
->  	/* Disable ASPM during firmware download due to problems switching
->  	 * to AMSS state.
-> -- 
-> 2.53.0
-> 
+Bloat knows no boundary!
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
