@@ -1,218 +1,191 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8930445A2A1
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 21:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588C04A64EA
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 21:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792014431; cv=pass; b=aDWHftPtxF8ci4jbMOM4Dqp8Fn0Qk523ndHL7i8EZWYfLmnZyXJgPlveqXOJKOIOSWGVPgxmVJkowUiq6HnedZQwZJnTUMAUm/ZG94qf3vTVZ1W5leHEOfDIJcpB7Pq6m0rnJnVFJf8t+J33onmIocrmYnQZii3iToSrrjin9kk=
+	t=1792014608; cv=pass; b=NMPaw8KnrMXE3KsU1t0NdWq56cnWkPbHvkmBVINzHJWic0vHamJoAI5x6hz8AIMEH/TkxcJ3cgoh+gUL9XbJsUKHX5BVkKzxCapNyvEBtyfwmB33L+om2si374vAJoHxEhGbn8YOCoDZoUl8XgPcFjXSMOXcwyU3mSpqwjz4X5U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792014431; c=relaxed/simple;
-	bh=MCaOs6wYNSB4LFrsDrFCk/QlJZrshEPv8X72I3y+9V4=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IfEv6SFTqlVOr59mKWeUiUwxGUDF2CnNOymUD/KKuvTK/mJ/q3Ppy2LC8FXIFOgpFgZaYlZSNFAwKDcU6RuItGgPiUDhIIWy/63iGdNRY1bG0+4PHjX16yd0nV0xRsT4vcjIJzFJWaUKFximEImY875Ox+Gl/Q9SKJUWGdShd24=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSlx6hcL; arc=pass smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1792014608; c=relaxed/simple;
+	bh=Sb/58QriJWaMhTgvU3eln2zuouYG3sux3/AAyVRoQ2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VlxS3IDgQq9LpEMwsRxZKMdHcYrkKlHK4pzPvUYU6PFlg+D+urBIVN/vJfuSIU2JAGkN6Sn7iOPZINazm2izhvZaOtJuv49N4evW2bbHIINg3u0iZgSwQjr38uoxmTMqZ7NQ8vmDmSO4yVIQbcZef8ZcAOmXcC3dXx3888pZ+fQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BoPayPDh; arc=pass smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSlx6hcL"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-917aca1aee5so9470806d6.2
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 14:47:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792014428; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BoPayPDh"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso215a12.1
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 14:50:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792014604; cv=none;
         d=google.com; s=arc-20260327;
-        b=qofSD5rMBDQfRW96DzmG6UueC3z6Y09sPqbzZMOG2MvcK7I58cyKxLlH35Y+ARd+rR
-         kHUyeW2sLs6Jr8Zzc3GUQuqdZBlpY/0Jf8pRvh8/fPu4XVrGcF/G2PFyxPDZC4X5yod5
-         UUuL+4VNMBF5RvNUR1b6Y1v/xUAI8Hd/yP1vqJYRiXQ18U4D+zuDV5Bp02YWC0HEtDjM
-         jstO7QKVQSLtRLJOw+IfhRKxWiQaFr6srdD0iDfjtB6El/iHzQwY1rwh/ufawEhVe8J2
-         smLX2vBmO6EdMP9Cfu9JMJtXgaSuUyToi0ajKLg44/c1RsDKJ3efbPlye+TqNSvpw9hA
-         ENLw==
+        b=aK/XCOARVwBFpc5lS6H06wGIfqpga8EqPnyffhE08nTZUZLXYyU2P0QpPWKNV9NgwV
+         Ge5J456byT9QbbAohRcpAp8S5v2gpen891TC+fvjUTi2hYtqvvLAwTLHG/Hzvqg7aVZa
+         8WriIehvk4qiw9r8VHa4znF/sBLqhN0c2ItgUhZNlfhTUupx1YyPEz7WXY+fBHrz20Pw
+         O+Ti1VDcoGax2x+JOhgNjAfAkmeratDLB37XDI5cKM8VXDgkKmxoYbK10pPc9qNlnorP
+         IjqhIovCus2FUPV0d29Q1Z14eOGUIm3jDNf9ST1BU6n3Rgqhtuiv2L6WD6XXTYkeQntL
+         fT0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=OmdjCtO0BT/G+HosYDOiIQ+MFbY+P6PHIY8xmD++EWw=;
-        fh=Y+3Wv818a4M51hFI0jGkL+NWAI3M9X7HeKtZFt37KJA=;
-        b=hpVuRzJAqPgcGOACkiIXGdM70ffURbz9dCVgWw98cYgoQf84/rF3387M9SpiCqrKq0
-         6g+QQfy908Wau9nEH0vexYlzRmUcv60ajUCtrLWnleGYycLkM7T2UCWnSpni4V2ZIubi
-         06bgnOpM9EjzML9jJn7H8f+0PNHxDhgnEBTZR/CoQFVZ/Ec7OJCcxJMlZUXgEHg5EX9r
-         +m6Viw5Er38BcVoI5eKOHBfAWXoL9iBt33peDN+ojJzzRm5iEZQcv165pODgwXgQF4uO
-         zgzMhcuE82/aEtqMaynYFC5K2oGQ0ejfW0ry2OEesFX40M0bRJCtGRzPAWm1OJERjMNK
-         tsBg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cqDh6SSAdrnUIksW3iYI4C7alV8nfaKKDKs+g1eoZic=;
+        fh=CPZOFn9cFPkeQunj38gxAVgjPZR1lKekbXTNFpQz7hg=;
+        b=pNPh02+Eo2kWmU89Us9c8mERzdM1u6QY00mtahYFYPWvIAH/qZSfItn2fxd/SRweZq
+         LhaN6irAd5iUr5X4hTVDlUbjjqlbunonjIrvRi5VW+t8noVVkLvJrXxJ0EWdD+YX2atr
+         YwoE6Tm3lr1rJpF7U/y0voLik6nT1TZJOS/SX4g8RCP6cIF2lB4Y1xsmT9DqgapOOMZ/
+         4GudLXXxqSn3sEtkrCF0w2wFfximyZfQu0UK/atw8aePnuFkcImEkuLV0PLLE9kfGxMF
+         MNbfpq3m726pl0dCi7D2eq0HrkGm390rkKZnlP/qhdBiGsIwkRHyiA6r1z0VB4owRzzR
+         Y/rQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792014428; x=1792619228; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OmdjCtO0BT/G+HosYDOiIQ+MFbY+P6PHIY8xmD++EWw=;
-        b=JSlx6hcLclOXuJ5rv3+BmT4OEpImG6UFCv/raPoxbZEOidM0DzSBwdQXAGriIr5Edi
-         TX49nUQL9NtrVe4u+GPwa7n6xU/AhixY0AegBACIRbdRq28mgasEndHIualDvFy5LTPR
-         Yd3gXeECBDYDxwABK6N/c2Y5Bd569usZ9CnVMiPRnI9BCDNLO669UbiMbWpWoG0hybMP
-         Fg3j32XupqTXaDb2z4g+fRVyyR+vUo4P5ieSz11ab59S9VrUJWGyQvPd537Na+l0XY/n
-         aR8oZ+YeefMeUY6gOU5UGsAW0Pf7GZUucXuC3HiPHqoHE81Qasn/aee2qAy7sGopm65T
-         szew==
+        d=google.com; s=20251104; t=1792014604; x=1792619404; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cqDh6SSAdrnUIksW3iYI4C7alV8nfaKKDKs+g1eoZic=;
+        b=BoPayPDhQaQmsd5UCdguiouW6b7guO9FNW01cc84QQ4wWkZJHONvrzpSIiV6VPbBe1
+         NkP+Qt2145gDpkm2htpwatOWkXQs2dPW2/hyUHn9bP3Rg+eQiJARBgPyWNzfZ57YCcQw
+         RmAF2kS3jtSvf0bgkD/uu4Bw4pJHj154nbcwaI14dNo0apJN+a/aWgCheyCq7FjVXY/e
+         z5OjUxMSIk6gX8+kYaVwrXrdBbTg5AlPFSZTxWpq31QdcC5vUj5MFyCyMoS7akBWjPo3
+         PtWs2DZtCFd0ykbPPij17ehwCCVGf7sjQ4j0Xh5O2ithP1AJGQpBeG2jlCsHxkCzRoHL
+         mVIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792014428; x=1792619228;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OmdjCtO0BT/G+HosYDOiIQ+MFbY+P6PHIY8xmD++EWw=;
-        b=VaKjzvgq+ux9zq28chx5mwCYiTomP+UGjnldum4G15Fd/AVgfliKBSBmMrc1YcQIwD
-         KUhmlcwYcIRiEROhHog7XI3ggbdJLQzy4w9fBhLmiroYieTd/PAXWgPQT0Zz9Smddcec
-         F7EiC7fctIQX16YYfe+5V+XC/lAMaViKyfqzxbQivrZxQZSUE7Z9UFR8NsP0Bf2xcPT5
-         G7OmqpYayztvGCATxYFKioW5z3Q+Mdg9uohqtXIxRiZ/ejfkoEp5SANFVlkFR2w/OY5o
-         +PhQm5hfqHLWZUVkk+WK9oUw9gkCYCuuZbitAGrnIz6HtZSl2lMtxioBqPb1E2tCnFRx
-         Ei1A==
-X-Forwarded-Encrypted: i=1; AKwUvBxhiWZyGq1Achk9b57qpZSqiLs7J+M+EmmG1LQb0yLm7H747mxzt8/zNbPTB9LbZ45ul80=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKYm8wdz4KPFtY0HWcyacSc9elZvxLBFSxhZAzOqZv0SM5lYO+g
-	CZPFJPTey6X/mrrGiyS5cHJ+1Mu2e+U1GQbndjxRufhCAGTVn5u5fVAa6z+Bhv1ixa99Tslrjmn
-	yQClUlBdOAElHdcBCmLXLyPlBrP/fP5wiY8LTVUJU
-X-Gm-Gg: AYBFou1rHC59BVtTdcaL/zFBuwi7vS40pLOhOsjZsg7P4mjK/NcQ9Sa+T+fRkZDILVx
-	pQHzR5Kq1nsHm4QNrGYnxOWPZlF3C4ihaEum4RipFzN1wbTjqXu2UuUnK4t0Wi7n/eNLEfSXQN5
-	LTHWB0Hz56mCofwR4mFHfR8l2nBiJP2rolLe6miEcS9LK84QPy5n+a8+GLkZBfRjbRPRm3HbgdU
-	+x91O8JRqvxru9t4E2gWFTsYaon4jeL6zdeFBERq7yWGvutQaPEaj1wRyiW8twuougRKbd051Jg
-	puzOBIFnQfKZFJEsatHtZCfutKkNZhMXOFdJ7FC0iYp3kC9c5b3qqZ6gm/0T0BZUFs5Jkm6Cg9y
-	W9uGy3GsFiXw+ryAmAQeN9TrrC1Xg1v52/zsP0q5svAa8dRBHrPXN
-X-Received: by 2002:a05:6214:43c1:b0:91b:8e06:73f5 with SMTP id
- 6a1803df08f44-91b8e0680ffmr139578016d6.15.1792014427625; Wed, 14 Oct 2026
- 14:47:07 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 14 Oct 2026 14:47:06 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 14 Oct 2026 14:47:06 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261014095702.39676-1-griffoul@gmail.com>
-References: <20260720111259.122911-1-dwmw2@infradead.org> <20261006183235.16576-1-griffoul@gmail.com>
- <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com> <20261014095702.39676-1-griffoul@gmail.com>
+        d=1e100.net; s=20260707; t=1792014604; x=1792619404;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cqDh6SSAdrnUIksW3iYI4C7alV8nfaKKDKs+g1eoZic=;
+        b=HdF7+d79m1nnL2EVcRKJCsSIgNRtAkmT5FV2CB6RmFU1J3NNsIxzASY4FQ5H+Itt5F
+         3ToRCGe71jC6LkmZ0x1RQAEoepv/PcYJs7sBGbSwgwJP4+BYrNsuogC5tcZsHcbuODhZ
+         9y3GkeqlyiH38ZdbQzJknxS95zuviY/uoRXZHHhNufFSHglc+hjRGhdV7zybH5zQbScz
+         YZn22DqjWTqBRztRlAT9I5hswZq5FbeFLyzf6fiUbp6y+X3nWHz2BUNR+LgYU+oSdQFR
+         nezn+tvXfYc1ToHDZIR09gDPesJCBmPZNwCLlIApzvN6zzKt9vzCblVhXbEoo5OHwW19
+         H7Kw==
+X-Forwarded-Encrypted: i=1; AKwUvBwQoU3m6QnHLztoTOZ8kPpxHARKiwhuj7lpNA8srHozVWTzEwv8GtCIoOOqO3PRO0KrFe4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLEx4USw1/mXtYvL+yrOUbIYdxHTnmCXIXPwCk36BYIHvEW0bIG
+	EkB6shXB2Wf6l0bIOoH0GuDjL5Rp/4UF9FMMBuJoO5mTSBGV2Yw+BFvG3dMAMPqJXnUfHMvqvbJ
+	16Qzd/eEwkQxxsTgROKQh7lPyGTmz807pj09yKyRY+eRrcp7uJD5xUt878tU=
+X-Gm-Gg: AYBFou3yGRRJwNrVs70pCCFu2apQ1B4oflEz3mGy19WqZLt5aAnW1Gvngo8THbyEHmK
+	RNkWm0vR+slJ2ao79vKreFOPgxCtV6bdV7//o5uWhOlWlXaBpdix5bSbFUhmQCQjmqbQ/d8wfMA
+	K3tWh25Pgr5L4PFoBB26V59hV2slnkecz0w1Epv3uTBUpijvQRT1u1KXs1xjKOwBLR6KvDc9V3v
+	9ACX0VBomMLZ2PlDjV41y0fO+XkGJnNfMJoF9+JeMkh4hKbDeQzmtEDsT+Qm1BuTLmHXkVf3ddx
+	Gu9xlAMBhleCsvo0OC+3r2PRZLqOzLaeRihaSL88e+7iIRl7jqW8FgI=
+X-Received: by 2002:a05:6402:20c2:10b0:6af:b196:68bf with SMTP id
+ 4fb4d7f45d1cf-6b20aacf5c4mr61458a12.7.1792014604097; Wed, 14 Oct 2026
+ 14:50:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 14 Oct 2026 14:47:06 -0700
-X-Gm-Features: AclHuK_bDoENPFsEJnePb9piUrHFuROo5b9vCnTZ7F3PMjuUH-N1Jl6pvQGbDQg
-Message-ID: <CAEvNRgHtB8j6=9r=txjsKvQM0F85nRN4KW5sdnuv_-Og=cWEfg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
-To: Fred Griffoul <griffoul@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: David Woodhouse <dwmw2@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-5-yosry@kernel.org>
+In-Reply-To: <20261012233638.2546339-5-yosry@kernel.org>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 14 Oct 2026 14:49:50 -0700
+X-Gm-Features: AclHuK_GlqQIdJcNkjsjv88poiBSqZFim_xtLDMo54MUoTLrqyASHXUTHJYwihU
+Message-ID: <CALMp9eQEEKVQT33t=UNDdGLotZWiUpznoM6Jxdc4u0W4vfcv1g@mail.gmail.com>
+Subject: Re: [PATCH v3 04/27] KVM: x86/mmu: Support specifying reserved TLB tags
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fred Griffoul <griffoul@gmail.com> writes:
+On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> In preparation for using the TLB tags allocator for SVM, which has a
+> range of ASIDs allocated for SEV/SNP, pass in the number of reserved TLB
+> tags when initializing the TLB tags allocator. The bitmap is
+> conceptually shifted such that bit=3D0 corresponds to tag=3Dnr_reserved.
+>
+> Specifying the minimum value during initialization also makes the API
+> clearer, as tag=3D0 is now explicitly reserved by the caller.
+>
+> No functional change intended for VMX as VPID=3D0 was already implicitly
+> reserved.
+>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> ---
+>  arch/x86/kvm/mmu.h     |  2 +-
+>  arch/x86/kvm/mmu/mmu.c | 42 ++++++++++++++++++++++++++++--------------
+>  arch/x86/kvm/vmx/vmx.h |  2 +-
+>  3 files changed, 30 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+> index de79e002edf8f..b443a5083bfb0 100644
+> --- a/arch/x86/kvm/mmu.h
+> +++ b/arch/x86/kvm/mmu.h
+> @@ -413,7 +413,7 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm, =
+gfn_t gfn)
+>
+>  typedef unsigned int kvm_tlb_tag_t;
+>
+> -int kvm_init_tlb_tags(unsigned int nr);
+> +int kvm_init_tlb_tags(unsigned int nr_total, unsigned int nr_reserved);
+>  void kvm_destroy_tlb_tags(void);
+>  kvm_tlb_tag_t kvm_alloc_tlb_tag(void);
+>  void kvm_free_tlb_tag(kvm_tlb_tag_t tag);
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 97d49247d9d82..c096c1a2b4684 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -8182,9 +8182,17 @@ static struct {
+>         spinlock_t      lock;
+>         unsigned long   *bitmap;
+>         unsigned int    nr;
+> +       kvm_tlb_tag_t   start;
+>  } tlb_tags;
+>
+> -int kvm_init_tlb_tags(unsigned int nr)
+> +/*
+> + * Initialize @nr_total TLB tags, where @nr_reserved of those tags are r=
+eserved.
+> + * Reserved tags start at 0 and are contiguous. Hence, usable tags are
+> + * [nr_reserved, nr_total). At least one reserved tag is required, as 0 =
+is the
+> + * host TLB tag on both VMX and AMD, and is the value returned on a fail=
+ed tag
 
-> Ackerley Tng <ackerleytng@google.com> writes:
->
->> When the provider wants to revoke the page, the notifications/function
->> calls flow this way, the last [ENTITY] in the chain actually does the
->> zapping.
->>
->> + [PROVIDER] -> [KVM]
->> + [PROVIDER] -> [DMABUF] -> [IOMMU]
->> + [PROVIDER] -> [GUEST_MEMFD] -> [USERSPACE] (AFAICT this was not
->>   implemented in the RFC.)
->
-> Thanks for going through it. I have just posted v2:
->
->   https://lore.kernel.org/all/20261014093733.90312-1-griffoul@gmail.com/
->
-> It changes two of these chains. dma-buf is gone: iommufd attaches to
-> the provider file itself, through a small interface in mm. And
-> guest_memfd now maps the file into userspace from the provider's
-> frames, so a revoke also zaps the VMM's mapping:
->
->   [PROVIDER] -> [GUEST_MEMFD] -> [KVM], [USERSPACE]
->   [PROVIDER] -> [IOMMU]
->
+Nit: VMX and SVM -or- Intel and AMD
 
-Thanks :)
-
->> IIUC guest_memfd conversions was not illustrated in the RFC: what
->> happens on a shared -> private conversion?
+> + * allocation.
+> + */
+> +int kvm_init_tlb_tags(unsigned int nr_total, unsigned int nr_reserved)
+>  {
+>         /*
+>          * Limit the number of TLB tags to VMX's hardcoded maximum of 0x1=
+0000
+> @@ -8194,7 +8202,12 @@ int kvm_init_tlb_tags(unsigned int nr)
+>          * need a solution that works for both Intel and AMD.
+>          */
+>         const unsigned int MAX_NR_TLB_TAGS =3D VMX_NR_VPIDS;
+> +       unsigned int nr;
 >
-> There are none yet. Only VMs of type KVM_X86_DEFAULT_VM can use a
-> provider, so all their memory is shared.
+> +       if (WARN_ON_ONCE(!nr_reserved || nr_reserved > nr_total))
+> +               return -EINVAL;
+> +
+> +       nr =3D nr_total - nr_reserved;
+>         if (!nr)
+>                 return 0;
 >
-
-To borrow David's words, the part about this that makes me itch is
-conversion. We have to support conversions. Even if it doesn't merge in
-the first patch series, we have to have line of sight to how conversions
-would work.
-
-Conversion requests originate from the guest and then the host handles
-the guest request by making calling an ioctl on guest_memfd. Hopefully
-this part doesn't change with alternative provider support.
-
-Suppose guest_memfd still gets the conversion request first, in RFCv2,
-to reach all the mappings in various page tables, it would have to be
-
-+ [GUEST_MEMFD] -> [KVM], [USERSPACE]
-+ [GUEST_MEMFD] -> [PROVIDER] -> [IOMMU]
-
-since guest_memfd must ensure no IOMMU mappings to guest private pages?
-There's that extra step through the [PROVIDER]...
-
->> Does your provider need to know if some memory was transitioned between
->> shared/private states? The provider can be notified too, if
->> necessary. If not, then isn't guest_memfd doing all the coordination
->> better than going via the provider?
+> @@ -8208,13 +8221,8 @@ int kvm_init_tlb_tags(unsigned int nr)
+>         if (!tlb_tags.bitmap)
+>                 return -ENOMEM;
 >
-> Our provider does not need to know, and I agree: once there is private
-> memory, guest_memfd converts the pages, so it should tell the others
-> what to zap.
->
-> I think the two models meet there, and the v2 cover letter now says so.
-> The iommufd side of v2 does not pin and keeps no references: it asks for
-> the frame behind each page, treats a page with no frame as a hole, and
-> maps again on a revoke. guest_memfd can offer that for its own file:
-> shared pages return their frames, private pages are holes, and
-> guest_memfd revokes a range whenever it converts it, in either
-> direction. That is your [GUEST_MEMFD] -> [IOMMU], and it should work for
-> folio-backed guest_memfd without memfd_pin_folios() or refcounts, as
-> long as guest_memfd also revokes a range before it frees its folios.
->
+> -       /*
+> -        * 0 is the host's TLB tag for both VMX's VPID and SVM's ASID, an=
+d is
+> -        * returned on failed allocations (e.g. no more tags left).
+> -        */
+> -       __set_bit(0, tlb_tags.bitmap);
+> -
+>         tlb_tags.nr =3D nr;
+> +       tlb_tags.start =3D nr_reserved;
 
-This part makes sense, if I'm understanding you correctly.
-
-> The one difference is that v2 also lets iommufd map a provider file
-> directly. Going through guest_memfd would add nothing without private
-> memory: it would only pass each revoke on. And memory that only devices
-> use, such as MMIO, does not go through guest_memfd at all. Both paths
-> would use the same iommufd code.
->
->> Does the revocation model work for you? If it helps, I can rebuild the
->> sample provider to illustrate how the revocation can be done.
->
-> Yes, the revocation model works for us. v2 replaces David's sample
-> with one that moves, donates and makes pages read-only, and a selftest
-> that checks the guest, the device and the VMM's mapping after each
-> change. It may be a good base if you want to try guest_memfd as the
-> provider for iommufd on top of it.
->
-
-Thanks, I will prototype what I have in mind too to make sure things
-work as I think they will :)
-
->> 4. [DIRECTMAP] Kernel direct map.
->
-> Agreed, that is separate. The memory we have in mind is a range hidden
-> from the host with memmap=, so it is not in the direct map.
->
-> Thanks,
-> Fred
+Can you also clear tlb_tags.start in kvm_destroy_tlb_tags()?
