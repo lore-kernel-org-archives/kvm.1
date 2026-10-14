@@ -1,125 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4A748F842
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 07:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF523D7A01;
+	Wed, 14 Oct 2026 07:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791963461; cv=none; b=FYmZV8DaxmgU4PeR3d5AD5hXbSCWBEt0Nqe1NcdfoZkPjyEFdMDMhixCKOydt2Am/3AlYG86VC18CU2WTpr1bm0CDt21I7gNVGAL9dTi10eViyv8jQ/WiMlxiej3p8MDB+17AA3JAgaT/1OmEFiI1URa8y0cNPKnY6XKeOdg2HE=
+	t=1791963627; cv=none; b=EuSdOi5M4tiHb12kiVofARK768oHn0NyPXRLNlflYkKgidhCABdTko6Xr4BCC+P9ZTd+jeBqSbMBFSZY7cSb8hk3phLYB8UJldjxcEoRpJmLvzplSdopBQu3ieufwq4ByOVDV4mxqSGqgXOzqgK4dNjXGQtQ3jwslbfghJOOKS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791963461; c=relaxed/simple;
-	bh=2Y9fbE9O7p8liEj4nGLfJ12MalMVV+gFP3WAl48R2RE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BsUOBlEJGoEVIylxRAqZDAyUwdws2scFJ5CwnWtiafbXCKZxirLFpVfXcrAgBN+TTv0gRss5T6hLttBynG5mh4Wy33Vi7qXqtcrpq5ZTQ+g+Xdqx8NXYhbsUCDtjg0JGam/eWGaeHPMnhM4msbHxJJt4B4wYgS+tt7OfW+RbrhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCmlq9Rx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791963627; c=relaxed/simple;
+	bh=8DNqwTDkyG/HzDA3Nlvx/HSSupKQoyoupiHktAu3TRQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ce0QmjmJlAobpFkMvIGrYxmheNRhjl2HpG1ETmXDvIkSPGv6at5E5eeQo4zTi0SlNgULYlofyfyBgjExWruSpsTINaWI+dwF8CaN7F6azZSwKVDUYSXXG44x9CVI/vVpZSm9+TqGsE74ZP1NEuEPhZeUhsBLaCPxxZX28bQz1U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=bP1w0Tdf; arc=none smtp.client-ip=207.54.90.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCmlq9Rx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4553F1F0089D
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 07:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791963459;
-	bh=GD+/Ha2/u4ZZXBCqFxIO50aJrY9gSr7+woMCBtv2vvw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QCmlq9RxZwZDnDSaQtL4l5SsOSSVWHNdqYeVB8POHxJJj8qMKyTmGIyowGQhn2g+z
-	 C5apiUXipQI519XKCt1Tpb3q24ONuzrGel99EK6VOcz6+Y+4D4ogZdNan4ivHp6C30
-	 EkGXg4zXnEPGKasmv1/2JsxVyulveXbL/OEijk2jxNLOAeeCSWULY+HL7mibiM5nwO
-	 rVwiuHIp9Awhs7QCLvjyUgeslA/eKklPXVr2+bCSzTtDid3P6Dw6SsvRJ8L+gB1dze
-	 XaAcy/5ntvXjGK7uOTsOmPQ4adW0Imj9tGs3wVRcTEOw5SwJXnsXb1W4HmXCvSPX5o
-	 yAXMPR5NY345Q==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so5435021a12.1
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 00:37:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy+GPxmegjtrQsAQpil/P7rOlD2RXPLw7Ch/W9++NWkLWd0bNX+NYPAJ2qQ0rDDggPuLEo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJFKmBa6pRTF/CVtAjBmzm6iOm4MygIgQu4qky/0xm+YHOXnRHf
-	MjxsXainJyT7JhWyhPWocZsgReX+QpamdS/1fhBKC2JwJacJERkaP6QXJPjE2HSiwnawNE6e8Wk
-	iELlq7PfMGLYmqfhkgGL6HvKmKkB+Uf8=
-X-Received: by 2002:a05:6402:21c9:b0:6b1:d9ac:b757 with SMTP id
- 4fb4d7f45d1cf-6b1d9acc3e6mr4316643a12.6.1791963457821; Wed, 14 Oct 2026
- 00:37:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="bP1w0Tdf"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1791963632; x=1823499632;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=8DNqwTDkyG/HzDA3Nlvx/HSSupKQoyoupiHktAu3TRQ=;
+  b=bP1w0TdfEimOYI7Q9WtUMKwZ+GgVT2ebtI12TYDyRcefpKbmHLeK9OGV
+   wfUvon/07o6Yqe1mhyJdk9XvfszgFYhLHmnsp7m++kFS3YasrQDPPS84I
+   22nb+3nkB1VE0dTsr8tbR5znKCYtABl9VGxqKQf5iPT0RO93dzjxyoelH
+   xCdnUH27dAEkUV5D66jI5Bp6iIaaEPMeFVzbw+iCpZ/TrusFaC1WpmDgX
+   x5YViXtRtLhYUPmB59HY2HLzu7s4bjHK/ZEL+SVRY9DEtVglDelrpee++
+   Q+GpS8PEfxnCcihfof5V7sqDDgcYrEHyI7R4zI0U8ox+OK6TiA5/JIiG9
+   Q==;
+X-CSE-ConnectionGUID: YrjmsRJFTGGoTgakHAVB6g==
+X-CSE-MsgGUID: nUADrrfVTQuct8uRexfxYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="258142034"
+X-IronPort-AV: E=Sophos;i="6.27,157,1786978800"; 
+   d="scan'208";a="258142034"
+Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 16:40:29 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id B787D7A49;
+	Wed, 14 Oct 2026 07:40:23 +0000 (UTC)
+Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 6FDD4C013DA;
+	Wed, 14 Oct 2026 07:40:23 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmom4.o.css.fujitsu.com (Postfix) with ESMTPS id 66FEA402666;
+	Wed, 14 Oct 2026 07:40:18 +0000 (UTC)
+Date: Wed, 14 Oct 2026 16:40:15 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Ben Horgan <ben.horgan@arm.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: Re: [PATCH v8 0/3] KVM: selftests: arm64: Improve diagnostics from
+ set_id_regs
+Message-ID: <as8x38o9taXgKZym@sm-arm-grace07>
+References: <20260929-kvm-arm64-set-id-regs-aarch64-v8-0-58aabe2c2fac@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261014052933.723303-1-cui.tao@linux.dev> <20261014052933.723303-4-cui.tao@linux.dev>
-In-Reply-To: <20261014052933.723303-4-cui.tao@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 14 Oct 2026 15:37:26 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
-X-Gm-Features: AclHuK9Ksa7VlvS-kSklI6Uruo2KF9go6WI1OnUs-g3EqUPWxpjWce4dC5vPHww
-Message-ID: <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-To: Tao Cui <cui.tao@linux.dev>
-Cc: maobibo@loongson.cn, gaosong@loongson.cn, zhaotianrui@loongson.cn, 
-	loongarch@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel@xen0n.name, nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260929-kvm-arm64-set-id-regs-aarch64-v8-0-58aabe2c2fac@kernel.org>
 
-Hi, Tao,
-
-On Wed, Oct 14, 2026 at 1:30=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
->
-> From: Tao Cui <cuitao@kylinos.cn>
->
-> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
-> invocation: every call overwrites pch_pic_base and registers the same
-> kvm_io_device on the MMIO bus at the new address, while
-> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
-> init, MMIO to the stale ranges computes its register offset against the
-> new base and silently reads 0 / drops writes, and the leftover bus
-> entries persist until the VM is destroyed.
->
-> Reject repeated initialization with -EEXIST, using the initialized
-> state of the kvm_io_device as the indicator.  The MMIO base is only
-> committed after a successful bus registration, and the real
-> registration error is propagated instead of being replaced with
-> -EFAULT.
->
-> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write=
- functions")
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Hi Mark,
+On Tue, Sep 29, 2026 at 05:16:51PM +0100, Mark Brown wrote:
+> While debugging issues related to aarch64 only systems I ran into
+> speedbumps due to the lack of detail in the results reported when the
+> guest register read and reset value preservation tests were run, they
+> generated an immediately fatal assert without indicating which register
+> was being tested. Update these tests to non-fatally report a standard
+> kselftest result per register, making it much easier to see what the
+> problem being reported is.
+> 
+> A similar issue exists with the validation of the individual bitfields
+> in registers due to the use of immediately fatal asserts. Update those
+> asserts to be standard kselftest reports.
+> 
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 > ---
->  arch/loongarch/kvm/intc/pch_pic.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index 51e4a6a39dc0..7979466de729 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -281,16 +281,22 @@ static int kvm_pch_pic_init(struct kvm_device *dev,=
- u64 addr)
->         struct kvm_io_device *device;
->         struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
->
-> -       s->pch_pic_base =3D addr;
->         device =3D &s->device;
-> +       mutex_lock(&kvm->slots_lock);
-Why move the mutex_lock()?
+> Changes in v8:
+> - Convert another assert.
+> - Link to v7: https://patch.msgid.link/20260901-kvm-arm64-set-id-regs-aarch64-v7-0-7b065b0bda9a@kernel.org
+> 
+> Changes in v7:
+> - Rebase onto v7.3-rc1.
+> - Link to v6: https://patch.msgid.link/20260719-kvm-arm64-set-id-regs-aarch64-v6-0-724287f5f108@kernel.org
+> 
+> Changes in v6:
+> - Rebase onto v7.2-rc3.
+> - Drop changes to handling of aarch32 related registers on 64 bit only
+>   systems, an in kernel solution is preferred for those.
 
-Huacai
+I’ve reproduced the set_id_regs failure under QEMU with kvm-arm.mode=nested on 
+a host that supports AArch32. KVM advertises the NV-capable L1 vCPU as AArch64-only, 
+but aa32_id_visibility() still permits the inner KVM to expose ID_DFR0_EL1.CopDbg = 0xa 
+to the selftest vCPU. The test expects zero because it skips setting expected 
+values for AArch32 ID registers.
 
-> +       if (s->device.ops) {
-> +               ret =3D -EEXIST;
-> +               goto out;
-> +       }
->         /* init device by pch pic writing and reading ops */
->         kvm_iodevice_init(device, &kvm_pch_pic_ops);
-> -       mutex_lock(&kvm->slots_lock);
->         /* register pch pic device */
->         ret =3D kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_=
-SIZE, device);
-> +       if (!ret)
-> +               s->pch_pic_base =3D addr;
-> +out:
->         mutex_unlock(&kvm->slots_lock);
->
-> -       return (ret < 0) ? -EFAULT : 0;
-> +       return ret;
->  }
->
->  /* used by user space to get or set pch pic registers */
-> --
-> 2.43.0
->
+In v6 you mentioned preferring an in-kernel solution. What did you have in mind, 
+given that changing the value returned by GET_ONE_REG may affect the userspace ABI?
+
+Thanks,
+Itaru.
+
+> - Use a define to count the non-test_regs registers.
+> - Link to v5: https://patch.msgid.link/20260317-kvm-arm64-set-id-regs-aarch64-v5-0-a60f2b956e22@kernel.org
+> 
+> Changes in v5:
+> - Rebase onto v7.0-rc1.
+> - Link to v4: https://patch.msgid.link/20260106-kvm-arm64-set-id-regs-aarch64-v4-0-c7ef4551afb3@kernel.org
+> 
+> Changes in v4:
+> - Correct check for 32 bit ID registers.
+> - Link to v3: https://patch.msgid.link/20251219-kvm-arm64-set-id-regs-aarch64-v3-0-bfa474ec3218@kernel.org
+> 
+> Changes in v3:
+> - Rebase onto v6.19-rc1.
+> - Link to v2: https://patch.msgid.link/20251114-kvm-arm64-set-id-regs-aarch64-v2-0-672f214f41bf@kernel.org
+> 
+> Changes in v2:
+> - Add a fix for spurious failures with 64 bit only guests.
+> - Link to v1: https://patch.msgid.link/20251030-kvm-arm64-set-id-regs-aarch64-v1-0-96fe0d2b178e@kernel.org
+> 
+> ---
+> Mark Brown (3):
+>       KVM: selftests: arm64: Report set_id_reg reads of test registers as tests
+>       KVM: selftests: arm64: Report register reset tests individually
+>       KVM: selftests: arm64: Make set_id_regs bitfield validity checks non-fatal
+> 
+>  tools/testing/selftests/kvm/arm64/set_id_regs.c | 130 ++++++++++++++++++------
+>  1 file changed, 98 insertions(+), 32 deletions(-)
+> ---
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> change-id: 20251028-kvm-arm64-set-id-regs-aarch64-ebb77969401c
+> 
+> Best regards,
+> --  
+> Mark Brown <broonie@kernel.org>
+> 
