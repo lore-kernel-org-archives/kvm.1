@@ -1,107 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD0A46AF21;
-	Wed, 14 Oct 2026 08:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0729E39AD2A
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 08:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791966879; cv=none; b=JVb+GxDYys2H7ZEOsp7zb6TgjmJ03gOPM7WqxH/PIERB82dsmDOCQzaffvUCZaIjahOElblwCOD8Ve7UfGkwgjj33sUkPBt2N5Dy8DFJ0y64++hQBqUrRoEbxeC2+R1Y8iB8xHT7/LIu+D9Ozr/Y4q8wP2jqbxRs3/kfYwibgCs=
+	t=1791967072; cv=none; b=iv+y416RKLQ6rD2j8p1o7iIRKIgTaYeuj8ZqFuOr/Jqh6/hVGsLq4RZYERJAnWYqrHkvs4fLIk8+mk5vbATPgK04qzn6dqfJWsa38LXhNJe9oTtbA3RkkXXb0Xw2Oq4J7Sw2pyOB6aCMcBMoc4F6iWtIBTCngl1h2Chl+Ks6hhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791966879; c=relaxed/simple;
-	bh=As4xWKoCTFyDtzbB/O7H7eilC+aDL7lf7ZzhIf7cknI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F6Ua8Lf+cV4314P8KhkJnxcMF7tI+eKpwg2smduwApVg/F9rmAB7cPMYIgbquptyWP0NfRSTnJpiPhKFMRr3fcaJTDjb41XPAuL5TocHQbAiRrvjhFz/8Qoq5ljoQFlpH+hs61UTgG+6IBGMo/HqUtJoryx3hRDpXO2j0jmq1pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RR3IZ7kG; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791967072; c=relaxed/simple;
+	bh=ARdqFFr4feuZC36L7tKPeV266TwXot48jPTDPet42oE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LEV76UZ4s2gVODdbS1wLvNbClxG3CeD0rLSejEK+bG5Hh/D0FMX23FBtgb7z0T0GHIujXnnswoqEDREDul0V3Oop3j9934g1q9sSCWTOZtWL5K+e+hc30QgCTXqb2Hmgyz3265wcuCYkotpxkTunC5o6mn9zszoWX8vhxHBkm/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hmk7vOvd; arc=none smtp.client-ip=95.215.58.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RR3IZ7kG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791966877; x=1823502877;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=As4xWKoCTFyDtzbB/O7H7eilC+aDL7lf7ZzhIf7cknI=;
-  b=RR3IZ7kGiFeqPPlWUXRSLq3+/nWgdDkB44aP96d6aBJCD8Ut8V1ptmAl
-   4u3/GegVbqKv++RAjuw5JFd9py/C/jVFQwLuGaPfFabXgvqMw46sUyj7P
-   4eZ06Dp0MqYQJn4u+MRpAuOIzJO+Uz/z5dPAMbrDYI/TXM/DGTpkrbOJ1
-   maulkL4WULZqW/QHQyGUwTjTYQ+EMGdG27BVMErIU59VP8BagLO9rV/nt
-   ZDtKHpOjj6D96CfoVXit9q+4szuSghYICpQa/qQ7OOq+kjt7eLYyZIUgN
-   IApIb9oz92RRgiybyXIFmIKFrxj0qY6CVK2fa6O2nitAW7UMj1G3x9wHM
-   w==;
-X-CSE-ConnectionGUID: 2kqiC2qeTPOBnUEjQCbOAQ==
-X-CSE-MsgGUID: oAkY88V0Sq+OxmCtA6yWDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="591712"
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="591712"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 01:34:29 -0700
-X-CSE-ConnectionGUID: FfYjxweyQ5yAiTtIT4OZ7w==
-X-CSE-MsgGUID: eLb3SKHaS3W4fuBJZ3UEmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="1297969"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa008.jf.intel.com with ESMTP; 14 Oct 2026 01:34:26 -0700
-Date: Wed, 14 Oct 2026 16:30:24 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, binbin.wu@linux.intel.com,
-	tony.lindgren@linux.intel.com, rick.p.edgecombe@intel.com,
-	nik.borisov@suse.com, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH v4 10/10] x86/virt/tdx: Verify structure member sizes
- against metadata field IDs
-Message-ID: <as89oLMguTZ9pM8A@yilunxu-OptiPlex-7050>
-References: <20261012094754.27702-1-chao.gao@intel.com>
- <20261012094754.27702-11-chao.gao@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hmk7vOvd"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ARdqFFr4feuZC36L7tKPeV266TwXot48jPTDPet42oE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791967068; v=1; x=1792571868;
+ b=hmk7vOvdFEyokWRFjV3eQIMh47nnjuIxIMVXbtMc2YSVjosbUB9aUu2Cmvj0Qa6AmMlgyoMS
+ vbBHCzRR7bs3l7kmIbtUMploGxCBIuHCHNg24WSqWCW3FDTMf14C9P13eUdFSMOIXQX+jcn8JYi
+ BrTB+N9/UBBUpRCjIoGg4Tt0=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 30b45cd5fa8450ca;
+	Wed, 14 Oct 2026 08:37:48 +0000
+X-Mizu-Trace-ID: 30b45cd5fa8450ca
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <4c6f8e4a-93c9-4ba7-b66b-b294ffd70bf9@linux.dev>
+Date: Wed, 14 Oct 2026 16:37:44 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012094754.27702-11-chao.gao@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: maobibo@loongson.cn, gaosong@loongson.cn, zhaotianrui@loongson.cn,
+ loongarch@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@xen0n.name,
+ nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+References: <20261014052933.723303-1-cui.tao@linux.dev>
+ <20261014052933.723303-4-cui.tao@linux.dev>
+ <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <CAAhV-H5SDKsifd1GwMLU_YMny8PqwHdyuvujrAiuvkALoi3+8A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 12, 2026 at 02:47:37AM -0700, Chao Gao wrote:
-> The TDX module reports its capabilities and limits as a set of metadata
-> fields, each identified by a field ID, and TDH.SYS.RD reads one field by
-> its ID. TDH.SYS.RD returns the value as a u64, but metadata fields are not
-> all 64 bits wide. A field ID therefore encodes the field's size into
-> bits 33:32.
-> 
-> The kernel mirrors these fields in C structures, and each member's size
-> must match the size encoded in the field ID. FIELD_MAP() stores the member
-> size and uses it to decide how many bytes to copy from the value returned
-> by TDH.SYS.RD. The size in the field ID is never consulted, so any mismatch
-> goes unnoticed. Declaring a u32 member for a 64-bit field, for example,
-> would silently store only its low 4 bytes.
-> 
-> Add a build-time check that the size encoded in each field ID matches the
-> size of the corresponding C structure member. A wrongly typed member then
-> fails the build with no runtime cost.
-> 
-> BUILD_BUG_ON() cannot be used in a structure initializer, so use
-> BUILD_BUG_ON_ZERO() and add its zero result to the .size initializer. This
-> performs the build-time check without changing the stored size.
-> 
-> An alternative would be to leave the size bits out of the field ID
-> definitions and construct the IDs from the member sizes, which makes a
-> mismatch impossible. But the TDX module ABI definitions list the full field
-> IDs, and definitions with the size bits stripped would match nothing in the
-> docs, making them harder to verify. Keep the IDs exactly as documented and
-> check the size they encode against the C type instead.
-> 
-> AI was used under supervision to review code and workshop logs. It
-> suggested moving the size check into its own macro to keep the .size line
-> short. Rick also used AI to write TDX_FIELD_SIZE_CODE(), which converts a
-> member size to the size encoding in the field ID.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
+Hi, Huacai
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+在 2026/10/14 15:37, Huacai Chen 写道:
+> Hi, Tao,
+> 
+> On Wed, Oct 14, 2026 at 1:30 PM Tao Cui <cui.tao@linux.dev> wrote:
+>>
+>> From: Tao Cui <cuitao@kylinos.cn>
+>>
+>> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
+>> invocation: every call overwrites pch_pic_base and registers the same
+>> kvm_io_device on the MMIO bus at the new address, while
+>> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
+>> init, MMIO to the stale ranges computes its register offset against the
+>> new base and silently reads 0 / drops writes, and the leftover bus
+>> entries persist until the VM is destroyed.
+>>
+>> Reject repeated initialization with -EEXIST, using the initialized
+>> state of the kvm_io_device as the indicator.  The MMIO base is only
+>> committed after a successful bus registration, and the real
+>> registration error is propagated instead of being replaced with
+>> -EFAULT.
+>>
+>> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
+>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>> ---
+>>  arch/loongarch/kvm/intc/pch_pic.c | 12 +++++++++---
+>>  1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+>> index 51e4a6a39dc0..7979466de729 100644
+>> --- a/arch/loongarch/kvm/intc/pch_pic.c
+>> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+>> @@ -281,16 +281,22 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
+>>         struct kvm_io_device *device;
+>>         struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
+>>
+>> -       s->pch_pic_base = addr;
+>>         device = &s->device;
+>> +       mutex_lock(&kvm->slots_lock);
+> Why move the mutex_lock()?
+> 
+
+Thanks for the question.
+
+The intent is to keep the repeated-init check mutual-excluded with the
+bus registration.  The set_attr ioctl path holds no other lock, so with
+the check outside slots_lock, two concurrent CTRL_INIT calls could both
+see device.ops == NULL and both register the same device on the MMIO
+bus.  Holding the lock across the check, the registration and the base
+commit makes them exclusive.
+
+That said, if you prefer the check before the lock, I can respin --
+please let me know.
+
+Thanks,
+Tao
+
+> Huacai
+> 
+>> +       if (s->device.ops) {
+>> +               ret = -EEXIST;
+>> +               goto out;
+>> +       }
+>>         /* init device by pch pic writing and reading ops */
+>>         kvm_iodevice_init(device, &kvm_pch_pic_ops);
+>> -       mutex_lock(&kvm->slots_lock);
+>>         /* register pch pic device */
+>>         ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
+>> +       if (!ret)
+>> +               s->pch_pic_base = addr;
+>> +out:
+>>         mutex_unlock(&kvm->slots_lock);
+>>
+>> -       return (ret < 0) ? -EFAULT : 0;
+>> +       return ret;
+>>  }
+>>
+>>  /* used by user space to get or set pch pic registers */
+>> --
+>> 2.43.0
+>>
+
