@@ -1,46 +1,46 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012042.outbound.protection.outlook.com [52.101.43.42])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010042.outbound.protection.outlook.com [52.101.201.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C20348C75
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 05:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111BE2FE074
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 05:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791956208; cv=fail; b=IIypCYu9yV1CQl1xctOd9/ccJmF5KeJRB8rduG93ykob0yBTWX9LjAQjhc5lan9GFo8h7SAGzpnufUie7tFcBnHN0J5y7nIYGUXg22m6pON8tO8LSFEU1xe8xSyja927SN3K9tbrExa/Csc8CvAnb17BCaUnad5/yyHgcDOVb8M=
+	t=1791956225; cv=fail; b=VNJT0crtRDrnpE5u2tfJxB4Sxot8b1wtsKHx9bxPBLBSqBlnshqk/cDROnIVuE6xIiiG1ogUd+XVW5Jftp+nxg+BY4fUfgUdk8RRq/HBZzzawAwKtnYOEu0kcqUn5rEGlWo7XFQwqLu+m4uAXEVUu3hqcUncW4YtwHwBg80MvOg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791956208; c=relaxed/simple;
-	bh=KzMrcYwqUII3vL/YYDaOeLrzf+iCrx55E2yWoynPUuI=;
+	s=arc-20240116; t=1791956225; c=relaxed/simple;
+	bh=JqtIr1L+jNbwPbg2Gw1GODxvUgb+nndwAuJWBLn2yhw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ps2qZg6W8VekisZNArqcVmfD3b5AoYO0/xtqW7fQrc7aDK79KdRgFAGZ1IVW9ynPwsM5LKyPeV3rqvFP6vTd1c8m0UuGQwnc1iC0lyu2ExIu3kX7W+ZlwnkZ2xIl+uMJBJIfJDdqDM3GmoVHj4h/Um2ElP4FoAR8EEDmlHUjJbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0odFjei6; arc=fail smtp.client-ip=52.101.43.42
+	 MIME-Version:Content-Type; b=ZPrhaUbFnNfyxroy04fFX4IaV/D6k+2jC9+baZSpCAcmjS8Lo34xpKaCQRMQ9NBXHYF3MTuUmYNayri9kLMPWDF/Cofn13EDPBqd2N6qlhyY75IKTeiEXQMnz9ZCwVXOYDniy/a0QsFzcylKMoujptnAx9iD6FeOLVkXa3d54p0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=44DNw1L9; arc=fail smtp.client-ip=52.101.201.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0odFjei6"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="44DNw1L9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wvSbPw/CftoF4Xbbu6t9jNEOw8NcPb/tKVh4yumlkPWl+Cey/LhcjdDW5ijun63M7HfTzHQ1m5jAZ5lCuP+t28EkRGGqsp7ZGg3whIa6XJsrwczsRrXS1TJ6Wknaw2Np2YXwvqXqGYU5DVyRS+wDW0tmiaKxSH6o4lT3A9uOWh/6icvra9urEfY+IYmX2+dj3O5Rb58ATHAkRqN5mppy62AiQ5p03bTZZLKXpw9rLO8b3456oF9n8a6wxbbo9F0h74aUQR4XidZvCfIwmeE0jKCczC/EoSiTv4sK7cue/4t1US1/csrlB7tTSkAvBQvg1l7Oov2szLLJmJbJjNhP/w==
+ b=E8KseCJMWfH2KcK0FjfiQP92fmOWFkUHpQFCt0EMMEnQJKD9vyBrcUZGNxyDg6ZY3VVSXPgPxE5g82KxJNeH0Z9MooZ9cRj3EJ4I+oqYaQwmUmOA5UpnP1p3L0XkCtJ1gyeIv3a09FlRTgZr65IEbFMCErL4hqyEVrwxnklekq+epibA6awMXfsLWX0ACM2AQ65h8bOrPw7WjxtyF5Sk3JldCnlyCUuku/jvLzeD1A5W3QS0P7RBcRpm4ihwXvI1CGGceh2IpHTBPZQNpsynzi3J9wJf5qAHhTt2Cd5I/+V6BtE0/MGKQUUuo1IkOjci4WanRb1wv7KNYehHrtpDYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=szdG2KVV44VJcELJe30wyoqNi6hNS666q6YLRFOFK2s=;
- b=vgv4Y5WaNyTsTsJDkjLfw0jwnkIrM02LU1wWNbaLpsJqOfBXrJ9Sxn1J/JleloVqDCzmeqBTLpC0/8rs7Jx6STsHb7ztCjhzmP02G6PwJgHt7TP5L+pCx6YI14rnlaImwmLUiu1dBKJgnWUYJEhO5F9Wy0qhTzVG1OwmUa9xATU97ED3FYeDHRIQjVNXwO4NqxJFfdIDwp0kSez6LKPuWZXGOXmCB+prUY39uBhGtcz+mKQVyUBU49FmlGaZjkny35JqTxzXpish8GINhIt6+0rvN4N5sCqnbdITTble4CRKeHVSlwexkMlyi8xp98wuJsNfiDa2NF8EntcluiNhtA==
+ bh=j3k6w3Pd3BJeAybw9ydvHpcos6rbnIAmD000irU0FuI=;
+ b=i2b47qLFV9c9+lxkX/5V2ztYQMJ6fjjVKf50fI4uXkiVLDdk4bIzNoK3yeJdNpcPRgmw56K3Uv5mRSWYJbpb975B9p0ZEq6J0wzteYlXswT3M2MRsysdFTeHvaFZPd2dDcQa7WTOm9sy9A9gtfpuSYGc+X6X0Aqavh7MiW6OLe1nZlQ3FrM1QwHSeyHcTcRc8jCh7C/+mpMo+ASzo3ofIrwpTWQZ7rhIx6M/YuSCFHxDKAD/608GoWZEHyNL75nMMPYwHhmIr95ghnlDiD2pAgMV9PAZuPwNxPJyp6jygREVxvugaFMTf+KjSobveiCd0d75ykeQU0PoG2yCt6/2Hw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=bull.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=szdG2KVV44VJcELJe30wyoqNi6hNS666q6YLRFOFK2s=;
- b=0odFjei6WqhNK/DxIw7G3+h7ucUZarBKgERsYuKFUgGk12+4IprZ2au0gk7rft0MzZ56b4AZEQ8CkRy17HxGIoOI/mHYyMUVMalNI4rIqYsmpXMg7vpd7a9PWGysezvND5Qkw8/zRpvUbSaCinLEle5gdvOI8riol8sHdeb56AQ=
-Received: from PH0PR07CA0066.namprd07.prod.outlook.com (2603:10b6:510:f::11)
- by CY8PR12MB7121.namprd12.prod.outlook.com (2603:10b6:930:62::20) with
+ bh=j3k6w3Pd3BJeAybw9ydvHpcos6rbnIAmD000irU0FuI=;
+ b=44DNw1L9R3dkh/gdDl5VD65rr6U5Zv/CayKUQdzJGAwRBxdoX8J8zXQa7W+fBwQZNVm24BpzQshZKs3TtkhYrzO/vhldTV1/oCvgicl04smQM6t6n7JwfdbW17PHDTV5Ey9ydQbGPHRpmUDjMBLVO1q0hNiiZOZFXNdrIqDivKQ=
+Received: from SJ0PR13CA0101.namprd13.prod.outlook.com (2603:10b6:a03:2c5::16)
+ by SA3PR12MB995558.namprd12.prod.outlook.com (2603:10b6:806:511::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
- 2026 05:36:42 +0000
-Received: from MW2PEPF00014678.namprd04.prod.outlook.com
- (2603:10b6:510:f:cafe::9f) by PH0PR07CA0066.outlook.office365.com
- (2603:10b6:510:f::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 14
- Oct 2026 05:36:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Wed, 14 Oct
+ 2026 05:37:00 +0000
+Received: from MW2PEPF00014675.namprd04.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::6f) by SJ0PR13CA0101.outlook.office365.com
+ (2603:10b6:a03:2c5::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Wed, 14
+ Oct 2026 05:37:00 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- MW2PEPF00014678.mail.protection.outlook.com (10.167.249.185) with Microsoft
+ MW2PEPF00014675.mail.protection.outlook.com (10.167.249.182) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Wed, 14 Oct 2026 05:36:41 +0000
+ 15.21.522.6 via Frontend Transport; Wed, 14 Oct 2026 05:36:59 +0000
 Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 14 Oct
- 2026 00:36:31 -0500
+ 2026 00:36:49 -0500
 From: Sairaj Kodilkar <sarunkod@amd.com>
 To: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@bull.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>, Alejandro Jimenez
@@ -65,9 +65,9 @@ To: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@bull.com>,
 	<sarunkod@amd.com>, Yi Liu <yi.l.liu@intel.com>, <kvm@vger.kernel.org>,
 	<qemu-devel@nongnu.org>
 CC: <vasant.hegde@amd.com>, <suravee.suthikulpanit@amd.com>
-Subject: [PATCH 5/8] i386/kvm: Use x86_iommu_device_get() for per-device IOMMU lookup
-Date: Wed, 14 Oct 2026 11:04:30 +0530
-Message-ID: <20261014053433.24564-6-sarunkod@amd.com>
+Subject: [PATCH 6/8] amd_iommu: Introduce root bus
+Date: Wed, 14 Oct 2026 11:04:31 +0530
+Message-ID: <20261014053433.24564-7-sarunkod@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261014053433.24564-1-sarunkod@amd.com>
 References: <20261014053433.24564-1-sarunkod@amd.com>
@@ -83,117 +83,66 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW2PEPF00014678:EE_|CY8PR12MB7121:EE_
-X-MS-Office365-Filtering-Correlation-Id: dda4cd70-cad7-4992-326d-08df29b52042
+X-MS-TrafficTypeDiagnostic: MW2PEPF00014675:EE_|SA3PR12MB995558:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb255ce8-16b2-44e1-d85c-08df29b52b24
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|36860700016|82310400026|921020|56012099006|11063799006|261009220027099003|261009223027099003|261009223327099003|261009221227099003|261009221727099003|10067099003|22082099003|18002099003|6133799003;
+	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|376014|7416014|82310400026|921020|56012099006|11063799006|261009223027099003|10067099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	oAuFSwr3738t68Vbn+7z5j4FE0v7QFecVdlmH60iqPHk39Xa2zwLzsFeN6RdhtjPynbkp7LZqXHx0eY0vAs5JSt/tHyUqAHUOKHLpXI+ZGTq+/vZ9Tmhu+eHIDGGb4od262W9x83YZMeWldCtnFPwn4l/ccE/W7/tUF+hXMX1D9ARR0AiK+D39dfcujgV/4hrO3/Uupp9P/akQNP4Fkv8kEyemyAD7yU50FlThaim/QKk5rJHDcisbwnN/lAy5heeIrGj++VJfR3CfGsesHH7wDdIudJEpdOulmkmlRV9VjKgBmf4eGEPECmuSdwzL1AKamgTDxw0jR95wstWl85Tiywy036+AvFNMJCOsQ73ZAU/ccGouGeX1ygDbsjD7Ge3XstP7wZX5HChh6LxCneBFTSRj/oW5vlTSI2EB4CX3fJsvCWoD1U4m2khEgk+PcTmWN+eJSDch3KUP+bM6bJf8EkhE4/EcKQeBaUMNrtdYunylNpFB7VreGOBa4/gNjoy2JHSavncVgq66w5T2fN1fcm3GmDV0VkXYWzIzxKH3rfrm8YJ0ZAxKIsTQdXH45KrjtJKHPJsddPR4zVRFiZe5qgEql52JUlRMqt1FyNTeZJU7OM4nDDcF9sZ281R+LuyX7xB0fY1diWXzNQoyyBFtKTZ95HypF8rQLaCsIsh8RXmM5NdANgePJTEtIITlfpNhAMfWQu/HAIG6TVLncYVsyOcpNYTypEGoVUUWCnqxCoCKCzIU6Wu6mbCEcr60n1
+	eWZvlXiUxs5INciDTvTFRTzJWcoE6CCj2wCRA47wtlTSk0bIOpO5vESp1+qIMvKm/gype9S8ou/WM5eqY0uzwfy+pC/iEp3qqhZfzFOHYQuHGArkLKDIOCnfgU4D7P3aCGvg6bmHapLaqYU/tnP2syx/ZBGbQK82r10bustu1Hab1j6zJR0ZE1K4N6/82upL2Fa168DucondnTbvQc/QmGyI6YS+fyfthLpvigeBNTzne0La9WvjeiKfyqwovuUQqbUHMkAbhPUGy13D/TZWdf+OtVkbdDo2NN1j4DDO+Ec/eTsn5f/FLBYJMPAREP9Od6bsYrRkNGbFZTpAJpyba0Q3Zp46opGm3nE7i4upheYuM7DvAQFTwMEIpktsH91os1yOVm5WQaZDyP/PL1Odsdk61aQr7Cyaze4YFExvifpleEAFoV9QLo2aYDLqQEG5BkfTFwhLXuuAYmmrEwXaXoP7Kb0hFiadmyg2oksF8/5Xe7lVaybzMQyt22cbluyNcKvDc3lh8am7yFYL4CGFKyhzY5L79PV6fMWDFzSAh/P97q3swnsLu5h0fDxnLZmyzmZfpri/YSPw9XMfj35750WTCOyppQiZL7Md9sGu2RjGUIJmE44p9hbcJPygN3mvd+RyffB4ibwq9aMRPzc+i0+kEhE8LQauwvC00IxQSCOKTI1zLonPjOyRXLDof3Hi746hCREo/+vMeWuKQpPbSoOomLJ2nYXzzWv+IsdEopfRRudysQu+80qX8rP42Xq5
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(36860700016)(82310400026)(921020)(56012099006)(11063799006)(261009220027099003)(261009223027099003)(261009223327099003)(261009221227099003)(261009221727099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(376014)(7416014)(82310400026)(921020)(56012099006)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	yD4t1i60Nu0fd8uXfpsW8ag9RC+ppqZIjORdwBc5MpqjaMZ+rJ/XfjT20CK/iwkUXf1bWRn5W8LWbJph+5xYrYTjnCbAFxJc6BAUDkWa99jp3QtlWEItHQSMrt353Cd2r1++GWnBFB4BYKyqNS+zB2ouQw1qaHywExBtNXHEQGJP6Mbqy4H8UqdSszhqP4ZXVWpiD1R7ovPQSNccY+d3r31XVCbChq7Ls/HQXtEpNxcoJucIhWagceFe4XlwMZUxOtntcg86HEXr+0ZooW/PIRXV3LEb2mH5ibXiBAGIq9A80W8+gu3pZwAxxC35/67lByK7PfEli9ehesaqKu5PKqreRRc7XoELNtYLAG9H4rOHk//msyt+Hi4hBa+O4p3CALVBZK5sg6sPDr18LRCvKbmxtFfOHVpxscrBb9a7DH7/Uz9kk8l0augad3W/ZYRv
+	x2wDkIjZNGlM7Ixd1/A5XtozzXUtpnJ1NhgBobx01Ez3KgVU+AXx5QnJh6ERvlqUIy6ol0jdnN0GjDlqYPsgYh/UrfrZnDETbGrKsS/Xus0AVgnPLIWlH8DppjkIqPLbUgt5zlETSIhEOVMsPgeqnOM1SdtaJmF6UUfwrArj3yPnj+ZxWnjKXeWTcdFVeJg4sST4LnwlICnV2aZbndpgUp4jLHgVNTh7XcUOghi8TbEBURXzjyKcslbEs4wy5cotehbT4MfMKEFT33gt6TMXqsBLa550xvX0aWeQ945JBGKqtk5Ugp6sDX/hzWWbGsLSg0RLn0qJzR1puaANl5AzglsorQYtb/4JAjsS8hV7q2prUTIKRO7cmUM5VcySNaYwsLluKe4pbulfwhOmEih2hNv9fRyCaUgcIEWD598uPTmqx81I/AKyT/pMGO7NTAtG
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 05:36:41.6237
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 05:36:59.8195
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dda4cd70-cad7-4992-326d-08df29b52042
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb255ce8-16b2-44e1-d85c-08df29b52b24
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MW2PEPF00014678.namprd04.prod.outlook.com
+	MW2PEPF00014675.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7121
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB995558
 
-Currently, kvm_arch_fixup_msi_route() unconditionally uses the default
-system IOMMU for interrupt remapping when IOMMU is present. This
-approach fails when an IOMMU is attached to a non-system bus and serves
-only a subset of devices, because the kernel does not program IRT
-(Interrupt Remapping Table) entries for devices outside the IOMMU's
-scope.
-
-This patch changes the behavior to perform per-device IOMMU lookup:
-- For PCI devices: Use pci_device_get_x86_iommu() to find the specific
-  IOMMU serving that device, if any
-- For non-PCI devices (IOAPIC): Fall back to the default IOMMU
-  only if interrupt remapping is enabled (ioapic_as != address_space_memory)
-
-This ensures MSI route translation occurs only for devices actually
-managed by an IOMMU, enabling proper interrupt remapping in configurations
-where IOMMUs are attached to arbitrary buses.
-
-NOTE: This patch assumes that only non-PCI device calling is IOAPIC and
-checks ioapic_as to determine interrupt remapping.
+Following patch will create IVRS entries starting from the root bus
 
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 ---
- hw/intc/ioapic.c      |  3 ++-
- target/i386/kvm/kvm.c | 15 ++++++++++++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ hw/i386/amd_iommu.c | 2 ++
+ hw/i386/amd_iommu.h | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
-index 1b3f1e824ac4..f1b881ee6118 100644
---- a/hw/intc/ioapic.c
-+++ b/hw/intc/ioapic.c
-@@ -438,8 +438,9 @@ static void ioapic_machine_done_notify(Notifier *notifier, void *data)
- #ifdef ACCEL_GSI_IRQFD_POSSIBLE
-     IOAPICCommonState *s = container_of(notifier, IOAPICCommonState,
-                                         machine_done);
-+    X86MachineState *x86ms = X86_MACHINE(qdev_get_machine());
- 
--    if (accel_irqchip_is_split()) {
-+    if (accel_irqchip_is_split() && x86ms->ioapic_as != &address_space_memory) {
-         X86IOMMUState *iommu = x86_iommu_get_default();
-         if (iommu) {
-             /* Register this IOAPIC with IOMMU IEC notifier, so that
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 644c45fb0a02..ffe977ceb418 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -6746,7 +6746,15 @@ uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address)
- int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
-                              uint64_t address, uint32_t data, PCIDevice *dev)
- {
--    X86IOMMUState *iommu = x86_iommu_get_default();
-+    X86IOMMUState *iommu = NULL;
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    X86MachineState *x86ms = X86_MACHINE(ms);
-+
-+    if (dev) {
-+        iommu = x86_iommu_device_get(dev);
-+    } else if (x86ms->ioapic_as != &address_space_memory) {
-+        iommu = x86_iommu_get_default();
-+    }
- 
-     if (iommu) {
-         X86IOMMUClass *class = X86_IOMMU_DEVICE_GET_CLASS(iommu);
-@@ -6848,6 +6856,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
- {
-     static bool notify_list_inited = false;
-     MSIRouteEntry *entry;
-+    X86IOMMUState *iommu = NULL;
- 
-     if (!dev) {
-         /* These are (possibly) IOAPIC routes only used for split
-@@ -6867,13 +6876,13 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
-     if (!notify_list_inited) {
-         /* For the first time we do add route, add ourselves into
-          * IOMMU's IEC notify list if needed. */
--        X86IOMMUState *iommu = x86_iommu_get_default();
-+        iommu = x86_iommu_device_get(dev);
-         if (iommu) {
-             x86_iommu_iec_register_notifier(iommu,
-                                             kvm_update_msi_routes_all,
-                                             NULL);
-+            notify_list_inited = true;
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 5c1fb0879c0f..5e4d5d1f1fcd 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -2713,6 +2713,8 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
          }
--        notify_list_inited = true;
      }
-     return 0;
- }
+ 
++    s->root_bus = bus;
++
+     s->iotlb = g_hash_table_new_full(amdvi_iotlb_hash,
+                                      amdvi_iotlb_equal, g_free, g_free);
+ 
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 687691ec1cce..04a5bbd33740 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -373,6 +373,9 @@ struct AMDVIState {
+ 
+     /* DMA address translation */
+     bool dma_remap;
++
++    /* root bus to register IOMMU ops */
++    PCIBus *root_bus;
+ };
+ 
+ uint64_t amdvi_extended_feature_register(AMDVIState *s);
 -- 
 2.34.1
 
