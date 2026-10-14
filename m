@@ -1,107 +1,109 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E98360EC5;
-	Wed, 14 Oct 2026 23:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792020512; cv=none; b=CLnr8GdYWuJA5ZVvUcb1ChtCxRYzmcta2WyyqmICLGJUo6r/Ew21XIkU4MSd0EgGe0c3y9mIyO0uD660vZUomVbXO60A+EZM25nKrNwBZCfxC2gkrk/GipEUg5Jqb/2aD7Be4lapdyeylwYbgDYivoDkQIq5IT98XEYDXXZL23U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792020512; c=relaxed/simple;
-	bh=1PnPz/ssIDum+2czs9HoAetAo6DOsRhCTiiWFKOUTmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oYdVGgwfSA0476ND26RrwA20au09mgefx1tjSEQtbFWK8iyqUD/rdfoe7vSYfQRuQ7hiV4+VI3z/I6wN9m7ooBgEoxME4h5gGflhOIlui7qzEHVGBKSTBVclMPiE0DRKjHviREIlUUzencVCBKX9U/WaTFpJAcBtbMSzhr86pi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JA3PvtPg; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613ED30C345
+	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 23:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792020715; cv=pass; b=OXms89mTsFLdwbzbSsZ/TqoZpAuuJJApl3laLSaa4ovgtzMX2dxQY4SjzwXI30u8mHVPNnpHJzhi33FnetRxIaZwzFwFFAxDqrK9LV9FIk+G23DR1DTx43/K4xwUBweftC8rhTniqnrTfOL0aACus6ecuXuY1uYckBfO0Z0YC98=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792020715; c=relaxed/simple;
+	bh=c+5SN4BUGc0cAYOqueGecoLgZhbCt6m/n0efmhJQ8/A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KGGR0OAmJyTsxOveBUxRMvxOee1W7ndSRU+a2fgH6ZaZVGANNQdUvCCO6VaDNLLyKmByFjKev5crhTmKUJJQ8tFGHez9farTh++OKIvPpryQaQcteTtSI22co0jxhBmjHMDUWX7Pf89jdb0YLI94Kmajj/frAWGCuVqJ4TNsl5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OSKetn34; arc=pass smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JA3PvtPg"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A534240E02B0;
-	Wed, 14 Oct 2026 23:28:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6AdeqXv0RTNt; Wed, 14 Oct 2026 23:28:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1792020496; bh=dZu9GO3zcx5gvlghTdibBt7uX59ONko2vayhAFoneY4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JA3PvtPgAEWmjeXMXheLOmV3iuQG5qEvPu5v8NaVvMDm6xXRgU4N1YBYdAS/xlAKk
-	 3kbBcp7JG5TsBPo/KCrO4uwtP5oCbrf0D5fcfqkuZD/yfJhWlyWYAPcW7mUascjSlQ
-	 0KzsHdt0sP9v+qCfnW2OPGb/4c2Mmo3YWrUSalBjKsVeU2ldEeRAsqyk/HxAsZ7P+Y
-	 hDedNwqAou+GAMEZitA5xv9ak9eCqvQJH4fSd2MKOdChmknN0qUEKsgs7N1IVgQYSo
-	 tRUs3UJQVcSvtOL6xUe+Tpk024cCCdTIVTcHPKOT8CPJLsQy1GDQ8zsS0wnGNAZjyC
-	 inhl6eXEaG050gDRjAqXoSV+pQ/WAigRPYKRqMVEx78hsOtRW4cJEdixzYfWDOKr08
-	 QJbm/VbXrHgNDy1fSLE3l6QYj+E2rwK4etHs43SRhB2da68bfIRSoSaTuxUsv21KNt
-	 CIKDTpIV6BOQ4AfCOyCOOaE3s33PpkCD2arXA3Mxl1gLJUPvtN8QHpOEWgGbSWgbMb
-	 o9gBLg9zFARfeX/C9QV0JtaDlEhNE6XNi9NcsjzFoLILnXwuuI1M2JxcCkMvlhaZMg
-	 sp23cW85ScZIFkEsB5pubejP1TJa/640VOHUvmAnF7iKeNN0gqoNV8f30JGIAJVRjf
-	 zca6vUZgA6xRuaLo7k+Fl0PA=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DE16B40E048C;
-	Wed, 14 Oct 2026 23:27:43 +0000 (UTC)
-Date: Wed, 14 Oct 2026 16:27:40 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, nikunj@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v3 0/2] x86/sev: Fix RMPOPT enablement on non-RMPOPT
- configs
-Message-ID: <20261014232740.GAatAP7B55b7VArwS9@fat_crate.local>
-References: <cover.1792018839.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OSKetn34"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so1195a12.0
+        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 16:31:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792020712; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VPrF7VVUvX+M+yZx5F0dTmPwtBVjOdqz7ubV6cwx1Lc1ONLmJnGfk/UuQiauDqHAUT
+         ynMwt8ZDaSokpY2KG619e93G+4sdhRG7TWxKtLm2fuiUJYiAeI3RPoR8kUyJna09oUO/
+         eGT4KrholZEA31aIBhAM2Gehs3M27zhFwMgKeONZzfvyT1PHpi4I7hAHBpGCpfFS83xh
+         0DJN/X3TQSAgvvFJw25vlXjYyzEi/wswcBqZ+Jvvw0w4eqWubJD0okK1usDA07BnFf4l
+         E3IxZP+QMr3VWW6t72cJL0z27wIoAz4qvaYkCCCWau44DSuUkieVX9NAq9Hz/oAJv1VH
+         JJnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=c+5SN4BUGc0cAYOqueGecoLgZhbCt6m/n0efmhJQ8/A=;
+        fh=LXwTa9QsmLiG7autefsKO5jfQetlvC3/3wixhXZqKjE=;
+        b=E8iRaQ2ydEcszwGWyhHUZM6xa0WWq3ilhQdTnvOSwwbXSBXYDIlnWGvVrAHIC64WCz
+         qdKzhOi6919zogqV6jzNeBaDVOXt0nnVfkk5pYF6gpFx8gi6fweIp+PKTlVt3QyvBaIZ
+         8hQ8H+uc832A+g2L0iySYI2ptiwGXfStEO4NAgEiwGLFPdyAu3q+LAgWaJTBQeQGPTP9
+         sB6o3eoV0vM9W5rU24h2Yz+wF/HL2ndf0yqE9m29CziJ3jvBAiMQxodpr2cGVGOu0yAL
+         XA4D/leXyOlUbZsIdyhGoFbCrPYveR1Ohz7KF93csmpgFh18tRZrBIH2hPlvveyRG4U/
+         RYPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792020712; x=1792625512; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=c+5SN4BUGc0cAYOqueGecoLgZhbCt6m/n0efmhJQ8/A=;
+        b=OSKetn343/ILNReqXFVfz7BB7Yb2YxRsdHFPS7lHsXtKqtgfHaiXpBDd2qg2uqfwiQ
+         YLK68EiDVxvl81HAjhs0OIEeAxy1fUvyU29WfmPmBwGeb9+FN3z5KcqMiJ9g9yGmI8HN
+         hcXdkxCfRVLNt66LqtNg3yaOTg8PkQ4iUSjGCogwnKw7gmXl+yw/Q6p6JniEg/MrjNp7
+         RdNHNsEflo5H8G5oPUkj33IYhtR4pJ9Viybcdj7d8PJgeTvCeOS/aT0fsfOLddfzpVQ3
+         xAPBKrjYORzOeKda07wh1EFcIFlx5VH1x2CqWUYrlh/KV8WDoxwmvnSNnU5GOnofwb9o
+         aPqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792020712; x=1792625512;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=c+5SN4BUGc0cAYOqueGecoLgZhbCt6m/n0efmhJQ8/A=;
+        b=1Vo3S500Xnr/acsoQKwGoaANnTbOg84uZw5qk/rQy6bm7d0kSzemCd7cXo04HrT7LT
+         7zSjuYOsi0R3DnIkLOy8PLLZ7JUgsLSmKD9rfRDE05Wz4xDI1aGof3t+whV3Xtl9Z36f
+         NMoEoXbE4OZItfj3Q5vlRqoIK/IYlfzrA7Qcf/zBC3k/TaDx4DES7MsIO2+7g5LW0ldq
+         I9MC0UmUAcgp46PXY3S5YvKBoKkwyRKY/0IDKadTOf90OV1BtwsWtJnrVM4zR5jK9uaA
+         sf7fgCqfbllJjKiqRddaVnNMV/UQeFN9HWo6D/Vu9ZmVzd0yC+PNjd2MACbUggbMcjaf
+         kcTw==
+X-Forwarded-Encrypted: i=1; AKwUvBx5Gy8tEPjBDI8Z+yHypXFYn+H0cL2HskGH0F8+wxrFPxg2iZDgcsHk8RtzNQQrSekureA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIKCmvztXs5LsvoML2nImROycdq4h778CoVtOQzQHEq3TvIfgL3
+	HUcdECrwmSbcBjeF5MDU8kxXCzGK1RJUBpsnCr7Nli5EG2uXiKtrYJFWlNX8CijUcEPkkd4xMe8
+	5yX5efXb/8I6mxHh9OWsZuOIxqMxVatXFn+Y9Q+U5
+X-Gm-Gg: AYBFou32IB88MnzEdVDpqFwzbw5V17N/RGxoyZf47yOm0+Wd8KKe0J1T4suPv2+vrdi
+	kpGX0qY0LrW2Ae6fK6N+2gRc3/1b1y9HVpcdVwhzxuyyo/MtVLNi3Xqqt0Ekj53S++l+eX5FH8D
+	K0IOrD5ceeYKwpZ1zg9xQt1cjtu0uzRuO3MJSxc3TI7Rm5u354d+tBaZ01fr/8cs9w9TUGWY3Uy
+	ed+x/4SKpHBjvgrgcR8tbkokKs5qyTjtLa9NAMr3vgb5/IMnq6y8G1Bt0Gm7VtIt5E4qq1jBPdG
+	tYFY/C1I950mpXAPyEz7FQnAkIzaqa0q76fNM4r/XOr97xexVg1EPdnb
+X-Received: by 2002:a05:6402:5c3:b0:6ae:188e:e119 with SMTP id
+ 4fb4d7f45d1cf-6b32bb8e2e4mr1000a12.9.1792020711839; Wed, 14 Oct 2026 16:31:51
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1792018839.git.ashish.kalra@amd.com>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-8-yosry@kernel.org>
+In-Reply-To: <20261012233638.2546339-8-yosry@kernel.org>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 14 Oct 2026 16:31:39 -0700
+X-Gm-Features: AclHuK9EHCeDUZdnrI67mbvozJY-igt-Nb7vmrmchnbUjAve2Tz2b0393hkSlgY
+Message-ID: <CALMp9eR7u=oyfYPWuROMyW-2aOPDznTaHHjK8j+5=SCxaKbgFg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/27] KVM: SEV: Do ASID initialization at VMCB initialization
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 11:06:32PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> Two fixes for the RMPOPT series, both for configurations where the
-> RMPOPT CPUID bit is advertised but RMPOPT is not actually usable:
-
-Those are clearly not settled yet.
-
-But you don't have to rush them, take your time with, test them more and
-analyze better what you're fixing instead of piling more stuff ontop.
-
-And avoid all that unnecessary commenting you're doing. The stuff you're
-saying belongs in the commit message - not spread around the code.
-
-If the code needs more explanation, then perhaps it needs to be simplified
-and split properly.
-
-I'm not at all happy about how intertwined and inter-dependent and thus
-fragile our SNP init gunk is.
-
-So think about that too, perhaps it can be simplified even more.
-
-I'll take the final versions later, during the 7.4 stabilization phase.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> The per-vCPU ASID does not change for SEV guests, so move the per-vCPU
+> (and per-VMCB) ASID initialization to sev_init_vmcb() to do it once,
+> instead of setting it before every VMRUN.
+>
+> No functional change intended.
+>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Jim Mattson <jmattson@google.com>
