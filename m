@@ -1,217 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EE32BDC28
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 20:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F7B3C456B;
+	Wed, 14 Oct 2026 20:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792010316; cv=none; b=q+Xmje3QDG+qb8yBu1BA83jXnSaRVHAcsGGXMv2NH5rWFjze7SNaFRZjlbEREgFGsBdQ71s2PK/d12I5dUqDfaC1ElWMIbr0QWALLmwuDpG2qBfrxNkHStDsrLb4uj2zl74Y1U8neNx4tTYUnKYT6jixi/IBvo9SHA1ewuPAfYY=
+	t=1792010336; cv=none; b=sIigbkiTTcDR/PpkJh7z34NjN3BJRh+Ji4A4JwBJ8MtnAKo8vNqKG82P0mcafJHgWWnpAqnZ2SYwSbz3UOyQl5wqW6MIpuUzG+ljg60Dt3YjagURSEsUVncaOf+WHQaR5jlPm/gFcif+52oaCfUtVmssIwoUUCc6dI6BuSF6MPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792010316; c=relaxed/simple;
-	bh=JoGPBXpoXq4TjNGJ7QeisPE4tusEKomuol6GAkp99TQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VizkFYrqyi5TTL7fId0+EW7cUkPC+U1gRtLtJqpKDTQ4FjWlg6ylevkpdq5Ar2Dwb+J/yuOyLIG5AsPX2nxdchM+ND56DZ5sOt9u8K9qVZBlxVC1ftIB+XoX3zsqaTtqAOBSxazVI6z7KUBIGDH2ov1WPbbIpxqpI09fYP5/CIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbiUJrEm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792010336; c=relaxed/simple;
+	bh=Ght/aBzy4llCz6EMP8auv1XpvupCUpViG+bXTIZP3qk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uO9Liz7qNFshdIVvwzQC680mohIefZqwSsFRfMDVBr/igQuiv8Rprfo5RE9W8SE166DS6Vwr3k4Ozfy4fERqqSu7eCzpJDIpdlkLwwRD9wJAF8OjD8Lk5h2FHUzKoQdxi5vHzv5RNFoG3B2xkGy66wnT9FyqrtqC/qBqo+bKOOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=xD7cx5hO; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbiUJrEm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CF81F000CB
-	for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 20:38:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792010315;
-	bh=Sjzadb3/6SBUHyGfg8P51zJVcvSPD9TaqG+ALWUyrhw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=dbiUJrEmvgzaxNpGr0yD75XVvvB/mUdHBeMB2fxkgpvD99Jn4RDLbFWakDnipnavG
-	 H5OkqoxHjlFdL7UjTDpmBJbT2cp7I1JvZCvJDBaaFkuhU5+O/D9Trz+mnh3H9RWNfj
-	 3MezFhbu3mlxR8zaRga20/bMd/tmjQjareU1TRiuBfnPDev+sz1ZnqCz5eXLHwsj+z
-	 1UgOFh/jgllgHvNw+RgqDROYeAbDclVnD4y0bz5OYOJFUvR6nG8gnIgO8WxgGP/sLx
-	 ZyfLvyXffCcEqY8DVUf0raQsmh6W/lPICu/0+cMztwRDYbfYfNvqvCF4YwGIu02zZA
-	 UXjHDLZbn8AwQ==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2e2007dd8bso765515566b.2
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 13:38:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByYlblsBS7EiBm8ewsh0Epqyef7c5p0oFFqOJ+Ou0+1lFfGQGCWlWyM2yzSh38gkh0bNh4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKu1b8Vcy1KFL/P+KiU1e/hKKnQOG0wbPXZmTRECSnuFeTrc85/
-	IVxPqSMJC5PsZtCZOYDUhWKKT7AnjGR97a+BILgZZBBxp5uTBEMmO/w1oXLMgCV6TefcF6ZYkGZ
-	HvhLaE/awxxM/YuuW6L1XtJhFPTHI65A=
-X-Received: by 2002:a17:907:3f20:b0:c3e:e726:9548 with SMTP id
- a640c23a62f3a-c3ee7269fcdmr47818566b.14.1792010314132; Wed, 14 Oct 2026
- 13:38:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="xD7cx5hO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1792010330;
+	bh=3Terinl8SuwfSYjw1hUDkfwIQWKWVy1NH/KsV7THaRI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=xD7cx5hOso7zpoKz9w0MCwp2erAQ266sRA3Daej6urcADyMwOfxP0ElO1XJcMp8Pz
+	 Ca5m8lKXvuU3U+Y8WCNGSlsbwncz+8686EtyTWM9KihCTuWAqmFoR5uJ3Kumv2xqFR
+	 /4dI+G5UnweWCDPPc/MY0UzriL+3nweWEEw8UbVpigliGLmYKn4DgUI2Qr3HbLPFvQ
+	 LdfOIb4pAhLoLmgUqXsic+24UWzDlqf+UeIgBBVwisiaqViswaM+78/UTSBbR6gLtY
+	 5WpiyBZoyQ7n4vXTuLDKRBeiicDA4B6/UOvyiNIjXMzGMwV1jaqauXA0wPHhXi5/yr
+	 ZshaFLBqn0HHw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4j4jhy41Mrz4w91;
+	Thu, 15 Oct 2026 07:38:41 +1100 (AEDT)
+Message-ID: <0bd00c26-4f53-4387-86be-99f0c37fa47c@ozlabs.org>
+Date: Wed, 14 Oct 2026 21:38:38 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-4-yosry@kernel.org>
- <CALMp9eT9xOFKSFnOg5OeXgmXV0pr-4-yJdBFFMORPx22BgHnHw@mail.gmail.com>
-In-Reply-To: <CALMp9eT9xOFKSFnOg5OeXgmXV0pr-4-yJdBFFMORPx22BgHnHw@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 14 Oct 2026 13:38:22 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMtrxJYN83_ht1wLfNrRvc_suLm7LyDhxZABQTBt-fN-w@mail.gmail.com>
-X-Gm-Features: AclHuK_q9B9H0vjnxDInI4iEfaZY2mbRtIbinfw9U-aINMewKYSX43KqJ568UFM
-Message-ID: <CAO9r8zMtrxJYN83_ht1wLfNrRvc_suLm7LyDhxZABQTBt-fN-w@mail.gmail.com>
-Subject: Re: [PATCH v3 03/27] KVM: VMX: Generalize VPID allocation to be vendor-neutral
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 8/9] vfio/pci: Support mmap() of a VFIO DMABUF
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>, Alex Mastro <amastro@fb.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>,
+ Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20261006193643.76330-1-matt@ozlabs.org>
+ <20261006193643.76330-9-matt@ozlabs.org>
+ <20261013171347.54e856c7@shazbot.org>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20261013171347.54e856c7@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 14, 2026 at 11:23=E2=80=AFAM Jim Mattson <jmattson@google.com> =
-wrote:
->
-> On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > In preparation for sharing with SVM, generalize the VMX VPID allocation
-> > code and move it to common code as a TLB tags allocator. Parameterize
-> > the TLB tags allocator by the number of tags, and allocate the bitmap
-> > dynamically. Opportunisitcally use guards to acquire the lock instead o=
-f
->
-> s/Opportunisitcally/Opportunistically/
->
-> > spin_{lock/unlock}().
-> >
-> > Keep the number of allowed tags capped at VMX's hardware cap, to avoid
-> > allocating a huge bitmap if L0 advertises a huge number of ASIDs to an
-> > L1 KVM. Realistically, the number of actual hardware ASIDs wouldn't be
-> > that large so there is no benefit.
-> >
-> > Initialize the TLB tags allocator during hardware setup/unsetup, and
-> > reserve tag=3D0 during initialziation, similar to how VPID=3D0 is curre=
-ntly
->
-> s/initialziation/initialization/
->
-> > reserved in the VMX-specific bitmap during hardware setup.
-> >
-> > Allow nr=3D0 to allow allocating all ASIDs to SEV on AMD without failin=
-g
-> > hardware setup, if at all possible, in which case any tag allocation
-> > fails (SEV won't use the tag allocator).  The number of tags includes
-> > tag=3D0, which is not usable. The interface is a little confusing in th=
-at
-> > regard, but this will be changed soon when reserved tags are explicitly
-> > introduced.
-> >
-> > Keep allocate_vpid() and free_vpid() as wrapper that check enable_vpid
-> > to avoid checking at all callsites, and add init_vpids() and
-> > destroy_vpids() to wrap init/destroy calls as well.
-> >
-> > No functional change intended.
->
-> I don't think that's really true. If it is, then you failed. For
-> example, the new -ENOMEM when the bitmap can't be dynamically
-> allocated.
+Hi Alexes,
 
-Point taken, will remove the claim.
+On 14/10/2026 00:13, Alex Williamson wrote:
+> On Tue,  6 Oct 2026 20:36:36 +0100
+> Matt Evans <matt@ozlabs.org> wrote:
+> 
+>> A VFIO DMABUF can export a subset of a BAR to userspace by fd; add
+>> support for mmap() of this fd.  This provides another route for a
+>> process to map BARs, in which the process can only map a specific
+>> subset of a BAR represented by the exported DMABUF.
+>>
+>> mmap() support enables userspace drivers to safely delegate BAR
+>> sub-ranges to other processes by sharing a DMABUF fd, without having
+>> to share the (omnipotent) VFIO device fd with them.
+>>
+>> Since the main VFIO BAR mmap() is now DMABUF-aware, the new mmap() reuses
+>> the existing vm_ops.
+>>
+>> The lifecycle of an exported DMABUF remains decoupled from that of the
+>> device fd it came from, i.e. the device fd could be closed with DMABUF
+>> VMAs present, meaning a fault on a VMA could happen concurrently with
+>> vfio_pci_dma_buf_cleanup().
+>>
+>> To deal with this scenario, the fault handler now temporarily takes a
+>> VFIO device registration to ensure the vdev remains valid, and then
+>> vdev locks can be taken.
+> 
+> This sounds like potentially measurable overhead if something is
+> slamming the fault handler where huge-fault is not supported or active.
+> Have you considered a fast path for the internal dmabuf where the
+> lifecycle is constrained?
 
->
-> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > ---
-> >  arch/x86/kvm/mmu.h     |  8 +++++
-> >  arch/x86/kvm/mmu/mmu.c | 78 ++++++++++++++++++++++++++++++++++++++++++
-> >  arch/x86/kvm/vmx/vmx.c | 40 +++++-----------------
-> >  arch/x86/kvm/vmx/vmx.h | 28 ++++++++++++---
-> >  4 files changed, 119 insertions(+), 35 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-> > index 2ae7f9ed4cf86..de79e002edf8f 100644
-> > --- a/arch/x86/kvm/mmu.h
-> > +++ b/arch/x86/kvm/mmu.h
-> > @@ -410,4 +410,12 @@ static inline bool kvm_is_gfn_alias(struct kvm *kv=
-m, gfn_t gfn)
-> >  {
-> >         return gfn & kvm_gfn_direct_bits(kvm);
-> >  }
-> > +
-> > +typedef unsigned int kvm_tlb_tag_t;
-> > +
-> > +int kvm_init_tlb_tags(unsigned int nr);
-> > +void kvm_destroy_tlb_tags(void);
-> > +kvm_tlb_tag_t kvm_alloc_tlb_tag(void);
-> > +void kvm_free_tlb_tag(kvm_tlb_tag_t tag);
-> > +
-> >  #endif
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index aadd5bdc2c97a..97d49247d9d82 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -8178,6 +8178,84 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
-> >                 vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread)=
-;
-> >  }
-> >
-> > +static struct {
-> > +       spinlock_t      lock;
-> > +       unsigned long   *bitmap;
-> > +       unsigned int    nr;
-> > +} tlb_tags;
->
-> Can we statically initialize this to avoid the call to spin_lock_init()?
->
-> ... tlb_tags =3D {
->         .lock =3D __SPIN_LOCK_UNLOCKED(tlb_tags.lock),
-> };
+Good question, I did think about this (rationale below) though ended up 
+trying to keep this function simpler/easier to reason about.  I can have 
+another look.
 
-The call to spin_lock_init() is less code, but I can make the change.
-I don't have a preference.
+< long info, as AlexM and I were talking about this offline >
 
->
-> > +
-> > +int kvm_init_tlb_tags(unsigned int nr)
-> > +{
-> > +       /*
-> > +        * Limit the number of TLB tags to VMX's hardcoded maximum of 0=
-x10000
-> > +        * to avoid wasting memory for the bitmap in the unlikely scena=
-rio the
-> > +        * CPU supports an inordinate number of ASIDs (on AMD).  If use=
-rspace
-> > +        * wants to concurrently run tens of thousands of vCPUs, they'l=
-l likely
-> > +        * need a solution that works for both Intel and AMD.
-> > +        */
-> > +       const unsigned int MAX_NR_TLB_TAGS =3D VMX_NR_VPIDS;
-> > +
-> > +       if (!nr)
-> > +               return 0;
-> > +
-> > +       if (nr > MAX_NR_TLB_TAGS) {
-> > +               pr_warn_once("Number of TLB tags capped (%u instead of =
-%u)\n",
-> > +                            MAX_NR_TLB_TAGS, nr);
-> > +               nr =3D MAX_NR_TLB_TAGS;
-> > +       }
-> > +
-> > +       tlb_tags.bitmap =3D bitmap_zalloc(nr, GFP_KERNEL);
-> > +       if (!tlb_tags.bitmap)
-> > +               return -ENOMEM;
-> > +
-> > +       /*
-> > +        * 0 is the host's TLB tag for both VMX's VPID and SVM's ASID, =
-and is
-> > +        * returned on failed allocations (e.g. no more tags left).
-> > +        */
-> > +       __set_bit(0, tlb_tags.bitmap);
-> > +
-> > +       tlb_tags.nr =3D nr;
-> > +       spin_lock_init(&tlb_tags.lock);
-> > +       return 0;
-> > +}
-> > +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_init_tlb_tags);
-> > +
-> > +void kvm_destroy_tlb_tags(void)
-> > +{
-> > +       bitmap_free(tlb_tags.bitmap);
-> > +       tlb_tags.bitmap =3D NULL;
->
-> For consistency and future-proofing, it might be wise to clear tlb_tags.n=
-r here.
+The position of your comment sounds like the device registration was 
+part of the concern, but can you clarify please?  I think it's more that
+..._fault() now takes dmabuf->resv plus vdev->dmabuf_lock (on top of the 
+pre-existing vdev->memory_lock) rather than the device registration. 
+The device registration refcount should be cheap (like, not block or 
+contend beyond the atomic op), and wasn't the bit I worry about.  :)
 
-Can do.
+The overhead is the single thread "this function does more stuff", plus 
+the scenario of threads both concurrently faulting.
 
->
-> > +}
-> > +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_destroy_tlb_tags);
+What's the baseline/fast path?  With an internal/VFIO mmap DMABUF we'd 
+at least need vdev->dmabuf_lock for its status, then the existing 
+memory_lock for existing reasons.  But once you have memory_lock then 
+(aside from the access cost of the atomic op) the new dmabuf_lock will 
+be cheap/uncontended in the absence of a blitz of concurrent exports. 
+(Export vs fault is a new performance dependency.)
+
+[ Aside: when adding vdev->dmabuf_lock it occured that we could revisit 
+the tests in vfio_pci_vmf_insert_pfn() that require memory_lock, and 
+remove that lock from the fault path:  e.g. if we know a DMABUF isn't 
+revoked then that implies vdev->bars_revoked = false, and that should 
+already be in sync with pm_runtime_engaged, __vfio_pci_memory_enabled() 
+...  I haven't traced this all through. ]
+
+The one I worry about more is dmabuf->resv; if there are importers and 
+fencing then this'll now hold up behind them.  (But this is only for 
+explicit DMABUFs, and feels like the price you pay with P2P.  This won't 
+happen for internal/VFIO mmap DMABUFs.)
+
+My gut concern is mostly the straight-line cost of Taking More Locks, 
+rather than that they will be hugely more contended in the threaded case 
+(where threads will already interfere via memory_lock, and taking 
+dmabuf_lock under that is Unlikely to also contend).  Well, and
+dmabuf->resv.
+
+But I don't have measurements of this; more complex will obviously cost 
+more, though we don't yet know whether it's prohibitive or noise.
+
+I'd rather not split this function before it's a problem, so to speak, 
+as it'll be slightly more complicated.  What I'd do:  introduce a flag 
+to vfio_pci_dma_buf to indicate "was internal/external export" then use 
+this to do extra synchronisation, or avoid it for a VFIO mmap VMA. 
+(priv->file != NULL is more or less that, but might be cleaner with a flag.)
+
+Hmm.  I'll hack up a test to try to measure the relative overhead of 
+VMA faults before/after (modulo access to meaningful HW).
+
+> Hopefully we can get those selftests included to avoid regressions.
+
+We'll post more tests separately (there're some extra requirements, e.g. 
+"real devices"/device access to work through).  The existing tests go 
+some way regarding avoiding existing VFIO fd mmap() regressions.  The 
+liability of not bringing the DMABUF-mmap tests into this series is just 
+on that feature, at least.
+
+If anyone has tested this series (whether to see existing VFIO works, or 
+to try the new DMABUF-mmap/revoke) that would be great to know.  AlexM 
+and I have some ideas for further testing internally too.
+
+> Overall, I'm not finding too much to pick on in this series, but it
+> also hasn't collected much in the way of reviews.  For a fundamental
+> change like this, I hope we can get more eyes on it.  Thanks,
+
+I'm glad, I feel it's in a good state now.
+
+100% agree needs more eyes.  FWIW Kevin and Praan reviewed ~all of v5, 
+though I dropped their R-Bs because all of the patches have in some way 
+changed.  (Though most of the changes are very small, am a stickler for 
+process.)  Please, if they or others have time for another pass... <:-)
+
+
+Many thanks,
+
+
+Matt
+
