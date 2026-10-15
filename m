@@ -1,148 +1,85 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mta1.migadu.com (out-192.mta1.migadu.com [95.215.58.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2C051AEDD
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 13:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F83130E858
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 14:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792072735; cv=none; b=epU05M/SZofsCFgvjhMQ3gYr7nugvSHIoqV5ucI2cMz04ssqnnH00xT81y9SVNv7n/cAm+K4JCKMqL/ApW9H4WYDb9ZxZdzgY9MTVHmBzR9jWqJyuiEiChTfVZZEgdTqI8bKYhnF0umCCG330dmm3qtfeochDtGU/jXA2cEtIkk=
+	t=1792072842; cv=none; b=p+/sSvULssIBrfz8e6+nShEdNVrVV49jy9KEiaTDRjNf/hQf7jPTN7B4zZd3t3T/wYgEymL9c2/6dfpxdLPdwCg6cV/oP2uqC44dGOc/Ev0K8mSUeRQOeISeUo/C7ylFNKglwWBD97AZFGFgUcFs1yTfEI+3xP/p8yWfXE6NyWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792072735; c=relaxed/simple;
-	bh=Fmr8PvRAaAoeaJUzhHvHl4m0oLOfVqb5pwowBeNSOdg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZJ9pntcm8a9RXPYpMeuEjYz4k2S2hJuFOsQg/y7yTHiJKzUyQ9PNkwVddW2VxTOvfu5VOC4Zz7C9VpStNxnr7X4Wah9UPzKLYB2IlKN+4Kh1r/rr0i18ZnXFEkNX//Ib3FRIfNqZhFRW1OrKME48GbcE6QaP3V1ioUWg147C3P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tN65rP8J; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1792072842; c=relaxed/simple;
+	bh=6Ntld4Igh2eWgn+gJwrpP12iCF/OrSpwwkSoEGWK6QQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UchslGdFOpG6Pv5Ss5ZDFtl3XSKLB94IGqKP70sPfTRnL9p+6HDvrcsj3dFKba926n3WqeBd+cMLg+yWP25Hjcki0t5fyL7MUzWe+xi8Ko7RQCMi94fdKVnOFJWeXcY2monPCEOlLb1Qm3fysTs+1bf8JubOA2E1bNwUYq1DrQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=i8WN1qz5; arc=none smtp.client-ip=95.215.58.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tN65rP8J"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e85f74c21aso3365ad.0
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 06:58:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792072733; x=1792677533; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uMSSECwkd6GBn6Q0rd3u20QgElhwSrNALm0yFALuhrI=;
-        b=tN65rP8JSCBhl7JyekGO7FwQrm/5VwUqYlidc5dzNg2U+zSOqnKWC8q2BTe0mZV2g0
-         Ya5kl+QNjqQXp2jhHnSXhdOBLthe+RfldxI3/0eXYMczq6dJS5l4OMJSLCYsuYkrQ10U
-         9mduyXt7ddqlDei2qn8jP550fgupkDMEyhpOVRrB/mLHey1KzU/BC7Jx9AWQzrsWUX2T
-         sCwAx6TYpmJfg8QLzdwNYEQDoJGSDojUAMmS6QRA8fXZaxvpiP5uuaEuFtWWSzCjXyjK
-         tdyhCjdlksH7pXxNabCTl1Ubm4kXgv2fOU3KZXHHqMtAL6it0J6Phdf5b1ItUquijtKM
-         WVvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792072733; x=1792677533;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uMSSECwkd6GBn6Q0rd3u20QgElhwSrNALm0yFALuhrI=;
-        b=GgJh64KD9CDbS6hKHY+VcBnIuQGFYa7j0EuL3WfJpuPCC38IOn+AsjHEiksAxmfMMx
-         jWM0CyIWog9/OeH6dM1oLfvyUmnCrF0PDECOb1G95EUBtXAsj+gKSIh5JNORJav5NqcB
-         M9guShbVe2u/0Ee7KQbXMiKOh7gTLPltMVWBP2xDcRUBtW9U3ytnGI1fma2nUeyDqiny
-         ht03Zga7vW3MLT+JPtA93qrlYtfYX3vW9HyuWPhmhgRviJ6tclpQi8Y9sdBp8uohsgf1
-         Kbkm+XdG07tKyOdCQniZV6VrhOnFxk3/qEyVhdeANy6x2mKtq/Rnej4oDh4+EYUR7Dwt
-         owrA==
-X-Forwarded-Encrypted: i=1; AKwUvBwrIuIdyXAUZ1boR3K9jE6T2Ool+1l+1hGM+StYAUSGOuBz5glrSxEaj6AqeD7AboZc5qQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ7bskjKZ6HoFjH5oMLA2VbHefdekwsxbg6UPf7UI93qbH9+AHR
-	O6kC96Q34DWRxyzfjkdjfQADRz8ZWoSsO3LADzGl1MeAsU9qBCT5utXy4Aa9csZ8c8CHwfFcQ+w
-	AFnZoEQ==
-X-Received: from pllq21.prod.google.com ([2002:a17:902:7895:b0:2e2:c8c0:e8eb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2348:b0:2e9:3295:11d1
- with SMTP id d9443c01a7336-2e97758f920mr460105ad.39.1792072733289; Thu, 15
- Oct 2026 06:58:53 -0700 (PDT)
-Date: Thu, 15 Oct 2026 06:58:52 -0700
-In-Reply-To: <asmwyCYDyaLwfmCV@yzhao56-desk.sh.intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="i8WN1qz5"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6Ntld4Igh2eWgn+gJwrpP12iCF/OrSpwwkSoEGWK6QQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792072837; v=1; x=1792677637;
+ b=i8WN1qz5ZUrN39SIFdMOgrxJU2yxe3XcmDKkxLDMr17EP5J4b+h97pcIo+201BQkPmINsAIE
+ qXTzPSptVwEBSsp0PKYueKb1M8VVaxx7kZv+ZDMnEKn0UjWPb5wbUnejrYetpM4EhzuWcS4MCx1
+ B+Ep5bPQ+yrVpJmmR/2Ouais=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id de2811613f9d1551;
+	Thu, 15 Oct 2026 14:00:37 +0000
+X-Mizu-Trace-ID: de2811613f9d1551
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5ba429b64c5so5113e87.1
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 07:00:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwsa+83VjYjMkme1NKoxtpSZwfSfyCP/4e2YqEydh9jbAuQenxDkrxbALfTDBbzq28pwl4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKH6H66ZYyg/wbDIt//d/E0T51ome8tiF8erMvN00nZehXzeEu5
+	VdK4vf+wcag710cqL9kLFsu1IQO6zoS3k99hBJVF6B/LdgSqLXoxyqnB9P3Ms1HsNDGc9gQ//3Y
+	j4hHMJwhA68DyMgVqIrXvc1aNoUbkLsspZTEf4QCd
+X-Received: by 2002:a05:6512:3196:b0:5be:3607:3a97 with SMTP id
+ 2adb3069b0e04-5be3e077786mr116198e87.0.1792072832985; Thu, 15 Oct 2026
+ 07:00:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260930001127.3170009-1-seanjc@google.com> <20260930001127.3170009-3-seanjc@google.com>
- <asmwyCYDyaLwfmCV@yzhao56-desk.sh.intel.com>
-Message-ID: <atDcHCtdPNAJGHeI@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: TDX: Synthesize SHUTDOWN instead of returning
- -EIO on unhandled EPT violation
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20261015100539.1011760-3-maz@kernel.org> <20261015125713.2650696-1-fuad.tabba@linux.dev>
+ <86ik33137e.wl-maz@kernel.org>
+In-Reply-To: <86ik33137e.wl-maz@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 15 Oct 2026 14:59:56 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTz2nsHkYkXOprZ9obYmTQeKrcue1S686CwCjWvLhtjmvQ@mail.gmail.com>
+X-Gm-Features: AclHuK_p_jA27OTWFMOxJa5ERUC2ySPYnnuaQE4YLlcy6i2zl-d3p83lu3UB5OY
+Message-ID: <CA+EHjTz2nsHkYkXOprZ9obYmTQeKrcue1S686CwCjWvLhtjmvQ@mail.gmail.com>
+Subject: Re: [PATCH 2/7] KVM: arm64: Move OUTSIDE_GUEST_MODE publication past
+ context being saved
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Oct 10, 2026, Yan Zhao wrote:
-> On Tue, Sep 29, 2026 at 05:11:26PM -0700, Sean Christopherson wrote:
-> > Exit to userspace with KVM_EXIT_SHUTDOWN instead of returning -EIO from
-> > KVM_RUN if KVM encounters an EPT Violation due to a guest access to a
-> > pending page.  Returning -EIO implies KVM is buggy, and most VMMs will
-> > respond by completely terminating the VM, versus rebooting the VM in
-> > response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the option of trying to
-> > keep the VM (from the end user's perspective) alive.
-> > 
-> > Ideally, KVM would probably exit with KVM_EXIT_MEMORY_FAULT, but KVM would
-> > need to extend run->memory_fault so that userspace knows the fault can't be
-> > handled.  This scenario specifically occurs when the guest has deliberately
-> > disabled #VEs on unaccepted memory for security purposes, i.e. the guest
-> > literally disabled the mechanism that tells it it screwed up.  But, because
-> > this is fatal, and the whole point is to NOT try to fixup the fault,
-> > jumping through hoops to return MEMORY_FAULT instead of SHUTDOWN doesn't
-> > make a whole lot of sense.
-> > 
-> > Don't bother bouncing through KVM_REQ_TRIPLE_FAULT as
-> > tdx_handle_ept_violation() is a top-level exit handler, i.e. there is no
-> > need to worry about failing to actually exit to userspace.
-> > 
-> > Fixes: e6a85781f783 ("KVM: TDX: Detect unexpected SEPT violations due to pending SPTEs")
-> > Cc: stable@vger.kernel.org
-> > Cc: James Houghton <jthoughton@google.com>
-> > Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> > Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > Cc: Yan Zhao <yan.y.zhao@intel.com>
-> > Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> > Cc: Ackerley Tng <ackerleytng@google.com>
-> > Cc: Vishal Annapurve <vannapurve@google.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> >  arch/x86/kvm/vmx/tdx.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index 29d4751f37fb..e3723f1222fc 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -1939,8 +1939,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
-> >  		if (tdx_is_sept_violation_unexpected_pending(vcpu)) {
-> >  			pr_warn("Guest access before accepting 0x%llx on vCPU %d\n",
-> >  				gpa, vcpu->vcpu_id);
-> > -			kvm_vm_dead(vcpu->kvm);
-> > -			return -EIO;
-> > +			kvm_prepare_shutdown_exit(vcpu);
-> Would it be better to exit with the reason KVM_EXIT_SYSTEM_EVENT and type
-> KVM_SYSTEM_EVENT_SHUTDOWN or KVM_SYSTEM_EVENT_TDX_FATAL?
+On Thu, 15 Oct 2026 at 14:52, Marc Zyngier <maz@kernel.org> wrote:
+[...]
+> I don't really want to make this vgic specific, as there could be
+> more. But I can more precisely describe what state were talking about:
+>
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 8b46fafdd3494..7ce9f3bfa7fff 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -1390,8 +1390,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>                 kvm_arch_vcpu_ctxsync_fp(vcpu);
+>
+>                 /*
+> -                * All the state has been synchronised, let advertise
+> -                * we're outside of the guest.
+> +                * The state that was pushed into the CPU on entering
+> +                * the guest has been synchronised back, let's
+> +                * advertise we're outside of the guest.
+>                  */
 
-No.  KVM_SYSTEM_EVENT_SHUTDOWN is an explicit call from the guest to do a clean
-shutdown (used by arm64 and RISC-V).  KVM_SYSTEM_EVENT_TDX_FATAL similarly exists
-to relay explicit calls from the guest.  Ditto for KVM_SYSTEM_EVENT_CRASH and
-KVM_SYSTEM_EVENT_SEV_TERM (which obviously is a poor fit for TDX, just pointing
-out that it's another guest-initiated event).
-
-KVM_EXIT_SHUTDOWN isn't a perfect fit, but IMO it's the closest approximation,
-e.g. it's a rough equivalent of what happens if a #VE couldn't be handled because
-the stack is invalid.  And more importantly, because we're retroactively fixing
-code, KVM_EXIT_SHUTDOWN has the best chance of being handled appropriately by all
-VMMs.
-
-> By defining a specific flag (e.g., KVM_SYSTEM_EVENT_FLAG_TDX_UNEXPECTED_PENDING),
-> we can stuff necessary info like gpa, vcpu->vcpu_id into data, so both pr_warn()
-> and pr_warn_ratelimited() can be dropped.
-
-Well, IMO, the printk can be dropped no matter what. :-)  But I don't care _that_
-much so I'm ok keeping the ratelimited version.
-
-vcpu_id is redundant, the exit is tied to a specific vCPU.  And as I said elsewhere,
-practically speaking the GPA is all but guaranteed to be useless outside of
-interactive debug sessions.
+lgtm,
+/fuad
