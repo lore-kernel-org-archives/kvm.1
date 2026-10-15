@@ -1,285 +1,224 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8BF53E2E6;
-	Thu, 15 Oct 2026 19:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A21F476694
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 19:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792092243; cv=none; b=XFC3mRsGwCdHkFb0J5YtaOKQloxGxYEWMKMhtmsn0t64oCOiJ/hHkB8gxU5uFgn+xGMSZ5q2czspu0JZJlc2Hovb6Fn+wW+RxR+wZAH8caqvhidVzvFBKsmV5yXPP7h0wkxI3abvzgygEdQFzUO+kYLWjaeUcMgSH8QRrg5qrcM=
+	t=1792094248; cv=none; b=c76LUpxu/zijFrs4eV6FeGLpGx6oUL18/yVqRyhghORNg//KFc2j9P5Rdj9gzZx2Js6A2q/7OuURmWMxU6mxKK/1mjJmCKelnE/l04P9slJfnfNRRMvucMsMlu+CcdYzrHv13QPz32/4NVsIJWB45S426pUg3HRDKD/eURedHnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792092243; c=relaxed/simple;
-	bh=rTzMipX3pUBTumObf4JpFhE4XbMqCnpKISixRhCTdD4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbdETGmfon4EJfPy+6Dt32FzWG1W2XqzkuVpk2OJ67+FFuOalgh9BZjDV5BpnixpH+594b42MqkrbBVBkekgXVxsnxQgcsigiSOejufD9ZIkWflBMVtsZC4hqBRoq6LeSWRJiWDFyD97J80o/4sn5QYSF4VXC8LTMtj3ho4+Mqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JyFiVabh; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792094248; c=relaxed/simple;
+	bh=sxR2u9BA5/CcmtclWpp5AGM/HULwOi/W5ck+DMmMkIk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qtsAxGHK84WgatPcLJsvHl78/h7zCBInpthmZWhfUJtoazqqGfSKHE7gc7xzY+PBMcfGpPGyzHKIg9phqEWLX6ukrtIvFuGmDEl769c1TvxMXXu5df81pb4AB4l8aBOruGmvwN59YrqeutazB7TWnfhDH0zhaZwo5SOe+88i7jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=VJ+w/L+R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VhsCFx92; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JyFiVabh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792092242; x=1823628242;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rTzMipX3pUBTumObf4JpFhE4XbMqCnpKISixRhCTdD4=;
-  b=JyFiVabhrAayLcQrYKKZSVybIOSG7qs2Lk/XMc9+EJyr/hXKNKyvY+JM
-   3gsyngPlLGY1q+hAYaIxrZdewYwIQizs9Mdh6F2k6Sz1/zx7MEyp6Wh0S
-   cqZCuUlvvVL1kaNOzWEYl6Zag1DZz0gW/lAjUeeWqOdMABG9layYkmnAf
-   fqTheN+1BJMtuWgIbzOpHRVF8iyvlaR2xdPchygsURURKvqcVZazGznBU
-   so5UxdrHA9rze/0RR5If4eYm6d2EX9FqeNqZVmhNrg3qne3CyzhVu81tA
-   3DIZKLQHM4B9Bzgqqdpq2YRxkdrXEsvB4s5oS8z/Et70a751PUMU5b3gy
-   g==;
-X-CSE-ConnectionGUID: /DlMcMR7S/+zOCS0vG7QdA==
-X-CSE-MsgGUID: FUIBgi+MRLK0n+HWBsnmfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="764818"
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="764818"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:17:20 -0700
-X-CSE-ConnectionGUID: pOkU8tYoTKCuOjgVU8OUqg==
-X-CSE-MsgGUID: /HhP0v/TToiDVkP4sMomTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1836898"
-Received: from rpedgeco-desk.jf.intel.com ([10.24.81.149])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:17:17 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: pbonzini@redhat.com,
-	dave.hansen@intel.com,
-	seanjc@google.com,
-	x86@kernel.org,
-	kas@kernel.org,
-	adrian.hunter@intel.com,
-	yan.y.zhao@intel.com,
-	binbin.wu@intel.com,
-	xiaoyao.li@intel.com,
-	chao.gao@intel.com,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	nik.borisov@suse.com,
-	yilun.xu@linux.intel.com,
-	tony.lindgren@linux.intel.com
-Cc: rick.p.edgecombe@intel.com
-Subject: [PATCH v2 2/2] x86/virt/tdx: Drop tdh_phymem_page_wbinvd_*()
-Date: Thu, 15 Oct 2026 12:17:10 -0700
-Message-ID: <20261015191710.3632302-3-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261015191710.3632302-1-rick.p.edgecombe@intel.com>
-References: <20261015191710.3632302-1-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="VJ+w/L+R";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VhsCFx92"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 525957A00D1
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:57:22 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 15 Oct 2026 15:57:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792094242;
+	 x=1792180642; bh=rYA62PIPCosAEwK3KTOovg055BVPSm68/iMypXOGiFk=; b=
+	VJ+w/L+R7J1aoOYYmj1shYFc218XHud1I3Ia1RIlUeYrDLNqM3TFbsOfhdZ6uR48
+	cE9HEUUW7UPAgjghJWVKObXC+cMh4PbOs8Rl7C+ieEoEJnwvje5s/gjT+7Hg1931
+	i6JJhLXVH0+PdwOpgqSbt1DWtDuVGp/OPHlnDoWmC7JuHYoz8hsXq6BAnxvSx6s9
+	ZjQyuSzRHAd+od7epaFuBFXxsS4bXJW9y4iksb7OsSwyDUTp2+gBp2hzxpzBOUk+
+	lXNL4SjMgOkvgJyYt3E9rD7uJi72Tx88BT7WteGf8u2FzHYvpQhtMCfNXzM5Wi7g
+	eOAzDMUukafPYOhT5yZNQQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792094242; x=
+	1792180642; bh=rYA62PIPCosAEwK3KTOovg055BVPSm68/iMypXOGiFk=; b=V
+	hsCFx92QKasidAESgTWTBQrf/yFyY+lEgFFse2c5dKxOQmb78cgCkmPUtpBoKEQ6
+	W6wwMYe4ufY3hYb3p3vTlbK3VXRVikRBsVawQ4BDCfk2pxSjt/2fpLk2BiMLIUsQ
+	2ErxHxYCubRaKyn66bRS/fzWzViiB+0ymBtNhSY4YzcO96enzq3dYQK95zVr5IqA
+	wAIWC+fzqklWqsvYgdCLjKmjfOVvKQA0W+VlfkEC0LYMg2n/EvAJl3n3biHy6Dn0
+	xz2ZfMFJbH3eShhGSMi45EpHLYACld0/5T5YVEQJxpJJIdR8fxvgr0aD0vMXGbjB
+	7z5/m1X4zJaURBHCWgsig==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792094242; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:iSDMm4rxCpHCpgcbt58xWtx0NfkgVEbKxFYPXoGG8g1v25X
+	N7iI1MoTpUs61CIBiKtMMEzks2UR+awQ7ew2R0Uv1oAS9zIbqg14oLsLDhISW5ox
+	hgMv0km+fpg3fjDAnQQTlyiR5qy64k4Zg6A5FvhonGuFNj1s1pL7xIWc89MfwDiO
+	ZKW514hoN7Jtp3q0HGmbgub4egSRORQj0T8jfzIiP7RM6hbUU+euQLzZZYJkvCOw
+	SfmdH3mjROzJbcqFRt4tgIom4lQlInXsfHXNM/xV/hb/nC6Q+dwSdJi+Z0peVhW5
+	FomBtW9TC3PYdCYL6rgEj6OO1uNJiepXumJPqJw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:L/oPJ2TgAoi5NCw9Z2kvz2XquLbFR2FN6C5vY/XcKeQ=:sxR2u9BA5/CcmtclWpp5AGM/HULwOi/W5ck+DMmMkIk=;
+X-ME-Sender: <xms:ITDRat6T61fiTrhwbbnHtKYVZEZKyEPjqyf2_Okpc8-Agiqyw0kf1A>
+    <xme:ITDRaqeo7Yj7AnosnEWJPdgH0syXFP04e2fkztua23jZNw_21NtcIAe4xgqMNvQ6z
+    snBaD_MTvihj-IWgA9scLC9ylQibhC137YCtta9dOfbJZxmTnQ31rU>
+X-ME-Received: <xmr:ITDRaoxsJgHCwnb7LTZSpkoWMB8hVl8uPITKUOM29hpkeJort9u3dZMtBG3aQg>
+X-ME-Proxy-Cause: dmFkZTE9ycIFqjPXJ15WpdX0VDq0lFUB2JIAwFolY1DFSoPQyuEKYW9WeKct6jhJUc0Vn8
+    4wPeZ8tsfI1xWmvqY64CFof+xE2xfcMwT6eSU096j01dTjlW2CAhuootUIZwfbHNSK+fSB
+    rvvRZdebbJ+RRQ4/89bPsLI0Zls+5Jxohl1DXrb9Q32FtdsCiwQxRDRWDMKtIhlmIBqcbC
+    QmCB4aPA+yxQSzJ86vi+RnTZA/vWgEa24GEWbuYidv+EpgJlaqa4sgvTZfVMe4z/tNe5O0
+    UQ7cufOsgJVD8zF5c4wROBrdKoeN3kvSUCn9En/2t8jX0B0u+NjjcTY+tSvTiJQfOcFQGe
+    zAOOCjuoNzJ+XY126cU8+JCVrhTExO9BbfV/hiohhOjFKJZD5ZratdVlWSe0XVXMUQDW0A
+    dcGT9yKs+uFHmRmgkUqidnHD2dhqTuqNZEl0QtZ1VvnxJbmPDTELX1iuWlxrzedMDOUPvg
+    DzmbULQAt+RsGUhiDdxT4otQR73J4N6KkRoOe0tkJ137QdcjRtpoWHSzCUG3x16cdvrcKv
+    92RXw/Ke6+af8ycwCof4ZA/l7FQ9mr402jINs6T9Cctb6bRJWggswtnOiWc+OtvPUKPyOu
+    LegFux2l0j4cEaqxtAgmIlHhc7fUl0jRhwfumqtIdlrF2Vom1vQ2Hd9DfJ+A
+X-ME-Proxy: <xmx:ITDRaop_0ryEhsoWgJYMfuukYldF0fAgOWWMJOHqXMv2N77j-wspLw>
+    <xmx:ITDRauzaKQYzKsteW083nC1-u5rihxoyz6bS_tg_phivkbzGyHEZiQ>
+    <xmx:ITDRakpTRzvkv6TIs9603vbQEJ_YXyUOgxY3nsaqMBIWmnE9dJnkyQ>
+    <xmx:ITDRameSMfO45u_k_rkivolPUbXXGLKWxV6S11xLpmXtPc4nZloh_A>
+    <xmx:IjDRal3ERqAPDN0hyobjAua0h2CD_1zXaOUGr8vu8GHwnJpe5sP8KqdE>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Oct 2026 15:57:20 -0400 (EDT)
+Date: Thu, 15 Oct 2026 13:57:18 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <jgg@ziepe.ca>, <kevin.tian@intel.com>,
+ <kbusch@meta.com>, <michal.winiarski@intel.com>,
+ <satyanarayana.k.v.p@intel.com>, <sonangp@nvidia.com>, <ankita@nvidia.com>,
+ <nathanc@nvidia.com>, <mochs@nvidia.com>, alex@shazbot.org
+Subject: Re: [RFC PATCH v2 00/16] vfio/pci: Handle PCI error recovery and
+ report state to userspace
+Message-ID: <20261015135718.43d1d27f@shazbot.org>
+In-Reply-To: <20260929173305.204856-1-skolothumtho@nvidia.com>
+References: <20260929173305.204856-1-skolothumtho@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In the early days of TDX it was expected that pages being reclaimed from
-the TDX module would need any cacheline from their private KeyID alias
-flushed. The TDX docs describe doing this in a couple narrow cases, for
-example reclaiming the TDR memory or guest private memory.
+On Tue, 29 Sep 2026 18:32:49 +0100
+Shameer Kolothum <skolothumtho@nvidia.com> wrote:
 
-Similar to how the CLFLUSH_BEFORE_ALLOC features0 bit was never actually
-set in any TDX module, the flush of the private KeyID cachelines turned
-out to not be needed by the final TDX HW either. However, the TDX docs
-were never updated to reflect that.
+> Hi,
+> 
+> Currently, vfio-pci signals the error eventfd from error_detected() and
+> returns PCI_ERS_RESULT_CAN_RECOVER, including for permanent failure. It
+> has no slot_reset() or resume() callback, so userspace is not notified
+> when host recovery completes or whether the device was reset.
+> 
+> This series adds opt-in host PCI error recovery for vfio-pci. It blocks
+> device access during recovery, restores device state after a host reset,
+> and reports recovery status to userspace. The kernel runs host recovery
+> and the VMM decides how to recover the guest.
+> 
+> Changes from v1
+> ---------------
+>  v1: https://lore.kernel.org/kvm/20260901093217.8539-1-skolothumtho@nvidia.com/
+>   
+>  - Thanks to Satya and Alex for reviews/feedback.
+>  - Use SRCU to drain ongoing device accesses and reject new accesses during
+>    recovery. A mutex protects recovery-state updates. 
+>  - Return SIGBUS for blocked BAR faults instead of waiting in the fault
+>    handler. VMM handling still needs target validation.
+>  - Reject userspace SR-IOV changes while access is blocked.
+>  - Exclude s390 and all CXL memory devices for now as s390 and CXL RCH
+>    recovery can omit completion callbacks.
+>   
+> Design
+> ------
+> Userspace opts in through VFIO_DEVICE_FEATURE_PCI_ERROR_RECOVERY. It
+> registers an eventfd and reads status flags and a sequence number. The
+> existing error eventfd is still signaled.
+> 
+> The callbacks handle the host recovery sequence:
+> 
+>  - error_detected() blocks new accesses and drains admitted ones,
+>    quiesces INTx, and revokes BAR mappings and exported DMA-BUFs. On a
+>    normal channel it also clears bus mastering. It votes CAN_RECOVER
+>    for a normal channel, NEED_RESET for a frozen channel, and DISCONNECT
+>    for permanent failure. Failure to save PCI_COMMAND or disable bus
+>    mastering leaves access blocked and returns NONE so other devices
+>    can continue recovery.
+>  - slot_reset() restores the configuration saved at open after a host
+>    reset, then tears down interrupt configuration. Userspace must set
+>    up interrupts again.
+>  - resume() completes restoration, unblocks access and completes INTx
+>    handling. A restoration failure keeps the device blocked.
+> 
+> Non-fatal errors also block device access because host recovery may
+> require a reset. Userspace reads the recovery status to determine
+> whether the device was reset or recovery failed.
+>   
+> Without opt-in, the existing error notification behavior is retained.
+> The open check also rejects a previously recorded host transaction when
+> recovery is disabled, so closing the device does not discard that state.
+> 
+> Locking and open questions
+> --------------------------
+> Several locks are involved in recovery. PCI core holds device_lock
+> while calling the driver, preventing concurrent driver binding or
+> unbinding. During the bus walk, it also holds pci_bus_sem for reading
+> to keep the device list stable. Adding or removing PCI devices requires
+> the write lock. This semaphore is shared across all PCI buses.
+>  
+> VFIO recovery blocks new accesses, waits for existing SRCU readers to
+> finish, and takes memory_lock. Power transitions also take memory_lock,
+> but entering D0 can then acquire pci_bus_sem to update PCIe link power
+> management (ASPM).
+> 
+> Local Sashiko/Claude review reports a lock-order conflict as below:
+> 
+>  1. A guest D0 request holds memory_lock.
+>  2. PCI core holds pci_bus_sem for reading while VFIO's recovery
+>     callback waits for memory_lock.
+>  3. Removal of an unrelated PCI device waits for the bus write lock.
+>  4. D0's ASPM update requests the bus read lock and waits behind that
+>     writer.
+> 
+> Each task waits for another, so none can proceed.
+> 
+> One possible solution could be(not implemented):
+> 
+>  - PCI core guarantees that pci_bus_sem is held for reading before
+>    invoking supported recovery callbacks. VFIO uses
+>    pci_set_power_state_locked() in those callbacks, avoiding another
+>    acquisition of the bus lock.
+>  - A new pci_try_set_power_state() helper tries to acquire pci_bus_sem
+>    and returns -EAGAIN on contention. Ordinary VFIO D0 paths use this
+>    helper and handle failure instead of waiting while holding VFIO locks
+> 	  
+> Not sure there are better ways to handle this or not. Feedbacks appreciated
+> on this.
 
-CLFLUSH_BEFORE_ALLOC handles flushing when giving memory to the TDX
-module, where the alias that needs flushing is the default, normal KeyID
-0. This was done with a clflush of the kernel's KeyID 0 mapping of the
-memory. For the reclaim path, instead it is the TDX KeyID aliases that
-need to be flushed. Since virtual mappings for these aliases are
-restricted to the TDX module, the module is the only thing that can map
-the page to do the clflush. The TDH.PHYMEM.PAGE.WBINVD SEAMCALL leaf was
-created to facilitate this.
+I've been churning tokens with an LLM on this.  My original intent was
+that a disconnect via srcu between a device object and user interface
+object, or at least ops pointers that act on the device, at the
+vfio-core level could help to avoid this.  While that may be
+worthwhile for more general use cases of removing user access to the
+device (surprise unplug, force unbind, etc.), it doesn't seem to
+resolve the scenario here.  In fact I haven't come up with better
+solutions than you've already suggested above.
 
-The docs are being updated to clarify that calling TDH.PHYMEM.PAGE.WBINVD
-is not needed. So drop the kernel code that calls this SEAMCALL and the
-helpers that facilitate it. With the removal of
-tdh_phymem_page_wbinvd_tdr(), tdx_global_keyid no longer needs to be kept
-around as a global variable. It just needs to be selected and provided to
-the TDX module during initial setup.
+> 
+> Another issue flagged was(I think this is a pre-existing one):
+>  - Open/close coordination with the whole host recovery transaction
+>    was already missing. Recovery can start after the open check, and
+>    close can overlap the physical reset. Restoration of closed devices
+>    is also not implemented.
 
-However, don't churn the code to remove the global variable because
-it fits neatly with the other KeyID partitioning global data. It is also
-foreseeable that this would be used in the future for other SEAMCALLs that
-require passing the global KeyID.
+Yes, it's pre-existing.  A more structured concept of a disconnected
+device would help make these gaps easier to close as well.  Thanks,
 
-KVM previously needed to call different types of tdh_phymem_page_wbinvd_*()
-helpers for different types of reclaim. So it had a stack of helpers and
-some open coded logic to use them in the rarer TDR reclaim case. Now that
-the wbinvd is gone, the steps for each operation are logically equivalent.
-So collapse the helpers and just call tdx_reclaim_control_page() from the
-TDR reclaim path.
-
-This unification brings TDR reclaim in line with the behavior of the other
-reclaim paths, by handling TDH.PHYMEM.PAGE.RECLAIM failure by leaking the
-page and setting the TDR page pointer to NULL. This results in reclaim not
-being tried a second time, which is reasonable because the first reclaim
-failing suggests a problem with the TDX module.
-
-AI was used to review the change.
-
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
-v2:
- - Clean up open coding of TDR reclaim now that it doesn't need to be.
-   (Yilun)
- - Logs stuff (Yilun, Yan, Chao)
- - [omit Yan RB due to code change]
----
- arch/x86/include/asm/tdx.h  |  2 --
- arch/x86/kvm/vmx/tdx.c      | 40 ++++++-------------------------------
- arch/x86/virt/vmx/tdx/tdx.c | 26 ------------------------
- arch/x86/virt/vmx/tdx/tdx.h |  1 -
- 4 files changed, 6 insertions(+), 63 deletions(-)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 89e97d5761d89..39e3c1f8a48e1 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -174,8 +174,6 @@ u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64
- u64 tdh_mem_track(struct tdx_td *tdr);
- u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, enum pg_level level, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_phymem_cache_wb(bool resume);
--u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
--u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, kvm_pfn_t pfn);
- #else
- static inline void tdx_init(void) { }
- static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 00850a3a77d66..ed1db8023c6ec 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -320,7 +320,7 @@ static inline void tdx_disassociate_vp(struct kvm_vcpu *vcpu)
- })
- 
- /* TDH.PHYMEM.PAGE.RECLAIM is allowed only when destroying the TD. */
--static int __tdx_reclaim_page(struct page *page)
-+static int tdx_reclaim_page(struct page *page)
- {
- 	u64 err, rcx, rdx, r8;
- 
-@@ -334,24 +334,15 @@ static int __tdx_reclaim_page(struct page *page)
- 	if (TDX_BUG_ON_3(err, TDH_PHYMEM_PAGE_RECLAIM, rcx, rdx, r8, NULL))
- 		return -EIO;
- 
-+	tdx_quirk_reset_paddr(page_to_phys(page), PAGE_SIZE);
-+
- 	return 0;
- }
- 
--static int tdx_reclaim_page(struct page *page)
--{
--	int r;
--
--	r = __tdx_reclaim_page(page);
--	if (!r)
--		tdx_quirk_reset_paddr(page_to_phys(page), PAGE_SIZE);
--	return r;
--}
--
- 
- /*
-- * Reclaim the TD control page(s) which are crypto-protected by TDX guest's
-- * private KeyID.  Assume the cache associated with the TDX private KeyID has
-- * been flushed.
-+ * Reclaim the TD control page(s) which are crypto-protected by private
-+ * KeyIDs.
-  */
- static void tdx_reclaim_control_page(struct page *ctrl_page)
- {
-@@ -550,7 +541,6 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
- static void tdx_reclaim_td_control_pages(struct kvm *kvm)
- {
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
--	u64 err;
- 	int i;
- 
- 	/*
-@@ -575,21 +565,7 @@ static void tdx_reclaim_td_control_pages(struct kvm *kvm)
- 	if (!kvm_tdx->td.tdr_page)
- 		return;
- 
--	if (__tdx_reclaim_page(kvm_tdx->td.tdr_page))
--		return;
--
--	/*
--	 * Use a SEAMCALL to ask the TDX module to flush the cache based on the
--	 * KeyID. TDX module may access TDR while operating on TD (Especially
--	 * when it is reclaiming TDCS).
--	 */
--	err = tdh_phymem_page_wbinvd_tdr(&kvm_tdx->td);
--	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
--		return;
--
--	tdx_quirk_reset_paddr(page_to_phys(kvm_tdx->td.tdr_page), PAGE_SIZE);
--
--	__free_page(kvm_tdx->td.tdr_page);
-+	tdx_reclaim_control_page(kvm_tdx->td.tdr_page);
- 	kvm_tdx->td.tdr_page = NULL;
- }
- 
-@@ -1814,10 +1790,6 @@ static int tdx_sept_remove_leaf_spte(struct kvm *kvm, gfn_t gfn,
- 	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_REMOVE, entry, level_state, kvm))
- 		return -EIO;
- 
--	err = tdh_phymem_page_wbinvd_hkid((u16)kvm_tdx->hkid, pfn);
--	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
--		return -EIO;
--
- 	tdx_quirk_reset_paddr(PFN_PHYS(pfn), PAGE_SIZE);
- 	return 0;
- }
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 8f9d3588f200f..21f7fce38aa46 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1956,32 +1956,6 @@ u64 tdh_phymem_cache_wb(bool resume)
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_phymem_cache_wb);
- 
--static inline u64 mk_keyed_paddr(u16 hkid, kvm_pfn_t pfn)
--{
--	/* KeyID bits are just above the physical address bits. */
--	return PFN_PHYS(pfn) | ((u64)hkid << boot_cpu_data.x86_phys_bits);
--}
--
--u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td)
--{
--	struct tdx_module_args args = {};
--
--	args.rcx = mk_keyed_paddr(tdx_global_keyid, page_to_pfn(td->tdr_page));
--
--	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
--}
--EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_tdr);
--
--u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, kvm_pfn_t pfn)
--{
--	struct tdx_module_args args = {};
--
--	args.rcx = mk_keyed_paddr(hkid, pfn);
--
--	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
--}
--EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
--
- void tdx_sys_disable(void)
- {
- 	struct tdx_module_args args = {};
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index bdfd0e1e337ac..3289be59d14fc 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -43,7 +43,6 @@
- #define TDH_SYS_TDMR_INIT		36
- #define TDH_MEM_TRACK			38
- #define TDH_PHYMEM_CACHE_WB		40
--#define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
- #define TDH_SYS_SHUTDOWN		52
--- 
-2.55.0
-
+Alex
