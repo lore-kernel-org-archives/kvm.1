@@ -1,264 +1,160 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013027.outbound.protection.outlook.com [40.107.201.27])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBEF47F77C
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 10:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792061037; cv=fail; b=n4r7LXK7fVbK48r/196kT3RWnMDbA5hTEPXmz0U3jh+1BW2R9Qwk5Ns++YPUrCMRSSqeTUb9vXwrhEtV5S5ZGl5GlJXHQ4vFZS5hge4QZArnaDZs9eZX0p123ckhqaz6MeVQvl3UowRPqdTpMP5qV7ns3+FME1TjxkCSTRRTVec=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792061037; c=relaxed/simple;
-	bh=buJQQBroP8xe9bxdF6jmdpcEhoiruSEfNzyXC64npXY=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=R9d761eokZRiDhvJIhcknuC9Lux1iaG/EscBalH+qeVuQSb9cEFTHxAHns7e8NJDk8lnjnTVqodMqRlTIGOylVTQgVB/XOsTVMNHwlL4HoXa6oWn0Gx2R1Al9nutM0AEY2XIdOyRhZuSlfsZZOKf/RQPgxEcddU6R61LQM9hiPg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eHsYbSz1; arc=fail smtp.client-ip=40.107.201.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF7251599A;
+	Thu, 15 Oct 2026 10:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792061099; cv=none; b=WbzYH1LXbJAEYUvecmU8Ze4bF4PZlxey0e52yT2eqVVLYO6FKwGk9J+so+29QNH6hKkqah+B2QvIsUl+KufaaoJ5AJDl7RmjIA+Vld44dVK0s9TcINKAwEogWDBOrcjEsGhQvo3D2W3WX/VBiODPTKACnxn053fB//Btv30tkSc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792061099; c=relaxed/simple;
+	bh=EcsGVo/EaqJzFEHbILjclgzrfs86bzldZNQbN3tCirQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R3w24HvbnEXqqY8scrsgTNxPPo6C7dkK8vKW2aFg8kFtpKzskQSV413C/jqVmEbYH6AKBXYSDrF0z2LVJlHeOZPf4jH9L8gdHxnE6GSwuQ90sC/YCtlXxzpsCF0hnFpfyEF5vJ2bmpL0NsLqSBOtPduivLPCJ/6hyh7dbZEZNKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=euFh00ut; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="eHsYbSz1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=le/WwH0U/EXaE0Qw6AfN1fY/CXu4ivhb3XPQyPVxXMhEJ9MPgSr6SOALP/FDt06+jxn2VomP2rbuFIjmQrREpABCHtkZYWh9zSgQaVfbBU9HdiadbiuNPmDJaOoH7kSmFuHMSJwISMkJsHRRUvzUfXGEu6HlFKmZ5pgJ8k91zw01gnc/oSBs46wAwAWHW81IDQeuGuAndodprTt0fdLf0dMN9B/vfQgSeR81JSmFxv9d5mqPc/Ijs6EfkIp9rhzqIB4opGG1xAutj61w1WfKGpgDpgvl7eF3EmOhfPrYihQ36nCEwp5C90I/luLmz7IluIHcbMXEhmW9yKzNLqeQ3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ba/SjI+XfUR6p/yK+ZLV+ZKMh7hBsgYO9tUf/BJaUl0=;
- b=ySiXMPae1VzAMV0bpeMtxEj/VIyExI0OhK1Of0zQLUGPTCEVLJC0cCmpoyG5HI1chyfhPZk3n6WUsOJdsSYa5rK5Jjf76rGh8y7ueO1WFseW2wqT2qbGo0FDiooNSlIhwxCef7keGTnwWHbTu0c9hcDa4rsjzEs+7afN3zwBucs8AUqcmEQAz5I77tTCUtvqibavFBnlVYEbcI9Z5nqgJM6JjkwC8liEGRMgOkZ+IBO9BRKBNLGv/tCE7tH6OSzF+lDruwe8cZ+SLqBOTWegNddflB9grbq4eaPXzTIJaH2cEmFrtgMeHTjoVklA3pFM1lZVd4w8kVcec/f0Qv5g3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=bull.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ba/SjI+XfUR6p/yK+ZLV+ZKMh7hBsgYO9tUf/BJaUl0=;
- b=eHsYbSz1dt8ZN/Jp4UIb8OBZXAAe/Llgqk1V7HBd+Q+MGkh8yRBjvH5JNQmjQfBMweHmX3rRdBT+fbbASi8koR6bFormJE0XbFca3pWrAOeX+D0TqBUw45ciV7oF/2WJ5D8EaDTIa6PLHnXaovW2gU45tEcaGok8AkaKRQb758Y=
-Received: from SJ0PR13CA0121.namprd13.prod.outlook.com (2603:10b6:a03:2c6::6)
- by CH3PR12MB8403.namprd12.prod.outlook.com (2603:10b6:610:133::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 10:43:52 +0000
-Received: from PH4PEPF0000B60D.namprd21.prod.outlook.com
- (2603:10b6:a03:2c6:cafe::9b) by SJ0PR13CA0121.outlook.office365.com
- (2603:10b6:a03:2c6::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Thu, 15
- Oct 2026 10:43:52 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- PH4PEPF0000B60D.mail.protection.outlook.com (10.167.243.88) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.0 via Frontend Transport; Thu, 15 Oct 2026 10:43:51 +0000
-Received: from [192.168.1.4] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 15 Oct
- 2026 05:43:39 -0500
-Message-ID: <1bb1aadb-7414-4edd-9b84-5a4db33e1bce@amd.com>
-Date: Thu, 15 Oct 2026 16:13:31 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="euFh00ut"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69F9kccf531930;
+	Thu, 15 Oct 2026 10:44:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=D3DHfgUvSczPS90QlosCe6beusdbK+
+	3al2oliDWEeUM=; b=euFh00utqxTVWOKkb44HslbQntniephltY/9ldLyWeTs8M
+	/US1GxgiQ3W2d06XgD5AulUyTtgQc6B8xr4QIz/ur0wupEL15omyXAU3xUKzTii+
+	9TdjG9kKopb85zyYMbvJefcY8hssNvZG2aRyIDOq/x98iWVQ1UtwmDyPlkNsdG2S
+	sizRrQ7eU0uLy8AUj1SPrqq6rimGSFS8BrKTd68L5oHiIJEVDN3Gjyki8wCyGE2M
+	8M6HotRFd+iMNpkme4yLJDME65H8Lwwvh2Tl1ic3XD5EGwJDE8FA7oMf6iK0Sfhn
+	Pw4dFIanDgGe9QkliOhPGggHXaKGk1RP0DN3FBPQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv3sdp6-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 15 Oct 2026 10:44:53 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69F9nuLv1967770;
+	Thu, 15 Oct 2026 10:44:52 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h816hbjeh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Oct 2026 10:44:52 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69FAimUR48693652
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Oct 2026 10:44:48 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F14452004D;
+	Thu, 15 Oct 2026 10:44:47 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1EE2820049;
+	Thu, 15 Oct 2026 10:44:47 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 15 Oct 2026 10:44:46 +0000 (GMT)
+Date: Thu, 15 Oct 2026 16:23:05 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Disable preemption around host-side
+ HPT lock users
+Message-ID: <20261015162140.3a47683d-77-amachhiw@linux.ibm.com>
+Mail-Followup-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+References: <20261014185215.71832-1-amachhiw@linux.ibm.com>
+ <sashiko-outbox-171754@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <sarunkod@amd.com>, "vasant.hegde@amd.com" <vasant.hegde@amd.com>,
-	"suravee.suthikulpanit@amd.com" <suravee.suthikulpanit@amd.com>
-Subject: Re: [PATCH 2/8] x86-iommu: Introduce x86_iommu_device_get() for
- x86-iommu retrieval
-Content-Language: en-US
-To: =?UTF-8?Q?Cl=C3=A9ment_MATHIEU--DRIF?= <clement.mathieu--drif@bull.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>, Alejandro Jimenez
-	<alejandro.j.jimenez@oracle.com>, Ani Sinha <anisinha@redhat.com>, "Igor
- Mammedov" <imammedo@redhat.com>, Jason Wang <jasowangio@gmail.com>, "Marcelo
- Tosatti" <mtosatti@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Richard
- Henderson" <richard.henderson@linaro.org>, Yi Liu <yi.l.liu@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "qemu-devel@nongnu.org"
-	<qemu-devel@nongnu.org>
-References: <20261014053433.24564-1-sarunkod@amd.com>
- <20261014053433.24564-3-sarunkod@amd.com>
- <e9162ee926e190d1fe7962d07a7c6e0b401456db.camel@bull.com>
-From: Sairaj Kodilkar <sarunkod@amd.com>
-In-Reply-To: <e9162ee926e190d1fe7962d07a7c6e0b401456db.camel@bull.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH4PEPF0000B60D:EE_|CH3PR12MB8403:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa7d25a5-55ea-4826-1669-08df2aa9339b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|82310400026|36860700016|921020|56012099006|11063799006|4143699003|261009223027099003|18002099003|10067099003|20046099003|21026099003|6133799003|5123799003|13003099007|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Yx95fav1QwKUPqGGoOkXk6GBfXbUDIqFCy7KJjNYW+YdLjCRMptPg5CAPW8stb8cFiP1lGm+H3XneLsSwIvBRu6CqQqTTU9DI0KtENSvEzdnYa+MB0bGF+dC9ZDTna1qf0UYXL1iufLh6vT6r070cjvpSBRUtwQ1++RJGwT38h5qdukMfkPaWQQJEe6X9qgSXJKgdbxu+3OZIZ4bU+ULOhIpgFPW5i23WcD14fgn5v+S2rfoAnPaDT693XCMY30BweBvHkrPxdgxM27mKrwhJ+Q+qYONI2SMlldkRxROANR2PqGKBApm2BZm7l9xK/Q057VXtP0lzvZxFQDYhW3c3Q3xRToj6UrujhduewGqB7nqpVUJtjy8BRKXVIrBnH8LcpR0sPrOmda6a6niw2V8g1ARII1TV9yGaj+PB3JURJVF7jTMqzeuxrJM5yeLkznj8vTIK8TjTXMshjosyU+hCP8pToYaqolctq/sDmVqWlslJFRGY0cbkamFDKq1sujy1PrwNBPy/phbS/9jbaFgshp/fH1Gv6S2ds7C+pnBm8LBA48OyYE0PWLW4F6xHFD3YRY0jrm2hgF9h9QOiIYAvIhp32y/PmXJU9bDQ5oRnCf38YCIEcVcVmXYGYa/udERlJZ4RMHYN8VZS1eJc+iT9C/iIsxiBVkcx9k1ETrH72ZI0dUbNJYGdssqiwlGrWaomKl0QM1iSAVUTNUI8QvRFAsr7Ec4EMbNEJ1Vdyfdu1m0lmWW/45ylb2v4Kz4Wx2G
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(82310400026)(36860700016)(921020)(56012099006)(11063799006)(4143699003)(261009223027099003)(18002099003)(10067099003)(20046099003)(21026099003)(6133799003)(5123799003)(13003099007)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	uXbgZu+zfn3b0R93F6y3b3XacdWhea2V4P5sNg1w16mcsBPIkGuSdyfc9fiQ0XiadfOtoThYo5WTLHCtNlc9h9i8igScDZxs3A6rejwhgM6DLPKIKKzF6q86e8p7WlcX7i0gKzcCKoZBf1H4SgqTFIRS/3/qSAlqHhDRjPU9TGRyROfQUuvNj60BANAgHrUsUCk0iJMUWn8slyR0ZBTxy4c8EergaacSKGBefhj/0qekfDceW8Zq1a8Dj6akn957Ggf4mUyqQCve/kzdwlA5TO4Fx7tqFU3sHcbVli6FyYPl0d9qrom/zknZkro7k5H5PofuNPWJjVvWXpWavFL9/EJWZy0at3yobv8DcYYFUm7LI6LUfL3T5RtESOfsFqMqwwU7Nk/+og7U6e7OyfGXaJTR5OgnXFcCcCU3RI1MCa7V2vTa5uaujOP9ykC44tks
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 10:43:51.2411
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa7d25a5-55ea-4826-1669-08df2aa9339b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH4PEPF0000B60D.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8403
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-171754@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7ydpsoDdgPP9VD2zGMNqYCUzd1LjZzwN
+X-Proofpoint-ORIG-GUID: 7ydpsoDdgPP9VD2zGMNqYCUzd1LjZzwN
+X-Authority-Analysis: v=2.4 cv=aqInmiZV c=1 sm=1 tr=0 ts=6ad0aea5 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=lMOgnohsUXiygdNOCAwA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE1MDA0MiBTYWx0ZWRfX0S1A5rRLMKv2
+ NDjAqf8AQgHjRVODUik6dYb8WVUVH4RtmYBAl5Rqj7WWkjPeHWniJm4xMTagrrDfHq76FCTsaMc
+ GWpeYY2PP+XOlcCn5IM4GI41t45/4l8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE1MDA0MiBTYWx0ZWRfXxc1DkNHlVZEz
+ RE7te6hgpfFZL+qqb6VKi27FDQQByFfGtHXg5jlWlPQD1PzuEuknPRM3qmo8Ih8ftC/6MmrvrZI
+ ft28Ch13GfWJfqHJuI1e+aBKvDGBR9PwsBcxHoT4/FoNv3WIhay95jVMbNt97Dr4fG9zU9+ozvr
+ KOhAckCvqkKnZqc8kcEF7vrcq7EAjpq+RSMEmVwWSwhhRHvVxVixfX0mj8RP1vBUJQ2CurpgIfm
+ YmxivR6o3pUOJq7rhS4gXuyAzzpQXh4SxDZ3bGUTwCAXWESy7Ph6IMPOEjhXco3uLKRDYwyzx6K
+ LcLWr8lO7IgAHTho7Ugc7iMi53uj4j6Gzsu1pwxdRz3v3Qqaxg+911mrZfs/vTwNhQA0ngpQYrx
+ 0Xp21Ef2snob5F/8VffadyXD6qDkhtR9uUguVufnWAlUkjjjwLGHfiG9AFKAL7/j1+6sPC6X+la
+ JJkz6XDyyl7N6SaPXJA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610150042
 
-
-
-On 10/15/2026 2:38 PM, Clément MATHIEU--DRIF wrote:
-> [Some people who received this message don't often get email from clement.mathieu--drif@bull.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On 2026/10/14 07:09 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: missing preempt_disable() in kvm_test_age_rmapp() leading to deadlock
+> --
 > 
-> On Wed, 2026-10-14 at 11:04 +0530, Sairaj Kodilkar wrote:
->> Caution: External email. Do not open attachments or click links, unless this email comes from a known sender and you know the content is safe.
->>
->>
->> kvm_arch_fixup_msi_route() and kvm_arch_add_msi_route_post() use
->> x86_iommu_get_default() whenever an IOMMU is present. This selects the
->> correct unit only when a single IOMMU is attached to the system bus.
->>
->> The following patches allow an IOMMU to attach to a different bus and
->> isolate the subset of devices below it. Each IOMMU then serves only part
->> of the PCI topology, so interrupt remapping must determine the IOMMU that
->> actually serves a given device.
->>
->> Add x86_iommu_device_get() to locate the IOMMU bus for a PCI device and
->> retrieve its X86IOMMUState through a new get_x86_iommu callback.
->>
->> Signed-off-by: Sairaj Kodilkar <[sarunkod@amd.com](mailto:sarunkod@amd.com)>
->> ---
->>  hw/i386/x86-iommu-stub.c    |  5 +++++
->>  hw/i386/x86-iommu.c         | 16 ++++++++++++++++
->>  include/hw/i386/x86-iommu.h |  6 ++++++
->>  include/hw/pci/pci.h        | 12 ++++++++++++
->>  4 files changed, 39 insertions(+)
->>
->> diff --git a/hw/i386/x86-iommu-stub.c b/hw/i386/x86-iommu-stub.c
->> index 781b5ff92227..b0383d2290b1 100644
->> --- a/hw/i386/x86-iommu-stub.c
->> +++ b/hw/i386/x86-iommu-stub.c
->> @@ -32,6 +32,11 @@ X86IOMMUState *x86_iommu_get_default(void)
->>      return NULL;
->>  }
->>
->> +X86IOMMUState *x86_iommu_device_get(PCIDevice *dev)
->> +{
->> +    return NULL;
->> +}
->> +
->>  bool x86_iommu_ir_supported(X86IOMMUState *s)
->>  {
->>      return false;
->> diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
->> index a57445404ef8..601db5cfea09 100644
->> --- a/hw/i386/x86-iommu.c
->> +++ b/hw/i386/x86-iommu.c
->> @@ -26,6 +26,7 @@
->>  #include "qemu/error-report.h"
->>  #include "trace.h"
->>  #include "system/kvm.h"
->> +#include "hw/pci/pci_bus.h"
->>
->>  void x86_iommu_iec_register_notifier(X86IOMMUState *iommu,
->>                                       iec_notify_fn fn, void *data)
->> @@ -90,6 +91,21 @@ X86IOMMUState *x86_iommu_get_default(void)
->>      return NULL;
->>  }
->>
->> +X86IOMMUState *x86_iommu_device_get(PCIDevice *dev)
->> +{
->> +    PCIBus *iommu_bus;
->> +    X86IOMMUState *iommu = NULL;
->> +
->> +    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
->> +
->> +    if (iommu_bus && iommu_bus->iommu_ops->get_x86_iommu) {
->> +        iommu_bus->iommu_ops->get_x86_iommu(iommu_bus->iommu_opaque,
->> +                                            (void **)&iommu);
->> +    }
->> +
->> +    return iommu;
->> +}
->> +
->>  static void x86_iommu_realize(DeviceState *dev, Error **errp)
->>  {
->>      X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(dev);
->> diff --git a/include/hw/i386/x86-iommu.h b/include/hw/i386/x86-iommu.h
->> index 0a1e1ba72571..eb575271e9d7 100644
->> --- a/include/hw/i386/x86-iommu.h
->> +++ b/include/hw/i386/x86-iommu.h
->> @@ -134,6 +134,12 @@ struct X86IOMMU_MSIMessage {
->>   */
->>  X86IOMMUState *x86_iommu_get_default(void);
->>
->> +/**
->> + * x86_iommu_device_get - get IOMMU device for given PCI device
->> + * @return: pointer to default IOMMU device
->> + */
->> +X86IOMMUState *x86_iommu_device_get(PCIDevice *dev);
->> +
->>  /**
->>   * x86_iommu_iec_register_notifier - register IEC (Interrupt Entry
->>   *                                   Cache) notifiers
->> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->> index f2448e941a0b..f3c4c3a4db56 100644
->> --- a/include/hw/pci/pci.h
->> +++ b/include/hw/pci/pci.h
->> @@ -698,6 +698,18 @@ typedef struct PCIIOMMUOps {
->>       * Returns: the guest physical address of the MSI doorbell.
->>       */
->>      uint64_t (*get_msi_direct_gpa)(PCIBus *bus, void *opaque, int devfn);
->> +
->> +    /**
->> +     * @get_x86_iommu: get parent x86-iommu for given hardware (AMD/Intel)
->> +     *
->> +     * Callback is required if IOMMU defines x86->int_remap()
->> +     *
->> +     * @opaque: the data passed to pci_setup_iommu()
->> +     *
->> +     * @x86_iommu: A pointer to store the x86-iommu object
->> +     */
->> +    int (*get_x86_iommu)(void *opaque, void **x86_iommu);
+> commit dbd9d3f82d3dd2c11f69c26045433b125bc70408
+> Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 > 
-> Are you using void ** because the X86 type is not defined when building for another target?
-> I'm not sure if the Qemu rules are strict about architecture isolation.
-
-including x86-iommu.h inside pci.h will cause circular dependancy as
-x86-iommu.h already depends on pci.h
-
+> KVM: PPC: Book3S HV: Disable preemption around host-side HPT lock users
 > 
-> Do you have any idea about how acceptable this is?
-
-At this point I am not sure and dont see any other way to do this
-
+> This commit disables preemption around host-side virtual-mode paths that
+> acquire HPTE_V_HVLOCK and lock_rmap(). This prevents a permanent CPU hang
+> where a preempted host thread holding either bit-lock blocks a spinning
+> guest vCPU thread.
 > 
-> Is there a reason why we could not expose the API in the same files as x86_iommu_get_default?
-
-x86_iommu_get_default() uses machine state to fetch the iommu device,
-because of which it does not depend on device/pci topology. Whereas, the
-goal of this series is to have a PCI device isolation, so kvm layer has
-to fetch device specific iommu by traversing pci topology using
-pci_device_get_iommu_bus_devfn(). Hence we cannot expose the API in
-x86_iommu_get_default().
-
-Thanks
-Sairaj
-
+> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > index 2ccb3d138f46c..8d85ce3440ae3 100644
+> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> [ ... ]
+> > @@ -890,6 +913,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+> >  
+> >  	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
+> >   retry:
+> > +	preempt_disable();
+> >  	lock_rmap(rmapp);
 > 
->> +
->>  } PCIIOMMUOps;
->>
->>  bool pci_device_get_iommu_bus_devfn(PCIDevice *dev, PCIBus **piommu_bus,
->> --
->> 2.34.1
->>
+> [Severity: High]
+> Does this same deadlock risk apply to kvm_test_age_rmapp()?
+> 
+> Looking at kvm_test_age_rmapp() in the same file, it also acquires
+> the spinning rmap bit-lock without explicitly disabling preemption:
+> 
+> arch/powerpc/kvm/book3s_64_mmu_hv.c:kvm_test_age_rmapp() {
+> 	...
+> 	lock_rmap(rmapp);
+> 	if (*rmapp & KVMPPC_RMAP_REFERENCED)
+> 		goto out;
+> 	...
+> }
+> 
+> kvm_test_age_rmapp() is invoked via MMU notifiers (like
+> mmu_notifier_test_young) holding the PTE lock. Under PREEMPT_RT, the PTE
+> lock is sleepable and does not disable preemption, so lock_rmap() is
+> acquired in a preemptible context.
+> 
+> If a host thread holding this bit-lock is preempted, and a guest vCPU
+> thread on the same CPU executes a virtual-mode path like
+> kvmppc_virtmode_do_h_remove() (which disables preemption) and attempts to
+> acquire the same rmap lock via remove_revmap_chain(), could it spin
+> indefinitely without yielding?
 
+No, this is not a problem on PPC.  I have explained the reason here:
+
+  https://lore.kernel.org/all/20261008005700.c78e5a18-dc-amachhiw@linux.ibm.com
+
+Thanks,
+Amit
