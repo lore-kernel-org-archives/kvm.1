@@ -1,33 +1,33 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AE5416841;
-	Thu, 15 Oct 2026 06:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B197049DBA3;
+	Thu, 15 Oct 2026 06:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792047182; cv=none; b=PILC2yUnYvEMg2aab6SqWOeoCHrbVuFThsjeCYB6N7I5kKiMeQbB7TVBF/q9TFIOXNW7Y8K21Xql0pltk8Wi8sG6myeI/7l2w/6pjSaBBunD76h9dK7pZ47bwLQHdKtoRt4H8bFiYDd0hmqtH7glcnJQ0495nyixbKPjyRQtcRI=
+	t=1792047182; cv=none; b=WBjs7i4+r06XZ9F8kv+tBox0yZxySaFFaJQUChtMlmUd28W51OALBgYSHOBVzR3msqUNeQ4Zq0YBcmJrsF/djDzaZpFVxtMFVvd8gEfO6jz8fPXyv7gnIUPzi3YajnQixe0XWg7cyAIkS24KIFBXDovBpydPpJTwhoBR6K+ufYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792047182; c=relaxed/simple;
-	bh=NAZzbrZ0ghYjiDnLPJMUT2odWpqPsyRG3/eqddghz0w=;
+	bh=+zKUNQj1OKpciozmBueicc9XhcAq8pJQcYxaDC6Alkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcX5ENVsaLNGd336jQT1WNtp1ocUUBW34g1qnFn5/SfFzGb1KohIowvlpq5UViPOtLGSlYtNbsJe34sO201qDH4NZCo7hH2QjXzGAwqO5bdEv8e3GTmx37jGLiKw1gCQua/FUcDmkQ1FF8FGlIjn1wd14tykaRh5+PVSBcw/r6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=160.30.148.34
+	 MIME-Version; b=ZbQKCmGYv/bG2TeHNqBFJWvekrbI/ShvKMcnEpQlG9Q7Tbpsx2HmP0bn7uj24baSpxWEHY3cJb7rnWnni464w4PH+c46QFYHKZHjn9a++Wnt2LXq+z2tvaM9bm9J5uUpuOuhS6505XjyZXnrrsyBe+7VR1BOWh7dEt+1H54jM+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=183.62.165.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j4zKb1TSJz4yh0n;
-	Thu, 15 Oct 2026 14:52:51 +0800 (CST)
-Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
-	by mse-fl1.zte.com.cn with SMTP id 69F6qi6w013950;
-	Thu, 15 Oct 2026 14:52:44 +0800 (+08)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4j4zKZ6Nw9z5B15M;
+	Thu, 15 Oct 2026 14:52:50 +0800 (CST)
+Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
+	by mse-fl2.zte.com.cn with SMTP id 69F6qjj2019179;
+	Thu, 15 Oct 2026 14:52:45 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 15 Oct 2026 14:52:46 +0800
-X-Zmail-TransId: 3e816ad0783e024-555a1
+	Thu, 15 Oct 2026 14:52:47 +0800
+X-Zmail-TransId: 3e816ad0783e024-555bd
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -49,9 +49,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>,
         Gong Shuai <gsh517025@gmail.com>
-Subject: [RFC PATCH 10/12] RISC-V: KVM: Accept auto-mode interrupt files for IMSIC IRQ bypass
-Date: Thu, 15 Oct 2026 14:52:30 +0800
-Message-ID: <20261015065232.604503-11-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH 11/12] iommu/riscv: Accept unpublished interrupt files in IRQ forwarding
+Date: Thu, 15 Oct 2026 14:52:31 +0800
+Message-ID: <20261015065232.604503-12-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261015065232.604503-1-gong.shuai@sanechips.com.cn>
 References: <20261015065232.604503-1-gong.shuai@sanechips.com.cn>
@@ -63,50 +63,112 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl1.zte.com.cn 69F6qi6w013950
+X-MAIL:mse-fl2.zte.com.cn 69F6qjj2019179
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Thu, 15 Oct 2026 14:52:51 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 15 Oct 2026 14:52:50 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AD07843.000/4j4zKb1TSJz4yh0n
+X-Fangmail-MID-QID: 6AD07842.000/4j4zKZ6Nw9z5B15M
 
-The IRQ bypass required the AIA to be in HWACCEL mode, while the KVM
-default is AUTO, which publishes an IMSIC VS-file whenever one is
-available and only falls back to the SW-file when the host has none
-left. Rejecting AUTO leaves every assigned device on host MSI delivery,
-which cannot work for a device attached to a nested domain because its
-stage-1 page tables belong to the guest, so the device keeps the host
-MSI address composed at vector activation and its MSIs fault in the
-guest stage-1.
+A guest with a vIOMMU needs the complete IMSIC topology of the VM in the
+MSI table, since the hardware resolves the target vCPU from the MSI
+address on its own. That table is installed when the first device MSI is
+forwarded, which can happen before every vCPU has its interrupt file
+published, so a request for the whole VM cannot require all of them.
+
+Skip the unpublished ones instead of rejecting the whole request. An MSI
+that resolves to one of them faults only for that vCPU and is reported
+in the fault queue, whereas a failed request would take IRQ bypass away
+from the entire virtual machine.
 
 Co-developed-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- arch/riscv/kvm/aia_imsic.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iommu/riscv/iommu-ir.c      | 25 +++++++++++++++++++++----
+ include/linux/irqchip/riscv-imsic.h | 14 ++++++++------
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index 37e27f28dc62..010f9a90f107 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -981,10 +981,13 @@ static int imsic_irqfd_forward(struct kvm_kernel_irqfd *irqfd,
- 	 * MSI-X because pci_write_msi_msg() masks an MSI-X vector around the
- 	 * update, which conventional MSI cannot provide.
- 	 */
--	if (kvm->arch.aia.mode != KVM_DEV_RISCV_AIA_MODE_HWACCEL ||
--	    !imsic_irqfd_is_msix(irqfd))
-+	if (!imsic_irqfd_is_msix(irqfd))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/iommu/riscv/iommu-ir.c b/drivers/iommu/riscv/iommu-ir.c
+index b3f0a56475ed..94971959a581 100644
+--- a/drivers/iommu/riscv/iommu-ir.c
++++ b/drivers/iommu/riscv/iommu-ir.c
+@@ -78,18 +78,28 @@ static int riscv_iommu_ir_validate_target(const struct riscv_iommu_ir_vcpu_info
+ static int riscv_iommu_ir_validate_targets(const struct riscv_iommu_ir_vcpu_info *vcpu_info,
+ 					   size_t nr_ptes, u64 *required_caps)
+ {
++	unsigned int nr_valid = 0;
+ 	int ret;
  
-+	/*
-+	 * The IOMMU writes MSIs straight into the VS-file, so bypass is
-+	 * gated by the hardware backing checks below, not the AIA mode.
-+	 */
- 	if (!imsic_targets_valid(&kvm->arch.aia)) {
- 		pr_debug("KVM: IMSIC IRQ bypass requires all VS-files\n");
- 		return -EOPNOTSUPP;
+-	if (!vcpu_info->targets || !vcpu_info->nr_targets || vcpu_info->nr_targets > nr_ptes)
++	if (!vcpu_info->targets || !vcpu_info->nr_targets)
+ 		return -EINVAL;
+ 
+ 	for (unsigned int i = 0; i < vcpu_info->nr_targets; i++) {
++		/* Interrupt files the host has not published yet are skipped. */
++		if (vcpu_info->targets[i].type == RISCV_IOMMU_IR_TARGET_INVALID)
++			continue;
++
+ 		ret = riscv_iommu_ir_validate_target(vcpu_info, &vcpu_info->targets[i],
+ 						     required_caps);
+ 		if (ret)
+ 			return ret;
++		nr_valid++;
+ 	}
+ 
++	/* The table only has to be able to deliver some interrupt file. */
++	if (!nr_valid || nr_valid > nr_ptes)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+@@ -147,9 +157,16 @@ static int riscv_iommu_ir_activate(struct riscv_iommu_msi_table *msi_table,
+ 
+ 	for (unsigned int i = 0; i < vcpu_info->nr_targets; i++) {
+ 		const struct riscv_iommu_ir_target *target = &vcpu_info->targets[i];
+-		size_t idx = riscv_iommu_ir_extract(target->gpa >> IMSIC_MMIO_PAGE_SHIFT,
+-						    vcpu_info->msi_addr_mask);
+-		struct riscv_iommu_msipte *msipte = &msi_table->root[idx];
++		size_t idx;
++		struct riscv_iommu_msipte *msipte;
++
++		/* Interrupt files the host has not published yet are skipped. */
++		if (target->type == RISCV_IOMMU_IR_TARGET_INVALID)
++			continue;
++
++		idx = riscv_iommu_ir_extract(target->gpa >> IMSIC_MMIO_PAGE_SHIFT,
++					     vcpu_info->msi_addr_mask);
++		msipte = &msi_table->root[idx];
+ 
+ 		/* A populated entry in the initially clear table indicates duplicate targets. */
+ 		if (msipte->pte || msipte->mrif_info) {
+diff --git a/include/linux/irqchip/riscv-imsic.h b/include/linux/irqchip/riscv-imsic.h
+index 02a836ce03b4..947c406d512b 100644
+--- a/include/linux/irqchip/riscv-imsic.h
++++ b/include/linux/irqchip/riscv-imsic.h
+@@ -138,12 +138,14 @@ struct riscv_iommu_ir_target {
+ };
+ 
+ /*
+- * FORWARD enables forwarding for one IRQ and provides the complete target array
+- * so the first forwarded IRQ can initialize the domain MSI table. UPDATE_TARGET
+- * replaces one target without changing per-IRQ forwarding state. The caller
+- * must quiesce all MSI producers using the table when changing both words of a
+- * live MRIF PTE because the update temporarily invalidates the entry. A NULL
+- * vcpu_info disables forwarding for the IRQ.
++ * FORWARD enables forwarding for one IRQ and provides the target array so the
++ * first forwarded IRQ can initialize the domain MSI table. Entries of type
++ * RISCV_IOMMU_IR_TARGET_INVALID are skipped, so a caller may forward the whole
++ * virtual machine topology while only some of its interrupt files are hardware
++ * backed. UPDATE_TARGET replaces one target without changing per-IRQ forwarding
++ * state. The caller must quiesce all MSI producers using the table when
++ * changing both words of a live MRIF PTE because the update temporarily
++ * invalidates the entry. A NULL vcpu_info disables forwarding for the IRQ.
+  *
+  * A well-formed request which is incompatible with the producer or current
+  * domain configuration returns -EOPNOTSUPP, allowing the caller to fall back
 -- 
 2.53.0
 
