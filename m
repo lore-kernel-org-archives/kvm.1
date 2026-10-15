@@ -1,16 +1,16 @@
 Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B197049DBA3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF693346E47;
 	Thu, 15 Oct 2026 06:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792047182; cv=none; b=WBjs7i4+r06XZ9F8kv+tBox0yZxySaFFaJQUChtMlmUd28W51OALBgYSHOBVzR3msqUNeQ4Zq0YBcmJrsF/djDzaZpFVxtMFVvd8gEfO6jz8fPXyv7gnIUPzi3YajnQixe0XWg7cyAIkS24KIFBXDovBpydPpJTwhoBR6K+ufYo=
+	t=1792047183; cv=none; b=gXVZIIH6X7WDYbOqLhu5V82WYc4BTeqlklVZTam8AZgQeLuParVzspipDCqxFOTToqees8sKzXUt3zjGbJJ/Nq8yQqDKcNfe7hvyGX5jt3TjJ4Ajwoi85/F+yaN/rqIqoL9KjqXYr+HjX9mMTDVl7gVdReRQ9qNBjk+G4YIlWUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792047182; c=relaxed/simple;
-	bh=+zKUNQj1OKpciozmBueicc9XhcAq8pJQcYxaDC6Alkw=;
+	s=arc-20240116; t=1792047183; c=relaxed/simple;
+	bh=GPphEfc+yty3jIvBg+vQZmUO9cfyKQDM9MeEhPKl/qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbQKCmGYv/bG2TeHNqBFJWvekrbI/ShvKMcnEpQlG9Q7Tbpsx2HmP0bn7uj24baSpxWEHY3cJb7rnWnni464w4PH+c46QFYHKZHjn9a++Wnt2LXq+z2tvaM9bm9J5uUpuOuhS6505XjyZXnrrsyBe+7VR1BOWh7dEt+1H54jM+g=
+	 MIME-Version; b=QAtvziS44Ty3BiZz/aqmSN/V48eJsdZIefs7bFGyWIMb6jWkhnxvIgEGspTFo2wGtfFH8bh00p9nHK/b8pO4p3VW1ojWPgsxE0K7KKE17oi1qvVkwn+5OxVoQApatJJ4HOVFho2u3zGjpC6wW/GpvSOgcjqmkBaL1hC5HfivjaU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=183.62.165.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
@@ -18,16 +18,16 @@ Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4j4zKZ6Nw9z5B15M;
-	Thu, 15 Oct 2026 14:52:50 +0800 (CST)
-Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
-	by mse-fl2.zte.com.cn with SMTP id 69F6qjj2019179;
-	Thu, 15 Oct 2026 14:52:45 +0800 (+08)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4j4zKV156Wz5B14q;
+	Thu, 15 Oct 2026 14:52:46 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl2.zte.com.cn with SMTP id 69F6qduG019086;
+	Thu, 15 Oct 2026 14:52:39 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 15 Oct 2026 14:52:47 +0800
-X-Zmail-TransId: 3e816ad0783e024-555bd
+	Thu, 15 Oct 2026 14:52:41 +0800
+X-Zmail-TransId: 3e816ad07838024-55505
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -49,9 +49,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>,
         Gong Shuai <gsh517025@gmail.com>
-Subject: [RFC PATCH 11/12] iommu/riscv: Accept unpublished interrupt files in IRQ forwarding
-Date: Thu, 15 Oct 2026 14:52:31 +0800
-Message-ID: <20261015065232.604503-12-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH 04/12] iommu/riscv: Add vIOMMU object support
+Date: Thu, 15 Oct 2026 14:52:24 +0800
+Message-ID: <20261015065232.604503-5-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261015065232.604503-1-gong.shuai@sanechips.com.cn>
 References: <20261015065232.604503-1-gong.shuai@sanechips.com.cn>
@@ -63,112 +63,134 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 69F6qjj2019179
+X-MAIL:mse-fl2.zte.com.cn 69F6qduG019086
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 15 Oct 2026 14:52:50 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 15 Oct 2026 14:52:46 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AD07842.000/4j4zKZ6Nw9z5B15M
+X-Fangmail-MID-QID: 6AD0783E.000/4j4zKV156Wz5B14q
 
-A guest with a vIOMMU needs the complete IMSIC topology of the VM in the
-MSI table, since the hardware resolves the target vCPU from the MSI
-address on its own. That table is installed when the first device MSI is
-forwarded, which can happen before every vCPU has its interrupt file
-published, so a request for the whole VM cannot require all of them.
+From: Wu Fei <wu.fei9@sanechips.com.cn>
 
-Skip the unpublished ones instead of rejecting the whole request. An MSI
-that resolves to one of them faults only for that vCPU and is reported
-in the fault queue, whereas a failed request would take IRQ bypass away
-from the entire virtual machine.
+Implement the vIOMMU ops so user space can allocate a RISC-V IOMMU
+vIOMMU on a stage-2 parent domain and query the size to allocate for
+it. The object keeps the parent domain and the GSCID the parent was
+allocated, which the nested domain and cache invalidation support added
+on top of it will need.
 
-Co-developed-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- drivers/iommu/riscv/iommu-ir.c      | 25 +++++++++++++++++++++----
- include/linux/irqchip/riscv-imsic.h | 14 ++++++++------
- 2 files changed, 29 insertions(+), 10 deletions(-)
+ drivers/iommu/riscv/iommu.c | 60 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/drivers/iommu/riscv/iommu-ir.c b/drivers/iommu/riscv/iommu-ir.c
-index b3f0a56475ed..94971959a581 100644
---- a/drivers/iommu/riscv/iommu-ir.c
-+++ b/drivers/iommu/riscv/iommu-ir.c
-@@ -78,18 +78,28 @@ static int riscv_iommu_ir_validate_target(const struct riscv_iommu_ir_vcpu_info
- static int riscv_iommu_ir_validate_targets(const struct riscv_iommu_ir_vcpu_info *vcpu_info,
- 					   size_t nr_ptes, u64 *required_caps)
- {
-+	unsigned int nr_valid = 0;
- 	int ret;
- 
--	if (!vcpu_info->targets || !vcpu_info->nr_targets || vcpu_info->nr_targets > nr_ptes)
-+	if (!vcpu_info->targets || !vcpu_info->nr_targets)
- 		return -EINVAL;
- 
- 	for (unsigned int i = 0; i < vcpu_info->nr_targets; i++) {
-+		/* Interrupt files the host has not published yet are skipped. */
-+		if (vcpu_info->targets[i].type == RISCV_IOMMU_IR_TARGET_INVALID)
-+			continue;
-+
- 		ret = riscv_iommu_ir_validate_target(vcpu_info, &vcpu_info->targets[i],
- 						     required_caps);
- 		if (ret)
- 			return ret;
-+		nr_valid++;
- 	}
- 
-+	/* The table only has to be able to deliver some interrupt file. */
-+	if (!nr_valid || nr_valid > nr_ptes)
-+		return -EINVAL;
-+
- 	return 0;
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index dd97c2731d95..bf02cd984d86 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -19,6 +19,7 @@
+ #include <linux/dma-map-ops.h>
+ #include <linux/init.h>
+ #include <linux/iommu.h>
++#include <linux/iommufd.h>
+ #include <linux/iopoll.h>
+ #include <linux/irqchip/riscv-imsic.h>
+ #include <linux/kernel.h>
+@@ -862,6 +863,7 @@ struct riscv_iommu_domain {
+ 	struct mutex mutex;		/* serialize domain state updates */
+ 	int pscid;
+ 	int gscid;
++	bool nest_parent;
+ 	struct riscv_iommu_msi_table msi_table;
+ };
+ PT_IOMMU_CHECK_DOMAIN(struct riscv_iommu_domain, riscvpt.iommu, domain);
+@@ -1497,6 +1499,20 @@ static bool riscv_iommu_iohgatp_supported(struct riscv_iommu_device *iommu,
+ 	return false;
  }
  
-@@ -147,9 +157,16 @@ static int riscv_iommu_ir_activate(struct riscv_iommu_msi_table *msi_table,
- 
- 	for (unsigned int i = 0; i < vcpu_info->nr_targets; i++) {
- 		const struct riscv_iommu_ir_target *target = &vcpu_info->targets[i];
--		size_t idx = riscv_iommu_ir_extract(target->gpa >> IMSIC_MMIO_PAGE_SHIFT,
--						    vcpu_info->msi_addr_mask);
--		struct riscv_iommu_msipte *msipte = &msi_table->root[idx];
-+		size_t idx;
-+		struct riscv_iommu_msipte *msipte;
++static bool riscv_iommu_supports_s1(struct riscv_iommu_device *iommu)
++{
++	return (iommu->caps & RISCV_IOMMU_CAPABILITIES_SV57) ||
++		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV48) ||
++		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV39);
++}
 +
-+		/* Interrupt files the host has not published yet are skipped. */
-+		if (target->type == RISCV_IOMMU_IR_TARGET_INVALID)
-+			continue;
++static bool riscv_iommu_supports_s2(struct riscv_iommu_device *iommu)
++{
++	return (iommu->caps & RISCV_IOMMU_CAPABILITIES_SV57X4) ||
++		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV48X4) ||
++		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV39X4);
++}
 +
-+		idx = riscv_iommu_ir_extract(target->gpa >> IMSIC_MMIO_PAGE_SHIFT,
-+					     vcpu_info->msi_addr_mask);
-+		msipte = &msi_table->root[idx];
+ static int riscv_iommu_msi_table_alloc(struct riscv_iommu_domain *domain,
+ 				       struct riscv_iommu_device *iommu,
+ 				       struct riscv_iommu_info *info)
+@@ -1734,6 +1750,7 @@ riscv_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
+ 			ret = -ENOMEM;
+ 			goto err_free;
+ 		}
++		domain->nest_parent = !!(flags & IOMMU_HWPT_ALLOC_NEST_PARENT);
  
- 		/* A populated entry in the initially clear table indicates duplicate targets. */
- 		if (msipte->pte || msipte->mrif_info) {
-diff --git a/include/linux/irqchip/riscv-imsic.h b/include/linux/irqchip/riscv-imsic.h
-index 02a836ce03b4..947c406d512b 100644
---- a/include/linux/irqchip/riscv-imsic.h
-+++ b/include/linux/irqchip/riscv-imsic.h
-@@ -138,12 +138,14 @@ struct riscv_iommu_ir_target {
- };
+ 		/*
+ 		 * Capture the current number of MSI PTEs now since it must remain
+@@ -1906,6 +1923,47 @@ static void riscv_iommu_release_device(struct device *dev)
+ 	kfree_rcu_mightsleep(info);
+ }
  
- /*
-- * FORWARD enables forwarding for one IRQ and provides the complete target array
-- * so the first forwarded IRQ can initialize the domain MSI table. UPDATE_TARGET
-- * replaces one target without changing per-IRQ forwarding state. The caller
-- * must quiesce all MSI producers using the table when changing both words of a
-- * live MRIF PTE because the update temporarily invalidates the entry. A NULL
-- * vcpu_info disables forwarding for the IRQ.
-+ * FORWARD enables forwarding for one IRQ and provides the target array so the
-+ * first forwarded IRQ can initialize the domain MSI table. Entries of type
-+ * RISCV_IOMMU_IR_TARGET_INVALID are skipped, so a caller may forward the whole
-+ * virtual machine topology while only some of its interrupt files are hardware
-+ * backed. UPDATE_TARGET replaces one target without changing per-IRQ forwarding
-+ * state. The caller must quiesce all MSI producers using the table when
-+ * changing both words of a live MRIF PTE because the update temporarily
-+ * invalidates the entry. A NULL vcpu_info disables forwarding for the IRQ.
-  *
-  * A well-formed request which is incompatible with the producer or current
-  * domain configuration returns -EOPNOTSUPP, allowing the caller to fall back
++struct riscv_viommu {
++	struct iommufd_viommu core;
++	struct riscv_iommu_device *iommu;
++	struct riscv_iommu_domain *s2_parent;
++	int gscid;
++};
++
++static const struct iommufd_viommu_ops riscv_viommu_ops = {
++};
++
++static size_t riscv_iommu_get_viommu_size(struct device *dev,
++					  enum iommu_viommu_type viommu_type)
++{
++	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
++
++	if (viommu_type != IOMMU_VIOMMU_TYPE_RISCV)
++		return 0;
++
++	if (!riscv_iommu_supports_s1(iommu) || !riscv_iommu_supports_s2(iommu))
++		return 0;
++
++	return VIOMMU_STRUCT_SIZE(struct riscv_viommu, core);
++}
++
++static int riscv_viommu_init(struct iommufd_viommu *viommu,
++			     struct iommu_domain *parent_domain,
++			     const struct iommu_user_data *user_data)
++{
++	struct riscv_viommu *rv_viommu = container_of(viommu, struct riscv_viommu, core);
++	struct riscv_iommu_device *iommu =
++		container_of(viommu->iommu_dev, struct riscv_iommu_device, iommu);
++	struct riscv_iommu_domain *s2_parent = iommu_domain_to_riscv(parent_domain);
++
++	rv_viommu->iommu = iommu;
++	rv_viommu->s2_parent = s2_parent;
++	rv_viommu->gscid = s2_parent->gscid;
++	viommu->ops = &riscv_viommu_ops;
++
++	return 0;
++}
++
+ static void riscv_iommu_get_resv_regions(struct device *dev, struct list_head *head)
+ {
+ 	struct iommu_resv_region *region;
+@@ -1930,6 +1988,8 @@ static const struct iommu_ops riscv_iommu_ops = {
+ 	.blocked_domain = &riscv_iommu_blocking_domain,
+ 	.release_domain = &riscv_iommu_blocking_domain,
+ 	.domain_alloc_paging_flags = riscv_iommu_domain_alloc_paging_flags,
++	.get_viommu_size = riscv_iommu_get_viommu_size,
++	.viommu_init = riscv_viommu_init,
+ 	.device_group = riscv_iommu_device_group,
+ 	.probe_device = riscv_iommu_probe_device,
+ 	.release_device	= riscv_iommu_release_device,
 -- 
 2.53.0
 
