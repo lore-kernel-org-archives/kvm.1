@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685E43F210C;
-	Thu, 15 Oct 2026 19:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BBD5293E7;
+	Thu, 15 Oct 2026 19:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792092240; cv=none; b=rYRPoR3nGlvix1COq8gP+prRsZ1B3LpxgWG+puc7DN5aL8QF1BjYoJbvMTehkXZQRCjBL4wcYbnfDW52DQHaoWLHuMOjeo8Yp/+XQ2jWTpjCyc3iZ4faSg59b6bmmbn+4rh0BAm0zNRuvrNiIBCMPrssy272xl8mCFdgGGxOdLk=
+	t=1792092242; cv=none; b=KcMBjObi8ySspaAJmI2GwIIZ8zMdEklCPEAFW1teiH6tilBHlpGg0BE6OmcxoBPFPsZAdMqzTd4dEiI5fzMNTO/WdrHClrtU5t/hhbgCw/NE0RqaaMxZWoTupegalvbK0SedOaXNv3kDNbrRRvi/VT7iKdAIdsC6erxiIipC3so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792092240; c=relaxed/simple;
-	bh=drnsMmlo0/kFdXnXsEi9yVwfZa26x6ahZwO3Xr9d1FU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ff4EgEsWNwFfKE5u07DT6iHLVPMnm95R3J1HBnc+cbviJUjUCvgIHpohfhBiOa3/FjTw6VM9h97I9+KsgiVyBJ74ZL3Eq2MNnNgXDOvRShj8qHT4ch1h50YDRLIDCrQz0lo+Pr00uSxQla9/uQyVEXxpnw8ndlT8QNK2OQjNeBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i4aI9BJ5; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1792092242; c=relaxed/simple;
+	bh=xi3oUxjHN6pE1Vs1NjxJG9OYu8VNWF2CL9fI21oI804=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FUpmsiHgGMJ4WMHTCz5J4cCUFoO+/4WnP7xQuQqG5WZudeNBumGUul4SQklYua++jSTjCmrR7i6lS17kn1d2F5RSmk5DcNfI4DAn/lRH97MPFPxEJ0AHXF7ZpqYpY2IBdrjd/TpQnyn8wY2pRpqvTvZDMNFVqt5tiEKkMllbL4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PSFXZlE7; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i4aI9BJ5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PSFXZlE7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792092239; x=1823628239;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=drnsMmlo0/kFdXnXsEi9yVwfZa26x6ahZwO3Xr9d1FU=;
-  b=i4aI9BJ50un5UThSwyvdPKfC+jHwq8R6e0CaZnQBrsx1gg+kYmEzNETR
-   y17fvQX5Jk5yqeLQmEJ89fozRt3J+MFR+50omtpPfpCWyWnuCvc7iqnlj
-   HFnBUbcgbkMnF3qMEj9HZsAB5BnN5A6WPTtYMH3Au/6aqoyGwj0wqkEd8
-   b0Xkke1A6BZjpAcirVuXLLYR+wFYEEcsI+STCFo+YNhBJMUdomCHV2tPy
-   uoiiWYtUX90y68XY+lGwHI4uvhbqtuz8Xhpl9poGDJgiF3gjpYAKY2kRT
-   vL+Kxx5sulwo8ZL53ZTxvNU5j7fGvsnf9XxDvdTrQTEVHxgpy6nummIYs
-   Q==;
-X-CSE-ConnectionGUID: CVqwDo5OQjaXUEhsBWlk+w==
-X-CSE-MsgGUID: ZiCdX+1YQf+pat12Vj4+MQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="764806"
+  t=1792092241; x=1823628241;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xi3oUxjHN6pE1Vs1NjxJG9OYu8VNWF2CL9fI21oI804=;
+  b=PSFXZlE7qxo8B52469DMOVcAStixKxmMPKWD4/wWU01NOBTj9qSt9BSl
+   O58OajgasSyXFSj59NIq+82KaDV3Pu9vZSOvjKYME8oHpe+tdx5LXx4td
+   aZwTBnONg0H4NcYvKh+ooM+SXVtKitFalVCXdqGBZBVRu1dy9YzCu85AV
+   3yHIkitmPYnpBMl2nhuUD/HFzxTXgMCCUSaR8d7+9jTK/sHVLUtwaOWUd
+   a4C3NoB9FQqUwmxZeZKSxv/pZIq4KogaBSxEcGIowNukOVzMSkT/yrTjy
+   oOpvUg8m8XOujbd5qXNyewYrSG53cQzmQjDOjdrgPus4dQB97OxmKBhsG
+   g==;
+X-CSE-ConnectionGUID: h16n83zDSDiHgRl1P5qZxQ==
+X-CSE-MsgGUID: 6Wt3VEhtTOKHpOsw5G8ngw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="764813"
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="764806"
+   d="scan'208";a="764813"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:17:18 -0700
-X-CSE-ConnectionGUID: ASKiAG61QHKF/3NpHubQPA==
-X-CSE-MsgGUID: ROs+S65cTaW9fmba6Ogvxw==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:17:19 -0700
+X-CSE-ConnectionGUID: KjXOJ5bFQVWrvLHkNMG0zw==
+X-CSE-MsgGUID: jqvB3lNRRRevmF0s7O3Npg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1836892"
+   d="scan'208";a="1836895"
 Received: from rpedgeco-desk.jf.intel.com ([10.24.81.149])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:17:16 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:17:17 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: pbonzini@redhat.com,
 	dave.hansen@intel.com,
@@ -59,10 +60,12 @@ To: pbonzini@redhat.com,
 	yilun.xu@linux.intel.com,
 	tony.lindgren@linux.intel.com
 Cc: rick.p.edgecombe@intel.com
-Subject: [PATCH v2 0/2] Drop unneeded cache flushing
-Date: Thu, 15 Oct 2026 12:17:08 -0700
-Message-ID: <20261015191710.3632302-1-rick.p.edgecombe@intel.com>
+Subject: [PATCH v2 1/2] x86/virt/tdx: Drop tdx_clflush_*()
+Date: Thu, 15 Oct 2026 12:17:09 -0700
+Message-ID: <20261015191710.3632302-2-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261015191710.3632302-1-rick.p.edgecombe@intel.com>
+References: <20261015191710.3632302-1-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,59 +74,125 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi TDX developers,
+The TDX module exposes a bit (CLFLUSH_BEFORE_ALLOC) to say whether it
+requires certain types of memory to be flushed from the cache before being
+handed to the TDX module.
 
-Can I get another round of review before we ask Dave and Sean to look at
-it? I'd like to pick up a few more RB tags.
+During the initial TDX upstreaming, it was decided it would be simplest
+to just always flush rather than checking for the bit and having
+conditional logic. So based on the TDX docs:
+  When allocating a memory page to be used as TD private memory or TD
+  control structure page, the host VMM is required to ensure that none of
+  the cache lines associated with the page is in a MODIFIED state.
 
--- Summary --
+...currently the kernel flushes before handing over private memory and TD
+control structure pages.
 
-In the early days of TDX it was assumed the HW would need some cache 
-flushing help around transitioning memory between KeyIDs, and so TDX arch 
-was designed to specify how the VMM needed to help the module perform 
-this. But it turned out the HW was able to handle these issues without SW 
-help. For some reason the TDX arch around performing the flushes remained. 
-Now the TDX arch is getting fixed and Linux can remove the code that was 
-helping perform this unneeded cache flushing. The changes will appear in 
-a future documentation update.
+The CLFLUSH_BEFORE_ALLOC bit has never been set by any TDX module, so this
+flushing has yet to be needed in practice. Going forward, the TDX docs will
+be updated to clarify that actually CLFLUSH_BEFORE_ALLOC will *never* be
+set in any future TDX module either.
 
-As some more context, while this is nice cleanup as is, merging these 
-patches will let us drop 2 patches out of the TDX huge pages series. Then 
-that series doesn't need to modify these flushes to work with TDX huge 
-pages. It also addresses Kiryl's comment about the cache flushing in 
-tdh_mem_page_aug() not respecting the 'level' arg, or warning that non-4KB 
-sizes are not supported.[0]
+So make code even simpler by just deleting all the CLFLUSH_BEFORE_ALLOC
+handling.
 
--- Changes since v1 --
+AI was used to review the change.
 
-Yilun asked if we could also remove the WBINVD calls around kexec and TDX
-setup error paths. It seems the answer is likely yes, but not confirmed
-enough for me yet. So I left that change for the future. Besides, it
-doesn't have the same TDX huge page intersection.
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+---
+v2:
+ - Log verbiage (Yan)
+ - Verbiage around "in practice" (Tony)
+ - Clarify what flows require CLFLUSH_BEFORE_ALLOC (Nikolay)
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 23 -----------------------
+ 1 file changed, 23 deletions(-)
 
-Yilun's comment about cleaning up the TDR reclaim after the changes in 
-patch 2 was a bit bigger that I expected. I really debated whether to 
-split that out. But it wasn't very feasible to do it as a prep patch, so I 
-left it as one big bigger. Really debated doing that, or an follow up 
-cleanup patch. Opinions requested.
-
-Based on v7.3-rc7.
-
-Thanks,
-
-Rick
-
-
-Rick Edgecombe (2):
-  x86/virt/tdx: Drop tdx_clflush_*()
-  x86/virt/tdx: Drop tdh_phymem_page_wbinvd_*()
-
- arch/x86/include/asm/tdx.h  |  2 --
- arch/x86/kvm/vmx/tdx.c      | 40 +++++-------------------------
- arch/x86/virt/vmx/tdx/tdx.c | 49 -------------------------------------
- arch/x86/virt/vmx/tdx/tdx.h |  1 -
- 4 files changed, 6 insertions(+), 86 deletions(-)
-
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 1b9ff749dd8e0..8f9d3588f200f 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1619,22 +1619,6 @@ static inline u64 tdx_tdr_pa(struct tdx_td *td)
+ 	return page_to_phys(td->tdr_page);
+ }
+ 
+-/*
+- * The TDX module exposes a CLFLUSH_BEFORE_ALLOC bit to specify whether
+- * a CLFLUSH of pages is required before handing them to the TDX module.
+- * Be conservative and make the code simpler by doing the CLFLUSH
+- * unconditionally.
+- */
+-static void tdx_clflush_page(struct page *page)
+-{
+-	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
+-}
+-
+-static void tdx_clflush_pfn(kvm_pfn_t pfn)
+-{
+-	clflush_cache_range(__va(PFN_PHYS(pfn)), PAGE_SIZE);
+-}
+-
+ static int pg_level_to_tdx_sept_level(enum pg_level level)
+ {
+ 	WARN_ON_ONCE(level == PG_LEVEL_NONE);
+@@ -1656,7 +1640,6 @@ u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page)
+ 		.rdx = tdx_tdr_pa(td),
+ 	};
+ 
+-	tdx_clflush_page(tdcs_page);
+ 	return seamcall(TDH_MNG_ADDCX, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_mng_addcx);
+@@ -1672,7 +1655,6 @@ u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, kvm_pfn_t pfn, struct page *sou
+ 	};
+ 	u64 ret;
+ 
+-	tdx_clflush_pfn(pfn);
+ 	ret = seamcall_ret(TDH_MEM_PAGE_ADD, &args);
+ 
+ 	*ext_err1 = args.rcx;
+@@ -1692,7 +1674,6 @@ u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, enum pg_level level,
+ 	};
+ 	u64 ret;
+ 
+-	tdx_clflush_page(page);
+ 	ret = seamcall_ret(TDH_MEM_SEPT_ADD, &args);
+ 
+ 	*ext_err1 = args.rcx;
+@@ -1709,7 +1690,6 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+ 		.rdx = vp->tdvpr_pa,
+ 	};
+ 
+-	tdx_clflush_page(tdcx_page);
+ 	return seamcall(TDH_VP_ADDCX, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_addcx);
+@@ -1724,7 +1704,6 @@ u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, enum pg_level level,
+ 	};
+ 	u64 ret;
+ 
+-	tdx_clflush_pfn(pfn);
+ 	ret = seamcall_ret(TDH_MEM_PAGE_AUG, &args);
+ 
+ 	*ext_err1 = args.rcx;
+@@ -1769,7 +1748,6 @@ u64 tdh_mng_create(struct tdx_td *td, u16 hkid)
+ 		.rdx = hkid,
+ 	};
+ 
+-	tdx_clflush_page(td->tdr_page);
+ 	return seamcall(TDH_MNG_CREATE, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_mng_create);
+@@ -1781,7 +1759,6 @@ u64 tdh_vp_create(struct tdx_td *td, struct tdx_vp *vp)
+ 		.rdx = tdx_tdr_pa(td),
+ 	};
+ 
+-	tdx_clflush_page(vp->tdvpr_page);
+ 	return seamcall(TDH_VP_CREATE, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_create);
 -- 
 2.55.0
 
