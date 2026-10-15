@@ -1,168 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D09648A8AC
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 08:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C708C48EBE0;
+	Thu, 15 Oct 2026 08:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792053106; cv=none; b=ZTukvD2U1sGbYT06ITn0+aiDLv9LaPc3F27JnWu1TgfSVyOk9jq98C4NkOT99gXSUAd+m8EqajpubTvg6WXkdHvOCCCKS2Am377GQbDRMQn+8Nn0oPgCQpZ6saqsfM/Sk7giuZbw9WJXM7uNXzr2Ozrt3RlhMGMqpWRaRFIxLyw=
+	t=1792053347; cv=none; b=BFYeVHCx5ivdp5sL+H7FmWSp3WnfscOT8CFEqn3MiXJ/MM744lMtbD7F2subxLKG8a5CLX8hVeM+BSwezatd5zQvOItN6ym0v7pUytSXTaQJDsDCCrYLNgJbufQrHJCkaaEodylnsDAPRR2CrnIwTuUXkTM+wo5b6lCwB0ugm78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792053106; c=relaxed/simple;
-	bh=+5OhdJLKSbRNoRiwvXpio5W1d+tZemFWqHA9zhT9EN8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtQFbSxktSybZsECufkJt6whBVqbaljvCdhp1HvyNkII4tGM8T+XNjBYZXyEOP0c6AB+X23SIZ1hAIxStyESQ57UJHj+epLtmMLAwcJyiid8FIXxy0X4Hu8xdndxfc1Zgn5ol+c2DSKpflHR95G31x3AvoQaD8BRTDAARZ0FRMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MSShRQ/m; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MXPXI53l; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792053347; c=relaxed/simple;
+	bh=jsAyffWac3S0pjRkbN+9fHBRvD+lojAJez5nsr6g6FI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfbhIjJbRLjR3v76UVasESt7qDs656jVf152mI+HHjaaegOmjzGG0B29fij8JpCQqDXC6vnzJ5LOcAybXd/KdN640EfwGY5NQPMWkRbW0MKg8IWFljA0sYiqRVe7l7LiKMPZgSt30L6T8LqlQ+f+JxTLmWplmf7EwIiN9vmc9Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QvRJk11d; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MSShRQ/m";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MXPXI53l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792053103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m0fSuS85qjgfYBkcBtEXHUunAA4roYAXdy4Psad89UE=;
-	b=MSShRQ/mS0gZF9h532aIYI7PQTsi9job5lfmcgEyl/FvDKCXSOvLw7pEj2Vk9gK/K4AoFg
-	A+5I/seC8yaCEEzbumU+VPffaBaKBJWYTtZthGYDArtsdpetfSPTmr2FfBHy9nhnCGArWq
-	215A/Dmdn4SAVF6rKYsFpZL0AbeUAIY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-zrHRJl8yNl-exC81pMRmPA-1; Thu, 15 Oct 2026 08:31:35 +0000
-X-MC-Unique: zrHRJl8yNl-exC81pMRmPA-1
-X-Mimecast-MFC-AGG-ID: zrHRJl8yNl-exC81pMRmPA_1792053094
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a16fefb7acso39293155e9.0
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 01:31:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792053094; x=1792657894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m0fSuS85qjgfYBkcBtEXHUunAA4roYAXdy4Psad89UE=;
-        b=MXPXI53l53KydYPIdNVRtFNFQW9G8lE6k18M7qoEjROur+1bui03f7Iez/lExQeJsM
-         z3cGbyhObnSnSToqn6WZ1Ht+8h0uL0ctwIUnlca/Yyz/1gJFhNnA8+N5Yrzcdmo1WPu5
-         qkDdbyPc+9jdNAjW8044lRYt30wRIdikRhf+EAO2akDMs9b5/68CgUwsfinr4PPl8q4X
-         LeDHEREy6ddyneDTKVe0xxw7sh8DFdv58nKrYVF6F/ll2VDfJ93D468FCUpL6pkLZlX6
-         uHMtbELuvm+SuLug892p/9O9U4y50+CfbzQATpbzHeM8V1M0neq7Sjls1yKOpqXRUPkz
-         wZ0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792053094; x=1792657894;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m0fSuS85qjgfYBkcBtEXHUunAA4roYAXdy4Psad89UE=;
-        b=DYoB3xkHSBMIbPJccn6tGD286uCZBuSBz/n17iBs69SBTkoSdI2arg4aqW/ymaab+K
-         Ign+LrmOgJNqXJdamrn03V47UU2F7B4pbq99jS4B3OCitGKWoEfEOaaXB2Qv09wOyGDp
-         jXpmMNXNM+pWc9PCvhGIGfr6ys+Fy1pg4diR9P/VE9y9jg5yiO6te+ht77yfrNa+WhgZ
-         F6oa9KIrL2nLxIBmfZxJwWvl9aT5fpEuiHHSt7qTQfsPkIJn8h0qUbS1G4sQC9e8wXT2
-         w++mWO42E6z39NOJpSu+hQFWkqqztklqBZ7oi7MlnoneFLq8gtuZfcbI2YnjSdf7ds+T
-         wpuA==
-X-Forwarded-Encrypted: i=1; AKwUvByCZFYf+O4ANetWJOll6XmYpXT2CoGBHi9+MhA1C7B7aowoTfrXw7Xz/ooLnorYtzSQZ5I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLDl8xnpFWg2L6RDqZ8R6m6dBIJ4fVFX77+41Gi0tG7m3YgKuKd
-	pISx6jV4d896vZivIRzyMN+CMoXMtoc1Etj2EVaCi6mnU/Cd6pw8ytsw+AAhwdnkAV8EX35Z1jc
-	z2gfqz2ytHQf8PkWWUQSVt9PK1P912GwAHhVCheTLoLP0RHc31nG/xg==
-X-Gm-Gg: AYBFou0KHmbrnXjgbOBLMeiVf8lZlddKg+1yln7GQIu8LBU8VCkoHtBYYgmTMm+vY49
-	fBRX/ZFIgS1uay1Wzw2xvW18NytdeppuaaFwDyJqfUfeaSeA4dDY0I3bnK9Lzw3FTZGrzQ9EsYf
-	EcsX10inN6bjx1ttE7RsdMshpZ2efagrsDXCjkEPdeVGU0j/DG7DwXwwobb0HZSR4R1WI5nYcnW
-	6+v1Cmk4YZlhoFJMKpkw1bZKEG9wj//MTP6VEi9vB44a40DzKv3Dg+f2ym8VJBzbSrchDKAUfvU
-	o133H3HmgC/j+fG03iw7k3e9rsSBlrX4bNi6CM46+yx8aR9uQ2mD1iEmqF1p0ttQBxW/c5HVRfG
-	3CuqYkVmKWab1p0MRK6KZZmJgyRfEi3ymf5k/ZVsOCQU1cBvN48U9c5H0frX3ghRvFT8DUA1NaY
-	e5qdJM
-X-Received: by 2002:a05:600c:5391:b0:49e:7a10:1b71 with SMTP id 5b1f17b1804b1-4a18e4a003cmr365070745e9.11.1792053094356;
-        Thu, 15 Oct 2026 01:31:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:5391:b0:49e:7a10:1b71 with SMTP id 5b1f17b1804b1-4a18e4a003cmr365070425e9.11.1792053093920;
-        Thu, 15 Oct 2026 01:31:33 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.82.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd972affsm51496405e9.2.2026.10.15.01.31.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 01:31:32 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Amirmohammad Eftekhar <amirmohammadeftekhar@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	stable@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 1/2] KVM: nVMX: Reset MMU back to the root MMU if loading L2 state fails for !VM-Entry
-Date: Thu, 15 Oct 2026 10:31:22 +0200
-Message-ID: <20261015083123.790030-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261015083123.790030-1-pbonzini@redhat.com>
-References: <20261015083123.790030-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QvRJk11d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792053345; x=1823589345;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jsAyffWac3S0pjRkbN+9fHBRvD+lojAJez5nsr6g6FI=;
+  b=QvRJk11dywpf9MXcufZTXtWPafFj1SrhrE79WJsCxrWjnh04xRI3ec9x
+   cGuAIY8L0fhk3VTwYgWa5Otunx+EZquvI+2RuAmBx4l22ZXQf9lkoNwYv
+   X/3X5heHIqveVDC2+FPtUiAVmK2c3JvVzyX/IzDxUMJkJu/KvI8XuN4NK
+   LJTEJdtydrHHGloC0wgkSvKBLRFoZtZy8g8/4qeer3STEXske+mQHjGky
+   WeyPIwfflePXM8Pa4x28krrbXjqNKkTa0W6XquLps9PboHWE0u/dOlU5P
+   VIPsQkoCRbE+Rgwsq06oD6iBMPQ5xPeBmA8Lu+pVAVr4MX34o0ud2vSJ4
+   A==;
+X-CSE-ConnectionGUID: kg0rBLqrRWeZTXatOzmKng==
+X-CSE-MsgGUID: vztgaAj0S6OPHBshwV1T/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="803655"
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="803655"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 01:35:44 -0700
+X-CSE-ConnectionGUID: rKUolCNlT4WsZ8d+hbkpnw==
+X-CSE-MsgGUID: xIyRtnMWREKJj3Y09eEkeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="1525166"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa007.jf.intel.com with ESMTP; 15 Oct 2026 01:35:42 -0700
+Date: Thu, 15 Oct 2026 16:31:31 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
+ capable IOMMUs
+Message-ID: <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050>
+References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+ <20261015010705.1973284-5-baolu.lu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015010705.1973284-5-baolu.lu@linux.intel.com>
 
-From: Amirmohammad Eftekhar <amirmohammadeftekhar@gmail.com>
+On Thu, Oct 15, 2026 at 09:07:05AM +0800, Lu Baolu wrote:
+> Assigning a device to a TD for private memory access requires that DMA
+> from that device be translated by structures the TDX module controls.
+> An Intel IOMMU that implements the trusted DMA extension provides a
+> parallel set of translation and invalidation resources for this purpose.
+> These become usable only after the TDX module has placed the IOMMU into
+> TDX mode, at which point the trusted resources belong exclusively to the
 
-Reset the vCPU's MMU pointer back to the root MMU if loading L2 state fails
-in the "not from VM-Entry" case, i.e. when emulating RSM or handling
-KVM_SET_NESTED_STATE.  Failure to unwind the MMU pointer results in KVM
-trying to run L1 with a nested MMU, and is especially problematic if the
-vCPU manages to free its nested state before the VM crashes.  Constructing
-the root for a nested EPT MMU goes through vmcs12, which is dynamically
-allocated/freed when nVMX is enabled/disabled.  And so if the nested state
-is freed with the MMU still pointing at the nested MMU, KVM will hit a NULL
-pointer deref when attempting to get L1=>L2 EPTP.
+I think at this point we first need to reason about the connection between
+IOMMU TDX mode and the PCIe link encryption. The device private memory
+access can be placed in cover-letter as the big picture of TDISP.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000078
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 114a2d067 P4D 111743067 PUD 11141f067 PMD 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 20 UID: 1000 PID: 1272 Comm: nested_tdp_faul Not tainted 7.3.0-rc4-8c89f11d1a99b-sink-vm #1914 PREEMPTLAZY
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:nested_ept_get_eptp+0xb/0x10 [kvm_intel]
-  Call Trace:
-   <TASK>
-   kvm_mmu_load+0xcd/0x870 [kvm]
-   kvm_arch_vcpu_ioctl_run+0x18f5/0x1f80 [kvm]
-   kvm_vcpu_ioctl+0x2c7/0x970 [kvm]
-   __x64_sys_ioctl+0x90/0xd0
-   do_syscall_64+0x9c/0x4d0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x47491b
-   </TASK>
-  Modules linked in: kvm_intel kvm irqbypass
-  CR2: 0000000000000078
-  ---[ end trace 0000000000000000 ]---
-  RIP: 0010:nested_ept_get_eptp+0xb/0x10 [kvm_intel]
+I can see we may need to touch a bit about trusted DMA translation at
+this phase, because the TDH.IOMMU.SETUP requires the VMM to provide 2
+contiguous Invalidation Queue buffers, which leaks the trusted DMA
+internals a bit. But I feel this should not be a first topic.
 
-Cc: David Woodhouse <dwmw2@infradead.org>
-Fixes: 72e9cbdb4338 ("KVM: nVMX: fix SMI injection in guest mode")
-Fixes: 8fcc4b5923af ("kvm: nVMX: Introduce KVM_CAP_NESTED_STATE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Amirmohammad Eftekhar <amirmohammadeftekhar@gmail.com>
-[sean: write changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://patch.msgid.link/20261001214356.3825100-2-seanjc@google.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/vmx/nested.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> TDX module, while the host retains control of the regular translation
+> path. The transition is performed by TDH.IOMMU.SETUP, which takes the
+> register base address of the target IOMMU together with a parameter
+> page describing memory the host has allocated for the TDX module to
+> manage trusted DMA on that unit.
+> 
+> Perform this initialization from the tdx-host driver by walking every
+> IOMMU unit through dmar_tdxcs_iommu_init() and initialize the ones whose
+> IOMMU implements the extension.
+> 
+> For each such unit the driver builds the IOMMU_MT parameter layout that
+> TDH.IOMMU.SETUP expects: two contiguous buffers for the trusted
+> invalidation queue, followed by the number of metadata pages the TDX
+> module reports in its global metadata. The pages are allocated on the
+> NUMA node of the IOMMU. The root page is passed to the TDX module, which
+> returns an identifier naming the initialized IOMMU. That identifier and
+> the pages backing it are tracked so the state can be released later.
+> 
+> Releasing the state is the reverse: TDH.IOMMU.CLEAR tears down the
+> trusted DMA resources established by TDH.IOMMU.SETUP, after which the
+> metadata pages can be freed and the VT-d driver told to lift the domain
+> ID restriction applied during initialization. If TDH.IOMMU.CLEAR fails
+> the pages are not freed, as the TDX module may still hold references to
+> them.
+> 
+> Rename tdx-host.c to main.c and build the module from a tdx-host-y
+> object list instead. New functionality can then be added as separate
+> source files instead of putting everything in a single file.
+> 
+> The code is built only when its dependencies are present, gated by
+> CONFIG_TDX_CONNECT.
+> 
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> ---
+>  drivers/virt/coco/tdx-host/Kconfig            |   6 +
+>  drivers/virt/coco/tdx-host/Makefile           |   3 +
+>  drivers/virt/coco/tdx-host/private.h          |  33 +++
+>  drivers/virt/coco/tdx-host/iommu.c            | 255 ++++++++++++++++++
+>  .../virt/coco/tdx-host/{tdx-host.c => main.c} |  21 +-
+>  5 files changed, 317 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/virt/coco/tdx-host/private.h
+>  create mode 100644 drivers/virt/coco/tdx-host/iommu.c
+>  rename drivers/virt/coco/tdx-host/{tdx-host.c => main.c} (92%)
+> 
+> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+> index 57d0c01a4357..62d91d4b41fa 100644
+> --- a/drivers/virt/coco/tdx-host/Kconfig
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -4,3 +4,9 @@ config TDX_HOST_SERVICES
+>  	select FW_LOADER
+>  	select FW_UPLOAD
+>  	default m
+> +
+> +config TDX_CONNECT
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index b25216862740..5165275128fc 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3770,8 +3770,10 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- vmentry_fail_vmexit:
- 	vmx_switch_vmcs(vcpu, &vmx->vmcs01);
- 
--	if (!from_vmentry)
-+	if (!from_vmentry) {
-+		nested_ept_uninit_mmu_context(vcpu);
- 		return NVMX_VMENTRY_VMEXIT;
-+	}
- 
- 	nested_put_vmcs12_pages(vcpu);
- 
--- 
-2.56.0
+Maybe we don't need the configuration. Now we turn on all TDX features
+that Linux knows about all the time.
 
+Architecturally, TDX Connect is an default-off feature. But Linux enables
+it regardlessly. It is questionable we then have a configuration that
+disable the driver that supports the feature.
+
+> +	def_bool y
+> +	depends on TDX_HOST_SERVICES
+> +	depends on PCI_TSM
+> +	depends on INTEL_IOMMU
+
+[..]
+
+> +static int tdx_iommu_setup(struct dmar_drhd_unit *drhd)
+> +{
+> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
+> +	unsigned int mt_page_count = tdx_sysinfo->tdx_connect.iommu_mt_page_count;
+> +	struct tdx_iommu_state *state;
+> +	u64 r, tdx_iommu_id;
+> +	int ret;
+> +
+> +	struct tdx_iommu_state *iommu_state __free(kfree) = kzalloc_obj(*iommu_state);
+> +	if (!iommu_state)
+> +		return -ENOMEM;
+> +
+> +	struct tdx_iommu_pages *iommu_mt __free(free_mt_pages) =
+> +			tdx_iommu_alloc_mt_pages(drhd, mt_page_count);
+> +	if (!iommu_mt)
+> +		return -ENOMEM;
+> +
+> +	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt->root, &tdx_iommu_id);
+> +	/* TDX Extension is not supported on this IOMMU. Nothing to do. */
+> +	if ((r & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_INVALID)
+> +		return -EOPNOTSUPP;
+
+Enable all IOMMUs regardless brings this problem. We need to try on
+every IOMMU, check the TDX error code to see if it is not supported (then
+skip) or failed. It's also sad to me that -EOPNOTSUPP is defined as the
+API between tdx-host and intel iommu driver.
+
+An alternative could be, bringing up one IOMMU when an associated
+device requests link encryption. Then a no-tdx-support iommu fails the
+encryption request naturally.
+
+Open to discussion.
