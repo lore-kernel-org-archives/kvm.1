@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E49151EDF2;
-	Thu, 15 Oct 2026 20:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE0353E30C;
+	Thu, 15 Oct 2026 20:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792095720; cv=none; b=GmUYI3UT9rs8qHXWaFYPZCL4E3a3lwrhqZx3EKFHMqwfN5OBA/5/0vN/Qub7V6EzxqbB3trITff4+LFTyH+TajlAlkcGolbjxLDrowwgugMrYrn+XMghRNSZVmCjiNTLqJO4eRbF4eyAF8saY3i3azmsoTtMVduNCRu32bWYC44=
+	t=1792095723; cv=none; b=BaR5tz6Pi2eliZINdUffhaDZFzV7+3PMa9ZstTgUbASUbgpvZ4cpS/rgTgZ1OpZSeluTgotUOZx4LU6wvtKTz2b9SjyV557Z9ZtdqZXKJwVl6U2QNzBuo4wy2qyNWjvRW6RUQLcegGkuxgb57OxdLuFLOhCVgZRxQ5dzHN4c+k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792095720; c=relaxed/simple;
-	bh=wOuDJ6WsP6oCgfBBWAx/7lYpc+JVh022Ql1ySHocHI8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rlo0t3GvjE9ZXSD/J1vH8d+CWnFoeTV+ov98U+9bE/yRbN4kKNIAHvVJvA0lJhA5B6XLxDTHUtGhKZRjBqNQBudjQ1zWk2F5SY8alKPmI+L/asmIQs6FXk8s4lHpoc77eDoq4mRLN48y0gVjDjbAGCgqhe6KfyOmUek/cKSoz8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IIsrsDNJ; arc=none smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1792095723; c=relaxed/simple;
+	bh=g8FXMCeHZLnxsXsspLx7xhXGvU/3I1ISfwf1ghL1qOU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AMvFLhBrisd1LhM4rPRh54JMJzfDI+zESCaGHL21iz6eixGx4AfTe8E9kJVo3aHX3Ju/jW5o5zYwrv5oLx+jVm1GJDdk8VngSuMGZdAodldpaBaVX31V6fiz8yth9WscNOPS8Ecvg9Cqwdme+PIPCpvSbYKlrdzH5jUvp08kcg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f4xVxxP5; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IIsrsDNJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f4xVxxP5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792095719; x=1823631719;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wOuDJ6WsP6oCgfBBWAx/7lYpc+JVh022Ql1ySHocHI8=;
-  b=IIsrsDNJPdDjTOuSMxXmitIQDxBfDE27g8uIW0JQUsFPtPxx3N3XdgLe
-   QDNXackys4vlq29Wmoz8Bs+/9cWLLnjQA2c0me6CNhnwHyx4Wik6yXhRe
-   ERc1gwfhZx1VJpRXukwckhrMpi3D5iBeRvUYwvrtJLJSpdOnX30V+Rfie
-   UAgUt7a11aYtLQ2Qztf5T20BSUHlyvRWD9Ic1oK2K6qOGcDUFkB6afQJp
-   bw5kTnroqJFAX0cZh4QCvQ58iUTX6FuFC29AMIpf3Wav1fkpcHbJLxWH7
-   EkCQGG4JzhWCjmFcPOrdGtj/jymdukjf59uoz6WvWzAcLGnTnKLS77Bak
+  t=1792095721; x=1823631721;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=g8FXMCeHZLnxsXsspLx7xhXGvU/3I1ISfwf1ghL1qOU=;
+  b=f4xVxxP5RtxrGBOi2tMDXcxx9Dsv0WUHBCB2Vd+OFX4mWvKTYLy4pp83
+   xpXcY2jOY1RdG9ai/WsPMO1fafxj+FWiHPGjzbrv/i56qacgGcNtmbPlc
+   o8oTsoqugx0QsGTX3Ss4I72c+X7vXdSnjlqp9ibkqqYKXAJSOnPc0iJws
+   i3QoIungUsdGt7EMLZVpaQXYvS5bAfrOElOdw3TBJunggy3dQ0a+dqzHD
+   CXTPmzUnI4xeETzNYAlpgxPdlQCQUrYYQ9MQ0FwMHxcAmwQ7zVYX66hJo
+   HpYRujlzz8zesHOxSyzI735YIDoUN6TTA7KwMEj58sbxkkmKvtwXEKzJ3
    w==;
-X-CSE-ConnectionGUID: UissLOHHRkWiMGIcKDjXhw==
-X-CSE-MsgGUID: h/NyvfrXRW6oHuMO8F86gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="911073"
+X-CSE-ConnectionGUID: +hXA/PnaQj6RAb8o1CHdow==
+X-CSE-MsgGUID: F1vOwYSXTFObb0EKV+3rIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="911092"
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="911073"
+   d="scan'208";a="911092"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 13:21:58 -0700
-X-CSE-ConnectionGUID: V38FKx9ORe2QUdfiBFhd0Q==
-X-CSE-MsgGUID: UFC6PtS3Q4aarAop6//X3Q==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 13:21:59 -0700
+X-CSE-ConnectionGUID: 0tS4RtH7S4Sp5oMXFjBX7A==
+X-CSE-MsgGUID: I4RJ5Fu/QTmlH3tqH4s1Ug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1844427"
+   d="scan'208";a="1844435"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa003.fm.intel.com with ESMTP; 15 Oct 2026 13:21:57 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 15 Oct 2026 13:21:58 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -69,10 +70,12 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Sohil Mehta <sohil.mehta@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 0/6] KVM: x86: Add LASS virtualization support
-Date: Thu, 15 Oct 2026 13:19:34 -0700
-Message-ID: <20261015201940.1655956-1-sohil.mehta@intel.com>
+Subject: [PATCH v5 2/6] KVM: x86: Use linear_read_system() to read the TSS I/O bitmap
+Date: Thu, 15 Oct 2026 13:19:36 -0700
+Message-ID: <20261015201940.1655956-3-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261015201940.1655956-1-sohil.mehta@intel.com>
+References: <20261015201940.1655956-1-sohil.mehta@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,137 +84,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Linear Address Space Separation (LASS) is a security feature that blocks
-accesses across the user/kernel boundary based on bit 63 of the linear
-address alone, before any page walk is performed. Host support for LASS
-has been merged [1][2]. This series adds the KVM virtualization support.
+TSS I/O permission bitmap reads are implicit supervisor accesses which
+are subject to Linear Address Space Separation (LASS) enforcement.
+Though highly unlikely, if a guest configures a TSS base in the user
+half, hardware would raise a #GP on access when LASS is enabled.
 
-Patches
--------
-I am posting a refreshed version because kvm-x86/next has advanced and some
-patches needed to be rebased. v5 contains only a couple of minor changes.
-Overall, the series is ready for maintainer review (and potential inclusion
-in the next cycle).
+Currently, the emulator reads the I/O permission bitmap from the TSS by
+calling read_std() directly which is inconsistent with other implicit
+accesses in the emulator such as IDT reads, GDT/LDT reads and TSS reads
+during task switch.
 
-Changes in v5
--------------
- - Rebased the patches onto kvm-x86/next (kvm-x86-next-2026.10.13)
- - Added a function comment to vmx_is_lass_violation() (patch 4)
- - Dropped the LASS x86 selftest (already posted separately [3])
- - Avoided the LASS specific KVM CR4 write test (patch 6)
- - Replaced Binbin's SoBs with Reviewed-bys
- - Picked up review and test tags
+An upcoming change will add a check to linear_read_system() to catch
+LASS violations. For consistency as well as to keep LASS enforcement
+centralized, switch both I/O bitmap reads to linear_read_system().
 
-v4: https://lore.kernel.org/all/20260806011536.4172258-1-sohil.mehta@intel.com/
+Note, emulator_io_port_access_allowed() doesn't propagate faults, so
+even though linear_read_system() will set the exception details they
+will be ignored.
 
-Background
-----------
-The host support series [4] covers the motivation, base enforcement
-mechanism, kernel toggling of RFLAGS and CR4.LASS, and the userspace
-exception notifications. Here's a brief summary of the SDM bits [5] that
-affects KVM support.
+While at it, fix an off-by-one in the I/O bitmap bounds check to account
+for the 2-byte read and ensure both bytes are within the TSS limit. The
+SDM mandates a trailing 0xFF byte after the bitmap so any out-of-bounds
+access would be all 1s (denying access). Make the change primarily to
+ensure hardware fidelity. A correctly configured OS will not run into
+this issue.
 
-When LASS is enabled, the CPU applies a violation check using bit 63 to
-every access to a linear address prior to page walks. A user-mode access
-to a supervisor address, or a supervisor-mode access to a user address,
-typically raises #GP (or #SS in rare cases) instead of a #PF that
-SMAP/SMEP alone would produce. LASS takes effect only in IA-32e mode.
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Tested-by: Kishen Maloor <kishen.maloor@intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+---
+v5:
+ - Picked up Tested-by tags
 
-Enforcement for supervisor-mode data accesses additionally requires SMAP
-to be enabled, and is suppressed for explicit accesses when RFLAGS.AC=1.
-Linear addresses used for TLB invalidation (INVLPG, INVPCID, INVVPID)
-are not subject to LASS. Unlike canonicality checks, LASS only applies
-to code fetches and not branch targets.
+v4:
+- New patch
 
-Note, LASS is now part of the SDM instead of the ISE. There are minor
-changes to the wording but nothing substantial. It also includes a
-clarification that the relative ordering of LASS and canonicality checks
-is not defined and cannot be determined by software.
+There could be a pre-existing issue here. It is unlikely that any OS
+demand-pages the I/O bitmap portion of the TSS. But if it does, the #PF
+details could get lost and the guest would get a #GP instead of a
+restartable #PF. Propagating the #PF to the callers is a larger change
+that is beyond the scope of this series.
+---
+ arch/x86/kvm/emulate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-KVM support
------------
-Hardware enforces LASS on guest code that runs natively, so KVM mostly needs
-to let the guest turn it on. The exception is instruction emulation, when KVM
-must apply the same LASS violation checks, so that emulated accesses behave
-the same way.
-
-For enabling, KVM advertises LASS to userspace, and lets the guest set
-CR4.LASS, including in nested VMX, when LASS is enumerated in its CPUID.
-
-Patch 1-4: Enhance the emulator to handle LASS violation checks.
-Patch   5: Guest CPUID and CR4 handling. Expose LASS to userspace.
-Patch   6: Extend set_sregs_test selftest for LASS.
-
-Testing
--------
-1. Basic enumeration and enabling in guest and nested environment.
-2. LASS enforcement tests (userspace + LKDTM + test kernel module)
- - Userspace access to kernel address (read, write, instr fetch)
- - Kernel access to user address (read, write, instr fetch)
- - RFLAGS.AC=1 suppression (read, write)
- - FEP tests for the above cases
-
-The x86 userspace selftest was posted separately and is under review for x86
-inclusion [3].
-
-KVM selftests and kvm-unit-tests run guest code in the lower half at CPL0, so
-enabling CR4.LASS makes the next instruction fetch a violation and
-triple-faults the guest. I used a set of LLM generated kvm-unit-tests [6] that
-overcome the limitation. Planning to clean them up and post them separately.
-
-Kishen Maloor and Farrah Chen tested v4 on Sierra Forest and Clearwater
-Forest, using the QEMU support [7] to expose LASS to the guest.
-
-Links
------
-[1]: https://lore.kernel.org/lkml/20251201231537.736899-1-dave.hansen@linux.intel.com/
-[2]: https://lore.kernel.org/lkml/20260413154235.1543087-1-dave.hansen@linux.intel.com/
-[3]: https://lore.kernel.org/lkml/20261009020025.4175228-1-sohil.mehta@intel.com/
-[4]: https://lore.kernel.org/all/20251118182911.2983253-1-sohil.mehta@intel.com/
-[5]: "Linear-Address Pre-Processing", Intel SDM (June 2026), Vol 3, Chapter 4.
-[6]: https://github.com/sohilmeh/kvm-unit-tests/tree/lass-llm
-[7]: https://lore.kernel.org/all/20260826035734.114685-1-kishen.maloor@intel.com/
-
-Previous versions
------------------
-v4: https://lore.kernel.org/all/20260806011536.4172258-1-sohil.mehta@intel.com/
-v3: https://lore.kernel.org/lkml/20230913124227.12574-1-binbin.wu@linux.intel.com/
-v2: https://lore.kernel.org/all/20230718131844.5706-1-guang.zeng@intel.com/
-v1: https://lore.kernel.org/all/20230601142309.6307-1-guang.zeng@intel.com/
-v0: https://lore.kernel.org/lkml/20230420133724.11398-1-guang.zeng@intel.com/
-
-
-Binbin Wu (1):
-  KVM: x86: Add an emulator flag to differentiate branch targets from
-    fetches
-
-Sohil Mehta (2):
-  KVM: x86: Use linear_read_system() to read the TSS I/O bitmap
-  KVM: selftests: Extend set_sregs_test to cover LASS
-
-Zeng Guang (3):
-  KVM: x86: Add LASS violation checks during instruction emulation
-  KVM: VMX: Implement LASS violation check
-  KVM: x86: Virtualize LASS and advertise support to userspace
-
- arch/x86/include/asm/kvm-x86-ops.h            |  1 +
- arch/x86/include/asm/kvm_host.h               |  2 +
- arch/x86/kvm/cpuid.c                          |  1 +
- arch/x86/kvm/emulate.c                        | 28 ++++++--
- arch/x86/kvm/kvm_emulate.h                    |  4 +-
- arch/x86/kvm/regs.h                           |  4 +-
- arch/x86/kvm/vmx/main.c                       |  1 +
- arch/x86/kvm/vmx/nested.c                     | 11 +--
- arch/x86/kvm/vmx/sgx.c                        |  3 +-
- arch/x86/kvm/vmx/vmx.c                        | 68 ++++++++++++++++++-
- arch/x86/kvm/vmx/vmx.h                        |  3 +
- arch/x86/kvm/x86.c                            |  9 ++-
- .../selftests/kvm/include/x86/processor.h     |  2 +
- .../selftests/kvm/x86/set_sregs_test.c        |  3 +
- 14 files changed, 125 insertions(+), 15 deletions(-)
-
-
-base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 15872e722af8..fbf47f5ae298 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -2555,12 +2555,12 @@ static bool emulator_io_port_access_allowed(struct x86_emulate_ctxt *ctxt,
+ #ifdef CONFIG_X86_64
+ 	base |= ((u64)base3) << 32;
+ #endif
+-	r = ops->read_std(ctxt, base + 102, &io_bitmap_ptr, 2, NULL, true);
++	r = linear_read_system(ctxt, base + 102, &io_bitmap_ptr, 2);
+ 	if (r != X86EMUL_CONTINUE)
+ 		return false;
+-	if (io_bitmap_ptr + port/8 > desc_limit_scaled(&tr_seg))
++	if (io_bitmap_ptr + port/8 + 1 > desc_limit_scaled(&tr_seg))
+ 		return false;
+-	r = ops->read_std(ctxt, base + io_bitmap_ptr + port/8, &perm, 2, NULL, true);
++	r = linear_read_system(ctxt, base + io_bitmap_ptr + port/8, &perm, 2);
+ 	if (r != X86EMUL_CONTINUE)
+ 		return false;
+ 	if ((perm >> bit_idx) & mask)
 -- 
 2.43.0
 
