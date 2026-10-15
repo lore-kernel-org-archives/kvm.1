@@ -1,125 +1,159 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ECC4052A5
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 23:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792106209; cv=pass; b=aAhQnw5a4eHCUDTdqqKDz7wYZs7Lb9rKhZQ4uMBpQ6Q2WBGyWLcVQ0nP1y4BAQtoMAY1siKYfbq5EN/SBMUmdbUwUvCO26eZQg/pYkjHSEPGfXhVxHS6G2ryDln8L38bqVIN6+Lnd0DVxcmuviR89Qjo+kQhSXVN2cSJxCqH3wU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792106209; c=relaxed/simple;
-	bh=uXzkqKblq6fQvGu8ml3Oo6m6nVdHmv3RtEL3U0hTe/o=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B338B3C1966
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 23:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792106447; cv=none; b=sBr/vG1ZQYpzxzjjvLpxYmqA7pjenCsh79qiD5RQfoyK3aC0rfKRi/Ihuh/BLM3o03yXRWt0VFJdDZgT79mw3s2ULUxxnK6S2NAJtytYq8kaL2hwf+Etg1mckT+XKoL7HWo6ScMPOBiT49spo/eUaV7aCGkDWZhwkDMnAj8T2oA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792106447; c=relaxed/simple;
+	bh=j83uMIx5Rfc2yvF68EcUoRsA11g31hIpPgYnchUqs+E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DNvxxC5t1YukpJMEsX5/H+nkYWGSYusF7dtfbCaw2HHmapuo1GGqkweqmROerzVOLnMdy0A2Avw/swFLviGR5yvuKLZS1f4XOkxphQgj3RBjb6b9jCUYhpGf+M1nywvCFxYTKA7k+kTClbgXgQrzM9fYn1Na4eJvPKTZvL4A1hE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JtS6bpoI; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=k8dZUWlQvlqCM3890501mwOOuk16ViYeF27dN7C2GgAfsjG26RJZIh+VcEpudITGHT5lSkdDpiwl91BTu8RBs8qvQO/rF7Mbjsg38vbxdd0gozWLit87EleoXPBzZgqyfxC5dmXgzD/AYHBjEZ+6Nue7O+jrG8XeJ1l6ck7x7K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDu7Okga; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JtS6bpoI"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso4882a12.0
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 16:16:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792106206; cv=none;
-        d=google.com; s=arc-20260327;
-        b=miCVDpMUC4I/GGWicwAVPVPi5TiDBPEUtykBVQUoesG33+nSmzQ+Um29AjLSpVNOiI
-         bjfXxHLUXYHdOS+bm0v2avtx+bNb9tFd6inQNoa5ugoD11uOd+iVl1IiytApJM3bcl3p
-         cnEqb6AXbWdVeh6T3RZQLB2MHYm39LnZRZU/gC2UloZHLcBz5HDnzZCC7C4VitFHVtSg
-         0p2oYuKH3rDep83KVtfwvfPPnQcT7vBjtBYptp+OaAFDdGAOF5IHtzhcyTcRQp2CTw21
-         J0IxNXK6VFoE9V0qtf10qnlMVh0qogJpFTcYUG3BaEqgPV3NmtSEcINvAxodgHmWhySj
-         8uqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uXzkqKblq6fQvGu8ml3Oo6m6nVdHmv3RtEL3U0hTe/o=;
-        fh=bDvri2rw3fFbuZIL0rZTkVEOGRyxRKQyeHEL8XL5mhI=;
-        b=FMEeJ2M5X+bEgWS3YaG+QxtvTHvEUmHBivsXw2L8drsWmDGv0teMahUExc7NA21XuY
-         o5gsZ8gi8wYFIuraj3M5kj4FClNdWETfkZdOlvg8Nz9SFOUj3X6DsswBnDid7dtfCy/v
-         84iAelZyQUNQZ1Vof69gX/QBFJ7Gag+TtV4htXQG6LNaaGjWSKJ2m4kafEL9bEUHnhpG
-         OD1sMMYc7ucd1SpWPZoOrwYxNJYO+L1mkjGiZ2zLxXMtHZFGgudU04rX95fmfjB0LBhF
-         ALMMEyvfBVxZgEkxWTTCyWHSXtqZwijQtVDyis2Dml5oQv5Yodlx5v+jdgY3Vq2REUVH
-         6OvQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792106206; x=1792711006; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uXzkqKblq6fQvGu8ml3Oo6m6nVdHmv3RtEL3U0hTe/o=;
-        b=JtS6bpoIGPX8r9KkU121Dx3KXEtRitrM9eVcCnhD6vEVlt0Q43Fu5CfhMBEfPY1LfM
-         VFxcqJ2v06EOr0E+nnbhgllJFiume4onIgZTfZKuW1Zer1fj6wujqMdWWAkxeDeCmMNj
-         W6rOEbqdJ5PjzN19pnipmez998FpHkrMB6G4tpoG6G6ejRL4sPbXNhf0FslcN1cXywcW
-         ikewGDPAMd7587dq0f6MAAej3bvy0+mTUj9rIOpCA+OpeDC+vnJHji9A0uC4pNqgyjap
-         mwMG08iSoKotX14BLzjxizXt9LpzHymD+9kDfdMfGv0dTjaatQ11ndd0rDD/m8GBWRQ7
-         ehWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792106206; x=1792711006;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uXzkqKblq6fQvGu8ml3Oo6m6nVdHmv3RtEL3U0hTe/o=;
-        b=php0lqf0Y8opRMfTXVp+oFoOsC2vL6n2SGJsLylkBO7BuQxhrp7B7o1ceugLL/NW8a
-         6phKbxL2gHFpIt/IVjtWFtNj/3dbLOPAid7gXzgb6ZsS9t2Z5ZTFyt9YLuFV+HqrZWmR
-         plndU9gQbvYxi8rzG/8Jp+nwXp+Hh3ybOqaXqjZnkneHfIjWxcUFm7g7JULLrDIimCXu
-         817J8DHJhbb7Bf8sc8SPh/oahJx7nLWUKWlGeN714gx6u+yDzMDdSXl+L9FPFfgk5rLB
-         I20Yq6mj0UDFtkCAGZ2nX/y7Ik3RmdjegdvcbjRkRuj/h9HSEns9WQbdY5Xd5eHC4fai
-         696Q==
-X-Forwarded-Encrypted: i=1; AKwUvByMBQyACK7EIqB4idNbfffloIn18lfTYyVKAolMUtORP7NMwaOpWY6q1ru1y3qOibzX/DA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIKojR6OvaYknRkLxxY3Hjmr7aY1dzxyjZv7LeO64+gdvZbFFXp
-	RGv44MvBkDHIWFxr/8n1rCnxQS8VG1b1D6idCvbayZNDe1mOV4xJCJGJuF9vIEl1F1eVrK75Q1x
-	oeoAgEViXBU+iWlc2ZwsF5jktHCyzHMrq6+RlZ0Ir
-X-Gm-Gg: AYBFou0ICiAGLAoUsXjmBD3jfSLREwuvjgSpDRlTRe2yGX/uG3WeuuLXakFjQ+LuHXV
-	AA/KabcZUtPCQOmZPebCdjX2CXqWwLAe2zl421naxUP4jKCo167o03W1v3S4muBdV5amXYwcKKl
-	5Ld71gvIJLwICz5KDgUnYV1isKNi3vzN2xG0xeWFlPcjtpPv+97NSCrAvAQcW+n3Er0yAUH+y3M
-	oPMk3/oliHPsjoYzhX2VwRiZ4yr/FHtAy6rrWkdLjyNaQeCU4gVre5P1yx1kzGPApr1jmZKJtum
-	dCksfM1UjtQBomZq7GSYJCNGIijy+HF+cWbYIjQ9uPVUH+zThuNiPno=
-X-Received: by 2002:aa7:d58b:0:b0:6ac:bd5c:9e2e with SMTP id
- 4fb4d7f45d1cf-6b38ba0eff6mr15062a12.6.1792106205772; Thu, 15 Oct 2026
- 16:16:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDu7Okga"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E161F000CA
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 23:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792106446;
+	bh=LUvhgsUTECZ66zaJTPjvK1A1xICdLeq69Y9+jbS//zo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XDu7OkgasokV1iQvw3CEpqZLLkZGI3z2dwXjxnRJtCYl4faVFEQA6/CWJYsSbQnay
+	 T+JaiGb99s2HI5ito20X5vsnEKrqzvqFlIA8K3vbHiiMFtiL+Hmnt8+MrJnS8P9Gcz
+	 j7VGK9OMwsXNHdZc/Dzbu6nIMYPqo7s8rhVug6w4uurM78QYJBTX85JrbQDzQ47xl0
+	 tCxubG+aX2MDIazqMrPNqcm7EEXGKDnAhSNL8xjQGJZXQzH9pVx9+d/RZSF0JabVx2
+	 uUGk7gsReduqCiW6uPBxITHBTrnqgn+Me01opaJ0VNtcmIIUbbJcX6jenvDFzIF10g
+	 ziaGGcQx74Nvg==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2dc63f8d8aso1023600366b.0
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 16:20:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzKIJCreAlmWmp2tYVRgTtLe2iZW9YtpiaCAWNT5Pu5INtI2Gr9KoO7+7kZNH4dD61ECLg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJnvaqLDDbjvkibjaYnnUeU3EBgZbL2dn44ROKw9leT8pPUsgO0
+	k47Hp0TDorPvBwMhPdW1n6jllgD1jPBfLWiJsU/BQF3+9cDjFxAIoAfsUa2+gLzTHq99jxdrR3L
+	IGnKtYT5bIg7bUtlE857NZR+tiNiGv8M=
+X-Received: by 2002:a17:907:d90:b0:c2d:bc76:8342 with SMTP id
+ a640c23a62f3a-c31a9a2db07mr1874472366b.5.1792106445362; Thu, 15 Oct 2026
+ 16:20:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-24-yosry@kernel.org>
-In-Reply-To: <20261012233638.2546339-24-yosry@kernel.org>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 15 Oct 2026 16:16:33 -0700
-X-Gm-Features: AclHuK9-OldzijEU45y2UUwduzs8NSJRwL3OgHFCmTXDYRVo0XnREasyo8UAXGI
-Message-ID: <CALMp9eSZkbSEMkrbFDsWU962AuLVMMe-Uo_gesqrU7Nb_V+ezA@mail.gmail.com>
-Subject: Re: [PATCH v3 23/27] KVM: nSVM: Do not reset TLB_CONTROL in vmcb02 on
- nested VM-Enter
-To: Yosry Ahmed <yosry@kernel.org>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-23-yosry@kernel.org>
+ <CALMp9eSv9a23si8rtWd_XGRJxVWE96aWdSzE_Ram5Bu6G_pb+w@mail.gmail.com>
+In-Reply-To: <CALMp9eSv9a23si8rtWd_XGRJxVWE96aWdSzE_Ram5Bu6G_pb+w@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 15 Oct 2026 16:20:34 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMkRADNhRCBoxKCPNM90H0uqB5Jyt7oB4RDmbhgY_UM-g@mail.gmail.com>
+X-Gm-Features: AclHuK9Dl0an3RcXmue1Fj0HSSER5rW3elDdOiQ5i-t568Zwn5LzEUXcQnJZvgo
+Message-ID: <CAO9r8zMkRADNhRCBoxKCPNM90H0uqB5Jyt7oB4RDmbhgY_UM-g@mail.gmail.com>
+Subject: Re: [PATCH v3 22/27] KVM: nSVM: Flush the TLB if L1 changes L2's ASID
+ in vmcb12
+To: Jim Mattson <jmattson@google.com>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+On Thu, Oct 15, 2026 at 4:09=E2=80=AFPM Jim Mattson <jmattson@google.com> w=
+rote:
 >
-> Stop clearing TLB_CONTROL when preparing the control area of vmcb02, as
-> this potentially undoes pending TLB flushes for L2 (e.g. through
-> KVM_REQ_TLB_FLUSH while L1 is running), and remove the associated TODO
-> comment.
+> On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > KVM uses a single ASID for L2 guests per-vCPU. Hence, when L1 changes
+> > L2's ASID in vmcb12 (e.g. due to switching to a different L2
+> > vCPU or simply to avoid flushing an existing ASID), KVM needs to flush
+> > the L2 ASID to correctly emulate different ASIDs as different TLB
+> > domains.
+> >
+> > Additionally, the nested NPT needs to be resync'd, as the MMU context
+> > is not tagged by ASID, and KVM cannot reuse nested NPT entries across
+> > different L2 ASIDs.
+> >
+> > Essentially, L1 switching L2's ASID is treated exactly the same as L1
+> > flushing L2's ASID, which is consistent with the APM:
+> >
+> >   Software may effectively flush the guest's TLB entries by allocating =
+a
+> >   new ASID for the guest and not reusing the old ASID until the entire
+> >   TLB has been flushed at least once.
+> >
+> > This is similar to nVMX's handling of last_vpid, except that when L1
+> > changes VPID12, KVM does *not* need to resync the nested EPT, because
+> > VMX VPIDs, unlike SVM ASIDs, do not tag guest-physical translations
+> > (i.e. nGPA to GPA translations).
+> >
+> > Reset last_asid when nested VMRUN fails to force a flush and sync on th=
+e
+> > next nested VMRUN. The TLB flush request survives the failure, but the
+> > request to sync the nested NPT does not, as it ends up being serviced i=
+n
+> > L1's MMU context after the synthesized VM-Exit.
+> >
+> > Drop the commentary about vmcb12's ASID being copied around only for th=
+e
+> > consistency checks, as they no longer apply, and opportunistically fix
+> > whitespace alignment.
+> >
+> > This is currently functionally a noop, as a full flush and sync is
+> > triggered on every nested transition, but is a step toward eliminating
+> > that.
+> >
+> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > ---
+> >  arch/x86/kvm/svm/nested.c | 29 +++++++++++++++++++++++------
+> >  arch/x86/kvm/svm/svm.h    |  2 ++
+> >  2 files changed, 25 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > index e04cc4f7669ea..8e4686b0d603a 100644
+> > --- a/arch/x86/kvm/svm/nested.c
+> > +++ b/arch/x86/kvm/svm/nested.c
+> > @@ -556,10 +556,8 @@ void __nested_copy_vmcb_control_to_cache(struct kv=
+m_vcpu *vcpu,
+> >         to->nested_cr3          =3D from->nested_cr3;
+> >         to->pause_filter_count  =3D from->pause_filter_count;
+> >         to->pause_filter_thresh =3D from->pause_filter_thresh;
+> > -
+> > -       /* Copy asid here because nested_vmcb_check_controls() will che=
+ck it */
+> > -       to->asid           =3D from->asid;
+> > -       to->clean =3D from->clean;
+> > +       to->asid                =3D from->asid;
+> > +       to->clean               =3D from->clean;
+> >
+> >  #ifdef CONFIG_KVM_HYPERV
+> >         /* Hyper-V extensions (Enlightened VMCB) */
+> > @@ -691,23 +689,35 @@ static void nested_save_pending_event_to_vmcb12(s=
+truct vcpu_svm *svm,
+> >  static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
+> >  {
+> >         struct vcpu_svm *svm =3D to_svm(vcpu);
+> > +       bool new_asid =3D false;
+> >
+> >         /* Handle pending Hyper-V TLB flush requests */
+> >         kvm_hv_nested_transtion_tlb_flush(vcpu, npt_enabled);
+> >
+> > +       if (svm->nested.ctl.asid !=3D svm->nested.last_asid) {
+> > +               svm->nested.last_asid =3D svm->nested.ctl.asid;
+> > +               new_asid =3D true;
+> > +       }
 >
-> This is currently harmless, because nested_svm_entry_tlb_flush() always
-> requests KVM_REQ_TLB_FLUSH_CURRENT on nested VM-Enter, which sets
-> TLB_CONTROL again before L2 is actually run. However, always flushing
-> will soon go away with proper TLB handling for L2, at which point always
-> clearing TLB_CONTROL would be a bug.
->
-> Clearing TLB_CONTROL on nested VM-Enter was probably done because
-> TLB_CONTROL is not cleared by the CPU on VM-Exit. However, KVM always
-> clears TLB_CONTROL in the active VMCB after a successful VMRUN. Hence,
-> at nested VM-Enter, TLB_CONTROL in vmcb02 can only be non-zero if a TLB
-> flush is queued for L2 while L1 is running (i.e. KVM_REQ_TLB_FLUSH), and
+> To make sure we don't miss a flush after restore, do we need to clear
+> last_asid in svm_set_nested_state()?
 
-Nit: s/i.e./e.g./
+In [1], we set svm->nested.vmcb02.cpu =3D -1 in svm_allocate_nested(),
+which should be called when EFER.SVME is set on restore, and should
+force a TLB flush on the first vCPU run. That being said, if EFER.SVME
+was already set (not a fresh vCPU), we won't necessarily flush the
+TLB. KVM_SET_SREGS will _probably_ flush the TLB, but I don't think
+it's guaranteed.
 
-> that should never be ignored.
->
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+But wouldn't this also affect non-nested? Are we guaranteed to flush
+L1's ASID after restore?
+
+[1] https://lore.kernel.org/kvm/20260903175856.4065099-1-yosry@kernel.org/
