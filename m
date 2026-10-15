@@ -1,138 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F98524AE6
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 14:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705CB49DBB6
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792076341; cv=none; b=NSfYJSeuNicVYwBcByUDJFRHWsd2GAdpOwNG+u9qV1XynVs13S5atFUtEnvDmxksgqNLoSYeoShJLzearWrW1IvuZjln4CRdFFhI64UN9AO+UnMTsdoTTiq3Oyzgd44ga6U5Z0xhK7yeiALrToXG6H24hasxFqpp8VRn2LDOFdo=
+	t=1792076774; cv=none; b=amn6D4EQwyBWw2qzasmvHaJg9FosilNx6JP8gEK/2hlNnzvVGaX/S9Jt7VdIOBfO8U9UPcbrTxouWLPQPVk8FkaxDfenhYLRdbIAbl03hr2L9tPnTDqDUY/gJ5rwR2Ek7Q+GTMevp6RaqaoaSH7yPq6ADPhfYkdHZRrlA2+M7TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792076341; c=relaxed/simple;
-	bh=DmvhX+cBUVA09kmZlLKviWT95wygZX2yDbQVrYIw1gY=;
+	s=arc-20240116; t=1792076774; c=relaxed/simple;
+	bh=LFmuohjWHYIX5AJbT47R04S8G91bBf3hQBMsE7CCbVs=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=dLv3CipGD3ztC1sThJVPdQvoe8SPHekGRpHQb7YRYHKPegWWUe2Y8Y1Vh5IxcpTvFNb9T34Tu/OfYvVIBnoUBnbY0NqQkpaZ+YuFn64+wynXqRZ5hOBTX0qNWOdtFZcqnA84QIwBS3AlEqntkGbU8rEv4/HzWuySPDxdmbPzKVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixtvNY1O; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=n93lR31Y1oP7QkqiL7snDJmmxzy5yzdW90VirAx5s0Ck52ZhBsYNiIF/3acMBSNoROVX4IOyfsG5L85ghweAn6PyNEGdz5LmrCZr/fnPfREp+5TJSIDy52kglYG4+epYWsDoqddP0BH95StFxmyPvnKLQECH/uY0ujod3iZ6ss8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Buao3YY9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixtvNY1O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB331F000C4;
-	Thu, 15 Oct 2026 14:58:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Buao3YY9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951B61F000C4;
+	Thu, 15 Oct 2026 15:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792076340;
-	bh=XzDpy+1ETM8QHU5MO6e7NQ+yPEeKkb1oO+LpECmjGWU=;
+	s=k20260515; t=1792076772;
+	bh=Af5yHoEjM5XX02Lq5e3UsZErocWPsUEWBnk2TY3cUbk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ixtvNY1OmVFdAmgGaVbcVAhaXsf5IpRHBbaxKJeLCFZesWbT0S1O9gbu1jH02iJ5F
-	 3ExpTSdylZBOqx6GR96DwjtoqwIlNASu7SiX84CU4I1Htrm77p/bWw4ZkPGWKoouUv
-	 ih0Apfsp5WRNFcu8YKYkbNyr0zGJFeAogE5VjoRfPn3Qx1RZ95YgVltIlo3vXMGoes
-	 YRXcF2TgV5Webxzm8B/z6EXI+BxqRzzV3lWcfNaYEllnIQYnM7Ad+Fat0BfFZmubd6
-	 J3SiKko3zA9eEQcffKOtW0bh1v+Yxb7BlX4P2zB9rHl7huEN2zvLMHrVmqkgOnjZ1F
-	 fy5H/0NkcyGlA==
-Message-ID: <sashiko-outbox-173015@kernel.org>
+	b=Buao3YY9mVCzy00WhI9in06Q7/AZege3Jimwv160NEKv81QTYAbdrYcBwxHhLUy2j
+	 yJX3M2jgyZStclRxqfRkJ66HCa1+Sqfyp5Lx9DHX2Y31Oqqdx4lGsf1XqGRDyxgMb/
+	 HkM80XQ2ooEQNg3xAMoOigbYVlPyGwBfNW/IEWuTEMdwJcWy1dSc7iviJGkapDqLsD
+	 64rqp4Waqlw6UtmQWZ+i5WRKSj/iya8czfIyG1XG6fNoAfhX05HOmn1MypSuUDem8f
+	 cvs1MSVA8HYaGZFf33caBSWWl6A2ws+Emezwix8KeqpH4gt9j47xylLrS4uMuV8m4C
+	 +eDc57/sd+G7g==
+Message-ID: <sashiko-outbox-173035@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 01/20] ctlv: Add the schema language and generator
+Subject: Re: [PATCH RFC 05/20] ctlv: Prepare message input handling
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Jiri Pirko" <jiri@resnulli.us>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261015145053.3664509-2-jiri@resnulli.us>
+In-Reply-To: <20261015145053.3664509-6-jiri@resnulli.us>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-2-jiri@resnulli.us>
+ <20261015145053.3664509-6-jiri@resnulli.us>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 14:58:59 +0000
+Date: Thu, 15 Oct 2026 15:06:12 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] ctlvgen: ABI compatibility checker incorrectly flags widening to=
- unlimited as an error
-- [Low] ctlvgen: missing validation for --mode uapi --source causes KeyError
+- [High] ctlv: infinite loop in ctlv_attr_next on out-of-bounds error path
 --
 
-commit dbbe210aabdf036fa0f92c7b8932bca4fd127ce7
-Author: Jiri Pirko <jiri@nvidia.com>
+commit 5ae11d979c8fbb4e21430610d57f8866b9d74025
+Author: Jiri Pirko <jiri@resnulli.us>
 
-ctlv: Add the schema language and generator
+ctlv: Prepare message input handling
+   =20
+This commit introduces wire walking, request indexing, and validated input
+accessors for CTLV generated family readers. It keeps CONFIG_CTLV unwired
+until module dispatch is complete.
 
-Define the YAML schema and append-only family registry. Add ctlvgen to
-validate specifications and emit kernel and UAPI outputs.
-
-> diff --git a/tools/ctlv/ctlvgen/cli.py b/tools/ctlv/ctlvgen/cli.py
-> new file mode 100755
-> index 0000000000000..c6bfafeb28525
-> --- /dev/null
-> +++ b/tools/ctlv/ctlvgen/cli.py
-
-[ ... ]
-
-> @@ -0,0 +1,172 @@
-[ ... ]
-> +    kinds =3D (args.header, args.source)
-> +    if args.mode and not any(kinds):
-> +        parser.error('--mode needs --header or --source')
-> +    if any(kinds) and not args.mode:
-> +        parser.error('--header and --source need --mode')
-
-[Severity: Low]
-Should the command-line parsing prevent the combination of --mode uapi
-and --source here?
-
-Right now, this combination passes validation, but the GENERATORS dictionary
-only maps ('uapi', 'header'). If a user provides --mode uapi --source, it
-will cause an unhandled KeyError later in _generate() when looking up the
-output renderer.
-
-> +    if args.schema_only and args.mode !=3D 'kernel':
-> +        parser.error('--schema-only needs --mode kernel')
-
-[ ... ]
-
-> +    if args.mode =3D=3D 'kernel':
-> +        renderer =3D (gen_kernel.render_header if args.header
-> +                    else gen_kernel.render_source)
-> +        text =3D renderer(family, family_api=3Dnot args.schema_only)
-> +    else:
-> +        text =3D GENERATORS[(args.mode, kind)](family)
-
-[ ... ]
-
-> diff --git a/tools/ctlv/ctlvgen/lib/compat.py b/tools/ctlv/ctlvgen/lib/co=
-mpat.py
+> diff --git a/drivers/ctlv/message.c b/drivers/ctlv/message.c
 > new file mode 100644
-> index 0000000000000..4cf93af06ea90
+> index 0000000000000..7e5742ba8f708
 > --- /dev/null
-> +++ b/tools/ctlv/ctlvgen/lib/compat.py
+> +++ b/drivers/ctlv/message.c
 
 [ ... ]
 
-> @@ -0,0 +1,821 @@
-[ ... ]
-> +def _compare_occurrences(problems, where, was, now):
-> +    old_max =3D was['max-occurrences']
-> +    new_max =3D now['max-occurrences']
-> +    if old_max =3D=3D new_max:
-> +        return
-> +    if old_max =3D=3D spec.UNLIMITED or new_max < old_max:
-
-[Severity: Medium]
-Will this incorrectly flag a compatible widening as an ABI break?
-
-Because spec.UNLIMITED is represented as 0, widening max-occurrences
-from a finite value like 10 to unlimited means new_max is 0 and
-old_max is 10. The condition new_max < old_max evaluates to true
-(0 < 10), misidentifying the widened bound as a narrowed bound.
-
-Does this check need to specifically ignore comparisons where new_max
-is spec.UNLIMITED?
-
-> +        problems.append(f'{where}: max-occurrences was narrowed from '
-> +                        f'{_occurrences(old_max)} to {_occurrences(new_m=
-ax)}')
+> +void ctlv_attr_next(struct ctlv_cursor *cursor)
+> +{
+> +	const struct ctlv_message_input_slot *slot;
+> +	const struct ctlv_message_input_scope *scope;
+> +	const struct ctlv_node_schema *node;
+> +	const struct ctlv_attr *next;
+> +	u32 next_nest;
+> +	u32 next_offset;
 > +
-> +
+> +	slot =3D ctlv_message_cursor_index(cursor);
+> +	if (!slot || WARN_ON_ONCE(!cursor->attr))
+> +		return;
+> +	next =3D (const void *)((const u8 *)cursor->attr +
+> +			      ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO));
+> +	next_offset =3D ctlv_message_offset(cursor->msg, next);
+> +	if (next_offset =3D=3D slot->end_offset) {
+> +		cursor->attr =3D NULL;
+> +		cursor->index_nest_scope =3D CTLV_MESSAGE_INPUT_INDEX_NONE;
+> +		return;
+> +	}
+> +	if (WARN_ON_ONCE(next_offset > slot->end_offset))
+> +		return;
+
+[Severity: High]
+Does this error path fail to invalidate the cursor, leading to an
+inescapable infinite loop during attribute iteration?
+
+In ctlv_attr_next(), if the computed next_offset exceeds slot->end_offset,
+the function triggers a WARN_ON_ONCE and returns early. Because it returns
+without clearing cursor->attr (unlike the successful termination path which
+explicitly sets it to NULL), the cursor's state remains exactly as it was.
+
+When using iterator macros like CTLV_IN_FOR_EACH, the loop continues as long
+as ctlv_attr_ok() returns true. Since the cursor state is unmodified, it
+evaluates as valid, causing the loop to re-process the exact same state and
+hit the error path again, resulting in a hard CPU lockup.
+
+Should the error path explicitly set cursor->attr =3D NULL before returning
+to safely terminate the iteration?
+
+> +	cursor->attr =3D next;
+> +	node =3D &cursor->tree->node_schemas[cursor->node];
+> +	if (node->kind =3D=3D CTLV_SCHEMA_NEST) {
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015145053.3664=
-509-1-jiri@resnulli.us?part=3D1
+509-1-jiri@resnulli.us?part=3D5
