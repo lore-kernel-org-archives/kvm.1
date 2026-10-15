@@ -1,46 +1,45 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010001.outbound.protection.outlook.com [52.101.61.1])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012043.outbound.protection.outlook.com [40.107.209.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DC03D954F;
-	Thu, 15 Oct 2026 06:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528BC2C08BB;
+	Thu, 15 Oct 2026 06:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792046958; cv=fail; b=umBbmDbUeRohns12Zx1EDkH180OLVGQMSlFXq0vFpWVviVXw4mql7AnHdLrT81wL+CdHvaTjqVbKK4o+8AQ87BFowL0izLGqdDdBBdGLNI9zflmJ/jfGO0sRBc3DNzJ73sdSwPeV+Cg9nEiTAMJYc2W6CQcrU1idfwpZj4q4/Hk=
+	t=1792046993; cv=fail; b=csC/h6iuiSXJOhdSUNBIPnfbBK3T1oLVDdHBujRdxcvaW0Dz/Cdj+yxL+mvGqUbbQfCVFACmCoA06lEX3VNX6m3w3h0lsRH3A4z8cmk859oxVrs1F+R1Ec+iXtlAgPN5uywJvL6a1y+kbNpliWRYNB07KpuA4MWYOS8vSCcfqzA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792046958; c=relaxed/simple;
-	bh=tig2gqVde7e53iy2OYGLOhDiFa5TGEvG5tZ6Omkgfa4=;
+	s=arc-20240116; t=1792046993; c=relaxed/simple;
+	bh=Z/gvDV8lgczEREA+NvYiEgUtHRsQv8P4SaKlNgG26Rk=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtxMh35DA3fLjBKui+2LX20RhqE3a4XH4oyN2CdrLMFO7vcCzsNEPJVwMkDV/S1Sjbkm0oUPuDT3fs5Q2hbDRX+ACmP2m8P6t4KEUslEXakHPmej2qKxvwDOKT9Wet1MtOAFWSqGZqRMAeltably6Qa2Hv8/59DoiXemt9kC+Fw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Q8UhM9ou; arc=fail smtp.client-ip=52.101.61.1
+	 MIME-Version:Content-Type; b=jC33jCQJ46OcuovgvwUB1lHtMxUpbsnrx2J5KekKBvCUtEE+XYkiBQ6xVTeCqhF+MhqyVk05BcZ1JiUpWrf8l26op7/QMnHHuOHpv6S0H2dMopfQFNKhrvVdbeeLYRrtCaQ41NgiD7BVdRK894b2WbFPz/0208YGD3QXimOMY34=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xggg4R2S; arc=fail smtp.client-ip=40.107.209.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Q8UhM9ou"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xggg4R2S"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iI3nPLvG63ki3hIr0HqspznUvntTjtMWsOhxU2oTP4CSQ3QfqEIBN/Lofq4gEV3gVMsIQJvsNBEoeTaehY+L6MV8psTrCjGEP4T5PXt1pzpkUdRXiQA6riLElR1cYDs7qad8Er+TY5B4q4R1Qi827saY9itk2tERLVWLCjeudse8jC7T609DvaYueceKmZ2RIoEUBzaW3OEZysIeeNp8eTCyeD150gB1vTBl8hq2NmWAQvEB05hZhSjHtz1SFply3mqCZrM7ICAPQVcTvAw9F98ASNEJn7+kkZDhTciUkPfor+rTTTXcABwCqA1uQ3PnLBxypF1O7fShu59dU0riJw==
+ b=sp9zJtmriKvGs2b7pxKr5Uo5w5IVBdMaD6sEjQ9MHs31s2cjQT121xvn/YABATmV3q3g3oWAlwu1PV9+cvs2GUYr72Nw+HxoPfF9HbzJWZke1+mgZr6rxi/mqrL76GqFSEWM2w3qnyOeGYctk+Ik7Sr7CEej2dmqXpQToifwkmwjRumQyHYAsu8HHY+wCBr1iFwF04z7u0cwD1AbPAaMlC89vIZdtGM1E9YkPq0Nm50+E79zYJRkO0n7qFVMA+p5BZ87aMc4NhfYu6yreuOdwh/lxCJC2ZqyiKdabqedtbplEa/gWNYOz/yLCULJDDWKtuGIVtdRiCQzhY+F0oO4yA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KLMYI2pCm5mlcwfJPLhFG0az6/WsgiBzJ/60D6mF7m8=;
- b=PqEo4RPZL2LOZVeOCfqUd2Jj7JpYkQKg4yAi0qVK53f40hNIlT1C0w0oQK5JAZPpRZcTDBOWRqKe5m/TpIIo5Uix/VKS82Werd+uKQbgeceXqCJAD4MwM+1Q0zuiBbqGXPSQSWKg+r5u7lyW6jrGNh+pdd1z1XQ/RfeAyyiMZuyY6eoV6vd9jgPWV4SFUm5dJnSvbrbnLB81oBJruoIGeySwfGYmY2mAV35T6xa3eQxuM6+btW3+envPFC32mNmzUvhW/kwfKqZwrK6BXlu+A3bo0deX6QaRWE05jFCQjvQh9utpkr5U6iO0I77cLpLWuQQcDOaQg4U9RGzApWdmsg==
+ bh=RaGloLY2pJJ4JCBGE+xxZGdIuiVpMsoMDPI3k3sAX0A=;
+ b=ISPVk+sT8pP0opf/k6yy0AOod9sTYwD+fhlaqkI9pCV3pFuaPg27RFKdLO7I+mJ8WmaNV7D5vP5ywqHk2efsOUujd8idaq59YeEZM0W0M/hYds5MVu3hSJGd/6ibSONvdtdxgeFm9PyefHiH0HA9YD9hShdt6xE9+takAyQ7jpsjlcvud3snUcKn8EGCLT61B/sKUqEldgCthX72qXMnoIWhGBx6Frv7HwvlonRPEzqiYPgS8Xu0y7Z6ItIJCXuryGlhslDIK4m42DKH6rUGKljkj/39jvVxiKcScnYoeK+gMOBCFnAs+l4Zhe1OgLQe21OiBuPcelbCKYetmQpLIg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KLMYI2pCm5mlcwfJPLhFG0az6/WsgiBzJ/60D6mF7m8=;
- b=Q8UhM9ouu+6ULRItprOxRSSPocdf/XRvGiYMXa1dBpUlhFfYnkgOM71yQgzR6NU55zdW5RcnYPjWXkohL+lhe+0eTnEA13g3wwHQotN0k2SSFcJeSn/6c890jkq49PWPS5U/ztgU4En/Ev62V+Jizub4OavBdE5rY3vPPePslQY=
-Received: from CH5P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::10)
- by DM4PR12MB7550.namprd12.prod.outlook.com (2603:10b6:8:10e::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 06:48:55 +0000
-Received: from DS8PEPF000000E0.namprd05.prod.outlook.com
- (2603:10b6:610:1f3:cafe::71) by CH5P223CA0002.outlook.office365.com
- (2603:10b6:610:1f3::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Thu,
- 15 Oct 2026 06:48:55 +0000
+ bh=RaGloLY2pJJ4JCBGE+xxZGdIuiVpMsoMDPI3k3sAX0A=;
+ b=xggg4R2SOn+L+tjz9QBmEg+Sp8M2Y34WVr42WtjmCPcSV7ZsaKi+sE5dEaZ7cS0GxhIkqpj8/xVUgU7a53NWYOJUYNrbgNpBbZIiRBxwOpQSQqv851WCYysGn7pNXXvwpmK7zcczRPj5FT0qStxjpRWulM0vSd2dB0vKIFwF0z8=
+Received: from DS7P220CA0124.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:25f::8) by
+ IA1PR12MB6018.namprd12.prod.outlook.com (2603:10b6:208:3d6::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.15; Thu, 15 Oct 2026 06:49:46 +0000
+Received: from DS8PEPF000000E2.namprd05.prod.outlook.com
+ (2603:10b6:8:25f:cafe::13) by DS7P220CA0124.outlook.office365.com
+ (2603:10b6:8:25f::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Thu, 15
+ Oct 2026 06:49:45 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,13 +47,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- DS8PEPF000000E0.mail.protection.outlook.com (10.167.23.203) with Microsoft
+ DS8PEPF000000E2.mail.protection.outlook.com (10.167.23.196) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 06:48:55 +0000
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 06:49:45 +0000
 Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 15 Oct
- 2026 01:48:39 -0500
+ 2026 01:49:30 -0500
 From: Sairaj Kodilkar <sarunkod@amd.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Andrew Morton
@@ -72,9 +71,9 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
  Hegde" <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
 	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: [PATCH v5 5/7] KVM: VMX: Factor out wakeup list handling code to KVM
-Date: Thu, 15 Oct 2026 12:15:13 +0530
-Message-ID: <20261015064515.10700-6-sarunkod@amd.com>
+Subject: [PATCH v5 7/7] iommu/amd: Provide kernel command line option to enable GAPPI
+Date: Thu, 15 Oct 2026 12:15:15 +0530
+Message-ID: <20261015064515.10700-8-sarunkod@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261015064515.10700-1-sarunkod@amd.com>
 References: <20261015064515.10700-1-sarunkod@amd.com>
@@ -90,512 +89,180 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS8PEPF000000E0:EE_|DM4PR12MB7550:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88461af2-44b7-4a6c-2660-08df2a8861ad
+X-MS-TrafficTypeDiagnostic: DS8PEPF000000E2:EE_|IA1PR12MB6018:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e848003-7cbe-4522-36e7-08df2a887fc2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|82310400026|36860700016|56012099006|921020|11063799006|261009223027099003|10067099003|6133799003|22082099003|18002099003|3023799007;
+	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|376014|7416014|36860700016|921020|56012099006|6133799003|10067099003|261009223027099003|18002099003|22082099003|3023799007|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	zuGAcUYiKITpoy0vsB4ocrBE33tB+Gg5xYpMQ6b7buZ3R8/Dfnav/LItOaKY1cqDHJy6Fdb6Kp07P/7T33yWxIEYleOmkboQd/4dTzmmgo+Cli4oEL2XVJ8pz36plsK/LxGQl5otI3e9WWASafzjM5DHaJ/GKFanrnc7IhTDnv3quqp2Nl53nCYTICFbXZft+sTMB76t3VLCeHX8NzT00M813iFVktZwYxpqHRZo50CkNUchjlzaNziqC+4Ch1KMIxRIJx+ZVkqffC5pcci7Aj5qMvul0qCreMMh6D6r+JA5EAPIvh3HU2JkWbYqTBXqh0zMQyqH6stpqrW665YWPJy2sCCvHWa9kb8IVP4UO+RgV3y2FTCWrdk5hw/YFrWJ6vuG1PCSFVqlqb0wcHaZSzWu/FbmnaEXf35RANmkkeP0yjWppBgDc2+PAr6mIsNxrnBCZqXU8NokuNeqq/JIpWraax7elEqVYX5yxo3pHvJopSETTDNKXndOsLPK220Cd1zPTVwJjh0F3ODz7xlh9KpAf6DWIRtvGRp9PcQgzYdpf+mbE6MK1F/tdwkt1XWscV/LfF+ctT70KEnt7leSlS26GQ4ekfFpt7EyT02FjkHniAQjA3fu0gosIxCRN5N57LfBLDu2SmIdZfK8lWWYprEgG43J0m0c+rSXmyFvNf+HtYgOleXOVhnFUkHTl+CN1ZU8rsCrZaoiRyUJGHkvxQRWQN3JXQk4LzyQces5qRRXcEJYBxx9us31qE6a7LSn
+	JPK3xbCtHFCuNxzdVQb60U2PH+S6affqmrmnrNvWriBzDMjW2XklwAn7JzAj9vU6rhhfBSxaUhfxE4uLUjgax3Fcz78T0Loe47/IItoVugOOnGRAE2+juJ+PvewLfreGKLor3pzAlxdrpEk+Kueab7uU+sXC4fcAz4HIvZjyaF7gH96vc0gWoD37TeoGRxaoWrJbk7jeHvr/ms66CJbTisOE6NUbi1u2FQT2HdqvLeLBjHfq2PsBzk0G4pBvOHzoU6h0YPFCDPhSFtXzIvvGpF1SVYOCmHd1ey+2sMqYl48NzpAU0mAWnLqTuuNQaRU2gPKLVpRioOwLLMqUfhMqip8Nhoz2EIszoxh2IAx/vsgTYiR7uPoS3rB9HH84F+iPph6TRxqo4drtmgsQ14UOtnv6wV74cOZJoDBl7sQGcwTrNJxxmxi8uEYx8NtC1N28YvbJgEgE5H9/NxjYa7E3uO89GzLvPCpQDIMRZVhL2tZB9tEU/mH/RO66sp7zHyHihzM+3WSNnCXIh1+QjLRdifugkeHNoucltRBs7F86++T80O9XunNdejBtWv+3iSvvJySZF0muNfe0ZVf5pCSdJ9gM9vl8sTp8uCaRcBSRHrx3eBb03vGEvFajHaQtMeqY8b9aO4YUsYCq7FYzFKUOYJZNXO7Vz0BEDUD28GJ5BA7CHQbPcAy4qDnNbqwVdfFQEZ3+RTz6Tqd+SJnodfI/01Xq5BFP4FStUoOXoq1e0nxASUthEK9DFaRAACW2R23k
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(82310400026)(36860700016)(56012099006)(921020)(11063799006)(261009223027099003)(10067099003)(6133799003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(376014)(7416014)(36860700016)(921020)(56012099006)(6133799003)(10067099003)(261009223027099003)(18002099003)(22082099003)(3023799007)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	3QEA6FDG0+9SDZWGw/EginQpCiA3GhFyT8y98RGNNxNUsmC5EGnfNsI1xPiD/NO/3/Segu+yyYuRbZwO606j9Ie1JFcZuI7kLNb0EZsWc660pCyXl2mJLu3Ylk4TKnmfSekwM2DhiYy+CIh6tiF2vm+0M2h7q63SLiupC1SVuUdBzz3lNRrPum/9kavgsVvBygYr9X1JC41ad797mkVPhuHevbzXiwPGodyPaEXdlzinjcKC3mroKC0WVtJFF9WezbPSxqGmAnixJ/S9MSPTC7gJTQMG4UNTn7FBDnkpvwqh7BRD2JFMBkN/dysDpRo94GskoSbiLNRr+X2wy3PI2LPmoHDOSK1TDZHYOLLsxRt2E3FaWkq5ZsUVIs4T/HDzKFvCzgi991H1uzCiH3E8/fsX2A/qPickngtdjc5CDgyasJDIYFZuqXCFflMJRNAM
+	MMMN6Y9AKnSIRt7zWQzMJTD6V1zcwNrqOh5wSaPRt4JjFxmwfO2qtL8ie1hzfBm831OZtveiK9SiiQmumBTCxwDdLGVoDrHTonh1Adc2K0YhqkO7XBFW8sRlIEOLckVIg5wNiX2SfWoqFF7k3MYe8Hb2CiMEslbkpgy5zfV3MwpraZI9d06kohHiy9jsQSyWjcFAagRh/G4ZbPPeo7I0LAvQ4qCUQ4xuXviCyvhAIKPRjZvQBfgkKutvvznMrLy5nvus8gEohacFXg/BzcIsK/BtNkcweoF18qlQtRI4eet0nSmx/nAq+qiBVyPkSaajZBLURRhYDsQoYzp3ngPwK0ylSfYH/J+Y3oo0MY/HwxPongKuGQGkVcFca7zbPt6aBKXQjsvu8jb7geJzr9TNBBaXZSxaJoHGA82pnlc2+3oIdjHO6KYTTlDjszPMuIaH
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 06:48:55.1765
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 06:49:45.6510
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88461af2-44b7-4a6c-2660-08df2a8861ad
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e848003-7cbe-4522-36e7-08df2a887fc2
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS8PEPF000000E0.namprd05.prod.outlook.com
+	DS8PEPF000000E2.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7550
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6018
 
-VMX maintains a per-pCPU list of blocked vCPUs so that they can be woken
-when a device interrupt arrives while the vCPU is not running. The vCPU
-is queued on the list of the pCPU it last ran on and its notification
-vector is switched to POSTED_INTR_WAKEUP_VECTOR, so the handler for that
-vector walks the local list and wakes the vCPUs that have a notification
-pending.
+Enable GAPPI when the IOMMU GAPPISup extended feature bit is set and
+the kernel is booted with the amd_iommu=gappi kernel parameter.
 
-Guest APIC Physical Processor Interrupt (GAPPI) needs the same
-infrastructure on AMD. When a device interrupt targets a non-running
-vCPU (IRTE[IsRun] = 0), the IOMMU delivers a physical APIC interrupt to
-IRTE[Destination] using IRTE[GATag][7:0] as the vector, which KVM
-programs to POSTED_INTR_WAKEUP_VECTOR. SVM therefore requires the same
-per-pCPU list of blocked vCPUs that VMX already has. Hence Move the
-per-pCPU list, its lock, the wakeup handler and the per-CPU
-initialization from VMX to common KVM x86 code.
+Document the option in Documentation/admin-guide/kernel-parameters.txt
+and mechanism in Documentation/arch/x86/iommu.rst.
 
-Intel and AMD determine whether a queued vCPU has a notification pending
-in different ways. Hence, introduce a new kvm_x86_ops callback
-vcpu_irq_pending(), which the wakeup handler uses to decide whether a
-vCPU needs to be woken.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |   1 +
- arch/x86/include/asm/kvm_host.h    |   1 +
- arch/x86/kvm/vmx/common.h          |   3 -
- arch/x86/kvm/vmx/main.c            |   6 ++
- arch/x86/kvm/vmx/posted_intr.c     |  82 +--------------------
- arch/x86/kvm/vmx/tdx.c             |   1 -
- arch/x86/kvm/vmx/vmx.c             |  14 ++--
- arch/x86/kvm/vmx/x86_ops.h         |   1 +
- arch/x86/kvm/x86.c                 | 111 +++++++++++++++++++++++++++++
- include/linux/kvm_host.h           |   6 ++
- 10 files changed, 135 insertions(+), 91 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  3 +-
+ Documentation/arch/x86/iommu.rst              | 22 +++++++++++++++
+ drivers/iommu/amd/amd_iommu_types.h           |  2 ++
+ drivers/iommu/amd/init.c                      | 28 +++++++++++++++++--
+ 4 files changed, 51 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index e213c9ae3e30..5d337f9336c5 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -30,6 +30,7 @@ KVM_X86_OP(vcpu_reset)
- KVM_X86_OP(prepare_switch_to_guest)
- KVM_X86_OP(vcpu_load)
- KVM_X86_OP(vcpu_put)
-+KVM_X86_OP_OPTIONAL(vcpu_irq_pending)
- KVM_X86_OP(update_exception_bitmap)
- KVM_X86_OP(get_msr)
- KVM_X86_OP(set_msr)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 683bb8bf43a9..51ed472c5ec3 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1529,6 +1529,7 @@ struct kvm_x86_ops {
- 	void (*prepare_switch_to_guest)(struct kvm_vcpu *vcpu);
- 	void (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
- 	void (*vcpu_put)(struct kvm_vcpu *vcpu);
-+	bool (*vcpu_irq_pending)(struct kvm_vcpu *vcpu);
- 
- 	/*
- 	 * Mask of DEBUGCTL bits that are owned by the host, i.e. that need to
-diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-index 08005676702c..5762d90a9531 100644
---- a/arch/x86/kvm/vmx/common.h
-+++ b/arch/x86/kvm/vmx/common.h
-@@ -34,9 +34,6 @@ struct vcpu_vt {
- 	/* Posted interrupt descriptor */
- 	struct pi_desc pi_desc;
- 
--	/* Used if this vCPU is waiting for PI notification wakeup. */
--	struct list_head pi_wakeup_list;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e75344f4e0cd..b260ebef118f 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -456,7 +456,8 @@ Kernel parameters
+ 				          to 4 KiB.
+ 			v2_pgsizes_only - Limit page-sizes used for v1 page-tables
+ 				          to 4KiB/2Mib/1GiB.
 -
- 	union vmx_exit_reason exit_reason;
++			gappi           - Use GAPPI instead of GALOG for vCPU
++				          wakeup notification.
  
- 	unsigned long	exit_qualification;
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 4c52ab8d0786..af5808eacc72 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -108,6 +108,11 @@ static void vt_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	vmx_vcpu_load(vcpu, cpu);
- }
+ 	amd_iommu_dump=	[HW,X86-64]
+ 			Enable AMD IOMMU driver option to dump the ACPI table
+diff --git a/Documentation/arch/x86/iommu.rst b/Documentation/arch/x86/iommu.rst
+index 79c33560299b..6bac30f5abbd 100644
+--- a/Documentation/arch/x86/iommu.rst
++++ b/Documentation/arch/x86/iommu.rst
+@@ -150,3 +150,25 @@ AMD Fault reporting
  
-+static bool vt_vcpu_irq_pending(struct kvm_vcpu *vcpu)
-+{
-+	return vmx_vcpu_irq_pending(vcpu);
-+}
+ 	AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0007 address=0xffffc02000 flags=0x0000]
+ 	AMD-Vi: Event logged [IO_PAGE_FAULT device=07:00.0 domain=0x0007 address=0xffffc02000 flags=0x0000]
 +
- static void vt_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
- {
- 	/*
-@@ -912,6 +917,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.prepare_switch_to_guest = vt_op(prepare_switch_to_guest),
- 	.vcpu_load = vt_op(vcpu_load),
- 	.vcpu_put = vt_op(vcpu_put),
-+	.vcpu_irq_pending = vt_op(vcpu_irq_pending),
++
++AMD vCPU wakeup Mechanism
++--------------------------
++
++GALOG
++^^^^^
++
++GALOG is a legacy notification path to wakeup the vCPU waiting on an interrupt.
++When IOMMU receives an interrupt destined to vCPU which is scheduled out, it
++updates the vAPIC backing page IRR and appends vCPU tags to a shared GA log
++buffer and raises a single GA log interrupt. IOMMU driver scans this buffer to
++decide which vCPU to wakeup.
++
++GAPPI
++^^^^^
++
++GAPPI is an alternative to GALOG.  With GAPPI enabled, the IOMMU still updates
++the guest vAPIC backing page IRR, but may deliver a physical APIC interrupt
++directly to IRTE[Destination], using IRTE[GATag][7:0] as the vector. This
++distributes host wakeup notifications across CPUs instead of centralizing them
++in a log buffer. This can be enabled by adding option amd_iommu=gappi
+diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
+index b89a2b3df0a4..51edd617ddca 100644
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -78,6 +78,7 @@
+ #define FEATURE_X2APIC		BIT_ULL(2)
+ #define FEATURE_NX		BIT_ULL(3)
+ #define FEATURE_GT		BIT_ULL(4)
++#define FEATURE_GAPPI		BIT_ULL(5)
+ #define FEATURE_IA		BIT_ULL(6)
+ #define FEATURE_GA		BIT_ULL(7)
+ #define FEATURE_HE		BIT_ULL(8)
+@@ -178,6 +179,7 @@
+ #define CONTROL_EPH_EN		45
+ #define CONTROL_XT_EN		50
+ #define CONTROL_INTCAPXT_EN	51
++#define CONTROL_GAPPI_EN	55
+ #define CONTROL_GCR3TRPMODE	58
+ #define CONTROL_IRTCACHEDIS	59
+ #define CONTROL_SNPAVIC_EN	61
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index ef23e0755c32..c536e0b3c4ff 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -446,6 +446,9 @@ static void iommu_disable(struct amd_iommu *iommu)
+ 	iommu_feature_disable(iommu, CONTROL_GALOG_EN);
+ 	iommu_feature_disable(iommu, CONTROL_GAINT_EN);
  
- 	.HOST_OWNED_DEBUGCTL = VMX_HOST_OWNED_DEBUGCTL_BITS,
++	/* Disable IOMMU GAPPI */
++	iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
++
+ 	/* Disable IOMMU PPR logging */
+ 	iommu_feature_disable(iommu, CONTROL_PPRLOG_EN);
+ 	iommu_feature_disable(iommu, CONTROL_PPRINT_EN);
+@@ -2984,6 +2987,13 @@ static void enable_iommus_vapic(void)
+ 	struct amd_iommu *iommu;
  
-diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
-index 4a6d9a17da23..1a22730bfafd 100644
---- a/arch/x86/kvm/vmx/posted_intr.c
-+++ b/arch/x86/kvm/vmx/posted_intr.c
-@@ -14,27 +14,6 @@
- #include "vmx.h"
- #include "tdx.h"
- 
--/*
-- * Maintain a per-CPU list of vCPUs that need to be awakened by wakeup_handler()
-- * when a WAKEUP_VECTOR interrupted is posted.  vCPUs are added to the list when
-- * the vCPU is scheduled out and is blocking (e.g. in HLT) with IRQs enabled.
-- * The vCPUs posted interrupt descriptor is updated at the same time to set its
-- * notification vector to WAKEUP_VECTOR, so that posted interrupt from devices
-- * wake the target vCPUs.  vCPUs are removed from the list and the notification
-- * vector is reset when the vCPU is scheduled in.
-- */
--static DEFINE_PER_CPU(struct list_head, wakeup_vcpus_on_cpu);
--/*
-- * Protect the per-CPU list with a per-CPU spinlock to handle task migration.
-- * When a blocking vCPU is awakened _and_ migrated to a different pCPU, the
-- * ->sched_in() path will need to take the vCPU off the list of the _previous_
-- * CPU.  IRQs must be disabled when taking this lock, otherwise deadlock will
-- * occur if a wakeup IRQ arrives and attempts to acquire the lock.
-- */
--static DEFINE_PER_CPU(raw_spinlock_t, wakeup_vcpus_on_cpu_lock);
--
--#define PI_LOCK_SCHED_OUT SINGLE_DEPTH_NESTING
--
- static struct pi_desc *vcpu_to_pi_desc(struct kvm_vcpu *vcpu)
- {
- 	return &(to_vt(vcpu)->pi_desc);
-@@ -57,7 +36,6 @@ static int pi_try_set_control(struct pi_desc *pi_desc, u64 *pold, u64 new)
- void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
- {
- 	struct pi_desc *pi_desc = vcpu_to_pi_desc(vcpu);
--	struct vcpu_vt *vt = to_vt(vcpu);
- 	struct pi_desc old, new;
- 	unsigned long flags;
- 	unsigned int dest;
-@@ -90,20 +68,7 @@ void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
- 	 * current pCPU if the task was migrated.
- 	 */
- 	if (pi_desc->nv == POSTED_INTR_WAKEUP_VECTOR) {
--		raw_spinlock_t *spinlock = &per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu);
--
--		/*
--		 * In addition to taking the wakeup lock for the regular/IRQ
--		 * context, tell lockdep it is being taken for the "sched out"
--		 * context as well.  vCPU loads happens in task context, and
--		 * this is taking the lock of the *previous* CPU, i.e. can race
--		 * with both the scheduler and the wakeup handler.
--		 */
--		raw_spin_lock(spinlock);
--		spin_acquire(&spinlock->dep_map, PI_LOCK_SCHED_OUT, 0, _RET_IP_);
--		list_del(&vt->pi_wakeup_list);
--		spin_release(&spinlock->dep_map, _RET_IP_);
--		raw_spin_unlock(spinlock);
-+		kvm_pi_disable_wakeup_handler(vcpu, vcpu->cpu);
+ 	for_each_iommu(iommu) {
++		/*
++		 * Disable GAPPI, do not check amd_iommu_gappi as it may be
++		 * false in new kexec kernel even though previous kernel has
++		 * enabled it.
++		 */
++		iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
++
+ 		/*
+ 		 * Disable GALog if already running. It could have been enabled
+ 		 * in the previous boot before kdump.
+@@ -3025,10 +3035,19 @@ static void enable_iommus_vapic(void)
+ 		return;
  	}
  
- 	dest = cpu_physical_id(cpu);
-@@ -162,28 +127,9 @@ static bool vmx_can_use_vtd_pi(struct kvm *kvm)
- static void pi_enable_wakeup_handler(struct kvm_vcpu *vcpu)
- {
- 	struct pi_desc *pi_desc = vcpu_to_pi_desc(vcpu);
--	struct vcpu_vt *vt = to_vt(vcpu);
- 	struct pi_desc old, new;
- 
--	lockdep_assert_irqs_disabled();
--
--	/*
--	 * Acquire the wakeup lock using the "sched out" context to workaround
--	 * a lockdep false positive.  When this is called, schedule() holds
--	 * various per-CPU scheduler locks.  When the wakeup handler runs, it
--	 * holds this CPU's wakeup lock while calling try_to_wake_up(), which
--	 * can eventually take the aforementioned scheduler locks, which causes
--	 * lockdep to assume there is deadlock.
--	 *
--	 * Deadlock can't actually occur because IRQs are disabled for the
--	 * entirety of the sched_out critical section, i.e. the wakeup handler
--	 * can't run while the scheduler locks are held.
--	 */
--	raw_spin_lock_nested(&per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu),
--			     PI_LOCK_SCHED_OUT);
--	list_add_tail(&vt->pi_wakeup_list,
--		      &per_cpu(wakeup_vcpus_on_cpu, vcpu->cpu));
--	raw_spin_unlock(&per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu));
-+	kvm_pi_enable_wakeup_handler(vcpu, vcpu->cpu);
- 
- 	WARN(pi_test_sn(pi_desc), "PI descriptor SN field set before blocking");
- 
-@@ -247,30 +193,6 @@ void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu)
- 		pi_set_sn(pi_desc);
- }
- 
--/*
-- * Handler for POSTED_INTERRUPT_WAKEUP_VECTOR.
-- */
--void pi_wakeup_handler(void)
--{
--	int cpu = smp_processor_id();
--	struct list_head *wakeup_list = &per_cpu(wakeup_vcpus_on_cpu, cpu);
--	raw_spinlock_t *spinlock = &per_cpu(wakeup_vcpus_on_cpu_lock, cpu);
--	struct vcpu_vt *vt;
--
--	raw_spin_lock(spinlock);
--	list_for_each_entry(vt, wakeup_list, pi_wakeup_list) {
--
--		if (pi_test_on(&vt->pi_desc))
--			kvm_vcpu_wake_up(vt_to_vcpu(vt));
--	}
--	raw_spin_unlock(spinlock);
--}
--
--void __init pi_init_cpu(int cpu)
--{
--	INIT_LIST_HEAD(&per_cpu(wakeup_vcpus_on_cpu, cpu));
--	raw_spin_lock_init(&per_cpu(wakeup_vcpus_on_cpu_lock, cpu));
--}
- 
- void pi_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
- {
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 00850a3a77d6..1ba73b1379a7 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -683,7 +683,6 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
- 
- 	fpstate_set_confidential(&vcpu->arch.guest_fpu);
- 	vcpu->arch.apic->guest_apic_protected = true;
--	INIT_LIST_HEAD(&tdx->vt.pi_wakeup_list);
- 
- 	vcpu->arch.efer = EFER_SCE | EFER_LME | EFER_LMA | EFER_NX;
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 612ab07d4100..3359f2481d77 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1587,6 +1587,13 @@ void vmx_vcpu_put(struct kvm_vcpu *vcpu)
- 	vmx_prepare_switch_to_host(to_vmx(vcpu));
- }
- 
-+bool vmx_vcpu_irq_pending(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_vt *vt = to_vt(vcpu);
-+
-+	return pi_test_on(&vt->pi_desc);
-+}
-+
- static void vmx_switch_loaded_vmcs(struct kvm_vcpu *vcpu,
- 				   struct loaded_vmcs *vmcs)
- {
-@@ -7667,8 +7674,6 @@ int vmx_vcpu_create(struct kvm_vcpu *vcpu)
- 	BUILD_BUG_ON(offsetof(struct vcpu_vmx, vcpu) != 0);
- 	vmx = to_vmx(vcpu);
- 
--	INIT_LIST_HEAD(&vmx->vt.pi_wakeup_list);
--
- 	err = -ENOMEM;
- 
- 	vmx->vpid = allocate_vpid();
-@@ -8548,8 +8553,6 @@ void vmx_migrate_timers(struct kvm_vcpu *vcpu)
- 
- void vmx_hardware_unsetup(void)
- {
--	kvm_set_posted_intr_wakeup_handler(NULL);
--
- 	if (nested)
- 		nested_vmx_hardware_unsetup();
- }
-@@ -8830,7 +8833,6 @@ __init int vmx_hardware_setup(void)
- 	}
- 	vmx_nested_ops.enabled = nested;
- 
--	kvm_set_posted_intr_wakeup_handler(pi_wakeup_handler);
- 
- 	/*
- 	 * On Intel CPUs that lack self-snoop feature, letting the guest control
-@@ -8900,8 +8902,6 @@ int __init vmx_init(void)
- 
- 	for_each_possible_cpu(cpu) {
- 		INIT_LIST_HEAD(&per_cpu(loaded_vmcss_on_cpu, cpu));
--
--		pi_init_cpu(cpu);
- 	}
- 
- 	vmx_check_vmcs12_offsets();
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index 054fd14bb2e1..114dd8bb48b9 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -26,6 +26,7 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu);
- void vmx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
- void vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
- void vmx_vcpu_put(struct kvm_vcpu *vcpu);
-+bool vmx_vcpu_irq_pending(struct kvm_vcpu *vcpu);
- int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath);
- void vmx_handle_exit_irqoff(struct kvm_vcpu *vcpu);
- int vmx_skip_emulated_instruction(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index aad065d035fb..0c637a18bcfa 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -310,6 +310,27 @@ const struct kvm_stats_header kvm_vcpu_stats_header = {
- 
- static struct kmem_cache *x86_emulator_cache;
- 
-+/*
-+ * Maintain a per-CPU list of vCPUs that need to be awakened by wakeup_handler()
-+ * when a WAKEUP_VECTOR interrupted is posted.  vCPUs are added to the list when
-+ * the vCPU is scheduled out and is blocking (e.g. in HLT) with IRQs enabled.
-+ * The vCPUs posted interrupt descriptor is updated at the same time to set its
-+ * notification vector to WAKEUP_VECTOR, so that posted interrupt from devices
-+ * wake the target vCPUs.  vCPUs are removed from the list and the notification
-+ * vector is reset when the vCPU is scheduled in.
-+ */
-+static DEFINE_PER_CPU(struct list_head, wakeup_vcpus_on_cpu);
-+/*
-+ * Protect the per-CPU list with a per-CPU spinlock to handle task migration.
-+ * When a blocking vCPU is awakened _and_ migrated to a different pCPU, the
-+ * ->sched_in() path will need to take the vCPU off the list of the _previous_
-+ * CPU.  IRQs must be disabled when taking this lock, otherwise deadlock will
-+ * occur if a wakeup IRQ arrives and attempts to acquire the lock.
-+ */
-+static DEFINE_PER_CPU(raw_spinlock_t, wakeup_vcpus_on_cpu_lock);
-+
-+#define PI_LOCK_SCHED_OUT SINGLE_DEPTH_NESTING
-+
- static struct kmem_cache *kvm_alloc_emulator_cache(void)
- {
- 	unsigned int useroffset = offsetof(struct x86_emulate_ctxt, src);
-@@ -2688,6 +2709,79 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
- 	vcpu->arch.last_host_tsc = rdtsc();
- }
- 
-+void kvm_pi_enable_wakeup_handler(struct kvm_vcpu *vcpu, int cpu)
-+{
-+	lockdep_assert_irqs_disabled();
-+
-+	/*
-+	 * Acquire the wakeup lock using the "sched out" context to workaround
-+	 * a lockdep false positive.  When this is called, schedule() holds
-+	 * various per-CPU scheduler locks.  When the wakeup handler runs, it
-+	 * holds this CPU's wakeup lock while calling try_to_wake_up(), which
-+	 * can eventually take the aforementioned scheduler locks, which causes
-+	 * lockdep to assume there is deadlock.
-+	 *
-+	 * Deadlock can't actually occur because IRQs are disabled for the
-+	 * entirety of the sched_out critical section, i.e. the wakeup handler
-+	 * can't run while the scheduler locks are held.
-+	 */
-+	raw_spin_lock_nested(&per_cpu(wakeup_vcpus_on_cpu_lock, cpu),
-+			     PI_LOCK_SCHED_OUT);
-+	if (list_empty(&vcpu->pi_wakeup_list))
-+		list_add_tail(&vcpu->pi_wakeup_list,
-+			      &per_cpu(wakeup_vcpus_on_cpu, cpu));
-+	raw_spin_unlock(&per_cpu(wakeup_vcpus_on_cpu_lock, cpu));
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_pi_enable_wakeup_handler);
-+
-+void kvm_pi_disable_wakeup_handler(struct kvm_vcpu *vcpu, int cpu)
-+{
-+	raw_spinlock_t *spinlock;
-+
-+	lockdep_assert_irqs_disabled();
-+
-+	spinlock = &per_cpu(wakeup_vcpus_on_cpu_lock, cpu);
-+
-+	/*
-+	 * In addition to taking the wakeup lock for the regular/IRQ
-+	 * context, tell lockdep it is being taken for the "sched out"
-+	 * context as well.  vCPU loads happens in task context, and
-+	 * this is taking the lock of the *previous* CPU, i.e. can race
-+	 * with both the scheduler and the wakeup handler.
-+	 */
-+	raw_spin_lock(spinlock);
-+	spin_acquire(&spinlock->dep_map, PI_LOCK_SCHED_OUT, 0, _RET_IP_);
-+	if (!list_empty(&vcpu->pi_wakeup_list))
-+		list_del_init(&vcpu->pi_wakeup_list);
-+	spin_release(&spinlock->dep_map, _RET_IP_);
-+	raw_spin_unlock(spinlock);
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_pi_disable_wakeup_handler);
-+
-+/*
-+ * Handler for POSTED_INTERRUPT_WAKEUP_VECTOR.
-+ */
-+static void kvm_pi_wakeup_handler(void)
-+{
-+	int cpu = smp_processor_id();
-+	struct list_head *wakeup_list = &per_cpu(wakeup_vcpus_on_cpu, cpu);
-+	raw_spinlock_t *spinlock = &per_cpu(wakeup_vcpus_on_cpu_lock, cpu);
-+	struct kvm_vcpu *vcpu;
-+
-+	raw_spin_lock(spinlock);
-+	list_for_each_entry(vcpu, wakeup_list, pi_wakeup_list) {
-+		if (kvm_x86_call(vcpu_irq_pending)(vcpu))
-+			kvm_vcpu_wake_up(vcpu);
-+	}
-+	raw_spin_unlock(spinlock);
-+}
-+
-+static void __init kvm_pi_init_cpu(int cpu)
-+{
-+	INIT_LIST_HEAD(&per_cpu(wakeup_vcpus_on_cpu, cpu));
-+	raw_spin_lock_init(&per_cpu(wakeup_vcpus_on_cpu_lock, cpu));
-+}
-+
- static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
- 				    struct kvm_lapic_state *s)
- {
-@@ -7109,6 +7203,13 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- 	 */
- 	kvm_timer_init();
- 
-+	/*
-+	 * Do not check if enable_device_posted_irqs is true because VMX
-+	 * requires wakeup handler for ipiv even if enable_device_posted_irqs
-+	 * is false
-+	 */
-+	kvm_set_posted_intr_wakeup_handler(kvm_pi_wakeup_handler);
-+
- 	if (pi_inject_timer == -1)
- 		pi_inject_timer = housekeeping_enabled(HK_TYPE_TIMER);
- #ifdef CONFIG_X86_64
-@@ -7175,6 +7276,7 @@ void kvm_x86_vendor_exit(void)
- 	irq_work_sync(&pvclock_irq_work);
- 	cancel_work_sync(&pvclock_gtod_work);
- #endif
-+	kvm_set_posted_intr_wakeup_handler(NULL);
- 	kvm_x86_call(hardware_unsetup)();
- 	kvm_destroy_user_return_msrs();
- 	kvm_mmu_vendor_module_exit();
-@@ -9346,6 +9448,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 	struct page *page;
- 	int r;
- 
-+	INIT_LIST_HEAD(&vcpu->pi_wakeup_list);
-+
- 	vcpu->arch.last_vmentry_cpu = -1;
- 	bitmap_fill(vcpu->arch.regs_avail, NR_VCPU_TOTAL_REGS);
- 	bitmap_fill(vcpu->arch.regs_dirty, NR_VCPU_TOTAL_REGS);
-@@ -11010,10 +11114,17 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_rmp_fault);
- 
- static int __init kvm_x86_init(void)
- {
-+	int cpu;
-+
- 	kvm_init_xstate_sizes();
- 
- 	kvm_mmu_x86_module_init();
- 	mitigate_smt_rsb &= boot_cpu_has_bug(X86_BUG_SMT_RSB) && cpu_smt_possible();
-+
-+	for_each_possible_cpu(cpu) {
-+		kvm_pi_init_cpu(cpu);
++	if (amd_iommu_gappi &&
++	    !(check_feature(FEATURE_GAPPI) &&
++	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
++		pr_warn("GAPPI is not supported.\n");
++		amd_iommu_gappi = false;
 +	}
 +
- 	return 0;
+ 	/* Enabling GAM and SNPAVIC support */
+ 	for_each_iommu(iommu) {
+-		if (iommu_init_ga_log(iommu) ||
+-		    iommu_ga_log_enable(iommu))
++		if (amd_iommu_gappi)
++			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
++		else if (iommu_init_ga_log(iommu) ||
++			 iommu_ga_log_enable(iommu))
+ 			return;
+ 
+ 		iommu_feature_enable(iommu, CONTROL_GAM_EN);
+@@ -3037,7 +3056,8 @@ static void enable_iommus_vapic(void)
+ 	}
+ 
+ 	amd_iommu_irq_ops.capability |= (1 << IRQ_POSTING_CAP);
+-	pr_info("Virtual APIC enabled\n");
++	pr_info("Virtual APIC enabled with %s\n",
++		amd_iommu_gappi ? "GAPPI" : "GALOG");
+ #endif
  }
- module_init(kvm_x86_init);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index c844def6dd95..efea016e8186 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -398,6 +398,9 @@ struct kvm_vcpu {
- 	 */
- 	struct kvm_memory_slot *last_used_slot;
- 	u64 last_used_slot_gen;
-+
-+	/* Used if this vCPU is waiting for PI notification wakeup. */
-+	struct list_head pi_wakeup_list;
- };
  
- /*
-@@ -2651,4 +2654,7 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
- 				    struct kvm_pre_fault_memory *range);
- #endif
- 
-+void kvm_pi_enable_wakeup_handler(struct kvm_vcpu *vcpu, int cpu);
-+void kvm_pi_disable_wakeup_handler(struct kvm_vcpu *vcpu, int cpu);
-+
- #endif
+@@ -3780,6 +3800,8 @@ static int __init parse_amd_iommu_options(char *str)
+ 		} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
+ 			pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
+ 			amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
++		} else if (strncmp(str, "gappi", 5) == 0) {
++			amd_iommu_gappi = true;
+ 		} else {
+ 			pr_notice("Unknown option - '%s'\n", str);
+ 		}
 -- 
 2.34.1
 
