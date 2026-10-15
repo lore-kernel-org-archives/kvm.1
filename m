@@ -1,95 +1,95 @@
 Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472F83E169F
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 22:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFEE4CE68E
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 22:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792102254; cv=pass; b=eXoUOP3MBMZz/Zr6xE8RYhSQK/EwwwGAnaW3vTDesvAkufdSt2dFa2UQPdqwlMHFBcix08MN1mpdsJSXXA/qQwaVh/uRcBX3D+ernVbCCLrbp5nkXS0T0dMuTnrq1n7AyQyUd94lT7YSMiS7NpAmfnbMnmesX1Gd67izNYT6Jh8=
+	t=1792102803; cv=pass; b=HwwpCBsjTamYjVap9PJaj/9B5YhIsHtqD/99kqANGQkoNTjjHE1GQQsfqhMhoJvY6JXNBBv+1GCmwfakMq/LRVmDzyNW/OHkCQC+u+fc+XhC4FZAj3eEMxOPPX/WjOfBun4zmMRctUT+mWGK7uafjleWDr2ZrAE4pdR4sJ343L8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792102254; c=relaxed/simple;
-	bh=HrOPWKV9uRiqcVmFgZretdSmBgeyb74MAmTnswv+yAs=;
+	s=arc-20240116; t=1792102803; c=relaxed/simple;
+	bh=1GkfmmTRxWbu/MUtgXkR/+YBy+TL6aN5OmAB8cTrNrk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vwz8nBl6jeXp2vra1EPFfiwslmQpesxxvXaxMaVbNh0VsqPiHGNubELMd0F48a265ZOzKbvaO47Q98OXz4z86CwNG7INftfbtlF3SuUmLaluRXeVH8DbKAatINDLTncSS3pis2MCV3cwpJAw+xgU1fKFzpAOnR41HdwOnOxdLC4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yx5dJdWg; arc=pass smtp.client-ip=209.85.160.179
+	 To:Cc:Content-Type; b=cTOEVz8Z3/obS1a3px6bmQBcvZIu1j9w2ViRSHi17sIR39D2DPuUfk3/c9EDKeVQ7DNvDLwL9ufHc3XAZ/Fmt+d97mc5mPZLwtW6ai8yN0mX5uc0mv6l/C0thKlnZyS8LtuTil92Pz/AYHT3IlbvU4SZHhOyuVKO8AARMGGgXWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kV6R6a9F; arc=pass smtp.client-ip=209.85.160.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yx5dJdWg"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5337fa12431so55011cf.1
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:10:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792102252; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kV6R6a9F"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-533202fe429so118421cf.0
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:20:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792102801; cv=none;
         d=google.com; s=arc-20260327;
-        b=SxHgqELjroTwQJiGX3bm7R9k9Gq1FTpvD8R9NAYhT7DaehsXSZYdq2jXVC0YK8EWuf
-         gKtGz4v7DvS+QNItUJ79Z+Os4WmHLATvgQumf2FdRw49OOZ7UF2g+jbSY7nzK1FVz3ix
-         uZPqsjlLymPWCQYy0E2CGmwpW1PdZCRq/opqx6TC4ozeG/Tyrg4zVK2xmhdVW8Pu9StC
-         Ypy7xLsRxeLgKCjh6w4yWJaLmYZyutzVmIWddrA04RC8LL+33iMnN7e98jI1YaiykUNQ
-         M6HTBFJNpYeyb7FW7kHK/8ViL0JyUVTbXaBSy4apfMhmim801Ln/aUUnYQE2my6XB5BR
-         Fw6g==
+        b=lZiuKMzAFwx0rkSnzya56g8Axaj+hzgOCvAmLcqQG3X7uywuXoDZK6Hdv08Ta9ygFC
+         kyIrdHoAGmyvDN0rdk6sq2gC/qGKxd13YTkSBiHQ1m8Ljd9QCae3nyJlRtWfIu3wfhNA
+         VRpyX7Yw88b+H6lLmXzLP1C5XBGGyz1PIrjxrL8L1WRM2egdzzkUawjxtaJnlazbYxQR
+         d7pVfhw8e474bvxQ5iQApORLu5fzOIqD0npb2acBrmX8E7V2V2W2BEaLM/hBGDqJ5/oh
+         01XSuXCI39MmIga0wMws7wpko+ew8LtI1L05ULxuUkyzlOFA+OUOXNh3b3qzzW9DTBJN
+         eyrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=HrOPWKV9uRiqcVmFgZretdSmBgeyb74MAmTnswv+yAs=;
-        fh=ueAaANsAtZJ8Aviml4XKRoqjByFBw/cB51A5x2wlYno=;
-        b=KT65ljywWDzKToEQJWYsDgVUci/A/zDmROtAOrAsyGYHJsSLW63cRJGMFR1S4DNB5n
-         ybKrb1aNe/KTGkEANP9v5jTt7s1AYrDwFIscWCwGAIpNIY717kzHRjDOjxaHErylr5Dd
-         qr5deqS+KDkyMRWdpBAWDCQbL/NQYcpJOKOEQxIQKUnlt+zzZ/038Lc/o2cMcfPvHRDK
-         IAOjwp9h919DW26iXmF/JhHuP5DNzU60935GIzxi6W53gV5wliiV5iL5MAr6CBbvKNhs
-         DbsHXtF3dD4zgTiGnyIc4/GRG3uS0JVNgXhPjJkJbhuky+gPrZB8dITtsOAJFmylOzNH
-         3j+g==;
+        bh=szmjy0cblE8XnXn4Fw1g4VyNcoow3dCxiKswAyvRGYg=;
+        fh=IN4X/tiTv+ijo4RUOluQuSJyh8wu2x875Zh3VUtigSg=;
+        b=fUJDVH++DjNybUC5b99owu976MQHe32nLcl+6hrFTEeCHtZmLbbfrkIhj3NsUmYRBJ
+         btB6tEO0CtZ1k/sZYPadOoSbCKO9dSQOPn/zpQSITvvwXQcFRrB99t/0MxpPNjrHAFCc
+         sjfCTAZYC0NWkheIMeE20U7Gk0SmK8qICN+oeElOkHZXr9zj06BeJ0TLRwOJ1pK6V5qb
+         8oOVSOkZ5uQXwwO9pyFT/q0NJeZEcJ0Y8uWZZt8oOPWODZNVurDsZmuEPo7/Xq56XF9u
+         0LaCYEpSR2aHlKdYQyOrxG8FSYn4QjCguFdq/7Yb8SvdRxWKy/c9XOBeWc5j3Vvpcpfo
+         wDTA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792102252; x=1792707052; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792102801; x=1792707601; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=HrOPWKV9uRiqcVmFgZretdSmBgeyb74MAmTnswv+yAs=;
-        b=Yx5dJdWg6GGbAiaUF1wuXAqfwP1RIS7hZUEF44jPJDjtSDMMO1KUX7jOqlvWlGZ727
-         dbuyRXAizRzeepUh+w8T7jf1YX8is6THGCTcgR6K2ZN9nLawUghDx3pcGp9L1IhEwcjx
-         m4P3YmDCOpA8ziaqQNooG7ifyRyAnSeP9FY+v6pK4/pD/bWGPt198S/5bxHG1gnMMstE
-         psy1p8hCOK1/6jpSKM0znszmlw4+LbhVp6Nc3NXwklLgbPlhL+d687QujHBjbvM24BJ6
-         pm3qbkqPgxRtNcnF26Wjshs5jY9WfZGMH+5z/KBbdowo7mKujKRD8ULxdOhcbUhxaeCD
-         iHog==
+        bh=szmjy0cblE8XnXn4Fw1g4VyNcoow3dCxiKswAyvRGYg=;
+        b=kV6R6a9F8W5UHaSlBLbrUXvBx70yCuuGkIGqzVtSMC8/p1oTPtAme1glPLaATs+c4m
+         bpwAlu9ZvjD3hNGqQO/21GbGQmBSQeClhrtfNl/RrKkmO3m1LImzJXjvBokBH48RU835
+         2gG2jwL449kkBvH/rMRpKsLLI6P51Ru2dxYzR7DHYfNtmcQ5d7IvzZqS6s5Kl6XmqCU2
+         6i3fYBEXmy+IwNIP4dimhjlGjLDyvFPi2srAslJ3dYtRrCQqQCUT+S02BXILS5ur6WZH
+         3DBYUEp/YJhoVIhm8LhGBardC+55FBFW4kHscv6nO7bZtxSBX2YwN/RfY39iK9UH0zYR
+         hpIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792102252; x=1792707052;
+        d=1e100.net; s=20260707; t=1792102801; x=1792707601;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HrOPWKV9uRiqcVmFgZretdSmBgeyb74MAmTnswv+yAs=;
-        b=SRN/X1gVXraaONSeP3n4QTeX7xE+bRKDcMUURVhLxhrv4PNQi9sWKngH45KhYradr6
-         UaUHX6RbnoyIRKUWjlkCRkixUb2XKrBx4U5zVpVWuIIzayhjL1ltigVpqNmOIP/XEGHp
-         6lulLgicwM0AWOUNoVsc1DMprW2SyqED3PfGEjsTV02Ca0DtkQ56F1sUOQWLw22o9Qtj
-         C5c1r4j0wCLNwj7+dFAHI49GYDrY3Cbj1ztJwnbaf3slwYMqiFDaAROA9E9SJ6YtR+tD
-         vO2GbSKgNw6GeEAUzmnke/YJVBfqTUpIuhgT3OLshNdM6W96k2wIEsSjDYBY0tCGLUrv
-         469A==
-X-Forwarded-Encrypted: i=1; AKwUvBy27fq9M5P9zass2hWh5OU0g+tjQ77NDm3lCfu2sbelG1jULf4DE8CAHN1JGSpAQVeWgBA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKDhjX4XRuNBJFOc4HITXH4taVL9QCr+xkmaeITyR79m994B7qE
-	zfLDfaDJ6uLYBzxbfmkQM4dvbJy9Ux+PQuev2JAs0hf3wISApcdvHrwPolbcs5xEnrjg9N39Xkz
-	MjQIOUQYxkKZkA8xutqi5R8dGl64EUrm2izrnu1zV
-X-Gm-Gg: AYBFou3Ye/Y7XJ99VvGJxFpZTGbesWZc/PPuviN49lZP8ni+9cfmnAKNw0C4hmklMsV
-	aafYNA0dS4MEf41iXzfgZaJ41JzsKHV39BfTiqujkd5fQN2gVttzjY/L5WXjPRU5JqfUujGspYf
-	srtJuPOVq/LF59Xxs1Ruci4xGvV3l2/0kOlddyiPHuiIHobHrufMHYC0YfmEbWqIERbtkKZGh5d
-	i7TidNs31NoXzJ8cfXrLaFWnw53tWzV0A0DPey/5FwCuhwFMDWXJHWaHc6ON5M6SmoOAh3Yi8SN
-	9aoFV4jXT1yzMohkqTHbHZIpEXMBD8dqHe6BPzHS4u/gf12i4lfqW2M=
-X-Received: by 2002:ac8:5a0f:0:b0:532:9220:a9ae with SMTP id
- d75a77b69052e-53629ac8fcbmr4055361cf.6.1792102251473; Thu, 15 Oct 2026
- 15:10:51 -0700 (PDT)
+        bh=szmjy0cblE8XnXn4Fw1g4VyNcoow3dCxiKswAyvRGYg=;
+        b=VUiJd0BsfK7IZQtjQPhy++XkJX2zyInOAZqiOG6p5bGYhBoyoCrsmks+UXIWflQKAy
+         Yfh0oYf0HiovbjjLzVnA0GefMfHCOknzL0U7l9LaX0W+y6IbNetUcMXOhb76hlAIlT1Y
+         320d2tO9uaQCFyOkDSqfXwHKJIV/F4EsEcv7ePaAtAX9taYBdkdh2N3oAW9qUWlEU0Pf
+         ODkEFTEmmZK643Wbb5LZzIEHERBlqnrDjDoIf/PTD1TkxfMMjy/nMeL/5FpWmAL22B5S
+         vX3jippEP/0V4fBmZiZJiXdSuPCFVqVbTgvG2MFl/kL6hcS7Nw40Kjq7enLjayNm3Y5m
+         TVbg==
+X-Forwarded-Encrypted: i=1; AKwUvBxJo1Tb7Yhc+ZGlHnmSw8q2+WQIKLjiTQpg8Idk61zIVV77HA8fVAlPKirWTkX6epHlBE4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKwh8KcXkXcFeiFn6Sk3vPNcW5dEKaRkvGb8C/LTosz1v9/ZnGM
+	IOrbCXfYiAfyLqkv4c+mkF14GHI6o4RT4FUEf9cCtDjutb5TaTs09akMtKZQ6h1cW4pd70Ie2dW
+	Uu8VjgIYgw3C3hwjli5Ol44ifsEKxdXvw21UVjznW9w7EQXfr2S9bpasbUHk=
+X-Gm-Gg: AYBFou1tLwCDrqCcjHl4PMYGgoThgO+T9P8DvnlgmemBCeUs5jUx7BozLfbTgAaG013
+	Lgmmaxfs10n03jM4v/S1Hh34dvTT4tf9nPtnCxpHIKHbfhFt57DGe5OKjETjHuxLsTiG8vzCmIU
+	eyAn6ggKHrMjH5UCSqXZdw82semBhE0u2ye38WE8bROMhADUWHiJw+gUa6hb2Tgfid2pS3DlJVt
+	C/JhkhcYg0gTVVxsEfi91YGOqrocis2PWGqFihKVmDPd6jV2AU20VKuunMMjEjyKeEovdAB1gY/
+	Kvmt9IsBORnaAGElit0zF1njW4EQz5MWVQBTVsUzoq8beoZMJc1A9LU=
+X-Received: by 2002:a05:622a:c05:b0:536:d46:ffa7 with SMTP id
+ d75a77b69052e-5362b40f017mr3315281cf.12.1792102800408; Thu, 15 Oct 2026
+ 15:20:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-19-yosry@kernel.org>
-In-Reply-To: <20261012233638.2546339-19-yosry@kernel.org>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-20-yosry@kernel.org>
+In-Reply-To: <20261012233638.2546339-20-yosry@kernel.org>
 From: Jim Mattson <jmattson@google.com>
-Date: Thu, 15 Oct 2026 15:10:35 -0700
-X-Gm-Features: AclHuK-0h5rHSnqyAiLfJHcCVzzx_T8eixjFxdrxOULNj_D687GEFjRgA8p0a3Q
-Message-ID: <CALMp9eSeDzKxf===96Wv7enq9-tO0EZhJoXTYvcCgZxuBS1pRA@mail.gmail.com>
-Subject: Re: [PATCH v3 18/27] KVM: nSVM: Split nested_svm_transition_tlb_flush()
- into entry/exit fns
+Date: Thu, 15 Oct 2026 15:19:47 -0700
+X-Gm-Features: AclHuK9pn6iw2-XSdhvtKYxB1Jis-OaHm0rG-azDJVuUxSdzBjHfIalhoskrHxY
+Message-ID: <CALMp9eRd3COQijFU8AdcJKo+usr4A7dC6GOYT3YS93UBZ0yHRA@mail.gmail.com>
+Subject: Re: [PATCH v3 19/27] KVM: nSVM: Service local TLB flushes before
+ nested transitions
 To: Yosry Ahmed <yosry@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
@@ -100,12 +100,44 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
 e:
 >
-> The handling for the entry and exit TLB flushes will diverge
-> significantly in the following changes. Instead of adding an 'is_vmenter'
-> argument like nested_vmx_transition_tlb_flush(), just split the function
-> into two variants for 'entry' and 'exit'.
+> Service pending TLB flushes for a specific context (L1 vs. L2) before
+> entering/leaving guest mode, as KVM does not track TLB flush requests
+> for L1 vs. L2. This is not currently required as KVM always flushes the
+> TLB on nested transitions, but it is a requirement to drop the
+> unconditional flushes.
 >
-> No functional change intended.
+> TLB flushes are performed through the VMCB's TLB_CONTROL field, so
+> service the flushes before every VMCB switch (except the precautionary
+> switch in svm_free_nested()). Servicing flushes may end up purging the
+> relevant HV TLB flush FIFO, which is based on guest_mode, so make sure
+> local TLB flushes are handled before calling {enter/leave}_guest_mode().
+>
+> This is conceptually similar to how nVMX calls
+> kvm_service_local_tlb_flush_requests(), except that the VMX calls only
+> have ordering requirements on {enter/leave}_guest_mode(), and not
+> switching the VMCS, because VPID used for TLB flushes depends on
+> guest_mode, and flushes are not VMCS-based.
+>
+> Note that nested_svm_{entry/exit}_tlb_flush() must be called after
+> kvm_service_local_tlb_flush_requests(), otherwise the TLB flushes will
+> be immediately applied on the outgoing VMCB rather than the incoming
+> one.
 >
 > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+> ---
+>  arch/x86/kvm/svm/nested.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+
+[ ... ]
+
+> @@ -1549,6 +1567,8 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
+>                 vcpu->arch.nested_run_pending =3D 0;
+>                 svm->nested.vmcb12_gpa =3D INVALID_GPA;
+>
+> +               nested_svm_service_local_tlb_flushes(vcpu);
+> +
+
+When called from svm_vcpu_free() during teardown,
+kvm_service_local_tlb_flush_requests() will be called for a vCPU that
+is being destroyed--and isn't loaded. By that point, the MMU has
+already been unloaded. Is that safe?
