@@ -1,94 +1,94 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99E13B1008
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 21:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B90B352037
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 22:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792101524; cv=pass; b=C08r72ESv+22oQo2WDhYN7OpHPD6nijtTYIUb7yRQdn3bxlgDqSkP/vZcBuM4lv0bX3YJf8n9OLBdjmE/UlSoiOFwsStWmYMfA7tRtDapJAoj7Vwdzkb/PKV8Q8SplCI7qMpJgl8vKzoqGfo+99zlqlsYc+Jn+JWjupfMLv8714=
+	t=1792101735; cv=pass; b=E8bUtky4E7lHiJAbewyHeXJ5nqlIeaP9dP+gsPshAVq22vyzofyH1R49MBUK9fykhs+DmuqJXKCQ3eEJ0GzyrvzCGH6eU8mK28aXH3ceOzbc34n95nAbO75/XbrrwjlwiGY0r2lBiNbYZQXPD3rc8IvbIEDiYweZjfv+aH+slAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792101524; c=relaxed/simple;
-	bh=4lfsCC/pIXgqCBYAycCDNBM8TUqqtrJavSIaFKbNshw=;
+	s=arc-20240116; t=1792101735; c=relaxed/simple;
+	bh=lRIHYlKk/yaj4fJSnxFwMaWvZPIuM4vHwdBVA9DV4jg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MLpapMCjR6YUOPhMsDFqIZ20pH6Gbcx20gxp9826LZ2q/FZ2Z3+MfnDrjzyRpfCUB3nCVUAtgStl5NqguX0aQl5Y4PHlgx2IquskUxD4j0pzmt/E3tjn8XH7v/XJA6vWPh5KLeXuqOGJIySuiYP2g8qOovOBzh5SWwyT4n+Fb5M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fh1ySglX; arc=pass smtp.client-ip=209.85.208.48
+	 To:Cc:Content-Type; b=tbP8ypAFlCfhGxOw47d6KF1GVLAUPWwfKa56JTCmdPQNZdCE8/EXGnNqohrLBtvHmWB6xiP4HNxWuoOiy40ovjYWjZEaczxDZWmncQYw4nNuE67GEtyUMEa338Hj36H38VT+XMQSVEn+7s1ij+C1XK8ZxbIb2GLlDTYmW8tVY48=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fMlt0tgd; arc=pass smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fh1ySglX"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so1632a12.1
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 14:58:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792101521; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fMlt0tgd"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so1665a12.1
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:02:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792101733; cv=none;
         d=google.com; s=arc-20260327;
-        b=ak3yhJIrXmeQliLtqS91Y79pDgb6NqAU2v0NtbJXu2Pn4zz2FPlUJFCByU9BPlSsEh
-         i5kAYA3mZQhTzXgzrOrYrK+Aju5OgnVtW9aujm6hnzKjwbjZz24xvshorEoXMRr50AoC
-         CmKHHCqNBtch8efVmbkU367GNL/Dp2RhWGCRN0Qc2XN2ETdH8+a0AC1B9IcQWA7riDw1
-         s5tQ5vDED1Jc+m+NCtIB5xsNI4SU97PnI8XgsN7NG9YDi8nBMyiiJgnLdFqb0wuzP+0b
-         rOh017pcMQuahESrBW6Zuqi+4bgboakJnHCBIRuBjvCJzpKST9FmQeAx3qIKt7tyTQyq
-         GznA==
+        b=JGCkpqYXTdA1aEj8aYy0c2BfGXdnb3ZV//tsO4+5ezAuzdC+HItNRdwmr1jDZp3Tr6
+         FNV3ef1XA+8dQozWIR+2b6ZSCu2EZH9FPgcw635ESekXwrwHhObMJFtlROy6yL1xvFSF
+         RWck8Un705b2Npi0aJuh0c6rHzC8aNNM+bh6RON9jnkWsC6IVR4RilJFSrpR3dYbgu3K
+         AFpvva5Q+pokCR4dBjnkCSUPzOAww3pSWXyalk2JbnG9RIckvkBH+kF96e8faJ9BOvuU
+         x6MRPZ5Ow+vTrQrXzyCs81zylgbrYY4UfJIJCzr/DjLT4A8Iy/v7D2FHNpA0NSaAMF/h
+         waog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4lfsCC/pIXgqCBYAycCDNBM8TUqqtrJavSIaFKbNshw=;
-        fh=WZSpfSUxv/z0uSY77y0C3JbNIVDMdK1G4LBvapdPbE4=;
-        b=qhaI3K2nK03z38iGviXJmShpPLUSiSBcZ1S+HQDgasU5dKfyMHAyj1+roFr3Cv8HKu
-         hgrcdzSuZhCea8En/BRpSsMNLwAC56fySq3AkKwrP7+uA4/t9DXLeESGM4rcjexL9iaq
-         XPK3t3JknRHYSLNbsFEBVwuNdnN12XTKN2AGpbUjAS/DNx5FelgJ2GWlBt3umOf3yoQX
-         phqBOTqJYY6yNvXCxJTmFHyyAlSqVHa12OS1lIYK+UVW6henL61isv0Rr3Ju2z2nyX+A
-         Z8y8cKoq4zfavTjo7RYUK3faMCpd1wnL+s9NJxMKxR+qWiD+ultdNGdUwBHjA3iz3YLY
-         Pdsg==;
+        bh=lRIHYlKk/yaj4fJSnxFwMaWvZPIuM4vHwdBVA9DV4jg=;
+        fh=vJ8mg6Epg5QrSk9AyYy2znQctzDm3HMUarUrLj7mTYk=;
+        b=l1sh3jRjBGBwFYGhJTmFfU+oj/3TouvBRJ0iO4zHuB4Ar0YZmKc+3nscok9/smCtPX
+         1WMXCKjM23+HD7GvVoPw+qAGD1cs/88tV6R0rDJupt4Fi9y8vmMJFx2NU60A2HkHDb/I
+         EQaPXFGiqJsbX6ob6QGoJxU4tlELEzLpLbPZaGxlXPxAIsnOG1K+fE4NsZI++wQKZBS1
+         TRrmzGbWwyX/xPfo3Rtd8GUBRPWyOFskZpo3qBWKsvK9LiKrHQDm3U1trXoDZV7jwimK
+         hK/9eEbQsn6J3oWp2eB5nBiawpN9L9Njm8G8kDtXnoVCAOyElERCw1EyLPkaM9PdQd6d
+         Km6w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792101521; x=1792706321; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792101733; x=1792706533; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4lfsCC/pIXgqCBYAycCDNBM8TUqqtrJavSIaFKbNshw=;
-        b=Fh1ySglXl8hMK+ZtAwv2GwFacihlvCZzeVODdxh0ae4RT6sZCFc2x7FSaVakU2Q3ky
-         KpR/QQGSCOub5djaEp2K3rxqWLzjB3KTW7+6J5j/fLQqsj/Bg+KMv25FYRFH3+kl0xmg
-         5wijkuOChAjBt67/nk19zkeIglqRY2p2KL9QD4G2yD2JPFl0xJUAFn9eM/ktEKhxNtQb
-         ENfV9s9OWVAq5SGDLb11x45SKD2OQmwtmk3fv6iCJhf3AZwQ90EWsZNgMh8w4l2yU6eY
-         UBpDQOrd0NI2H9uorMiBbZSp6Bu+Qxha3Rg2RMZ304cKy/Mxj3zCsKIj/jfetfjnC5OQ
-         yAIA==
+        bh=lRIHYlKk/yaj4fJSnxFwMaWvZPIuM4vHwdBVA9DV4jg=;
+        b=fMlt0tgdRUGLNOVVn7YxteYCIBgnvkXlfP/eyLx/rHLV4XtiavZRHeBXMod35Yg53f
+         DAtQEaMrNBgq86GeVMd4BldWbC5FKR3X1Fywp3cf3zTDtkVZz3oOf5RHO+xa6vnxhOla
+         EY8eOqLnhLBAjUnTHVqlrN5KtwX7t5aBBgQP2fVwUgtXOO4DgJQrjZSD8Ab33Bf+CEki
+         3EBgc2+px/olZGUzKeDXC8xauM62IFxoKqf+HMgHroDX3BzKPfslepd8+GxS2zyyKmVh
+         YM0bLCBmkz5tgzNQbFUfxV2hznMB/g3FlgieRMgvh+AAowdp6BvMGgJHeta94aZnq+Cz
+         n2/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792101521; x=1792706321;
+        d=1e100.net; s=20260707; t=1792101733; x=1792706533;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4lfsCC/pIXgqCBYAycCDNBM8TUqqtrJavSIaFKbNshw=;
-        b=YrTil5G92vj/2b4lbI7EAMcxS6Ak5HzQASq6fAvWUlP5QfTEaMIozclkUptImTKUk/
-         bSQCiY1JUsBBLOkaD2egxQ7x0jzE/NiuK6fU7bPIyQY0VaiJxBWlIlVNFLm1y2VEaFsX
-         dT5GxlNGFwTDReR/M16XMtfq91PSVOJq5Ru1bA88MUJYM4H+O8Jc+Ar8fzjxdQ7nqfLK
-         u5IY1F4Cvr8YXbcZAli6+TFBF9Hemqot3jZuMppBM0gvdh+ZWQKMNyvAUlOskJaf/hKH
-         pWeinhoqOuJo1AalGhjINZ9U1UpxDUDtgMon71W/RBkohUIYbKaqI0RKMH22qdgAXq7t
-         Yfqg==
-X-Forwarded-Encrypted: i=1; AKwUvBwc4Ai17S7dPCc9MEfs5LMs06erBkpx2EwdOxNjdsx6d/2yLyWpQt4dn8h1F9R4gxOu1Bw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLv8UBTnSZquA7yhlhobIljDSLw1Iwnye86J9fc25bFAH3d2s45
-	pDfOXLIxzpy/TCPM44ZwVEJjhNYDn5SUracXB8FC26n0Pg84C+WGmRuNGxBkVuJOV1tQanZFtiy
-	lXuUFqIFA36AObrjCeCAet2T2E8epVGELQmDUxNjN
-X-Gm-Gg: AYBFou09NfRLWGiEXhHZeGJm6LfP5Z2X2f2wwCc8o0qS/2JT2qSEiAsBSgn5ryud7p6
-	+OzoldAoEkZIeZAxsYopXYtrJe6fwdZ40SAv4s9GYpl4pP62toamdGosmHl6gmVhK/Sa/7UbGys
-	/GyIS5938Qo89OKjPzKRv7jXxMKiwnAKPf5gG9cNI8DAc+QYyPaKxQ3SFM9AzBpIekDCcxyYI0H
-	g1AhMpPo4yOWoLb8BWSIiRIyrII05OSAhyHkyNCjmn7ccdCHNF9wmim1A0TpoG0g6YwbHhroYWU
-	Z/uIyV4L3oJpdqxQr7WFxnQ2jOXnoDT3an9BtUqSEjS8RorJ8FBpELk=
-X-Received: by 2002:a05:6402:208e:10b0:6b1:d80d:396b with SMTP id
- 4fb4d7f45d1cf-6b375fddc3fmr77708a12.14.1792101520578; Thu, 15 Oct 2026
- 14:58:40 -0700 (PDT)
+        bh=lRIHYlKk/yaj4fJSnxFwMaWvZPIuM4vHwdBVA9DV4jg=;
+        b=cX6T65nmXJjD2amMyzOS5OpyaZtCyk1NSgCa/UejPW1nfbaNEq5iP/4B2Hc3Z1RbOA
+         IW1tKByODFC97/Yc1dl1P01qORxJiZqaKSF2OewoxMCCv/5IknaHP4ugMZbZqvpfZTdV
+         1Nr3UPI0BLkaVReLuwjo/gBe6jBkDz8vb6zPg0BXxcjMYBh/WS32yNonPAEZNnbGrBnl
+         AhbyuTAq87DAVnjt9D11pYx5DL3THTPqP+HbsgUoYhWpUjpj+kUZoIbnbOq3lx0Tf6Xz
+         GGmDdc9il/gYLPTElW5xNOKREVlf55fQMwAAQasXhGhuhjbXLiLUbY8p1/cQ71gQiSyP
+         6mQA==
+X-Forwarded-Encrypted: i=1; AKwUvByK9b6XtGq0DQU2JdaTNp339kSXAkhWwZ7CWLwouWAULcv6+9EEgdC0kxEcs0TpqnFwQGU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI7zyBzwYzhwWSwKIviSlwFj6TFJeBNwcQqf1lIt5CDSeeLGpS+
+	/0Qj9/xdeKbcMFJEeCvv3428KN1xS8glLgZ+6DsfdIC+c/EgCDZ96FMQO7y4OIvO9Gofvzb3VWj
+	o/LxQmh+DKCp4S1ACs72nTF7RzNgGZXsbHcxIv2jt
+X-Gm-Gg: AYBFou2YN0b3PMPW9L2P550F2juyUZfGnRxttUK3pc4rwMymOO6sUJXEUdYCqHiH4vQ
+	LhUf3+5b4CQPeniy+gPvGnEUSzP5duNep+CRTWEdcy/rTYyCscJ6iexSCZr6C+OLSKslPQxYIuK
+	cV+eJD6s7UQcodTzf0O0TKm+wImeYJrLpI8DZggOe5MJYs4lR3LDML4HiCoZe0X0ln95A+fR9fK
+	PBBaKuCeLHSTEvRqYatwwtmrsJKgeitgOOcmVw4c6O2qLpdbFOoJYhkMsWqCmwENTKzk7JhdNjA
+	wSSPisl8d4kO7yHblIpMeg26eH4aN4YUy3bJ/Gg0ASESvmNmwNgJzcE=
+X-Received: by 2002:a05:6402:512:b0:6b1:bc48:2238 with SMTP id
+ 4fb4d7f45d1cf-6b3894961d1mr21368a12.11.1792101732235; Thu, 15 Oct 2026
+ 15:02:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-15-yosry@kernel.org>
-In-Reply-To: <20261012233638.2546339-15-yosry@kernel.org>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-16-yosry@kernel.org>
+In-Reply-To: <20261012233638.2546339-16-yosry@kernel.org>
 From: Jim Mattson <jmattson@google.com>
-Date: Thu, 15 Oct 2026 14:58:26 -0700
-X-Gm-Features: AclHuK9CxP6GbqbW9U7W79mpoa0Y4WMcsiBdKJF8JhPFOD_gck3RCkNZ1mCmaGU
-Message-ID: <CALMp9eRLJcnUEwct80x5moBvomgxvLL8eiabx6=YXoHxLKsaRQ@mail.gmail.com>
-Subject: Re: [PATCH v3 14/27] KVM: x86: hyper-v: Rename kvm_hv_vcpu_purge_flush_tlb()
+Date: Thu, 15 Oct 2026 15:02:00 -0700
+X-Gm-Features: AclHuK-w8w-gun3Ara8xw4uWe-BO5jdjT5uR_3SEXdllXWIlVSRpcYuXf0FuzTo
+Message-ID: <CALMp9eSoybGVairftaYg6uyCCoGHwvb9mE9p0V6gJLpm5bbrCw@mail.gmail.com>
+Subject: Re: [PATCH v3 15/27] KVM: x86: hyper-v: Allow purging all TLB flush FIFOs
 To: Yosry Ahmed <yosry@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
@@ -99,12 +99,17 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
 e:
 >
-> Rename kvm_hv_vcpu_purge_flush_tlb() to kvm_hv_purge_tlb_flush_fifo() to
-> clarify that it purges the TLB flush FIFO, not purge *and* flush the
-> TLB.
+> Refactor kvm_hv_purge_tlb_flush_fifo() to introduce an inner helper,
+> __kvm_hv_purge_tlb_flush_fifo(), parameterized by an optional FIFO. If a
+> FIFO is not passed in, all FIFOs are purged.
 >
-> No functional change intended.
+> Note that KVM_REQ_HV_TLB_FLUSH is consumed by
+> __kvm_hv_purge_tlb_flush_fifo(), so a selective purge on one FIFO will
+> render any subsequent non-selective purge useless. This is not a problem
+> because purging TLB flush FIFOs is an optimization (and there are
+> currently no users of the non-selective purges).
 >
-> Suggested-by: Sean Christopherson <seanjc@google.com>
+> No functional change intended as a FIFO is always being passed in now.
+>
 > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 Reviewed-by: Jim Mattson <jmattson@google.com>
