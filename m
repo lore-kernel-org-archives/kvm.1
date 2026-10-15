@@ -1,134 +1,205 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4AA2F84F
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 00:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85813221DAE;
+	Thu, 15 Oct 2026 01:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792022813; cv=none; b=akkrrYyhDv/XLzJcyCJXsf11TsIeqcVRtYK9VZbYuzxLcqIQMyhV8edJm8jO18gFZtEbk6DJ2Jm3pPhYtNwCaISTG6Ar1gVKtcVLJfSGB/lk9q2gJK/pnOQ/y56zLl9toaL8D3XbeO8cgvUPi5/3W7YgzBDH2k3R6WwG0MN23rw=
+	t=1792027181; cv=none; b=fnUWAvymFf8KN51mAHXECdK0MLPe/l3O9twp96FvZrvohZCKhfFKHEJT4Uyv69pE6sRCyMnlNHsgkvZjT8RGuy3SPifjizSwSlhd98fgt4k3eZ+PqUiqMTsrVQ6CD7V4gOdNvt54jBKeMbNkU7pdJTw6xxNgMNSrRT7XDlqIwbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792022813; c=relaxed/simple;
-	bh=Y1j2IAmDNpy/11ji2yeubu8arnWuY9EaUML0l2Bnxww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bxFQQ2uuvUoXxaFmqac6mEhaLrtkTLqEhXvA8k7wx7G+Q19O0I7QEFpZXcR/LxSNa1KclbbN9EoHgi46jt9qu1+yrCnWP8kyEU/EJWikNT2/kxdmoUXi0UaZvE4NwDhzVLhkEWd5/CuScHLoCMKuvjbpsot0x74WG+8ZmzkHt1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=luBmiaKG; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1792027181; c=relaxed/simple;
+	bh=zz9y8GxZ2JDrBYgE892VEWJJC2iKAGE3HHocd9sYed0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MKEFrp78mu1fb5rU2b1Rc44tjXlkzPGKp/JGAcsGd190A4/UKbaosukzE02u5dY1FxdNLl1fXQ0w4oTkOTGzI7567lBbRq0IhE9kSvfq7s43hKH2kLXYzbF2V2/s5Lu01PZBbiPf7ESE/5UI2P73HCN5mGSga7DHKLkCq3kxk54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nu+lfyQp; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="luBmiaKG"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-917c04630c2so59225126d6.3
-        for <kvm@vger.kernel.org>; Wed, 14 Oct 2026 17:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792022811; x=1792627611; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3XFik+OiPTKZRBTKKsNSHHZcnVJeKmiSTNRzSNQWFTw=;
-        b=luBmiaKGhfat1XeT7DWB2qnyqFKL1auwhlq1cTgJlMZP2ddopIZhMBcg8S70yXK4ZF
-         ljOABYdvkNJwJ5R0kveTmIKwavh0wh0LNTCXF96BE4xIcf5helzRNvUCpwDuUyJRrxSa
-         gqpjzmQHmaUNJwQm0KP8SE+ku41eswSWBir5KN/uwK/vEvd2WnIJmFhQEX8lOD3H9PD5
-         AMT1SpnqPj7qFDn58d7whX7HnS8giP388N9YQ5nz18ZbDSOfUuo+JmACuV3jbi+t52m1
-         i+XsyP/sT1Dd41A8v7IQXfwA2aZuRUWZrJKgX4EIDVOLRX91ncV1Ijew/co2Yh96CPKj
-         3WJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792022811; x=1792627611;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3XFik+OiPTKZRBTKKsNSHHZcnVJeKmiSTNRzSNQWFTw=;
-        b=m6rOtIgtnRDBJmzJxKg5fEcbrePxGAd3xf+iT0QTgZmgGp1Hsp6oVtygOuoRStDx6C
-         hy7CDSmOPqihRdy5cnE+hZDdvngwkGrY4ExkEH8YwQcWl4Xm106x+VS2jobDqf8UsYIl
-         K/FL1W1KYImWVbrELpVJMUm63nqd7fOeM9IRjzvVDreRzOYdE2On/DeAVeMdFTCKzCTe
-         iL7Ncx/WlCv56+sqJrLODVLn1XjpRRpTfmC/SnnggrVEn8umazDbVKoChICOzzOFOb4J
-         t4cqvnWcJDEob/0OBsaRAwIWff7lyfjr69h/FRpVAcbnXoDQXWoRMW7RmQZfLaxPNjfl
-         mKDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwBvQBV3gDNOu5XY/ky7tZZtTUqGhOb974uctDfzUFODcetTavkfhP3vxKagzSKAHsMQfk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK9v7DzU2jRgHQwyt0A+pStyLHpjJ/RamggcilrOZVw2GSFPQcj
-	z3CtILdveUJmgCVJNfydJmzAtC4lQRobZzhNVuBdT4vDr6AfgTkplCa6MCbGbTv/72Q=
-X-Gm-Gg: AYBFou3yN59+P0b9h/KkLxSf+yR0UP/aJoMsWpdze7b+jZ9BzeffOr19BwpEUa1iWE6
-	IGnOITuA+ykk4dXPW/+ped5tr4F6TJVMJpgjbAvYGrpA5fThyfqqB1Al3DL9p4GVEZMEz4pqxMz
-	MSy2tw0rcICYJ9zwve5hj/fmZqctwAxa62288pXX6rAYCyW+QzRgI7yDBmCDEAU1Is4b5mGb9JF
-	czf9I/0uJfMRF/eydpoN8N0y21c6zr0ssYreqBAmJmQ3xPSOnYvM9ro4v69Zu8V6Qxbg/sTIpUy
-	pLcQnBLh/VWwGvFiRsB2UuGu/mLDkdloUm3fi3n0ScMsegc71YRJDVQ8iycxygGRiEq8FMLOjzs
-	lMXyX2aEy68I8FHXf4FrHYwgxgZ6S2lJnIuofk1AlZ5KG9PzPO8o/EqSNLUDZwVXWiaSZ6ZZYEt
-	/+4z8YgF3oaT4NPMDorDnuUVfbhLNnrVDY9I+kSXNetwE/j45Ly00xBVySSefb9fP2kX9skAxy8
-	Gn6/16HLdsH1j5x9L01lMaiDK20WK+UvusjiKtHm61mMfnCJMl06B0q
-X-Received: by 2002:a05:620a:2992:b0:93b:e5e9:23d9 with SMTP id af79cd13be357-93ebd229343mr2677174285a.23.1792022810691;
-        Wed, 14 Oct 2026 17:06:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef5051333sm620942285a.28.2026.10.14.17.06.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 17:06:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xH8zh-0000000EzB1-0n38;
-	Wed, 14 Oct 2026 21:06:49 -0300
-Date: Wed, 14 Oct 2026 21:06:49 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	"alex@shazbot.org" <alex@shazbot.org>,
-	"ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
-	"ath12k@lists.infradead.org" <ath12k@lists.infradead.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"jjohnson@kernel.org" <jjohnson@kernel.org>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"kevin.tian@intel.com" <kevin.tian@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"skolothumtho@nvidia.com" <skolothumtho@nvidia.com>,
-	"yishaih@nvidia.com" <yishaih@nvidia.com>
-Subject: Re: [PATCH 0/7] Enable Qualcomm WiFi PCIe passthrough to VMs
-Message-ID: <20261015000649.GP14213@ziepe.ca>
-References: <20261013140345.GK14213@ziepe.ca>
- <20261013154225.214531-1-jtornosm@redhat.com>
- <20261014150047.GO14213@ziepe.ca>
- <MN2PR02MB68639A3F262110A6E9B96683D49D2@MN2PR02MB6863.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nu+lfyQp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792027179; x=1823563179;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zz9y8GxZ2JDrBYgE892VEWJJC2iKAGE3HHocd9sYed0=;
+  b=nu+lfyQpOGaD8d0LXp0/0mKE/WJHUkFk2G5gvd2MtTWIBU3gMFapO/T3
+   zJTPJcA8n5IY8+PBwZUweJ7HAp5AkS+qnzX28eQFHiSzdcIPDbuvYzrOb
+   yuCxIWWYt1bf3N6E7q3DHisbxVBV+EhH8R9aYoxPdRfAhKWm9DB29nDHw
+   uKyxBCc7O1hVaa2U7+7Fpb2TIltZJmLVujkfFN0NU0Zh1XPxVuGQ5ccF3
+   iO5dPEwFx34E3WBXPpCHEELURBc0Y0q3NS+7tmT8i/5XPtwTYisQ0rwi1
+   eYmlH+QCwU901kI7Afndf87ghi9J/4N3S8Juwljx0+f3meLqlOqCAGMs2
+   g==;
+X-CSE-ConnectionGUID: dRdFXypDQzyqmAzPDO817w==
+X-CSE-MsgGUID: 8mERFIYvTm2EZIW3KlVLDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="789200"
+X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
+   d="scan'208";a="789200"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 18:19:38 -0700
+X-CSE-ConnectionGUID: NtOL3hLfQu6kHojhKAXRxw==
+X-CSE-MsgGUID: Ym534/kMSjqC6p7RYcgBqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
+   d="scan'208";a="1595513"
+Received: from allen-box.sh.intel.com ([10.239.48.101])
+  by fmviesa004.fm.intel.com with ESMTP; 14 Oct 2026 18:19:34 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: iommu@lists.linux.dev,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	yilun.xu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH v2 0/4] coco/tdx-host: Introduce trusted DMA initialization support
+Date: Thu, 15 Oct 2026 09:07:01 +0800
+Message-ID: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN2PR02MB68639A3F262110A6E9B96683D49D2@MN2PR02MB6863.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 14, 2026 at 08:46:33PM +0000, Michael Kelley wrote:
-> From: Jason Gunthorpe <jgg@ziepe.ca> Sent: Wednesday, October 14, 2026 8:01 AM
-> > 
-> > On Tue, Oct 13, 2026 at 05:42:25PM +0200, Jose Ignacio Tornos Martinez wrote:
-> > > Thank you for the direction on device MSI domains. The Hyper-V
-> > > reference is difficult for me to follow for this case. Could
-> > > you point me to some existing KVM/VFIO equivalent, or similar
-> > > example for my use case? Any pointers to relevant code,
-> > > documentation, or previous discussions on this topic would be
-> > > very helpful to get started in the right direction.
-> > >
-> > > Also, where would this need to be implemented? Kernel only
-> > > because it is already supported in QEMU in a general way, or
-> > > kernel and QEMU for some specifics?
-> > 
-> > I spent some time with AI to research this and drafted up some slop
-> > for you that outlines a bunch of ideas and explains how some of the
-> > bits work today. Not saying this is something to follow but it should
-> > be a good starting point to come up with a good idea.
-> 
-> This is a nice summary of what Hyper-V does. It looks right to me
-> based on my experience with that driver (pci-hyperv.c) over the
-> years.
-> 
-> I wrote the documentation in Documentation/virt/hyperv/vpci.rst.
-> With your permission, I'd like to adapt some of your material below
-> and add it to vpci.rst, primarily to provide some broader context
-> on the "why" and the implications of the overall approach. I'm
-> not sure how soon that will be, but it will go on my "to do" list.
+Hi,
 
-Sure, no worries do with it as you like!
+This series adds trusted DMA initialization support to the tdx-host and
+intel-iommu drivers, as groundwork for TEE I/O trusted DMA support.
 
-Jason
+Following Jason Gunthorpe's suggestion on v1, this version moves the
+host/TDX-module interactions out of the IOMMU driver and into the TDX
+host (TSM) driver. It is posted to collect review feedback from TDX, TSM
+and IOMMU stakeholders; it is not yet intended for merging.
+
+This is part of the effort to implement the TDX PCIe Link Encryption
+feature, which includes the following components:
+
+[ ] TDX module extensions initialization, posted in [3]
+[X] Introduce trusted DMA initialization support
+[ ] SEAMCALL helpers for TDX PCIe Link Encryption
+[ ] PCIe Link Encryption Establishment via TDX platform services
+
+Background:
+
+Intel VT-d hardware gains a second set of DMA translation structures,
+owned by the TDX module and used only for devices assigned to
+confidential guests.
+
+From the TDX Connect architecture perspective, VT-d is enhanced with:
+
+  1) Trusted DMA translation root table
+     - A second root-table address register, restricted to SEAM SAI.
+     - Programmed by the TDX module with the root of TDX-managed DMA
+       translation tables for TD-assigned devices.
+
+  2) Trusted invalidation queue
+     - A second invalidation-queue address register plus dedicated
+       head/tail registers, also restricted to SEAM SAI.
+
+  3) IOTLB / DID isolation
+     - When TDX Connect is enabled, the TDX module owns the half of the
+       domain ID space with the MSB set; the VMM must confine itself to
+       the lower half.
+
+This posting covers initialization only: the host hands the TDX module
+the memory it needs and asks it to take over trusted DMA management on
+each capable IOMMU. The non-trusted DMA path is unchanged, except that
+the host's usable domain ID space on TDX-capable IOMMUs is halved. The
+TDX guest and device flows come in a later series.
+
+Breakdown:
+
+- Patch 1: Adds the TDH.IOMMU.SETUP and TDH.IOMMU.CLEAR SEAMCALL
+  wrappers, exported only to the tdx-host module.
+
+- Patch 2: Reads the IOMMU_MT_PAGES_COUNT global metadata field when
+  TDX_FEATURES0 advertises TDX Connect. It tells the host how many
+  metadata pages the TDX module needs per IOMMU.
+
+- Patch 3: Adds dmar_tdxcs_iommu_init_all() and
+  dmar_tdxcs_iommu_release() to the VT-d driver. init_all() walks the
+  active DMAR units, checks the preconditions TDH.IOMMU.SETUP requires,
+  confines the host to the lower half of the DID space, and hands each
+  TDX-capable unit to a tdx-host callback.
+
+- Patch 4: Implements the setup() callback in the tdx-host driver:
+  allocates the trusted invalidation-queue buffers and metadata pages
+  on the IOMMU's NUMA node, builds the IOMMU_MT parameter page, and
+  issues TDH.IOMMU.SETUP. Units the TDX module does not cover are
+  skipped. Teardown uses TDH.IOMMU.CLEAR; if that fails, the pages are
+  intentionally leaked.
+
+Change log:
+
+v2:
+- Moved the TDX module interactions (page allocation, IOMMU_MT
+  construction, SEAMCALLs) from the VT-d driver to the tdx-host driver.
+  The VT-d driver now only does the DRHD walk, precondition checks and
+  DID reservation, and exposes them via a callback-based API.
+- Renamed tdx-host.c to main.c and added iommu.c.
+
+v1:
+- https://lore.kernel.org/r/20260915074235.1219183-1-baolu.lu@linux.intel.com
+
+ABI History:
+
+TDH.IOMMU.CLEAR previously required the host to provide, as input, the
+parameter page used for TDH.IOMMU.SETUP. The ABI has changed to take
+only the TDX IOMMU ID. This change is not yet reflected in the public
+ABI specification [1], so the two may differ.
+
+Reference:
+
+Implementation details follow the interfaces and behavior defined in the
+TDX Connect Application Binary Interface (ABI) Reference Specification
+and Intel TDX Connect Architecture Specification [1].
+
+A full preview of these dependencies and follow-up changes is available
+at [4].
+
+Link: https://cdrdv2.intel.com/v1/dl/getContent/858625 # [1]
+Link: https://www.intel.com/content/www/us/en/content-details/862706/intel-tdx-connect-architecture-specification.html # [2]
+Link: https://lore.kernel.org/r/20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com # [3]
+Link: https://github.com/intel-staging/tdx/tree/tdisp_phase1 # [4]
+
+Please review. Any feedback is highly appreciated.
+
+Thanks,
+Baolu
+
+Lu Baolu (4):
+  x86/virt/tdx: Add SEAMCALL wrappers for IOMMU setup/clear
+  x86/virt/tdx: Read global metadata for trusted IOMMU
+  iommu/vt-d: Add an API for tdx-host when enabling trusted DMA
+  coco/tdx-host: Initialize trusted DMA on all capable IOMMUs
+
+ drivers/virt/coco/tdx-host/Kconfig            |   6 +
+ drivers/virt/coco/tdx-host/Makefile           |   3 +
+ arch/x86/include/asm/tdx.h                    |   3 +
+ arch/x86/include/asm/tdx_global_metadata.h    |   5 +
+ arch/x86/virt/vmx/tdx/tdx.h                   |   2 +
+ drivers/iommu/intel/iommu.h                   |   6 +
+ drivers/virt/coco/tdx-host/private.h          |  33 +++
+ include/linux/dmar.h                          |   5 +
+ arch/x86/virt/vmx/tdx/tdx.c                   |  56 ++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  20 ++
+ drivers/iommu/intel/dmar.c                    | 103 +++++++
+ drivers/iommu/intel/iommu.c                   |  19 ++
+ drivers/virt/coco/tdx-host/iommu.c            | 255 ++++++++++++++++++
+ .../virt/coco/tdx-host/{tdx-host.c => main.c} |  21 +-
+ 14 files changed, 536 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/virt/coco/tdx-host/private.h
+ create mode 100644 drivers/virt/coco/tdx-host/iommu.c
+ rename drivers/virt/coco/tdx-host/{tdx-host.c => main.c} (92%)
+
+-- 
+2.43.0
+
