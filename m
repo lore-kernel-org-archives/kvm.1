@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1C848594F
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 11:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EA44A5EC1
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 11:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792062203; cv=none; b=eOjQY8obn66gw6YvdfG03kbvAVR2BkeK9gftNXzh9nuE6i+wjDb2OZqqMcecWpyx2s45ZLE90mVvMK0Fqg+9SjqsFNEV27xlQomoapa1n3QUVfYSimNmL9k/vljSpR2vF3MH+zaD/LMX6s7RlreHFQx5s/b5vBX1S5OxfrVOTf8=
+	t=1792062269; cv=none; b=t5hhc9l3LxpmixSaQDT+5zymoEnVQzzdAwAxJeWNfg+BUkomsHThz6+VSPn5FvwQR7dicdqcPDnH3ti0fFSRQBWB6ZShPamcfGG8pS3DennXJf+8xZH/WaAlW3bGdJDppvge+AXHwL9L1qto+1uzCQK/10lfyHrhE7W/CpJ2Vfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792062203; c=relaxed/simple;
-	bh=0JVzGiy1ytobry7uN8ST+tMf+tjqeLNw9Tq4DZ/7HD8=;
+	s=arc-20240116; t=1792062269; c=relaxed/simple;
+	bh=gVSWy9R/BJ/8Rumu5FoLhMUGMQQjgQ+qvZcUhEGqUnM=;
 	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=h93s7Uxm3BFElh2PJ+pt5otT+FRo7tQYiBOaw5dsK6Z8weaVeX9hZOjAa8UocmIqmzPRDflQhBm/m+HKh2QMxagbCu8LL89jIt5qG0UCDBujCAJuiUuKBGA1H2bUIQJBqHH7BGtxnq5gr09oJ2uKJz3c/8EVWg6FwP34WVE2n7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NxbiWbQG; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=MAbQR0brzvTGagbj1M3nEcDA13euJMqAI8aueT6/+MxyDRWeitMOccAOI3IXQvYsWWXwuV1SnrqlLrTmQM7YQekSl2vTH7K2QAyPrNvPtiIJACgrdLuMKipmt4Yg7ywe3zSGTVTw6zgb6DP0/MAWyXetdL70RhI5uB4VWxlFtTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwiKypnb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NxbiWbQG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3221F000C4;
-	Thu, 15 Oct 2026 11:03:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwiKypnb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CFE1F000C4;
+	Thu, 15 Oct 2026 11:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792062201;
-	bh=0KkMkLUNOTfMj/EU1ydMGH9FbatWMYyYQdtAVSLNc/Y=;
+	s=k20260515; t=1792062268;
+	bh=D5OjbiRzx9wVxWJ3LHwRZ9MBdwR22x6OMnNz0SP32Eg=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=NxbiWbQGYu/6QNIsm7Wbl2dx7mogFD5ECehnIBoU7HtoQ3PK7hOwLoTvJzsun4VG2
-	 7KsIyLK/p1sKBsAV14Tav3WWj3JRnzNORUeD4/X/tfxhEM4mhdzsT44nK4HKxqEa/2
-	 Rln37BnHuSEMgGpq22/UB2C33i5oErfYqlBQvIY60LD9pNzwztCa2yrHSmLCT+u9fZ
-	 5KGHDtMvFMaIhU4RFRZ9yMT4uiEsXZxsPyDvdooNHZUbIM5qtStIQbQggy9IIJnp1P
-	 2642Xm73ncAZPhRxYex7qyr+9Ue1k3AaNGLpQbVv4JG+Q64Thn6FsWToEOSY5BDRkr
-	 3Ozh4zu+w6Bvg==
-Message-ID: <sashiko-outbox-172711@kernel.org>
+	b=BwiKypnbUI5QzofgdTa6PPG9GScxw0a6jafVAExcjw3xIUAOhjSEa5RMpEWzQ1s6J
+	 kqffjdBDePSGBG+AL7Asyla1xs8IzFMwMGkc7hiwSJelbK8MOoQKstTFCNrN+wOsTS
+	 V/c4Q4KYMIWRi5+MxM05ga7GauVySrApnV/2AKe6g3v4J5jsrT51fgEQ/gPf9qbpSd
+	 8w2yocAhK8ZOdbcVQydm1/exHb81cdWfdPYuYfElZ3bdRAZrTvOncnBLI5Xk1iL+2P
+	 dA3XkbeYfd3hr7LK/K3FERmj57jRZruKJc00I9qOmJFB0DR2XNistY84qxipjGi6MO
+	 FtSKFzXR185kA==
+Message-ID: <sashiko-outbox-172712@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 2/5] KVM: nSVM: Add nested PML emulation
+Subject: Re: [RFC PATCH 4/5] KVM: selftests: nVMX: Add nested PML coverage
+ to nested_dirty_log_test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nikunj A Dadhania" <nikunj@amd.com>, kvm@vger.kernel.org
-In-Reply-To: <20261015103933.2088307-3-nikunj@amd.com>
+In-Reply-To: <20261015103933.2088307-5-nikunj@amd.com>
 References: <20261015103933.2088307-1-nikunj@amd.com>
- <20261015103933.2088307-3-nikunj@amd.com>
+ <20261015103933.2088307-5-nikunj@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 11:03:21 +0000
+Date: Thu, 15 Oct 2026 11:04:27 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,90 +46,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: nSVM: spurious PML_FULL VM-Exit injection on discarded faults
+- [Medium] selftests: kvm: nVMX test asserts on invalid guest PML index
 --
 
-commit ac3a6ec9423b67a67c9dfb9dd5ebd698f451f130
+commit 88c8168ec493a327cfe182178b11f281733406e7
 Author: Nikunj A Dadhania <nikunj@amd.com>
 
-KVM: nSVM: Add nested PML emulation
+KVM: selftests: nVMX: Add nested PML coverage to nested_dirty_log_test
 
-This commit emulates Page Modification Logging (PML) for nested SVM guests,
-allowing L1 hypervisors to track dirty pages in their L2 guests. KVM emulat=
-es
-PML in software by write-protecting L2 SPTEs and logging dirty GPAs to L1's
-PML buffer.
+This patch adds coverage for nested PML to nested_dirty_log_test. It
+verifies that L1 takes a PML_FULL exit when the buffer fills, can drain it,
+and can resume L2 without losing entries.
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index af0ef678433d7..8251b38d14790 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-
-[ ... ]
-
-> @@ -63,7 +64,14 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu=
- *vcpu,
->  	if (WARN_ON_ONCE(hweight64(fault_stage) !=3D 1))
->  		fault_stage =3D PFERR_GUEST_FINAL_MASK;
-> =20
-> -	vmcb->control.exit_code =3D SVM_EXIT_NPF;
-> +	/*
-> +	 * Only the exit code differs for a PML Full; hardware leaves the
-> +	 * EXITINFO fields as the nested page fault that filled the buffer
-> +	 * would set them.
-> +	 */
-> +	vmcb->control.exit_code =3D svm->nested.pml_full ? SVM_EXIT_PML_FULL : =
-SVM_EXIT_NPF;
-> +	svm->nested.pml_full =3D false;
-> +
->  	vmcb->control.exit_info_1 =3D fault_stage |
->  				    (fault->error_code & ~PFERR_GUEST_FAULT_STAGE_MASK);
->  	vmcb->control.exit_info_2 =3D fault->address;
-
-[Severity: High]
-If L2 triggers a legitimate but unrelated nested page fault (such as a read
-fault) after a previous discarded fault left pml_full set, does this blindly
-consume the lingering pml_full flag?=20
-
-It looks like this would inject an SVM_EXIT_PML_FULL exit into L1 carrying
-the error code of a read fault. Since hardware PML only logs writes, could
-this architecturally impossible state crash or confuse the L1 hypervisor?
+> diff --git a/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c b/to=
+ols/testing/selftests/kvm/x86/nested_dirty_log_test.c
+> index 7e5f9ae1cb00a..b1008724f46dc 100644
+> --- a/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
+> +++ b/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
 
 [ ... ]
 
-> @@ -2169,6 +2200,47 @@ static gpa_t svm_translate_nested_gpa(struct kvm_v=
-cpu *vcpu, gpa_t gpa,
->  	return w->gva_to_gpa(vcpu, w, gpa, access, exception);
+> @@ -192,6 +192,149 @@ static void test_handle_ucall_sync(struct kvm_vm *v=
+m, u64 arg,
+>  	}
 >  }
 > =20
-> +static int nested_svm_write_pml_buffer(struct kvm_vcpu *vcpu, gpa_t gpa)
+> +#define PML_LOG_NR_ENTRIES	512
+> +#define PML_HEAD_INDEX		(PML_LOG_NR_ENTRIES - 1)
+> +
+> +#define PML_FULL_MAX_EXITS	64
+
+[ ... ]
+
+> +static void l1_pml_vmx_code(struct vmx_pages *vmx)
 > +{
-> +	struct vcpu_svm *svm =3D to_svm(vcpu);
-> +	u16 index;
-> +	gpa_t dst;
+> +	int nr_pml_full =3D 0;
 > +
-> +	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) || !nested_pml_enabled(svm))
-> +		return 0;
+> +	GUEST_ASSERT(vmx->vmcs_gpa);
+> +	prepare_for_vmx_operation(vmx);
+> +	load_vmcs(vmx);
 > +
-> +	/* The flag can be set here if the fault that raised it was discarded. =
-*/
-> +	if (svm->nested.pml_full)
-> +		return 1;
+> +	/* PML requires EPT. */
+> +	GUEST_ASSERT(vmx->eptp_gpa);
 > +
-> +	index =3D svm->nested.ctl.pml_index;
-> +	if (index >=3D PML_LOG_NR_ENTRIES) {
-> +		svm->nested.pml_full =3D true;
-> +		return 1;
+> +	prepare_vmcs(vmx, l2_pml_guest_code);
+> +
+> +	vmwrite(PML_ADDRESS, vmx->pml_gpa);
+> +	vmwrite(GUEST_PML_INDEX, PML_LOG_NR_ENTRIES);
+> +	vmwrite(SECONDARY_VM_EXEC_CONTROL,
+> +		vmread(SECONDARY_VM_EXEC_CONTROL) | SECONDARY_EXEC_ENABLE_PML);
+> +
+> +	vmlaunch();
+> +
+> +	for (;;) {
+> +		u64 reason =3D vmread(VM_EXIT_REASON);
+> +
+> +		if (reason =3D=3D EXIT_REASON_VMCALL)
+> +			break;
+> +
+> +		GUEST_ASSERT_EQ(reason, EXIT_REASON_PML_FULL);
+
+[Severity: Medium]
+Since the test intentionally sets GUEST_PML_INDEX to 512, shouldn't this
+result in a VM-entry failure instead of a successful entry followed by a
+PML_FULL exit?
+
+According to the Intel SDM (Volume 3C, Section 26.3.1.5 "Checks on Guest
+Non-Register State"), the guest PML index must be less than 512 when PML
+is enabled.
+
+Does this assertion rely on KVM improperly omitting the guest state check?
+If KVM is updated in the future to correctly emulate the architecturally
+mandated check and fail the VM-entry, will this assertion break the test
+suite?
+
+> +		GUEST_ASSERT(++nr_pml_full < PML_FULL_MAX_EXITS);
+> +
+> +		vmwrite(GUEST_PML_INDEX, PML_HEAD_INDEX);
+> +		vmresume();
 > +	}
-
-[Severity: High]
-If KVM resolves or discards the page fault internally without injecting it
-into L1, this leaves the pml_full flag set while L2 execution resumes.
-
-The comment acknowledges that the flag can be left set by discarded faults.
-However, is it safe to leave it set if the next fault isn't guaranteed to be
-a write?
+> +
+> +	GUEST_SYNC_ARGS(vmread(GUEST_PML_INDEX), nr_pml_full, 0, 0, 0);
+> +	GUEST_DONE();
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015103933.2088=
-307-1-nikunj@amd.com?part=3D2
+307-1-nikunj@amd.com?part=3D4
