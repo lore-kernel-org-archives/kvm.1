@@ -1,52 +1,52 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012058.outbound.protection.outlook.com [40.93.195.58])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013017.outbound.protection.outlook.com [40.93.196.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2645937E5EB;
-	Thu, 15 Oct 2026 23:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AD44EE85F;
+	Thu, 15 Oct 2026 23:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792105442; cv=fail; b=s1oIPBFC0Y7wwlsWUFyRuYfKeXk617n2laxCrnu/cHNG498qxpAMugvqfY58x7blJajwQRSd946F//oLO5cGsP8NuxBS9RjFho89wknFVOpcKeD1BX8jewkb4yuPa9EliwycA6fa1X6r2As2t9GwLK/k7hryWsFF2dmMoauvs0Q=
+	t=1792105639; cv=fail; b=J77wLKqsYsWWaIgKRp+dKv7PrAv3AGb4QLVWUvzrOXpNBpQGgUuRVaiIF/2fGPFYl6NEP/soHf4WlRcHa3lMM7uPb747s047rlH8cJSbO4UJF43b9CKUth1geZql2ldbGoQCnbLYGJUB7/n/eoo9y1aCEqrAu3kslS48P9JfQP4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792105442; c=relaxed/simple;
-	bh=94tLOYcuxiJeXmD11TuBb00XhQji/LNwAXPBYRTweps=;
+	s=arc-20240116; t=1792105639; c=relaxed/simple;
+	bh=TZQ/f60YA9CR+2a27GRzMy+syN6bxKak7KeO3OPzUUQ=;
 	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=os4W3MNrFnFxdqSSl/zVvbKL4ysgAdE+0JLdcYVKrnrWnqnXAatDpb4ehk+HrIuMxNH/wuXiWr56mohYLOpOSSI1HXXFOImaOb725yupnq9K/PsvIwk96y88zbrwbw9SkDgy1ovkdOb3pq0put7bXGe6fnJcl+t25FjK6ED3N7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mpRLqwpa; arc=fail smtp.client-ip=40.93.195.58
+	 Content-Type:MIME-Version; b=nfflV6xtlkv0QSY1YDbHOEMoONj5g2nq/aeMl9wAygEK6MQ4pR+wXFEw39XcB2GypgvLBYUvP8gM4iDALnSCEx/7L4LDagc40sYVj0DUP/iGn+aRb+sgNefyniUhZc2mfqunyOlNW9v3IydEm5FUISRD3TYUHmnZDTqf8up/GLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5YYB0sIC; arc=fail smtp.client-ip=40.93.196.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mpRLqwpa"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5YYB0sIC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HOVUBZ82TtXin3KBiY1A22InucjMXYXKXofrK8b3xncQ+1PRddAOnhk0QRDSiWXcHEJoxBDFMDUXzH8Ux+cXBL5o6OXXz5gKkrQriE5CYbWfayvDbA+JciOyOEyaJhDNoNphOLKu2eRp0ZS5mdTOBTYPhDMPzL8178sf/U25llJKi+nK6IPLOaJ5q1H4dyQ5wVRUMetq2wKpudaUJr0G2xJcsxEq6Sz4TnVxMxNC0OX00KUqpI5X8baYpwLlr3gaZxV0gKKJHflEAxmngQ1aWGZVIsD4J0lJi7OjJR4Nmf3YzzEp9yP7jyxHj89PgOilI8MUE06yyVh6if+B9cu4Aw==
+ b=M+scjpEU6qDJMPRvKcx99karb8WFMVbhSzLrt9bnVIBdIvm7O8Mse5NKRBN7J2eJeyTkiJbjVsns0Vl71R0pplz0HkVPmmjfS+Gdj5OpmuCv9+F3X7Apqu7tiB8O/D/04EBYHB5hSY34/v5d7+YxecqQySMh24VQztUYkaCCMDWXobbwoOG6duveBdiZ7Pjs5iHJp1Z/NgCgh6trdyGElDgDaS8HAr1f8nkonRGdEAZb0OahZpQZ5SI9r1E8uQB5tVQKg5vktahuOYBjFrbVd5b9bBp8JSiDbFWEsNFRfbh+ZVuLAGC5GCxpJgcBTY3Ck3365y+LKWuvJt6YlS5Gjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fkoj3nJRfWkfRiDU34eNADOyPlXur3WQ+t3IfNzg9f0=;
- b=L9UbWiWrZGfQUpsP/dLP7QDX+IG0D23cAFcarLQJjDDm0k9AZQW23f0YslKJ1ez2GNxsPA0FaWq6XSvxNO8oGbGFR9TdwnFkOoShBmatzP8VrLJiiC1zVORG8UZdj0R/i8tISX0vkQE0rftjXUxhXCupb0rSp6xIp91f76YjzNEd6GmOnnBAHHZyZOTv2+9jZVMumB8iz1teXinrjaABBn6bpvTp3MEr+ZIQXFZ99aePJXvymZSGzV6ATHl/kUIOp71hCCj1+Hdz4Ake5wzg9MxkwPJ0mS+JFV0dOM3mumkhozjXqWLLqMUSDEpN1Am6YZhbxLEqDwKghuAl55getQ==
+ bh=irZ8FDV3BI0fN5EgW2nxgU3ACiYxh9Rp+0mF0pf1WIA=;
+ b=PvqVd1n5ORSRFn8txa4VmkJMQjmLORw8XINhi91srN0VTUTO+E+XPyFWevo4lHGOTA0lWOzLvwWxm4UEN/viL7tE8YXg9Ce+Z3eek2PJbG0kKbU0+OKfy+T9P0RprPCZV/j8jXZDzbVOTm3+YCMd2YvzSi0bx6TPo5jtDRshtVHBjC7LcRsVw8vKdESl9oh/dlaeQmh+htQtimTYkJ9MQLEaFUJnXxtwPcblJA+4Hw/LIw4xZB5+ke7JfphyjHELZntGQfAQX6oI1suje4TQw+sivY4+nceLiWM27A5CABKVWafSC7go6ih6iq+mUQhsSis+VdLevHWWdpYag/vlmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fkoj3nJRfWkfRiDU34eNADOyPlXur3WQ+t3IfNzg9f0=;
- b=mpRLqwpapiCEAdovNArgM3BU6xRAdCZfrND7dJoi+ZvF56tTFdWT+RCg2e80sT9obtqkchLACc2UF55mqF/33YU2x0ElUOtm6Di5r7jIkLe89SfXLmrQz8jAXdcqWZQMAd1NnBbM8KkFCW0jgwyR7aHnjEKnh+O9/W4A7qETq2E=
+ bh=irZ8FDV3BI0fN5EgW2nxgU3ACiYxh9Rp+0mF0pf1WIA=;
+ b=5YYB0sICZ8zFYwwyuptpHCTYmmYXSUK6vCKts3xpX+sMUjcOKxSu4cgDmsMqShKr8N5eXYvoUUxm3uZsYaGHXa/miCtSVUU60kNGAZKmy9CUz6JcePRXfesN60A7MX2jSPpgWJcBteCSfewodv3YT5n7Q3k4XoPdVEDfneFLY7U=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
  by BN5PR12MB9510.namprd12.prod.outlook.com (2603:10b6:408:2ac::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Thu, 15 Oct
- 2026 23:03:50 +0000
+ 2026 23:07:14 +0000
 Received: from BL1PR12MB5320.namprd12.prod.outlook.com
  ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
  ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.013; Thu, 15 Oct 2026
- 23:03:50 +0000
-Message-ID: <b688c125-c2bc-4e3d-8c02-cc912936abec@amd.com>
-Date: Thu, 15 Oct 2026 18:03:41 -0500
+ 23:07:14 +0000
+Message-ID: <c557ea83-11aa-4747-b305-93d554d3fbc4@amd.com>
+Date: Thu, 15 Oct 2026 18:07:03 -0500
 User-Agent: Mozilla Thunderbird
 From: Babu Moger <babu.moger@amd.com>
-Subject: Re: [PATCH v6 02/18] x86/resctrl: Add PLZA support to command-line
- options
+Subject: Re: [PATCH v6 03/18] x86/resctrl: Add PLZA configuration definitions
+ and data structures
 To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
  bp@alien8.de, ben.horgan@arm.com
 Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
@@ -64,14 +64,14 @@ Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
  linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
  peternewman@google.com
 References: <cover.1790867441.git.babu.moger@amd.com>
- <bc2e144788fd42fdf2a3b4920e3d9a5b79c175fa.1790867441.git.babu.moger@amd.com>
- <5c10567d-0092-401b-9fd4-b0b85485dc44@intel.com>
+ <608876cedf5eece3f8b9297bcf21663a86a6380d.1790867441.git.babu.moger@amd.com>
+ <bf4bd727-eac2-48ba-ad85-539a818524d6@intel.com>
 Content-Language: en-US
-In-Reply-To: <5c10567d-0092-401b-9fd4-b0b85485dc44@intel.com>
+In-Reply-To: <bf4bd727-eac2-48ba-ad85-539a818524d6@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0110.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c5::22) To BL1PR12MB5320.namprd12.prod.outlook.com
+X-ClientProxiedBy: DS7PR03CA0099.namprd03.prod.outlook.com
+ (2603:10b6:5:3b7::14) To BL1PR12MB5320.namprd12.prod.outlook.com
  (2603:10b6:208:314::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -81,105 +81,196 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|BN5PR12MB9510:EE_
-X-MS-Office365-Filtering-Correlation-Id: af81a0ef-ce36-4e71-de02-08df2b1093aa
+X-MS-Office365-Filtering-Correlation-Id: 3d91980c-9b8a-4c05-bc16-08df2b110d0f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|10067099003|22082099003|11063799006|4143699003|56012099006;
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|10067099003|22082099003|3023799007|11063799006|261009223027099003|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	9CwX+8fNM3Q/pYkpG1spjuIfR+ZO8If18tvb94w1wOJ9g5nVtN9VR7G4aNCFlLMDcg8e9le9/t+l3yPkHCvAEa03mqzNh/ys3fZVD2njEiTTfgB8jCGM0N9xiKLIIKPK09RzQfnW9yr5f75qS9uxsqESqwLbGEsqeYc69JDDdeQrXq/a3Ptn84BeLLWTgLzHI4qqOeHkaJGE7V5EDQhXWHeF+6FDQbxZ8n+ZuB868fjO0CREzcAyt7g71S4z4Lk+YjpRk0r9UgSUAVBlUrwkCFkZMEdLDOnz++KRjroOXs8hdZGkNG6efJvxnPRCz5yRkmuUxpOiBsdHFxDaQbItZ5NbgcI+mFFFj6iq2uj6XZVkspY5ZgAQVZyFZtVfQ0Pdck86YWsb2wTiJ/TB65/CtckynXQX2NymFxk1/wbBwdB3duz6jBKak0CkrrH/3Is/In7es+B/+D4bQYPaqhA73eQP311uy8Of/sF3/DZeyWZjFsKN/JKswJi0Uxy5Pf1hbzN5MXm5KVb0UvWdPXWUpwxes4uVXqBBbqn74d63HRzzVK9wjG/+pVrfehpwj2MbxAqASdk7hIjkG0NVi0azjOqtpPXucEwl+HPMs5IPA0Nh3O4Ue7hxrRR3r1dN+dsqSzKhqNeRK7gZFP5uP4Hw+u4nzoE5oEBOcX8uKeiEFYw=
+	ochB67sch8Auz/wYtM3Vmrx3VX2I3Lhb5O5hshlbcAu3UYYvCyMf8ZnO3Jp1JqLcqYQ7ionlswpPXEhK6XaU9/i0G4Jw9NyYSdx/hP4tGAoE2DOtmkIPtavFZ7YXOp61YpGJpdvEB/rj97xiZKcLAeDpeKkhii5dc7qRp+P76WnvOSA1OetxQeV6yceiuG9+eiYtn7i9r60pvGecVnzA62GcTc/hWkVhQuwN0oOs4lmsPwoUSW3Lunpw6dwALmMHgmnwVdJbNAKbJRHA1KQGHbLAwrqbYLtm6qlH1wpUEgMV4p+7Vs+tvyFeZXSASXUrNY2IgGSyv35EO5g5tyzx37czJZDuVphemxygg/SglCqWR+vI6VuzZe/jB/H/r/nh94yjgv7288kEY+aqu1dRFz4s7y7eBNleJ6C0u/DLldG5CFnVAgXKdpDbjG3klM8aFDRdS8M6797JpyVKfqkLttJ8q3iJyPfQ8yQcFJoWQrGjdcLVWMNhW70p5o6NkhkcpPg0gXTBQGGqKUKPxQ2XlWodCBxTfpKlUikZGqtbZ8aJ5lhT/8By7SHUL9ZuPS4GEMCzCJIzXnXqlaza9l32l8PFGZQu7K0EczRJGyr2oyKC0ACcmXDhB5Z4Osq/wY2vdtUw4MkWYw65ftZFajFkPHAL45DIkVJkvOIdWzRNe0s=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(10067099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(10067099003)(22082099003)(3023799007)(11063799006)(261009223027099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OWxwT2VIOFhlN2JKdS9DMk9xSkxHYTRuelBxNHpTN1hKSkZtRFNPelFnTEQr?=
- =?utf-8?B?Z2RJZDNlUm9ibml6ZnBrQVlSZ0FjREdQU1JuVmtEUmNXRFY2cWVZVkpNWHZT?=
- =?utf-8?B?TmhFcHVrYjFnTmlncVFpVWd5MFh3U1lRcmI1TUJjWTdoa1p1MjlkWFFjV3pN?=
- =?utf-8?B?eUFyUXhGcGEwUXJMcHVHdW5abzVqZWxWbGlFRXFoUHhGUXQ2QjlLNkFqdDNJ?=
- =?utf-8?B?cDVOelJ5K1BrZzdZOXlNSCtCNzlVQWlqQ0gzYTluWHRWZmlPeTgxR01leUhi?=
- =?utf-8?B?Zy9Dd3d4RkwyRzhhTHZNUG1FLzZzakNOZDluanN1Z1RQTDdNNzZsRUpkNjZF?=
- =?utf-8?B?ZnFFSzA0UWFIRzZFS3c4MUVBTnVhNWpSWDZaMEFKc3UvVWFiLzhRMWF6cndB?=
- =?utf-8?B?bitlaGZyd0NoQkRpOEhNUnVWQS84MkJJbGl3eUFQdFdESVRCV0FxQXVCSVpU?=
- =?utf-8?B?NGwrWFpYU3BLdzJwVDVGRE1lWEx2R2pybHVrb2pDZ0FaN3FncW8rcFBiQ1k0?=
- =?utf-8?B?K2FacEtDZFp1YXJUeUw0blNiZWVkYVZKRVF6VVI2VXNnbFkwSUdLUFRoUCtk?=
- =?utf-8?B?a0NJUXNXMDBLbzMwWW9kUHgvYksyU3Q0aHRsV1JjY2VaNmRvNEREWXk1Yk9V?=
- =?utf-8?B?L2ttMWxmK3BjMnlud0RtVHdtbUdITWVQd1pMMEk5eElSdFhKbjNQQzNyZ0ZH?=
- =?utf-8?B?Q3g2RkxNQjUvK2JlNkE5TzBtb2dDMDBGelNyTXJOUlZnRXhYSVZlK3luNFdW?=
- =?utf-8?B?UjNaZk0xeVBFclN5WWNtQ2Y3NnFORFc2c2k1djJoVm1kcUQva3ZzQk1KQlBC?=
- =?utf-8?B?YllOQzVxSFp0amU3aGlpVjB4NmhaS05WQmQyT3FKdUJWTlRUM2lKMUQ3clp5?=
- =?utf-8?B?Y2JTeVljMTdnTi9ydHdKK2xCZi83TjNPbTJ4VFlJalJqcng2ZWdEcXJrQXdo?=
- =?utf-8?B?YmE5MnF6YnlBc2EzSzU2c09kNVZmK1E3RzBDUUtqK25nMElXUTVmWnFpZDFa?=
- =?utf-8?B?c21ieXVsMEF3bUsyTFA0bVJKK25OQlZRT0o5Qk9VVlh3T1ltNkZ6U3lzWkg0?=
- =?utf-8?B?QklXc2RYbHhNNGdFT3N1Q01LTE5ERzdUYU1YUXRJMk16dFBKL1Q0QVdVL0VX?=
- =?utf-8?B?RmFCblhTVVl4RFFUUnZVQWJOUVpJQ2cwMHhKSjlISkt2ZEVqUzZMcCtlaEIw?=
- =?utf-8?B?Tlc5S3J0Ukt1alptZWE1ek1CME5ZRUt6em9UMWM3RkhLSEdPTzFTbzlvM3Ra?=
- =?utf-8?B?Z0kxSVJWWThJelo4ckd0cExETU5BUEJKK2NGanA0ZkZqNzdsMmxvalJuNTd2?=
- =?utf-8?B?SHYyZGZVSzZreU9aTkN2UE5uR29hTE1xZVBpcDRMZ3RqME9VVjRRT282ZFc5?=
- =?utf-8?B?N3ZQd0hEaTRyTXU3dzgwd0lVa1luVEVzSll5Q0Vqd1QzWnRBU2F0ZGxwK21P?=
- =?utf-8?B?eUhtK1hYaXVjVnUxbWpxS0tCQmZpZWV0ZWZleHdOTGZXbzhNUUREREUvQ3R0?=
- =?utf-8?B?SXV4cmx1bitZQWh2QjZxT1cyWTBLUklwaUFkNE1LcGFXdTNzcnVLT0doWUlj?=
- =?utf-8?B?NzhMM0I4N0E4eDRMZFphbFVTem9qODJ1a0hpZ3NrUEVReTR0dDFyMkJqVUhu?=
- =?utf-8?B?L3U1V1ZiNEk5a2o2SVBGeTd6MjRFLy9wVWthcmtwMXRBZC9hUTVUMCt0bHhK?=
- =?utf-8?B?YkVmaG1XcC8wUjMxN1M3QTNXWlRCNktRdHhQckNqbm5SVklCQm5WYUUrNDBD?=
- =?utf-8?B?ME5iQ0dwN3lPK1FQM0t2bDh5NG5JaXUzUkVETG4yMDI0SEZVREhJVllVOENl?=
- =?utf-8?B?WlZ0cnpzdjNWQVU1cXFISlllMHNWd1ZhYlBpU2g2ZGRpeUMySGZMTzEvaG9P?=
- =?utf-8?B?VVdDK3lQc0RUV09vVWNzNDRlUEZ5V09EcHhKTzRmQks1Q0ViUXRDdnQyVGlL?=
- =?utf-8?B?SklHajFoUngvenY2bkpNUGpJQWFZYlNrWWtLVlh2eWxtMUJlalVCbUM3Mi9y?=
- =?utf-8?B?dldJZ2d4RVhKd3E2UDRxNEY3bEV2Sm42YnkwWHZCSUFMaEp4TFZ4amE1bXBN?=
- =?utf-8?B?Q1FxRFBHQXR5S0hzaDQzY2RHRWpBRVZMVjZYcUxuSC91cVdQcXVkRWoxVS9l?=
- =?utf-8?B?bXNwNkloSUFudFJTS3FHdU9uV1U2MUw1Wkp6RUh5RWI0WGVpQS9wS0Y5aHlH?=
- =?utf-8?B?V3M4TVYwY041NTlyVjIrRjdxUEJzczllaUUzbjNWM2J1RXd3UExCOW5tOEFn?=
- =?utf-8?B?ZzhUb0ExcnJ2Zi9PSkpjV0FZZkpQUm9LZG1OYTkyQnlPTnZVelFmeXFWZ2hw?=
- =?utf-8?Q?j1c5O4jczkdoOCT+G0?=
+	=?utf-8?B?WHJmcHB6cldUcFdGU2tpNmc5TEZyanR3RkdGaEhzYlVsMForclEzWUNRNVZm?=
+ =?utf-8?B?ZDVIK1MvMlUwbGprVllCY0dhU2hyMHRNRXVpRGt4QWh3OC9nMFJ4clhoUmEr?=
+ =?utf-8?B?d1AvbGRpRCt3YW9kRk03WXBleTF4a2dvaE4zTTRoOHdvR01KZkIzZ3JCNmYr?=
+ =?utf-8?B?UDNMNmV0cGFKUVhhVjFlcjE2L1JzMmRHd1FWMU9VaWk2OGZWTGxKTUlTWVpw?=
+ =?utf-8?B?bWsyVDhFRHRlOEtVNUpDTEtTc3htaHQ2UXU5ZHc4ekJJY1kxVURrNFgrdjZo?=
+ =?utf-8?B?c3lmajFzQ2tVV2gyclh5d0N0NnhzbUVJTnJ3ZmZMM1hPS0F3VmRWUXJuZFdr?=
+ =?utf-8?B?ZlhJRUdSTHZ4a1ZSWTZicG54VlVQSjJnNTBxbW1xMUpqQkJ6b3piNkcrTlZj?=
+ =?utf-8?B?SmhkQktpWFExYVlUT3dUejRxcFdlUVZoQms4M1htN1ZHa3pwNzBpOGtnT2l1?=
+ =?utf-8?B?THJwZzVhbmpKZHdWYXVTeWY1eGhkVUdoTmxpenJoZjBHMC9mOFliZ1BEN3ZL?=
+ =?utf-8?B?V21jc0M2aDhXS0daaWJmd25hMEorUVlsZ1J4U3NTd0ROTnl6Z1B5K090YU91?=
+ =?utf-8?B?bm1SRXY5cDUvTStxYzZXbmdmT0oxSzFGZWUvRlJnRmF1Q0RzV1FtQ3poeTBa?=
+ =?utf-8?B?eE5RT3lnL3haYmdxUy8wbzBpRmFoNXNXKzBsUi9IY2E3STBmUGRBMDZLQmR6?=
+ =?utf-8?B?ZXNEYzArMXZsdWNBWmZPL29rN0tRM1ZDYzRlV0pRU0VEQklUY2JHemxvL3A1?=
+ =?utf-8?B?QjA0c2plcWczZld2U3JtVU1SKzQyQVR6WkpvWGpjUDZNYUhoNm1jQ3BKcFRK?=
+ =?utf-8?B?R2E5WHp5Sk04d0NHQXNzejRXbU45aWFXUmQzR3N1LzZaVU1jak1yQmdHL2oz?=
+ =?utf-8?B?V2g3VUtqcDFXeERTamo1K2Fsc2RMeFFmYi80SFhzL09EeVlVOTN4NVRIR0ZE?=
+ =?utf-8?B?SUdhSGhIalFHYlV4TTA1SWhlV0FNYTRzelBaODkzb3N1bkRQWnl6ODJvVW9M?=
+ =?utf-8?B?S3NaZmpIRnBZSEdZbWdMNUhwaENLTHl4eFA2bmNSTFViQS9Scnk5b2hrSCt6?=
+ =?utf-8?B?Mi9OTjZmWWFNVG14c01GWUJwWWFEZjl5MEhsVTFTMHdxbjFtbzNCY1NtQ1pk?=
+ =?utf-8?B?TGk1UThsaWpUaXE4UHB2endoK2VHR0NHaEk1NU5Ea0srWFZkRHg1N2tqeUs0?=
+ =?utf-8?B?QTkrRGlSWWRzdEFPSmpsYlZsVEJaTkpic3JtZ2RSTW1zeXRweGJWT0VkaXJI?=
+ =?utf-8?B?Zmg5cUNRZXZnRW1Ra3FsVzdtVW1VOTlOb1U5a2w0K24wSlkxb2g2NU51d3E4?=
+ =?utf-8?B?cGZUVng3WDZ6YWVJY1prVjQ2blBISlFPYmxwODk3eFpWalQ3Q05JOVRJM2NZ?=
+ =?utf-8?B?Z0pWeS8rbHZTRmZVd1VLNm1obmMvcVcwUkxXb2tUT0FDNXJVeFNpYTM0eG1L?=
+ =?utf-8?B?Vys2WVZSUkpmMVc4RktWSk9rZjR4YUEzNWtDdGl3eHN6MGhHKzU5M3d2R1lT?=
+ =?utf-8?B?cmhud1Z4NHYySW1uU1FEWlg4cnZQcHVQWVkzTjd5eERWSjQ4OC9BRHZHRW1k?=
+ =?utf-8?B?T1Vyejd1c3kyTHdRU1d1cDBKektlZjIzenIzbjZRb2E1dTVEdzNkT1dkTmNV?=
+ =?utf-8?B?ako1eTZXRzROYWFyNW5hZ3FuMGlsRWtaUDhnZjh1cFRFaVlsR2FKOXIrWVg3?=
+ =?utf-8?B?TFlYQm50N29vRTZIcXU0a0VneDEzN3BpRzJaMFlsbStYdVVvcGNsSDBLamZO?=
+ =?utf-8?B?ak16R2ZETWw2bS9LMGJkZE9mWGpLbS90SitITU85dFJsZ0p1SHdTYTh3VUs1?=
+ =?utf-8?B?WDN0TGVRUjhPUnlJTGowTjB3ZzB3dWpIRU9ITGUva3IvRWg1K1Y2c3V3bXZk?=
+ =?utf-8?B?NXpoeUtZVEYzZnE1bnpZeFlrNVJPS1I3SEhFaDVweklYQ3dibGVFSDE1QXl3?=
+ =?utf-8?B?aXByL29Uc3p3V0JUYnlaRUpHK3lKaHFvK3RqZlJDZ2ZZNXYxOVlRYy9pZEtB?=
+ =?utf-8?B?N3d6aEVvUVlwOHIrcTNHczlHYURCUlVsd0psL0EwZ2hOL3ZidENydTg0QnB4?=
+ =?utf-8?B?dXBFN283cklvb1FrVXg1N0ZkdVNOVzBka1FYcmF5N2IyUHZKREVLRkFaRGxO?=
+ =?utf-8?B?b2hoc3ZRK3U2MDVVOW5WaEQwZmpLaEVnelplM1c4ZGdVOS9OWklZZXlOL2ln?=
+ =?utf-8?B?UkJ1ZzNLbDlnQ1krUUVGTzFzTWNhbmpQSDRvdXAxeGJlbWhKMzJsc1o5UEpD?=
+ =?utf-8?B?ZTVIQ0taTmdpc250V1l3NHZDZTdKZ2dvTDFZdXdGTzQvY0RwU3JVYXRNZkg1?=
+ =?utf-8?Q?SNmB3cJotfOkeQbqZ5?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af81a0ef-ce36-4e71-de02-08df2b1093aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d91980c-9b8a-4c05-bc16-08df2b110d0f
 X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 23:03:50.7926
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 23:07:14.6649
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P6urEBk7tLPpJBkp/1vMChVQs3XgKo9Om3KzaLQv/ZVl4bkZiWgxo8g+aVCm7b72
+X-MS-Exchange-CrossTenant-UserPrincipalName: j/fwGJW6UklGfy3I0OE/FSl2trWuiaXr4DUdROib0KggAtdI1otMletxoozWOyaq
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9510
 
 Hi Reinette,
 
-On 10/15/26 09:17, Reinette Chatre wrote:
+On 10/15/26 09:22, Reinette Chatre wrote:
 > Hi Babu,
 > 
+> nit: subject claims multiple "definitions" while only adding one #define.
+Will change it to:
+
+x86/resctrl: Add PLZA configuration register and data structures
+
+
+> 
 > On 10/1/26 8:10 AM, Babu Moger wrote:
->> Add a kernel command-line parameter to enable or disable the exposure of
->> the PLZA (Privilege Level Zero Association) feature to resctrl.
->>
->> This allows administrators to control PLZA visibility at boot time via the
->> rdt= option (e.g. rdt=plza or rdt=!plza).
->>
+>> Privilege Level Zero Association (PLZA) enables the kernel to switch to
+>> a different CLOSID and/or RMID than those used in user mode when entering
+>> kernel mode. CLOSID and RMID selection are independent and can be
+>> configured separately.
 > 
-> Apologies for not being clear in previous review. This changelog has a
-> lot of repetition. Above two paragraphs are redundant, paragraph below is
-> sufficient by itself. One possible change would be to spell out PLZA in
-> the paragraph below. Spelling PLZA out may not be necessary since it is
-> spelled out in the patch self, so up to you.
-
-No worries. It will be:
-
-Add "plza" to the rdt= command-line parameter so PLZA (Privilege Level 
-Zero Association) exposure to resctrl can be enabled or disabled at 
-boot. PLZA is exposed by default when supported; rdt=!plza suppresses it.
+> That CLOSID and RMID are independent on x86 is clear to me. That they can be
+> configured separately is not clear to me in this context. What does this
+> "separate configuration" refer to? Looking at the later patches kernel
+> mode allocation and monitoring associations are always configured together
+> and written to same MSR at the same time?
 
 
+Good point. Its confusing.  What I meant is that allocation (CLOSID) and 
+monitoring (RMID) associations are independent PLZA features and can be 
+enabled independently in hardware. For example, a platform may enable 
+kernel mode CLOSID association without enabling kernel mode RMID 
+association, or vice versa.
+
+Yes. The kernel interface configures both together because they are 
+carried in the same IA32_PQR_ASSOC MSR update.
+
+How about?
+
+Privilege Level Zero Association (PLZA) enables the kernel to use a 
+different CLOSID and/or RMID in kernel mode than in user mode. 
+Allocation (CLOSID) and monitoring (RMID) associations are independent 
+PLZA features and may be enabled independently by hardware.
 
 > 
->> Add "plza" to the rdt= command-line parameter so PLZA exposure to resctrl
->> can be enabled or disabled at boot. PLZA is exposed by default when
->> supported; rdt=!plza suppresses it.
+>>
+>> PLZA associations are programmed on a per-CPU basis through
+>> MSR_IA32_PQR_PLZA_ASSOC (0xc00003fc), which contains the kernel RMID and
+>> CLOSID values along with their corresponding enable bits.
+>>
+>> Make the register and its field layout available so kernel mode allocation
+>> and monitoring associations can be configured independently.
+> 
+> Could you please also elaborate what "configured independently" refers to?
+> At this point it specifically refers to kernel mode and from what I understand
+> kernel mode of allocation and monitoring are configured together.
+
+Yea. it is not clear. Let me change. Remove the text "independently"(Its 
+already in the earlier text).
+
+Make the register and its field layout available so kernel mode 
+allocation and monitoring associations can be configured.
+
+> 
 >>
 >> Signed-off-by: Babu Moger <babu.moger@amd.com>
 >> ---
 > 
-> With first two paragraphs of changelog removed:
-> | Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+> ...
 > 
+>> ---
+>>   arch/x86/include/asm/msr-index.h       |  1 +
+>>   arch/x86/kernel/cpu/resctrl/internal.h | 49 ++++++++++++++++++++++++++
+>>   2 files changed, 50 insertions(+)
+>>
+>> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+>> index 82ca6356dc62..1331291f7a36 100644
+>> --- a/arch/x86/include/asm/msr-index.h
+>> +++ b/arch/x86/include/asm/msr-index.h
+>> @@ -1304,6 +1304,7 @@
+>>   /* - AMD: */
+>>   #define MSR_IA32_MBA_BW_BASE		0xc0000200
+>>   #define MSR_IA32_SMBA_BW_BASE		0xc0000280
+>> +#define MSR_IA32_PQR_PLZA_ASSOC		0xc00003fc
+>>   #define MSR_IA32_L3_QOS_ABMC_CFG	0xc00003fd
+>>   #define MSR_IA32_L3_QOS_EXT_CFG		0xc00003ff
+>>   #define MSR_IA32_EVT_CFG_BASE		0xc0000400
+>> diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+>> index e3cfa0c10e92..44ecde20b1b4 100644
+>> --- a/arch/x86/kernel/cpu/resctrl/internal.h
+>> +++ b/arch/x86/kernel/cpu/resctrl/internal.h
+>> @@ -222,6 +222,55 @@ union l3_qos_abmc_cfg {
+>>   	unsigned long full;
+>>   };
+>>   
+>> +/*
+>> + * Privilege Level Zero Association (PLZA) is configured via
+>> + * MSR_IA32_PQR_PLZA_ASSOC.
+>> + *
+>> + * @rmid		: RMID programmed for PLZA.
+>> + * @reserved1		: Reserved.
+>> + * @rmid_en		: Enable RMID for PLZA.
+>> + * @closid		: CLOSID programmed for PLZA.
+>> + * @reserved2		: Reserved.
+>> + * @closid_en		: Enable CLOSID for PLZA.
+>> + * @reserved3		: Reserved.
+>> + * @plza_en		: Enable PLZA. When enabled, PLZA applies to the
+>> + *			  given CPU.
+>> + *
+>> + * The MSR_IA32_PQR_PLZA_ASSOC must be programmed on every CPU in a QoS
+>> + * domain. Each domain supports a single PLZA CLOSID and/or RMID
+>> + * association, and all fields except @plza_en must be programmed
+>> + * identically across the domain to ensure consistent behavior.
+>> + *
+>> + * CLOSID and RMID selections are controlled independently. When PLZA is
+>> + * enabled (@plza_en = 1), CPL0 uses CLOSID and RMID values from
+>> + * MSR_IA32_PQR_PLZA_ASSOC depending on the corresponding enable bits. When
+>> + * PLZA is disabled (@plza_en = 0), the CLOSID and RMID are always taken
+>> + * from MSR_IA32_PQR_ASSOC regardless of privilege level.
+>> + *
+>> + * - @rmid_en = 1: use the RMID from MSR_IA32_PQR_PLZA_ASSOC if @plza_en = 1.
+>> + * - @rmid_en = 0: use the RMID from MSR_IA32_PQR_ASSOC.
+>> + * - @closid_en = 1: use the CLOSID from MSR_IA32_PQR_PLZA_ASSOC if @plza_en = 1.
+>> + * - @closid_en = 0: use the CLOSID from MSR_IA32_PQR_ASSOC.
+>> + *
+>> + * This allows PLZA to override only RMID, only CLOSID, or both. If both
+>> + * rmid_en and closid_en are clear, the effective behavior is the same as
+> 
+> nit: rmid_en -> @rmid_en, closid_en -> @closid_en
+
+Sure.
+
 Thanks
 Babu
