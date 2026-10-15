@@ -1,193 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820F443E9F5
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792077737; cv=none; b=Mq9Ec9qsJb7TWj1Kiy0RxNuTClrdxiMfYOyrROf+6WTlXTa8kZGW8M3IO5rZC5xA0h2sqj5q8Vg+Q0GMgCvrZULJ9DHj/Las6aNLrTmSIiyjTxStpDH1YoHG8moB565Zv3JjO4Kq0zmbwFbSnwgml2dnmeCIloSK9UVY0FgIjFA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792077737; c=relaxed/simple;
-	bh=xBiFswB4PS6wPz1epIS31hwTsAxbPgndayiFdni3Pb4=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=sCSquO8JYwjuW/HQf3dilIN3XZQVUmYulxJYgNNpw0ciuBO3CQoxB7E+HEJss8P+4yFoZUYMi+41px8cVwQL9LYLQfk2yj2UTNTd0mBnBo10ZL7pCRLX19fQo1VMD8FCJu5hFveLEHrfkMKw1NAusTMeElrcZhPQ9YHxudKKH74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrC1BQJU; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD7F367295
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792077749; cv=pass; b=nA2b8ej3YyvZZYpk3ixHNFrCMM/dNBkwA2OlHfXxmvBCROlm+v1lTvC82+OtBWmvXy633+fETZEZ7ZYbuY32RPocahI6maiUpGHM/pwgrlJCFuIa0m91tiLsCM401azy40xCkwITSBFu25iFB0i2u2k9pBPVD9BmPBPVOyxcmdk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792077749; c=relaxed/simple;
+	bh=tOoKnWkXS6eLJWT/7QdD2bMyx4UfyGw83m8FAMh9FVU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dhgOeJfphUU2P7DK4IPm22EYealAX/Jy/2/1pxvwRWkoNpIN8zECMOBAIQDlJQnugQZA4OCyF5f+YaDT7f/fOCrAjNTh2WWnQSjdBM1CIS1P66dm+46P4plYAebjGNn2nXQdQuHpOebhHdMyGQf2pDB4j6fEdoMXA0u5ldQ23aI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NcWHBAvK; arc=pass smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrC1BQJU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1DB1F000C4;
-	Thu, 15 Oct 2026 15:22:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792077732;
-	bh=9JCIrBjHStMJNHGRIYsrxIKZMsYDV/IKNHOcOEySyhk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VrC1BQJUPMIiZpYOR9hOtfktq4s19muheg+xX+9Y4IbO3kMkw4QK/QQZGokg0dq/y
-	 7SzTPEY6bQxRMSXkb4Vl6j9XQ0poUIkNd5ho74roQJE6LxzvZHecJj7J2vH3pSp+ty
-	 6wW2+cg8dy/esVfPqYDKYX2CEWTOQVCNg53FCWubMiGntKYt2SmOnAATtjRoE3VxYW
-	 hlEiSDBkx4uznXHNaghzykdeqb24oAkyQrD2memEDglfDbxykGDL5sqyCOhCU9MLaj
-	 ws7Hz51TIODFf7kBpduZH9EHERdq5G726fDNU1fBoSRz61IQfN1T8K4e62scD0etrD
-	 JNG9gawS1B2Mw==
-Message-ID: <sashiko-outbox-173058@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 10/20] ctlv: Prepare event queue support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiri Pirko" <jiri@resnulli.us>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261015145053.3664509-11-jiri@resnulli.us>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-11-jiri@resnulli.us>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 15:22:11 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NcWHBAvK"
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6df1eeb43feso2327241eaf.1
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 08:22:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792077744; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qp0duBrr+Nz/6wdjGw08YHfruJKQogLx4BHpsRpWJRuYGbtkbWEsw3xESELzTaJmNM
+         vmNMgga5kV+b0RKdyMMe8VVrSHjt02j7naHZ7C0xntSR0khexp9Nq6GwvdGhJEoUEOYm
+         gtypCuzXs3GyxnD87kjYygKuvO5byHFpwZL2n+a4ooYzcX9AEkYmirLEVfGBJrinOM+G
+         iams6xBs0wO1GdVc+MlrR3It45+IgEkw4ZT4/saAlJwln+nvFRpdzgPRATaNQ5ey3WIF
+         X2ywOw02fhahcTKQHLcpdddRs12kD7L9vRJLAzfUa+kI3A5BuWHnQxKXOPCTVeQMnsN4
+         1VfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yvSSopROBCP6eUNokXJ2oRimLwMN7MQjW33S7Bdd9tI=;
+        fh=4zy44f7ayE6xtQh+JwVmApJwWn7QpMLghzgbOQg/j2c=;
+        b=ppgc6kYCzZBhMgXE1Yl++KDKsNc5T+NPiwNnyCLxtR+9LniJ72EeeWKgfgWAUXCBph
+         h0D4HZUV6rHz/DuK9hgpQh+3txacuINS4oAgjbEWEbbj8oA1OyMvstbgyPKodPYeR/rX
+         R/aM6yaiEjvU5/ztgULOVU0XptL1mGOkspH1+ydoJHjKJjic8fXb9u9lZLu5BuuMj3dB
+         5jRcYAalnFGYTnNREIU0ZpDGqUvpaC06HhhqG9G9j1WjocAY1klDvTssLoi2kDmwHu9v
+         J5wFDiJCIidUPMPacjmK+gvmsEMWqrp9CEnIKBR60VMBmRZ7W9TUrEQJlbCwnjrQJ19B
+         nPNw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792077744; x=1792682544; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yvSSopROBCP6eUNokXJ2oRimLwMN7MQjW33S7Bdd9tI=;
+        b=NcWHBAvKHA2PedchA4nd1CHPTu9pjOwMvOAQjcpLaxV4iYAv60VhqRxEAMJquRQxbH
+         a55R2oV8fynkm106nFZOS/c22YaitGRzZkcq8QjcInc+j3GGDfegRVqhsFMLTl6ixr3t
+         qi/YvCcKMg/K39aSOcB1VHsPzrU7HQXGcmhMH5gDJpcn86FSzQEiEFBjaYwdfPdtPY8y
+         0TDIF+SJScCB81NweHVdIyqkgkf6obMVIHZmTJTUK8SRuz7VGjmz0BVKG+6S/41YgGTR
+         U3rODK2ImwInuacGHJZFun3Pqzp9w/T6V/RTRetO6GKQ8CGGAGxFagD5YO4Flpx43ZlY
+         aLrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792077744; x=1792682544;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yvSSopROBCP6eUNokXJ2oRimLwMN7MQjW33S7Bdd9tI=;
+        b=EmJfQeZ4GRhCo4LCVQbKWHnC7spYza2OqnSxqrqqmzkVlwkBdkBVpK1XraHgl26aEm
+         MsjzphEFMIqNHuiP8LGRvt8GKxwwaWlAVZTq+OE6/KPIwLIWfMaS5+5O7r4nrI1jKTwQ
+         p79yS7EG0PmxVX0cYHLMmn7wXS0r5B2KdkWRy/fWyjJEWAtmPk4juBfUfStbyBRyZENt
+         V+WODiSFTSIrkMAZnwQ2ZkDZIcytk7BcyJIArwXK1A9hifTQlyaAQxnlYg9T0bHRvGu0
+         pvLO3XE9FqwLXe+surdgAlfY9caDBzrW/u6Z+2DCZbtwcbIqaWovNr66u4qJNniRR0H9
+         8PMw==
+X-Forwarded-Encrypted: i=1; AKwUvBxEVFJu4Wvg/q5RSULNkDooLCTUqISqM1hMCZs3FAI9ZkMoMG1NMCJIuybMHCP4IwfhcXk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYILDNmWGxGrjyKRgO/Kqpq9vxRfT0X3dwnkA3mCSoa9mUSsr5tm
+	98fSg2VqNmM+etKHFm4NGlIrgpbm32gTI1oTp0VAj/n3EBOn6t/5pEa4oGNK3PkuujClF0VIKC1
+	+Coex4MGXrpL5vqYOaXiWuMGORI1ex80=
+X-Gm-Gg: AYBFou16XaBbyqQT77vfqfretwLA4sZIFLVaOPp70+BvzdIS9kTjaIbdL7HJ5rhf45j
+	lYAwwD20Qx2mBuUVtAgtheAbYVTOeOMsoZcNzjP9kiBuoYbPNXpwS4ZaIgofkhp9agrqWygwPGK
+	q8qlSifVaOwpy1uYPXxFa+dVxhK1A0eM7SyBzLmUCC5l1JyQpthkxAiI6p6FmET3fgnCFkQJS3Z
+	FCd8zKmOYIw3qSg1UgLAc2tI73HSs5Hhogu7AlMcZu5ne2afX/ZudP9Jm2NWbENqtfKYLS9VLWp
+	v5ovWhh5YyCXzu8APZN51YYpIXCLCAbb1gmeSMEYsD9Oesals6uer4m2
+X-Received: by 2002:a05:6820:16a1:b0:6f5:f68f:4016 with SMTP id
+ 006d021491bc7-6f5f68f5a1cmr10213280eaf.19.1792077744402; Thu, 15 Oct 2026
+ 08:22:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20261008090037.86931-1-flyingpeng@tencent.com>
+ <aslQLXcK1VXSkrVo@google.com> <CAPm50aJ6uudDOAC-XN1qQAd=aEtKYVgKuQWwM7cmLOsruQR9xw@mail.gmail.com>
+ <aszcfeG_qPq_2x9w@google.com>
+In-Reply-To: <aszcfeG_qPq_2x9w@google.com>
+From: Hao Peng <flyingpenghao@gmail.com>
+Date: Thu, 15 Oct 2026 23:22:11 +0800
+X-Gm-Features: AclHuK9EiaUT_jPSN8rUqb6RgQl_YOgCQVAiz-Yopvgi-LUKFA5V_NDuUIcfSbg
+Message-ID: <CAPm50aLOKwb4JytbP5q9Y3CfDSnTL=wgVe3-coAko7YO_49xOQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86: Guard against division by zero in adjust_lapic_timer_advance()
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, 
+	Peng Hao <flyingpeng@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] race: TOCTOU in ctlv_event_file_read causes lost terminal events
-- [High] mm: Out-of-bounds write when finalizing reserved event records wit=
-h unaligned sizes
-- [Medium] race: Queue misordering appends overflow event after terminal re=
-moved event
-- [Low] cleanup: Mixing goto-based error cleanup with scope-based guards
---
+On Mon, Oct 12, 2026 at 9:11=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Sat, Oct 10, 2026, Hao Peng wrote:
+> > On Sat, Oct 10, 2026 at 4:35=E2=80=AFAM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > On Thu, Oct 08, 2026, Peng Hao wrote:
+> > > > When TSC calibration fails and userspace never programs a tsc khz,
+> > > > vcpu->arch.virtual_tsc_khz stays zero, but the lapic timer's
+> > > > software-mode expiry path still calls adjust_lapic_timer_advance()
+> > > > unconditionally on every timer expiration (unlike
+> > > > __wait_lapic_expire(), this path is not gated on tsc_scaling_ratio)=
+.
+> > > > Both the "too early" and "too late" branches do_div() by
+> > > > virtual_tsc_khz, so a zero khz crashes the host with #DE as soon as
+> > > > the timer advance drifts outside the adjust window.
+> > > >
+> > > > Bail out before either division.
+> > > >
+> > > > Signed-off-by: Peng Hao <flyingpeng@tencent.com>
+> > > > ---
+> > > >  arch/x86/kvm/lapic.c | 3 +++
+> > > >  1 file changed, 3 insertions(+)
+> > > >
+> > > > diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> > > > index 13e32c4915e2..4dcbc66c8e07 100644
+> > > > --- a/arch/x86/kvm/lapic.c
+> > > > +++ b/arch/x86/kvm/lapic.c
+> > > > @@ -1991,6 +1991,9 @@ static inline void adjust_lapic_timer_advance=
+(struct kvm_vcpu *vcpu,
+> > > >           abs(advance_expire_delta) < LAPIC_TIMER_ADVANCE_ADJUST_MI=
+N)
+> > > >               return;
+> > > >
+> > > > +     if (unlikely(!vcpu->arch.virtual_tsc_khz))
+> > > > +             return;
+> > >
+> > > Ugh.  I'd rather reject KVM_CREATE_VCPU, even though there is a rathe=
+r surprising
+> > > amount of code in KVM that does indeed play nice with tsc_khz =3D=3D =
+0.  I don't see
+> > > how the guest can possibly function with virtual_tsc_khz=3D=3D0.
+> > >
+> > Agreed the guest is broken in that state -- virtual_tsc_mult is zero to=
+o, so
+> > nsec_to_cycles() returns 0 and the deadline timer fires immediately. Bu=
+t I don't
+> > think KVM_CREATE_VCPU is where to enforce it, because letting vCPU crea=
+tion
+> >  succeed is what makes the state recoverable:
+> >   - kvm_arch_vcpu_create() deliberately ignores kvm_set_tsc_khz()'s -1
+> >   - KVM_SET_TSC_KHZ is only reachable once the vCPU exists. With
+> >       kvm_caps.has_tsc_control and a khz below kvm_caps.max_guest_tsc_k=
+hz it
+> >       recomputes virtual_tsc_{shift,mult} and the guest is fully
+> > functional again.
+> >  - max_tsc_khz does the same thing ahead of time, via default_tsc_khz.
+>
+> I don't see how it's recoverable.  kvm_set_tsc_khz() will compute thresh_=
+{lo,hi}=3D0,
+> and so use_scaling will always be true.  Which means this:
+>
+>         ratio =3D mul_u64_u32_div(1ULL << kvm_caps.tsc_scaling_ratio_frac=
+_bits,
+>                                 user_tsc_khz, tsc_khz);
+>
+> will again hit a #DE, no?
+>
+> Even if KVM somehow makes it past that, kvm_guest_time_update() will put =
+the vCPU
+> into an infinite request loop as get_cpu_tsc_khz() will always return 0 f=
+or modern
+> CPUs with a constant TSC:
+>
+You're right, and it's worse than I argued. I went back and checked:
+  - adjust_tsc_khz() gives thresh_lo =3D=3D thresh_hi =3D=3D 0, so use_scal=
+ing
+is always true, and
+set_tsc_khz() lands on mul_u64_u32_div(..., user_tsc_khz, tsc_khz)
+with   tsc_khz =3D=3D 0.
+ So KVM_SET_TSC_KHZ itself #DEs -- the "recoverable via KVM_SET_TSC_KHZ"
+argument I made is wrong; retract it.
+     - get_cpu_tsc_khz() (x86.c:1652) returns tsc_khz for
+CONSTANT_TSC, and mark_tsc_unstable()
+doesn't clear that CPUID bit, so kvm_guest_time_update() returns 1
+forever. Since vcpu_run() only
+breaks on r <=3D 0 , the vCPU thread spins in the host kernel rather
+than even failing the guest.
 
-commit 77cd7b72d04e886f1416198fdf738e02c8632520
-Author: Jiri Pirko <jiri@resnulli.us>
-Subject: ctlv: Prepare event queue support
-
-Add per-open subscriptions, bounded event queues and event creation for
-CTLV families. Add the generated root family kernel bindings now that their
-message and event helpers are available.
-
-> diff --git a/drivers/ctlv/event.c b/drivers/ctlv/event.c
-> new file mode 100644
-> index 0000000000000..0f68d33e031c8
-> --- /dev/null
-> +++ b/drivers/ctlv/event.c
-> @@ -0,0 +1,713 @@
-[ ... ]
-> +static void ctlv_event_record_done(struct ctlv_op_ctx *ctx, struct ctlv_=
-event_record *rec)
-> +{
-> +	u32 root_len =3D ctx->output.root->len;
-> +
-> +	rec->len =3D sizeof(rec->hdr) + CTLV_ALIGN(root_len);
-> +	rec->hdr.length =3D rec->len;
-> +	memset(rec->root + root_len, 0, rec->len - sizeof(rec->hdr) - root_len);
-> +}
-> +
-> +static struct ctlv_event_record *ctlv_event_record_reserve(struct ctlv_d=
-evice *ctlvdev,
-> +							   const struct ctlv_op_entry *op)
-> +{
-> +	struct ctlv_event_record *rec;
-> +
-> +	rec =3D ctlv_event_record_alloc(ctlv_event_len(op), GFP_KERNEL_ACCOUNT);
-
-[Severity: High]
-Does this sequence cause an out-of-bounds write when finalizing reserved
-event records with unaligned sizes?
-
-In ctlv_event_record_reserve(), the record is allocated with a capacity of
-ctlv_event_len(op). If the maximum record length from the schema is not a
-multiple of 8, this length will be unaligned.
-
-When root_len approaches this unaligned maximum in ctlv_event_record_done(),
-CTLV_ALIGN(root_len) rounds up past the allocated size. The subsequent
-memset() then writes padding zeros up to the aligned boundary, which can
-cause an out-of-bounds write on the kernel heap.
-
-[ ... ]
-> +struct ctlv_op_ctx *ctlv_event_create(struct ctlv_device *ctlvdev, u64 o=
-p_id,
-> +				      struct ctlv_cursor **reply, gfp_t gfp)
-> +{
-[ ... ]
-> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
-> +		const struct ctlv_family *family;
-> +
-> +		if (!ctlvdev->events_live) {
-> +			ret =3D -ENODEV;
-> +			goto err_free_ctx;
-
-[Severity: Low]
-Is it safe to mix goto-based error cleanup with scope-based guards here?
-
-The cleanup subsystem guide mandates that functions must never mix
-goto-based error handling and guard()/scoped_guard() declarations.
-Using goto to jump out of a scoped_guard creates confusing ownership
-semantics.
-
-[ ... ]
-> +int ctlv_event_emit(struct ctlv_op_ctx *ctx)
-> +{
-[ ... ]
-> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
-> +		if (ctlvdev->dead_announced)
-> +			goto out_free;
-
-[Severity: Low]
-Does this goto also violate the cleanup guidelines?
-
-Similar to ctlv_event_create(), jumping out of a scoped_guard to a cleanup
-label is discouraged and violates the cleanup rules.
-
-[ ... ]
-> +static void ctlv_event_queue_consumed(struct ctlv_file *cfile, struct ct=
-lv_event_record *rec)
-> +{
-> +	if (rec =3D=3D cfile->overflow) {
-> +		guard(spinlock)
-> +			(&cfile->ctlvdev->events_lock);
-> +		cfile->reading_overflow =3D false;
-> +		if (cfile->overflowing)
-> +			ctlv_event_queue_add(cfile, rec);
-
-[Severity: Medium]
-Can this queue misordering append the overflow event after the removed even=
-t?
-
-If a reader is consuming the overflow marker while the queue receives anoth=
-er
-dropped event, cfile->overflowing becomes true again. If
-ctlv_event_device_dead() is then called, it enqueues the removed terminal
-event.=20
-
-When the reader finishes and calls ctlv_event_queue_consumed(), it sees
-overflowing =3D=3D true and re-enqueues the overflow marker. Because
-ctlv_event_queue_add() appends to the tail, the overflow marker is
-incorrectly queued after the removed event, breaking monotonicity and the
-terminal property of the removal event.
-
-[ ... ]
-> +ssize_t ctlv_event_file_read(struct ctlv_file *cfile, char __user *buf, =
-size_t len, bool blocking)
-> +{
-[ ... ]
-> +	while (!(rec =3D ctlv_event_queue_take(cfile))) {
-> +		/* Drained, and the device is gone. */
-> +		if (READ_ONCE(ctlvdev->dead_announced)) {
-> +			ret =3D -ENODEV;
-> +			goto out_unlock;
-> +		}
-
-[Severity: High]
-Is there a race condition between the queue check and checking dead_announc=
-ed?
-
-The queue is checked locklessly (via ctlv_event_queue_take() returning NULL
-and dropping the lock) before checking READ_ONCE(ctlvdev->dead_announced).
-
-If ctlv_event_device_dead() runs exactly between these two checks, it will
-queue the removed event and set dead_announced =3D true. The reader will th=
-en
-see dead_announced as true and return -ENODEV immediately, completely
-missing the freshly queued terminal removed event. This race prevents
-userspace from observing the final state of the device.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015145053.3664=
-509-1-jiri@resnulli.us?part=3D10
+ Worse for my approach: that first one is a third division by zero in
+the same state, reachable from
+a plain ioctl and not covered by either of my patches. "Add a guard at
+each use site" is a losing
+strategy here.
+>   static unsigned long get_cpu_tsc_khz(void)
+>   {
+>         if (cpu_feature_enabled(X86_FEATURE_CONSTANT_TSC))
+>                 return tsc_khz;    <=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D always zero
+>         else
+>                 return __this_cpu_read(cpu_tsc_khz);
+>   }
+>
+> And so this code will re-request KVM_REQ_CLOCK_UPDATE and the vCPU will h=
+ang.
+>
+>         tgt_tsc_hz =3D (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
+>         if (unlikely(tgt_tsc_hz =3D=3D 0)) {
+>                 preempt_enable();
+>                 kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
+>                 return 1;
+>         }
+>
