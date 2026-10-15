@@ -1,184 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEBF4A64C5
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 07:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459A54A5C59
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 07:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792048102; cv=none; b=EeVBC3FHY3O58KQq/VVDnnZ8WFkvI9NxbUV3bAwwB7HhUXaa2WzSKrLKL7NmGUa2hWcOH/MujT3ytSTpYPoeVu7yNcByTktAdomQCoG1pMS1w+i7cYMo46WP7b44I0334tPzEGD6UEdKhKTijfJff2PMpqiS5c8+cAIFKdyo3qU=
+	t=1792048180; cv=none; b=da9D1Xrv86gvHhh7Oyq7hKB0Q/W0i2I0kMsmArXHaaOywcYUcEbmpFRuPL1TZEhpy3wtspEHDDRzbvGij91s6/TTdQROqbKMPEID1W4X4w43NaZW3uvicHBmWZAx2sGfOnYHFCWqweWyJecNbwRWRjOboTRcQZbMRk/4pkxX2FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792048102; c=relaxed/simple;
-	bh=BOT0UWP9YXd0Za6BISLj7RumQDPVm4W0GUgYADc61Uc=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=WmC2F71hBf7HLLZBYRXegS3OfwQ4qfSt7/ZEVL6m9kIFjeDmmHwKdifVZVFQDD7zaH+rTi1nW6u3DPDP82inMKJCGDrt7pF3PRkhJvh/uUUyDlbY1sByn/5+rLlkeaMjPpKDxyPQVVfgAdzDeCQYZWVYTjvK2sMSkDStPXyx5Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGS45h7y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792048180; c=relaxed/simple;
+	bh=vSE6SF/O7vjB6gvtVPX8GgYZcDaIDXMtT2/2oI7pXAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LdmrSeEm5iXEoPvB/s8uob+Jt7Oh3tEBKHOEP3czj823jWxWsgmA6RzuBhl+EjDyc195yLUtbM2dR0rj5kpfKNW6+CNsf8qCkHuPk8zc4h621p6z3yQdUP1PpjylsL/0Rhzt6TZp6u+knwzyXGK7W1QSrJhLT/82R2+kuhP80ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LZ781QyM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGS45h7y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C56E1F000C4;
-	Thu, 15 Oct 2026 07:08:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792048089;
-	bh=Cno4ZZUVZ7S7+Z1rUEIRoeh3OnNguzSf/rb/ic/7ipw=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=XGS45h7yS0Vob01bWxBalfx/Xj6FfWijEWAVQCcClQm3BYSxyIiFxwBW09gbvjofO
-	 3VJd9eo9ZVw7ZIyMEGJkv9lYkslokMW/+9/0CYuJKor0GpYQiIBdqSN/XOezTKAq50
-	 xuakohKT+P00Y0PjKgXvucleS7AXN9oj1ZlTv/R0rS6LuR3CUpZKdBQ2NPS1+PEW6B
-	 JmtTbqfneQLjq7jCjMyqhSYSq7HzqYV6GH9O0ZPaMhrGUQQDVvsPSyh9AedPhQKUUR
-	 ezBWOnwGyR2A7yhHB4YgdbxJBjMRSmz+X2FRF5BV9Sis9NH7v3DPnQLVzC6qern1h6
-	 4Q0D+qece3TAg==
-Message-ID: <sashiko-outbox-172380@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 7/7] iommu/amd: Provide kernel command line option to
- enable GAPPI
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sairaj Kodilkar" <sarunkod@amd.com>, kvm@vger.kernel.org
-In-Reply-To: <20261015064515.10700-8-sarunkod@amd.com>
-References: <20261015064515.10700-1-sarunkod@amd.com>
- <20261015064515.10700-8-sarunkod@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 07:08:09 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LZ781QyM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792048172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vSE6SF/O7vjB6gvtVPX8GgYZcDaIDXMtT2/2oI7pXAI=;
+	b=LZ781QyMYaG31kqXmcnoLhvBJkdHsnSE9UlydqGfwfYT84R+RMmFBmbFks2ziCSsMXuR3D
+	E/ub9B1YWyvNK/P+AMdcWZikdbJqqppiPGA9x+Aj/1vahXTV6dLqqX1Z5G/RnRFRyNrao9
+	UyPP/BnZN4aUcx9C6GyK3zkwgvELZg8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-317-SirXxdeDPEuJ2pN2inpTCA-1; Thu,
+ 15 Oct 2026 07:09:28 +0000
+X-MC-Unique: SirXxdeDPEuJ2pN2inpTCA-1
+X-Mimecast-MFC-AGG-ID: SirXxdeDPEuJ2pN2inpTCA_1792048166
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1BCE31956067;
+	Thu, 15 Oct 2026 07:09:26 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 485A8300072E;
+	Thu, 15 Oct 2026 07:09:20 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jgg@ziepe.ca
+Cc: alex@shazbot.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	bhelgaas@google.com,
+	jjohnson@kernel.org,
+	johannes@sipsolutions.net,
+	jtornosm@redhat.com,
+	kevin.tian@intel.com,
+	kvm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mani@kernel.org,
+	skolothumtho@nvidia.com,
+	yishaih@nvidia.com
+Subject: Re: [PATCH 0/7] Enable Qualcomm WiFi PCIe passthrough to VMs
+Date: Thu, 15 Oct 2026 09:09:19 +0200
+Message-ID: <20261015070919.466876-1-jtornosm@redhat.com>
+In-Reply-To: <20261014150047.GO14213@ziepe.ca>
+References: <20261014150047.GO14213@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] iommu/amd: NULL pointer dereference in iommu_poll_ga_log() with GA=
-PPI
-- [Medium] iommu/amd: amd_iommu_gappi state inconsistent on VAPIC fallback
-- [Low] iommu/amd: missing GAPPI in feat_str feature name array
---
+Hi Jason
 
-commit f3f34d41f6c88bbaa635da8109c52cf22d09f580
-Author: Sairaj Kodilkar <sarunkod@amd.com>
+Thank you very much for this. This is a very good and complete analysis.
+I need some time to study this carefully and understand all the
+implications. After this I will try to do an initial proposal to work on.
 
-iommu/amd: Provide kernel command line option to enable GAPPI
+Best regards
+Jose Ignacio
 
-Enable GAPPI when the IOMMU GAPPISup extended feature bit is set and
-the kernel is booted with the amd_iommu=3Dgappi kernel parameter.
-
-> diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_=
-iommu_types.h
-> index b89a2b3df0a49..51edd617ddca2 100644
-> --- a/drivers/iommu/amd/amd_iommu_types.h
-> +++ b/drivers/iommu/amd/amd_iommu_types.h
-> @@ -78,6 +78,7 @@
->  #define FEATURE_X2APIC		BIT_ULL(2)
->  #define FEATURE_NX		BIT_ULL(3)
->  #define FEATURE_GT		BIT_ULL(4)
-> +#define FEATURE_GAPPI		BIT_ULL(5)
-
-[Severity: Low]
-This isn't a functional bug, but FEATURE_GAPPI is defined as bit 5.=20
-
-In print_iommu_info(), bit 5 is still hardcoded as "[5]" in the feature
-string array:
-
-drivers/iommu/amd/init.c:print_iommu_info() {
-...
-	static const char * const feat_str[] =3D {
-		"PreF", "PPR", "X2APIC", "NX", "GT", "[5]",
-		"IA", "GA", "HE", "PC"
-	};
-...
-}
-
-Should "[5]" be updated to "GAPPI" so the kernel boot log displays the
-correct feature name?
-
-[ ... ]
-> diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-> index ef23e0755c32d..c536e0b3c4ff7 100644
-> --- a/drivers/iommu/amd/init.c
-> +++ b/drivers/iommu/amd/init.c
-[ ... ]
-> @@ -3025,10 +3035,19 @@ static void enable_iommus_vapic(void)
->  		return;
->  	}
-> =20
-> +	if (amd_iommu_gappi &&
-> +	    !(check_feature(FEATURE_GAPPI) &&
-> +	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-> +		pr_warn("GAPPI is not supported.\n");
-> +		amd_iommu_gappi =3D false;
-> +	}
-
-[Severity: Medium]
-If VAPIC is unsupported or disabled due to SNP, the code returns early just
-above this diff and falls back to legacy mode:
-
-drivers/iommu/amd/init.c:enable_iommus_vapic() {
-...
-	if (!check_feature(FEATURE_GAM_VAPIC)) {
-		amd_iommu_guest_ir =3D AMD_IOMMU_GUEST_IR_LEGACY_GA;
-		return;
-	}
-
-	if (amd_iommu_snp_en &&
-	    !FEATURE_SNPAVICSUP_GAM(amd_iommu_efr2)) {
-		pr_warn("Force to disable Virtual APIC due to SNP\n");
-		amd_iommu_guest_ir =3D AMD_IOMMU_GUEST_IR_LEGACY_GA;
-		return;
-	}
-...
-}
-
-These early returns bypass the new fallback check added here that sets
-amd_iommu_gappi =3D false.
-
-If KVM subsequently reads the stale amd_iommu_gappi flag and attempts to set
-up IRTE entries using GAPPI parameters, it calls irq_set_vcpu_affinity()
-which triggers this check:
-
-drivers/iommu/amd/iommu.c:amd_ir_set_vcpu_affinity() {
-...
-	if (WARN_ON_ONCE(!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir)))
-		return -EINVAL;
-...
-}
-
-Could this result in a kernel warning and failure to configure the affinity
-since the IOMMU driver actually fell back to legacy mode?
-
-> +
->  	/* Enabling GAM and SNPAVIC support */
->  	for_each_iommu(iommu) {
-> -		if (iommu_init_ga_log(iommu) ||
-> -		    iommu_ga_log_enable(iommu))
-> +		if (amd_iommu_gappi)
-> +			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-> +		else if (iommu_init_ga_log(iommu) ||
-> +			 iommu_ga_log_enable(iommu))
->  			return;
-
-[Severity: High]
-If GAPPI is enabled, we skip allocating the GA log, so iommu->ga_log
-remains NULL.
-
-If the previous kernel used the legacy GA log and left an interrupt pending,
-or if an unmasked interrupt triggers the handler:
-
-drivers/iommu/amd/iommu.c:iommu_poll_ga_log() {
-...
-	head =3D readl(iommu->mmio_base + MMIO_GA_HEAD_OFFSET);
-	tail =3D readl(iommu->mmio_base + MMIO_GA_TAIL_OFFSET);
-
-	while (head !=3D tail) {
-		volatile u64 *raw;
-...
-		raw =3D (u64 *)(iommu->ga_log + head);
-...
-		/* Avoid memcpy function-call overhead */
-		log_entry =3D *raw;
-...
-}
-
-Won't the while loop unconditionally dereference iommu->ga_log which is now
-NULL, crashing the kernel?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015064515.1070=
-0-1-sarunkod@amd.com?part=3D7
