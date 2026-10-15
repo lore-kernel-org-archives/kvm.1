@@ -1,273 +1,203 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804733AAF42;
-	Thu, 15 Oct 2026 17:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DC35592FD
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 17:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792084329; cv=none; b=lx/v8U7m1yK68StU5EZJg7z5sH6IqUjOMLuROGcPMvB1KFiy+VdorM90TdN6TTLC08iP3mrKaq450WEyNCrLAnM4u/NcH8TiiT1fR0DB8dwAXrRs8sPqhqtd59xyY7V3pyBUxZkkP00Ohf1zQY+7UP7hfoExZlkWiQEtPemVoQQ=
+	t=1792084679; cv=none; b=R+guNNtwpg9ao8nsdQ0q0Jk7bSOYPaPtns+4I0oL05hoOgc0J5qAnCdtWZI2tcilxwWSOz/r/bE3dpa7+BhWLvWNGpwnuIUu4/b6oH+7ti5UFQzIZfWgHHS2Y+HZKnT/RrisT0M61fGugMvrApRvKrZIAl7jyZOs+DhBJP6cYZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792084329; c=relaxed/simple;
-	bh=sedMkyz1/6r+v9BYxI2T82jNuve8cAUmkRvl9UYxbeg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pbVoE3IWbO3Nd22JdIvHG3JtCSSZLe8O8yCvPjeOOhPWJW9sXlvQan9A3MIlDgZknKkntFWugJnJ/Se7kNPrh3IYw8pjwCeNd09erA9TFWUgOiXzEZriZhRXiph+JZl/gqn2VQhuM7RHcWrTgwNwrkLRU0rLyVX55liO6Bd48J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZQeGbJQS; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1792084679; c=relaxed/simple;
+	bh=97nz3x4cCT7jJVkf7khGZ92jWq9O4MzPPIoGZFfCE3Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KZYvphNm1bXHkLI54FxTM3W1gZddzch5U1Jm8LDoi+a4Fg+V0eeP4V2oKzjetpUjkaOGEU5F+yMjghFHqFe+Kn8xvpFyqscxf4Yc9u2iFFFwehUzOwX5M9fDFfTpNBr/sS7gpZ5zgXAqf59ZqexvWazrNzpOybKtACtwNUG4Hoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LGHjnZQ2; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZQeGbJQS"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69F9kD2F667549;
-	Thu, 15 Oct 2026 17:11:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Wr+4KfFpBN/d+mD4C5REdG2z/mL4BLtMypY6Rb5xL
-	Sw=; b=ZQeGbJQSIxaDH4NqynQuqh726c5n6DjF6Gwn45f6roaUYHkC0qWj1pZGJ
-	3otTIXKi0GbS7Ztmo6kX2MzXfu2CuDOx7PML4SAwnFVYz9B6/bGQVYGfBKqaJikJ
-	9rGbZeob6A1JBXajj0tBgEeEZOoZmtplRz0GGOOi8XjYVwAwAwetid7eUMb1HwxU
-	VkpG8ri+PWgoXY6g4yefgZaZyount934vSaVwd4NfkXBKys4JEjLJCqPaSSnpyCV
-	aCFBZdlkNVnl0yzm2LzcnTCRvrCYw4TuJOezQsQmnmn4CuLhQZdCDC9LQP+GEtbe
-	E+4MlAmFLMWGusx1aS6C1US9oiihg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dugu7kh-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 15 Oct 2026 17:11:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69FDuHNT709726;
-	Thu, 15 Oct 2026 17:11:48 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h9wvg89cr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Oct 2026 17:11:48 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69FHBjfw27984498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Oct 2026 17:11:46 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D554E5805D;
-	Thu, 15 Oct 2026 17:11:45 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9CDF45805C;
-	Thu, 15 Oct 2026 17:11:41 +0000 (GMT)
-Received: from li-d98989cc-2c66-11b2-a85c-93ab83b7dd53.fritz.box (unknown [9.111.57.222])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 15 Oct 2026 17:11:41 +0000 (GMT)
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: KVM <kvm@vger.kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gabriella Seifert <gseifert@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Mike Rapoport <rppt@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>,
-        Sean Christopherson <seanjc@google.com>, Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-Subject: [GIT PULL] KVM: s390: Changes for 7.4 including arm on s390
-Date: Thu, 15 Oct 2026 19:11:40 +0200
-Message-ID: <20261015171140.262334-1-borntraeger@de.ibm.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LGHjnZQ2"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-486e70f2457so889172f8f.2
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 10:17:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792084669; x=1792689469; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nUb4cagls44kE5et9qrliHAU76p7w/thb7bKXpN7Lxs=;
+        b=LGHjnZQ2i3mxf4ZTcid18hLmSzPCcPavgFPgZXktiYaRW1loWCVGAx9MKQnl/QcRCf
+         ehi71GtHRfcunwNyEobfohUWmkeA9mNpHK4FLA4407u/3wMFSFhlWGMhG5S2neNoRtEJ
+         zbkFGb+xPzgYcG8N/dR2fxLkkuMk7YYGP73vQni7JEphDT8lsWRDGrTYwq7CHBDrCojT
+         GASpge4oiIj0VCC1VtwWK2UYDpvGJzquN+0TjRWAufqxK1f4pkXz2DlI5Y4bHumxbJ/u
+         Vu9hHXOCPX9rWAqEaf2aAporaEoq3Dq13KZi0t2lBQOo7uWkK1mx2b7X/TcgLYg3LcCj
+         I20A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792084669; x=1792689469;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nUb4cagls44kE5et9qrliHAU76p7w/thb7bKXpN7Lxs=;
+        b=mKthFjfMq/adzmc8cjNWe44KJePgbf6yOALdedK0YcnwWu0ATSttCexi5R7wUPQCml
+         0Q8f5Krm9Q8Xqh/X+P/pUqzV2/zsSwcKouYgjQcLL5YDzls8cYoKzq+D5jpmXzbNwneD
+         5/oy4eKTnI3F5vhY8b/p/opQBsa1YRGWiqv3+6gMPgUrv9MT61tc8NmLTKAVeOcdftew
+         7h4LYF21YtSExRMg1V0TjxZo9MvKlgqITPF+R78DqQFCK8Mlmk7tBTSjq447iUo2/qe7
+         ZdHXGxLtB55kJ8bJZx0J5xBhZz5GAO2h59DjqTPVJWDLyWsIPTU1/v1GXFAE3q5FVWS/
+         iCOg==
+X-Forwarded-Encrypted: i=1; AKwUvBx+ggZ+9/UQxoappcRkuXUf80q0nc0PDc/hkEuhVugz3SUFxgXawd0KHKx4dwRg3SsPlUY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJMqRUEsqVzxfzflQ1GaDlSdWYxtuiZuTnumJm7QL//5d2cHcVi
+	AMp8VdL6cfsG0gP5iVAp3Y1Usi9WDRvKSSQ9ALDlhsnkSiacUbBWfceM
+X-Gm-Gg: AYBFou3JyAWeZb1495aFVnN6tMUkBxo4AOX+AXSJjVkKrnOJ70jSCwYhweBYtifqRWJ
+	JzpCONA00WXuD0NgNFhkz2r0obIcef7axIPURU5gwi3330ReSEi0ykN4Ig8OXhdHiZHPckRtJ3p
+	BOzKkqDg1UC3txvcJvW3XFyuztR+zWD9sIzAcL8zXMQN321Z3twS9RSD6eNErcsZxomnK0HLlHv
+	M45MlsCtc9uVKBvVgJ3uPqYT05pqxF7EHevV8FAh15UrFMncQl78TGKigY0BxX/8tJCHvOgsTWx
+	8K600QZzwLM+hkE4l4rr26jdqRwGq3hit99G2HyOVdupFRgEAyYmlg7ReNwcowZZrtH3yuwxLrl
+	Q5Rl0XgMfR1WuGgBvn6QlPXhYhQkjxgd8NvJFXqd6DlbuJoZQUGqGXPiwxhLQ+gDomO64I5NfOJ
+	mnSC5LqwjnfYQaQuhc9dndOxmHdDhwlLF2YOpRgrGhO/KPqpA3fkHiY1PvpsHalMI9LCy/4Br7W
+	zYrj3Jbgmw/3gDrQhrI3j1cZU4l+ZwN6lAXQwLQQiC17d0+uXvSFWGpEZHfMUBRH4SumKwzaT1d
+	vx7IxQBjRPAxqev42z+v+v2N0Rtc413Daa8=
+X-Received: by 2002:a5d:44cd:0:b0:488:89e4:c3af with SMTP id ffacd0b85a97d-48dbaae4869mr30499724f8f.45.1792084668569;
+        Thu, 15 Oct 2026 10:17:48 -0700 (PDT)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfaf1acd7sm1180327f8f.1.2026.10.15.10.17.46
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 15 Oct 2026 10:17:48 -0700 (PDT)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Ackerley Tng <ackerleytng@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH 0/9] mm: Memory providers for guest_memfd and iommufd
+Date: Thu, 15 Oct 2026 17:17:46 +0000
+Message-ID: <20261015171746.51538-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAEvNRgHtB8j6=9r=txjsKvQM0F85nRN4KW5sdnuv_-Og=cWEfg@mail.gmail.com>
+References: <20260720111259.122911-1-dwmw2@infradead.org> <20261006183235.16576-1-griffoul@gmail.com> <CAEvNRgEseLO+LbkwXrEit0H2LH5Wx-srSvHEMpt0=upPL3tF=g@mail.gmail.com> <20261014095702.39676-1-griffoul@gmail.com> <CAEvNRgHtB8j6=9r=txjsKvQM0F85nRN4KW5sdnuv_-Og=cWEfg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Cr0q4X4D c=1 sm=1 tr=0 ts=6ad10955 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=U1Dpukk0pk5jbBdTZmcA:9
-X-Proofpoint-GUID: uIY7MLkXTNUs4Av4YFvJJtGkHZnMmy8U
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE1MDA2NiBTYWx0ZWRfX4/gihiYfnEBB
- zSIvgEe/C8LBK9yHNHhD1z33CjJfBQkysR4jozLlgdp0sZLRYaQnxHEeRRyGitPljiNwUfjFUci
- lzoGr1hnSgtA7m57vD0N3BAxzz+Or/3WwSvbIq5SwacxXk5elCnTfXYe/p/iJFu+BoBccrzBoMN
- AsjfdVsEOrDRcQdHwUARWqq05GT7ejW8S53utxVeDoC0XatGhQugStJp+44Gl1ZDvRap+UriJGo
- 5wYbPNy6ww1oSseCz398oVVibw2y6fxCDBGbJcHybY7k50y7zhLRvOgcTQC4yQ+SRRvNSY9ZjmG
- fDBqM5AnWfXJf2p2ymXLmcHqrRJphVK5nfbwXcbBkHDYHF9vxhabXbHMEblNuGgtypC7gedSrW0
- Ev0uwP3ECoEdluXKhxuw8WKrp0XRWi30vRuk6qR3yZb8fnpHWKhbxjs8Ged8EnnvJ+KnPHkxiHs
- psvvZTAqv4bVdDUyCgQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE1MDA2NiBTYWx0ZWRfX9gxTFNlXMLy4
- tAy21z7K56I90RU31KMVmsoowzD+rZ8NKvNYEhvjGmVwmDteEphVzFOm5I4NmrDakxN+My0Uvuu
- uBHhMsxjvN21M7cVbftXIne2PMLizh0=
-X-Proofpoint-ORIG-GUID: tp9VdytwUJqzRoc_LpHha49jY7PAVD5Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610150066
 
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
+Ackerley Tng <ackerleytng@google.com> writes:
 
-Paolo,
+> To borrow David's words, the part about this that makes me itch is
+> conversion. We have to support conversions. Even if it doesn't merge in
+> the first patch series, we have to have line of sight to how conversions
+> would work.
+>
+> Conversion requests originate from the guest and then the host handles
+> the guest request by making calling an ioctl on guest_memfd. Hopefully
+> this part doesn't change with alternative provider support.
 
-The following changes since commit 439d8f9cb01cb04f9b31910efd0ae8dbdfa4ad97:
+Agreed, and it doesn't change. Conversions still go through
+guest_memfd. It is the only one that knows which pages are private.
 
-  Merge tag 'kvmarm-7.4' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD (2026-10-14 18:26:28 +0200)
+> Suppose guest_memfd still gets the conversion request first, in RFCv2,
+> to reach all the mappings in various page tables, it would have to be
+>
+> + [GUEST_MEMFD] -> [KVM], [USERSPACE]
+> + [GUEST_MEMFD] -> [PROVIDER] -> [IOMMU]
+>
+> since guest_memfd must ensure no IOMMU mappings to guest private pages?
+> There's that extra step through the [PROVIDER]...
 
-are available in the Git repository at:
+Right, there is a step through [PROVIDER]. But it can be a step through
+the mem_provider code in mm, which every provider shares, rather than
+through each provider driver. Then guest_memfd doesn't need to know who
+else maps the frames, and providers don't have to get it right one by
+one.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tags/kvm-s390-next-7.4-2
+Here is the idea, on top of your in-place conversion. The VMM gives the
+same provider file to guest_memfd and to iommufd, as in v2. When
+guest_memfd converts a range to private, it claims the range:
 
-for you to fetch changes up to e93fb70b748982fda5e6d97721df35194cacfc4a:
+  int mem_provider_claim(struct mem_provider_attachment *att,
+                         loff_t offset, loff_t len);
+  void mem_provider_unclaim(struct mem_provider_attachment *att,
+                            loff_t offset, loff_t len);
 
-  arm64: Use proper include variant (2026-10-15 13:38:43 +0200)
+The claim revokes the range for every other consumer of the file. After
+that, get_page() returns a hole to them. So iommufd unmaps the pages
+and can't map them again, and nothing changes on the iommufd side.
+guest_memfd zaps its own mappings, as it does today.
 
-The last one line patch is in fact a cherry-pick of b64f41a7ace1
-("arm64: Use proper include variant") from the arm tree, but necessary
-to build.
+Going back to shared is the reverse. guest_memfd returns the frames to
+the host first, then unclaims the range. The other consumers then map
+the frames again. So a conversion looks like:
 
-With that we have the initial arm on s390 support.
+  [GUEST_MEMFD] -> [KVM], [USERSPACE]
+  [GUEST_MEMFD] -> [PROVIDER] -> [IOMMU]
 
-----------------------------------------------------------------
-KVM: s390: Changes for 7.4
+That is your second chain, but the [PROVIDER] step is the common code
+in mm/mem_provider.c. It does the revokes and hands out the holes. The
+provider driver itself only gets one callback, and it can refuse a
+claim. For example, it would refuse if it also lends those frames
+through another file. Conversions can already fail, so this fits. If a
+later step fails, guest_memfd just unclaims the range.
 
-- rework page allocation for secure guest variable storage
-- selftests
-- documentation
-- replace get_zeroed_page with kzalloc
-- fix floating interrupt inject for corner cases
-- initial arm64 on s390 support
+This also answers your earlier question. The provider doesn't need to
+know what is shared or private. It only needs to know which ranges are
+claimed, so that it doesn't move or share them, and only takes them
+back once the guest has given them up.
 
-This also contains the patch
-"arm64: Use proper include variant"
-as a build fix. It is also part of the arm tree.
+I haven't implemented this yet. My plan is to rebase on kvm-x86 next,
+which has your conversion code. Then I'd demo it with a
+KVM_X86_SW_PROTECTED_VM and the sample provider. A device sees a shared
+page, loses it when the page becomes private, and sees the same frame
+again when it goes back to shared.
 
-----------------------------------------------------------------
-Eric Farman (1):
-      Documentation: Add missing KVM s390 crypto attributes
+Does that match what you have in mind?
 
-Gabriella Seifert (1):
-      KVM: s390: selftests: Add IRQ injection selftests
+> Thanks, I will prototype what I have in mind too to make sure things
+> work as I think they will :)
 
-Heiko Carstens (1):
-      s390/uv: Rework page allocation for guest variable storage area
+Thanks, that would really help. The sample provider and the KVM
+selftest in the series could be a starting point.
 
-Hendrik Brueckner (1):
-      s390/hwcaps: Report SAE support as hwcap
-
-Janosch Frank (2):
-      KVM: s390: Improve floating IRQ injection behavior
-      KVM: s390: Kick PV cpus at the right time for service irqs
-
-Mike Rapoport (Microsoft) (4):
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for sie_page2 and CMMA
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for the GIB
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for the STSI buffer
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for the STHYI buffer
-
-Steffen Eiden (14):
-      s390/Kconfig: remove PCI dependency from HAS_IOMEM
-      KVM: s390: Use dedicated function for migration mode
-      s390/tools: Use arm64 headers
-      KVM: s390: Use arm64 code
-      s390: Introduce Start Arm Execution instruction
-      KVM: s390: arm64: Introduce host definitions
-      KVM: s390: Add basic arm64 kvm module
-      KVM: s390: arm64: Implement required functions
-      KVM: s390: arm64: Implement vm/vcpu create destroy
-      KVM: s390: arm64: Implement vCPU IOCTLs
-      KVM: s390: arm64: Implement basic page fault handler
-      KVM: s390: arm64: Integrate arm on s390
-      MAINTAINERS: Add entry for ARM on s390 KVM
-      arm64: Use proper include variant
-
- Documentation/virt/kvm/devices/vm.rst            |  18 +
- MAINTAINERS                                      |  17 +
- arch/arm64/include/asm/sysreg.h                  |   2 +-
- arch/s390/Kconfig                                |   5 +-
- arch/s390/include/arm64/kvm_emulate.h            | 130 ++++
- arch/s390/include/arm64/kvm_nested.h             |  11 +
- arch/s390/include/arm64/ptrace.h                 |  11 +
- arch/s390/include/arm64/sysreg.h                 |  13 +
- arch/s390/include/asm/asm-prototypes.h           |   1 +
- arch/s390/include/asm/elf.h                      |   2 +
- arch/s390/include/asm/io.h                       |  12 +-
- arch/s390/include/asm/kvm.h                      |   6 +
- arch/s390/include/asm/kvm_host.h                 |   4 +
- arch/s390/include/asm/kvm_host_arm64.h           | 209 +++++++
- arch/s390/include/asm/kvm_host_arm64_types.h     | 124 ++++
- arch/s390/include/asm/kvm_host_types.h           |   4 +
- arch/s390/include/asm/sae.h                      |  49 ++
- arch/s390/include/asm/sclp.h                     |   5 +-
- arch/s390/include/asm/stacktrace.h               |   5 +
- arch/s390/include/uapi/Kbuild                    |   6 +
- arch/s390/kernel/asm-offsets.c                   |   1 +
- arch/s390/kernel/entry.S                         |  22 +
- arch/s390/kernel/processor.c                     |   3 +
- arch/s390/kernel/uv.c                            |  41 +-
- arch/s390/kvm/Kconfig                            |  21 +-
- arch/s390/kvm/Makefile                           |   1 +
- arch/s390/kvm/arm64/.gitignore                   |   2 +
- arch/s390/kvm/arm64/Makefile                     | 110 ++++
- arch/s390/kvm/arm64/Makefile.gen                 |  28 +
- arch/s390/kvm/arm64/arm.c                        | 754 +++++++++++++++++++++++
- arch/s390/kvm/arm64/arm.h                        |  58 ++
- arch/s390/kvm/arm64/copy-arm64c.awk              |  82 +++
- arch/s390/kvm/arm64/guest.c                      | 135 ++++
- arch/s390/kvm/arm64/handle_exit.c                | 161 +++++
- arch/s390/kvm/arm64/handle_exit.h                |   9 +
- arch/s390/kvm/arm64/inject_fault.c               |  21 +
- arch/s390/kvm/arm64/mmio.c                       |  15 +
- arch/s390/kvm/arm64/mmu.c                        | 210 +++++++
- arch/s390/kvm/arm64/reset.c                      |  71 +++
- arch/s390/kvm/arm64/trace.h                      | 101 +++
- arch/s390/kvm/gmap/faultin.c                     |   5 +
- arch/s390/kvm/gmap/gmap.c                        |   4 +
- arch/s390/kvm/gmap/kvm_mmu.c                     |   6 +-
- arch/s390/kvm/gmap/trace_gmap.h                  |  13 +
- arch/s390/kvm/s390/intercept.c                   |  32 +-
- arch/s390/kvm/s390/interrupt.c                   | 130 +++-
- arch/s390/kvm/s390/priv.c                        |  19 +-
- arch/s390/kvm/s390/s390.c                        |  12 +-
- arch/s390/kvm/s390/s390.h                        |   1 +
- arch/s390/tools/Makefile                         |   6 +-
- arch/s390/tools/Makefile.arm64h                  |  55 ++
- arch/s390/tools/copy-arm64h-full.awk             |  50 ++
- arch/s390/tools/copy-arm64h.awk                  |  83 +++
- arch/s390/tools/opcodes.txt                      |   3 +
- drivers/s390/char/sclp_early.c                   |   1 +
- tools/testing/selftests/kvm/Makefile.kvm         |   1 +
- tools/testing/selftests/kvm/s390/irq_injection.c |  74 +++
- 57 files changed, 2883 insertions(+), 92 deletions(-)
- create mode 100644 arch/s390/include/arm64/kvm_emulate.h
- create mode 100644 arch/s390/include/arm64/kvm_nested.h
- create mode 100644 arch/s390/include/arm64/ptrace.h
- create mode 100644 arch/s390/include/arm64/sysreg.h
- create mode 100644 arch/s390/include/asm/kvm.h
- create mode 100644 arch/s390/include/asm/kvm_host_arm64.h
- create mode 100644 arch/s390/include/asm/kvm_host_arm64_types.h
- create mode 100644 arch/s390/include/asm/sae.h
- create mode 100644 arch/s390/include/uapi/Kbuild
- create mode 100644 arch/s390/kvm/arm64/.gitignore
- create mode 100644 arch/s390/kvm/arm64/Makefile
- create mode 100644 arch/s390/kvm/arm64/Makefile.gen
- create mode 100644 arch/s390/kvm/arm64/arm.c
- create mode 100644 arch/s390/kvm/arm64/arm.h
- create mode 100644 arch/s390/kvm/arm64/copy-arm64c.awk
- create mode 100644 arch/s390/kvm/arm64/guest.c
- create mode 100644 arch/s390/kvm/arm64/handle_exit.c
- create mode 100644 arch/s390/kvm/arm64/handle_exit.h
- create mode 100644 arch/s390/kvm/arm64/inject_fault.c
- create mode 100644 arch/s390/kvm/arm64/mmio.c
- create mode 100644 arch/s390/kvm/arm64/mmu.c
- create mode 100644 arch/s390/kvm/arm64/reset.c
- create mode 100644 arch/s390/kvm/arm64/trace.h
- create mode 100644 arch/s390/tools/Makefile.arm64h
- create mode 100644 arch/s390/tools/copy-arm64h-full.awk
- create mode 100644 arch/s390/tools/copy-arm64h.awk
- create mode 100644 tools/testing/selftests/kvm/s390/irq_injection.c
+Thanks,
+Fred
