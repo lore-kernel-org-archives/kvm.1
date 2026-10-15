@@ -1,100 +1,193 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5526525B091
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820F443E9F5
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792077677; cv=none; b=Pg1jXpGRpULomzov++48g7QwcxO5xslacjSTjL1rQ+fQvcRFe9tunx4/uqN93N8J4OuawTrcIwLefQ2WFqoV06ZmX449fAz5bnUpz9/Zv5z6ebNgcu3mZAdqjfHnWpV4Nd96Y6IRxpW81PvsI1u9zZauHJZfeo5TRMc7PZ+wPIg=
+	t=1792077737; cv=none; b=Mq9Ec9qsJb7TWj1Kiy0RxNuTClrdxiMfYOyrROf+6WTlXTa8kZGW8M3IO5rZC5xA0h2sqj5q8Vg+Q0GMgCvrZULJ9DHj/Las6aNLrTmSIiyjTxStpDH1YoHG8moB565Zv3JjO4Kq0zmbwFbSnwgml2dnmeCIloSK9UVY0FgIjFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792077677; c=relaxed/simple;
-	bh=bMG/2cOgMM7JgeRqvzUIdnhn3sLkYPBn1qsyrRStR4M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ArOQnuquAOPUt5n7Y8NtnV2mGAfFtU0CvyXLvjAIxdWMs2Tea4WTIg7l971jP5ou51wkvEe/KY3z/q3rZpaIzTliKcTs4O/QPEOL5LCXVBtMwIkoPsCoC7itby5mCIJQzawxB0ax4j9wmDyxUs+X/xfhQ0uLWCo/pb+qXgX+CYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HynF03zZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792077737; c=relaxed/simple;
+	bh=xBiFswB4PS6wPz1epIS31hwTsAxbPgndayiFdni3Pb4=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=sCSquO8JYwjuW/HQf3dilIN3XZQVUmYulxJYgNNpw0ciuBO3CQoxB7E+HEJss8P+4yFoZUYMi+41px8cVwQL9LYLQfk2yj2UTNTd0mBnBo10ZL7pCRLX19fQo1VMD8FCJu5hFveLEHrfkMKw1NAusTMeElrcZhPQ9YHxudKKH74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrC1BQJU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HynF03zZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B961F000C6
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:21:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrC1BQJU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1DB1F000C4;
+	Thu, 15 Oct 2026 15:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792077676;
-	bh=mu9FGXZ2MMcGUoDzfZ8NA1Fpk5jNUbWcqS4CHApa294=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=HynF03zZPGW5/qK/wbRpHHvWC/9piFSo30qDUQBNwQM0yS1+ZSIZTiAqD1qlFNRzO
-	 4tfNx5uHvkmPEr4MTSw8ScGdw3mYtEzZYQUTAffdMSmYwXNgkl/2RpXta5wIaD1CwE
-	 yQT2DtkVEIPGTBqIeHOirnPAVsB8h3VB3T5gqOJdeN4Ab+L8yaiIiKqKRCwJ2kGkdf
-	 mt89lgR89gW1toXYdpo5a0PTve59EG5LKgFtBUJetvVXoLqCJ2qxlHYPMS7Yxofarw
-	 J82/LF/g4M0EWVtZGiH4vGtgslMj2a+6j7cGYXrVUpTa9dgAWZWNBFJMUdSBkq8XEf
-	 6F0PoBlc5XFLg==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c262f1186f0so724928266b.1
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 08:21:16 -0700 (PDT)
-X-Gm-Message-State: AFq9FYK0C9OsVB79V/8EPdWn5oCI+MBWv30kRR3iGUEx2SA4QgY/oy8/
-	eGmKv+3JuDCZh4RPH6va1tZzZi8s10PKPCGyP6c1xk+gdoq5mIKF8m5P1EYxHIhzWKxAkiV27ET
-	pIXUAVHo46c2cy65VnrDF8XY1KYEdWRk=
-X-Received: by 2002:a17:906:6205:b0:c3e:4f41:e2a6 with SMTP id
- a640c23a62f3a-c3e4f41e8c9mr337921966b.6.1792077675194; Thu, 15 Oct 2026
- 08:21:15 -0700 (PDT)
+	s=k20260515; t=1792077732;
+	bh=9JCIrBjHStMJNHGRIYsrxIKZMsYDV/IKNHOcOEySyhk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VrC1BQJUPMIiZpYOR9hOtfktq4s19muheg+xX+9Y4IbO3kMkw4QK/QQZGokg0dq/y
+	 7SzTPEY6bQxRMSXkb4Vl6j9XQ0poUIkNd5ho74roQJE6LxzvZHecJj7J2vH3pSp+ty
+	 6wW2+cg8dy/esVfPqYDKYX2CEWTOQVCNg53FCWubMiGntKYt2SmOnAATtjRoE3VxYW
+	 hlEiSDBkx4uznXHNaghzykdeqb24oAkyQrD2memEDglfDbxykGDL5sqyCOhCU9MLaj
+	 ws7Hz51TIODFf7kBpduZH9EHERdq5G726fDNU1fBoSRz61IQfN1T8K4e62scD0etrD
+	 JNG9gawS1B2Mw==
+Message-ID: <sashiko-outbox-173058@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 10/20] ctlv: Prepare event queue support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jiri Pirko" <jiri@resnulli.us>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261015145053.3664509-11-jiri@resnulli.us>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-11-jiri@resnulli.us>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 15 Oct 2026 15:22:11 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261015103933.2088307-1-nikunj@amd.com> <20261015103933.2088307-2-nikunj@amd.com>
-In-Reply-To: <20261015103933.2088307-2-nikunj@amd.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 15 Oct 2026 08:21:03 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOV6Js2GgjPXGcjs4ZG4CkqBivRnas0GR1Dd=22O89-AA@mail.gmail.com>
-X-Gm-Features: AclHuK9-Fl2wev654spgk2hdjQE555fsrK0SB90dPHSLKRjCaEzPrSiDDhriZ8g
-Message-ID: <CAO9r8zOV6Js2GgjPXGcjs4ZG4CkqBivRnas0GR1Dd=22O89-AA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/5] KVM: x86/mmu: Log dirty GPAs only for the nested
- GPA walk
-To: Nikunj A Dadhania <nikunj@amd.com>
-Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
-	thomas.lendacky@amd.com, mlevitsk@redhat.com, joao.m.martins@oracle.com, 
-	kai.huang@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 15, 2026 at 3:40=E2=80=AFAM Nikunj A Dadhania <nikunj@amd.com> =
-wrote:
->
-> Gate PML logging on the walk being the nested GPA walk, as only that walk
-> yields an L2 GPA.
->
-> No functional change intended, as the EPT template only backs the nested
-> GPA walk.  The upcoming nested SVM PML support runs this code for PTTYPE
-> 64, which other walks reach too.
->
-> Assisted-by: LLM
-> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-> ---
->  arch/x86/kvm/mmu/paging_tmpl.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
-l.h
-> index 8e350095508c..043d0ec02b27 100644
-> --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> @@ -235,7 +235,9 @@ static int FNAME(update_accessed_dirty_bits)(struct k=
-vm_vcpu *vcpu,
->                                 !(pte & PT_GUEST_DIRTY_MASK)) {
->                         trace_kvm_mmu_set_dirty_bit(table_gfn, index, siz=
-eof(pte));
->  #if PTTYPE =3D=3D PTTYPE_EPT
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] race: TOCTOU in ctlv_event_file_read causes lost terminal events
+- [High] mm: Out-of-bounds write when finalizing reserved event records wit=
+h unaligned sizes
+- [Medium] race: Queue misordering appends overflow event after terminal re=
+moved event
+- [Low] cleanup: Mixing goto-based error cleanup with scope-based guards
+--
 
-Do we still need this?
+commit 77cd7b72d04e886f1416198fdf738e02c8632520
+Author: Jiri Pirko <jiri@resnulli.us>
+Subject: ctlv: Prepare event queue support
 
-> -                       if (kvm_nested_call(write_log_dirty)(vcpu, addr))
-> +                       /* Only the nested GPA walk yields an L2 GPA to l=
-og. */
-> +                       if (w =3D=3D &vcpu->arch.ngpa_walk &&
-> +                           kvm_nested_call(write_log_dirty)(vcpu, addr))
->                                 return -EINVAL;
->  #endif
->                         pte |=3D PT_GUEST_DIRTY_MASK;
-> --
-> 2.48.1
->
->
+Add per-open subscriptions, bounded event queues and event creation for
+CTLV families. Add the generated root family kernel bindings now that their
+message and event helpers are available.
+
+> diff --git a/drivers/ctlv/event.c b/drivers/ctlv/event.c
+> new file mode 100644
+> index 0000000000000..0f68d33e031c8
+> --- /dev/null
+> +++ b/drivers/ctlv/event.c
+> @@ -0,0 +1,713 @@
+[ ... ]
+> +static void ctlv_event_record_done(struct ctlv_op_ctx *ctx, struct ctlv_=
+event_record *rec)
+> +{
+> +	u32 root_len =3D ctx->output.root->len;
+> +
+> +	rec->len =3D sizeof(rec->hdr) + CTLV_ALIGN(root_len);
+> +	rec->hdr.length =3D rec->len;
+> +	memset(rec->root + root_len, 0, rec->len - sizeof(rec->hdr) - root_len);
+> +}
+> +
+> +static struct ctlv_event_record *ctlv_event_record_reserve(struct ctlv_d=
+evice *ctlvdev,
+> +							   const struct ctlv_op_entry *op)
+> +{
+> +	struct ctlv_event_record *rec;
+> +
+> +	rec =3D ctlv_event_record_alloc(ctlv_event_len(op), GFP_KERNEL_ACCOUNT);
+
+[Severity: High]
+Does this sequence cause an out-of-bounds write when finalizing reserved
+event records with unaligned sizes?
+
+In ctlv_event_record_reserve(), the record is allocated with a capacity of
+ctlv_event_len(op). If the maximum record length from the schema is not a
+multiple of 8, this length will be unaligned.
+
+When root_len approaches this unaligned maximum in ctlv_event_record_done(),
+CTLV_ALIGN(root_len) rounds up past the allocated size. The subsequent
+memset() then writes padding zeros up to the aligned boundary, which can
+cause an out-of-bounds write on the kernel heap.
+
+[ ... ]
+> +struct ctlv_op_ctx *ctlv_event_create(struct ctlv_device *ctlvdev, u64 o=
+p_id,
+> +				      struct ctlv_cursor **reply, gfp_t gfp)
+> +{
+[ ... ]
+> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
+> +		const struct ctlv_family *family;
+> +
+> +		if (!ctlvdev->events_live) {
+> +			ret =3D -ENODEV;
+> +			goto err_free_ctx;
+
+[Severity: Low]
+Is it safe to mix goto-based error cleanup with scope-based guards here?
+
+The cleanup subsystem guide mandates that functions must never mix
+goto-based error handling and guard()/scoped_guard() declarations.
+Using goto to jump out of a scoped_guard creates confusing ownership
+semantics.
+
+[ ... ]
+> +int ctlv_event_emit(struct ctlv_op_ctx *ctx)
+> +{
+[ ... ]
+> +	scoped_guard(spinlock, &ctlvdev->events_lock) {
+> +		if (ctlvdev->dead_announced)
+> +			goto out_free;
+
+[Severity: Low]
+Does this goto also violate the cleanup guidelines?
+
+Similar to ctlv_event_create(), jumping out of a scoped_guard to a cleanup
+label is discouraged and violates the cleanup rules.
+
+[ ... ]
+> +static void ctlv_event_queue_consumed(struct ctlv_file *cfile, struct ct=
+lv_event_record *rec)
+> +{
+> +	if (rec =3D=3D cfile->overflow) {
+> +		guard(spinlock)
+> +			(&cfile->ctlvdev->events_lock);
+> +		cfile->reading_overflow =3D false;
+> +		if (cfile->overflowing)
+> +			ctlv_event_queue_add(cfile, rec);
+
+[Severity: Medium]
+Can this queue misordering append the overflow event after the removed even=
+t?
+
+If a reader is consuming the overflow marker while the queue receives anoth=
+er
+dropped event, cfile->overflowing becomes true again. If
+ctlv_event_device_dead() is then called, it enqueues the removed terminal
+event.=20
+
+When the reader finishes and calls ctlv_event_queue_consumed(), it sees
+overflowing =3D=3D true and re-enqueues the overflow marker. Because
+ctlv_event_queue_add() appends to the tail, the overflow marker is
+incorrectly queued after the removed event, breaking monotonicity and the
+terminal property of the removal event.
+
+[ ... ]
+> +ssize_t ctlv_event_file_read(struct ctlv_file *cfile, char __user *buf, =
+size_t len, bool blocking)
+> +{
+[ ... ]
+> +	while (!(rec =3D ctlv_event_queue_take(cfile))) {
+> +		/* Drained, and the device is gone. */
+> +		if (READ_ONCE(ctlvdev->dead_announced)) {
+> +			ret =3D -ENODEV;
+> +			goto out_unlock;
+> +		}
+
+[Severity: High]
+Is there a race condition between the queue check and checking dead_announc=
+ed?
+
+The queue is checked locklessly (via ctlv_event_queue_take() returning NULL
+and dropping the lock) before checking READ_ONCE(ctlvdev->dead_announced).
+
+If ctlv_event_device_dead() runs exactly between these two checks, it will
+queue the removed event and set dead_announced =3D true. The reader will th=
+en
+see dead_announced as true and return -ENODEV immediately, completely
+missing the freshly queued terminal removed event. This race prevents
+userspace from observing the final state of the device.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015145053.3664=
+509-1-jiri@resnulli.us?part=3D10
