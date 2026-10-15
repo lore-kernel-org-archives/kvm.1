@@ -1,224 +1,217 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A21F476694
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 19:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E49151EDF2;
+	Thu, 15 Oct 2026 20:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792094248; cv=none; b=c76LUpxu/zijFrs4eV6FeGLpGx6oUL18/yVqRyhghORNg//KFc2j9P5Rdj9gzZx2Js6A2q/7OuURmWMxU6mxKK/1mjJmCKelnE/l04P9slJfnfNRRMvucMsMlu+CcdYzrHv13QPz32/4NVsIJWB45S426pUg3HRDKD/eURedHnI=
+	t=1792095720; cv=none; b=GmUYI3UT9rs8qHXWaFYPZCL4E3a3lwrhqZx3EKFHMqwfN5OBA/5/0vN/Qub7V6EzxqbB3trITff4+LFTyH+TajlAlkcGolbjxLDrowwgugMrYrn+XMghRNSZVmCjiNTLqJO4eRbF4eyAF8saY3i3azmsoTtMVduNCRu32bWYC44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792094248; c=relaxed/simple;
-	bh=sxR2u9BA5/CcmtclWpp5AGM/HULwOi/W5ck+DMmMkIk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qtsAxGHK84WgatPcLJsvHl78/h7zCBInpthmZWhfUJtoazqqGfSKHE7gc7xzY+PBMcfGpPGyzHKIg9phqEWLX6ukrtIvFuGmDEl769c1TvxMXXu5df81pb4AB4l8aBOruGmvwN59YrqeutazB7TWnfhDH0zhaZwo5SOe+88i7jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=VJ+w/L+R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VhsCFx92; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1792095720; c=relaxed/simple;
+	bh=wOuDJ6WsP6oCgfBBWAx/7lYpc+JVh022Ql1ySHocHI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rlo0t3GvjE9ZXSD/J1vH8d+CWnFoeTV+ov98U+9bE/yRbN4kKNIAHvVJvA0lJhA5B6XLxDTHUtGhKZRjBqNQBudjQ1zWk2F5SY8alKPmI+L/asmIQs6FXk8s4lHpoc77eDoq4mRLN48y0gVjDjbAGCgqhe6KfyOmUek/cKSoz8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IIsrsDNJ; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="VJ+w/L+R";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VhsCFx92"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 525957A00D1
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 15:57:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 15 Oct 2026 15:57:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792094242;
-	 x=1792180642; bh=rYA62PIPCosAEwK3KTOovg055BVPSm68/iMypXOGiFk=; b=
-	VJ+w/L+R7J1aoOYYmj1shYFc218XHud1I3Ia1RIlUeYrDLNqM3TFbsOfhdZ6uR48
-	cE9HEUUW7UPAgjghJWVKObXC+cMh4PbOs8Rl7C+ieEoEJnwvje5s/gjT+7Hg1931
-	i6JJhLXVH0+PdwOpgqSbt1DWtDuVGp/OPHlnDoWmC7JuHYoz8hsXq6BAnxvSx6s9
-	ZjQyuSzRHAd+od7epaFuBFXxsS4bXJW9y4iksb7OsSwyDUTp2+gBp2hzxpzBOUk+
-	lXNL4SjMgOkvgJyYt3E9rD7uJi72Tx88BT7WteGf8u2FzHYvpQhtMCfNXzM5Wi7g
-	eOAzDMUukafPYOhT5yZNQQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792094242; x=
-	1792180642; bh=rYA62PIPCosAEwK3KTOovg055BVPSm68/iMypXOGiFk=; b=V
-	hsCFx92QKasidAESgTWTBQrf/yFyY+lEgFFse2c5dKxOQmb78cgCkmPUtpBoKEQ6
-	W6wwMYe4ufY3hYb3p3vTlbK3VXRVikRBsVawQ4BDCfk2pxSjt/2fpLk2BiMLIUsQ
-	2ErxHxYCubRaKyn66bRS/fzWzViiB+0ymBtNhSY4YzcO96enzq3dYQK95zVr5IqA
-	wAIWC+fzqklWqsvYgdCLjKmjfOVvKQA0W+VlfkEC0LYMg2n/EvAJl3n3biHy6Dn0
-	xz2ZfMFJbH3eShhGSMi45EpHLYACld0/5T5YVEQJxpJJIdR8fxvgr0aD0vMXGbjB
-	7z5/m1X4zJaURBHCWgsig==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792094242; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:iSDMm4rxCpHCpgcbt58xWtx0NfkgVEbKxFYPXoGG8g1v25X
-	N7iI1MoTpUs61CIBiKtMMEzks2UR+awQ7ew2R0Uv1oAS9zIbqg14oLsLDhISW5ox
-	hgMv0km+fpg3fjDAnQQTlyiR5qy64k4Zg6A5FvhonGuFNj1s1pL7xIWc89MfwDiO
-	ZKW514hoN7Jtp3q0HGmbgub4egSRORQj0T8jfzIiP7RM6hbUU+euQLzZZYJkvCOw
-	SfmdH3mjROzJbcqFRt4tgIom4lQlInXsfHXNM/xV/hb/nC6Q+dwSdJi+Z0peVhW5
-	FomBtW9TC3PYdCYL6rgEj6OO1uNJiepXumJPqJw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:L/oPJ2TgAoi5NCw9Z2kvz2XquLbFR2FN6C5vY/XcKeQ=:sxR2u9BA5/CcmtclWpp5AGM/HULwOi/W5ck+DMmMkIk=;
-X-ME-Sender: <xms:ITDRat6T61fiTrhwbbnHtKYVZEZKyEPjqyf2_Okpc8-Agiqyw0kf1A>
-    <xme:ITDRaqeo7Yj7AnosnEWJPdgH0syXFP04e2fkztua23jZNw_21NtcIAe4xgqMNvQ6z
-    snBaD_MTvihj-IWgA9scLC9ylQibhC137YCtta9dOfbJZxmTnQ31rU>
-X-ME-Received: <xmr:ITDRaoxsJgHCwnb7LTZSpkoWMB8hVl8uPITKUOM29hpkeJort9u3dZMtBG3aQg>
-X-ME-Proxy-Cause: dmFkZTE9ycIFqjPXJ15WpdX0VDq0lFUB2JIAwFolY1DFSoPQyuEKYW9WeKct6jhJUc0Vn8
-    4wPeZ8tsfI1xWmvqY64CFof+xE2xfcMwT6eSU096j01dTjlW2CAhuootUIZwfbHNSK+fSB
-    rvvRZdebbJ+RRQ4/89bPsLI0Zls+5Jxohl1DXrb9Q32FtdsCiwQxRDRWDMKtIhlmIBqcbC
-    QmCB4aPA+yxQSzJ86vi+RnTZA/vWgEa24GEWbuYidv+EpgJlaqa4sgvTZfVMe4z/tNe5O0
-    UQ7cufOsgJVD8zF5c4wROBrdKoeN3kvSUCn9En/2t8jX0B0u+NjjcTY+tSvTiJQfOcFQGe
-    zAOOCjuoNzJ+XY126cU8+JCVrhTExO9BbfV/hiohhOjFKJZD5ZratdVlWSe0XVXMUQDW0A
-    dcGT9yKs+uFHmRmgkUqidnHD2dhqTuqNZEl0QtZ1VvnxJbmPDTELX1iuWlxrzedMDOUPvg
-    DzmbULQAt+RsGUhiDdxT4otQR73J4N6KkRoOe0tkJ137QdcjRtpoWHSzCUG3x16cdvrcKv
-    92RXw/Ke6+af8ycwCof4ZA/l7FQ9mr402jINs6T9Cctb6bRJWggswtnOiWc+OtvPUKPyOu
-    LegFux2l0j4cEaqxtAgmIlHhc7fUl0jRhwfumqtIdlrF2Vom1vQ2Hd9DfJ+A
-X-ME-Proxy: <xmx:ITDRaop_0ryEhsoWgJYMfuukYldF0fAgOWWMJOHqXMv2N77j-wspLw>
-    <xmx:ITDRauzaKQYzKsteW083nC1-u5rihxoyz6bS_tg_phivkbzGyHEZiQ>
-    <xmx:ITDRakpTRzvkv6TIs9603vbQEJ_YXyUOgxY3nsaqMBIWmnE9dJnkyQ>
-    <xmx:ITDRameSMfO45u_k_rkivolPUbXXGLKWxV6S11xLpmXtPc4nZloh_A>
-    <xmx:IjDRal3ERqAPDN0hyobjAua0h2CD_1zXaOUGr8vu8GHwnJpe5sP8KqdE>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Oct 2026 15:57:20 -0400 (EDT)
-Date: Thu, 15 Oct 2026 13:57:18 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <jgg@ziepe.ca>, <kevin.tian@intel.com>,
- <kbusch@meta.com>, <michal.winiarski@intel.com>,
- <satyanarayana.k.v.p@intel.com>, <sonangp@nvidia.com>, <ankita@nvidia.com>,
- <nathanc@nvidia.com>, <mochs@nvidia.com>, alex@shazbot.org
-Subject: Re: [RFC PATCH v2 00/16] vfio/pci: Handle PCI error recovery and
- report state to userspace
-Message-ID: <20261015135718.43d1d27f@shazbot.org>
-In-Reply-To: <20260929173305.204856-1-skolothumtho@nvidia.com>
-References: <20260929173305.204856-1-skolothumtho@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IIsrsDNJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792095719; x=1823631719;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wOuDJ6WsP6oCgfBBWAx/7lYpc+JVh022Ql1ySHocHI8=;
+  b=IIsrsDNJPdDjTOuSMxXmitIQDxBfDE27g8uIW0JQUsFPtPxx3N3XdgLe
+   QDNXackys4vlq29Wmoz8Bs+/9cWLLnjQA2c0me6CNhnwHyx4Wik6yXhRe
+   ERc1gwfhZx1VJpRXukwckhrMpi3D5iBeRvUYwvrtJLJSpdOnX30V+Rfie
+   UAgUt7a11aYtLQ2Qztf5T20BSUHlyvRWD9Ic1oK2K6qOGcDUFkB6afQJp
+   bw5kTnroqJFAX0cZh4QCvQ58iUTX6FuFC29AMIpf3Wav1fkpcHbJLxWH7
+   EkCQGG4JzhWCjmFcPOrdGtj/jymdukjf59uoz6WvWzAcLGnTnKLS77Bak
+   w==;
+X-CSE-ConnectionGUID: UissLOHHRkWiMGIcKDjXhw==
+X-CSE-MsgGUID: h/NyvfrXRW6oHuMO8F86gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="911073"
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="911073"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 13:21:58 -0700
+X-CSE-ConnectionGUID: V38FKx9ORe2QUdfiBFhd0Q==
+X-CSE-MsgGUID: UFC6PtS3Q4aarAop6//X3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="1844427"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by fmviesa003.fm.intel.com with ESMTP; 15 Oct 2026 13:21:57 -0700
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: kvm@vger.kernel.org,
+	x86@kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Chang S . Bae" <chang.seok.bae@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Chao Gao <chao.gao@intel.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Matlack <dmatlack@google.com>,
+	Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
+	Kishen Maloor <kishen.maloor@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Farrah Chen <farrah.chen@intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v5 0/6] KVM: x86: Add LASS virtualization support
+Date: Thu, 15 Oct 2026 13:19:34 -0700
+Message-ID: <20261015201940.1655956-1-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 29 Sep 2026 18:32:49 +0100
-Shameer Kolothum <skolothumtho@nvidia.com> wrote:
+Linear Address Space Separation (LASS) is a security feature that blocks
+accesses across the user/kernel boundary based on bit 63 of the linear
+address alone, before any page walk is performed. Host support for LASS
+has been merged [1][2]. This series adds the KVM virtualization support.
 
-> Hi,
-> 
-> Currently, vfio-pci signals the error eventfd from error_detected() and
-> returns PCI_ERS_RESULT_CAN_RECOVER, including for permanent failure. It
-> has no slot_reset() or resume() callback, so userspace is not notified
-> when host recovery completes or whether the device was reset.
-> 
-> This series adds opt-in host PCI error recovery for vfio-pci. It blocks
-> device access during recovery, restores device state after a host reset,
-> and reports recovery status to userspace. The kernel runs host recovery
-> and the VMM decides how to recover the guest.
-> 
-> Changes from v1
-> ---------------
->  v1: https://lore.kernel.org/kvm/20260901093217.8539-1-skolothumtho@nvidia.com/
->   
->  - Thanks to Satya and Alex for reviews/feedback.
->  - Use SRCU to drain ongoing device accesses and reject new accesses during
->    recovery. A mutex protects recovery-state updates. 
->  - Return SIGBUS for blocked BAR faults instead of waiting in the fault
->    handler. VMM handling still needs target validation.
->  - Reject userspace SR-IOV changes while access is blocked.
->  - Exclude s390 and all CXL memory devices for now as s390 and CXL RCH
->    recovery can omit completion callbacks.
->   
-> Design
-> ------
-> Userspace opts in through VFIO_DEVICE_FEATURE_PCI_ERROR_RECOVERY. It
-> registers an eventfd and reads status flags and a sequence number. The
-> existing error eventfd is still signaled.
-> 
-> The callbacks handle the host recovery sequence:
-> 
->  - error_detected() blocks new accesses and drains admitted ones,
->    quiesces INTx, and revokes BAR mappings and exported DMA-BUFs. On a
->    normal channel it also clears bus mastering. It votes CAN_RECOVER
->    for a normal channel, NEED_RESET for a frozen channel, and DISCONNECT
->    for permanent failure. Failure to save PCI_COMMAND or disable bus
->    mastering leaves access blocked and returns NONE so other devices
->    can continue recovery.
->  - slot_reset() restores the configuration saved at open after a host
->    reset, then tears down interrupt configuration. Userspace must set
->    up interrupts again.
->  - resume() completes restoration, unblocks access and completes INTx
->    handling. A restoration failure keeps the device blocked.
-> 
-> Non-fatal errors also block device access because host recovery may
-> require a reset. Userspace reads the recovery status to determine
-> whether the device was reset or recovery failed.
->   
-> Without opt-in, the existing error notification behavior is retained.
-> The open check also rejects a previously recorded host transaction when
-> recovery is disabled, so closing the device does not discard that state.
-> 
-> Locking and open questions
-> --------------------------
-> Several locks are involved in recovery. PCI core holds device_lock
-> while calling the driver, preventing concurrent driver binding or
-> unbinding. During the bus walk, it also holds pci_bus_sem for reading
-> to keep the device list stable. Adding or removing PCI devices requires
-> the write lock. This semaphore is shared across all PCI buses.
->  
-> VFIO recovery blocks new accesses, waits for existing SRCU readers to
-> finish, and takes memory_lock. Power transitions also take memory_lock,
-> but entering D0 can then acquire pci_bus_sem to update PCIe link power
-> management (ASPM).
-> 
-> Local Sashiko/Claude review reports a lock-order conflict as below:
-> 
->  1. A guest D0 request holds memory_lock.
->  2. PCI core holds pci_bus_sem for reading while VFIO's recovery
->     callback waits for memory_lock.
->  3. Removal of an unrelated PCI device waits for the bus write lock.
->  4. D0's ASPM update requests the bus read lock and waits behind that
->     writer.
-> 
-> Each task waits for another, so none can proceed.
-> 
-> One possible solution could be(not implemented):
-> 
->  - PCI core guarantees that pci_bus_sem is held for reading before
->    invoking supported recovery callbacks. VFIO uses
->    pci_set_power_state_locked() in those callbacks, avoiding another
->    acquisition of the bus lock.
->  - A new pci_try_set_power_state() helper tries to acquire pci_bus_sem
->    and returns -EAGAIN on contention. Ordinary VFIO D0 paths use this
->    helper and handle failure instead of waiting while holding VFIO locks
-> 	  
-> Not sure there are better ways to handle this or not. Feedbacks appreciated
-> on this.
+Patches
+-------
+I am posting a refreshed version because kvm-x86/next has advanced and some
+patches needed to be rebased. v5 contains only a couple of minor changes.
+Overall, the series is ready for maintainer review (and potential inclusion
+in the next cycle).
 
-I've been churning tokens with an LLM on this.  My original intent was
-that a disconnect via srcu between a device object and user interface
-object, or at least ops pointers that act on the device, at the
-vfio-core level could help to avoid this.  While that may be
-worthwhile for more general use cases of removing user access to the
-device (surprise unplug, force unbind, etc.), it doesn't seem to
-resolve the scenario here.  In fact I haven't come up with better
-solutions than you've already suggested above.
+Changes in v5
+-------------
+ - Rebased the patches onto kvm-x86/next (kvm-x86-next-2026.10.13)
+ - Added a function comment to vmx_is_lass_violation() (patch 4)
+ - Dropped the LASS x86 selftest (already posted separately [3])
+ - Avoided the LASS specific KVM CR4 write test (patch 6)
+ - Replaced Binbin's SoBs with Reviewed-bys
+ - Picked up review and test tags
 
-> 
-> Another issue flagged was(I think this is a pre-existing one):
->  - Open/close coordination with the whole host recovery transaction
->    was already missing. Recovery can start after the open check, and
->    close can overlap the physical reset. Restoration of closed devices
->    is also not implemented.
+v4: https://lore.kernel.org/all/20260806011536.4172258-1-sohil.mehta@intel.com/
 
-Yes, it's pre-existing.  A more structured concept of a disconnected
-device would help make these gaps easier to close as well.  Thanks,
+Background
+----------
+The host support series [4] covers the motivation, base enforcement
+mechanism, kernel toggling of RFLAGS and CR4.LASS, and the userspace
+exception notifications. Here's a brief summary of the SDM bits [5] that
+affects KVM support.
 
-Alex
+When LASS is enabled, the CPU applies a violation check using bit 63 to
+every access to a linear address prior to page walks. A user-mode access
+to a supervisor address, or a supervisor-mode access to a user address,
+typically raises #GP (or #SS in rare cases) instead of a #PF that
+SMAP/SMEP alone would produce. LASS takes effect only in IA-32e mode.
+
+Enforcement for supervisor-mode data accesses additionally requires SMAP
+to be enabled, and is suppressed for explicit accesses when RFLAGS.AC=1.
+Linear addresses used for TLB invalidation (INVLPG, INVPCID, INVVPID)
+are not subject to LASS. Unlike canonicality checks, LASS only applies
+to code fetches and not branch targets.
+
+Note, LASS is now part of the SDM instead of the ISE. There are minor
+changes to the wording but nothing substantial. It also includes a
+clarification that the relative ordering of LASS and canonicality checks
+is not defined and cannot be determined by software.
+
+KVM support
+-----------
+Hardware enforces LASS on guest code that runs natively, so KVM mostly needs
+to let the guest turn it on. The exception is instruction emulation, when KVM
+must apply the same LASS violation checks, so that emulated accesses behave
+the same way.
+
+For enabling, KVM advertises LASS to userspace, and lets the guest set
+CR4.LASS, including in nested VMX, when LASS is enumerated in its CPUID.
+
+Patch 1-4: Enhance the emulator to handle LASS violation checks.
+Patch   5: Guest CPUID and CR4 handling. Expose LASS to userspace.
+Patch   6: Extend set_sregs_test selftest for LASS.
+
+Testing
+-------
+1. Basic enumeration and enabling in guest and nested environment.
+2. LASS enforcement tests (userspace + LKDTM + test kernel module)
+ - Userspace access to kernel address (read, write, instr fetch)
+ - Kernel access to user address (read, write, instr fetch)
+ - RFLAGS.AC=1 suppression (read, write)
+ - FEP tests for the above cases
+
+The x86 userspace selftest was posted separately and is under review for x86
+inclusion [3].
+
+KVM selftests and kvm-unit-tests run guest code in the lower half at CPL0, so
+enabling CR4.LASS makes the next instruction fetch a violation and
+triple-faults the guest. I used a set of LLM generated kvm-unit-tests [6] that
+overcome the limitation. Planning to clean them up and post them separately.
+
+Kishen Maloor and Farrah Chen tested v4 on Sierra Forest and Clearwater
+Forest, using the QEMU support [7] to expose LASS to the guest.
+
+Links
+-----
+[1]: https://lore.kernel.org/lkml/20251201231537.736899-1-dave.hansen@linux.intel.com/
+[2]: https://lore.kernel.org/lkml/20260413154235.1543087-1-dave.hansen@linux.intel.com/
+[3]: https://lore.kernel.org/lkml/20261009020025.4175228-1-sohil.mehta@intel.com/
+[4]: https://lore.kernel.org/all/20251118182911.2983253-1-sohil.mehta@intel.com/
+[5]: "Linear-Address Pre-Processing", Intel SDM (June 2026), Vol 3, Chapter 4.
+[6]: https://github.com/sohilmeh/kvm-unit-tests/tree/lass-llm
+[7]: https://lore.kernel.org/all/20260826035734.114685-1-kishen.maloor@intel.com/
+
+Previous versions
+-----------------
+v4: https://lore.kernel.org/all/20260806011536.4172258-1-sohil.mehta@intel.com/
+v3: https://lore.kernel.org/lkml/20230913124227.12574-1-binbin.wu@linux.intel.com/
+v2: https://lore.kernel.org/all/20230718131844.5706-1-guang.zeng@intel.com/
+v1: https://lore.kernel.org/all/20230601142309.6307-1-guang.zeng@intel.com/
+v0: https://lore.kernel.org/lkml/20230420133724.11398-1-guang.zeng@intel.com/
+
+
+Binbin Wu (1):
+  KVM: x86: Add an emulator flag to differentiate branch targets from
+    fetches
+
+Sohil Mehta (2):
+  KVM: x86: Use linear_read_system() to read the TSS I/O bitmap
+  KVM: selftests: Extend set_sregs_test to cover LASS
+
+Zeng Guang (3):
+  KVM: x86: Add LASS violation checks during instruction emulation
+  KVM: VMX: Implement LASS violation check
+  KVM: x86: Virtualize LASS and advertise support to userspace
+
+ arch/x86/include/asm/kvm-x86-ops.h            |  1 +
+ arch/x86/include/asm/kvm_host.h               |  2 +
+ arch/x86/kvm/cpuid.c                          |  1 +
+ arch/x86/kvm/emulate.c                        | 28 ++++++--
+ arch/x86/kvm/kvm_emulate.h                    |  4 +-
+ arch/x86/kvm/regs.h                           |  4 +-
+ arch/x86/kvm/vmx/main.c                       |  1 +
+ arch/x86/kvm/vmx/nested.c                     | 11 +--
+ arch/x86/kvm/vmx/sgx.c                        |  3 +-
+ arch/x86/kvm/vmx/vmx.c                        | 68 ++++++++++++++++++-
+ arch/x86/kvm/vmx/vmx.h                        |  3 +
+ arch/x86/kvm/x86.c                            |  9 ++-
+ .../selftests/kvm/include/x86/processor.h     |  2 +
+ .../selftests/kvm/x86/set_sregs_test.c        |  3 +
+ 14 files changed, 125 insertions(+), 15 deletions(-)
+
+
+base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+-- 
+2.43.0
+
