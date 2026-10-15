@@ -1,33 +1,33 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5114449DBA8;
-	Thu, 15 Oct 2026 06:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403AB49E139;
+	Thu, 15 Oct 2026 06:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792047180; cv=none; b=UYTho/wliBHJkOfBoWwZVanLSJpvkK3ShD/kk80wffJgA7MvslTKtjiUyoSST90XMeGoTdR0yBaYv8LOX+1lBxGLYls8hdrSgPxeaRhQopHIh9ytcHcRQqRGicTTqYAGRqzzN/hl38goIvVqJfycal7MTmOaXzMlRKMfDwiENOw=
+	t=1792047181; cv=none; b=g4r/lzHSwGF5U//C59BSH/LtLLv3wq3BGJFSJojSRzfEO7nkVoyIvyWgfxnlDdwRfqVKD7iMss3hAB0rWzNfIbJ7uWx/ckAJPM/16nBraUUAY5voRxl86Sq6FMTtCw5MxiKB9QLDQkhFD9WtlHuVqQu6GKhHc04UzhqK1OWNLnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792047180; c=relaxed/simple;
-	bh=v09gpINBPhnmGNmY54bIIp8vYD8ZjbtywWQC4AY5h1c=;
+	s=arc-20240116; t=1792047181; c=relaxed/simple;
+	bh=KpBRoo1AGCSg/H6JDJ7ELtcRGaW7NHwEetKk7sLzBXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWwUcoRsOWL3sLttItB2jYeNxxKDa4tclkGS+8sJG2TCInnm45GXkhjpFbsgXsquXXVwpzxcJrRxYfqNWcF11bdfKdhuI4ofeKu1+UVRA0xqavfkqHd0XHxKUSbrt50LnyEYarNaB8pVPQ2gKgByKOLRcCOX99xICnDxiRW97WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=183.62.165.209
+	 MIME-Version; b=Sl/4naG+/U7Zcs6JFuYFBCbyfb1sAmiGLjkiMBffP4Bu2GKojDhY9vBmnBbfFGDMT0fQ+shojmr7MyrmcJxSiE6xrNrVYyFM8enEIgW9QbLCkulsbdevWB0iXEKo73f2t4IFpeReRjYbM7uSTCzwSH7NYXTQ0wvt7mVCkxLNZNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=160.30.148.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4j4zKT0GRkz5B14p;
-	Thu, 15 Oct 2026 14:52:45 +0800 (CST)
-Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
-	by mse-fl2.zte.com.cn with SMTP id 69F6qchO019083;
-	Thu, 15 Oct 2026 14:52:38 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j4zKX3rJdz8Xrrd;
+	Thu, 15 Oct 2026 14:52:48 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl1.zte.com.cn with SMTP id 69F6qfBb013906;
+	Thu, 15 Oct 2026 14:52:41 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 15 Oct 2026 14:52:40 +0800
-X-Zmail-TransId: 3e816ad07837024-554ee
+	Thu, 15 Oct 2026 14:52:43 +0800
+X-Zmail-TransId: 3e816ad0783a024-55537
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -49,9 +49,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>,
         Gong Shuai <gsh517025@gmail.com>
-Subject: [RFC PATCH 03/12] iommufd: Add RISC-V IOMMU cache invalidation data type
-Date: Thu, 15 Oct 2026 14:52:23 +0800
-Message-ID: <20261015065232.604503-4-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH 06/12] iommu/riscv: Add vIOMMU cache invalidation
+Date: Thu, 15 Oct 2026 14:52:26 +0800
+Message-ID: <20261015065232.604503-7-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261015065232.604503-1-gong.shuai@sanechips.com.cn>
 References: <20261015065232.604503-1-gong.shuai@sanechips.com.cn>
@@ -63,78 +63,162 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 69F6qchO019083
+X-MAIL:mse-fl1.zte.com.cn 69F6qfBb013906
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 15 Oct 2026 14:52:45 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 15 Oct 2026 14:52:48 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AD0783D.000/4j4zKT0GRkz5B14p
+X-Fangmail-MID-QID: 6AD07840.001/4j4zKX3rJdz8Xrrd
 
-From: Wu Fei <wu.fei9@sanechips.com.cn>
+Implement cache_invalidate for the vIOMMU, which takes IOTINVAL commands
+from user space in the struct iommu_viommu_riscv_invalidate format and
+forwards them to the physical IOMMU command queue.
 
-Add IOMMU_VIOMMU_INVALIDATE_DATA_RISCV and the matching
-struct iommu_viommu_riscv_invalidate, so user space can pass RISC-V
-IOMMU IOTINVAL commands to the vIOMMU cache invalidation path using a
-payload layout that is shared with the kernel, instead of relying on the
-driver internal struct riscv_iommu_command.
+The uAPI payload is little-endian, so convert it to the native command
+words the hardware queue expects. Only IOTINVAL.VMA is accepted;
+reserved bits are rejected. The guest-owned GV, GSCID and PSCV/PSCID
+operands are replaced with the ones the host actually programs, so a
+guest cannot invalidate caches that belong to another guest.
 
+Co-developed-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
-Co-developed-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- include/uapi/linux/iommufd.h | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/iommu/riscv/iommu-bits.h | 13 +++++
+ drivers/iommu/riscv/iommu.c      | 93 ++++++++++++++++++++++++++++++++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 7458878386c5..36e6187bb34b 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -903,10 +903,12 @@ struct iommu_hwpt_get_dirty_bitmap {
-  *                                        Data Type
-  * @IOMMU_HWPT_INVALIDATE_DATA_VTD_S1: Invalidation data for VTD_S1
-  * @IOMMU_VIOMMU_INVALIDATE_DATA_ARM_SMMUV3: Invalidation data for ARM SMMUv3
-+ * @IOMMU_VIOMMU_INVALIDATE_DATA_RISCV: Invalidation data for RISC-V IOMMU
-  */
- enum iommu_hwpt_invalidate_data_type {
- 	IOMMU_HWPT_INVALIDATE_DATA_VTD_S1 = 0,
- 	IOMMU_VIOMMU_INVALIDATE_DATA_ARM_SMMUV3 = 1,
-+	IOMMU_VIOMMU_INVALIDATE_DATA_RISCV = 2,
- };
+diff --git a/drivers/iommu/riscv/iommu-bits.h b/drivers/iommu/riscv/iommu-bits.h
+index 2a8230a0c1bb..68190d6cc060 100644
+--- a/drivers/iommu/riscv/iommu-bits.h
++++ b/drivers/iommu/riscv/iommu-bits.h
+@@ -486,6 +486,19 @@ struct riscv_iommu_command {
+ /* dword1[61:10] is the 4K-aligned page address */
+ #define RISCV_IOMMU_CMD1_IOTINVAL_ADDR		GENMASK_ULL(61, 10)
  
- /**
-@@ -967,6 +969,31 @@ struct iommu_viommu_arm_smmuv3_invalidate {
- 	__aligned_le64 cmd[2];
- };
- 
-+/**
-+ * struct iommu_viommu_riscv_invalidate - RISC-V IOMMU cache invalidation
-+ *         (IOMMU_VIOMMU_INVALIDATE_DATA_RISCV)
-+ * @cmd: 128-bit cache invalidation command that runs in the IOMMU command
-+ *       queue, in the format defined by the "IOMMU Page-table cache
-+ *       invalidation" section of the RISC-V IOMMU specification. Must be
-+ *       little-endian.
-+ *
-+ * Supported command list only when passing in a vIOMMU via @hwpt_id:
-+ *     IOTINVAL.VMA
-+ *
-+ * The isolation operands are owned by the kernel, which overwrites them
-+ * before the command is issued:
-+ *     GV = 1 and GSCID = the GSCID assigned to the vIOMMU
-+ *     PSCV = 1 and PSCID = 0
-+ *
-+ * All other reserved bits must be 0.
-+ *
-+ * -EIO will be returned if the command is not supported, -EINVAL if it is
-+ * malformed.
++/*
++ * All standard bits of the IOTINVAL command. The remaining bits are
++ * reserved for future standard use, forwarding them to the physical IOMMU
++ * may make it treat the command as illegal.
 + */
-+struct iommu_viommu_riscv_invalidate {
-+	__aligned_le64 cmd[2];
++#define RISCV_IOMMU_CMD0_IOTINVAL_STANDARD \
++	(RISCV_IOMMU_CMD0_OPCODE | RISCV_IOMMU_CMD0_FUNC | \
++	 RISCV_IOMMU_CMD0_IOTINVAL_AV | RISCV_IOMMU_CMD0_IOTINVAL_PSCID | \
++	 RISCV_IOMMU_CMD0_IOTINVAL_PSCV | RISCV_IOMMU_CMD0_IOTINVAL_GV | \
++	 RISCV_IOMMU_CMD0_IOTINVAL_NL | RISCV_IOMMU_CMD0_IOTINVAL_GSCID)
++#define RISCV_IOMMU_CMD1_IOTINVAL_STANDARD \
++	(RISCV_IOMMU_CMD1_IOTINVAL_S | RISCV_IOMMU_CMD1_IOTINVAL_ADDR)
++
+ /* 3.1.2 IOMMU Command Queue Fences */
+ /* Fields on dword0 */
+ #define RISCV_IOMMU_CMD_IOFENCE_OPCODE		2
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index 8046cadefbd8..c34331bcd661 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -2075,8 +2075,101 @@ riscv_viommu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
+ 	return &nested_domain->domain;
+ }
+ 
++/*
++ * One invalidation command, viewed as either the little-endian uAPI
++ * payload or the native command words.
++ */
++struct riscv_viommu_invalidation_cmd {
++	union {
++		struct riscv_iommu_command cmd;
++		struct iommu_viommu_riscv_invalidate ucmd;
++	};
 +};
 +
- /**
-  * struct iommu_hwpt_invalidate - ioctl(IOMMU_HWPT_INVALIDATE)
-  * @size: sizeof(struct iommu_hwpt_invalidate)
++static int riscv_viommu_cache_invalidate(struct iommufd_viommu *viommu,
++					 struct iommu_user_data_array *array)
++{
++	struct riscv_viommu *rv_viommu = container_of(viommu, struct riscv_viommu, core);
++	struct riscv_iommu_device *iommu = rv_viommu->iommu;
++	struct riscv_viommu_invalidation_cmd *cmds;
++	unsigned int i = 0;
++	int ret;
++
++	if (array->type != IOMMU_VIOMMU_INVALIDATE_DATA_RISCV)
++		return -EINVAL;
++
++	/* entry_num==0 is the data_type support probe */
++	if (!array->entry_num)
++		return 0;
++
++	static_assert(sizeof(*cmds) == 2 * sizeof(u64));
++
++	cmds = kcalloc(array->entry_num, sizeof(*cmds), GFP_KERNEL);
++	if (!cmds)
++		return -ENOMEM;
++
++	ret = iommu_copy_struct_from_full_user_array(cmds, sizeof(*cmds), array,
++						     IOMMU_VIOMMU_INVALIDATE_DATA_RISCV);
++	if (ret)
++		goto out_free;
++
++	for (i = 0; i < array->entry_num; i++) {
++		struct riscv_iommu_command *cmd = &cmds[i].cmd;
++		u64 opcode, func;
++
++		/* The uAPI payload is little-endian */
++		cmd->dword0 = le64_to_cpu(cmds[i].ucmd.cmd[0]);
++		cmd->dword1 = le64_to_cpu(cmds[i].ucmd.cmd[1]);
++
++		opcode = FIELD_GET(RISCV_IOMMU_CMD0_OPCODE, cmd->dword0);
++		if (opcode != RISCV_IOMMU_CMD_IOTINVAL_OPCODE) {
++			/* Only page-table cache invalidation is forwarded */
++			ret = -EIO;
++			goto out_free;
++		}
++
++		/* Reject reserved bits instead of forwarding them to the physical IOMMU */
++		if (cmd->dword0 & ~RISCV_IOMMU_CMD0_IOTINVAL_STANDARD ||
++		    cmd->dword1 & ~RISCV_IOMMU_CMD1_IOTINVAL_STANDARD) {
++			ret = -EINVAL;
++			goto out_free;
++		}
++
++		func = FIELD_GET(RISCV_IOMMU_CMD0_FUNC, cmd->dword0);
++		if (func != RISCV_IOMMU_CMD_IOTINVAL_FUNC_VMA) {
++			ret = -EIO;
++			goto out_free;
++		}
++
++		/*
++		 * The guest operates in its own GSCID/PSCID namespace.
++		 * The physical IOMMU uses the host-assigned GSCID and
++		 * PSCID=0. Enforce both for correct cache invalidation.
++		 */
++		cmd->dword0 &= ~(RISCV_IOMMU_CMD0_IOTINVAL_GV |
++				 RISCV_IOMMU_CMD0_IOTINVAL_GSCID |
++				 RISCV_IOMMU_CMD0_IOTINVAL_PSCV |
++				 RISCV_IOMMU_CMD0_IOTINVAL_PSCID);
++		cmd->dword0 |= FIELD_PREP(RISCV_IOMMU_CMD0_IOTINVAL_GSCID,
++					  rv_viommu->gscid) |
++			       RISCV_IOMMU_CMD0_IOTINVAL_GV |
++			       FIELD_PREP(RISCV_IOMMU_CMD0_IOTINVAL_PSCID, 0) |
++			       RISCV_IOMMU_CMD0_IOTINVAL_PSCV;
++
++		riscv_iommu_cmd_send(iommu, cmd);
++	}
++
++	riscv_iommu_cmd_sync(iommu, RISCV_IOMMU_IOTINVAL_TIMEOUT);
++
++out_free:
++	array->entry_num = i;
++	kfree(cmds);
++	return ret;
++}
++
+ static const struct iommufd_viommu_ops riscv_viommu_ops = {
+ 	.alloc_domain_nested = riscv_viommu_alloc_domain_nested,
++	.cache_invalidate = riscv_viommu_cache_invalidate,
+ };
+ 
+ static size_t riscv_iommu_get_viommu_size(struct device *dev,
 -- 
 2.53.0
 
