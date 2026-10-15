@@ -1,150 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898A553CA6D;
-	Thu, 15 Oct 2026 20:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A98655D889
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 20:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792095729; cv=none; b=JNj9apMgv2cGMyM13wBCF/hPLtJDx+SHKf0HEYJkUMe9Iezc1Pv3kahSO54s6KiRwPSx1qA7xc9H0EIxeGZ9SJhs9IvyErugdE+xOB7o/7ZBm5y0DRNHtuCPMGABF5b49yWpY6/OGMaW5x4sjcNVrPc7j9UH/6aODj18uL6n+jI=
+	t=1792095928; cv=none; b=dbSZOaqqkwxWjql9spRS/UJ/cvSCRBZTevgfHQHV2EJNhNiaWUj/bNTVVZEOO+SqGktZcNPYCbj0p1s4+MbtMGXtXWU7zL+QFITSsYuGVilpg9+wFgVcIz1/561bbXyBAZfItn+r5QvfnTXXNIvycQ5QedSAjpUIomLIMKjWRyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792095729; c=relaxed/simple;
-	bh=bE5+1IemOECT05OEvh34mnl/ZoqjgtYYKl4gXF9D0BA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjLM9TEjlqhwLHDANUl6HMY3H5OmRBHGewc1ldOlzgUW1taxIHs5lBFXigaztWuMY79oO9hOcB9MIzKrSLmVeMi6z461z4i/9vJSkIZDy2yqZ3AGpAiYSXNB50HGGhN2FPN146PUCnghlXG4SH0AL+2YfUtZglT3ca/wgTijMrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HDwgL3bg; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792095928; c=relaxed/simple;
+	bh=ohSNWTMc1i9x1RIYDHajEGmflI2MmuOm55ScfjpqJak=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FzAdh67cyRY9ekwjenb6yF2/gNnD7E18qE6iJ0ppiyEFUEEArtzIZd4lEqv3CmKv+DoUJydVTpFB+rZJm9oQ3+6zRkBWfbF/Gd6j1Ou6huFW1wCsDeaeI/BQHBNFycj/kLpvqvg96ISmo6Q5ROSuX2+DKxFSZKFgY2mPDmyn5bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=nhHKUQtl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ndRC8o72; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HDwgL3bg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792095726; x=1823631726;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bE5+1IemOECT05OEvh34mnl/ZoqjgtYYKl4gXF9D0BA=;
-  b=HDwgL3bgrUZ1ZvZ5eiV1WNWWMjhbCtKpILnDt1VTOTOEHW7SbSdNiPOS
-   sw1W+SrzeS8LH6ZKb53dBOoyFh7YkxT22MzuWhpi54bmIRJQH1GgVIEK9
-   LIoPD+m1//qvauX/mkmT/CFzFj6xc9b38QVlv9A1W1JwPLmMEZ6kQxDMU
-   CzEwIOvWZYVEjEy+s8L+3PQ0kxYL1W+IrS70UVVeWYmO1dHHVgqchO4gt
-   sfnlJz3di33uJxW1YWARvG/01B9CCWn4gQCQFehoU3Vk/vXQGxZcnCZ3W
-   A+GH4W+lDCzRF5kYhb780ejqNNVriwo7curUYpozjcFSmr5/5rqg+3lQi
-   A==;
-X-CSE-ConnectionGUID: 4/JoFbNAQre+4ugryk9NQQ==
-X-CSE-MsgGUID: 7HjycFQ0S96cj5PRCKzmSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="911138"
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="911138"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 13:22:02 -0700
-X-CSE-ConnectionGUID: REvyi5jzSzS0k4n65gpYaQ==
-X-CSE-MsgGUID: fTOr0R0jRGOlhEPoB7vVEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1844502"
-Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa003.fm.intel.com with ESMTP; 15 Oct 2026 13:22:00 -0700
-From: Sohil Mehta <sohil.mehta@intel.com>
-To: kvm@vger.kernel.org,
-	x86@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Chang S . Bae" <chang.seok.bae@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Chao Gao <chao.gao@intel.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Matlack <dmatlack@google.com>,
-	Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Farrah Chen <farrah.chen@intel.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 6/6] KVM: selftests: Extend set_sregs_test to cover LASS
-Date: Thu, 15 Oct 2026 13:19:40 -0700
-Message-ID: <20261015201940.1655956-7-sohil.mehta@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261015201940.1655956-1-sohil.mehta@intel.com>
-References: <20261015201940.1655956-1-sohil.mehta@intel.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="nhHKUQtl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ndRC8o72"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 02CE41D000BC
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 16:25:25 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 15 Oct 2026 16:25:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792095925;
+	 x=1792182325; bh=Sww3R/VX25uolOQ8fO9EbTe9gZvDFuDQzrStIIgWqzA=; b=
+	nhHKUQtlYos729HPdlJiozjrUQHq6Tf1ZpIUCmN/WUnr/D+9NhYE2wux9i6x76vH
+	wXSbeDFpOf3ZNuANrOUN3iNjqqv2Gl0xVDSyw9blevW4I4dL3xVTmd2jkCLtBMCl
+	vcyYkVUGTIO0yowBRJ6Hs2KSnH4GWQiB/TjGJgSvlAINtlHtD9oRMOQ1pkJxk/K1
+	1Hfs1TGli1s75BVxBAjfC/hUBReM79eCuOn4zc/cE3+eut6HHevgsw/tM7NZP7sr
+	EoSBMDO6BhOgeo0g5alyOSBvvCb7sJfgul78fs2zROIKtz6QeWtaFZXE8esuEDJh
+	voGoLG82dz8n0P1cOQYbcw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792095925; x=
+	1792182325; bh=Sww3R/VX25uolOQ8fO9EbTe9gZvDFuDQzrStIIgWqzA=; b=n
+	dRC8o72pkljfzsK5UHNunM2CPyiC6AEhp4OrOvMp3Z3gQDmZvjgy3raBewApbYcl
+	3iP3QppBQz4WoKx+beVMLmFX6HRKncwlgbsppsqLxCec+qGLpHhY0NL639e+6i5o
+	9a37j/Du4GJk0ex7HH6p/+DzU1pwZsXvYau28OegkNIMBQhLLnN0Z8faK9sra+qA
+	+ugmRRZLdqQzwodoxgnZIdpPCNomEnirbEE4jAPkil9f8zBiPmvWtJE5NOwVIrnY
+	3xBmeJbBtJzy2MKSmnHKk35LXylEHUCiNKSF63RhKsEbdWZ8BAPGQ5cx0rwrv9fR
+	KJgb3iB4O+5WPNLdPROcg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792095925; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:sIRM43xbspT8tdR3feQDOsz5ko8yAuDp2D46QscId1tWFmE
+	d6WhqXQBiJcp3ZCsEHtw27k10yX1sP3uKOWdsHYhAWWdyT3aRW/OrxXZ1+wITGuO
+	lcSKofU06ibHZUrM/TbIel5G52iVG0l6tNXUaLwlU4/vSsjN1bQ7AuA7leze7Q6E
+	kriwYczQf//7CDmtFwtheLqnLn68QIdAWRF6tEXq5cSy943dRryiAYI80wtKNiSK
+	vk02yf/8WDv0mQUHTpgxzIK+UH/4HiPm4zVjlMvrtVURP3rZymcCeg5UzYTQNxRl
+	jiJEMOwUlIhlbcRoFu2ZzvSzJ8eH1cs/ugdMXCw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:D1ZDaf6qxHsza0NFT9xO6R3fAcB3uXofasbHkTinHmw=:ohSNWTMc1i9x1RIYDHajEGmflI2MmuOm55ScfjpqJak=;
+X-ME-Sender: <xms:tDbRahFbNadZttAEAk_s_FNOKq6DfMiQUGMj483lkH1cwmw-tjdQdQ>
+    <xme:tDbRavp7IrdmofsMlKFxNGfdBXLSZrQBKe_egelBBqQ9_8hpAnPg8YxCgMOHVB02F
+    85_AYe5pxm4HPSChtV1zkRAl5YJplu35LMH-cFUwnR1wra1DxMQ_Q>
+X-ME-Received: <xmr:tDbRaqY0_3FzgqDtxjVQI1bsnDO4S5MloUJpJmTXjkhDknHKkxxu0Li91v9PjA>
+X-ME-Proxy-Cause: dmFkZTEHmFmM49NNe27fqs5QH7E5eRsDwnB+o9tR4Hz6D539LuhgIMDtTipijxaPtcylM5
+    rSCBW8II8rnvpu9BffMNrH6QeDo66Sn/OME7Oi9T9dQLG8wXuOXgv3KP5PhPr/rd0/ECUI
+    3LBLdxBoshzwbZhb3/u//vNxNu0z8gbMCtiX+soq5on/jkN3LG4TL2AKSlDvxHaB8j71au
+    mu+iXsLiQiyAK5yjqggTzL1CRH6uT92GUYqqwsksLsW/Jbaj+OWv5IBJuLkRJI3JAuV0rC
+    Vveedlv5sj2ENScqsAkRMcmgcO0669d1bFm2eepH5tSFseZdM/ax7Db1N1yuWm9Uzo8CBC
+    /geWnA7LSe/Y39Oy9oj0IZ59opAX+aeXpZm5rsl885Nv1UTraX01tzO1sg1DFQyG9iXcWi
+    /g48nJtKgMsZTLNhdJTrXru5Idqb0IQIppFWjOaycMCbn6BZrMg78wWU4/yjIYT034piSN
+    T0fGvmjzGB9tbQUyWtmIfHyNCgO7WZXB/3IcpepS3vSCZ0vL25cKNnQ0uHjb3H5qxCVGeM
+    qD8wtGTQ6lVEmDrnwxT7DQzwbfct1C+68jbqS99tciUd3aiPpb/VZ6GeorigI64abDxUep
+    Hc9FpRdvxr0CtWzdzsA73y6XwwEMkH2NuuSNaJUS6xmgoXqtssOnDoEnWeFw
+X-ME-Proxy: <xmx:tDbRaoWtLt9HnCT5y94qdO02P4jdXiiI-9BlATfpPcW4cDcWsAMYeg>
+    <xmx:tDbRaj_WaVGrViBR0qa0dhVkWflxyaYi6waJkO0RtEOQtRjEr_UCtA>
+    <xmx:tDbRah_XbuPn6oo78XEFQCPSOgT-_P7L2WinARG8VSdo_O2zSwVbsQ>
+    <xmx:tDbRajROT4m6vl1zkYaExzFaTASSRJlV6xEl41s6SUspzva0v_PX6w>
+    <xmx:tTbRagxXR_bMfTf0OzTzjqCe5DITWbP4SBpPNIKqFj7gRMeQOudSAerB>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Oct 2026 16:25:24 -0400 (EDT)
+Date: Thu, 15 Oct 2026 14:25:22 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Longfang Liu <liulongfang@huawei.com>
+Cc: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v6 0/2] fix two issues in hisi_acc_vfio_pci driver
+Message-ID: <20261015142522.085c6e5d@shazbot.org>
+In-Reply-To: <20261013071929.3988687-1-liulongfang@huawei.com>
+References: <20261013071929.3988687-1-liulongfang@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Extend set_sregs_test to cover CR4.LASS and verify that KVM_SET_SREGS
-accepts CR4.LASS when LASS is supported, and rejects it, without
-modifying sregs, when it isn't.
+On Tue, 13 Oct 2026 15:19:27 +0800
+Longfang Liu <liulongfang@huawei.com> wrote:
 
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Tested-by: Kishen Maloor <kishen.maloor@intel.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
----
-v5:
- - Avoided the CR4 write test specific to LASS.
- - Picked up review and test tags
+> This series fixes two issues in the HiSilicon ACC VFIO PCI driver:
+> 1. A NULL pointer dereference in reset_prepare() when a PF is bound
+> to the driver and passed through to a VM.
+> 2. A 64KB page incompatibility on QM_HW_V3 hardware that breaks
+> migration and the guest kernel.
+> 
+> Changes since v5:
+> - Fix a potential NULL dereference in reset_prepare().
+>   Open code &qm->pdev->dev at dev_err() to drop the local variable
+>   evaluated before the mig_ops check.
+> 
+> Changes since v4:
+> - Removed dev_err() log from reset_prepare().
+> - Removed redundant pdev->is_virtfn check from probe().
+> 
+> Changes since v3:
+> - Merged the set_reset_flag fix into patch 1 (was a separate patch in v3)
+> - Replaced pf_qm guards with a mig_ops check at function entry.
+> - Moved the 64KB page check from open_device to probe, selecting generic
+>   ops instead of rejecting the device.
+> 
+> Changes since v2:
+> - Remove redundant qm->io_base check.
+> - Drop PAGE_ALIGN for BAR2 configuration region.
+> 
+> Longfang Liu (2):
+>   hisi_acc_vfio_pci: fix NULL dereference in reset_prepare on PF
+>     passthrough
+>   hisi_acc_vfio_pci: reject live migration on 64KB page with QM_HW_V3
+>     hardware
+> 
+>  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 46 ++++++++++++-------
+>  1 file changed, 29 insertions(+), 17 deletions(-)
+> 
 
-v4:
- - New patch
----
- tools/testing/selftests/kvm/include/x86/processor.h | 2 ++
- tools/testing/selftests/kvm/x86/set_sregs_test.c    | 3 +++
- 2 files changed, 5 insertions(+)
+Applied to vfio next branch for v7.4.  Thanks,
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 5898a277a2e0..606ee9fe0ddb 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -81,6 +81,7 @@ const char *ex_str(int vector);
- #define X86_CR4_SMEP		(1ul << 20)
- #define X86_CR4_SMAP		(1ul << 21)
- #define X86_CR4_PKE		(1ul << 22)
-+#define X86_CR4_LASS		(1ul << 27)
- 
- struct xstate_header {
- 	u64				xstate_bv;
-@@ -197,6 +198,7 @@ struct kvm_x86_cpu_feature {
- #define	X86_FEATURE_SPEC_CTRL		KVM_X86_CPU_FEATURE(0x7, 0, EDX, 26)
- #define	X86_FEATURE_ARCH_CAPABILITIES	KVM_X86_CPU_FEATURE(0x7, 0, EDX, 29)
- #define	X86_FEATURE_PKS			KVM_X86_CPU_FEATURE(0x7, 0, ECX, 31)
-+#define	X86_FEATURE_LASS		KVM_X86_CPU_FEATURE(0x7, 1, EAX, 6)
- #define	X86_FEATURE_XTILECFG		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 17)
- #define	X86_FEATURE_XTILEDATA		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 18)
- #define	X86_FEATURE_XSAVES		KVM_X86_CPU_FEATURE(0xD, 1, EAX, 3)
-diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-index 5afc4187f5eb..f30dc61fe00f 100644
---- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
-+++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-@@ -72,6 +72,8 @@ static u64 calc_supported_cr4_feature_bits(void)
- 		cr4 |= X86_CR4_SMAP;
- 	if (kvm_cpu_has(X86_FEATURE_PKU))
- 		cr4 |= X86_CR4_PKE;
-+	if (kvm_cpu_has(X86_FEATURE_LASS))
-+		cr4 |= X86_CR4_LASS;
- 
- 	return cr4;
- }
-@@ -128,6 +130,7 @@ static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
- 	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMEP);
- 	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMAP);
- 	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_PKE);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_LASS);
- 
- 	for (i = 32; i < 64; i++)
- 		TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, BIT(i));
--- 
-2.43.0
-
+Alex
