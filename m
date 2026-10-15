@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5482EEE66
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 01:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A52244694
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 01:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792027718; cv=none; b=ILikN1HR4LP5cMCZLmGBibru3cPVdLEFofDB07ZYCUN8Oyqel+tsSkjN694el6rFjhXmPMvOFn2QaL4zPjk8o9vIcaCDfSPaTuBDtFXYbFIcyXdR2jCPPqIvsy7/VduWCr/Y4ECIdoiB/AmdkM9TpbtM3bR2rgkq/0Lccjr9yXk=
+	t=1792027905; cv=none; b=FAouPBQm5j89tlXcpbyEPxk3a1iQLyld6oi7hjETM8LbKMBB1HYAFUxY/fZF/vKzSQM6W2bNUONBM6Odo1RaEwpbndjrEbEqAvtqqY9XKZ9KTSXnqJeIzTgfTxbWsaZKJjwG5BjKuYWlK6mJyxuwwNu1ysTZJIbgncN9yUtscNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792027718; c=relaxed/simple;
-	bh=stlb4D+El4INLKUZWC7mXSw1FnhmJMZpuMrbBjk6p0c=;
+	s=arc-20240116; t=1792027905; c=relaxed/simple;
+	bh=deRXviqqR809X69HO5tgVHyJCOU8qgz7LT5h9O3zsAs=;
 	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=jUIZLgqbbJGMg/AUhwCNjrP6xW+R1uP04vtIhrBc1toZSFi8NjISS9oP0Kfqfa5KdlvWV/WneXtXZsLjZS8RzoEbD9MQHZXMK8FIrYlxfRI76/1FB5eAHCLwns519q92vovcB81+uwsgUmBhF8s8pSbp9p1avFkmKieQlzpEGgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3pT3nwp; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=isEzDH4xLFQjojKeUIOttTdhcthAN7b+rVjiWsVgeP4XuOsII7n6yq45ocySr979gdW18v2y2wViGv9AIgJgdZ6xPrpuOx7AuANecq91VPXowc3TQSuuIIgVdwB4HjzQXHIf+I9wSZWnmHNXUGmqOYfY771KaXqtajF7QaFKz00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MEO1y4m9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3pT3nwp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9A31F000C4;
-	Thu, 15 Oct 2026 01:28:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MEO1y4m9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9221F000C4;
+	Thu, 15 Oct 2026 01:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792027716;
-	bh=zFmkTi1YxdLhydC/wLEEKQ2vETrYhkGWr07eS8TH57Y=;
+	s=k20260515; t=1792027903;
+	bh=f82+IJ9v1p6UVlMIAQvi27sTyl5oBk/fxzqnhz0KY+o=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=N3pT3nwppud2xgUDLQ1JgHAWqnztOeQkrPaRkbMdSxFWVL4O8WS5V0vIDPjSrMJ5S
-	 uY1pHBIop8os9nCVfJkVLLtKf2xhqn6fjyVd2u6oIznEFEw0OGrzJEq0dRw+wJRLVI
-	 m//U+FxUNWYUXTXMkyJeIooYjsb5kLPEBg5gxGgRf5IlnZzrdD2loctRWjsIF6z84W
-	 zT5f62fsbNvIVLw07y5klW2zyXbPCjXGrkKrOMFVuyIEK+2ALz7NhcQFcjOSvO3GTP
-	 mbybjM+Hp62ypt39WQQ44t9Wcd97K8NlyDAXKkzhppoiNVM0Njf+nPNNthwtF7s4Fr
-	 yIvzbSFwbLIEw==
-Message-ID: <sashiko-outbox-172091@kernel.org>
+	b=MEO1y4m98g/a3E+mtzdSjBpfwH2RdIMW9M07CDlvLe+gZCyYqFK3R27g2+NWOV4nZ
+	 6JLPafWwJzoxre3eK7lIXHWRsuuhoHy+DsTRaVbD1c1xxXALAxm0Y43AUqsx+68cYx
+	 1xJn5gmmudcFtLh6acXyL7YA1aRTFkkitOdHBR9JCL2JH5/J+7Ciz9iKCXbRS/rALX
+	 J961in7Ae0tEEt9UVcBuHPEH574UKDI+vHhdTy659cmiT4FvIRENWGeAxpdB14Gl28
+	 A7g+62jZB4blh/UMRPjmW5faEgbL72Ocp1sOmPnnOfb7oLgSCu170OKNjgzAGtTIjP
+	 x11UfZW5aNPxQ==
+Message-ID: <sashiko-outbox-172095@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
- setup/clear
+Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
+ capable IOMMUs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Lu Baolu" <baolu.lu@linux.intel.com>, kvm@vger.kernel.org
-In-Reply-To: <20261015010705.1973284-2-baolu.lu@linux.intel.com>
+In-Reply-To: <20261015010705.1973284-5-baolu.lu@linux.intel.com>
 References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
- <20261015010705.1973284-2-baolu.lu@linux.intel.com>
+ <20261015010705.1973284-5-baolu.lu@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 01:28:35 +0000
+Date: Thu, 15 Oct 2026 01:31:43 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,84 +46,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] x86/virt/tdx: missing clflush on IOMMU parameter pages
+- [High] virt/coco/tdx-host: desynchronized host/hardware state on xa_inser=
+t failure
 --
 
-commit ea38aa1a74969b72895a018349277b8a5b88cfb3
+commit 83cda44603ec97cb10640905999d9a617eced100
 Author: Lu Baolu <baolu.lu@linux.intel.com>
 
-x86/virt/tdx: Add SEAMCALL wrappers for IOMMU setup/clear
+coco/tdx-host: Initialize trusted DMA on all capable IOMMUs
 
-This commit adds SEAMCALL wrappers for TDH.IOMMU.SETUP and TDH.IOMMU.CLEAR.
-These functions transition an IOMMU into and out of Secure TDX Mode to
-provide the trusted foundation required before enabling TEE-IO security
-protocols.
+Assigning a device to a TD for private memory access requires that DMA
+from that device be translated by structures the TDX module controls.
+An Intel IOMMU that implements the trusted DMA extension provides a
+parallel set of translation and invalidation resources for this purpose.
 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 1b9ff749dd8e0..5d31c1b0890ae 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-
+> diff --git a/drivers/virt/coco/tdx-host/iommu.c b/drivers/virt/coco/tdx-h=
+ost/iommu.c
+> new file mode 100644
+> index 0000000000000..a80e57bf26a12
+> --- /dev/null
+> +++ b/drivers/virt/coco/tdx-host/iommu.c
 [ ... ]
-
-> @@ -2034,3 +2034,59 @@ void tdx_sys_disable(void)
->  	if (ret && (ret & TDX_SW_ERROR) !=3D TDX_SW_ERROR)
->  		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
->  }
-> +
-> +/*
-> + * Wrapper for TDH.IOMMU.SETUP leaf, which transitions the IOMMU and rel=
-ated
-> + * I/O stack into Secure TDX Mode.
-> + *
-> + * The @root page format is defined by the TDX Connect ABI spec (Table 3=
-.35,
-> + * Structure of IOMMU_MT Parameter): the first two entries describe the =
-size
-> + * and HPA (Host Physical Address) of the two contiguous buffers for the
-> + * invalidation queue; the remaining entries provide HPAs of
-> + * IOMMU_MT_PAGES_COUNT metadata pages. IOMMU_MT_PAGES_COUNT is obtained=
- from
-> + * trusted IOMMU global metadata.
-> + */
-> +u64 tdh_iommu_setup(u64 reg_base, void *root, u64 *tdx_iommu_id)
+> +static int tdx_iommu_setup(struct dmar_drhd_unit *drhd)
 > +{
-> +	struct tdx_module_args args =3D {
-> +		.rcx =3D reg_base,
-> +		.rdx =3D __pa(root),
-> +	};
+[ ... ]
+> +	state =3D no_free_ptr(iommu_state);
+> +	state->drhd =3D drhd;
+> +	state->tdx_iommu_id =3D tdx_iommu_id;
+> +	state->mt_pages =3D no_free_ptr(iommu_mt);
+> +	ret =3D xa_insert(&tdx_iommu_xa, (unsigned long)tdx_iommu_id, state, GF=
+P_KERNEL);
+> +	if (ret) {
+> +		WARN_ON(tdx_iommu_clear(state));
+> +		kfree(state);
+> +		return ret;
+> +	}
 
 [Severity: High]
-Does the root page need to be flushed from the CPU cache before being passed
-to the TDX module?
+If xa_insert() fails and tdx_iommu_clear(state) also fails, this code
+unconditionally frees state and returns an error. Does this leave the
+hardware state desynchronized?
 
-The TDX module accesses memory using physical addresses. If CPU-cached,
-unflushed memory pages are passed to the module during trusted DMA
-initialization, it can lead to cache paradoxes and machine checks,
-potentially causing host kernel panics.
+When this function returns an error, the caller dmar_tdxcs_iommu_init_all()=
+ in
+drivers/iommu/intel/dmar.c restores iommu->max_domain_id to its full un-hal=
+ved
+range and leaves drhd->tdx_mode =3D false:
 
-Other TDX page-adding wrappers typically ensure pages are flushed. While the
-caller is responsible for populating the parameter page, the caller introdu=
-ced
-in the follow-up patch (tdx_iommu_setup in iommu.c) allocates and populates
-the metadata pages but does not appear to perform a cache flush either.
+	ret =3D setup(drhd);
+	...
+	if (ret) {
+		scoped_guard(mutex, &iommu->did_lock)
+			iommu->max_domain_id =3D ndoms;
+		...
+		return ret;
+	}
 
-Should tdh_iommu_setup() perform the flush, or does the caller need to be
-updated to handle it?
+Because tdx_iommu_clear() failed, the physical hardware is permanently left=
+ in
+Secure TDX Mode, but the software state now believes it is not. Will this
+cause hardware faults or fatal domain ID conflicts when the host attempts to
+use domain IDs that now belong exclusively to TDX?
 
-> +	u64 ret;
-> +
-> +	/*
-> +	 * Don't loop forever:
-> +	 *
-> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
-> +	 *    calls.
-> +	 *  - On TDX_INTERRUPTED_RESUMABLE, all registers except RAX remain
-> +	 *    unchanged.
-> +	 */
-
-[ ... ]
+Unlike tdx_iommu_disable_all() which safely detects a clear failure and lea=
+ves
+tdx_mode true to confine the host to the lower half of the DID space, this
+error path completely loses track of the hardware state, breaking isolation.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015010705.1973=
-284-1-baolu.lu@linux.intel.com?part=3D1
+284-1-baolu.lu@linux.intel.com?part=3D4
