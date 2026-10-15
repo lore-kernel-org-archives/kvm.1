@@ -1,93 +1,118 @@
-Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005AF1A680B
-	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 13:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C79C31716E;
+	Thu, 15 Oct 2026 13:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792070159; cv=none; b=Ckn/SWyIwSNznU64FNpM4yQOXxd1FeHRaRFQ3ZSknOVGhkDtEVtRybilykIU8STf9Fe9okjK0cAFyo4zRuw5inbm687kf2GZ3UCVVFroBGVMjKa6VZu7CexbTO5/7kd6UJiLRoApX2IWjQiSkRGiV3kbkYqdU8fOICcb2Ij+cR4=
+	t=1792071058; cv=none; b=nEEz9Qv7PSd1Xm6CvrYWSwoBPRMvbBkq4G+ywPJsg+J4NyDs3+vP5pRuDfmY1d1BasiJO/+eY8CFCTVqOC/splxUehSZcLt+j4smFhYxzJxSRxGdZ/Z3gBtbfRznTw3lKmk0rZozRub36BSDrkKGc4cmxYdKs0sUl1yVTZX/fHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792070159; c=relaxed/simple;
-	bh=cBClqqcoRnjq1tJUyrLKGJx+LO26OjFSc7Ag8ZACa0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EBVe2BsNpEDbHAVTziPerCJYhSYAnirgVAy3m4jc+vX+IJaYnlMF78TZtevJ6pt3B89uxn7wxAqpJVG0Y60aczYr0KKdaY3FjKt7m+6g4F4FR/8OL89W+McLacePPiql5AIQZG21mOcqc5bxv8/5Qcl3XiHdInoROdywZIKR3ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FFgACMSV; arc=none smtp.client-ip=91.218.175.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1792071058; c=relaxed/simple;
+	bh=L9aIgzSjYho00ggV/zjV4jYYwOi6um4AdVfO21ejWEA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I3//rAsk1pG5TpiCiPTl1QfxeHLEK/mI1lbt1d0DcwhcV+0/sLpxKq/ruazwYVV8KuspoNhXKpvLULul8/4XBodNwF9DSG9FJwn5Ou0aAw8UeGlBTpZVGw77neKFYa8aScGgD2RY0tTisVi9xLv1PANnZeKSeQxvEsvQrfRg/5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ol5vRMnH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FFgACMSV"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=cBClqqcoRnjq1tJUyrLKGJx+LO26OjFSc7Ag8ZACa0Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792070155; v=1; x=1792674955;
- b=FFgACMSVjGrbSEPR2dLUmi3WDsf7CE9FvksqCyWv/lb3bymzAjdGyANWk2ztx+jVxmNhx0yG
- adBRHbMqF70GtsOuLpJtDdOXZ4d0xIXsW+gx6YB+TXa3Wp5jLAF5Vx4yyrmMJrqowhAUQ4bEk0C
- vNSJX/BcQyFJxPBpUJnAV8bI=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 07249f13e37a95ca;
-	Thu, 15 Oct 2026 13:15:55 +0000
-X-Mizu-Trace-ID: 07249f13e37a95ca
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5ba429b64c5so4211e87.1
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 06:15:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwqbLISaD92kpO9jKs0rjZ4FZ300HSlwidb5z3F592z+3uq+3urKbZgQsJ02JGUplDmlNI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIXQ840IcIZOduz3TGjDtUk/VaJnHda5WYssumuRjma6YUFze3+
-	ERqTWnMltNrmKBMhDNjmw04SJ4ZK3jahfVL54s8l1RB2wsid3JyUMQUemmJ/9gar4L7SKBFjnJm
-	MLHklZYIGC1dOM5x2pnBQ7ZPiGye3w/eC6tI4Wv3W
-X-Received: by 2002:a05:6512:2211:b0:5bc:ce5b:96f3 with SMTP id
- 2adb3069b0e04-5be3e11d7c9mr81883e87.4.1792070154180; Thu, 15 Oct 2026
- 06:15:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ol5vRMnH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564521F000C4;
+	Thu, 15 Oct 2026 13:30:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792071055;
+	bh=aieewkiVnVuP9Gv4tnFbYL65Nv/XO1TXk9gy+wXJC4Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Ol5vRMnHMUpLDISLVFg5BEdpUSxJjrLkJkYSiePoPb7ofgNa1DtfJqxDHMcnFUtpm
+	 UU4ZmN8IsflTOkK46Jy8692973WILwjvmZBJFB1pR5c8MqFWMqhcT52IKh4pvXX3b9
+	 /WVebvEpJTHzlw2C6AJYFDdVzvqGbSGX04uDOP34W87QDvB41W8vlAGTBd8Gurn676
+	 I+xWw287r7fQSTI5Rz5CIdZ2NiDMuCXLncbzQVuB2vqeR3wuK0XU3SaSIntO5RyGFa
+	 7D2uEjaH6QE5CKptkGLHub7GuaMMDsvf/yhxXvaGXL+bbNVtqQhUFUgACUQeTPQWIO
+	 p2oP2JHAVwuaQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xHLXp-00000003K9v-18ma;
+	Thu, 15 Oct 2026 13:30:53 +0000
+Date: Thu, 15 Oct 2026 14:30:52 +0100
+Message-ID: <86jynj146r.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH 0/7] KVM: arm64: Fix cross-CPU vcpu pausing
+In-Reply-To: <20261015125712.2650518-1-fuad.tabba@linux.dev>
+References: <20261015100539.1011760-1-maz@kernel.org>
+	<20261015125712.2650518-1-fuad.tabba@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261015100539.1011760-6-maz@kernel.org> <20261015125716.2650737-1-fuad.tabba@linux.dev>
- <86ld7z150j.wl-maz@kernel.org>
-In-Reply-To: <86ld7z150j.wl-maz@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 15 Oct 2026 14:15:17 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTw=CsL7XdMdV2g41ThRMQe1_Vh=HL5E50pOBT3ZWQ=PtQ@mail.gmail.com>
-X-Gm-Features: AclHuK81C1k155nk4IeQL38Uum0spopA4W4U08O1g0zocLSDFFuwHaItMqtONv8
-Message-ID: <CA+EHjTw=CsL7XdMdV2g41ThRMQe1_Vh=HL5E50pOBT3ZWQ=PtQ@mail.gmail.com>
-Subject: Re: [PATCH 5/7] KVM: arm64: Add helpers to halt a vCPU
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, seiden@linux.ibm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, tabba@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, 15 Oct 2026 at 14:13, Marc Zyngier <maz@kernel.org> wrote:
->
-> On Thu, 15 Oct 2026 13:57:16 +0100,
-> Fuad Tabba <fuad.tabba@linux.dev> wrote:
+On Thu, 15 Oct 2026 13:57:12 +0100,
+Fuad Tabba <fuad.tabba@linux.dev> wrote:
+> 
+> Hi Marc,
+> 
+> On Thu, 15 Oct 2026 11:05:32 +0100, Marc Zyngier <maz@kernel.org> wrote:
+> [...]
+> > This series addresses these defects, and builds on top of it to:
 > >
-> > Hi Marc,
+> > - add pausing to a single vcpu in addition to the full VM pausing
 > >
-> > On Thu, 15 Oct 2026 11:05:37 +0100, Oliver Upton <oupton@kernel.org> wrote:
-> > [...]
-> > > Signed-off-by: Oliver Upton <oupton@kernel.org>
-> > > Link: https://patch.msgid.link/20260929212925.31775-2-oupton@kernel.org
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > - convert LPI disabling and the MOVALL command to vcpu pausing
 > >
-> > Should this one have a Cc: stable too? Patch 6 is tagged for stable and
-> > calls kvm_pause_vcpu() and kvm_resume_vcpu(), so it won't build in
-> > stable without this patch.
->
-> My take is that there is no need to backport this patch at all. A
-> valid backport of patch #6 should simply halt the full VM, not just a
-> single vcpu.
+> > Patches on top of -rc6, most of them being Cc stable without any
+> > qualification (this has been broken for as long as I can remember).
+> 
+> I'll send a couple of nits on patches 2 and 5 as replies to those
+> patches.
 
-Makes sense, so this will be resolved on the backport itself.
+Thanks, I'll tidy that up as I apply them.
 
-/fuad
+> 
+> For the series:
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> 
+> Tested on QEMU on top of -rc6: npVM and pVM boots in pKVM, npVM boots
+> with nVHE and VHE hosts, and vgic_irq and vgic_lpi_stress in all three
+> and with kvm-arm.mode=nested. My reproducer has vcpu 0 clear vcpu 1's
+> EnableLPIs while the LPI is in vcpu 1's LR: on -rc6 the LPI is still
+> pending on vcpu 1 afterwards, and with the series it isn't. With my
+> vgic-its v2 [1] on top, my MOVALL selftest and my shared LPI and DISCARD
+> reproducers pass, including with PROVE_LOCKING and with debug hooks
+> that force the DISCARD race.
+> 
+> Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-> Thanks,
->
->         M.
->
-> --
-> Without deviation from the norm, progress is not possible.
+Great, thanks again.
+
+> 
+> v2 of "Fix LPI double mapping and DISCARD" [1] applies on top of this
+> series as it is. Would you take it as it is, or would you like me to
+> respin it?
+
+I can stash it on top as is. Looks like the first set of 7.4 fixes is
+going to be pretty vgic-heavy anyway.
+
+Cheers,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
