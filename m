@@ -1,187 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C708C48EBE0;
-	Thu, 15 Oct 2026 08:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1BF4A3D55
+	for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 08:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792053347; cv=none; b=BFYeVHCx5ivdp5sL+H7FmWSp3WnfscOT8CFEqn3MiXJ/MM744lMtbD7F2subxLKG8a5CLX8hVeM+BSwezatd5zQvOItN6ym0v7pUytSXTaQJDsDCCrYLNgJbufQrHJCkaaEodylnsDAPRR2CrnIwTuUXkTM+wo5b6lCwB0ugm78=
+	t=1792053903; cv=none; b=JwlndQQFODCz6GnyCi6l0h115U1CWY3mWL0rfWhNrGv/sq66I6U3Cy6WCJLIs3qMxxXmSzTP8xb8hDzsHGBex6PwbFyigagBPNo481T0Hk4XR04icJLhfC0SfP1SSmvESycPI4YQNuAqxECTqgU5hw16/8fR11uk2aZuKMzIkG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792053347; c=relaxed/simple;
-	bh=jsAyffWac3S0pjRkbN+9fHBRvD+lojAJez5nsr6g6FI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TfbhIjJbRLjR3v76UVasESt7qDs656jVf152mI+HHjaaegOmjzGG0B29fij8JpCQqDXC6vnzJ5LOcAybXd/KdN640EfwGY5NQPMWkRbW0MKg8IWFljA0sYiqRVe7l7LiKMPZgSt30L6T8LqlQ+f+JxTLmWplmf7EwIiN9vmc9Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QvRJk11d; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1792053903; c=relaxed/simple;
+	bh=g4i/J/Y7zTGSyL4VYqnXFpJPHcqTwdJXbfkiOHbpvJY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OT1IXr828NT+1Qj/P9V0AOhUwYPEwrF2PmPKVxa+IM9YxPGpH1uCdRoCwH6mDfE7hkoktBbKNLxup28jeW/L0plF8g8irZngwf/pjRGHhEJU5GkuP7PTh4v7TrLhLnK++InaWB9NjEnLi9+TNCRGJLSZHoYMThCVFLKWW/FFaiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WS1EFJEV; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QvRJk11d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792053345; x=1823589345;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jsAyffWac3S0pjRkbN+9fHBRvD+lojAJez5nsr6g6FI=;
-  b=QvRJk11dywpf9MXcufZTXtWPafFj1SrhrE79WJsCxrWjnh04xRI3ec9x
-   cGuAIY8L0fhk3VTwYgWa5Otunx+EZquvI+2RuAmBx4l22ZXQf9lkoNwYv
-   X/3X5heHIqveVDC2+FPtUiAVmK2c3JvVzyX/IzDxUMJkJu/KvI8XuN4NK
-   LJTEJdtydrHHGloC0wgkSvKBLRFoZtZy8g8/4qeer3STEXske+mQHjGky
-   WeyPIwfflePXM8Pa4x28krrbXjqNKkTa0W6XquLps9PboHWE0u/dOlU5P
-   VIPsQkoCRbE+Rgwsq06oD6iBMPQ5xPeBmA8Lu+pVAVr4MX34o0ud2vSJ4
-   A==;
-X-CSE-ConnectionGUID: kg0rBLqrRWeZTXatOzmKng==
-X-CSE-MsgGUID: vztgaAj0S6OPHBshwV1T/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="803655"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="803655"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 01:35:44 -0700
-X-CSE-ConnectionGUID: rKUolCNlT4WsZ8d+hbkpnw==
-X-CSE-MsgGUID: xIyRtnMWREKJj3Y09eEkeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1525166"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa007.jf.intel.com with ESMTP; 15 Oct 2026 01:35:42 -0700
-Date: Thu, 15 Oct 2026 16:31:31 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
- capable IOMMUs
-Message-ID: <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050>
-References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
- <20261015010705.1973284-5-baolu.lu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WS1EFJEV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=g4i/J/Y7zTGSyL4VYqnXFpJPHcqTwdJXbfkiOHbpvJY=; b=WS1EFJEVVa9EaknD1LRjWgswoo
+	yiU3L71/ymYztPy86BdoKZfdgHBcJmR9p9xpmc2O/F7l+jXaxxTVV4qI2TPKUSzeM3vjjnIsyJW4C
+	9e7hMYvdwOyD+luuB0gJdpoEj2RhU685H2zMZSyHDWuroO3kz96+kMOdrVSUthknw28PiZySqNXMJ
+	Wxwy2hKVeO+3/1E96OxKAUaB1xxJMf/8PagwqOwx5cuybKLSieyNI3PwZjn6c+p4Ekt5+yNXY4E7o
+	lByd7qQNjenoF5dtPPrk5MT3DF3cq02tWKZ+A6kLv3uxUx68Tgg8JNOw5itk1ryPJorDMU3knX2nt
+	YVekDq/Q==;
+Received: from 54-240-197-234.amazon.com ([54.240.197.234] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xHH55-0000000CEFi-1dP1;
+	Thu, 15 Oct 2026 08:44:55 +0000
+Message-ID: <c213ca93393bffb774ac1642a4718f91a4c14891.camel@infradead.org>
+Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
+From: David Woodhouse <dwmw2@infradead.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>, seanjc@google.com, 
+	pbonzini@redhat.com
+Cc: John Levon <john.levon@nutanix.com>, "kvm@vger.kernel.org"
+	 <kvm@vger.kernel.org>, Thanos Makatos <thanos.makatos@nutanix.com>
+Date: Thu, 15 Oct 2026 09:44:54 +0100
+In-Reply-To: <c18ef5464ff4fb4d607c6ae02c58024b41b3f17c.camel@infradead.org>
+References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
+		 <20260922135102.GA24134@fedora>
+	 <c18ef5464ff4fb4d607c6ae02c58024b41b3f17c.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-E5DmH1OykxlWnv+iTmZM"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015010705.1973284-5-baolu.lu@linux.intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Oct 15, 2026 at 09:07:05AM +0800, Lu Baolu wrote:
-> Assigning a device to a TD for private memory access requires that DMA
-> from that device be translated by structures the TDX module controls.
-> An Intel IOMMU that implements the trusted DMA extension provides a
-> parallel set of translation and invalidation resources for this purpose.
-> These become usable only after the TDX module has placed the IOMMU into
-> TDX mode, at which point the trusted resources belong exclusively to the
 
-I think at this point we first need to reason about the connection between
-IOMMU TDX mode and the PCIe link encryption. The device private memory
-access can be placed in cover-letter as the big picture of TDISP.
+--=-E5DmH1OykxlWnv+iTmZM
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I can see we may need to touch a bit about trusted DMA translation at
-this phase, because the TDH.IOMMU.SETUP requires the VMM to provide 2
-contiguous Invalidation Queue buffers, which leaks the trusted DMA
-internals a bit. But I feel this should not be a first topic.
+On Sun, 2026-10-04 at 18:16 +0200, David Woodhouse wrote:
+>=20
+> FWIW while this is sufficient for implementing i82599 VF emulation, to
+> get line-rate TCP *performance* I also needed a directed yield_to() to
+> the consumer worker thread when it gets triggered.
+>=20
+> And to get line-rate *UDP* performance I needed the consumer to be able
+> to arm/disarm it, to avoid getting throttled into lockstep with the
+> guest.
+>=20
+> I'll clean up my proof of concept hacks and post them after LPC.
 
-> TDX module, while the host retains control of the regular translation
-> path. The transition is performed by TDH.IOMMU.SETUP, which takes the
-> register base address of the target IOMMU together with a parameter
-> page describing memory the host has allocated for the TDX module to
-> manage trusted DMA on that unit.
-> 
-> Perform this initialization from the tdx-host driver by walking every
-> IOMMU unit through dmar_tdxcs_iommu_init() and initialize the ones whose
-> IOMMU implements the extension.
-> 
-> For each such unit the driver builds the IOMMU_MT parameter layout that
-> TDH.IOMMU.SETUP expects: two contiguous buffers for the trusted
-> invalidation queue, followed by the number of metadata pages the TDX
-> module reports in its global metadata. The pages are allocated on the
-> NUMA node of the IOMMU. The root page is passed to the TDX module, which
-> returns an identifier naming the initialized IOMMU. That identifier and
-> the pages backing it are tracked so the state can be released later.
-> 
-> Releasing the state is the reverse: TDH.IOMMU.CLEAR tears down the
-> trusted DMA resources established by TDH.IOMMU.SETUP, after which the
-> metadata pages can be freed and the VT-d driver told to lift the domain
-> ID restriction applied during initialization. If TDH.IOMMU.CLEAR fails
-> the pages are not freed, as the TDX module may still hold references to
-> them.
-> 
-> Rename tdx-host.c to main.c and build the module from a tdx-host-y
-> object list instead. New functionality can then be added as separate
-> source files instead of putting everything in a single file.
-> 
-> The code is built only when its dependencies are present, gated by
-> CONFIG_TDX_CONNECT.
-> 
-> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-> ---
->  drivers/virt/coco/tdx-host/Kconfig            |   6 +
->  drivers/virt/coco/tdx-host/Makefile           |   3 +
->  drivers/virt/coco/tdx-host/private.h          |  33 +++
->  drivers/virt/coco/tdx-host/iommu.c            | 255 ++++++++++++++++++
->  .../virt/coco/tdx-host/{tdx-host.c => main.c} |  21 +-
->  5 files changed, 317 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/virt/coco/tdx-host/private.h
->  create mode 100644 drivers/virt/coco/tdx-host/iommu.c
->  rename drivers/virt/coco/tdx-host/{tdx-host.c => main.c} (92%)
-> 
-> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-> index 57d0c01a4357..62d91d4b41fa 100644
-> --- a/drivers/virt/coco/tdx-host/Kconfig
-> +++ b/drivers/virt/coco/tdx-host/Kconfig
-> @@ -4,3 +4,9 @@ config TDX_HOST_SERVICES
->  	select FW_LOADER
->  	select FW_UPLOAD
->  	default m
-> +
-> +config TDX_CONNECT
+FWIW after a bunch of other performance work on the emulation it turns
+out I can live without this. As I was preparing to send a version of it
+upstream, I did a final retest with/without it, and it isn't needed any
+more.
 
-Maybe we don't need the configuration. Now we turn on all TDX features
-that Linux knows about all the time.
+--=-E5DmH1OykxlWnv+iTmZM
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Architecturally, TDX Connect is an default-off feature. But Linux enables
-it regardlessly. It is questionable we then have a configuration that
-disable the driver that supports the feature.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+jx92v7p5KCAPGu4mpdM2THoAAAAAAAA=
 
-> +	def_bool y
-> +	depends on TDX_HOST_SERVICES
-> +	depends on PCI_TSM
-> +	depends on INTEL_IOMMU
 
-[..]
-
-> +static int tdx_iommu_setup(struct dmar_drhd_unit *drhd)
-> +{
-> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-> +	unsigned int mt_page_count = tdx_sysinfo->tdx_connect.iommu_mt_page_count;
-> +	struct tdx_iommu_state *state;
-> +	u64 r, tdx_iommu_id;
-> +	int ret;
-> +
-> +	struct tdx_iommu_state *iommu_state __free(kfree) = kzalloc_obj(*iommu_state);
-> +	if (!iommu_state)
-> +		return -ENOMEM;
-> +
-> +	struct tdx_iommu_pages *iommu_mt __free(free_mt_pages) =
-> +			tdx_iommu_alloc_mt_pages(drhd, mt_page_count);
-> +	if (!iommu_mt)
-> +		return -ENOMEM;
-> +
-> +	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt->root, &tdx_iommu_id);
-> +	/* TDX Extension is not supported on this IOMMU. Nothing to do. */
-> +	if ((r & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_INVALID)
-> +		return -EOPNOTSUPP;
-
-Enable all IOMMUs regardless brings this problem. We need to try on
-every IOMMU, check the TDX error code to see if it is not supported (then
-skip) or failed. It's also sad to me that -EOPNOTSUPP is defined as the
-API between tdx-host and intel iommu driver.
-
-An alternative could be, bringing up one IOMMU when an associated
-device requests link encryption. Then a no-tdx-support iommu fails the
-encryption request naturally.
-
-Open to discussion.
+--=-E5DmH1OykxlWnv+iTmZM--
