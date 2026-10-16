@@ -1,190 +1,129 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64F1368D74
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 16:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC1025EF87
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 16:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792166421; cv=none; b=hjDLoC2xGmjgbolDmqPr4SYATLgdER9tFmKc0w2xB1d4XZmw7VVvL2DWKbmHNHtTIfgFk5DRiDz2UO+M/x9ZyL/LyAlpZXZtCPvngx3eWYXVkolVMNRrkvc4F+xtf+YPmxgtGfT/axMc0UtjgN1G0jVFdrybfBoSmKADqUGMZYA=
+	t=1792166488; cv=none; b=eMCb11m26Y3uFXGmRM9ctJ4K8E35PtrIFLllNLZfxsL7tLori2b34H0gEnJkKxbvwfuRe2iNBGvykyXbwLWOg1bEf4DHQb3XcQ3xlhlfBdN3AxHutbGh8cWXOAzcoU/9fXrOYv3/38iYol0CwAijMHQhF6JVK3BpbG6K8pbK4l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792166421; c=relaxed/simple;
-	bh=oo1ODDdkU0C7BmGW2+rzO0urjKyPCv5+n0gJX9i22no=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bGmCV7M8K73tFqFpzaPyqlIsW4Sr52o4a84acA/MnPBLoQmJLKTEzsvMlKAsXsk9MqpQdggUoh0VecN6raA2P05P/6hqwMVoTYcx05ag1Yu+XXrANZqwO26r1Dk7H86TuvMHEVyyXVFOlRHagWjnyexE4nM6jNdVofS69btSNxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Iz2CfjQ2; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1792166488; c=relaxed/simple;
+	bh=fhzcePjlzw9yVEu7oOj/cbwjemqzwf+zSSlTyISabsY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=n5XNqgoAU3gIMIbmGgYgFuhW02uvrhTV8mcTEAAXIHgPXgHLgt4MX3B+oj6i9nJp0x/MpnwXFC8wQd22V0TLXq6kelojWOsQYi45PxJ0SyQgW5MjLAUX91vljY89EhzFiCW1XVmSeyx+o7ZeeFFcRTVUmh7dummdJJv+uk4ClnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g3ZGZEqO; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Iz2CfjQ2"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 213B01516;
-	Fri, 16 Oct 2026 09:00:16 -0700 (PDT)
-Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BAF3E3F673;
-	Fri, 16 Oct 2026 09:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792166419; bh=oo1ODDdkU0C7BmGW2+rzO0urjKyPCv5+n0gJX9i22no=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iz2CfjQ2vcO+GNeMLCkHKFEWjrQB4a2hGNBIIb3x07/vOZXVZHTjEGTmGoEBs5rfl
-	 IVFS1UyE/WfIefZ57d0eIhrnKmYB7qKAUBZtDhQyO9jzy2hHZ1Y0jMTrn1yQ+6em+S
-	 ixm5Rp0ivP1voYWClA87AvNgbJr+3oTicAAzo9jA=
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: maz@kernel.org,
-	oliver.upton@linux.dev,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	peter.maydell@linaro.org,
-	lpieralisi@kernel.org,
-	timothy.hayes@arm.com,
-	fuad.tabba@linux.dev
-Subject: [PATCH 16/16] KVM: arm64: gic-v5: Document ITS userspace ABI
-Date: Fri, 16 Oct 2026 16:57:41 +0100
-Message-Id: <20261016155741.979985-17-sascha.bischoff@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261016155741.979985-1-sascha.bischoff@arm.com>
-References: <20261016155741.979985-1-sascha.bischoff@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g3ZGZEqO"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab2395f104so102891a91.2
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 09:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792166487; x=1792771287; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=D1rfnYRO+IqRRG/ZwKbx1XrlNOfWSfXuey2SabsfEdA=;
+        b=g3ZGZEqOeUpFoUdYw4L1Mldn2gb0NZUvKujoUmViPI9sGf5PNQXBTz4eDFpyf+z7Io
+         DHfMrQ2lrLNq90NCMkkDPdVWSngwRP5/aSommwR0YY1JJdJOZK8AqgrP37owB3UXB8Lf
+         3iSJXTBhislDDv7I2NoKisUGVitue19Z/On7qqgdgXX6oVpHycyXYaDWtCQMeK3DMgGg
+         BgGVPktW4NJj1l86x0WIUK7wFWj3ekXe+JSvHPP5+xTe6FOtWcT7utX4pkyy5ED1QLBn
+         XLEyyYetf7RE0kUnmUqaRSC5Ur+67nKhjF7zVQ4r7UyezxE8MY5DKzg+4hkYQeiQjTu/
+         YoGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792166487; x=1792771287;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D1rfnYRO+IqRRG/ZwKbx1XrlNOfWSfXuey2SabsfEdA=;
+        b=socsTvG1shmp51NBi5weH3RV26ggDcQCJ+OJPUBkJQick4FWCTvwGbEr6NgzymVcAw
+         +OyJvyItGCbK7D51fohC45wS2VZ3ZVsxEWxvSHpPnMO8yZ8L4PgNKRPZ94aJkRmrsPtw
+         eDKsbgUp/DNkGptqyDcQ8nNkvOm0zQP+K1ctMCm9VjcC70lTHBLbi4s4IqERN7ET8GWU
+         I6NoYAR1IOzB48sFR0RImgIBmTB9k++PkmRKQx7uQpGf1oMu/M6Vwi+IG85F+B6EdxsD
+         wVhMIkWtgQvUKTjqevxa2iSo+8aQKIzuYl2+hDjXrISsFuTh7/u1aGJBMXr15nvYHyy5
+         QIOA==
+X-Forwarded-Encrypted: i=1; AKwUvByt7Y4SBs3Ly/jBel0LmR7LqbJ0dGLLGUwnW3O3I+MPruGrom1m/X7xGvVymW1iaxdmnGo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJdaADNXZ4vlj71KCKT+qhFf9PpBTMVT24F/Ev8/z2tsXFTU+oG
+	6qEVcGsE5JHmbFsIr4AjOORN7jLlIJW2J96DGTi77bUX3tDWo94pv7MgYB0uilXgHvbA2l9oAKc
+	CLxPT6g==
+X-Received: from pgby10-n1.prod.google.com ([2002:a05:6a02:650a:10b0:cc7:b17d:4d13])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35cb:b0:3aa:fc22:8aa7
+ with SMTP id 98e67ed59e1d1-3acef5c49eemr235813a91.53.1792166486289; Fri, 16
+ Oct 2026 09:01:26 -0700 (PDT)
+Date: Fri, 16 Oct 2026 09:01:25 -0700
+In-Reply-To: <CALMp9eRkd-kgBpWTS4nYHaCuDH-PPgB-zvtomBXv-GS7G7M1tA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260310060022.15120-1-manali.shukla@amd.com> <20260310060022.15120-7-manali.shukla@amd.com>
+ <20261008191950.816113-1-jmattson@google.com> <CALMp9eRkd-kgBpWTS4nYHaCuDH-PPgB-zvtomBXv-GS7G7M1tA@mail.gmail.com>
+Message-ID: <atJKVRcCsAYewGl7@google.com>
+Subject: Re: [PATCH v3 6/9] KVM: SVM: Add support for IBS Virtualization
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Manali Shukla <manali.shukla@amd.com>, pbonzini@redhat.com, mingo@redhat.com, 
+	bp@alien8.de, kvm@vger.kernel.org, x86@kernel.org, santosh.shukla@amd.com, 
+	nikunj.dadhania@amd.com, Naveen.Rao@amd.com, dapeng1.mi@linux.intel.com, 
+	ravi.bangoria@amd.com, peterz@infradead.org, Sandipan.Das@amd.com, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Document the GICv5 ITS device and its userspace ABI, including the
-MMIO address, reset control, register attributes, and MSI requirements.
-State that software should target ITS_TRANSLATER, while KVM uses the
-MSI address to identify the virtual ITS.
+On Thu, Oct 08, 2026, Jim Mattson wrote:
+> On Thu, Oct 8, 2026 at 12:19=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
+> >
+> > On Tue, Mar 10, 2026 at 06:00:18AM +0000, Manali Shukla wrote:
+> > > +     /*
+> > > +      * When IBS virtualization is enabled, guest reads from
+> > > +      * MSR_AMD64_IBSFETCHPHYSAD and MSR_AMD64_IBSDCPHYSAD must retu=
+rn 0.
 
-Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
----
- .../virt/kvm/devices/arm-vgic-v5-its.rst      | 102 ++++++++++++++++++
- Documentation/virt/kvm/devices/index.rst      |   1 +
- 2 files changed, 103 insertions(+)
- create mode 100644 Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
+This is incorrect.  Hardware returns 0 because it (presumably) doesn't want=
+ to
+translate the address on the fly.  KVM isn't bound by such a restriction.
 
-diff --git a/Documentation/virt/kvm/devices/arm-vgic-v5-its.rst b/Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
-new file mode 100644
-index 0000000000000..250057e4445d7
---- /dev/null
-+++ b/Documentation/virt/kvm/devices/arm-vgic-v5-its.rst
-@@ -0,0 +1,102 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+============================================================
-+ARM Virtual Generic Interrupt Controller v5 ITS (VGICv5 ITS)
-+============================================================
-+
-+Device types supported:
-+  KVM_DEV_TYPE_ARM_VGIC_V5_ITS    ARM GICv5 Interrupt Translation Service
-+
-+The GICv5 ITS translates MSI(-X) interrupts into LPIs. It is optional and
-+requires a GICv5 host and a KVM_DEV_TYPE_ARM_VGIC_V5 device for the VM. The
-+ITS and VGIC devices may be created in either order, but their models must
-+match. Userspace should assign each ITS a separate, non-overlapping MMIO
-+region.
-+
-+MSIs injected through KVM_SIGNAL_MSI must provide a DeviceID using
-+KVM_MSI_VALID_DEVID. The MSI address should target ITS_TRANSLATER in the
-+ITS_TRANSLATE_FRAME. KVM uses the address to identify the virtual ITS, and
-+the MSI data supplies the EventID. The virtual ITS supports 16-bit EventIDs;
-+the upper 16 bits of the MSI data must be zero.
-+
-+
-+Groups
-+======
-+
-+KVM_DEV_ARM_VGIC_GRP_ADDR
-+-------------------------
-+
-+  Attributes:
-+    KVM_VGIC_V5_ADDR_TYPE_ITS (rw, 64-bit)
-+      Base address of the ITS in the guest physical address space. The address
-+      must be 64K aligned. The region covers 128K: a 64K control frame and a
-+      64K translation frame. The address must be set before accessing ITS
-+      registers through KVM_DEV_ARM_VGIC_GRP_ITS_REGS. It can only be set once.
-+
-+  Errors:
-+
-+    =======  =========================================================
-+    -E2BIG   Address outside the guest's addressable IPA range
-+    -EINVAL  Address is not 64K aligned, or the 128K range wraps
-+    -EEXIST  Address has already been configured
-+    -EFAULT  Invalid user pointer for kvm_device_attr.addr
-+    -ENODEV  Unsupported address attribute for GET or SET
-+    -ENXIO   Unsupported address attribute for HAS
-+    -EBUSY   Concurrent address configuration has already set the base
-+    -ENOMEM  Unable to allocate space for the MMIO bus entry
-+    -ENOSPC  MMIO bus device limit reached
-+    =======  =========================================================
-+
-+
-+KVM_DEV_ARM_VGIC_GRP_CTRL
-+-------------------------
-+
-+  Attributes:
-+    KVM_DEV_ARM_VGIC_CTRL_INIT
-+      Accepted for consistency with other VGIC devices; no additional ITS
-+      initialization is required.
-+
-+    KVM_DEV_ARM_ITS_CTRL_RESET
-+      Reset the emulated ITS registers and discard cached translations. The
-+      configured MMIO base address is retained. Guest memory containing the
-+      device and interrupt translation tables is not modified.
-+
-+  Errors:
-+
-+    =======  =========================================================
-+    -EBUSY   A vCPU could not be locked for reset
-+    -ENXIO   Unsupported control attribute for SET, or any GET
-+    =======  =========================================================
-+
-+
-+KVM_DEV_ARM_VGIC_GRP_ITS_REGS
-+-----------------------------
-+
-+  Attributes:
-+    The attr field of kvm_device_attr contains the ITS register offset from
-+    the control frame base address. kvm_device_attr.addr points to a __u64,
-+    regardless of whether the register is 32 or 64 bits wide. A 64-bit
-+    register must be addressed at its base offset; userspace cannot access
-+    its upper or lower half separately. Guest MMIO may use aligned 32-bit
-+    accesses to DT_BASER, DIDR, READ_EVENT_DATAR, and GEN_EVENT_DIDR.
-+
-+    The ITS base address must be configured before this group can be used.
-+    Writes to read-only registers are ignored. Writes to DT_CFGR and DT_BASER
-+    through this interface update their values even when the ITS is enabled;
-+    guest MMIO writes to those registers are ignored while it is enabled.
-+
-+    The registers with readable, writable state are CR0, CR1, DT_CFGR,
-+    DT_BASER, DIDR, EIDR, GEN_EVENT_DIDR, and GEN_EVENT_EIDR.
-+
-+    Some registers initiate guest-visible operations when written, including
-+    INV_EVENTR, INV_DEVICER, READ_EVENTR, and GEN_EVENTR. READ_EVENT_DATAR is
-+    a read-only result register.
-+
-+  Errors:
-+
-+    =======  =========================================================
-+    -ENXIO   ITS base address is unset, or offset is unsupported
-+    -EINVAL  Offset is not aligned to the register width
-+    -EFAULT  Invalid user pointer for kvm_device_attr.addr
-+    -EBUSY   A vCPU could not be locked
-+    =======  =========================================================
-diff --git a/Documentation/virt/kvm/devices/index.rst b/Documentation/virt/kvm/devices/index.rst
-index 70845aba38f45..d6d64b7266e83 100644
---- a/Documentation/virt/kvm/devices/index.rst
-+++ b/Documentation/virt/kvm/devices/index.rst
-@@ -11,6 +11,7 @@ Devices
-    arm-vgic
-    arm-vgic-v3
-    arm-vgic-v5
-+   arm-vgic-v5-its
-    mpic
-    s390_flic
-    vcpu
--- 
-2.34.1
+> > > +      * This is done for security reasons, as guests should not be a=
+llowed to
+> > > +      * access or infer any information about the system's physical
+> > > +      * addresses.
+> > > +      */
+> > > +     case MSR_AMD64_IBSDCPHYSAD:
+> > > +     case MSR_AMD64_IBSFETCHPHYSAD:
+> > > +             msr_info->data =3D 0;
+> > > +             break;
+> > > +
+> >
+> > These new cases should be conditional. Before this patch, KVM synthesiz=
+ed
+> > a #GP for a guest without X86_FEATURE_IBS. Now it returns 0.
+> >
+> > But, is this even necessary? APM vol. 2, section 15.38, says that when =
+IBS
+> > virtualization is enabled in the VMCB, the processor returns 0 on guest
+> > reads from IbsFetchPhysAd and IbsDcPhysAd and ignores guest writes to
+> > them. Can't we just disable interception of these MSRs when VIBS is ena=
+bled
+> > for the vCPU, and let the hardware handle them?
+>=20
+> Doh! As I realized later in the series, KVM_FEP requires that KVM must
+> be able to emulate reads and writes of every virtualized MSR...even if
+> virtualization just means "ignore."
 
+Not just FEP.  As proposed, the MSR is intercepted and so what hardware doe=
+s is
+irrelevant.
+
+I'm confused by (at least) one thing: why can software write these MSRs?  I=
+IUC,
+they are outputs from the CPU.
+
+If these were read-only, couldn't KVM use gva_to_gpa() with MSR_AMD64_IBSDC=
+LINAD
+and MSR_AMD64_IBSFETCHLINAD to get the GPA for the guest?  The MSRs being w=
+ritable
+is bizarre.
