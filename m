@@ -1,82 +1,124 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938D932AAA8
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 01:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26AA1E9B37;
+	Fri, 16 Oct 2026 01:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792112967; cv=none; b=rfhKS8aiK3bpYW5rMvpHbISxHe2CyZf3aAcflypBW/0x9dUQnSEqrYFHaNTwCXVEzTms0lkUafX85LsEQIE+hFdmgKYZiSIR5N0C+ZZTlSG1jWzHucIRXA1P4P7fr3rvDbvCqVyixYXSQw95H3oU5iFDMx7Y2DRoXRM/u5d1kbU=
+	t=1792114246; cv=none; b=dfPtT0Wvr8Id67vlSw+Hn1dV/i53fK0t/rGJLw3Ex3sTRExqbwD7N261/yd4X/IYEXSuGyB97rclHeZJcXfiqqRaE6ByhJPpnOdMdf3aF4h1wPRxVHo6zFTrT3IVdYQnMM34ZrsjGCgUPva1W//PKs9a94WUtqDrIXqxyQ70B1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792112967; c=relaxed/simple;
-	bh=Fnap2Rx62fYsbiLE8UE3rOQY6lE5SWcRUsRCoHhTdNs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ew6orX8zTklJLJqUvqTRXV4pPEnNogfmCBt/rm2k546MjDmmCX+5b2cjksTYYbegZs9dvozxEe3z28sW7gCCDqL9vMhZPUdLy/2AY1aCZ6o98b4ayPRCuyEmuDjujffYu2RDikLJFpwzePQpwUCKqEM044SDd7SHRQqqKDMw94Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I97P7zEP; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I97P7zEP"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd0e92d64a1so514514a12.1
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 18:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792112965; x=1792717765; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8LGdcJ3oqZPjHIrBM3BmFTUe/r+rIIS1a0NntXDK3pA=;
-        b=I97P7zEPnc6uOCizd9gyJS15Fgnkb88wz+7QVTaCe1+pitOR8wjY8hR594Wn2EB50w
-         tnIoNnwa1+r6i3JQ+zJa7a4d9WokSW0dI6AJ7YQtn+0CkkW+XauLzR1+8qn7Foe3bXfK
-         KobL3Tkq9afWfgkncqGWznFRYIzjTpCrlWV6BldeaLZlyok1hflRVL5I7CsgUWq1mufn
-         lYrfdL4Mi3dd8Wc5piobaBtFLTj5V2R05WYKrWzBN2WuZNvzJ2wodM+T71m6GbuhjEca
-         sXlYZ44zA2/BBfcqKe10eDHmkcBBjaH90SwCNHbYyM3F2MCoUf5s/5pct8dLIqwwfECM
-         rBfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792112965; x=1792717765;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8LGdcJ3oqZPjHIrBM3BmFTUe/r+rIIS1a0NntXDK3pA=;
-        b=nY6Y/nwnJA7KKbXteKRdCMOG06w7LgYvXxV6UStkVQ5/rl3T/B6XHbkcj3Me2gdPYa
-         kbsLh74slR9UzIOYggTI1bTnHqdDBH94OjaOznmqDPceIjX36bXhmDGau+h6hmxNw/L+
-         G6OrCSB6vHRuBHVVJlyra/oDQl47j27afCkrThulRbWTblSMJ8+7oFImIJG6Z6KBKlx1
-         Zp/b88266jHTt3SZlp5emAm+I2jsPAScFsEISfYCmCImDzd5TacVrDaTFImYxw2FIU9+
-         pPDUqQoqoNnAKcN6F1XhW86ToNBhBi+TU9iPvo0zZu4CjwSyGEuouU+83kDeZKNLjqOM
-         d9EA==
-X-Forwarded-Encrypted: i=1; AKwUvBzNH5cdfnbxpbg1UdHu/CS9GahO7DquZcW+pvqzfgxyCButkKk3hS/0aKkJLKH5rqc41U4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKWv30WDOo2GqE/Doi8vep99edNoal9P6GlsiSzQWmyleC2IaF1
-	E/CSgpLaEdjh5r9rChiPUk9YajJ5J7Ry2OsqwitOcKTbONf7/ua47eGlvgkC/4WhkD82VYwSElV
-	r0DEZcQ==
-X-Received: from pglk22-n2.prod.google.com ([2002:a05:6a02:6b96:20b0:ccf:9d14:abe0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:394f:b0:3e1:3734:63e0
- with SMTP id adf61e73a8af0-3e202037737mr1140181637.41.1792112964479; Thu, 15
- Oct 2026 18:09:24 -0700 (PDT)
-Date: Thu, 15 Oct 2026 18:09:23 -0700
-In-Reply-To: <20261015160346.181835-1-aaltinay@google.com>
+	s=arc-20240116; t=1792114246; c=relaxed/simple;
+	bh=NHjPVffI4vaUZO+Vsx8dzVQOq3E63OHQvnKtyn4jZqo=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=AKdhAaVMMcfo/YOWSPdZ5JBXTrS/7P0ReyPBxKo02gnTHn1lCWF+SWlaNR8x0ROj+Y8RZFsszFyhe+o+62XxY0o8DRMLRfhEuDYnm6ou0JK8TEycxI1mQW6TqYXiLuz5iWH7MeDqtx6VbhwI6iEMnJs2GrBFvomaYUgjE2TdJwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxfdI8ftFqpFoWAA--.65034S3;
+	Fri, 16 Oct 2026 09:30:36 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxRs07ftFqI_AsAA--.15901S2;
+	Fri, 16 Oct 2026 09:30:35 +0800 (CST)
+Subject: Re: [PATCH v4 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
+To: Tao Cui <cui.tao@linux.dev>, chenhuacai@kernel.org,
+ zhaotianrui@loongson.cn
+Cc: loongarch@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@xen0n.name,
+ nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+References: <20261015234638.1077815-1-cui.tao@linux.dev>
+ <20261015234638.1077815-4-cui.tao@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <bd455df4-49e8-c80c-a5cc-b0feabeb3262@loongson.cn>
+Date: Fri, 16 Oct 2026 09:31:57 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261015160346.181835-1-aaltinay@google.com>
-Message-ID: <atF5Q7ICoyOArbRL@google.com>
-Subject: Re: [PATCH 6.18.y v2 0/6] KVM: x86: CPUID faulting fixes and AMD
- CPUID faulting virtualization
-From: Sean Christopherson <seanjc@google.com>
-To: Anil Altinay <aaltinay@google.com>
-Cc: stable@vger.kernel.org, Jim Mattson <jmattson@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+In-Reply-To: <20261015234638.1077815-4-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxRs07ftFqI_AsAA--.15901S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZFykJr4xCFyDGr4DAF4fWFX_yoW8tFW5pr
+	W8Ca9xCrW8Wr1I9Fs7Zwn7XFyI9a1I9w4F9F1YyFy2kr15tr9YqFyFya15X3WDJ3y8AFyI
+	qFs8G34Fva1UAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4s2-UUUUU
 
-On Thu, Oct 15, 2026, Anil Altinay wrote:
-> Please backport the following 6 upstream commits to the 6.18.y stable tree:
 
-Why?  These aren't typical stable material, especially adding support for a new
-feature (virtualizing AMD's flavor of CPUID faulting).
 
-> 1. 690dc03859e7 ("KVM: x86: Ignore cpuid faulting in SMM") [v7.1-rc1]
-> 2. cf7d65d1d6f5 ("KVM: x86: Consolidate CPUID fault handling for emulator and interception logic") [v7.2-rc1]
-> 3. be7fd7c3e8bc ("KVM: x86: Prioritize CPUID faulting over CPUID VM-exits in nested VMX") [v7.2-rc1]
-> 4. d1bc99885a59 ("KVM: x86: Remove supports_cpuid_fault() helper") [v7.2-rc1]
-> 5. e93a93f11490 ("KVM: x86: Virtualize AMD CPUID faulting") [v7.2-rc1]
-> 6. b16c2aca369d ("KVM: selftests: Update hwcr_msr_test for CPUID faulting bit") [v7.2-rc1]
+On 2026/10/16 上午7:46, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
+> invocation: every call overwrites pch_pic_base and registers the same
+> kvm_io_device on the MMIO bus at the new address, while
+> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
+> init, MMIO to the stale ranges computes its register offset against the
+> new base and silently reads 0 / drops writes, and the leftover bus
+> entries persist until the VM is destroyed.
+> 
+> Reject repeated initialization with -EEXIST, using the initialized
+> state of the kvm_io_device as the indicator.  The check, the MMIO base
+> update and the bus registration are serialized by slots_lock, and the
+> real registration error is propagated instead of being replaced with
+> -EFAULT.
+> 
+> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>   arch/loongarch/kvm/intc/pch_pic.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+> index 51e4a6a39dc0..a4c35ed704be 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -281,16 +281,21 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
+>   	struct kvm_io_device *device;
+>   	struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
+>   
+> -	s->pch_pic_base = addr;
+>   	device = &s->device;
+> +	mutex_lock(&kvm->slots_lock);
+> +	if (s->device.ops) {
+> +		ret = -EEXIST;
+> +		goto out;
+> +	}
+> +	s->pch_pic_base = addr;
+>   	/* init device by pch pic writing and reading ops */
+>   	kvm_iodevice_init(device, &kvm_pch_pic_ops);
+> -	mutex_lock(&kvm->slots_lock);
+>   	/* register pch pic device */
+>   	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
+> +out:
+>   	mutex_unlock(&kvm->slots_lock);
+one small nit, what to do if there is failure with 
+kvm_io_bus_register_dev()?  clear s->pch_pic_base and  s->device.ops?
+
+Regards
+Bibo Mao
+>   
+> -	return (ret < 0) ? -EFAULT : 0;
+> +	return ret;
+>   }
+>   
+>   /* used by user space to get or set pch pic registers */
+> 
+
