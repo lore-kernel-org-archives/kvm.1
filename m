@@ -1,148 +1,162 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012040.outbound.protection.outlook.com [52.101.43.40])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101A029B8E1;
-	Fri, 16 Oct 2026 21:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792187707; cv=fail; b=Wf/aF66AHimE9entK7lVtx86gpQakaQCLjp48Dwts8B8f7lSXVjIydaWOCmscwN08ezmASgxH2akSm+gWfMxn0HV3EVJnFVKBJTaKRbHWsv3t5pZGa/d/sIuEiyPP2iHxvC0C6COaUA+y4I2IKtXn9/HhAsR/e2tYU/BGlFTkYo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792187707; c=relaxed/simple;
-	bh=bZj6WkONFM+KUsC/Veop0Yei4CRWbLkmd7ybniniUlE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FW+WD3QR/b1hsIgjpNDeFc491wLilGyiCvupbuvqy4bQ+zWUy9IroyiARErxzqAQRFURU1uQbqcvfT3wcpngBbmZ3iAGb3Da7ha/3rZvlXB+a0vRnRpfpsG4j1KmuoyPBS5Wj1rgu0PO0UPxmH6PLDS7idFZy5bt3UlfM+DAguY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IVHW3H+K; arc=fail smtp.client-ip=52.101.43.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7C743F4C2;
+	Fri, 16 Oct 2026 22:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792188926; cv=none; b=HUdweB1OD7AXZQuJHTmAkHKsfkXyqP+Nw+RzRSRG4pNl72R1tlVTiHgAqfGtJwzKJuNcdJAnG1E4kT9m0/AktmnEf+Uq9yXGXsPNf+p1kKxT0Uxp892cHP4hAIttcwkxXU96WwhXjkaSOzVI1KG7I4FbMuWhMcJ7M30Z3aX/keQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792188926; c=relaxed/simple;
+	bh=XBH2zFV2qQau7y1HpoVnAZ2uTtVV3oXXugaCb0ICBys=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NJOOib57A13Ym0JqkT8Hosxt5UNKpSbc+a4KrMSmaJxscsKwiiO9U7ZOTSkMb4sDegEa7jDazh6XFe+Y6q0NSQbNcJGMwg5ZStIfCDUrJCX3b9s8wUbddDSgE7yXJhgdLtS9uoumr0sgF5eXM1q+sgn2kL7wptRdRBBWmO2urLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b77k7pW/; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IVHW3H+K"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n2XHUVrL62zWrmJ5MPttR8Zu0hhuDidyoTve8C5uMoFTKGxfooV8rCzBg+nT6lrx7Y+6Arehq1Dvnp/P4tvb+rBhCL8TCFrKeslhalHwMLxcfpd/ddUc8ffzUqUVemse/Xz93+ziCfJBBuMuuMZh08tEJF477t5FGBjiYEW+Js29Mn9McFhwvmDlso2SfNc64tkOB72AhwKYEDuB5IE8h4T3C5+2AtCCAUY1b3N+2ald/IWLRBG5ZXXPC6/EGsgSI31icP8gKwECol+HHeU8REmh876GcX+3dCY3JGXtzI3DIRiZXBIpb9gLdvp+GRQYQds+t4Slf13zjKGGdyBWVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+cuFSVmfnzvVwVCCSRlrPPTEj9FlaSVjyYWOcq7irM4=;
- b=ISLoeh6ZYFCKBlO3RmhwZauV4RRqptraInVMUT4jaT2lZxVwUcm+1CKm1fEbGOioC8uH25509Tpvhn/k6dMi95HkY+7aEe7Q/e2R5Rz5BahsTDd0h2/uLPJr+JqG6hfSRwroi1JOYZQH0tjaqz1iRIBZ/N0Idf6UxZ0mxt4XFQjMl9wnSXNniIgu2nwbO67g4bzM5AK0NjsebVkzzc8Ad8Qn9x+Uwe4vNLAI04DfGVe2ICh5XZroC928fpJ/BuR04dfPdI7lZljCUaudLuBBbXwPoqQiV1KAySLHY3hTDoNhjPIAKXeg7dLAbnpwXizOWyUF3Zafkkr6j8GlMjycTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+cuFSVmfnzvVwVCCSRlrPPTEj9FlaSVjyYWOcq7irM4=;
- b=IVHW3H+K2UhB8oy/kdxsafWDxbx/FHwXlWYS6ZCiA/6iQT2cv1TorBhAP0W2r+GhvBeRr1qkGM+lMOrSCS/OX5G9eqjI5GO0clq3K8Zk/mzSrv9detqFAwfNXYE+S/SNDn6jtiQhQPAMDJiJg/KZrZcgGl3nYvLuAfyv5gvjVD4=
-Received: from PH8P223CA0006.NAMP223.PROD.OUTLOOK.COM (2603:10b6:510:2db::12)
- by AT6PR12MB255547.namprd12.prod.outlook.com (2603:10b6:170:115::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Fri, 16 Oct
- 2026 21:55:03 +0000
-Received: from PH7PEPF00000007.namprd04.prod.outlook.com
- (2603:10b6:510:2db:cafe::a8) by PH8P223CA0006.outlook.office365.com
- (2603:10b6:510:2db::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Fri, 16
- Oct 2026 21:55:03 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- PH7PEPF00000007.mail.protection.outlook.com (10.167.243.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 21:55:03 +0000
-Received: from speedway8455host.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 16 Oct
- 2026 16:54:52 -0500
-From: "Pratik R. Sampat" <prsampat@amd.com>
-To: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
-	<thomas.lendacky@amd.com>, <kim.phillips@amd.com>, <nikunj@amd.com>,
-	<michael.roth@amd.com>, <ashish.kalra@amd.com>, <prsampat@amd.com>
-Subject: [Patch v3 4/4] x86/hyperv: Add guest support for Enhanced SMT Protection
-Date: Fri, 16 Oct 2026 21:54:07 +0000
-Message-ID: <32abec5508bb39420b713e3960233979a520e4e9.1792184487.git.prsampat@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1792184487.git.prsampat@amd.com>
-References: <cover.1792184487.git.prsampat@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b77k7pW/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792188922; x=1823724922;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=XBH2zFV2qQau7y1HpoVnAZ2uTtVV3oXXugaCb0ICBys=;
+  b=b77k7pW/vfkynvl9nw5jJtY8fWZneaSmEaR5IRJA3lfIWZRaiOxMRqu1
+   gDXe9NMJntQO1Xh4uWUX6y7/kQfhQQmWwSU2VWI17BnkQflY6FZAbfrsA
+   LuCXR05xyueW7p40w3SAnsyBunhZC4aEDkAEZlwHKd7vCAqWPgUpoYPWo
+   /2No/fO+PBneE6UiiPtW7VRChejcalPp+ghG+e/dtkN98IuHQsaXAP2Wm
+   qB8ICO4VzLctOYC6IVeKQuVhiIV6QzKF37xA4FjVMomvt5tC+PDvk+8js
+   mIf9R1JPqIYFcKImq+nEgc093S12YPrbIIhzlKtXLV/6LXdQDg5q4q389
+   w==;
+X-CSE-ConnectionGUID: 9NzNUjUNTFutAw34u0mLWg==
+X-CSE-MsgGUID: xyyJvPQGSOGKUnBh5rNSDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="879222"
+X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
+   d="scan'208";a="879222"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 15:15:21 -0700
+X-CSE-ConnectionGUID: 0bWT7Z2dRoanaf4fnPq3kw==
+X-CSE-MsgGUID: +oW3YqkZQ0WOa0osJsLyCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
+   d="scan'208";a="3881636"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 15:15:17 -0700
+Message-ID: <e1553e03-7ca8-4507-b608-d9d663759c1f@linux.intel.com>
+Date: Sat, 17 Oct 2026 06:15:15 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PEPF00000007:EE_|AT6PR12MB255547:EE_
-X-MS-Office365-Filtering-Correlation-Id: b2296f63-0fc5-4714-cc16-08df2bd021d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|1800799024|23010399003|10067099003|18002099003|22082099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	uMa609eOENguS2X8e/eAQCN2lzKYN31uF1uf2wuqb7SSQAliCKWlUjynIscDnk6xTnM3J4LdZWV4H443Y17vmGUWF1KaB6zNGA0JpSNw9CjNRb1rTqM/sb2g1kXRplFc3ivcabfi9ipVAZADc8G9a8impzS6UmXCs0wmAKa2sLvMgzvo1WwNgQNe9qnIQbsH3w/JuQUd/3FDvB9dFGvs2n9U8ALOxS97irdDvOPU+2DU5qNsnL8jzjkJ3rH4ddpHJJZh1Ro+Q+5VfjHmC5fO36CWS28YP1GxDt0H2O69IQABgR4JUEhN5hKzeou3kvqG5n7ujEQCH+YcXl8bN/mpmQd8QUQmPLVSsjS/yI22Oam+f8UESQ4LkyBUXAs76f6GTeg4+C5PPeuyPFsNTkoi92+tcbOrKuJP0SrnWl/h9XJtg/cHenO0jIpAqPbZvyHP/XhouOT00OzBIrjOG7jZ46XCDk86mcbK/Rkak2Xa4elxLtposyAKWmJayZOo8UeeOn9DoDBTNatZihjZEghwFrxXveYN5+dYtPrGVpeiWDH9poPaLeeZpccodZpfhECvCo4N3Sas9tZJmKHzq4UBb+Nvj14LELPs4Cx304K2jQra4pPvlYbmExQ+2x2LK+a21I9GmNsT0iFs/+HMb044kN4d1zJU5lmwnPApZwRZPIegKgbZDJarmVWRUoap+JqDXOjSXDG/OdyCyygy9bMR5Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(1800799024)(23010399003)(10067099003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	S8d4I2RiTOAmtvCwRNqlLTKymq5SKqsL1eAUyCqLuWOc3BmcAO9DiZxbsblr4cZrUd4FVFUW2I7/fbvTVfg4LZf1D7uw1vgBx0qQo9TYg0T0S7Ojvttm5OoAIh41WS39iz8PZrFH4iWrxpuhYdIjIPYKGJBdw9fE3VXO0gQZCUgNnupTlse65NfWgi9FJV03ZGTWJgegbGwsNhCoGkTtrZtVJIzlAK89dANO7JR9wczaHFToh6kSmrP5PRnidgjYtfp71E6Qk9W4/OHzk0JRRYtTVFVs8LhxjwRjoqK0OCZeN9ob/TdyMMH7/2PA2Zqjdm8EF6g6KcPOUxfrgRLHo88TGTAka3EvaACeJWnWxTLK0XSkCqHroGA5cKrOJXcUcsuYKSl8TwUPMVsew/jcm+292JqHAqKiduQjRioirR/c5nBtEaKdodNokJ5h0eDv
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 21:55:03.0151
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2296f63-0fc5-4714-cc16-08df2bd021d7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH7PEPF00000007.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AT6PR12MB255547
+User-Agent: Mozilla Thunderbird
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v5 1/5] KVM: TDX: Check unsupported CPUID bits against the
+ TDX module's subleaf
+To: Sean Christopherson <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+ dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
+ nik.borisov@suse.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ xiaoyao.li@intel.com, chao.gao@intel.com, tony.lindgren@linux.intel.com,
+ kishen.maloor@intel.com, dedekind1@gmail.com, adrian.hunter@intel.com
+References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
+ <20261016091422.3182216-2-binbin.wu@linux.intel.com>
+ <atJB7kDzKsvzrMau@google.com>
+Content-Language: en-US
+In-Reply-To: <atJB7kDzKsvzrMau@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add corresponding hyperv support for Enhanced SMT protection. A fully
-enlightened SEV-SNP guest on Hyper-V builds the VMSA itself when
-bringing up an AP, so populate both fields there, before the page is
-turned into a VMSA and while it is still writable.
+On 10/16/2026 11:25 PM, Sean Christopherson wrote:
+> On Fri, Oct 16, 2026, Binbin Wu wrote:
+>> Don't reject the mismatch outright, as the ABI allows userspace to provide
+>> an arbitrary index when KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared.  It's
+>> userspace's responsibility to provide the intended entries; KVM only needs
+>> to ensure that the values it validates are the values it applies.
+>>
+>> Fixes: 6d415778f106 ("KVM: TDX: Disable support for TSX and WAITPKG")
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Closes: https://lore.kernel.org/kvm/20260604024927.E22311F00893@smtp.kernel.org
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> ---
+>> v5:
+>> - Split out from "KVM: TDX: Validate userspace CPUID input for
+>>   KVM_TDX_INIT_VM" as a standalone fix.  Sashiko reported the issue
+>>   against the TDX CPUID validation patch, but it also applies to the
+>>   existing code, so split it out to allow backporting to stable
+>>   independently of the rest of the series.
+>> - Check the userspace values against the subleaf reported by the TDX
+>>   module instead of rejecting the request when there is a mismatch.
+>>
+>>   A simpler alternative would be to require a zero index when
+>>   KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared, but that would be an ABI
+>>   change.
+> 
+> The even simpler change is to reject the incoming CPUID if userspace doesn't set
+> KVM_CPUID_FLAG_SIGNIFCANT_INDEX as expected.  Yes, that's an ABI change.  No, we
+> don't care.  The rule isn't "never change the ABI", it's "don't break userspace",
+> and there's basically zero chance a TDX guest can function properly if userspace
+> doesn't set KVM_CPUID_FLAG_SIGNIFCANT_INDEX as appropriate.
+> 
+> diff --git arch/x86/kvm/vmx/tdx.c arch/x86/kvm/vmx/tdx.c
+> index 75a86d64892a..7e0d81066420 100644
+> --- arch/x86/kvm/vmx/tdx.c
+> +++ arch/x86/kvm/vmx/tdx.c
+> @@ -151,8 +151,12 @@ static void tdx_clear_unsupported_cpuid(struct kvm_cpuid_entry2 *entry)
+>                 clear_waitpkg(entry);
+>  }
+>  
+> -static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
+> +static bool tdx_is_unsupported_cpuid_entry(const struct kvm_cpuid_entry2 *entry)
+>  {
+> +       if (cpuid_function_is_indexed(entry->function) !=
+> +           !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX))
+> +               return true;
+> +
+>         return has_tsx(entry) || has_waitpkg(entry);
+>  }
+>  
+> @@ -2386,7 +2390,7 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
+>                 if (!entry)
+>                         continue;
+>  
+> -               if (tdx_unsupported_cpuid(entry))
+> +               if (tdx_is_unsupported_cpuid_entry(entry))
+>                         return -EINVAL;
+>  
+>                 copy_cnt++;
+> 
+> Can you test the attached patches?  If they boot TDX with QEMU, I'll go ahead
+> and post.
 
-Similar to KVM, fully set the sibling mask so that all threads of the
-same guest trust each other.
+Patch 3 "KVM: TDX: Don't zero non-significant CPUID entry indices" breaks QEMU.
 
-Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
----
-v2..v3: No changes
+QEMU uses zero as index for cpuid entries when index is not significant.
+And in QEMU, the lookup function doesn't consult the flags at all.
 
-v1..v2: New patch
----
- arch/x86/hyperv/ivm.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+struct kvm_cpuid_entry2 *cpuid_find_entry(struct kvm_cpuid2 *cpuid,
+                                          uint32_t function,
+                                          uint32_t index)
+{
+    int i;
+    for (i = 0; i < cpuid->nent; ++i) {
+        if (cpuid->entries[i].function == function &&
+            cpuid->entries[i].index == index) {
+            return &cpuid->entries[i];
+        }
+    }
+    /* not found: */
+    return NULL;
+}
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 2ce4dfe53472..40dd252f333a 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -347,6 +347,17 @@ int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip, unsigned int cpu)
- 	vmsa->vmpl = 0;
- 	vmsa->sev_features = sev_status >> 2;
- 
-+	if (sev_status & MSR_AMD64_SNP_ESMT_PROT) {
-+		vmsa->vcpu_id = apic_id;
-+		/*
-+		 * The mask fully set puts every vCPU in one group, so any two
-+		 * of them may be co-resident. A legal ESMTP sibling must
-+		 * also match on ASID, so the sibling of a vCPU in guest mode is
-+		 * always either another vCPU of this same guest or idle.
-+		 */
-+		vmsa->vcpu_sibling_mask = U32_MAX;
-+	}
-+
- 	ret = snp_set_vmsa(vmsa, true);
- 	if (ret) {
- 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
--- 
-2.43.0
+If KVM doesn't zero the index for the non-significant, QEMU cannot find
+any entry for non-significant entries returned by KVM_TDX_CAPABILITIES.
 
+And 0x80000008 is used to pass GPAW, and KVM_TDX_INIT_VM fails when QEMU
+doesn't pass it.
+
+After dropping patch 3, QEMU can boot TD.
+Also our internal TDX CI cases passed.
