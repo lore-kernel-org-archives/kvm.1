@@ -1,208 +1,155 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044535013AE;
-	Fri, 16 Oct 2026 16:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A484335E93C
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 16:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792169114; cv=none; b=PITYFoHlY+Ktr0xrNCwXOaDNyWIA3GH94QSQRJ+zqTW6gQW+6yOBkV26L1B9PiXFK5YIcp0GlGkjbbUaKLq7cLfQq+iR+EM7F+UM4aQv862gfYF/59+UB6+JgiivVyDKOTWuHMc0/pTmMvVUXQgNp9JLwNsuu5RNZWV6TL8Cd/c=
+	t=1792169424; cv=none; b=PbrybZSOLfB07GKAgLdeGADsEp3dfxnFwDGo0GOhV/s9X8xZ5aqaeOZ5EQESNA/YGCa99joRA8kx53jL37PUy8NSVVftnTufZiOmZQWq7G4fmPETkoW66/Ibq3K2gnUg95/jYvETWCnFkxJToZXTyPBPZxnRtVEzESSpLrEirYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792169114; c=relaxed/simple;
-	bh=9aGuFzSjqbFXQeIaakwZkg7S4QQyzAWqwcUppOkOEvw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qhnZ+Q0iwQfxDmjVz2TUPCh6ZNmNA/V0wnvUxWgC6vDEI0Eug6ALmve68qENqcyC4YuL/kpOScQBE1DJdIDiNhkb2EvhK4OI0wL1Bx+6s3ronZU2tHcaFulv0BFodNKhdqA48Mj2YjISH6QSrM9aaHe7fucvuyO6r5No/XID9XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=K1lRUsCP; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1792169424; c=relaxed/simple;
+	bh=dKGK9QzfUtkdrx3e2Lna8zFW8U+rke7oYbRAphr71y0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JbbPxR+V/oedQRi72zkLdfLuRljluR8XFEex7pmAKU3x01XkQscJdd85q1QZsBxrCtC7rbrfitWPgqtzREugBM3kwtJnKt2kMAKW3QMILkjeXxEbNuxhyDhV58ZJBdWe6i2KOZ7mImEj1OGOTwy7IOfoo3YvAEA+j2sdKPc6kY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GVqpULF6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gLiO+VYV; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="K1lRUsCP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=9aGuFzSjqbFXQeIaakwZkg7S4QQyzAWqwcUppOkOEvw=; b=K1lRUsCP6VhHlnLeT82tqeTG2D
-	Yy1J9iORsQ54DSJ6vQRP09joeaoB5Tk5kEN+h3K6Uu7lvtF7MdNCnPpJLAfZTBmqxU7aWLV76Owi8
-	Ix9rN93gDZkTImEYQFVbHEMi91xV47z2BZ2zjesbngj048BUk4YpW+X8gJZBwkWSdfIqO2surzfzP
-	pU26HOeAY2xzDffI3uzGPM0tWKjzaaknONfJKSpHjIWBZ7F5FwIc1V/0vPPvdWVgtCy35Wc23OGMn
-	vtu9MeWBVOmidzbqk47ayFMQTjp9PDEGmJtLbMmhbVfwMXCwsQrzB1CI2mIF5NT8kCDzNfWDed+j+
-	twx+L6Pg==;
-Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-cache-142.e-maa3.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHl3M-00000005MIr-1xWl;
-	Fri, 16 Oct 2026 16:45:08 +0000
-Message-ID: <9ad14b040fa073f982a2a967b72175232e1d7aad.camel@infradead.org>
-Subject: Re: [PATCH v3 05/11] KVM: x86/xen: Retry event channel delivery
- which races a memslot update
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Date: Fri, 16 Oct 2026 17:45:08 +0100
-In-Reply-To: <sashiko-outbox-174536@kernel.org>
-References: <20261016145646.579369-1-dwmw2@infradead.org>
-	 <20261016145646.579369-6-dwmw2@infradead.org>
-	 <sashiko-outbox-174536@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-uqGj/n6scU74aC6zCwGg"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GVqpULF6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gLiO+VYV"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C749A7A00DE
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:50:20 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 16 Oct 2026 12:50:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792169420;
+	 x=1792255820; bh=xgeXQ7QI49qUYlE81VNicEWZ0NBkP0UQ4uYQY/eXcg0=; b=
+	GVqpULF6XfeuZGeCHyZcAi3Ds+T/ouQSnDoYbWb/o+nq49tcVDCWVZIbzcaLR7c4
+	A6tZ6ckcv76wdaim6+Xy0XqJFzN7diMkelRBTLWUtpywcKkqkZ9+X40cLUNCPwYV
+	BeSKaXP/axkEeXSmAEquyhlQE8boDlqf9QJyZhvgGk+9rKymNbRdvGE+okrAmt3U
+	2o7t63NHIK+7ar9dqVUBfm53mMbgUmec4GJ6zN8sQCZO3mI+lYX5SK2/kFMfdSrq
+	zHwdphlTJ2K+Cwm0fYFx0G6Xo5NGQUx0SQYe3PmDz0f3MD9XgA0B5Pu7oMvVWF91
+	5cdTreJ3GaL3e/Jkqh29Og==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792169420; x=
+	1792255820; bh=xgeXQ7QI49qUYlE81VNicEWZ0NBkP0UQ4uYQY/eXcg0=; b=g
+	LiO+VYVOQjz3MC27kNoumQKbB7aM+wIf0fUXWRlpY0g8TXIZVsR7FYkFk0A0tb7i
+	ba681COYXYruwAmAZg7OwmNtiu9CMsoYLTDz4yzWAS7BY9GHAvAZhH8/o8N/jnLJ
+	YlDtHn7ZpfkmyavHOh1CcI2mOrWS58NAveJKdZmqhinm9KeLucAwSyjXTv2fSvwg
+	k1bqSJQS8TjuiUr25iSpnoRHLkPN6KG76uj5TUJQ8z9yPdTYqfMe6joS9OHa0ujc
+	Jm5FnOf2j/vGN5gOPhFUMFYfNj7GExGQxikEpGcd7zwb8MUUA9lsnA2Olio2jTc3
+	ORJ3nK6Sqn1c4AKsY7xxA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792169420; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:lP10BbLRGEnMJ52CvxIMDzOwPgwPZZLF4ASNqZKMbBWwje5
+	CEhMY1h4aHRNsvlQ7x2O9yPgLKJb4rmEDslbTsnMoeFIx+5VPQzKZvTasCzODC//
+	HG+inoqNgDJXXxLePstvrYnjqAnOcx8GkgnypWs+c5rlwOiuUejzGHdMhoRJnx0L
+	p2BclqvqJlAM/a8aBDvdXMn3x7aWKMXfj9QshKg3Pw9SL4MVFICyImjdUnh/doSK
+	AU2FqAUehhIWn3RNmN6V1PUq24cpUr4jMIHcfLK+sK+JPbm5ZwFzIMpkoOnAz2Ql
+	qC6sAHTy+K32qO4OzRG/Usa3Y/NmCf/T3SIrN5w==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:aY80aroA/i0x89lPnAKZZ2eGbOpuWioNrDLlXsvQzFo=:dKGK9QzfUtkdrx3e2Lna8zFW8U+rke7oYbRAphr71y0=;
+X-ME-Sender: <xms:zFXSatIp5PVs_pCkx7ttSi6y4mLQHwVqriryiwOzq0G5uTfhUHeL5w>
+    <xme:zFXSavLxUjK-Y7C0hdBYuxqOmeBRdDNOyHRVs4k9nOOA2G2LRSl0iLvF3Jd-f5efx
+    VcDowkTlAr-D0hoFAMLATbtaLw8R3AhR8rMzDGsv5Fz95IYnKXks0VV>
+X-ME-Received: <xmr:zFXSagjZiG07CKYCezwrlFfa8v-dtsE_tWcCEquZlUqgG3aw0390PbP4VT6Dng>
+X-ME-Proxy-Cause: dmFkZTEb/AYso0mXeMN4uPzOI2HzYX85Xp44M58HlE7sv9GJphQzlpRb+Ar10TokQ47zK4
+    dY0cfzNGkwd8kWFiRBSSQ+b+oNwUN1gQXBPe5b3ILFvYZlUMaolS58TB7gOcQRvpP2FzdZ
+    qKC1HPKN7I5J14UK8Mgbuq2PT/GHr4WDq4YgduKqJ8YIdwtlNMWymYO8v0sS5q+c5UMNcQ
+    lpEKOpocYGqf6tZBPaVRyshIV3v1A6/9s/yctJvVTEInjlZHqg/YsPrmcZGJhi++IIAJua
+    FYxxMMlLtanbckLOFNFWctRHThoGvPZyTxr3fQPBwMxH9zCXuaP2FWVl8/OocESshLaFJN
+    OorZwzEm+hMNMG/OA5H/zGUyF+p1A4e2KEFrGEVscJ3CAK+zZLidBQMq/6UuNbC2YIDuUs
+    k5JAf3Sy2JgoQQCgmcIoxHCmBeqptu3oCfY5MyFtTghWF+T4ytOGztZ/I36sXdjV8qvHuX
+    wMxZo3Wu37hIdOZ6km+BorJ5OGNex+E2TgaQktUazq7zjhZ/WadFP9gHVzNU0SWXmmi2Dh
+    K7I2474itoDok6xv8/I+fbwbQDX7T8PbIjVqQYaTytdosuUgdbE6fky3iTGwlK3BcWQ0eA
+    u12aMyzmSTFN01Pk6iKI5Y90yL3ucwJdv0Q6k69TSl8KSPX2w5/5sKZBGaAg
+X-ME-Proxy: <xmx:zFXSahOpE1yTIR9S1IAfAs1H7om6VrIbmbX3Mg-MehPDawhsmb-s_Q>
+    <xmx:zFXSajrRRL-Ex5AQaDagDX4hEdD3bwru8UWHwi3G-zAbe4CM2ELMlQ>
+    <xmx:zFXSar63N9SIHYtiZ9z1e7hxQhOIKsOEm2jjXQQjeZlN6RCILhW9OA>
+    <xmx:zFXSapgzRIlQKv8Q5XWSZTjHVWYLN46k6sSUvyLXjU1myeBa3p3K3Q>
+    <xmx:zFXSap4OV6nFhFBlJ9S2uaAg6I0v-7FYfn9GbeQ9jR3AVtkO3xlOgGkL>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 16 Oct 2026 12:50:19 -0400 (EDT)
+Date: Fri, 16 Oct 2026 10:50:14 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: kvm@vger.kernel.org, =?UTF-8?B?TWljaGHFgg==?= Winiarski
+ <michal.winiarski@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas
+ <yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>, Kevin
+ Tian <kevin.tian@intel.com>, intel-xe@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio/xe: Add CRI and NVL device IDs
+Message-ID: <20261016105014.672b05ac@shazbot.org>
+In-Reply-To: <20261014131849.157593-2-satyanarayana.k.v.p@intel.com>
+References: <20261014131849.157593-2-satyanarayana.k.v.p@intel.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-uqGj/n6scU74aC6zCwGg
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-10-16 at 15:11 +0000, sashiko-bot@kernel.org wrote:
-> Does this early return fail to set a KVM request to abort guest entry?
->=20
-> When kvm_xen_set_evtchn() returns -EAGAIN due to a memslot update race,
-> returning here leaves timer_pending > 0 but KVM's entry path
-> (vcpu_enter_guest) will see no pending requests or injectable interrupts.
->=20
-> Because the host hrtimer has already expired and will not restart, could =
-this
-> cause the vCPU to enter the guest without the timer interrupt and run
-> indefinitely until an unrelated VM-exit occurs?
->=20
-> For context, this caller is at the end of the vcpu_run() loop:
->=20
-> arch/x86/kvm/x86.c:vcpu_run() {
-> =C2=A0=C2=A0=C2=A0 ...
-> =C2=A0=C2=A0=C2=A0 if (kvm_cpu_has_pending_timer(vcpu))
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kvm_inject_pending_timer_irqs(=
-vcpu);
-> =C2=A0=C2=A0=C2=A0 ...
-> }
->=20
-> If injection fails here without setting a request like
-> kvm_make_request(KVM_REQ_EVENT, vcpu), won't the next loop iteration call
-> vcpu_enter_guest() and enter the guest without scheduling an immediate re=
-try?
+On Wed, 14 Oct 2026 18:48:50 +0530
+Satyanarayana K V P <satyanarayana.k.v.p@intel.com> wrote:
 
-Ick, yes. I never did like the way that *timers* were handled
-differently from *events*. I thought I'd tried to clean that up
-recently and handle them all the same... not sure what happened to
-that. In the meantime yes, that should raise KVM_REQ_UNBLOCK on the
-failure path to trigger another bounce through vcpu_run().=20
+> Crescent Island (CRI), Nova Lake-S (NVL-S) and Nova Lake-P (NVL-P)
+> support SR-IOV in the Xe driver. Add their PCI IDs to the xe-vfio-pci
+> device table, so that the generated vfio_pci module aliases allow
+> userspace to select this variant driver for their VFs.
+>=20
+> Also reordered the table entries.
+>=20
+> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> Cc: Micha=C5=82 Winiarski <michal.winiarski@intel.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Yishai Hadas <yishaih@nvidia.com>
+> Cc: Shameer Kolothum <skolothumtho@nvidia.com>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Cc: Alex Williamson <alex@shazbot.org>
+> Cc: kvm@vger.kernel.org
+> Cc: intel-xe@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  drivers/vfio/pci/xe/main.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
+> index cbff5af385ef..8f1237751d51 100644
+> --- a/drivers/vfio/pci/xe/main.c
+> +++ b/drivers/vfio/pci/xe/main.c
+> @@ -574,9 +574,12 @@ static void xe_vfio_pci_remove(struct pci_dev *pdev)
+>  }
+> =20
+>  static const struct pci_device_id xe_vfio_pci_table[] =3D {
+> +	INTEL_BMG_IDS(INTEL_PCI_VFIO_DEVICE),
+> +	INTEL_CRI_IDS(INTEL_PCI_VFIO_DEVICE),
+> +	INTEL_NVLS_IDS(INTEL_PCI_VFIO_DEVICE),
+> +	INTEL_NVLP_IDS(INTEL_PCI_VFIO_DEVICE),
+>  	INTEL_PTL_IDS(INTEL_PCI_VFIO_DEVICE),
+>  	INTEL_WCL_IDS(INTEL_PCI_VFIO_DEVICE),
+> -	INTEL_BMG_IDS(INTEL_PCI_VFIO_DEVICE),
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(pci, xe_vfio_pci_table);
 
---=-uqGj/n6scU74aC6zCwGg
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Applied to vfio next branch for v7.4.  Thanks,
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-R1eJQuWZbxdXF9Ne+JaAcHsAAAAAAAA=
-
-
---=-uqGj/n6scU74aC6zCwGg--
+Alex
