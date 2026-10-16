@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E8F4EBAD0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C3B4EBACB;
 	Fri, 16 Oct 2026 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792162620; cv=none; b=bzkjL5jFq5bhvPgpgDKwXQEpi/OiBKDbue2nqUhPymx+g5PJyvdX9VaTkDyyS9qnbBIoeHyf6g1RkgMVctUFXVa3UB7ZSIZ3hOo1lDq3AOWYT5DrvI1KW3ln5hvNFYfahYg4HoFce732Kz+VWuHPGZp0De+BOhhQ53wKOssfr0g=
+	t=1792162620; cv=none; b=IgT6iWqKnTQ5bz524tg95huQ/S1qWXSoa8iOY+SyRkqKYwicgXJI5QkSfdX5SaHfJIV1z4zwSp3zWFi5eyaIRdDcrazAzVAG3DqW2id3iyZyU1oNuSkxw9Vrn/ldgq5wzBDwR+Kzn5F9hr8dkaqB/r2ovTvJ7fKdOwPnGYzXnqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792162620; c=relaxed/simple;
-	bh=jqsueGaiqY/v1Q9rSeBsNmWSdKhneknu82uJHwEK9NY=;
+	bh=tbE8vmQ4rcYAMYfq3TrIS4Ij0cFvRQcxbjwTcfo2itM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7K8nFuZNJyw0aK09EzCSImLdwQ8wIbsDCyavExOnt5+5ycQoSUPHHT788bQbSjuGgSSqPIAcqpkJr71K3GxhknK6YWwHqkrHcRvREOkZhxjM85bXb+GAD8fgdSEPdrzh4lBEuyKOIq8FkTstCKR1s8ktmdG0v7zAB6F3UrC66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WVJQUEq6; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version:Content-Type; b=XoAIPAzy1cDXcf4psWTzz0aRXtmuaBBrM2EK6N7gfcHp7z6Bo0G6IIjtEU0KntxIJ6D60khp1Wgd3kCCsC5lZ3jUKkLyDDRrolUlFGp18nVHy7YFrLVtOy2pEpxX+YymHxmVjY+VkvblIh7tLAtqiFSIuUQSqPKLiepx2WfTWxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JyQg8mOd; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WVJQUEq6"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JyQg8mOd"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=bjnkFrD5nKcgJn0NoCN01Nlxtzt8gKrUyJe4SHcCb8k=; b=WVJQUEq6/gxWk4uhgRIAPk+bY5
-	A7yPKWc+vSbi4n9MeS0J5ViE+DQOapIPWQ/rKfsinGTbMLp3Jk8M6+e7tV7isWStBlnJ5IIfhQspw
-	LeOu6cIbi0KK1dGdvparZ8aK3PAHyl/iJdStR2p1Qce7Hkdt1b/HYSOEiOM5MJhvnLwUgTqkVoL8h
-	BCWW37+M1v5hLafN7qUzVoPJbZXPsHiVjD94JK36CtxMd5ly4yvWzEUShF4IdFxWDwEbj06Sn8o+i
-	PGqsM/y6cs/ns8g1WFAg9nsEpDQQ4OLyAEOQ4M1PAXjsOocms9z58ljrI53aI+nN4f+XisPohMuZo
-	pydKZ+aA==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=/FFWQunDoZLdfyayX2ver/DNdvcc4CrsmeVbtNvpIEQ=; b=JyQg8mOdWoC66df3sAcfPkPUMH
+	MkyNiWlK116IIca/2oBqd2OU813TYdRZWeJn15CVxG4O5B9TjQMDzcA3BtmDXR3RfKcpB5sQ1iHWn
+	O4SC05HCQueS6RxTB7+xBpXZXnIIiSEUbLT4JuXWcUQigpAu0W6StA6RgcAL3oHTUGXwaRJ+jiBvR
+	pg0cEsLlXoO5OWicRtHL46HbQSR51XbdiPY44pRe+eYRQUlW/LkJKImkoDXYYigK0hAL6knwjR0vU
+	c0HWogQHi/eAEy8vjIIMyfxokXF9vI87k8DmDXs5SY3AodNgyMWAa4M9XnCIWe/ueXKB335PcnFkt
+	75TuJ56w==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMX-00000001dOc-1wpb;
+	id 1xHjMX-00000001dOb-1wpo;
 	Fri, 16 Oct 2026 14:56:49 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMU-00000002QjI-3m3s;
+	id 1xHjMU-00000002Qj6-37Fw;
 	Fri, 16 Oct 2026 15:56:46 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -43,9 +43,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 08/11] KVM: x86/xen: Don't dirty track "vCPU info" page
-Date: Fri, 16 Oct 2026 15:56:42 +0100
-Message-ID: <20261016145646.579369-9-dwmw2@infradead.org>
+Subject: [PATCH v3 05/11] KVM: x86/xen: Retry event channel delivery which races a memslot update
+Date: Fri, 16 Oct 2026 15:56:39 +0100
+Message-ID: <20261016145646.579369-6-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261016145646.579369-1-dwmw2@infradead.org>
 References: <20261016145646.579369-1-dwmw2@infradead.org>
@@ -55,76 +55,196 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Sean Christopherson <seanjc@google.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Give the Xen per-vCPU info page the same treatment as the per-VM shared
-info page, and never mark it dirty, as KVM clearly relies on userspace to
-assume the page is always dirty.  While the page is marked dirty on writes
-via kvm_xen_inject_pending_events(), it's not marked dirty when written by
-__kvm_xen_set_evtchn_fast().
+Event channel delivery now returns -EAGAIN when it races a memslot
+update. It always failed; now the failure is distinguishable, and
+instead of dropping the event each caller reacts according to its
+context:
 
-Furthermore, as was the case with the shared info page, writes in the event
-channel fastpath may be done without an active vCPU, e.g. when called via
-timer callback or irqfd injection.  I.e. attempting to fix the fastpath
-would run afoul of the same issue that was fixed by
-commit 55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info
-not to mark page dirty").
+ - kvm_xen_hvm_evtchn_send(): the KVM_XEN_HVM_EVTCHN_SEND ioctl.
+   May sleep: passes wait == true, and kvm_gpc_refresh() rides the
+   update out.
 
-This also covers the pvclock writes kvm_guest_time_update() makes
-through the same cache; userspace assuming the page is always dirty
-covers those equally.
+ - evtchn_set_fn(): irqfd routing, from the irqfd workqueue after
+   the atomic fast path failed. May also wait.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[dwmw2: also update the KVM_GET_DIRTY_LOG note in api.rst, which
- named only the shared_info page]
+ - kvm_xen_hcall_evtchn_send(): the guest's own EVTCHNOP_send, in
+   vcpu_run's exit handling under the vCPU's kvm->srcu read section
+   — the very reader the memslot update is waiting out, so waiting
+   there deadlocks, and any guest can trigger it. Instead, leave the
+   hypercall uncompleted, with RIP not advanced, and the guest
+   re-executes it; each attempt cycles the srcu read section on the
+   way back in, letting the update complete. This is how Xen itself
+   restarts preempted hypercalls, and the pending delivery is pure
+   guest state, so there is nothing extra to migrate.
+
+ - kvm_xen_inject_timer_irqs(): the timer retry added by the
+   previous commit — timer_pending *is* its pending state, so it
+   keeps that and retries on the next entry pass. The entry pass
+   holds the vCPU's kvm->srcu, so it may not wait. The
+   KVM_XEN_VCPU_GET_ATTR timer flush doesn't need to wait: an
+   undelivered event is reported as still owed in the snapshot.
+
+Reported-by: sashiko-bot@kernel.org
+Closes: https://lore.kernel.org/all/20260920215341.5ECE91F000FF@smtp.kernel.org
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: LLM
 ---
- Documentation/virt/kvm/api.rst | 5 +++--
- arch/x86/kvm/xen.c             | 3 +--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/xen.c | 58 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 39 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index e0430cc750c9..b24aac070b11 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -385,8 +385,9 @@ The bits in the dirty bitmap are cleared before the ioctl returns, unless
- KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2 is enabled.  For more information,
- see the description of the capability.
- 
--Note that the Xen shared_info page, if configured, shall always be assumed
--to be dirty. KVM will not explicitly mark it such.
-+Note that the Xen shared_info page and vcpu_info area, if configured,
-+shall always be assumed to be dirty. KVM will not explicitly mark them
-+such.
- 
- 
- 4.10 KVM_RUN
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 418acf0b02e1..82adc5741f8d 100644
+index 0ef646cf3990..6b7532b0e26a 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -756,7 +756,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
- 	}
+@@ -30,9 +30,10 @@
+ #include "cpuid.h"
+ #include "trace.h"
  
--	kvm_gpc_mark_dirty_in_slot(gpc);
- 	read_unlock_irqrestore(&gpc->lock, flags);
+-static int kvm_xen_set_evtchn(struct kvm_xen_evtchn *xe, struct kvm *kvm);
++static int kvm_xen_set_evtchn(struct kvm_xen_evtchn *xe, struct kvm *kvm,
++			      bool wait);
+ static int kvm_xen_setattr_evtchn(struct kvm *kvm, struct kvm_xen_hvm_attr *data);
+-static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r);
++static int kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r);
  
- 	/* For the per-vCPU lapic vector, deliver it as MSI. */
-@@ -2524,7 +2523,7 @@ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
+ DEFINE_STATIC_KEY_DEFERRED_FALSE(kvm_xen_enabled, HZ);
  
- 	kvm_gpc_init(&vcpu->arch.xen.runstate_cache, vcpu->kvm);
- 	kvm_gpc_init(&vcpu->arch.xen.runstate2_cache, vcpu->kvm);
--	kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm);
-+	__kvm_gpc_init(&vcpu->arch.xen.vcpu_info_cache, vcpu->kvm, true);
- 	kvm_gpc_init(&vcpu->arch.xen.vcpu_time_info_cache, vcpu->kvm);
+@@ -135,7 +136,7 @@ void kvm_xen_inject_timer_irqs(struct kvm_vcpu *vcpu)
+ 		e.port = vcpu->arch.xen.timer_virq;
+ 		e.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
+ 
+-		rc = kvm_xen_set_evtchn(&e, vcpu->kvm);
++		rc = kvm_xen_set_evtchn(&e, vcpu->kvm, false);
+ 
+ 		/*
+ 		 * Leave timer_pending set if the memslot is being updated
+@@ -1868,8 +1869,21 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+ 		}
+ 		break;
+ 	case __HYPERVISOR_event_channel_op:
+-		if (params[0] == EVTCHNOP_send)
+-			handled = kvm_xen_hcall_evtchn_send(vcpu, params[1], &r);
++		if (params[0] == EVTCHNOP_send) {
++			int ret = kvm_xen_hcall_evtchn_send(vcpu, params[1], &r);
++
++			/*
++			 * Delivery raced a memslot update; waiting for it
++			 * here would deadlock under vcpu_run's kvm->srcu
++			 * read section. Leave the hypercall uncompleted —
++			 * RIP not advanced — so the guest re-executes it.
++			 * Each attempt cycles the srcu read section on the
++			 * way back in, letting the update complete.
++			 */
++			if (ret == -EAGAIN)
++				return 1;
++			handled = !ret;
++		}
+ 		break;
+ 	case __HYPERVISOR_sched_op:
+ 		handled = kvm_xen_hcall_sched_op(vcpu, is_64bit, params[0],
+@@ -2060,7 +2074,8 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 	return rc;
  }
  
+-static int kvm_xen_set_evtchn(struct kvm_xen_evtchn *xe, struct kvm *kvm)
++static int kvm_xen_set_evtchn(struct kvm_xen_evtchn *xe, struct kvm *kvm,
++			      bool wait)
+ {
+ 	bool mm_borrowed = false;
+ 	int rc;
+@@ -2097,16 +2112,13 @@ static int kvm_xen_set_evtchn(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 	 */
+ 	do {
+ 		struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+-		int idx;
+ 
+ 		rc = kvm_xen_set_evtchn_fast(xe, kvm);
+ 		if (rc != -EWOULDBLOCK)
+ 			break;
+ 
+-		idx = srcu_read_lock(&kvm->srcu);
+-		rc = kvm_gpc_refresh(gpc, PAGE_SIZE, false);
+-		srcu_read_unlock(&kvm->srcu, idx);
+-	} while(!rc);
++		rc = kvm_gpc_refresh(gpc, PAGE_SIZE, wait);
++	} while (!rc);
+ 
+ 	if (mm_borrowed)
+ 		kthread_unuse_mm(kvm->mm);
+@@ -2121,7 +2133,7 @@ static int evtchn_set_fn(struct kvm_kernel_irq_routing_entry *e, struct kvm *kvm
+ 	if (!level)
+ 		return -EINVAL;
+ 
+-	return kvm_xen_set_evtchn(&e->xen_evtchn, kvm);
++	return kvm_xen_set_evtchn(&e->xen_evtchn, kvm, true);
+ }
+ 
+ /*
+@@ -2195,7 +2207,7 @@ int kvm_xen_hvm_evtchn_send(struct kvm *kvm, struct kvm_irq_routing_xen_evtchn *
+ 	e.vcpu_idx = -1;
+ 	e.priority = uxe->priority;
+ 
+-	ret = kvm_xen_set_evtchn(&e, kvm);
++	ret = kvm_xen_set_evtchn(&e, kvm, true);
+ 
+ 	/*
+ 	 * None of that 'return 1 if it actually got delivered' nonsense.
+@@ -2424,7 +2436,11 @@ static int kvm_xen_setattr_evtchn(struct kvm *kvm, struct kvm_xen_hvm_attr *data
+ 	return kvm_xen_eventfd_assign(kvm, data);
+ }
+ 
+-static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
++/*
++ * Returns 0 with *r set if handled, -EAGAIN if the hypercall should be
++ * re-executed by the guest, or -ENOENT to hand it to userspace.
++ */
++static int kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
+ {
+ 	struct evtchnfd *evtchnfd;
+ 	struct evtchn_send send;
+@@ -2434,7 +2450,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
+ 	BUILD_BUG_ON(sizeof(send) != 4);
+ 	if (kvm_read_guest_virt(vcpu, param, &send, sizeof(send), &e)) {
+ 		*r = -EFAULT;
+-		return true;
++		return 0;
+ 	}
+ 
+ 	/*
+@@ -2443,18 +2459,22 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
+ 	 */
+ 	evtchnfd = xa_load(&vcpu->kvm->arch.xen.evtchn_ports, send.port);
+ 	if (!evtchnfd)
+-		return false;
++		return -ENOENT;
+ 
+ 	if (evtchnfd->deliver.port.port) {
+-		int ret = kvm_xen_set_evtchn(&evtchnfd->deliver.port, vcpu->kvm);
++		int ret = kvm_xen_set_evtchn(&evtchnfd->deliver.port,
++					     vcpu->kvm, false);
++
++		if (ret == -EAGAIN)
++			return ret;
+ 		if (ret < 0 && ret != -ENOTCONN)
+-			return false;
++			return -ENOENT;
+ 	} else {
+ 		eventfd_signal(evtchnfd->deliver.eventfd.ctx);
+ 	}
+ 
+ 	*r = 0;
+-	return true;
++	return 0;
+ }
+ 
+ void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
 -- 
 2.43.0
 
