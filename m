@@ -1,124 +1,167 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26AA1E9B37;
-	Fri, 16 Oct 2026 01:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0014E2AD0C
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 01:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792114246; cv=none; b=dfPtT0Wvr8Id67vlSw+Hn1dV/i53fK0t/rGJLw3Ex3sTRExqbwD7N261/yd4X/IYEXSuGyB97rclHeZJcXfiqqRaE6ByhJPpnOdMdf3aF4h1wPRxVHo6zFTrT3IVdYQnMM34ZrsjGCgUPva1W//PKs9a94WUtqDrIXqxyQ70B1U=
+	t=1792115258; cv=none; b=KC96x8MPeKezW7c5r9Gg64mENF84aCPM97mMeONdApM23zyAb5MFaqgLJgxoyof3ncvezOborbW8akGVkvLUqLGdH1KpQN2JEwpXmVColbMzyR4/uzK/cqssi++08HGmJY1W1JpH2NwEUePQQCJwvj0BDltVf/d60C+QKbrO15A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792114246; c=relaxed/simple;
-	bh=NHjPVffI4vaUZO+Vsx8dzVQOq3E63OHQvnKtyn4jZqo=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=AKdhAaVMMcfo/YOWSPdZ5JBXTrS/7P0ReyPBxKo02gnTHn1lCWF+SWlaNR8x0ROj+Y8RZFsszFyhe+o+62XxY0o8DRMLRfhEuDYnm6ou0JK8TEycxI1mQW6TqYXiLuz5iWH7MeDqtx6VbhwI6iEMnJs2GrBFvomaYUgjE2TdJwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8CxfdI8ftFqpFoWAA--.65034S3;
-	Fri, 16 Oct 2026 09:30:36 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxRs07ftFqI_AsAA--.15901S2;
-	Fri, 16 Oct 2026 09:30:35 +0800 (CST)
-Subject: Re: [PATCH v4 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-To: Tao Cui <cui.tao@linux.dev>, chenhuacai@kernel.org,
- zhaotianrui@loongson.cn
-Cc: loongarch@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@xen0n.name,
- nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-References: <20261015234638.1077815-1-cui.tao@linux.dev>
- <20261015234638.1077815-4-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <bd455df4-49e8-c80c-a5cc-b0feabeb3262@loongson.cn>
-Date: Fri, 16 Oct 2026 09:31:57 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1792115258; c=relaxed/simple;
+	bh=5M2peoG8jXom4XHhqR1eJ4sUTNnWk2VuvSwruGiSMXg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XlFGycfneL4FLAo3CouOd/bnyVajl73tRn9u+YfFnhEOnP9STuAAMM9A9Vo6XtdXMGovNYi9PgO7UQ01TXsZ0H2MUTjA7yp+7oIEyeN2TrRgCSSA+YSKyu3uqF6Y/Mf5KpIGqOotFwBqZALI/wXJFZXIRVYj6s6KAfdf9bXiFps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oGnKLMAA; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oGnKLMAA"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfa4e4684bso38917445ad.2
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 18:47:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792115256; x=1792720056; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+I0hVQqHR1ieM6ZT8DAxKDUM+QaSKzLxn8i4OPlAHWM=;
+        b=oGnKLMAAJja4jXVbwkx5jcH3MVwudW1w4nQ3BvTUmYd/9qkLdaBm6+vrUC86wHv353
+         4SRZtmGKsry/kGiqJpo+SQGk03LuB1c6xmkwymxH5+gkgvaA3SrZ4vn3dqZD1Z2RfOr5
+         AeF2hcxe+B/wCzmDP2rUUgweLXIdpLMy+mbIttLD+SFjUZgLJZTLTQl5EAADJDe96zMd
+         nuEp3Km+7hH0+ClebfskJrFO2zX7dv48NeWAHcrPN5bhvdK4v0zKosmLWR3htu1nkRBm
+         FE1O3XaUJnznFwwcKLUrHId+zANPHUhHwABoLZpva0hXkTK20s+rU+BKl94vyFXuefWz
+         xVJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792115256; x=1792720056;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+I0hVQqHR1ieM6ZT8DAxKDUM+QaSKzLxn8i4OPlAHWM=;
+        b=IKHalZHUzT3/L0r7tqS/IYjDu6PbAOuqt/UnN1IXxXNa6HrML+pog82Bj23+C289A2
+         8f55JYXN2AVorNPUQRO3lLCJojsxnL19Uqp1dyoMdIImX5cAbUnnBE1Tji957+BnRhju
+         Xlyc2j7fLzS6zj4zCHMCzG7GE1HRYMExrQX/YPhzbztBAplUwXaZkkF2eQjQkEptFjcI
+         9n0rQpCtp59JwdIgNoJsR/jOx4SAsulYyCtAqTm5LWT43gGJdqn8UM22s3qT4ZHiNdjq
+         iBQQ4/FrEymxPoBfBL8HEnMiOqAESRFOr1iJsgvtZJ5GMJPaKlXMHslKrqBvEq85aGFB
+         Racg==
+X-Forwarded-Encrypted: i=1; AKwUvBzM8Othz0v52qbDKqAGf6OpCpsQ5GNnz41/FmCZXmzCzKJopUjco8CH4L8IJVHy0gpotDQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIPIWY9hptEXTp35lTeA9B7yGmpJNJNKpaabE35PZ1TDieOjir6
+	FpWVslpbAv3sD5eOvEpeOKTHaSqxQCrrV4z+zQ77ZhAML0adi+2DFmncXcqDYcS4DmLodanvIS/
+	neeCmIw==
+X-Received: from plbmg15.prod.google.com ([2002:a17:903:348f:b0:2e9:3e55:fe6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f688:b0:2dd:ad74:ac22
+ with SMTP id d9443c01a7336-2e842cfcd6emr190938585ad.29.1792115256038; Thu, 15
+ Oct 2026 18:47:36 -0700 (PDT)
+Date: Thu, 15 Oct 2026 18:47:35 -0700
+In-Reply-To: <a578b2ff-52a4-4959-832d-a84b24ccb80e@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20261015234638.1077815-4-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxRs07ftFqI_AsAA--.15901S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZFykJr4xCFyDGr4DAF4fWFX_yoW8tFW5pr
-	W8Ca9xCrW8Wr1I9Fs7Zwn7XFyI9a1I9w4F9F1YyFy2kr15tr9YqFyFya15X3WDJ3y8AFyI
-	qFs8G34Fva1UAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4s2-UUUUU
+Mime-Version: 1.0
+References: <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
+ <20260224212939.2081828-1-changyuanl@google.com> <a578b2ff-52a4-4959-832d-a84b24ccb80e@linux.intel.com>
+Message-ID: <atGCN656hpWzSuci@google.com>
+Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Changyuan Lyu <changyuanl@google.com>, rick.p.edgecombe@intel.com, binbin.wu@intel.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	isaku.yamahata@intel.com, kas@kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, tglx@kernel.org, x86@kernel.org, xiaoyao.li@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-
-
-On 2026/10/16 上午7:46, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
+On Tue, Oct 13, 2026, Binbin Wu wrote:
+> On 2/25/2026 5:29 AM, Changyuan Lyu wrote:
 > 
-> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
-> invocation: every call overwrites pch_pic_base and registers the same
-> kvm_io_device on the MMIO bus at the new address, while
-> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
-> init, MMIO to the stale ranges computes its register offset against the
-> new base and silently reads 0 / drops writes, and the leftover bus
-> entries persist until the VM is destroyed.
+> [...]
 > 
-> Reject repeated initialization with -EEXIST, using the initialized
-> state of the kvm_io_device as the indicator.  The check, the MMIO base
-> update and the bus registration are serialized by slots_lock, and the
-> real registration error is propagated instead of being replaced with
-> -EFAULT.
+> > -----------------------
+> > 
+> >>From 18b967b718911c09872c3717d8ab083fa59c4a70 Mon Sep 17 00:00:00 2001
+> > From: Changyuan Lyu <changyuanl@google.com>
+> > Date: Fri, 20 Feb 2026 09:55:28 -0800
+> > Subject: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
+> > 
+> > Set the KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag in the kvm_cpuid_entry2
+> > structures returned by KVM_TDX_CAPABILITIES if the CPUID is indexed.
+> > This ensures consistency with the CPUID entries returned by
+> > KVM_GET_SUPPORTED_CPUID.
+> > 
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Changyuan Lyu <changyuanl@google.com>
 > 
-> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->   arch/loongarch/kvm/intc/pch_pic.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-> index 51e4a6a39dc0..a4c35ed704be 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -281,16 +281,21 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
->   	struct kvm_io_device *device;
->   	struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
+> Hi Sean,
+> 
+> When I was preparing the v5 of the TDX CPUID patch series, the internal sashiko
+> reported a issue:
+>   > @@ -2359,6 +2359,15 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
+>   >  		if (!entry)
+>   >  			continue;
+>   >  
+>   > +		/*
+>   > +		 * Reject entries whose index doesn't match the expected one.
+>   > +		 * This catches userspace passing a CPUID entry with the
+>   > +		 * KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag cleared when the index
+>   > +		 * is significant.
+>   > +		 */
+>   > +		if (entry->index != tmp.index)
+>   > +			return -EINVAL;
 >   
-> -	s->pch_pic_base = addr;
->   	device = &s->device;
-> +	mutex_lock(&kvm->slots_lock);
-> +	if (s->device.ops) {
-> +		ret = -EEXIST;
-> +		goto out;
-> +	}
-> +	s->pch_pic_base = addr;
->   	/* init device by pch pic writing and reading ops */
->   	kvm_iodevice_init(device, &kvm_pch_pic_ops);
-> -	mutex_lock(&kvm->slots_lock);
->   	/* register pch pic device */
->   	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
-> +out:
->   	mutex_unlock(&kvm->slots_lock);
-one small nit, what to do if there is failure with 
-kvm_io_bus_register_dev()?  clear s->pch_pic_base and  s->device.ops?
-
-Regards
-Bibo Mao
+>   [Severity: Medium]
+>   Does this unconditional check inadvertently break userspace VMMs that provide
+>   valid CPUID entries but leave the index field uninitialized for
+>   non-significant leaves?
 >   
-> -	return (ret < 0) ? -EFAULT : 0;
-> +	return ret;
->   }
->   
->   /* used by user space to get or set pch pic registers */
+>   Since kvm_find_cpuid_entry2() ignores the index field when
+>   KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared, VMMs are not architecturally
+>   required to zero the index for non-significant leaves. This check forces
+>   the index to be exactly 0 (since tmp.index is normalized to 0) even for
+>   leaves that do not have architecturally significant subleaves.
 > 
+> 
+> I think the issue is valid,
 
+Yeah, requiring the index to be a specific value without SIGNIFCANT_INDEX set
+could break usrspace.
+
+> so it needs to know whether the entry is a subleaf or not. I think it's more
+
+By "it", I assume you mean userspace?
+
+> reliable to do it via the information reported by the TDX module. i.e. my
+> patch set will rely on this patch to set KVM_CPUID_FLAG_SIGNIFCANT_INDEX for
+> entries that are indexed.
+> 
+> Will you apply this patch?
+> Or I can include this patch in my patch set. Also, 0x23 is still missing in
+> cpuid_function_is_indexed(), I can add a patch to add 0x23 as well.
+>
+> > ---
+> >  arch/x86/kvm/vmx/tdx.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 2d7a4d52ccfb4..1c039eab2f3d8 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -167,6 +167,7 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+> > 
+> >  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+> >  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+> > +	entry->flags = 0;
+> >  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+> >  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+> >  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+> > @@ -174,6 +175,9 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+> > 
+> >  	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+> >  		entry->index = 0;
+> > +	else
+> > +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+
+Hrm, I'm getting deja vu.  Oh, this is an old thread.  *sigh*  I was expecting
+a new patch/thread, but it got "posted" inline.
+
+I'll send a small v2.
