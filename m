@@ -1,201 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011018.outbound.protection.outlook.com [52.101.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C913B38AF
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 08:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792139144; cv=none; b=K1nCoXTL63y++aBco90nLYu+ANtuSUatZ2Rpkxqvef5jHbvBtGAdYmkJ9+gq0IVg0DY9WJbv6qEC9afbVaBnmeQMJNL2e2vXNtHl/A2ZDu+WMnEhfejhNW9n6Z4kjI2I/uLnnTLdhtuYyh/y61ss9sKpCVBpB8LRHChOysG0iwY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792139144; c=relaxed/simple;
-	bh=KAfd8tRH2E+vvJpLkFEh63/NAmBOZN4lDvDMX9uzf5s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pi1J3OKEdZWXG9fQlv/sH/WqSMCe/WVIFMzdHdrbYJgpP4/1l73OT5Et15n6ieeoG9vWHIWscI8dSQwZ964v8MKs/92BcuQixUvOl71HFGumvYkIQEWr3nmBy249B6pwpMhaHQvlAl/NZMEZzBIv7R+w19NMwugcBQe4XdotBBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRoAjjQH; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2191825B091;
+	Fri, 16 Oct 2026 08:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792139772; cv=fail; b=aGefNQDkL32qsjcErZrGTlS+MgaHsSb8duDIsD2VGDrnjIcmMOEs9V8AMC++AwWPzAFvJz8cQYBJ/T4JGn7izvGSNtda3B16sWL3x0UvYx4wAcFV80Tu7hZALacdVDT5XdLVZDO9FIeQsIJPo2Cjrh1nhzmZWIZ+LiVL9qW2T30=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792139772; c=relaxed/simple;
+	bh=iUP2I64dIJ7ZdihImWDt4VRidqcUYIsMsVVF8BMGm7w=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Af+t1HmEMVpEF5qtiz79xqc7xFgedPudBxLFtooEGHKp5yPJzh+88XtHbfHR2H3A+gQtrWQP+G43eZl/xro6h83LTceimGI0oKAJxitmPeqTdxxI3K+c9rgg6SsrWjSB4AVdDRXq+qq7vKk0cl6cukNgMaSAbDh8s+LRLwLNo1s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Rko8M5nM; arc=fail smtp.client-ip=52.101.52.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRoAjjQH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792139143; x=1823675143;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KAfd8tRH2E+vvJpLkFEh63/NAmBOZN4lDvDMX9uzf5s=;
-  b=dRoAjjQHbcu60fYhIO7ZboCy/l7lbvo7ffJL3gXX1AZld/0/BjsHth/U
-   PqjQuP8wyfdANq+4MxTD51mUdzNA9OCEGwP/JthccnUzP/eUJw7wWsTOZ
-   McZaRHm7sHD6Ml1irco1bSdPB+SLgBZTQa/gOZQ3jMJEBVCRHNoTS3fKV
-   OE1iDjK+O/whJIF3rRZ6LW78yLDsKRr2YY7vJF4MGoT+iby+MlvQWwd/k
-   2WLDla4RXy3huszAlsGs9IHpFSY6/MhSilyCbBNdE0P6253gsQv06NV9g
-   gYRn0yave8Wamz9L02dCLBiihFQo9ExIAdcBjH5PUu0Lw7d65dv2RmHsS
-   w==;
-X-CSE-ConnectionGUID: QSxCzryHQ4+SYIt+Fx2GLQ==
-X-CSE-MsgGUID: 8PjhHy3XSxahkWLbjg9waA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="812313"
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="812313"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 01:23:27 -0700
-X-CSE-ConnectionGUID: u5J2rt91RgyRRrpNhQby/w==
-X-CSE-MsgGUID: kNfHIRW4RAm85ARoSZ/D7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="2143052"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 16 Oct 2026 01:23:20 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHdDg-00000000HtS-105i;
-	Fri, 16 Oct 2026 08:23:16 +0000
-Date: Fri, 16 Oct 2026 16:23:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sairaj Kodilkar <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Li RongQing <lirongqing@baidu.com>, Marco Elver <elver@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v5 7/7] iommu/amd: Provide kernel command line option to
- enable GAPPI
-Message-ID: <202610161625.7iSczyVo-lkp@intel.com>
-References: <20261015064515.10700-8-sarunkod@amd.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Rko8M5nM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FnKm4LEC5oKeudXrjXUPtVJeUW7cwh8l7EjCcy+vi1XLwuKVHTpK5og0GB1kAwB/eT7Y8ICdZw0AniE1OSeGbCpJ/IDcWmGZuDWQCEiVArH8HeZxktF50etGMqycQZ0PQSs9/RUNHcVI3UMT/hyTSqZ0ohfgGQzmjFys7MOqcBCLzgryGpdPRwGylLPkmfFC/1Iu8UlcCAYxRByOcQTTduJKY6XIvAEuScgEgKlKJAfj8DyskZxVWdVVAHLBniW0Wfa5xntNfJ3t+ihIZAeqpLp/TbfCNuyLxPvwIkblEf0cr7zBRHqEHeGIGbL2lAhiNLYSxmPSovG9HlWyflDr/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iUP2I64dIJ7ZdihImWDt4VRidqcUYIsMsVVF8BMGm7w=;
+ b=tGnq4qedo5yardJn6J1KAmChuR/6EEO+aZJLEptGKmGRHK0sVRn9oTExtA33ISl7Ad9iD7m0kn6+AW2GCjI9SbiX4uy/yVA0JL4G0xj1K1KhA3+UP68lVCX79kvJ3NZAnLmI2ILOXWIDiyen3PrAJjzbcq/h4+BwT6YmxGj4gh+OQU0HExrXJqZl8577AkaIrYejJSy/nuffDjhOkSkbuCI9JbQKlTJd3eiAObDXZ5CS/CcRGx1kpDT7ugx/vcIF1ucXQeSSaX4PUvM83P5gl3yz3YQ/YwvpymCmJQktdj5LmmBzJGZNrhPPk/M983W43H6Q7CJ/lQ/fnviwlz48vA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iUP2I64dIJ7ZdihImWDt4VRidqcUYIsMsVVF8BMGm7w=;
+ b=Rko8M5nMytWp6yhzWCzSTPMeQlQtNRH+KSUEO4RmHfqEi/R/5WVgW+YCU5Lo7Fkg3r2xtRW1dkGpeGUtNBsLNzXIV43dl5Bp2S1QvZLXaUczy3Y/kObXMtdTDjnn/Fd5rukieyoGMczhQcT4jU70c7m7PndCd3LiOHxNA72CGxMDuzSCx4T/BU+MCvxiao7DB7/a9xyV7qRTdH+MMxxj9lyyQ7PfEMzMjbr4NV/CubtDAiPbkmOZNInRbpdELJMQJQqQ/ZHFG7jWU/+mcNkvKitIqXgVsm9dmvMYclZlt2c0Dee0bEO3ICqcuvbwh3Chpi2zjSRiK5Esm+PD0qdzaw==
+Received: from SAWPR12MB999267.namprd12.prod.outlook.com
+ (2603:10b6:806:55f::17) by DS7PR12MB8251.namprd12.prod.outlook.com
+ (2603:10b6:8:e3::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Fri, 16 Oct
+ 2026 08:36:05 +0000
+Received: from SAWPR12MB999267.namprd12.prod.outlook.com
+ ([fe80::fe35:8a00:d9eb:40f9]) by SAWPR12MB999267.namprd12.prod.outlook.com
+ ([fe80::fe35:8a00:d9eb:40f9%4]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 08:36:05 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: Andrea Parri <parri.andrea@gmail.com>, Alex Williamson <alex@shazbot.org>
+CC: Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, Shameer
+ Kolothum Thodi <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+	Jiaqi Yan <jiaqiyan@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] vfio/nvgrace-gpu: Use a core-only open_device in
+ fallback mode
+Thread-Topic: [PATCH v2 1/2] vfio/nvgrace-gpu: Use a core-only open_device in
+ fallback mode
+Thread-Index: AQHdXH4FK1EyXFmi0kOO7GnzrIArMLb/2Xsf
+Date: Fri, 16 Oct 2026 08:36:04 +0000
+Message-ID:
+ <SAWPR12MB999267720838FDA5D7136D2DB4B09B2@SAWPR12MB999267.namprd12.prod.outlook.com>
+References: <20261015081937.405320-1-parri.andrea@gmail.com>
+ <20261015081937.405320-2-parri.andrea@gmail.com>
+In-Reply-To: <20261015081937.405320-2-parri.andrea@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SAWPR12MB999267:EE_|DS7PR12MB8251:EE_
+x-ms-office365-filtering-correlation-id: 7d0ff0f7-fea0-41a5-4343-08df2b608483
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|56012099006|38070700021|11063799006|4143699003|22082099003|10067099003|18002099003;
+x-microsoft-antispam-message-info:
+ 9cq+YnX8ZorNesFnfmG1yeslM1CE2wJXOyb0mlNMyw+R19ywVzL2nIjB3jaIwC+0IVniDNxB3gTyOweujfmSHMbbx5mO0I5zm/slwmzHHQxfmqnYS9kS5veFtkUpGdZ1Z98rJLmyyz/qg104nQTC4SBUkCUDnpDieEebWQxkdxs908ZoEd6YtmbyiGsXGzrmus6AU+bS9kyu2lY7sQvgqSxri4OTryRS3uhRkyvadvnToNPUF7bRQSGtDEQiIf18gTNuXiN85zqdGF6RlT1B7jnOT6gTMSnVuedHi5MN2M2V7Uoztk+42Bj6kumLW/2aSLD5EnOOUmB3nAZKkFhJMuSXJIVR6gm/eE5G0N1IAjRovO70dsmWAd991O24F6Bydnx3jxPfA5glC872JF3+AeUsWfupU8NqGLFXcJCbRpaKWl1evGjbxO4WeqAm3U7toLnWQe3fzgW/BnM8ssSqQENQhaWfInwUJg/dzBqxKIy4UeaCdnzLmSRnrc8PBzZ+rjg682S9zeFVtPBfXGZSfmPLTQx3M7f2tEGr0psPsfDd4/GupKMe8lQVkZDHAQkKvOtP6/ucEvih879xOUixC7YQTlfBj5q6u1q9gPEo6RHdbqwsoAi0hTYqVmMoUe3VN3ibZkgODePITR0HDr2ypLXluEMy3mdIk7+RPpqvPvv1j7aVfgDGUIJfBoH5TFlyh755Q2cR3fUvLyPsFzkZQeLcZRl7M1e1QrqmwW5qXp0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SAWPR12MB999267.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(56012099006)(38070700021)(11063799006)(4143699003)(22082099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?UWwGZAJVq+J6nxkkL08mq/lMcHAxVCb5PY2GGXSV8U9lM9je1weKvIfxmi?=
+ =?iso-8859-1?Q?8FM+DXWMd5WkhrbOjAxFTT9ezlpvjr9pZyJ1Tm4YJaPaXJYNtHX/bE5IGQ?=
+ =?iso-8859-1?Q?72BJVw2nrxVBeTRxhu3lnLmuU2qMjrEyQ0qloXaT6bNDdpU5DEShtsD1Yy?=
+ =?iso-8859-1?Q?iip66i1zQVcwzlxk9p3MPrrUhJL3j+7Cv//7OKdG8mI80l17x/0l+mwrxC?=
+ =?iso-8859-1?Q?amnQKYXW+IU9X5t+8whnMmfRWy+xXdOHoZ2+xc3gsi7w9s4yY7l1jyTlJc?=
+ =?iso-8859-1?Q?ZWz0bBRHsz8A/jSZ3lci303/aSfT2xlri3d2gtcklgF1pNfvBVoBa4ocft?=
+ =?iso-8859-1?Q?nF8PP/aepsoqE32Od16zqU1ZdPZWu1hj75KJ4ESb1KptBo63WylJ5JeWhA?=
+ =?iso-8859-1?Q?tVvPqO5SEEpo3GgNfDJP0opP2VrUDSd0CwLBzY2f+nocFERma5Vk9cvTTd?=
+ =?iso-8859-1?Q?GByE4WcUP1M0+qF7XuSYeFSOaTrkhk7fwQgjG0IngW/+6kUbaKhRpKFlJj?=
+ =?iso-8859-1?Q?CW3n65gkGa+zto09f0NmVpHjgafV14TcljeXgff2yg5BNdIm74ssmxc2Ib?=
+ =?iso-8859-1?Q?yRC+CRCUawuBTOMxaBX2A6FZNAqskxfcqRJWsx9eqgU9GT/C3rgD+PeNpK?=
+ =?iso-8859-1?Q?RWaK4YGLi0GF25kBL1iHnzD/DXxEj2sF/kzhS4JDX06u3+I2NkOyhEaWCN?=
+ =?iso-8859-1?Q?/URs6IK/dibs2lKiN1aK+lmAemvgPcKaeFDkxfM7JG01f11n0+UxBcKPuU?=
+ =?iso-8859-1?Q?OvyGBElMeWeZnElAcVE4cNPh0t8DNoLvzTzl7hWdoyEdkrZ7sjoFReOOuT?=
+ =?iso-8859-1?Q?ljGo55F45v1fsu8kVgs+pd4gVBMgyPseIV0qEAYV4Ln9MZxB6nBXAeQk5u?=
+ =?iso-8859-1?Q?RkmSuaBNT3sxh1GHq9LOQsfv3cKYYsVjOsGA91imzxZkAZ1gi5WFDxCPm1?=
+ =?iso-8859-1?Q?yeEhNldJjaDKmtgrXGhCxJ9PPPrAwBLdowyY5frdszn5TuIJUkwUvruE8C?=
+ =?iso-8859-1?Q?o7swfszlyjVM59d4JuXJjl/oGIHGVD4/fhbMlWNJTh9DCYy7kHYDX9nUZj?=
+ =?iso-8859-1?Q?JUkYWJgroulBIM40Wv7dZIEDDP715q7vX2oQX/J9v5A4MPYescSOQOs+Z3?=
+ =?iso-8859-1?Q?5rljiU5lIhuQONWTnfi7RjMF74j2aMEYz+ReB9UYKiJMt3/1GattMCWPAU?=
+ =?iso-8859-1?Q?Iu9IXDDt5Kgn7ELNpZ/SO+jml/RmZPUO+PM2o0QnPyoJo+sYfTKo/Gtf2C?=
+ =?iso-8859-1?Q?xmbrI39TdWST40EyRuNy2yaTiX0V0sQSRMcj1LfRhiKnqT6qKrSNmSG/px?=
+ =?iso-8859-1?Q?knPruh1rvMeaTKJ6dRwfIwHDpxMGwjgjJ5BD+46ZDl5wPoo3uEGkUW+fiH?=
+ =?iso-8859-1?Q?PGmgoKrs23XHeMvroGNTZifEjgTkqXggL6ACkqSF64nVVT9MsNizqxYpwS?=
+ =?iso-8859-1?Q?nObLnva3tsV3ApOcMVCvA1uxk2JMVSdOfYF3bhrhI44tmJGG4RIoCIWcsO?=
+ =?iso-8859-1?Q?nktEi5+Kp5jfGuXKvcuEJBNkJ9exHQhEvSmx1Fc1arWjcczMApt4rT6d6X?=
+ =?iso-8859-1?Q?BmAhHyNkSH2a+vFFSUtV55QIKHKZsdhFuH7/o3/4FiDtfio0tPGbHhQ6GG?=
+ =?iso-8859-1?Q?WZPTmFgGmUjV4FNSD+SHGNSo+Pp+9an0R0qQwcmP3l9VAQ2WgfK5XqBdNF?=
+ =?iso-8859-1?Q?os/NgdgBE9KtlHoczW3kouamEk80hLBnGncq4YCRoj4ZU7Ys17PrAELvC2?=
+ =?iso-8859-1?Q?xBWJYS1Iv3Ial077ICOt0zp/pEicEe4drLnLbNu8ZesUMr?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015064515.10700-8-sarunkod@amd.com>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SAWPR12MB999267.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d0ff0f7-fea0-41a5-4343-08df2b608483
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2026 08:36:04.9492
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: f181EH5MiAstfhryL45BECPNE2/LjaIBPxYAgW0/1ZQ9vYwFaqzCxmu531h6Mtm8ovJLqRzuDsDqUNstrS4P0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8251
 
-Hi Sairaj,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 4056b3c9d3c92ea45955641dbafeb9b960e146ef]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Sairaj-Kodilkar/iommu-amd-KVM-SVM-Rename-cpu-to-apicid-in-IOMMU-interface/20261015-121509
-base:   4056b3c9d3c92ea45955641dbafeb9b960e146ef
-patch link:    https://lore.kernel.org/r/20261015064515.10700-8-sarunkod%40amd.com
-patch subject: [PATCH v5 7/7] iommu/amd: Provide kernel command line option to enable GAPPI
-config: x86_64-randconfig-1017-20261016 (https://download.01.org/0day-ci/archive/20261016/202610161625.7iSczyVo-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610161625.7iSczyVo-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610161625.7iSczyVo-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/iommu/amd/init.c:163:6: error: redefinition of 'false' as different kind of symbol
-     163 | bool amd_iommu_gappi;
-         |      ^
-   include/linux/amd-iommu.h:65:25: note: expanded from macro 'amd_iommu_gappi'
-      65 | #define amd_iommu_gappi false
-         |                         ^
-   include/linux/stddef.h:11:2: note: previous definition is here
-      11 |         false   = 0,
-         |         ^
-   drivers/iommu/amd/init.c:164:15: error: redefinition of 'false' as different kind of symbol
-     164 | EXPORT_SYMBOL(amd_iommu_gappi);
-         |               ^
-   include/linux/amd-iommu.h:65:25: note: expanded from macro 'amd_iommu_gappi'
-      65 | #define amd_iommu_gappi false
-         |                         ^
-   include/linux/stddef.h:11:2: note: previous definition is here
-      11 |         false   = 0,
-         |         ^
-   drivers/iommu/amd/init.c:164:1: error: cannot take the address of an rvalue of type 'int'
-     164 | EXPORT_SYMBOL(amd_iommu_gappi);
-         | ^             ~~~~~~~~~~~~~~~
-   include/linux/export.h:89:29: note: expanded from macro 'EXPORT_SYMBOL'
-      89 | #define EXPORT_SYMBOL(sym)              _EXPORT_SYMBOL(sym, "")
-         |                                         ^              ~~~
-   include/linux/export.h:86:38: note: expanded from macro '_EXPORT_SYMBOL'
-      86 | #define _EXPORT_SYMBOL(sym, license)    __EXPORT_SYMBOL(sym, license, "")
-         |                                         ^               ~~~
-   include/linux/export.h:77:2: note: expanded from macro '__EXPORT_SYMBOL'
-      77 |         __ADDRESSABLE(sym)                                      \
-         |         ^             ~~~
-   include/linux/compiler.h:276:2: note: expanded from macro '__ADDRESSABLE'
-     276 |         ___ADDRESSABLE(sym, __section(".discard.addressable"))
-         |         ^              ~~~
-   include/linux/compiler.h:273:63: note: expanded from macro '___ADDRESSABLE'
-     273 |         __UNIQUE_ID(__PASTE(addressable_, sym)) = (void *)(uintptr_t)&sym;
-         |                                                                      ^~~~
->> drivers/iommu/amd/init.c:3804:20: error: expression is not assignable
-    3804 |                         amd_iommu_gappi = true;
-         |                         ~~~~~~~~~~~~~~~ ^
-   4 errors generated.
-
-
-vim +3804 drivers/iommu/amd/init.c
-
-  3775	
-  3776	static int __init parse_amd_iommu_options(char *str)
-  3777	{
-  3778		if (!str)
-  3779			return -EINVAL;
-  3780	
-  3781		while (*str) {
-  3782			if (strncmp(str, "fullflush", 9) == 0) {
-  3783				pr_warn("amd_iommu=fullflush deprecated; use iommu.strict=1 instead\n");
-  3784				iommu_set_dma_strict();
-  3785			} else if (strncmp(str, "force_enable", 12) == 0) {
-  3786				amd_iommu_force_enable = true;
-  3787			} else if (strncmp(str, "off", 3) == 0) {
-  3788				amd_iommu_disabled = true;
-  3789			} else if (strncmp(str, "force_isolation", 15) == 0) {
-  3790				amd_iommu_force_isolation = true;
-  3791			} else if (strncmp(str, "pgtbl_v1", 8) == 0) {
-  3792				amd_iommu_pgtable = PD_MODE_V1;
-  3793			} else if (strncmp(str, "pgtbl_v2", 8) == 0) {
-  3794				amd_iommu_pgtable = PD_MODE_V2;
-  3795			} else if (strncmp(str, "irtcachedis", 11) == 0) {
-  3796				amd_iommu_irtcachedis = true;
-  3797			} else if (strncmp(str, "nohugepages", 11) == 0) {
-  3798				pr_info("Restricting V1 page-sizes to 4KiB");
-  3799				amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_4K;
-  3800			} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
-  3801				pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
-  3802				amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-  3803			} else if (strncmp(str, "gappi", 5) == 0) {
-> 3804				amd_iommu_gappi = true;
-  3805			} else {
-  3806				pr_notice("Unknown option - '%s'\n", str);
-  3807			}
-  3808	
-  3809			str += strcspn(str, ",");
-  3810			while (*str == ',')
-  3811				str++;
-  3812		}
-  3813	
-  3814		return 1;
-  3815	}
-  3816	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Ankit Agrawal <ankita@nvidia.com>=
