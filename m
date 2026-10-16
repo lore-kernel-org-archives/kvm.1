@@ -1,105 +1,152 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D70443E3B;
-	Fri, 16 Oct 2026 09:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA24471D1E
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 09:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792142193; cv=none; b=AtYZhSSHWXT6O3eGhuCLdTmTmqHSL7x0HPAewvemGrNhHv7WDsAQbYdDdTdHUubnPTAPGesC/Vwc1dF6DE2MMSSHko5GCG30cjdgGkOywbw66fpIaP5AEkhSXCKrEQElP+elh+YEg+Fr3aE+of3e1mX46Xn9tNtH7NcLCIVSXL0=
+	t=1792142644; cv=none; b=fwOZb2jQwprkY5F1pm5DAZWKMoF74rA3eFmBnKAcINHRFYGZKP4rz38CKbzMJZVZWE8CwzUY8/ZKDsHuKjECbr99i7YlIPHXbrnHt0eoI6YdwC+m8jjuvxRWm5Vw/AHQAIt91KCXl/H3kUi7iNeDb91ABUiEY/E7T4TltW7KzAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792142193; c=relaxed/simple;
-	bh=ZKTQiqaUB5djL+VKplSECEMXubTC4GKdMv8dMZE3860=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zx+kjSIrXaj16n87ZNiJLKQXbRQHXzVD3ysaaMPj4IcCCWOgLw8hSYJE6rywIRsLpX28x6FVauqz7olDMrG76gFFbI7wR5z7nYinkcRPNKJrP7wiX3jN5I6NuL13J6pfDKapkxLgyehxSXrZ+XqeBKBNFnfKwp7d+aRrQL7N20E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j5fSq2WzTz8Xrnw;
-	Fri, 16 Oct 2026 17:16:27 +0800 (CST)
-Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
-	by mse-fl2.zte.com.cn with SMTP id 69G9GElv040441;
-	Fri, 16 Oct 2026 17:16:14 +0800 (+08)
-	(envelope-from gong.shuai@sanechips.com.cn)
-Received: from ubuntu-35-gs (unknown [10.230.214.35])
-	by smtp (Zmail) with SMTP;
-	Fri, 16 Oct 2026 17:16:17 +0800
-X-Zmail-TransId: 3e816ad1eb5a024-bff28
-X-Zmail-LocalSMTP: 1
-X-Zmail-RealSender: gong.shuai@sanechips.com.cn
-From: Gong Shuai <gong.shuai@sanechips.com.cn>
-To: jgg@ziepe.ca
-Cc: alex@ghiti.fr, andrew.jones@oss.qualcomm.com, anup@brainfault.org,
-        aou@eecs.berkeley.edu, atish.patra@linux.dev,
-        fangyu.yu@linux.alibaba.com, gong.shuai@sanechips.com.cn,
-        gsh517025@gmail.com, iommu@lists.linux.dev, joro@8bytes.org,
-        kevin.tian@intel.com, kvm-riscv@lists.infradead.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, palmer@dabbelt.com,
-        pbonzini@redhat.com, pjw@kernel.org, robin.murphy@arm.com,
-        seanjc@google.com, tomasz.jeznach@linux.dev, will@kernel.org,
-        wu.fei9@sanechips.com.cn, zhao.qingye@sanechips.com.cn
-Subject: Re: [RFC PATCH 0/12] iommu/riscv: Add nested translation (vIOMMU) support
-Date: Fri, 16 Oct 2026 17:16:10 +0800
-Message-ID: <20261016091610.13912-1-gong.shuai@sanechips.com.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261016000004.GB14213@ziepe.ca>
-References: <20261016000004.GB14213@ziepe.ca>
+	s=arc-20240116; t=1792142644; c=relaxed/simple;
+	bh=tMlphX1srqSmwkm/I2q1GT1VN1k8XsQkkzVMJnc0xjU=;
+	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
+	 Date; b=S+EYrSc/qZxU1SpSqL7LSgFWUoGHJjbBdeawo6+WpxDeQrM2LMKq4WfYcZM96mM92gXzBD0lOFKw5k/2EJrVr3VCiC/ZcyxYIyMWWp61EXnKv170WrvIYs67gEd7UjiJjFtBOHc1z1r0YLpE3b9EW/mRKX3zBDur80aTLBDNv+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKRwxDg/; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKRwxDg/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95501F000C4;
+	Fri, 16 Oct 2026 09:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792142643;
+	bh=Fpgm6bCQCM5yiihqrZPr3RxfiI4wATnSEI/iDPpKImk=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=gKRwxDg/HVAOGzUZ0F+MTAW4ZKC9dEK2MiPCu9gvIO7wHEn/faatJU0HigHiJbYKs
+	 xkc7S9tbA4+//gc6mMILlPXRMetZL0+1Le4k9Bc6QnhProWN/9GW6R3NB2jxA/fGsS
+	 PvNm5zfVzq2z4b7EDZoBQbfb+k2OXNEaCMEEaZyWw4KHon8JldRcF0cnbwaqUB0zso
+	 TTxkwEa2+mF2M5KyM/5kjpMUtbvpeL0G0DAg86G0F1y1oDtmVVBrDlTCS8633GeBDP
+	 FWrNAR1ppkBTKk4ofdUNSIsNV4KcaDIMBws1cs8owq7b3s0TmuF6khEW+ZaSnvNhkc
+	 48Z0e0WTre24g==
+Message-ID: <sashiko-outbox-174077@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 5/5] KVM: TDX: Validate userspace CPUID input for
+ KVM_TDX_INIT_VM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Binbin Wu" <binbin.wu@linux.intel.com>, kvm@vger.kernel.org
+In-Reply-To: <20261016091422.3182216-6-binbin.wu@linux.intel.com>
+References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
+ <20261016091422.3182216-6-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 16 Oct 2026 09:24:02 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
-Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 69G9GElv040441
-X-TLS: YES
-X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 16 Oct 2026 17:16:27 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AD1EB6B.001/4j5fSq2WzTz8Xrnw
 
-Hi Jason,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] kvm: KVM_TDX_INIT_VM rejects CPUID.0x7.0.EAX breaking guest sublea=
+f enumeration
+- [High] mm: heap buffer overflow in setup_tdparams_cpuids() via unbounded =
+td_conf->num_cpuid_config
+--
 
-Thanks for the review again.
+commit 8ec54e6006917e96837000de9e4002c7f4499444
+Author: Binbin Wu <binbin.wu@linux.intel.com>
 
-> > Add nested translation support to the RISC-V IOMMU driver, so a KVM guest
-> > with its own vIOMMU can own the first stage of a device context while the
-> > host keeps the second stage, and add the interrupt support. This is an RFC
-> > and comments on the design are welcome.
->
-> The iommufd parts looked reasonable to me
->
-> I feel some mild skepticism about all the MSI parts, it would be good
-> to get more of the interrupt stuff actually landed before posting this
-> again.
+KVM: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
 
-Agreed on the MSI parts. They are a working proof to exercise the
-nested flow end to end, not a finished design. The reason they are
-in this series at all is that the NVMe device we use for testing
-depends on MSI interrupts. Without this support, DMA succeeds but
-the MSIs fault, so the driver ends up polling for completions after
-timeouts.
+This commit validates the CPUID configuration provided by userspace
+through KVM_TDX_INIT_VM against KVM's TDX allowlist. It drops the
+hardcoded denylist-based check in favor of a strict allowlist.
 
-We will keep following the irqbypass groundwork as it evolves, and
-continue this work once it has landed.
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index e53f1e98bb04a..80c6519c13ff5 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+[ ... ]
+> @@ -2567,6 +2548,14 @@ static int setup_tdparams_eptp_controls(struct kvm=
+_cpuid2 *cpuid,
+>  	return 0;
+>  }
+> =20
+> +static bool tdx_has_unsupported_cpuid_cfg_bit(const struct kvm_cpuid_ent=
+ry2 *e, u32 index)
+> +{
+> +	return (e->eax & ~tdx_get_cpuid_cfg_mask(e->function, index, CPUID_EAX)=
+) ||
+> +	       (e->ebx & ~tdx_get_cpuid_cfg_mask(e->function, index, CPUID_EBX)=
+) ||
+> +	       (e->ecx & ~tdx_get_cpuid_cfg_mask(e->function, index, CPUID_ECX)=
+) ||
+> +	       (e->edx & ~tdx_get_cpuid_cfg_mask(e->function, index, CPUID_EDX)=
+);
+> +}
 
->
-> Please try harder on the commit messages, do not use AI to write them
-> like this. They need to explain why this patch exists and what problem
-> it is solving not some inscrutible description of what it contains.
+[Severity: High]
+Does this strict allowlist check inadvertently break guest subleaf enumerat=
+ion
+by rejecting valid KVM_TDX_INIT_VM inputs?
 
-I will rewrite all of them.
+CPUID leaf 0x7 subleaf 0 EAX contains the maximum supported subleaf index,
+which is non-feature information. However, tdx_get_cpuid_cfg_non_feature_ma=
+sk()
+completely omits leaf 0x7, and reverse_cpuid does not track 0x7.0.EAX as a
+feature word.
 
-Thanks,
-Shuai
+Because tdx_get_cpuid_cfg_mask(0x7, 0, CPUID_EAX) returns 0, this new check
+will reject any non-zero value for CPUID.0x7.0.EAX. This strictly requires
+userspace to provide 0, effectively preventing exposure of subleaves 1+
+(such as for AMX or AVX-VNNI) and breaking valid VM initialization requests.
 
->
-> You'll need other riscv people to help you with reviewing it.
->
-> Jason
+>  static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
+>  				 struct td_params *td_params)
+>  {
+[ ... ]
+> @@ -2596,7 +2585,7 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 =
+*cpuid,
+>  		 * not the index of the userspace entry, which may differ if
+>  		 * KVM_CPUID_FLAG_SIGNIFCANT_INDEX isn't set.
+>  		 */
+> -		if (tdx_unsupported_cpuid(entry, tmp.index))
+> +		if (tdx_has_unsupported_cpuid_cfg_bit(entry, tmp.index))
+>  			return -EINVAL;
+> =20
+>  		copy_cnt++;
+
+[Severity: High]
+Can the loop enclosing this code write past the end of the td_params heap
+allocation?
+
+td_conf->num_cpuid_config is read from the TDX module and bounded to 128
+by KVM in get_tdx_sys_info_td_conf():
+
+	if (sysinfo_td_conf->num_cpuid_config > ARRAY_SIZE(sysinfo_td_conf->cpuid_=
+config_leaves))
+		return -EINVAL;
+
+However, td_params->cpuid_values is an array inside a union with
+u8 reserved3[768], which limits it to 48 tdx_cpuid_value structures:
+
+arch/x86/kvm/vmx/tdx_arch.h:struct td_params {
+    ...
+    union {
+        DECLARE_FLEX_ARRAY(struct tdx_cpuid_value, cpuid_values);
+        u8 reserved3[768];
+    };
+} __packed __aligned(1024);
+
+td_params itself is dynamically allocated as a fixed 1024-byte object via
+kzalloc_obj(struct td_params) in setup_tdparams().
+
+If the hardware returns a num_cpuid_config value greater than 48, the loop
+in setup_tdparams_cpuids() will exceed the 48-element capacity when assigni=
+ng
+value =3D &td_params->cpuid_values[i] just below this snippet, causing a he=
+ap
+buffer overflow.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016091422.3182=
+216-1-binbin.wu@linux.intel.com?part=3D5
