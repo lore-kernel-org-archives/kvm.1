@@ -1,45 +1,46 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011061.outbound.protection.outlook.com [52.101.57.61])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010071.outbound.protection.outlook.com [52.101.193.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8784333508E;
-	Fri, 16 Oct 2026 21:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187011EB1AA;
+	Fri, 16 Oct 2026 21:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792187660; cv=fail; b=XEtdxjjeGM0wWLyDKf2pyfXhPf/A8nvpy1TG9Ebmp/f8rEpCHZCFVZ3LXbF4m3GhW7lTSwajPX+WafeOSlI62OEmKtMSHDUzqkPjR1hl91Pnj7Z60g+iQnSIATMZBUCxktC+1szPy8JVUJs9v7xgkqp9Unj93xTf2G9sW/auCLo=
+	t=1792187672; cv=fail; b=s/h96/bJ+jHnY5c5ULj4/hpIRXXwM42ou3j+bsYiSZKymFg/han0hNCjMWlka1Vr62tFaEvw854kXF4uDq5U/4X3CD83TsPGrbAAiJxJFNCQie5XZvP8/vHnObW3XYM3JJtJw9AS3e9n++3o6gY+SMOrsugl0dgx8fS+/aXsgXk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792187660; c=relaxed/simple;
-	bh=WmS4nmulBncIjqU6bLZCeTL252dVC/kvBWiUSMYs1oU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DUFAwG574UcrqcnsvvMXPE1auqXACc6zqIvkOWHutPygJRe0fNq7fPPc69ECAlK9gWbzfoYg+pPbNOWVSj7rb/gsUhAY5m7G5zHND3fWA4zjQGbPsukCMUb1Ye/kVsi4NyaRxJ7phNI8rcRzW57vN1YJsuZKyg1+BCWQUVcBIWk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tfmri8yz; arc=fail smtp.client-ip=52.101.57.61
+	s=arc-20240116; t=1792187672; c=relaxed/simple;
+	bh=N+vmJmZY76JLuVst3v93gFyHDx4xu+00a6OBuKQC470=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V79qRBQVuizj9US/hVlbb7abubxtoNN9Wn6oTyQNys3wK2I623G9NDSbmE+G9V3iLtuIiGYh3+2BffDlIwEsJ5g0k6kY8v4w5pbiQb2Vhp0EMKymbV7mEPo+WiIu8Hlj132ER7jj0kQZdJemHN1vCbzAE0f7lY+sKDJUYVI7P6w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fOjVtsjV; arc=fail smtp.client-ip=52.101.193.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tfmri8yz"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fOjVtsjV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c+dBA742rJi2VMfDA7YhZufrLNopxvNdiq1og1E/ohvH0TdQzRYcl/xff54AYibiwb4pBCfRZaeakYMeLppWptMSo2QwyqL9RM5zfXKJ7N46ZccTWB+8l5ftsVWJxu+qvdUi9PdI2TKi4Jx8QvovB/qVJOodHKa1/U60K+eKqV7GiuV7t80Vi+28e1HvV8HP0TVtVYY7vYCdocAipK97AbgGaJtH4I0D0GUW4WGhmt+SEgXpn1aAhHeHOPzcE7Z4mOVm5enSfMKSBXNQ5zHwsspj+ZVk8QgT5/4ZLwpoyRyRhoYcB0qTERA7y/T3lS04hjoFh0Hw/EEsjQ2NY5ii7A==
+ b=Vu8heMZzvOvWM4prOP89mD7XByuqZOapoHiIMBcn6eGf+yW/YY+bhGk3zmmLC+66abThP3aVWgFD6bITQ+eTYJ67O7l7kE4Vr+n71eQJsDUFsLHBKM8huYuP9A/JDAEson/h4VubpiIgVuAzSoXGoryNaDDlaOo1aPf4iF8en1dQHJ5Un2uJkitjjeaH+e1Tp9el3pD/+PSDEapNmyPx1K9/aCzkvenEKNhPjc/1qg091PUtq9N9SWUOHUXGrA/WnhcT7tLd02x5B8CjiKFZD6rGW74Nl+mRM+xcdbLzN7Yd2mcu+TWBuRkRK4yfE8LAmDxyX8Wbf7gi5690gAL8yw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sksmAcYZA6cYRPmY99G3DtkPmrSmawMh+REJDoy/P0k=;
- b=Q933sd9H8jNlbsRiN21QUjnwSndty0WbNgsrLbz6mRC+Od+88Jp285qdvW69ZSQ+hu7u7u7qykDG8/hL9sGnOnzFmgutiIP9afchfs1pKfhfVCH5dtvRK8zldQJnPGRVx48EndM7s/KKnK2VD2cSYQVFUqViHNy5jz4HjFoxM/SXFKzZGjeTbZhifINzKFwMxl8y8qP2qwnfTSl3MnypYTYFLPpK+3XiE/YXHKOcYexyrd9ftVn/1GOEbHJR/BdCfN8rGeLnUSuA6Vd0jzW3B9sHfwYXcEP/1qnwzYRmQv3DUfDT7Css0y7WF1vnLrKYRyCzUzDEzkQCEszAqDZ02g==
+ bh=eGVCcHwsmajvrZHU63BVW0NKBhelIJJK+WIPVH/X1a4=;
+ b=WI75TR/2ZKwFLgVcIuQorr1YDcXqeAiWT8Aq9IlCth2d1G7IHItEAMg+uSG90X3tmxjx3iI7PplXUxMXxiPNkM7axYlka2WRgBP9GSfM0QaH7nhLiTE+vI4GouFfImxXsNkgrPXEG50bus9jLVdqHhDXIzH5QBLdQ41cnNIO/mjhLDSugyz4VAmFAFtqpwqHkNd2hJezzmIHUHwHP7vQ2NlxluF/hXfdaYV43FIvyuWjDZzMHd4B1Cn0fXYSDtTAZM2coDB1qj9RtLrfcmmwYpa+ZFpMReZw3w3U6/JvCqBh5WZTV/woO4PyVn7xPWXZg7iPTbPymzJM2V90EGQrow==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sksmAcYZA6cYRPmY99G3DtkPmrSmawMh+REJDoy/P0k=;
- b=tfmri8yzQhZMVknse6TvHPJ/pp9lQAJoe6bo/9Yk9GQazh7BQTWbKmz9GX5AtaI9SMara9FaqlXENlXdtfbOiJjednFnUIPUrtgbJVwS+wZ/xPK+wJbs4epH/OdUUn8bVE7HIdHnVOR0yTh9tZCY1/jf6R52yN93Krj+SgUJxWU=
-Received: from PH7P220CA0064.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32c::8)
- by DS0PR12MB7779.namprd12.prod.outlook.com (2603:10b6:8:150::5) with
+ bh=eGVCcHwsmajvrZHU63BVW0NKBhelIJJK+WIPVH/X1a4=;
+ b=fOjVtsjVvuF6V9JmSU62Fq9wRFXu8q/u0BGWbHH0/W4U4pjlAmW8LH+/gqdZKSkMSRWu4+K0je/eTr8FphNtjbVEU0z6i5DjxkOYZEY3PulLwBfC8wxw8yUWDZBNINWiP+DQlXjxBiemusRTiGhFM7BqSwIlTaplkHlc6VtwbgM=
+Received: from BY3PR04CA0016.namprd04.prod.outlook.com (2603:10b6:a03:217::21)
+ by DM4PR12MB6039.namprd12.prod.outlook.com (2603:10b6:8:aa::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Fri, 16 Oct
- 2026 21:54:14 +0000
-Received: from PH7PEPF0000000A.namprd04.prod.outlook.com
- (2603:10b6:510:32c:cafe::3c) by PH7P220CA0064.outlook.office365.com
- (2603:10b6:510:32c::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Fri, 16
- Oct 2026 21:54:13 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.17; Fri, 16 Oct
+ 2026 21:54:26 +0000
+Received: from PH7PEPF00000008.namprd04.prod.outlook.com
+ (2603:10b6:a03:217:cafe::81) by BY3PR04CA0016.outlook.office365.com
+ (2603:10b6:a03:217::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Fri, 16
+ Oct 2026 21:54:25 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,23 +48,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- PH7PEPF0000000A.mail.protection.outlook.com (10.167.243.41) with Microsoft
+ PH7PEPF00000008.mail.protection.outlook.com (10.167.243.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 21:54:13 +0000
+ 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 21:54:25 +0000
 Received: from speedway8455host.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 16 Oct
- 2026 16:54:06 -0500
+ 2026 16:54:17 -0500
 From: "Pratik R. Sampat" <prsampat@amd.com>
 To: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
 	<dave.hansen@linux.intel.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
 	<thomas.lendacky@amd.com>, <kim.phillips@amd.com>, <nikunj@amd.com>,
 	<michael.roth@amd.com>, <ashish.kalra@amd.com>, <prsampat@amd.com>
-Subject: [Patch v3 0/4] Introduce Enhanced SMT Protection for SEV-SNP
-Date: Fri, 16 Oct 2026 21:54:03 +0000
-Message-ID: <cover.1792184487.git.prsampat@amd.com>
+Subject: [Patch v3 1/4] KVM: SVM: Re-queue events that were never injected
+Date: Fri, 16 Oct 2026 21:54:04 +0000
+Message-ID: <905ffc25da83b1af51698fe4544d361203578a80.1792184487.git.prsampat@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1792184487.git.prsampat@amd.com>
+References: <cover.1792184487.git.prsampat@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,146 +79,142 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PEPF0000000A:EE_|DS0PR12MB7779:EE_
-X-MS-Office365-Filtering-Correlation-Id: 937a9890-5033-4180-564f-08df2bd00450
+X-MS-TrafficTypeDiagnostic: PH7PEPF00000008:EE_|DM4PR12MB6039:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6c8d36c-1dd9-4fb9-634e-08df2bd00b53
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|23010399003|1800799024|36860700016|376014|56012099006|6133799003|18002099003|260925021911599003|10067099003|260925021311599003|3023799007|260925022911599003|13003099007|11063799006|261009223027099003;
+	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|6133799003|18002099003|10067099003|22082099003|11063799006|261009223027099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	Xy2tKdP5D4WwOXpKcjFv3fAZrYEdKPkjJKeg98l1CUvyJZ6EYaOV7+UMsUOWBqTMZsAO9BnKr3Xw1edp8fx6+LeVkhC7c4YNAA+TgxEYy8N0uSPN4BY0Cpe5J2F0KfdCN2iXv3ZnlcVoMMOXDDB4MuSl4SHjZK+r/wujYKvPMvle2AAmO1ji4yR22+tJN71oB1LOW7N1RDfU97bFn6pOemi/P9+iDs1Gr7aGx+I0TpxG6Qldhd5dkCVigC9/uz+M6fujFJfUn4tOACFnsbxMjV15r2e60GiaYhBlrqR8laOPLTrlSY0Uk+wVXSfSY3AGTGeXXngw39L99pkJ3G22eQb8zYS7J7IeQ3m6bbGtnZ6a6c+4mR8vhaK8BTgY8vN4V1MnAaOTlK5cZ19anO9RtLDRraKjdCRK0NOY4JiqskQ8RCNbqFnIv7CN41ZbmBWkwdoHCg6AQNO3V8wzIaTGxMO+/b468XyCi7T0aWYQWFEiDuiHJP/Bo4+591mytfGVsasXLZq6AUhzKxLt+c9Tran9NTi7trw8VmBzee1KZuLqRY26vMPUtEHP/+KFF9EDrJIa2iQOkqkEeGJmpzl7aH8F1SHRW2NZG1m0DwHP9CiussEWnPgduigBknvojCGndkTj2rII6t6/1Z8lfYcfqXK/pe1gAnkZUJXJZfYhUvs=
+	J+Gbi9FKdVQpCfmDuZ668HIZdxWELRU3DXXhjWePMXsplNX+YZTk9IjBRJXT0vGEnnoxCgxSsxGlvs92yQ5Nyz39EjldD88PgXpRJVNJ4GDoP0d12+v7pFVTFvEyX8tuWMgvUV/+V8VNJvez9e69MTdJ/Hy3XUBAEfd9RE5S+EUIotaJ2IPeUhwyvgONWX2GtV6dYr8X9sAwNmWqGN0HAGOtH7QUtQefIMFCvJqjKiOoFmB+VtIuiAwJLzbrC32VMqTRY3DymJejsT2h8TsxVUduGaq5J2bS3N2GQZQ8XWSEqCjLxotQQJCYqQjLILdtYrsyuDrG2DDQpm95SurczH1HgosBeUKD7HTWTH6wL9RczdSF1bouZtNtixqrJyIOaiMW3sG6XPaB/afKszrE/WE+vWNnucUnUzoBoxSbgUKbyRTjH/0U4AwPIXmmLZ2NJaVS/2YUS3RVcE5wCLTSTPRN+57EtJEeTpUXlab+kthR2yCbG7kHU3M+UM0ZW1xsvbEjGCK63SHTL5zQj4cDFjlkt9NZVvFO7YeekuJl2u9OFLLD4KCL2vXJB30IYz29zRiiE5VD9qF3EBf1HLWxMxk/+ViP0KIhskrJi7arrdchNEybDG7MG8rdNRTimyNKIsP/d3r/tvMEVCRTWmzx7Uj2J78l5F4jQJgGZo7Mjyw8aB2AlqsFctc3ydR4SO0b
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(1800799024)(36860700016)(376014)(56012099006)(6133799003)(18002099003)(260925021911599003)(10067099003)(260925021311599003)(3023799007)(260925022911599003)(13003099007)(11063799006)(261009223027099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(6133799003)(18002099003)(10067099003)(22082099003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	fR7UFGrmL8SEGEddrh1LuPCUPr9MDBz1eQiE2QMlH2gK0wpAaj3uoyEbgCeAuKg2veNO2oNAW2oxhIOO8aRys0S+tMZGUtWhFdmiyfJcbUPjKohGRvjhkqLz9zzTYWGroIsyvCUvsnTny0Xy1BOAn2E0+6Q9Baa08cowDtS239Egd9LOrRlQOPcn7gCjmnV94OdJywyODVWyv4UPKFDmJ4TqJ4/vIOs+3oK1kL2Gh0+AztKg97vcckfSaHmVSbV8AKc56rfM67yGtEZzAOY44+j5JXsDSyo1/UEcOHdfkGNUda2nY+Rr2MYKVB4nE9IBGqXQDetyHRRrPzfse/v4AXrlQcSMFbAyq18FGUHm+wC1jKkm61+BkPF+7UTTC7yLETIaPoHy6vrdDA8dXMoOx5T2g8l+Gx3x0o9vNu8zk/fye5YmfnIpsQnF8tsNC9Q5
+	fpVofqrmmfo1xCah+jsEwb4AghVvHbeL0PQN8lFrQe43Z+BiR/e6DycCN7RFBDOCJb3mD3+mZTOWYrtqE42ZKFYgA/BLi6Wbbzl+6kOiOwTzPLgOThFeVMPO8NMgMZQy+Ha862RpfNfs/xoSsflRJrAqLy8NAT0exG+DyxvIC2Z4TUTbPTR3b5cAoNTJm2BstX6184wkbGX/QMxjRMmZzL5QYvT0h48QY9kv36rVzzt94yz7p8J1lv6zRiOkAX9lZQhVqvLw2dbTKM69Z3pt6BkJI4ZiodTrkwPuVukDOd2iS0SoMuY9VlYR7cSEe5wOszz7+Uu1roIylH+HCNkTsH9Z/1OX8+2HNrGj3x0IxqiYXIGCalHsOH6QVnt8mcCa/nSkdiaA89TXMfnTqzP4R1BeJMD+MXRk1Y9GhjA9MfFV9F30Q3YReM+y6Sj8Kk+q
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 21:54:13.4837
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 21:54:25.1994
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 937a9890-5033-4180-564f-08df2bd00450
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6c8d36c-1dd9-4fb9-634e-08df2bd00b53
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	PH7PEPF0000000A.namprd04.prod.outlook.com
+	PH7PEPF00000008.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7779
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6039
 
-Enhanced SMT Protection (ESMTP) allows an SEV-SNP VM to require that,
-while one of its vCPUs is in guest mode, every SMT sibling thread on
-that physical core is either idle in host mode or running a vCPU the
-guest itself has declared a legal sibling.  This mitigates the
-side-channel risk of sharing core resources with untrusted host threads
-or with another guest.
+When injecting an event into the guest via the event_inj field, a
+non-zero event_inj value on #VMEXIT means that the hardware was not able
+to inject the event into the guest.  This used to only occur for the
+VMEXIT_INVALID intercept code, which was a fatal error and resulted in
+the guest being torn down.
 
-Unlike core scheduling, where co-residency is a host kernel policy
-expressed with cookies, ESMTP is enforced by hardware. The sibling mask
-lives in the VMSA.  The host is not trusted to run arbitrary kernel,
-userspace, or interrupt-handling work on a sibling thread while an ESMTP
-vCPU is active on that core.
+Enhanced SMT Protection (ESMTP) invalidates that assumption.  When ESMTP
+is enabled, VMRUN doesn't enter guest mode immediately; it stalls at a
+synchronization point until every sibling thread is either idle or has
+executed VMRUN for a legal sibling vCPU.  If an ESMTP timeout / illegal
+sibling exit / interrupt arrives while VMRUN is stalled, VMRUN can now
+terminate with the corresponding #VMEXIT intercept code, without
+entering guest mode, and thus without injecting the event.
 
-Both KVM and the guest fully set the VCPU_SIBLING_MASK, which places
-every vCPU of the guest in one group so that any two of them may be
-co-resident.  Combined with the ASID check, the sibling of a vCPU in
-guest mode is then always either another vCPU of that same guest or a
-thread idle in host mode.
+For example, on a 2-way SMT core running vCPU0 on thread 0 and vCPU1 on
+thread 1:
+  Thread 0 (vCPU0)                         Thread 1 (vCPU1)
+  ----------------                         ----------------
+  Interrupt A injected to the guest             in host
+  VMRUN                                           |
+    |                                             |
+    v                                             |
+  Stall waiting for sibling                       |
+    |                                             |
+    |  host INTR arrives on thread 0              |
+    |  while it waits                             |
+    |                                             |
+    v                                             |
+  #VMEXIT                                         v
+  Interrupt B injected to the guest              idle
+  VMRUN
 
-Usage
------
-Requires patched OVMF [1] and QEMU [2] builds (unchanged from v2).
-Launch an SEV-SNP guest with ESMTP enabled on the sev-snp-guest object:
+In this case injecting interrupt B clobbers the last event. Interrupt A
+is never delivered and lost forever.
 
-  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,esmtp=on
+Therefore, in preparation for ESMTP support, accommodate for potentially
+lost interrupts by detecting an undelivered injected event and
+re-queuing it so as not to lose the event.
 
-ESMTP is opt-in because it carries a performance cost as VMRUN stalls
-until the sibling runs work from a trusted vCPU or is in host idle.
+svm_cancel_injection() already recovers a staged event this way and
+becomes redundant, so fold it in.
 
-The guest reports the feature in dmesg among the SNP feature names:
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
+---
+v2..v3: No changes
 
-  # dmesg | grep -i SEV
-  ... SEV-SNP ... ESMTProt ...
+v1..v2: No changes
+---
+ arch/x86/kvm/svm/svm.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-Empirical test
---------------
-* Identify siblings via:
-  cat /sys/devices/system/cpu/cpuX/topology/thread_siblings_list
-* Pin the guest on the siblings
-* Spawn a load in the guest e.g. via stress-ng --cpu 2 for SMT=2.
-  Expect the guest utilization % for both sibling CPUs to be at 100% as
-  the vCPU siblings are deemed trusted
-* Spawn a load in the host latched onto one of the siblings.
-  E.g. taskset -C X stress-ng --cpu 1
-* Expect CPU X's utilization to be shared between host and guest %.
-  Also expect drop in CPU utilization on the thread Sibling CPU as when
-  the host task runs the guest will be forced idle.
-
-Patches based on cryptodev-2.6
-
-v3:
-* Collected Reviewed-by tags - Tom
-* Reword esmtp_timeout_ns description - Tom
-* Use sev_status to determine SNP support for guest as well - Tom
-* Convert esmtp_timeout_ns to u32 instead of u64 to avoid a #DE error
-  if the division extends over 64 bits. - Sashiko
-
-Response to Sashiko AI
-* Possibility of a stale EVENTINJ to clobber a valid EXITINTINFO here in
-  svm_complete_interrupts():
-	- Today we make check only on a non-zero EVENTINJ rather than a
-	  VALID one since that check on exitintinfo is made on it
-	  anyways later within the function.
-	- AFAIU, it is not possible to have leftover events from L1
-	  injected into L2 wihout the valid bit set.
-	- Only an L1 that does so deliberately can possibly trigger this
-	  and even then the impact is limited to that L1's L2.
-	- I could add an additional control->event_inj &
-	  SVM_EXITINTINFO_VALID check if is really a case that can be
-	  reached in reality but keeping it off for now.
-* Not syncing msr-index changes since several bits apart from ESMTP are
-  also changed and perf tooling maintainers generally sync that. However,
-  if needed I drop in a patch that syncs the MSRs too.
-
-v2: https://lore.kernel.org/kvm/cover.1791302373.git.prsampat@amd.com/
-* Move idle wakeup ICR programming to svm_enable_virtualization_cpu()
-  instead of sev_hardware_setup() - Sashiko
-* Remove cond_sched() in ESMTP exit paths - Sashiko
-* Add a VMSA builing of ESMTP fields for hyperv - Sashiko
-* Add ESMTP to SNP_FEATURES_IMPL and SNP_FEATURES_IMPL_REQ - Local
-  Claude Sashiko instance
-* Cover hotplug CPUs / SMT changes by programming the ICR for all CPUs
-  - local Claude Sashiko instance
-* Add esmtp timeout documentation to kernel paramters
-* Collected Acked-by tag - Boris
-
-Not syncing msr-index changes since several bits apart from ESMTP are
-also changed and perf tooling maintainers generally sync that. However,
-if needed I drop in a patch that syncs the MSRs too.
-
-v1: https://lore.kernel.org/kvm/cover.1789399214.git.prsampat@amd.com
-
-[1]: https://github.com/tianocore/edk2/pull/13128
-[2]: https://lore.kernel.org/qemu-devel/cover.1789399242.git.prsampat@amd.com/
-
-Pratik R. Sampat (4):
-  KVM: SVM: Re-queue events that were never injected
-  KVM: SVM: Add host support for Enhanced SMT Protection
-  x86/sev: Add guest support for Enhanced SMT Protection
-  x86/hyperv: Add guest support for Enhanced SMT Protection
-
- .../admin-guide/kernel-parameters.txt         | 19 ++++++++
- arch/x86/boot/compressed/sev.c                |  6 ++-
- arch/x86/coco/sev/core.c                      | 13 +++++
- arch/x86/hyperv/ivm.c                         | 11 +++++
- arch/x86/include/asm/cpufeatures.h            |  1 +
- arch/x86/include/asm/msr-index.h              |  5 +-
- arch/x86/include/asm/svm.h                    | 12 ++++-
- arch/x86/include/uapi/asm/svm.h               |  9 +++-
- arch/x86/kernel/cpu/scattered.c               |  1 +
- arch/x86/kvm/svm/sev.c                        | 48 ++++++++++++++++++-
- arch/x86/kvm/svm/svm.c                        | 41 ++++++++++++++--
- arch/x86/kvm/svm/svm.h                        |  2 +
- 12 files changed, 157 insertions(+), 11 deletions(-)
-
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 7d59d301e1e5..5d15c706e43b 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4340,6 +4340,7 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	u8 vector;
+ 	int type;
++	struct vmcb_control_area *control = &svm->vmcb->control;
+ 	u32 exitintinfo = svm->vmcb->control.exit_int_info;
+ 	bool nmi_l1_to_l2 = svm->nmi_l1_to_l2;
+ 	bool soft_int_injected = svm->soft_int_injected;
+@@ -4347,6 +4348,27 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
+ 	svm->nmi_l1_to_l2 = false;
+ 	svm->soft_int_injected = false;
+ 
++	/*
++	 * Hardware clears EVENTINJ field when it injects an event.
++	 * A non-empty EVENTINJ on #VMEXIT means the vCPU never entered guest
++	 * mode, and thus that the event was never delivered.  Migrate the event
++	 * to EXITINTINFO so that it's requeued instead of being dropped.
++	 *
++	 * An undelivered event doesn't imply a fatal VMEXIT_INVALID. With
++	 * Enhanced SMT Protection, VMRUN may exit with an ordinary #VMEXIT
++	 * without having injected that event into the guest.
++	 *
++	 * Clobbering EXITINTINFO is safe precisely because the vCPU never
++	 * entered guest mode.
++	 */
++	if (control->event_inj) {
++		control->exit_int_info = control->event_inj;
++		control->exit_int_info_err = control->event_inj_err;
++		control->event_inj = 0;
++
++		exitintinfo = control->exit_int_info;
++	}
++
+ 	/*
+ 	 * If we've made progress since setting awaiting_iret_completion, we've
+ 	 * executed an IRET and can allow NMI injection.
+@@ -4410,11 +4432,14 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
+ static void svm_cancel_injection(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+-	struct vmcb_control_area *control = &svm->vmcb->control;
+ 
+-	control->exit_int_info = control->event_inj;
+-	control->exit_int_info_err = control->event_inj_err;
+-	control->event_inj = 0;
++	/*
++	 * EXITINTINFO is stale as it holds the event from the previous #VMEXIT
++	 * (or from the last time the current VMCB was run).  Invalidate it so
++	 * that svm_complete_interrupts() requeues if and only if KVM staged an
++	 * event in EVENTINJ.
++	 */
++	svm->vmcb->control.exit_int_info = 0;
+ 	svm_complete_interrupts(vcpu);
+ }
+ 
 -- 
 2.43.0
 
