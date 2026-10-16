@@ -1,136 +1,172 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE9625393E
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 09:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141933; cv=pass; b=Y6dDszyGs7Kes0jl32qFbip5twl7cEp+8oX4kmzb1S2AVhfYLCMR+b8AKAeeYpH3kLpb4YtTHyun+h8Y5K1L08zLdLkmB6tbP+CZSm+jWgkaTpoemA8CStZshMfYOiEUEWdEROepRihbwIwgAQY1hB8LsY8k4CjESOVlXCV06Zs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141933; c=relaxed/simple;
-	bh=4phRvFpHhegv43W7JKa3t8dLnLZvXANt5x2EEvNl+8w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hyxN97EM91R3niApBmqVkGOOFVUjH4aR0mQFDFy6Lu6inkJyCdD87kZ+7EYwfixGsiaGkzMyjvmBxBsi/RY5DfZAOyooAdCfFK9wC1ma9zovwMQwNsWeTJka4meCS8IHOg9EIDlqkAs5CqDUVnC9J5IozRSLt2K/nX9kkfupkcU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ROKSmRaL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mz025evQ; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D57466B75;
+	Fri, 16 Oct 2026 09:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792141980; cv=none; b=GII0as2LoigkeiFIYS8wvVNyoWXiucGWMlOO4YFQnqNE1X9S5p/qDVEEGD68qx4fn1OOw1OBx876MAnjPiqLqqw/lqv36NII3ngAccO8I9R6GgUreivn9O964KhKJrJR4N/pW/CuqxjNvm27WuapxcLBMl+OzeDiPHKGLzDed2g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792141980; c=relaxed/simple;
+	bh=tIkUz86ONiXurGzEfoccU/KpLb0S8j0MPoniAWV3O6g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GnVkQeEEB/p/+LvubBv9QBasF5gmHpD6H4ahByto5LJV85+G+Irj+LIyeij3Rct5dyB6CUKQhezQf+oNloLPO/wHY/nSiwQlFHEK/msudYr0iCU8aJPY+xttO4Ri4qzO+R68O/C0fpAUbZiwYWtwh23dEwduv+MaRuIOY4yJK6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYZgl/L4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ROKSmRaL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mz025evQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792141930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WJJ41mm7nzuaQpGjKZP6QV+aCSoS6Gxyv7mNQIQLo5c=;
-	b=ROKSmRaLenEghGHVQQVYKqC88qoLg1/rwHrcFBRVqB73+qjThguGtPGYOJE/dGPdKTcYfr
-	fXieBaXSXR9lDu5Gmpdd09wOW3exwys3yyPg37UwKgcb6V60wURspBq+oQF8JmxSz0AY8Z
-	P1i6ijsMfpB6Fyxwmril/0uMfQqpt3g=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-wGkg5fV5MZaACXIy85HDPQ-1; Fri, 16 Oct 2026 09:12:09 +0000
-X-MC-Unique: wGkg5fV5MZaACXIy85HDPQ-1
-X-Mimecast-MFC-AGG-ID: wGkg5fV5MZaACXIy85HDPQ_1792141928
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48df02e6b40so1517298f8f.3
-        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 02:12:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792141928; cv=none;
-        d=google.com; s=arc-20260327;
-        b=p41i1nebZS3d3rmm30LzXfCt382m2esi9oBXcvgyA15RU0Pwl4/vqdKvbf/OLbcFd5
-         uxHGLYJ1jq5AALygyUy6DRKZEa44n7sOyEP1xFEeKqw+l6/V2pQCftP8qYYgfE6Olpov
-         7qQ9+WiFGgUxC4QRZXvYjnKjTMuyozFhK+tDkfP52cSFezRPB/+SpEuu84Vh0JoXBBLx
-         9IooGdlvWQWnT8PXp1z3wIIZ7P+YCswNztZnLjmYlgiADY9/oiYJJeEtqQlsU47WsMG/
-         HAl2S/jAs3lUmSMlcfIjO9/S6FIV3Ew5myCKTStcZBaKmUGUxz5LtfQ6FvoIv5E9hwG/
-         Mf4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WJJ41mm7nzuaQpGjKZP6QV+aCSoS6Gxyv7mNQIQLo5c=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=ZPMOGEyLUA/fy8gLpOvrxqnQKZuYsBAYKrkCKBDK91tyyB3SWCZotiB9npWLXxZmsl
-         A+RaO7N63sInpbMJ+koQPkqLVb+g+AIxmgN4Zn1TIRR+5EYBNTCv126VC7e8k9n3gx/q
-         ALQO11XltHDdKjSseA4d5yeYQQkQLy0UnVFlxMy1M0BSClrcOmg4CfjjY2lyVGQK9wBm
-         XBWywgSk1yl3YS7FEW7RsGt1bUlTQcIZ3ClRQbZL5crXYgx9bzVBmFJQUX00LYL8qhrM
-         wwXg+ujMRvy41iBOsFBNmHeqUwvckuzIrVwTGJPEkPJnlQ0e/ibgn0Gpl4I0ye7ardIt
-         IA4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792141928; x=1792746728; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WJJ41mm7nzuaQpGjKZP6QV+aCSoS6Gxyv7mNQIQLo5c=;
-        b=mz025evQkBaqzqgPS9qb0isFy5r3Ps6sh4cR7sUrqD/HVwBA9ifHCt6ZvLsV+ZYtic
-         /PPGHl2iso/4RANiT1qzUfqZwR+rRUQ+fVl/K5FdeREC5F1vi4oi7Mqw6/E96BCbHt0y
-         8xHQjjR6a+Qd1KGxX4758byaD/KvPEv9f/xqRDFj0CjfPGF7uRyriDOavTFoxX6eYg99
-         5mgBKNCsYMm6oZkWup2jPwbh2mdaTi0e8cBm5lVm/rZx7EWmUYHFkxcPc3WLhFLsJbm8
-         sH7iyWfpJbGHjy/OSIBoijFdXVuWPKmJXyThA4ArK9k1iNyVzJS/32f1niEQa6WOegc5
-         3zLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792141928; x=1792746728;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WJJ41mm7nzuaQpGjKZP6QV+aCSoS6Gxyv7mNQIQLo5c=;
-        b=s/6IAxiEIHT2Ug9kRdSujb0mZXpfYuzcx1LiWmZCIVjuhS27ajekqito0KEnAKMPTm
-         jNKaqOAzVAZMx6GMQ5E/OSNajmlPNrczkSj/er4q9pgjI/lxI6xMzpM+ks7BHlFmUQG5
-         S8z0I3BI8Ab1ZlZJpEXx4DDSxF/kFCgA5HLnxG9k80yjMOWxCG3YPKsZQWJVgNXSFVcR
-         nRsnAbB+TrvyoBXpZ8VZaKLazDL4V6Xg++n0cGXllm1zQXW/Zpv8bRfEExei2c51SzXT
-         xVdDL2ltRSb0vLU2uPi9prPrhLdKRBMssqEZ8+3t66MEhzI738iMTIa9/KROP1MpRfZL
-         Kbxg==
-X-Gm-Message-State: AFq9FYLEt/qW2F2KKfZBZTDC7rykwvtF6c2ZwGD5hUgYio/wYQBmrZIq
-	z4xA1g8KygAUlKhFk2s6uOxfwJglAz/LL36zaJ/WgVI+hGOiVZdoAyG1/8TAsa3Yrm2ZWClI+NV
-	N6BlDovpxWFl4iIn78SAN5dVWFllQK0S/ZHzEisN1ckLi7qhfQ/52pmUyOuwbJvP9Q0c5W1H97C
-	Z8Ft5av0eOAoI7s0MyK1GXjefCS4Jk
-X-Gm-Gg: AYBFou3kxXKmU8DxE1MiTgoPM9qUv1CnqNkJ1+xy/w8CE4PLUVpkmPIOllq7iRV6ktZ
-	3F2NoFg0zIHal95i+fFbPFmV1HkL6h2GDMzxICi6ds+Bqjv/ej+Q/nizq37t/bXHUaUIRlczt7G
-	uSraXHEpuzXlB+AJ6utVIIK0dVcPYN9RxVZ3aUi4lXLkDglVPX4kO46JPdgDpWLpRqZE7PONZJz
-	E2y952JjJyL8obMluZtBpj9/SMsY8YACs8ldcmuKqzGZObouaLalUoikM7pLg==
-X-Received: by 2002:a05:6000:4b0c:b0:48d:f3a5:4563 with SMTP id ffacd0b85a97d-48df3a5458fmr11200747f8f.20.1792141928239;
-        Fri, 16 Oct 2026 02:12:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:4b0c:b0:48d:f3a5:4563 with SMTP id
- ffacd0b85a97d-48df3a5458fmr11200696f8f.20.1792141927682; Fri, 16 Oct 2026
- 02:12:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYZgl/L4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521BE1F000C4;
+	Fri, 16 Oct 2026 09:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792141979;
+	bh=mQH+kXpKSTymGia/uumXbgT78aV2agpPTvM0izIRqhE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=LYZgl/L47fPO8Aq+OVvp5UAIfE6hgsH5zIh9oJrQPyGOyzlbTMZ+sEC6Ba2iivygG
+	 TkPuULqc5Ixpat8F42Z/hB853dD7BfPLHituatCT9QtBtX37bYoB2UITBUScGPZJTv
+	 /usSd5kkvMwdNHq8GlE8NVjVR68AUrk8rBGTbLTczFneKEc+Vlra2BuBzIxoldvSJD
+	 5k/PrxNtsyWoMGyB7jwmq/3ALOfJ2jyscwflYFHeck2tVFD/wKAmWKx5Sd0GuFkzRm
+	 5Nais/Vmmp4nMWPIYN3Q5NTbSyK91tqJb4EB8JS7BrO04489Jub9pYLLW9dhx6IUPi
+	 ELIJk5iqbinsA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Fred Griffoul <griffoul@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH v2 00/11] mm: Memory providers for guest_memfd and
+ iommufd
+In-Reply-To: <20261014093733.90312-1-griffoul@gmail.com>
+References: <20261014093733.90312-1-griffoul@gmail.com>
+Date: Fri, 16 Oct 2026 14:42:40 +0530
+Message-ID: <yq5a4iem57qv.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261016044415.958618-1-seanjc@google.com>
-In-Reply-To: <20261016044415.958618-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 16 Oct 2026 11:11:55 +0200
-X-Gm-Features: AclHuK9WZ26zN9lSzbCdIOrScFxTk9_YmWZKtqGI-UaxpTJBYIJrmsnce1N66a8
-Message-ID: <CABgObfbm6KA_m-C9fCW+k7zca9OUFaAhw6=1u0pFuQGEfXXfCw@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: x86: Pull requests for 7.4
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Oct 16, 2026 at 6:44=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
+Fred Griffoul <griffoul@gmail.com> writes:
+
+> From: Fred Griffoul <fgriffo@amazon.co.uk>
 >
-> This cycle is "fun", only the "mmu" and "svm" requests escaped without a =
-conflict
-> or some other notable mess.  That said, I don't think there's anything pa=
-rticularly
-> thorny to deal with, just a lot of minor stuff.  Details in the individua=
-l pull
-> requests.
+
+ [ ... 24 lines skipped ... ] 
+
 >
-> My apologies for not getting the guest_memfd in-place conversion changes =
-sent
-> along sooner.  I really wanted to get you a pull request around 7.3-rc4, =
-but we
-> simply could get the code ready in time.
+> Why a new interface
+> ===================
+>
+> kvm_gmem_ops gives KVM a way in. For devices, the only option today is
+> a dma-buf plus a private call that iommufd looks up with symbol_get(),
+> which is how vfio-pci works. Each new owner would need another such
+> lookup, and iommufd would end up knowing each owner by name. With a
+> common interface, a provider module only calls into mm, and nothing
+> needs symbol_get().
+>
+> It also means the provider revokes a range once. The VMM hands the
+> same file to KVM and to iommufd; on a revoke the core forwards it to
+> every consumer, so KVM clears the range from stage-2, iommufd from the
+> IOMMU page tables, and guest_memfd from the VMM's own mapping, all
+> before the revoke returns.
+>
 
-Pulled all, thanks (for now to kvm/queue). Even if it was a bit messy,
-part of it was due to more than the usual amount of changes in 7.3.
+What confused me was the introduction of memory providers as a subsystem
+in their own. What we really need is the ability to map PFNs from
+other subsystems into KVM stage-2 and into subsystems such as iommufd?.
 
-Paolo
+Restricting the scope to the above, at least initially, would make this
+much easier to reason about.
 
+For my use case, the VFIO fd becomes the backing provider (referred to
+as backend below). We can create a guest_memfd using that
+resource_fd, allowing MMIO BAR ranges to be mapped into KVM stage-2.
+
+Another feature provided by this series is the ability to map the same
+range into iommufd. We probably want to restrict this to shared ranges.
+It may be simpler for guest_memfd to drive this. The resulting
+relationship would be:
+
++-----------------------+
+| VFIO PCI BAR backing  |
++-----------------------+
+            |
+            | guest_memfd_backing_ops
+            | Supplies BAR PFNs
+            v
++------------------------------------------+
+| guest_memfd                              |
+|                                          |
+| Controls shared/private state            |
+| Exports shared, accessible PFNs          |
+| Revokes consumer mappings when needed    |
++------------------------------------------+
+            |
+            | mem_provider_ops
+            | IOAS_MAP_FILE(fd = guest_memfd)
+            v
++-----------------------+
+| IOMMUFD               |
+|                       |
+| Creates and refreshes |
+| IOMMU DMA mappings    |
++-----------------------+
+            |
+            v
+      Device DMA access
+
+
+Another capability the memory-provider interface could provide is
+kernel-initiated IOAS mapping, for example by allowing a guest_memfd fd
+to be used with IOAS_MAP_FILE.
+
+Currently, a private-to-shared conversion causes a VM exit, followed by
+an IOAS_MAP for the newly shared range. Could using guest_memfd with
+IOAS_MAP_FILE avoid this?
+
+Perhaps the series could be rearranged as follows:
+
+- Allow a guest_memfd fd to be used with IOAS_MAP_FILE.
+- Add a VFIO or other backend for guest_memfd, without calling it a provider.
+- Add support for guest_memfd to provide guest PFNs to other subsystems
+  through its file descriptor.
+
+Would this work?
+
+-aneesh
