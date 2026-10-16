@@ -1,151 +1,234 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538D31DF248
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 19:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792179697; cv=pass; b=MeZZL4+3jcSKEsHEGN99eTUCGDRTP20eF5vUsMt4GXQL/KdHf82dGttbOgYGMsFzQSxBi0aKvrLXbCKDwhd+VQIv80II1x62sBrmle87GvdQj5tIbPgpJVWXjqQnhqvWEMhzrsU0U+6QK5Rfg3GfstcqnwarcQFpVr6r0sCIdsY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792179697; c=relaxed/simple;
-	bh=S7u97F0mKuHEaXlleeG6ov/Y3VkqNsMCwMjqHsihwxw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lWjp1pd6BAjKEVaBkHx+Okn1M+gX+BPeiz4I4MgcIuSp6ujL1d0OwW4B3Qdu9k9TaV0SUcQeJWDdIsOMpInLNerf67dcQGbsR0MBoH22HLOQuG0kJwETzfgo2WhF7jQ20jS/ka9f0ysIiboK9a/NL96IFNz8nN7tTHHIs5ArUy0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oQ4WZRH/; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059643CB2FA
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 20:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792181344; cv=none; b=qavGVhGoW7V2nzv6tlRnB57jNGJLcNvxPz4wrBBpBufH4jhSgvuTUoOLRyc5Q9JZ198yIR0gk5spAdAnJoCTlupkR6C6MEH3sFk6O9sL6qbSScsRiL5Y5bZ7CXXk8uv5LRNGzvs+IsQe58GdeuwTB/Vn4ybRq82pNQgS60auAto=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792181344; c=relaxed/simple;
+	bh=RI04OnsvMB9uQ7ea/1UpgCPq9PltzrbbletOSbqIk8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YC41X12oJ7tf+NK7O/8hIStPwv/TcOQJKJXCZe+w4MjfDpbkZI/8012bBiphuUBcpMaFI8Kfn2YKOiY9ikmaMUA+pgtIr9SgeAJn0DmwilZ2ADHgNyxx2QirtKkKjPhRwhC5/TUCfLosict+sMF7ATyh/cX0Lb6rOSBedJ/dSNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nu66+NBk; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oQ4WZRH/"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-533202fe429so61571cf.0
-        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:41:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792179695; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Uh3oPRrpmceJZFIo5JjwI4e9A4eQv9k42BQF5vsOVmAzfKViSs6pwLAEqo+9ZuhxWX
-         6D4ggsAAgIRxStEQEmAbHjjuSIy3MhCrR5Mwk0CSvpYxG4w+9wdGhfbWk+WWBRilccEr
-         A1Hr+9k5TjTRu8X7IGVsGS5UaW+6CRqG/tuOdVWyCE3Uj5Zs959EMLEAmQ63UYD/jlre
-         pCwJeWHasG4dCPZ4lHJT3nIGjZY0w7bTe7uKN6KOEixz+e9wwpF7ToCwXJ4+kqTrefgK
-         EcxRIo2iPoD5MEhEuleziLJKpCu/2A+uCX/om4MMWzBESAOME7PSnKtPv+ctXJL6tuJb
-         70mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7I6WLMkKR2BgKIxGRcqSFhqIpV9v6f9mjoXxwWLiuPk=;
-        fh=WFlLmmWDU+ybWkMF5PYAPG2AiuALf8zXitLFjihV+qs=;
-        b=VaiXwG8bTxI5qu6m8TIdRmAAAFC5j0/NuSAkmLLl5BoPpAGhNx4M+4OzBayyyjI6Ck
-         NAMuXyNtbM3ZyLxLYUqcFCA243PJNIuR2C2EBQI0n6NZZolKs30XgeybKVl+1DpBmntz
-         1A0ubQZnMfcq6E0fq2KaiTfT+pOmkWjdWh7X3bfNUNzhIG+m+VQyWt5WAHuSD0+TnFK7
-         KD27IKyb2seCgSVY9F6etzsKhi7ZmSi1BXZoJXz2x1uIW97vEQKXsEZfys+4XX3y41Rk
-         +9Yy5H1eDVwjv3efaAqacyXKW194tKtpjBlkng2OCxnqlagpIaNiXdYKGGI1EsBEz3MD
-         xlLw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nu66+NBk"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3a0aaa0fd13so357033a91.2
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 13:09:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792179695; x=1792784495; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=linaro.org; s=google; t=1792181342; x=1792786142; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7I6WLMkKR2BgKIxGRcqSFhqIpV9v6f9mjoXxwWLiuPk=;
-        b=oQ4WZRH/s4OlqMsSt1YCy+GDPxLQD8NKDV3kNsjiU4D/ngxoJmU5b6qr2TuhbHxLh3
-         KQcR1ogam8OZBBoG3NNM+ABOG6d4HWcms3gs5NHs5NFgySsjLxheDPE75gNHKGefi1sp
-         Jc7oudV06kCUrL5iLnrxgGBAtGU2YqfMHZb1NHGIsdCmvgFnkhccnQMheDDgMjeJvypI
-         XvBz3aI/05Xdaf6d2pgrydkbSAhEs79Rl/oLVwM1qo7379T38fGoBKRwq2LUXtYrOR8G
-         Zza/PUdosEaWkeX6C8JXb1FPddosj+2fQCTPz4MFkRfE9+pDcTJt8CY/RBCCAnhFF08g
-         N2bg==
+        bh=9qKt714wTpFnQNXIMAii1yJHjNpuAXnTO+pThrST3To=;
+        b=nu66+NBko4mS+MCnexIkWteafWvdP8iGNWAMoX85gcNo7kWOpBA/p5brN/GJOhO3Pl
+         0F5fkKHV5WyujcFgmX1YhUiTp3apmWZl/GLIia3ihtKgGC+21Lqb0s1DcZNSu0smffbe
+         f9uBfp3+8/iFamVbE5nKBs6q0/yVBPNEMxMg5ypLj/G/XTsqHd5fc/dXudjWa9DgLXiu
+         ge0Gkwnn3qK1tu737mfBJXXb8lHa9vRDRxDrZWSD6TCKCadC44AD8pn/qKw4wPBWO0yq
+         5KVLpceUqDl8VhKc7d2I8LttF/yyHNFnwV+rpOawAXMKYDVNQ6Sl26KyDZYwkeGU6Ti6
+         2jkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792179695; x=1792784495;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792181342; x=1792786142;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7I6WLMkKR2BgKIxGRcqSFhqIpV9v6f9mjoXxwWLiuPk=;
-        b=jf0fPmzbGwG3+8cDC+X+MuwLUi+h0xN+nqueUVkQ0REEuaSSusFjrRamD91gb5cwFm
-         tpRWGoShAcTox0ymWhZ1i7R7Trx61qfDcIM+879uh1TorwFtksoTurfdUkTDBhtpCttu
-         LVrtmvcPR8wy6jCsA4DH1u7CSyaXh6eFn4l72u8EfYzklna/c3D4F4FSHJ49ItYHruLF
-         A2h/+yzraeow7ekh23KaawW7+rjrK5gKgWVsDxltB8QswNr5A6VaJnZEhh7EGnFss5hM
-         kiJZh8aQWDzFB/OZxDhpfZT5PUSWZaC41JdW7w4yYkAFBV+3y73lebNqWmmpl9Ocsj4D
-         Qugg==
-X-Forwarded-Encrypted: i=1; AKwUvBxxjieWzx8bxE4vyaaAd32HgWtUuy5aCIOccEwj5rdAI1kTgSZ/wqz00XgYT/PASFB5eAU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKu2pvV4G3WKgJgOwNS4Ru9JqKHyFCtc1ddbJhIh0TP4501CV3e
-	0qfiT88DRhie0RXvDZMlxtlr+5KsQhbzV7ejEI241BEfVO1iKrmZKJcObVN9MQNzjegqYqJhwzz
-	PEaveJkSCAOfhZCeZj0ze/1VrbZ/e9B5etlSd1A7H
-X-Gm-Gg: AYBFou1q7WvAONv7uelBup42tyoyeVFkewqsPvHVtcYEZgezboM+gTxrcdmO/RPBstq
-	ogW6QilV0Gpb5YzCR3cFVxYO7Ckmlsnz9Z/yhtexhqeJd2maAWkYZqDuf0GMhvYBkCfBJe5HgIZ
-	I7ubk8ZOSP8ZsbSPh2EvN/nSwBMBVOThoInBtCO1mx10ESyN7BUrB4Vlg5Xyig6Cpmqut2wkSI7
-	ldlyHCETDLEPeh1qV5EOj3mI9LHiC2We4eNKOTNDA/uG/E8ENk9G7/hmKO0ofgdLF9Fhvb8fvJC
-	rHBboN4ZHtm/ttjDNCftoQIpnzLaRaEDNVqVndvuFTiSIP/Bh8jiAI8=
-X-Received: by 2002:ac8:5ace:0:b0:534:b7b2:634f with SMTP id
- d75a77b69052e-53646227b1amr1807741cf.8.1792179694296; Fri, 16 Oct 2026
- 12:41:34 -0700 (PDT)
+        bh=9qKt714wTpFnQNXIMAii1yJHjNpuAXnTO+pThrST3To=;
+        b=I0t2A05G7C6yIomLCsZ5dNYukJF15BYh3/oIs1SE4J1aFeQ5e+YrerQjycyXAcCype
+         o15YuYvGgfQw6aPFk/GqydWND05tf2L08MdOD8+WZn/S1lckCUawzxsqIUlIkH8Y4TD5
+         mmuWJa/kUazBzeZdQRhLY96c6bX+aKQAt/a6VXlJ6LvRcaTdx3kBalXI5Wiq+UtFIqGT
+         Jj6HQzM+ovnjYdQPvqShMm8bnFZggqnRum0TDKzQHPjIqJRSbm+RQE+xu54zHBQQjqEe
+         iD65s81RF6oh0hXWLGeQmxK257llpF/DXGR1Rx+1aIy9Yq94HG7dHcUP735uI6sMS45L
+         worw==
+X-Forwarded-Encrypted: i=1; AKwUvBwgEc+OTyKp083Acg6Rv65TlMMr7vXsxQCeG6g5C6+PEADHVr+0PWtg5Q5QdDq7OWXBTWY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIz9twSOi61gDMBnhxmUh9ee9oS7H/Nb7GhGRIOoVDkyVSdYXwM
+	5fFANdH8GXEsyeAUDMlLTBENzkwcqbFt52nJPb/Wln7DAI0Vecn758TsahbApZz6vcM=
+X-Gm-Gg: AYBFou1IfWWTj1pPZjoFyGYiSjIvgP0i+h0a2DoGhQDIxkGwxdZ3s7a2pFojOq8Vv0/
+	m9Wx3AevK9Y8wzbKIdHq3bzcXaef+mcqWSISKDVnst2TyFRG5VCoXTDo2aZd55SXe+MEouW0TtL
+	Cge1GYJsrHPKmpuMomlE5haNoKQ+w7OlI8+p4LoSaDncc9UJZ40+FtFMa30vHaR6c1IxPnaoG3m
+	x72ylbAeP5ixnXypr9DsfKmjhxEaVGM0Jo2a+i23gQdFeapvrOn7Ncteefhh2XRt3ciSRJgYD/y
+	HRWNh/Iybanv8zxqtEadOFXFZBEGPeuX0MxtOzXmvPbCt1+3C+oRh/EaVkGkHuv4ZIM/sHT8V/B
+	Rr2T4dnpwfpNQtcD9ST9DHhtzd578RX1YqJE+3Zs/nlp8ULMhnRsm/Cwwo497YOMaSb9EDA8QEY
+	hOMsGViY0lPDpP/hIy3nCjwOgpn1L72L/SFcH0+lC9jMvcNPoVOutKY96G+w4Td9cFjjVUgFPOJ
+	xx6dvnVLoWw
+X-Received: by 2002:a17:90b:45:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3aceeb9272dmr792959a91.15.1792181342239;
+        Fri, 16 Oct 2026 13:09:02 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:ff2f:8a9c:5623:f753])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc49c263asm5207912a91.17.2026.10.16.13.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 13:09:01 -0700 (PDT)
+Date: Fri, 16 Oct 2026 14:08:58 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
+	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC v4 11/24] target/arm/kvm-rme: Populate Realm with runtime
+ images
+Message-ID: <atKEWmnXA-Gu1Y9T@p14s>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-12-mathieu.poirier@linaro.org>
+ <3257a387-490f-44bb-bd44-dbe06036fd52@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-25-yosry@kernel.org>
- <CALMp9eRb3ExsQ0g24YQyo85sV1fnHZadh33hBChUY=ZGUaT7jA@mail.gmail.com>
- <CAO9r8zMt5ZNwr3Y+NfFcAW5Cf4JaerCScSsLxcvsvHYR=DoYBw@mail.gmail.com> <atF1lByf9w3Pvzyt@google.com>
-In-Reply-To: <atF1lByf9w3Pvzyt@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 16 Oct 2026 12:41:20 -0700
-X-Gm-Features: AclHuK_lmx3knEDpq2O9cX91zu7wMSJRiSiXRo3aJT1GBy87KnfcOtvuGmB_cxE
-Message-ID: <CALMp9eQ0j9mpaRFgGSgSzbpLZJL3hmQEY9Ey2VEMuqST0uRTsg@mail.gmail.com>
-Subject: Re: [PATCH v3 24/27] KVM: nSVM: Flush L2's ASID when emulating INVLPGA
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3257a387-490f-44bb-bd44-dbe06036fd52@redhat.com>
 
-On Thu, Oct 15, 2026 at 5:53=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Thu, Oct 15, 2026, Yosry Ahmed wrote:
-> > On Thu, Oct 15, 2026 at 4:37=E2=80=AFPM Jim Mattson <jmattson@google.co=
-m> wrote:
-> > > > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > > > index 8f2542357e78d..436d13f106369 100644
-> > > > --- a/arch/x86/kvm/svm/svm.c
-> > > > +++ b/arch/x86/kvm/svm/svm.c
-> > > > @@ -2468,17 +2468,61 @@ static int clgi_interception(struct kvm_vcp=
-u *vcpu)
-> > > >
-> > > >  static int invlpga_interception(struct kvm_vcpu *vcpu)
-> > > >  {
-> > > > +       struct vcpu_svm *svm =3D to_svm(vcpu);
-> > > >         /* FIXME: Handle an address size prefix. */
-> > > >         gva_t gva =3D kvm_rax_read(vcpu);
-> > > >         u32 asid =3D kvm_ecx_read(vcpu);
-> > > > +       int cpu;
-> > > >
-> > > >         if (nested_svm_check_permissions(vcpu))
-> > > >                 return 1;
-> > > >
-> > > >         trace_kvm_invlpga(to_svm(vcpu)->vmcb->save.rip, asid, gva);
-> > > >
-> > > > -       /* Let's treat INVLPGA the same as INVLPG (can be optimized=
-!) */
-> > > > -       kvm_mmu_invlpg(vcpu, gva);
-> > > > +       /*
-> > > > +        * INVLPG on a non-canonical address is a NOP according to =
-the SDM,
-> > > > +        * assume the same behavior from INVLPGA since the APM does=
-n't specify.
-> > > > +        */
-> > > > +       if (is_noncanonical_invlpg_address(gva, vcpu))
-> > > > +               return kvm_skip_emulated_instruction(vcpu);
-> > >
-> > > If L1 is in 32-bit mode with junk in RAX[63:32] (e.g. bits left over
-> > > from long mode), the full 64-bit value may not be canonical. Should
-> > > the kvm_rax_read(vcpu) above be kvm_register_read(vcpu,
-> > > VCPU_REGS_RAX)?
-> >
-> > Doesn't kvm_rax_read() already use kvm_reg_mode_mask() as per
-> > __BUILD_KVM_GPR_ACCESSORS()?
->
-> Yes, Jim's probably thinking of older kernels before fc40b1254c32 ("KVM: =
-x86: Add
-> mode-aware versions of kvm_<reg>_{read,write}() helpers").
+On Fri, Oct 02, 2026 at 01:45:40PM +1000, Gavin Shan wrote:
+> On 9/4/26 5:35 AM, Mathieu Poirier wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > Once the Realm descriptor has been created, tell KVM to transfer runtime
+> > images (kernel, DT, and rootfs) from guest memory to Realm memory.
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > ---
+> >   target/arm/kvm-rme.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
+> >   1 file changed, 76 insertions(+)
+> > 
+> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > index 9985f5daba89..c082a5d8f3d1 100644
+> > --- a/target/arm/kvm-rme.c
+> > +++ b/target/arm/kvm-rme.c
+> > @@ -15,6 +15,7 @@
+> >   #include "migration/blocker.h"
+> >   #include "qapi/error.h"
+> >   #include "qemu/error-report.h"
+> > +#include "qemu/memalign.h"
+> >   #include "qom/object_interfaces.h"
+> >   #include "system/confidential-guest-support.h"
+> >   #include "system/kvm.h"
+> > @@ -43,12 +44,87 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> >   static RmeGuest *rme_guest;
+> > +static int rme_populate_range(const RmeRamRegion *region, bool measure,
+> > +                              Error **errp)
+> > +{
+> > +    int ret;
+> > +    void *buffer;
+> > +    hwaddr size = region->size;
+> > +    hwaddr base = region->base;
+> > +    hwaddr start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
+> > +    hwaddr end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
+> > +    struct kvm_arm_rmi_populate populate_args;
+> > +    size_t aligned_size = ROUND_UP(region->size, qemu_real_host_page_size());
+> 
+> s/qemu_real_host_page_size()/RME_PAGE_SIZE
 
-Doh! My bad.
+I refactored this function in V5 [1], along with the above declarations.
+
+[1]. https://lore.kernel.org/kvm/20261002202026.1204110-10-mathieu.poirier@linaro.org/
+
+> 
+> > +
+> > +    if (!region->data) {
+> > +        return -ENODEV;
+> > +    }
+> > +
+> > +    ret = kvm_set_memory_attributes_private(start, end - start);
+> > +    if (ret) {
+> > +        error_report("RME: failed to configure initial"
+> > +                     "private guest memory");
+> > +        return ret;
+> > +    }
+> > +
+> > +    /* Allocate page-aligned memory */
+> > +    buffer = qemu_memalign(qemu_real_host_page_size(), aligned_size);
+> > +
+> > +    if (!buffer) {
+> > +        return -ENOMEM;
+> > +    }
+> > +
+> > +    memset(buffer, 0, aligned_size);
+> > +    memcpy(buffer, region->data, region->size);
+> > +
+> > +    populate_args = (struct kvm_arm_rmi_populate) {
+> > +        .base = start,
+> > +        .size = end - start,
+> > +        .source_uaddr = (uintptr_t)buffer,
+> > +        .flags = measure ? KVM_ARM_RMI_POPULATE_FLAGS_MEASURE : 0,
+> > +    };
+> > +
+> > +    while (populate_args.size > 0) {
+> > +        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
+> > +        if (ret) {
+> > +            error_setg_errno(errp, -ret,
+> > +                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
+> > +                start, end);
+> > +            break;
+> > +        }
+> > +    }
+> > +
+> > +    qemu_vfree(buffer);
+> > +
+> > +    return ret;
+> > +}
+> > +
+> 
+> I doubt that the unaligned regions (RmeRamRegion) are allowed. For example,
+> the region [4KB 64KB+4KB] is turned to the aligned range [0 128KB] when RME_PAGE_SIZE
+> is 64KB. The question is how do we know the added regions due to the alignment
+> ([0 4KB] and [64KB+4KB 128KB]) are safe for kvm_vm_ioctl(KVM_ARM_RMI_POPULATE).
+> I guess we probably just reject unaligned regions if they're not expected.
+
+To make sure I understand your point, please expand on what would be an
+unaligned regions.  In your example, [0 128KB] is aligned on 64KB boundries. 
+
+> 
+> Even if the unaligned regions are allowed, they seem not well handled.
+> 
+> - @aligned_size is still 64KB instead of the 128KB ?
+
+I'm confused.  ROUND_UP(64KB+4KB, 64KB) would be 128KB.  What am I missing?
+
+> - In "memcpy(buffer, region->data, region->size);", the blob data would be copied to
+>   [4KB, 4KB+64KB]. However, we're copying the data to [0 64KB] now.
+
+I agree with you.  That part was refactored in V5 [1]:
+
+        memcpy(buffer + (base - start), region->data, region->size); 
+
+> 
+> > +static void rme_populate_ram_region(gpointer data, gpointer err)
+> > +{
+> > +    Error **errp = err;
+> > +    const RmeRamRegion *region = data;
+> > +
+> > +    if (*errp) {
+> > +        return;
+> > +    }
+> > +
+> > +    rme_populate_range(region, /* measure */ true, errp);
+> > +}
+> > +
+> >   static void rme_vm_state_change(void *opaque, bool running, RunState state)
+> >   {
+> > +    Error *errp = NULL;
+> > +
+> >       if (!running) {
+> >           return;
+> >       }
+> > +    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, &errp);
+> > +    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
+> > +    if (errp) {
+> > +        return;
+> > +    }
+> > +
+> >       kvm_mark_guest_state_protected();
+> >   }
+> 
+> Thanks,
+> Gavin
+> 
