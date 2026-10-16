@@ -1,102 +1,103 @@
 Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A484335E93C
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 16:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0984E66C9
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 16:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792169424; cv=none; b=PbrybZSOLfB07GKAgLdeGADsEp3dfxnFwDGo0GOhV/s9X8xZ5aqaeOZ5EQESNA/YGCa99joRA8kx53jL37PUy8NSVVftnTufZiOmZQWq7G4fmPETkoW66/Ibq3K2gnUg95/jYvETWCnFkxJToZXTyPBPZxnRtVEzESSpLrEirYQ=
+	t=1792169469; cv=none; b=oA1uv1pSqyWxJrHGYK8BaWCAICOPGo36X4WhRCxfHIgVczSo13kJQhvVEjNp+UG7KQqzJPj74F4ONAU/U4J8rRg8nmbmrXGidm/WZb3IALmjjkzEMyzndD5MTRZRYpGOtvROP2odB/DFp/HV2E9vOSSZxWhVRwD/K7spzQmAioM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792169424; c=relaxed/simple;
-	bh=dKGK9QzfUtkdrx3e2Lna8zFW8U+rke7oYbRAphr71y0=;
+	s=arc-20240116; t=1792169469; c=relaxed/simple;
+	bh=1qYWCAKTkhmKcOwT31wEJeKAJhbyN0fE6ogE2fCnyyM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JbbPxR+V/oedQRi72zkLdfLuRljluR8XFEex7pmAKU3x01XkQscJdd85q1QZsBxrCtC7rbrfitWPgqtzREugBM3kwtJnKt2kMAKW3QMILkjeXxEbNuxhyDhV58ZJBdWe6i2KOZ7mImEj1OGOTwy7IOfoo3YvAEA+j2sdKPc6kY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GVqpULF6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gLiO+VYV; arc=none smtp.client-ip=202.12.124.155
+	 MIME-Version:Content-Type; b=T7003ULB3a1VKN5MOTavRR+ZW9P6jMxGRwir4QUQ7A9LpJb+5ih5YHqWTOtlMXj4IBplFvnwE+m9w1wCJRaf9J4pjhoOfVhLyQOGINf1DZb7mT0t6CsPu/g9VaXpPEli516SHxY1VyG2xfRagC+QD7HcBaOTVtYnq3SnD4P1wwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NmltWcTy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qlL1mJXF; arc=none smtp.client-ip=202.12.124.155
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GVqpULF6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gLiO+VYV"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id C749A7A00DE
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:50:20 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NmltWcTy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qlL1mJXF"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 161187A00F9
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:51:06 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Fri, 16 Oct 2026 12:50:20 -0400
+  by phl-compute-12.internal (MEProxy); Fri, 16 Oct 2026 12:51:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792169420;
-	 x=1792255820; bh=xgeXQ7QI49qUYlE81VNicEWZ0NBkP0UQ4uYQY/eXcg0=; b=
-	GVqpULF6XfeuZGeCHyZcAi3Ds+T/ouQSnDoYbWb/o+nq49tcVDCWVZIbzcaLR7c4
-	A6tZ6ckcv76wdaim6+Xy0XqJFzN7diMkelRBTLWUtpywcKkqkZ9+X40cLUNCPwYV
-	BeSKaXP/axkEeXSmAEquyhlQE8boDlqf9QJyZhvgGk+9rKymNbRdvGE+okrAmt3U
-	2o7t63NHIK+7ar9dqVUBfm53mMbgUmec4GJ6zN8sQCZO3mI+lYX5SK2/kFMfdSrq
-	zHwdphlTJ2K+Cwm0fYFx0G6Xo5NGQUx0SQYe3PmDz0f3MD9XgA0B5Pu7oMvVWF91
-	5cdTreJ3GaL3e/Jkqh29Og==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792169464;
+	 x=1792255864; bh=Ra1TtkI4ooI5DONSEwts9vxaOUDseQDBqDPzSb+JDls=; b=
+	NmltWcTyz26kCRY3Q2UDN+Tu2nFMJf2mtTQ7KKbYAnsMAomue6fYHlg6HdkHkv3J
+	aiCTtabcMUtAwujTL84C95PIu9va8x/wFYEdJhVH2JhF22GLUqKozke1llm9MD7B
+	niWDO0C3FOTl9FZ5T5EHqttjLriRSHsBxevqAS7jEsrj4eNn+AqIp8gAQ4frOYpV
+	dgwDZLf4N+PE+66JGejJYTYy8w+htM95hcsHPdqAsNz1P28jtX/OSemkUHw0vINE
+	afb0mdAJI/cxy6ob1+Jpq4zMeVGhNqAoFcA+NOz/OpdFrdFVk3WVSfAzZt+gSAB0
+	ncgBf4/HEr5mzxDgGyNzpA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792169420; x=
-	1792255820; bh=xgeXQ7QI49qUYlE81VNicEWZ0NBkP0UQ4uYQY/eXcg0=; b=g
-	LiO+VYVOQjz3MC27kNoumQKbB7aM+wIf0fUXWRlpY0g8TXIZVsR7FYkFk0A0tb7i
-	ba681COYXYruwAmAZg7OwmNtiu9CMsoYLTDz4yzWAS7BY9GHAvAZhH8/o8N/jnLJ
-	YlDtHn7ZpfkmyavHOh1CcI2mOrWS58NAveJKdZmqhinm9KeLucAwSyjXTv2fSvwg
-	k1bqSJQS8TjuiUr25iSpnoRHLkPN6KG76uj5TUJQ8z9yPdTYqfMe6joS9OHa0ujc
-	Jm5FnOf2j/vGN5gOPhFUMFYfNj7GExGQxikEpGcd7zwb8MUUA9lsnA2Olio2jTc3
-	ORJ3nK6Sqn1c4AKsY7xxA==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792169464; x=
+	1792255864; bh=Ra1TtkI4ooI5DONSEwts9vxaOUDseQDBqDPzSb+JDls=; b=q
+	lL1mJXFfZcsO572+lyKZRvBxS472YmQZgw7VswkPhdo5+pzD1/Y75WnbuvAumd6M
+	HFlCQwBw1MqYwC/fHDp40/ADEdSFr3ViBYiwJbuGmtlBXGax2gvkKtSPpTJm4GK7
+	jEnAEpDaOUK/kAqEk0iFNDWRsOD+aeyxjr+B34FFeFQpn20a5IywtaEpURC9YUw5
+	Rf4v8CeFbN81uHcZOFzwF4z4e0Yy7cFW6OiVwQ3mj0jz/Mtsm/LZiWtWNsfFn0u1
+	Cu8TIyL+wQXf6JFDzjBEKsS9MKsPpupuTroWhMYXQDMGXOFCfmMJUgPj/BitofAy
+	geQtlyXD8J5SZzSTYoiWQ==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
 	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792169420; d=shazbot.org;
+DKIM2-Signature: i=1; m=1; t=1792169464; d=shazbot.org;
 	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:lP10BbLRGEnMJ52CvxIMDzOwPgwPZZLF4ASNqZKMbBWwje5
-	CEhMY1h4aHRNsvlQ7x2O9yPgLKJb4rmEDslbTsnMoeFIx+5VPQzKZvTasCzODC//
-	HG+inoqNgDJXXxLePstvrYnjqAnOcx8GkgnypWs+c5rlwOiuUejzGHdMhoRJnx0L
-	p2BclqvqJlAM/a8aBDvdXMn3x7aWKMXfj9QshKg3Pw9SL4MVFICyImjdUnh/doSK
-	AU2FqAUehhIWn3RNmN6V1PUq24cpUr4jMIHcfLK+sK+JPbm5ZwFzIMpkoOnAz2Ql
-	qC6sAHTy+K32qO4OzRG/Usa3Y/NmCf/T3SIrN5w==;
+	s=fm1:rsa-sha256:s+UGl8p9aR9tlO4dPx8ApXhGmaq9senvoLjuEu11MLwwEqn
+	m7mhBPhJXBMyMMg8j2lAlGnyQ7XTrPyKaAL7N83FItkIeW/yzTQiSUtlFVVE5l4K
+	Ht0bLw+uz2XM3KWHiQSvDSXdgGigWiMdGaE4AVD+jjq/uW4OIHSDqM7fuh4YL/Uj
+	aWXHacCJw2HX3PuyKQbJsT5M4JdQ3MCjugYx089wNZ2j2ICRegra4aQpTxVq7VJy
+	31RqZECb7o2C2+YLhA7nuoU35v7ZdAP6YWhPNb00gaMGs5M5/2oGlN5voJuxo+jI
+	7kSbuzI2Ve3kKkD5pdgLb51ggtbfhLhgtJbuiIg==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:aY80aroA/i0x89lPnAKZZ2eGbOpuWioNrDLlXsvQzFo=:dKGK9QzfUtkdrx3e2Lna8zFW8U+rke7oYbRAphr71y0=;
-X-ME-Sender: <xms:zFXSatIp5PVs_pCkx7ttSi6y4mLQHwVqriryiwOzq0G5uTfhUHeL5w>
-    <xme:zFXSavLxUjK-Y7C0hdBYuxqOmeBRdDNOyHRVs4k9nOOA2G2LRSl0iLvF3Jd-f5efx
-    VcDowkTlAr-D0hoFAMLATbtaLw8R3AhR8rMzDGsv5Fz95IYnKXks0VV>
-X-ME-Received: <xmr:zFXSagjZiG07CKYCezwrlFfa8v-dtsE_tWcCEquZlUqgG3aw0390PbP4VT6Dng>
-X-ME-Proxy-Cause: dmFkZTEb/AYso0mXeMN4uPzOI2HzYX85Xp44M58HlE7sv9GJphQzlpRb+Ar10TokQ47zK4
-    dY0cfzNGkwd8kWFiRBSSQ+b+oNwUN1gQXBPe5b3ILFvYZlUMaolS58TB7gOcQRvpP2FzdZ
-    qKC1HPKN7I5J14UK8Mgbuq2PT/GHr4WDq4YgduKqJ8YIdwtlNMWymYO8v0sS5q+c5UMNcQ
-    lpEKOpocYGqf6tZBPaVRyshIV3v1A6/9s/yctJvVTEInjlZHqg/YsPrmcZGJhi++IIAJua
-    FYxxMMlLtanbckLOFNFWctRHThoGvPZyTxr3fQPBwMxH9zCXuaP2FWVl8/OocESshLaFJN
-    OorZwzEm+hMNMG/OA5H/zGUyF+p1A4e2KEFrGEVscJ3CAK+zZLidBQMq/6UuNbC2YIDuUs
-    k5JAf3Sy2JgoQQCgmcIoxHCmBeqptu3oCfY5MyFtTghWF+T4ytOGztZ/I36sXdjV8qvHuX
-    wMxZo3Wu37hIdOZ6km+BorJ5OGNex+E2TgaQktUazq7zjhZ/WadFP9gHVzNU0SWXmmi2Dh
-    K7I2474itoDok6xv8/I+fbwbQDX7T8PbIjVqQYaTytdosuUgdbE6fky3iTGwlK3BcWQ0eA
-    u12aMyzmSTFN01Pk6iKI5Y90yL3ucwJdv0Q6k69TSl8KSPX2w5/5sKZBGaAg
-X-ME-Proxy: <xmx:zFXSahOpE1yTIR9S1IAfAs1H7om6VrIbmbX3Mg-MehPDawhsmb-s_Q>
-    <xmx:zFXSajrRRL-Ex5AQaDagDX4hEdD3bwru8UWHwi3G-zAbe4CM2ELMlQ>
-    <xmx:zFXSar63N9SIHYtiZ9z1e7hxQhOIKsOEm2jjXQQjeZlN6RCILhW9OA>
-    <xmx:zFXSapgzRIlQKv8Q5XWSZTjHVWYLN46k6sSUvyLXjU1myeBa3p3K3Q>
-    <xmx:zFXSap4OV6nFhFBlJ9S2uaAg6I0v-7FYfn9GbeQ9jR3AVtkO3xlOgGkL>
+Message-Instance: m=1; h=sha256:SzDpePWH6uPmF+REI6xlkInAQKnZPagQrDhOOc7MqcA=:1qYWCAKTkhmKcOwT31wEJeKAJhbyN0fE6ogE2fCnyyM=;
+X-ME-Sender: <xms:-FXSantN3UdZpwW0kh0gnI7svsQARFnmA0qzfyIi9TAdI3ZeSdZwBQ>
+    <xme:-FXSariAr7ShND5JoLFHvTgcNUcTsvaRZ1cDoOoZm_-nA0RcDnn9H2SK_5chgSoUJ
+    HNa2kibPd29KG6CIPgpsOkIUxrd32z5xYu2MbulAGCEufyXjTjKdpY>
+X-ME-Received: <xmr:-FXSalb2HDLxMHxuRCzeI_q6HJ3JVxwKT5cOIXq3-3du8hTSG1iPcOfz9QzomQ>
+X-ME-Proxy-Cause: dmFkZTGfp9DYtFpIWflhSEcKnl9D+LKiGYgtMQnr4eHzyx6i8eXv0cf/RffRQh/9m0XbT+
+    k2UQ+2zo03iz3nqmutVkT19I4vAnjlE6iP0cIiP/pAhpGBUTc87JVmh8qrA5wFPzy+b0I4
+    GxlK/Y0dEcXO0icPjN22dmf8Zjif/JDvYdahTCzJMi2szyNVbF8DlMqbPIcTyolGp559Cr
+    ujnYbmAEozlQWFmEIFFwVNXuyelM6coyaKqpae/tVCihHZhYUDLv1mJBsCVNCrFF41703+
+    z+7ouRtMIBHQFhd5VT55hc0w3M5pDW7ysiuRXix0sBgUtsDZW0afUIGRMw5qZz9r/klnPk
+    jfgilf8HrzUKllfyOO0uMr91YVrrZHXFC8OzP/HtyszWRd4bTOQx7bV438LDkImq7LqsPz
+    Qov0VDerzsFnw4zWY6PVegWvhl60i6aJIuVJ6Fy0r2ItjTDOpHHeQmGvP9+tzDHq7EHiDf
+    LonMNpQWHdd79GjtTFp8jVymbb6nVBPJ6FuAxkfcFOFewcPNaFUzEDuKTKs5/Z8Y5vNza7
+    7nAO5GW74Mvlb1xeUEmXBFPldYlfS63C7P67ui1N0AjAicdviRLQjUlxyNwjMr9AfjqMZZ
+    1NNAVD06icpAcL+LT1bbeCHtx8gxuE/hkR7KjoUu32Bu2JzOTvZzI72vHIBw
+X-ME-Proxy: <xmx:-FXSaiae8N_3vAreFYX5PhPjk5qY1pRtJEmUSCEv44YQpdqns_HVuw>
+    <xmx:-FXSaizjUdpxFFVRUSX8MF2lDQANwtF4zRoT3WFbvGrOtwQVRak0LA>
+    <xmx:-FXSamdS-d0BMzvMwVSXbHDHO9nB7E2WsO4vAQOCsbo28sArOq0b3Q>
+    <xmx:-FXSav5hn1U18-ivMLSlW81nAjTIL6HnRadwAe8OJVpjbBN7UNUHWQ>
+    <xmx:-FXSambvb2zZlT7Qc2STZw0uGDBc8SRwVZulxI7fpFqj6QQZF0eE34RC>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Oct 2026 12:50:19 -0400 (EDT)
-Date: Fri, 16 Oct 2026 10:50:14 -0600
+ 16 Oct 2026 12:51:03 -0400 (EDT)
+Date: Fri, 16 Oct 2026 10:51:02 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: kvm@vger.kernel.org, =?UTF-8?B?TWljaGHFgg==?= Winiarski
- <michal.winiarski@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas
- <yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>, Kevin
- Tian <kevin.tian@intel.com>, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] vfio/xe: Add CRI and NVL device IDs
-Message-ID: <20261016105014.672b05ac@shazbot.org>
-In-Reply-To: <20261014131849.157593-2-satyanarayana.k.v.p@intel.com>
-References: <20261014131849.157593-2-satyanarayana.k.v.p@intel.com>
+To: Andrea Parri <parri.andrea@gmail.com>
+Cc: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, Jiaqi Yan
+ <jiaqiyan@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [PATCH v2 0/2] vfio/nvgrace-gpu: Separate the fallback-mode
+ open_device
+Message-ID: <20261016105102.32b769fa@shazbot.org>
+In-Reply-To: <20261015081937.405320-1-parri.andrea@gmail.com>
+References: <20261015081937.405320-1-parri.andrea@gmail.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -104,51 +105,51 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 14 Oct 2026 18:48:50 +0530
-Satyanarayana K V P <satyanarayana.k.v.p@intel.com> wrote:
+On Thu, 15 Oct 2026 10:19:33 +0200
+Andrea Parri <parri.andrea@gmail.com> wrote:
 
-> Crescent Island (CRI), Nova Lake-S (NVL-S) and Nova Lake-P (NVL-P)
-> support SR-IOV in the Xe driver. Add their PCI IDs to the xe-vfio-pci
-> device table, so that the generated vfio_pci module aliases allow
-> userspace to select this variant driver for their VFs.
->=20
-> Also reordered the table entries.
->=20
-> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-> Cc: Micha=C5=82 Winiarski <michal.winiarski@intel.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Yishai Hadas <yishaih@nvidia.com>
-> Cc: Shameer Kolothum <skolothumtho@nvidia.com>
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Cc: Alex Williamson <alex@shazbot.org>
-> Cc: kvm@vger.kernel.org
-> Cc: intel-xe@lists.freedesktop.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  drivers/vfio/pci/xe/main.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
-> index cbff5af385ef..8f1237751d51 100644
-> --- a/drivers/vfio/pci/xe/main.c
-> +++ b/drivers/vfio/pci/xe/main.c
-> @@ -574,9 +574,12 @@ static void xe_vfio_pci_remove(struct pci_dev *pdev)
->  }
-> =20
->  static const struct pci_device_id xe_vfio_pci_table[] =3D {
-> +	INTEL_BMG_IDS(INTEL_PCI_VFIO_DEVICE),
-> +	INTEL_CRI_IDS(INTEL_PCI_VFIO_DEVICE),
-> +	INTEL_NVLS_IDS(INTEL_PCI_VFIO_DEVICE),
-> +	INTEL_NVLP_IDS(INTEL_PCI_VFIO_DEVICE),
->  	INTEL_PTL_IDS(INTEL_PCI_VFIO_DEVICE),
->  	INTEL_WCL_IDS(INTEL_PCI_VFIO_DEVICE),
-> -	INTEL_BMG_IDS(INTEL_PCI_VFIO_DEVICE),
->  	{}
->  };
->  MODULE_DEVICE_TABLE(pci, xe_vfio_pci_table);
+> In fallback mode, where the ACPI memory properties are missing or the
+> C2C link is down, nvgrace-gpu opens a device through
+> nvgrace_gpu_open_device() but closes it through
+> vfio_pci_core_close_device().  The open registers an empty usemem range
+> for poison handling that nothing unregisters, so a second open fails
+> with -EBUSY, and the first open after an unbind hits a KASAN
+> slab-use-after-free in register_pfn_address_space().
+> 
+> Patch 1 gives the fallback table its own open_device, as Alex suggested
+> on v1, and is marked for stable.  Patch 2 drops a usemem length check
+> in nvgrace_gpu_open_device() that only existed for fallback mode.
+> 
+> Tested on x86-64 under virtme-ng with KASAN, not on Grace hardware.  A
+> QEMU cxl-type3 function, bound through driver_override, takes the
+> fallback path and is opened through a noiommu VFIO cdev.  On v7.3-rc7
+> the second open fails with -EBUSY and the open after unbind and rebind
+> reports the use-after-free.  With patch 1, and with the whole series,
+> neither happens.  Patch 2 only affects full mode, which this setup
+> cannot reach.
+> 
+> Changes in v2:
+> - Replace the usemem.memlength guards with a core-only open_device for
+>   the fallback table (Alex)
+> - Add patch 2
+> - Fallback open no longer fails when BAR0 cannot be mapped; Ankit
+>   confirmed fallback mode does not need that check
+> - Rebase on v7.3-rc7
+> 
+> v1: https://lore.kernel.org/r/20260925161024.189771-1-parri.andrea@gmail.com/
+> 
+> Andrea Parri (2):
+>   vfio/nvgrace-gpu: Use a core-only open_device in fallback mode
+>   vfio/nvgrace-gpu: Drop the usemem length check in open_device
+> 
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 23 ++++++++++++++++++-----
+>  1 file changed, 18 insertions(+), 5 deletions(-)
+> 
+> 
+> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 
 Applied to vfio next branch for v7.4.  Thanks,
 
