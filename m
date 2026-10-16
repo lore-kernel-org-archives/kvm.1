@@ -1,156 +1,194 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0984E66C9
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 16:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E684C55C1CC
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 17:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792169469; cv=none; b=oA1uv1pSqyWxJrHGYK8BaWCAICOPGo36X4WhRCxfHIgVczSo13kJQhvVEjNp+UG7KQqzJPj74F4ONAU/U4J8rRg8nmbmrXGidm/WZb3IALmjjkzEMyzndD5MTRZRYpGOtvROP2odB/DFp/HV2E9vOSSZxWhVRwD/K7spzQmAioM=
+	t=1792170867; cv=none; b=XIHrmnTn70Agf2QvCWdMpTpeWqpeKXwv0/Tv5xw3CfDGteqoFIb7nqe4LZ9fsFv6FKGfvWZBkdeCUIE5fON6azqYP8lRdcmssWhZh8l07MdQ36F0A5pgTBEIH13zLl1UYn5tO9GuQfUV+Ttkq4W8db3FcBt7Ig5q8EMCnjD8Dvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792169469; c=relaxed/simple;
-	bh=1qYWCAKTkhmKcOwT31wEJeKAJhbyN0fE6ogE2fCnyyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T7003ULB3a1VKN5MOTavRR+ZW9P6jMxGRwir4QUQ7A9LpJb+5ih5YHqWTOtlMXj4IBplFvnwE+m9w1wCJRaf9J4pjhoOfVhLyQOGINf1DZb7mT0t6CsPu/g9VaXpPEli516SHxY1VyG2xfRagC+QD7HcBaOTVtYnq3SnD4P1wwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NmltWcTy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qlL1mJXF; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1792170867; c=relaxed/simple;
+	bh=6Bh+A7BuYKO8u0RzcMkA27VimbBpim8zKQeuv/QiJV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OPJDttQ6Ip01KbDZVB7wJC7j1vukrYjAvyp0NeGaPkpATubVTcSULN+w/7M0bRaDQnewvJd4vzUAob/N/d+QGFvQ7JB48idJDhANgFxasjRldk3bZgRQm0l4dMYQFDSpMRzP3+BCDxRfgs1Ci47ofthZrPP0yLr1MHLjoXKw2ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w8VM95P6; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NmltWcTy";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qlL1mJXF"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 161187A00F9
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:51:06 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Fri, 16 Oct 2026 12:51:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792169464;
-	 x=1792255864; bh=Ra1TtkI4ooI5DONSEwts9vxaOUDseQDBqDPzSb+JDls=; b=
-	NmltWcTyz26kCRY3Q2UDN+Tu2nFMJf2mtTQ7KKbYAnsMAomue6fYHlg6HdkHkv3J
-	aiCTtabcMUtAwujTL84C95PIu9va8x/wFYEdJhVH2JhF22GLUqKozke1llm9MD7B
-	niWDO0C3FOTl9FZ5T5EHqttjLriRSHsBxevqAS7jEsrj4eNn+AqIp8gAQ4frOYpV
-	dgwDZLf4N+PE+66JGejJYTYy8w+htM95hcsHPdqAsNz1P28jtX/OSemkUHw0vINE
-	afb0mdAJI/cxy6ob1+Jpq4zMeVGhNqAoFcA+NOz/OpdFrdFVk3WVSfAzZt+gSAB0
-	ncgBf4/HEr5mzxDgGyNzpA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792169464; x=
-	1792255864; bh=Ra1TtkI4ooI5DONSEwts9vxaOUDseQDBqDPzSb+JDls=; b=q
-	lL1mJXFfZcsO572+lyKZRvBxS472YmQZgw7VswkPhdo5+pzD1/Y75WnbuvAumd6M
-	HFlCQwBw1MqYwC/fHDp40/ADEdSFr3ViBYiwJbuGmtlBXGax2gvkKtSPpTJm4GK7
-	jEnAEpDaOUK/kAqEk0iFNDWRsOD+aeyxjr+B34FFeFQpn20a5IywtaEpURC9YUw5
-	Rf4v8CeFbN81uHcZOFzwF4z4e0Yy7cFW6OiVwQ3mj0jz/Mtsm/LZiWtWNsfFn0u1
-	Cu8TIyL+wQXf6JFDzjBEKsS9MKsPpupuTroWhMYXQDMGXOFCfmMJUgPj/BitofAy
-	geQtlyXD8J5SZzSTYoiWQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792169464; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:s+UGl8p9aR9tlO4dPx8ApXhGmaq9senvoLjuEu11MLwwEqn
-	m7mhBPhJXBMyMMg8j2lAlGnyQ7XTrPyKaAL7N83FItkIeW/yzTQiSUtlFVVE5l4K
-	Ht0bLw+uz2XM3KWHiQSvDSXdgGigWiMdGaE4AVD+jjq/uW4OIHSDqM7fuh4YL/Uj
-	aWXHacCJw2HX3PuyKQbJsT5M4JdQ3MCjugYx089wNZ2j2ICRegra4aQpTxVq7VJy
-	31RqZECb7o2C2+YLhA7nuoU35v7ZdAP6YWhPNb00gaMGs5M5/2oGlN5voJuxo+jI
-	7kSbuzI2Ve3kKkD5pdgLb51ggtbfhLhgtJbuiIg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:SzDpePWH6uPmF+REI6xlkInAQKnZPagQrDhOOc7MqcA=:1qYWCAKTkhmKcOwT31wEJeKAJhbyN0fE6ogE2fCnyyM=;
-X-ME-Sender: <xms:-FXSantN3UdZpwW0kh0gnI7svsQARFnmA0qzfyIi9TAdI3ZeSdZwBQ>
-    <xme:-FXSariAr7ShND5JoLFHvTgcNUcTsvaRZ1cDoOoZm_-nA0RcDnn9H2SK_5chgSoUJ
-    HNa2kibPd29KG6CIPgpsOkIUxrd32z5xYu2MbulAGCEufyXjTjKdpY>
-X-ME-Received: <xmr:-FXSalb2HDLxMHxuRCzeI_q6HJ3JVxwKT5cOIXq3-3du8hTSG1iPcOfz9QzomQ>
-X-ME-Proxy-Cause: dmFkZTGfp9DYtFpIWflhSEcKnl9D+LKiGYgtMQnr4eHzyx6i8eXv0cf/RffRQh/9m0XbT+
-    k2UQ+2zo03iz3nqmutVkT19I4vAnjlE6iP0cIiP/pAhpGBUTc87JVmh8qrA5wFPzy+b0I4
-    GxlK/Y0dEcXO0icPjN22dmf8Zjif/JDvYdahTCzJMi2szyNVbF8DlMqbPIcTyolGp559Cr
-    ujnYbmAEozlQWFmEIFFwVNXuyelM6coyaKqpae/tVCihHZhYUDLv1mJBsCVNCrFF41703+
-    z+7ouRtMIBHQFhd5VT55hc0w3M5pDW7ysiuRXix0sBgUtsDZW0afUIGRMw5qZz9r/klnPk
-    jfgilf8HrzUKllfyOO0uMr91YVrrZHXFC8OzP/HtyszWRd4bTOQx7bV438LDkImq7LqsPz
-    Qov0VDerzsFnw4zWY6PVegWvhl60i6aJIuVJ6Fy0r2ItjTDOpHHeQmGvP9+tzDHq7EHiDf
-    LonMNpQWHdd79GjtTFp8jVymbb6nVBPJ6FuAxkfcFOFewcPNaFUzEDuKTKs5/Z8Y5vNza7
-    7nAO5GW74Mvlb1xeUEmXBFPldYlfS63C7P67ui1N0AjAicdviRLQjUlxyNwjMr9AfjqMZZ
-    1NNAVD06icpAcL+LT1bbeCHtx8gxuE/hkR7KjoUu32Bu2JzOTvZzI72vHIBw
-X-ME-Proxy: <xmx:-FXSaiae8N_3vAreFYX5PhPjk5qY1pRtJEmUSCEv44YQpdqns_HVuw>
-    <xmx:-FXSaizjUdpxFFVRUSX8MF2lDQANwtF4zRoT3WFbvGrOtwQVRak0LA>
-    <xmx:-FXSamdS-d0BMzvMwVSXbHDHO9nB7E2WsO4vAQOCsbo28sArOq0b3Q>
-    <xmx:-FXSav5hn1U18-ivMLSlW81nAjTIL6HnRadwAe8OJVpjbBN7UNUHWQ>
-    <xmx:-FXSambvb2zZlT7Qc2STZw0uGDBc8SRwVZulxI7fpFqj6QQZF0eE34RC>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Oct 2026 12:51:03 -0400 (EDT)
-Date: Fri, 16 Oct 2026 10:51:02 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Andrea Parri <parri.andrea@gmail.com>
-Cc: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
- <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, Jiaqi Yan
- <jiaqiyan@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex@shazbot.org
-Subject: Re: [PATCH v2 0/2] vfio/nvgrace-gpu: Separate the fallback-mode
- open_device
-Message-ID: <20261016105102.32b769fa@shazbot.org>
-In-Reply-To: <20261015081937.405320-1-parri.andrea@gmail.com>
-References: <20261015081937.405320-1-parri.andrea@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w8VM95P6"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-88bc25fcd0eso111693b3a.2
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 10:14:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1792170863; x=1792775663; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5HJrOnAZYpIuuAfp/L5yO221qV9COB5ByPC6P2WDsDo=;
+        b=w8VM95P61cGt1cOLViwTBIMitw1Y5QsuTmw9/XfJ1Piu5g8DiqbIKRUDrSVcmGDz6U
+         gM8XiCLTWh3zT67ArhSihumTZuc5by42VfLFEHQ5lN/8+oVZp+fA0QELN9AY4uUhMaWU
+         dhxUN/1JY1oU4BbO2WEdzfv5Hs7JALGKjKDbalrNmILzef42Kn3PUT2FUHGG7cQiYHML
+         ilvgYXyWqzkWbqfMVFc+M3GqlkUX9dCZf10Q0OpBdWFxmmCWG0DCh7NXawAebehCiewx
+         Xw3Y3fFw9yE+hCls2OOOPr/83ovAhkbQHQWDMkpVldGZVsUYh3Oqoi9I2O0gA3NdWtgd
+         ycKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792170863; x=1792775663;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5HJrOnAZYpIuuAfp/L5yO221qV9COB5ByPC6P2WDsDo=;
+        b=txaZLgHtAhJDxt01B7qsdi6dkqTk2Jl7j2k4GZYXgozkbQV65WVL9ObzC2U9PAbJCX
+         zrxSWkK1TMesa04yiut9RVhe+ECguVtWLnukkWRSPf/ByiyNop6JPEX9gI9+Tkfy6Uac
+         pgHIO2XptUc1/Ix7r6tU261UmyLKyYkpGSiUSywpMzkJmPG+us6uJ+79p4zgdyl+drYm
+         SHv4QA7miaHFDxq8Tvxl8EydGTRSDRjCWuRJYPIu1sztGv1CFcalr3hPjbBy8zk+H2Mj
+         A100M2zzXJSo39pjduUX6x1S95ZlhwY8SHjOwTmiew3Y3rVEMntjO42k+g107XXcZySr
+         ngzg==
+X-Forwarded-Encrypted: i=1; AKwUvBwtMV9DA1ME/fRjeXzPgabWx3hBUKpShNyBsyoofUBqOAa/jabYnCPfd1KOs7WqgJBIHcI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJofOZRtF2nliqGzq+ITvAETt55xueJpN6FONI3WbF158g+d6Fj
+	oJue05tqtYQiQLodn3Hdpi8P04JL6J0NnUZuPTudVjlZQwdJuBTJm2ncnIXAdyp8hJE=
+X-Gm-Gg: AYBFou1c/yb1afHvLcVCMzfoODIWj5ICbpsbC1uqNkIQCQS7sMhRAokJmHOlb2yBL4H
+	ITNVpXL3Oua2div6lU/TI/CtSvY/7UK8ViZoauaYziNBg7qebKliibT6sxKMeRVwsC2OuMPjzeX
+	wv7WOXHdsr3aiEFZ+0Iiqbd95DAyAYDQAHPhO4ME7v6wpqKdTl741gvlzulPr5ud4GAe3+vf9dr
+	39v41hs3bCf6Q5Mxkcii4KTaCtwuJwW4ol6d3kf25sJGnQiuIGlBXl55W0FRHouAdg4kRopL9HY
+	bIfuYqczHcwFUlX5JV6lvRy7aK2jlYgmib9/f9P6q4mkQDOyF98RMtEx+91l2MeBnEGpwtY5nGj
+	ZbiO2vZyPZazqvG/92jGKWnVIMdBM1oZQh9yFBITJiLGGVfaZcYVMLzg4SAP2SNYknbRRR8HxdW
+	fz+ZlnNTddBmbTXUwCkb0MSu6Y6Y8hCPcUhArGVWA4T59/n7j6fqK+zkFBfjGZg11aZbz2STfdU
+	A==
+X-Received: by 2002:a05:6a00:4404:b0:89e:df2e:cebb with SMTP id d2e1a72fcca58-8a04d33cba9mr189265b3a.59.1792170862923;
+        Fri, 16 Oct 2026 10:14:22 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:ff2f:8a9c:5623:f753])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89f579464besm1491750b3a.34.2026.10.16.10.14.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 10:14:22 -0700 (PDT)
+Date: Fri, 16 Oct 2026 11:14:19 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
+	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC v4 10/24] target/arm/kvm-rme: Keep track of images loaded
+ in Realm memory
+Message-ID: <atJbayxYy4qePc_2@p14s>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-11-mathieu.poirier@linaro.org>
+ <062da66b-73fa-40e5-94cc-80b1ca760687@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <062da66b-73fa-40e5-94cc-80b1ca760687@redhat.com>
 
-On Thu, 15 Oct 2026 10:19:33 +0200
-Andrea Parri <parri.andrea@gmail.com> wrote:
+On Fri, Oct 02, 2026 at 11:23:58AM +1000, Gavin Shan wrote:
+> On 9/4/26 5:35 AM, Mathieu Poirier wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > Add a Rom notifier to keep track of binary blobs loaded in Realm memory.
+> > That way we can deterministically calculate the Realm Initial Measurement (RIM).
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > ---
+> >   target/arm/kvm-rme.c | 52 ++++++++++++++++++++++++++++++++++++++++++++
+> >   1 file changed, 52 insertions(+)
+> > 
+> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > index f7c2cc786e2c..9985f5daba89 100644
+> > --- a/target/arm/kvm-rme.c
+> > +++ b/target/arm/kvm-rme.c
+> > @@ -10,6 +10,7 @@
+> >   #include "hw/core/boards.h"
+> >   #include "hw/core/cpu.h"
+> > +#include "hw/core/loader.h"
+> >   #include "kvm_arm.h"
+> >   #include "migration/blocker.h"
+> >   #include "qapi/error.h"
+> > @@ -22,8 +23,18 @@
+> >   #define TYPE_RME_GUEST "rme-guest"
+> >   OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+> > +#define RME_PAGE_SIZE qemu_real_host_page_size()
+> > +
+> > +typedef struct {
+> > +    hwaddr base;
+> > +    hwaddr size;
+> > +    uint8_t *data;
+> > +} RmeRamRegion;
+> > +
+> 
+> This is the equivalent to 'RomLoaderNotifyData' defined in PATCH[09/24]. We may
+> use 'RomLoaderNotifyData' if it can be renamed to reflect its purpose, no need
+> to define an identical structure.
+>
 
-> In fallback mode, where the ACPI memory properties are missing or the
-> C2C link is down, nvgrace-gpu opens a device through
-> nvgrace_gpu_open_device() but closes it through
-> vfio_pci_core_close_device().  The open registers an empty usemem range
-> for poison handling that nothing unregisters, so a second open fails
-> with -EBUSY, and the first open after an unbind hits a KASAN
-> slab-use-after-free in register_pfn_address_space().
+I ended up using 'RomLoaderNotifyData' in kvm-rme.c instead of 'RmeRamRegion'.
+ 
+> >   struct RmeGuest {
+> >       ConfidentialGuestSupport parent_obj;
+> > +    Notifier rom_load_notifier;
+> > +    GSList *ram_regions;
+> >   };
+> >   OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> > @@ -41,6 +52,44 @@ static void rme_vm_state_change(void *opaque, bool running, RunState state)
+> >       kvm_mark_guest_state_protected();
+> >   }
+> > +static gint rme_compare_ram_regions(gconstpointer a, gconstpointer b)
+> > +{
+> > +    const RmeRamRegion *ra = a;
+> > +    const RmeRamRegion *rb = b;
+> > +
+> > +    g_assert(ra->base != rb->base);
+> > +    return ra->base < rb->base ? -1 : 1;
+> > +}
+> > +
+> > +static void rme_rom_load_notify(Notifier *notifier, void *data)
+> > +{
+> > +    RmeRamRegion *region;
+> > +    RomLoaderNotifyData *rom = data;
+> > +
+> > +    if (rom->addr == -1) {
+> > +        /*
+> > +         * These blobs (ACPI tables) are not loaded into guest RAM at reset.
+> > +         * Instead the firmware will load them via fw_cfg and measure them
+> > +         * itself.
+> > +         */
+> > +        return;
+> > +    }
+> > +
+> > +    region = g_new0(RmeRamRegion, 1);
+> > +    region->base = rom->addr;
+> > +    region->size = rom->len;
+> > +    region->data = rom->data;
+> > +
+> > +    /*
+> > +     * The Realm Initial Measurement (RIM) depends on the order in which we
+> > +     * initialize and populate the RAM regions. To help a verifier
+> > +     * independently calculate the RIM, sort regions by GPA.
+> > +     */
+> > +    rme_guest->ram_regions = g_slist_insert_sorted(rme_guest->ram_regions,
+> > +                                                   region,
+> > +                                                   rme_compare_ram_regions);
+> > +}
+> > +
+> >   static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
+> >   {
+> >       KVMState *s = KVM_STATE(current_accel());
+> > @@ -58,6 +107,9 @@ static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
+> >       error_setg(&rme_mig_blocker, "RME: migration is not implemented");
+> >       migrate_add_blocker(&rme_mig_blocker, &error_fatal);
+> > +    rme_guest->rom_load_notifier.notify = rme_rom_load_notify;
+> > +    rom_add_load_notifier(&rme_guest->rom_load_notifier);
+> > +
+> >       /*
+> >        * The realm activation is done last, when the VM starts, after all images
+> >        * have been loaded and all vcpus finalized.
 > 
-> Patch 1 gives the fallback table its own open_device, as Alex suggested
-> on v1, and is marked for stable.  Patch 2 drops a usemem length check
-> in nvgrace_gpu_open_device() that only existed for fallback mode.
+> Thanks,
+> Gavin
 > 
-> Tested on x86-64 under virtme-ng with KASAN, not on Grace hardware.  A
-> QEMU cxl-type3 function, bound through driver_override, takes the
-> fallback path and is opened through a noiommu VFIO cdev.  On v7.3-rc7
-> the second open fails with -EBUSY and the open after unbind and rebind
-> reports the use-after-free.  With patch 1, and with the whole series,
-> neither happens.  Patch 2 only affects full mode, which this setup
-> cannot reach.
-> 
-> Changes in v2:
-> - Replace the usemem.memlength guards with a core-only open_device for
->   the fallback table (Alex)
-> - Add patch 2
-> - Fallback open no longer fails when BAR0 cannot be mapped; Ankit
->   confirmed fallback mode does not need that check
-> - Rebase on v7.3-rc7
-> 
-> v1: https://lore.kernel.org/r/20260925161024.189771-1-parri.andrea@gmail.com/
-> 
-> Andrea Parri (2):
->   vfio/nvgrace-gpu: Use a core-only open_device in fallback mode
->   vfio/nvgrace-gpu: Drop the usemem length check in open_device
-> 
->  drivers/vfio/pci/nvgrace-gpu/main.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
-> 
-> 
-> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-
-Applied to vfio next branch for v7.4.  Thanks,
-
-Alex
