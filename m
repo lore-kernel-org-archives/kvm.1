@@ -1,47 +1,47 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47274360EFA;
-	Fri, 16 Oct 2026 16:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044535013AE;
+	Fri, 16 Oct 2026 16:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792168630; cv=none; b=hkO69RlSASB3icANPRNqoIPADXpBXncBSFUqg6J4E3L3zYVy0iMRfdP5saoZLdpyPxi5Mrx14o5FTEzivONb18GKDyCzQqO6viPZwxuDW1Wma2/Y/bstejNov4A2VcbtyXsJZn7OsfUAr6I3G81g4fjwQ/ImkWAFDsgBJr6+ZyQ=
+	t=1792169114; cv=none; b=PITYFoHlY+Ktr0xrNCwXOaDNyWIA3GH94QSQRJ+zqTW6gQW+6yOBkV26L1B9PiXFK5YIcp0GlGkjbbUaKLq7cLfQq+iR+EM7F+UM4aQv862gfYF/59+UB6+JgiivVyDKOTWuHMc0/pTmMvVUXQgNp9JLwNsuu5RNZWV6TL8Cd/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792168630; c=relaxed/simple;
-	bh=XIT44eNWHfcF88/VmNTbAi98x0XA54rVuM6R2KO7ewk=;
+	s=arc-20240116; t=1792169114; c=relaxed/simple;
+	bh=9aGuFzSjqbFXQeIaakwZkg7S4QQyzAWqwcUppOkOEvw=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kjy8MRcZREoSXfdyzBxKzwdcy6V2s+EMxq+0gWuWyPYaAwcQQc7yJ6osaHpiT9RZbv5ta9cEfpnk7+ArmfPPWbtzlX9tYXQ6v8w76tc5BKt+o6wkwufi+WBINNLhJU1yx/yqOQeb6ZGXktjwbGM+GSSGkEhfIiBZ8g3LqXC9NxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Fa0PobNG; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=qhnZ+Q0iwQfxDmjVz2TUPCh6ZNmNA/V0wnvUxWgC6vDEI0Eug6ALmve68qENqcyC4YuL/kpOScQBE1DJdIDiNhkb2EvhK4OI0wL1Bx+6s3ronZU2tHcaFulv0BFodNKhdqA48Mj2YjISH6QSrM9aaHe7fucvuyO6r5No/XID9XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=K1lRUsCP; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Fa0PobNG"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="K1lRUsCP"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XIT44eNWHfcF88/VmNTbAi98x0XA54rVuM6R2KO7ewk=; b=Fa0PobNG/Xgs/Ugtko0Ro1cOV6
-	rcHD4A/UKYqkT6hO7kqpsARcqHxuOtwFB/xsWqHHTEJvyVaaELP3HnHWFwcLEpsHqOsC6RZGfHUzf
-	IW5tjgUGE7ZSbjEkJsXrRJnIIXe11N11v5DDdoY5h3eqw/FIttDUMjIuUHFx5XBwT1fIhnodQMh9F
-	x0hcjDYybfy+6SADLDgKOb7dg7tnqQJl5KUD4SVT7zUXvjmAOLK6s4mtufqk6lif6gYwpHCm6iAkj
-	xEnxKt/AxRJskcaJWGca8d8iiXaIijROESiA9xwkSGkqNrYA21n0xAMvaoOR6H7rTFHd9zuaTcN4H
-	4koYTtDQ==;
+	bh=9aGuFzSjqbFXQeIaakwZkg7S4QQyzAWqwcUppOkOEvw=; b=K1lRUsCP6VhHlnLeT82tqeTG2D
+	Yy1J9iORsQ54DSJ6vQRP09joeaoB5Tk5kEN+h3K6Uu7lvtF7MdNCnPpJLAfZTBmqxU7aWLV76Owi8
+	Ix9rN93gDZkTImEYQFVbHEMi91xV47z2BZ2zjesbngj048BUk4YpW+X8gJZBwkWSdfIqO2surzfzP
+	pU26HOeAY2xzDffI3uzGPM0tWKjzaaknONfJKSpHjIWBZ7F5FwIc1V/0vPPvdWVgtCy35Wc23OGMn
+	vtu9MeWBVOmidzbqk47ayFMQTjp9PDEGmJtLbMmhbVfwMXCwsQrzB1CI2mIF5NT8kCDzNfWDed+j+
+	twx+L6Pg==;
 Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-cache-142.e-maa3.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHkvW-00000005IFO-2eTj;
-	Fri, 16 Oct 2026 16:37:02 +0000
-Message-ID: <b8b03cfd1e665f2e86a7bc804b6f447a49fd2497.camel@infradead.org>
-Subject: Re: [PATCH v3 03/11] KVM: x86/xen: Wait out memslot updates in the
- Xen attribute ioctls
+	id 1xHl3M-00000005MIr-1xWl;
+	Fri, 16 Oct 2026 16:45:08 +0000
+Message-ID: <9ad14b040fa073f982a2a967b72175232e1d7aad.camel@infradead.org>
+Subject: Re: [PATCH v3 05/11] KVM: x86/xen: Retry event channel delivery
+ which races a memslot update
 From: David Woodhouse <dwmw2@infradead.org>
 To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Date: Fri, 16 Oct 2026 17:37:01 +0100
-In-Reply-To: <sashiko-outbox-174534@kernel.org>
+Date: Fri, 16 Oct 2026 17:45:08 +0100
+In-Reply-To: <sashiko-outbox-174536@kernel.org>
 References: <20261016145646.579369-1-dwmw2@infradead.org>
-	 <20261016145646.579369-4-dwmw2@infradead.org>
-	 <sashiko-outbox-174534@kernel.org>
+	 <20261016145646.579369-6-dwmw2@infradead.org>
+	 <sashiko-outbox-174536@kernel.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-bOUUIXOlgs/m/dN1RFvE"
+	boundary="=-uqGj/n6scU74aC6zCwGg"
 User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -52,44 +52,44 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-bOUUIXOlgs/m/dN1RFvE
+--=-uqGj/n6scU74aC6zCwGg
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, 2026-10-16 at 15:11 +0000, sashiko-bot@kernel.org wrote:
+> Does this early return fail to set a KVM request to abort guest entry?
 >=20
+> When kvm_xen_set_evtchn() returns -EAGAIN due to a memslot update race,
+> returning here leaves timer_pending > 0 but KVM's entry path
+> (vcpu_enter_guest) will see no pending requests or injectable interrupts.
 >=20
-> [Severity: Medium]
-> While the computed epochs are nearly identical, could concurrent writers
-> cause a torn read for the guest if the clock readings straddle a second
-> boundary?
+> Because the host hrtimer has already expired and will not restart, could =
+this
+> cause the vCPU to enter the guest without the timer interrupt and run
+> indefinitely until an unrelated VM-exit occurs?
 >=20
-> If thread A and thread B compute the time concurrently, they might obtain
-> readings on opposite sides of a second boundary:
-> =C2=A0 Thread A: sec =3D 100, nsec =3D 999999999
-> =C2=A0 Thread B: sec =3D 101, nsec =3D 0
+> For context, this caller is at the end of the vcpu_run() loop:
 >=20
-> Because they both write to the shared structure non-atomically, their
-> updates can interleave:
-> =C2=A0 Thread A writes wc->sec =3D 100
-> =C2=A0 Thread B writes wc->nsec =3D 0
+> arch/x86/kvm/x86.c:vcpu_run() {
+> =C2=A0=C2=A0=C2=A0 ...
+> =C2=A0=C2=A0=C2=A0 if (kvm_cpu_has_pending_timer(vcpu))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kvm_inject_pending_timer_irqs(=
+vcpu);
+> =C2=A0=C2=A0=C2=A0 ...
+> }
 >=20
-> This would produce a time shifted by a full second (sec =3D 100, nsec =3D=
- 0).
->=20
-> Because both threads increment the version counter using the same
-> read-modify-write pattern, the seqlock ends up in a valid, even state.
-> Would the guest then accept this torn time since the writers are not
-> serialized?
+> If injection fails here without setting a request like
+> kvm_make_request(KVM_REQ_EVENT, vcpu), won't the next loop iteration call
+> vcpu_enter_guest() and enter the guest without scheduling an immediate re=
+try?
 
-Hah. This is so vanishingly unlikely =E2=80=94 and in a case that shouldn't=
- be
-happening anyway, as it involves the VMM setting up the shinfo for a
-*running* guest while that guest is also changing things for itself =E2=80=
-=94
-that I don't think it's worth inventing a new lock to avoid it.=20
+Ick, yes. I never did like the way that *timers* were handled
+differently from *events*. I thought I'd tried to clean that up
+recently and handle them all the same... not sure what happened to
+that. In the meantime yes, that should raise KVM_REQ_UNBLOCK on the
+failure path to trigger another bounce through vcpu_run().=20
 
---=-bOUUIXOlgs/m/dN1RFvE
+--=-uqGj/n6scU74aC6zCwGg
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -187,22 +187,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjEwMTYxNjM3MDFaMC8GCSqGSIb3DQEJBDEiBCDLgxA8gsW7NQiQht7GU1P90NxNI0L0
-73aZwdeqb1k0PjCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjEwMTYxNjQ1MDhaMC8GCSqGSIb3DQEJBDEiBCB0FIHsgrZRBFy78wrU8zVEos5KpaqA
+0wOtUWPDX6F/TzCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAbZdZGgDCclwb/wdPAgCXLe3SNBJmDTKqIGWhyLCOXFdUoXk5056b
-MwQHCs8J6WuImy3Sgr7/BiBrIMwXzMzV8cTYCNKlkkmG4+WhiE/WpGtrCvRjdGLe3gTwV40Y1V6C
-o5C5xxtLQg29XuQnjQiet4giPjvkIJQrAnDaDhdTpyrxXADkRlMlVuC2e0lRmZv9cBPI6TibrLok
-OKGtNjSLu5IMvRDpj8EzzW4UZEtr4o4IUQKVB8EPEolnFkmOsYjMj+pIFb4sI3Y4idzjQmcyZnx9
-48lTR+dwr6cednkvlLSfUK2OGBM+PctTU+Z7/NqLxjGOkI2xhFTHNYK3P9y0qs1gbe8CjK74szDz
-H60+boRA88QBF5nrIEoIrlRL8aaMAH2koNDApUg7BdL7c3Mj++MzF06kXam/1bBe6uXzbkDR91PK
-Ec61H38uVcN3m6eVIKQCzMkJiOw/95YsU+Up7cN/Qsew8VTbuVjDEczOFeN2i3N4uihGBcc/pkxH
-wxACMACv5O6Q+DnX314X4qs1YysZvF030iEvTkxKHz37kAsvn1CIScD49UygI0GBrL+LQukoWGxY
-XjTepW4MATJ/INRbyugM3CeDSMR/PUgEnV5fP+f9EMAdQe5u+Oo1yno1tp0GngF6EQDXtWYL1CPv
-fW9GR2VpxJzuuUllLS6GkrkAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAnoFQWKKD8jZQkOTP65IYsqEa3HFcfhFw88ejJ84SenyoNZ21/XgA
+vWtgY6EUJk1sHkR3CDkuGwPxzDkbvygHz4HBu3YeraYsFCRVDgkRViUCJrjMb8OAtngGoXlKPP1G
+HMQNlzvgd9OWQlU3KHupgZzXA0jlU3jIWRgSEtNYEXIEGIopPQF88jTqDS+HfbNd9K+L1/fhrqZ7
+xbor3dQfuPQuqoPK4JT1UiDhalN9K0E+jelpnWMg86ofjDd5pb4tFz5rQX1P5UeHZL0KjpnHZf9w
+tPLKGbpTTB/3QSdNfGW6SxCAfyjPbrW2jS1lFE6AYv7sCEOBVCMjL06IqsvYejKFyMG07IGEK/0s
+4bTF377YJxtf70yX/CxY5tUkjHe1WQpttKO0DmR6hgByCJv9Fu7g3B5YvaUS81xG/hEhV/UNBSEW
+NOfUIxx3VOm6EHOETg1o5LuxgsiixwI5VxGHv0ldwn9AFk3ERD3vpMeH00m/LCTP/fzKFM2D+GTu
+r8HipDBznfcIJjJXxrZJ2ozwAmJfDsrhRSSKdlMrr52I4200o8mundI2K5HEX7HW3DgkrrHIU0J1
+YlPGNuxE+Jfkli8M5ZCaI4FApBSQoXT+5lL21jFR5r+p/TuI7rnPbe28tOZaugDT+6GrA87u+n6W
+R1eJQuWZbxdXF9Ne+JaAcHsAAAAAAAA=
 
 
---=-bOUUIXOlgs/m/dN1RFvE--
+--=-uqGj/n6scU74aC6zCwGg--
