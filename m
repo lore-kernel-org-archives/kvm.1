@@ -1,56 +1,56 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4D539A06A
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 04:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1B7393DEF
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 04:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792125862; cv=none; b=CUqypanNe9Ma/Po0HNAjv9tN4pTInE85AAGezsCSIwCWkSTTIKhdarnMan6CdObToLTqmSFcnVlJ9B5CdFybrDk14aIML9EboZSnG5Sr5FDYv7kRmcjdnfzLeqphl2YRjVF6FJBBtaawkXxQIgWgXZ7kcliMl8BcblDN2S6f3SY=
+	t=1792125863; cv=none; b=Lnu6BLkE9exw7Xv76z00BvD+9maxbkLlJDvc9HTpo6K+uhMTEYqTOYsewlhPTDo4o0hBZLPn1HGa/YpH/NWik/HmV1AtA5cR3lFWbUZ9ZiFfubjh/zJhpIaqFjpclDtl0Nt6vpsImmLQrhxQNisnRQEgu4UJ+EOTY+Nj25oB4kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792125862; c=relaxed/simple;
-	bh=XjUUDdcP2CI0CF0n8gkpkLfWDsLoYAA7uUimqdblRQM=;
+	s=arc-20240116; t=1792125863; c=relaxed/simple;
+	bh=VA/CKG5TGpaH0tCblyH1AcFibPiB6QlsnsS32IvRxvk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gCnsDxaMgx2E8DjS5XRUTWy2B48hEZen1N7IilPh+CcjBbs4RNTktOyGoXMUhyfJTIXwUM3AaVtK1X6WYv0npzrjko99KIViGfzbF6AdGLdAPGUEYThLfg3ehSh1DkMmMyFNax39sVYIqrfScMmRvPonOJDORD4PQbUpE7msnTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OOsrEavl; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=fsiDLXjSdFNATn3mjwTDQY9Mhx14RQYo0zgG3qwEY22rKOSrNdetoAICyaNZ4Xg/8gPB4YUieI8QJRlEqq8mNxRa+ekmSnEjfHndu61MrHp5fOLKMiVEhouVb2nfGFjBUpXBDkEw/lcZ+pEnRSv8jkgvQVor/GRO7/Ziz7gM4KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Iw2kONWi; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OOsrEavl"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd61bdc8683so1970779a12.3
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 21:44:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Iw2kONWi"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e942b1cc86so23974575ad.1
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 21:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792125859; x=1792730659; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792125861; x=1792730661; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=NxZ+b4JCGOlHDvtphu6wLcPq/YWjg3jI+s4nvF3CTmI=;
-        b=OOsrEavlNgGVIw3rDZM6qVvuBD6sURT0atlkh8vyDuJ4QL42u4Wt6OxRj+ofO+NLaM
-         GXjUg1Y0p39b0iY1wAgQvzuhd0SsqJWgxJEzRsOmrLwGFFAS5LOyPulL6u/yx3xcB2aR
-         A84eBO/TaChndsYhgl14E3A46E8F7T/z2Q8Roisq/9Dq+u5KgaFrB87cF6lZV6+bgcAd
-         6xtVtC2ri0DJUzlkA+rKEmrnUy1NTuI4xAizpxXOh0/GmomN3g+kZcXfhdxsQ4D0IenS
-         9IZxqSMgHrqVLGtqz7UxZG4frwjKOBiyJxB1kGHpHde4zfefRdHejzEMzGTCbJVViNxZ
-         LHCw==
+        bh=3zD8XpFPXJqFea7WUGGo95CCbrLBPfUfm1ny+qlhtNU=;
+        b=Iw2kONWiZB4qZoD/KH3Gzyl1g5IIawzs4RTgOZIUBASjZcBGFpf2lC07aQWkycCIXi
+         SPBdCDskXBOYrNiMbAT7vPhqGzFCGw7bCsxqySRTUY1OqxeN27c/m1nQsyMH+T/4Ba66
+         hEdWQ9QQMSvQhUBeItHmv725V7BzHHM+tU0v/2v0u4tGutcU7vCRJCnA+fB3i7FojCEQ
+         CIyZhxxfWNhQbZUtMEsIu7mLVnq/RscgkbdTtAvD9RPL5xbY1DxhWzCS4idj/G+Bn4/f
+         i4BfDHThNRL2ehCtuQ9078tyf27MrYr8s1tpypkA4ebE2kLX8m3/GnYLZt2qvgx7d8Ih
+         RHxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792125859; x=1792730659;
+        d=1e100.net; s=20260707; t=1792125861; x=1792730661;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NxZ+b4JCGOlHDvtphu6wLcPq/YWjg3jI+s4nvF3CTmI=;
-        b=T4q1uRzQaidg6qEqCkO7eBqNzUMV7RBcR2IOw+QcZW3NcNdLI8i2poN3oIJRTlihV2
-         Kiq/f4/iQMEmc7u9qywIZjRNi9IP+8KMbjrWGo3LHnGVu92tju2rtDp45dZh0aYKoGZj
-         LWOWkoben95KIT9qZsqTsTMYkRme/OP5bYltuA6Mdzen3WuscAEBBTEZ9k3XiwSXZClU
-         7bqJnkxGVfvfjMzEPpsCDlZtjjs8OzzO38WiN+os4I8D3k4OBROQwhbIeSG25jtq+G0i
-         YvSUmW3JFFksiyNwMe1rY21mJ2vwR9wA5bE0cYF4FNH8AA3psiGmvDlxshQPHiUKHU5M
-         EfQw==
-X-Gm-Message-State: AFq9FYK+20g+VqojAtL1fvlcDpdm8LxDzZndpC25d+hxqBU1srjv200U
-	+TFV0e1aMYrDwyKE3RzQtPaM+CJjjWt/5yCeqeJiF1LxER2SYcfpZqzbAJ91G42xThd3jmii2z3
-	Z8G3TiA==
-X-Received: from pgby3-n2.prod.google.com ([2002:a05:6a02:6503:20b0:cc7:982c:320f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c793:b0:3e0:e12f:5dd
- with SMTP id adf61e73a8af0-3e16bf0290cmr16704765637.69.1792125859176; Thu, 15
- Oct 2026 21:44:19 -0700 (PDT)
+        bh=3zD8XpFPXJqFea7WUGGo95CCbrLBPfUfm1ny+qlhtNU=;
+        b=xU0DQPmm6m7I2VWi+ecH9h9k5fBUnN5NpNdJmDQDwdW/4BQeDxQgKTAVImI8NerQGh
+         /nAd50X3lskcvU9HKszSUlJmeemFrh1X+LJVGGzsSUtYa62EhscLfIVzau4YevXQoFdk
+         pdrAsyauohOnzjtliiSX0j8Lvl1BUqIBpxwxBpWCAKHFiI+N2lttQy7LEZxnATUqW//Q
+         C3Ih9/s7s5jFFrOMFZg8wfHfLrxcr459LBtpO42nqNqdn87MBs8K5uqrkjg8W+5TEhPO
+         rnO5sEDyFmjNu86nixoUen+oxBIagMrp/FWEYzLRZP7gd0myYCbx8ML4Hz2VdSA8MO96
+         lz7w==
+X-Gm-Message-State: AFq9FYLb46YRzyM0X/iYSDhLmxNu7ohJwcvj6pzTpwrHsu2I/qFCQO6l
+	R3YDe3NhamdtK34BJEIyQaNNlHo/xJCccG85eZm1W8BIOiOrJMZV/9jaoI6wnh3klQNzc+lwvPf
+	+lOrEEg==
+X-Received: from pli18.prod.google.com ([2002:a17:902:c112:b0:2e9:59de:6dc0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce07:b0:2dd:ad73:5b6c
+ with SMTP id d9443c01a7336-2e8429ad1d4mr185380335ad.28.1792125860305; Thu, 15
+ Oct 2026 21:44:20 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 15 Oct 2026 21:44:07 -0700
+Date: Thu, 15 Oct 2026 21:44:08 -0700
 In-Reply-To: <20261016044415.958618-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,185 +60,185 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261016044415.958618-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-Message-ID: <20261016044415.958618-3-seanjc@google.com>
-Subject: [GIT PULL] KVM: guest_memfd and CoCo changes for 7.4
+Message-ID: <20261016044415.958618-4-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86: Misc changes for 7.4
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-In-place conversion support is the obvious highlight.  The rest of the changes
-are either fixes (mostly found by AI) or prep work related to in-place conversions.
+This one really lives up to its name.  There's a lot of smallish stuff all over.
+There's a minor conflict between this and the "vmx" branch, more details in the
+"vmx" pull request.
 
-Note, this is based on 7.3-rc4 as it has a hard dependency on commit fc6415a384f0
-("mm/gup: factor out LRU cache draining for folio into lru_cache_drain_for_folio()").
+The following changes since commit d4b7fb647204f0c81dfeae2d1a708e4d858e0c94:
 
-Note #2, this will conflict with the "vmx" pull request.  More details in that
-pull request (I do my local merges in alphabetical order, so I always see the
-conflict when merging in the "vmx" branch).
-
-Note #3, there's a deadlock splat with SNP[1] that isn't resolved here.  The CCP
-driver holds its system-wide mutex (that guards PSP firmware calls) while doing
-a variety of might-fault operations, which leads to an ABBA locking issue when
-KVM attempts to issue SNP_LAUNCH_UPDATE while holding a gmem's lock.  The plan
-is to either temporarily disable SNP[2], or (much) better, fastrack a series to
-fix the deadlock by having the driver hold sev_cmd_mutex only when it absolutely
-needs to[3].
-
-[1] https://lore.kernel.org/all/asz8GKNO9aQANr5E@google.com
-[2] https://lore.kernel.org/all/as0FedYcvJvdOaq2@google.com
-[3] https://lore.kernel.org/all/20261014132145.1726322-1-michael.roth@amd.com
-
-The following changes since commit 93f51579e7df248780214094418f205253383cc5:
-
-  Linux 7.3-rc4 (2026-09-20 13:48:15 -0700)
+  Merge branch 'kvm-xen-longmode' into HEAD (2026-09-04 17:35:03 +0200)
 
 are available in the Git repository at:
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-coco-7.4
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-misc-7.4
 
-for you to fetch changes up to a6270ed4bec0caa25913082e71ce22254e9cd3ed:
+for you to fetch changes up to 88b23a2e8286b7016c3b58dc10093cf28c22aa3d:
 
-  KVM: selftests: Support guest_memfd in-place conversion (2026-10-12 08:08:29 -0700)
-
-----------------------------------------------------------------
-KVM guest_memfd and CoCo changes for 7.4
-
- - Take the invalidate lock when unbinding a dying file to fix a race with
-   kvm_gmem_invalidate_end() that results in KVM leaving the MMU invalidation
-   count elevated.  Not taking the lock in the first place was pure misguided
-   paranoid.
-
- - When binding a memslot, purge the bindings if storing the new memslot fails,
-   as Xarray's "store range" API can subtly fail partway through.
-
- - Establish memslot<=>guest_memfd bindings *after* the memslot is ready, as
-   the memslot becomes reachable the instant the binding is installed.
-
- - Don't grab a page refcount when reloading an SNP VMSA and stop returning a
-   "struct page" from guest_memfd's PFN lookup altogether, to ensure that KVM
-   doesn't hold any unnecessary refcounts (the lifetime of the page is ensured
-   by MMU notifiers and similar hooks).  Preventing unnecessary refcounts
-   greatly simplifies supporting in-place SHARED=>PRIVATE conversions.
-
- - Add support for in-place PRIVATE<=>SHARED conversion, i.e. allow a single
-   guest_memfd instance to be used for both PRIVATE and SHARED variations of
-   CoCo guests' memory (though not at the same time).  This eliminates the need
-   to double allocate guest memory for TDX and SNP, and is basically a hard
-   requirement for pKVM, which relies on being able to preserve memory contents
-   on conversions.
-
- - Hack-a-fix a deadlock bug in ->error_remove_folio() by returning -EBUSY if
-   the filemap invalidate lock is contended.  Punt on a proper fix for the
-   moment, as a proper fix likely involves reworking truncate_error_folio().
-
- - Add a pile of selftests for in-place conversions.
-
- - Misc guest_memfd cleanups
+  KVM: x86: Request event processing for exception VM-Exits (2026-10-02 07:49:40 -0700)
 
 ----------------------------------------------------------------
-Ackerley Tng (25):
-      KVM: SEV: Treat unassigned RMP entry as benign race on PSMASH failure
-      KVM: SEV: Check for invalidation before warning on unassigned RMP entry
-      KVM: SEV: Drop page refcount early in VMSA reload
-      KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
-      KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
-      KVM: guest_memfd: Pass mapping type filter to invalidation helper
-      KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-      KVM: guest_memfd: Ensure pages are not in use before conversion
-      KVM: guest_memfd: Call arch make_shared callback for to-shared conversion
-      KVM: guest_memfd: Return early if range already has requested attributes
-      KVM: guest_memfd: Zero page while getting pfn
-      KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
-      KVM: selftests: Test basic single-page conversion flow
-      KVM: selftests: Test conversion flow when INIT_SHARED
-      KVM: selftests: Test conversion precision in guest_memfd
-      KVM: selftests: Test conversion before allocation
-      KVM: selftests: Convert with allocated folios in different layouts
-      KVM: selftests: Test that truncation does not change shared/private status
-      KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
-      KVM: selftests: Test conversion with elevated page refcount
-      KVM: selftests: Reset shared memory after hole-punching
-      KVM: selftests: Provide function to look up guest_memfd details from gpa
-      KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
-      KVM: selftests: Set up page size and alignment independently for guest_memfd
-      KVM: selftests: Update private_mem_conversions_test for in-place conversions
+KVM x86 misc changes for 7.4
 
-Fuad Tabba (1):
-      KVM: guest_memfd: Fix the in-place conversion documentation
+ - Mask off the address space ID when checking for illegal usage of
+   kvm_set_internal_memslot() to prevent false negatives on the sanity check.
 
-Hao Zhang (1):
-      KVM: guest_memfd: Avoid deadlock in error_remove_folio()
+ - Explicitly zero reserved flags when delivering a SynIC message to avoid
+   leaking a byte of stack information to the guest.
 
-Lisa Wang (1):
-      KVM: selftests: Support guest_memfd in-place conversion
+ - Rework TDX's handling of the canonical MMU root level to not rely on
+   userspace to fill CPUID correctly, as doing so lets userspace trivially
+   trigger a KVM_BUG_ON().
 
-Michael Roth (1):
-      KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+ - Reject KVM_SET_NESTED_STATE if userspace "restores" L1 with EFER.LMA=1 &&
+   EFER.LME=0, which confuses KVM into trying to configure an 64-bit MMU
+   without PAE.
 
-Sean Christopherson (30):
-      KVM: guest_memfd: Elaborate on how release() vs. get_pfn() is safe against UAF
-      KVM: guest_memfd: Gracefully handle xarray errors when binding a memslot
-      KVM: Use goto to handle errors during memslot preparation
-      KVM: Only bind memslot to guest_memfd instance for CREATE operations
-      KVM: guest_memfd: Split bind() into prepare()+commit() phases
-      KVM: guest_memfd: Establish memslot<=>guest_memfd bindings *after* memslot is ready
-      KVM: guest_memfd: Drop superfluous WRITE_ONCE() when binding a memslot
-      KVM: SEV: Drop page refcount early during RMP fault handling
-      KVM: guest_memfd: Stop returning struct page from PFN lookup
-      KVM: guest_memfd: Optimize away conversion overheads via dead-code elimination
-      KVM: guest_memfd: Use kvm_mem_is_private() when populating guest_memfd memory
-      KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
-      KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
-      KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
-      KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
-      KVM: Provide generic interface for checking memory private/shared status
-      KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
-      KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
-      KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings for in-place conversions
-      KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
-      KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
-      KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
-      KVM: selftests: Create gmem fd before "regular" fd when adding memslot
-      KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
-      KVM: selftests: Add support for mmap() on guest_memfd in core library
-      KVM: selftests: Add selftests global for guest memory attributes capability
-      KVM: selftests: Add helpers for calling ioctls on guest_memfd
-      KVM: selftests: Test that shared/private status is consistent across processes
-      KVM: selftests: Provide common function to set memory attributes
-      KVM: selftests: Update private memory exits test to work with per-gmem attributes
+ - Ignore EFER.LMA (clear it from KVM's cached save state) if EFER.LME=0 when
+   preparing L2 state, to fix another way to confuse KVM's MMU (and because
+   real hardware also ignores EFER.LMA).
 
-Shivank Garg (1):
-      KVM: guest_memfd: take the invalidate lock when unbinding a dying file
+ - Improve KVM's sanity checks for a misconfigured MMU to (hopefully) detect
+   all of the ways KVM can botch EFER.LMA vs. CR4.PAE.
 
- Documentation/admin-guide/kernel-parameters.txt                |  26 +++++
- Documentation/virt/kvm/api.rst                                 | 116 ++++++++++++++++--
- Documentation/virt/kvm/x86/amd-memory-encryption.rst           |  14 ++-
- Documentation/virt/kvm/x86/intel-tdx.rst                       |   4 +
- arch/arm64/kvm/mmu.c                                           |   4 +-
- arch/arm64/kvm/nested.c                                        |   4 +-
- arch/x86/include/asm/kvm-x86-ops.h                             |   2 +-
- arch/x86/include/asm/kvm_host.h                                |   9 +-
- arch/x86/kvm/Kconfig                                           |  15 ++-
- arch/x86/kvm/mmu/mmu.c                                         |  30 ++---
- arch/x86/kvm/svm/sev.c                                         |  66 ++++++-----
- arch/x86/kvm/vmx/tdx.c                                         |   8 +-
- arch/x86/kvm/x86.c                                             |  20 ++--
- include/linux/kvm_host.h                                       |  91 ++++++++-------
- include/trace/events/kvm.h                                     |   6 +-
- include/uapi/linux/kvm.h                                       |  16 +++
- tools/testing/selftests/kvm/Makefile.kvm                       |   1 +
- tools/testing/selftests/kvm/include/kvm_util.h                 | 139 +++++++++++++++++++---
- tools/testing/selftests/kvm/include/test_util.h                |  32 ++---
- tools/testing/selftests/kvm/lib/kvm_util.c                     | 237 ++++++++++++++++++++++++-------------
- tools/testing/selftests/kvm/lib/test_util.c                    |   7 --
- tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c | 512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- tools/testing/selftests/kvm/x86/private_mem_conversions_test.c |  66 ++++++++---
- tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c   |  36 +++++-
- virt/kvm/Kconfig                                               |   3 -
- virt/kvm/guest_memfd.c                                         | 653 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------
- virt/kvm/guest_memfd.h                                         |  19 ++-
- virt/kvm/kvm_main.c                                            | 157 +++++++++++++++++--------
- 28 files changed, 1875 insertions(+), 418 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+ - Remove the "full" out-param from kvm_x86_ops.flush_tlb_gva() as the param
+   is only used to avoid what effectively amounts to a single memory write.
+
+ - Fix a mostly-benign bug where KVM can write through a guest's read-only
+   mapping due to not checking the error code when expediting emulated MMIO
+   page faults.
+
+ - Honor the guest's view of the "EFER.LMSLE must be zero" defeature so that
+   userspace can provide migration compatibility between Rome and Milan+.
+
+ - Pend a KVM_REQ_EVENT request when an exception is morphed into a nested
+   VM-Exit, otherwise KVM can fail to actually deliver the nested VM-Exit,
+   e.g. when injecting a page fault.
+
+ - Add support for PML on SVM.
+
+ - Add support for virtualizating Bus Lock Detect on SVM, and fix a number of
+   DR6 bugs and warts along the way.
+
+ - Misc fixes and cleanups.
+
+----------------------------------------------------------------
+Hao Xiang (1):
+      KVM: x86: Rename CPUID feature bit AVX10_VNNI_INT to AVX10_V1_AUX
+
+Jim Mattson (4):
+      KVM: x86: Advertise EFER_LMSLE_MBZ when KVM disallows EFER.LMSLE
+      KVM: x86: Honor the guest's EFER_LMSLE_MBZ
+      KVM: selftests: Rename svm_nested_clear_efer_svme to svm_nested_efer_test
+      KVM: selftests: Add coverage for the EFER_LMSLE_MBZ defeature
+
+Karl Mehltretter (2):
+      Documentation: KVM: SEV: Use the uapi structure names
+      Documentation: KVM: x86: Use struct kvm_clock_pairing in hypercalls.rst
+
+Kyle Zeng (1):
+      KVM: x86: Restrict saved GPA writes to hardware write faults
+
+Loc Nguyen (1):
+      KVM: x86: Request event processing for exception VM-Exits
+
+Luka Absandze (1):
+      KVM: x86/pmu: Don't retry a counter whose config was rejected
+
+Nikunj A Dadhania (7):
+      KVM: x86: Move PML page to common vcpu arch structure
+      KVM: x86: Carve out PML flush routine
+      KVM: VMX: Use cpu_dirty_log_size instead of enable_pml for PML checks
+      KVM: x86: Carve out common dirty logging update
+      x86/cpufeatures: Add Page modification logging
+      KVM: SVM: Use BIT_ULL for 64-bit misc_ctl bit definitions
+      KVM: SVM: Add Page modification logging support
+
+Paolo Bonzini (1):
+      KVM: x86: remove "full" out-argument from flush_tlb_gva
+
+Ravi Bangoria (1):
+      KVM: SVM: Add support for virtualizating Bus Lock Detect
+
+Sean Christopherson (20):
+      KVM: x86: Zero reserved synic flags when delivering message to avoid stack leak
+      KVM: x86: Track kvm_vcpu_arch.pending_ioapic_eoi as a u8 to drop dead BUG_ON()
+      KVM: x86/mmu: Use KVM's max TDP level to determine need for 32-bit TDP root
+      KVM: VMX: Explicitly track TDX VMs' root level instead of guessing it from CPUID
+      KVM: VMX: Drop TDX_SHARED_BIT_PWL_{4,5} and dedup related code
+      KVM: nSVM: Reject KVM_SET_NESTED_STATE if L1 has EFER.LMA=1 && EFER.LME=0
+      KVM: nSVM: Ignore EFER.LMA if EFER.LME=0 when preparing L2 state
+      KVM: x86/mmu: Bug the VM if KVM attempts to walk more levels than the MMU has
+      KVM: x86/mmu: Bug the VM if KVM calcs a CPU role with EFER.LMA=1 && CR4.PAE=0
+      KVM: x86/mmu: Convert MMU walker's bounds check from BUG_ON() to KVM_BUG_ON()
+      KVM: VMX: Pass @vcpu, not @vmx to init_vmcs()
+      KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when delivering #DB payload
+      KVM: x86: Rename kvm_dr6_fixed() => kvm_get_dr6_fixed_1()
+      KVM: Return an "unsigned long", not "u64" for the fixed-1 DR6 bits
+      KVM: x86: Force fixed-1 bits in DR6 after synchronizing with hardware
+      KVM: x86: Set guest's fixed-1 DR6 bits when delivering #DB payload
+      KVM: x86: Kill off DR6_FIXED_1 to prevent future misuse
+      KVM: SVM: Add helper to query if LBR virtualization needs to be enabled
+      KVM: nSVM: Open code check on LBR virtualization being enabled in vmcb12
+      KVM: selftests: Add module param API to check if nested virtualization is enabled
+
+Shivansh Dhiman (3):
+      KVM: nSVM: Disable LBRV in nested control cache when unsupported
+      KVM: nSVM: Don't assume all active-low bits DR6 are fixed-1
+      KVM: SVM: Add a vCPU-aware helper to get supported DEBUGCTL bits
+
+Tharit Tangkijwanichakul (2):
+      KVM: x86: Reject reserved CR8 bits in KVM_SET_SREGS
+      KVM: selftests: Add CR8 reserved-bit checks to set_sregs_test
+
+Zeng Chi (1):
+      KVM: Mask off the address space ID in kvm_set_internal_memslot() check
+
+ Documentation/virt/kvm/api.rst                     |  25 ++
+ .../virt/kvm/x86/amd-memory-encryption.rst         |   8 +-
+ Documentation/virt/kvm/x86/hypercalls.rst          |   2 +-
+ arch/x86/include/asm/cpufeatures.h                 |   1 +
+ arch/x86/include/asm/kvm_host.h                    |  10 +-
+ arch/x86/include/asm/svm.h                         |  14 +-
+ arch/x86/include/uapi/asm/svm.h                    |   2 +
+ arch/x86/kernel/cpu/scattered.c                    |   1 +
+ arch/x86/kvm/cpuid.c                               |  36 +--
+ arch/x86/kvm/cpuid.h                               |   1 -
+ arch/x86/kvm/hyperv.c                              |   9 +-
+ arch/x86/kvm/kvm_emulate.h                         |   4 +-
+ arch/x86/kvm/lapic.c                               |   4 +-
+ arch/x86/kvm/lapic.h                               |   2 +-
+ arch/x86/kvm/mmu/mmu.c                             |  29 ++-
+ arch/x86/kvm/mmu/paging_tmpl.h                     |  17 +-
+ arch/x86/kvm/msrs.c                                |  12 +-
+ arch/x86/kvm/pmu.c                                 |  14 +-
+ arch/x86/kvm/regs.c                                |  16 +-
+ arch/x86/kvm/regs.h                                |  11 +-
+ arch/x86/kvm/reverse_cpuid.h                       |   2 +-
+ arch/x86/kvm/svm/nested.c                          |  46 ++--
+ arch/x86/kvm/svm/sev.c                             |   7 +-
+ arch/x86/kvm/svm/svm.c                             | 162 ++++++++++++-
+ arch/x86/kvm/svm/svm.h                             |  13 +-
+ arch/x86/kvm/vmx/main.c                            |   8 +-
+ arch/x86/kvm/vmx/tdx.c                             |  21 +-
+ arch/x86/kvm/vmx/vmx.c                             |  94 +++-----
+ arch/x86/kvm/vmx/vmx.h                             |   9 +-
+ arch/x86/kvm/vmx/x86_ops.h                         |   4 +-
+ arch/x86/kvm/x86.c                                 | 130 +++++++---
+ arch/x86/kvm/x86.h                                 |  10 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   2 +-
+ .../testing/selftests/kvm/include/x86/processor.h  |  14 ++
+ tools/testing/selftests/kvm/x86/set_sregs_test.c   |  11 +
+ .../selftests/kvm/x86/svm_nested_clear_efer_svme.c |  50 ----
+ .../selftests/kvm/x86/svm_nested_efer_test.c       | 266 +++++++++++++++++++++
+ virt/kvm/kvm_main.c                                |   2 +-
+ 38 files changed, 803 insertions(+), 266 deletions(-)
+ delete mode 100644 tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_efer_test.c
