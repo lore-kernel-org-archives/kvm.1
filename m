@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B8C4EBAC9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797CC4EB876;
 	Fri, 16 Oct 2026 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792162621; cv=none; b=M2Cl50k/b9VyoVZVawPWYB99teUsMoXbgyzvc2Dfx6Vf5JSZ0CAA2n7KHyQbSXmEdmJP7cUlix6BWAdtqC1myQxMYwHgRld5g2HLkmYcYE2ogpHiaFod08LgaD5ve/64WmKTR1oR5UgAiTTwCEuUc7t2czlCZ+ikHk90waqOPmg=
+	t=1792162621; cv=none; b=gLHObYg9WJzb7bpsfeKvhDRlh1CSXjd1ieZR6XtK291FcIvCXxYAq9oftBZ8mhWfqazrvXBQ1rJkFPyWpzNZysOvPc0L0OY6ON1TxNW2HRo1RUT5BZLihFHguGJimJ9VjUfzXr66g0ycTje5i1dmPuJKOajT+S9NKexKg5ZpC/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792162621; c=relaxed/simple;
-	bh=HxmcfR/8iGgpOiY1aW05K4KdewaDlJcb0Jx7N50HTns=;
+	bh=VPuD+iznaHPFgb0T5ME/jEwcfMyYal3GaoaMzqNGQAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pplsDe+zlgmKMxE5wFcOsa5kMwW7Y2DFHkQkl18VfbSG2zfzL8WqCcCTWvKbifT0DPmz2Y3C4d6IJSlzROpfSH3CIgcO07T3qKRbqoEyT0y6zMttgHW6CGWIivdDMZPjsOLNRwGd00U4FJqsQsvMPh2tWqfsWxWAt/vZK+9wrzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qFnZuhO5; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version:Content-Type; b=dCOcqVndDQFm3MURDu9Qs6fe1/o1kZB2p5MMalGgSk+L8PnErUO4xsfZ7eEwHq1HsJf+s1n440ERdlNscb+sjZtFw0516kLKhEY4A84Bed7N0JM4+a4VBXmxNwUAvRw4qmdFvCpLcTfXC/5p4InlagS6gwx2BeKcZMIiz7S5iWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=S6ryZJRj; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qFnZuhO5"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="S6ryZJRj"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description;
-	bh=bu24Me2M9bh5wmmP0KoTMJEOWeNW/Uf26dLTu8DMTjo=; b=qFnZuhO5IkrT3+sk+OEMJTi0uB
-	5lKObfJvI5jBkwmeq3Knfvtrsdczch2lhOFTHSxi1rI3msr7/Y8p5Q1oYrZCQKZH5Bh/AnjqJEOic
-	5sSmNQxRnXuN8Qwr2wAkog6MrOVnlNJ0bTPO2c+i8o2S93bg8gwGohEBgxIvgFsMg+aKsyTd9EIHl
-	pGLn4kfvLrXxTPv0ekUoHE+MSHWhDrhN8Ox5kI84YcXOLsfx43ji8+LekCjBQ0bqo0YgIO6n2PjNr
-	07KMAlV+1LP9L3vkKGPadObfD3Po7qE8NGaXC4wD86eTvmPngE6zdS0SI2vqwX0Lk0f5CxI1IRsBS
-	NY6Yi4aA==;
+	bh=EPJAdsPZxOFKgj9EDg8h628y+uz0cGQWZ8gyqAeH6xk=; b=S6ryZJRjgDSSpj5OX2+b8sjyAH
+	8mC0CzRvD9zRhOnKDR4tN9XgQ/ifJteK/EMc09jPalBaDovu3lbRTrCIHujYnZ3XGqSwVO/5WF0fc
+	/WzjinQQWrnt4pciPa12g/8+Qa1MF92s26k2Ods7t1pfV7ORCtYYh7hESBPTIzmFUH/iLLMuAXIiy
+	duk+v2TcK7htEqICq7W+EdrSc5Q2SSNCkS3FoGlr/x6jglunas0QdlR/ylgcagKQDbmHqFtTDekaA
+	m3+1y0CC/qhu0zuMbOt0F+aiKxRcBPNd2hS7h/Aii9vecN/thnUdYPYGiNOQ9Y39dg4Hm60O3bTLo
+	7B/37b0Q==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMX-00000001dOa-1wmd;
+	id 1xHjMX-00000001dOZ-1wnR;
 	Fri, 16 Oct 2026 14:56:49 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMU-00000002Qj2-2yrG;
+	id 1xHjMU-00000002Qiy-2pyU;
 	Fri, 16 Oct 2026 15:56:46 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -43,9 +43,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 04/11] KVM: x86/xen: Don't lose the timer event when delivery fails transiently
-Date: Fri, 16 Oct 2026 15:56:38 +0100
-Message-ID: <20261016145646.579369-5-dwmw2@infradead.org>
+Subject: [PATCH v3 03/11] KVM: x86/xen: Wait out memslot updates in the Xen attribute ioctls
+Date: Fri, 16 Oct 2026 15:56:37 +0100
+Message-ID: <20261016145646.579369-4-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261016145646.579369-1-dwmw2@infradead.org>
 References: <20261016145646.579369-1-dwmw2@infradead.org>
@@ -62,201 +62,367 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-kvm_xen_inject_timer_irqs() can drop events if kvm_xen_set_evtchn()
-fails transiently, as it can when a memslot is in the process of
-being updated. Defer the delivery in that case by leaving
-->arch.xen.timer_pending set, so that it gets retried.
+Activating a shared_info, vcpu_info, pvclock or runstate cache can
+fail if it races a memslot update: previously with -EFAULT, now with
+-EAGAIN. These ioctls may sleep, so pass wait and let the activation
+ride the update out; userspace never sees the transient state.
 
-If the shared_info cache has been deactivated (-EINVAL), clear
-timer_pending — a halted vCPU would otherwise spin forever, as
-kvm_cpu_has_pending_timer() aborts every block while nothing can
-deliver the event — but keep timer_expires, so the GET_ATTR/SET_ATTR
-migration flow still carries the event and re-fires it on re-arm.
-If delivery fails with -EFAULT, the shared_info gfn is genuinely
-unbacked and can never succeed: drop the event and complete the
-timer rather than spin on it.
+The waiting is done without xen_lock held. A vCPU writing the
+hypercall page MSR blocks on xen_lock from within its kvm->srcu read
+section, and the memslot update cannot complete until that section
+quiesces, so an ioctl waiting while holding the lock would deadlock
+all three. Deactivations and the attribute field updates themselves
+stay under the lock; concurrent SET_ATTR calls racing through an
+activation window are userspace's own race, serialized by the cache's
+refresh_lock, and the last one wins. Document the rule at the lock's
+definition.
 
-True Xen does not have this problem: the shared_info page is owned
-by Xen and always exists, even when not mapped into the guest. The
-equivalent for a KVM/Xen VMM is KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA,
-which has no memslot dependency and is the recommended mode; this
-fixes the legacy GFN mode, which xen_shinfo_test exercises.
+This also means two kvm_xen_shared_info_init() calls can publish the
+wallclock concurrently, no longer excluded by xen_lock. That is
+harmless: concurrent writers compute the same epoch, modulo
+nanoseconds of jitter, and each re-reads long_mode to pick the
+destination, so the location for the final mode is always freshly
+written. Interleaving two observably different snapshots would
+require userspace to race its own clock update against its own
+attribute calls, and even full serialization would give it one or
+the other arbitrarily.
 
-Don't re-arm the hrtimer in the KVM_XEN_VCPU_GET_ATTR(TIMER) flush
-while a delivery is still pending; a re-fired callback racing the
-retry would deliver twice. Re-arm through kvm_xen_start_timer(),
-which recomputes the expiry from timer_expires: the hrtimer's own
-expiry field is stale when the timer last fired through the direct
-callback path, which doesn't program the hrtimer.
+The hypercall page MSR write cannot wait at all — it would be waiting
+out its own srcu read section — so its shared_info re-init passes
+wait=false and ignores -EAGAIN, proceeding with the stale wallclock
+snapshot. The wallclock is written only here and in the attribute
+paths, so nothing retries it, but hitting that window requires the
+guest to change its own bitness while userspace is simultaneously
+rearranging memslots. A real failure (-EFAULT) still fails the WRMSR
+as it always did.
 
-The drop is vanishingly rare upstream, but hangs roughly half of all
-xen_shinfo_test runs once the following atomic SRCU conversion
-widens the window; hence fixing it first.
+kvm_xen_shared_info_init() gains the wait flag for its refresh.
+It and xen_get_guest_pvclock() keep a kvm->srcu read section around
+each kvm_gpc_check() and the access through the mapping — the check
+consults the memslots — but drop it across the refresh.
 
-Fixes: 536395260582 ("KVM: x86/xen: handle PV timers oneshot mode")
-Assisted-by: LLM
+The kvm->srcu read sections around the activation calls go away;
+they existed to satisfy the old refresh contract, and holding one
+across a waiting activation would deadlock against the memslot
+update. The runstate updates in kvm_xen_vcpu_set_attr() still read
+guest state through the caches, so they keep narrow read sections
+of their own.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: LLM
 ---
- arch/x86/kvm/xen.c                            | 88 ++++++++++++++-----
- .../selftests/kvm/x86/xen_shinfo_test.c       | 11 +--
- 2 files changed, 70 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/kvm_host.h |   6 ++
+ arch/x86/kvm/xen.c              | 125 +++++++++++++++++++++++---------
+ 2 files changed, 95 insertions(+), 36 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 3af7395c2430..ed633a39a97a 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1108,6 +1108,12 @@ struct kvm_hv {
+ #ifdef CONFIG_KVM_XEN
+ /* Xen emulation context */
+ struct kvm_xen {
++	/*
++	 * Taken from within kvm->srcu read sections (e.g. by a vCPU
++	 * writing the hypercall page MSR), so never held while waiting
++	 * out a memslot update: the update waits for those read
++	 * sections to quiesce.
++	 */
+ 	struct mutex xen_lock;
+ 	u32 xen_version;
+ 	bool long_mode;
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 5901b5711c3a..0ef646cf3990 100644
+index d64630a417a7..5901b5711c3a 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -36,6 +36,19 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r);
+@@ -36,7 +36,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r);
  
  DEFINE_STATIC_KEY_DEFERRED_FALSE(kvm_xen_enabled, HZ);
  
-+static inline int max_evtchn_port(bool has_64bit_shinfo)
-+{
-+	if (has_64bit_shinfo)
-+		return EVTCHN_2L_NR_CHANNELS;
-+	else
-+		return COMPAT_EVTCHN_2L_NR_CHANNELS;
-+}
-+
-+static inline int kvm_max_evtchn_port(struct kvm *kvm)
-+{
-+	return max_evtchn_port(kvm_xen_has_64bit_shinfo(kvm));
-+}
-+
- static int kvm_xen_shared_info_init(struct kvm *kvm, bool wait)
+-static int kvm_xen_shared_info_init(struct kvm *kvm)
++static int kvm_xen_shared_info_init(struct kvm *kvm, bool wait)
  {
  	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
-@@ -115,13 +128,35 @@ void kvm_xen_inject_timer_irqs(struct kvm_vcpu *vcpu)
- {
- 	if (atomic_read(&vcpu->arch.xen.timer_pending) > 0) {
- 		struct kvm_xen_evtchn e;
-+		int rc;
+ 	struct pvclock_wall_clock *wc;
+@@ -44,17 +44,24 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	u32 wc_version;
+ 	u64 wall_nsec;
+ 	int ret = 0;
+-	int idx = srcu_read_lock(&kvm->srcu);
++	int idx;
  
- 		e.vcpu_id = vcpu->vcpu_id;
- 		e.vcpu_idx = vcpu->vcpu_idx;
- 		e.port = vcpu->arch.xen.timer_virq;
- 		e.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
+-	read_lock_irq(&gpc->lock);
+-	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
++	/*
++	 * kvm_gpc_check() consults the memslots, so take kvm->srcu around
++	 * each check and the write through the mapping — but not across
++	 * the refresh, which may wait for a memslot update to complete.
++	 */
++	for (;;) {
++		idx = srcu_read_lock(&kvm->srcu);
++		read_lock_irq(&gpc->lock);
++		if (kvm_gpc_check(gpc, PAGE_SIZE))
++			break;
+ 		read_unlock_irq(&gpc->lock);
++		srcu_read_unlock(&kvm->srcu, idx);
  
--		kvm_xen_set_evtchn(&e, vcpu->kvm);
-+		rc = kvm_xen_set_evtchn(&e, vcpu->kvm);
-+
-+		/*
-+		 * Leave timer_pending set if the memslot is being updated
-+		 * (-EAGAIN); delivery is retried on the next entry pass.
-+		 */
-+		if (rc == -EAGAIN)
-+			return;
-+
-+		/*
-+		 * If the event cannot currently be delivered (-EINVAL:
-+		 * deactivated shared_info, or an out-of-range port), clear
-+		 * timer_pending — a halted vCPU would otherwise spin on
-+		 * kvm_cpu_has_pending_timer() — but keep timer_expires,
-+		 * which still reports the event as owed through
-+		 * KVM_XEN_VCPU_GET_ATTR; re-arming the timer with an expiry
-+		 * in the past fires it again.
-+		 */
-+		if (rc == -EINVAL) {
-+			atomic_set(&vcpu->arch.xen.timer_pending, 0);
-+			return;
-+		}
+-		ret = kvm_gpc_refresh(gpc, PAGE_SIZE, false);
++		ret = kvm_gpc_refresh(gpc, PAGE_SIZE, wait);
+ 		if (ret)
+ 			goto out;
+-
+-		read_lock_irq(&gpc->lock);
+ 	}
  
- 		vcpu->arch.xen.timer_expires = 0;
- 		atomic_set(&vcpu->arch.xen.timer_pending, 0);
-@@ -1311,13 +1346,14 @@ int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 	/*
+@@ -98,9 +105,9 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
  
- 	case KVM_XEN_VCPU_ATTR_TYPE_TIMER:
- 		/*
--		 * Ensure a consistent snapshot of state is captured, with a
--		 * timer either being pending, or the event channel delivered
--		 * to the corresponding bit in the shared_info. Not still
--		 * lurking in the timer_pending flag for deferred delivery.
--		 * Purely as an optimisation, if the timer_expires field is
--		 * zero, that means the timer isn't active (or even in the
--		 * timer_pending flag) and there is no need to cancel it.
-+		 * Ensure a consistent snapshot of state is captured: a timer
-+		 * which already fired has either been delivered to the
-+		 * corresponding bit in the shared_info, or is reported as
-+		 * still owed (expires_ns != 0, if the shared_info page was
-+		 * unavailable). Purely as an optimisation, if the
-+		 * timer_expires field is zero, that means the timer isn't
-+		 * active (or even in the timer_pending flag) and there is
-+		 * no need to cancel it.
- 		 */
- 		if (vcpu->arch.xen.timer_expires) {
- 			hrtimer_cancel(&vcpu->arch.xen.timer);
-@@ -1335,10 +1371,27 @@ int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 		 * That's fine, as the guest won't even have had a chance
- 		 * to run and handle the interrupt. Asserting an already
- 		 * pending event channel is idempotent.
-+		 *
-+		 * Don't re-arm if the flush above failed transiently and
-+		 * left the timer pending: delivery is owned by the retry
-+		 * on the guest entry path, and an immediate hrtimer fire
-+		 * would race it — the callback's timer_pending suppression
-+		 * check is not serialized against the entry path, so a
-+		 * late callback could re-assert a port the entry path had
-+		 * already delivered and the guest already consumed.
-+		 *
-+		 * An expiry already in the past fires immediately: the
-+		 * event is still owed.
-+		 *
-+		 * Don't re-arm an undeliverable port: the immediate fire
-+		 * would get -EINVAL from the delivery path and destroy
-+		 * the timer_expires state just reported to userspace.
- 		 */
--		if (vcpu->arch.xen.timer_expires)
--			hrtimer_start_expires(&vcpu->arch.xen.timer,
--					      HRTIMER_MODE_ABS_HARD);
-+		if (vcpu->arch.xen.timer_expires &&
-+		    !atomic_read(&vcpu->arch.xen.timer_pending) &&
-+		    vcpu->arch.xen.timer_virq < kvm_max_evtchn_port(vcpu->kvm))
-+			kvm_xen_start_timer(vcpu, vcpu->arch.xen.timer_expires,
-+					    false);
+ 	wc->version = wc_version + 1;
+ 	read_unlock_irq(&gpc->lock);
++	srcu_read_unlock(&kvm->srcu, idx);
  
- 		r = 0;
- 		break;
-@@ -1514,19 +1567,6 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
- 	return kvm_xen_hypercall_set_result(vcpu, run->xen.u.hcall.result);
+ out:
+-	srcu_read_unlock(&kvm->srcu, idx);
+ 	return ret;
  }
  
--static inline int max_evtchn_port(bool has_64bit_shinfo)
--{
--	if (has_64bit_shinfo)
--		return EVTCHN_2L_NR_CHANNELS;
--	else
--		return COMPAT_EVTCHN_2L_NR_CHANNELS;
--}
--
--static inline int kvm_max_evtchn_port(struct kvm *kvm)
--{
--	return max_evtchn_port(kvm_xen_has_64bit_shinfo(kvm));
--}
--
- static bool wait_pending_event(struct kvm_vcpu *vcpu, bool has_64bit_shinfo,
- 			       int nr_ports, evtchn_port_t *ports)
+@@ -155,21 +162,29 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
+ 				 unsigned int offset)
  {
-diff --git a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-index aaa414c677ad..3b11d0ee253f 100644
---- a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-+++ b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-@@ -356,11 +356,12 @@ static void guest_code(void)
- wait_for_timer:
+ 	unsigned long flags;
+-	int r;
++	int idx, r;
+ 
+-	read_lock_irqsave(&gpc->lock, flags);
+-	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
++	/*
++	 * As in kvm_xen_shared_info_init(): kvm_gpc_check() consults the
++	 * memslots, so take kvm->srcu around each check and the copy, but
++	 * not across the refresh.
++	 */
++	for (;;) {
++		idx = srcu_read_lock(&vcpu->kvm->srcu);
++		read_lock_irqsave(&gpc->lock, flags);
++		if (kvm_gpc_check(gpc, offset + sizeof(*hv_clock)))
++			break;
+ 		read_unlock_irqrestore(&gpc->lock, flags);
++		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 
+ 		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock), false);
+ 		if (r)
+ 			return r;
+-
+-		read_lock_irqsave(&gpc->lock, flags);
+ 	}
+ 
+ 	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
+ 	read_unlock_irqrestore(&gpc->lock, flags);
++	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 
  	/*
- 	 * Poll for a timer wake event while the worker thread is mucking with
--	 * the shared info.  KVM XEN drops timer IRQs if the shared info is
--	 * invalid when the timer expires.  Arbitrarily poll 100 times before
--	 * giving up and asking the VMM to re-arm the timer.  100 polls should
--	 * consume enough time to beat on KVM without taking too long if the
--	 * timer IRQ is dropped due to an invalid event channel.
-+	 * the shared info.  KVM is now supposed to retry a timer IRQ whose
-+	 * delivery hit an invalid shared info rather than drop it, but older
-+	 * kernels drop it on the floor.  Arbitrarily poll 100 times before
-+	 * giving up and asking the VMM to re-arm the timer, so the test still
-+	 * completes (and documents the VMM-side recovery protocol) on
-+	 * unfixed kernels.
- 	 */
- 	for (i = 0; i < 100 && !guest_saw_irq; i++)
- 		__xen_hypercall(__HYPERVISOR_sched_op, SCHEDOP_poll, &p);
+ 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
+@@ -784,27 +799,34 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
+ 		} else {
+ 			mutex_lock(&kvm->arch.xen.xen_lock);
+ 			kvm->arch.xen.long_mode = !!data->u.long_mode;
++			mutex_unlock(&kvm->arch.xen.xen_lock);
+ 
+ 			/*
+ 			 * Re-initialize shared_info to put the wallclock in the
+ 			 * correct place. Whilst it's not necessary to do this
+ 			 * unless the mode is actually changed, it does no harm
+-			 * to make the call anyway.
++			 * to make the call anyway. Done without xen_lock held:
++			 * the init may wait out a memslot update, and a vCPU
++			 * may block on xen_lock from within the kvm->srcu read
++			 * section which that update must wait out.
+ 			 */
+ 			r = kvm->arch.xen.shinfo_cache.active ?
+-				kvm_xen_shared_info_init(kvm) : 0;
+-			mutex_unlock(&kvm->arch.xen.xen_lock);
++				kvm_xen_shared_info_init(kvm, true) : 0;
+ 		}
+ 		break;
+ 
+ 	case KVM_XEN_ATTR_TYPE_SHARED_INFO:
+ 	case KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA: {
+-		int idx;
+-
++		/*
++		 * Deactivation stays under xen_lock, but an activation may
++		 * wait out a memslot update and so must not hold it: a vCPU
++		 * may block on xen_lock from within the kvm->srcu read
++		 * section which that update must wait out. Concurrent
++		 * SET_ATTR calls racing in the window are userspace's own
++		 * race; the cache layer serializes them, last one wins.
++		 */
+ 		mutex_lock(&kvm->arch.xen.xen_lock);
+ 
+-		idx = srcu_read_lock(&kvm->srcu);
+-
+ 		if (data->type == KVM_XEN_ATTR_TYPE_SHARED_INFO) {
+ 			gfn_t gfn = data->u.shared_info.gfn;
+ 
+@@ -812,8 +834,10 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
+ 				kvm_gpc_deactivate(&kvm->arch.xen.shinfo_cache);
+ 				r = 0;
+ 			} else {
++				mutex_unlock(&kvm->arch.xen.xen_lock);
+ 				r = kvm_gpc_activate(&kvm->arch.xen.shinfo_cache,
+-						     gfn_to_gpa(gfn), PAGE_SIZE, false);
++						     gfn_to_gpa(gfn), PAGE_SIZE, true);
++				mutex_lock(&kvm->arch.xen.xen_lock);
+ 			}
+ 		} else {
+ 			void __user * hva = u64_to_user_ptr(data->u.shared_info.hva);
+@@ -829,12 +853,11 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
+ 			}
+ 		}
+ 
+-		srcu_read_unlock(&kvm->srcu, idx);
++		mutex_unlock(&kvm->arch.xen.xen_lock);
+ 
+ 		if (!r && kvm->arch.xen.shinfo_cache.active)
+-			r = kvm_xen_shared_info_init(kvm);
++			r = kvm_xen_shared_info_init(kvm, true);
+ 
+-		mutex_unlock(&kvm->arch.xen.xen_lock);
+ 		break;
+ 	}
+ 	case KVM_XEN_ATTR_TYPE_UPCALL_VECTOR:
+@@ -937,7 +960,6 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 	int idx, r = -ENOENT;
+ 
+ 	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+-	idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 
+ 	switch (data->type) {
+ 	case KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO:
+@@ -959,8 +981,16 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 			if (!IS_ALIGNED(data->u.gpa, sizeof(u32)))
+ 				break;
+ 
++			/*
++			 * As with the shared_info attributes: a waiting
++			 * activation must not hold xen_lock, on which a
++			 * vCPU may block from within the kvm->srcu read
++			 * section the memslot update has to wait out.
++			 */
++			mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
+ 			r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_info_cache,
+-					     data->u.gpa, sizeof(struct vcpu_info), false);
++					     data->u.gpa, sizeof(struct vcpu_info), true);
++			mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+ 		} else {
+ 			if (data->u.hva == 0) {
+ 				kvm_gpc_deactivate(&vcpu->arch.xen.vcpu_info_cache);
+@@ -988,9 +1018,11 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 			break;
+ 		}
+ 
++		mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
+ 		r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_time_info_cache,
+ 				     data->u.gpa,
+-				     sizeof(struct pvclock_vcpu_time_info), false);
++				     sizeof(struct pvclock_vcpu_time_info), true);
++		mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+ 		if (!r)
+ 			kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
+ 		break;
+@@ -1022,10 +1054,14 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 
+ 		/* How much fits in the (first) page? */
+ 		sz1 = PAGE_SIZE - (data->u.gpa & ~PAGE_MASK);
++
++		mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
+ 		r = kvm_gpc_activate(&vcpu->arch.xen.runstate_cache,
+-				     data->u.gpa, sz1, false);
+-		if (r)
++				     data->u.gpa, sz1, true);
++		if (r) {
++			mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+ 			goto deactivate_out;
++		}
+ 
+ 		/* Either map the second page, or deactivate the second GPC */
+ 		if (sz1 >= sz) {
+@@ -1034,12 +1070,17 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 			sz2 = sz - sz1;
+ 			BUG_ON((data->u.gpa + sz1) & ~PAGE_MASK);
+ 			r = kvm_gpc_activate(&vcpu->arch.xen.runstate2_cache,
+-					     data->u.gpa + sz1, sz2, false);
+-			if (r)
++					     data->u.gpa + sz1, sz2, true);
++			if (r) {
++				mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+ 				goto deactivate_out;
++			}
+ 		}
++		mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+ 
++		idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		kvm_xen_update_runstate_guest(vcpu, false);
++		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 		break;
+ 	}
+ 	case KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_CURRENT:
+@@ -1052,7 +1093,9 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 			break;
+ 		}
+ 
++		idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		kvm_xen_update_runstate(vcpu, data->u.runstate.state);
++		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 		r = 0;
+ 		break;
+ 
+@@ -1132,10 +1175,12 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 		vcpu->arch.xen.runstate_times[RUNSTATE_offline] +=
+ 			data->u.runstate.time_offline;
+ 
++		idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		if (data->u.runstate.state <= RUNSTATE_offline)
+ 			kvm_xen_update_runstate(vcpu, data->u.runstate.state);
+ 		else if (vcpu->arch.xen.runstate_cache.active)
+ 			kvm_xen_update_runstate_guest(vcpu, false);
++		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 		r = 0;
+ 		break;
+ 
+@@ -1181,7 +1226,6 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 		break;
+ 	}
+ 
+-	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 	mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
+ 	return r;
+ }
+@@ -1326,11 +1370,20 @@ int kvm_xen_write_hypercall_page(struct kvm_vcpu *vcpu, u64 data)
+ 
+ 		/*
+ 		 * Re-initialize shared_info to put the wallclock in the
+-		 * correct place.
++		 * correct place. The wallclock is a snapshot, written only
++		 * here, and this cannot wait out a memslot update from
++		 * within the vCPU's kvm->srcu read section. If it races
++		 * one (-EAGAIN), just proceed with the stale snapshot; a
++		 * guest changing its own bitness while userspace is
++		 * rearranging memslots has only itself to blame. A real
++		 * failure still fails the WRMSR as it always did.
+ 		 */
+-		if (kvm->arch.xen.shinfo_cache.active &&
+-		    kvm_xen_shared_info_init(kvm))
+-			r = 1;
++		if (kvm->arch.xen.shinfo_cache.active) {
++			int ret = kvm_xen_shared_info_init(kvm, false);
++
++			if (ret && ret != -EAGAIN)
++				r = 1;
++		}
+ 	}
+ 	mutex_unlock(&kvm->arch.xen.xen_lock);
+ 
 -- 
 2.43.0
 
