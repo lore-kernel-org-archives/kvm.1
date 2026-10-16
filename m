@@ -1,146 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20304772B5
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 10:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DD7471263
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 10:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792145238; cv=none; b=JRg4frpYqy8RoxIqp0Q1LZnS5ixT7LaEzVB9T1k+sF7IoM7f/XGjA9Ud4M6PGBYhgOIHVoYHVFLcZti1LkJTvOGRC87osdK6rqoBzmRU7fyg7u0if5MfNN941YbQmsNNSK+XOdY0mDX+Wc00HVkm6OjasB4stZHFxsRDOegidBA=
+	t=1792145374; cv=none; b=rOdhFP7e3ZgW4x6LSkFTmeJvTgIcJEy75dALohQgYJbTnK1VV8pX4wWLpFsL4zZe1x+V/4syXkK+EtyBkL+XDVBPQaYBYMRM+guW518+ZWIuMzRcAzSbzAqytzVLOhb4cLzlb/AshAC7tMc1aUvUYXYpWXLDzW1O6Z+OVEB/sr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792145238; c=relaxed/simple;
-	bh=lXDU/ZpUNPUgFD+XotvjlxDVn1vbaoykba7e5YS1FHs=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=YxwTVyIv8hBknBN0NgUfdLFG8Pg4gTi1ZfObgVd8+kq/tZ0TgnmVkayhKQK/RbscIoD9n9U0SDLJ0NagFtnzts4LUVvD8d7k2Rdza5OzXDD0r425Mc7OHnXjisVQEbc6xVd3mCaHHyVS2QwweoK6NRbxFIAe8JIWB+llfqb2BxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdM99UTg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792145374; c=relaxed/simple;
+	bh=y462Q+q8oUQGg7quqBwcm1RU1wGDkgobl8Os4e6L+To=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kU6f1T001Frq6s8yQ2AteYzjeSe0Ektxhri9LCd6Bl3zxs0OS7dGoDSKeuMA8NIw9rdANjlRISrY6k+2DjI7ro7C9oGWRwDdZRaxBs/h6Ou4uYblJKPLo7WyVLW/ZH5KaVUw6xzmSP90rL0a5ydg9lCtx3FC2i+cWSMwSjIVMOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=guBRGFUG; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdM99UTg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47851F000C5;
-	Fri, 16 Oct 2026 10:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792145236;
-	bh=Pg1wURaZtpJhqmR1/JldLnceqIw8L4F28UbVKiuf77Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kdM99UTgYsXutj8E2j2n6JoXsZTI6ab+ljczIRLWSu9iK7jrTmI1u5EXonZi03I2B
-	 /0ohgBT9vpT6FS3jWmuo3EDEyOZ7VuL6Q95WeI6LysQ3LFXP0VhU5B6kVrsv+1mkvP
-	 yJHTQA13QOHA0vYS6MP6pOvHv9nvxq/kqqexF+si25ID0rqydUbBTDDKBz6Uvo1bwv
-	 vUNKWiLzpehpDqoYcBMwLwOKFpOCccbxllmnwttOOuxEUtAXFh1ywxOKUivY11sPGq
-	 gmxXCV4sfooiyDqdox6GiU3WtFVIZZcGteCRjmZvGdz/yrCwV2dCQ9V7YsVNoiRKkV
-	 FDBxAeeFTGqWw==
-Message-ID: <sashiko-outbox-174122@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/3] LoongArch: KVM: Clear device pointer in irqchip
- destroy callbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261016095151.1155049-2-cui.tao@linux.dev>
-References: <20261016095151.1155049-1-cui.tao@linux.dev>
- <20261016095151.1155049-2-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 10:07:13 +0000
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="guBRGFUG"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48c4649b35bso1273157f8f.3
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 03:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1792145370; x=1792750170; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DfjtBumDUQtQeiNse/0/IpCKbiv0enjynpJ+UPte5LQ=;
+        b=guBRGFUGeBaixX0VEDsxMkKT+NFfnIqndkBUVzTJS8P5mnh05QmjRq3PAzqee/D5M+
+         C0Q8Ds/NM34tmp8c0B09exvlF7eMiRC1YIUA76/dCDxAclhsX0cNUGwjFC+VCGrMOVzp
+         GiUjlIUsBUZ8w1zd6JgoTVT63jJl/wc2wUcNgQPy9E2WWZKhm6vJ0CsAcOibLd2puWvT
+         d7Zz/O3j+Gn+1XyjDuGoEzogCpfc3RNSkxKtRQEQL1AMntQlidZccMhX8+nX2+tD8AKu
+         J43lkWhcg9N2AM0hWcsBA7Z6WmuVNC7EGR5Rp73q33PyuDFtZT0V11kAXreq3uSK+0Y/
+         QieQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792145370; x=1792750170;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DfjtBumDUQtQeiNse/0/IpCKbiv0enjynpJ+UPte5LQ=;
+        b=g2B1PaN3IZ/hqoMXtMC8tDjGpt/QmvGE/Mxc8nZ2VdXSQ4PvAw4EsDr/GxCxYBqCks
+         nXp5F4CECjZXBdOhIapGd/NLZWr9v2G3lvgzJcQXrwn/QbjmREFxFmBkytR7bYE4cDGf
+         6v7lXQ5s7neDwdRwe2UgsnS1AUPCRUjiKtmXsbzx/VUZeZlGPpZE57qR7Unz9Lg/q9eJ
+         FxAOHFRMDSYwcx7rJsjXTV8hSn5uDLYOlFzvBG9iFg7zLdcr2EBE77BqSefseAg/GolM
+         aQ1+XlTjITwt+nA0BbXMXoJ1e/I2UAXYegQvoBSbGjPk6wx/iuzjJNgE1ZR6gnpu9xrb
+         I9Cw==
+X-Forwarded-Encrypted: i=1; AKwUvBxVpmrfAg/jhh4jae7dJpvC4lkdRSFV0U7qDC7Lp7jMtd0szFWJw9ovrdBhfbqFzJrJHtM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIHbHBEizZ2h9OL/tDKW35IGdAvt99HOisjCtVz5bR5MRvmRh1T
+	4JVPYfNTafKND4qB3SnD5//bKsC7CTNxhS4uG1BlyYz0ILgCLThrXYsoJrRQ+D3U20c=
+X-Gm-Gg: AYBFou298JjeJTSr6nCFug7UwYRD5nC0pUJL6Oc3QPr+oeFHKvDYwBF8vLkV5jTYvsi
+	mB6L1akyfQb/RdXBQLPTcLc2CwXzxSyLnI1JURj5BRR+o/oY3G+IEIuy6AXGHj8DXTzxoKaWjyy
+	6i9XFyNR3MWFd3khuHSCGgvey4Zi/M3Aosbrif4uxodpO6lVX6cX0mDS86iLTwdjh2AJy9e9Z+w
+	/1rYZfmcaTKEcfOGJ496HWZ+kiPLb9O7dYoOd32VVg2K661SDGRdipvTThBtkoClDa6G50Bjju5
+	4afAWkvz9PtQJ6cSxUvvYxoxK79tWBnNyb3XssUOl6PSgY0TJ1sOR2b5fnU3w0qSlSBaUAjOoAE
+	ytACppX2xVSDLPqBS0ucLumDZ73fG8Ct2HRtIxNt6bcgTDpyau99PtkZkiKWk0dgpAU0bZ+eBaZ
+	NyEKsIF5WRY27wD/34amMB38ixMNFFNQ7vDw0k355SEoltppBAvbH2PIGCgFuqNCeaBQLfTHTb9
+	q0JIIINuClmQuPiUxlQ4q/52L3cOa9ACMpfEzwolh8xdEN3P461pM6/uOm0
+X-Received: by 2002:a05:6000:29c3:b0:488:764c:7a17 with SMTP id ffacd0b85a97d-48dba788922mr30073917f8f.1.1792145369626;
+        Fri, 16 Oct 2026 03:09:29 -0700 (PDT)
+Received: from localhost (p200300f65f19a904af4079c70d984f00.dip0.t-ipconnect.de. [2003:f6:5f19:a904:af40:79c7:d98:4f00])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48dfd4f5b2dsm4364872f8f.31.2026.10.16.03.09.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 03:09:29 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Nicolas Schier <nsc@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hasan Basbunar <basbunarhasan@gmail.com>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH v2 0/3] <linux/mod_devicetable.h> deprecation continues
+Date: Fri, 16 Oct 2026 12:09:11 +0200
+Message-ID: <cover.1792144769.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.56.0.rc1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1307; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=y462Q+q8oUQGg7quqBwcm1RU1wGDkgobl8Os4e6L+To=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBq0ffICy4QAVwGpwrBpebGe+cZKb2jzXNv49Mrv E/fwiNK8BKJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCatH3yAAKCRCPgPtYfRL+ TmUoCACZSyCbbUDkUav9mU2UDRAssLukMQD6BaQ+B0KWo8b1Xz6YWELM2d76YyJo0NYic+F2ULL eItz6V6UkKv90SFZJdF9DN9xNqeLnGUdIGls3IPrNHwakGv673gnGajgixnjiMwscDru7+CCOvW GN59gUKywNo1HSVHKDQzbDvbzjRa5LNV6mUeEHUbUxo8HXf4OOBHqEi+yb7Caef8le+sulMswAu 9n7jAyMVSDnbIYj3OFhgVTpM3NlDGMR/l4Xg2TKJatULMGjgmV/Agq+HMoY5U6TUyRlMA4NoTnh Sx0oy1ru/ntYsxCLrQ0zcQUC0N23LmKi0EVB8Bce9/KOgCwi
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] kvm: NULL pointer dereference in lockless IRQ injection paths
-- [High] kvm: loongarch: UAF window in kvm_dmsintc_destroy due to wrong kfr=
-ee order
---
+Hello,
 
-commit b63c6600199f59512e0a9603666fb0590806637a
-Author: Tao Cui <cuitao@kylinos.cn>
+v1 of this series is available from
+https://lore.kernel.org/lkml/cover.1789988540.git.u.kleine-koenig@baylibre.com/
 
-LoongArch: KVM: Clear device pointer in irqchip destroy callbacks
-   =20
-This commit clears the irqchip device pointers when destroying devices to
-prevent dangling pointers from being dereferenced if device creation fails
-later.
+Changes since then are:
 
-> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
-dmsintc.c
-> index ff327b4c05f7e..c182185a3d592 100644
-> --- a/arch/loongarch/kvm/intc/dmsintc.c
-> +++ b/arch/loongarch/kvm/intc/dmsintc.c
-> @@ -146,6 +146,7 @@ static void kvm_dmsintc_destroy(struct kvm_device *de=
-v)
->  		return;
-> =20
->  	kfree(dev->kvm->arch.dmsintc);
-> +	dev->kvm->arch.dmsintc =3D NULL;
+ - rebase to v7.3-rc7
+ - Add a header guard and a comment about why it's necessary
+ - Add Acked-by: for Armin Wolf
 
-[Severity: High]
-Does this create a Use-After-Free window? The memory is freed before the
-globally visible pointer is cleared. If KVM_CREATE_DEVICE succeeds but a
-subsequent error (e.g. in anon_inode_getfd) triggers ops->destroy(), this
-invokes kvm_dmsintc_destroy() while concurrent threads can still access the
-pointer.
+Nathan identified two merge conflicts for v1 with commits in next. These
+still happen and are easy to resolve as soon as the respective branches
+are merged into a common tree.
 
-Should the pointer be cleared before calling kfree(), as is correctly done
-for the other irqchip devices in this patch?
+Nathan already proposed to take this series via the Kbuild tree after
+letting it cook in next after the upcomming merge window closes.
 
->  	kfree(dev);
->  }
-> =20
+Uwe Kleine-König (The Capable Hub) (3):
+  Move struct cpu_feature to <linux/cpufeature.h>
+  devicetable-offsets: Include the needed device-id headers instead of
+    the catch-all
+  file2alias: Include the needed device-id headers instead of the
+    catch-all
 
-[ ... ]
+Best regards
+Uwe
 
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index 220fc23ffe8cf..dab2d3f1b8f62 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -483,6 +483,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
-v)
-> =20
->  	kvm =3D dev->kvm;
->  	s =3D kvm->arch.pch_pic;
-> +	kvm->arch.pch_pic =3D NULL;
+ arch/loongarch/kvm/main.c         |  2 +-
+ include/linux/cpufeature.h        | 19 ++++++++++-
+ include/linux/mod_devicetable.h   | 13 -------
+ scripts/mod/devicetable-offsets.c | 57 ++++++++++++++++++++++++++++++-
+ scripts/mod/file2alias.c          | 56 +++++++++++++++++++++++++++++-
+ 5 files changed, 130 insertions(+), 17 deletions(-)
 
-[Severity: Critical]
-Does setting this pointer to NULL introduce a NULL pointer dereference in t=
-he
-concurrent lockless IRQ injection paths?
 
-If a user-space process maps GSI routing to an irqchip and races KVM_IRQ_LI=
-NE
-or KVM_IRQFD interrupt injection against a failing KVM_CREATE_DEVICE ioctl
-(e.g. by hitting the process RLIMIT_NOFILE limit), this teardown path will
-assign NULL to the irqchip pointer.
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+-- 
+2.56.0.rc1
 
-Concurrently, the IRQ injection path locklessly invokes routing callbacks
-like kvm_set_pic_irq() which pass the potentially NULL kvm->arch.pch_pic in=
-to
-pch_pic_set_irq():
-
-arch/loongarch/kvm/irqfd.c:kvm_set_pic_irq() {
-    ...
-    pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
-    ...
-}
-
-The pointer is then unconditionally dereferenced:
-
-arch/loongarch/kvm/intc/pch_pic.c:pch_pic_set_irq() {
-    ...
-    spin_lock(&s->lock);
-    ...
-}
-
-A similar pattern exists for eiointc_set_irq() in
-arch/loongarch/kvm/intc/eiointc.c.
-
-Are NULL guard checks needed in the concurrent readers to safely handle this
-regression?
-
->  	/* unregister pch pic device and free it's memory */
->  	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016095151.1155=
-049-1-cui.tao@linux.dev?part=3D1
