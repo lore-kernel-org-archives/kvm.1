@@ -1,260 +1,221 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012071.outbound.protection.outlook.com [52.101.53.71])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011061.outbound.protection.outlook.com [52.101.57.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E973F1046;
-	Fri, 16 Oct 2026 21:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8784333508E;
+	Fri, 16 Oct 2026 21:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792186408; cv=fail; b=qUnnQR+Xb7K2vh7VLMKccxUlhAVcH+gsRcO2L+lm6gELAu+OC7JVe61g+sfDCzoER0x4dvaPKstJ7xbqTlzeqsXRBhRs86eC6RlGHzSv0YnxTuY9zLW14XQKXvHkH0VBeWqKbWjWYVUr1g8vJfAQT9Ks2ZhJrMysSUvyNXAwhrY=
+	t=1792187660; cv=fail; b=XEtdxjjeGM0wWLyDKf2pyfXhPf/A8nvpy1TG9Ebmp/f8rEpCHZCFVZ3LXbF4m3GhW7lTSwajPX+WafeOSlI62OEmKtMSHDUzqkPjR1hl91Pnj7Z60g+iQnSIATMZBUCxktC+1szPy8JVUJs9v7xgkqp9Unj93xTf2G9sW/auCLo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792186408; c=relaxed/simple;
-	bh=+5h2ULNN/hZLwy12Y7wiUXQIkO8IIc3cr+Gjx5EU92w=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=naq+JH0sldjgDL/NYVODEmTf41yzWPh8yzcybQvEufh2X2iCcyG5psxQrYo5LYCmxGMDL/G9HojV0Vvd0Z61Pu0Yr54kuf8xooKNaPoUEd1qnO2YcBAjxTbatTJDssnI1vheJkxsyyPEdg6L88G5eSnNjZXze9Q1hHwcMZlqIuE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=v+PxE4PB; arc=fail smtp.client-ip=52.101.53.71
+	s=arc-20240116; t=1792187660; c=relaxed/simple;
+	bh=WmS4nmulBncIjqU6bLZCeTL252dVC/kvBWiUSMYs1oU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DUFAwG574UcrqcnsvvMXPE1auqXACc6zqIvkOWHutPygJRe0fNq7fPPc69ECAlK9gWbzfoYg+pPbNOWVSj7rb/gsUhAY5m7G5zHND3fWA4zjQGbPsukCMUb1Ye/kVsi4NyaRxJ7phNI8rcRzW57vN1YJsuZKyg1+BCWQUVcBIWk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tfmri8yz; arc=fail smtp.client-ip=52.101.57.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="v+PxE4PB"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tfmri8yz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gq3SOVTM6J2uA4088izoYMXO8sggc2nETScvv85gbF86tsZdCEvyDNisIsRXmR9R2XptY9qrDC8ORAUgbIUoxK6QbLjmsqqxGteYkDgcox4yRVb9W0SIqnrrjQRmWv3oOhw2ePDtEqWzCM3OLZ+zQ2IKl5I2N/AeP9Wx6pm/+319sCI1x/aSp89HbbHeQC9/X0lmI6BWl0PGA+1R++xkiqtX5n4yZcnjwDLdJwrl31YSGiswXI6MfvYe18X4ZndpyS0+IzfXP+6S0m8RWV5vGhdbeba87JpEm1XnArfkqR02rcxNwzcQo9GZuz1Ut9teW6faKSl/aKzZVwLh3NMNrg==
+ b=c+dBA742rJi2VMfDA7YhZufrLNopxvNdiq1og1E/ohvH0TdQzRYcl/xff54AYibiwb4pBCfRZaeakYMeLppWptMSo2QwyqL9RM5zfXKJ7N46ZccTWB+8l5ftsVWJxu+qvdUi9PdI2TKi4Jx8QvovB/qVJOodHKa1/U60K+eKqV7GiuV7t80Vi+28e1HvV8HP0TVtVYY7vYCdocAipK97AbgGaJtH4I0D0GUW4WGhmt+SEgXpn1aAhHeHOPzcE7Z4mOVm5enSfMKSBXNQ5zHwsspj+ZVk8QgT5/4ZLwpoyRyRhoYcB0qTERA7y/T3lS04hjoFh0Hw/EEsjQ2NY5ii7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XWCmXYUgzja27WQRclz7GDyB4RO872xsPlU51jh879Q=;
- b=kYPNwpPGICx53xdKWlMU2nHUetDoyw+xVD/bjGdpZNTAgqVvXwePpkyDUwl8id24xyNH4bcP5J8EwjkkxocidMef66R5EZjTjBnhFEOeACqWT4bvEnEhbej+JD1Pzrdgf8hz+p9cDeg7eWnrKGc6uIDyoCMXHPZx/0Cq1oEYXkTV/Lbh5PKJ7JDKVy/DRkQCDra+b8+OZQOEoOBMeG+ja/gxJGq4Nkr6V/npH6T29aJiSlUzgaaSr1vNSKsnidJvpxR3WiVEAxlL+M0oQGqXRgFV+fkQgor3NJqhu3MmgXhxZ3JyIrH0XTmBatesTh4mX8P8naGdBoDt86c8n1PvrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=sksmAcYZA6cYRPmY99G3DtkPmrSmawMh+REJDoy/P0k=;
+ b=Q933sd9H8jNlbsRiN21QUjnwSndty0WbNgsrLbz6mRC+Od+88Jp285qdvW69ZSQ+hu7u7u7qykDG8/hL9sGnOnzFmgutiIP9afchfs1pKfhfVCH5dtvRK8zldQJnPGRVx48EndM7s/KKnK2VD2cSYQVFUqViHNy5jz4HjFoxM/SXFKzZGjeTbZhifINzKFwMxl8y8qP2qwnfTSl3MnypYTYFLPpK+3XiE/YXHKOcYexyrd9ftVn/1GOEbHJR/BdCfN8rGeLnUSuA6Vd0jzW3B9sHfwYXcEP/1qnwzYRmQv3DUfDT7Css0y7WF1vnLrKYRyCzUzDEzkQCEszAqDZ02g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XWCmXYUgzja27WQRclz7GDyB4RO872xsPlU51jh879Q=;
- b=v+PxE4PBUWRYzoD5rODcMMA7/nKwJ3WLjE39qBlIT3BXXFgjJICth3vnok7OY7Wv0BC7l30q6HEmrR4/4o4KVBMQ2/DvS6BLyKp9J7pr7AjWeoikx62QkSZJIkC3dOqZ00oXI7tiq2rfCkUDIPmjlIeKHMyifg4Aky5avgO57Bs=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by IA0PR12MB7577.namprd12.prod.outlook.com (2603:10b6:208:43e::20) with
+ bh=sksmAcYZA6cYRPmY99G3DtkPmrSmawMh+REJDoy/P0k=;
+ b=tfmri8yzQhZMVknse6TvHPJ/pp9lQAJoe6bo/9Yk9GQazh7BQTWbKmz9GX5AtaI9SMara9FaqlXENlXdtfbOiJjednFnUIPUrtgbJVwS+wZ/xPK+wJbs4epH/OdUUn8bVE7HIdHnVOR0yTh9tZCY1/jf6R52yN93Krj+SgUJxWU=
+Received: from PH7P220CA0064.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32c::8)
+ by DS0PR12MB7779.namprd12.prod.outlook.com (2603:10b6:8:150::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Fri, 16 Oct
- 2026 21:33:20 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
- 21:33:20 +0000
-Message-ID: <d7ba6551-adfc-4078-abd7-0f016d7a5dfa@amd.com>
-Date: Fri, 16 Oct 2026 16:33:10 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 11/18] fs/resctrl: Introduce kmode_cpus/kmode_cpus_list
- per rdtgroup
-To: Reinette Chatre <reinette.chatre@intel.com>,
- Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, bp@alien8.de,
- ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <54b0c60041902accde067b48bc3178c6756294d6.1790867441.git.babu.moger@amd.com>
- <0096fb82-4104-429a-bd69-7f733624c664@intel.com>
-Content-Language: en-US
-From: "Moger, Babu" <bmoger@amd.com>
-In-Reply-To: <0096fb82-4104-429a-bd69-7f733624c664@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0027.namprd04.prod.outlook.com
- (2603:10b6:806:f2::32) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Fri, 16 Oct
+ 2026 21:54:14 +0000
+Received: from PH7PEPF0000000A.namprd04.prod.outlook.com
+ (2603:10b6:510:32c:cafe::3c) by PH7P220CA0064.outlook.office365.com
+ (2603:10b6:510:32c::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Fri, 16
+ Oct 2026 21:54:13 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ PH7PEPF0000000A.mail.protection.outlook.com (10.167.243.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 21:54:13 +0000
+Received: from speedway8455host.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 16 Oct
+ 2026 16:54:06 -0500
+From: "Pratik R. Sampat" <prsampat@amd.com>
+To: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
+	<thomas.lendacky@amd.com>, <kim.phillips@amd.com>, <nikunj@amd.com>,
+	<michael.roth@amd.com>, <ashish.kalra@amd.com>, <prsampat@amd.com>
+Subject: [Patch v3 0/4] Introduce Enhanced SMT Protection for SEV-SNP
+Date: Fri, 16 Oct 2026 21:54:03 +0000
+Message-ID: <cover.1792184487.git.prsampat@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|IA0PR12MB7577:EE_
-X-MS-Office365-Filtering-Correlation-Id: de15c6bb-5762-4262-4f4d-08df2bcd192b
+X-MS-TrafficTypeDiagnostic: PH7PEPF0000000A:EE_|DS0PR12MB7779:EE_
+X-MS-Office365-Filtering-Correlation-Id: 937a9890-5033-4180-564f-08df2bd00450
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|56012099006|6133799003|10067099003|18002099003|22082099003|3023799007|4143699003|11063799006|261009223027099003;
+	BCL:0;ARA:13230040|82310400026|23010399003|1800799024|36860700016|376014|56012099006|6133799003|18002099003|260925021911599003|10067099003|260925021311599003|3023799007|260925022911599003|13003099007|11063799006|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	ATarEq0qekcuJ3PgPg5XDJd3vtJSTrVJ62JBdBi45de0B1l2MXSIKQJxrb1nxGtyBhUl+UkwGEppM2U0iyHb4hwHSdtTTNhEVF3U3KgLCuuCIzk+/utDxwdzTFHJsfhvW33Fiuhe22QdxsFCpf8j7iswjgIdzPXOWR+6zMKnKcYpcqv1D5cSRkJ96Zouoi6nH9GhkpG/SFiPJeSlOvudb9azPlEqbLDNNmifC5szXYGD73Vo7Vgem+D4SMBH1O1JIM9y045PwbgcfUVPDZKvmy/sniSapUms9I/jQfRSRGEc7E54ZPHH1hmhnjSbUXEXBagogIAWKxilvmSSDdvlUXIDFgHkCOJmTVy1aFORAaf9fSOh8CrIXlZwdInapDNNDJxo13zdaqNKEUw0fTbJ7iCfUsvWVefn9ytURJKYzL2LZJSxyX03hCpzIMg2OnXSqNG4u2+3h29a8y1acNZw4tXWeKmkn3SwqpnqStd0HlIKUioJqseet2nAgfu1bYd+A0S17lrIT8ZVwl0hUjKF/Yf+mYYvKhhpGm+C7Gh1ytg2QZw1qizy7rERv0Bjxtfc4h/D8b2T3C0PLhabvpmbTZGA10w/eLomohvzJMo0ZYR79c6n/u04+ssag5spOh19HFybEwK1xo2HFsBac0p72it1bVI8/dLmLwJMDd9dE50=
+	Xy2tKdP5D4WwOXpKcjFv3fAZrYEdKPkjJKeg98l1CUvyJZ6EYaOV7+UMsUOWBqTMZsAO9BnKr3Xw1edp8fx6+LeVkhC7c4YNAA+TgxEYy8N0uSPN4BY0Cpe5J2F0KfdCN2iXv3ZnlcVoMMOXDDB4MuSl4SHjZK+r/wujYKvPMvle2AAmO1ji4yR22+tJN71oB1LOW7N1RDfU97bFn6pOemi/P9+iDs1Gr7aGx+I0TpxG6Qldhd5dkCVigC9/uz+M6fujFJfUn4tOACFnsbxMjV15r2e60GiaYhBlrqR8laOPLTrlSY0Uk+wVXSfSY3AGTGeXXngw39L99pkJ3G22eQb8zYS7J7IeQ3m6bbGtnZ6a6c+4mR8vhaK8BTgY8vN4V1MnAaOTlK5cZ19anO9RtLDRraKjdCRK0NOY4JiqskQ8RCNbqFnIv7CN41ZbmBWkwdoHCg6AQNO3V8wzIaTGxMO+/b468XyCi7T0aWYQWFEiDuiHJP/Bo4+591mytfGVsasXLZq6AUhzKxLt+c9Tran9NTi7trw8VmBzee1KZuLqRY26vMPUtEHP/+KFF9EDrJIa2iQOkqkEeGJmpzl7aH8F1SHRW2NZG1m0DwHP9CiussEWnPgduigBknvojCGndkTj2rII6t6/1Z8lfYcfqXK/pe1gAnkZUJXJZfYhUvs=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(56012099006)(6133799003)(10067099003)(18002099003)(22082099003)(3023799007)(4143699003)(11063799006)(261009223027099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(1800799024)(36860700016)(376014)(56012099006)(6133799003)(18002099003)(260925021911599003)(10067099003)(260925021311599003)(3023799007)(260925022911599003)(13003099007)(11063799006)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aDlVYldSMEFZb2lkekpDeTlhbHVEMTJoWWVqdG5XbWg2K2s1bFUwekVWcGsy?=
- =?utf-8?B?SnVqdkZXYnF3SFZkaitrc0VXM1c3LzllZEY3NUVwbHRTbk5QZjlianpmVi9F?=
- =?utf-8?B?MWoyeG91UFpHQ1FURXF6ejByaUNJS1pLOHcyL21qTUZVenV4RjUvWWo4MDY3?=
- =?utf-8?B?MENIYk9ubGdsNmo4NGZaSXVHQkNxZERrdDRNdWMzaysxNGdtK0hOUkhqdE95?=
- =?utf-8?B?OEgzRnhSdWZBb05Ib2hXTnNaYTVTeDJGbUpISXZYV1o2Ky9UWFRWVjVjMkFh?=
- =?utf-8?B?QVAwRnpOVjZadVFpOTJHaEE2RVhiZzhQT1prRGQwb3ZPaXlpeWt3U1VqdUtv?=
- =?utf-8?B?Z2dYbkZPaVRhbUtCZ1E2bVpUWWZwRzN1TVluUHdXUXl1SHdFaGFaWDROWnZm?=
- =?utf-8?B?emJsb2N4bjRKTE9NeDU2UmVrNngyRWo0VWMyVXJSekJUUlp0Z1lmNFVhQkVX?=
- =?utf-8?B?b2pPb1FYc1JVb0RxdVNFczV2bmt0ZldkY1VjTHhkRDJWaVJsNVc0dHpXck4v?=
- =?utf-8?B?MkQzakpBaWlidHdBeGUrRnJxdkFKSFZLNlNWRXpsd1kyMDRlMmtrb0ViNUJt?=
- =?utf-8?B?ZkFmNUNXUkk1Z2lWNWEySTZRY1BVY3kxM04vWEk3MTdnbHU2ZEdSSDA2aWlj?=
- =?utf-8?B?dnpUVXozRGxWMDhIYXNiNUVQQTh6dGhFU0hFSnNtM0FvNzJGam84UTYxMGFn?=
- =?utf-8?B?L1lWM0xOZEhXSnBSL2J1ejNLaXRBZis3ZlAvVTlIVW9tRGN6d2VIcENJSDNB?=
- =?utf-8?B?WEJ1KzgzZ1phTm43MnA2eW10ZGNJUzl4MndrVXA0RzJaSS9OOEVwYTNMZXY3?=
- =?utf-8?B?eGlaeDROTzU3R1BtR3BtSklRUTFML3M4dEhPZkhya2FOUTA5S2ZoVjNoSFlx?=
- =?utf-8?B?TmNxQWV3dzRXWFQ5djlzZW92blJ3MzEycHVlQmZHRzVkSHR6dXlVRTZ5a01M?=
- =?utf-8?B?bjcxcjBGK0EzSlNlcFBGekowRUhCNDR2L0lLSExUOTkwc0NvWDRzelBuanRv?=
- =?utf-8?B?c1NsL01DUFZzRmlBa3FzN1NwSUFhRDlzQW82SitDWGtVeGx1Y203SVBoWHlx?=
- =?utf-8?B?eU1JMUdhdGFNYTNsZjA5VXZBS2ZrYUJuNUdvNGoxT3NrTk9NVWkzM2dBK1FR?=
- =?utf-8?B?N0QyMlhTdHoxdUxhcndWSXRwNENFL1pjQ0VlTUs4eDlhWllpbzRJemQvZ0pU?=
- =?utf-8?B?Q0tKcE5vZm5lZnBuV1pmd0ZzUk1lOVI0YUpqUG5yK1huVWNiRkw4by9mVFhD?=
- =?utf-8?B?d2d4WjArb0FoQWMwZ0hYandDdmduQllDUklKZ0ovT29hTkdFMElDVTNrSTdl?=
- =?utf-8?B?eEVYYk4zbFY4S1BWYmJZTGl5bk5hKy9mZTB4VlFLV2pNdlVBUjFmOFpTT0No?=
- =?utf-8?B?NWNQMzVtSmFuVE9MQldIaUIxdWRQQnR6NkFkWDRvK00wRFhGVU9QSW9xLytP?=
- =?utf-8?B?NUF6Q0wyVUh1ZFc1WTZackQ3dlNYMC90dVo5aWpyejlxT1M1VUoxUTE0ZUlZ?=
- =?utf-8?B?aUJTR2hnbG1LLy83a0lsNWRXeGZQanZFSHhUN0hSZEhVdmVJdVdWM2NDTVNs?=
- =?utf-8?B?TFdYakJDZHU2WEVPVFgrNHcvQ1BLRVhzSzNqL2Ftbm4wanhPUEhYVWlxeUhV?=
- =?utf-8?B?RFlSNlRpc0tPWHdPUmI3WE45Mml4NHpLMTJGVDdFb0hvZUQ5Q2RtZHZaZHdN?=
- =?utf-8?B?NWd1aG5RRG1xKzFDcTU5UTdqUHl2ZmJNMzBxTk9XS2MyZStLNWFrS09zanRk?=
- =?utf-8?B?RGJqSS9aVTlzcEV0bHVGUlNZN2x1eiswc2llVkdraVErenVxSEkwbjZDMUoz?=
- =?utf-8?B?SC9nVDRpWlNyanRzbE54aU1uR2VwMms1RjBtZ0NCejhBOU1abFNtL1hoLzFB?=
- =?utf-8?B?U1RtK0lGaG40aGthQ1JxcUFBRCt6a2NlSVhMcWJkZHJEclc4WUhtVWt2Ym9q?=
- =?utf-8?B?azZFV0x4QnJkQ1hpNkR6bkNrUnFueGdMK0ZNbU1saFFpMU5OK0NYc0hhUmxv?=
- =?utf-8?B?UWM5RVdZSHI3T09hQzFhcCt0ekFyaGtkS3hkamRtUzRFcnRMT2RXZUhBL0pn?=
- =?utf-8?B?NWtDT21aUktxY2lwOG4zMlU5RG9iZGJmaURVaXBkTVdjM21JOGFESmJ3c2JV?=
- =?utf-8?B?ak1pODlXaDZnZkhxbnNKdUpkUXkzR3lIT2ExZThqQ0FuMk1SNzlWYjFBOXRp?=
- =?utf-8?B?NDlRQTd3a1YwWHo2d1phekJCcDlMSEVMTEZpZXN5RzhQUDRHNzc3eVNsVis3?=
- =?utf-8?B?ZDhtNm1hTldXeCtyMnc0TTQ3dkVQSGhoeHNsSVp3R1NIb2ZQVCtSWVR5dGVK?=
- =?utf-8?Q?fC+d54r8x7BHUeJ1u+?=
+	fR7UFGrmL8SEGEddrh1LuPCUPr9MDBz1eQiE2QMlH2gK0wpAaj3uoyEbgCeAuKg2veNO2oNAW2oxhIOO8aRys0S+tMZGUtWhFdmiyfJcbUPjKohGRvjhkqLz9zzTYWGroIsyvCUvsnTny0Xy1BOAn2E0+6Q9Baa08cowDtS239Egd9LOrRlQOPcn7gCjmnV94OdJywyODVWyv4UPKFDmJ4TqJ4/vIOs+3oK1kL2Gh0+AztKg97vcckfSaHmVSbV8AKc56rfM67yGtEZzAOY44+j5JXsDSyo1/UEcOHdfkGNUda2nY+Rr2MYKVB4nE9IBGqXQDetyHRRrPzfse/v4AXrlQcSMFbAyq18FGUHm+wC1jKkm61+BkPF+7UTTC7yLETIaPoHy6vrdDA8dXMoOx5T2g8l+Gx3x0o9vNu8zk/fye5YmfnIpsQnF8tsNC9Q5
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de15c6bb-5762-4262-4f4d-08df2bcd192b
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 21:33:20.7845
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 21:54:13.4837
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 937a9890-5033-4180-564f-08df2bd00450
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zlGhyetg0c3gyKuzLzvjYegLjyL/1wmje2ZAjdWqvS3kjYybK0bkGk2ZJdfrJjZK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7577
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	PH7PEPF0000000A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7779
 
-Hi Reinette,
+Enhanced SMT Protection (ESMTP) allows an SEV-SNP VM to require that,
+while one of its vCPUs is in guest mode, every SMT sibling thread on
+that physical core is either idle in host mode or running a vCPU the
+guest itself has declared a legal sibling.  This mitigates the
+side-channel risk of sharing core resources with untrusted host threads
+or with another guest.
 
+Unlike core scheduling, where co-residency is a host kernel policy
+expressed with cookies, ESMTP is enforced by hardware. The sibling mask
+lives in the VMSA.  The host is not trusted to run arbitrary kernel,
+userspace, or interrupt-handling work on a sibling thread while an ESMTP
+vCPU is active on that core.
 
-On 10/15/2026 10:31 AM, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/1/26 8:10 AM, Babu Moger wrote:
->> The RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode allows tasks to use different
->> allocation and monitoring associations when transitioning from user mode to
-> 
-> Could "different allocation and monitoring associations" just be "different
-> CLOSID and RMID" (in places where this is what it refers to)? Being specific
-> and consistent with terms would make this so much easier to understand.
+Both KVM and the guest fully set the VCPU_SIBLING_MASK, which places
+every vCPU of the guest in one group so that any two of them may be
+co-resident.  Combined with the ASID check, the sibling of a vCPU in
+guest mode is then always either another vCPU of that same guest or a
+thread idle in host mode.
 
-I avoided using CLOSID and RMID terms in filesystem specific code. If 
-you are ok with that then I will use these terms.
+Usage
+-----
+Requires patched OVMF [1] and QEMU [2] builds (unchanged from v2).
+Launch an SEV-SNP guest with ESMTP enabled on the sev-snp-guest object:
 
-> 
->> kernel mode. The mode is enabled/disabled on a per-CPU basis.
->>
->> Add kmode_cpus and kmode_cpus_list to display the CPUs associated with a
->> kernel mode. These files are exposed only when the global_enable_per_cpu
-> 
-> 
-> "a kernel mode" -> this is specific to RESCTRL_GLOBAL_ENABLE_PER_CPU kernel
-> mode node?
+  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,esmtp=on
 
-Sure.
+ESMTP is opt-in because it carries a performance cost as VMRUN stalls
+until the sibling runs work from a trusted vCPU or is in host idle.
 
-> 
-> This switches from "RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode" to
-> "global_enable_per_cpu mode" mid changelog.
+The guest reports the feature in dmesg among the SNP feature names:
 
-Will change it.
+  # dmesg | grep -i SEV
+  ... SEV-SNP ... ESMTProt ...
 
-> 
->> mode is active.
->>
->> Signed-off-by: Babu Moger <babu.moger@amd.com>
->> ---
-> 
-> ...> ---
->>   fs/resctrl/internal.h |  2 ++
->>   fs/resctrl/rdtgroup.c | 42 ++++++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 44 insertions(+)
->>
->> diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
->> index 986b9c942fb2..6b8d14c4bd83 100644
->> --- a/fs/resctrl/internal.h
->> +++ b/fs/resctrl/internal.h
->> @@ -216,6 +216,7 @@ struct mongroup {
->>    * @mon:			mongroup related data
->>    * @mode:			mode of resource group
->>    * @mba_mbps_event:		input monitoring event id when mba_sc is enabled
->> + * @kmode_cpu_mask:		CPUs in this group's kernel-mode association
-> 
-> Could there be a caveat that the value is only valid when the resource group
-> is backing the RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode?
+Empirical test
+--------------
+* Identify siblings via:
+  cat /sys/devices/system/cpu/cpuX/topology/thread_siblings_list
+* Pin the guest on the siblings
+* Spawn a load in the guest e.g. via stress-ng --cpu 2 for SMT=2.
+  Expect the guest utilization % for both sibling CPUs to be at 100% as
+  the vCPU siblings are deemed trusted
+* Spawn a load in the host latched onto one of the siblings.
+  E.g. taskset -C X stress-ng --cpu 1
+* Expect CPU X's utilization to be shared between host and guest %.
+  Also expect drop in CPU utilization on the thread Sibling CPU as when
+  the host task runs the guest will be forced idle.
 
-Sure.
+Patches based on cryptodev-2.6
 
-> 
->>    * @plr:			pseudo-locked region
->>    */
->>   struct rdtgroup {
->> @@ -229,6 +230,7 @@ struct rdtgroup {
->>   	struct mongroup			mon;
->>   	enum rdtgrp_mode		mode;
->>   	enum resctrl_event_id		mba_mbps_event;
->> +	struct cpumask			kmode_cpu_mask;
->>   	struct pseudo_lock_region	*plr;
->>   };
->>   
->> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
->> index 46b2cafd9411..0e638dc654c1 100644
->> --- a/fs/resctrl/rdtgroup.c
->> +++ b/fs/resctrl/rdtgroup.c
->> @@ -385,6 +385,31 @@ static int rdtgroup_cpus_show(struct kernfs_open_file *of,
->>   	return ret;
->>   }
->>   
->> +/*
->> + * Display CPU masks for the kernel-mode associated resource group.
-> 
-> nit: "masks for" -> "mask of"?
+v3:
+* Collected Reviewed-by tags - Tom
+* Reword esmtp_timeout_ns description - Tom
+* Use sev_status to determine SNP support for guest as well - Tom
+* Convert esmtp_timeout_ns to u32 instead of u64 to avoid a #DE error
+  if the division extends over 64 bits. - Sashiko
 
-Sure.
+Response to Sashiko AI
+* Possibility of a stale EVENTINJ to clobber a valid EXITINTINFO here in
+  svm_complete_interrupts():
+	- Today we make check only on a non-zero EVENTINJ rather than a
+	  VALID one since that check on exitintinfo is made on it
+	  anyways later within the function.
+	- AFAIU, it is not possible to have leftover events from L1
+	  injected into L2 wihout the valid bit set.
+	- Only an L1 that does so deliberately can possibly trigger this
+	  and even then the impact is limited to that L1's L2.
+	- I could add an additional control->event_inj &
+	  SVM_EXITINTINFO_VALID check if is really a case that can be
+	  reached in reality but keeping it off for now.
+* Not syncing msr-index changes since several bits apart from ESMTP are
+  also changed and perf tooling maintainers generally sync that. However,
+  if needed I drop in a patch that syncs the MSRs too.
 
-> 
->> + * Supports both "kmode_cpus" (bitmap format) and "kmode_cpus_list"
->> + * (range list format); the output format is selected accordingly.
->> + *
->> + * Returns -ENOENT on error.
->> + */
->> +static int rdtgroup_kmode_cpus_show(struct kernfs_open_file *of,
->> +				    struct seq_file *s, void *v)
->> +{
->> +	struct rdtgroup *rdtgrp;
->> +	int ret = 0;
->> +
->> +	rdtgrp = rdtgroup_kn_lock_live(of->kn);
->> +
->> +	if (!rdtgrp || rdtgrp != resctrl_kmode.rdtgrp)
-> 
-> Could the changelog please help reader understand the patches better?
-> For example, the additional "rdtgrp != resctrl_kmode.rdtgrp" check is
-> subtle but very important to maintain synchronization, but it is
-> never mentioned why this is used.
+v2: https://lore.kernel.org/kvm/cover.1791302373.git.prsampat@amd.com/
+* Move idle wakeup ICR programming to svm_enable_virtualization_cpu()
+  instead of sev_hardware_setup() - Sashiko
+* Remove cond_sched() in ESMTP exit paths - Sashiko
+* Add a VMSA builing of ESMTP fields for hyperv - Sashiko
+* Add ESMTP to SNP_FEATURES_IMPL and SNP_FEATURES_IMPL_REQ - Local
+  Claude Sashiko instance
+* Cover hotplug CPUs / SMT changes by programming the ICR for all CPUs
+  - local Claude Sashiko instance
+* Add esmtp timeout documentation to kernel paramters
+* Collected Acked-by tag - Boris
 
-Will add a line in changelog about this check.
+Not syncing msr-index changes since several bits apart from ESMTP are
+also changed and perf tooling maintainers generally sync that. However,
+if needed I drop in a patch that syncs the MSRs too.
 
-Thanks
-Babu
+v1: https://lore.kernel.org/kvm/cover.1789399214.git.prsampat@amd.com
+
+[1]: https://github.com/tianocore/edk2/pull/13128
+[2]: https://lore.kernel.org/qemu-devel/cover.1789399242.git.prsampat@amd.com/
+
+Pratik R. Sampat (4):
+  KVM: SVM: Re-queue events that were never injected
+  KVM: SVM: Add host support for Enhanced SMT Protection
+  x86/sev: Add guest support for Enhanced SMT Protection
+  x86/hyperv: Add guest support for Enhanced SMT Protection
+
+ .../admin-guide/kernel-parameters.txt         | 19 ++++++++
+ arch/x86/boot/compressed/sev.c                |  6 ++-
+ arch/x86/coco/sev/core.c                      | 13 +++++
+ arch/x86/hyperv/ivm.c                         | 11 +++++
+ arch/x86/include/asm/cpufeatures.h            |  1 +
+ arch/x86/include/asm/msr-index.h              |  5 +-
+ arch/x86/include/asm/svm.h                    | 12 ++++-
+ arch/x86/include/uapi/asm/svm.h               |  9 +++-
+ arch/x86/kernel/cpu/scattered.c               |  1 +
+ arch/x86/kvm/svm/sev.c                        | 48 ++++++++++++++++++-
+ arch/x86/kvm/svm/svm.c                        | 41 ++++++++++++++--
+ arch/x86/kvm/svm/svm.h                        |  2 +
+ 12 files changed, 157 insertions(+), 11 deletions(-)
+
+-- 
+2.43.0
 
