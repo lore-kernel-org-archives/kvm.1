@@ -1,226 +1,129 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367453B05AB;
-	Fri, 16 Oct 2026 06:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18F139C637
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 06:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792131780; cv=none; b=hTkharpJPwTbieGS6ZlupmEa8t3XPK1NmE2lI4ynio90iumVQK0OMGlkO9PmM0/VpLd9V/SFApWVJP/OJmy+jnrRgk2dPHg9yKHHKWmL/yHckxJNEd/TNpLY/SGNIexSjWox96plX1sUQhY+ZTFMEnTG3LVx9SLUFGzwknCl8XY=
+	t=1792133858; cv=none; b=C2lJIRGShkEsStrrcTS3+w4nbfs1gxup8z1siFumq784fBioiYPx9C2K/jNlubsF0hkn9n41xQqtg/ovASeGpovtnsEBLmjOODQOX2iPGBJPJ/GTR/ZSXk/mLW9U/UOaHZjZqAxXh/RISh2tWvUVx7teMD9Tq5RNgpTz9mENCsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792131780; c=relaxed/simple;
-	bh=C9qvTUrTH8VNtDED+cvldsVstCOQcFMyni/7YqTX8dw=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Ymq2uxUV2rkFJnuRaMoIOOt0Igrj/15TkKrWwOIsYLYdkYBgPQK/Sgcs4XVG5yUH7C5o3NgbTg/zlQyUHJ2i0T9D10J/UGV09md2heE7s4OWIUCCB0QmX6gj/nkKGQoM2kwMLc85Jr1T3jxDU4ywWapjyYTJhI7dseSLnIOs4WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Cxf9O_wtFqc2kWAA--.65375S3;
-	Fri, 16 Oct 2026 14:22:55 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxNs29wtFqYAQtAA--.15575S2;
-	Fri, 16 Oct 2026 14:22:55 +0800 (CST)
-Subject: Re: [PATCH v2] LoongArch: KVM: Add hypercall crash support
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20261016034245.3002859-1-maobibo@loongson.cn>
- <CAAhV-H7JeBurcvmqPm1icKvSmGTnTP9HifRhdz6PqLhhtkcYKg@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <d7c5bc1e-d50d-fd3d-05c3-b35ba4c20911@loongson.cn>
-Date: Fri, 16 Oct 2026 14:24:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1792133858; c=relaxed/simple;
+	bh=brrnJVOqQ+HmlXP6bRZSNZ0XkAOugFpp2qAEvCN/zkU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oH2heEy20CzmueR1zfOO91ptGhyxfgcLiJQvUs1SUPfIv5Lmjn/5WMd9eNojhzSGJM9MFZ1F/LS8z2WnKeUQ3jzs7CNLbKI41LkSR3LtGH/C8SndESLbs4sdkxJaTzCjOuSvHdY9BdouLUQN+pLoTzlAhZkO1r0eNGnodsVagI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JW3EorQn; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JW3EorQn"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1561429a12.0
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 23:57:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792133854; x=1792738654; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YISc5oMGhcHW7+1utxN5bTXf7xFDmvdTaxjR4KsInxQ=;
+        b=JW3EorQnRsUbKT5vrJ3oh5K/Xn7wpg439eLIJN0+W2ak0XhE/CnuBMGRNSIObq+GdX
+         jZz3Dlz0Ezq72+ZMQ5Brrm0iVBnwnXqrQYGGE0zeCL1I2ISzWqmlGsUSVQfA1D/3QYU3
+         mS8Bp9EujGDKOX/EVR5lqxck/oUJ/3KDolgD/rkdsfs2SKVLiM/ieb95gVpYYWWEtg4s
+         G/wE0e4OWN02V29FdPy4NRkEC1+n+ybekvDvSR2DvVJN7JmE50Axp4NTENV0jQGkYmCm
+         aAnnB5gHLHcbm3MSOain+S0zwiLL3O5iM9Sg8RGpoMmGOSi79aWEv05smQlyaKjyXi1D
+         r6EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792133854; x=1792738654;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YISc5oMGhcHW7+1utxN5bTXf7xFDmvdTaxjR4KsInxQ=;
+        b=MsYRGX25pnRkUdRBC3aKSWWv7AhQ+y3J8A2gxZ6b6KB49RqTl9u+2YYBz8d+T7S+XD
+         0fzVJQ3RwBYOc0x7OjH0uHE00iKun04tgocpu+wRtQ0qO/SQwC/KfzKltRCIuooisCgf
+         9cSzA47vxkwMwxWiW3O8m9FDo4SVmfzVhRjcPVaGLqz0GXdGEguq/ImjsedDb4XPKZCc
+         2rkoWwXPBBn41Ab67G0Rdk6a1/vS72v5Ig/OrESNr4w1Hhn1MBUVPXwz464fD6EwfV/J
+         RPphpv2LEzA1hjc0WCZMWEiHj5X/FBRLS9YnUtdBqdvdTmFtvGnljCdvxBnfUKy2rEVF
+         +B7g==
+X-Gm-Message-State: AFq9FYL8Rqn1Z+6WWwt5wcRGAHCAVqPC3hqtO9oyePJeNNIVdCqWX9xq
+	aOilob6LZRKuYqV1KBs2kkthBqtSooV5y+BCihFSGXX0B6uVSfE21RGj
+X-Gm-Gg: AYBFou1VR6GQLzaTDj/JlgBzXH+xWqhPpXMVPB2eWs7WbNo7GzN5e9AFfr9K2JogoRN
+	yiZVADVsqRQzYdu2ZQJXhkwgBMHlHFtsnXM+ImlZ17FWJq+lx5N6gy0s64Z4An4QFygrvCrRyzV
+	ApEfW5p9VkLNKXATk370AbD7T85R21z96cshUJG0vpxrGPWD43TCJJYXIUCkhxa21ZhohxS9xlZ
+	KNM/P1RMiXTUTGZCYnbtLP8iqM3aSXWtkg0dOo6R2efw522SdShMYAy+C1EsKbDfBCDvbSie8OP
+	03GXdudtpbyQs6sdN7fOIYYqyU2mD3RBA9ZX72Ph/Ym6qPp63xgOxS7c53GgympOxLUBb0YsHlL
+	hXCFk+XMnI/c1ekfoJnGNhbGG8HsHTmqEvX19yTmF33dlIO/SWyKLHqVmNulFVTOSEwfzsssgZL
+	j41d9PNoKMSZbKqSmiAsoRnJEpt21fV3g33AxsfQhTEdlj2+jJOlIUMRUe4mDr1ORG/cvOGbAGw
+	VYKMQA82HC94ZyUXa1gXl5PCUjXTyRx6RyqfEZPmQJH2muf+6yAyKyM0cCBSdafpo1wjGmWF+CO
+	6Cj5OqSDvEkK05qQcmjXV9uyZ/1c/FnE5l0vrCTPy9BI
+X-Received: by 2002:a17:90b:270c:b0:3ab:be66:ddb6 with SMTP id 98e67ed59e1d1-3abbe66e034mr14548452a91.20.1792133853729;
+        Thu, 15 Oct 2026 23:57:33 -0700 (PDT)
+Received: from FLYINGPENG-MC2.tencent.com ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947dfa00sm7765410a91.17.2026.10.15.23.57.32
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 15 Oct 2026 23:57:33 -0700 (PDT)
+From: Peng Hao <flyingpenghao@gmail.com>
+X-Google-Original-From: Peng Hao <flyingpeng@tencent.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: kvm@vger.kernel.org
+Subject: [PATCH] KVM: x86: Reject KVM_CREATE_VCPU when the host TSC frequency is unknown
+Date: Fri, 16 Oct 2026 14:57:29 +0800
+Message-ID: <20261016065729.85873-1-flyingpeng@tencent.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H7JeBurcvmqPm1icKvSmGTnTP9HifRhdz6PqLhhtkcYKg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxNs29wtFqYAQtAA--.15575S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Wr4xJr1fGr1kAw4xGFW7GFX_yoWxCry8pF
-	92yFs5GrW8Gr1fCws3twnI9ry7WFs7Cr1IgFy29FWrCF4Y9wn5ur18KryDCF98X3y8Wa40
-	vF9Yq3s8ZFsrt3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
-	14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
-	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
-	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
-	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
-	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
-	0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1MK
-	ZJUUUUU==
 
+If host TSC calibration fails, tsc_khz stays zero: tsc_init() marks the TSC
+unstable, clears X86_FEATURE_TSC_DEADLINE_TIMER and gives up.  KVM has been
+papering over that state since 03ba32cae66e ("VMX: x86: handle host TSC
+calibration failure"), but the guest cannot actually run:
 
+  - kvm_set_tsc_khz() computes thresh_lo == thresh_hi == 0 via
+    adjust_tsc_khz(), so use_scaling is always true and set_tsc_khz()
+    divides by tsc_khz to compute the scaling ratio, i.e. #DE in host
+    context.  This one is reachable from KVM_SET_TSC_KHZ alone, no guest
+    cooperation required.
+  - kvm_guest_time_update() re-requests KVM_REQ_CLOCK_UPDATE and returns 1
+    because get_cpu_tsc_khz() hands back the (zero) global tsc_khz for CPUs
+    with a constant TSC.  vcpu_run() only breaks out of its loop on
+    "r <= 0", so the vCPU thread spins in the host kernel rather than even
+    failing the guest.
+  - Everything that converts guest cycles to nanoseconds, e.g. the lapic
+    timer advance logic, divides by virtual_tsc_khz, which is zero as well.
 
-On 2026/10/16 下午12:32, Huacai Chen wrote:
-> V1 in the pull-request has been merged.
-It is my fault. Will submit the fix version after rc1.
+Each of those has been growing its own "is the frequency zero?" check, and
+the list keeps getting longer.  Cut it off at the source instead: fail
+KVM_CREATE_VCPU rather than letting userspace walk into a host #DE or a
+spinning vCPU thread.
 
-Regards
-Bibo Mao
-> 
-> Huacai
-> 
-> On Fri, Oct 16, 2026 at 11:43 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> Now generic pvpanic is supported in Linux kernel which will notify VMM
->> with VM crash event. There is some limitations with pvpanic, such as it
->> requires good kernel stack or CPU hardware context and panic() C function
->> is in health state.
->>
->> Sometimes CPU hardware context or kernel/irq stack is corrupted. Hypercall
->> code is more direct and low-level crash method, which is useful in
->> exception entry with assmble language, here add one hypercall code to
->> support VM crash function, so that VMM can capture CPU crash context
->> in time.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>    v1 ... v2:
->>    1. Add VM feature checking with KVM_LOONGARCH_VM_FEAT_CRASH from VMM
->>       user space.
->> ---
->>   arch/loongarch/include/asm/kvm_host.h      |  1 +
->>   arch/loongarch/include/asm/kvm_para.h      | 15 +++++++++++++++
->>   arch/loongarch/include/uapi/asm/kvm.h      |  1 +
->>   arch/loongarch/include/uapi/asm/kvm_para.h |  1 +
->>   arch/loongarch/kvm/exit.c                  | 11 +++++++++++
->>   arch/loongarch/kvm/vm.c                    |  4 +++-
->>   6 files changed, 32 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
->> index 65d91c3ce313..96f9f1317cad 100644
->> --- a/arch/loongarch/include/asm/kvm_host.h
->> +++ b/arch/loongarch/include/asm/kvm_host.h
->> @@ -168,6 +168,7 @@ enum emulation_result {
->>   #define LOONGARCH_PV_FEAT_MASK         (BIT(KVM_FEATURE_IPI) |         \
->>                                           BIT(KVM_FEATURE_PREEMPT) |     \
->>                                           BIT(KVM_FEATURE_STEAL_TIME) |  \
->> +                                        BIT(KVM_FEATURE_CRASH) |       \
->>                                           BIT(KVM_FEATURE_USER_HCALL) |  \
->>                                           BIT(KVM_FEATURE_VIRT_EXTIOI))
->>
->> diff --git a/arch/loongarch/include/asm/kvm_para.h b/arch/loongarch/include/asm/kvm_para.h
->> index fb17ba0fa101..3b183bb1aaa8 100644
->> --- a/arch/loongarch/include/asm/kvm_para.h
->> +++ b/arch/loongarch/include/asm/kvm_para.h
->> @@ -14,6 +14,7 @@
->>   #define KVM_HCALL_CODE_SERVICE         0
->>   #define KVM_HCALL_CODE_SWDBG           1
->>   #define KVM_HCALL_CODE_USER_SERVICE    2
->> +#define KVM_HCALL_CODE_CRASH           3
->>
->>   #define KVM_HCALL_SERVICE              HYPERCALL_ENCODE(HYPERVISOR_KVM, KVM_HCALL_CODE_SERVICE)
->>   #define  KVM_HCALL_FUNC_IPI            1
->> @@ -22,6 +23,7 @@
->>   #define KVM_HCALL_SWDBG                        HYPERCALL_ENCODE(HYPERVISOR_KVM, KVM_HCALL_CODE_SWDBG)
->>
->>   #define KVM_HCALL_USER_SERVICE         HYPERCALL_ENCODE(HYPERVISOR_KVM, KVM_HCALL_CODE_USER_SERVICE)
->> +#define KVM_HCALL_CRASH                        HYPERCALL_ENCODE(HYPERVISOR_KVM, KVM_HCALL_CODE_CRASH)
->>
->>   /*
->>    * LoongArch hypercall return code
->> @@ -161,6 +163,19 @@ static __always_inline long kvm_hypercall5(u64 fid,
->>          return ret;
->>   }
->>
->> +static __always_inline long kvm_hypercall_crash(void)
->> +{
->> +       register long ret asm("a0");
->> +
->> +       __asm__ __volatile__(
->> +               "hvcl "__stringify(KVM_HCALL_CRASH)
->> +               : "=r" (ret)
->> +               : : "memory"
->> +               );
->> +
->> +       return ret;
->> +}
->> +
->>   #ifdef CONFIG_PARAVIRT
->>   bool kvm_para_available(void);
->>   unsigned int kvm_arch_para_features(void);
->> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
->> index cd0b5c11ca9c..b222bfc48042 100644
->> --- a/arch/loongarch/include/uapi/asm/kvm.h
->> +++ b/arch/loongarch/include/uapi/asm/kvm.h
->> @@ -106,6 +106,7 @@ struct kvm_fpu {
->>   #define  KVM_LOONGARCH_VM_FEAT_PTW             8
->>   #define  KVM_LOONGARCH_VM_FEAT_MSGINT          9
->>   #define  KVM_LOONGARCH_VM_FEAT_PV_PREEMPT      10
->> +#define  KVM_LOONGARCH_VM_FEAT_CRASH           11
->>
->>   /* Device Control API on vcpu fd */
->>   #define KVM_LOONGARCH_VCPU_CPUCFG      0
->> diff --git a/arch/loongarch/include/uapi/asm/kvm_para.h b/arch/loongarch/include/uapi/asm/kvm_para.h
->> index d28cbcadd276..bf1a0c826ca6 100644
->> --- a/arch/loongarch/include/uapi/asm/kvm_para.h
->> +++ b/arch/loongarch/include/uapi/asm/kvm_para.h
->> @@ -16,6 +16,7 @@
->>   #define  KVM_FEATURE_IPI               1
->>   #define  KVM_FEATURE_STEAL_TIME                2
->>   #define  KVM_FEATURE_PREEMPT           3
->> +#define  KVM_FEATURE_CRASH             4
->>   /* BIT 24 - 31 are features configurable by user space vmm */
->>   #define  KVM_FEATURE_VIRT_EXTIOI       24
->>   #define  KVM_FEATURE_USER_HCALL                25
->> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
->> index 4f58e6e2cf86..3b6daa946c76 100644
->> --- a/arch/loongarch/kvm/exit.c
->> +++ b/arch/loongarch/kvm/exit.c
->> @@ -911,6 +911,17 @@ static int kvm_handle_hypercall(struct kvm_vcpu *vcpu, int ecode)
->>                  vcpu->run->hypercall.ret = KVM_HCALL_INVALID_CODE;
->>                  ret = RESUME_HOST;
->>                  break;
->> +       case KVM_HCALL_CRASH:
->> +               if (!kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_CRASH)) {
->> +                       kvm_write_reg(vcpu, LOONGARCH_GPR_A0, KVM_HCALL_INVALID_CODE);
->> +                       break;
->> +               }
->> +
->> +               vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
->> +               vcpu->run->system_event.type = KVM_SYSTEM_EVENT_CRASH;
->> +               vcpu->run->system_event.ndata = 0;
->> +               ret = RESUME_HOST;
->> +               break;
->>          case KVM_HCALL_SWDBG:
->>                  /* KVM_HCALL_SWDBG only in effective when SW_BP is enabled */
->>                  if (vcpu->guest_debug & KVM_GUESTDBG_SW_BP_MASK) {
->> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
->> index 6dabb227a732..9bf4b3bb8f25 100644
->> --- a/arch/loongarch/kvm/vm.c
->> +++ b/arch/loongarch/kvm/vm.c
->> @@ -49,8 +49,9 @@ static void kvm_vm_init_features(struct kvm *kvm)
->>                  kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_PMU);
->>
->>          /* Enable all PV features by default */
->> -       kvm->arch.pv_features |= BIT(KVM_FEATURE_IPI);
->> +       kvm->arch.pv_features |= BIT(KVM_FEATURE_IPI) | BIT(KVM_FEATURE_CRASH);
->>          kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_PV_IPI);
->> +       kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_CRASH);
->>          if (kvm_pvtime_supported()) {
->>                  kvm->arch.pv_features |= BIT(KVM_FEATURE_PREEMPT);
->>                  kvm->arch.pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
->> @@ -163,6 +164,7 @@ static int kvm_vm_feature_has_attr(struct kvm *kvm, struct kvm_device_attr *attr
->>          case KVM_LOONGARCH_VM_FEAT_PV_IPI:
->>          case KVM_LOONGARCH_VM_FEAT_PV_PREEMPT:
->>          case KVM_LOONGARCH_VM_FEAT_PV_STEALTIME:
->> +       case KVM_LOONGARCH_VM_FEAT_CRASH:
->>                  if (kvm_vm_support(&kvm->arch, attr->attr))
->>                          return 0;
->>                  return -ENXIO;
->>
->> base-commit: 2f2f7eeef8b0a1a9b9ca998231419873ccae8d4e
->> --
->> 2.39.3
->>
+Signed-off-by: Peng Hao <flyingpeng@tencent.com>
+---
+ arch/x86/kvm/x86.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 4b3681796c75..8dd75d60eecf 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9342,6 +9342,17 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 	struct page *page;
+ 	int r;
+ 
++	/*
++	 * The host TSC frequency is unknown, e.g. because TSC calibration failed
++	 * at boot.  KVM cannot virtualize the TSC in this state, and every
++	 * consumer of the frequency ends up needing its own zero check; fail vCPU
++	 * creation instead of handing userspace a vCPU that cannot run.
++	 */
++	if (!tsc_khz) {
++		pr_err_ratelimited("cannot create vCPU, host TSC frequency is unknown\n");
++		return -EIO;
++	}
++
+ 	vcpu->arch.last_vmentry_cpu = -1;
+ 	bitmap_fill(vcpu->arch.regs_avail, NR_VCPU_TOTAL_REGS);
+ 	bitmap_fill(vcpu->arch.regs_dirty, NR_VCPU_TOTAL_REGS);
+-- 
+2.43.7
 
