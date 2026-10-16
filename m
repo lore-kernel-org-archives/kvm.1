@@ -1,234 +1,200 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012041.outbound.protection.outlook.com [52.101.53.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059643CB2FA
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 20:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792181344; cv=none; b=qavGVhGoW7V2nzv6tlRnB57jNGJLcNvxPz4wrBBpBufH4jhSgvuTUoOLRyc5Q9JZ198yIR0gk5spAdAnJoCTlupkR6C6MEH3sFk6O9sL6qbSScsRiL5Y5bZ7CXXk8uv5LRNGzvs+IsQe58GdeuwTB/Vn4ybRq82pNQgS60auAto=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792181344; c=relaxed/simple;
-	bh=RI04OnsvMB9uQ7ea/1UpgCPq9PltzrbbletOSbqIk8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YC41X12oJ7tf+NK7O/8hIStPwv/TcOQJKJXCZe+w4MjfDpbkZI/8012bBiphuUBcpMaFI8Kfn2YKOiY9ikmaMUA+pgtIr9SgeAJn0DmwilZ2ADHgNyxx2QirtKkKjPhRwhC5/TUCfLosict+sMF7ATyh/cX0Lb6rOSBedJ/dSNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nu66+NBk; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2361E3812DB;
+	Fri, 16 Oct 2026 20:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792184025; cv=fail; b=VRpZl15d2q2vnl1F4Bj+q2uLwxesQlshsadmZcg9A3BGaCT/Jf1rWXdmTtLZJMKbUcpSidCCL31DKqbvH6Nb+NbH+jw4yTiK/wR5nTR1S5Kw8hvX+gLsCGk3bZRDOAyBtBbSeS2iLI2k/HTJG0H5Sg0YIPCPxNIOrn+zjpKP2dM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792184025; c=relaxed/simple;
+	bh=14086800gVworB+I65hSBgA3jifAIE4N7p3Z7vQUOhk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=e8+G7diI1jnyZmpUG1Yo7IX8mFZ/xCOuPaioDUu9ETeRK4Qev5XstLbzN1iV80KcJz1PQmZYLUQRvD+n7In46oP7OnjSyMjXeL9iLE8kUjDpMS+HF/7jjCQeZDUTnDCVAUGO1cvbzmwGFg9kaO0vTldJ5tHGf1rTCk2oBSL9xbo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zd3L8h40; arc=fail smtp.client-ip=52.101.53.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nu66+NBk"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3a0aaa0fd13so357033a91.2
-        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 13:09:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1792181342; x=1792786142; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9qKt714wTpFnQNXIMAii1yJHjNpuAXnTO+pThrST3To=;
-        b=nu66+NBko4mS+MCnexIkWteafWvdP8iGNWAMoX85gcNo7kWOpBA/p5brN/GJOhO3Pl
-         0F5fkKHV5WyujcFgmX1YhUiTp3apmWZl/GLIia3ihtKgGC+21Lqb0s1DcZNSu0smffbe
-         f9uBfp3+8/iFamVbE5nKBs6q0/yVBPNEMxMg5ypLj/G/XTsqHd5fc/dXudjWa9DgLXiu
-         ge0Gkwnn3qK1tu737mfBJXXb8lHa9vRDRxDrZWSD6TCKCadC44AD8pn/qKw4wPBWO0yq
-         5KVLpceUqDl8VhKc7d2I8LttF/yyHNFnwV+rpOawAXMKYDVNQ6Sl26KyDZYwkeGU6Ti6
-         2jkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792181342; x=1792786142;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9qKt714wTpFnQNXIMAii1yJHjNpuAXnTO+pThrST3To=;
-        b=I0t2A05G7C6yIomLCsZ5dNYukJF15BYh3/oIs1SE4J1aFeQ5e+YrerQjycyXAcCype
-         o15YuYvGgfQw6aPFk/GqydWND05tf2L08MdOD8+WZn/S1lckCUawzxsqIUlIkH8Y4TD5
-         mmuWJa/kUazBzeZdQRhLY96c6bX+aKQAt/a6VXlJ6LvRcaTdx3kBalXI5Wiq+UtFIqGT
-         Jj6HQzM+ovnjYdQPvqShMm8bnFZggqnRum0TDKzQHPjIqJRSbm+RQE+xu54zHBQQjqEe
-         iD65s81RF6oh0hXWLGeQmxK257llpF/DXGR1Rx+1aIy9Yq94HG7dHcUP735uI6sMS45L
-         worw==
-X-Forwarded-Encrypted: i=1; AKwUvBwgEc+OTyKp083Acg6Rv65TlMMr7vXsxQCeG6g5C6+PEADHVr+0PWtg5Q5QdDq7OWXBTWY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIz9twSOi61gDMBnhxmUh9ee9oS7H/Nb7GhGRIOoVDkyVSdYXwM
-	5fFANdH8GXEsyeAUDMlLTBENzkwcqbFt52nJPb/Wln7DAI0Vecn758TsahbApZz6vcM=
-X-Gm-Gg: AYBFou1IfWWTj1pPZjoFyGYiSjIvgP0i+h0a2DoGhQDIxkGwxdZ3s7a2pFojOq8Vv0/
-	m9Wx3AevK9Y8wzbKIdHq3bzcXaef+mcqWSISKDVnst2TyFRG5VCoXTDo2aZd55SXe+MEouW0TtL
-	Cge1GYJsrHPKmpuMomlE5haNoKQ+w7OlI8+p4LoSaDncc9UJZ40+FtFMa30vHaR6c1IxPnaoG3m
-	x72ylbAeP5ixnXypr9DsfKmjhxEaVGM0Jo2a+i23gQdFeapvrOn7Ncteefhh2XRt3ciSRJgYD/y
-	HRWNh/Iybanv8zxqtEadOFXFZBEGPeuX0MxtOzXmvPbCt1+3C+oRh/EaVkGkHuv4ZIM/sHT8V/B
-	Rr2T4dnpwfpNQtcD9ST9DHhtzd578RX1YqJE+3Zs/nlp8ULMhnRsm/Cwwo497YOMaSb9EDA8QEY
-	hOMsGViY0lPDpP/hIy3nCjwOgpn1L72L/SFcH0+lC9jMvcNPoVOutKY96G+w4Td9cFjjVUgFPOJ
-	xx6dvnVLoWw
-X-Received: by 2002:a17:90b:45:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3aceeb9272dmr792959a91.15.1792181342239;
-        Fri, 16 Oct 2026 13:09:02 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:ff2f:8a9c:5623:f753])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc49c263asm5207912a91.17.2026.10.16.13.09.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 13:09:01 -0700 (PDT)
-Date: Fri, 16 Oct 2026 14:08:58 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Gavin Shan <gshan@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
-	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
-	kvm@vger.kernel.org
-Subject: Re: [RFC v4 11/24] target/arm/kvm-rme: Populate Realm with runtime
- images
-Message-ID: <atKEWmnXA-Gu1Y9T@p14s>
-References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
- <20260903193611.1058589-12-mathieu.poirier@linaro.org>
- <3257a387-490f-44bb-bd44-dbe06036fd52@redhat.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zd3L8h40"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wt0B8odFc2k8gWISW8OuKX1Fp8mBOvtuJ2ooid7P8Orc9NDMZwTmV/KID91ONxWtrmD6/2x1R8PX2/iE91AcliyVzZv9D8vSWBOSwpSFWbdKAc/4Or0vL6lOIMeb+ah2yQT8PfUt2n6ukHGrliyvE1SwpvB/p/UB+tVhJmM2CrnCbeg4t7KuObtsTvvQUpQp5jLh45CHPtiiYUgoY0IMGpXss6zvuq0BukASS3PcRtctyxO9OuPQ2X/NVRbeH77qIjBQ3jTK1RKKZrYXzOSFvEc3aa3f69+FKBaiNiDSYHYqQV4rzndi10Yc9+8VHS+bT0KBRSdW4wBo/KoZETS7xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p0mF232IflyvifGc2IXf7P6jXrZOBWgKMb1aq4CLVMU=;
+ b=LRak4zKGOqnBarGMb3XP6LVDDq2p/93vhpp+3GOe9WTfxq5pqtx7HLB2QGbcMF+5Gtqg1b+81gIPHfjyk0Kwth87VPeR7ChEH58B2o//piMoNrhM2m4FJkKVG58RRTIDaSgKhXgDAU+Db67iTKuNtijmIimM4036sPu49Bbq+AjAcZEODtZ41Wz06wr+0lRh4pXfLeEDL+q9luIFsg6yOLhf2tJZY6U6Q/uCj7vH+sFYDE5o5xtNaKiC0Tcus6cdMjVE3WwVZgXE0vBEGJ27IrN97EUtRq0QbtKI02kPk6zjxjoNeneiojBGVrKlKsesT6hp9aTehWotipmPSYCcjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p0mF232IflyvifGc2IXf7P6jXrZOBWgKMb1aq4CLVMU=;
+ b=zd3L8h40RUn9lyEyiwmUxlN3zJU50ns4DBs0IJu0QzFJtzhkI+v0hjSRzcO1j2CXBVuKCKrBHkP5QGUME58PZbVSlSF4jLORLgIvLHAznhvkSGlx/QFF3Levjc2YIo5Q6Z7vIrBSauLz2NxVfJJ/IyvdJYAzwp/0re2RbIaiFYQ=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
+ by MW6PR12MB8916.namprd12.prod.outlook.com (2603:10b6:303:24b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Fri, 16 Oct
+ 2026 20:53:40 +0000
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 20:53:39 +0000
+Message-ID: <89715865-895d-4771-a700-f1a8aaa385cc@amd.com>
+Date: Fri, 16 Oct 2026 15:53:29 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 10/18] fs/resctrl: Add support for hidden resource
+ group files
+To: Reinette Chatre <reinette.chatre@intel.com>,
+ Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, bp@alien8.de,
+ ben.horgan@arm.com
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
+ elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
+ kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
+ ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
+ ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
+ prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
+ elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
+ peternewman@google.com
+References: <cover.1790867441.git.babu.moger@amd.com>
+ <9e770ba6dff365f823e702430ec3872709bc92d4.1790867441.git.babu.moger@amd.com>
+ <0ad861e2-1dce-4179-986c-872a33eff38a@intel.com>
+Content-Language: en-US
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <0ad861e2-1dce-4179-986c-872a33eff38a@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0002.namprd13.prod.outlook.com
+ (2603:10b6:806:21::7) To BL1PR12MB5320.namprd12.prod.outlook.com
+ (2603:10b6:208:314::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3257a387-490f-44bb-bd44-dbe06036fd52@redhat.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|MW6PR12MB8916:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e789879-368d-4f1a-99ce-08df2bc78e51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|11063799006|56012099006|5023799004|4143699003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	4YhkdYSTx00UXTtpuTkNwfeohAI2r9vcNLSHVkVvOmnbhimuNJNQIEtJfzNyrqlukL1jUr/VhDRi/YYU2LkOayUBY4jhLDYOt02CIhq0SaxMhlWtFKalBU2r/NdkcSxAUmVNQdOCImiEeT/MjK4u49f4FrNc1A6z0n1W0LHx/1wcbdXSkqoVclwBU7ybXDhKIfazAtw1TmlV8RfKe1VdB3s1/IX1beH70GdUl0BJ6u3lz9UuB4rIMgF+0O4alSqMKkbNf2j6Tlx/rO1yY5+zFgwPz6uUnt/vN0rhBjUpNzzaZNWkV2jQtCJEwMyX0gVzMge1RC8DBVEKWkeBQ+WNNRcu5jsHn6IsdjxtYDAFPPIA0lV9EaaoQXnEdzwWHZogmVbHx2VtAOiyFc4yTmYb1aIvO/Gmbct174Ybtqef/sOlRs56lokqurUORyJ0bXZWUuVrV3IjawIFfDZSnSecLu6dpPRK8mX47Oc0GGxEouEEESu4dX2/3p8BxL+m4sCdjQ1Ip7YTM0t6iqgzk+Ua98ifxT/naMJrdGgALSpNMIMHrLeTmCkVRg3gME6tagqVUhe1YpIep2M6ODITEgY9BiX3UbMDzn7kSRuut5jKF65ym7NC+EVABgbuHTCkADY4knwY7U64clZhdmpF3426GfbtuSRn4VcyJF24IdjHkIc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(11063799006)(56012099006)(5023799004)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QUcxZ2tydjVSTGlPclA5RTVSYTV5ZmgvdWltMEpoM3g5Q0F6dVhINUhtcGhr?=
+ =?utf-8?B?cW1UbXUrNjhZQzZOdDJIbSthNDladnRad1RRdnFVdllPSDh6NWZWZEZ6bXZJ?=
+ =?utf-8?B?RzZsVGhKVmNTaUNET1NUL09nTVJ4WWdQWU80UWpvVmNJZzhrV3BCRUdGTTYx?=
+ =?utf-8?B?S2hzMGNCTndKNC80Q21xRXhtbTBKYVUzeWlvQ25SY0JvVWdUUUZvb3MwTHlB?=
+ =?utf-8?B?WkxVWTJzTnlYY3VlK3BsN0tTcW1YY09kVEFnNHYzZTFGSUZUQ2lCK3ViSWdo?=
+ =?utf-8?B?dllpVFV4VU1UN1JYVjdCN2ZRSW9NdXRkNHJLS2FsNUZDVDhtV2tOWHI4bi9q?=
+ =?utf-8?B?bGVTRDVQMHhHSXRqbHZuZ3ZNT05KbHQwSjk4U1UyTS9qOVB5V3hINlJ4Y1Fo?=
+ =?utf-8?B?K2xLT09CYm1peG11RWRrZVY5dFlDelk1WEhoLzByNUU3b2xzSm84eTJQL0hs?=
+ =?utf-8?B?SGdSV0hTK2dqaEpjaDQwU3ZaMm1xL2wzcVJTcWxZa3Q4SnFaTGdublk4MkR3?=
+ =?utf-8?B?dTVUcWJRV0NjWXNEWlBqQ3FEZFdHd2lnT1gvVXlvYmhmS2lUbmJPd2dRTUdj?=
+ =?utf-8?B?NStGQ29JZlI1b0VtUU5SSkI1WkhBZEVwYXBwQVVrcUJyL3Q4MHNKUitXc3ZP?=
+ =?utf-8?B?TWpzRlJ1UWloWEdoMXVKODFnRlFlYmFkWFM1Z0d3Qm9HbzZRNGozSjloUDJK?=
+ =?utf-8?B?eUhrNHJHT0oxcG9JaXhrWFI0MVdqRFp1blVOSVVBZG92cTM3OHlFMkpKQkNI?=
+ =?utf-8?B?a3ZpajFiUWlyZTF0SDBlYklMSXRSK3RRaWpQeHc0Rnk4dTVYQnF5WEhWYVBD?=
+ =?utf-8?B?MUNXdHJzRWVlOVlvMFJwdW03SWE5dmhMSjhlQk9ZV3Jmc3hqcjdLWWJ4b0JT?=
+ =?utf-8?B?em45THQ4emx4RkZYVkVlK1M4SDhwdmJ4RTBESkhCdDRXRG8vYTRtSytCUFo0?=
+ =?utf-8?B?MWhnWGVyeTJkdTZ4ajI0TEs3LzZIb2JGOGUzVDZFY2F3U0FFa0xIUVVGK0NM?=
+ =?utf-8?B?UHZLalJyc29odzJ6eWl2QTN4MC9kdVdKYnJnNEUxdUdxMkZab2p3QlkvY0hU?=
+ =?utf-8?B?a0ZIMU9sUWlkYTZySkl4ZEdIa2Rhc2Y5d3QzSk1GMGgxSU16T2dGOS9EdFl2?=
+ =?utf-8?B?L1d4M3EwT1JTTzRIY0dKTUcyWmcwQWpBeXgrbGxkYXJXUVZjZDdqdTYwcDN0?=
+ =?utf-8?B?dzFBKzNNOXNsRStqTUFlZWpHSnk5cGpnT0JBZkpZVHl2cDh5bGduaG4rTGtl?=
+ =?utf-8?B?NzRYZU9KT3pKT3FTUW9sMzMyQU1hWk1pRWFkejMzdVBJSEU1QVRzM2RaeVBp?=
+ =?utf-8?B?MnpWbWsrcTljYklrOEFVcVNFUXJKUXk3QVV0Q3dWV2U2bGNzQ09xWDNZSFU1?=
+ =?utf-8?B?S3VBY21TYUs4dFJXR2pQRlJkaUJ3VGFsVDRSN3orQi9ZVC9CSXFzMjBES3Iy?=
+ =?utf-8?B?U1FnWEFHbHlPR1FUYWxCZ211QmxaODZOWjVrWktwcWlTMDNoNGlYWXA4dnZo?=
+ =?utf-8?B?ZkExM1ZRdVdEc0t2MitSMGRzTTF1WThnNW1FUVVZUXgwM0NXTGoybTlMV3VX?=
+ =?utf-8?B?bENlbklTWUU3enhIS0RiQTJhUWZPMHRsNnE0ZFRRUzY5alIrbVkzTHQ1RXl4?=
+ =?utf-8?B?clZDc1U2RzFCcUs1S0o3bDlYTGdrN21wK21ocThFeEtMYWJWNmRuM29TMStB?=
+ =?utf-8?B?WlZ2THlObzFOVEtXbjVlNysrMmxZdzBPdDJHemdJK2xLdGJ5REt3TzBOL1Y0?=
+ =?utf-8?B?Y0tOOUNLMGlVRCtrU2JHbWg1M0ZIYU1hMTk5L0R4ZlZXRVo5SXRDZHFaYkh2?=
+ =?utf-8?B?bTFjMnI3VXBzaEZFbDNGTEZrQXRGSjc0TUFyU3VBbEVseTJaMGV1Y3hBWHkw?=
+ =?utf-8?B?QTJ4azczZFZCVTVSMkp0eGJrNVZmbmZOSm1uTGlqOEdWQndkSmZBTnExS1lX?=
+ =?utf-8?B?ZXUyRGtMbEFVUmhXYXRqV0tib2Q0ZmxPYlZRdC9TU1JWd2k1dWtXTHVwSTdQ?=
+ =?utf-8?B?Rkp2b1hJZk9SRy9CMVNzREZaQkhTVUErK0dOcEJ6b1NxZnpqT2o0WmhBWW5u?=
+ =?utf-8?B?REc5VGI5M3RTcTVXSEhvZW00L21tRE5zNE42cG1BNXR4YlBaTnkzQmhqWkVx?=
+ =?utf-8?B?TVg4U0VZdmV4SjVObnJWamxXdTlGVlc3cnY5L0hDSXpGTVNHM3pPMnJ1bFU3?=
+ =?utf-8?B?NGZ5TUN3K21MaENDd2xmZnoyVjE0MEhTTGd6NW42VjBqWXZMMGp0RkhGMmdG?=
+ =?utf-8?B?MEtsN0V0S0F0UVN3b1UrM2xzWGNERFAzMWhZMmRRQnFIYTNRQ21mcE95bW1y?=
+ =?utf-8?Q?oGbv5ZW/DWGb/yVhc9?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e789879-368d-4f1a-99ce-08df2bc78e51
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 20:53:39.8099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L3Y1nfYgOceigfY6B6D2pt3CJDvIXsqvJzS9med3ZUfd22DEYNYDgfUnaa1k/NlP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8916
 
-On Fri, Oct 02, 2026 at 01:45:40PM +1000, Gavin Shan wrote:
-> On 9/4/26 5:35 AM, Mathieu Poirier wrote:
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > 
-> > Once the Realm descriptor has been created, tell KVM to transfer runtime
-> > images (kernel, DT, and rootfs) from guest memory to Realm memory.
-> > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
-> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > ---
-> >   target/arm/kvm-rme.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 76 insertions(+)
-> > 
-> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > index 9985f5daba89..c082a5d8f3d1 100644
-> > --- a/target/arm/kvm-rme.c
-> > +++ b/target/arm/kvm-rme.c
-> > @@ -15,6 +15,7 @@
-> >   #include "migration/blocker.h"
-> >   #include "qapi/error.h"
-> >   #include "qemu/error-report.h"
-> > +#include "qemu/memalign.h"
-> >   #include "qom/object_interfaces.h"
-> >   #include "system/confidential-guest-support.h"
-> >   #include "system/kvm.h"
-> > @@ -43,12 +44,87 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> >   static RmeGuest *rme_guest;
-> > +static int rme_populate_range(const RmeRamRegion *region, bool measure,
-> > +                              Error **errp)
-> > +{
-> > +    int ret;
-> > +    void *buffer;
-> > +    hwaddr size = region->size;
-> > +    hwaddr base = region->base;
-> > +    hwaddr start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
-> > +    hwaddr end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
-> > +    struct kvm_arm_rmi_populate populate_args;
-> > +    size_t aligned_size = ROUND_UP(region->size, qemu_real_host_page_size());
+Hi Reinette,
+
+
+On 10/15/2026 10:27 AM, Reinette Chatre wrote:
+> Hi Babu,
 > 
-> s/qemu_real_host_page_size()/RME_PAGE_SIZE
-
-I refactored this function in V5 [1], along with the above declarations.
-
-[1]. https://lore.kernel.org/kvm/20261002202026.1204110-10-mathieu.poirier@linaro.org/
-
+> On 10/1/26 8:10 AM, Babu Moger wrote:
+>> Some per-group resctrl files are only meaningful once a resource group
+>> has an active kernel mode association.
 > 
-> > +
-> > +    if (!region->data) {
-> > +        return -ENODEV;
-> > +    }
-> > +
-> > +    ret = kvm_set_memory_attributes_private(start, end - start);
-> > +    if (ret) {
-> > +        error_report("RME: failed to configure initial"
-> > +                     "private guest memory");
-> > +        return ret;
-> > +    }
-> > +
-> > +    /* Allocate page-aligned memory */
-> > +    buffer = qemu_memalign(qemu_real_host_page_size(), aligned_size);
-> > +
-> > +    if (!buffer) {
-> > +        return -ENOMEM;
-> > +    }
-> > +
-> > +    memset(buffer, 0, aligned_size);
-> > +    memcpy(buffer, region->data, region->size);
-> > +
-> > +    populate_args = (struct kvm_arm_rmi_populate) {
-> > +        .base = start,
-> > +        .size = end - start,
-> > +        .source_uaddr = (uintptr_t)buffer,
-> > +        .flags = measure ? KVM_ARM_RMI_POPULATE_FLAGS_MEASURE : 0,
-> > +    };
-> > +
-> > +    while (populate_args.size > 0) {
-> > +        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
-> > +        if (ret) {
-> > +            error_setg_errno(errp, -ret,
-> > +                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
-> > +                start, end);
-> > +            break;
-> > +        }
-> > +    }
-> > +
-> > +    qemu_vfree(buffer);
-> > +
-> > +    return ret;
-> > +}
-> > +
+> Could this elaborate more about how the files depend on the kernel mode
+> and why they may not always be meaningful?
 > 
-> I doubt that the unaligned regions (RmeRamRegion) are allowed. For example,
-> the region [4KB 64KB+4KB] is turned to the aligned range [0 128KB] when RME_PAGE_SIZE
-> is 64KB. The question is how do we know the added regions due to the alignment
-> ([0 4KB] and [64KB+4KB 128KB]) are safe for kvm_vm_ioctl(KVM_ARM_RMI_POPULATE).
-> I guess we probably just reject unaligned regions if they're not expected.
-
-To make sure I understand your point, please expand on what would be an
-unaligned regions.  In your example, [0 128KB] is aligned on 64KB boundries. 
-
+>>
+>> Creating them only at activation would complicate group setup and
 > 
-> Even if the unaligned regions are allowed, they seem not well handled.
+> Why would it complicate group setup and teardown? I think it would
+> rather complicate mode activation and de-activation but since there is
+> no detail about how this will complicate group setup it is difficult to
+> compare. It is difficult to reason about a patch when the motivation is
+> vague.
 > 
-> - @aligned_size is still 64KB instead of the 128KB ?
-
-I'm confused.  ROUND_UP(64KB+4KB, 64KB) would be 128KB.  What am I missing?
-
-> - In "memcpy(buffer, region->data, region->size);", the blob data would be copied to
->   [4KB, 4KB+64KB]. However, we're copying the data to [0 64KB] now.
-
-I agree with you.  That part was refactored in V5 [1]:
-
-        memcpy(buffer + (base - start), region->data, region->size); 
-
+>> teardown, while exposing them on every group would show empty files
 > 
-> > +static void rme_populate_ram_region(gpointer data, gpointer err)
-> > +{
-> > +    Error **errp = err;
-> > +    const RmeRamRegion *region = data;
-> > +
-> > +    if (*errp) {
-> > +        return;
-> > +    }
-> > +
-> > +    rme_populate_range(region, /* measure */ true, errp);
-> > +}
-> > +
-> >   static void rme_vm_state_change(void *opaque, bool running, RunState state)
-> >   {
-> > +    Error *errp = NULL;
-> > +
-> >       if (!running) {
-> >           return;
-> >       }
-> > +    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, &errp);
-> > +    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
-> > +    if (errp) {
-> > +        return;
-> > +    }
-> > +
-> >       kvm_mark_guest_state_protected();
-> >   }
+> "show empty files" - technically these files, as they are implemented,
+> will not be empty but return errors
 > 
-> Thanks,
-> Gavin
+>> with no clear purpose.
+>>
+>> Add a hidden property to struct rftype to hide files at creation.
 > 
+> Missing a "why".
+> This can append to describe how this adds the foundational support in
+> preparation for features to restore visibility when the feature's files
+> need to be exposed to user space.
+> 
+
+Will rephrase the whole changelog:
+
+"Some per-group resctrl files are only applicable to resource groups
+with an active kernel mode association. Accessing these files before a
+kernel mode association is established would result in errors and does
+not provide useful information.
+
+Creating and removing these files when a kernel mode is activated or
+deactivated would add complexity to the mode management path. Add a
+hidden property to struct rftype so files can be created with the
+resource group and exposed only when they become applicable.
+
+This provides the infrastructure needed to control file visibility for
+future kernel-mode-specific resctrl interfaces."
+
+Thanks
+Babu
