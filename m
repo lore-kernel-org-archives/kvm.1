@@ -1,221 +1,218 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010018.outbound.protection.outlook.com [52.101.193.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8466542EC5;
-	Fri, 16 Oct 2026 16:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792167829; cv=fail; b=e8GntRwxJdW6umiQEaKHza1kUpnnFWzkDvFQCWAjF/iaZWddt3YS3NwnunU937veoxTR/eYiidUVHQA1XBDrVeeB8NBl590F7cVz4X4c09Xm5QpWjR3ttL0+NggikkeyBqC8yDNUwvdL6IxtmDhEBRIpuVdY/wlA0tItPk6Rm64=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792167829; c=relaxed/simple;
-	bh=hRb5rxvX/X5Wbh1bBbsClAj5vWDQwEXzsKT/tMOjKmY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VOewHFEi/GKiTRKO74Qr9HXOVnJxjVySldGHXDrD5E8oPE+XMrFhB+tmesggKcdRNqAvW+TvYuqmTDCOr72RXx9UF1LAm7j6rnt6hqg+nxYnk5GDTb4UvXw8tE6UCtaiQZZ5tAgGhirCmfXlxekmztS55+DMBSkDswNPDMkYro0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VAbPS0Tj; arc=fail smtp.client-ip=52.101.193.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853315326BB;
+	Fri, 16 Oct 2026 16:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792167837; cv=none; b=jV5fruIb3e8Oexxw3uMlQzUdR9cU7aQheYBTqtSRXIwxz6L85UL3EHMA7Lgr2/OeDeBmiipIQDCrR5mgTXyK946HRybNnSwpV3UZuAjuxOBdGyCLHdx071VAyUsbUxOeP0/RR7ecgrPYAUd3F49/7sa6uu2ePC9jbNA0sHiIdnc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792167837; c=relaxed/simple;
+	bh=HbyTB9YG3IEFvULFpxbg7zJ3FR2lmghbhWYQBeuso18=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=aJKlYqJyJ0g0PuSf27WjAvSIdDdPCK6p+vHfUHws90Kv9IVmcnTUCHe/+ZoaXVWiJdG45rr4vXT/SRPUd8B4GGEJglIPN2SDDJWO0FReYvGHEE6LJOTjGbby1pt2SN289YowwniGvUTOQJaEYseu3cqF778QL8MVQ0uYlN2Z4Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=am7s3oiB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VAbPS0Tj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nccNvDIC6BqvUyebGvAEawOWhN9COyN2lKdgm77NY3sunCkwmlD1ofGD06FR8EaZ5PjXrH9Mq01Z9LyTDAg7NwyvPHIRoLGSARbAzPbIXyb76cLYr5hU3Of9y3PUgZMrh/tW+pcmZpJKuO/Ipt5BjhJcUuKncSZdAoJoDVmCrD6MgmXORdEmQMf/N4s1ooOMBHOaf0XnCUTUeH2DxhMFXvgroE+NIAdZVPmccK3NR3k1MB1Iok3fH/RKbnKcwcAC4B43bLzyyTtqAgCCcYoUtHqu051pKxwqvv1zw7NfNQ3ws6kE3F9Ex48wI73U7tspoT0TGlYDMWFEAKGa9vKtNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XUFVLuogs0jQqdn5y85ElIHumIpqUqnIh7FOnr026HI=;
- b=aeYvzcMOsMj7v85YITmwNE4rINHV9Wjrrl5yaGV8JV/yXLriXNR3lwsIfuNDQWyPPxWafa+TgnAM2XwMLjVQg4udnLne5tWM0Wn9DMEWHx+pe40nBY9Z1nmVW7yvLcZ7f57gRidK95dEiJnHiMjaCcmjCZXalO/zrHJ0/0mbtbgfXImFF4KNMwzjnJfvKDUpnxdT8+M8RL0aCVyKTWjHsZk2Y7SgTwk0yKxasAnZfJV3xTOGTmVvXH2af0NJT87bwZ5f3LbFZTutxHWtkjhfdCUuRvWDZ6P178xd4plIlVZ5l91HYOFbtRCNxH5wJ0rh0MDcyjTRxFozMUh7ecNynw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XUFVLuogs0jQqdn5y85ElIHumIpqUqnIh7FOnr026HI=;
- b=VAbPS0Tjo+mtnXJqU4gkLD84akSOtWNdTgEag83euTglbufvxRLGcRpI6dJJYNh44SDHFrsOvQXuBqiAoXoAtQdRU9pHgMl5lvpn1S0/Cb9ACKLrktdzfZaiLaF64WDBp057w4hGb0NQkffNPFwXOUH5FfyY1ihAXGuvTeSupdrkIzZCU0WcjNomAwiawUfpbzsvVlDgtRa2P4r0q2xwb8pReR9mkzQ92zutju/54Hne3sSDzluu9InVJloi/AZy4u2fb2B3a/hnOgKvC/NTMfF2UO0gr7r/qLKgT3GyVO+zLAaD0FvCupSQxMGt+ORXpoHy5RgQ2xVvSqGTQ/vrKA==
-Received: from CH2PR18CA0024.namprd18.prod.outlook.com (2603:10b6:610:4f::34)
- by CHBPR12MB732828.namprd12.prod.outlook.com (2603:10b6:610:406::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Fri, 16 Oct
- 2026 16:23:30 +0000
-Received: from CH01EPF000BE948.namprd02.prod.outlook.com
- (2603:10b6:610:4f:cafe::72) by CH2PR18CA0024.outlook.office365.com
- (2603:10b6:610:4f::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.17 via Frontend Transport; Fri,
- 16 Oct 2026 16:23:30 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH01EPF000BE948.mail.protection.outlook.com (10.167.244.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 16:23:29 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 16 Oct
- 2026 09:23:04 -0700
-Received: from nvidia-4028GR-scsim.nvidia.com (10.126.230.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Fri, 16 Oct 2026 09:22:55 -0700
-From: <mhonap@nvidia.com>
-To: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
-	<jic23@kernel.org>, <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
-	<smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
-	<dave@stgolabs.net>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
-	<yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
-	<bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
-	<gustavoars@kernel.org>
-CC: <cjia@nvidia.com>, <kjaju@nvidia.com>, <vsethi@nvidia.com>,
-	<zhiw@nvidia.com>, <mhonap@nvidia.com>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-Subject: [PATCH v6 27/31] vfio/cxl: Describe the CXL device and decoder geometry to userspace
-Date: Fri, 16 Oct 2026 21:48:34 +0530
-Message-ID: <20261016161839.2765592-28-mhonap@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261016161839.2765592-1-mhonap@nvidia.com>
-References: <20261016161839.2765592-1-mhonap@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="am7s3oiB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4A41F000C4;
+	Fri, 16 Oct 2026 16:23:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792167835;
+	bh=MTGG3sE8c3g2AGiRuxoGfoVJjt2RErDfmEmcb286QKI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=am7s3oiBpL3DW65qGetBS/FQFYEFBJl0JVvSqybQgaOYMEVyJI02GmGpUaZMlJx77
+	 SEIXt2GUQxjM8VXRmBUpm+ynpDeM7j0SvnxtDg3D3i+nC9AE947unMp8qwe6uYxmZQ
+	 K9m/gpAeVXEOBmn7GnkqKgAI50tP29dNW8ZZZrg9sFdj5PBkoZTjmU/+0LFcT8QQxH
+	 qL1Pyx3mTeRa8CLvaJ5tzDS7H1zvHUPvrdnDdmB6ViKTEUVsYMXtcRDNHwN4HJ2rmQ
+	 sc/YckdTIcoQYmw49E/kt8e9L0iP/9FhcLuAv3vjT6T4l6eJpotadHaDy9zUY7xcaT
+	 d6vHyrJYAPatA==
+Message-ID: <sashiko-outbox-174632@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 09/16] KVM: arm64: gic-v5: Add ITS MSI injection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sascha Bischoff" <sascha.bischoff@arm.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
+In-Reply-To: <20261016155741.979985-10-sascha.bischoff@arm.com>
+References: <20261016155741.979985-1-sascha.bischoff@arm.com>
+ <20261016155741.979985-10-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 16 Oct 2026 16:23:54 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH01EPF000BE948:EE_|CHBPR12MB732828:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab8b1ad8-dc83-4f7d-38d0-08df2ba1d0a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|7416014|23010399003|36860700016|1800799024|921020|56012099006|11063799006|10067099003|261009223027099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	zo04g3yL7Bn1Yy1OuM9RM19t2d76wxQBQRyZ89mee0r1/cp7s9GZZFNPFiyGGme7wODl3FwY/L8XSdN7IQZojcLwR2N3CwHmRiRXVic7DAiK2/iZ68Ldphz5w9EmHaIK136KEF0jcz2Y2Wgv4hUcXdkWDP5X6QQKeS01GSonSV100CySU5Pa6TA+p36coIbfsZWetpV0kq7Ht0nXGhizL1wRUZ6DvtEjxTm20CeC7Vk2ZPT8/gdEaOWUDceSzLikYiUVTxirddpdXqGxLpRDAszbvxuUwCrNpMMVPjg40WIHBp/vCZaKaTGJhIjFvfbS4JaNDOn1+MufqWhEC5R7WtoI/dmn7J/m+qq2l0fcrXP/A4d48Kl3wPVk5HyrVKANYAVb6sm+1P8g7Qloal9FkdXiOypzFiZ4y4ABWX3dqyozsCir7vbBRD3tWmI9iaWgip9eMK4tDsa5isPxUlwLvg8rhRI9vYpuOeI0OC5GDVXtS4iCx3DBkwQVbYw7crGKor/mrkTtK5PQ7gKrDK3CXzcWlPeb0zw/HX0QwOhM1r5Led1KriVoku2eYwY2u5iF3qZF8AnCWycj8/JsyJ5uHF3L0dXxQdw2aS7o6m4tEHG8wqf8a3hfZOkvOGxn/8+eDcPTTncOqabwY3vIcnH4d3Rf8roqLDKh5TZ8YtQkfjjfJX8Adu6z+fkjI68HV6GKi++g+9idBXSl6Aasi81NLmPkD6JGx65Lz2Yg5GKHOY35zRpqA7W8vjF1O9RGmH+t
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(23010399003)(36860700016)(1800799024)(921020)(56012099006)(11063799006)(10067099003)(261009223027099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	gM5NZEPu9XN80DiAaE+Ea+X00R9idWLieWIhclSVCrdfMa8f+603zTAkqh7/hl16t1NqFZNbDjyzO3qt9DlQY8UKFhPNAbfNKeRkj6Edr67MdnKjOQssp20pqBdtkVd8WyJ1cMWwgiBcXWkEbW38/8ihy7W1jaXvOIk+NFeTTjDQjjQguX2ATpWqXuRnCkIBpZlIyi4VedyKbFfkXd867XjUDn2eikXHubb9HkcJIoCtlaHuMcwXFrhpKInVRaU0UEuUpV6kreeJLvTnRNLH0/3dGA2DjJ1BnyE822AS3fOSFGxYzXVNI5bf2c0XC7fDpxODN7hf61oG5ZnFSfo4Vr20UNKpnAb7l0oRTq8q7vV/WGZThGQVt3oDkNLfu+9fv+GDY3BvxLkp/fuepcSyMYwHLGcAYOkGEz9iy4rfQdNve4sKRhTYJ7B6BHtqcKdS
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 16:23:29.8504
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab8b1ad8-dc83-4f7d-38d0-08df2ba1d0a5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH01EPF000BE948.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHBPR12MB732828
 
-From: Manish Honap <mhonap@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
+s) to consider:
+- [High] kvm/vgic: raw_spinlock deadlock due to missing IRQ disable in its_=
+cache_add_translation
+- [High] kvm/vgic: userspace-triggerable WARN_ON_ONCE causes host DoS in vg=
+ic_v5_its_inject_msi
+- [High] arm64: vgic-v5: User-triggerable WARN_ON_ONCE in MSI injection
+- [High] kvm: arm64: ABI violation on guest-driven MSI mapping errors
+- [Medium] kvm: arm64: gic-v5: MSI injection aborted on translation cache a=
+llocation failure
+- [Medium] arm64: vgic-v5: MSI injection fails if ITS cache insertion fails
+--
 
-Advertise the assignment with a device-info flag so a VMM can tell a CXL
-Type-2 device apart from a device bound without the CXL extensions.
+commit 65afd53542f7c52bea1da09f7e70c85b22c50b33
+Author: Sascha Bischoff <sascha.bischoff@arm.com>
 
-On the trapped decoder register region, add a capability carrying the BAR
-and offset of the HDM decoder block so the VMM can place the trapped
-window where the guest expects to find it.
+    KVM: arm64: gic-v5: Add ITS MSI injection
+   =20
+    Now that KVM can resolve GICv5 ITS translations from guest memory,
+    allow userspace and irqfd MSI injection to target a virtual GICv5 ITS.
 
-The size of the guest's memory window comes from the HDM memory region.
+> diff --git a/arch/arm64/kvm/vgic/vgic-its-v5.c b/arch/arm64/kvm/vgic/vgic=
+-its-v5.c
+> index e4c0415137605..5920fa1bcb2cf 100644
+> --- a/arch/arm64/kvm/vgic/vgic-its-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-its-v5.c
 
-Assisted-by: LLM
-Signed-off-by: Manish Honap <mhonap@nvidia.com>
----
- drivers/vfio/pci/cxl/vfio_cxl_core.c | 16 ++++++++++++++++
- drivers/vfio/pci/vfio_pci_core.c     |  3 +++
- include/uapi/linux/vfio.h            | 18 ++++++++++++++++++
- 3 files changed, 37 insertions(+)
+[ ... ]
 
-diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-index 3cbb9fbc8328..9ef052a3745e 100644
---- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
-+++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-@@ -286,9 +286,25 @@ static ssize_t vfio_cxl_comp_rw(struct vfio_pci_core_device *vdev,
- 	return count;
- }
- 
-+static int vfio_cxl_comp_add_capability(struct vfio_pci_core_device *vdev,
-+					struct vfio_pci_region *region,
-+					struct vfio_info_cap *caps)
-+{
-+	struct cxl_hdm_info *hdm = vdev->cxl->hdm;
-+	struct vfio_region_info_cap_cxl_comp_regs cap = {
-+		.header.id = VFIO_REGION_INFO_CAP_CXL_COMP_REGS,
-+		.header.version = 1,
-+		.bar = hdm->hdm_bar,
-+		.offset = hdm->hdm_offset,
-+	};
-+
-+	return vfio_info_add_capability(caps, &cap.header, sizeof(cap));
-+}
-+
- static const struct vfio_pci_regops vfio_cxl_comp_regops = {
- 	.rw = vfio_cxl_comp_rw,
- 	.release = vfio_cxl_region_release,
-+	.add_capability = vfio_cxl_comp_add_capability,
- };
- 
- /*
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index be2acab625c0..0c4a3637619f 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1391,6 +1391,9 @@ static int vfio_pci_ioctl_get_info(struct vfio_pci_core_device *vdev,
- 	if (vdev->reset_works)
- 		info.flags |= VFIO_DEVICE_FLAGS_RESET;
- 
-+	if (vdev->cxl_ops)
-+		info.flags |= VFIO_DEVICE_FLAGS_CXL;
-+
- 	info.num_regions = VFIO_PCI_NUM_REGIONS + vdev->num_regions;
- 	info.num_irqs = VFIO_PCI_NUM_IRQS;
- 
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 6cba3284b21e..81985e68166a 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -215,6 +215,7 @@ struct vfio_device_info {
- #define VFIO_DEVICE_FLAGS_FSL_MC (1 << 6)	/* vfio-fsl-mc device */
- #define VFIO_DEVICE_FLAGS_CAPS	(1 << 7)	/* Info supports caps */
- #define VFIO_DEVICE_FLAGS_CDX	(1 << 8)	/* vfio-cdx device */
-+#define VFIO_DEVICE_FLAGS_CXL	(1 << 9)	/* vfio-cxl device */
- 	__u32	num_regions;	/* Max region index + 1 */
- 	__u32	num_irqs;	/* Max IRQ index + 1 */
- 	__u32   cap_offset;	/* Offset within info struct of first cap */
-@@ -503,6 +504,23 @@ struct vfio_region_info_cap_nvlink2_lnkspd {
- 	__u32 __pad;
- };
- 
-+/*
-+ * Geometry of a CXL Type-2 device's HDM decoder registers, so a VMM can place
-+ * the trapped component register window where the guest expects it. The trapped
-+ * region spans the whole HDM decoder block (every decoder), not just decoder 0:
-+ * a VMM reads the decoder count and each decoder's committed base from the block
-+ * itself. Additional trapped component capabilities, such as CXL RAS, are
-+ * exposed as their own region subtypes rather than by extending this cap.
-+ */
-+#define VFIO_REGION_INFO_CAP_CXL_COMP_REGS	6
-+
-+struct vfio_region_info_cap_cxl_comp_regs {
-+	struct vfio_info_cap_header header;
-+	__u32 bar;
-+	__u32 __resv;
-+	__aligned_u64 offset;
-+};
-+
- /**
-  * VFIO_DEVICE_GET_IRQ_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 9,
-  *				    struct vfio_irq_info)
--- 
-2.53.0
+>  static int its_cache_add_translation(struct kvm *kvm, struct vgic_v5_its=
+ *its,
+>  				     u32 device_id, u16 event_id,
+>  				     struct vgic_irq *irq)
+>  {
+>  	u64 key =3D ((u64)device_id << 16) | (u64)event_id;
+>  	struct its_cache_translation_entry *entry;
+>  	struct its_cache_translation_entry *old;
+>  	struct hlist_node *tmp;
+>  	HLIST_HEAD(removed);
+> =20
+>  	entry =3D kzalloc_obj(*entry, GFP_KERNEL);
+>  	if (!entry)
+>  		return -ENOMEM;
+> =20
+>  	entry->key =3D key;
+>  	entry->irq =3D irq;
+> =20
+>  	scoped_guard(raw_spinlock, &its->translation_cache_lock) {
 
+[Severity: High]
+Could this lock acquisition deadlock?
+
+The translation_cache_lock is a raw_spinlock_t that is also acquired in
+hardirq context by its_cache_look_up_translation(). Since
+scoped_guard(raw_spinlock) does not disable local interrupts, a hardirq cou=
+ld
+preempt this process-context section and attempt to acquire the same lock,
+spinning forever.
+
+Should this use the raw_spinlock_irqsave variant?
+
+[ ... ]
+
+>  static int its_cache_look_up_translation(struct vgic_v5_its *its,
+>  					 u32 device_id, u16 event_id,
+>  					 struct vgic_irq **irq)
+>  {
+>  	u64 key =3D ((u64)device_id << 16) | (u64)event_id;
+>  	struct its_cache_translation_entry *entry;
+> =20
+>  	guard(raw_spinlock)(&its->translation_cache_lock);
+
+[Severity: High]
+Does this also need to disable interrupts?
+
+Since this is called from the fast path (kvm_arch_set_irq_inatomic) which c=
+an
+run in hardirq context, and the same lock is taken in process context, shou=
+ld
+both sides use the irqsave/irqrestore variants to prevent deadlocks?
+
+[ ... ]
+
+> @@ -531,7 +572,8 @@ static int __vgic_v5_its_resolve_lpi(struct kvm *kvm,=
+ struct vgic_v5_its *its,
+>  		return PTR_ERR(*irq);
+> =20
+>  	vgic_get_irq_ref(*irq);
+> -	ret =3D its_cache_add_translation(kvm, its, device_id, event_id, *irq);
+> +	ret =3D its_cache_add_translation(kvm, its, device_id, (u16)event_id,
+> +					 *irq);
+>  	if (ret) {
+>  		vgic_put_irq(kvm, *irq);
+>  		vgic_put_irq(kvm, *irq);
+>  		*irq =3D NULL;
+>  	}
+> =20
+>  	return ret;
+>  }
+
+[Severity: Medium]
+Is it correct to abort the injection if the translation cache insertion fai=
+ls?
+
+The translation cache is intended to be a best-effort optimization. If
+its_cache_add_translation() fails (e.g., due to -ENOMEM), propagating the
+error and dropping the successfully resolved LPI will silently lose the
+interrupt, which could hang guest drivers under host memory pressure.
+
+Should the error be swallowed here instead so that injection proceeds?
+
+[ ... ]
+
+> +int vgic_v5_its_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
+> +{
+> +	struct vgic_v5_its *its;
+> +	struct vgic_irq *irq;
+> +	bool borrowed_mm =3D false;
+> +	int ret;
+> +
+> +	ret =3D vgic_v5_check_msi(kvm, msi);
+> +	if (ret)
+> +		return ret;
+> +
+> +	its =3D vgic_v5_msi_to_its(kvm, msi);
+> +	if (IS_ERR(its))
+> +		return PTR_ERR(its);
+> +
+> +	/* An irqfd cache miss is resolved by a worker outside the VM's mm. */
+> +	if (current->mm !=3D kvm->mm) {
+> +		if (WARN_ON_ONCE(current->mm || !(current->flags & PF_KTHREAD)))
+> +			return -EWOULDBLOCK;
+
+[Severity: High]
+Could this WARN_ON_ONCE be triggered by unprivileged userspace?=20
+
+If a normal user process (other than the VM creator) calls the KVM_SIGNAL_M=
+SI
+ioctl, current->mm will not equal kvm->mm, and since it is a user thread,
+current->mm is non-NULL and it lacks PF_KTHREAD. Triggering a kernel warning
+can crash the host if panic_on_warn is enabled, leading to a Denial of Serv=
+ice.
+
+> +
+> +		if (!mmget_not_zero(kvm->mm))
+> +			return -EFAULT;
+> +
+> +		kthread_use_mm(kvm->mm);
+> +		borrowed_mm =3D true;
+> +	}
+> +
+> +	ret =3D vgic_v5_its_resolve_lpi(kvm, its, msi->devid, msi->data, &irq);
+> +	if (borrowed_mm) {
+> +		kthread_unuse_mm(kvm->mm);
+> +		mmput(kvm->mm);
+> +	}
+> +
+> +	if (ret)
+> +		return ret;
+
+[Severity: High]
+Does this violate the KVM_SIGNAL_MSI ABI by returning negative error codes?
+
+When the guest provides an invalid mapping (like an out-of-bounds Event ID),
+vgic_v5_its_resolve_lpi() returns errors like -E2BIG or -EINVAL. Propagating
+these directly to the ioctl caller instead of returning 0 (to indicate the
+guest blocked or unmapped the MSI) can cause the VMM to abort, creating a
+guest-to-host Denial of Service.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016155741.9799=
+85-1-sascha.bischoff@arm.com?part=3D9
