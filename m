@@ -1,221 +1,341 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F4C3D0934
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 22:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC723D1CA8
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 22:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792189452; cv=none; b=C4TaC5S8buSn4l+rlCkT9nvzscUKj4Rquw3LMl9RPCSuhcu3gevK5VGt6viLOREJhRWuooBO6ZM4H/PARb4nVgyKMkLHvSqZZorFkimPE/Oiz2zSO/ngDZ9Au1BWEB5QdFUmry9L90pVepfw87nF+HnVsLD0VJtPi1JmKu9MH8w=
+	t=1792191216; cv=none; b=TIc4iPcKFMn8AlDJHvfAI5YRE5aPvVJsx+vieX21psNXV00ox6XB0/KDsWsDiTtlwEwxxtM98o/ydJNsceENXVOJYa2106wnV1InbqVlWOZOGs1PJvxuebiI38JT1aYDlVC1ahrsXI3pL1zrTLHtZgJQQI2Is1a0ahQL3K+ZaNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792189452; c=relaxed/simple;
-	bh=Dg1w/DrZD3x4rU9wHdX7W8CD8BmWcDcR0rtQ7ou8fMo=;
-	h=Message-ID:From:Subject:To:In-Reply-To:References:Content-Type:
-	 Date; b=I4Q4myOU2JQ9EkWUBZtSyYjvkTBi2OriGuZ8QqaAObGP+bE0Uf7WdtEeNJ0vEF1+ZDGlR2IKc6oNUPj+ZNW7dfKPsKy9BueHE9c6CQyu5QSPzCr8u6Pv81U5tdlDR4EDJnrN5fyN7UHpn9cMu7rb7Znr8I4Ns071I2g19y5xBy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ch1int/c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792191216; c=relaxed/simple;
+	bh=Qv7hgPZ7ZU/3KCanfItnt/Lo3MWHFzfYc7jIr4M4SXg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P/61uvRgEFjSOmeLom2sbolad4ODt5xn/MajFFlrjjZIgTv28E9LYIYo3ocRQaOY4zah48Q6YTperohWHbSWsVE367+OpR35Jhc3IfyUbTH2QnpCjUGT+dcSf1drkvKV/pqU0t+TYaNkwLFIdfCG6pa6EzMPFGdgGU/OUc4HRkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=in7XwrYq; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ch1int/c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3DD1F000C4;
-	Fri, 16 Oct 2026 22:24:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792189451;
-	bh=drKA8OHEDS53Ivj8/UgOtJXdUV+R/9tmrlCXWgNwefQ=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=ch1int/cE8HBFtEgfuPXhWtBlPMMRrsFAmEbl/qKAWnC6OJ+C8lMTjYdwZv6zUS7K
-	 bXDo9TEtjLCcyM/CnEAJ7cqXW90pNom+3gxj572Hvbekiaxg1dYm58+mflaODRncY1
-	 4uOak6HhemedWpq0/eS694PpItPv7D8sJxPKvx0knamV/3EZzA79HavZqa3bcMQFbJ
-	 RCC94i2uLEMC8Q8Ro48ejNzwblxTx2u2DtI2pTUu7Fu6UdevCtIoOwwhJS7EOW6yYH
-	 aSvmKJCBxA/oW3YcWC4kWs2rhrkrTLZamW16tuWgO4kgYp1K34bdKuY/oxoNOa0LzZ
-	 D7QaA30RO9MAg==
-Message-ID: <sashiko-outbox-175015@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [Patch v3 1/4] KVM: SVM: Re-queue events that were never
- injected
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pratik R. Sampat" <prsampat@amd.com>, kvm@vger.kernel.org
-In-Reply-To: <905ffc25da83b1af51698fe4544d361203578a80.1792184487.git.prsampat@amd.com>
-References: <cover.1792184487.git.prsampat@amd.com>
- <905ffc25da83b1af51698fe4544d361203578a80.1792184487.git.prsampat@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 22:24:10 +0000
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="in7XwrYq"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3a4b3ac8fb7so261097a91.0
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 15:53:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1792191214; x=1792796014; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jFbt1hoixxjPVWE023X/7skdt6GJW42bri8Snk4vWz4=;
+        b=in7XwrYqMVlnp6+tRMrHl0UCI4YLA76XWIH4GflmWUXxh1uTfgpTGbS9+nHCb4ISdu
+         rst8hYsHYP5tPy2CQ1Kaxc99pnBsjeCssop+3NKpEhrNQxd3q/5U30cHTrdoOTxdRq94
+         egeRMRx3VBVBW31EBqcWTW25xEwrlXvXJGfEkP6SGdty77dyIH2KXnaKd6v68yxSVmB2
+         ada0lzuK6VdWhQAo0Hc3AMBcYgHTVAiRSLjZQlzloAhiUA1dTI0Vj+dANHxYre971dOf
+         lQ3lTkjRCEzfGn9cHlfVaQvdxBlrrPd6Q/N0Y5hxxpABKQHn9IOl+DuJA35zg1oHw+XV
+         1+5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792191214; x=1792796014;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jFbt1hoixxjPVWE023X/7skdt6GJW42bri8Snk4vWz4=;
+        b=cLD5uijFcXLRHhEj+xpdOEshdgyYcJVCsJ5kIUpfQzKeXV4ug6BX+uEzVR9m76Xva7
+         e+8frfgG4UQ2y9M/E+ApiIrtpAzHL92GqpbFWD4E1ZxhNvp6i8z6sMz+A6XUxhUaRaI1
+         TChztfVyGZzn4fyKLsd4xylWGOpd/CODj24UJ1Gnx9J3vocfjn31wegtCXvDT/eID/vi
+         1JA9bHvs3u15VEuKHIJzKmqY0qmL+ViaitWnP0AiQMiBKX9pK8w69qWdEb7+/lJFXrlL
+         D0Q09J6eGBURI/b7LBuoBVXYsL76t2XJGhLaZ0++eKY+coFmR1aUbO0OIMueSlPZMQ+6
+         /JYg==
+X-Forwarded-Encrypted: i=1; AKwUvBwaBRUWfY9l1PHfLHEBSK3Qr2ibfppIYeaZs9iu5vm3bGVp9lxJ6sZ1TZzkC9pzpRG6bxo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJorXOgDj95W+CiVgkm1xeTnrWKbjoYvc8QR5y+yinzim31oFzV
+	ddjMK3BCDGUJaVFm754oyahLilN16AO2UWdXj+TkWvnluGpVXZTjPYzMJD/BNt0M8qg=
+X-Gm-Gg: AYBFou2EHk6e1FbY4iH1+jbd7swU8+dGzhe7AUs8GmkwNiWk/ygcetwVAIjS2V9hF8v
+	zstyOBrYIIkhd0va2DCU68Tf7QCnacdXfBUqK3SNtB2zps89Wu9fLapwLbv+/B+OX8HEuzYgjd7
+	GfSIMphhsy819an9e+z/N2gBh3kUxE7J4jbmc8hQrgFpWLmELZ/sIZYvqfi3EoJ35DUksgUKcl3
+	GZDEqRPGv0+CyXfQct/+vlYJ7LemHhIgtnjrDs+haq/cUMryyeHlQnIyPPdkFGXu1nv4bWtRdOq
+	Kz1n8O3BlmvixDIA+cTmHUBpYQ0s2Q9bS0KhrHoLRTvDjkFuOfg17aQVpJCvtl8IjqvZ8u8WRO9
+	GzUXpzlCqy99Vr2gJzF1YVOwDx8EsuuPPfNAbv+184IgB7jJ4OawzT46NqSEbf1Lz8uYacdemTT
+	bBY3dljmjQNHBC8FSM/RrJx+q4szWMU8j8iFvE9W6o4MSVv9Dgj7nxAl9Yr0BgMtq5rnKXrSch2
+	A==
+X-Received: by 2002:a17:90b:4f8e:b0:3ab:d26b:c2e9 with SMTP id 98e67ed59e1d1-3acef1451d2mr1122422a91.33.1792191213780;
+        Fri, 16 Oct 2026 15:53:33 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:ff2f:8a9c:5623:f753])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd9c4b4eesm3634255a91.2.2026.10.16.15.53.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 15:53:33 -0700 (PDT)
+Date: Fri, 16 Oct 2026 16:53:29 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
+	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC v4 12/24] target/arm/cpu: Set number of breakpoints and
+ watchpoints in KVM
+Message-ID: <atKq6YqMMzzft2r1@p14s>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-13-mathieu.poirier@linaro.org>
+ <eda8ee8f-5f17-4144-b21e-b1d990ee3270@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eda8ee8f-5f17-4144-b21e-b1d990ee3270@redhat.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM: SVM: missing SVM_EVTINJ_VALID check in svm_complete_interrupt=
-s()
-- [Medium] KVM: SVM: svm_complete_interrupts() clobbers VMCB event_inj and =
-exit_int_info
---
-
-commit d02578cb88ead63ae65c3cea00ca65df2ab7a2eb
-Author: Pratik R. Sampat <prsampat@amd.com>
-
-KVM: SVM: Re-queue events that were never injected
-
-This commit updates svm_complete_interrupts() to detect undelivered injected
-events in control->event_inj on #VMEXIT, migrate them to control->exit_int_=
-info
-so they are re-queued, and folds svm_cancel_injection() into this path.
-
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index fe0cba4731b2e..660dd1a3f497e 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4330,6 +4330,7 @@ static void svm_complete_interrupts(struct kvm_vcpu=
- *vcpu)
->  	struct vcpu_svm *svm =3D to_svm(vcpu);
->  	u8 vector;
->  	int type;
-> +	struct vmcb_control_area *control =3D &svm->vmcb->control;
->  	u32 exitintinfo =3D svm->vmcb->control.exit_int_info;
->  	bool nmi_l1_to_l2 =3D svm->nmi_l1_to_l2;
->  	bool soft_int_injected =3D svm->soft_int_injected;
-> @@ -4337,6 +4338,27 @@ static void svm_complete_interrupts(struct kvm_vcp=
-u *vcpu)
->  	svm->nmi_l1_to_l2 =3D false;
->  	svm->soft_int_injected =3D false;
-> =20
-> +	/*
-> +	 * Hardware clears EVENTINJ field when it injects an event.
-> +	 * A non-empty EVENTINJ on #VMEXIT means the vCPU never entered guest
-> +	 * mode, and thus that the event was never delivered.  Migrate the event
-> +	 * to EXITINTINFO so that it's requeued instead of being dropped.
-> +	 *
-> +	 * An undelivered event doesn't imply a fatal VMEXIT_INVALID. With
-> +	 * Enhanced SMT Protection, VMRUN may exit with an ordinary #VMEXIT
-> +	 * without having injected that event into the guest.
-> +	 *
-> +	 * Clobbering EXITINTINFO is safe precisely because the vCPU never
-> +	 * entered guest mode.
-> +	 */
-> +	if (control->event_inj) {
-> +		control->exit_int_info =3D control->event_inj;
-> +		control->exit_int_info_err =3D control->event_inj_err;
-> +		control->event_inj =3D 0;
-> +
-> +		exitintinfo =3D control->exit_int_info;
-> +	}
-
-[Severity: High]
-Should this check (control->event_inj & SVM_EVTINJ_VALID) rather than
-control->event_inj?
-
-In nested SVM, L1 can configure vmcb12->control.event_inj with
-SVM_EVTINJ_VALID cleared while leaving non-zero vector, type, or
-error-code-valid bits in bits 30:0.  nested_svm_check_event_inj() accepts
-this, __nested_copy_vmcb_control_to_cache() preserves the non-reserved bits,
-and nested_vmcb02_prepare_control() copies vmcb12_ctrl->event_inj into
-vmcb02->control.event_inj:
-
-arch/x86/kvm/svm/nested.c:nested_svm_check_event_inj() {
-	if (!(event_inj & SVM_EVTINJ_VALID))
-		return true;
-    ...
-}
-
-arch/x86/kvm/svm/nested.c:__nested_copy_vmcb_control_to_cache() {
-    ...
-	to->event_inj           =3D from->event_inj & ~SVM_EVTINJ_RESERVED_BITS;
-	to->event_inj_err       =3D from->event_inj_err;
-}
-
-arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_control() {
-    ...
-	vmcb02->control.event_inj           =3D vmcb12_ctrl->event_inj;
-	vmcb02->control.event_inj_err       =3D vmcb12_ctrl->event_inj_err;
-    ...
-}
-
-When SVM_EVTINJ_VALID is 0, VMRUN ignores EVENTINJ without clearing it and
-enters L2 normally.  On the subsequent #VMEXIT from L2,
-if (control->event_inj) evaluates to true and overwrites
-control->exit_int_info and exitintinfo with the invalid event_inj value
-(where SVM_EXITINTINFO_VALID is 0).
-
-If L2 exited while vectoring an event, the valid exit_int_info populated by
-hardware is clobbered and svm_complete_interrupts() returns early at
-if (!(exitintinfo & SVM_EXITINTINFO_VALID)), dropping the L2 event.
-
-In addition, if the invalid event_inj has non-zero SVM_EXITINTINFO_TYPE_MASK
-bits and L2 exits with an #NPF that requires instruction emulation,
-svm_check_emulate_instruction() inspects control->exit_int_info without
-checking SVM_EXITINTINFO_VALID:
-
-arch/x86/kvm/svm/svm.c:svm_check_emulate_instruction() {
-    ...
-	if ((svm->vmcb->control.exit_int_info & SVM_EXITINTINFO_TYPE_MASK) &&
-	    !kvm_can_emulate_event_vectoring(emul_type))
-		return X86EMUL_UNHANDLEABLE_VECTORING;
-    ...
-}
-
-causing #NPF emulation to fail with X86EMUL_UNHANDLEABLE_VECTORING.
-
-[Severity: Medium]
-Also, by overwriting control->exit_int_info and zeroing control->event_inj =
-in
-the VMCB during svm_complete_interrupts(), won't subsequent exit handling in
-svm_handle_exit() observe mutated VMCB fields?
-
-In svm_vcpu_run(), trace_kvm_exit() runs before svm_complete_interrupts(),
-while svm_handle_exit() runs afterward in vcpu_enter_guest():
-
-arch/x86/kvm/svm/svm.c:svm_handle_exit() {
-    ...
-	if (is_guest_mode(vcpu)) {
-		int vmexit;
-
-		trace_kvm_nested_vmexit(vcpu, KVM_ISA_SVM);
-    ...
-	}
-
-	if (svm_is_vmrun_failure(svm->vmcb->control.exit_code)) {
-		kvm_run->exit_reason =3D KVM_EXIT_FAIL_ENTRY;
-		kvm_run->fail_entry.hardware_entry_failure_reason
-			=3D svm->vmcb->control.exit_code;
-		kvm_run->fail_entry.cpu =3D vcpu->arch.last_vmentry_cpu;
-		dump_vmcb(vcpu);
-		return 0;
-	}
-    ...
-}
-
-When VMRUN fails with SVM_EXIT_ERR (for example, due to an invalid
-control->event_inj configuration) or hits an unexpected exit while an event
-is staged in control->event_inj, dump_vmcb() will log 0 for event_inj and
-print the staged event_inj under exit_int_info, hiding the event_inj value
-that was present at VMRUN.  Similarly, for nested exits,
-trace_kvm_nested_vmexit() will record the migrated exit_int_info, disagreei=
-ng
-with trace_kvm_exit() for the same exit.
-
-Would it be better to read control->event_inj and control->event_inj_err in=
-to
-local variables in svm_complete_interrupts() (while clearing
-control->event_inj) instead of writing them into control->exit_int_info and
-control->exit_int_info_err in the VMCB?
-
-[ ... ]
-
+On Fri, Oct 02, 2026 at 02:06:24PM +1000, Gavin Shan wrote:
+> On 9/4/26 5:35 AM, Mathieu Poirier wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > Add "num-breakpoints" and "num-watchpoints" CPU parameters to configure
+> > the debug features that KVM presents to the guest. The KVM vCPU
+> > configuration is modified by calling SET_ONE_REG on the ID register.
+> > 
+> > This is needed for Realm VMs, whose parameters include breakpoints and
+> > watchpoints, and influence the Realm Initial Measurement.
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > ---
+> >   target/arm/arm-qmp-cmds.c |  1 +
+> >   target/arm/cpu.h          |  4 ++
+> >   target/arm/cpu64.c        | 81 +++++++++++++++++++++++++++++++++++++++
+> >   target/arm/kvm.c          | 56 +++++++++++++++++++++++++++
+> >   4 files changed, 142 insertions(+)
+> > 
+> > diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+> > index 83ec95c290f6..9ed65eb090d7 100644
+> > --- a/target/arm/arm-qmp-cmds.c
+> > +++ b/target/arm/arm-qmp-cmds.c
+> > @@ -76,6 +76,7 @@ static const char *cpu_model_advertised_features[] = {
+> >       "sve1408", "sve1536", "sve1664", "sve1792", "sve1920", "sve2048",
+> >       "kvm-no-adjvtime", "kvm-steal-time",
+> >       "pauth", "pauth-impdef", "pauth-qarma3", "pauth-qarma5",
+> > +    "num-breakpoints", "num-watchpoints",
+> >       NULL
+> >   };
+> > diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> > index 6bbc942f9a59..d256d66a3e1b 100644
+> > --- a/target/arm/cpu.h
+> > +++ b/target/arm/cpu.h
+> > @@ -1173,6 +1173,10 @@ struct ArchCPU {
+> >       /* Generic timer counter frequency, in Hz */
+> >       uint64_t gt_cntfrq_hz;
+> > +
+> > +    /* Allows to override the default configuration */
+> > +    uint8_t num_bps;
+> > +    uint8_t num_wps;
+> >   };
+> 
+> May improve the comments to indicate: these two fields are only needed
+> by RME-vCPUs.
+> 
+>        /* Override the default configuration, only for RME vCPUs */
+> 
+> >   typedef struct ARMCPUInfo {
+> > diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+> > index 4e8c47253086..18adb06d78ad 100644
+> > --- a/target/arm/cpu64.c
+> > +++ b/target/arm/cpu64.c
+> > @@ -666,6 +666,86 @@ void aarch64_add_pauth_properties(Object *obj)
+> >       }
+> >   }
+> > +#if defined(CONFIG_KVM)
+> > +static void arm_cpu_get_num_wps(Object *obj, Visitor *v, const char *name,
+> > +                                void *opaque, Error **errp)
+> > +{
+> > +    uint8_t val;
+> > +    ARMCPU *cpu = ARM_CPU(obj);
+> > +
+> > +    val = cpu->num_wps;
+> > +    if (val == 0) {
+> > +        val = FIELD_EX64(cpu->isar.idregs[ID_AA64DFR0_EL1_IDX],
+> > +                         ID_AA64DFR0, WRPS) + 1;
+> > +    }
+> > +
+> > +    visit_type_uint8(v, name, &val, errp);
+> > +}
+> > +
+> > +static void arm_cpu_set_num_wps(Object *obj, Visitor *v, const char *name,
+> > +                                void *opaque, Error **errp)
+> > +{
+> > +    uint8_t val;
+> > +    ARMCPU *cpu = ARM_CPU(obj);
+> > +    uint8_t max_wps = FIELD_EX64(cpu->isar.idregs[ID_AA64DFR0_EL1_IDX],
+> > +                                 ID_AA64DFR0, WRPS) + 1;
+> > +
+> > +    if (!visit_type_uint8(v, name, &val, errp)) {
+> > +        return;
+> > +    }
+> > +
+> > +    if (val < 2 || val > max_wps) {
+> > +        error_setg(errp, "invalid number of watchpoints");
+> > +        return;
+> > +   }
+> > +
+> > +    cpu->num_wps = val;
+> > +}
+> > +
+> > +static void arm_cpu_get_num_bps(Object *obj, Visitor *v, const char *name,
+> > +                                void *opaque, Error **errp)
+> > +{
+> > +    uint8_t val;
+> > +    ARMCPU *cpu = ARM_CPU(obj);
+> > +
+> > +    val = cpu->num_bps;
+> > +    if (val == 0) {
+> > +        val = FIELD_EX64(cpu->isar.idregs[ID_AA64DFR0_EL1_IDX],
+> > +                         ID_AA64DFR0, BRPS) + 1;
+> > +    }
+> > +
+> > +    visit_type_uint8(v, name, &val, errp);
+> > +}
+> > +
+> > +static void arm_cpu_set_num_bps(Object *obj, Visitor *v, const char *name,
+> > +                                void *opaque, Error **errp)
+> > +{
+> > +    uint8_t val;
+> > +    ARMCPU *cpu = ARM_CPU(obj);
+> > +    uint8_t max_bps = FIELD_EX64(cpu->isar.idregs[ID_AA64DFR0_EL1_IDX],
+> > +                                 ID_AA64DFR0, BRPS) + 1;
+> > +
+> > +    if (!visit_type_uint8(v, name, &val, errp)) {
+> > +        return;
+> > +    }
+> > +
+> > +    if (val < 2 || val > max_bps) {
+> > +        error_setg(errp, "invalid number of breakpoints");
+>           ^^^^^
+> 
+> Code alignment issue here.
+> 
+> > +       return;
+> > +    }
+> > +
+> > +    cpu->num_bps = val;
+> > +}
+> > +
+> > +static void aarch64_add_kvm_writable_properties(Object *obj)
+> > +{
+> > +    object_property_add(obj, "num-breakpoints", "uint8", arm_cpu_get_num_bps,
+> > +                        arm_cpu_set_num_bps, NULL, NULL);
+> > +    object_property_add(obj, "num-watchpoints", "uint8", arm_cpu_get_num_wps,
+> > +                        arm_cpu_set_num_wps, NULL, NULL);
+> > +}
+> > +#endif /* CONFIG_KVM */
+> > +
+> >   void aarch64_cpu_lpa2_finalize(ARMCPU *cpu, Error **errp)
+> >   {
+> >       uint64_t t;
+> > @@ -807,6 +887,7 @@ void aarch64_host_initfn(Object *obj)
+> >       kvm_arm_set_cpreg_mig_tolerances(cpu);
+> >       kvm_arm_set_cpu_features_from_host(cpu);
+> >       aarch64_add_sve_properties(obj);
+> > +    aarch64_add_kvm_writable_properties(obj);
+> >   #elif defined(CONFIG_HVF)
+> >       hvf_arm_set_cpu_features_from_host(cpu);
+> >   #elif defined(CONFIG_WHPX)
+> > diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> > index ca25b707a0a8..93686b038263 100644
+> > --- a/target/arm/kvm.c
+> > +++ b/target/arm/kvm.c
+> > @@ -912,6 +912,56 @@ out:
+> >       return ret;
+> >   }
+> > +#define KVM_REG_ARM_ID_AA64DFR0_EL1     ARM64_SYS_REG(3, 0, 0, 5, 0)
+> > +
+> > +static void kvm_arm_configure_aa64dfr0(ARMCPU *cpu)
+> > +{
+> > +    int ret;
+> > +    uint64_t val, newval;
+> > +    CPUState *cs = CPU(cpu);
+> > +
+> > +    if (!cpu->num_bps && !cpu->num_wps) {
+> > +        return;
+> > +    }
+> > +
+> > +    newval = cpu->isar.idregs[ID_AA64DFR0_EL1_IDX];
+> > +    if (cpu->num_bps) {
+> > +        uint64_t ctx_cmps = FIELD_EX64(newval, ID_AA64DFR0, CTX_CMPS);
+> > +
+> > +        /* CTX_CMPs is never greater than BRPs */
+> > +        ctx_cmps = MIN(ctx_cmps, cpu->num_bps - 1);
+> > +        newval = FIELD_DP64(newval, ID_AA64DFR0, BRPS, cpu->num_bps - 1);
+> > +        newval = FIELD_DP64(newval, ID_AA64DFR0, CTX_CMPS, ctx_cmps);
+> > +    }
+> > +    if (cpu->num_wps) {
+> > +        newval = FIELD_DP64(newval, ID_AA64DFR0, WRPS, cpu->num_wps - 1);
+> > +    }
+> > +    ret = kvm_set_one_reg(cs, KVM_REG_ARM_ID_AA64DFR0_EL1, &newval);
+> > +    if (ret) {
+> > +        error_report("Failed to set KVM_REG_ARM_ID_AA64DFR0_EL1");
+> > +        return;
+> > +    }
+> > +
+> > +    /*
+> > +     * Check if the write succeeded. KVM does offer the writable mask for this
+> > +     * register, but this way we also check if the value we wrote was sane.
+> > +     */
+> > +    ret = kvm_get_one_reg(cs, KVM_REG_ARM_ID_AA64DFR0_EL1, &val);
+> > +    if (ret) {
+> > +        error_report("Failed to get KVM_REG_ARM_ID_AA64DFR0_EL1");
+> > +        return;
+> > +    }
+> > +
+> > +    if (val != newval) {
+> > +        error_report("Failed to update KVM_REG_ARM_ID_AA64DFR0_EL1");
+> > +    }
+> 
+> These two checks could be combined since we needn't to know how the write has
+> been failing.
+> 
+>        if (ret || val != newval) {
+>            error_report("Failed to update KVM_REG_ARM_ID_AA64DFR0_EL1");
+>        }
+> 
+> > +}
+> > +
+> > +static void kvm_arm_configure_vcpu_regs(ARMCPU *cpu)
+> > +{
+> > +    kvm_arm_configure_aa64dfr0(cpu);
+> > +}
+> > +
+> >   /**
+> >    * kvm_arm_cpreg_level:
+> >    * @regidx: KVM register index
+> > @@ -1128,6 +1178,12 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
+> >           fprintf(stderr, "kvm_arm_vcpu_init failed: %s\n", strerror(-ret));
+> >           abort();
+> >       }
+> > +
+> > +    /*
+> > +     * Before loading the KVM values into CPUState, update the KVM configuration
+> > +     */
+> 
+> Can be squeezed into one line:
+> 
+>        /* Update KVM state before it's loaded to CPUState */
+> 
+> > +    kvm_arm_configure_vcpu_regs(cpu);
+> > +
+> 
+> The newly added properties ("num-breakpoints", "num-watchpoints") are only needed by
+> RME-vCPUs, but they're also visible to the normal vCPUs. So do we need to bail without
+> adding the properties if RME isn't supported by the vCPUs in kvm_arm_configure_vcpu_regs() ?
 >
->
->
->
 
-=E5=AE=8C=E7=BE=8E=EF=BC=81 (Oops, no, wait, no extra text! Let's make sure=
- the output ends with a blank line and only contains the report.)
-Wait=E2=80=94I didn't output that last line yet, I was still thinking? No, =
-I had closed the thought block! Wait: I must NOT output anything after the =
-report. Let me check what I wrote=E2=80=94oh, I wrote that inside the respo=
-nse! Let me stop immediately.
-Wait: I cannot edit what's already streamed, so let me just stop without ad=
-ding anything else.=E5=91=83=E2=80=94no, I must stop outputting now.
+I added a check for confidential-guest-support in the get() functions of both
+options.  I also addressed the rest of your comments above.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1792184487.gi=
-t.prsampat@amd.com?part=3D1
+Thanks for the review,
+Mathieu 
+ 
+> >       if (!write_kvmstate_to_list(cpu)) {
+> >           fprintf(stderr, "write_kvmstate_to_list failed\n");
+> >           abort();
+> 
+> Thanks,
+> Gavin
+> 
