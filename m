@@ -1,36 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A420425393E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45C747DD64;
 	Fri, 16 Oct 2026 14:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792162612; cv=none; b=t0pRBdcYKceJ1EsfVuC+cG543pg+4gqEH8i/ExUHURJomRlqdjFsoH+K9HTkaHWCc3dBF8Roqex4WhkUCk0H/rEfGXzTJ6cnLe7eUqZnnklBwJ/8Yvqy4DEgWO8sNoD1v8ejDFqtoWYjGZAK04D5ZMT1mM1feU1LroBKAl7+OcM=
+	t=1792162612; cv=none; b=q98cRk3ZejueSROlT0PsH+V/mWlQxjVfCA5aOlOKjGx+RcjnlSmYYwgr7QOy6LTAlxdpTATrqNgDb9JCbYtIr0pBwUAWP5wwDRGM/DxuMeccTxXH/cEzn9ddZizbJO4ygxkJdr6+n8mhdYppjpiA0KKwOsI5V/2Ahc5DC/mef8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792162612; c=relaxed/simple;
-	bh=FRCCOgOSAlx3PGj26oOZRv/5/Q6RJly3Ii7gxnKwVrk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UoLjcBTn0Y/2LCQuA2XNPThT5ymz3Fh0aF1LqulrpVBOlQAdcoTL1zOUIvBjnq1CTqCDDpTyp7TvImdWRZSeb1JDaWYvNEX4SdHc3/yq8B2W1kBUcR9DNmqInKDWLYis7tcAh8H5skrCmrguMF7nXBuMTXMuOk259/8YpXdRqC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=for5baom; arc=none smtp.client-ip=90.155.50.34
+	bh=V07lK0KROqQLDGedanoAsWZ9sB/6YvE/A+gIh8BR92k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KvDR0HKQ/jGX+JYKcuzuSYqKoLP/zngltfpL5MtkDPxMVNzmNmsbZeMZU1WVOKoOG/D3LbPRRufnDTEGD2SwMkmXmeBj6qP97cWT/2OUhwi/vZwSui5II3nbgv/084Y645G8KyYborKKII3MqgPF+v9R/3J8vsQiaXsI/e2aBkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=SQvB+tes; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="for5baom"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="SQvB+tes"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=loDe5dUodpRHBSkS1U2eASMTxzh4bnwz7rBw7spVv3A=; b=for5baomUvgm1tRB5wlkkjFnTH
-	z0Q3XeH6OAmqVFIPXLkUUWuxl7hhrsLN++19WkG5sd7Edy55ei/ZnbDynpy7iFOPBJt7J4sOiocpS
-	qAhKRCGW8Kwo0iLxXLpuywJcQLDSIov0sMEG+k3umwiZ6CmQVmLcvK/6Da4RYN5bRiT+S1OEg8IaY
-	h3gRiAJI48rQqrVYyZ69XIennsMU5KI2JnwYgUe3Wg/8D2OAdHRUvKNOe+z4ToU+j834H1RQhzhbJ
-	ixs3rQTt3yTZoYb3wAJmSfVPPKNdnoFDCIFl//TmuRSKFR8gZUpMGXTVS1fbBESTToQG44alFO8GN
-	fj59/7bw==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=T2gI/ppzqpwnJM/45A5En1gm5GPaRm6veIkEs/RtEBU=; b=SQvB+tesnFMGk8pPUfLNhHI3qa
+	3GUa7xoTT0E68rIkde2zQVq5FrZ7aAE9DX8exASZuehwVwYSubfqnNgtLN2DK85nBGbN0Rut947Ew
+	zapwWQe57CPsO61mczWQuDia45j/EG5MF95ZtKapWTqutmlWuKEX5yBke80EvViYwxaAcYsdP21KT
+	rEoPxBVQx6jPf5GkAOhksRK0j32i3hGr43VQomFWXOyJwMb1c5Z2CQ0THD1VB4yd2XuremSBzENU6
+	QNMr1RETsIvt4t6IcA+Qavx+CLXckFB3mRC56AJ10cPRRbMIw3lRRtdqFbzNOggNeZ2YbboBz8jTN
+	ksf9TMDg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHjMU-00000004QIo-3Qnr;
-	Fri, 16 Oct 2026 14:56:46 +0000
+	id 1xHjMU-00000004QIp-46Pe;
+	Fri, 16 Oct 2026 14:56:47 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMU-00000002Qin-23Vh;
+	id 1xHjMU-00000002QjA-3Fuf;
 	Fri, 16 Oct 2026 15:56:46 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -42,10 +43,12 @@ Cc: linux-kernel@vger.kernel.org,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 00/11] KVM: x86/xen: Don't drop event deliveries which race memslot updates
-Date: Fri, 16 Oct 2026 15:56:34 +0100
-Message-ID: <20261016145646.579369-1-dwmw2@infradead.org>
+Subject: [PATCH v3 06/11] KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
+Date: Fri, 16 Oct 2026 15:56:40 +0100
+Message-ID: <20261016145646.579369-7-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261016145646.579369-1-dwmw2@infradead.org>
+References: <20261016145646.579369-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,166 +60,242 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Sean Christopherson <seanjc@google.com>
 
-Sashiko analysis and torture testing of the upcoming conversion of the
-gfn_to_pfn_cache from rwlock to atomic SRCU¹ highlighted a pre-existing
-problem: refreshing a cache can fail while a memslot is briefly marked
-KVM_MEMSLOT_INVALID during a memslot update, causing kvm_gpc_refresh() to
-return -EFAULT.
+Move the marking of an event as pending in the target vCPU's vcpu_info
+into a separate helper, __kvm_xen_set_evtchn_fast(), invoked after the
+shared_info processing is complete and its RCU read-side critical
+section has been exited. This makes both halves easier to read.
 
-The Xen event channel and timer delivery paths silently dropped events when
-they hit that window. In some cases we don't really care very much: the VMM
-should really be using the KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA option to more
-faithfully represent the Xen semantics where the shared info page exists
-whether it's mapped into the guest at any given moment or not, which doesn't
-depend on memslots at all. But we can be more consistent, and more
-intentional about it. So...
+No functional change intended.
 
-Return -EAGAIN from __kvm_gpc_refresh() to distinguish the transient case
-from a genuinely unbacked GFN, and add a retry loop for the common case
-callers which can just wait for the memslot update to complete, as well as
-dealing with the corner cases which can't:
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[dwmw2: rebased onto the -EAGAIN series. Sean's series first
+ converted the GPC locks to read_trylock(), which this series does
+ not carry, so the helper takes the plain read lock and the
+ original's trylock failure path does not apply. The caller's
+ kvm->srcu section extends across the helper call, since
+ kvm_gpc_check() on the vcpu_info cache consults the memslot
+ generation and the irqfd path enters holding only irq_srcu; in
+ Sean's series that was covered by a guard(srcu) spanning the whole
+ function.]
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: LLM
+---
+ arch/x86/kvm/xen.c | 158 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 97 insertions(+), 61 deletions(-)
 
- - The Xen attribute ioctls wait, so userspace never sees the transient
-   state.
-
- - Timer delivery leaves ->arch.xen.timer_pending set and retries from
-   kvm_xen_inject_timer_irqs() on the next vCPU entry.
-
- - The guest's own EVTCHNOP_send hypercall runs under vcpu_run's kvm->srcu
-   read section — the very reader the memslot update is waiting for — so it
-   cannot wait. Leave the hypercall uncompleted without advancing RIP, so
-   the guest re-executes it. This is how Xen itself restarts preempted
-   hypercalls.
-
- - The hypercall page MSR may want to update the shared info page if
-   latching a change of long_mode. Plumbing a retry like the one added for
-   EVTCHNOP_send would be complex overkill, so on -EAGAIN just allow the
-   wallclock change to fail (as opposed to #GP as it did before without
-   even filling the hypercall page). A guest sets the hypercall page
-   *early* in boot, and nothing should be manipulating memslots then
-   anyway.
-
-The waiting is done without holding xen_lock, on which a vCPU writing
-the hypercall page MSR may block from within its kvm->srcu read
-section — the very reader the memslot update has to wait out.
-
-Patches 6-9 are pulled forward from the SRCU series because they stand
-alone:
-
- - Three from Sean², extracting vcpu_info delivery into a separate
-   helper and taking the shared_info and vcpu_info pages out of dirty
-   tracking. Rebased: his series had first converted the GPC locks to
-   read_trylock(), which this one doesn't carry as the rwlocks are all
-   going away soon anyway.
-
- - Requesting the guest TLB flush from record_steal_time() itself, as
-   a standalone cleanup in preparation for converting that to GPC.
-
-The last two patches are selftests: a new test racing a guest
-EVTCHNOP_send loop against a tight memslot delete/recreate loop, and a
-fix to xen_shinfo_test's timer recovery protocol. Tested with both and
-the rest of the KVM selftests; an instrumented run showed 10 of the
-race test's 4000 sends hitting the update window and re-executing.
-
-Based on kvm/next (d4b7fb647204).
-
-v3: https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-eagain-v3
- - Take kvm->srcu around each kvm_gpc_check() and the copy through the
-   mapping in xen_get_guest_pvclock(), which had none (also found by
-   the syzbot CI on v2).
- - Drop v2's patch 3 and move the waiting out from under xen_lock
-   instead. The srcu unlock/relock it added to the hypercall page MSR
-   write was reachable from nested VM-exit MSR-load lists in contexts
-   (KVM_SET_NESTED_STATE and friends) which hold kvm->srcu by a local
-   index, corrupting the SRCU counts. With no ioctl ever waiting
-   while holding xen_lock, taking it from within a kvm->srcu read
-   section is safe again and no srcu games are needed. Activations
-   racing a concurrent SET_ATTR in the window are userspace's own
-   race; last one wins.
- - The hypercall page MSR write keeps wait=false for its shared_info
-   re-init and no longer fails the WRMSR on the transient race (see
-   above).
- - Re-arm through kvm_xen_start_timer() in the KVM_XEN_VCPU_GET_ATTR
-   timer flush, recomputing the expiry from timer_expires. The
-   hrtimer's own expiry field is stale when the timer last fired
-   through the direct callback path, which doesn't program it. Don't
-   re-arm an undeliverable (out of range) port, where the immediate
-   -EINVAL would destroy the timer_expires state just reported.
- - New final patch: give the timer recovery poll in xen_shinfo_test a
-   timeout. If the timer event is dropped while the guest is already
-   blocked in SCHEDOP_poll, nothing else ever wakes it, so the test's
-   documented VMM re-arm protocol could never actually run.
- - Commit message and kernel-doc fixes.
-
-Thanks again to the Sashiko review bot, which found the first three
-on v2. Less so to my own local incarnation of Sashiko, which didn't —
-though it did redeem itself by finding the stale-srcu-index problem
-with v2's patch 3.
-
-v2: https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-eagain-v2
-    https://lore.kernel.org/kvm/20261014220508.518772-1-dwmw2@infradead.org/
- - Take kvm->srcu around the kvm_gpc_check() loop and the wallclock
-   write in kvm_xen_shared_info_init(), which had lost it.
- - New patch 3: don't block on xen_lock within the vCPU's kvm->srcu
-   read section (three-way deadlock against a waiting ioctl and a
-   memslot update). Document the rule at the lock's definition.
- - On -EINVAL (deactivated shared_info, or an invalid port), clear
-   timer_pending but keep timer_expires: a halted vCPU would
-   otherwise spin aborting its own block, and the event is still
-   reported as pending through KVM_XEN_VCPU_GET_ATTR.
- - Drop the wait argument from kvm_xen_inject_timer_irqs(); neither
-   caller may wait.
- - Extend the KVM_GET_DIRTY_LOG note in api.rst to the vcpu_info area.
- - Teach lockdep that the wait functions as a synchronize_srcu(), so
-   it reports any lock held across it which a kvm->srcu read section
-   can take.
- - Comment fixes; drop a leftover cosmetic hunk.
-
-v1: https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-eagain
-    https://lore.kernel.org/kvm/20261013204824.454208-1-dwmw2@infradead.org/
-
-¹ https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-srcu-v2
-² https://lore.kernel.org/kvm/20260529165114.748639-1-seanjc@google.com/
-
-
-David Woodhouse (8):
-  KVM: pfncache: Return -EAGAIN for a lookup which hits an invalid
-    memslot
-  KVM: pfncache: Add a 'wait' argument to the refresh and activate
-    functions
-  KVM: x86/xen: Wait out memslot updates in the Xen attribute ioctls
-  KVM: x86/xen: Don't lose the timer event when delivery fails
-    transiently
-  KVM: x86/xen: Retry event channel delivery which races a memslot
-    update
-  KVM: x86: Request the guest TLB flush from record_steal_time()
-  KVM: selftests: Add Xen evtchn vs memslot-update race test
-  KVM: selftests: Fix unreachable timer recovery in xen_shinfo_test
-
-Sean Christopherson (3):
-  KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
-  KVM: x86/xen: Explicitly tag "shared info" page as never being dirty
-    tracked
-  KVM: x86/xen: Don't dirty track "vCPU info" page
-
- Documentation/virt/kvm/api.rst                |   5 +-
- arch/x86/include/asm/kvm_host.h               |   6 +
- arch/x86/kvm/msrs.c                           |   2 +-
- arch/x86/kvm/x86.c                            |  28 +-
- arch/x86/kvm/xen.c                            | 442 ++++++++++++------
- include/linux/kvm_host.h                      |  39 +-
- include/linux/kvm_types.h                     |   1 +
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/xen_evtchn_memslot_race_test.c    | 178 +++++++
- .../selftests/kvm/x86/xen_shinfo_test.c       |  20 +-
- virt/kvm/pfncache.c                           | 142 ++++--
- 11 files changed, 661 insertions(+), 203 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/xen_evtchn_memslot_race_test.c
-
-
-base-commit: d4b7fb647204f0c81dfeae2d1a708e4d858e0c94
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 6b7532b0e26a..cc96719159d3 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1938,6 +1938,89 @@ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
+ 	}
+ }
+ 
++static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit,
++				      bool has_64bit_shinfo)
++{
++	struct gfn_to_pfn_cache *gpc = &vcpu->arch.xen.vcpu_info_cache;
++	unsigned long vi_pending_sel_ofs;
++	bool inject_upcall = false;
++	bool kick_vcpu = false;
++	unsigned long flags;
++	bool old;
++
++	vi_pending_sel_ofs = has_64bit_shinfo ?
++		offsetof(struct vcpu_info, evtchn_pending_sel) :
++		offsetof(struct compat_vcpu_info, evtchn_pending_sel);
++
++	/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
++	read_lock_irqsave(&gpc->lock, flags);
++	if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
++		/*
++		 * Could not access the vcpu_info. Set the bit in-kernel and
++		 * prod the vCPU to deliver it for itself. Note that an MSI is
++		 * *not* an acceptable substitute here even if the vCPU has an
++		 * upcall vector: the pending bit only exists in
++		 * evtchn_pending_sel so far, and the vCPU has to be forced
++		 * out of the guest so that kvm_xen_inject_pending_events()
++		 * can refresh the cache and propagate it to the guest.
++		 */
++		if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
++			kick_vcpu = true;
++		goto out_unlock;
++	}
++	inject_upcall = true;
++
++	/*
++	 * Explicitly use a 32-bit btsl instead of test_and_set_bit(), which
++	 * would use btsq on x86-64. The vcpu_info is guest-controlled and only
++	 * required to be 32-bit aligned, so a 64-bit access could generate a
++	 * split-lock #AC.
++	 *
++	 * Note, this does not apply to the test_and_set_bit() on pending_bits
++	 * in the caller: that is in the per-VM shared_info, which is page
++	 * aligned, so the access is guaranteed to be 64-bit aligned.
++	 */
++	old = GEN_BINARY_RMWcc(LOCK_PREFIX "btsl",
++			       *(u32 *)(gpc->khva + vi_pending_sel_ofs),
++			       c, "Ir", port_word_bit);
++	if (!old) {
++		struct vcpu_info *vi = gpc->khva;
++
++		/* No need for compat handling */
++		BUILD_BUG_ON(offsetof(struct vcpu_info, evtchn_upcall_pending) !=
++			     offsetof(struct compat_vcpu_info, evtchn_upcall_pending));
++
++		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
++		kick_vcpu = true;
++	}
++
++out_unlock:
++	read_unlock_irqrestore(&gpc->lock, flags);
++
++	/*
++	 * Deliver the upcall or kick the vCPU only after dropping the GPC
++	 * read lock. Both paths end up in kvm_vcpu_kick(), and the MSI
++	 * delivery also walks the APIC map and takes APIC locks; none of
++	 * that wants to be nested inside the GPC read lock, which a
++	 * concurrent invalidation may be waiting to take for write.
++	 */
++	if (!kick_vcpu)
++		return;
++
++	/*
++	 * For the per-vCPU lapic vector, deliver it as MSI — but only if the
++	 * vcpu_info was actually updated above. If it wasn't, the vCPU must
++	 * be kicked instead (see above).
++	 */
++	if (inject_upcall && vcpu->arch.xen.upcall_vector) {
++		kvm_xen_inject_vcpu_vector(vcpu);
++		return;
++	}
++
++	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
++	kvm_vcpu_kick(vcpu);
++}
++
+ /*
+  * The return value from this function is propagated to kvm_set_irq() API,
+  * so it returns:
+@@ -1952,11 +2035,10 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ {
+ 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+ 	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(kvm);
+-	unsigned long *pending_bits, *mask_bits, vi_pending_sel_ofs;
++	unsigned long *pending_bits, *mask_bits;
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long flags;
+ 	int port_word_bit;
+-	bool kick_vcpu = false;
+ 	int vcpu_idx, idx, rc;
+ 
+ 	vcpu_idx = READ_ONCE(xe->vcpu_idx);
+@@ -1978,23 +2060,19 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 
+ 	read_lock_irqsave(&gpc->lock, flags);
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
+-		goto out_rcu;
++		goto out_unlock;
+ 
+ 	if (has_64bit_shinfo) {
+ 		struct shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+ 		port_word_bit = xe->port / 64;
+-
+-		vi_pending_sel_ofs = offsetof(struct vcpu_info, evtchn_pending_sel);
+ 	} else {
+ 		struct compat_shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+ 		port_word_bit = xe->port / 32;
+ 
+-		vi_pending_sel_ofs = offsetof(struct compat_vcpu_info, evtchn_pending_sel);
+-
+ 		/* test_and_set_bit() needs 64-bit alignment, but that's OK */
+ 		BUILD_BUG_ON(offsetof(struct compat_shared_info, evtchn_pending) & 7);
+ 	}
+@@ -2010,66 +2088,24 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		rc = 0; /* It was already raised */
+ 	} else if (test_bit(xe->port, mask_bits)) {
+ 		rc = -ENOTCONN; /* Masked */
+-		kvm_xen_check_poller(vcpu, xe->port);
+ 	} else {
+-		bool old;
+-
+ 		rc = 1; /* Delivered to the bitmap in shared_info. */
+-		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
+-		read_unlock_irqrestore(&gpc->lock, flags);
+-		gpc = &vcpu->arch.xen.vcpu_info_cache;
+-
+-		read_lock_irqsave(&gpc->lock, flags);
+-		if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-			/*
+-			 * Could not access the vcpu_info. Set the bit in-kernel
+-			 * and prod the vCPU to deliver it for itself.
+-			 */
+-			if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
+-				kick_vcpu = true;
+-			goto out_rcu;
+-		}
+-
+-		/*
+-		 * Explicitly use a 32-bit btsl instead of test_and_set_bit(),
+-		 * which would use btsq on x86-64. The vcpu_info is guest-
+-		 * controlled and only required to be 32-bit aligned, so a
+-		 * 64-bit access could generate a split-lock #AC.
+-		 *
+-		 * Note, this does not apply to the test_and_set_bit() on
+-		 * pending_bits above: that is in the per-VM shared_info, which
+-		 * is page aligned, so the access is guaranteed to be 64-bit
+-		 * aligned.
+-		 */
+-		old = GEN_BINARY_RMWcc(LOCK_PREFIX "btsl",
+-				       *(u32 *)(gpc->khva + vi_pending_sel_ofs),
+-				       c, "Ir", port_word_bit);
+-		if (!old) {
+-			struct vcpu_info *vi = gpc->khva;
+-
+-			/* No need for compat handling */
+-			BUILD_BUG_ON(offsetof(struct vcpu_info, evtchn_upcall_pending) !=
+-				     offsetof(struct compat_vcpu_info, evtchn_upcall_pending));
+-
+-			WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+-			kick_vcpu = true;
+-		}
+-
+-		/* For the per-vCPU lapic vector, deliver it as MSI. */
+-		if (kick_vcpu && vcpu->arch.xen.upcall_vector) {
+-			kvm_xen_inject_vcpu_vector(vcpu);
+-			kick_vcpu = false;
+-		}
+ 	}
+ 
+- out_rcu:
++ out_unlock:
+ 	read_unlock_irqrestore(&gpc->lock, flags);
+-	srcu_read_unlock(&kvm->srcu, idx);
+ 
+-	if (kick_vcpu) {
+-		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
+-		kvm_vcpu_kick(vcpu);
+-	}
++	/*
++	 * Both of these can kick the vCPU, so keep them outside the GPC
++	 * read lock; an invalidation may be waiting to take it for write.
++	 */
++	if (rc == -ENOTCONN)
++		kvm_xen_check_poller(vcpu, xe->port);
++	else if (rc == 1)
++		__kvm_xen_set_evtchn_fast(vcpu, port_word_bit,
++					  has_64bit_shinfo);
++
++	srcu_read_unlock(&kvm->srcu, idx);
+ 
+ 	return rc;
+ }
 -- 
 2.43.0
 
