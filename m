@@ -1,200 +1,203 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012041.outbound.protection.outlook.com [52.101.53.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2361E3812DB;
-	Fri, 16 Oct 2026 20:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0D448B9D
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 21:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792184025; cv=fail; b=VRpZl15d2q2vnl1F4Bj+q2uLwxesQlshsadmZcg9A3BGaCT/Jf1rWXdmTtLZJMKbUcpSidCCL31DKqbvH6Nb+NbH+jw4yTiK/wR5nTR1S5Kw8hvX+gLsCGk3bZRDOAyBtBbSeS2iLI2k/HTJG0H5Sg0YIPCPxNIOrn+zjpKP2dM=
+	t=1792185467; cv=pass; b=Zo4Rb6+y9yJieJQILdIWzu+044fjUbduGFEY7HBJhVuxL9BzpyXgh7r+7ReDitgEvKlcRY/1fRm1yJknLVNUe05Vd01+Ui6oxrDjJw+Io4A6rUpvONYrlpaxcaaSdJS3kEVkY+XILq51+wqMdVPsxla0RmOxmRdeDnSjwtOk/f8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792184025; c=relaxed/simple;
-	bh=14086800gVworB+I65hSBgA3jifAIE4N7p3Z7vQUOhk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=e8+G7diI1jnyZmpUG1Yo7IX8mFZ/xCOuPaioDUu9ETeRK4Qev5XstLbzN1iV80KcJz1PQmZYLUQRvD+n7In46oP7OnjSyMjXeL9iLE8kUjDpMS+HF/7jjCQeZDUTnDCVAUGO1cvbzmwGFg9kaO0vTldJ5tHGf1rTCk2oBSL9xbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zd3L8h40; arc=fail smtp.client-ip=52.101.53.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1792185467; c=relaxed/simple;
+	bh=Xo4SuVAkwhUfmLEjXQw1rkMVGu6ZcsrZb6xQHUYm1Js=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PZrCr7va8nvWvwPlrN6OkGEjYebmGrgErrFUY/U8UM/Zzc4IjKNZ4tj9QgNET2KzdwlNCvRR6nMnu1na1L+VpF4NseCbEbYa1zKfwM434x7AjYgkjvrIFJwDURkx3FuYdsHqZEOeU3/Hdlp/BYefWbL/tn4Uwe3IrhQkgbREY6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ISVfacDC; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zd3L8h40"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wt0B8odFc2k8gWISW8OuKX1Fp8mBOvtuJ2ooid7P8Orc9NDMZwTmV/KID91ONxWtrmD6/2x1R8PX2/iE91AcliyVzZv9D8vSWBOSwpSFWbdKAc/4Or0vL6lOIMeb+ah2yQT8PfUt2n6ukHGrliyvE1SwpvB/p/UB+tVhJmM2CrnCbeg4t7KuObtsTvvQUpQp5jLh45CHPtiiYUgoY0IMGpXss6zvuq0BukASS3PcRtctyxO9OuPQ2X/NVRbeH77qIjBQ3jTK1RKKZrYXzOSFvEc3aa3f69+FKBaiNiDSYHYqQV4rzndi10Yc9+8VHS+bT0KBRSdW4wBo/KoZETS7xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p0mF232IflyvifGc2IXf7P6jXrZOBWgKMb1aq4CLVMU=;
- b=LRak4zKGOqnBarGMb3XP6LVDDq2p/93vhpp+3GOe9WTfxq5pqtx7HLB2QGbcMF+5Gtqg1b+81gIPHfjyk0Kwth87VPeR7ChEH58B2o//piMoNrhM2m4FJkKVG58RRTIDaSgKhXgDAU+Db67iTKuNtijmIimM4036sPu49Bbq+AjAcZEODtZ41Wz06wr+0lRh4pXfLeEDL+q9luIFsg6yOLhf2tJZY6U6Q/uCj7vH+sFYDE5o5xtNaKiC0Tcus6cdMjVE3WwVZgXE0vBEGJ27IrN97EUtRq0QbtKI02kPk6zjxjoNeneiojBGVrKlKsesT6hp9aTehWotipmPSYCcjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p0mF232IflyvifGc2IXf7P6jXrZOBWgKMb1aq4CLVMU=;
- b=zd3L8h40RUn9lyEyiwmUxlN3zJU50ns4DBs0IJu0QzFJtzhkI+v0hjSRzcO1j2CXBVuKCKrBHkP5QGUME58PZbVSlSF4jLORLgIvLHAznhvkSGlx/QFF3Levjc2YIo5Q6Z7vIrBSauLz2NxVfJJ/IyvdJYAzwp/0re2RbIaiFYQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by MW6PR12MB8916.namprd12.prod.outlook.com (2603:10b6:303:24b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Fri, 16 Oct
- 2026 20:53:40 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
- 20:53:39 +0000
-Message-ID: <89715865-895d-4771-a700-f1a8aaa385cc@amd.com>
-Date: Fri, 16 Oct 2026 15:53:29 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 10/18] fs/resctrl: Add support for hidden resource
- group files
-To: Reinette Chatre <reinette.chatre@intel.com>,
- Babu Moger <babu.moger@amd.com>, tony.luck@intel.com, bp@alien8.de,
- ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <9e770ba6dff365f823e702430ec3872709bc92d4.1790867441.git.babu.moger@amd.com>
- <0ad861e2-1dce-4179-986c-872a33eff38a@intel.com>
-Content-Language: en-US
-From: "Moger, Babu" <bmoger@amd.com>
-In-Reply-To: <0ad861e2-1dce-4179-986c-872a33eff38a@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0002.namprd13.prod.outlook.com
- (2603:10b6:806:21::7) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ISVfacDC"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so1402a12.1
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 14:17:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792185463; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EsphIftju/SFQJdOCpAQT7BRWCie4OgpCZ398ys7Quo3z1RJU30nhKREvWhz7aOhL3
+         C3YPtRCSwrC+A6dxzWidRSuTASChuw3kNDYRnUBsMzYWadU0YMUV0LQDPOy2gVAwDHVP
+         w7OhnQBnwNBpfPlIozmvE+jqxupC+E3ZTuLDnT2+5QlRSbHZObXooUdQkqxcGOBOSFiG
+         WbXcTV/MWJV6SMCYFVSGOeRCKq2DKHxy6r99DH0dTVVg7Ut9ipO84J4oucZea6fMz1sj
+         mQD2qrSi5SFHnTYyYq5pPVNPCJBaEj8zpbgkYqbGEhuiYJl1e8jJZZQu3T1wYrhFljn6
+         noSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yqwdcpJ3cGMcIcxOWOSXEb4Qi+fpKcEZP2GPtydVxR8=;
+        fh=rbH7eR8/xyXPM2WL/AmIzYcp0k36Rj7NA1xSfe4/9EM=;
+        b=g6hJADHO8ExJkw0rp2J3MIUHhCFirvmxBBa4ztLPxJMNLTeGcg6wbs7VFCwRJn+uM0
+         +sVy5wKoe1lk4nBhrZ45MgqGscQjuossFKvhjHkzDhrOxaPFA4NzWJuUcaps898ITbbj
+         KVX4e25WoZJwso/ZQHH/Z2CBfj+eo5no+WBwo3fpvEnyT92y6tDG6zD17YJTfD8XYGrV
+         UPZu7cjUl+P3VxXHWLnk17F/H4mxBfTKuCi4bZFrNtyaz0B0zhcSm8bhvNfC++Hy1upE
+         +T19rCXwxfiHf09/KSVZUbC9hSHq99dHGoU8ZvyUV6lWKJqf/WE23KxB+JSCfJMy8Hzn
+         gwmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792185463; x=1792790263; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yqwdcpJ3cGMcIcxOWOSXEb4Qi+fpKcEZP2GPtydVxR8=;
+        b=ISVfacDCRAqHPqVylxrybLLPcmeYtQnjjqciEg6dxeFKh6+vqPKIomkt3yXGg0+hu7
+         uDbAKhiklrKycpqwGFHeZJ16Lqk316HGU5PBz5HdASamYJDDXoGN1J+QMjXQJqbf4/yn
+         sII1Z/brxx/U2dOoFGUBNJ+ryghugz7UX40LSka32RkzaPpGPRE9QhV7TbheG/9Q/B2/
+         aTQguSA9099iFijptro2iBIWNvhhrPVvdpG4lFaex/at5S1oLvAM7gqFRSHXThjQFVtx
+         eeQa4mTNBgrQ56cPAHoIOgwYbwFMUbLjaPks9wQRy0gzyZfFhEWuS3nYU8gao6NvZEM2
+         c/7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792185463; x=1792790263;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yqwdcpJ3cGMcIcxOWOSXEb4Qi+fpKcEZP2GPtydVxR8=;
+        b=cIu0dTNSEky+Au2jlivaQQlGJ8DBY/SBYJ/DOMburAS0Ch/yVB3pY/4TeJz17aGutQ
+         ZdwsX/LdJeRxvQZTVc5cvOzfqfnnweXif8x/7E9KX8vuWf60BnbIO8vV+F2o7lQiNkU3
+         W1qMyu6BUUiiKkEee6of91EKFuJg5ZEhEg69J97Eu17TB0CZD28LGFNsW1s7ojWxQ/DB
+         2uaWQTn42BitLJ7U99Eug3zZ4oXo/bol5HAklEOPQ2cI0NCh8oaGJQrGZ+9UoEtX00Cq
+         DYJYqVQ36LZxMVgliiWTbjY+oICoJZz3YpRUR/4UaUwoBcTwSI/PRP19wehtOjyJ70+K
+         0TIQ==
+X-Forwarded-Encrypted: i=1; AKwUvByUV7iKE+7ycrNQaT9+PUqFZwsCBcG6UH0YdsbuP0h9fRwgM/AamKEECbQgPYoJvwdtj30=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBWGZSAwKtfjSmT7SZj4Wl+4qIBJzeTiH6EkcUW+wlFHeSohmC
+	/LAhc2LhXJr6T4pvSqvZ3/SXLwY7Nb2t6gpj0SLPxW/hzPMG1A0tQg6xmuYLQbDohNy2hkSmZvG
+	TcId3UO7/se+oZHve1VZOQAEFEZ+fa/yrT3xF708R
+X-Gm-Gg: AYBFou25iCpzU47ouZXKkRtc4/6pxtK3E7FuJ7i9jowgpjivtPyDhJiqnNIMszTbbnc
+	rIyMGBdHMm2aCIEjg5JRi+7ouT+ZYLgTmHLWZm6cSDp2ox5Ka0sQmm8S8WcPz4JjDybTB4qwQhs
+	cyvNqR5lyh4Es5VoqoMbyiEy3u7kJJbheaqk7/BIWFp1/l/AdG6U5d+Sng4irUhbVZ758ERbGaU
+	YV0RoNycFgGNM9XYsGM4ANnoe/CJN2g/wwciEbCkSXRfzvgzvZ7CqmJ3sQyCke2ft2iNWbvSlJ/
+	ODrvq7JxHqRRO/ZzbS9VNilsAQyLQfql7qCoNf16+XeYIoW9EFy9WRqZjSr21KTeY5xKRgiXmG5
+	8wux02yhcIb9wv/Em0CZs0kbPwKzB5w74tnnq
+X-Received: by 2002:a05:6402:a58b:20b0:6b1:c3f3:225 with SMTP id
+ 4fb4d7f45d1cf-6b3a8697d78mr22141a12.0.1792185462133; Fri, 16 Oct 2026
+ 14:17:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|MW6PR12MB8916:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e789879-368d-4f1a-99ce-08df2bc78e51
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|11063799006|56012099006|5023799004|4143699003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	4YhkdYSTx00UXTtpuTkNwfeohAI2r9vcNLSHVkVvOmnbhimuNJNQIEtJfzNyrqlukL1jUr/VhDRi/YYU2LkOayUBY4jhLDYOt02CIhq0SaxMhlWtFKalBU2r/NdkcSxAUmVNQdOCImiEeT/MjK4u49f4FrNc1A6z0n1W0LHx/1wcbdXSkqoVclwBU7ybXDhKIfazAtw1TmlV8RfKe1VdB3s1/IX1beH70GdUl0BJ6u3lz9UuB4rIMgF+0O4alSqMKkbNf2j6Tlx/rO1yY5+zFgwPz6uUnt/vN0rhBjUpNzzaZNWkV2jQtCJEwMyX0gVzMge1RC8DBVEKWkeBQ+WNNRcu5jsHn6IsdjxtYDAFPPIA0lV9EaaoQXnEdzwWHZogmVbHx2VtAOiyFc4yTmYb1aIvO/Gmbct174Ybtqef/sOlRs56lokqurUORyJ0bXZWUuVrV3IjawIFfDZSnSecLu6dpPRK8mX47Oc0GGxEouEEESu4dX2/3p8BxL+m4sCdjQ1Ip7YTM0t6iqgzk+Ua98ifxT/naMJrdGgALSpNMIMHrLeTmCkVRg3gME6tagqVUhe1YpIep2M6ODITEgY9BiX3UbMDzn7kSRuut5jKF65ym7NC+EVABgbuHTCkADY4knwY7U64clZhdmpF3426GfbtuSRn4VcyJF24IdjHkIc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(11063799006)(56012099006)(5023799004)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QUcxZ2tydjVSTGlPclA5RTVSYTV5ZmgvdWltMEpoM3g5Q0F6dVhINUhtcGhr?=
- =?utf-8?B?cW1UbXUrNjhZQzZOdDJIbSthNDladnRad1RRdnFVdllPSDh6NWZWZEZ6bXZJ?=
- =?utf-8?B?RzZsVGhKVmNTaUNET1NUL09nTVJ4WWdQWU80UWpvVmNJZzhrV3BCRUdGTTYx?=
- =?utf-8?B?S2hzMGNCTndKNC80Q21xRXhtbTBKYVUzeWlvQ25SY0JvVWdUUUZvb3MwTHlB?=
- =?utf-8?B?WkxVWTJzTnlYY3VlK3BsN0tTcW1YY09kVEFnNHYzZTFGSUZUQ2lCK3ViSWdo?=
- =?utf-8?B?dllpVFV4VU1UN1JYVjdCN2ZRSW9NdXRkNHJLS2FsNUZDVDhtV2tOWHI4bi9q?=
- =?utf-8?B?bGVTRDVQMHhHSXRqbHZuZ3ZNT05KbHQwSjk4U1UyTS9qOVB5V3hINlJ4Y1Fo?=
- =?utf-8?B?K2xLT09CYm1peG11RWRrZVY5dFlDelk1WEhoLzByNUU3b2xzSm84eTJQL0hs?=
- =?utf-8?B?SGdSV0hTK2dqaEpjaDQwU3ZaMm1xL2wzcVJTcWxZa3Q4SnFaTGdublk4MkR3?=
- =?utf-8?B?dTVUcWJRV0NjWXNEWlBqQ3FEZFdHd2lnT1gvVXlvYmhmS2lUbmJPd2dRTUdj?=
- =?utf-8?B?NStGQ29JZlI1b0VtUU5SSkI1WkhBZEVwYXBwQVVrcUJyL3Q4MHNKUitXc3ZP?=
- =?utf-8?B?TWpzRlJ1UWloWEdoMXVKODFnRlFlYmFkWFM1Z0d3Qm9HbzZRNGozSjloUDJK?=
- =?utf-8?B?eUhrNHJHT0oxcG9JaXhrWFI0MVdqRFp1blVOSVVBZG92cTM3OHlFMkpKQkNI?=
- =?utf-8?B?a3ZpajFiUWlyZTF0SDBlYklMSXRSK3RRaWpQeHc0Rnk4dTVYQnF5WEhWYVBD?=
- =?utf-8?B?MUNXdHJzRWVlOVlvMFJwdW03SWE5dmhMSjhlQk9ZV3Jmc3hqcjdLWWJ4b0JT?=
- =?utf-8?B?em45THQ4emx4RkZYVkVlK1M4SDhwdmJ4RTBESkhCdDRXRG8vYTRtSytCUFo0?=
- =?utf-8?B?MWhnWGVyeTJkdTZ4ajI0TEs3LzZIb2JGOGUzVDZFY2F3U0FFa0xIUVVGK0NM?=
- =?utf-8?B?UHZLalJyc29odzJ6eWl2QTN4MC9kdVdKYnJnNEUxdUdxMkZab2p3QlkvY0hU?=
- =?utf-8?B?a0ZIMU9sUWlkYTZySkl4ZEdIa2Rhc2Y5d3QzSk1GMGgxSU16T2dGOS9EdFl2?=
- =?utf-8?B?L1d4M3EwT1JTTzRIY0dKTUcyWmcwQWpBeXgrbGxkYXJXUVZjZDdqdTYwcDN0?=
- =?utf-8?B?dzFBKzNNOXNsRStqTUFlZWpHSnk5cGpnT0JBZkpZVHl2cDh5bGduaG4rTGtl?=
- =?utf-8?B?NzRYZU9KT3pKT3FTUW9sMzMyQU1hWk1pRWFkejMzdVBJSEU1QVRzM2RaeVBp?=
- =?utf-8?B?MnpWbWsrcTljYklrOEFVcVNFUXJKUXk3QVV0Q3dWV2U2bGNzQ09xWDNZSFU1?=
- =?utf-8?B?S3VBY21TYUs4dFJXR2pQRlJkaUJ3VGFsVDRSN3orQi9ZVC9CSXFzMjBES3Iy?=
- =?utf-8?B?U1FnWEFHbHlPR1FUYWxCZ211QmxaODZOWjVrWktwcWlTMDNoNGlYWXA4dnZo?=
- =?utf-8?B?ZkExM1ZRdVdEc0t2MitSMGRzTTF1WThnNW1FUVVZUXgwM0NXTGoybTlMV3VX?=
- =?utf-8?B?bENlbklTWUU3enhIS0RiQTJhUWZPMHRsNnE0ZFRRUzY5alIrbVkzTHQ1RXl4?=
- =?utf-8?B?clZDc1U2RzFCcUs1S0o3bDlYTGdrN21wK21ocThFeEtMYWJWNmRuM29TMStB?=
- =?utf-8?B?WlZ2THlObzFOVEtXbjVlNysrMmxZdzBPdDJHemdJK2xLdGJ5REt3TzBOL1Y0?=
- =?utf-8?B?Y0tOOUNLMGlVRCtrU2JHbWg1M0ZIYU1hMTk5L0R4ZlZXRVo5SXRDZHFaYkh2?=
- =?utf-8?B?bTFjMnI3VXBzaEZFbDNGTEZrQXRGSjc0TUFyU3VBbEVseTJaMGV1Y3hBWHkw?=
- =?utf-8?B?QTJ4azczZFZCVTVSMkp0eGJrNVZmbmZOSm1uTGlqOEdWQndkSmZBTnExS1lX?=
- =?utf-8?B?ZXUyRGtMbEFVUmhXYXRqV0tib2Q0ZmxPYlZRdC9TU1JWd2k1dWtXTHVwSTdQ?=
- =?utf-8?B?Rkp2b1hJZk9SRy9CMVNzREZaQkhTVUErK0dOcEJ6b1NxZnpqT2o0WmhBWW5u?=
- =?utf-8?B?REc5VGI5M3RTcTVXSEhvZW00L21tRE5zNE42cG1BNXR4YlBaTnkzQmhqWkVx?=
- =?utf-8?B?TVg4U0VZdmV4SjVObnJWamxXdTlGVlc3cnY5L0hDSXpGTVNHM3pPMnJ1bFU3?=
- =?utf-8?B?NGZ5TUN3K21MaENDd2xmZnoyVjE0MEhTTGd6NW42VjBqWXZMMGp0RkhGMmdG?=
- =?utf-8?B?MEtsN0V0S0F0UVN3b1UrM2xzWGNERFAzMWhZMmRRQnFIYTNRQ21mcE95bW1y?=
- =?utf-8?Q?oGbv5ZW/DWGb/yVhc9?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e789879-368d-4f1a-99ce-08df2bc78e51
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 20:53:39.8099
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L3Y1nfYgOceigfY6B6D2pt3CJDvIXsqvJzS9med3ZUfd22DEYNYDgfUnaa1k/NlP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8916
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-27-yosry@kernel.org>
+In-Reply-To: <20261012233638.2546339-27-yosry@kernel.org>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 16 Oct 2026 14:17:30 -0700
+X-Gm-Features: AclHuK9F3IRSQWq-rRd2sfxk5IrJhnxcD3qf_KqHgb_kMW3Lv1Eba5dVyLI-W-o
+Message-ID: <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com>
+Subject: Re: [PATCH v3 26/27] KVM: nSVM: Use different ASIDs for L1 and L2
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Reinette,
+On Mon, Oct 12, 2026 at 4:37=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> Now that TLB flushes are properly handled and tracked for L1 vs L2
+> ASIDs, allocate a separate new ASID for L2 for each vCPU, similar to how
+> VMX handles VPIDs. Drop the unconditional flushes and syncs on nested
+> transitions.
+>
+> L1 and L2 can now only share an ASID in two cases:
+> - KVM runs out of ASIDs and uses the fallback ASID for both L1 and L2.
+> - SEV VMs always use the same ASID for SEV-specific requirements.
+>
+> WARN if the ASID is shared otherwise.
+>
+> Initialize last_asid to 0, such that the L2 ASID is always flushed on
+> first nested VM-Enter after it's allocated.
+>
+> On SEV VM migration, free the L2 ASID on the destination vCPU (if nested
+> was already initialized) before overwriting it with the SEV ASID.
+>
+> On a Turin CPU, this results in 8-15% performance boost in CPUID rate
+> microbenchmark [1] and netperf TCP_RR latency/throughput.
+>
+> [1] https://lore.kernel.org/kvm/20231109180646.2963718-1-khorenko@virtuoz=
+zo.com/
+>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> ---
+>  arch/x86/kvm/svm/nested.c | 32 +++++++++++++++++++++++---------
+>  arch/x86/kvm/svm/sev.c    |  6 ++++--
+>  2 files changed, 27 insertions(+), 11 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 4ffc10bf9232e..6fe68f2ae282d 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -711,6 +711,10 @@ static void nested_svm_entry_tlb_flush(struct kvm_vc=
+pu *vcpu)
+>          * context is not tagged by the ASID, so the shadow NPTs cannot b=
+e
+>          * reused across different L2 ASIDs.
+>          *
+> +        * Note, last_asid is initialized as 0, so the first nested VM-En=
+ter
+> +        * after setting EFER.SVME will always flush the TLB to avoid usi=
+ng
+> +        * stale entries.
+> +        *
+>          * If L1 requested a full TLB flush for all ASIDs (including its =
+own),
+>          * L1's own ASID is also flushed on nested VM-Exit, before runnin=
+g L1.
+>          *
+> @@ -727,12 +731,10 @@ static void nested_svm_entry_tlb_flush(struct kvm_v=
+cpu *vcpu)
+>          * If L1 and L2 share the same ASID in hardware (when using the f=
+allback
+>          * ASID for both, or for SEV guests), flush it on nested transiti=
+ons.
+>          */
+> -       if (svm->asid =3D=3D svm->nested.asid02)
+> +       if (svm->asid =3D=3D svm->nested.asid02) {
+> +               WARN_ON_ONCE(svm->asid !=3D fallback_asid && !is_sev_gues=
+t(vcpu));
+>                 kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+> -
+> -       /* TODO: optimize unconditional TLB flush/MMU sync */
+> -       kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
+> -       kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+> +       }
+
+Per the APM, volume 2, Section 15.16.1, "TLB Flush":
+
+> All TLB entries belonging to all ASIDs are flushed by SMI, RSM, MTRR modi=
+fications, IORR modifications, and access to other system MSRs that affect =
+address translation.
+
+With two separate ASIDs and the unconditional flush removed, do we
+flush both ASIDs in the above instances?
+
+Moreover, does this change the semantics of PV TLB flush? In
+record_steal_time(), we have:
+
+if (st_preempted & KVM_VCPU_FLUSH_TLB)
+        kvm_vcpu_flush_tlb_guest(vcpu);
+
+IIUC, an idle vCPU that wakes into L2 will flush only L2's ASID. In
+the past, with a shared ASID, L1's ASID was always flushed on emulated
+VM-exit anyway. Now, L1's ASID will be unaffected. Though I can't find
+any real documentation on PV TLB flush, it *seems* like the remote
+vCPU would want L1's ASID to be flushed. OTOH, this change makes nSVM
+behave just like nVMX.
 
 
-On 10/15/2026 10:27 AM, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/1/26 8:10 AM, Babu Moger wrote:
->> Some per-group resctrl files are only meaningful once a resource group
->> has an active kernel mode association.
-> 
-> Could this elaborate more about how the files depend on the kernel mode
-> and why they may not always be meaningful?
-> 
->>
->> Creating them only at activation would complicate group setup and
-> 
-> Why would it complicate group setup and teardown? I think it would
-> rather complicate mode activation and de-activation but since there is
-> no detail about how this will complicate group setup it is difficult to
-> compare. It is difficult to reason about a patch when the motivation is
-> vague.
-> 
->> teardown, while exposing them on every group would show empty files
-> 
-> "show empty files" - technically these files, as they are implemented,
-> will not be empty but return errors
-> 
->> with no clear purpose.
->>
->> Add a hidden property to struct rftype to hide files at creation.
-> 
-> Missing a "why".
-> This can append to describe how this adds the foundational support in
-> preparation for features to restore visibility when the feature's files
-> need to be exposed to user space.
-> 
+Nit: with this change, the following stale comment in
+svm_flush_tlb_asid() needs to be updated:
 
-Will rephrase the whole changelog:
-
-"Some per-group resctrl files are only applicable to resource groups
-with an active kernel mode association. Accessing these files before a
-kernel mode association is established would result in errors and does
-not provide useful information.
-
-Creating and removing these files when a kernel mode is activated or
-deactivated would add complexity to the mode management path. Add a
-hidden property to struct rftype so files can be created with the
-resource group and exposed only when they become applicable.
-
-This provides the infrastructure needed to control file visibility for
-future kernel-mode-specific resctrl interfaces."
-
-Thanks
-Babu
+/*
+* Flush only the current ASID even if the TLB flush was invoked via
+* kvm_flush_remote_tlbs(). Although flushing remote TLBs requires all
+* ASIDs to be flushed, KVM uses a single ASID for L1 and L2, and
+* unconditionally does a TLB flush on both nested VM-Enter and nested
+* VM-Exit (via kvm_mmu_reset_context()).
+*/
