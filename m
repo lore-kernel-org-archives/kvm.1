@@ -1,167 +1,151 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374C13C1097
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 19:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538D31DF248
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 19:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792179566; cv=pass; b=kkZv4vkLrgHogyejexR2l5IpnaAM5EMyOnnWtVoIKC6SpYIjNt5cxBHhktobkoyMFPayuydC5185ERk/oJmLzoyp+WsbXSjPN7AdTUHF1wxoUNaYWu5Zz3DzSDRkXMZpldhZpJcemgsJ008tEho63nYIwOjYbkyI+yo1pbvEc8A=
+	t=1792179697; cv=pass; b=MeZZL4+3jcSKEsHEGN99eTUCGDRTP20eF5vUsMt4GXQL/KdHf82dGttbOgYGMsFzQSxBi0aKvrLXbCKDwhd+VQIv80II1x62sBrmle87GvdQj5tIbPgpJVWXjqQnhqvWEMhzrsU0U+6QK5Rfg3GfstcqnwarcQFpVr6r0sCIdsY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792179566; c=relaxed/simple;
-	bh=5HperhJ6ndHDYOECzEf0f7rRkNIZtGc1zoTN7qOyyzU=;
+	s=arc-20240116; t=1792179697; c=relaxed/simple;
+	bh=S7u97F0mKuHEaXlleeG6ov/Y3VkqNsMCwMjqHsihwxw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SfXx0qYtEFx9EEP97Mzb6DtptELhEg/mEan+4k5iQ9T5voOmvBcTZjuYaq7qD8RB3+Oc7ZkxwAEr/lx02FAhbJAutA1Gz5S4ANZt1SPtxgDhCAEdYrGEu+MLBG0BHwFN5Y4XTzIBJMwEpc3n2XBOd9D0f6ROVeBvimBOIVYgb+g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y9kBYsU5; arc=pass smtp.client-ip=209.85.160.172
+	 To:Cc:Content-Type; b=lWjp1pd6BAjKEVaBkHx+Okn1M+gX+BPeiz4I4MgcIuSp6ujL1d0OwW4B3Qdu9k9TaV0SUcQeJWDdIsOMpInLNerf67dcQGbsR0MBoH22HLOQuG0kJwETzfgo2WhF7jQ20jS/ka9f0ysIiboK9a/NL96IFNz8nN7tTHHIs5ArUy0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oQ4WZRH/; arc=pass smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y9kBYsU5"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-535f598d126so1741cf.1
-        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:39:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792179561; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oQ4WZRH/"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-533202fe429so61571cf.0
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 12:41:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792179695; cv=none;
         d=google.com; s=arc-20260327;
-        b=oe8cadJ3JHZVpJ6Cpw5DwcRsU2sZXteBF+cd4rq/Ep9vfhAfpM8bfX359rXhA+bjZL
-         qcTP1RpFa5Ou/IYuk7zXZmMve7P2PYDbslBvJ8vRrYI4p2bC/mcAjg7LElgUIZ18SeGC
-         SXhgggHHbimjrTTQ1SY32Xksx16JhAEGjzMWuHJ4Q8nbSQsaaooMBfSNBwkd1TPaoVz1
-         rxHxXejw0+0bVbAxauhQmpUF34E4RwuWCyoxpI1cJGrRdS/+YoX2sSBsVk0nce5qMFgW
-         M2AGsoIuuTHrysrdXzUCadwHDYeC+D60ovlWjrbBUT7KMGUz3qByCYbgtY0jom3nCuqG
-         2o0Q==
+        b=Uh3oPRrpmceJZFIo5JjwI4e9A4eQv9k42BQF5vsOVmAzfKViSs6pwLAEqo+9ZuhxWX
+         6D4ggsAAgIRxStEQEmAbHjjuSIy3MhCrR5Mwk0CSvpYxG4w+9wdGhfbWk+WWBRilccEr
+         A1Hr+9k5TjTRu8X7IGVsGS5UaW+6CRqG/tuOdVWyCE3Uj5Zs959EMLEAmQ63UYD/jlre
+         pCwJeWHasG4dCPZ4lHJT3nIGjZY0w7bTe7uKN6KOEixz+e9wwpF7ToCwXJ4+kqTrefgK
+         EcxRIo2iPoD5MEhEuleziLJKpCu/2A+uCX/om4MMWzBESAOME7PSnKtPv+ctXJL6tuJb
+         70mA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tYB+24gRvl6A6xyv52LeRn+X+82XyzZtyhvPLO+Wm1o=;
-        fh=zG/c2bNSM0WLsqz3gs7rP8kr+CYDQwXlnAL5pkvZfa0=;
-        b=SOIv4ikj6rn6h+88r+/nzWIde2j9dkQWjC42ZGXjWrxAGkSJUnzeCFSmBmnsdMl3Z8
-         a++XvyBgza7inYloCImYuBcOWoKFIObLgmh6/7Cd2lvW1x8nBilogfpQGl8yggmWSzh8
-         YR91X2LBJoIM/IIpTMG6nW587n+y6LbuIw/azW1bn9MisPpNlw/UM0NiD/cpvdKL3Ykh
-         rE1kaZnX8G2wwduhRTT+Uqi7uOuMXgLZyQYQ9jd1vy4/G8svrbp0kWgUniwmi7TDv2JR
-         4PRU6oP2a5GCcuoqPNM4AY5NBHdOH0Maj1eE2vX9adOj2yWjSGuom2Q6QGwGTu4J8AmI
-         4Y3A==;
+        bh=7I6WLMkKR2BgKIxGRcqSFhqIpV9v6f9mjoXxwWLiuPk=;
+        fh=WFlLmmWDU+ybWkMF5PYAPG2AiuALf8zXitLFjihV+qs=;
+        b=VaiXwG8bTxI5qu6m8TIdRmAAAFC5j0/NuSAkmLLl5BoPpAGhNx4M+4OzBayyyjI6Ck
+         NAMuXyNtbM3ZyLxLYUqcFCA243PJNIuR2C2EBQI0n6NZZolKs30XgeybKVl+1DpBmntz
+         1A0ubQZnMfcq6E0fq2KaiTfT+pOmkWjdWh7X3bfNUNzhIG+m+VQyWt5WAHuSD0+TnFK7
+         KD27IKyb2seCgSVY9F6etzsKhi7ZmSi1BXZoJXz2x1uIW97vEQKXsEZfys+4XX3y41Rk
+         +9Yy5H1eDVwjv3efaAqacyXKW194tKtpjBlkng2OCxnqlagpIaNiXdYKGGI1EsBEz3MD
+         xlLw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792179561; x=1792784361; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792179695; x=1792784495; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tYB+24gRvl6A6xyv52LeRn+X+82XyzZtyhvPLO+Wm1o=;
-        b=Y9kBYsU5Ao5BiZpIW1bl0/pd6l/eLwUWjJCKlt3M2Z+1vK07KwwP/xZJLQ1SgbwQmX
-         KqLu0chArQbVb5I6txnRFAU//FUb8qI9TAq1EDfoozKDPcS+7ZivBTNSkFNoBozodrCJ
-         5zUZSisDc/O15DAS6dbDNx0Ue6kiHC3tPn6CjFaslCOfpMQpFH8OvwqcslpyKpQj52sA
-         sPK197hAUI/W58nbKO3/w9UZEnXLJpFEKXOrGk0Ia6TPEhprDq5UUExS/JupKP8njSXm
-         DWww7NXKerGoro+yu/qKsaCbQmjK/IRVEUoh6lmGaQJ7GHiJVW3ctCdQ4641A3M8ZZFM
-         mr+g==
+        bh=7I6WLMkKR2BgKIxGRcqSFhqIpV9v6f9mjoXxwWLiuPk=;
+        b=oQ4WZRH/s4OlqMsSt1YCy+GDPxLQD8NKDV3kNsjiU4D/ngxoJmU5b6qr2TuhbHxLh3
+         KQcR1ogam8OZBBoG3NNM+ABOG6d4HWcms3gs5NHs5NFgySsjLxheDPE75gNHKGefi1sp
+         Jc7oudV06kCUrL5iLnrxgGBAtGU2YqfMHZb1NHGIsdCmvgFnkhccnQMheDDgMjeJvypI
+         XvBz3aI/05Xdaf6d2pgrydkbSAhEs79Rl/oLVwM1qo7379T38fGoBKRwq2LUXtYrOR8G
+         Zza/PUdosEaWkeX6C8JXb1FPddosj+2fQCTPz4MFkRfE9+pDcTJt8CY/RBCCAnhFF08g
+         N2bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792179561; x=1792784361;
+        d=1e100.net; s=20260707; t=1792179695; x=1792784495;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tYB+24gRvl6A6xyv52LeRn+X+82XyzZtyhvPLO+Wm1o=;
-        b=Xdb2ANe8pLEiCAsnWyJhl1Z3hjJ3lqM05OxuYxTFQMf9/YZVAuiNDyR5ywr80He0Fb
-         +leh7a6Eatpe9/+j37ZEE5aPRxDJ+fW89wk2roMwHByEpcuWKmHC06pSUxTRu3xFUTK1
-         mY6+aZW8YfS4YlkaTyvzfyR1mzmEPjVeSnqDJfLtkl4WRsl9I4ieHJMfvDs6vmMpC5Va
-         rsn8csAeWUscRMRzf4XwPvM3/ZW42U52J4bTN7e7Pjpzb3VOwaWnZjoYxUjdgFP+t9BZ
-         AMU4BzEyluRMWzbi5JTu7u+EYUU2okx1dhh3rGD+1DbMFOVA3AeQbbfLdzcepsTljUBz
-         Vbnw==
-X-Forwarded-Encrypted: i=1; AKwUvBxF47zfWxha1p6sJgcGXm40rbc9utFsnbcRUhbnsZWL8Mu9ReZ6x1Id85BuK53d47jkG0U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIjJh2YZJNvMIpE54TcwypSrCNi2HwZvdUp0GIVU+/fChhEQ4go
-	NrynPxa/bUSPaUkpxgvo87QuY8MVjLhLl2yZaNwpc+qW6sqBN/roW7x4pwIb66qrJoDX7tNH3Dw
-	9i76nikfhCPD/iZT9dZL5tl93wW53WTkUBA3ypWT7
-X-Gm-Gg: AYBFou1bXajiCRP7dZBzWUq70oxQiVkifxxmrSVt8+oKpkyCjhr71ywWgsA+A8iFw6V
-	ze5Njk8UobwEojCrT4Qpb1Cc3ev0x3H5ndjlmOqJfzCIODfokcu2xrVcsdqTR2qQrOhJ2ZPlAjf
-	zUHS3XMn9IfGvBA9WblCXG+r9vgbdJSImuA9xwYMtJy6nvSLO6Es63mc5n5bsNPeIbnmprHM3Jj
-	f6iFY+yl43OvL2KJgLTwwic/KUO8WGEFrpGm6suT6JLB4onFwJMYXdAia7MX82mKkW7NRp1nl/g
-	fmE77zO74LRUNFpDnOsQjpPaBOQfeZ5BHqZrBPVDiVQPd7UsOYVg/73rZq5z2DBnlA==
-X-Received: by 2002:a05:622a:1cc4:b0:530:e00f:7768 with SMTP id
- d75a77b69052e-53649add080mr31861cf.0.1792179560138; Fri, 16 Oct 2026 12:39:20
- -0700 (PDT)
+        bh=7I6WLMkKR2BgKIxGRcqSFhqIpV9v6f9mjoXxwWLiuPk=;
+        b=jf0fPmzbGwG3+8cDC+X+MuwLUi+h0xN+nqueUVkQ0REEuaSSusFjrRamD91gb5cwFm
+         tpRWGoShAcTox0ymWhZ1i7R7Trx61qfDcIM+879uh1TorwFtksoTurfdUkTDBhtpCttu
+         LVrtmvcPR8wy6jCsA4DH1u7CSyaXh6eFn4l72u8EfYzklna/c3D4F4FSHJ49ItYHruLF
+         A2h/+yzraeow7ekh23KaawW7+rjrK5gKgWVsDxltB8QswNr5A6VaJnZEhh7EGnFss5hM
+         kiJZh8aQWDzFB/OZxDhpfZT5PUSWZaC41JdW7w4yYkAFBV+3y73lebNqWmmpl9Ocsj4D
+         Qugg==
+X-Forwarded-Encrypted: i=1; AKwUvBxxjieWzx8bxE4vyaaAd32HgWtUuy5aCIOccEwj5rdAI1kTgSZ/wqz00XgYT/PASFB5eAU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKu2pvV4G3WKgJgOwNS4Ru9JqKHyFCtc1ddbJhIh0TP4501CV3e
+	0qfiT88DRhie0RXvDZMlxtlr+5KsQhbzV7ejEI241BEfVO1iKrmZKJcObVN9MQNzjegqYqJhwzz
+	PEaveJkSCAOfhZCeZj0ze/1VrbZ/e9B5etlSd1A7H
+X-Gm-Gg: AYBFou1q7WvAONv7uelBup42tyoyeVFkewqsPvHVtcYEZgezboM+gTxrcdmO/RPBstq
+	ogW6QilV0Gpb5YzCR3cFVxYO7Ckmlsnz9Z/yhtexhqeJd2maAWkYZqDuf0GMhvYBkCfBJe5HgIZ
+	I7ubk8ZOSP8ZsbSPh2EvN/nSwBMBVOThoInBtCO1mx10ESyN7BUrB4Vlg5Xyig6Cpmqut2wkSI7
+	ldlyHCETDLEPeh1qV5EOj3mI9LHiC2We4eNKOTNDA/uG/E8ENk9G7/hmKO0ofgdLF9Fhvb8fvJC
+	rHBboN4ZHtm/ttjDNCftoQIpnzLaRaEDNVqVndvuFTiSIP/Bh8jiAI8=
+X-Received: by 2002:ac8:5ace:0:b0:534:b7b2:634f with SMTP id
+ d75a77b69052e-53646227b1amr1807741cf.8.1792179694296; Fri, 16 Oct 2026
+ 12:41:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-20-yosry@kernel.org>
- <CALMp9eRd3COQijFU8AdcJKo+usr4A7dC6GOYT3YS93UBZ0yHRA@mail.gmail.com> <CAO9r8zNvcoXxDHxxZEWZM-Effav-Yb8piVuN5BsGanhR5dJmFw@mail.gmail.com>
-In-Reply-To: <CAO9r8zNvcoXxDHxxZEWZM-Effav-Yb8piVuN5BsGanhR5dJmFw@mail.gmail.com>
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-25-yosry@kernel.org>
+ <CALMp9eRb3ExsQ0g24YQyo85sV1fnHZadh33hBChUY=ZGUaT7jA@mail.gmail.com>
+ <CAO9r8zMt5ZNwr3Y+NfFcAW5Cf4JaerCScSsLxcvsvHYR=DoYBw@mail.gmail.com> <atF1lByf9w3Pvzyt@google.com>
+In-Reply-To: <atF1lByf9w3Pvzyt@google.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Fri, 16 Oct 2026 12:39:05 -0700
-X-Gm-Features: AclHuK9GXq5IvU0yurc3OGJJuMNaC-vtMWVfUvmlQbKcygeI63kT7JK3WCbyRgg
-Message-ID: <CALMp9eSQD0XJ_0y0ovdiHYXoRi-_FNHtrsraJOWSNafnWCm9sQ@mail.gmail.com>
-Subject: Re: [PATCH v3 19/27] KVM: nSVM: Service local TLB flushes before
- nested transitions
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+Date: Fri, 16 Oct 2026 12:41:20 -0700
+X-Gm-Features: AclHuK_lmx3knEDpq2O9cX91zu7wMSJRiSiXRo3aJT1GBy87KnfcOtvuGmB_cxE
+Message-ID: <CALMp9eQ0j9mpaRFgGSgSzbpLZJL3hmQEY9Ey2VEMuqST0uRTsg@mail.gmail.com>
+Subject: Re: [PATCH v3 24/27] KVM: nSVM: Flush L2's ASID when emulating INVLPGA
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 15, 2026 at 3:35=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+On Thu, Oct 15, 2026 at 5:53=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
 >
-> On Thu, Oct 15, 2026 at 3:20=E2=80=AFPM Jim Mattson <jmattson@google.com>=
- wrote:
+> On Thu, Oct 15, 2026, Yosry Ahmed wrote:
+> > On Thu, Oct 15, 2026 at 4:37=E2=80=AFPM Jim Mattson <jmattson@google.co=
+m> wrote:
+> > > > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > > > index 8f2542357e78d..436d13f106369 100644
+> > > > --- a/arch/x86/kvm/svm/svm.c
+> > > > +++ b/arch/x86/kvm/svm/svm.c
+> > > > @@ -2468,17 +2468,61 @@ static int clgi_interception(struct kvm_vcp=
+u *vcpu)
+> > > >
+> > > >  static int invlpga_interception(struct kvm_vcpu *vcpu)
+> > > >  {
+> > > > +       struct vcpu_svm *svm =3D to_svm(vcpu);
+> > > >         /* FIXME: Handle an address size prefix. */
+> > > >         gva_t gva =3D kvm_rax_read(vcpu);
+> > > >         u32 asid =3D kvm_ecx_read(vcpu);
+> > > > +       int cpu;
+> > > >
+> > > >         if (nested_svm_check_permissions(vcpu))
+> > > >                 return 1;
+> > > >
+> > > >         trace_kvm_invlpga(to_svm(vcpu)->vmcb->save.rip, asid, gva);
+> > > >
+> > > > -       /* Let's treat INVLPGA the same as INVLPG (can be optimized=
+!) */
+> > > > -       kvm_mmu_invlpg(vcpu, gva);
+> > > > +       /*
+> > > > +        * INVLPG on a non-canonical address is a NOP according to =
+the SDM,
+> > > > +        * assume the same behavior from INVLPGA since the APM does=
+n't specify.
+> > > > +        */
+> > > > +       if (is_noncanonical_invlpg_address(gva, vcpu))
+> > > > +               return kvm_skip_emulated_instruction(vcpu);
+> > >
+> > > If L1 is in 32-bit mode with junk in RAX[63:32] (e.g. bits left over
+> > > from long mode), the full 64-bit value may not be canonical. Should
+> > > the kvm_rax_read(vcpu) above be kvm_register_read(vcpu,
+> > > VCPU_REGS_RAX)?
 > >
-> > On Mon, Oct 12, 2026 at 4:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
-wrote:
-> > >
-> > > Service pending TLB flushes for a specific context (L1 vs. L2) before
-> > > entering/leaving guest mode, as KVM does not track TLB flush requests
-> > > for L1 vs. L2. This is not currently required as KVM always flushes t=
-he
-> > > TLB on nested transitions, but it is a requirement to drop the
-> > > unconditional flushes.
-> > >
-> > > TLB flushes are performed through the VMCB's TLB_CONTROL field, so
-> > > service the flushes before every VMCB switch (except the precautionar=
-y
-> > > switch in svm_free_nested()). Servicing flushes may end up purging th=
-e
-> > > relevant HV TLB flush FIFO, which is based on guest_mode, so make sur=
-e
-> > > local TLB flushes are handled before calling {enter/leave}_guest_mode=
-().
-> > >
-> > > This is conceptually similar to how nVMX calls
-> > > kvm_service_local_tlb_flush_requests(), except that the VMX calls onl=
-y
-> > > have ordering requirements on {enter/leave}_guest_mode(), and not
-> > > switching the VMCS, because VPID used for TLB flushes depends on
-> > > guest_mode, and flushes are not VMCS-based.
-> > >
-> > > Note that nested_svm_{entry/exit}_tlb_flush() must be called after
-> > > kvm_service_local_tlb_flush_requests(), otherwise the TLB flushes wil=
-l
-> > > be immediately applied on the outgoing VMCB rather than the incoming
-> > > one.
-> > >
-> > > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > > ---
-> > >  arch/x86/kvm/svm/nested.c | 22 ++++++++++++++++++++++
-> > >  1 file changed, 22 insertions(+)
-> >
-> > [ ... ]
-> >
-> > > @@ -1549,6 +1567,8 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
-> > >                 vcpu->arch.nested_run_pending =3D 0;
-> > >                 svm->nested.vmcb12_gpa =3D INVALID_GPA;
-> > >
-> > > +               nested_svm_service_local_tlb_flushes(vcpu);
-> > > +
-> >
-> > When called from svm_vcpu_free() during teardown,
-> > kvm_service_local_tlb_flush_requests() will be called for a vCPU that
-> > is being destroyed--and isn't loaded. By that point, the MMU has
-> > already been unloaded. Is that safe?
+> > Doesn't kvm_rax_read() already use kvm_reg_mode_mask() as per
+> > __BUILD_KVM_GPR_ACCESSORS()?
 >
-> It should be, VMX already does it.
->
-> I am assuming you are specifically asking about
-> kvm_vcpu_flush_tlb_guest(), as it could end up syncing roots with TDP
-> off. kvm_mmu_unload() should set all roots to INVALID_PAGE. Both
-> kvm_mmu_sync_roots() and kvm_mmu_sync_prev_roots() will then
-> gracefully skip.
+> Yes, Jim's probably thinking of older kernels before fc40b1254c32 ("KVM: =
+x86: Add
+> mode-aware versions of kvm_<reg>_{read,write}() helpers").
 
-I'm just paranoid about process teardown and borrowed MMs.
+Doh! My bad.
