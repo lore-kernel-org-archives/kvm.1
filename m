@@ -1,428 +1,176 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797CC4EB876;
-	Fri, 16 Oct 2026 14:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06154D17AA
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 14:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792162621; cv=none; b=gLHObYg9WJzb7bpsfeKvhDRlh1CSXjd1ieZR6XtK291FcIvCXxYAq9oftBZ8mhWfqazrvXBQ1rJkFPyWpzNZysOvPc0L0OY6ON1TxNW2HRo1RUT5BZLihFHguGJimJ9VjUfzXr66g0ycTje5i1dmPuJKOajT+S9NKexKg5ZpC/c=
+	t=1792162715; cv=none; b=la6Wr6ZK2XQi4C/o52Y6hj4Ob0mf7jA8Un0DWl8UxpEc5RFdPI3ab+06szA7ogKdOtVH55wx0OPIIa0O5E3t1OC3N6NNfGoRABYVRM7vo5rHIhD52h7YCMPA5KAG1YoCc90ymUc32uW3GZRUPtjERLqdHDbNgwscGadVXNo0ef0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792162621; c=relaxed/simple;
-	bh=VPuD+iznaHPFgb0T5ME/jEwcfMyYal3GaoaMzqNGQAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dCOcqVndDQFm3MURDu9Qs6fe1/o1kZB2p5MMalGgSk+L8PnErUO4xsfZ7eEwHq1HsJf+s1n440ERdlNscb+sjZtFw0516kLKhEY4A84Bed7N0JM4+a4VBXmxNwUAvRw4qmdFvCpLcTfXC/5p4InlagS6gwx2BeKcZMIiz7S5iWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=S6ryZJRj; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1792162715; c=relaxed/simple;
+	bh=mTMdRDasmuA/EDAmwz9LCUnoHW7nOhtRiIxjXAgYEZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T5n3cas1ep8oIvtz4nUEYJbjqY7G5HzBcWVOIam1c4ZBs+XO59FcWzwPZhi+cwQvCuYX58oEUEUPRgtcbEYNZqyih7Cg4xJJsbSpYtTpeK4wm320rO0FNgXZ3Yqdqn2sWKsddsIm4RuqC2H25XGq8YTYvZT8Iqslt/6JV2zTdBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=f6XH/Tne; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="S6ryZJRj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=EPJAdsPZxOFKgj9EDg8h628y+uz0cGQWZ8gyqAeH6xk=; b=S6ryZJRjgDSSpj5OX2+b8sjyAH
-	8mC0CzRvD9zRhOnKDR4tN9XgQ/ifJteK/EMc09jPalBaDovu3lbRTrCIHujYnZ3XGqSwVO/5WF0fc
-	/WzjinQQWrnt4pciPa12g/8+Qa1MF92s26k2Ods7t1pfV7ORCtYYh7hESBPTIzmFUH/iLLMuAXIiy
-	duk+v2TcK7htEqICq7W+EdrSc5Q2SSNCkS3FoGlr/x6jglunas0QdlR/ylgcagKQDbmHqFtTDekaA
-	m3+1y0CC/qhu0zuMbOt0F+aiKxRcBPNd2hS7h/Aii9vecN/thnUdYPYGiNOQ9Y39dg4Hm60O3bTLo
-	7B/37b0Q==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMX-00000001dOZ-1wnR;
-	Fri, 16 Oct 2026 14:56:49 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHjMU-00000002Qiy-2pyU;
-	Fri, 16 Oct 2026 15:56:46 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paul Durrant <paul@xen.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 03/11] KVM: x86/xen: Wait out memslot updates in the Xen attribute ioctls
-Date: Fri, 16 Oct 2026 15:56:37 +0100
-Message-ID: <20261016145646.579369-4-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261016145646.579369-1-dwmw2@infradead.org>
-References: <20261016145646.579369-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="f6XH/Tne"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5351e6a2230so58049241cf.3
+        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 07:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1792162712; x=1792767512; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4kgwhKXvrsbFVEHtBB9HsyIrs9QabB8/6eZ9haqu9k4=;
+        b=f6XH/TneIg1GeUlGm5hqkxJlh0bVk/ERdxoJsT3M10i3E8o/E/xSI500gAZZ8xWyBw
+         Y/P8R1CexisHx3rKpY9dV/008tBWL+RLJ4N79CR2NXhcqmMO+TEjryIOa1e6qZWEE+02
+         WGzCWKLJpkJIFVXow3BvalYICWmyqk+3+lh2q6w8arZtL54T5hR2iFWpcCVgpHmmBEET
+         bFEG4CNo+h1GtqlswzQ5L+MzMSRVDCcgOfaMqWxZVDSzujNxpoZqu4xqPAkejml1OzyX
+         VVvJTKbZp/8zgI6fTxGdh0uAj+EZlALRaqo6mVUBZG5wf+uujL3X6Zfb+4REMexGtx5z
+         gfhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792162712; x=1792767512;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4kgwhKXvrsbFVEHtBB9HsyIrs9QabB8/6eZ9haqu9k4=;
+        b=nNVc/63luHGny+jk8o+Mlw7twJhlrhtSLAzQOtxiUZ9sF5fg39oxrclFMUGvrqbMsG
+         cwPYCk7kJWWES6v2ILg9ROwt4Q2+MTDKLti+hDJOJPFb9NPSlX/tRwaz/vUQxWf3PktW
+         ZdtDZWLHqf+MYugdOyAHommhGxfERbuozqaWX6JJy+hETdAOZyZHKIGl2efYh6M4LzQp
+         zzQ0K5Er2AXNZJJPhPMam/o1kbmdTuHXC0Jq6axejYywvCngsTDo46SlSscEbeXrr3Rw
+         fT095D4xMYt3laq0BVvevUUNlEvvG46Tbbo2FNSELtcFPWN9rbTJtX3oQ550FEXBnpYa
+         ZzOg==
+X-Forwarded-Encrypted: i=1; AKwUvBzPnx+pOYeF92wrpqO82VmvHVHVOYM+duplwFR2mX17sBZGKEnMKaL6/zGPvzsdbtMQVRE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIEHOuTq0Xmh9IchwWZxB24UXhuc8cMWSv6pggciweey6rKV1Xx
+	6JP9nwL58rlZGQTy9XauR6BwWs8/lPm5YyKqeI7tY0oxg79wGwW2yXuABxTNc+8tt/0=
+X-Gm-Gg: AYBFou3/e3NZwGNlk9Np25W4gJo+RrG2CDaswHQ4zbUVSAP/OBsuq3Bdp9FsF5Yx22F
+	BJ0UNv2BFngDofdmCJAc1BoHfxBDEnDw8WropoYwyzGmHaKgdJSMLdTVGgdq7GwGl9O2zXVPiaL
+	Sk/e5W4PefTknXerWHasBJHo+X9JQdSbOC5RvaB3hhNS2CGGX1tx2rZVpkkAs3L4IzLuvT8jWon
+	X32dzhPqLz0q7ZfBNKLhbEr1js+1TeU7BNHwxmgHIIYxc0K4knPQai2RjmcHhr0Si41sUjwSeJ0
+	zpafrDFnIZO+HiaO60fbOraDb5zq1P57nFScb9YVF5nfbqzK6AnQugMuoROpf1VfEGvtIysOUqQ
+	WU9ytQYkTEMw8xGzb7rZSQ975JD9OPylmk2SGw4+dwQaKrnXjQiUma10s4+Fx/hitlKDTzICrxF
+	8DXVpDKzqwmw7juPn5eI+/pMhRvf2hm6SMNIf4TbsJLM0zUckiwaus0inwe/7VmroZr0SiNpbAA
+	dSFIjgXhIVDhq2iEYa25H69vQuz5qthdRBqQx/ZAIOEW5pTfjZth0ib
+X-Received: by 2002:a05:622a:2b06:b0:533:920d:7bf8 with SMTP id d75a77b69052e-5359fae3efdmr392482121cf.24.1792162712412;
+        Fri, 16 Oct 2026 07:58:32 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362aa19fefsm24355711cf.23.2026.10.16.07.58.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 07:58:31 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xHjOA-00000001tOb-2Mjk;
+	Fri, 16 Oct 2026 11:58:30 -0300
+Date: Fri, 16 Oct 2026 11:58:30 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
+ capable IOMMUs
+Message-ID: <20261016145830.GA448730@ziepe.ca>
+References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+ <20261015010705.1973284-5-baolu.lu@linux.intel.com>
+ <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050>
+ <20261015173707.GV14213@ziepe.ca>
+ <5ca5f1c4-4c3c-47f1-b79c-c1fe06b20ee4@linux.intel.com>
+ <CO1PR11MB4836E2CB05E1448BB42047458C9B2@CO1PR11MB4836.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CO1PR11MB4836E2CB05E1448BB42047458C9B2@CO1PR11MB4836.namprd11.prod.outlook.com>
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Fri, Oct 16, 2026 at 07:17:31AM +0000, Tian, Kevin wrote:
+> +Aneesh.
+> 
+> > From: Baolu Lu <baolu.lu@linux.intel.com>
+> > Sent: Friday, October 16, 2026 3:03 PM
+> > 
+> > On 10/16/2026 1:37 AM, Jason Gunthorpe wrote:
+> > > On Thu, Oct 15, 2026 at 04:31:31PM +0800, Xu Yilun wrote:
+> > >
+> > >> An alternative could be, bringing up one IOMMU when an associated
+> > >> device requests link encryption. Then a no-tdx-support iommu fails the
+> > >> encryption request naturally.
+> > > That is what ARM is planning to do. I think it is reasonable to
+> > > trigger creation of the secure iommu when the TSM is connected to TDX.
+> > >
+> > > Fail connect if the iommu could not be created.
+> > 
+> > Yes, agreed. The Intel iommu driver could use per-device interfaces,
+> > just as ARM is planning. There are some differences, though.
+> > 
+> > ARM's interaction with the iommu driver in viommu_init() appears to
+> > consist of two steps:
+> > 
+> >   - arm_smmu_get_realm_params(dev, &params): get and validate the
+> >     physical iommu information from the arm-smmu-v3 driver;
+> >   - cca_psmmu_get(&params): activate the physical smmu for Realm use.
+> > 
+> > Intel differs in two ways:
+> > 
+> >   - ARM queries the physical iommu information from the iommu driver
+> >     in the viommu_init() path. On Intel, the secure iommu must be set
+> >     up during TSM connect, because it is part of establishing PCIe
+> >     link encryption.
+> 
+> My understanding is that the psmmu is required for link encryption, so
+> it's similar ordering here i.e. activated before tsm connect?
 
-Activating a shared_info, vcpu_info, pvclock or runstate cache can
-fail if it races a memslot update: previously with -EFAULT, now with
--EAGAIN. These ioctls may sleep, so pass wait and let the activation
-ride the update out; userspace never sees the transient state.
+No, AFAIK? The psmmu has to be linked before creating the vdev, and in
+the current spec the only way to get the measurements is through the
+vdev, but I am expecting that to change.
 
-The waiting is done without xen_lock held. A vCPU writing the
-hypercall page MSR blocks on xen_lock from within its kvm->srcu read
-section, and the memslot update cannot complete until that section
-quiesces, so an ioctl waiting while holding the lock would deadlock
-all three. Deactivations and the attribute field updates themselves
-stay under the lock; concurrent SET_ATTR calls racing through an
-activation window are userspace's own race, serialized by the cache's
-refresh_lock, and the last one wins. Document the rule at the lock's
-definition.
+I have no idea what brilliant idea caused the VT-d iommu HW to become
+involved in DOE and link IDE configuration in the root port. That
+makes very little sense from an architecture perspective.
 
-This also means two kvm_xen_shared_info_init() calls can publish the
-wallclock concurrently, no longer excluded by xen_lock. That is
-harmless: concurrent writers compute the same epoch, modulo
-nanoseconds of jitter, and each re-reads long_mode to pick the
-destination, so the location for the final mode is always freshly
-written. Interleaving two observably different snapshots would
-require userspace to race its own clock update against its own
-attribute calls, and even full serialization would give it one or
-the other arbitrarily.
+> >   - The TDX Connect architecture places requirements on the host
+> >     iommu driver while the secure IOMMU is being set up. For example,
+> >     the host iommu driver must block the enhanced command (ECMD)
+> >     interface while the TDH.IOMMU.SETUP SEAMCALL runs, and it must
+> >     reserve the upper half of the domain ID space. These steps have
+> >     to happen atomically under the iommu driver's own locks. As a
+> >     result, the Intel iommu driver needs to merge the two steps above
+> >     into one.
+> 
+> Didn't get this. Both ECMD and DID reservation are TDX specific things.
+> How are they related to the two steps in the ARM sides and why calls
+> for merging?
+> 
+> and why are they must be done atomically? they are conditions to
+> execute TDH.IOMMU.SETUP, but it is perfectly fine to reserve DID
+> at an early point then block ECMD later...
 
-The hypercall page MSR write cannot wait at all — it would be waiting
-out its own srcu read section — so its shared_info re-init passes
-wait=false and ignores -EAGAIN, proceeding with the stale wallclock
-snapshot. The wallclock is written only here and in the attribute
-paths, so nothing retries it, but hitting that window requires the
-guest to change its own bitness while userspace is simultaneously
-rearranging memslots. A real failure (-EFAULT) still fails the WRMSR
-as it always did.
+That's going to be a bit of a PITA, since the DIDs can be in use when
+the tdx module is start potentially.
 
-kvm_xen_shared_info_init() gains the wait flag for its refresh.
-It and xen_get_guest_pvclock() keep a kvm->srcu read section around
-each kvm_gpc_check() and the access through the mapping — the check
-consults the memslots — but drop it across the refresh.
+I suppose you can start out by just failing if this has happened.
 
-The kvm->srcu read sections around the activation calls go away;
-they existed to satisfy the old refresh contract, and holding one
-across a waiting activation would deadlock against the memslot
-update. The runstate updates in kvm_xen_vcpu_set_attr() still read
-guest state through the caches, so they keep narrow read sections
-of their own.
+But as soon as reasonably possible once the system opts into a TDX
+operation the VT-d drivers should stop using the upper did space.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Assisted-by: LLM
----
- arch/x86/include/asm/kvm_host.h |   6 ++
- arch/x86/kvm/xen.c              | 125 +++++++++++++++++++++++---------
- 2 files changed, 95 insertions(+), 36 deletions(-)
+Otherwise you will have to implement live DID renaming, which is a
+PITA in an iommu driver.
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 3af7395c2430..ed633a39a97a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1108,6 +1108,12 @@ struct kvm_hv {
- #ifdef CONFIG_KVM_XEN
- /* Xen emulation context */
- struct kvm_xen {
-+	/*
-+	 * Taken from within kvm->srcu read sections (e.g. by a vCPU
-+	 * writing the hypercall page MSR), so never held while waiting
-+	 * out a memslot update: the update waits for those read
-+	 * sections to quiesce.
-+	 */
- 	struct mutex xen_lock;
- 	u32 xen_version;
- 	bool long_mode;
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index d64630a417a7..5901b5711c3a 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -36,7 +36,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r);
- 
- DEFINE_STATIC_KEY_DEFERRED_FALSE(kvm_xen_enabled, HZ);
- 
--static int kvm_xen_shared_info_init(struct kvm *kvm)
-+static int kvm_xen_shared_info_init(struct kvm *kvm, bool wait)
- {
- 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
- 	struct pvclock_wall_clock *wc;
-@@ -44,17 +44,24 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
- 	u32 wc_version;
- 	u64 wall_nsec;
- 	int ret = 0;
--	int idx = srcu_read_lock(&kvm->srcu);
-+	int idx;
- 
--	read_lock_irq(&gpc->lock);
--	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
-+	/*
-+	 * kvm_gpc_check() consults the memslots, so take kvm->srcu around
-+	 * each check and the write through the mapping — but not across
-+	 * the refresh, which may wait for a memslot update to complete.
-+	 */
-+	for (;;) {
-+		idx = srcu_read_lock(&kvm->srcu);
-+		read_lock_irq(&gpc->lock);
-+		if (kvm_gpc_check(gpc, PAGE_SIZE))
-+			break;
- 		read_unlock_irq(&gpc->lock);
-+		srcu_read_unlock(&kvm->srcu, idx);
- 
--		ret = kvm_gpc_refresh(gpc, PAGE_SIZE, false);
-+		ret = kvm_gpc_refresh(gpc, PAGE_SIZE, wait);
- 		if (ret)
- 			goto out;
--
--		read_lock_irq(&gpc->lock);
- 	}
- 
- 	/*
-@@ -98,9 +105,9 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
- 
- 	wc->version = wc_version + 1;
- 	read_unlock_irq(&gpc->lock);
-+	srcu_read_unlock(&kvm->srcu, idx);
- 
- out:
--	srcu_read_unlock(&kvm->srcu, idx);
- 	return ret;
- }
- 
-@@ -155,21 +162,29 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
- 				 unsigned int offset)
- {
- 	unsigned long flags;
--	int r;
-+	int idx, r;
- 
--	read_lock_irqsave(&gpc->lock, flags);
--	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
-+	/*
-+	 * As in kvm_xen_shared_info_init(): kvm_gpc_check() consults the
-+	 * memslots, so take kvm->srcu around each check and the copy, but
-+	 * not across the refresh.
-+	 */
-+	for (;;) {
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
-+		read_lock_irqsave(&gpc->lock, flags);
-+		if (kvm_gpc_check(gpc, offset + sizeof(*hv_clock)))
-+			break;
- 		read_unlock_irqrestore(&gpc->lock, flags);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 
- 		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock), false);
- 		if (r)
- 			return r;
--
--		read_lock_irqsave(&gpc->lock, flags);
- 	}
- 
- 	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
- 	read_unlock_irqrestore(&gpc->lock, flags);
-+	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 
- 	/*
- 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
-@@ -784,27 +799,34 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
- 		} else {
- 			mutex_lock(&kvm->arch.xen.xen_lock);
- 			kvm->arch.xen.long_mode = !!data->u.long_mode;
-+			mutex_unlock(&kvm->arch.xen.xen_lock);
- 
- 			/*
- 			 * Re-initialize shared_info to put the wallclock in the
- 			 * correct place. Whilst it's not necessary to do this
- 			 * unless the mode is actually changed, it does no harm
--			 * to make the call anyway.
-+			 * to make the call anyway. Done without xen_lock held:
-+			 * the init may wait out a memslot update, and a vCPU
-+			 * may block on xen_lock from within the kvm->srcu read
-+			 * section which that update must wait out.
- 			 */
- 			r = kvm->arch.xen.shinfo_cache.active ?
--				kvm_xen_shared_info_init(kvm) : 0;
--			mutex_unlock(&kvm->arch.xen.xen_lock);
-+				kvm_xen_shared_info_init(kvm, true) : 0;
- 		}
- 		break;
- 
- 	case KVM_XEN_ATTR_TYPE_SHARED_INFO:
- 	case KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA: {
--		int idx;
--
-+		/*
-+		 * Deactivation stays under xen_lock, but an activation may
-+		 * wait out a memslot update and so must not hold it: a vCPU
-+		 * may block on xen_lock from within the kvm->srcu read
-+		 * section which that update must wait out. Concurrent
-+		 * SET_ATTR calls racing in the window are userspace's own
-+		 * race; the cache layer serializes them, last one wins.
-+		 */
- 		mutex_lock(&kvm->arch.xen.xen_lock);
- 
--		idx = srcu_read_lock(&kvm->srcu);
--
- 		if (data->type == KVM_XEN_ATTR_TYPE_SHARED_INFO) {
- 			gfn_t gfn = data->u.shared_info.gfn;
- 
-@@ -812,8 +834,10 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
- 				kvm_gpc_deactivate(&kvm->arch.xen.shinfo_cache);
- 				r = 0;
- 			} else {
-+				mutex_unlock(&kvm->arch.xen.xen_lock);
- 				r = kvm_gpc_activate(&kvm->arch.xen.shinfo_cache,
--						     gfn_to_gpa(gfn), PAGE_SIZE, false);
-+						     gfn_to_gpa(gfn), PAGE_SIZE, true);
-+				mutex_lock(&kvm->arch.xen.xen_lock);
- 			}
- 		} else {
- 			void __user * hva = u64_to_user_ptr(data->u.shared_info.hva);
-@@ -829,12 +853,11 @@ int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data)
- 			}
- 		}
- 
--		srcu_read_unlock(&kvm->srcu, idx);
-+		mutex_unlock(&kvm->arch.xen.xen_lock);
- 
- 		if (!r && kvm->arch.xen.shinfo_cache.active)
--			r = kvm_xen_shared_info_init(kvm);
-+			r = kvm_xen_shared_info_init(kvm, true);
- 
--		mutex_unlock(&kvm->arch.xen.xen_lock);
- 		break;
- 	}
- 	case KVM_XEN_ATTR_TYPE_UPCALL_VECTOR:
-@@ -937,7 +960,6 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 	int idx, r = -ENOENT;
- 
- 	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
--	idx = srcu_read_lock(&vcpu->kvm->srcu);
- 
- 	switch (data->type) {
- 	case KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO:
-@@ -959,8 +981,16 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 			if (!IS_ALIGNED(data->u.gpa, sizeof(u32)))
- 				break;
- 
-+			/*
-+			 * As with the shared_info attributes: a waiting
-+			 * activation must not hold xen_lock, on which a
-+			 * vCPU may block from within the kvm->srcu read
-+			 * section the memslot update has to wait out.
-+			 */
-+			mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
- 			r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_info_cache,
--					     data->u.gpa, sizeof(struct vcpu_info), false);
-+					     data->u.gpa, sizeof(struct vcpu_info), true);
-+			mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
- 		} else {
- 			if (data->u.hva == 0) {
- 				kvm_gpc_deactivate(&vcpu->arch.xen.vcpu_info_cache);
-@@ -988,9 +1018,11 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 			break;
- 		}
- 
-+		mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
- 		r = kvm_gpc_activate(&vcpu->arch.xen.vcpu_time_info_cache,
- 				     data->u.gpa,
--				     sizeof(struct pvclock_vcpu_time_info), false);
-+				     sizeof(struct pvclock_vcpu_time_info), true);
-+		mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
- 		if (!r)
- 			kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
- 		break;
-@@ -1022,10 +1054,14 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 
- 		/* How much fits in the (first) page? */
- 		sz1 = PAGE_SIZE - (data->u.gpa & ~PAGE_MASK);
-+
-+		mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
- 		r = kvm_gpc_activate(&vcpu->arch.xen.runstate_cache,
--				     data->u.gpa, sz1, false);
--		if (r)
-+				     data->u.gpa, sz1, true);
-+		if (r) {
-+			mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
- 			goto deactivate_out;
-+		}
- 
- 		/* Either map the second page, or deactivate the second GPC */
- 		if (sz1 >= sz) {
-@@ -1034,12 +1070,17 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 			sz2 = sz - sz1;
- 			BUG_ON((data->u.gpa + sz1) & ~PAGE_MASK);
- 			r = kvm_gpc_activate(&vcpu->arch.xen.runstate2_cache,
--					     data->u.gpa + sz1, sz2, false);
--			if (r)
-+					     data->u.gpa + sz1, sz2, true);
-+			if (r) {
-+				mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
- 				goto deactivate_out;
-+			}
- 		}
-+		mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
- 
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		kvm_xen_update_runstate_guest(vcpu, false);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		break;
- 	}
- 	case KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_CURRENT:
-@@ -1052,7 +1093,9 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 			break;
- 		}
- 
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		kvm_xen_update_runstate(vcpu, data->u.runstate.state);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		r = 0;
- 		break;
- 
-@@ -1132,10 +1175,12 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 		vcpu->arch.xen.runstate_times[RUNSTATE_offline] +=
- 			data->u.runstate.time_offline;
- 
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		if (data->u.runstate.state <= RUNSTATE_offline)
- 			kvm_xen_update_runstate(vcpu, data->u.runstate.state);
- 		else if (vcpu->arch.xen.runstate_cache.active)
- 			kvm_xen_update_runstate_guest(vcpu, false);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		r = 0;
- 		break;
- 
-@@ -1181,7 +1226,6 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 		break;
- 	}
- 
--	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 	mutex_unlock(&vcpu->kvm->arch.xen.xen_lock);
- 	return r;
- }
-@@ -1326,11 +1370,20 @@ int kvm_xen_write_hypercall_page(struct kvm_vcpu *vcpu, u64 data)
- 
- 		/*
- 		 * Re-initialize shared_info to put the wallclock in the
--		 * correct place.
-+		 * correct place. The wallclock is a snapshot, written only
-+		 * here, and this cannot wait out a memslot update from
-+		 * within the vCPU's kvm->srcu read section. If it races
-+		 * one (-EAGAIN), just proceed with the stale snapshot; a
-+		 * guest changing its own bitness while userspace is
-+		 * rearranging memslots has only itself to blame. A real
-+		 * failure still fails the WRMSR as it always did.
- 		 */
--		if (kvm->arch.xen.shinfo_cache.active &&
--		    kvm_xen_shared_info_init(kvm))
--			r = 1;
-+		if (kvm->arch.xen.shinfo_cache.active) {
-+			int ret = kvm_xen_shared_info_init(kvm, false);
-+
-+			if (ret && ret != -EAGAIN)
-+				r = 1;
-+		}
- 	}
- 	mutex_unlock(&kvm->arch.xen.xen_lock);
- 
--- 
-2.43.0
+Jason
 
