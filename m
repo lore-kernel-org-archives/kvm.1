@@ -1,123 +1,201 @@
-Received: from mta1.migadu.com (out-233.mta1.migadu.com [95.215.58.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3B2443ABE
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 08:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C913B38AF
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 08:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792137681; cv=none; b=ZXHPVeKGmLxe5iX+QWfXaPElVy4vXAMplQbGAvBla317HVbPJJZaHMAp5ZAS9GEqA6PhkTFYRyjDF2F1DDzwmr/8PjEv+DGwvRW4LJoAhx16qubOp8eqFVKkmIZOVGCviMVrqxS1zeYtY9NSOSBfARYY4A8PoPYlN9nDvWmjoyQ=
+	t=1792139144; cv=none; b=K1nCoXTL63y++aBco90nLYu+ANtuSUatZ2Rpkxqvef5jHbvBtGAdYmkJ9+gq0IVg0DY9WJbv6qEC9afbVaBnmeQMJNL2e2vXNtHl/A2ZDu+WMnEhfejhNW9n6Z4kjI2I/uLnnTLdhtuYyh/y61ss9sKpCVBpB8LRHChOysG0iwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792137681; c=relaxed/simple;
-	bh=njluWDIpoeZU4jBqpL6b8E6MdLPNtMq8KoaKPgk7RPQ=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=R/NxR/xKYQVMXAZo8Ze1NFYzZpd4IwbXvwsJQ03YiYi+zO+JwxEQCeV5V4//RsF5MU7TYdjrDIvKLNa5w5lIkZqQRW395EItFGzAzbStHywRceRAVreci2lNgczvvpAN6Y8MELE0wLs2hdaMsptBncM681sYCrDAQ5vv0ZgPvIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TbH9DvlD; arc=none smtp.client-ip=95.215.58.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1792139144; c=relaxed/simple;
+	bh=KAfd8tRH2E+vvJpLkFEh63/NAmBOZN4lDvDMX9uzf5s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pi1J3OKEdZWXG9fQlv/sH/WqSMCe/WVIFMzdHdrbYJgpP4/1l73OT5Et15n6ieeoG9vWHIWscI8dSQwZ964v8MKs/92BcuQixUvOl71HFGumvYkIQEWr3nmBy249B6pwpMhaHQvlAl/NZMEZzBIv7R+w19NMwugcBQe4XdotBBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRoAjjQH; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TbH9DvlD"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=njluWDIpoeZU4jBqpL6b8E6MdLPNtMq8KoaKPgk7RPQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792137675; v=1; x=1792742475;
- b=TbH9DvlDHtSqQReohc9BoD3r3Vt+dzXKeIvrT+7ItBCHsd26PzAKnacRmq5qwuU+UiFV+yko
- A+D5PpjZRZ/CLJrO3+vYs1p4NeNSGrAIim3sVXGG9kMKpVx400bQAM0uRn9Jp94rZyy8PdjqiVV
- m4xGJR6v3YKsQhH276mKPMbA=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 5b0e9e4f0d93aed3;
-	Fri, 16 Oct 2026 08:01:15 +0000
-X-Mizu-Trace-ID: 5b0e9e4f0d93aed3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3747972d-0133-4542-a314-40ff1c688937@linux.dev>
-Date: Fri, 16 Oct 2026 16:01:06 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRoAjjQH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792139143; x=1823675143;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KAfd8tRH2E+vvJpLkFEh63/NAmBOZN4lDvDMX9uzf5s=;
+  b=dRoAjjQHbcu60fYhIO7ZboCy/l7lbvo7ffJL3gXX1AZld/0/BjsHth/U
+   PqjQuP8wyfdANq+4MxTD51mUdzNA9OCEGwP/JthccnUzP/eUJw7wWsTOZ
+   McZaRHm7sHD6Ml1irco1bSdPB+SLgBZTQa/gOZQ3jMJEBVCRHNoTS3fKV
+   OE1iDjK+O/whJIF3rRZ6LW78yLDsKRr2YY7vJF4MGoT+iby+MlvQWwd/k
+   2WLDla4RXy3huszAlsGs9IHpFSY6/MhSilyCbBNdE0P6253gsQv06NV9g
+   gYRn0yave8Wamz9L02dCLBiihFQo9ExIAdcBjH5PUu0Lw7d65dv2RmHsS
+   w==;
+X-CSE-ConnectionGUID: QSxCzryHQ4+SYIt+Fx2GLQ==
+X-CSE-MsgGUID: 8PjhHy3XSxahkWLbjg9waA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="812313"
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="812313"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 01:23:27 -0700
+X-CSE-ConnectionGUID: u5J2rt91RgyRRrpNhQby/w==
+X-CSE-MsgGUID: kNfHIRW4RAm85ARoSZ/D7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="2143052"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 16 Oct 2026 01:23:20 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xHdDg-00000000HtS-105i;
+	Fri, 16 Oct 2026 08:23:16 +0000
+Date: Fri, 16 Oct 2026 16:23:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sairaj Kodilkar <sarunkod@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Li RongQing <lirongqing@baidu.com>, Marco Elver <elver@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	iommu@lists.linux.dev, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v5 7/7] iommu/amd: Provide kernel command line option to
+ enable GAPPI
+Message-ID: <202610161625.7iSczyVo-lkp@intel.com>
+References: <20261015064515.10700-8-sarunkod@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, loongarch@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@xen0n.name,
- nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [PATCH v4 3/3] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-To: Bibo Mao <maobibo@loongson.cn>, chenhuacai@kernel.org,
- zhaotianrui@loongson.cn
-References: <20261015234638.1077815-1-cui.tao@linux.dev>
- <20261015234638.1077815-4-cui.tao@linux.dev>
- <bd455df4-49e8-c80c-a5cc-b0feabeb3262@loongson.cn>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <bd455df4-49e8-c80c-a5cc-b0feabeb3262@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015064515.10700-8-sarunkod@amd.com>
 
-Hi，Bibo
+Hi Sairaj,
 
-在 2026/10/16 9:31, Bibo Mao 写道:
-> 
-> 
-> On 2026/10/16 上午7:46, Tao Cui wrote:
->> From: Tao Cui <cuitao@kylinos.cn>
->>
->> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
->> invocation: every call overwrites pch_pic_base and registers the same
->> kvm_io_device on the MMIO bus at the new address, while
->> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
->> init, MMIO to the stale ranges computes its register offset against the
->> new base and silently reads 0 / drops writes, and the leftover bus
->> entries persist until the VM is destroyed.
->>
->> Reject repeated initialization with -EEXIST, using the initialized
->> state of the kvm_io_device as the indicator.  The check, the MMIO base
->> update and the bus registration are serialized by slots_lock, and the
->> real registration error is propagated instead of being replaced with
->> -EFAULT.
->>
->> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
->> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
->> ---
->>   arch/loongarch/kvm/intc/pch_pic.c | 11 ++++++++---
->>   1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
->> index 51e4a6a39dc0..a4c35ed704be 100644
->> --- a/arch/loongarch/kvm/intc/pch_pic.c
->> +++ b/arch/loongarch/kvm/intc/pch_pic.c
->> @@ -281,16 +281,21 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
->>       struct kvm_io_device *device;
->>       struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
->>   -    s->pch_pic_base = addr;
->>       device = &s->device;
->> +    mutex_lock(&kvm->slots_lock);
->> +    if (s->device.ops) {
->> +        ret = -EEXIST;
->> +        goto out;
->> +    }
->> +    s->pch_pic_base = addr;
->>       /* init device by pch pic writing and reading ops */
->>       kvm_iodevice_init(device, &kvm_pch_pic_ops);
->> -    mutex_lock(&kvm->slots_lock);
->>       /* register pch pic device */
->>       ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
->> +out:
->>       mutex_unlock(&kvm->slots_lock);
-> one small nit, what to do if there is failure with kvm_io_bus_register_dev()?  clear s->pch_pic_base and  s->device.ops?
-> 
+kernel test robot noticed the following build errors:
 
-I missed this.  You're right. On the failure path I should undo the
-state set before kvm_io_bus_register_dev(). I'll fix that in the next
-revision.
+[auto build test ERROR on 4056b3c9d3c92ea45955641dbafeb9b960e146ef]
 
-Thanks，
-Tao
+url:    https://github.com/intel-lab-lkp/linux/commits/Sairaj-Kodilkar/iommu-amd-KVM-SVM-Rename-cpu-to-apicid-in-IOMMU-interface/20261015-121509
+base:   4056b3c9d3c92ea45955641dbafeb9b960e146ef
+patch link:    https://lore.kernel.org/r/20261015064515.10700-8-sarunkod%40amd.com
+patch subject: [PATCH v5 7/7] iommu/amd: Provide kernel command line option to enable GAPPI
+config: x86_64-randconfig-1017-20261016 (https://download.01.org/0day-ci/archive/20261016/202610161625.7iSczyVo-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610161625.7iSczyVo-lkp@intel.com/reproduce)
 
-> Regards
-> Bibo Mao
->>   -    return (ret < 0) ? -EFAULT : 0;
->> +    return ret;
->>   }
->>     /* used by user space to get or set pch pic registers */
->>
-> 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610161625.7iSczyVo-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+   drivers/iommu/amd/init.c:163:6: error: redefinition of 'false' as different kind of symbol
+     163 | bool amd_iommu_gappi;
+         |      ^
+   include/linux/amd-iommu.h:65:25: note: expanded from macro 'amd_iommu_gappi'
+      65 | #define amd_iommu_gappi false
+         |                         ^
+   include/linux/stddef.h:11:2: note: previous definition is here
+      11 |         false   = 0,
+         |         ^
+   drivers/iommu/amd/init.c:164:15: error: redefinition of 'false' as different kind of symbol
+     164 | EXPORT_SYMBOL(amd_iommu_gappi);
+         |               ^
+   include/linux/amd-iommu.h:65:25: note: expanded from macro 'amd_iommu_gappi'
+      65 | #define amd_iommu_gappi false
+         |                         ^
+   include/linux/stddef.h:11:2: note: previous definition is here
+      11 |         false   = 0,
+         |         ^
+   drivers/iommu/amd/init.c:164:1: error: cannot take the address of an rvalue of type 'int'
+     164 | EXPORT_SYMBOL(amd_iommu_gappi);
+         | ^             ~~~~~~~~~~~~~~~
+   include/linux/export.h:89:29: note: expanded from macro 'EXPORT_SYMBOL'
+      89 | #define EXPORT_SYMBOL(sym)              _EXPORT_SYMBOL(sym, "")
+         |                                         ^              ~~~
+   include/linux/export.h:86:38: note: expanded from macro '_EXPORT_SYMBOL'
+      86 | #define _EXPORT_SYMBOL(sym, license)    __EXPORT_SYMBOL(sym, license, "")
+         |                                         ^               ~~~
+   include/linux/export.h:77:2: note: expanded from macro '__EXPORT_SYMBOL'
+      77 |         __ADDRESSABLE(sym)                                      \
+         |         ^             ~~~
+   include/linux/compiler.h:276:2: note: expanded from macro '__ADDRESSABLE'
+     276 |         ___ADDRESSABLE(sym, __section(".discard.addressable"))
+         |         ^              ~~~
+   include/linux/compiler.h:273:63: note: expanded from macro '___ADDRESSABLE'
+     273 |         __UNIQUE_ID(__PASTE(addressable_, sym)) = (void *)(uintptr_t)&sym;
+         |                                                                      ^~~~
+>> drivers/iommu/amd/init.c:3804:20: error: expression is not assignable
+    3804 |                         amd_iommu_gappi = true;
+         |                         ~~~~~~~~~~~~~~~ ^
+   4 errors generated.
+
+
+vim +3804 drivers/iommu/amd/init.c
+
+  3775	
+  3776	static int __init parse_amd_iommu_options(char *str)
+  3777	{
+  3778		if (!str)
+  3779			return -EINVAL;
+  3780	
+  3781		while (*str) {
+  3782			if (strncmp(str, "fullflush", 9) == 0) {
+  3783				pr_warn("amd_iommu=fullflush deprecated; use iommu.strict=1 instead\n");
+  3784				iommu_set_dma_strict();
+  3785			} else if (strncmp(str, "force_enable", 12) == 0) {
+  3786				amd_iommu_force_enable = true;
+  3787			} else if (strncmp(str, "off", 3) == 0) {
+  3788				amd_iommu_disabled = true;
+  3789			} else if (strncmp(str, "force_isolation", 15) == 0) {
+  3790				amd_iommu_force_isolation = true;
+  3791			} else if (strncmp(str, "pgtbl_v1", 8) == 0) {
+  3792				amd_iommu_pgtable = PD_MODE_V1;
+  3793			} else if (strncmp(str, "pgtbl_v2", 8) == 0) {
+  3794				amd_iommu_pgtable = PD_MODE_V2;
+  3795			} else if (strncmp(str, "irtcachedis", 11) == 0) {
+  3796				amd_iommu_irtcachedis = true;
+  3797			} else if (strncmp(str, "nohugepages", 11) == 0) {
+  3798				pr_info("Restricting V1 page-sizes to 4KiB");
+  3799				amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_4K;
+  3800			} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
+  3801				pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
+  3802				amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
+  3803			} else if (strncmp(str, "gappi", 5) == 0) {
+> 3804				amd_iommu_gappi = true;
+  3805			} else {
+  3806				pr_notice("Unknown option - '%s'\n", str);
+  3807			}
+  3808	
+  3809			str += strcspn(str, ",");
+  3810			while (*str == ',')
+  3811				str++;
+  3812		}
+  3813	
+  3814		return 1;
+  3815	}
+  3816	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
