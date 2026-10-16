@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E64468C37;
-	Fri, 16 Oct 2026 09:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AFF466B75;
+	Fri, 16 Oct 2026 09:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141833; cv=none; b=b9DxUL2hr0Tq45a/xbI2+dvu8hAhU2Gwen3Qfk5MGYO9gnm+qNhCwYMu9t1WPYfZ6W7EVryTXZWaWDak4HFz4eSOG7T9IE8SgR1nzxOsU0PGMDEhaFrT2rDLFY4l6T5uqzjuUNrPIeATdy1wa3/WE5yiifGqryJ4/AJJg6KkMC8=
+	t=1792141836; cv=none; b=J9VcPvQu9Z5l1oSZrmmLdkTzLD4pwChudJiPgkwHzGvZRTTpdTEtP7mrT1BvALnCMa+rCjWR52h6tjGr2fZ+CSbwrZn7PZ1tCkYRrfCtAPMbEEctaggKVbBg55sPdcEA28TJNkOJH2eZthXYR2/jD9z1pxj7Nj7rp7AAHCJyhlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141833; c=relaxed/simple;
-	bh=axyD8OVAMk3Wtc0/earijSD6skFEO+Hk+l1bvj2fTeM=;
+	s=arc-20240116; t=1792141836; c=relaxed/simple;
+	bh=5wbBRUQbbpMowga1bd7vW9+BrHNhlbotyhkWM0U3Y+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdKrN8linUkWGeZeSVDBDXS2/+h0MoAFzoaYnQedhTPYCv3YuOjhZTqhF2y05mjdb6PlhPpq8aZkGEOggqRtp4hajW6J99uT7Ci4ROoQF9ky2AeImECuCUg1wE/zqMgPMpsqHE4+Ud+MaJOt5UdIkEQL+fQXQ8rhTNKM9uGjww8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hxj74d3J; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=G805nkE1ds11f/KtYOzlM/yQpthx5Q7CuR0nq3P9Rp5Uc1TiaukloHdG9Iqu+TKe8xncmCOpWjOWwV7K9917JkZreo41VNGvkwPrETUWsRn6x8wW54MXcCDSuygqTTXDZUZvPI3W+T6qTqKe/SXrQADD6kw5KxRDqakbNg5DRJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eh/0yF0P; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hxj74d3J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eh/0yF0P"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792141831; x=1823677831;
+  t=1792141834; x=1823677834;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=axyD8OVAMk3Wtc0/earijSD6skFEO+Hk+l1bvj2fTeM=;
-  b=hxj74d3JT1oLf0CraeppVCNL1RnHRfKtDz6M91LejEfz90LmiB7gysFz
-   +71DC4Vs+W/I4saUSMV/Y+/31wzBg5GKMSRvSUuPMI0oSmBhyjTt+79ym
-   L39kbpRDao5rdSdBvN0l6PSYZQ7WxghDCCzFB51Fh3o7UQNqGRQ63JF/7
-   ctPn/diJRlq5F8CJN7Jcg/baOBIN/j6jrh9o/Oy45oyAfmlKo6jck+yt0
-   9aiFFgCpgiOoFDBFQlC8FagMHWoxtnr0BVFnQbeBj6HkswsYZ1rsIpqT+
-   XP6x3abxf1/3/fJoGjRQoiwnGFw+goF9zJhw5ugDMlGb7vDsEjo6thOy2
-   Q==;
-X-CSE-ConnectionGUID: NoffNtIFSHi3/4cxke71+g==
-X-CSE-MsgGUID: pwP9jd6xQGi7/PC1QPk2sQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="927121"
+  bh=5wbBRUQbbpMowga1bd7vW9+BrHNhlbotyhkWM0U3Y+0=;
+  b=Eh/0yF0PSuEQmuJp7TqrYUGI6z/vgBWLtebSyt6vKF2ms5Azh14kx/Jf
+   5Og9OP0ioNp62rBFuoDHRf9V0+Sht+Si+ARMf5fSBFZUxKd4H5hF81kBM
+   ztUEvNNtPy6jXwxkoNuwzdvrWT6dU16TBkTG3U24ERaPFwxW8dn4QXIKn
+   blAVY8ZT5J61NXWvHYW/8K/+FQBSkUJXoakHvHOz3hvf5wi0dAid6OB0R
+   CBQYmErrSBsROukSyRBX37tKH1bG9IMdcTQ9+PkhmhKaJcqpmBt+f1Qnw
+   5Zrm78u40YdCJuHTOqm3PoCKzd6iAlQ44kuJh7QalN8/tlpbDL0gDNASU
+   w==;
+X-CSE-ConnectionGUID: j9k2OAesRiGBsLsX8P6AUg==
+X-CSE-MsgGUID: ZM8QLw/gS52DGrFwp+w0VQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="927135"
 X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="927121"
+   d="scan'208";a="927135"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 02:10:30 -0700
-X-CSE-ConnectionGUID: fWEqfsMEQmic9VR31IiGCQ==
-X-CSE-MsgGUID: rCr8xMiJRXOjCS26/yvOfQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 02:10:34 -0700
+X-CSE-ConnectionGUID: m3jAh8UJTJuh6hdasJ0pJA==
+X-CSE-MsgGUID: AhWnXyAcQz2nz2vji0/PCA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="1812554"
+   d="scan'208";a="1812564"
 Received: from litbin-desktop.sh.intel.com ([10.239.57.15])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 02:10:28 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 02:10:31 -0700
 From: Binbin Wu <binbin.wu@linux.intel.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -60,9 +60,9 @@ Cc: seanjc@google.com,
 	dedekind1@gmail.com,
 	adrian.hunter@intel.com,
 	binbin.wu@linux.intel.com
-Subject: [PATCH v5 1/5] KVM: TDX: Check unsupported CPUID bits against the TDX module's subleaf
-Date: Fri, 16 Oct 2026 17:14:18 +0800
-Message-ID: <20261016091422.3182216-2-binbin.wu@linux.intel.com>
+Subject: [PATCH v5 2/5] KVM: TDX: Track configurable CPUID bits allowed by KVM
+Date: Fri, 16 Oct 2026 17:14:19 +0800
+Message-ID: <20261016091422.3182216-3-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
 References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
@@ -74,119 +74,265 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Check for unsupported CPUID bits using the subleaf reported by the TDX
-module instead of the index of the matching userspace entry, so that KVM
-validates the same subleaf that the values are copied into.
+Add tdx_cpu_cfg_caps[] to track the subset of TDX directly configurable
+CPUID feature bits that KVM supports, and initialize it during TDX
+hardware setup.
 
-setup_tdparams_cpuids() walks the directly configurable CPUID leaves
-reported by the TDX module and looks up the corresponding userspace entry
-via kvm_find_cpuid_entry2().  If userspace doesn't set
-KVM_CPUID_FLAG_SIGNIFCANT_INDEX on an entry, kvm_find_cpuid_entry2()
-ignores the entry's index, i.e. the matched entry's index can differ from
-the TDX module's subleaf.  tdx_unsupported_cpuid() checks HLE, RTM and
-WAITPKG based on the userspace entry's index, while the register values
-are applied to the TDX module's subleaf, which allows userspace to bypass
-the check.
+The TDX module reports the CPUID bits that the VMM can directly configure
+for a TD, but KVM can't blindly expose every reported bit to userspace.
+Some features imply additional state, e.g. MSRs, that KVM must context
+switch across host/guest transitions to avoid corrupting host state.  The
+existing hardcoded denylist can't account for such features introduced by
+future TDX modules.
 
-E.g. if userspace provides a CPUID.0x7 entry with index 3, WAITPKG set,
-and KVM_CPUID_FLAG_SIGNIFCANT_INDEX cleared, the entry is matched for the
-TDX module's subleaf 0.  The check sees index 3 and passes, while ECX is
-copied into td_params for CPUID.0x7.0, where WAITPKG is directly
-configurable.  The TDX module accepts the value, and the TD ends up with
-WAITPKG enumerated despite KVM not supporting it.  The same applies to RTM
-and HLE.
+Aside from a few fixed-1 bits required for basic TDX support, features
+that can clobber host state are either directly configurable or controlled
+by TD ATTRIBUTES/XFAM, which KVM already validates.  Thus, an allowlist
+covering only the directly configurable bits is sufficient.
 
-Don't reject the mismatch outright, as the ABI allows userspace to provide
-an arbitrary index when KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared.  It's
-userspace's responsibility to provide the intended entries; KVM only needs
-to ensure that the values it validates are the values it applies.
+Organize tdx_cpu_cfg_caps[] like kvm_cpu_caps[] so that the allowlist can
+be built with feature-name based initializers.  Directly configurable bits
+that aren't feature flags will be handled when building the per-register
+masks for KVM_TDX_CAPABILITIES.
 
-Fixes: 6d415778f106 ("KVM: TDX: Disable support for TSX and WAITPKG")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/kvm/20260604024927.E22311F00893@smtp.kernel.org
-Cc: stable@vger.kernel.org
+Sort the directly configurable CPUID feature bits into three categories:
+
+ 1) Features that KVM supports and tracks in kvm_cpu_caps[].  Use
+    TDX_CFG_F() so that they are also capped by kvm_cpu_caps[].
+
+ 2) Features that KVM supports, or can safely allow, but doesn't track in
+    kvm_cpu_caps[], i.e. MWAIT and HT.  Use TDX_CFG_INDEPENDENT_F().
+
+ 3) Features that are obsolete or unsupported by KVM, and thus excluded,
+    i.e. EST, TM2, CID, SDBG, XTPR, DCA, PN (PSN), ACPI, ACC (TM), PBE,
+    HLE, RTM, CQM (RDT_M), RDT_A, PREFETCHWT1, WAITPKG, TME, PCONFIG,
+    CORE_CAPABILITIES, RAO_INT, FRED, and AMX-TRANSPOSE.
+
+Excluding the features in category 3 shouldn't break userspace, as
+userspace is expected to consult KVM_TDX_CAPABILITIES for the configurable
+bits before invoking KVM_TDX_INIT_VM.  Nor should it break guests, as the
+features are either obsolete or unsupported by KVM, and in the latter case,
+a guest relying on them would already have run into problems.
+CORE_CAPABILITIES is a special case; it will be allowed separately to
+accommodate its legacy fixed-1 definition.
+
+Future changes will use tdx_cpu_cfg_caps[] to filter KVM_TDX_CAPABILITIES
+and to reject unsupported CPUID input to KVM_TDX_INIT_VM, so that directly
+configurable bits introduced by future TDX modules are neither advertised
+to nor configurable by userspace until KVM explicitly opts in.
+
 Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
 v5:
-- Split out from "KVM: TDX: Validate userspace CPUID input for
-  KVM_TDX_INIT_VM" as a standalone fix.  Sashiko reported the issue
-  against the TDX CPUID validation patch, but it also applies to the
-  existing code, so split it out to allow backporting to stable
-  independently of the rest of the series.
-- Check the userspace values against the subleaf reported by the TDX
-  module instead of rejecting the request when there is a mismatch.
+- Simplify the commit message for excluded bits. (Xiaoyao)
+- Use TDX_CFG_INDEPENDENT_F() instead of TDX_CFG_EXTRA_F(). (Xiaoyao)
+- Avoid using "patch" in the commit message. (Rick)
+- Remove comments for host clobbering features KVM doesn't support yet.
+  (Xiaoyao)
+- AMX_COMPLEX should be added for CPUID_7_1_EDX instead of CPUID_1E_1_EAX,
+  it was a wrong fix in v4 to add it for CPUID_1E_1_EAX.
+- Exclude XTPR since TDX/KVM doesn't actually virtualize the feature and
+  guests don't need it.
+- Move the TDX CPUID allowlist code next to the other CPUID helpers.
 
-  A simpler alternative would be to require a zero index when
-  KVM_CPUID_FLAG_SIGNIFCANT_INDEX is cleared, but that would be an ABI
-  change.
+v4:
+- Add XTPR and HT to the allowlist.
+- Explain in the changelog why some directly configurable bits are not
+  added to the allowlist.
+- Improve comments/changelog. (Xiaoyao)
+- Fix the bug that AMX_COMPLEX should be added for CPUID_1E_1_EAX instead
+  of CPUID_7_1_EDX.
+
+v3:
+- Drop the new data structure in v2 and only track feature bits by
+  following the organization of kvm_cpu_caps[], handle non-feature
+  bits separately. (Sean)
+- Use two versions of macros (TDX_CFG_F() vs. TDX_CFG_EXTRA_F()) to
+  distinguish whether a supported TDX configurable CPUID bit should be
+  checked against KVM's common cpu capabilities.
+- Add AMX_COMPLEX since it has been defined in the CPUID virtualization doc.
 ---
- arch/x86/kvm/vmx/tdx.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 153 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 153 insertions(+)
 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index ee1d412b0ee6..ae7135784878 100644
+index ae7135784878..b6e096079655 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -119,9 +119,9 @@ static u32 tdx_set_guest_phys_addr_bits(const u32 eax, int addr_bits)
+@@ -57,6 +57,8 @@ bool enable_tdx __ro_after_init;
+ module_param_named(tdx, enable_tdx, bool, 0444);
  
+ static const struct tdx_sys_info *tdx_sysinfo;
++static u32 tdx_cpu_cfg_caps[NR_KVM_CPU_CAPS] __ro_after_init;
++static_assert(ARRAY_SIZE(tdx_cpu_cfg_caps) == ARRAY_SIZE(kvm_cpu_caps));
+ 
+ void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
+ {
+@@ -117,6 +119,155 @@ static u32 tdx_set_guest_phys_addr_bits(const u32 eax, int addr_bits)
+ 	return (eax & ~GENMASK(23, 16)) | (addr_bits & 0xff) << 16;
+ }
+ 
++#define TDX_VALIDATE_CPU_CAP_USAGE(name)			\
++	BUILD_BUG_ON(__feature_leaf(X86_FEATURE_##name) !=	\
++		     tdx_cpu_cap_init_in_progress)
++
++/* For features that are dependent on kvm_cpu_caps[]. */
++#define TDX_CFG_F(name)					\
++({							\
++	TDX_VALIDATE_CPU_CAP_USAGE(name);		\
++	tdx_cfg_caps |= feature_bit(name);		\
++})
++
++/*
++ * For features that are not dependent on kvm_cpu_caps[], e.g. MWAIT.
++ * Use this version only when there is a justification.
++ */
++#define TDX_CFG_INDEPENDENT_F(name)			\
++({							\
++	TDX_VALIDATE_CPU_CAP_USAGE(name);		\
++	tdx_cfg_caps_independent |= feature_bit(name);	\
++})
++
++#define tdx_cpu_cfg_cap_init(leaf, feature_initializers...)		\
++do {									\
++	const u32 __maybe_unused tdx_cpu_cap_init_in_progress = leaf;	\
++	u32 tdx_cfg_caps_independent = 0;				\
++	u32 tdx_cfg_caps = 0;						\
++									\
++	feature_initializers						\
++	tdx_cpu_cfg_caps[leaf] = (tdx_cfg_caps & kvm_cpu_caps[leaf]) |	\
++				 tdx_cfg_caps_independent;		\
++} while (0)
++
++/*
++ * Initialize tdx_cpu_cfg_caps[], the list of CPUID features that KVM
++ * supports for TDX guests.  It covers only the directly configurable CPUID
++ * bits reported by the TDX module; features controlled by XFAM and
++ * ATTRIBUTES are handled separately.
++ */
++static void __init tdx_initialize_cpu_cfg_caps(void)
++{
++	tdx_cpu_cfg_cap_init(CPUID_1_ECX,
++		/*
++		 * KVM allows userspace to enumerate MONITOR+MWAIT support to
++		 * the guest, but the MWAIT feature flag is never advertised
++		 * to userspace for non-TDX VMs.
++		 */
++		TDX_CFG_INDEPENDENT_F(MWAIT),
++		TDX_CFG_F(TSC_DEADLINE_TIMER),
++		TDX_CFG_F(AVX),
++		TDX_CFG_F(F16C),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_1_EDX,
++		TDX_CFG_F(MCE),
++		TDX_CFG_F(MTRR),
++		TDX_CFG_F(MCA),
++		TDX_CFG_F(SELFSNOOP),
++		/*
++		 * HT is a topology enumeration bit that KVM doesn't care
++		 * about, but userspace may want to expose it to the guests.
++		 */
++		TDX_CFG_INDEPENDENT_F(HT),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_7_0_EBX,
++		TDX_CFG_F(BMI1),
++		TDX_CFG_F(BMI2),
++		TDX_CFG_F(ERMS),
++		TDX_CFG_F(AVX512F),
++		TDX_CFG_F(AVX512DQ),
++		TDX_CFG_F(ADX),
++		TDX_CFG_F(AVX512IFMA),
++		TDX_CFG_F(AVX512PF),
++		TDX_CFG_F(AVX512ER),
++		TDX_CFG_F(AVX512CD),
++		TDX_CFG_F(AVX512BW),
++		TDX_CFG_F(AVX512VL),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_7_ECX,
++		TDX_CFG_F(UMIP),
++		TDX_CFG_F(AVX512_VBMI2),
++		TDX_CFG_F(GFNI),
++		TDX_CFG_F(VAES),
++		TDX_CFG_F(VPCLMULQDQ),
++		TDX_CFG_F(AVX512_VNNI),
++		TDX_CFG_F(AVX512_BITALG),
++		TDX_CFG_F(AVX512_VPOPCNTDQ),
++		TDX_CFG_F(LA57),
++		TDX_CFG_F(RDPID),
++		TDX_CFG_F(CLDEMOTE),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_7_EDX,
++		TDX_CFG_F(AVX512_4VNNIW),
++		TDX_CFG_F(AVX512_4FMAPS),
++		TDX_CFG_F(FSRM),
++		TDX_CFG_F(AVX512_VP2INTERSECT),
++		TDX_CFG_F(SERIALIZE),
++		TDX_CFG_F(TSXLDTRK),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_7_1_EAX,
++		TDX_CFG_F(SHA512),
++		TDX_CFG_F(SM3),
++		TDX_CFG_F(SM4),
++		TDX_CFG_F(AVX_VNNI),
++		TDX_CFG_F(AVX512_BF16),
++		TDX_CFG_F(CMPCCXADD),
++		TDX_CFG_F(FZRM),
++		TDX_CFG_F(FSRS),
++		TDX_CFG_F(FSRC),
++		TDX_CFG_F(LKGS),
++		TDX_CFG_F(WRMSRNS),
++		TDX_CFG_F(AMX_FP16),
++		TDX_CFG_F(AVX_IFMA),
++		TDX_CFG_F(LAM),
++		TDX_CFG_F(MOVRS),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_7_1_EDX,
++		TDX_CFG_F(AVX_VNNI_INT8),
++		TDX_CFG_F(AVX_NE_CONVERT),
++		TDX_CFG_F(AMX_COMPLEX),
++		TDX_CFG_F(AVX_VNNI_INT16),
++		TDX_CFG_F(PREFETCHITI),
++		TDX_CFG_F(AVX10),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_7_2_EDX,
++		TDX_CFG_F(DDPD_U),
++		TDX_CFG_F(MCDT_NO),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_1E_1_EAX,
++		TDX_CFG_F(AMX_FP8),
++		TDX_CFG_F(AMX_TF32),
++		TDX_CFG_F(AMX_AVX512),
++		TDX_CFG_F(AMX_MOVRS),
++	);
++
++	tdx_cpu_cfg_cap_init(CPUID_8000_0008_EBX,
++		TDX_CFG_F(WBNOINVD),
++	);
++}
++
++#undef TDX_CFG_F
++#undef TDX_CFG_INDEPENDENT_F
++
  #define TDX_FEATURE_TSX (__feature_bit(X86_FEATURE_HLE) | __feature_bit(X86_FEATURE_RTM))
  
--static bool has_tsx(const struct kvm_cpuid_entry2 *entry)
-+static bool has_tsx(const struct kvm_cpuid_entry2 *entry, u32 index)
- {
--	return entry->function == 7 && entry->index == 0 &&
-+	return entry->function == 7 && index == 0 &&
- 	       (entry->ebx & TDX_FEATURE_TSX);
- }
+ static bool has_tsx(const struct kvm_cpuid_entry2 *entry, u32 index)
+@@ -3529,6 +3680,8 @@ int __init tdx_hardware_setup(void)
+ 		return r;
+ 	}
  
-@@ -130,9 +130,9 @@ static void clear_tsx(struct kvm_cpuid_entry2 *entry)
- 	entry->ebx &= ~TDX_FEATURE_TSX;
- }
++	tdx_initialize_cpu_cfg_caps();
++
+ 	KVM_SANITY_CHECK_VM_STRUCT_SIZE(kvm_tdx);
  
--static bool has_waitpkg(const struct kvm_cpuid_entry2 *entry)
-+static bool has_waitpkg(const struct kvm_cpuid_entry2 *entry, u32 index)
- {
--	return entry->function == 7 && entry->index == 0 &&
-+	return entry->function == 7 && index == 0 &&
- 	       (entry->ecx & __feature_bit(X86_FEATURE_WAITPKG));
- }
- 
-@@ -143,16 +143,16 @@ static void clear_waitpkg(struct kvm_cpuid_entry2 *entry)
- 
- static void tdx_clear_unsupported_cpuid(struct kvm_cpuid_entry2 *entry)
- {
--	if (has_tsx(entry))
-+	if (has_tsx(entry, entry->index))
- 		clear_tsx(entry);
- 
--	if (has_waitpkg(entry))
-+	if (has_waitpkg(entry, entry->index))
- 		clear_waitpkg(entry);
- }
- 
--static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
-+static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry, u32 index)
- {
--	return has_tsx(entry) || has_waitpkg(entry);
-+	return has_tsx(entry, index) || has_waitpkg(entry, index);
- }
- 
- #define KVM_TDX_CPUID_NO_SUBLEAF	((__u32)-1)
-@@ -2381,7 +2381,13 @@ static int setup_tdparams_cpuids(struct kvm_cpuid2 *cpuid,
- 		if (!entry)
- 			continue;
- 
--		if (tdx_unsupported_cpuid(entry))
-+		/*
-+		 * Check the userspace values against the subleaf reported by
-+		 * the TDX module, i.e. the subleaf the values are applied to,
-+		 * not the index of the userspace entry, which may differ if
-+		 * KVM_CPUID_FLAG_SIGNIFCANT_INDEX isn't set.
-+		 */
-+		if (tdx_unsupported_cpuid(entry, tmp.index))
- 			return -EINVAL;
- 
- 		copy_cnt++;
+ 	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
 -- 
 2.46.0
 
