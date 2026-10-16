@@ -1,129 +1,130 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18F139C637
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 06:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357D22BEFF6;
+	Fri, 16 Oct 2026 07:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792133858; cv=none; b=C2lJIRGShkEsStrrcTS3+w4nbfs1gxup8z1siFumq784fBioiYPx9C2K/jNlubsF0hkn9n41xQqtg/ovASeGpovtnsEBLmjOODQOX2iPGBJPJ/GTR/ZSXk/mLW9U/UOaHZjZqAxXh/RISh2tWvUVx7teMD9Tq5RNgpTz9mENCsA=
+	t=1792134211; cv=none; b=nhImU/6V6J27LYAPfCXRni+MpoKh1wvWV4g/+kWjJqpGpr0Irr0WcXSGPJAhyE/OewK9f/RQ+VR09eNyafBSUKkElwyGu1LQjKJoFp+RlS+tYXtRPXoPI3/OnSCUJiaVProWloHh/q6o2ey8mcKWlvRivO6NdanAbhW/pInSZXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792133858; c=relaxed/simple;
-	bh=brrnJVOqQ+HmlXP6bRZSNZ0XkAOugFpp2qAEvCN/zkU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oH2heEy20CzmueR1zfOO91ptGhyxfgcLiJQvUs1SUPfIv5Lmjn/5WMd9eNojhzSGJM9MFZ1F/LS8z2WnKeUQ3jzs7CNLbKI41LkSR3LtGH/C8SndESLbs4sdkxJaTzCjOuSvHdY9BdouLUQN+pLoTzlAhZkO1r0eNGnodsVagI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JW3EorQn; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792134211; c=relaxed/simple;
+	bh=0amuKCd5T4PSq5JE2PNjiw40J8GZ6GUSKmj40QX3MHA=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MRsKSLuQ2i1xTa6WpPXME73gj1ZFxDWId4ZI/3xjIQ0NOJdpsNt8cawyMP0X8s/TrK8MAbb7zVTCO2q595ZcZLKmBqsU9jlEk2ER/Rf0d6xDd8XfFjXR7PLv78OANJ6KVxce7PAFVXndyLOop2UIt/URcNLy9ZFUQy6t4sOURN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ngHFwzYj; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JW3EorQn"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1561429a12.0
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 23:57:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792133854; x=1792738654; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YISc5oMGhcHW7+1utxN5bTXf7xFDmvdTaxjR4KsInxQ=;
-        b=JW3EorQnRsUbKT5vrJ3oh5K/Xn7wpg439eLIJN0+W2ak0XhE/CnuBMGRNSIObq+GdX
-         jZz3Dlz0Ezq72+ZMQ5Brrm0iVBnwnXqrQYGGE0zeCL1I2ISzWqmlGsUSVQfA1D/3QYU3
-         mS8Bp9EujGDKOX/EVR5lqxck/oUJ/3KDolgD/rkdsfs2SKVLiM/ieb95gVpYYWWEtg4s
-         G/wE0e4OWN02V29FdPy4NRkEC1+n+ybekvDvSR2DvVJN7JmE50Axp4NTENV0jQGkYmCm
-         aAnnB5gHLHcbm3MSOain+S0zwiLL3O5iM9Sg8RGpoMmGOSi79aWEv05smQlyaKjyXi1D
-         r6EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792133854; x=1792738654;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YISc5oMGhcHW7+1utxN5bTXf7xFDmvdTaxjR4KsInxQ=;
-        b=MsYRGX25pnRkUdRBC3aKSWWv7AhQ+y3J8A2gxZ6b6KB49RqTl9u+2YYBz8d+T7S+XD
-         0fzVJQ3RwBYOc0x7OjH0uHE00iKun04tgocpu+wRtQ0qO/SQwC/KfzKltRCIuooisCgf
-         9cSzA47vxkwMwxWiW3O8m9FDo4SVmfzVhRjcPVaGLqz0GXdGEguq/ImjsedDb4XPKZCc
-         2rkoWwXPBBn41Ab67G0Rdk6a1/vS72v5Ig/OrESNr4w1Hhn1MBUVPXwz464fD6EwfV/J
-         RPphpv2LEzA1hjc0WCZMWEiHj5X/FBRLS9YnUtdBqdvdTmFtvGnljCdvxBnfUKy2rEVF
-         +B7g==
-X-Gm-Message-State: AFq9FYL8Rqn1Z+6WWwt5wcRGAHCAVqPC3hqtO9oyePJeNNIVdCqWX9xq
-	aOilob6LZRKuYqV1KBs2kkthBqtSooV5y+BCihFSGXX0B6uVSfE21RGj
-X-Gm-Gg: AYBFou1VR6GQLzaTDj/JlgBzXH+xWqhPpXMVPB2eWs7WbNo7GzN5e9AFfr9K2JogoRN
-	yiZVADVsqRQzYdu2ZQJXhkwgBMHlHFtsnXM+ImlZ17FWJq+lx5N6gy0s64Z4An4QFygrvCrRyzV
-	ApEfW5p9VkLNKXATk370AbD7T85R21z96cshUJG0vpxrGPWD43TCJJYXIUCkhxa21ZhohxS9xlZ
-	KNM/P1RMiXTUTGZCYnbtLP8iqM3aSXWtkg0dOo6R2efw522SdShMYAy+C1EsKbDfBCDvbSie8OP
-	03GXdudtpbyQs6sdN7fOIYYqyU2mD3RBA9ZX72Ph/Ym6qPp63xgOxS7c53GgympOxLUBb0YsHlL
-	hXCFk+XMnI/c1ekfoJnGNhbGG8HsHTmqEvX19yTmF33dlIO/SWyKLHqVmNulFVTOSEwfzsssgZL
-	j41d9PNoKMSZbKqSmiAsoRnJEpt21fV3g33AxsfQhTEdlj2+jJOlIUMRUe4mDr1ORG/cvOGbAGw
-	VYKMQA82HC94ZyUXa1gXl5PCUjXTyRx6RyqfEZPmQJH2muf+6yAyKyM0cCBSdafpo1wjGmWF+CO
-	6Cj5OqSDvEkK05qQcmjXV9uyZ/1c/FnE5l0vrCTPy9BI
-X-Received: by 2002:a17:90b:270c:b0:3ab:be66:ddb6 with SMTP id 98e67ed59e1d1-3abbe66e034mr14548452a91.20.1792133853729;
-        Thu, 15 Oct 2026 23:57:33 -0700 (PDT)
-Received: from FLYINGPENG-MC2.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947dfa00sm7765410a91.17.2026.10.15.23.57.32
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 15 Oct 2026 23:57:33 -0700 (PDT)
-From: Peng Hao <flyingpenghao@gmail.com>
-X-Google-Original-From: Peng Hao <flyingpeng@tencent.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: kvm@vger.kernel.org
-Subject: [PATCH] KVM: x86: Reject KVM_CREATE_VCPU when the host TSC frequency is unknown
-Date: Fri, 16 Oct 2026 14:57:29 +0800
-Message-ID: <20261016065729.85873-1-flyingpeng@tencent.com>
-X-Mailer: git-send-email 2.47.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ngHFwzYj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792134210; x=1823670210;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=0amuKCd5T4PSq5JE2PNjiw40J8GZ6GUSKmj40QX3MHA=;
+  b=ngHFwzYjSKN65lS4M2eubkOi8xy2RZa3IhVJSEgb6TBPOCkBq4mT8A6N
+   OfRTl6ofZHuSqTgD/+3aHdtz/GMnI3st15zEu876VE6etU+Wps4S1uzb8
+   pp9TwBHtJFci5+04lYx7P6zuisPqYuAGwNnreLjlX69AggQoeO4RuX852
+   zcnVRfGUxMnmh1E6ugGWr2cJznLDH+EC4PyERlnnC/KX8dCSuJUdca4Ku
+   GWkM+f00h7eCzDdHALYyz91UNCNl60WjVDDS4HOCQKOWyqshqCcEmpPMY
+   +ngKEX+KXCjE1UbqcB0lR3yk/vvDndX270CXT9nKjAZkWtColW47eS+Py
+   g==;
+X-CSE-ConnectionGUID: DjNwHOr+Que2bFqAEt+LIA==
+X-CSE-MsgGUID: xbeDRT6KTGWLFYoD99WndA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="925934"
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="925934"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 00:03:30 -0700
+X-CSE-ConnectionGUID: 8Zwup8+BS/ikkviipDeQnw==
+X-CSE-MsgGUID: cRb/PgvVQQWTQiIGhVxr5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="3628357"
+Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 00:03:25 -0700
+Message-ID: <5ca5f1c4-4c3c-47f1-b79c-c1fe06b20ee4@linux.intel.com>
+Date: Fri, 16 Oct 2026 15:03:23 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+ Chao Gao <chao.gao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
+ capable IOMMUs
+To: Jason Gunthorpe <jgg@ziepe.ca>, Xu Yilun <yilun.xu@linux.intel.com>
+References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+ <20261015010705.1973284-5-baolu.lu@linux.intel.com>
+ <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050> <20261015173707.GV14213@ziepe.ca>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261015173707.GV14213@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-If host TSC calibration fails, tsc_khz stays zero: tsc_init() marks the TSC
-unstable, clears X86_FEATURE_TSC_DEADLINE_TIMER and gives up.  KVM has been
-papering over that state since 03ba32cae66e ("VMX: x86: handle host TSC
-calibration failure"), but the guest cannot actually run:
+On 10/16/2026 1:37 AM, Jason Gunthorpe wrote:
+> On Thu, Oct 15, 2026 at 04:31:31PM +0800, Xu Yilun wrote:
+> 
+>> An alternative could be, bringing up one IOMMU when an associated
+>> device requests link encryption. Then a no-tdx-support iommu fails the
+>> encryption request naturally.
+> That is what ARM is planning to do. I think it is reasonable to
+> trigger creation of the secure iommu when the TSM is connected to TDX.
+> 
+> Fail connect if the iommu could not be created.
 
-  - kvm_set_tsc_khz() computes thresh_lo == thresh_hi == 0 via
-    adjust_tsc_khz(), so use_scaling is always true and set_tsc_khz()
-    divides by tsc_khz to compute the scaling ratio, i.e. #DE in host
-    context.  This one is reachable from KVM_SET_TSC_KHZ alone, no guest
-    cooperation required.
-  - kvm_guest_time_update() re-requests KVM_REQ_CLOCK_UPDATE and returns 1
-    because get_cpu_tsc_khz() hands back the (zero) global tsc_khz for CPUs
-    with a constant TSC.  vcpu_run() only breaks out of its loop on
-    "r <= 0", so the vCPU thread spins in the host kernel rather than even
-    failing the guest.
-  - Everything that converts guest cycles to nanoseconds, e.g. the lapic
-    timer advance logic, divides by virtual_tsc_khz, which is zero as well.
+Yes, agreed. The Intel iommu driver could use per-device interfaces,
+just as ARM is planning. There are some differences, though.
 
-Each of those has been growing its own "is the frequency zero?" check, and
-the list keeps getting longer.  Cut it off at the source instead: fail
-KVM_CREATE_VCPU rather than letting userspace walk into a host #DE or a
-spinning vCPU thread.
+ARM's interaction with the iommu driver in viommu_init() appears to
+consist of two steps:
 
-Signed-off-by: Peng Hao <flyingpeng@tencent.com>
----
- arch/x86/kvm/x86.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+  - arm_smmu_get_realm_params(dev, &params): get and validate the
+    physical iommu information from the arm-smmu-v3 driver;
+  - cca_psmmu_get(&params): activate the physical smmu for Realm use.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 4b3681796c75..8dd75d60eecf 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9342,6 +9342,17 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 	struct page *page;
- 	int r;
- 
-+	/*
-+	 * The host TSC frequency is unknown, e.g. because TSC calibration failed
-+	 * at boot.  KVM cannot virtualize the TSC in this state, and every
-+	 * consumer of the frequency ends up needing its own zero check; fail vCPU
-+	 * creation instead of handing userspace a vCPU that cannot run.
-+	 */
-+	if (!tsc_khz) {
-+		pr_err_ratelimited("cannot create vCPU, host TSC frequency is unknown\n");
-+		return -EIO;
-+	}
-+
- 	vcpu->arch.last_vmentry_cpu = -1;
- 	bitmap_fill(vcpu->arch.regs_avail, NR_VCPU_TOTAL_REGS);
- 	bitmap_fill(vcpu->arch.regs_dirty, NR_VCPU_TOTAL_REGS);
--- 
-2.43.7
+Intel differs in two ways:
 
+  - ARM queries the physical iommu information from the iommu driver
+    in the viommu_init() path. On Intel, the secure iommu must be set
+    up during TSM connect, because it is part of establishing PCIe
+    link encryption.
+
+  - The TDX Connect architecture places requirements on the host
+    iommu driver while the secure IOMMU is being set up. For example,
+    the host iommu driver must block the enhanced command (ECMD)
+    interface while the TDH.IOMMU.SETUP SEAMCALL runs, and it must
+    reserve the upper half of the domain ID space. These steps have
+    to happen atomically under the iommu driver's own locks. As a
+    result, the Intel iommu driver needs to merge the two steps above
+    into one.
+
+So the Intel iommu driver will probably end up with interfaces like:
+
+  - dmar_tdxcs_iommu_init(struct device *dev, ...);
+  - dmar_tdxcs_iommu_release(struct device *dev, ...);
+
+These would be called from the connect and disconnect callbacks of
+the TDX link ops:
+
+static struct pci_tsm_ops tdx_tsm_link_ops = {
+         .owner = THIS_MODULE,
+         .probe = tdx_tsm_link_probe,
+         .remove = tdx_tsm_link_remove,
+         .connect = tdx_tsm_link_connect,
+         .disconnect = tdx_tsm_link_disconnect,
+...
+};
+
+Any thoughts?
+
+Thanks,
+baolu
