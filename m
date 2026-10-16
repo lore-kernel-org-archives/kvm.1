@@ -1,149 +1,119 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077601AC44D
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 00:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3ED725A2A2
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 00:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792109693; cv=none; b=Ba2HsT4geqW3Hr5QIQbLByRaQCzXXZm6H3U57wL6c3ov63APZ2/EhBY02BpvEuT/7/qXjrD1urvaZ9v1hlLwEDJvQuZvEeVm3iQuNXp+VTMc1JwNGC05FA1PvTjQoGPi6dCBRDlUP2plhnoUn5jTR2wL7bGDrSPVz2lLmh1K/O0=
+	t=1792112022; cv=none; b=HwZq/AL1fUlj5bCy7h9HORGbzCeVM6q6f4P9hYWxmB/dgVpAQNHyRuqxhNTOd9r7slwkOMmtabEfvf73qrkYwPfPFA9yii+HQTHzkQIXNH59FBhDD4MAjk7x/N3nXFBJkQJXJYhb9X1QIUhT26HyW9m3pyNnWCcbakNPIrJ5+L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792109693; c=relaxed/simple;
-	bh=N3hAyy7nTu0uD6uxxEosrsvSAc05WwQLSTSIID6INNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oQL4ihDAGmXWvS783iA18OArqFb6kN/OAbu65qwzlQJiTYgUVpb7l8ls0Il5N197RVMZ7Xuhr2xKyfHqH6bIqwbBfSiQyvNjfGkSVS6A4CcTgBsHE7Pj9YFR+XPoym8V80TD3jOjo6N/9xQ0hrZIBGS8zCpo/fz75ioJjAa/AAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=T/StiSJg; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1792112022; c=relaxed/simple;
+	bh=c/rHAYjbF/iR0UNEq17ASuQeAKKJEqDnVLFmO41pGUY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LDu1SIL9qg/kex449G3VmdwxdC0RYsDm8DAZtaN97P37eM/mVpiPR2Sns9NAJH4biABDldA+y5tkmBUCuWICpJecVqD5xWq4H0S+UGKAMyXN4yiJhU0YXfIqMQ4/bvSeUF+hHWY6oWpB5k4kjaWAnrHDxaxnGq81ceco25lMVog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=diYTGbjk; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="T/StiSJg"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-535d60d850cso5463571cf.0
-        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 17:14:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="diYTGbjk"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2df8484f12cso66397055ad.3
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 17:53:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792109691; x=1792714491; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
-        b=T/StiSJg9NKkj9ibcSWBMEe5hjKjl5QSwtnEiP3tJzvpn/R0nSFhQSE2BteEpHDzDF
-         4uRGBFJHEJaC8NsxylpA+ABes7IxI2+87ROJ6dQn0dhETh3oLKejUQcI3XVrCeooZ0jN
-         LBuzzRkKgdH7XqHEVZM1mVh+4VYM5srvaGbH7cRqoiS+NpWHcQ3PPJ8hSNCRl3zf0jSx
-         OC8glC/BwOAeoVt/aqPc6qBd/KOujSyKOKYhxMVH9idVTMQYEAS0+Dk3trwFqSQzgoDP
-         Ukq63JkewdwSwFPWIY5gvBVoi5Iy7viGPaetFhiagl3amNV78U7Bh5Yi+uua5qHdSPpB
-         aUIw==
+        d=google.com; s=20251104; t=1792112021; x=1792716821; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ajBIk136uVxpI53sUFSso4YotN3OcG6aregDR0+fYpQ=;
+        b=diYTGbjkJxt0+XuDIQFfAkvvlFo9m6gA560spFvJafsVQiAgScquO1XsqcLc2Epkh0
+         KY6Q/T03TERraaup+SEfse51NsapYCf2lTSvqcE1JPcFyVq+rJkXiTkZ2/2TJEIULvgi
+         RTRtX1Pvon6U6ZBiXh9n8mydhvM2+O268qX7U94xZHvhY79skbEJd4wNZXjT/rF5/whW
+         dEIGUGYjTqeJIS7YnocUJuO4RbNpUYSrg2AkZKdeThaJodmdQzttnJdoCJj8TtgKlQ4M
+         /ZRyCK5RbzlSLWzpYVjfyIgdFV3iupL+J1VZor8W9z1sb6H72UxnD5y0POZxPFfBfYhH
+         FbcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792109691; x=1792714491;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792112021; x=1792716821;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
-        b=GX+UosGJMO8+NsiJGvUmSsnXqXqX8fEXP6G/O3yiCu1zCxtbXALiORzeR+lXtTNzKT
-         ujdDJwV0euFGe/1EKLTcXBCdXx/ErGzkvVzirC1LjUYjUerDwy4g8/YdPNKr32ut/Ba0
-         1TsH62DPk1od0P6f2+Zzt/Xe+tgGOCr5ko7KdwdJRM6JEIkI7kK1mShEM/oEUbXrxhhl
-         iVti0NYirY1BiMN/mxM4wbvBlXycBTBZjNloN+Mxr56VzgGkVQMNLnyjkKO3RD9YaVdw
-         fbM6cpcRRfvDNmLS6E6PGTwjZFNZRqSli5nU1DBlrSQaFPjw0a6rqh+Db1yxGZihIkpX
-         ztIA==
-X-Forwarded-Encrypted: i=1; AKwUvBzQhcM9TdX4nsw+HSuP7G2r/ChDuCkd17U4iYzHzTqOOgcU64Dz3yrP/TLSF9L/CFG6wDo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3TiCaT6viqEAXwdL64YXb8z4/y1MrdiSZYHDMglTj8bZMGZIT
-	/e01gJanN5XW+b/JXDwXtHh3gjoZCRyJcYY9JOxmDBozdPtMvtFmGRVIAWgbIDjAlho=
-X-Gm-Gg: AYBFou3nDvBrQNvSsuHpKiKbIZcevQRHwlWryQikvrEfiYnK/Y4NjZkaWhGOW55XyfA
-	dRh19hkR6bP9RRs7VD0nxXFnn96RxXdK4c/oTr1ugq9f/fc03Gc4iPinSsCAtsqlyuG+qOovm6T
-	o6CcfKIp0z++knDtxFBdsV/4QHIcmkuq2dMJyZ/72bpcUfoTreCte9m80/mY6v3IQmdTzgLGJuF
-	7DIBHOjTLcWk4tA7xjhPQ7YYOojuNBTIC4M91H+F/+Cl//bQUmeTejM/Y8hdRWzhwaowFAmvlI0
-	OH5fXaqTOfDPsU0+mL8uU84KwEw32a9d38R5Sr4MJP2JAUOfCHjvJxEG50sZXEmVs8XlSg7dPBh
-	2JGzpXnuEMjdHsys7xbD1dPbaLoPEaF1MGySCrGnm/30SWAjTQZNIoHmkqgA0PoAjyigR9O6PfX
-	V0pKXZRzDbVP/MvqlcyKOP/lCtA/6MrRI7m+VABrJzCnSUdRnuUdvIx0tjDikX2gIAPoOAnAkZD
-	S2Pkbg5lIpwU6cm8EsUGcX99ERY57YohSnq5IchUPsEpHePTVCZqA3f
-X-Received: by 2002:a05:622a:990:b0:535:ba01:d95 with SMTP id d75a77b69052e-536272c2d55mr30900421cf.19.1792109690637;
-        Thu, 15 Oct 2026 17:14:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362aa57106sm7257071cf.28.2026.10.15.17.14.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 17:14:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xHVay-00000000IxD-2c33;
-	Thu, 15 Oct 2026 21:14:48 -0300
-Date: Thu, 15 Oct 2026 21:14:48 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Fred Griffoul <griffoul@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 07/11] iommufd: Use large IOMMU pages for provider
- mappings
-Message-ID: <20261016001448.GC14213@ziepe.ca>
-References: <20261014093733.90312-1-griffoul@gmail.com>
- <20261014093733.90312-8-griffoul@gmail.com>
+        bh=ajBIk136uVxpI53sUFSso4YotN3OcG6aregDR0+fYpQ=;
+        b=dJJn5uGXEOLUeEQUbzYO6pDbDALqhwf0aegR6FwgfZs5myl2pORaN41VAc9FkKK3ri
+         7visZq7Li9ADJSoX5BSZ5wBnPjGV846cQvvqPW2b2XE0Ce+CJW6CbEuC4HpccW01RkAv
+         9SDU8yS7sY74FT6nEXZEr8vCK/OlKqJwyBrUflNDm/FqPYXFWs2GDc4AsvA5vUItl6o0
+         mo7L7GugSh9fniLCd/+AqJKba0U/i3luWzOaZdOllmPChhDNHkbBbodR5A0JLg28c0cl
+         0F0KtwVZzHvmw1ESxgMC3AZQHPdbFsQajLEFg9m0h7Ek3VRTmRGZjy+9kixILkWeP+Rv
+         cUJg==
+X-Forwarded-Encrypted: i=1; AKwUvBwDyMWeQW2x1ael1F1dWG8X4lnYByIOpXB9eEr/Kqxww3WMjMvTFiJjVaFAsEhaFVAtVAo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIQgODFq1XIzsg++0/RUjWo+jjKdtZAPFTFvsUYjs03JNLmNV0c
+	gN4Kasn8sNOHv59WWTFKbmPc7Uh0dWDcX0kxf9P+0vb8l1trB9pzRCvlxejGvbhu+MHWGrKw6Ph
+	phEAp6Q==
+X-Received: from pllk2.prod.google.com ([2002:a17:902:7602:b0:2e6:5c7:de7d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e841:b0:2e9:7dda:bfc7
+ with SMTP id d9443c01a7336-2e97ddac0e3mr9904065ad.66.1792112020750; Thu, 15
+ Oct 2026 17:53:40 -0700 (PDT)
+Date: Thu, 15 Oct 2026 17:53:40 -0700
+In-Reply-To: <CAO9r8zMt5ZNwr3Y+NfFcAW5Cf4JaerCScSsLxcvsvHYR=DoYBw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014093733.90312-8-griffoul@gmail.com>
+Mime-Version: 1.0
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-25-yosry@kernel.org>
+ <CALMp9eRb3ExsQ0g24YQyo85sV1fnHZadh33hBChUY=ZGUaT7jA@mail.gmail.com> <CAO9r8zMt5ZNwr3Y+NfFcAW5Cf4JaerCScSsLxcvsvHYR=DoYBw@mail.gmail.com>
+Message-ID: <atF1lByf9w3Pvzyt@google.com>
+Subject: Re: [PATCH v3 24/27] KVM: nSVM: Flush L2's ASID when emulating INVLPGA
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 09:37:29AM +0000, Fred Griffoul wrote:
-> From: Fred Griffoul <fgriffo@amazon.co.uk>
-> 
-> Provider pages are mapped with one PAGE_SIZE entry each. A device that
-> uses a large provider block then misses in the IOTLB on every page, and
-> the IOMMU needs more page table memory than the block requires. A
-> revoke also flushes the IOTLB once per run of pages it unmaps.
-> 
-> Map each block that the provider reports with large IOMMU pages where
-> the IOVA and the frames are aligned alike, and with smaller ones where
-> they are not. Only the pages of the block are mapped, as before.
-> 
-> A large IOMMU page can only be unmapped whole, so a revoke that cuts
-> one widens its range to the whole page. It maps back what the provider
-> backs now, and a device may also fault on the rest of that page while
-> it is remapped. The widening finds the page with iova_to_phys():
-> pages that only look like one large page make the revoke remap more
-> than it must, which is harmless.
+On Thu, Oct 15, 2026, Yosry Ahmed wrote:
+> On Thu, Oct 15, 2026 at 4:37=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
+> > > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > > index 8f2542357e78d..436d13f106369 100644
+> > > --- a/arch/x86/kvm/svm/svm.c
+> > > +++ b/arch/x86/kvm/svm/svm.c
+> > > @@ -2468,17 +2468,61 @@ static int clgi_interception(struct kvm_vcpu =
+*vcpu)
+> > >
+> > >  static int invlpga_interception(struct kvm_vcpu *vcpu)
+> > >  {
+> > > +       struct vcpu_svm *svm =3D to_svm(vcpu);
+> > >         /* FIXME: Handle an address size prefix. */
+> > >         gva_t gva =3D kvm_rax_read(vcpu);
+> > >         u32 asid =3D kvm_ecx_read(vcpu);
+> > > +       int cpu;
+> > >
+> > >         if (nested_svm_check_permissions(vcpu))
+> > >                 return 1;
+> > >
+> > >         trace_kvm_invlpga(to_svm(vcpu)->vmcb->save.rip, asid, gva);
+> > >
+> > > -       /* Let's treat INVLPGA the same as INVLPG (can be optimized!)=
+ */
+> > > -       kvm_mmu_invlpg(vcpu, gva);
+> > > +       /*
+> > > +        * INVLPG on a non-canonical address is a NOP according to th=
+e SDM,
+> > > +        * assume the same behavior from INVLPGA since the APM doesn'=
+t specify.
+> > > +        */
+> > > +       if (is_noncanonical_invlpg_address(gva, vcpu))
+> > > +               return kvm_skip_emulated_instruction(vcpu);
+> >
+> > If L1 is in 32-bit mode with junk in RAX[63:32] (e.g. bits left over
+> > from long mode), the full 64-bit value may not be canonical. Should
+> > the kvm_rax_read(vcpu) above be kvm_register_read(vcpu,
+> > VCPU_REGS_RAX)?
+>=20
+> Doesn't kvm_rax_read() already use kvm_reg_mode_mask() as per
+> __BUILD_KVM_GPR_ACCESSORS()?
 
-You are going to need to go into generic_pt and implement cut and a
-more suitable unmap to make this stuff work properly. We can't over
-unmap on conversions.
-
-> iommu_unmap() may not split the range of one map call either, and
-> virtio-iommu refuses to. Map each IOMMU page with its own call: the
-> widened range ends on IOMMU page boundaries, so it also ends on map
-> call boundaries.
-
-Also please don't write commit messages with AI. WTF is this even
-trying to say? The subject is "use large pages" and this text says
-"map each page with its own call"
-
-Jason
+Yes, Jim's probably thinking of older kernels before fc40b1254c32 ("KVM: x8=
+6: Add
+mode-aware versions of kvm_<reg>_{read,write}() helpers").
