@@ -1,167 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93F74A21
-	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 00:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077601AC44D
+	for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 00:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792109137; cv=none; b=iu/AJioX4INmGI7MEJPnMqMJ2c8RYs4YsEj9PzMuzkMD9zvu9r6AOh0VXdsp3jJJKHI8BBHHjBj/hI/MS1gGvq5VSbO2n1wq/AWX5/XVL1Vn3SsL2rFORQO4W6Yj8ZSuW3Lz+1eYa8DJehAS+o6UP7NGmG/dzayjRS15dHehT8U=
+	t=1792109693; cv=none; b=Ba2HsT4geqW3Hr5QIQbLByRaQCzXXZm6H3U57wL6c3ov63APZ2/EhBY02BpvEuT/7/qXjrD1urvaZ9v1hlLwEDJvQuZvEeVm3iQuNXp+VTMc1JwNGC05FA1PvTjQoGPi6dCBRDlUP2plhnoUn5jTR2wL7bGDrSPVz2lLmh1K/O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792109137; c=relaxed/simple;
-	bh=lVMJOr8k4NC7cvEVROI7e9cLzXjzf8H4JDLSX4qT5YA=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=grgAV0ep7CXmHcBr8iwSwnsE7xq0vgdrh4FpwW+tbknQ4Bo+zug2EL5gI7gh5HKmYb5VF6sd8H3Dx+rGPu1bQcUTQFgZG9gynnK17nb+yZ2udwl0VCj5nXDr1sQQBJKTpdfj2KXs0nfqo/u6FZLDmeskkl1y3RuNbO6igYUGZ0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOgKT5po; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792109693; c=relaxed/simple;
+	bh=N3hAyy7nTu0uD6uxxEosrsvSAc05WwQLSTSIID6INNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oQL4ihDAGmXWvS783iA18OArqFb6kN/OAbu65qwzlQJiTYgUVpb7l8ls0Il5N197RVMZ7Xuhr2xKyfHqH6bIqwbBfSiQyvNjfGkSVS6A4CcTgBsHE7Pj9YFR+XPoym8V80TD3jOjo6N/9xQ0hrZIBGS8zCpo/fz75ioJjAa/AAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=T/StiSJg; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOgKT5po"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A271F000C4;
-	Fri, 16 Oct 2026 00:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792109136;
-	bh=tydoap3XLCF0EdAhwMqIPJL7IQ9h/YCyYKEDLqlh6y0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nOgKT5pogov4qYMpvODtRy/PvTa+3j87dzLFSoyLpbcMeTEGKJR23Whk4Jku4exQr
-	 Hox33PeuWWL0nwWSbWsbTM/iPEmWFTE0HJ8fa5oMMJrDKDZ5t0SYEA3qdHSVxEb0bO
-	 7fh8uRgopRjZN0VDbRxj+rZQSc16W7Von/JM/5giRlDksy0Gl8nJL/e2QH75dBHeCK
-	 mEpigc8yHoj4f3081VRBZTrK6KNWLnni9HjFVVae+S7uG/QnEAb+uYpwgyr5aY3V/C
-	 u5fObsDSf9XmnNp1s5T3q0VHTWIz3q1GxvxhDyoJx2EOAuwTx2h7bnEa1NqXS+tQuT
-	 DndLnwND+j9kw==
-Message-ID: <sashiko-outbox-173505@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/3] LoongArch: KVM: Clear device pointer in irqchip
- destroy callbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261015234638.1077815-2-cui.tao@linux.dev>
-References: <20261015234638.1077815-1-cui.tao@linux.dev>
- <20261015234638.1077815-2-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 00:05:35 +0000
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="T/StiSJg"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-535d60d850cso5463571cf.0
+        for <kvm@vger.kernel.org>; Thu, 15 Oct 2026 17:14:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1792109691; x=1792714491; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
+        b=T/StiSJg9NKkj9ibcSWBMEe5hjKjl5QSwtnEiP3tJzvpn/R0nSFhQSE2BteEpHDzDF
+         4uRGBFJHEJaC8NsxylpA+ABes7IxI2+87ROJ6dQn0dhETh3oLKejUQcI3XVrCeooZ0jN
+         LBuzzRkKgdH7XqHEVZM1mVh+4VYM5srvaGbH7cRqoiS+NpWHcQ3PPJ8hSNCRl3zf0jSx
+         OC8glC/BwOAeoVt/aqPc6qBd/KOujSyKOKYhxMVH9idVTMQYEAS0+Dk3trwFqSQzgoDP
+         Ukq63JkewdwSwFPWIY5gvBVoi5Iy7viGPaetFhiagl3amNV78U7Bh5Yi+uua5qHdSPpB
+         aUIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792109691; x=1792714491;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V2saNd2pf5xXpmgizEGMG+P83blHZRupazL/vtIJhv4=;
+        b=GX+UosGJMO8+NsiJGvUmSsnXqXqX8fEXP6G/O3yiCu1zCxtbXALiORzeR+lXtTNzKT
+         ujdDJwV0euFGe/1EKLTcXBCdXx/ErGzkvVzirC1LjUYjUerDwy4g8/YdPNKr32ut/Ba0
+         1TsH62DPk1od0P6f2+Zzt/Xe+tgGOCr5ko7KdwdJRM6JEIkI7kK1mShEM/oEUbXrxhhl
+         iVti0NYirY1BiMN/mxM4wbvBlXycBTBZjNloN+Mxr56VzgGkVQMNLnyjkKO3RD9YaVdw
+         fbM6cpcRRfvDNmLS6E6PGTwjZFNZRqSli5nU1DBlrSQaFPjw0a6rqh+Db1yxGZihIkpX
+         ztIA==
+X-Forwarded-Encrypted: i=1; AKwUvBzQhcM9TdX4nsw+HSuP7G2r/ChDuCkd17U4iYzHzTqOOgcU64Dz3yrP/TLSF9L/CFG6wDo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK3TiCaT6viqEAXwdL64YXb8z4/y1MrdiSZYHDMglTj8bZMGZIT
+	/e01gJanN5XW+b/JXDwXtHh3gjoZCRyJcYY9JOxmDBozdPtMvtFmGRVIAWgbIDjAlho=
+X-Gm-Gg: AYBFou3nDvBrQNvSsuHpKiKbIZcevQRHwlWryQikvrEfiYnK/Y4NjZkaWhGOW55XyfA
+	dRh19hkR6bP9RRs7VD0nxXFnn96RxXdK4c/oTr1ugq9f/fc03Gc4iPinSsCAtsqlyuG+qOovm6T
+	o6CcfKIp0z++knDtxFBdsV/4QHIcmkuq2dMJyZ/72bpcUfoTreCte9m80/mY6v3IQmdTzgLGJuF
+	7DIBHOjTLcWk4tA7xjhPQ7YYOojuNBTIC4M91H+F/+Cl//bQUmeTejM/Y8hdRWzhwaowFAmvlI0
+	OH5fXaqTOfDPsU0+mL8uU84KwEw32a9d38R5Sr4MJP2JAUOfCHjvJxEG50sZXEmVs8XlSg7dPBh
+	2JGzpXnuEMjdHsys7xbD1dPbaLoPEaF1MGySCrGnm/30SWAjTQZNIoHmkqgA0PoAjyigR9O6PfX
+	V0pKXZRzDbVP/MvqlcyKOP/lCtA/6MrRI7m+VABrJzCnSUdRnuUdvIx0tjDikX2gIAPoOAnAkZD
+	S2Pkbg5lIpwU6cm8EsUGcX99ERY57YohSnq5IchUPsEpHePTVCZqA3f
+X-Received: by 2002:a05:622a:990:b0:535:ba01:d95 with SMTP id d75a77b69052e-536272c2d55mr30900421cf.19.1792109690637;
+        Thu, 15 Oct 2026 17:14:50 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362aa57106sm7257071cf.28.2026.10.15.17.14.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 17:14:49 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xHVay-00000000IxD-2c33;
+	Thu, 15 Oct 2026 21:14:48 -0300
+Date: Thu, 15 Oct 2026 21:14:48 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Fred Griffoul <griffoul@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH v2 07/11] iommufd: Use large IOMMU pages for provider
+ mappings
+Message-ID: <20261016001448.GC14213@ziepe.ca>
+References: <20261014093733.90312-1-griffoul@gmail.com>
+ <20261014093733.90312-8-griffoul@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014093733.90312-8-griffoul@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] kvm: loongarch: UAF in irqchip teardown due to missing irq_srcu sy=
-nchronization
-- [High] kvm: loongarch: NULL pointer dereference in IRQ injection paths
---
+On Wed, Oct 14, 2026 at 09:37:29AM +0000, Fred Griffoul wrote:
+> From: Fred Griffoul <fgriffo@amazon.co.uk>
+> 
+> Provider pages are mapped with one PAGE_SIZE entry each. A device that
+> uses a large provider block then misses in the IOTLB on every page, and
+> the IOMMU needs more page table memory than the block requires. A
+> revoke also flushes the IOTLB once per run of pages it unmaps.
+> 
+> Map each block that the provider reports with large IOMMU pages where
+> the IOVA and the frames are aligned alike, and with smaller ones where
+> they are not. Only the pages of the block are mapped, as before.
+> 
+> A large IOMMU page can only be unmapped whole, so a revoke that cuts
+> one widens its range to the whole page. It maps back what the provider
+> backs now, and a device may also fault on the rest of that page while
+> it is remapped. The widening finds the page with iova_to_phys():
+> pages that only look like one large page make the revoke remap more
+> than it must, which is harmless.
 
-commit 2f10d82f92df54fcbd750081f5d2c1a3283f66b9
-Author: Tao Cui <cuitao@kylinos.cn>
+You are going to need to go into generic_pt and implement cut and a
+more suitable unmap to make this stuff work properly. We can't over
+unmap on conversions.
 
-LoongArch: KVM: Clear device pointer in irqchip destroy callbacks
+> iommu_unmap() may not split the range of one map call either, and
+> virtio-iommu refuses to. Map each IOMMU page with its own call: the
+> widened range ends on IOMMU page boundaries, so it also ends on map
+> call boundaries.
 
-The destroy callbacks of the four irqchip devices free the device
-structure without clearing kvm->arch.{ipi,eiointc,pch_pic,dmsintc},
-leaving a dangling pointer. This clears the pointer when destroying.
+Also please don't write commit messages with AI. WTF is this even
+trying to say? The subject is "use large pages" and this text says
+"map each page with its own call"
 
-> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
-dmsintc.c
-> --- a/arch/loongarch/kvm/intc/dmsintc.c
-> +++ b/arch/loongarch/kvm/intc/dmsintc.c
-> @@ -146,6 +146,7 @@ static void kvm_dmsintc_destroy(struct kvm_device *de=
-v)
->  		return;
-> =20
->  	kfree(dev->kvm->arch.dmsintc);
-> +	dev->kvm->arch.dmsintc =3D NULL;
-
-[Severity: High]
-Does this sequence free the structure before setting the pointer to NULL?
-This could leave a globally visible dangling pointer during the race window.
-
-If KVM_CREATE_DEVICE fails during anon_inode_getfd() (e.g., due to a process
-hitting RLIMIT_NOFILE), this destroy callback executes immediately. If a
-guest concurrently issues KVM_SIGNAL_MSI or KVM_IRQ_LINE ioctls, can they
-race with this teardown?
-
-Without calling synchronize_srcu(&kvm->irq_srcu) before kfree(), concurrent
-IRQ injections holding the SRCU read lock might access the freed memory,
-leading to a use-after-free.
-
-[ ... ]
-
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -675,6 +675,7 @@ static void kvm_eiointc_destroy(struct kvm_device *de=
-v)
-> =20
->  	kvm =3D dev->kvm;
->  	eiointc =3D kvm->arch.eiointc;
-> +	kvm->arch.eiointc =3D NULL;
->  	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_vext);
-
-[Severity: High]
-Can this modification introduce a NULL pointer dereference in the IRQ
-injection paths?
-
-When kvm->arch.eiointc is cleared here without SRCU synchronization,
-concurrent IRQ routing callbacks might see a NULL pointer. Functions like
-eiointc_set_irq() or pch_msi_set_irq() currently dereference
-kvm->arch.eiointc unconditionally:
-
-arch/loongarch/kvm/intc/eiointc.c:eiointc_set_irq() {
-    ...
-    spin_lock_irqsave(&s->lock, flags);
-    ...
-}
-
-Additionally, since eiointc is eventually freed in this function without
-waiting for synchronize_srcu(&kvm->irq_srcu), could concurrent injections
-also hit a use-after-free if they managed to read the pointer before it
-was set to NULL?
-
-[ ... ]
-
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -483,6 +483,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
-v)
-> =20
->  	kvm =3D dev->kvm;
->  	s =3D kvm->arch.pch_pic;
-> +	kvm->arch.pch_pic =3D NULL;
->  	/* unregister pch pic device and free it's memory */
->  	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
-
-[Severity: High]
-Similar to eiointc, does clearing kvm->arch.pch_pic without SRCU
-synchronization expose concurrent IRQ handlers to a NULL pointer dereference
-or use-after-free?
-
-If KVM_IRQ_LINE is called concurrently, kvm_set_pic_irq() reads
-kvm->arch.pch_pic and passes it to pch_pic_set_irq() without validation:
-
-arch/loongarch/kvm/irqfd.c:kvm_set_pic_irq() {
-    ...
-    pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
-    ...
-}
-
-arch/loongarch/kvm/intc/pch_pic.c:pch_pic_set_irq() {
-    ...
-    spin_lock(&s->lock);
-    ...
-}
-
-If the caller reads the pointer after it is cleared, it will dereference
-NULL. If it reads the pointer before it is cleared, the subsequent kfree(s)
-at the end of this destroy callback could cause a use-after-free, since
-there is no synchronize_srcu(&kvm->irq_srcu) to protect the read-side.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015234638.1077=
-815-1-cui.tao@linux.dev?part=3D1
+Jason
