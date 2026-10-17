@@ -1,233 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FC9302146;
-	Sat, 17 Oct 2026 11:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C6383984;
+	Sat, 17 Oct 2026 12:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792237710; cv=none; b=qrftaoGBGcTrBpohJ1Q8lwXzYX1zTwltnYc17lnzW0y9AIDCCnWd8iWnUc8TW5aQLx9FlffmqvdmxgxfXuUydkvaaL7DqjRgPUTWAciECe/B+8badbgx9qgtoxUVeYWy97vRBW/1EL0Hc7FWsqZj5b3PUolfNCw0iRNsK+eRFvo=
+	t=1792239907; cv=none; b=LTAK2ecxZf1betdSiltrlKTBzZJNMZllqp8A5v4Ok7iamH1f5TQwPaTEpzrpLn81Or9WXhWobK7fmnBqjbDksyx3Pp1EiktLgtMinZ6ZY+6NFLYNWIz074VbeMACxMbhtALZMilFMGlOIaCF3br527P6TkwcDWRvAcaT3YFgxmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792237710; c=relaxed/simple;
-	bh=y1FPo3GMWlifTTHe8FuDPc02/dkHtva0dU1ppoaU2bc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HPLkwe3JLTt8Y+lzdaQg0zK0zDMQcsIz6d24bfZz31TEHUIPuA6akfvYUX03ExwCPwrIkFhVSBnxMFgQGszUM7r3jNsFnQurqvF12b2XSZgKtSUOgsX4b5f9weT2eJAYIDKNY2jgzK8OrBE1vXdG+QqbZVi09IjdQp29eC9vsLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6XsGeLv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792239907; c=relaxed/simple;
+	bh=d0lRRxmXLnUsJtatii7z2pOxUgVx3Rg6HZ2/8Trpm9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KNKd4dRRXtiZfANz8XS2KdHHYu6ndYE+dk30tsEKFMMlsQyHen4JzZ6HSM/Dl75vG2UlH6eMErKVSAi2FFBGy0usZjHgCzndd0XnwjZvomq0Xd8x4692M9jC5eSO1ptcApuoHi7K7xAUnl54cVm19RtStAtHH2meJidwmjTpy04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tr2xttvj; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6XsGeLv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4251F000C4;
-	Sat, 17 Oct 2026 11:48:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792237709;
-	bh=jJmc5s72fxnzrSisazlCiSA9/N+0IuorH4FcHqR8R3Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T6XsGeLv6DMHkSP68KPe1EP4tk+yLjiPAPERFWjp/cc64HhPR9M/EY5g4KzGqPhsq
-	 s9ZyCRe/Wte5Br0+77Xt/SJ59TP13Z5thDfc1ow5ctTsb09aF1aUA7Ev9UuUz1qUpJ
-	 ANXbRY3WzL6cdisADF0z+2IsINIYz4hwohQzHNGNTD9czKTtejHj4R3LfhP17TM/x0
-	 jwrIaKz3earIeawjC36RR5TNjyjy7IbAWn2lpYVkAXgeGzWdCqpgIyjI1LvcQz4vAm
-	 0iApAkw+VRn0SW96Vp1J3vzN4kN3lZukFsyqY0kIu2kTFL0WAX0XlSPWjAvtLDBD1m
-	 AQBhgOLqPYTIg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xI2tn-0000000459f-0Czq;
-	Sat, 17 Oct 2026 11:48:27 +0000
-Date: Sat, 17 Oct 2026 12:51:41 +0100
-Message-ID: <87y0bw8rzm.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <sascha.bischoff@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	oupton@kernel.org,
-	fuad.tabba@linux.dev,
-	joey.gouly@arm.com,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com
-Subject: Re: [PATCH 1/2] KVM: arm64: vgic: Require matching VGIC model for GICv3 ITS
-In-Reply-To: <20261016152225.898761-2-sascha.bischoff@arm.com>
-References: <20261016152225.898761-1-sascha.bischoff@arm.com>
-	<20261016152225.898761-2-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tr2xttvj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=QBt9n5EhoF4ytefL+NqOdtVCXxj2E+IaiHKYLwHYwdQ=; b=tr2xttvjtFbuxnSu06mhWznsxe
+	eTga23DNzmSDqKHqOACNQeuc3kb6FlBYW6PqlNxmgQjOdd1p/4UBaWDWl0naljuBKNOuaQYr23sa0
+	qs3GFKWKpMd3gBLEAe63Zx1RT5CFZ7T2lLicEiLFT9salRDKb4Xvx4+JQ9fK3cG+IGP714sA8q2tS
+	twY+WhNxhvG77Ogwv1eHUJq/F7QYHpdUvU7XrkAYB+WdBER9oNRPPmU+Whnqly2kGnvVEKvZKkFan
+	npMS8FcWIafqsJP43iITbnGDDMO5lpF7JjEpocKb0kr+eZL+G7/075jgAR4/TcjCN5SDppxoHi2MS
+	EuUQGCOQ==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xI3TC-0000000CVCI-2BZw;
+	Sat, 17 Oct 2026 12:25:02 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xI3TC-00000002YlS-1Nvm;
+	Sat, 17 Oct 2026 13:25:02 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Thara Gopinath <tgopinath@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	Nikolas Wipper <nik.wipper@gmx.de>,
+	Mushahid Hussain <hmushi@amazon.co.uk>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	nh-open-source@amazon.com
+Subject: [RFC PATCH 10/55] KVM: x86: Allow MP state ioctls on plane vCPU fds
+Date: Sat, 17 Oct 2026 13:24:16 +0100
+Message-ID: <20261017122501.610248-11-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261017122501.610248-1-dwmw2@infradead.org>
+References: <20261017122501.610248-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sascha.bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Fri, 16 Oct 2026 16:22:23 +0100,
-Sascha Bischoff <sascha.bischoff@arm.com> wrote:
-> 
-> On a GICv5 host with legacy support, KVM registers both VGICv3 and
-> VGICv5 devices. A VM can create a GICv3 ITS with another VGIC model,
-> setting has_its even though that model cannot use the GICv3 ITS.
-> 
-> Reject GICv3 ITS creation when the VM already has an incompatible VGIC.
-> KVM also permits creating an ITS before its VGIC, so record the model
-> required by the ITS and reject a later incompatible VGIC. Preserve
-> either creation order when the models match.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-init.c | 5 +++++
->  arch/arm64/kvm/vgic/vgic-its.c  | 9 +++++++++
->  include/kvm/arm_vgic.h          | 2 ++
->  3 files changed, 16 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-> index b5ea1e39c6862..48a92555fa6ab 100644
-> --- a/arch/arm64/kvm/vgic/vgic-init.c
-> +++ b/arch/arm64/kvm/vgic/vgic-init.c
-> @@ -125,6 +125,11 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->  		goto out_unlock;
->  	}
->  
-> +	if (kvm->arch.vgic.its_model && kvm->arch.vgic.its_model != type) {
-> +		ret = -ENODEV;
-> +		goto out_unlock;
-> +	}
-> +
->  	if (kvm_id_regs_final(kvm))
->  		goto out_unlock;
->  	ret = 0;
-> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-> index e5657cb603567..bf901626ea6df 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> @@ -1875,6 +1875,14 @@ static int vgic_its_create(struct kvm_device *dev, u32 type)
->  
->  	mutex_lock(&dev->kvm->arch.config_lock);
->  
-> +	if ((irqchip_in_kernel(dev->kvm) && !vgic_is_v3(dev->kvm)) ||
-> +	    (dev->kvm->arch.vgic.its_model &&
-> +	     dev->kvm->arch.vgic.its_model != KVM_DEV_TYPE_ARM_VGIC_V3)) {
-> +		mutex_unlock(&dev->kvm->arch.config_lock);
-> +		kfree(its);
-> +		return -ENODEV;
-> +	}
-> +
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-A comment would go a long way to make it clear what this is checking
-for:
+A new plane vCPU for an AP starts, like any non-boot x86 vCPU, in the
+uninitialised wait-for-INIT state, and nothing ever sends INIT/SIPI to
+the higher plane of an AP. The VMM placing an initial VTL context on
+it has to mark it runnable itself.
 
-	- if a GIC already exists and is not v3, fail
-	- if an ITS already exists and is not v3, fail
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: LLM
+---
+ arch/x86/kvm/x86.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
->  	if (vgic_initialized(dev->kvm)) {
->  		ret = vgic_v4_init(dev->kvm);
->  		if (ret < 0) {
-> @@ -1903,6 +1911,7 @@ static int vgic_its_create(struct kvm_device *dev, u32 type)
->  
->  	dev->kvm->arch.vgic.msis_require_devid = true;
->  	dev->kvm->arch.vgic.has_its = true;
-> +	dev->kvm->arch.vgic.its_model = KVM_DEV_TYPE_ARM_VGIC_V3;
->  	its->enabled = false;
->  	its->dev = dev;
->  
-> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-> index 7be81b936bf10..a2b6b328808ba 100644
-> --- a/include/kvm/arm_vgic.h
-> +++ b/include/kvm/arm_vgic.h
-> @@ -548,6 +548,8 @@ struct vgic_dist {
->  	struct vgic_io_device	cpuif_iodev;
->  
->  	bool			has_its;
-> +	/* VGIC model required by the VM's ITS devices. */
-> +	u32			its_model;
-
-I reckon that has_its and its_model can be made the same thing, since
-its_model == 0 indicates the lack of ITS, and it is otherwise the same
-as vgic_model.
-
-I ended up with this (untested). Thoughts?
-
-	M.
-
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index 2d915769cdc7c..c70390b7fcab6 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -456,6 +456,9 @@ int kvm_vgic_vcpu_init(struct kvm_vcpu *vcpu)
- 		 */
- 		if (vcpu->vcpu_id >= kvm_vgic_global_state.max_gicv5_vcpus)
- 			return -EINVAL;
-+		break;
-+	default:
-+		unreachable();
- 	}
- 
- 	return ret;
-@@ -572,6 +575,8 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
- 		kfree(dist->vgic_v5_irs_data);
- 		dist->vgic_v5_irs_data = NULL;
- 		break;
-+	default:
-+		unreachable();
- 	}
- 
- 	xa_destroy(&dist->lpi_xa);
-diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-index 0ec461df74cd9..171e5e345c220 100644
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -1963,7 +1963,6 @@ static int vgic_its_create(struct kvm_device *dev, u32 type)
- 	xa_init(&its->translation_cache);
- 
- 	dev->kvm->arch.vgic.msis_require_devid = true;
--	dev->kvm->arch.vgic.has_its = true;
- 	dev->kvm->arch.vgic.its_model = KVM_DEV_TYPE_ARM_VGIC_V3;
- 	its->enabled = false;
- 	its->dev = dev;
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index 636c576b2b99e..282fac37b6642 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -42,10 +42,7 @@ bool vgic_has_its(struct kvm *kvm)
- {
- 	struct vgic_dist *dist = &kvm->arch.vgic;
- 
--	if (dist->vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
--		return false;
--
--	return dist->has_its;
-+	return (dist->its_model == dist->vgic_model);
- }
- 
- bool vgic_supports_direct_msis(struct kvm *kvm)
-diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-index c4135815884b6..4b2c41917b77c 100644
---- a/include/kvm/arm_vgic.h
-+++ b/include/kvm/arm_vgic.h
-@@ -503,7 +503,9 @@ struct vgic_dist {
- 	bool			initialized;
- 
- 	/* vGIC model the kernel emulates for the guest (GICv2 or GICv3) */
--	u32			vgic_model;
-+	enum kvm_device_type	vgic_model;
-+	/* VGIC model required by the VM's ITS devices. */
-+	enum kvm_device_type	its_model;
- 
- 	/* Implementation revision as reported in the GICD_IIDR */
- 	u32			implementation_rev;
-@@ -548,9 +550,6 @@ struct vgic_dist {
- 	struct vgic_io_device	dist_iodev;
- 	struct vgic_io_device	cpuif_iodev;
- 
--	bool			has_its;
--	/* VGIC model required by the VM's ITS devices. */
--	u32			its_model;
- 	bool			table_write_in_progress;
- 
- 	/*
-
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index ca5d8e081fdc..970c738558f2 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6278,6 +6278,8 @@ bool kvm_arch_is_vcpu_plane_ioctl(unsigned ioctl)
+ 	case KVM_SET_ONE_REG:
+ 	case KVM_GET_SREGS2:
+ 	case KVM_SET_SREGS2:
++	case KVM_GET_MP_STATE:
++	case KVM_SET_MP_STATE:
+ 	case KVM_GET_VCPU_EVENTS:
+ 	case KVM_SET_VCPU_EVENTS:
+ 	case KVM_GET_XCRS:
 -- 
-Jazz isn't dead. It just smells funny.
+2.50.1
+
