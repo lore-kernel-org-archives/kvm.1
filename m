@@ -1,43 +1,43 @@
 Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5163847CC96;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50C347F2D1;
 	Sat, 17 Oct 2026 09:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.76.10.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792229435; cv=none; b=m/V9++fItXJBgCL3apycNhaMRR13scxaUssCa+Qa1fd8y5/PRklDyqKFXKDSsCOXRKAZD3sCBsjFAVrTCPpJg9rks5buxb9GTq6vuVg413xa/yV2enr+NBL1k9TRoEna0X9EO1S/WkufixNWaUVcYcjcmqSb4NJxe2rAVbyFsMk=
+	t=1792229436; cv=none; b=odQV61eRQv8TYL+ojdX9HYEt5fwlwLp5+0fimlTkpW0uky28WC7GSjDo1ZaIHIGeShmyl0SLuvekMjQrJF48059a0Fo3UvCDZQdd0NRQm5fLlzBFc6XYLgM+wwH9h8RK0EE3iVa9uaqVWPuLMuolNlLCiVwh1b1UNzZK7SZLZh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792229435; c=relaxed/simple;
-	bh=6n/DP+J3QmugsD4VZVw0nVpPRH9MpEeUb+U8oLZy37I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=km1f64+kBrid/zXimLh5yuNlgn5uvT4iYwkXEsKCLIOiA2wX7fxbuvippTh13wTUFfi19609EH1Ds4RW2L2wrWsYHFfWPJjS5Z3ZTulI2KeTN8eAero3fT/oVkMeeSuOjSgER19xBmCGhXv9e0v29cHPzryFYwoIuPR22S+RO1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de; spf=pass smtp.mailfrom=cispa.de; dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b=dt/U9xKf; arc=none smtp.client-ip=134.76.10.21
+	s=arc-20240116; t=1792229436; c=relaxed/simple;
+	bh=d1gproy9oF7zXZCfeL17GoDpaBg9gaPpJtC/7WxDTS8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=onE6gLzr2GbMJNe1xrsF6flUyI/epLpR43WsHd3vhDtAnJ5omBYuZyleY6c7TfnEojpSDL8BZY/pfdtwR3JGawKmwQ6fuSjyPptaRoEMdqjBrKFSntZRCcXzBJYb8XAvhEK5DmHf1/mndgZ/isu6j5SUbu4escvj4Wfyc5eNT5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de; spf=pass smtp.mailfrom=cispa.de; dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b=pIRyFbj9; arc=none smtp.client-ip=134.76.10.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b="dt/U9xKf"
+	dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b="pIRyFbj9"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
 	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:
 	Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=HgMYbhAoeaeOOZxtD9k9QZow02hV/8D2BFRu4aNQ2EE=; b=dt/U9xKf/R1IbwIzG1qexRxGT+
-	3BKH6MlOG9oZT9BFUFzBTKtwIsdktEtYFFwdU19zZd0WkCOdmMhlALo3XfGapu1KcgOBTPhwfGN3V
-	RfzyuA7FeztGcPrMhXELKGOYGDBAIpAvfVn82dUFx3ivCBX2kPRC/sM44QMZHilhHf8QwIsfg5t7N
-	AxjKrIPe5VuUjotA9ktCJPAgWj/mS4+v8qNvFPiOWwXeYSQMVTWQ0mT08WOx7KhxOHaJ30m8Rm11n
-	82eJCEmd+/LrK2VVatsoUvTZ1Z0mnw+wiJ6AQMa3YDD0K8k/AndLRW8KEEIT925aMCl6vlKWUEs0f
-	gv9iRLmA==;
-Received: from mailer.gwdg.de ([134.76.10.26]:43444)
+	bh=4t411huFdYtuNuPySjQ9ZCck/NBFFjumNiKv93w5aN4=; b=pIRyFbj92uEI8RbY+u4MZu+ROa
+	TcWyoXSysacKtsbWtbaexovJPogFjCZEgdw8KzSDFfFkYx9OGZvcJ7N0B/N/Jt5XZW0k/rxDCtLb8
+	dWG1f0Y3a9vLIltaSTjQrq24qcPW3GT+o1kbjywFQW7DeEUXJPg/40ZcdaIPYyKAcSfS2oG+4Ojmy
+	Q2GImb1NEE9gRUfUrUKyiy2u+QL8HUU+KVxGoJPr8Lgn++gg/F+fWfV3g/GWrGx1tx7a9R9w5DmTF
+	uSqj115cw2c6UeDtjICa/dI/5UaTytrGl1iDtg40jiubAu6/B9BGxfbNsQgmh2P7ZsrphbkTXss77
+	A++L2ueA==;
+Received: from mailer.gwdg.de ([134.76.10.26]:55350)
 	by mailer.gwdg.de with esmtp (GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xI0kL-00BAXf-0F;
-	Sat, 17 Oct 2026 11:30:32 +0200
+	id 1xI0kL-00BAXo-2a;
+	Sat, 17 Oct 2026 11:30:33 +0200
 Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
 	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
 	(GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xI0kK-000VYE-26;
-	Sat, 17 Oct 2026 11:30:32 +0200
+	id 1xI0kL-000VYi-1B;
+	Sat, 17 Oct 2026 11:30:33 +0200
 Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
  (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Sat, 17 Oct
@@ -45,9 +45,9 @@ Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
 From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 To: <seanjc@google.com>, <pbonzini@redhat.com>
 CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [BUG] KVM: nSVM: vNMI vmcb02->vmcb01 egress runs for a non-nested-vNMI L1 (gated on global vnmi, not nested_vnmi_enabled)
-Date: Sat, 17 Oct 2026 11:30:15 +0200
-Message-ID: <20261017093016.32348-6-amirmohammad.eftekhar@cispa.de>
+Subject: [BUG] KVM: x86: Hyper-V VP-assist page reuses the KVM PV-EOI gfn_to_hva_cache, so enabling both WARNs and fails KVM_RUN
+Date: Sat, 17 Oct 2026 11:30:16 +0200
+Message-ID: <20261017093016.32348-7-amirmohammad.eftekhar@cispa.de>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -64,41 +64,41 @@ X-Spam-Level: -
 
 Hi,
 
-Reporting an nSVM vNMI fidelity bug (correctness, L1-scoped; not
-memory-safety, not guest->host).
+Reporting a guest self-DoS (correctness/robustness; not memory-safety, not
+guest->host).
 
-On nested VM-exit, nested_svm_vmexit() copies the virtual-NMI state from
-vmcb02 back into vmcb01:
+The Hyper-V VP-assist page and KVM's PV-EOI feature share a single
+gfn_to_hva_cache, vcpu->arch.pv_eoi.data:
 
-  if (vnmi) {                                             /* svm/nested.c ~1407 */
-          if (vmcb02->control.int_ctl & V_NMI_BLOCKING_MASK)
-                  vmcb01->control.int_ctl |= V_NMI_BLOCKING_MASK;
-          else
-                  vmcb01->control.int_ctl &= ~V_NMI_BLOCKING_MASK;
+ - Writing HV_X64_MSR_VP_ASSIST_PAGE arms the cache for the VP-assist page via
+   kvm_lapic_set_pv_eoi(vcpu, gfn_to_gpa(gfn) | KVM_MSR_ENABLED,
+   sizeof(struct hv_vp_assist_page))   /* hyperv.c ~1600 */
+ - kvm_hv_get_assist_page() then reads it back with that same cache and the
+   VP-assist length:
+   kvm_read_guest_cached(kvm, &vcpu->arch.pv_eoi.data,
+                         &hv_vcpu->vp_assist_page,
+                         sizeof(struct hv_vp_assist_page))  /* hyperv.c ~952 */
 
-          if (vcpu->arch.nmi_pending) { ... V_NMI_PENDING_MASK ... }
-  }
-
-The guard is the global `vnmi` module capability, not
-nested_vnmi_enabled(svm). The *ingress* side is gated correctly -- in
-nested_vmcb02_prepare_control() the V_NMI_* bits are only pulled from vmcb12
-when nested_vnmi_enabled(svm) is true (svm/nested.c ~888-896). The egress is
-not symmetric: for an L1 that was NOT granted nested vNMI, KVM still overwrites
-vmcb01's V_NMI_BLOCKING/V_NMI_PENDING from vmcb02 on every L2 round-trip, so
-L1's own NMI-blocking/pending state (which KVM maintains in vmcb01's V_NMI for
-such an L1) is clobbered by L2-derived bits.
+pv_eoi.data is the one gfn_to_hva_cache shared between the two features. A guest
+that has VP-assist enabled and then writes MSR_KVM_PV_EOI_EN (a different GPA,
+len 1) re-initializes pv_eoi.data for the 1-byte PV-EOI object while VP-assist
+stays enabled. The next kvm_hv_get_assist_page() then does a cached read of
+sizeof(struct hv_vp_assist_page) against a cache set up for len 1 -> the
+length/GPA mismatch trips the cache and KVM fails the read, surfacing as a WARN
+and a failed KVM_RUN for a guest that did nothing architecturally illegal (the
+two features are independent and both legitimately enableable).
 
 Impact / class
 --------------
-L1-scoped fidelity (a VMEXIT-egress state-mismerge class). Victim is L1; not a
-privilege boundary, not guest->host, AMD-only, and CONFIG_KVM_AMD is off on the
-kvmCTF target, so this is upstream-hardening value rather than a bounty issue.
+Guest self-DoS (the guest breaks its own vCPU); low severity, no host memory
+safety or cross-VM effect. Reported because "enable two unrelated, individually
+valid features -> WARN + failed KVM_RUN" is a robustness bug.
 
-Suggested fix
--------------
-Gate the egress copy on nested_vnmi_enabled(svm) to match the ingress, so a
-non-nested-vNMI L1's V_NMI state in vmcb01 is left untouched across L2 entry/
-exit. Happy to send the patch.
+Suggested direction
+-------------------
+Give the Hyper-V VP-assist page its own gfn_to_hva_cache instead of borrowing
+vcpu->arch.pv_eoi.data, so the two features cannot clobber each other's cache.
+Happy to send a patch once you confirm that's the preferred fix.
 
 Read-confirmed against kvm-x86/next (tip of 2026-10-13); present in mainline
 v7.3-rc6.
