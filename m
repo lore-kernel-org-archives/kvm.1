@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E562490BEC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F8F4908CD;
 	Sat, 17 Oct 2026 12:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792239912; cv=none; b=LueT4dtp4ZuGCDfimbjg+dKkAY+bHwUnWd1rVoHntMyOqhFxaWpxVKDIzt8P//GrwE4XeNfsPTV+Pvd7EptSo01jOgqyWCbW+Fu8HLsNmpvc3HaeMhx5CBzI5QHjjkF918UGcXogZPVebrQ5VRMOZsnvpluEPatg8wGkkduFUQo=
+	t=1792239913; cv=none; b=YdIYz9soQGoMtjCK3CUjpMF+zXNIfcqjZVFWjuzeLpvg2FOqQKk3lFWR/lh565FcMaQnWIP8DYMpiwZ2IhJ0Q+QxahLm8lBE0zSi5PSykTNdxnGKXva3b+XggGIoKmK30zDj80zIEsqSDGI/xjMQ/05P6QKJjiybIZeDiNRb2aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792239912; c=relaxed/simple;
-	bh=5k3Xo+xmKtrt3lSmJryex41ZoFo1GnIi75WcsMAxYlY=;
+	s=arc-20240116; t=1792239913; c=relaxed/simple;
+	bh=RVi6Ypb2sRHdkkT9sxlDqvx5LAZU/U7DtYQuWNHtvHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdCjZYwi/m8SY9WSj2Y91MindeAuQ8WHhPlNbWJYlxnK2pmttUIOmPZq2Ua1U8ELtwuchRqLJocy5WG9Qk1GO3i5yk3QWiTXJOEzoQNmoqe6N5M3RsA6vg/jJ1FkOKL0EbIe1NH00bpfP+7YQw0Akx2XfBLhrK+YCBZqK+X9bGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=McUw3hGj; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=AtvGp0tTXok2o/RW9/r+UxFz4H2/B6F4orrG2Pyn9/q96gKpCXelKQaSc/1WWducArEj8dqBU9Rh4HZW9ukPTsnaafkBzGKjcobopDZX07LG7yZdY7uhBbKpvsY4evEREsHd5ICctVe0eYBxx+FrDKU0heDaZixQPwDOmWT6y9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Adm6Rauo; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="McUw3hGj"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Adm6Rauo"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=/EWyCyVIsJ7rQk78dgU8SQgTJnoYpxSVJ3hL1dmNDcM=; b=McUw3hGj8eyAG3BV/f47eaHE5g
-	YyfhOP1sN01U7ERLrYdN/ZNnV5SN8v8CzlKS5KpVdkphiKUqKjYHsuNUjwF/UM5vB+ht0wtFyY9md
-	yv4BcmnJ8W/z2LxoGlvqvzQy743Y6lpSck8liELYgKQshJBG8sRrznCkNkkRgI0i2gyQGb8XJSh1x
-	67sMjkrw5TKW5oZPzr9VrQhCSrbUlhCS/oTnmAcUgMIltS4DsDYi67qhpM2wR2gMSoR9nOm4FDYy+
-	ksLfZDUuJwvTEHMgBlO/dvigFzxl2VvzEyKjO8qOMdbiQ58AI1d9fz0jfZdWZlG50LMy/STHfwtd5
-	S+QcCUhA==;
+	bh=oqD01cGmatq0R7KGfZBkSFOS1thsicsovcmsGvVc4zw=; b=Adm6Rauo0Ar5AIH+FLJCl2xdXO
+	K/Wq3MC+UoV3nH7uU2eYnFD1fDgZ02n9ztpDgO3Vt6DYHuzbP52VilQKlSgOoqO0U2PIBVhLh7Uar
+	CgElLx2NxPNwEPVBuu8bmwttOBkxF77FpLVpYVzEIofAhqsvXfchv+CZGvrSkWfGHKCtpcNkKWm4v
+	BZKOgZVIxsdbsiFUQPIvxqf8f7UTv3x7mynBVZQSRn88pKdIIiCmE6O+nhlw0R/UeVz7zga9d/k2e
+	zf1YsbRORHX+T1EmDfACUcBjBNdq8kML7nGSc8SnsqFkGwBnMoqHUhM+p3XT+8cI8TUOwm+QqurIL
+	Vg7FVbpg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xI3TE-0000000CVEW-2eOF;
+	id 1xI3TE-0000000CVE9-1V8H;
 	Sat, 17 Oct 2026 12:25:04 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xI3TE-00000002Yof-1iMC;
+	id 1xI3TE-00000002YoA-0eTW;
 	Sat, 17 Oct 2026 13:25:04 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -53,9 +53,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>,
 	nh-open-source@amazon.com
-Subject: [RFC PATCH 54/55] KVM: Check every plane's protections before caching a gfn->hva
-Date: Sat, 17 Oct 2026 13:25:00 +0100
-Message-ID: <20261017122501.610248-55-dwmw2@infradead.org>
+Subject: [RFC PATCH 48/55] KVM: x86: hyperv: Advertise XMM fast hypercall output
+Date: Sat, 17 Oct 2026 13:24:54 +0100
+Message-ID: <20261017122501.610248-49-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017122501.610248-1-dwmw2@infradead.org>
 References: <20261017122501.610248-1-dwmw2@infradead.org>
@@ -71,120 +71,31 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The gfn_to_hva_cache init and the pfncache refresh refuse to cache a
-range carrying NR/NW attributes, but consulted only plane 0's array.
-Cached accesses made in vCPU context for a non-zero plane vCPU (steal
-time, PV EOI, pvclock) therefore enforced plane 0's protections only: a
-plane-N guest could point a PV MSR at a gfn its own plane marked NW and
-kvm_write_guest_offset_cached() wrote through it, while the uncached
-paths correctly use the vCPU's own plane.
+The Hyper-V VSM register hypercalls return data in XMM registers when
+the guest uses their fast forms, and the userspace handler answering
+them writes those registers through the vCPU FPU state. Report
+HV_X64_HYPERCALL_XMM_OUTPUT_AVAILABLE in KVM_GET_SUPPORTED_HV_CPUID so
+the VMM can expose it; the reference hypervisor advertises it, and the
+Windows secure kernel only uses the fast forms when it is present.
 
-A cached translation has no plane context at use time, so refuse the
-cache when ANY plane protects the range.  The attribute generation that
-invalidates these caches is already partition-wide, so updates on any
-plane force a re-check.  The plane array walk follows the existing
-lock-free kvm->planes[] reader pattern (acquire paired with the
-publishing release).
-
-Fixes: a407d03e5697 ("KVM: Take memory protections into account for accesses with cached gfn->hva")
-Fixes: dc506e2ff987 ("KVM: pfncache: Fail to refresh if it contains memory protections")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: LLM
 ---
- include/linux/kvm_host.h |  8 ++++++++
- virt/kvm/kvm_main.c      | 31 ++++++++++++++++++++++++++++++-
- virt/kvm/pfncache.c      |  3 ++-
- 3 files changed, 40 insertions(+), 2 deletions(-)
+ arch/x86/kvm/hyperv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 60923494eea5..6a1ac96d64ba 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2846,6 +2846,8 @@ bool kvm_plane_range_has_any_attrs(struct kvm_plane *plane, gfn_t start,
- 				   gfn_t end);
- bool kvm_range_has_any_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 					unsigned long mask);
-+bool kvm_any_plane_range_has_rw_memory_protections(struct kvm *kvm,
-+						   gfn_t start, gfn_t end);
- bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
- 					struct kvm_gfn_range *range);
- bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-@@ -2889,6 +2891,12 @@ static inline bool kvm_range_has_any_memory_attributes(struct kvm *kvm,
- {
- 	return false;
- }
-+static inline bool kvm_any_plane_range_has_rw_memory_protections(struct kvm *kvm,
-+								 gfn_t start,
-+								 gfn_t end)
-+{
-+	return false;
-+}
- static inline u64 kvm_mem_attributes_generation(struct kvm *kvm)
- {
- 	return 0;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 1c70bb70500c..f0b474b0547d 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2779,6 +2779,34 @@ static bool kvm_plane_range_has_memory_attributes(struct kvm_plane *plane,
- 	return false;
- }
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 02866b9b7e9b..dbe1b83c1f28 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -3751,6 +3751,7 @@ int kvm_get_hv_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid2 *cpuid,
+ 			ent->ebx |= HV_ENABLE_EXTENDED_HYPERCALLS;
  
-+/*
-+ * Returns true if any plane's attributes deny read or write anywhere in
-+ * [@start, @end).  Cached gfn->hva translations carry no plane context
-+ * at use time, so a cache must be refused when ANY plane protects the
-+ * range, not just plane 0.
-+ */
-+bool kvm_any_plane_range_has_rw_memory_protections(struct kvm *kvm,
-+						   gfn_t start, gfn_t end)
-+{
-+	unsigned long mask = KVM_MEMORY_ATTRIBUTE_NR | KVM_MEMORY_ATTRIBUTE_NW;
-+	int i;
-+
-+	if (kvm_range_has_rw_memory_protections(kvm, start, end))
-+		return true;
-+
-+	for (i = 1; i < KVM_MAX_PLANES; i++) {
-+		/* Pairs with the release in kvm_create_plane(). */
-+		struct kvm_plane *plane = smp_load_acquire(&kvm->planes[i]);
-+
-+		if (plane &&
-+		    kvm_plane_range_has_memory_attributes(plane, start, end,
-+							  mask))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static bool kvm_range_memory_attributes_need_sync(struct kvm_plane *plane,
- 						  gfn_t start, gfn_t end,
- 						  unsigned long attributes)
-@@ -3939,7 +3967,8 @@ static int __kvm_gfn_to_hva_cache_init(struct kvm *kvm,
- 	 * check has to happen after storing the generation number.
- 	 */
- 	ghc->attrs_generation = kvm_mem_attributes_generation(kvm);
--	if (kvm_range_has_rw_memory_protections(kvm, start_gfn, end_gfn + 1)) {
-+	if (kvm_any_plane_range_has_rw_memory_protections(kvm, start_gfn,
-+							  end_gfn + 1)) {
- 		ghc->hva = KVM_HVA_ERR_BAD;
- 		return -EFAULT;
- 	}
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 39935740136d..6ad1c62e9cd8 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -304,7 +304,8 @@ static int __kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned l
- 			 * generation number.
- 			 */
- 			gpc->attrs_generation = kvm_mem_attributes_generation(kvm);
--			if (kvm_range_has_rw_memory_protections(kvm, gfn, gfn + 1)) {
-+			if (kvm_any_plane_range_has_rw_memory_protections(kvm, gfn,
-+									  gfn + 1)) {
- 				gpc->uhva = KVM_HVA_ERR_BAD;
- 				ret = -EFAULT;
- 				goto out;
+ 			ent->edx |= HV_X64_HYPERCALL_XMM_INPUT_AVAILABLE;
++			ent->edx |= HV_X64_HYPERCALL_XMM_OUTPUT_AVAILABLE;
+ 			ent->edx |= HV_FEATURE_FREQUENCY_MSRS_AVAILABLE;
+ 			ent->edx |= HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
+ 
 -- 
 2.50.1
 
