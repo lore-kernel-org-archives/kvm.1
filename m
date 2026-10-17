@@ -1,228 +1,123 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64843D994
-	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 14:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792248376; cv=none; b=M92f7KAA8F7lKh693aQVEke5DTRzqZcnQV1h5XSLHKU6cKL6qsuxYWIS5hrEXQGXOCiPBWAeKAaOxVDWs/SmLQTRkRQRROghfZGk7qYKSuxPP1iVIkTL/vc7yh5di4LPDtfMwe14r3wlPdA278vJQN0g/j7AMv++LX39PvCOkIE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792248376; c=relaxed/simple;
-	bh=cPr1Huwe/LeQ+kju7chDpmHbf+xQPpv7XwkCXW2T5Ow=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WzthsnSXFdDXySw3FJj63WgwkdBtGkJfibX2o3dRc3vyTj50aR2bu5UFaniKWzOBFIDBsBK52Re1tyvlLVttADgjYeBcsJK6rkajxMhWirTchCc8Vgsue2MCKV2reIyY+6bdtbP/5DA2ucPpxxqOb3uTuV2RGNXw9+Reck7oK20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jRfqCyW1; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D91035F619
+	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 15:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792250718; cv=pass; b=utSVZIFSZ3DpvoV2ILBRglvJHPYzB4H+GqAckxfLVBm5fspPDJQhLboSv0AsEzSfsIyuPLggbgr9SfSqqRKom7bJK94q2ae28w+x4q0SdNHxTkGYX7lKrwMZWhv1yOhqJQLp4HgGFMu96Ve2yxX7yeDhgNxZ6KcpI6l4Mw85u/E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792250718; c=relaxed/simple;
+	bh=Jm8AzdPrPR6BhXQyJz2nZ42hfc8fkKPUPVq/AoDXHaw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b4rGHywkStUcv5v/gAGDSjjzAU8DtvOZQc5bCdMJ9FNCqX85zo5dJZYhi9CXa0ZioeDPeW34BEmouSrHyDNhHbQBVIRlL67k02KQc0+Zte9sTly5VGy3K3tlAA+UG1SsOXG7vSAVJlGAKez7HATjvtkw5APnLznX/Qo9vRgOjjk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5YGnyIS; arc=pass smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jRfqCyW1"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cd6532dbd7bso678507a12.2
-        for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 07:46:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5YGnyIS"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93f259cdc86so84324185a.3
+        for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 08:25:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792250716; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ASEgxRjoR+vbSVltErT+HHcnio09CPoVj5DOfcH8Sr+JrImEZcwp+69+w+VwRiUU5P
+         yAFh/j+Pg35+9+A3jo7Ec0Q0YBMY6AWWhGaoo6AHRGJrgnRiqYafJEfQ9oOFPr7SF1jW
+         9YGxS69oL5Tr0Hqo2YIfZ4tzKre6yYq3HTlGvv0PAsARJgCAPK2EDHUF5ai8uGgxqoJp
+         RomEGcuoRFStLOgeZ1UHdSybYkOvH3hd5OTFBXQZ+gq7pW2CX1YSAnBgN41/iuezvmB4
+         RU2aLX46gbWl3fruloTAU1mEcQ70SaaUE3eGI5w99/vHiLRuNZ6qop4gyu8m0WVdZ85N
+         peug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=cBiNZFwCvoEsAVFQ+85lVVDF8nZW55yFDyjuRN5OJEE=;
+        fh=1BUbqdW2VZNpSkIQD7uJC2aN9uYU62qgu0C0L1AQG3w=;
+        b=kRJnrZIEHXwUjnUDTxIAS58fNnuMa+oYsws/QpwX7QjnxxrEVuyjVlhjWFwkwt5fAH
+         cYVFJ6dp1UtuAbRDYpCbiOxPcnaOOEUobwcEswz4YN7IlOHzgmC3L5ekCo8i3kW5/+sR
+         RnGz3jgcre1FJu87AkVbT0nFQdDhKf5+q2ApQIKEfWW62bQuRK33h7lau3TiJF+H735M
+         ZGHLPPgD6DTHLU4unUuXGtYXMTrBGKMwpdwxOYyuH/cdip5b+FQB6nm9wlR0IWGRDV8e
+         hJ5EkWZj66ulppt44fo2MjMCf80bPyXAdV9pf2mRmvz5K5rTOMKi7tfTGttjJYV9sRTv
+         qWvg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792248374; x=1792853174; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792250716; x=1792855516; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5YjTyKWZuH05/ZhTwWgCJdu9/Y1Qp2hvgkotUhyJ1PQ=;
-        b=jRfqCyW1OrEjS4TG+OS/vRc6VpzCBFjDORhc0aVzr0Mn/SoWimk4qdvlkvtBZmhr59
-         ZbNB9PnXOoVoXYrvSlwxzMzJmBaI+tYsFrcGQQSOj6Xu2kJ0kgcQUNQty+jXyWekGWs2
-         QZTbUYdlT53w7Mm6INO4t3s7elegaCI0O/w/5aGR3Xkz0RLm0MtX+7uD6lr8QlXDuZtA
-         LYb2LuFDvZhbY/5GREZycRfn7gUBoGwcj7BZtmllkXKnfaPlPxxNuY4FIuyTNHJEcavg
-         Mlbs5X23jfKncn/JTyy9ZftAg00olUH8HBi+FaTQ6U7T6an8nZb6vN51FaqOQUR/69kR
-         DMQQ==
+        bh=cBiNZFwCvoEsAVFQ+85lVVDF8nZW55yFDyjuRN5OJEE=;
+        b=S5YGnyISdiqMD500TqKu/2332EmWoUTKP87+MUGOG6QPTvSlWnUVne+RBQtXXf8uii
+         pTMUtqFbFW3D+D6pM3k/cJkdQMEtMgwgDqSN+adWgX9u6IC9p1vl+8FJdIt5KhAs8bCN
+         x8ZARz/HAcGgUbbL9M7rj+p976MuH5PXUFwTaRTVghbH5D2z5Hy2P/HWdLK++bkPyG3t
+         nVmM9udXfE1pQM6YnsP4g7iXiKQDpWjZUdkJxzeO7yLTl6+Ewn57TdAVcWGRQ4RDUMSl
+         1/Htohgd2qUaGYR+t00PfMkRUHG9ctUkayYT3SzEZoX1ovEHlx4vFj7OddqUvPpy5OjL
+         9WaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792248374; x=1792853174;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5YjTyKWZuH05/ZhTwWgCJdu9/Y1Qp2hvgkotUhyJ1PQ=;
-        b=BW7B/NJQcJ12uUjx1ikg+ZXfT3yvmLUq6PabVzo97wJrh+f7wZiTKHk80I6fhcSTzy
-         8+n/oafK3ACPkkmfJoteLJrMpSqom4q5VQRUYxcqhbdPFC94rLDOnmWK3YUxMl9oU1yW
-         4KbUGGfBcsqYt5cXju2Fu9UDTFvTPKgvyEbrIw+ZdIWeicVkjscyhfJkwkTTwsCPBVJb
-         E2cise4uKpc1hB9YCrB2GjNWbqQE9FmyR/yqAKW05JEPvcPlpKbAg0Vzf3HQslGN3Ulx
-         u2pa5fv1Zkr3QHnzConB/YLCb1BXKCWGYa6umRjZ7dHME/Tb08EBulHTdlPkbCbG29xo
-         Y7PQ==
-X-Forwarded-Encrypted: i=1; AKwUvByEtRu2Bq1xLP955G1V7n92V8xBzMc7f1ld2H3fVP4OjBfYpDnCjRqkGeXVovh2sztcwac=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLnOC2BZ7FML5OQDUMJ73HDr01YJFiyGnboFtoj3YEdiOE9Ojs7
-	oPV1SpT80SIoq72KJZsyjBR4gt2r1f5b/JB7wvEg+rMB0ZKrNiah+iUtIBLWBYZqCjqvYdNPo0U
-	7CnqAng==
-X-Received: from pgbm1-n1.prod.google.com ([2002:a05:6a02:6181:10b0:cca:bb35:aa7b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:62c3:b0:3e1:a7df:3756
- with SMTP id adf61e73a8af0-3e225fcc626mr1919269637.48.1792248373818; Sat, 17
- Oct 2026 07:46:13 -0700 (PDT)
-Date: Sat, 17 Oct 2026 07:46:13 -0700
-In-Reply-To: <sashiko-outbox-175447@kernel.org>
+        d=1e100.net; s=20260707; t=1792250716; x=1792855516;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cBiNZFwCvoEsAVFQ+85lVVDF8nZW55yFDyjuRN5OJEE=;
+        b=C/hQfNd8UEwdAz40SGS9r9mNiGgMM5dK1KIXRx8Kle9W6QmGcqIs22sCzJqw70cUc2
+         QgBNPai4qifxfeyq736hP2EdImhOSjxH8Gtiitier3MwBCKAuL9O5u/La5HIJJmDUl8A
+         mxzIuCBYEzbgDhnv9otVTJUtPFSFD/JuSI8GZCcOCFbuhtuwERHbHy3mhsBxL8CUacw6
+         FxnrS9HYHGvvYSDIqmoczsSk6nOs9sIjI6XNxvazH9LkKQk5rt1mulYnDN6tRnDAq9Hh
+         Td2OslXpSm1j/27Sj1XmqHeaioqA+VwUq8K4HmF3gXZA4tGCEhDWguO/Fo9ZQE5jNJpm
+         4lqQ==
+X-Forwarded-Encrypted: i=1; AKwUvByAH07OoGTAuO1+aQIpAlS4sxIgxfQkJurU9MKZikfQL4LiOQYc7Q4reLorDDQYA3wqp4w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLW0ZtLQiUbu5CwRUUy1sRD+2XmvKaGSDXQ8CH6zbPp2WV9CRiw
+	poyj2PB6DvX0zo5j7sW/vd80E9DjSE1oElsf5/XLpMQ1PLwXpBer8vzarE7vedjmhBJPYUOKOOT
+	9cuW+z1wD1ptu3354AwXwK7/Os/aY3q5/v9Ro
+X-Gm-Gg: AYBFou1vq71b4k5n3Mlra222YnlCcQ0M/TgW9G6pEGQLlDAn94wXx5y5Pwd+BZsMRH/
+	n+4XZ3nD8qixCn8ajwyon9En3UfPEJVqs6akJCMTcKel/+ra5UDeoo8BA+hQl1+7DA375x3ftul
+	CnBm8QXlwiG//M7ousU9dJT+bTDKyQ9PcoUSKBME9Dd5EpuJLRYWP2op5sdvzs5GuVL1DRJVVSD
+	SUPeaC4yjUf8uXpBoZuNFb2g0yY6qs/Vu77VeQbLheOU0Bs9K4xZ2VHus5t1lEyXyf4HvPHfwUG
+	1SuVUepSL9jxWx474cTfe/A+1stXPpTeKcMa5Ras9tWCsqSwHowxOKXxirAN4a0TzdbdA+RrT/K
+	ze9SLz1aqhKFGZOizgamZbY5APYPQhjczDAWLIJAR4YLSlA==
+X-Received: by 2002:a05:620a:2783:b0:93e:d051:8f19 with SMTP id
+ af79cd13be357-93f29ced575mr485953085a.40.1792250716444; Sat, 17 Oct 2026
+ 08:25:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261017093016.32348-2-amirmohammad.eftekhar@cispa.de> <sashiko-outbox-175447@kernel.org>
-Message-ID: <atOKNaeDY7UkIYJH@google.com>
-Subject: Re: [PATCH] KVM: VMX: Load the EOI-exit bitmap into vmcs01, not the
- active VMCS
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20261017110213.46199-1-tharitt97@gmail.com> <20261017110213.46199-6-tharitt97@gmail.com>
+In-Reply-To: <20261017110213.46199-6-tharitt97@gmail.com>
+From: Tharit Tangkijwanichakul <tharitt97@gmail.com>
+Date: Sat, 17 Oct 2026 22:25:04 +0700
+X-Gm-Features: AclHuK8Bu8EDo40zZmiyUcWdeJAzBkx4-shpMZtTbASYDmEugT246DxrXg3J2Ik
+Message-ID: <CACak8wNa-dbNMGO=4U=JpTqSYWdk9MC+DWZS3WxRwuRRvC1T7g@mail.gmail.com>
+Subject: Re: [PATCH 5/5] KVM: selftests: Test protection of the ucall MMIO region
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel-mentees@lists.linux.dev, 
+	skhan@linuxfoundation.org, me@brighamcampbell.com, jkoolstra@xs4all.nl
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Oct 17, 2026, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] KVM: VMX: vmx_load_eoi_exitmap() comment mismatch and deferred L2 update
-> --
-> 
-> commit b2b472dc800418ff9ed851c85722ed6e99a11a91
-> Author: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-> 
-> KVM: VMX: Load the EOI-exit bitmap into vmcs01, not the active VMCS
-> 
-> This commit adds guard(vmx_vmcs01) to vmx_load_eoi_exitmap() so that updates
-> to EOI_EXIT_BITMAP0..3 target vmcs01 rather than whichever VMCS happens to be
-> loaded on the CPU.
-> 
-> >     KVM: VMX: Load the EOI-exit bitmap into vmcs01, not the active VMCS
-> >     
-> >     vmx_load_eoi_exitmap() writes EOI_EXIT_BITMAP0..3 directly with
-> >     vmcs_write64() and, unlike its siblings vmx_hwapic_isr_update() and
-> >     vmx_sync_pir_to_irr(),
-> >     does not take guard(vmx_vmcs01).  The EOI-exit bitmap belongs to L1's APIC,
-> >     but with nested virtual-interrupt-delivery an L2 can be active when KVM
-> >     refreshes it (e.g. via kvm_vcpu_reload_apic_access_page() /
-> >     vcpu_scan_ioapic()), so the writes land in vmcs02 instead of vmcs01: L2's
-> >     EOI-exit bitmap is corrupted and vmcs01's is left stale until the next L1
-> >     refresh.
-> >     
-> >     Add guard(vmx_vmcs01), matching the sibling APICv callbacks.
-> >     
-> >     Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-> 
-> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> > index 612ab07d4100f..ec2ea3e1d14d8 100644
-> > --- a/arch/x86/kvm/vmx/vmx.c
-> > +++ b/arch/x86/kvm/vmx/vmx.c
-> > @@ -7139,6 +7139,13 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
-> >  	if (!kvm_vcpu_apicv_active(vcpu))
-> >  		return;
-> >  
-> > +	/*
-> > +	 * The EOI-exit bitmap tracks L1's APIC, so it must land in vmcs01, not
-> > +	 * whichever VMCS is currently loaded; a nested VID L2 can be active
-> > +	 * here.  Mirror vmx_hwapic_isr_update()/vmx_sync_pir_to_irr().
-> > +	 */
-> > +	guard(vmx_vmcs01)(vcpu);
-> > +
-> >  	vmcs_write64(EOI_EXIT_BITMAP0, eoi_exit_bitmap[0]);
-> >  	vmcs_write64(EOI_EXIT_BITMAP1, eoi_exit_bitmap[1]);
-> >  	vmcs_write64(EOI_EXIT_BITMAP2, eoi_exit_bitmap[2]);
-> 
-> [Severity: Medium]
-> Can vcpu_scan_ioapic() or kvm_vcpu_reload_apic_access_page() actually trigger
-> vmx_load_eoi_exitmap() while L2 is active, as described in the commit message
-> and comment?
+> +#define CLOBBERED_SLOT         TEST_MEM_SLOT_BASE
+Upon self-review, this should have been hardcoded to 1 (to clobber the
+reserved ucal mmio).
 
-Not in normal operation, no.  Maybe if userspace does something bizarre and forces
-the vCPU back into L2 after the exit, but before KVM_RUN?  Regardless, we should
-rip out the deferred update, I simply missed it when removing all the others,
-probably because it was buring in kvm_vcpu_arch instead of vcpu_vmx.
+> +       ret = __vm_set_user_memory_region2(vm, CLOBBERED_SLOT, 0,
+> +                                          vm->ucall_mmio_addr, slot_size, slot_mem, 0, 0);
+> +       TEST_ASSERT(ret == -1 && errno == EEXIST,
+> +                   "Expected the ucall GPA overlap to be rejected: ret=%d errno=%d",
+> +                   ret, errno);
+This should have been errno == EINVAL check to catch writing to the
+exiting read-only slot.
 
-Not yet tested...
+The earlier test accidentally passed because it used a different slot
+ID (=2, not reserved) and received EEXIST for overlapping the reserved
+ucall GPA. It therefore tested GPA overlap rejection, not the intended
+rejection of overwriting slot 1.
 
----
-From: Sean Christopherson <seanjc@google.com>
-Date: Sat, 17 Oct 2026 07:33:11 -0700
-Subject: [PATCH] KVM: x86: Switch to vmcs01 to update EOIT exiting bitmap
- on-demand if L2 is active
-
-If KVM needs to update the EOI bitmap while L2 is running, temporarily load
-vmcs01 and immediately refresh the bitmap in vmcs01 instead of deferring
-the update until the next nested VM-Exit.  I.e. give the EOI bitmap the
-same treatment as the many other updates that were previously deferred.
-
-Reported-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-Closes: https://lore.kernel.org/all/20261017093016.32348-2-amirmohammad.eftekhar@cispa.de
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kvm/regs.h             |  6 ------
- arch/x86/kvm/vmx/vmx.c          |  2 ++
- arch/x86/kvm/x86.c              | 13 -------------
- 4 files changed, 3 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index e2eef7057bd3..9583bde5c848 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -108,7 +108,7 @@
- #define KVM_REQ_HV_RESET		KVM_ARCH_REQ(20)
- #define KVM_REQ_HV_EXIT			KVM_ARCH_REQ(21)
- #define KVM_REQ_HV_STIMER		KVM_ARCH_REQ(22)
--#define KVM_REQ_LOAD_EOI_EXITMAP	KVM_ARCH_REQ(23)
-+/*#define FREE!!!  USE ME!!!		KVM_ARCH_REQ(23) */
- #define KVM_REQ_GET_NESTED_STATE_PAGES	KVM_ARCH_REQ(24)
- #define KVM_REQ_APICV_UPDATE \
- 	KVM_ARCH_REQ_FLAGS(25, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
-diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-index 97c17b120a57..04d047f46753 100644
---- a/arch/x86/kvm/regs.h
-+++ b/arch/x86/kvm/regs.h
-@@ -463,12 +463,6 @@ static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
- static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
- {
- 	vcpu->arch.hflags &= ~HF_GUEST_MASK;
--
--	if (vcpu->arch.load_eoi_exitmap_pending) {
--		vcpu->arch.load_eoi_exitmap_pending = false;
--		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
--	}
--
- 	vcpu->stat.guest_mode = 0;
- }
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b341af4c6057..59b48d959ee0 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7082,6 +7082,8 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
- 	if (!kvm_vcpu_apicv_active(vcpu))
- 		return;
- 
-+	guard(vmx_vmcs01)(vcpu);
-+
- 	vmcs_write64(EOI_EXIT_BITMAP0, eoi_exit_bitmap[0]);
- 	vmcs_write64(EOI_EXIT_BITMAP1, eoi_exit_bitmap[1]);
- 	vmcs_write64(EOI_EXIT_BITMAP2, eoi_exit_bitmap[2]);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 32563a91fba9..0028d57e964a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8062,17 +8062,6 @@ static void vcpu_scan_ioapic(struct kvm_vcpu *vcpu)
- 		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
- #endif
- 
--	if (is_guest_mode(vcpu))
--		vcpu->arch.load_eoi_exitmap_pending = true;
--	else
--		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
--}
--
--static void vcpu_load_eoi_exitmap(struct kvm_vcpu *vcpu)
--{
--	if (!kvm_apic_hw_enabled(vcpu->arch.apic))
--		return;
--
- #ifdef CONFIG_KVM_HYPERV
- 	if (to_hv_vcpu(vcpu)) {
- 		u64 eoi_exit_bitmap[4];
-@@ -8240,8 +8229,6 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		}
- 		if (kvm_check_request(KVM_REQ_SCAN_IOAPIC, vcpu))
- 			vcpu_scan_ioapic(vcpu);
--		if (kvm_check_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu))
--			vcpu_load_eoi_exitmap(vcpu);
- 		if (kvm_check_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu))
- 			kvm_vcpu_reload_apic_access_page(vcpu);
- #ifdef CONFIG_KVM_HYPERV
-
-base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
--- 
+I will fix it in v2
