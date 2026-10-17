@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404A7490BF8;
-	Sat, 17 Oct 2026 12:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E084908BD;
+	Sat, 17 Oct 2026 12:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792239911; cv=none; b=VauN8lE1YxxWbn3CuQh3mC8zTfvx0JSGyFG7OFyVTzcImaFBVPtB/k+Pz5ZVvMAohr4PBZwF0fsVopzhcQIkl0iwBBCgfQiyox/lEN4VgjsnbSvjQ3DgzSSL4P3yczU6M6sR9dVnRHKGYTFo8tnrsliNiOQYiKTQUNbIN7pbDts=
+	t=1792239911; cv=none; b=mUKQerX/4HHfn2Y3F4oIPlMl9C2y7kfGarCS01RCp5sRlJIDOx35KYf7RA7yrP3MRCa52J0Oad3DF0Mx2Tyr3MJmL05uXEXTMHpLpXA+alSnjC0+RTlix78U52xpQ6B3DH+MFhbk/FErhWKLkw7MLq6GysRTPqxC0Adv8Xkhcss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792239911; c=relaxed/simple;
-	bh=vr814dPQ7m+H8Psfpz2S57tibOiNxzsQ2rMb10VDSfA=;
+	bh=e4NVwWxSygRZVzQpMQXwy7eP31A7NwBkmnOaqFmpKWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tzloKt+q1Y62W2Du9DLN4jneJx0N06PZFAEGpZ2DAWXqTu34WtyoLSIcJkgT5+3fAP8BjO4Yd07VGhLmRARCyco/yFPrY+BUbi/db5mFIqSSIiTODBIH6dlPcJqlgDswT4LZNbipo1XELSV9m/66xyqrmdsSpaP685qBcv9UP9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rK7/yPkJ; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=FBSm8p+KzfV8ZQKCk3x3nEFPPNPOfBnrTV4/N8NYwJMbeoaktvZFCo29Ow0Lc3vR6zx0H25t8AaFK8YAtVfKuVJtezAln2wAeuUF5g49J/nFe0EoUq0M1/65Pgby7PftCYBxV+xArBovYwwx80X+pb5RPKt5YuCxoE8NH150JFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hkwAhEUr; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rK7/yPkJ"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hkwAhEUr"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=a4CHpkcKk/utciFY5YQmuIJ361lOG35Qn0BJvjWEjlo=; b=rK7/yPkJmhRU1BF/WKlhP2FUB6
-	nKbcCjbDJMJMacaEwdDhkHkdY8hyXUfN/1GmyFO3F2xhB0FOz0pQqMiCPSiSlWkCQuDZS2cT9EkVi
-	Bw3I7rdyr4Kevdbsz4rOk+JEE0Ip72YK/W5Uqlgyr31EfRSaR4SbuT+qjhpq+aYV1St1Mz+BIQbZe
-	KjZLtZ/epZfJvE3h3m02vMC9gCZp0+L007TsqcKfYgoVKwPb917z6LnORLnwHJ7ls1xm0zCkUUeni
-	RVDCQaPN8g+BPlsDuaHi2cmr4B4umCkulpCmgQcH8mEeh+8Z4cn1EVtsYR0fB1EpnJShHAb/b4s6a
-	RuREs/Lg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=QtFNYlu2JpzTLIvleMoSefldT0KV8NO6x0YOGWgR15k=; b=hkwAhEUr2rO3JnT+V7xHmJ/7QH
+	vBy49GRMcYFDu6g1CrSWYuG+IjnOCSh/JjUkiJ6vVv9ak+KqwGFAmu34AuhUcLPlIoCBIkyLL4Nvl
+	L9zLjkCHEZnaeBf9D1LnFrm2sK/387dB8fMgi0iNSMMRm53hxPNaS+OEJkRbV9cJAVHEKXv+ktitF
+	vrfL29QWoY1pgao8A1V4DvYRdNZ02dEidlYq7A2uhxsBy9Zrd8KUU86k8mGyQla/vJ+FkJftPnyYq
+	l4j+aF/261yo6UEG/UEUWQq3ygc6RwhgDJR/HrZeFf/U75RwX1CH95VfBcZbmuQ/HEsMsL38Rj0jZ
+	BRZkrBHg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xI3TE-0000000CVEV-2GHk;
+	id 1xI3TE-0000000CVDW-0Gov;
 	Sat, 17 Oct 2026 12:25:04 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xI3TE-00000002YoW-1ONF;
-	Sat, 17 Oct 2026 13:25:04 +0100
+	id 1xI3TD-00000002Yni-3esr;
+	Sat, 17 Oct 2026 13:25:03 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>,
 	nh-open-source@amazon.com
-Subject: [RFC PATCH 52/55] KVM: selftests: Add Hyper-V reference TSC page memory attribute test
-Date: Sat, 17 Oct 2026 13:24:58 +0100
-Message-ID: <20261017122501.610248-53-dwmw2@infradead.org>
+Subject: [RFC PATCH 42/55] KVM: x86: Gate forced VTL entry on interrupt deliverability
+Date: Sat, 17 Oct 2026 13:24:48 +0100
+Message-ID: <20261017122501.610248-43-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017122501.610248-1-dwmw2@infradead.org>
 References: <20261017122501.610248-1-dwmw2@infradead.org>
@@ -65,176 +65,265 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The reference TSC page is written by the host, not by the guest, so
-the guest-side memory attribute tests never cover it.  Add a test
-that a page at an unprotected gfn is maintained as usual, that
-pointing HV_X64_MSR_REFERENCE_TSC at a gfn carrying
-KVM_MEMORY_ATTRIBUTE_NW leaves the page contents untouched — on the
-MSR write itself and on a subsequent KVM_SET_CLOCK-forced update —
-and that re-pointing the MSR at a writable page recovers.
+A fixed vector posted to a higher plane forces a VTL entry even when
+the higher VTL's TPR masks it, so the secure kernel is entered with
+reason INTERRUPT and nothing to deliver.  The TLFS (15.9, "VTL
+Interrupt Management") holds such an interrupt pending without
+switching: only a deliverable interrupt preempts the lower VTL.
+
+Gate the forced-entry evaluation on the higher plane's APIC reporting
+a deliverable vector under its PPR.  A masked vector keeps its posted
+marker instead of consuming the single entry attempt, so the entry
+fires if a later VTL round trip leaves the vector deliverable; the
+higher plane still consumes its own marker when it runs.  Each marker
+is consumed only by its own approved clause, in both the userspace
+exit and the in-kernel refusal paths: an exit triggered by extint, a
+stimer or the LAPIC timer while the posted vector is still masked
+leaves the APIC marker armed.
+
+NMIs move to a marker of their own, hv_nmi_event_pending, and keep
+forcing entry unconditionally: the NMI is folded back to plane 0 at
+acceptance, so the higher plane's APIC carries nothing the PPR gate
+could see.  The marker is armed wherever NMI state is posted to a
+non-zero plane (kvm_inject_nmi() and the vCPU-events ioctl, which is
+allowlisted on plane fds), and the level-triggered NMI state
+(KVM_REQ_NMI, nmi_queued, nmi_pending) does not feed the gate: a
+posting earns exactly one wakeup, like the APIC event path, instead
+of keeping the gate permanently true for a parked higher plane.
+
+The in-kernel switch consumes the markers on a refused entry attempt
+too.  The only refusal left on that path is a failing VTL-control
+write (blocked planes are filtered in kvm_higher_plane_with_event()),
+which stays failed until an overlay or memory-attribute change; the
+event remains latched in the plane's own pending state for its next
+entry, rather than repeating the failing guest write on every exit of
+the lower plane and keeping the vCPU from ever blocking.
+
+Matches the deliverability gating of the reference VSM
+implementation (its kvm_plane_has_interrupt); the production Nitro
+Hypervisor remains PPR-blind, and the conformance suite's TPR-masked
+test probes for either behaviour.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: LLM
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/x86/hyperv_tsc_page_attrs.c | 129 ++++++++++++++++++
- 2 files changed, 130 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/hyperv_tsc_page_attrs.c
+ arch/x86/include/asm/kvm_host.h |  21 +++++--
+ arch/x86/kvm/lapic.c            |   2 +-
+ arch/x86/kvm/x86.c              | 104 ++++++++++++++++++++++++--------
+ 3 files changed, 96 insertions(+), 31 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 47c7a4c732eb..6edeb6693375 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -89,6 +89,7 @@ TEST_GEN_PROGS_x86 += x86/hyperv_forward_hcall
- TEST_GEN_PROGS_x86 += x86/hyperv_ipi
- TEST_GEN_PROGS_x86 += x86/hyperv_svm_test
- TEST_GEN_PROGS_x86 += x86/hyperv_tlb_flush
-+TEST_GEN_PROGS_x86 += x86/hyperv_tsc_page_attrs
- TEST_GEN_PROGS_x86 += x86/kvm_clock_test
- TEST_GEN_PROGS_x86 += x86/kvm_pv_test
- TEST_GEN_PROGS_x86 += x86/kvm_buslock_test
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_tsc_page_attrs.c b/tools/testing/selftests/kvm/x86/hyperv_tsc_page_attrs.c
-new file mode 100644
-index 000000000000..efa47ae69780
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/hyperv_tsc_page_attrs.c
-@@ -0,0 +1,129 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Test that KVM honours plane memory attributes when it maintains the
-+ * Hyper-V reference TSC page.  A page whose gfn carries
-+ * KVM_MEMORY_ATTRIBUTE_NW in the owning plane's attributes must never
-+ * be written by the host, on the HV_X64_MSR_REFERENCE_TSC write or on
-+ * any later masterclock update; an unprotected page keeps working, and
-+ * re-pointing the MSR at a writable page recovers.
-+ */
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "hyperv.h"
-+
-+struct ms_hyperv_tsc_page {
-+	volatile u32 tsc_sequence;
-+	u32 reserved1;
-+	volatile u64 tsc_scale;
-+	volatile s64 tsc_offset;
-+} __packed;
-+
-+#define SENTINEL_SEQ	0xdeadbeef
-+#define SENTINEL_U64	0xcafef00dcafef00dULL
-+
-+static void guest_main(struct ms_hyperv_tsc_page *page_a, gpa_t page_a_gpa,
-+		       struct ms_hyperv_tsc_page *page_b, gpa_t page_b_gpa)
-+{
-+	/* Set Guest OS id to enable Hyper-V emulation */
-+	wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
-+
-+	/* An unprotected page is maintained by KVM as usual. */
-+	wrmsr(HV_X64_MSR_REFERENCE_TSC, page_a_gpa | 0x1);
-+	GUEST_ASSERT(page_a->tsc_sequence != 0);
-+
-+	/* Fill the page about to be protected, while it is still writable. */
-+	page_b->tsc_sequence = SENTINEL_SEQ;
-+	page_b->tsc_scale = SENTINEL_U64;
-+	page_b->tsc_offset = SENTINEL_U64;
-+
-+	GUEST_SYNC(1);	/* host sets KVM_MEMORY_ATTRIBUTE_NW on page_b */
-+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 6d864aa71b5b..6d3bae46ecab 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -861,14 +861,25 @@ void kvm_arch_vcpu_common_destroy(struct kvm_vcpu_common *common);
+ 
+ struct kvm_vcpu_arch {
+ 	/*
+-	 * Hyper-V VSM: an APIC event (fixed vector or NMI) was delivered to
+-	 * this plane while it was suspended.  Set at delivery, cleared when
+-	 * the plane next runs; a lower plane's run loop uses it to force a
+-	 * VTL entry even when the vector is currently masked by this
+-	 * plane's TPR (matching the reference host's apic_pending_vtls).
++	 * Hyper-V VSM: a fixed APIC vector was delivered to this plane
++	 * while it was suspended.  Set at delivery, cleared when the plane
++	 * next runs; a lower plane's run loop uses it to force a VTL entry
++	 * once the vector is deliverable under this plane's PPR (TLFS 15.9:
++	 * an interrupt the higher VTL's priority masks is held pending and
++	 * the VTL does not switch).  While masked, the marker is held, so
++	 * the entry fires when a VTL round trip leaves the vector
++	 * deliverable.
+ 	 */
+ 	bool hv_apic_event_pending;
+ 
 +	/*
-+	 * Pointing the reference TSC MSR at the protected page must not
-+	 * have KVM write to it: not on the MSR write itself, and not on
-+	 * the masterclock update the write requests.
++	 * Hyper-V VSM: an NMI was aimed at this (higher) plane.  Forces a
++	 * VTL entry unconditionally: the NMI itself is folded back to
++	 * plane 0 (reference host behaviour), so the higher plane's APIC
++	 * carries no trace of it and the PPR gate above cannot apply.
 +	 */
-+	wrmsr(HV_X64_MSR_REFERENCE_TSC, page_b_gpa | 0x1);
-+	GUEST_ASSERT(page_b->tsc_sequence == SENTINEL_SEQ);
-+	GUEST_ASSERT(page_b->tsc_scale == SENTINEL_U64);
-+	GUEST_ASSERT(page_b->tsc_offset == SENTINEL_U64);
++	bool hv_nmi_event_pending;
 +
-+	GUEST_SYNC(2);	/* host resets kvmclock, forcing a TSC page update */
-+
-+	GUEST_ASSERT(page_b->tsc_sequence == SENTINEL_SEQ);
-+	GUEST_ASSERT(page_b->tsc_scale == SENTINEL_U64);
-+	GUEST_ASSERT(page_b->tsc_offset == SENTINEL_U64);
-+
-+	/* Re-pointing the MSR at a writable page recovers. */
-+	wrmsr(HV_X64_MSR_REFERENCE_TSC, page_a_gpa | 0x1);
-+	GUEST_ASSERT(page_a->tsc_sequence != 0);
-+
-+	GUEST_DONE();
-+}
-+
-+int main(void)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	gva_t page_a_gva, page_b_gva;
-+	gpa_t page_b_gpa;
-+	int stage;
-+
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_HYPERV_TIME));
-+	TEST_REQUIRE(kvm_check_cap(KVM_CAP_MEMORY_ATTRIBUTES) &
-+		     KVM_MEMORY_ATTRIBUTE_NW);
-+	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_main);
-+
-+	vcpu_set_hv_cpuid(vcpu);
-+
-+	page_a_gva = vm_alloc_page(vm);
-+	page_b_gva = vm_alloc_page(vm);
-+	memset(addr_gva2hva(vm, page_a_gva), 0x0, getpagesize());
-+	memset(addr_gva2hva(vm, page_b_gva), 0x0, getpagesize());
-+	page_b_gpa = addr_gva2gpa(vm, page_b_gva);
-+
-+	vcpu_args_set(vcpu, 4, page_a_gva, addr_gva2gpa(vm, page_a_gva),
-+		      page_b_gva, page_b_gpa);
-+
-+	for (stage = 1;; stage++) {
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+			/* NOT REACHED */
-+		case UCALL_SYNC:
-+			break;
-+		case UCALL_DONE:
-+			/* Keep in sync with guest_main() */
-+			TEST_ASSERT(stage == 3, "Testing ended prematurely, stage %d",
-+				    stage);
-+			goto out;
-+		default:
-+			TEST_FAIL("Unknown ucall %lu", uc.cmd);
+ 	/*
+ 	 * rip and regs accesses must go through
+ 	 * kvm_{register,rip}_{read,write} functions.
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 32cace3c89f4..03894f302985 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -1486,7 +1486,7 @@ static int __apic_accept_irq(struct kvm_lapic *apic, int delivery_mode,
+ 			struct kvm_vcpu *twin;
+ 			int p;
+ 
+-			WRITE_ONCE(vcpu->arch.hv_apic_event_pending, true);
++			WRITE_ONCE(vcpu->arch.hv_nmi_event_pending, true);
+ 			if (vcpu->common->vcpus[0])
+ 				kvm_inject_nmi(vcpu->common->vcpus[0]);
+ 			for (p = 0; p < vcpu->plane_level; p++) {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index d82b457e6714..89203909db36 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1071,6 +1071,13 @@ void kvm_inject_nmi(struct kvm_vcpu *vcpu)
+ {
+ 	atomic_inc(&vcpu->arch.nmi_queued);
+ 	kvm_make_request(KVM_REQ_NMI, vcpu);
++	/*
++	 * NMI state posted to a suspended higher plane earns one entry
++	 * attempt through the single-shot marker, like the APIC event
++	 * path; the queued NMI itself is delivered when the plane runs.
++	 */
++	if (vcpu->plane_level)
++		WRITE_ONCE(vcpu->arch.hv_nmi_event_pending, true);
+ }
+ 
+ void kvm_queue_exception_e(struct kvm_vcpu *vcpu, unsigned nr, u32 error_code)
+@@ -5809,8 +5816,13 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 	if (events->flags & KVM_VCPUEVENT_VALID_NMI_PENDING) {
+ 		vcpu->arch.nmi_pending = 0;
+ 		atomic_set(&vcpu->arch.nmi_queued, events->nmi.pending);
+-		if (events->nmi.pending)
++		if (events->nmi.pending) {
+ 			kvm_make_request(KVM_REQ_NMI, vcpu);
++			/* One entry attempt for a parked higher plane. */
++			if (vcpu->plane_level)
++				WRITE_ONCE(vcpu->arch.hv_nmi_event_pending,
++					   true);
 +		}
-+
-+		TEST_ASSERT(uc.args[1] == stage,
-+			    "Stage %d: Unexpected sync, got %lx",
-+			    stage, (ulong)uc.args[1]);
-+
-+		if (stage == 1)
-+			vm_set_memory_attributes(vm, page_b_gpa, getpagesize(),
-+						 KVM_MEMORY_ATTRIBUTE_NW);
-+
-+		/* Reset kvmclock triggering TSC page update */
-+		if (stage == 2) {
-+			struct kvm_clock_data clock = {0};
-+
-+			vm_ioctl(vm, KVM_SET_CLOCK, &clock);
-+		}
-+	}
-+
-+out:
-+	kvm_vm_free(vm);
-+}
+ 	}
+ 	kvm_x86_call(set_nmi_mask)(vcpu, events->nmi.masked);
+ 
+@@ -11286,25 +11298,36 @@ static struct kvm_vcpu *kvm_higher_plane_with_event(struct kvm_vcpu *vcpu)
+ #endif
+ 		/*
+ 		 * Forced entry is edge-triggered on the posting of an
+-		 * event, not level-triggered on the target's IRR, matching
+-		 * the reference host's apic_pending_vtls bitmap: one entry
+-		 * attempt per posted interrupt, via the hv_apic_event_pending
+-		 * marker __apic_accept_irq sets.  A vector that stays
++		 * event, not level-triggered on the target's IRR: one
++		 * entry attempt per posted interrupt, via the
++		 * hv_apic_event_pending marker __apic_accept_irq sets.
++		 * The attempt is gated on deliverability (TLFS 15.9: an
++		 * interrupt the higher VTL's priority mask blocks is held
++		 * pending and the VTL does not switch).  A masked vector
++		 * holds its marker, so the entry fires if a VTL round
++		 * trip leaves the vector deliverable; the plane consumes
++		 * its own marker when it runs.  A vector that stays
+ 		 * latched after a refused attempt (no VP assist page yet)
+-		 * or that was masked by the plane's TPR waits for the next
+-		 * cooperative entry or the next posted event; scanning the
+-		 * IRR here instead would replay it the moment the assist
+-		 * page is re-enabled.  A pending synthetic-timer request
+-		 * counts as well: it can only be processed (and its
+-		 * interrupt delivered) once the higher plane runs, so it
+-		 * would otherwise never fire while the plane is suspended.
++		 * waits for the next cooperative entry or the next posted
++		 * event; scanning the IRR here instead would replay it
++		 * the moment the assist page is re-enabled.  NMIs force
++		 * entry ungated through their own single-shot marker, set
++		 * wherever NMI state is posted to a higher plane (the
++		 * higher APIC carries nothing to gate on; the NMI itself
++		 * is folded back to plane 0 on the APIC path).  A pending
++		 * synthetic-timer request counts as well: it can only be
++		 * processed (and its interrupt delivered) once the higher
++		 * plane runs, so it would otherwise never fire while the
++		 * plane is suspended.
++		 *
++		 * The reference host forces entry even for a TPR-masked
++		 * vector; the suite's TPR test probes for both behaviours.
+ 		 */
+-		if (READ_ONCE(higher->arch.hv_apic_event_pending) ||
++		if ((READ_ONCE(higher->arch.hv_apic_event_pending) &&
++		     higher->arch.apic && kvm_apic_has_interrupt(higher) >= 0) ||
++		    READ_ONCE(higher->arch.hv_nmi_event_pending) ||
+ 		    kvm_cpu_has_extint(higher) ||
+ 		    kvm_test_request(KVM_REQ_HV_STIMER, higher) ||
+-		    kvm_test_request(KVM_REQ_NMI, higher) ||
+-		    atomic_read(&higher->arch.nmi_queued) ||
+-		    higher->arch.nmi_pending ||
+ 		    (higher->arch.apic &&
+ 		     atomic_read(&higher->arch.apic->lapic_timer.pending)))
+ 			return higher;
+@@ -11333,9 +11356,17 @@ static bool kvm_hv_vtl_interrupt_exit(struct kvm_vcpu *vcpu)
+ 	 * Single-shot, as in the reference host: if userspace refuses
+ 	 * the entry (e.g. the target VTL has no VP assist page yet),
+ 	 * the event waits in the target's IRR for a cooperative entry
+-	 * rather than re-triggering an exit storm.
+-	 */
+-	WRITE_ONCE(higher->arch.hv_apic_event_pending, false);
++	 * rather than re-triggering an exit storm.  Each marker is
++	 * consumed only by its own approved attempt: when this exit was
++	 * triggered by another clause (extint, stimer, timer) while the
++	 * posted vector is still masked, the APIC marker stays armed so
++	 * a VTL round trip that unmasks the vector can retrigger the
++	 * entry.
++	 */
++	if (READ_ONCE(higher->arch.hv_apic_event_pending) &&
++	    higher->arch.apic && kvm_apic_has_interrupt(higher) >= 0)
++		WRITE_ONCE(higher->arch.hv_apic_event_pending, false);
++	WRITE_ONCE(higher->arch.hv_nmi_event_pending, false);
+ 
+ 	vcpu->run->exit_reason = KVM_EXIT_HYPERV;
+ 	vcpu->run->hyperv.type = KVM_EXIT_HYPERV_VTL_INTERRUPT;
+@@ -11874,9 +11905,32 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	if (READ_ONCE(to_kvm_hv(vcpu->kvm)->hv_inkernel_vtl_switch)) {
+ 		struct kvm_vcpu *higher = kvm_higher_plane_with_event(vcpu);
+ 
+-		if (higher && kvm_hv_vtl_interrupt_entry(vcpu, higher)) {
+-			kvm_make_request(KVM_REQ_EVENT, higher);
+-			kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
++		if (higher) {
++			if (kvm_hv_vtl_interrupt_entry(vcpu, higher)) {
++				kvm_make_request(KVM_REQ_EVENT, higher);
++				kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
++			} else {
++				/*
++				 * Single-shot in in-kernel mode too: the
++				 * refusal (a failing control-area write;
++				 * blocked planes are filtered in
++				 * kvm_higher_plane_with_event()) cannot
++				 * succeed until external action, so consume
++				 * the markers rather than repeating the
++				 * failing guest write on every exit.  The
++				 * event stays latched in the plane's own
++				 * pending state for its next entry.  A
++				 * still-masked vector keeps its marker; only
++				 * its own approved attempt consumes it.
++				 */
++				if (READ_ONCE(higher->arch.hv_apic_event_pending) &&
++				    higher->arch.apic &&
++				    kvm_apic_has_interrupt(higher) >= 0)
++					WRITE_ONCE(higher->arch.hv_apic_event_pending,
++						   false);
++				WRITE_ONCE(higher->arch.hv_nmi_event_pending,
++					   false);
++			}
+ 		}
+ 	}
+ #endif
+@@ -11889,12 +11943,12 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 
+ 	/*
+ 	 * This plane is running and about to evaluate its events: its
+-	 * pended-while-suspended marker is consumed.  The clear must come
++	 * pended-while-suspended markers are consumed.  The clear must come
+ 	 * after the VTL-exit and plane-reschedule bail-outs above: a run
+-	 * aborted there never evaluates the pended event, and nothing
+-	 * re-arms the marker for a TPR-masked vector.
++	 * aborted there never evaluates the pended event.
+ 	 */
+ 	WRITE_ONCE(vcpu->arch.hv_apic_event_pending, false);
++	WRITE_ONCE(vcpu->arch.hv_nmi_event_pending, false);
+ 
+ 	if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
+ 	    kvm_xen_has_interrupt(vcpu)) {
 -- 
 2.50.1
 
