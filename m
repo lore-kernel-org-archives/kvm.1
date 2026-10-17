@@ -1,180 +1,337 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDE4296BC8;
-	Sat, 17 Oct 2026 00:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119681DF748;
+	Sat, 17 Oct 2026 00:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792196730; cv=none; b=U9h/q53vsVRj1tQYhz3xNhY7sgNVo6+7zumJYZ+TjDGRvsus2Nle1eX2A3u6U9GxoQ55ZUAZBC/JKuM2WaDN30O3iQduxrx4tN6G59UtIpdN96WTM32MCYQI9EtUXHIAg58PNbVCKHQLla0xY3vjBQCBM+Ef7FyQ3OE8w7hcNWM=
+	t=1792197102; cv=none; b=py0Fj+jJyH7I9DWa1pc23GGaFYelsk9PDhD4pEdiri9lOSAuhPZYYwOsy0+eD31quqJxrXZ4hD6hajP2nRCziykCrO8TvliNkWZTM3VL/7wz1ibIyc22o4CFchv6yUYEkeZHuwarkwSA53ySaXZbJFpaOsTWQrxbthah8efHyEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792196730; c=relaxed/simple;
-	bh=6phze58+1EAMEfpcc7733WPyqHcs5wwcwMeH9Qvw3e8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QAZGXm1WyLA0+//4yL+51CpKeudLPHOzLlESk9k32fsaSJZG0cFRkSLi0fn4TXM4FpVtJqP/or4Z7K20EGvDVKgb3v5BfXibVEkXapb92FQg/zRcpaSPVAYIHDMDvrkca1Pap6iliDkfpBqSxKso6fSUww5TDAhjcIpvu4M68TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZ/l9etZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792197102; c=relaxed/simple;
+	bh=xHmRw2cRQagCKkS8PJSihbgYajdbuGTI060lbUJ2Oyk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WD0S7vyFKQ3Hu4oyGaguUM9L79pWBVg5HM2Z1mGiIQLDk2UpCvhLIwAUeAr01awVoi7JaFZFS4E38PJvv51sv71OAxdq0ZSJczeADbBB4A/oSPcH0v/w4oh7JPvji6V8sg3h42rYiJCiuo+3FiMs9EJxRfMsCuMdsvX8GXrVTTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=VyCBASqu; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZ/l9etZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A8A1F000C5;
-	Sat, 17 Oct 2026 00:25:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792196729;
-	bh=0ZD6ChK7lg1utHvEY0sj2hl57RF+hR8oMWnZxli03SU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RZ/l9etZbpYWiIt+zAzgTUDaKeHS4t1ldMj1RjoutsPCC7ngDpwZ1fcD4L0+/GPko
-	 YmlsZHWIo0hthteX3KV/tdot1Q+aiPFRvpP+NLVYH/DHu0ps4GR7ME8D17NU315wxg
-	 E7G8Xw2/lWKSi5uLqrxBdSHmlXhMcC0BW1gFdFjn+EMasmJlACWxfm9OSugyTd9QEl
-	 99qepXN5jryXWXvy0M52RlKIe1LJhbbRt1W4tpuZTYa+PRNdnmp3HxMlwaVkisYtoS
-	 syHmRnK4h2O4N4ZAOSmArwkJeh6zTwB7ELRF4G+wcGLbmXwhl4aPZjfmkpmI5TbBYE
-	 4I29+z285zqeQ==
-Date: Sat, 17 Oct 2026 00:25:27 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: Re: [PATCH v3 26/27] KVM: nSVM: Use different ASIDs for L1 and L2
-Message-ID: <atK3Y5XxL-zmAvY-@google.com>
-References: <20261012233638.2546339-1-yosry@kernel.org>
- <20261012233638.2546339-27-yosry@kernel.org>
- <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="VyCBASqu"
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 69GNFjUY611926;
+	Fri, 16 Oct 2026 17:31:14 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=zby02wAL5TpiWDd6bifHL/lm8nLGoWYVqnELw
+	eQC2EM=; b=VyCBASquBzYKAzjY1W+65UoYOmwFqsxOYxfxIAN8L1KsSHDC2YgK4
+	D+v0gY+gDeGF21MY4LW/PHxo/9W7FEnIf5qFQdEvvc4xLhdh/yQ15eAlga/AK4Ak
+	bnxXyFPAXOl8e+JKAyFVl3wAj4e418pg2LrfyIDlMcrlOP6rGohIDyMumo7iYB9I
+	XqE47CR2YXmQz8/jG+JopknlSqORe1L8ghhfsdm8Y7bUIamWtn2OFkuGGaV2VvOd
+	Sa9tXXKIfgNMOM1rST0Tu7ayMPUw79qmpStrw0rcfkKEj4VdCzl0h9R/8g0LG1vO
+	3aXCmAKC8nkYAIgCO1l28nLfqSddXLrJQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by m0089730.ppops.net (PPS) with ESMTPS id 4hb52n271a-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 16 Oct 2026 17:31:14 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Sat, 17 Oct
+ 2026 00:31:12 +0000
+Date: Fri, 16 Oct 2026 17:31:11 -0700
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <sgarzare@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
+        <skhan@linuxfoundation.org>, <stefanha@redhat.com>, <mst@redhat.com>,
+        <jasowangio@gmail.com>, <xuanzhuo@linux.alibaba.com>,
+        <eperezma@redhat.com>, <shuah@kernel.org>, <rdunlap@infradead.org>,
+        <donald.hunter@gmail.com>, <edumazet@kernel.org>,
+        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <sargun@sargun.me>, <jlinbox@meta.com>
+Subject: Re: [PATCH net-next v3 4/7] vsock: add a netlink command to assign
+ the g2h device to a netns
+Message-ID: <atLBzxk7MKIfjcOV@devvm29614.prn0.facebook.com>
+References: <20261012-vsock-guest-ns-v3-4-b32447c66b23@meta.com>
+ <179193191574.434549.17107426250790354528@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com>
+In-Reply-To: <179193191574.434549.17107426250790354528@kernel.org>
+X-Proofpoint-GUID: rYRV4izQldbowqQDpsQbkvqZ4Wxxf07w
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE3MDAwMSBTYWx0ZWRfX1H+Z4ndQMHwb
+ K3Oc9Y4lMwR1a2odi/8d/9MrN6pu09uo9sJ+Y99BsJHcP3olrukV8IlS/dn8oNfEabf2OuU/8hX
+ EYErk/hpIfRhqwJpqr9B3S6ZYOjhHRyKHcvFbigPUH31YE08LqHARDGL8dQHHlPosnUSN6aOGR0
+ F/SQDaIhzJqY2fzyLuYPTFhwFpiYO/xMGjPeKpCxvGmIoYOBW+K60l2x3Up+gf7Bn0rX5Dqhy4r
+ da4bQLUeOPNoO76SB/x3kwUbs01zAl/9LFDtUiB/fVH2IzpoQQ63Zp5nwxu3FTFEBXSIJ1OFeh1
+ QSOzr/ulGng1KM9F359UaJpe4Na5TrQyOcZMDrvx9zzgu1dcgp+4cGlAwK1fRuCSjRWEmNHz6X7
+ +n9/YNAMOlmKqu6v9aRwANa4crIIrb/uboxNYRj7TauEQOsAHMSPS5WUQLJnaljoAqRviEx1hrQ
+ vG6PSvdm4VtVbvsh2eQ==
+X-Authority-Analysis: v=2.4 cv=KNrPn1Fo c=1 sm=1 tr=0 ts=6ad2c1d2 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=8nJEP1OIZ-IA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=855S8uPTkML1Oy45N9_h:22 a=VwQbUJbxAAAA:8
+ a=9R54UkLUAAAA:8 a=VabnemYjAAAA:8 a=zjU2S2RF1nsdpTlKO_gA:9 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=YTcpBFlVQWkNscrzJ_Dz:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: rYRV4izQldbowqQDpsQbkvqZ4Wxxf07w
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE3MDAwMSBTYWx0ZWRfXzTs+hVolHVn8
+ a0qQgW5jauiNKbTZAa2LoUcTsLH2vk6afuzGrJ8JYWqUUa5vG0V3UrKArMwXeZHtXFqzcuE4CgD
+ cp2vD48U1/u2le2l7Zh4jUI8uO0kpA8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-16_04,2026-10-14_01,2025-10-01_01
 
-On Fri, Oct 16, 2026 at 02:17:30PM -0700, Jim Mattson wrote:
-> On Mon, Oct 12, 2026 at 4:37â€¯PM Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > Now that TLB flushes are properly handled and tracked for L1 vs L2
-> > ASIDs, allocate a separate new ASID for L2 for each vCPU, similar to how
-> > VMX handles VPIDs. Drop the unconditional flushes and syncs on nested
-> > transitions.
-> >
-> > L1 and L2 can now only share an ASID in two cases:
-> > - KVM runs out of ASIDs and uses the fallback ASID for both L1 and L2.
-> > - SEV VMs always use the same ASID for SEV-specific requirements.
-> >
-> > WARN if the ASID is shared otherwise.
-> >
-> > Initialize last_asid to 0, such that the L2 ASID is always flushed on
-> > first nested VM-Enter after it's allocated.
-> >
-> > On SEV VM migration, free the L2 ASID on the destination vCPU (if nested
-> > was already initialized) before overwriting it with the SEV ASID.
-> >
-> > On a Turin CPU, this results in 8-15% performance boost in CPUID rate
-> > microbenchmark [1] and netperf TCP_RR latency/throughput.
-> >
-> > [1] https://lore.kernel.org/kvm/20231109180646.2963718-1-khorenko@virtuozzo.com/
-> >
-> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > ---
-> >  arch/x86/kvm/svm/nested.c | 32 +++++++++++++++++++++++---------
-> >  arch/x86/kvm/svm/sev.c    |  6 ++++--
-> >  2 files changed, 27 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index 4ffc10bf9232e..6fe68f2ae282d 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -711,6 +711,10 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
-> >          * context is not tagged by the ASID, so the shadow NPTs cannot be
-> >          * reused across different L2 ASIDs.
-> >          *
-> > +        * Note, last_asid is initialized as 0, so the first nested VM-Enter
-> > +        * after setting EFER.SVME will always flush the TLB to avoid using
-> > +        * stale entries.
-> > +        *
-> >          * If L1 requested a full TLB flush for all ASIDs (including its own),
-> >          * L1's own ASID is also flushed on nested VM-Exit, before running L1.
-> >          *
-> > @@ -727,12 +731,10 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
-> >          * If L1 and L2 share the same ASID in hardware (when using the fallback
-> >          * ASID for both, or for SEV guests), flush it on nested transitions.
-> >          */
-> > -       if (svm->asid == svm->nested.asid02)
-> > +       if (svm->asid == svm->nested.asid02) {
-> > +               WARN_ON_ONCE(svm->asid != fallback_asid && !is_sev_guest(vcpu));
-> >                 kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
-> > -
-> > -       /* TODO: optimize unconditional TLB flush/MMU sync */
-> > -       kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
-> > -       kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
-> > +       }
+On Tue, Oct 13, 2026 at 10:51:55PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider.
 > 
-> Per the APM, volume 2, Section 15.16.1, "TLB Flush":
+> Critical: 0 · High: 0 · Medium: 2 · Low: 2
 > 
-> > All TLB entries belonging to all ASIDs are flushed by SMI, RSM, MTRR modifications, IORR modifications, and access to other system MSRs that affect address translation.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> With two separate ASIDs and the unconditional flush removed, do we
-> flush both ASIDs in the above instances?
+> - [Medium] Take a namespace that cannot reach the assigned G2H device, on
+>   a system with vhost-vsock (H2G) and vsock_loopback loaded.
+> - [Medium] `vsock_g2h_reset_unreachable()` in net/vmw_vsock/af_vsock.c
+>   resets sockets without lock_sock() while the device stays live.
+> - [Low] No in-tree transport sets the new capability at this commit.
+> - [Low] `vsock_g2h_net_assign()` in net/vmw_vsock/af_vsock.c sends the
+>   success reply before it commits the assignment.
 
-SMI and RSM, yeah I think so. kvm_smm_changed() ->
-kvm_mmu_reset_context() deletes all roots, and kvm_mmu_load() will flush
-the current ASID when a new root is loaded.
-
-MTRR writes seem to do nothing beyond store the value, probably since
-0a7b73559b39 ("KVM: x86: Remove VMX support for virtualizing guest MTRR
-memtypes"). It is documented as an errata but I maybe KVM should still
-flush the TLB? If that's a real bug, it's separate from this series tho.
-We just need to make sure if we fix it, we should flush both ASIDs. We
-can probably just reset the MMU context here too?
-
-I can't find anything related to IORR in KVM.
-
-For MSRs, I think the relevant ones are EFER and PAT:
-
-- For EFER, a change to KVM_MMU_EFER_ROLE_BITS resets the MMU similar to
-  SMI/RSM, so covers both ASIDs. Clearing EFER.SVME frees L2's ASID and
-  re-allocating an ASID will flush it by clearing last_asid.
-
-- For PAT, I am not sure if that falls under "system MSRs that affect
-  address translation", but KVM isn't flushing for L1 today on PAT
-  writes anyway, so I hope not?
+pw-bot: cr
 
 > 
-> Moreover, does this change the semantics of PV TLB flush? In
-> record_steal_time(), we have:
+> --
 > 
-> if (st_preempted & KVM_VCPU_FLUSH_TLB)
->         kvm_vcpu_flush_tlb_guest(vcpu);
+> vsock: add a netlink command to assign the g2h device to a netns
 > 
-> IIUC, an idle vCPU that wakes into L2 will flush only L2's ASID. In
-> the past, with a shared ASID, L1's ASID was always flushed on emulated
-> VM-exit anyway. Now, L1's ASID will be unaffected. Though I can't find
-> any real documentation on PV TLB flush, it *seems* like the remote
-> vCPU would want L1's ASID to be flushed. OTOH, this change makes nSVM
-> behave just like nVMX.
-
-I am honestly not sure. It seems like we should be flushing the context
-that issued the PV flush. But I also suppose (aside from Hyper-V) all L2
-PV calls should go to L1, not L0, so should we always flush L1's context
-here?
-
-It would be a pre-existing bug, but this series would be adding it to
-SVM as well. Adding David here since his name appears all over the git
-log for that code, so hopefully he'll tell us for sure.
-
+> This patch adds a vsock generic netlink family with two commands.
+> VSOCK_CMD_DEV_NETNS_SET moves the guest's G2H vsock device into the
+> caller's network namespace, and VSOCK_CMD_DEV_NETNS_GET reports where the
+> device is. After a move, connected sockets that can no longer reach the
+> device are closed with ECONNRESET, and the assignment holds a reference on
+> the target namespace.
 > 
+> Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
 > 
-> Nit: with this change, the following stale comment in
-> svm_flush_tlb_asid() needs to be updated:
+> > diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+> > index fe43e85959583..9276479004c0f 100644
+> > --- a/Documentation/admin-guide/sysctl/net.rst
+> > +++ b/Documentation/admin-guide/sysctl/net.rst
+> > @@ -529,6 +529,43 @@ their hosts. The behavior of VSOCK sockets in a network namespace is determined
 > 
-> /*
-> * Flush only the current ASID even if the TLB flush was invoked via
-> * kvm_flush_remote_tlbs(). Although flushing remote TLBs requires all
-> * ASIDs to be flushed, KVM uses a single ASID for L1 and L2, and
-> * unconditionally does a TLB flush on both nested VM-Enter and nested
-> * VM-Exit (via kvm_mmu_reset_context()).
-> */
-
-Will fix.
-
-Thanks!
+> [ ... ]
+> 
+> > +Support is transport dependent. A G2H transport that does not implement the
+> > +move refuses the command with ``EOPNOTSUPP``. Of the in-tree guest transports,
+> > +only virtio-vsock implements it.
+> 
+> [Severity: Low]
+> This is a minor point. Is this sentence accurate at this commit?
+> 
+> No in-tree transport sets netns_assign_allow yet, so this check in
+> vsock_g2h_net_assign() always fails:
+> 
+> 	if (!vsock_net_assignable(transport_g2h)) {
+> 
+> As a result, VSOCK_CMD_DEV_NETNS_SET returns -EOPNOTSUPP (or -ENODEV) for
+> every G2H transport. The new exports vsock_g2h_net_get(), vsock_g2h_net_eq()
+> and vsock_maybe_set_connected() also have no callers yet.
+> 
+> The next patch in the series, "vsock/virtio: support guest device network
+> namespace", adds .netns_assign_allow = true to virtio_transport and calls
+> those helpers. So the mismatch only exists at bisect points between the two
+> patches. Could this sentence move into that patch?
+> 
+> > diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> > index 8f34bf68f9164..e663be3bbfa0b 100644
+> > --- a/net/vmw_vsock/af_vsock.c
+> > +++ b/net/vmw_vsock/af_vsock.c
+> 
+> [ ... ]
+> 
+> > @@ -564,7 +632,12 @@ static bool vsock_use_local_transport(unsigned int remote_cid)
+> >  		return true;
+> >  
+> >  	if (transport_g2h) {
+> > -		return remote_cid == transport_g2h->get_local_cid();
+> > +		u32 cid = __vsock_registered_transport_cid(&transport_g2h, net);
+> > +
+> > +		/* The device may be unreachable from @net, in which case
+> > +		 * @remote_cid is not the local CID.
+> > +		 */
+> > +		return cid != VMADDR_CID_ANY && remote_cid == cid;
+> >  	} else {
+> >  		return remote_cid == VMADDR_CID_HOST;
+> >  	}
+> 
+> [Severity: Medium]
+> Suppose the G2H device has been assigned to a local mode namespace, and
+> vhost-vsock and vsock_loopback are also loaded. What happens in a namespace
+> that can no longer reach the device?
+> 
+> In that namespace, IOCTL_VM_SOCKETS_GET_LOCAL_CID in vsock_dev_do_ioctl()
+> gets VMADDR_CID_ANY from transport_g2h and falls back to transport_h2g:
+> 
+> 	cid = vsock_registered_transport_cid(&transport_g2h, net);
+> 	if (cid == VMADDR_CID_ANY)
+> 		cid = vsock_registered_transport_cid(&transport_h2g,
+> 						     net);
+> 
+> vhost_transport_get_local_cid() returns VHOST_VSOCK_DEFAULT_HOST_CID, so the
+> namespace is told its local CID is 2. __vsock_find_cid(net, 2) is also true
+> through the transport_h2g && cid == VMADDR_CID_HOST check, so bind() to
+> CID 2 succeeds.
+> 
+> A connect() to CID 2 then enters the transport_g2h branch above, because the
+> pointer is non-NULL. It returns false because cid is VMADDR_CID_ANY, so the
+> remote_cid == VMADDR_CID_HOST loopback fallback in the else branch is never
+> reached.
+> 
+> vsock_assign_transport() then picks transport_g2h for
+> remote_cid <= VMADDR_CID_HOST and fails at the new check:
+> 
+> 	if (vsock_g2h_unreachable(new_transport, sock_net(sk))) {
+> 		ret = -ENETUNREACH;
+> 
+> Should an unreachable G2H transport be treated the same as an absent one
+> here, so that connecting to the namespace's own reported CID uses loopback?
+> The later virtio patch in the series makes this path reachable and does not
+> change this logic.
+> 
+> [ ... ]
+> 
+> > @@ -742,8 +823,267 @@ bool vsock_find_cid(unsigned int cid)
+> 
+> [ ... ]
+> 
+> > +/* Close every connected socket of @t that can no longer reach the g2h device.
+> > + */
+> > +static void vsock_g2h_reset_unreachable(const struct vsock_transport *t)
+> > +{
+> > +	struct vsock_sock *vsk, *tmp;
+> > +	struct sock *sk;
+> > +	int i;
+> > +
+> > +	lockdep_assert_held(&vsock_register_mutex);
+> > +
+> > +	spin_lock_bh(&vsock_table_lock);
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(vsock_connected_table); i++) {
+> > +		list_for_each_entry_safe(vsk, tmp, &vsock_connected_table[i],
+> > +					 connected_table) {
+> > +			sk = sk_vsock(vsk);
+> > +
+> > +			if (vsk->transport != t ||
+> > +			    sk->sk_state == TCP_CLOSE ||
+> > +			    vsock_g2h_reachable_sk(vsk))
+> > +				continue;
+> > +
+> > +			/* If close has already been scheduled for this socket,
+> > +			 * we can skip.
+> > +			 */
+> > +			if (vsk->close_work_scheduled)
+> > +				continue;
+> > +
+> > +			sk->sk_state = TCP_CLOSE;
+> > +			sk->sk_err = ECONNRESET;
+> > +			sk_error_report(sk);
+> > +
+> > +			__vsock_remove_connected(vsk);
+> 
+> [Severity: Medium]
+> Can these writes race with the socket's own state machine?
+> 
+> Only vsock_register_mutex and vsock_table_lock are held here, and neither
+> one excludes lock_sock() holders. close_work_scheduled is read the same way.
+> 
+> The existing lockless resets, virtio_vsock_reset_sock() and
+> vhost_vsock_reset_orphans(), only run when the device is going away. Here
+> the device keeps running, so its RX path can work on the same socket at the
+> same time.
+> 
+> With the later virtio patch, virtio_transport_rx_work() checks
+> vsock_g2h_net_eq(net) for each packet but does not synchronize with the
+> swap. That patch's commit message also notes that an assign can land while
+> rx_work is draining a batch:
+> 
+> CPU1 (assign)                      CPU2 (rx_work)
+>                                    vsock_g2h_net_eq(net) returns true
+> vsock_g2h_net_swap()
+>                                    virtio_transport_recv_pkt()
+>                                      lock_sock(sk)
+>                                      sk_state is TCP_ESTABLISHED
+> vsock_g2h_reset_unreachable()
+>   sk->sk_state = TCP_CLOSE
+>   sk->sk_err = ECONNRESET
+>   __vsock_remove_connected(vsk)
+>                                      virtio_transport_recv_connected()
+>                                        virtio_transport_do_close()
+>                                          sk->sk_state = TCP_CLOSING
+> 
+> If an incoming SHUTDOWN or RST arrives at that point, doesn't the socket end
+> up in TCP_CLOSING with ECONNRESET set and outside the connected table?
+> 
+> There is a similar window on the send side. vsock_connectible_sendmsg() may
+> already have passed its sk_err check and could enqueue one more chunk
+> through the device after the sweep. KCSAN would also likely report these
+> unannotated stores against the locked writers.
+> 
+> Refcounting looks balanced, because vsock_remove_connected() re-checks table
+> membership. So the effect appears to be limited to inconsistent socket
+> state.
+> 
+> [ ... ]
+> 
+> > +static int vsock_g2h_net_assign(struct net *net, struct sk_buff *msg,
+> > +				struct genl_info *info)
+> > +{
+> 
+> [ ... ]
+> 
+> > +	ret = -EMSGSIZE;
+> > +	hdr = genlmsg_iput(msg, info);
+> > +	if (!hdr)
+> > +		goto unlock;
+> > +	genlmsg_end(msg, hdr);
+> > +
+> > +	ret = genlmsg_reply(msg, info);
+> > +	msg = NULL;
+> > +	if (ret)
+> > +		goto unlock;
+> > +
+> > +	old = vsock_g2h_net_swap(net, &old_tracker);
+> > +
+> > +	/* See vsock_maybe_set_connected() comment about synchronizing with
+> > +	 * connecting sockets.
+> > +	 */
+> > +	vsock_g2h_reset_unreachable(transport_g2h);
+> 
+> [Severity: Low]
+> Is this ordering intended? The success reply goes out before
+> vsock_g2h_net_swap() and vsock_g2h_reset_unreachable() run.
+> 
+> This means userspace can see VSOCK_CMD_DEV_NETNS_SET succeed while
+> vsock_g2h_net still points at the old namespace and the established sockets
+> there are still open. Those sockets' send and receive paths take lock_sock(),
+> not vsock_register_mutex, so the mutex does not hold them off.
+> 
+> The move also depends on the reply being delivered. genlmsg_reply() does a
+> MSG_DONTWAIT unicast, so if the requester's receive buffer is full it
+> returns -EAGAIN and the swap is skipped. Neither the commit message nor the
+> docs mention this failure mode.
+> 
+> Could the swap and the sweep run first, with the reply sent after them?
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-vsock-guest-ns-v3-0-b32447c66b23%40meta.com
