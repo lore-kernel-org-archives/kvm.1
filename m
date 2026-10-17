@@ -1,173 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0240247F2F3
-	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 09:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A5A399003
+	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 11:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792230323; cv=none; b=j5pZ6fyzyKPD8CMNRYIdC6frgAvU7ucvGef17wNS+jfUGBWjamyI33Kvfs5iNzcwxgBGeUPBblcdsWJPQAFVp5QMulE1TruLLuQLBxCcy/i4gDzcWF4wzTDV17fKQ+3bH1j1DxG871lrJYkkM6qIIaCNE+CR+XlHPL1VIb3tO+o=
+	t=1792234951; cv=none; b=YTq88M5NPB6oYMHI4/GemfecrMs1vpAN2LBX9QHbLa5XUTz56C2MqCGh/NsWBtsFAsob8t8R9kTHoGsmvPIX+y5glFTyl2Hh/5BQJUNuwrycYkpXUI/jVhzC79E1iQ5YeBNDS6PW3VcPYrBO2Q1tPtTc33IaSO+LUzKeOsHnjDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792230323; c=relaxed/simple;
-	bh=c9QRZ2rZvPYasCBKJus9g7au3i7W00QLn+vQEpsARcA=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=Xv51IV96tnfvI/iqpsZHDeZlp9bG0vR+QCgyAVpzPjyGynAgA27MqAyg88CNQasllJo08qIdiGdnmmDbokQ/UnDmsJT0nsAfVC01gMgFeLL5swDKJNSKf87dJ01x8acStlm8CjprBJyq9xURpM//DLq+oqrZNMeg2XNIZenAEkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4DYs2ka; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792234951; c=relaxed/simple;
+	bh=FjGEp2k4FfSPM+tdsngqSEiml++4V5/mJNGAoCdd2oA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OqgEZb67hy1BI1K1g/Wnob8f59vPS6kX4TkgRahScwxEm5mNEUDJoOZE+L9+TUy1ZKBup4fnpr55V6futx4gr+e/dhEXPJXS4atfZpDNzDvjCPCpZtQHqQDkgrzjHvA7LBp1N0mfcpXKIs1UUDSqHjoytr7akY5xrTVlKXbD0Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHuZQpun; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4DYs2ka"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A921F000C4;
-	Sat, 17 Oct 2026 09:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792230321;
-	bh=ncvvse0yeDsjDP/L2tAjvZRN7xp9z4L2ki6Dd42Ul20=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=H4DYs2katZkhUrydIhJkIT2NV2U4oELIY92zNfx+C0VP2EEAopLOhIVQMmTHkVtZZ
-	 THwUZd5/P8ReDN/jUWLKKKosMHL7LPs1GgVl5KjNg3j5j8WEcLPUb1k6XwtDEWw0jY
-	 kzTqlB2MrC3i9Yd3vmXV9DqfXupFCD8bEllQgEl233/W8yzwf9m0nqZDspcN9tsKjV
-	 zZSerHhhkgSt6yjuZbuERI1RfFPyiFcy6OrrGmxnFRu0tCzo0vvpFhsG4NvdkBsUR9
-	 NDuxV9pds9+eIWS2QeOSVJJG2lbwnWxu2Azx+H0j1dWuUFnzxaDzjUA3s9OcCAHWSw
-	 vLnKo5CHhhciQ==
-Message-ID: <sashiko-outbox-175448@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: nVMX: Clear nested.smm.guest_mode on a failed
- RSM-to-L2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amirmohammad Eftekhar" <amirmohammad.eftekhar@cispa.de>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261017093016.32348-1-amirmohammad.eftekhar@cispa.de>
-References: <20261017093016.32348-1-amirmohammad.eftekhar@cispa.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 17 Oct 2026 09:45:21 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHuZQpun"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e987b4a710so7892815ad.1
+        for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 04:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792234949; x=1792839749; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EooerGosbt9uNoLNk2R3r8CmWtmPXhr2JTyWgkAeP44=;
+        b=cHuZQpunqcDKgEEWM+GEZRfBnCIGjPlwrCxJQX5QcKOO/pp1ON9UIdIoaZVF9EGWLQ
+         ydpO4Rp1bQ3Vm9ykUu/sq8VzstLrvMLiMa6fhg/qMh+yTHdtJQ02lhzid4jPb4//r+Ok
+         QKRItRLq0gQRej8lQ/8a142R1MEcWEara+aqpwP51OrDWPDoRanzVL2tk7MNOwQjrRNQ
+         aaLHhUxO5BbkWLAOaynqv2gR8u0LXZPnuvue4tv90X0PgcsGpXxh9hj6VzL6Nmq8px9E
+         KEDsc8JmSmFcGaFtIP+jUy3z+E4CKqWDgSHt86Hi7cffVxSMWfU0saVPvdKy9TU0s+A3
+         eUlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792234949; x=1792839749;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EooerGosbt9uNoLNk2R3r8CmWtmPXhr2JTyWgkAeP44=;
+        b=WIUzktPeNeGprm/svsAc1ZGQ6+2YwxREOpkkj4HJ/3bCrk6RuggHno7r4sr8QfYpzu
+         2AhLvh6wNuo8AZkDoLMWaPwrI14MzLWW4uHV+YBasy4Sr2xpD/NcFSyGsT6FpILodFNr
+         Q3hwyhJYAy/+Szw0cXF6N3Zh47B6x12+VfHLJc4RCfGt6IDHivFW/17oq4XLdsxRFvJu
+         Peoi/yAKNMRZBxBenEM4/RxbpQFEG3TKjzC7wUSFLxhdVWtPG2beEJn/9IiRIQedr+dO
+         yiYil3s/kihZu+iAv/xlW88AyVCScV1GPshgfkX2W+7pwpgrD1noavmlvMTGHFAApvYp
+         MnUw==
+X-Forwarded-Encrypted: i=1; AKwUvBxcB3j4yG9BY06qxcx05qDa3MCK1HYKvj0BCYUmhYgSLvfwi3vHnMkOYGc0MVZ+Kg7pfcg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLaeWQMe0+9SqyfT5sgArlvh2EBPflZo5Vl2VOexW0d9oXQ4TkK
+	1BBIwBB1hP3N6cYg8DBKVUYNFhZbtvjBY7EIkl5As4uO3teCJ3zj+3n0znGAbiA7
+X-Gm-Gg: AYBFou25jgubQ666JprueYmtTvgmE66XSg3OsSeo9eg4dF+TtVm2MuNOoxdxEf8aN+b
+	1cg20KelGOL1HKE7x5IdWAL4QWED+r7twPRc6nU9LoMW44c98e3LRLO/dOkVPGP1pdgfURua1RT
+	qvphq+ZsUTkC8prgOcKItphphP3nSDeeponuTCJGfeQPeSDDGEH93135VNkjlPbVvYuu891yEnV
+	JfS8PBNAHYn7YjSQAgZCpnRnA4Xd2M2NykYd6CKi1zDvGPii9TQCN6EALdCaMlk0XrCCsUU/s0d
+	6OqfxV0GtTqjFoqPR4bL7eOayUkgGj9e6Kdj+PS4Qv5zpygl0lsGbfNdZK1cF8KkpEoqxdkErE7
+	07KChFuup3kaf6hJulfF7czTaQCUBhZ08i33vEYRIfryg73GRpJ2ONsBIw3h2cyFpBE6SeUwd2w
+	HKTG44wbKbONk0YaEVcc+eB4zqNWAnfUZyx4gXwJBJq1AmXfTPFeJzDQxOoJEBXPHU5Dh/ng4OX
+	LXjyctFhNMUcCsDkBB8XQ==
+X-Received: by 2002:a17:903:1a10:b0:2df:a0d4:71de with SMTP id d9443c01a7336-2e9a66ebc71mr15900275ad.0.1792234948529;
+        Sat, 17 Oct 2026 04:02:28 -0700 (PDT)
+Received: from x1c ([2405:9800:b670:b64b:7c65:ff3e:80ba:b06])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e804dd9sm20559955ad.16.2026.10.17.04.02.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 04:02:28 -0700 (PDT)
+From: Tharit Tangkijwanichakul <tharitt97@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	me@brighamcampbell.com,
+	jkoolstra@xs4all.nl,
+	Tharit Tangkijwanichakul <tharitt97@gmail.com>
+Subject: [PATCH 0/5] KVM: selftests: Reserve memslot 1 for ucall MMIO
+Date: Sat, 17 Oct 2026 18:02:08 +0700
+Message-ID: <20261017110213.46199-1-tharitt97@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM: nVMX: free_nested() fails to clear nested.smm.guest_mode
---
+This series addresses the TODO in __vm_create() to reserve memslot 1
+for the ucall MMIO region. It introduces a shared base for test
+memslots, migrates existing test users, and adds a read-only region to
+prevent overlapping allocations.
 
-commit 9761932a71b71304448767969048672413614979
-Author: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+A regression test verifies overlap rejection and continued ucall
+operation.
 
-KVM: nVMX: Clear nested.smm.guest_mode on a failed RSM-to-L2
+Testing:
+- Intel Core i5-10210U and Rockchip RK3588 (arm64).
 
-This commit clears vmx->nested.smm.guest_mode before the vmcs12 consistency
-check and L2 re-entry in vmx_leave_smm() so that a failed RSM-to-L2 does not
-leave nested.smm.guest_mode set after nested.smm.vmxon has been cleared.
+These tests are changed but not tested: 
+- arm64/sea_to_user.c: not enough memory allocation.
+- x86/nested_vmsave_vmload_test.c: requires X86_FEATURE_SVM.
+- riscv/sbi_pmu_test.c: riscv hardware unavailability.
 
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 612ab07d4100f..b704edab847be 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -8511,6 +8511,18 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const uni=
-on kvm_smram *smram)
->  	}
-> =20
->  	if (vmx->nested.smm.guest_mode) {
-> +		/*
-> +		 * Clear smm.guest_mode up front so the failure arms below, which
-> +		 * triple-fault the vCPU, cannot leave the internal pair
-> +		 * (smm.guest_mode=3Dtrue, smm.vmxon=3Dfalse): smm.vmxon was already
-> +		 * consumed into nested.vmxon above, and KVM_GET_NESTED_STATE
-> +		 * would then serialize SMM_GUEST_MODE without SMM_VMXON, which
-> +		 * KVM_SET_NESTED_STATE rejects (-EINVAL), breaking the
-> +		 * save/restore round-trip.  The flag has served its only purpose
-> +		 * (bringing the vCPU into this re-entry) by now.
-> +		 */
-> +		vmx->nested.smm.guest_mode =3D false;
-> +
->  		/* Triple fault if the state is invalid.  */
->  		if (nested_vmx_check_restored_vmcs12(vcpu) < 0)
->  			return 1;
+The following test failures reproduce on both the unmodified base
+<8edffbc1f6272db167037e1a8c49b99e9cd04803> with host kernel 
+7.3.0-rc1-gd4b7fb647204 on RK3588 and with this series applied:
+- arm64/vgic_its_save.c
+- arm64/hypercalls.c
 
-[Severity: High]
-Should free_nested() in arch/x86/kvm/vmx/nested.c also clear
-vmx->nested.smm.guest_mode?
+These failures are unchanged by this series.
 
-As noted in the commit message, free_nested() clears vmx->nested.smm.vmxon
-and frees vmx->nested.cached_vmcs12, but leaves vmx->nested.smm.guest_mode
-untouched:
+Tharit Tangkijwanichakul (5):
+  KVM: selftests: Introduce a shared base for test memslots
+  KVM: selftests: Use the shared memslot base in memslot_perf_test
+  KVM: selftests: Use the shared memslot base in memstress
+  KVM: selftests: Reserve memslot 1 for the ucall MMIO address
+  KVM: selftests: Test protection of the ucall MMIO region
 
-arch/x86/kvm/vmx/nested.c:free_nested() {
-	...
-	vmx->nested.vmxon =3D false;
-	vmx->nested.smm.vmxon =3D false;
-	vmx->nested.vmxon_ptr =3D INVALID_GPA;
-	...
-	kfree(vmx->nested.cached_vmcs12);
-	vmx->nested.cached_vmcs12 =3D NULL;
-	...
-}
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../testing/selftests/kvm/arm64/hypercalls.c  |  3 +-
+ .../testing/selftests/kvm/arm64/sea_to_user.c |  2 +-
+ .../kvm/arm64/stage2_block_transitions.c      |  2 +-
+ .../selftests/kvm/arm64/vgic_its_save.c       |  2 +-
+ .../selftests/kvm/arm64/vgic_lpi_stress.c     |  2 +-
+ tools/testing/selftests/kvm/dirty_log_test.c  |  2 +-
+ .../testing/selftests/kvm/guest_memfd_test.c  |  2 +-
+ .../testing/selftests/kvm/include/kvm_util.h  |  1 +
+ .../testing/selftests/kvm/include/memstress.h |  2 +-
+ .../selftests/kvm/kvm_page_table_test.c       |  2 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c    | 19 ++++--
+ .../testing/selftests/kvm/memslot_perf_test.c | 62 +++++++++++--------
+ tools/testing/selftests/kvm/mmu_stress_test.c |  2 +-
+ .../selftests/kvm/reserved_slot_test.c        | 61 ++++++++++++++++++
+ .../selftests/kvm/riscv/sbi_pmu_test.c        |  3 +-
+ tools/testing/selftests/kvm/steal_time.c      |  3 +-
+ .../selftests/kvm/x86/nested_dirty_log_test.c |  2 +-
+ .../kvm/x86/nested_vmsave_vmload_test.c       |  2 +-
+ 19 files changed, 128 insertions(+), 47 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/reserved_slot_test.c
 
-If a vCPU enters SMM from L2 via vmx_enter_smm() (or has SMM_VMXON |
-SMM_GUEST_MODE restored via vmx_set_nested_state()), both
-vmx->nested.smm.vmxon and vmx->nested.smm.guest_mode are set to true while
-is_guest_mode(vcpu) is false.
+-- 
+2.53.0
 
-If vmx_leave_nested() -> free_nested() is then called while the vCPU is in
-SMM -- for example, via vmx_set_nested_state() with vmxon_pa =3D=3D INVALID=
-_GPA,
-or via a host-initiated write of 0 to MSR_IA32_FEAT_CTL in vmx_set_msr() --
-free_nested() sets vmx->nested.smm.vmxon =3D false and frees
-vmx->nested.cached_vmcs12 (setting it to NULL), while leaving
-vmx->nested.smm.guest_mode =3D true.
-
-When the guest subsequently executes RSM, emulator_leave_smm() ->
-vmx_leave_smm() sees vmx->nested.smm.guest_mode =3D=3D true and calls
-nested_vmx_check_restored_vmcs12(vcpu), which dereferences a NULL vmcs12:
-
-arch/x86/kvm/vmx/nested.c:nested_vmx_check_restored_vmcs12() {
-	enum vm_entry_failure_code ignored;
-	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
-
-	if (nested_cpu_has_shadow_vmcs(vmcs12) &&
-	...
-}
-
-Similarly, leaving SMM via kvm_vcpu_ioctl_x86_set_vcpu_events() calls
-kvm_leave_nested() -> vmx_leave_nested() -> free_nested(), or calling
-vmx_set_nested_state() to replace an SMM_GUEST_MODE state with an
-SMM_VMXON-only state relies on vmx_leave_nested() -> free_nested() to clear
-the prior SMM state:
-
-arch/x86/kvm/vmx/nested.c:vmx_set_nested_state() {
-	...
-	vmx_leave_nested(vcpu);
-
-	if (kvm_state->hdr.vmx.vmxon_pa =3D=3D INVALID_GPA)
-		return 0;
-	...
-	if (kvm_state->hdr.vmx.smm.flags & KVM_STATE_NESTED_SMM_VMXON) {
-		vmx->nested.smm.vmxon =3D true;
-		vmx->nested.vmxon =3D false;
-
-		if (kvm_state->hdr.vmx.smm.flags & KVM_STATE_NESTED_SMM_GUEST_MODE)
-			vmx->nested.smm.guest_mode =3D true;
-	}
-	...
-}
-
-Without clearing vmx->nested.smm.guest_mode in free_nested(), those paths
-still leave (smm.guest_mode=3Dtrue, smm.vmxon=3Dfalse) or leak a stale
-smm.guest_mode=3Dtrue into the newly restored state, causing either a NULL
-pointer dereference in nested_vmx_check_restored_vmcs12() on RSM or the same
-KVM_GET_NESTED_STATE / KVM_SET_NESTED_STATE round-trip failure when the gue=
-st
-later executes VMXON.
-
-> @@ -8520,7 +8532,6 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const unio=
-n kvm_smram *smram)
->  			return 1;
-> =20
->  		vcpu->arch.nested_run_pending =3D KVM_NESTED_RUN_PENDING;
-> -		vmx->nested.smm.guest_mode =3D false;
->  	}
->  	return 0;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261017093016.3234=
-8-1-amirmohammad.eftekhar@cispa.de?part=3D1
