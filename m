@@ -1,129 +1,206 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859CA470EB0
-	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 14:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69016288C81
+	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 14:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792245966; cv=none; b=ESG7+dX7W6L0D1mMgtkappwCBHna+V0S3BreuqxRY3b896bXrKi88kiClMtz6C21GGqI+sXa/BKVRKwqmXuX8PQ5RLEzb/Gu4ox/whr343Y8Lv0yUK800//Wx4VbtFsOeRaJBBsjhTmP5zDc1KhwG89UG1LLEe4sEwD+zIAR7ps=
+	t=1792246386; cv=none; b=CfjKXWICEhQ5WSFPbfctgVVCHlgAWjxaL+w0J/KFtpGTW+omiDtmaSP8h3fqH3QvTWCx+Li9XTiTjBAe5vNZYY+WLCE1COVHCTc9ByJOgCgz/fsucvEmhmh9OMorRFoyIviWMBGG9Lhxmp2NvzVKu1EUjW2zKTIbFJk6KyQSCd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792245966; c=relaxed/simple;
-	bh=I2SzU/X0UsUkDnk+7F4P+NF2JrYj+zJ90hjnCQGIqZk=;
+	s=arc-20240116; t=1792246386; c=relaxed/simple;
+	bh=EX/FzVLznKz1i9Q1JsMD+r5L5kBOVC+1NFVnRF5uMFQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mKS0Fkq5qeHA2CXn7wM3n4Flm/RPTWDIvPhw0Pbc1hOwEA6/ie/Js/RP8/O1hRgEyFe33ANMszLRSEnw2eFQ34cjnKFoNRYpNHoPMkUOOEOdt4waYIKwBhOE0x3ueXQ9evaraAi5q/njLQIRjdee8+bMsGfiiHW4MkTIfx6GqPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eFA0LTSG; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=QX0U2i1Wd2udTcULV3m6WJYmNCvk1nYWebDmzyEr6AQ8vM3X9SBAyGDP70Sk6+mKTWv9qrl00vQg6mHPFAbMB4ukya2nZhMHf/kebwy5t4VlMFSoK1lu/Vx9gb0I0LrH2aDsCFPudvFP+8yH8ibqLpbKUXhz+l+Hg+voLc4GDe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jWEtqr86; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eFA0LTSG"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e818ca61bfso6530885ad.2
-        for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 07:06:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jWEtqr86"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cec4226c70so6760275ad.1
+        for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 07:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792245963; x=1792850763; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792246384; x=1792851184; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZVdY7DMl2n2rpVG1smOAYr0lCvQQYHVvm5gpWtCLbZs=;
-        b=eFA0LTSGDlkCoVsC9GP5rvIAEU9A5uyVS7yaG8S2W/dyrgmOiZmBoCxiQq8N4+7MHQ
-         g+1+omNTDjIK3KVhbdtJ8EWlXJ8EAUjHvr3jwDXvwjqrw3AwlTFgQpgkGuqLEsOckjR+
-         mjc5KkhTX0G8TBAyr20TG+0jIFL2XewlxFF3Ae7mTHPFCh3qnS2QmaOHXVirv9XSSndc
-         pOAS+OiW1btYCx7pkBV6F2yFSovRXehkmpUmu1Eo6CBbbiMBq/PA201kI4FqzJnjYjLS
-         xEJgcQ/5DjdVY0dRAwcwIqYcp/93h7KU+DkZ2AIv/adVWC5TtPoSxfyW2HWSe6RdEWAX
-         wpPQ==
+        bh=JCniu1TDC3KaNG6UTHQva21z43WBHuc3cHi+ywDliPM=;
+        b=jWEtqr86zVYHhy3D0jq5B2tf3CdZQIYrVnNpoQ31baacycSD+FD1alaH3IgB5JcXzO
+         PHMiPCMllLl+P26HMoxfMA/sfOsOOLTnykPOYnqhQBQ65F3hQiM4GFAi96U12fjxTD3w
+         E7w7QT+repm6H48G4u+TzpScbYRtbycUEQb0TNQdAvFExRoG45qCxEqnDhyLDngjzbeQ
+         kSQ/DYo2MPdYbDEUdUrX03sMJYqXHNA/EP6D9SO2GufEBMzWkXe78RfPXPlIMRgMVjnl
+         6FIfzoN2DuvCNRCxYih5Ducqg7qb4Eop4wKmt7Snn6P9iGU8zXOxnxvyWJAEJxJte9bg
+         Q7pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792245963; x=1792850763;
+        d=1e100.net; s=20260707; t=1792246384; x=1792851184;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZVdY7DMl2n2rpVG1smOAYr0lCvQQYHVvm5gpWtCLbZs=;
-        b=RNHo9KDSd3C8GJQQxI9p80nE8jwkuTO9xee+Y+VNIErhC+WHOxSjDrdSWhQ8Tj5OLo
-         ejrH+jMio3LQIZGuqPdmoaFqxPXi0Ht0Qy6KRuzR0AkWTQTjJ1NmwTpGU1mch0gezlNk
-         VST9kS2r4nSx+VmA02A2BbRkIxPg1rGvO+LLKCV5Mi3CI3kKIi0bVAoma4ZZBhmTMG+j
-         nWDddTrXY1z+9/rDXEp+2qQBWdO7D4oW/NgxVnHnLuJN8vPBoOenoIZSaZhF3FE0PWpk
-         //QLg29NOhRSSUibXT4/sVhHovELuzqS+/PdyCTHvVRFYKo13Se11r7Vw9UE7PMZ0kcy
-         LLZA==
-X-Forwarded-Encrypted: i=1; AKwUvByGxadwyy6h6wm064qahjntgBMDXSGgsR+PqaItGLkHK2uAGMI8BIW2rVwG5EurXMVEzJ0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGw/TXs4Lfh0Z8xJOJvIxVHWe1B4Yni16JN0wfvMEJyLJM5jE9
-	UqLIJdLv8Hq5ressirW15i12x5znRNQDpewI87Qjq76gk9nuH0QIj7D579ESn2UUq+sG9pST9Fy
-	KwgUb5Q==
-X-Received: from plble14.prod.google.com ([2002:a17:902:fb0e:b0:2e1:326b:da73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1111:b0:2e8:965c:aedf
- with SMTP id d9443c01a7336-2e9a6c206b7mr23610075ad.42.1792245962200; Sat, 17
- Oct 2026 07:06:02 -0700 (PDT)
-Date: Sat, 17 Oct 2026 07:06:01 -0700
-In-Reply-To: <20261017093016.32348-7-amirmohammad.eftekhar@cispa.de>
+        bh=JCniu1TDC3KaNG6UTHQva21z43WBHuc3cHi+ywDliPM=;
+        b=R70dvD77vFnDafHHb4hdcW+mtg0pefNQpNpv8xci1ZC6BM5IoPwbC5PV/5gxDHKmF1
+         PtwM2Na9OIXDeO/0OQu0IQw3Cg+89ajwsIGl/s9Ls6fOLKknkJqmaM+7SJVlzZTOk6qR
+         0bcHAufsNwwT9vEJqfldy/rt8ky1igYDfDLlbTrYcFk0g6JkzprCndndKrkgWAEacibb
+         3phoO2QyA2fMRXZcBCINi2pXPH49joh7CUVzWGKvru1P0bRbde3UI3Ny3/luO6+pZdlR
+         LxjLfvRvvxmP7tNWwuQyrVhqzk8ARg1gE09uPvHgZHYRyvEhQ6jq/ASgWAER9TO6FpLR
+         0nyw==
+X-Forwarded-Encrypted: i=1; AKwUvBwpKXrjGnhYg/AoTfITdIrgM8pL6F9p+lkvt8Z0TgpoFVYpS9mRzUYJuAiUrbzhTCwkTXg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKe7LbaiTl8xd44W5Ct1A/UljS7EcnZRfFqUwUCH4HSsCcabbyA
+	bfXjRTOXflQzoxVCwH9eWy5FFeBKGKi9fvReuJvyqDKOIXe1rJjDYXVmNgpLIWPaJ9Xh1nJKe5P
+	8zFVfqg==
+X-Received: from plbme6.prod.google.com ([2002:a17:902:fc46:b0:2df:6366:11cc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f87:b0:2e9:4f21:91ef
+ with SMTP id d9443c01a7336-2e9a69e99f3mr23537045ad.36.1792246383457; Sat, 17
+ Oct 2026 07:13:03 -0700 (PDT)
+Date: Sat, 17 Oct 2026 07:13:02 -0700
+In-Reply-To: <20261017093016.32348-4-amirmohammad.eftekhar@cispa.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20261017093016.32348-7-amirmohammad.eftekhar@cispa.de>
-Message-ID: <atOAyUIiGLBsgsWI@google.com>
-Subject: Re: [BUG] KVM: x86: Hyper-V VP-assist page reuses the KVM PV-EOI
- gfn_to_hva_cache, so enabling both WARNs and fails KVM_RUN
+References: <20261017093016.32348-4-amirmohammad.eftekhar@cispa.de>
+Message-ID: <atOCbna3qAQZ1wLn@google.com>
+Subject: Re: [PATCH] KVM: x86: Ratelimit guest-triggerable IOAPIC/LAPIC log messages
 From: Sean Christopherson <seanjc@google.com>
 To: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 
++Josef and Chris
+
 On Sat, Oct 17, 2026, Amirmohammad Eftekhar wrote:
-> Hi,
+> A guest can drive these kernel log writes at will -- the IOAPIC MMIO
+> read/write handlers log every access with an unsupported length, and the
+> LAPIC IRQ-delivery path logs each physical-broadcast lowest-priority IPI --
+> so a guest can flood the host dmesg/journal.  Use the _ratelimited()
+> variants, matching the ratelimited logging already used elsewhere in the
+> LAPIC.
 > 
-> Reporting a guest self-DoS (correctness/robustness; not memory-safety, not
-> guest->host).
-
-And a KVM WARN, that's the only reason I care about "fixing" this.
-
-> The Hyper-V VP-assist page and KVM's PV-EOI feature share a single
-> gfn_to_hva_cache, vcpu->arch.pv_eoi.data:
-
-I'm still flabbergasted that this is the case (I recently learned about this thanks
-to another AI-found bug).
-
->  - Writing HV_X64_MSR_VP_ASSIST_PAGE arms the cache for the VP-assist page via
->    kvm_lapic_set_pv_eoi(vcpu, gfn_to_gpa(gfn) | KVM_MSR_ENABLED,
->    sizeof(struct hv_vp_assist_page))   /* hyperv.c ~1600 */
->  - kvm_hv_get_assist_page() then reads it back with that same cache and the
->    VP-assist length:
->    kvm_read_guest_cached(kvm, &vcpu->arch.pv_eoi.data,
->                          &hv_vcpu->vp_assist_page,
->                          sizeof(struct hv_vp_assist_page))  /* hyperv.c ~952 */
+> Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+> ---
+>  arch/x86/kvm/ioapic.c | 4 ++--
+>  arch/x86/kvm/lapic.c  | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> pv_eoi.data is the one gfn_to_hva_cache shared between the two features. A guest
-> that has VP-assist enabled and then writes MSR_KVM_PV_EOI_EN (a different GPA,
-> len 1) re-initializes pv_eoi.data for the 1-byte PV-EOI object while VP-assist
-> stays enabled. The next kvm_hv_get_assist_page() then does a cached read of
-> sizeof(struct hv_vp_assist_page) against a cache set up for len 1 -> the
-> length/GPA mismatch trips the cache and KVM fails the read, surfacing as a WARN
-> and a failed KVM_RUN for a guest that did nothing architecturally illegal (the
-> two features are independent and both legitimately enableable).
+> diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+> index 0d59b9c75..df15d9401 100644
+> --- a/arch/x86/kvm/ioapic.c
+> +++ b/arch/x86/kvm/ioapic.c
+> @@ -647,7 +647,7 @@ static int ioapic_mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+>  		memcpy(val, (char *)&result, len);
+>  		break;
+>  	default:
+> -		printk(KERN_WARNING "ioapic: wrong length %d\n", len);
+> +		pr_warn_ratelimited("ioapic: wrong length %d\n", len);
+>  	}
+>  	return 0;
+>  }
+> @@ -672,7 +672,7 @@ static int ioapic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+>  		data = *(u8  *) val;
+>  		break;
+>  	default:
+> -		printk(KERN_WARNING "ioapic: Unsupported size %d\n", len);
+> +		pr_warn_ratelimited("ioapic: Unsupported size %d\n", len);
+>  		return 0;
+>  	}
+>  
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index ecf611845..7d85a56b6 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -1359,7 +1359,7 @@ int __kvm_irq_delivery_to_apic(struct kvm *kvm, struct kvm_lapic *src,
+>  
+>  	if (irq->dest_mode == APIC_DEST_PHYSICAL &&
+>  	    irq->dest_id == 0xff && kvm_lowest_prio_delivery(irq)) {
+> -		pr_info("apic: phys broadcast and lowest prio\n");
+> +		pr_info_ratelimited("apic: phys broadcast and lowest prio\n");
+>  		irq->delivery_mode = APIC_DM_FIXED;
+>  	}
 
-Eh, given that no one has ever complained, and that enabling both at different
-locations would probably break the guest anyways, I don't see any reason to go
-out of our way to make this work.  If someone wants to clean up the Hyper-V mess,
-they're more than welcome to, but for an immediate fix, I just want to prevent
-KVM from tripping the WARN.
+This, and more flaws of this nature, were also sent along off-list by Josef and
+Chris.  For this specific case, I think what I'll do is combine all of the
+APIC ratelimited conversions into a single patch, flip a coin for the Author,
+and list the other person as Co-Author.  Any objections to that approach?
 
-So as a stopgap (which will probably become the long-term behavior...), this?
+Author:     Josef Bacik <josef@toxicpanda.com>
+AuthorDate: Wed Oct 7 23:19:48 2026 +0000
+Commit:     Chris Mason <mason@kernel.org>
+CommitDate: Fri Oct 16 18:07:57 2026 +0000
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index c18f45f66c24..88cc5a6ce170 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -947,6 +947,15 @@ int kvm_hv_get_assist_page(struct kvm_vcpu *vcpu)
- 	if (!hv_vcpu || !kvm_hv_assist_page_enabled(vcpu))
- 		return -EFAULT;
- 
-+	/*
-+	 * KVM reuses its own PV EOI feature to emulate Hyper-V's EOI Assist,
-+	 * and rather stupidly reuses the same MSR and cache storage.  Treat
-+	 * the assist page as inaccessible if the shared state is configured
-+	 * only for PV EOI's single byte of data.
-+	 */
-+	if (vcpu->arch.pv_eoi.data.len < sizeof(struct hv_vp_assist_page))
-+		return -EFAULT;
-+
- 	return kvm_read_guest_cached(vcpu->kvm, &vcpu->arch.pv_eoi.data,
- 				     &hv_vcpu->vp_assist_page, sizeof(struct hv_vp_assist_page));
+    KVM: x86: Ratelimit the I/O APIC's access size warnings
+    
+    ioapic_mmio_read() and ioapic_mmio_write() print a warning for an access
+    that is not 1, 2, 4 or 8 bytes long.  The guest chooses the length: a far
+    pointer load with a 32-bit operand size, e.g. LDS, reads six bytes, and
+    an access that starts in the page below the I/O APIC leaves a fragment of
+    any length for it.
+    
+    A guest that does this in a loop writes to the host's log, and to its
+    console, as fast as it can exit, which drowns everything else and keeps
+    the CPU busy in the console driver.
+    
+    Ratelimit the two messages.  They are now prefixed with the module name.
+    
+    Fixes: 1fd4f2a5ed8f ("KVM: In-kernel I/O APIC model")
+    Assisted-by: LLM
+    Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+
+diff --git arch/x86/kvm/ioapic.c arch/x86/kvm/ioapic.c
+index 0d59b9c758c2..df15d940181c 100644
+--- arch/x86/kvm/ioapic.c
++++ arch/x86/kvm/ioapic.c
+@@ -647,7 +647,7 @@ static int ioapic_mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+                memcpy(val, (char *)&result, len);
+                break;
+        default:
+-               printk(KERN_WARNING "ioapic: wrong length %d\n", len);
++               pr_warn_ratelimited("ioapic: wrong length %d\n", len);
+        }
+        return 0;
  }
+@@ -672,7 +672,7 @@ static int ioapic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+                data = *(u8  *) val;
+                break;
+        default:
+-               printk(KERN_WARNING "ioapic: Unsupported size %d\n", len);
++               pr_warn_ratelimited("ioapic: Unsupported size %d\n", len);
+                return 0;
+        }
+
+Author:     Josef Bacik <josef@toxicpanda.com>
+AuthorDate: Thu Oct 8 13:12:54 2026 +0000
+Commit:     Chris Mason <mason@kernel.org>
+CommitDate: Fri Oct 16 18:08:44 2026 +0000
+
+    KVM: x86: Ratelimit "Local APIC read with len"
+    
+    kvm_lapic_reg_read() prints an error for a read within one register whose
+    length isn't 1, 2 or 4, i.e. is 3.  The instruction emulator doesn't ask
+    for that, but an SEV-ES guest states the length of an MMIO access in its
+    GHCB, and kvm_sev_es_mmio() passes up to eight bytes on as they come.
+    
+    Such a guest can write to the host's log, and to its console, as fast as it
+    can exit.  Ratelimit the message, which is now prefixed with the module
+    name.
+    
+    Fixes: 8f423a80d299 ("KVM: SVM: Support MMIO for an SEV-ES guest")
+    Assisted-by: LLM
+    Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+
+diff --git arch/x86/kvm/lapic.c arch/x86/kvm/lapic.c
+index ea3afa5e9fa3..82a2dba1f269 100644
+--- arch/x86/kvm/lapic.c
++++ arch/x86/kvm/lapic.c
+@@ -1829,8 +1829,8 @@ static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
+                memcpy(data, (char *)&result + alignment, len);
+                break;
+        default:
+-               printk(KERN_ERR "Local APIC read with len = %x, "
+-                      "should be 1,2, or 4 instead\n", len);
++               pr_err_ratelimited("Local APIC read with len = %x, should be 1,2, or 4 instead\n",
++                                  len);
+                break;
+        }
+        return 0;
+
