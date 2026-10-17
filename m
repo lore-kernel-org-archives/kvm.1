@@ -1,38 +1,38 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398F8494291;
-	Sat, 17 Oct 2026 12:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6062249E14B;
+	Sat, 17 Oct 2026 12:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792239915; cv=none; b=g+kzmddApZ2QbPHMWKcOxi55nHmHthhCbeSx67PEo7B1jWV2/YaAgiCyr+3yj1HqDehwps3OaPMrUZtvQYFSWus4/Kqje953aVrVFo016xDYlDqAv9+U0rvw5Ls8MnSczFSJmx+rGNOhkChiM+k78pEfD/MB56RwS9JBNTj90ms=
+	t=1792239919; cv=none; b=cSGIu3usuFQ0Fkwy+Mbi0iKzITD7HtgQ7kd/P5KBeK0m5thcJw6Ftvthsc/My78c2tmEMFmIwfYDQoaCNNbHDKDR/GBJRhsShgVV2eXZcAiSTbfwO+5eO4wDN8wHnRLdUuvFUSpiuXailzOVEyq3WT++fn9f9Nx55RE0C+QeAfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792239915; c=relaxed/simple;
-	bh=3WkiVn+fXYzkzCq5Ma1IUyy1namICr3IcHzyyf5vZho=;
+	s=arc-20240116; t=1792239919; c=relaxed/simple;
+	bh=/LsXguQhmSy6cUDt/D5aWgMQWux/IuGLv1mKrD1Vnk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1nZkYnp4zapO5CTT/OM0rMwxyJhZ2cj3gp53D7arZTTVkyTi82LzSfrzOKv2EI3aXOLZIfD56aeMmunf2MgAqLNtJrpZuJPRNvzOiNSK/XWqW4fnIwCZCYRcfisQeZb6iVzs0O7w+zySoSM1moeTfBOkmKFIDJGDt27TtYkEm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pfZbl/e6; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version:Content-Type; b=mkwyIAjN1pax4ct6KHW93PYZyqomBPsNGHeDnApmoaHaeAxG3etBucUybkOSria1fU6nH2A6MVLno82LVjFeSpi5MZs9t2hY/q6iXi6mh1zYbRfqU7X5s9PfdRwkPLw8m/5CVmnKvy77XZ1IuACH74f9Ul7tttPG0xC7SvnkYRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mfWP3tB7; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pfZbl/e6"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mfWP3tB7"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=GJI8bj1/o7xcDKTOTBlog9lF6RE2KdEibjxq7sa/iGk=; b=pfZbl/e6bvIJrbBET7tLI2JlH2
-	U9NHyDlxhuI57VXy+sJ2P5FYI25NbK12iCbDukaEJh9p16VsJexXqIKe6OkHZEh0DzDtmBRY59B/I
-	0empbaDMMmjrW2qyOXoizf2YpR75hxCWn7CCjmmQuO6v0nY7FhYKzFm/+MaL0W8PFxf494g1wYQ+5
-	9bbyDVTdDMiiSorKd9XL02e7frAeauJaHlBPO1RP7shafVQ+kKF9IyRLlAI+lAKxWJuGTZVZQH3h7
-	PcOrNpS/Y/zgU/8xAK9EDrlL9fPrN+n4S8j6C5qxGnkvQdjZCBjO/0XQolEBeLmtDiUcjCm0d5ys5
-	+iQVpoeQ==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=c3Ad41yLZWa1cG22U8FT3RHf8ZklcirDatDO4x4kl/g=; b=mfWP3tB7tvEm0nqDbGsyqD5o2M
+	G8+I35xRkkk8MsB7ozxCk5hJc1yo8mkEDoBd1fCJbnU+9wX/baqPLHeuU0c0LVYrlVU5O6zb9LILN
+	1tjcSka4jxTSIwyW/UEodmKy8T/vlTK/5OgKVqiwak8S7funVqIjfnMTvHkZjzyKL9m6Vm3vSF7zE
+	Oozr5b0Aa7esVlf0oxEGoLCRzt/Y5bCYhTHs3TgiZPkw/dmzSuMycusc1bRmcH3rDD+9dr7CWnLIJ
+	03/k1EjCNFm2wIqXS9GT2Vnl0rbmugPrdBtZNEyyhuzrC/Ks+bGgUWm05hFARmjGtq5nl/tgU4BzJ
+	D2OD2jug==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xI3TF-00000002LfU-1xRZ;
-	Sat, 17 Oct 2026 12:25:06 +0000
+	id 1xI3TE-00000002LfJ-1bD0;
+	Sat, 17 Oct 2026 12:25:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xI3TD-00000002YnF-2EjC;
-	Sat, 17 Oct 2026 13:25:03 +0100
+	id 1xI3TC-00000002Ylu-2bKq;
+	Sat, 17 Oct 2026 13:25:02 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	David Woodhouse <dwmw@amazon.co.uk>,
 	nh-open-source@amazon.com
-Subject: [RFC PATCH 35/55] KVM: x86: Leave TSC matching to the plane 0 vCPUs
-Date: Sat, 17 Oct 2026 13:24:41 +0100
-Message-ID: <20261017122501.610248-36-dwmw2@infradead.org>
+Subject: [RFC PATCH 17/55] KVM: x86: hyper-v: flush the calling plane's TLB on flush hypercalls
+Date: Sat, 17 Oct 2026 13:24:23 +0100
+Message-ID: <20261017122501.610248-18-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017122501.610248-1-dwmw2@infradead.org>
 References: <20261017122501.610248-1-dwmw2@infradead.org>
@@ -65,66 +65,99 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Mushahid Hussain <hmushi@amazon.co.uk>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM enables the master clock when every vCPU has a matching TSC, judged
-by nr_vcpus_matched_tsc + 1 == online_vcpus.  online_vcpus counts a vCPU
-once, but each of its plane vCPUs synchronizes its TSC at creation and
-counts as another matching vCPU.  With one higher plane the count can
-never equal the number of vCPUs again, the master clock stays off and
-kvmclock loses PVCLOCK_TSC_STABLE_BIT.  Among other things the Hyper-V
-reference TSC page then breaks: KVM writes sequence 0 to it, finds the
-clock unstable and leaves it that way.
+The Hyper-V TLB flush hypercalls resolve their target vCPUs through
+the plane-0 array, so a flush issued from a non-zero plane flushed
+only the plane-0 vCPUs and the caller's own plane kept stale
+translations. The Windows secure kernel repopulated a PFN-database
+page table entry, flushed, then took a fatal page fault on the very
+address it had just mapped, because VTL1's TLB still held the old
+read-only zero-page translation.
 
-The planes of a vCPU share its TSC.  Give a plane vCPU the current
-generation and leave the matching count and generation changes to its
-plane 0 sibling.
+Resolve each flush target to the vCPU of the calling plane (falling
+back to plane 0 where no such plane vCPU exists — it then has no TLB
+to flush either) and raise the flush request on that vCPU directly.
 
-Assisted-by: LLM
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: LLM
 ---
- arch/x86/kvm/x86.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/x86/kvm/hyperv.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0f8a149ba0eb..ba468f7c4d4a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2858,6 +2858,31 @@ static void __kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 offset, u64 tsc,
- 	if (vcpu->arch.guest_tsc_protected)
- 		return;
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index eefc18c750f1..797c5cbfbbaf 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -2122,6 +2122,23 @@ static int kvm_hv_hypercall_check_params(struct kvm_vcpu *vcpu,
+ 	return 0;
+ }
  
-+	/*
-+	 * The planes of a vCPU share its TSC and online_vcpus counts the
-+	 * vCPU once, so a plane vCPU neither counts as a matching vCPU nor
-+	 * starts a generation; its plane 0 sibling speaks for it.  Nor may
-+	 * it perturb the global matching window (last_tsc_ and
-+	 * user_set_tsc): KVM_SET_MSRS is accepted on plane fds, and a TSC
-+	 * write on a plane fd
-+	 * moving the window would corrupt the next plane-0 write's match
-+	 * decision.  Latch the generation from the plane-0 sibling, which
-+	 * exists by construction for a plane twin, rather than from the
-+	 * VM-global cur_tsc_* that may belong to a different vCPU's
-+	 * generation entirely.
-+	 */
-+	if (vcpu->plane_level) {
-+		struct kvm_vcpu *sibling = vcpu->common->vcpus[0];
++/*
++ * A TLB flush hypercall flushes the caller's VTL view of the target VPs:
++ * resolve the target to the vCPU of the caller's plane, which has its own
++ * roots and TLB tag.  Fall back to plane 0 when the plane vCPU does not
++ * exist (it then has no TLB to flush either).
++ */
++static struct kvm_vcpu *hv_flush_plane_vcpu(struct kvm_vcpu *caller,
++					    struct kvm_vcpu *v)
++{
++	struct kvm_vcpu *pv;
 +
-+		vcpu->arch.last_guest_tsc = tsc;
-+		kvm_vcpu_write_tsc_offset(vcpu, offset);
++	if (!caller->plane_level)
++		return v;
++	pv = v->common->vcpus[caller->plane_level];
++	return pv ?: v;
++}
 +
-+		vcpu->arch.this_tsc_generation = sibling->arch.this_tsc_generation;
-+		vcpu->arch.this_tsc_nsec = sibling->arch.this_tsc_nsec;
-+		vcpu->arch.this_tsc_write = sibling->arch.this_tsc_write;
-+		return;
-+	}
-+
- 	if (user_set_tsc)
- 		vcpu->kvm->arch.user_set_tsc = true;
+ static s64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
+ {
+ 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
+@@ -2257,12 +2274,18 @@ static s64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
+ 	 */
+ 	if (all_cpus && !is_guest_mode(vcpu)) {
+ 		kvm_for_each_vcpu(i, v, kvm) {
++			v = hv_flush_plane_vcpu(vcpu, v);
+ 			tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(v, false);
+ 			hv_tlb_flush_enqueue(v, tlb_flush_fifo,
+ 					     tlb_flush_entries, hc->rep_cnt);
++			if (vcpu->plane_level) {
++				kvm_make_request(KVM_REQ_HV_TLB_FLUSH, v);
++				kvm_vcpu_kick(v);
++			}
+ 		}
+ 
+-		kvm_make_all_cpus_request(kvm, KVM_REQ_HV_TLB_FLUSH);
++		if (!vcpu->plane_level)
++			kvm_make_all_cpus_request(kvm, KVM_REQ_HV_TLB_FLUSH);
+ 	} else if (!is_guest_mode(vcpu)) {
+ 		sparse_set_to_vcpu_mask(kvm, sparse_banks, valid_bank_mask, vcpu_mask);
+ 
+@@ -2270,12 +2293,19 @@ static s64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
+ 			v = kvm_get_vcpu(kvm, i);
+ 			if (!v)
+ 				continue;
++			v = hv_flush_plane_vcpu(vcpu, v);
+ 			tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(v, false);
+ 			hv_tlb_flush_enqueue(v, tlb_flush_fifo,
+ 					     tlb_flush_entries, hc->rep_cnt);
++			if (vcpu->plane_level) {
++				kvm_make_request(KVM_REQ_HV_TLB_FLUSH, v);
++				kvm_vcpu_kick(v);
++			}
+ 		}
+ 
+-		kvm_make_vcpus_request_mask(kvm, KVM_REQ_HV_TLB_FLUSH, vcpu_mask);
++		if (!vcpu->plane_level)
++			kvm_make_vcpus_request_mask(kvm, KVM_REQ_HV_TLB_FLUSH,
++						    vcpu_mask);
+ 	} else {
+ 		struct kvm_vcpu_hv *hv_v;
  
 -- 
 2.50.1
