@@ -1,172 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35374CF474
-	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 03:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2A038B14F
+	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 06:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792207651; cv=none; b=DJvVrDO7B8xPyGdy2MW9B2sS7+4WLirz1ynQiPkyLt15FRlQyifok5KSRlE8m6E/iUOj3FS5ntDKbRqcnwxO7ekpuIWZ4yiVqxkTvscdmG70jtajzaSvthDHD9jOcaMizkJ6cIlkzknlnczYSbXoXH1RbZyYGSGVsvVoSYPqGsE=
+	t=1792219661; cv=none; b=AAhhKXiiPja7PyvTs6tdxCl+kUYVpDo/gK1mWb72c7LEwqmVtRDz+FLbIMXcKku2nvoifXASRbAcMnCMWEKogt2SobybTRh7dcOmbLmok1+qJjUP7pUE41xFdzV1TwM/AfTG5GsnErqHf8L3qLVIDarNVg2w+loorHoqTpW+ZBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792207651; c=relaxed/simple;
-	bh=se2r3Fv9k0MzHtqcfSjo0Hf6nwmZDajF+GEzQLZ5dxM=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=DFQa7icKXaOlbL/CQO6punF87udiAcpdYm/2o7E4boNSJQfNoZxYl+a5LjsqMgNHWU3roZ5PbR7MJHT7nVmaDInPmqbBZxxNSM+IV8AL/v6xT+p3/uVFRhywXlseRsbboxX+3pCSU6DqATR3emnK2M4lPLAPAr76XSU91zI93JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxsC3Mnr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792219661; c=relaxed/simple;
+	bh=vDL4eRYOU70NHW3c0Z6bi/ZAGOULay+LzXOfNl2kzgE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QFmYfSDocT/A8mdPijUIhOsfzn4I905BxCd/qWYUMAJ56vNw9B2rLRlEkjfAhAmPLzleW8k6fuKdA9YNMN9YHNEF6q0t3khfvPvJMQQ4raJHM8PC2CDjMs8IAXD9c49K63EZvZd+UvwYqpJs14i67Wlkwaqidy1csDGWYpbprmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=enqRWGDX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxsC3Mnr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1B21F000C4;
-	Sat, 17 Oct 2026 03:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792207649;
-	bh=zjRj/LRmO+CiP3Hdb+V+y89DzaRI2HDRySJVNaBxuH8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JxsC3MnrN+UpD9s0DcELXWXsAN2yEM+dt63L3YoqcHDvGoqrdHmG0xCpB4WcfX+Ws
-	 nQ6Nyt/GjLM811CXjUSxgBTHGd+BCMnNOwb03cK0hZ5B5/t0LBrFImtYvzyPdXdCey
-	 2/GyKCHuo5VnIoHS8GHQHkCQYzNAjarvztdbNSEbd3jSkLFwJZPyD1vcs4xt4zRxvM
-	 H2tIPBd88AZYTS+wVn4S7xc1bCGoO+MfOtnKfAuPgieAVt0ZOqOnxG9sq6wbNxaodu
-	 zo3fkjCIinouUr+ErkQDkAAZS1GZ+/g3LoA6g0h7IRUeFMByvcNNX0opF01xMlZ+Y3
-	 5D5Q69YApDabA==
-Message-ID: <sashiko-outbox-175245@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: riscv: Only fast-path dirty-log write faults on
- host-writable leaves
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "SeungJu Cheon" <suunj1331@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261017030927.345454-1-suunj1331@gmail.com>
-References: <20261017030927.345454-1-suunj1331@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 17 Oct 2026 03:27:29 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="enqRWGDX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792219657;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/Oa4F7t0+0NDXxalX71XAymg9taDjr1JExEQgwq3otA=;
+	b=enqRWGDX4g2PBoHVZcOj1L5OVOOqxhGUVbvRSPEN3OSP1xrYqFo9a2eL6mgOBf793twXF8
+	SL5DA+qTc9QyGS2ZJmKKC14DZRlWGGT7UiyqhKKHUGP0vr23uoh23pUpazko1zML/4Q5hY
+	JPZg4yu5NqHVc+md9AOYWqUG1wSYtUg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-348-NGdJZHomM3KP7CpweHORug-1; Sat,
+ 17 Oct 2026 06:47:32 +0000
+X-MC-Unique: NGdJZHomM3KP7CpweHORug-1
+X-Mimecast-MFC-AGG-ID: NGdJZHomM3KP7CpweHORug_1792219650
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5052F1956065;
+	Sat, 17 Oct 2026 06:47:30 +0000 (UTC)
+Received: from [100.90.56.12] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A97E11800495;
+	Sat, 17 Oct 2026 06:47:26 +0000 (UTC)
+Message-ID: <866179b6-8303-4c30-aa59-005fa4554362@redhat.com>
+Date: Sat, 17 Oct 2026 08:47:24 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/19] accel/kvm: Add CGS flag to control in-place
+ conversion support
+To: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, berrange@redhat.com, armbru@redhat.com,
+ pankaj.gupta@amd.com, xiaoyao.li@intel.com, chao.p.peng@linux.intel.com,
+ david@kernel.org, ashish.kalra@amd.com, ackerleytng@google.com,
+ lpieralisi@kernel.org
+References: <20261007134323.1606088-1-michael.roth@amd.com>
+ <20261007134323.1606088-8-michael.roth@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20261007134323.1606088-8-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] KVM: riscv: missing host page dirtying in kvm_riscv_mmu_map() =
-on read fault
---
+On 10/7/26 15:41, Michael Roth wrote:
+> For confidential guests, guest_memfd is currently used only for private
+> guest memory, and normal guest memory comes from the configured memory
+> backend just as it does for a non-confidential guest. It is now possible
+> to use the same physical memory to back a particular GPA regardless of
+> whether it is in a shared or private state. This avoids the need to
+> rely on discarding memory between shared/private conversions (to avoid
+> doubled memory usage), and is intended to be the primary mode of using
+> guest_memfd for confidential guests moving forward, and future features
+> like hugepage support will likely require it.
+> 
+> Add an internal flag to enable this support. Since
+> ConfidentialGuestSupport is already used to track some
+> guest_memfd-related functionality (e.g.  whether it is required for the
+> configured machine), similarly introduce this flag as a member of
+> the ConfidentialGuestSupport object.
+> 
+> Also add the KVM-specific checks to enable this support, but leave the
+> option disabled so that required changes can first be implemented for
+> CGS variants that intend to make use of KVM's in-place conversion
+> support.
 
-commit 62242a1df73a6632040ee4bbfc1be21570c1f2af
-Author: SeungJu Cheon <suunj1331@gmail.com>
+I would make this on (either by default, or by removing the option 
+altogether) if KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES is available, 
+otherwise you need a special option to run confidential guests on kernel 
+that disable the "private" attribute *on the VM* file descriptor.
 
-KVM: riscv: Only fast-path dirty-log write faults on host-writable leaves
+In fact, I think that since migration is not supported by either SNP or 
+TDX, the extra complication of being able to toggle it is not worth the 
+effort.  The old code path can still be tested by changing the 
+gmem_in_place_conversion module parameter for KVM.
 
-This commit records host writability in RSW bit 9 (KVM_GSTAGE_PTE_HOST_WRIT=
-ABLE)
-on G-stage leaf PTEs before dirty logging forces the mapping read-only, and
-checks this bit in kvm_riscv_mmu_dirty_log_write_fault_fast() so that
-read-only host mappings fall back to the slow path.
+Thanks,
 
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 371fccaf9df08..bbc8ab632c8a1 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -586,6 +586,12 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast=
-(struct kvm *kvm,
->  			break;
->  		}
-> =20
-> +		/* Let the slow path handle host-side write protection and CoW. */
-> +		if (!(pte_val(old_pte) & KVM_GSTAGE_PTE_HOST_WRITABLE)) {
-> +			ret =3D false;
-> +			break;
-> +		}
+Paolo
+
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>   accel/kvm/kvm-all.c                         | 18 ++++++++++++++++++
+>   hw/core/machine.c                           |  5 +++++
+>   include/hw/core/boards.h                    |  1 +
+>   include/system/confidential-guest-support.h | 12 ++++++++++++
+>   4 files changed, 36 insertions(+)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index f1deb458ec..862539aed4 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3074,6 +3074,24 @@ static int kvm_init(AccelState *as, MachineState *ms)
+>       kvm_guest_memfd_flags_supported =
+>           kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD_FLAGS);
+>   
+> +    if (machine_require_guest_memfd_convert_in_place(ms)) {
+> +        uint64_t guest_memfd_supported_memory_attributes;
 > +
->  		if (!dirty_marked) {
->  			mark_page_dirty_in_slot(kvm, memslot, gfn);
->  			dirty_marked =3D true;
-> @@ -629,6 +635,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
-vm_memory_slot *memslot,
->  	bool is_hugetlb;
->  	bool unused =3D false;
->  	bool writable;
-> +	bool host_writable;
->  	unsigned int vma_pageshift;
->  	gfn_t gfn =3D gpa >> PAGE_SHIFT;
->  	struct vm_area_struct *vma;
-> @@ -713,6 +720,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
-vm_memory_slot *memslot,
->  	if (is_error_noslot_pfn(hfn))
->  		return -EFAULT;
-> =20
-> +	host_writable =3D writable;
+> +        guest_memfd_supported_memory_attributes =
+> +            kvm_vm_check_extension(s, KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES);
 > +
->  	/*
->  	 * If logging is active then we allow writable pages only
->  	 * for write faults.
-> @@ -738,10 +747,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct=
- kvm_memory_slot *memslot,
->  	if (writable) {
->  		mark_page_dirty_in_slot(kvm, memslot, gfn);
->  		ret =3D kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SH=
-IFT,
-> -						vma_pagesize, false, true, out_map);
-> +						vma_pagesize, false, true, host_writable,
-> +						out_map);
->  	} else {
->  		ret =3D kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SH=
-IFT,
-> -						vma_pagesize, true, true, out_map);
-> +						vma_pagesize, true, true, host_writable,
-> +						out_map);
->  	}
-> =20
->  	if (ret)
+> +        if (!(guest_memfd_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> +            ret = -EINVAL;
+> +            error_report("In-place conversion is only supported if private "
+> +                         "memory attributes can be set via guest_memfd. "
+> +                         "Please ensure the 'gmem_in_place_conversion' KVM "
+> +                         "module parameter is set to 1.");
+> +            goto err;
+> +        }
+> +
+> +        kvm_supported_memory_attributes = guest_memfd_supported_memory_attributes;
+> +    }
+> +
+>       if (s->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
+>           s->kernel_irqchip_split = mc->default_kernel_irqchip_split ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
+>       }
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index d9ac4b419a..e9cc6c2420 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1346,6 +1346,11 @@ bool machine_require_guest_memfd_private(MachineState *machine)
+>       return machine->cgs && machine->cgs->require_guest_memfd;
+>   }
+>   
+> +bool machine_require_guest_memfd_convert_in_place(MachineState *machine)
+> +{
+> +    return machine->cgs && machine->cgs->convert_in_place;
+> +}
+> +
+>   static char *cpu_slot_to_string(const CPUArchId *cpu)
+>   {
+>       GString *s = g_string_new(NULL);
+> diff --git a/include/hw/core/boards.h b/include/hw/core/boards.h
+> index d0e4ad9820..9ea124b224 100644
+> --- a/include/hw/core/boards.h
+> +++ b/include/hw/core/boards.h
+> @@ -44,6 +44,7 @@ int machine_phandle_start(MachineState *machine);
+>   bool machine_dump_guest_core(MachineState *machine);
+>   bool machine_mem_merge(MachineState *machine);
+>   bool machine_require_guest_memfd_private(MachineState *machine);
+> +bool machine_require_guest_memfd_convert_in_place(MachineState *machine);
+>   HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machine);
+>   void machine_set_cpu_numa_node(MachineState *machine,
+>                                  const CpuInstanceProperties *props,
+> diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+> index 5dca717308..2c9a9ff217 100644
+> --- a/include/system/confidential-guest-support.h
+> +++ b/include/system/confidential-guest-support.h
+> @@ -92,6 +92,18 @@ struct ConfidentialGuestSupport {
+>        * so 'ready' is not set, we'll abort.
+>        */
+>       bool ready;
+> +
+> +    /*
+> +     * CGS implementations will use this to indicate whether or not
+> +     * to enable in-place conversion for guest-memfd.
+> +     *
+> +     * If set, the machine re-uses physical pages when converting
+> +     * between shared/private (as opposed to using different
+> +     * physical pages depending on the access type, which is the
+> +     * default mode when 'require_guest_memfd' is set without
+> +     * additionally setting this flag).
+> +     */
+> +    bool convert_in_place;
+>   };
+>   
+>   typedef struct ConfidentialGuestSupportClass {
 
-[Severity: Critical]
-Should the out_unlock path in kvm_riscv_mmu_map() also be updated to pass
-host_writable instead of writable to kvm_release_faultin_page()?
-
-Currently, the end of kvm_riscv_mmu_map() does:
-
-out_unlock:
-	kvm_release_faultin_page(kvm, page,
-				 unused || (ret && ret !=3D -EEXIST), writable);
-
-When dirty logging is enabled on a writable memslot (logging =3D=3D true) a=
-nd the
-guest triggers a read fault (is_write =3D=3D false) on a page whose primary=
- MMU
-PTE already has write permission (such as a clean MAP_SHARED shmem/memfd fo=
-lio
-faulted in for read, or an anonymous folio after MADV_FREE),
-__kvm_faultin_pfn() sees pte_write() via get_user_page_fast_only() and sets
-writable =3D true without marking the host PTE or folio dirty.
-
-kvm_riscv_mmu_map() then records host_writable =3D true, sets writable =3D =
-false
-because (logging && !is_write), and installs a read-only G-stage PTE with
-KVM_GSTAGE_PTE_HOST_WRITABLE set. Because writable is false at out_unlock,
-kvm_release_faultin_page() calls kvm_release_page_clean(page) instead of
-kvm_release_page_dirty(page).
-
-If the guest subsequently writes to that GPA,
-kvm_riscv_mmu_dirty_log_write_fault_fast() sees KVM_GSTAGE_PTE_HOST_WRITABLE
-and makes the G-stage PTE writable under read_lock(&kvm->mmu_lock) without
-marking the backing host folio dirty:
-
-include/linux/kvm_host.h:kvm_release_faultin_page()
-	/*
-	 * If the page that KVM got from the *primary MMU* is writable, and KVM
-	 * installed or reused a SPTE, mark the page/folio dirty.  Note, this
-	 * may mark a folio dirty even if KVM created a read-only SPTE, e.g. if
-	 * the GFN is write-protected.  Folios can't be safely marked dirty
-	 * outside of mmu_lock as doing so could race with writeback on the
-	 * folio.  As a result, KVM can't mark folios dirty in the fast page
-	 * fault handler, and so KVM must (somewhat) speculatively mark the
-	 * folio dirty if KVM could locklessly make the SPTE writable.
-	 */
-
-Since G-stage unmapping only clears the PTE without propagating dirty state=
- to
-the host struct page, can host page reclaim later evict the guest-modified
-folio as clean without writeback or swap-out, losing the guest's written da=
-ta?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261017030927.3454=
-54-1-suunj1331@gmail.com?part=3D1
