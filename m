@@ -1,230 +1,172 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC6F3AAF6C
-	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 03:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35374CF474
+	for <kvm@vger.kernel.org>; Sat, 17 Oct 2026 03:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792206585; cv=none; b=s6O+92jKyyMTM23yS7s3UrnPmmnTlpdmvcFPde8ydtXKg6yjk0EZNB4tHeIU6JY7eEvdjd7G2neRPkrMnSndhhX6ULDGWNKLpSKxUpu3EcZd7MPYcltG8QOO0Fjc2eF99DHgCq2d3eVx/ZeHXpfCnT4W5kg8ULCGN7AH0sGelB8=
+	t=1792207651; cv=none; b=DJvVrDO7B8xPyGdy2MW9B2sS7+4WLirz1ynQiPkyLt15FRlQyifok5KSRlE8m6E/iUOj3FS5ntDKbRqcnwxO7ekpuIWZ4yiVqxkTvscdmG70jtajzaSvthDHD9jOcaMizkJ6cIlkzknlnczYSbXoXH1RbZyYGSGVsvVoSYPqGsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792206585; c=relaxed/simple;
-	bh=zDoMxRzARHHAy5ri+HjeBWocd4VpQdNpx8uIHCb8OO0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BLypF0fzsRsEtyuL7HyDNY2qBhoDNEkFH/lPsRfxSFqFGpZEiIET+laPFU7bM5yMQ9HuhOxdE9o8ozeI1gtDDxG4assfhDK6x0D4RrIRNp9qOQqi9jhqD+OBCe5wAhMA44vNBwFzM/Z7KZoA0QygsCYB503WDCIZZP2ocewei1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o8NQSuSz; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792207651; c=relaxed/simple;
+	bh=se2r3Fv9k0MzHtqcfSjo0Hf6nwmZDajF+GEzQLZ5dxM=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=DFQa7icKXaOlbL/CQO6punF87udiAcpdYm/2o7E4boNSJQfNoZxYl+a5LjsqMgNHWU3roZ5PbR7MJHT7nVmaDInPmqbBZxxNSM+IV8AL/v6xT+p3/uVFRhywXlseRsbboxX+3pCSU6DqATR3emnK2M4lPLAPAr76XSU91zI93JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxsC3Mnr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o8NQSuSz"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cd632f7a4a1so275944a12.3
-        for <kvm@vger.kernel.org>; Fri, 16 Oct 2026 20:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792206583; x=1792811383; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=enK3RSWvXdgqwIVRPBvjJmOYoe9F1G7CwzrwYjBwBdA=;
-        b=o8NQSuSzgCXIdFSZZ+2MsfR9MAPbOPh2uYIQbEAizPuIr2fimr1aRAHpLzBaH3pEYI
-         /F94ZDCPpGq1/JUMOxY1/1LcKGYRt9LsAQXWHo/hUuR8+XE3wPcxzaYFdtcOn8uNMBta
-         BpSB2enEL47sles4fWQL7RKiSjbGlyrwBDryhLvqqYlPtzgsJoBTPQ3uaB2gnsU7toQ1
-         qnxucSC6Lq6h0KAfs1HmaFcpQ042anF/O2fVAgYmCY1PdkDwooZ+dXK05v19hheQoSaM
-         +55fgUfzXM8VLs4YWqqevu6atMcERWl8QUp4vu1uFpF/Mh/wgkmPOYLZoJ58omAGOm2s
-         iVqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792206583; x=1792811383;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=enK3RSWvXdgqwIVRPBvjJmOYoe9F1G7CwzrwYjBwBdA=;
-        b=D64yyO3E4URalYOMo1gKNVmov9nOBOONpA9mEy1vxeKJ5mDucAuTiY2rc1i8D4PsAY
-         RvsaRFsRXeVVkdSFVJEvw+5vB89nDGzLiOe5U8TrkCTGFsP28If320NGLG6qJJOy92Yb
-         2Fhbzs7DYtJt3pcy4cK/EDMgim105yWN/ud969BDmGyLJYAHjU8KpMW82jdMGsPq70q5
-         67Sjd3gk5yjIIKxx6oFZe0LhCJfVM73Dy9Wxg0dDwyheMYx5zqEvyHXTZqAQz9nck+Fr
-         NsHu6vUkPZjp+P3PBW2ozupb1BuueUO4cg2LkENIoJPi0zonqGCpgg+MY3VzfdOZm+sN
-         cSag==
-X-Forwarded-Encrypted: i=1; AKwUvBxWfZ7+BqhEbqvDYZ2IpjvgGUv8FOIWw32ZKc2rL+7Ee9GQCpFfyjclLLVAMjaXsheP6O8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYItkD7twF3KQ6Z5GMVDWHNDO4WlhcuzrrK6J/FsUOS5jAqaRMYV
-	3k5EFGqL1Ya+zURY9OFw1WLrfq2kRc6c4QoZcp4Zm59L955O8oP3CiR/
-X-Gm-Gg: AYBFou26FOrnomcc4qQvvNrgcIk4IxPyL6VPW9ld9SyaPs8DBHOsfmtTM/MQg8DaM7F
-	ruQTA92Fq/orRnK9LV4Jp7g7XMmFxFR6fVJzLEMQq5snj6RQ5u304jG/m1myWkYBw8nCKTjdeSd
-	SXjArOs5zIFwFO7QIVQ6pT2nrIRWVSIEzj0p7DzlbaJHEKB95qbN4LOdzBKyO+pPO0m3plfK32R
-	vv6RJzdM3+2p1NKmvPP9XqXJifcI7QG6ZvRMcyUCLyct27CeYlf7BCSmxh3iD3nT8w5WZqku5He
-	L4SkGsUGzecdasKgl8E72Sy7JZnMns1V1iA/DwBT+GkqRPJaTGcTvlZAKGkffhITllTG1gyGJQq
-	5kFaDteWgbN/V2U1yRehSH+694jrzjg1plXdHIMXRpBLO8nWPCjJB6NvcbuB1dYB8buNRXrYiVN
-	b44TSNoPoFflpRoUtl3EXncw/imI7ageZIoHhg5pnFy+9KncnE/bJ2jyKpYtaVIEW08MLJa3chA
-	I/G2KCxk/UW8Uz5ekIHcFKOXJcasiIM2Q==
-X-Received: by 2002:a17:90b:5803:b0:3ab:9c73:12e with SMTP id 98e67ed59e1d1-3acee29303bmr1411650a91.6.1792206583320;
-        Fri, 16 Oct 2026 20:09:43 -0700 (PDT)
-Received: from fedora ([61.74.238.173])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6549b6171sm1795406a12.14.2026.10.16.20.09.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 20:09:42 -0700 (PDT)
-From: SeungJu Cheon <suunj1331@gmail.com>
-To: anup@brainfault.org,
-	atish.patra@linux.dev
-Cc: tjytimi@163.com,
-	inochiama@gmail.com,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	andrew.jones@linux.dev,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	SeungJu Cheon <suunj1331@gmail.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH] KVM: riscv: Only fast-path dirty-log write faults on host-writable leaves
-Date: Sat, 17 Oct 2026 12:09:26 +0900
-Message-ID: <20261017030927.345454-1-suunj1331@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxsC3Mnr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1B21F000C4;
+	Sat, 17 Oct 2026 03:27:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792207649;
+	bh=zjRj/LRmO+CiP3Hdb+V+y89DzaRI2HDRySJVNaBxuH8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=JxsC3MnrN+UpD9s0DcELXWXsAN2yEM+dt63L3YoqcHDvGoqrdHmG0xCpB4WcfX+Ws
+	 nQ6Nyt/GjLM811CXjUSxgBTHGd+BCMnNOwb03cK0hZ5B5/t0LBrFImtYvzyPdXdCey
+	 2/GyKCHuo5VnIoHS8GHQHkCQYzNAjarvztdbNSEbd3jSkLFwJZPyD1vcs4xt4zRxvM
+	 H2tIPBd88AZYTS+wVn4S7xc1bCGoO+MfOtnKfAuPgieAVt0ZOqOnxG9sq6wbNxaodu
+	 zo3fkjCIinouUr+ErkQDkAAZS1GZ+/g3LoA6g0h7IRUeFMByvcNNX0opF01xMlZ+Y3
+	 5D5Q69YApDabA==
+Message-ID: <sashiko-outbox-175245@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: riscv: Only fast-path dirty-log write faults on
+ host-writable leaves
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "SeungJu Cheon" <suunj1331@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261017030927.345454-1-suunj1331@gmail.com>
+References: <20261017030927.345454-1-suunj1331@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 17 Oct 2026 03:27:29 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The dirty-log write fault fast path sets _PAGE_WRITE without checking
-whether the backing page is host-writable. A read fault can install
-a read-only mapping to the shared zero page. A subsequent guest write
-then takes the fast path and writes into the zero page instead of
-going through the slow path to break CoW.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] KVM: riscv: missing host page dirtying in kvm_riscv_mmu_map() =
+on read fault
+--
 
-Use RSW bit 9 to record host writability before dirty logging forces
-the mapping read-only. Preserve this bit across write-protection and
-fall back to the slow path when it is clear.
+commit 62242a1df73a6632040ee4bbfc1be21570c1f2af
+Author: SeungJu Cheon <suunj1331@gmail.com>
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-174168@kernel.org/
-Fixes: 7705be59eb2d ("KVM: riscv: Fast-path dirty logging write faults")
-Cc: stable@vger.kernel.org # 7.2+
-Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
----
-Testing:
+KVM: riscv: Only fast-path dirty-log write faults on host-writable leaves
 
-1. HiFive Premier P550
+This commit records host writability in RSW bit 9 (KVM_GSTAGE_PTE_HOST_WRIT=
+ABLE)
+on G-stage leaf PTEs before dirty logging forces the mapping read-only, and
+checks this bit in kvm_riscv_mmu_dirty_log_write_fault_fast() so that
+read-only host mappings fall back to the slow path.
 
-   A selftest makes the guest read an untouched page, then write to
-   it with dirty logging enabled. Before the fix, the write corrupts
-   the host zero page. After the fix, CoW allocates a private page
-   and the zero page stays zero.
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 371fccaf9df08..bbc8ab632c8a1 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -586,6 +586,12 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast=
+(struct kvm *kvm,
+>  			break;
+>  		}
+> =20
+> +		/* Let the slow path handle host-side write protection and CoW. */
+> +		if (!(pte_val(old_pte) & KVM_GSTAGE_PTE_HOST_WRITABLE)) {
+> +			ret =3D false;
+> +			break;
+> +		}
+> +
+>  		if (!dirty_marked) {
+>  			mark_page_dirty_in_slot(kvm, memslot, gfn);
+>  			dirty_marked =3D true;
+> @@ -629,6 +635,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
+vm_memory_slot *memslot,
+>  	bool is_hugetlb;
+>  	bool unused =3D false;
+>  	bool writable;
+> +	bool host_writable;
+>  	unsigned int vma_pageshift;
+>  	gfn_t gfn =3D gpa >> PAGE_SHIFT;
+>  	struct vm_area_struct *vma;
+> @@ -713,6 +720,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
+vm_memory_slot *memslot,
+>  	if (is_error_noslot_pfn(hfn))
+>  		return -EFAULT;
+> =20
+> +	host_writable =3D writable;
+> +
+>  	/*
+>  	 * If logging is active then we allow writable pages only
+>  	 * for write faults.
+> @@ -738,10 +747,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct=
+ kvm_memory_slot *memslot,
+>  	if (writable) {
+>  		mark_page_dirty_in_slot(kvm, memslot, gfn);
+>  		ret =3D kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SH=
+IFT,
+> -						vma_pagesize, false, true, out_map);
+> +						vma_pagesize, false, true, host_writable,
+> +						out_map);
+>  	} else {
+>  		ret =3D kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SH=
+IFT,
+> -						vma_pagesize, true, true, out_map);
+> +						vma_pagesize, true, true, host_writable,
+> +						out_map);
+>  	}
+> =20
+>  	if (ret)
 
-   dirty_log_perf_test -v 3 -b 256M -i 3 shows no noticeable
-   regression (14-21s per iteration before and after).
+[Severity: Critical]
+Should the out_unlock path in kvm_riscv_mmu_map() also be updated to pass
+host_writable instead of writable to kvm_release_faultin_page()?
 
-2. QEMU (-cpu rv64,h=true)
+Currently, the end of kvm_riscv_mmu_map() does:
 
-   The same selftest reproduces the zero-page corruption before the
-   fix and passes after it.
+out_unlock:
+	kvm_release_faultin_page(kvm, page,
+				 unused || (ret && ret !=3D -EEXIST), writable);
 
-This patch applies on top of the Accessed-bit fix [1].
+When dirty logging is enabled on a writable memslot (logging =3D=3D true) a=
+nd the
+guest triggers a read fault (is_write =3D=3D false) on a page whose primary=
+ MMU
+PTE already has write permission (such as a clean MAP_SHARED shmem/memfd fo=
+lio
+faulted in for read, or an anonymous folio after MADV_FREE),
+__kvm_faultin_pfn() sees pte_write() via get_user_page_fast_only() and sets
+writable =3D true without marking the host PTE or folio dirty.
 
-[1] https://lore.kernel.org/all/20261016101458.221648-1-suunj1331@gmail.com/
+kvm_riscv_mmu_map() then records host_writable =3D true, sets writable =3D =
+false
+because (logging && !is_write), and installs a read-only G-stage PTE with
+KVM_GSTAGE_PTE_HOST_WRITABLE set. Because writable is false at out_unlock,
+kvm_release_faultin_page() calls kvm_release_page_clean(page) instead of
+kvm_release_page_dirty(page).
 
- arch/riscv/include/asm/kvm_gstage.h |  5 ++++-
- arch/riscv/kvm/gstage.c             |  5 ++++-
- arch/riscv/kvm/mmu.c                | 15 +++++++++++++--
- 3 files changed, 21 insertions(+), 4 deletions(-)
+If the guest subsequently writes to that GPA,
+kvm_riscv_mmu_dirty_log_write_fault_fast() sees KVM_GSTAGE_PTE_HOST_WRITABLE
+and makes the G-stage PTE writable under read_lock(&kvm->mmu_lock) without
+marking the backing host folio dirty:
 
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index aaf080ba1b77..0d19ad6d7dfe 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -35,6 +35,9 @@ extern unsigned long kvm_riscv_gstage_max_pgd_levels;
- #define kvm_riscv_gstage_pgd_xbits	2
- #define kvm_riscv_gstage_pgd_size	(1UL << (HGATP_PAGE_SHIFT + kvm_riscv_gstage_pgd_xbits))
- 
-+/* RSW bit 9: the host mapping behind this leaf is writable. */
-+#define KVM_GSTAGE_PTE_HOST_WRITABLE	BIT(9)
-+
- static inline unsigned long kvm_riscv_gstage_gpa_bits(unsigned long pgd_levels)
- {
- 	return (HGATP_PAGE_SHIFT +
-@@ -61,7 +64,7 @@ bool kvm_riscv_gstage_try_update_pte(struct kvm_gstage *gstage, u32 level,
- int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 			      struct kvm_mmu_memory_cache *pcache,
- 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
--			      bool page_rdonly, bool page_exec,
-+			      bool page_rdonly, bool page_exec, bool host_writable,
- 			      struct kvm_gstage_mapping *out_map);
- 
- bool kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index be70607a33ea..d9bfd0c6d5fd 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -207,7 +207,7 @@ static void kvm_riscv_gstage_update_pte_prot(struct kvm_gstage *gstage, u32 leve
- int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 			      struct kvm_mmu_memory_cache *pcache,
- 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
--			      bool page_rdonly, bool page_exec,
-+			      bool page_rdonly, bool page_exec, bool host_writable,
- 			      struct kvm_gstage_mapping *out_map)
- {
- 	bool found_leaf;
-@@ -246,6 +246,9 @@ int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 			prot = PAGE_WRITE;
- 	}
- 
-+	if (host_writable)
-+		prot = __pgprot(pgprot_val(prot) | KVM_GSTAGE_PTE_HOST_WRITABLE);
-+
- 	found_leaf = kvm_riscv_gstage_get_leaf(gstage, gpa, &ptep, &ptep_level);
- 	if (found_leaf) {
- 		/*
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 042d1e3b3547..196cde6c40cd 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -586,6 +586,12 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast(struct kvm *kvm,
- 			break;
- 		}
- 
-+		/* Let the slow path handle host-side write protection and CoW. */
-+		if (!(pte_val(old_pte) & KVM_GSTAGE_PTE_HOST_WRITABLE)) {
-+			ret = false;
-+			break;
-+		}
-+
- 		if (!dirty_marked) {
- 			mark_page_dirty_in_slot(kvm, memslot, gfn);
- 			dirty_marked = true;
-@@ -630,6 +636,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	bool is_hugetlb;
- 	bool unused = false;
- 	bool writable;
-+	bool host_writable;
- 	unsigned int vma_pageshift;
- 	gfn_t gfn = gpa >> PAGE_SHIFT;
- 	struct vm_area_struct *vma;
-@@ -714,6 +721,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	if (is_error_noslot_pfn(hfn))
- 		return -EFAULT;
- 
-+	host_writable = writable;
-+
- 	/*
- 	 * If logging is active then we allow writable pages only
- 	 * for write faults.
-@@ -739,10 +748,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	if (writable) {
- 		mark_page_dirty_in_slot(kvm, memslot, gfn);
- 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
--						vma_pagesize, false, true, out_map);
-+						vma_pagesize, false, true, host_writable,
-+						out_map);
- 	} else {
- 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
--						vma_pagesize, true, true, out_map);
-+						vma_pagesize, true, true, host_writable,
-+						out_map);
- 	}
- 
- 	if (ret)
--- 
-2.52.0
+include/linux/kvm_host.h:kvm_release_faultin_page()
+	/*
+	 * If the page that KVM got from the *primary MMU* is writable, and KVM
+	 * installed or reused a SPTE, mark the page/folio dirty.  Note, this
+	 * may mark a folio dirty even if KVM created a read-only SPTE, e.g. if
+	 * the GFN is write-protected.  Folios can't be safely marked dirty
+	 * outside of mmu_lock as doing so could race with writeback on the
+	 * folio.  As a result, KVM can't mark folios dirty in the fast page
+	 * fault handler, and so KVM must (somewhat) speculatively mark the
+	 * folio dirty if KVM could locklessly make the SPTE writable.
+	 */
 
+Since G-stage unmapping only clears the PTE without propagating dirty state=
+ to
+the host struct page, can host page reclaim later evict the guest-modified
+folio as clean without writeback or swap-out, losing the guest's written da=
+ta?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261017030927.3454=
+54-1-suunj1331@gmail.com?part=3D1
