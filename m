@@ -1,118 +1,153 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4893DAAC3
-	for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 23:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792365147; cv=none; b=V4BP8pk3yXfw1nYZrC1xJjzpfHzy6LmAtXQRcy8dI1mPJQyyOEmeTi1dmNbWANly7zqglhGz5j9T9WYDPBLtrWmpCp/nVVncluSlaMnq/U73beNhkefc17zXSv1visfht1YhvLDyhM0Afz8qcFVmSC2gdSncADz9R8hK2TWGbss=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792365147; c=relaxed/simple;
-	bh=FmRZBhpqLPyc1UGxxy4qJoUHxNedPgUqXqvk3ujJM1A=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DF639E9D6
+	for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 23:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792367621; cv=pass; b=iwz1ZnHNrLkZjk4O02PFgFAgwxAPOw77InCVhv90/I8jkseHM414yA+KjM4sRoFA9l0Bk0dWPYDRGZTNXZnZhAolTUpCc3/E2TUl0IPjzp75Muhhl/tRwt9tH1YPsN+UratbVz9F4YerkOBTaAO/AWz/XoYW1X7Aon39uIdXajw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792367621; c=relaxed/simple;
+	bh=ikcStFONhfs5hokFZ9u0J5DwZzPFduPyuFeHVqSmKog=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XAnJJx+Ykh3n/bbriqPZlFYCxzzC6YSydxd6pm1mtPOM3D1typPiX3Cn1mHhBpfZPlXLhvsS72XAaoI8kqvgw8h1SM4Os/Cvlvm0zbiyAHfu1QTMV0MHGcBfCjtAnpnbLiJZyAPGO4VbPxXKhk0yAvetxQLFe1Kxcbcgr9ickSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULInmk5k; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=Pful3PwyDJZ67DSsFUNXjDR3auRM52vkqHc58eQe3UdypUYksg3c7Z2t+kbUWj/ZZ23A709GvMYkbNDzz2Dd3EDTOVCxG80pRIyQ11sreuoF2fkUvugl3wm4IqVQ3fd8BQezLMdsnmXKtSXkqTbthU2NSNokSAe7eShQmhNsl/M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZDgA8XP; arc=pass smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULInmk5k"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c37b612635bso167233966b.3
-        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 16:12:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZDgA8XP"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a052aff9e9so881283b3a.0
+        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 16:53:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792367620; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KVxkz0hqGd7Wj7cJa13aQMjFseTA9OB3uJSCCOLHeBxWz3EuEhIdhp/+4bpAp9yyoZ
+         ASjhjtWZ7Ik7AMa9ddza7E9g7NLDeumgrsryRmaTt8BJD+FbuNqnlFYhr4U18wg95/zL
+         E879GqduLa0YoIvMND3bpI3c2LMQ9XbYjdwypAp9NBaNFfmp60bqM5Eje3WcWox9VI/t
+         x7LNzwbk1eKVDi88QLz9Cu/DcmarHxAIF62kIN+gEOqvbw3ptiXfuxkvTttZ5/7DfsxV
+         7GiZiIJ6FIO96noodOrpfiURqt6bPiwcDl9FEjgsz1EVfz28aiVND9ZJ07e49cX/G0tI
+         QLwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ikcStFONhfs5hokFZ9u0J5DwZzPFduPyuFeHVqSmKog=;
+        fh=+dgUdqa1VWZ4fOG4X19fhqh0ETplOI1uEg5IaR+0kcQ=;
+        b=Pp/RVLhA6E3FYWm44P3p781Geobtag9ABGwDJ4H27nqyCydsKF4PvTa/QNAZyUzxmL
+         d69fCRHCgTQDPyJ666muTLJGzeEJgkO+BZhDnULDfsAUOR6cNkCDVrIvOkvPWcuZUthz
+         WHQiGYuACY7xL9aUbDTTK7eHwLcLOomQZVqU8W2Esi93wPdcCRfoBL7V3wSfG/pvuBp4
+         VdbD7Fk/Z2DSfOJseQEu2+e7B3odWpbQOTOKDEFN+Ai9Q6ytvGpWWrCJf5cvSGnH95WA
+         U5cZBfTrm+Z9llClEaYJFDsD2XqwHD3gFGHhxNnXUU26/MsnnmjwkjU4l59lOttiLfRb
+         nPlg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1792365143; x=1792969943; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792367620; x=1792972420; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ppuPp4Of6QB0MqdJw5vbPQTFdSm51NtQw86VD0/q+5E=;
-        b=ULInmk5krdrdVnz1hL9loM4bYhVW1ZU8F24+6ODujTZVcHPe4C4kTNd0LjiYGRrVz7
-         b58lzsVriKgtk5oKzBAIUcpiMU2fG0/BPYK7CxTZdjATLSZhGV7V8dL8hmNXsSj0yf/2
-         h0nG8H77/NQj5t+c7moqUZhqbW9RohqX9Guyg=
+        bh=ikcStFONhfs5hokFZ9u0J5DwZzPFduPyuFeHVqSmKog=;
+        b=IZDgA8XPxtSh5SmNztAw9myhG61BrYOUczUp3QyZ3U4M+b/31OnoF0hdpSfL5a9W5k
+         SpPaQA4NCvjY+GWzDVkjQV69DzntUDS4Ha/r+7fZn86vIwu+VmFE45/Ck7dzcO+W0JVn
+         x/My9Pz7dv+WqOzz/StA6xrhvATJoLdO01IcgioEpSnVnJWn8Ogdya6qJUpGNhte2N+Q
+         GBJYQQYzLlELK87jq34hmdd7p69WK4c2g3UfEFkmE/G5EmOvx3d/9U2LaVcqjo1YUb9j
+         XX4j1xByvqrIP//XQuoJ6Uby3mYfgTjlMF2qCNt9T/2+eRhh6IqYmuOcrMis2cTt/Bhr
+         8w6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792365143; x=1792969943;
+        d=1e100.net; s=20260707; t=1792367620; x=1792972420;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=ppuPp4Of6QB0MqdJw5vbPQTFdSm51NtQw86VD0/q+5E=;
-        b=GbInOV1+sdn9eEVDoibLNYnf3rmHuJahTyHa3SG7+ClZ/VRu5IJICVVQPikKFscZFr
-         F/DGC7FpD7+l2zwwzqS/04Q49Jl4nIWyxUu4V8YNgVKddI7wK5kwcb7mmoTh9st4Jik4
-         KfDYLKJ2D4vcUZArsvcbczp6RxxSGTqT1UtjkIdAh2FyvBgq10BaqMZtFqFiXp5nI1iK
-         FiIGPB+L/NPGqzPrK/1AiQ7NpbOwJOduO2hqMa1KbbioLCgiH2QY6QC+QNrSztQVY3VQ
-         Cfc0XwcnEaCY66oFbe21j0sxG14T+JKqr2ULKeC9pBY1nVaBmim321LaNhZ8YMo9wSjf
-         vslQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxr+S9MlmQSDiKxdfldx5bFq33WovaerSTWFtyIZesD6V8CGDKPF8/l4bKbeFguox+NHjg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLX9+DZPfLQkwKbgfp/Hes4oejL84p3aHoGBCHlEv0x2r0p53Gm
-	AFTws0BgLlWWsD187WvSYQ/eWXeFBi4DG81rF0WJc5NkYeCJ0PWtaM39daJqnxZz+8ayAVfsYM8
-	6L03r/7M=
-X-Gm-Gg: AYBFou0AwilbrJmi1D2gTE0V+OjH563hUZhKxcncdPDEm4akuCMnkrrKkPFS4Hk+y1y
-	9udv7S+1Qo+YHfRrRA+ylhKrvyJvv/oeQunZzzcJMpeyKckHd46ua0/gO+frn6ZulYxUA0362md
-	GvXqhBwzZs2qi4WIW6NpG7oTxf8s+sw80EdvuUf/VAL00YJ1ujlRXknw7M1dC0oJ1NPr4eIDUuX
-	d0o+otiw9/ftvGAwReUh489ZPXGu/nojNTgixgQho/zSMEEGcGvvgp8h5OrNjDFg8BdQuNPJk1m
-	JmcitE7n/19JKV9+I2mXoISmvYMAhxA14eCxNPUVEOqc0CNMl4Or9lonY1uZfNvYNGb4+yOFcds
-	+MgmamOC82LFaMHfp1OZzUfXC96/EGbRsTlAXZdmDSOVJ1hpcDvO473LLsRcoBIcqpLtKREg8HR
-	q0xpr49y4QYxb6D/cufI+meidvEjz3OmZkRev6k7kNA7CdDgno/829w4USyi/xouLvUkbThrPq5
-	oiguZCedNZHnvyBGqZC6IBfGt1JXixLYqOSzI9x+kuXXyJd
-X-Received: by 2002:a17:907:930e:b0:c40:eb1a:4c8b with SMTP id a640c23a62f3a-c419fded7ccmr381856266b.29.1792365143132;
-        Sun, 18 Oct 2026 16:12:23 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c409239b3acsm307600166b.86.2026.10.18.16.12.22
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Oct 2026 16:12:22 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c37b612635bso167233366b.3
-        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 16:12:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxgKmMZ0wgVLute2b22sxTFiiR+cYr2HJloOXrcRVRW5uDQf6jDzA+Ak22Xl5hvEd4pbtM=@vger.kernel.org
-X-Received: by 2002:a17:907:9494:b0:c3f:7270:1093 with SMTP id
- a640c23a62f3a-c419f706c4cmr443663566b.26.1792365142168; Sun, 18 Oct 2026
- 16:12:22 -0700 (PDT)
+        bh=ikcStFONhfs5hokFZ9u0J5DwZzPFduPyuFeHVqSmKog=;
+        b=tpOliwAnEfLVVSo25c+waearizkYZTv83ywSoBtO35gK3hVthWxGneFKDqU3PjOKyY
+         LCAc+NevcSscmnZ2X12AJX6wDaiTHo4C3zYcxaz7YYjIVhcV93D6slA71O35YDNJ84l+
+         FE2/Z3PxoPgyTjkCwleDsGKJJJka/+gxM+TybDkfO7uR4ZuRkA6lY5TEONCtmamtZXHm
+         ueiA3C3LRsIkeZuFEEbPOxCkDyKZDysrA/Lq57WhWmDNKSbvrXEG8mF2M64man0dv0lf
+         +jprbiHfRink5zvTnByuMyAL28rbZ4Wom2IZMczzXh5msIaAW8q8W0NOEvduCK3oEVt0
+         Sabg==
+X-Forwarded-Encrypted: i=1; AKwUvBy3XoQKoMtIDZOFrjf8WmY3PDeKCElyCohkiiOuJI4aawPPeeLP0BHfFw4Rc1cRRqEuRB4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKAkyamZsgNAk5HHr8oHOFO5t+89CiQUT6vfTyPUkt+1vo16C0r
+	GP0OPfxaR7NW1dteE7O9bUaeBnqjA1JltxL47VD5BRXu7eFe0jJQfytgejzUhdMP2tY9eWJXpx4
+	mmtuvUSmZrebda6LzBTNTTEqMsVECXag=
+X-Gm-Gg: AYBFou3Tfqls4hVrFL0q6IrQ8csMyRye5CNWuQuuunZcql/bFBL/6xE3AwUA5c3BBSi
+	NhW8Ng4MMcAH8bLCtab7xGXcRKtDwaBMw2ap6zYPl7OEsdA+HPKJhDRgZVGWyDDbitxoT/7mukJ
+	G1z9or731W8cwHzwyTdBj2WzRVJlkMXS7fzeOgb9sbUKWZDUonyTSwh1luiApdW2jbzEZuzWnBB
+	KdNisZp1wpZitlP4tMADfGP8BhwaNp30pFm7AUELqKraclmgZvtsTEAzumJt2dXXWongge+EAS+
+	U099PfZEhmsXN8take9L7CTs2Juuz/wDCFnl6nDSDZa8NYYJxZ+wqUdz2ySmBSe+CYeLukSN+4N
+	tR4094M33SxGWRsiXrQ==
+X-Received: by 2002:a05:6a00:1806:b0:892:597f:37d8 with SMTP id
+ d2e1a72fcca58-8a04ba18454mr4779902b3a.15.1792367619719; Sun, 18 Oct 2026
+ 16:53:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
- <20261018204838.4080b238@pumpkin> <20261018175347-mutt-send-email-mst@kernel.org>
- <CAHk-=wjneFJ7XmZ6ux-LsHq4apDgANcKfERztmAG9sGVY_TxAg@mail.gmail.com>
-In-Reply-To: <CAHk-=wjneFJ7XmZ6ux-LsHq4apDgANcKfERztmAG9sGVY_TxAg@mail.gmail.com>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Sun, 18 Oct 2026 13:12:05 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wjZiwN8=PGEVm19QO2SiO29aA1E459+5mVQ0nmNoqOpjA@mail.gmail.com>
-X-Gm-Features: AclHuK8ibgIQ7ZzCJT6T1XNCTCPJUVy2j1kAdMYMCDJTCT4gsOXcLC7aX43RNik
-Message-ID: <CAHk-=wjZiwN8=PGEVm19QO2SiO29aA1E459+5mVQ0nmNoqOpjA@mail.gmail.com>
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: David Laight <david.laight.linux@gmail.com>, Haoran Wang <haoranwangsec@gmail.com>, 
-	jasowangio@gmail.com, KVM list <kvm@vger.kernel.org>, virtualization@lists.linux.dev, 
-	Netdev <netdev@vger.kernel.org>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Security Officers <security@kernel.org>
+References: <20261015145053.3664509-1-jiri@resnulli.us> <20261016234354.GA664420@nvidia.com>
+ <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
+ <20261017203407.GM13920@nvidia.com> <atPgqROZZxnihYfC@kernel.org> <20261017231007.GP13920@nvidia.com>
+In-Reply-To: <20261017231007.GP13920@nvidia.com>
+From: Dionna Glaze <drdeeglaze@gmail.com>
+Date: Sun, 18 Oct 2026 16:53:28 -0700
+X-Gm-Features: AclHuK9GuI1sFp98b1K0khmGUju9GL5ycOOU8Mt4euoyLz8UHj6wifrtGgAMHK0
+Message-ID: <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX support
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, david.quigley@intel.com, 
+	lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+	cedric.xing@intel.com, sameo@meta.com, James.Bottomley@hansenpartnership.com, 
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com, 
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 18 Oct 2026 at 12:06, Linus Torvalds
-<torvalds@linuxfoundation.org> wrote:
+> On Sat, Oct 17, 2026 at 11:55:05PM +0300, Jarkko Sakkinen wrote:
+> > I wish I had a better picture what is going on.
+
+Me too. I've spent my Sunday with Claude trying to build some
+understanding of all this stuff, and put together a static site about
+this series.
+
+https://deeglaze.github.io/scratch/ctlv-site/index.html
+
+It includes a review that I've personally walked through to ensure it
+wasn't off base, but of course we're all fallible here.
+I haven't decided to email the review comments to the list yet because
+it's pretty thorough for something posted here as an RFC.
+
+I think something to be really careful about with this series is how
+it's managing kernel memory.
+
+* https://deeglaze.github.io/scratch/ctlv-site/review-02.html#reply-7
+* https://deeglaze.github.io/scratch/ctlv-site/review-04.html#reply-27
+* https://deeglaze.github.io/scratch/ctlv-site/review-07.html#reply-7
+* https://deeglaze.github.io/scratch/ctlv-site/review-11.html#reply-8
+* https://deeglaze.github.io/scratch/ctlv-site/review-16.html#reply-30
+* https://deeglaze.github.io/scratch/ctlv-site/review-18.html#reply-19
+
+Something I and some others dislike about IMA is the unbounded log. I
+don't know how many stalled proposals there have been so far to permit
+some model of "snapshot/endorse and truncate" to allow a remote
+attestation verification service to store existing logs in object
+storage, measure the reference and/or trusted signature that the log
+was "good", and then drop everything in the log prior to the
+pointer/endorsement event, but we have a chance to start with the
+right model here. I liked Tushar's talk in 2024
+https://www.youtube.com/watch?v=5cXDrIx8Qgo
+IMA carries its log through kexec and this log doesn't, which is a
+hazard to later attestations that don't have some other out of band
+protocol to associate its boot instance with some off-box cache of the
+rest of the log.
+
 >
-> That's a separate bug, and you really shouldn't use __get_user to work around it just because it doesn't check.
+> Currently we don't have an intention to flow TPM command packets
+> through this. Anything would be a high level operation like 'extend'
 >
-> You should use pagefault_disable() around the access. And if there is still a sleep_on() complaint, that should be fixed.
 
-Ok, no longer driving around and checked: using pagefault_disable()
-around the get_user() should indeed fix the warning, because
-get_user() uses 'might_fault()', which doesn't complain if
-pagefault_disabled() is set.
-
-Admittedly the actual fault handler uses a different check: it uses
-faulthandler_disabled(), which also checks for "in_atomic()", which is
-why that __get_user() case just silently happened to work (badly).
-
-But that check is historical - but actively wrong - the added
-in_atomic() check in faulthandler_disabled() also checks for disabled
-preemption, which is one of those "it's not reliable" things (because
-the preemption count depends on whether preemption is enabled at
-all!).
-
-So no. There are exactly _zero_ valid reasons to use __get_user() and
-friends. We really need to just get rid of that broken garbage. All it
-does now is open up potential security holes and allow people to avoid
-warnings for actively buggy code.
-
-               Linus
+If you're not intercepting all extends through other interfaces to the
+registers (e.g., /dev/tpmrm0), then it needs to be clearer in the
+documentation that users not using the interface will break users of
+the interface when they both target overlapping sets of registers.
