@@ -1,69 +1,69 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12E83EAC68
-	for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 20:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0594CDA37
+	for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 21:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792355672; cv=none; b=XwOMRNwNh5dsWhC2aIb5fi8iNvaI4c+/XNEYVhIU58P4OxUS69Y8QDIgQSHAapKbl21rGY5GbyzVQc4j0k+JpLjvnwTPowAZMFODRa4b9ykmmnYBAyXIzoxVU3fhe4P9gVpR11Bvl9HXO0UJ6MtdjdRVAh0DCBaTF7iTFx1ZqxA=
+	t=1792357927; cv=none; b=IZXwx/jlWjjyi2ifYXKnXtpR7LhSXrHDMQfQCZrKgAgZNSn2UgG7yBl1d6dsnvNNLd8b2O+V/4mNpIWDUa2cXe/qp0/nCcpeybjR7G6beGdmHV3KmmBY1Ix05vBhcAE924HOHxtxr/RGTUf6+nV5xhUBCc1HCtCDd9K3pZtpSBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792355672; c=relaxed/simple;
-	bh=mGtMxGvGMAPxZX+KuCd0vFb++3GQYItv+c8z4egM++c=;
+	s=arc-20240116; t=1792357927; c=relaxed/simple;
+	bh=+AhBVTr7AVwgOwcBqSG3YDlgmZAw3nrSuWm0g675vUE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TmrHHPiFbmJwm4s6oE1MUTgU1IKtg7Xh7fFU2Ac+iwVQ+x4sv3DuAXHAcfNqTTQ2nrPHESDcdO1/uzbILF0xNmL/olP/1LlkXSbo/jnmvBoqXMe5eaxq/npa3qmQVnIERbX/MW54SZI17afSMtFhkqnrPZzCQ2rtp+sR0VhDsbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqwLDKu5; arc=none smtp.client-ip=209.85.208.45
+	 To:Cc:Content-Type; b=Sra1JIC+F31cjfcgo5GsXggBXCiAxbj40S/2bC+JWlGJkk11VOA9HfgYRcuI/NS1uGrwKZZjLniC6g51Jih3/qiALUHjjUrYsAbSQtAOQr1wiasw/IJceWuYGbJG77EJpfHWmJSEVLjgs0yPoGz77bNalF+LYcUcLktY/fgdsmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9QHRNsv; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqwLDKu5"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso1635534a12.0
-        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 13:34:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9QHRNsv"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2dcbcc546fso154175766b.3
+        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 14:12:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1792355669; x=1792960469; darn=vger.kernel.org;
+        d=linuxfoundation.org; s=google; t=1792357924; x=1792962724; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LcZudtVZGXqPCpJjVd+PjoGGou1YwE9FLeXdn5NeRV4=;
-        b=gqwLDKu5s9gordUFCi6XC70nosY/hZjBZv6Qb8r48rLLHMiDWFg/swEdylGSGbWspM
-         uU+2cPaD8Ciz9MwAuWxhkoE1LjLgrtgsp5EGEtw5FFerYl1WGfU5WBn2tvDkb8QkSGs5
-         FjQRhQrl5cEPlT327Je2O5ZAphnx0itGXUk3s=
+        bh=FhrOh9ObXddFM4Jcmg5gPf4RqgcAG0wBDdYKHUigitI=;
+        b=A9QHRNsvBjxSbR0XifLTZdoU4eHYrzTuXqU3z2XE5a8J0q2zJe/k6eZnjR2gVmTK9C
+         +h3OZEagdX9eT8Yvq9FQREa2ExyzIYuwGciXD2NR+lXArTDQGoAzjJQiVoyYtjL1raT4
+         RnbMr4LfpYjFIIwxpEVJHGkR0BQuU/AcPI3Hk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792355669; x=1792960469;
+        d=1e100.net; s=20260707; t=1792357924; x=1792962724;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=LcZudtVZGXqPCpJjVd+PjoGGou1YwE9FLeXdn5NeRV4=;
-        b=jcD7tqOp4guIk+nirNfM1CWxd9brXQr/jdzvXF7Dqd5moAlCEBcYwWujTyKMiNNrMA
-         kKU8g0917/dXOd8KDPYALcknfoci3D+WNvyKEw+oxGUKp7rXRUO9oFoHKEPnKmQ6B6UQ
-         hLdR/DPXrQOul5mhFG9YilZiL1gkDNQdGl84hQMOjEiy3ZNYrTzXMc8OT+IMwnomaIKG
-         lDDz6xSYn+WWurImCjjGoeBBLceNQ0+Laa4TcGoAOje3wZSogztebFxRk9lY/p62wq+D
-         FthVXh2TfxY6IRqPOpG19YDV78r1qzgOk/9V767tY0AKBuxEVhC/LtR/QlYzH6pY4RCp
-         EYlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzc7lQ277WyHb8C+o/J0tUd4KPYUOolOjUb67OpH6gxU71maCNiyd/jITI3VzAZrLOfFsU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK7eEUSKsPwlfAvyg6E5s7pdookG13vf2j7ysHYipUX+YwJHVur
-	aq/fpl4TroYZwz63TpbyUoCNIX4IsevgpD5dNrGeCqn0Ro9R5Dw7Q9lzd8vJc7BwLuBzteGz/9I
-	O3gzOnoc=
-X-Gm-Gg: AYBFou27p1brhE0Myn4jJhrmaE4mv5Y8IafndaP4+JFonAT/J0PKkIES6VI7VR7simS
-	M6GOyLbJLk3W3/wL7L1o1bYCoJGj8+6Rz1VlXXuv1UBH8/hXTaxIgCblVmPZRAwTiVrtmFc5iqA
-	x1L0hWMMuIJHaLTSW+d1iZkAxqe+iLC8Lfe5I8y5+9meFKwqR9yIzond4hvOAWYMkAsC5bmlM+z
-	jlZEqsy7Gykc6ENKO863FxUiF4WyxpVjiP6/1thP5/L/ewJno/i3s5ybsjyzFB5kAna1ud0joUz
-	k+gvwvJwrB7DvScnorYyHyjHbpHbTYygsLxhgynQldKVzBPDQ93LCln9fKlSuLPqtWpIGJtgH2Q
-	WaXCYzSh+xQjdYbNxWEXogOIPb8p0mw7Mzhs3macTn4xjPQ4UxCs9jHy4xCggO5Lk+co8YsyBnr
-	C1hdCIGHlQEL8i7iTi7eGzFjxlG9uflYh2Z20bXxerk9/ZA0+dbHC+z933lucD38d3HnSET1LPS
-	v2CtSZ0RAiWqqNLnA3usYV+R8Fy6beXE9CCv3jxCqT1syk=
-X-Received: by 2002:a17:907:3f1f:b0:c2e:4e08:19ab with SMTP id a640c23a62f3a-c419df3e373mr393452066b.16.1792355669186;
-        Sun, 18 Oct 2026 13:34:29 -0700 (PDT)
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com. [209.85.218.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40919bcae3sm295062066b.57.2026.10.18.13.34.28
+        bh=FhrOh9ObXddFM4Jcmg5gPf4RqgcAG0wBDdYKHUigitI=;
+        b=XBJrMuFTd6BB4roCZt5ADEpI8Qm1iNafKCjgnd/nQP+KReXQm3Ekt/0HJtSCOSohGw
+         0SOtT5uJRPZ1yfXlTkl9iDfIRyxS1P3heoOYAiZKCgtioqVjjluRr1A8tz4BhERY63XE
+         MRGNDqv6jNA7E+ymyqoc2YoFR8ba73uafKVS792o/VVsRjG/EnBQZk+opC9hi5jCe00h
+         cab32WY+4x55HukacvV79ClN5jQRzB4XL+Vf7jgM4eOVkKJklOQN16Yw6ID9+QFTMVFB
+         sZLxtQAlkvc9Q02WfCfIu+q7pEqIoY08SEmIoD8FxVTHWa1ueR933xQGeBFrcF/r6+C3
+         +mNQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzvz/hqFWc8YhSUOMahppkGbbDiY4gOBelbbB2UfKkKdQrJu2T1nvJLfRLJwVxf1nQ9ABA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKnoOzEgD+hf9F6c8rrL59wFEgj7RgT21yAdfM0nOOZR0YnTZ+r
+	TLqzdQRDZGwWL/rsbs1DkVB8CBVYHBfR5U50dkKyqkRLEPIK9sjffBrZ3upEypTFxY2wVSVLY6I
+	ZeS3/+/M=
+X-Gm-Gg: AYBFou3QoU/v2n6ZEpx+Cq8teMEkCdWD3BaPfQNZ2J1RBOGy6Rwe6ehpOEOXbGhRBem
+	IbvNzFywCG336i3fumT6Lu1Jdaoi/8jQ+22rGegVnalkVi9Kz800p/Zhi03sE5avNEBfWTRfCdY
+	TV+sFhI68d1bEmH5xmfVVuG0L+fOzsDd8uhPkGEfJ4/vDyHkbinnUTtjse41WBy/40B26mKQPI7
+	Hea1s9fp93Rq7k34dwhV8P8LqAvmk1k93a93P1HzQu3wzYFkCZ6nSWhd7wpNHdBJZBy8ObMywbZ
+	1Li/s3aLytAx6zryeXdjf0S37jfRh0p81BYvPBQaVQSCeEWC2e1b7xecEXU14nmB+0SpoAccaRq
+	LxLG8etgQ76Pym0iFzVdmL2HDS44THqG1pzFFCF18zRPEdPZ9Pbt5nMwsbNSBw4nRf96Xh5lnEq
+	i5Q+7xL/qcsc95Qlvn6phGcqgZXAy9C2tdD4r2AT+4+5+bceA18fIeJ3PSThn9dKwTX3Xp5X1up
+	nrszSDzNAIR/kEjrA3mzyAFvD8A3hWF6GOxfQtZZtMAdfM=
+X-Received: by 2002:a17:907:1c8f:b0:c29:f5d8:9c75 with SMTP id a640c23a62f3a-c419f7083d5mr355799966b.36.1792357924128;
+        Sun, 18 Oct 2026 14:12:04 -0700 (PDT)
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com. [209.85.208.49])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40912ca52esm303490966b.38.2026.10.18.14.12.02
         for <kvm@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Oct 2026 13:34:28 -0700 (PDT)
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2e8c710847so168431766b.0
-        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 13:34:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByArDhR4rITiwgnoR9fcC3rXiOdvPaKLjn58Wov6+VjvO5osad8yB2DAfWTpYHilmsJDWU=@vger.kernel.org
-X-Received: by 2002:a17:907:6d0b:b0:c26:1649:47ad with SMTP id
- a640c23a62f3a-c419faf81bemr359351966b.35.1792355668398; Sun, 18 Oct 2026
- 13:34:28 -0700 (PDT)
+        Sun, 18 Oct 2026 14:12:03 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b1aa2848d2so2145746a12.3
+        for <kvm@vger.kernel.org>; Sun, 18 Oct 2026 14:12:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw5MkY6CapeJFyz34LbUcePkmZBQnnspB9k6Q4PtDi9Y8uurLJtD7swiR4CSUciPu07ivM=@vger.kernel.org
+X-Received: by 2002:a17:907:86aa:b0:c31:e958:408c with SMTP id
+ a640c23a62f3a-c419f803714mr362945266b.38.1792357922492; Sun, 18 Oct 2026
+ 14:12:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,39 +71,121 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261018152358-mutt-send-email-mst@kernel.org>
+ <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+In-Reply-To: <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
 From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Sun, 18 Oct 2026 10:34:12 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
-X-Gm-Features: AclHuK98aalKW5kTezoePJe0elXfnFi_e6X010Sl6ShLR7WlXp_TWSCo1UYtPLA
-Message-ID: <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+Date: Sun, 18 Oct 2026 11:11:44 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wjxOy24XQnSSGimnHbp9mVjUETBE5HrS+W9E8mRrtxBLw@mail.gmail.com>
+X-Gm-Features: AclHuK-BuQ_t8DyWOTykYSUp3UkUFx2INkZ9fVII4LHbFyz6TFQuNw2DbQZKHk4
+Message-ID: <CAHk-=wjxOy24XQnSSGimnHbp9mVjUETBE5HrS+W9E8mRrtxBLw@mail.gmail.com>
 Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
  memory via vDPA passthrough
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: Haoran Wang <haoranwangsec@gmail.com>, jasowangio@gmail.com, kvm@vger.kernel.org, 
 	virtualization@lists.linux.dev, netdev@vger.kernel.org, eperezma@redhat.com, 
 	linux-kernel@vger.kernel.org, security@kernel.org
+Content-Type: multipart/mixed; boundary="000000000000482e69065e23d9f5"
+
+--000000000000482e69065e23d9f5
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 18 Oct 2026 at 09:26, Michael S. Tsirkin <mst@redhat.com> wrote:
+On Sun, 18 Oct 2026 at 10:34, Linus Torvalds
+<torvalds@linuxfoundation.org> wrote:
 >
-> +               __virtio16 __user *uaddr = ivec.iov.iovec[0].iov_base;
-> +
-> +               if (!access_ok(uaddr, sizeof(*p)))
-> +                       return -EFAULT;
-> +               ret = __get_user(tmp, uaddr);
+> And __get_user() together with access_ok() is actively wrong and
+> stupid. It's slower, bigger, and more bug-prone than just using
+> "get_user()".
 
-You should never use __get_user() in the first place. It is almost
-always just a bug.
+Btw, if you have *multiple* accesses to the same structure, that was a
+historical reason to use access_ok() with multiple __get_user() calls.
 
-And __get_user() together with access_ok() is actively wrong and
-stupid. It's slower, bigger, and more bug-prone than just using
-"get_user()".
+But it's not a useful pattern today - and hasn't been for years -
+because the real cost is not the access_ok(), but the stac/clac that
+surrounds __get_user() on modern hardware.
 
-The *only* reason ever to use __get_user() is in very very iffy code
-that might use a kernel pointer and doesn't want the access_ok() code.
+If performance is really crticial, the new "unsafe_get_user()" model
+is the way to go.
 
-Or old legacy code from the last century when __get_user() was faster
-and was inlined.
+Here's an UNTESTED example patch of how to do a conversion. It
+generates much better code than __get_user() ever did. That patch
+looks good to me, but again: I didn't actually *test* it (and the
+reason this signal.c code has never been updated to the modern pattern
+is that it really doesn't matter for performance - I decided to use it
+as an example not because it matters, but because it's a good example
+code-sequence for the legacy model conversion).
 
-               Linus
+Somebody should test it.
+
+                     Linus
+
+--000000000000482e69065e23d9f5
+Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
+Content-Disposition: attachment; filename="patch.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mveblmwl0>
+X-Attachment-Id: f_mveblmwl0
+
+IGtlcm5lbC9zaWduYWwuYyB8IDU2ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzAgaW5zZXJ0aW9ucygrKSwg
+MjYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEva2VybmVsL3NpZ25hbC5jIGIva2VybmVsL3Np
+Z25hbC5jCmluZGV4IGQzMWViY2I2ZWQ0ZC4uMGZkMTI5NmU5MTJiIDEwMDY0NAotLS0gYS9rZXJu
+ZWwvc2lnbmFsLmMKKysrIGIva2VybmVsL3NpZ25hbC5jCkBAIC00Nzc2LDEyICs0Nzc2LDEyIEBA
+IFNZU0NBTExfREVGSU5FMyhzaWdhY3Rpb24sIGludCwgc2lnLAogCiAJaWYgKGFjdCkgewogCQlv
+bGRfc2lnc2V0X3QgbWFzazsKLQkJaWYgKCFhY2Nlc3Nfb2soYWN0LCBzaXplb2YoKmFjdCkpIHx8
+Ci0JCSAgICBfX2dldF91c2VyKG5ld19rYS5zYS5zYV9oYW5kbGVyLCAmYWN0LT5zYV9oYW5kbGVy
+KSB8fAotCQkgICAgX19nZXRfdXNlcihuZXdfa2Euc2Euc2FfcmVzdG9yZXIsICZhY3QtPnNhX3Jl
+c3RvcmVyKSB8fAotCQkgICAgX19nZXRfdXNlcihuZXdfa2Euc2Euc2FfZmxhZ3MsICZhY3QtPnNh
+X2ZsYWdzKSB8fAotCQkgICAgX19nZXRfdXNlcihtYXNrLCAmYWN0LT5zYV9tYXNrKSkKLQkJCXJl
+dHVybiAtRUZBVUxUOworCQlzY29wZWRfdXNlcl9yZWFkX2FjY2VzcyhhY3QsIEVmYXVsdCkgewor
+CQkJdW5zYWZlX2dldF91c2VyKG5ld19rYS5zYS5zYV9oYW5kbGVyLCAmYWN0LT5zYV9oYW5kbGVy
+LCBFZmF1bHQpOworCQkJdW5zYWZlX2dldF91c2VyKG5ld19rYS5zYS5zYV9yZXN0b3JlciwgJmFj
+dC0+c2FfcmVzdG9yZXIsIEVmYXVsdCk7CisJCQl1bnNhZmVfZ2V0X3VzZXIobmV3X2thLnNhLnNh
+X2ZsYWdzLCAmYWN0LT5zYV9mbGFncywgRWZhdWx0KTsKKwkJCXVuc2FmZV9nZXRfdXNlcihtYXNr
+LCAmYWN0LT5zYV9tYXNrLCBFZmF1bHQpOworCQl9CiAjaWZkZWYgX19BUkNIX0hBU19LQV9SRVNU
+T1JFUgogCQluZXdfa2Eua2FfcmVzdG9yZXIgPSBOVUxMOwogI2VuZGlmCkBAIC00NzkxLDE1ICs0
+NzkxLDE4IEBAIFNZU0NBTExfREVGSU5FMyhzaWdhY3Rpb24sIGludCwgc2lnLAogCXJldCA9IGRv
+X3NpZ2FjdGlvbihzaWcsIGFjdCA/ICZuZXdfa2EgOiBOVUxMLCBvYWN0ID8gJm9sZF9rYSA6IE5V
+TEwpOwogCiAJaWYgKCFyZXQgJiYgb2FjdCkgewotCQlpZiAoIWFjY2Vzc19vayhvYWN0LCBzaXpl
+b2YoKm9hY3QpKSB8fAotCQkgICAgX19wdXRfdXNlcihvbGRfa2Euc2Euc2FfaGFuZGxlciwgJm9h
+Y3QtPnNhX2hhbmRsZXIpIHx8Ci0JCSAgICBfX3B1dF91c2VyKG9sZF9rYS5zYS5zYV9yZXN0b3Jl
+ciwgJm9hY3QtPnNhX3Jlc3RvcmVyKSB8fAotCQkgICAgX19wdXRfdXNlcihvbGRfa2Euc2Euc2Ff
+ZmxhZ3MsICZvYWN0LT5zYV9mbGFncykgfHwKLQkJICAgIF9fcHV0X3VzZXIob2xkX2thLnNhLnNh
+X21hc2suc2lnWzBdLCAmb2FjdC0+c2FfbWFzaykpCi0JCQlyZXR1cm4gLUVGQVVMVDsKKwkJc2Nv
+cGVkX3VzZXJfd3JpdGVfYWNjZXNzKGFjdCwgRWZhdWx0KSB7CisJCQl1bnNhZmVfcHV0X3VzZXIo
+b2xkX2thLnNhLnNhX2hhbmRsZXIsICZvYWN0LT5zYV9oYW5kbGVyLCBFZmF1bHQpOworCQkJdW5z
+YWZlX3B1dF91c2VyKG9sZF9rYS5zYS5zYV9yZXN0b3JlciwgJm9hY3QtPnNhX3Jlc3RvcmVyLCBF
+ZmF1bHQpOworCQkJdW5zYWZlX3B1dF91c2VyKG9sZF9rYS5zYS5zYV9mbGFncywgJm9hY3QtPnNh
+X2ZsYWdzLCBFZmF1bHQpOworCQkJdW5zYWZlX3B1dF91c2VyKG9sZF9rYS5zYS5zYV9tYXNrLnNp
+Z1swXSwgJm9hY3QtPnNhX21hc2ssIEVmYXVsdCk7CisJCX0KIAl9CiAKIAlyZXR1cm4gcmV0Owor
+CitFZmF1bHQ6CisJcmV0dXJuIC1FRkFVTFQ7CiB9CiAjZW5kaWYKICNpZmRlZiBDT05GSUdfQ09N
+UEFUX09MRF9TSUdBQ1RJT04KQEAgLTQ4MTMsMTIgKzQ4MTYsMTIgQEAgQ09NUEFUX1NZU0NBTExf
+REVGSU5FMyhzaWdhY3Rpb24sIGludCwgc2lnLAogCWNvbXBhdF91cHRyX3QgaGFuZGxlciwgcmVz
+dG9yZXI7CiAKIAlpZiAoYWN0KSB7Ci0JCWlmICghYWNjZXNzX29rKGFjdCwgc2l6ZW9mKCphY3Qp
+KSB8fAotCQkgICAgX19nZXRfdXNlcihoYW5kbGVyLCAmYWN0LT5zYV9oYW5kbGVyKSB8fAotCQkg
+ICAgX19nZXRfdXNlcihyZXN0b3JlciwgJmFjdC0+c2FfcmVzdG9yZXIpIHx8Ci0JCSAgICBfX2dl
+dF91c2VyKG5ld19rYS5zYS5zYV9mbGFncywgJmFjdC0+c2FfZmxhZ3MpIHx8Ci0JCSAgICBfX2dl
+dF91c2VyKG1hc2ssICZhY3QtPnNhX21hc2spKQotCQkJcmV0dXJuIC1FRkFVTFQ7CisJCXNjb3Bl
+ZF91c2VyX3JlYWRfYWNjZXNzKGFjdCwgRWZhdWx0KSB7CisJCQl1bnNhZmVfZ2V0X3VzZXIoaGFu
+ZGxlciwgJmFjdC0+c2FfaGFuZGxlciwgRWZhdWx0KTsKKwkJCXVuc2FmZV9nZXRfdXNlcihyZXN0
+b3JlciwgJmFjdC0+c2FfcmVzdG9yZXIsIEVmYXVsdCk7CisJCQl1bnNhZmVfZ2V0X3VzZXIobmV3
+X2thLnNhLnNhX2ZsYWdzLCAmYWN0LT5zYV9mbGFncywgRWZhdWx0KTsKKwkJCXVuc2FmZV9nZXRf
+dXNlcihtYXNrLCAmYWN0LT5zYV9tYXNrLCBFZmF1bHQpOworCQl9CiAKICNpZmRlZiBfX0FSQ0hf
+SEFTX0tBX1JFU1RPUkVSCiAJCW5ld19rYS5rYV9yZXN0b3JlciA9IE5VTEw7CkBAIC00ODMxLDE2
+ICs0ODM0LDE3IEBAIENPTVBBVF9TWVNDQUxMX0RFRklORTMoc2lnYWN0aW9uLCBpbnQsIHNpZywK
+IAlyZXQgPSBkb19zaWdhY3Rpb24oc2lnLCBhY3QgPyAmbmV3X2thIDogTlVMTCwgb2FjdCA/ICZv
+bGRfa2EgOiBOVUxMKTsKIAogCWlmICghcmV0ICYmIG9hY3QpIHsKLQkJaWYgKCFhY2Nlc3Nfb2so
+b2FjdCwgc2l6ZW9mKCpvYWN0KSkgfHwKLQkJICAgIF9fcHV0X3VzZXIocHRyX3RvX2NvbXBhdChv
+bGRfa2Euc2Euc2FfaGFuZGxlciksCi0JCQkgICAgICAgJm9hY3QtPnNhX2hhbmRsZXIpIHx8Ci0J
+CSAgICBfX3B1dF91c2VyKHB0cl90b19jb21wYXQob2xkX2thLnNhLnNhX3Jlc3RvcmVyKSwKLQkJ
+CSAgICAgICAmb2FjdC0+c2FfcmVzdG9yZXIpIHx8Ci0JCSAgICBfX3B1dF91c2VyKG9sZF9rYS5z
+YS5zYV9mbGFncywgJm9hY3QtPnNhX2ZsYWdzKSB8fAotCQkgICAgX19wdXRfdXNlcihvbGRfa2Eu
+c2Euc2FfbWFzay5zaWdbMF0sICZvYWN0LT5zYV9tYXNrKSkKLQkJCXJldHVybiAtRUZBVUxUOwor
+CQlzY29wZWRfdXNlcl93cml0ZV9hY2Nlc3MoYWN0LCBFZmF1bHQpIHsKKwkJCXVuc2FmZV9wdXRf
+dXNlcihwdHJfdG9fY29tcGF0KG9sZF9rYS5zYS5zYV9oYW5kbGVyKSwgJm9hY3QtPnNhX2hhbmRs
+ZXIsIEVmYXVsdCk7CisJCQl1bnNhZmVfcHV0X3VzZXIocHRyX3RvX2NvbXBhdChvbGRfa2Euc2Eu
+c2FfcmVzdG9yZXIpLCAmb2FjdC0+c2FfcmVzdG9yZXIsIEVmYXVsdCk7CisJCQl1bnNhZmVfcHV0
+X3VzZXIob2xkX2thLnNhLnNhX2ZsYWdzLCAmb2FjdC0+c2FfZmxhZ3MsIEVmYXVsdCk7CisJCQl1
+bnNhZmVfcHV0X3VzZXIob2xkX2thLnNhLnNhX21hc2suc2lnWzBdLCAmb2FjdC0+c2FfbWFzaywg
+RWZhdWx0KTsKKwkJfQogCX0KIAlyZXR1cm4gcmV0OworCitFZmF1bHQ6CisJcmV0dXJuIC1FRkFV
+TFQ7CiB9CiAjZW5kaWYKIAo=
+--000000000000482e69065e23d9f5--
