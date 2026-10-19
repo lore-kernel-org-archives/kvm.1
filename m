@@ -1,80 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792439310;
-	b=OH+Y7cGQFBYoUEmrixWwJHhOpGuBE2B6nk23ItAvSzKW2XeNoSnGYTX+NhVit8aAjHNE
-	 FKSpRkqJf0bEoM1t8mw6ZWJpvTVxm4agDjU5o4z4EtK7pYT774ewp0EBVEvNZXawU8w4Z
-	 2NhUGnOSnxmk1t1CzdhmsJ1z8zO9E2F1Rypoqz1wXXYlOpv37x3Oan+OqeYMiUuaXafHr
-	 n78n8kyJjj2iCFNpm7FR1fbmFwo1FCYTfhiN6SZ9NmcIzWK37WTZvmpSXthGAiEke+EAH
-	 Vq/S5qcZi1XMz07R5FhVwDU40egmOgcud8qUEdCS1WcgVxW8wX0kkVBbqxjkEO/dEzg==
+	t=1792439530;
+	b=qOMakNOxTxSrN+Vc2zcNz9C+25Xe8CU7ubJC5VWSmGRXiV8uxgBbHEyeQQ6h2pWZrqAm
+	 IcUqPrqzt6wTDuqN6V0R/neeNo2KppioEZNArphnHeuHhM0z02+h6oOUy63t4I7EsO/Bu
+	 35mR7HCigPbupfDUnNHUpMCbZWic0QQEnoVX5ejDejkxGLhHOzI015SUko+BTg8hTPF8x
+	 z++DENMKYlTFtUvd+4zOWlkUQAJnNz1wluBx6bKs+L/oLMpAhy2+WXg1GVOuTx9ACJddY
+	 4qezvVwLIZOLVGNFDNgaBptindrTn2gwX+bSTbXa5hGe6smlrbqvesXEWwRjeSAzkSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792439310;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Scanned-By;
-	bh=pdvPNczTwLl4TbsrQeGwtn2bpfA7wPIowKpcfjyQjto=;
-	b=5KHBzHAHfX3GwWdCPBzN9jUl6++qWX+SMHM2LJ+Ly4F2prr/xjdoE/xT4JUnWLOrLQfO
-	 yz3m63BK1z8hidGbdg6G4uFeUsOd6kTDsP+yPObOrjy++rAUAxzG3i0n3UKj0Co/Go+WI
-	 iZ798wwqCZn3TwfplI9dLp7ao3JlFBFqGzMK/9tXSnsSmXQD71Bzmr3LgD5MtC+gL2E+O
-	 vQu/IlxLTVGr5DIa/hQRXs41KJ2dRdiD8/OGTlEDT1HIWkbEAxpR+Js2o4Vsd+4pXKymJ
-	 7J3ph1JBX2XWeh7jmY+FR0Recw9qtAFPkM0ldnUB3KN3qy+RhqN/z+APHO1Dq0x73gg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792439530;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=fw09UutyHUduFpWZBPLYb8dsT3BQWfkURXiLOP0HpZI=;
+	b=hjXhcQrIImJJahKHmKfz1KL0qZ+pHp4dhQuHo7f1Q+fjtqyEtbHuRqgXqFyQbpE5NKif
+	 4qBigVon+xXlRaquFt5VeAyL4EvmV3HwVE/xgig9fnZBZk1yas/+H4jGUmMTM3d+5SHrl
+	 Hc/+Ic4tUj9sd33vfO0PnoRLYyUAe/mgfqjdn7sI8zqPdCJ+y1bZVF/rivooGgoY9GUyG
+	 qT6Fk6jg3v0B1yO0YADemrf/YTNJ6zBeBHME8FbYveewbhAbyy+o28dkj42fDKQqUCu2R
+	 EQl8v4A0xhfpu0eOVikUYIEbnSLXqjv0IN1fR1FM0k2Pr6XvWTXIBepa2Z1+CuwK1BA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KKDrIXL3;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jMu6TnIf;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E1A606A324
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 19:48:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7E1A606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61718606A320
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 19:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KKDrIXL3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792439308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdvPNczTwLl4TbsrQeGwtn2bpfA7wPIowKpcfjyQjto=;
-	b=KKDrIXL3b65xa30L9fb3ymFIo021PJBf2k6/LC2Mj85YwDUm8k4/DeME5F6VAZbgTHhosf
-	qk4unvtm4vE+GdyKZ3vm0XripunNQAPmRJteCo8eXWhI8SUHv/5tmBoQEkSR5SHu09aJPb
-	76adiaeXBj9CIK5u9Q2xn+feAZRWqFQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-W37X9w1oP5CsYqTiQVPi5Q-1; Mon,
- 19 Oct 2026 19:48:24 +0000
-X-MC-Unique: W37X9w1oP5CsYqTiQVPi5Q-1
-X-Mimecast-MFC-AGG-ID: W37X9w1oP5CsYqTiQVPi5Q_1792439303
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E2F01800868;
-	Mon, 19 Oct 2026 19:48:23 +0000 (UTC)
-Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F0E5830002CE;
-	Mon, 19 Oct 2026 19:48:22 +0000 (UTC)
-Date: Mon, 19 Oct 2026 15:48:21 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: seanjc@google.com, pbonzini@redhat.com,
-	John Levon <john.levon@nutanix.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Thanos Makatos <thanos.makatos@nutanix.com>
-Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
-Message-ID: <20261019194821.GA157850@shajnocz.csb>
-References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
- <20260922135102.GA24134@fedora>
- <c18ef5464ff4fb4d607c6ae02c58024b41b3f17c.camel@infradead.org>
- <c213ca93393bffb774ac1642a4718f91a4c14891.camel@infradead.org>
- <20261015182208.GA1504100@shajnocz.csb>
- <fbf7e9f63141a539b69896edb07805abcd0f23d5.camel@infradead.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jMu6TnIf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60791F000C4
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 19:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792439529;
+	bh=fw09UutyHUduFpWZBPLYb8dsT3BQWfkURXiLOP0HpZI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jMu6TnIfTNL4eRW0Js34t44xMai7XURJsas9RHqMz2yu9DqxycEs9EUSWqGtrlKBv
+	 48cdxx5qRmaJv0czwbMX1upiuyeQumZglPdYSDHShuMHaRa+YKpkhltXYH4rXDhtJq
+	 3oz3bo+qgw52QloWelMJdAUVFsHV67TicwFah+6/VE9U2+SiUL9z5mY6jt1+b0F2XO
+	 ZZXC0XggEs4p0jWRDp69LYNezW00aYukcqlBwufOaK1isPw18A+TzyN57bUIFKav2M
+	 vrtERrm+aO2B9k8jLILhIkvMUH2aXEAX5vxp5gTNTokxE87EUvvBIUWasyv0dxj8PT
+	 EC9CkitAMnNLw==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b170129413so3983034a12.1
+        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 12:52:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxcYBijHTp6F7v1CSYWRDC1f9spuWTdFpluUjiLxgLoEBeyot46un2pc6NjEiz1vwJKgx8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIXCkqaxEUVeFKLJTVGoF9GrUBPBm0Nu9c+AmwJIKNtm/ZD3Z/D
+	Yqk26Ez948HxeoeSolh7KlOiJm4E3yWxpcncsIKwvPlvdFAjPGlK+8PBNxNFVy2+TPqewcIofRf
+	VbAN7rldHdzCHbFZFGtFCBA6cTznW4zQ=
+X-Received: by 2002:a17:907:e114:b0:c42:6350:dfc4 with SMTP id
+ a640c23a62f3a-c426350e5e0mr292574466b.24.1792439528817; Mon, 19 Oct 2026
+ 12:52:08 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,59 +59,131 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fbf7e9f63141a539b69896edb07805abcd0f23d5.camel@infradead.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-27-yosry@kernel.org>
+ <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com>
+ <atK3Y5XxL-zmAvY-@google.com> <CALMp9eRcWZ8fh8_m35RDw-VNrqz4kapVodGoLr=B_iAZaPOA=Q@mail.gmail.com>
+In-Reply-To: <CALMp9eRcWZ8fh8_m35RDw-VNrqz4kapVodGoLr=B_iAZaPOA=Q@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 19 Oct 2026 12:51:56 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMdu+YyPb3RhdTDzYteRAE9dBqxTQZKSajm4eYZCp9Y9Q@mail.gmail.com>
+X-Gm-Features: AclHuK-WXUmbGE969wYGI9ZZxINhiGhrG6z65F41z9sxkj_UYKXRaPnp2UFqYDg
+Message-ID: <CAO9r8zMdu+YyPb3RhdTDzYteRAE9dBqxTQZKSajm4eYZCp9Y9Q@mail.gmail.com>
+Subject: Re: [PATCH v3 26/27] KVM: nSVM: Use different ASIDs for L1 and L2
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Woodhouse <dwmw@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 15, 2026 at 07:43:34PM +0100, David Woodhouse wrote:
-> On Thu, 2026-10-15 at 14:23 -0400, Stefan Hajnoczi wrote:
-> > On Thu, Oct 15, 2026 at 09:44:54AM +0100, David Woodhouse wrote:
-> > > On Sun, 2026-10-04 at 18:16 +0200, David Woodhouse wrote:
-> > > > 
-> > > > FWIW while this is sufficient for implementing i82599 VF emulation, to
-> > > > get line-rate TCP *performance* I also needed a directed yield_to() to
-> > > > the consumer worker thread when it gets triggered.
-> > > > 
-> > > > And to get line-rate *UDP* performance I needed the consumer to be able
-> > > > to arm/disarm it, to avoid getting throttled into lockstep with the
-> > > > guest.
-> > > > 
-> > > > I'll clean up my proof of concept hacks and post them after LPC.
-> > > 
-> > > FWIW after a bunch of other performance work on the emulation it turns
-> > > out I can live without this. As I was preparing to send a version of it
-> > > upstream, I did a final retest with/without it, and it isn't needed any
-> > > more.
-> > 
-> > Neat, were you able to still use ioeventfd without POST_WRITE or did you
-> > take a different approach?
-> > 
-> > We ran NVMe emulation benchmarks with QEMU recently and found Windows
-> > guests need ioeventfd POST_WRITE to get into the ballpark of virtio-blk.
-> > I'm still keen for POST_WRITE to be merged.
-> > 
-> > Thanos & John: do you want to give the patch series another spin based
-> > on the feedback?
-> 
-> Apologies, I was again being lax with my pronouns, and expecting my
-> choice of citation to carry the information about what I meant by "it".
-> 
-> I am using the ioeventfd POST_WRITE (with Sean's put_user cleanup).
-> 
-> As cited above, I *had* implemented a directed yield too, and further
-> made it possible for the consumer to arm/disarm that directed yield
-> (becomes sometimes latency matters, and sometimes throughput matters).
-> 
-> Since then, I've done a lot more optimisation of wakeups and batch
-> processing on the emulation side. So when I was preparing the directed
-> yield for upstream submission and did a last-minute A/B test with and
-> without the directed yield, I found that the directed yield didn't
-> actually give me a significant win at all — neither for TCP nor UDP
-> traffic.
+On Mon, Oct 19, 2026 at 11:50=E2=80=AFAM Jim Mattson <jmattson@google.com> =
+wrote:
+>
+> On Fri, Oct 16, 2026 at 5:25=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Fri, Oct 16, 2026 at 02:17:30PM -0700, Jim Mattson wrote:
+> > > On Mon, Oct 12, 2026 at 4:37=E2=80=AFPM Yosry Ahmed <yosry@kernel.org=
+> wrote:
+> > > >
+> [ ... ]
+> > > Per the APM, volume 2, Section 15.16.1, "TLB Flush":
+> > >
+> > > > All TLB entries belonging to all ASIDs are flushed by SMI, RSM, MTR=
+R modifications, IORR modifications, and access to other system MSRs that a=
+ffect address translation.
+> > >
+> > > With two separate ASIDs and the unconditional flush removed, do we
+> > > flush both ASIDs in the above instances?
+> >
+> > SMI and RSM, yeah I think so. kvm_smm_changed() ->
+> > kvm_mmu_reset_context() deletes all roots, and kvm_mmu_load() will flus=
+h
+> > the current ASID when a new root is loaded.
+>
+> Okay. Is this mechanism obvious to those who are versed in the ways of
+> the KVM MMU?
 
-I see, thanks for clarifying.
+I don't consider myself versed in the ways of the KVM MMU, it took me
+a few minutes to track this done, so I think it's okay.
 
-Stefan
+>
+> > MTRR writes seem to do nothing beyond store the value, probably since
+> > 0a7b73559b39 ("KVM: x86: Remove VMX support for virtualizing guest MTRR
+> > memtypes"). It is documented as an errata but I maybe KVM should still
+> > flush the TLB? If that's a real bug, it's separate from this series tho=
+.
+> > We just need to make sure if we fix it, we should flush both ASIDs. We
+> > can probably just reset the MMU context here too?
+>
+> Probably. Admittedly, it's orthogonal to this series.
 
+Agreed.
+
+>
+> > I can't find anything related to IORR in KVM.
+>
+> Me neither. :)
+>
+> > For MSRs, I think the relevant ones are EFER and PAT:
+> >
+> > - For EFER, a change to KVM_MMU_EFER_ROLE_BITS resets the MMU similar t=
+o
+> >   SMI/RSM, so covers both ASIDs. Clearing EFER.SVME frees L2's ASID and
+> >   re-allocating an ASID will flush it by clearing last_asid.
+>
+> Okay.
+>
+> > - For PAT, I am not sure if that falls under "system MSRs that affect
+> >   address translation", but KVM isn't flushing for L1 today on PAT
+> >   writes anyway, so I hope not?
+>
+> Maybe not. Intel, at least, puts the burden of flushing TLBs on
+> software. In volume 3 of the SDM, section 14.12.4, "Programming the
+> PAT":
+>
+> > The operating system (OS) is responsible for ensuring that changes to a=
+ PAT entry occur in a manner that maintains the consistency of the processo=
+r caches and translation lookaside buffers (TLB). It requires the OS to inv=
+alidate all affected TLB entries (including global entries) and all entries=
+ in all paging-tructure caches.
+
+Nice!
+
+>
+> > >
+> > > Moreover, does this change the semantics of PV TLB flush? In
+> > > record_steal_time(), we have:
+> > >
+> > > if (st_preempted & KVM_VCPU_FLUSH_TLB)
+> > >         kvm_vcpu_flush_tlb_guest(vcpu);
+> > >
+> > > IIUC, an idle vCPU that wakes into L2 will flush only L2's ASID. In
+> > > the past, with a shared ASID, L1's ASID was always flushed on emulate=
+d
+> > > VM-exit anyway. Now, L1's ASID will be unaffected. Though I can't fin=
+d
+> > > any real documentation on PV TLB flush, it *seems* like the remote
+> > > vCPU would want L1's ASID to be flushed. OTOH, this change makes nSVM
+> > > behave just like nVMX.
+> >
+> > I am honestly not sure. It seems like we should be flushing the context
+> > that issued the PV flush. But I also suppose (aside from Hyper-V) all L=
+2
+> > PV calls should go to L1, not L0, so should we always flush L1's contex=
+t
+> > here?
+> >
+> > It would be a pre-existing bug, but this series would be adding it to
+> > SVM as well. Adding David here since his name appears all over the git
+> > log for that code, so hopefully he'll tell us for sure.
+>
+> It's just happenstance that the PV TLB flush mechanism works with nSVM
+> today, but I don't think we should feel free to break it.
+
+Nested virtualization on Intel is probably more popular than AMD at
+this point, so my gut feeling is that we shouldn't block on fixing
+this. But I agree we shouldn't feel free to break it either. Will wait
+for Sean or David to chime in before deciding the way forward, but if
+there's a fix it would be separate from this series imo anyway.
