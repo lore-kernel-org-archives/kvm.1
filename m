@@ -1,298 +1,171 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-242.mta1.migadu.com [95.215.58.242])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D425F511E9A
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 14:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5379F4C8466
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 14:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.242
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792419130; cv=none; b=rRSPS5Wrg85CBME1wC0frppz6h2+k6KspegRLnuKICSdwfxOuOdVuG2Fj5E6HmOdlqgTXvXey/DgVF4cxDGgfy5iesYuCs1IjZmT4EwYRMa/fMzsCSa8kZoQpihhf8OKIS7eKkuTZStvhdL12/7csvXjM3mBYyypxRzc9Mi4CGk=
+	t=1792420993; cv=none; b=r1gH9pLn+JYMcPmTcfybG29XPxwLWkTeAYNG8dGL9TgDjTJ5QQ/qhUxjLgcY7uHXc5xyawhscyeSfp0kDjlT2EwXwlipC2zFXLjMH7Fi0B2f2+WKIrG8F1PD2t2dlYkJgMCRhDefHHG/V3pTkObsilYgGNZuAxPDymZ+SB3AgV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792419130; c=relaxed/simple;
-	bh=38h+2Yebx/4frhJrkasMSHfDfWCWtifqCUTxn5bBarU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6CzLJd0HEj4GBtCr1JQ6/zDUwpZ23wyqT13NaCrq7Zi9wdZx8pVOLCthgz4Mf9uU20DBtiFIzJsoYxtptkeGxXVnH03/6KYT89jRvP3YJs1IQqWEawt0xWd288Ktv+wg+vgaSAly7vzUCgijz5Y8CEleOOEgkvpENuW7EdhOUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FKdywTIk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AUEfQbJL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792420993; c=relaxed/simple;
+	bh=yAzZlMG9yyqlRb+Q8VS1SI9X4mbkrMtuzvvRVXOI/o4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CPLTnmVn0hN3+iEHSI02AlD5Mn88Lz3VQTZGG+t2OeCvJENAUtku/z5xaMHza9lfUmahqMR1EfFeVFbLwQhe/nEQIorau5HiOLTtzp68/954pH7Wb4FzvApwUolqRDwl9pn6YB7AvnOvm5uGJY8SjbAKvdwMxkVOLHcFgqdpYa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Eq2Q/oIq; arc=none smtp.client-ip=95.215.58.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FKdywTIk";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AUEfQbJL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792419127;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2M95tyOOQgifHQf5+1v9W4pLBHiwR5Qq/5/JuiYMWjk=;
-	b=FKdywTIkVlVN0ezEdPKhmef1eBqZlKY1XpqYqOa711OY/lHLHfM+TL1Ge3FUIUxMtFXsjM
-	4dHw85/0S3LWFgWHHimaB2ih8AXBn0fB8vhFx3RTS5lzyXaq+VSaMDG9JyNN30CldCJ0y1
-	IDbEIxm4dmw9fuGuMDUjMhprL+v7tOo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-_FHpXWNcMQiWXpGzI-6MCA-1; Mon, 19 Oct 2026 14:12:06 +0000
-X-MC-Unique: _FHpXWNcMQiWXpGzI-6MCA-1
-X-Mimecast-MFC-AGG-ID: _FHpXWNcMQiWXpGzI-6MCA_1792419125
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48b027578a4so1986999f8f.3
-        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 07:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792419125; x=1793023925; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2M95tyOOQgifHQf5+1v9W4pLBHiwR5Qq/5/JuiYMWjk=;
-        b=AUEfQbJLtk2cx5MAZMdh5bk0WAekC52HsJA5cxj9sHprTtfI4aPvyT+bUsidTG8Mnn
-         k4bpTHV8xdYUigWdLoRF5aB7WR4o0IrUV7Qjc1A4xQs+owr9i682l9ZI7ukHskqAcSsH
-         MEVlrUriTwIyoHccJjG6uhXqrU/1JMnfaNZchrVtcvdngq7J4huU7xK0g0zOKJgtbD0F
-         RKuiPo1u75wIAdX1I2IplolRNyP41dsfEIWN/2lx/8RJKEphkByc90PHpmzXpZe9tYsS
-         u+JwvDH6XlxO6sDSgldljuLkyMNITcjWWYTIIbhCDbJm84N6ApPypPaQ+pwjL1+jSkMl
-         jABQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792419125; x=1793023925;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2M95tyOOQgifHQf5+1v9W4pLBHiwR5Qq/5/JuiYMWjk=;
-        b=CxQCukgtviM6RnjtKRuRB9n8Mxml6Ch5hpRYLGtYcsYlI/bOM07dn9+CXZR0D+fdFT
-         S2DgO05btUuo3xe2OAgFXcLLl9kgjNvBSz2/DaJHy5pdDFASNrmPJjnJ3iA33RJi6Z7x
-         sozsG+J27XZLQyHMxQxVx0bq8m4e8Jq7Owdtt20kSQF8HVEBPDs3V1Ly3cLE6Wlzu7w1
-         WciVAzKDbPt5M1uQrxh2rEHi3UmAW7g6MlZV2pHwm6s6tIfzpz0l36Cu5xqjiTlctFf+
-         fuOKxfvjbcitswselzB1ZnLDTDlM/4FgiqBvwVV/ZKulrEHrNQ2XEeVEIeKEWPJMU/HG
-         djGg==
-X-Forwarded-Encrypted: i=1; AKwUvBwE/C0kUfsyuWglsHX8aamsmhpCnzTxYHOKpTMM+nSS/jsS54Xlj7+IZfnPH0CCtWAz5NY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLrmEsyxbJA4ROaUJ0b0Jk4bqjKNrgN0nd3caGzz+5uL4z+ofOZ
-	ZfvjwSxes7+35WMMhesKl/8kXHv34OMag5BNTSgq/EfIKmOJcZOlvxE2Hc/HWKTJ8Oqbshu1+Rc
-	8AcEBbimjENS1XD15PEJnls2feVdFgPHZbec4jpWvZ8kOSsbSTLyBjA==
-X-Gm-Gg: AYBFou0uxac9pz49YcDxVWJonRvuf/kkyAAEXgTvM7sdtBR61sF41g+5pgQxXgQ/NIz
-	Hu15195Br+yjaySwdBN6o92NK0P5SLMRo5QsfUiMAV7Qtt8R0TMoYOA/vR4ZguPavS1RdncZNfo
-	TyiRJfe9LHY7dhXUAW3w/O8wI2OYOmX9PPPj1/8Ty5KPI3iOHRlnN9wB3BCBvoUjFKwN8n4kpuf
-	/DU2vMiHQuPdCjvoALCqFjjIujHNJRB/Z78ixOjHhkOf1boccainRWZzMklpQftwMEP2cFVbbtA
-	uth95EPG0ls9ffzC25Kkeh/Ht5ocawR7SqOexHaC+gmpA0MZIQ+rQPnYbapj6GmhfHDswqtnEo/
-	hxB2c
-X-Received: by 2002:a5d:534f:0:b0:486:e707:42eb with SMTP id ffacd0b85a97d-48e07f9a00emr12076074f8f.33.1792419124931;
-        Mon, 19 Oct 2026 07:12:04 -0700 (PDT)
-X-Received: by 2002:a5d:534f:0:b0:486:e707:42eb with SMTP id ffacd0b85a97d-48e07f9a00emr12076004f8f.33.1792419124225;
-        Mon, 19 Oct 2026 07:12:04 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.74.151])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd471a72sm25288394f8f.4.2026.10.19.07.12.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 07:12:03 -0700 (PDT)
-Date: Mon, 19 Oct 2026 16:11:57 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bobbyeshleman@gmail.com
-Subject: Re: [PATCH net-next v4 4/4] vsock/virtio: defer RX notifications
- until batch unlock
-Message-ID: <atYlFHcjGMFxHCuM@sgarzare-redhat>
-References: <20261014115640.184286-1-physicalmtea@gmail.com>
- <20261014115640.184286-5-physicalmtea@gmail.com>
- <atI3neoHXhgiEpYJ@sgarzare-redhat>
- <CAJwVaMLmMf1iyWmoZMAJuS2551DsSWSkcRsUVz3M5xi9AXWsWg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Eq2Q/oIq"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=yAzZlMG9yyqlRb+Q8VS1SI9X4mbkrMtuzvvRVXOI/o4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792420989; v=1; x=1793025789;
+ b=Eq2Q/oIqSHKVdGihDgA6d5YqFLgZdM6/7LiEN2Uoe2E6fANdsQLc67fLWsb9ZUfyN/hV1QR0
+ X+R3x/MtiA4a6sRRDOSBnmVZNXpm4CKxdnGgq2DlSuWOhgsIH1qleKbC/ZG8V5iGh/Iv91/STvk
+ s2LJzeLblxFM30gpOcbT7ejU=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 609bfc4a7ea223cb;
+	Mon, 19 Oct 2026 14:43:08 +0000
+X-Mizu-Trace-ID: 609bfc4a7ea223cb
+X-Migadu-Flow: FLOW_OUT
+From: Andrew Jones <andrew.jones@linux.dev>
+To: kvm@vger.kernel.org,
+	will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: kvm-riscv@lists.infradead.org,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH kvmtool] riscv: Place the FDT after the kernel's image_size
+Date: Mon, 19 Oct 2026 16:43:04 +0200
+Message-ID: <20261019144304.2678066-1-andrew.jones@linux.dev>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAJwVaMLmMf1iyWmoZMAJuS2551DsSWSkcRsUVz3M5xi9AXWsWg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 12:55:35PM +0800, Jia Jia wrote:
->>
->> On Wed, Oct 14, 2026 at 07:56:40PM +0800, Jia Jia wrote:
->> >An RX batch can make a socket readable while the worker still holds its
->> >socket lock. Waking a blocking reader then only moves it to waiting for
->> >the same lock.
->> >
->> >Record the existing low-watermark condition and notify once after
->> >release_sock(). Move the coalesced write-space notification after the
->> >unlock as well, since both callbacks wake sk_sleep(sk). Deliver
->> >write-space before data-ready and keep the lookup reference until both
->> >callbacks complete.
->> >
->> >As with write-space, save the initial sk_data_ready callback and batch only
->> >while both saved callbacks remain installed. Sockets with replaced
->> >callbacks retain their per-packet behavior.
->> >
->> >The existing psock-marker check also covers a concurrent sockmap attach:
->> >at most the already admitted packet completes on the native path, and the
->> >next packet ends the batch.
->> >
->> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->> >---
->> > include/linux/virtio_vsock.h            |  1 +
->> > include/net/af_vsock.h                  |  5 ++--
->> > net/vmw_vsock/af_vsock.c                |  1 +
->> > net/vmw_vsock/virtio_transport_common.c | 35 ++++++++++++++++++-------
->> > 4 files changed, 31 insertions(+), 11 deletions(-)
->> >
->> >diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->> >index bf077ee0ded88..f1396ca3ad9b5 100644
->> >--- a/include/linux/virtio_vsock.h
->> >+++ b/include/linux/virtio_vsock.h
->> >@@ -288,6 +288,7 @@ struct virtio_transport_rx_batch {
->> >       unsigned int pkts;
->> >       size_t bytes;
->> >       bool write_space_pending;
->> >+      bool data_ready_pending;
->> > };
->> >
->> > void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
->> >diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->> >index 9a40960d10cbe..78bab5820f528 100644
->> >--- a/include/net/af_vsock.h
->> >+++ b/include/net/af_vsock.h
->> >@@ -64,9 +64,10 @@ struct vsock_sock {
->> >       bool sent_request;
->> >       bool ignore_connecting_rst;
->> >       /*
->> >-       * Initial callback, used to identify replacements and deliver deferred
->> >-       * write-space notifications.
->> >+       * Initial callbacks, used to identify replacements and deliver deferred
->> >+       * notifications.
->> >        */
->> >+      void (*default_data_ready)(struct sock *sk);
->> >       void (*default_write_space)(struct sock *sk);
->> >
->> >       /* Protected by lock_sock(sk) */
->> >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->> >index fe7f49da6c4bc..f40659ec29df0 100644
->> >--- a/net/vmw_vsock/af_vsock.c
->> >+++ b/net/vmw_vsock/af_vsock.c
->> >@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
->> >               sk->sk_type = type;
->> >
->> >       vsk = vsock_sk(sk);
->> >+      vsk->default_data_ready = sk->sk_data_ready;
->> >       vsk->default_write_space = sk->sk_write_space;
->> >       vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
->> >       vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
->> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> >index f4b5f0230493e..8b62b789b71c5 100644
->> >--- a/net/vmw_vsock/virtio_transport_common.c
->> >+++ b/net/vmw_vsock/virtio_transport_common.c
->> >@@ -1588,7 +1588,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
->> >
->> > static int
->> > virtio_transport_recv_connected(struct sock *sk,
->> >-                              struct sk_buff *skb)
->> >+                              struct sk_buff *skb,
->> >+                              bool *data_ready_pending)
->> > {
->> >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
->> >       struct vsock_sock *vsk = vsock_sk(sk);
->> >@@ -1607,7 +1608,13 @@ virtio_transport_recv_connected(struct sock *sk,
->> >                       vsock_remove_sock(vsk);
->> >                       break;
->> >               }
->> >-              vsock_data_ready(sk);
->> >+              if (!data_ready_pending) {
->> >+                      vsock_data_ready(sk);
->> >+              } else if (!*data_ready_pending &&
->> >+                         (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
->> >+                          sock_flag(sk, SOCK_DONE))) {
->> >+                      *data_ready_pending = true;
->> >+              }
->> >               return err;
->> >       case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
->> >               virtio_transport_send_credit_update(vsk);
->> >@@ -1820,6 +1827,7 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
->> >       return sk->sk_state == TCP_ESTABLISHED &&
->> >              sk->sk_type == SOCK_STREAM &&
->> >              READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
->> >+             READ_ONCE(sk->sk_data_ready) == vsk->default_data_ready &&
->> >              READ_ONCE(sk->sk_write_space) == vsk->default_write_space &&
->> >              !sock_flag(sk, SOCK_DONE) &&
->> >              vsk->transport == &t->transport &&
->> >@@ -1830,8 +1838,9 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
->> > /*
->> >  * The caller holds sk's socket lock.  Set @batchable if the socket can remain
->> >  * locked for another ordinary STREAM/RW packet.  When @batch is non-NULL,
->> >- * record a default write-space notification for batch finish instead of
->> >- * delivering it immediately.  Return true if the caller must free @skb.
->> >+ * record default write-space and data-ready notifications for batch finish
->> >+ * instead of delivering them immediately.  Return true if the caller must
->> >+ * free @skb.
->> >  */
->> > static bool
->> > virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->> >@@ -1883,7 +1892,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->> >               kfree_skb(skb);
->> >               break;
->> >       case TCP_ESTABLISHED:
->> >-              virtio_transport_recv_connected(sk, skb);
->> >+              virtio_transport_recv_connected(sk, skb,
->> >+                                              batch ?
->> >+                                              &batch->data_ready_pending : NULL);
->> >               break;
->> >       case TCP_CLOSING:
->> >               virtio_transport_recv_disconnecting(sk, skb);
->> >@@ -1957,27 +1968,33 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
->> > /*
->> >  * Finish the RX batch.
->> >  * For a non-empty batch, the caller holds the socket lock acquired with
->> >- * lock_sock(). Deliver any deferred write-space notification while the lock
->> >- * is held, then release the lock and the batch's lookup reference.
->> >- * An empty batch is a no-op.
->> >+ * lock_sock(). Release the lock, deliver any deferred write-space and
->> >+ * data-ready notifications in that order, then drop the batch's lookup
->> >+ * reference. An empty batch is a no-op.
->> >  */
->> > void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
->> > {
->> >       bool write_space_pending = batch->write_space_pending;
->> >+      bool data_ready_pending = batch->data_ready_pending;
->> >       struct sock *sk = batch->sk;
->> >
->> >       batch->sk = NULL;
->> >       batch->pkts = 0;
->> >       batch->bytes = 0;
->> >       batch->write_space_pending = false;
->> >+      batch->data_ready_pending = false;
->> >
->> >       if (!sk)
->> >               return;
->> >
->> >+      release_sock(sk);
->> >+
->>
->> Why in the previous patch we release the socket after calling
->> default_write_space() and now we are moving before?
->>
->
->My intention was to keep the two behavioral changes separately
->testable. Patch 3 is a complete intermediate state: it coalesces
->repeated sk_write_space()
->notifications while preserving the existing under-lock callback
->context. Patch 4 then adds data-ready coalescing and moves both
->deferred notifications
->after release_sock(). Patch 4 therefore builds on Patch 3 rather than fixing it.
+The FDT is placed relative to the end of the kernel image file, but a
+kernel's memory footprint includes its BSS, which isn't in the file. When
+the BSS is large enough, e.g. with lockdep enabled, the FDT lands inside
+it and is wiped when the kernel clears BSS, leaving the guest hung with no
+console output. Use the image_size from the Image header, as arm64 does.
 
-Okay, I see, makes sense, please make it clear in the commit 
-description.
+Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+---
+ riscv/include/asm/image.h | 40 +++++++++++++++++++++++++++++++++++++++
+ riscv/kvm.c               | 26 ++++++++++++++++++++++---
+ 2 files changed, 63 insertions(+), 3 deletions(-)
+ create mode 100644 riscv/include/asm/image.h
 
-Thanks,
-Stefano
-
->
->> >       if (write_space_pending)
->> >               vsock_sk(sk)->default_write_space(sk);
->> >
->> >-      release_sock(sk);
->> >+      if (data_ready_pending)
->> >+              vsock_sk(sk)->default_data_ready(sk);
->> >+
->> >       sock_put(sk);
->> > }
->> > EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
->> >--
->> >2.53.0
->> >
->>
->
+diff --git a/riscv/include/asm/image.h b/riscv/include/asm/image.h
+new file mode 100644
+index 000000000000..0deb74ddd9d4
+--- /dev/null
++++ b/riscv/include/asm/image.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __ASM_IMAGE_H
++#define __ASM_IMAGE_H
++
++#define RISCV_IMAGE_MAGIC	"RISCV\0\0\0"
++#define RISCV_IMAGE_MAGIC2	"RSC\x05"
++
++/*
++ * struct riscv_image_header - riscv kernel image header
++ * See Documentation/arch/riscv/boot-image-header.rst for details
++ *
++ * @code0:		Executable code
++ * @code1:		Executable code
++ * @text_offset:	Image load offset (little endian)
++ * @image_size:		Effective Image size (little endian)
++ * @flags:		kernel flags (little endian)
++ * @version:		version
++ * @res1:		reserved
++ * @res2:		reserved
++ * @magic:		Magic number (RISC-V specific; deprecated)
++ * @magic2:		Magic number 2 (to match the ARM64 'magic' field pos)
++ * @res3:		reserved (will be used for PE COFF offset)
++ */
++
++struct riscv_image_header {
++	u32 code0;
++	u32 code1;
++	__le64 text_offset;
++	__le64 image_size;
++	__le64 flags;
++	u32 version;
++	u32 res1;
++	u64 res2;
++	u64 magic;
++	u32 magic2;
++	u32 res3;
++};
++
++#endif /* __ASM_IMAGE_H */
+diff --git a/riscv/kvm.c b/riscv/kvm.c
+index 1d494792de79..fc192af34435 100644
+--- a/riscv/kvm.c
++++ b/riscv/kvm.c
+@@ -4,9 +4,11 @@
+ #include "kvm/virtio-console.h"
+ #include "kvm/fdt.h"
+ 
++#include <linux/byteorder.h>
+ #include <linux/kernel.h>
+ #include <linux/kvm.h>
+ #include <linux/sizes.h>
++#include <asm/image.h>
+ 
+ struct kvm_ext kvm_req_ext[] = {
+ 	{ DEFINE_KVM_EXT(KVM_CAP_ONE_REG) },
+@@ -100,6 +102,22 @@ void kvm__arch_init(struct kvm *kvm)
+ 	riscv__irqchip_create(kvm);
+ }
+ 
++/*
++ * The kernel's memory footprint, including BSS, is the image_size in the
++ * Image header, which may be larger than the file.
++ */
++static u64 kvm__arch_get_kernel_size(void *kernel, ssize_t file_size)
++{
++	struct riscv_image_header *hdr = kernel;
++
++	if ((size_t)file_size < sizeof(*hdr) ||
++	    (memcmp(&hdr->magic2, RISCV_IMAGE_MAGIC2, sizeof(hdr->magic2)) &&
++	     memcmp(&hdr->magic, RISCV_IMAGE_MAGIC, sizeof(hdr->magic))))
++		return file_size;
++
++	return max_t(u64, le64_to_cpu(hdr->image_size), file_size);
++}
++
+ #define FDT_ALIGN	SZ_4M
+ #define INITRD_ALIGN	8
+ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+@@ -108,6 +126,7 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+ 	void *pos, *kernel_end, *limit;
+ 	unsigned long guest_addr, kernel_offset;
+ 	ssize_t file_size;
++	u64 kernel_size;
+ 
+ 	/*
+ 	 * Linux requires the initrd and dtb to be mapped inside lowmem,
+@@ -132,9 +151,10 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+ 
+ 		die_perror("kernel read");
+ 	}
+-	kernel_end = pos + file_size;
+-	pr_debug("Loaded kernel to 0x%llx (%zd bytes)",
+-		 kvm->arch.kern_guest_start, file_size);
++	kernel_size = kvm__arch_get_kernel_size(pos, file_size);
++	kernel_end = pos + kernel_size;
++	pr_debug("Loaded kernel to 0x%llx (%zd bytes, %llu in memory)",
++		 kvm->arch.kern_guest_start, file_size, kernel_size);
+ 
+ 	/* Place FDT just after kernel at FDT_ALIGN address */
+ 	pos = kernel_end + FDT_ALIGN;
+-- 
+2.56.0
 
