@@ -1,150 +1,208 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A755031BCAE;
-	Mon, 19 Oct 2026 08:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34CF36921E
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 09:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792400049; cv=none; b=QOUUJhxHNmwuzJedOUa2F7jCEDNO0f45ELgbeacbE19WJAjqoeH/eYMPnNqgL4VtMJphhlD2z2/q8AtFJDdNyX+GUQgOVCIkpkauHQ2wdq0piOVdILuKUPLKUEf/nkw3hc1dC1kBZLvJnU6+dy/EhlCox5S+EyBi0WrKI4tRmCM=
+	t=1792401120; cv=none; b=FhdR/LqhkRgrtfpufXtNBG7P66XzFHEo5fDVsOpmPMtiFos3TqfnS3F0gBbj3YK+LGXtA1spmRZv5G8S5e3YDO645JM1A7TQhMVBCdoe/66iPAwGFwqErvfNxQQ8KU8i1ygX67Vc+kTzIAJ3yqWNl5AZfUmyCJ3qovt4V6NGx44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792400049; c=relaxed/simple;
-	bh=EyaMsR5iFwGWvG9qQ3I0c8/2vWJxmxXrEFqr0VPGaW4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uVYep/5P3DNOieTIud6ytEkOwe4DAkCRSZp1b6M28I/GBOhENZADa+f30W+NTPiqZ51DgEnN/yakLiMSs6LMFdzycoCM1dlyHDCz+nT9ny12yO/mKax5aYLeUjyG+3xgLsQt/m4aI5ACVeX/qU+0f4u/RCXcdeBLHDl9+pcvR1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pqyuCBbo; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1792401120; c=relaxed/simple;
+	bh=RvvP0kRRmyCDMDIDJ4ncYNus69AHU02jK9lGrDT7lUw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=V38kspn2ZDbPRfQEgmQs+yidBMjYrJtttjGkOqtU3p2gnC5kejhCc66wsB9po4UkiCI1tLGCxjpPHb310EoIo+XzBWRXIodif3HuonMlJwXrKnn1e1OjXGBUhCOX8mttLFrlQrXLZw+eL9BJOPVOtnKatCTnPLRYMry6o0zRVbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YDztyGSC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qEyc7PBV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pqyuCBbo"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69J8i5vU1636640;
-	Mon, 19 Oct 2026 08:54:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OxWYpG
-	YGadiI9V8mHVtnuZO1pcajp+u0zbDutU4rXHI=; b=pqyuCBboU4EDht1tq5y4ta
-	/JstzltpTRATNRPNoKzqfr6iF1ySlA6WL6vLvk9r0BGo3+VubJs/SGPy3VPqKglY
-	DlU0MhBEYG3vHqnBBewIX53rwq59ma2WgupFPJ9Dn/lga/o/O6C6xFA5nLpXONaD
-	E9gKbgNEsMKyUcXDh41yR5RSwBhNaqEJ9H3D2RnAbA7zCEc8FheIZPIcJ+TmcWJf
-	BZkfWa26r9tHNhJcK92IX6xuG11IcyJrKlwNBtEi5X/bIUgjrlCAmqxWaJT6DeSc
-	iYXnPB9CWhjPA0B7/ScjQbuoJP756oBK5l4hHxXmQKVPsNyCb7JCGRhGW8VrGG+Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hc0ptj4qj-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 19 Oct 2026 08:54:02 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69J8ZH4g3842415;
-	Mon, 19 Oct 2026 08:54:01 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hckbq521c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Oct 2026 08:54:01 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69J8rvxd47251754
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Oct 2026 08:53:57 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BEFEB2004B;
-	Mon, 19 Oct 2026 08:53:57 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 76D0D20040;
-	Mon, 19 Oct 2026 08:53:57 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Oct 2026 08:53:57 +0000 (GMT)
-Message-ID: <ec1cdde1-3201-4f6e-845c-c8f2ca0bb76a@linux.ibm.com>
-Date: Mon, 19 Oct 2026 10:53:57 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YDztyGSC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qEyc7PBV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792401117;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xv1sH19LW/lyaQLSFLozDIBk8LFcI769sFQGb3jES7M=;
+	b=YDztyGSC/OgWwDMELqS9lvsaszDZb533k5o7cKshJIp83B553jL0f9CB3pVxWjlI2gNW9N
+	+4NpacNV/L1Rnjlqi5d1Pbcp2tK7DPWtD/TnXODIZFqC9+EcyZfXEfYLfw9O6o5z8kRD1m
+	SultUdHzq2ymsiDveZcFVPVV2/EeD/U=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-FyJQyZqqPCiU_CVNOfL3AA-1; Mon, 19 Oct 2026 09:11:56 +0000
+X-MC-Unique: FyJQyZqqPCiU_CVNOfL3AA-1
+X-Mimecast-MFC-AGG-ID: FyJQyZqqPCiU_CVNOfL3AA_1792401115
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1cf5e7012so15272755e9.2
+        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 02:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792401115; x=1793005915; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xv1sH19LW/lyaQLSFLozDIBk8LFcI769sFQGb3jES7M=;
+        b=qEyc7PBVb5m0NbuepYIUqXBRGIE/0TPB5EGNOA/bqq1esKw6o/nUwRaeAuxhNd9xfC
+         XNP4ZN17mGD067TMIOl2aAvrmY9sauZb9XuBK4AnHRFDAJlZKQz70kHoww3DyvZFsDPy
+         +xj8VyU+tKOtwXnT54YNryubZp1btYr9Q525CeCGpBeKpvC7zRBdWUJfsxRaU6ubCT2V
+         LtWQLLv5n9NpR/xTzcrfluHS0kP+A9C9thQZzTuvwoljmixWPnjB4HOuSL3GuuI92Ai8
+         ZISgS/3XYnvtAOrYZlJkWswZpbIRkinUormUBLbO2fi3LaZ2Iz0prQeBqnzjGpjL920X
+         t1kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792401115; x=1793005915;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xv1sH19LW/lyaQLSFLozDIBk8LFcI769sFQGb3jES7M=;
+        b=A8TyCcrmYGQIKCftSRQvfX2t4D8asZt6FU4u8WB7IiUZlh7Iw87UAeD0foiwTA0i4O
+         qAMO6x+coDdzxZqKF3UvXw5Turq/wyQtgqBLF15cie0amukBiZ4LBcYVqfiPRnDYxiHp
+         lX28KvIU9Vc2e4lyjaCI53YubSNRud/asnBRPTmS7LpapOtEty9M7v7iRkj3H7IXNSbd
+         ficCr5RYhDANekfiIriVVe2KDmxX/IlVp8+8g2Xg4QGzu5VCEECYFdnwolHX/7KCVPSN
+         EJUfqhN7FMJK+s0/WkPHCHa/nhMJcnLKTwdE1/d8EVHmM4xbVJCw+EMPUkEykPLhohVp
+         SP7g==
+X-Forwarded-Encrypted: i=1; AKwUvBxivBdX5XwXz1N+62PWYlBzbOxCTZNxRvFzFCWDq+C2DF7AupntEp4ypJypx/blPAu/x+Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKDZF3uztOqzWmpamAnqU6K5gnCoKQ6nIRTSm4kudOixHLT1kpH
+	XdnyaBqbbmd6UlX7HxhoO1814tXGcIlY65a97uobakBZ48b+xEAe+Zwdjs5lqCVhKGm49vTxBQw
+	L1z6Ps0mw+HlVHJoYyZ3vscD4CJQdB1caE6/QnbhT9wiTvO6bpucQZs7dV26pgw==
+X-Gm-Gg: AYBFou2PPevKSOD3ZDbxZ6KiL65op05piVXmj70ouNx/6dXlYMxHGTaVy6qzUfZOWyC
+	zyDoUeQpRnIKF3j5oo7m0Nvac7DkFAaL89pQ8ToYxpwhLrgvhc+3UUntUzBrfCGNnsfgskh1buF
+	9IiB5FKRlCcTaF0W3oNCKIMrPI/aeTjSnP5+/086cpRZTVOjZD+pdVFnXUHNA9RGlLhlVZ0HOIj
+	Cc7d2KT26ocqqFnbyJZnsMwVQkUBXFrXbUgOc6mZ/GT1v1jhNGMjBjEutM7Lzn7v0wUalc+nO9k
+	TwoGsvGa4Wb8KBncpuFh3I7IFQTb0AwduN7+W41Xjf5r8ofM19V3JIlq8fxNelX1Q0FV/mDPzpL
+	txjVAtLbYrNeaxtEaQPsH8flmgilblGDT2GUw1DCB7w==
+X-Received: by 2002:a05:600c:8709:b0:4a1:7e77:c382 with SMTP id 5b1f17b1804b1-4a1d75e6f32mr142061075e9.5.1792401114939;
+        Mon, 19 Oct 2026 02:11:54 -0700 (PDT)
+X-Received: by 2002:a05:600c:8709:b0:4a1:7e77:c382 with SMTP id 5b1f17b1804b1-4a1d75e6f32mr142060435e9.5.1792401114368;
+        Mon, 19 Oct 2026 02:11:54 -0700 (PDT)
+Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c8a81587sm505305865e9.1.2026.10.19.02.11.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 02:11:53 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Andrea Oliveri <oliveriandrea@gmail.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>, kvm@vger.kernel.org, Andrea Oliveri
+ <oliveriandrea@gmail.com>
+Subject: Re: [PATCH] i386: Hyper-V nested sleep states enlightenment
+In-Reply-To: <20261016234027.1002275-1-oliveriandrea@gmail.com>
+References: <20261016234027.1002275-1-oliveriandrea@gmail.com>
+Date: Mon, 19 Oct 2026 11:11:53 +0200
+Message-ID: <kupbj8qt5pi.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] KVM: s390: fix ESSA addressing exception injection
- in migration mode
-To: Gautam Gala <ggala@linux.ibm.com>, imbrenda@linux.ibm.com,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: frankja@linux.ibm.com, david@kernel.org, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
-        pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org
-References: <20261015104822.77062-1-ggala@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20261015104822.77062-1-ggala@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE5MDAzNCBTYWx0ZWRfX/8FL6NjUpEGo
- V3w5Ln1Z7LCJv/1YhjON2fTqMrcGkPIf0Pg8SUFxks+PB4uEVjbyruWQu3tvh4/EYvOI+P8djYM
- 0WsSI7YvVYL8rHUxb9itrS5SejaeTGroD2GZ4Nu8fcr2eak4fCftaxa3sbwCEziGV6kA7IZCjeR
- 1rt3gKNsLh8sPoxDGpHwbnFi8DKvs/SKy6cOhqTEkFfSCRkcj26YhUR0cltrrQQkQknIf6ipmG4
- FNzPYP3wAmuYaTbepm19EZx8/bU7rnyTM4+n+78uS1h9waTUkKVQ2HulxbpIl4KiqS+L+ScZXeE
- IGvct5DlJkvrHsSzi61JjHTU/qR2WFIOQVoXxJcEIZNFJWbRQokYPdXdDwf6NWfNTDNYXBlXFMN
- vSd9vFExLfpvgaklEdHeiw58jeDS0KWq8od+7HyBbq/pt/5LMOfZPuZGBmyuvVfBRnCk5gJnPTo
- j5/LD910e8GeecnNCDw==
-X-Authority-Analysis: v=2.4 cv=WNvqzXsR c=1 sm=1 tr=0 ts=6ad5daaa cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=BdKKiVBxiTNh0JwODn8A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE5MDAzNCBTYWx0ZWRfX8hcLAkJbjeNC
- rv7XZUKzSz67kHteS6tLcRN9PdUCCmYOmgdv2UlFZmpamLpZ3UH9SnJDNAO+K5Xd93rmaisrVpX
- WppPh+/oQ8Un5jJQ10me5FE2WHAwZTI=
-X-Proofpoint-GUID: T1G9eOk7o-EigrjfgA9crZAav1XT9UUO
-X-Proofpoint-ORIG-GUID: kXCNzz0_rstK71_YtHoaIcEQfFdKsrNZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-19_03,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0 spamscore=0 impostorscore=0 phishscore=0
- suspectscore=0 bulkscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610190034
+Content-Type: text/plain
 
+Andrea Oliveri <oliveriandrea@gmail.com> writes:
 
+> Hyper-V running nested on KVM (e.g. Windows with Virtualization-Based
+> Security) allows hibernation of its root partition only if the parent
+> hypervisor sets bit 20 of HV_CPUID_ENLIGHTMENT_INFO.EAX. KVM never sets
+> it, so such guests report "The hypervisor does not support hibernation".
+>
+> Add a "hv-nested-sleep" property that sets the bit. It is a hint
+> only and needs no KVM support. With it, Windows 11 26H2 with VBS,
+> HVCI and Credential Guard hibernates and resumes.
+>
+> The nested hypervisor uses the bit for one more thing, on resume:
+> instead of writing IA32_TSC itself, it issues hypercall 0x103 with the
+> TSC and the parent reference time saved at suspend, asking the parent
+> to restore its TSC. KVM returns HV_STATUS_INVALID_HYPERCALL_CODE;
+> the nested hypervisor ignores the status and already compensates the
+> TSC jump in software, so the guest clock stays correct.
+>
+> Signed-off-by: Andrea Oliveri <oliveriandrea@gmail.com>
 
-Am 15.10.26 um 12:48 schrieb Gautam Gala:
-> ESSA emulation in migration mode silently dropped addressing exceptions
-> when the guest page-table walk failed, so the guest never received the
-> expected PGM_ADDRESSING interrupt during live migration.
-> 
-> Patch 1 fixes dat_perform_essa() to return PGM_ADDRESSING on a walk
-> failure, and __do_essa() to inject the program interrupt when it sees
-> that return value.
-> 
-> Patch 2 adds a regression test integrated into the existing cmma_test
-> selftest.
-> 
-> Changes since v1:
->   - dat_perform_essa() now returns +PGM_ADDRESSING instead of
->     -PGM_ADDRESSING; kvm_s390_inject_program_int() takes an unsigned u16
->     so passing -5 would have wrapped to 0xFFFB and injected a bogus PIC.
->     __do_essa() comparison and inject call updated accordingly. The
->     kernel-doc return-value entry is corrected to %PGM_ADDRESSING.
->   - Selftest: pgm_handler_c() now reads the actual PIC from lowcore
->     (__LC_PGM_INT_CODE) instead of hard-coding PGM_ADDRESSING, so the
->     test would have caught the sign error above had it been in v1.
->   - Selftest: virt_map(vm, 0, 0, 1) added so the DAT-on guest can
->     access the lowcore to read the PIC.
->   - Selftest: PGM_ADDRESSING, __LC_PGM_INT_CODE and __LC_PGM_NEW_PSW
->     constants moved to the shared s390/processor.h header.
->   - Selftest: SIGALRM/alarm() timeout wrapper removed.
-> 
-> Gautam Gala (2):
->    KVM: s390: fix ESSA addressing exception injection in migration mode
->    KVM: s390: selftests: add ESSA migration mode PGM_ADDRESSING
->      regression test
-> 
->   arch/s390/kvm/gmap/dat.c                      |  5 +-
->   arch/s390/kvm/s390/priv.c                     |  2 +
->   .../selftests/kvm/include/s390/processor.h    |  7 ++
->   tools/testing/selftests/kvm/s390/cmma_test.c  | 69 +++++++++++++++++++
->   4 files changed, 82 insertions(+), 1 deletion(-)
-> 
+Please take a look at the competing proposal:
 
+QEMU:
+https://lore.kernel.org/qemu-devel/20261005194057.10910-1-hmushi@amazon.co.uk/
+KVM: https://lore.kernel.org/kvm/20261005192431.87317-4-hmushi@amazon.co.uk/
 
-Thanks, applied.
+> ---
+>  docs/system/i386/hyperv.rst    | 10 ++++++++++
+>  target/i386/cpu.c              |  1 +
+>  target/i386/cpu.h              |  1 +
+>  target/i386/kvm/hyperv-proto.h |  1 +
+>  target/i386/kvm/kvm.c          |  5 +++++
+>  5 files changed, 18 insertions(+)
+>
+> diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
+> index e1babffb0f..4b37d5536b 100644
+> --- a/docs/system/i386/hyperv.rst
+> +++ b/docs/system/i386/hyperv.rst
+> @@ -187,6 +187,16 @@ Existing enlightenments
+>    Note: enabling this feature on old hardware (without APICv/AVIC support) may
+>    have negative effect on guest's performance.
+>  
+> +``hv-nested-sleep``
+> +  Tells a guest that runs its own Hyper-V (Windows with Virtualization-Based
+> +  Security, or with the Hyper-V role) that sleep states are supported for a
+> +  nested hypervisor (CPUID 0x40000004.EAX bit 20). Without it, Hyper-V running
+> +  on top of KVM disables hibernation (S4) for its root partition: Windows
+> +  reports "The hypervisor does not support hibernation", and an S4 attempt
+> +  makes the nested hypervisor reset the machine. No KVM support is needed: the
+> +  bit is a hint only. On resume the nested hypervisor issues a hypercall that
+> +  KVM does not implement; the nested hypervisor ignores the failure.
+> +
+>  ``hv-no-nonarch-coresharing`` = on/off/auto
+>    This enlightenment tells guest OS that virtual processors will never share a
+>    physical core unless they are reported as sibling SMT threads. This information
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 5da80ade70..9df628ed2a 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -10797,6 +10797,7 @@ static const Property x86_cpu_properties[] = {
+>                        HYPERV_FEAT_TLBFLUSH_DIRECT, 0),
+>      DEFINE_PROP_ON_OFF_AUTO("hv-no-nonarch-coresharing", X86CPU,
+>                              hyperv_no_nonarch_cs, ON_OFF_AUTO_OFF),
+> +    DEFINE_PROP_BOOL("hv-nested-sleep", X86CPU, hyperv_nested_sleep, false),
+>  #ifdef CONFIG_SYNDBG
+>      DEFINE_PROP_BIT64("hv-syndbg", X86CPU, hyperv_features,
+>                        HYPERV_FEAT_SYNDBG, 0),
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index e7a88074c0..bff8b1d192 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -2374,6 +2374,7 @@ struct ArchCPU {
+>      uint64_t hyperv_features;
+>      bool hyperv_passthrough;
+>      OnOffAuto hyperv_no_nonarch_cs;
+> +    bool hyperv_nested_sleep;
+>      uint32_t hyperv_vendor_id[3];
+>      uint32_t hyperv_interface_id[4];
+>      uint32_t hyperv_limits[3];
+> diff --git a/target/i386/kvm/hyperv-proto.h b/target/i386/kvm/hyperv-proto.h
+> index a9f056f2f3..df6ce6ae42 100644
+> --- a/target/i386/kvm/hyperv-proto.h
+> +++ b/target/i386/kvm/hyperv-proto.h
+> @@ -81,6 +81,7 @@
+>  #define HV_EX_PROCESSOR_MASKS_RECOMMENDED   (1u << 11)
+>  #define HV_ENLIGHTENED_VMCS_RECOMMENDED     (1u << 14)
+>  #define HV_NO_NONARCH_CORESHARING           (1u << 18)
+> +#define HV_NESTED_SLEEP_SUPPORTED           (1u << 20)
+>  
+>  /*
+>   * HV_CPUID_SYNDBG_PLATFORM_CAPABILITIES.EAX bits
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index da922f72d7..76f1a37ea5 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -1630,6 +1630,11 @@ static int hyperv_fill_cpuids(CPUState *cs,
+>              HV_NO_NONARCH_CORESHARING;
+>      }
+>  
+> +    /* Only a hint for a nested Hyper-V: no KVM support is needed */
+> +    if (cpu->hyperv_nested_sleep) {
+> +        c->eax |= HV_NESTED_SLEEP_SUPPORTED;
+> +    }
+> +
+>      c = &cpuid_ent[cpuid_i++];
+>      c->function = HV_CPUID_IMPLEMENT_LIMITS;
+>      c->eax = cpu->hv_max_vps;
+
+-- 
+Vitaly
+
