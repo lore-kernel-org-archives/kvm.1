@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.14
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792452723;
-	b=moY83XApsVNeG/j9HTMFfAVUASEfJEVvlKC7umnPH2CNRXwRmBTdCxEezziSnCCCtKfE
-	 5CwGgqUygeuEKFD76ohHagf3iQGUq0gSIszRAMJOaKF31qzKwD6SpDleuuCKtpfd5s0JW
-	 FABUN6GmQtxP6auh0JLjCVZ9/+3mTOZM/xxxca8fiLnOw8Pkx+eNR+vhKrStqZUJEYUdp
-	 ITbN8J0IoinuoTw2tCPSF5U1aooixVCvbywt9yj7VoMc2+RdJ1vDQU80VBYyoNeWrf+L2
-	 CFdJXGc4JBjv3sQhujRmruHr7h0iToXsnR9C0/q7j+Yg+XafsaVSv/MPbOxDtgi3jeQ==
+	t=1792452724;
+	b=gvoArjvx8XJv+zoW3TDXf61zFJsG4Sl5Tx2191D81dRxaPNxIRBswDxgvUrg4Yih3/TE
+	 uv2czH6NCkOHh9Y0XoQNZUQKOyF+Xu3S7wkuQwnbCPVC1NofW1TphmqP0Ds3eW+V6QXYi
+	 2BhcXx50axgZXhbPXESh5E3hBRydj8AXN7bftgewQspR32Y+L5n4kT9O7+e/qWJzYlBqe
+	 eQpHPLA0lEppYaYheSN7mNlwZb7DK3SSi4t5g0fxpS9RlvdPrm4l5cj/TFuJU2311AdpE
+	 VL5jSVR41LOh4VroYSJ/e6p2m1wkZB/a+R6KHe/8SvtUpMG5BsLWsowcxAsW3eKYl+w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792452723;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452724;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-ClientProxiedBy:MIME-Version:
@@ -24,58 +24,58 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=JKEIJrl+XE5qUFwVoKtZ9oPpqQfKCJOAbJRXyji0gbY=;
-	b=pFfwcSXemLtTDWUL6Cs8ra+/ktf7W07XgpfJQlxGvCxnZvFrbEm2nLC96690HakmBkBR
-	 QToFvptpQLBMh7isPLNni3Kf8ctPxdeu9l7DIwiqYYJoZ5jeBSGiKbClO45lIzbraevE9
-	 /Ty9/hKKxhH4vr5HJZZakI9FcVMNIDshIyZcwTBeLaaAjRo3pwPB6/2vI+79hlSpJxWWB
-	 6t4oUKrc4rubtHE8Ac5EQ/Eb95T36Ne+Ypf7xBd0IzYGjtLDkjMKZQ5zA7mCD1pxLZJZQ
-	 eWg3eqnYKMawtvU89XNlEsmaxbwU5g2H0wzSOKj2b+jPZqRehYjEiiW5t7g9Otg5lvw==
+	bh=LPnhIweAhW4UynW7YD2xT9gUh8SNgOX7jRw1weiNRHI=;
+	b=YBBjlvhrULT5hivPfotaf1jjs3nIyyJZ7gGFnZFjXVkQC6OwJMsUKsFxzgW/7JbXgjxh
+	 fhpWLkLfz/NXV5BpFhH9BfQ6ofWo95PFsoIXaNvfwLLUS7HVs9Y5dBe0/VHIj9iIuqMkY
+	 /tIw10rCvVZ/OdlSjtQcTmKJgBGNi1QAqD2oPVkspvIaKrwL84wFXeRb8nX1G1ZSHyjl/
+	 jGCinHh2dWVqY8oi+tOimlBXxgxeW62n3gNcrfGQgWtmj0DGNYPBIGYPjbl4gGEd+1YUA
+	 VNw8N51lm3ApOp6Y+x+G0ezwsRQaFCjw0IUuf/Tw/zV0/fW1ikL1dYzol5OUcW75jSg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gZb7kXdN;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gipmJMaD;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.14
 Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010014.outbound.protection.outlook.com [52.101.61.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000BE606A325;
-	Mon, 19 Oct 2026 23:32:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 000BE606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62A0606A321;
+	Mon, 19 Oct 2026 23:32:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B62A0606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gZb7kXdN
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gipmJMaD
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A3uiU88HFZFdS8JggEo4NgVR+6NlcRJe0WCf7YQj0ZfjgebDhrsYQLn8+1jC2bMDeP5iT09dFmx5N8k+Tr7L83ifi//gFAs4fWReWFS+Xhf/DcEsMgYUyK5+OUeiMago+ZE/y/9U9J2MJHQeDVp10rBeak2pvU9NWs12Q8sfvbbRO5CyuysOZ/rzQ7sVUeluTLHWe3US8In4xxqcoL7OwwwyXAyoIM+j/2d+3JRJO7BT1vLTk8eBOH2UQfNWNTnElWMwTDnA4g6uLozxhhFfgiIlyMatHs7H9lKddUg8j5PQeA2NEbhz68U9FQCcxOYQGU4iBNaXSxV5Y2SWGUz/Lg==
+ b=m82DHEWZGNu4j0uN90IMVTETHPzDxZ7VW4aRKoxWtdZmcTvriftPQczw7OjJdoPoNCjDnD0omimD7dFJYcYxFJ+64hJ0MjnVRo8gL6f8LuvAaJhu5QsDUKzUCRL84AVsIohlKMspykvpgBm4P9AsVtxLACx1bHPgmjHmK6MDkqqfLjekMi9kAkFQ9Fy7T7mWq1OOIoSCXSt5ya65agd1YDahEKTVTGfP1H+xtGE3qy1oAmCauDBlJRqDl7U+OcQUZ9yrRksOxEj2wPWzSGD0vpuxngT2Khoo/qt5FISZav/9ODHddk8ULEB7EPP8Qigpx0C62Z37vMgWYcUn6Wbh4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JKEIJrl+XE5qUFwVoKtZ9oPpqQfKCJOAbJRXyji0gbY=;
- b=q+jSgYfOQZ2loqUVNJ7Kv/1qkuy2unqD9pbZyusSnweISoqbHrfgAcozrwaB/Jr1lGq6RurGnoA771NFoN8yv6pj+/MRQvDsph0ixEm8bplvax7bIknNmd+w3h4Q5Wsjv/w3ugdrmtA8xRVLaaYcGf2Ui19g0U1geGDyK8WNaMMgMD1Wfk+jwdQgpeFXTJAmavuZCwVh8mtV4i++vqbTT8t6t7WY0KfThPrlXqaT9ce2t8Dt+k+Xkbt2VU67B301SzuDU71x2RQesWtmj7pwI9J95xKdf38leP9t6OVk2HE0113W1eaSXckyUE9VjRh4SJOwy16cX4fyN8dE/hN3BQ==
+ bh=LPnhIweAhW4UynW7YD2xT9gUh8SNgOX7jRw1weiNRHI=;
+ b=DovyZ5eiDtTBS8Pc9I3xYrSD5+VOpVTOoI5yoI8BtqNVyDEy4jPclMHkcKkIeAkbtrdaLdXNIG+JA9hBW9ObBl+zOyZxtZJ+EBDjLq7pJASzYxdKpwQhcIIs3fwaJhliu2IiY6F38DYCwpBG+ODVEYr97oU3cfj+N3lz2SaxlEaEa4rZTK5ymfEDDpFS3Z6Sq9odQika1gPtB4Q+pWETMnGn8FLBk8JQT4WTH0Y+BLHqq01/uYMkXrHFhG89T61+fwSJZIGlo6badZ8AsLLC8vanGZkV8CHyds554iSNDbZFns0f7vpAPh1tWRu6Qa8itsEPmvXPEYF53Aq5BRvkkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JKEIJrl+XE5qUFwVoKtZ9oPpqQfKCJOAbJRXyji0gbY=;
- b=gZb7kXdN0yQXD7GFWKW1z3ryKuLS8IdGPF8kZ+eR/RC8JQER2P2MkYRmotBaZtiURyCmj47T6eXg/nwqnR/p++gukCERXltNZeF95HjE+5VnSfVUojcQxWNEYkuc4IhMh4xoVC9SieKhPbhdcm+A1BWxS+nxDUwg1JHkDd5/AtKj6DlpAckFGr2Yy2HOSZuXM+KvwOzkhQCAZjVSBn5zOHYxlxTdALL+HxB5CfK7OEvg8zrmWr5zBK/6hmoXXZnRypMcbLkbNwdIVFl02dQrUcYCNI6ZqJA6Akd7XLiSeS+Uppp+KZu/vkK4T7fxMza4FpzU40j2S+dtvZhostmdNw==
+ bh=LPnhIweAhW4UynW7YD2xT9gUh8SNgOX7jRw1weiNRHI=;
+ b=gipmJMaD0mvePZlD7Dou9MdUWMyfpreaGMYpETkMeWM4zEoNHnMZui1wyCtneFawJ7DIpTNAgEAKZe5p+oZiMLJUDzLjkt4v6XocuhLBUvkYvqFt/YuUmBnTki6v2CHi2bieT/Hlxe/b+XtMGhR8OTsEP/f8gKnDuMPcwc6thu6e8nN6azYXszCfTkjmIWnYP3XfdxcXlUFdW+FhoYPpvwbvFvrGU2ALR08QsyydOgMgdiE0eghqCZXu9UeWGlvG01ym3ZNNAyuRoQPkKvzmaIjcrT7ivAtTV4+C/+b4/F9mZwdOrT0x8Gbm9tEA5X/+yZaPpgOEZUa9k7vGuranKw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12) by SN7PR12MB8789.namprd12.prod.outlook.com
  (2603:10b6:806:34b::8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.18; Mon, 19 Oct
- 2026 23:29:49 +0000
+ 2026 23:29:50 +0000
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 23:29:49 +0000
+ 23:29:50 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH RFC 03/20] ctlv: Add the root family specification and
- generated files
+Subject: Re: [PATCH RFC 13/20] Documentation: ctlv: Describe how to write a
+ family
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: Jiri Pirko <jiri@resnulli.us>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -89,14 +89,14 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com, 
  dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
  peter.fang@intel.com
-In-Reply-To: <20261015145053.3664509-4-jiri@resnulli.us>
+In-Reply-To: <20261015145053.3664509-14-jiri@resnulli.us>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-4-jiri@resnulli.us>
+ <20261015145053.3664509-14-jiri@resnulli.us>
 Date: Mon, 19 Oct 2026 20:29:45 -0300
-Message-Id: <179245258505.58760.6060356114682279013.b4-review@b4>
+Message-Id: <179245258505.58760.3972297562218204862.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-ClientProxiedBy: BL1PR13CA0309.namprd13.prod.outlook.com
- (2603:10b6:208:2c1::14) To CHBPR12MB731189.namprd12.prod.outlook.com
+X-ClientProxiedBy: MN0P222CA0008.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:531::12) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -109,102 +109,294 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SN7PR12MB8789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ebcccf7-85b5-4d38-3ef7-08df2e38ddae
+X-MS-Office365-Filtering-Correlation-Id: eebb7eac-2f0b-4ea7-e6eb-08df2e38ddf0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|6133799003|18002099003|22082099003|10067099003|4143699003|11063799006|261009223027099003|56012099006;
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|6133799003|18002099003|22082099003|10067099003|3023799007|4143699003|11063799006|261009223027099003|5023799004|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	n9yuTonbJEgqZba6YE1/YXhXC22yhGaqE97qsI8DONic07Z3DHySknSKefvWWnc5ehEwo8c9xea4JaovMUPDYzbVPEo0eq3ND/3M8j8hYhtfWVuTKnlUqJe4lJ1FGFPPuhKLMGqstoEmbl1ktgy3PknBLViNA1jVKI161Xe0Zq4Tod3kjvo9OGiw+4dmPCXcf2t8kYPIQ8yS+d+AHQrCAhCrfoUuSz2RjtSiqB4Eu0KRg6iQJOcB5M4R2rXXCwLBDp1mcJcOwGo8+gyV+ssJTnzfZDej+4CPkaD5mwDWm8HmOFhg1ufWNKIZubDPXhSYTTmgYI+15/0YavctYCMJAzTB8xqMYFsAAZYAXi3OdW0ozPwPz427+cmjEb/88ap52bdM4K4+BFicgjWB9Y6zOQsoc9+2eJR+jsv8Q+Qm4q90WQbWaNcZd2hn7dWbkiehB1dpFtkNV1LrXhqyx5CNpnDFGu7VoGvv6eKoR+ebRKWzTda6AbD4IIUdywf8nhjytnSZQBrZJQ2TiVF2SStuMyOPnTlpusQd16QQRXmqFYaLSgm0Gi1uiRvyF8TuB2K8Ilrv6gW5Qoe3yFJj21Dbx5HHuTXc4Kol5PQ8E41EnkIeXbuOgzf4/U0+06tMDjsaUZYw5aj5/+2s+UP/hms4MpzCJYji/4X79ixSBZnmadw=
+	s1evXvf+nAQraqxg0fFjlH8LfUhVnNLVwauV9A5PcQtUSPZXVvXWv4JBmRqFx/F8PcyAfxbGoDkAeAgKARXcDJa/q9AnremNPBz48n/LXH4TrEG9uu00mc6ppFLJBe5czoa5LW5n+UlJ8U/KU2G1xiCxkRRVH74v3z+vTXuYU2QTfspLAgQ4Df8LQ172S9JUEpSJcePXwCT3oSe2+KYcSK1BdfPE20pMGymjitkV/3IXcngjtJo1qICTI2AiWSWLgpbsRGqFfKUisI0FAT+WpdV2dsdTjFk1Tht3isMa62HwkpQOXURNskDrZaCt5/e0R9DxWrB1RSA5VPWNvgIb3acNrpb+gIYGvkEIPDM19kSAUH8lTkbUoodHti+9obVv8lW4PEawl8e2Gw3bivE0x3uCZAej0DiGC4nKkeY61ZTXDtqRQpy0aCWw9Pbx435wXLX0tORZjSwxkws3GhQ7theBVwapR9jPGo+es1qS2PWtRqiL6ngN4ge8BEll2XUR+D/Ksvu94ASfO77aaNymcOkDJ1R4+tpFnZm1APky/lAEBfLwItXCM98hlgogcZt9DVk9yaowMonBpNVEh7/HMCtnMKgs3Q1t/8iP2Ed6yzN5ovsMxO6qvRPM/BA4gIATHRd7wqZ4DJBJCUBrkgko4xG8E0+pOqNVk9+dKNAb/I8=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(6133799003)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(6133799003)(18002099003)(22082099003)(10067099003)(3023799007)(4143699003)(11063799006)(261009223027099003)(5023799004)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T0syaXNsYlN0amtqZ3ZpZ0pRRTU1SnNRYmx1cXl6TURlUkllbjVWV0NvdXN6?=
- =?utf-8?B?RVlHTnRZSit4dVkyZkh3c3RQU3Z0RVZ3VTJJSWIzQTBrZnRBVm5IWXJ6T2l1?=
- =?utf-8?B?dnZvTnJjcDdaSWZGa0wra3ZOWENxT0h0bVJLbkdNOEtnNzZxTDBTMVhWekdT?=
- =?utf-8?B?bGpLaGZkc2RlL2pQbm0vNy8yL3JucVpTU0M0b0pJb2hCV2Z4T1NZRzE5UE9x?=
- =?utf-8?B?aE8rQmdIVitLWTJXbWszN0dwb1U1N2UzVlF6R0JxK3NENXZDUEYvckNFVU91?=
- =?utf-8?B?TEh6TnZhR1dhUHBhZjJ2bmxRWU80aWoyTU1vZWU3cUVpekV3OUh0b1JFUnhZ?=
- =?utf-8?B?RmNOTko0Uk9WdGlrWithRTFDYWNVbWo3dHRjSUk3TUIzenRKczErMDhuMXpz?=
- =?utf-8?B?TjBKSFlOQTFQWnZXcHI1endmWE8yQkNCUUEvNzU2ZW03WjRrZEZab2tpa1NB?=
- =?utf-8?B?eDJhM3BtQ0Vod1NpcUFUdndoNEtkb0dSYWZzTGpvYmN0Uk9QVFE1S1VkNWxP?=
- =?utf-8?B?ZTgrU21yR3dPRDJKYWxLY3lpOU5mYlphQnV2QzZhbHFSYkRjaVhyMkhEdEd3?=
- =?utf-8?B?OEtMa2VJTzBJQnIwRXBHU2p6SFFWL0Q0QWg1aHJPUUdzNnEweVc3YzlZUjRM?=
- =?utf-8?B?by9YNzVqRWdZbFBtNTFwM2p5Z1dLMzV1ZGhWMXh2QnJ4WFA4SlQrTndPakQx?=
- =?utf-8?B?YjYzSFI0WFJES1ZTOXNBQWlLUi8zcWV3UEtYemx0bjVXcXVkMFdmQ0V4MGox?=
- =?utf-8?B?U0ZyN3I3ek0xUzBEUzhNVlZoREpVZVRyM1BkenplUUdpTFZSZisyRElKUk9m?=
- =?utf-8?B?LzNGbHBVRjlOTUt2cGdmbEdVS2NFTWhrTnhwdzJPZlk0QW9ObEc1UzZFc09F?=
- =?utf-8?B?SzZHbEUzYThXNkc2azFiUFBxMlpQcWUwMTlWSGdRSzBqUjhPUEhKZXA0aHEx?=
- =?utf-8?B?TmdDdVJDZHdCa2YyS2F1cVpVYzlKWlhUQ1NLSnVCT1pFMEhWbmhZampzTVRZ?=
- =?utf-8?B?UXMxczBsOTA2THZ3QlRQRFpSNms3QThac3hLWGdkMnZoSTR0V0xTR0xmamtY?=
- =?utf-8?B?R05vOW9CTU9jYTdBRk1LK21YZmRqbTE0bWlWd0JBamtER3l0K3NnNy9rVFNz?=
- =?utf-8?B?cnJQcG5EQWx6RTE2UkJPT3BHTE01UDkzakE1cWxXejJKbHBRaHNtSUd5TDAy?=
- =?utf-8?B?RHYyR3FBMmE3RWNWNzgyc0UyNU4zbHFNYUREd25mTXZPYWNmQ242SXIzL3Jy?=
- =?utf-8?B?VTBCUGIyRzQzbTR4T042VytLUmRoK2JqZ2ZCcDN4cVZzSmMvT2hZNFhZdER1?=
- =?utf-8?B?L2tocVBkVC9KUFFOQllZWkhsSlNDT0N1THd1a09TNHJSaTFtd3pLdk5nTGZI?=
- =?utf-8?B?TnJNaGc1ZjA3VFJ5UGVrTDdwSm1Qd1JZZS9wd2ViYzByWVI4bVowMXZ0TExs?=
- =?utf-8?B?cGNUN2x5SlVZdjZ0NnI2Zy93Q1Fra1g5Z3NLTHQrTzFzZjZTK3M2aEcxa2dL?=
- =?utf-8?B?YURvWWc5Ti96T0htNWFyTDBpYkZnR3lZQ1NTT1VSRE1qTW54NmtZSStRNDU3?=
- =?utf-8?B?RDFnZFZodWFrU1V2S0VFRi9XSkJiN1p0dWlkcFp0Nk83UTFTWVFTcVJOSEw0?=
- =?utf-8?B?SjZLTzZUQW5HdHFld1JZYUU0MXVaeUlVQWlDT0FzL0M3Njg4dWk3RkZmem9k?=
- =?utf-8?B?Umg1ZXovVlBSeE45blZQZ2RPa3JzRVJod3RWUzVFemhueXB0aTRSRU5taFMy?=
- =?utf-8?B?djFFbDBJSWVqUkp4YVVWWlkvSHo2OTc5OGlkNkpKWXMxSThYTGJ6RFljOFRv?=
- =?utf-8?B?eVM1bmdFMFYwNTZFZys4T2NLRW5jbEFNU1ZPdUwvQVJCQTlmQUJxSnhYaXhx?=
- =?utf-8?B?TVdodXZ2SXIxeEJpMmtOUVcxZXhMeENRNUl5K0lVSE1aRERid3cra0VrT00y?=
- =?utf-8?B?MG5aMjJGN0tSMlIrL1ppQTVPUjJPbXJJNjZIRDlhOFdHekxoa2VwKzIvOENh?=
- =?utf-8?B?TW1Pa1JDRFhCbG1CY0w3MjdxclYydDNzc3U0R2lpdU9jdldPQTRFbkxhNXIw?=
- =?utf-8?B?Wm5VdEdiZFd6R2ZlTXVRL2JNR2pTYXAyekNiWW91b09oR0s1OVo5V3ZEQTd3?=
- =?utf-8?B?MlVzcWpyVGZRU3g5Q203ZEc0b2R3dDVCOUw2Tk5yNWlWSnVRaWVnUGRtR2l5?=
- =?utf-8?B?QzN5cG9EMG91TWluLzBFeXhyWExlVU9XdmxsYkd5MlFQSnZtQWlkbnlpVXB3?=
- =?utf-8?B?d0NtSW1veVZ5bFBKaVpZblQ2L1h1QS9oVW5VMm9TYjc4eGlGY054c080Si9V?=
- =?utf-8?Q?4XyF0u9BunbgJ88khP?=
+	=?utf-8?B?Y2h3YzVsSGhlSjlBMkY5dDZ5MzRnUk5vb1VjNm1JdnRaVTZRV0RrNUVtQzYz?=
+ =?utf-8?B?NDh5bFNQM2daMmcxZTl3dTZCMEtqNDFRbDNxd0VMUng3d1htZTJvZ0VuYnVt?=
+ =?utf-8?B?cW5PQ29ETjczOXBCelBxUThadTlOV1NJN1ZTRXRQZVBJeVkvVzdLeTFydHlQ?=
+ =?utf-8?B?RnkwSjlCSE4yOHl5Wi91b01ZZGhwUFhNOVI1NUVPdzdPQjV3dStNUVQ3SjdZ?=
+ =?utf-8?B?Q1hWL1JQcVlxV05LMjlTaksvSVcxcmRzUWdCQ0tVemg4UFJLTDNGOFBGbG1n?=
+ =?utf-8?B?SWRCb0hBdlFsZ0dCcEhvUjh2M1dETFIreGkrWkdyblBVMlFxSjMySHYraldn?=
+ =?utf-8?B?YU9QVStkWTk1SmVmQTFTRXVJSEVPOVVsUFRtL25CeGZjZ2hnUjN5bmJGUndX?=
+ =?utf-8?B?UDQ2Y3R6NVZ4djFYMUNjUUFUeTBYSTZQSEhBN1Qrd0NSM1FBN0VLZXBPUERF?=
+ =?utf-8?B?YTRXQ1lmV3Y5aUhSMlZJeVRzQUJabnhrdlBNWlB1NjBIRDJ5U25wckRGUFds?=
+ =?utf-8?B?dUFYQlpvUkRjSy9FRlpNNDFqYnY2QnhWUkVUZUVsWmloVFMySlU3eDJpMDU3?=
+ =?utf-8?B?ZnozWFRLWUcyeDZxakUzNzE0RGg0R29lSXcvQmdxeGtWT3lZbkl3czZ5VUV0?=
+ =?utf-8?B?MTZYUFgrMDUwL3VBS0tMNWY4NWh6S1lNQUJIUTRpT282UkllRHpHTzRZd3ds?=
+ =?utf-8?B?elhnNUhGaEtmSVRvdVNRd3pVak5qSUJEL0VxZnAyU2Z4ME5tL3VyMjZMbFYw?=
+ =?utf-8?B?SllvSWtwVzFjVDlOR08zbW43ODY2RHJsVEd3bzJpQUFtSDV4RW1pUVNqYWpZ?=
+ =?utf-8?B?blJaZlBqTkRScExJRW1kT2QyVUV1VlJUNmlTNS8xV1B1OXltcWZFWXNjTmQz?=
+ =?utf-8?B?OGtkRG9GNWROQmVlQTkwM0RqL2xMdTJuTUJNL0pMTDNobTk4SHAvYnJNdXF4?=
+ =?utf-8?B?MElrSzRZZ1VKSjJoc3ZRVXp6VU9VenB1Y0V3ZzBrTytuME9IYzcwVnh6NXlv?=
+ =?utf-8?B?cEpaMmp0eS94bFFDUXl6NWZtbmc0SGF2OTVRVUFQZ3U0VldDeEhuMDRzamhY?=
+ =?utf-8?B?aHVxWjdwSTQ2YzdtWlNqZ1VKTlFEVU01RlNoWG9TOU5QMnVoT0I3RHFsTjB1?=
+ =?utf-8?B?eDhGTkdyRDRzZHhCMXlrZjV3VEdsVDVORnFFMExjdTV2VDhyeFNKZnhtMjhj?=
+ =?utf-8?B?N2RIeDIzeC9Vd3AwbmJkZGlISkxyZE9CRmVUcU1reVhFOWU4TlZZRTlUamdn?=
+ =?utf-8?B?VjgwVzRMVVhxcDE0QnF4YWNqMFJRTUlUenlML0RoV3E0aU4vUXJNd25vOWta?=
+ =?utf-8?B?YWhEeXlUZ2xTUXpYaWplWTlSSm44WUVxRm5kNGVvNDV3eUJUSjd5UEpaa1RH?=
+ =?utf-8?B?YzdRVzJLSkFIUFoxbVhYdWxXajlacm9wMVkzYmJOd2RwenQ0SWpGcFZuOEJ4?=
+ =?utf-8?B?c2dRa3NFM1pCeWhyZnR5WVVwZGJaUGgxTGQzLzFwZFNvMDJRamRUQzh0ODZU?=
+ =?utf-8?B?Mnlta3RoQ2ZTOXVhcERiNWVVR0tJM1RJa01CWlZyTys0aGx5Zk9XTCtzZEVY?=
+ =?utf-8?B?SkVPN3JiYVkwVGsyYWFoQjlvM3ZpZmZSQVU5T2pEbXJZYUU5T0t5dk9RSTJK?=
+ =?utf-8?B?alpyaS9iUDhwM21mdHlURnNRY08xM0MrMmhFd0hzWWZWN084ZndYUjA3Yk8v?=
+ =?utf-8?B?Q2Rsc29CV2ZuQlAzQnpSQlRMOXlCVERhcWxOZ1FQWEFTUi9aYm4rT1FKQ2Jv?=
+ =?utf-8?B?NjhWbXRsait2M1paRGZ3aVlwYXhxaVN4VnBIa2c0ck5kSlpJUjlvamc1K2Ur?=
+ =?utf-8?B?UVlCYVFZbDdubGJzL0JHZy9NNDJ0Rk80UmZKTmppMUZoQklTUUpSaEFTbGQ3?=
+ =?utf-8?B?OHk5MmFYZm81cHZzL2RQOHYzTUc0WUxDWE9zdjdNWElvVnJxREMxbWs2SnNl?=
+ =?utf-8?B?SHNaSFR0L1NnUWVPd2kxTFN6QWxRVXIzUHRHckFKQTdralBRd1hsZHoyU2tH?=
+ =?utf-8?B?QnI0RTNZQkNYSFJROU15UFk2TkVobmwybzFweGlTY1VVTFdHOVIveWZvd0FU?=
+ =?utf-8?B?akJvVllzVFBCN0JhamtqeW4wWDZEcW12WGhraXd2eFpVR1NBNWRDOU1SUFhy?=
+ =?utf-8?B?aU9zczJwSmpXeS9jSEVFbERDeWFLRy9LRWYrZlpwYkFMMjRHZVoxaEwrZEVw?=
+ =?utf-8?B?RFdURHFnNno3Wi85SEliMnUxckZUTmdhYmNjclZZN2c2OUFuNHVmZ3REV1dj?=
+ =?utf-8?B?UzczdmNFUW1QSFA3Qm9GTkJ6bHBZUk9obkpENmxWVnJuVzdIU0IwdFJvWUFC?=
+ =?utf-8?Q?5j5WnaCaUXNCh8fasJ?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ebcccf7-85b5-4d38-3ef7-08df2e38ddae
+X-MS-Exchange-CrossTenant-Network-Message-Id: eebb7eac-2f0b-4ea7-e6eb-08df2e38ddf0
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:29:48.4122
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:29:48.8300
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NpnKYL6NkT34fivCMdUBo8cPRlquRWvLwgl5tvXbdHcc097SAzc8rno+4ysyqArH
+X-MS-Exchange-CrossTenant-UserPrincipalName: IcxPwJULIrop7U48QK6hUlJ3f9bSOKiKZv2XfnrY8Tz2o0LIcK+DN4bfEMFdTS1z
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8789
 
-> [ ... 238 lines skipped ... ]
-> --- /dev/null
-> +++ b/Documentation/ctlv/families.yaml
-> @@ -0,0 +1,13 @@
-> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-> +%YAML 1.2
-> +---
-> +# Append-only registry of CTLV family names, indexed by family ID: the entry at
-> +# index N has family ID N, up to 65535. The root family owns ID 0 and heads the
-> +# list, and every other entry comes after the entry of the family it inherits.
-> +# An entry may be marked deprecated, but never reordered, removed, renamed or
-> +# reused, its position being its wire identity. Every entry must have a
-> +# specification in specs/<name>.yaml, and is added by the change that adds the
-> +# implementation. Fixtures under tools/ctlv/tests/ are not registered.
+> [ ... 34 lines skipped ... ]
+> +Add the specification, registry entry, and output manifest entry in one change::
 > +
-> +families:
-> +  - ctlv
+> +    Documentation/ctlv/specs/ctlv-example.yaml
+> +    Documentation/ctlv/families.yaml
+> +    Documentation/ctlv/generated-files.yaml
+> +
+> +``families.yaml`` is append-only. Its array index is the family ID and is part
+> +of every generated attribute and operation ID. Never reorder, remove, rename,
+> +or reuse an entry. ``Documentation/ctlv/abi/families.registry.yaml`` is the
+> +checked-in registry ABI. The output manifest selects the generated UAPI,
+> +kernel and userspace paths and generation modes.
+> +
+> +Generate and verify them with::
+> +
+> +    make -C tools/ctlv regen
+> +    make -C tools/ctlv all
+> +
 
-I see where you are coming from with this, but it is going to be
-problematic from a global kernel perspective. Given CTLV is imagined
-as a general tool for any subsystem we cannot control the tree that
-things merge through. It will not be like netdev where there is one
-authoritative tree with a linear history.
+Maybe mention to inspect git diff and ensure nothing unexpected
+changed?
 
-So if Bob and Jane maintainers both add their own subsystems by the
-time it gets to Linus the IDs will get scrambled, and bisection will
-be lost. 
+> +Never edit a generated output. Change the YAML or generator and regenerate it.
+> +Optional RST reference pages are written to
+> +``Documentation/output/ctlv/families`` by::
+> +
+> +    make -C tools/ctlv docs
+> +
+> +Write the specification
+> +=======================
+> +
 
-Either changes to this file must be strictly done in a single tree
-with shared branches (which is going to be a bit hard process wise)
+Before introducing the YAML, write out in a more plain text form
+exactly what system calls the example is aiming to create with. I came
+up with:
 
-Or we need to put the ID #s here and have some simple process to
-coordinate them during the development process. Since new families are
-probably rare it shouldn't be a big deal
+For an example, define two system calls from userspace that look like this::
+
+    item_set_action(u64 index, string label?, blob data?) -> status;
+    items_dump_query() -> { u64 index; string label?; }[];
+
+And one event::
+
+    item_changed_event -> { u64 index; string label?; };
+
+``index`` is 0..4095, ``label`` is at most 63 bytes excluding NUL, and ``data``
+is at most 1 MiB with 8-byte alignment.
+
+> +.. code-block:: yaml
+> +
+> +    # SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+> +    %YAML 1.2
+> +    ---
+> +    family:
+> +      name: ctlv-example
+> +      inherits: ctlv
+> +      post-init: true
+> +      pre-fini: true
+> +
+> +    attr-groups:
+> +      - name: item
+> +        attrs:
+> +          - name: index
+> +            type: uint
+> +            max: 4095
+> +          - name: label
+> +            type: string
+> +            max-length: 63
+> +          - name: data
+> +            blob:
+> +              direction: input
+> +              allowed-backings: [ va ]
+> +              max-length: 1048576
+> +              alignment: 8
+> +      - name: list
+> +        attrs:
+> +          - name: item
+> +            attrs: item-reply
+> +            max-occurrences: unlimited
+> +
+> +    attr-sets:
+> +      - name: item-request
+> +        attrs: item.index
+> +        optional-attrs:
+> +          - item.label
+> +          - item.data
+> +      - name: item-reply
+> +        attrs: item.index
+> +        optional-attrs: item.label
+> +      - name: items-reply
+> +        optional-attrs: list.item
+
+I haven't quite figured out what attr-sets is about. I think these
+blocks should have some # comments with more guidance what is going on.
+
+> +
+> +    ops:
+> +      - name: item-set
+> +        type: action
+> +        optional: true
+> +        request:
+> +          attrs: item-request
+> +      - name: items-dump
+> +        type: query
+> +        availability: dynamic
+> +        pre-post: true
+> +        reply:
+> +          attrs: items-reply
+> +        suggested-reply-length: 4096
+> +      - name: item-changed
+> +        type: event
+> +        reply:
+> +          attrs: item-reply
+> +
+> +An attribute has one payload form: ``type``, ``enum``, ``flags``, ``attrs``, or
+> +``blob``. An attr set names one message level. ``attrs`` are required and
+> +``optional-attrs`` are optional. Its bounds and membership are ABI.
+
+The attribute first point of view is maybe a little too netlinky, I
+prefer to think of this as a system call first, with a first class
+'query' to get a list of things
+
+Alot of stuff this is going to deal with won't be the netlink esque
+'dump a table, set a table' kind of flow, but a bunch of different
+system calls with arguments.
+
+> +
+> +Inheritance and extension points
+> +================================
+> +
+> +A descendant implements only the operations it declares. Inherited operations
+> +keep the callbacks and operation hooks of their declaring family. Every module
+> +therefore depends on the module containing its parent implementation.
+> +
+
+This section seems hard to understand, it is missing something
+explaining the purpose an intended usage of this mechanism. I think I
+get it.. 
+
+Maybe structure this to be an improvement to the first example solving
+a specific problem 'like the HW driver need to add per-driver
+things to the scheme'
+
+Also please use a more neutral term like "HW driver" not vendor
+throughout.
+
+> +A parent reserves an extension point with an empty stub set:
+> +
+> +.. code-block:: yaml
+> +
+> +    attr-groups:
+> +      - name: device
+> +        attrs:
+> +          - name: details
+> +            attrs: details-extension
+> +
+> +    attr-sets:
+> +      - name: details-extension
+> +        stub: true
+> +      - name: device-reply
+> +        optional-attrs: device.details
+> +
+> +A child fills that same set:
+> +
+> +.. code-block:: yaml
+> +
+> +    family:
+> +      name: ctlv-example-vendor
+> +      inherits: ctlv-example
+> +      pre-init: true
+> +
+> +    attr-groups:
+> +      - name: vendor
+> +        attrs:
+> +          - name: serial
+> +            type: uint
+> +
+> +    attr-sets:
+> +      - name: details-extension
+> +        optional-attrs: vendor.serial
+> +
+> +The parent implementation opens the physical nest and delegates its members:
+> +
+> +.. code-block:: c
+> +
+> +    if (ctlv_example_device_details_start(reply, &details)) {
+> +            ret = ctlv_stub_fill(ctx, request_details, &details);
+> +            ctlv_nest_end(&details);
+> +            if (ret)
+> +                    return ret;
+> +    }
+> +
+> +The generated child callback fills it:
+> +
+> +.. code-block:: c
+> +
+> +    int ctlv_example_vendor_details_extension_fill(
+> +                            void *priv, struct ctlv_op_ctx *ctx,
+> +                            const struct ctlv_cursor *request,
+> +                            struct ctlv_cursor *nest)
+> +    {
+> +            ctlv_example_vendor_vendor_serial_put(nest,
+> +                                                   example_serial(priv));
+> +            return 0;
+> +    }
+
+I suppose this like RDMA and each HW driver using this gets its own
+full scheme tree that only has its own stuff in it?
+
+What about userspace, it "knows" somehow what to do?
+
+> +
+> +An unfilled stub contributes no nest or message length. Neither side names the
+> +family on the other side.
+
+One of the things I feel strongly about from iommufd is that it should
+be really obvious what HW drivers is being affiliated with these
+operations that have a HW driver struct linked to them.
+
+So, like, if userspace does a query and gets back an item that has one
+of these extended structs it should have a trivial way to branch to
+the right handler for it. Inspecting the attributes doesn't seem like
+a great way to go about that?
+
+Is there some place to put an ID of 'ctlv-example-vendor' someplace?
+Like in the nest start somehow?
 
 -- 
 Jason
