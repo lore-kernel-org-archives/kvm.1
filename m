@@ -1,105 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.12
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792444168;
-	b=vAfx/YsaKkMWL9WGVuwSG19SeCxJA8Es0fslY/39pD5hmCdzHZsKn3V4eAkdjtvlnKSX
-	 qqo2eqgTErRDuabBvAEw1snRw1GN8xNwU36z6bleJMw092K3XNs+XfWaH2QKCQDXIhcDH
-	 5jTCej0XBwiltoklwroCh1gnjOyIhZJ7o39ip3+3ASZfWqnXcv/aNBd5d6cp8UluwlIpa
-	 5VVUOLW7Mxnn7CVlmjn4Dd815Ga+cUAZMNfRQKXKKygJ8PUOq3ji0eWQWEDjnRTNHtZAI
-	 8rbraHc74HtGI0lgACnb6xiv4BogctPUx+yQg7LSI87pFN7HEPxLxAkXK0scJ0YccAA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792444168;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=qfOPIZ+caAUMGz2SU3h9AMcec7H/CbveDgbWwxj1Dys=;
-	b=376tGb0pdxPu+lZEykQolaKb79QZ+b5blOw/Sv6SZWyNgJo+WP459pH0SIjp4zEq8hSX
-	 2YdrGlAb6zYaESmJMdNtNigTALCfGae2q8KSJ+Xa7tPx7Sf2khE90M37O5qtaVdAI/WvN
-	 6ONuGOsYqSw31bKoHw1wUjFzpE9kUTHLhY0NIi+enmy8zY7hJkDFikUS2NX3A1cwbtWCw
-	 Hzx8cHvJqSuF4dbRyGeVy0hD7Cueke1X2oCpJ90wDJsxcVIz0pZ56GZN5p3Q/WzZ4B+iU
-	 Mcgpp6Wil0qnfdiZug7NEz48dwN23Gk8aEv6mUvdVmfpms3bnw2CFBc+2IOo9Yk2SbQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WrIWQ0tX;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.12
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012012.outbound.protection.outlook.com [52.101.48.12])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792445230;
+	b=IevaBNg3AAVDgVTMCZUMaxSNz7Iu+udPbC5kVm+NoBCJFg+AMMPiPVZLPz6nw/AB341W
+	 spsblsvX+M5xCYQzdh2M8iKGi0O106BstLyLj8Deiq9kxWV377mE7KC3TRbBoDT2HurPs
+	 M7ZTNSzRKY4+ujq9lun8Rn7KR+clQmaJSivWQoWawD/ucrzidDkBlb1gfkgI6q9iF3cZK
+	 gdlvnD1B0D3glkgVap3brIZbm72jGpJhLRuix/UbVj39fxpPj8lpS1xwAoHmUlmgjjPgj
+	 ZPoMXG4KOxb9r+GEzRSAVxKj2ET0VFM2utYPeZ0PXs8BHrba2j7Q+dYPUTKfpfr1NFQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445230;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=8DHkGnFBcEp54nYO2eePiEHaMsvKGlleU1AIuv6QlNU=;
+	b=qAzR18mw5+Q56YCEzBwM62/mDzfcMoNc9l9nWaCojPU0hMoaoee87kUlMp30aJ7TL/eQ
+	 S74uhgR0eQYqEtA7pi9fYko/ekZLh0x5c6+1Z6F2jQHM9ubN2zGXkZPFZf4RuIhJpaXuj
+	 SCbJhJ7ZjmV5A+bN56QGPGbLVFDlV63XDVTJAt1NfmYM4hYDXkNCcdwhckTbJnBHXc1Pk
+	 ridL2wb387Uvf1VCBZnapzw09n7xkpJQa8cSu7X0dHGda8/7XBnaIsvodrZzRq0bAbHXt
+	 ZNWDDrXJaLEyGSgR+nAb6aoyrGQ7790py3/R57thz7BWoLn2PL3XxAa7LWWpkTgL0KA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D2E84OPe;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EBE606A31C
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 21:09:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54EBE606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368C2606A31D
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 21:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WrIWQ0tX
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XFtW9viu5dn5JLTRp7KQPZvZu9vPE5N2G+8TRDdx75Wwdltw4pAMJuDxmqgwb2AOB6sdeoICVUga6YOfuQ/XxmWNSq32OINW9S+gqI2IlqFPQ28glY/bATBLOKhfJaelpibCPWNBUkNBImZTrfeAQh+2rOk/NiqIw23WPS2r1WYbj9G8TzRRAmGMJOk8XjDTPg7wFQx+8+qd3M1A9p2mOiXNAF45f67l1aEpFpDPc6HFmaZSlSN0tj8CDc5iTW62nkHZjVvgEfE11FioBfWe+hsFdNhxMhpbxZ1rKbpeL5k+F4+qQWhP5/aojsaM8RkYf379erVICurC3I1XdhMfyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qfOPIZ+caAUMGz2SU3h9AMcec7H/CbveDgbWwxj1Dys=;
- b=BOJuVemXNA+Mn9Sxv9oNe7jUic+s3e3OPqy6VEmY2+b9V6p86sctGN7F+7jORSZIpl5t1D8ZlAYiYs8d6Y7oOPjmcv3kDbR/ErTwK4AQoZRSVrq3HB7246C64r9xVga/GQnGq94THMxUcYSOddXv3WeXOlWCruF80ACkUb7ch3lkSK07F+Graj530pY3z6uIj5gMjaF/65DiX2jXNegxeiDnNPOeoCzEWM9LMCCVD0tHgk/pjOsGxpvHafIlwm4RppsQs/MMJjv1oTpsE+pAdl1S4GEXD0NQO7n89YEDqddYQM+OvJBTHwMQucojjWts123sv3qOhoIT2T0DSWBKOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qfOPIZ+caAUMGz2SU3h9AMcec7H/CbveDgbWwxj1Dys=;
- b=WrIWQ0tXUYaghdjS45DvPum7i4mYCIdNVXxXmm+PC0JGDBHzPawXrF0jqbj9BdVLARisEsi1KBHf7NJO49jq5OCJCosGgat4qgucR+1ySjnx9WHfgA3EI5SYv9+91UhD/FtKj30S34dgQoCuwumNn0X0Vf28ddmVyJRRugt4fAc=
-Received: from PH8P220CA0030.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:348::15)
- by CHBPR12MB307707.namprd12.prod.outlook.com (2603:10b6:610:33f::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 21:09:24 +0000
-Received: from CY6PEPF00000048.namprd03.prod.outlook.com
- (2603:10b6:510:348:cafe::55) by PH8P220CA0030.outlook.office365.com
- (2603:10b6:510:348::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.19 via Frontend Transport; Mon,
- 19 Oct 2026 21:09:24 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY6PEPF00000048.mail.protection.outlook.com (10.167.247.133) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Mon, 19 Oct 2026 21:09:24 +0000
-Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 19 Oct
- 2026 16:09:22 -0500
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>
-CC: <peterz@infradead.org>, <acme@kernel.org>, <kvm@vger.kernel.org>,
-	<x86@kernel.org>, <yosry@kernel.org>, <jmattson@google.com>,
-	<thomas.lendacky@amd.com>, <nikunj.dadhania@amd.com>, <sandipan.das@amd.com>,
-	<shivansh.dhiman@amd.com>
-Subject: [PATCH v2 12/12] KVM: x86: Use SCATTERED_F() for PERFMON_V2
-Date: Mon, 19 Oct 2026 21:05:32 +0000
-Message-ID: <20261019210532.378628-13-shivansh.dhiman@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261019210532.378628-1-shivansh.dhiman@amd.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D2E84OPe
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1851F000C4;
+	Mon, 19 Oct 2026 21:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792445229;
+	bh=8DHkGnFBcEp54nYO2eePiEHaMsvKGlleU1AIuv6QlNU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=D2E84OPe7sZIg0oKkOGM8uOTmhZ9QsPOK0xi5NNAriLP1pRX0g/wz6+DtLLg5RFtr
+	 kmiD/K0E4LNPgblUQzppQoumtDnPytrqZUQ8jcH1MRXmgXD1GHckD3Uvh6qtdb/eE2
+	 3mKDIwYZpp2UbEkJJXdwsyQjI9Y8P6XCC8I1vox4wmv9i30yf4devdc12khtibx0Tx
+	 aN6T5wxp5aqb0FV3HnWVAy4PKUSFIcP8u+poTpk5dfgFtSKYa3aLSn67T0r66fUAld
+	 ddFIAczVpPRc4mJwvhmgoKT1+02FHcqWsqVP8t9ZP+tVeci2nPf8bsEqplCJWhEXFs
+	 RgvbtffHQqnyg==
+Message-ID: <sashiko-outbox-178255@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 07/12] KVM: SVM: Advertise LbrExtV2 to userspace
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261019210532.378628-8-shivansh.dhiman@amd.com>
 References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
+ <20261019210532.378628-8-shivansh.dhiman@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Oct 2026 21:27:09 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -108,64 +59,139 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY6PEPF00000048:EE_|CHBPR12MB307707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2723c017-d18f-449a-a1f8-08df2e2540d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|23010399003|1800799024|18002099003|10067099003|22082099003|3023799007|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	G3zB7/mIatpwEaxSmCZY01VMmPOiW86qGZX2HowhT2AvBzSSBRmjBTBTvgkn9VWvuGkNDhi6IV4PUODALuwvUSohxy1j6bL7nc1WzvWagt/RwhCL5kz99LafSIgWGYtPpurm3WobdFW2y4yXLcghoff0cttgLaMUjeq3ZSglKrvxBRbXUci0ET3a/f3c/BS7CSsnHDUwpz/C14pCb53fTtNosaWBTuWm/xIemxoMFfpoJSfnrWBJi4FV7FdOUnj/UkElRNpNC1D60WsphGp1NLbxJwPlq0M5w43mdgOmCdFilO5DQihaR+IUU1aoQcXe5KwXffiaWJWWuYOi2uB2EhffOsoneW4E76WzaxvF81wYDAppDN/GN+QAXmr14lfhZeyw1I9IF1oENK0Qk05+DLObmJQWHso5+DWxCNAERwqursLxmCoZkWD/JrBhh5OWFdTLsxnAdigj3s0NJFecN2VVbrX6kH7wy82Kx/w4mWvfi9UpiBtHryVHhOAAMTET9iUxFG793otFJVMu07pycdH9sy/dcwg9hcYqe9JIB9myJIJCt6/6fppHWPB54mT2n4jg12+Do70mln4runMTCnDubBQjrAFiPmFxzyMrWjbzE74UFuJDeMd7fuedE7IvmKkZ8ycid0x7Yox3eJrKVKd1cjL5Cj6TYYkfAA6NyHfmYt+AVj4YV8eaJUs8SmXPMF+w39VuuHRtNraJiZV/6g==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(23010399003)(1800799024)(18002099003)(10067099003)(22082099003)(3023799007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	QaolSLL7Mv1mjvDg99DlZmhglF/0L4JlgClQU4Drd71U1t9dDNLi3xvYOErPp8vG/EJ8NdICidwfXiS/dYeXKIpkt/GFwmbO9jNNg0vigsufsgzZe+SC3noBPfSdzkR8XNKZM8MdZLCkZn5HjOCRb7aCDmAgM8zYIMHA1Pv5qG6dHIfh67Tw/MWQsUfo9Pji3TLF43lrmmC9l3aAF+WJX2rcZ5/8o6ClOWgd1TMC0Y34EjoDazOqVNPkrivusAXYZ7QYdNKfv0Pv6wb1q65ONm6jui9LPeeQXHaxNT8F9QGQq6+/1coH2LNGza7K+KKYpXFZxYofdeE+fvErQISuA8ZxClLbpjGws2rahKP0RFJGrOutGl880Gg0S1UTaO0dhSH+eKD6u8tybOhmrgn1txAv2kkJw/+/2i3MzGFl8njjHCTDwe1OsxFPkIRCtCGZ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 21:09:24.5515
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2723c017-d18f-449a-a1f8-08df2e2540d2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY6PEPF00000048.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHBPR12MB307707
 
-PERFMON_V2 is a scattered feature, so enumerate it with SCATTERED_F()
-instead of F(). No functional change intended.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] KVM: x86: __do_cpuid_func() reports lbr_v2_stack_sz when LBRv2 i=
+s disabled
+- [Medium] KVM: SVM: AMD_LBR_V2 not cleared in svm_set_cpu_caps() when !ena=
+ble_pmu
+--
 
-Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
----
+commit 7e80a77e67ad5de914e6e6583e6c7b559aacbce2
+Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-Changes in v2:
-* Rebased, no changes.
+KVM: SVM: Advertise LbrExtV2 to userspace
 
----
- arch/x86/kvm/cpuid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This commit advertises X86_FEATURE_AMD_LBR_V2 and reports the LBRv2 stack
+depth in CPUID leaf 0x80000022 when LBR virtualization, the mediated PMU,
+PerfMonV2, and a 16-entry host LBR stack are available.
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 37da587ede71..3d00a4eaf1a4 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1257,7 +1257,7 @@ void kvm_initialize_cpu_caps(void)
- 	);
- 
- 	kvm_cpu_cap_init(CPUID_8000_0022_EAX,
--		F(PERFMON_V2),
-+		SCATTERED_F(PERFMON_V2),
- 		SCATTERED_F(AMD_LBR_V2),
- 		SCATTERED_F(AMD_LBR_PMC_FREEZE),
- 	);
--- 
-2.43.0
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index adafd6fa2c542..bb24d83621328 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -1258,6 +1258,7 @@ void kvm_initialize_cpu_caps(void)
+> =20
+>  	kvm_cpu_cap_init(CPUID_8000_0022_EAX,
+>  		F(PERFMON_V2),
+> +		SCATTERED_F(AMD_LBR_V2),
+>  	);
+> =20
+>  	if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
+> @@ -1904,6 +1905,8 @@ static inline int __do_cpuid_func(struct kvm_cpuid_=
+array *array, u32 function)
+>  		cpuid_entry_override(entry, CPUID_8000_0022_EAX);
+> =20
+>  		ebx.split.num_core_pmc =3D kvm_pmu_cap.num_counters_gp;
+> +		ebx.split.lbr_v2_stack_sz =3D kvm_pmu_cap.num_branches_lbr;
 
+[Severity: Medium]
+Should __do_cpuid_func() in arch/x86/kvm/cpuid.c check
+kvm_cpu_cap_has(X86_FEATURE_AMD_LBR_V2) before populating
+ebx.split.lbr_v2_stack_sz?
+
+When enable_pmu is true on an LBRv2-capable host, kvm_init_pmu_capability()
+copies kvm_host_pmu into kvm_pmu_cap:
+
+arch/x86/kvm/pmu.c:kvm_init_pmu_capability() {
+    ...
+    memcpy(&kvm_pmu_cap, &kvm_host_pmu, sizeof(kvm_host_pmu));
+    ...
+}
+
+In svm_set_cpu_caps(), if lbrv is false, enable_mediated_pmu is false, or
+kvm_pmu_cap.num_branches_lbr is not SVM_LBR_V2_STACK_SIZE, KVM clears
+X86_FEATURE_AMD_LBR_V2 while X86_FEATURE_PERFMON_V2 remains set and
+kvm_pmu_cap.num_branches_lbr remains non-zero.
+
+When userspace invokes KVM_GET_SUPPORTED_CPUID, __do_cpuid_func() for leaf
+0x80000022 only checks enable_pmu and
+kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2). Wouldn't this cause
+KVM_GET_SUPPORTED_CPUID to report a non-zero lbr_v2_stack_sz in EBX even
+when X86_FEATURE_AMD_LBR_V2 is cleared in EAX?
+
+> +
+>  		entry->ebx =3D ebx.full;
+>  		break;
+>  	}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 69f9ea746bb6f..ea7535ccc3fe6 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5843,6 +5843,18 @@ static __init void svm_set_cpu_caps(void)
+>  		if (kvm_pmu_cap.version !=3D 2 ||
+>  		    !kvm_cpu_cap_has(X86_FEATURE_PERFCTR_CORE))
+>  			kvm_cpu_cap_clear(X86_FEATURE_PERFMON_V2);
+> +
+> +		/*
+> +		 * LBRv2 requires LBR virtualization and the mediated PMU to
+> +		 * let the guest own the LBR stack, and is enumerated through
+> +		 * PerfMonV2's CPUID leaf.  KVM also can't faithfully virtualize
+> +		 * a stack depth other than the architectural 16 entries, as the
+> +		 * VMCB save area provides exactly that many entries.
+> +		 */
+> +		if (!lbrv || !enable_mediated_pmu ||
+> +		    !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2) ||
+> +		    kvm_pmu_cap.num_branches_lbr !=3D SVM_LBR_V2_STACK_SIZE)
+> +			kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2);
+>  	}
+
+[Severity: Medium]
+In svm_set_cpu_caps() in arch/x86/kvm/svm/svm.c, both
+kvm_cpu_cap_clear(X86_FEATURE_PERFMON_V2) and
+kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2) are inside the if (enable_pmu)
+block:
+
+arch/x86/kvm/svm/svm.c:svm_set_cpu_caps() {
+    ...
+    if (enable_pmu) {
+        ...
+        if (kvm_pmu_cap.version !=3D 2 ||
+            !kvm_cpu_cap_has(X86_FEATURE_PERFCTR_CORE))
+            kvm_cpu_cap_clear(X86_FEATURE_PERFMON_V2);
+
+        if (!lbrv || !enable_mediated_pmu ||
+            !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2) ||
+            kvm_pmu_cap.num_branches_lbr !=3D SVM_LBR_V2_STACK_SIZE)
+            kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2);
+    }
+    ...
+}
+
+When enable_pmu is false on an LBRv2-capable host, kvm_initialize_cpu_caps()
+still initializes CPUID_8000_0022_EAX with F(PERFMON_V2) and
+SCATTERED_F(AMD_LBR_V2), and svm_set_cpu_caps() skips clearing them.
+
+Because kvm_vcpu_after_set_cpuid() populates vcpu->arch.cpu_caps from
+kvm_cpu_caps, doesn't this leave kvm_cpu_cap_has(X86_FEATURE_AMD_LBR_V2)
+true globally and allow guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_V2) to
+be set if userspace passes leaf 0x80000022 in KVM_SET_CPUID2 when enable_pmu
+is false?
+
+With the earlier commit ("KVM: nSVM: Propagate LBRv2 state across nested
+transitions") in this series, svm_copy_vmrun_state() and
+__nested_copy_vmcb_save_to_cache() check
+kvm_cpu_cap_has(X86_FEATURE_AMD_LBR_V2), while nested_vmcb02_prepare_save(),
+nested_svm_vmexit_update_vmcb12(), and nested_svm_vmexit() check
+guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_V2). Wouldn't leaving
+X86_FEATURE_AMD_LBR_V2 set when enable_pmu is false cause KVM to copy LBRv2
+state into the L1 MSR_VM_HSAVE_PA area during SMM transitions and propagate
+DBG_EXTN_CFG_LBRV2EN across nested transitions without mediated PMU support?
+
+> =20
+>  	/* CPUID 0x8000001F (SME/SEV features) */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019210532.3786=
+28-1-shivansh.dhiman@amd.com?part=3D7
