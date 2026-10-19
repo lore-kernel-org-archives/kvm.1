@@ -1,108 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.28
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792424878;
-	b=C0ZXftxEospjxh/8eqU0woq/QQ7GjmnYks+dEWXHNrqA2pxDxRqgJTakSxUl2UDyyXA+
-	 APTJSR8mnlw7zBgo4nZh7iLbtW6jcjfolYqhOHh+bNUjXrpWnM29CSD8NPrmzOY8g6PP5
-	 iwyS9KRq3oag9A9xTkNCM2Jn+vBh0RcafG6cbqQG5YQPBa+zNV9QiGoMJ+TWXBuuh69YH
-	 i4Mvrbf4RINiDb9bY9dqiBB4dcsBHRL71wxuJtnToPgbEO6Bgpkfxb8cznrLLePudyhTj
-	 xa5ydq3je5In/WU7fwsPm+WLl99ZMT1vAe3Uzf7sedrNtApzpefn62lPrYQkbtsuzBQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792424878;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=8PGE3p0sonSO4wIR8xXkFH5hBIV11o+vX3deO4y8bgM=;
-	b=JI2VFgmoMCEJvqoXOzrcgEgw4g4ZjuvRroMCHAR39YinML8X0N+N8/7bb3rGKz/dg/GY
-	 gE6rY1CDq97AWfMFf0XOY4FBiGTVYzC0Rw0rjLxe3+l9GiiLsP08ca15tRA9k5ure3kIL
-	 tLlX/H5r6W8rW4zlBNDPrgCl7HRHo6h59Ijw7IyLeW+hHcgqzSPzHWXNpMg2DbZgqB56u
-	 p6FhA7H5xGsDrk6tY0s0/9DKeaf2lPsnVQhsv6+8oMfTs17q0COyb2MpI0BOF4l+fzonW
-	 FJmkSfnbLtepm318ojiY6fSfkMvn3JPE58Ok4utJ6C7Zlc6rXalt6m/CTRldI+JUhgw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=VkOqPnoD;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.28
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010028.outbound.protection.outlook.com [52.101.193.28])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792425700;
+	b=U9HO9x2nkpJIaLQ0eoSI38wjJb8R3AVTwwAdO4bB1+fFYgpeAXhKPhQFgiymhjMsALJB
+	 hI7f7M6oAE4yQWL19IVecj2smITgHU+Qene0x0ueylwc05LZYE3Eaoo/F1c1+iWDiuybW
+	 J67liRoqAG6knsuLNsavTO6B2iaB70f53zLL/2bpax/mlAA5End7gsu5jb3W1J8ZIgvVi
+	 wCD72M1hX9l50gO28x/VUYS+sFvMJKraUX+o5k3m9g51EN/7VY6jDaj9x8TcFYw79RQ53
+	 ZNAzp1wnksNxuvXa6WoDNjBAqxUo/vHUKa2nskFQHV0Zbzg09KvwcYQiIu11iZpyAGw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792425700;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=QC9xCOK+f/jHXxb9ySYvKpqdWbzsq981kopxJgUWmKs=;
+	b=Y4hQQ19D4lV+jWit899TS/j4SXHfK6nhcGrv+FYw/jewX9OBhf7Z89p2RMPmT4V6TNSp
+	 IoAv6RaPv3EPly1EY96+u1hIiXrWaputZ2nS+PiTytPVrepDcH5O8zSMM9atOXcudqMbX
+	 cBJcpSpR1I5/Qa1c+7ELVGdHOZKPMKrMk1AXjTppELL8UZ1xb3csdMhuJjRtqdOtz6+qp
+	 qqBupmilCDuKQWjBMVQCeS7f7psHMGIdx56iratTv2OElQaSnzBOIvWIYug9fazBC6EA8
+	 tcn2VfrTlFGLQMRlKshdVEFtdsVe5fVIYI198WZwwWxJXzeIUvHlzRk/jP5ZQGHVK+Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VJ0WNv8V;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=aGHH0HZt;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3966083432;
-	Mon, 19 Oct 2026 15:47:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F3966083432
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8E0606C922
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 16:01:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE8E0606C922
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=VkOqPnoD
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OaM3bU4wvWSl1+NcC3nwRZN2lRAWiFnva3oOJC3VmzQswy0ImUEZQ/cAc9mQg6Wu8xoIvyzHiqe5HrS606ms7WDp0bK9XAGn6gpxei17J30GSVJaWik7FX1NJm4NcCCKJh9aiOeTfwRX/HA0GYy/HClPQEQXeKAAAPTwtlObPcnKUOYDQUh2DfwmJNDRiVWNSP24V7Mgi89/PNwM8z5rPUp7LvWX5gsuSIQ9xSXaklOqD61vW2rlJAX8Byraj86yzblLHdpG2b37b49IeaHBBNYo5QvdwnPI9sFsZ8otxX1x9Q0r+rwfRlKUCkie0KJ9Q0tZFmdMWR1e40YCH2VYCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8PGE3p0sonSO4wIR8xXkFH5hBIV11o+vX3deO4y8bgM=;
- b=WWb68Sw7bJYmnByW7BqWecMUrbaWJjyAr2ZvYmKuyOio1KoihEcNuAVdfx4HknmuuU+7ag39Nqtkdm8un5SrULD4n3BRqJMTQlndZWBhrLbIcgQjfUVWrt1ZARIUkHfkU+kK14CJ3rEN943/lKELlr/1lU+TdIAOojelmo5wfoSznK310fms4zocM3pCfITyUEmCJyhlCTyszUJASAZRBVcM4E5ehsj2yugtKk9fTBMB2bKTyXeqH/1qBEW+WzWF7YSHjJIh7Vjv3jKV8GalZSl1z8JM+jy9n060FJ1+M4XknR04rZygZnGZ43pBYS6/jbr6WWdqkQByEKxigxS5GA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8PGE3p0sonSO4wIR8xXkFH5hBIV11o+vX3deO4y8bgM=;
- b=VkOqPnoDTYoR/t6fjwRUyY1k549HkBekgT5IDYY/xryr9YKGZmbjCOg6IaTwYx56G73L8v4jzxWzaIEnAwL9HsuTKSzxVB1cUFdzf2HevC6vS4Zj9aUhOv5uZgeuJWSK9bJfqJEzBHaQCagEmiR104kOA3glsvFOaAO3L/QGITQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by AT6PR12MB932818.namprd12.prod.outlook.com (2603:10b6:170:116::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 15:47:52 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 15:47:52 +0000
-Message-ID: <cabf7da5-e5ba-4a49-9edf-f801f344ded6@amd.com>
-Date: Mon, 19 Oct 2026 10:47:49 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/18] fs/resctrl: Deactivate kernel mode associations
- when a group is removed
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de, ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <e9a2b05b2322acf51e16571d07bc7ee297613b3c.1790867441.git.babu.moger@amd.com>
- <08e1de88-cab0-4caa-87f2-94db0f698ba7@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <08e1de88-cab0-4caa-87f2-94db0f698ba7@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN0PR03CA0015.namprd03.prod.outlook.com
- (2603:10b6:408:e6::20) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VJ0WNv8V;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=aGHH0HZt
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69JFPDmT3675001
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 16:01:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	QC9xCOK+f/jHXxb9ySYvKpqdWbzsq981kopxJgUWmKs=; b=VJ0WNv8VbS+H+h/u
+	1NAHOZqZPnNmFGTMyX2Cbw1oHOwgUJ13aoeNDiBvJSCLpJctWMdhTyYyoAYq2wvS
+	9K8CsqSrWYGERhhAVJMKqGPDG71RaasyCgNRTLmb39tPJPbR9p1xm2ynaLpKHPIp
+	I0mOYwFrbLzV8NYQPcoURT2Mo3ItzU//Pql/uFA5y/g4OkJYJoP599w/xNOsP7+N
+	BkRq1pgGO71ktRibvL3dMj089x9G8/D4FeQ/777916PxfDUMCc5O2ewWW3OH38Kj
+	st/UTHD6abMhBGL0Y6grXuIGrNLGF58Gj9g3sMHmONs1Qyxei7YkmKVi6ik/lokw
+	hTHYrw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hdf48j0mn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 16:01:32 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-3510d0baf63so5852488eec.1
+        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 09:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1792425692; x=1793030492; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QC9xCOK+f/jHXxb9ySYvKpqdWbzsq981kopxJgUWmKs=;
+        b=aGHH0HZtVMcoOhYQlBIx6zdX8kdykgsElb+vQl1YjSDiwHlN29DvmbolmfE1dZVKid
+         6cW3MXy3xi0alyIntePoP8hTb/AgIQpvKAN0xCGu/P2vQEokE0An3E4uycWvaRFqU/zx
+         aaBxRBX0fZayb8BbIyBm7wsoiYwraenul7hHuo4Lyhia7xfWnZQGg+zhE/IEjXnzkURe
+         Hzq9VnX8A8TQvxwH1U4+O3zXBwKHPgG0qd2EvIL6NxOiskltFmZ6Rxo493Fy+hW/7aDf
+         SSTu62FtzVWn7yzo4jx054VD+AMNdaX2Q6NidNA/E8M9I37bShjtL9VOLStbwVQwcBLK
+         pVbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792425692; x=1793030492;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QC9xCOK+f/jHXxb9ySYvKpqdWbzsq981kopxJgUWmKs=;
+        b=n7lW20Q7lgHKPWFPRU8XWa/q+hfMw81T+3i+qO3ScK48zHGSRFovPPkFsWFyUcgu6S
+         1KEqvmq673M3nC8pXmnIWxHDy263djzKhh1ke/GsaYeTc9ryAe/U7CikicNrFfWyt9Jr
+         FwwBU+6cBfnAugc+T7UHS/3Xdcl/JF3/GdJmntRnwKaiCEg9+QDOv5X6NdPzo4f76vYy
+         R3xEWem+Wkv5IYHVjYep1Xb8/9PTHpg7TIrVpM2FKkICz08PQY2nT2yy/1ZChH2ltzyr
+         SKXS73LjB29HdC5cw/cVn03+smWDuEFK1Pa6s4u7xF6PIalB4FZeTxq1P0Ya256PyOG4
+         UNOA==
+X-Forwarded-Encrypted: i=1; AKwUvBwzDGU9BFgEsF82ggzBSLRN6lEJqNmqO4G7ENSPoXASMqu98HGXYq5xei9i+tvgbaMdRrU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJOF/eopBJ3G+x08kBZ0OCGSh/rz1ZWkcY3d0iQo3Mv8eZgTbSM
+	syj3hJ7IU+3b35MXFRoUvYqWUrbnf+jLtEZzPAg+H8ce0NPIbKHgvMcE8CHoqmf8Y/JR6ZGmnhG
+	87n/EDsqloPAQzRiAuaFiJzF0oBOJ4V23nZIXEb0TkubN8evZAT+1ytlXWivAJtQ=
+X-Gm-Gg: AYBFou22hfRlgzn4Yy8E+jomOaxtATtgC6tak3O8Dhm48YzueJzTyjlklGWZc3XEXAc
+	BflOu1n09Se2eB/USPc6Nj5HWC1PeHPdxwssJJHmyXcq67Ia+isKhCI+tMjAHalAh931DFsspcw
+	G4kT7fzgE9bQ0qHagsQ/96p3uTetuGdwPhePmocDe8NxNXfiuM0JmoJIPfdMOGumjoBkrYqp6Pi
+	Vkd7lDetYU7mg8Tz94yf1KxOJQvnn/StU17xBxoimwSKEaxZ0Qez8kxqzcZ5sHq5zGSYaS5l1gy
+	APOuqDfDu5r10UDV+AzygeTTJarZdmiji9/sE7azBDeG55UGE/GDcdZmYA7zmy9VRw2aXSZO7xX
+	gQdCENdGKILywhHhfnLFvRDMWlPXXZtDovMNcevzEHYGvaXd6F0eiPXPcIX9PEdje8u6jkQ==
+X-Received: by 2002:a05:693c:638d:10b0:359:8492:20ff with SMTP id 5a478bee46e88-361a1270c4cmr10867495eec.12.1792425691580;
+        Mon, 19 Oct 2026 09:01:31 -0700 (PDT)
+X-Received: by 2002:a05:693c:638d:10b0:359:8492:20ff with SMTP id 5a478bee46e88-361a1270c4cmr10867456eec.12.1792425690814;
+        Mon, 19 Oct 2026 09:01:30 -0700 (PDT)
+Received: from [192.168.1.199] (192-80-163-190.dyn.novuscom.net. [192.80.163.190])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082784ec8sm31303112eec.22.2026.10.19.09.01.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 09:01:30 -0700 (PDT)
+Message-ID: <bc7f368b-ffd3-467f-b1a0-fc03ba60ff6c@oss.qualcomm.com>
+Date: Mon, 19 Oct 2026 09:01:29 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,247 +113,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|AT6PR12MB932818:EE_
-X-MS-Office365-Filtering-Correlation-Id: a29a1f73-f166-45c1-f41e-08df2df855d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|4143699003|11063799006|56012099006|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	XeqRYou1d5UzSj9rWJ8C6sn1G2womXCMPPuZI9J+aoW+m6CEfQLFNMSu51sljZME+rD1XJwwf0Luo82K0NoNSLS0+L1u9s9tp2oYyzQfNmJ2pXlW5WwtSdttootsQHbvUd4QcDetDAUsFKLDAkNdsaB5zEfhFWhT1O4lISTzRp16PBF0K+U1dEM0B4eXzHFadSZl4wtX84FuO7GLIAFTSxMqS6V6NKi6d7RAlCkhW1WLpPJFZqn+O05Ts4BkrqjrJAy0RyiN4hGNwkDpsIHVbAajKojXnlSU9c/EisnRjP5R3rpWfV7PlBUDTF6FT0ZPeYj9t1JM8gPWhEMtUDqciRsFR+2K7rp5KJB/MHMdtLdEV/gw97VRnZ5Cfx7XBr1CgJVfryLXtyhvpchaU+LdBU/OT7+e0vVaGCaNSjduemELbcZTpjwo4Fa6vNoaACHUhAndpZ3NWHXlQ7DO/o74yRiAVevnrYksz+/jZxIaM8Tz+0GO4qw2pZv5fxH8qEEFxh45hRAgZwvoA7o/jjLdU+oWQWWAQnU+DEzqP3xd8WBeJx+vzYNgDWs/gbhuz/oXWD585lR1cH7j9Mutt1+TcKKO24qa4Cc4VjLBU4HQlpqeF/nv+dWVqTy7GBse2nWMLVrdkR94yrchwnK3hTMxWiFcDzrQjegDV28YWca/uEA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(4143699003)(11063799006)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZkJ0Sk9oRitYTGpQZ1dCb2JpbUxLN0VMZEx1SlIzeVB5Wmh4bDgrOHZqczQz?=
- =?utf-8?B?c3pPNm9CMEE1Z3Q3UDNvNGtTOStHbUx6TlFaMUR0VE1vZWs3SXlyKzgzUFZr?=
- =?utf-8?B?Y0x0UjFxNWZZWTMzQnVhak8xbEQrd2RrOS9rYUlhQzZJdVpFa200U3NLcGps?=
- =?utf-8?B?eEVtSTBIaThJOWRGdk1jb1p4UWt3RExyT3ZpSmdVUTJLWmh4a2pDUjJ3OUo1?=
- =?utf-8?B?REJVR0V5M3R5b2wra21SZ25oT1dhdWQ0SDlZd0djTG5XNWNPUStHdm9UN2Zu?=
- =?utf-8?B?RUFaclFCQ0o2eHIrb2dVMlhEVTQ0Nmh2QUh6cExueWFvNGx0T3JuV2xGQloy?=
- =?utf-8?B?VHJzdlRHdm1sTHkwbXcrODY0QTYrdSs3ZWtGdmY4WThSUzNIa3FjNUljMnVQ?=
- =?utf-8?B?V2dvRktMbDZtMUswRHI1aTVMMTU4L1hJNWh3ekhCMDNoQXprSVBSZVpBUEZq?=
- =?utf-8?B?cnZyVzdGVTgyQjZwTWdKMmtHNjhDSGRCMVl3ZHVvU3QzeXRUWjlEdXQ3Sndz?=
- =?utf-8?B?eGE2OWlVNG9FVi8vZ2JpelVNTjVLa3lNZWJ6ZGdVbnpxWTZBS29vcTllTzlS?=
- =?utf-8?B?UVpJMncrOVNTdTM2bGJaekJhVVpQZllQRnJ1dC8wL1NWRm9EMjM3Tk9DamtQ?=
- =?utf-8?B?aFBFeHZiYWR0WXNOTkI1UXFEVkw4VFl1ZHFhL28rb0xkN2FXMWJGRDRpcWsz?=
- =?utf-8?B?UkxsbThzZUpkd09XNitVNmVUOGJibkJsRFA3aUdoTm04ZjNrUDdZNzlUMTll?=
- =?utf-8?B?elBQV3N1aDBiSjcvQngwSzkwVGlJZDZBQmdQaWJjOUxZUGJKcnlNb0lQN1V3?=
- =?utf-8?B?MVoxbDh4dmp0UDFzSHBMZFRLbUJVbG1kV3BuaW5CTmw0UkQxcHpDeVVOYWln?=
- =?utf-8?B?UCtjWDhRaFgyQ3YrR3hJaXBuT1h1bm5ZVGFOZDhibHE3OEN3eU80MnNTTjVw?=
- =?utf-8?B?QmVXTXdGSWEzcDNhVzMrNGNSbno4cXdFUzJjSWl3QzhUVUNWbVYveWhXR2pn?=
- =?utf-8?B?RnAvY1hLcnRURDlZTGd1dldmbmE4UHZjbk1JWmM0L3pERHd6a2llT3BlSll1?=
- =?utf-8?B?WmZRVFl3OXB2T2NxSUoxWVRyY0lKcHZ0WDFOT0xKSjRYVXNSOWZNUHVkb1Nh?=
- =?utf-8?B?L2k4bkJhVlErRXo2amJUcy96SXl4eGNodUt6QTBxWkFTZlJUdmpzeS9qWnZs?=
- =?utf-8?B?alJVbVhuVnEyTEtBZloyVlFMeUZBOHozQ0t0Z1E2WTdDSUJZUVBzZFhTYTIw?=
- =?utf-8?B?d2ZSeGlra1dleVM3R0l0Y1JhMjNYZjgybkZHQVVETjVVMEkyVXJLWkk4amd4?=
- =?utf-8?B?cmJsUXU1WWRDSE5iSE5lbXBmODZNNmxscTkxeHoydXdWMzQyUW9BeVZ2K3lJ?=
- =?utf-8?B?azlnTVYvTEhtMlJkRVhIMzVtMEJkVHp1cGEzaUJrUXRSY3h6VmhHd2tzWXp1?=
- =?utf-8?B?NUtLbHIrL1djMGVIazhsa2g0cFRCWmgreHBjZklFUmdiOTQ2ang0RlBoZTJO?=
- =?utf-8?B?Y1UzazNuOXZoSmZQNFVIUEh6Q1pvNjlFc0liZmtYYmc2Y092UVowYXNQeFJN?=
- =?utf-8?B?cUNmclpvUkRFbFNwblUrT3I1ejBDSFlUOFV5NnJldElRMWMxRVdhZFhFZlQ0?=
- =?utf-8?B?bVVvVnQ1a3hJVE5QU2F6WGJlN1V4OEQ1d21KWnFiNFAxdjQxZWtMOVc4TFFW?=
- =?utf-8?B?WVdPVW1GM2lsalI3NE01TTd3ellLV1I3cHAvYklzeUxiN2RINnF0ZzA1eUha?=
- =?utf-8?B?Y0JuZDYxOXEvdWNzZjRCTVg2M3JjZDl3b2ppaDArTm9rU01XcWswWjI1eXNP?=
- =?utf-8?B?T20vTjNkbDlxb2JIN0RxdjJPOVVTbXpPNGV6QTBnNHhvS1lXblY2bldDRnBK?=
- =?utf-8?B?MFZoUnBXT21aS1FGZFlOQjYyS3lkUXEvN3lPaHhNNmN0N3VqdDljamQzZys2?=
- =?utf-8?B?OTkwNXRmbDQ4b2FDZkpWMlNtT09xMVpTcGtRNlJucEhWcHd4RythbnRGQkk0?=
- =?utf-8?B?OHprc25Gb1o1UFNxeHFPNE1hNWhDems0aEhEZ3oxazFHRlZVdFhhZnJES0RD?=
- =?utf-8?B?bXEyK1FjVmV5VDJwM2RYYlNrcDdKbVRtUzE2SW83R01kL3NBWkdGR24zN1ZT?=
- =?utf-8?B?REZVVDA3OTZZOGdOS3ZjaDh2eExoc3JsMHUyQVArdjdBalVqZ05sQ3MxUXJj?=
- =?utf-8?B?RC9oTzJqS3ZFWVBFVnFXYjE3RmNzYzcvRldmVi8zK3RhbkVhZVBkTUhNYmpE?=
- =?utf-8?B?VTFZc1RwQklUTFZqWVlNd0VXamRXR1UvMS82bUZmTFhhaHFoSGs4WW9VV01y?=
- =?utf-8?Q?rLCBFJevbk0XpKZ+VV?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a29a1f73-f166-45c1-f41e-08df2df855d4
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 15:47:52.6439
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IgC2H3GxOphT4AvOdAklk7pr4jTfZd+2Y9ASyZuJJCN6JK+l9bLcwhqetYnUH7gs
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AT6PR12MB932818
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: Clarify 'query-kvm' deprecation release
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+        qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+        Markus Armbruster <armbru@redhat.com>, kvm@vger.kernel.org
+References: <20261018230305.6239-1-philmd@oss.qualcomm.com>
+From: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20261018230305.6239-1-philmd@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE5MDA2MyBTYWx0ZWRfX26IjCo3oZIzD
+ CIXnRvsIyQdjXn5pRJlu6jGzKAcaht3C0XtdZzKnRjUbiYzu5yHqmielJWkD2FfuZS/RBRNNmKV
+ A987WGppjPeMZ27J4dxEWgDDwpuOyJoLnL9PCBB3m7k7C2FSJcKlCJ/1E33s5LLbVypXTHPUnRM
+ vmNaPmbMG+IVevrfmf9XiAcVYGdZqOaYfX5oRVFf8RsQAdpgc+1PtZxB5OSDeChNCMdZtnev5Ty
+ TS8Fx+5UVX/yFsDnvu7kBsnA2xbFEvYWmjZltQxcRsiJql4mKXY93SEQIVf9dI1qm2Eu11zqpNQ
+ neaBMFh8rYFgQ1RM6i+Rbrrx0S82b+8Pw31GgIADifFuKKKcqFzLDoPM9/sMjk/+tp8meiOwiky
+ vU8pNT98svxGcMFRTgKZTeHoSSjBFje4TDg5qOTPDhZWfYwkVPAy0xyIK+62wWhExJSZZLw9oNw
+ MLYBEDKwRYteX+y6UyQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE5MDA2MyBTYWx0ZWRfX1/wgesVbDNvJ
+ iOroZnIRLMBwDcWAkUolNBEOQQaUJhoadXv8TLpELK5yXZMpEiQTjS+kdM2dHOmVewY9KNjUy5r
+ sqwLElyz3TfLY2ucOOh09QcydJqsnhw=
+X-Proofpoint-ORIG-GUID: HguTx6vKpCveJSsjr4S8BNyCqMl6Zisl
+X-Authority-Analysis: v=2.4 cv=Qr/LTlyd c=1 sm=1 tr=0 ts=6ad63edc cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=9852oil1ID9t5xBSyQ/BEA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=EUspDBNiAAAA:8 a=6zmBB6n6n2PSzIUxsucA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-GUID: HguTx6vKpCveJSsjr4S8BNyCqMl6Zisl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-19_05,2026-10-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610190063
 
-Hi Reinette,
-
-On 10/15/26 10:43, Reinette Chatre wrote:
-> Hi Babu,
+On 10/18/2026 4:03 PM, Philippe Mathieu-Daudé wrote:
+> 'query-kvm' was deprecated in commit 824141dcf48, merged after
+> the v11.1.0 release. Correct to prevent too early removal.
 > 
-> On 10/1/26 8:10 AM, Babu Moger wrote:
->> The active kernel mode association is backed by either a CTRL_MON or
->> MON group.
-> 
-> This context does not reflect the code at this point in series but what
-> behavior will be after entire series is applied. It is also written as
-> general but specific to the global per-CPU kernel mode.
-> 
->> When the backing group is removed, or when resctrl is unmounted, clear
->> the programmed association and restore the default settings.
-> 
-> Please provide more context to user and help reader to understand what the
-> patch does without needing to decipher the patch.
-
-"The global per-CPU kernel mode, RESCTRL_GLOBAL_ENABLE_PER_CPU, allows 
-kernel work to use allocation and monitoring associations that differ 
-from those of the originating user task. When the mode is active, 
-"info/kernel_mode" displays the backing mode. If the backing group is 
-removed, or resctrl is unmounted, the association becomes invalid.
-
-Clear the programmed association and revert the kernel mode to the 
-default "inherit user" behavior. This ensures that kernel work continues 
-to use the allocation and monitoring associations of the originating 
-user task until a new kernel mode association is configured.
-
-Document this user-visible behavior in resctrl.rst."
-
-> 
-> For example, "restore the default settings" is a very vague way to
-> describe that removing the group backing the global per-CPU kernel mode
-> automatically switches the kernel mode to "inherit user". Please explain
-> at high level what the code does and why. As a hypothetical, why not
-> keep the kernel mode as "global per-CPU kernel mode" but switch the assigned
-> group to the default group? This would match most other similar resctrl behaviors,
-> no?
-
-My assuption, you are not asking me to change it to "global per-CPU 
-kernel mode" when the group is removed.
-
-> 
-> This is also user visible behavior that should be documented in resctrl.rst.
-
-Will add a line under "inherit_user" documentation.
-
-> 
->> ---
->>   fs/resctrl/rdtgroup.c | 44 +++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 44 insertions(+)
->>
->> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
->> index f5c7790f7970..0cdc868a55b1 100644
->> --- a/fs/resctrl/rdtgroup.c
->> +++ b/fs/resctrl/rdtgroup.c
->> @@ -1167,6 +1167,36 @@ static void resctrl_kmode_global_offline_cpu(unsigned int cpu)
->>   	resctrl_configure_kmode_global(cpumask_of(cpu), rdtgrp, false);
->>   }
->>   
->> +/*
->> + * Disable the association on @rdtgrp's kmode_cpu_mask, clear the mask, and
->> + * hide the group's kmode_cpus files.
-> 
-> "hide the group's kmode_cpus files"? Does not match the code below.
-> Even so, the comments just narrate the function.
-
-Yea. Will remove  "hide the group's kmode_cpus files"  detail.
-
-> 
->> + */
->> +static void rdtgroup_kmode_global_deactivate(struct rdtgroup *rdtgrp)
->> +{
->> +	resctrl_configure_kmode_global(&rdtgrp->kmode_cpu_mask, rdtgrp, false);
->> +	cpumask_clear(&rdtgrp->kmode_cpu_mask);
->> +}
->> +
->> +/*
->> + * rdtgroup_kmode_global_detach() - Detach @rdtgrp from the global per-CPU mode
->> + * @rdtgrp: Resctrl group being removed or torn down.
->> + *
->> + * If @rdtgrp backs the active association, disable it, clear kernel mode
->> + * state, and restore RESCTRL_INHERIT_USER.
->> + */
->> +static void rdtgroup_kmode_global_detach(struct rdtgroup *rdtgrp)
->> +{
->> +	if (resctrl_kmode.rdtgrp != rdtgrp)
-> 
-> Please do not use tests on resctrl_kmode.rdtgrp as synonym for
-> resctrl_kmode.active == RESCTRL_GLOBAL_ENABLE_PER_CPU.
-
-Not really. This was a check to make sure kernel mode is pointing to 
-correct group that is being removed.
-
-> 
->> +		return;
->> +
->> +	rdtgroup_kmode_global_deactivate(rdtgrp);
->> +
->> +	resctrl_kmode.rdtgrp = NULL;
->> +	resctrl_kmode.kmode_cur = RESCTRL_INHERIT_USER;
->> +	resctrl_kmode.ctrl = KMODE_ASSIGN;
->> +	resctrl_kmode.mon = KMODE_ASSIGN;
->> +}
-> 
-> There seems to be some duplication between rdtgroup_kmode_global_detach() and
-> resctrl_kmode_switch(). Since the contract is already established that
-> disabling RESCTRL_GLOBAL_ENABLE_PER_CPU enables RESCTRL_INHERIT_USER, could this
-> reset to RESCTRL_INHERIT_USER not just be done in rdtgroup_kmode_global_deactivate()
-> without duplicating it in rdtgroup_kmode_global_detach() and resctrl_kmode_switch()?
-> 
-> With that done, it looks like rdtgroup_kmode_global_detach() could just be
-> dropped if rdtgroup_kmode_global_deactivate() gets the check to ensure the
-> group needs removing?
+> Fixes: 824141dcf48 ("hw/core: Deprecate query-kvm")
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
+> ---
+>  docs/about/deprecated.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 
-Yea. I may have to re-organize few things. I can do everything with 
-rdtgroup_kmode_global_deactivate() and rdtgroup_kmode_global_activate().
-And remove both rdtgroup_kmode_global_detach() and  resctrl_kmode_switch().
-
-> 
->> +
->>   void *rdt_kn_parent_priv(struct kernfs_node *kn)
->>   {
->>   	/*
->> @@ -3228,6 +3258,7 @@ static void free_all_child_rdtgrp(struct rdtgroup *rdtgrp)
->>   
->>   	head = &rdtgrp->mon.crdtgrp_list;
->>   	list_for_each_entry_safe(sentry, stmp, head, mon.crdtgrp_list) {
->> +		rdtgroup_kmode_global_detach(sentry);
->>   		rdtgroup_unassign_cntrs(sentry);
->>   		free_rmid(sentry->closid, sentry->mon.rmid);
->>   		list_del(&sentry->mon.crdtgrp_list);
->> @@ -3265,6 +3296,7 @@ static void rmdir_all_sub(void)
->>   		cpumask_or(&rdtgroup_default.cpu_mask,
->>   			   &rdtgroup_default.cpu_mask, &rdtgrp->cpu_mask);
->>   
->> +		rdtgroup_kmode_global_detach(rdtgrp);
->>   		rdtgroup_unassign_cntrs(rdtgrp);
->>   
->>   		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP ||
->> @@ -3360,6 +3392,7 @@ static void resctrl_fs_teardown(void)
->>   		return;
->>   
->>   	rmdir_all_sub();
->> +	rdtgroup_kmode_global_detach(&rdtgroup_default);
->>   	rdtgroup_unassign_cntrs(&rdtgroup_default);
->>   	mon_put_kn_priv();
->>   	rdt_pseudo_lock_release();
->> @@ -4395,6 +4428,8 @@ static int rdtgroup_rmdir_mon(struct rdtgroup *rdtgrp, cpumask_var_t tmpmask)
->>   	u32 closid, rmid;
->>   	int cpu;
->>   
->> +	rdtgroup_kmode_global_detach(rdtgrp);
->> +
->>   	/* Give any tasks back to the parent group */
->>   	rdt_move_group_tasks(rdtgrp, prdtgrp, tmpmask);
->>   
->> @@ -4442,9 +4477,18 @@ static int rdtgroup_ctrl_remove(struct rdtgroup *rdtgrp)
->>   
->>   static int rdtgroup_rmdir_ctrl(struct rdtgroup *rdtgrp, cpumask_var_t tmpmask)
->>   {
->> +	struct rdtgroup *sentry;
->>   	u32 closid, rmid;
->>   	int cpu;
->>   
->> +	/*
->> +	 * A monitor group uses its parent's CLOSID. Detach a child that
->> +	 * backs the association before that CLOSID is freed.
-> 
-> Why does this have to be done before the CLOSID is freed? The monitor groups
-> are cleared later from free_all_child_rdtgrp() that will call
-> rdtgroup_kmode_global_detach() for every monitor again.
-
-Yea. May not be required. Will remove.
-
-Thanks
-Babu
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
