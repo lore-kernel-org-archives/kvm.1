@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792428382;
-	b=OdOT5zQcgYECaO2EZc3yjGPTfJVE3yPGQWJG3KSJCXDlVuf8AbVdLmH9jHSv2EJ966JY
-	 3gAXB8v694/San9Biq9qOIHxLxWTToOsJDFIoYxxsJ+ZnKnl/JdsKKs8cy1d/mYqagVQt
-	 i58ABwjpoJGE5xqjTM7NDmMAXmP7WpnTMHokrVX3PfwSqzu6yq7fzphDaj/I23h2hEQ6v
-	 zVMHakJuUKkcxqRYExWlmre6R4nF598XxN13fUEOdvyjH2ISS3JMEtboYFafk/96lmYPY
-	 A6NbM1f9IX/q2/f7WiwMTXu30DDzNL55YzerYzHVKuSMsFtqAW8mKe5huk+W9lOOhTA==
+	t=1792428378;
+	b=IxkSzJQjq+kD5/DKd7BMszzuIxXlM4F0NCqsFUTyUXkmgOyU0+IjcUYZlLMyRLp69gFZ
+	 eOjX2UuBCj9WLkHiQdmzlV791wtGc2SlDVeZ0hP37YKXywpp547AXkInsVi5qsNfcZ8v/
+	 TY2yh56sHznmKgiBPMljOADgzL5wsqQ0Uecy60Ri2CWxXNrljrESzuuX7hCibSA4FB4xt
+	 /46caItaskIe6PNznN7O2rqwPOQKulkiGpucrEKpDVru3+ZBTngSv9GFpDw/nS6Vw2vX7
+	 V9xigqqhV8tsohbUOxHKmnK4bugr/bi2KQ9NFSOTadxJivAdL99a0O/a2549L69YgYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792428382;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=PpUm1Z1e638n0+K7OgzaItxVh9BcbeBTISpg9/I5NAo=;
-	b=yIQVBIwPDv0Bmh7tqry3+//VFhMlbnOeNFFqS4yK2WZqAPZLreHIa/Z2YRSfRkSKNy6g
-	 jQUkc+6UwPwwAt69ZPs3kpX3apIGqqT++bx3vNYLGf48S9FF6+U8WfqVGfzMgyJHXyGfF
-	 pYS7715L8D0v2snzejxe4BtNZsh+HS8VkKtW0BeU2WrazF0XT0qjDUpXpdfQSA1n2ymUX
-	 mMmKI4psfdWGB9Neftfrp3qAFMg9NRAhqciF7ppRM9oy4irTbkOejDJXqxr6g6/vyrcF5
-	 mvEWOnjVfro4QkFLlfvVlZMtafSSJ7y3AmRexPEXB2DFTUCmos6jbHvUzI+P1Ga9VXQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792428378;
+	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition;
+	bh=zG9l3gdEZv24Wv1+jYwCr9vu8fFpf5WmZW/fv7xLtNI=;
+	b=KM4rj/6+XgXRmU43CUkjC2QQLX8L08nf1PQerOcaoCQ159IqT+I1KxX/dvvHC45BFOEt
+	 v3CpOK0fI9dpuTyziARrzqrBUKZre1Kpg2kPvzyhOXD1IbWGvKffFhvOvMbcPswLUOVvE
+	 4AZ1TaUU9e1jkiL1NtTqWmEbqCihKDcZbUkbOK6UtUObdwRd25kxwfjmjjbBlbZTXRhgb
+	 +YHIA6NCZH+42DnffKtgHCoj4e3Y90b0T34hW/Kbk1SWLrhiny91EDFMZK1dSyhjxrbCg
+	 FxKxP+zNEfAdPrpGF/K/bUFftzXVREFL/G5kh2pi4C9dPpVCh8yl9EznGPgHiSIwLYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=da+OgQyQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYg7Jdh4;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAAD606A32D
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 16:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA8606A31D;
+	Mon, 19 Oct 2026 16:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=da+OgQyQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA621F000C4;
-	Mon, 19 Oct 2026 16:46:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYg7Jdh4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949271F000C4;
+	Mon, 19 Oct 2026 16:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792428382;
-	bh=PpUm1Z1e638n0+K7OgzaItxVh9BcbeBTISpg9/I5NAo=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=da+OgQyQBZ82HuIeVFOjrN9+ruCi0KSbvGa3RAlqEfdg5ZlxKuvwnsOhGN8kgYdVA
-	 /xOVJ9xKFDsGqej/oHCFm3YJjsZ1UwsKY6mqtTbDVgDh9yLEHiuEXCDMCwan+pbwmk
-	 tIsbVFEYCMTMl5OF8a1tLRxxcKHQNp/88NXrUN/ku2YRghVN3JXm0Ir8dF9KDVVusC
-	 V9p4xW0sbeMuanH5xP1pxfrebL6+Y9bsDjDez1GYFFQLofC+M6kFFmg9ODJSOzd0Gl
-	 KSfvDOoKj4qYuuYtkOxiQA0xweRyTujuzZDTGRH1eqRm2HDurX/rH0fMFduULNjyNg
-	 ssi6fRFo08LIQ==
-Message-ID: <sashiko-outbox-177931@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 12/12] KVM: selftests: Fix unreachable timer recovery
- in xen_shinfo_test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-In-Reply-To: <20261019162445.37219-13-dwmw2@infradead.org>
-References: <20261019162445.37219-1-dwmw2@infradead.org>
- <20261019162445.37219-13-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 16:46:21 +0000
+	s=k20260515; t=1792428377;
+	bh=zG9l3gdEZv24Wv1+jYwCr9vu8fFpf5WmZW/fv7xLtNI=;
+	h=Date:From:To:Cc:Subject;
+	b=GYg7Jdh4E8FUAFl8R+uAscN46oKSgEe3ROvwudBV21lFN2Sk6Yv/HG050fATFK/Lt
+	 gdKdp81In8Ol/92ATo2aupE+kh1FTYtMtJGp133fhBIJs3STDC6m4fXeNIeVZKU46G
+	 YIqPjzu3y0EXyyrGvAST74ge5zo5A40MkgyY+tAaMoIHEuqkt6hwbaiRZfTBDR2jwN
+	 /5OZP7JYT7pBk8DAxx9ve4R5ysbXNF3L7IFNBbXxQcVj0Hq7URXIURyGhfpIE/IzbS
+	 wkltKZdN09pd90PXLN6yL5C7tQVEMxsIA1e5beZz0Vdq598otH7TRpfKmHLi7QZ6NV
+	 TjYj2eivSxW9A==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 7AF921AC57D0; Mon, 19 Oct 2026 17:46:15 +0100 (BST)
+Date: Mon, 19 Oct 2026 17:46:15 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+Cc: KVM <kvm@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: linux-next: manual merge of the kvm-arm tree with the kvm tree
+Message-ID: <atZJV1B79VsZoy8u@sirena.co.uk>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,127 +59,199 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="72M+QjVQ4xoMSxcZ"
+Content-Disposition: inline
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] KVM: selftests: wrong fix in guest_code() for juggle_shinfo_stat=
-e() GFN 0 bug
---
 
-commit 36db2d77eb09cc5d7b05a58f930d6724ba060038
-Author: David Woodhouse <dwmw@amazon.co.uk>
+--72M+QjVQ4xoMSxcZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-KVM: selftests: Fix unreachable timer recovery in xen_shinfo_test
+Hi all,
 
-This commit adds a 10ms timeout to the SCHEDOP_poll hypercall in the
-TEST_LOCKING_POLL_RACE phase of xen_shinfo_test so the guest does not hang =
-if
-the timer event is dropped while blocked in the poll.
+Today's linux-next merge of the kvm-arm tree got a conflict in:
 
-> diff --git a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c b/tools/te=
-sting/selftests/kvm/x86/xen_shinfo_test.c
-> index 3b11d0ee253f5..729c0ba9ab4e8 100644
-> --- a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-> +++ b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-> @@ -350,7 +350,14 @@ static void guest_code(void)
->  	p =3D (struct sched_poll) {
->  		.ports =3D ports,
->  		.nr_ports =3D 1,
-> -		.timeout =3D 0
-> +		/*
-> +		 * The poll must have a timeout: if the timer event is dropped
-> +		 * while we are already blocked in the poll, nothing else will
-> +		 * ever wake us, and the recovery protocol below could never
-> +		 * run. (As with TEST_POLL_TIMEOUT above, KVM treats the
-> +		 * timeout as relative.)
-> +		 */
-> +		.timeout =3D 10000000,
->  	};
-> =20
->  wait_for_timer:
+  arch/arm64/kvm/mmu.c
 
-[Severity: Medium]
-Is SCHEDOP_poll in TEST_LOCKING_POLL_RACE actually supposed to block waiting
-for the timer?
+between commit:
 
-In main(), the host sets bit 0 of evtchn_pending[0] before arming the timer=
- on
-EVTCHN_TIMER:
+  dd0bc00e3e920 ("Merge branch kvm-arm64/cca-7.4 into kvmarm-master/next")
 
-tools/testing/selftests/kvm/x86/xen_shinfo_test.c:main() {
-    ...
-    case TEST_LOCKING_POLL_RACE:
-        shinfo->evtchn_pending[0] =3D 1;
+=66rom the kvm tree and commits:
 
-        evtchn_irq_expected =3D true;
-        tmr.u.timer.expires_ns =3D rs->state_entry_time +
-                                 SHINFO_RACE_TIMEOUT * 1000000000ULL;
-        vcpu_ioctl(vcpu, KVM_XEN_VCPU_SET_ATTR, &tmr);
-        break;
-}
+  b44a8c32f0116 ("KVM: arm64: Abstract out memory abort handling")
+  892c8a0bcc8e3 ("Merge branch kvm-arm64/cca-7.4 into kvmarm-master/next")
 
-And in guest_code(), the guest polls on port 0 (ports[0] =3D 0), not on
-EVTCHN_TIMER. In wait_pending_event(), ret defaults to true:
+=66rom the kvm-arm tree.
 
-arch/x86/kvm/xen.c:wait_pending_event() {
-    ...
-    bool ret =3D true;
-    int idx, i;
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
-    idx =3D srcu_read_lock(&kvm->srcu);
-    read_lock_irqsave(&gpc->lock, flags);
-    if (!kvm_gpc_check(gpc, PAGE_SIZE))
-        goto out_rcu;
-    ...
-}
+diff --combined arch/arm64/kvm/mmu.c
+index 6e28ded84b4d2,c9622b6e4c741..0000000000000
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@@ -329,6 -329,9 +329,9 @@@ static void kvm_vm_stage2_unmap_range(s
+  	struct kvm *kvm =3D kvm_s2_mmu_to_kvm(mmu);
+  	int (*fn)(struct kvm_pgtable *, u64, u64);
+ =20
++ 	lockdep_assert_held_write(&kvm->mmu_lock);
++ 	WARN_ON(size & ~PAGE_MASK);
++=20
+  	if (kvm_is_nested_s2_mmu(kvm, mmu))
+  		fn =3D kvm_pgtable_stage2_unmap_tracked;
+  	else
+@@@ -1585,11 -1588,32 +1588,11 @@@ transparent_hugepage_adjust(const struc
+  	return PAGE_SIZE;
+  }
+ =20
+ -static int get_vma_page_shift(struct vm_area_struct *vma, unsigned long h=
+va)
+ +static int get_vma_page_shift(struct vm_area_struct *vma)
+  {
+ -	unsigned long pa;
+ -
+ -	if (is_vm_hugetlb_page(vma) && !(vma->vm_flags & VM_PFNMAP))
+ +	if (vma_is_hugetlb(vma))
+  		return huge_page_shift(hstate_vma(vma));
+ =20
+ -	if (!(vma->vm_flags & VM_PFNMAP))
+ -		return PAGE_SHIFT;
+ -
+ -	VM_BUG_ON(is_vm_hugetlb_page(vma));
+ -
+ -	pa =3D (vma->vm_pgoff << PAGE_SHIFT) + (hva - vma->vm_start);
+ -
+ -#ifndef __PAGETABLE_PMD_FOLDED
+ -	if ((hva & (PUD_SIZE - 1)) =3D=3D (pa & (PUD_SIZE - 1)) &&
+ -	    ALIGN_DOWN(hva, PUD_SIZE) >=3D vma->vm_start &&
+ -	    ALIGN(hva, PUD_SIZE) <=3D vma->vm_end)
+ -		return PUD_SHIFT;
+ -#endif
+ -
+ -	if ((hva & (PMD_SIZE - 1)) =3D=3D (pa & (PMD_SIZE - 1)) &&
+ -	    ALIGN_DOWN(hva, PMD_SIZE) >=3D vma->vm_start &&
+ -	    ALIGN(hva, PMD_SIZE) <=3D vma->vm_end)
+ -		return PMD_SHIFT;
+ -
+  	return PAGE_SHIFT;
+  }
+ =20
+@@@ -1927,7 -1951,7 +1930,7 @@@ static short kvm_s2_resolve_vma_size(co
+  		vma_shift =3D PAGE_SHIFT;
+  	} else {
+  		s2vi->max_map_size =3D PUD_SIZE;
+ -		vma_shift =3D get_vma_page_shift(vma, s2fd->hva);
+ +		vma_shift =3D get_vma_page_shift(vma);
+  	}
+ =20
+  	switch (vma_shift) {
+@@@ -2078,6 -2102,16 +2081,6 @@@ static int kvm_s2_fault_pin_pfn(const s
+  				return -EFAULT;
+  			}
+  		} else {
+ -			/*
+ -			 * If the page was identified as device early by looking at
+ -			 * the VMA flags, vma_pagesize is already representing the
+ -			 * largest quantity we can map.  If instead it was mapped
+ -			 * via __kvm_faultin_pfn(), vma_pagesize is set to PAGE_SIZE
+ -			 * and must not be upgraded.
+ -			 *
+ -			 * In both cases, we don't let transparent_hugepage_adjust()
+ -			 * change things at the last minute.
+ -			 */
+  			s2vi->map_non_cacheable =3D true;
+  		}
+ =20
+@@@ -2179,10 -2213,10 +2182,10 @@@ static int kvm_s2_fault_map(const struc
+ =20
+  	/*
+  	 * If we are not forced to use page mapping, check if we are
+ -	 * backed by a THP and thus use block mapping if possible.
+ +	 * backed by a huge stage-1 mapping and thus use block mapping if
+ +	 * possible.
+  	 */
+ -	if (mapping_size =3D=3D PAGE_SIZE &&
+ -	    !(s2vi->max_map_size =3D=3D PAGE_SIZE || s2vi->map_non_cacheable)) {
+ +	if (mapping_size =3D=3D PAGE_SIZE && s2vi->max_map_size !=3D PAGE_SIZE) {
+  		if (perm_fault_granule > PAGE_SIZE) {
+  			mapping_size =3D perm_fault_granule;
+  		} else {
+@@@ -2276,6 -2310,10 +2279,6 @@@ static int user_mem_abort(const struct=20
+  			return ret;
+  	}
+ =20
+ -	/*
+ -	 * Let's check if we will get back a huge page backed by hugetlbfs, or
+ -	 * get block mapping for device MMIO region.
+ -	 */
+  	ret =3D kvm_s2_fault_pin_pfn(s2fd, &s2vi);
+  	if (ret =3D=3D -EHWPOISON) {
+  		/* If result is specified, let the caller handle this. */
+@@@ -2298,9 -2336,11 +2301,11 @@@
+ =20
+  static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+  {
+- 	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
+- 			!esr_abt_is_write_fault(s2fd->esr) &&
+- 			!kvm_s2_fault_is_exec(s2fd));
++ 	struct kvm_vcpu *vcpu =3D s2fd->vcpu;
++=20
++ 	VM_WARN_ON_ONCE(kvm_vcpu_trap_is_permission_fault(vcpu) &&
++ 			!kvm_is_write_fault(vcpu) &&
++ 			!esr_abt_is_exec_fault(kvm_vcpu_get_esr(vcpu)));
+ =20
+  	if (kvm_slot_has_gmem(s2fd->memslot))
+  		return gmem_abort(s2fd, NULL);
+@@@ -2953,18 -2993,18 +2958,18 @@@ void kvm_set_way_flush(struct kvm_vcpu=
+=20
+ =20
+  	/*
+  	 * If this is the first time we do a S/W operation
+ -	 * (i.e. HCR_TVM not set) flush the whole memory, and set the
+ +	 * (i.e. HCR_EL2_TVM not set) flush the whole memory, and set the
+  	 * VM trapping.
+  	 *
+  	 * Otherwise, rely on the VM trapping to wait for the MMU +
+  	 * Caches to be turned off. At that point, we'll be able to
+  	 * clean the caches again.
+  	 */
+ -	if (!(hcr & HCR_TVM)) {
+ +	if (!(hcr & HCR_EL2_TVM)) {
+  		trace_kvm_set_way_flush(*vcpu_pc(vcpu),
+  					vcpu_has_cache_enabled(vcpu));
+  		stage2_flush_vm(vcpu->kvm);
+ -		*vcpu_hcr(vcpu) =3D hcr | HCR_TVM;
+ +		*vcpu_hcr(vcpu) =3D hcr | HCR_EL2_TVM;
+  	}
+  }
+ =20
+@@@ -2982,7 -3022,7 +2987,7 @@@ void kvm_toggle_cache(struct kvm_vcpu *
+ =20
+  	/* Caches are now on, stop trapping VM ops (until a S/W op) */
+  	if (now_enabled)
+ -		*vcpu_hcr(vcpu) &=3D ~HCR_TVM;
+ +		*vcpu_hcr(vcpu) &=3D ~HCR_EL2_TVM;
+ =20
+  	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
+  }
 
-When shinfo_cache is deactivated, kvm_gpc_check() returns false and
-wait_pending_event() returns true immediately. When shinfo_cache is active =
-on
-shinfo, bit 0 of evtchn_pending[0] is set, so test_bit() also returns true
-without halting the vCPU. Furthermore, if the timer expires while shinfo_ca=
-che
-is deactivated, xen_timer_callback() sees -EWOULDBLOCK from
-kvm_xen_set_evtchn_fast() and unconditionally raises KVM_REQ_UNBLOCK and ca=
-lls
-kvm_vcpu_kick().
+--72M+QjVQ4xoMSxcZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Instead, isn't the vCPU blocking in kvm_vcpu_halt() because of a bug in
-juggle_shinfo_state()?
+-----BEGIN PGP SIGNATURE-----
 
-tools/testing/selftests/kvm/x86/xen_shinfo_test.c:juggle_shinfo_state() {
-    ...
-    struct kvm_xen_hvm_attr cache_deactivate_hva =3D {
-        .type =3D KVM_XEN_ATTR_TYPE_SHARED_INFO,
-        .u.shared_info.hva =3D 0
-    };
-    ...
-}
+iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCatZJVwAKCRAv73Ows9A4
+iUArAP9MxhAaziYZm6gt5kMgAompfS0w+yvFAgvIBGMwpTy9+AD8CXQjiHiPF/m4
+bR7VzHVTTX5Fna6hrPAmOebsBZfQgQk=
+=q7Jb
+-----END PGP SIGNATURE-----
 
-Because cache_deactivate_hva uses KVM_XEN_ATTR_TYPE_SHARED_INFO instead of
-KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA with hva =3D 0 (which unions with gfn =3D=
- 0),
-kvm_xen_hvm_set_attr() activates shinfo_cache on guest GFN 0 rather than
-deactivating it (since KVM_XEN_ATTR_TYPE_SHARED_INFO checks for
-KVM_XEN_INVALID_GFN). At guest GFN 0, evtchn_pending[0] bit 0 is 0, so a
-concurrent SCHEDOP_poll sees the port as not pending and blocks in
-kvm_vcpu_halt().
-
-Adding a 10ms timeout here causes the guest to sleep in kvm_vcpu_halt() for
-10ms whenever SCHEDOP_poll coincides with cache_deactivate_hva, rather than
-spinning in the tight hypercall loop to stress gpc->lock contention, while
-leaving KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA deactivation untested and continu=
-ing
-to overwrite guest GFN 0 with wallclock data.
-
-Should this instead fix cache_deactivate_hva.type to
-KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA in juggle_shinfo_state(), with:
-
-  Fixes: 9397b5334af1 ("KVM: selftests: map Xen's shared_info page using HV=
-A rather than GFN")
-
-?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019162445.3721=
-9-1-dwmw2@infradead.org?part=3D12
+--72M+QjVQ4xoMSxcZ--
