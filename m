@@ -1,107 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.70
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792451500;
-	b=FHXIgzKNchxZ6N8NIrdOZ1lFSicJJ8lwmBx8ZjPaIzJ7jd14MAHbGGy6O0UxF5zZzimo
-	 BqP+g11oZOjZnPP/tQUJ+w+kTp+0JEupRDnwPNcDuNp6QbfVlStYK9RyTW2C0Fblh+yfV
-	 zaaMIusv+Sm8WGNJIRUAfNUbD4GDRyjjRjzJqvpKkw+n/+sVnG5yAlORCIYDqhIDTDOtU
-	 pOfWw154mu2BnuLSVkkFU7ID1Y7iRZmsrDCZTbWRwtQHNhUyDmlIsdnzE5E2C43HVyPN3
-	 53POkBp0lbSKXLcqK1tCjhNiOOLfVdY9+CMY9FBc992hN50V1VYdHqRy13FjioU92Zw==
+	t=1792452385;
+	b=i6dQWGh3A4/E4hy+2DBH/23PRHG3E0lN1rK8yy8o1uV7fXgoMpgmExQ0ugBhEcL80YHK
+	 alx2FpHt85NvzBQk+mFwU02zhxxOsud5+eLiAIQEHaLOoAu1wPMUtmqe9dnZl0HvjBQ5L
+	 /dEYWpkpqnyApGPxY353wLUYgY5KV9ZNAEKetDVkB+Aac1i0icRGh5Ubof10q/KEHt7q5
+	 pn/Zgfa5OMWfVKzAvOVp/UtgGZjkecolMcxA10DiXhC6p+HA8EZak1vToT2o84Txa+I2f
+	 CXWnhO7kNHxXOG4q/nRF6d5OrSXMR6f6CIJsRs/PvWHUZV02SW6HhvruANxefAlYfcQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792451500;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Pk3BetNzco22ofDGndAoQ+zxFz/nVvlehUw2PuEfUN8=;
-	b=EQGY2XrXtEVLeB7QuQtazPfBvs9F3h/7n+9uD39IT0wfB54p1mbZmlI8tcKFMGB9L8hX
-	 3p7ENQuxKJFOqQYeMDLckBuni1aN9FvMd+p0tuvhuzq9P4GLtbuKT1wbokc/dGh67DgYv
-	 1U6O121BcYvEmBoCtubu7LDJycFitj6YbXRQjxbbV00UrqwqnFLEPP1kQyIPP1mnlw6+s
-	 T5ancqUNxPPNy70gryzImNQEXUsP0m5M43BjktNti1oMKB8oq5+W9U5oSE4QK1s+IcC6n
-	 7JwTLx3zCb50d/bcThAmVyztYx50QqaCXMwgLgzlGqtYaLRdOTRuz3iEwAhAgvOL4yQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452385;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
+	b=rzxDfNj7GTbYyLhANXmY7CAKI7bK5zR7P13wUmIlArdMer2sgCW91r+2HEUeMwLj6O2u
+	 cvZuZTIJyy8OsmIx3CajgAenl57c+qkN4qByiaHFNbphIZgXkc3CFsJE/HRrkIkQjS/JU
+	 g+Dil+kE0JfG17lYx1wtSbZXyx48d7WDJFqzwIrkMexLWOs7+w6yS9dFDnmcY73y2K9rb
+	 PYkHcfFkL3T/+fIFyXH6LyZ9Vo7lE9vz/DibspOWDSy7oSAqXtYVAzNPU6gpE/pytsWCM
+	 ZpTCR3Z3o1lp13ZpEXYLVjIti8usn5xCBvRCKlaQ4Nz9Iycan/4/W0oI0KAGwQJlegg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=aUAbArE4;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.70
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013070.outbound.protection.outlook.com [40.107.201.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="KfOw2Bp/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6B3606A31A;
-	Mon, 19 Oct 2026 23:11:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D6B3606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2084A606A319
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 23:26:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2084A606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=aUAbArE4
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vLh3K8VXqQjbe5TFXopGyUR0yUyfq0gkMBwC/unir6Wwqj/REexbhi94xuUKL1NevP1CyBkdNPgHqTBQCaAMQIh7n+mTM3uFz1HYgB5JyAa+kjk6cwa4xTOoM9dllw3Clgn38Jh7cUP/NglB5O4quYaDdtZaqo+kSFRpPb3FSjvpEqvYyu4Pq9zmH0ElYj7HCdfX68RnTmMskR0FKucUNP3euI6KduOF+c6umrppmjlilSsZ+EmF5Hr8bmrFRjBewzLKPwTaxqaswVfdDHHJpIVu3GLopq67i4FCf4ELxuj2kXqaAe4XFwyN26l7LoDeXdbg7o00l3i/OUj4XnnzGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pk3BetNzco22ofDGndAoQ+zxFz/nVvlehUw2PuEfUN8=;
- b=V9WKz3zskQ3W5dK2mVqn1K184VOLeWRufrf9L9vDnjnrU1jRWC8KEmTFPE1+jE8tmc3+oEWweH6Ypi3VIbtsAUulAm9X4iz3l0mz2ouNFiz0D8unx9NU85OIbAuToCGEbihFrzb00iNglZj4Q2PH1IqYShMHJcE2IscxCwrM6FNAkGvXL+aXhUhAObV0wriGAyXylULuccBPe/NnZgIO8hPGZSV6zt7i6a+xtaM90NR6vl+zY/aMRhoE8aUlkSVf5yvX7ag8ZmnL2bFodOgirvjqaMiYvF0FpZpXeEk+6FumSCj5do24Z7e/UAluD77dXJaPzwCa7X7r846DGMh/sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pk3BetNzco22ofDGndAoQ+zxFz/nVvlehUw2PuEfUN8=;
- b=aUAbArE4Gl4L8CPFXuS/7QePwriXB+en7vuv46oRJ16sgXX5qcwg5mIgd/KOI943/B1xYU7b2h5rF9leW05837ILj9XcVmr/Hycpbkcl4jJxXUtNalK9bUHRxCHFHjAZGlRnaDNWdU0Hg2Ze8tWaWdtPAd4M2/WOyC1ARtG9prqfwwiSxbkp+E2UKVkuX+YVvwk2/TXDTKJfGJBHwfvHlHzw7PlMESUfEH9IsEnUz+A3Q++fwXpIKUr8062NPPElXQgjhg57hUxC4IvLO7+wXbqpWjgVbzB4C1TWtO8Vj0t1bMUn6buC83pTo9zdpxg2+uxW18IOy+b0lxyIjymbbQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by CH3PR12MB8993.namprd12.prod.outlook.com
- (2603:10b6:610:17b::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 23:11:34 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 23:11:34 +0000
-Date: Mon, 19 Oct 2026 20:11:33 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Dionna Glaze <drdeeglaze@gmail.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261019231133.GT13920@nvidia.com>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261016234354.GA664420@nvidia.com>
- <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
- <20261017203407.GM13920@nvidia.com>
- <atPgqROZZxnihYfC@kernel.org>
- <20261017231007.GP13920@nvidia.com>
- <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-X-ClientProxiedBy: BN9PR03CA0253.namprd03.prod.outlook.com
- (2603:10b6:408:ff::18) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=KfOw2Bp/
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2544a12.1
+        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 16:26:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792452383; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UldX/XhGUtC8TgcnJPxy2vK6VSUSp+paDEwzFJppx990wuEnxgBidA5I5A2vErs6Y2
+         ROndwp7168yRIc6X1uGySSgbdSv/FIW05HWL85/vD9/7drFG2QCgDJqXV6HbWOxctDCs
+         7HEEJWeoKfAOm6Zk3r/Z3QQFLGTf2YScN1tPd/+fnAJ7Cb/sOAzEjfa3m74Gi00Bbq5/
+         MSlJpX+j9U2AGlAqYl10NaW56fCrzSLxhxA4Fkr50SJMKPx+97Qt3fBuo7qIbtgkt2ig
+         fjFw3371Iq1tBXLRSNeSdKqKjKkYzf4kFfWKIZVTpq1kWcJnrmOZGZC5LGATTsh+lrYg
+         fJ+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
+        fh=j9+BzdkehH8aUtF+0uHUNpt3UUrfZnZMT9jT7hWpVYc=;
+        b=KKviftQAcULRDh87xvNKwcfZe3CoB2QuTku5IoQpb/gJv2LtUCExTvcLS/xZ+JTapo
+         doJeY+cuImlxDUG0M/JtHACveUZBojZ3sfhZ3QLexSp84Bb8yGbkNWBaLb07M/Xk/Y6A
+         DMRTKnxWxjprGoaRnyl3/ZlDKsp58lGkXciuLNkGbrMmQ4d3iA1yP/zIT1pgPrLVd3OV
+         lWJcmEFQIJTQbPkVUDhiPzey1s1UHu/UqcPjCZf3fG0bUv9y/J4+KNMcKCSG5moPJ+SX
+         rrkAYzG/vLGmr7IYeYcfm6vqDLMNX1Vvb1n06ntD8SY+0MykK4bcPvuw6fQIu5VW71HI
+         FTsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792452383; x=1793057183; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
+        b=KfOw2Bp/ckflu3yP//2FjjIVuRufE//wgFl7r2i3ijRfRuhds/q10dt9MswPLuNvru
+         K+58IaR3Aaw8Dcd9HRxErhuj1c5DVPsKwi0AUow32IID+2xQSFGdZzElK/T8HhQJ0lBW
+         BldR1xqfF/ukP1iXCaIyIUI1HDYiky88R9jWgkZ42turnV3p5ZwAb9fuBI0cjAC/Eue9
+         1RJG2uTGndtWLiOktka72gsZ4e2clM252K8Oi9/CvT14+hfp/EOGwgeYuyUaPdPPHD1C
+         aPT3JNQvzHyTyKmyNyClPHzeh4p+gU/uauiNp7xQ2QwfS1BOt1GtLkGlfRqPZxCx1KOx
+         qXAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792452383; x=1793057183;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
+        b=lht/79LqFk1UINeWqUfR2sce3baGTH7w6P911ZdIX+ZltsuxNKg6kA+xCrdqz+Nvt3
+         h2pWaO7mS0fLeCp/lgXIAg3Pl2hihwBbPq4Mgawfesqra3umfgxhayYYBLAU6uMBga0X
+         hL1/DQJwjBdN2xe0NiTDzIoLxy5bTKZ6DBrpgO9kzrU4oFSKR6Ne+LXmKs3++TvnAfRU
+         rePk+WDbef1wStUr+zwDn4dHN6OX0D9f2P/d3ioOX2/5V2hue2QxQKNQL2I/u9PUxGzj
+         lbVMNv6HADD0mH7BNPePHtNXS5EMu6h4f1x2SGfhysVYOdoEB96FIm81PAk89Hh5MoiK
+         LzXA==
+X-Forwarded-Encrypted: i=1; AKwUvBz57VNo/BUWnbeqbpYFXYm3Kjo9T3G6DPBkGhGarGxn9O89cqTbkVqF8xelOZZcyhzDE90=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKlf1ZKa2cg5DOkxtdKUKQsly7z8TEFs1Oes6k2Y0Ankz6fnDef
+	oXh68gOumhl76MrRLBYB6ANQdE7qtr0VmX14e0pVei72RXxNQfTJHcWNxCkLzxYMGIMqwshlDw8
+	R2p+TS3vD9TL7x/W3VJPgK/viDGYMkxOfA3yz7SiD
+X-Gm-Gg: AYBFou1EJAe+zyFTJxqQJ4SCsDlNTDUZI/wUG3glEJRWpTsHtsrN0uWl76MgjgV/TzL
+	b+sKIWt3XqKViH5pZHAZvDPfCDQhmzg7OpxHRTxNIHA/5avbbmbnlMgiTU1Jf9BQOmNJm1P3EwA
+	C3EFwO1gh4pASohOoY+gowJQvFSbfuOxpRu37vfWSljYr067AxGKdfyGeEmvrnY87J6q6WFtQBX
+	bBYCQkRzaO56p50JozTHPCaK/qm25z3GpydLLG/AXiLM3IKSYYaG7k92r1D53pRXBqHhe41rk8u
+	UHdUGlN/6gSlYv0mJ5RZC9y4BrAfVUU0nL4g7Mhh/4O1cCNHngoEmXwbOEHzj0yiV1ZkFm5NR/T
+	t2VBaCVOuNCJwrhmNvNBkz3Sm6fRRc78V4NR1
+X-Received: by 2002:a05:6402:5286:b0:6af:b196:68bf with SMTP id
+ 4fb4d7f45d1cf-6b3e7032ba3mr19962a12.7.1792452383122; Mon, 19 Oct 2026
+ 16:26:23 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -111,100 +104,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CH3PR12MB8993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69c2e298-2222-484c-4921-08df2e36518a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|7416014|1800799024|22082099003|18002099003|4143699003|11063799006|261009223027099003|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	oMoOBxApfLb+UgZHEQHm0CIIPkROq62OiKn7lZTb3Ge7pG1BK+qjrR2DJcR4wFgjeN68oYWtyd8QSu1MhvhnCMP+QKHqZRioNlvb+iUBzWSC4syC4aYYzWcsDexd0l0K7XtZLdGI4c1tilSaPmSYbFY1Qf6knwLd/wJknefzcqxNIlqH1497QGgjfsTiG7J0BaSulR4ocIf1fYqNfg6LTSU+Akhnldvidm822/8g23KX8r1oOqfkREVQNwg8uFgoSXPhjeE6SL0yQWULKX99QDAiRofQE30K53G8YSgHlxwnDKdeXXfd15BhekLCLenbhcptGl24VF7BXVgj2gzZ93XfijvklkTvtUVZfIqgcMFrl3gEtt2JZLn6jZ9kqaZRYJuUOLiX+qG4doMkasTXo2hF45fmTzFiBSDfJovN716l2epiQXbS/TFOsEiYT6Aa4SPhfotClyQmcIvpe4l7Z86+gkzV7h1VrYJS05Zi/14arPERnnbXE89nBNnIGeEv7b1oU0NbUluIMYQDbPEJIi9R64g4KyWSkOtIZ8pIuZFAYpLuNQT7r8lf5K7Jy8eqsuIAG+P63wycMYG6AMWhbEkKZSizGDIjdftn0x6XcwEJk0m1A7CNb/MZQJTSjIKAcC381aIwORPkzuZ1OQNFbSGNV3keX9Fq5rPedDoRnO8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(7416014)(1800799024)(22082099003)(18002099003)(4143699003)(11063799006)(261009223027099003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Cq8NXeTQakZh3CrmJqoJnx34STvs2XRiC+/7PwqkAJH/U9xb4ddWW3WNt4/m?=
- =?us-ascii?Q?OgGtQvUHc60tK0pZ2MB97+lCC8aZSqm9mmG/gkod20tiQk4RdE5XI9kzYMLI?=
- =?us-ascii?Q?4aQ1hYxHVY/OlItXPWq6kWbnTJWZeLKtKL3dTNp82qZyKjpnUT5Qm3AaYMcZ?=
- =?us-ascii?Q?oTP11zsasDTr3ab2PSt2QvMs2Qxgv8hLf3n0AHcVggcsN/nkUDctOoQlWLl8?=
- =?us-ascii?Q?Of333krYWd1uJKqpQ7SJalgLjbn6/uaWSKRj2aKYCmp7yw0KwYpCnypCUB2t?=
- =?us-ascii?Q?Lcl9B19KnuzhKwUOcZZFOluHGEh818UO69XO9zCswLUlR9r1F4rQ6t6AFP5a?=
- =?us-ascii?Q?dpGhXg+/Y02E7IA45ABX364gfZX4+hxcDEYisW2gK4wMixac7iLmlhEtO7IN?=
- =?us-ascii?Q?wmULbDyM0LGhS+0BpxLYFaggddMM4Ml9ICgJ4Vp7TW07T3TT/60yw3NW8v4w?=
- =?us-ascii?Q?NMq4V5u7B9cS8cyko7a/vdWlqVqfMisURFC5H4iG7Z8B7mzvKX9+h8qoJiZh?=
- =?us-ascii?Q?AzV6zIq3H7G7QkyuyFPwlIpSFA9ESxJG6B7i7c8sS957YB4dICpPdX5y7gmb?=
- =?us-ascii?Q?9h6pAYAG0/klxe09YfhkXR/qkgTGx/BhRGgr3QQs57FM+q8x+5/jzZVhI3J7?=
- =?us-ascii?Q?DBQfwtpuHz/d/s6JTxXKdhrI+cNfX9iwuInOFwxO19CtubTRJ06Zdn2qLJ7A?=
- =?us-ascii?Q?cfI13dC3NFwxd+iJvTOfyTe5Czp2I+ELnF1fHfCn/32YPLyQKM92rwBotNiq?=
- =?us-ascii?Q?lj/SFf/s4oSOqKPczaL4tL9NzIs9oOVVWNQG8W1AQVoI0mYVlJbBUhZ08/AG?=
- =?us-ascii?Q?QN7/zXqPwbQY2GsCqewYC6kSwnuMIjEKK9Vjh8PK0WA89o2QJLH2NYL6nBo3?=
- =?us-ascii?Q?LYD92cdfejzzFYUQBYVU0o1dQWl3Cfi0RmraSvFxI3HdYz79i2L9PHjRXU/D?=
- =?us-ascii?Q?TfMMLPw+q2tkl7RkvonalD02B1LpTjhaMk17Vm2F7c1zE+VSBY3zfef6leec?=
- =?us-ascii?Q?XcExPPRyPVIcab4mgcYOfBPg66JKcTxNWa6xygJVijbK9PRdzHBzZKkVjmS3?=
- =?us-ascii?Q?SRTQjSRajPtDylaHiHsXl+11LUf1ARhSie6jBRXfaMfMjRll5WoII8OCly3M?=
- =?us-ascii?Q?O2kTeHtRNin5m9mBnLmFDxW+3ihoYMJNKKS8mYWSkjcn5elBnlk9igDEtmob?=
- =?us-ascii?Q?VHFCeVEuQr8Vq73gtm8nKzi+NeQa2sgByd3J15HBRxPpBhj4+28WZXHEvmGs?=
- =?us-ascii?Q?fnTULFzsQDnI9MMQlFF2xss7j9xCLHUEgG+DI7O9GmVYrLI/v+mHJ7TcZB1F?=
- =?us-ascii?Q?shLQYGYQ7PyWNnrCMMPYuIcaJ2vKYcCghuTLVI8vQxcbl49Cjytb57gqSjqA?=
- =?us-ascii?Q?baQ2J6kgjMVeQL4a4yzeBcdcZnJBoDehQC75K4RGHTrk4ziYlUF4mM+zh5YI?=
- =?us-ascii?Q?BwGeKaG6w4qkCBqfEhZRvu65Guvsw5dzgo4m2kkG2Q8rMLgYILzbkPRMZJuW?=
- =?us-ascii?Q?l8rAqSadMatSOiiF8y5EicW+Djse0TmJO5PV8c3zMSuoFCNEgv6i0SPCTeyI?=
- =?us-ascii?Q?ASDxhhlAWxNi2vJr3gWwSByK4TPqYEnT4zHshilL2+1P0Lj/x0hqmZhf/yK4?=
- =?us-ascii?Q?Lh0/jYLPhyjEJUvSiuKt2LElyEQ/z9ODA/jfO2BhDTNPWohi1TWaldlo26JM?=
- =?us-ascii?Q?J3/aOxXUyHoTrMpWlfjWBBD+0Py3C8GololpVFlXzF7RyVM5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69c2e298-2222-484c-4921-08df2e36518a
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:11:34.1963
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4928tsZ4Imjas5Uzn9QC/hSc/bNr839fEWpWM8maay7GeT04u+aG+gPyCtFs52SO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8993
+References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-4-shivansh.dhiman@amd.com>
+In-Reply-To: <20261019210532.378628-4-shivansh.dhiman@amd.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 19 Oct 2026 16:26:11 -0700
+X-Gm-Features: AclHuK8oRMv7kqF_KPOsMxBijtohUAtErtLXfKrtkvZWID5tE48bkobhU1O1LAM
+Message-ID: <CALMp9eSS8W0CQF4pVJmo_fcKzA19pfK6et+i3cVDLNcA2M5Esw@mail.gmail.com>
+Subject: Re: [PATCH v2 03/12] KVM: SVM: Emulate guest accesses to LBRv2 MSRs
+To: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
+	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
+	nikunj.dadhania@amd.com, sandipan.das@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 18, 2026 at 04:53:28PM -0700, Dionna Glaze wrote:
-> > On Sat, Oct 17, 2026 at 11:55:05PM +0300, Jarkko Sakkinen wrote:
-> > > I wish I had a better picture what is going on.
-> 
-> Me too. I've spent my Sunday with Claude trying to build some
-> understanding of all this stuff, and put together a static site about
-> this series.
-> 
-> https://deeglaze.github.io/scratch/ctlv-site/index.html
-> 
-> It includes a review that I've personally walked through to ensure it
-> wasn't off base, but of course we're all fallible here.
-> I haven't decided to email the review comments to the list yet because
-> it's pretty thorough for something posted here as an RFC.
+On Mon, Oct 19, 2026 at 2:06=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
+d.com> wrote:
+>
+> Back the LBRv2 MSRs with their VMCB save-area fields in
+> svm_{get,set}_msr(). This is required when guest accesses to these
+> MSRs are intercepted. This allows the guest to retain the values
+> of these MSRs on VMRUN/#VMEXIT cycle when vLBR is disabled.
+>
+> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+> ---
+>
+> Changes in v2:
+> * Use KVM_BUG_ON() in svm_vmcb_lbrv2() for an out-of-range LBR stack
+>   index, and then use entry 0.
+> * Do not mark the VMCB dirty on writes to the LBRv2 MSRs since VMCB clean
+>   bit for LBR doesn't cover the LBRv2 state.
+>
+> ---
+>  arch/x86/include/asm/svm.h |  2 ++
+>  arch/x86/kvm/svm/svm.c     | 69 ++++++++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.h     |  3 ++
+>  3 files changed, 74 insertions(+)
+>
 
-It is a really fascinating summary with an interesting construction
-for the CTLV part, I hope to read it more carefully this week. Thanks
-for preparing it
+[ ... ]
 
-I'm still digesting the documentation as well and have made some notes
-about improvements. I feel like it goes straight to a highly technical
-summary and perhaps some kind of more gradual build up would be nicer.
+> +static u64 *svm_vmcb_lbrv2(struct vcpu_svm *svm, u32 msr)
+> +{
+> +       u32 offset =3D msr - MSR_AMD_SAMP_BR_FROM;
+> +       u32 idx =3D offset >> 1;
+> +
+> +       if (KVM_BUG_ON(idx >=3D SVM_LBR_V2_STACK_SIZE, svm->vcpu.kvm))
+> +               idx =3D 0;
 
-> > Currently we don't have an intention to flow TPM command packets
-> 
-> If you're not intercepting all extends through other interfaces to the
-> registers (e.g., /dev/tpmrm0), then it needs to be clearer in the
-> documentation that users not using the interface will break users of
-> the interface when they both target overlapping sets of registers.
+This guard isn't Spectre V1 safe. Use array_index_nospec().
 
-This is sort of already the existing case with all of this. There is
-no way to 'lock' a measurement register so that only one use can write
-to it. eg you can't prevent some other user app from opening
-/dev/tpmrm0 and trashing the MR your app is using.
+> +
+> +       if (offset & 1)
+> +               return &svm->vmcb->save.lbr[idx].lbr_stack_to;
+> +       return &svm->vmcb->save.lbr[idx].lbr_stack_from;
+> +}
+> +
 
-That you can do it through this interface is, to me, just more of the
-same ...
+[ ... ]
 
-But yes, it should be made clear where all the overlaps lie. Hopefully
-nobody finds this surprising and there already shouldn't be two
-userspaces using the same MR.
+>                 *svm_vmcb_lbr(svm, ecx) =3D data;
+>                 vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+>                 break;
+> +       /*
+> +        * No VMCB clean bit covers the LBRv2 state, i.e. the CPU never s=
+kips
+> +        * loading it on VMRUN, so there's no need to mark the VMCB dirty=
+.
+> +        */
+> +       case MSR_AMD_DBG_EXTN_CFG:
+> +               if (!svm_lbrv2_supported(vcpu))
+> +                       return KVM_MSR_RET_UNSUPPORTED;
+> +
+> +               if (data & DBG_EXTN_CFG_RESERVED_BITS)
+> +                       return 1;
+> +
+> +               if (svm->vmcb->save.dbg_extn_cfg =3D=3D data)
+> +                       break;
+> +
+> +               svm->vmcb->save.dbg_extn_cfg =3D data;
+> +               svm_update_lbrv(vcpu);
+> +               break;
+> +       case MSR_AMD64_LBR_SELECT:
+> +               if (!svm_lbrv2_supported(vcpu))
+> +                       return KVM_MSR_RET_UNSUPPORTED;
+> +
+> +               if (data & LBR_SELECT_RESERVED_BITS)
+> +                       return 1;
 
-Jason
+Hardware doesn't raise #GP. It masks the reserved bits off.
+
+> +
+> +               if (svm->vmcb->save.lbr_select =3D=3D data)
+> +                       break;
+> +
+> +               svm->vmcb->save.lbr_select =3D data;
+> +               break;
+> +       case MSR_AMD_SAMP_BR_FROM ... MSR_AMD_SAMP_BR_FROM + 31:
+
+What if the guest CPUID.0x80000022:EBX[9:4] declares fewer than 16 LBRs?
+
+> +               if (!svm_lbrv2_supported(vcpu))
+> +                       return KVM_MSR_RET_UNSUPPORTED;
+> +
+> +               *svm_vmcb_lbrv2(svm, ecx) =3D data;
+
+Hardware does some funky things with high bits that should (a) be
+documented, and (b) be modeled here.
+
+On a Genoa host, I found:
+
+- For FROM MSRs, bits 62:58 always read back as sign-extension of bit
+57, but bit 63 reads back as stored.
+- For TO MSRs, bits 60:58 always read back as sign-extension of bit
+57, but bits 63:61 read back as stored.
