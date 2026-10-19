@@ -1,56 +1,77 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792445813;
-	b=uRSAdGAIiOxsoaXKsHOTHk6R38YLyraapOklvHVkbM9Ee4mGRbPCoq/SGOqURTWlPMzy
-	 hvHiw9tIIpJncuajOgMqajIe3G3ecu6/3Aym8Iae0Hsa7wP0Cx0jd6nt5cwLTjdgVM41Y
-	 UK6PxKGASjHqsup3S6BM7totLdku88id5kdR5VIKaLTuRqmnQPUal0ejIZ1cdPlf5lbPV
-	 N+cFkDH03QYey0ey9Yov2eM1fPvjaSJpEfNxKKk30ZlzYBnxVHPJ4NjgG/nTI2a9qQIO1
-	 lMOB7sWiC7HdAX3J/+jlH7DkSLraQ+nt+qmmmHmdSsJS3KHN46ClQRdwDUIxKNcsDPQ==
+	t=1792446408;
+	b=1DPdVQkq3vgv+ipbRZEI19aDHfKF38IWjYDRM34iqVSRPSAcdLIlSa9gWBqBtR/Wi741
+	 ksfYqRszLTPIIEd9xjIvp5Qt6CYC7ex+rQyQ9F5l+yrLD2i8+kkY89EZpNvZxQRSqoYpu
+	 Bl+6op/wuFB3bORv0XOZiTVJ7PSYdcvE3a5xrQAS7MOzPtqT2bF8eW6feDnwqSt4dbazY
+	 EMLQgpAeP1TRkOV+IvObV7xoevWK/EyfHdmBp1QadhlooxxrpoADIbUz/M6k7zXPk8Mu/
+	 w5gvYLsXJSXeTITkdteKvHdLpDWAJiHeaan+JZswUZV7V2bvZs1oQp4sjvlEZaPh2lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792445813;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=bCMEsK/7iPQdVav/BaIBylxmRftfTx5xnVzAbcg/9Mk=;
-	b=TdHAD/VYMVFmj/yhIK/UcB+ZpoJ6QQ0lDwNwXjnSCqS2j2gHdalCOE9SXOl31/8O/1ky
-	 LnuK3Z5DDeaGWZ20l5K2n3Pahi/V4mDQmXzlBVnPNaus1LB6i5WnjcxRyhSHHbCYf1Awb
-	 JG68KWap4O5xgn2YTAppAO4EOerh6rsdr1jEiXNRhyfSYev3ZHoo8zvRU8ORdQ9vPXq5r
-	 xCbxVmGOwDlKYfR0LgkCJdvTMvJ0fNLDa17wxIbzwWQXuxkjJI3E0llfno/Lvy8XkfAYd
-	 TdeM41V7hz1sA9a/JiHR/Zqyj8HmONVHJKeRsqyqEcMN+LqI6uLMaOFXYY6q/D/unog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792446408;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ZMh0iCAmhjZDg07+iXZGqb/qmaSMmikK3Gld4B4JZmI=;
+	b=3U42ioGzEsSvtN1xHPkJMb2lrzs8wJudSazcHrJ5nXSlDLmujTWXf7H7yuTfRVVs1tiT
+	 aAauPGgdvW+9RoqYyVlsNj9gX+KRJR6lGye2SLH5MEpGUCM4eWw39meOoDlCcNmP+ICsP
+	 baOJ5S18Rbkj3UjcCt2tHIm/H/3QtJIEILGjelYUQQtlImEITQCxQrscyhpomNeebXZqV
+	 ytVw6rrx5pRpmuo3fEeLu+YAawgfpoKP0BZ2uG8B/iXlbywDEk2Xq3uxxjUyAikUHbEVP
+	 fTdSHNkKs2pkQEoz+o1X/JH714YRXiicV2K4fYtrQfmtORy6XQRn/QVf3EbOFe9bIhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TrJrjAgn;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLRw0p56;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE16606A319
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 21:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3CF606A319;
+	Mon, 19 Oct 2026 21:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TrJrjAgn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FF51F000C4;
-	Mon, 19 Oct 2026 21:36:52 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLRw0p56
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F372B1F000C4;
+	Mon, 19 Oct 2026 21:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792445812;
-	bh=bCMEsK/7iPQdVav/BaIBylxmRftfTx5xnVzAbcg/9Mk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TrJrjAgnFTM6DOG9Urv9jcQ5KpFYf3xNG7dhqk5lX2itlBDePMs5xF+FvxU60D2sy
-	 icdr0sswMtIVjTmPmB9X535SUfbMy46VlZ22U5REHCDRMasHQduTbUjtfllFrTRHEf
-	 bKxgJNH0CKonJV6nIY1TRhR/92+TKdP1WIMX3dleI8Hr1JW+BwIW9mrbtjICoFqUV3
-	 b7P3xm9O3PQaKdrVt5eBFNm+zy0DUv9oHKhIjXNV1lFYB0lSxAQFhbAZK5ou+WXN7I
-	 Q/26FS3g0oJWMElV3nWs4zBzmAtUcJRGWf5R7RjWGRHtLpsoch2Y4w/MiqxYvG92Ns
-	 B29QyUDN/rSAg==
-Message-ID: <sashiko-outbox-178266@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 10/12] KVM: nSVM: Pass through LBRv2 MSRs to L2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261019210532.378628-11-shivansh.dhiman@amd.com>
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
- <20261019210532.378628-11-shivansh.dhiman@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 21:36:51 +0000
+	s=k20260515; t=1792446408;
+	bh=ZMh0iCAmhjZDg07+iXZGqb/qmaSMmikK3Gld4B4JZmI=;
+	h=From:To:Cc:Subject:Date;
+	b=MLRw0p56RTCHYs3ndbGLGg7z8qzas9EKQRXKxLMBtobIGIxXx4IHlH9PI7P0GAWsm
+	 PWBdvrRrHVNMeg9q/rKDe4sgK/UJ/dkBYaYLahu7vwGNT6Cp6ug9RiadqWjPgp5NiA
+	 hGlj3I3ozZ8gOm+ExBIBm6OwWzVFoJnRHck++v4sRIalGpDDHsnaX6gnd6MM8APRDq
+	 EDPRkWh7uHn5ONmUmyZU8JNPBvx3Z33yDMNApXnooBDDmUl0WqO0PwnftvAcSfz/rH
+	 vGnPuORqalJowiqLL8GU4r0oxf2Goe9gqa7Oa+8yqd+ipktAIW3zyexgTTVJXAS5Dl
+	 nDSnVhwtbSj7g==
+From: Yosry Ahmed <yosry@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Kevin Cheng <chengkev@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	Matt Fleming <matt@readmodwrite.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Tal Zussman <tz2294@columbia.edu>,
+	andrew.cooper3@citrix.com,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nikola Ciprich <nikola.ciprich@linuxbox.cz>,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH 6.18.y] KVM: SVM: Stop toggling virtual VMSAVE/VMLOAD on intercept recalc
+Date: Mon, 19 Oct 2026 21:46:11 +0000
+Message-ID: <20261019214611.404880-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,135 +80,99 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM: nSVM: missing msrpm02 recalc in svm_update_lbrv() for LBRv2 M=
-SRs
---
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit 97c65be26df9b6afb7c41700b0bfb2f3401bc714
-Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
+[ Upstream commit 55780d8a1dcc93d2c4b33c565ada88df12c9f206 ]
 
-KVM: nSVM: Pass through LBRv2 MSRs to L2
+Virtual VMSAVE/VMLOAD enablement (i.e.
+VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK) is set/cleared by
+svm_recalc_instruction_intercepts() when the intercepts are cleared/set.
+This is unnecessary because the bit is meaningless when intercepts are
+set and KVM emulates the instructions. Initialize the bit in vmcb01 base
+on vls, and keep it unchanged.
 
-This commit adds the LBRv2 MSRs to merge_msrs[] in
-nested_svm_init_msrpm_merge_offsets() so their MSRPM bits are merged into
-msrpm02, allowing L2 to access them directly without taking a VM-Exit.
+This is similar-ish to how vGIF is handled. It is enabled in init_vmcb()
+if vgif=1 and remains unchanged when the STGI intercept is enabled (e.g.
+for NMI windows).
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index b356a091e320c..84154f353935c 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -209,7 +209,7 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm =
-*svm)
->   * Hardcode the capacity of the array based on the maximum number of _of=
-fsets_.
->   * MSRs are batched together, so there are fewer offsets than MSRs.
->   */
-> -static int nested_svm_msrpm_merge_offsets[10] __ro_after_init;
-> +static int nested_svm_msrpm_merge_offsets[12] __ro_after_init;
->  static int nested_svm_nr_msrpm_merge_offsets __ro_after_init;
->  typedef unsigned long nsvm_msrpm_merge_t;
-> =20
-> @@ -253,6 +253,27 @@ int __init nested_svm_init_msrpm_merge_offsets(void)
->  		MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
->  		MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
->  		MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET,
-> +
-> +		MSR_AMD_DBG_EXTN_CFG,
-> +		MSR_AMD64_LBR_SELECT,
-> +
-> +		/* This part of MSRs should match SVM_LBR_V2_STACK_SIZE * 2. */
-> +		MSR_AMD_SAMP_BR_FROM + 0, MSR_AMD_SAMP_BR_FROM + 1,
-> +		MSR_AMD_SAMP_BR_FROM + 2, MSR_AMD_SAMP_BR_FROM + 3,
-> +		MSR_AMD_SAMP_BR_FROM + 4, MSR_AMD_SAMP_BR_FROM + 5,
-> +		MSR_AMD_SAMP_BR_FROM + 6, MSR_AMD_SAMP_BR_FROM + 7,
-> +		MSR_AMD_SAMP_BR_FROM + 8, MSR_AMD_SAMP_BR_FROM + 9,
-> +		MSR_AMD_SAMP_BR_FROM + 10, MSR_AMD_SAMP_BR_FROM + 11,
-> +		MSR_AMD_SAMP_BR_FROM + 12, MSR_AMD_SAMP_BR_FROM + 13,
-> +		MSR_AMD_SAMP_BR_FROM + 14, MSR_AMD_SAMP_BR_FROM + 15,
-> +		MSR_AMD_SAMP_BR_FROM + 16, MSR_AMD_SAMP_BR_FROM + 17,
-> +		MSR_AMD_SAMP_BR_FROM + 18, MSR_AMD_SAMP_BR_FROM + 19,
-> +		MSR_AMD_SAMP_BR_FROM + 20, MSR_AMD_SAMP_BR_FROM + 21,
-> +		MSR_AMD_SAMP_BR_FROM + 22, MSR_AMD_SAMP_BR_FROM + 23,
-> +		MSR_AMD_SAMP_BR_FROM + 24, MSR_AMD_SAMP_BR_FROM + 25,
-> +		MSR_AMD_SAMP_BR_FROM + 26, MSR_AMD_SAMP_BR_FROM + 27,
-> +		MSR_AMD_SAMP_BR_FROM + 28, MSR_AMD_SAMP_BR_FROM + 29,
-> +		MSR_AMD_SAMP_BR_FROM + 30, MSR_AMD_SAMP_BR_FROM + 31,
+This fixes a bug in svm_recalc_instruction_intercepts(). The intercepts
+for VMSAVE/VMLOAD are always toggled in vmcb01, but
+VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK is toggled in the current VMCB, which
+could be vmcb02 instead of vmcb01 if L2 is active.
 
-[Severity: High]
-Can this leave stale LBRv2 intercept bits in msrpm02 when L2 toggles
-DBG_EXTN_CFG_LBRV2EN without exiting to L1, exposing the host's hardware
-LBRv2 registers to L2?
+Virtual VMSAVE/VMLOAD enablement in vmcb02 is separately controlled by
+nested_vmcb02_prepare_control() based on the vCPU features and VMCB12,
+and if intercepts are needed they are set by recalc_intercepts().
 
-Suppose L1 runs L2 with INTERCEPT_MSR_PROT enabled in vmcb12,
-SVM_MISC2_ENABLE_V_LBR disabled in vmcb12->control.misc_ctl2, and the LBRv2
-MSRs un-intercepted in vmcb12's MSRPM, while DBG_EXTN_CFG_LBRV2EN is set in
-dbg_extn_cfg at nested VMRUN.
+The bug is benign though. Not toggling the bit for vmcb01 is harmless
+because it's useless anyway. For vmcb02:
 
-During nested_svm_vmrun(), nested_vmcb02_prepare_save() calls
-svm_update_lbrv(), which sees svm_lbrv2_active() as true, sets
-SVM_MISC2_ENABLE_V_LBR in vmcb02->control.misc_ctl2, and clears the
-intercept bits for MSR_AMD64_LBR_SELECT and MSR_AMD_SAMP_BR_FROM + 0..31 in
-svm->msrpm (msrpm01) via svm_recalc_lbrv2_msr_intercepts(). Then
-nested_svm_merge_msrpm() merges msrpm01 and vmcb12's MSRPM into
-svm->nested.msrpm (msrpm02), clearing those intercept bits in msrpm02.
+- The bit could be incorrectly cleared when intercepts are set in
+  vmcb01. This is harmless because VMSAVE/VMLOAD will be emulated by KVM
+  anyway.
 
-When L2 subsequently writes 0 to MSR_AMD_DBG_EXTN_CFG (which remains
-intercepted in msrpm01 for non-SEV-ES guests), hardware exits to L0 and
-restores L0's host LBRv2 registers. Because L1 does not intercept
-MSR_AMD_DBG_EXTN_CFG in vmcb12, nested_svm_exit_handled_msr() returns
-NESTED_EXIT_HOST and L0 handles the write in svm_set_msr():
+- The bit could be incorrectly set when the intercepts are cleared in
+  vmcb01. However, if the bit was originally clear in vmcb02, then
+  recalc_intercepts() will enable in the intercepts in vmcb02 anyway and
+  VMSAVE/VMLOAD will be emulated by KVM.
 
-arch/x86/kvm/svm/svm.c:svm_set_msr() {
-	...
-	case MSR_AMD_DBG_EXTN_CFG:
-		...
-		svm->vmcb->save.dbg_extn_cfg =3D data;
-		svm_update_lbrv(vcpu);
-		break;
-}
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260110004821.3411245-3-yosry.ahmed@linux.dev
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 5a1a726e68ff ("KVM: x86: Use KVM_REQ_RECALC_INTERCEPTS to react to CPUID updates")
+Reported-by: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+Closes: https://lore.kernel.org/linux-mm/arY1Wq6R9OY20ans@pcnci.linuxbox.cz/
+Tested-by: Nikola Ciprich <nikola.ciprich@linuxbox.cz>
+[ yosry: The bug is not benign. Since 5a1a726e68ff, a vCPU restored into
+  L2 (e.g. on live migration) recalculates intercepts with vmcb02
+  loaded, leaving vmcb01 with neither VMLOAD/VMSAVE intercepts nor
+  virtual VMLOAD/VMSAVE, so L1's VMLOAD/VMSAVE corrupt host memory. ]
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+ arch/x86/kvm/svm/svm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-svm_update_lbrv() disables LBR virtualization in vmcb02 (clearing
-SVM_MISC2_ENABLE_V_LBR) and calls svm_recalc_lbrv2_msr_intercepts():
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 335b214aa3711..5f3c6d7974fb9 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -981,10 +981,14 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
+ 			svm_set_intercept(svm, INTERCEPT_RDTSCP);
+ 	}
+ 
++	/*
++	 * No need to toggle VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK here, it is
++	 * always set if vls is enabled. If the intercepts are set, the bit is
++	 * meaningless anyway.
++	 */
+ 	if (guest_cpuid_is_intel_compatible(vcpu)) {
+ 		svm_set_intercept(svm, INTERCEPT_VMLOAD);
+ 		svm_set_intercept(svm, INTERCEPT_VMSAVE);
+-		svm->vmcb->control.virt_ext &= ~VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+ 	} else {
+ 		/*
+ 		 * If hardware supports Virtual VMLOAD VMSAVE then enable it
+@@ -993,7 +997,6 @@ static void svm_recalc_instruction_intercepts(struct kvm_vcpu *vcpu)
+ 		if (vls) {
+ 			svm_clr_intercept(svm, INTERCEPT_VMLOAD);
+ 			svm_clr_intercept(svm, INTERCEPT_VMSAVE);
+-			svm->vmcb->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
+ 		}
+ 	}
+ }
+@@ -1137,6 +1140,9 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
+ 		svm->vmcb->control.int_ctl |= V_GIF_ENABLE_MASK;
+ 	}
+ 
++	if (vls)
++		svm->vmcb->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
++
+ 	if (vcpu->kvm->arch.bus_lock_detection_enabled)
+ 		svm_set_intercept(svm, INTERCEPT_BUSLOCK);
+ 
+-- 
+2.56.0.212.g129ede20d9-goog
 
-arch/x86/kvm/svm/svm.c:svm_recalc_lbrv2_msr_intercepts() {
-	...
-	for (i =3D 0; i < 32; i++)
-		svm_set_intercept_for_msr(vcpu, MSR_AMD_SAMP_BR_FROM + i, MSR_TYPE_RW, in=
-tercept);
-
-	svm_set_intercept_for_msr(vcpu, MSR_AMD64_LBR_SELECT, MSR_TYPE_RW, interce=
-pt);
-}
-
-This re-enables the intercepts in svm->msrpm (msrpm01) and sets
-svm->nested.force_msr_bitmap_recalc =3D true, but nested_svm_merge_msrpm() =
-is
-only invoked during nested_svm_vmrun() and svm_get_nested_state_pages()
-(via KVM_REQ_GET_NESTED_STATE_PAGES).
-
-Because msrpm01 is not re-merged into msrpm02 before re-entering L2, L0
-resumes L2 with SVM_MISC2_ENABLE_V_LBR cleared in vmcb02 while msrpm02 still
-has the intercept bits cleared for MSR_AMD64_LBR_SELECT and
-MSR_AMD_SAMP_BR_FROM + 0..31, allowing L2 to directly read and write the L0
-host's hardware LBRv2 MSRs.
-
-Conversely, if L1 enters L2 with dbg_extn_cfg =3D=3D 0 and L2 later sets
-DBG_EXTN_CFG_LBRV2EN without a nested exit to L1, clearing the intercepts in
-msrpm01 is not propagated to msrpm02 until the next nested #VMEXIT and VMRU=
-N.
-
-Should svm_recalc_lbrv2_msr_intercepts() (or svm_set_intercept_for_msr() wh=
-en
-is_guest_mode(vcpu) is true) ensure msrpm02 is updated before re-entering L=
-2?
-
->  	};
->  	int i, j;
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019210532.3786=
-28-1-shivansh.dhiman@amd.com?part=3D10
