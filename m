@@ -1,191 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D773DEAE3
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 08:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052D48DB3A;
+	Mon, 19 Oct 2026 08:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792397343; cv=none; b=AprIIbtMB/3P9JSNkGXaeXbqOx8njsff45EUD8bN17WxY1D64uV5gs1pCr5YCBW36Efr2FrxR7ft01JuOaULEY9XlbgUZM8YOrncBFkrWmOG3Az36rh1uEsbonf2jMaXrMPoaDdnV5tvEdP9C5LJ2yW2Y7zyetY1zPhaQtdzpjA=
+	t=1792397545; cv=none; b=cvT4zwR+tWZbLL9XH4AYZOVRHhnUgkgOQsBxK8N/J/pZ2ASI+Ud7kS2qRt2CcIbTOBl5Ar/7eQ6I9KjEWG74i1CHD1MV7WWHjVaDWW4f8Qq3MpY+rboWOiJVgdNnRN3VGs/N0T9EtN0J6Y8QdqKN44cit8Fso3BZdhpqmSZACmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792397343; c=relaxed/simple;
-	bh=RdbKafGbBexXKLZtNp7pKspBNJZCct7oTazxUbkC90k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AFD8l7WTpUKOTSyegpGNQ8cmjZR1WcikM9HJheXq+Mj9Piksa2K2sXu7NUuXA+wHKYioeyUJDFRL8CQW0ovVuBTIUqRqquKvJANNsxk0WCnQMeuJYZZe9JPIBxHIfo0FGOgDEUbo1nIt8h73oErpU9Cs+uis0lg62JF35Sucb6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UNpH/Tc/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792397545; c=relaxed/simple;
+	bh=F62E0+/4F4qgGcCGX2HCnm0q1KbdUrG+InmuZKUrUBY=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Uu7wHmrw9XP2F6UKPeKKvsN4FV+lNOHLVRUuNzJqXV+0mcGPKnLlyXPY4ZUdwBFp8BV9g48u1Z9x7X+FfkZJz81NHSEsJx7UvAE0PCLprHsY0M0XVAMULXXjJ5wRu58KB+h1O12V46Cp+xO7uOlAgwyi7yFNs6maue+AgvYwa8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aP1TSt7p; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UNpH/Tc/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792397340;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:resent-to:
-	 resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references;
-	bh=9YUfwYqe6KLoYZjW2wWSXKj8ZV76DX6TpAPyYqYwhe8=;
-	b=UNpH/Tc/arX9xSvHgmxHWCyJpN9yc7EsZSqFpByWBZnXQGQQMe2Su7jUSlU4oF20oozsOL
-	4Fr22hTKFU3G4gVzt7XTwh1Qn/naq9ERZQli3SRsvxvxYaL7CR67iWJ6qC6O6CIatnJQS6
-	+BkRIhAHPMj6Wk7KhX5DSy8f9/SLHxg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-602-n_tiRJwNNgazkRIzb2Z2Gw-1; Mon,
- 19 Oct 2026 08:08:56 +0000
-X-MC-Unique: n_tiRJwNNgazkRIzb2Z2Gw-1
-X-Mimecast-MFC-AGG-ID: n_tiRJwNNgazkRIzb2Z2Gw_1792397333
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95FF018001E6;
-	Mon, 19 Oct 2026 08:08:52 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B10471955E70;
-	Mon, 19 Oct 2026 08:08:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id DC3D421E6A04; Mon, 19 Oct 2026 10:08:47 +0200 (CEST)
-Resent-To: 17746591750@163.com, graf@amazon.com, FangSheng.Huang@amd.com,
- michael.roth@amd.com, jamin_lin@aspeedtech.com, kane_chen@aspeedtech.com,
- steven_lee@aspeedtech.com, andrew@codeconstruct.com.au,
- palmer@dabbelt.com, foss@defmacro.it, sebastian.huber@embedded-brains.de,
- jiaxun.yang@flygoat.com, lizhijian@fujitsu.com, edgar.iglesias@gmail.com,
- jasowangio@gmail.com, leetroy@gmail.com, liwei1518@gmail.com,
- npiggin@gmail.com, zhangckid@gmail.com, titusr@google.com,
- wuhaotsh@google.com, arei.gonglei@huawei.com, berto@igalia.com,
- zhao1.liu@intel.com, its@irrelevant.dk, joel@jms.id.au, clg@kaod.org,
- conor@kernel.org, david@kernel.org, jic23@kernel.org, kbusch@kernel.org,
- sstabellini@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, lixianglai@loongson.cn,
- zhiwei_liu@linux.alibaba.com, maobibo@loongson.cn, zhenwei.pi@linux.dev,
- qemu-arm@nongnu.org, adityag@linux.ibm.com, qemu-block@nongnu.org,
- amachhiw@linux.ibm.com, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, kfting@nuvoton.com,
- den@openvz.org, daniel.barboza@oss.qualcomm.com, philmd@oss.qualcomm.com,
- pierrick.bouvier@oss.qualcomm.com, chao.liu@processmission.com,
- sam@rfc1149.net, kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
- alistair.francis@wdc.com, anthony@xenproject.org,
- borntraeger@linux.ibm.com, brueckner@linux.ibm.com, farman@linux.ibm.com,
- harshpb@linux.ibm.com, iii@linux.ibm.com, jjherne@linux.ibm.com,
- milesg@linux.ibm.com, mjrosato@linux.ibm.com, pasic@linux.ibm.com,
- rathc@linux.ibm.com, xen-devel@lists.xenproject.org, luc@lmichel.fr
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 19 Oct 2026 10:08:47 +0200
-Resent-Message-ID: <87v76y159s.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
-  Michael Roth <michael.roth@amd.com>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@oss.qualcomm.com>,  Amit Machhiwal <amachhiw@linux.ibm.com>,
-  Alexander Graf <graf@amazon.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  "Gonglei (Arei)"
- <arei.gonglei@huawei.com>,  zhenwei pi <zhenwei.pi@linux.dev>,  David
- Hildenbrand <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,
-  Alberto Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna
- Reitz <hreitz@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Ani
- Sinha <anisinha@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
-  Luc Michel <luc@lmichel.fr>,  Zhao Liu <zhao1.liu@intel.com>,  Jonathan
- Cameron <jic23@kernel.org>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>,  Steven Lee
- <steven_lee@aspeedtech.com>,  Troy Lee <leetroy@gmail.com>,  Jamin Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Andrew
- Jeffery <andrew@codeconstruct.com.au>,  Joel Stanley <joel@jms.id.au>,
-  Samuel Tardieu <sam@rfc1149.net>,  Marcelo Tosatti <mtosatti@redhat.com>,
-  John Snow <jsnow@redhat.com>,  "Denis V. Lunev" <den@openvz.org>,  Song
- Gao <17746591750@163.com>,  Bibo Mao <maobibo@loongson.cn>,  Xianglai Li
- <lixianglai@loongson.cn>,  Jiaxun Yang <jiaxun.yang@flygoat.com>,
-  FangSheng Huang <FangSheng.Huang@amd.com>,  Tyrone Ting
- <kfting@nuvoton.com>,  Hao Wu <wuhaotsh@google.com>,  Jason Wang
- <jasowangio@gmail.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Nicholas
- Piggin <npiggin@gmail.com>,  Aditya Gupta <adityag@linux.ibm.com>,  Glenn
- Miles <milesg@linux.ibm.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,
-  Conor Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
- <borntraeger@linux.ibm.com>,  Jason Herne <jjherne@linux.ibm.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Ilya Leoshkevich
- <iii@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-  Zhang Chen <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,
-  Peter Xu <peterx@redhat.com>,  Chinmay Rath <rathc@linux.ibm.com>,
-  Hendrik Brueckner <brueckner@linux.ibm.com>,  kvm@vger.kernel.org,
-  qemu-block@nongnu.org,  qemu-arm@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-ppc@nongnu.org,  qemu-riscv@nongnu.org,  qemu-s390x@nongnu.org,
-  xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v5 35/62] qom: convert scalar properties to QAPI-aware
- registration
-In-Reply-To: <20260911-qom-qapi-v5-35-7732a55b7760@redhat.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?=
-	Lureau"'s message of "Fri, 11 Sep 2026 20:35:09 +0400")
-References: <20260911-qom-qapi-v5-0-7732a55b7760@redhat.com>
-	<20260911-qom-qapi-v5-35-7732a55b7760@redhat.com>
-Date: Mon, 19 Oct 2026 09:41:59 +0200
-Message-ID: <87jyne2l2w.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aP1TSt7p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792397544; x=1823933544;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=F62E0+/4F4qgGcCGX2HCnm0q1KbdUrG+InmuZKUrUBY=;
+  b=aP1TSt7pDhuUIHqSgcfDRGsH1BikajoB0bWS2swFUBrY1Du5TCfCg/0C
+   r92jl7sSRxLY+qP159C3xJGgCPe9chT0fEmyscY/UJ4XDzDqtSxtiRea1
+   rYOGXq37oU5rJLLZp0O1R6fEAdfFzAurSWwnNr6VCX3hsCikX4tY5UCV9
+   lVTKNqjCvyhrNSNcMqzc8/c6v8beI+biE9iBl0Js3qZYxwHfEVzEqhWmF
+   C6bEvNJhkSanWRhnoDM8vz73N9m+KknRXhdh1UC7j5Rh9co3qJH+pnhIv
+   wvCBBTWVj6Kb5g2CEe3/Pv5w9JCwgocvQQtbdog6xe+h+/gTgT87qvNwq
+   g==;
+X-CSE-ConnectionGUID: pN16u2HyT4enbEuMckFsuA==
+X-CSE-MsgGUID: xr1D0nANRLOOTFxK8NCceg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="1068086"
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="1068086"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 01:12:24 -0700
+X-CSE-ConnectionGUID: o4RJNjPFS7+qPLJGv+t2Xg==
+X-CSE-MsgGUID: SZROF/7MQSCwkJgaMC1W5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="2472391"
+Received: from unknown (HELO [10.238.0.90]) ([10.238.0.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 01:12:20 -0700
+Message-ID: <23a3c630-a3ad-4874-b13c-b8795cd194a6@linux.intel.com>
+Date: Mon, 19 Oct 2026 16:12:18 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, "iommu@lists.linux.dev"
+ <iommu@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Kiryl Shutsemau
+ <kas@kernel.org>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 4/4] coco/tdx-host: Initialize trusted DMA on all
+ capable IOMMUs
+To: "Tian, Kevin" <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20261015010705.1973284-1-baolu.lu@linux.intel.com>
+ <20261015010705.1973284-5-baolu.lu@linux.intel.com>
+ <atCPY6LzHd4y0Ywh@yilunxu-OptiPlex-7050> <20261015173707.GV14213@ziepe.ca>
+ <5ca5f1c4-4c3c-47f1-b79c-c1fe06b20ee4@linux.intel.com>
+ <CO1PR11MB4836E2CB05E1448BB42047458C9B2@CO1PR11MB4836.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <CO1PR11MB4836E2CB05E1448BB42047458C9B2@CO1PR11MB4836.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+On 10/16/2026 3:17 PM, Tian, Kevin wrote:
+>>    - The TDX Connect architecture places requirements on the host
+>>      iommu driver while the secure IOMMU is being set up. For example,
+>>      the host iommu driver must block the enhanced command (ECMD)
+>>      interface while the TDH.IOMMU.SETUP SEAMCALL runs, and it must
+>>      reserve the upper half of the domain ID space. These steps have
+>>      to happen atomically under the iommu driver's own locks. As a
+>>      result, the Intel iommu driver needs to merge the two steps above
+>>      into one.
+> Didn't get this. Both ECMD and DID reservation are TDX specific things.
+> How are they related to the two steps in the ARM sides and why calls
+> for merging?
+> 
+> and why are they must be done atomically? they are conditions to
+> execute TDH.IOMMU.SETUP, but it is perfectly fine to reserve DID
+> at an early point then block ECMD later...
 
-> Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+You are right, "atomically" was too strong. Only the ECMD block has to
+bracket TDH.IOMMU.SETUP. So I plan to restructure it as follows:
 
-[...]
+- dmar_tdxcs_init_prepare(dev, &params): resolve the device's DRHD and
+   take a reference on its secure-mode state. For the first user,
+   validate the preconditions (TE/QI/SM enabled), reserve the upper half
+   of the DID space (failing with -EBUSY if any of it is in use), block
+   ECMD and return what tdx-host needs (register base, NUMA node, etc).
+   If the unit is already in Secure TDX mode, just report that so
+   tdx-host skips TDH.IOMMU.SETUP.
 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 872920b6482b..4e5d8d9f86e3 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -4258,7 +4258,7 @@ static void virt_machine_class_init(ObjectClass *oc=
-, const void *data)
->                                            "Set on/off to enable/disable =
-high "
->                                            "memory region for PCI MMIO");
->=20=20
-> -    object_class_property_add(oc, "highmem-mmio-size", "size",
-> +    object_class_property_add_qapi(oc, "highmem-mmio-size", &size_type_i=
-nfo,
->                                     virt_get_highmem_mmio_size,
->                                     virt_set_highmem_mmio_size,
->                                     NULL, NULL);
-> @@ -4266,7 +4266,7 @@ static void virt_machine_class_init(ObjectClass *oc=
-, const void *data)
->                                            "Set the high memory region si=
-ze "
->                                            "for PCI MMIO");
->=20=20
-> -    object_class_property_add(oc, "virtio-mmio-transports", "uint8",
-> +    object_class_property_add_qapi(oc, "virtio-mmio-transports", &uint8_=
-type_info,
+- dmar_tdxcs_init_done(dev, result): unblock ECMD, then either mark the
+   unit as being in Secure TDX mode or roll back (including the DID
+   reservation), based on the SEAMCALL result. It must be called
+   whenever init_prepare() returns success.
 
-scripts/checkpatch.pl gripes
+- dmar_tdxcs_release(dev): drop the reference; the last user releases
+   the DID reservation and clears the Secure TDX mode state after
+   tdx-host issues TDH.IOMMU.CLEAR.
 
-    WARNING: line over 80 characters
+These are called from tdx_tsm_link_connect()/disconnect(). Any failure,
+whether a precondition, DID reservation or the SEAMCALL itself, aborts
+connect with the corresponding error.
 
-Easy enough to avoid.
-
-Many more below.
-
->                                     virt_get_virtio_transports,
->                                     virt_set_virtio_transports,
->                                     NULL, NULL);
-
-[...]
-
+Thanks,
+baolu
