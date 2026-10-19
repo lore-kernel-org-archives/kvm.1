@@ -1,99 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792435805;
-	b=mLSWrSO5AnBYTMUm2yBZoAetu/1VzIXgrjzXGkip52NhRYQrZZxEJJ3Jig/MiCcnJD9h
-	 HFc2yHQbw/SSKErQBH3/5zoNy3TjyMcqf9g90M4oDge6iPJD/AfKve+Li6XPZ4VS5eDxF
-	 MMoD9/2uM7g2mYMPnHU47c/Qh5r9F62fBG0h9BXP8uyuqQv8atdXJLKYp0uX2eLLQa0GF
-	 oEEhkyXCAVR56B9kOgod31y19x1qZLw2a1R+csQ7M7McrHHqYUphv+x7lYAiI3nUJTSfP
-	 DLTHjVvX/stfuwbZBjPAhubWWxhP8n5AVQGSLaLrm1jyglbySTcXDqeqGEasfsOhtcA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792435805;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ysOFk37b7EhjKYs1jlxO5/HNbou30LEDlMbBjMznOzQ=;
-	b=Fti9qGVNC1aJe3+Yfypcnx+pYH0C++4CqXkleacmWsXda9EuXS/N4MYNC7OH+jGmJGT3
-	 kmCwimGF/GHY58BkkPBYrrSkutZpfm6DN4MGUjn5KNtbknd0g/sLegF4SrKCpCKTuhnZh
-	 ih/hp22nVE5vNvn7BWwTX6roZR5oA+EzzJwhij9f8qatmHsknycSJI0TSkRDn7sbo73e7
-	 HXV+oZJ68qqDCMP2mWW8UnQZEXBDPdhg4wwjAU1SbVJBnjpkk9+Kk5Q8taZQfpdcIDJTT
-	 55nlyzP1vhhXAdHzNwEaR7/nmJNRGjo0sDH/q2k4UzfkShHBZ6cWOM3afoPNA+Os8tQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=gp2KVdHC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792437309;
+	b=IYgb8S25P1XtFQH2PzPObuFNeU6B1JHCPmGpTdqDDJy5f3cnvK2Yg1GrQMeMztMN2jNz
+	 Q9KZfZ2uXwRQdHVSaYHWC3/mMYKq7YSJQHeSSE86XBLfwgCo613jtd7hRCPfMbCUepgsl
+	 5lD/HFjIP6WyqAP8ZgKLaMTafROpw5A0cZkraDD4o2ckeCdwVr9DDOP5WW/I3/ClKFTw5
+	 g/vr8tjajfyEnqGdsQVNCKs5wsAf4+XSPoErSdRlGhgbJC3b6zvlSUnFPtVM/S7o3XiDC
+	 B1YvI1uDQprfp9zeURFsl/flMjaHyPbgOnx8QdkFZnCBACR7Cx06QkegvllzwTeI/Lg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792437309;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=rFOi8DF9otl7QSq9yN9Q1rig7a71rUpd/odhmx+OLmo=;
+	b=39xE9vRizreGWRwKzMKmkARhwGDSUvhPd7W2n7efJT38LDaWC1Pinq3I36qv1wnPvBB7
+	 fjnvvxDfvxsZGCMAPzPZt+1qwd2NHB3cuXRvHw4vQE9ToLajTmjCoY7J8EI/2M51egZWW
+	 KdjbpX7LDRtmJGhzv4sj9YDyzCrIkj9EwzzkypaJ/N1hAnNwTb4amVQJ1JdzsAsxFtYBK
+	 dCZhD6jdxtB5S5H/ZmVn+p0zwXu3uPKvenGWQ5BigTDhm8DdKFvVtr0UQeIvId8ouq4dD
+	 tJLPLCFZCdHuuUlQKYe6puLGDKn3cS20zxHxkl4krpGqLVk6Dq1lqknYlDUBP+v4N9w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EZ20yDLX;
+	arc=none smtp.remote-ip=198.175.65.20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B3C606A31B
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 18:50:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2B3C606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2D6606A31B;
+	Mon, 19 Oct 2026 19:15:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA2D6606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=gp2KVdHC
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso1928a12.0
-        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 11:50:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792435803; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sJ2+IHYnHXP2vmyBCZf/cDQ8G7sk78eMuXYKQ7YHwuRNVXOisbVbUjDK75cLD4AacU
-         HhiSJeeU9jE/e0de5g4ZTF3NOG3wCHVKjdT8123iHP/4lctP7dQMq8NlruwQ+Dh5EfOC
-         KHw1dqCF+ynexb5cCF340V6wYxUgS1+aORLG1nA0rmrUd9ckpAwXBTrV1QJsXCYV0RH1
-         PcF99vbSUkUZ6Wsme14lDWoBljjC0WoKfLKNRyCPyIMXxB9zw6fJ7N/6oy3Inuf0FFYd
-         En66/pZxCVApnX6cL+zgp/ha7ka2cMTL3n3yPS53J82Uo2XWfdmNsn1FOxWFDS1XcHtz
-         97rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ysOFk37b7EhjKYs1jlxO5/HNbou30LEDlMbBjMznOzQ=;
-        fh=LH/BetqEcOo9LgeFc7TX7WmFhpw/B0OgFupXiI2U+80=;
-        b=nwMnAi2VzZDRsiONPQK5a3Q16ItSrDPwvcZETbr8u1oqs6twHVUJCAHAkrJ2XNJ1nZ
-         7MBz4JulNnU+D/bd74g2mus2xMO6TMG8TEeFZRd9PjUvfyRfopKCMs2sDF8SXsg2+P9z
-         AuHpRwyiVSajnOLi61gfHUHkVNzJOLSCdPlzCY5WIqo0RDpUmxgyuMJ4+bwdf/YEv4bF
-         KYiKF6Xxw4rbmIJ9Q4mx7IbAyYpPAkhLvGfXcgRO+hJ6N2ewhWkDzHwQmrSA9uTkuPQ4
-         ECwB13RqEm/yTLk7TKs94VfjF22XsNjBUlupJUb1H+hivwRaVOxk+hD+PaVU6f2g9oNZ
-         3dmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792435803; x=1793040603; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ysOFk37b7EhjKYs1jlxO5/HNbou30LEDlMbBjMznOzQ=;
-        b=gp2KVdHCF/tHupiE14bhXUoXsrCrfiM3vgC4SszA5Lgw1AZHSl5S1knOomWoE7M7XJ
-         3vWoWvWTtYYw7rbdyoepgtCmzQgB/deyFYs6FP7+Ynkb7hjpfDg9PM8UbPYm1xB8EVzy
-         FfDZ6hPqvWCqluBvPIuDfpxMIkvIXIno6biDIYBGVv9Nq7VJLFHMvWfur5XVlfFASOwC
-         3Y8rsSQMJG3ixI8qLK+WdD1IIg3BBCjsdhmJnxLbIA+v1GThFO+Q3FTlQCFxC1fc8JrY
-         /6isrjIe6rw1Vf9cY3dxkk/mQgSadCi1HEwsInW4Pw4iMi3bD0tUiXLXUpuU/YoKFe+w
-         6nvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792435803; x=1793040603;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ysOFk37b7EhjKYs1jlxO5/HNbou30LEDlMbBjMznOzQ=;
-        b=AavgIgR4aFotGLbkqbJY49LxrIyhq1WrTPHr7t76fKqO3LqTD3tFUPTQtdVVoJwGaE
-         XgVAeyczL1iULFwrOzEBULVqhBVjZ+i31AjApAJoaiNpSpQZ9mroBJmTAXvMeASH3ixx
-         Y+bg3kPpbytMJtrsmQFyNS5C4J2OnSrLCGAIcZOF/QWFce/Nt3BhKtVyLfgYTZCz3UH2
-         cj37/Mmo7LmgGGihm5hFSoX4bc8KuR6z63E89FTliFTgWluKssXaNwL4e1EURSd9VEu5
-         6KdY4Ow+f0VCmOfbqoFSDbuycqGp2GfufPvKyyBz3LmVh0JrgolaDoNC+a85waPttZPi
-         Hz2A==
-X-Forwarded-Encrypted: i=1; AKwUvBzKMq4V5Ml4cgIzdv15b7H8PGwXocp35/b9cBG9MLvco50RmXoopHv1NbKDfAjz8njNoI4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK8+7kdxRsxHyfuiNzeFqNovPA5awVGfNKqUAwLnbetYyrA3RM0
-	ZWiZh1rmiMzG5OLg1q8r3A3ELb0a1vx84tM21+pyg36IkF6Vw9VJldvak80xt2fL50VzE0DpX1S
-	eZGAP95QkgIDNj+CyEAjQ/r8kKKSTL9YZtubX1ekb
-X-Gm-Gg: AYBFou3KxoCm/1HxQI0aIgsQyEPnddPimFYKqTQJIE4VhVAdqPk1gfTka0M8zYn6+Rv
-	tDOpKSURLbmGb0HAYJa0I+SNCqQJ8Qu8Gum+WMlbLlV8jnEbugd6O0jITb71qIb9+/GYahN5qoZ
-	sTXFqD+4jkzLe9nr5sAPhXwO1jzoyeNs12GWqqXmpBSRAWoE2EJ5WRcH+PB2gB3GkJQEDMG6EDS
-	mKwFT+m/ifPT+jJLqnrp5GkPhnWjeXoPNiQDoJjsV3pV7u3UlmEkZhJ7ngPNb2+LPwZB9gAbH6T
-	s0Dw6vKbt96XRY+a8Id3vgsrM+E/DwaZR9jqbvqZR/qQzsyCcEJeuKE=
-X-Received: by 2002:aa7:d68d:0:b0:6a9:d188:2374 with SMTP id
- 4fb4d7f45d1cf-6b3e57928cfmr6518a12.1.1792435802430; Mon, 19 Oct 2026 11:50:02
- -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EZ20yDLX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792437309; x=1823973309;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6eY0X/AE+MaCXxfTIcBVpl37SW1NNYBffDDp97xe7PE=;
+  b=EZ20yDLXD+7RHJf26QwxMpEUBcS9QYPJ01fmZMQwsJ+hD0iI32L+yk30
+   bYUBnVU765Vf+k5X2f7XELMdQDXTEc8OPLurEYDBFzsh4QmwgBKVyJ4DI
+   TELwvOSALXP2Dv5cg0fbRJmNPl+98Se/+fNqU7447VYPSAyr4Td8sbuca
+   BXUvM76v3o8DbdEb8MthhlD0ouMifWAf1JeAAh/kBKQXduBCBlEKuf551
+   gV5Z3F/GONYZdvWUgL0gFD5Vb9m0r1uVrcCqLKQO9OvHEhKyy9aL1urUt
+   SZZwk2K/iQeGyhR/RYVd8hfZgRXlhKGy1f5+b10l2IeOyEAXS1YZe+Wxl
+   w==;
+X-CSE-ConnectionGUID: 1DsutZt/RqCb4jMxsZwPwg==
+X-CSE-MsgGUID: eT4GuLBNQoG8e23+np7Ysw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1144129"
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="1144129"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 12:15:08 -0700
+X-CSE-ConnectionGUID: bcwaIiXyRXWlbu6WaVle6w==
+X-CSE-MsgGUID: 8K6XFerOTuCcG9L7RO3GmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="2595531"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 12:15:07 -0700
+Message-ID: <354ca46e-7038-4a78-a248-6e2f60c23601@intel.com>
+Date: Mon, 19 Oct 2026 14:15:06 -0500
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,103 +72,151 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261012233638.2546339-1-yosry@kernel.org> <20261012233638.2546339-27-yosry@kernel.org>
- <CALMp9eS8KDozNGT9J_uN69W32QEvTbg2JrtRqN0ESi00b_uq=A@mail.gmail.com> <atK3Y5XxL-zmAvY-@google.com>
-In-Reply-To: <atK3Y5XxL-zmAvY-@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 19 Oct 2026 11:49:50 -0700
-X-Gm-Features: AclHuK-HB6pH30iHmiqBTNMP3lFUzo7O87u3CK_c_9C3jbnplSPKBf6ajDasAA0
-Message-ID: <CALMp9eRcWZ8fh8_m35RDw-VNrqz4kapVodGoLr=B_iAZaPOA=Q@mail.gmail.com>
-Subject: Re: [PATCH v3 26/27] KVM: nSVM: Use different ASIDs for L1 and L2
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Woodhouse <dwmw@amazon.co.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: x86/pmu: Add mediated vPMU PerfMon v5 support
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Jim Mattson <jmattson@google.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260827223755.143247-1-zide.chen@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20260827223755.143247-1-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 16, 2026 at 5:25=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Fri, Oct 16, 2026 at 02:17:30PM -0700, Jim Mattson wrote:
-> > On Mon, Oct 12, 2026 at 4:37=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
-wrote:
-> > >
-[ ... ]
-> > Per the APM, volume 2, Section 15.16.1, "TLB Flush":
-> >
-> > > All TLB entries belonging to all ASIDs are flushed by SMI, RSM, MTRR =
-modifications, IORR modifications, and access to other system MSRs that aff=
-ect address translation.
-> >
-> > With two separate ASIDs and the unconditional flush removed, do we
-> > flush both ASIDs in the above instances?
->
-> SMI and RSM, yeah I think so. kvm_smm_changed() ->
-> kvm_mmu_reset_context() deletes all roots, and kvm_mmu_load() will flush
-> the current ASID when a new root is loaded.
+Hi Sean,
 
-Okay. Is this mechanism obvious to those who are versed in the ways of
-the KVM MMU?
+Friendly ping on this series. The v2 addresses all of your feedback from
+the v1 review. I'd appreciate your thoughts whenever you have some cycles.
 
-> MTRR writes seem to do nothing beyond store the value, probably since
-> 0a7b73559b39 ("KVM: x86: Remove VMX support for virtualizing guest MTRR
-> memtypes"). It is documented as an errata but I maybe KVM should still
-> flush the TLB? If that's a real bug, it's separate from this series tho.
-> We just need to make sure if we fix it, we should flush both ASIDs. We
-> can probably just reset the MMU context here too?
+For context, it would be ideal to land this vPMU v5 series before my
+other series to keep the stack clean:
 
-Probably. Admittedly, it's orthogonal to this series.
+1. PMU Partitioning:
+https://lore.kernel.org/kvm/20260821222002.54907-1-zide.chen@intel.com/T/#t
+2. TMA:
+https://lore.kernel.org/kvm/20260817183143.226156-1-zide.chen@intel.com/
 
-> I can't find anything related to IORR in KVM.
+Thanks,
+Zide
 
-Me neither. :)
 
-> For MSRs, I think the relevant ones are EFER and PAT:
->
-> - For EFER, a change to KVM_MMU_EFER_ROLE_BITS resets the MMU similar to
->   SMI/RSM, so covers both ASIDs. Clearing EFER.SVME frees L2's ASID and
->   re-allocating an ASID will flush it by clearing last_asid.
+On 8/27/2026 5:37 PM, Zide Chen wrote:
+> KVM currently caps the guest Intel architectural PMU version at 2. This
+> series bumps it to PerfMon v5 and adds support for some features that
+> are introduced in PerfMon v3-v5.
+> 
+> - CPUID.0AH:ECX fixed-counter bitmap (v5): supersedes EDX[4:0] and
+>   lets KVM/guests represent non-contiguous fixed counters (e.g. some
+>   E-core server parts skip fixed counter 3).
+> - Add support for IA32_PERF_GLOBAL_STATUS_SET (v4): lets software set
+>   individual bits in the global status MSR.
+> - Add support for IA32_PERF_GLOBAL_INUSE (v4): reports which counters
+>   and PMI are currently claimed.
+> - Implement ANYTHREAD_DEPRECATION capability.
+> 
+> Intel PerfMon v5 doesn't support non-contiguous GP counters; however,
+> this series lays the groundwork for GP counter bitmap support anyway,
+> for consistency with the host perf API interface, and prepares for
+> Perfmon Masking support.
+> 
+> Freeze_PerfMon_On_PMI virtualization is not implemented because, as
+> commit 3daa96d67274 ("perf/intel: Remove Perfmon-v4 counter_freezing
+> support") states, the Freeze-on-PMI mechanism violates the perf counter
+> independence.
+> 
+> Streamlined Freeze_LBRs_On_PMI is not implemented because LBR is not
+> yet supported on mediated vPMU.
+> 
+> Tested on SPR and CWF:
+> 
+> - Ran "perf test" on both L0 and L1; no issues attributable to this
+>   series have been observed so far.
+> 
+> - Ran KVM selftests on both L0 and L1.
+> 
+> - Passed AnyThread tests on both fixed and gp counters:
+>   $ perf stat -e r20003c,r2000c4,r2000c0 -- sleep 1
+> 
+> - Tested various guest fixed-counter configurations:
+>       CPUID.0AH:ECX = 0x7   CPUID.0AH:EDX[4:0]=3
+>       CPUID.0AH:ECX = 0x2   CPUID.0AH:EDX[4:0]=0
+>       CPUID.0AH:ECX = 0x6   CPUID.0AH:EDX[4:0]=0
+>       CPUID.0AH:ECX = 0x5   CPUID.0AH:EDX[4:0]=1
+>       CPUID.0AH:ECX = 0x0   CPUID.0AH:EDX[4:0]=0
+> 
+>   Verified that the guest PMU reflected the configured fixed-counter
+>   and that the following command used fixed or general-purpose counters
+>   as expected:
+> 
+>   $ perf stat -e instructions,cpu-cycles,ref-cycles -- sleep 1
+> 
+> - Manually tested IA32_PERF_GLOBAL_INUSE.
+> 
+> - Ran some additional perf tests on both L0 and L1.
+> 
+> - Sanity testing on nested VMs.
+> 
+> Patch series summary:
+> patch 1-4: Code cleanup and a fix.
+> patch 5-10: Implement PMC bitmap support.
+> patch 11-14: Implement PerfMon v3-v5 new features.
+> patch 15: Advertise PerfMon version up to v5.
+> patch 16: Fix pmu_counters_test selftests fixed counter test case.
+> 
+> Rebased to kvm-x86/next: 76671054f9a1
+> 
+> v2 changes:
+> - Dropped v1 11/15: KVM: x86/pmu: Emulate streamlined Freeze-LBR-on-PMI
+> - New patch 4/15 to gate BUFFER_OVF reserved bit on guest DS feature.
+> - Some renames:
+>   - all_valid_pmc_mask to pmc_exists;
+>   - add _is to kvm_{gp,fixed}_pmc_supported();
+>   - split kvm_for_each_set_pmc_idx() to kvm_for_each_{gp,fixed}_counter().
+> - Add missing AnyThr handling in IA32_FIXED_CTR_CTRL and advertise
+>   anythread_deprecated only if kvm_pmu_cap.version >= 5.
+> - Cap vPMU v3/v4 to v2, as AnyThread cannot be safely virtualized.
+> - Miscellaneous updates to changelogs and some minor fixes.
+> 
+> Dapeng Mi (6):
+>   KVM: x86/pmu: Drop nr_arch_{gp,fixed}_counters from kvm_pmu
+>   perf/x86: Plumb counter bitmap from x86_pmu to x86_pmu_cap
+>   KVM: x86/pmu: Switch to bitmask-based KVM PMU capabilities
+>   perf/x86: Remove num_counters_{gp,fixed} from x86_pmu_capability
+>   KVM: x86/pmu: Advertise PerfMon version 5 on Intel hosts
+>   KVM: selftests: Support fixed counters bitmap in pmu_counters_test
+> 
+> Zide Chen (10):
+>   KVM: x86/pmu: Remove redundant Perf Global Status MSR bit definitions
+>   KVM: x86/pmu: Rename all_valid_pmc_idx to pmc_exists
+>   KVM: x86/pmu: Rename reserved_bits to eventsel_rsvd in kvm_pmu
+>   KVM: x86/pmu: Gate BUFFER_OVF reserved bit on guest DS
+>   KVM: x86/pmu: Add PMC bitmap accessor helpers
+>   KVM: x86/pmu: Expose kvm_host_pmu to vendor modules
+>   KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and GLOBAL_INUSE MSRs
+>   KVM: x86/pmu: Populate CPUID.0AH:ECX fixed-counter bitmap
+>   KVM: x86/pmu: Factor out fixed counter control bit calculation
+>   KVM: x86/pmu: Ignore AnyThread bit if CPUID.0AH:EDX[15] is set
+> 
+>  arch/x86/events/core.c                        |   8 +-
+>  arch/x86/include/asm/kvm_host.h               |   9 +-
+>  arch/x86/include/asm/msr-index.h              |  12 +-
+>  arch/x86/include/asm/perf_event.h             |  10 +-
+>  arch/x86/kvm/cpuid.c                          |  21 ++-
+>  arch/x86/kvm/msrs.c                           |  12 +-
+>  arch/x86/kvm/pmu.c                            |  85 ++++++---
+>  arch/x86/kvm/pmu.h                            |  54 +++++-
+>  arch/x86/kvm/svm/pmu.c                        |  37 ++--
+>  arch/x86/kvm/svm/svm.c                        |  17 +-
+>  arch/x86/kvm/vmx/nested.c                     |   8 +-
+>  arch/x86/kvm/vmx/pmu_intel.c                  | 167 +++++++++++++-----
+>  arch/x86/kvm/vmx/vmx.c                        |  19 +-
+>  .../selftests/kvm/include/x86/processor.h     |   6 +-
+>  .../selftests/kvm/x86/pmu_counters_test.c     |  26 ++-
+>  15 files changed, 349 insertions(+), 142 deletions(-)
+> 
 
-Okay.
-
-> - For PAT, I am not sure if that falls under "system MSRs that affect
->   address translation", but KVM isn't flushing for L1 today on PAT
->   writes anyway, so I hope not?
-
-Maybe not. Intel, at least, puts the burden of flushing TLBs on
-software. In volume 3 of the SDM, section 14.12.4, "Programming the
-PAT":
-
-> The operating system (OS) is responsible for ensuring that changes to a P=
-AT entry occur in a manner that maintains the consistency of the processor =
-caches and translation lookaside buffers (TLB). It requires the OS to inval=
-idate all affected TLB entries (including global entries) and all entries i=
-n all paging-tructure caches.
-
-> >
-> > Moreover, does this change the semantics of PV TLB flush? In
-> > record_steal_time(), we have:
-> >
-> > if (st_preempted & KVM_VCPU_FLUSH_TLB)
-> >         kvm_vcpu_flush_tlb_guest(vcpu);
-> >
-> > IIUC, an idle vCPU that wakes into L2 will flush only L2's ASID. In
-> > the past, with a shared ASID, L1's ASID was always flushed on emulated
-> > VM-exit anyway. Now, L1's ASID will be unaffected. Though I can't find
-> > any real documentation on PV TLB flush, it *seems* like the remote
-> > vCPU would want L1's ASID to be flushed. OTOH, this change makes nSVM
-> > behave just like nVMX.
->
-> I am honestly not sure. It seems like we should be flushing the context
-> that issued the PV flush. But I also suppose (aside from Hyper-V) all L2
-> PV calls should go to L1, not L0, so should we always flush L1's context
-> here?
->
-> It would be a pre-existing bug, but this series would be adding it to
-> SVM as well. Adding David here since his name appears all over the git
-> log for that code, so hopefully he'll tell us for sure.
-
-It's just happenstance that the PV TLB flush mechanism works with nSVM
-today, but I don't think we should feel free to break it.
