@@ -1,67 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792437527;
-	b=qPY/y/Zpu4nvvNWC+7TD55OSYBJrN0KbTVYuMnqhI6Wy/B7RqnhG5gFHedLzR/uG3r4+
-	 mLPCkODX0uuDFEjfH2NPaUyExTGEI9demq5ZlSGEhLTxTlhC/1M+L6GOzCdcRWvavk5X2
-	 wijxw7dZymxutPL7lLlQzlW2M7u9Cfhv3vsG5ycxdc/shDip+Yw3rf0yFHD/AznRjInkQ
-	 D0WJeuY5FjZR5MlWV7IYCR1Yjttk5JynvFGtV8IIoOm2QIXbkgQr9lRzwm/hoAwJEs1QX
-	 y4J9x7Ad5uvtlX8eKy+wbm6q0AMMH4CHn99qBJwqJQ7FkrkcpZCiOjNjXebe/Lu3+dg==
+	t=1792439310;
+	b=OH+Y7cGQFBYoUEmrixWwJHhOpGuBE2B6nk23ItAvSzKW2XeNoSnGYTX+NhVit8aAjHNE
+	 FKSpRkqJf0bEoM1t8mw6ZWJpvTVxm4agDjU5o4z4EtK7pYT774ewp0EBVEvNZXawU8w4Z
+	 2NhUGnOSnxmk1t1CzdhmsJ1z8zO9E2F1Rypoqz1wXXYlOpv37x3Oan+OqeYMiUuaXafHr
+	 n78n8kyJjj2iCFNpm7FR1fbmFwo1FCYTfhiN6SZ9NmcIzWK37WTZvmpSXthGAiEke+EAH
+	 Vq/S5qcZi1XMz07R5FhVwDU40egmOgcud8qUEdCS1WcgVxW8wX0kkVBbqxjkEO/dEzg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437527;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=77mlLPeWieg1gPE9ZVsd30acJWkC/9GBsg5MHF+AKxs=;
-	b=A55zkVs25sZqZCxY6eud3xELUsoY74BJM0G3mON6OC8ZLt/oRvvX3wJx5KdZ/49KgiZX
-	 ubjq59zQYWvkw9lCfqXEq3PytS37+LRNmj1OcR1g0o8wKRubEPGc9+pxJsEdReqM9iFvZ
-	 wqY00t/TDlFP6VODevTCBR/DUGZVO7WzlV2dqJ+plB526Tquok5yxuBnoOBG+bYEf+2Uu
-	 3EqytGXOe6j/24HjWIkQqvG4fY0EYDqaBkiIgtIq7w91mARyrgTqswC3+WDliId9yRft3
-	 kweomInmyCP5948sm84mwJzsIRCTHaEaYfhnvtXjtRQjfyXQpDMRd7iseI9Fg49EmEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792439310;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-Scanned-By;
+	bh=pdvPNczTwLl4TbsrQeGwtn2bpfA7wPIowKpcfjyQjto=;
+	b=5KHBzHAHfX3GwWdCPBzN9jUl6++qWX+SMHM2LJ+Ly4F2prr/xjdoE/xT4JUnWLOrLQfO
+	 yz3m63BK1z8hidGbdg6G4uFeUsOd6kTDsP+yPObOrjy++rAUAxzG3i0n3UKj0Co/Go+WI
+	 iZ798wwqCZn3TwfplI9dLp7ao3JlFBFqGzMK/9tXSnsSmXQD71Bzmr3LgD5MtC+gL2E+O
+	 vQu/IlxLTVGr5DIa/hQRXs41KJ2dRdiD8/OGTlEDT1HIWkbEAxpR+Js2o4Vsd+4pXKymJ
+	 7J3ph1JBX2XWeh7jmY+FR0Recw9qtAFPkM0ldnUB3KN3qy+RhqN/z+APHO1Dq0x73gg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sc8vkZXo;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KKDrIXL3;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50686606A31D;
-	Mon, 19 Oct 2026 19:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E1A606A324
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 19:48:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7E1A606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sc8vkZXo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4E51F000C5;
-	Mon, 19 Oct 2026 19:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792437526;
-	bh=77mlLPeWieg1gPE9ZVsd30acJWkC/9GBsg5MHF+AKxs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=Sc8vkZXorvzEGiY+LTRN6fEVRb6T2XdkonoSOpCOZ99dDlclFWXdAjTQzLo55Kja+
-	 932j/jmJktfh0c/WttptWZOh5I9zbZL57LJ/70JPW6RB9MAy/sJj7hrADPlbGFd+D8
-	 eeSXvklCAyOzanZ3JWVuxsfOFe18y4ZQJtWe2Pkd4cLoJef/pF3++QAjondU+Pdn9g
-	 dujZFbDGxAIYKSZ9tTyMkY+vBOiUJxYTllh9R09mMFN190XHAqxSyvINACudxH1uSo
-	 CbXmLOyhnCQ002lb5K0f1ajSB/A+r6h/S2iZC53DsHfbZRjmNvpVAZomX+VyY6SRgO
-	 gqeNX1nCz852w==
-Date: Mon, 19 Oct 2026 14:18:45 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v11 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
-Message-ID: <20261019191845.GA2219127@bhelgaas>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KKDrIXL3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792439308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdvPNczTwLl4TbsrQeGwtn2bpfA7wPIowKpcfjyQjto=;
+	b=KKDrIXL3b65xa30L9fb3ymFIo021PJBf2k6/LC2Mj85YwDUm8k4/DeME5F6VAZbgTHhosf
+	qk4unvtm4vE+GdyKZ3vm0XripunNQAPmRJteCo8eXWhI8SUHv/5tmBoQEkSR5SHu09aJPb
+	76adiaeXBj9CIK5u9Q2xn+feAZRWqFQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-W37X9w1oP5CsYqTiQVPi5Q-1; Mon,
+ 19 Oct 2026 19:48:24 +0000
+X-MC-Unique: W37X9w1oP5CsYqTiQVPi5Q-1
+X-Mimecast-MFC-AGG-ID: W37X9w1oP5CsYqTiQVPi5Q_1792439303
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E2F01800868;
+	Mon, 19 Oct 2026 19:48:23 +0000 (UTC)
+Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F0E5830002CE;
+	Mon, 19 Oct 2026 19:48:22 +0000 (UTC)
+Date: Mon, 19 Oct 2026 15:48:21 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: seanjc@google.com, pbonzini@redhat.com,
+	John Levon <john.levon@nutanix.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Thanos Makatos <thanos.makatos@nutanix.com>
+Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
+Message-ID: <20261019194821.GA157850@shajnocz.csb>
+References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
+ <20260922135102.GA24134@fedora>
+ <c18ef5464ff4fb4d607c6ae02c58024b41b3f17c.camel@infradead.org>
+ <c213ca93393bffb774ac1642a4718f91a4c14891.camel@infradead.org>
+ <20261015182208.GA1504100@shajnocz.csb>
+ <fbf7e9f63141a539b69896edb07805abcd0f23d5.camel@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,54 +84,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261019183537.GI64621@unreal>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fbf7e9f63141a539b69896edb07805abcd0f23d5.camel@infradead.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Mon, Oct 19, 2026 at 09:35:37PM +0300, Leon Romanovsky wrote:
-> On Wed, Oct 14, 2026 at 05:49:53PM +0300, Leon Romanovsky wrote:
-> > On Wed, Oct 14, 2026, at 16:23, Bjorn Helgaas wrote:
-> > > On Wed, Oct 14, 2026 at 09:53:47AM +0300, Leon Romanovsky wrote:
-> > >> On Tue, Oct 13, 2026 at 05:25:08PM +0300, Leon Romanovsky wrote:
-> > >> > PCI P2PDMA applies Request and Completion Redirect throughout both paths.
-> > >> > This misclassifies asymmetric and nested switches, and reports one answer
-> > >> > for every kind of TLP.
-> > >> > 
-> > >> > Three ACS controls act on TLP attributes the Requester chooses rather
-> > >> > than on the topology: Translation Blocking and Direct Translated P2P act on
-> > >> > a Request's Address Type, and Completion Redirect skips Completions carrying
-> > >> > Relaxed Ordering.
-> > >> > 
-> > >> > Evaluate each direction at the path divergence, decide every class from the
-> > >> > one walk, and treat a client with ATS enabled as translating unless its
-> > >> > driver declares per-mapping ATS.
-> > >> > 
-> > >> > This completes the P2PDMA side; dma-buf and mlx5 follow separately.
-> > >> > 
-> > >> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > >> > ---
-> > >> > Changes in v11:
-> > >> 
-> > >> 
-> > >> Bjorn,
-> > >> 
-> > >> Could you please save me from the AI-bot attack? Every rebase seems to
-> > >> uncover another bizarre pre-existing issue. It never ends.
-> > >
-> > > Can you elaborate?  I'm not sure what you'd like me to do here.  I
-> > > don't control the Sashiko reviews, and I thought Sashiko was recently
-> > > changed to put pre-existing issues in a database but not in the email
-> > > responses.
+On Thu, Oct 15, 2026 at 07:43:34PM +0100, David Woodhouse wrote:
+> On Thu, 2026-10-15 at 14:23 -0400, Stefan Hajnoczi wrote:
+> > On Thu, Oct 15, 2026 at 09:44:54AM +0100, David Woodhouse wrote:
+> > > On Sun, 2026-10-04 at 18:16 +0200, David Woodhouse wrote:
+> > > > 
+> > > > FWIW while this is sufficient for implementing i82599 VF emulation, to
+> > > > get line-rate TCP *performance* I also needed a directed yield_to() to
+> > > > the consumer worker thread when it gets triggered.
+> > > > 
+> > > > And to get line-rate *UDP* performance I needed the consumer to be able
+> > > > to arm/disarm it, to avoid getting throttled into lockstep with the
+> > > > guest.
+> > > > 
+> > > > I'll clean up my proof of concept hacks and post them after LPC.
+> > > 
+> > > FWIW after a bunch of other performance work on the emulation it turns
+> > > out I can live without this. As I was preparing to send a version of it
+> > > upstream, I did a final retest with/without it, and it isn't needed any
+> > > more.
 > > 
-> > AI reviews are not deterministic and every resubmission gives us slightly different result, which is in this phase of submission is  full of hallucinated flows not applicable to the upstream.
+> > Neat, were you able to still use ioeventfd without POST_WRITE or did you
+> > take a different approach?
 > > 
-> > In addition to upstream Sashiko, i run everything through local one with slightly better models which hallucinating even more.
+> > We ran NVMe emulation benchmarks with QEMU recently and found Windows
+> > guests need ioeventfd POST_WRITE to get into the ballpark of virtio-blk.
+> > I'm still keen for POST_WRITE to be merged.
 > > 
-> > I would ask you to merge the series so it gets real exposure in addition to my kunit and specific hw setup.
+> > Thanos & John: do you want to give the patch series another spin based
+> > on the feedback?
 > 
-> Bjorn,
+> Apologies, I was again being lax with my pronouns, and expecting my
+> choice of citation to carry the information about what I meant by "it".
 > 
-> We're in the merge window now, so I don't expect such a large series to be
-> merged. What about the next cycle? Should I send v12 after -rc1, or wait?
+> I am using the ioeventfd POST_WRITE (with Sean's put_user cleanup).
+> 
+> As cited above, I *had* implemented a directed yield too, and further
+> made it possible for the consumer to arm/disarm that directed yield
+> (becomes sometimes latency matters, and sometimes throughput matters).
+> 
+> Since then, I've done a lot more optimisation of wakeups and batch
+> processing on the emulation side. So when I was preparing the directed
+> yield for upstream submission and did a last-minute A/B test with and
+> without the directed yield, I found that the directed yield didn't
+> actually give me a significant win at all — neither for TCP nor UDP
+> traffic.
 
-After -rc1 would be good.
+I see, thanks for clarifying.
+
+Stefan
+
