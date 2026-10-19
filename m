@@ -1,92 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.200.57
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.9
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792440664;
-	b=icXjyXxPS/7oa4Gt50ijA3iFLfMDXvrchC+2iDgaXGxPvGY71FEl5ULfWBgqVa3L5L7s
-	 7CZo8H8fUeXZmnpZn6PMi0wAAfdATz0n5XxlaLnAYseXcuTbXxnH/Xfndovpvi80LOCwu
-	 6cmfVBUadGHNqWz6QTGDupf76tNmaCuQ9QfO35eGC1iCCF4f3msV/5rtj8akDlYR+9imT
-	 lwpLcMZXaSn5Q0nIIH3iR4R0KIc8yKFiUCAjfC9dtdyASzNQJZ5it/2e99oPg2YyNm3Mn
-	 hFIYmbCS+3J+xpVSOODCoVT++Yk3F9k2cP3zF1eRXG26pGEnkshY3UjLItuMixZg7DQ==
+	t=1792440821;
+	b=QYrdvnFMvnhNJUA4SxfNYwYb7/NqgVNKOZl/JDi1GLw8tPASFcHe+f56X1oA+ehiR7Pm
+	 ObIbV9lt2UybNRQKsOCbHVHI2BXLDPXyRYtmEke+EuQfbGV9EaDh/gjxmMUVnD5qJ3K/+
+	 PId9l1xsqVMn322Ocn9RMTjat7yFIfAP1MZgpYQ+LEG0R0mQPnojeiLEEm8t7DHlUucoc
+	 yXxBpNL0xCM+aJAjGJEuonnzuDp5ihb/RIIWBywyJDSgNgd3WDSnG7rp79bh4kAJmvMNZ
+	 M1XQHpZJDq4+0JjlsIplOJ7kwTfrur3XQ26WrtgY9VxBPuyl9eTKS+NaUmnRycptkqQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792440664;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:X-Mailer:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792440821;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=nzoxcAu/KB3ED2ZUJM4kelf0Lc72NmRPbDCLQByeHiw=;
-	b=H9kGXnFt9O05EJenlEyDM7d//+ZfilGnAJtDWMVvbc7JMt5I67KLlno9ccU6OO9DHD4H
-	 UhBOhVBWjcgH2QlAHfNm7dVU+SoWG6d9kdj7Rg2esvHCuWovx5I6dddv40SmCTihkZM9e
-	 QGE3AiHQViCcKLKmCvt6/XuwElCF+Ne2ZTQ4GMeWM+/kfQTsRbNDbfflm8sDO4xjfdkUO
-	 lFxCXsoLct/gN+1wUNDO+7brRjOX1IR6sn5mMGIqBABE3xnrkBPH5AK2EUUEOWbs6M46J
-	 5Zmj3+1ehuTPrY9Mf44nHiYqgUjJfnitGAbm+AUkPHmebiDsJVAPFcIW9aHm/lJG3qQ==
+	bh=rVWsT3EYwUtjVr8hufdMWsty3yJ5xMO9XV0NsnOvMgM=;
+	b=ix95ee2bWspik37J8xssqp8skCQNJqPsKqgxfLLkq1lwlONlD9c7WkM+WozrLsh7xByD
+	 GaJfDVgfMN+sTobIwFi7CEl0I+d0CMAbFYN6sBFdWHi0+mCVR/QSteNPIhruh4ktqAdso
+	 QQWQqvMKIjT0OwtF2DzN1u/fN+V1tOBV8IAMZS2bDLGs7BjEcvtJRwQo5DGA/cyPfSngE
+	 ArMj3ZBUm7ZaH36VAdx/qUehZedVIoMS1KwSJmsi3Dc6nkst+Gm0TVeZBL3bIRmXqlRUP
+	 wbIsCtzvZO7mUteMPhF9mq34qOaqbnu438CshsGjm3fiEQQX1TPIUb9W+iF/aKXG0wA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pNXgYDqw;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.200.57
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012057.outbound.protection.outlook.com [40.107.200.57])
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=SmGfNwoR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.9
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012009.outbound.protection.outlook.com [40.93.195.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDE0606A319;
-	Mon, 19 Oct 2026 20:11:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FDE0606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72554606A335
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 20:13:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72554606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pNXgYDqw
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=SmGfNwoR
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pDEyxx1uP0IJ9nVyuIQJOTyqCdPFYgJ9DNIFtRkAKZPYFUXu5lEY+P/NADt++eEUzCMinmulfw4evVWDTSyctKm5Vnv9vvfCJztPls6WquT+GdGQFs+pGvH2xGo6ajG0F9MGwLdK8ytB2pqPtKK/5gVeJNFD6/Uu88ZVGIYT87hsVzEIpVDrEHunURRIVjjD+CADxhyJsXYt/XRJW17tOIhDrXAKk4lZ4lQhLKerdgQTU3WckHr34ZaYkrH/0TzQBwwKkTwGWqA9Bb4xhIAPnG471mW0zWOYOE/MUkViytqM564LH3Gx1H7Pu6tMxpNjWp0hOGvgtutNfQDU5SAxqA==
+ b=pBxU4+RUaMYDT71dVtgLeuZ5YBUyHHM30XAX8qIm1s9Wp/ClsUSMygJ/4BS7ba7y3E+vwTeSNVf46oFosst9XFdBg9oZWuFwRqUaHiZclaJnBZOMKy2Xmrim1VKSRB9wnMRY3UJn+uZg2qnGor9FbHtgcOblXV82e1FJcD1F2ArMndeT4JZsAN8C6HNFGHtVe+Q0imgjm/ODeLpemFuZkFpQISVQ7OTXkRSB0r1XeoWAPb1160Y4RFJL8PDDS5G3NzfIE+6Ss1y9dEtLmyCbVuZ+2u7jVOlf6+4pb9mGr3AUGc/TZ3eMjybjpMFyPA055U5bS9PrTgS0P3GTyupztA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nzoxcAu/KB3ED2ZUJM4kelf0Lc72NmRPbDCLQByeHiw=;
- b=evG6Jr1eYp1gJBe9WlW8lSepNkZOlJVSA6wLzTeLGcW7LP9lPUzxu1dfShISZcq14q73rsI7U6KKnhtpzp38IYSRwF31ubcWwHHHziL9dqZuL42Nkj8QWWALVdckq87iSONqcBz6Q2i8mrqIwe0p/Ul0xvXKidCGgD+SB7q11kgKZCnpPk2R/XYFzyuJnqDkHss2OmdpBz7s+BQwydL6zktyLJCZ3dxGFaHt3RGiUVE0WikzSdB5nIGvWjEnr08OD1BSSNkBrD3mrBnZ8iChX6+6uAoTEETGcEPnlQJzDhtSjYLCpw1m01SsPiv1uq/pv5que3bB8xAneMSdzb3Ufw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=rVWsT3EYwUtjVr8hufdMWsty3yJ5xMO9XV0NsnOvMgM=;
+ b=Gy+ZjtTq8jQhJ4a4Dslp3ckHTLDNaBK5D1CxWXjNIrA8pMDY3V0rpu9/s+oBI6yFayn5NtLXrZbBLh7fxSP7lNaGHa5CcGgD6bqwfKWaFUAckHXfA9eLfOvIJIXS1PJCHy+3sMxSbujRz9kCyLfuIRfRGRzhpGUV6MCsI1te8y+F7ikMNbWoQsEgKP4EvvlfDOeILoL4/f6CN7jwDfBZ3C7Cu0TS0yDay6bBlxPemY0t1EnQbgIXY0QhfiLaxWwviajzg9EbP3BDkOqAf/3IAN/PrvwXwiaGh3ocSNcAqyOwfoBcydF/OPjPwbVTXw0k3YAx3NSR/SZpZ7t6S3pkDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nzoxcAu/KB3ED2ZUJM4kelf0Lc72NmRPbDCLQByeHiw=;
- b=pNXgYDqw6weXEecHEhNjTvv1rOC2nMqSLm2OUKBPHb7KdFVnJyfnsW3YpJRTDZ75tlsCMNeQbWK2nltuL2fqoIlbaPa4H3sD5H1gt41GNgbUGg5eO9l9Ja3zHKHJYaoh2efSu/36JD8jNYJpET6AaT0M8PIcEeZmKLxlbmUMjbpHHz2UNPUf7wpDc+8kK45MBHY3yuPJNcyij1EJQnDj7/5E5ZogG8Pa3DEKCtDZAQTu4rwLt0NaRAP7EF8wKu+P/8p/5MxssI7OTlO/KPHoVpQfRMQ0G5N5Kcy5l7pwR24r2R5zv2pMCqyNRflOhJuVA4jB2NSUuhNuSnABMbPPYA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
- by IA1PR12MB7663.namprd12.prod.outlook.com (2603:10b6:208:424::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Mon, 19 Oct
- 2026 20:10:59 +0000
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 20:10:58 +0000
-Date: Mon, 19 Oct 2026 14:10:53 -0600
-From: Alex Williamson <alwilliamson@nvidia.com>
-To: mark-ship-it <williamwoodstock79@gmail.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI: Avoid bus reset on NVIDIA GB202 and GB203 GPUs
-Message-ID: <20261019141053.7b2d8e23@nvidia.com>
-In-Reply-To: <20261018201727.96924-1-williamwoodstock79@gmail.com>
-References: <20261018201727.96924-1-williamwoodstock79@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0104.namprd03.prod.outlook.com
- (2603:10b6:303:b7::19) To LV3PR12MB9411.namprd12.prod.outlook.com
- (2603:10b6:408:215::20)
+ bh=rVWsT3EYwUtjVr8hufdMWsty3yJ5xMO9XV0NsnOvMgM=;
+ b=SmGfNwoRGVw2wrg9xJOXRgQ0ZXmZp/8N4QMNXtMt3sByrd6kaYIMjolWOfU3d6/5ePxqWH8aCiy3pgB/nO9J8wLTpeLvZDaIwGanJhXILxzyuqzZpUyQyPlDsPzISSonu/VXunYM8yFR7GB+6IGNhxG+hLmMdK0TyTEItY0QZ+M=
+Received: from DS3P220CA0014.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:45f::7) by
+ DM3PR12MB9285.namprd12.prod.outlook.com (2603:10b6:0:49::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.14; Mon, 19 Oct 2026 20:13:35 +0000
+Received: from CY5PEPF00000E76.namprd02.prod.outlook.com
+ (2603:10b6:8:45f:cafe::78) by DS3P220CA0014.outlook.office365.com
+ (2603:10b6:8:45f::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.19 via Frontend Transport; Mon,
+ 19 Oct 2026 20:13:35 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY5PEPF00000E76.mail.protection.outlook.com (10.167.247.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Mon, 19 Oct 2026 20:13:34 +0000
+Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 19 Oct
+ 2026 15:13:33 -0500
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>
+CC: <seanjc@google.com>, <kvm@vger.kernel.org>, <qemu-devel@nongnu.org>,
+	<yosry@kernel.org>, <nikunj.dadhania@amd.com>, <sandipan.das@amd.com>,
+	<shivansh.dhiman@amd.com>
+Subject: [PATCH v2 0/4] target/i386: Add AMD LBR Extension v2 support
+Date: Mon, 19 Oct 2026 20:13:09 +0000
+Message-ID: <20261019201314.269798-1-shivansh.dhiman@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,135 +104,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA1PR12MB7663:EE_
-X-MS-Office365-Filtering-Correlation-Id: 474d2e08-ae1a-47fa-529e-08df2e1d16a2
+X-MS-TrafficTypeDiagnostic: CY5PEPF00000E76:EE_|DM3PR12MB9285:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f5d5427-91c5-4a2f-a005-08df2e1d742f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|261009223027099003|56012099006|11063799006|22082099003|18002099003|10067099003|6133799003;
+	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|1800799024|376014|6133799003|18002099003|10067099003|13003099007|261009223027099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	y/VhbIkNvYkA+qoOKExY4I14adHdFGkSdCyljX/wNWjrsz/i8gj6BVOHjZbsd7Dr22n2+po2yf4+DoJNAPSb6DhuWyrw3s5aEd6KbeCpL9fNpeA4hMEpIqGMy9fNOG/4xeqdUx3N16xra0fALZLBdejqNVNPWOIUZRVUzRkrS+uS/aCo2PtRE9R3nMmFsXKBOsfhd2OHoShvLK1l+XVnsT2o+Zip9lmZfM6tSGAwJOHabWUHdJ2StAS9FUqsTibdGKeNkdhwDNKQhXgWvlNSU6kmsx4UbJm+WAD0fXmwc79MRB4uiay521+dsBCAvbVsb1Hr3IzPJtNkCrkXYrZqqE8cEq+XNWY/k+EJy+feRE35kkGps+OJLGAmyjJQzJdfVWDLSlmVvVIMm+eyXPHTrYYBNrD/YGsi8REuNlEMFgODgyE7QAbVWgn0nh60Tt6fg/Rzq10x0xgO6r7S4Qm1Ql6r382dp9604UMoMChpAEfkCO2ypZTyXfIeFnpak/pDH4nzt6N19yICTQTJZynleV0MFyk6QW70pzsGtpWRz/jflG+qleYWlRnEc46Qxk2sRIHvLnv0UUNJoTRDGw7u6cRfuUV72xaBprDcJnFVdohXkN2pthNYs1JlRYOp7ufiE1Gpp2glMOrMQFXWqGi2HspBspTKd39ysDTAYzJAOxA=
+	vosuHuz3N7DpD2IkyP8OnYL4JOph+Eln4lIAs+4zrzVemVurNa2R5pS2MU2JA8WWNKytlnPT0sN69ob4/tumBO8JHIpBhQw0vVpwgP8eoB6I1qYfae06RZUTIgHOyoqwAAEQZIkYSXwFc0zdLbgCzl0Y+pwu3xh4hCVDW019KbULUOYxpk0N7yx349ISftw8s4nbi7DEpJw6zKhE1vlMXey0/NvdBxdXmNO1s2VtFzU1BEOUeZL9PDNKdTfNyqFxt/8u+GGxOUx4Q/XYF82KJgyBXPVRkdOGsLvwTHR5UKDRk+BDXF8YKSkGMwl2IRSbkGrCuW0RIoH2KMIFA1qbjvIuZsuRfc40dcltzJyWND68+fsLJPGftZ8/KXKIEhOk9tK+Sy0yJmIZgjiWwfjjmVxVrG9MzGviYZSaM8S1/kETp9rds3bmzjcQ0P6vQyxHxzCdG1i8XQeJb4sTKddtIt3bvlGIprwzRqPh/CYeE0zZ3RKhrK+EnND6pRgSPHIPQ4+dtx0EEsoJOIL9pgASpe6YiLoxzByj1p92Sng4BPug82GfWpBAPRTOlFf7C7vKh+E9B8wXykV3KF1sBhHCS4JWEVG65aia1R9Yfs65qK/qKXhsSyX2qNqHIkX+xZ9kFnoZGYK++Lr5CAM5nx/ja6YoVe1xoM9yGnWMqOrfTJM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(261009223027099003)(56012099006)(11063799006)(22082099003)(18002099003)(10067099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(376014)(6133799003)(18002099003)(10067099003)(13003099007)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5uYg3tw5VgwDINbsPS5xQ13KFbk4FfiDyFp3G0igczOAOkn46Dhzbt9TLD+Z?=
- =?us-ascii?Q?Mq5of6tuD0iIj9giFSRGI8CJFtJsxN3WfClCOkDMeTO2E3EAgpLSflpEfEFV?=
- =?us-ascii?Q?E2R/s9gx7m0jM+k/egYycWZcdKUuPB59684krPXJmN0iIdu5QhO2mtwQmYHU?=
- =?us-ascii?Q?TzPbTGcapy36t6ekK2EZMzBaH5jU7XwQ9rFW2mdCS2t5MxSv9KnA2a7pbqyl?=
- =?us-ascii?Q?gLhdHusCx87SS6c5bDt5fDPdT69ZaliYAs8tjqEkS/oAdzDMSKI1k4izFKRS?=
- =?us-ascii?Q?mSIiH+k7F0x/oS3wWcWdI/VUrSoCjiCNWZsi1FhwMKjEQxazecOMhtKuUE6a?=
- =?us-ascii?Q?Hy1BjwN3Nh0Z+CC0scq+1xJr2DnrNRqbVLSh48Elp/I2VsuwN6OlADUbfso3?=
- =?us-ascii?Q?GT45gT0/ShpmA+pdk6NZR1D5RHYTt7ru/nKdwBAqW9pqFduawK2DqzqPj/vm?=
- =?us-ascii?Q?7dx7KMujVncXn6RXQkj+Akyo0tzqYPJGrm1AL01pu0dJtvAnx/t0Mq3TLMrr?=
- =?us-ascii?Q?na5pubM2b6iIZMrjnj9j1ZILWIs0YTVLbZEtUPvA7fYCEstMKW44O8dlMGfK?=
- =?us-ascii?Q?j4RwQUYoCnyzOHPkQpdJE5tRV9BYu1ISRZolKW8a0QzOEFJXmdrhKM5YMbyo?=
- =?us-ascii?Q?PEyCsEQBbYgjObl4f4KBkmKEQEk51iU7TVD+M9bQBdzibB4iWHdrUzXFO9X+?=
- =?us-ascii?Q?+kUUpNE8yGJjlPeC1YAkYFucsw8aqHG7Lwbz5XWEESLBufJiPMQlHk25sywY?=
- =?us-ascii?Q?TsvlJVCMHQ1/Cl3kccwxE4SySPgJgmQvQfKHzNbXqgCpLwnWfa5ECMk6PjyV?=
- =?us-ascii?Q?YOsxWFS/RvlYoVnyNbpZfudIZzdPbMAHSLU8EtWwZyatY1VAchXSzwfQIL3p?=
- =?us-ascii?Q?aqwPwHbIF//noyy6QovO/W5kkWzFEAEwQDLDvAjhLIQsAeb2VY80M0unAphJ?=
- =?us-ascii?Q?zYLIX2+EuP2b93qHrOJ1xCvXgifg69zWQUFumtehnSjA6LAdMiwBjfH5uKE5?=
- =?us-ascii?Q?KVOgHRFHk7Qm9Mx5ltSkFPzLyDEUIa5f8NNId45J9wgiluGX4qYVrAST5Y6K?=
- =?us-ascii?Q?CcnrQwiAAd93d0I1l905WUPjWhbXbCBGlOcGRcLlw7CB7Ypp4pHiG2nsPLZY?=
- =?us-ascii?Q?xi+zStSeX+vpgKmHZ5ITiHYJfw3Yl8bW5xgmGK+C1zn8P0kQQmPk6DBzq/pn?=
- =?us-ascii?Q?KsaHHPyrdOd+0Ip7v9+I2om09Tx5SsH5DHVxmsWENw6ZSQ5P2OmhiXh7ELVC?=
- =?us-ascii?Q?1zE//M98DvtRApSKqkGYKkW85KstjgB2bFi/Lo0QJAutKn8vousXJxb5kRUc?=
- =?us-ascii?Q?zvl1pDap6DZsJkJvAMDgFPSJSugYYaQK2G8mCwy6WyM/DBPuVDaGrPQbD3+J?=
- =?us-ascii?Q?SWXBbBtSFjd39JP8wOsoBmo04Dt2CQB41iFh0HhWyUioUuFmfhBUf9MhM3p0?=
- =?us-ascii?Q?sRJ6M/SMio+YEscGb0Klg5S/v6YokzDLiuT1YTEqapw4akDMqefIyWnN0CD2?=
- =?us-ascii?Q?gAwqeXuMPFuyoMGlSeTnsebawnMKd1LYoOYT23ndF6JviLVrkkVD/KSOsiOE?=
- =?us-ascii?Q?A8IHH+XMYzMlyannQKuemmMoamX8qqu5yny6KfYZIMLZ6zql1mlBrrzxeCof?=
- =?us-ascii?Q?nMnf/KnlvBafKcfouN6Q8vgxXSBQ0EdjLGGr0+X09/bUXL9aWfbvorMdQiFw?=
- =?us-ascii?Q?0ZQnl/vdT0s0LsUjX2WGUtU2QyKfNSqJIaVkgSRbTP4UGyKcJbXuSn5QhZBL?=
- =?us-ascii?Q?yEWAsUfBOw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 474d2e08-ae1a-47fa-529e-08df2e1d16a2
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 20:10:57.9972
+	inCgCTD5fofdq+gr04YUE5H2x9gHGb/F0YJIX2KR81EIhbW/E9T/AFf2xxbPUezwG+dCz5CO2sv9YtMix5i2VrRu+DIcv6+z7iRd/uYckFfbHwmsrOfwkq1pFPHfgr/OWaDXewusLHk5UM4cZHF6HBuWN3YfJ+sPz5UVOq/kaP3mc9gL3uOsDofm6z2Qaj0AbM9XmQX4lETEu3/+VOEOFONfkqcMYfwZpG6IjCk0MBAIY2MVqdwEq5KUJGKxYdZygGxwHkt/iGiiR8YIP5/+6Di1b0l8Yo4i7iQTSRwwCxoS/pLtgWnwj2prm3u/GE7xW9pmf7kzUsVzlxk/5xw0gOtEcdnnzmCL4PgU/FbgnsKdAqbhYBr9a4gJhSraMHjWMHLOKV/C8btsYXT2xezZa5tF3NfIwEHgJlEnWFMratVG/OuH5/DSfAt74QsLah5R
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 20:13:34.7271
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2hnEIVsl80PHH3sZcDTJQN7WWid5fZluvnYnyhz3jG3rTByFTcXdaMrGwsAiI3TfKxsmGWpV+VD6WP29ZzwB+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7663
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f5d5427-91c5-4a2f-a005-08df2e1d742f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY5PEPF00000E76.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9285
 
-On Sun, 18 Oct 2026 13:17:27 -0700
-mark-ship-it <williamwoodstock79@gmail.com> wrote:
+This QEMU series exposes AMD's Last Branch Record Extension Version 2
+(LbrExtV2) and the dependent LBR/PMC freeze feature to guests, so that
+they can use the LBRv2 virtualization provided by KVM.
 
-> NVIDIA GB202 (GeForce RTX 5090, RTX PRO 6000) and GB203 (GeForce RTX
-> 5080/5070 Ti/5070) GPUs train their link at x16 at boot, but after a
-> Secondary Bus Reset the link comes back at x8 and stays there until the
-> next cold boot.
-> 
-> The GPU's HD Audio function (e.g. 10de:22e9 on GB203) has no reset method,
-> so when both functions are assigned to a VM, vfio-pci falls back to a bus
-> reset at VM start and again at release, and the GPU then runs at half
-> width. Assigning only function 0 avoids the bus reset because the GPU
-> itself supports FLR, which is why the problem is usually reported as
-> "passing the audio function breaks x16".
-> 
-> Observed on an RTX 5080 (10de:2c02) behind an AMD Root Port, kernel
-> 7.0.14, Proxmox VE host with a Windows 11 Pro guest:
-> 
->   boot:                         LnkSta: Speed 32GT/s, Width x16
->   echo 1 > /sys/bus/pci/devices/<root port>/reset_subordinate
->                                 LnkSta: Speed 32GT/s, Width x8 (downgraded)
-> 
-> No VM is involved in that reproduction. Stepping the link speed through
-> bwctrl (Gen5 -> Gen4 -> Gen5) retrains the link and the speed follows,
-> but the width stays at x8. With a VM started frozen (-S), the link is
-> already at x8 before any guest code has run, so the guest driver is not
-> involved.
-> 
-> With this patch applied, reset_method for the GPU is "flr" only, both
-> functions can be assigned, and the link stays at x16 Gen5 across VM
-> start, shutdown and restart, with the Windows guest driver working.
-> 
-> The same symptom has been reported with an RTX 5090 (10de:2b85) on an
-> AMD X870E board, where passing only function 0 was the only thing that
-> kept x16.
-> 
-> Link: https://forum.proxmox.com/threads/asus-x870e-pcie-x8-bifurcation-bug-with-rtx-5090-vfio-passthrough.178461/
-> 
-> Signed-off-by: mark-ship-it <williamwoodstock79@gmail.com>
-> ---
->  drivers/pci/quirks.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 1aa87a3ef..a4adcc3e7 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -3769,10 +3769,17 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, 0x22D0, quirk_no_bus_reset);
->  /*
->   * Some NVIDIA GPU devices do not work with bus reset, SBR needs to be
->   * prevented for those affected devices.
-> + *
-> + * GB202 (0x2b80-0x2bbf) and GB203 (0x2c00-0x2c7f) GPUs train at x16 at
-> + * boot, but after a Secondary Bus Reset the link comes back at x8 and
-> + * stays there until the next cold boot; a link retrain restores the speed
-> + * but not the width.  Function Level Reset does not have this problem.
->   */
->  static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
->  {
-> -	if ((dev->device & 0xffc0) == 0x2340)
-> +	if ((dev->device & 0xffc0) == 0x2340 ||
-> +	    (dev->device & 0xffc0) == 0x2b80 ||
-> +	    (dev->device & 0xff80) == 0x2c00)
->  		quirk_no_bus_reset(dev);
->  }
->  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
+LbrExtV2, introduced on Zen 4, is a branch sampling facility. It records
+the last taken branches in a 16-entry stack of dedicated MSRs:
+  * MSR 0xC000010E - Last Branch Stack Select  (LBR_SELECT)
+  * MSR 0xC000010F - Debug Extension Control   (DBG_EXTN_CFG)
+  * MSR 0xC0010300..0xC001031F - 16 LBR FROM/TO MSR pairs
 
-What's your RTX 5080 vBIOS version and system information?  Is it the
-same Asus X870E as the other 5090 reports or something else?
+v1: https://lore.kernel.org/qemu-devel/20260724201203.633799-1-shivansh.dhiman@amd.com/
 
-Is the issue still present on kernel v7.3?
+Regards,
+Shivansh
 
-Disabling bus reset entirely should be a last resort, it has
-implications for device isolation when no other reset mechanism exists.
-Thanks,
+---
+Changelog:
 
-Alex
+v1 -> v2:
+ * Rebased on v11.1.2.
+ * New patch to read and write the LbrExtV2 MSRs with KVM_GET_MSRS and
+   KVM_SET_MSRS (patch 1).
+ * New patch to migrate the LbrExtV2 MSRs in a new VMState subsection
+   (patch 2).
+ * Moved the CPUID_8000_0022_EAX_LBREXT_V2 definition to patch 1.
+
+---
+Shivansh Dhiman (4):
+  target/i386: Add MSR access interface for AMD LbrExtV2
+  target/i386: Add AMD LbrExtV2 states to vmstate
+  target/i386: Add support for AMD LbrExtV2
+  target/i386: Add support for AMD LBR/PMC freeze
+
+ target/i386/cpu.c     | 26 +++++++++++++++++++++++---
+ target/i386/cpu.h     | 15 ++++++++++++++-
+ target/i386/kvm/kvm.c | 31 +++++++++++++++++++++++++++++++
+ target/i386/machine.c | 24 ++++++++++++++++++++++++
+ 4 files changed, 92 insertions(+), 4 deletions(-)
+
+
+base-commit: 4fc49f46dc95d4a27de2509e7fceb2931e91faeb
+-- 
+2.43.0
+
