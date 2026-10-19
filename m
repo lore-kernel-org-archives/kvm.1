@@ -1,204 +1,231 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE57C4D7974
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 10:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CF64D09EE;
+	Mon, 19 Oct 2026 10:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792406146; cv=none; b=K/1NRkxwiVGvvBAq+hzddKtTppUf8rGaRzA6SoHt3fDbVGcn8oSNBKeqSuykqABhw6PwTLXSzg1c9GvxS2ZgnLuYsWR3tL33OMNiTgaMchlptDyWtDQHycBUEFkG3CYcAwsFms0KLIP82ey19ODw13XevCGey3tfXxkAkmgsGvQ=
+	t=1792407429; cv=none; b=uuteXJh1Pha5hpqq8nqT5a8Lw79fstE3zHqeLjtQn+HKbEMKYAEq441X2UrIKRWulzCSmjsRtBHZD3crKnPschvXfwfx908KAB7qooyhjSnWjuKTHy9ulW7UFSgwGZWI5h9MVDfSCcJIhbQrBTeT1OuoxD3j1LBmqybZqOf7T4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792406146; c=relaxed/simple;
-	bh=vbiSRamytWLO1U5NTquFeMm8lWhPmezop6+BPen9+rA=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=itLxBpoMo4HJIMVLiXr9oI6yslSQry84R80wkZ65o98AeJqUE1sC/6zR1hgCZQ45B1ONUGKW9ZzbmJi+k7Dwvg1WoW9jtd+xSWyak86S6P54AcetfTJ/1RyIlnmvvs8hmIHzClX9YFoEpBlwdg0Ob5kSCkI9ptQAhveRKYeWwhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXpG5ckH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792407429; c=relaxed/simple;
+	bh=+WzZhkAwkPXH6W1kia133VCOMslYqRZKnzSwUNXCui0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/1UNMKmPAte32pDX8MTVtMGGqCTHtTG7fbY85bm019GBeg4HLt2JYgOIsHiLOQjY2JfuzIAoivReZQFzYJbtFIP8V/XnFTsanedv54b52Ankioej1uUsEN2Nxtcv+6f5YV7NIvnlNbrJm/DxEId3CqbsXAoesqvjgIR3UbLvg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SbkJR+fC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=trsT8hH/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MWBwni5M; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4desH9I3; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXpG5ckH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AD31F000C4;
-	Mon, 19 Oct 2026 10:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792406144;
-	bh=fHSwpgaf+ds8OzWnj9BRRLxEY4f8tWO8etbpCdXileA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NXpG5ckHnmLt8eGbpQueQ2zRzROjD/grcXJRQrUyOUIBGvAiOZnaL5QEk7UxiYItb
-	 gOHlceefit/6CuDd0oKhKlIdgTp9T0wmnjsNMsRLHrQ9cLd7Q8Cj7TlgULuWKKJMMi
-	 rQFLVVmKLAXRNfk7HNUMw+pbb96Q6FRn+R01Es5a6UCrlV+ayV1aIvZjGDJf0qWLOv
-	 dxJy22klbEUmaMa8gDAnya5PV6f7oGNPEcKB63ZlzeQMSBb1HjhYhxiUuNSwOrJJuH
-	 s1pjivRRBPcGy44YOxIcdmuDCHMpHxmfftsSRG4Fve4IxInGVLXUulropVlGxYuY/k
-	 DReEBCqsFQEcA==
-Message-ID: <sashiko-outbox-176999@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 4/5] vfio/spapr_tce: Normalize EEH IOA error
- injection addresses
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Narayana Murty N" <nnmlinux@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261019101813.45085-5-nnmlinux@linux.ibm.com>
-References: <20261019101813.45085-1-nnmlinux@linux.ibm.com>
- <20261019101813.45085-5-nnmlinux@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 10:35:43 +0000
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SbkJR+fC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="trsT8hH/";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MWBwni5M";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4desH9I3"
+Received: from kunlun.suse.cz (unknown [IPv6:2a07:de40:b306:2000::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C7C921C96;
+	Mon, 19 Oct 2026 10:57:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792407426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HBoLQBnR2x2I9gF8Bsc1t9MrDCxYKDsvlVnMLW9MKsg=;
+	b=SbkJR+fCsBxBEvs2CEDuET0EMPfVlddVpr5wDMpd0yK6EGsXT0d74uG0jNK+XAQ3oI0ZdX
+	IxBL42BqXVjogxi2antYzRwseb7DOd0bv6pvDLX+bITHjfB40c7pe2otKl23Pjza0ouv3a
+	urwdskWD2DqeX7bPkPg1DbbWBiHjDAg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792407426;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HBoLQBnR2x2I9gF8Bsc1t9MrDCxYKDsvlVnMLW9MKsg=;
+	b=trsT8hH/s7rOWEqSiO4V52ryJ932QZ+OpYW/KMmVg1lfSODvQpOV19Cyal6hNCwFZ6DuUJ
+	2tsdd3EDY7CdmVCQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MWBwni5M;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4desH9I3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792407424; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HBoLQBnR2x2I9gF8Bsc1t9MrDCxYKDsvlVnMLW9MKsg=;
+	b=MWBwni5MFz43iAvEWU+bVeL33MPkYVQEoh7Wj3bJbypjGswq3ziGwyFayvKJcEwO21vTti
+	ALDpuPhhN0hpCDPR769lybiQSjn5+fMs8JQL2kmOVch7gmpjNgE/Xc0SmQ2uzUgSob7Wmd
+	2rGnYITCmgAdQsh4sMLY+BrU6jkAgIo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792407424;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HBoLQBnR2x2I9gF8Bsc1t9MrDCxYKDsvlVnMLW9MKsg=;
+	b=4desH9I3xRvpv6asRs58vFO5OnHYl2ZrLSIUJFOwP/sEoL6hY8mFJ5I1bq5oH37+NTd/bQ
+	3puQ7U4tHScmV5BQ==
+Date: Mon, 19 Oct 2026 12:57:03 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	kvm-ppc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ring-buffer: Do not check si_mem_available() before
+ deferred init completes
+Message-ID: <atX3fzEV_Pai4woV@kunlun.suse.cz>
+References: <20261009163557.88467-3-amachhiw@linux.ibm.com>
+ <20261016134247.70722-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261016134247.70722-1-amachhiw@linux.ibm.com>
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [2.99 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	HFILTER_HOSTNAME_UNKNOWN(2.50)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ONCE_RECEIVED(1.20)[];
+	HFILTER_HELO_IP_A(1.00)[kunlun.suse.cz];
+	RDNS_NONE(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HFILTER_HELO_NORES_A_OR_MX(0.30)[kunlun.suse.cz];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b306:2000::2:from];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[goodmis.org,kernel.org,vger.kernel.org,lists.ozlabs.org,google.com,efficios.com,linux.ibm.com,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,kunlun.suse.cz:helo]
+X-Spam-Score: 2.99
+X-Spam-Level: **
+X-Spamd-Bar: ++
+X-Rspamd-Queue-Id: 8C7C921C96
+X-Spam-Flag: NO
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] vfio/spapr_tce: vfio_spapr_ioctl_eeh_pe_op() breaks non-BAR erro=
-r injection
-- [Medium] vfio/spapr_tce: vfio_spapr_eeh_normalize_addr() matches unset PC=
-I BARs
---
+On Fri, Oct 16, 2026 at 07:12:47PM +0530, Amit Machhiwal wrote:
+> During early boot (early_trace_init() called from start_kernel()),
+> tracing allocates initial ring buffers (temp_buffer, array_buffer, and
+> snapshot_buffer) for CPU 0.  Later, as secondary CPUs come online during
+> smp_init(), each CPU's ring buffer is allocated via trace_rb_cpu_prepare().
+> 
+> Before attempting page allocation, __rb_allocate_pages() performs a
+> heuristic check using si_mem_available() to return early with -ENOMEM if
+> memory appears insufficient.
+> 
+> However, on kernels built with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y,
+> NR_FREE_PAGES only reflects the initial non-deferred pool across the entire
+> period from early_trace_init() through smp_init().  defer_init() leaves
+> only a single section per node (e.g.  16 MiB with 64 KB pages) initialized
+> up-front, and on kernels with large static binary footprints (debug
+> configurations enabling PAGE_OWNER, DEBUG_PAGEALLOC, KFENCE, or SLUB_DEBUG),
+> early core initialisations (SLUB caches, vmalloc, static ftrace records)
+> consume virtually all managed pages in this pool.
+> 
+> si_mem_available() therefore returns a false negative (often 0-1 pages)
+> across both SYSTEM_BOOTING (for the initial CPU 0 buffers) and
+> SYSTEM_SCHEDULING (for secondary CPU buffers via trace_rb_cpu_prepare()),
+> causing __rb_allocate_pages() to prematurely abort with -ENOMEM.
+> 
+> This failure is false: the buddy allocator is designed to replenish
+> ZONE_NORMAL on demand via deferred_grow_zone() when an actual allocation
+> is attempted.  Checking si_mem_available() before calling alloc_pages_node()
+> short-circuits this on-demand growth entirely.
+> 
+> deferred_grow_zone() is only permanently disabled after page_alloc_init_late()
+> completes (it spawns per-node kthreads and blocks until done), which happens
+> inside kernel_init_freeable() — before system_state is set to
+> SYSTEM_FREEING_INITMEM.  Skip the si_mem_available() check until
+> SYSTEM_FREEING_INITMEM, at which point all deferred pages are initialized
+> and si_mem_available() is accurate.
+> 
+> Wrap the guard in #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT so that on kernels
+> without deferred init the original check is preserved unchanged.
+> 
+> Fixes: 2a872fa4e9c8 ("ring-buffer: Check if memory is available before allocation")
+> Cc: stable@vger.kernel.org
+> Reported-by: Michal Suchánek <msuchanek@suse.de>
+> Closes: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
+> Link: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Changes since v1:
+>  - Extend the guard to cover SYSTEM_SCHEDULING as well: smp_init() calls
+>    trace_rb_cpu_prepare() -> __rb_allocate_pages() before page_alloc_init_late()
+>    completes, so the false negative window spans both SYSTEM_BOOTING and
+>    SYSTEM_SCHEDULING. Use system_state >= SYSTEM_FREEING_INITMEM as the correct
+>    boundary.  (Sashiko, Vincent Donnefort)
+>  - Wrap in #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT to preserve the original
+>    check unchanged on non-deferred kernels. (Vincent Donnefort)
+>  - Drop Tested-by: guard condition changed, requesting fresh test.
+> 
+>  kernel/trace/ring_buffer.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 04bb94c29f58..aa877a272c89 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -2452,10 +2452,24 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
+>  	 * memory. It may not be accurate. But we don't care, we just want
+>  	 * to prevent doing any allocation when it is obvious that it is
+>  	 * not going to succeed.
+> +	 *
+> +	 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, NR_FREE_PAGES only reflects
+> +	 * the initial non-deferred pool during early boot and throughout SMP
+> +	 * bring-up (smp_init() runs before page_alloc_init_late() completes
+> +	 * deferred initialization). si_mem_available() returns a false negative
+> +	 * across this entire window while actual allocations succeed by growing
+> +	 * the zone on demand via deferred_grow_zone(). Only re-enable the check
+> +	 * from SYSTEM_FREEING_INITMEM onward, after page_alloc_init_late() has
+> +	 * finished and si_mem_available() is accurate.
+>  	 */
+>  	i = si_mem_available();
+> +#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+> +	if (system_state >= SYSTEM_FREEING_INITMEM && i < nr_pages)
+> +		return -ENOMEM;
+> +#else
+>  	if (i < nr_pages)
+>  		return -ENOMEM;
+> +#endif
+>  
+>  	/*
+>  	 * If a user thread allocates too much, and si_mem_available()
+> 
+> base-commit: 2f2f7eeef8b0a1a9b9ca998231419873ccae8d4e
 
-commit 02ecc4e02395ee3674eee2a40d451772c566a3ad
-Author: Narayana Murty N <nnmlinux@linux.ibm.com>
+Hello,
 
-vfio/spapr_tce: Normalize EEH IOA error injection addresses
+due to other conflicting changes this no longer applies.
 
-This patch normalizes IOA/MMIO error-injection addresses in the sPAPR
-VFIO EEH ioctl path before dispatching to eeh_pe_inject_err(), translating
-host Linux BAR resource addresses to PCI bus addresses.
+Will you send a rebase?
 
-> diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iomm=
-u_spapr_tce.c
-> index 1c0eec228cc6f..dad9ba54bae60 100644
-> --- a/drivers/vfio/vfio_iommu_spapr_tce.c
-> +++ b/drivers/vfio/vfio_iommu_spapr_tce.c
-> @@ -774,6 +774,97 @@ static long tce_iommu_create_default_window(struct t=
-ce_container *container)
->  	return ret;
->  }
-> =20
-> +static int vfio_spapr_eeh_normalize_addr(struct eeh_pe *pe,
-> +					 unsigned long addr,
-> +					 unsigned long mask,
-> +					 unsigned long *normalized)
-> +{
+Thanks
 
-[ ... ]
-
-> +	pci_lock_rescan_remove();
-> +	eeh_pe_for_each_dev(pe, edev, tmp) {
-> +		pdev =3D eeh_dev_to_pci_dev(edev);
-> +		if (!pdev)
-> +			continue;
-> +
-> +		for (bar =3D 0; bar < PCI_STD_NUM_BARS; bar++) {
-> +			res =3D &pdev->resource[bar];
-> +
-> +			if (!resource_size(res))
-> +				continue;
-> +
-> +			if (!(res->flags & (IORESOURCE_MEM | IORESOURCE_IO)))
-> +				continue;
-> +
-> +			pcibios_resource_to_bus(pdev->bus, &region, res);
-
-[Severity: Medium]
-Can vfio_spapr_eeh_normalize_addr() match unassigned or disabled BARs here?
-
-On PowerPC, unassigned BARs in pcibios_fixup_resources() and
-alloc_resource() in arch/powerpc/kernel/pci-common.c have res->start =3D 0,
-res->end =3D size - 1, and IORESOURCE_UNSET set alongside IORESOURCE_MEM or
-IORESOURCE_IO:
-
-arch/powerpc/kernel/pci-common.c:pcibios_fixup_resources() {
-    ...
-			res->end -=3D res->start;
-			res->start =3D 0;
-			res->flags |=3D IORESOURCE_UNSET;
-    ...
-}
-
-Because resource_size(res) is non-zero and IORESOURCE_UNSET is not checked,
-vfio_spapr_eeh_normalize_addr() passes res to pcibios_resource_to_bus().
-In drivers/pci/host-bridge.c, pcibios_resource_to_bus() calls
-resource_contains(window->res, res), which returns false when
-IORESOURCE_UNSET is set, leaving offset =3D 0 and setting region.start =3D
-res->start.
-
-When a device in the PE has an unassigned standard BAR, wouldn't any
-supplied addr in [0, size) match Case 1 on the unassigned BAR, or if an
-unassigned BAR retained res->start =3D window->offset from
-of_pci_parse_addrs(), cause a valid CPU resource address of a later BAR at
-the start of the PHB window to match Case 1 on the unset BAR and skip
-translation?
-
-For comparison, eeh_break_device() in arch/powerpc/kernel/eeh.c skips
-such resources before matching BARs. Should this loop also skip BARs
-where !res->start or res->flags & (IORESOURCE_UNSET | IORESOURCE_DISABLED)?
-
-> +
-> +			pci_start =3D region.start;
-> +			pci_len =3D resource_size(res);
-
-[ ... ]
-
-> +done:
-> +	pci_unlock_rescan_remove();
-> +
-> +	if (rc)
-> +		pr_debug("vfio EEH: addr=3D0x%lx not found in any PCI bus BAR of PE, i=
-njection may fail\n",
-> +			 addr);
-> +	return rc;
-> +}
-> +
->  static long vfio_spapr_ioctl_eeh_pe_op(struct iommu_group *group,
->  				       unsigned long arg)
->  {
-> @@ -818,6 +909,20 @@ static long vfio_spapr_ioctl_eeh_pe_op(struct iommu_=
-group *group,
->  		if (copy_from_user(&op, (void __user *)arg, minsz))
->  			return -EFAULT;
-> =20
-> +		if (op.err.type =3D=3D EEH_ERR_TYPE_32 ||
-> +		    op.err.type =3D=3D EEH_ERR_TYPE_64) {
-> +			unsigned long normalized;
-> +			int ret;
-> +
-> +			ret =3D vfio_spapr_eeh_normalize_addr(pe, op.err.addr,
-> +							    op.err.mask,
-> +							    &normalized);
-> +			if (ret)
-> +				return ret;
-> +
-> +			op.err.addr =3D normalized;
-> +		}
-> +
->  		return eeh_pe_inject_err(pe, op.err.type, op.err.func,
->  					 op.err.addr, op.err.mask);
->  	default:
-
-[Severity: Medium]
-Does calling vfio_spapr_eeh_normalize_addr() for all EEH_ERR_TYPE_32 and
-EEH_ERR_TYPE_64 requests break non-BAR error injections such as DMA and
-PCI config-space errors?
-
-In arch/powerpc/include/uapi/asm/eeh.h, EEH_ERR_TYPE_32 and EEH_ERR_TYPE_64
-are the only two error types and are used across all op.err.func values
-(EEH_ERR_FUNC_MIN through EEH_ERR_FUNC_MAX), including PCI config-space
-error functions (EEH_ERR_FUNC_LD_CFG_ADDR, EEH_ERR_FUNC_LD_CFG_DATA,
-EEH_ERR_FUNC_ST_CFG_ADDR, EEH_ERR_FUNC_ST_CFG_DATA) and DMA error functions
-(EEH_ERR_FUNC_DMA_RD_* and EEH_ERR_FUNC_DMA_WR_*).
-
-When userspace invokes VFIO_EEH_PE_INJECT_ERR for a DMA or config-space
-error function with a non-zero op.err.addr (such as an IOVA in the TCE
-window or a config offset) or a non-zero op.err.mask,
-vfio_spapr_eeh_normalize_addr() searches standard MEM/IO BARs, fails to
-find a match, and returns -EINVAL, causing vfio_spapr_ioctl_eeh_pe_op() to
-abort before calling eeh_pe_inject_err() (or corrupts op.err.addr if the
-DMA address happens to fall within a host BAR range).
-
-Also, notice that the pr_debug() in vfio_spapr_eeh_normalize_addr() says
-"injection may fail", whereas vfio_spapr_ioctl_eeh_pe_op() immediately
-returns ret (-EINVAL) without attempting injection. Should BAR address
-normalization be restricted to MMIO/PIO op.err.func values, or pass the
-address through when it is not a BAR-targeted function?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019101813.4508=
-5-1-nnmlinux@linux.ibm.com?part=3D4
+Michal
