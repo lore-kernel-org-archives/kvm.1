@@ -1,71 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792427100;
-	b=mNkq3VwW730pJBjXK7Qfia5NK1YjhKM1G0rfDNOcmoI7RxYl8GsgVXJ19A6f029EuVCD
-	 BuyFjgvkq1Pj8DgkhzRxSgbIbNid2gch0mjVHWgWfVIahz45dPvsl8tKAzW2wkiucoxNP
-	 v6m9LE34qm1mUHxd24uScUBTDw4/waJYuYsEl2TlAWlbsVol86KtET8fsed6fwv4Gf5Tg
-	 +fBnq9lSEF7EWsMGQNhnQmC/Z9HVDC8jilo3uwpyQOqqZ6yfAyKX6HW+zxbkwNF+gdEDI
-	 yVdEjT/bIgwjPOQwdLRaNPY0wSdyQqenwjzT7ADi9TamtmJF27LaSEuyMRPItwYo6/A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792427100;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=6MKBy2LzwKc5tYKfWDsUXaCqB+jnQ5/Uc3KirDlScOU=;
-	b=DSW0Q1aFJE7r9w+WJmsZtyXS16eYv2ohN1+KfNA6+Ww/m4XiWfY4q0UB6+404OwbtK/f
-	 PcwORGsaGlF8gT0yAXoCDz1y81uyW/TZpAxelQgGjEhbLbJiocFrytkiKPqclw1Vnn7wV
-	 xe3+hB5/ocqoxzX3i9LirinnnzR3j1VCOeX6k6a8HRHG/Rqb58B4CogVyVNyqioB5vazH
-	 gdlkooKb/kBGW4yYlgKMBpQ88kiASmWwpYD7IpNXVOoS/RqPyZp9RLDmYAHDxsMTE8M5r
-	 d2dmNvaXE8Zjhdg9Bg+yd2CC8IsvcFbDwyHtnxOR5kHKWcQNdW9Bfzhv083YgswyqFA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AoTupm1w;
-	arc=none smtp.remote-ip=90.155.92.199
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792427521;
+	b=tf4uUcNrax0Oc2c5S8Yf+YcHPG8FMmO3TJT4X2TBCH4b4q9dAsevQHR15JW3+3fvuI7z
+	 EIBCTFROSdUAzrPKwRl4chrbbc7z7oz5igHSs7iwu4zVzRNCyJ1Rd8Qhl8Vpq+Ra2uhDt
+	 WX++QtdoLN8bSVlapx/SlFS/DrlVJD1fyTt4/hZgK4eX3HX7VN82vnG9XZyKy+vJIEyJd
+	 wE08MOSl6iMNlCTXwwxt4FmQQ9SKXEJtOIckl4u4EB4QMPBjvkj/sCCKbaVtgd/j1TEvL
+	 SeOTBvAL3eyGSAf94ncKk28dgLGd+mw+cm19QgW6/jRJAcEVEGLsMZdPg7AIXtDvnog==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792427521;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=yp6NTANy9HS+Hr8XMRe24CxBPGRYd3gY7ymSPeE8KIA=;
+	b=mCFu+YC6bN1WEU4MmWAyOhqsXElFD+4NhHHky0zlGYnXtWUUBed5pFNBEkXU2U5iWzYq
+	 4DvuQYkb0kA7LVCFGA/WCLTzo7yNw3V6H4uIkQsj/S+MEve5jMnUmaBPkXHLk18mpSMP6
+	 lw57pUciHmbFG3iipMgodDn6Zb7fZx/PzhypFCfJIzV6gVA9EbqWMEuQsX+CzKWN5XVE/
+	 MkMiUE9b5oxhK3o/rDFrObUXGgfCYspLFMT/V8+ST85B0qXDMtBNFBb9XR6j4RgKIlTA3
+	 bfq6lUPLqrbM51xNuvhWIMVA0lFiLCVd96U0moiIhXKS2B5L/5Ep9hoGJxRfNT7SG3Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="3A/mwbuh";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.13
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012013.outbound.protection.outlook.com [40.93.195.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748F0606A320;
-	Mon, 19 Oct 2026 16:24:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 748F0606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82AF606A31A;
+	Mon, 19 Oct 2026 16:32:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C82AF606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AoTupm1w
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=6MKBy2LzwKc5tYKfWDsUXaCqB+jnQ5/Uc3KirDlScOU=; b=AoTupm1wxEFh+2JaCBgpbgU0ic
-	TbRK8WtR/+MVOxAXWCBs6eAdFLyGjEZMLk68spb4zp/ATSfNr2UAfLg172l1k2zNIiCMNph3n93xt
-	sj+rq4ZcGI5xncBejrD+OyK6FthZS3l6Nn54vphoI1SSY4PEiruR5q8+zfMTiPOD7BdW6nMvtY/ZN
-	fYPlGyDYaDsKpiWkZoXumqPcaQDw/ZcK2LecvUwyg8JTnAk+CqD3updqkGuzlesSQWzHqIHuRD/kx
-	zqOYd45MoM9L1sa2BgRRLdUg/++9zS+MYTHUkEvmBeArUpPNdPByNAuEzfUCvxf2XU08p5FIFcuN4
-	aL+rKMLg==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xIqAK-00000003qsj-1Gta;
-	Mon, 19 Oct 2026 16:24:48 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xIqAH-000000009gj-1aDd;
-	Mon, 19 Oct 2026 17:24:45 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paul Durrant <paul@xen.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v4 05/12] KVM: x86/xen: Don't lose the timer event when delivery fails transiently
-Date: Mon, 19 Oct 2026 17:24:36 +0100
-Message-ID: <20261019162445.37219-6-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261019162445.37219-1-dwmw2@infradead.org>
-References: <20261019162445.37219-1-dwmw2@infradead.org>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=3A/mwbuh
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mCYhLaabES0mHWJV4kABOTwek8ZwWnwcnHsaQ9ALCVGIEuNetYsT/1xMborQoHDYiXlje3ODsKmOK6yOhF3jeGLy7k5l8FVTB33f1v6j3gz6kER8dOwcm7nGd6PvtBTMq9iDQckiMQhhERKJCs73poGbuAqDsjhLQyJeRJWQPM+mT+eJJdBbG5TcqN/nE0I/zm0dbFemm18XVKR1hcVdY0921bSXQK5ACwHwwW57hj1OyWM3njaE7gzXDfmweRvr6pmNWKyGvNEduTftNv0sePxAn6cAX1zx0O959kxHBYQUVF2gffWzsnvtyffguQ7fyFSOQUMd5fsAUCzK+UQd4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yp6NTANy9HS+Hr8XMRe24CxBPGRYd3gY7ymSPeE8KIA=;
+ b=x8jeZklqDd/WHqY8xoiR+o15GOhkRcXwFAAQKkKnZT5VFs8AEMXBoY81V2hw0n3vPpr/gA+9L2vKj7BVaOfqtW9NZtICe1K9Zqx8/jNSgDNCcfSwjuElZx5VepXkf/qwbDVzYxxYBKfUMU8XzdIqoWDbDqkZw89NOvHKkRK+L7/Nazk+pISexQ6KBq0rysT41VWdPu/UAAFwQbfVwsOrxgjk8CIYmkKQfi9MTkaLTxPDSv3+Bk4KgJvNGWItIhBoKL/zig+H1ck6Ir3sKP8VZWzRa+Y081j7TqVgdLqAMuVnyhTdJ4PfvRO7fk6iOWcWX6XZk3Di8HaUboH2dR0enw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yp6NTANy9HS+Hr8XMRe24CxBPGRYd3gY7ymSPeE8KIA=;
+ b=3A/mwbuhJhhy+9jGWLt+HtASig4/fd5QyMbSJ64ES7wolX1m2HkaS93kRAqN5ml2Y4PvnBXZK3J5zQQzk+l9pXNMNxrgIUA73s6eYLqv3iamm2BS9OuWYU//PX50HIVLYhl7kyEQOA98QhU6hJgzz5SVGN1EkT4P/CDNnU7QC8o=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
+ by SA3PR12MB8811.namprd12.prod.outlook.com (2603:10b6:806:312::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.18; Mon, 19 Oct
+ 2026 16:31:52 +0000
+Received: from BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
+ ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 16:31:52 +0000
+Message-ID: <e1753b90-f22e-4708-8c2e-0e1d2e0f46dc@amd.com>
+Date: Mon, 19 Oct 2026 11:31:48 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 14/18] fs/resctrl: Control visibility of global per-CPU
+ kernel mode group files
+To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
+ bp@alien8.de, ben.horgan@arm.com
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+ fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
+ elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
+ kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
+ ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
+ ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
+ prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
+ elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
+ peternewman@google.com
+References: <cover.1790867441.git.babu.moger@amd.com>
+ <28d7e4484c93d899ed86ddafa13faccce0dedca9.1790867441.git.babu.moger@amd.com>
+ <c600a240-ed11-4e31-b3c3-779f01175f28@intel.com>
+Content-Language: en-US
+From: Babu Moger <babu.moger@amd.com>
+In-Reply-To: <c600a240-ed11-4e31-b3c3-779f01175f28@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS1PR03CA0020.namprd03.prod.outlook.com
+ (2603:10b6:8:233::9) To BL1PR12MB5320.namprd12.prod.outlook.com
+ (2603:10b6:208:314::17)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,246 +112,137 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|SA3PR12MB8811:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d9fce53-5074-4e39-7f95-08df2dfe7b75
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|6133799003|22082099003|18002099003|10067099003|4143699003|261009223027099003|5023799004|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	m9BCFdMQSugIk8z+WJl+pc6aIWa1XAG2PwmZQuyvpEUng6DcLqprULGPKbn2EqT2HCKKfatHb+QE/j1Ga7ym4Ms75QYMwAUU2cj0Zpd/zoRhivGQPiC1G7QlwMS7zlg4M5PkoOG44hkejfKUYMNkn2Ap8DsLHwTbCJIrEJeBW5qpjUVsMv5uaRMU0BWeWF3VgeJv8mT6oakbh2zJnWlCsVhjlptFWlg+rP8NHtofdEr1seW1JoylT16E+nNfx4amES0rGrligf9CaSA9zp1RUPPnEy8LqfQjv957zRPirGgnAwj1ZiwixCNFMgwYQDtY4UMpNS3cXNvXHczB4PDbdyUeH9KFh2phiahJprJrBTT6dN/loNtgrIBYgUBvPBnVmhADk2dK6KMrjMg0JZ+HYSj5Yqnk46nIzxecp8XEOrfkum+fSXoDhu6WgUeVsxRUN0xG/Dro3RTVssnFV9SUfxl/rWn/toj1AiOWFZOL5Mg9jwmpfeb8nZEgqSkMqNbK5rMGuGWSQ3q/W5A7nB2w7h56PJOSlx6NwsHi1Kb3hJ0kQTee37FK4Wm0m+F/uewFEnAZxk7qTniHudkNLNNhU3u2Yl0Vb7b9/IH/8QymFew7yLxADV9Nyxfyo1q8Z3I6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(10067099003)(4143699003)(261009223027099003)(5023799004)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SkZ3Uk5UOWZRRmlEMkhLZGlpcUlwT0dyb0tNUXNyd29ReGFkc3c5Um44Rm52?=
+ =?utf-8?B?bXdtdGhxSVo3NkhzVk5ZSDlvZ0xqTE9FaTFHZmFrc2RNY3NoeGo1NStyZ3lL?=
+ =?utf-8?B?Q3Ixd3lnUjlLSzI3ZWhhL1E3TEJLajI3STQ5TFVvUFVYc2VuYkoyV01wNEN6?=
+ =?utf-8?B?d2UzUFJMUzhHUkdycC9EMTJITFVrU2kwOWh0YnpmdEhvUTVpTnE4NVNFRkww?=
+ =?utf-8?B?UkRSRHNtRm5UdFhYaDJsc2dPSDYraHNkaURUSFlLMml3V3VPcjR5M1NXT2Fv?=
+ =?utf-8?B?YnoxdlZTZEJxQ3MydnNydXBmTEEvUnNnYlRGUm4vZkRRdFdXODVJSjBXYjVo?=
+ =?utf-8?B?aC9Tc2hIOERaRjJEcnh5UzFKd1NMTVkyODErSWRyU2lWWHgvQjNMR2RtaEhU?=
+ =?utf-8?B?TUtZZXNVdFBQcXRyd2RIVVhqTmxVVVJKNU9MM3BKMm4wblFEWURReGx2NU5Q?=
+ =?utf-8?B?cEprbVBocGlJUEgxWFV6MElGc2s3Q3h1eGJ2T002QWhBcmYvWDFnY1UyaXZw?=
+ =?utf-8?B?NGNKSExERGlxOFRoUmN5UmdPTGRXUkRBQ2RIVFZiNTY3QnBsckRTWjJPcVFi?=
+ =?utf-8?B?dnU0T3Y4TWljVnJXTkxsYzZYSXNCdnV0M2pjMFRCR1NSbExxa1NWeUdJeGFZ?=
+ =?utf-8?B?NG5WcWZEZTl5NHlXbmtqOEVWa0lPL1NOeTM3UzF3a0lLdEw5aGFTSmxZWFdF?=
+ =?utf-8?B?SE9Hdkt1VXVPYUI4QkJ0THV4NFhXa0gxMU4ySm9ISTBMSDFDekZrNkFvYnY4?=
+ =?utf-8?B?TFUvcjNiYzk3eXIyWFFCOHdFcUhoM2d2WEcwdVZSU2Y5ZUUyOFN3KzhtTmwz?=
+ =?utf-8?B?R01BeVdyK3dnbVdhTHlha1M1TGIyb2djUkQrVXBFV2ZBWG5zQzdIcmhFY2xO?=
+ =?utf-8?B?ZStUZGFDbW1zYktia2c2YVlWcHhxS25MQW9aelhNaGZnbS9aV2pkbXNMRVh6?=
+ =?utf-8?B?RDVhWGpSWWtQQXZncjk3bktiZUp2NHBVQjhxbGJiUUZpTlV3WFZOZGFWNHJY?=
+ =?utf-8?B?WkhBL1R0MkVUOGlaR3ZOS0RHS2NLOG05cmdEZkhITG1KMDg3YU5wdjIzS2Nm?=
+ =?utf-8?B?dDNES1NtNjN3ZDNPL0ZmZHVVa20wNEpqSmRpc2huVkZpUTZ5Tld0OW45dnM5?=
+ =?utf-8?B?TUczZXNFK3RZNnU4ZTE3UGRMT3UyNi9veTFxQy9jM2MwVThMK3Vmd0RMaExO?=
+ =?utf-8?B?R3dLTVBPTzJkQmI4Q1FnSDZRQVBOVFNDczhiRHdDY2dNZE9SY3hYaUI1N0V1?=
+ =?utf-8?B?RjJPVGtzM000OHBMZHlpSjBBVDBvT1NqZUJxK0xlaU9tUVpGampZMG9Bbk5C?=
+ =?utf-8?B?Vm9ESXZoVTA2WGtQZmQ4QVg1NGJZQkhBY3dRRURUR1UwUUZYd2RhZWVaSk8w?=
+ =?utf-8?B?K3lBVEJ0NFVRWlhTcFZxL2tTaCsyUDBqWFl4M1VRSUticXExVFFDM25zU2ow?=
+ =?utf-8?B?QmlGemI4MzM0M2J1bzYvaTI2NHhmQTRiUjBsK1Z6WkppeFZqWlFmL1BvaS9n?=
+ =?utf-8?B?YVVMT1E5K0tsWUtGRGp2Zy81aVFvckJQNmRtR0JFbUhVVWVLZ05qdlc0S2Nq?=
+ =?utf-8?B?ZmNhUVZVYmpsMVdoNm5iNXExVmVVSzFzZ05tNWJpWnRBY3JlSXJweWxCWkNx?=
+ =?utf-8?B?Y3VMT1lKWW9KQXhoU3ZVV05QcDQ4c2xxVVVneitsSTFsTG5lOHRHMGgrLzlq?=
+ =?utf-8?B?UFpjTWc3SjhIakFHZ3FGUVNTQzJuMlM4dFBYZjZlb0lYVFRlTzVXWFFEeXNn?=
+ =?utf-8?B?VGRxRVBxQ1pyeGwwdnFodzJZM040WlBJSDN1VHpyWElzMEFXMVBrUHUwUUxG?=
+ =?utf-8?B?NWZtZlRuT3VjTGZGMGMvdlg2Y25aQmxoaXJXa3M2T2dkWE56NWxSdGNEc3lO?=
+ =?utf-8?B?NjRWcTNnOTZGYko2KzVxMVBxeGxiR1ZjK1Q2Mmcxc1VTQ0djNnJ5UTdKN3ll?=
+ =?utf-8?B?VmN0Ry9nelA5WjFzQUpQTVpKNlJVTEgvaDh3N2laOGNpRGp4aGdEaVVwSkhi?=
+ =?utf-8?B?ZWEvUlk3T1ZuYlhXUGh1ejZmaWdSRm5uQkVsL1VOa3MySWxESXRDODE3UnFm?=
+ =?utf-8?B?cVRrVHM1dCtaUGZvdWlUU2FvaDY0SjVuN1RlMVI3dmNoUVZFWVFtREdCS281?=
+ =?utf-8?B?OGs3RXVFaHFKbVJmVWQ2VmVkRFI5d3duUXBRaEJYb0JPc01PQ1EzUjJPWXVr?=
+ =?utf-8?B?d2NIQmZrZ1NPVjRSekliZ3luR1Q5WkNvSEowaDBGK0w4QThxUExidXlZYlpo?=
+ =?utf-8?B?NnFjajdSRXhqalpsRWxHeS8vQWg5OFV3Z1ROaDRtZjNEdSthNmp1Rm93UnNU?=
+ =?utf-8?Q?P8+2kj9GvK66O8zixz?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d9fce53-5074-4e39-7f95-08df2dfe7b75
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 16:31:52.7489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eoew3gabtALpP7Nw4I+DKmt1wS1LqiKf12yVpGlENWsjzAT1plxzgQKM2t0ABDel
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8811
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Hi Reinette,
 
-kvm_xen_inject_timer_irqs() can drop events if kvm_xen_set_evtchn()
-fails transiently, as it can when a memslot is in the process of
-being updated. Defer the delivery in that case by leaving
-->arch.xen.timer_pending set, so that it gets retried.
+On 10/15/26 10:46, Reinette Chatre wrote:
+> Hi Babu,
+> 
+> On 10/1/26 8:10 AM, Babu Moger wrote:
+>> The kmode_cpus and kmode_cpus_list files are specific to the
+>> RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode. These files are created in a
+>> hidden state when an rdtgroup is created.
+>>
+>> Introduce resctrl_kmode_global_files_show() to manage the visibility of
+>> these files based on whether the global per-CPU kernel mode is enabled or
+>> disabled.
+> 
+> This does not sound right and does not match the patch. The visibility of files
+> is per group, not globally whether the mode is enabled or not, right?
+> 
+> It is ok to have cryptic changelogs when changes are small and simple but these
+> changes are not small and simple.
 
-Raise KVM_REQ_UNBLOCK for the retry, as the timer callback does when
-it defers: without it, nothing aborts the guest entry, and a vCPU
-which takes no further exits would hold the owed event indefinitely.
-The request survives to kvm_vcpu_exit_request(), bouncing the vCPU
-back through vcpu_run()'s injection pass until the memslot update
-completes.
+"The kmode_cpus and kmode_cpus_list files are specific to the 
+RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode. These files are created in a 
+hidden state when an rdtgroup is created.
 
-If the shared_info cache has been deactivated (-EINVAL), clear
-timer_pending — a halted vCPU would otherwise spin forever, as
-kvm_cpu_has_pending_timer() aborts every block while nothing can
-deliver the event — but keep timer_expires, so the GET_ATTR/SET_ATTR
-migration flow still carries the event and re-fires it on re-arm.
-If delivery fails with -EFAULT, the shared_info gfn is genuinely
-unbacked and can never succeed: drop the event and complete the
-timer rather than spin on it.
+Introduce resctrl_kmode_global_files_show() to manage the visibility of 
+these files based on whether a resource group backs the global per-CPU 
+kernel mode. Hide the files when the group is no longer associated with 
+the mode.
 
-True Xen does not have this problem: the shared_info page is owned
-by Xen and always exists, even when not mapped into the guest. The
-equivalent for a KVM/Xen VMM is KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA,
-which has no memslot dependency and is the recommended mode; this
-fixes the legacy GFN mode, which xen_shinfo_test exercises.
+This avoids exposing kernel mode configuration files in resource groups 
+where they do not apply."
 
-Don't re-arm the hrtimer in the KVM_XEN_VCPU_GET_ATTR(TIMER) flush
-while a delivery is still pending; a re-fired callback racing the
-retry would deliver twice. Re-arm through kvm_xen_start_timer(),
-which recomputes the expiry from timer_expires: the hrtimer's own
-expiry field is stale when the timer last fired through the direct
-callback path, which doesn't program the hrtimer. A timer still
-armed across the flush is always restored; one which already fired is
-not re-fired if its port is out of range, where the immediate -EINVAL
-would destroy the owed timer_expires state just reported to
-userspace.
 
-The drop is vanishingly rare upstream, but hangs roughly half of all
-xen_shinfo_test runs once a subsequent atomic SRCU conversion of the
-pfncache widens the window; hence fixing it first.
+> 
+> Sidenote (on topic of consistent terminology): Please stick to "activate"/"deactivate"
+> for the mode itself and use "enable"/"disable" when mode is enabled/disabled per-CPU.
+> 
 
-Fixes: 536395260582 ("KVM: x86/xen: handle PV timers oneshot mode")
-Assisted-by: LLM
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/kvm/xen.c                            | 108 ++++++++++++++----
- .../selftests/kvm/x86/xen_shinfo_test.c       |  11 +-
- 2 files changed, 89 insertions(+), 30 deletions(-)
+Sure.
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 8c49ec8aa4d9..8a9d6963fc05 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -36,6 +36,19 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r);
- 
- DEFINE_STATIC_KEY_DEFERRED_FALSE(kvm_xen_enabled, HZ);
- 
-+static inline int max_evtchn_port(bool has_64bit_shinfo)
-+{
-+	if (has_64bit_shinfo)
-+		return EVTCHN_2L_NR_CHANNELS;
-+	else
-+		return COMPAT_EVTCHN_2L_NR_CHANNELS;
-+}
-+
-+static inline int kvm_max_evtchn_port(struct kvm *kvm)
-+{
-+	return max_evtchn_port(kvm_xen_has_64bit_shinfo(kvm));
-+}
-+
- static int kvm_xen_shared_info_init(struct kvm *kvm, bool wait)
- {
- 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
-@@ -126,14 +139,47 @@ void kvm_xen_inject_timer_irqs(struct kvm_vcpu *vcpu)
- {
- 	if (atomic_read(&vcpu->arch.xen.timer_pending) > 0) {
- 		struct kvm_xen_evtchn e;
-+		int rc;
- 
- 		e.vcpu_id = vcpu->vcpu_id;
- 		e.vcpu_idx = vcpu->vcpu_idx;
- 		e.port = vcpu->arch.xen.timer_virq;
- 		e.priority = KVM_IRQ_ROUTING_XEN_EVTCHN_PRIO_2LEVEL;
- 
--		kvm_xen_set_evtchn(&e, vcpu->kvm);
-+		rc = kvm_xen_set_evtchn(&e, vcpu->kvm);
-+
-+		/*
-+		 * Leave timer_pending set if the memslot is being updated
-+		 * (-EAGAIN), and raise KVM_REQ_UNBLOCK — as the timer
-+		 * callback does when it defers — so that the entry is
-+		 * aborted and this retried from vcpu_run(), rather than
-+		 * the guest running with the owed event undelivered until
-+		 * some unrelated VM exit.
-+		 */
-+		if (rc == -EAGAIN) {
-+			kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
-+			return;
-+		}
-+
-+		/*
-+		 * If the event cannot currently be delivered (-EINVAL:
-+		 * deactivated shared_info, or an out-of-range port), clear
-+		 * timer_pending — a halted vCPU would otherwise spin on
-+		 * kvm_cpu_has_pending_timer() — but keep timer_expires,
-+		 * which still reports the event as owed through
-+		 * KVM_XEN_VCPU_GET_ATTR; re-arming the timer with an expiry
-+		 * in the past fires it again.
-+		 */
-+		if (rc == -EINVAL) {
-+			atomic_set(&vcpu->arch.xen.timer_pending, 0);
-+			return;
-+		}
- 
-+		/*
-+		 * Delivered - or failed in a way which can never succeed
-+		 * (-EFAULT: a genuinely unbacked shared_info gfn). Either
-+		 * way the event is complete: drop it rather than spin.
-+		 */
- 		vcpu->arch.xen.timer_expires = 0;
- 		atomic_set(&vcpu->arch.xen.timer_pending, 0);
- 	}
-@@ -1315,17 +1361,21 @@ int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 		r = 0;
- 		break;
- 
--	case KVM_XEN_VCPU_ATTR_TYPE_TIMER:
-+	case KVM_XEN_VCPU_ATTR_TYPE_TIMER: {
-+		bool timer_armed = false;
-+
- 		/*
--		 * Ensure a consistent snapshot of state is captured, with a
--		 * timer either being pending, or the event channel delivered
--		 * to the corresponding bit in the shared_info. Not still
--		 * lurking in the timer_pending flag for deferred delivery.
--		 * Purely as an optimisation, if the timer_expires field is
--		 * zero, that means the timer isn't active (or even in the
--		 * timer_pending flag) and there is no need to cancel it.
-+		 * Ensure a consistent snapshot of state is captured: a timer
-+		 * which already fired has either been delivered to the
-+		 * corresponding bit in the shared_info, or is reported as
-+		 * still owed (expires_ns != 0, if the shared_info page was
-+		 * unavailable). Purely as an optimisation, if the
-+		 * timer_expires field is zero, that means the timer isn't
-+		 * active (or even in the timer_pending flag) and there is
-+		 * no need to cancel it.
- 		 */
- 		if (vcpu->arch.xen.timer_expires) {
-+			timer_armed = hrtimer_active(&vcpu->arch.xen.timer);
- 			hrtimer_cancel(&vcpu->arch.xen.timer);
- 			kvm_xen_inject_timer_irqs(vcpu);
- 		}
-@@ -1341,13 +1391,34 @@ int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 		 * That's fine, as the guest won't even have had a chance
- 		 * to run and handle the interrupt. Asserting an already
- 		 * pending event channel is idempotent.
-+		 *
-+		 * Don't re-arm if the flush above failed transiently and
-+		 * left the timer pending: delivery is owned by the retry
-+		 * on the guest entry path, and an immediate hrtimer fire
-+		 * would race it — the callback's timer_pending suppression
-+		 * check is not serialized against the entry path, so a
-+		 * late callback could re-assert a port the entry path had
-+		 * already delivered and the guest already consumed.
-+		 *
-+		 * An expiry already in the past fires immediately: the
-+		 * event is still owed.
-+		 *
-+		 * A timer still armed (not yet fired) across the flush is
-+		 * always restored, whatever its port. One which already
-+		 * fired is not re-fired if its port is out of range, where
-+		 * the immediate -EINVAL from the delivery path would destroy
-+		 * the timer_expires state just reported to userspace.
- 		 */
--		if (vcpu->arch.xen.timer_expires)
--			hrtimer_start_expires(&vcpu->arch.xen.timer,
--					      HRTIMER_MODE_ABS_HARD);
-+		if (vcpu->arch.xen.timer_expires &&
-+		    !atomic_read(&vcpu->arch.xen.timer_pending) &&
-+		    (timer_armed ||
-+		     vcpu->arch.xen.timer_virq < kvm_max_evtchn_port(vcpu->kvm)))
-+			kvm_xen_start_timer(vcpu, vcpu->arch.xen.timer_expires,
-+					    false);
- 
- 		r = 0;
- 		break;
-+	}
- 
- 	case KVM_XEN_VCPU_ATTR_TYPE_UPCALL_VECTOR:
- 		data->u.vector = vcpu->arch.xen.upcall_vector;
-@@ -1520,19 +1591,6 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
- 	return kvm_xen_hypercall_set_result(vcpu, run->xen.u.hcall.result);
- }
- 
--static inline int max_evtchn_port(bool has_64bit_shinfo)
--{
--	if (has_64bit_shinfo)
--		return EVTCHN_2L_NR_CHANNELS;
--	else
--		return COMPAT_EVTCHN_2L_NR_CHANNELS;
--}
--
--static inline int kvm_max_evtchn_port(struct kvm *kvm)
--{
--	return max_evtchn_port(kvm_xen_has_64bit_shinfo(kvm));
--}
--
- static bool wait_pending_event(struct kvm_vcpu *vcpu, bool has_64bit_shinfo,
- 			       int nr_ports, evtchn_port_t *ports)
- {
-diff --git a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-index aaa414c677ad..3b11d0ee253f 100644
---- a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-+++ b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-@@ -356,11 +356,12 @@ static void guest_code(void)
- wait_for_timer:
- 	/*
- 	 * Poll for a timer wake event while the worker thread is mucking with
--	 * the shared info.  KVM XEN drops timer IRQs if the shared info is
--	 * invalid when the timer expires.  Arbitrarily poll 100 times before
--	 * giving up and asking the VMM to re-arm the timer.  100 polls should
--	 * consume enough time to beat on KVM without taking too long if the
--	 * timer IRQ is dropped due to an invalid event channel.
-+	 * the shared info.  KVM is now supposed to retry a timer IRQ whose
-+	 * delivery hit an invalid shared info rather than drop it, but older
-+	 * kernels drop it on the floor.  Arbitrarily poll 100 times before
-+	 * giving up and asking the VMM to re-arm the timer, so the test still
-+	 * completes (and documents the VMM-side recovery protocol) on
-+	 * unfixed kernels.
- 	 */
- 	for (i = 0; i < 100 && !guest_saw_irq; i++)
- 		__xen_hypercall(__HYPERVISOR_sched_op, SCHEDOP_poll, &p);
--- 
-2.43.0
+> 
+>>
+>> Suggested-by: Reinette Chatre <reinette.chatre@intel.com>
+>> Signed-off-by: Babu Moger <babu.moger@amd.com>
+>> ---
+>> v6: Helper named for the global per-CPU files instead of unhiding every
+>>      hidden file on the group.
+>>      https://lore.kernel.org/lkml/34aa4824-810b-4c81-8188-f2f37e1dc277@intel.com/
+>> ---
+>>   fs/resctrl/rdtgroup.c | 19 +++++++++++++++++++
+>>   1 file changed, 19 insertions(+)
+>>
+>> diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+>> index 0cdc868a55b1..98451b417fe3 100644
+>> --- a/fs/resctrl/rdtgroup.c
+>> +++ b/fs/resctrl/rdtgroup.c
+>> @@ -1125,6 +1125,24 @@ static int resctrl_kernel_mode_show(struct kernfs_open_file *of,
+>>   	return 0;
+>>   }
+>>   
+>> +/* Show or hide kmode_cpus and kmode_cpus_list on @kn. */
+>> +static void resctrl_kmode_global_files_show(struct kernfs_node *kn, bool show)
+> 
+> I think this can be simplified by changing the signature to:
+> 	 rdtgroup_kmode_global_files_show(struct rdtgroup *rdtgrp, bool show)
 
+Sure. Will do.
+
+Thanks
+Babu
