@@ -1,203 +1,239 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011033.outbound.protection.outlook.com [52.101.57.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEC31C8604;
-	Mon, 19 Oct 2026 02:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4621B36404E
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 03:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792375239; cv=fail; b=Eq44W2slPlmMZEiLcZ1W8x+iuE+aSp8QZIac+jGQ8twDj0AUxYttKy2+eubHHcn2JFGsFsiDhLYxcK1Ke85IV67CHfOkaOPq2XRGStDGsp4lpVw7d+AO9yNUZDsBFdlmSsMRVps9t69vUgR/xh3ufU7US4yq/NcnQ24LswGdAAc=
+	t=1792378980; cv=fail; b=Mu5JQitu/aWX4kVyA85FnZ4rI4vlgi0q7/20cBLSrA3nuAn91Y5M5nYaACgFTZ/uGqyScaVS71DQ/N5F22oZBM7e1Jjlmi+dZfIvdyMKftAp1wlJ/Bt7yZ3kYcLfpY/QtaMWcAOFqO2IBoijCkXbVX99twEu7kVkbirOtP0s+x8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792375239; c=relaxed/simple;
-	bh=Rny2UVcfbwMt1cxenm59XB/x0MC4m6xxdy2Xuu60Xzg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=m35mtyb2RL3oYIv7g/gZrTlTfNZNthSFFT47Ggc9GfSwHYpI+QOXe1kloGOafbC0yGZ40d5kJCGqb+NZ6ZiVL2UN4H8hMjVoxmPISNY6to3QAiLClGPN9Cliqq/075vdCQhFnenviBzsMUclVWx5p+SfdaTRtCO88azbalikVYQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QHylOPnM; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792378980; c=relaxed/simple;
+	bh=NbK2nsdTCFp6fdZRAhhlq2AzOw/SjR7i3FFnvUslV8Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=KUesd7NgZZnwIOEz+kwGKcr7optTkQYZJlj0XFm70BvRjHAVHbHkY8+b5A7RfUJHKVwzL/lmLpt1QTy/PnlaUPrbhfjzwk7FIXc3bgpSw6ryG8RTiezKE/yWqO5xO4qLf/iZ/dlwMBOzurVaSURB9j8CRqhtI/sh2ZH/fsFkpKI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tQFSMhei; arc=fail smtp.client-ip=52.101.57.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QHylOPnM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792375238; x=1823911238;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=Rny2UVcfbwMt1cxenm59XB/x0MC4m6xxdy2Xuu60Xzg=;
-  b=QHylOPnMquC+yYkRN8JjO6WX9zYBcwTl7oYePbglxQ/xJ7JwEb8VGUxn
-   a3PFowuecLCe4a3iX81elK7c5xb09mCIyXqSCEFG7oyOv16aTvMOsV4lr
-   GWjhtwpbZnktkstsnMUUg8nU31RSfs+gpuiGxAVJMa6PMjEwnlt/2payL
-   vzDKhQb8WcfaGprfMNSnBApUKM9JKbJQYLpsZib0af2m8TDNfyzR1ILIq
-   A7HFBwebhDwAJLLtLNmS9qVybrQeGHGTTeJsxzrnReeWmj5+UrOWiR06L
-   Z5rdht8W1/Mq+JLt1HVps0L9hgx5L8L6Qf+sHUhYUz0Of8QvoOqFTa6Y0
-   A==;
-X-CSE-ConnectionGUID: Oqo+MwLbT3Knw+LDuCJBcg==
-X-CSE-MsgGUID: eGk2fFbnTfyUvTg5Z8Xi3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="1077439"
-X-IronPort-AV: E=Sophos;i="6.27,166,1787036400"; 
-   d="scan'208";a="1077439"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 19:00:38 -0700
-X-CSE-ConnectionGUID: Fv6mD3MWREe4Vl6+2QndkA==
-X-CSE-MsgGUID: 4tERhbGET1SL0z79QG/fFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,166,1787036400"; 
-   d="scan'208";a="4165163"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 19:00:36 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sun, 18 Oct 2026 19:00:36 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Sun, 18 Oct 2026 19:00:36 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.1) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sun, 18 Oct 2026 19:00:36 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tQFSMhei"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l8peb/W6Ue3UK0FMXuSVgWJ5ch18jpBLQ61PFadhFOi5d6t+1BLjuzE1ueNSSrJGFqEWybBe4d9GyAaQGJiqkmPXIVh+zz3arbIyYzRlO5x/eTbkau7HLco+sYVUcM5WBC1fImQeYFsvueApyBGOEBw7mD+LtrNgzrW4ouWxO7EVAPln0JYyYfamgYTGgR+pgn/6AsWWi57Tsg5/ktW2vMRLUDUy/IfzhvVFvFiy32hdWSPh4hCma7btBUH4R6NWzrjeiW2R2aH9Vn6sAFB3Hiwv1Vsrih2Zd++4xMVlm0L75iNcgpISXccodxS2F3DLKH1yXQ/PhsXO2+p7YODanw==
+ b=mOW87VlkZf3DzBWm4DqT8bGasj5KGp/JYjxzF1COLbx3HJvgJP2L8quXGbfIrplNYTJV+xayh9ndSB1zNA50K6qgDQiTaQWH541Ho05rECzvSPLHCfjGVbR/KxT2xBV9cT6MpaQlMC3bgIm9ioKzbu4TtTvaoWZJlWO1tuegdbV9HSDGUrluyqa1tq0uyHLgYoqYYhiR0DeUyt4Y3pwrGihrZQQskcYLoAABJylcFzL5h5QT3dTcZ1/34BWfZiRgeshr4leIu58fOXOIzAxn6XD6hfJ5yE8lEaPaMq3N5UV2+FPSr+/grN96lVRTaObc1SJT/SoNWVZKYV9OlkIMjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZImBO6MHXyJX5Hm/oVtCZhx1rVh15yYFe621EQD6W08=;
- b=AYXK8UqRwrLcfL9SvI15c5xGgDRpNkSHlCyb9kuSojkNTEeDN4nhECWe22kNSFIP9NDbPa5YtsMAMa5dJS7MoAKaWQ//m1iyWBTJ4g/sj9VWxRa+fwzA/8np9FtPnbo0m6qXmEAA0au1YZ+iFi7C167IeY0puq7GWZiz5YYdWqiul1PBSSZwS5bjSs6ADbsq5LsF8f6c/8vdxMfdEBkRXeRtGXzaI2tUKM2aZfRyeprKaf2fpu/TRYwUqzvjfxSQS4s4NkaumQEvTGCVljvIpdGxLzWlIVZwAsCvx11GlNvAvc+AptUqhdpAB4RjAhMZQpHCnA/4g15SAUooD1U8Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL0PR11MB3236.namprd11.prod.outlook.com (2603:10b6:208:60::18)
- by SA1PR11MB8476.namprd11.prod.outlook.com (2603:10b6:806:3af::20) with
+ bh=4vYpkylCXNDdnaDTf0m2KMLD+WW7fm5W1hibDb4AR0A=;
+ b=qNHUR0VvYh/ca0ccMBkLSWD9F4RAX25y5l+gXqfwYc7OXm45pz9ljw6TI3pgMJiAkF6k4nmk639058GSbhqtdeKvjJclV1miZWCUGK042/AvVF3gnjPhIolV0E7KaxB/iz6Nw7Fl3hcjjbvLmGnSDrAARmxNkiHAQlgICTYSeptrmMw/mP3iU73ummB1r8gNrSAY26yJTfd+Rg1Gr1vlbwRfSeayTMgrB6e8rLn2Fc2gmnnrISG7kCbb4cRTRKfaMjUBr9wH+HybYFjPfT7cIIgxayfN9XZIRirowaVXCLFsLh2bGI+gnbNwVu0V7JvM0jNXyyCD3ISLSclKn0mLlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4vYpkylCXNDdnaDTf0m2KMLD+WW7fm5W1hibDb4AR0A=;
+ b=tQFSMheiOG96spLW+AbWj6h3WPl7aftlPGC/MXzk6oWwdVgEcf2xcR3vJKDSUfXuqsXh/6Y8vtRBgYiHzZ14CuuPBiCoMhWC+Kyy+YdKfM4Rd/gUiF+zbMr5lVBdgaQ4XZqrz7SDyVQ8v38ax11VFsFBM9UxeakalGD4jUVKWMU=
+Received: from BLAPR03CA0044.namprd03.prod.outlook.com (2603:10b6:208:32d::19)
+ by SJ0PR12MB6782.namprd12.prod.outlook.com (2603:10b6:a03:44d::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 02:00:26 +0000
-Received: from BL0PR11MB3236.namprd11.prod.outlook.com
- ([fe80::b026:a3ba:5162:beb2]) by BL0PR11MB3236.namprd11.prod.outlook.com
- ([fe80::b026:a3ba:5162:beb2%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 02:00:26 +0000
-Date: Mon, 19 Oct 2026 09:59:24 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "Du, Fan" <fan.du@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Huang, Kai" <kai.huang@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>, "thomas.lendacky@amd.com"
-	<thomas.lendacky@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"tabba@google.com" <tabba@google.com>, "david@kernel.org" <david@kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Peng, Chao P"
-	<chao.p.peng@intel.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
-	"michael.roth@amd.com" <michael.roth@amd.com>, "nik.borisov@suse.com"
-	<nik.borisov@suse.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "sagis@google.com" <sagis@google.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "Chen, Farrah"
-	<farrah.chen@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
-	"francescolavra.fl@gmail.com" <francescolavra.fl@gmail.com>, "Miao, Jun"
-	<jun.miao@intel.com>, "jgross@suse.com" <jgross@suse.com>,
-	"pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v4 08/17] KVM: TDX: Adjust the topup count of DPAMT page
- pairs for splitting S-EPT
-Message-ID: <atV5fDnckj+3V0D/@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <6ac2a1ffc4a860e71e63c068b33dc7644e65401b.camel@intel.com>
- <e126bda86263fc4d6af53112eec01a95da48570f.camel@intel.com>
- <asivFAotV10NIZQL@yzhao56-desk.sh.intel.com>
- <594befb577b9142dc0c90b7be5bb65888a3a2523.camel@intel.com>
- <asnJcZsKdDzgaYzc@yzhao56-desk.sh.intel.com>
- <ae995b5ec798491c3a5511fc44b6308e9664a53b.camel@intel.com>
- <as8UwKoAaT/1HgNr@yzhao56-desk.sh.intel.com>
- <71682b712350b5270e4a0f5cddceb1da12341b9d.camel@intel.com>
- <atBaxwAG84jlOywE@yzhao56-desk.sh.intel.com>
- <25927de50b85816956e8989f402ff6ccfa8fa0ba.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <25927de50b85816956e8989f402ff6ccfa8fa0ba.camel@intel.com>
-X-ClientProxiedBy: SI2PR02CA0043.apcprd02.prod.outlook.com
- (2603:1096:4:196::12) To BL0PR11MB3236.namprd11.prod.outlook.com
- (2603:10b6:208:60::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.17; Mon, 19 Oct
+ 2026 03:02:55 +0000
+Received: from BN1PEPF00005FFE.namprd05.prod.outlook.com
+ (2603:10b6:208:32d:cafe::17) by BLAPR03CA0044.outlook.office365.com
+ (2603:10b6:208:32d::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Mon,
+ 19 Oct 2026 03:02:54 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00005FFE.mail.protection.outlook.com (10.167.243.230) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Mon, 19 Oct 2026 03:02:54 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sun, 18 Oct
+ 2026 22:02:46 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sun, 18 Oct
+ 2026 22:02:46 -0500
+Received: from [10.85.36.197] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Sun, 18 Oct 2026 22:02:45 -0500
+Message-ID: <18f7b615-7723-49ef-9b11-d30a4118f92a@amd.com>
+Date: Mon, 19 Oct 2026 08:32:39 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/5] KVM: nSVM: Add nested PML emulation
+To: <sashiko-reviews@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<seanjc@google.com>
+References: <20261015103933.2088307-1-nikunj@amd.com>
+ <20261015103933.2088307-3-nikunj@amd.com> <sashiko-outbox-172711@kernel.org>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <sashiko-outbox-172711@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR11MB3236:EE_|SA1PR11MB8476:EE_
-X-MS-Office365-Filtering-Correlation-Id: 742d57c2-ec98-4c27-2c19-08df2d84be52
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFE:EE_|SJ0PR12MB6782:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec01229e-3d7a-49a2-f3d8-08df2d8d785f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|4143699003|11063799006|56012099006|261009223027099003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: 3NZH6QsBtsevhJFT3pLtsxGbXDEO00wa22exrBA0IfAe+ENa6xfAOQ8UKY48YEh4jctPmLldl6AjoFlfLjLLP4EwRpyL+aZsrjYPTOFj+GbB27xXlEDbeQ4VNIQs9h2gCzqshJRUuiFKHAvhuD7Yh1bclrl44tmvLRACtZSbV7VpiYpDq92P+8C6FVehBBXSXAnSzvgyIdVYHuVW/Ded4eh4NUZTCfyYbknsZD7wueGZwZEgHCRf1nplovoUsuDxmqzs9Usp/Z4IlF5FrVndrlh9e8aZ/7rxpFrJY2Qy/xyR5rMt5XJgGtBABwbiIOkcSodZkx38xBtqcgi/cbtoCYDUr+5wFuPxinomqIZ37uRcKSsUoo9gOw+8uW31FhbHVnjCQGfTOgxEb/dsmn1oDnouEZHCTKm5q8R0WYOZ9JgUqCAK6CbdkhTxDyyyhYRLNDjmB5wdj09fp1a+UN7nKiCdHQQZNCPKqCXWvjDhs1dMTGCgQfjZeTGMxVyYieyWMsq3HLyAP0tld3JEKmHKJdY13VoDOWro4aRcnpOnVuN//S+HCQJnbfEVN7R1KS5pcBFDPQnnwVlPDHorRotlHvTzcsSx7+2PrU98+RWqZDIOnlMGJiqGILEccAUnukBXvbiTqNFtazxC6orhA2/FOB0hWfx7IoTKJ8a2bkXpgqI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3236.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(4143699003)(11063799006)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|376014|1800799024|6133799003|10067099003|22082099003|18002099003|13003099007|4143699003|261009223027099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	JDgK60hJcsWvbsbDvFXiALGhNgDEzXdreXqZbjEEPLvH16e+QeRFXyWdNwCkj3T7gbwQeQXEmmRaroBMIkx5Aw0uq4QidKHdv498iUfyrFYn++lY+t8kO3WP5gB7xHhL7Eaki47eMla9NneQNgTxTiUzfRTCGnFo9juTnL3hWb/xmNkyHyY4lYvEkxPcLlmoJ6RmazFDapsR4D4kpDAFP41zt7Ruy8YE1p8Ukn8M9VXlLJ+TMMNEs7pJYF5HYTEluTIEotdeFElMVMBzn8KsrfNb/AzgzCS9RE05WL18KIdNdfgo5HzFZc9Txy+eZ/36b7cmGz4s8xM3IY1YoTRAEWnMWySXb0n3rew0uSqbiEIxyOPT1jSJb/7Z2TK8+JCcfuKfEzjlQtvnCx4N7HdeXS817SDAvhP3XPZRUrkxoxCO6Jn9Oii0CT8NZK4+Xx5Borqz3/VK5dOBG5Ef8MY06NLYA66908+sh7o1pxdPPx5o5rM9Ztv8DMCKaLfVo2zR8wESYxGcVqxkFYFg7ozpvA/YlB3Ye2A4jQEdbim0IhPQOjh0DDP6nw4R2KLzNc15jSBR3mUPNBZVe22B+4ca63/S7cWAG6WYNGN2fwp2m4I07XjmxVgIO64VJDaH01LlE5JPgiiCvQyqGZ8jwySuUWGbmPAKqIRxqkr/wBe8fKb8ggGBPewetK3Pa1xuI+K1zO5QgV2bWgiomlFrTkOAGw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(376014)(1800799024)(6133799003)(10067099003)(22082099003)(18002099003)(13003099007)(4143699003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QzD6QKSgcKTEHa3+eRqxqQOgqQkiwTGlko7d0+UcRhmJ2slDJsDhhyQrf0Hi?=
- =?us-ascii?Q?lTwQCrV1iilULFJ3PVJyoP49djNEcVhKh1m8JO62EtH74j/hZDhcMzRc4kE8?=
- =?us-ascii?Q?oJm0TnKs8fmK8TdYxw5x7JIDFGciajTXdSFUDBuszj1rbL9+Z9fOhmrINzK6?=
- =?us-ascii?Q?JGKGuUsLC/Ad7s2LPNJt5hVjmpGqA5NKcfbXNuTyXB9l7ErH1jrE42OJNrfY?=
- =?us-ascii?Q?kGkmWAUSYl84BNDwJWPuDr24RH3vGfLTuscFXlp2zdgJ1i+m9qtHdGThbFl6?=
- =?us-ascii?Q?n/oD8XeMgx3bMc4b0CGct//UMjkNZZi3e0ASThN6aAysXLkhc9sesur2aRim?=
- =?us-ascii?Q?4emK9cyByBfbkX+VdX2nz7MtHi7oQprfENynbTVFdVSMUmqSs/ACJ3YcgI5r?=
- =?us-ascii?Q?hzSQOGO7wUJiR3wdGX31VVJ9DX63a5lwJzk5wGVsxnB7JvE0sS124wsU+eIW?=
- =?us-ascii?Q?uzCFATQ5KQ7PUXmNmmX3tWlKP3wKaQDiCh+YKr7Sn8zomu/FR6Tc8/+5lXu/?=
- =?us-ascii?Q?u2G2ARuqnz98QtFJdnUQ++UmNJks4Wcrg8S7dWuFAf3oStGN6oGAysWgQtKh?=
- =?us-ascii?Q?jPa47Gn7bXMv2h85vukViAUC3Kl0zoGg/n6/tktZS/+Np2e0mOklLZNJuaFW?=
- =?us-ascii?Q?qHzqVIHnimDhquQFYBhrXigaz5xNa1RIdRoxLn/rxCyO0Tnz/GIcpYcAruoJ?=
- =?us-ascii?Q?8/BTyqX8ZrsmS2Oz2OckamXd/pe5KcjPdSSLlaSxFzqPtYiu2+ib17PUq5xi?=
- =?us-ascii?Q?OLPeW1WdkPGjIRWwP7BNsYrJ1qoaSgWM7kI0pqLk1F+nOtDVCqi5aEJKoMua?=
- =?us-ascii?Q?RCShtFMTk1+azw4w/dH3d/aHaeM1QFV+CPFFRLaj4wBcoCcUbA1fJ//eGPnP?=
- =?us-ascii?Q?xLl8RD+3N50VEY/CIrtDzj5dORZBG/SEZ1JVKVrLPhQ/zY2J4jFX4eLBqN8S?=
- =?us-ascii?Q?gh0B4KtUKjZhpXy8+kyk9PrAbZ3gzeY45uQKGq0dD+COXdD3zbHNIamM5s2t?=
- =?us-ascii?Q?U+YR3gsnnQJxTJt1PhcH6EFqC1iwVHe1E8AcUmf5qn+JdzeM9e/pw6orQlFz?=
- =?us-ascii?Q?2wwU4wvZ0k8o5If0sMfuhfcbA1qhn5L8h9HCwf4Rwj47igDsebAL3GYa8DRS?=
- =?us-ascii?Q?iYWU4YUfniuo60aa2zUqs9HdJAoJUhB0QO7FYbeR5HWCxr9D+3geIY231tGt?=
- =?us-ascii?Q?l9S6SV34iHiSWFggyHJdpbJt8U/pAgnbem5HzLt1QA1VKgXcVBXMFCfYqrnV?=
- =?us-ascii?Q?/ttDkbqoXZA7kB8hmroL0/yNAs9elT5ADuekzC9T/cAylK/qr8IhC7z5Hih+?=
- =?us-ascii?Q?b+7Z/Idc0zAATqTCGSsoRqIwVWdiEUP6PNVfcuY/FxRRg/FN7qioFyWx2j50?=
- =?us-ascii?Q?qJvkX8tFynlNZFCtLJFsNjlbgIPkD8U6Qp/yqVY/maH4P3YkDEPY9pxMrKCN?=
- =?us-ascii?Q?Tr98P6pM+gtAvZXo75NiFQLH0MaQBfK/dftm6GfJwOQ82MILn752xqRVMH7L?=
- =?us-ascii?Q?DO2Cjr7FXJJiyjxHG9tGCY7/SmwFwARQclM702QP+Bre/p0NiSlC5M5Ix1OM?=
- =?us-ascii?Q?XJAtG8VPF5gCC4xQoXwbQI27DmBRMpXP/Z0HVllmt+Cvz79X7DVrPKCegKbU?=
- =?us-ascii?Q?QkKLSS2mEH3HQrdNIPJ7YD78mBA6QUge6hOiHrIkx/TrWyqU+vUI2OhkG1vH?=
- =?us-ascii?Q?ukAtLoGsqe16W69lh2xi6acbYwqoqhPMdaNUpM5MTSxfRk4zUVxXl2RlrTZU?=
- =?us-ascii?Q?qriuD/NTiA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: seqN9Hc3O/iwGx+nenEjzoPSr1ftPsG6QM1YYI8HJX5+vGiNVHxY7AA7nvjZaGhWeCIAGsvwyJfiBGFDY1uZStdQf2MIz57rSq2F/oK6+fEbi/8RJHmpWOeywO45Q/I9BEAMricYS1PE8aOalhdUDeQn0E924iz9nStpDQEa/ySVe+cn/4mW8EkdhopspASJMLb4pQHVwQqrflTcG3a2T2+U1ay61hCTAqT3/LQqjTix9JkipDRc5MhwqHtnCIuQJYpcw3AaLGOg2MveND/zqcDmP9kfIu1kCPE6wpkC6vFfNyIq/cUEiy6HHLUtR7EXHE9sn70L3Gy/5XSqnR0ynw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 742d57c2-ec98-4c27-2c19-08df2d84be52
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3236.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 02:00:26.4908
+X-MS-Exchange-AntiSpam-MessageData-0:
+	gTFw4FZ4/f7u8l7b26FTLeZaMPstpoy4kFWKfx/0dkensH0+Obu1W2vUGUHMeC2392kjYEH3QrG9O6hvMY9qkOcqSQbfyi22Ihym4ENFyozzeE+LxbTV8eQnLfMl0T+9lR++tChrS5JbZ9zudlGoPEdVrGEVW+5IMBtGo8WQ4Jim7Qzr0XAYT8pf1j7otazlpm07mp9Nyp/30JZJnCdOS6AywEGk9wqxs0O/G5yiJOlk+ZNq35Lq2y1IeRWVFIquU3crLl9ahIhMUxipIK0o3w0x/Q75zrCR9WZ/7TI8jF2+kxl5Q3/cDcxbNAyPUgjNTOfaK1tPml/S6tuEzrzd4ZGVn3aItH57tGGMF4yR8NhEUJSbQ5kYLgupHdAg3HhzjT2NRsMLWV8rrb4UEZ7qc5zEJUuO6SpVpjdzrirP/bP1nTt1Iz1IB8qRw+ESlsGe
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 03:02:54.2663
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 97ahP5bO9q0MiKTdhrbSZeowBqQURJXCja54DCgQH29+hi1faB+y+Taew/o+hsQPksQD0cn/iFwiG+F4PbQq5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8476
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec01229e-3d7a-49a2-f3d8-08df2d8d785f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00005FFE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6782
 
-On Fri, Oct 16, 2026 at 01:21:14AM +0800, Edgecombe, Rick P wrote:
-> On Thu, 2026-10-15 at 12:47 +0800, Yan Zhao wrote:
-> > > The point of spelling it all out was to make the contact clear and the
-> > > implementation doesn't have to assume anything about the callers.
-> > Hmm, but it's hard for the caller to know if private_page is true.
-> > We should avoid leaking TDX specific knowledge to KVM MMU, right?
+
+
+On 10/15/2026 4:33 PM, sashiko-bot@kernel.org wrote:
+> [You don't often get email from sashiko-bot@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
 > 
-> Wait, why won't the caller won't know if it might map a new private page? This
-> is basically to cover the +1 part of the "+ 1 -1" in the calculation. I was
-> thinking to set it to true for normal ept violation (like an accept) and false
-> for split.
-In TDX's .topup_external_cache() hook, tdx_topup_external_pamt_cache() always
-needs to allocate DPAMT pages for guest private pages, even for the split case.
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: nSVM: spurious PML_FULL VM-Exit injection on discarded faults
+> --
+> 
+> commit ac3a6ec9423b67a67c9dfb9dd5ebd698f451f130
+> Author: Nikunj A Dadhania <nikunj@amd.com>
+> 
+> KVM: nSVM: Add nested PML emulation
+> 
+> This commit emulates Page Modification Logging (PML) for nested SVM guests,
+> allowing L1 hypervisors to track dirty pages in their L2 guests. KVM emulates
+> PML in software by write-protecting L2 SPTEs and logging dirty GPAs to L1's
+> PML buffer.
+> 
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index af0ef678433d7..8251b38d14790 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+> 
+> [ ... ]
+> 
+>> @@ -63,7 +64,14 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
+>>       if (WARN_ON_ONCE(hweight64(fault_stage) != 1))
+>>               fault_stage = PFERR_GUEST_FINAL_MASK;
+>>
+>> -     vmcb->control.exit_code = SVM_EXIT_NPF;
+>> +     /*
+>> +      * Only the exit code differs for a PML Full; hardware leaves the
+>> +      * EXITINFO fields as the nested page fault that filled the buffer
+>> +      * would set them.
+>> +      */
+>> +     vmcb->control.exit_code = svm->nested.pml_full ? SVM_EXIT_PML_FULL : SVM_EXIT_NPF;
+>> +     svm->nested.pml_full = false;
+>> +
+>>       vmcb->control.exit_info_1 = fault_stage |
+>>                                   (fault->error_code & ~PFERR_GUEST_FAULT_STAGE_MASK);
+>>       vmcb->control.exit_info_2 = fault->address;
+> 
+> [Severity: High]
+> If L2 triggers a legitimate but unrelated nested page fault (such as a read
+> fault) after a previous discarded fault left pml_full set, does this blindly
+> consume the lingering pml_full flag?
 
-However, from KVM MMU's perspective, it is unnatural to specify "private_page"
-as true when tdp_mmu_alloc_sp_for_split() is preparing the mid-level page table
-page.
+Yes.  Both findings are about the same flag - one at the point it is
+consumed, one at the point it is left set - so this answers both.
 
-So, I think we should keep the current convention of just specifying
-min_nr_spts, and let the TDX-specific tdx_topup_external_pamt_cache() account
-for the +1 part for guest private pages, which is invisible and should not be
-exposed to KVM MMU.
+nVMX does the same: vmx->nested.pml_full is set in
+nested_vmx_write_pml_buffer() and consumed unconditionally in
+nested_ept_inject_page_fault(), with the same discard paths in shared MMU
+code.  I kept the flag here to match that rather than introduce a
+different mechanism in a first posting.
 
-So, what about
+The effect is bounded: L1 takes one spurious PML Full, and as
+pml_full_interception() ignores the EXITINFO fields, L1 drains,
+re-enters L2 and gets the real fault on the retry.
 
-topup(bool with_root_spt, int min_nr_spts) ?
+The clean fix could be to carry the indication on the fault rather than
+on the vCPU - a synthetic PFERR bit, set by the walk that raised it and
+tested in nested_svm_inject_npf_exit(). Something like the below, roughly:
+
+      #define PFERR_PML_FULL          BIT_ULL(50)
+      #define PFERR_SYNTHETIC_MASK    (PFERR_IMPLICIT_ACCESS | \
+                                       PFERR_PRIVATE_ACCESS | PFERR_PML_FULL)
+
+      /* update_accessed_dirty_bits() */
+      if (w == &vcpu->arch.ngpa_walk &&
+          kvm_nested_call(write_log_dirty)(vcpu, addr))
+              return -EBUSY;
+
+      /* walk_addr_generic(), tagging the fault it is about to raise */
+      if (unlikely(ret == -EBUSY))
+              errcode |= PFERR_PML_FULL;
+
+      /* nested_svm_inject_npf_exit() */
+      pml_full = fault->error_code & PFERR_PML_FULL;
+      vmcb->control.exit_code = pml_full ? SVM_EXIT_PML_FULL : SVM_EXIT_NPF;
+
+It would also let nVMX drop its flag and the WARN_ON_ONCE in
+nested_ept_inject_page_fault().
+
+Separately, Yosry asked on this thread about factoring
+nested_svm_write_pml_buffer() and its nVMX counterpart into common code.
+I will wait for Sean's input on both before reworking either.
+
+> 
+> It looks like this would inject an SVM_EXIT_PML_FULL exit into L1 carrying
+> the error code of a read fault. Since hardware PML only logs writes, could
+> this architecturally impossible state crash or confuse the L1 hypervisor?
+> 
+> [ ... ]
+> 
+>> @@ -2169,6 +2200,47 @@ static gpa_t svm_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
+>>       return w->gva_to_gpa(vcpu, w, gpa, access, exception);
+>>  }
+>>
+>> +static int nested_svm_write_pml_buffer(struct kvm_vcpu *vcpu, gpa_t gpa)
+>> +{
+>> +     struct vcpu_svm *svm = to_svm(vcpu);
+>> +     u16 index;
+>> +     gpa_t dst;
+>> +
+>> +     if (WARN_ON_ONCE(!is_guest_mode(vcpu)) || !nested_pml_enabled(svm))
+>> +             return 0;
+>> +
+>> +     /* The flag can be set here if the fault that raised it was discarded. */
+>> +     if (svm->nested.pml_full)
+>> +             return 1;
+>> +
+>> +     index = svm->nested.ctl.pml_index;
+>> +     if (index >= PML_LOG_NR_ENTRIES) {
+>> +             svm->nested.pml_full = true;
+>> +             return 1;
+>> +     }
+> 
+> [Severity: High]
+> If KVM resolves or discards the page fault internally without injecting it
+> into L1, this leaves the pml_full flag set while L2 execution resumes.
+> 
+> The comment acknowledges that the flag can be left set by discarded faults.
+> However, is it safe to leave it set if the next fault isn't guaranteed to be
+> a write?
+
+Regards
+Nikunj
