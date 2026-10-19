@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.1
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.14
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792452675;
-	b=esRLpNzeKW5knM0eLFoyAY8pBfWJBzRe0Go0fvHe6Zb6CoFJsNtbH8UoqIdR5ZdLZcc4
-	 h5nkrdSuVtkyfI/OUfGAmcNoiCFaeH1y3gOmvax6CZgzfAnPdAzmGh34fsTLseNReq1uU
-	 /obmKMkP+ODXe+DUtGn4wdYHfgdZsF9zgrZ2v5Ei0n9NZQ6crdJg3EACyzeLcLgW8QLvw
-	 H2TrW2oBFmjlWPLKnC4T6QcNL635aWlusazK3G8IzK+T0C1FOsJq32GIQAX/2IHPrD2JE
-	 z+yurpAheyl+/GQJu3MW67Lelr3tgFCuFOGAjnIXrlCZQhmpxLOHOrzIHzPSzkHvKhQ==
+	t=1792452725;
+	b=KtkPfBu1b+gnDSfWio0crnAzsUTvFZqc+zxtUYkzknK5X5TpRdTBZV9yrYMiwNYrFYhA
+	 9gQqcH3MS/qhUqRC4+B1dPV3cRJZMdc1++HFTzEUZlJfWOZHZv/bf/HkXbA0CvlmurpbN
+	 SGsyHb1c9KbnTUwDw2UzIqqEGOgmi0C406g2UwIhm77dXpZ45LyHmZ3IjpFpRrTZqz3rA
+	 rqKiRp2JpAm+EgoMZvObt7QoS+lMfX5oxffYwQJxPYfR6/QSP5OAvRv7vnUVTMhvDlBFp
+	 AGMneboOVYc0VVclzmmqSVYf5ErDIbPI7vuDmHcrH4RaylY8zyNr1YwRZmN9bG2SOhA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792452675;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452725;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-ClientProxiedBy:MIME-Version:
@@ -24,58 +24,57 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=sPcz3Cd0fEAnxGXGD00/IHYBSS+7FIbuI0zdvcPMghw=;
-	b=3WhLPJLxB92z3OSrPIS0OJVMpmkrhk6dmYs7d+GY0MDH6I6YyNEAFBXSlHaPBJwA4FVs
-	 x+4KC3wp4D/tCn4rh6DmhR4uVkE2GwChhDSb0QRtrqfbLK+Os+f5GfJtqmPte7b6L54um
-	 N9iOvmdkLEVzvAQtbcbyg8aRKAJQAwV2E6XRqNTb/jwEJeuCS2SvS9CDuFWbTt/c/J9YO
-	 aKgflybztQQIuvzp3gFTvsJIoYv3op4qkCcWryZsEo7zpmX8U+VYy6K4cGVKW8QR02syO
-	 foCi9YPxF6odCdPc/2FJSvS8ZlsrJrg8TH6NxKnm85YKYinNra+5KWWbbS7sXTZ6bRg==
+	bh=/pkZm3oCAJ0oKR6LIjsRJIZaSRSQBa73V4PGUUc4QHk=;
+	b=cYHVrR6cfG6FRhd24XimUUgcu0nnhCJxi/btXYv1ErLugiEGak8BgoksppRcrEJeJFEK
+	 59Y24Hkq8fxexOXTrc152OGTgqRvovZXxhhlIhrYi2ITyNH0D2W0GoalRC4NNeogLzbKz
+	 t+HC+CMLxuabPqb6ejVrHq+cduF+MQaHag9PduS50FriPZCSPd866DIfDkRK8Z0cI3krY
+	 k6OpTcXEGggdnlU7IcXjrnVUFdwpMFOcHYFdtBoZHXPzt6jXFRVcm1Rpl5wnB/i3Xm2m1
+	 iHsBW/IIz2mCPI4QCWsSkbv8f3BTRkUA9UP+tUALt1fktdGp2Zb3EjRSE95gZD+AO6A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gCP59ENz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.1
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011001.outbound.protection.outlook.com [52.101.62.1])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=azmzXoYV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.14
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010014.outbound.protection.outlook.com [52.101.61.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512FC606A31A;
-	Mon, 19 Oct 2026 23:31:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 512FC606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893D7606A32C;
+	Mon, 19 Oct 2026 23:32:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 893D7606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gCP59ENz
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=azmzXoYV
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mNoH4VQr231NMbfUlxlrP8j2/qKEReWeMq7fVjXERtE/I1qktYeRsI08+swxQTxXdUZMCWb117YnaOae8wFC5cmAkYLvDF8cxPM6hXrl64m19Nculgzb/YffoR+P8OmmN9lCZQH+OW02aob2I1K1F5TvGv/YbHqIasFDd649k8nZOojPlmKa5GwnQs4XP10QcvpYCKpa8UawMWM0JliNGMsIaWj1oaKDbP1Z4ksVOFUI5hD3djLmxkgBhkbQVwu8uT9YB7a3pgHQrsWIoTvQ1rtVjXoHF4/3GOgjES7m+iSkfEfogt2V+TT8UNlWB3s3paylpw/rzQVXVwYzbTHxKQ==
+ b=BfRyQHytzTZv+rOub+EKsJ1CbbiTtrhEZYlPxuxYRE3thdSQOU9bBY8oTAOEjsoCLEBs253DRX67fjk+IFOuXCwtebM3UioPJfFBc1+nUX+QZ1SQ9sGjZT2b2v0QKBKD7ncIKXQX2yp1V/wXbCKovXSfcY0cjFiWorEsuZ6zVxmc98/v4O/qBoImcHvz1PzbPtRuhV7i1fuTAs/9ibUlPooNSlYayeqOLLqh8zxoH0saT3jyw66UXa4MjLfjs0jkP3WkZBxJcncBWW/um4gbWGDJYkbMNDqF7UrBIsnhhDD/es6rq5s3ZPrCZIZtheXm0DlCnJpobJUCC7JJ7BCXZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sPcz3Cd0fEAnxGXGD00/IHYBSS+7FIbuI0zdvcPMghw=;
- b=vhRzskK+wmNf3wMg7rz1T9i8eC9eDuVsbyt1bED5CIiI0Vrzz071QxQ9yLM8lOSaJlUxk/GrxQb1KRwhjFicYsygIo/TteL5aYIjob0OljZIHU5oJxAVnpPDSFUsrL2dLp8UmDW73eD5ecqR+nO+Vlo5OGiV/8M8AsWzFyCZ8rsA4nSjzfu43YBh0dCDvf64RLlUGJJsEbyu6eFdn0nJHkohhJpbpaiAWxElUOOSYtwrhbT78ZmNpEgOsDGfQ/CZSCxRlmZJw9tVFfW9SRRqKduyMEpDS4AVbVKmj1K7uqISDojaUt5PLlDps4q3QNl4acIu59eZ1PBfHau1BH8rmQ==
+ bh=/pkZm3oCAJ0oKR6LIjsRJIZaSRSQBa73V4PGUUc4QHk=;
+ b=WAf1e6wSqYv6McEtPK0WDP4d1aEdDySQKb7isgiAOIVjT66LQfegxXXEFl5O4IdYEc9iOOvdVyl1V9T8y4iS72aoKzNN2cvcWMElgVV4UEswjhBYxVQecaFq+p64KsrPg+XNTu9Id0ZOMpaoqMe87Mudaf9h8PL/nwUUYxEII9FQZloWa/gb4vWoz4/eVwyOp0f+Jb4O5kZW6MEbe0b0n2jvtg6s8hrTUMSOapRX5s/FnV+zyv6Lo8VJ4hL7XmeEvWpdO2HX1BXjHcSxoFawp+ZH2YHSFcKIWgNPcmB6Z5sEcL0V6jMnyBbYkYOoZC7UDq7GBmhXEy+WqZzlJivrew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sPcz3Cd0fEAnxGXGD00/IHYBSS+7FIbuI0zdvcPMghw=;
- b=gCP59ENzxIRfRL6bVmUgMyiKB5W9IOtBkOqdyKckQNcTVFU7UHGZB2+U50MIzTWUCN4YkNBdPq34tOO1X0nNQ2QeP8HFgR8TlRuDNz2rzz0LgJF378Vl5b10ej45dgbZ75qXrPPiGOlRqZL1eHVZLqMDbh88zlEtzPsxXXldVfHy5XMwcriQxfCKO/2yUMi96RTxTevPQCKnqciQGzdEiX5ePgHeP74Ga3xmOwRl1/KL5YOhbz/JnGxAQorY6PbxewD0BW834lFjuESA0+czGsUgkDsV8AU/6kfC+hat7iHub9JA4AUuEB6HCsYeNvn/mfn0b1oonrE34l8+4CVqPA==
+ bh=/pkZm3oCAJ0oKR6LIjsRJIZaSRSQBa73V4PGUUc4QHk=;
+ b=azmzXoYV8AmOFuhX7NGq7oPxgW95LYzCruo7lg7XY1F30NnXNrUMelgmQUmMsNFp+LqN2QscWZu375c1RDILORXIhLJRkTpB6D2EWJMtaFerl3grp4os8O3p0haEvq7nNHML1sWmyR9sFYvXbFIiPGQUg5yT9eBbt0ZuFGRbUjQJIWIjCTDaW8QkXtMKgNrXndL0YvZMfUsQZpXft22l7q4AyA9QbcvJLyk5ht+JP9MLXpj+RweKqOLVCqUbRiaaysVYC7ZucNDlV851ZIPjuBItH4QkFMzoqOr6x+KTWZUVswbrTz12wJRk2qV1/xWsdom1HRW4eUoOi/1LYNkfCw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12) by SN7PR12MB8789.namprd12.prod.outlook.com
  (2603:10b6:806:34b::8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.18; Mon, 19 Oct
- 2026 23:29:49 +0000
+ 2026 23:29:48 +0000
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
  ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 23:29:49 +0000
+ 23:29:48 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family
- API
+Subject: Re: [PATCH RFC 04/20] Documentation: ctlv: Add userspace ABI
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: Jiri Pirko <jiri@resnulli.us>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
@@ -89,14 +88,14 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com, 
  dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
  peter.fang@intel.com
-In-Reply-To: <20261015145053.3664509-3-jiri@resnulli.us>
+In-Reply-To: <20261015145053.3664509-5-jiri@resnulli.us>
 References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-3-jiri@resnulli.us>
+ <20261015145053.3664509-5-jiri@resnulli.us>
 Date: Mon, 19 Oct 2026 20:29:45 -0300
-Message-Id: <179245258504.58760.15790996354033644110.b4-review@b4>
+Message-Id: <179245258505.58760.6612247594755628055.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-ClientProxiedBy: BN0PR04CA0031.namprd04.prod.outlook.com
- (2603:10b6:408:e8::6) To CHBPR12MB731189.namprd12.prod.outlook.com
+X-ClientProxiedBy: BN0PR04CA0053.namprd04.prod.outlook.com
+ (2603:10b6:408:e8::28) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -109,206 +108,287 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SN7PR12MB8789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 06751bff-ff36-4636-9785-08df2e38dd9a
+X-MS-Office365-Filtering-Correlation-Id: 97ceb4dd-a0be-4eff-72ce-08df2e38dd8c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|18002099003|22082099003|10067099003|3023799007|4143699003|11063799006|261009223027099003|56012099006;
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|6133799003|9063799003|18002099003|22082099003|10067099003|3023799007|4143699003|11063799006|261009223027099003|5023799004|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	yl5wLznsRU3MgUkJBDe+Ube34vJZYFO9N92hVlxS4fK7YYFbCY8+UPlu9vCsTmVRoKFL/h5AF6dilUoZDw61hrDS8KnxGj7uyEtpF/B+PPjqk6Ugjq0onUgE2djWklwUPR6y5U3xfDtv3h+I66DtyNy4D96Hbr23TmYP3uYakwlWDQSVR4gOR3bZRBJK+IrhIiRACHrYATOaOto8ULCeS5dsFyubh1b/mx3Q1xMzyJa2Xuu63cpPewWUK1fLCHkllNKBVaR7XtELw5UqsK693E9IKOcRILQoQ/pMiQMmpzDc/xUjeylnP5VNHYweA6zkyoOZi9DMacs9L+ILSb32S2vHKpm6d/UPO9eouYuLS2uBq+Ii3g3b4i+zo4onGYzMSFEUsvC9vpgIrMlq3cdM5Qa47ptREAVP+v1pkBIojVPiZ+zyB02zcW5bsMLpxY4eSqpaV0wPa2rdCjBAkUZtE72dkjB0E+T4UHO6gSgHzWiQ79t0irpm3KaCtzLxI0PzSMRU+mKlJNfGe707uZoL4n3W63knbduWLtmWm/d8ZPLds8bM4xJTQoI7ek2WXuGdNZDsvUu1WSGHy7PaK1x5P+2cvegYzh6dOFR/XGa5BYJUAIY+usKI/D+S/OmB8xLBBfAe3FEF84IyitvPE9+rcGpqQj4AQ0ZIk7tw+sfUF5M=
+	PW+jf1yRnOfflKrF779lwYcKj5fw1cNSuEpGIAQYveYE/X4g1cVjR7gkKKpThMD7zmOYJfB1RsKrHUh/eaM2XQQEUydPQKXRiBNiWAxNzsHfu86yeRF122ZdNmyoVfIMysX4uVslGL3rRVpHfDqyyzTPI5P/s9cRMZH656S4gvyS6diUYGqaZyLG3/ReKSm2mAIHGI9ZHpxlGtWKFSv8sU4jzaQ0IbX6PsCL4ovbRIqTRF+n+O1HrL1LGx49WUD3PekKBmLvw/3at9ua2b9NGVKA5Sl127DfjgMM9y5/5nSY3AcexirCf8TDBc3Zg/0k9dWzICsQV1UG3y9P90kqhdw4bpzwg6p8Kh2z3FzRdmkvq2yNuVwtmGuoD/z04XBXZCld0QzVz7AZ/fws/i53R46AtWBvQ+qegmk/sBTM3bDQVKtmTrr83ixyp6OJU90xyrRjBoUfqutxA6u6o1QHKb7w2Y7gJl4iOyB6/zn4D/BAC7cqDocB6R69+CkizZ0+TMf4oNASm4ag22gYhrNVxT2x1kVtDzLa2FAZ0mzEae9dJnQipDN3P2N3x/CGeK9agj4TZGIjIS+eg76u7GLnIHt+PpnuNsSYJNX6V8UGM8WFgno2t44L9yYuiBuqBOsrzRbby74Oc8m8E6btHpmzHIEophWg/UHord2ILWe3sCc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(10067099003)(3023799007)(4143699003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(6133799003)(9063799003)(18002099003)(22082099003)(10067099003)(3023799007)(4143699003)(11063799006)(261009223027099003)(5023799004)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dlIvb2lHbHduemcxK2tHVjhaSG1BdEdxam85YkxDWXh5M1dzRDFpQVFNZDh2?=
- =?utf-8?B?VjM1MTZCNW14T2E2dDZpQVI4MFM0MVZtMDJOMmcrT1ptZE5Rb3pQa205dmd4?=
- =?utf-8?B?bE43VVdGZ0tSbXBkRGcxT3VmaWtCdmNqanNLUlVWdXVURE93d1Q0L0FNRExl?=
- =?utf-8?B?VmxnVmIrV2c3ZFp3Zk5ybzFJcGZTRzI1V1g1OFFYdmJpZUhrdGY0clh0bWhU?=
- =?utf-8?B?NEJXR3o4NkVodldNOHdkTm5mdU9lcVRpTkFvckt1c3ZkVldMN1ZJUDlnQVQx?=
- =?utf-8?B?NHJVU2pnOEVPMWZBTGIycmhPc2pnczVSL3VOOTVCUGVGT2NqRFI0dEpxYTZv?=
- =?utf-8?B?TVBLSVFBdW9RSXcxMzE4YlRVVHdXSGJaVi9MZjNoUlorU0wzQjlTQmRFUTNh?=
- =?utf-8?B?WjdWcy85MFpnSWtVT0k0VGx2dlNoWmI4Z3luS0RoUFZSYkZ4MW5mbWwzeEFm?=
- =?utf-8?B?UTdHYnRnVzhqaE9FUjNxQmZtVUl3QVFWaS9PaTZaOGZpaEFYTDN3S0dPbzhP?=
- =?utf-8?B?eEFUUzhuVU1IeFI0S1c5S2RDMDRZcFdNdGhreXRWZmEzemVxRkh1TlJvSnVJ?=
- =?utf-8?B?ZzhSTUE5RkRIK0lCcEFYZVl0ZE1rWGJPODY2cU9OcldIaU5BN0RhMi9mTVp0?=
- =?utf-8?B?dElvY1duZVhZc1RGUnQ2R1R1NGdtYXdtVVZ3bkM1M0hBZkJrMnl3WEV0U2lZ?=
- =?utf-8?B?TS95VXozelBKYzBFSlZLQS9rWU82ZXM1MkJQRCtXa1I4R3JqbUY3bXI0Ym9l?=
- =?utf-8?B?QThwRndTMUMwQVVHRG1GeVZoRnNRc1dwa1NRT1U3T1V4dGk2aDJBLzN3anlB?=
- =?utf-8?B?WUNWdUtNTWtPQ3pFZXB2L2Zways0aEZCVXJoLzc5cDYyY1JVTXJlTlRQSG9D?=
- =?utf-8?B?YmFYeGVNREF4Q0xDaDJkdFBKK0tVZWdkZ0ZDUDl1Q3lsV0FwZFVsZ3pUZlVD?=
- =?utf-8?B?VllTeGxBc1IzbFlUZXIwaExOYS96Rk42NHlnalhTZHBFeWhTTVdlNW9yTDM1?=
- =?utf-8?B?YTNmc0NmdEVNMDNhK3k3b2hKTUQvRnhtOXY1bTNQYWxTQksrWENWZUtpaUVO?=
- =?utf-8?B?T1FUWkZnTkZ1bkR6Vk5EZEhGRHFVYkl4NUN1eklhQzRQYnI2aXd4anBaYjZa?=
- =?utf-8?B?cDZLSUJtbEJuN3ZxemI3Um5QR0YzR0s1UUsxY3ZaaEZhcm9JYnlkcGlqbFBh?=
- =?utf-8?B?dEtqdHVIRXYrMTN3VDQzejVRaUtETHpldXNnNFoyMzBxaDN0cUkzWDl1S3Fn?=
- =?utf-8?B?alFJSDk1RitPbllJbjlsRkhBYVZ2Q3RDNFZtSnp3d3ZPSkMwVVJUaElHdHVF?=
- =?utf-8?B?NDM2RkpQMEhVMnNjZkFOV2lvcjV1dFQrblNtSVhub0hYQWxzM1ZnbVBMYUpk?=
- =?utf-8?B?bUNsNWUwQXFuVi9UVUhmdVptNmV3QmFnMUhLcWVwUW5IQ210RUpKczZIVG9Z?=
- =?utf-8?B?Y3dMcTVMdU9reTlYVWIyaHBocnduaCs1Nkx3eEEwa2c4cCtDTStOTVdiMXcw?=
- =?utf-8?B?d3M0eEgwNDlCK1liT3ptd01KeTVGUjZDb1FvQkNWS3FJWS9uQi8xTzhwenpR?=
- =?utf-8?B?dEFqdFlteVpOVjYrSGE1bktiSGhPeWh1bW1RaTdKUU1WYlZqKzRJWGsyL3hU?=
- =?utf-8?B?dnllRjNFaDJQZ2tkdjlFa1FCQVBGeE9TbFFpQnJ0d3UyYXMwNk1KZmFUNCts?=
- =?utf-8?B?MFBzVVVPUEc1Q2tkdnU5b3VaTjArTTRJa3d5Y3dhVnRFTWVTMnRpYU02RkF6?=
- =?utf-8?B?QlNheDdKalZEWlhJaW9WUjM1eThCeHU5ZEtoeStHK2RlUXZDN3J6VWJtQlB3?=
- =?utf-8?B?clMrWjd5ZlQ5d3NmUWlUQVRhOGdHVU1tNmFBTWZ3Mm1zc2RWNjlnNzZpSGlV?=
- =?utf-8?B?NHlqdzF1QUdzMVBJWkFXYzZtVkgvT3FYQzBVWXNHby80czF2THpZQkZ1bXd5?=
- =?utf-8?B?Q1NqK2duSnJCeDVBNjIvYXFDLzREMEpqVm44QmdWVHRsWlJoaXJrNktaS3NY?=
- =?utf-8?B?ZTlZWFNMVFFVNUd3ZDlDb1JjR3hIeUplTmZ4VFhvVkJRVy9sM09pK1dmSGlQ?=
- =?utf-8?B?cFYxM01BTGNFYUlQUXArVEM4Y3FacVdQV2dCaWpKV1dKT28zcG5rTlE5eERu?=
- =?utf-8?B?cmpYQW8ySzB3VzdtQlNKRDRPYkR1TkJ2MXh1L3hYTG9BNkp6YzRUNXBWcEh4?=
- =?utf-8?B?V09lYW9MNUNFcW9QQXcydW1lYjhmUXdyWWVmcjY4ZEw1c3lSY01iekJDcTN3?=
- =?utf-8?B?SnNTa0QyNm1uRjB3YmNCMForcVhCWXY4QTFQaUNMVmQ4NTF0Yi9EUnBBOWNa?=
- =?utf-8?Q?vnfiJkhH4VOuDOiW6E?=
+	=?utf-8?B?OUZjYUkwanZJSHMxSEFlQUprSXRBNlRqeEJ4MW1NRTVvRXhtNEQ1WE9XK0NC?=
+ =?utf-8?B?WkMrNFhuWEk2M3p4U3RyVTFPSlJMSmxXT3JlZlR5dGhob0JOQTMvZEhJSEY2?=
+ =?utf-8?B?Nm5ORzBMUGNZTlFYUFEvTlFvOVZUQW5YRUhPSk5GMWd6ODhpVGNSbEFLT3BF?=
+ =?utf-8?B?TitPcXZoR3ovQ1hkM2JnS21aeTNJc3NYQWFkRk5OWTBmNHQzUUJ2ZkVPRVBu?=
+ =?utf-8?B?TVlDMGpNVzFFSGFDVW1zM0UrTjh2SzFnT2F3cy9rSmRQeXprOXk2Tll0OEVw?=
+ =?utf-8?B?dWZpZ0laKzBsQlpmTXpUOG50QlNTUHgzMkFnanBtRVUrMEI2TXQvalN4dG9U?=
+ =?utf-8?B?VTIvYlg3blZqSytEaGhzenJ3R1Q0YWFSYnF1L3VYSGxUT3VIRmlLZ2hwSUMy?=
+ =?utf-8?B?YmZHeWgrYWM1bVhOVDlyZXFOMU9YdVNFcGwwTmJSNWVvNGl0YVVZM09TdnVE?=
+ =?utf-8?B?ekpRbkFtSUNQbEFIcTZPV21sZU1NQVRHTkgxdGlUOXNKM2E3eEdUY09wTmlo?=
+ =?utf-8?B?OTlPQmZ5bTRoNnB2VXNaTmFxYWEvNW5vNFVsUWd6d1kxYVNvMUtTVlA2TVMy?=
+ =?utf-8?B?L2JiQ2UrbjRnRlpDd200dDdNKy9KVjRsdW8weUk1aWJXcTFkSFJsZFhneE5W?=
+ =?utf-8?B?K2I2WXRZZ2RLRUNjdlgrZkpmeHdRc3QrcE15LzBBV1Yvb2UzNUwzLzJwS0tW?=
+ =?utf-8?B?VWVLYUJlbkFzdS9Cd3lmODBlc3VSQ3hXZDZ3RWZZY2ozVklTSWM4ajRwVG9B?=
+ =?utf-8?B?UWhDSklkdEFGOGt1aWVSYURWQS9FWm5jZ09jUmwyd0JPcXArWi8vWVpwc2wv?=
+ =?utf-8?B?QmpGVUxhWW1ycExmV2swb3l2MWhBU2hCTjRPcGk2Mm53WG5VcW9ZcUZnOFgw?=
+ =?utf-8?B?WHlVcGY5aytoNEdySjJER2dLM2VWZmMwUkppRWkwNlBYTzFzRGhxdUYwZWdJ?=
+ =?utf-8?B?dm54b3h3MmpLSDgxenNzSFZTcE1EVG03Uk9XU0RWWi9JeW9UYVVJZ1p5M0Z3?=
+ =?utf-8?B?UHVVOGcwM1hwWE50N1l3c2ttSUhteXJnZDBlajFwM0FyNkFWREY5UjB6dmt4?=
+ =?utf-8?B?VWlrY1ExS05TenhCc2gxdFVEZlNSK3BVWHlJRGszZEwvNjJCNHZMQk5PWWNM?=
+ =?utf-8?B?WFBJRkRrdGhPNUVoNHlFWW4xd0tYQU9iUkd0b1dFR0V4bk9IVFJ0djV4ejhh?=
+ =?utf-8?B?VWs4aTVZUlBRV054YWZkMitJUDhZOW5QKzJPRWcvVTQvZFdHb2hwcE1lcTcw?=
+ =?utf-8?B?dTVLMEpYUEVvbGtqUUxiYXljaGxTeng3SklqVDV0T2hPOEFmcnc0ZXVHMjNw?=
+ =?utf-8?B?b3JoaHZXNWVPVG9CWGhQMW4yOVZzUE1pL2VDNjNpQnBXYXRlUzUrMm5qdHhY?=
+ =?utf-8?B?UjVzejBXNnV4Q3g5Skk5NVFxM0JrWUlxKzNERDBJcGhXS3VPVStnU05UdENT?=
+ =?utf-8?B?UUFBOVVyOFpHdGVJaTBWRzRRRmtqNEs1czlwTi9DOE1WVVV5WEtla1l1TFlS?=
+ =?utf-8?B?a2dWWXduQzVBcTFMY2t0azhmOXNONDlGdnhoeUF2ZjVVZGlzenFKUVVJUVNB?=
+ =?utf-8?B?VUNRRUhZdUlaYVpNb2RUbkY5VUQ1MEZoejdIWTR3RkJhbVgxdGhnNWpFQng5?=
+ =?utf-8?B?WFhUWDByL3FxeEpYUXJHWHFMOGp3Rnp3SkFIRVk4Wk4xOVg2cDVFMjNUdStT?=
+ =?utf-8?B?VTVRMnpaRWJRK2tpUDMyMmVBdHJhM2hLa0NMem5xbm1iWGNkYkczamNhWWNs?=
+ =?utf-8?B?SHZ6b0k1ZGRNY3oxT2M2ZUN6OVVLamVXUW9pZm8zTjNnbTRWMXV6Q0VwMlp5?=
+ =?utf-8?B?V05hK3dXQlRhOWtodEdidFV6SmtXbDZ1MGJSdXJuQ1ZteDFnTSswY2hWWlVy?=
+ =?utf-8?B?bC9jaUl6aXE2QUh3cUtsWDJHNmhubUVSNTM0bTFOVTlLNVhUQ1ZvVVRBVFor?=
+ =?utf-8?B?dU0wRm4yZTkvNUJEeUg2V3ZqQVcrMDBwSFpzWEJqVk5EK0R5azBOZW42a1V2?=
+ =?utf-8?B?aVViWGNod3k2bWNRaWxvNVZodEZ4WllKSllqbm1FSUF5TzMvTm5nQlpPSEdR?=
+ =?utf-8?B?R1BsMWVVR1JzRmJKYUk0UkZCZTJvZ1QycXZ3OFNVZGxzSUQ4dlBHRGF4QnZz?=
+ =?utf-8?B?ZnRnZEpwZkR4OHdPSXphaWg0UTVOOG9SSUdTbmk4ZnViemRYUG8zYU5nZ1Rw?=
+ =?utf-8?B?aU5rcUJXTk5XUVhqOGJFWUJ2dFZJRE5MYTlYVlVyYU4wV3hFL0ZvVUloaHVZ?=
+ =?utf-8?B?TXVybW5hQ1hlMHhYZVd4NHVkSkJYek5VSmZDQ0JRRmdoRlg1cklJaVRENDRa?=
+ =?utf-8?Q?TwRuF7YqFhtEcvyc4Z?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06751bff-ff36-4636-9785-08df2e38dd9a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97ceb4dd-a0be-4eff-72ce-08df2e38dd8c
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:29:48.2115
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:29:48.1490
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y5TN5RuWEeRG8yrr4zbg6ltMOr+p+Y9Jg4/jnyMu4NFlwtYZfNVwgTedU8KcjAdK
+X-MS-Exchange-CrossTenant-UserPrincipalName: z3B7fzKXxjeFH+2abDyP8M9pP9zPJeb5J8uuhOlpZe8ZFfJEe5yjrmSVOSWT3DMr
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8789
 
-> [ ... 159 lines skipped ... ]
-> +#define CTLV_NODE_SCHEMA_UNLIMITED 0
+> Describe the CTLV transport, discovery, wire format and userspace
+> compatibility rules.
+> 
+> Assisted-by: Cursor: GPT-5.6 Sol
+> Assisted-by: Cursor: Claude Opus 5.5
+> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> ---
+>  Documentation/userspace-api/ctlv.rst  | 507 ++++++++++++++++++++++++++
+>  Documentation/userspace-api/index.rst |   1 +
+>  MAINTAINERS                           |   1 +
+>  3 files changed, 509 insertions(+)
+>  create mode 100644 Documentation/userspace-api/ctlv.rst
+>
+> diff --git a/Documentation/userspace-api/ctlv.rst b/Documentation/userspace-api/ctlv.rst
+> new file mode 100644
+> index 00000000000000..5ebca3d4d94af8
+> --- /dev/null
+> +++ b/Documentation/userspace-api/ctlv.rst
+> @@ -0,0 +1,507 @@
+> +.. SPDX-License-Identifier: GPL-2.0
 > +
-> +#define __CTLV_NODE_SCHEMA(_attr, _kind, _occurrences, ...)	\
-> +	{ .attr_id = (_attr), .kind = (_kind),			\
-> +	  .max_occurrences = (_occurrences), __VA_ARGS__ }
+> +==================
+> +CTLV userspace ABI
+> +==================
+> +
+> +:Author: Jiri Pirko
+> +
 
-This reads alot better without the extra macro layer. The point of
-this is to allow the codegen output to be concise it is worth being a
-bit more verbose here so the exact form is easier to see.
+This could use an introduction:
+
+Char-Device Tag Length Value (CTLV) is a flexible way to describe system calls
+delivered over ioctl for a kernel subsystem. It provides a 64 bit operation
+number with variable length input/output arguments described in a YAML schema.
+The arguments are serialized using a TLV scheme. Strong support for
+forwards/backward compatability is baked into the schema design.
+
+CTLV excels for uAPIs that are too unconstrained to fit in simple structs.
+Things that have arrays of arrays, variable size structs, variable sized data,
+strings and similar which are challenging to represent.
+
+As a transport CTLV uses a global number space. Inspection tools like
+strace/seccomp can always decode a CTLV ioctl without having to know what
+subsystem is using it. The global number space is organized into families, which
+roughly corresponds to a subsystem.
+
+A family describes what its devices accept in YAML, a generator turns that into
+kernel metadata and UAPI headers, and CTLV validates every message before a
+family callback sees it. Userspace sees one character device per instance, one
+ioctl, and ``read()`` for events.
+
+> +CTLV is a transport for device control interfaces. A family describes what its
+> +devices accept in YAML, a generator turns that into kernel metadata and UAPI
+> +headers, and CTLV validates every message before a family callback sees it.
+> +Userspace sees one character device per instance, one ioctl, and ``read()`` for
+> +events.
+> +
+> +This document is the ABI. What each family accepts is specified under
+> +``Documentation/ctlv/specs``; writing a family is :doc:`/driver-api/ctlv`.
+> +
+> +Why a TLV transport
+> +===================
+> +
+> +CTLV puts the rules of every operation in one description and validates them
+> +once:
+> +
+> +- One ioctl carries every operation of every family, so a new operation is a
+> +  new specification entry, not a new ioctl number.
+> +- Attributes are optional or required by declaration, so a message can grow
+> +  without breaking a caller that does not know the new attribute.
+> +- An unknown attribute is refused on a request and tolerated on a reply, so a
+> +  new kernel can say more to an old program. A request may mark an attribute an
+> +  old kernel is welcome to skip, so a new program can say more too.
+> +- Bounds, lengths, occurrence counts and nesting depth are checked before a
+> +  family callback runs.
+> +
+> +Devices
+> +=======
+> +
+> +Each registered instance appears as a character device in the ``ctlv`` class
+> +with a dynamic minor::
+> +
+> +    /dev/ctlv0
+> +    /sys/class/ctlv/ctlv0
+> +
+> +Sysfs shows class membership, the ``dev`` number and the device-model link to
+> +the parent device. There is no family sysfs attribute; ``families-dump`` on an
+> +open descriptor is the authoritative answer to what a device is.
+
+I've tried to like this but, I really am not a fan. I think it
+reflects too much of a netlink influence.
+
+My two biggest problems:
+
+1) This prevents us from incrementally using CTLV as a more robust
+   uAPI. Like if I wanted to start using it in vfio for new uAPI I
+   cannot
+
+2) It destroys the kernel concept of a cdev subsystem, where we have a
+   distinct class, /dev/ directory and cdev nodes.
+
+   Lots of tooling and userspace is geared toward working this way. A
+   completely unstable /dev/ctlvX that could be *anything* will need a
+   meaningful new methodology in userspace. For instance anyone doing
+   containers that wants to pass these is going to need special
+   tooling.
+
+> [ ... 143 lines skipped ... ]
+> +An attribute ID names the family that declared it, a group within that family
+> +and an attribute within that group::
+> +
+> +    63           48 47           32 31                             0
+> +    +--------------+--------------+--------------------------------+
+> +    |    family    |    group     |             attr               |
+> +    +--------------+--------------+--------------------------------+
+> +
+> +    CTLV_ATTR(family, group, attr)
+> +    CTLV_ATTR_FAMILY(attr) / CTLV_ATTR_GROUP(attr) / CTLV_ATTR_NUMBER(attr)
+> +
+> +An operation ID is the same shape with the group bits zero::
+> +
+> +    CTLV_OP(family, op)
+> +    CTLV_OP_FAMILY(op) / CTLV_OP_NUMBER(op)
+> +
+> +Use generated complete IDs. A family's header defines every ID it declares
+> +and includes its parent's.
+
+I'm OK with this, it seems like a fine design, very netlink inspired.
+
+One of the nice properties is an external tool, like strace or a
+seccomp does have enough information to capture the entire operation,
+including all parameters.
+
+Though I wonder how much trouble it will be for userspace to form
+these things.. It has to pre-determine how much memory it needs then
+fill in this structure. That's not so easy to use.
+
+How hard would it be to accept a linked list, or array, of buffer
+frags? With some strict rule that a leaf attribute cannot span frags?
+
+My thinking is userspace could allocate frag by frag as it builds the
+message instead of being forced to do a size, allocate, fill sequence?
 
 > +
-> +#define __CTLV_NODE_SCHEMA_CHILDREN(_first, _count, _required)	\
-> +	.first_child = (_first), .children_count = (_count),	\
-> +	.required_children_count = (_required)
+> +Request occurrence order
+> +------------------------
 > +
-> +#define CTLV_NODE_SCHEMA_ROOT(_first, _count, _required)	\
-> +	__CTLV_NODE_SCHEMA(CTLV_ATTR_ROOT, CTLV_SCHEMA_NEST, 1,	\
-> +			   __CTLV_NODE_SCHEMA_CHILDREN(_first, _count, _required))
+> +Occurrences of one attribute ID must be contiguous within each request root or
+> +nest. ``A A B`` is valid, while ``A B A`` is not. An ignored unknown attribute
+> +is not an occurrence of any known attribute, but it ends the preceding run, so
+> +``A ignored-unknown A`` is also invalid. Different IDs otherwise have no
+> +required numeric or schema order.
 
-For instance this is much more directly readable:
-
-#define CTLV_NODE_SCHEMA_ROOT(_first, _count, _required) \
-	((struct ctlv_node_schema){                      \
-		.attr_id = CTLV_ATTR_ROOT,               \
-		.kind = CTLV_SCHEMA_NEST,                \
-		.max_occurrences = 1,                    \
-		.first_child = _first,                   \
-		.children_count = _count,                \
-		.required_children_count = _required,    \
-	})
-
-Even if it is longer, and and clangd can now jump to the struct members
-
-I also think each of these should have a one line comment explaining
-when it is used.
-
-> [ ... 61 lines skipped ... ]
-> +#define __CTLV_STUB_SCHEMA(_family, _set, _node, _optional)	\
-> +	{ .family_id = (_family), .set_id = (_set),		\
-> +	  .node = (_node), .optional = (_optional) }
-
-Same here
+I'm not entirely sure what this is trying to say. Is it just a single
+ID must be contiguous if it is repeated?
 
 > +
-> +#define CTLV_STUB_SCHEMA(_family, _set, _node)			\
-> +	__CTLV_STUB_SCHEMA(_family, _set, _node, false)
+> +Attributes a kernel may skip
+> +----------------------------
 > +
-> +#define CTLV_STUB_SCHEMA_OPTIONAL(_family, _set, _node)		\
-> +	__CTLV_STUB_SCHEMA(_family, _set, _node, true)
+> +A request attribute, the root aside, may carry
+> +``CTLV_ATTR_F_IGNORE_IF_UNKNOWN``. If no family the device answers declares
+> +that complete ID, the kernel steps over the whole attribute without looking
+> +inside it; without the bit, an attribute the schema does not place where it
+> +appears fails the request as it always has.
 > +
-> +struct ctlv_schema_tree {
-> +	const struct ctlv_node_schema *node_schemas;
-> +	u32 node_schemas_count;
-> +	const struct ctlv_stub_schema *stub_schemas;
-> +	u32 stub_schemas_count;
-> +};
+> +The bit forgives an ID this kernel has never heard of and nothing else. An ID
+> +the device's schema declares somewhere is held to that schema, so an attribute
+> +sent where it does not belong fails whether the bit is set or not, and one sent
+> +where it does belong is checked as usual. Every other rule applies too: the
+> +length has to fit its nest and the header may carry no bit the format does not
+> +define. Replies and events never carry it.
 
-I've been ponding for a while what 'stub' means in this context.
-
-AI suggested "extension_points would be a clearer name here." I guess
-because ctlv.rst calls it "Inheritance and extension points" ?
+This is pretty hard to read. AI?
 
 > +
-> +#define CTLV_SCHEMA_TREE(_name) {				\
-> +	.node_schemas = _name##_node_schemas,			\
-> +	.node_schemas_count = ARRAY_SIZE(_name##_node_schemas),	\
-> +}
-
-It is helpful to put the struct on these macros ((struct X){})
-
-#define CTLV_SCHEMA_TREE(_name)                                         \
-	((struct ctlv_schema_tree){                                     \
-		.node_schemas = _name##_node_schemas,                   \
-		.node_schemas_count = ARRAY_SIZE(_name##_node_schemas), \
-	})
-
-> [ ... 127 lines skipped ... ]
-> +typedef size_t (*ctlv_family_priv_size_fn)(void);
-> +typedef const void *(*ctlv_family_pre_init_fn)(const void *init_info);
-> +typedef int (*ctlv_family_init_fn)(struct ctlv_device *ctlvdev,
-> +				   const void *init_info, void *priv);
-> +typedef int (*ctlv_family_post_init_fn)(struct ctlv_device *ctlvdev,
-> +					void *priv);
-> +typedef void (*ctlv_family_pre_fini_fn)(struct ctlv_device *ctlvdev,
-> +					void *priv);
-> +typedef void (*ctlv_family_fini_fn)(struct ctlv_device *ctlvdev, void *priv);
+> +This is how a program built against a newer version of a family talks to an
+> +older kernel. What that kernel knows is validated, what it does not is
+> +ignored, and a caller that has to know which is which asks ``op-schema-get``
+> +first.
 > +
-> +typedef int (*ctlv_stub_fill_fn)(void *priv, struct ctlv_op_ctx *ctx,
-> +				 const struct ctlv_cursor *request,
-> +				 struct ctlv_cursor *nest);
+> +Executing an operation
+> +======================
 > +
-> +struct ctlv_stub_ops {
-> +	u16 family_id;
-> +	u32 set_id;
-> +	ctlv_stub_fill_fn fill;
-> +};
+> +One ioctl executes every operation::
 > +
-> +#define CTLV_STUB_OPS(_family, _set, _name) {			\
-> +	.family_id = (_family),					\
-> +	.set_id = (_set),					\
-> +	.fill = _name##_fill,					\
-> +}
+> +    struct ctlv_op_exec {
+> +            __aligned_u64 op_id;
+> +            __aligned_u64 request;      /* struct ctlv_attr __user * */
+> +            __aligned_u64 reply;        /* struct ctlv_attr __user * */
+> +            __u32 request_len;
+> +            __u32 reply_len;
+> +            __aligned_u64 generation;   /* queries only */
+> +            __aligned_u64 cursor;       /* queries only */
+> +            __aligned_u64 reserved[2];  /* must be zero */
+> +    };
 > +
-> +struct ctlv_family {
-> +	const struct ctlv_family_schema *schema;
-> +	const struct ctlv_family *parent;
-> +	const struct ctlv_op *ops;
-> +	u32 ops_count;
-> +	ctlv_op_pre_fn pre;
-> +	ctlv_op_post_fn post;
-> +	ctlv_family_priv_size_fn priv_size;
-> +	ctlv_family_pre_init_fn pre_init;
-> +	ctlv_family_init_fn init;
-> +	ctlv_family_post_init_fn post_init;
-> +	ctlv_family_pre_fini_fn pre_fini;
-> +	ctlv_family_fini_fn fini;
-> +	const struct ctlv_stub_ops *stub_ops;
-> +	u32 stub_ops_count;
+> +    #define CTLV_IOC_OP_EXEC _IOWR(0xBB, 0x00, struct ctlv_op_exec)
 
-Having the function ops in a struct use typedefs instead of just
-coding the signature is unkernelly, I couldn't figure out what this
-was done, it seems there is no user of the typedef
+Generally I've ben frowning on using the size arugment for ioctl. This
+means you can never make that struct bigger, and that's historically
+been a bad choice...
 
-> [ ... 182 lines skipped ... ]
-> +/* Implementation limits, not wire-field maxima: raising them is compatible. */
+I've mostly been using this:
+
+  #define IOMMU_DESTROY _IO(IOMMUFD_TYPE, IOMMUFD_CMD_DESTROY)
+
+And then put a length at the top of the struct and do the
+
+        ret = copy_struct_from_user(ucmd.cmd, op->size, ucmd.ubuffer,
+                                    ucmd.user_size);
+
+Kind of thing so there is a solid compatability story.
+
+> [ ... 81 lines skipped ... ]
+> +``ENOMEM``
+> +    The kernel could not allocate what the operation needed.
 > +
-> +/* Request roots, action replies, query reply fragments and event roots. */
-> +#define CTLV_MAX_INLINE_MESSAGE_LEN	0x100000	/* 1 MiB */
-> +/* Includes the error information root. */
-> +#define CTLV_MAX_ERROR_LEN		0x4000		/* 16 KiB */
-> +/* The root attr is at depth zero. */
-> +#define CTLV_MAX_NEST_DEPTH		32
-> +#define CTLV_DEFAULT_QUERY_REPLY_LEN	0x10000		/* 64 KiB */
-> +#define CTLV_MAX_EVENT_QUEUE_LEN	0x1000000	/* 16 MiB */
 
-If they are just random kernel limits I'm not sure they should be in
-this uapi header?
+EOVERFLOW for check_overflow failures
 
 -- 
 Jason
