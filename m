@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CBB400E11
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 13:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18C44F30DB
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 13:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792416617; cv=none; b=Ato4JXgOsiqH0SvEx1dZx1H0IeByKzQUvucaw3u/2/NXGiLdt/dXQZJq5VJvVSn85086k/MhtJJ9P9WgEIRo0d6baCxZG+kXS6tv3YKhnk3d/DrT2inpthWLzyx7oHz1Dqm28tfgAXcI3rbLQwTbG8P55H02NwVBLy0NtmzUMxQ=
+	t=1792416833; cv=none; b=qL3I+mXo0B1TTM4C+ZKM2qM2qa+zr4y1raqoWVncRsPIaelxF9EzopDSusKc1zP0kQqRGo9Ot4w5EBlSaG32mBtlC63TFZ1/Gt+a9bKBpoxzTFZE50WEuozuZuJBQvuj0oG/l+7i7t3lsZHsB7hPO1tB+rjLrKpLCy2IV3FRSAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792416617; c=relaxed/simple;
-	bh=gnSvZ/LUFuJBVLtInfEtDLD0rv1MVCgno8bRL9CcznM=;
+	s=arc-20240116; t=1792416833; c=relaxed/simple;
+	bh=ujXmLORlFdUC8dYzrwRUCwif5YWfOXSF11Rs+nig8sY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jEJgfxSwaOShWSXK2iirzJgopMWhd2L7LZbtSJVAjLru1Co1yMlEnIA2wpasR0v9phPDKfe1Rz7IYKnr3f7GI48XHPLRfjPvTTZ+qj+4RMtKITz9NLZyNbNf5eu+AC1g44t5MACseOvQ9oKg22z8bz2+bMtJwshB0boKEE4G4qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XWIiIh+9; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=N/YJzMZVd5fCWhjEOJZI9g65eESybah7Dt1hgORFB4MBEWCnW2h2mBrhwigYM9EeQmXYUoTo68tk3+BY8Tj6fKoeTBsOmh1+t/AvJEs2KkXXWrlchzm6fYF5OBUw8ooVzjgP4tEARACprW4T08XlhCeznGGPEMT2y58j7i3KQ5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UjV4c1SF; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XWIiIh+9"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="UjV4c1SF"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 062451682;
-	Mon, 19 Oct 2026 06:30:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D03741682;
+	Mon, 19 Oct 2026 06:33:47 -0700 (PDT)
 Received: from [10.0.136.108] (M0PRX50XMG.cambridge.arm.com [10.0.136.108])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DA513F7D8;
-	Mon, 19 Oct 2026 06:30:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C0213F7D8;
+	Mon, 19 Oct 2026 06:33:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792416613; bh=gnSvZ/LUFuJBVLtInfEtDLD0rv1MVCgno8bRL9CcznM=;
+	t=1792416831; bh=ujXmLORlFdUC8dYzrwRUCwif5YWfOXSF11Rs+nig8sY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XWIiIh+9N00nPEszeOCb0o1XUFPcpksmB+gfgf1dsmuWmFkafVKu0XsjhNE00YwI6
-	 oQkIrEn1hXZSm1Y1KdyKHhfjct+P2agJ9D8DvghaybKTIt0i644pkuamtCLPLpegQk
-	 gyNBx5JhhgeRqCXWqWrXL55FMs9abZiA1nRRrrcY=
-Message-ID: <c6981395-bb76-4683-bf9c-b9b83e9a6a9a@arm.com>
-Date: Mon, 19 Oct 2026 14:30:10 +0100
+	b=UjV4c1SF9xNCAoOXioBz7tSAyYZ/mAfTbiTR7C8qe7c6KAyzoehoYaX2xl7mswvjb
+	 2XW5PNkyPw/kkzhazF6kZHxdR/xiPIvVnH6KCJLkhBEAJSa0uqiVIoGcunx6qm2DgW
+	 Emdx8z9A21+BvHbW/JWeXE/6xi+YQ0+t8ODrrST0=
+Message-ID: <6e7f76e9-3e62-4733-9d4a-acf944e005cb@arm.com>
+Date: Mon, 19 Oct 2026 14:33:48 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,82 +35,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] KVM: arm64: vgic: Require matching VGIC model for
- GICv3 ITS
+Subject: Re: [PATCH 2/2] KVM: selftests: Reject GICv3 ITS with a GICv5 VGIC
 To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
  kvm@vger.kernel.org
 Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
 References: <20261016152225.898761-1-sascha.bischoff@arm.com>
- <20261016152225.898761-2-sascha.bischoff@arm.com>
- <sashiko-outbox-174566@kernel.org>
+ <20261016152225.898761-3-sascha.bischoff@arm.com>
+ <sashiko-outbox-174571@kernel.org>
 Content-Language: en-GB
 From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <sashiko-outbox-174566@kernel.org>
+In-Reply-To: <sashiko-outbox-174571@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 16/10/2026 16:35, sashiko-bot@kernel.org wrote:
+On 16/10/2026 16:36, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] kvm: vgic: its_model state leak on ITS creation failure prevents VGIC fallback
+> - [Medium] selftests: vgic_v5.c uses ad hoc skip messages and direct exit() instead of TAP
 > --
 > 
-> commit 1db9490bd1d4f94f4d1c1d3aee70dca948f96eb7
+> commit 1b97dfda1bac7a30c8395c0645ac8efb945b4639
 > Author: Sascha Bischoff <sascha.bischoff@arm.com>
 > 
-> KVM: arm64: vgic: Require matching VGIC model for GICv3 ITS
+> KVM: selftests: Reject GICv3 ITS with a GICv5 VGIC
 > 
-> On a GICv5 host with legacy support, KVM registers both VGICv3 and
-> VGICv5 devices. A VM can create a GICv3 ITS with another VGIC model,
-> setting has_its even though that model cannot use the GICv3 ITS.
+> Check that a GICv3 ITS and a GICv5 VGIC cannot be paired, regardless
+> of which device is created first. Skip the check when the host does not
+> expose a GICv3 ITS.
 > 
->> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
->> index e5657cb603567..bf901626ea6df 100644
->> --- a/arch/arm64/kvm/vgic/vgic-its.c
->> +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> 
+>> diff --git a/tools/testing/selftests/kvm/arm64/vgic_v5.c b/tools/testing/selftests/kvm/arm64/vgic_v5.c
+>> index d5df742b23001..5bf7d99d29147 100644
+>> --- a/tools/testing/selftests/kvm/arm64/vgic_v5.c
+>> +++ b/tools/testing/selftests/kvm/arm64/vgic_v5.c
 > [ ... ]
-> 
->> @@ -1903,6 +1911,7 @@ static int vgic_its_create(struct kvm_device *dev, u32 type)
+>> @@ -2003,8 +2003,40 @@ int test_kvm_device(u32 gic_dev_type)
+>>   	return 0;
+>>   }
 >>   
->>   	dev->kvm->arch.vgic.msis_require_devid = true;
->>   	dev->kvm->arch.vgic.has_its = true;
->> +	dev->kvm->arch.vgic.its_model = KVM_DEV_TYPE_ARM_VGIC_V3;
->>   	its->enabled = false;
->>   	its->dev = dev;
+>> +static void test_vgic_v3_its_with_vgic_v5(void)
+>> +{
+>> +	struct kvm_vm *vm = vm_create_barebones();
+>> +	int gic_fd, its_fd, ret;
+>> +
+>> +	if (__kvm_test_create_device(vm, KVM_DEV_TYPE_ARM_VGIC_ITS)) {
+>> +		pr_info("No GICv3 ITS support; skipping mixed-model test.\n");
+>> +		kvm_vm_free(vm);
+>> +		return;
+>> +	}
 > 
 > [Severity: Medium]
-> When vgic_its_create() successfully executes, it updates the VM-wide state
-> (its_model, has_its, msis_require_devid) to reflect the ITS device. If the
-> generic kvm_ioctl_create_device() subsequently fails at anon_inode_getfd()
-> due to process FD exhaustion, it aborts the device creation and calls the
-> vgic_its_destroy() cleanup callback.
+> When running test_vgic_v3_its_with_vgic_v5() on a host without GICv3 ITS
+> support, this prints an unstructured skip message and returns directly.
 > 
-> However, vgic_its_destroy() does not roll back the its_model VM-wide property:
+> Could this be converted to use a TAP reporting macro like
+> ksft_test_result_skip() instead of an ad-hoc pr_info() and return?
 > 
-> arch/arm64/kvm/vgic/vgic-its.c:vgic_its_destroy() {
->      ...
-> 	vgic_its_free_device_list(kvm, its);
-> 	vgic_its_free_collection_list(kvm, its);
-> 	vgic_its_invalidate_cache(its);
-> 	xa_destroy(&its->translation_cache);
-> 
-> 	mutex_unlock(&its->its_lock);
-> 	kfree(its);
-> 	kfree(kvm_dev);
-> }
-> 
-> Consequently, the VM permanently records that it requires a GICv3 VGIC model.
-> 
-> Does this state inconsistency prevent userspace from recovering and falling
-> back to a different VGIC model (such as VGICv5) after an ephemeral FD
-> allocation error, or if userspace intentionally closes the ITS file descriptor
-> before creating the VGIC?
+> Additionally, running the test suite on a host without GICv5 support calls
+> exit(KSFT_SKIP) directly in main() instead of using ksft_exit_skip().
+> Are there plans to update the main() exit path as well?
 > 
 
-This is something that I don't intend to fix. If the case where we've 
-encountered process FD exhaustion, then we're already in a rather broken 
-state. If userspace closes the FD before creating the vgic, then that's 
-on userspace. I don't think that these are realistic cases to fix.
+As it stands, this matches the rest of the GICv5 selftests. I think that 
+it makes some sense to adjust these going forward, but this change is 
+not the time to start doing that IMO.
+
+I'll look into doing this going forward, but won't fix this for now.
 
 Thanks,
 Sascha
