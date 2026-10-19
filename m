@@ -1,100 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.1
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792452385;
-	b=i6dQWGh3A4/E4hy+2DBH/23PRHG3E0lN1rK8yy8o1uV7fXgoMpgmExQ0ugBhEcL80YHK
-	 alx2FpHt85NvzBQk+mFwU02zhxxOsud5+eLiAIQEHaLOoAu1wPMUtmqe9dnZl0HvjBQ5L
-	 /dEYWpkpqnyApGPxY353wLUYgY5KV9ZNAEKetDVkB+Aac1i0icRGh5Ubof10q/KEHt7q5
-	 pn/Zgfa5OMWfVKzAvOVp/UtgGZjkecolMcxA10DiXhC6p+HA8EZak1vToT2o84Txa+I2f
-	 CXWnhO7kNHxXOG4q/nRF6d5OrSXMR6f6CIJsRs/PvWHUZV02SW6HhvruANxefAlYfcQ==
+	t=1792452675;
+	b=esRLpNzeKW5knM0eLFoyAY8pBfWJBzRe0Go0fvHe6Zb6CoFJsNtbH8UoqIdR5ZdLZcc4
+	 h5nkrdSuVtkyfI/OUfGAmcNoiCFaeH1y3gOmvax6CZgzfAnPdAzmGh34fsTLseNReq1uU
+	 /obmKMkP+ODXe+DUtGn4wdYHfgdZsF9zgrZ2v5Ei0n9NZQ6crdJg3EACyzeLcLgW8QLvw
+	 H2TrW2oBFmjlWPLKnC4T6QcNL635aWlusazK3G8IzK+T0C1FOsJq32GIQAX/2IHPrD2JE
+	 z+yurpAheyl+/GQJu3MW67Lelr3tgFCuFOGAjnIXrlCZQhmpxLOHOrzIHzPSzkHvKhQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792452385;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
-	b=rzxDfNj7GTbYyLhANXmY7CAKI7bK5zR7P13wUmIlArdMer2sgCW91r+2HEUeMwLj6O2u
-	 cvZuZTIJyy8OsmIx3CajgAenl57c+qkN4qByiaHFNbphIZgXkc3CFsJE/HRrkIkQjS/JU
-	 g+Dil+kE0JfG17lYx1wtSbZXyx48d7WDJFqzwIrkMexLWOs7+w6yS9dFDnmcY73y2K9rb
-	 PYkHcfFkL3T/+fIFyXH6LyZ9Vo7lE9vz/DibspOWDSy7oSAqXtYVAzNPU6gpE/pytsWCM
-	 ZpTCR3Z3o1lp13ZpEXYLVjIti8usn5xCBvRCKlaQ4Nz9Iycan/4/W0oI0KAGwQJlegg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452675;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=sPcz3Cd0fEAnxGXGD00/IHYBSS+7FIbuI0zdvcPMghw=;
+	b=3WhLPJLxB92z3OSrPIS0OJVMpmkrhk6dmYs7d+GY0MDH6I6YyNEAFBXSlHaPBJwA4FVs
+	 x+4KC3wp4D/tCn4rh6DmhR4uVkE2GwChhDSb0QRtrqfbLK+Os+f5GfJtqmPte7b6L54um
+	 N9iOvmdkLEVzvAQtbcbyg8aRKAJQAwV2E6XRqNTb/jwEJeuCS2SvS9CDuFWbTt/c/J9YO
+	 aKgflybztQQIuvzp3gFTvsJIoYv3op4qkCcWryZsEo7zpmX8U+VYy6K4cGVKW8QR02syO
+	 foCi9YPxF6odCdPc/2FJSvS8ZlsrJrg8TH6NxKnm85YKYinNra+5KWWbbS7sXTZ6bRg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="KfOw2Bp/";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gCP59ENz;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.1
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011001.outbound.protection.outlook.com [52.101.62.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2084A606A319
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 23:26:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2084A606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512FC606A31A;
+	Mon, 19 Oct 2026 23:31:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 512FC606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=KfOw2Bp/
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2544a12.1
-        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 16:26:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792452383; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UldX/XhGUtC8TgcnJPxy2vK6VSUSp+paDEwzFJppx990wuEnxgBidA5I5A2vErs6Y2
-         ROndwp7168yRIc6X1uGySSgbdSv/FIW05HWL85/vD9/7drFG2QCgDJqXV6HbWOxctDCs
-         7HEEJWeoKfAOm6Zk3r/Z3QQFLGTf2YScN1tPd/+fnAJ7Cb/sOAzEjfa3m74Gi00Bbq5/
-         MSlJpX+j9U2AGlAqYl10NaW56fCrzSLxhxA4Fkr50SJMKPx+97Qt3fBuo7qIbtgkt2ig
-         fjFw3371Iq1tBXLRSNeSdKqKjKkYzf4kFfWKIZVTpq1kWcJnrmOZGZC5LGATTsh+lrYg
-         fJ+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
-        fh=j9+BzdkehH8aUtF+0uHUNpt3UUrfZnZMT9jT7hWpVYc=;
-        b=KKviftQAcULRDh87xvNKwcfZe3CoB2QuTku5IoQpb/gJv2LtUCExTvcLS/xZ+JTapo
-         doJeY+cuImlxDUG0M/JtHACveUZBojZ3sfhZ3QLexSp84Bb8yGbkNWBaLb07M/Xk/Y6A
-         DMRTKnxWxjprGoaRnyl3/ZlDKsp58lGkXciuLNkGbrMmQ4d3iA1yP/zIT1pgPrLVd3OV
-         lWJcmEFQIJTQbPkVUDhiPzey1s1UHu/UqcPjCZf3fG0bUv9y/J4+KNMcKCSG5moPJ+SX
-         rrkAYzG/vLGmr7IYeYcfm6vqDLMNX1Vvb1n06ntD8SY+0MykK4bcPvuw6fQIu5VW71HI
-         FTsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792452383; x=1793057183; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
-        b=KfOw2Bp/ckflu3yP//2FjjIVuRufE//wgFl7r2i3ijRfRuhds/q10dt9MswPLuNvru
-         K+58IaR3Aaw8Dcd9HRxErhuj1c5DVPsKwi0AUow32IID+2xQSFGdZzElK/T8HhQJ0lBW
-         BldR1xqfF/ukP1iXCaIyIUI1HDYiky88R9jWgkZ42turnV3p5ZwAb9fuBI0cjAC/Eue9
-         1RJG2uTGndtWLiOktka72gsZ4e2clM252K8Oi9/CvT14+hfp/EOGwgeYuyUaPdPPHD1C
-         aPT3JNQvzHyTyKmyNyClPHzeh4p+gU/uauiNp7xQ2QwfS1BOt1GtLkGlfRqPZxCx1KOx
-         qXAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792452383; x=1793057183;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CLC3zjnxIjKArH1FQcGvSs3bjt/7iKdfVzrRyl7zBcY=;
-        b=lht/79LqFk1UINeWqUfR2sce3baGTH7w6P911ZdIX+ZltsuxNKg6kA+xCrdqz+Nvt3
-         h2pWaO7mS0fLeCp/lgXIAg3Pl2hihwBbPq4Mgawfesqra3umfgxhayYYBLAU6uMBga0X
-         hL1/DQJwjBdN2xe0NiTDzIoLxy5bTKZ6DBrpgO9kzrU4oFSKR6Ne+LXmKs3++TvnAfRU
-         rePk+WDbef1wStUr+zwDn4dHN6OX0D9f2P/d3ioOX2/5V2hue2QxQKNQL2I/u9PUxGzj
-         lbVMNv6HADD0mH7BNPePHtNXS5EMu6h4f1x2SGfhysVYOdoEB96FIm81PAk89Hh5MoiK
-         LzXA==
-X-Forwarded-Encrypted: i=1; AKwUvBz57VNo/BUWnbeqbpYFXYm3Kjo9T3G6DPBkGhGarGxn9O89cqTbkVqF8xelOZZcyhzDE90=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKlf1ZKa2cg5DOkxtdKUKQsly7z8TEFs1Oes6k2Y0Ankz6fnDef
-	oXh68gOumhl76MrRLBYB6ANQdE7qtr0VmX14e0pVei72RXxNQfTJHcWNxCkLzxYMGIMqwshlDw8
-	R2p+TS3vD9TL7x/W3VJPgK/viDGYMkxOfA3yz7SiD
-X-Gm-Gg: AYBFou1EJAe+zyFTJxqQJ4SCsDlNTDUZI/wUG3glEJRWpTsHtsrN0uWl76MgjgV/TzL
-	b+sKIWt3XqKViH5pZHAZvDPfCDQhmzg7OpxHRTxNIHA/5avbbmbnlMgiTU1Jf9BQOmNJm1P3EwA
-	C3EFwO1gh4pASohOoY+gowJQvFSbfuOxpRu37vfWSljYr067AxGKdfyGeEmvrnY87J6q6WFtQBX
-	bBYCQkRzaO56p50JozTHPCaK/qm25z3GpydLLG/AXiLM3IKSYYaG7k92r1D53pRXBqHhe41rk8u
-	UHdUGlN/6gSlYv0mJ5RZC9y4BrAfVUU0nL4g7Mhh/4O1cCNHngoEmXwbOEHzj0yiV1ZkFm5NR/T
-	t2VBaCVOuNCJwrhmNvNBkz3Sm6fRRc78V4NR1
-X-Received: by 2002:a05:6402:5286:b0:6af:b196:68bf with SMTP id
- 4fb4d7f45d1cf-6b3e7032ba3mr19962a12.7.1792452383122; Mon, 19 Oct 2026
- 16:26:23 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gCP59ENz
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mNoH4VQr231NMbfUlxlrP8j2/qKEReWeMq7fVjXERtE/I1qktYeRsI08+swxQTxXdUZMCWb117YnaOae8wFC5cmAkYLvDF8cxPM6hXrl64m19Nculgzb/YffoR+P8OmmN9lCZQH+OW02aob2I1K1F5TvGv/YbHqIasFDd649k8nZOojPlmKa5GwnQs4XP10QcvpYCKpa8UawMWM0JliNGMsIaWj1oaKDbP1Z4ksVOFUI5hD3djLmxkgBhkbQVwu8uT9YB7a3pgHQrsWIoTvQ1rtVjXoHF4/3GOgjES7m+iSkfEfogt2V+TT8UNlWB3s3paylpw/rzQVXVwYzbTHxKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sPcz3Cd0fEAnxGXGD00/IHYBSS+7FIbuI0zdvcPMghw=;
+ b=vhRzskK+wmNf3wMg7rz1T9i8eC9eDuVsbyt1bED5CIiI0Vrzz071QxQ9yLM8lOSaJlUxk/GrxQb1KRwhjFicYsygIo/TteL5aYIjob0OljZIHU5oJxAVnpPDSFUsrL2dLp8UmDW73eD5ecqR+nO+Vlo5OGiV/8M8AsWzFyCZ8rsA4nSjzfu43YBh0dCDvf64RLlUGJJsEbyu6eFdn0nJHkohhJpbpaiAWxElUOOSYtwrhbT78ZmNpEgOsDGfQ/CZSCxRlmZJw9tVFfW9SRRqKduyMEpDS4AVbVKmj1K7uqISDojaUt5PLlDps4q3QNl4acIu59eZ1PBfHau1BH8rmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sPcz3Cd0fEAnxGXGD00/IHYBSS+7FIbuI0zdvcPMghw=;
+ b=gCP59ENzxIRfRL6bVmUgMyiKB5W9IOtBkOqdyKckQNcTVFU7UHGZB2+U50MIzTWUCN4YkNBdPq34tOO1X0nNQ2QeP8HFgR8TlRuDNz2rzz0LgJF378Vl5b10ej45dgbZ75qXrPPiGOlRqZL1eHVZLqMDbh88zlEtzPsxXXldVfHy5XMwcriQxfCKO/2yUMi96RTxTevPQCKnqciQGzdEiX5ePgHeP74Ga3xmOwRl1/KL5YOhbz/JnGxAQorY6PbxewD0BW834lFjuESA0+czGsUgkDsV8AU/6kfC+hat7iHub9JA4AUuEB6HCsYeNvn/mfn0b1oonrE34l8+4CVqPA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by SN7PR12MB8789.namprd12.prod.outlook.com
+ (2603:10b6:806:34b::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.18; Mon, 19 Oct
+ 2026 23:29:49 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 23:29:49 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family
+ API
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+ linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com, 
+ lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+ cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+ James.Bottomley@HansenPartnership.com, aik@amd.com, jpiotrowski@nvidia.com, 
+ qinkun@google.com, pgonda@google.com, jic23@kernel.org, 
+ alistair.francis@wdc.com, ankita@nvidia.com, suzuki.poulose@arm.com, 
+ kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com, 
+ dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+ peter.fang@intel.com
+In-Reply-To: <20261015145053.3664509-3-jiri@resnulli.us>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-3-jiri@resnulli.us>
+Date: Mon, 19 Oct 2026 20:29:45 -0300
+Message-Id: <179245258504.58760.15790996354033644110.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-ClientProxiedBy: BN0PR04CA0031.namprd04.prod.outlook.com
+ (2603:10b6:408:e8::6) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,118 +107,208 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-4-shivansh.dhiman@amd.com>
-In-Reply-To: <20261019210532.378628-4-shivansh.dhiman@amd.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 19 Oct 2026 16:26:11 -0700
-X-Gm-Features: AclHuK8oRMv7kqF_KPOsMxBijtohUAtErtLXfKrtkvZWID5tE48bkobhU1O1LAM
-Message-ID: <CALMp9eSS8W0CQF4pVJmo_fcKzA19pfK6et+i3cVDLNcA2M5Esw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/12] KVM: SVM: Emulate guest accesses to LBRv2 MSRs
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
-	nikunj.dadhania@amd.com, sandipan.das@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SN7PR12MB8789:EE_
+X-MS-Office365-Filtering-Correlation-Id: 06751bff-ff36-4636-9785-08df2e38dd9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|18002099003|22082099003|10067099003|3023799007|4143699003|11063799006|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	yl5wLznsRU3MgUkJBDe+Ube34vJZYFO9N92hVlxS4fK7YYFbCY8+UPlu9vCsTmVRoKFL/h5AF6dilUoZDw61hrDS8KnxGj7uyEtpF/B+PPjqk6Ugjq0onUgE2djWklwUPR6y5U3xfDtv3h+I66DtyNy4D96Hbr23TmYP3uYakwlWDQSVR4gOR3bZRBJK+IrhIiRACHrYATOaOto8ULCeS5dsFyubh1b/mx3Q1xMzyJa2Xuu63cpPewWUK1fLCHkllNKBVaR7XtELw5UqsK693E9IKOcRILQoQ/pMiQMmpzDc/xUjeylnP5VNHYweA6zkyoOZi9DMacs9L+ILSb32S2vHKpm6d/UPO9eouYuLS2uBq+Ii3g3b4i+zo4onGYzMSFEUsvC9vpgIrMlq3cdM5Qa47ptREAVP+v1pkBIojVPiZ+zyB02zcW5bsMLpxY4eSqpaV0wPa2rdCjBAkUZtE72dkjB0E+T4UHO6gSgHzWiQ79t0irpm3KaCtzLxI0PzSMRU+mKlJNfGe707uZoL4n3W63knbduWLtmWm/d8ZPLds8bM4xJTQoI7ek2WXuGdNZDsvUu1WSGHy7PaK1x5P+2cvegYzh6dOFR/XGa5BYJUAIY+usKI/D+S/OmB8xLBBfAe3FEF84IyitvPE9+rcGpqQj4AQ0ZIk7tw+sfUF5M=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(10067099003)(3023799007)(4143699003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dlIvb2lHbHduemcxK2tHVjhaSG1BdEdxam85YkxDWXh5M1dzRDFpQVFNZDh2?=
+ =?utf-8?B?VjM1MTZCNW14T2E2dDZpQVI4MFM0MVZtMDJOMmcrT1ptZE5Rb3pQa205dmd4?=
+ =?utf-8?B?bE43VVdGZ0tSbXBkRGcxT3VmaWtCdmNqanNLUlVWdXVURE93d1Q0L0FNRExl?=
+ =?utf-8?B?VmxnVmIrV2c3ZFp3Zk5ybzFJcGZTRzI1V1g1OFFYdmJpZUhrdGY0clh0bWhU?=
+ =?utf-8?B?NEJXR3o4NkVodldNOHdkTm5mdU9lcVRpTkFvckt1c3ZkVldMN1ZJUDlnQVQx?=
+ =?utf-8?B?NHJVU2pnOEVPMWZBTGIycmhPc2pnczVSL3VOOTVCUGVGT2NqRFI0dEpxYTZv?=
+ =?utf-8?B?TVBLSVFBdW9RSXcxMzE4YlRVVHdXSGJaVi9MZjNoUlorU0wzQjlTQmRFUTNh?=
+ =?utf-8?B?WjdWcy85MFpnSWtVT0k0VGx2dlNoWmI4Z3luS0RoUFZSYkZ4MW5mbWwzeEFm?=
+ =?utf-8?B?UTdHYnRnVzhqaE9FUjNxQmZtVUl3QVFWaS9PaTZaOGZpaEFYTDN3S0dPbzhP?=
+ =?utf-8?B?eEFUUzhuVU1IeFI0S1c5S2RDMDRZcFdNdGhreXRWZmEzemVxRkh1TlJvSnVJ?=
+ =?utf-8?B?ZzhSTUE5RkRIK0lCcEFYZVl0ZE1rWGJPODY2cU9OcldIaU5BN0RhMi9mTVp0?=
+ =?utf-8?B?dElvY1duZVhZc1RGUnQ2R1R1NGdtYXdtVVZ3bkM1M0hBZkJrMnl3WEV0U2lZ?=
+ =?utf-8?B?TS95VXozelBKYzBFSlZLQS9rWU82ZXM1MkJQRCtXa1I4R3JqbUY3bXI0Ym9l?=
+ =?utf-8?B?QThwRndTMUMwQVVHRG1GeVZoRnNRc1dwa1NRT1U3T1V4dGk2aDJBLzN3anlB?=
+ =?utf-8?B?WUNWdUtNTWtPQ3pFZXB2L2Zways0aEZCVXJoLzc5cDYyY1JVTXJlTlRQSG9D?=
+ =?utf-8?B?YmFYeGVNREF4Q0xDaDJkdFBKK0tVZWdkZ0ZDUDl1Q3lsV0FwZFVsZ3pUZlVD?=
+ =?utf-8?B?VllTeGxBc1IzbFlUZXIwaExOYS96Rk42NHlnalhTZHBFeWhTTVdlNW9yTDM1?=
+ =?utf-8?B?YTNmc0NmdEVNMDNhK3k3b2hKTUQvRnhtOXY1bTNQYWxTQksrWENWZUtpaUVO?=
+ =?utf-8?B?T1FUWkZnTkZ1bkR6Vk5EZEhGRHFVYkl4NUN1eklhQzRQYnI2aXd4anBaYjZa?=
+ =?utf-8?B?cDZLSUJtbEJuN3ZxemI3Um5QR0YzR0s1UUsxY3ZaaEZhcm9JYnlkcGlqbFBh?=
+ =?utf-8?B?dEtqdHVIRXYrMTN3VDQzejVRaUtETHpldXNnNFoyMzBxaDN0cUkzWDl1S3Fn?=
+ =?utf-8?B?alFJSDk1RitPbllJbjlsRkhBYVZ2Q3RDNFZtSnp3d3ZPSkMwVVJUaElHdHVF?=
+ =?utf-8?B?NDM2RkpQMEhVMnNjZkFOV2lvcjV1dFQrblNtSVhub0hYQWxzM1ZnbVBMYUpk?=
+ =?utf-8?B?bUNsNWUwQXFuVi9UVUhmdVptNmV3QmFnMUhLcWVwUW5IQ210RUpKczZIVG9Z?=
+ =?utf-8?B?Y3dMcTVMdU9reTlYVWIyaHBocnduaCs1Nkx3eEEwa2c4cCtDTStOTVdiMXcw?=
+ =?utf-8?B?d3M0eEgwNDlCK1liT3ptd01KeTVGUjZDb1FvQkNWS3FJWS9uQi8xTzhwenpR?=
+ =?utf-8?B?dEFqdFlteVpOVjYrSGE1bktiSGhPeWh1bW1RaTdKUU1WYlZqKzRJWGsyL3hU?=
+ =?utf-8?B?dnllRjNFaDJQZ2tkdjlFa1FCQVBGeE9TbFFpQnJ0d3UyYXMwNk1KZmFUNCts?=
+ =?utf-8?B?MFBzVVVPUEc1Q2tkdnU5b3VaTjArTTRJa3d5Y3dhVnRFTWVTMnRpYU02RkF6?=
+ =?utf-8?B?QlNheDdKalZEWlhJaW9WUjM1eThCeHU5ZEtoeStHK2RlUXZDN3J6VWJtQlB3?=
+ =?utf-8?B?clMrWjd5ZlQ5d3NmUWlUQVRhOGdHVU1tNmFBTWZ3Mm1zc2RWNjlnNzZpSGlV?=
+ =?utf-8?B?NHlqdzF1QUdzMVBJWkFXYzZtVkgvT3FYQzBVWXNHby80czF2THpZQkZ1bXd5?=
+ =?utf-8?B?Q1NqK2duSnJCeDVBNjIvYXFDLzREMEpqVm44QmdWVHRsWlJoaXJrNktaS3NY?=
+ =?utf-8?B?ZTlZWFNMVFFVNUd3ZDlDb1JjR3hIeUplTmZ4VFhvVkJRVy9sM09pK1dmSGlQ?=
+ =?utf-8?B?cFYxM01BTGNFYUlQUXArVEM4Y3FacVdQV2dCaWpKV1dKT28zcG5rTlE5eERu?=
+ =?utf-8?B?cmpYQW8ySzB3VzdtQlNKRDRPYkR1TkJ2MXh1L3hYTG9BNkp6YzRUNXBWcEh4?=
+ =?utf-8?B?V09lYW9MNUNFcW9QQXcydW1lYjhmUXdyWWVmcjY4ZEw1c3lSY01iekJDcTN3?=
+ =?utf-8?B?SnNTa0QyNm1uRjB3YmNCMForcVhCWXY4QTFQaUNMVmQ4NTF0Yi9EUnBBOWNa?=
+ =?utf-8?Q?vnfiJkhH4VOuDOiW6E?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 06751bff-ff36-4636-9785-08df2e38dd9a
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:29:48.2115
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y5TN5RuWEeRG8yrr4zbg6ltMOr+p+Y9Jg4/jnyMu4NFlwtYZfNVwgTedU8KcjAdK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8789
 
-On Mon, Oct 19, 2026 at 2:06=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
-d.com> wrote:
->
-> Back the LBRv2 MSRs with their VMCB save-area fields in
-> svm_{get,set}_msr(). This is required when guest accesses to these
-> MSRs are intercepted. This allows the guest to retain the values
-> of these MSRs on VMRUN/#VMEXIT cycle when vLBR is disabled.
->
-> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> ---
->
-> Changes in v2:
-> * Use KVM_BUG_ON() in svm_vmcb_lbrv2() for an out-of-range LBR stack
->   index, and then use entry 0.
-> * Do not mark the VMCB dirty on writes to the LBRv2 MSRs since VMCB clean
->   bit for LBR doesn't cover the LBRv2 state.
->
-> ---
->  arch/x86/include/asm/svm.h |  2 ++
->  arch/x86/kvm/svm/svm.c     | 69 ++++++++++++++++++++++++++++++++++++++
->  arch/x86/kvm/svm/svm.h     |  3 ++
->  3 files changed, 74 insertions(+)
->
-
-[ ... ]
-
-> +static u64 *svm_vmcb_lbrv2(struct vcpu_svm *svm, u32 msr)
-> +{
-> +       u32 offset =3D msr - MSR_AMD_SAMP_BR_FROM;
-> +       u32 idx =3D offset >> 1;
+> [ ... 159 lines skipped ... ]
+> +#define CTLV_NODE_SCHEMA_UNLIMITED 0
 > +
-> +       if (KVM_BUG_ON(idx >=3D SVM_LBR_V2_STACK_SIZE, svm->vcpu.kvm))
-> +               idx =3D 0;
+> +#define __CTLV_NODE_SCHEMA(_attr, _kind, _occurrences, ...)	\
+> +	{ .attr_id = (_attr), .kind = (_kind),			\
+> +	  .max_occurrences = (_occurrences), __VA_ARGS__ }
 
-This guard isn't Spectre V1 safe. Use array_index_nospec().
+This reads alot better without the extra macro layer. The point of
+this is to allow the codegen output to be concise it is worth being a
+bit more verbose here so the exact form is easier to see.
 
 > +
-> +       if (offset & 1)
-> +               return &svm->vmcb->save.lbr[idx].lbr_stack_to;
-> +       return &svm->vmcb->save.lbr[idx].lbr_stack_from;
+> +#define __CTLV_NODE_SCHEMA_CHILDREN(_first, _count, _required)	\
+> +	.first_child = (_first), .children_count = (_count),	\
+> +	.required_children_count = (_required)
+> +
+> +#define CTLV_NODE_SCHEMA_ROOT(_first, _count, _required)	\
+> +	__CTLV_NODE_SCHEMA(CTLV_ATTR_ROOT, CTLV_SCHEMA_NEST, 1,	\
+> +			   __CTLV_NODE_SCHEMA_CHILDREN(_first, _count, _required))
+
+For instance this is much more directly readable:
+
+#define CTLV_NODE_SCHEMA_ROOT(_first, _count, _required) \
+	((struct ctlv_node_schema){                      \
+		.attr_id = CTLV_ATTR_ROOT,               \
+		.kind = CTLV_SCHEMA_NEST,                \
+		.max_occurrences = 1,                    \
+		.first_child = _first,                   \
+		.children_count = _count,                \
+		.required_children_count = _required,    \
+	})
+
+Even if it is longer, and and clangd can now jump to the struct members
+
+I also think each of these should have a one line comment explaining
+when it is used.
+
+> [ ... 61 lines skipped ... ]
+> +#define __CTLV_STUB_SCHEMA(_family, _set, _node, _optional)	\
+> +	{ .family_id = (_family), .set_id = (_set),		\
+> +	  .node = (_node), .optional = (_optional) }
+
+Same here
+
+> +
+> +#define CTLV_STUB_SCHEMA(_family, _set, _node)			\
+> +	__CTLV_STUB_SCHEMA(_family, _set, _node, false)
+> +
+> +#define CTLV_STUB_SCHEMA_OPTIONAL(_family, _set, _node)		\
+> +	__CTLV_STUB_SCHEMA(_family, _set, _node, true)
+> +
+> +struct ctlv_schema_tree {
+> +	const struct ctlv_node_schema *node_schemas;
+> +	u32 node_schemas_count;
+> +	const struct ctlv_stub_schema *stub_schemas;
+> +	u32 stub_schemas_count;
+> +};
+
+I've been ponding for a while what 'stub' means in this context.
+
+AI suggested "extension_points would be a clearer name here." I guess
+because ctlv.rst calls it "Inheritance and extension points" ?
+
+> +
+> +#define CTLV_SCHEMA_TREE(_name) {				\
+> +	.node_schemas = _name##_node_schemas,			\
+> +	.node_schemas_count = ARRAY_SIZE(_name##_node_schemas),	\
+> +}
+
+It is helpful to put the struct on these macros ((struct X){})
+
+#define CTLV_SCHEMA_TREE(_name)                                         \
+	((struct ctlv_schema_tree){                                     \
+		.node_schemas = _name##_node_schemas,                   \
+		.node_schemas_count = ARRAY_SIZE(_name##_node_schemas), \
+	})
+
+> [ ... 127 lines skipped ... ]
+> +typedef size_t (*ctlv_family_priv_size_fn)(void);
+> +typedef const void *(*ctlv_family_pre_init_fn)(const void *init_info);
+> +typedef int (*ctlv_family_init_fn)(struct ctlv_device *ctlvdev,
+> +				   const void *init_info, void *priv);
+> +typedef int (*ctlv_family_post_init_fn)(struct ctlv_device *ctlvdev,
+> +					void *priv);
+> +typedef void (*ctlv_family_pre_fini_fn)(struct ctlv_device *ctlvdev,
+> +					void *priv);
+> +typedef void (*ctlv_family_fini_fn)(struct ctlv_device *ctlvdev, void *priv);
+> +
+> +typedef int (*ctlv_stub_fill_fn)(void *priv, struct ctlv_op_ctx *ctx,
+> +				 const struct ctlv_cursor *request,
+> +				 struct ctlv_cursor *nest);
+> +
+> +struct ctlv_stub_ops {
+> +	u16 family_id;
+> +	u32 set_id;
+> +	ctlv_stub_fill_fn fill;
+> +};
+> +
+> +#define CTLV_STUB_OPS(_family, _set, _name) {			\
+> +	.family_id = (_family),					\
+> +	.set_id = (_set),					\
+> +	.fill = _name##_fill,					\
 > +}
 > +
+> +struct ctlv_family {
+> +	const struct ctlv_family_schema *schema;
+> +	const struct ctlv_family *parent;
+> +	const struct ctlv_op *ops;
+> +	u32 ops_count;
+> +	ctlv_op_pre_fn pre;
+> +	ctlv_op_post_fn post;
+> +	ctlv_family_priv_size_fn priv_size;
+> +	ctlv_family_pre_init_fn pre_init;
+> +	ctlv_family_init_fn init;
+> +	ctlv_family_post_init_fn post_init;
+> +	ctlv_family_pre_fini_fn pre_fini;
+> +	ctlv_family_fini_fn fini;
+> +	const struct ctlv_stub_ops *stub_ops;
+> +	u32 stub_ops_count;
 
-[ ... ]
+Having the function ops in a struct use typedefs instead of just
+coding the signature is unkernelly, I couldn't figure out what this
+was done, it seems there is no user of the typedef
 
->                 *svm_vmcb_lbr(svm, ecx) =3D data;
->                 vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
->                 break;
-> +       /*
-> +        * No VMCB clean bit covers the LBRv2 state, i.e. the CPU never s=
-kips
-> +        * loading it on VMRUN, so there's no need to mark the VMCB dirty=
-.
-> +        */
-> +       case MSR_AMD_DBG_EXTN_CFG:
-> +               if (!svm_lbrv2_supported(vcpu))
-> +                       return KVM_MSR_RET_UNSUPPORTED;
+> [ ... 182 lines skipped ... ]
+> +/* Implementation limits, not wire-field maxima: raising them is compatible. */
 > +
-> +               if (data & DBG_EXTN_CFG_RESERVED_BITS)
-> +                       return 1;
-> +
-> +               if (svm->vmcb->save.dbg_extn_cfg =3D=3D data)
-> +                       break;
-> +
-> +               svm->vmcb->save.dbg_extn_cfg =3D data;
-> +               svm_update_lbrv(vcpu);
-> +               break;
-> +       case MSR_AMD64_LBR_SELECT:
-> +               if (!svm_lbrv2_supported(vcpu))
-> +                       return KVM_MSR_RET_UNSUPPORTED;
-> +
-> +               if (data & LBR_SELECT_RESERVED_BITS)
-> +                       return 1;
+> +/* Request roots, action replies, query reply fragments and event roots. */
+> +#define CTLV_MAX_INLINE_MESSAGE_LEN	0x100000	/* 1 MiB */
+> +/* Includes the error information root. */
+> +#define CTLV_MAX_ERROR_LEN		0x4000		/* 16 KiB */
+> +/* The root attr is at depth zero. */
+> +#define CTLV_MAX_NEST_DEPTH		32
+> +#define CTLV_DEFAULT_QUERY_REPLY_LEN	0x10000		/* 64 KiB */
+> +#define CTLV_MAX_EVENT_QUEUE_LEN	0x1000000	/* 16 MiB */
 
-Hardware doesn't raise #GP. It masks the reserved bits off.
+If they are just random kernel limits I'm not sure they should be in
+this uapi header?
 
-> +
-> +               if (svm->vmcb->save.lbr_select =3D=3D data)
-> +                       break;
-> +
-> +               svm->vmcb->save.lbr_select =3D data;
-> +               break;
-> +       case MSR_AMD_SAMP_BR_FROM ... MSR_AMD_SAMP_BR_FROM + 31:
-
-What if the guest CPUID.0x80000022:EBX[9:4] declares fewer than 16 LBRs?
-
-> +               if (!svm_lbrv2_supported(vcpu))
-> +                       return KVM_MSR_RET_UNSUPPORTED;
-> +
-> +               *svm_vmcb_lbrv2(svm, ecx) =3D data;
-
-Hardware does some funky things with high bits that should (a) be
-documented, and (b) be modeled here.
-
-On a Genoa host, I found:
-
-- For FROM MSRs, bits 62:58 always read back as sign-extension of bit
-57, but bit 63 reads back as stored.
-- For TO MSRs, bits 60:58 always read back as sign-extension of bit
-57, but bits 63:61 read back as stored.
+-- 
+Jason
