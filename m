@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792445230;
-	b=IevaBNg3AAVDgVTMCZUMaxSNz7Iu+udPbC5kVm+NoBCJFg+AMMPiPVZLPz6nw/AB341W
-	 spsblsvX+M5xCYQzdh2M8iKGi0O106BstLyLj8Deiq9kxWV377mE7KC3TRbBoDT2HurPs
-	 M7ZTNSzRKY4+ujq9lun8Rn7KR+clQmaJSivWQoWawD/ucrzidDkBlb1gfkgI6q9iF3cZK
-	 gdlvnD1B0D3glkgVap3brIZbm72jGpJhLRuix/UbVj39fxpPj8lpS1xwAoHmUlmgjjPgj
-	 ZPoMXG4KOxb9r+GEzRSAVxKj2ET0VFM2utYPeZ0PXs8BHrba2j7Q+dYPUTKfpfr1NFQ==
+	t=1792445265;
+	b=umNSbFxhJipgo3hGQQ1ZcJFzszkaplqroLZYQBhrZmSv6lZ6Sp3Vzz68jOlbUafCU1gc
+	 Z6IEOZST4tZUphm1wvQd6fmlqjcgmsjF2iGZm9u1WuFkRZ7jKaLvJA2a/rCfXCNi9nixf
+	 Uvn1DyaG5o5flmGcRaHxADMCRiNoteBNfDScIdn2Ly5plyg/LM0q1RcHlrkVwWDLa27g/
+	 n+ZIrIU9fBEt9GAu/RerdVCZEXRwVRtF9DgwtlkkNASrg/bW3ryc5yBm8NxHTquL9IFCv
+	 8q2BhS9QtW1sWIOPnB8TQR6mG1v+Afa2cUwMfNOrk+jfl6e+ZBYGW8Z1o0HvoDgzWPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792445230;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445265;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=8DHkGnFBcEp54nYO2eePiEHaMsvKGlleU1AIuv6QlNU=;
-	b=qAzR18mw5+Q56YCEzBwM62/mDzfcMoNc9l9nWaCojPU0hMoaoee87kUlMp30aJ7TL/eQ
-	 S74uhgR0eQYqEtA7pi9fYko/ekZLh0x5c6+1Z6F2jQHM9ubN2zGXkZPFZf4RuIhJpaXuj
-	 SCbJhJ7ZjmV5A+bN56QGPGbLVFDlV63XDVTJAt1NfmYM4hYDXkNCcdwhckTbJnBHXc1Pk
-	 ridL2wb387Uvf1VCBZnapzw09n7xkpJQa8cSu7X0dHGda8/7XBnaIsvodrZzRq0bAbHXt
-	 ZNWDDrXJaLEyGSgR+nAb6aoyrGQ7790py3/R57thz7BWoLn2PL3XxAa7LWWpkTgL0KA==
+	bh=pcBsMEwCijvS4r5xZrDMw6uwulx4KbwEcNqxVRxyt34=;
+	b=4vIXfW9wQP2Bfmci3Zu1sYalMYuGD4NggZctl5TBmlsWdtVKTY6UQMEq56RxDubp1bMu
+	 NlahdyJymeQ7KLukRbcWE1kpkPULOYc58nhBWHq3LdcZcwiBOzF0rBhyaHfNDkqro8DxD
+	 HregEPpKkML08GhZlEfcJBriGR6YHjrK7T4iQk5wzcRX7RKN8eDuKlfbsISI+R+tZpV8l
+	 IQfpkIPSq7emw5jUWSydtHVFou9zFqZJE2aIQ1oqB6k2rm9OXzHM55q9m4k3yTNvmuSFA
+	 bN9Mdf+jUFxoYfRsx2dwAvnrhJOV26CSDpvtu2JB5/q+6wkit68r1LD3oiZTDamFDWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D2E84OPe;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EsKp74z6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368C2606A31D
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 21:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A73E606A319
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 21:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D2E84OPe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1851F000C4;
-	Mon, 19 Oct 2026 21:27:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EsKp74z6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE62D1F000C4;
+	Mon, 19 Oct 2026 21:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792445229;
-	bh=8DHkGnFBcEp54nYO2eePiEHaMsvKGlleU1AIuv6QlNU=;
+	s=k20260515; t=1792445265;
+	bh=pcBsMEwCijvS4r5xZrDMw6uwulx4KbwEcNqxVRxyt34=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=D2E84OPe7sZIg0oKkOGM8uOTmhZ9QsPOK0xi5NNAriLP1pRX0g/wz6+DtLLg5RFtr
-	 kmiD/K0E4LNPgblUQzppQoumtDnPytrqZUQ8jcH1MRXmgXD1GHckD3Uvh6qtdb/eE2
-	 3mKDIwYZpp2UbEkJJXdwsyQjI9Y8P6XCC8I1vox4wmv9i30yf4devdc12khtibx0Tx
-	 aN6T5wxp5aqb0FV3HnWVAy4PKUSFIcP8u+poTpk5dfgFtSKYa3aLSn67T0r66fUAld
-	 ddFIAczVpPRc4mJwvhmgoKT1+02FHcqWsqVP8t9ZP+tVeci2nPf8bsEqplCJWhEXFs
-	 RgvbtffHQqnyg==
-Message-ID: <sashiko-outbox-178255@kernel.org>
+	b=EsKp74z6/9Xro4Xn7J6qJLEjd1WMgrflhKnRocapLestkw7XzJKQAGWc3udlQ3ooN
+	 aXUJ0h3nl77q0ck01LjMjzgc8PKhbphT4UuY6hOI/9ni/nn6grkzTeGhB8sFT7mCyC
+	 V0TB9XG+IsLXLefuhFJ/1BOFbuSpIPB03JYpwLSh6XZOIfBq25jv29beSb8LTuncAv
+	 +HbnW8jlqsuuwlqwLQv6cbxkUd//EWi8AVwNQBPSbD8j5ZXvXDfobgJrP+KZV2vSz/
+	 avRuGqAZ7skny/uYjhKJs1yYaM8F/+WOrZQPc9QFC2IDtmC0LV30P+vL9OWNScAvxf
+	 w/x7rM7Rk8SSA==
+Message-ID: <sashiko-outbox-178256@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 07/12] KVM: SVM: Advertise LbrExtV2 to userspace
+Subject: Re: [PATCH v2 11/12] KVM: SVM: Add LBR/PMC freeze support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261019210532.378628-8-shivansh.dhiman@amd.com>
+In-Reply-To: <20261019210532.378628-12-shivansh.dhiman@amd.com>
 References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
- <20261019210532.378628-8-shivansh.dhiman@amd.com>
+ <20261019210532.378628-12-shivansh.dhiman@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 21:27:09 +0000
+Date: Mon, 19 Oct 2026 21:27:44 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,138 +60,227 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Medium] KVM: x86: __do_cpuid_func() reports lbr_v2_stack_sz when LBRv2 i=
-s disabled
-- [Medium] KVM: SVM: AMD_LBR_V2 not cleared in svm_set_cpu_caps() when !ena=
-ble_pmu
+- [High] KVM: SVM: AMD_LBR_PMC_FREEZE advertised without gating in svm_set_=
+cpu_caps()
+- [High] KVM: SVM: amd_pmu_refresh() leaves freeze bits reserved in global_=
+status_rsvd
+- [High] KVM: SVM: svm_vcpu_run() loses hardware PMC freeze when GLOBAL_CTL=
+ intercepted
+- [High] KVM: SVM: svm_need_lbr_virtualization() omits DEBUGCTL freeze-on-P=
+MI bits
 --
 
-commit 7e80a77e67ad5de914e6e6583e6c7b559aacbce2
+commit e9a3e4432aa85c33133e5cfe1c272c751022082d
 Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-KVM: SVM: Advertise LbrExtV2 to userspace
+KVM: SVM: Add LBR/PMC freeze support
 
-This commit advertises X86_FEATURE_AMD_LBR_V2 and reports the LBRv2 stack
-depth in CPUID leaf 0x80000022 when LBR virtualization, the mediated PMU,
-PerfMonV2, and a 16-entry host LBR stack are available.
+This commit advertises X86_FEATURE_AMD_LBR_PMC_FREEZE (CPUID
+0x80000022.EAX[2]) to guests and allows guests with the feature to set
+DEBUGCTLMSR_FREEZE_LBRS_ON_PMI and DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI in
+MSR_IA32_DEBUGCTLMSR.
 
 > diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index adafd6fa2c542..bb24d83621328 100644
+> index bb24d83621328..37da587ede716 100644
 > --- a/arch/x86/kvm/cpuid.c
 > +++ b/arch/x86/kvm/cpuid.c
-> @@ -1258,6 +1258,7 @@ void kvm_initialize_cpu_caps(void)
-> =20
+> @@ -1259,6 +1259,7 @@ void kvm_initialize_cpu_caps(void)
 >  	kvm_cpu_cap_init(CPUID_8000_0022_EAX,
 >  		F(PERFMON_V2),
-> +		SCATTERED_F(AMD_LBR_V2),
+>  		SCATTERED_F(AMD_LBR_V2),
+> +		SCATTERED_F(AMD_LBR_PMC_FREEZE),
 >  	);
-> =20
->  	if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
-> @@ -1904,6 +1905,8 @@ static inline int __do_cpuid_func(struct kvm_cpuid_=
-array *array, u32 function)
->  		cpuid_entry_override(entry, CPUID_8000_0022_EAX);
-> =20
->  		ebx.split.num_core_pmc =3D kvm_pmu_cap.num_counters_gp;
-> +		ebx.split.lbr_v2_stack_sz =3D kvm_pmu_cap.num_branches_lbr;
 
-[Severity: Medium]
-Should __do_cpuid_func() in arch/x86/kvm/cpuid.c check
-kvm_cpu_cap_has(X86_FEATURE_AMD_LBR_V2) before populating
-ebx.split.lbr_v2_stack_sz?
+[Severity: High]
+Should X86_FEATURE_AMD_LBR_PMC_FREEZE also be gated in svm_set_cpu_caps()
+(and in svm_get_supported_debugctl()) on lbrv, enable_mediated_pmu, and
+X86_FEATURE_PERFMON_V2?
 
-When enable_pmu is true on an LBRv2-capable host, kvm_init_pmu_capability()
-copies kvm_host_pmu into kvm_pmu_cap:
-
-arch/x86/kvm/pmu.c:kvm_init_pmu_capability() {
-    ...
-    memcpy(&kvm_pmu_cap, &kvm_host_pmu, sizeof(kvm_host_pmu));
-    ...
-}
-
-In svm_set_cpu_caps(), if lbrv is false, enable_mediated_pmu is false, or
-kvm_pmu_cap.num_branches_lbr is not SVM_LBR_V2_STACK_SIZE, KVM clears
-X86_FEATURE_AMD_LBR_V2 while X86_FEATURE_PERFMON_V2 remains set and
-kvm_pmu_cap.num_branches_lbr remains non-zero.
-
-When userspace invokes KVM_GET_SUPPORTED_CPUID, __do_cpuid_func() for leaf
-0x80000022 only checks enable_pmu and
-kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2). Wouldn't this cause
-KVM_GET_SUPPORTED_CPUID to report a non-zero lbr_v2_stack_sz in EBX even
-when X86_FEATURE_AMD_LBR_V2 is cleared in EAX?
-
-> +
->  		entry->ebx =3D ebx.full;
->  		break;
->  	}
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 69f9ea746bb6f..ea7535ccc3fe6 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5843,6 +5843,18 @@ static __init void svm_set_cpu_caps(void)
->  		if (kvm_pmu_cap.version !=3D 2 ||
->  		    !kvm_cpu_cap_has(X86_FEATURE_PERFCTR_CORE))
->  			kvm_cpu_cap_clear(X86_FEATURE_PERFMON_V2);
-> +
-> +		/*
-> +		 * LBRv2 requires LBR virtualization and the mediated PMU to
-> +		 * let the guest own the LBR stack, and is enumerated through
-> +		 * PerfMonV2's CPUID leaf.  KVM also can't faithfully virtualize
-> +		 * a stack depth other than the architectural 16 entries, as the
-> +		 * VMCB save area provides exactly that many entries.
-> +		 */
-> +		if (!lbrv || !enable_mediated_pmu ||
-> +		    !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2) ||
-> +		    kvm_pmu_cap.num_branches_lbr !=3D SVM_LBR_V2_STACK_SIZE)
-> +			kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2);
->  	}
-
-[Severity: Medium]
-In svm_set_cpu_caps() in arch/x86/kvm/svm/svm.c, both
-kvm_cpu_cap_clear(X86_FEATURE_PERFMON_V2) and
-kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2) are inside the if (enable_pmu)
-block:
+In arch/x86/kvm/svm/svm.c, svm_set_cpu_caps() clears X86_FEATURE_AMD_LBR_V2
+and X86_FEATURE_BUS_LOCK_DETECT when LBR virtualization or the mediated PMU
+is unavailable:
 
 arch/x86/kvm/svm/svm.c:svm_set_cpu_caps() {
-    ...
-    if (enable_pmu) {
-        ...
-        if (kvm_pmu_cap.version !=3D 2 ||
-            !kvm_cpu_cap_has(X86_FEATURE_PERFCTR_CORE))
-            kvm_cpu_cap_clear(X86_FEATURE_PERFMON_V2);
-
-        if (!lbrv || !enable_mediated_pmu ||
-            !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2) ||
-            kvm_pmu_cap.num_branches_lbr !=3D SVM_LBR_V2_STACK_SIZE)
-            kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2);
-    }
-    ...
+	...
+		if (!lbrv || !enable_mediated_pmu ||
+		    !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2) ||
+		    kvm_pmu_cap.num_branches_lbr !=3D SVM_LBR_V2_STACK_SIZE)
+			kvm_cpu_cap_clear(X86_FEATURE_AMD_LBR_V2);
+	}
+	...
+	if (!lbrv)
+		kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
 }
 
-When enable_pmu is false on an LBRv2-capable host, kvm_initialize_cpu_caps()
-still initializes CPUID_8000_0022_EAX with F(PERFMON_V2) and
-SCATTERED_F(AMD_LBR_V2), and svm_set_cpu_caps() skips clearing them.
+Without similar gating for X86_FEATURE_AMD_LBR_PMC_FREEZE:
 
-Because kvm_vcpu_after_set_cpuid() populates vcpu->arch.cpu_caps from
-kvm_cpu_caps, doesn't this leave kvm_cpu_cap_has(X86_FEATURE_AMD_LBR_V2)
-true globally and allow guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_V2) to
-be set if userspace passes leaf 0x80000022 in KVM_SET_CPUID2 when enable_pmu
-is false?
+1. When !lbrv, MSR_IA32_DEBUGCTLMSR is not virtualized in svm_set_msr(),
+   which ignores writes via kvm_pr_unimpl_wrmsr(), leaving the advertised
+   feature non-functional:
 
-With the earlier commit ("KVM: nSVM: Propagate LBRv2 state across nested
-transitions") in this series, svm_copy_vmrun_state() and
-__nested_copy_vmcb_save_to_cache() check
-kvm_cpu_cap_has(X86_FEATURE_AMD_LBR_V2), while nested_vmcb02_prepare_save(),
-nested_svm_vmexit_update_vmcb12(), and nested_svm_vmexit() check
-guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_V2). Wouldn't leaving
-X86_FEATURE_AMD_LBR_V2 set when enable_pmu is false cause KVM to copy LBRv2
-state into the L1 MSR_VM_HSAVE_PA area during SMM transitions and propagate
-DBG_EXTN_CFG_LBRV2EN across nested transitions without mediated PMU support?
+arch/x86/kvm/svm/svm.c:svm_set_msr() {
+	case MSR_IA32_DEBUGCTLMSR:
+		if (!lbrv) {
+			kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
+			break;
+		}
+}
 
+2. When lbrv is enabled but !enable_mediated_pmu (or when
+   !kvm_vcpu_has_mediated_pmu(vcpu)), the perf_event-backed vPMU does not
+   emulate freeze-on-PMI in __kvm_perf_overflow(). Because
+   svm_get_supported_debugctl() still permits setting
+   DEBUGCTLMSR_FREEZE_LBRS_ON_PMI and DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI in
+   svm->vmcb->save.dbgctl, those bits are loaded into the physical
+   MSR_IA32_DEBUGCTLMSR while the hardware PMCs and LBRv2 remain owned by
+   host perf, causing host PMIs during guest execution to freeze host PMCs
+   and LBRs (and trigger the reserved PerfCntrGlobalStatus warning in
+   amd_pmu_v2_handle_irq() if bit 59 is set).
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 01be2fc05d701..9b65728ee0d2f 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -801,6 +801,10 @@ static inline u64 svm_get_supported_debugctl(struct =
+kvm_vcpu *vcpu)
+>  	if (guest_cpu_cap_has(vcpu, X86_FEATURE_BUS_LOCK_DETECT))
+>  		debugctl |=3D DEBUGCTLMSR_BUS_LOCK_DETECT;
 > =20
->  	/* CPUID 0x8000001F (SME/SEV features) */
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_PMC_FREEZE))
+> +		debugctl |=3D DEBUGCTLMSR_FREEZE_LBRS_ON_PMI |
+> +			    DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI;
+> +
+>  	return debugctl;
+>  }
+
+[Severity: High]
+When X86_FEATURE_AMD_LBR_PMC_FREEZE is exposed to the guest, does
+amd_pmu_refresh() also need to clear the freeze status bits in
+pmu->global_status_rsvd?
+
+When DEBUGCTLMSR_FREEZE_LBRS_ON_PMI is enabled and a PMC overflows in the
+guest, hardware sets GLOBAL_STATUS_LBRS_FROZEN (bit 58) in
+MSR_AMD64_PERF_CNTR_GLOBAL_STATUS, which amd_mediated_pmu_put() saves into
+pmu->global_status:
+
+arch/x86/kvm/svm/pmu.c:amd_mediated_pmu_put() {
+	...
+	wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_CTL, 0);
+	rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS, pmu->global_status);
+}
+
+However, amd_pmu_refresh() leaves all bits above nr_arch_gp_counters marked
+as reserved in pmu->global_status_rsvd:
+
+arch/x86/kvm/svm/pmu.c:amd_pmu_refresh() {
+	...
+	if (pmu->version > 1) {
+		pmu->global_ctrl_rsvd =3D ~(BIT_ULL(pmu->nr_arch_gp_counters) - 1);
+		pmu->global_status_rsvd =3D pmu->global_ctrl_rsvd;
+	}
+}
+
+Won't kvm_pmu_set_msr() then reject host-initiated KVM_SET_MSRS writes to
+MSR_AMD64_PERF_CNTR_GLOBAL_STATUS during live migration (and strip the free=
+ze
+bits on intercepted writes to MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET) whenev=
+er
+GLOBAL_STATUS_LBRS_FROZEN (or GLOBAL_STATUS_COUNTERS_FROZEN) is set?
+
+arch/x86/kvm/pmu.c:kvm_pmu_set_msr() {
+	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+		/* Per PPR, Read-only MSR. Writes are ignored. */
+		if (!msr_info->host_initiated)
+			break;
+
+		if (data & pmu->global_status_rsvd)
+			return 1;
+
+		pmu->global_status =3D data;
+		break;
+}
+
+[Severity: High]
+Can the hardware-cleared MSR_AMD64_PERF_CNTR_GLOBAL_CTL state on PMC
+freeze-on-PMI be lost across a VM-Exit when MSR_AMD64_PERF_CNTR_GLOBAL_CTL
+is write-intercepted?
+
+When DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI is set and a counter overflows,
+hardware clears the PerfCntrEn bits in MSR_AMD64_PERF_CNTR_GLOBAL_CTL
+directly without a guest WRMSR.
+
+On VM-Exit, svm_vcpu_run() only saves MSR_AMD64_PERF_CNTR_GLOBAL_CTL when
+writes to the MSR are not intercepted, and amd_mediated_pmu_put() then zero=
+es
+the hardware MSR:
+
+arch/x86/kvm/svm/svm.c:svm_vcpu_run() {
+	...
+	if (kvm_vcpu_has_mediated_pmu(vcpu)) {
+		if (!msr_write_intercepted(svm, MSR_AMD64_PERF_CNTR_GLOBAL_CTL))
+			rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
+			       vcpu_to_pmu(vcpu)->global_ctrl);
+		...
+	}
+}
+
+If MSR_AMD64_PERF_CNTR_GLOBAL_CTL is write-intercepted (for example when
+kvm_need_perf_global_ctrl_intercept(vcpu) is true because guest
+nr_arch_gp_counters differs from host num_counters_gp, or when L1 intercepts
+the MSR for L2), won't KVM miss the hardware-cleared value and reload the
+stale pre-overflow pmu->global_ctrl on the next amd_mediated_pmu_load(),
+unfreezing the guest's counters?
+
+[Severity: High]
+Does svm_need_lbr_virtualization() also need to check for
+DEBUGCTLMSR_FREEZE_LBRS_ON_PMI and DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI?
+
+Currently svm_need_lbr_virtualization() only checks for DEBUGCTLMSR_LBR,
+DEBUGCTLMSR_BUS_LOCK_DETECT, and svm_lbrv2_active():
+
+arch/x86/kvm/svm/svm.c:svm_need_lbr_virtualization() {
+	struct vcpu_svm *svm =3D to_svm(vcpu);
+
+	if (svm->vmcb->save.dbgctl & (DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK_DETEC=
+T))
+		return true;
+
+	if (svm_lbrv2_active(vcpu))
+		return true;
+
+	return false;
+}
+
+If a guest sets DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI without enabling LBRs or
+Bus Lock Detect (or sets DEBUGCTLMSR_FREEZE_LBRS_ON_PMI before setting
+DBG_EXTN_CFG_LBRV2EN), SVM_MISC2_ENABLE_V_LBR will remain clear in
+svm->vmcb->control.misc_ctl2.
+
+When SVM_MISC2_ENABLE_V_LBR is clear, svm_vcpu_run() only updates the
+hardware MSR_IA32_DEBUGCTLMSR when vcpu->arch.host_debugctl differs from
+svm->vmcb->save.dbgctl:
+
+arch/x86/kvm/svm/svm.c:svm_vcpu_run() {
+	if (!(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR) &&
+	    vcpu->arch.host_debugctl !=3D svm->vmcb->save.dbgctl)
+		update_debugctlmsr(svm->vmcb->save.dbgctl);
+}
+
+Because vcpu_enter_guest() captures vcpu->arch.host_debugctl =3D
+get_debugctlmsr() before kvm_mediated_pmu_load() calls
+perf_load_guest_context() -> amd_pmu_lbr_disable_all() (which clears
+DEBUGCTLMSR_FREEZE_LBRS_ON_PMI in hardware MSR_IA32_DEBUGCTLMSR on the host=
+),
+if the guest's svm->vmcb->save.dbgctl matches the host's pre-disable
+DEBUGCTLMSR_FREEZE_LBRS_ON_PMI value, won't svm_vcpu_run() skip
+update_debugctlmsr() and leave the hardware MSR_IA32_DEBUGCTLMSR cleared?
+
+=D1=82=D0=B8=D1=82=D1=8C=D1=81=D1=8F
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019210532.3786=
-28-1-shivansh.dhiman@amd.com?part=3D7
+28-1-shivansh.dhiman@amd.com?part=3D11
