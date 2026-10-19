@@ -1,79 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D332E4E9C22;
-	Mon, 19 Oct 2026 12:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20064F402F
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 13:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792413616; cv=none; b=rHNcA6vvE74BmwFdA39s3KKXEAD61y8Pyc8YJeK4mXewV/L058xvRT6lU6vEVH7KcagDHotZq7Lfkjtw6UWijKs7Sls6vYUJy5GsN65dcDdOUD9aRu57+MTmGpedEWvKu8/f/Or7BA8MHWCCtxnYOaPB8wjq+zm9SEqXh9i19DM=
+	t=1792415144; cv=none; b=Qkl2LaqJ1JWcQygIe4phRM99Q3wZ+uhaAtON6SBh9zLUKgZ1toxFnjBtxABfJ6J3v2aEUhj2A34zG6Wmkij63Ylv4IlPq811AJs7X1E93bsM/nSjHzX6zXVL2dKUQSnOv3rAEUsilpAuc2y/d0/UzM583yS1VJA+YH12vUgEX1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792413616; c=relaxed/simple;
-	bh=c2jJL8g1o78ZHcWn2hWaMeykmocZ1Jrl/60Jv1Ak2kc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ftmi7vwt1s7+DKRbqKfTDR9lE/FawDNsdhxGBAiBOz4HPsV5g4N7PdzG+ygTi1eNgtqSvu4w/Ca7NDbj/4BEzIqrigr3t6cpss7NPTs2qVU14NKzDlWzGqktRvIpO63CCSEVpq03hz5D0X/Lq9G8yKK1kvi6JLC20qw8beioqag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FceDrw6E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792415144; c=relaxed/simple;
+	bh=YjwPHevZQRNcLzJWtyHuFf40qjBdsRaMXi1C5dnfxRg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Lkkj4xE8GCFC+mv3vCV6qNphMRaAiDfYmrHCIXcKZw73MM136qb0SvVIsBAdTR+orQ5fjYbWNSp1rp4hEoDArZ5JSYb/O2sPiflbKU9zHnvgRPVEqXrV91q6vPeufGVamAyiorlTig/3xp8XhsBqhvr8ypXmra7owiByDLpDhqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LwvksZcm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FceDrw6E"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5CCEA1F000C4;
-	Mon, 19 Oct 2026 12:40:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792413605;
-	bh=Lt3t+hZCkJKDCkgZ9RLSNhgjFT8G4p+7rBrqWmCeF2U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FceDrw6EYmp9Eq/4QZT7kFwc7TNvkJf1WpONqCkjTJr4Dy30SP0p/h7SJDNiQWGu6
-	 JLqqXK/UWY45KsWa70U6jZ6liJUYTWIL0dVD8ede5QlpUUHWLFPNQ9tWGpAQJoSvYM
-	 sukVJUiK40DNYCh29b08aiqM3bZZz8a2KTMmNoJhr7I0YU+wgWl9K3zIYvCKdMS4Pf
-	 n9Bodc4j+4WJtyPpGf/UDHxEdRX5L0JPNVx8TsQlG10Fiv66AZuqXPsG4PRvkNMZ89
-	 AA09rqznCRJo+XLcuFgR8NX3+8mtApm68Wlwh6/dVrWeadbCqLPWMhrxgNQA4GD68b
-	 dCgoCb+xaowDw==
-Date: Mon, 19 Oct 2026 15:40:02 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Dionna Glaze <drdeeglaze@gmail.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <atYPohN7ztVVGko-@kernel.org>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261016234354.GA664420@nvidia.com>
- <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
- <20261017203407.GM13920@nvidia.com>
- <atPgqROZZxnihYfC@kernel.org>
- <20261017231007.GP13920@nvidia.com>
- <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LwvksZcm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792415142;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kV7Tc7mRNwSqujjo1xPDFzUdbavaM8JaxSFB36oeQtg=;
+	b=LwvksZcmdCjjx/eKw3w9LYXX3gYwXZS9SLPGoG5dGVcYCG36sclk55Vxk1CxZyP/bm7FS+
+	U1pbKxmuNHDtED+sJAC2bAL04cfrLXXZCzVL2h+R8qkp58EKtj4eiQ40Ej30x15Dz0WN95
+	tiqldiYXgIr81qxGKhJqBQhG/8HfwAA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-VBlEnvoDOcGZ2wnIaLwvqw-1; Mon,
+ 19 Oct 2026 13:05:37 +0000
+X-MC-Unique: VBlEnvoDOcGZ2wnIaLwvqw-1
+X-Mimecast-MFC-AGG-ID: VBlEnvoDOcGZ2wnIaLwvqw_1792415132
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 004D31954B3B;
+	Mon, 19 Oct 2026 13:05:32 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF4A47E2;
+	Mon, 19 Oct 2026 13:05:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 706FD21E6A04; Mon, 19 Oct 2026 15:05:28 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+  Michael Roth <michael.roth@amd.com>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@oss.qualcomm.com>,  Alberto Garcia <berto@igalia.com>,  Kevin Wolf
+ <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,  Elena
+ Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Marcelo Tosatti <mtosatti@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  David Hildenbrand <david@kernel.org>,  Cornelia Huck <cohuck@redhat.com>,
+  Eric Farman <farman@linux.ibm.com>,  Matthew Rosato
+ <mjrosato@linux.ibm.com>,  qemu-block@nongnu.org,
+  linux-cxl@vger.kernel.org,  kvm@vger.kernel.org,  qemu-s390x@nongnu.org
+Subject: Re: [PATCH v5 17/62] qom: convert struct properties to QAPI-aware
+ registration
+In-Reply-To: <20260911-qom-qapi-v5-17-7732a55b7760@redhat.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?=
+	Lureau"'s message of "Fri, 11 Sep 2026 20:34:51 +0400")
+References: <20260911-qom-qapi-v5-0-7732a55b7760@redhat.com>
+	<20260911-qom-qapi-v5-17-7732a55b7760@redhat.com>
+Date: Mon, 19 Oct 2026 15:05:28 +0200
+Message-ID: <87ik2xzvqf.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Sun, Oct 18, 2026 at 04:53:28PM -0700, Dionna Glaze wrote:
-> > On Sat, Oct 17, 2026 at 11:55:05PM +0300, Jarkko Sakkinen wrote:
-> > > I wish I had a better picture what is going on.
-> 
-> Me too. I've spent my Sunday with Claude trying to build some
-> understanding of all this stuff, and put together a static site about
-> this series.
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-So I got the information I needed from Jason. If there is something that
-is scoped well that it does not take too much time to digest, feel free
-to contact me again on this topic (or anyone involved).
+> Convert all callers of object_property_add() and
+> object_class_property_add() that register struct-typed properties with
+> QAPI visitor-based getters/setters to use object_property_add_qapi() and
+> object_class_property_add_qapi() instead.
+>
+> This replaces the manual string type name with a reference to the
+> generated QAPITypeInfo constant, enabling QMP introspection to report
+> accurate QAPI type information for struct properties. Existing
+> getters/setters are preserved unchanged.
+>
+> The cxl-fmw property type is corrected from "CXLFixedMemoryWindow"
+> (not a real QAPI type) to "CXLFixedMemoryWindowOptions".
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  authz/list.c              |  2 +-
+>  block/throttle-groups.c   |  5 +++--
+>  chardev/char-socket.c     |  3 ++-
+>  hw/core/machine.c         | 11 +++++++----
+>  hw/cxl/cxl-host.c         |  4 +++-
+>  hw/remote/vfio-user-obj.c |  5 +++--
+>  hw/vfio-user/pci.c        |  5 +++--
+>  target/i386/cpu.c         | 11 ++++++++---
+>  target/i386/kvm/tdx.c     |  4 +++-
+>  target/s390x/cpu-system.c |  4 +++-
+>  10 files changed, 36 insertions(+), 18 deletions(-)
+>
+> diff --git a/authz/list.c b/authz/list.c
+> index 363b2ee12c98..ed3d346004c2 100644
+> --- a/authz/list.c
+> +++ b/authz/list.c
+> @@ -128,7 +128,7 @@ qauthz_list_class_init(ObjectClass *oc, const void *d=
+ata)
+>          .set =3D qauthz_list_prop_set_policy,
+>      ));
+>=20=20
+> -    object_class_property_add(oc, "rules", "QAuthZListRule",
+> +    object_class_property_add_qapi(oc, "rules", &QAuthZListRule_type_inf=
+o,
+>                                qauthz_list_prop_get_rules,
+>                                qauthz_list_prop_set_rules,
+>                                NULL, NULL);
 
-I.e. I can help if the problem is defined but figuring out what the
-problem is - that is out of my scope :-) Hope you understand this,
-and I'm saying this from polite/constructive point of view.
+docs/devel/style.rst (for what it's worth):
 
-Br, Jarkko
+    In case of function, there are several variants:
+
+    * 4 spaces indent from the beginning
+    * align the secondary lines just after the opening parenthesis of the f=
+irst
+
+    For example:
+
+    .. code-block:: c
+
+        do_something(x, y,
+            z);
+
+        do_something(x, y,
+                     z);
+
+        do_something(x, do_another(y,
+                                   z));
+
+Thoughts?
+
+[...]
+
