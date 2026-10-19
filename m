@@ -1,71 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.232
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792421997;
-	b=yoFnfSjQZwTynkeBmSIrAQwul2QxCmkwJx3L1JK0el0Tsta7O7icJt5H2A3q3dEj3Ncf
-	 ry19R2dkxFYPSt6v6IdHS08S/Gha4TTSX4shYd6QLkFt2YwBxtk8vI8dU54DFIV+XhaXQ
-	 t4VgNYb6GMEwMr6Uk51/KIh04tjoEK678rfh8bbAxJeI1OmrcemPOe8ascF/pkqRBGdyc
-	 /TBQuH6lXAAaXmXNoLTBZP8ZuijI4yhxEJhbHbvn+iuGD3J7mcIC8JeUjdQnHgDSiZaEa
-	 qOpz4JM8/qVmHXACGrbXUNATLzBJ6qTYP19M0cKeYpPoRu8sMQTqfGPXHAxVuaOgSrA==
+	t=1792423999;
+	b=d+TggoXYTlT+fRFyt34oABL/EXVB/C7ZlJq6SFJ8PhlaStCTLABLCRVhfGpWKM7l21Aq
+	 Mw1xNktNUXzYo48RG49JZ3G57pDdi/yh0wIo+FBjUft3AH2HqbgkBFnXjdo/nkL1U9vm7
+	 fTAFt8VAPsjv9VS0nsqKNCPur605o9FNYnV2J0Re7DMx8IPAoTsAz71rmW1pg4PDgT3BS
+	 VjcvEImjo0a+l4DzjOVtidBturMgGtRxtzZkhH4KY+RmQSJ3OQl2btUUsMrCKaBxMXLK+
+	 8flDLAm8K0xPyvSj3hGkaA3w0rorTQivcGcGYTFIA/1fkLHUFcXnsWV/7+ZWOEhOPbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792421997;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=Meq30BGUrGHp6xcOF0w5JprFYd5g2Y2UtUcpUpaVjGQ=;
-	b=wbZtxssEzBj3GeVJn878mVW8tphQFbqnR4fYOAuP7IlPYkinRgfgzrMoNNGHuQhdFfgp
-	 tclk7tgyiqN5CWd5EJJXaUB/DywXrjdDdFrCDLhYfFHPJRMbE6WXw52lmmYw+4WzxtETp
-	 t+NFp+liGiyw8ZYhUQeMmaBrtfb6Sme1uF/rl2FdhqVARxU8jcFbrzkWwPL2gkSUFJUpe
-	 CHHOUJGRnevS45AXvQWnnJblr5xv2SVyZJ6UoZzj/Wf77EHNBCWcZczqwmaajYxgTWUIH
-	 3mrI4Fpw+3EuWw9X6UtcmDCbDBots96AJ4gR5/+7Tuth3OpA2///KNDMEpH0WQHCbww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792423999;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=chgIyerIQUJ4MpBdj3CzM7sYFHniQ/ji6TFUETNF7sE=;
+	b=z6rCXT6WKhIlFQrWgqENEIEIBTR63m1WccFYm+z4iFWAYfMKBiCsQLdNVqMP9cvOf23C
+	 uj5cAb7AeurCaLLIw1QnQIbThu/VJBlAt03A4DM8+uvRgMDjdbTkmkb/S6B1tHrTQu1qd
+	 2keJJS/+1fRvAQoiu2wIEOeVj2rRd0eiJ6qPzNcKeYMQwLJhkFlJ8go41J2un3mA1nIRU
+	 BdFXb7Jo1n/pFngSNxoTyM93P9rFynogwpFl457lQhLj1gUHLOOAqUpbSkcBgt5O9cTGF
+	 fYFmd+NSvA7L7aF6Jyaj4mFMhyaQXeWOR/fOEhA2nfhizDEFWpRhggaYqbcY/VWOhMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--vdonnefort.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=gWoq6qaI;
-	arc=none smtp.remote-ip=209.85.221.71
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pLUGfr7o;
+	arc=none smtp.remote-ip=95.215.58.232
+Received: from mta1.migadu.com (out-232.mta1.migadu.com [95.215.58.232])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08B607886C
-	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 14:59:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F08B607886C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vdonnefort.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBB360740A9
+	for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 15:33:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DBB360740A9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=gWoq6qaI
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48df02e6b40so1359284f8f.3
-        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 07:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792421995; x=1793026795; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Meq30BGUrGHp6xcOF0w5JprFYd5g2Y2UtUcpUpaVjGQ=;
-        b=gWoq6qaIRRhPS7ZJ8zuEYoMMw4FIP6l1QkNJ+z0IZuZZhMO4ZRKK0gw/vkvJjehUuS
-         rzG4RMZfwzOsOsjWhie03KCHMaK/ZlvaNMd0Y0dLsXid1efdVy9xrF+HmJgXmnQ1EyxP
-         lTASUERTguy2hotQWY+bEk8OyfX7Ma1X1IVq64j+uEfYze+kYH8z7KvrNlqQdoSeRIXL
-         qqAloxLG/UrALaRwAMD14hiSzeDX7JkyB1Q1/vCfkKreYmF6RXif+qKbFy3DP3/fZFoZ
-         gFuEYZmRYsqeX6uQcGsUoxwG8oKz8FFTzNwNmMoyZWUzdcdeehIOdJs1w4ggzqi/10q9
-         VbgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792421995; x=1793026795;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Meq30BGUrGHp6xcOF0w5JprFYd5g2Y2UtUcpUpaVjGQ=;
-        b=Y+saBZOZSIrphjp7aMrg9Xe6o7XmqfakO2zIgKNOO+8gCAMj7wIY9vErjBDYcQPHNQ
-         c7+UPhrQPtDyNE+cms3tDre848AlX2tZhxtSnUZM0zmUhZi2WHTKWcUl+qKKSjjanPN+
-         J6FxPquKI4WGPzx67wHDvms4i5jE3jg5ZMScovA/t6P7t2bKDqXVyWcvlcs+UfACkmX7
-         OUCbvbTBI7TaTaml4LyuBNmA7Yaf/2kgF0Ncx/Ajs0ROt0I4IFRHkegO6z8yOYCBADzR
-         6/gOXwhhmGhDPbXPTkcn6c4GRJ0hb2tPdKXZ9C65bMPZ1mtu6K0YTn0hRsB7Anak2VTU
-         ILNw==
-X-Gm-Message-State: AFq9FYKD2ZSiZFfmZyzeQ1z8ivcmTw642jLfg0nvq8cirntZCLqxfj4+
-	g679xN59O/bONVKK0mZgItH42V28RnUPLNxRqujNHweG+ivbIK5vIdzIx1gF2UrIWxVsdpd66RN
-	LponZlvJnZFwvy/8w6K3Gvw==
-X-Received: from wrus7.prod.google.com ([2002:a5d:6a87:0:b0:48e:1449:1f6c])
- (user=vdonnefort job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:60cc:0:b0:48d:f14a:9177 with SMTP id ffacd0b85a97d-48e07fb9180mr11409788f8f.56.1792421995213;
- Mon, 19 Oct 2026 07:59:55 -0700 (PDT)
-Date: Mon, 19 Oct 2026 15:59:49 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pLUGfr7o
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=1U6BfBwCfq4V3+m41gJdoq8QfWpdRN+npCvu9W+LDfU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792423996; v=1; x=1793028796;
+ b=pLUGfr7oRZbX4oqLyLg7KpxyMYl3j00MH9rAR/TSgHv1DhjMP5zV/T9G+i9QDU820IK18QQ2
+ UGVq2MbDvI9qIfFz0hEX00GyVEFeiGpcwo8Kep1jJ625CHR7A1Re9StRqhUUmA+4lA9brS2gTj1
+ c3MOarw3I4N/7tnUX7HmOygQ=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 739c1306116241c0;
+	Mon, 19 Oct 2026 15:33:16 +0000
+X-Mizu-Trace-ID: 739c1306116241c0
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5be58ad9600so7331e87.0
+        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 08:33:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByN0R6b/NG6p40sVro0wN3W8i46LeSNMgp9XzF+LmmA0Ri9FaG9JzlLQEGdNLOgLPoDd0E=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIGhthE+bBFSTbw8oG8gxP+y9Ub4+sz9fKjkxF5CMPibZCmzF32
+	wfIcPbz6Tcu6LMqdKsvD/WZBTYSQXhl9A10UJgoD3uGsD82VAwOwxi77I16n5MCMDripjTvMyu1
+	2jUrZUSSXbAUlvuiz2gQhMCY7GL7/XGyGwuG0BxjQ
+X-Received: by 2002:a05:6512:3096:b0:5b7:6707:e44c with SMTP id
+ 2adb3069b0e04-5be51d36f63mr209729e87.12.1792423991379; Mon, 19 Oct 2026
+ 08:33:11 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,84 +65,64 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-Message-ID: <20261019145949.1922019-1-vdonnefort@google.com>
-Subject: [PATCH kvmtool] arm64: THPs for systems with pages bigger than 4K
-From: Vincent Donnefort <vdonnefort@google.com>
-To: will@kernel.org, julien.thierry.kdev@gmail.com
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org, oliver.upton@linux.dev, 
-	suzuki.poulose@arm.com, alexandru.elisei@arm.com, andre.przywara@arm.com, 
-	Vincent Donnefort <vdonnefort@google.com>
+MIME-Version: 1.0
+References: <20261019134242.1289002-1-sascha.bischoff@arm.com> <20261019134242.1289002-2-sascha.bischoff@arm.com>
+In-Reply-To: <20261019134242.1289002-2-sascha.bischoff@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Mon, 19 Oct 2026 16:32:34 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTzqKiWr2tnV0rUiA4VVCs5a0E2XQQTdwvH0bTKZ5dxe5A@mail.gmail.com>
+X-Gm-Features: AclHuK9YsVMfbpulg4gsG40qG2ygFeEoSjoGnDJEH8FVka3Piy823C8uPTVEmEs
+Message-ID: <CA+EHjTzqKiWr2tnV0rUiA4VVCs5a0E2XQQTdwvH0bTKZ5dxe5A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] KVM: arm64: vgic: Require matching VGIC model for
+ GICv3 ITS
+To: Sascha Bischoff <sascha.bischoff@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
+	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 
-The THP support imposes an alignment of the memslot userspace address to
-the size of a THP (PMD_SIZE). To do so, kvmtool overallocates the RAM
-size and aligns it. However it assumes PMD_SIZE is 2MiB, which is only
-true on 4KiB page systems.
+Hi Sascha,
 
-Use a huge-page size, based on the system page size. This value can be
-massive for a 64KiB page system, so skip the alignment if we couldn't
-even install one THP.
+On Mon, 19 Oct 2026 14:42:41 +0100, Sascha Bischoff
+<sascha.bischoff@arm.com> wrote:
+> On a GICv5 host with legacy support, KVM registers both VGICv3 and
+> VGICv5 devices. Without a model check, a VM can create a GICv3 ITS
+> alongside an incompatible VGIC, regardless of creation order.
 
-Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+Could you add to the commit message that the new checks apply on every
+host? A GICv2 VGIC and an ITS, in either order, now fail with -ENODEV,
+where before both were created and the ITS was ignored.
 
-diff --git a/arm64/kvm.c b/arm64/kvm.c
-index 36b3284e4a92..2c01dc32fa9a 100644
---- a/arm64/kvm.c
-+++ b/arm64/kvm.c
-@@ -18,6 +18,8 @@
- 
- #include <asm/image.h>
- 
-+#define HUGEPAGE_SIZE (PAGE_SIZE * (PAGE_SIZE / 8UL))
-+
- static struct arm64_image_header *kernel_header;
- 
- struct kvm_ext kvm_req_ext[] = {
-@@ -35,20 +37,23 @@ bool kvm__arch_cpu_supports_vm(void)
- 
- void kvm__init_ram(struct kvm *kvm)
- {
--	u64 phys_start, phys_size;
-+	u64 phys_start, phys_size, ram_alloc_align = SZ_64K;
- 	void *host_mem;
- 	int err;
- 
- 	/*
--	 * Allocate guest memory. We must align our buffer to 64K to
--	 * correlate with the maximum guest page size for virtio-mmio.
--	 * If using THP, then our minimal alignment becomes 2M.
--	 * 2M trumps 64K, so let's go with that.
-+	 * Allocate guest memory. We must align our buffer to 64K to correlate
-+	 * with the maximum guest page size for virtio-mmio. If using THP, then
-+	 * our minimal alignment trumps 64K, so let's go with that.
- 	 */
- 	kvm->ram_size = kvm->cfg.ram_size;
- 	kvm->arch.ram_alloc_size = kvm->ram_size;
--	if (!kvm->cfg.hugetlbfs_path)
--		kvm->arch.ram_alloc_size += SZ_2M;
-+	if (!kvm->cfg.hugetlbfs_path) {
-+		if (kvm->ram_size >= HUGEPAGE_SIZE)
-+			ram_alloc_align = HUGEPAGE_SIZE;
-+
-+		kvm->arch.ram_alloc_size += ram_alloc_align;
-+	}
- 
- 	if (kvm->cfg.arch.guest_memfd)
- 		kvm->arch.ram_alloc_start = mmap_guest_memfd(kvm,
-@@ -63,7 +68,7 @@ void kvm__init_ram(struct kvm *kvm)
- 		    kvm->arch.ram_alloc_size, errno);
- 
- 	kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
--					SZ_2M);
-+					ram_alloc_align);
- 
- 	if (!kvm->cfg.arch.guest_memfd) {
- 		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
+[...]
+> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+[...]
+> @@ -42,10 +42,7 @@ bool vgic_has_its(struct kvm *kvm)
+>  {
+>          struct vgic_dist *dist = &kvm->arch.vgic;
+>
+> -        if (dist->vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
+> -                return false;
+> -
+> -        return dist->has_its;
+> +        return !!dist->its_model;
+>  }
 
-base-commit: f67bc0bdae9433a9cfd05e65ea2c1bb6102566d9
--- 
-2.56.0.176.g3575e65682-goog
+I think this should check vgic_model as well, as Sashiko raised [1].
+vgic_its_create() accepts an ITS when there's no in-kernel VGIC, and
+the VM can then run with a userspace irqchip. On a GICv4.0 host,
+kvm_vgic_flush_hwstate() then calls vgic_v4_commit() on every entry,
+for a vPE that vgic_v4_init() never set up. irq_set_vcpu_affinity()
+fails on irq 0 and the error is ignored, so nothing crashes, but this
+patch makes that path reachable. The MSI paths Sashiko lists are fine,
+since KVM_SIGNAL_MSI requires an in-kernel irqchip and irqfd an
+initialised VGIC.
 
+Something like this would keep the 0 == 0 case you pointed out for
+Marc's version false:
+
+        return dist->its_model && dist->its_model == dist->vgic_model;
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/sashiko-outbox-177254@kernel.org/
