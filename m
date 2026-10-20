@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493435;
-	b=tIC0h/3Pfu4m5yDKKSOifXV4aqZlMbsyDdJWEBVCQujva3m1Atb9AIrgmrVzc4rg/1pH
-	 vZRTplMbodT26H/ilr4I5rjhQ9VNrwB751RFigBIdnuu6zmM5dmJF9GDE0Mh5FLTnjuVe
-	 sW6Kx7CZ/oG25Ke3mxIDrEYtrhIKV5VrWtv4+I1IxvWZNPL7Qv7KW2o0eJa+86Akmy/Ui
-	 8wt3xab+ngZahAFak9Q2Klfgj+v+3/h6gBVINOyhS/MUfNfLfDreA06jwsfOBlwhQ78gT
-	 SKb6vDRFTaU6FRrdg5x5OPmSQzgqN6zseCc3t9socSo2Y1nivhtPm5IILOYRGRhwhcQ==
+	t=1792493442;
+	b=Umft3FKlzw4jKnx6MfZpAvjB44IHbDjyy9SgaRUORHToNKt15LeDMGyntk/ND45LRE1I
+	 Mfey8V9XdteKEPsOA/eCeOBz9fPo+qz7kXH5efvOcBoKBx0QnRET7dztmRk1EQFlb1O+r
+	 p4HHFb3QI7/1dYsgpSI2ph2HX0pxqKMV3QY3kIqaSa+opLsB7nJWayeEheo7qCUz5emvd
+	 fM3rybiN0LK0IcHTWgMr5RRkNopaMR6/QS6e8oFhdvZVb+tx9D3vrjQQ1pWPdGDoEMkoH
+	 5/6LL0VDk42G8jEWW1i70DjauMBtwj8oarAHG4/j8DgTENOG9pwypXQ1JT+0xVp9y2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493435;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493442;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
 	 X-Scanned-By;
-	bh=stj/oklFy5XE7Ux6UVzd34CG7YO8zlEFRRZGNs4BwjQ=;
-	b=ssHbB+g7L3aSaTSgUOnIESpftiUaKqfXSlyGTuZZGW1I2g1RnF3AkuOSOzUzfnelnULf
-	 QVXRBfTEkqLBb4mlnWOdDqDnIeSvQ8x9Mm7Ii2D0XrTxJ9XN9fkFqjXj3Lfc+vjCduw1J
-	 miiM+Y1FmE2TPDIvsqGeED/wLA7r9gYJikTleNEeJtwyNwr1kxD0447zkPn8V3T1OCPdK
-	 Imund0C5u4NaE/ul1F8T2diEsepmhs8YamNyqsL1KgKlZuaQNuTeZ8JK2OL/PXuLhoyuD
-	 X4IZPoOQl0Tr2udk0HQz+fkUpZQLXsgV5KIXVCksWX8q0FOv2+lR7x7/i8qMe71ZmuQ==
+	bh=wDKqI9lxsJYOWv5oXkIIVMolronNVooZmn3jjB1NaoM=;
+	b=iEmMalcNsd1ud0SntrN0jicO3Y6jwyi0dhBMqj3LGiuIAO2VuNT3es5FZ+1CmfWUJP6G
+	 bTVXsUkOhIBUR0zX3oP9TI65Uo8YBZ1xhY3+mtyyTmOGcC9dhEV95tVOjfjTL06oVVr0M
+	 e74auC75mqvXqiJuVvPW4qkAOXXoxr5gJTvnlvH1xweWu10Cb2uhaCw0vUk1e5yrMQx3s
+	 VKv6vkTMm722KX2jwjfgr0Zqyi1IHpInh5q1bpWKOtrjUERIbj8aynb1MM5ls5OWyqfjz
+	 IqeWvmdi3rFODT9AW6ajH6gsmyixEtPGhVvtHOPF2fXNtmDnJlJD5O5f0nPwgrxSVgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FA0d2bZn;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JnSpf3wk;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6670960A2602
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:50:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6670960A2602
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8503C606A320
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:50:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8503C606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FA0d2bZn
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JnSpf3wk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792493434;
+	s=mimecast20190719; t=1792493440;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=stj/oklFy5XE7Ux6UVzd34CG7YO8zlEFRRZGNs4BwjQ=;
-	b=FA0d2bZnAjmxVWje6jrukFJntl8LiVIkhaR2F4/sYQiFzzxjDZjYwU0+k2L+2hmOh0kOs6
-	NGTCd6tAIogNIkzjpZnuTBTOijskLjMXw/PYFRv5NLwTxBguhSwKPlbmuFabxHk5BLVOvH
-	w6Q9huSBL1rRBYe+t1owfKD78Tazug0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=wDKqI9lxsJYOWv5oXkIIVMolronNVooZmn3jjB1NaoM=;
+	b=JnSpf3wkoHQHHOIAZ6Y9OpdY5+3qdd/WVTpPWP2/pBk31YNgGDzJLoiiCvAm2aBDxBcbNq
+	wOVT2Vvgn9/FBcozigME5XA3dxwUym/aBfkPuC6Xwb6xUKKZqM9WRiO8Ia889aTJfSIid0
+	VjvCKp7r82Zl8AC+PX7K9F1hSI9pnZk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-Cd5iFrsSPFiy_O9eCidOaQ-1; Tue,
- 20 Oct 2026 10:50:30 +0000
-X-MC-Unique: Cd5iFrsSPFiy_O9eCidOaQ-1
-X-Mimecast-MFC-AGG-ID: Cd5iFrsSPFiy_O9eCidOaQ_1792493424
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-nPrkmqWhMXen_3R1vU7oZw-1; Tue,
+ 20 Oct 2026 10:50:34 +0000
+X-MC-Unique: nPrkmqWhMXen_3R1vU7oZw-1
+X-Mimecast-MFC-AGG-ID: nPrkmqWhMXen_3R1vU7oZw_1792493430
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C16C31955DE8;
-	Tue, 20 Oct 2026 10:50:24 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 06E3A1805A18;
+	Tue, 20 Oct 2026 10:50:30 +0000 (UTC)
 Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4304D1956095;
-	Tue, 20 Oct 2026 10:50:22 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D157218005B8;
+	Tue, 20 Oct 2026 10:50:26 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:46:03 +0400
-Subject: [PATCH v7 46/65] hw/ppc/spapr_drc: convert fdt property to
+Date: Tue, 20 Oct 2026 14:46:04 +0400
+Subject: [PATCH v7 47/65] hw/s390x: convert BootCertificatesList to
  QAPI-aware registration
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-46-431a86b02b58@redhat.com>
+Message-Id: <20261020-qom-qapi-v7-47-431a86b02b58@redhat.com>
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 To: qemu-devel@nongnu.org
@@ -151,49 +151,56 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
  Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1126;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1505;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=tzAtw2N/GmjCt5f2xymcXMco6tXqwvWNy/tFAoovn48=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZbrmMIXAAgbwi3HHXAfckNSBqoT7PupXMdX
- jNNL1pkTe6JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWwAKCRDa6OEJdZac
- 5ZtBD/9HzJq3j9NRTh8cC/IrlGiBUn7R8G3aWpPmmvNkh3x2f+rQGtv+c4/4fZ5SVY8vIMlozLI
- LUxj6qGBu0GxrQWT8fSd91RvbaYDeiByrDclv6ElUBKkE+tgleBEJUKwQJfK3M0e39H0MbjtzRg
- dxzN4rNG0OtE8h6qgxhP29CFH3AITnPK6JfYp3BIuQLwbsy/HZwgwge9j97HT9lCQ3XaWTtwWEp
- mj+SjQmSYNj3MWpB5O71V5XG20mItYobMA5CEVyvnwge7sN5eyuap4ds31caHAW78QyHPlOFVoC
- mLdbsQcFaIesAIo6kEnisNkqHnb8yVLFTI6dZfqTwCKl2twuRgOyGq3sME35mvXwpXYnk7ngkNm
- 4Wv7Qk3oqp9AjkpD2TpcMxKOiMI/qMeCTzwBE3Ul8FypE56v856BMn24Tr0BYUM36SttPitGe8O
- y06nmXFiwC88uT5JL/gPnfbVYmjDD8CwTftjlcRo66wdO/Uj1cC4+wc1ynGvOspelolj6z9kjry
- bcWiTwBgrkt3gSwktkytTSDlZ5MqNlPDv0mE82BFtszFNBtxOhfX0w97OQzXtVLle5h+YKHfgdn
- N5d4ugnLs5FJL1SrpPAd+tbg85sl64x/ZW1OdnyMEQL9XhQtUEDzjmQBCxiIyHOFat+aC63mV0H
- gQWNLU0ZIgJd7oA==
+ bh=wdbhYWD/vf672j0phUbR1cOU3kwkLl3/cupZ0YaTznU=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZbDkYgPj0HDzsA3Y34WzGHrPrDPeDHvzd0l
+ wPaLOFmX3WJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWwAKCRDa6OEJdZac
+ 5QyFD/0b7xA4ChrYMo5WcQsrtlQZqCXFanjHmndWojPNq6E6DJrh7yNweRlM5B8GO8az5oyA75h
+ sUttRiBWYNvMnlgXQtH/nE8T96ywsGyTT9ZInHttlzN9P5Fh5Kr/SqOcHkuYj6mXh4Qo8l9kpkX
+ 5Ls7K8Ke23byTyibodkbaedkpfdM3EpJ3hzQ5r3Cbp68RrQqxPRAGGe+DEVXyTzCaUIrg/oKuKl
+ ee+1owd49sj/oDWlsbQ8JKwkl9rM61yJQqCHZ/8bYXLsQ8Sy+lP6fJkHm9Ng4C2rM7dDW0wPeZJ
+ /AnxrnFDz+SaS70Z+Q7qSIRHxareyWZJA0rnKOl82n26hwJ2mAFFTibkJxJPdnojLqX+mWBzWUU
+ 61jumL2L/vI6Hbuh3iO7YnsdjYk+RAjIYNyc/LVGHWFYLkgevtNRkvL4bo4c8ILFq/kfEbpOOX9
+ IJctXj/7n79Sx62wNtTjV3Wmenr+zMkYIemOn14uqf9VuXdkB0ih5iiJgO031WJpDUGUW/l3UO0
+ Nt1goAs8YdyzC1w+yD/OBemcsUJMxG2IKhcXMBoyjQtwO1hYYX+0qqyxosT72NLiOrgKTvIWx/C
+ AamF9QKFFgHdWVkuKlqIBCfed1sEkedvwsLa07Bik/rEdPJdSrKHrHCPDZ9x/Q5r3QVwD+zyVVq
+ V10wnjLfSGUrDTg==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Use object_property_add_qapi() with any_type_info for the "fdt"
-property, since the FDT structure is dynamically shaped at runtime and
-cannot be represented as a static QAPI type.
-
-Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/ppc/spapr_drc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/s390x/s390-virtio-ccw.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
-index 64f9ca29b02e..740149ffdf3e 100644
---- a/hw/ppc/spapr_drc.c
-+++ b/hw/ppc/spapr_drc.c
-@@ -587,7 +587,7 @@ static void spapr_dr_connector_instance_init(Object *obj)
-     object_property_add_uint32_ptr(obj, "id", &drc->id, OBJ_PROP_FLAG_READ);
-     object_property_add_qapi(obj, "index", &uint32_type_info, prop_get_index,
-                         NULL, NULL, NULL);
--    object_property_add(obj, "fdt", "struct", prop_get_fdt,
-+    object_property_add_qapi(obj, "fdt", &any_type_info, prop_get_fdt,
-                         NULL, NULL, NULL);
-     drc->state = drck->empty_state;
- }
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 3ed425b16c3e..8bc09c179552 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -44,6 +44,7 @@
+ #include "target/s390x/kvm/pv.h"
+ #include "migration/blocker.h"
+ #include "qapi/qapi-builtin-type-infos.h"
++#include "qapi/qapi-type-infos-machine-s390x.h"
+ #include "qapi/visitor.h"
+ #include "qapi/qapi-visit-machine-s390x.h"
+ #include "hw/s390x/cpu-topology.h"
+@@ -918,8 +919,10 @@ static void ccw_machine_class_init(ObjectClass *oc, const void *data)
+             " to upper case) to pass to machine loader, boot manager,"
+             " and guest kernel");
+ 
+-    object_class_property_add(oc, "boot-certs", "BootCertificatesList",
+-                              machine_get_boot_certs, machine_set_boot_certs, NULL, NULL);
++    object_class_property_add_qapi(oc, "boot-certs",
++                                   &BootCertificatesList_type_info,
++                                   machine_get_boot_certs,
++                                   machine_set_boot_certs, NULL, NULL);
+     object_class_property_set_description(oc, "boot-certs",
+             "provide paths to a directory and/or a certificate file for secure boot");
+ 
 
 -- 
 2.56.0.116.g6de20f6092dc
