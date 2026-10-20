@@ -1,65 +1,142 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792502195;
-	b=kZ2Y5Brg9fTjyZSB7+GVPPDqwol1HKWpVQjts53eCoiWDH43HPvsceBydNR2WB1cmAS/
-	 lj4+4ZO4ilC9sK7+kyri/0b0pQEvWJjd0Le02MlXhDF5kgGBueiIDUk40N2nev2iHE3Nc
-	 DAB7WmlF081TJdaNLyieozdrHNv2aQZ5lhBSUPCP2UzvG21YGTnjug2Rz/dYXs7aQvaB5
-	 9W8hxRSWfsfjDu0FNzxWGxKClMCOm2SPJHt3lfnPsBwiPExsSzsYKiEwaBcEsYOLus43c
-	 nZk65AInPqXLcmjtC2HU0ttKW32PjjMfVQD/5Msd02iE6m3JXKMA/lDoKim7EQ+fSQw==
+	t=1792502754;
+	b=x2gBoLTRTRzq+JSixXpyPOgPc//K31rNd0QtctqtHAQyZIMln7X0AUGgG65WF6cUKI8Z
+	 S6JCkBCMZb5Purg9mucFATWPaH0SP5/qWVw/q276fYZ+QBUYtxe9oGxMFNVYVg8AjjhDg
+	 di5QrEjifgYK6KOt4BVEfHj1yqGK/rGdwosDbzPWw0YctO2SX7Q8OanaCmuGFFOWrL4z9
+	 GqIejCyJuWifLht+L3VPiSsJTH7+b8isQ7D4MVVto06H2+CMq66ynb+uQ01XxtEtI9OeU
+	 Wwsf+P2GHBEykd6LD8pCF/fN2gLpSopg+NC8Di1DxCIXO3AB5jI0x+xCNOs88UeBirQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792502195;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Date:
-	 In-Reply-To:References:Content-Type:User-Agent:MIME-Version:
-	 X-SRS-Rewrite;
-	bh=e10qufVRqqqJb1AQ6FrtUxdb1E5vSEGGMawPRMfZR38=;
-	b=bInZonnp53Zq9fSaUBIRm+jzcj00CVU0hhTtT5VsEonczuya+ktEHZdO2PvdX/cAvUoJ
-	 jBJEixvEhtk2To+KxOl6oLk/Z/hTmm9hfGys0/0znaRXOR+kqMKrwCjAU8gpQSqRNpgck
-	 s3399U/Gd7WTJuL7TY8myctXklxx4rK/TL2EdfGfz18ypgNhs74TFpRgksWKg19XH6oYB
-	 x9ydWatKXa9/Pu/FXxcRyeOvdeR9/DLiXum3Lskp2uru98+M2taSOlKtMJoeRh4WS6mB7
-	 47gkaYVLJdfCpXCmC6EvwcTRHUhKbgU4bho+8HB+QuHqxFXk5BZwdl0GSbrvkEoPvdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792502754;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=iZCI3o0wJlVAfnoZvSx8CT5djmTykiJdbItsauKw+V8=;
+	b=LFeXYKZhTXHhXSkO0o8XVPz5BXImCnTmmYG8HMIQxom9dgnKcEWq6pcEk79VBX2s5VgW
+	 Wq8F1a3HUjezwff3lcIbw13B4JK3pGLfEtGaOB5lW38Tcy2y1uiYXy40K8wkNY3FX4Pa6
+	 /1kTT65i5xqYkTUkQk18Ow2V0mcDPFGXQ+6ZYjZFEKGYO19w3fsVTWK8YwagCv2zRf8yw
+	 kMmNYDvKwE0V+n/CiwAx1wBVJxlDgBaVX6sNk16A0iXkG76LR4ZHWkOWG51Dy6PKALIr0
+	 hl/yzqpWQseWBjAShPen0C23g97FovcPDuvy/QZwbJNfmRaAbLv4jnJRclrcu9h6y/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OsrgXtY0;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BDtHK845;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F346606A31C;
-	Tue, 20 Oct 2026 13:16:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F346606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AED5606A319
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 13:25:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AED5606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OsrgXtY0
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=e10qufVRqqqJb1AQ6FrtUxdb1E5vSEGGMawPRMfZR38=; b=OsrgXtY05kBLGG2NARyqZDaNdr
-	Jz9rDbz40Oqup/dKOhAlvsLNMwxw0O1fguEGO4nNQmaelBkiDck2wq+Kx1mR2DYRMEcPA+DFwXzrj
-	m5H4MICRP22+6w1BbBEqSz6dpUz3pgwWXPOgTOnlBDELkCofCxi+WVCIlhWmE6GFaS6Vpx+FY9wPQ
-	JDjm4bBQh8VrCbPcxOsveQWdU7+Jj5+Ixu3TcUNisBtPWuLTQ+E7l7uYnial3a+a/kgG+eXhozKzh
-	7TE45AfeGSCI2nTprHwa+5g+1HH5r2X6u2TzJAw6FOBFReyZAn7Jdqa+VBSQvMDGk9KDWJ2ws2K2Q
-	qI1HQ0IQ==;
-Received: from 54-240-197-234.amazon.com ([54.240.197.234] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJ9he-0000000H2yS-132U;
-	Tue, 20 Oct 2026 13:16:30 +0000
-Message-ID: <a654a72765eaf278649b285218b0b1f6f9d45664.camel@infradead.org>
-Subject: Re: [PATCH v4 06/12] KVM: x86/xen: Retry event channel delivery
- which races a memslot update
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Date: Tue, 20 Oct 2026 14:16:34 +0100
-In-Reply-To: <sashiko-outbox-177923@kernel.org>
-References: <20261019162445.37219-1-dwmw2@infradead.org>
-	 <20261019162445.37219-7-dwmw2@infradead.org>
-	 <sashiko-outbox-177923@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-JlmFvHwtW4LRXbe0y1ju"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BDtHK845
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792502752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iZCI3o0wJlVAfnoZvSx8CT5djmTykiJdbItsauKw+V8=;
+	b=BDtHK845o4/kqhelySR0etd3RJTNtPq1NXWvxYOR/pcpSFiQr/jVEYztM5+zJz8wC4T2dQ
+	666YWnVU32nxT5GA+PZJWQaIiK87GaLOn+NwfJojdK3dXOk8XfGFQE3CaR1SoG2s3SDTml
+	Zti4LupLxMfywRen9En7zZLjcE49Wew=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-GpgImfhOMWa0lumUFG9c1g-1; Tue,
+ 20 Oct 2026 13:25:47 +0000
+X-MC-Unique: GpgImfhOMWa0lumUFG9c1g-1
+X-Mimecast-MFC-AGG-ID: GpgImfhOMWa0lumUFG9c1g_1792502743
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D737F1800BDD;
+	Tue, 20 Oct 2026 13:25:39 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA9B818005B3;
+	Tue, 20 Oct 2026 13:25:35 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 71D8121E6A04; Tue, 20 Oct 2026 15:25:33 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
+ <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
+ Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
+ Kostiuk
+ <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
+ <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
+  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
+ Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@oss.qualcomm.com>,
+  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
+  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
+  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
+  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
+ Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
+  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
+  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
+ <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
+  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
+ Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
+ <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
+ Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
+  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
+ <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
+ <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
+ Lin
+ <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
+ Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
+ Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
+ Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
+ <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
+ <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
+ Dooley <conor@kernel.org>,  Sebastian Huber
+ <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
+ <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Anthony PERARD
+ <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
+ <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
+  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
+  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
+  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
+  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
+ <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
+ Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 43/65] qom: replace object_property_add_tm with
+ StructTm QAPI type
+In-Reply-To: <20261020-qom-qapi-v7-43-431a86b02b58@redhat.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?=
+	Lureau"'s message of "Tue, 20 Oct 2026 14:46:00 +0400")
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+	<20261020-qom-qapi-v7-43-431a86b02b58@redhat.com>
+Date: Tue, 20 Oct 2026 15:25:33 +0200
+Message-ID: <874iegpkqa.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,154 +146,255 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-JlmFvHwtW4LRXbe0y1ju
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Mon, 2026-10-19 at 16:37 +0000, sashiko-bot@kernel.org wrote:
->=20
-> [Severity: High]
-> Can passing wait=3Dtrue unconditionally in evtchn_set_fn() cause a 3-way
-> deadlock when GSI 0 is routed to KVM_IRQ_ROUTING_XEN_EVTCHN and the
-> in-kernel PIT is active?
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-Meh, that's insane and would be a malicious VMM but isn't currently
-*prevented* by the kernel. Nothing stops userspace from setting up an
-in-kernel PIT *and* routing GSI0 to event channels.
+> Define a StructTm QAPI struct in common.json matching the existing
+> "struct tm" property wire format (tm_year, tm_mon, tm_mday, tm_hour,
+> tm_min, tm_sec as int32).
+>
+> Convert the two callers (mc146818rtc and spapr_rtc) to use
+> object_property_add_qapi() with a standard ObjectPropertyAccessor
+> that populates a StructTm and calls the generated visitor.
+>
+> Remove object_property_add_tm(), object_class_property_add_tm(),
+> the TMProperty type, and the property_get_tm() helper from
+> qom/object.c, along with their declarations in object.h.
+>
+> Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  hw/ppc/spapr_rtc.c   | 24 +++++++++++++++---
+>  hw/rtc/mc146818rtc.c | 22 ++++++++++++++---
+>  include/qom/object.h | 29 ----------------------
+>  qapi/common.json     | 28 +++++++++++++++++++++
+>  qapi/pragma.json     |  1 +
+>  qom/object.c         | 69 ----------------------------------------------=
+------
+>  6 files changed, 69 insertions(+), 104 deletions(-)
+>
+> diff --git a/hw/ppc/spapr_rtc.c b/hw/ppc/spapr_rtc.c
+> index 1f7d2d8f898b..5105cf538f64 100644
+> --- a/hw/ppc/spapr_rtc.c
+> +++ b/hw/ppc/spapr_rtc.c
+> @@ -33,6 +33,9 @@
+>  #include "migration/vmstate.h"
+>  #include "qapi/error.h"
+>  #include "qapi/qapi-events-misc.h"
+> +#include "qapi/qapi-type-infos-common.h"
+> +#include "qapi/qapi-visit-common.h"
+> +#include "qapi/visitor.h"
+>  #include "qemu/cutils.h"
+>  #include "qemu/module.h"
+>=20=20
+> @@ -131,9 +134,23 @@ static void rtas_set_time_of_day(PowerPCCPU *cpu, Sp=
+aprMachineState *spapr,
+>      rtas_st(rets, 0, RTAS_OUT_SUCCESS);
+>  }
+>=20=20
+> -static void spapr_rtc_qom_date(Object *obj, struct tm *current_tm, Error=
+ **errp)
+> +static void spapr_rtc_qom_date(Object *obj, Visitor *v, const char *name,
+> +                               void *opaque, Error **errp)
+>  {
+> -    spapr_rtc_read(SPAPR_RTC(obj), current_tm, NULL);
+> +    struct tm value;
+> +    StructTm tm, *tmp =3D &tm;
+> +
+> +    spapr_rtc_read(SPAPR_RTC(obj), &value, NULL);
+> +
+> +    tm =3D (StructTm) {
+> +        .tm_year =3D value.tm_year,
+> +        .tm_mon =3D value.tm_mon,
+> +        .tm_mday =3D value.tm_mday,
+> +        .tm_hour =3D value.tm_hour,
+> +        .tm_min =3D value.tm_min,
+> +        .tm_sec =3D value.tm_sec,
+> +    };
+> +    visit_type_StructTm(v, name, &tmp, errp);
+>  }
+>=20=20
+>  static void spapr_rtc_realize(DeviceState *dev, Error **errp)
+> @@ -150,7 +167,8 @@ static void spapr_rtc_realize(DeviceState *dev, Error=
+ **errp)
+>      rtc_ns =3D qemu_clock_get_ns(rtc_clock);
+>      rtc->ns_offset =3D host_s * NANOSECONDS_PER_SECOND - rtc_ns;
+>=20=20
+> -    object_property_add_tm(OBJECT(rtc), "date", spapr_rtc_qom_date);
+> +    object_property_add_qapi(OBJECT(rtc), "date", &StructTm_type_info,
+> +                             spapr_rtc_qom_date, NULL, NULL, NULL);
 
-Preventing it is ugly too: we'd have to prevent setting the routing
-while a PIT exists (OK), as well as creating an in-kernel PIT while
-GSI0 is routed to event channels (ick).
+The @type reported by qom-list & friends changes from "struct tm"
+(visible at the end of this patch) to to "StuctTm".  Such changes can be
+compatibility breaks.
 
-We can't drop the SRCU in pit_ioport_write() like we do in other
-places, as it protects the *bus* too.
+Same "this is okay" argument as for the previous patch, and same
+request: please note the change in the commit message.
 
-Simplest option is probably just to make xen.c::evtchn_set_fn() not set
-the 'wait' argument if irq_source_id =3D=3D KVM_PIT_IRQ_SOURCE_ID. You can
-still do that daft thing; you just don't get to deadlock the kernel
-with it. I'll do that in the next round.
+>  }
+>=20=20
+>  static const VMStateDescription vmstate_spapr_rtc =3D {
+> diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+> index ba396435d1af..6010f8587ce0 100644
+> --- a/hw/rtc/mc146818rtc.c
+> +++ b/hw/rtc/mc146818rtc.c
+> @@ -42,6 +42,8 @@
+>  #include "migration/vmstate.h"
+>  #include "qapi/error.h"
+>  #include "qapi/qapi-events-misc.h"
+> +#include "qapi/qapi-type-infos-common.h"
+> +#include "qapi/qapi-visit-common.h"
+>  #include "qapi/visitor.h"
+>  #include "trace.h"
+>=20=20
+> @@ -854,12 +856,25 @@ static const MemoryRegionOps cmos_ops =3D {
+>      .endianness =3D DEVICE_LITTLE_ENDIAN,
+>  };
+>=20=20
+> -static void rtc_get_date(Object *obj, struct tm *current_tm, Error **err=
+p)
+> +static void rtc_get_date(Object *obj, Visitor *v, const char *name,
+> +                         void *opaque, Error **errp)
+>  {
+>      MC146818RtcState *s =3D MC146818_RTC(obj);
+> +    struct tm value;
+> +    StructTm tm, *tmp =3D &tm;
+>=20=20
+>      rtc_update_time(s);
+> -    rtc_get_time(s, current_tm);
+> +    rtc_get_time(s, &value);
+> +
+> +    tm =3D (StructTm) {
+> +        .tm_year =3D value.tm_year,
+> +        .tm_mon =3D value.tm_mon,
+> +        .tm_mday =3D value.tm_mday,
+> +        .tm_hour =3D value.tm_hour,
+> +        .tm_min =3D value.tm_min,
+> +        .tm_sec =3D value.tm_sec,
+> +    };
+> +    visit_type_StructTm(v, name, &tmp, errp);
+>  }
+>=20=20
+>  static void rtc_realizefn(DeviceState *dev, Error **errp)
+> @@ -1019,7 +1034,8 @@ static void rtc_class_initfn(ObjectClass *klass, co=
+nst void *data)
+>      device_class_set_props(dc, mc146818rtc_properties);
+>      set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>=20=20
+> -    object_class_property_add_tm(klass, "date", rtc_get_date);
+> +    object_class_property_add_qapi(klass, "date", &StructTm_type_info,
+> +                                   rtc_get_date, NULL, NULL, NULL);
+>  }
+>=20=20
+>  static const TypeInfo mc146818rtc_info =3D {
+> diff --git a/include/qom/object.h b/include/qom/object.h
+> index e04be4caed57..29cbd84b8d03 100644
+> --- a/include/qom/object.h
+> +++ b/include/qom/object.h
+> @@ -2156,35 +2156,6 @@ object_class_property_add_qapi(ObjectClass *klass,
+>                                 ObjectPropertyRelease *release,
+>                                 void *opaque);
+>=20=20
+> -/**
+> - * object_property_add_tm:
+> - * @obj: the object to add a property to
+> - * @name: the name of the property
+> - * @get: the getter or NULL if the property is write-only.
+> - *
+> - * Add a read-only struct tm valued property using a getter function.
+> - * This function will add a property of type 'struct tm'.
+> - *
+> - * Returns: The newly added property on success, or %NULL on failure.
+> - */
+> -ObjectProperty *object_property_add_tm(Object *obj, const char *name,
+> -                            void (*get)(Object *, struct tm *, Error **)=
+);
+> -
+> -/**
+> - * object_class_property_add_tm:
+> - * @klass: the object class to add a property to
+> - * @name: the name of the property
+> - * @get: the getter or NULL if the property is write-only.
+> - *
+> - * Add a read-only struct tm valued property using a getter function.
+> - * This function will add a property of type 'struct tm'.
+> - *
+> - * Returns: The newly added property on success, or %NULL on failure.
+> - */
+> -ObjectProperty *object_class_property_add_tm(ObjectClass *klass,
+> -                            const char *name,
+> -                            void (*get)(Object *, struct tm *, Error **)=
+);
+> -
+>  typedef enum {
+>      /* Automatically add a getter to the property */
+>      OBJ_PROP_FLAG_READ =3D 1 << 0,
+> diff --git a/qapi/common.json b/qapi/common.json
+> index 1352e664b23e..222037ea0b32 100644
+> --- a/qapi/common.json
+> +++ b/qapi/common.json
+> @@ -218,3 +218,31 @@
+>  ##
+>  { 'enum': 'EndianMode',
+>    'data': [ 'unspecified', 'little', 'big' ] }
+> +
+> +##
+> +# @StructTm:
+> +#
+> +# Broken-down time.  Field semantics match C ``struct tm``.
 
-Still annoyed at my own local Sashiko runs for not finding this... and
-it would be nice if lockdep could see through kthread_flush_work() too.
-Not sure how feasible that is.
+Again, please use the revised syntax for introductions.
 
---=-JlmFvHwtW4LRXbe0y1ju
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+> +#
+> +# @tm_year: years since 1900
+> +#
+> +# @tm_mon: months since January (0-11)
+> +#
+> +# @tm_mday: day of the month (1-31)
+> +#
+> +# @tm_hour: hours since midnight (0-23)
+> +#
+> +# @tm_min: minutes after the hour (0-59)
+> +#
+> +# @tm_sec: seconds after the minute (0-59, 60-61 for leap seconds)
+> +#
+> +# Since: 11.2
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-g1AeliYo/J4EcHN5FiUBdWgAAAAAAAA=
+Same "do we care?" as for the previous patch.
 
+> +##
+> +{ 'struct': 'StructTm',
+> +  'data': {
+> +    'tm_year': 'int32',
+> +    'tm_mon': 'int32',
+> +    'tm_mday': 'int32',
+> +    'tm_hour': 'int32',
+> +    'tm_min': 'int32',
+> +    'tm_sec': 'int32' } }
+> diff --git a/qapi/pragma.json b/qapi/pragma.json
+> index 342cedc42e76..9be2819a46bd 100644
+> --- a/qapi/pragma.json
+> +++ b/qapi/pragma.json
+> @@ -109,6 +109,7 @@
+       # Externally visible types whose member names may use uppercase
 
---=-JlmFvHwtW4LRXbe0y1ju--
+Not this patch's fault, but here goes anyway: the comment should be "may
+use uppercase or '_'".  I'll fix it.
+
+       'member-name-exceptions': [     # visible in:
+           'ACPISlotType',             # query-acpi-ospm-status
+           [...]
+>          'QKeyCode',                 # send-key, input-sent-event
+>          'QapiErrorClass',           # QMP error replies
+>          'SshHostKeyCheckMode',      # blockdev-add, -blockdev
+> +        'StructTm',                 # qom-get of RTC date property
+>          'SysEmuTarget',             # query-cpu-fast, query-target
+>          'UuidInfo',                 # query-uuid
+>          'VncClientInfo',            # query-vnc, query-vnc-servers, ...
+
+[...]
+
