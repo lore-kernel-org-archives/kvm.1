@@ -1,58 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.0.225.12
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.113
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792464802;
-	b=QST6HU6GQa97kbIu09EGYMpBydIRVo0KY5T540yrxQi1IMnxighzxRZcFVswrFYufXXM
-	 +zxlSOfa7TzuEdIc+Pi9UFeitg9Wgl2segNJfNLSNwjUN/EA4IopgxdjFbfzQ9pLKi4c0
-	 rtC9IzFuBZEuLPggUb8IGQk1UdkuuQK0S9wRTXrFOZH3f70iwrPNn7yB3Q8HgwygpAm3b
-	 nt2ywHvMGesslg7aACI5YvvMx80BRJjJearjZUB6irjihh2ctbwmR3O7c7ilrhepsBlwm
-	 ZEimO3B2Bc/J/mP0JdQRyiigFwgVs5zepY7AYkZJ7guj+Uk1HzeV2ZK7jY+XNFUEaAg==
+	t=1792476082;
+	b=oUgyBnrl6R25iXxFjssqg4NKEwHHGhSQu9V3JgSvMc4HoRZ5wdss4qjxxrI2GvaLMCTr
+	 0Dr+fk0CY9DW4aWW+ndAw/DmCDrV/0V6qrh3OpLcg4bAHV3MsCb8vSr34HPLXQL4MY/LJ
+	 l/ozHkAPq8zamz9xeNbbibVoXmhvTQ6z7MpTkuWX8R3eP8WxqXucf1N96gpvc58RBidfG
+	 ZPaPQK4WIOkhuoY9d8M2qpJ2U9F16BPNqd4Yypb+J3T3wYF0usIT5OcJo0ubQNFbHFKDk
+	 RJKWl6BtHiWNH9PvboDyohU2y3huWC+fO5AcdEked22sBbjlnS2/R0LFk3R9bSWT3lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792464802;
-	h=DMARC-Filter:Received:Received:Received:X-Eyou-Smtpauth:
-	 X-Eyou-EnvelopeSender:X-Eyou-From:From:Date:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Eyou-Sender;
-	bh=Isam2qzXFBltZx89pCZ1QeUN4o0j6H71EtrOD9wZiSk=;
-	b=yLPZ6AYdhhExr/fE8DClDOQakXRnXc6HPfzUOvXks9LG4QcIpO5M98sJexTxVmbxgsKk
-	 to+/dnCYcjGDut8o+k/B0Vlse0iKeYgYT+amJETzbL5K42fM9Q4SqUCmFUBZMiKT14R41
-	 /QGdLt7KkmNUOUOLAPIYPjdjPCKJqYxQtT70vs9RcOopcpEUCLOq6UpHKoYIqlXv64Q5X
-	 tK9s0iFxLDLyYUwTUemhQvIzzIQVXnEek3Cp1ZDo3vIv3EyIbk5xwDypms89u9dnHVPHL
-	 rE8uMkYt0TiLY1lShWo4e2lfU73h/m+BfOw0/0H1IgKQm0mmv9sYXJHNW1ZU4tBY5TA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792476082;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=n0lvCzzmfqsXaPehGrVPNSxhMDiKKXELU0wbhzo/qJ0=;
+	b=Y4SoZCd1/ARRI6B0pPECLNiC3pXM/NgCp6XWgHV2FSAVUtoT7DPfLfeIckymFoSsTsAi
+	 4Alp2iLh/HA0cL8vDLbaj13gQX+gMfsEM+m22HkS9gFNRXx9is6MADfA9IgK0q9LhZy8r
+	 Pe2u1p9TBm61tJZeoJEUdugdzE0PT4VMNCfKVOS7tDwnnfuzDLeBFGrcaAJeOBykSFpYY
+	 cToWrFk/lCf5QGO9Ibb2sPKx+b0R4TlbZHVtTYgCEBWxsQDEPqHYwvwDhPurcM3qW4enb
+	 e+XztW2/xhI5Dqukgd9JzZ4ldeO7S76mumEvqOOGqidnWxSGiLbZ4yTYtXA2VhNrDtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=zhaoxin.com;
-	spf=pass smtp.mailfrom=zhaoxin.com;
-	arc=none smtp.remote-ip=210.0.225.12
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5370606A31A;
-	Tue, 20 Oct 2026 02:53:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5370606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-Received: from zhaoxin.com (unknown [127.0.0.1])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4j7xmm022Bzb0pbc;
-	Tue, 20 Oct 2026 10:53:12 +0800 (CST)
-Received: from zhaoxin.com (unknown [10.28.140.201])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4j7xml4GH3zb0pbc;
-	Tue, 20 Oct 2026 10:53:11 +0800 (CST)
-Received: from ewan-server (ewan-server [10.28.24.7])
-	by zhaoxin.com (8.30) with ESMTP62f8ff40056a60f56e6be29f9128510a
-	Tue, 20 Oct 2026 10:53:10 +0800
-X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
-X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
-X-Eyou-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-From: "=?UTF-8?B?RXdhbiBIYWktb2M=?=" <ewanhai-oc@zhaoxin.com>
-Date: Tue, 20 Oct 2026 10:53:29 +0800
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Frank Zhu <frankzhu@zhaoxin.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ewanhai@zhaoxin.com, cobechen@zhaoxin.com
-Subject: Re: [PATCH v2 6/9] KVM: selftests: Skip PERF_CAPABILITIES vCPU
- checks without PDCM
-Message-ID: <atbVQZsuClHwaLGo@ewan-server>
-References: <20260910115414.3015260-1-ewanhai-oc@zhaoxin.com>
- <20260910115414.3015260-7-ewanhai-oc@zhaoxin.com>
- <aqQqJysVQxS76YIE@google.com>
- <arHesdC4MieHtZUr@ewan-server>
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b="IIQ/lxQL";
+	arc=none smtp.remote-ip=115.124.30.113
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABD9606A321;
+	Tue, 20 Oct 2026 06:01:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9ABD9606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=IIQ/lxQL
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792476072; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=n0lvCzzmfqsXaPehGrVPNSxhMDiKKXELU0wbhzo/qJ0=;
+	b=IIQ/lxQLKZ8Ip8nwtSMS48YoS3LUQRI4Cvp1HHLHtp4o0mrGT1RUH2P0V7lkWLxX2gNrmlbOLzWo9R0scwtI2EPdb5/4QgmEb3F0qoXvzOmVQ7kkXTY/iMgHSfGqBjA4negJfFpYqm9seWftpXIo/IuK0M4z37KbzuMI3S0xce4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=xiang.zheng@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XDBuaNR_1792476066;
+Received: from localhost.localdomain(mailfrom:xiang.zheng@linux.alibaba.com fp:SMTPD_---0XDBuaNR_1792476066 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 20 Oct 2026 14:01:11 +0800
+From: Xiang Zheng <xiang.zheng@linux.alibaba.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Shannon Zhao <shannon.zhao@linux.alibaba.com>,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 1/2] KVM: x86: ioapic: Clear stale RTC pending EOIs using the delivery record
+Date: Tue, 20 Oct 2026 14:00:52 +0800
+Message-ID: <20261020060053.25011-2-xiang.zheng@linux.alibaba.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261020060053.25011-1-xiang.zheng@linux.alibaba.com>
+References: <20261020060053.25011-1-xiang.zheng@linux.alibaba.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,86 +72,71 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arHesdC4MieHtZUr@ewan-server>
-X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 22, 2026 at 09:54:51AM +0800, Ewan Hai-oc wrote:
-> On Fri, Sep 11, 2026 at 09:19:51AM -0700, Sean Christopherson wrote:
-> > On Thu, Sep 10, 2026, Ewan Hai-oc wrote:
-> > > From: Frank Zhu <frankzhu@zhaoxin.com>
-> > > 
-> > > KVM allows userspace to query MSR_IA32_PERF_CAPABILITIES through
-> > > KVM_GET_MSRS even when PDCM is not exposed in KVM_GET_SUPPORTED_CPUID.
-> > > However, vCPU accesses to the MSR fail without PDCM.
-> > 
-> > Hrm, no, KVM is supposed to allow reads and drop writes of '0' for MSRs that are
-> > advertised to userspace, but ultimately unsupported.  I'm pretty sure this is a
-> > KVM bug.  I think MSR_IA32_ARCH_CAPABILITIES is also affected.
-> > 
-> > Completely untested, but I think this?
-> > 
-> > diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-> > index dd3bb04878ca..fa77cfdbda7e 100644
-> > --- a/arch/x86/kvm/msrs.c
-> > +++ b/arch/x86/kvm/msrs.c
-> > @@ -512,9 +512,15 @@ static int kvm_get_feature_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data,
-> >  
-> >  	switch (index) {
-> >  	case MSR_IA32_ARCH_CAPABILITIES:
-> > +		if (!kvm_cpu_cap_has(X86_FEATURE_ARCH_CAPABILITIES))
-> > +			return KVM_MSR_RET_UNSUPPORTED;
-> > +
-> >  		*data = kvm_get_arch_capabilities();
-> >  		break;
-> >  	case MSR_IA32_PERF_CAPABILITIES:
-> > +		if (!kvm_cpu_cap_has(X86_FEATURE_PDCM))
-> > +			return KVM_MSR_RET_UNSUPPORTED;
-> > +
-> >  		*data = kvm_caps.supported_perf_cap;
-> >  		break;
-> >  	case MSR_PLATFORM_INFO:
-> >
-> 
-> I saw that you applied eight patches from the series to the kvm-x86
-> selftests branch and skipped patch 6 as a KVM bug.
-> 
-> We are testing the change you suggested on Zhaoxin systems with and
-> without PDCM support. We expect to report the results within the next
-> few weeks.
-> 
+Use the vCPU/vector pairs recorded in rtc_status to clear completed RTC
+pending EOIs instead of consulting the current redirection entry.
 
-Hi Sean,
+AVIC completes EOIs of edge-triggered interrupts in hardware, without a
+VM exit, so KVM cannot decrement the RTC pending-EOI count from an EOI
+exit.  ioapic_lazy_update_eoi() compensates at the next injection by
+clearing the pending EOI of any vCPU that no longer has the vector in
+IRR/ISR, but it identifies those vCPUs with the current redirection
+entry instead of the delivery record kept in rtc_status.
 
-Frank tested your suggested change on Zhaoxin systems **without** PDCM,
-using kvm_intel. The results support the fix.
+If the guest rewrites the RTC redirection entry after an interrupt was
+delivered and EOI'd without an exit, e.g. because the guest moves the
+RTC to another processor, the new route no longer matches the recorded
+delivery, so the pending EOI is left set and every later RTC interrupt
+is reported as coalesced and dropped.  A guest that relies on the RTC
+timer interrupt to advance timekeeping, e.g. a Windows guest without
+HPET and with an unused APIC timer, then loses its timer and hangs.
 
-MSR_IA32_PERF_CAPABILITIES is no longer listed in
-KVM_GET_MSR_FEATURE_INDEX_LIST. A direct KVM_GET_MSRS query on the
-/dev/kvm fd still succeeds, with the MSR data changing from 0x2000
-to 0 through the existing unsupported-MSR handling. The MSR remains
-in KVM_GET_MSR_INDEX_LIST, and the existing vCPU userspace behavior
-of allowing reads of zero and writes of zero is unchanged.
+Walk the vCPUs present in rtc_status and test the vector stored at
+delivery.  While at it, clear every completed record instead of bailing
+out after the first one, and skip pins other than the RTC, the only pin
+with delivery tracking.
 
-We also checked the QEMU behavior. With the MSR absent from the feature
-list, QEMU's supported-feature query returns zero for PERF_CAPABILITIES.
-The PDCM bit in KVM_GET_SUPPORTED_CPUID is unchanged and was already
-clear on these systems. QEMU filters PDCM out of CPU models that request
-it, so this resolves our concern about the effect on CPU model selection.
+Fixes: f458d039db7e ("kvm: ioapic: Lazy update IOAPIC EOI")
+Signed-off-by: Xiang Zheng <xiang.zheng@linux.alibaba.com>
+---
+ arch/x86/kvm/ioapic.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-feature_msrs_test passes with the change. vmx_pmu_caps_test is skipped
-on these systems, and the other KVM selftests we ran showed no regressions.
-Our hardware testing covered systems without PDCM; we have not validated
-the change on PDCM-capable hardware.
-
-One observation about the ARCH_CAPABILITIES check: in the code we
-checked, EMULATED_F(ARCH_CAPABILITIES) already enables the capability
-unconditionally, so the new check does not change its behavior.
-
-Thanks,
-Ewan
-
-> Thanks for applying the patches and for looking into the patch 6 issue.
-> 
+diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+index 0d59b9c758c2..803fda172db5 100644
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -167,21 +167,18 @@ static void ioapic_lazy_update_eoi(struct kvm_ioapic *ioapic, int irq)
+ {
+ 	unsigned long i;
+ 	struct kvm_vcpu *vcpu;
+-	union kvm_ioapic_redirect_entry *entry = &ioapic->redirtbl[irq];
++	struct rtc_status *status = &ioapic->rtc_status;
++
++	if (irq != RTC_GSI || !status->pending_eoi)
++		return;
+ 
++	/* Use the target recorded at delivery; the entry may have changed. */
+ 	kvm_for_each_vcpu(i, vcpu, ioapic->kvm) {
+-		if (!kvm_apic_match_dest(vcpu, NULL, APIC_DEST_NOSHORT,
+-					 entry->fields.dest_id,
+-					 entry->fields.dest_mode) ||
+-		    kvm_apic_pending_eoi(vcpu, entry->fields.vector))
++		if (!test_bit(vcpu->vcpu_id, status->map) ||
++		    kvm_apic_pending_eoi(vcpu, status->vectors[vcpu->vcpu_id]))
+ 			continue;
+ 
+-		/*
+-		 * If no longer has pending EOI in LAPICs, update
+-		 * EOI for this vector.
+-		 */
+-		rtc_irq_eoi(ioapic, vcpu, entry->fields.vector);
+-		break;
++		rtc_irq_eoi(ioapic, vcpu, status->vectors[vcpu->vcpu_id]);
+ 	}
+ }
+ 
+-- 
+2.50.1 (Apple Git-155)
 
