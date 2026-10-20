@@ -1,49 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792482253;
-	b=BOIsUyiarHCeVniQY0pkWGL+dsCbtDQNjMxeargVS6vM4KvXPgliRnuP51EbW1kM8e1B
-	 mzyb3GGR06YbNGtQKX9mf5CZAULLVMWOJs+SkJ/oA4BuWdtYB63B/yl9XTde/gVc2oFD+
-	 +x8miWPxBFnDc+yNF+LH/wGbnbeFkikOF/+1fix7xj6ZxgQ0D5k85x81diVTUcUrEmtWV
-	 y8TsV3rokQ3p3vG53XwyJaVpHqdVHSrzJNUaUh7wl3wUmD/jypuBd4/rzMZPv+bmrL7CS
-	 2mFfSfqJ4C33qFikpreE5f4o3USrsn0soZPUe+vfHt7CHzhNTWvQAk6sDG9+faLL1OQ==
+	t=1792484744;
+	b=Vmtyoxz6CCxuiw3XyHZblMPbI13KEN8WhjhKMKEmuaXJAJQIyqcKDjGaGkP2go6JHzKQ
+	 0TvoFHGMG/gJ5xF+RfziMGFHzw2wFSrHjyBFU5AVxTee90k8yB2Sg83CLr4V7Yrctgqvm
+	 rD+4Q9Kxr6g2V7IxEcJ0poFeClEvRyxr+hVovkZtMRQ73v3i0t6ig2hpS3RMTwaK6U2J/
+	 EpS4u5DD+YhyhGPxGtIEZnwztu1mD/3YH8pocf7opeNtjyK5PF9Lw01zxwoc461G7imO9
+	 W2MxCM/ZJJNxSQCk1N6MtFQZK3PPuaQRg4+VVIJ6LAjRDFi7EODUONE4us+kHo8GjcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792482253;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=LfoOhm00iP//E0N4F9AlbSUJTf43+auw00OGwsKyDj8=;
-	b=ho2M8AejhzhHnF/y+e+cTmg7MjBJe5tlAsJDgaaC63NdxWt/N8WKjQWFcxyr9c2Lsl/2
-	 Xd1RvSXoYx+4ixmlWNGtsZi0urj6rYSdaR4U7alWrasfi9T/kHSEdQij9Ynevtec9ZWeV
-	 PAf1zy0tYtQQcVq4L3oDN09e59IvG+1DN/NSV4O4bLfiCS8MjNsmUlWmJMWVDoWIsnng6
-	 CG1lwDB4Boe/6mLOS2G37MP2XbGZDpl/AWBAlexUp43+ItI35+utU6Vszre11QtZj5Vbr
-	 WH8Juuh0N8MuhTHT733YeVWENmoimeFSOCckPtJsgg5Bzdx+dz4BLhB+5c+PRGOlWwg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792484744;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=jAJohs9jM4C9qmzSTrnzOJHD+AEB6zrnbjv7P5LD8bM=;
+	b=4RoQ5NI26Qeq/y0gcZTzkfKhyHlaK3AkMAWCOKJ+nhYzmUasQ1DLGINhIUtrcwRoLd6l
+	 4FbXM2+L3A5D94sA3c3Tvv5DWKLPoPVIqx7BPblJ0Eln8YVwRr/14lSobH+wjXk/QzL6J
+	 L9V4cUkTIwX3h9EzAwLG8p+po0LkZf6YQKii2FagI0mVFKokyUlQCe7m5AbZOVBDS9gCL
+	 FFlWWzQidLlKYKJn48x2Tr5yPbw8nSu5LH2wI7b9ou+1ZKDMMjWoq3xrm5o/wach29lZm
+	 EQkNxT9eM3X7jIMMMenXMxjGL/F1KULKtKNOlvWRT0s3S9Nyr0iJVdA0YwXYtorTnnQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OgkQUeEp;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1778F606A31C
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 07:44:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1778F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RcjK16qB;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D36C606A319;
+	Tue, 20 Oct 2026 08:25:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D36C606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OgkQUeEp
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F1AF1595;
-	Tue, 20 Oct 2026 00:44:09 -0700 (PDT)
-Received: from [10.0.136.108] (M0PRX50XMG.cambridge.arm.com [10.0.136.108])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DFBA13F7B4;
-	Tue, 20 Oct 2026 00:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792482252; bh=2c18fozBhrsSmOpHTh00ZE2k6HIbTfIxp8a4vEnkaO4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OgkQUeEpqjp95Q9MtHaL/sbEWU+qgni+fsviK1MMEa+vnKCPyN3p8tNRbHHF5CWHU
-	 BoidisyAu8NDjn3lHNyAE2lbiO0T49D7NCLcadhPb/2fc2bsOlX++IMQWKGZ3UoTVu
-	 FKQtQy4BQ32NisE2mBlmacmU6AIjOmy1ErWGmIDw=
-Message-ID: <a87f0a59-f71f-4583-8ace-394f9af649e5@arm.com>
-Date: Tue, 20 Oct 2026 08:44:09 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RcjK16qB
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69K1ENHR4176854;
+	Tue, 20 Oct 2026 08:25:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=jAJohs9jM4C9qmzSTrnzOJHD+AEB6zrnbjv7P5LD8
+	bM=; b=RcjK16qB/2LH7X6b83KR75wtihO0XSKdlxjmKOinFid0CZdUl5YS+gLHI
+	0kEHvU0YgVC/N41k9+SwC2EpndVMRvGM0Bq1vvhSKosXhXaJaXzCL3Owsc+jzjX9
+	r3ODH2IEj9BuAm1OlSzobAIVgvElwGKgL9jN/KD01xfs7JlPVzrE228CixevDe5o
+	domYQXWb2NtWmU6OA/3bC+ptSH4Z0CkEFxCVgPKF32wQv+oihZjQaKTzWSzWyXc6
+	435G9tCvSCyj1xSanGxXZ4jVr5y/x4Sm3Q10xd3JE6c7o+w+FZcFzn8iD+5gILG0
+	ZU9fBJ7mSl0xfkwncoXq6roU39Iow==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw581p7u-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 08:25:40 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69K6vVs5794894;
+	Tue, 20 Oct 2026 08:25:40 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hcp1yh1ft-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 08:25:40 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69K8Pcuk18285216
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Oct 2026 08:25:38 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E55F58050;
+	Tue, 20 Oct 2026 08:25:38 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C2A3358054;
+	Tue, 20 Oct 2026 08:25:35 +0000 (GMT)
+Received: from b46lp13.lnxne.boe (unknown [9.87.84.240])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Oct 2026 08:25:35 +0000 (GMT)
+From: Gautam Gala <ggala@linux.ibm.com>
+To: borntraeger@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: frankja@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, akrowiak@linux.ibm.com, pasic@linux.ibm.com,
+        pmorel@linux.ibm.com
+Subject: [PATCH v1 1/1] KVM: s390: pqap: fix AP status written to wrong half of GR1
+Date: Tue, 20 Oct 2026 10:25:34 +0200
+Message-ID: <20261020082534.481867-1-ggala@linux.ibm.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,83 +93,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] KVM: arm64: vgic: Require matching VGIC model for
- GICv3 ITS
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com,
- seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com
-References: <20261019134242.1289002-1-sascha.bischoff@arm.com>
- <20261019134242.1289002-2-sascha.bischoff@arm.com>
- <CA+EHjTzqKiWr2tnV0rUiA4VVCs5a0E2XQQTdwvH0bTKZ5dxe5A@mail.gmail.com>
-Content-Language: en-GB
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <CA+EHjTzqKiWr2tnV0rUiA4VVCs5a0E2XQQTdwvH0bTKZ5dxe5A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDAzMiBTYWx0ZWRfX1stH9jO+DoIW
+ bKahL0Z3YB6PqoqtJo0AHFS3HIl7ZNQfbke9TQu9XpNOPrSk10SxIn0zyQz/MJC/WReOrcwHENU
+ ApK+fx5HLC6aUtqA8cc3ubw9fxB1O3U=
+X-Proofpoint-GUID: LpeQUKuIyJmjA8GLABCRRgCQZqo51mhB
+X-Proofpoint-ORIG-GUID: LpeQUKuIyJmjA8GLABCRRgCQZqo51mhB
+X-Authority-Analysis: v=2.4 cv=UOBIjyfy c=1 sm=1 tr=0 ts=6ad72584 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=dCozhJJj6gtuAxkZyfYA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDAzMiBTYWx0ZWRfX7iQjd7pbtWcS
+ Hxkr1xC/OT5W7a8iIt4huK3uTc/QxhIAXnPKlpmJbxJBR8GEFxYPSylhQw+sRoQvBMi1RUDW7SH
+ TdPL+vrEcbthhuT4J+Q0IH0aQIsuu3B0OPD5chEG9zaiqAyamZAG8AmBzVUt/u3CxXgVXRCVPBE
+ I+KsE3qYDuXc3rRZDFpTJvzJ6dIRuPN9Lpy3J8f4nZxZGaQjceUkqIyjG8t2UTYf5wrlPQdJ9ZL
+ zeOcsAHpkAAjtEJrwsdIByV7T7T6CjpWGBgpctoOrf6LHCz/HlRZ2GppAw2YNs/MeT16lw8E1DW
+ ze6JgRlcl8EwC9dfGnazghu7s0xl3UySR9YmLn2rjjX+sACLNxvv4q4jZZJAwfpy2TvJV44hEp7
+ k0R7ZqTKa9CGyLtEf1XiYvve+Cg4NmoKnhO2ZM0R0NUV1oJkabSWUJsstytrsJdiGhPVYyIsXYf
+ 3DW5O+nTzPVXUBbFzcw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-20_01,2026-10-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610200032
 
-Hi Fuad,
+The AP Queue Status Word (APQSW) occupies bit positions 32-63 of GR1,
+i.e. the low 32 bits of the 64-bit register, while the upper 32 bits
+are reserved.
 
-On 19/10/2026 16:32, Fuad Tabba wrote:
-> Hi Sascha,
-> 
-> On Mon, 19 Oct 2026 14:42:41 +0100, Sascha Bischoff
-> <sascha.bischoff@arm.com> wrote:
->> On a GICv5 host with legacy support, KVM registers both VGICv3 and
->> VGICv5 devices. Without a model check, a VM can create a GICv3 ITS
->> alongside an incompatible VGIC, regardless of creation order.
-> 
-> Could you add to the commit message that the new checks apply on every
-> host? A GICv2 VGIC and an ITS, in either order, now fail with -ENODEV,
-> where before both were created and the ITS was ignored.
+The no-hook fallback path in handle_pqap() synthesizes an APQSW and
+copies struct ap_queue_status directly into GPR1 using memcpy(). On
+big-endian s390 this places the APQSW in the upper 32 bits of the
+register rather than in the architecturally defined APQSW field.
 
-Ah, that's a good point (and a situation that hadn't properly clicked in 
-my head). I'll absolutely update it.
+Use union ap_queue_status_reg and assign its value directly to GPR1.
+This places APQSW in the correct half of the register and aligns the
+fallback path with the register layout used by the AP infrastructure.
 
-> 
-> [...]
->> diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-> [...]
->> @@ -42,10 +42,7 @@ bool vgic_has_its(struct kvm *kvm)
->>   {
->>           struct vgic_dist *dist = &kvm->arch.vgic;
->>
->> -        if (dist->vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
->> -                return false;
->> -
->> -        return dist->has_its;
->> +        return !!dist->its_model;
->>   }
-> 
-> I think this should check vgic_model as well, as Sashiko raised [1].
+Fixes: e5282de93105 ("s390: ap: kvm: add PQAP interception for AQIC")
+Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
+---
+ arch/s390/kvm/s390/priv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Yeah, Sashiko and you have raised a valid point here.
-
-> vgic_its_create() accepts an ITS when there's no in-kernel VGIC, and
-> the VM can then run with a userspace irqchip. On a GICv4.0 host,
-> kvm_vgic_flush_hwstate() then calls vgic_v4_commit() on every entry,
-> for a vPE that vgic_v4_init() never set up. irq_set_vcpu_affinity()
-> fails on irq 0 and the error is ignored, so nothing crashes, but this
-> patch makes that path reachable. The MSI paths Sashiko lists are fine,
-> since KVM_SIGNAL_MSI requires an in-kernel irqchip and irqfd an
-> initialised VGIC.
-> 
-> Something like this would keep the 0 == 0 case you pointed out for
-> Marc's version false:
-> 
->          return dist->its_model && dist->its_model == dist->vgic_model;
-
-Foolishly, this was the variant I'd dismissed as it returns false until 
-vgic_model is set. However, I guess that is the behaviour we want here. 
-An ITS is only a valid ITS if the model matches.
-
-> 
-> Cheers,
-> /fuad
-> 
-> [1] https://lore.kernel.org/all/sashiko-outbox-177254@kernel.org/
-
-Thank you!
-Sascha
+diff --git a/arch/s390/kvm/s390/priv.c b/arch/s390/kvm/s390/priv.c
+index b3cb2c2c3aa7..ccb2a7830265 100644
+--- a/arch/s390/kvm/s390/priv.c
++++ b/arch/s390/kvm/s390/priv.c
+@@ -592,7 +592,7 @@ EXPORT_SYMBOL_FOR_MODULES(kvm_s390_is_gpa_in_memslot, "vfio_ap");
+  */
+ static int handle_pqap(struct kvm_vcpu *vcpu)
+ {
+-	struct ap_queue_status status = {};
++	union ap_queue_status_reg status = {};
+ 	crypto_hook pqap_hook;
+ 	unsigned long reg0;
+ 	int ret;
+@@ -661,8 +661,8 @@ static int handle_pqap(struct kvm_vcpu *vcpu)
+ 	 * No hook means no driver to enable the SIE CRYCB and no queues.
+ 	 * We send this response to the guest.
+ 	 */
+-	status.response_code = 0x01;
+-	memcpy(&vcpu->run->s.regs.gprs[1], &status, sizeof(status));
++	status.status.response_code = 0x01;
++	vcpu->run->s.regs.gprs[1] = status.value;
+ 	kvm_s390_set_psw_cc(vcpu, 3);
+ 	return 0;
+ }
+-- 
+2.56.0
 
