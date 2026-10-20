@@ -1,119 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792489295;
-	b=JeqUvrk39mlJXdDP7cQZHaK0oMe4ZfDqyhvcKUd7DUdgI/51xVN98zX5wKqvkRJ0scTF
-	 0Q41q754UYKVbpDbU0fgXX30BB8pSSk4Oair5ewdF9DJdxXdPbAC8fVYlKaKyX8SOfUMr
-	 8a5qLRVfDlnSRatIBbI26otZaj0nO/kLXdTpYt2gvcZdpN8UubHPm/0xlt2RutUZFIKG5
-	 Uys+L3cO0jZqVn4iqWGfT2dFaZ1Ep1DgHH3CzcY9k0xps6lM+XSEo4P8wQ7wXgWm57V/Q
-	 TPR8/TtJqWTE1psMvuK52RRRPPkgwnGbPbiayuu0FNlcIWkUMgItG0xo32jWR6HEw9Q==
+	t=1792490913;
+	b=3xxNEICdtUI87/kAsPjUED4OJVfacqJDFBci2e8KhTJlt1pzVK9kSG1XHujdzLwIGZFi
+	 +CaVPUsLBRKP+Dmnkb41WiPYQAnJutcH64yVutG5aB1KBg3aCuoLHq/DPHXBMzaFxjpJ2
+	 ebpS6OxLScc3HJFw3HEUv237KsvsTtjs3kfbpdB8mXqi/WYS8DYpWoHZ6O+gl28Mo/QaI
+	 2qnRngt7UE0i3dHAhXSiqd0lmLwuro2/WWYEQ5B9Q2eNyNYYewC8aLMDYShnrcXvdLUzB
+	 20mGi/UJCEiGz3YqZ9CRKVid6e6o6apDYQh/vtIisz1Pa349AQEQdSp8U3HC/ddvcfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792489295;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=DruToGQJ8QxTgYnIiS8jfyW7h08d1jOiadZ2C/M4nnM=;
-	b=s5G8xBXiPOzZcpeZ5RYkhgxAWWPhBKdXqW6hxqokFHdlUooOL9eq4GXYzQ+Sf0HmeUZe
-	 46vEVYTUi1gEaDniyTjnrdl7fXAgadmy0gWbtswOqs+R5yArWCgCk9MjTexEkd5LmVn9q
-	 h5RrJWCAKeMAFc5pVYNQh+fZois//FXHLe6JDp1uNNBP1U7/37zQksD3X5yDgx83C675e
-	 0+L1yZJGMkgnKUsBqTHqgKBh+dk2mvI3EoS1t/69qOMB34TI/9Ii9qwOfhSS8y9tUhXKr
-	 LJ6za/Qx5CjbnItYymoifp20Dk5ePBOcRcyhjS8Fmb4prqHFASp08vTPTtYpNwmKtXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792490913;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=SjT5XBnlckbh7zbaJ4V23lj8qiCFtCBNLfeFwSuy4aA=;
+	b=qDg6u+zfgYJd4Q3MX+wCMu62AocsQXqRu3yyPWUGBPeWqsangHP6Z+8wlOfpNkCT8GYU
+	 0JISbwOpsIfI7RQaL7UxxG09BvaREUAIWoR2vE3qgNMb0wixYBW5VOBVbx9EiuzUNl4Cy
+	 ImUt09ELxI3gxeIl2FhQAmhkEXfFhbtfenevSmqNZe0if1CCqtpG/whqew4bAlv9ehA80
+	 OdgcE7gMv93WPHcr2owMepuLbW5U1g43z53rM5iC7nORxwa9MaJDIzikwiTxl8xFwUS4o
+	 +jxEyk8AtxgJN/Y6XVgVpL9vcmHc/wFKoExbLY2TKsTQU86ekfWFBVktRBsX50/mOUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="K/JJF7cn";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=thMXV7hS;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsLWhr02;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08AF60A4AF0
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 09:41:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C08AF60A4AF0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ED8606A32F
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K/JJF7cn;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=thMXV7hS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792489293;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DruToGQJ8QxTgYnIiS8jfyW7h08d1jOiadZ2C/M4nnM=;
-	b=K/JJF7cn1b2v39EPXSI4LcmWuQRbWrADl1q8iTSWrSIltNdbR4rVMTKkdXGqJ64Y5n4uHk
-	VUKDLUa4lYeTgz8sMAuv+ggQoO7SG2xPDossWKDWTbWefQwsrbkGR7IM/41QRhlMgRzBPz
-	KSK1y8iBGhyWJZyf/B/VfMj3yKtNnJ4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-384-jwsTMZ5tM8-ddCSc8v0hiA-1; Tue, 20 Oct 2026 09:41:32 +0000
-X-MC-Unique: jwsTMZ5tM8-ddCSc8v0hiA-1
-X-Mimecast-MFC-AGG-ID: jwsTMZ5tM8-ddCSc8v0hiA_1792489291
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e0ef019a4so2247485f8f.3
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 02:41:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792489291; x=1793094091; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DruToGQJ8QxTgYnIiS8jfyW7h08d1jOiadZ2C/M4nnM=;
-        b=thMXV7hSlArkty2E09MFqC8JiSmsxCNhX4jsyo4vaGhi9sjt/1MWEsimi2z0BvEqzR
-         ZPk2y5DI132wHcgq14xsxNy24W2sezZ59Quuw6nzKEefP9HWZ/ADqVXbyhsOwdCfw04j
-         7fhEXLdKAfdw+qV6GrRLGFnFW6e8LrnWxhnmJGq9T7AZTFDO7wYg30X+NgvGT6a/elaV
-         chFFk7pMHY9zdWpFFmQR1YA8SSYE8YxykqfN9O/BG7IYyZyrj4peBGEzGCq7MGMq2ON8
-         SDQGmEuvxHPcpRh5HQX6QHv+ydchkUOsfXxU6ECpifQd3XmwMWXzGRscsAhTL08egn/F
-         7tQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792489291; x=1793094091;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=DruToGQJ8QxTgYnIiS8jfyW7h08d1jOiadZ2C/M4nnM=;
-        b=ZGdGy9uFgCpm/Ai89qwcXEuCCcx3egXw2bfDjWwvEvZKyyqaZ5qJZ2zTgnVW5F/ddZ
-         nWoJIklcxfXpR67DGRmdaHJAw13MYGStR+a7mn5N2A3ofXhSSFaCTocOoDC2bH6q9guc
-         MLfTy5XBserZEFHpp7fONmUuYqXngY0uat9a4zgKKDz+GP3lpXnFarbYl5Wtsnc0qq6y
-         CKOQZtLYhwfqfpitXuPvF26egukXOGyn9oWZTCB6xFeNlbHVm1mB8xGoIwwchv9R3cci
-         WOiXkII2ALPZjeYwN6JuQKz+m3OYUyhGtAWznk9usystVUdD/UPpDtd/S4E9odAblRvn
-         2lPA==
-X-Forwarded-Encrypted: i=1; AKwUvBxgdKh+OdaibDjq379X7bQzSGRM5gy5WGg8vzC2bTO1530cX/yQogDwrWGcPmEWEP5jsk0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKH9ILsoEaaMf6hMFS5YMveUgFlKJM3RFx5cEW2Tv6H3NQZqbID
-	1x5rQhQjQAzMCcHyzAQjS1Fi00blymC05wHcjeHq0hDTtMH6j2RurA6jOT7YDT/BGcVTsA7uGxb
-	MqdsdPjTnlmD3MSDyOMlOlvV67oWb0jV0vnwZ7znkEezdYb2iW2RH5g==
-X-Gm-Gg: AYBFou39I5Uf1KHHMsR5oVJNBd+KQdAJ/g0lax0aUapR731i8s9D1oyJn36SQD+kEb6
-	DhVYNd7answ4fnTBWb6Du3uIGDOIKY+kY9TQywXrFXw+L/aU1MhqTzBsh0XYBrivU+G7b2UErg6
-	CU/hq5wjQIgoCxzSWg97W+5TZ79TvoOpt1mqXGb8yaFpgb2MsjsHoOovgm/r9Dz0KYNtrrw7K+3
-	nZ08Uq7qRVk07sMODA8wxLzVjGFgFIxuB5KwtzAAI2KMwqxNsBtbfnep9vBfrg3vqoZ1pC5n8Em
-	gBHW5lRRzsob5oSuBmAs4bP2GIh7nsu7MIls2b6pypxnActCLUaOhh1kbER4a5fESokm5g==
-X-Received: by 2002:a05:6000:4288:b0:48a:fbf7:15c9 with SMTP id ffacd0b85a97d-48e079888a1mr21624730f8f.1.1792489290982;
-        Tue, 20 Oct 2026 02:41:30 -0700 (PDT)
-X-Received: by 2002:a05:6000:4288:b0:48a:fbf7:15c9 with SMTP id ffacd0b85a97d-48e079888a1mr21624669f8f.1.1792489290347;
-        Tue, 20 Oct 2026 02:41:30 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d82dec7sm4899460f8f.46.2026.10.20.02.41.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 02:41:29 -0700 (PDT)
-Date: Tue, 20 Oct 2026 05:41:26 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: Wang Haoran <haoranwangsec@gmail.com>, torvalds@linuxfoundation.org,
-	jasowangio@gmail.com, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-Message-ID: <20261020054100-mutt-send-email-mst@kernel.org>
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
- <20261018152358-mutt-send-email-mst@kernel.org>
- <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
- <20261018174250-mutt-send-email-mst@kernel.org>
- <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
- <20261020021924-mutt-send-email-mst@kernel.org>
- <CAJaqyWfcg_K33c5hzSh83vgTvujn_M_8odcxFSTVzkcv6jQu9g@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsLWhr02
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807081F000C8;
+	Tue, 20 Oct 2026 10:08:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792490912;
+	bh=SjT5XBnlckbh7zbaJ4V23lj8qiCFtCBNLfeFwSuy4aA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QsLWhr02WdZGGsQKtJXP5jtm6P3ndNoAEjRCqZgaKUfboFTN/uqrmKSHEgoaN5c7o
+	 i5VwTWDMP7MYSMqbuYyHuDEjs2t9C94r8zFNsfpdiKmKi9jEgzsFo+20WwhRd6HO0K
+	 Yhp9T36auF89vjhXW0E86006rySCfv/Ih90ZR1HLy5vBb6x30srPkFVxsbrqVq/FEX
+	 e8bNNKW8YzBnCYOdvB/eVdYqjFwScqCCf4FSIzgzbZLSA6ZclaZJnBF8TKb6qGvfP5
+	 YzKcVfiWJNbf4bGCLw6yh24cDz9s5tt2gXg63SkP1GbwnHTiA3n4EDkl5Gjc8go34X
+	 bOjO5TUrD7DbA==
+Message-ID: <sashiko-outbox-178795@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] KVM: x86: Wake blocked vCPUs before offlining a
+ CPU
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinmeng Zhou" <jinmengzhou22@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261020085401.80296-3-jinmengzhou22@gmail.com>
+References: <20260924080648.51014-1-zhoujinmeng@bytedance.com>
+ <20261020085401.80296-1-jinmengzhou22@gmail.com>
+ <20261020085401.80296-3-jinmengzhou22@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 10:08:32 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,114 +61,216 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJaqyWfcg_K33c5hzSh83vgTvujn_M_8odcxFSTVzkcv6jQu9g@mail.gmail.com>
 
-On Tue, Oct 20, 2026 at 11:22:59AM +0200, Eugenio Perez Martin wrote:
-> On Tue, Oct 20, 2026 at 8:31 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Mon, Oct 19, 2026 at 03:14:46PM +0800, Wang Haoran wrote:
-> > > Eugenio previously offered some additional suggestions in reply to
-> > > my patch email. Should these also be addressed?
-> >
-> > The following seems to work for me. Testing would be appreciated.
-> >
-> > From: Michael S. Tsirkin <mst@redhat.com>
-> > Subject: [PATCH v2] vringh: use get_user/put_user in the use_va path
-> >
-> > getu16_iotlb()/putu16_iotlb() pass the address produced by
-> > iotlb_translate() straight to __get_user()/__put_user(),
-> > without access_ok checked anywhere. Not good.
-> >
-> > Switch to get_user()/put_user(), which are always
-> > correct, and safer.
-> >
-> > But the fact is that accessing user memory like this
-> > will sometimes (rarely) race with page being swapped
-> > out, trigger EFAULT, and it should be retried
-> > from a worker, and vdpa_sim currently does not do this.
-> >
-> > Fixes: 42823a871fd4 ("vringh: support VA with iotlb")
-> > Cc: Stefano Garzarella <sgarzare@redhat.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >
-> > ---
-> >
-> > Notes (changelog):
-> > v1->v2:
-> >     Use get_user()/put_user() wrapped in pagefault_disable() instead of
-> >     access_ok() followed by __get_user()/__put_user(); the helpers are
-> >     reached from BH-disabled sections, and __get_user() is not a valid
-> >     way around that (David Laight, Linus Torvalds)
-> >
-> >  drivers/vdpa/vdpa_sim/vdpa_sim_blk.c | 2 ++
-> >  drivers/vdpa/vdpa_sim/vdpa_sim_net.c | 2 ++
-> >  drivers/vhost/vringh.c               | 4 ++--
-> >  3 files changed, 6 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c b/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c
-> > index 76dd5b0828d7..325ec8f0ab85 100644
-> > --- a/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c
-> > +++ b/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c
-> > @@ -347,8 +347,10 @@ static void vdpasim_blk_work(struct vdpasim *vdpasim)
-> >                         smp_wmb();
-> >
-> >                         local_bh_disable();
-> > +                       pagefault_disable();
-> >                         if (vringh_need_notify_iotlb(&vq->vring) > 0)
-> >                                 vringh_notify(&vq->vring);
-> > +                       pagefault_enable();
-> >                         local_bh_enable();
-> >
-> >                         if (++reqs > 4) {
-> > diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim_net.c b/drivers/vdpa/vdpa_sim/vdpa_sim_net.c
-> > index a6514b5ccd86..964cdf422467 100644
-> > --- a/drivers/vdpa/vdpa_sim/vdpa_sim_net.c
-> > +++ b/drivers/vdpa/vdpa_sim/vdpa_sim_net.c
-> > @@ -77,8 +77,10 @@ static void vdpasim_net_complete(struct vdpasim_virtqueue *vq, size_t len)
-> >         smp_wmb();
-> >
-> >         local_bh_disable();
-> > +       pagefault_disable();
-> >         if (vringh_need_notify_iotlb(&vq->vring) > 0)
-> >                 vringh_notify(&vq->vring);
-> > +       pagefault_enable();
-> >         local_bh_enable();
-> >  }
-> >
-> 
-> Why not move the pagefault disable_enable to wrap just the accesses?
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] KVM: VMX: out-of-bounds per-CPU access in vmx_vcpu_pi_load() o=
+n TDX CPU offline
+- [High] KVM: x86: pi_cpu_offline() runs before CPUHP_AP_SCHED_WAIT_EMPTY d=
+rains tasks
+--
 
-We want most accessed with PF enabled, so memory can be faulted in.
+commit e59f5fb4482718a249da5dc7f86ef0922b551270
+Author: Jinmeng Zhou <zhoujinmeng@bytedance.com>
 
-> Future vdpa drivers could use va and we might miss the call. Also, the
-> reverse is also true, vdpa_sim could be configured to not use it, even
-> if it is not a big waste.
-> 
-> > diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-> > index 9066f9f12ba1..74836eb60c7a 100644
-> > --- a/drivers/vhost/vringh.c
-> > +++ b/drivers/vhost/vringh.c
-> > @@ -1213,7 +1213,7 @@ static inline int getu16_iotlb(const struct vringh *vrh,
-> >                 return ret;
-> >
-> >         if (vrh->use_va) {
-> > -               ret = __get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-> > +               ret = get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-> >                 if (ret)
-> >                         return ret;
-> >         } else {
-> > @@ -1251,7 +1251,7 @@ static inline int putu16_iotlb(const struct vringh *vrh,
-> >         tmp = cpu_to_vringh16(vrh, val);
-> >
-> >         if (vrh->use_va) {
-> > -               ret = __put_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-> > +               ret = put_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-> >                 if (ret)
-> >                         return ret;
-> >         } else {
-> >
+KVM: x86: Wake blocked vCPUs before offlining a CPU
 
+This commit adds an optional x86 vendor cpu_offline() callback invoked duri=
+ng
+CPUHP_AP_X86_KVM_ONLINE teardown and implements it for VMX to wake blocked
+vCPUs on the outgoing CPU's posted-interrupt wakeup list so their
+posted-interrupt destination state is migrated to an active CPU.
+
+> diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_int=
+r.c
+> index 4a6d9a17da238..1905472b336d3 100644
+> --- a/arch/x86/kvm/vmx/posted_intr.c
+> +++ b/arch/x86/kvm/vmx/posted_intr.c
+> @@ -266,6 +266,24 @@ void pi_wakeup_handler(void)
+>  	raw_spin_unlock(spinlock);
+>  }
+> =20
+> +void pi_cpu_offline(unsigned int cpu)
+> +{
+> +	struct list_head *wakeup_list =3D &per_cpu(wakeup_vcpus_on_cpu, cpu);
+> +	raw_spinlock_t *spinlock =3D &per_cpu(wakeup_vcpus_on_cpu_lock, cpu);
+> +	struct vcpu_vt *vt;
+> +	unsigned long flags;
+> +
+> +	/*
+> +	 * CPUHP_AP_ACTIVE has already deactivated the CPU.  Wake blocked vCPUs
+> +	 * so that they are scheduled on another CPU and rebuild their posted
+> +	 * interrupt wakeup state in vmx_vcpu_pi_load().
+> +	 */
+> +	raw_spin_lock_irqsave(spinlock, flags);
+> +	list_for_each_entry(vt, wakeup_list, pi_wakeup_list)
+> +		__kvm_vcpu_wake_up(vt_to_vcpu(vt));
+> +	raw_spin_unlock_irqrestore(spinlock, flags);
+> +}
+
+[Severity: Critical]
+Can this trigger an out-of-bounds per-CPU access in vmx_vcpu_pi_load() when
+offlining a CPU with a blocked TDX vCPU that uses VT-d posted interrupts?
+
+When a TDX vCPU blocks on CPU C with posted interrupts enabled,
+tdx_vcpu_put() -> vmx_vcpu_pi_put() -> pi_enable_wakeup_handler() adds
+vt->pi_wakeup_list to per_cpu(wakeup_vcpus_on_cpu, C) and sets pi_desc->nv =
+to
+POSTED_INTR_WAKEUP_VECTOR while the vCPU is on per_cpu(associated_tdvcpus, =
+C)
+with vcpu->cpu =3D=3D C.
+
+During CPU hot-unplug of CPU C, pi_cpu_offline(C) calls __kvm_vcpu_wake_up(=
+),
+which asynchronously wakes the vCPU task on another active CPU D without
+removing vt->pi_wakeup_list or waiting for the vCPU task to schedule in on
+CPU D.
+
+As CPU C continues hotplug teardown to CPUHP_AP_KVM_ONLINE (since
+CPUHP_AP_SCHED_WAIT_EMPTY only waits for CPU C's own runqueue to drain),
+kvm_offline_cpu() -> kvm_disable_virtualization_cpu() ->
+vt_disable_virtualization_cpu() -> tdx_disable_virtualization_cpu() ->
+tdx_flush_vp() -> tdx_disassociate_vp() runs on CPU C and resets vcpu->cpu =
+to
+-1:
+
+arch/x86/kvm/vmx/tdx.c:tdx_disassociate_vp() {
+	lockdep_assert_irqs_disabled();
+
+	list_del(&to_tdx(vcpu)->cpu_list);
+	...
+	smp_wmb();
+
+	vcpu->cpu =3D -1;
+}
+
+When the woken TDX vCPU task subsequently schedules in on CPU D,
+kvm_sched_in() -> kvm_arch_vcpu_load() -> vt_vcpu_load() -> tdx_vcpu_load()
+calls vmx_vcpu_pi_load(vcpu, D) before vcpu->cpu is updated at the end of
+kvm_arch_vcpu_load():
+
+arch/x86/kvm/vmx/posted_intr.c:vmx_vcpu_pi_load() {
+	...
+	if (pi_desc->nv =3D=3D POSTED_INTR_WAKEUP_VECTOR) {
+		raw_spinlock_t *spinlock =3D &per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->cpu=
+);
+
+		raw_spin_lock(spinlock);
+		spin_acquire(&spinlock->dep_map, PI_LOCK_SCHED_OUT, 0, _RET_IP_);
+		list_del(&vt->pi_wakeup_list);
+		spin_release(&spinlock->dep_map, _RET_IP_);
+		raw_spin_unlock(spinlock);
+	}
+}
+
+With vcpu->cpu =3D=3D -1, doesn't &per_cpu(wakeup_vcpus_on_cpu_lock, vcpu->=
+cpu)
+index __per_cpu_offset[-1] out of bounds, pass an invalid spinlock pointer =
+to
+raw_spin_lock(), and delete vt->pi_wakeup_list without holding CPU C's
+wakeup_vcpus_on_cpu_lock?
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a08ae25f373fb..38bffe6ec9b4b 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -6823,8 +6823,9 @@ static int kvm_x86_cpu_online(unsigned int cpu)
+>  static int kvm_x86_cpu_offline(unsigned int cpu)
+>  {
+>  	if (!boot_cpu_has(X86_FEATURE_CONSTANT_TSC))
+> -		return kvmclock_cpu_down_prep(cpu);
+> +		kvmclock_cpu_down_prep(cpu);
+> =20
+> +	kvm_x86_call(cpu_offline)(cpu);
+>  	return 0;
+>  }
+
+[Severity: High]
+Could a vCPU task in a migrate_disable() region still block on the outgoing
+CPU and add itself to wakeup_vcpus_on_cpu after kvm_x86_cpu_offline() has
+already walked the list?
+
+During CPU teardown, callbacks run in descending order of enum cpuhp_state:
+
+include/linux/cpuhotplug.h:
+	CPUHP_AP_KVM_ONLINE,
+	CPUHP_AP_SCHED_WAIT_EMPTY,
+	...
+	CPUHP_AP_X86_KVM_ONLINE,
+	CPUHP_AP_ACTIVE,
+
+In CPUHP_AP_ACTIVE, sched_cpu_deactivate() clears cpu_active_mask and enabl=
+es
+balance_push_set(cpu, true), but draining tasks in migrate_disable() regions
+on the outgoing CPU happens later at CPUHP_AP_SCHED_WAIT_EMPTY via
+sched_cpu_wait_empty() -> balance_hotplug_wait().
+
+If a vCPU task running vcpu_run() enters a migrate_disable() region (for
+example on CONFIG_PREEMPT_RT where spinlock_t, rwlock_t such as kvm->mmu_lo=
+ck,
+and local_lock_t call migrate_disable(), or via bpf_prog_run_pin_on_cpu())
+and gets preempted or blocks on an rtmutex, __schedule() calls
+migrate_disable_switch(), setting p->cpus_ptr =3D cpumask_of(cpu) while
+p->cpus_mask retains its normal affinity mask.
+
+CPUHP_AP_X86_KVM_ONLINE then runs kvm_x86_cpu_offline() -> pi_cpu_offline(c=
+pu)
+while the vCPU is not in kvm_vcpu_block(), and the hotplug thread waits at
+CPUHP_AP_SCHED_WAIT_EMPTY in balance_hotplug_wait() because
+rq_has_pinned_tasks(rq) is true.
+
+When the vCPU task switches back in on the dying CPU, finish_lock_switch() =
+->
+__balance_callbacks() -> balance_push() returns early because migration is
+disabled:
+
+kernel/sched/core.c:balance_push() {
+	...
+	if (kthread_is_per_cpu(push_task) ||
+	    is_migration_disabled(push_task)) {
+		...
+		return;
+	}
+}
+
+When the vCPU task exits its migrate_disable() region, __migrate_enable() ->
+___migrate_enable() -> __set_cpus_allowed_ptr() -> affine_move_task() checks
+whether the current CPU is still in p->cpus_mask:
+
+kernel/sched/core.c:affine_move_task() {
+	...
+	if (cpumask_test_cpu(task_cpu(p), &p->cpus_mask) ||
+	    (task_current_donor(rq, p) && !task_current(rq, p))) {
+		struct task_struct *push_task =3D NULL;
+
+		if ((flags & SCA_MIGRATE_ENABLE) &&
+		    (p->migration_flags & MDF_PUSH) && !rq->push_busy) {
+			rq->push_busy =3D true;
+			push_task =3D get_task_struct(p);
+		}
+		...
+		return 0;
+	}
+}
+
+Because offline CPUs are not cleared from p->cpus_mask for tasks in
+top_cpuset, and MDF_PUSH was not set (MDF_PUSH is only set by RT/DL
+push_cpu_stop()), affine_move_task() returns 0 without migrating the task or
+setting TIF_NEED_RESCHED.
+
+If the vCPU task then reaches kvm_vcpu_halt() -> kvm_vcpu_block() ->
+schedule() before another preemption occurs, kvm_sched_out() ->
+vmx_vcpu_pi_put() -> pi_enable_wakeup_handler() will add vt->pi_wakeup_list=
+ to
+per_cpu(wakeup_vcpus_on_cpu, cpu) with pi_desc.ndst targeting the offline C=
+PU
+after pi_cpu_offline(cpu) has already finished.
+
+Should pi_cpu_offline() instead be invoked after CPUHP_AP_SCHED_WAIT_EMPTY
+(for instance from the CPUHP_AP_KVM_ONLINE stage, which was placed below
+CPUHP_AP_SCHED_WAIT_EMPTY so balance_hotplug_wait() has already drained all
+vCPU tasks from the outgoing CPU)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020085401.8029=
+6-1-jinmengzhou22@gmail.com?part=3D2
