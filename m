@@ -1,70 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493518;
-	b=vcfGjSFGFXccN718d4aD8lKcxjYt81CTpsw/eccCMivrv1iT9BC7ODEMULgY2jrvbZkn
-	 KdQt9SXFC1XK1jlmbd0n/wmmft4OzNo/DLnTvoCIfGjwTU+Ga01iOPPbIqQEa4+VJjiXP
-	 Yz/U3lMmhfre1/6ikTI76LDVNllpgdtjuhv/NtHHdD3nZb1XSKs3OAokmI+9bmhIhbkrD
-	 tTq5LH/jb8MSDk6bwsnln7CNm0JKdMh8PPiSmfI54ibCkc8eprpWT31yIKUplLJV6YCN4
-	 PecJy/J599uDOPKQvVcMbc8WKvm5FsrFA+3VO1c5C9saaocngxXzIwKfPYWie86XVLQ==
+	t=1792493528;
+	b=Qy28O2N7dWjE+iBhIOtxxVjH9WTCQz0xrx0xYSOmy40XlXk/d3Ipf6+pEL6s/o6HFNc7
+	 WVU8vNopmuIcJmk2ysmrKbNS8T90C3X++IkK1vvofEFf0BZBzp/mOpp4RDW87vU5SGpEx
+	 2bJgXE11CLIr42hYZQ8Wl7GVRbLE+aZDG4tHhIePm5y9PIsdZ4gyJno2ZnVX9qpP/VuHG
+	 6p1UGioW8lyhy10Bhh5gifWCm84tKDKlQHfmTWQ6VIQQMeRALebZdBcOGkfQdg13mw28d
+	 4OWTGlaVivt2MzPdiKjFuy+3SLkRJ3e6sgTaiPjGlvB/GX7WZuFPk0uF42vOwMcX7dw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493518;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493528;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
 	 X-Scanned-By;
-	bh=LYACgjhTWZ9q+fLhnzsamP9g+AzKgXq2yAfu5fEslcg=;
-	b=HQyqb6PDL4lVcUnJUosdRq5K35a432jgtWf0u2dqsfPehPO0/gOSp6Q+gmsDl2yCqCG5
-	 zuQaNVjYAEE9RemO0WeY4k5TS+rVq6xk+9U4HyDhwPef1G5oiAqnV/SCZTKBBKRtZ3sYh
-	 UXRrmVIhClBM0G/pr7VD+D0rR8R8YUz4pdbr1y0Pj2de/BknunrI2ZfXXi8SWurgqUFj3
-	 5GnMr5in/y7Mmehq1YZYB0c5NnvIRJwzyEsDxZsHzwaXaVQ/ue+A8q6f3E7JPfflS7VjQ
-	 zfAJEMIQu659mG2ruDL6doD1PERM6O1MmV95/vM2h4ZfDAtCRctWff4PELOYq9aCwjA==
+	bh=edIbxy8j0ZeLmK0JPM910tAFzYTrVmN4a79XoyzsTPs=;
+	b=jdfUs28gYZszNQ0dc+OKiz9SZMq7oOtWOXW2iOvgZO0l5e5Mhw32HZkM0CktXxBuMGP2
+	 AKJJU7YrlEOQGJ5zJoFNIUXhxjLfnm6CpQknSV0Q9t1bBATr2vKhsIAcXGN0i+EeksfHZ
+	 u9r3Sq4CpPgnnXjKyXoVPJZcI4U5M96nr19A5FAA6CUpw9+vxlMLjBWlLIAduycKz/wLV
+	 Rsd4yhVuxByTRyHkHRSi/nyjZVMhH3g/6f0aLBkoOkh3kmAqPPHQec5Un5Rws+yi4Elws
+	 9oEnugiynEdPu+h6bNFsi/IvFn3/NJRVGZriCWU95zosd95j/jFqnM3AhPLG/MlmHXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bu4casYT;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XWLOffIq;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4690060A381B
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:51:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4690060A381B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0562606A31B
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:52:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0562606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bu4casYT
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XWLOffIq
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792493516;
+	s=mimecast20190719; t=1792493526;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LYACgjhTWZ9q+fLhnzsamP9g+AzKgXq2yAfu5fEslcg=;
-	b=bu4casYToARdLgFBCkFiBQfC3w0GQGvFhpfS2TE53hWqj/AlYV/kcDS8vD6H5soXgElek+
-	RAzzIUd4s1bcUjtHVOUVKB+4ZGBUwnkXSv3ENpT5OP+Uwe81Br3XLvzb/o1LAso8sTJh4G
-	Z4I5ydCoySnRiz0hcR3SkrZui+Wl7oc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=edIbxy8j0ZeLmK0JPM910tAFzYTrVmN4a79XoyzsTPs=;
+	b=XWLOffIqp0dzfMN7npTE8ln70l0mHDaJQ4YaNJRInktXlCaBxNhmbyBVPhyAV6otDDtdZy
+	SGBHj4GLBUSArH6Iom+X3eSUe1sm1Jj0316wi3U4uAgDVTXTIztlHtKwQV/ossAe8gzT6w
+	DXMxUDvxjwkY5B0h7ZOJsOZASue9/7c=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-wz3IHZmqNpWyL00b1VAr7Q-1; Tue,
- 20 Oct 2026 10:51:46 +0000
-X-MC-Unique: wz3IHZmqNpWyL00b1VAr7Q-1
-X-Mimecast-MFC-AGG-ID: wz3IHZmqNpWyL00b1VAr7Q_1792493502
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-UkF2cxSIP0KFpD-x2kfPug-1; Tue,
+ 20 Oct 2026 10:52:03 +0000
+X-MC-Unique: UkF2cxSIP0KFpD-x2kfPug-1
+X-Mimecast-MFC-AGG-ID: UkF2cxSIP0KFpD-x2kfPug_1792493519
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 390C7180132B;
-	Tue, 20 Oct 2026 10:51:42 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 171B41955DE8;
+	Tue, 20 Oct 2026 10:51:59 +0000 (UTC)
 Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AEC3230000E7;
-	Tue, 20 Oct 2026 10:51:39 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D26A65BC;
+	Tue, 20 Oct 2026 10:51:55 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:46:18 +0400
-Subject: [PATCH v7 61/65] qdev: remove deprecated PropertyInfo.type and
- .enum_table fields
+Date: Tue, 20 Oct 2026 14:46:21 +0400
+Subject: [PATCH v7 64/65] qom: use QAPITypeInfo in object_property_get_enum
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,7 +75,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-61-431a86b02b58@redhat.com>
+Message-Id: <20261020-qom-qapi-v7-64-431a86b02b58@redhat.com>
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 To: qemu-devel@nongnu.org
@@ -151,159 +150,139 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
  Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5656;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4777;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=GW0iWX+ovnUEAGVG0BxcFS64OjWdn47qGiXFBFBt6kE=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZduD65Qr6F408CFXCHRwiWcGKpWuyckav27
- m0L7FlHyHOJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGXQAKCRDa6OEJdZac
- 5SIyD/9K494S/RKkzAsSOv9T/MgMAP/WgYu11N3TAUAFlouXn2Swjs8mxH+DvN0TL1zOI7DEln4
- fWF3jd4K9yGpeOdK3FVhlUuUGIu+vCahmXGsC2IRNnSgUJb4k2RHjeIiyWV/jhtNA/9wx465q/C
- 0OSjxbW+EtYZ3lz0RkjF6YDM+tm9WVYqnQnMDbFuzngcpgqksdveXP06Xu2THNHykMaEy9m8nir
- mzxnTI67NabjcysMX+MF1Qgy6e2kI6X8PSi5Ii4CpJXlg6NszHB8aISyuxGh3En/Fv2Y/2f/fzC
- sIKxBFBcSVSMYhRpwzAZZCX8YSUbh2Y42NRkfwZMI08gHA+sl8pYFdenolCBtd8mEDlWjtCWGLB
- c97FNo8YgEqQpDTNZOal6LhBdRktum+TSi1XlcqMndZ/TCO/g5x8g/hnsFrp/+6WHt+4VAegrzT
- mkGeBr/Y+ok5ueSlc+kTZYEoLpKHAsHeYM3r+GcPnXOgCk9GvkOrAfaAoHc155+qqmkOyAUeWJu
- V4X338aVVee/lykp8yDDcAkwPVhw1DH0lCRXuHCA2/aR8xhiZg8zMindNp8TtG/QbTUCwDa/WMw
- hJcKbcWKMOqkjIZn3eNTlzVwzpE6SFeoKKAnXaQFooDRlL0a/mAzPqJ1ahGBT4iLEdc/AVpxjkM
- ETt5bqcvNS2VmlQ==
+ bh=btPOLigegMrUtE/H8gDPhCCZC+0Be3DpIj2amZiGpeM=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZdBPk60N5wT01axiLdb48ZwuPjCejnM2ZCc
+ 8PglQD+RAWJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGXQAKCRDa6OEJdZac
+ 5SPyEAC5HRZ0r0eZqxI5kzCsHrclz4H0Z1qTSRRBggURJDWP1KPYcglKwzX4001DDcIq+3FTVpq
+ uqL6jJTS5vpJyJyR897eCp/+/txzLU8tlhsslIoDbOhlREexjvA38cJU7R22vQlvcx+DpICRHE3
+ a5XvP5h0s1/Pyiwdap+iMevEvuEEcbH/jRuSHep2d8iVv7Koi8q0iUC8zZ9PuwSKBiXi/oILGfy
+ aiMrs8f/RgP9W/MoV3ZQRoFzC+PDRjFuTVfcaA60kq0BkbXlZZqC8u7Z+II9Xx+mxD8jpqF0dvl
+ YdxYl9iXw3cbjdx662K6DNPPTjQqlqch+lUyD9IDKGSOxwMVRZODMwFtKF8oOvp/VlJSjSI2dYp
+ n/X+gSwpl4DPtL64HznEe7j1fcGEq0YFRHnDbDHbwuxtIa57jCuK6wDAdaarfxUiuLtPfX7zXKA
+ 1mhzw7Xk53JCYfVRtyhDDwz68cwocztkSeDoHbr+rWIMtJWAgR3K0ZgRcwpuhUoaQpp7LtkUpd6
+ SttTn4wc4MNuYc4Awpzamcf3DaIFaC+EQhFDU5i9gl+OPJb5rstVcuwsDzcleSXgUaDrqgSpCQo
+ Bgm5lkNrnrlf7BG0h6WM3CgbBEadCmph3q1159HTgqfLA36QI7zt946mDEQrtiXWNDke3TZA+Wo
+ l6wkFmd77J6ABag==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Now that all PropertyInfo definitions use .qapi_type, remove the
-legacy .type (string) and .enum_table fields from PropertyInfo, and
-the .arrayinfo/.arrayfieldsize fields from Property.
-
-Remove fallback branches in qdev_property_add_static() and
-qdev_class_add_property() that used object_property_add() with
-prop->info->type: these always use the QAPI-aware registration
-path now. Simplify qdev_propinfo_enum_lookup(), prop_array_info()
-and prop_array_elem_size() to use the new fields directly.
+The typename parameter becomes a QAPITypeInfo pointer, and the
+validation compares prop->qapi_type against it instead of matching
+prop->type strings.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/core/qdev-properties.c         | 58 ++++++++++++---------------------------
- include/hw/core/qdev-properties.h |  4 ---
- 2 files changed, 17 insertions(+), 45 deletions(-)
+ hw/core/machine-qmp-cmds.c      | 4 +++-
+ include/qom/object.h            | 4 ++--
+ qom/object.c                    | 8 ++++----
+ tests/unit/check-qom-proplist.c | 6 +++---
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 5c403cc2e57e..a121878467e1 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -103,11 +103,8 @@ static ObjectPropertyAccessor *field_prop_setter(const PropertyInfo *info)
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 3fee45d568da..6b425baeb2da 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -18,6 +18,7 @@
+ #include "qapi/qapi-commands-accelerator.h"
+ #include "qapi/qapi-commands-machine.h"
+ #include "qobject/qobject.h"
++#include "qapi/qapi-type-infos-common.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/type-helpers.h"
+ #include "qemu/uuid.h"
+@@ -252,7 +253,8 @@ static int query_memdev(Object *obj, void *opaque)
+         } else {
+             m->has_reserve = true;
+         }
+-        m->policy = object_property_get_enum(obj, "policy", "HostMemPolicy",
++        m->policy = object_property_get_enum(obj, "policy",
++                                             &HostMemPolicy_type_info,
+                                              &error_abort);
+         host_nodes = object_property_get_qobject(obj,
+                                                  "host-nodes",
+diff --git a/include/qom/object.h b/include/qom/object.h
+index a9bbc44cfcc9..9f937e30dae5 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -1566,7 +1566,7 @@ uint64_t object_property_get_uint(Object *obj, const char *name,
+  * object_property_get_enum:
+  * @obj: the object
+  * @name: the name of the property
+- * @typename: the name of the enum data type
++ * @type_info: the QAPITypeInfo of the enum
+  * @errp: returns an error if this function fails
+  *
+  * Returns: the value of the property, converted to an integer (which
+@@ -1574,7 +1574,7 @@ uint64_t object_property_get_uint(Object *obj, const char *name,
+  * value is not an enum).
+  */
+ int object_property_get_enum(Object *obj, const char *name,
+-                             const char *typename, Error **errp);
++                             const QAPITypeInfo *type_info, Error **errp);
  
- const QEnumLookup *qdev_propinfo_enum_lookup(const PropertyInfo *info)
- {
--    if (info->qapi_type) {
--        assert(info->qapi_type->lookup);
--        return info->qapi_type->lookup;
--    }
--    return info->enum_table;
-+    assert(info->qapi_type->lookup);
-+    return info->qapi_type->lookup;
+ /**
+  * object_property_set:
+diff --git a/qom/object.c b/qom/object.c
+index 791d981dc689..40b569d4d574 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -1775,7 +1775,7 @@ uint64_t object_property_get_uint(Object *obj, const char *name,
  }
  
- void qdev_propinfo_get_enum(Object *obj, Visitor *v, const char *name,
-@@ -668,18 +665,12 @@ struct ArrayElementList {
- 
- static const PropertyInfo *prop_array_info(const Property *prop)
+ int object_property_get_enum(Object *obj, const char *name,
+-                             const char *typename, Error **errp)
++                             const QAPITypeInfo *type_info, Error **errp)
  {
--    if (prop->info->element_info) {
--        return prop->info->element_info;
--    }
--    return prop->arrayinfo;
-+    return prop->info->element_info;
- }
- 
- static int prop_array_elem_size(const Property *prop)
- {
--    if (prop->info->element_size) {
--        return prop->info->element_size;
--    }
--    return prop->arrayfieldsize;
-+    return prop->info->element_size;
- }
- 
- /*
-@@ -1224,20 +1215,13 @@ void qdev_property_add_static(DeviceState *dev, const Property *prop)
-     const QAPITypeInfo *qapi_type = qdev_prop_qapi_type(prop);
- 
-     assert(!prop->info->create);
-+    assert(qapi_type);
- 
--    if (qapi_type) {
--        op = object_property_add_qapi(obj, prop->name, qapi_type,
--                                      field_prop_getter(prop->info),
--                                      field_prop_setter(prop->info),
--                                      prop->info->release,
--                                      (Property *)prop);
--    } else {
--        op = object_property_add(obj, prop->name, prop->info->type,
--                                 field_prop_getter(prop->info),
--                                 field_prop_setter(prop->info),
--                                 prop->info->release,
--                                 (Property *)prop);
--    }
-+    op = object_property_add_qapi(obj, prop->name, qapi_type,
-+                                  field_prop_getter(prop->info),
-+                                  field_prop_setter(prop->info),
-+                                  prop->info->release,
-+                                  (Property *)prop);
- 
-     object_property_set_description(obj, prop->name,
-                                     prop->info->description);
-@@ -1261,21 +1245,13 @@ static void qdev_class_add_property(DeviceClass *klass, const char *name,
-     } else {
-         const QAPITypeInfo *qapi_type = qdev_prop_qapi_type(prop);
- 
--        if (qapi_type) {
--            op = object_class_property_add_qapi(oc,
--                                               name, qapi_type,
--                                               field_prop_getter(prop->info),
--                                               field_prop_setter(prop->info),
--                                               prop->info->release,
--                                               (Property *)prop);
--        } else {
--            op = object_class_property_add(oc,
--                                           name, prop->info->type,
--                                           field_prop_getter(prop->info),
--                                           field_prop_setter(prop->info),
--                                           prop->info->release,
--                                           (Property *)prop);
--        }
-+        assert(qapi_type);
-+        op = object_class_property_add_qapi(oc,
-+                                            name, qapi_type,
-+                                            field_prop_getter(prop->info),
-+                                            field_prop_setter(prop->info),
-+                                            prop->info->release,
-+                                            (Property *)prop);
+     char *str;
+     int ret;
+@@ -1785,10 +1785,10 @@ int object_property_get_enum(Object *obj, const char *name,
+         return -1;
      }
-     if (prop->set_default) {
-         prop->info->set_default_value(op, prop);
-diff --git a/include/hw/core/qdev-properties.h b/include/hw/core/qdev-properties.h
-index 39f95ce7a3c6..2267e734d1fd 100644
---- a/include/hw/core/qdev-properties.h
-+++ b/include/hw/core/qdev-properties.h
-@@ -23,17 +23,13 @@ struct Property {
-         int64_t i;
-         uint64_t u;
-     } defval;
--    const PropertyInfo *arrayinfo;
-     int          arrayoffset;
--    int          arrayfieldsize;
-     uint8_t      bitnr;
-     bool         set_default;
- };
  
- struct PropertyInfo {
--    const char *type;
-     const char *description;
--    const QEnumLookup *enum_table;
-     const QAPITypeInfo *qapi_type;
-     const struct PropertyInfo *element_info;
-     int element_size;
+-    if (!g_str_equal(prop->type, typename)) {
++    if (prop->qapi_type != type_info) {
+         error_setg(errp, "Property %s on %s is not '%s' enum type",
+-                   name, object_class_get_name(
+-                       object_get_class(obj)), typename);
++                   name, object_class_get_name(object_get_class(obj)),
++                   type_info->name);
+         return -1;
+     }
+ 
+diff --git a/tests/unit/check-qom-proplist.c b/tests/unit/check-qom-proplist.c
+index 69155e720751..1cb48c7490ef 100644
+--- a/tests/unit/check-qom-proplist.c
++++ b/tests/unit/check-qom-proplist.c
+@@ -582,14 +582,14 @@ static void test_dummy_getenum(void)
+ 
+     val = object_property_get_enum(OBJECT(dobj),
+                                    "av",
+-                                   "DummyAnimal",
++                                   &dummy_animal_qapi_type_info,
+                                    &error_abort);
+     g_assert(val == DUMMY_PLATYPUS);
+ 
+     /* A bad enum type name */
+     val = object_property_get_enum(OBJECT(dobj),
+                                    "av",
+-                                   "BadAnimal",
++                                   &dummy_str_qapi_type_info,
+                                    &err);
+     g_assert(val == -1);
+     error_free_or_abort(&err);
+@@ -597,7 +597,7 @@ static void test_dummy_getenum(void)
+     /* A non-enum property name */
+     val = object_property_get_enum(OBJECT(dobj),
+                                    "iv",
+-                                   "DummyAnimal",
++                                   &dummy_animal_qapi_type_info,
+                                    &err);
+     g_assert(val == -1);
+     error_free_or_abort(&err);
 
 -- 
 2.56.0.116.g6de20f6092dc
