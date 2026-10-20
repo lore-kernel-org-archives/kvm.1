@@ -1,136 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493517;
-	b=F7DBKmghTCRqWqK7x9TUCqBmCezT0bdMnqnyp9IaRhyUWj8qrhHU5oS2tx3YtxYMqzsd
-	 bYH7pEj0AUMHTYNgGFwb1uM0KghxVpZxXo8f3Ne5ZM1IF8q+m8O0gPKuulnM1Ue7LUVyz
-	 ea4yBvVivzQjNTeso0VVWmgafW2TvuX0vdNSv4OPny570FghgCauNJyu1d9Ic6tOsvVWJ
-	 LE4yOUjcpfQhPWU2aRaWEGF2Uzm/BqxdDF/FT79iOe/JntRi/HlQ/14OdhWtqp8ks8EqL
-	 nP8enHM8p32oE20e0EphBYen0SoMLcSXdL/kVz48VZ2GZvtJi6r879acI4mTrOvlXWA==
+	t=1792493518;
+	b=dSE7v1wkdXcv8K54Jc5emh+i7EugQ1prTIg++1XBGgdvhVE3Ty2XamOuVUdGXG7+vdQG
+	 /dOgSMxxd2Uf+GBOSn6fLc0OCritY4Ms+Oz2Wg/rY/yrTY7JH80YyTeuRRbYaAtni5KwD
+	 Oz4j4d26WpHvlgXuG2WOFm7QeFDYBg3sFaPXIJ2lT9lOQGxGVT5Ge2LSU04uUY6gQVk+s
+	 IU7yLEkJGk+/hkbFsjKyfxRMIPboIJ2K0mR+IzZITwTPAnKyDqSnecyGbOO5SrO6LRO4Q
+	 D8NvTuUxOTUtruA88w8wz8QvmBMAp6F2jblWHTOQ6uG+y105kD6MKUFezMXNyMfTYog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493517;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=Ko6yZh9M1s2VW5tIdG2OCTSHQVjujibVM95DZEJ7phw=;
-	b=M4ekcrzI6q9rXXQ0dAbfmBZTPiiWhRwIy7WvQ4nBWRoK73dsUd9PAYMAsur/oxAPi1SZ
-	 iKVMFvBuzR2WJzjyz9mdeR5hNiHhkAPkZoFLEjmTI+L1hxZd2Q6yRNdbhZoppE1AyA9vq
-	 bm0/hDGbqM6HSnRaLhpjBxK1xpRdQ4LteE6rMNGd4+KVIqg2UYQQeSL0r340Pkbp2vrv1
-	 jtc6Ugowd64eSc+2qjg3GV2nmH/25fvaIVTb8QByVSO27ytyo4DNR6y1ovWMQRx4ripaq
-	 iREoDIpmEbQyE4X1kHXHsihMvxT+9eRKoJ2jRe26a/k5NWpI67dkgvo0sPjgcyRZTYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493518;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
+	 X-Scanned-By;
+	bh=th1JKpfzAzi8+0DyZvMgIumhc4CFEiTeW47qkGiYHs4=;
+	b=kiFlGLOG9wrYnupczgBloyk1dmcy9lWSKa/YJOzM7m3iMjofJ89jLTGf871626azIZMy
+	 3Rmr/1gHk6Q9Yq6UoKGDue0/jRv+c8BlLrokgrm1xz4QVCnN1mSXsI8tfGPKMhj8Oat31
+	 5/6aBYoL95KZXYraIDU7s6wWCvZMRMPQXz4tR5pbMem+1MCC0IKoauqQxfqzkgR3Rxs6Y
+	 F9XJ2IBKZGS0Ju0cvUws8hDGz630BP23ATU5PNSuMwZKf7VTgnmcvO0RDqjYkUEJuGXPO
+	 TstyNWZpkjllZ9N2psgTYztyDy7W+aydC4Il+vdaLwwFJiP6pAbzNscaIujn3695ulw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PoXPZ8YD;
-	arc=none smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="EsuFvIr/";
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499BF60A3819
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F209660A2634
 	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:51:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 499BF60A3819
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F209660A2634
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PoXPZ8YD
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c45111bebso1912461f8f.0
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 03:51:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1792493515; x=1793098315; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ko6yZh9M1s2VW5tIdG2OCTSHQVjujibVM95DZEJ7phw=;
-        b=PoXPZ8YDshKNfSGDlFq54ZiT3REVhQWlWmpKaOqkkSRW2y0KUG7T0pSmqI70Pjvzf4
-         v7NU0g9SBvCOmH/WzR6sfC+RSt2ZEmQpseGvn2Sy7EymxRoDgUu0OlGtIDAQqEXl0KVM
-         mItupb7FHHXFQSx+wYmsuxCBlq5po77ewuTgvGdG8PeQ8Ne9U7jFfDp1mJlh54wbUguD
-         wlQdDkx/O6Qotwj3khhhQd/iLkl9upDenxPqemFSO9gDsEAHT19avIpjaQMZdOqD3IR3
-         /4L0xzrW9sQexqppsDPeu/AwAtFBw801P2m1GfLKD/IYW2KtQTjkTvqQnc/FQo+nsrL4
-         0Qbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792493515; x=1793098315;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ko6yZh9M1s2VW5tIdG2OCTSHQVjujibVM95DZEJ7phw=;
-        b=TGMrKthPJq0u9HDS1Q5PAa1rCdsqAzz/HLAvUnKNU1VIC4FJIeGwpd9dNryIOwwJoC
-         AM8zkgIxc6GsocstcBX1ZjAAoRjn+e0NSSJu8v5KmUAeEdMZpRJA9ZsEND6cgoj3FA8S
-         xpj0Di1sfsV62ut48mDVUYH8qLg2e831tIPizpEhmytZt15OrsHayXfRckKMYNpB94WO
-         nQm4Vfsx+9IrwyFUv3H+tNpSWJsrRamEx5iqIDlE4TynuyN+dTJ1KiLfpA+zdsRX9MzV
-         mNY92sSggmgvB56Oe71DqlWa0KU+5dHq6M6O3sPscJXWAhB2cKvRR7F0tHvmPwnUb9AX
-         vzHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzTiZnwi8dhbw3rYhYMhfbSJyD0a9dXz3VmmfSfT09gSdh8ycsid9lILfnjR+3h0Dv7bHA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJnq5VAHW7whghHRnb3dwFRIMZVmoyvBCjMd+z5Tc/c98XJT0QZ
-	wc84ZUiP890/FlfxL/nXDDxxpHIRPQz0rlNmn3howx4i7iiPPh57R9JYvBdqqXcnbUY=
-X-Gm-Gg: AYBFou1AdVvQScf9wR0E5nMd9ChML6mAXjn29a+150iNG2nQ0ETEtT841Y/rG1S+kBp
-	oNeR4xgiVQgqENX24PFMq8ChgyNDtOw1v919Wm+W+en5FMaIawVKy82PiQwjS0zfHrsqk4DUzTR
-	Vpu3A5Ezf8TV/n9NzPqarpryF1x2mPHx/Srpxo93cu3Wg5QaHkz4bsGoEI9p31RfUxZzKDcOvUr
-	ogmzIHLcUpsSMbHmDCgQSiQhrdjhD1rhsB1xWe7SRZEGymVBzymWZQoNsMAIDZ+kIuoSYg8d9xm
-	QhruUfs11NJnE1WMzEEHXlKWJtu3tUEQPajxJNwRISHpV9ar0m75D2HWicS4LFEWiPxv2o+T3Nj
-	QdJDglWk/rHrvgyuXcyFU36LOpwHIEB6upKAm2xHxJKdrjLH1Q1E3WT6KdlCVatMJ0t0PcRGTsd
-	BVUJzFYdsaIDpM8KGkV5V3RFghEBnj5cnG4EHQ7YlpAZiC1S0GC0Zp6d6ytjbA/66nbuGYEQ==
-X-Received: by 2002:a05:6000:29d2:b0:48b:f93:3b87 with SMTP id ffacd0b85a97d-48e07fc7a04mr13714326f8f.30.1792493514603;
-        Tue, 20 Oct 2026 03:51:54 -0700 (PDT)
-Received: from draig.lan ([185.124.0.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d80f9cdsm5176970f8f.11.2026.10.20.03.51.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 03:51:53 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 95B4C5FA43;
-	Tue, 20 Oct 2026 11:43:24 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Song Gao <17746591750@163.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Bernhard Beschow <shentey@gmail.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Durrant <paul@xen.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Walk?= <bwalk@linux.ibm.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	qemu-s390x@nongnu.org,
-	David Woodhouse <dwmw2@infradead.org>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	qemu-ppc@nongnu.org,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	kvm@vger.kernel.org,
-	qemu-arm@nongnu.org,
-	linux-edac@vger.kernel.org,
-	Glenn Miles <milesg@linux.ibm.com>,
-	Chao Liu <chao.liu@processmission.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Chinmay Rath <rathc@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Weiwei Li <liwei1518@gmail.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	qemu-riscv@nongnu.org,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 22/23] accel/kvm: cache KVMCPUOps
-Date: Tue, 20 Oct 2026 11:43:16 +0100
-Message-ID: <20261020104320.3686723-23-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261020104320.3686723-1-alex.bennee@linaro.org>
-References: <20261020104320.3686723-1-alex.bennee@linaro.org>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EsuFvIr/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792493516;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=th1JKpfzAzi8+0DyZvMgIumhc4CFEiTeW47qkGiYHs4=;
+	b=EsuFvIr/Opo2dpcrc92u4DQgS/+C9k3yD9tfXf7sXD5fCVOUI96+5ochFzdcbM/CWCUHuc
+	MmyoNxtDKTJbk0+Cn510+GFzt8qiLaDmw44nuRVmKLCituWLRy4c/f3f/iSSdPc4wxS5n2
+	lPgNOjuco4s0d7NbAiKg9x207QCFZH8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-MDo8sez-NcyGAOl5_G0YjQ-1; Tue,
+ 20 Oct 2026 10:51:52 +0000
+X-MC-Unique: MDo8sez-NcyGAOl5_G0YjQ-1
+X-Mimecast-MFC-AGG-ID: MDo8sez-NcyGAOl5_G0YjQ_1792493508
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E077E1955DD1;
+	Tue, 20 Oct 2026 10:51:47 +0000 (UTC)
+Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9E9F31800677;
+	Tue, 20 Oct 2026 10:51:44 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Date: Tue, 20 Oct 2026 14:46:19 +0400
+Subject: [PATCH v7 62/65] hw/i386: convert PCSouthBridgeOption to QAPI enum
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -140,91 +73,289 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20261020-qom-qapi-v7-62-431a86b02b58@redhat.com>
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, John Snow <jsnow@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ David Hildenbrand <david@kernel.org>, Igor Mammedov <imammedo@redhat.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ kvm@vger.kernel.org, Alberto Garcia <berto@igalia.com>, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>, 
+ Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>, 
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
+ Jagannathan Raman <jag.raman@oracle.com>, 
+ John Levon <john.levon@nutanix.com>, 
+ Thanos Makatos <thanos.makatos@nutanix.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Eric Farman <farman@linux.ibm.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org, 
+ linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Sergio Lopez <slp@redhat.com>, 
+ qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org, 
+ Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>, 
+ Xianglai Li <lixianglai@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Pedro Barbuda <pbarbuda@microsoft.com>, 
+ Mohamed Mediouni <mohamed@unpredictable.fr>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org, 
+ Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>, 
+ Alistair Francis <alistair@alistair23.me>, Alexander Graf <graf@amazon.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, 
+ zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>, 
+ Luc Michel <luc@lmichel.fr>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Jamin Lin <jamin_lin@aspeedtech.com>, Kane Chen <kane_chen@aspeedtech.com>, 
+ Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>, 
+ FangSheng Huang <FangSheng.Huang@amd.com>, Tyrone Ting <kfting@nuvoton.com>, 
+ Hao Wu <wuhaotsh@google.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>, 
+ Aditya Gupta <adityag@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>, 
+ Conor Dooley <conor@kernel.org>, 
+ Sebastian Huber <sebastian.huber@embedded-brains.de>, 
+ Halil Pasic <pasic@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Jason Herne <jjherne@linux.ibm.com>, Titus Rwantare <titusr@google.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony PERARD <anthony@xenproject.org>, Peter Xu <peterx@redhat.com>, 
+ Chinmay Rath <rathc@linux.ibm.com>, 
+ Hendrik Brueckner <brueckner@linux.ibm.com>, xen-devel@lists.xenproject.org, 
+ Roman Bolshakov <rbolshakov@ddn.com>, 
+ Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>, 
+ Farhan Ali <alifm@linux.ibm.com>, Alex Williamson <alex@shazbot.org>, 
+ Tao Tang <tangtao1634@phytium.com.cn>, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, Fabiano Rosas <farosas@suse.de>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
+ Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6526;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=jr+R1XEAXGqEfl6dzBqQchDTHMoMaEnbkkCJTWPjK7M=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZdHAMFgnhAvWl4qCaozSGC8ZoljjEYi6VBP
+ 70IoZTx452JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGXQAKCRDa6OEJdZac
+ 5bQgEACXrVy4PI0RHLf3EYbpFdgeh/G/qw9Szqqn90QJFXbDyFtQmp3c6wFtAFWSP3ffrhRIGOr
+ RcUHeYkCVoyizAcDDgjI8OyPrmHVEnG3PwXeWRtGK0kH1my0bbmCJx/osVW8rApSvdzvYpi9s0Y
+ 6bnxKKjw0JzliwdtFqTmFt0nn1S7YQOKfUDqhPgAWAHg8bwDPi1N1201GaF9lvKcJLYtaT4uNPx
+ duB+KEvf23TePBMMCkwNlGjW5qm6S0gf5Ryxjb7UDLk0DAMDD6sOLYbUwrlEcS2bJu7T+7pz3Pk
+ KIUx9WJmwNr8hA510xbEUM7U+qI4jtLtBszuvBioYQI3kVmqBqcaNtqPICXlIwOy+0b4xnL1Gkk
+ eA26OvbARkhRxfm9CnY4bEgdMJQoeQnDOu1qzkbjiH5164V7Vey/w6iyXw5kqW/vm1Sq08RW2k9
+ ICd329fnCbR+neChTSaunOu2wlSsKfBfb8AHGJDPC9l+G08VUaWeDhOHfuAgrke7NLVPatk+RPO
+ Idq2+9q621/0Y/k95lzrzNRBGYp6P2uo1GlxLYcHglKAYZo/Cej2Jt8gBe7Gw+Qz351rWqwXcvm
+ 8YX+kB6Z2Q3knEFy4SolR3NudeuK7WGfrFsryom7DUjqSDf2dGK5/LD4kxH5aflGMGZmB0moZnG
+ LnhWzV1mrbEwmtw==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Doing a QOM cast each time we need KVMCPUOps is overkill, especially
-considering it is a single static assignment when we configure the
-accelerator. Cache the value on kvm_init_vcpu and use it.
+Move PCSouthBridgeOption from a hand-rolled C enum to a proper QAPI
+enum in qapi/machine.json.
 
-We also assert that anytime the system asks for KVMCPUOps it should be
-at a point we can honour the request.
+This gives the x-south-bridge property a generated type_info with a
+valid masked_name, so it appears in query-qmp-schema introspection and
+the qapi-type field of qom-list-properties output.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+The south_bridge/default_south_bridge fields change from const char *
+to PCSouthBridgeOption, with an explicit mapping table from enum value
+to QOM device type name.
+
+Enum values are changed: "PIIX3"->"ppix3", "piix4-isa"->"piix4", this
+is under a x-property, so shouldn't be a breaking change.
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/accel/kvm/cpu-ops.h | 13 +++++++++----
- include/hw/core/cpu.h       |  3 +++
- accel/kvm/kvm-all.c         |  4 ++++
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ hw/i386/pc_piix.c    | 61 ++++++++++++++++------------------------------------
+ include/hw/i386/pc.h |  4 ++--
+ qapi/machine.json    | 14 ++++++++++++
+ 3 files changed, 34 insertions(+), 45 deletions(-)
 
-diff --git a/include/accel/kvm/cpu-ops.h b/include/accel/kvm/cpu-ops.h
-index d43bc845ad5..075bac1d494 100644
---- a/include/accel/kvm/cpu-ops.h
-+++ b/include/accel/kvm/cpu-ops.h
-@@ -156,11 +156,16 @@ DECLARE_CLASS_CHECKERS(KVMAccelCPUClass, KVM_ACCEL_CPU, TYPE_KVM_ACCEL_CPU)
-  */
- static inline const KVMCPUOps *kvm_get_cpu_ops(const CPUState *cpu)
- {
--    if (cpu->cc->accel_cpu) {
--        KVMAccelCPUClass *kacc = KVM_ACCEL_CPU_CLASS(cpu->cc->accel_cpu);
--        return kacc->cpu_ops;
-+    if (cpu) {
-+        if (cpu->kvm_cpu_ops) {
-+            return cpu->kvm_cpu_ops;
-+        }
-+        if (cpu->cc->accel_cpu) {
-+            KVMAccelCPUClass *kacc = KVM_ACCEL_CPU_CLASS(cpu->cc->accel_cpu);
-+            return kacc->cpu_ops;
-+        }
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 63c4667ea372..5a94a34166d8 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -47,6 +47,7 @@
+ #include "hw/acpi/acpi.h"
+ #include "hw/vfio/types.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-machine.h"
+ #include "qemu/error-report.h"
+ #include "system/xen.h"
+ #ifdef CONFIG_XEN
+@@ -75,6 +76,11 @@ static GlobalProperty pc_piix_compat_defaults[] = {
+ static const size_t pc_piix_compat_defaults_len =
+     G_N_ELEMENTS(pc_piix_compat_defaults);
+ 
++static const char *pc_south_bridge_type[] = {
++    [PC_SOUTH_BRIDGE_OPTION_PIIX3] = TYPE_PIIX3_DEVICE,
++    [PC_SOUTH_BRIDGE_OPTION_PIIX4] = TYPE_PIIX4_PCI_DEVICE,
++};
++
+ /*
+  * Return the global irq number corresponding to a given device irq
+  * pin. We could also use the bus number to have a more precise mapping.
+@@ -236,7 +242,8 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+ 
+     gsi_state = pc_gsi_create(&x86ms->gsi, true);
+ 
+-    pci_dev = pci_new_multifunction(-1, pcms->south_bridge);
++    pci_dev = pci_new_multifunction(-1,
++                                    pc_south_bridge_type[pcms->south_bridge]);
+     object_property_set_bool(OBJECT(pci_dev), "has-usb",
+                              machine_usb(machine), &error_abort);
+     object_property_set_bool(OBJECT(pci_dev), "has-acpi",
+@@ -317,51 +324,18 @@ static void pc_init1(MachineState *machine, const char *pci_type)
      }
--    return NULL;
-+    g_assert_not_reached();
  }
  
- #endif /* ACCEL_KVM_CPU_OPS_H */
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 456154df6f6..1e164036286 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -473,6 +473,8 @@ struct qemu_work_item;
-  *    ring is enabled.
-  * @kvm_fetch_index: Keeps the index that we last fetched from the per-vCPU
-  *    dirty ring structure.
-+ * @kvm_cpu_ops: Cached pointer to the KVMCPUOps table to avoid QOM lookups
-+ *    in the run loop.
-  *
-  * @neg_align: The CPUState is the common part of a concrete ArchCPU
-  * which is allocated when an individual CPU instance is created. As
-@@ -554,6 +556,7 @@ struct CPUState {
-     uint32_t kvm_fetch_index;
-     uint64_t dirty_pages;
-     int kvm_vcpu_stats_fd;
-+    const struct KVMCPUOps *kvm_cpu_ops;
+-typedef enum PCSouthBridgeOption {
+-    PC_SOUTH_BRIDGE_OPTION_PIIX3,
+-    PC_SOUTH_BRIDGE_OPTION_PIIX4,
+-    PC_SOUTH_BRIDGE_OPTION_MAX,
+-} PCSouthBridgeOption;
+-
+-static const QEnumLookup PCSouthBridgeOption_lookup = {
+-    .array = (const char *const[]) {
+-        [PC_SOUTH_BRIDGE_OPTION_PIIX3] = TYPE_PIIX3_DEVICE,
+-        [PC_SOUTH_BRIDGE_OPTION_PIIX4] = TYPE_PIIX4_PCI_DEVICE,
+-    },
+-    .size = PC_SOUTH_BRIDGE_OPTION_MAX
+-};
+-
+ static int pc_get_south_bridge(Object *obj, Error **errp)
+ {
+     PCMachineState *pcms = PC_MACHINE(obj);
+-    int i;
  
-     /* Use by accel-block: CPU is executing an ioctl() */
-     QemuLockCnt in_ioctl_lock;
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 5189cdc6a01..041113ed9b5 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -746,6 +746,9 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
-     KVMState *s = kvm_state;
-     int ret;
+-    for (i = 0; i < PCSouthBridgeOption_lookup.size; i++) {
+-        if (g_strcmp0(PCSouthBridgeOption_lookup.array[i],
+-                      pcms->south_bridge) == 0) {
+-            return i;
+-        }
+-    }
+-
+-    error_setg(errp, "Invalid south bridge value set");
+-    return 0;
++    return pcms->south_bridge;
+ }
  
-+    assert(ops);
-+    cpu->kvm_cpu_ops = ops;
+ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
+ {
+     PCMachineState *pcms = PC_MACHINE(obj);
+ 
+-    if (value < 0) {
+-        error_setg(errp, "Value can't be negative");
+-        return;
+-    }
+-
+-    if (value >= PCSouthBridgeOption_lookup.size) {
+-        error_setg(errp, "Value too big");
+-        return;
+-    }
+-
+-    pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
++    pcms->south_bridge = value;
+ }
+ 
+ #ifdef CONFIG_XEN
+@@ -398,7 +372,7 @@ static void pc_i440fx_machine_options(MachineClass *m)
+ {
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     ObjectClass *oc = OBJECT_CLASS(m);
+-    pcmc->default_south_bridge = TYPE_PIIX3_DEVICE;
++    pcmc->default_south_bridge = PC_SOUTH_BRIDGE_OPTION_PIIX3;
+     pcmc->pci_root_uid = 0;
+     pcmc->default_cpu_version = 1;
+ 
+@@ -413,12 +387,13 @@ static void pc_i440fx_machine_options(MachineClass *m)
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_UEFI_VARS_X64);
+ 
+-    object_class_property_add_enum(oc, "x-south-bridge", "PCSouthBridgeOption",
+-                                   &PCSouthBridgeOption_lookup,
+-                                   pc_get_south_bridge,
+-                                   pc_set_south_bridge);
+-    object_class_property_set_description(oc, "x-south-bridge",
+-                                     "Use a different south bridge than PIIX3");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "x-south-bridge",
++        .description = "Use a different south bridge than PIIX3",
++        .qapi_type = &PCSouthBridgeOption_type_info,
++        .get = pc_get_south_bridge,
++        .set = pc_set_south_bridge,
++    ));
+     compat_props_add(m->compat_props,
+                      pc_piix_compat_defaults, pc_piix_compat_defaults_len);
+ }
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 8edec62a1af2..3afd376116b1 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -47,7 +47,7 @@ typedef struct PCMachineState {
+     uint64_t max_ram_below_4g;
+     OnOffAuto vmport;
+     SmbiosEntryPointType smbios_entry_point_type;
+-    const char *south_bridge;
++    PCSouthBridgeOption south_bridge;
+ 
+     bool acpi_build_enabled;
+     bool wdat_enabled;
+@@ -94,7 +94,7 @@ struct PCMachineClass {
+ 
+     /* Device configuration: */
+     bool pci_enabled;
+-    const char *default_south_bridge;
++    PCSouthBridgeOption default_south_bridge;
+ 
+     /* Compat options: */
+ 
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 46b6935ab0b8..cc028e890ae5 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -462,6 +462,20 @@
+ { 'enum': 'Pca9554PinState',
+   'data': ['low', 'high'] }
+ 
++##
++# @PCSouthBridgeOption:
++#
++# South bridge chipset option for PC i440FX machines.
++#
++# @piix3: Intel PIIX3 (default)
++#
++# @piix4: Intel PIIX4
++#
++# Since: 11.2
++##
++{ 'enum': 'PCSouthBridgeOption',
++  'data': ['piix3', 'piix4'] }
 +
-     trace_kvm_init_vcpu(cpu->cpu_index, kvm_vcpu_id(cpu));
- 
-     if (ops->pre_create_vcpu) {
-@@ -4111,6 +4114,7 @@ int kvm_on_sigbus(int code, void *addr)
-      * we can only get action optional here.
-      */
-     assert(code != BUS_MCEERR_AR);
-+    assert(first_cpu);
-     ops = kvm_get_cpu_ops(first_cpu);
-     if (ops && ops->on_sigbus_vcpu) {
-         ops->on_sigbus_vcpu(first_cpu, code, addr);
+ ##
+ # @inject-nmi:
+ #     Injects a Non-Maskable Interrupt (machine specific: for example
+
 -- 
-2.47.3
+2.56.0.116.g6de20f6092dc
 
