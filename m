@@ -1,108 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792492830;
-	b=plUL4HdV2trh48qhEnk91MGo9pxFlhlPM8b2SK36Q133U1jpxpZti1MNraHhIR9fT29k
-	 Wbb31JdbDVO84L/hfIVnx0jZkGsnoi9SAA+XOE7sDxN5a4Hgc9jnI3R89V6TkV0lqjCPq
-	 AXNRWpeQUIesmt2fQ2owPiYm2xtx4LX6q31tIlOFd41eKsH8O5qkOt5eIfrLFh/tvBtDz
-	 OEfv5g379WvoLcefzylhPVjPmxhsR4+2efH1XShkLtdvp7UrZgpZcScbjTmOs7tWbLTB9
-	 83PT/su+tDgpoiklXIAq+dCViZrWSDumoe6LMD4PlnPX14fxfGFP12CBLf9xpjJWgvA==
+	t=1792492924;
+	b=V6T6MpXyWFTh3EzZMl9X/zfJVoEa0fUED70F0DPobLDT96jDnGVQ+EZFg3xqfP9OyrC+
+	 FGYaIUCM+53huvIZcfA5SE8yWioO9GZEef2++vt1AGfNthxSdpaRwLIjkp0WsomxyoILm
+	 p4AOdFUGL0TcWO44GGdvRh+4e+roPFoBHwbpNJ44o06PhEdCVi8jm6WHXBNTDRaZWxoik
+	 2SA9clMGhGeWFsfRDL7Uv31NGIiOoLY/QecGWdZkjWCsBwd8iN71xxVN+3iP48Z4jmF49
+	 bumYxRsURdvfzB0Cpo7Nv8WDPvairL0y/5On8S+RJs4Si+B0Hbtg2yJiECmTdnwqThw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792492830;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:X-Mutt-Fcc;
-	bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
-	b=kZUFTL3NX4MqdK/4DxgMPsdd6qO2wAT199qBXY4FvoJda9yijhg44nDKU5ODgJO49Cyb
-	 W1iTxiuaCWhyDmb4EsGJq3Fz659NM4NBd3pSRMORsSVdUL9Iy/eBsWa1PEd1WsZ2SRopJ
-	 dLbT8pSFQwoqnKH+cRuTSrnUtE+YBGo/HNyal8x0SRYxY6yiAmPzG3WWr7SCMxWicVr4n
-	 hUeUMvZNXlRl9Lk/hu9JG5zJTRI84Oj5tL9cWFxQBwQhzd8MOukOz96NUFZy+HdlZ16QW
-	 is8zUi/t6C7hbNza/BOw+Hi7s/8CULHlxBUjy9PJu8S3iqPeuN77mfs/tE2/quUHj8Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492924;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=HOfrP9Gwhe+jGo5BWEDgZkkf4alGpvk7OGOLWLYgIaA=;
+	b=nVJFrgZTeDqLMd402G1lpDcCCeKcpKcHWYDbYug5Lo85XsDAnO9dbMpZYCSP5hyXQohM
+	 Avz01R6EkuqGvDvlEMWxn4dOpcb2E5FoAvwCrYEytUYUfinFX7F1GKx6w7msh7HdVEXCK
+	 hwlMpsBXZaNsIpWNryXY2iPA8G/Ckfl5Lwx22kiqmrXi5NZ1L8uEUYj54QFP0/FCrHr8X
+	 +k1uf4hhCGXbl8OyhnsYfUgSHRdYmwP+zxW4wwNKUBs7RBknghiCVJdXvUcIU4mBqLLL1
+	 Msi2nk8S5jzl81iJc3PgSVIybOiWq/MXb7UEWmx4sJGWs5h3sw6JkS9FT1URcRVJS1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RmdHq4N7;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MabU5TfZ;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E4C606A31D
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:40:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94E4C606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=R0X9Nmpp;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40861606A31A;
+	Tue, 20 Oct 2026 10:42:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40861606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RmdHq4N7;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MabU5TfZ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792492828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
-	b=RmdHq4N7uHME6HBybqJQuPI3oaUxpgLWAL0fiClnHcx6Fgu09FS8E1LXsuI76+3nWbcK++
-	Hpf0l2raqDdKuTwZvOEKmcfhngdxVqwUWpzVkwOjb1cGTRKBAbGrKc8WIm/3yAQrZZFcsF
-	Lbnp/7aEfhgIuF0E+gpPABJ5xlo84gc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-wQGM-MBgN3iBFWELyCk5NQ-1; Tue, 20 Oct 2026 10:40:27 +0000
-X-MC-Unique: wQGM-MBgN3iBFWELyCk5NQ-1
-X-Mimecast-MFC-AGG-ID: wQGM-MBgN3iBFWELyCk5NQ_1792492826
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1de9dac94so19990295e9.2
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 03:40:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792492826; x=1793097626; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
-        b=MabU5TfZonnq5TntfkPQWhWGO+2UMdIlT2+GY4PWW/ZAaI860X3HZpwjka0lZo8jXn
-         vEZ9Nw2LWW1eXuMa+u2L0MA936C+BErZKwZjxsZfznXQNnSBeHjgszmoq+bdcyuO25P5
-         RKMiLAshO21FIY4sGd2gJs+ZY4Aq4B9Yke4Ak+OExDrfNIDujAx5bz9VhrP07JgLtkjT
-         it7F89YFaJ8MtWW9NZV1TGMDJKfbYqJ7uPxBqNa5R02+peIRUxUe+43I84GeVd3ctCtL
-         gnxYqyM5TVvLki0SWSga3qBvMMArEToyOQ2MxTxXsC/RlYXUnx/PtPrbPa9P1PZwWIvn
-         mbyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792492826; x=1793097626;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
-        b=nuYJ+6fzdcn3FEf3G/fhObvSlQctk7nchDOoW25x5sRIZzhC9GyAlKPDIbQ5st2WQc
-         MdFTwzKdT/Ar/tnXQMbno+Nrn5d/wFfkhT4UHBCrJQSt0dC7rxaAaliu8x2+OxxPVvCT
-         1xdKY1sZX18fG4tdgWyr2M0Aa+WoFlg4A1dD7WYACTgnh5XEdR7DMLDxzIZLrhboncWV
-         KcxiMskaDc067MkZ9pYzaI1b5ZnV2EZz0HiluXYhpa5CpX6sKR7JV0pH6Vjc8asVxR82
-         s4WYCklmWH43CGBcRyh8EwXBo8Sl+pwoKdensYDfpki3oMRuvfdiotCtsTXkSkCEq45b
-         7PLg==
-X-Gm-Message-State: AFq9FYKCCiilmcNf9Vz8DQJzWx8vIMqgLBUNk+5UpM5pkhOsCxioWLBY
-	W0ANGOe+mQPA30FVLlx9h5htyjfMlY7svo6DY2mt1U1EpCwB7EHLDQEgS1JAD5PDjvN2aZGmhVG
-	JMjnAI/41Kyz6L09gOup04YPtSJ++9ukF38vqvIFjrrFYWnuvtv6gXg==
-X-Gm-Gg: AYBFou2CCM6dSHicETSbqqJ3IYhU/YuDIDHqjw0KcsiYHLJQx48QUTU0rkzrbmdK/Gy
-	uREttg9ia2wHuGOeLSTAd6xGVPgULFw7+J9dI+vYS4yDVIJxN8qgoiiE309QWWg94uzJLkmHIWs
-	JuQq/CamU7aHnMIykrN3DBJSXvhlr8u8OesJlNWSEVLox3kjWg728SPW8dZ4rYqdKMxkF/r8wnj
-	+zPuwpyH3agoAFnyXVAd1d24hZi4goAqEoClWCKsGjzIzWtZ2U/XnfJEnv2uny6gUfwVYht4tHZ
-	/htd0WzcVdlYLIChw+dOk88IYazBYXJbSrcLw6xrQTWw9S2gS1byzs2n0Qoal7yqKHrx2g==
-X-Received: by 2002:a05:600c:1c19:b0:4a1:ec5b:dca with SMTP id 5b1f17b1804b1-4a1ec5b0fb6mr118201105e9.15.1792492825853;
-        Tue, 20 Oct 2026 03:40:25 -0700 (PDT)
-X-Received: by 2002:a05:600c:1c19:b0:4a1:ec5b:dca with SMTP id 5b1f17b1804b1-4a1ec5b0fb6mr118200305e9.15.1792492825235;
-        Tue, 20 Oct 2026 03:40:25 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d6dbf12sm5345167f8f.1.2026.10.20.03.40.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 03:40:24 -0700 (PDT)
-Date: Tue, 20 Oct 2026 06:40:22 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	andrey.drobyshev@virtuozzo.com, den@openvz.org, jiri@resnulli.us,
-	kmehltretter@gmail.com, mst@redhat.com, ptikhomirov@virtuozzo.com,
-	sashiko-bot@kernel.org, tanglongjun@kylinos.cn
-Subject: [GIT PULL] vhost,virtio: fixes, features, cleanups
-Message-ID: <20261020064022-mutt-send-email-mst@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=R0X9Nmpp
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EA711596;
+	Tue, 20 Oct 2026 03:41:59 -0700 (PDT)
+Received: from [10.0.137.15] (XHFQ2J9959-5.cambridge.arm.com [10.0.137.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2958D3F7D8;
+	Tue, 20 Oct 2026 03:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792492922; bh=OaSet948UMPKW/bEq7Gy7KB2ZNmZwB2hGOuIicxjXI8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=R0X9NmppaPctZe25oyvdRyxTPp7TrT33QgSmgyWht1QNwxUfP4JqEzNxdmziK123R
+	 XueQS3xiz/bfL8vBZ1yVww8k6Q6T25wedDXhj06BS3d1+I/XnwCjNfnm9GNFLMWDfn
+	 vC7cxViW1dKg0DcKnWi5Bhdwq1g6zBBbBiqLMygQ=
+Message-ID: <375868af-d0bd-4278-83e6-f8429df130e9@arm.com>
+Date: Tue, 20 Oct 2026 11:41:57 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,80 +53,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mutt-Fcc: =sent
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 15/15] misc/arm-cla: Add vfio-mdev user interface
+To: Jason Gunthorpe <jgg@nvidia.com>, Jean-Philippe Brucker <jpb@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Alex Williamson <alex@shazbot.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Oded Gabbay <ogabbay@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+References: <20261015142552.4128028-1-ryan.roberts@arm.com>
+ <20261015142552.4128028-16-ryan.roberts@arm.com>
+ <20261015164102.GC13920@nvidia.com>
+ <CABCqBse_aZL-EH0us2uA5X10q6E4WP02MoHTYf+M9ezRZr26WQ@mail.gmail.com>
+ <20261016144202.GG13920@nvidia.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20261016144202.GG13920@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Linus,
-I have a bunch more fixes under review, but let's get this off my plate
-first. Thanks!
+On 16/10/2026 15:42, Jason Gunthorpe wrote:
+> On Fri, Oct 16, 2026 at 03:22:00PM +0100, Jean-Philippe Brucker wrote:
+>> On Thu, 15 Oct 2026 at 17:41, Jason Gunthorpe <jgg@nvidia.com> wrote:
+>>> I think I said this last time, please don't use vfio mdev for
+>>> anything. There is nothing mediated about this.
+>>
+>> We don't multiplex a device between guests, but the host driver must
+>> control part of the device registers while the remainder is assigned to
+>> a guest. The host configures accelerator access, stage-2 translation,
+>> handles CPUHP and context save/restore. So we can't bind the device to
+>> vfio-platform.
+> 
+> That's fine, you can make a proper vfio-cla driver.
 
-The following changes since commit 48a4ee65e677559776349128e6a81a6041986c99:
+Hi Jason,
 
-  vduse: return compat ioctl results directly (2026-09-08 03:58:27 -0400)
+Thanks for taking a look at this! I've been chewing on this comment and trying
+to educate myself deeper on the subject. I have a proposal...
 
-are available in the Git repository at:
+Currently we create a struct device per CLA device instance. But multiple CLA
+device instances cooperate within a domain and the domain is the "unit of
+isolation"; we can't have some CLAs from a domain assigned to a VM, while others
+from the same domain are used by the host. Therefore it didn't feel like the
+correct model to unbind one of these devices from the native driver and rebind
+it to a cla-vfio driver. mdev seemed to solve this problem nicely for us.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+But looking into it in more detail, I guess something like this might be a bit
+more standard:
 
-for you to fetch changes up to c69023b5e16e5ffe9368603dca76d85bd544ee57:
+ - Split the existing CLA driver into three components:
+    - cla-core: Hardware discovery, domain configuration, struct device
+      registration and CPU hotplug
+    - cla-native driver: Provides the user space accelerator interfaces
+    - cla-vfio driver: Enables domains to be assigned to virtual machines
+ - Each domain has a struct device (created by the core)
+    - An individual CLA is not represented by a struct device
+ - Either cla-native or cla-vfio can then bind to a domain device
+    - cla-native exposes a char device per domain, per accelerator class
+    - cla-vfio
 
-  tools/virtio: add missing device-id/virtio.h wrapper header (2026-10-08 18:30:04 -0400)
+For VFIO, I guess we could use one VFIO region per CLA, which would allow the
+VMM to construct a device tree. But it would need to additionally determine
+which CPU each CLA is bound to; perhaps that's a sysfs interface that cla-core
+could expose?
 
-----------------------------------------------------------------
-vhost,virtio: fixes, features, cleanups
+Does this feel like it's going in the right direction?
 
-This adds CPR support for vhost.
+Thanks,
+Ryan
 
-Plus some fixes, notably for a host of races we had when callback fire
-around device reset.
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Andrey Drobyshev (3):
-      vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
-      vhost/vsock: re-scan TX virtqueue on device start
-      vhost: synchronize with RCU readers when freeing workers
-
-Karl Mehltretter (6):
-      virtio_ccw: fix synchronize_cbs() after interrupt fallback
-      virtio_ccw: always take irq_lock in the classic interrupt handler
-      remoteproc: implement synchronize_cbs() for virtio devices
-      um: virtio_uml: implement synchronize_cbs()
-      platform/mellanox: mlxbf-tmfifo: implement synchronize_cbs()
-      virtio_vdpa: implement synchronize_cbs()
-
-Longjun Tang (1):
-      tools/virtio: add missing device-id/virtio.h wrapper header
-
-Michael S. Tsirkin (3):
-      virtio: synchronize callbacks after device reset
-      virtio_pci_modern: move avq cleanup from reset to del_vqs
-      virtio_pci: drop callback sync on reset
-
-Pavel Tikhomirov (2):
-      vhost/vsock: split out vhost_vsock_drop_backends helper
-      vhost/vsock: add VHOST_RESET_OWNER ioctl
-
- arch/um/drivers/virtio_uml.c             | 10 ++++
- drivers/platform/mellanox/mlxbf-tmfifo.c | 15 ++++++
- drivers/remoteproc/remoteproc_core.c     | 12 +++++
- drivers/remoteproc/remoteproc_virtio.c   | 39 +++++++++++---
- drivers/s390/virtio/virtio_ccw.c         |  6 +--
- drivers/vhost/net.c                      |  4 +-
- drivers/vhost/scsi.c                     |  2 +-
- drivers/vhost/test.c                     |  4 +-
- drivers/vhost/vdpa.c                     |  4 +-
- drivers/vhost/vhost.c                    | 26 ++++++++--
- drivers/vhost/vhost.h                    |  5 +-
- drivers/vhost/vsock.c                    | 89 +++++++++++++++++++++++++-------
- drivers/virtio/virtio.c                  |  2 +
- drivers/virtio/virtio_pci_legacy.c       |  2 -
- drivers/virtio/virtio_pci_modern.c       | 15 +++---
- drivers/virtio/virtio_vdpa.c             | 34 ++++++++++--
- include/linux/remoteproc.h               |  3 ++
- tools/virtio/linux/device-id/virtio.h    |  2 +
- 18 files changed, 215 insertions(+), 59 deletions(-)
- create mode 100644 tools/virtio/linux/device-id/virtio.h
+> 
+> Jason
 
