@@ -1,109 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.42
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.28
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792519390;
-	b=bvPYGeud0euUjQ3MMm1XK9FKDE1OZhrsdtxmSF5bjXlAJpUrUl0mM0gk3+a8M8VTuaDK
-	 52H50YaGiSmrzEH0NxE/oPP5DQ7l5dIRPeMVxRKCUVNxEDNmPge0SHWyKcYHmRp3FoRdX
-	 RKWNdTW64b+vd5LN3Bv9pkLOVXQlRYzJ+blBkRYvo+pqqsdoEoVi+Cj3jzTurP8pQZStn
-	 KDnKABfS4lbbOA1rPX9Fq66ta++YZY9w9MMyyicSQTgHQM2yJf5FuDd1H7OhVrVh1Dwt6
-	 k2Wf15GeEcE03/zpVlbcvGnZGfbqwUW0zPkbqmTG4M1BiCDYjD6RZP6/NUNcFcuDAFg==
+	t=1792519996;
+	b=djj9hYwsG83u20xRpmGkyEKw8iuHB0+3RUFefMVcLauPj6pFDTLy1ufqFkgfbXdVwa9t
+	 tc0xJp20OmGdQxB8sWEdvdyGHC8uYV4hdFDqPpEVqw9C/sr8omnoE+EjY2NWnWlVs+dWg
+	 OOnlmh+MsuRA3iRkXB+LYpe1YL9D2fwMcY9Xti8YLxMi9zwskbHzKHhdf9iQcT7+gbuSF
+	 hSf2BeEctE5Eo5kFSJcWZB/+FmKgnr9GfeXG8IrZ5biKH3/Aly6dhfHXoKKfg7iSCuUg/
+	 rk1H+ly2BGNLAR0FrfLpOc+9zHBaRhsuHeL81Zz4jAEp3kBJf5p6jzMm8gLzHlBkNEQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792519390;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:From:Subject:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792519996;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=gtTzYTmMhR+j2b358MN5O3NMPfyjCr5UZIUGV7LRA9g=;
-	b=P3s+6hf7g2+wtL4EBIlKajiAW8xHu2CJpvnBaMDWFHaGVqtL/fr2DhimZW7H/v8XvuLT
-	 MvTNyEkxTpgNU0tPcNLydlbKeBKhpu98votUrcS88Sl5lm6b/EpBq6aAHHZ33VplBV8N6
-	 8rJAJHCR6jl+q4S+oQ5I7dYhsj9YKjK9GomXn2vlDQjGRulIp/an1rU+CRkHv0Db1DRUo
-	 g5va5C7uRAmzeOxDXJKJRFKwgEAxUMID+Gggb1I/fabHfpE06CYSRI49PB9L459c/y8tU
-	 /j+LSaxtNUnIkZUIotrlaDlpLAVgJMPHXiDexFXZqmpb3iYwFfdmiuNwo5sspfO2GYQ==
+	bh=VaOvS2twVbKi3tyA3d7Wv4DfFe56GtGVq5wc4Ly0sBY=;
+	b=UvagtkXHsHZIoLunaLohZePR0TVNAs6XGj97qXggfJh+ptnfqRDVJtw8vN9CNKYoNri1
+	 19+vne5yMZm49g43snHfWVhYsw/8rz89AFXIcvbu2DzFPoDHRLCTmIbclBT4HOOIGEwH5
+	 U8A9rhsJNSYPtKuy1AKG7OTLOfdUxWN3GYBI9aR9fLc9l1vjjxq8Joq4p542bKMKYnxox
+	 S9YLJwJvDzLxnGqnlqGZCev+L4SJzq2Qg6inb7N0I/iyC1xECeqDKxFSXyMlyxuVtCs80
+	 5+9YbWfWrQYgBezveC0bXUwhM1PJhGhTaXu1yEaqMzPcrKcIl4hso2UgZH8R+jDJMDQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=f156nkyK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.42
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=RZUOJATw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.28
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012028.outbound.protection.outlook.com [40.107.209.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A8A606A31A;
-	Tue, 20 Oct 2026 18:03:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3A8A606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B655606A325
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 18:13:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B655606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=f156nkyK
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=RZUOJATw
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gom50RA+jMJ0j0L2AqyRmNcwuDMluDYaQuQ26WHICohTnzzn9DrjWgZUM880W3xx36dH7UO1VUfrrhZiaJ8J1Gi28gTbZVNSPYM631u7080BpTwPg0DKEve8+cC4/qHQoA8pWUG7hNIMKmee4nzjoA/eDdBkiHS8RgcuHPpJ0mOB0Myd8VssEXQyaiixJwpE9CIDafBN6LDD+DLxDJGluzy7Or9U/rCnXcoHU6YlKnH+ihXw+zr/k6NcwGwxBL0OnTUiOU3DgZfNur3l7adwKTPK7Sj51xcSD5rRhVpQRO8nSDX0hMJ6zDdyTmH/sf0rHhtMStctAMWFu5bFgArAXQ==
+ b=anwk2XI8KCRwMXke72QihjJr6yPa4cG6hkkilP7xL06aNyiFoDgGXkoP61xKdyq2d5teC5GrDMVK68Va22uZ9Wmm2A9ocjOUFGpSKfkVg9+iq9RgexwPwonRRBnbb7sYbR0g/2LX8yiDkssuYLnmU877tRvyxX+9swscGpYorq/quBEjxrWrQYRZyNBho8Zv1DXVPAvaQOMAQXJkFPnQd7gXNGC0qbwoRV3laV6kQmmKg6PInwlxVrpPLdOz8Rcawr44iVdVESGChGQ35L5mPdUDu0Qnh4rJ6y/phuFBZ7udmg7y41w5OE4YzYZjwfpw0CqK8MhygtFNDgj8QEJWWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gtTzYTmMhR+j2b358MN5O3NMPfyjCr5UZIUGV7LRA9g=;
- b=ODkptS/vv7sjM2SjYNMbmxmse4DdG9nBbuT/pcbVccxAcGx7QRvfjhE700jl1X9sHVAFoRc6mw82MWLlelBIGF9GbAEe8CFlkSQH9KqV3biQ6q2gv+i/0MNiSFNtGoXqcdVBwsHe665afMJ84sDO6/zMTcu6+x1GvTngRJ+QXHS/CUjDFsnFFFUPM1olMx/kWCFL7rS1v0fa9i+PbGCC+QnmT2VMl816ZzdFeqSMftRfWQUMr2ZD406lu+Ud+EHOzeUdx2y9/z6mdJw3shlyH3UeJfzeHsmGSNMyIi/isMqLeMafqeZhoRW2LtIfLFaIlV7abzz8MKB8GDAzeBOIVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=VaOvS2twVbKi3tyA3d7Wv4DfFe56GtGVq5wc4Ly0sBY=;
+ b=mhw6UX3wasOmRnBGvwrnOdAKSZbQUWmY6t2KT54zKcVol4Un6TJOAbp+ZK0FgZEO9m1ssAsGqxMTCOLBCVCguqfau5/+OXtKza3ugTZyt1WyeM8vwW/F1Nu2/gefcrsCjz/dK/jQFBdIZLmxDhPM1vfh/vur5NDKx+dn3NtZa1a3eCSn4c+SJk+G3Taw50KL4YUrRiZ/ImHFjF36ZVWYOakdYcpSHUv5dKanMlA/VJKMxqawfBV2WyumrnZacnKXYydiViCHDVBnGFtGH8L2HTO0mLw5ZZ9xcohkuzyGqx7W/h7CkbSIfol39w8bhBz4Cz/tJeSlhqfuhw/pbwF+jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gtTzYTmMhR+j2b358MN5O3NMPfyjCr5UZIUGV7LRA9g=;
- b=f156nkyKBqysyCb36y/8IJjRYK6FxjC/7Uy/PTyGPuNXVZlKi5OCT8l36dRwLc1PGGcHj0aMQSIKjvEMN4ELUZdZLS5HoX17LFrnYqAYr3aYMVPTCGTH6Yjcm3wK3FDGkZbKd+GimVuwKUuTTS4d7pOpOzu13BlUZBY7OVW1PWE=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by DS7PR12MB6023.namprd12.prod.outlook.com (2603:10b6:8:85::7) with Microsoft
+ bh=VaOvS2twVbKi3tyA3d7Wv4DfFe56GtGVq5wc4Ly0sBY=;
+ b=RZUOJATwdUn+Z3qNPwnXPu5m8DeMFsjLP08xEk7zjIuo5fMJ1MN3DDJE4dNhNu1gWmc+TsRuMQxRoLLu0TZZ4cr5cCOO/nrFot8VBx48GHUPExmDrjx1fIAx5zghQLA6SYyx6Loi1zxuaxBKtuIRkZvPZx5tzY7XRS7G1GnaqiQ=
+Received: from MN2PR01CA0040.prod.exchangelabs.com (2603:10b6:208:23f::9) by
+ CY1PR12MB9625.namprd12.prod.outlook.com (2603:10b6:930:106::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
+ 2026 18:13:01 +0000
+Received: from MN7PEPF0000014D.namprd04.prod.outlook.com
+ (2603:10b6:208:23f:cafe::93) by MN2PR01CA0040.outlook.office365.com
+ (2603:10b6:208:23f::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.20 via Frontend Transport; Tue,
+ 20 Oct 2026 18:13:01 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MN7PEPF0000014D.mail.protection.outlook.com (10.167.254.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.15; Tue, 20 Oct 2026 18:03:02 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
- 18:03:02 +0000
-Message-ID: <ae45849d-8260-4a34-a860-51a309dafa29@amd.com>
-Date: Tue, 20 Oct 2026 13:02:58 -0500
-User-Agent: Mozilla Thunderbird
-From: Babu Moger <babu.moger@amd.com>
-Subject: Re: [PATCH v6 03/18] x86/resctrl: Add PLZA configuration definitions
- and data structures
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de, ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <608876cedf5eece3f8b9297bcf21663a86a6380d.1790867441.git.babu.moger@amd.com>
- <bf4bd727-eac2-48ba-ad85-539a818524d6@intel.com>
- <c557ea83-11aa-4747-b305-93d554d3fbc4@amd.com>
- <dde507b4-6592-4450-80c6-41af64c1796b@intel.com>
-Content-Language: en-US
-In-Reply-To: <dde507b4-6592-4450-80c6-41af64c1796b@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DS1PR04CA0026.namprd04.prod.outlook.com
- (2603:10b6:8:243::10) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+ 15.21.546.15 via Frontend Transport; Tue, 20 Oct 2026 18:13:01 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 20 Oct
+ 2026 13:13:00 -0500
+Date: Tue, 20 Oct 2026 13:12:45 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+CC: Lorenzo Pieralisi <lpieralisi@kernel.org>, Kohei Enju
+	<enju.kohei@fujitsu.com>, <gshan@redhat.com>, <berrange@redhat.com>,
+	<kchamart@redhat.com>, <pierrick.bouvier@oss.qualcomm.com>,
+	<peter.maydell@linaro.org>, <mst@redhat.com>, <cohuck@redhat.com>,
+	<pbonzini@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>,
+	<lorenzo.pieralisi@linaro.org>, <qemu-devel@nongnu.org>,
+	<qemu-arm@nongnu.org>, <kvm@vger.kernel.org>
+Subject: Re: [RFC v4 03/24] target/arm: Add confidential guest support
+Message-ID: <fgmu2cuxx2n2cuxqeotas2iu43jk7aou3hldhw4757x4jyv6np@snsceczzajcy>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-4-mathieu.poirier@linaro.org>
+ <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
+ <arI197vJkW75p50c@lpieralisi>
+ <arSTQQ5uB6oR-vFe@FCCLS0092175.localdomain>
+ <ataBkrIvULJXj4v6@p14s>
+ <atdKSwvu_uldqwlz@red-moon>
+ <atekhR1Wz03nUCHB@p14s>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,132 +116,284 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <atekhR1Wz03nUCHB@p14s>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|DS7PR12MB6023:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3145f20f-7c8d-4440-b7f0-08df2ed4621d
+X-MS-TrafficTypeDiagnostic: MN7PEPF0000014D:EE_|CY1PR12MB9625:EE_
+X-MS-Office365-Filtering-Correlation-Id: f643022a-732b-4a5a-0897-08df2ed5c712
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|6133799003|18002099003|22082099003|4143699003|11063799006|10067099003|56012099006;
+	BCL:0;ARA:13230040|30052699003|36860700016|7416014|376014|23010399003|82310400026|1800799024|4143699003|11063799006|56012099006|261009223027099003|261009221227099003|10067099003|22082099003|18002099003|6133799003|3023799007|27256017;
 X-Microsoft-Antispam-Message-Info:
-	RS786e2hH/C7yA7/UPuhM7oD0fuacZwacTID5VYpHuTdvvZUkl6ze/Ei6ZizeJQpp2i6uu+wWWVr2f1S+uiFGl23g0GJFT2tryPGolS4RPV5gTRxNzz3s7gcguDtgYd3MRZJhdeDWzbdTbyVLdb3QPb0HE26YzqHyn61QAWQlVZDQHO0j0xCXXrn7RSl8vAB1svnih7/C+dMawSFnWXqrgA24lDyM1ckBAQUIUTYbMZDzMmDDjPXY/bycZv1MnM+9Rde5lQNPOLqOYAy62dvZaGWZssj9pQ+insdYMb5mauFMLanpFAYEq8zc137j+zpTqphPD1ytatgPDpKCS0UZ1YuG6/OruRgSuOoBmWMOyDf+JMtd0PXZ1rlyjhBtt/ojoALv8V0ntja05aYyZltpx3cE9qUJoMcVaaE0NK1bBjd25RCGUZ7Tt3+i5r0UdfYYQbK+1ak3sf6ZLUeT4bvbjzKGQN4jITqG6YNOD2N0smnCK+oNV7Rnn1UkAhf8RhE94r69q3A/nNlMGyW0EsKqjC06Dy4sV/qNUBDFJtr3fl9WUOxFt18u2LsnVOT79OjJe8ZdEnY90gluXvy0KmLl5+fOEkVxQihsMRlfhjU+q005zZVjKon796Y118muomN97jEeSUsUPFvDeMmBpf0//ZdndxyLioeyPGQjQq+tiI=
+	JvGZXNbq25KKDzB0FeG5pNVpzccqY+v+0+RdWNuNQOyk36HKHQ+xHRE6z8Bs28GEJlhYpKgnoNCIKtgnw4mT441L3jcJqx07Q+ze60CX462+5kPnSMrR/6dn06GbhhdJo++6KNXeSBbPwiy7N6xzNnK+DvaMqUrpP10WD1yh4/m0i6b/C5Mu85HnLumWuTUydNn3fr3u3uWFjV+BiMg0uEp4qTvTGBmWildN5UFQx5qcnhzPOEE1l/mt+UMUXojPuAyfo9x+i9no2HnsexWAWvabEX5PAHn8TWLAS8L1o3zLtiUPwDVI2OQoV3efl711/NwBhhwRQaFFwI5OEaOJsJ9He92I7Cu/Imx5atNjkBQhH2j4S+dkSVIeRvRgOvUNc2IUhZEMGS/uD9iB5j8ZBc4bZOo+kCkqDcm2012hzJ++zm1wLuCZ85dNukZppaLZSJHovM+XhyQROsODvGRiyop2KeothUU2d3+5lVUiey3T7/yTxg+uGGJT56cqsBwrQmEvH8pfXfSdywzTA12qGSteQ9ROT6Hm3RbJDT5A+4I+5GR93/yJbNZtjdHUlpIIUj+MwU+wF3E8AXw8u5XTFJ01pjYYO5DtmLy6v26O2ny5KpGxt01RgLDgB0jr1mbpjzX8Ymq6kGZyY9vTo7AYYhCGMw7nhnHkPYxSwU8fBiXPoTk7FkF7GRFrJnmwjpn+z8nH23raWeMFzSVSEbZrXGocEVbkq6CtmEFew+nVikdvQ3Iic/AZsDS35b5Mh8s3
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(30052699003)(36860700016)(7416014)(376014)(23010399003)(82310400026)(1800799024)(4143699003)(11063799006)(56012099006)(261009223027099003)(261009221227099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007)(27256017);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXVLQW5CaW4rNGY4VmRzdTNIUmNraEJZR3ZFckhqUWZGQ3ZQd2tVTzY2UDZw?=
- =?utf-8?B?dUd5bzBEanBuNXJ1S1YzSEh5Uk9zYk93OHE3ZWxNVktGakdQZjRzYWQyclJ3?=
- =?utf-8?B?Y0lINmROWWJuMW9MRWt2VXJaZkF6aE80UUpvdGt6elQyektDb09aNUdwRWZC?=
- =?utf-8?B?WnJXS3NaNE1xL2xYOFF3UkpDRjNUWURjaUpYMDYvMHZETGV3UDZQNTdPMUFO?=
- =?utf-8?B?cE5QdDd1aUkwbjN6NzN6MEFvSjg5eStjek1FOUY4L3hZTzZjMVRSOGY5Z2d2?=
- =?utf-8?B?dWE1RCtURktCSTJvMndONUo1MjNNTFljZVh5RWhFR3phMjZnRFpWeHh5ZDdX?=
- =?utf-8?B?R25xa3NFODdnWWxBdWRuczNmTy8zQXprbkdZRE8zL2xSS0dtNzVzMmxETzQ3?=
- =?utf-8?B?SytEQXVTN0toY1h4eHFweDdSYzY2WFk5ajRUSURZbFA1SXVVRnBMLytlRllw?=
- =?utf-8?B?azJ2cUMyQ3pudDdoakptY1lnRlJ1RDJ1a3B5Rmw3VFdrcUpNNDVMRU9GZkpl?=
- =?utf-8?B?cW51ZFJhcndCMHlSd0sxSU1GczVBdUpGMmd2SEQ1cXVrTXlQMFdZMnFzWXRL?=
- =?utf-8?B?TjJvTjBaL3c0bXdTeUVFRHVVVGhpbnp2VEE1M0lNYWNGZERySlFQSk5KL01k?=
- =?utf-8?B?ZUZiUUFVSXlmV3kzQXYvS2dHUm4raGlleWNLTlFnRVdiLzNyVjhTODZGQXJX?=
- =?utf-8?B?MXErNFZuamJMeEVDUk1tUE5tYUNCV1RxS1o5eWVDYUZtZTR5WmcvRWpkbmZi?=
- =?utf-8?B?Q29GTmpqWldpeStPczdhSVFzRnZDaGd0YjFtcjFDd1diS2xvL1M4L0U2YzEz?=
- =?utf-8?B?aUxFY1prZnFnbXdOQmVWN0x5d0hzTC9pLzIxcUxJRXdXT08vTVVscmg4enhy?=
- =?utf-8?B?L2p2YmFLbzRFU3duOCs1TTJkOURRNkZFN05mc1JPbUhVZURURWtpOW1tQTZM?=
- =?utf-8?B?YjdWS2lXZHpvME5GaE1ranBuaEVmT2tadFZDZlYvY0pMeDRWeXlMa09qakZ1?=
- =?utf-8?B?ajZtK0VyeHNoRzUyc1JRMXRza1lEd28ycTgxWmVvYjh5R1RPUVZ1eXZMYW40?=
- =?utf-8?B?cXRqNUx4SWg5anhqNkNTVUFidEFLaC8vUk50eE1RY3ZkV1JrYXdYVmUvV1p0?=
- =?utf-8?B?c0gvbHJ6TmFFeU1sQm1Wem5XYmYrVmlpdU5UR1JJQ2JFdlJEY1h2VUx2bG5a?=
- =?utf-8?B?Q21leWFSM2Qwb3pjSzNFNWlib0xzK2E4aFVQMGJ0blQ0cWNtZ05IK2ZrSW9C?=
- =?utf-8?B?QitNK0FyYkNxbURqRGZiWVVOWEdPVndteTUvVTk1cHJGTDhqSUp6REdsdzlh?=
- =?utf-8?B?WnJkNWRySmJUMDJPT1JsbkVYd2lqRzlOM3Y2UDZzMGI5QjhqTldUVVdxbFdt?=
- =?utf-8?B?YzlXU0Rha0o1SERBakhrWFBieXYzMnVuUUxKSG8zTUlpdmtrbm91dGdKZzZO?=
- =?utf-8?B?Sld1aDduQVZXRXNpOFYrQ3JFd1pMOEsxNzEzVWl3UnNNdjgwQmVjZEdsak1S?=
- =?utf-8?B?WThWL25nRGZ2SkhaVzl4YjFBNGErWU9iYVZvMzc3bUV1NCtyNnBBR3pqOFN6?=
- =?utf-8?B?WjdLdXlsb0lqUm5UbXRDa2c1Y3BjdlB5TXJ5NWtLTXNxZkxOZGlDbjBWZmN5?=
- =?utf-8?B?eW8ydVlTUDVUTm1pSkE3Tk5hTERza2FNeVJZU3ZJcThkL09hUm9OVUJ5UklB?=
- =?utf-8?B?TlRwYWJvVVhpWE0rM0c0bWdlSFRBZ3pYUjBLMDBNbm1kVW02aU84TTNSOHM0?=
- =?utf-8?B?N3FwOEwwcHZQTUNoU3FKMGhJbkJ0RURTVEtVUVcwVS94K0VrWDBoUXZBcldV?=
- =?utf-8?B?d09PQ0MrN2ZJSzFFRGo5bXlBRmEwWmtibmFIM0U0SzZnWkVZVGJqWm9oTjY0?=
- =?utf-8?B?ZjZVK3ZSZm1sV29oN01xYUlTL0xTZ25Ia0RGRGZUdXpkMmxleEgvYU5Ed2R1?=
- =?utf-8?B?OUw1RDU5emVvZXFOdDlYcVk0bmE1QkFFS2IrT0M3R25meHVhZDhicVRCVVI3?=
- =?utf-8?B?b3pjWmJURUFvenVLSlRhYXU5ekVXb3l2MWtJejlkRjVJdklOaTZWRTUzcVU0?=
- =?utf-8?B?aHllRnlsbGpCK2dyUU5DcndkbUthUzlPcHVKVWVUVHBWWDdRandJdlVMcEhH?=
- =?utf-8?B?SmpWMDBHdXJGT2NnbGx4akI4aS9SV3Axd2kwRytuNys5WFVKU0tDTzhweW0y?=
- =?utf-8?B?WitodXFaZm9GakpORWlobU9PajVnNTZyLzc1cS83dStqVEpLenpkUnRYU0cv?=
- =?utf-8?B?ZFplWm4zMGVWRDdrRXFFM1JWNnJkYUgvbnNTZXRTTWk4ekJsR21UZkNacHgr?=
- =?utf-8?Q?ichASFU0sLJfh8mXFu?=
+	XWtz9eycPLAEcsNGeyJlJwq31T6Ved/crOOoNBKwZsL3aWTkT826qK4YpsBBqlKsF1bXBIFB2ImkQiAZU+1jZEJmmz/Gybm/fdL2Am/uMxImaDtgc/Ez+j5zAlyPZDYXfFFmO8rePdNnTM4LGbW/wN+s7ww2Uf2En2oQLBFZ3MMjdhGZhccqVvPwK09CJ7dkyuD20ZgndO/IAGZV0cVCT0hmzaqM1MJj77yPcqp/gq0xlVg7C9la0ul/uXc/U8HFq8BTUC3+KNafTaUU6UI4XH9FtsdfuC1SdarmcwbiZs51xaQMriCnwtYJpyhmQHq/frm7yqThQZDwvGvypBQstyRV7NarSixDofAGqAowORMFSRuOnSo9bnbyAge2snDD+sumrTRA6UEuMmrom936FIqI5WDdwvVOljhG0vjZ84OAfJdKLMgFAm2q+M7G3KQr
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3145f20f-7c8d-4440-b7f0-08df2ed4621d
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 18:03:02.5831
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 18:13:01.2205
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: f643022a-732b-4a5a-0897-08df2ed5c712
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bB5GCOIvQ3Y8wg6xgzZSBBZwATkMH8UlcBi/DPX+fVZrgrVHptr7ZX0A7fmcGzw8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6023
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN7PEPF0000014D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9625
 
-Hi Reinette,
-
-On 10/19/26 11:16, Reinette Chatre wrote:
-> Hi Babu,
+On Tue, Oct 20, 2026 at 11:27:33AM -0600, Mathieu Poirier wrote:
+> On Tue, Oct 20, 2026 at 01:02:35PM +0200, Lorenzo Pieralisi wrote:
+> > On Mon, Oct 19, 2026 at 02:46:10PM -0600, Mathieu Poirier wrote:
+> > > On Thu, Sep 24, 2026 at 12:12:35PM +0900, Kohei Enju wrote:
+> > > > On 09/22 10:01, Lorenzo Pieralisi wrote:
+> > > > > On Tue, Sep 15, 2026 at 04:27:21PM -0500, Michael Roth wrote:
+> > > > > > On Thu, Sep 03, 2026 at 01:35:50PM -0600, Mathieu Poirier wrote:
+> > > > > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > > > > 
+> > > > > > > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
+> > > > > > > support the Arm Realm Management Extension (RME). It is instantiated by
+> > > > > > > passing on the command-line:
+> > > > > > > 
+> > > > > > >   -M virt,confidential-guest-support=<id>
+> > > > > > >   -object rme-guest,id=<id>
+> > > > > > > 
+> > > > > > > This is only the skeleton. Support will be added in following patches.
+> > > > > > > 
+> > > > > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > > > > > > ---
+> > > > > > >  docs/system/confidential-guest-support.rst |  1 +
+> > > > > > >  qapi/qom.json                              | 13 +++++++
+> > > > > > >  target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
+> > > > > > >  target/arm/meson.build                     |  5 ++-
+> > > > > > >  4 files changed, 60 insertions(+), 1 deletion(-)
+> > > > > > >  create mode 100644 target/arm/kvm-rme.c
+> > > > > > > 
+> > > > > > > diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
+> > > > > > > index 562a7c3c2852..abb56923ad13 100644
+> > > > > > > --- a/docs/system/confidential-guest-support.rst
+> > > > > > > +++ b/docs/system/confidential-guest-support.rst
+> > > > > > > @@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
+> > > > > > >  * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
+> > > > > > >  * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
+> > > > > > >  * AWS Nitro Enclaves (see :doc:`nitro`)
+> > > > > > > +* Arm Realm Management Extension (RME)
+> > > > > > >  
+> > > > > > >  Other mechanisms may be supported in future.
+> > > > > > > diff --git a/qapi/qom.json b/qapi/qom.json
+> > > > > > > index 776b13027fd8..52997c29a32d 100644
+> > > > > > > --- a/qapi/qom.json
+> > > > > > > +++ b/qapi/qom.json
+> > > > > > > @@ -1288,6 +1288,17 @@
+> > > > > > >    'data': { '*pretty': 'bool',
+> > > > > > >              '*close-action': 'MonitorQMPCloseAction' } }
+> > > > > > >  
+> > > > > > > +##
+> > > > > > > +# @RmeGuestProperties:
+> > > > > > > +#
+> > > > > > > +# Properties for rme-guest objects.
+> > > > > > > +#
+> > > > > > > +# Since: 11.1
+> > > > > > > +##
+> > > > > > > +{ 'struct': 'RmeGuestProperties',
+> > > > > > > +  'base': 'ConfidentialGuestSupportProperties',
+> > > > > > 
+> > > > > > Just FYI, based on input from Markus I'm planning to drop this
+> > > > > > ConfidentialGuestSupportProperties base type from my series
+> > > > > > since it's probably only SNP/TDX that need to be able to switch
+> > > > > > it on/off, whereas this series appears to use/require it from
+> > > > > > the start.
+> > > > > > 
+> > > > > > I'm not exactly sure what it will look like for v3 yet, but if you
+> > > > > > were based on v2 you'd instead probably just do the following in the
+> > > > > > instance_init function for your rme-guest instance:
+> > > > > > 
+> > > > > >   cgs->allow_convert_in_place = true;
+> > > > > >   cgs->convert_in_place = true;
+> > > > > > 
+> > > > > > rather than exposing it as a cmdline option.
+> > > > > 
+> > > > > Yep, it won't be an option for CCA Realms anyway since that will be
+> > > > > the baseline.
+> > > > 
+> > > > IIUC, in-place conversion requires RAM backed by a shared/mappable
+> > > > guest_memfd. If in-place conversion is always enabled for CCA Realms,
+> > > > could QEMU also select the equivalent of
+> > > > 
+> > > >   -object memory-backend-guest-memfd,id=ram0,size=...,share=on
+> > > > 
+> > > > automatically for the default RAM, so that specifying the RAM size with
+> > > > `-m` is sufficient?
+> > > 
+> > > Are you suggesting that on Arm, we completely get rid of 
+> > 
+> > Nit: obviously on Arm rme-guest configs.
 > 
-> On 10/15/26 4:07 PM, Babu Moger wrote:
->> On 10/15/26 09:22, Reinette Chatre wrote:
->>> On 10/1/26 8:10 AM, Babu Moger wrote:
->>>> Privilege Level Zero Association (PLZA) enables the kernel to switch to
->>>> a different CLOSID and/or RMID than those used in user mode when entering
->>>> kernel mode. CLOSID and RMID selection are independent and can be
->>>> configured separately.
->>>
->>> That CLOSID and RMID are independent on x86 is clear to me. That they can be
->>> configured separately is not clear to me in this context. What does this
->>> "separate configuration" refer to? Looking at the later patches kernel
->>> mode allocation and monitoring associations are always configured together
->>> and written to same MSR at the same time?
->>
->>
->> Good point. Its confusing.  What I meant is that allocation (CLOSID)
->> and monitoring (RMID) associations are independent PLZA features and
->> can be enabled independently in hardware. For example, a platform
->> may enable kernel mode CLOSID association without enabling kernel
->> mode RMID association, or vice versa.
->>
->> Yes. The kernel interface configures both together because they are carried in the same IA32_PQR_ASSOC MSR update.
->>
->> How about?
->>
->> Privilege Level Zero Association (PLZA) enables the kernel to use a
->> different CLOSID and/or RMID in kernel mode than in user mode.
->> Allocation (CLOSID) and monitoring (RMID) associations are
->> independent PLZA features and may be enabled independently by
->> hardware.
+> Indeed.
 > 
-> Which CLOSID (MSR_IA32_PQR_PLZA_ASSOC.closid) and/or RMID (MSR_IA32_PQR_PLZA_ASSOC.rmid)
-> is used in kernel mode is different from whether the CLOSID (MSR_IA32_PQR_PLZA_ASSOC.closid_en)
-> and/or RMID (MSR_IA32_PQR_PLZA_ASSOC.rmid_en) is used in kernel mode.
+> > 
+> > >     -object memory-backend-guest-memfd,id=ram0,size=$(RAMSIZE),share=on
+> > 
+> > If that's what we want to make a default, I guess we ought to override
+> > create_default_memdev for arm machines + rme-guest configs ?
+> > 
+> > Pros and cons ? I am not sure how well received is setting implicit defaults
+> > for specific machine configs and what that really buys us eventually.
 > 
-> This series uses the high level "allocation and monitoring association" term
-> interchangeably for both of these meanings and doing so causes confusion.
+> I agree, this entails a fair amount of changes for cosmetic gains only.
+
+I think it will also add some uneccessary confusion. For instance, based
+on Paolo's feedback[1], we will likely not expose any sort of option to
+switch between in-place/out-of-place conversion for SNP/TDX, but instead
+just use whatever mode the KVM module was actually configured to use.
+
+For in-place conversion, it actually doesn't seem too bad to hook into
+create_default_memdev to have it default to memory-backend-memfd.
+However, currently, it used backend-file/backend-ram depending on other
+options, and those options are applicable to out-of-place conversion as
+well where e.g. maybe the user wants to use file-backed hugetlb memory
+for their shared memory. So we wouldn't want to change the behavior for
+out-of-place.
+
+But then, for in-place, if we default to a different backend then stuff
+like mem-path=... parameters for out-of-place invocations will then
+become silently ignored, or we will need to generate an error for those,
+which works against the idea of having a common cmdline that "just
+works" for in-place/out-of-place.
+
+If we (users, management/libvirt, etc.) consolidate around specifying the
+memfd backend for confidential VMs, then we can have a "default" that is
+more consistent between in-place vs. out-of-place, which i think is more
+beneficial than trying to consolidate around a syntacticly simpler
+cmdline that might not behave as expected when switching between
+older/newer kernels which may or may not have in-place support.
+
+So, a longwinded "I agree" from me as well.
+
+Thanks,
+
+Mike
+
 > 
-> Please pick specific terms to refer to the CLOSID/RMID assigned to kernel mode vs
-> whether the CLOSID/RMID assignment is enabled and use it throughout the series.
-> 
-
-Another attempt to capture all the details:
-
-"Privilege Level Zero Association (PLZA) enables the kernel to use a 
-different CLOSID and/or RMID than those used in user mode when executing 
-in kernel mode. CLOSID and RMID selection can be configured independently.
-
-The kernel mode CLOSID and RMID are specified by 
-MSR_IA32_PQR_PLZA_ASSOC.closid and MSR_IA32_PQR_PLZA_ASSOC.rmid, 
-respectively. plza_en activates the PLZA operation, while closid_en and 
-rmid_en independently control whether the corresponding kernel mode 
-CLOSID or RMID is used.
-
-Make the register and its field layout available so kernel mode 
-allocation (CLOSID) and monitoring (RMID) selection can be configured 
-independently."
-
-Thanks
-Babu
+> > 
+> > > or simply to get rid of "size=$(RAMSIZE)" in the above because it is redundant
+> > > with "-m $(RAMSIZE)"?
+> > > 
+> > > Gavin and Michael, what is your take on that suggestion?
+> > 
+> > Yes please any feedback on this is welcome.
+> > 
+> > Thanks,
+> > Lorenzo
+> > 
+> > > Thanks,
+> > > Mathieu
+> > > 
+> > > > 
+> > > > Thanks,
+> > > > Kohei
+> > > > 
+> > > > > 
+> > > > > Thanks,
+> > > > > Lorenzo
+> > > > > 
+> > > > > > Thanks,
+> > > > > > 
+> > > > > > Mike
+> > > > > > 
+> > > > > > > +  'data': {} }
+> > > > > > > +
+> > > > > > >  ##
+> > > > > > >  # @ObjectType:
+> > > > > > >  #
+> > > > > > > @@ -1346,6 +1357,7 @@
+> > > > > > >      { 'name': 'pr-manager-helper',
+> > > > > > >        'if': 'CONFIG_LINUX' },
+> > > > > > >      'qtest',
+> > > > > > > +    'rme-guest',
+> > > > > > >      'rng-builtin',
+> > > > > > >      'rng-egd',
+> > > > > > >      { 'name': 'rng-random',
+> > > > > > > @@ -1427,6 +1439,7 @@
+> > > > > > >        'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
+> > > > > > >                                        'if': 'CONFIG_LINUX' },
+> > > > > > >        'qtest':                      'QtestProperties',
+> > > > > > > +      'rme-guest':                  'RmeGuestProperties',
+> > > > > > >        'rng-builtin':                'RngProperties',
+> > > > > > >        'rng-egd':                    'RngEgdProperties',
+> > > > > > >        'rng-random':                 { 'type': 'RngRandomProperties',
+> > > > > > > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > > > > > > new file mode 100644
+> > > > > > > index 000000000000..42e1d1e7b859
+> > > > > > > --- /dev/null
+> > > > > > > +++ b/target/arm/kvm-rme.c
+> > > > > > > @@ -0,0 +1,42 @@
+> > > > > > > +/*
+> > > > > > > + * QEMU Arm RME support
+> > > > > > > + *
+> > > > > > > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > > > > > > + *
+> > > > > > > + * Copyright Linaro 2026
+> > > > > > > + */
+> > > > > > > +
+> > > > > > > +#include "qemu/osdep.h"
+> > > > > > > +
+> > > > > > > +#include "hw/core/boards.h"
+> > > > > > > +#include "hw/core/cpu.h"
+> > > > > > > +#include "kvm_arm.h"
+> > > > > > > +#include "migration/blocker.h"
+> > > > > > > +#include "qapi/error.h"
+> > > > > > > +#include "qom/object_interfaces.h"
+> > > > > > > +#include "system/confidential-guest-support.h"
+> > > > > > > +#include "system/kvm.h"
+> > > > > > > +#include "system/runstate.h"
+> > > > > > > +
+> > > > > > > +#define TYPE_RME_GUEST "rme-guest"
+> > > > > > > +OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+> > > > > > > +
+> > > > > > > +struct RmeGuest {
+> > > > > > > +    ConfidentialGuestSupport parent_obj;
+> > > > > > > +};
+> > > > > > > +
+> > > > > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> > > > > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
+> > > > > > > +                                          { TYPE_USER_CREATABLE }, { })
+> > > > > > > +
+> > > > > > > +static void rme_guest_class_init(ObjectClass *oc, const void *data)
+> > > > > > > +{
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +static void rme_guest_init(Object *obj)
+> > > > > > > +{
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +static void rme_guest_finalize(Object *obj)
+> > > > > > > +{
+> > > > > > > +}
+> > > > > > > diff --git a/target/arm/meson.build b/target/arm/meson.build
+> > > > > > > index 0369f96b4cc6..9d322a7aad28 100644
+> > > > > > > --- a/target/arm/meson.build
+> > > > > > > +++ b/target/arm/meson.build
+> > > > > > > @@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
+> > > > > > >  arm_common_system_ss.add(files(
+> > > > > > >    'arm-qmp-cmds.c',
+> > > > > > >  ))
+> > > > > > > -arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
+> > > > > > > +arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
+> > > > > > > +  'hyp_gdbstub.c',
+> > > > > > > +  'kvm.c',
+> > > > > > > +  'kvm-rme.c'))
+> > > > > > >  arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
+> > > > > > >  
+> > > > > > >  arm_user_ss.add(files('cpu.c'))
+> > > > > > > -- 
+> > > > > > > 2.43.0
+> > > > > > > 
+> > > > > > > 
