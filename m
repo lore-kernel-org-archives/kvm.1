@@ -1,76 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.12.53.23
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510073;
-	b=UOs0HRoEgtbKQWuNI8HPenCMxArCqabqFv34bob1A6WKy79ler5Jdr923h81hqnx2a//
-	 4JvCVfGdPdASOX6YHNtfDxelgvmAPox7e0cCAa/8g91Bijzmcuu2TajgGp7eT3Ucp1kfp
-	 nNZjlc7LPCGd4EE4cF8qY16+lSncf7AxgkoRHghRLD4PRWf0HTdz9OHbAJShJjFrURBXW
-	 LQhENyJ08ekPuVu4uJZyetF3rtsAI4zzA+yyNBPWiz8VXjzVkdqQiKjC+/SyLhFWWYMbq
-	 lfQ0bf5VWKuYHiiY2624QncJNeJ1IwFqU8W2ILapS5F6FEbtSMC4Ih2uPhEtHatoOMg==
+	t=1792510083;
+	b=gAwwMG0iG+y2vpKZpPI2VfwwyHyqrGE+J8AOREuxAE5ehpwRixuKCzthQ4Y4j3n6B0az
+	 Dmu2czsVfjhiV/qbpaD5P+EGd9AspS4P1myw/+GF2GnSlRLLQrpllMqlzD/LeILDOSOFn
+	 DvBj1GoRVquFCb83/SMwEhm3hkW4wqMVnqOrLxcbsLZLAEmNdEZvvzApOrluqNr0jdy3U
+	 dPaT+1ZsdkRcRTOKx9oItFkXyDjFJ9/9rufqLEfcUyUDPPzhGy7fyadSVbCYzR7TQXSMj
+	 lENAGYY5nANXVLk+O0YZkH/d8bKpbA/m+mDpqrDWuKX89sM/6NGwATjDcVPgrplPIQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510073;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510083;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
 	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=7k9NOmMMfZXvfteGnF7jjF0ekHZPNYfauGqI9ty4uhc=;
-	b=ICZNZwwYSEZW6oqXIXzWrORlKQIrtBFpGBhixuVnViKjMyGJlE5Jv8+1ZLxAIo3THrCp
-	 lN0pJ78wZ4gUtf7dVVMSi1NotHObH7yS9lbBHreCvliKCC3wcb9OwnWXyw/GoYxiVluaQ
-	 LTnzqq6TYJEPAf91uSwsAoj+KBosuflRijIvRHF09gzNvBlDnDV1bxhmET1cXVu8Cmcjq
-	 zs6MeMZUgeHrh/oeHfqqdnPFGPOIztM7fL4ATwjDggJFjootytl9DDla7qacZHG2srkqz
-	 rT3Mun6XtJl8j32PgTNJO912Myi3SU7lqNM2fqSwlDI8sIko5Hp2V2CPoyyNZq7TGVw==
+	bh=FSMjDfW2T1XSqaO7Z7hkdLLVctrFywse/htaeda2kjI=;
+	b=iI9hnym6hUi9q0qZjV0RnsdKxFyEQzdYTS3uX+nTzB8ozBhP/F4hbezNGZtI/auIXByL
+	 XaoHyoJ3kDIuuz4EhC0/hvGPRs1/KQ8OI9Xm1jBEOuXyynTaY3F2CAVABNzVogpKgRHBp
+	 4SB1Yu6Sg16+vmLeFWuxf0GqOSLTZSZadFEKUDNe69hbnFKY/On1lNEm4lHaSI03MEg+7
+	 ItbPH61nf+KCQuC3uKjZbePN97Wo2XzjYyu88wWwKgr7HhPCy++o0nSUVQTU8SH1GlRbm
+	 2bIU1wbtJothzAgpDvB6UB2HZ2YphMnKBkwCc+JCdKilEML6VJOAVuCvXaxSz/5D/2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amazon.de;
 	spf=pass smtp.mailfrom=amazon.de;
-	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=Fo86sHJQ;
-	arc=none smtp.remote-ip=52.34.181.151
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=PR0p5wkX;
+	arc=none smtp.remote-ip=52.12.53.23
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4278606A319
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 15:27:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4278606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65F3606A31E
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 15:28:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A65F3606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=Fo86sHJQ
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=PR0p5wkX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1792510072; x=1824046072;
+  t=1792510082; x=1824046082;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7k9NOmMMfZXvfteGnF7jjF0ekHZPNYfauGqI9ty4uhc=;
-  b=Fo86sHJQH1i4WYYy+J4FezL7Gx/c/r29nz1foKfXJ9UzONMMEMWxTUrW
-   Rr4iCtG373u9LvuNzbBPRb/5qYx2z2ZWzJnqxwT1Rh4Oz+C6tVaoJ8/XD
-   7tYDcUzuFovMTIpK63Fva62YUNNHmgH0hjFwNJMnCYGx8O2rFLuFm/3op
-   w8WnNEQYFf1xVolZ+0JosdiXmpb1OYV2dhBJqT/UOtf4D5kRjPEP3I/SS
-   5oriMWfLqr2sisoMVP1nwK66O1Li4DrUrLbkrNCprli4+nxJuHtpt0KXE
-   NzImtGGCBe6MO712mQOjnRlEO11W7Ih1zEyYM9FiJhtQ6qIE7JiaoI8Ko
-   A==;
-X-CSE-ConnectionGUID: cmj60SYARomcbjaamSJ8fw==
-X-CSE-MsgGUID: D97Qs6NZS/iB7WB/DHZ0kQ==
+  bh=FSMjDfW2T1XSqaO7Z7hkdLLVctrFywse/htaeda2kjI=;
+  b=PR0p5wkXJXYqHjz5X6Y5AQRpQtHOyEykHBwzMqYI8kjTs9XpCLO3m0Hw
+   HMqzI0IbpUUB2XhrA9ep2Sj9LyTc6KcrCw69JmE+xnp2x7d38YoEDZKAu
+   r8xh6lRgPvGeoTcJT7BX1kvhjyT2hhZUyOccMEO6qPuT0xtt7GDvzS47L
+   ZC6SyaJvJsXuqZZp/aTz5POUrleC30eSA36lglhBV2k5ppJwBQYadnIZT
+   YTnJFD+wsjZsnNq9tDixqGSpHNhm+OP0E5PXXpWNamiAgTpCSIX82Hra5
+   7kBjRVZbGoTJmBDbRmA1A9L0wQtPWy0dyhQtQvoOIMTjYlBVAbd993zGY
+   g==;
+X-CSE-ConnectionGUID: UQjKrmrmSbKuqGsve8G0Tg==
+X-CSE-MsgGUID: oL4Ai8YjRyGmVjUOYknFug==
 X-IronPort-AV: E=Sophos;i="6.27,168,1787011200"; 
-   d="scan'208";a="31745993"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 15:27:42 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:17518]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.190:2525] with esmtp (Farcaster)
- id 4260941c-6a76-4d18-934d-852ed6e88a57; Tue, 20 Oct 2026 15:27:41 +0000 (UTC)
-X-Farcaster-Flow-ID: 4260941c-6a76-4d18-934d-852ed6e88a57
+   d="scan'208";a="31626825"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 15:27:59 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:6272]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.90:2525] with esmtp (Farcaster)
+ id b9d57236-edd2-489b-b426-a02456740f34; Tue, 20 Oct 2026 15:27:59 +0000 (UTC)
+X-Farcaster-Flow-ID: b9d57236-edd2-489b-b426-a02456740f34
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Tue, 20 Oct 2026 15:27:41 +0000
+ Tue, 20 Oct 2026 15:27:59 +0000
 Received: from dev-dsk-gmazz-1b-865f0d50.eu-west-1.amazon.com (10.253.70.18)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53;
- Tue, 20 Oct 2026 15:27:40 +0000
+ Tue, 20 Oct 2026 15:27:58 +0000
 From: Giacomo Mazzola <gmazz@amazon.de>
 To: <kvm@vger.kernel.org>
-CC: Giacomo Mazzola <gmazz@amazon.de>
-Subject: [kvm-unit-tests PATCH v2 6/8] x86: add timeout-based SMP bringup when fw_cfg is unavailable
-Date: Tue, 20 Oct 2026 15:25:23 +0000
-Message-ID: <20261020152525.57694-7-gmazz@amazon.de>
+CC: Giacomo Mazzola <gmazz@amazon.de>, Andrew Jones <andrew.jones@linux.dev>
+Subject: [kvm-unit-tests PATCH v2 7/8] efi: fix load_options_size conversion to character count
+Date: Tue, 20 Oct 2026 15:25:24 +0000
+Message-ID: <20261020152525.57694-8-gmazz@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261020152525.57694-1-gmazz@amazon.de>
 References: <20261020152525.57694-1-gmazz@amazon.de>
@@ -85,69 +85,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-When fw_cfg is unavailable, fwcfg_get_nb_cpus()
-returns 0 and the existing bringup loop spins forever waiting for
-cpu_online_count to match.  Add a timeout-based fallback that
-watches cpu_online_count and declares bringup complete once no new
-AP has checked in for AP_QUIESCE_TICKS (~4 billion TSC ticks).
+load_options_size is in bytes, but options_chars is used as the
+iteration count over the u16 load options array.  Divide by
+sizeof(u16) to convert from bytes to UTF-16 code units; without
+this, the loop reads past the end of the load options buffer.
 
-Assuming a TSC frequency of at least 1 GHz, this gives between ~1 s
-(at 4 GHz) and ~4 s (at 1 GHz) of quiescence after the last AP
-before declaring bringup complete.
+The original Linux kernel code (drivers/firmware/efi/libstub/
+efi-stub-helper.c) from which this function was adapted performs
+the same conversion:
 
+    options_chars = options_size / sizeof(efi_char16_t);
+
+This was lost when the function was ported to KUT.
+
+Fixes: 85c3c524 ("lib/efi: Add support for getting the cmdline")
 Signed-off-by: Giacomo Mazzola <gmazz@amazon.de>
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 ---
- lib/x86/smp.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ lib/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/x86/smp.c b/lib/x86/smp.c
-index 706f071a..2fcc6c65 100644
---- a/lib/x86/smp.c
-+++ b/lib/x86/smp.c
-@@ -14,6 +14,13 @@
- 
- #define IPI_VECTOR 0x20
- 
-+/*
-+ * Quiescence timeout for AP bringup when the CPU count is not known
-+ * (bare-metal EFI without fw_cfg).  Assumes a TSC frequency of at
-+ * least 1 GHz; at 4 GHz this gives ~1 s, at 1 GHz ~4 s.
-+ */
-+#define AP_QUIESCE_TICKS (4ull * 1000 * 1000 * 1000)
-+
- typedef void (*ipi_function_type)(void *data);
- 
- static struct spinlock ipi_lock;
-@@ -293,8 +300,24 @@ void bringup_aps(void)
- 
- 	_cpu_count = fwcfg_get_nb_cpus();
- 
--	while (_cpu_count != atomic_read(&cpu_online_count))
--		cpu_relax();
-+	if (_cpu_count) {
-+		while (_cpu_count != atomic_read(&cpu_online_count))
-+			cpu_relax();
-+	} else {
-+		int prev = atomic_read(&cpu_online_count);
-+		u64 last_change = rdtsc();
-+
-+		while (rdtsc() - last_change < AP_QUIESCE_TICKS) {
-+			int cur = atomic_read(&cpu_online_count);
-+
-+			if (cur != prev) {
-+				prev = cur;
-+				last_change = rdtsc();
-+			}
-+			cpu_relax();
-+		}
-+		_cpu_count = prev;
-+	}
- 
- 	printf("smp: %d CPUs online\n", _cpu_count);
- }
+diff --git a/lib/efi.c b/lib/efi.c
+index f396bd71..d1be2bfc 100644
+--- a/lib/efi.c
++++ b/lib/efi.c
+@@ -134,7 +134,7 @@ static char *efi_convert_cmdline(struct efi_loaded_image_64 *image, int *cmd_lin
+ {
+ 	const u16 *s2;
+ 	unsigned long cmdline_addr = 0;
+-	int options_chars = image->load_options_size;
++	int options_chars = image->load_options_size / sizeof(u16);
+ 	const u16 *options = image->load_options;
+ 	int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
+ 	bool in_quote = false;
 -- 
 2.47.3
 
