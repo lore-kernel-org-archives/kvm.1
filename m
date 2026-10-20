@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792539948;
-	b=38dkKBco7Kh/02HkaZrl3mw2lwfK1ZMYvZN4vlCwu2jHW8hagUr1jHNWdW2gYp1UYlWh
-	 P4Kt5R7BHWGMsJJZRaY/rA6tHOVubF0zTDIFTvZtXN4xL89l2xG/L42LHPiZ5W3ao94AC
-	 Vdr4ahrxwq4U5EtlRdTWhRHpk0buXqGObnwWesf1jJKz05edQEFH982L5Lwgbyx/VKoyY
-	 2BqVRzmbo0TrTGhKTls2zNGK2QfMvrill/F/GfAouB3AIoSilq0IRvUH+2TP13NNiLz0k
-	 9O9twRkoAA6ZouVRUKu3FLRV8RHsFseEX0JtsxCKjyez64dxt1O/nNl3pL1hOwM9Y1A==
+	b=PmbE6cDkKRV87FuB+cgw0GrNCMU/Dq6I/Ab+q4UoU7nmEbyOxtJmO2lcJR0TTzF0fLeN
+	 N34VoOiuxRop0fD/DlWdfImZIUcR3xtKwRsnFcZFddGg3FkcJMXpYKRpPd5oL0UXJhWYy
+	 bTAkHRCY5GsKnVcu4RKEwGaPjAAYNvQsmj3Ed/RKBnBncXUApGF4oGbTtaa7J0W8UHG1F
+	 lmilK0O9ggnDqjBjpx/rS8LBbT3JDERguxIbvhKwzZMAq5/f2huk2LAKXYh/P/21rWWD1
+	 0opX4Whx/nwU0NLyfV2ayfkcthk2LfcrY30ieIQrHmBi975K/6YeUoLG5ki7oXyaNig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792539948;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=yDeUrlP+9V6t8Szn1Kr0YDnDSBUM+zoUIo+daTEsHVM=;
-	b=qw4zPBgEZNvEnS9H7G05rLlDdXOL8kKnT7BljzdSESLb97v9rS2pgpDWxNqMBM+wxiQ0
-	 EdOM2ngjm6SBChy8f6Cdwrg/UDEw9KYGrXzUKlCby13eLXlSNd/xT78SjcdxzM3LX6yMw
-	 7kwnQt9LTuMB2AWI/sVT5dqacDRyIBv7HvlQUaNE2bT2TNkwCsUr/A2TuRYvEMUhxTS4b
-	 ZcCOBRviS338o6vpMBog2HVR4MJTn7BryyFQG1aW/Y2tzGBEBuwIi7OHPdYOXQikkjIp9
-	 m4QkWJNHp0iXFBupaWsZYVv8keaSKbGFRMW/PNhV3YSVuKUgy0AhOo5oCmuuajZat8g==
+	bh=W+TfMg64jOFPKI8BrWsSCAubaYF+Edkz42TVHe5mp54=;
+	b=dcln9deXRr2O0M1O99CvZ/0VjX9nPhOY0b2ENYy8P9gJrfPDGO/O5gcYGG4v95DzczLk
+	 denpLysaz22zlV9pTjKGv8svNlCbjJM5Q19y3ihUfl/yt9DGf9rhb0+dNOq6M+1yy0Ajx
+	 fCjrene+45n9c7Kedk+yQA/eF2tdknOjJWpdI8md/0impo0QX+Xr98dxdoUTYGg+e/10Z
+	 ebscCWigMU8uM6RV6yI7clSQAQXSmcZ0WpJanTc6qmh6tE3ebscYUz83gNUKp9TII89HR
+	 eeN3OGCf3VEFKU8rvG7/QTOFtrvwOsgrrXdthEPXVbGlTUoYX98jTk+gQ/rFjkZJ5qA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=vJxmDvlF;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=SjZc4EnG;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A10606A31A
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 23:45:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27A10606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AF7606A332
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 23:45:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0AF7606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=vJxmDvlF
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3a4a0017549so532838a91.3
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 16:45:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=SjZc4EnG
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2df8484f12cso1108735ad.3
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 16:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1792539947; x=1793144747; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yDeUrlP+9V6t8Szn1Kr0YDnDSBUM+zoUIo+daTEsHVM=;
-        b=vJxmDvlFA3TrD1gTBnYYf8cXIxkD7t/43sVyli+/GcdVFzkprsLocSzqWTWMEwxl7K
-         ogefd5RSDXIZTPonAzRKCBg4uEIBE8T6T8FJCwLI7mi3O1f05BbL6iq1ai2JFAcRTf4o
-         pJP1ZEs9pZePtmuE/DjYNBY1rCJ/C4NbL4717HO2qW95TNTk/u42Q9vyDCXdBFJpKRX6
-         3X6WJZoUph6odJgH03SidP8s6UignQzPA33lIoRqa7ezh0TPIHtwaJ+kZRq95QTcccAH
-         SyEa2kYotxot111VChJWiNPWSFa0N+84RJxgS/kO6mfQq3zJS4dnTRA5dB1ogdIIaGQw
-         D1Kg==
+        bh=W+TfMg64jOFPKI8BrWsSCAubaYF+Edkz42TVHe5mp54=;
+        b=SjZc4EnG/LgcnRtcUFPZUGudsMzD4xQ5n13Nno+UwiSl4dyeXWBIHERfQHW+y6hBu4
+         f723eEuF8Q6m4yKLUewpE0nKrj3WtsuKY37dP0ZqmjQrjSL32s7HbXTnufx4CdDEiobi
+         OIPaLktQunnmExsvcC/VwdY3N+P3qt4l0DNL1d/7trYcJA4IfUXxPD4Uaf56YY9W4bhz
+         25lX+HTTxFNnFFmP3KuzDqo5gArsAdWyCGvySB+woNpFKWmFIicUfin0PTVv2YWzl3lO
+         qZmjsWTwwPmiDWeOHjJBa6VYO2NBT9YLw3FATOXtAQmumBErIXuHgWuSJ+4GkC2w8hHw
+         3Frg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1792539947; x=1793144747;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yDeUrlP+9V6t8Szn1Kr0YDnDSBUM+zoUIo+daTEsHVM=;
-        b=GhnvjunHP7vIRXekkyHh4e/aPq1Rbi9UPHrE+v3Mh7fqy5Rz9sIrGGvt5y/ITtBfPd
-         2oW8+1LEkZae1bANdddiI83urK22O3Nk47Sb9cpCSYjpRjKfzXST5P4hdR4SANnPWwBM
-         6WfJULY3XzckeRb5K9zhS3q90Jo6ghYtMhsr64vFIH1j2G/yQW+gAMUeRKactVwuBaz0
-         LSJHShqwUIRyhbYrWji4Thwvs5ixBWMT8yQzaKXSKlqQvdZnard8xXEhL25or5y/JrWm
-         b2rRtP/3tUHLqF3RmAHeiO1HTaNdsvP7NOeuu8B5KX7B5bJ//ZtdzmhXQa113NjwIJqO
-         XhKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzRyXkrjnLLe2olB+xofTkrLH+ui8Kxjcpkdahdd27nGu6oeM0hQ9kw8Avht4IZtMY3X8s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJMk3rkXKZGViyaVkn507nTrueg8qosKS4hko99N84Tb3gfatQO
-	qfnC2/oP21XvLdkkCLyga49AxHtVpnUgPPWsJ3tQnVtcHar4pkNdgx1a6y3QL2KNrc6MH8X4fnU
-	hlJYjZIAfI/Yg1A==
-X-Received: from pjbfa23.prod.google.com ([2002:a17:90a:f0d7:b0:3a8:4f60:e802])
+        bh=W+TfMg64jOFPKI8BrWsSCAubaYF+Edkz42TVHe5mp54=;
+        b=ujfHxIneLEiIRVtlCPaGxS2mcIznyUUMFWqhGktUfFI0NyBrwvqsAqzulmuKtKXDIn
+         7PJi0SACbFJ9Uyl1O1GV875mue5JfPVR5phaAzbjB37Lb9gdAH1SSVsNiXY9L8wIg1I3
+         DF+7TwrM38KCO+wHo0fxfdCLtpeBBjN7bkEV+B0EeAZ1mavsORDmlHNVbQbSmEltswxg
+         1u7RVLyaPjmKBpolsIlqlZnnvyva8uvvDHK2o+MCZ7LkSkk6NyBGqDteOrACzJq7Gahz
+         OTQUz4w84IvdWmK9wq2zVYjcDzO/HXRzj+OZw41rW++wHtbGSAktVnISLqTz/K59+6xp
+         S4yA==
+X-Forwarded-Encrypted: i=1; AKwUvByDugd7nf1qX0NTdc0nWgd6YLdov6apd+fmxX+cLwkeNNrJOtLgb5XCum4TMSDj7m5LwFc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLOm6p/cjMXJSoIGLHgrjsNtHV17Yda7MeK7Xvj2GLu01erD6JY
+	cBba4flwmtLTthLLj9UMScMr7n4+Xm8y6HKpeCajWdpJyXCTj5VopXOcvv3xqYXOVme60E7u0sR
+	TXb9sUYybIBmMoA==
+X-Received: from plbkk5.prod.google.com ([2002:a17:903:705:b0:2e9:7e8e:b72e])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:35cd:b0:3ac:a6a5:5743 with SMTP id 98e67ed59e1d1-3ad86f0bd1dmr382782a91.32.1792539946954;
- Tue, 20 Oct 2026 16:45:46 -0700 (PDT)
-Date: Tue, 20 Oct 2026 16:45:28 -0700
+ 2002:a17:902:ebc6:b0:2dd:ad73:c98b with SMTP id d9443c01a7336-2ea43f928abmr2553835ad.35.1792539945981;
+ Tue, 20 Oct 2026 16:45:45 -0700 (PDT)
+Date: Tue, 20 Oct 2026 16:45:27 -0700
 In-Reply-To: <20261020234535.3182385-1-jmattson@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261020234535.3182385-1-jmattson@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261020234535.3182385-3-jmattson@google.com>
-Subject: [PATCH 2/4] KVM: VMX: Refresh LBR MSR intercepts on full MSR
+Message-ID: <20261020234535.3182385-2-jmattson@google.com>
+Subject: [PATCH 1/4] KVM: SVM: Always update LBR MSR intercepts on full MSR
  intercept recalc
 From: Jim Mattson <jmattson@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
@@ -90,135 +90,117 @@ Cc: Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, linux-kernel@vger.ke
 	Yosry Ahmed <yosry@kernel.org>, Like Xu <likexu@tencent.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Re-apply the LBR MSR intercepts in vmx_recalc_msr_intercepts() if the
-LBRs are currently passed through, so that changes to userspace MSR
-filters are reflected in the MSR bitmap.  Unlike SVM, which can simply
-rewrite the intercepts in either direction, leave the bitmap alone if
-the LBRs aren't passed through, as a filter can only force interception,
-never prevent it, i.e. the bitmap is already correct.  Note, clearing
-msr_passthrough to force vmx_passthrough_lbr_msrs() to re-apply the
-intercepts on the next VM-Enter isn't an option, as doing so would
-leave stale passthrough bits behind if the guest LBR event is no longer
-active.
+Split the "already up-to-date" check out of the code that writes the LBR
+MSR intercepts, and write the intercepts unconditionally from
+svm_recalc_msr_intercepts(), so that changes to userspace MSR filters are
+reflected in the MSR permissions map.
 
-vmx_recalc_msr_intercepts() is invoked in response to
-KVM_REQ_RECALC_INTERCEPTS, which is raised on MSR filter updates, but it
-skips the LBR MSRs, and vmx_enable_lbr_msrs_passthrough() does nothing
-if lbr_desc->msr_passthrough is already set.  If the LBR MSRs are passed
-through when userspace installs a filter that denies them, they remain
-passed through, and the guest can access them without exiting to
-userspace.  Conversely, if a filter forced interception when the guest
-LBR event became active, relaxing the filter leaves the MSRs needlessly
-intercepted.  Either way, the bitmap remains stale until the guest LBR
-event is torn down and recreated.
+svm_recalc_msr_intercepts() is invoked in response to
+KVM_REQ_RECALC_INTERCEPTS, which is raised on MSR filter updates.  But
+svm->lbr_msrs_intercepted tracks only the interception KVM wants, not
+what is actually in the bitmap after the filter is applied.  If the LBR
+MSRs are passed through when userspace installs a filter that denies
+them, the early return leaves them passed through, and the guest can
+access them without exiting to userspace.  Conversely, if a filter
+forced interception when LBR virtualization was enabled, relaxing the
+filter leaves the MSRs needlessly intercepted.  Either way, the bitmap
+remains stale until the next change to LBR_CTL.
 
-Only x2APIC MSRs are exempt from userspace filtering (see
-kvm_msr_allowed() and the KVM_X86_SET_MSR_FILTER documentation), and the
-filter is honored when LBR passthrough is first enabled, so KVM's
-behavior shouldn't depend on whether the filter is set before or after
-the guest enables LBRs.  Drop the LBR MSRs from the comment claiming
-that they can't be filtered by userspace, and clarify that
-lbr_desc.msr_passthrough tracks KVM's desired interception, which may
-not match the MSR bitmap when userspace filters are in play.
+Full intercept recalculations are rare (e.g. on RESET/INIT, EFER.SVME
+toggles, and CPUID, PERF_CAPABILITIES, and MSR filter updates), and
+never happen on nested VMRUN or #VMEXIT, so writing the intercepts there
+does not reintroduce the redundant per-VMRUN bitmap updates that the
+check was added to avoid.  And because svm_recalc_msr_intercepts()
+already unconditionally writes the intercepts for many other MSRs (and
+thus marks Hyper-V's nested enlightenments dirty), writing the LBR MSR
+intercepts there doesn't introduce any new invalidations.
 
-Fixes: 9254beaafd12 ("KVM: vmx/pmu: Reduce the overhead of LBR pass-through or cancellation")
+Add a comment to clarify that lbr_msrs_intercepted reflects KVM's
+desired interception, not necessarily the state of the bitmap.
+
+Fixes: 3fa05f96fc08 ("KVM: SVM: Fix redundant updates of LBR MSR intercepts")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/kvm/vmx/pmu_intel.c | 20 +++++++++++++++++++-
- arch/x86/kvm/vmx/pmu_intel.h |  7 ++++++-
- arch/x86/kvm/vmx/vmx.c       |  6 ++++--
- arch/x86/kvm/vmx/vmx.h       |  1 +
- 4 files changed, 30 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/svm.c | 28 +++++++++++++++++++++++-----
+ arch/x86/kvm/svm/svm.h |  6 ++++++
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 70a8c4816135..b945213f0b68 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -517,7 +517,8 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 	memset(&lbr_desc->records, 0, sizeof(lbr_desc->records));
- 
- 	/*
--	 * Setting passthrough of LBR MSRs is done only in the VM-Entry loop,
-+	 * LBR MSRs are initially passed through only in the VM-Entry loop (a
-+	 * full MSR intercept recalc merely refreshes an existing passthrough),
- 	 * and PMU refresh is disallowed after the vCPU has run, i.e. this code
- 	 * should never be reached while KVM is passing through MSRs.
- 	 */
-@@ -704,6 +705,23 @@ static inline void vmx_enable_lbr_msrs_passthrough(struct kvm_vcpu *vcpu)
- 	lbr_desc->msr_passthrough = true;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index fe0cba4731b2..55b3ee840365 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -721,14 +721,11 @@ void *svm_alloc_permissions_map(unsigned long size, gfp_t gfp_mask)
+ 	return pm;
  }
  
-+/*
-+ * Refresh the LBR MSR intercepts if the LBRs are passed through, so that
-+ * changes to userspace MSR filters are reflected in the MSR bitmap.  There's
-+ * nothing to do if the LBRs are intercepted, as a filter can only force
-+ * interception, never prevent it.
-+ */
-+void vmx_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+-static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
++static void svm_set_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	bool intercept = !(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
+ 
+-	if (intercept == svm->lbr_msrs_intercepted)
+-		return;
+-
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHFROMIP, MSR_TYPE_RW, intercept);
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHTOIP, MSR_TYPE_RW, intercept);
+ 	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTINTFROMIP, MSR_TYPE_RW, intercept);
+@@ -740,6 +737,22 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ 	svm->lbr_msrs_intercepted = intercept;
+ }
+ 
++static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
 +{
-+	struct lbr_desc *lbr_desc = vcpu_to_lbr_desc(vcpu);
++	struct vcpu_svm *svm = to_svm(vcpu);
++	bool intercept = !(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
 +
-+	if (WARN_ON_ONCE(!lbr_desc))
++	/*
++	 * Skip redundant updates from svm_update_lbrv(), e.g. on every nested
++	 * VMRUN and #VMEXIT.  Note, svm_recalc_msr_intercepts() updates the
++	 * bitmap unconditionally, as userspace MSR filters may have changed.
++	 */
++	if (intercept == svm->lbr_msrs_intercepted)
 +		return;
 +
-+	if (lbr_desc->msr_passthrough)
-+		vmx_update_intercept_for_lbr_msrs(vcpu, false);
++	svm_set_lbr_msr_intercepts(vcpu);
 +}
 +
- /*
-  * Higher priority host perf events (e.g. cpu pinned) could reclaim the
-  * pmu resources (e.g. LBR) that were assigned to the guest. This is
-diff --git a/arch/x86/kvm/vmx/pmu_intel.h b/arch/x86/kvm/vmx/pmu_intel.h
-index 5d9357640aa1..b553f63e19a6 100644
---- a/arch/x86/kvm/vmx/pmu_intel.h
-+++ b/arch/x86/kvm/vmx/pmu_intel.h
-@@ -34,7 +34,12 @@ struct lbr_desc {
- 	 */
- 	struct perf_event *event;
+ void svm_vcpu_free_msrpm(void *msrpm)
+ {
+ 	__free_pages(virt_to_page(msrpm), get_order(MSRPM_SIZE));
+@@ -795,8 +808,13 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+ 	svm_disable_intercept_for_msr(vcpu, MSR_SYSCALL_MASK, MSR_TYPE_RW);
+ #endif
  
--	/* True if LBRs are marked as not intercepted in the MSR bitmap */
 +	/*
-+	 * True if KVM wants the LBR MSRs to be passed through, i.e. not
-+	 * intercepted.  Note, userspace MSR filters may force interception of
-+	 * some or all LBR MSRs regardless, i.e. this doesn't necessarily
-+	 * reflect the state of the MSR bitmap.
++	 * Unconditionally refresh the LBR MSR intercepts, as userspace MSR
++	 * filters may have changed, in which case the bitmap may be stale even
++	 * if KVM's desired interception hasn't changed.
 +	 */
- 	bool msr_passthrough;
- };
+ 	if (lbrv)
+-		svm_recalc_lbr_msr_intercepts(vcpu);
++		svm_set_lbr_msr_intercepts(vcpu);
  
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 612ab07d4100..1c190a6303a3 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4347,11 +4347,13 @@ static void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
- 		vmx_set_intercept_for_msr(vcpu, MSR_IA32_S_CET, MSR_TYPE_RW, intercept);
- 	}
+ 	if (cpu_feature_enabled(X86_FEATURE_IBPB))
+ 		svm_set_intercept_for_msr(vcpu, MSR_IA32_PRED_CMD, MSR_TYPE_W,
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 84f19026d3e8..62e08d6d4706 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -364,6 +364,12 @@ struct vcpu_svm {
  
-+	vmx_recalc_lbr_msr_intercepts(vcpu);
+ 	bool avic_irq_window;
+ 	bool x2avic_msrs_intercepted;
 +
- 	vmx_recalc_pmu_msr_intercepts(vcpu);
++	/*
++	 * True if KVM wants the LBR MSRs to be intercepted.  Note, userspace MSR
++	 * filters may force interception regardless, i.e. this doesn't
++	 * necessarily reflect the state of the MSR bitmap.
++	 */
+ 	bool lbr_msrs_intercepted;
  
- 	/*
--	 * x2APIC and LBR MSR intercepts are modified on-demand and cannot be
--	 * filtered by userspace.
-+	 * x2APIC intercepts are modified on-demand and cannot be filtered by
-+	 * userspace.
- 	 */
- }
- 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index dc8517f15bc4..ec6104b66009 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -667,6 +667,7 @@ static __always_inline struct vcpu_vmx *to_vmx(struct kvm_vcpu *vcpu)
- void intel_pmu_cross_mapped_check(struct kvm_pmu *pmu);
- int intel_pmu_create_guest_lbr_event(struct kvm_vcpu *vcpu);
- void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu);
-+void vmx_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu);
- 
- struct vmcs *alloc_vmcs_cpu(bool shadow, int cpu, gfp_t flags);
- void free_vmcs(struct vmcs *vmcs);
+ 	/* Guest GIF value, used when vGIF is not enabled */
 -- 
 2.56.0.212.g129ede20d9-goog
 
