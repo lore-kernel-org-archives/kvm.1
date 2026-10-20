@@ -1,65 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792543415;
-	b=MPRO+cB8KD1sWqJbmzvl6jDjZpinfd5g0FbYqX3mH5NpzMPmFWHpt6v0w5GrM9+T7KKg
-	 TshsbdTIC8t5offr2FHa0Riol6ZJFp8dUoWBqs5zYTBZkeQoKWgEfouha4JKpdgjvopUy
-	 ZqHRgWSzqGSIqqurMsgw1e7QeXT8s6tgH8Dpmm2G3Q8gQUgCd/Qbe7kALafLij2+OZ6Ha
-	 52JXgCVcocehRRWUUQjDg6tHpfjKPM2oiRp9Powgxs/eeGyfkZypRA4ovkoXERBd2zpQ+
-	 zrRaSZs6vIDdnZ2XgvZs+D+utyLuiULL2fLVgHmPU3w7egO+neBZ6JqjLG9/VSBBnOg==
+	t=1792544397;
+	b=jYQB5RlP2/TYE+jULsQ6n2ZzEJC0I3UfCA6m/jrBu7vA/pB0JLoMlJDb3McZV6j7/PjO
+	 mhuIPu9PGBgoGyRAEZYBYQek0dYpWdGskBizQihA5mo398L64RJ8AN5RmvueaMci4m118
+	 HZzsnggpCsLhCYV49oK1t0+BtScsZOKSmD4ZJ0m3/R6J00wnvm+bvyar8gpKV2SjZOxnR
+	 uyMNvzM9OXoqy+dgEtFeemCtQURRnW3omPVCuwrYqyPZGd45jZ1GbGeiy7OXFV5LndUAj
+	 PXGRUU+JiiXsRVY7LSPl9yvLZF+RZsX6qM5ANvZf+zRIHP5jKLP9+wKpKqX1ycRw95Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792543415;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=+nsFjOW7BqpbTIqHalWaePbKIO7ywrm1YspyvTTDJtI=;
-	b=X25bysreya8fYQLdf+2yLtNuWSZDgCCgaeZsV8CT1MBpX8Pl5HUGQLxrcKF4C+6u71mD
-	 hQFxKhNp+2FppUF0Dlb+QxARSTc87TidZv4YMWFeEyekQVgS6FvK3FL/MDrZzn0w4MAoD
-	 U+TH5xMaq/r4m9cOqdGR4a9m5XQE33V7YYbnH2EaNRm/TahRXhIj2iV0zPpHPht9MBuhB
-	 DmbJL96v7ZDaEG0QWfCF1SUOmwTZDFUFA9Gslgz2ISHu66K+g9/ttt8jHPtPdj/VJhi9S
-	 tEV2YmQWsaF0ldHoKP9TbLHhppGe4V0uiIahPm8R3WfGGXdDa1vzllzu2KampoIK5XA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792544397;
+	h=DMARC-Filter:Received:Received:Message-Id:Received:Received:
+	 X-Zmail-TransId:X-Mailer:Date:Mime-Version:From:To:Cc:Subject:
+	 Content-Type:X-MAIL:X-MSS:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
+	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=PXHozQagEJBA1ns8T90M1EXOSvUI54qTtRszB1T9xqU=;
+	b=FZpYfxKV/BI0Gn+V2iZE9W0f1vP2f3y92xnhtPxHXj+pd8p+2LfX8lEpc5SrQ8JaQ7Jw
+	 CR8cIjob+QyxDGSj732J8Q/WDdJIc7nc1bX2sD42H559U+mE7iSVDKAl0+2nzCLiXhNQN
+	 Y9YZ3RrEpxOUJ5xMuWbktucMnbiy28CH5xKuJRD+BzxcahxoKUzhCvRU1A/L3yGKityoO
+	 9Yx/Pmn7FCYK12+ORSd7Mxr1jc60BR02y122mnd7sRfkIDiX18Y99Hu3be0yaXjBGnBlR
+	 urXYUCQ3Kp+NIKF8lVWiBQfR6c99kgK7McfVOl7idT80/nj7MAwthKN9W0Xs2rnr0kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DxcF7P9Z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	arc=none smtp.remote-ip=160.30.148.34
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC11606A319;
-	Wed, 21 Oct 2026 00:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DxcF7P9Z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F321F000CB;
-	Wed, 21 Oct 2026 00:43:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792543415;
-	bh=+nsFjOW7BqpbTIqHalWaePbKIO7ywrm1YspyvTTDJtI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DxcF7P9Z8g9YonBWeXdP7GBGjT2smZ0f5bgEtvl7J2t4zP4ETROvhigfV8h151wzc
-	 LIfDwx4M/0LBeRjp33bTltFl023pkl94jXkiwX0i25JhHsbeCeKHVXH/oIbW0+9bxA
-	 HYYEmnbflmRQ3yza6Xba4HjF/k3Nf6UNv8WMYYqTwy2dwAc/hL5BCVTS/CY3oZzbqe
-	 YDbK6eRvAU3STAbb2jBawAmCzDD86hXg5xitwqBq3UkMFwHIYOQd7FYr8oHkHnG4ue
-	 whDknX3N7JSVkNgvSjnWi/1p0aw4ykAmdez+cN+5EdinjhAtZrHasyW4lRf1gniW1T
-	 MJXqzY0ZyMzgA==
-Date: Wed, 21 Oct 2026 01:43:24 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
- lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
- cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
- James.Bottomley@HansenPartnership.com, aik@amd.com, jpiotrowski@nvidia.com,
- qinkun@google.com, pgonda@google.com, alistair.francis@wdc.com,
- ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
- dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- peter.fang@intel.com
-Subject: Re: [PATCH RFC 05/20] ctlv: Prepare message input handling
-Message-ID: <20261021014324.58376589@jic23-hlaptop>
-In-Reply-To: <20261015145053.3664509-6-jiri@resnulli.us>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-	<20261015145053.3664509-6-jiri@resnulli.us>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD9C606A31C
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 00:59:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBD9C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j8WCY38Kjz5BNS0;
+	Wed, 21 Oct 2026 08:59:53 +0800 (CST)
+Received: (from root@localhost)
+	by mse-fl1.zte.com.cn id 69L0xqLO033882;
+	Wed, 21 Oct 2026 08:59:52 +0800 (+08)
+	(envelope-from ye.zhihao1@zte.com.cn)
+Message-Id: <202610210059.69L0xqLO033882@mse-fl1.zte.com.cn>
+Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
+	by mse-fl2.zte.com.cn with SMTP id 69KBdBD4088046;
+	Tue, 20 Oct 2026 19:39:11 +0800 (+08)
+	(envelope-from ye.zhihao1@zte.com.cn)
+Received: from mapi (szxlzmapp01[null])
+	by mapi (Zmail) with MAPI id mid12;
+	Tue, 20 Oct 2026 19:39:13 +0800 (CST)
+X-Zmail-TransId: 2b036ad752e1cc2-4bbb4
+X-Mailer: Zmail v1.0
+Date: Tue, 20 Oct 2026 19:39:13 +0800 (CST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,143 +60,35 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+From: <ye.zhihao1@zte.com.cn>
+To: <atishp@rivosinc.com>
+Cc: <eric.lin@sifive.com>, <will@kernel.org>, <kvm@vger.kernel.org>,
+        <linux-riscv@lists.infradead.org>, <mark.rutland@arm.com>,
+        <palmer@dabbelt.com>, <paul.walmsley@sifive.com>,
+        <sergey.matyukevich@syntacore.com>, <kvm-riscv@lists.infradead.org>,
+        <guoren@kernel.org>, <ajones@ventanamicro.com>, <anup@brainfault.org>
+Subject: =?UTF-8?B?UmU6ICBbUEFUQ0ggdjIgMDgvMTFdIFJJU0MtVjogS1ZNOiBEaXNhYmxlIGFsbCBocG1jb3VudGVyIGFjY2VzcyBmb3IgVlMvVlUgbW9kZQ==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 69L0xqLO033882
+X-MSS: AUDITRELEASE@mse-fl1.zte.com.cn
+X-TLS: YES
+X-ENVELOPE-SENDER: ye.zhihao1@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Wed, 21 Oct 2026 08:59:53 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AD80E89.001/4j8WCY38Kjz5BNS0
 
-On Thu, 15 Oct 2026 16:50:38 +0200
-Jiri Pirko <jiri@resnulli.us> wrote:
+Questions on KVM PMU Counter Numbering, Hcounteren Setting, and Migration/Conflict Handling
 
-> From: Jiri Pirko <jiri@nvidia.com>
-> 
-> Add wire walking, request indexing and validated input accessors for
-> generated family readers.
-> 
-> Keep CONFIG_CTLV unwired until dispatch completes the module.
-> 
-> Assisted-by: Cursor: GPT-5.6 Sol
-> Assisted-by: Cursor: Claude Opus 5.5
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Dear Atish Patra,
 
-Trivial stuff only. I didn't attempt (yet) to check
-all the walking code, just get a feeling for what was here. 
+I noticed your relevant patches and comments regarding the KVM module in your virtualization work. During my virtualization validation, I have the following questions:
 
+I found that the hardware counter numbers actually used on the host are inconsistent with the virtualized numbers returned after KVM emulation. Is this because you want to ensure that the VM can work properly in migration scenarios and avoid the conflict scenario where the host and guest count simultaneously on the same CPU and share the same hardware counter? Also, why are all virtualized events disguised as sampling events? Is it because SBI PMU does not support the passing of this flag, so KVM cannot distinguish between stat and record events?
 
-> diff --git a/drivers/ctlv/Kconfig b/drivers/ctlv/Kconfig
-> new file mode 100644
-> index 000000000000..aed3243c55fd
-> --- /dev/null
-> +++ b/drivers/ctlv/Kconfig
-> @@ -0,0 +1,12 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +menuconfig CTLV
-> +	tristate "CTLV character device TLV UAPI"
-> +	help
-> +	  CTLV provides character device UAPIs described by a checked-in YAML
-> +	  specification. It owns the character device lifetime, the strict TLV
-> +	  message format, request validation, reply serialization, the large
-> +	  payloads a request describes rather than carries, per-open event
-> +	  queues and runtime schema introspection, so families only implement
-> +	  semantics.
-> +
-> +	  If you don't know what to do here, say N.
+In addition, I noticed that in your main.c, Hcounteren is set to 0x02. Is this also because there is no correlation between the logical hardware counters and the virtual counters? Have you considered enabling Hcounteren to reduce the overhead caused by CSR traps? In KVM, is it mandatory to modify the logical hardware counter numbers and the virtual counter numbers so that they match and are consistent, and would it be necessary to reconsider how to solve the migration and conflict issues encountered in the previous scenarios?
 
-I'd not say that.  Overly cautious for something we expect
-to get fairly extensive use.
-
-
-> diff --git a/drivers/ctlv/message.c b/drivers/ctlv/message.c
-> new file mode 100644
-> index 000000000000..7e5742ba8f70
-> --- /dev/null
-> +++ b/drivers/ctlv/message.c
-
-> +
-> +bool ctlv_message_input_rebind(struct ctlv_cursor *nest, const struct ctlv_schema_tree *tree,
-> +			       u32 node)
-> +{
-> +	const struct ctlv_message_input_scope *bound_scope;
-> +	const struct ctlv_message_input_nest *indexed;
-> +	u32 i;
-> +
-> +	if (WARN_ON_ONCE(!nest->attr || !nest->msg || !nest->msg->index))
-> +		return false;
-> +	if (!ctlv_message_nest_index_ok(nest))
-> +		return false;
-> +	bound_scope = &nest->msg->index->scopes[nest->index_nest_scope];
-> +	indexed = &nest->msg->index->nests[bound_scope->nest];
-> +	for (i = 0; i < indexed->scopes_count; i++) {
-
-	for (u32 i = 0; ...
-
-> +		u32 scope_index = indexed->first_scope + i;
-> +		const struct ctlv_message_input_scope *scope =
-> +			&nest->msg->index->scopes[scope_index];
-> +
-> +		if (scope->tree != tree || scope->node != node)
-> +			continue;
-> +		nest->tree = tree;
-> +		nest->node = node;
-> +		nest->index_nest_scope = scope_index;
-> +		return true;
-> +	}
-> +	return false;
-> +}
-
-> +
-> +void ctlv_attr_next(struct ctlv_cursor *cursor)
-> +{
-> +	const struct ctlv_message_input_slot *slot;
-> +	const struct ctlv_message_input_scope *scope;
-> +	const struct ctlv_node_schema *node;
-> +	const struct ctlv_attr *next;
-> +	u32 next_nest;
-> +	u32 next_offset;
-> +
-> +	slot = ctlv_message_cursor_index(cursor);
-> +	if (!slot || WARN_ON_ONCE(!cursor->attr))
-> +		return;
-> +	next = (const void *)((const u8 *)cursor->attr +
-> +			      ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO));
-
-kernel code is allowed to rely on void * arithmetic, so this can be
-	next = (const void *)cursor->attr +
-	       ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO);
-
-container_of() for instance makes use of sizeof(void) == 1.
- 
-
-
-> +const void *ctlv_attr_binary(const struct ctlv_cursor *cursor, u32 *len)
-> +{
-> +	const void *value;
-> +
-> +	*len = 0;
-> +	value = ctlv_message_cursor_payload(cursor, BIT(CTLV_SCHEMA_BINARY), len);
-> +	if (!value)
-> +		*len = 0;
-
-I'd kind of have assumed that ctlv_message_cursor_payload() would not
-set len to anything if it returns NULL.  Thus the default *len = 0 would
-be intact.  From a quick look that seems to be the case making this
-code a little odd. 
-
-Perhaps overly defensive or keeping an LLM happy?
-Same applies on some other functions.
-
-
-
-> +	return value;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(ctlv_attr_binary, "CTLV");
-> +
-> +/*
-> + * The room is measured before anything is written, which is what leaves a
-> + * refused attr's message exactly as it was, padding included.
-> + */
-
-Having a trailing comment in a file rarely adds much or indeed
-even more rarely gets read.
-
-
-> diff --git a/drivers/ctlv/message.h b/drivers/ctlv/message.h
+Best regards,
+ZHIHAO YE
