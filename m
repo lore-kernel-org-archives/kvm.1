@@ -1,49 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792506456;
-	b=YyLp8RzjMEk9MQEaFoZUFSjZJesVMODJNVJitDVgQquQWgSVkeYF470+aGxcyMrsTgRr
-	 ehunLTiqG87RPxIpu7EwwynxStY8gRuYRRVKTf/VxiKB1wJHmLei/enORjIy+Kgc7N2h8
-	 YyN9tDZJCo0s5xpw5bsH/YhIbBxgs2/R3w7YohewLp840sqmAtTRI+VU0jiWk6FhXdfFr
-	 O+d8pCWNtX3aNTaSErO1CAqMNKUXEbDYBu5f6MJdUMOSsLHzXUfmX1TiHCLP3udPk9ecS
-	 SC4yLns58aUEcLHIkMrFpHoTG3/m5xfic+/v4j6vmncw/IkNy8wv6oK8SCEdBFf/Mdw==
+	t=1792506799;
+	b=Q2RAetsPBnF+DlvbnwjAB1bl6bwmnupC4GYEH3LquHE8cLZYn8RihsirNitX/dxstoay
+	 sTiIt8gzv962xhAyIqAW57wRt4bs1RJyA6J73YVFWOGLJqIgU+YmKSEbT/RXZK4SA2PO8
+	 KYMdDHHIDIr5iCazWzVNVQ6vVLz5wonJPE6INoHBfGF0KgrEjQScjh9GtxoYpObdQ7PAM
+	 rCHiTdXUJ2gK27mSorrVJP0oPIZI0HTzdmm8uPMgGoZ2pJRQICVZhF7Kz9sbL7+rwGjbk
+	 O3G8eprDeTqAfyMPbU9qtxQV49Pdk/Ki01sJABYvjLYsawbO1B3M9OlZaOVhpCytZIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792506456;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Dd9e46BTrpHgF60mWtnGPE2/vPI3dSQPcJz11b4S1jk=;
-	b=Nma0kkoZzKOUpH+G2RHqfPkPQjRQ8CU3koXUe2+1x+nwAucJmcwXWSfNiclqIjyDZS8H
-	 9jD0xgv3lm5fGLgb6oXvLj1FPMvcu0TWj9TTBKKpb02LEyzx2IfGoauY0zQW4zgKplR7t
-	 CGtlRoxBh4HQB5aCKNngmZt5rQG1jAypiOYtFLjOBBaSoxp5ac5NRH8bRJJ5zIjThAw9c
-	 rzPO58ld37vaVsFdJd9Akmf11K4HLs5+fsGnNSjvWJGHYgx2hnjWCYcPE8sAixi4YyuRM
-	 ra/86mHL8jYPcg5usmVpCxv8yI/oF0aRlMT1mpZwCyydW5YmyPJna+YQpJ1DaXlBtug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792506799;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=YmDZMO5e+0pNU7Q50UoTGVHdGqoRMMsJYF5VbvD22Ak=;
+	b=bEgDKhTCB4KSIrilyMxXCDubt5RelAl8WQzk4wh83Bph0XkW0FAPFtf00RjNxMsoEGSi
+	 sFOB1L+ZhEantl40xhPmKEpThYFmc/842AoeLfvRIT0tFtTbP7R8LTdKoWFSqv6vSrD2s
+	 VOcK1vT1BXiFqtE9Kv2V8HuEtvE0eerEyrPnO08vyDrlwOVI3nAT+fg1msorZ1mtuwxMs
+	 KKxkmtznYUtFQ7wwdN85LXL5ZYcXg3f8+TuvcA0nQakqCTFJm2Iros4Pt0Z4XPV46kFMH
+	 ZJCCmS66yLxtfOmP/o1cGHSFd1HlEKf8ZVQgGjz90Xye+ne9UJf2VCnAg5RkDX+4qjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BPAHlMuP;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B59606A331;
-	Tue, 20 Oct 2026 14:27:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52B59606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oLtbMqno;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FB9606A31E;
+	Tue, 20 Oct 2026 14:33:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16FB9606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BPAHlMuP
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4272616F8;
-	Tue, 20 Oct 2026 07:27:31 -0700 (PDT)
-Received: from [10.0.137.15] (XHFQ2J9959-5.cambridge.arm.com [10.0.137.15])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D2363F7D8;
-	Tue, 20 Oct 2026 07:27:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792506454; bh=II7XzKF/T9a42uG8lOm7+KYJJnneubeimBS3uGSkock=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BPAHlMuPMZTzU3zfBQVYdzZx6EFum1IZ9tNdfI41BIOD1ynRavvH/BLSpoHVkwC7j
-	 GsxOWywnQWifJ95J1IVxn6CyoFnm6HTr1FG1Zk1MR5LW8CW5zDQlNmBupLWLyCWxE6
-	 +Tufm7Qk3l7H79TsgTEtkuAfPiAAvp+fpJIutrRk=
-Message-ID: <08521420-5adb-4e3a-8110-4713bcd5dfa0@arm.com>
-Date: Tue, 20 Oct 2026 15:27:28 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oLtbMqno
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDEYuP2567886;
+	Tue, 20 Oct 2026 14:33:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=YmDZMO5e+0pNU7Q50
+	UoTGVHdGqoRMMsJYF5VbvD22Ak=; b=oLtbMqnoJHtghr1MHHIigWe39+xmMFAmx
+	JgJMt/Zc9oKxtQW1VGui//QqmEAxZ8oUXIBU+dMM8cpa/m+UIW+ylLDIHIDWD2Wi
+	lxDValElj5qSu1XA0R/sLqp7QqYYheaoZIur+XLzmD5IwAmFDYvPR+y0T6a+UE+L
+	7+y6cB1KYYoZ7RqCgKF/XwoUSjUvL5e7pxDEn06XrYXbHzRGQ7RXuLyAntSUMtPi
+	uOCgFKDrPK8XH0oP6MY4d7wL3rd6Htpn/bqseq8txXmQAeISIDqWxjGzTj1gcQiM
+	vfCF8O7cGOUrqiMN6JZNED5fcf+vPLQcU+vrJQ19E5UaJQh+i+5ug==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5a3du3-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 14:33:14 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDYsjW1538904;
+	Tue, 20 Oct 2026 14:33:14 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hckqvjhqw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 14:33:14 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69KEXCtQ3867572
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Oct 2026 14:33:12 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7697158060;
+	Tue, 20 Oct 2026 14:33:12 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13AAE5805E;
+	Tue, 20 Oct 2026 14:33:11 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Oct 2026 14:33:10 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>
+Cc: KVM <kvm@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>, Shuah Khan <shuah@kernel.org>
+Subject: [PATCH 1/2] KVM: Set up async page faults only for faults that need to wait
+Date: Tue, 20 Oct 2026 16:33:07 +0200
+Message-ID: <20261020143308.228328-2-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261020143308.228328-1-borntraeger@linux.ibm.com>
+References: <20261020143308.228328-1-borntraeger@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,101 +96,63 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 15/15] misc/arm-cla: Add vfio-mdev user interface
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jean-Philippe Brucker <jpb@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Alex Williamson <alex@shazbot.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Oded Gabbay <ogabbay@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-References: <20261015142552.4128028-1-ryan.roberts@arm.com>
- <20261015142552.4128028-16-ryan.roberts@arm.com>
- <20261015164102.GC13920@nvidia.com>
- <CABCqBse_aZL-EH0us2uA5X10q6E4WP02MoHTYf+M9ezRZr26WQ@mail.gmail.com>
- <20261016144202.GG13920@nvidia.com>
- <375868af-d0bd-4278-83e6-f8429df130e9@arm.com>
- <20261020141540.GB3008132@nvidia.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20261020141540.GB3008132@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDA1NiBTYWx0ZWRfX+X8uS9nnYvgk
+ 88Hc3HjxK2vFv46cdXNMtoczbmomOXbYQXJNtPW57uakRKoalQ4FOoKsrjypSbbDhZGYmbll0RQ
+ y4jmaRY7yvAibdmwcfCwvMcsOnAOABM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDA1NiBTYWx0ZWRfXxu0l6YUWbPOk
+ ry7vkwJl9hZw9fKXGsYUHkd009vgUR4H8Tq4cEWaeVGQvrSl0OmQIMyJV7b4YVZJIoXgBbGsc3p
+ DN/b8Adz9jdCcF1zsWjBZQPke7JXO/++t3R5kseSZCNfnPrX1PZZre4uKe4CNP4GF9AodUNxwNw
+ waRnZqGhKqJzpRLeCevngY39LA7LXXnVKa52oDvH1tSDV7nW80TuWlyP4ZP67NYbJcfie1GImOL
+ ZiWeigH5A99T4E/SD8bChVs6j/8kX/BccfYS16OauzkBemQDmoNoHFxRo9JVBMqWLUGXR6ZDxiA
+ ZxHhtDG2zk3Qiwo3Fi2FrEkWrVdrfuBbPvhxzgJgcF3OyUce7ytgM8cngEKlq9ds5PDh1Zvp2Tw
+ wsMhYlJ+Qlkk96JvNQ3WYnmOMYtLF/7dnZzVYzL56k0AiWBIzqZpM8k0V4dFk5ffZC++JhoRg7W
+ DZ+0eaO9mp3cwn8WZZA==
+X-Proofpoint-GUID: Zvef_ByYTYQLBf8vihPeg0xd5GibJuWH
+X-Authority-Analysis: v=2.4 cv=JIKuIMKb c=1 sm=1 tr=0 ts=6ad77bab cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=2XfxGlgA2qNMPojl:21 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=B90Q0sit6v1lwuMtttgA:9
+X-Proofpoint-ORIG-GUID: X8GrOVqDz2ryGb4OIS5AORN8rBnxMJ8E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-20_02,2026-10-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610200056
 
-On 20/10/2026 15:15, Jason Gunthorpe wrote:
-> On Tue, Oct 20, 2026 at 11:41:57AM +0100, Ryan Roberts wrote:
->> On 16/10/2026 15:42, Jason Gunthorpe wrote:
->>> On Fri, Oct 16, 2026 at 03:22:00PM +0100, Jean-Philippe Brucker wrote:
->>>> On Thu, 15 Oct 2026 at 17:41, Jason Gunthorpe <jgg@nvidia.com> wrote:
->>>>> I think I said this last time, please don't use vfio mdev for
->>>>> anything. There is nothing mediated about this.
->>>>
->>>> We don't multiplex a device between guests, but the host driver must
->>>> control part of the device registers while the remainder is assigned to
->>>> a guest. The host configures accelerator access, stage-2 translation,
->>>> handles CPUHP and context save/restore. So we can't bind the device to
->>>> vfio-platform.
->>>
->>> That's fine, you can make a proper vfio-cla driver.
->>
->> Hi Jason,
->>
->> Thanks for taking a look at this! I've been chewing on this comment and trying
->> to educate myself deeper on the subject. I have a proposal...
->>
->> Currently we create a struct device per CLA device instance. But multiple CLA
->> device instances cooperate within a domain and the domain is the "unit of
->> isolation"; 
-> 
-> Well that's weird and a bit confusing.
+hva_to_pfn() checks a FOLL_NOWAIT gup() for EINTR, EAGAIN and EHWPOISON.
+There might be others like -EFAULT for VM_FAULT_SIGBUS.  For those other
+errors, reporting KVM_PFN_ERR_NEEDS_IO would be wrong as it triggers an
+async_pf resulting in endless retries.
 
-Yes; this conversation is helping me to see that... :)
+Return KVM_PFN_ERR_NEEDS_IO only if gup() returned 0 pages and report
+the error otherwise.
 
-I was originally trying to avoid creating any globally visible entity that
-describes a "domain", since I thought there was a possibility that each process
-might want to define it's own view of a domain. But in hindsight I don't think
-that's helpful...
+Fixes: 0857b9e95c1a ("KVM: Enable async page fault processing")
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+---
+ virt/kvm/kvm_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
->> we can't have some CLAs from a domain assigned to a VM, while others
->> from the same domain are used by the host. Therefore it didn't feel like the
->> correct model to unbind one of these devices from the native driver and rebind
->> it to a cla-vfio driver. mdev seemed to solve this problem nicely for us.
->>
->> But looking into it in more detail, I guess something like this might be a bit
->> more standard:
->>
->>  - Split the existing CLA driver into three components:
->>     - cla-core: Hardware discovery, domain configuration, struct device
->>       registration and CPU hotplug
->>     - cla-native driver: Provides the user space accelerator interfaces
->>     - cla-vfio driver: Enables domains to be assigned to virtual machines
->>  - Each domain has a struct device (created by the core)
->>     - An individual CLA is not represented by a struct device
->>  - Either cla-native or cla-vfio can then bind to a domain device
->>     - cla-native exposes a char device per domain, per accelerator class
->>     - cla-vfio
->>
->> For VFIO, I guess we could use one VFIO region per CLA, which would allow the
->> VMM to construct a device tree. But it would need to additionally determine
->> which CPU each CLA is bound to; perhaps that's a sysfs interface that cla-core
->> could expose?
-> 
-> I don't know alot about your CLA, but this sounds reasonable. There
-> may be uses with containers to have the split exposed like this too.
-
-...This all feels much clearer and simpler. I'll work on an approach like this.
-
-Thanks,
-Ryan
-
-> 
-> Jason
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 5a782849521c..34b38d7512c3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3048,6 +3048,7 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
+ 			pfn = KVM_PFN_ERR_FAULT;
+ 	} else {
+ 		if ((kfp->flags & FOLL_NOWAIT) &&
++		    npages == 0 && /* no PFN_ERR_NEEDS_IO on errors */
+ 		    vma_is_valid(vma, kfp->flags & FOLL_WRITE))
+ 			pfn = KVM_PFN_ERR_NEEDS_IO;
+ 		else
+-- 
+2.53.0
 
