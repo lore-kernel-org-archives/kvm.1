@@ -1,70 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493533;
-	b=HbfwvSnDQG91u3FQEHn5qYxKnZP5/3IBanW57t3hsAk3mN60pQOTeRuF5abL2U07ajXO
-	 Gdcl+EFWB49m2McbziqsMcw4VyaSGOV7jXYlgG7Bw2ngpHrEEZKzU77+m/8cK/3mnAzbr
-	 BynYwn0MKnXS6hLm2bSINHM1a40/0/laK8fepp7xv/vX4AwWHffHH0eGgXFisNgfXaCb7
-	 lnBvxswiz3XXvKuOGx2/VFXK0jZtck9YrfluG3hlZFIx00TLiOjTpU7HVgQ4RyZ/txe7E
-	 SfDp06ssa539zxI+Z9fjySEVS9OxJkKp8tpuUuJ9Pu49wVqn0B/l7kuiOdn/gTSq45A==
+	t=1792494056;
+	b=X0opwpWhauKkJFSSR7U/VsGv7othT9ZQSPZ+II+XqqhJhgKGKpdxm63zxcwo17Leltey
+	 ET7dD4Nbhbe5VMUQVS9eSrShIEKwOC0+tGwH1LK1SXjGFgHqYqrfj2egaZO1cvJJArqFu
+	 kzlvpDOKzU8ZR3miCxwbMw9nX1aQ3peVnJk0VPHIebj3HQybe4oxZSO8tAP66u72IhD6L
+	 E7sm9Z3NFcWVTuPFYQFdpY31MqJwpGuE+OkmHQB0litmM0jXeV4lmCLi4snOpbEPOhtZJ
+	 YHGL8H4yaUlCP57y1+5o0sx9tHA5Psoyr2SgLTUfzJw00AssEnLhOnWtLWkaFx5V7Ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493533;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
-	 X-Scanned-By;
-	bh=Cht00yUtxWZgYYGvkiDrdQx2K2tPqKneM6BMi8EBSe8=;
-	b=2H8WxsGvE6kqv1PoHN8DSlIHMU5c9sV+RHWuPGNrBdf/Rkw/TzphCZQ/7rXodl8hfNFX
-	 UAzVcfDEXksArQtw3eVjDueDRyVYhyHFosv5VJoeMm7H6sGo+BElnFhejObpJ9o7ioaf4
-	 9Eu4RL5ZfjS1LSZAC8WTqAy6XvOgA5HSXNuNx+Sl4s8jgTLpOMlvQps8TGZlYaVOwpt7W
-	 CHWhMf2vIFegYMFX9YggU4mgHXF+43G9wViW5jydFBvB6P105bzDniyiTDz1WAej3m1UC
-	 xrbO+gSFcXEbu6+M5m41P1tO3o8uNYauBF922GBlHGHMSuRjEi5ugSoIiYOGEUp6jdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792494056;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=vSoBJw3bJU+XayjzczxzT9tLb1CSLP3d3fwCLBfTU4o=;
+	b=PbDC86SkDRvEO+L90x2wEMolSFXs1ocxwsZgACl4U0H8SqCnzAniOgwnDgv5J2B1qjOx
+	 Izyoy8w7Mi/LFNra41w03xAu1Cr4LW9Y7NSwCV0oVtWBDuugacBMyW3q/xEdzlZjpxYT4
+	 KHnSQWFfpQRP7BG+eaLtlipE2HCRrveRCLklj882xjj76s6IMm6lnbUD0qKb+1677vbXQ
+	 I/SuPDev6VnlsRpdlWJGybwkfuux7gjxFfbB5MJt/nju5A4jU0KgNBT2aCLKojs8x+wNC
+	 s9ushLitSddlV+rj4gV/V1U5ufADrj0IsuMA1rGjDYOj7UqID06imPxRPQr5ooORjsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JaiHpW5p;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gnKD+AWY;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE169606A319
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:52:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE169606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A12F606A31A;
+	Tue, 20 Oct 2026 11:00:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A12F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JaiHpW5p
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792493532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cht00yUtxWZgYYGvkiDrdQx2K2tPqKneM6BMi8EBSe8=;
-	b=JaiHpW5pNptVTLB7kq5Loz5RYWsz0iErLrcBMQyuIH2NKRp/XtwXC0Fo8kcAcKMTa/GByy
-	PXiWvaEOgXNT6N/xpromKLPXwbMAYgPHHoMCaJ9WvKZifDD4qmpMYHnULwOqwM7crvzIpE
-	FkkBzsY6OxL878kJyet2CGiWhQwacI0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-7pgMjRlDPJm6ek2MrAPphA-1; Tue,
- 20 Oct 2026 10:52:08 +0000
-X-MC-Unique: 7pgMjRlDPJm6ek2MrAPphA-1
-X-Mimecast-MFC-AGG-ID: 7pgMjRlDPJm6ek2MrAPphA_1792493524
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A12B1954ACE;
-	Tue, 20 Oct 2026 10:52:04 +0000 (UTC)
-Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 81B4630000E7;
-	Tue, 20 Oct 2026 10:52:01 +0000 (UTC)
-From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:46:22 +0400
-Subject: [PATCH v7 65/65] tests/qmp-cmd-test: assert qapi-type resolves in
- query-qmp-schema
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gnKD+AWY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792494057; x=1824030057;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=f1gIxStBvvTnb8FUgZjxNH2u6l0XyPghXfOpb0RB0J4=;
+  b=gnKD+AWYQBJLN2CFNfugIj0cQrpBio0AMf0kx/rENFTAaj4lZDv9bF+X
+   KOEarHC8VW/dWlIGdizt/OhAX1h8dpUwtgchYsf8fp2fLQ0Ed/oDJ+Zne
+   bBZ0m/gg4fZ2Abb2XQKxpr1oZe+w4JlJyaqraOlMyUvMRLoWrFlldlPaZ
+   V4NF/6Q/pxF6fWoXUK6iUU8jJHBOri1ERwfFv6SC3L+k0bjZbTh2/Mc+x
+   SlLdiG/4XZ/OKiOc7wPfJlOu+zUvLCamCqa1DsoT+vIhAaxQLi6uIrHrR
+   dnpwkisqKv3ULrZOlmwl85JtEKelJ2z86rFNn26FtfIAC0b+oNee+ZOuB
+   w==;
+X-CSE-ConnectionGUID: /Jpwnj3tRHKs2b3k9RWjEQ==
+X-CSE-MsgGUID: uECbREtNRqG9IkLYLFPjRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1083344"
+X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
+   d="scan'208";a="1083344"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 04:00:56 -0700
+X-CSE-ConnectionGUID: GDanXnDXRsyEl3uWTadSJg==
+X-CSE-MsgGUID: 6tz/75haS3yne8QlpbGpww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
+   d="scan'208";a="4571442"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa013.fm.intel.com with ESMTP; 20 Oct 2026 04:00:52 -0700
+Date: Tue, 20 Oct 2026 18:55:59 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: pbonzini@redhat.com, dave.hansen@intel.com, seanjc@google.com,
+	x86@kernel.org, kas@kernel.org, adrian.hunter@intel.com,
+	yan.y.zhao@intel.com, binbin.wu@intel.com, xiaoyao.li@intel.com,
+	chao.gao@intel.com, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, nik.borisov@suse.com,
+	tony.lindgren@linux.intel.com
+Subject: Re: [PATCH v2 2/2] x86/virt/tdx: Drop tdh_phymem_page_wbinvd_*()
+Message-ID: <atdIv8UNaqJ+9Vf6@yilunxu-OptiPlex-7050>
+References: <20261015191710.3632302-1-rick.p.edgecombe@intel.com>
+ <20261015191710.3632302-3-rick.p.edgecombe@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,205 +83,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-65-431a86b02b58@redhat.com>
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, John Snow <jsnow@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Kostiantyn Kostiuk <kkostiuk@redhat.com>, Eric Blake <eblake@redhat.com>, 
- David Hildenbrand <david@kernel.org>, Igor Mammedov <imammedo@redhat.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Jason Wang <jasowangio@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
- kvm@vger.kernel.org, Alberto Garcia <berto@igalia.com>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>, 
- Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
- Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
- Jagannathan Raman <jag.raman@oracle.com>, 
- John Levon <john.levon@nutanix.com>, 
- Thanos Makatos <thanos.makatos@nutanix.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Cornelia Huck <cohuck@redhat.com>, Eric Farman <farman@linux.ibm.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org, 
- linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Sergio Lopez <slp@redhat.com>, 
- qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org, 
- Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>, 
- Xianglai Li <lixianglai@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Pedro Barbuda <pbarbuda@microsoft.com>, 
- Mohamed Mediouni <mohamed@unpredictable.fr>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org, 
- Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>, 
- Alistair Francis <alistair@alistair23.me>, Alexander Graf <graf@amazon.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, 
- zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>, 
- Luc Michel <luc@lmichel.fr>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Jamin Lin <jamin_lin@aspeedtech.com>, Kane Chen <kane_chen@aspeedtech.com>, 
- Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>, 
- FangSheng Huang <FangSheng.Huang@amd.com>, Tyrone Ting <kfting@nuvoton.com>, 
- Hao Wu <wuhaotsh@google.com>, Keith Busch <kbusch@kernel.org>, 
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>, 
- Aditya Gupta <adityag@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>, 
- Conor Dooley <conor@kernel.org>, 
- Sebastian Huber <sebastian.huber@embedded-brains.de>, 
- Halil Pasic <pasic@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Jason Herne <jjherne@linux.ibm.com>, Titus Rwantare <titusr@google.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Peter Xu <peterx@redhat.com>, 
- Chinmay Rath <rathc@linux.ibm.com>, 
- Hendrik Brueckner <brueckner@linux.ibm.com>, xen-devel@lists.xenproject.org, 
- Roman Bolshakov <rbolshakov@ddn.com>, 
- Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>, 
- Farhan Ali <alifm@linux.ibm.com>, Alex Williamson <alex@shazbot.org>, 
- Tao Tang <tangtao1634@phytium.com.cn>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, Fabiano Rosas <farosas@suse.de>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
- Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3522;
- i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=d0AC/pqR2xkFHzouOcdpk0rfewmoRKNngAyjCDgTMl8=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZdBKSnHJPBpmcmbmASu7qOtoUGXTowk7yNX
- g+tgxS9nNCJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGXQAKCRDa6OEJdZac
- 5YaTD/9vG9jkAEkIZLFzUN64FilSwr9riDSC6dE2d/cUhX4cjMjxDVeEJE3fOoiBKvDHuHP6Fam
- eLESfFQfsqJcKbQZcC7fZwpUyYgAah0Te7HBf1dTcZEFTRvKN74njWw41ZqG0c7tTwK2RvnjIsK
- 8fHHImBlQjy3IQpEa+tkvQUC4iH8rw0sZLyrCG2YcdoTu7W+WXDLexUk2cOs0ruBPuwoKzJNY0h
- kfSjtPXCqWAYW/CLE/XAxTIg0npoHuOEJsdHN2vFua1QGpata7fM9WvmMdkxxN/mTWXE368BfaR
- SefydRBG8ysGItK2Wa42Jka1iFQCJauQfgYfzHLKFuwYgNDhmVGREedy/FHX4FKrmlFt+/DTCBT
- WQqkUunveY9WHZTah8Oyc6HQu217yOg1Pu1mzdUOKA7L5efOGeeF2VXLU4xx8F0cI3x9n1w2m9S
- ZjD8AIg2GEOQSHZTOHmvLShHGgZeqbIHmzkuVPwP9Uu0Xvd4oFkSUdsv018jZzRlsuC1WZ19WVs
- HwVfX09lvPTKCeCW/MnPJHOy4Jz9YIZOrueZvIMglgwQcZOoG8zo20m3HJUDkc4M1fhIN0xN5GX
- +pxjl6niKchvnstVDhaDerpY/9nebfmNnSTV8sMRAPUBnvklXn1847TNA0iuqTN+Qp24h+XOk0a
- iSGRIgq7QkVJWcA==
-X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
- fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015191710.3632302-3-rick.p.edgecombe@intel.com>
 
-For every QOM type returned by qom-list-types, call qom-list-properties
-and verify that each property's qapi-type value (when present) maps to
-a valid entry in the query-qmp-schema introspection output.
+> KVM previously needed to call different types of tdh_phymem_page_wbinvd_*()
+> helpers for different types of reclaim. So it had a stack of helpers and
+> some open coded logic to use them in the rarer TDR reclaim case. Now that
+> the wbinvd is gone, the steps for each operation are logically equivalent.
+> So collapse the helpers and just call tdx_reclaim_control_page() from the
+> TDR reclaim path.
+> 
+> This unification brings TDR reclaim in line with the behavior of the other
+> reclaim paths, by handling TDH.PHYMEM.PAGE.RECLAIM failure by leaking the
+> page and setting the TDR page pointer to NULL. This results in reclaim not
+> being tried a second time, which is reasonable because the first reclaim
+> failing suggests a problem with the TDX module.
 
-The test is gated behind g_test_slow() since it iterates all registered
-QOM types.
+Ah, it really is bigger than expected: Removing __tdx_reclaim_page();
+unconditionally nullify kvm_tdx->td.tdr_page;
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- tests/qtest/qmp-cmd-test.c | 55 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 1 deletion(-)
+Personally, I would split the helper collapsion into the 3rd patch in
+this series. But I'm also good this way.
 
-diff --git a/tests/qtest/qmp-cmd-test.c b/tests/qtest/qmp-cmd-test.c
-index 279a8f5614e9..acb7b0dd6a9f 100644
---- a/tests/qtest/qmp-cmd-test.c
-+++ b/tests/qtest/qmp-cmd-test.c
-@@ -15,6 +15,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-visit-introspect.h"
- #include "qobject/qdict.h"
-+#include "qobject/qlist.h"
- #include "qapi/qobject-input-visitor.h"
- 
- const char common_args[] = "-nodefaults -machine none";
-@@ -131,6 +132,8 @@ typedef struct {
-     GHashTable *hash;
- } QmpSchema;
- 
-+static QmpSchema schema;
-+
- static void qmp_schema_init(QmpSchema *schema)
- {
-     QDict *resp;
-@@ -343,9 +346,56 @@ static void test_object_add_failure_modes(void)
-     qtest_quit(qts);
- }
- 
-+static void test_qapi_type(void)
-+{
-+    QTestState *qts;
-+    g_autoptr(QDict) resp = NULL;
-+    QList *types;
-+    QListEntry *type_entry, *prop_entry;
-+
-+    qts = qtest_init(common_args);
-+
-+    resp = qtest_qmp(qts,
-+                     "{ 'execute': 'qom-list-types',"
-+                     "  'arguments': { 'abstract': true } }");
-+    g_assert(qdict_haskey(resp, "return"));
-+    types = qdict_get_qlist(resp, "return");
-+
-+    QLIST_FOREACH_ENTRY(types, type_entry) {
-+        QDict *type = qobject_to(QDict, qlist_entry_obj(type_entry));
-+        const char *name = qdict_get_str(type, "name");
-+        g_autoptr(QDict) props_resp = NULL;
-+        QList *props;
-+
-+        props_resp = qtest_qmp(qts,
-+                               "{ 'execute': 'qom-list-properties',"
-+                               "  'arguments': { 'typename': %s } }",
-+                               name);
-+        if (!qdict_haskey(props_resp, "return")) {
-+            continue;
-+        }
-+        props = qdict_get_qlist(props_resp, "return");
-+
-+        QLIST_FOREACH_ENTRY(props, prop_entry) {
-+            QDict *prop = qobject_to(QDict, qlist_entry_obj(prop_entry));
-+            const char *qapi_type = qdict_get_try_str(prop, "qapi-type");
-+            const char *propname = qdict_get_str(prop, "name");
-+            const char *ty = qdict_get_str(prop, "type");
-+
-+            if (qapi_type) {
-+                g_assert_nonnull(qmp_schema_lookup(&schema, qapi_type));
-+            } else if (!g_str_has_prefix(ty, "child<") &&
-+                       !g_str_has_prefix(ty, "link<")) {
-+                g_test_message("%s.%s %s has no associated qapi-type",
-+                               name, propname, ty);
-+            }
-+        }
-+    }
-+    qtest_quit(qts);
-+}
-+
- int main(int argc, char *argv[])
- {
--    QmpSchema schema;
-     int ret;
- 
-     g_test_init(&argc, &argv, NULL);
-@@ -355,6 +405,9 @@ int main(int argc, char *argv[])
- 
-     qtest_add_func("qmp/object-add-failure-modes",
-                    test_object_add_failure_modes);
-+    if (g_test_slow()) {
-+        qtest_add_func("qmp/qapi-type", test_qapi_type);
-+    }
- 
-     ret = g_test_run();
- 
-
--- 
-2.56.0.116.g6de20f6092dc
-
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
