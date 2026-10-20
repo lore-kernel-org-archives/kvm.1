@@ -1,65 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.148
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792537213;
-	b=z8+aL7wV/mSGJWKeBvSyTJcGQTT9kbdSOtbl8RQPvcncMKPMvhkE7kxHG2YmHNWWytCu
-	 OFTX+2e5HE6WfEonB+pvrZ/1g1KnoaVRvF491bQHZNAjX8DWEu7XVsz/73I3BoVCAKwzh
-	 Xx727JCEXfwObsYKfHiLFElMoz4aptEuweto7gnJTsGvE7JqauAkSJlT8TTOBbHSQbTKt
-	 5M3ACU9erK6JNotJS3T7rnGNG3bDIIVB1AsS7ARJ1pQwGHrvbVuKl67gA3Ot5UykoXPBK
-	 /s3FtiGJ5qN2Bi28pApxl7Usz4aVDszQYgw+aSwI59410Kj0V6ZYNnOB3uxvm2YWpWQ==
+	t=1792539004;
+	b=GWYoNt+feswy5p75FW/udWJvkq4NhoWYAQW3kc2oIDhMgSn1eIXGAFiT9yP/kcQtDK+B
+	 RH5orWzmjfpUzFRVbVYA6EwEkLfJnZXWOAus/8WT1BgdskwlIg3KV1jtSUFk0Ruli1kea
+	 UmKG9GLpYVDc2B1LEbCe5EzalcFZtTNakQDEt8+JAiFbj3OAXuEhAwBZiljSX8yzVfL4I
+	 XLXrz272VXJUSFPDehiIuBQdlHVflGd9UIGGAOiRAMkxQSt57xDhBb0EyQ2uZ+TEd03jk
+	 cT9DqSsiIydFVMCzjnpfQAVI45F/K0rnh74wPETI/F1LZt2/6aa2JyCqC0/7x+GpaoA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792537213;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792539004;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=DgzMkFS09rbRFwZ4qpsmxdlgfbYdDf6ylfA8LxCI1R8=;
-	b=kHhI00xG4vSVvXFj5muZbWOlIy1Fc93SAPJ061X7KvlxP9N9Ji24+YNkHNsSxInzG7FN
-	 iICuYXp0aceesB+Oj4EmxOZm9qxQ6nZz3h0n8DW4yjbgTZw+vUZNwiRbBBPBRPHUhbY4R
-	 M5ILfS+e9uyjdhQxaPaftd8pmPiZamP+KkBuIQpetUyZo0Uvpp1IptGIixMVOh658cL7u
-	 jJsCebOVP4xy3kOODnxjxvCh1e5YJovwaUYajakm9FSPkYVMBSswtNtGPvFUdFCjI1j3T
-	 f/UnEpLt6UnbgiT4t3XPlrYISXGqLxBn0h6hnumeBukOaFHbT9An15CO6hFeEPL9+Gw==
+	bh=vpOI+1qBW/MtfJm0O85kyO88qqkrY/yJqDCLaRNjbVw=;
+	b=VRN45EG5x2n7LZmtNevFSlWK2eQve2XBAAJ8fNKnYX5HzpQ+Yk2IUamQ9fS57fkggPXU
+	 hOhIql5D2oaSUVX5GBRXS0sc+il2eXkr5KZeheQmJ7/rn7oCeGAIX+AvCOZn3sI5NkmFm
+	 ciZHkoFbEubGEqoFZOuaoyJJ3G91voCbP7gHDd2PD+/kCTbpeYLNKAmylXLDDCErFzFzE
+	 v1mR7Okj5uoF0dhSyMABndPDkx/NCNCAS/nAoqdMoI1A6cEtpbdreYgDiEcL9OUkLcnR9
+	 fw0mNevg/XY0rlYbFnuJA+qJu7SBMhbQdPsglzm5gfetgOpfaNsvVsWk6XjrgcP76Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="GzWdJMx/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=QGACHvRG;
+	arc=none smtp.remote-ip=115.124.28.148
+Received: from out28-148.mail.aliyun.com (out28-148.mail.aliyun.com [115.124.28.148])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AF1606A31F;
-	Tue, 20 Oct 2026 23:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A8A606A320;
+	Tue, 20 Oct 2026 23:30:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0A8A606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GzWdJMx/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59CC1F000CA;
-	Tue, 20 Oct 2026 23:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792537213;
-	bh=DgzMkFS09rbRFwZ4qpsmxdlgfbYdDf6ylfA8LxCI1R8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GzWdJMx/J+lIl8jl0o/1aIJfIn0Fiikh7T+QKFR+muFhEsJWOyIDXXjHB+ymwJ9p3
-	 X9xKslDzIkwXjT22ffDq28qVVcTwehXVKBjqCuMHe7oifsyFoFjE8mlPe6p69/MUG0
-	 MqjZpXRtX22SZuDwxy9BmnfnERl772BdXOcn+WSnOCj9BqWo8CGdM6RLUV5lAFjL4n
-	 S67onXBFxCsaRTyTczYF2pHQMsVGoY65AFPd8qbvie4RwhzkWSG1URpHInd65Koss/
-	 OvO48afHdNcQIgFAjjreKYHN44g+BnKp9EmpI6DwUsl+l1SD9TVEjVky16hSIWSgCu
-	 HRWv0tIfiqHhg==
-Date: Wed, 21 Oct 2026 00:00:03 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
- lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
- cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
- James.Bottomley@HansenPartnership.com, aik@amd.com, jpiotrowski@nvidia.com,
- qinkun@google.com, pgonda@google.com, alistair.francis@wdc.com,
- ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
- dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- peter.fang@intel.com
-Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
-Message-ID: <20261021000003.71f78d99@jic23-hlaptop>
-In-Reply-To: <20261015145053.3664509-3-jiri@resnulli.us>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-	<20261015145053.3664509-3-jiri@resnulli.us>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=QGACHvRG
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1792538999; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=vpOI+1qBW/MtfJm0O85kyO88qqkrY/yJqDCLaRNjbVw=;
+	b=QGACHvRGyo4WyDIcoCu3SwNOb7Os6K1a/tGqS6bchdxzNZs22XEekAaMW3KzF9RtLg/OK5BHC346YsZPRNp/FURgSMUTLuEVY5HgtIlPS5Vo/3H9f+XjQ1hNUHlxhu+4iSbbryXkrM6iAOWS1PB3l+HJSPjONbGzp0DwTPn4zw8=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04501025|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00619225-0.000360456-0.993447;FP=3275688948779205885|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034184;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jm3sHc-_1792538997;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jm3sHc-_1792538997 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 21 Oct 2026 07:29:58 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Weibin Liu <liuwb@xiaopeng.com>
+Subject: [PATCH] vhost: fix used ring index wrap in vhost_add_used_n_in_order
+Date: Wed, 21 Oct 2026 07:29:56 +0800
+Message-ID: <20261020232956.99970-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,119 +65,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 15 Oct 2026 16:50:35 +0200
-Jiri Pirko <jiri@resnulli.us> wrote:
+vhost_add_used_n_in_order() advances start by nheads[i] but wraps it
+with a single subtraction.  If start + nheads[i] >= 2 * vq->num, start
+can remain outside the ring.
 
-> From: Jiri Pirko <jiri@nvidia.com>
-> 
-> Define CTLV's common TLV transport, ioctl, event records, identifiers
-> and limits. Add the in-kernel API used by family implementations and
-> generated code.
-> 
-> Assisted-by: Cursor: GPT-5.6 Sol
-> Assisted-by: Cursor: Claude Opus 5.5
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Minor stuff only.  Some of it moaning about toys we don't get in uapi
-headers that make kernel code 'so elegant' :)
+With used-ring logging enabled, start > vq->num makes (vq->num - start)
+underflow.  log_write() then sets bits beyond the dirty-log bitmap,
+potentially corrupting adjacent userspace memory.  This is reachable on
+the vhost-net TX path with VIRTIO_F_IN_ORDER: done_idx can reach
+VHOST_NET_BATCH (64), triggering the issue with a 32-entry ring.
 
-> diff --git a/include/linux/ctlv_family.h b/include/linux/ctlv_family.h
-> new file mode 100644
-> index 000000000000..1ae4d3a536f7
-> --- /dev/null
-> +++ b/include/linux/ctlv_family.h
+Wrap start with a mask to keep it within the ring.  VHOST_SET_VRING_NUM
+enforces a nonzero power-of-two ring size, allowing start to be wrapped
+using & (vq->num - 1).
 
-FWIW I fully agree with Jason that sometimes it is worth burning
-some lines and even duplicating things a bit to avoid too many
-complex macros.  I didn't have anything to add to comments on this file
-at this point.  Will see how new version looks!
+Fixes: 67a873df0c41 ("vhost: basic in order support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
+Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+---
+Reproducer (verified on a kernel containing commit 67a873df0c41 with a
+temporary WARN_ON_ONCE probe in log_used(); the probe is not part of
+this patch):
 
+With VIRTIO_F_IN_ORDER, num=32, and used-ring dirty logging enabled, the
+TX batch reaches done_idx=64.  In the observed run, the initial index is
+3, so the single subtraction leaves start=35.  The resulting length
+calculation wraps to 34359738344 bytes, as confirmed by the log_used()
+probe.
 
-> diff --git a/include/uapi/linux/ctlv.h b/include/uapi/linux/ctlv.h
-> new file mode 100644
-> index 000000000000..6bc0d1a296e6
-> --- /dev/null
-> +++ b/include/uapi/linux/ctlv.h
-> @@ -0,0 +1,183 @@
-> +/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-> +/*
-> + * Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES
-> + *
-> + * CTLV transport UAPI: the TLV wire format, the op-execution ioctl, the event
-> + * record header and transport limits. Schema-free; a family's constants
-> + * are generated into <linux/<family>_gen.h>, the root family's into
-> + * <linux/ctlv_gen.h>.
-> + */
-> +#ifndef _UAPI_LINUX_CTLV_H
-> +#define _UAPI_LINUX_CTLV_H
-> +
-> +#include <linux/ioctl.h>
-> +#include <linux/types.h>
-> +
-> +/**
-> + * struct ctlv_attr - Attr header.
-> + * @len: this header plus its payload, excluding this attr's trailing padding
-> + * @flags: CTLV_ATTR_F_* bits
-> + * @attr_id: complete attr ID, or CTLV_ATTR_ROOT for a message root
-> + *
-> + * Attrs are aligned to CTLV_ALIGNTO, which is why @attr_id is __aligned_u64: a
-> + * 32-bit ABI would otherwise align this structure to four bytes. A nested
-> + * payload is the concatenation of CTLV_ALIGN(child.len) bytes per child, so
-> + * child padding counts inside the containing attr's @len while a leaf's own
+A 64-byte canary immediately after the 512-byte log bitmap changes from
+0xA5 to 0xFF, confirming the out-of-bounds write.  The used-ring canary
+remains intact because vhost_put_used() runs before start is advanced;
+the demonstrated corruption is in the dirty-log bitmap.
 
-Whilst I get what you mean, leaf doesn't feel like a clear concept in this
-comment block.  Maybe 'this attrs own padding does not.' or something like that?
+ drivers/vhost/vhost.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> + * padding does not. Scalar payloads are native-endian. Within each request
-> + * root or nest, occurrences of one @attr_id are contiguous; different IDs
-> + * otherwise have no required order.
-> + */
-> +struct ctlv_attr {
-> +	__u32 len;
-> +	__u32 flags;
-> +	__aligned_u64 attr_id;
-> +};
-> +
-> +#define CTLV_ALIGNTO 8
-> +#define CTLV_ALIGN(_len) (((_len) + CTLV_ALIGNTO - 1) & ~(CTLV_ALIGNTO - 1))
-
-Could this use __ALIGN_KERNEL() from uapi/linux/const.h?
-
-
-> +
-> +/* Set exactly on root and nested attrs, clear on scalar attrs. */
-> +#define CTLV_ATTR_F_NESTED		(1U << 0)
-> +/* Query fragments: set on the root and each nest logically open at the end. */
-> +#define CTLV_ATTR_F_FRAG_MORE		(1U << 1)
-> +/*
-> + * A request attr, never the root, that a device whose schema does not declare
-> + * its ID skips whole instead of refusing the message. An ID that schema does
-> + * declare is held to it wherever it appears, so this asks to be forgiven what
-> + * this kernel has never heard of and nothing else.
-> + */
-> +#define CTLV_ATTR_F_IGNORE_IF_UNKNOWN	(1U << 2)
-
-Doesn't really matter but could use __BITUL() just to hammer home this are single
-bits. Places like pci_regs.h have started doing this for new things.
-
-
-
-> +/* Implementation limits, not wire-field maxima: raising them is compatible. */
-> +
-> +/* Request roots, action replies, query reply fragments and event roots. */
-> +#define CTLV_MAX_INLINE_MESSAGE_LEN	0x100000	/* 1 MiB */
-> +/* Includes the error information root. */
-> +#define CTLV_MAX_ERROR_LEN		0x4000		/* 16 KiB */
-> +/* The root attr is at depth zero. */
-> +#define CTLV_MAX_NEST_DEPTH		32
-> +#define CTLV_DEFAULT_QUERY_REPLY_LEN	0x10000		/* 64 KiB */
-> +#define CTLV_MAX_EVENT_QUEUE_LEN	0x1000000	/* 16 MiB */
-
-Pity the linux/sizes.h header isn't in UAPI as result is we need
-those comments on what the sizes are.  Ah well, never mind.
-
-> +
-> +#endif /* _UAPI_LINUX_CTLV_H */
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 44cac11b68d2..0226c4c59709 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -3172,8 +3172,7 @@ static int vhost_add_used_n_in_order(struct vhost_virtqueue *vq,
+ 		}
+ 		start += nheads[i];
+ 		new += nheads[i];
+-		if (start >= vq->num)
+-			start -= vq->num;
++		start &= vq->num - 1;
+ 	}
+ 
+ 	if (unlikely(vq->log_used)) {
+-- 
+2.50.1
 
