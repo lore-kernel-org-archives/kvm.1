@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493329;
-	b=ShV1Lk0QFcN89gFv6x8PDNdl2aUyfQ2wrH1NoE9Cy3/k3FhXSvjBF/5yirqdPYDQ6IMU
-	 9voJD8dgpaCk/cfoht0OP87gUoCqaK+rNFNn22MoRZJMpmfMU2ECwqUsqTtIV8rwU+D9L
-	 7zEoEdXt+TAWWI4Y9MjW8cjlFNIvnSehLflnC2ULTAsMhIhruAdGy4Gwf+hyK5fYYN+GV
-	 tJwg2GqMeh7DGGhSjgfuCPqPMmpisjym5s8hNHk3kqmyCJ5IXdaCH1jW7CWyCXN07YZZA
-	 +aqgnY2sICZCn16KcxonHhtBlSWwWbs82v1PBpN5frFKuFktcYufy79nDhfEs3nCMug==
+	t=1792493333;
+	b=bqAnPu7t6fpzoA/+g+p9M27P4kWFFF99C3lm/tNWQzjHzGHoeT6lJB9NM6fPxjWtJmrk
+	 pc7SJEP72Az7c1rM61MXZXNLrpMSNNJuQJ23NGnfhOMdWuNhb823E3Hp/ZCLdSPjUKHnU
+	 3HZcMjYKyAMxz5fL85tt6UhThPMErr8nlOP6LBgOwwvypVH7PdEDtYiJpT6BI/DxITHo6
+	 ayM5BGRXHEqfunKVcQzY7Jt32Zk2SjLnlLNltLTjrjBUhv0QvAAIGUfCPY6Neb7gGK+KF
+	 Ak2s6PKN+tmpbgm3qdNqyeu2o5V08wTidhSNTe0PgMTlkR8xVQdCvF58hHxgLLbbWkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493329;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493333;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
 	 X-Scanned-By;
-	bh=VsbaU0VdjEFE5/Kdiolu0QHc56Ub04+6AJsyszfha5Q=;
-	b=ha7RyDHGGp5S2rfyXbrAj35W5QUbGdS8mSi9HL2JkJo2LSQ7sUsRdNy4xUcosIC2V8JI
-	 nK3/rAZAbOXmlC54BQ4TwwbdZvgOy1HYH6rwWCYnFz/Y1qLRjML7eP0+P6YfIjlnSje0D
-	 OPgsqobjylAGBK7YZagwsGV3NUDugFUwfzOLPnUz9mPMmPIDuZc+fEWcGK2KAwwAHQZy3
-	 GdwEul1W2gqGt6rGmab6N4FGcazw0k2OYs5RkDNcvOMdvdNNwEYFBLbU6qLv0UGnF18hx
-	 pNET20cTv+j2sftNHxziQIbhT4yTe2X/XIzzZhGnp6duc21zidA006WsOzuy9Ldev8A==
+	bh=ITZAmzqb42SOieKlyK1KvmCdBEM4ZFKVGJMc/HmGp5k=;
+	b=2MBp9wFuCxze/cn776FY2Ud1+shu4Gqd18lcVKhhb8xXrkgywLkhlanGBLUwP0PgKhTr
+	 CMUH2n0W7LZHj+wtpVlxoHVFfCyeHe4ymNhmW4DPW/W9prEvD3cDBdFu7fnWnS7J5Nn0M
+	 tEhRSxul/n3gA7Bkf7wjVBsQj43CKMPOtaI5An8+bULOsmFGLF+ylvsYp2fI7pmkN+8Kd
+	 Xax9UG1urFIIXW2iNYCHTW+UQ5vn/kyqVjEsD1nhsQZFvZwA+USp1GpQzQfqiwuT4LSWj
+	 AomRhf6l1FTE8haUEeS9s3kPxWm7sAJpuk/pNNL8v+9YfQLxwpX/x89ovD0NZzhbjdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDlJHP8t;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aA7RMqTJ;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA1C606A338
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:48:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FA1C606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A437B606A330
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:48:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A437B606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDlJHP8t
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aA7RMqTJ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792493327;
+	s=mimecast20190719; t=1792493331;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VsbaU0VdjEFE5/Kdiolu0QHc56Ub04+6AJsyszfha5Q=;
-	b=CDlJHP8tLabAkU3o+c0wfLCj0Ooaqk2wEi/TpmfPmvUlWl1rWhDR4UilKWqgAsN0YkcdKv
-	grhDWPgTHREoRrOkeoEUUO58MRm+veRBPJ+/RicgWHFhk9iMHGPwv76B2C209LdhMfbYiJ
-	e8qIUPTWfW4I8EISe/v/4iIM+j2+cVY=
+	bh=ITZAmzqb42SOieKlyK1KvmCdBEM4ZFKVGJMc/HmGp5k=;
+	b=aA7RMqTJTItkMzNt1wOVrC6h5TI+u0zS+ROM2WbDh+H4MC8gt0i69UwyUcudp2zbwPlWSq
+	qGoFlSwzATFL03FpHS/eRuvTUHQpWErCnW/7mwtlpiV5DDc8NY48CAvzdjp2N9JRronySV
+	4ew6BEiL+x5AwQ/UalRjfFU2isDSWBc=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-83--Z5Wuh_zPUyc0JzRRnv_JA-1; Tue,
- 20 Oct 2026 06:48:42 -0400
-X-MC-Unique: -Z5Wuh_zPUyc0JzRRnv_JA-1
-X-Mimecast-MFC-AGG-ID: -Z5Wuh_zPUyc0JzRRnv_JA_1792493319
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-PGS6jTcAOfWke_074JgvdA-1; Tue,
+ 20 Oct 2026 10:48:48 +0000
+X-MC-Unique: PGS6jTcAOfWke_074JgvdA-1
+X-Mimecast-MFC-AGG-ID: PGS6jTcAOfWke_074JgvdA_1792493324
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 15B921956076;
-	Tue, 20 Oct 2026 10:48:39 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 607CC1955DCB;
+	Tue, 20 Oct 2026 10:48:44 +0000 (UTC)
 Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1EFBA418;
-	Tue, 20 Oct 2026 10:48:36 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3C7E018002B1;
+	Tue, 20 Oct 2026 10:48:41 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:45:44 +0400
-Subject: [PATCH v7 27/65] hostmem-file: convert OnOffAuto rom property to
+Date: Tue, 20 Oct 2026 14:45:45 +0400
+Subject: [PATCH v7 28/65] sev: convert OnOffAuto legacy-vm-type property to
  QAPI-aware registration
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-27-431a86b02b58@redhat.com>
+Message-Id: <20261020-qom-qapi-v7-28-431a86b02b58@redhat.com>
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 To: qemu-devel@nongnu.org
@@ -151,101 +151,94 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
  Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3017;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2932;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=iZFd9HvderJ8uRReytwVEg9V/BI0/W9et6yTV5n+0HQ=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZaUi0I/HhTBoPEm8cGvUR2Ags/oP63+/IJC
- B3aPbt5x/6JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWgAKCRDa6OEJdZac
- 5SbrEACzpT4DA3aDgoPm1mkI7LWP4C1/KmFL4+/JVH+4dvDiHK2lfPUcj6g8+5ZAjiaZ7BNg5vr
- GU3ywL52hlZ5JZCn41HMfti/ha4z983dNfIctpiaV9RJU+A22EtAvPLpDEcFPF9PfeB/aMB6a1h
- 0Dpk/O8iKpIR0ww2sHYfJ7HC8jqBpBpc5BTWLONeOzWTk3OnFRU6R0c5BPcI6cENi7juVgxXrtZ
- ispq5YrtGrp52pLe3Ewh7Z+QrKyA2oKxwo7jhh3PQ9MQf1Bv4H9XMKBZmivwnir/bT4wnDtabCG
- Z3MBE8QRfPUHzLW7s8idRTcelPr99S0+ZteQGhagDNHrC6CSQMSUQPO7daBJj8bgI/gxraF66d0
- ceIDBeRODFFyp397ZvOHRafc6G41UZt3Q09G/ONGcgNom+1IxZuqlJKhvb2/lhLdZMQFRPNkGAj
- +EpBka/x64Ny38YdXyQE79VKzddpZZLDC1bVdR+/jm4r3s6ujtMANYlwZojYhpW6CGtB8RorWmI
- BzUp4XLCDTQrGR4EZej7rnfAUKzkJ3+sMWrkIk59mZgmLJ5fXSxLqhwExH6OrIEp1ay3QZ15Bhp
- MS3Wp8RSmuhgaHr6i15QnVDly1vb0u60cJvRjNcpvjIEC40XFnirrOV6Qw6AmT4lgBoJx/CvkS4
- b2y0JppmjOhRU9g==
+ bh=e2zxmMhmJGF0dwc0SRzZuUR5qMnfM/36nnJtEEhS5HU=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZaPCLOl/jTkrNhGvjvoErUEYn1j7um/aMo0
+ ZI7dyqyzT6JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWgAKCRDa6OEJdZac
+ 5bBPD/9YSzBj8rYL1VR6mIizfqkgB0/PpThetAFKK6VOJ5UwsrSCvay3ut/gvIfOk0yHdhdHVWq
+ Uz2ZKUkj9DO9sRX39BQCuKmjIsfoY3siZbaDChTtbShjPxhuFraX/nC2nvPuqd3vJJCy6AOeiCN
+ 0ihLqhJPkeYoPKVqVd8jLDAt24/RSLOtUiuCXK3ZjSyXPiQCI7Q+c4ObrWUqfFSKoZuD/WjUmpI
+ Ydb1AYXzIDBSx6VHn33zxDswViVybQV5ahY7osUUBE7KAI28mVSFrxFOCGWT58Hpz/xomG0JKq8
+ 9VXoJNH+E5shv0v0VhMSnm+pvNmz0id2LZty8354Pi1CZ+KdmxSwz7Kxqdc0NCFER77a7+xn7J6
+ x0S9Zu85aLRNnCRSOJ5auSHQgryCGQvKSOlqFFL+SCOVftpsiiUH4bd8CAKJCIPeqw7j7beCCGY
+ KNB6BsQL6TDT7zaAQmMPNVZur/l87U4iJmPZjBF6c3RiM/10WKCnxRb3MWcocawkttpcuS9FLxg
+ B9ud9eSGegnwhA1PxzXyburB+4c8MbRt5hdLKQvae+gUTUK0Z3BG3jbmybChBhoNKRREWEUepvd
+ LkDhvCIHcfCmtyY2QCNu5qT/nkPIDzUZOqpHc0Oq8GA49cI/MvabenocOgTLTS9BEKBuQDZRWKY
+ jeq3wdMr+xiPpNg==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Convert the rom OnOffAuto property from manual visitor-based
-callbacks to property_add_qapi_enum().
+Convert the legacy-vm-type OnOffAuto property from manual
+visitor-based callbacks to property_add_qapi_enum().
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- backends/hostmem-file.c | 29 +++++++++++++----------------
+ target/i386/sev.c | 29 +++++++++++++----------------
  1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
-index 7efecf71f565..7d4d52482966 100644
---- a/backends/hostmem-file.c
-+++ b/backends/hostmem-file.c
-@@ -19,7 +19,7 @@
- #include "qom/object_interfaces.h"
- #include "qom/object.h"
- #include "qapi/visitor.h"
--#include "qapi/qapi-visit-common.h"
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index cc16c6b07123..b2c7260c80a4 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -20,6 +20,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "qapi/error.h"
 +#include "qapi/qapi-type-infos-common.h"
- 
- OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendFile, MEMORY_BACKEND_FILE)
- 
-@@ -230,30 +230,24 @@ static void file_memory_backend_set_readonly(Object *obj, bool value,
-     fb->readonly = value;
+ #include "qom/object_interfaces.h"
+ #include "qemu/base64.h"
+ #include "qemu/module.h"
+@@ -2939,23 +2940,16 @@ sev_guest_set_session_file(Object *obj, const char *value, Error **errp)
+     SEV_GUEST(obj)->session_file = g_strdup(value);
  }
  
--static void file_memory_backend_get_rom(Object *obj, Visitor *v,
--                                        const char *name, void *opaque,
--                                        Error **errp)
-+static int file_memory_backend_get_rom(Object *obj, Error **errp)
+-static void sev_guest_get_legacy_vm_type(Object *obj, Visitor *v,
+-                                         const char *name, void *opaque,
+-                                         Error **errp)
++static int sev_guest_get_legacy_vm_type(Object *obj, Error **errp)
  {
-     HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(obj);
--    OnOffAuto rom = fb->rom;
+     SevGuestState *sev_guest = SEV_GUEST(obj);
+-    OnOffAuto legacy_vm_type = sev_guest->legacy_vm_type;
 -
--    visit_type_OnOffAuto(v, name, &rom, errp);
-+    return fb->rom;
+-    visit_type_OnOffAuto(v, name, &legacy_vm_type, errp);
++    return sev_guest->legacy_vm_type;
  }
  
--static void file_memory_backend_set_rom(Object *obj, Visitor *v,
--                                        const char *name, void *opaque,
--                                        Error **errp)
-+static void file_memory_backend_set_rom(Object *obj, int value, Error **errp)
+-static void sev_guest_set_legacy_vm_type(Object *obj, Visitor *v,
+-                                         const char *name, void *opaque,
+-                                         Error **errp)
++static void sev_guest_set_legacy_vm_type(Object *obj, int value, Error **errp)
  {
-     HostMemoryBackend *backend = MEMORY_BACKEND(obj);
-     HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(obj);
- 
-     if (host_memory_backend_mr_inited(backend)) {
--        error_setg(errp, "cannot change property '%s' of %s.", name,
-+        error_setg(errp, "cannot change property 'rom' of %s.",
-                    object_get_typename(obj));
-         return;
-     }
- 
--    visit_type_OnOffAuto(v, name, &fb->rom, errp);
-+    fb->rom = value;
+     SevGuestState *sev_guest = SEV_GUEST(obj);
+-
+-    visit_type_OnOffAuto(v, name, &sev_guest->legacy_vm_type, errp);
++    sev_guest->legacy_vm_type = value;
  }
  
- static void file_backend_unparent(Object *obj)
-@@ -298,10 +292,13 @@ file_backend_class_init(ObjectClass *oc, const void *data)
-     object_class_property_add_bool(oc, "readonly",
-         file_memory_backend_get_readonly,
-         file_memory_backend_set_readonly);
--    object_class_property_add(oc, "rom", "OnOffAuto",
--        file_memory_backend_get_rom, file_memory_backend_set_rom, NULL, NULL);
--    object_class_property_set_description(oc, "rom",
--        "Whether to create Read Only Memory (ROM)");
+ static void
+@@ -2981,11 +2975,14 @@ sev_guest_class_init(ObjectClass *oc, const void *data)
+                                   sev_guest_set_session_file);
+     object_class_property_set_description(oc, "session-file",
+             "guest owners session parameters (encoded with base64)");
+-    object_class_property_add(oc, "legacy-vm-type", "OnOffAuto",
+-                              sev_guest_get_legacy_vm_type,
+-                              sev_guest_set_legacy_vm_type, NULL, NULL);
+-    object_class_property_set_description(oc, "legacy-vm-type",
+-            "use legacy VM type to maintain measurement compatibility with older QEMU or kernel versions.");
 +    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
-+        .name = "rom",
-+        .description = "Whether to create Read Only Memory (ROM)",
++        .name = "legacy-vm-type",
++        .description = "use legacy VM type to maintain measurement "
++                       "compatibility with older QEMU or kernel versions.",
 +        .qapi_type = &OnOffAuto_type_info,
-+        .get = file_memory_backend_get_rom,
-+        .set = file_memory_backend_set_rom,
++        .get = sev_guest_get_legacy_vm_type,
++        .set = sev_guest_set_legacy_vm_type,
 +    ));
  }
  
- static void file_backend_instance_finalize(Object *o)
+ static void
 
 -- 
 2.56.0.116.g6de20f6092dc
