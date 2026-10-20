@@ -1,68 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.0.225.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792462618;
-	b=e4GMIiQJ94HimPtIRsn7WXlWhFY0KSAn1yD9viTaJbeaYm0NsfQTN4IS9kZu96v00nkN
-	 7IzFWdG3/Of/n4ChlrOrHy1SLYp+VpCDLscjgQ2VriCZsUWZcqvewaLM3J0P+H/eoXFij
-	 Z2cTQ6/xqF2XYh//UoPPnKLY51hoAx6AV0kt2IptglYshOCzcKo55PlN+tudTrSGqX0rx
-	 Hqywn2W8ZLCbc2rRxggo5HIE3EczvN3ubojvBoYKv1lNbEWM8fts1oWMucpCVuE+AlClq
-	 AzEByrw2ILwhbwpFXT9OtzZZ/TLAokIkyZv+fA0Wd1JGDbjQb9AyYK0IrEGDHxhvRHA==
+	t=1792464802;
+	b=QST6HU6GQa97kbIu09EGYMpBydIRVo0KY5T540yrxQi1IMnxighzxRZcFVswrFYufXXM
+	 +zxlSOfa7TzuEdIc+Pi9UFeitg9Wgl2segNJfNLSNwjUN/EA4IopgxdjFbfzQ9pLKi4c0
+	 rtC9IzFuBZEuLPggUb8IGQk1UdkuuQK0S9wRTXrFOZH3f70iwrPNn7yB3Q8HgwygpAm3b
+	 nt2ywHvMGesslg7aACI5YvvMx80BRJjJearjZUB6irjihh2ctbwmR3O7c7ilrhepsBlwm
+	 ZEimO3B2Bc/J/mP0JdQRyiigFwgVs5zepY7AYkZJ7guj+Uk1HzeV2ZK7jY+XNFUEaAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792462618;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=1pPFgpir1OWU10pzSExtICnFtJBK2lqIaHmilT4ip1I=;
-	b=5uGZ4DeFhJR6ESmuQ+HSyqJmYZTJTTOxmgZyuk1HxXYos04Hh/W2NX0uByQQU/0Jvi0O
-	 mE8CWLP+GJMnb3bco4jiVk4X49HDTElKen1CxhmVMkYrlQzqE9qLZsJVkR3UDlZCerFe5
-	 jia9+KfM3rA/X6OsDLNJWspOhGvtduUkBDNgqqOPrIk41M2fhKWAtrHLwVnLwJtXD4Y9p
-	 Ldj12Kv7xkLVvElYc83+UcEi4lVoreMRmd6AB/9d2y2DEgbsmmAL9pEiRbIhYHSwVdNIm
-	 7qY7d6+jtmjf2MoU2HMBHcSPLEP+DzMHgis8CmyrAtN3bBhBJdujIW9vc3adi2bb7Pg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792464802;
+	h=DMARC-Filter:Received:Received:Received:X-Eyou-Smtpauth:
+	 X-Eyou-EnvelopeSender:X-Eyou-From:From:Date:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Eyou-Sender;
+	bh=Isam2qzXFBltZx89pCZ1QeUN4o0j6H71EtrOD9wZiSk=;
+	b=yLPZ6AYdhhExr/fE8DClDOQakXRnXc6HPfzUOvXks9LG4QcIpO5M98sJexTxVmbxgsKk
+	 to+/dnCYcjGDut8o+k/B0Vlse0iKeYgYT+amJETzbL5K42fM9Q4SqUCmFUBZMiKT14R41
+	 /QGdLt7KkmNUOUOLAPIYPjdjPCKJqYxQtT70vs9RcOopcpEUCLOq6UpHKoYIqlXv64Q5X
+	 tK9s0iFxLDLyYUwTUemhQvIzzIQVXnEek3Cp1ZDo3vIv3EyIbk5xwDypms89u9dnHVPHL
+	 rE8uMkYt0TiLY1lShWo4e2lfU73h/m+BfOw0/0H1IgKQm0mmv9sYXJHNW1ZU4tBY5TA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mNSnfc9U;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802A3606A319;
-	Tue, 20 Oct 2026 02:16:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 802A3606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mNSnfc9U
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792462618; x=1823998618;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bmz39BVigYG+Gm5UlAHsCh014l79WZqidSvSMxlrEUc=;
-  b=mNSnfc9U8IYukDuYyap7grRrYuFAT2P+KUTr4nEFb2g1lwg4UOyub/qF
-   lJt1WNd5bjD2cgf/Ykrud+1q79KsXNqFbcPri1NJ0cNdUVFde172CHVM0
-   c/uw9d9gN5ZWf8tVyM4EC9ljViSHxkXeXRfzqhHiBxaIX9+ak+bIun803
-   gX3mn0SdYk7ssLRjUeqJwp8Rqz3stc7VaeZPZgZifzqolyLZywItgUhoV
-   +qR/ZyqMRfdooIF9Mwn9NqjlYBSayVcihdHYVUj5qPCBfqmdnUX5tEraE
-   XTMeJUreBahzddrjfBe6vsCZZdxpSqnEup6PH0HyzvPDTBYIhJzfeOEX8
-   g==;
-X-CSE-ConnectionGUID: 4Cm6D9gHQluOnQYkGFB8rg==
-X-CSE-MsgGUID: ze5i6t9RSN+Tl9BphBciLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1039524"
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="1039524"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 19:16:57 -0700
-X-CSE-ConnectionGUID: TDM8AGf5R/6tn3Za74ZjIA==
-X-CSE-MsgGUID: 41bPApv6RQGFL0RuIyyKCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="2732749"
-Received: from blu2-desk.sh.intel.com (HELO [10.239.156.26]) ([10.239.156.26])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 19:16:53 -0700
-Message-ID: <0dd026cb-09e5-46a7-b88a-9b57353f0637@linux.intel.com>
-Date: Tue, 20 Oct 2026 10:16:51 +0800
+	dmarc=none header.from=zhaoxin.com;
+	spf=pass smtp.mailfrom=zhaoxin.com;
+	arc=none smtp.remote-ip=210.0.225.12
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5370606A31A;
+	Tue, 20 Oct 2026 02:53:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5370606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+Received: from zhaoxin.com (unknown [127.0.0.1])
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4j7xmm022Bzb0pbc;
+	Tue, 20 Oct 2026 10:53:12 +0800 (CST)
+Received: from zhaoxin.com (unknown [10.28.140.201])
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4j7xml4GH3zb0pbc;
+	Tue, 20 Oct 2026 10:53:11 +0800 (CST)
+Received: from ewan-server (ewan-server [10.28.24.7])
+	by zhaoxin.com (8.30) with ESMTP62f8ff40056a60f56e6be29f9128510a
+	Tue, 20 Oct 2026 10:53:10 +0800
+X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
+X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
+X-Eyou-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+From: "=?UTF-8?B?RXdhbiBIYWktb2M=?=" <ewanhai-oc@zhaoxin.com>
+Date: Tue, 20 Oct 2026 10:53:29 +0800
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Frank Zhu <frankzhu@zhaoxin.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ewanhai@zhaoxin.com, cobechen@zhaoxin.com
+Subject: Re: [PATCH v2 6/9] KVM: selftests: Skip PERF_CAPABILITIES vCPU
+ checks without PDCM
+Message-ID: <atbVQZsuClHwaLGo@ewan-server>
+References: <20260910115414.3015260-1-ewanhai-oc@zhaoxin.com>
+ <20260910115414.3015260-7-ewanhai-oc@zhaoxin.com>
+ <aqQqJysVQxS76YIE@google.com>
+ <arHesdC4MieHtZUr@ewan-server>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,221 +62,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/18] iommu/vt-d: Clear unpreserved context entries
- during shutdown
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-9-skhawaja@google.com>
- <c724012c-13e1-41de-b7e3-1fb08d9b9d8c@linux.intel.com>
- <asmC5Ow_VYtvgGOQ@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <asmC5Ow_VYtvgGOQ@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arHesdC4MieHtZUr@ewan-server>
+X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
 
-On 10/10/26 08:32, Samiullah Khawaja wrote:
-> On Fri, Oct 09, 2026 at 08:43:26AM +0800, Baolu Lu wrote:
->> On 9/21/26 08:48, Samiullah Khawaja wrote:
->>> During normal shutdown the iommu translation is disabled. Since the root
->>> table is preserved during live update, it needs to be cleaned up and the
->>> context entries of the unpreserved devices and root entries for the
->>> unpreserved context tables need to be cleared.
->>>
->>> This is required because during kexec reboot and shutdown the devices do
->>> not go through the release flow, so there might be stale entries in the
->>> root table and context tables. Also note that new unpreserved context
->>> tables for unpreserved devices might have been added after preservation,
->>> so the root table entries for unpreserved context tables also need to
->>> removed.
->>>
->>> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
->>> ---
->>>  drivers/iommu/intel/iommu.c      |  15 +++-
->>>  drivers/iommu/intel/iommu.h      |   5 ++
->>>  drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
->>>  3 files changed, 157 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->>> index 4bfc2f173010..474c926172c5 100644
->>> --- a/drivers/iommu/intel/iommu.c
->>> +++ b/drivers/iommu/intel/iommu.c
->>> @@ -1852,6 +1852,14 @@ static int iommu_suspend(void *data)
->>>      iommu_flush_all();
->>> +    /*
->>> +     * Note that IOMMU suspend doesn't affect live update. The state
->>> +     * preserved during live update is not released and remains 
->>> valid during
->>> +     * suspend and reused during IOMMU resume.
->>> +     *
->>> +     * Also note deployment of suspend/resume and live updated use case
->>> +     * should be mostly mutually exclusive.
->>> +     */
->>>      for_each_active_iommu(iommu, drhd) {
->>>          iommu_disable_translation(iommu);
->>> @@ -2397,8 +2405,11 @@ void intel_iommu_shutdown(void)
->>>          /* Disable PMRs explicitly here. */
->>>          iommu_disable_protect_mem_regions(iommu);
->>> -        /* Make sure the IOMMUs are switched off */
->>> -        iommu_disable_translation(iommu);
->>> +        /* Make sure the IOMMUs are switched off if not preserved. */
->>> +        if (iommu_preserved_state(&iommu->iommu))
->>> +            clear_unpreserved_context_entries(iommu);
->>> +        else
->>> +            iommu_disable_translation(iommu);
->>>      }
->>>  }
->>> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
->>> index 785057236e7c..4feb5bd76b18 100644
->>> --- a/drivers/iommu/intel/iommu.h
->>> +++ b/drivers/iommu/intel/iommu.h
->>> @@ -1307,6 +1307,11 @@ int intel_iommu_preserve(struct iommu_device 
->>> *iommu,
->>>               struct iommu_hw_ser *iommu_ser);
->>>  void intel_iommu_unpreserve(struct iommu_device *iommu,
->>>                  struct iommu_hw_ser *iommu_ser);
->>> +void clear_unpreserved_context_entries(struct intel_iommu *iommu);
->>> +#else
->>> +static inline void clear_unpreserved_context_entries(struct 
->>> intel_iommu *iommu)
->>> +{
->>> +}
->>>  #endif
->>>  #ifdef CONFIG_INTEL_IOMMU_SVM
->>> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/ 
->>> liveupdate.c
->>> index 0837bb889fed..501dc0e9cc0a 100644
->>> --- a/drivers/iommu/intel/liveupdate.c
->>> +++ b/drivers/iommu/intel/liveupdate.c
->>> @@ -77,6 +77,145 @@ static int preserve_context_table(struct 
->>> intel_iommu *iommu,
->>>      return 0;
->>>  }
->>> +static void clear_unpreserved_context_root_entries(struct 
->>> intel_iommu *iommu,
->>> +                           struct iommu_hw_ser *ser)
->>> +{
->>> +    struct root_entry *root;
->>> +    int i;
->>> +
->>> +    /*
->>> +     * Individual invalidations for each context table removal are not
->>> +     * needed as we issue global invalidations later.
->>> +     */
->>> +    for (i = 0; i < ROOT_ENTRY_NR; i++) {
->>> +        root = &iommu->root_entry[i];
->>> +
->>> +        if (!is_context_table_preserved(iommu, ser, i, 0) && (root- 
->>> >lo & 1)) {
->>> +            root->lo = 0;
->>> +            __iommu_flush_cache(iommu,
->>> +                        &root->lo,
->>> +                        sizeof(root->lo));
->>> +        }
->>> +
->>> +        if (!sm_supported(iommu))
->>> +            continue;
->>> +
->>> +        if (!is_context_table_preserved(iommu, ser, i, 0x80) && 
->>> (root->hi & 1)) {
->>> +            root->hi = 0;
->>> +            __iommu_flush_cache(iommu,
->>> +                        &root->hi,
->>> +                        sizeof(root->hi));
->>> +        }
->>> +    }
->>> +}
->>> +
->>> +static void clear_unpreserved_context(struct device_domain_info 
->>> *info, u8 bus, u8 devfn)
->>> +{
->>> +    struct context_entry *context;
->>> +
->>> +    /*
->>> +     * This cleanup is done during shutdown, so it should be fine to 
->>> only
->>> +     * clear the entries here and issue one global invalidation 
->>> later to
->>> +     * invalidate all cleared entries.
->>> +     *
->>> +     * Note that the device IOTLB invalidation for unpreserved 
->>> devices is
->>> +     * skipped this way, but that should not be needed as the 
->>> devices are
->>> +     * quiesced at this point. This should improve the performance 
->>> of the
->>> +     * cleanup process and avoids any invalidation timeouts because 
->>> drivers
->>> +     * might have moved devices to D3 state.
->>
->> I don't quite follow why device-TLB flushes could be skipped when the
->> device is quiesced. Nothing guarantees that an unpreserved device that
->> has ATS enabled doesn't carry stale cache entries. It may keep
->> translations to memory that the next kernel reuses.
+On Tue, Sep 22, 2026 at 09:54:51AM +0800, Ewan Hai-oc wrote:
+> On Fri, Sep 11, 2026 at 09:19:51AM -0700, Sean Christopherson wrote:
+> > On Thu, Sep 10, 2026, Ewan Hai-oc wrote:
+> > > From: Frank Zhu <frankzhu@zhaoxin.com>
+> > > 
+> > > KVM allows userspace to query MSR_IA32_PERF_CAPABILITIES through
+> > > KVM_GET_MSRS even when PDCM is not exposed in KVM_GET_SUPPORTED_CPUID.
+> > > However, vCPU accesses to the MSR fail without PDCM.
+> > 
+> > Hrm, no, KVM is supposed to allow reads and drop writes of '0' for MSRs that are
+> > advertised to userspace, but ultimately unsupported.  I'm pretty sure this is a
+> > KVM bug.  I think MSR_IA32_ARCH_CAPABILITIES is also affected.
+> > 
+> > Completely untested, but I think this?
+> > 
+> > diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+> > index dd3bb04878ca..fa77cfdbda7e 100644
+> > --- a/arch/x86/kvm/msrs.c
+> > +++ b/arch/x86/kvm/msrs.c
+> > @@ -512,9 +512,15 @@ static int kvm_get_feature_msr(struct kvm_vcpu *vcpu, u32 index, u64 *data,
+> >  
+> >  	switch (index) {
+> >  	case MSR_IA32_ARCH_CAPABILITIES:
+> > +		if (!kvm_cpu_cap_has(X86_FEATURE_ARCH_CAPABILITIES))
+> > +			return KVM_MSR_RET_UNSUPPORTED;
+> > +
+> >  		*data = kvm_get_arch_capabilities();
+> >  		break;
+> >  	case MSR_IA32_PERF_CAPABILITIES:
+> > +		if (!kvm_cpu_cap_has(X86_FEATURE_PDCM))
+> > +			return KVM_MSR_RET_UNSUPPORTED;
+> > +
+> >  		*data = kvm_caps.supported_perf_cap;
+> >  		break;
+> >  	case MSR_PLATFORM_INFO:
+> >
 > 
-> I agree with your assessment, the device-TLB might still have stale
-> entries. But this assumption is based on the existing kexec reboot
-> behaviour. That is, during normal shutdown the iommu translation is
-> disabled but the device-TLB invalidations are not issued either. The
-> unpreserved devices go through the same flow in the next kernel as they
-> do after a normal kexec reboot. I will update the comment to add this
-> detail.
-
-I guess device-TLB invalidation is omitted during a normal kexec reboot
-because the device will be reset or re-initialized during shutdown or
-probe, which usually clears the ATC as a side effect. But I don't think
-that's guaranteed. Anyway, this might be a pre-existing issue and not
-specific to this series.
-
->>
->> I would suggest at least a global device-TLB flush for ATS-enabled
->> unpreserved devices, or is there anything I've overlooked?
+> I saw that you applied eight patches from the series to the kvm-x86
+> selftests branch and skipped patch 6 as a KVM bug.
 > 
-> This might be tricky as this late during shutdown some devices might
-> already be in a low power state, and sending them device-TLB
-> invalidations would cause invalidation timeouts. Even if that doesn't
-> happen, it will still add to the shutdown time.
-
-Okay, fair enough.
-
->>
->>> +     *
->>> +     * The iommu lock is not needed as the context tables are never 
->>> removed
->>> +     * and the new ones are not added during shutdown.
->>> +     */
->>> +    context = iommu_context_addr(info->iommu, bus, devfn, 0);
->>> +    if (context) {
->>> +        /*
->>> +         * Individual invalidations are not needed as we issue global
->>> +         * invalidations later once all the cleanups are done.
->>> +         */
->>> +        context_clear_present(context);
->>> +        __iommu_flush_cache(info->iommu, context, sizeof(*context));
->>> +        context_clear_entry(context);
->>> +        __iommu_flush_cache(info->iommu, context, sizeof(*context));
->>> +    }
->>> +}
->>
->> [-snipped-]
->>
->> Thanks,
->> baolu
->>
+> We are testing the change you suggested on Zhaoxin systems with and
+> without PDCM support. We expect to report the results within the next
+> few weeks.
 > 
-> Thanks,
-> Sami
+
+Hi Sean,
+
+Frank tested your suggested change on Zhaoxin systems **without** PDCM,
+using kvm_intel. The results support the fix.
+
+MSR_IA32_PERF_CAPABILITIES is no longer listed in
+KVM_GET_MSR_FEATURE_INDEX_LIST. A direct KVM_GET_MSRS query on the
+/dev/kvm fd still succeeds, with the MSR data changing from 0x2000
+to 0 through the existing unsupported-MSR handling. The MSR remains
+in KVM_GET_MSR_INDEX_LIST, and the existing vCPU userspace behavior
+of allowing reads of zero and writes of zero is unchanged.
+
+We also checked the QEMU behavior. With the MSR absent from the feature
+list, QEMU's supported-feature query returns zero for PERF_CAPABILITIES.
+The PDCM bit in KVM_GET_SUPPORTED_CPUID is unchanged and was already
+clear on these systems. QEMU filters PDCM out of CPU models that request
+it, so this resolves our concern about the effect on CPU model selection.
+
+feature_msrs_test passes with the change. vmx_pmu_caps_test is skipped
+on these systems, and the other KVM selftests we ran showed no regressions.
+Our hardware testing covered systems without PDCM; we have not validated
+the change on PDCM-capable hardware.
+
+One observation about the ARCH_CAPABILITIES check: in the code we
+checked, EMULATED_F(ARCH_CAPABILITIES) already enables the capability
+unconditionally, so the new check does not change its behavior.
 
 Thanks,
-baolu
+Ewan
+
+> Thanks for applying the patches and for looking into the patch 6 issue.
+> 
+
