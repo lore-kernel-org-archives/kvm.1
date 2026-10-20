@@ -1,88 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792518657;
-	b=oetVMBZgMMohv/toes0iFitcU52EGi8INYI5SQtXoLLfDIeit7BdQNWof4DUAXsVx/X9
-	 8MzQhQSUHIroiren459zsKQWw0Vs5B6w+B/+nkOUk8305ODKxK4lcrS59nCykCa4+NO8q
-	 SYk+twUIxn/L16VsE1EPuKLQ/TtHexUPLoJ8EBIQJ4FyyjxNhO3xu+6hbJQzcYUzFUfOd
-	 oW8meA8RTCqNVeq6E/n9nkULSahWMWVkCx8Bl0QU2+KSfXVLk06gnOx2o4UzXkUPlKCvx
-	 iryMGRyFP3m9/iX6TajNM36mQ77b5OEfxsefgAgHuL8eKQ8Bz9p0gydOrZA9T06KVsA==
+	t=1792519116;
+	b=TMzqeeaxeZLK4vwjIYEVRyIY7G72KKwWYt2u0Z8/7lluSWl3IJWMLNtG34qE2tFGhWGu
+	 9r/qXLj9U7TpnnSPBNgGTQBGZgePcwP/L9g+LCzyVcrARobLZJ7/Dd866AOp7giW9Mb+I
+	 w4ni+dHI/CrzTe4cS2Qlk8tzLsgxxICeqT6kDbnaEpw+wpGgcMQ5zwcgH90VPQF+bnq7L
+	 w+YxoRHm1Z5v9JbRhF+Vs9iRf+inG0ucXTl8CI2rgMWCBeQiecrxhsuoZjOc+SkHhHANU
+	 FIX9QHa1jFOXg85g78g00EO+Au/1/nQE6HTUKjSo/g91e0SebNzPBMdR+SeTlkhODHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792518657;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
-	b=o+/E/LoVlvCm5B2kSTBEq3oMh/54/vMSWuobrb3AfT1GxDKTJlQkRKrQOfMr7skAOZ2u
-	 FBg6Xa2U9DYzgMbEYL0e/d7SFrPa5QrbhPaV92E4f1elaHwGfgT9kmfbYIKx4eKOqnQ82
-	 odGiSUKBY/63N+bWGgm5fVxbrTklpBWNZ/ZE8Nuz08ra9qVPVEpdy4mA6gZ7RHry2SpQr
-	 N8JRTuoJMrmYdMpIz6KgL5nVsV1hj6VDES9Kluc7xAJwshFQouxM4E7qzOf/PRre4WVXY
-	 FzeSh0RSro77OdGPMLeONVCSEA1mSxMcyZzmFCfxZuGh1NCqq/BJ6SpOUF4sn4IUHPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792519116;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Proofpoint-Reinject:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=HIzrdxg5oNPolRQcXv/OvKZmKqZ0PQMID/Gy8WOIXPY=;
+	b=Epz47BGGPwZetVcgXdf/itaKPXppwRV3SuE1/miZW34RIA6iy1ZtHyOnfDzixn9TQCE1
+	 aH96TnO7g/0W4kQ4CElgrkWDXWNOVyzvfySQ3Nsu18xuPk7Bd/puzoBrrBJzpQuk7m+Jq
+	 vtsSPLup0BFIHmea545cgO7eJFhnLFWUSeVOmehwbKIzK5/eoBH/1NnDHH1NlbSgktUfw
+	 Nh05rKxXs4JwDqPwl/76XDnnmCKB0TSR6SmEipcgWL33Vc1j2TZeFqIRf5DSbtV5SM/CV
+	 a4ZVhESjAYyXjEfGCSrboFEfsRRUpZbGdC4+EOdtwGhnSuy8cVBhbyGh6ngJeI/1FMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linuxfoundation.org;
-	spf=pass smtp.mailfrom=linuxfoundation.org;
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=FaXZZkDT;
-	arc=none smtp.remote-ip=209.85.218.51
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PBUJFw13;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26AE606A323
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 17:50:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B26AE606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78730606A31D;
+	Tue, 20 Oct 2026 17:58:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78730606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=FaXZZkDT
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c37b612635bso476562466b.3
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1792518655; x=1793123455; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
-        b=FaXZZkDT4JTAJD9dls5zNgoYwqN4YoaMS9ggdsn9VJDCOrpWIPpIJtnKJc5VsnFaa6
-         NstxfC4k9ERrs0kvhRAeH1sHz2ZLoi6fy7GQyMHWaqdZYp+tOqS9UKf4ZqNmZ55I/VYB
-         BJUlcKtqh1qMtChxYdXTyHU7LwFIy0XxNhEeI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792518655; x=1793123455;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
-        b=E2tD5XqvTWdjWtTU3ckweWUtWiSeMQ/gSx7P5jRLmyMGLC5IqMG5Lp5P+AYoU0r9Mf
-         2ANXXmM0zxbYcLg8rMjKmmb9pXAbrzmJLcQs1CB/ZD6D5OZ8gbXdlsP0GmJxWV1qFhBC
-         /ewnpZ6TY/WfphcQhfVtGA2ealsXf2BeUftDy6plvXpsXA0MkV58fvqN5TLTnq30Crcj
-         ZPBEds3d4+z3a0o7Cj4spvjpp2Jr9YJB8ieB+UBLPN7ySTNJoQCryZnauagnUlk4/2El
-         5YBIVNfpBa8I3uqSwX0Bh62wESYuaVhigUi1LPoTAAogMeb82QnkUgMZc9jT8KxqLNJr
-         CgDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxFrvLdPpW+U9Vdf+IC906DEPXAWijyTr0VK6I8+f1PbSEYmQIMkxbZx66FZW5PV/c+UYM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI1NzVIvjVHMjD4AGIRZdQWRMimEeuIMkkRzJxWisJraTFKsT69
-	uFtTShc7y4Nfr5IiNCFqS5vk5e5kYeSh1brgjVSZmESySRmlXiVTTdZOKei2IASV4Biww6KHOCO
-	hv6FipsQ=
-X-Gm-Gg: AYBFou2dupMRXhTJPiAM0MDPjsJ9zV1lqzwtX6bFjrhuDWffa6Y6GJ56R+3QuAs6Q5w
-	CdW1uFXDxIHnK9sDPgcz36X7u5C6jCgZk8iL5ppisMBB8uhwB4I2zZERQ1eZtnSFC4lEFocM7hn
-	0HXf4PrxnicDBd6x3q+lofCBEDaskjdbJF5VIUqNNVxQp8/ZBidocKhVMg+VwEM05MynF97NzSZ
-	MleG+SNlbetckPprJpY2CLhP/6QnPJOHtgiq55JLcIK/E9YYumPaE9/651RdKpUbuuD320w4TN8
-	/VDv8JX+UnjyFegvkMNSiastwSqelSK+jYv3+ouGvau5oDyyfZOFBbNqkV6TbjbTeE+0mgYDQtZ
-	t/Li2N2GsP/jmMd557c0M0ptCFOt06Q04XrDu0bc850EHasyI79xBcHDhV926HbE2jMKwx9KrTW
-	s+IMo30zFRo4myHjuDM4yN5w6EuoYbgyL8HDj+007sWoUfygSSVg3NIOXTHJbWElzKMh3ojH98S
-	cvxxWbwPVSMMWciVUcTAQnkJxg5pjNd22dvS6oIRzPA3IE=
-X-Received: by 2002:a17:907:e0d8:b0:c46:645f:ced7 with SMTP id a640c23a62f3a-c46645fd11dmr145935866b.39.1792518654945;
-        Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4678fd7eaesm652066b.59.2026.10.20.10.50.54
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2a4e013a44so476284666b.2
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByHGt/7p3JXHoq3JRLUQ+sFlvqlXpxH7XmHBXjSzgZjwkbBBZNgXzA/O7PuCon7UmK9mZw=@vger.kernel.org
-X-Received: by 2002:a17:907:d2a:b0:c41:21ef:26ef with SMTP id
- a640c23a62f3a-c419ef2407fmr811663866b.20.1792518653997; Tue, 20 Oct 2026
- 10:50:53 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PBUJFw13
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69KHENid3067465;
+	Tue, 20 Oct 2026 17:58:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=HIzrdxg5oNPolRQcXv/OvKZmKqZ0PQMID/Gy8WOIX
+	PY=; b=PBUJFw13lvtB9CDBgD9eiLDX39drqctt8hnpZI1FThwk5ht8yNDD2by8i
+	TqjKiYvXhLgp7JsYijo76M/Xs9igsBiU2rP/fTDBMuiexTGa8+106kIv4UeMa7h8
+	mZyHwgF8doFqpAD+zwcp2IhHBwMoXvI4szP9KM/PRXghngfjow2sCm+pw4j7am0X
+	fTtek18sQVgz+NXiTko5zAYQ/tNuysXLUWir7qmt0hz57Nz/LTV8uqZ0XC8/5eHO
+	fw+XFDqPU8HTYqVNbfeyVrYdLhrU4FbLrnXBPBVZ+CbZn+CjmyhsJr+AyZeY7ceT
+	bG5agTXtGkvKeg9Km+SkAEfNH+/vg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw59vbkv-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 17:58:23 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69KH4rgJ1795921;
+	Tue, 20 Oct 2026 17:58:22 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4he6gq9ne9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Oct 2026 17:58:22 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69KHwLJY27001362
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Oct 2026 17:58:21 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4616D5805A;
+	Tue, 20 Oct 2026 17:58:21 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9568058054;
+	Tue, 20 Oct 2026 17:58:19 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Oct 2026 17:58:19 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>
+Cc: KVM <kvm@vger.kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>, Shuah Khan <shuah@kernel.org>
+Subject: [PATCH v2 0/2] Fix error handling for async_pf
+Date: Tue, 20 Oct 2026 19:58:16 +0200
+Message-ID: <20261020175818.375700-1-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -92,40 +94,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
- <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
- <20261018174250-mutt-send-email-mst@kernel.org> <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
- <20261020021924-mutt-send-email-mst@kernel.org> <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
- <20261020102134.745ff48a@pumpkin>
-In-Reply-To: <20261020102134.745ff48a@pumpkin>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Tue, 20 Oct 2026 07:50:36 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wjUb=G+9gtaSO4bfUYKL+tVBVQq-Zfn_pGbCfxNWbz9AA@mail.gmail.com>
-X-Gm-Features: AclHuK9rATEm1NS_MFfAyhy60SuMBv6wKyZqfF_GIdeIDY7VES_ZxkiFI1mL3aE
-Message-ID: <CAHk-=wjUb=G+9gtaSO4bfUYKL+tVBVQq-Zfn_pGbCfxNWbz9AA@mail.gmail.com>
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wang Haoran <haoranwangsec@gmail.com>, jasowangio@gmail.com, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	eperezma@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDA3MCBTYWx0ZWRfX1bG11A86HdgZ
+ w0yYqbHwy+ufoCLrlkkC9Qwq2ublcqbRAIXRBA4UaxGLvO2l6/QvxmT/aGCKHJtXfNjCXRYScm4
+ ypHXb7G784KL+6LaenD81OR8SjatxYF80L547bunmBPN1W2AzpmGHn/MATqrdbBS8sPAledo2Yb
+ DxNxO4cRQyTuAYT4w0XIoYax6bDBwLVBiGN7BzdzOOoVZR1tDEthnxeawq+GcYaJa38Fq2W52be
+ dIE7vAAriJ7t7kmI2koo5GiIHvC4tFkfkkfU2jbupgD7wDLRkQc6QOL7nQQ1hACyc/5v1kDU7Xt
+ cfQQyHfIocjTkbnqkq6ut4i1smye/JXSF6l6DzJrTB5hdR+2xgj/DsSEaueKkfHi0tx6DNUU7v8
+ HA/kC93ByUmthqZ9KulEKnP5LAXGsf9rCnrr0CSgJOjidRQF4i/ueBeClvspad1AiuyaEzWNcGC
+ oAGayC73Nw/d8HoqegQ==
+X-Proofpoint-ORIG-GUID: ebKPFl1Mv8rN2aIPwOtBNweBe4pp7ip1
+X-Proofpoint-GUID: 2LMV4pCp912SHRs-HirMFPY9wICDxhd_
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDA3MCBTYWx0ZWRfXyfrZAfE5/gv3
+ o7eQspZgJjSn0kJZ1iJGBPhufRXT9Opb+z2DedGTChe7SVXesRrEsIP4ZR9kh+J6baOO+6GJTdu
+ SmrkULnkkpDbWPQGQwNJ6b8EaGys2vQ=
+X-Authority-Analysis: v=2.4 cv=ZfSIpcVA c=1 sm=1 tr=0 ts=6ad7abbf cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=JYCxxj4wjfSeNEK2tAkA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-20_03,2026-10-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ clxscore=1015 phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610200070
 
-On Mon, 19 Oct 2026 at 23:21, David Laight <david.laight.linux@gmail.com> wrote:
->
-> There should also be very few (if any) access_ok() calls outside of the code
-> that implements user copies.
+Return mapping errors also for async_pf cases. Otherwise guests
+will loop forever. Nothing critical just missing error handling.
 
-Note that that branch only removes __get_user/__put_user - and only on x86.
+v1->v2:
+- !npages instead of npages == 0 (Sean)
+- new block comment (Sean)
+- fix testcase to build with 7.3 and 7.4-rc
 
-So there's still a lot of valid access_ok() calls left. Some are
-around things like raw_copy_to/from_user() etc.
+Christian Borntraeger (2):
+  KVM: Set up async page faults only for faults that need to wait
+  KVM: selftests: Test that KVM_RUN fails for unresolvable host faults
 
-But some are around things that just want to verify that it's a valid
-user address for other reasons. On example is in fork.c that just
-checks that the stack that is supplied is ok.
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/faultin_sigbus_test.c       | 169 ++++++++++++++++++
+ virt/kvm/kvm_main.c                           |   3 +-
+ 3 files changed, 172 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/kvm/faultin_sigbus_test.c
 
-But yes, the branch does remove a number of access_ok() calls. Fewer
-than you'd maybe think, though.
+-- 
+2.53.0
 
-                  Linus
