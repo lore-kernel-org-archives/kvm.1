@@ -1,11 +1,11 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792493518;
-	b=dSE7v1wkdXcv8K54Jc5emh+i7EugQ1prTIg++1XBGgdvhVE3Ty2XamOuVUdGXG7+vdQG
-	 /dOgSMxxd2Uf+GBOSn6fLc0OCritY4Ms+Oz2Wg/rY/yrTY7JH80YyTeuRRbYaAtni5KwD
-	 Oz4j4d26WpHvlgXuG2WOFm7QeFDYBg3sFaPXIJ2lT9lOQGxGVT5Ge2LSU04uUY6gQVk+s
-	 IU7yLEkJGk+/hkbFsjKyfxRMIPboIJ2K0mR+IzZITwTPAnKyDqSnecyGbOO5SrO6LRO4Q
-	 D8NvTuUxOTUtruA88w8wz8QvmBMAp6F2jblWHTOQ6uG+y105kD6MKUFezMXNyMfTYog==
+	b=vcfGjSFGFXccN718d4aD8lKcxjYt81CTpsw/eccCMivrv1iT9BC7ODEMULgY2jrvbZkn
+	 KdQt9SXFC1XK1jlmbd0n/wmmft4OzNo/DLnTvoCIfGjwTU+Ga01iOPPbIqQEa4+VJjiXP
+	 Yz/U3lMmhfre1/6ikTI76LDVNllpgdtjuhv/NtHHdD3nZb1XSKs3OAokmI+9bmhIhbkrD
+	 tTq5LH/jb8MSDk6bwsnln7CNm0JKdMh8PPiSmfI54ibCkc8eprpWT31yIKUplLJV6YCN4
+	 PecJy/J599uDOPKQvVcMbc8WKvm5FsrFA+3VO1c5C9saaocngxXzIwKfPYWie86XVLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792493518;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
@@ -13,57 +13,58 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
 	 X-Scanned-By;
-	bh=th1JKpfzAzi8+0DyZvMgIumhc4CFEiTeW47qkGiYHs4=;
-	b=kiFlGLOG9wrYnupczgBloyk1dmcy9lWSKa/YJOzM7m3iMjofJ89jLTGf871626azIZMy
-	 3Rmr/1gHk6Q9Yq6UoKGDue0/jRv+c8BlLrokgrm1xz4QVCnN1mSXsI8tfGPKMhj8Oat31
-	 5/6aBYoL95KZXYraIDU7s6wWCvZMRMPQXz4tR5pbMem+1MCC0IKoauqQxfqzkgR3Rxs6Y
-	 F9XJ2IBKZGS0Ju0cvUws8hDGz630BP23ATU5PNSuMwZKf7VTgnmcvO0RDqjYkUEJuGXPO
-	 TstyNWZpkjllZ9N2psgTYztyDy7W+aydC4Il+vdaLwwFJiP6pAbzNscaIujn3695ulw==
+	bh=LYACgjhTWZ9q+fLhnzsamP9g+AzKgXq2yAfu5fEslcg=;
+	b=HQyqb6PDL4lVcUnJUosdRq5K35a432jgtWf0u2dqsfPehPO0/gOSp6Q+gmsDl2yCqCG5
+	 zuQaNVjYAEE9RemO0WeY4k5TS+rVq6xk+9U4HyDhwPef1G5oiAqnV/SCZTKBBKRtZ3sYh
+	 UXRrmVIhClBM0G/pr7VD+D0rR8R8YUz4pdbr1y0Pj2de/BknunrI2ZfXXi8SWurgqUFj3
+	 5GnMr5in/y7Mmehq1YZYB0c5NnvIRJwzyEsDxZsHzwaXaVQ/ue+A8q6f3E7JPfflS7VjQ
+	 zfAJEMIQu659mG2ruDL6doD1PERM6O1MmV95/vM2h4ZfDAtCRctWff4PELOYq9aCwjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="EsuFvIr/";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bu4casYT;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F209660A2634
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:51:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F209660A2634
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4690060A381B
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:51:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4690060A381B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EsuFvIr/
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bu4casYT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1792493516;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=th1JKpfzAzi8+0DyZvMgIumhc4CFEiTeW47qkGiYHs4=;
-	b=EsuFvIr/Opo2dpcrc92u4DQgS/+C9k3yD9tfXf7sXD5fCVOUI96+5ochFzdcbM/CWCUHuc
-	MmyoNxtDKTJbk0+Cn510+GFzt8qiLaDmw44nuRVmKLCituWLRy4c/f3f/iSSdPc4wxS5n2
-	lPgNOjuco4s0d7NbAiKg9x207QCFZH8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=LYACgjhTWZ9q+fLhnzsamP9g+AzKgXq2yAfu5fEslcg=;
+	b=bu4casYToARdLgFBCkFiBQfC3w0GQGvFhpfS2TE53hWqj/AlYV/kcDS8vD6H5soXgElek+
+	RAzzIUd4s1bcUjtHVOUVKB+4ZGBUwnkXSv3ENpT5OP+Uwe81Br3XLvzb/o1LAso8sTJh4G
+	Z4I5ydCoySnRiz0hcR3SkrZui+Wl7oc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-MDo8sez-NcyGAOl5_G0YjQ-1; Tue,
- 20 Oct 2026 10:51:52 +0000
-X-MC-Unique: MDo8sez-NcyGAOl5_G0YjQ-1
-X-Mimecast-MFC-AGG-ID: MDo8sez-NcyGAOl5_G0YjQ_1792493508
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-wz3IHZmqNpWyL00b1VAr7Q-1; Tue,
+ 20 Oct 2026 10:51:46 +0000
+X-MC-Unique: wz3IHZmqNpWyL00b1VAr7Q-1
+X-Mimecast-MFC-AGG-ID: wz3IHZmqNpWyL00b1VAr7Q_1792493502
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E077E1955DD1;
-	Tue, 20 Oct 2026 10:51:47 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 390C7180132B;
+	Tue, 20 Oct 2026 10:51:42 +0000 (UTC)
 Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9E9F31800677;
-	Tue, 20 Oct 2026 10:51:44 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AEC3230000E7;
+	Tue, 20 Oct 2026 10:51:39 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:46:19 +0400
-Subject: [PATCH v7 62/65] hw/i386: convert PCSouthBridgeOption to QAPI enum
+Date: Tue, 20 Oct 2026 14:46:18 +0400
+Subject: [PATCH v7 61/65] qdev: remove deprecated PropertyInfo.type and
+ .enum_table fields
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-62-431a86b02b58@redhat.com>
+Message-Id: <20261020-qom-qapi-v7-61-431a86b02b58@redhat.com>
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 To: qemu-devel@nongnu.org
@@ -150,211 +151,159 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
  Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6526;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5656;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=jr+R1XEAXGqEfl6dzBqQchDTHMoMaEnbkkCJTWPjK7M=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZdHAMFgnhAvWl4qCaozSGC8ZoljjEYi6VBP
- 70IoZTx452JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGXQAKCRDa6OEJdZac
- 5bQgEACXrVy4PI0RHLf3EYbpFdgeh/G/qw9Szqqn90QJFXbDyFtQmp3c6wFtAFWSP3ffrhRIGOr
- RcUHeYkCVoyizAcDDgjI8OyPrmHVEnG3PwXeWRtGK0kH1my0bbmCJx/osVW8rApSvdzvYpi9s0Y
- 6bnxKKjw0JzliwdtFqTmFt0nn1S7YQOKfUDqhPgAWAHg8bwDPi1N1201GaF9lvKcJLYtaT4uNPx
- duB+KEvf23TePBMMCkwNlGjW5qm6S0gf5Ryxjb7UDLk0DAMDD6sOLYbUwrlEcS2bJu7T+7pz3Pk
- KIUx9WJmwNr8hA510xbEUM7U+qI4jtLtBszuvBioYQI3kVmqBqcaNtqPICXlIwOy+0b4xnL1Gkk
- eA26OvbARkhRxfm9CnY4bEgdMJQoeQnDOu1qzkbjiH5164V7Vey/w6iyXw5kqW/vm1Sq08RW2k9
- ICd329fnCbR+neChTSaunOu2wlSsKfBfb8AHGJDPC9l+G08VUaWeDhOHfuAgrke7NLVPatk+RPO
- Idq2+9q621/0Y/k95lzrzNRBGYp6P2uo1GlxLYcHglKAYZo/Cej2Jt8gBe7Gw+Qz351rWqwXcvm
- 8YX+kB6Z2Q3knEFy4SolR3NudeuK7WGfrFsryom7DUjqSDf2dGK5/LD4kxH5aflGMGZmB0moZnG
- LnhWzV1mrbEwmtw==
+ bh=GW0iWX+ovnUEAGVG0BxcFS64OjWdn47qGiXFBFBt6kE=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZduD65Qr6F408CFXCHRwiWcGKpWuyckav27
+ m0L7FlHyHOJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGXQAKCRDa6OEJdZac
+ 5SIyD/9K494S/RKkzAsSOv9T/MgMAP/WgYu11N3TAUAFlouXn2Swjs8mxH+DvN0TL1zOI7DEln4
+ fWF3jd4K9yGpeOdK3FVhlUuUGIu+vCahmXGsC2IRNnSgUJb4k2RHjeIiyWV/jhtNA/9wx465q/C
+ 0OSjxbW+EtYZ3lz0RkjF6YDM+tm9WVYqnQnMDbFuzngcpgqksdveXP06Xu2THNHykMaEy9m8nir
+ mzxnTI67NabjcysMX+MF1Qgy6e2kI6X8PSi5Ii4CpJXlg6NszHB8aISyuxGh3En/Fv2Y/2f/fzC
+ sIKxBFBcSVSMYhRpwzAZZCX8YSUbh2Y42NRkfwZMI08gHA+sl8pYFdenolCBtd8mEDlWjtCWGLB
+ c97FNo8YgEqQpDTNZOal6LhBdRktum+TSi1XlcqMndZ/TCO/g5x8g/hnsFrp/+6WHt+4VAegrzT
+ mkGeBr/Y+ok5ueSlc+kTZYEoLpKHAsHeYM3r+GcPnXOgCk9GvkOrAfaAoHc155+qqmkOyAUeWJu
+ V4X338aVVee/lykp8yDDcAkwPVhw1DH0lCRXuHCA2/aR8xhiZg8zMindNp8TtG/QbTUCwDa/WMw
+ hJcKbcWKMOqkjIZn3eNTlzVwzpE6SFeoKKAnXaQFooDRlL0a/mAzPqJ1ahGBT4iLEdc/AVpxjkM
+ ETt5bqcvNS2VmlQ==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Move PCSouthBridgeOption from a hand-rolled C enum to a proper QAPI
-enum in qapi/machine.json.
+Now that all PropertyInfo definitions use .qapi_type, remove the
+legacy .type (string) and .enum_table fields from PropertyInfo, and
+the .arrayinfo/.arrayfieldsize fields from Property.
 
-This gives the x-south-bridge property a generated type_info with a
-valid masked_name, so it appears in query-qmp-schema introspection and
-the qapi-type field of qom-list-properties output.
-
-The south_bridge/default_south_bridge fields change from const char *
-to PCSouthBridgeOption, with an explicit mapping table from enum value
-to QOM device type name.
-
-Enum values are changed: "PIIX3"->"ppix3", "piix4-isa"->"piix4", this
-is under a x-property, so shouldn't be a breaking change.
+Remove fallback branches in qdev_property_add_static() and
+qdev_class_add_property() that used object_property_add() with
+prop->info->type: these always use the QAPI-aware registration
+path now. Simplify qdev_propinfo_enum_lookup(), prop_array_info()
+and prop_array_elem_size() to use the new fields directly.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/i386/pc_piix.c    | 61 ++++++++++++++++------------------------------------
- include/hw/i386/pc.h |  4 ++--
- qapi/machine.json    | 14 ++++++++++++
- 3 files changed, 34 insertions(+), 45 deletions(-)
+ hw/core/qdev-properties.c         | 58 ++++++++++++---------------------------
+ include/hw/core/qdev-properties.h |  4 ---
+ 2 files changed, 17 insertions(+), 45 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 63c4667ea372..5a94a34166d8 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -47,6 +47,7 @@
- #include "hw/acpi/acpi.h"
- #include "hw/vfio/types.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-type-infos-machine.h"
- #include "qemu/error-report.h"
- #include "system/xen.h"
- #ifdef CONFIG_XEN
-@@ -75,6 +76,11 @@ static GlobalProperty pc_piix_compat_defaults[] = {
- static const size_t pc_piix_compat_defaults_len =
-     G_N_ELEMENTS(pc_piix_compat_defaults);
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 5c403cc2e57e..a121878467e1 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -103,11 +103,8 @@ static ObjectPropertyAccessor *field_prop_setter(const PropertyInfo *info)
  
-+static const char *pc_south_bridge_type[] = {
-+    [PC_SOUTH_BRIDGE_OPTION_PIIX3] = TYPE_PIIX3_DEVICE,
-+    [PC_SOUTH_BRIDGE_OPTION_PIIX4] = TYPE_PIIX4_PCI_DEVICE,
-+};
-+
+ const QEnumLookup *qdev_propinfo_enum_lookup(const PropertyInfo *info)
+ {
+-    if (info->qapi_type) {
+-        assert(info->qapi_type->lookup);
+-        return info->qapi_type->lookup;
+-    }
+-    return info->enum_table;
++    assert(info->qapi_type->lookup);
++    return info->qapi_type->lookup;
+ }
+ 
+ void qdev_propinfo_get_enum(Object *obj, Visitor *v, const char *name,
+@@ -668,18 +665,12 @@ struct ArrayElementList {
+ 
+ static const PropertyInfo *prop_array_info(const Property *prop)
+ {
+-    if (prop->info->element_info) {
+-        return prop->info->element_info;
+-    }
+-    return prop->arrayinfo;
++    return prop->info->element_info;
+ }
+ 
+ static int prop_array_elem_size(const Property *prop)
+ {
+-    if (prop->info->element_size) {
+-        return prop->info->element_size;
+-    }
+-    return prop->arrayfieldsize;
++    return prop->info->element_size;
+ }
+ 
  /*
-  * Return the global irq number corresponding to a given device irq
-  * pin. We could also use the bus number to have a more precise mapping.
-@@ -236,7 +242,8 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+@@ -1224,20 +1215,13 @@ void qdev_property_add_static(DeviceState *dev, const Property *prop)
+     const QAPITypeInfo *qapi_type = qdev_prop_qapi_type(prop);
  
-     gsi_state = pc_gsi_create(&x86ms->gsi, true);
+     assert(!prop->info->create);
++    assert(qapi_type);
  
--    pci_dev = pci_new_multifunction(-1, pcms->south_bridge);
-+    pci_dev = pci_new_multifunction(-1,
-+                                    pc_south_bridge_type[pcms->south_bridge]);
-     object_property_set_bool(OBJECT(pci_dev), "has-usb",
-                              machine_usb(machine), &error_abort);
-     object_property_set_bool(OBJECT(pci_dev), "has-acpi",
-@@ -317,51 +324,18 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-     }
- }
+-    if (qapi_type) {
+-        op = object_property_add_qapi(obj, prop->name, qapi_type,
+-                                      field_prop_getter(prop->info),
+-                                      field_prop_setter(prop->info),
+-                                      prop->info->release,
+-                                      (Property *)prop);
+-    } else {
+-        op = object_property_add(obj, prop->name, prop->info->type,
+-                                 field_prop_getter(prop->info),
+-                                 field_prop_setter(prop->info),
+-                                 prop->info->release,
+-                                 (Property *)prop);
+-    }
++    op = object_property_add_qapi(obj, prop->name, qapi_type,
++                                  field_prop_getter(prop->info),
++                                  field_prop_setter(prop->info),
++                                  prop->info->release,
++                                  (Property *)prop);
  
--typedef enum PCSouthBridgeOption {
--    PC_SOUTH_BRIDGE_OPTION_PIIX3,
--    PC_SOUTH_BRIDGE_OPTION_PIIX4,
--    PC_SOUTH_BRIDGE_OPTION_MAX,
--} PCSouthBridgeOption;
--
--static const QEnumLookup PCSouthBridgeOption_lookup = {
--    .array = (const char *const[]) {
--        [PC_SOUTH_BRIDGE_OPTION_PIIX3] = TYPE_PIIX3_DEVICE,
--        [PC_SOUTH_BRIDGE_OPTION_PIIX4] = TYPE_PIIX4_PCI_DEVICE,
--    },
--    .size = PC_SOUTH_BRIDGE_OPTION_MAX
--};
--
- static int pc_get_south_bridge(Object *obj, Error **errp)
- {
-     PCMachineState *pcms = PC_MACHINE(obj);
--    int i;
+     object_property_set_description(obj, prop->name,
+                                     prop->info->description);
+@@ -1261,21 +1245,13 @@ static void qdev_class_add_property(DeviceClass *klass, const char *name,
+     } else {
+         const QAPITypeInfo *qapi_type = qdev_prop_qapi_type(prop);
  
--    for (i = 0; i < PCSouthBridgeOption_lookup.size; i++) {
--        if (g_strcmp0(PCSouthBridgeOption_lookup.array[i],
--                      pcms->south_bridge) == 0) {
--            return i;
+-        if (qapi_type) {
+-            op = object_class_property_add_qapi(oc,
+-                                               name, qapi_type,
+-                                               field_prop_getter(prop->info),
+-                                               field_prop_setter(prop->info),
+-                                               prop->info->release,
+-                                               (Property *)prop);
+-        } else {
+-            op = object_class_property_add(oc,
+-                                           name, prop->info->type,
+-                                           field_prop_getter(prop->info),
+-                                           field_prop_setter(prop->info),
+-                                           prop->info->release,
+-                                           (Property *)prop);
 -        }
--    }
--
--    error_setg(errp, "Invalid south bridge value set");
--    return 0;
-+    return pcms->south_bridge;
- }
++        assert(qapi_type);
++        op = object_class_property_add_qapi(oc,
++                                            name, qapi_type,
++                                            field_prop_getter(prop->info),
++                                            field_prop_setter(prop->info),
++                                            prop->info->release,
++                                            (Property *)prop);
+     }
+     if (prop->set_default) {
+         prop->info->set_default_value(op, prop);
+diff --git a/include/hw/core/qdev-properties.h b/include/hw/core/qdev-properties.h
+index 39f95ce7a3c6..2267e734d1fd 100644
+--- a/include/hw/core/qdev-properties.h
++++ b/include/hw/core/qdev-properties.h
+@@ -23,17 +23,13 @@ struct Property {
+         int64_t i;
+         uint64_t u;
+     } defval;
+-    const PropertyInfo *arrayinfo;
+     int          arrayoffset;
+-    int          arrayfieldsize;
+     uint8_t      bitnr;
+     bool         set_default;
+ };
  
- static void pc_set_south_bridge(Object *obj, int value, Error **errp)
- {
-     PCMachineState *pcms = PC_MACHINE(obj);
- 
--    if (value < 0) {
--        error_setg(errp, "Value can't be negative");
--        return;
--    }
--
--    if (value >= PCSouthBridgeOption_lookup.size) {
--        error_setg(errp, "Value too big");
--        return;
--    }
--
--    pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
-+    pcms->south_bridge = value;
- }
- 
- #ifdef CONFIG_XEN
-@@ -398,7 +372,7 @@ static void pc_i440fx_machine_options(MachineClass *m)
- {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     ObjectClass *oc = OBJECT_CLASS(m);
--    pcmc->default_south_bridge = TYPE_PIIX3_DEVICE;
-+    pcmc->default_south_bridge = PC_SOUTH_BRIDGE_OPTION_PIIX3;
-     pcmc->pci_root_uid = 0;
-     pcmc->default_cpu_version = 1;
- 
-@@ -413,12 +387,13 @@ static void pc_i440fx_machine_options(MachineClass *m)
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_UEFI_VARS_X64);
- 
--    object_class_property_add_enum(oc, "x-south-bridge", "PCSouthBridgeOption",
--                                   &PCSouthBridgeOption_lookup,
--                                   pc_get_south_bridge,
--                                   pc_set_south_bridge);
--    object_class_property_set_description(oc, "x-south-bridge",
--                                     "Use a different south bridge than PIIX3");
-+    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
-+        .name = "x-south-bridge",
-+        .description = "Use a different south bridge than PIIX3",
-+        .qapi_type = &PCSouthBridgeOption_type_info,
-+        .get = pc_get_south_bridge,
-+        .set = pc_set_south_bridge,
-+    ));
-     compat_props_add(m->compat_props,
-                      pc_piix_compat_defaults, pc_piix_compat_defaults_len);
- }
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 8edec62a1af2..3afd376116b1 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -47,7 +47,7 @@ typedef struct PCMachineState {
-     uint64_t max_ram_below_4g;
-     OnOffAuto vmport;
-     SmbiosEntryPointType smbios_entry_point_type;
--    const char *south_bridge;
-+    PCSouthBridgeOption south_bridge;
- 
-     bool acpi_build_enabled;
-     bool wdat_enabled;
-@@ -94,7 +94,7 @@ struct PCMachineClass {
- 
-     /* Device configuration: */
-     bool pci_enabled;
--    const char *default_south_bridge;
-+    PCSouthBridgeOption default_south_bridge;
- 
-     /* Compat options: */
- 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 46b6935ab0b8..cc028e890ae5 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -462,6 +462,20 @@
- { 'enum': 'Pca9554PinState',
-   'data': ['low', 'high'] }
- 
-+##
-+# @PCSouthBridgeOption:
-+#
-+# South bridge chipset option for PC i440FX machines.
-+#
-+# @piix3: Intel PIIX3 (default)
-+#
-+# @piix4: Intel PIIX4
-+#
-+# Since: 11.2
-+##
-+{ 'enum': 'PCSouthBridgeOption',
-+  'data': ['piix3', 'piix4'] }
-+
- ##
- # @inject-nmi:
- #     Injects a Non-Maskable Interrupt (machine specific: for example
+ struct PropertyInfo {
+-    const char *type;
+     const char *description;
+-    const QEnumLookup *enum_table;
+     const QAPITypeInfo *qapi_type;
+     const struct PropertyInfo *element_info;
+     int element_size;
 
 -- 
 2.56.0.116.g6de20f6092dc
