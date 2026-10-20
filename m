@@ -1,89 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.228.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792484744;
-	b=Vmtyoxz6CCxuiw3XyHZblMPbI13KEN8WhjhKMKEmuaXJAJQIyqcKDjGaGkP2go6JHzKQ
-	 0TvoFHGMG/gJ5xF+RfziMGFHzw2wFSrHjyBFU5AVxTee90k8yB2Sg83CLr4V7Yrctgqvm
-	 rD+4Q9Kxr6g2V7IxEcJ0poFeClEvRyxr+hVovkZtMRQ73v3i0t6ig2hpS3RMTwaK6U2J/
-	 EpS4u5DD+YhyhGPxGtIEZnwztu1mD/3YH8pocf7opeNtjyK5PF9Lw01zxwoc461G7imO9
-	 W2MxCM/ZJJNxSQCk1N6MtFQZK3PPuaQRg4+VVIJ6LAjRDFi7EODUONE4us+kHo8GjcA==
+	t=1792486491;
+	b=PAXvuclRgkQY9SfA5dJ/Og4Li7QQ4qvl9sShKTBmxw+wCQUU5++Ku3OYPo0/tsNGVz4x
+	 bUPUkYQ/ddDJBhLr61OetO/gZdHj4edqjy0/OaL+kaTFn4FZU1EmEYSnuJ7cCiZGm4lyO
+	 c51llzxx97ZbJMpVEKjudOgrLxhvLs0JokSiOPU3/Ad4/1tA50quO1p2i1K/ma/sd4wwe
+	 jqM9t4/8F5ZoANtPDWtTKnYFLBG8DPAW+iSiFfrp/V+DvN+hjW0BVs8/kSn5WLCB/xe58
+	 6Q2GwFLKVNpLEOQwKoi1Vm8BSpqp6Vf2SeQ0XuZHldFqzRX80ZNu1w/cxWn+qDwsM2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792484744;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-TM-AS-GCONF:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=jAJohs9jM4C9qmzSTrnzOJHD+AEB6zrnbjv7P5LD8bM=;
-	b=4RoQ5NI26Qeq/y0gcZTzkfKhyHlaK3AkMAWCOKJ+nhYzmUasQ1DLGINhIUtrcwRoLd6l
-	 4FbXM2+L3A5D94sA3c3Tvv5DWKLPoPVIqx7BPblJ0Eln8YVwRr/14lSobH+wjXk/QzL6J
-	 L9V4cUkTIwX3h9EzAwLG8p+po0LkZf6YQKii2FagI0mVFKokyUlQCe7m5AbZOVBDS9gCL
-	 FFlWWzQidLlKYKJn48x2Tr5yPbw8nSu5LH2wI7b9ou+1ZKDMMjWoq3xrm5o/wach29lZm
-	 EQkNxT9eM3X7jIMMMenXMxjGL/F1KULKtKNOlvWRT0s3S9Nyr0iJVdA0YwXYtorTnnQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792486491;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=bcZcmvJ3NbIWoxlSM4Tt4ETiKqKGT1/tEngMkwZ/3VI=;
+	b=4eJNPNfNSdPv4iE3kn0UHzDzlJd4fBt3lhl7VPnR+HsuSGfeFrEdXNMsKoW+czEnWQMi
+	 RfBY5eovZf/vIuh1d8E8pmxa3myhD35+8I8sqZqJb+oV2UMMZww2ma1R4WeUUr+Z2tjEN
+	 t6GLt+zmD0wDoD/OOX6mjWzOkXs8+r5vERWXTihIwVfMpXYc05WoAHa3RoL5YFVwwdsuf
+	 GKJf+Rk+9v625JfPR0Ur3uxHAorogR2OFk6UJp6KihXMENLaqZb7yzMTJ4BwkC6xA25ov
+	 s34qsoIVMfRtv8rEcLys+pg+b3XTYpJjTUY9SHH8gVdQqRamgMhBxc+s1KH5pInBO2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RcjK16qB;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=S7Epn4g3;
+	arc=none smtp.remote-ip=74.125.228.9
+Received: from mail-pz2-f9.google.com (mail-pz2-f9.google.com [74.125.228.9])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D36C606A319;
-	Tue, 20 Oct 2026 08:25:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D36C606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C69606A31E
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 08:54:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67C69606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RcjK16qB
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69K1ENHR4176854;
-	Tue, 20 Oct 2026 08:25:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=jAJohs9jM4C9qmzSTrnzOJHD+AEB6zrnbjv7P5LD8
-	bM=; b=RcjK16qB/2LH7X6b83KR75wtihO0XSKdlxjmKOinFid0CZdUl5YS+gLHI
-	0kEHvU0YgVC/N41k9+SwC2EpndVMRvGM0Bq1vvhSKosXhXaJaXzCL3Owsc+jzjX9
-	r3ODH2IEj9BuAm1OlSzobAIVgvElwGKgL9jN/KD01xfs7JlPVzrE228CixevDe5o
-	domYQXWb2NtWmU6OA/3bC+ptSH4Z0CkEFxCVgPKF32wQv+oihZjQaKTzWSzWyXc6
-	435G9tCvSCyj1xSanGxXZ4jVr5y/x4Sm3Q10xd3JE6c7o+w+FZcFzn8iD+5gILG0
-	ZU9fBJ7mSl0xfkwncoXq6roU39Iow==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw581p7u-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 20 Oct 2026 08:25:40 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69K6vVs5794894;
-	Tue, 20 Oct 2026 08:25:40 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hcp1yh1ft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Oct 2026 08:25:40 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69K8Pcuk18285216
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Oct 2026 08:25:38 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E55F58050;
-	Tue, 20 Oct 2026 08:25:38 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C2A3358054;
-	Tue, 20 Oct 2026 08:25:35 +0000 (GMT)
-Received: from b46lp13.lnxne.boe (unknown [9.87.84.240])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 20 Oct 2026 08:25:35 +0000 (GMT)
-From: Gautam Gala <ggala@linux.ibm.com>
-To: borntraeger@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: frankja@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, akrowiak@linux.ibm.com, pasic@linux.ibm.com,
-        pmorel@linux.ibm.com
-Subject: [PATCH v1 1/1] KVM: s390: pqap: fix AP status written to wrong half of GR1
-Date: Tue, 20 Oct 2026 10:25:34 +0200
-Message-ID: <20261020082534.481867-1-ggala@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=S7Epn4g3
+Received: by mail-pz2-f9.google.com with SMTP id 41be03b00d2f7-cd68485005eso601907a12.0
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 01:54:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792486490; x=1793091290; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bcZcmvJ3NbIWoxlSM4Tt4ETiKqKGT1/tEngMkwZ/3VI=;
+        b=S7Epn4g3Y7S6ruUQfhlqpLpw3vllp9oRj1fl+HH89GSLWi8fTsWWjXg9PSIVBhI2AB
+         iYHwlPI2LkELNA2uhA/j3SrW5jehJmqofRfGDidzLsrWZ5c49khM+z9Rj6qqNMtjIz1t
+         lMwZdW/EoFWy7bVPaiKdw9uJytD9JzivucPxF4AUsNKfkj0EhcU/bYe19You4VgVsIbf
+         ow24mk3vErGhz9aasSIETqgXzzvegfuNW5sRAfzR31gG8dn0CZ0OmbHG1pr4X5PPOGAK
+         04BYKz6pvD2S2iDdmEvsqrTYPQk0tWWR8V5UhE62y2X7SoEFYclckc30u1iVHkCF+gu9
+         Hzsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792486490; x=1793091290;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bcZcmvJ3NbIWoxlSM4Tt4ETiKqKGT1/tEngMkwZ/3VI=;
+        b=nGRRWDhaVwlUk9lqxj/RMDZRpKNnxhC+pJh3tm6HJqs4Sr+zyF39ejBOHoc+pyKxNP
+         80nztrE68WIBq9+pTY2POndYbpzPYzRZK6dujoQd5D7icp1K3dISaC0EIDne9FFwMWK7
+         0TqDtw6hMw6IaAJ2jA52cgTbYcqAo0PCH8ql7SuORXuwCBXV73OLioEIUcLUv2FnJ5im
+         J+cAEU2qLuO0xwHC1tR7c3ex6nDYlRTluW8umnSv1ZreNWWqh3O8kowciNDHqIYTE/IB
+         TNdhj8K0yMBgIdQ+z1l/EN/Q1kup0soU5S1D3WZ5mnq/4h5v1ljuMfPe5NjxQLJOdecf
+         sXcQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxVuA3xitk7jHcE0v2wm7AWNG4AJ+U0iCIzonc5YrfkHsArPv0bc75KisYaYj/QRQ1ISI4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJLN30UcaktUqF8L6thSgV7cbhVnZMvELd81Srjtoaa5O/pl2Tm
+	czhdt65NUGpRKzEkQ14rM66qHaLooGyT6Luqhhjog1lNqlHDS6cdYXWM
+X-Gm-Gg: AYBFou34sUCcSMs9dwrV4M9/aEqn47u89193mhNU9jKa8evACzNG835p/tRFq3yQhyA
+	6/yiPVLoTUzo3J1x26k/0AVgwBkhQkd/QkKjWAn9BLrnQWhkMf/AnNFekC8oqt38D5AFfWFd7/F
+	1Pc7YwpJcvBKAfWbC97WNO1iTJoRCkVj/W8/F768k5vhg4ojS2hqWTSC0dJld4LSuTmmnI7FWBI
+	Td/RfQhJqqtaoixs5+vEb2sve5pmGLSh4cqL+kHFQfgVzNyoQao9NaanR7VZ5Qia0MnmStX3l+M
+	sv5HWP2W1uinxeXhizV0pTgj5jjv8KqSA8oeibob9ROPCmeTk/SnPfLmslxdxgoFfYALrPf25WD
+	eKxmhHXu/CbJ8qiz5ubt6uabZXEbv/pgvOUp9bycZiEK3oAZH0cWK8nrt4Zv5AqwECBqpAJk6nj
+	c/ZK7m8hq/jefcaWNodT19SKRgoANEkW04DH2yns4ZyFlzld9BmCNL6pi4+YG4Jx1uYlUpD2qAY
+	YaFeGoa+1jAgqfTuFW/rILlQw7YffaahVGLlA==
+X-Received: by 2002:a05:6a00:1394:b0:87d:3894:197b with SMTP id d2e1a72fcca58-8a04cb1ed84mr8394665b3a.59.1792486489688;
+        Tue, 20 Oct 2026 01:54:49 -0700 (PDT)
+Received: from HXDQXTDYHN.bytedance.net ([203.208.167.149])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89f580173efsm4540237b3a.50.2026.10.20.01.54.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 20 Oct 2026 01:54:49 -0700 (PDT)
+From: Jinmeng Zhou <jinmengzhou22@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Feng Wu <feng.wu@intel.com>,
+	x86@kernel.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jinmeng Zhou <zhoujinmeng@bytedance.com>,
+	stable@vger.kernel.org,
+	Guixiong Wei <weiguixiong@bytedance.com>
+Subject: [PATCH v2 1/2] KVM: x86: Make the kvmclock CPU hotplug state generic
+Date: Tue, 20 Oct 2026 16:54:00 +0800
+Message-Id: <20261020085401.80296-2-jinmengzhou22@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20261020085401.80296-1-jinmengzhou22@gmail.com>
+References: <20260924080648.51014-1-zhoujinmeng@bytedance.com>
+ <20261020085401.80296-1-jinmengzhou22@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,77 +110,113 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDAzMiBTYWx0ZWRfX1stH9jO+DoIW
- bKahL0Z3YB6PqoqtJo0AHFS3HIl7ZNQfbke9TQu9XpNOPrSk10SxIn0zyQz/MJC/WReOrcwHENU
- ApK+fx5HLC6aUtqA8cc3ubw9fxB1O3U=
-X-Proofpoint-GUID: LpeQUKuIyJmjA8GLABCRRgCQZqo51mhB
-X-Proofpoint-ORIG-GUID: LpeQUKuIyJmjA8GLABCRRgCQZqo51mhB
-X-Authority-Analysis: v=2.4 cv=UOBIjyfy c=1 sm=1 tr=0 ts=6ad72584 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=dCozhJJj6gtuAxkZyfYA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDAzMiBTYWx0ZWRfX7iQjd7pbtWcS
- Hxkr1xC/OT5W7a8iIt4huK3uTc/QxhIAXnPKlpmJbxJBR8GEFxYPSylhQw+sRoQvBMi1RUDW7SH
- TdPL+vrEcbthhuT4J+Q0IH0aQIsuu3B0OPD5chEG9zaiqAyamZAG8AmBzVUt/u3CxXgVXRCVPBE
- I+KsE3qYDuXc3rRZDFpTJvzJ6dIRuPN9Lpy3J8f4nZxZGaQjceUkqIyjG8t2UTYf5wrlPQdJ9ZL
- zeOcsAHpkAAjtEJrwsdIByV7T7T6CjpWGBgpctoOrf6LHCz/HlRZ2GppAw2YNs/MeT16lw8E1DW
- ze6JgRlcl8EwC9dfGnazghu7s0xl3UySR9YmLn2rjjX+sACLNxvv4q4jZZJAwfpy2TvJV44hEp7
- k0R7ZqTKa9CGyLtEf1XiYvve+Cg4NmoKnhO2ZM0R0NUV1oJkabSWUJsstytrsJdiGhPVYyIsXYf
- 3DW5O+nTzPVXUBbFzcw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-20_01,2026-10-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610200032
 
-The AP Queue Status Word (APQSW) occupies bit positions 32-63 of GR1,
-i.e. the low 32 bits of the 64-bit register, while the upper 32 bits
-are reserved.
+From: Jinmeng Zhou <zhoujinmeng@bytedance.com>
 
-The no-hook fallback path in handle_pqap() synthesizes an APQSW and
-copies struct ap_queue_status directly into GPR1 using memcpy(). On
-big-endian s390 this places the APQSW in the upper 32 bits of the
-register rather than in the architecturally defined APQSW field.
+Rename CPUHP_AP_X86_KVM_CLK_ONLINE to CPUHP_AP_X86_KVM_ONLINE so that the
+state can be used for any x86 KVM work that needs to run when a CPU comes
+online or goes offline, not just for kvmclock.
 
-Use union ap_queue_status_reg and assign its value directly to GPR1.
-This places APQSW in the correct half of the register and aligns the
-fallback path with the register layout used by the AP infrastructure.
+The state is currently registered by kvm_timer_init() only if the host
+lacks X86_FEATURE_CONSTANT_TSC, so it is never installed on modern CPUs.
+Register it unconditionally from kvm_x86_vendor_init(), and remove it from
+kvm_x86_vendor_exit().  Add kvm_x86_cpu_online() and kvm_x86_cpu_offline()
+wrappers that call the existing kvmclock helpers only on hosts without a
+constant TSC.
 
-Fixes: e5282de93105 ("s390: ap: kvm: add PQAP interception for AQIC")
-Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
+Keep the registration after kvm_timer_init() so that the cpufreq notifier
+is registered before kvmclock_cpu_online() samples the frequency of each
+online CPU.
+
+No functional change for kvmclock.  On hosts with a constant TSC, the
+state is now registered but its callbacks do nothing.
+
+Cc: stable@vger.kernel.org
+Co-developed-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Jinmeng Zhou <zhoujinmeng@bytedance.com>
 ---
- arch/s390/kvm/s390/priv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c         | 29 +++++++++++++++++++++++++----
+ include/linux/cpuhotplug.h |  2 +-
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/arch/s390/kvm/s390/priv.c b/arch/s390/kvm/s390/priv.c
-index b3cb2c2c3aa7..ccb2a7830265 100644
---- a/arch/s390/kvm/s390/priv.c
-+++ b/arch/s390/kvm/s390/priv.c
-@@ -592,7 +592,7 @@ EXPORT_SYMBOL_FOR_MODULES(kvm_s390_is_gpa_in_memslot, "vfio_ap");
-  */
- static int handle_pqap(struct kvm_vcpu *vcpu)
- {
--	struct ap_queue_status status = {};
-+	union ap_queue_status_reg status = {};
- 	crypto_hook pqap_hook;
- 	unsigned long reg0;
- 	int ret;
-@@ -661,8 +661,8 @@ static int handle_pqap(struct kvm_vcpu *vcpu)
- 	 * No hook means no driver to enable the SIE CRYCB and no queues.
- 	 * We send this response to the guest.
- 	 */
--	status.response_code = 0x01;
--	memcpy(&vcpu->run->s.regs.gprs[1], &status, sizeof(status));
-+	status.status.response_code = 0x01;
-+	vcpu->run->s.regs.gprs[1] = status.value;
- 	kvm_s390_set_psw_cc(vcpu, 3);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 79468ddfe4736..a08ae25f373fb 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6812,6 +6812,22 @@ static int kvmclock_cpu_online(unsigned int cpu)
  	return 0;
  }
+ 
++static int kvm_x86_cpu_online(unsigned int cpu)
++{
++	if (!boot_cpu_has(X86_FEATURE_CONSTANT_TSC))
++		return kvmclock_cpu_online(cpu);
++
++	return 0;
++}
++
++static int kvm_x86_cpu_offline(unsigned int cpu)
++{
++	if (!boot_cpu_has(X86_FEATURE_CONSTANT_TSC))
++		return kvmclock_cpu_down_prep(cpu);
++
++	return 0;
++}
++
+ static void kvm_timer_init(void)
+ {
+ 	if (!boot_cpu_has(X86_FEATURE_CONSTANT_TSC)) {
+@@ -6832,9 +6848,6 @@ static void kvm_timer_init(void)
+ 		}
+ 		cpufreq_register_notifier(&kvmclock_cpufreq_notifier_block,
+ 					  CPUFREQ_TRANSITION_NOTIFIER);
+-
+-		cpuhp_setup_state(CPUHP_AP_X86_KVM_CLK_ONLINE, "x86/kvm/clk:online",
+-				  kvmclock_cpu_online, kvmclock_cpu_down_prep);
+ 	}
+ }
+ 
+@@ -7109,6 +7122,13 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
+ 	 */
+ 	kvm_timer_init();
+ 
++	/*
++	 * Register the CPU hotplug state after the cpufreq notifier so that
++	 * kvmclock_cpu_online() can't miss a frequency transition.
++	 */
++	cpuhp_setup_state(CPUHP_AP_X86_KVM_ONLINE, "x86/kvm:online",
++			  kvm_x86_cpu_online, kvm_x86_cpu_offline);
++
+ 	if (pi_inject_timer == -1)
+ 		pi_inject_timer = housekeeping_enabled(HK_TYPE_TIMER);
+ #ifdef CONFIG_X86_64
+@@ -7165,10 +7185,11 @@ void kvm_x86_vendor_exit(void)
+ #endif
+ 	kvm_lapic_exit();
+ 
++	cpuhp_remove_state_nocalls(CPUHP_AP_X86_KVM_ONLINE);
++
+ 	if (!boot_cpu_has(X86_FEATURE_CONSTANT_TSC)) {
+ 		cpufreq_unregister_notifier(&kvmclock_cpufreq_notifier_block,
+ 					    CPUFREQ_TRANSITION_NOTIFIER);
+-		cpuhp_remove_state_nocalls(CPUHP_AP_X86_KVM_CLK_ONLINE);
+ 	}
+ #ifdef CONFIG_X86_64
+ 	pvclock_gtod_unregister_notifier(&pvclock_gtod_notifier);
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index feb32949aeea6..91da42fd11161 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -241,7 +241,7 @@ enum cpuhp_state {
+ 	CPUHP_AP_ONLINE_DYN,
+ 	CPUHP_AP_ONLINE_DYN_END		= CPUHP_AP_ONLINE_DYN + 40,
+ 	CPUHP_AP_X86_HPET_ONLINE,
+-	CPUHP_AP_X86_KVM_CLK_ONLINE,
++	CPUHP_AP_X86_KVM_ONLINE,
+ 	CPUHP_AP_ACTIVE,
+ 	CPUHP_ONLINE,
+ };
 -- 
-2.56.0
+2.39.5
 
