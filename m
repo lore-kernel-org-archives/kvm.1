@@ -1,101 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792517257;
-	b=JEJlfW0Ga8McZZlqzmZpQW67TosqSweIqCUZ2E0UqQqoR9KYBPQRo+w92rTPK4uV+hRv
-	 MUTMozwqnmohccLXgxNlT/hlYxhDcJV3tq8wW++Iiy+boIRndVXbGzzhexfDTCKV0zjyO
-	 vpb4MYxvZG5D7bYUQ5tsI5ZY8SLdWnOnJ7V2bKrcslIAk4xfIt9aaMXnzmuFUs5iQv7Yu
-	 xaApbd+bJfAPN8kjAOhnqr17aKfpg63Pr3mrteFO6deAH+n+w3tpNw3P9rGETma4iyARn
-	 NAW41Nk9yeFEFQ5hp85EbgJkycfNjBep9tgr2BIzKEHPGqmqWsjHoV9QrgcUCb+Ul+A==
+	t=1792518657;
+	b=oetVMBZgMMohv/toes0iFitcU52EGi8INYI5SQtXoLLfDIeit7BdQNWof4DUAXsVx/X9
+	 8MzQhQSUHIroiren459zsKQWw0Vs5B6w+B/+nkOUk8305ODKxK4lcrS59nCykCa4+NO8q
+	 SYk+twUIxn/L16VsE1EPuKLQ/TtHexUPLoJ8EBIQJ4FyyjxNhO3xu+6hbJQzcYUzFUfOd
+	 oW8meA8RTCqNVeq6E/n9nkULSahWMWVkCx8Bl0QU2+KSfXVLk06gnOx2o4UzXkUPlKCvx
+	 iryMGRyFP3m9/iX6TajNM36mQ77b5OEfxsefgAgHuL8eKQ8Bz9p0gydOrZA9T06KVsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792517257;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792518657;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=TIuVvUMuRAYl/dxcnqP8vb2VgWML544JX9D0im23wI4=;
-	b=nyeJdiDluW9NBqqB4+AnPRSlKv6mEF06Nm/YhvEQjzLvajjd5sp8P/5c2H+GEL25cTys
-	 CVIREsNEPXZaSBkkk/mLKp4dC2EWntiDDBid8SyU7oHIDfrDuGND9htafi6rjpzqwJBow
-	 YLYUHxZHJRPj730Cddthj2aFDp72QsXQoow8eXc499qBqId4Zo4XpQhLfrZZiDIriGN3O
-	 SIIvHHCMQ4goO9XwKaYzokuhMaeUIYSzTqyOq977QChbkqx/0uV0Y47bpvDYU+6H3Qzn5
-	 vyJsIYlKeRIkjathBiPSxfAAHCGWTEBEoLwPQ/fzgO6Ggote26z6fy4/5+u1GKUF7Lg==
+	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
+	b=o+/E/LoVlvCm5B2kSTBEq3oMh/54/vMSWuobrb3AfT1GxDKTJlQkRKrQOfMr7skAOZ2u
+	 FBg6Xa2U9DYzgMbEYL0e/d7SFrPa5QrbhPaV92E4f1elaHwGfgT9kmfbYIKx4eKOqnQ82
+	 odGiSUKBY/63N+bWGgm5fVxbrTklpBWNZ/ZE8Nuz08ra9qVPVEpdy4mA6gZ7RHry2SpQr
+	 N8JRTuoJMrmYdMpIz6KgL5nVsV1hj6VDES9Kluc7xAJwshFQouxM4E7qzOf/PRre4WVXY
+	 FzeSh0RSro77OdGPMLeONVCSEA1mSxMcyZzmFCfxZuGh1NCqq/BJ6SpOUF4sn4IUHPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=fkZApnKi;
-	arc=none smtp.remote-ip=209.85.216.46
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	dmarc=pass header.from=linuxfoundation.org;
+	spf=pass smtp.mailfrom=linuxfoundation.org;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=FaXZZkDT;
+	arc=none smtp.remote-ip=209.85.218.51
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EB0606A327
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 17:27:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07EB0606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26AE606A323
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 17:50:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B26AE606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=fkZApnKi
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3acc96a256dso2271459a91.3
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:27:36 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=FaXZZkDT
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c37b612635bso476562466b.3
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1792517256; x=1793122056; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TIuVvUMuRAYl/dxcnqP8vb2VgWML544JX9D0im23wI4=;
-        b=fkZApnKi2bKmmOXkY4E6jzVoSuuvbpOiGnvA2lc9LWsGT2V31mRGKSIJzT9cikI4V4
-         310k1YlXSBxqa7FnS7F96Rkm0OZ6E3Um21dsvgtw4Szq4ZU1NUCSB4Iy7fq424SclGAq
-         38scFxh/zrxfJj3EHE7fXaBZ7/P4617wyTvD7v63KvPYiTzN5I2FK5/l60kg2PXBtsPz
-         nXLOnc+fhH0Vlm4EnjFM+fElC4WKE4HaWzJ5wVSbGR16CfoNJYFs06YBqutX8KEM1uYK
-         ZbMl8INgh3IYRDIzHRZ9wj5Hkcl3ONJ+Dk9LpgAjdNMGnWa7v2sy0Rr5a5D6un5zVeKe
-         ANvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792517256; x=1793122056;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=linuxfoundation.org; s=google; t=1792518655; x=1793123455; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TIuVvUMuRAYl/dxcnqP8vb2VgWML544JX9D0im23wI4=;
-        b=hR0UOGstu9LRWYH45aKB6H//bu4wsBtenfiVZvFA7xKyIUHcn7hmcB0gwwqzX+UO86
-         RP+Acrcvfu8GXxzYBnrXnEf2atCjL4fPgrYjvTT9gqzqpDSg0Lw0uNZBVIMdnElilBMp
-         gUyOIE2ZH6O6bEaqZ8GyrWdKTfIdOLN6avpfwsvdlvuT5THQw8ByMf2qt+j6kw5PHvw8
-         EoNL5/uLbYQ95nKnwKUGZybK843HaL/rJq+Wwrm78rEy4YrvhxLva8xJZamuqQ5i7232
-         WHgQouwp0kJtCf1Zk800hSUjkX+63Zf7sPtk9N7XgwIWpS5PVOlG9z1xKTMXXEsuTjhT
-         QLtA==
-X-Forwarded-Encrypted: i=1; AKwUvByAjpPVz9llKAzSu4WZfXP7Boy8iX8B3G2NlAm/b7btf7wfkdH+sDJtqo6K17tu7O2QNl4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLpCmsdGJiQSFa2RkoaBw9hOYXrYHD00XfbRUmO3+GcES66f2eE
-	OPJ8+NqoIVRASUlp0GXToI+ktOgNQ8q0S6KGB006wygjRu0JX6sYTqNHwynfvO6oQRU=
-X-Gm-Gg: AYBFou1gMX8hA+PBqD4E4j4nQ4ge52DZ718aXIhMWy1yDxSuhCrRnJOTdFpHVzP7rC/
-	f0veEAh5L4xV5mKJTA90ergEGcqyTnMedTuSX+GJgXWBTcy1YUQ0utDqrPjaXXigvOvCB89zFwb
-	K3ebCo4FBJuC+U2jPAWO9BRDbDOrLpwrtH//A37YIuAMNJoD8edGcFAPtfSmVCqTIytwh8PNyRY
-	zcoyeH2f86rNep7MoejkkDE+1oO8WkNz7f3j48k7+TzXJVzAB/6LWZjrnR21BxoZo1eXcpac45t
-	Sac1tyJbauvoxrQvLH7G3nX1RR7lLXJapktuoKIGI/dylgxB3jOEECa67jXGsDSxYJGfwWAmqfM
-	fQvfryOdU27YqCW4X2rUuhmgEXF8fUWd4ISKxpoiSa5qHP3Zrzr2hNBizrPnsHc8Rbxy4zhLTR2
-	svWrfaQKYlByDDN1+PZ639gWgY8g3lMxFoVRJfS4WZ8RgR63qP8BIg7AYZ5GcuGER2efqIj6g4v
-	g==
-X-Received: by 2002:a17:90b:3b86:b0:3ab:2737:3396 with SMTP id 98e67ed59e1d1-3acef5f1d2dmr10291676a91.65.1792517256200;
-        Tue, 20 Oct 2026 10:27:36 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:1567:1f94:7104:b613])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad80303567sm467989a91.14.2026.10.20.10.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 10:27:35 -0700 (PDT)
-Date: Tue, 20 Oct 2026 11:27:33 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Kohei Enju <enju.kohei@fujitsu.com>, gshan@redhat.com,
-	michael.roth@amd.com, berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
-	qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v4 03/24] target/arm: Add confidential guest support
-Message-ID: <atekhR1Wz03nUCHB@p14s>
-References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
- <20260903193611.1058589-4-mathieu.poirier@linaro.org>
- <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
- <arI197vJkW75p50c@lpieralisi>
- <arSTQQ5uB6oR-vFe@FCCLS0092175.localdomain>
- <ataBkrIvULJXj4v6@p14s>
- <atdKSwvu_uldqwlz@red-moon>
+        bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
+        b=FaXZZkDT4JTAJD9dls5zNgoYwqN4YoaMS9ggdsn9VJDCOrpWIPpIJtnKJc5VsnFaa6
+         NstxfC4k9ERrs0kvhRAeH1sHz2ZLoi6fy7GQyMHWaqdZYp+tOqS9UKf4ZqNmZ55I/VYB
+         BJUlcKtqh1qMtChxYdXTyHU7LwFIy0XxNhEeI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792518655; x=1793123455;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
+        b=E2tD5XqvTWdjWtTU3ckweWUtWiSeMQ/gSx7P5jRLmyMGLC5IqMG5Lp5P+AYoU0r9Mf
+         2ANXXmM0zxbYcLg8rMjKmmb9pXAbrzmJLcQs1CB/ZD6D5OZ8gbXdlsP0GmJxWV1qFhBC
+         /ewnpZ6TY/WfphcQhfVtGA2ealsXf2BeUftDy6plvXpsXA0MkV58fvqN5TLTnq30Crcj
+         ZPBEds3d4+z3a0o7Cj4spvjpp2Jr9YJB8ieB+UBLPN7ySTNJoQCryZnauagnUlk4/2El
+         5YBIVNfpBa8I3uqSwX0Bh62wESYuaVhigUi1LPoTAAogMeb82QnkUgMZc9jT8KxqLNJr
+         CgDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxFrvLdPpW+U9Vdf+IC906DEPXAWijyTr0VK6I8+f1PbSEYmQIMkxbZx66FZW5PV/c+UYM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI1NzVIvjVHMjD4AGIRZdQWRMimEeuIMkkRzJxWisJraTFKsT69
+	uFtTShc7y4Nfr5IiNCFqS5vk5e5kYeSh1brgjVSZmESySRmlXiVTTdZOKei2IASV4Biww6KHOCO
+	hv6FipsQ=
+X-Gm-Gg: AYBFou2dupMRXhTJPiAM0MDPjsJ9zV1lqzwtX6bFjrhuDWffa6Y6GJ56R+3QuAs6Q5w
+	CdW1uFXDxIHnK9sDPgcz36X7u5C6jCgZk8iL5ppisMBB8uhwB4I2zZERQ1eZtnSFC4lEFocM7hn
+	0HXf4PrxnicDBd6x3q+lofCBEDaskjdbJF5VIUqNNVxQp8/ZBidocKhVMg+VwEM05MynF97NzSZ
+	MleG+SNlbetckPprJpY2CLhP/6QnPJOHtgiq55JLcIK/E9YYumPaE9/651RdKpUbuuD320w4TN8
+	/VDv8JX+UnjyFegvkMNSiastwSqelSK+jYv3+ouGvau5oDyyfZOFBbNqkV6TbjbTeE+0mgYDQtZ
+	t/Li2N2GsP/jmMd557c0M0ptCFOt06Q04XrDu0bc850EHasyI79xBcHDhV926HbE2jMKwx9KrTW
+	s+IMo30zFRo4myHjuDM4yN5w6EuoYbgyL8HDj+007sWoUfygSSVg3NIOXTHJbWElzKMh3ojH98S
+	cvxxWbwPVSMMWciVUcTAQnkJxg5pjNd22dvS6oIRzPA3IE=
+X-Received: by 2002:a17:907:e0d8:b0:c46:645f:ced7 with SMTP id a640c23a62f3a-c46645fd11dmr145935866b.39.1792518654945;
+        Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4678fd7eaesm652066b.59.2026.10.20.10.50.54
+        for <kvm@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2a4e013a44so476284666b.2
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByHGt/7p3JXHoq3JRLUQ+sFlvqlXpxH7XmHBXjSzgZjwkbBBZNgXzA/O7PuCon7UmK9mZw=@vger.kernel.org
+X-Received: by 2002:a17:907:d2a:b0:c41:21ef:26ef with SMTP id
+ a640c23a62f3a-c419ef2407fmr811663866b.20.1792518653997; Tue, 20 Oct 2026
+ 10:50:53 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,222 +92,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atdKSwvu_uldqwlz@red-moon>
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
+ <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+ <20261018174250-mutt-send-email-mst@kernel.org> <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
+ <20261020021924-mutt-send-email-mst@kernel.org> <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
+ <20261020102134.745ff48a@pumpkin>
+In-Reply-To: <20261020102134.745ff48a@pumpkin>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Tue, 20 Oct 2026 07:50:36 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wjUb=G+9gtaSO4bfUYKL+tVBVQq-Zfn_pGbCfxNWbz9AA@mail.gmail.com>
+X-Gm-Features: AclHuK9rATEm1NS_MFfAyhy60SuMBv6wKyZqfF_GIdeIDY7VES_ZxkiFI1mL3aE
+Message-ID: <CAHk-=wjUb=G+9gtaSO4bfUYKL+tVBVQq-Zfn_pGbCfxNWbz9AA@mail.gmail.com>
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wang Haoran <haoranwangsec@gmail.com>, jasowangio@gmail.com, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	eperezma@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 20, 2026 at 01:02:35PM +0200, Lorenzo Pieralisi wrote:
-> On Mon, Oct 19, 2026 at 02:46:10PM -0600, Mathieu Poirier wrote:
-> > On Thu, Sep 24, 2026 at 12:12:35PM +0900, Kohei Enju wrote:
-> > > On 09/22 10:01, Lorenzo Pieralisi wrote:
-> > > > On Tue, Sep 15, 2026 at 04:27:21PM -0500, Michael Roth wrote:
-> > > > > On Thu, Sep 03, 2026 at 01:35:50PM -0600, Mathieu Poirier wrote:
-> > > > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > > > > 
-> > > > > > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
-> > > > > > support the Arm Realm Management Extension (RME). It is instantiated by
-> > > > > > passing on the command-line:
-> > > > > > 
-> > > > > >   -M virt,confidential-guest-support=<id>
-> > > > > >   -object rme-guest,id=<id>
-> > > > > > 
-> > > > > > This is only the skeleton. Support will be added in following patches.
-> > > > > > 
-> > > > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > > > > > ---
-> > > > > >  docs/system/confidential-guest-support.rst |  1 +
-> > > > > >  qapi/qom.json                              | 13 +++++++
-> > > > > >  target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
-> > > > > >  target/arm/meson.build                     |  5 ++-
-> > > > > >  4 files changed, 60 insertions(+), 1 deletion(-)
-> > > > > >  create mode 100644 target/arm/kvm-rme.c
-> > > > > > 
-> > > > > > diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-> > > > > > index 562a7c3c2852..abb56923ad13 100644
-> > > > > > --- a/docs/system/confidential-guest-support.rst
-> > > > > > +++ b/docs/system/confidential-guest-support.rst
-> > > > > > @@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
-> > > > > >  * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
-> > > > > >  * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
-> > > > > >  * AWS Nitro Enclaves (see :doc:`nitro`)
-> > > > > > +* Arm Realm Management Extension (RME)
-> > > > > >  
-> > > > > >  Other mechanisms may be supported in future.
-> > > > > > diff --git a/qapi/qom.json b/qapi/qom.json
-> > > > > > index 776b13027fd8..52997c29a32d 100644
-> > > > > > --- a/qapi/qom.json
-> > > > > > +++ b/qapi/qom.json
-> > > > > > @@ -1288,6 +1288,17 @@
-> > > > > >    'data': { '*pretty': 'bool',
-> > > > > >              '*close-action': 'MonitorQMPCloseAction' } }
-> > > > > >  
-> > > > > > +##
-> > > > > > +# @RmeGuestProperties:
-> > > > > > +#
-> > > > > > +# Properties for rme-guest objects.
-> > > > > > +#
-> > > > > > +# Since: 11.1
-> > > > > > +##
-> > > > > > +{ 'struct': 'RmeGuestProperties',
-> > > > > > +  'base': 'ConfidentialGuestSupportProperties',
-> > > > > 
-> > > > > Just FYI, based on input from Markus I'm planning to drop this
-> > > > > ConfidentialGuestSupportProperties base type from my series
-> > > > > since it's probably only SNP/TDX that need to be able to switch
-> > > > > it on/off, whereas this series appears to use/require it from
-> > > > > the start.
-> > > > > 
-> > > > > I'm not exactly sure what it will look like for v3 yet, but if you
-> > > > > were based on v2 you'd instead probably just do the following in the
-> > > > > instance_init function for your rme-guest instance:
-> > > > > 
-> > > > >   cgs->allow_convert_in_place = true;
-> > > > >   cgs->convert_in_place = true;
-> > > > > 
-> > > > > rather than exposing it as a cmdline option.
-> > > > 
-> > > > Yep, it won't be an option for CCA Realms anyway since that will be
-> > > > the baseline.
-> > > 
-> > > IIUC, in-place conversion requires RAM backed by a shared/mappable
-> > > guest_memfd. If in-place conversion is always enabled for CCA Realms,
-> > > could QEMU also select the equivalent of
-> > > 
-> > >   -object memory-backend-guest-memfd,id=ram0,size=...,share=on
-> > > 
-> > > automatically for the default RAM, so that specifying the RAM size with
-> > > `-m` is sufficient?
-> > 
-> > Are you suggesting that on Arm, we completely get rid of 
-> 
-> Nit: obviously on Arm rme-guest configs.
+On Mon, 19 Oct 2026 at 23:21, David Laight <david.laight.linux@gmail.com> wrote:
+>
+> There should also be very few (if any) access_ok() calls outside of the code
+> that implements user copies.
 
-Indeed.
+Note that that branch only removes __get_user/__put_user - and only on x86.
 
-> 
-> >     -object memory-backend-guest-memfd,id=ram0,size=$(RAMSIZE),share=on
-> 
-> If that's what we want to make a default, I guess we ought to override
-> create_default_memdev for arm machines + rme-guest configs ?
-> 
-> Pros and cons ? I am not sure how well received is setting implicit defaults
-> for specific machine configs and what that really buys us eventually.
+So there's still a lot of valid access_ok() calls left. Some are
+around things like raw_copy_to/from_user() etc.
 
-I agree, this entails a fair amount of changes for cosmetic gains only.
+But some are around things that just want to verify that it's a valid
+user address for other reasons. On example is in fork.c that just
+checks that the stack that is supplied is ok.
 
-> 
-> > or simply to get rid of "size=$(RAMSIZE)" in the above because it is redundant
-> > with "-m $(RAMSIZE)"?
-> > 
-> > Gavin and Michael, what is your take on that suggestion?
-> 
-> Yes please any feedback on this is welcome.
-> 
-> Thanks,
-> Lorenzo
-> 
-> > Thanks,
-> > Mathieu
-> > 
-> > > 
-> > > Thanks,
-> > > Kohei
-> > > 
-> > > > 
-> > > > Thanks,
-> > > > Lorenzo
-> > > > 
-> > > > > Thanks,
-> > > > > 
-> > > > > Mike
-> > > > > 
-> > > > > > +  'data': {} }
-> > > > > > +
-> > > > > >  ##
-> > > > > >  # @ObjectType:
-> > > > > >  #
-> > > > > > @@ -1346,6 +1357,7 @@
-> > > > > >      { 'name': 'pr-manager-helper',
-> > > > > >        'if': 'CONFIG_LINUX' },
-> > > > > >      'qtest',
-> > > > > > +    'rme-guest',
-> > > > > >      'rng-builtin',
-> > > > > >      'rng-egd',
-> > > > > >      { 'name': 'rng-random',
-> > > > > > @@ -1427,6 +1439,7 @@
-> > > > > >        'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
-> > > > > >                                        'if': 'CONFIG_LINUX' },
-> > > > > >        'qtest':                      'QtestProperties',
-> > > > > > +      'rme-guest':                  'RmeGuestProperties',
-> > > > > >        'rng-builtin':                'RngProperties',
-> > > > > >        'rng-egd':                    'RngEgdProperties',
-> > > > > >        'rng-random':                 { 'type': 'RngRandomProperties',
-> > > > > > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > > > > > new file mode 100644
-> > > > > > index 000000000000..42e1d1e7b859
-> > > > > > --- /dev/null
-> > > > > > +++ b/target/arm/kvm-rme.c
-> > > > > > @@ -0,0 +1,42 @@
-> > > > > > +/*
-> > > > > > + * QEMU Arm RME support
-> > > > > > + *
-> > > > > > + * SPDX-License-Identifier: GPL-2.0-or-later
-> > > > > > + *
-> > > > > > + * Copyright Linaro 2026
-> > > > > > + */
-> > > > > > +
-> > > > > > +#include "qemu/osdep.h"
-> > > > > > +
-> > > > > > +#include "hw/core/boards.h"
-> > > > > > +#include "hw/core/cpu.h"
-> > > > > > +#include "kvm_arm.h"
-> > > > > > +#include "migration/blocker.h"
-> > > > > > +#include "qapi/error.h"
-> > > > > > +#include "qom/object_interfaces.h"
-> > > > > > +#include "system/confidential-guest-support.h"
-> > > > > > +#include "system/kvm.h"
-> > > > > > +#include "system/runstate.h"
-> > > > > > +
-> > > > > > +#define TYPE_RME_GUEST "rme-guest"
-> > > > > > +OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
-> > > > > > +
-> > > > > > +struct RmeGuest {
-> > > > > > +    ConfidentialGuestSupport parent_obj;
-> > > > > > +};
-> > > > > > +
-> > > > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> > > > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
-> > > > > > +                                          { TYPE_USER_CREATABLE }, { })
-> > > > > > +
-> > > > > > +static void rme_guest_class_init(ObjectClass *oc, const void *data)
-> > > > > > +{
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void rme_guest_init(Object *obj)
-> > > > > > +{
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void rme_guest_finalize(Object *obj)
-> > > > > > +{
-> > > > > > +}
-> > > > > > diff --git a/target/arm/meson.build b/target/arm/meson.build
-> > > > > > index 0369f96b4cc6..9d322a7aad28 100644
-> > > > > > --- a/target/arm/meson.build
-> > > > > > +++ b/target/arm/meson.build
-> > > > > > @@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
-> > > > > >  arm_common_system_ss.add(files(
-> > > > > >    'arm-qmp-cmds.c',
-> > > > > >  ))
-> > > > > > -arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
-> > > > > > +arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
-> > > > > > +  'hyp_gdbstub.c',
-> > > > > > +  'kvm.c',
-> > > > > > +  'kvm-rme.c'))
-> > > > > >  arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
-> > > > > >  
-> > > > > >  arm_user_ss.add(files('cpu.c'))
-> > > > > > -- 
-> > > > > > 2.43.0
-> > > > > > 
-> > > > > > 
+But yes, the branch does remove a number of access_ok() calls. Fewer
+than you'd maybe think, though.
+
+                  Linus
