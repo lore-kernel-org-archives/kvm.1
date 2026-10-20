@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493017;
-	b=N6oU4JmxW/Lw61O9NgVODW3PanPU7oW8w3Ryc9pILuwnZJGd8Sh0jBec7Ml3hbpSGxzT
-	 BET9E/Sn5DrItduuXwjSFByBW0srr2FLHHJ6tgGy2Yx4JElaPuXvx/OQl+kzz0624WlY/
-	 drg1rx30B5YMj7TIsa/23N9sofmuDrMAXPDPZ48gt3z820jX4EsjRvGF7E4OqbhoYhUwo
-	 u40iprPLh8QyQNszDL5xNPrzfCXVHvk/wlL2KqnU2OfMlkHZlkQDoj7/2uRf2RbG46LYm
-	 vT+a+D28vZZUlNqiXISoi4t6ymOZlFjTyTKM0T1wGxnWYMnEIs9Bz68+kQZ1KSs5Ymw==
+	t=1792493018;
+	b=HYB5GPpSM9zgb3TVODmO9+M0UTYZV+mzgWzc25vnOUj7qiETNS0wbGHKjBUEryIkLayL
+	 YVzM/uxY1Pq2KwHd+TDNDQvb6ZgGP73aFTwcQ81CDhN7kg8Qfdhfn8GZiz7ApQdm2odSY
+	 HmuuQoMoJawmefQ393sdiQQD5/8mC9l3DMGZCJzlrg8kQB/L04lavHVPYcsZOzR0nCCnt
+	 H/BxMHt4rFrPZZn+i7514ZaanShoFhtuMFT3MYdhWj9Ao1RiSSwFNzftbQesIX7Q+0qqA
+	 QXgr0eDoC/pqajcjAVEV1hxq73HSwP21jc1JuPiToy9DqivVz9yr4cV71s4nR7YZnRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493017;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493018;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=3nKJ8HDcn3r8uziE9nKrYpZyKDrGZlceKJ4Jq+Ujj9I=;
-	b=HGuRD6WwOo2CSrMCyIEbX+bdfp4Hci9Xa7Wx4dPtJIqSSJZtimEKa0RKXQWvzNTzE8Td
-	 Pcjq76WPu9VS5MO3XYWeVlpIqZMDJWGXr9xwaRRtKWY2ARn9dk34ywFyYea3u3/16MwSu
-	 Y4H6fvbyW6mBBQSc6nz0f77ZhnOFHbhljVKVoIWfY/Uxz2g1dlGE1NiIIOQGVgbzmm8Lh
-	 0mkfk/a6k9t5nJ/95wgMZffNDltEFJiP9muCZYDOncaPhCXjYbiWOGNtC41wngqk0er+R
-	 P4h3t1gswIE4+m5+dN2xdxP83yNdDTaTw9ileGbwz2nyPJypsks3PaK0MEMHVfy20Lg==
+	bh=d8sAo4RHPko4hi2qqkKFKsivhsO5nInc2hxbjXJGN8Q=;
+	b=QbdqXvrEYUMx6oT04cip6/Vs0KjlVrW8nT3e3qDN1rnwbtaxDtDbUrc/TT+qsJMo/J0Y
+	 MkYobpLYmmf3EkZcmGVghctcTtfB8YGYSmkFnj95QdYfqnkBFQzbugTJBrMBRMt6ojl1h
+	 hx9vPAiwuI9wV3QA1QvRxd9gl1UjtY+KY16LNikLmDHbuZ03aSNYtlyzZRHI1Fq3VU2ur
+	 z58wkPvVmB7ppJSBtt6qJWwqBzEvUDXXTVGc/bPL819KpjGgWjkKA99PVNU1Oav4atmF0
+	 UZkvkirSpQHLQNssga8Es1Psutd1oF0ymlxwI32OvQjmgiMxBwiwjdzr1dSsZwMjnww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linaro.org;
 	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=pcrcx1fw;
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b="jm/ghVD7";
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6066460A4AFC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF12A60A3809
 	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:43:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6066460A4AFC
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF12A60A3809
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=pcrcx1fw
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48c4be28b82so2372310f8f.2
+	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=jm/ghVD7
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a021c809e3so26099795e9.0
         for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 03:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1792493016; x=1793097816; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3nKJ8HDcn3r8uziE9nKrYpZyKDrGZlceKJ4Jq+Ujj9I=;
-        b=pcrcx1fwj7G//JPU9EkcF16Vuz/kzOsihfjuSClD9XlQqWjqSd/viC6AIHsDgvgNCA
-         em5oeP91CODEgCDc/0PRVlEJBdBaBIfoU0BWlRLPi65MjqefnTYYirSOdgPtrjsQe6po
-         2EmZes33zArGXL1SKXAGcOFH55Ha97boQ1/EHOdyEPWZm//JYRG8dTBeTU7IntAcGLB4
-         +0PLL7053sF5R/Ad5tXsr1b6lyuVrtmAae1RPRIoubAQvYwCtGUm9oTd+1qFoEZppxwX
-         3nAQNv0f9lhp06Rgs14olmMQw5ODheVmAVALIFM1halR6+GqJYxmzooRbdP8tF247g7q
-         3Ggw==
+        bh=d8sAo4RHPko4hi2qqkKFKsivhsO5nInc2hxbjXJGN8Q=;
+        b=jm/ghVD7KGaAzRiPh7pqiXq9IDPmlXcwOeS4mDkrEvpWbD0+BzVs5XpGEdny3M7nLw
+         0XNP+yYgrR4zru6GGpBfuUDtDydxG1A3hOQYgA5VJNmPMCxlG7TXRACeTRIeKtRAYecm
+         9gaGwZSReGpK+CL0JLKkPg5E4lmVPNXgg8+rJlibHAh2Qnl1zClOZKUx6VhY/QH+1GgY
+         ZTDkDLKRNUxoPUTSGdS/nKzj6Zl4qCQkZ5IW3WapUs2JdcCz34nWYpAn+TvDQ+BFSWJr
+         BAVDawltTsRx2KRznTdplWKwlqW2KuRp6ExljPGu3lBHAs0qbVOQnnKvVS2KXasUjiVp
+         880w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1792493016; x=1793097816;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3nKJ8HDcn3r8uziE9nKrYpZyKDrGZlceKJ4Jq+Ujj9I=;
-        b=u+c2nIUtAYK2uNKAcFOu5VBQh88NfbftDSjN8QUl/NuHeAKng7Lt/uagu+QGkiucDd
-         AwdmzIXvRfeSVvPNZX0uU5kxo4RkDdQ7Kl85uV/5gavycTabqyWFcKSb58DG4Q1MJfFB
-         qpUvRrlehJg5dhF1CH4loXV3oouAsjuonUT2vHkt4ZmrmSZfChvZpg1+gQ4nx/ZDBle4
-         BbU0vTL10JP2kRgksQ1kplDnMVfwvLsZZFrZ7ZrbU9/BBrg5kkZYcE3tDTjLDAov3stf
-         Qut4ixsxSmZdVKV3SCqSp6Kc9SqKEEfhPBA/bg8BZfsZqFIj8a6LgdMzsI8m73cMzfmh
-         8H0A==
-X-Forwarded-Encrypted: i=1; AKwUvBzjeZ9sb2ez1eZtJjTY0cYeSKGJMCNoK+0m7su3GRreomVge/16hdQIv4u/CCowrcTc3Sg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI5sEujoOKGrz0UhzsC87DJdwHehg0PCmmxnylS3xbHikXCPGwQ
-	A3diUEafYk7OCwQa4MPA/T+eYNoce5Xmo2wsQH5WgJVnwgOon9soS69qugfKjQRk/t0=
-X-Gm-Gg: AYBFou0Ydvfd+6Yx36qDLhjGob9nz7FxFwv/lm0wynId7R1+FUFpHMgSnAVpHMSZEdS
-	8xpPkoVMh/W8hm80n4EDAa3e8h9+YyDu1Ob+ugu1ktIO7G6ZLy55KTSrGVEdz0La/plNYn38v2y
-	NlUhurKmcL2fgg5L4j9E2wzsr/ZauT1jrOw0nKq2++sLGgY15YtTkWNwL4DMIaI83SFLDIzgX19
-	g3dSWw5C8ZkeEljHWfMFVAcPOwdIcrvDD9gAbEA2H6me3MfRIVm2201RYIQNg18NF3W/NMFyzKp
-	6Al21tWD1bXOkT/C/vdaUldC8iOZJZpTb7g7L5geG7EiXehYYX1HLO5Llc/yIyjWo2Zh9sejL6Q
-	XyHDJ7MSBfVbVs43XLqnjPhsWzVYMuTFZdWxfP/WwPnCDwWf3iqUE6ncPChUv1aX0h0+DBCu3/N
-	2kNCbSxGaA8ZWqVj1Cr43EYsTH4UQKIVIT0sUlxTvsrCI7y02wDFPcwrOGcuF73pulWgMnuw==
-X-Received: by 2002:a05:6000:5ca:b0:48d:ff06:c626 with SMTP id ffacd0b85a97d-48e07f9eacbmr20650207f8f.35.1792493015656;
-        Tue, 20 Oct 2026 03:43:35 -0700 (PDT)
+        bh=d8sAo4RHPko4hi2qqkKFKsivhsO5nInc2hxbjXJGN8Q=;
+        b=M0DVlb4z7+nCmxGrA3gW15+BXkutJu3LuwUMdJq6mhNH1brmrx1MLKSof6Df3EgQkG
+         EdHnsRYDO3iT+ufkjw5HqX6riIIyfoYzt8/kWb1sJ4qxJqfPKM5clrQOhOtmTQuLzvGT
+         lYcWyn2FrP/awZ2pTp/zjgYh8WWuNVT6aFmpW0XYy1kdungQfqTA0yQYO5yXwVJ9k8Zo
+         qnXap9E1aGrQDUvJ9MaPyJ3EMFszEqOycv29Yqwoo6bwHvjraiyZG6vhHfxAj/ap+k8O
+         6ZIe8WQdqUFedPO3Qj3IjbXddXglp1MJ7LtMx6K2lwzi+yK0xCQTKvTGnrKOUpbw8Wwy
+         F4kA==
+X-Forwarded-Encrypted: i=1; AKwUvBxK1p/l8zxaTislAlDKeVcu9cLlwHQe3XDCFPKrpjvea3jXvgWDsjrrq9+wM6uXqH1eWr4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIoHe3qkohiSTikKJ83EPdATOvCWTKLeTrR0xCAN0J6s3nau5VY
+	Pkpjlfwwlr1ao2X7S6YI6NtfOLTI5b28vLrGfNMkkBHcS4X2kiQXKiaErSTxrYBNTco=
+X-Gm-Gg: AYBFou1B/9RULZqYeAR35cwkHMWHWhk5hTzYsZCzPaz9tGBJBf+KWS/zC2MGG4xQi16
+	wf64d1zvqbd2mjUgq6Oykno95HFMgWRd/eSg1BRnf5QvSk12L5IuZHe8cleeblgAbdGBRCUBC2a
+	UQ0vIzrk4ptoCksEvyl4O6zaHz27oE9G2b4sF/kkS9YzFp5hODSvGcLgFG4Bu+g/WomtcwHn5Bh
+	db0g4UhU/zwpCj+o2unPBkjxc0z+UR2uDbgkauh4Yq5uOX6eaVijqEuOiBt6c/Tkk7Rxfmpfky/
+	8iO3tRsFip/7mbBWMTMWeetmgVd8i/Wg2b1iZjOMDIxdBamZG6XPP6EkMPKVECN5lZ4vaV3bHqP
+	zh/X8/aGFpjuJdaENGk0YhVdKxJ6tliO0eq7JoumOuhkm+D23/E63GpgG26xWW9GFjZ/xKHWv/t
+	+SQ+KK0vOsmrvgtBEgRKSVdVx6a6oA1O67OxxQnt3BSvRyhGhCnFZ+MfX66FRi/FIa4bBakw==
+X-Received: by 2002:a05:600d:82c5:b0:4a1:e575:33dd with SMTP id 5b1f17b1804b1-4a1e57533efmr143324095e9.18.1792493016088;
+        Tue, 20 Oct 2026 03:43:36 -0700 (PDT)
 Received: from draig.lan ([185.124.0.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d80fafdsm5465775f8f.9.2026.10.20.03.43.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2cc809csm64726835e9.8.2026.10.20.03.43.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 20 Oct 2026 03:43:27 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 015BD5F9E2;
+	by draig.lan (Postfix) with ESMTP id 3C5355FED7;
 	Tue, 20 Oct 2026 11:43:24 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -125,9 +125,9 @@ Cc: Bibo Mao <maobibo@loongson.cn>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	qemu-riscv@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 19/23] accel/kvm: remove TARGET_KVM_HAVE_GUEST_DEBUG
-Date: Tue, 20 Oct 2026 11:43:13 +0100
-Message-ID: <20261020104320.3686723-20-alex.bennee@linaro.org>
+Subject: [PATCH 20/23] accel/kvm: port kvm_arch_stop_on_emulation_error to KVMCPUOps
+Date: Tue, 20 Oct 2026 11:43:14 +0100
+Message-ID: <20261020104320.3686723-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261020104320.3686723-1-alex.bennee@linaro.org>
 References: <20261020104320.3686723-1-alex.bennee@linaro.org>
@@ -143,249 +143,199 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-With guest debug and breakpoint handling now migrated to struct
-KVMCPUOps, accel/kvm dispatches dynamically via ops. If an
-architecture does not support guest debug or breakpoints, the
-callbacks are simply NULL and common code handles this gracefully.
-
-As a result we can drop TARGET_KVM_HAVE_GUEST_DEBUG. Remove it from
-target configs and eliminate the #ifdef guards.
+Really only x86 is doing much complicated, everyone else defaults to
+stop.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configs/targets/aarch64-softmmu.mak     |  1 -
- configs/targets/i386-softmmu.mak        |  1 -
- configs/targets/loongarch64-softmmu.mak |  1 -
- configs/targets/ppc-softmmu.mak         |  1 -
- configs/targets/ppc64-softmmu.mak       |  1 -
- configs/targets/riscv64-softmmu.mak     |  1 -
- configs/targets/s390x-softmmu.mak       |  1 -
- configs/targets/x86_64-softmmu.mak      |  1 -
- include/system/kvm.h                    |  7 -------
- include/system/kvm_int.h                |  2 --
- accel/kvm/kvm-accel-ops.c               |  4 ----
- accel/kvm/kvm-all.c                     | 15 +++++----------
- 12 files changed, 5 insertions(+), 31 deletions(-)
+ include/accel/kvm/cpu-ops.h | 7 +++++++
+ include/system/kvm.h        | 2 --
+ target/i386/kvm/kvm_i386.h  | 1 +
+ accel/kvm/kvm-all.c         | 8 +++++++-
+ target/arm/kvm.c            | 5 -----
+ target/i386/kvm/kvm-cpu.c   | 1 +
+ target/i386/kvm/kvm.c       | 2 +-
+ target/loongarch/kvm/kvm.c  | 5 -----
+ target/ppc/kvm.c            | 5 -----
+ target/riscv/kvm/kvm-cpu.c  | 5 -----
+ target/s390x/kvm/kvm.c      | 5 -----
+ 11 files changed, 17 insertions(+), 29 deletions(-)
 
-diff --git a/configs/targets/aarch64-softmmu.mak b/configs/targets/aarch64-softmmu.mak
-index d34aead41c4..6f60ca6505c 100644
---- a/configs/targets/aarch64-softmmu.mak
-+++ b/configs/targets/aarch64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= aarch64-core.xml aarch64-fpu.xml arm-core.xml arm-vfp.xml arm-vfp3.xml arm-vfp-sysregs.xml arm-neon.xml arm-m-profile.xml arm-m-profile-mve.xml aarch64-pauth.xml aarch64-sme2.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
-index 38a8f85201f..2eef68dc55e 100644
---- a/configs/targets/i386-softmmu.mak
-+++ b/configs/targets/i386-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=i386
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= i386-32bit.xml
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
-index a425b3dbaae..3b3a9021980 100644
---- a/configs/targets/loongarch64-softmmu.mak
-+++ b/configs/targets/loongarch64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= loongarch-base32.xml loongarch-base64.xml loongarch-fpu.xml loongarch-lsx.xml loongarch-lasx.xml
- # all boards require libfdt
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/ppc-softmmu.mak b/configs/targets/ppc-softmmu.mak
-index 867898bd47c..c47887f8992 100644
---- a/configs/targets/ppc-softmmu.mak
-+++ b/configs/targets/ppc-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=ppc
- TARGET_BIG_ENDIAN=y
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= power-core.xml power-fpu.xml power-altivec.xml power-spe.xml
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/ppc64-softmmu.mak b/configs/targets/ppc64-softmmu.mak
-index 10d7a2681e7..8c6dc84b821 100644
---- a/configs/targets/ppc64-softmmu.mak
-+++ b/configs/targets/ppc64-softmmu.mak
-@@ -1,7 +1,6 @@
- TARGET_ARCH=ppc64
- TARGET_BASE_ARCH=ppc
- TARGET_BIG_ENDIAN=y
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= power64-core.xml power-fpu.xml power-altivec.xml power-spe.xml power-vsx.xml
- # all boards require libfdt
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index a10dc03c04c..18b674230ab 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= riscv-64bit-cpu.xml riscv-32bit-fpu.xml riscv-64bit-fpu.xml riscv-64bit-virtual.xml riscv-32bit-cpu.xml riscv-32bit-virtual.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/s390x-softmmu.mak b/configs/targets/s390x-softmmu.mak
-index 478988e6d4a..6a629c6479e 100644
---- a/configs/targets/s390x-softmmu.mak
-+++ b/configs/targets/s390x-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=s390x
- TARGET_BIG_ENDIAN=y
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= s390x-core64.xml s390-acr.xml s390-fpr.xml s390-vx.xml s390-cr.xml s390-virt.xml s390-virt-kvm.xml s390-gs.xml
- TARGET_LONG_BITS=64
- TARGET_NOT_USING_LEGACY_NATIVE_ENDIAN_API=y
-diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
-index c7f8746b4f5..491173df466 100644
---- a/configs/targets/x86_64-softmmu.mak
-+++ b/configs/targets/x86_64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=x86_64
- TARGET_BASE_ARCH=i386
--TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= i386-64bit.xml i386-64bit-apx.xml
- TARGET_LONG_BITS=64
+diff --git a/include/accel/kvm/cpu-ops.h b/include/accel/kvm/cpu-ops.h
+index 23a83eee6ed..c2ae74f2b87 100644
+--- a/include/accel/kvm/cpu-ops.h
++++ b/include/accel/kvm/cpu-ops.h
+@@ -95,6 +95,12 @@ struct kvm_run;
+  *                        Returns 0 on success, or a negative errno on failure.
+  * @remove_all_hw_breakpoints: Optional callback to remove all architecture-
+  *                             specific hardware breakpoints and watchpoints.
++ * @stop_on_emulation_error: Optional callback executed when KVM encounters an
++ *                           internal emulation failure (such as
++ *                           KVM_INTERNAL_ERROR_EMULATION) to decide whether
++ *                           execution should stop.
++ *                           Returns true to stop the VM, or false to dump state
++ *                           and continue. If NULL, defaults to true.
+  */
+ typedef struct KVMCPUOps {
+     int (*pre_create_vcpu)(CPUState *cpu, Error **errp);
+@@ -115,6 +121,7 @@ typedef struct KVMCPUOps {
+     int (*remove_hw_breakpoint)(CPUState *cpu, vaddr addr, vaddr len,
+                                 GdbBreakpointType type);
+     void (*remove_all_hw_breakpoints)(CPUState *cpu);
++    bool (*stop_on_emulation_error)(CPUState *cpu);
+ } KVMCPUOps;
+ 
+ #define TYPE_KVM_ACCEL_CPU "kvm-accel-cpu"
 diff --git a/include/system/kvm.h b/include/system/kvm.h
-index cfc0144d9a5..1a52e7e5261 100644
+index 1a52e7e5261..719ae1c71fb 100644
 --- a/include/system/kvm.h
 +++ b/include/system/kvm.h
-@@ -232,14 +232,7 @@ void kvm_irqchip_change_notify(void);
-  * calling down to the KVMCPUOps::update_guest_debug callback after the generic
-  * fields have been set.
-  */
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap);
--#else
--static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap)
--{
--    return -EINVAL;
--}
--#endif
+@@ -387,8 +387,6 @@ struct kvm_sw_breakpoint *kvm_find_sw_breakpoint(CPUState *cpu,
  
- /* internal API */
+ int kvm_sw_breakpoints_active(CPUState *cpu);
  
-diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
-index 0876aac938d..9d1d3fd3deb 100644
---- a/include/system/kvm_int.h
-+++ b/include/system/kvm_int.h
-@@ -113,9 +113,7 @@ struct KVMState
-     struct kvm_coalesced_mmio_ring *coalesced_mmio_ring;
-     bool coalesced_flush_in_progress;
-     int vcpu_events;
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     QTAILQ_HEAD(, kvm_sw_breakpoint) kvm_sw_breakpoints;
--#endif
-     int max_nested_state_len;
-     int kvm_shadow_mem;
-     bool kernel_irqchip_allowed;
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 445d7d7f545..ab10de6ac30 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -86,12 +86,10 @@ static bool kvm_cpus_are_resettable(void)
-     return !kvm_enabled() || !kvm_state->guest_state_protected;
- }
+-bool kvm_arch_stop_on_emulation_error(CPUState *cpu);
+-
+ int kvm_vm_check_extension(KVMState *s, unsigned int extension);
  
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- static void kvm_update_guest_debug_ops(CPUState *cpu)
- {
-     kvm_update_guest_debug(cpu, 0);
- }
--#endif
- 
- static void kvm_accel_ops_class_init(ObjectClass *oc, const void *data)
- {
-@@ -106,12 +104,10 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, const void *data)
-     ops->synchronize_pre_loadvm = kvm_cpu_synchronize_pre_loadvm;
-     ops->handle_interrupt = generic_handle_interrupt;
- 
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     ops->update_guest_debug = kvm_update_guest_debug_ops;
-     ops->insert_gdbstub_breakpoint = kvm_insert_gdbstub_breakpoint;
-     ops->remove_gdbstub_breakpoint = kvm_remove_gdbstub_breakpoint;
-     ops->remove_all_gdbstub_breakpoints = kvm_remove_all_gdbstub_breakpoints;
--#endif
- }
- 
- static const TypeInfo kvm_accel_ops_type = {
+ #define kvm_vm_enable_cap(s, capability, cap_flags, ...)             \
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index e2ae601100c..9d4be604443 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -51,6 +51,7 @@ int x86_kvm_insert_hw_breakpoint(CPUState *cs, vaddr addr, vaddr len,
+ int x86_kvm_remove_hw_breakpoint(CPUState *cs, vaddr addr, vaddr len,
+                                  GdbBreakpointType type);
+ void x86_kvm_remove_all_hw_breakpoints(CPUState *cs);
++bool x86_kvm_stop_on_emulation_error(CPUState *cs);
+ void kvm_arch_after_reset_vcpu(X86CPU *cpu);
+ void kvm_arch_do_init_vcpu(X86CPU *cs);
+ uint32_t kvm_arch_get_supported_cpuid(KVMState *env, uint32_t function,
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 3bd61264a7e..5b96fac513e 100644
+index 5b96fac513e..62ebb3458c8 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2964,9 +2964,7 @@ static int kvm_init(AccelState *as, MachineState *ms)
-     s->sigmask_len = 8;
-     accel_blocker_init();
- 
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     QTAILQ_INIT(&s->kvm_sw_breakpoints);
--#endif
-     QLIST_INIT(&s->kvm_parked_vcpus);
-     s->fd = qemu_open_old(s->device ?: "/dev/kvm", O_RDWR);
-     if (s->fd == -1) {
-@@ -3077,7 +3075,6 @@ static int kvm_init(AccelState *as, MachineState *ms)
-     kvm_vm_attributes_allowed =
-         (kvm_check_extension(s, KVM_CAP_VM_ATTRIBUTES) > 0);
- 
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     if (kvm_check_extension(s, KVM_CAP_SET_GUEST_DEBUG) > 0) {
-         as->gdbstub.sstep_flags = SSTEP_ENABLE;
- 
-@@ -3088,7 +3085,6 @@ static int kvm_init(AccelState *as, MachineState *ms)
-             as->gdbstub.sstep_flags |= SSTEP_NOIRQ;
-         }
+@@ -3183,8 +3183,14 @@ static int kvm_handle_internal_error(CPUState *cpu, struct kvm_run *run)
+                 i, (uint64_t)run->internal.data[i]);
      }
--#endif
- 
-     kvm_state = s;
- 
-@@ -3832,7 +3828,6 @@ bool kvm_arm_supports_user_irq(void)
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_USER_IRQ);
- }
- 
--#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- struct kvm_sw_breakpoint *kvm_find_sw_breakpoint(CPUState *cpu, vaddr pc)
- {
-     struct kvm_sw_breakpoint *bp;
-@@ -3869,6 +3864,10 @@ int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap)
-     const KVMCPUOps *ops = kvm_get_cpu_ops(cpu);
-     struct kvm_set_guest_debug_data data;
- 
-+    if (!ops || !ops->update_guest_debug) {
-+        return -EINVAL;
-+    }
+     if (run->internal.suberror == KVM_INTERNAL_ERROR_EMULATION) {
++        const KVMCPUOps *ops = kvm_get_cpu_ops(cpu);
++        bool stop = true;
 +
-     data.dbg.control = reinject_trap;
- 
-     if (cpu_single_stepping(cpu)) {
-@@ -3878,9 +3877,7 @@ int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap)
-             data.dbg.control |= KVM_GUESTDBG_BLOCKIRQ;
+         fprintf(stderr, "emulation failure\n");
+-        if (!kvm_arch_stop_on_emulation_error(cpu)) {
++        if (ops && ops->stop_on_emulation_error) {
++            stop = ops->stop_on_emulation_error(cpu);
++        }
++        if (!stop) {
+             cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
+             return EXCP_INTERRUPT;
          }
-     }
--    if (ops && ops->update_guest_debug) {
--        ops->update_guest_debug(cpu, &data.dbg);
--    }
-+    ops->update_guest_debug(cpu, &data.dbg);
- 
-     run_on_cpu(cpu, kvm_invoke_set_guest_debug,
-                RUN_ON_CPU_HOST_PTR(&data));
-@@ -4022,8 +4019,6 @@ void kvm_remove_all_gdbstub_breakpoints(CPUState *cpu)
-     }
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 5c0ccfc11cd..ed99699098c 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1609,11 +1609,6 @@ static int arm_kvm_handle_exit(CPUState *cs, struct kvm_run *run)
+     return ret;
  }
  
--#endif /* !TARGET_KVM_HAVE_GUEST_DEBUG */
+-bool kvm_arch_stop_on_emulation_error(CPUState *cs)
+-{
+-    return true;
+-}
 -
- static int kvm_set_signal_mask(CPUState *cpu, const sigset_t *sigset)
+ /**
+  * kvm_arm_hw_debug_active:
+  * @cpu: ARMCPU
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index baaee0c7e71..c9340183eaf 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -251,6 +251,7 @@ static const KVMCPUOps x86_kvm_cpu_ops = {
+     .insert_hw_breakpoint = x86_kvm_insert_hw_breakpoint,
+     .remove_hw_breakpoint = x86_kvm_remove_hw_breakpoint,
+     .remove_all_hw_breakpoints = x86_kvm_remove_all_hw_breakpoints,
++    .stop_on_emulation_error = x86_kvm_stop_on_emulation_error,
+ };
+ 
+ static void kvm_cpu_accel_class_init(ObjectClass *oc, const void *data)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 78c06a07bd6..e419af944cb 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -6661,7 +6661,7 @@ int x86_kvm_handle_exit(CPUState *cs, struct kvm_run *run)
+     return ret;
+ }
+ 
+-bool kvm_arch_stop_on_emulation_error(CPUState *cs)
++bool x86_kvm_stop_on_emulation_error(CPUState *cs)
  {
-     KVMState *s = kvm_state;
+     X86CPU *cpu = X86_CPU(cs);
+     CPUX86State *env = &cpu->env;
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index b15f60bd2c3..fd0f3a82a6b 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -1513,11 +1513,6 @@ static int loongarch_kvm_process_async_events(CPUState *cs)
+     return cs->halted;
+ }
+ 
+-bool kvm_arch_stop_on_emulation_error(CPUState *cs)
+-{
+-    return true;
+-}
+-
+ static void loongarch_kvm_update_guest_debug(CPUState *cpu,
+                                              struct kvm_guest_debug *dbg)
+ {
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 548bf3e00ad..f5f2f82a4d8 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -2840,11 +2840,6 @@ int kvmppc_load_htab_chunk(QEMUFile *f, int fd, uint32_t index,
+     return 0;
+ }
+ 
+-bool kvm_arch_stop_on_emulation_error(CPUState *cpu)
+-{
+-    return true;
+-}
+-
+ void kvm_arch_init_irq_routing(KVMState *s)
+ {
+ }
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index aeb049c0c71..6a88fe761c0 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1621,11 +1621,6 @@ int kvm_arch_irqchip_create(KVMState *s)
+     return kvm_check_extension(s, KVM_CAP_DEVICE_CTRL);
+ }
+ 
+-bool kvm_arch_stop_on_emulation_error(CPUState *cs)
+-{
+-    return true;
+-}
+-
+ static void kvm_riscv_handle_sbi_dbcn(CPUState *cs, struct kvm_run *run)
+ {
+     const MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index ccdc85900ba..e0373d05515 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -1935,11 +1935,6 @@ static int s390x_kvm_handle_exit(CPUState *cs, struct kvm_run *run)
+     return ret;
+ }
+ 
+-bool kvm_arch_stop_on_emulation_error(CPUState *cpu)
+-{
+-    return true;
+-}
+-
+ void kvm_s390_enable_css_support(S390CPU *cpu)
+ {
+     int r;
 -- 
 2.47.3
 
