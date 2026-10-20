@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792514373;
-	b=wvliJKsLkPCUInLVkof17AiKw6pbIFwswdjXhlaip9Jh2gZxmyOJwq3ToLRX8Y9PC2+y
-	 BlhHTEdu7KGqtzDsQmLpfAAmkWh7NKuZ3EYJLnV6ZAHTT9+kF1Rjw0Lt/14NK2ipW45ZH
-	 nVco+eO9gEFOI3HR8EzmrWACznBI8GFXWK2zPh8//rR7rE7hzUAH2IyVMzcJbm3GdqTVM
-	 syWk1C3FOWXZXkMPMoFBGn8bWD3ktqU4nLYXS/uhz5yhfQs2kXSEt5G9oi4+pc8JqAVsU
-	 IoOeukCUljln2FnibnevQGUKH8KMvky7OIv11g7NbNrjhhKFQIlelIpOr2Azsh82qrw==
+	t=1792514378;
+	b=4pfi9yAeK0nwp0UYC7cU8C2u9EDCT8K33gXyAZL5phVRp4twla78IbrX1jnkMmQGZibL
+	 W2ICONZ3LnJluHA4NkpS5f/3Wt/iovxTvRObRSlHl/UKZIE4GYns+l7ocarCm1YmTkWQN
+	 mLaPZrT9Xi1yBPTjt17mBms82kedE7pQiymhaMku2HuEba0BviPocTMw0JBi6xmBQKGSV
+	 Z8/Ag8E7kPSjfznMPNkbk7JlM4m9QF5i0yQPhMKf/eQAqzT4Ojf3CsdQpp36MFHvkljrZ
+	 OA8PU73ODV68tspTtyN4y2pmKrCoemy8O5kyqptxHaQsKvP2A/TF5rFMDFyc4Qjjztw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792514373;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792514378;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=830H2YTMFkD9IORfLXHCHq/I9Z/gK3pKXYSwz8rUqk4=;
-	b=tpb5UjAKoKIK4FNvXul/ZkIHoDce4UV7qGybv5N5a5T4EiOTksfzo7xfDlgpn/UbwlYS
-	 dr47WbmIkM6THJanUPFx03LYlSuymful67I0EoP+uMfRNfTF/7dg7JMCfgTqF98tDp9NH
-	 BTl235zcLkclyO3pe/oxYhCZV4S/8yU16rBDsllcx/o49L6Xubh5vjomHC/l2Qck/vGJk
-	 M1lmd9wGTmNdd/6Uw2LjQJl+fkkM8o7rlaSvAFIDhgHBxAAUAoM2AbnHkRnx2SpyjjbFQ
-	 1sMq2JqKtEDhNgAQWUcMpZvWvTMO0Mt4GTQuQT7p5MrTdU8ZtVfdS5GDJzrLeRMZM8Q==
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=wi8oSibcZwtyoLuWKyzPA4tpvz247HUgC+oOA7GlrD4=;
+	b=WI/x1iiz9PYtFrjE02nFKmzMTcIy4zB/8lE69ugmjqGBDKUtVKscm0UC/p7R/hWzAdkH
+	 nmf6yHTJXvoQhsv6DU2XMo4amq1dyIt9C2CuGAFUbp45TMNbsytQyhN4Ehz016/9Ad0fi
+	 np82vLRVZRZOEKWP1XPGUMN5MU8sv8TbtldZDREYMklRB+jmR4ClSSpb1TnWS+7843vjm
+	 X6Y3Of7S3BIJxzvS0iXEPl4hYR3P2GUnf5E0XwRj7Qx0Y2C2qCBmzGEDACoDISdpdl8/I
+	 MU9zY6IchX+LAcKyU0U0L7nIsICbIMNd6904VvKzGXz8CUppVI+4VfjzR6jr/Yn4Fhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=b7Day1CE;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vzFWNsmG;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B7A606D50A
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 16:39:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8B7A606D50A
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6142E606A31D
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 16:39:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6142E606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=b7Day1CE
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vzFWNsmG
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A83B11596;
-	Tue, 20 Oct 2026 09:39:28 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 225CC2103;
+	Tue, 20 Oct 2026 09:39:33 -0700 (PDT)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4DF2F3F7D8;
-	Tue, 20 Oct 2026 09:39:30 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0FAD3F7D8;
+	Tue, 20 Oct 2026 09:39:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792514371; bh=5rR7Cm0/WLTiRNhzJ0pe4uv+L2juToro2br9wZ5Wk7o=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b7Day1CEKJw+adAz90dZ+i2OF/o9tpbIQwSTwJ4ylGS+KplNNCbhZCKNN++pf9BBr
-	 qFE6tFRuSCdkcl8+sYER64nWZigWMmAu2baN6JcHltYCx56t4ksOu99o1v7bLXndR4
-	 bsYa/3TIyQWq7L81Ox3D77JOKo6n5XCDV1rjQhEM=
+	t=1792514376; bh=FMTfj2vF1JMjc7DiD/wvEGGwmJATcyNhrtDtTJY35Rk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vzFWNsmGyfqlqYZgBHNykBmswcdj5BNC/SheX2YGkd6385/hb21gKmlvZmWIk+k1w
+	 XJXFIx1R5OBJHW7F5BLopTQUe3hERi4bwVnLghR6DCISgjah6peOlmCp/dCXyf87g9
+	 Y8BtnUJFp9gjYqmTUFU/lLkMYDJRUdw25qXjfJX8=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	kvmarm@lists.linux.dev,
@@ -52,10 +53,12 @@ Cc: maz@kernel.org,
 	seiden@linux.ibm.com,
 	suzuki.poulose@arm.com,
 	yuzenghui@huawei.com
-Subject: [PATCH v3 0/2] KVM: arm64: Reject mismatched VGIC/ITS models
-Date: Tue, 20 Oct 2026 17:39:21 +0100
-Message-Id: <20261020163923.1407856-1-sascha.bischoff@arm.com>
+Subject: [PATCH v3 1/2] KVM: arm64: vgic: Require matching VGIC and ITS models
+Date: Tue, 20 Oct 2026 17:39:22 +0100
+Message-Id: <20261020163923.1407856-2-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261020163923.1407856-1-sascha.bischoff@arm.com>
+References: <20261020163923.1407856-1-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -67,60 +70,166 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On a GICv5 host with legacy GICv3 support, KVM exposes both VGIC
-models to userspace. A VM can create a GICv3 ITS alongside a GICv5
-VGIC, because neither creation path checks the model of the other
-device. The ITS sets has_its, but a GICv5 VM cannot use a GICv3 ITS
-for MSI translation. Creating the ITS before the VGIC also lets
-userspace select an incompatible VGIC model later.
+On a GICv5 host with legacy support, KVM registers both VGICv3 and
+VGICv5 devices. Without a model check, a VM can create a GICv3 ITS
+alongside an incompatible VGIC, regardless of creation order.
 
-The same issue affects GICv2 on hosts with GICv3 ITS support. KVM
-previously accepted a GICv2 VGIC and a GICv3 ITS in either order, then
-ignored the ITS. The new checks reject this pairing with -ENODEV.
+The same problem exists for GICv2 on hosts that support a GICv3 ITS.
+KVM used to allow userspace to create both devices in either order,
+then ignored the ITS.
 
-Record the VGIC model required by a GICv3 ITS and reject incompatible
-device creation in either order. Drop has_its in favour of checking
-that its_model matches vgic_model, so an ITS created without an
-in-kernel VGIC is not reported as available. The second patch tests
-both orderings of the GICv5 mismatch, skipping the test if the host
-does not offer a GICv3 ITS.
+Record the VGIC model required by an ITS. Reject an ITS if the VM
+already has an incompatible VGIC, and reject a VGIC if an existing
+ITS requires a different model. These checks apply on every host:
+a GICv2 VGIC and a GICv3 ITS now fail with -ENODEV in either order.
+Allow either creation order when the models match.
 
-This series is based on kvmarm/next-7.4+fixes-7.3-2.
+Have vgic_has_its() require matching VGIC and ITS models, and drop
+the separate has_its flag.
 
-Changes since V2:
+As part of this change, swap the type of vgic_model from u32 to enum
+kvm_device_type. This requires updating the switch cases in
+kvm_vgic_vcpu_init() and kvm_vgic_dist_destroy() to include default
+cases, which we mark as unreachable().
 
-* Check vgic_model in vgic_has_its(), as pointed out by Sashiko [1]
-  and Fuad [2], so an ITS without an in-kernel VGIC is not reported as
-  present.
-* Document the GICv2 behaviour and make the first patch subject
-  independent of the GIC version.
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+---
+ arch/arm64/kvm/vgic/vgic-init.c    | 17 +++++++++++++++++
+ arch/arm64/kvm/vgic/vgic-its.c     | 15 ++++++++++++++-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |  5 +----
+ include/kvm/arm_vgic.h             |  5 +++--
+ 4 files changed, 35 insertions(+), 7 deletions(-)
 
-Changes since V1:
-
-* Worked in Marc's suggestion to drop has_its.
-* Check for its_model being non-zero in vgic_has_its(), allowing us to
-  drop has_its.
-* Added a comment to explain what we are actually doing. Again, Marc's
-  suggestion.
-* Changed the type of vgic_model from u32 to enum kvm_device_type.
-
-Thanks,
-Sascha
-
-[1] https://lore.kernel.org/all/sashiko-outbox-177254@kernel.org
-[2] https://lore.kernel.org/all/CA+EHjTzqKiWr2tnV0rUiA4VVCs5a0E2XQQTdwvH0bTKZ5dxe5A@mail.gmail.com/
-
-Sascha Bischoff (2):
-  KVM: arm64: vgic: Require matching VGIC and ITS models
-  KVM: selftests: Reject GICv3 ITS with a GICv5 VGIC
-
- arch/arm64/kvm/vgic/vgic-init.c             | 17 +++++++++++
- arch/arm64/kvm/vgic/vgic-its.c              | 15 +++++++++-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c          |  5 +---
- include/kvm/arm_vgic.h                      |  5 ++--
- tools/testing/selftests/kvm/arm64/vgic_v5.c | 32 +++++++++++++++++++++
- 5 files changed, 67 insertions(+), 7 deletions(-)
-
+diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+index b5ea1e39c6862..e499cec70e607 100644
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -125,6 +125,11 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+ 		goto out_unlock;
+ 	}
+ 
++	if (kvm->arch.vgic.its_model && kvm->arch.vgic.its_model != type) {
++		ret = -ENODEV;
++		goto out_unlock;
++	}
++
+ 	if (kvm_id_regs_final(kvm))
+ 		goto out_unlock;
+ 	ret = 0;
+@@ -437,6 +442,8 @@ int kvm_vgic_vcpu_init(struct kvm_vcpu *vcpu)
+ 		return ret;
+ 
+ 	switch (dist->vgic_model) {
++	case KVM_DEV_TYPE_ARM_VGIC_V2:
++		break;
+ 	case KVM_DEV_TYPE_ARM_VGIC_V3:
+ 		/*
+ 		 * If we are creating a VCPU with a GICv3 we must also register
+@@ -455,6 +462,9 @@ int kvm_vgic_vcpu_init(struct kvm_vcpu *vcpu)
+ 		 */
+ 		if (vcpu->vcpu_id >= kvm_vgic_global_state.max_gicv5_vcpus)
+ 			return -EINVAL;
++		break;
++	default:
++		unreachable();
+ 	}
+ 
+ 	return ret;
+@@ -554,6 +564,10 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
+ 	dist->nr_spis = 0;
+ 	dist->vgic_dist_base = VGIC_ADDR_UNDEF;
+ 
++	/* A VM may be destroyed without ever creating a VGIC. */
++	if (!dist->vgic_model)
++		goto out;
++
+ 	switch (dist->vgic_model) {
+ 	case KVM_DEV_TYPE_ARM_VGIC_V2:
+ 		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
+@@ -571,8 +585,11 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
+ 		kfree(dist->vgic_v5_irs_data);
+ 		dist->vgic_v5_irs_data = NULL;
+ 		break;
++	default:
++		unreachable();
+ 	}
+ 
++out:
+ 	xa_destroy(&dist->lpi_xa);
+ }
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index e5657cb603567..7df5869cff990 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -1875,6 +1875,19 @@ static int vgic_its_create(struct kvm_device *dev, u32 type)
+ 
+ 	mutex_lock(&dev->kvm->arch.config_lock);
+ 
++	/*
++	 * Reject creation of a GICv3 ITS if:
++	 * - The VM already has a VGIC other than GICv3.
++	 * - An existing ITS requires a VGIC model other than GICv3.
++	 */
++	if ((irqchip_in_kernel(dev->kvm) && !vgic_is_v3(dev->kvm)) ||
++	    (dev->kvm->arch.vgic.its_model &&
++	     dev->kvm->arch.vgic.its_model != KVM_DEV_TYPE_ARM_VGIC_V3)) {
++		mutex_unlock(&dev->kvm->arch.config_lock);
++		kfree(its);
++		return -ENODEV;
++	}
++
+ 	if (vgic_initialized(dev->kvm)) {
+ 		ret = vgic_v4_init(dev->kvm);
+ 		if (ret < 0) {
+@@ -1902,7 +1915,7 @@ static int vgic_its_create(struct kvm_device *dev, u32 type)
+ 	xa_init(&its->translation_cache);
+ 
+ 	dev->kvm->arch.vgic.msis_require_devid = true;
+-	dev->kvm->arch.vgic.has_its = true;
++	dev->kvm->arch.vgic.its_model = KVM_DEV_TYPE_ARM_VGIC_V3;
+ 	its->enabled = false;
+ 	its->dev = dev;
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+index 5ab789accc9d4..08f867ebc0df4 100644
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -42,10 +42,7 @@ bool vgic_has_its(struct kvm *kvm)
+ {
+ 	struct vgic_dist *dist = &kvm->arch.vgic;
+ 
+-	if (dist->vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
+-		return false;
+-
+-	return dist->has_its;
++	return dist->its_model && dist->its_model == dist->vgic_model;
+ }
+ 
+ bool vgic_supports_direct_msis(struct kvm *kvm)
+diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+index 7be81b936bf10..cad74eaff0a7e 100644
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -502,7 +502,9 @@ struct vgic_dist {
+ 	bool			initialized;
+ 
+ 	/* vGIC model the kernel emulates for the guest (GICv2 or GICv3) */
+-	u32			vgic_model;
++	enum kvm_device_type	vgic_model;
++	/* VGIC model required by the VM's ITS devices. */
++	enum kvm_device_type	its_model;
+ 
+ 	/* Implementation revision as reported in the GICD_IIDR */
+ 	u32			implementation_rev;
+@@ -547,7 +549,6 @@ struct vgic_dist {
+ 	struct vgic_io_device	dist_iodev;
+ 	struct vgic_io_device	cpuif_iodev;
+ 
+-	bool			has_its;
+ 	bool			table_write_in_progress;
+ 
+ 	/*
 -- 
 2.34.1
 
