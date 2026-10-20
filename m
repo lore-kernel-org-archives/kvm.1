@@ -1,80 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792502105;
-	b=L24D3Si3/bAI/C9oUHFSJQf9w0FrOsNomHQ5rIpNzAqHD3XuQb2N8RrIRBiwQetydC+m
-	 kjHqzEs+7QwIxvNhbtdsBDEkneEOJ8IO03hlUGlk7qsIZE49kmoSLi9SPb/vNW/WEIVCG
-	 BjVit2QbQ7zqTUjV9/ykAiK0+QNK2BKZ0n1Cgg4AFrm9zvki+kxc59PzNrtOkvI6bANJl
-	 G/Jp73IAIRBayQUeH8/ccTICm5fbea+af9dZeDwDNogTFhVLAf38FFP4Lfh1ejpUnD4uW
-	 BZtiwKDomBgS51wtevjud+KKc+cFElrufZk7AObgTtZcKNF665taDqzbcg6TEPO3WPg==
+	t=1792502195;
+	b=kZ2Y5Brg9fTjyZSB7+GVPPDqwol1HKWpVQjts53eCoiWDH43HPvsceBydNR2WB1cmAS/
+	 lj4+4ZO4ilC9sK7+kyri/0b0pQEvWJjd0Le02MlXhDF5kgGBueiIDUk40N2nev2iHE3Nc
+	 DAB7WmlF081TJdaNLyieozdrHNv2aQZ5lhBSUPCP2UzvG21YGTnjug2Rz/dYXs7aQvaB5
+	 9W8hxRSWfsfjDu0FNzxWGxKClMCOm2SPJHt3lfnPsBwiPExsSzsYKiEwaBcEsYOLus43c
+	 nZk65AInPqXLcmjtC2HU0ttKW32PjjMfVQD/5Msd02iE6m3JXKMA/lDoKim7EQ+fSQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792502105;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=tuNkSWZVJR9pU7AFRF8BvGrXZ1Ry6Li/NkjogDbT3rc=;
-	b=Rmu9jrnROa3ipUwTBm32hrojzY3ftzVGQxIC6a5sQVekQ8Yq9cK54YOh8n+Ocz5vWUR0
-	 oT6v/g92QLT0X996xCOqF5Mxl15Dbf+1SYOjhIaUsGLgxAACtscoGQZdTje8NsS+dQMNf
-	 Kii0CJ13vBj6TwszaJTD2cUH4TOTqNXa7LmUNS6WXED/sDU+0H11D9gqrEVg2HAktDiNI
-	 XKHO1OJl3tdIiXEW12yrMckTq5iWYPr/rCNL4vQjYfn2OAgmUjx+lu6+dEs7iQSyGEjm7
-	 YqLd/98jBqoYgwYQq58wiTB+A75bjaTRL023YI34TdCKfiw0OE+3qUY8E1ocT+wYmVg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792502195;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Date:
+	 In-Reply-To:References:Content-Type:User-Agent:MIME-Version:
+	 X-SRS-Rewrite;
+	bh=e10qufVRqqqJb1AQ6FrtUxdb1E5vSEGGMawPRMfZR38=;
+	b=bInZonnp53Zq9fSaUBIRm+jzcj00CVU0hhTtT5VsEonczuya+ktEHZdO2PvdX/cAvUoJ
+	 jBJEixvEhtk2To+KxOl6oLk/Z/hTmm9hfGys0/0znaRXOR+kqMKrwCjAU8gpQSqRNpgck
+	 s3399U/Gd7WTJuL7TY8myctXklxx4rK/TL2EdfGfz18ypgNhs74TFpRgksWKg19XH6oYB
+	 x9ydWatKXa9/Pu/FXxcRyeOvdeR9/DLiXum3Lskp2uru98+M2taSOlKtMJoeRh4WS6mB7
+	 47gkaYVLJdfCpXCmC6EvwcTRHUhKbgU4bho+8HB+QuHqxFXk5BZwdl0GSbrvkEoPvdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EZ5Q0LXt;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OsrgXtY0;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA5660A2623
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 13:15:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DA5660A2623
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F346606A31C;
+	Tue, 20 Oct 2026 13:16:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F346606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EZ5Q0LXt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792502104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tuNkSWZVJR9pU7AFRF8BvGrXZ1Ry6Li/NkjogDbT3rc=;
-	b=EZ5Q0LXt+JCqry2lVEHGQvuww9x2K4ZkRX0MOJzj8c3ORYy2MZ1qOj2QZ4xuzI02yWiuob
-	GXDle/xb0nWYFiAHQFzNWmAgQZYWJ71n0Loy+pORKMqgj2Ffi2w2Vae4Y8sMaty0bhtSVo
-	aR70ODYP9GK1GWaZMd3KPZ5pYFBH9VM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-JzrOb0XxOCOiUpHh44vFrQ-1; Tue,
- 20 Oct 2026 13:14:53 +0000
-X-MC-Unique: JzrOb0XxOCOiUpHh44vFrQ-1
-X-Mimecast-MFC-AGG-ID: JzrOb0XxOCOiUpHh44vFrQ_1792502092
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F93E1955EA9;
-	Tue, 20 Oct 2026 13:14:52 +0000 (UTC)
-Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A5D01800257;
-	Tue, 20 Oct 2026 13:14:51 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Yan Zhao <yan.y.zhao@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 2/3] KVM: x86: leave the legacy private attribute in for TDX and SEV
-Date: Tue, 20 Oct 2026 09:14:46 -0400
-Message-ID: <20261020131447.122096-3-pbonzini@redhat.com>
-In-Reply-To: <20261020131447.122096-1-pbonzini@redhat.com>
-References: <20261020131447.122096-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OsrgXtY0
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=e10qufVRqqqJb1AQ6FrtUxdb1E5vSEGGMawPRMfZR38=; b=OsrgXtY05kBLGG2NARyqZDaNdr
+	Jz9rDbz40Oqup/dKOhAlvsLNMwxw0O1fguEGO4nNQmaelBkiDck2wq+Kx1mR2DYRMEcPA+DFwXzrj
+	m5H4MICRP22+6w1BbBEqSz6dpUz3pgwWXPOgTOnlBDELkCofCxi+WVCIlhWmE6GFaS6Vpx+FY9wPQ
+	JDjm4bBQh8VrCbPcxOsveQWdU7+Jj5+Ixu3TcUNisBtPWuLTQ+E7l7uYnial3a+a/kgG+eXhozKzh
+	7TE45AfeGSCI2nTprHwa+5g+1HH5r2X6u2TzJAw6FOBFReyZAn7Jdqa+VBSQvMDGk9KDWJ2ws2K2Q
+	qI1HQ0IQ==;
+Received: from 54-240-197-234.amazon.com ([54.240.197.234] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xJ9he-0000000H2yS-132U;
+	Tue, 20 Oct 2026 13:16:30 +0000
+Message-ID: <a654a72765eaf278649b285218b0b1f6f9d45664.camel@infradead.org>
+Subject: Re: [PATCH v4 06/12] KVM: x86/xen: Retry event channel delivery
+ which races a memslot update
+From: David Woodhouse <dwmw2@infradead.org>
+To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Date: Tue, 20 Oct 2026 14:16:34 +0100
+In-Reply-To: <sashiko-outbox-177923@kernel.org>
+References: <20261019162445.37219-1-dwmw2@infradead.org>
+	 <20261019162445.37219-7-dwmw2@infradead.org>
+	 <sashiko-outbox-177923@kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-JlmFvHwtW4LRXbe0y1ju"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,46 +69,154 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-
-As of today, and presumably as of Linux 7.4's release date, there
-is hardly any VMM that supports guest_memfd attributes.  Support the
-legacy VM attribute for private memory if SEV or TDX are requested;
-default it to disabled if only the software-protected VM is requested,
-since it is only used by guest_memfd selftests.
-
-While in-place conversion is the best option, it is way too
-early to enable it by default.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 01a683a9042a..4f7d75ec8c40 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -80,6 +80,7 @@ config KVM_PRIVATE_MEMATTR_VM
- 	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
- 	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
- 	select KVM_VM_MEMORY_ATTRIBUTES
-+	default KVM_INTEL_TDX || KVM_AMD_SEV
- 	help
- 	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
- 	  memory attributes.  Using per-VM attributes is deprecated in favor of
-@@ -87,7 +88,7 @@ config KVM_PRIVATE_MEMATTR_VM
- 	  CoCo VMs using a VMM that doesn't support guest_memfd memory
- 	  attributes.
- 
--	  If unsure, say N.
-+	  If unsure, say "Y".
- 
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
--- 
-2.52.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
+--=-JlmFvHwtW4LRXbe0y1ju
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2026-10-19 at 16:37 +0000, sashiko-bot@kernel.org wrote:
+>=20
+> [Severity: High]
+> Can passing wait=3Dtrue unconditionally in evtchn_set_fn() cause a 3-way
+> deadlock when GSI 0 is routed to KVM_IRQ_ROUTING_XEN_EVTCHN and the
+> in-kernel PIT is active?
+
+Meh, that's insane and would be a malicious VMM but isn't currently
+*prevented* by the kernel. Nothing stops userspace from setting up an
+in-kernel PIT *and* routing GSI0 to event channels.
+
+Preventing it is ugly too: we'd have to prevent setting the routing
+while a PIT exists (OK), as well as creating an in-kernel PIT while
+GSI0 is routed to event channels (ick).
+
+We can't drop the SRCU in pit_ioport_write() like we do in other
+places, as it protects the *bus* too.
+
+Simplest option is probably just to make xen.c::evtchn_set_fn() not set
+the 'wait' argument if irq_source_id =3D=3D KVM_PIT_IRQ_SOURCE_ID. You can
+still do that daft thing; you just don't get to deadlock the kernel
+with it. I'll do that in the next round.
+
+Still annoyed at my own local Sashiko runs for not finding this... and
+it would be nice if lockdep could see through kthread_flush_work() too.
+Not sure how feasible that is.
+
+--=-JlmFvHwtW4LRXbe0y1ju
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+g1AeliYo/J4EcHN5FiUBdWgAAAAAAAA=
+
+
+--=-JlmFvHwtW4LRXbe0y1ju--
