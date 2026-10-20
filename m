@@ -1,109 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.228.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792503943;
-	b=5GU9KmBIWfmttGXUa0J+50jSIxF1x927xVVnSybQAiwAJliFMVLCmXcxS7uIlCLbAQbB
-	 FbXovJG3szEJ1Cm/sXojjqwMUUMauH2GT9SvIAyncKTtOXwXjRAfKpfyutkeqmumrfm1M
-	 qKmvVlLD1N6ZrPTLVZR+5IF7DUnxPayQmyhsXpHZs8ipkc7Tjv7xnwvELEuSjSUcxEEwx
-	 HYAOtk9GMYih4IP9hwJFrq5FuZpTEDY1VijLtbAujvFoi5zFYyI2WGrWmEzSrE48R0avU
-	 rjleKgHvooMOPiBeBxGJCEn/pfnLGTeC0SDHn6VBtKEim1n2m+WxIKwnDhEjJahENHA==
+	t=1792505141;
+	b=j/3issMHR0Bb627c5JtURFmfsA7N04C7mgByeVvuZlDF3LdbXJC3rtXQLCnBVhmX2JXM
+	 PSndPUfexchmTd9jR+Mcy+e7HJH2I8zJ3zvwA0P9TGiq1m7llMvatpz31dbWxRWgs/FqA
+	 VEYRLXgUK1qiB7AsfU3Hl2fI4XwZgfsv33TDGOoPUI19h0yXh5aKsunhSJSXAj98BYTlM
+	 VFmKycYtzvyXzUeHxEuN6i02rRhrZqpbfNLTlwolS6U9XfD8e1p4vCIh4nqdjOOyNl01+
+	 c7n+LGv73l2lcvy9R1c37MUCKszK2wDVxjaivApHFNO5TWU7huO4ImLzLLMCy9LDAHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792503943;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:
-	 MIME-Version:User-Agent:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=TBlQ8XEvNLoQoc5u8Ixhu1A95c9gfj4lGqG4ps0UPhA=;
-	b=rt3AZFTOdTv7ydsrLVtN9YmQFCMkzehhZOSf6IzuK0H5xbeN476kCDsJgHNqzGfdM4tq
-	 +xgiiaLNeg4jVULTFOe4xoMGPk760T6aWwmWigVVi9yAINH2nwXnHYTv7Nx/pPmHE0c3E
-	 P2IRJ3xZ/eDTTfa9wGQ8G73PIPfmbGRfevmeopIrKzVBf9foAP5NCH1vcawmU2ChcZYKV
-	 iwPxXiwEo06adwjACjswpmSOJZgKrJNcR877+gFqmapK8hnurQHVBolZ3ZL08W1+amTV0
-	 l6vHZfNBlkciFNGKRxfOLc16hk7QKURGY7CzfiSZ2ZFARRhfRd2N1OM+JosrJ5bcwVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792505141;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=jkLumwW0F/yIPW3a3VULflIMMv5oMLlwkuByskuyIMU=;
+	b=jSKMS3YpnYhYO06XgYLCjk2sd08Uk9BLM2RK6FuKeArQhrDXrOxL4ygaRzkENxWKp/kl
+	 HBg3gcEIPVG90qjWxrnFxdS6yP1wQwRwu+XMEjweH7/usdslpxcEwmvzzjZNfhSarhddD
+	 5XMgN5q6VrEvbJfsnX2KqPa59UZD1zxArzfBUEw/uV1e3u0nSTEXDh22FlRTFAe7gWJzi
+	 g9IajOYjWvcXdDhC0ciNPT+kzH/Mvkqod6pA2KQU0PelxEFSHe1tJe5rCHzmhQzXvRtRX
+	 c5fzrlgpNf4ieYlLx5OLywfYNFdP1gm8hokNLnldPLN4s6lPjZ3jlYxd/hSmo8YXnJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lobz1BKJ;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eZYsUue7;
+	arc=none smtp.remote-ip=74.125.228.8
+Received: from mail-pz2-f8.google.com (mail-pz2-f8.google.com [74.125.228.8])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39951606A319;
-	Tue, 20 Oct 2026 13:45:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39951606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B83606A324
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 14:05:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21B83606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lobz1BKJ
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDE6jQ2677907;
-	Tue, 20 Oct 2026 13:45:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TBlQ8X
-	EvNLoQoc5u8Ixhu1A95c9gfj4lGqG4ps0UPhA=; b=lobz1BKJ7orrjhojPMHzS+
-	nezKnO4H0YowUzeui0QgHi+B+RNDC4ieaTfD/wKGBYt0DyWQME/wzliQdWap0mzK
-	Bx6HRiHVJBn/eTOtFM5qmu0KQAN+WDsxKbVwec2oKSHOHevRlfUXH44UtxQpf54A
-	b1ZkFysMN9ekffIC+Q9HS1rRo4EXQOecWXjAhfqAAh4hVG6+WtFxefAWHvleNyQV
-	8DiRVHgGME9P3827chCUzF2QPEV7KJdfodeu8PpqBsjq7kxOMAvieOGjmKkbUmWz
-	tueLfbaJw6y3Pv3o21oSTVX4SB8J7MPY+YnBwlmC+THptJekbaYa4J0TdtC9WdeA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw58k5r7-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 20 Oct 2026 13:45:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDZ2Ss1539114;
-	Tue, 20 Oct 2026 13:45:17 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hckqvjcrq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Oct 2026 13:45:17 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69KDjG3N8192700
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Oct 2026 13:45:17 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 811925805B;
-	Tue, 20 Oct 2026 13:45:16 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3B3A5805E;
-	Tue, 20 Oct 2026 13:45:13 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.185.52])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 20 Oct 2026 13:45:13 +0000 (GMT)
-Message-ID: <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Dionna Glaze <drdeeglaze@gmail.com>, Jiri Pirko <jiri@resnulli.us>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-        ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-        sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
-        jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-        jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-        suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-        elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-        roberto.sassu@huawei.com
-In-Reply-To: <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-	 <20261016234354.GA664420@nvidia.com>
-	 <CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
-	 <20261017203407.GM13920@nvidia.com> <atPgqROZZxnihYfC@kernel.org>
-	 <20261017231007.GP13920@nvidia.com>
-	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
-	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 20 Oct 2026 09:45:13 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eZYsUue7
+Received: by mail-pz2-f8.google.com with SMTP id 41be03b00d2f7-cd3da0e82daso680165a12.1
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 07:05:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792505140; x=1793109940; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jkLumwW0F/yIPW3a3VULflIMMv5oMLlwkuByskuyIMU=;
+        b=eZYsUue72ruKyTWdv3j5zsViPhrAEs0rf6WaSRCGjlsqZcrZIvuDBwR4csUORdFAKU
+         NlB6Exw0pT25ctj7TVMWsj6zPxduU6kp0PmXzj9XKzf8ns/PEOlt3cgnkcb5VNug0o+l
+         PN0hI9nnRFY0JrrnM+Hwa29l+164dAKRhovDid323MSYW8ErhA1lOQJ3PQBggrTGnpZo
+         9tVlxi2FUH9V0qp6dfM9GAA6jgIsPAoEa+S0Mfe8lK5gGL2wMpHuEV7wvSj6KX+rbz4O
+         orDQknHgwEkw+BLp18gBJAA6TknaawDJX5Qqkhj5N3ZLW1EUFyuiJS4aNqDoPGi8rSwR
+         IBOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792505140; x=1793109940;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jkLumwW0F/yIPW3a3VULflIMMv5oMLlwkuByskuyIMU=;
+        b=qZLjgvyOh1Z5C5k9ew44aIHddw7jCCygPLgQPEkgTz7drnAQ3hoEWqxIULOp5/9upj
+         bWGlN9rUkkbebYHhbpEupnI1AjQ4i36BzM4ZYAMyycBxhZAYtmjC4N6JC1yqU0s/enAv
+         6Ou6SNvpULF8jwC5PvLcyR5OLB+e3QWHwS9gCVupij71MxTE7H+N8l4uER7phHGGhbqd
+         6wEcW1mbqvgHoP2YZhcqGJQxZTpHiy5s/HxH+FCDNEDg47nCR9FsDv58TZj+72V9QFho
+         rGOE+/2JbcW3oSpL3AYYY4gTfDl+cyHunBaji/LRqZeoBEvsT0Vy6HCk0gSSbEbOGlnL
+         J6Ww==
+X-Forwarded-Encrypted: i=1; AKwUvBzvbOZDxC1nd3+KXc0ggP3D6g2rEOWPdCj2o85Wq+ZMvHFpV0Hjg6/aO/n7Ze2EI+NYqFU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLGADwcYbl5EVYPkyzbzFXFHyHFWSnZrrG16tNzf6PJmlqUADBJ
+	2Ofmrsb8GXly92Va9oHQzcAqBwcyz/Ouuc2qDKXbNKU56msfVFi0PSAQ
+X-Gm-Gg: AYBFou2xwLiydzk/pkdczu4lK5h2Zh7s8bHgsh+gp2EsSMQfaznPMEwmzeyIMDmkzV+
+	5Wj4U9RYARlbGXPXdKL/1+YZuPzTyGLzUgCqII0UCzNJ22pNwWB6mSr+Mr1DjiENoiYAz/dDHRe
+	BTkob6GF+AH092whqmewvmq1Gw3MZm8pKFVrksREJ2qE66uuel+xMHMjwK6JsVNr39R2Pon0nXd
+	6STRMjNq5WR4RkTlnGU98NJyoPXd1bfxsHPPxTZSmGJcvlDsXXPePqTxDUSbbKOatI8fybVthRA
+	ByylDSLum0MW2lxu4FG943kA4FQqFBw7EI4uyOYAJNXbCnJYWJormNkzUvR7hJDtIzIStVw3YPd
+	ckb/qkPpCcFIMYpYA462n077xGDXp9WehMBr/ZBFrH+jIuEN2YuMxU74068RNCYlGNF+argJgTf
+	vxVuJgLutVlqbdz8037pLtBD45bMHJOdBx62OKdyhkbpq1F9MhFeuZKCh/yUYzqjUVDpXzlHhxp
+	Ruek+TqpBLPLRFfE+1KuiaYhvFna7LO
+X-Received: by 2002:a05:6a00:3e24:b0:881:be70:448e with SMTP id d2e1a72fcca58-8a04d34914amr8255299b3a.53.1792505140313;
+        Tue, 20 Oct 2026 07:05:40 -0700 (PDT)
+Received: from HXDQXTDYHN.bytedance.net ([203.208.167.149])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a04493551csm3769242b3a.44.2026.10.20.07.05.31
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 20 Oct 2026 07:05:38 -0700 (PDT)
+From: Jinmeng Zhou <jinmengzhou22@gmail.com>
+To: sarunkod@amd.com
+Cc: Jinmeng Zhou <zhoujinmeng@bytedance.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org,
+	kvm@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iommu/amd: Reset IRTE notification bits on every GA update
+Date: Tue, 20 Oct 2026 22:04:58 +0800
+Message-Id: <20261020140458.13755-1-jinmengzhou22@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260821055611.27138-5-sarunkod@amd.com>
+References: <20260821055611.27138-1-sarunkod@amd.com> <20260821055611.27138-5-sarunkod@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,107 +111,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: JtM8A38RBL3pm-4XpExNGRnUJbYOx1IJ
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDA1NCBTYWx0ZWRfX5a0BTeNDogy7
- HQ0ku9noWvy//AajEmcZvoM8yDC4VlINY6GJLGXIshPQ9qYymdbZncUJRcGN6eoGPSMZCX07m+G
- acJPmPM4yBTYsF4o+YWZvyI9CBeL5Ko=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDA1NCBTYWx0ZWRfXyxPutWlpO7ER
- sAuCdwbWN4XoLLpGWf1AgJqgPZKv/nRELbbFHPd9VAOItOlJf4x6EKK41MIww9qGCwHZRdNtgc9
- mvUVQjKNRDJlEZ0D+vKN6tGkGFgCDxPEnlB1t5C0qVYHzlffxB5njJnn+SfbdO2/d54MQuG4hKl
- A5JVTCcjVl/eQPH7BkJRsnk0xRnd5yytBexE8cWHNphq93NHqqMMLAbvtzIAiaU9F8TQTV3axG7
- 3aN+/u2ZdLVQsUxAyey0SYMrzOkVJyZc2zHRX52+5KeAJbrwCaOOwzKl0F+zAwKlWyrdP9V/cye
- fEOGOJv/EHagwzxRpOu+b+8dRYFTDM2dcP530+30a9ETbjWHdbVk/ovWGEO+1BKP3Em/WZUZJ3u
- 9j7Ckg9ejD+12OXwLFxkH6KwR2Z4/xEaw9KUJQFPiczsNq79WF7GUBkJhxSeWttr992xweGJJdw
- 2qp8yPFtoi8ZTmus/BA==
-X-Proofpoint-ORIG-GUID: O8O2cJueqZADDX7RlQ3tl2sxveS2Ra_I
-X-Authority-Analysis: v=2.4 cv=Ob4NnRTY c=1 sm=1 tr=0 ts=6ad7706f cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=FK4dugxTnjcHPJTaTJcA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-20_02,2026-10-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 phishscore=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 clxscore=1011 impostorscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610200054
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2026-10-19 at 09:10 -0700, Dionna Glaze wrote:
-> On Mon, Oct 19, 2026 at 5:08=E2=80=AFAM Jiri Pirko <jiri@resnulli.us> wro=
-te:
-> >=20
-> > Yeah, I was thinking about this and went back and forth. In the end, th=
-e
-> > only reason for leaving it unbounded is to allow multiple independent
-> > users of the same register. For example, IMA and systemd could share a
-> > TDX RTMR. The systemd side would read the journal through the
-> > attestation device and the IMA side through securityfs, but both are
-> > views of the same journal. If one side truncated it, the other could no
-> > longer replay the RTMR. Isn't this the valid usecase? Do you see how to
-> > resolve this?
-> >=20
->=20
-> Bright minds have spent a significant amount of time working on this.
->=20
-> +Roberto Sassu, +Mimi Zohar
+From: Jinmeng Zhou <zhoujinmeng@bytedance.com>
 
-Dionna, thank you for including us in this discussion.
+__amd_iommu_update_ga() clears GALogIntr when the vCPU starts running,
+but leaves GAPPIDis untouched, so a GAPPIDis value programmed while the
+vCPU was scheduled out is carried over into the running IRTE. GAPPIDis
+is recomputed every time the vCPU is put, so the stale value is only
+ever visible while the vCPU is running. GALogIntr and GAPPIDis are
+never both in use, as GAPPI vs. GA log is selected when the IOMMU is
+initialized.
 
-Based on my questioning AI, it sounds like the purpose of this patch set is=
- to
-introduce a vendor-agnostic common attestation subsystem framework that can=
- act
-as an internal kernel multiplexor for any measurement consumer, like IMA or
-DRTM. By providing a direct kernel-to-kernel call path, it allows measureme=
-nts
-to be routed to different Roots of Trust (ROT)=E2=80=94such as physical mot=
-herboard
-TPMs, Intel TDX RTMRs, AMD SEV-SNP registers, and PCIe SPDM devices=E2=80=
-=94without
-hardcoding IMA to specific device drivers.
+Clear both bits up front and let the not-running path set whichever one
+the current wakeup policy needs, so that each update fully derives the
+notification bits from the new state. The only resulting difference is
+that GAPPIDis is now clear, rather than stale, in IRTEs with IsRun set.
+Update the kernel-doc accordingly.
 
-To support this framework, IMA requires a strict, atomic execution sequence=
- to
-maintain the Measure =E2=86=92 Extend =E2=86=92 Execute (Measure Before Use=
-) guarantee. This
-initializes early during the late_initcall phase within the initramfs (via
-dracut).
+Link: https://lore.kernel.org/all/20260821055611.27138-5-sarunkod@amd.com/
+Signed-off-by: Jinmeng Zhou <zhoujinmeng@bytedance.com>
+---
+This is a suggested cleanup on top of v4 4/7; please feel free to squash
+it into that patch for the next revision.
 
-If the new subsystem introduces a direct kernel-to-kernel multiplexing call
-path, how will it ensure the mandatory synchronous wait behavior when exten=
-ding
-multiple hardware backends?
+ drivers/iommu/amd/iommu.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-I strongly agree with Jason=E2=80=99s point that we should table any discus=
-sions
-regarding a new dynamic log or uAPI additions at this stage, and focus stri=
-ctly
-on exposing the static firmware-level TDX log. I also echo Jiri=E2=80=99s c=
-oncern that
-replacing the securityfs template log with a placeholder string would break
-backwards compatibility for the existing IMA ecosystem.
-
-Thanks,
-
-Mimi
-
-
-> IMA logs and systemd logs are both system level concerns that are
-> relevant to the OS construction, not individual users,
-> so I would just say to reroute IMA to use ctlv using a kernel config
-> setting, then make systemd the new system manager of the holistic log.
-
-
-> The securityfs log contents can simply say, "log managed by ctlv" in
-> this setting, in the form of the template identifier.
-> For policy violations, only the 0... extend needs to go to ctlv.
-> IMA can still keep its violation log as a ring buffer when it's not a
-> 1-to-1 violation to extension
-
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index d89e3ce97e57..3d4d44be1ecb 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3962,13 +3962,19 @@ static const struct irq_domain_ops amd_ir_domain_ops = {
+ static void __amd_iommu_update_ga(struct irte_ga *entry, int apicid,
+ 				  bool wakeup_intr, bool is_running)
+ {
++	/*
++	 * Derive the notification bits from the new state on every update so
++	 * that an in-place update doesn't carry over bits from the old state.
++	 */
++	entry->lo.fields_vapic.ga_log_intr = false;
++	entry->lo.fields_vapic.gappi_dis = false;
++
+ 	if (is_running) {
+ 		entry->lo.fields_vapic.destination =
+ 					APICID_TO_IRTE_DEST_LO(apicid);
+ 		entry->hi.fields.destination =
+ 					APICID_TO_IRTE_DEST_HI(apicid);
+ 		entry->lo.fields_vapic.is_run = true;
+-		entry->lo.fields_vapic.ga_log_intr = false;
+ 	} else {
+ 		if (amd_iommu_gappi) {
+ 			entry->lo.fields_vapic.gappi_dis = !wakeup_intr &&
+@@ -3990,13 +3996,13 @@ static void __amd_iommu_update_ga(struct irte_ga *entry, int apicid,
+  * a vCPU, without issuing an IOMMU invalidation for the IRTE.
+  *
+  * If the vCPU is scheduled to run on pCPU (@is_running = 1), configure the
+- * Destination with the pCPU's APIC ID, set IsRun, and clear GALogIntr. If the
+- * vCPU is scheduled out (@is_running = 0), clear IsRun and set/clear GALogIntr
+- * and GAPPIDis based on input from the caller (e.g. KVM only requests
+- * wakeup_intr when the vCPU is blocking and requires a notification wake
+- * event). This API is intended to be used when a vCPU is scheduled in/out (or
+- * stops running for any reason), to do a fast update of IsRun, GALogIntr,
+- * GAPPIDis and (conditionally) Destination.
++ * Destination with the pCPU's APIC ID, set IsRun, and clear GALogIntr and
++ * GAPPIDis. If the vCPU is scheduled out (@is_running = 0), clear IsRun and
++ * set/clear GALogIntr and GAPPIDis based on input from the caller (e.g. KVM
++ * only requests wakeup_intr when the vCPU is blocking and requires a
++ * notification wake event). This API is intended to be used when a vCPU is
++ * scheduled in/out (or stops running for any reason), to do a fast update of
++ * IsRun, GALogIntr, GAPPIDis and (conditionally) Destination.
+  *
+  * Per the IOMMU spec, the Destination, IsRun, GATag and GAPPIDis fields are
+  * not cached and thus don't require an invalidation to ensure the IOMMU
+-- 
+2.39.5
 
