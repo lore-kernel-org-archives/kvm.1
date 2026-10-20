@@ -1,66 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792539570;
-	b=1n5PGTy/OW0MlWPolc93PR9QuGb9rF5DJ88OpngXOCty0CYLf07KxFNa0GS6xXwkWErg
-	 zY8Q4dGTUbEE9PudOD0fmo5CNkCLiK+cZnuRpfT1p5Rsf85Kf7+TAaZXgfGmdHFL4ZrIR
-	 XOwQMLMS0vx7qv9LuCjDJMMBEi4846cXq4onC3oWSbDoWPenOWi1FAHx2GE7ySaXwH8aP
-	 bHfxaDYmjU9FOPWtkoMjKUQE8VJrSVNd8Bp/aVbYpS9i3sqyuBHMi3kbWJrs2CovApe1r
-	 r1Ociroc0xujeQkxE+FrlpPyNeZ390ICSvZn+1kKDNzjsY8HUM7vJ0TXre+5wsNFySA==
+	t=1792539946;
+	b=aKiAanGYsOBJl2oWsnPrJkw7nF+G3oaqXtq85Zk304yKT4rwPPQPxfISrvmiawceWLK0
+	 fUFnfb47Ryvw2z2fie2F/o66LWHtPKIDIofeoJOht7pZ+qNlt1pXIH/s8hzltmoS08uG5
+	 sb0TozRKFvqE+rrjKI1Qt+Ac/9tUB/8c7+0TdfSmcu4qkjKFMFK0I5a2WNavVWnT+C5ho
+	 HeA8BSAzlxAIthKYpB12I1E2U80d6BK7VBZIDeNNtZ9HH0h8fU6zBLqHRBvdDr+fsmjlp
+	 WVZrye4l8zb4uBiLyAon7we1Y1XVT7OuREj6m9D2oa+s6I5UlYh9UdCqlFqLRI2lRMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792539570;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=MvPKh2LFCRo5HFkIjF2qDl5qC/wMMf/toViD9nxJYC0=;
-	b=C4cLb/Frx/qBOKkL+xJH6G3nDa9knripWNJLJLUzYTh3o4Q1sHoZiBH156xr2Fau7UXC
-	 oYg6SIo2PtWEPI4E0SDscXq33TEYBDmw+uRJFpsuAuUfZOgOQg7Hm1hVSnAgzglA/IVaZ
-	 Ahcir2W7rn3cdqEPlQN2rx3ZAhJz+pj5jwKY09eBkUr9sfm2c2pc6pww8h6E2BBW0q//F
-	 ebagaHCmqyenIsV3RDG3J3dQ0fQysFspn4oroQsDCVteybA+4fEQs9m1TYJaZu0S/0uvi
-	 H21iHS61RYLx04h1S4ele6QDlqa2thvbOTrAomxoCLfQmLGzQngp4+WPkTzbkUyORXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792539946;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=3LRr5Ug7Hink3TzszKDpLdeff6jWIBq0xQg53IvpWZU=;
+	b=DUdJL5rdzRKhRxD7Q/5qzspPQuaKKlBKKEpIzSSTL+nXyXWc/jkhbfqFJD9TYV27tP3/
+	 c0mJDXkrT4C0zwz92P8Yl1RjvPHYSRmJCkN3R/lhA/OhwatJhHQI+byRex0IqLT0ewk9o
+	 P6eKC6BHXLClND8KhxlTGGLhCQFE4o26ghUFrVoUcOVtzqv5R87Kre8Ao5rgPYudbrL+c
+	 SRM4d0PsmIdGiTlhPYp1MX9VzB7lZMg27nkTkAXiIEphPQ7iilh1AJh8/K6tlvRejCK3p
+	 5CHsaQd/2FN/jX0vAVcnmcZejv7xubsqtoPCPfot/eaJ3pwfFXnxIGlgZ6o3Wr9Cb4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Nau/Q4LF";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="p6J/uWtX";
+	arc=none smtp.remote-ip=209.85.215.200
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F157606A319;
-	Tue, 20 Oct 2026 23:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08432606A31A
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 23:45:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08432606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nau/Q4LF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB4D1F000C9;
-	Tue, 20 Oct 2026 23:39:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792539569;
-	bh=MvPKh2LFCRo5HFkIjF2qDl5qC/wMMf/toViD9nxJYC0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Nau/Q4LFrwosrfYQpQ+p0FIoHHf1KpsvhH26jv59Sn/U/x/EA5+nAoav6rAnDS8BA
-	 RiQ7lhIBhhs3+50lQVutaVM03jVaq49QF40fqbIEi469uvbG7+bLvN8SIYiuXCcpEi
-	 0VFQT2ZURPZ0qdzAiuI+XZgiq/ssnsDdedIpx69+lH80Zc1uUiYJi5kF0nf4U+DknV
-	 rAzgqxrM7nX6/e2/uhHpLguBPh0Rhfz3mcETzqagf5fWjcdrKuTEoqdqsRFPMV5F8g
-	 Adv70qRaGSD+Rg0PVPUVibeacB0h37KeuWZsdvcZjPWtSPiI2cXz2/q9l04IWfphOz
-	 plFGSCwHK5vXg==
-Date: Wed, 21 Oct 2026 00:39:18 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
- lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
- cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
- James.Bottomley@HansenPartnership.com, aik@amd.com, jpiotrowski@nvidia.com,
- qinkun@google.com, pgonda@google.com, alistair.francis@wdc.com,
- ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
- dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- peter.fang@intel.com
-Subject: Re: [PATCH RFC 02/20] ctlv: Add the UAPI wire format and family API
-Message-ID: <20261021003918.36151a58@jic23-hlaptop>
-In-Reply-To: <20261021000003.71f78d99@jic23-hlaptop>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
-	<20261015145053.3664509-3-jiri@resnulli.us>
-	<20261021000003.71f78d99@jic23-hlaptop>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=p6J/uWtX
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc4216aee8fso85232a12.1
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 16:45:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792539945; x=1793144745; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3LRr5Ug7Hink3TzszKDpLdeff6jWIBq0xQg53IvpWZU=;
+        b=p6J/uWtXe3YADJDhsZLO9crjXArT8fBzfARh7sryf2DiCIPHzPnfNHh5r3rpD2syu0
+         vdOzVvxcdWHbnHDQkvqcODlncCvHqkxVdVbAaBDVqGqYg7jIW+NUdqRKUMkj/unAmqv+
+         nfaoG9cUSK/jWyulKy4p8tvfmLYiPj04Z6tYrcER+YrrJx2s6Esto+o6qB5AU/KPNRBk
+         z1JJC0hLdHumFLH4JHSZ55YUhpX8utlAHW4gmlSGCzfl/wqatD4u2BdC3efE7k1oBug9
+         OrCgPk6NWWVpYqHIhqArXwrh1pReXt1FN5ucFFMmfRO0IPk1Mr/TDsBWJ5rBILdfVHmd
+         2l+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792539945; x=1793144745;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3LRr5Ug7Hink3TzszKDpLdeff6jWIBq0xQg53IvpWZU=;
+        b=tYJ2Wybn9WnW/6p6cFDgmyDOk8I6oymj26JtYk84sRxHQox4fO8vh9eme/9SJuyw0p
+         IcoqyTiYG3BerCXwxGkOKsrGWEIXVsR9VlKpEPFa2d2crLqSBcDmaltYuR4R2z4pCz7q
+         xX+E70LixFZNmvE92IjHlhW+P9YRBmbvCwPWWWKW0H/d5+Sswc/eVtltCiVs2oSUJViB
+         B2sfcsMm3ZQMC6hZqAJDFF02AXiCo5/sD5bpG+SFeYFF1UE57eIpwzALJRbAQdM5AAFo
+         YCWn1T7rr3xFRskaWBrbMvitBzAyxWpJ8Tq4mjZ9Bh4bOdRfay2p6rTxksr4Ba9reMeL
+         +Mpg==
+X-Forwarded-Encrypted: i=1; AKwUvBwkzXRWxq0638FR9sRa07xim01MRfBzhGXGjD8ic3+KmIxzvXAR64Zks6Yr+NA2S7O4cjI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJaFyNbJuT01X+1xuhb32RMnMhMFCqFJgKOa++23Qa2tXQnQoWo
+	aQ0AV4qj9QfnDkwiFriPhXLIw9vjJKpmA95eIXxA4xZbI5V9D690ydYeygxQPT3h3t4jLYos+m6
+	Odqr5Cjf7T0v4Ow==
+X-Received: from pgib22.prod.google.com ([2002:a63:e716:0:b0:cd5:f9fc:b96f])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:2d0b:b0:3e2:86b6:9c05 with SMTP id adf61e73a8af0-3e287e65d1bmr301507637.37.1792539945129;
+ Tue, 20 Oct 2026 16:45:45 -0700 (PDT)
+Date: Tue, 20 Oct 2026 16:45:26 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,34 +75,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261020234535.3182385-1-jmattson@google.com>
+Subject: [PATCH 0/4] KVM: x86: Honor userspace MSR filter changes for
+ passed-through LBR MSRs
+From: Jim Mattson <jmattson@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Like Xu <likexu@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+
+When userspace installs a new MSR filter, KVM raises
+KVM_REQ_RECALC_INTERCEPTS to rebuild the MSR intercept bitmaps.  However,
+both SVM and VMX cache the desired interception state for the LBR MSRs,
+and skip updating the bitmap when the cached state hasn't changed.  The
+cached state doesn't account for the filter, so a filter that denies
+access to LBR MSRs that are already passed through never takes effect,
+i.e. the guest can continue to read and write the MSRs without exiting
+to userspace.  Conversely, if a filter forced interception when the
+LBRs were passed through, relaxing the filter leaves the MSRs needlessly
+intercepted.
+
+On SVM, the bug was introduced by commit 3fa05f96fc08 ("KVM: SVM: Fix
+redundant updates of LBR MSR intercepts").  On VMX, it goes all the way
+back to commit 9254beaafd12 ("KVM: vmx/pmu: Reduce the overhead of LBR
+pass-through or cancellation").  The comment in
+vmx_recalc_msr_intercepts() claiming that LBR MSRs "cannot be filtered
+by userspace" is at odds with both kvm_msr_allowed() and the
+KVM_X86_SET_MSR_FILTER documentation, which exempt only the x2APIC MSRs.
+It's also at odds with the filter actually being applied when the LBRs
+are first passed through.
+
+Patches 1 and 2 fix SVM and VMX, respectively.  Patch 3 adds a selftests
+helper to request permission for a dynamic XSAVE feature without
+skipping the test if the feature is unavailable.  Patch 4 adds a test
+that primes as many of KVM's passthrough paths as is practical (LBRs,
+SPEC_CTRL, XFD, APERF/MPERF, etc.), and then cycles through every
+possible transition between "allow all," "deny reads," "deny writes,"
+and "deny both," verifying that every denied access (and only denied
+accesses) exits to userspace.
+
+Without patch 1, the new test fails on an AMD Genoa host with lbrv=1:
+both RDMSR and WRMSR of all four LBR MSRs (0x1db-0x1de) are still passed
+through after the first deny-all filter is installed.  Similarly,
+without patch 2, the test fails on an Intel Ice Lake host: both RDMSR
+and WRMSR of MSR_LBR_SELECT, MSR_LBR_TOS, MSR_LBR_NHM_FROM,
+MSR_LBR_NHM_TO, and MSR_LBR_INFO_0 are still passed through after the
+first deny-all filter is installed.  With the full series, the test
+passes on both hosts.
+
+The selftest is intentionally broader than the LBR MSRs, in the hope of
+catching future "skip the update if nothing changed" optimizations that
+forget about userspace MSR filters.  Intel PT MSRs aren't covered, as
+priming them requires the guest to be actively tracing.
+
+Jim Mattson (4):
+  KVM: SVM: Always update LBR MSR intercepts on full MSR intercept
+    recalc
+  KVM: VMX: Refresh LBR MSR intercepts on full MSR intercept recalc
+  KVM: selftests: Add a helper to request XSAVE permission without
+    skipping
+  KVM: selftests: Verify MSR filter changes apply to passed-through MSRs
+
+ arch/x86/kvm/svm/svm.c                        |  28 +-
+ arch/x86/kvm/svm/svm.h                        |   6 +
+ arch/x86/kvm/vmx/pmu_intel.c                  |  20 +-
+ arch/x86/kvm/vmx/pmu_intel.h                  |   7 +-
+ arch/x86/kvm/vmx/vmx.c                        |   6 +-
+ arch/x86/kvm/vmx/vmx.h                        |   1 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     |   4 +
+ .../testing/selftests/kvm/lib/x86/processor.c |  33 +-
+ .../kvm/x86/msr_filter_update_test.c          | 392 ++++++++++++++++++
+ 10 files changed, 478 insertions(+), 20 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/msr_filter_update_test.c
 
 
-> > +/**
-> > + * struct ctlv_attr - Attr header.
-> > + * @len: this header plus its payload, excluding this attr's trailing padding
-> > + * @flags: CTLV_ATTR_F_* bits
-> > + * @attr_id: complete attr ID, or CTLV_ATTR_ROOT for a message root
-> > + *
-> > + * Attrs are aligned to CTLV_ALIGNTO, which is why @attr_id is __aligned_u64: a
-> > + * 32-bit ABI would otherwise align this structure to four bytes. A nested
-> > + * payload is the concatenation of CTLV_ALIGN(child.len) bytes per child, so
-> > + * child padding counts inside the containing attr's @len while a leaf's own  
-> 
-> Whilst I get what you mean, leaf doesn't feel like a clear concept in this
-> comment block.  Maybe 'this attrs own padding does not.' or something like that?
-Ignore this one - lack of coffee...  Leaf is indeed clearly defined as most nested
-child.
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+-- 
+2.56.0.212.g129ede20d9-goog
 
-> 
-> > + * padding does not. Scalar payloads are native-endian. Within each request
-> > + * root or nest, occurrences of one @attr_id are contiguous; different IDs
-> > + * otherwise have no required order.
-> > + */
-> > +struct ctlv_attr {
-> > +	__u32 len;
-> > +	__u32 flags;
-> > +	__aligned_u64 attr_id;
-> > +};
