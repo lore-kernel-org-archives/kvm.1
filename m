@@ -1,59 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792507225;
-	b=J6rZjjwqe5tI9QdF9ajV6YyFq1qdkH7dXOt8ljtqL897BVx09jANDCWFmOWSyVBR+sAT
-	 jgKwuEVAdeTvrGgz5fkeoLoYv2zUyRVx4K1zd1KnOhIfHqyGW8NJIHCkoZ/QN9HY++MJO
-	 mOSLsYka6JGVh5AAcbNpvBOtRaQ18iWNQe/kfTe1Dvys+Z7ShskoAXblME51cb2FwjYfp
-	 0VwXKz877nQ5mQgAMwnkMAS+HlFhWFBZ9qDWu2lLpfXWeI0GUW+o2iebkkOX1EoFUIcXg
-	 ovXBCAWlmf8BXWkeDJG6vtgiN07LOwyO8MclgXVDRXK2sigUpw3xejHUt/TUm0YCtDA==
+	t=1792507394;
+	b=eoZXvJL+0SBfdl08UBVwLOELRft55xfwCTKCqijJjtaFMdJmnuVM/pQu71c8nDFAIYNU
+	 QgXMJ43tA9uSuWvIqWQN/iTZ605JN6p0I+l3ZEH7etLjOIfI6j+o95bKCWCGYYx//hvWg
+	 jPJFPGgenEkVLtr+UT6uyF6HWkqfPegmJH1cfZwyPboG/ckzo4QnNP/dI5iy315ov2CKn
+	 2ZQsNfdUzvYzWzIfuGaUCL1pFI9PPPqqhZ1OZ+cWTO4Usf4Rz44VEu9H+1efwg/SbO/r0
+	 581avScAbeC14MBc8He7CxcdZ/gYsNINmivIaLT1nuLOIuzXLVLa1noce0ln5sxJ0Zg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792507225;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=5ag2TWCXWR9uzwdO4FL54tkw6F6WUl4C1dUeOhZ1BMU=;
-	b=KRh3E2tbarD7GTUXOvnIsz/h7/x+/lPTJ7roQYzGkMq66lKmpIKqpYsEfu7B97mGofVr
-	 PAu1QIWh6QVAlUtAmDnTNoNfUV+6XOLr0ATZ2+sDNSOjH3J1FG2VHlGISKD5ZszEgbRib
-	 uf4ckQLkeVwv+kVMgAh958LeJGPzXw71wzT9XC5DXi2SQEWr9oH81pCdjjjJ02ysa0A3c
-	 dm2qxwdg/TB9MgF8Ky+5eXCaavvCyItqIx9nDZJ/3f0XN+/WGNRrOwOgLTNUWOMWynu2F
-	 Sq545nbJJNmq47zhlArvYLInKYdLR/H+M7Onlc5Nu13vU6DTq5ERunZ9LrNNq9UEM5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792507394;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=jQyDvfX7kGhNcVt2WJOUsbR6Xr7YV1OMvJOHBnTjnZQ=;
+	b=wo8qlKfRhy2N4NEQclRuFbKjVT/xZksBGSpvcFGyFmjp2/ryOrxbK4CCJjxAYW/r/YeA
+	 eZ02Iw9ClqjT69KFSZZPYTJ6ooAc+ogrc7dsiAipsUybgYbE0h4LEsHdpgZYAZXE0fKkg
+	 ks80bmi8F01WPR1XIWF2pQy3ILlL+BvAWSu1oMTcucA7kmW7nV9Az7kT9j0vb4W28BM2i
+	 HFFqOboFtyz4YcJbn+PgChQh/SrO6du0OW8u0xfAUAuTAs+VSPp82Vau5EQ4Ox7NhYYm3
+	 ch0Xge7Aa24J96gYHK9UEJI+Qw31PYZ7NcUFkd1AYzY7Lbpz11CcGXZqgD/sWAlL2SA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cxn7Ofr1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE4606A319;
-	Tue, 20 Oct 2026 14:40:25 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hl0e9+IB;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECB8606A31D
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 14:43:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6ECB8606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cxn7Ofr1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CD01F000C8;
-	Tue, 20 Oct 2026 14:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792507225;
-	bh=5ag2TWCXWR9uzwdO4FL54tkw6F6WUl4C1dUeOhZ1BMU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Cxn7Ofr1wvvUiUpg/R0YCV7YQ7xesgvqbIo4AzRbd11v2ij8B92lvDF9Hk0ikuocG
-	 pLIQvpRzAWRvcWpOBeSgqjKqtEy5OCSA5+RwXtcRn+FFf7CxaZfm0NfXcpmWfKparq
-	 rpT0MrjKnqspN75f+S3LlHHy/UmdyA5EQXMh0DHndukWRaXlWRQ/6DebnxVDk/DFhK
-	 XQB4odxaxRYZfVAVeAcjq5GSbgmzvfW5vy/Gmi620JuBaFsB7ai2VJM69PoNlQFIuX
-	 TmXZ6ZnkwjPvbCJX0mOmwRSX5ChBSyLD/8EkuxOZr9D72Hxbw3uarZmbctwgCVB1I5
-	 yBqF1KeisXU8g==
-Message-ID: <sashiko-outbox-179179@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] KVM: selftests: Test that KVM_RUN fails for
- unresolvable host faults
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
-Cc: KVM <kvm@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20261020143308.228328-3-borntraeger@linux.ibm.com>
-References: <20261020143308.228328-1-borntraeger@linux.ibm.com>
- <20261020143308.228328-3-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 20 Oct 2026 14:40:24 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hl0e9+IB
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55CB716F8;
+	Tue, 20 Oct 2026 07:43:08 -0700 (PDT)
+Received: from [10.57.15.218] (unknown [10.57.15.218])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2899E3F7D8;
+	Tue, 20 Oct 2026 07:43:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792507391; bh=W/Yikr956noee/xLRWy1f51hzGlzHc+4smIokQpB9Lg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hl0e9+IBBWp9E+x72oIanT99AIWv1ndjtvX6GN8kI19JG/d+AuHI3PqRQ6e/X8css
+	 q2rfFAxHAiCe+WVgV0zQ7cavUxeKYacxdjD4wKMQCTYTDjc7z9R2PIBTMT/nPPcGNM
+	 cjqHRZXreBywaD0rBmQJWQJQ4FvcTFVYuTnS+1mI=
+Message-ID: <16679dd3-c168-4dee-bb9d-da9b0e3416cf@arm.com>
+Date: Tue, 20 Oct 2026 15:43:08 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,80 +52,99 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH kvmtool] arm64: THPs for systems with pages bigger than 4K
+To: Vincent Donnefort <vdonnefort@google.com>, will@kernel.org,
+ julien.thierry.kdev@gmail.com
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, maz@kernel.org,
+ oliver.upton@linux.dev, alexandru.elisei@arm.com, andre.przywara@arm.com
+References: <20261019145949.1922019-1-vdonnefort@google.com>
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261019145949.1922019-1-vdonnefort@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] KVM: selftests: missing gmem_flags argument to vm_mem_add() in m=
-ain()
---
-
-commit 3a1c0f90404979b6638dbd3c2769d7b78633b104
-Author: Christian Borntraeger <borntraeger@linux.ibm.com>
-
-KVM: selftests: Test that KVM_RUN fails for unresolvable host faults
-
-This commit adds a selftest in which a guest writes to a shmem-backed
-memslot beyond the end of the file to verify that KVM_RUN fails with
--EFAULT rather than retrying an asynchronous page fault indefinitely.
-
-> diff --git a/tools/testing/selftests/kvm/faultin_sigbus_test.c b/tools/te=
-sting/selftests/kvm/faultin_sigbus_test.c
-> new file mode 100644
-> index 0000000000000..b9d673260ed5a
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/faultin_sigbus_test.c
-> @@ -0,0 +1,168 @@
-
-[ ... ]
-
-> +int main(void)
-> +{
-> +	struct sigaction sa =3D { .sa_handler =3D sig_alarm };	/* no SA_RESTART=
- */
-> +	struct userspace_mem_region *region;
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	struct ucall uc;
-> +	gpa_t gpa;
-> +	gva_t gva;
-> +	u64 npages;
-> +	int r;
+On 19/10/2026 15:59, Vincent Donnefort wrote:
+> The THP support imposes an alignment of the memslot userspace address to
+> the size of a THP (PMD_SIZE). To do so, kvmtool overallocates the RAM
+> size and aligns it. However it assumes PMD_SIZE is 2MiB, which is only
+> true on 4KiB page systems.
+> 
+> Use a huge-page size, based on the system page size. This value can be
+> massive for a 64KiB page system, so skip the alignment if we couldn't
+> even install one THP.
+> 
+> Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+> 
+> diff --git a/arm64/kvm.c b/arm64/kvm.c
+> index 36b3284e4a92..2c01dc32fa9a 100644
+> --- a/arm64/kvm.c
+> +++ b/arm64/kvm.c
+> @@ -18,6 +18,8 @@
+>   
+>   #include <asm/image.h>
+>   
+> +#define HUGEPAGE_SIZE (PAGE_SIZE * (PAGE_SIZE / 8UL))
 > +
-> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
+>   static struct arm64_image_header *kernel_header;
+>   
+>   struct kvm_ext kvm_req_ext[] = {
+> @@ -35,20 +37,23 @@ bool kvm__arch_cpu_supports_vm(void)
+>   
+>   void kvm__init_ram(struct kvm *kvm)
+>   {
+> -	u64 phys_start, phys_size;
+> +	u64 phys_start, phys_size, ram_alloc_align = SZ_64K;
+>   	void *host_mem;
+>   	int err;
+>   
+>   	/*
+> -	 * Allocate guest memory. We must align our buffer to 64K to
+> -	 * correlate with the maximum guest page size for virtio-mmio.
+> -	 * If using THP, then our minimal alignment becomes 2M.
+> -	 * 2M trumps 64K, so let's go with that.
+> +	 * Allocate guest memory. We must align our buffer to 64K to correlate
+> +	 * with the maximum guest page size for virtio-mmio. If using THP, then
+> +	 * our minimal alignment trumps 64K, so let's go with that.
+>   	 */
+>   	kvm->ram_size = kvm->cfg.ram_size;
+>   	kvm->arch.ram_alloc_size = kvm->ram_size;
+> -	if (!kvm->cfg.hugetlbfs_path)
+> -		kvm->arch.ram_alloc_size += SZ_2M;
+> +	if (!kvm->cfg.hugetlbfs_path) {
+> +		if (kvm->ram_size >= HUGEPAGE_SIZE)
+> +			ram_alloc_align = HUGEPAGE_SIZE;
+
+There is logic in builtin-run.c to detect the host_ram_size(), could we
+use that instead to decide if we should apply this alignment ? Or retry
+the RAM allocation without the alignment on failure ?
+
+It doesn't look like a good idea to hard code this based just on the
+requested RAM size.
+
+Cheers
+Suzuki
+
+
+
 > +
-> +	/* After slot 0 and the page that some architectures use for ucalls. */
-> +	region =3D memslot2region(vm, 0);
-> +	gpa =3D align_up(region->region.guest_phys_addr +
-> +		       region->region.memory_size + vm->page_size, TEST_SIZE);
-> +	npages =3D TEST_SIZE / vm->page_size;
-> +
-> +	vm_mem_add(vm, VM_MEM_SRC_SHMEM, gpa, TEST_SLOT, npages, 0, -1, 0);
+> +		kvm->arch.ram_alloc_size += ram_alloc_align;
+> +	}
+>   
+>   	if (kvm->cfg.arch.guest_memfd)
+>   		kvm->arch.ram_alloc_start = mmap_guest_memfd(kvm,
+> @@ -63,7 +68,7 @@ void kvm__init_ram(struct kvm *kvm)
+>   		    kvm->arch.ram_alloc_size, errno);
+>   
+>   	kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
+> -					SZ_2M);
+> +					ram_alloc_align);
+>   
+>   	if (!kvm->cfg.arch.guest_memfd) {
+>   		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
+> 
+> base-commit: f67bc0bdae9433a9cfd05e65ea2c1bb6102566d9
 
-[Severity: Medium]
-Does this fail to build when compiling KVM selftests?
-
-In tools/testing/selftests/kvm/include/kvm_util.h (and
-tools/testing/selftests/kvm/lib/kvm_util.c), vm_mem_add() takes 9
-arguments following commit ee455183c92be7:
-
-void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
-		gpa_t gpa, u32 slot, u64 npages, u32 flags,
-		int gmem_fd, u64 gmem_offset, u64 gmem_flags);
-
-Calling vm_mem_add() in main() with only 8 arguments omits the final
-gmem_flags parameter and fails compilation with too few arguments to
-function vm_mem_add. Should this pass the 9th argument (0), or use the
-6-argument helper vm_userspace_mem_region_add(vm, VM_MEM_SRC_SHMEM, gpa,
-TEST_SLOT, npages, 0) instead?
-
-> +	region =3D memslot2region(vm, TEST_SLOT);
-> +	/* Only the first host page is backed, everything behind it is SIGBUS. =
-*/
-> +	TEST_ASSERT(!ftruncate(region->fd, getpagesize()), "ftruncate() failed"=
-);
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020143308.2283=
-28-1-borntraeger@linux.ibm.com?part=3D2
