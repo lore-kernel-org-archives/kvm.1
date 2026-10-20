@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493339;
-	b=pdfSq1XRJB5v5VcBFa3G6flbP+tUc9olF4BGN/WEhPrl1VSmLjjdZu0ZIOWddd3hle14
-	 uRdYrl80gwxvnqd4HKpgb6q6pltlG3tMy0MEuuOMVa6VvHwgcAVdo+rAlEyeou8CB9ciq
-	 5FumAgsDS/yz1gXhu3yqOQ6lpuANhHrTX6ni6O4tOxlhN/4dJJbePEEHekVFkrvFmReWa
-	 7PfXZ2HexGPgN+NxGofO/63O5sfpb9l9KrNTmxGtrJpqSot3IKPmUtZoSx7btC+HRpF0+
-	 gC/WO7FQ8iIefYEqgmQgmOOAUFf8LlR/R4cG0HYRZq3yb16xCKr5rC4kFQOsAnEzxYA==
+	t=1792493345;
+	b=PMKFFivCgV8/R4UrPqKRC9dqq2cGqbeRAz6h5CFev+Nkf+w5oRt71X8WPufyKTpDCinJ
+	 U/JIVkG1QGjvdeq5gOF6oGrGLrLyDIzYQiALx+BDOEPIUGPgi+we0bOwplUSIPcVenSw7
+	 nGLOiZX6m6D57QzD6nFv9ADE5ES09Z4V+2AkGU7O3UMB2+PClwPFWlRHwdWBTWEYfbIMS
+	 LPk6RCBcT4s+vkHdnWjB2I4TuzIp36h0SsmGRSdLWCPpT1jiXVu5F75Amtzmm1t6WwpK1
+	 mKj/DajnQk3hEKBsDHCu/xbTZdhYk4/6EwevY3N2bFs0+HEFk0YVN2LlcCiaggCwMmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493339;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493345;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
 	 X-Scanned-By;
-	bh=neSxnRoG/OmCl+kteGebRHQJWP0OZxqFcRCZ8c/QA3c=;
-	b=42GWmUvQGCYPUHQ+HYzsmFF0yNurdRjoPMjS65FiMxHxTAbIgJ3W2Ct6BE7Pvn+M+CRF
-	 C15e2gjwbFUO770qTf/Egu2uO0x7afvX1IWr/SaxUMF+bystUGYd06CQ1EFmn49RH962y
-	 dH/dmJ6jkiNFVz7XWDBV0nAN9SIWLLbqIQbwKjHsc5IxprDLB+QjUMlyGKmU9Km/DJggi
-	 +MFt6nYK+kNh5UaYnRn+H9RbZBnUhUichEQJEHx7CkGf0CsnnHD6lpO1ReBTkPx1zP5b4
-	 xoW6pCIpdHUSDxfhHQeptqRozRy3YDzr2eGm7v/l0VnzgNGOOGLHRSUFM65hR/S7hXw==
+	bh=vqRAumP9Q4P45v+BnAaswZB9eyGK4924nboYOJbbp2E=;
+	b=up3GVI0oBKdf1CaxCBxulUSo6Mk4N9aj6720gd5OCUF7+DUrq02SaL60PmWpV508DVxN
+	 icE1e6Q9Y1F+/PL6VwXBLwAPrGKT0OiKBBSITzOHcqAkfYETSWMqOmjmcNmpbdF9uhXES
+	 9iU/lcve0Gp2GC3O4j+8w/CfEBLQuviF5qMOQWH3SMlj4g1dxoDWPfuvwAFwO8nbrlytq
+	 Ggel7/lIAxr0qWn7UR7I9Ekqqm9cv0/6LkK6uhUj/7gmAZj+PPw7jwicNi36mgaj0arz/
+	 CS5J80UNLp+xvI6tnLCmCZGkOIzWVb8+OIMc+hfBk6parq1qsYFjbZpGxa8VnLjLg0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gjPDNYY+;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TbLZsblz;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C01606A31A
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:48:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27C01606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2949A606A31D
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:49:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2949A606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gjPDNYY+
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TbLZsblz
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792493338;
+	s=mimecast20190719; t=1792493344;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=neSxnRoG/OmCl+kteGebRHQJWP0OZxqFcRCZ8c/QA3c=;
-	b=gjPDNYY+gMVpShgD1vQ7IAbBScyXya4t41NAFU5GU/BR4em9iVyutGv/GjqKB534owM+7b
-	3i1lS1CWfa0lgmB/Z1Al0ZnXcPLyubbfdr4gjluC4boWVhZ+hGBxKzP1z7JOz9DCqoAx0D
-	gcDDOjZawApDRhRc0EwpE6sTyZrbbug=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=vqRAumP9Q4P45v+BnAaswZB9eyGK4924nboYOJbbp2E=;
+	b=TbLZsblzzm39TNhmUHN3I4nqaoWQhJgEqPnYhVZfiAhF9P0DOYMSOoW0WIFVIsfunL0Eqx
+	+CNRM+OzQQ8SlYFuDXk9Hlp2/FOGrfFjUKXpVTx6StGLz8+o93LzuGgdgIhOX/i0ebzoQ/
+	75UqO8nzmRmPorNEN0eqPXn+TPMB2ak=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-561--SDF1wKINiCajNC4XN8nVg-1; Tue,
- 20 Oct 2026 10:48:53 +0000
-X-MC-Unique: -SDF1wKINiCajNC4XN8nVg-1
-X-Mimecast-MFC-AGG-ID: -SDF1wKINiCajNC4XN8nVg_1792493329
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-GSbpLDLrPQqHZRQ94vMg0A-1; Tue,
+ 20 Oct 2026 10:48:59 +0000
+X-MC-Unique: GSbpLDLrPQqHZRQ94vMg0A-1
+X-Mimecast-MFC-AGG-ID: GSbpLDLrPQqHZRQ94vMg0A_1792493335
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C281219560AD;
-	Tue, 20 Oct 2026 10:48:49 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 401F418002AD;
+	Tue, 20 Oct 2026 10:48:55 +0000 (UTC)
 Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC00130000E7;
-	Tue, 20 Oct 2026 10:48:46 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4CB201800257;
+	Tue, 20 Oct 2026 10:48:52 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:45:46 +0400
-Subject: [PATCH v7 29/65] whpx: convert OnOffAuto hyperv property to
+Date: Tue, 20 Oct 2026 14:45:47 +0400
+Subject: [PATCH v7 30/65] whpx: convert OnOffAuto arch properties to
  QAPI-aware registration
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-29-431a86b02b58@redhat.com>
+Message-Id: <20261020-qom-qapi-v7-30-431a86b02b58@redhat.com>
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 To: qemu-devel@nongnu.org
@@ -151,54 +151,91 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
  Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2624;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6702;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=fGCiDH3DKuAcB7LiCAkFXJHjeu1egNzKD2fVY9nF9O8=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZaOCCAg3rKTDCUl37+MgI4Ayhi8dunIN41j
- jugR4kjAkCJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWgAKCRDa6OEJdZac
- 5b6WEACNN5lLKAUjdYB4zCcQJTY9b/clU3Ul2ZqrNT8WzHUQ+fqxHO7sMKEnV/KpehWqsAYB7Wa
- TcTcGvlU8B+Rp77AddGo/jHP3KiihUrvHM5s2QNpNKBTkpdE/FtNtDGvtY7Rl7BnE0I4ur8xacz
- HXMHNM++tzb2u4VkpDDbgWl8A7MUiCYAu2iAC93LMBoFtVGYq/tjz4PQr2gFfLvNxJ8hh8g+2iu
- smVuhJO5UxVs/qkZoh6kIe0LZ6WvLafLB9/AU4a+YYPl0g7G3gvQV+Pzb64VIcibMzpV8qJ8b8M
- t+/BnO1YoRZPZ11BLDzxA83zKDcZQWNwtNYWZCCxAgLA9Evb3RKKpX3ezykZW625hA11ml8/USP
- Ng9IwZx3DS+SVp66cPB3YD4Vblja8jaJLVCuGSQnNstkM9jWJ41xW1pTt/RQn1TsRK/t7qyBtO1
- kHBG4Xp7bkht89XuKnLvIPrFH/W85g9KGuerywfZYfz/FobiX2GdtR3qPJiq0+oIJa2vLvqAjID
- 3M72ERKY7E2DdWkQ/qN6y7zsbhicNq980YAI7vae2/ht1mYnRZYyo4tF62m7MjopLEjAufj+RHB
- jZQHwA8CL5TVxFAQmJ8wDFE+5CAwj4qru7MbpAYn1njH780Iqg5frmuGfrB2B5bUXeimrR8uppN
- FX/dQnG4r/dU1+A==
+ bh=F8HZ01XPkkBAtzYnAznI+OeIpIRAjOQCT4x6+nWcsZQ=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZaNHtr+AkGnY6QtTL0vsHs6SXFQUQ8MQ6i4
+ S1YABGB6XOJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWgAKCRDa6OEJdZac
+ 5U3+D/0bY0Yw06OplfGaxwkWeRkmM8vGPJ5F9M0cVeicCg/oXCYp+UKgC78TYi76WRGpbyL2C7S
+ 0KxXaqPjOuPoiru3KbrrdebJxsrbKZijDWmhlIsP9jywqVWMuCB+weipCeiSrSWcM8KYKDNl6lh
+ BAGjS+eZuivN40OoVe2PxA7lKt96RrybUNJq39LwnTdm/8Lx0x5A7nOmtMf6p5zUDEy6bO9wTJ9
+ /9cnmG5OgUn4fNab0GmXDPDj2/b7lDQNLOZQiOEE1aPD1CnruklCEcrbKrMXEZIYQc9JkVJVviZ
+ sWu3vDJ9GCWP/JGd6P26BcaZeOw6qiIfSjJgGMcE3CyRguBdSr4ldn+yC83f6n9vVa68VDVU85t
+ PoSwXa0eYL0MCuvzu1v2GPnE/oDcMkqhH7+e/tLdejjt7K9jX7qtbmGTnHtszQGZv3Bn0tfV3RM
+ fJtheu+i9GFuCM5MxESNY85RUBO6acenPHsR1+nmHtqbICIGanSHvfZzCXqJL4WwAH/IRbzic4F
+ sB4SZ4sCdErodKNcNWECfUhDwpvmtfzJ5r4PC9kT3qEABypAk8pdibNyUNuaX6p+KJtOwuuQsnA
+ NP6Npp4aqbXBUyIW3gZUAcetZJhmn/V7jRQ/TFEG2uGqdOa3T2YNGJ9TDknE1CAeWkCjRf+IwA6
+ Z2YAEk2bZvmBjgQ==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Convert the hyperv OnOffAuto property from manual visitor-based
-callbacks to property_add_qapi_enum().
+Convert the ignore-unknown-msr, intercept-msr-gp, and ssd OnOffAuto
+properties from manual visitor-based callbacks to
+property_add_qapi_enum().
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- accel/whpx/whpx-common.c | 29 ++++++++++-------------------
- 1 file changed, 10 insertions(+), 19 deletions(-)
+ target/i386/whpx/whpx-all.c | 101 +++++++++++++++-----------------------------
+ 1 file changed, 34 insertions(+), 67 deletions(-)
 
-diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-index 247e12db8128..187938c02b51 100644
---- a/accel/whpx/whpx-common.c
-+++ b/accel/whpx/whpx-common.c
-@@ -22,6 +22,7 @@
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index 113f79afb9ab..64fa389a2f93 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -30,7 +30,7 @@
  #include "qemu/error-report.h"
  #include "qapi/error.h"
  #include "qapi/qapi-types-common.h"
+-#include "qapi/qapi-visit-common.h"
 +#include "qapi/qapi-type-infos-common.h"
- #include "qapi/qapi-visit-common.h"
  #include "migration/blocker.h"
+ #include "host-cpu.h"
  #include "accel/accel-cpu-target.h"
-@@ -470,18 +471,11 @@ static void whpx_set_kernel_irqchip(Object *obj, Visitor *v,
+@@ -1875,6 +1875,7 @@ void whpx_apply_breakpoints(
      }
  }
  
--static void whpx_set_hyperv(Object *obj, Visitor *v,
++
+ void whpx_arch_destroy_vcpu(CPUState *cpu)
+ {
+     X86CPU *x86cpu = X86_CPU(cpu);
+@@ -1955,7 +1956,7 @@ static int whpx_handle_hyperv_guestidle(CPUState *cpu)
+     return whpx_handle_halt(cpu);
+ }
+ 
+-static void whpx_vcpu_kick_out_of_hlt(CPUState *cpu) 
++static void whpx_vcpu_kick_out_of_hlt(CPUState *cpu)
+ {
+     WHV_REGISTER_VALUE reg;
+     whpx_get_reg(cpu, WHvRegisterInternalActivityState, &reg);
+@@ -2059,7 +2060,7 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
+                 .Vector = irq,
+             };
+             reg_count += 1;
+-            /* 
++            /*
+              * When the Hyper-V APIC is enabled, to get out of HLT we
+              * either have to request an interrupt or manually get it away
+              * from HLT.
+@@ -2359,7 +2360,7 @@ int whpx_vcpu_run(CPUState *cpu)
+             WHV_REGISTER_VALUE reg_values[3] = {0};
+             WHV_REGISTER_NAME reg_names[3];
+             UINT32 reg_count;
+-            bool is_known_msr = 0; 
++            bool is_known_msr = 0;
+             bool raises_gpf = false;
+             uint64_t val;
+ 
+@@ -2911,120 +2912,86 @@ void whpx_cpu_instance_init(CPUState *cs)
+  * Partition support
+  */
+ 
+-static void whpx_set_unknown_msr(Object *obj, Visitor *v,
 -                                   const char *name, void *opaque,
 -                                   Error **errp)
-+static void whpx_set_hyperv(Object *obj, int value, Error **errp)
++static void whpx_set_unknown_msr(Object *obj, int value, Error **errp)
  {
      struct whpx_state *whpx = &whpx_global;
 -    OnOffAuto mode;
@@ -210,10 +247,15 @@ index 247e12db8128..187938c02b51 100644
 -    switch (mode) {
 +    switch (value) {
      case ON_OFF_AUTO_ON:
-         whpx->hyperv_enlightenments_allowed = true;
-         whpx->hyperv_enlightenments_required = true;
-@@ -497,11 +491,7 @@ static void whpx_set_hyperv(Object *obj, Visitor *v,
-         whpx->hyperv_enlightenments_required = false;
+         whpx->ignore_unknown_msr = true;
+         break;
+-
+     case ON_OFF_AUTO_OFF:
+         whpx->ignore_unknown_msr = false;
+         break;
+-
+     case ON_OFF_AUTO_AUTO:
+         whpx->ignore_unknown_msr = true;
          break;
      default:
 -        /*
@@ -225,24 +267,117 @@ index 247e12db8128..187938c02b51 100644
      }
  }
  
-@@ -533,11 +523,12 @@ static void whpx_accel_class_init(ObjectClass *oc, const void *data)
-         NULL, NULL);
-     object_class_property_set_description(oc, "kernel-irqchip",
-         "Configure WHPX in-kernel irqchip");
--    object_class_property_add(oc, "hyperv", "OnOffAuto",
--        NULL, whpx_set_hyperv,
--        NULL, NULL);
--    object_class_property_set_description(oc, "hyperv",
--        "Configure Hyper-V enlightenments");
-+    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
-+        .name = "hyperv",
-+        .description = "Configure Hyper-V enlightenments",
-+        .qapi_type = &OnOffAuto_type_info,
-+        .set = whpx_set_hyperv,
-+    ));
+-static void whpx_set_intercept_msr_gp(Object *obj, Visitor *v,
+-                                   const char *name, void *opaque,
+-                                   Error **errp)
++static void whpx_set_intercept_msr_gp(Object *obj, int value, Error **errp)
+ {
+     struct whpx_state *whpx = &whpx_global;
+-    OnOffAuto mode;
  
-     whpx_arch_accel_class_init(oc);
+-    if (!visit_type_OnOffAuto(v, name, &mode, errp)) {
+-        return;
+-    }
+-
+-    switch (mode) {
++    switch (value) {
+     case ON_OFF_AUTO_ON:
+         whpx->intercept_msr_gp = true;
+         break;
+-
+     case ON_OFF_AUTO_OFF:
+         whpx->intercept_msr_gp = false;
+         break;
+-
+     case ON_OFF_AUTO_AUTO:
+         whpx->intercept_msr_gp = false;
+         break;
+     default:
+-        /*
+-         * The value was checked in visit_type_OnOffAuto() above. If
+-         * we get here, then something is wrong in QEMU.
+-         */
+-        abort();
++        g_assert_not_reached();
+     }
  }
+ 
+-static void whpx_set_ssd(Object *obj, Visitor *v,
+-                                   const char *name, void *opaque,
+-                                   Error **errp)
++static void whpx_set_ssd(Object *obj, int value, Error **errp)
+ {
+     struct whpx_state *whpx = &whpx_global;
+-    OnOffAuto mode;
+ 
+-    if (!visit_type_OnOffAuto(v, name, &mode, errp)) {
+-        return;
+-    }
+-
+-    switch (mode) {
++    switch (value) {
+     case ON_OFF_AUTO_ON:
+         whpx->separate_security_domain = true;
+         break;
+-
+     case ON_OFF_AUTO_OFF:
+         whpx->separate_security_domain = false;
+         break;
+-
+     case ON_OFF_AUTO_AUTO:
+         whpx->separate_security_domain = true;
+         break;
+     default:
+-        /*
+-         * The value was checked in visit_type_OnOffAuto() above. If
+-         * we get here, then something is wrong in QEMU.
+-         */
+-        abort();
++        g_assert_not_reached();
+     }
+ }
+ 
+ 
+ void whpx_arch_accel_class_init(ObjectClass *oc)
+ {
+-    object_class_property_add(oc, "ignore-unknown-msr", "OnOffAuto",
+-        NULL, whpx_set_unknown_msr,
+-        NULL, NULL);
+-    object_class_property_set_description(oc, "ignore-unknown-msr",
+-        "Configure unknown MSR behavior");
+-    object_class_property_add(oc, "intercept-msr-gp", "OnOffAuto",
+-        NULL, whpx_set_intercept_msr_gp,
+-        NULL, NULL);
+-    object_class_property_set_description(oc, "intercept-msr-gp",
+-        "Intercept #GP to log erroring MSR accesses.");
+-    object_class_property_add(oc, "ssd", "OnOffAuto",
+-        NULL, whpx_set_ssd,
+-        NULL, NULL);
+-    object_class_property_set_description(oc, "ssd",
+-        "Separate security domain");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "ignore-unknown-msr",
++        .description = "Configure unknown MSR behavior",
++        .qapi_type = &OnOffAuto_type_info,
++        .set = whpx_set_unknown_msr,
++    ));
++
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "intercept-msr-gp",
++        .description = "Intercept #GP to log erroring MSR accesses.",
++        .qapi_type = &OnOffAuto_type_info,
++        .set = whpx_set_intercept_msr_gp,
++    ));
++
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "ssd",
++        .description = "Separate security domain",
++        .qapi_type = &OnOffAuto_type_info,
++        .set = whpx_set_ssd,
++    ));
+ }
+ 
+ int whpx_accel_init(AccelState *as, MachineState *ms)
 
 -- 
 2.56.0.116.g6de20f6092dc
