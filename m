@@ -1,108 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500924;
-	b=VIxUEIRHNhYM8vXsLDIYjH04GtjBC8S0KZ1LhAv2f+fIqJ8r3irK9zo/Jfbhi+efv4mP
-	 E/FxVVU65lZpCh8VPPoAmx8jkvw6cdFj93mu30OKZ7aAc2GvPBmaV4oovq5EGHXMXqe1h
-	 pUvmXvd1gar1CrZeNP92Ds74Bo1qOiZ4vdYx5yqf6WV2O/MhmdYgzjxytpWmAib7hMgFx
-	 9Qkw14MQcKmOtz3LEdi8O/ejD7QvD3IlTXdrkD8fHVuIKz1Z2VYAKFP3kkF3IKzb8u7pl
-	 PxtEkOWhZ8IdxljL5Lq0kgbHuBZVAz+/S1RqBeBKtfqePgXKenjbUrKNX42T4/CRzyQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500924;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=XQOUTOVFh8JzZI9kzVmkfR5g5tplHfGAGARfyUUcUvk=;
-	b=vEOTK+mY3KAiRJG29qTeRyMrSk+e+kUubjjaXGksECw9sjFd+SRwW5+OBij8M0FXR5Pc
-	 s/PDjP2Q80zsxjwhNVj12ZeiCj0YR3Aj4Lj2tr8tLwdGTkSLBgR/bwDSYS+PENQNiSPgM
-	 X8VI5wzTGu5NRnc8yox1Dn/tPiWDKHNjDQL3r+ZB94o7SIk70j7rg37gpkpPxnc6tgFP5
-	 +zBX+sq0QbIme7nsFylBjud9mEvmx0KA7u8ury9cwc4F/+uqOtiZmoauOPBx734jwVlVP
-	 AjpAdbXDoW8zDvF2ioEh+bTqJ6VzvbieIWfX8dPyhwe2GpGrufrLlbUilsR7Y1jYlKQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b="Ip/eppT6";
-	arc=none smtp.remote-ip=209.85.219.52
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792501133;
+	b=aoEZaZuM4wEFpTxxCF9ncXESY7GlBgcNpIZ42tAf13ujvALzbF5qPgqdi1Q4d0BYcdJy
+	 NKPof0YqouwhYflD10PKo7EfY2QKQOgeJU2dqvwIkZzoXCdFcS/UtWy+/NOEmCmY2a8O2
+	 3dMVXHVHGjM16PL2Kza+uc6YVRO1OUrLKglvFtV5KsM0t7N9MAAmy+tMxQUum1MIF0LUd
+	 HzIFhoXOzakR5iOBujNBqGw8mPWh07fk9v9uuybN70SVuIXYnulBb+hsDRfJtDYJQcslt
+	 apv08vMqmFDrjj6da5TDl2tULXL2m6qWUWZdP3MIzUQv+yqdhto6ek0zRyZZUyc/VzA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792501133;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=VUxthBqiZaOd+FFznks+MirJZVKuej0EZmOWkfi5vpk=;
+	b=31tblATtu+N4qrGkFTxbrvQ8/MCBXz3OoykS7A6DmRkUKq63TVWXV1gIYXV8/tdx+0fY
+	 HjPTPKw8017VN1678ddFBMvP9EfPaqEZP4U1dVKMQ+qSl0/hRPoIXN7s7hnRJ6tb/gtSO
+	 L04aeI1i658nT0bBRkqRWIC+R5NMwoiHgloOkvnXFrpBGYkuvABMEAvdFmwPSIbVBRYme
+	 TItdmfh1+zmt2t6QWiSKuG43FvM2B3gaIA+6FFhS753/iHfSQXemHqtytQoYyqe/ETTkH
+	 b5qni9YNk3X9OogJsrVyJtp1QEHN3FulpdNLn0dq1gpl0R58NBnppwvuHPcNBN3FvaQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GA5oeREv;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Wg7p6buZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB1C606A320
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 12:55:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0BB1C606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB51606A31C
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 12:58:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BB51606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ip/eppT6
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-917ad52d7b6so35335806d6.2
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 05:55:23 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GA5oeREv;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Wg7p6buZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792501132;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VUxthBqiZaOd+FFznks+MirJZVKuej0EZmOWkfi5vpk=;
+	b=GA5oeREv5pINVVAEDQB1JeZS4rvjNXWDxum8IzuUhGqxjP4+Etqv+xKpTUhyCVW1lstdTC
+	nVKqDUtHqfawx+jG9yGdzM3w5CqX2lIdri4pv1EWWqybKECrB3B1btXi7Lqg5CYwLclzzw
+	2nygl0CevQpV6A+tXhRoWWB9HjijZgk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-dLNTZny1NAeeIZAffF8FMg-1; Tue, 20 Oct 2026 12:58:50 +0000
+X-MC-Unique: dLNTZny1NAeeIZAffF8FMg-1
+X-Mimecast-MFC-AGG-ID: dLNTZny1NAeeIZAffF8FMg_1792501129
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48c4445512dso2862864f8f.2
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 05:58:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792501129; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YyD/zZKP60wA3LI/08ein69RziyE6K6reBLEI0Oalqjg80b2KhwTxQAmofFjlRZwxG
+         csP9q4hVBtJMsPdUDJEnlnzQPUXVBuc6IhPX1CfFw8HNrHHkxCC/BYm5RIFhC9cAhzgy
+         4kXtoMBJ/SZF8c9ftt13tf1asglBoxgSYuLaZCvh8hp2/+fxXEIyFMIOJ3nFFrH50jn8
+         kCq3TeZ8G5YknU3anJpjG/fDXN2rhhCtLd5lDXR1+CLp62o/ZfX2gSgXxpCWqDF7a8yp
+         JHspaw9+qTAbWiq8qOHwqmKQtNZXQf9bMtnfUTUXQlU0Xqbi+AZ6MpOEwGd3cR/5LHho
+         WWKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=VUxthBqiZaOd+FFznks+MirJZVKuej0EZmOWkfi5vpk=;
+        fh=4efFLAMYchlJ9I5E3aTdssOmKB/0gMgnjsqwjSoGJnc=;
+        b=HF1dkVxUnScrFdCMFrkb7iArgc/f0ueRqDwQgkusIMyisW5ND9sb1UHma9IrUvdoHQ
+         nwYsCHlmLRWT018Z2lVKDQdQI/NF79iuVAn11591sPv+/xdXa8oXsosyxvugErrIJvCz
+         m1boJ61NIuhmfDOZNeC4VkRCgceKGTYsI/RejPOxcFil0NFru/X9genaPbpMMIdAvcw/
+         nmuSUYUqkii4EyOXi0HEFk9ciY3XkuLnRllNdLepFgtSKibD98GbIJnzFadEz7zrrUWB
+         HKjSaCTcxRadzKlRWhi3u/lrQo05gsNchHGjblnmvPahWE4nZbnbUhtiCpUoYYkZXlLD
+         pCOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792500923; x=1793105723; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XQOUTOVFh8JzZI9kzVmkfR5g5tplHfGAGARfyUUcUvk=;
-        b=Ip/eppT6lIOeHIgd9ePC/agK6WRPZ0LvrXW2qIgtRclhuB4uCSmSrxlrJG++jx7x8Q
-         GxRJ9aVKNiguohDmkJur58tjsyvXwHpL80A1HqiszhOvfukAvzQCVsNG48fczWZCjyuK
-         99WHOIHNNv7xPeXFebwW7pSdNeiVuHiGnXCtBOZIkocrPApbJQ/crl1qxsKkg8sB7DwS
-         +GmVdzy8lDjOrzMnLBUthRpSfV2LciwfmcjKgTvhRyAvhVXo4wGnBkqCMLS6VTDKsFKf
-         4jQx3eRIduJnj35kxC0dEzhiB7AZKjLl1y/cXPEpKJEm1g109Nh1dhx63WFjunhwttRT
-         D9Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792500923; x=1793105723;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1792501129; x=1793105929; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XQOUTOVFh8JzZI9kzVmkfR5g5tplHfGAGARfyUUcUvk=;
-        b=cSQlWoR0oS8g2i7q8KFCXySwf/g2adpcGhBoYFGv9EysZHIxCJKVvcx4NlSonxJsOj
-         NIx/nicY0WZYu0VgibDzyye9fGUZlqWh5oU+xhA+2RXTlIzNzgw/WGISb+ru1keYtwzz
-         q1BPP4cCli8ELaLIrtbuNoGOr+rxWn3YAfDVWaGp4KJImdWJNwiBISb1VXywrHvUOImV
-         4LwR80kTg7whCKNYlSgEgBT7QmQIupq2NE3s2B94wrARjTzSeGUoH96Py4ogA+mQxYVO
-         5uYg8tKqBF5WVXwYF+N6h+8X3uuRgvBN6oVIx8WTzBlImGiaw0kNa8wQ1FwFB/Q+VreJ
-         wKaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzP488Mf6NX58g2wQo/B9QZylliaipXRxDTQZm7AibHWgEsCbIYCb7Jl54oVpQpp17dieQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKgX9qNDZ3lj24hvx2JbTKH5RXkZoD48/nFf8JaE9hEYeFnuA/a
-	OLhseYCkvxj3mtK/Wu5rDdJKJ1By5MQ08phyw6q9C8nK2x7fJri0Lyn5FNuz1aGSSZ8=
-X-Gm-Gg: AYBFou120t8luEv4WPq0UOfJBuAbE/fsa67vArUxfSyi8Pva8UgyXrMBA8JwrFa5jy8
-	vQkW0bCWy+BSSmew7x5Ygvt+SgRmXst+rM+4DxT4XoBKbrcjOWe6dNmPxShtBRjnnWjRlRWX5IS
-	KHkKlN+88kXIO8zWhm8WdtOCNub4g70vUDHUX6Ur8d+XC/ftc2jgxIvB1zAllc4OA8lctZGO1ch
-	RpOg6PDECsHQZZq4xCmk6l1Z+LhRk4pAdSKXm647sz1jcofPO2Km1eO1pOrCkr89ioAcQfAXQeE
-	XcHf7xAdNdxKCIjpHxPrMLqcsljJ/CPPtd96gN/49cpJJp9CDGkeGryFLVNH1wMnfe+ruQv6iwG
-	1WtqT75WsyAI6niPVkYfVy604PmN1osNngV6+tBjx+5OzCLPiLE3RSkLcrtqBsesC2g6REUe2Gz
-	0wzDiovTyzpjxq5fR6PmH6zyTHcmjAAgb2g+AYT4fzUvBdTcPKYAkTVQXe6ulIx3jekBnOizopj
-	rz7vAOh1+rPpfYSHWZ+gWfHacnY47YmuHk9yy6UKVJGBkd/S2gqabnK
-X-Received: by 2002:a05:6214:626:b0:917:8752:8214 with SMTP id 6a1803df08f44-91bdec2e198mr180120836d6.1.1792500921889;
-        Tue, 20 Oct 2026 05:55:21 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c03da5b4asm26796476d6.0.2026.10.20.05.55.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 05:55:21 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xJ9NA-0000000CTFP-3VJ7;
-	Tue, 20 Oct 2026 09:55:20 -0300
-Date: Tue, 20 Oct 2026 09:55:20 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 03/20] ctlv: Add the root family specification and
- generated files
-Message-ID: <20261020125520.GN14213@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-4-jiri@resnulli.us>
- <179245258505.58760.6060356114682279013.b4-review@b4>
- <atdeH3nA_gkLwPLM@FV6GYCPJ69>
+        bh=VUxthBqiZaOd+FFznks+MirJZVKuej0EZmOWkfi5vpk=;
+        b=Wg7p6buZuipxNpz0ZdaQxziAT1GrbeVjckzLhmLQDo1l2a/gL5BbVaxUHuLM0r6TMO
+         RNZYYxsSb1i+ZA28kk8sMNdPWY7EFnRRbLUkjav0ea3idgcT8vSyK2vcxgUjomdUnQqG
+         LBTw7mfTU9TXN5TUed1lmm9irUxsGt5/IP++bJBMnuTMdSvJ3gji6Vr46pa/RqRNFtOr
+         tSgFBuprcnq62amlw4EeoSpryudQsEkWcUjPZ1Bi50kFRMSATC1PVdTXPmibog1A1qhj
+         cTl3yqaTbLSS+9awdfTKNV+shJ5h/WI7lT7HYAJKn4+c9tEIFOke9N7mMj2QzkTIYbOw
+         M8UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792501129; x=1793105929;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VUxthBqiZaOd+FFznks+MirJZVKuej0EZmOWkfi5vpk=;
+        b=cLYyuEb7nu5UoCFM07yZI1iokWkz6L2hTFyfYKdo653Uj+uxUdu+X4c/dy2vppYB2b
+         sJDPbv1z64MrzrlMKb1AOWPc7/ynwJBvmvZDo0PLAkBcPLB4hM9z1znedfrEylI/+h75
+         Bqw1KCyOxNcdWYTnYpWchkjoFeDEuTN0m1Hq3lawQl514WCd1cYI/slqF/e/iZOie8q3
+         DOMI/TvcB4oqWRewa/rviX/bA3RR5XnN21AzhtoFSpNb/8mV5C7BxvweFb3W/TF0OfVj
+         sDo44Xil5rtNxodLBmVeqSQNo7ENNBdtTrWSAeE72MWZTz9gTU+3JRZh8aoP944sYVSr
+         4h9g==
+X-Forwarded-Encrypted: i=1; AKwUvBzvDKrewsVPNmUU6/QVNsFIDZtaIby+kUlcHzrmczn54X+NZleJm45JPymdMV6ua098+AY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKUH29pCdLgBscjguEn2mQW1rj60BOCshrHtpl20VVoi5x+9emY
+	6tdw7w5hAXCyJWMdA75cehlG7ncbnDYnKlPAkt+ISlm7ESwyTd+6AEZoSjturEKkKIrCVGF/NBi
+	qSgsNkUYSpa7t5F1aNEl5/XBPaQBbwRGuWqAATT6zA8TkpbRi1lXWYWbCE0VYRiKUQZ5T6MwbuH
+	TmVSHuqTH1ff9N5JIwvmSF/b4QGoCI
+X-Gm-Gg: AYBFou0mA9KcZ7AxXr6PN78L8d2+B7a1D/k0kA9362wGz86Mzkum6G2GCIir38LEsCW
+	iQaCTXjprbq3emYnkK5DfJwf3/HTTOHNVybervk2u9WDrwdsaGgL/Qs3ohh8PG3yKLaN4LqOeOu
+	ZO0Dal1n8NeAFqIhE7cbjfVLF2NrplXE31UmxBMRgt9zvC4pUCB3YIgUjMhkc36PBOm9RKNaDXZ
+	J59IRll34MkBOHmiaeMjHGsoxz4AHflK7a1YFrXReWbm80Jlh/7vrDIiLW6iw==
+X-Received: by 2002:a05:6000:24c5:b0:488:7b66:140c with SMTP id ffacd0b85a97d-48e07bc17f7mr19463053f8f.28.1792501129587;
+        Tue, 20 Oct 2026 05:58:49 -0700 (PDT)
+X-Received: by 2002:a05:6000:24c5:b0:488:7b66:140c with SMTP id
+ ffacd0b85a97d-48e07bc17f7mr19463023f8f.28.1792501129183; Tue, 20 Oct 2026
+ 05:58:49 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,54 +122,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atdeH3nA_gkLwPLM@FV6GYCPJ69>
+References: <atdeLNa8rtifVnaV@sirena.co.uk>
+In-Reply-To: <atdeLNa8rtifVnaV@sirena.co.uk>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 20 Oct 2026 14:58:35 +0200
+X-Gm-Features: AclHuK_EyXz6S57-dKvlnTp-wiyLvlM_cIx0foL-YU26mYTOQGN3J0P1sUFgOR4
+Message-ID: <CABgObfZJJ8WF4cYm-cqYY0OOBs2zJCBV54+c3YVjCaBv_CiAmQ@mail.gmail.com>
+Subject: Re: linux-next: manual merge of the kvm-x86 tree with the kvm tree
+To: Mark Brown <broonie@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, KVM <kvm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 20, 2026 at 02:28:55PM +0200, Jiri Pirko wrote:
-> Tue, Oct 20, 2026 at 01:29:45AM +0200, jgg@nvidia.com wrote:
-> >> [ ... 238 lines skipped ... ]
-> >> --- /dev/null
-> >> +++ b/Documentation/ctlv/families.yaml
-> >> @@ -0,0 +1,13 @@
-> >> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +# Append-only registry of CTLV family names, indexed by family ID: the entry at
-> >> +# index N has family ID N, up to 65535. The root family owns ID 0 and heads the
-> >> +# list, and every other entry comes after the entry of the family it inherits.
-> >> +# An entry may be marked deprecated, but never reordered, removed, renamed or
-> >> +# reused, its position being its wire identity. Every entry must have a
-> >> +# specification in specs/<name>.yaml, and is added by the change that adds the
-> >> +# implementation. Fixtures under tools/ctlv/tests/ are not registered.
-> >> +
-> >> +families:
-> >> +  - ctlv
-> >
-> >I see where you are coming from with this, but it is going to be
-> >problematic from a global kernel perspective. Given CTLV is imagined
-> >as a general tool for any subsystem we cannot control the tree that
-> >things merge through. It will not be like netdev where there is one
-> >authoritative tree with a linear history.
-> >
-> >So if Bob and Jane maintainers both add their own subsystems by the
-> >time it gets to Linus the IDs will get scrambled, and bisection will
-> >be lost. 
-> >
-> >Either changes to this file must be strictly done in a single tree
-> >with shared branches (which is going to be a bit hard process wise)
-> >
-> >Or we need to put the ID #s here and have some simple process to
-> >coordinate them during the development process. Since new families are
-> >probably rare it shouldn't be a big deal
-> 
-> Exactly. Collision is not very likely. Explicit ID or implicit, scramble
-> would still happen. And in that case it is resolvable.
+Il mar 20 ott 2026, 14:27 Mark Brown <broonie@kernel.org> ha scritto:
+>
+> Hi all,
+>
+> Today's linux-next merge of the kvm-x86 tree got a conflict in:
+>
+>   tools/testing/selftests/kvm/x86/nested_x2apic_test.c
+>
+> between commit:
+>
+>   994489f04ebbb ("Merge tag 'kvm-x86-selftests-7.4' of https://github.com/kvm-x86/linux into HEAD")
+>
+> from the kvm tree and commit:
+>
+>   8b0aa41839602 ("Merge branch 'selftests'")
+>
+> from the kvm-x86 tree.
+>
+> I fixed it up (see below) and can carry the fix as necessary.
 
-I think because of process if it is kept like this we will have to
-merge 'dead code' to reserve spots for people doing new work..
+Oops, my (harmless) mistake in solving the conflict. I will add a
+fixup patch to kvm/next.
 
-But at a minimum this comment above needs a big fat warning not to
-change this file without consulting with XYZ to coordinate merging.
+Paolo
 
-Jason
