@@ -1,85 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792479125;
-	b=w/gmB1GELW4zCU9bWFZ9cIfmjgm4EPYBHTFY5jjsBEl9daViFmlwFYaF0hUwfp2TwIsE
-	 pD4+Ex+ARbPpNkEoPWiHpfYpZeloIopB0xYp5Z8W+B6yMDCZ03MkMDXqsWQtOuhcpK/dg
-	 qr0K//dhE3Jq1UB2VsoozykW32SbdeEamBS/KRbTpfvWdfKumhMMTcsOv6cTccG8zU710
-	 iRQ0dTSZNQ27eAsMs5Ilj4US6YlhyP5OAI9P2Hs3Qq1qyIdhFsPz1wXqKK8CxVlxh2jJy
-	 Mus7G6Bte56jWsx3w8wCLM4swXSUtxMMmK3vTHi8DfikjjFyIASnSZ1ENbh37HRUFEQ==
+	t=1792480374;
+	b=h2WLxZb9HUz+pTZejJ9/rEZa+ZnRX5Uo1d3eauH0vkBB1BMSUNaMJXNJK04PpvV1Y8hC
+	 d1XmXxbcCHf5S2bPVWr+yjdsVgWxwohpjfEC1DrArvOgs6G423Gh8Amo0PAO/zTmgs/yF
+	 jO502ua4zNHYb2aCmi8vuFywmMHuZTn9Ui0M+QauP/K/J5aoAYtm86EtaSnGxSPc3E+ph
+	 CFV1co9sZJ3HUFZ+UpvCFBWzdOEkA1Ln9ii3NQTp+6LRpgy4nOX7YgnBx/cX2aNdHi7Y1
+	 17FaAHcMOBdBpt1xQrgvRZx8kLJp8DTR6MP+wituHIk9fMD2fkNWcow5nlirotwT6iw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792479125;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=oDF42rmnmkhzedotr2E1sl7hiMAx0kNtO/q61gkgaPI=;
-	b=RBYk7ODXipVxGp9WvV69mHLEQRtul5wC2GnWXTQ/DmTT4XSpum6h/v0e0ub/IJ7EHkK/
-	 /v6ICJTPH2ykqEoXuuNo3zwLgRt29WgOvQKF2j+X53xAb0VHEUjwjp+X2b1EZF/WnKb5e
-	 gam4TrpwEDDIFN2ZYBxeN5ebjIxoUoMxvv28NdFZMPVU9NBP6IhaKB3auJF4RZaDvO5VP
-	 Oit93Gs55UcEEg7PLh2JlLE2NwbYBNYIZThIPFptHO6RPKNlh9i+yWK0emT3UdygitYIS
-	 VQ0hWUCN8UfhbpV/c3PkMeAATsmr7nfOpHJNKKMqXZVwNtUtTfS2P+IkCF9K4zgexew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792480374;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=ZoV9Wz62aYiL5BWtqMeRBCY7UFLWc6enrWeTYPiqAWI=;
+	b=JOOM7c5jSS7SPAQ5kXMdKs6gOg32CLy4DG/rMhtUQEdbu/TeyLq/UdXvf2A4kXXkXe+m
+	 oA52kYDUHAeDcJTDTSJAXlDG4uZ4PiYdBYLVbPD1CqBmjrH8rW+6pdV2MQDMP/510ygnU
+	 uEruKcbb/B0tLW7lYI2oOb7QQbtBCn/V5Zz0Lg02ltVhrNL08z1BccG6tffosts97NAlv
+	 Epk8obEtjVQHf/FkKQa4YBtg0uhojFHo8IrmWyZ96enJF5hwIcrbtsHLER+yP9VC8weZA
+	 haw5YVaoXcvnKF2tGh0aQDImb/XAqNUkXFsuSEbUyns8XkgVXDmZSfhl236BnsviFRQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linuxfoundation.org;
-	spf=pass smtp.mailfrom=linuxfoundation.org;
-	arc=none smtp.remote-ip=209.85.208.51
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZjoFICcK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2F7606A32E
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 06:52:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F2F7606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso3985043a12.0
-        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 23:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1792479123; x=1793083923; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oDF42rmnmkhzedotr2E1sl7hiMAx0kNtO/q61gkgaPI=;
-        b=T2ieWWm2fJMs0ly/lKc+VBaeNbR7JULdp/Yv1onwgfgH6q5MD5rmGllkC4r1IGDjPh
-         b/oViX0b6w+uMFqC5z0zvmY+lbDh55jK+TCaZMeqXjulSW3NEhRsiuz2anP+CryhJBrp
-         lyXFOsCuCjD/XcDxIqSfX1dJPC9p/wimpItQE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792479123; x=1793083923;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=oDF42rmnmkhzedotr2E1sl7hiMAx0kNtO/q61gkgaPI=;
-        b=0wACPqOdJx7Q+pbWhIIf58AdPo9fg+F2d7v6MDiGoe5YgUdKX/RL5XsMqYlVbpVy43
-         pHdPeA3/sQH2PTUV60WphlPj3bonCrdhMcLSvuU5b2gWMfjzRUxw/yCwFWum67LMwrV0
-         r5IRU9QEKduBb1E31rlEmFf069/ca8W/GrbHDJds5+Oh3WktDhETApiqFgs61VDokdet
-         FIZ0etwJGS0Kj5UOPiP+zBnKglhlN45a38zbK7wfRpfAnb1jg5GmDZ7xQHvlqOxdRUUm
-         l3e3DHncMPKUc72hEZ0upvJqmOa/D6IjAPjA++wQV2/U7HFgkjR+8FgeySlboopmzrn7
-         XaEA==
-X-Forwarded-Encrypted: i=1; AKwUvBzq87kpKiT0IdNZpo7qqwpb4HAwSIr3/uNUCWxT3ye+k+sm4HM77GSGvNlmHq/0ougAExg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKkOU++vrWcj4f0rODeEzHrIyFHBjzVMulxMjen8zwldgI0wQkw
-	S83A8PPVYV1QqpmdB4285GQl6yOYn1G8XZ2ItnE5SkhAOYF3GlsIuNP24VwtVOJgWwwZfC63I1l
-	Q6xyjEs8=
-X-Gm-Gg: AYBFou2NtvGMKFMTgwi5TCQf2H8UH2IciGgzHTpzT57ssk05w1g+fYPxhUkTYvCcgwe
-	t1CAVfEq1AOpI2tFFZBQWlRHF/ttXzDT5nkG22ifo36sCZcwgvEwcndwhv2+MEt4hSSjdL2S5ch
-	YJ7d8UjN8Q6yL0S932doIP0TY+1o2rdEheUQ9VywV8tlYnmDBf7iuT1GCM4qKrC9SfPFsH+9Qcz
-	slgv9L0nRqYDE5UUG0CUUylijykTh3MOzyATamHVaE+bTRE7B4qNjEJWtVjD+jD2yEvG/EBLZOe
-	7mFT1k3QKdOkJAm/lluV0zlNVI8ZQKERVNPSw417r+BIi/cWjWQ+dZdIZ8vjUu4zkRGxGxKT6i1
-	E2L5o/Utft5r21TW6+ORxOF7U5JiIYEuKo0nBWolgHHN3iEcix0AOCAdxSAgvQXGJHVdpulGRNR
-	grXVDFAIuxL+HYE3c3z8+qfCd2e51q3aUUz1h4yngWwlVBYu6AJeJUfvaULJLnPVo6EvBvGwj2T
-	XcqAUEmLjMMfPA6pJjhDiKzp/nLK7n/8ISfKDlfilMfzTU=
-X-Received: by 2002:a05:6402:20ce:10b0:6af:859a:f306 with SMTP id 4fb4d7f45d1cf-6b3a8209426mr4393775a12.36.1792479122483;
-        Mon, 19 Oct 2026 23:52:02 -0700 (PDT)
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com. [209.85.218.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b38a1dacb6sm5006639a12.28.2026.10.19.23.52.00
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Oct 2026 23:52:00 -0700 (PDT)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso395123066b.2
-        for <kvm@vger.kernel.org>; Mon, 19 Oct 2026 23:52:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwKaJQlZlzqttAMN/mo+NXTIXqZpNCqCdp8LgE5QCLC1hGdLnZ8I21k86+2hLwS/yJM2T0=@vger.kernel.org
-X-Received: by 2002:a17:906:dc8d:b0:c46:645f:cedd with SMTP id
- a640c23a62f3a-c46645fd0e1mr41541566b.8.1792479120078; Mon, 19 Oct 2026
- 23:52:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4FD606A326;
+	Tue, 20 Oct 2026 07:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZjoFICcK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738941F000CA;
+	Tue, 20 Oct 2026 07:12:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792480373;
+	bh=ZoV9Wz62aYiL5BWtqMeRBCY7UFLWc6enrWeTYPiqAWI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZjoFICcK9yvSV9CMrCCzTtYUOjwDL8HjzyDvaPkSK/DCcZ4cbeES4+CzKhNcHnRTc
+	 livyH/PgTvCrp47WoSU6gRTBvtOaMGaWvf/xN74GwwkMXMFD86E3gOyTIqZ5HivEN9
+	 QfIZCCSMFtADQ8/h7ONdm/MOogrQkvXC9xJsQMenZQCvOIRYCTP+apTHaXGbSpoFdt
+	 KczPbCtXgOGaq7IMQGGvkjjpaXEgUlXE9UjM712GdfJXDPSwa7MIqD3qNBNaliqraB
+	 JV1mFgcJqBqe83vvs2kGAfeQLWjqaBmrA6PTnVjSW7jhBH1lh5EwfiTYb46eAaGlsn
+	 PjP190VesmcSg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xJ41j-0000000508c-1NYD;
+	Tue, 20 Oct 2026 07:12:51 +0000
+Date: Tue, 20 Oct 2026 08:12:50 +0100
+Message-ID: <86wlrczvyl.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	KVM <kvm@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: Re: linux-next: manual merge of the kvm-arm tree with the kvm tree
+In-Reply-To: <CABgObfYRYCrOj-rHDaDd3LSFMSd0ug-YoB2pD7jDA8ZgMR0sCA@mail.gmail.com>
+References: <atZJV1B79VsZoy8u@sirena.co.uk>
+	<CABgObfYRYCrOj-rHDaDd3LSFMSd0ug-YoB2pD7jDA8ZgMR0sCA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -88,39 +72,43 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
- <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
- <20261018174250-mutt-send-email-mst@kernel.org> <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
- <20261020021924-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261020021924-mutt-send-email-mst@kernel.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Mon, 19 Oct 2026 20:51:43 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
-X-Gm-Features: AclHuK8XyMOfalc2h8xLYAwuI7OOaq7eZ0Xa-sCHFlL0Wx6hRPrX61Uqe-VGGwI
-Message-ID: <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Wang Haoran <haoranwangsec@gmail.com>, jasowangio@gmail.com, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, eperezma@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, broonie@kernel.org, oupton@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, suzuki.poulose@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, 19 Oct 2026 at 20:31, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> The following seems to work for me. Testing would be appreciated.
+On Mon, 19 Oct 2026 17:56:39 +0100,
+Paolo Bonzini <pbonzini@redhat.com> wrote:
+> 
+> Il lun 19 ott 2026, 18:46 Mark Brown <broonie@kernel.org> ha scritto:
+> >
+> > Hi all,
+> >
+> > Today's linux-next merge of the kvm-arm tree got a conflict in:
+> >
+> >   arch/arm64/kvm/mmu.c
+> >
+> > between commit:
+> >
+> >   dd0bc00e3e920 ("Merge branch kvm-arm64/cca-7.4 into kvmarm-master/next")
+> >
+> > from the kvm tree and commits:
+> >
+> >   b44a8c32f0116 ("KVM: arm64: Abstract out memory abort handling")
+> >   892c8a0bcc8e3 ("Merge branch kvm-arm64/cca-7.4 into kvmarm-master/next")
+> >
+> > from the kvm-arm tree.
+> 
+> Hi Marc/Oliver, is this something that will be fixed on your side by rebasing?
 
-I have a whole branch that removes __get_user() and __put_user() entirely.
+Yes. As soon as you have a stable tag on your side, I'll remerge the
+fix branches on that, and all will be forgiven.
 
-Somebody should check that I did it right. But I didn't want to do the
-pagefault_disable() around the vringh_notify() part, so it's not quite
-the same as yours.
+Thanks,
 
-Let me just push it out. I was going to let it simmer, but your email
-made me go "I should just let more people look at it".
+	M.
 
-Mind taking a look at the 'uaccess-cleanups' branch?
-
-It builds for me. That's all the testing it has gotten so far. Blush.
-
-                   Linus
+-- 
+Without deviation from the norm, progress is not possible.
