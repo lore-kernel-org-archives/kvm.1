@@ -1,76 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.34.181.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510047;
-	b=noxD/qxFXWihuey7cBgVhuqQk3/Q73U3YpDRGaizotXmQtuo+8QJGLepZe2YGL9N0Pfm
-	 9eBLoTSTyEP5gwa8iWSC8UWAmQdfycTLDuiViSdWJN3FjaQGSer0vDr4m4CMEIUOpZlGM
-	 hi/SSTNa8DdF/iP52zPIHHl3rb2PApaJdMjcEMH3KxnddfWRCQ0g24kk6oLt0rc7BJdYl
-	 ufBTwuS19tffb/Z5emqQdg9k5lf2mgAispteOMMFEytw1rX90Un+sjmUH1RV5vL6uIBDD
-	 lzgQ1Cx3wvxTr4ceixZvQDgCbX0lOSYtQel1OrNAWHahr3J1D2tWnhakjNx10IjoPLA==
+	t=1792510073;
+	b=UOs0HRoEgtbKQWuNI8HPenCMxArCqabqFv34bob1A6WKy79ler5Jdr923h81hqnx2a//
+	 4JvCVfGdPdASOX6YHNtfDxelgvmAPox7e0cCAa/8g91Bijzmcuu2TajgGp7eT3Ucp1kfp
+	 nNZjlc7LPCGd4EE4cF8qY16+lSncf7AxgkoRHghRLD4PRWf0HTdz9OHbAJShJjFrURBXW
+	 LQhENyJ08ekPuVu4uJZyetF3rtsAI4zzA+yyNBPWiz8VXjzVkdqQiKjC+/SyLhFWWYMbq
+	 lfQ0bf5VWKuYHiiY2624QncJNeJ1IwFqU8W2ILapS5F6FEbtSMC4Ih2uPhEtHatoOMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510047;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510073;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
 	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=smYt2A/D6bgUwhq9IK8nY6O2fO8D40KFUJ7xfAAL5tA=;
-	b=tckS64K734OPAkkj/MZa6jHqwMAaOgo/uqfp3cSrN0qqghpJPE1ODufPLGUKNaa6Eg8i
-	 Ww1QKb7M842B3mncImaA0a56VIzmW5toMYeGX/cb+jiUG5C6kCGqNCbha2Bkk66tIOiE6
-	 9isoa3Fijz+zvvXu1oOxPwKzwkhvkr336+QPQU4h6Nb+ogVeOthrxOCxmTF8UWi5PW+iX
-	 EYyv/DT8yfd5MyxcqzyNtY34b4YxFLcgLd3CjOSvfm1zSM1ZS4aFRUa3I86Qs5tIwkIgH
-	 RskyEnaNJ8/94R2+dm80rnV0MjwCxtGjqCt3vDADnidOs1AFvcRvUfu1iip/rAfiHIg==
+	bh=7k9NOmMMfZXvfteGnF7jjF0ekHZPNYfauGqI9ty4uhc=;
+	b=ICZNZwwYSEZW6oqXIXzWrORlKQIrtBFpGBhixuVnViKjMyGJlE5Jv8+1ZLxAIo3THrCp
+	 lN0pJ78wZ4gUtf7dVVMSi1NotHObH7yS9lbBHreCvliKCC3wcb9OwnWXyw/GoYxiVluaQ
+	 LTnzqq6TYJEPAf91uSwsAoj+KBosuflRijIvRHF09gzNvBlDnDV1bxhmET1cXVu8Cmcjq
+	 zs6MeMZUgeHrh/oeHfqqdnPFGPOIztM7fL4ATwjDggJFjootytl9DDla7qacZHG2srkqz
+	 rT3Mun6XtJl8j32PgTNJO912Myi3SU7lqNM2fqSwlDI8sIko5Hp2V2CPoyyNZq7TGVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amazon.de;
 	spf=pass smtp.mailfrom=amazon.de;
-	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=shWdw9AB;
-	arc=none smtp.remote-ip=44.246.77.92
-Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=Fo86sHJQ;
+	arc=none smtp.remote-ip=52.34.181.151
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570D4606A31D
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 15:27:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 570D4606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4278606A319
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 15:27:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4278606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=shWdw9AB
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=Fo86sHJQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1792510047; x=1824046047;
+  t=1792510072; x=1824046072;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=smYt2A/D6bgUwhq9IK8nY6O2fO8D40KFUJ7xfAAL5tA=;
-  b=shWdw9ABuM6oaHzEBXN5tYKHuoDtoB4fFGsFQt3qmrVHF9pxT4HSNqdo
-   XHoYGHr88skmuhUZCsD7I1qCMxxeaV0y+P0XQe+qFKwfXs9KKLQfPc/O9
-   w81skMhOqxdBoW0EqvMUGrq5WRElYLdYa7/AOqE8Fjc7RXjUVUj2zY9fh
-   Q6sio5erKqMajUCYmtMnnA3IWi1vNh5K8lrm8ZhwxZITHE9RHSXFeweCU
-   N81iWbgAUWWLUiD1dwe7tPfocGSGEtSlRRMCXIWnvL1Eh2uy0bOzZcEiB
-   rQxmgdaNnJdlOIt/FdO6gv+sQyLiCCGHuT+TOdscXCRwgn02yxhkJ5e2F
-   g==;
-X-CSE-ConnectionGUID: Jcj+GkKXSHySA4WmnLxOmQ==
-X-CSE-MsgGUID: Jg08VMWkQtKCOUUao/upxQ==
+  bh=7k9NOmMMfZXvfteGnF7jjF0ekHZPNYfauGqI9ty4uhc=;
+  b=Fo86sHJQH1i4WYYy+J4FezL7Gx/c/r29nz1foKfXJ9UzONMMEMWxTUrW
+   Rr4iCtG373u9LvuNzbBPRb/5qYx2z2ZWzJnqxwT1Rh4Oz+C6tVaoJ8/XD
+   7tYDcUzuFovMTIpK63Fva62YUNNHmgH0hjFwNJMnCYGx8O2rFLuFm/3op
+   w8WnNEQYFf1xVolZ+0JosdiXmpb1OYV2dhBJqT/UOtf4D5kRjPEP3I/SS
+   5oriMWfLqr2sisoMVP1nwK66O1Li4DrUrLbkrNCprli4+nxJuHtpt0KXE
+   NzImtGGCBe6MO712mQOjnRlEO11W7Ih1zEyYM9FiJhtQ6qIE7JiaoI8Ko
+   A==;
+X-CSE-ConnectionGUID: cmj60SYARomcbjaamSJ8fw==
+X-CSE-MsgGUID: D97Qs6NZS/iB7WB/DHZ0kQ==
 X-IronPort-AV: E=Sophos;i="6.27,168,1787011200"; 
-   d="scan'208";a="31748079"
+   d="scan'208";a="31745993"
 Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 15:27:24 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:25929]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.38:2525] with esmtp (Farcaster)
- id 0b048636-3cdf-4399-9489-66b476c5a006; Tue, 20 Oct 2026 15:27:24 +0000 (UTC)
-X-Farcaster-Flow-ID: 0b048636-3cdf-4399-9489-66b476c5a006
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 15:27:42 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:17518]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.190:2525] with esmtp (Farcaster)
+ id 4260941c-6a76-4d18-934d-852ed6e88a57; Tue, 20 Oct 2026 15:27:41 +0000 (UTC)
+X-Farcaster-Flow-ID: 4260941c-6a76-4d18-934d-852ed6e88a57
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Tue, 20 Oct 2026 15:27:24 +0000
+ Tue, 20 Oct 2026 15:27:41 +0000
 Received: from dev-dsk-gmazz-1b-865f0d50.eu-west-1.amazon.com (10.253.70.18)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53;
- Tue, 20 Oct 2026 15:27:23 +0000
+ Tue, 20 Oct 2026 15:27:40 +0000
 From: Giacomo Mazzola <gmazz@amazon.de>
 To: <kvm@vger.kernel.org>
 CC: Giacomo Mazzola <gmazz@amazon.de>
-Subject: [kvm-unit-tests PATCH v2 5/8] x86: replace per-AP bringup prints with a single summary line
-Date: Tue, 20 Oct 2026 15:25:22 +0000
-Message-ID: <20261020152525.57694-6-gmazz@amazon.de>
+Subject: [kvm-unit-tests PATCH v2 6/8] x86: add timeout-based SMP bringup when fw_cfg is unavailable
+Date: Tue, 20 Oct 2026 15:25:23 +0000
+Message-ID: <20261020152525.57694-7-gmazz@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261020152525.57694-1-gmazz@amazon.de>
 References: <20261020152525.57694-1-gmazz@amazon.de>
@@ -85,58 +85,68 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Remove the per-AP "CPU %d online" printf from ap_online() and the
-per-CPU "enabling apic" printf from enable_apic().  Replace them
-with a single "smp: %d CPUs online" message printed once after all
-APs have come up.
+When fw_cfg is unavailable, fwcfg_get_nb_cpus()
+returns 0 and the existing bringup loop spins forever waiting for
+cpu_online_count to match.  Add a timeout-based fallback that
+watches cpu_online_count and declares bringup complete once no new
+AP has checked in for AP_QUIESCE_TICKS (~4 billion TSC ticks).
 
-On systems with many CPUs, the serial lock contention from per-AP
-prints delays bringup long enough to trigger platform watchdogs.
-A single summary line provides the same information without O(ncpus)
-serial transactions during bringup.
+Assuming a TSC frequency of at least 1 GHz, this gives between ~1 s
+(at 4 GHz) and ~4 s (at 1 GHz) of quiescence after the last AP
+before declaring bringup complete.
 
 Signed-off-by: Giacomo Mazzola <gmazz@amazon.de>
 ---
- lib/x86/apic.c | 1 -
- lib/x86/smp.c  | 4 ++--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ lib/x86/smp.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/lib/x86/apic.c b/lib/x86/apic.c
-index c538fb5f..483b26d3 100644
---- a/lib/x86/apic.c
-+++ b/lib/x86/apic.c
-@@ -237,7 +237,6 @@ void set_irq_line(unsigned line, int val)
- 
- void enable_apic(void)
- {
--	printf("enabling apic\n");
- 	xapic_write(APIC_SPIV, 0x1ff);
- }
- 
 diff --git a/lib/x86/smp.c b/lib/x86/smp.c
-index 0cd44cdc..706f071a 100644
+index 706f071a..2fcc6c65 100644
 --- a/lib/x86/smp.c
 +++ b/lib/x86/smp.c
-@@ -97,7 +97,6 @@ void ap_online(void)
- {
- 	sti();
+@@ -14,6 +14,13 @@
  
--	printf("setup: CPU %" PRId32 " online\n", apic_id());
- 	atomic_inc(&cpu_online_count);
+ #define IPI_VECTOR 0x20
  
- 	/* Only the BSP runs the test's main(), APs are given work via IPIs. */
-@@ -294,7 +293,8 @@ void bringup_aps(void)
++/*
++ * Quiescence timeout for AP bringup when the CPU count is not known
++ * (bare-metal EFI without fw_cfg).  Assumes a TSC frequency of at
++ * least 1 GHz; at 4 GHz this gives ~1 s, at 1 GHz ~4 s.
++ */
++#define AP_QUIESCE_TICKS (4ull * 1000 * 1000 * 1000)
++
+ typedef void (*ipi_function_type)(void *data);
+ 
+ static struct spinlock ipi_lock;
+@@ -293,8 +300,24 @@ void bringup_aps(void)
  
  	_cpu_count = fwcfg_get_nb_cpus();
  
--	printf("smp: waiting for %d APs\n", _cpu_count - 1);
- 	while (_cpu_count != atomic_read(&cpu_online_count))
- 		cpu_relax();
+-	while (_cpu_count != atomic_read(&cpu_online_count))
+-		cpu_relax();
++	if (_cpu_count) {
++		while (_cpu_count != atomic_read(&cpu_online_count))
++			cpu_relax();
++	} else {
++		int prev = atomic_read(&cpu_online_count);
++		u64 last_change = rdtsc();
 +
-+	printf("smp: %d CPUs online\n", _cpu_count);
++		while (rdtsc() - last_change < AP_QUIESCE_TICKS) {
++			int cur = atomic_read(&cpu_online_count);
++
++			if (cur != prev) {
++				prev = cur;
++				last_change = rdtsc();
++			}
++			cpu_relax();
++		}
++		_cpu_count = prev;
++	}
+ 
+ 	printf("smp: %d CPUs online\n", _cpu_count);
  }
 -- 
 2.47.3
