@@ -1,69 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792493247;
-	b=dgI0A7Bz5n16vxFRF/VuYFe5VendDurCOgWyQU+uQU5bd8u0G1tGJzTvDl8vkuvfWrSn
-	 yEyuxC3FOVJIuBF19EyoQdWo8sKSUzFouyJOFs8QnQ2apaIzr2vGtrWYcBsS+k64aXG9r
-	 +352jB2A3qWLyzOS8GxIuA814CWfGgxt5zFoa52cYmg7siRrNcCOZ4y+wK5HTnGsXICzK
-	 i5MH4nabbAAInehutO8VYSo38o5nIO9mBDhHMb+KsbUu3NJiO1sT9VGXXrtpXYzygeD35
-	 Q7raFaSEDw3quGvLzHVVluEpzgd5WOWAXIURLtVhWy3Rc0Ff/mLojNmKDNQjXr+MkFw==
+	t=1792493251;
+	b=DFCmo+lgB/0vJJrnFd3+63nDOQxkIT5NH1lOSUPQ6V8niy0oIFDc5cMac2uvPBHU7aHB
+	 MHPn+SOOTlCq1yU8ccdDvLLITI3lPCbqc1OFbzEaU8UB1G61D6dbzFpLKNc8hwtcrqJur
+	 E89UjF+yh4apOgF/Mv+6gKpU2IcClut4uot7+/H1PG1rOgZvrYaqH4bVySRqLhdjZQiDX
+	 tEO4YgO+ZPmjSqq0SDk6ouv2kj6Q//SRX0bJYVEV+7ngEfs65bv+hMcAbVwimHe2n2ybv
+	 4PaGqQZQ9SDK5B/7MgdmxOf621Rbx0WHCqWZBhOtSmD58Km63ENRy3uz8NUnCnGT69A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792493247;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792493251;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
 	 X-Scanned-By;
-	bh=T3j8f+7qjazkHlU3ibuflAeMZnSK6eTgFQwyyu7+HY4=;
-	b=EsprlEB5Wo/DaDMTLDyG1lS1wxFXl74eDTzRAABPKOhKKI1YxspNOdj8R02oho0LFRBc
-	 clZOIEH2LnMlcGUUN8Rgp1q1mPGgF+X8uULynrhtW97Pf0L5ogumz1eBwCGNtd76sibpL
-	 M7GapFNLtyL3cRx0Kvn45ylfuCyBbCEDZOcCKw9MWMC29eptjFiLZnLhQdoggfwY6ZBD9
-	 htD8Y4/kOg2khCZoE6HTy6z6gx5e43WHEDu9dIaZRt1h1L8E7o5qtTxiBYazgocs+cns+
-	 fRaGWbUmxvAuGN0hiqlclYtOt48+UuWvvNdXegMF2JQJKQYFDSd7GxDj36p5kY8ERLw==
+	bh=ECa+EP2+GWrANsxj0WvwUZJkCIlcvdWbNsc8NiwNlVo=;
+	b=wk3EBwAoA80SNxH5E65EvlH6pQHFV+P0p82hCD8ItQg08Be0SJY8MJhqUQ5ikNtlNj++
+	 XbzmwBOlBzLJ/qyDTIgfCv9Yg/+UmTB5Kq9BfEvntHwFya3lXyJR5T/tFRwsvvKFdk4K0
+	 LpB9oKR0UlCV8Hucos+2QAULPlK5PCUl/ywfZS9EbbAQid6u+010uQxuH2owUGqK3nXuQ
+	 FfeWFf5Z0qXQg8h0qc/cEMGC0uKUindZsxx73ZEVG9nB1kh7rqqdFLJxk+pLUtL2/WgtP
+	 FF8A1l6kUDVqznIH/evUMRwYsqS8wTpj3HxxalbyzSgYsrtk0pIXScmcbKz0cvqLPpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ma1S9WUJ;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g5CiGGuN;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848D0606A319
-	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:47:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 848D0606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ED9606A32D
+	for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 10:47:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28ED9606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ma1S9WUJ
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g5CiGGuN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792493245;
+	s=mimecast20190719; t=1792493250;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T3j8f+7qjazkHlU3ibuflAeMZnSK6eTgFQwyyu7+HY4=;
-	b=Ma1S9WUJwCrl7Z8h//7gJQ6StBDL/nu4R0flBPucFKAY4XaX8e5jH+oo+mf2E0F+vR8wIo
-	/AavSU1Jt93i1O2rk4QEDLGy54TSEqNYVFOlyuGCN0ZHbQtM05f4yKNhzm27UaG/V/CZ3S
-	XWXONaRFLVON5vtm0nDsfP+HISqCpj4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=ECa+EP2+GWrANsxj0WvwUZJkCIlcvdWbNsc8NiwNlVo=;
+	b=g5CiGGuNvFD0rgfvjV/dslMMhS8N2Tk2sVawBzi7DbQM0fjPit4aIcWckuDIta3ksgelEp
+	5OmtJONQBOz7bKbSzEseUXQFsTZqVjjWpuE8swVjkr/CYFVvHU15f6ssTOzsWVUtWEZsJ8
+	ocTQ1UmmJF45kUNLVyBF1gpUAo+Z1T0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-ihbyk2kzMnWd3H-QsJ0KOQ-1; Tue,
- 20 Oct 2026 10:47:20 +0000
-X-MC-Unique: ihbyk2kzMnWd3H-QsJ0KOQ-1
-X-Mimecast-MFC-AGG-ID: ihbyk2kzMnWd3H-QsJ0KOQ_1792493236
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-330---ICFwzSMLyjVd2-rA4_dw-1; Tue,
+ 20 Oct 2026 10:47:26 +0000
+X-MC-Unique: --ICFwzSMLyjVd2-rA4_dw-1
+X-Mimecast-MFC-AGG-ID: --ICFwzSMLyjVd2-rA4_dw_1792493241
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EFDAD18007F6;
-	Tue, 20 Oct 2026 10:47:15 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B08BA1955EA9;
+	Tue, 20 Oct 2026 10:47:21 +0000 (UTC)
 Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AC08B1800586;
-	Tue, 20 Oct 2026 10:47:12 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7AA0630000E7;
+	Tue, 20 Oct 2026 10:47:18 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Tue, 20 Oct 2026 14:45:28 +0400
-Subject: [PATCH v7 11/65] qom: add qapi_type field to ObjectProperty
+Date: Tue, 20 Oct 2026 14:45:29 +0400
+Subject: [PATCH v7 12/65] qapi/qom: add qapi-type field to
+ ObjectPropertyInfo
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261020-qom-qapi-v7-11-431a86b02b58@redhat.com>
+Message-Id: <20261020-qom-qapi-v7-12-431a86b02b58@redhat.com>
 References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 In-Reply-To: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
 To: qemu-devel@nongnu.org
@@ -150,69 +151,80 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Yoshinori Sato <yoshinori.sato@nifty.com>, Jiri Pirko <jiri@resnulli.us>, 
  Eric Auger <eric.auger@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1530;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1921;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=2OIgxeWqZ6otP2YGCtYtdyJ3HEK4Fvyx/L7bWvHPHdk=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZYjp5Y+KqlnMbXKVbPp8oeCxnUXz1KL4/P8
- K4p+GJF/R2JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWAAKCRDa6OEJdZac
- 5TnHEACR1GhcDzcI8DmQKfHIpJvlmkNBtahkon1/NhI0x7islO7obbKLlwPWCy4wQP0LWmjiFde
- xdHBmPABE8w+GBhIOHh7SA0bED9tVk5Z/KKlUlLW05WmHAclgZP0w/6d5wvOkytAsYlsqG3VRxy
- pzheoaZub7M/f1Vel44KT2PyTTkmTa/qOXxEwlb0xyleSWHAWJ9YwJZGDMVgrIazoCrrCjuu3I7
- iTedHPzNeu958dcqBAk2k83xJ9h7d8l/nOwWQBatA7434OZv4mQjeA8o1Ofgcbi65KOPJGxySd/
- zpF8bho145/tHV1hb2kOE9AJZWK5EagdnYfGHXBmTDKlj+Th/DTIwXSf5tt/sZhF0vRDi1iPq/I
- LKCOU9KvJA+kSgItubIrwmplrAZNenxsHtooqhUGlhbPvcmEcxvBEYCswzXAevfatbwJoe7DFxw
- Q+8H0wl+PDfMBiyBB0MAjrQjDNAgi3DiW+nG2xFvGonrsvQbamKdlaKdTC0x/2QCSiZM65jfyJv
- qZtODKR7Ucan3Z0MVy9Ve7TFMgJLRkBuEHYeUxKnLwFChoZ5UPUii0h9F/SrqgDGCI5+Y7VLkFR
- PA/35B9aACGPcf7BnkarTv8euSmDQVmF5eXIH82cCmx+dLkD7Y0WERC0r9g9iDHW6Ux3KE0GVqX
- 9APAXx+LTkI4QMg==
+ bh=iKT89ERqmB5xJit6r3j8WUD6ClpE36oEYsgjEEvZ40o=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBq10ZYxccp5RLblnwypa/9MUPo5yHCT1xWIDSPC
+ kA8/nPQHZWJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCatdGWAAKCRDa6OEJdZac
+ 5e/BD/9TtX0u6H+0rpG8WE+dl2QuQTNqc7I7UQsZIGnhPN3Al/XNQZiAz7mmC9G+NYbkf+JSdfB
+ k5kprVrQhJ3Qwo46Eo+f3qr8ThczDGZA6O4hzHv5kxdvgp6qn1DaCqqyaCoKsR/z+iuGL2HmZsU
+ mDSJqIH3dy3Hb40RluHg7V7GmVv4Rf6FguZ82m5gB7pbbTD2eXnx3z+CnMSeaAmfG4F8BZ0feAi
+ ZZdOtwWw3zJcvLJE4/+UfOCPiGxw4cQtY+ATWlNBSjHmmNXNtzG8MlEvUPCJ2Sjn27mHRxuM7nO
+ WQ6+yJh/lQ0Ghbdq95AVNza5NuB1EVwplpUXCjM1cH+Yy2DOAZFw8NZuDgRazKKFH/AOAYKwO7P
+ fSFGOlRSGjjJuFA4w4sYrs+YXl2zcGOmUVTKNTX3yF2OhQx8UgAnNPV9I4poe0gXiUAgmElaUBX
+ bAH8SeScvuf8ZDHbsiN/1WmUdBrI/V4+IxLJlZYGHkeyF8ysSL5DJ7MeUTFBeBmG5LI9nRNWyhj
+ xgXX8aohw8Oq+7nyejaTJP4C9/B8IRO6jiFJRRUvMsMjnKfTeEn2904ZPwG2JU6Qdo5st5sHmK6
+ GVmZP2Uzs/39Pu485CCHNkrP67konhv+JXIwq2EN4q6gZq+7K1gfG51xtJ2MyHYyCc0BAAGTRD5
+ xkTzLUa6kbRI52Q==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Add a const pointer to QAPITypeInfo in ObjectProperty. NULL for now,
-but future patches will add means to make it non-null. The
-QAPITypeInfo will then be used by QOM introspection to tie the
-property to a QAPI type.
+Add an optional 'qapi-type' field to ObjectPropertyInfo and
+ObjectPropertyValue. When present, it contains the masked type name that
+can be looked up in query-qmp-schema output. Absent for properties
+without a QAPI type association. Always absent for now, populated
+in the following changes.
 
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/qom/object.h | 2 ++
- qom/object.c         | 1 +
- 2 files changed, 3 insertions(+)
+ qapi/qom.json | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 90c1a34e49aa..e9b380462ded 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -15,6 +15,7 @@
- #define QEMU_OBJECT_H
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 49f222796ab4..34be7768135c 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -35,6 +35,10 @@
+ #        qdev device type name.  Link properties form the device model
+ #        graph.
+ #
++# @qapi-type: the name of the property's type as it appears in the
++#     output of ``query-qmp-schema``.  Absent if the type does not
++#     occur there.  (since 11.2)
++#
+ # @description: if specified, the description of the property.
+ #
+ # @default-value: the default value, if any (since 5.0)
+@@ -44,6 +48,7 @@
+ { 'struct': 'ObjectPropertyInfo',
+   'data': { 'name': 'str',
+             'type': 'str',
++            '*qapi-type': 'str',
+             '*description': 'str',
+             '*default-value': 'any' } }
  
- #include "qapi/qapi-builtin-types.h"
-+#include "qapi/qapi-type-info.h"
- #include "qemu/module.h"
+@@ -55,6 +60,10 @@
+ # @type: the type of the property, as described in
+ #     `ObjectPropertyInfo`.
+ #
++# @qapi-type: the name of the property's type as it appears in the
++#     output of ``query-qmp-schema``.  Absent if the type does not
++#     occur there.  (since 11.2)
++#
+ # @value: the value of the property.  Absent when the property cannot
+ #     be read.
+ #
+@@ -63,6 +72,7 @@
+ { 'struct': 'ObjectPropertyValue',
+   'data': { 'name': 'str',
+             'type': 'str',
++            '*qapi-type': 'str',
+             '*value': 'any' } }
  
- struct TypeImpl;
-@@ -91,6 +92,7 @@ struct ObjectProperty
-     char *name;
-     char *type;
-     char *description;
-+    const QAPITypeInfo *qapi_type;
-     ObjectPropertyAccessor *get;
-     ObjectPropertyAccessor *set;
-     ObjectPropertyResolve *resolve;
-diff --git a/qom/object.c b/qom/object.c
-index 96498f3d001c..c34b47312f29 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -3171,6 +3171,7 @@ object_property_add_alias(Object *obj, const char *name,
-                              property_release_alias,
-                              prop);
-     op->resolve = property_resolve_alias;
-+    op->qapi_type = target_prop->qapi_type;
-     if (target_prop->defval) {
-         op->defval = qobject_ref(target_prop->defval);
-     }
+ ##
 
 -- 
 2.56.0.116.g6de20f6092dc
