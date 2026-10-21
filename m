@@ -1,106 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792587228;
-	b=knud+f9jwhF/hIVMFaESq0hZ6h5TYCE968hP5UowUdRdBhoN3w5P0x7uQCoAbIcOymII
-	 pQsZ5fmg1/XvdjpZcJTUzL9yWGoPIeGvhxSnwCH7x9iqtQXNVAYNlTPSM6UX4woJFrPbN
-	 NYpahwWwemdlfAHDNhqaaGE/SLsif7vtJ/L/JwZ9Go6r+w8OnOZ6NcU3FMJA+90iuciI/
-	 FQgS+fFjuTUJf3zejW5hfs18bnPLBsVkEh4ZJBz2a3s/dDUcuo4Cw/sJ2wkTbps6BTVdW
-	 Won2hre4n4BCtl0EayYeYhTFdpLawMK/GBu0VHc7hb2CquZcyZ+tCfh9r7+aM+Cw/EQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792587228;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792587896;
+	b=bLSRNh6T1o0QjeGzYuKcPivaHAHvJFFsgJK+qLVFCMKa+vcOWnF7a8GUD+Ds8wIgmlAn
+	 h0pMyLzHkVdU6a72bcgjTwAF/rHlTJnEW5nfJe6e4YWEc0qwE1/ofuxpXf+DTMCmnj3Kl
+	 ppS0MJROYcAFCKVQw/S+/EAliur1RJvyhZKiSutSM2uFKdMCv4CXEHWezM5zFTbt0GEyw
+	 vXRAr3HPhtYmF9vIW365IbB5pbll54zjIrwJBK0WYNl/zDoCF6oLInYhcyekPSCxu0lKg
+	 8rRz0om0vD/KYiuz4stOGrdLWUnb4rMeP7YHk6tXq197C3GVl2raJPXcZ1+yQg1J9Jw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792587896;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=vVQV8bQ7dJZGlG+AnyXvGIO0abFwqKNBWUl84ZSQwZE=;
-	b=siTfc6R9FTFwrBXSb+mKymYGMMdHs7jZfLnBjY03dd/J0az4jTwDghsTktMsrzuMzVsT
-	 iqmDVh0U7eAgA/ClQd8L1TMRGGlTAgsMBQWzjlRJ2fChW9KuCxh9kSs9NEvTgf9p3y6Qk
-	 Q2nMAsV3tdCmEksV60VWWGUEKIGGi5nPGX8BfzgpVM8ZupCV/pyNvY80aSLH6MfpWtThB
-	 Y1w4nFyh7T/6m46vjvnJFcIXKuwvGw+TVANLOeFL2GrVFffThD/JAe1fmwq3cHGb0PCez
-	 aVvr1EjEqxMkYEbCaOJT/D8/5e76PVjReHfuq5AbheKOKnz51QpMPGZJixFnGwKwgSw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QGeRoihD;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
+	b=W374XyyieUU+xJxJWxLQ9B2hJtp4a62vxwqtaMIEhksfCbH2dr6ZVo2lB9Luan/IFzNB
+	 6O5WODpmZrclWtdZNCM9+0mFvKRlLgfvK64Tlbuu6WwKDjYGQ67ZEHuCpt8zEK6jaLG+k
+	 G8FplzZKWziD15yTESVMvixs0GWsAR4CAFxYxjpw2uqF8lOiZbun4ppfpN8rr14r6DnyK
+	 fwiZVNrL96TxhXBGYsLQ7temQfLEnRFlqJa7FwPxX7LhC/Ep/oW+iCMGOT0vVU2fTiVk3
+	 K0GHmClqLSFF2IVvJyMVl8wI5m04DpYW+ULKxvsTzFyPMFv8+sEw/lGADiJ5LobbEPA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=CFLBbsMY;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110BD606A31A
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 12:53:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 110BD606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62693606A31B
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:04:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62693606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QGeRoihD
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5365b48238dso6108371cf.0
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 05:53:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792587227; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SbqcD8XgS32o2QsRvBq9dkcUpOEnWaD8DZGfzozgibZu2maHSJm+Z6LvyhatkQzxsK
-         9DZci8w90dlPixyRTdnyheBrDLPkqIMVaDJghyfT8CH8ILFOhqe0gV5DH3DDvVo3EpLN
-         01sZMOiwCGzdXWMdECa5rrRIQMnDzHNZ2xPrzxacPledZdvjwJ9qqTtezUm+T9Dy0zlS
-         XGz9F5lBkeLiDF5i2/iE0rjh1I2ofZ1ONUzMZxscNGHQTQUDgMPA1Ffdd/wqQj8QMihF
-         U1D+XELNOHUW92fUZ1xb6muXVEIJmfcNL4UWDKv/X9lasYH/zG6VVFojmJhWir0xgJ3N
-         D/Dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=vVQV8bQ7dJZGlG+AnyXvGIO0abFwqKNBWUl84ZSQwZE=;
-        fh=3L1y8mkli4P5uvLmpYXyjNjmfFuWE4BHkshm6097W74=;
-        b=JeWN0h65e0by9GRWBsZ0LjOdkR8eN/yb3erZKSpnXQzbh83VDf0t1rCWjovL1CB3S4
-         eJ2856HBLmkJxmLKX/dtIu8uyHLLzZSvqESRVNGeyPv1Ln//4sIcOsjwpBt8niGByawu
-         pYms3rfpXrKYwSE+6GkS392CiHWkOQqDr/NmFFUoGlPcuDhISvRxlCYLPjq/xDMU36a4
-         BYOaLb/H9S7ah7SO6uFApQu7o1kt9LL+jIXfNVKXtfIsc0URYUitYCDHuMkOAuPIbFJ6
-         DkgKQydoZI48qtSSubrnclHmf7mlylmRQ/I3fGun1xd5XHuBUNaJovWqkWq/kbGEvEKb
-         /W2A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=CFLBbsMY
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1e3098ee2so8095965e9.3
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 06:04:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792587227; x=1793192027; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vVQV8bQ7dJZGlG+AnyXvGIO0abFwqKNBWUl84ZSQwZE=;
-        b=QGeRoihD65FQdc8RvPozpgQSjV7yOWDU7rcZKasvivK+eBB4yUw8nHpwWFtGAsIy7n
-         8hlP8ZksN9BUyilV0cFLqYUE9yiEc2JIqwkFJ5/fnFcUL1b87UUOrYqcnHNMyJFeU3uf
-         EI5GaVjyB3nxUuKvKC9hCVvXt/J98q0dCLiYmupDCIRjPDv+4G/YtQgM4P87YebLDKuu
-         rnnCReSmi9jI35inLq4N511Uwijd2OPH5XmV3lJcBOvPlmoB7aEDxslrlRgSKHqef8o7
-         W8zc/Np8u04T1qU38zEOTtyeaIDz0NVYFsLdE8zTeSd+tewXXzGzVQ/q4IQhd7lv31XX
-         K0sA==
+        d=resnulli.us; s=google; t=1792587893; x=1793192693; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
+        b=CFLBbsMYwkrufn9yAq0dSA5Z2c8I2rI4qRFb2c71CsfhYTuPu1XRsLh69ZdtqYM98x
+         9C7RY1x4yjmLKjlv5JMunmxpuiHgr10OI/zCMoNcmyFwjHLmzfgUNQ8rWUEAJRoNAgPd
+         zx6f1rQ+q6QLX+7BmMwMlP6A/8+Oc5Yrau5gTZOanD+1ts5Aa7lgDfF10KVx3gHSb730
+         rAnUJJ7t2T2AqgXlhscveNcqek8YMjE2eKzx6NEQ7hcihBA0/X7uvPVcD7TOMvGRg+CI
+         VJqsYeSAGOgzr7gowdk3glF2ev0bFVuPoPFN+QB9wwVANRdfS5JCQbZWv6FroeDwvu9l
+         NhoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792587227; x=1793192027;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vVQV8bQ7dJZGlG+AnyXvGIO0abFwqKNBWUl84ZSQwZE=;
-        b=PFXxkecISbAWOFQMnURozYp6LZpwcAb44S8s923PQd4NGVncYIiHkOVo6BTdFXVJkw
-         biRnwyEgVKEHUYYooIyVlqs/ag2pYgjgeH3Nhxj2BOucWIxuiwemuwEGAZmdk2CZdDx2
-         UfXcZTgnJu0Q3hZjKn61bLutl5eeFOCEbAfZ/rJ+elFqbfnaScTeEDHYB20JT7jlUrQf
-         xLdUJNQjuY9FKygUKAtAU65dBmAaiKVQgZmmiIXftPl7awW5XW2KUpts19044GuWsKze
-         m1sPjw9K71YwqcB2ptDnDt1ehj55F/p3SHzGH9v+D1IdOZXOjHsPhGFIOTor8sXZxFNp
-         R/lA==
-X-Forwarded-Encrypted: i=1; AKwUvBxGw8fFacwKMbU53yi3XJjdOBfmUMuBJrfK+VIfzVUwltVfjPHd4+PQ58LITN3TqQLHsYU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLY6Kk2fAxFLUsIkidFg2wUYGK1sdUesAXLWeVMQE7rRM3MfBsZ
-	jp+1enmxa9/zQUwqbrOykFL0sx2HSXweh14r4HyXM4rwXtw1Ncqr2hGtwH2f0qnbymi8KQUC+D8
-	x+QoZHV9x7Oaew7TssNpKInQ/HvhPiLhd4M/B/Zc6
-X-Gm-Gg: AYBFou0KVA5oD/etVNx5TFox8dkkbPyH3Yn1fR/4CN4x9423C+BBP8jqTQXmEchVBXd
-	whS8SuwA2rNG51SVyIpmyrAYkjMNdyg0XXf+hk7AFqJKctVRSCMD6WxTJ9a8UW/sQmjzBljZUVa
-	Miy0xtU4SyJD2RCMMRwMYPPhIWJpsOuOdqMtaeRNu06WXZoike5J0Bc86xPS7pA2T7oKCNalmKG
-	lIXakn9q9Mfh97pb+LnM9aLTxJKc9ks2elOXCGiPayaYxKAKIKUdili2S4KkGHppCQ1aOwFzsS5
-	jRbrV9Ijo2f17y65erZDkBX4l8GEOsocoylFQp5mO5As5rrRxabnheJUhiNh0io03iycvTi/xdB
-	auNkvWEuscaO0/jU3J/8qIbUbVam6pgImtIuHHO+dD0GAptyNL+ZGJBEtmmzPrrNeUl8=
-X-Received: by 2002:a05:622a:2298:b0:535:1cbe:375e with SMTP id
- d75a77b69052e-5369b86a007mr26318971cf.59.1792587226044; Wed, 21 Oct 2026
- 05:53:46 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 21 Oct 2026 05:53:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 21 Oct 2026 05:53:45 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20261020131447.122096-3-pbonzini@redhat.com>
-References: <20261020131447.122096-1-pbonzini@redhat.com> <20261020131447.122096-3-pbonzini@redhat.com>
+        d=1e100.net; s=20260707; t=1792587893; x=1793192693;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XBJOZdPNJaWBnEXbMM9r6oKBxoRWtijN3lb4QnOPdPU=;
+        b=TMMwG/5EGKKSmbiy7uZDzV7kRBDKkh+qCYqQYWgAsufwiy2OJGOG/bTmDI/f1dAije
+         h/fuAJ/ENCyHZLZqjdrOVZNWLfrN6Wf/IS395tmv5k4fdlxTrWNi4Nm/jX8HHPmEvMvj
+         GkLnjvhABkbuat1LbJjD8wPfQ6BozzcNoskiObzR11LRa/RSPXRkdMSwuqitwe70vNZL
+         pUaXjpIfCnkYUF/VwOugD+PeIE78wOyuGMZm7AE/FNo3OgNiwLRgxORoxYs34OTFGDCi
+         KillIJpzkqqGTIuySs2aKFgYpEJN6ypaTmi0hXEXqhABLjhDq7PctYZtsRGbPdgmY4AV
+         K0Sg==
+X-Forwarded-Encrypted: i=1; AKwUvByUmKUd9gsCnLL8RayHbwAKUdU2rcAsmYnmP9JbUdCCDI5gVsv0izqjyZYZGEZMZjFznHw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJx1HckNkx4u9DgEVLqsQCKK/7fGMvrgEkQ4mMm96uQaOhO01aF
+	0npbo035Qf/3tJYeCRXz3qH9g46b40hlQulfIcr0BLCx4GyIGLoYsBXNHsqa3S/59tE=
+X-Gm-Gg: AYBFou1IL4XktDIeGb56X2h+UPXhPVpxMdJyMSLSlY2lEc7nq/Dw5pAdvSWFyK/ijWK
+	1ICpM+DTn6Cp5BzpQ2gJYJx3cm9d1A6qbd7hq6S9N0raOlufmZFTAtxbnxaH9HUSa/p6nhMLPng
+	dpI9o9cRRD4vGW6EbB4a0nCeOeruqskOn2b1J7X9rsP8vsEfqII+XhOvTSdxT5kdObyf5IJiWYV
+	dI8KF+OJf9k1NJiC2OK+CA7x2ECAaylkx0fzG0E5qXnM0328SBgaESn0CtrFHMS4dj8rApps9kf
+	DiYwx/VI0OO2DsJcwn+qj+tl3/M9Ma0XWRCrgJ8a1f/DAHO8TRo+Dj9ixUkidv8qOwf/0NvvCyy
+	uwaH614wk5twcPYuVWUyIssMTj0c7iHLGXHdv4NlovaYqwKbBVbn52qQnG8caYt+K7yujwYnZVN
+	NP358mvrWMoBkqEfx3M4eV0bkFl5XtmdLzccEbZKQ/MbcKcasG0zG1a5vAkomJCA60hyZ/VsUpl
+	IFqNy5pXd+lqcpcjr4w8caMyEjim/rSsjovLP9zT/py4uhePyKDDaFOfC9Z7psr3QF9wNekkfwQ
+	Y/KAdMPuf8Lb
+X-Received: by 2002:a05:600c:3512:b0:4a1:e00b:a0ea with SMTP id 5b1f17b1804b1-4a1fd8a3fd3mr39461765e9.1.1792587893167;
+        Wed, 21 Oct 2026 06:04:53 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835c77sm5101952f8f.36.2026.10.21.06.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 06:04:52 -0700 (PDT)
+Date: Wed, 21 Oct 2026 15:04:49 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 15/20] attestation: Prepare provider and instance core
+Message-ID: <ati4arl9sf1Rgnob@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-16-jiri@resnulli.us>
+ <179245258506.58760.1633805100070716498.b4-review@b4>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,56 +105,30 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Wed, 21 Oct 2026 05:53:45 -0700
-X-Gm-Features: AclHuK_cQy3FIEKPEYLrrT0unEbP9o3cNdKisHPXC0klQRVgJdOZliD266c8PeQ
-Message-ID: <CAEvNRgGceF8m5GFV0aE2ALkVEY=mvWevGmaCrgoxcLznadOF4Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] KVM: x86: leave the legacy private attribute in for
- TDX and SEV
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Fuad Tabba <tabba@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Shivank Garg <shivankg@amd.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Sean Christopherson <seanjc@google.com>, vannapurve@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179245258506.58760.1633805100070716498.b4-review@b4>
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Tue, Oct 20, 2026 at 01:29:45AM +0200, jgg@nvidia.com wrote:
+>> [ ... 99 lines skipped ... ]
+>> +++ b/drivers/attestation/Kconfig
+>> @@ -0,0 +1,12 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only
+>> +menuconfig ATTESTATION
+>> +	tristate "Attestation"
+>> +	depends on CTLV
+>
+>ld.lld-21: error: undefined symbol: hash_digest_size
+>>>> referenced by ctlv.c
+>>>>               drivers/attestation/core/ctlv.o:(ctlv_attestation_mr_read_query) in archive vmlinux.a
+>>>> referenced by ctlv.c
+>
+>Needs a:
+>
+>+       select CRYPTO_HASH_INFO
 
-> As of today, and presumably as of Linux 7.4's release date, there
-> is hardly any VMM that supports guest_memfd attributes.  Support the
-> legacy VM attribute for private memory if SEV or TDX are requested;
-> default it to disabled if only the software-protected VM is requested,
-> since it is only used by guest_memfd selftests.
->
-> While in-place conversion is the best option, it is way too
-> early to enable it by default.
->
+Ack
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/kvm/Kconfig | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index 01a683a9042a..4f7d75ec8c40 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -80,6 +80,7 @@ config KVM_PRIVATE_MEMATTR_VM
->  	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
->  	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
->  	select KVM_VM_MEMORY_ATTRIBUTES
-> +	default KVM_INTEL_TDX || KVM_AMD_SEV
->  	help
->  	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
->  	  memory attributes.  Using per-VM attributes is deprecated in favor of
-> @@ -87,7 +88,7 @@ config KVM_PRIVATE_MEMATTR_VM
->  	  CoCo VMs using a VMM that doesn't support guest_memfd memory
->  	  attributes.
->
-> -	  If unsure, say N.
-> +	  If unsure, say "Y".
->
->  config KVM_SW_PROTECTED_VM
->  	bool "Enable support for KVM software-protected VMs"
-> --
-> 2.52.0
+>-- 
+>Jason
