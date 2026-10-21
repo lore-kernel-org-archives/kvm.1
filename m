@@ -1,88 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792588399;
-	b=bQKPZ+b90e+TislfUSmW0d6LLy0F+UHVN1eOxSCJkIyTPkomL8o4jRt50llzuw5+GRyg
-	 3ffxMR+G1ocjx/ePDiOSVix1n7RWd5TXBhDj2bXXjIzEeZWrLePunJsVgfPQBdLRK48Fc
-	 W3Rwyo4HATX7ZKQPemNGr2TsqGLtyLIVM4C85bvg7Luc2U0tlrDaqoBlhF9S7QDmqSqhc
-	 TYkM6oD1FDQeOZBRsVI4chv2h4d7q+9dCnOH3fZbOdO1WWesPB74sxXexTkPDm5tBKMPW
-	 c00MXOUTCih+d+YT5PybKep2qsoSF8gvWP/k/AwEIY48+n+z0kO44B2eBipT8/UnALA==
+	t=1792588400;
+	b=dEdpoi2YjucyYa01BlkRiQ6sJTCdDg7eSTLEIbjB8dZ7P0nuaufOBXzMDawjpIh++zjX
+	 GCWKbVHJWQXZ8tvMqR8iQizwv9/WE5MkueaX3tiwoeGpLrCYE8c+3bW1Odtcq7IJEOMPX
+	 6s/iFKhqpN8gvAHnOrNmURlSHdmhTeJkuW0/kCQjEdiCpa/orRnipNn/tRlQQstltw1pw
+	 o0VZcx7RmDF8AmspZg3MzDbAN49NOFuhWX7RDpDZ9D2ztom+l9v7TgeWKyiG0oLJSaK91
+	 Yf99TL0aNUDdisP2/5Y48vOeKQ0pdgvySFia/lIulq3TDhp9TjGDKttLtirIvB02EVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792588399;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588400;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:To:Cc:X-Mailer:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=o6p3pCo7kCCnsjGIBt4vEqtv3jWVT9ZqbdZWvk7buQ0=;
-	b=NcX/+P3HnNdaydwweB4SaZercnq52c/V5DLCeFJmy0P3PPq2zFQKZz1K1ZcH/4Ru2Um2
-	 D6fOBcYnj31JwYR71ydcdIWnYr8ovy26iP1KLOQE530T+1rQDbvPNaXN0aj0OSiSTgkPO
-	 4PoBnWMjEbQJPMCKlTy4VeJ5v7+I7569ZhqfACVg+n3SbKP5+Dxh27tA6gPbgcEKrNV0c
-	 bBVgqxINJOQ6u3ktFD/6fin21LpvUE8RfVIaBbnOwSGHWPWi9drI5eERlwMinZGdPO5IC
-	 B6vsSoKcico4FElEkVuD7VPMEKsRukjbH7gs5xtCRWVNPQfN3doEnwVmJc497u+6AdQ==
+	bh=XhDg8QClMZJOayDv8bj/xO5vbSdeZvK1hnpn/RI7Gj0=;
+	b=t59yULrIBHLrQZ/6RikjJF0kHRKWjGDBsf448I4Ayb1G4pN5sLEEfnK7eXRaQ9GJDsdN
+	 843zkqqqYaq+90VCsWWAOWdEYUU727KKh/ykWla7hgR8xn0cllxXa1vaEEZKbyKJRybYl
+	 RZfuV1v9uUQvRNtRm71N8WKVxtPhFMf7twM5XhwQhvdfxhX3wdCYdsk/1PG4EOBEBBCrt
+	 w5x9qRdI7F8zYgifvHJFMzx34r+dJU+0gwWlC8t0Z8kslj230r9CtCBCQlE0mD0Ou2NeS
+	 /dWa55WY7oGQDSlHyWiQPXIP70sbZ5HwT3l1wnWpcTmHIBkO+HYVb0IvFoE774uhpeg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fyhfHnL2;
-	arc=none smtp.remote-ip=209.85.221.49
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FCEmyVSw;
+	arc=none smtp.remote-ip=209.85.221.51
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9C4606A31F
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:13:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE9C4606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D383606A323
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:13:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D383606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fyhfHnL2
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48e0d885929so564497f8f.3
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 06:13:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FCEmyVSw
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48441a2ba1bso492152f8f.1
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 06:13:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792588397; x=1793193197; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=o6p3pCo7kCCnsjGIBt4vEqtv3jWVT9ZqbdZWvk7buQ0=;
-        b=fyhfHnL2vgB+Al2ATPFZaHH0oxN/5vfVtER8IQWKhOYBhNJT4FtRou7YxivrUyj3q/
-         /nwzcxONL7tsdzu6Con8f7CAM2xMdFNlVyJAqfTIW8sh39WNInede+Y4Eg5Zh69OrGiJ
-         IQM7UkpIOOctEq/2BwM7PDIPIPVVttoace+kvL4WGfc77/2A9+D6MtupCMTxRab/2Z8/
-         Q2XNYMeslEdmJm0KY049Qy7mSASaa7hbwVcH5y0T1XQlCBZZ4M8Dd7wVCZBZmvJEzzf0
-         fisK+iTfplb8kdiLOX/yhWZKbgqC3t4uWVJNU0xNe47VQ6+kMk8546NoIBfKmNiK2NI+
-         XwZw==
+        d=gmail.com; s=20251104; t=1792588398; x=1793193198; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XhDg8QClMZJOayDv8bj/xO5vbSdeZvK1hnpn/RI7Gj0=;
+        b=FCEmyVSwyMIhgeTMCMdf9r23TjhNj0veKXSrM/ESw4hf4Bz7ZIqD1y8TaEBp44tsoP
+         yRgWBIUPNTqNe8io8dF2Vv/JsYPX+h8UkBnn/pt7yV5z743+FGCRp89YZrZvfUoE9TZh
+         8PlaYsq2kAvy9foYDpeD5OHutjRLZbCax4NToL+sI0DJYrmhPV2TvrHMoBvAHmn6DfnR
+         9jWSOLCzWyT4SP8kWpzb/+q/rj7xtIf5tuJ8/VmA+MN9kvyJG09eQztgLD8TOihfKOM4
+         qH3gqr0qt3XyfFJ4XJPa8aVIgpPxKl8eSlcvlUTGPSJE4GG3gZtaJfZoCo23ocXN+Ktp
+         7KNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792588397; x=1793193197;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=o6p3pCo7kCCnsjGIBt4vEqtv3jWVT9ZqbdZWvk7buQ0=;
-        b=pl1ZWiyBXBacmQbm+c0x0EBAG/56xLUx5IfDz0+5JoNVocsTVwawCYUAO/ra8e2h0G
-         Y5poDOL4ilqlQHcmgasLGcpx0TWmEmIhp/WrmiFicA5cTct3/qvsRvJ8I6CnX4U7TG19
-         p+fGiQGvKTbC66wcB5gcLOHmo7REGG7C9r6Y0N3AKxZQtUGTv5Y0t1iam6vG+bBcY7do
-         Hqs6aYj21ouI8KvIe6EiR4A2cksr7IaAvkxEJzGKYe+FCd/c/7sBb4bv9tI5tp3Ytlr9
-         o4+0Ahe31LUgpgqU36lnZllrs3KwyrsUBJcnrMXGTBpP6D57E+s8x40hLek39fQZkKB1
-         7eQA==
-X-Forwarded-Encrypted: i=1; AKwUvBy0F6JM5SUCDX3cTF8IUpzSQCs1nYfWEwUQPSnwVARZrCRs7S/nJKsnjTLBvbqImZegucE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIFrln7OMsgU1Eb3BsJKIS7m3ESHNUAipSipsKkgyfIUL0cLkW1
-	jPD8EBv9qt11nCjkhqhxG9+JDG+LgKHrxtVp2fCouGW1WiG2WTMDJSA5
-X-Gm-Gg: AYBFou0VTwJslcpyxnFxY10n33T4jX2PQRRhGR218lRzw9vnmVOcKWdETWdogbbLmuc
-	o9l/NLDbDO0Q8DdPUDJJHyLarNf4UuGnvvrxGddUg5wRxfOoYRZkwrSR0mQS5JfOyJ4G0JUu4bY
-	mn7QgecggEiWfeEY1OG/R4iEM6lxeakGc4GuGTon9lGXVs1RAY5zht3i9AyGpwk9Vh08JXyJAs3
-	HcWSgWF6uOn3x5jBSLOOHww1PIYZ56Yihu31GyZPRIkb1P6VgzPShE7gbadKq3mXg8wqU2X7eUW
-	+w7dZ93czpluzUUa+ecnlGSexvSmTqp6gTYN0eiXrAFm9z9I/QOGQlIAgBJahkk4dtIMGw6G27o
-	5P+MHDGtSxl6uHw1pE+4jz9NNDks18+808Hj/dcN7scpxOiBeurz2qOvoM27t1TSgkp53X5g5oU
-	/CWky8lL2Dnvvr0jcYXCAeruvQKKW3C+9k3eTIbSCOSs+ew44NEU345yB6jw07NjLCZXR+q/jHj
-	lVHnDZ2qP1H/Jm6XkdZevUOe9ZSWCl7UZUBQXEev2tiIAxyvMQjhpltJVG34eeHC4AMb4GpPD90
-	AyGspY/QM9yrH2zb
-X-Received: by 2002:a5d:584d:0:b0:48e:28bd:e010 with SMTP id ffacd0b85a97d-48e28bde4b0mr2656500f8f.7.1792588396895;
-        Wed, 21 Oct 2026 06:13:16 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792588398; x=1793193198;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XhDg8QClMZJOayDv8bj/xO5vbSdeZvK1hnpn/RI7Gj0=;
+        b=b4NSDWJZfORg+S4X7JZKzi0tzz9vKMimGgrGcf4P5ipexzIOUG0wnsy6vrkmoMciM3
+         OK48+YqJRCDuc45f5HuS3Yu2KcHJbwfusf4D2d9VWFffnvyXCkXqP6OWJxxsKThhGjR2
+         NraE2IZHSuJWivrW+FatFKDiXSrztRzKvu2VaIK8pOBz8ZtKUNkRRtXVL74CMxqffWtr
+         vDMJBWQEO6Hi1u5q3RaA9t87ddcUurM9S3iyyp7ZAdy2l78uNGO9bKjYXN2GVW+ZLoG4
+         KRgJXc/VJoouvOrm64gB0cG5wr6hAJkFn0On6HEPetyYlCtQmNs9lUwPGX35Q+T0da3S
+         6C3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBz/ARMM07EX0++X2KEOrryO7MlDmC50oC9X0lJU89sC5f6xP9CXArYRrG4G08vl+dif9uQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLUo0ArCvtmWQ+Om52ZHKnoSchcY8xvO06DjD6yFfzbXBwKT2pS
+	E+l9eT9tDPpzLHcjCFKWUqS8Cyh8O3goWrsgw1HRyfpypINEYRxr3PA1
+X-Gm-Gg: AYBFou0URkEx+i2TN3APFwmCVQpgrb7lIYWVwqPSg0iA1q/SRg6LS15Fma2JZXgZwqJ
+	y71CmP7D0Ukxrms5gOYykBps4b0qAzJbtK/DP4E/+JoHtQaVnIZzwtc7qH9kQcN6umGrBTqdDct
+	0eiwfbnONSluVLUMEk2TiDYAQgWRMICViJedsBnjn43RJ4xLI1WxBuoVBmLcsFWwxYegNlE1YYD
+	slXBteXvJIUkOeDStKUEw0j8PHgJc7MD3zdKSzpN5KrrKYfqN1OWVNVI00lQ2E9XNB0Inzpd6D0
+	7OQ24kgzqRbSAKMtP4Sbuwtdh448aExn/BYTCCZAauGUujZsjPtvAfx4MkaYx1+jc1heun1EqNS
+	UrKQ6bjNGD34cM/a8Aba4X8BsfibHTkpOO8c09B4PqzInLKOdPl6HUnKOExfhL6DcK4VrwrDcB7
+	cM52dI2FsMJKi+IUNJNjVb8JR/tnLRtA9Fr79xjG4fpXvkyLrnrPrfwPGZZmz9iTStIlGtKtlLj
+	xMjc6BKeZmrlnuBs/2RSqeso/sf2E4sfJqD8WYpAEsSKUnM8SAWBk8UZ2T6MFKfvaKxsUDltZLz
+	hJJ9FymMlJ2HX3VQ
+X-Received: by 2002:a05:6000:178d:b0:48e:b8f:f7d9 with SMTP id ffacd0b85a97d-48e2644eba3mr4823249f8f.6.1792588397791;
+        Wed, 21 Oct 2026 06:13:17 -0700 (PDT)
 Received: from [127.0.1.1] ([2a00:23c4:a702:d301:39f4:e118:e272:79d8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258358c1sm5655560f8f.43.2026.10.21.06.13.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258358c1sm5655560f8f.43.2026.10.21.06.13.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 06:13:16 -0700 (PDT)
+        Wed, 21 Oct 2026 06:13:17 -0700 (PDT)
 From: Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH v2 0/4] Fix transmit handling on SCI/RSCI ports
-Date: Wed, 21 Oct 2026 14:13:12 +0100
-Message-Id: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
+Date: Wed, 21 Oct 2026 14:13:13 +0100
+Subject: [PATCH v2 1/4] serial: sh-sci: Drop TE disable at end of
+ transmission on SCI
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,10 +95,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGm62GoC/y3Myw6CMBCF4Vchs7ZNW+TmyvcwxNAywhAF0hGik
- r67lbj8Tk7+DRg9IcMp2cDjSkzTGGEOCbi+GTsU1EaDUSbXyijRmeV+ZUfCRucqxyazGcT77PF
- Grz11qaN74ufk33t51b/1H9GVLpROK3ks0lKVQgtLwyLbhuXwOdtZehyRo9z0gDqE8AUHqvtvp
- QAAAA==
+Message-Id: <20261021-g2ul_sci-v2-1-b4e038220018@bp.renesas.com>
+References: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
+In-Reply-To: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Jiri Slaby <jirislaby@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
  Rick Edgecombe <rick.p.edgecombe@intel.com>, 
@@ -105,76 +105,56 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
  linux-renesas-soc@vger.kernel.org, x86@kernel.org, 
  linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
- Biju Das <biju.das.jz@bp.renesas.com>, Au Dang <au.dang.jx@renesas.com>
+ Biju Das <biju.das.jz@bp.renesas.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792588395; l=2681;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792588395; l=1377;
  i=biju.das.jz@bp.renesas.com; s=20261020; h=from:subject:message-id;
- bh=UKJg4b3SfR4kpP4oWIhEOgnGd98EBh9C3fKOCKd2yt0=;
- b=1NJHANvhrv+QQW8+t8rXZ8HELSt/2/6SELbVExz3/VnizRqtcgP50eKAy6UNf7GUmJoRz4YZ+
- q/+dgXcBcwsClSnKfz2cjoBWXVbYCRRGKs/PsjrY89rZYZBKgXjI3nE
+ bh=3weoth6w6Xdl5b6WOfiDQxw3Mye7WCDgh2tqKrLoXnc=;
+ b=pfNldyHMgPcqhzkFa1o+cms2Op0v6z0MqVAr8fWkcLhT21/2XnwoWjrKs6qWVj5+gpFwTXWbJ
+ sRDd6avqjMtA8nT5XfTmxuB80Ps12Jq+DvQdSjgwz9YuPZJv0R/r4sM
 X-Developer-Key: i=biju.das.jz@bp.renesas.com; a=ed25519;
  pk=yzD2T1OLS3lEYflbk64xhLlxhk75lZ+NoOtkTOqrlVw=
 
-Hi All,
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-This series fixes several transmit problems on the SCI (PORT_SCI) and
-RSCI ports of the sh-sci driver, seen on Renesas RZ SoCs:
+Commit f06c2a9000eb ("tty: serial: sh-sci: Fix end of transmission on
+SCI") made sci_transmit_chars() clear SCSCR.TE and return early on
+PORT_SCI once the transmit FIFO is empty.
 
- - Patch 1 removes the code that disables TE at the end of a
-   transmission on SCI, which the hardware manual does not describe.
- - Patch 2 stops the TEI handler from turning the transmitter off
-   while the xmit kfifo still holds data, which could stall or lose
-   output. It also covers the TE handling that patch 1 no longer does
-   in sci_transmit_chars().
- - Patch 3 skips the software clear of the TDxE flag on SCI, since
-   hardware clears it on a TDR write and the extra clear caused a
-   spurious TXI and a duplicated last character.
- - Patch 4 forces a TE toggle when restoring SCSCR in the console
-   write path on SCI, so the TXI that restarts an interrupted drain is
-   generated. Without it the RZ/G2UL console can hang during boot.
+The hardware manual does not describe disabling the transmitter to end
+a transmission, so this special case has no basis in the documented
+programming sequence. Remove it and let SCI follow the same path as the
+other port types. A plain revert no longer applies because the driver
+now uses a kfifo, so the code is removed by hand.
 
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-serial@vger.kernel.org
-CC: linux-renesas-soc@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-coco@lists.linux.dev
-Cc: kvm@vger.kernel.org
+Fixes: f06c2a9000eb ("tty: serial: sh-sci: Fix end of transmission on SCI")
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-
-Changes in v2:
- * Updated commit header and description for patch#2 and #3.
- * Take the port lock before reading the control register, so the
-   read-modify-write in sci_tx_end_interrupt() is protected.
- * Extended the pending-data check in sci_tx_end_interrupt() to cover
-   x_char and a stopped port, not only a non-empty xmit kfifo.
- * Replaced the PORT_SCI check with a has_tdxe_auto_clear flag in
-   struct sci_port, set from the new tdxe_auto_clear field in
-   struct sci_of_data.
-- Link to v1: https://lore.kernel.org/r/20261019170139.473808-1-biju.das.jz@bp.renesas.com
-
 ---
-Au Dang (2):
-      serial: sh-sci: Skip TDxE clear when hardware clears it automatically
-      serial: sh-sci: Toggle TE when restoring SCSCR in console write on SCI
-
-Biju Das (2):
-      serial: sh-sci: Drop TE disable at end of transmission on SCI
-      serial: sh-sci: Keep TX enabled on TEI while data is pending
-
- drivers/tty/serial/rsci.c          |  2 ++
- drivers/tty/serial/sh-sci-common.h |  4 ++++
- drivers/tty/serial/sh-sci.c        | 45 +++++++++++++++++++++++++-------------
- 3 files changed, 36 insertions(+), 15 deletions(-)
+v1->v2:
+ * No change.
 ---
-base-commit: 8f7df005a7564bd7ffa75da9c3085d5b996f1e16
-change-id: 20261020-g2ul_sci-b610606ea5b5
+ drivers/tty/serial/sh-sci.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Best regards,
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index bd58bbfa65aa..9eb297dbc901 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1036,13 +1036,6 @@ static void sci_transmit_chars(struct uart_port *port)
+ 			c = port->x_char;
+ 			port->x_char = 0;
+ 		} else if (stopped || !kfifo_get(&tport->xmit_fifo, &c)) {
+-			if (s->type == PORT_SCI &&
+-			    kfifo_is_empty(&tport->xmit_fifo)) {
+-				ctrl = sci_serial_in(port, SCSCR);
+-				ctrl &= ~SCSCR_TE;
+-				sci_serial_out(port, SCSCR, ctrl);
+-				return;
+-			}
+ 			break;
+ 		}
+ 
+
 -- 
-Biju Das <biju.das.jz@bp.renesas.com>
+2.43.0
 
