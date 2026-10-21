@@ -1,77 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.92
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=129.187.255.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792582239;
-	b=PiehPUjLSL+n6gpW+UKZuatJqmHSdwFK+nJPcJuYPzSOXVeNKvGXCKiKLujccW9scWgM
-	 OMV7+fxJreXC3q+k41GxN1h2MJ25Xv1yHObeaL5H2bYafIp13kuq8omt/SiBEFqCqi8PQ
-	 HvBHUVseYYtKUOFAnDYh1l2xrt3QE2wWTUA8ldMLl/xwuO/xrHw4pfej5/xUNoh1di/mQ
-	 cpQW3T/OoVUZYObw3yz120drni2fYWUviyBMLB7WBrBBGmhutgXYBY+CWUIOyCjPx+nCz
-	 f36cALE7vcPcaPiVs8w7d2MjzrPRsF7XC92DmkamuHYM5udfrYMnxCXPjxhHjs+73FQ==
+	t=1792582978;
+	b=MZWgyaQIvoICFun4TeBc5s30i1RoUk5q/FcUrj/d2Fd4slSXfC7G3zudhxmfZnZ2Ehn9
+	 vaR/ff/MA1p38fKsFM/DnX6Il600b6Tx37rsCEXs/GLweiHcUSOdkLQu2vWpkcwSa9eWx
+	 l12r3Rs1BOXczn/H3uu9/uBvHcx4tKmpDlluVkMOPoWvpTu5qpBJ+dpi1I4zdakKzooxu
+	 /qMuJDLjhJj8o3NTB9viTeK8m/dTTMiGNvOxjQhjG74Q9N8PfIosuJLAPdGJUfyZTLq89
+	 XpnLRdUj+DUvjCcupCwZF3z4hw6ynhxaZhGAD2DkZFWGVFJOML+ynvkLPNdK1WTXMaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792582239;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792582978;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:X-Spam-Flag:
+	 X-Spam-Score:X-Spam-Level:X-Spam-Status:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:Autocrypt:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=U+xSPnvmF/tO+Fgf3pJ9qhNAxgNa/gXXKtkwmbQs8oM=;
-	b=aO7g1lYxsij4MGUtzCldl9OUl3uyLvx9fTJ1bYGHtiZPX/Lzq7ws1YXmlPxwHDLgqo7w
-	 qF9WOaSkUCT5YgWph3cnFPl3zpsbPBuM/C/10TIo/VME+GUC84DG5+kF6mx+KuDuUMIYA
-	 32J+TWEXGqMRRMlHQHtLpAO0R17ko1QBBw8K/G3ns9R7jGtfl+bO6v5NjEDb1eJr7XBJ4
-	 z9Pm9mlZkvJ0RIssN9viwziFPpuhopQ8DdwvMd5096l5LV1ayC+/sbH+cTMDbQUYEfdea
-	 NrCeqxOAjjmYC+0ysZTu8TYcGen0wZH+IIWWi1FCKcc2W0GVHtL4ZTPoiUUQ0P+LPfA==
+	bh=M87r41iuqvCpmvbuB7XwGxNLJEegfo1qBE6eCLf1DZI=;
+	b=THLMjnoFgrb+lc39X92Tjtiqtcn5VdCXpPZ5TjHdh61gzpXVKgfJK9U65rdARdfB+udd
+	 xf3TW/ZVsJrMZu4Ja2UXI+hykwAt/pGEttaSs2q/GlzosZuSsanlUcYLItxI5W+WOd95J
+	 FaE3XsGnvCyqoWtUDxSu9YZr0F9F0qQ1Ke8sgizFqVBVTVlBXw30nvy1lUWYCTLBeB7M2
+	 URlK0Y6m9RNxDiElP+Y/ejZOuDYNMIF87Kf93Eofiw0NZPjF63aXPLmL5Tg3rQ7mH8WL3
+	 Ou57GbLafsTnEIF/9BEylbcsQrsS1rkQvEHnW2tDobufCxnw7rZ7dOPOTFd6JNv6fZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=peV2frh8;
-	arc=none smtp.remote-ip=91.218.175.92
-Received: from mta0.migadu.com (out-92.mta0.migadu.com [91.218.175.92])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=tum.de;
+	spf=pass smtp.mailfrom=tum.de;
+	dkim=pass header.d=tum.de header.i=@tum.de header.a=rsa-sha256 header.s=tu-postout21 header.b=gnw1PoyJ;
+	arc=none smtp.remote-ip=129.187.255.137
+Received: from postout1.mail.lrz.de (postout1.mail.lrz.de [129.187.255.137])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E64606A31B
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 11:30:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7E64606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D731606A31A;
+	Wed, 21 Oct 2026 11:42:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D731606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tum.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tum.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=peV2frh8
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ajoLYE5AD2heyAC44s3QWW8/SJdTozUgA/AhWcBRkvo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792582235; v=1; x=1793187035;
- b=peV2frh87rolLVSFnvECmmtCIKSTBix8AHi94IGRwH2+Zplz/8TmlcfbFbtgWK++PPc/FcIX
- LF4vX1JfVq8eQAPn3Km9B4spHNUfS/5G43hyqiZ3M2xqyrStXmaDXJ780crtyJQOZLG9IS6I3x8
- kHbmK8qsFXefL7HyACclAzCE=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 591aea82344d2dfa;
-	Wed, 21 Oct 2026 11:30:20 +0000
-X-Mizu-Trace-ID: 591aea82344d2dfa
-X-Migadu-Flow: FLOW_OUT
-From: Jinyu Tang <jinyu.tang@linux.dev>
-To: SeungJu Cheon <suunj1331@gmail.com>
-Cc: Jinyu Tang <jinyu.tang@linux.dev>,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	tjytimi@163.com,
-	inochiama@gmail.com,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	andrew.jones@linux.dev,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: riscv: Set Accessed bit in dirty-log write fault fast path
-Date: Wed, 21 Oct 2026 19:30:10 +0800
-Message-ID: <20261021113010.2476783-1-jinyu.tang@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261016101458.221648-1-suunj1331@gmail.com>
-References: <20261016101458.221648-1-suunj1331@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=tum.de header.i=@tum.de header.a=rsa-sha256 header.s=tu-postout21 header.b=gnw1PoyJ
+Received: from lxmhs51.srv.lrz.de (localhost [127.0.0.1])
+	by postout1.mail.lrz.de (Postfix) with ESMTP id 4j8nTS24t0zyTg;
+	Wed, 21 Oct 2026 13:42:52 +0200 (CEST)
+Authentication-Results: postout.lrz.de (amavis); dkim=pass (2048-bit key)
+ reason="pass (just generated, assumed good)" header.d=tum.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tum.de; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=tu-postout21; t=1792582971; bh=M87r41iuqvCpmvbuB7XwGxNLJEegfo
+	1qBE6eCLf1DZI=; b=gnw1PoyJGSPXwH70+ePOcZ3ddRaDNqjvd6Nc36OvlN8YsX
+	wlAb1LQYCcJwCq4dDIYLxtbN6Kzja6MaZQgiN2WiLV+N2VUSrYGj66p1zLBSHtao
+	Q0+XQeTKaGH/kFibxcgrKakLWvcQ5LjBWrzqRo4wyM4Fxpiqu8Lll1kdL5NtiXXD
+	/pW2TlGqq8OW9H7b5sWZ+PafgdY4qgMq1KDtWBW4JGkD2UIatuj57ZHHmxTytT0P
+	tC/e8BC93ltaVn4XDC/q4u38e/XA06cDIxNcxfJkdfUWLWmfuw9Ao0DemK84Kl/W
+	449YC1S5UPkffUnxXsvu6l+9hitgU91qwnDnV0Uw==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs51.srv.lrz.de
+X-Spam-Flag: NO
+X-Spam-Score: -2.87
+X-Spam-Level:
+Received: from postout1.mail.lrz.de ([127.0.0.1])
+ by lxmhs51.srv.lrz.de (lxmhs51.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
+ with LMTP id nFk3514vqUJs; Wed, 21 Oct 2026 13:42:51 +0200 (CEST)
+Received: from [IPV6:2a02:2455:1b1c:5000:a2c4:f9c8:74:1614] (unknown [IPv6:2a02:2455:1b1c:5000:a2c4:f9c8:74:1614])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by postout1.mail.lrz.de (Postfix) with ESMTPSA id 4j8nTR4MLHzyVF;
+	Wed, 21 Oct 2026 13:42:51 +0200 (CEST)
+Message-ID: <17ae73e9-c460-4ffc-9fc0-5fe2e8e1a08a@tum.de>
+Date: Wed, 21 Oct 2026 13:42:51 +0200
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,33 +75,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/hyper-v: Don't WARN on VM-Enter if eVMCS sees
+ VMFUNC[63:32] != 0
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
+ Vitaly Kuznetsov <vkuznets@redhat.com>
+References: <f1f39118-2e1b-476b-9a84-ef7d56412bdc@tum.de>
+ <atfxm7Tj7nYB_6Kr@google.com>
+Content-Language: en-US
+From: Manuel Andreas <manuel.andreas@tum.de>
+Autocrypt: addr=manuel.andreas@tum.de; keydata=
+ xjMEY9Zx/RYJKwYBBAHaRw8BAQdALWzRzW9a74DX4l6i8VzXGvv72Vz0qfvj9s7bjBD905nN
+ Jk1hbnVlbCBBbmRyZWFzIDxtYW51ZWwuYW5kcmVhc0B0dW0uZGU+wokEExYIADEWIQQuSfNX
+ 11QV6exAUmOqZGwY4LuingUCY9Zx/QIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEKpkbBjgu6Ke
+ McQBAPyP530S365I50I5rM2XjH5Hr9YcUQATD5dusZJMDgejAP9T/wUurwQSuRfm1rK8cNcf
+ w4wP3+PLvL+J+kuVku93CM44BGPWcf0SCisGAQQBl1UBBQEBB0AmCAf31tLBD5tvtdZ0XX1B
+ yGLUAxhgmFskGyPhY8wOKQMBCAfCeAQYFggAIBYhBC5J81fXVBXp7EBSY6pkbBjgu6KeBQJj
+ 1nH9AhsMAAoJEKpkbBjgu6Kej6YA/RvJdXMjsD5csifolLw53KX0/ElM22SvaGym1+KiiVND
+ AQDy+y+bCXI+J713/AwLBsDxTEXmP7Cp49ZqbAu83NnpBQ==
+In-Reply-To: <atfxm7Tj7nYB_6Kr@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 16, 2026 at 07:14:58PM +0900, SeungJu Cheon wrote:
-> @@ -591,14 +591,15 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast(struct kvm *kvm,
->  			dirty_marked = true;
->  		}
+On 10/21/26 00:56, Sean Christopherson wrote:
+> I think the WARN is correct, this code is broken.  Unless I'm missing some eVMCS
+> magic/quirk, this, and the secondary controls check, should be conditioned on the
+> field actually being used.
+> 
+> This, over two patches?
+> 
+> diff --git a/arch/x86/kvm/vmx/hyperv.c b/arch/x86/kvm/vmx/hyperv.c
+> index fa41d036acd4..a1daf8f2ec5a 100644
+> --- a/arch/x86/kvm/vmx/hyperv.c
+> +++ b/arch/x86/kvm/vmx/hyperv.c
+> @@ -169,7 +169,8 @@ int nested_evmcs_check_controls(struct vmcs12 *vmcs12)
+>  					       vmcs12->cpu_based_vm_exec_control)))
+>  		return -EINVAL;
 >  
-> -		if ((pte_val(old_pte) & (_PAGE_WRITE | _PAGE_DIRTY)) ==
-> -		    (_PAGE_WRITE | _PAGE_DIRTY)) {
-> +		if ((pte_val(old_pte) &
-> +		     (_PAGE_WRITE | _PAGE_DIRTY | _PAGE_ACCESSED)) ==
-> +		    (_PAGE_WRITE | _PAGE_DIRTY | _PAGE_ACCESSED)) {
->  			new_pte = old_pte;
->  			ret = true;
->  			break;
->  		}
+> -	if (CC(!nested_evmcs_is_valid_controls(EVMCS_2NDEXEC,
+> +	if (nested_cpu_has(vmcs12, CPU_BASED_ACTIVATE_SECONDARY_CONTROLS) &&
+> +	    CC(!nested_evmcs_is_valid_controls(EVMCS_2NDEXEC,
+>  					       vmcs12->secondary_vm_exec_control)))
+>  		return -EINVAL;
 >  
-> -		new_pte = pte_mkdirty(pte_mkwrite_novma(old_pte));
-> +		new_pte = pte_mkyoung(pte_mkdirty(pte_mkwrite_novma(old_pte)));
+> @@ -186,11 +187,10 @@ int nested_evmcs_check_controls(struct vmcs12 *vmcs12)
+>  	 * controls in bits 63:32, i.e. dropping those bits on the consistency
+>  	 * check is intentional.
+>  	 */
+> -	if (WARN_ON_ONCE(vmcs12->vm_function_control >> 32))
+> -		return -EINVAL;
+> -
+> -	if (CC(!nested_evmcs_is_valid_controls(EVMCS_VMFUNC,
+> -					       vmcs12->vm_function_control)))
+> +	if (nested_cpu_has_vmfunc(vmcs12) &&
+> +	    (WARN_ON_ONCE(vmcs12->vm_function_control >> 32) ||
+> +	     CC(!nested_evmcs_is_valid_controls(EVMCS_VMFUNC,
+> +						vmcs12->vm_function_control))))
+>  		return -EINVAL;
+>  
+>  	return 0;
+> 
+> 
+Looks sane to me. However, I still don't see a reason for this being a
+WARN at all, what exactly is the intended signal here?
 
-I tested this on QEMU 10.2.1 with Svade enabled and Svadu disabled.
-With dirty logging enabled, the test clears A through page-idle tracking,
-write-protects the page with KVM_GET_DIRTY_LOG, and resumes the guest
-write. The unpatched kernel times out after 10 seconds, while the same
-test completes with this patch applied.
-
-Reviewed-by: Jinyu Tang <jinyu.tang@linux.dev>
-
-Thanks,
-Jinyu
+Best,
+Manuel
