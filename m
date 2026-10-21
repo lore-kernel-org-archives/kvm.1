@@ -1,47 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792571872;
-	b=E3bYKjEfdtT0wRM0wvvI7Sf2UrR9YhoDDbgwqn0F9yO+hKboFYaDWY0nWZU1GcTIHv1P
-	 5WCGvTWLZbpEEBWiMm+2jU9DfrJsR8ErZXjwVoBm0Hy5u3ebfvYjQSKu0GhaimBS+qg9S
-	 A6y/JYk5QfDObjiPtodNc48w2Vnwwf9eazBI1CkJ7IsuIzXBQomzT2ytEl9aC6FrgseCh
-	 qDjuv6i2mgmzCBL5n7HZnSYGRNbv+1OJ9b9Ti9WV34fC5U9yP1tH9eHGNsf85qK7DeElQ
-	 u0MDNpLr1mRiMJbzLt8elJjdq0+BwSu24JwbDXj35loY6utjS9jDnCZi5sbXn+N5JpQ==
+	t=1792572940;
+	b=x+NdFJgfTiLPuGEuS5cjpY7gLOTDU47YA0Ie2TlbZ4A6TXZlGqIE1E+Od4Rm6JabbMMM
+	 7K0tRdYI2/PLmLDfG+ScV3aUEhjlGSRMC5R3bj9pgqUSjiYQ5cRk/25TWssE+GKI3g/3x
+	 nENUy2BuxCYWaRCbdIyI3qA25fm5LYnfP9L9t/9tV7UbJsQp6ZqL17SG5Y07svtHgqJa6
+	 +GIYndenvt3mx45c9hCirzXlk1h5vLXrm5S/7h3IL08IPkECwupgwL6mLP4mI0vO5UMp2
+	 EvR0VPbsLovFYq0SQtIasLTlOMJSscoLzHCRziCKv4YjAu3mb8E6dBYV4LrFwYzHD9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792571872;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=SZ3EviCYxMDcxcQqwdkGz4a9ADC55X4maOqxKmHiuIA=;
-	b=1OqwUqkpvGoOFycwgv3MBx8GTUzKpIQlAv2qgN7ICFgW/L5sn4GScvvmKxTckKJ+b6Su
-	 zc0yHszQgv+3WRUOuJkq6Ao9IdpuuUlG9zPXRx4Ttbc5RyS2vBn9z2eVclINExyuGRN2X
-	 1zHJxUNIS/m6MvPAV9OWDpkNflMvo9YtUWOcicBQXZv7twxZzmjxuUAaGqfgoLiz7vgeR
-	 9ATXyhFfvf8X5OBWTfeUjVla+B1731ZnuXlD4ULFylqj+q+yNvIXfw0kYAVvWbKo36net
-	 A03eaVLJ1e0SvfsrOkKTtS/mODsv3/IsGcKr6n0VORrAUw8UTT2jtso3fGeZIMCos0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792572940;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ZlzMMtlOMt0j7sxnZGkr7qkygcFA8MGAgcH9bAVX7Kk=;
+	b=wIz8UeaCQcjUbL17stO3i99ZVogpNFhtwhYKcUD+VlHlFfYir+v/wKalHX/DMZpJuY6/
+	 Aj23aUqNMxPL0CB8kVYk7ZKU2arkDSqUYHA49hArfSINqBuMUukXi/xLV1sOSakKH8v8d
+	 I00VdIdC59gsdFGUl5xU2Ylg2twcQnGbgSusQDC39ln/KcTc9NzMERarmrrcuk9gTeGpi
+	 qgo40LErWcBdTuGPqVvCAic7BjXGtfPOJphDOXpuYvJrMhElpdq8KdUG02Upsj2pD+wzc
+	 AoetWWRFDxgxmu84hns4ELeRBRjerswhi4zVjyGbt1SgcUACS5DnuJPw7uc+IfwiswQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I+cKpbzK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Q63ZWMYw;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973DE606A31A;
-	Wed, 21 Oct 2026 08:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BA3606A31C
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 08:55:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3BA3606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I+cKpbzK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A681F000CE;
-	Wed, 21 Oct 2026 08:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792571872;
-	bh=SZ3EviCYxMDcxcQqwdkGz4a9ADC55X4maOqxKmHiuIA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=I+cKpbzKX1NJJ+vV3Nf0xMc43gi4ozC2qu1m4Ircxn0vL1WBettiLwcFxk0f2Zk7m
-	 36hyR7/aePcxRJAnWMBei2+6ToqUej8aR+A7EAKCBm3fz1bLXzkpfI7BhoEbc+AJO3
-	 MrGhYQT/V2n2ViXB972cnyE8mcI7UoUCQ5QW6JrOzOs1XRwHDxzlJDGjFMXfY2GA2i
-	 q7o4gYrYg+OiQleCuWFTeREKMo3iuAk51O7BQ52KEfPtOzZf5CMRZbo1Wh9s/x5+7W
-	 ugnkO+geYfV8JQgNZKoYEx+5Bhy+TD7dXOH256AeeqslY0Y+BQITgPUjBMJv0B8C3F
-	 FcjEbATjabgLg==
-Message-ID: <973fd409-64b7-4c62-82e1-c75c784b80f7@kernel.org>
-Date: Wed, 21 Oct 2026 10:37:44 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Q63ZWMYw
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso305140a91.3
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 01:55:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792572939; x=1793177739; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZlzMMtlOMt0j7sxnZGkr7qkygcFA8MGAgcH9bAVX7Kk=;
+        b=Q63ZWMYwY2xiEcGgxNT+yzrIlSaw9gGr5WmMgDxgjgm7sxXVG3yzck52PqI5GprMdC
+         0YqC8fY/9VYDsWb6Mw+YnkSo0Q5zzMuwZTqwk99O1vHcqh4zIyKbb13+fHmmKwH2O1bT
+         TjC06GLD1Bf2MvZiPAj0Yb4RkP468nRt4HZtclmCnhYNMF/XcJXxaC/d3cGHUvx3U1Uf
+         phMYsUrcDAVSoLAs5Yp2Av74cYiwVpLJzASoz3MHKVTzRKP+5wqpnvI4sAPOGZRpzV/z
+         ZBdICmaDUU+/c0Wx8a+ojZ9sm+P+Z5cjrFzRe9YC726WzvQgEIgmpAPgKlO+mvbbj7Qt
+         2UjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792572939; x=1793177739;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZlzMMtlOMt0j7sxnZGkr7qkygcFA8MGAgcH9bAVX7Kk=;
+        b=mqrjNY/q/Iy5DqYP5LN1WIuHjqIMyMjVhCcplQVJe+8xJI8gW9ymNCtPWpt30iHl4z
+         5SDqCk2kZoV5jQ7W1fdEtLrjKKtwo3mrUS91Mgzn5NtemlSItubuZkRU7XfqnuFvNARu
+         0AItZ0Puaf7pVsiwq2M45hFCJOLYscW6Ki65GWSO4z/6pbS1dWkkMcxd3IRUv/GVGzP0
+         gQ+S/7upnr9fb9J0flUdgz2tSWZmvbs09tv32tJQp2ww7P72vexo+0aGPa58YvZOKAdY
+         XCE8DkwbzU7ufP4sLD0Iqz80KKtSWNDljrEdewSTXUSeotdAHDqX7eG2ctR/kVJfX5Fy
+         OJKw==
+X-Forwarded-Encrypted: i=1; AKwUvBzmXWF18IDnkDfcLx5b81jtlHFk759Ev8wmAKB4R2tvYZDQXS9wnO79EdWGOlJF8QPHAP8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYKv0A3nRNigcAFIDcaoiezM4iQZFinB+Iym2Ql0u5edcP9vbm
+	//ESCiLb291fMLNPCLIOYXIVUUNXn9CN49spH9f4QlAPClT8AVoXTpi3
+X-Gm-Gg: AYBFou1wNtNYq2WT61pPFn0J5DNgkGTOVLHjHJdZwyyHUW//yhdH7ClwgEG21DzFPAi
+	yyFvjBkkXWxI0M/mftq4mjxTXORMQHNONSQOnlT3mAICFf96yIKkpxpDvmHqvJLn4bOKGEQTQzc
+	NIfAUA0cVQMgoLaiAYjO5sfRGlXkQ9KSYfo1JvtyK1OjcEpBbKAhYoOBAxk5DDOqfIIoQIFKRat
+	wr+q+UyGMAtS5k3c+quMIawqIHJ/bJgJmYc5g/0LYLH7YfywvEIkBt7vtjB19IP3IKGW2v/XZ8c
+	3s+gF4ZD7KTvIbxJ/+WallAxIWOiulRbH+qGCnEOH6i60Jvgb7ga/o4Sx0YAticInV/hEw2Op9r
+	m/Z0QXIjiNhjyIMEJP3HhIwRo7E2mgrzfb0Dnto+4oyhscrhpWyaknAExSC20D29EE48EIJWv2y
+	pkm/VWiW5uD9jD8yO+W/J6KBOSZAo+oU7Ck9CoeRz3OTsq4qFrXYevfF/eD4qK5K0LTmk2wifxx
+	uczrH4ZNrnxxwD5V0cVDxs/zZ6mqwXfeCznDLKgkdBwrL3CDOheWGY=
+X-Received: by 2002:a17:90b:2f8b:b0:3ad:6781:da66 with SMTP id 98e67ed59e1d1-3ad86c79915mr1116703a91.23.1792572938794;
+        Wed, 21 Oct 2026 01:55:38 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad85f56b03sm1398207a91.3.2026.10.21.01.55.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 01:55:38 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost-scsi: fix page reference leak in misaligned I/O fallback
+Date: Wed, 21 Oct 2026 16:54:58 +0800
+Message-Id: <20261021085458.196742-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -51,209 +100,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm/huge_memory: recheck a special PMD under the
- lock in copy_huge_pmd()
-To: Konstantin Khorenko <khorenko@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org
-References: <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-0-85eaec8417f6@virtuozzo.com>
- <20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-1-85eaec8417f6@virtuozzo.com>
- <5800bc6e-7671-41eb-bb09-7fbc8f2d085c@kernel.org>
- <03a10e8e-f14e-4612-9c23-70f94137a29e@virtuozzo.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <03a10e8e-f14e-4612-9c23-70f94137a29e@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/16/26 15:05, Konstantin Khorenko wrote:
-> On 10/15/26 16:14, David Hildenbrand (Arm) wrote:
->> I would have thought that unmap_mapping_pages() is only called in
->> corner cases when we would have concurrent fork().
->>
->> Like vfio_pci_zap_bars().
->>
->> But yeah, likely there is a theoretical race.
-> 
-> Agreed, it needs a zap such as vfio_pci_zap_bars() racing with fork()
-> of the mapping owner. I only hit it with a delay injected into the
-> window.
-> 
->> TBH, I think we can drop this comment entirely. That's just simply
->> the right thing to do?
-> 
-> Will do. I kept the comment on the CoW warning below it, which is
-> about something else.
-> 
->> But why do we do this early copy dance *at all*? I think I
->> complained about this vma_is_anonymous handling in the past.
->> vma_needs_copy() is the one deciding whether something should get
->> copied or not.
->>
->> So, can't we just get rid of the vma_is_anonymous() handling and
->> perform the weird special-pte check (that I hate entirely) when
->> already holding the PTL?
-> 
-> I tried exactly that first, see "try 1" below. The early
-> vma_is_anonymous() return is gone, the locks are taken for every huge
-> PMD, and both the special check and the skip of non-anonymous VMAs
-> run on the value read under the lock. The lockless read is gone, and
-> the race with it. The skip itself has to stay, as the anonymous path
-> cannot copy a file THP.
-> 
-> That makes fork slower when it walks a VMA full of huge PMDs that it
-> then skips. vma_needs_copy() sends such VMAs here, for example a
-> MAP_PRIVATE file mapping with an anon_vma. fork() of a process with
-> 4 GB of shmem THPs mapped MAP_PRIVATE and an anon_vma on the VMA
-> (2047 PMD-mapped THPs), median of 2000 forks, 4-vCPU KVM guest:
-> 
->   v7.3-rc7     86-87 us
->   try 1       131-148 us
+iov_iter_get_pages2() returns a byte count that excludes the offset
+into the first page, but also returns a reference to that page in
+pages[].
 
-Perfectly fine.
+On the misaligned-I/O fallback,
+vhost_scsi_revert_map_iov_to_sgl() puts pages already added to the SG
+list.  The cleanup loop starts at pages[npages], but accounts for its
+first page as PAGE_SIZE bytes rather than PAGE_SIZE - offset.  If the
+remaining data starts at a non-zero offset, it can finish one page
+early and leave a page reference behind.
 
-> 
-> That is about 25 ns per huge PMD, spent taking and dropping the two
-> PMD locks only to skip it.
+Use PAGE_SIZE - offset for the first remaining page and clear offset
+for later pages, as in the mapping loop.  Without this, each affected
+request leaks one page reference.
 
-We should likely do exactly what we do in the PTE path: copy PMDs that reference
-file folios. See copy_present_ptes().
+Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+Testing:
 
-This THP/PMD handling inconsistency is annoying the crap out of me. We should
-just consistently do the same thing for PTE vs. PMD.
+- Four fileio vhost-scsi test instances repeatedly issued affected
+  writes using recycled backing pages.  After about 1.33 million
+  requests, MemAvailable fell from 5.3 GB to 13 MB and swap was nearly
+  exhausted.
 
-> 
-> So "try 2" keeps the early return, but decides it from the VMA flags
-> instead of a lockless read of the PMD: a non-anonymous VMA without
-> VM_PFNMAP or VM_MIXEDMAP cannot hold a special PMD other than the huge
-> zero one, as vmf_insert_pfn_pmd() requires one of the flags, and the
-> flags cannot change under the mmap write lock fork holds. Everything
-> else is decided under the PTL, as in try 1. fork() is back at
-> 86-87 us.
-> 
-> I also tried vma_is_special_huge() for that check, but its
-> vma_is_dax() test on every huge PMD made fork cost about 17% more
-> kernel instructions than v7.3-rc7 here, against about 1% for the
-> flags test.
-> 
-> Both diffs are against v7.3-rc7 and leave out the deposit fix from
-> patch 2, which goes on top as before. If try 2 looks right to you, v4
-> will be try 2 plus the deposit patch.
-> 
-> Try 1:
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1958,39 +1958,36 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->         pgtable_t pgtable = NULL;
->         int ret = -ENOMEM;
-> 
-> -       pmd = pmdp_get_lockless(src_pmd);
-> +       if (vma_is_anonymous(dst_vma)) {
-> +               pgtable = pte_alloc_one(dst_mm);
-> +               if (unlikely(!pgtable))
-> +                       goto out;
-> +       }
-> +
-> +       dst_ptl = pmd_lock(dst_mm, dst_pmd);
-> +       src_ptl = pmd_lockptr(src_mm, src_pmd);
-> +       spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-> +
-> +       ret = -EAGAIN;
-> +       pmd = *src_pmd;
-> +
->         if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
->                      !is_huge_zero_pmd(pmd))) {
+The affected fallback is reachable from guest-issued virtio-scsi I/O.
 
+ drivers/vhost/scsi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-There is a vm_normal_page_pmd(). It should be used instead of all of this
-open-coded crap people added over the years.
-
-Again, take a look at how the PTE scenario handles it in copy_present_ptes() etc.
-
-> -               dst_ptl = pmd_lock(dst_mm, dst_pmd);
-> -               src_ptl = pmd_lockptr(src_mm, src_pmd);
-> -               spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
->                 /*
-> -                * No need to recheck the pmd, it can't change with write
-> -                * mmap lock held here.
-> -                *
-> -                * Meanwhile, making sure it's not a CoW VMA with writable
-> -                * mapping, otherwise it means either the anon page wrongly
-> -                * applied special bit, or we made the PRIVATE mapping be
-> -                * able to wrongly write to the backend MMIO.
-> +                * Make sure it's not a CoW VMA with writable mapping,
-> +                * otherwise it means either the anon page wrongly applied
-> +                * special bit, or we made the PRIVATE mapping be able to
-> +                * wrongly write to the backend MMIO.
-
-
-Nobody should be checking pmd_special() bits manually. Use vm_normal_page_pmd().
-
-Sorry that you'll have to clean up the mess people created over the years.
-
-But it's all just waiting for more bugs to be discovered or introduces when
-doing stuff completely different for PTE vs. PMD.
-
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 4f8c0260bc9e..b7e41c0a91d4 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -883,11 +883,16 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
+ 
+ 	iov_iter_revert(iter, bytes);
++	/*
++	 * pages[npages] is the first page not added to the SG list.  The
++	 * remaining data starts at offset in that page.
++	 */
+ 	while (bytes) {
+-		n = min_t(unsigned int, PAGE_SIZE, bytes);
++		n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
+ 
+ 		put_page(pages[npages++]);
+ 		bytes -= n;
++		offset = 0;
+ 	}
+ 
+ 	return -EINVAL;
 -- 
-Cheers,
-
-David
+2.47.0
