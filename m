@@ -1,57 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792588958;
-	b=LBw9AAlH1zRosIon2YwmJJvGIE1zQqPBndL7lsdbJlT4hAfBz4KRRAhqhsSOJbwFOJKX
-	 xWClpcoikRCXMKkAtOFo1NkonqriiAD7wBqcpoORC8ZQF5djnDbusbgXLf0QlljQignnN
-	 RDn/zoEtJLVqYmIl9PrlxhzamZqQi3tD/FrcuOAgw148YJyEYoK9e3TIrjpeK9ithHRcu
-	 mFqhAapRqWjyNs4iIKZzSNBMgXBLFBJSaCm8gs3f55XsD05eRwNl2L25MD4ZeuELYFP8+
-	 uUeh/2EvxeQMa1HWpBw6/fTvHpv3UbsP2rSlrKGcyZV3jDZrUdo+4j4rcn/QutsFQDQ==
+	t=1792589026;
+	b=Ul1XDA7kImsSwpK7my7lfrCeaD/pG1axl/AQH8fH+VwZwh9cFFcpxvpfy2j/YixBq8yS
+	 jUjdaZwE0TrEV7x0AZ0HUj0RD9Y2YeRYGaEakaf+uPPajn6jFan604Qw+Qrdhoe5EFVLH
+	 nlBgnDILvFr8Dv1EmLk2M0DqFc4bTFXD64tt9eOgjDxxUWG/wew/2l8bcgkw0OsBMZGP1
+	 DXS0aAxAJewGw4cY549g+pX7rrnvbduAL8QxwOQA9e1CqHFyDebMjQk8gM31ueXhpGAZw
+	 G2C9BcqvODwCI7af7v9CJJ2Rs8YgndVFUAfL42Nm1yMGbnlwiC1o0zoqiM6FSRSkkJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792588958;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=1e5vEM5bC0Ni4rbWVmWLeHIbQLKHuQ+qzL2ZykOAEfA=;
-	b=AnLcDOnLtVjuiKSVqkWVS5lNS5Skh4Y2rlfnFm5NJsv+FokDofAQOU7mJnpWcCbR2y0h
-	 LFgA7F2edPSyfasPVRb07M6TMmbyTtSLwHER7e4FYeinUS9DoJ/JwG3pODuWUBw1kKgGh
-	 pyU4Muke4ykGGQGgRejFMonjIUlq6DgQBK+yS3c2dVpGI7R47ZhfEjQsroSoGzNZD963Z
-	 rf3Psk/qvyqRZR+dCI20E/0iZ2zZiRv554y/hPx0XPmGBzVYp2WWG7KsSYZU9LjsTLlt1
-	 crUhIvLrjeN/59z7KeZ0kfmFZeaPWza682SQxjBSxu+8aODqG0k7hcNVJvSLV57anZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792589026;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=ENEgiLYyZC1rCnAzeRub371bt2VgRo0VClTgBaXb9SQ=;
+	b=V4I+TP+HmCNcJzctPqXSw06nnKMYbkmfX3J+uez4bTuM2dVfUrh/d66CuUoHw+ob1hCT
+	 QC7R3HPkWodqTPoFRI5Nd4zqB7k12QhAimdw1Sk+GClWh4WE0VSlG6CrNVjuQKHKdCk7V
+	 ayPcZmcieVvcxQzPxgY9dglIOtRMmn1zRolCKhlG3bZTx9B3HEU8APZ3ZylmqyKUSHsOs
+	 ABifCB1w1HvlvYXighyq4groy+0cR/IjK90MtVHJ8RLBxExPzFZLMga/F2WSxa0wlg4sK
+	 5/kvCVvm2XPIxovnbri7/9NvwhBO6ph+CLF9bQbINPEaOrl4wu4Lz9WWKY9Lx0ftE1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHu9sjEw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=yADG1ECr;
+	arc=none smtp.remote-ip=209.85.167.48
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89EC606A319;
-	Wed, 21 Oct 2026 13:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F62606A31A
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:23:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97F62606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHu9sjEw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF871F000C4;
-	Wed, 21 Oct 2026 13:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792588957;
-	bh=1e5vEM5bC0Ni4rbWVmWLeHIbQLKHuQ+qzL2ZykOAEfA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lHu9sjEwzlW3PBpLtZxSQOIc9JAEurY4I7ohfXwaJSnH4n128xr3+r7OWbAd6gfKE
-	 isnlBzO4BLOcxfRYpSOi7jRcBSwI+LvgkszJca4mu6iZZLCma8hhbSLks7sHcXVyZ0
-	 1xieyBhmivr4Uq9KLcxhh78obMNKmPMcz59G+v9oXMhWILWZlm8XQxi2ym4VdHsAZL
-	 tkjJRrB0ryVe6l2+JrzHynggmJsn1wulW1mHHPfTziZXmlXX8CMR67ygTmy9FMK/tv
-	 V4U1HiGtCX0Z/MvVTt2+E/HGU1xeup/QaYDIoOb0OuaU9skjfMb/pLlC4ID39XzhQj
-	 WGJ/TUoAdEnDQ==
-Message-ID: <sashiko-outbox-180298@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/4] serial: sh-sci: Skip TDxE clear when hardware
- clears it automatically
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Biju Das" <biju.das.au@gmail.com>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261021-g2ul_sci-v2-3-b4e038220018@bp.renesas.com>
-References: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
- <20261021-g2ul_sci-v2-3-b4e038220018@bp.renesas.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 13:22:36 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=yADG1ECr
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5ba357a1929so736986e87.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 06:23:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1792589023; x=1793193823; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ENEgiLYyZC1rCnAzeRub371bt2VgRo0VClTgBaXb9SQ=;
+        b=yADG1ECr+QObb1QB83+iidmbJj/fobUApZuVsn1YngJx0ZfuONZA+pu4Ic4qUtnpBh
+         GkC63lm5wjgFfb5gMxmSAQ1T2MEC4rYKyNJBBZCRDvoNFfdc/1dnbPoawHNFeIMG3cQ1
+         dwQhoE+vIJAk+03yuCz00MdNPuLCfWEByg6Xqf6mtFZQHE4dGhAcSwxre3Khenao61eM
+         S/YfPRVj5VyHZarKAEdvN1f5q0N5RbEvEKVfa6CCJfAqWlGEaFei/xSUvauLvApvz3jM
+         2mJS5acP+BCEntRYDraaf909OwUFD6CronNRivnX9dfLAoUcbHGmy9cQS/fpdfcJEuVV
+         IBRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792589023; x=1793193823;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ENEgiLYyZC1rCnAzeRub371bt2VgRo0VClTgBaXb9SQ=;
+        b=M6nPJbseO64DYHFNXDjH4hBeto/nrjkGSZngGJpe6N9dgcYO/gZqvNIbgvVNencvCz
+         srPJVpiCK5TCiVueTqb+EVOUtBN53mUCQ2ZtLhgs2M8xTohe0tipXKQtg9aIZYc5kMcT
+         ikj/vmaXOkUlPS5gOVUzuI1pMa5FDsvap+V1mG4TtfoiOdFIho4m0+JfiqoeGpL8Orp/
+         jPhOfcalMBId0jkS2R4Z2dAvzNJgEaCJ6Mo9EGbie2dg/7l7GWDBu9FIMjw49SBp5mTu
+         IRl4oUnY1Ww64tmyCJDHKZbx/RcyHkCTk4qPG7LtJmkyYl+NcGG7adtVIL8WeqEqAZnn
+         KVZg==
+X-Forwarded-Encrypted: i=1; AKwUvBzNoRC/l1ypKHNUc7w/zYnjHzzkCTd9K0zw6EhwBRsCKMGCxmWarwBltQdpyYQTgCImges=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLO16Jahgzlf6W0VUyQaLDMGNkpHG1al9B8pGzdkLuwpfFStGsr
+	Q+6PVI4s4CpWWWjgboyySPsgGbLRMCjFsIJH6z05grXzTHI8SNLg6fRP+x2qLbMnOAc=
+X-Gm-Gg: AYBFou3nlOm1ox9MBzB0aXEhrhq6q4INC6pPPK85NwXkc981tGxkcUoGGJ8YL/6V+CX
+	PXkp/d6MzQz8yay/Z1Eye+L/7KscRUIZ6jBL4MgCh1pTxdm6OduNC2tUmCQTSV5Nsxxj6xDfAGB
+	8lzwtQbeF4PZW1xvTur5rwfc1r/p/IlEjcPZLFR8cMV7iVZv4bX70ElECNLS30nbnkRMmjZOMdo
+	tTvapvMA7Cw+9+2972xazLHkENJDc3/Y+ExhKEfslPLu7BlnDnBJzwsyrwIBOVgASHdVI9Z7NZ6
+	W/oHYtakKjH8xJ1g8/mRr6KS2c+Hr5xfkDi6FHNT0wjj2+j5a+LP3Q2dabGESlHstDJjCAA9qTI
+	/svtvQ1HSVthhtlP2W/Rd1vou5y6dWMunKL6M+3hLqHGUhKVQqeVuwm7ijXh/F0pLZn5tykEz2e
+	qRWT2WjA8Ra1dLY/tDXTSAy87mCidAQRZtoaBtCCRWfAvFaVtufxOnzqsQjimkNb/LiNCHu3WRT
+	7xlLfAor7pcTisNhg97UgWrfPmMLfwSys6pVy0jMvtUueZ5qCRO2s5pOOJLsAW9Kbg=
+X-Received: by 2002:a05:6512:3c8e:b0:5be:55b6:7a92 with SMTP id 2adb3069b0e04-5bfa1c2d635mr792386e87.30.1792589022381;
+        Wed, 21 Oct 2026 06:23:42 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ac4a4f5f04sm2718501fa.32.2026.10.21.06.23.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 06:23:41 -0700 (PDT)
+Date: Wed, 21 Oct 2026 15:23:38 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 01/20] ctlv: Add the schema language and generator
+Message-ID: <ati8DWgQb23dV4Dv@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-2-jiri@resnulli.us>
+ <20261020233132.793b7e97@jic23-hlaptop>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,74 +103,206 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020233132.793b7e97@jic23-hlaptop>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] serial: sh-sci: missing has_tdxe_auto_clear init in scix_early_c=
-onsole_setup()
---
-
-commit 7c4175b5ac1e1b0c0d116921a097acf598dc7be1
-Author: Au Dang <au.dang.jx@renesas.com>
-
-serial: sh-sci: Skip TDxE clear when hardware clears it automatically
-
-This commit adds a tdxe_auto_clear flag to struct sci_of_data and propagates
-it to struct sci_port as has_tdxe_auto_clear to skip software clearing of
-TDxE in sci_transmit_chars() and sci_poll_put_char() on PORT_SCI variants.
-
-> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-> index 58120b523ca1e..aa179c7874878 100644
-> --- a/drivers/tty/serial/sh-sci.c
-> +++ b/drivers/tty/serial/sh-sci.c
-> @@ -913,7 +913,8 @@ static void sci_poll_put_char(struct uart_port *port,=
- unsigned char c)
->  	} while (!(status & SCxSR_TDxE(port)));
-> =20
->  	sci_serial_out(port, SCxTDR, c);
-> -	s->ops->clear_SCxSR(port, SCxSR_TDxE_CLEAR(port) & ~SCxSR_TEND(port));
-> +	if (!s->has_tdxe_auto_clear)
-> +		s->ops->clear_SCxSR(port, SCxSR_TDxE_CLEAR(port) & ~SCxSR_TEND(port));
->  }
->  #endif /* CONFIG_CONSOLE_POLL || CONFIG_SERIAL_SH_SCI_CONSOLE ||
->  	  CONFIG_SERIAL_SH_SCI_EARLYCON */
-
-[ ... ]
-
-> @@ -3791,6 +3794,7 @@ static struct plat_sci_port *sci_parse_dt(struct pl=
-atform_device *pdev,
->  	sp->ops =3D data->ops;
->  	sp->port.ops =3D data->uart_ops;
->  	sp->params =3D data->params;
-> +	sp->has_tdxe_auto_clear =3D data->tdxe_auto_clear;
-
-[Severity: Medium]
-Should scix_early_console_setup() in drivers/tty/serial/sh-sci.c also copy
-data->tdxe_auto_clear to sci_ports[0].has_tdxe_auto_clear?
-
-When earlycon is enabled on a renesas,sci port, sci_early_console_setup() ->
-scix_early_console_setup() initializes sci_ports[0] from of_sci_sci, but
-leaves has_tdxe_auto_clear unset:
-
-drivers/tty/serial/sh-sci.c:scix_early_console_setup() {
-	...
-	sci_ports[0].cfg =3D &port_cfg;
-	sci_ports[0].params =3D data->params;
-	sci_ports[0].ops =3D data->ops;
-	sci_ports[0].port.ops =3D data->uart_ops;
-	sci_uart_earlycon =3D true;
-	...
-}
-
-During early console output via serial_console_write() ->
-uart_console_write() -> serial_console_putchar() -> sci_poll_put_char(),
-s->has_tdxe_auto_clear will still be false on sci_ports[0], causing
-s->ops->clear_SCxSR() to be called in software instead of being skipped.
-
-> =20
->  	sp->has_rtscts =3D of_property_read_bool(np, "uart-has-rtscts");
+Wed, Oct 21, 2026 at 12:31:32AM +0200, jic23@kernel.org wrote:
+>On Thu, 15 Oct 2026 16:50:34 +0200
+>Jiri Pirko <jiri@resnulli.us> wrote:
 >
+>> From: Jiri Pirko <jiri@nvidia.com>
+>> 
+>> Define the YAML schema and append-only family registry. Add ctlvgen to
+>> validate specifications and emit kernel and UAPI outputs.
+>> 
+>> Assisted-by: Cursor: GPT-5.6 Sol
+>> Assisted-by: Cursor: Claude Opus 5.5
+>> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+>
+>Obviously you asked for broad structural review and this isn't that. I'm terrible
+>at reading code for just the big picture but feel free to ignore the small stuff
+>in this reply.
+>
+>My python being even worse than my yaml I'll only say that
+>part looked plausible to me!
+>
+>> diff --git a/Documentation/ctlv/ctlv-schema.yaml b/Documentation/ctlv/ctlv-schema.yaml
+>> new file mode 100644
+>> index 000000000000..38fd56e6627c
+>> --- /dev/null
+>> +++ b/Documentation/ctlv/ctlv-schema.yaml
+>> @@ -0,0 +1,359 @@
+>> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://kernel.org/schemas/ctlv/ctlv-schema.yaml#
+>> +$schema: https://json-schema.org/draft-07/schema
+>> +
+>> +# The syntax gate for a CTLV family specification: permitted keys, their shapes
+>> +# and the closed sets of keywords. Anything needing more than one declaration at
+>> +# a time is checked by tools/ctlv/ctlvgen/lib/semantics.py.
+>> +
+>> +$defs:
+>> +  name:
+>> +    description: Kebab-case identifier. A dot is reserved for selectors.
+>> +    type: string
+>> +    pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+>> +
+>> +  family-name:
+>> +    description: Name carried by family discovery.
+>> +    allOf:
+>> +      - $ref: '#/$defs/name'
+>> +      - maxLength: 63
+>> +
+>> +  selector:
+>> +    description: |
+>
+>Really trivial but nice to drop | where it doesn't make sense to
+>force line break preservation like here. 
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-g2ul_sci-v=
-2-0-b4e038220018@bp.renesas.com?part=3D3
+Okay
+
+>
+>> +      A named attr set, a whole attr group, or one exact attr as
+>> +      "group.attr". There are no tuple selectors and no cross-family
+>> +      qualification.
+>> +    type: string
+>> +    pattern: ^[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+(-[a-z0-9]+)*)?$
+>> +
+>> +  selectors:
+>> +    oneOf:
+>> +      - $ref: '#/$defs/selector'
+>> +      - type: array
+>> +        minItems: 1
+>> +        items:
+>> +          $ref: '#/$defs/selector'
+>
+>My yaml is terrible (and all learnt form reviewing DT bindings which are
+>undoubtedly perfect :) but random LLM agrees with me that you can simplify
+>this as it's a local definition.  I think doing so makes life a little
+>easier for reader by indicating it is thing defined a few lines up.
+>
+>            $ref: 'selector'
+>
+>I don't care that much though.
+
+Okay
+
+>
+>> +
+>> +  uint:
+>> +    type: integer
+>> +    minimum: 0
+>> +    maximum: 4294967295
+>> +
+>> +  integer-bound:
+>> +    type: integer
+>> +    minimum: -9223372036854775808
+>> +    maximum: 18446744073709551615
+>> +
+>> +  max-occurrences:
+>> +    description: |
+>> +      A finite positive count, or unlimited, which is reachable only from
+>> +      query replies.
+>> +    oneOf:
+>> +      - type: integer
+>> +        minimum: 1
+>> +        maximum: 4294967295
+>> +      - const: unlimited
+>> +
+>> +  unit:
+>> +    description: CTLV-owned unit, matching enum ctlv_unit.
+>> +    enum: [ seconds, hertz, bytes, celsius ]
+>
+>These are used in here?  I'm sure some are but guessing not
+>all of them yet.
+
+Nope. I just want these to be part of the initial schema as it is not
+omitted by later family implementation by accident. Easy to pick up by
+AI assistents I believe.
+
+
+>
+>
+>> +  attr:
+>> +    description: |
+>> +      One attr declaration. Exactly one primary form out of type, enum,
+>> +      flags, attrs and blob must be present. optional-attrs and recursive
+>> +      may only accompany attrs.
+>
+>Maybe worth the yaml gynastics needed to enforce this rather than
+>just putting it in the description?  An LLM fed me something when
+>I sanity checked how bad it would be and it's only somewhat nasty...
+>
+>Bunch of:
+> oneOf:
+>      - required: [ type ]
+>        not: { anyOf: [ { required: [ enum ] }, { required: [ flags ] }, { required: [ attrs ] }, 	{ required: [ blob ] } ] }
+>
+>lines, though I thought there was a more compact way to do it.
+
+Okay, will try.
+
+
+>
+>
+>> +    type: object
+>> +    required: [ name ]
+>> +    additionalProperties: false
+>> +    properties:
+>> +      name:
+>> +        $ref: '#/$defs/name'
+>> +      type:
+>> +        description: |
+>> +          Primitive payload. Integers are always 64-bit, and a bool is one
+>> +          byte holding zero or one.
+>> +        enum: [ uint, sint, bool, string, binary ]
+>> +      enum:
+>> +        description: Name of an enum definition; implies an unsigned payload.
+>> +        $ref: '#/$defs/name'
+>> +      flags:
+>> +        description: Name of a flags definition; implies an unsigned payload.
+>> +        $ref: '#/$defs/name'
+>> +      attrs:
+>> +        description: Nested payload, given as selectors.
+>> +        $ref: '#/$defs/selectors'
+>> +      optional-attrs:
+>> +        description: Further nested payload whose placements are optional.
+>> +        $ref: '#/$defs/selectors'
+>> +      recursive:
+>> +        description: |
+>> +          The nested payload is one attr set that may contain this attr
+>> +          again, describing a structure of any depth. Only a query reply can
+>> +          hold one, since such a nest has no maximum length.
+>> +        const: true
+>> +      blob:
+>> +        $ref: '#/$defs/blob'
+>> +      min:
+>> +        description: Inclusive minimum of an integer payload.
+>> +        $ref: '#/$defs/integer-bound'
+>> +      max:
+>> +        description: Inclusive maximum of an integer payload.
+>> +        $ref: '#/$defs/integer-bound'
+>> +      length:
+>> +        description: Exact payload length of a binary attr.
+>> +        $ref: '#/$defs/uint'
+>> +      min-length:
+>> +        description: |
+>> +          Minimum payload length, excluding the terminator of a string.
+>> +        $ref: '#/$defs/uint'
+>> +      max-length:
+>> +        description: |
+>> +          Maximum payload length, excluding the terminator of a string.
+>> +        $ref: '#/$defs/uint'
+>> +      unit:
+>> +        $ref: '#/$defs/unit'
+>> +      scale:
+>> +        description: Decimal exponent applied to the payload.
+>> +        type: integer
+>> +        minimum: -128
+>> +        maximum: 127
+>> +      max-occurrences:
+>> +        $ref: '#/$defs/max-occurrences'
+>> +
