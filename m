@@ -1,96 +1,210 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792616599;
-	b=4DTtsuFiRZXvDxbDNCRfuE1NKDMcN5h0zORfz8vs5AiiIewazKh1lWqSu7C8qTsRUuHO
-	 6XrStmiHWJwIgsfk4BheIeN0hvLHufsETFqfn7/3URaZrVGsM5wQtLFxLjLwtBH9G7B/o
-	 1IBRBQQyFc6qh33pdBmjmcvaXY0v+hjWB/ZbUhEUEoQOwtT6mVL8WvGG49jHSWCoWAOYe
-	 X3890G7wtgj+fd+obtL+bKWwooaf7chu7AK+CChEImyR0h277YvVQYh4saEkAphh4aVmj
-	 Dh2nq73xd8xkeLWWDVnpJo7swmKTiT6ls0XfXulA/aqengRxoQqAo9szCTA4LidDxjQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792616599;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=WQT0qPzr3Ls1jasnVTpNHtajcbGWRZOPvuwt8bwWQHU=;
-	b=arPQpBmRka/XNVkdBWR14eFx2eqkOmLU/xHRmb3SLIfhfua23ugPeIXc8qyk+k+bGqe6
-	 mCxAk5o5Gh3Pfwb/HjQBhMRQHVCxkG8wJFii0V1aUvnnFRiovtgYBcjUiNjURocyitCdl
-	 1/a/GiQdGfXYGhDoJp4fScgO/VyHNxyBP4fJMQQIvrSTPkyeETBspCmjX+RaxXBMfe499
-	 kJ1hU59qgcXCwgNPk3sbcpGyoQGarQFVey7UmmGSCridZ2s1OrkzVlmxNGLRtUfer7QiK
-	 uzrvjPpPHPh/x/RwwF4DuUWCpgXr9IB1T3lcXQfLA2v9BkvWr4B61Dg42i+Z7HaEnTQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=an9b1da1;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.10
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792618122;
+	b=H0bu/0LGjTRecF+SEr9IoFW+9j5yoxOqxaPE2ixYs0tJ1PJ8O45k8h9/Awqvm+F1DxPO
+	 PDAuH8VAIZrsQW5ugNdS/D/R4BWBvQryX1LLSrMss3NcerKJRM1M9OCWphsuwVVBQuYHJ
+	 EANnOlLQ8sgvZzo3xNAL+/lMViEY6JV82kKcROD2DSdvd5BqxIg29KTJGfoi0v2CL42hx
+	 /Bv/0cXJJyZrqxUmoWYpczm7/U0AkpCw51vf+Cuz4mfnXKFEdv8+pSmSbr3oOubltpOmR
+	 xdMlrrDFcrJBN5BNina2hdrJjSXWgGnwRYkMqSM3Yme6uKr7I7N4hQIBciqi4lbK8Ew==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792618122;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:user-agent:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ld-processed:
+	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
+	 x-microsoft-antispam:x-microsoft-antispam-message-info:
+	 x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:Content-ID:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=mcqhnauXFYF8WFDm4olPTogSWtaVxljL2I++UatGUlo=;
+	b=vKpdQ2xaMsyR5WF9EcrQCAyLLADBaWADVruFkSxfUu0t4O73z5PYWALNjfGAii24b5A1
+	 6I/CgksUGBZBOfUAjoOQfzPPhYj5l45Y9L/Phn6YHOfRH00V+IiywQVlOrI8ARCMiQoIl
+	 nqOHng4j1mdOBN6gP3qZofjTSTlL5yDqNeaSwYdXxYR74Vo5xyIyZGopJgmmhBlfVu6c5
+	 mvFAlZ1enVKTR18VqMuVpKHHksSvH9PXnt4GC+gBIql+UOldDXfG6SXzbirJz8tYyQECy
+	 aVZgalcYx8f3rU1HYsTajpiCY7nbABwDtgWQslNTCTiwFqIbLk24t2Hr+4Mwmc/3iFA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hIr86++d;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619E606A31B
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 21:03:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9619E606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DF7606A31A;
+	Wed, 21 Oct 2026 21:28:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73DF7606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=an9b1da1
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ab60ff4273so1065634a91.0
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 14:03:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1792616598; x=1793221398; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WQT0qPzr3Ls1jasnVTpNHtajcbGWRZOPvuwt8bwWQHU=;
-        b=an9b1da1vl2QSKguB7Yye/6/4B04odtWHOMG8VBMABbPGcSg9pwJ2nq5b/cvBIMqgh
-         hL2JAxV0E37N2c5yDRcwya+r9lnetqzzRlB7IvqqlomqZQeqYVhm/wMxRE5ZJdxi9rPB
-         dQas9pPHrMzPpEuWg0LbFVMwXmbFS8nWZQKG7PtMcV9u7mFaJwMWN90Tst+dMirgQUxv
-         f11S7PFqxZuqMWcMRG8dt6jq8t4azQucXQqJMzK7+eBIuBvMjSV5YPeV8DwQ6hh4RaLi
-         SWHo8J6U4T4vsIdZ/FCbxwFjOH7qxhrFP757G7lpooEFSczhnx7JLHpYJ753hu1oYa6z
-         oqlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792616598; x=1793221398;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WQT0qPzr3Ls1jasnVTpNHtajcbGWRZOPvuwt8bwWQHU=;
-        b=lYc7p9RHQ8mFYd9WAEH3nnOFRO/J3GGmq8G1/SkuVDMvHHz9YW0Kn2uPEwNNnchaLM
-         Ym1p2Guerc0lAg7PvUZS04ihEeke0wIuefIW6PBy7T35YIsBkOb0Ka8KZIPK/9FcdBd1
-         Ycgdmszxus6e9qwBtHmX3L4u6xRgzg7XFIx+G04vSG68Th5cYn9+a0y0oM31ShyZHEqJ
-         RvfAblGc23sUAtWDS4f7tFXnSQ1dmP80cmHlz3V5SlRNPi8usTyKZW2f1GoL3p0qDxqw
-         MGlC0UAb1g7n3Y4HKIXZxXb6flXZa46QRyhDAGSqFoUfbZiFxQhMgQ6LNfGDgFhK1lfH
-         32LA==
-X-Forwarded-Encrypted: i=1; AKwUvBxzR55NN+5sosOKz5Uaf381Zl4THD1/55Rfh/O5Uf5uiE5Erx+A/7fj6863yrYI0V2uXCY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJl185lQZ6FKo2HTGwnJDgu61KARlb5UN4FNCbDenMAWYolBAmU
-	W9d5WF1ph+zvR38CzMUhY9xNVu076blb4ZidpoNSS29R9CiD0ZFmPYAujLO7iJIjBUk=
-X-Gm-Gg: AYBFou1FYF7KvW6qkC1tXDoDQ0Tj8h0SKlQf2w9KWg0N3N0gV7M29Fy/4TijK/nuWs0
-	4PsrbNGWquMjS4sOv5S0H4C56bpUHQoMTd4JKXjA3fdcTOzgqeukLrOexIK7HbWrsHPRR89ALxP
-	fwk41L9wwY7230a+bXsh5DM1nTTtJfjpp6NAp8v0Aa4cpHSpyunbZXS33HfaSx5K1wcTP10JH/j
-	Wz6auoNuXowpdOJS9mvfzg8vCpFTaA2Lj2kJ0aFTZTt15P4wFxsRHEbS9/d0RgTNQ7jOpVgFntG
-	gR5DBvg9vkp265uv4JN1VxG2uGtsH0cEC52OQf4+9tswO/TQHK/HF6z3LxSie4x5ycbmJ/HcdCc
-	OgLJ6ys+NtaqjhLdDjsDmDlQVuyvB4ScmjtQEdA17dmFKiWaN37+IZscU7cFUAy/T6vekeXQYeJ
-	nuzZnQQWfbk3vzMHnpw1AQuCfeqUz0uYrE5gawrxdv+sfiOfTimZDtmK0VOattyFQtyFsWPUgtl
-	hi7He4HuMvi4Iw3Ti2toUUH2J/PiugN3pXm/VNRGREbMteZYHx6bPpyQeA=
-X-Received: by 2002:a17:90a:c887:b0:3a7:9413:cfae with SMTP id 98e67ed59e1d1-3ad86f36215mr2395188a91.42.1792616597688;
-        Wed, 21 Oct 2026 14:03:17 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:8e8e:37a7:da6e:5dab])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada49544f1sm975697a91.16.2026.10.21.14.03.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 14:03:17 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:03:14 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Gavin Shan <gshan@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, lorenzo.pieralisi@linaro.org,
-	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
-	kvm@vger.kernel.org
-Subject: Re: [RFC v4 00/24] Add Realm support to QEMU-VMM
-Message-ID: <atkokvqTHygpI8dt@p14s>
-References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
- <7dea93a6-b119-4882-9c56-557a372b646a@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hIr86++d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792618120; x=1824154120;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=mcqhnauXFYF8WFDm4olPTogSWtaVxljL2I++UatGUlo=;
+  b=hIr86++d+LGABcLKk8kpuSGyg4fc/ff0frmIsg2v5u6m96C8BeaDS/cx
+   l62x3P+yPWFq2ylUSovZy3mz09o1CMOab/Rbk9d5P/FRHp/BtlbkRgTfd
+   BLs0fLB0euLAkg8N7P4tdEfkJav2Pagynm1VOLlzcj9A0l3mwgnxjFsN8
+   oy8UV9livfQy7yfttJxp9lSjM5qWI6/MW0JhbjWjttpYfeOE99YsfCu4t
+   jZx2OnF1eix+RVaUoVRGSIkOhxjOVgQL7U5pMmKNoVxXexPsqmiKHsH8e
+   EYaDh9tXkZG/0DDGiuvqCBp9AC4rMH6/z4NlmO6gKQF8dal2pY5Ek1tth
+   Q==;
+X-CSE-ConnectionGUID: DFmdOqJyQ5S6TUJDpEMryw==
+X-CSE-MsgGUID: VgoKe9TOR2K92Apn+ganZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1257885"
+X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
+   d="scan'208";a="1257885"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 14:28:40 -0700
+X-CSE-ConnectionGUID: yB+8lIB5S56Xgi0U9bwgxQ==
+X-CSE-MsgGUID: s1js7QSMSRecJ8YHCLMjCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
+   d="scan'208";a="3135218"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 14:28:39 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 21 Oct 2026 14:28:38 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Wed, 21 Oct 2026 14:28:38 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.23) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 21 Oct 2026 14:28:38 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YrhYLkAKp5t28yBCjKVWWcyiTz7J9PoiKBYl3Xt3fcajh9LTsBnBKGedk1vvopNVMtlSu6vnLm5fmBL6BGd0aX4EYfWMx7oI9mUTnVPJz4g33MpnS5uAW1wrPh8o6T1dt5rUehRdHcTbcB64HKgDg5hWJwWoqGzv7YIi5VJT/p1ja3CxhU8QwRTF7ILg3n/Q7MrdwLTyjwzYloB9N3aKMDxfZiLJL3FPQ3Q4oRZBDIjN4LiGsYy22LBceIFL+hRIvHYtoXuELyTBKVnxSRoc00ek4LrX5YHgXFhFyAtOPbhCCdrfW8MewGXG3MFC4oDAwp4LvvuZVoc2pKMMl+1B8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mcqhnauXFYF8WFDm4olPTogSWtaVxljL2I++UatGUlo=;
+ b=rDJ4ak653stDo088FN3w9ZvUSldwkKvGrRr2E5suw8r4eKCIAFWrxphq4S8QuOE4tUv0LmSfzJsVn201ErUUdtqza9Kl+ve4swdufYNSfTrGpBPtqPaAQtzs4lxGwOY0lsbdju8VvuvqWDc7wGnnaMaFUZq8/dbclMNXpr40RT4jYzq1z/NJXHIx5OpJ9KK5Zs1VklqGHcj+GKv2rpQU1jroD8ZBaPVw221u8h54rM/7bb0R4OxHW2pGftkeH0hcIUMc/v+yp1+aVAHCKbA5MkwKnNaKzJ3hgH1BsiUIaePlVJ1/3tldeneDtEmhud6dIEVc3nIfvwrGfLFZGX4Hxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB634048.namprd11.prod.outlook.com
+ (2603:10b6:208:549::23) by SN7PR11MB6996.namprd11.prod.outlook.com
+ (2603:10b6:806:2af::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Wed, 21 Oct
+ 2026 21:28:33 +0000
+Received: from IA3PR11MB634048.namprd11.prod.outlook.com
+ ([fe80::760f:f0a4:7417:6e57]) by IA3PR11MB634048.namprd11.prod.outlook.com
+ ([fe80::760f:f0a4:7417:6e57%5]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 21:28:32 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "Zhao, Yan Y" <yan.y.zhao@intel.com>
+CC: "Du, Fan" <fan.du@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"kai.huang@intel.com" <kai.huang@intel.com>, "Li, Xiaoyao"
+	<xiaoyao.li@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tabba@google.com"
+	<tabba@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "david@kernel.org"
+	<david@kernel.org>, "michael.roth@amd.com" <michael.roth@amd.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "seanjc@google.com"
+	<seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
+	"Peng, Chao P" <chao.p.peng@intel.com>, "nik.borisov@suse.com"
+	<nik.borisov@suse.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "sagis@google.com" <sagis@google.com>,
+	"Annapurve, Vishal" <vannapurve@google.com>, "Chen, Farrah"
+	<farrah.chen@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
+	"francescolavra.fl@gmail.com" <francescolavra.fl@gmail.com>, "Miao, Jun"
+	<jun.miao@intel.com>, "jgross@suse.com" <jgross@suse.com>,
+	"pgonda@google.com" <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v4 01/17] x86/virt/tdx: Enhance tdx_pamt_get/put() to
+ support huge pages
+Thread-Topic: [PATCH v4 01/17] x86/virt/tdx: Enhance tdx_pamt_get/put() to
+ support huge pages
+Thread-Index: AQHdTykCb/i0a5FVc0eZkBiALVPvabbpU5eAgA1PggCAA/5+AIADbkMAgADzGACABYa6AIAEHkAA
+Date: Wed, 21 Oct 2026 21:28:32 +0000
+Message-ID: <ca949948073ba2079db578b7a27108db6991dc1a.camel@intel.com>
+References: <20260928090729.15468-1-yan.y.zhao@intel.com>
+	 <20260928090808.15484-1-yan.y.zhao@intel.com>
+	 <e494996660b45273590860e961b36378c4099c03.camel@intel.com>
+	 <asoQ/P7sghrEVDQs@yzhao56-desk.sh.intel.com>
+	 <ea3584fd5613223ee066fbd368272dc7070bceec.camel@intel.com>
+	 <atBLdGBCsPwMK7Sh@yzhao56-desk.sh.intel.com>
+	 <896585225b67cb215db0ce66dece20ba8fbb919f.camel@intel.com>
+	 <atW6Il1yN85IA1Wj@yzhao56-desk.sh.intel.com>
+In-Reply-To: <atW6Il1yN85IA1Wj@yzhao56-desk.sh.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB634048:EE_|SN7PR11MB6996:EE_
+x-ms-office365-filtering-correlation-id: e422776a-0453-499f-f11f-08df2fba421a
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|22082099003|261021121427099003|11063799006|38070700021|56012099006|5023799004|4143699003|18002099003|6133799003|10067099003;
+x-microsoft-antispam-message-info: h8b17qFt4jK9kWBHmz4cIB6e92JKAzb6yq/6xeYxPM3SWzX9Cde/T8e2qALg8NKUkJNuKRst4Wu4Kv4O8HRhtP5jFdjELdCB3e7k1OY/3mbz6IrY4LzxUeEueR7wbicJtYMllHioQpOD/v1sTq5R6ocECywylvqnt/uw6VN0TnE3IAWm/DUieg00dOamz6r7hyC3q7uxLZ55tUagmiM6TgeoesX4Qv/zTwm2Y46qmy5+oQQrofyEVgRpdeDVg13Y467NsJz31I595R28LBq7c09//CWxw2ABwyt6hcfoWuXAqiUUJGkE0RXfFOA0pSfRNM/hnEvfar3mSVQ8q5aWSNy8BSNvwOBi+54rRAtNdV4ZEP76BkMz6Jyzf6T4EBu/s2q8D5jU1DJnZsdWyxQi37R1Vr3kXb5ClIVSkRc/4X7mAXl/DPPFnCbbULPwPBVDtnI1VdudsV+/c2YdZPGPuyB0p/MqlHv5mwMSHMuT4F+pd8GevXH4x3v0px6hwNwEw4Ew0mrfWA1d1rem4LlGhMM6LlWSZW1h9fs1qP0SpPIgQp7MnORu9rhsZRorNmg4rC4VOWtRGiYjDU7D8j10x1rzQ43l6jfYLHiJD3d9Bm2pZEhWm8Gocqnyma7WhjRP3qwgC16WDTPNX9AY2AKPeZXrD1L9o8jQlKOwQnsbznA1M6K1izhk5j7MbXO9GpycmJOQM9jOupoah55Mj2iB0LbZDmKb1We15ux5HBxngng=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB634048.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(22082099003)(261021121427099003)(11063799006)(38070700021)(56012099006)(5023799004)(4143699003)(18002099003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UlZYTjhzUi9iTUlSZ3U3dmhlUGhuM3JrUDRhK014UTF0bW1LZk9qUWdRK1lO?=
+ =?utf-8?B?Z2JFK0RyRVFTUTBRTHdIdEltTm1RSm54YjVlbWJTcVZ1UkVhL1pJdjBxVTVG?=
+ =?utf-8?B?bGxCbVhxdU5GMEtRNlpzQ08xNlhPNXMrZ1l6V2NXU0hnNUJDdmM1R25IWUxK?=
+ =?utf-8?B?ajE2OHBjaTUyNDl1Q2VPRzdRb2hlMmlxNkFuOHN1SndOZTRXaHZUNTlZNzZu?=
+ =?utf-8?B?ZFY0alBKYlBKNTUvNEhvNERlTmhKZnN5akpla0ZLVjFXK0hUcmdScjRCSjdq?=
+ =?utf-8?B?cmFzWndvem04SzNqY1hUd2U5YU8zYzFHbUJvOHc1VmZ4OWpmZDMvVm9LdXVM?=
+ =?utf-8?B?aThUTXhRWEFLRkVwZjlUdW4zNTlBTG93NXF6NUcyRmVTSnY5RmF0OFlGWUQ0?=
+ =?utf-8?B?V3pqNnhrcDJrUG5TbjZZOTl3NWw5UEhZa3BFZHU4ZFE0NTQzYW9nK1o4Q0tx?=
+ =?utf-8?B?YXRXZUZrd0pGazUxSEF0SnIxMkhRRjVkWnc3UDQ1di91ZHRodHRBR2xYVVZv?=
+ =?utf-8?B?VUpmaTE2M2N6dElBUkFKL3c3MkRLZ2tBbWVFN1N6VENTNTFkV0gzemkzTGtv?=
+ =?utf-8?B?clRXVzN2SGlGUkc2Z0tlRWJWeFpHVDFMd3Z3eGxhMjFiN1JFNDkrZFFaZVhH?=
+ =?utf-8?B?MFdwRTI3SUI1bThiZUw2ejhVcmx4VnVSR2UwTGhybTZmUXNtdmJxN0wxK05L?=
+ =?utf-8?B?dll4TlJxSllEUVpMcXRta2FsWFMvRE9DazgzbjFoRTIxdWVycHVDazFvNkV0?=
+ =?utf-8?B?SkwrMXdBcWRLSGo1K0o1ZFRSbVhNSVErb01MUk5QMUg3b1cwYlp2UEZyREpG?=
+ =?utf-8?B?VjZ1UEt1NTFVU2tBSXEzemt4cnNqekdYY2IybDJqdTJ5cFA2NVdDa20zTG9H?=
+ =?utf-8?B?Mm1haHZuQVAvbTF1TGE1K29mcER5a2ZvVUdOdGdBS1RGTStEZElnRTZ3eHNx?=
+ =?utf-8?B?RnVNcXFyejdrZnpwMzJWYktVK05zQU9hdnBEci9RVE4ra0lCa1p5eUNVazgy?=
+ =?utf-8?B?dlBZbHIvNHRHTVNIWUs3aldBNlBpUTVMek1GcHRIMzhpdnBQeTRTRDlmTEx3?=
+ =?utf-8?B?N3RDODdpMUtNVEtFemFmOCs3MVViOTg2QWJUdVVkYXpUSE9BZkRJTkY5czIw?=
+ =?utf-8?B?YjdYMTZwL0Rsdm5tZjI0dm5QZU5LQzV4emtkSXZycmh1T3JjWUxhTGpVZ1pp?=
+ =?utf-8?B?SHpnbWxnRUdZb2tuUkp4dzNteHRKOGFOUk9hSnNEalpnbzBIRGEvWDVWVjBK?=
+ =?utf-8?B?Vk5NTFNlN2xiMzBoY3ZoN0pXRlYwZWVPSUk5c3dTQmNnY0c4SlJkdnMzVWQy?=
+ =?utf-8?B?a09xSENxUHBOQ2NlRXhBTElHOXU5cFN3QlZVc0pWTWJ2TVgva0pyTFlUT0l6?=
+ =?utf-8?B?aFdrL3NJWjloSmd0WS9nMUswSEFjMVFYVXVXRGdhWG83MkNCTUNqOTVlSEtm?=
+ =?utf-8?B?TFFTMUVhb2FhODJXck5KRWpzMHA4em9uWENscHFGZHY0bEM4cjhxOFJhSjJP?=
+ =?utf-8?B?cnozMW5NaG9qWkh3cGQ4WUxsaloyQzhTKzVwQU9QN2t0bFBpbFlVOHZlV1FS?=
+ =?utf-8?B?TFRMU0RBbW83NmVwTGlBNmo0Qkw4Qkx0QUZNclFWRnBGcjhGM2VMSkhqMzJl?=
+ =?utf-8?B?c3NkV01EOUorVk4zWjc0bCs3UWVYajloZkJiWHVEZ29Kc1pDaGhaMStOYTZu?=
+ =?utf-8?B?Tnp3cmc0QWpvV3p0TGVkRHpUVGNJbkp1MksrRFdzdVZ5cUtxQkVmVFQwRGxF?=
+ =?utf-8?B?UFJsQ3pqZXhSSWdGMmVYN1E5UkpYNTJHSmU5RU5NcXNXNG1aR3JqdTFoR1Z4?=
+ =?utf-8?B?aElCRFJNMjV5bUNuR1I5TXBQOVJmbDBuOWNIQS9OczltK05RRlpmcVdLQUhL?=
+ =?utf-8?B?OXFUYzlneTJLY0YxMS9yWXVNTGFMdmpDcWRWMVN6WUpVMkRucXNndUdVRUw4?=
+ =?utf-8?B?WDJuOWxvbUFFdVVKTWNDTUtYM1N0Zkt3dkZ1ZEZobXZVMlg0QUlQWTBVUTFL?=
+ =?utf-8?B?M1RJVGNpbmR2NmxOSktLV0lzbmd1dU5QZGdUZldZcTViUjNyQWMvUTVLSUN6?=
+ =?utf-8?B?b2tmUUJRVVh0VEJEMGNkcHFNZ0dPSDdWZW1CeU01NTI2ckhrcHdFVHRvSWxJ?=
+ =?utf-8?B?R0FveHpWQzByaXpzdkM0dlFFVDhmNXUzMUZxbEMreHRnVXFEV21nc0d1Y25o?=
+ =?utf-8?B?K2h3ekxIUHdQRm9EQjAyUFN4U3ArVW5OMWlhVEVmcnA1am9jc21FZXdEakc3?=
+ =?utf-8?B?enVBc2M0V2piYUZ1Qmg5ajE5UGh3R1RWT2FyekxNNnhJdUY3bGl3d1B4T1pz?=
+ =?utf-8?B?MkxmWnpVZkpXYTBRNzRZbGJYa3BWeXBlbGJLVmlLZ3ZLaWlHd0Jvdm1sWnVS?=
+ =?utf-8?Q?tLbVZR3iI0FOmfZg=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1CE1D9D9F82D1D408FB43FA346D43DE1@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -100,215 +214,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7dea93a6-b119-4882-9c56-557a372b646a@redhat.com>
+X-Exchange-RoutingPolicyChecked: MY7jfqucIIcKKvz2ogqObddAZMyrBQAZD0eiSGSKgP3xmKGQ6+6ArJ/kavPGnqJzyeruThe/dwom3LixH19Ntkxe92nr1YFxktQEoHh/l4t/ytcIQ+VwZsgfy/vb+dqCwsK7gzBC+DiCeUIQPKMRFJ9euPg5IZnE4NTEbylkJk2HiEiyUrfVlDZYA/v/d32xu4BnkT7WG/VJKtJSaJw8oJ+GjJV/jf+/MjmRqqZt/W43/JIRIOa2D/KFQwO741UraaSLuKUA/3T/4sppqQeMSLsRJ30De28kx+vNcYERIS8jppoGSK66IzzYElkTqD14bS1ssQtIDaWhBirdypmSKQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB634048.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e422776a-0453-499f-f11f-08df2fba421a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Oct 2026 21:28:32.8789
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 36cGRzVVEzODBAuWotPz7zoVuVSjfY3M8JvBa9i8Zad9wsEZnzI8pq+sjFUTP1DEsSFKEIrqY4DUx+Nb+orMcVsbKzl8S70JOJp+ntEUwmU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6996
+X-OriginatorOrg: intel.com
 
-Hi Gavin,
-
-On Mon, Sep 21, 2026 at 02:05:19PM +1000, Gavin Shan wrote:
-> Hi Mathieu,
-> 
-> On 9/4/26 5:35 AM, Mathieu Poirier wrote:
-> > This patchset provides minimal functionality to start a Realm VM
-> > from an Arm RME capable host using the following command line:
-> > 
-> > qemu-system-aarch64 \
-> >   -M confidential-guest-support=rme0,memory-backend=ram0 \
-> >   -object rme-guest,id=rme0,convert-in-place=on \
-> >   -object memory-backend-guest-memfd,id=ram0,size=1G,share=on \
-> >   -cpu host -M virt -enable-kvm -M gic-version=3,its=on -nodefaults ..
-> > 
-> > It is a refactoring of Jean-Philippe Brucker's initial work dating from a while
-> > back.  It is compatible with Steven Price's v16 revision [1] of his work adding
-> > CCA support to KVM.
-> > 
-> > This revision is based on Michael Roth's work on guest memfd in-place memory
-> > conversion [2], rebased to QEMU master.  I left out the AMD specific changes
-> > from Michael's work because I can't test the result.  Other than the
-> > modications to the linux headers, this series is identical to V3.
-> > 
-> > It was tested on the QEMU SBSA machine.  For convenience, a repository is hosted
-> > here [3], along with the TF-A [4] and RMM [5] for the SBSA machine (compatible
-> > with Steven's v16 patchset).  The Repository for the kernel [6] is also
-> > available.  Note that for the latter, defines for
-> > KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES and KVM_CAP_ARM_RMI have been modified to
-> > follow QEMU master.
-> > 
-> > Instructions to compile and run the entire stack can be found here [7].
-> > 
-> > Device Assignment is not included.
-> > 
-> > Thanks,
-> > Mathieu
-> > 
-> > [1]. https://lore.kernel.org/kvm/20260803134403.80630-1-steven.price@arm.com/
-> > [2]. https://lore.kernel.org/kvm/20260528000416.8161-1-michael.roth@amd.com/
-> > [3]. https://gitlab.com/Linaro/cca-public/qemu/-/tree/upstream-v4?ref_type=heads
-> > [4]. https://gitlab.com/Linaro/cca-public/tf-a/trusted-firmware-a/-/tree/cca/v13?ref_type=heads
-> > [5]. https://gitlab.com/Linaro/cca-public/rmm/-/tree/cca/v16?ref_type=heads
-> > [6]. https://gitlab.com/Linaro/cca-public/linux/-/tree/upstream-v4?ref_type=heads
-> > [7]. https://gitlab.com/Linaro/cca-public/build-instructions
-> > 
-> 
-> Give this series and (v19) arm/cca host series [1] a try, and found the following
-> issues. I'm sharing the found issues that I need take chance to look at them
-> closely in future.
-> 
-> [1] https://git.gitlab.arm.com/linux-arm/linux-cca.git  (branch: cca/cca-host/kvm-v19/integration)
-> 
-> Note that the host is emulated using qemu (TCG mode) via 'virt' platform, using
-> the following command lines
-> 
-> laptop$ /home/gshan/sandbox/cca/host/qemu/build/qemu-system-aarch64                 \
->         -M virt,virtualization=on,secure=on,gic-version=3,acpi=off                  \
->         -cpu max,x-rme=on -m 4G -smp 8                                              \
->         -serial mon:stdio -monitor none -nographic -nodefaults                      \
->         -bios /home/gshan/sandbox/cca/host/tf-a/flash.bin                           \
->         -kernel /home/gshan/sandbox/cca/host/linux/arch/arm64/boot/Image            \
->         -initrd /home/gshan/sandbox/cca/host/buildroot/output/images/rootfs.cpio.xz \
->         -append kvm-arm.mode=rmm                                                    \
->         -device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1                       \
->         -device pcie-root-port,bus=pcie.0,chassis=2,id=pcie.2                       \
->         -device pcie-root-port,bus=pcie.0,chassis=3,id=pcie.3                       \
->         -device pcie-root-port,bus=pcie.0,chassis=4,id=pcie.4                       \
->         -device virtio-9p-device,fsdev=shr0,mount_tag=shr0                          \
->         -fsdev local,security_model=none,path=/home/gshan/sandbox/cca/guest,id=shr0 \
->         -netdev tap,id=tap1,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown       \
->         -device virtio-net-pci,bus=pcie.2,netdev=tap1,mac=b8:3f:d2:1d:3e:80
-> 
-> The realm VM is started using the following command lines.
-> 
-> host$ qemu-system-aarch64 -enable-kvm -object rme-guest,id=rme0,convert-in-place=on \
->       -machine virt,gic-version=3,confidential-guest-support=rme0 -m 2G -cpu host   \
->       -smp maxcpus=4,cpus=4,sockets=1,clusters=1,cores=2,threads=2                  \
->       -object memory-backend-guest-memfd,id=mem0,size=2G,share=on                   \
->       -numa node,nodeid=0,cpus=0-3,memdev=mem0                                      \
->       -serial mon:stdio -monitor none -nographic -nodefaults                        \
->       -kernel /mnt/linux/arch/arm64/boot/Image                                      \
->       -initrd /mnt/buildroot/output/images/rootfs.cpio.xz                           \
->       -append earlycon=pl011,mmio,0x10009000000
-> 
-> Found issues
-> ============
-
-I was able to do the same manipulations on my side, but using the SBSA machine
-for system emulation, with results as described below: 
-
-> 
-> (1) qemu is terminiated on qmp command 'dump-guest-memory'
-> 
-> (qemu) dump-guest-memory -p "/tmp/mem" 0x40000000 0x10000000
-> **
-> ERROR:../system/memory_mapping.c:215:guest_phys_block_add_section: assertion failed: (predecessor->target_end <= target_start)
-> Bail out! ERROR:../system/memory_mapping.c:215:guest_phys_block_add_section: assertion failed: (predecessor->target_end <= target_start)
->
-
-On my side this command causes the Realm to abort, as I expected it to be.
-Realm memory should not be observable from the host.  There may be a debug mode
-to enable this kind of operation but I will have to look at the documentation
-for details.
- 
-> (2) qemu emulation can't be stopped and resumed
-> 
-> (qemu) stop
-> (qemu) cont
-> Failed to set KVM_REG_ARM_TIMER_CNT
-> 
-
-That too I was expecting.  Anything that can comprimise a Realm will cause the
-HW to abort.  I'll investigate the "Failed to set KVM_REG_ARM_TIMER_CNT" error
-message though.
-
-> (3) qemu is terminiated on qmp command 'system_reset'
-> 
-> (qemu) system_reset
-> cpus are not resettable, terminating
-> 
-> (4) 'reboot' from the guest doesn't work
-> 
-> root@guest:~# reboot
->    :
-> Requesting system reboot
-> [  123.264893] reboot: Restarting system
-> qemu-system-aarch64: cpus are not resettable, terminating
-> 
-
-I suspect 'system_reset' from the monitor and a 'reboot' from the command line
-will, at some point, end up following the same sequence.  I need to think about
-the 'reboot' use case further. 
-
-
-> (5) Incompatible to virtio-iommu-pci. The realm guest doesn't boot up if a virtio-iommu-pci
->     device is specified in the command lines
-> 
-> host$ qemu-system-aarch64 -enable-kvm                                          \
-> -object rme-guest,id=rme0,convert-in-place=on                                  \
-> -machine virt,gic-version=3,confidential-guest-support=rme0                    \
-> -m 2G -cpu host -smp maxcpus=4,cpus=4,sockets=1,clusters=1,cores=2,threads=2   \
-> -object memory-backend-guest-memfd,id=mem0,size=2G,share=on                    \
-> -numa node,nodeid=0,cpus=0-3,memdev=mem0                                       \
-> -serial mon:stdio -monitor none -nographic -nodefaults                         \
-> -kernel /mnt/linux/arch/arm64/boot/Image                                       \
-> -initrd /mnt/buildroot/output/images/rootfs.cpio.xz                            \
-> -append earlycon=pl011,mmio,0x10009000000                                      \
-> -device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1                          \
-> -device pcie-root-port,bus=pcie.0,chassis=2,id=pcie.2                          \
-> -device virtio-iommu-pci,bus=pcie.0                                            \
-> -drive file=/mnt/disk.qcow2,if=none,id=drive0                                  \
-> -device virtio-blk-pci,id=virtblk0,bus=pcie.1,drive=drive0,num-queues=4        \
-> -netdev tap,id=tap1,vhost=on,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown \
-> -device virtio-net-pci,bus=pcie.2,netdev=tap1,mac=b8:3f:d2:1d:3e:c0
-
-
-I added the following to my Realm's boot command parameters:
-
--device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1 \
--device virtio-iommu-pci,bus=pcie.0 \
-
-
->      :
-> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x000f0510]
-> [    0.000000] Linux version 7.2.0-rc5-gavin-gf5098b6bae76 (gshan@nvidia-grace-hopper-01.khw.eng.bos2.dc.redhat.com) (gcc (GCC) 14.3.1 20251022 (Red Hat 14.3.1-4), GNU ld version 2.41-65.el10) #47 SMP PREEMPT Mon Jul 27 02:29:03 EDT 2026
-> [    0.000000] KASLR enabled
-> [    0.000000] Machine model: linux,dummy-virt
-> [    0.000000] earlycon: pl11 at MMIO 0x0000010009000000 (options '')
-> [    0.000000] printk: legacy bootconsole [pl11] enabled
-> [    0.000000] efi: UEFI not found.
-> [    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
-> [    0.000000] NODE_DATA(0) allocated [mem 0xbfbecb00-0xbfbf09bf]
-> [    0.000000] psci: probing for conduit method from DT.
-> [    0.000000] psci: PSCIv1.1 detected in firmware.
-> [    0.000000] psci: Using standard PSCI v0.2 function IDs
-> [    0.000000] psci: MIGRATE_INFO_TYPE not supported.
-> [    0.000000] psci: SMC Calling Convention v1.2
-> [    0.000000] RME: Using RSI version 1.0
-> [    0.000000] Zone ranges:
-> [    0.000000]   DMA      [mem 0x0000000040000000-0x00000000bfffffff]
-> [    0.000000]   DMA32    empty
-> [    0.000000]   Normal   empty
-> [    0.000000] Movable zone start for each node
->      :
-> [    6.664423] Serial: AMBA PL011 UART driver
-> [    7.151312] 9000000.pl011: ttyAMA0 at MMIO 0x9000000 (irq = 13, base_baud = 0) is a PL011 rev1
-> [    7.213181] printk: console [ttyAMA0] enabled
-> [    8.536454] HugeTLB: registered 1.00 Gi
-> <...The realm guest stops here, no output since then...>
->
-
-On my side I get to user space but virtio-serial and virtio-net don't work.  I'm
-guessing virtio-iommu-pci does the same thing as this patch [1], but virtio
-devices are disrupted because it is not configured properly.  I need to
-investigate to find the best approach to follow, i.e implicitly use (and
-configure) a virtio-iommu-pci or make sure that [1] and a virtio-iommu-pci
-device can play nice together.   
-
-Thanks,
-Mathieu
-
-[1]. [RFC v4 21/24] target/arm/kvm-rme: Add DMA remapping for the shared memory region
-
-
-> Thanks,
-> Gavin
-> 
+T24gTW9uLCAyMDI2LTEwLTE5IGF0IDE0OjM1ICswODAwLCBZYW4gWmhhbyB3cm90ZToNCj4gPiBU
+aGVuIHRoZSBjb250cmFjdCBpcyBzaW1wbHk6DQo+ID4gDQo+ID4gwqDCoMKgIFRoZXJlIGFyZSBv
+bmx5IHR3byBwb3NzaWJsZSBtYXBwaW5nIGxldmVsczogMk1CIGFuZCA0S0IuIFRoZXJlIGlzIGEN
+Cj4gPiByZWZjb3VudA0KPiA+IMKgwqDCoCBmb3IgZWFjaCAyTUIgYWxpZ25lZCByYW5nZS4gVGhl
+IG1hcHBpbmcgbGV2ZWwgd2lsbCBiZSA0S0Igd2hlbiB0aGVyZSBpcw0KPiA+IGFueQ0KPiA+IMKg
+wqDCoCByZWZjb3VudCBmb3IgMk1CIGFsaWduZWQgcmFuZ2UuDQo+ID4gwqDCoMKgIA0KPiA+IMKg
+wqDCoCB0ZHhfcGFtdF9nZXQoKSBpbmNyZW1lbnRzIHRoZSByZWZjb3VudA0KPiA+IMKgwqDCoCB0
+ZHhfcGFtdF9wdXQoKSBkZWNyZW1lbnRzIHRoZSByZWZjb3VudA0KPiBJIHRoaW5rIHJlZmNvdW50
+cyBzaG91bGQgbm90IGFwcGVhciBpbiB0aGUgY29udHJhY3QuIFdoYXQgaXMgbWVhbmluZ2Z1bCB0
+byBLVk0NCj4gaXMgbm90IHRoZSByZWZjb3VudCBhZGp1c3RtZW50LCBidXQgcHJlcGFyaW5nIGFu
+ZCB1bnByZXBhcmluZyBQQU1UIHBhZ2VzIGZvcg0KPiB0aGUgcGh5c2ljYWwgcGFnZSBLVk0gd2Fu
+dHMgdG8gaW5zdGFsbC91bmluc3RhbGwuDQoNCldlbGwgZ2V0IGFuZCBwdXQgYXJlIGFscmVhZHkg
+cmVmY291bnQgYXNzb2NpYXRlZCB0ZXJtcy4uLg0KDQo+IA0KPiBXaGVuZXZlciBLVk0gaW52b2tl
+cyB0ZHhfcGFtdF9nZXQoKSwgaXQgd2FudHMgdG8gZW5zdXJlIERQQU1UIHBhZ2VzIGFyZQ0KPiBp
+bnN0YWxsZWQgYmVmb3JlIGluc3RhbGxpbmcgYSBwaHlzaWNhbCBwYWdlOyB3aGVuIEtWTSBpbnZv
+a2VzIHRkeF9wYW10X3B1dCgpLA0KPiBpdCB3YW50cyB0byBlbnN1cmUgRFBBTVQgcGFnZXMgY2Fu
+IGJlIHRvcm4gZG93biBjb3JyZWN0bHkgYWZ0ZXIgdW5pbnN0YWxsaW5nIGENCj4gcGh5c2ljYWwg
+cGFnZS4gU28sIHBlcmhhcHMgYSBtb3JlIGFjY3VyYXRlIG5hbWluZyBmb3INCj4gdGR4X3BhbXRf
+Z2V0KCkvdGR4X3BhbXRfcHV0KCkgd291bGQgYmUNCj4gdGR4X3BhbXRfcHJlcGFyZSgpL3RkeF9w
+YW10X3VucHJlcGFyZSgpPw0KDQpJIGRvbid0IHNlZSBhIHJlYXNvbiB0byBjaGFuZ2UgdGhlIGp1
+c3Qgc2V0dGxlZCBwYXR0ZXJuLiBJdCB3ZW50IHRocm91Z2ggbWFueQ0Kcm91bmRzIG9mIHJldmll
+d3MgYW5kIG5vIG9uZSBldmVyIG9iamVjdGVkIHRvIHRoZSBnZXQvcHV0IHBhdHRlcm4uIEFGQUlD
+VCB0aGUNCm9ubHkgc2NlbmFyaW8gd2hlcmUgaXQgZG9lc24ndCBmaXQgZm9yIGh1Z2UgcGFnZXMg
+aWYgaXQgaXMgY2hhbmdlZCB0byBhY2NlcHQNCmFyZ3MgZm9yIG90aGVyIGxldmVscy4gQnV0IGFz
+IGJlZm9yZSB0aGVyZSBpcyBub3RoaW5nIHRvIGRvIGZvciB0aG9zZSBvdGhlcg0KbGV2ZWxzLiBB
+bmQgdGhlIGNhbGxlcnMgYWxyZWFkeSBrbm93IHRoaXMgYmVjYXVzZSB0aGV5IGhhdmUgdG8gdG9w
+IHVwIHRoZSBjYWNoZQ0KYXBwcm9wcmlhdGVseS4gU28gdGhlcmUgaXMgbm8gYmVuZWZpdCB0aGF0
+IEkgY2FuIHNlZS4gQW5kIGZvbGxvd2luZyBmcm9tIHRoYXQuLi4NCm5vIG5lZWQgdG8gcmVuYW1l
+IHRoZSBmdW5jdGlvbnMgYWxyZWFkeS4NCg0KPiANCj4gVGhlIHJlZmNvdW50cyBhcmUgaW50ZXJu
+YWwgaW1wbGVtZW50YXRpb24gZGV0YWlscyBvZiB0ZHhfcGFtdF97Z2V0L3B1dH0oKSBhbmQNCj4g
+YXJlIGhpZGRlbiBmcm9tIEtWTS4gSXQgaXMgdGR4X3BhbXRfe2dldC9wdXR9KCkgdGhhdCBkZWNp
+ZGVzIHRvIHVzZSBwZXItMk1CDQo+IHJlZmNvdW50cyB0byB0cmFjayB0aGUgaW52b2NhdGlvbiBj
+b3VudCwgYW5kIGVuc3VyZXMgdGhhdCBQQU1UIHBhZ2VzIGFyZQ0KPiAodW4paW5zdGFsbGVkIG9u
+bHkgb25jZSBmb3IgZWFjaCAyTUIgcmFuZ2UuDQo+IA0KPiBUaGUgY29udHJhY3QgaXMgdGhlcmVm
+b3JlIHNpbXBsZSBmb3IgS1ZNOg0KPiB3aGVuZXZlciBLVk0gaW5zdGFsbHMvdW5pbnN0YWxscyBh
+IHBoeXNpY2FsIHBhZ2UsIGludm9rZSB0ZHhfcGFtdF97Z2V0L3B1dH0oKQ0KPiBhbmQgc3BlY2lm
+eSB0aGUgcGh5c2ljYWwgcmFuZ2UgYnkgcHJvdmlkaW5nIHRoZSBsZXZlbC4NCj4gDQo+ID4gwqDC
+oMKgIHRkaF9tZW1fcGFnZV9kZW1vdGUoKSBpbmNyZW1lbnRzIHRoZSByZWZjb3VudCBmb3IgZWFj
+aCA0S0IgcGFnZQ0KPiBTaW5jZSB0ZGhfbWVtX3BhZ2VfZGVtb3RlKCkgb25seSBzcGxpdHMgdGhl
+IG1hcHBpbmcgbGV2ZWwgb2YgYW4gYWxyZWFkeQ0KPiBpbnN0YWxsZWQgcGh5c2ljYWwgcGFnZSAo
+d2l0aG91dCByZW1vdmluZyBhbnkgcGh5c2ljYWwgcGFnZSksIEtWTSBkb2VzIG5vdA0KPiBuZWVk
+DQo+IHRvIGludm9rZSB0ZHhfcGFtdF97Z2V0L3B1dH0oKSBmb3IgdGhlIGd1ZXN0IHByaXZhdGUg
+cGFnZS4gQXMgcmVmY291bnRzIGFyZQ0KPiBoaWRkZW4gZnJvbSBLVk0sIEtWTSBpcyB1bmF3YXJl
+IG9mIHRoZSB1bmRlcmx5aW5nIHJlZmNvdW50IGFkanVzdG1lbnQgZm9yIHRoZQ0KPiBzcGxpdCBo
+dWdlIHBhZ2UuDQo+IA0KPiBPbiB0aGUgb3RoZXIgaGFuZCwgc2luY2UgdGRoX21lbV9wYWdlX2Rl
+bW90ZSgpIHdpbGwgaW5zdGFsbCBhIG5ldyBwYWdlIHRhYmxlDQo+IHBhZ2UsIEtWTSBuZWVkcyB0
+byBpbnZva2UgdGR4X3BhbXRfZ2V0KCkgYXQgbGV2ZWwgNEtCIHRvIHByZXBhcmUgZm9yIHRoZSBu
+ZXcNCj4gcGFnZSB0YWJsZSBwYWdlICh3aGljaCBpcyA0S0IpIGJlZm9yZSBpbnZva2luZyB0ZGhf
+bWVtX3BhZ2VfZGVtb3RlKCkuDQo+IA0KPiA+IMKgwqDCoCBUaGUgbWFwcGluZyBsZXZlbCB3aWxs
+IGJlIGRldGVybWluZWQgYnkgdGhlIHJlZmNvdW50IGFmdGVyIGVhY2gNCj4gPiBvcGVyYXRpb24g
+aXMNCj4gPiDCoMKgwqAgY29tcGxldGUuDQo+ID4gDQo+ID4gSWYgeW91IHdhbnQgdG8gcGFzcyB0
+aGUgbGV2ZWwsIHNvbWVob3cgaXQgaGFzIHRvIGJlIGNsZWFyIGhvdyB0aGUgcmVmY291bnQNCj4g
+PiBhbmQNCj4gPiBtYXBwaW5nIGxldmVsIHdpbGwgYmUgYWRqdXN0ZWQgZm9yIGVhY2ggY29tYmlu
+YXRpb24gb2Ygb3BlcmF0aW9ucy4NCj4gV2hlbiBhIGxldmVsIGlzIHBhc3NlZCB0byB0ZHhfcGFt
+dF97Z2V0L3B1dH0oKSwgaXQgaW5kaWNhdGVzIHRoYXQgS1ZNIHdhbnRzIHRvDQo+IHByZXBhcmUv
+dW5wcmVwYXJlIFBBTVQgcGFnZXMgZm9yIGEgcGh5c2ljYWwgcGFnZSBhdCB0aGUgc3BlY2lmaWVk
+IGxldmVsLg0KDQpBcyBhbHJlYWR5IGRpc2N1c3NlZCwgdGhlcmUgaXMgb25seSBvbmUgbGV2ZWwg
+d2hlcmUgd2Ugd291bGQgbmVlZCB0byBkbw0KYW55dGhpbmcuDQoNCg==
