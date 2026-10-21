@@ -1,49 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.92
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792578936;
-	b=dTC4XsJ/foaLImkAUSO6bKyIwGsUleJW+rKmkI/MsCCKemA1zD+328keD4xeClqAlaKs
-	 3ANaydBXBhoftfo8K/wDXPCh8uJHtXwsfr1odxh14B2bAD3rKhqtNw6GAwRT6wgbapqgo
-	 Qfy/nLmegNjJrf/0Iy054U4t5i2Yc9hYB6DY+MB2X2ro14A2UIXcPqYjzZ9twqcLn5AO3
-	 W0sVP0//PzTxb3Z8aeAAWtln00mVdwNKp75zsWXRZi62evxxguA2v2TT7QjbtlkpoqGbL
-	 LPmQFLa/k+kqNWB4XGhF+IUx0htd7fmPSm4B2fQ9E4RfwzF0HMYxPyg/jiSAnaac2FA==
+	t=1792582239;
+	b=PiehPUjLSL+n6gpW+UKZuatJqmHSdwFK+nJPcJuYPzSOXVeNKvGXCKiKLujccW9scWgM
+	 OMV7+fxJreXC3q+k41GxN1h2MJ25Xv1yHObeaL5H2bYafIp13kuq8omt/SiBEFqCqi8PQ
+	 HvBHUVseYYtKUOFAnDYh1l2xrt3QE2wWTUA8ldMLl/xwuO/xrHw4pfej5/xUNoh1di/mQ
+	 cpQW3T/OoVUZYObw3yz120drni2fYWUviyBMLB7WBrBBGmhutgXYBY+CWUIOyCjPx+nCz
+	 f36cALE7vcPcaPiVs8w7d2MjzrPRsF7XC92DmkamuHYM5udfrYMnxCXPjxhHjs+73FQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792578936;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=hPLzdvCJGykwL2y3rICFM79srKCNKSx/p5qwSLEhJPE=;
-	b=uGSF0OXC32bNHq9jECUu98BlTF7gR3eSjRwR29oB/3i88N024Fxsw8LorWhf5q9tZwZs
-	 fvhmFz6jxjZ4v5+f1Jr7l2EFsWPStRWC+qvPJLOeQOQatDxVtkOjHO9WUbLn6q0iT2y/d
-	 GevFQryoXJYKs5ofecXUPdwoWMNqJB2iDCIJK9QhDFsODuuoRrqvkQfU3UM/7mE6XHPyy
-	 IsWrEsy9z+IM4vNmYw8gUHGZoX6V2EvNUPTV6V3TpVQJdwbyn5xAfMkXn86qeZWARVTY7
-	 XYuAhnTewP3BFrV1MPyK4wa1Uc7JI10tL19BA9bTmb0+W4VIzV+16KBjMHhYr4DZstg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792582239;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=U+xSPnvmF/tO+Fgf3pJ9qhNAxgNa/gXXKtkwmbQs8oM=;
+	b=aO7g1lYxsij4MGUtzCldl9OUl3uyLvx9fTJ1bYGHtiZPX/Lzq7ws1YXmlPxwHDLgqo7w
+	 qF9WOaSkUCT5YgWph3cnFPl3zpsbPBuM/C/10TIo/VME+GUC84DG5+kF6mx+KuDuUMIYA
+	 32J+TWEXGqMRRMlHQHtLpAO0R17ko1QBBw8K/G3ns9R7jGtfl+bO6v5NjEDb1eJr7XBJ4
+	 z9Pm9mlZkvJ0RIssN9viwziFPpuhopQ8DdwvMd5096l5LV1ayC+/sbH+cTMDbQUYEfdea
+	 NrCeqxOAjjmYC+0ysZTu8TYcGen0wZH+IIWWi1FCKcc2W0GVHtL4ZTPoiUUQ0P+LPfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bmO+naBc;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EF4606A31E
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 10:35:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79EF4606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=peV2frh8;
+	arc=none smtp.remote-ip=91.218.175.92
+Received: from mta0.migadu.com (out-92.mta0.migadu.com [91.218.175.92])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E64606A31B
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 11:30:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7E64606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bmO+naBc
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 932852720;
-	Wed, 21 Oct 2026 03:35:31 -0700 (PDT)
-Received: from [10.0.152.204] (e121487-lin.cambridge.arm.com [10.0.152.204])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2BC9D3F7D8;
-	Wed, 21 Oct 2026 03:35:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792578934; bh=vyNBvJ+nnDRHCk/KoMeZ8Wpl4kv4Vz/nK8psg4EsgBg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bmO+naBcBKw3zU725Z1Gucdtz2ZDwDtYZQU5hakq6JAP6iEPFM11mfHNrZIjlqnQ1
-	 NxUwX1/D1+Mzr6Bf9TFAofwHnXGmZsyiG8kXXiHmowl7PxNv/6XkxXprtu8BwktIrD
-	 qfOcDw24Z3L1R2Orye15l6EZUsied80vCKXM4OY4=
-Message-ID: <8658049d-fdd3-49a5-9b8e-acf3c3467c1d@arm.com>
-Date: Wed, 21 Oct 2026 11:35:31 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=peV2frh8
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ajoLYE5AD2heyAC44s3QWW8/SJdTozUgA/AhWcBRkvo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792582235; v=1; x=1793187035;
+ b=peV2frh87rolLVSFnvECmmtCIKSTBix8AHi94IGRwH2+Zplz/8TmlcfbFbtgWK++PPc/FcIX
+ LF4vX1JfVq8eQAPn3Km9B4spHNUfS/5G43hyqiZ3M2xqyrStXmaDXJ780crtyJQOZLG9IS6I3x8
+ kHbmK8qsFXefL7HyACclAzCE=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 591aea82344d2dfa;
+	Wed, 21 Oct 2026 11:30:20 +0000
+X-Mizu-Trace-ID: 591aea82344d2dfa
+X-Migadu-Flow: FLOW_OUT
+From: Jinyu Tang <jinyu.tang@linux.dev>
+To: SeungJu Cheon <suunj1331@gmail.com>
+Cc: Jinyu Tang <jinyu.tang@linux.dev>,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	tjytimi@163.com,
+	inochiama@gmail.com,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	andrew.jones@linux.dev,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: riscv: Set Accessed bit in dirty-log write fault fast path
+Date: Wed, 21 Oct 2026 19:30:10 +0800
+Message-ID: <20261021113010.2476783-1-jinyu.tang@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261016101458.221648-1-suunj1331@gmail.com>
+References: <20261016101458.221648-1-suunj1331@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,50 +81,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH kvmtool v3 00/21] arm64: Support GICv5-based guests
-To: Sascha Bischoff <sascha.bischoff@arm.com>, will@kernel.org,
- julien.thierry.kdev@gmail.com
-Cc: maz@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- timothy.hayes@arm.com, Peter Maydell <peter.maydell@linaro.org>
-References: <20261016153939.913764-1-sascha.bischoff@arm.com>
-Content-Language: en-GB
-From: Vladimir Murzin <vladimir.murzin@arm.com>
-In-Reply-To: <20261016153939.913764-1-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Sascha,
+On Fri, Oct 16, 2026 at 07:14:58PM +0900, SeungJu Cheon wrote:
+> @@ -591,14 +591,15 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast(struct kvm *kvm,
+>  			dirty_marked = true;
+>  		}
+>  
+> -		if ((pte_val(old_pte) & (_PAGE_WRITE | _PAGE_DIRTY)) ==
+> -		    (_PAGE_WRITE | _PAGE_DIRTY)) {
+> +		if ((pte_val(old_pte) &
+> +		     (_PAGE_WRITE | _PAGE_DIRTY | _PAGE_ACCESSED)) ==
+> +		    (_PAGE_WRITE | _PAGE_DIRTY | _PAGE_ACCESSED)) {
+>  			new_pte = old_pte;
+>  			ret = true;
+>  			break;
+>  		}
+>  
+> -		new_pte = pte_mkdirty(pte_mkwrite_novma(old_pte));
+> +		new_pte = pte_mkyoung(pte_mkdirty(pte_mkwrite_novma(old_pte)));
 
-On 10/16/26 16:39, Sascha Bischoff wrote:
-> This series adds support for GICv5-based VMs to kvmtool. These are
-> exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
-> only creates a vGICv5 device and the latter adds in a GICv5 ITS. The
-> GICv5 specification can be found at [1].
-> 
-> The GICv5 support in KVM needed by --irqchip=gicv5 is expected to
-> land in Linux v7.4. KVM support for GICv5 ITS has yet to be posted,
-> but should follow shortly. Thus, --irqchip=gicv5 works with the
-> corresponding KVM changes, while --irqchip=gicv5-its cannot yet be
-> used with upstream KVM.
-> 
+I tested this on QEMU 10.2.1 with Svade enabled and Svadu disabled.
+With dirty logging enabled, the test clears A through page-idle tracking,
+write-protects the page with KVM_GET_DIRTY_LOG, and resumes the guest
+write. The unpatched kernel times out after 10 seconds, while the same
+test completes with this patch applied.
 
-I successfully booted a Linux guest on GICv5 FVP (with FEAT_GCIE_LEGACY)
-using both --irqchip=gicv5 and --irqchip=gicv3. I also used this series
-to boot a Linux guest on GICv3 FVP with kvmtool's automatic irqchip selection.
-Everything worked fine.
+Reviewed-by: Jinyu Tang <jinyu.tang@linux.dev>
 
-FWIW, feel free to add
-
-Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
-
-for non-ITS parts.
-
-Since --irqchip=gicv5 already provides a usable Linux guest and is
-aligned with upstream vGICv5 support, it would be nice to get these
-parts merged sooner (which would also reduce the series to just ITS
-support). So I'll do my best to review non-ITS bits.
-
-Cheers
-Vladimir
-
+Thanks,
+Jinyu
