@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=130.117.225.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792614984;
-	b=lLk/8G8Uo5Pok1lVtpvfVcj2ajMApj5Is78doI6yF7yoHhqR3YtVM6Sl4lcXPpqy3Bux
-	 MZtCR4O/axTlVJggsqvv48QUo5wOc8u8qTrT+aFVL6XuNwl/kruD7QNKHT5ZpckvuxAOP
-	 7bBG+d6a6HKgEgpF0Ay46iho5GdCYNiNL4F3l6yPQcJlIAkTgYxzot+dhVRQGC5rVhwg+
-	 7wD+R3Jnc1qecN8L3ttk2ZxJ+jQ338dv0IhzwkFB1j4ZtU9gBH2eclnusAdd3w6D3c2F9
-	 Lr/3fswb1KfsRTwOz+T7g2CHQjw/75pBejqfLaut9Eyh6GzRRozie09Dteq6WGbqwGQ==
+	b=S9Leip80GujfD3cgfKfxKo5CtFxqvu6RtLDrmU9R0wmdZgQPZTaqF1L58Vjv71eX3R8i
+	 +AQvq/AKgtOnZ5jlBc8pDH6HwvLh2B22m7iDw/XtzSs3hLCHmXQOBmks61ZRZzA5wnKP9
+	 MAJmOvnBiDz+lxf+2+JHS01RMpJPV9LuAF+sBOcnNIx6Pd5ZuHYTop7Ue7A1QtRwtg8Tq
+	 JOCMK2Q/FeWgAjUS7SWfIpW6XlJeM/Y9zSmhpwy6QjT+qqxmn+h3qVWwigNVOMHksgVwC
+	 CTEPUcqgpwwQag+OsXrBH783trns71R4T0P/cHbws7KiL8tVWCAx85QBmb4eWj29zow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792614984;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=tbceIaRF0sAuckuiO6cyxQdP9/vX0G/uVvpCY2YPfrc=;
-	b=D+SAFNoDSfh0S3Lr/uGrmvcDzDeGC0Sf/BI4Bnzv5MlkcD91j7aBY71pkk9QiCWYldHr
-	 vSwuh/NKU+PVcvv6G/DTo4qaG9tXjXev60oUf+EGyyyNmRvnCsH7XaZ5O5otylFaF3RiG
-	 qP7O2/TRYj4qysMz+ZauPDN/HmlXvp3DSd/tbM6GSQ4nzb5N+abe+YSrBIhgYLDGvvj0Q
-	 zGLE2faHIbnqSbw3GwTxNl01xXNFQ5ypooXWK60h3beVQdEKqOInBQl40F7a4xK7XHbNS
-	 0XUiYHZHN7kN1z5+bdHeb66U80LrLn0dA1L/evM/kInEIfgYSuc7c1yVXBJFbOeK4jg==
+	bh=Y1RzK/YwA6RDAUfpjsoiTntAin9i553yc8Nq4zLllH0=;
+	b=BtdfaHYi6xl2Sfii4Xarw3MjlM49TxX6P4Mw0Ve3q4XGCU+fSu0yGgEudz8GQe5Yl29R
+	 9NwtpFPWegoq4YWKXTWBUawhRyfELY2Wu1yzzCq79jP/jZn2GeEw6ZgScpQ9vIxXMJFxJ
+	 2souUs0IS+8z/xyjNnQ5c9hQEK70FLVu17S6Dd8fXAZDxWPAFRJxf817fZ9d38EhRKYrF
+	 LkhRPL7UZUHQ72vQYNwDrPo8r7KqIW9f1WDuC0B50pSss34IUgxa9P0mITp8NjAh8dJkO
+	 Fh/uRVK/whYD2kDedfWMBzuZvaMci0HFL0s5MrZhGpeddjZtj8e5rCIu7qiXpBpYTSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=virtuozzo.com;
 	spf=pass smtp.mailfrom=virtuozzo.com;
-	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=ShpT2mht;
+	dkim=pass header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=RhqVHXEU;
 	arc=none smtp.remote-ip=130.117.225.111
 Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AEB606A31F;
-	Wed, 21 Oct 2026 20:36:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53AEB606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D78606A31D;
+	Wed, 21 Oct 2026 20:36:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21D78606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=ShpT2mht
+	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=RhqVHXEU
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=tbceIaRF0sAuckuiO6cyxQdP9/vX0G/uVvpCY2YPfrc=; b=ShpT2mhtcIjao9HMfss
-	jXF7S4rKU1qxrdXq/oerjb+AA9xKx86xQW4rVJcpTdwN6GZi3Ko03fok6bTdeQmb9HLFJhC/LurPW
-	1vQvll05taTdW0NaVp8f8eYgYZe+1epvUyhyliWeJsPezDRk3ikw09d6PCLoOfsOIvbJnLtepWDc7
-	770hBdGBt5KnoFXUorGIvPN4bqx6So+zy2P1wOKtrmnLIHwIBZjXTG8O3dnlK/61VVFjzmJad2pU6
-	uuZzEx1oTR8I+jU8m2RTFniKH0ugGCrSddrm0qHfJ1vCBbLSvq8/mQ5Qr0H1zCbcujPoWNMgHY7+g
-	nBKgoTqn5gaSY7w==;
+	:From; bh=Y1RzK/YwA6RDAUfpjsoiTntAin9i553yc8Nq4zLllH0=; b=RhqVHXEUndGRIBgj47h
+	pPTEb3m6RFxj9akFPIe49tfRDAWGu26fjc4+SDC49mdYbeFVhe8zQZkaUaZFK7AjbQL3IGmqVKaCa
+	gOS7QcNIMyb6KrjZCFIVIRvhYvww4AV1cssjbcdRr/Q3L82+1sVwQ31SOyzTWtyZ5jQDeBfLsQrpJ
+	m6u91/gJhvifPvsIhnE6+5GKwT4TRY3m705hpJo9F8zBUd2XTeL0tOlofB6fwXlyd/0bGmar9P0xU
+	tkE1I0WfXSxsDKFEVnTWFOvW6QJ/5uCmZiNTT2iaEfIuUDWH6HHGV3U1ciwYdxbhRZLnmDCBicEKA
+	fjiy54bFVpTiO9w==;
 Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
 	by relay.virtuozzo.com with esmtp (Exim 4.96)
 	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xJcz4-00D9zC-2y;
-	Wed, 21 Oct 2026 22:36:09 +0200
+	id 1xJcz5-00D9zC-2L;
+	Wed, 21 Oct 2026 22:36:10 +0200
 From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Wed, 21 Oct 2026 22:36:00 +0200
-Subject: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
- folio_dup_file_rmap_pmd()
+Date: Wed, 21 Oct 2026 22:36:01 +0200
+Subject: [PATCH v4 2/4] mm/huge_memory: copy file THPs at fork like
+ copy_present_ptes() does
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+Message-Id: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
 References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
 In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -82,59 +82,197 @@ Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>, 
  Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1546;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6227;
  i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=zhntYNSyNOhAa1ZPHwaiFUV3wOk6ing6WAMJ8CgrgUQ=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq2SI3kTt0eGcvGYVZkf1nokMQHDfejBZY7fajV
- 0TyI+y7YxiJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatkiNwAKCRBRlgpH+WFc
- KgnAD/4ojtuF4NBnUvfl/Psk86uzqUN1kVtoLEKMaMThvlqW1s3hK5DewNJbbtEf8Kazy+pGsy7
- 2MNBKYRUNiZDEhZn/2DHUE1gt+A1tVbizNXBa/MWAiM0mHN4ngFsKzIt8G4YzVFPRIiFTv47n4W
- UzZ9V4zYqU+0s0nv2SkSdgabyHn+IOd37dsdB1FOWbqkMfFafvXpi338tn8jdGLrv9NurDGPBXa
- JZN7A4rUTj1hDfc6KXc2+NthJvKbdfaeHECDDIrCgp96JMX4YtV1Oq6Vo4PNsA+spLXB6gm22vs
- bt8zKJcN2+rdAim5R+CHKro0V0Fp0XAZp4Xj82XaDXiCzDfPcKc8FDuP9RDDvxj6RzW+X2RIO0E
- 612Fj+ImIt3/D5SW82Dj9MLXESvv7BYtG4DMGFZ7XcgRqlHZpzwiWRnWvsGrxcJKt2wKFFMBlJH
- cuLulc+7fr3I4ndV99zx4sbup7C77YzhIsIspwXhd6cDjs9nPaznCZrSIcs5vKegskyHFrqx+Db
- rqe+t05922C0eCwL1UxqL2hupnKSl4lwMd1mwvKy9yhaHtuSKLRavqalIHyXq5zh+tUCFdTvAP+
- kEDIzV2/fARqYVLPRiGeTeSch5+t8I9q8grSh7VIqydeFZPMIov/cihVtwGD8oOVUOK0w5eQsBw
- F++lxfRANMnnNdQ==
+ bh=nh00pu51IsT3zM5A1R7uGgA2XAL0sg7pMkX5L0hR5qg=;
+ b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq2SI40uwjfe9GN/YmjA61tXcSKiQclxtfzMsN2
+ Mbs7XLQIiKJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCatkiOAAKCRBRlgpH+WFc
+ KrT/D/9BsSDADsSj6G/kkL7TPB7IeoBkX1b2TyhPck22FQPKaM7KpzLFRcfIlpY+i8x0WkPgfBY
+ OBi4LgL4xWrkveBTEc9ukzjhBe6h48OLwn2ImfvO9Fz4qKbPu7tK5NdQH/MeE62+bE3uujTmIxk
+ TPXMxn0+GDL+7egr1nSfucEIITm1+vBjjSF0BddxU6SdmEXheMXxx7owHZD69xk1pSvp2ME16Jl
+ JXdCj47SxNS19CV9mwQMe1p6xni3KnyIOsHhDwfK/c9Gv5fhAtoZAiKXBoIFQheeVFs6W3i2EaE
+ BLytz3oIIRe6UOIyoQiQWoTz58090luuI7BLEgWefdW8n105r9mpEPEWdfCzcV4WnAV85LCBJjY
+ 3GGRaiYqsiwNOOYHOJSDDFuQ6wNU2f7qUQW00F7+ItUW/YNpQkduJPd0oyhkVjZElADi1N1HmED
+ L8Yqb7L2nDf5XmAe3bxSMP94FZgLsWj2sc6Eu7a2MBBSIQm/2uTIANeUPY+zPYaCpq4u6gvcdIK
+ gQO3Y7YvAVIwgR0Xe9qpaqBAac7KKA4EKcHbyksi4H3gfdfbIOyUoR061Zy/oRCnbeqKhSCK68/
+ 34DxAgGEfDzRaZ4v3q1LOAQnbQa3gKN6FDRCB/n+uTAD7MA5e3jl5ouJo1FKowyN2ZOOwJFJk1J
+ IpAwWMr+4r/tNzQ==
 X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
  fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
 
-folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
-__folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
-PTE mappings to the folio instead of one PMD mapping. Each unmap of the
-PMD removes one PMD mapping:
+This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
+copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
+non-anonymous VMA and left the child to fault them in again, while the
+PTEs of the same VMA are copied.
 
-- the folio's mapcount never returns to zero, and removing the folio
-  from the page cache reports "Bad page cache", or hits a VM_BUG_ON
-  with CONFIG_DEBUG_VM;
-- the first unmap already counts as the last one and drops the
-  PMD-mapped statistics while the other mm still maps the folio;
-- the second one drives the entire mapcount below zero and drops them
-  again.
+Treat file folios as the PTE path does: take a reference, duplicate the
+rmap and account them. fork then pays a reference and an rmap update
+per PMD, and saves the child a fault per PMD it touches. The next patch
+sends PFN mappings through the same tail.
 
-The helper has no caller yet, the next patch adds the first one. Pass
-PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
+That covers the VMAs vma_needs_copy() sends here:
 
-Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
+- private file mappings with an anon_vma;
+- VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP (fuse DAX),
+  and VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get
+  from a guard region.
+
+The DAX huge zero PMD is copied too, with a reference taken by
+mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
+file folio is copied and accounted like copy_nonpresent_pte() does, and
+made read-only in both processes only in a CoW mapping.
+
+The copy then gets the same tail as __copy_present_ptes(): write
+protect both sides in a CoW mapping, mark the child's copy clean in a
+shared one, and drop the uffd-wp bit where the child is not armed. An
+anonymous THP is now write protected only when its PMD is writable, as
+a PTE is.
+
+A page table is deposited under the copy where the fault paths deposit
+one: in anonymous VMAs, and wherever the architecture needs one.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 ---
- include/linux/rmap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c | 60 ++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 23 deletions(-)
 
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 0b332770abeed..7562017416094 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -558,7 +558,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
- 		struct page *page, struct vm_area_struct *dst_vma)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1e5d68acf62a5..13e3674fb6115 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1898,12 +1898,13 @@ static void copy_huge_non_present_pmd(
+ 		pmd_t pmd, pgtable_t pgtable)
  {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PTE);
-+	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PMD);
- #else
- 	WARN_ON_ONCE(true);
- #endif
+ 	softleaf_t entry = softleaf_from_pmd(pmd);
+-	struct folio *src_folio;
++	struct folio *src_folio = softleaf_to_folio(entry);
+ 
+ 	VM_WARN_ON_ONCE(!pmd_is_valid_softleaf(pmd));
+ 
+-	if (softleaf_is_migration_write(entry) ||
+-	    softleaf_is_migration_read_exclusive(entry)) {
++	if ((softleaf_is_migration_write(entry) ||
++	     softleaf_is_migration_read_exclusive(entry)) &&
++	    vma_is_cow_mapping(src_vma)) {
+ 		entry = make_readable_migration_entry(swp_offset(entry));
+ 		pmd = softleaf_to_pmd(entry);
+ 		if (pmd_swp_soft_dirty(*src_pmd))
+@@ -1927,7 +1928,6 @@ static void copy_huge_non_present_pmd(
+ 			set_pmd_at(src_mm, addr, src_pmd, pmd);
+ 		}
+ 
+-		src_folio = softleaf_to_folio(entry);
+ 		VM_WARN_ON(!folio_test_large(src_folio));
+ 
+ 		folio_get(src_folio);
+@@ -1939,9 +1939,11 @@ static void copy_huge_non_present_pmd(
+ 					    dst_vma, src_vma);
+ 	}
+ 
+-	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+-	mm_inc_nr_ptes(dst_mm);
+-	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
++	add_mm_counter(dst_mm, mm_counter(src_folio), HPAGE_PMD_NR);
++	if (pgtable) {
++		mm_inc_nr_ptes(dst_mm);
++		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
++	}
+ 	if (!userfaultfd_protected(dst_vma))
+ 		pmd = pmd_swp_clear_uffd(pmd);
+ 	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+@@ -1957,6 +1959,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 	pmd_t pmd;
+ 	pgtable_t pgtable = NULL;
+ 	int ret = -ENOMEM;
++	bool writable;
+ 
+ 	pmd = pmdp_get_lockless(src_pmd);
+ 	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
+@@ -1977,13 +1980,11 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 		goto set_pmd;
+ 	}
+ 
+-	/* Skip if can be re-fill on fault */
+-	if (!vma_is_anonymous(dst_vma))
+-		return 0;
+-
+-	pgtable = pte_alloc_one(dst_mm);
+-	if (unlikely(!pgtable))
+-		goto out;
++	if (vma_is_anonymous(dst_vma) || arch_needs_pgtable_deposit()) {
++		pgtable = pte_alloc_one(dst_mm);
++		if (unlikely(!pgtable))
++			goto out;
++	}
+ 
+ 	dst_ptl = pmd_lock(dst_mm, dst_pmd);
+ 	src_ptl = pmd_lockptr(src_mm, src_pmd);
+@@ -2001,7 +2002,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 	}
+ 
+ 	if (unlikely(!pmd_trans_huge(pmd))) {
+-		pte_free(dst_mm, pgtable);
++		if (pgtable)
++			pte_free(dst_mm, pgtable);
+ 		goto out_unlock;
+ 	}
+ 	/*
+@@ -2016,7 +2018,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 		 * copy. It just takes a reference.
+ 		 */
+ 		mm_get_huge_zero_folio(dst_mm);
+-		goto out_zero_page;
++		goto copy_pmd;
+ 	}
+ 
+ 	src_page = pmd_page(pmd);
+@@ -2024,6 +2026,12 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 	src_folio = page_folio(src_page);
+ 
+ 	folio_get(src_folio);
++	if (!folio_test_anon(src_folio)) {
++		folio_dup_file_rmap_pmd(src_folio, src_page, dst_vma);
++		add_mm_counter(dst_mm, mm_counter_file(src_folio),
++			       HPAGE_PMD_NR);
++		goto copy_pmd;
++	}
+ 	if (unlikely(folio_try_dup_anon_rmap_pmd(src_folio, src_page, dst_vma, src_vma))) {
+ 		/* Page maybe pinned: split and retry the fault on PTEs. */
+ 		folio_put(src_folio);
+@@ -2034,19 +2042,25 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 		return -EAGAIN;
+ 	}
+ 	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+-out_zero_page:
+-	mm_inc_nr_ptes(dst_mm);
+-	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
++copy_pmd:
++	if (pgtable) {
++		mm_inc_nr_ptes(dst_mm);
++		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
++	}
+ 
+-	/* See __copy_present_ptes(): restore accessible protection. */
++	/* See __copy_present_ptes(). */
++	writable = pmd_write(pmd);
+ 	if (!userfaultfd_protected(dst_vma)) {
+ 		if (userfaultfd_rwp(src_vma) && pmd_uffd(pmd))
+ 			pmd = pmd_modify(pmd, dst_vma->vm_page_prot);
+ 		pmd = pmd_clear_uffd(pmd);
+ 	}
+-
+-	pmdp_set_wrprotect(src_mm, addr, src_pmd);
+-	pmd = pmd_wrprotect(pmd);
++	if (vma_is_cow_mapping(src_vma) && writable) {
++		pmdp_set_wrprotect(src_mm, addr, src_pmd);
++		pmd = pmd_wrprotect(pmd);
++	}
++	if (src_vma->vm_flags & VM_SHARED)
++		pmd = pmd_mkclean(pmd);
+ set_pmd:
+ 	pmd = pmd_mkold(pmd);
+ 	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
 
 -- 
 2.43.0
