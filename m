@@ -1,62 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.158
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792565311;
-	b=hxYhFMWR5EKKCyU8czYWDshPugAzoi7d3jQ0ueDQSw7a+AIZ2cO1ZBRvjDhVs6oYDalp
-	 GAznF1oD2oTDr1UAJydwLrAJ/a33sx72bGH4kSgWe7VMPVAk+uzqH0xhVZnq+WyUVvnis
-	 NNY4fMWm4jBJM/sbKQqRKCgQeW3YASGg0foCgXTfiBndRyEopK2RdAQPhmq//IOrCEqpD
-	 pIAkjx/PLbjEEQ846DF8b6XhwKV8QxW2HBMkx60iFocz2oLxER1FbEAW9+UVXKUFxLz75
-	 tg5P/Wsfgr7p1GgID5pcPH9ijq9LqKGK8TE/izTLHY5JNAjrFmDWKNr4a3IC54rLjUA==
+	t=1792566095;
+	b=gKFuXbLBqX2eWZGBr3P9mr91bhe4MNc8lFXervFsUwwco4w7YnIZA2nEmr2+hJssiVEC
+	 kfKWFl7s71rEtBG7UECPoSZcbQV7i+Lz//yUdB+GkiZ46IsqCNe+1I8XSoa16gHW9vKfZ
+	 2KAYDaIPAUhvj5TZLiMAnc6PNppcNcmwLtzJyWM561o/Pk8WEf3DL1R26ckuhc2Y8+fvL
+	 RpdD3H9NbvtuvrPxp+pJ2z8oH0ovpawaQUFn+fbRZKSwsYbFqB+v3srfgaBkjkfvnW7Nh
+	 N/pn2iCHbsWrvYTiexrNmSWw3RIVH3CsNEEgMc7428REl2rvHG+Mf5I6YA6ME+hS4Uw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792565311;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=ERCu28HOlccXBiT0hxEnKDMxA84fNeRxo/vPze54s84=;
-	b=lWDmGtLFD0h00H0SErs7p0kJ8YNxml6+8eteNsMkqF7tXthSYQgBfqGx1SOT2s0LTWGk
-	 WOieg9WzBOyV5l+/HyIdOUuamm1UBsJVTbRaEkFjfeUpBjEb8x0WAF58b2bsY7qX5eS9P
-	 BjXis4O62R2S5UvQeQBPAmC0t2agu/kQxaE8gQWS/Cke3+KEHpvDWha+OjPTjXpsYaMxR
-	 /RBBPcotNytMdVaB9TKEoamPZWvoonh1KxN8PtEwEiB3yfz7tf3HnOyXXgCxJFcyx9g9O
-	 8gcOIkxJJA+J/2s7nNJ8beYsbHaT3omWNp2cl6abjUbnKBYYszRhCQk710SntiwHNxA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792566095;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=LW6vT8/bJRD2PuTEJwndC38LlBOnCHCX+4SCfvFcgSg=;
+	b=AaZnS8G4I63RzWBwckEWo7+rNdA6ekr5oC9qcLXCjJjpTLf8ys3BNjoNRFa3+8zOx+ZF
+	 +DP2RuvL+Y+etVlIxxi6d6dAMihhMs6FaRJwdntBTx2CpWqVU3C/vdWJn1smPGABjc6RQ
+	 +CaiVmib1woeJWMG3+Rz6kLQ+X/lvJ3u+EqKk9FK53YmaVAN2cykpEMaqV8pw1yQem4dU
+	 2D16duf6CqXUwAOEnz0YRHc5tEKb93Bw5czxLc0LI2fhT1TKz9v3SiPiucmY3k4PPX/in
+	 fPPjLjt6oVlB6z1WRjYH6/sEcGHDYVH9lvyWzs4OBCQDG33GfTO1X8Yh1O17SJyJc5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LN7Z+wTU;
-	arc=none smtp.remote-ip=95.215.58.158
-Received: from mta1.migadu.com (out-158.mta1.migadu.com [95.215.58.158])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="Q/vTJsmy";
+	arc=none smtp.remote-ip=192.198.163.14
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08836606A31B
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 06:48:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08836606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30042606A31B;
+	Wed, 21 Oct 2026 07:01:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30042606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LN7Z+wTU
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ERCu28HOlccXBiT0hxEnKDMxA84fNeRxo/vPze54s84=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792565309; v=1; x=1793170109;
- b=LN7Z+wTU4LbsAlrEhrHk7tOV/1RoKGGEBz+pmbNleJa6Ry+BxnRD7G2iQ8/+cbm9leSYAp+y
- nGYzRYGreZD7mdqUQSg797epLoV1jEUtysacpIMmbJPy2nCSaAfACQLUtCw0S65W8zMlNPDyj4h
- ejNvsFmxidzVz3jL88/sRrrg=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 2118d0f06fbbbac3;
-	Wed, 21 Oct 2026 06:48:29 +0000
-X-Mizu-Trace-ID: 2118d0f06fbbbac3
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5bcbb378fc9so6512e87.0
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 23:48:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx/MfeRKwpxrbjTANSK5erN/xWa/2oDCOpIsIohQZA4QgDU0ePLSgs5C04kdDaKv45aH8A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKGCMockXkF87i4Sm+vwpYTEi+FEx7A+BuootQeiHQEtlYG2XoE
-	pQXm6WRV9WtxcRw/w4ElyUGuOpticAV6pkzeappCgrcjBU4q48H/9UHm0utDu1+BuXchIqp/XqL
-	ysbzLw+R2RaSx46pjG+M2E903jLmfC0/bFi/yMnuL
-X-Received: by 2002:a05:6512:290b:b0:5bf:63a2:27fd with SMTP id
- 2adb3069b0e04-5bf63a22a04mr171664e87.1.1792565308065; Tue, 20 Oct 2026
- 23:48:28 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q/vTJsmy
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792566096; x=1824102096;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NJ31YHh5++zU4DamiwZUEuDhe5/eYnwgnLLc8jg5Nd8=;
+  b=Q/vTJsmye+4m4tZMPhR4vjd8b/BNhtcp8prp8iDmPFwODzob2ghIjm3n
+   lGrh9+93OP/AEll0VxQNR3QtrAsIaNEAaDU9eP2CgIKZ1o5RTxuAMAKyZ
+   VaC2QcawYn5xehslHiqejT+IuySQzcN4cYEoQ8Kb2xp8r0WNGFI0MR/OG
+   S+qQ9g9qh3L/Ebs+TIadGBhFJ76P33Tf+h6C6r3b/EOKeLCIg/kFro6Er
+   0u9MeSkyNk80z3zMvFopV1n/aggR3xB10aAGDCSJxliaGq1dTHgSB1OSm
+   F+WGeYKXFw9X7maM9POws+9+/9uaVpIYo6kmUDMf0jUm1Ud8Yg6XIP4Gc
+   w==;
+X-CSE-ConnectionGUID: HHf49g/DS0u06byCEGpnyg==
+X-CSE-MsgGUID: ybdSDO5eTrmAHC5TpXVp1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11941"; a="1298824"
+X-IronPort-AV: E=Sophos;i="6.27,169,1787036400"; 
+   d="scan'208";a="1298824"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 00:01:35 -0700
+X-CSE-ConnectionGUID: e6Co0PlaQvunqGRtRrT3rQ==
+X-CSE-MsgGUID: nt3EcC7mQNm5sJP0uFPQeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,169,1787036400"; 
+   d="scan'208";a="3026620"
+Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 00:01:32 -0700
+Message-ID: <579383f0-3192-49e8-af14-43504cc39ebc@intel.com>
+Date: Wed, 21 Oct 2026 15:01:29 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,30 +72,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020163923.1407856-1-sascha.bischoff@arm.com> <20261020163923.1407856-3-sascha.bischoff@arm.com>
-In-Reply-To: <20261020163923.1407856-3-sascha.bischoff@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 21 Oct 2026 07:47:51 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTx5Gk2aBFUAzAP8pa_kggwPhoJOvkCT6YtLg0dbQEBSZQ@mail.gmail.com>
-X-Gm-Features: AclHuK_-J6_HJSmrppsH8jrPBh30NkV5zsuQqfHdht3jCK3LseUqzQwdv9UJsgk
-Message-ID: <CA+EHjTx5Gk2aBFUAzAP8pa_kggwPhoJOvkCT6YtLg0dbQEBSZQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] KVM: selftests: Reject GICv3 ITS with a GICv5 VGIC
-To: Sascha Bischoff <sascha.bischoff@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] KVM: split CONFIG_KVM_PRIVATE_MEMATTR_VM out of
+ KVM_VM_MEMORY_ATTRIBUTES
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Shivank Garg <shivankg@amd.com>,
+ Yan Zhao <yan.y.zhao@intel.com>, Sean Christopherson <seanjc@google.com>
+References: <20261020131447.122096-1-pbonzini@redhat.com>
+ <20261020131447.122096-2-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261020131447.122096-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 20 Oct 2026 at 17:39, Sascha Bischoff <sascha.bischoff@arm.com> wrote:
->
-> Check that a GICv3 ITS and a GICv5 VGIC cannot be paired, regardless
-> of which device is created first. Skip the check when the host does not
-> expose a GICv3 ITS.
->
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+On 10/20/2026 9:14 PM, Paolo Bonzini wrote:
+> With Linux 7.4 the "private" memory attribute was moved from the VM
+> to the individual guest_memfd file descriptor.  The old semantics are
+> available for backwards compatibility via CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> 
+> However, this ties support for VM memory attributes entirely to
+> a backwards compatibility symbol, which is a problem when adding
+> VM memory attributes other than PRIVATE.  Thus, make
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES the equivalent of the old
+> CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES, and use a more descriptive name
+> for the private memory attribute.  Do this now, instead of waiting
+> for more attributes to come, before distros start adjusting
+> their build configuration.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
