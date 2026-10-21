@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792625665;
-	b=WS4vq96ZPOqkNvzrqlIzhknpzFMyxWD2h5KLj8SyK4c44YUYvwyadJtDeUNLC/M4jycN
-	 VsSsq60qysm432EIRO/R0LtmO3ZU97k/iBdKBXNFFAxRuaEX6T8CcwNKrdn9SbVr1lJcP
-	 BWpHoFaxUWw1TTxyA0RWq11a3KRelAABrqxLfys+EmORBkCtDESq0U+zcEhuPqs3cvj/X
-	 M4yWTNcd3145wpc6EEn/rvWSjkVOZRLmLNmyIFjVFdw8FOyZfJSN0mr8XHSkg9Fas/xpx
-	 oIzohwolzqQESkkzk9I3IexEiePvdI0zSy+bx3WrckmVOffO0RDvDAmLrjg/eLuRgpQ==
+	t=1792626194;
+	b=GRkwRVrB7c4v74KPxa4a6f4DEe7MkA40ALQdx9SXzQHkc9K7E9NmAetEFB2JMTzx1HlD
+	 PVy3m/8Ppqj5Vm1KNwp03RuVIGRx9VRrkr1T3QbCnhnLoSbqttT9FPOk4Szg2Y7+ZJvH+
+	 XnwoDVO8UbGAizSFkst19SR9baMuy5zZFXqYpg22I81xPWNRAMgnPBN+KhMNR0V2nSk0B
+	 an4Ugou6dTXnn8eknz75lj0Er4NnYx/BdWiqcbiumq86o1TzP56558YIGj3F1/UnS2KRR
+	 RrkqoPd86tZN6rlR/AtKF0DeOdhYRC6kP1T07PMBMPXuekPl/QprOUBECgTkMCD/vqw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792625665;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792626194;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
-	b=IMapoaTPhrMdcmC3NSlNUaOtWH0Oo865vhA75soHX6l9yaWN1ntcc9FvINkrFGIbFT7C
-	 RzFjAvSk9bDWRCfYtu+yTTPgJRfm8bvXklTUBcemsyz7/zsUoDnGrk+NLsQOBBlxzq/Cb
-	 NtHla3zJ8WRpsmD/13hKGB0CTsIKJVszVwaUU1+oMg6vE9XujoNB9Nnp3l7d8RUbEQzEP
-	 dW0bTFvjqRZfT80ThbFE40T34tNBIn64/1Dkf8qW9sh+55wXZnZuh6iQ5Su2+kE8TjNtg
-	 Uq72tY9AUrkPC+arW9ouVIlqcgYczMTejkAsz4OIpbIQzwD75GSUhOWlFq0S7/kRiXQ==
+	bh=xqMxgDGxhPiOyoUaqZji5WTWN8A1cJANGbLxRlZzHO4=;
+	b=Gf+JTT41jF1sC7fyZ56tGLHJoilrgitCfEunLRHN3/E5dPQhOYFldUcg4cONKWVu/tX5
+	 ShZhifBiVjBIjkxk3grXbg72ZSFMV62qVTzDpCsPSDaX5ODJ8dmWOIctKk9WlQMQJKr55
+	 aBehtz7Fza6UBiLhnLZ3KIHP/xkILGlKAkXNWRwEMPcnZUN+fIIN8qbGnPVkuIxXgpEnH
+	 9F6d4piomS5soJlpmQyXQxlxXP03W//y4ldao3EPaA1Iz/mDVK3FcxdiSmX4bP+ksV/3I
+	 OR4nx/ovFYAjiObR0P3UFSzMJfL1iRwRJp5RjAUrA/99s6kKQBO3NXLR9cY89ryuc2Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LdnzE0zJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="E/pSRgKi";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.43
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C10606A31B
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:34:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88C10606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE16A606A319
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:43:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE16A606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LdnzE0zJ
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2775a12.1
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 16:34:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792625664; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=E/pSRgKi
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso5206a12.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 16:43:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792626192; cv=none;
         d=google.com; s=arc-20260327;
-        b=JkBX/elTv+Mqtb6ehioVjO7SzQcgNxhNo5RfNp40i5CwJvR8jldV8c90z8wmdkwo7a
-         Q7iqnO6bQza2/l6D4L22ZVmvB5JQ/0cQtrQwqFmdPoa31sdUY5hGYzoasJZZibR+h0GF
-         aCcJQoDyWFGdxFyJXySeygKpHwBT4GVCuoRvYNZcB46Br9M1DtSRzdCCv6E39D679Uqy
-         OHy0t48GYivCe2y9Wj2qnUzrKj5t60mxr0b32diqTP2ff3njApsDdBVErw0Vk8PZTmTL
-         Mc3lue29ANcaJh08ffu+PrZPnNrrsK93ddRIr+2JdtUSwE+qRL4ZXXgtlsYP2JBsLKDW
-         VX3Q==
+        b=H35BvwkBMbo36uOp1tTpnV8ZsUf9cB2dms0BulKSc4LVwAbk/9cf+Ts2KgLCda3LoX
+         0wZJ2zwLCVD88iiFaE1NB7UOcW7S8v0oUYpKJxhmfNRlb2eupjIiLd3UHWGM8qIImmCZ
+         y28HRSEVxbFhZn+x09t3wg04R/hPZNN6ZxxpYTXeb1NobWej/wzF+Y8Wy8vELQPRtvQo
+         3eHvOrdkOItpJOteIf3EkC1Ef5U2b1uGWRG4A/7wuKppd7tdNMcd+Mqg6VWL2RO3jhTq
+         bYJeOp2RZFIBnl3saGJHf8tiZS2vkabnqq6sn3Btz2+xicQlmvkTpX1DrNp+LT4odWI8
+         TWug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
-        fh=n+joK8yClKi/kQhnE16dfXV0bL/TKlsNwI6wrqXPSfU=;
-        b=KWSFBTP/FLzSjdfTp2QjVtOvtCbBn8MX/1RwqEiotsrtwiRQqIrF203RFzYJqRyZoy
-         7nrh6M0iYJ8jKuG6W1Sx+Dl7TmIpQzXKO6qLTcaPtAyCE0IqO6xpJsxNTWZPD4yJ3OrA
-         4nZp1YksabRIWZKakmxugSUxc//IXTxNkTmuPQnx+R+NrO0Mc/68Ylilgac76FvRcFGI
-         XsVO0Z0RF06DvaTowOlrEukM5YbsAjhq8GCiBJ14nzL7HJItN2cGIWEUgpT7NxDHwfGe
-         RuRxIu2VgCkhtrouVur3wbwEN90r1EnoeHa4lmB7LBuWyxtq5uMgcwkJSjpy71E4rHEE
-         55MQ==;
+        bh=xqMxgDGxhPiOyoUaqZji5WTWN8A1cJANGbLxRlZzHO4=;
+        fh=hs7nDZ7SZo/OGHr5IXA0HA0H3XqTZxf3Eza0npkWaj8=;
+        b=S3h3GSNWx5Oxlyr3CvGhvfAV7nnEP5r4aGkDdniJ678ZDiQepgvnwOUpbnctFre2Nz
+         kRjTefiJfUwFV4r1em9wIASiu1uvMNxAuhMXVTWIPr1WJKoVBOfZI8cipLazfDZAbDC5
+         uB2iDFMWODoM/vTApGAQiXhvOrJnP7v34Vgj9jRCWNRTbgFQs4Og4nLsQIZh5F5iUWXV
+         2iiJCdh72rD/ZkNoDW8k8J7C2tJaXLnoJiy8su6XZKSncKVUzWh9KFsDGQLg8JJ7qX5+
+         mKa8aiK54QAktGg/qwmU/rEzkhZ7rLebOS/ExdxgzYbEVyk0FgOcoOaMBgiMNDEOWWSr
+         Xg2g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792625664; x=1793230464; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792626192; x=1793230992; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
-        b=LdnzE0zJquVjUHmlmSxeqD4jOmflRdqRlDQ3XcYK1BlPGsbAAi2zlAqYfQhnSIE25/
-         cPcMktJPyAE4aNRAKrqq97X3mOBvXrdK0UATWJsV5ZwcBhmiNawNw7lblKkcdpFGPoN6
-         by8epEvuLM5AhlRJhQVYjBSa2WyTysM3yhC8E0g/WQCVQaYHh3ue5xlxpSUGO5F7Aijp
-         Dg4l24JDX+e/KyNalYUZh3BtXL/I2ohWMOPZiVp2i/IC6j4ZvIxW2wUo9CfU3Bz1OcsM
-         SErjL7K/DS/CVNrLVtaHvGTF1LWefbYArqsphI1ZoW9dfwlGWeYwQg96osf6M541+FB2
-         X8Kw==
+        bh=xqMxgDGxhPiOyoUaqZji5WTWN8A1cJANGbLxRlZzHO4=;
+        b=E/pSRgKiSBZy4zxBZHAxR+Cn7Pbrl1+eSF/eoVUZkoIMhcUMBUlN16ijRFpClyQV3F
+         6U+fMImI/i2OA9edQS/R8+MzjIeNITkC8gQg/fB6iL9XQf5P0R+ihIZ3O/0DOXM6EOW4
+         F8E62q6XZOCUcX2UBZ6UO5aA3v6ersGKPdRhNpwSHv9whuZbVcQxHSGzidSZ6dryV0z3
+         1sVXCl8YeTS5JaeIYZZVsnPUzYY95Bl0Pyjmo2Qbtlh4g1QAkCRNAOVDWynRLlOkBVs5
+         wzDCEHPHo+fUwmq09WrnOlBkqeDIhURHAZ1Qw074Lpy/pneo2B//sIk5GjHM5QskAupI
+         zHhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792625664; x=1793230464;
+        d=1e100.net; s=20260707; t=1792626192; x=1793230992;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
-        b=utESgfcBaVx/gaBJ14zlwrsT1EvGMChH/tia9gqeJOX645TUcBewE9ZMfpeGGrF+jB
-         mDPmuaS61KwYDsbEL9oEFoU1msRbYP1IL2CwZBo8k17My2Wi5kwGOD4q3fjMtr1tPaJS
-         gfzCGrJvNfZdbMAIRUMBPS8956Dw7k4Wj6VV7+XIpsVRIeZSK2fcd6Sk9WBiWHlILuOT
-         Iok6w5yydyKjioepwxkN8FQ6CELXmIwD3inV8lxPXrPxSZhtD3P472qAMBEDwNbGuISr
-         pl1h2f4G+3SfftGkg0d4Xp83TwCjjifM7qv7Y902tXznSh4Wk8SlQwgar3ICNVRSGw8F
-         c5NA==
-X-Forwarded-Encrypted: i=1; AKwUvBxeNlwhmnspE0c+WyTPBk7hah/g9/wZIZVEtdDveqcpHYqbuWa1TW8LWsqszN8CbuTp/ww=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL2A9nu7G3MCL/z/BpaaUpntMrcdW0NvvKSAqBkcbHyh01Zo57G
-	1wk3HxMJt5GS3YV+EsKSpE6hNaRi2/ZrSr+rvg/qpUXgOuzE3LTBAaz7t3s640MZos7WCYoqXrp
-	Z3PmKV4f6Sbvnjwr1EnD6vTsmpdHiCL0fooZK+NXT
-X-Gm-Gg: AYBFou29vrNmomBYBBS5cmRoOPeCQywjIHIitIDZWn4kxFp6bXxs+QF008m4yDnWXCG
-	KWfav2Dj3k0BJZyykpcQI4KEe/etJtxsriSCCJ5v1JQ2amUA+eoydxAM6jGqmCcB+AjFT4vLOmO
-	dGBHXWLnpyFLr7QG1gGvCcAsulLxscDGP8aC6Kr0jzCEkbIb6/MSUrcJZctxx8KHQ3omIn/yl9d
-	PdZMO4HUXvrYpjjxwh9UtUXDcoQWKQQO+luJeFnWSTLumt9ROQjtPOr3tQOeerpu8da/2nrSwQ5
-	cc6oGdmX8q98PSfMw4HYH+UsH2PlVMxqujF8ddo+Q7GXB5UjFJbXW0GDmOEoqoMxtoWZvmCFw2Z
-	QFZjT630O6KP1Yb+YYLHWnFwybpMuyOK/pevp
-X-Received: by 2002:a05:6402:3258:20b0:6af:97c0:ce51 with SMTP id
- 4fb4d7f45d1cf-6b42036d1eamr8171a12.13.1792625663534; Wed, 21 Oct 2026
- 16:34:23 -0700 (PDT)
+        bh=xqMxgDGxhPiOyoUaqZji5WTWN8A1cJANGbLxRlZzHO4=;
+        b=IPGro6EyjUMDIi/VGEURIDWylxeCyi6IPI0k9gn672UG9MO9P3Vp3PI2rNsZLWjTT1
+         tjIbbz5h1eFj2Xd5nfCo0p7hlglXS4oG63AE/hJ0ns3FnuBWx8jK5IdVWLcjbab4YkiR
+         HNkmXztFoLAFYaMp4U/G+zFLuwVh9+yhx/i/tM9RtNUKHCvyx6n7PQ8avnSXNIAlOJ/+
+         /TKXOxKQREj0CehI/+r/UwKOEDow3kOtDe6l47Jp715Y+TSp/4L77ZvQCjaMPsQsHj0m
+         KB1tv2myLdhHXHQrQhrFcPESMQCxqhcc1py5UKSnFmEOK+evAY3OrUPBXP78G23VjSPd
+         gyRg==
+X-Forwarded-Encrypted: i=1; AKwUvBzf0Z6GWHqHrXs5iwbP5qsXGmYbTCdwTYoDWpQ6fgU1fCTzG8MD5JjtqR2691r8Tc6LMSQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEXRV6Eeh940bmINi0Khoz/s6HqhQ5GL5EbbsNYvW88VKcL3H0
+	xgcH3CceyDi5RwOACN5UDz477TEVbywEBaIoe72hTz2GTzm2zJMN8bcT59pP/VKgM5SgF7yUGwa
+	/j7Xd9C4dzcz4z4UzgIH8Tezu47V4Kn/C2hh+1D6E
+X-Gm-Gg: AYBFou2TEL5j1Gz77aSUHsSvZ+/X1SzjMtL/tvczqfJSkFaAA0ja/1MeXfIKbKlryIw
+	MTTyv7vbkekywUz5Now+uJ2Dyej/Cru4SxDRMVSFGHSKoeByVut8NJuDGba1gdgteiNK6Qoz5tp
+	hctAinn/AIR2D7P1CoDWNqSm7XsZBH8qskmBDgRMcmoR5U1Nt6M9p142wyWFGUJW5VHeeoXkWAn
+	kpOmiLDyaWNZIP9Q0wtNWZXK3ryvho0t00zqoK+6R/V/TJ6oeB3786/qlr2GmBaKXK+eTcMVf0B
+	8AlZZJRf7NFVU0alLEdrtkVPqKvFdUkWQvK8UQa7LbpEAhkrk3RQNVO2nL41n0q9z9MonjEwsIt
+	aULEGxGWjmMmHu/Y1pZUHgaDk/l3G6pJPQJqy
+X-Received: by 2002:a05:6402:270c:b0:6ac:84a2:bdc7 with SMTP id
+ 4fb4d7f45d1cf-6b420321f14mr12746a12.15.1792626191849; Wed, 21 Oct 2026
+ 16:43:11 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,13 +104,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-5-shivansh.dhiman@amd.com>
-In-Reply-To: <20261019210532.378628-5-shivansh.dhiman@amd.com>
+References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-6-shivansh.dhiman@amd.com>
+In-Reply-To: <20261019210532.378628-6-shivansh.dhiman@amd.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Wed, 21 Oct 2026 16:34:11 -0700
-X-Gm-Features: AclHuK8Fq2OFwJbDGTBqUL2KjFhS3p59umi4aJ4iOn3Aabk6CQHJXunrqbDFxu0
-Message-ID: <CALMp9eS+vfR=Gk5QhLFrCZ4MyCq1YrunViB=tB5OLo+L8Ka+OA@mail.gmail.com>
-Subject: Re: [PATCH v2 04/12] KVM: SVM: Enable hardware-assisted LBRv2 virtualization
+Date: Wed, 21 Oct 2026 16:42:59 -0700
+X-Gm-Features: AclHuK9wm8PUCEYtAidiUragN1S-msumWFyv__Om700jGHu3sB28SCGOAFOtB-M
+Message-ID: <CALMp9eSX7aDK8+126wbGEOSonTs1+g6VFPTMxXtS-1-HHWFn5g@mail.gmail.com>
+Subject: Re: [PATCH v2 05/12] KVM: x86: Add support for Live Migration
 To: Shivansh Dhiman <shivansh.dhiman@amd.com>
 Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
 	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
@@ -122,74 +122,20 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Oct 19, 2026 at 2:07=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
 d.com> wrote:
 >
-> Enable V_LBR so hardware saves and restores the guest's LBRv2 state in
-> the VMCB, and pass the LBRv2 MSRs through (by disabling interception)
-> to the guest while it is set. V_LBR is enabled lazily, only once the
-> guest turns on branch recording, just like legacy LBR keys off DEBUGCTL.
-
-For a Linux guest, I think lazy V_LBR toggling is a bad idea for guest
-context-switch when LBR is in use:
-
-Context-switch calls perf_pmu_disable() -> amd_pmu_lbr_reset() ->
-perf_pmu_enable().
-
-The PMU disable clears LBRV2EN, so V_LBR is cleared. As a result, KVM
-intercepts all of the LBR MSRs written in amd_pmu_lbr_reset(): 32
-stack writes plus LBR_SELECT.
-
-> Co-developed-by: Sandipan Das <sandipan.das@amd.com>
-> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+> Report the LBRv2 MSRs through KVM_GET_MSR_INDEX_LIST so that userspace
+> can save and restore them across live migration.
+>
 > Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 > ---
 >
 > Changes in v2:
-> * Check svm_lbrv2_active() in svm_need_lbr_virtualization(), which is
->   a newly added function.
+> * New patch.
+> * Lets userspace save/restore the LBRv2 MSRs through
+>   KVM_{GET,SET}_MSRS.
 >
 > ---
->  arch/x86/kvm/svm/svm.c | 45 +++++++++++++++++++++++++++++++++++++++++-
->  arch/x86/kvm/svm/svm.h |  1 +
->  2 files changed, 45 insertions(+), 1 deletion(-)
->
 
-[ ... ]
+The shortlog should probably be something like "KVM: x86: Add LBRv2
+MSRs to msrs_to_save"
 
-> +static void svm_recalc_lbrv2_msr_intercepts(struct kvm_vcpu *vcpu)
-> +{
-> +       struct vcpu_svm *svm =3D to_svm(vcpu);
-> +       bool intercept =3D !svm_lbrv2_active(vcpu);
-> +       int i;
-> +
-> +       if (intercept =3D=3D svm->lbrv2_msrs_intercepted)
-> +               return;
-
-This replicates the bug I just fixed in
-https://lore.kernel.org/all/20261020234535.3182385-2-jmattson@google.com/.
-
-> +       for (i =3D 0; i < 32; i++)
-
-Nit: 2 * SVM_LBR_V2_STACK_SIZE.
-
-As I asked on patch 3, what if the guest CPUID.0x80000022:EBX[9:4]
-declares fewer than 16 LBRs?
-
-> +               svm_set_intercept_for_msr(vcpu, MSR_AMD_SAMP_BR_FROM + i,=
- MSR_TYPE_RW, intercept);
-> +
-> +       svm_set_intercept_for_msr(vcpu, MSR_AMD64_LBR_SELECT, MSR_TYPE_RW=
-, intercept);
-> +
-> +       /*
-> +        * DBG_EXTN_CFG stays permanently intercepted for non-SEV-ES gues=
-ts so
-> +        * KVM can observe LBRV2EN and lazily toggle V_LBR.  SEV-ES+ gues=
-ts must
-> +        * delegate LBR virtualization to the processor (per the APM), wh=
-ere
-> +        * intercepting LBR MSRs can be fatal, so toggle it with the rest=
-.  See
-> +        * commit b7e4be0a224f ("KVM: SEV-ES: Delegate LBR virtualization=
- to the
-> +        * processor").
-
-Is intercepting LBR MSRs fatal, or is clearing LBRV fatal?
+Reviewed-by: Jim Mattson <jmattson@google.com>
