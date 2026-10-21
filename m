@@ -1,100 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792608694;
-	b=0UfoAiftg3BvDh89L5uDmnG6wxFCBN71O4qBuvuq8T7ZJFmPRgLupzEQ2hRpCNZuTOei
-	 Y1m9cicI2EICBsbDfFrpGEhNaYoEJJlu+YcfTRtx3DD0doGJBpfYD7pXhQF7g4QNzVO3K
-	 XT5jSCEc3zzn3Fmlmu+hBbNvKTAitJfq78v1IHwPmuqHRLaNiH4m2SjCE8FXHLniZ8jSZ
-	 ezeorhQI6akMULShVq9wf6Hfihgf1GKUZE6VCU0wafh++RN0riMm9416cq6C2cLamEk3r
-	 +Kaoj2gE3l3PVBM/e4vlkTA2CyLP9m0BVNccutjcwIq605DBEyKfI7B+U5pHGxf741A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792608694;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=V2oW+YxRWdAsPD4uJs1XKcHYT7T/4QzyNKf44tXuYtg=;
-	b=o4KVDUQBFqm8c06jS+IFQZO0BkPs/mb+5V9UddWWIEIOl0AHMuRUYFV0apadHlaiOuK9
-	 OlBm4eBuu+EtiIEHuyMJwTjotmb6nwuf1mzIwfmyzomXlN1jksjPTfgEcH1KM7LwmFnnh
-	 5fQLgxZprEcBYnqVSpIseMuVNaQAIUWszsI0AwsLdk9gS2kvsG0ikTjsITR0CveslqRVP
-	 z/DY6Ww7kUA9Ru8Wh/boq1hu3QWoEkhn9M5boEHePDEvpxKUmEI2QD1lSX8VP68u+zqwf
-	 BMuz01h3QKFm27qUvsOmIMmYa0HZSPWQKtk9YWG7euSNMyT0I3DuvWO7ghPVy1EYnmw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=soleen.com;
-	spf=pass smtp.mailfrom=soleen.com;
-	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=HlE8O8AN;
-	arc=fail smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792609534;
+	b=mPZ1/8Dmr7iITxmyljg+F78C2BI8wYx4DR5b+UO8BbfSjAjaD4I540lFZlSCm8mcQElT
+	 0GXRvmGzBILqTzyRQBgAgg7mA2VyE+IuSyhGmThbohjySoQ3XGuuiCQhKPwBZXCSN2soe
+	 MjsF+tYVdNrwicNVR8+tKtEdHVuctJDcXAeN+rK1px9P9cQ/4NbHiZacgcS/ZPikr4LmD
+	 iKbkKawVb6m8yPJ2WlG7CUr7Rl8lJ0HxDJqsQ/i8Q4vOLqIFpo7PcABr//q3PfkNccY3M
+	 G15k3CnxhART/CQ+otn2DVkoFcfB8tZXXDspvbPwsOS/MFSQ6giSx6Id8IzQnp9U8rg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792609534;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:
+	 MIME-Version:User-Agent:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=xQ2SqnwVDG5xMzvzDIXO6M7gDqTy1UNMqzDsHAfACMk=;
+	b=jo/PwyEj4v7cvdYjgLzxFYLs8VuVfGBoGKdHcYKo4jIP6LwJQdvoI23/lXL0QeqpPdDP
+	 4dxKAJeTrZx5AuQvVaPtqFZsPDzY2jNJ8YXwRJTZHUXCGbB4CtZjS4/ndKSvFqVpnG5Q6
+	 j2gtn1P4+xDJTFWM3RLGy5F5MK7btI5nBAnoXyCZQCWyEsMq8bMyIst+smm9iZKyp2q32
+	 vs6PtDVpARkv/0+biJdY89WUHjTbpwIztMvz78rFHFUcjXJrAcivoOHFzw05MSyqe/Bi+
+	 zuFueATjrx8AkZrAE8llBuOP0alUhQjMXnoJsO++KtMICX2OUSlSsKYERBJk2g3IOig==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coL7n6oI;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1118606A31D
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 18:51:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1118606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011F8606A31A;
+	Wed, 21 Oct 2026 19:05:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 011F8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=HlE8O8AN
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so1465392a12.1
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 11:51:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792608692; cv=none;
-        d=google.com; s=arc-20260327;
-        b=W3PNHlfg5L1YjZaKcYP5Bpk1wxVQpOdTOul/y59yGw1WipPIjvN2RMGoKYyDH8D7Cm
-         pM8yjLGz8w1fLNk5s6zfoVvPIIuMePFy/SzlUBnCyo3Z6hZOQs+/ou3huMQTW+jKc4vy
-         d6ZIEdDR15DWlmWHPr28MfIHmafd4xldwp0RjkuZQrj8im8XRC5lWCBBCLBdK5GY6nRo
-         drjFoamsRP9T30fbiJlERSZfAtXAXyad/nY4dAP40a6jRDZxMEXQd+OmMTSWHiRjTDDB
-         Xs9UBylS0S2LTVSq+ULwJgphuTSvpQDTAlJNpSXbUv2RphDZNYuu4BH7np1W6abu4MZI
-         /fIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=V2oW+YxRWdAsPD4uJs1XKcHYT7T/4QzyNKf44tXuYtg=;
-        fh=E3gNrEmzuXnBSSTVYGaX6PBwRQ2pPBfxg4zFuYSg6oE=;
-        b=SAPKeOaAnuUcMaqsaT9hEQsYZwAG1rdQNF0p93wbNpTETSGKWYmVw0X0e4NGXZIdu4
-         JNVg1hQ8nI4j1k92OowOLUQ4cZfep4u65pm3sEStP1k+UK8G7Ct6sQDgVqaX1F/VsJAh
-         oKiTQPMzy2tzDGegx71GosTVrZlALug0xuFKjYvF+nczGLMnEcpXaThzOiMBubm1a6Mc
-         lzCeXuswIHFq8gIu6iz+XGH2ZOqV/pGx+a/hIZJUL/wS5qR7icmWBLh44EXzMLpcvHwh
-         VUP16gsw0vOCUB3JydkOah6LKTkW/FIphAKAPJQxitKbofChYOiLQ9aDXaneO0/qXEwC
-         WRXg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792608692; x=1793213492; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=V2oW+YxRWdAsPD4uJs1XKcHYT7T/4QzyNKf44tXuYtg=;
-        b=HlE8O8ANX0EKpSe16g+iBaKuq+PflNI/nF8nfZx6q4OaNXjnD3WcfTP3ZxUZ6C5yww
-         AQBlVf8uKRAHdsAZlJ3nOI2KRDtgeKEzjh6KweWDxu1SToMmLpwutL5+Lhr+woZoPbMT
-         N1VnHlS+CynNKAT7F1IUt5thcgbaiveM8ggBR3Nw16XMDjcQGNRcVcNo5SDcaGJ27VgC
-         SQZcks2KlihqbrkzWQ6XLWFtJ/xz9Gpgi9JXe2qQ02aMC2CNEezI26fvbSwiRyYprEUe
-         g6GxU5sGPGr92AGt2GfoO7lQG5xEts7k+b+8LB52OVC6Pn4O+EIbicTODb4yWZNAA2oj
-         0ngQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792608692; x=1793213492;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=V2oW+YxRWdAsPD4uJs1XKcHYT7T/4QzyNKf44tXuYtg=;
-        b=U1nwPT9e/VaJSTKgsGdcOXQ+6EIdYSUwQwxq7N6gBxAT+uL+ONAbB+ybq50lfQh2/C
-         nIMd9Yu7cWg99iit9FX6sv8xl64FY0zaawuAvRfx8Ra2ZjuuGdgdzuoyesBM076DCjW/
-         qUz5PcoXIIfwDUFKNQ1vvmpk7jHHiDnpqrr9qcJjuvLjU7uscyaFT2LdUNxHMxXvoUJr
-         fBlPUHxBQnLiVaxYWbhuXm+H7CgDYdWttsenM4TJ2qX5HGfo3CbcC/w4vMjKiPmcSUZ0
-         svh1n9W1mZt+JgjQJn1LnGSHwfc4WWzbgAabqpqgjiY28tfG7gTV/OuJ8O8sR4da3xNI
-         PocA==
-X-Forwarded-Encrypted: i=1; AKwUvBxlo+8uN2tyop0lvs+WT97RIXMMp2KIZVMR5pGCeIdQUda/QyezwrtynFsYvwzmABThapw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKpeEqztxsi/b46kG58bAmCdyIKl9T+Us+S/HUOyElUKAUwYu1e
-	cTo7kSj+ltbPbnS7Vb3b+xNWvn7CYe9lP+Ka7AxTjQlymogAyXzbklTfyOIuBMDS8FutOac9uHK
-	uri9KX3CYwkECcsjD0AEMjvx5QuM9WHC9McXCG/x54w==
-X-Gm-Gg: AYBFou1GD5r0AuTaC/y7WwLTcgM5xXKt3zdXyshCnA9nFBowBc9fcODai0X7T/m7ZoI
-	7/a+yu0m+2gikf8cFuRSJe8CpHD3t6reN6he47U1IUt/bNkleYcG5Sgj3saDaLDHOm0jGqTe56S
-	szMIX6wXzRFhT6JnTVU95xpfv/2AMXZ5CH3uiA6dvR14aP0LYsCtDh5OCwRTHvJvgSW8g02FQjd
-	QMeaTTXMNgblkttDbrmSXPuqNW7Kbwgn9vgyNokJdlxoenT5EBDe04W+3m+ci4T565GzJPqr2s/
-	n7sy9UYGz3UftXC+jIcVy7fP/BNlxbiumLp55HdkYaQONFxM1tAFgpUwNp6VI+Bva6XDQweO2fA
-	6nrAMaESspPTXAXkTY7sdsV6+m0HkNaPb0y1/7yaM+sYC6A2x1nCSPisP6u5xd34g8mQ=
-X-Received: by 2002:a05:6402:241a:b0:6b4:1df2:244e with SMTP id
- 4fb4d7f45d1cf-6b41df242e6mr53870a12.38.1792608691873; Wed, 21 Oct 2026
- 11:51:31 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coL7n6oI
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69LIE1B6208261;
+	Wed, 21 Oct 2026 19:05:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xQ2Sqn
+	wVDG5xMzvzDIXO6M7gDqTy1UNMqzDsHAfACMk=; b=coL7n6oIAQolMtk9jv3xCD
+	IdOjROBbuS8cjUl20s1RZTJh4mekwegdSgpa4i2L1qYmOasx8S0/v0cu3MUxqjuQ
+	3VCnBeeJzA3TxPZX64Yhiy6b3At4DYvKAZ4+ZwN5vy0w1M0OJKdZ0JYsIYe7AZSK
+	FcmvztvzKFbdc7QtK++cBEEUbsdfAXXd3f0rxO9MsW7n05QxY581f8hdEonceQOA
+	CACZZBE/sHGxQqrT8NCDVgcpdYYdqRPbAo+1CipenFAZt+OEUzJYDXmysvjdywCs
+	x8QNQv2W64rPX/In2OSqbV+9nWruPsQOwizQozakHKOyzJCgY+3lRzlEsKYSyJQw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5bk3jk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 21 Oct 2026 19:05:14 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69LHopV93498329;
+	Wed, 21 Oct 2026 19:05:13 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hcmuh8gr3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Oct 2026 19:05:13 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69LJ5CNV61080034
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Oct 2026 19:05:12 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 909FD58056;
+	Wed, 21 Oct 2026 19:05:12 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 370605805A;
+	Wed, 21 Oct 2026 19:05:10 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.77.162.217])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 21 Oct 2026 19:05:10 +0000 (GMT)
+Message-ID: <8d8833fac61558a94af415143530884349584a2f.camel@linux.ibm.com>
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Dionna Glaze <drdeeglaze@gmail.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+        rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+        James.Bottomley@hansenpartnership.com, aik@amd.com,
+        jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+        jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+        suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+        elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+        roberto.sassu@huawei.com
+In-Reply-To: <20261021143529.GP3008132@nvidia.com>
+References: 
+	<CANwfdvXFLJpC4Bc1PwRoUUP20fu2K8b+FHZ1JLLFXAikC-cBaw@mail.gmail.com>
+	 <20261017203407.GM13920@nvidia.com> <atPgqROZZxnihYfC@kernel.org>
+	 <20261017231007.GP13920@nvidia.com>
+	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
+	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+	 <20261019225658.GS13920@nvidia.com> <ath4vwt7KGyDXKVJ@FV6GYCPJ69>
+	 <103486a4a29ecc7b72940dd051c00ae59266bd05.camel@linux.ibm.com>
+	 <20261021143529.GP3008132@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 21 Oct 2026 15:05:09 -0400
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,98 +115,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
- <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
- <9huzecdi6go0.fsf@tarunix.c.googlers.com> <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
-In-Reply-To: <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 21 Oct 2026 14:50:54 -0400
-X-Gm-Features: AclHuK9td__2XcAMViewCe_NhDoA_TjTC8gr4y8u3SANqGewpEKZoTgIKv6iXME
-Message-ID: <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-To: David Matlack <dmatlack@google.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ydaOzlwPIUk9SIhOIcCkK3SVXfS2DDcg
+X-Proofpoint-ORIG-GUID: GzBYn879Oa5NzXnY4sgOMq8X1dbUx1fB
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDA3NCBTYWx0ZWRfXwyVoKuAud310
+ A3MMgRuO3P9BfDlryZr7ihLhpK+1PPfP0xO1xgsoY0qD3mT++OvGba+8UA0zkcoD+iWg/elNtcH
+ Z8gPzXT/JWDMgUcPZBCKi26sOkrkUsY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDA3NCBTYWx0ZWRfX1hmDKI4a0lIN
+ oCbznsJRgcS0JN6foELRHP6ISHyPt+L/UW64K16gcO4VrYiohYmtKf0oW63pkMniBR5FA572QN5
+ ieNRoOqQ5C+MUuzixWaCYc9xzLcGBWUGx03ndwS3NTq8ewrjFeaaF25ZgavBj0gzJcdgbUGxSh1
+ z/ImEgbAtQpFnbxfpY5IGBnzAOUVBhPlq7kbzT4jo+YS8enEUnhx0XveFs7pUFwmfqtIhy7rfMr
+ /eNM5pZnlbLbm0Swwddnnl31pEYsNFSv3Bp6+k2s2ORgrk1ke5QlzwIRPi80LBWPLiKzQs+u8rS
+ SF8vdtLnNGB//AB0FOdXciN8gmxl2uGcWMN78g8nK/9aLNTmGVGxuGAPsMu90zKkHsZHcndSc2b
+ gg2i2oceWWm/HafsY/e03vEgK0dQEZfnGympFncPnRryoEodcVL2DFBslRUkKJieyf7rN1+dJEg
+ a9Wr0QwuxTURorMH4dw==
+X-Authority-Analysis: v=2.4 cv=Gb2CDgXL c=1 sm=1 tr=0 ts=6ad90ceb cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=yVQDdmlqToHGFoNqkO4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-21_05,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
+ clxscore=1015 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610210074
 
-On Wed, Oct 21, 2026 at 2:47=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
->
-> On Wed, Oct 21, 2026 at 11:40=E2=80=AFAM <tarunsahu@google.com> wrote:
-> >
-> > Pasha Tatashin <pasha.tatashin@soleen.com> writes:
-> >
-> > > On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@google=
-.com> wrote:
-> > >>
-> > >> LUO and its file handlers validate handed-over state with monolithic
-> > >> compatibility strings ("luo-v5", "memfd-v2"). Any change to a serial=
-ized
-> > >> structure, even an optional additive one, must bump the string, whic=
-h
-> > >> breaks live update between adjacent kernels. Replace the string in
-> > >> struct luo_ser with a feature header, so that the target kernel can
-> > >> accept or reject the source kernel state per feature.
-> > >>
-> > >> struct luo_feature_hdr is a fixed 128-byte header: the serialized
-> > >
-> > > This patch is all wrong; 128 bytes is far too large. For every _ser
-> > > struct, we only need 8 bytes instead.
-> >
-> > NOO, It is not. It is intended to avoid complex mess with unnecessary
-> > over-engineering.
+On Wed, 2026-10-21 at 11:35 -0300, Jason Gunthorpe wrote:
+> On Wed, Oct 21, 2026 at 10:12:34AM -0400, Mimi Zohar wrote:
+> > > > I think for now we should not include a new dynamic log here, the u=
+API
+> > > > around this Jiri drafted can remain a future step. I don't want to
+> > > > open complicated discussions about new functionality at this
+> > > > stage. The whole CTLV idea in general is a big enough thing to bite
+> > > > off for this series.
+> > >=20
+> > > Okay, dropping the log from this set.
+> >=20
+> > Thank you.  Please keep in mind going forward, that the scarce hardware=
+ register
+> > limitation (like the 4 TDX RTMRs) should be resolved (e.g. by multiplex=
+ing the
+> > extension path), not by combining distinct measurement lists.
+>=20
+> I'm not sure what you mean?
+>=20
+> Since the HW doesn't support sealing the only *technical* requirement
+> is the verifier can reproduce the measurement register hash. So long
+> as we can get there we can do whatever.
+>=20
+> Multiplexing extension alone isn't enough. We need some scheme to
+> reconstruct interleaved logs too.
+>=20
+> For example we could add an atomic sequence number for each
+> extend. Every log sharing a register can report the sequence
+> number. The verifier would have to globally sort all logs to confirm
+> the hash.
+>=20
+> Hopefully we don't have to tackle this problem. I hope that 4
+> registers is enough for Linux. One for IMA, one for systemd, one for
+> user? Plus a spare!
 
-128-byte per serialized struct is not starter.
+Agreed, I hope you don't have to tackle it either.
 
-> >
-> > >
-> > > The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
-> > > 30 feature flags + 2 reserved bits for flags extension). The last two
-> > > bits of the flags indicate whether an extended flags field is present=
-.
-> > > Each extended flags field is 8 bytes, and its last two bits indicate
-> > > that yet another extended flags field follows.
-> >
-> > If we will have dynamic extension of flags, Think about this.
->
-> To support dynamic extensions in a backward compatible way you want
-> something like this:
->
-> struct luo_feature_hdr {
->    size
->    flags
+>=20
+> Maybe we can build a multiplexed scheme on the spare? I don't know.
 
-__u32 size
-__u32 flags
+To avoid interleaving the logs, AI had suggested multiplexing or virtualiza=
+tion
+of the RTMRs.  Whether is has any merit, I'll leave to you.  Here's the ver=
+y
+short AI explanation:
 
->    extensions  // offset of first luo_feature_extensions (or 0)
+"Instead of allowing external drivers or subsystems to execute a direct, ra=
+w
+extend command to a specific hardware register index, the new attestation
+subsystem should act as a Hypervisor for Registers."
 
-__u64 extensions[0]  --> but the size should be specificed in
-declaration macro that I showed in the next patch.
+>=20
+> But we almost certainly need to have logs sequentially created in time
+> occupying the same register. Ie IMA may take over the register from
+> UEFI logging. Here we'd want to report the start/end hash values of
+> the logs back to userspace so the verifier can stitch the order back
+> together.
+>=20
+> It would also be nice to think about a way to restrict the registers
+> to help avoid multi-user conflicts from misconfiguration.
 
-> }
->
-> struct luo_feature_extentions {
->     flags
->     extensions // offset of next luo_feature_extensions (or 0)
-> }
->
-> And then an example serialization struct would be:
->
-> struct foo_ser {
->     struct luo_feature_hdr header;
->     ... fields ...
->     struct luo_feature_extension extensions1;
->     ... fields ...
->     struct luo_feature_extension extensions2;
-> }
+That would definitely be a plus.
+
+Mimi
