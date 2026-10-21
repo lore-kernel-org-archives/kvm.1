@@ -1,110 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.59
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792602010;
-	b=Bvf/QibUanwBKeF9vzTjj/vXhpud00skKNXuLZKTKmTKZNiCzOWq/qs+kQBqJ+WjiAtp
-	 dXRfKH9mky5E5fwmkrkrNWQGrwzzGAPBR3lYKX0cxlyxewduTYo1PCeL5lYkJgStyYJoA
-	 Ir5dtDRxxGSmIzh83iu6UFndi47npZAKXK4nwfyVxkty0dsq357bRoeavtJ6+aLXvJkjj
-	 B4aIY/QJHLbUSH19As+lDTb9QKri0ZxOBqGeJ0yBN5OFGBUR8qmbqcZsEa5uzerFU1XRN
-	 n/xCQZ8JqRQ0cSUi4ILKU49dzRwjpIyHCDmQ4Wa8K8hX0Vu8u+D6dqUQsoxCCvlc/4A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792602010;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jz2h+fDQpIjsnhUo54g20qmIZjwTYgRPH6a6FRwxN7k=;
-	b=NoIInsaXW/sEkJzQtaaIvMa6r1L349y0Qx0zZr6LJ12nZiSy7zS6g7Xz93OFMpuqcFnU
-	 ueZSJfmEm8UKr1Bj3KfRgKHukNFZ0wPOoZUBOwnALTb62mGpcT24FBU2g64sLQtrczvy4
-	 IYLkakFfmDeRd3IrPuAo6D+4QhuInFsYXz2hC9sK97xp5RQ7f8B/NhTtJDDEjlvoD+pAS
-	 sqjRFrfALfZ2KG99qM4dvLUlxqZ2/MALrS7qW/RsWtnsgoPJMgLMsXzbHPfWQoppmHCIm
-	 sGFYNAKv8yFOWeMiBFXvLVyq0SMJtCICCxNLlNpeuO6Qvue7+O+9MjDf8JBtuuHQ9fQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Ten42nts;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.59
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012059.outbound.protection.outlook.com [52.101.53.59])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792602248;
+	b=PkeYG1umq3Ufts/DchU7OOYzQnoNG/eNNTO1Ez0shgL6YMbV+4TrqLyuL3bn0vUtMtCh
+	 y2kuQqY9moh4E16UPT2PfpO10fclrkaEjEPHq4vF4nS46L2BXAtjocpp19+vr2uQSQKrL
+	 z0J56PmsykHcZW3T7qSX6/aR5cMWVORQdjNEARzuB/Z+lyXiQ4PrXbgC4wFIUNqwgxwlC
+	 pHToexEgxlYV+exQ5ahxcm+iED6rA4RDLB6VZOloLzkwv8AZp8w4MKVfopibRaoiYE2J0
+	 EvS/V3u71YDXo6+pctORvVWpTp4GaHyXqLaeTECT3NsbTgsqP6N2v00/yz0CTAwN25w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792602248;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Qofc/C3ulxNQPffK4mS2418qbHbzkMfHjhjhVdFF1AY=;
+	b=xlQ6j5+DEt6zlPmOZvqTEnCiPhk3EFyzwX7gSpHdtTXMgvGvRaoq15knh+gA7TU2TuRM
+	 +l8LbBUfjL2AeQC9FicA+Ftfxja9UgzQhYmE5wVDpOUqmRE1aKAbkBKo2s3pxlTrRjw+h
+	 tidVhYrQhyEkoolRrM2LtogeDHlIKqlu/w+T9ZIfIrpAbpxnVodBuSrRrA4Hh4WrQ+sIl
+	 AarTnLJWw8ZQLQUYpkT2k+fm70Ua/x/33JUe1sJftqNTQLB3wlPofqt6/H5KR5txLe97E
+	 2Xaby+C+td+z3F9rmJ3DUUdmVfdvjEx6FaF3+RxEb4Ch8CaBmuGswgT58SMpMtOkJiw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IU2w1HmK;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ev15ecuS;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BF3606A31D;
-	Wed, 21 Oct 2026 17:00:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4BF3606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17F0606A323
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 17:04:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D17F0606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Ten42nts
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vQcIUrEXQhnzYQQ5Uwj9QlLXJmP6R0cl9+pnZoFMfeM6sShf4lBuKW3S8ZkHsKof65iX4zxK4RNL+Lr5ZQVn2xfqOnkBQV7vwg9vmBSQGtISD7969kke+rN/6RFirOlMKPW4Ank9Fy3eQulDExxmq0mewjCt5oSPJAwLrbQsOmxM/5LztoYl/l3mGzTkdmK+Y+TQbFWTmpnCCyUS0qM+JsZCCBCzwer5UXSgNHoCDTs2VMkqvFK2EFgMRYr7Jlu9SnoeaejR89suq4Rrfo7yuiAMbV+LiiXO2D1QbDhyCJBZnbJ4ueDZIzPVCbE4R7XyPl9NqmzqeKSmV49ERicH3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jz2h+fDQpIjsnhUo54g20qmIZjwTYgRPH6a6FRwxN7k=;
- b=kOh06lt/4ngkYzT9MssXOmTQZ8cFIAAb5BS0aCRkqBRloG/r8z5wjGdy5LAGS9v1EoyVv0jUoOBSF6YseBHhQRs9mAQ1gjCpeVzBis5drXF2llh1kPCJnQc9rBYzeFGw3C8QI4iiDjwQejh0pjs0wXcIyuF55+e2TloyXVdOt/ZYfXmWg/fZ7ajb+xaTSVcun7DRGttXjkKrrX2P6puqY3RnbxsscNjGlo/2DdoNM0wzhzHsiGU+Lgj756M2ILb7HnB4f4RlY8k0LRrTOxNFkpv8agiW4G765iAzxNpDd3nq5vrX0yOInWFO87jljlzyevj3aYrJGP0suXv7SE8B7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jz2h+fDQpIjsnhUo54g20qmIZjwTYgRPH6a6FRwxN7k=;
- b=Ten42ntsBe0yWcVKmCKF/hivvIx+x62quXOKXFWM2tl/OVrlsWV/vjfAx1tu2AN/15HqxuLV6AN0DoRvgBrKEBiMbuo7+unVeKXRNhGO5pj2Fo7kqgEppBG7LMRfSNodA3JoRma1Uhl9FQaBFUVYm6ALl3U3xR+42OdhZuRTKm4=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17)
- by PH8PR12MB7207.namprd12.prod.outlook.com (2603:10b6:510:225::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Wed, 21 Oct
- 2026 17:00:02 +0000
-Received: from BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1]) by BL1PR12MB5320.namprd12.prod.outlook.com
- ([fe80::1876:4a6d:2cf5:b8d1%5]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 17:00:01 +0000
-Message-ID: <345e3647-5bdf-4cd4-828d-bd28e0b66cac@amd.com>
-Date: Wed, 21 Oct 2026 11:59:57 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 14/18] fs/resctrl: Control visibility of global per-CPU
- kernel mode group files
-To: Reinette Chatre <reinette.chatre@intel.com>, tony.luck@intel.com,
- bp@alien8.de, ben.horgan@arm.com
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- x86@kernel.org, Dave.Martin@arm.com, james.morse@arm.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
- fenghuay@nvidia.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- akpm@linux-foundation.org, rppt@kernel.org, dapeng1.mi@linux.intel.com,
- elver@google.com, enelsonmoore@gmail.com, jlayton@kernel.org,
- kuba@kernel.org, ebiggers@kernel.org, seanjc@google.com,
- ewanhai-oc@zhaoxin.com, binbin.wu@linux.intel.com, peterz@infradead.org,
- ashish.kalra@amd.com, superm1@kernel.org, chang.seok.bae@intel.com,
- prathyushi.nangia@amd.com, kim.phillips@amd.com, ackerleytng@google.com,
- elena.reshetova@intel.com, naveen@kernel.org, darwi@linutronix.de,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, eranian@google.com,
- peternewman@google.com
-References: <cover.1790867441.git.babu.moger@amd.com>
- <28d7e4484c93d899ed86ddafa13faccce0dedca9.1790867441.git.babu.moger@amd.com>
- <c600a240-ed11-4e31-b3c3-779f01175f28@intel.com>
- <e1753b90-f22e-4708-8c2e-0e1d2e0f46dc@amd.com>
- <91e0e000-7e37-4e49-95cd-76062097fb79@intel.com>
-Content-Language: en-US
-From: Babu Moger <babu.moger@amd.com>
-In-Reply-To: <91e0e000-7e37-4e49-95cd-76062097fb79@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN9P223CA0002.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:408:10b::7) To BL1PR12MB5320.namprd12.prod.outlook.com
- (2603:10b6:208:314::17)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IU2w1HmK;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ev15ecuS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792602246;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qofc/C3ulxNQPffK4mS2418qbHbzkMfHjhjhVdFF1AY=;
+	b=IU2w1HmK2HI5Po45pvt67nBdMmzEbGpuEe6WIYFT9XcWOlsRZv9XvEux6dS6jGgtBFaOXm
+	MQOP4JI/XnbRIACkli9joGAJiPc4vPAeyqFgtpTBwqo4NjZpFhJJ8cqC/Z7yCXeePeh4dX
+	JjA8A/TpeJuzCm6yOIR7yooylxx06NE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-362-NmsXa48xNeK6j-CzV4PsTw-1; Wed, 21 Oct 2026 17:04:05 +0000
+X-MC-Unique: NmsXa48xNeK6j-CzV4PsTw-1
+X-Mimecast-MFC-AGG-ID: NmsXa48xNeK6j-CzV4PsTw_1792602244
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a027f2e364so7526415e9.3
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 10:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792602244; x=1793207044; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Qofc/C3ulxNQPffK4mS2418qbHbzkMfHjhjhVdFF1AY=;
+        b=Ev15ecuSDBQIpfU30tw3kVnKUZ8wKo2z/jxmtv40Shaw6vlWGs+ABOt5h4N+oafAiA
+         Rx82URgokALhp1LQFylA7CzLn+J1arpjVuKF2HPy4d0RQhNsuIO5SSfg1VpP8FrlJJrY
+         tFRHaVx2ZaKGnowmNQfcJm8VtPjTjdatvneJQXHkuq0+QlMQvh5XPmC/AHkG0+nXBulH
+         Yi5R0iqHnBNz6NV7MpJMnj1Dcf7vBs884YrC8ULNUImBDhcuMp7RfnPtpedCE3II3LZP
+         R2cdOFOWGTEJ0CCbOsr4d4C0LZZWXO45nv1L2J4RMjV8zRZHQiqGCgHs1t7myGzueOTf
+         +YZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792602244; x=1793207044;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Qofc/C3ulxNQPffK4mS2418qbHbzkMfHjhjhVdFF1AY=;
+        b=ctywTr2C2opPm0yisfTf9rq9oTcawUsk9hh1yyHV3sLvWmD2OCLRrqDL1BuoDF14KJ
+         OQakVpkCEEaX3KH/3HK8+sP2mhmA0BqzHdU21lbx0fxqGQlsc6xlynQBFa5pVyx4yMeB
+         p1jO8dw4M4EgIkrgA32/xkVeRQTn71kKwA4AFVjt+wt3335O0ocw5m7XtwVU5PuYJIoN
+         axWtq2mUW0l08k/eRoEq2FtYykxzuhrQEYifVYfGEUtmfzrnl4z0gdeSfNo8Z306ofyd
+         Qvs5+ADD3OsBntkb5/5MC539mMNdVb0wXdpaLitUQkrpr5uKtFnTZ6rHiOknE+RFn0V7
+         K/rg==
+X-Forwarded-Encrypted: i=1; AKwUvByMoa+4jdAbVqlxOZHz9ZupCCd/XipBqoAcPa3mRyZ5QMItnNGMExSTVLSak9kAbJ5Tk60=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIQiaZveAHPIh4PQ/Q15X99F2uXu+2EWb35MYeN4PCkzUCy3E5+
+	icTgvmni7IVUYw2KGY6bL+tFT27M2cUFs/ZeLgbyWyJgRAlkAe5vyVCc3vzzp26z39aqgHQL+oI
+	siOPQcaPjAoqBCkFHYpxDXQJNCqKi57wG2mCIoeKdjIglI4iBpug9Tw==
+X-Gm-Gg: AYBFou2PRuFttiIcyFHRj36uxLONczuH6Z3u2DPxzroFlMn9pHLl1v2tY8SlmO41RXd
+	vA3G39CY9MmvS0fljmHgH5Q8/heNzzsMfDN4oK/vTINHK7uoLVFi//+2qGRVL5iYR2PNUJ5vrAB
+	daE0XmlLgkqhdzdOGdH/10VQreBrBGx+VFtry63sCKIoR/dLbJCsTi0EOFYdAbUHCIXK+GW8ntc
+	7z+XyMJ3oGQO5nzFkDoSmZRPyZ4Xnkzxek53bcN4SyORlf0TYXVpuHJqJbi8BYMqtR6XsSwsTim
+	+lC+HfXCIlINeZb/LNPr5CQKWAAJFMIW8EK2dQA5YraJgTZvqYP+7a6+GTOg0l5YA7dYNjaAicU
+	r5tGx7A==
+X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr60550945e9.12.1792602244042;
+        Wed, 21 Oct 2026 10:04:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr60550105e9.12.1792602243508;
+        Wed, 21 Oct 2026 10:04:03 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.143.193])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a350b0sm6349215e9.9.2026.10.21.10.04.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 10:04:02 -0700 (PDT)
+Date: Wed, 21 Oct 2026 19:03:42 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@kernel.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
+	Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH net-next v4 5/7] vsock/virtio: support guest device
+ network namespace
+Message-ID: <atjvzn-zPYJjLAhy@sgarzare-redhat>
+References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
+ <20261020-vsock-guest-ns-v4-5-047527cfccfc@meta.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -114,126 +125,205 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5320:EE_|PH8PR12MB7207:EE_
-X-MS-Office365-Filtering-Correlation-Id: d28cf12c-ea1b-4739-766d-08df2f94bea3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|22082099003|18002099003|10067099003|261021121427099002|4143699003|5023799004|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	uY9H3eXmzz8AsgefUbdsjjQqmG5m+7Mde6/2mJXfIE6UohE84zHzauzIefRkaT7U0Hds61LhNUjjCpFyOePh4k0vac+xItBSvL0oLm3NdCjKoJmqHGd+/hUbss/256pgQWSg/GUIII3Lc/LUE1BG4wx9vUrzf4sxOEy6Tn7PXofmcPGZW1kisjpU8ZTVwEa7KS8bYcOx4I0LtRfQMn0QYFxRqCNg6LUdXnsvSRSD5d/xTKkgDD7DklJGwTGRwxhuT48FJC5+ozXFI6Q+hNUzM8042MAlp7zC1VHQOStsAnIEpMJ2h2QxNeAsX98lBew3jEFLq0px6Zqq77l9VuPBO1cylVqkWDuluXYV3E0RxaBHZTxKJbx1gWFqdUz3CO57mOwt7S1CZm+inTuMVlzcKfHOrPwxsMfsoYUVZR7To6h96FOWJSiPFhJ0ZZmhOjtIWO0gwckIy+NmCY3Wu9YUhPYrgndUVNtnSVbNN9yAKJR+dh+dRUT63ztDLe9/fPN8+VjrNuxqNL4u7w1WYxzp06qiL1i637lnt57bufUUn5PDdFeLlDtp0cSd2yaefly0NN0CZT+PQay8t6vA3vVlmQ4qiCEZ0gr615cCdFMIUAlUKLiJDiJIN7hm1QPfqYAnsOP/bYjsLqiHIDpabrcXAAsWPFxqfD8ZBM6owM92zgg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(22082099003)(18002099003)(10067099003)(261021121427099002)(4143699003)(5023799004)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WXJzZEtCL0NBZm5JSC9ZSUE1dFdFTW92dGlMaHZlbGtCMFBPWnJSWDBVbDFh?=
- =?utf-8?B?emg3MHQ0MWpKUXUwYnNXNlBNWDllTG55U0RPWGtla3dDVW81blRaazFOaDh4?=
- =?utf-8?B?TW5GSjQvYk1JcmlNVDRYN0NhakE5ZXVNQ2J1cUFqbmhEL2VEdGxlcWVJRzla?=
- =?utf-8?B?a2JQcXQyZkRvc09aYkxEc1gwY0E2NUNud1IzdlpTRFFYNTlabU4rLzBmOGJa?=
- =?utf-8?B?Q0xiUit6RjVUMUhQMkdiMDhodGlzT0ZiS2wxK3VrRUVPc3A1SWJ2VWJoaS9V?=
- =?utf-8?B?Nkd4VXhEaUxrNEtHSE5QRUNmR3JqK25FRVhZc0p6ZHA0TC9xaFh4R0FNWDZ1?=
- =?utf-8?B?VGc2YXhUMHVieDJHR29JajMvUjVwdWd1bVV2Z2paQWRjZ2NGSFZZQlUvOXVJ?=
- =?utf-8?B?cTF1dkwvMG1YMWg2NmJ5K1ZuUWNGVHQ3WjdQdjYzMUhibFNObGIwMlNVWHhU?=
- =?utf-8?B?bUtNby9jSzJXdHFPbW5JS3FHNkNQYzdCUFI4WXorWUVlbmRqeWtlYlpkaXlj?=
- =?utf-8?B?UzdQUjRFaytuc3phM0FYTlNsUTlFa0dlbUZRN3EyNFk4VzcrREFidHF1Qzhi?=
- =?utf-8?B?NnlVbGduMHp1TklyK2NyOGI2K2krYTN0cUZLdjlxdks4M3E5RFBoK2NVWVRF?=
- =?utf-8?B?NXZMM3hHMmk4S2FySmgvNnBkdzlOakFqZHZEeWxXY1kxR2loK1NtMlBuYlBQ?=
- =?utf-8?B?VzRHZG1kSEJ6czk2d2Mva3Z3WjVNWUo3R1oweTJtdWt6RTlVbU41c09kc2xD?=
- =?utf-8?B?MUNINVBYZUU5RDVJYTlqbVZQZ3I3aEorZ1E5K1RTbHhyMWlLakwyUU1xdjdL?=
- =?utf-8?B?UjVIZjJZK0czQi9uY1JQUVBkRzBTblA1UU45Y01tZmdURndiVkM5V2srUUw3?=
- =?utf-8?B?OVZpbEUrK08vVDJyTnkrVWV0OFFiR21mSXA1Qm4xeHlwLzZnR3JaQnM1ZVkr?=
- =?utf-8?B?V3JJMUFqU0J0aHdOaWlpSWhaZUp3MkdHWW13alhCc2tsTVpod0E2KzZDSHho?=
- =?utf-8?B?NFJuOWc2M1M2aE1HT3QxUnhSS0hkTjNjT1VMUWxVb3M4U0x5QS9GelhKN2dP?=
- =?utf-8?B?bmpRWTd6bVNTUG94WkFoZGhjK3NRMzJpT3lLSS94MGh3TVNVV29sN01ZQkhO?=
- =?utf-8?B?bGtDdTREVW9vSVlrUjhjL1NrVmpGaHRxVFhnYitERnNKQUltZWNjUGg1TFFo?=
- =?utf-8?B?aUo3bW9pcHJET3QrcFhwQWRhUjhRbWltRkdwbmVRNThKQlRGQnk2Wm9CMUQw?=
- =?utf-8?B?bmNDRm45QjNxYXJwbzBxRmtYZ21MVXF4V2Nha0JhUkVhU3Z5NlZUdjdpd2Ux?=
- =?utf-8?B?blQ1Mm1GS1ArTWd5QnNoU1VrRjRoSUxOd284NTk5N25qbjU5MkxzdXErNEhQ?=
- =?utf-8?B?Rng0dk1aZml0TGxCRmIwZ3p1bSthVWFwMnFQTm1wSmprTzJyaHhrby9iSTlU?=
- =?utf-8?B?SzVxaXV3RmFuUk5uYkpzR0wxekpJS2Jhcnlac29IckVPQUM4Ny92N01ra3Zv?=
- =?utf-8?B?SEtPdmZDMFdaVGljK3lhTEFNRmFEZGFKeUpTMXZad3QwR2ZaaWZLNkZzQ0F2?=
- =?utf-8?B?Y1czeDF1UEFmcy83ZWR4QmlTWlgvTzZKTFhHa2JmdS95VzArcGNKSUEvZUdt?=
- =?utf-8?B?OEFJYUd6YzF3ZDlEcTBWazl2MGRLK3hxYmRZcis5OVBsbVhEMUdrb09VWkQv?=
- =?utf-8?B?UmZtTGxPZFppSk1pMVpsMGFrWE9vMWhTY2VLQ1RrU3BYelF6emEwNjV5cDdl?=
- =?utf-8?B?RTlRUjBPWHRkbGgwZG00NlNFa1E0KzY0UDJxdGNud1RsME5rZjU4WFN3WmZJ?=
- =?utf-8?B?TXBxak5SVVNkcXZyL2s5VGp1WXltWE1RNTNFWWRmWjFYb2VUR1JIQWdKenZn?=
- =?utf-8?B?SXhWTnJxTEEza2pBQnBBUlEzU0pJV2kxQXZIMEY0b3B0a3VDOFdUdTc1R2Yv?=
- =?utf-8?B?WGtrblZTblBTZ3ppbjd6WXNhMEhYRlNTOHlicFF1Ti9EM1NnREt2elNVVnk4?=
- =?utf-8?B?ekNrRmMzNHdtK013aEN4MTJ0TEN5RVlQUTVYcjEvZy9zRWFqT2V3T055UGZQ?=
- =?utf-8?B?M2pIb28yUXR1VFdtVzdkRHBkVG1rTVRCODUzUjV6NkxzaUZVcDVsMDY4T3ln?=
- =?utf-8?B?M0hMUGM0cHQ0SmJmc1FPMml5YzdmZG1pVW5TdXN1TUhDNG0ycUlleXFXQ0xQ?=
- =?utf-8?B?YXViT1N3d2ZTVCsvR1ZxN1doTU1JcHJKMjJoYnBkV0NpV1VIcXFNSXByaS9m?=
- =?utf-8?B?TkRsaXNRZmZUVjNQR1l5WnVjTG1GaVE4Wkd1WkhidHV0SHdMTlR1ZzdVK1hF?=
- =?utf-8?Q?ded0sJMCS9SqK2hyn8?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d28cf12c-ea1b-4739-766d-08df2f94bea3
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5320.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 17:00:01.1686
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I/G75DEK1X7Flzz/sFixbakcpzF4zwLIWRMjWuiDRhxP1dAuCE578Vc4McIK/oMg
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7207
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261020-vsock-guest-ns-v4-5-047527cfccfc@meta.com>
 
-Hi Reinette,
+On Tue, Oct 20, 2026 at 06:15:08PM -0700, Bobby Eshleman wrote:
+>virtio-vsock did not have namespace support (the device was always
+>accessible to any global namespace).
+>
+>Make the virtio-vsock device assignable to a namespace and initialize it
+>to init_net. Because virtio-vsock and init_net are both hardcoded to
+>global mode, nothing changes until the assign command is issued.
+>
+>An assign can land while virtio_transport_rx_work() is draining a
+>batch, so the assigned namespace is re-read per packet rather than once
+>per batch. Matching the rest of the batch against the namespace the
+>device has left would reset connections that belong to the new one.
+>
+>When a device is assigned to a namespace, every already established
+>vsock socket that is no longer able to reach the device is forcibly
+>closed. For that reason, adding new sockets to the connected table must
+>be performed atomically with regards to namespace assignment. This
+>ensures that when the socket is added to the connected table that it
+>actually passes the new reachability conditions set by ns assignment. If
+>it wins the race to the table and does NOT pass the reachability tests,
+>then it will be reset. This is the purpose of the new helper
+>'vsock_maybe_set_connected()'.
+>
+>Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>---
+>Changes in v4:
+>- Drop packets in virtio_transport_send_pkt() from a netns that cannot
+>  reach the device, e.g. shutdown() or credit updates on a swept socket
+>  (Sashiko)
+>
+>Changes in v3:
+>- Re-read the assigned netns per packet in virtio_transport_rx_work()
+>  rather than once per batch, so a mid-batch assign cannot reset the new
+>  namespace's connections (Sashiko)
+>- Drop the NULL netns reset in virtio_transport_rx_work(), the assigned
+>  netns is now pinned
+>- Drop the .reset op and the virtio_transport_reset{,_no_sock}() exports,
+>  the sweep no longer sends a RST (Sashiko)
+>
+>Changes in v2:
+>- Export virtio_transport_reset(), wire it to the new .reset op (Stefano)
+>- netns_assign_allow is now a bool (Stefano)
+>- Pass NULL, not &init_net, in virtio_transport_rx_work(), and
+>  comment why (Stefano)
+>- Drop the if (net) guard around put_net() (Stefano)
+>- Drop the comments at the vsock_maybe_set_connected() call sites,
+>  the commit msg seems sufficient
+>---
+> net/vmw_vsock/virtio_transport.c        | 32 +++++++++++++++++++++++++++-----
+> net/vmw_vsock/virtio_transport_common.c | 18 +++++++++++++-----
+> 2 files changed, 40 insertions(+), 10 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>index eced6929405d..06df82b130cf 100644
+>--- a/net/vmw_vsock/virtio_transport.c
+>+++ b/net/vmw_vsock/virtio_transport.c
+>@@ -256,6 +256,15 @@ virtio_transport_send_pkt(struct sk_buff *skb, struct net *net)
+> 		goto out_rcu;
+> 	}
+>
+>+	/* A socket reset by an assign can still send credit updates from
+>+	 * recvmsg() and setsockopt(SO_RCVLOWAT).
+>+	 */
+>+	if (!vsock_g2h_net_reachable(net)) {
+>+		kfree_skb(skb);
+>+		len = -ENETUNREACH;
+>+		goto out_rcu;
+>+	}
+>+
+> 	/* If send_pkt_queue is empty, we can safely bypass this queue
+> 	 * because packet order is maintained and (try) to put the packet
+> 	 * on the virtqueue using virtio_transport_send_skb_fast_path.
+>@@ -542,7 +551,7 @@ static bool virtio_transport_msgzerocopy_allow(void)
+>
+> bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
+> {
+>-	return vsock_net_mode_global(vsk);
+>+	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
+> }
+>
+> static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
+>@@ -587,6 +596,7 @@ static struct virtio_transport virtio_transport = {
+> 		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
+>
+> 		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
+>+		.netns_assign_allow       = true,
+>
+> 		.notify_poll_in           = virtio_transport_notify_poll_in,
+> 		.notify_poll_out          = virtio_transport_notify_poll_out,
+>@@ -616,7 +626,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
+> 	struct virtio_vsock *vsock;
+> 	bool seqpacket_allow;
+>
+>-	if (!vsock_net_mode_global(vsk))
+>+	if (!vsock_g2h_net_reachable(sock_net(sk_vsock(vsk))))
+> 		return false;
+>
+> 	seqpacket_allow = false;
+>@@ -633,7 +643,12 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> {
+> 	struct virtio_vsock *vsock =
+> 		container_of(work, struct virtio_vsock, rx_work);
+>+	struct virtio_transport *t = &virtio_transport;
+>+	netns_tracker ns_tracker;
+> 	struct virtqueue *vq;
+>+	struct net *net;
+>+
+>+	net = vsock_g2h_net_get(&ns_tracker);
+>
+> 	mutex_lock(&vsock->rx_lock);
+>
+>@@ -682,10 +697,15 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>
+> 			virtio_transport_deliver_tap_pkt(skb);
+>
+>-			/* Force virtio-transport into global mode since it
+>-			 * does not yet support local-mode namespacing.
+>+			/* Only grab a reference if the net changes underneath
+>+			 * us.
+> 			 */
+>-			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
+>+			if (unlikely(!vsock_g2h_net_eq(net))) {
+>+				put_net_track(net, &ns_tracker);
+>+				net = vsock_g2h_net_get(&ns_tracker);
+>+			}
+>+
+>+			virtio_transport_recv_pkt(t, skb, net);
+> 		}
+> 	} while (!virtqueue_enable_cb(vq));
+>
+>@@ -694,6 +714,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> 		virtio_vsock_rx_fill(vsock);
+> out_nofill:
+> 	mutex_unlock(&vsock->rx_lock);
+>+
+>+	put_net_track(net, &ns_tracker);
+> }
+>
+> static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 1e762a480df4..0c864db2bc65 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1478,9 +1478,13 @@ virtio_transport_recv_connecting(struct sock *sk,
+>
+> 	switch (le16_to_cpu(hdr->op)) {
+> 	case VIRTIO_VSOCK_OP_RESPONSE:
+>-		sk->sk_state = TCP_ESTABLISHED;
+>+		if (!vsock_maybe_set_connected(vsk)) {
+>+			skerr = ECONNRESET;
+>+			err = -ENETUNREACH;
+>+			goto destroy;
+>+		}
+>+
+> 		sk->sk_socket->state = SS_CONNECTED;
+>-		vsock_insert_connected(vsk);
+> 		sk->sk_state_change(sk);
+> 		break;
+> 	case VIRTIO_VSOCK_OP_INVALID:
+>@@ -1736,8 +1740,6 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+>
+> 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+>
+>-	child->sk_state = TCP_ESTABLISHED;
+>-
+> 	vchild = vsock_sk(child);
+> 	vsock_addr_init(&vchild->local_addr, le64_to_cpu(hdr->dst_cid),
+> 			le32_to_cpu(hdr->dst_port));
+>@@ -1758,7 +1760,13 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+> 	if (virtio_transport_space_update(child, skb))
+> 		child->sk_write_space(child);
+>
+>-	vsock_insert_connected(vchild);
+>+	if (!vsock_maybe_set_connected(vchild)) {
+>+		release_sock(child);
+>+		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
 
-On 10/19/26 17:00, Reinette Chatre wrote:
-> Hi Babu,
-> 
-> On 10/19/26 9:31 AM, Babu Moger wrote:
->> Hi Reinette,
->>
->> On 10/15/26 10:46, Reinette Chatre wrote:
->>> Hi Babu,
->>>
->>> On 10/1/26 8:10 AM, Babu Moger wrote:
->>>> The kmode_cpus and kmode_cpus_list files are specific to the
->>>> RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode. These files are created in a
->>>> hidden state when an rdtgroup is created.
->>>>
->>>> Introduce resctrl_kmode_global_files_show() to manage the visibility of
->>>> these files based on whether the global per-CPU kernel mode is enabled or
->>>> disabled.
->>>
->>> This does not sound right and does not match the patch. The visibility of files
->>> is per group, not globally whether the mode is enabled or not, right?
->>>
->>> It is ok to have cryptic changelogs when changes are small and simple but these
->>> changes are not small and simple.
->>
->> "The kmode_cpus and kmode_cpus_list files are specific to the RESCTRL_GLOBAL_ENABLE_PER_CPU kernel mode. These files are created in a hidden state when an rdtgroup is created.
-> 
-> Could the context please help the reader a bit more? Some items that could help:
-> - *why* are these files specific to global per-CPU kernel mode? (mention that it is used by user space
->     to do the per-CPU enable/disable of the mode)
-> - *why* is it created in a hidden state? (mention that a resource group can only be assigned
->    to the global per-CPU kernel mode after it has been created via a separate resctrl file)
-> 
+We might be facing the same issue here that we were discussing a few 
+days ago in another patch.
 
-Sure. Will add that.
-
->>> Introduce resctrl_kmode_global_files_show() to manage the visibility
->> of these files based on whether a resource group backs the global
-> 
-> hmmm ... resctrl_kmode_global_files_show() does not actually do any
-> checks to ensure the resource group backs the global per-CPU kernel mode.
-> 
-
-Yes. Will fix this.
-
-> 
->> per-CPU kernel mode. Hide the files when the group is no longer
->> associated with the mode.
-> Could the patches be organized so that this becomes a symmetrical change
-> that highlights when files become visible and when they become invisible to support
-> the description within this changelog?
-
-I didn't quite understand this comment. Could you please elaborate?
+I mean, is it correct to send the reset to `sock_net(sk)`?
+Or should we use the one of the sender?
 
 Thanks,
-Babu
+Stefano
 
+>+		sock_put(child);
+>+		return -ENETUNREACH;
+>+	}
+>+
+> 	vsock_enqueue_accept(sk, child);
+> 	virtio_transport_send_response(vchild, skb);
+>
+>
+>-- 
+>2.53.0-Meta
+>
 
