@@ -1,66 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792545367;
-	b=vVb59mpQ0U0B7ch9/IfH8V8WpZbDgXOAqLtPxT79hKmrIsqmCfJ7z95dxbu/beVYkotv
-	 4nAWm4xl+WoZ0JQ/Jq4Se7mFR9oCFEM5PsIWPIVxkzuR8uGvJkv9xpnc5OkdWwSjV3Ytt
-	 iyG7n5LqsUkfhHjpNCSaXWZ4XgisVgsUUd9MNh7wVyXykaS+jaaCMHG+YcQxBMtRBVIQh
-	 iQ91yO8ZJQGWkE/P/ScqOKNjsZP4sDOig+bDrZ+uFxJGVG7aqEPaVKep3yDzPISYQs6Z4
-	 osmLkdMqTFIv76kG76SpctYihXQsekrWNcqnIttEg+pVwLPYI2GPBEaZSD8O7i7Fk+Q==
+	t=1792545917;
+	b=Xt2qHP5efUNxHTwGXHxbPbJ6PWXqy5hFpftes3KWf+YjecSmWYopDdge48wFdKah9s1l
+	 5ies5R+V+wBRZMwDHt0Te+tvIaAEOuz0VbW79LWsA/HBu1l627sLekRDbhbkf+zRNQvbO
+	 O9vC6mKh7/98rqG6tH2smb988Q6VF8l70OySskcB3lo51teWcUuUiX49+45ORe+xXPsmX
+	 /7/ZvSCO4Psx9VX8JnfO9hUFRnLhksKSXsJm41YquH4s/uteDROcZdrF6Ab5j08fKlk7V
+	 6s87RAm3OK9pFcykdNrpMkhftwlxgPncCoHkByUrrGfZ+80+CLcG1OU8nV445Vg0SpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792545367;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version;
-	bh=5k1N2Js0SfVvfWjaVF3vgyTDwUhkemawtCQi5cXuHYY=;
-	b=3EXHGSUHvUNUqnLqb0bP73diagEZD3nI8m8dBBAazSN3TYfkunWQjtU9lToJgqGzs7Uw
-	 WX2WfVnvOw5gzvSnOAiOIFHOLmUsK0L92GW626Zuo+gVkAHaX71bsxEXcRLPcp2uDm7Im
-	 g7HQCFsvFjuBWqrwbau7X5yDU7C7OAU7MfZfV/mRJhPfR0g6RlT3nnk0C9PdzCQlHdtT3
-	 94zZKzC+gEkBLoCtOE1y/dZdo4O/9CGVvTNCumvSA0K85QPu05xRXQE1kB9Kk7KA6WNmR
-	 KSmpDvz3BJHnkt3uuxjZwh4+xrUKuiBsMOtko8Eaw8temyl4FnxxdvtdGGDXFgsIRzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792545917;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=4bdhRhvLCR2OGjIxKNlvor52ldxxtItwDVGS0GO5vlE=;
+	b=xaLeNlFpoNXoYFlrh8QGiqOvWXfGGbHiwpiZYOvWRD5RR+VRQuXuzorgW2CPHwY18scZ
+	 7yNlM/16CqrN6DIGJ5DfyMzPf3tD0CLKtflHMcfcMqAO8gPwQU2kDSeB2o1td52JpaMYd
+	 5k7/ztQvEGEEbMTjxaFty24gdJNICIHq4GrCMN0CX4jvKGxPwXHPDFnKSoI+5mD9UUhKT
+	 5zVNyxujdAOIhWQfxcmWfhA7WOMgRCcWny4LwmM/FqPiUr7ogAM9cxmBhTjKMT3xe3pSi
+	 fiJsjIFe5HoZLN1sXtxmj+/o8Ykrqi3jPy0R2R4aw2//804VxvzmDcspqNqHqzMv7GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=jNdJxekg;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l9ZFmHKE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1BD606A328;
-	Wed, 21 Oct 2026 01:16:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A1BD606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321E6606A319;
+	Wed, 21 Oct 2026 01:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=jNdJxekg
-Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69KNGKNC4142482;
-	Tue, 20 Oct 2026 18:15:34 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=5k1N2Js0SfVvfWjaVF3vgyTDwUhkemawtCQi5
-	cXuHYY=; b=jNdJxekg4ZvvaxSt8bLtVLLvezuMG3rb9Cf5rivI7Sxod/9BAO7MR
-	eD+OUkDywWd8s3x2zUWvOE1FnHPFM3QrsPzstb3L62McAgEELJGTFLd65vA2Xheo
-	D4YlPI0VJuxpBn4pyWBmcJ/pWg1YOxMAz95uL6xjDV9zd8N8Pms1EMv667wPGSZ0
-	Jq1iOCwS86HV0Yu4XZCbwM+CUeek2pHMdV3VHjOu49KIJs9uMhleR0dWBjpMxY6n
-	It4njXjALyJA6opx3L/9e28+n4zHGsQLGv252NWJbQB8CwA4hCUjhV58pK0z3isF
-	BdTgTaSwHgVI4luL4ccSnnC2+AsoSaDRg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hdw50gsgs-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 20 Oct 2026 18:15:34 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Wed, 21 Oct
- 2026 01:15:21 +0000
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Tue, 20 Oct 2026 18:15:09 -0700
-Subject: [PATCH net-next v4 6/7] selftests/vsock: test the guest vsock
- device network namespace
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l9ZFmHKE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505451F000C9;
+	Wed, 21 Oct 2026 01:25:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792545916;
+	bh=4bdhRhvLCR2OGjIxKNlvor52ldxxtItwDVGS0GO5vlE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=l9ZFmHKEU/tlzxe+ZQ2rXXUNZIZ7NRc9MDFn6t+2EnFjQd0F/F1eOOau1b+RvVxpk
+	 wmcQA7BXyhiQ+fCH4WmKbP0UH/KBcb337EZ/4QnsmExYnAu+hUqeurjT7b3fE5Fuap
+	 SjiRPzngmTN89MyNez5+pb6ubCwlVc9kUxwsLecQU9Q9EnyJsK67Mcg4UqdM1HW5nE
+	 /xTzxsMqO+TTbsSfx4XSV8xqdDNXhuOE+AmdLgOWtyh0v3Pi8/nyrdNZopK1NDxlan
+	 jygxgW7nU2Gm42PIWonHcgv8+L7n8/TO5zZ5N0dx51wjnV13PK/AKzpE90CtPviaiv
+	 x5wzvWgPedDbQ==
+Date: Wed, 21 Oct 2026 02:25:05 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
+ lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
+ cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
+ James.Bottomley@HansenPartnership.com, aik@amd.com, jpiotrowski@nvidia.com,
+ qinkun@google.com, pgonda@google.com, alistair.francis@wdc.com,
+ ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+ dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ peter.fang@intel.com
+Subject: Re: [PATCH RFC 12/20] ctlv: Add device and operation dispatch
+Message-ID: <20261021022505.6fe1b1bb@jic23-hlaptop>
+In-Reply-To: <20261015145053.3664509-13-jiri@resnulli.us>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+	<20261015145053.3664509-13-jiri@resnulli.us>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,706 +69,201 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261020-vsock-guest-ns-v4-6-047527cfccfc@meta.com>
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
-In-Reply-To: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>,
-        Eric Dumazet
-	<edumazet@kernel.org>
-CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <sargun@sargun.me>, <jlinbox@meta.com>,
-        Bobby Eshleman <bobbyeshleman@gmail.com>,
-        Bobby Eshleman
-	<bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-GUID: gfkF4Cp3E9lju4ZQYcf83OLlPmnGtC6P
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDAwNCBTYWx0ZWRfXxZkBR8HVp7Z7
- gQoRTmIyg9bWegfC6ebc4fGW10rLXUXynYsSxOBJKd54sCv3wZU1b0Zj8ka5UxC0bK0q/vqwWuu
- c7uY0bDRHOUmLuOvXjT3EYZsJ06tGI8=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDAwNCBTYWx0ZWRfX5RT0VMMZsd02
- 2YAaAVQ35Th5k8wcfSi31bRgJ+THwenvZkKWxUjkqngjVR9kijj2kmLlT62ng72PU2t24j0Galp
- t6p+xpF5vpRTNJHWUyAeIJfVObmg0+eFFZlJSmYh4eg9/1iUtsdXrsP8XIrxNhDUlxOlF3D+3C7
- 0+3hvfpBC4JKmFTmcvtQGj1M2Ja9wo/7nNlDL6PUwCixEW0EtCOg3BGWunC2hgt1+62tGG9fgPQ
- OHxHNwRzFigSATjuMB4OsPMDbMMVqZOeDeObw3FLMm0G5aFdomZmviZrIwefC3k1eQoWzafzdsJ
- NX/aqfawPbbdoT4LKdMuEdYlrlqinrQBSh5W4eMDCQfbNa7BYdeiLb07tj3mHVYLsNFevlCjdMt
- ym/OIh6OAFH9+r9FT2089cRhcD+3Uj7SjGvQsYcdL6Em+L8nqIrK1eGZ6S4+5kPFllcPVJvf884
- AWwweD+oH7X6EhnSG1g==
-X-Proofpoint-ORIG-GUID: gfkF4Cp3E9lju4ZQYcf83OLlPmnGtC6P
-X-Authority-Analysis: v=2.4 cv=B9osQ+tM c=1 sm=1 tr=0 ts=6ad81236 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
- a=CMzfravdsZyu_tbiwAgA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-20_04,2026-10-19_02,2025-10-01_01
 
-Add tests for guest vsock device namespace assignment, including ns
-destruction and the device moving between namespaces.
+On Thu, 15 Oct 2026 16:50:45 +0200
+Jiri Pirko <jiri@resnulli.us> wrote:
 
-The tests drive the device through ynl's cli.py and create guest
-namespaces with unshare, so they need python3, PyYAML and unshare. A
-missing one skips only these tests, not the whole script.
+> From: Jiri Pirko <jiri@nvidia.com>
+> 
+> Register CTLV devices, resolve family chains and dispatch operations
+> through validated messages. Wire CONFIG_CTLV and the generated root family
+> after all module objects are present.
+> 
+> Assisted-by: Cursor: GPT-5.6 Sol
+> Assisted-by: Cursor: Claude Opus 5.5
+> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> ---
+>  drivers/Kconfig             |    2 +
+>  drivers/Makefile            |    1 +
+>  drivers/ctlv/Makefile       |    4 +-
+>  drivers/ctlv/core.c         | 1517 +++++++++++++++++++++++++++++++++++
+Normally I'd push back hard on too big to read, but it is an rfc
+and other patches in the series are much large.
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
-Changes in v4:
-- Start the old_conn_send_fails stopwatch before the sender, so a slow
-  guest skips rather than fails (Sashiko)
+I'm out of time for today and not sure when I'll get back to this,
+so just a few quick comments inline on the bit I did look at.
 
-Changes in v3:
-- Replace reset_on_ns_delete_ok with pins_ns_ok, to cover the netns
-  pinning
-- Skip only the ns_guest_ tests when PyYAML or the ynl CLI or spec is
-  missing, and ship the ynl bits via TEST_FILES for installed trees
-  (Sashiko)
-- Also skip only the ns_guest_ tests when unshare or python3 is missing
-- Make vm_ns_start() wait for the namespace and report failure (Sashiko)
-- Poll for FIRST in old_conn_send_fails instead of sleeping, and report
-  an over-long assign as a skip (Sashiko)
-- Kill the guest-side socat by name, $! names a local subshell (Sashiko)
-- Wait for the host listener to exit before the next test binds its
-  port (Sashiko)
+>  drivers/ctlv/device.h       |   17 +
+>  include/linux/ctlv.h        |   55 ++
+>  include/linux/ctlv_family.h |   22 +
+>  7 files changed, 1616 insertions(+), 2 deletions(-)
+>  create mode 100644 drivers/ctlv/core.c
 
-Changes in v2:
-- Drive the assign with ynl cli.py, drop the vsock_assign_g2h_netns
-  ioctl helper and its patch
-- Terminate the guest socat sender too, it sometimes outlived the test
-  and kept holding on to a port the next test binds
----
- tools/testing/selftests/vsock/Makefile  |   5 +
- tools/testing/selftests/vsock/vmtest.sh | 502 +++++++++++++++++++++++++++++++-
- 2 files changed, 501 insertions(+), 6 deletions(-)
+> diff --git a/drivers/ctlv/core.c b/drivers/ctlv/core.c
+> new file mode 100644
+> index 000000000000..aeab29fe2fdd
+> --- /dev/null
+> +++ b/drivers/ctlv/core.c
 
-diff --git a/tools/testing/selftests/vsock/Makefile b/tools/testing/selftests/vsock/Makefile
-index c407c0afd938..2b066ba91bcd 100644
---- a/tools/testing/selftests/vsock/Makefile
-+++ b/tools/testing/selftests/vsock/Makefile
-@@ -13,5 +13,10 @@ $(VSOCK_TEST_DIR)/vsock_test: $(VSOCK_TEST_SRCS)
- TEST_PROGS += vmtest.sh
- TEST_GEN_FILES := vsock_test
- 
-+TEST_FILES := \
-+	../../../net/ynl/pyynl/cli.py \
-+	../../../net/ynl/pyynl/lib \
-+	../../../../Documentation/netlink/specs/vsock.yaml
-+
- include ../lib.mk
- 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 310dfc2a39ad..f8aee1336a09 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -17,6 +17,20 @@ readonly KERNEL_CHECKOUT=$(realpath "${SCRIPT_DIR}"/../../../../)
- source "${SCRIPT_DIR}"/../kselftest/ktap_helpers.sh
- 
- readonly VSOCK_TEST="${SCRIPT_DIR}"/vsock_test
-+
-+# "make install" copies the ynl CLI, its lib package and the spec next to this
-+# script (see TEST_FILES); in a source tree they stay where they are built.
-+if [[ -r "${SCRIPT_DIR}"/cli.py ]]; then
-+	readonly YNL_CLI="${SCRIPT_DIR}"/cli.py
-+	readonly YNL_LIB="${SCRIPT_DIR}"/lib
-+	readonly VSOCK_SPEC="${SCRIPT_DIR}"/vsock.yaml
-+else
-+	readonly YNL_DIR="${KERNEL_CHECKOUT}"/tools/net/ynl/pyynl
-+	readonly YNL_CLI="${YNL_DIR}"/cli.py
-+	readonly YNL_LIB="${YNL_DIR}"/lib
-+	readonly SPEC_DIR="${KERNEL_CHECKOUT}"/Documentation/netlink/specs
-+	readonly VSOCK_SPEC="${SPEC_DIR}"/vsock.yaml
-+fi
- readonly TEST_GUEST_PORT=51000
- readonly TEST_HOST_PORT=50000
- readonly TEST_HOST_PORT_LISTENER=50001
-@@ -73,6 +87,12 @@ readonly TEST_NAMES=(
- 	ns_delete_vm_ok
- 	ns_delete_host_ok
- 	ns_delete_both_ok
-+	ns_guest_local_connect_to_host_fails
-+	ns_guest_assign_g2h_netns_connect_to_host_ok
-+	ns_guest_assign_g2h_netns_init_ns_connect_fails
-+	ns_guest_assign_g2h_netns_host_connect_ok
-+	ns_guest_assign_g2h_netns_pins_ns_ok
-+	ns_guest_assign_g2h_netns_old_conn_send_fails
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -149,12 +169,36 @@ readonly TEST_DESCS=(
- 
- 	# ns_delete_both_ok
- 	"Check that deleting the VM and host's namespaces does not break the socket connection"
-+
-+	# ns_guest_local_connect_to_host_fails
-+	"Check a guest process in a local ns cannot reach the host without the netns assign."
-+
-+	# ns_guest_assign_g2h_netns_connect_to_host_ok
-+	"Check a guest process in a local ns reaches the host once the vsock device is assigned to it."
-+
-+	# ns_guest_assign_g2h_netns_init_ns_connect_fails
-+	"Check the guest's initial ns loses vsock once the device is assigned to another ns."
-+
-+	# ns_guest_assign_g2h_netns_host_connect_ok
-+	"Check the host reaches a guest listener in the ns the vsock device is assigned to."
-+
-+	# ns_guest_assign_g2h_netns_pins_ns_ok
-+	"Check the assignment keeps the ns alive when deleted, and that reassigning releases it."
-+
-+	# ns_guest_assign_g2h_netns_old_conn_send_fails
-+	"Check connections made before the assign stop sending once they lose the device."
- )
- 
- readonly USE_SHARED_VM=(
- 	vm_server_host_client
- 	vm_client_host_server
- 	vm_loopback
-+	ns_guest_local_connect_to_host_fails
-+	ns_guest_assign_g2h_netns_connect_to_host_ok
-+	ns_guest_assign_g2h_netns_init_ns_connect_fails
-+	ns_guest_assign_g2h_netns_host_connect_ok
-+	ns_guest_assign_g2h_netns_pins_ns_ok
-+	ns_guest_assign_g2h_netns_old_conn_send_fails
- )
- readonly NS_MODES=("local" "global")
- 
-@@ -316,6 +360,34 @@ check_deps() {
- 	fi
- }
- 
-+check_ns_guest_deps() {
-+	local tname=$1
-+	local dep
-+
-+	if [[ ! "${tname}" =~ ^ns_guest_ ]]; then
-+		return 0
-+	fi
-+
-+	for dep in unshare python3; do
-+		if [[ ! -x $(command -v "${dep}") ]]; then
-+			log_host "no ${dep} for test ${tname}"
-+			return 1
-+		fi
-+	done
-+
-+	if ! python3 -c "import yaml" &>/dev/null; then
-+		log_host "no python3 yaml module for test ${tname}"
-+		return 1
-+	fi
-+
-+	if [[ ! -r "${YNL_CLI}" ]] || [[ ! -r "${VSOCK_SPEC}" ]]; then
-+		log_host "no ynl cli or vsock spec for test ${tname}"
-+		return 1
-+	fi
-+
-+	return 0
-+}
-+
- check_netns() {
- 	local tname=$1
- 
-@@ -401,6 +473,19 @@ setup_home() {
- 	mkdir -p "$(dirname "${SSH_KEY_PATH}")"
- 	ssh-keygen -t ed25519 -f "${SSH_KEY_PATH}" -N "" -q
- 	cp "${VSOCK_TEST}" "${TEST_HOME}"/vsock_test
-+
-+	mkdir -p "${TEST_HOME}"/ynl
-+	if [[ -r "${YNL_CLI}" ]]; then
-+		cp "${YNL_CLI}" "${TEST_HOME}"/ynl/
-+		cp -r "${YNL_LIB}" "${TEST_HOME}"/ynl/
-+		cp "${VSOCK_SPEC}" "${TEST_HOME}"/ynl/
-+	fi
-+
-+	# One of the tests runs the CLI as an unprivileged user, so the CLI
-+	# has to be reachable by one.
-+	chmod -R a+rX "${TEST_HOME}"/ynl
-+
-+	chmod 755 "${TEST_HOME}"
- }
- 
- create_pidfile() {
-@@ -528,6 +613,82 @@ vm_wait_for_ssh() {
- 	done
- }
- 
-+# Create a local mode namespace in the VM and echo the pid holding it open.
-+vm_ns_start() {
-+	local ns=$1
-+	local initns
-+	local nspid
-+	local newns
-+	local i
-+
-+	local mode=/proc/sys/net/vsock/child_ns_mode
-+
-+	if ! vm_ssh "${ns}" -- "echo local > ${mode}" &>/dev/null; then
-+		return
-+	fi
-+
-+	nspid=$(vm_ssh "${ns}" -- "unshare -n sleep infinity" \
-+		'>/dev/null 2>&1 & echo $!')
-+	if [[ -z "${nspid}" ]]; then
-+		return
-+	fi
-+
-+	initns=$(vm_ssh "${ns}" -- "readlink /proc/self/ns/net")
-+	for ((i = 0; i < WAIT_PERIOD_MAX; i++)); do
-+		newns=$(vm_ssh "${ns}" -- "readlink /proc/${nspid}/ns/net" \
-+			2>/dev/null)
-+		if [[ -n "${newns}" ]] && [[ "${newns}" != "${initns}" ]]; then
-+			echo "${nspid}"
-+			return
-+		fi
-+		sleep 1
-+	done
-+
-+	vm_ns_stop "${ns}" "${nspid}"
-+}
-+
-+# Returns once the holder is gone, so that the namespace is unreferenced and
-+# the kernel can start tearing it down.
-+vm_ns_stop() {
-+	local ns=$1
-+	local nspid=$2
-+
-+	vm_ssh "${ns}" <<-EOF &>/dev/null
-+		kill ${nspid}
-+		for ((i = 0; i < ${WAIT_PERIOD_MAX}; i++)); do
-+			kill -0 ${nspid} 2>/dev/null || break
-+			sleep 1
-+		done
-+	EOF
-+}
-+
-+# Runs in the guest's initial namespace when <nspid> is empty. The command must
-+# not contain single quotes.
-+vm_ns_exec() {
-+	local ns=$1
-+	local nspid=$2
-+	local cmd=$3
-+
-+	if [[ -z "${nspid}" ]]; then
-+		vm_ssh "${ns}" -- "${cmd}"
-+		return
-+	fi
-+
-+	vm_ssh "${ns}" -- nsenter -t "${nspid}" -n sh -c "'${cmd}'"
-+}
-+
-+vm_ns_assign_g2h() {
-+	local ns=$1
-+	local nspid=$2
-+
-+	vm_ns_exec "${ns}" "${nspid}" "python3 /root/ynl/cli.py --no-schema \
-+		--spec /root/ynl/vsock.yaml --do dev-netns-set"
-+}
-+
-+vm_reset_g2h() {
-+	vm_ns_assign_g2h "init_ns" "" &>/dev/null
-+}
-+
- # derived from selftests/net/net_helper.sh
- wait_for_listener()
- {
-@@ -564,17 +725,33 @@ wait_for_listener()
- 	done
- }
- 
--vm_wait_for_listener() {
-+# Runs in the guest's initial namespace when <nspid> is empty.
-+vm_ns_wait_for_listener() {
- 	local ns=$1
--	local port=$2
--	local protocol=$3
-+	local nspid=$2
-+	local port=$3
-+	local protocol=$4
-+	local nsenter=
-+	local args
-+
-+	[[ -n "${nspid}" ]] && nsenter="nsenter -t ${nspid} -n"
-+	args="${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX} ${protocol}"
- 
- 	vm_ssh "${ns}" <<EOF
- $(declare -f wait_for_listener)
--wait_for_listener ${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX} ${protocol}
-+export -f wait_for_listener
-+${nsenter} bash -c "wait_for_listener ${args}"
- EOF
- }
- 
-+vm_wait_for_listener() {
-+	local ns=$1
-+	local port=$2
-+	local protocol=$3
-+
-+	vm_ns_wait_for_listener "${ns}" "" "${port}" "${protocol}"
-+}
-+
- host_wait_for_listener() {
- 	local ns=$1
- 	local port=$2
-@@ -1421,6 +1598,317 @@ test_ns_delete_both_ok() {
- 	check_ns_delete_doesnt_break_connection "both"
- }
- 
-+# Send a string from the guest to a host listener and leave what the host
-+# received in <outfile>.
-+guest_send_to_host() {
-+	local ns=$1
-+	local nspid=$2
-+	local port=$3
-+	local outfile=$4
-+	local cmd="echo TEST | socat -u STDIN VSOCK-CONNECT:2:${port}"
-+	local pid
-+
-+	socat -u VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	host_wait_for_listener "${ns}" "${port}" "vsock"
-+
-+	vm_ns_exec "${ns}" "${nspid}" "${cmd}" 2>/dev/null
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done'
-+
-+	# Wait for the listener to actually go, or the next test binding the
-+	# same port races it and silently reads nothing.
-+	terminate_pids "${pid}"
-+	wait "${pid}" 2>/dev/null
-+}
-+
-+# Send a string from the host to a listener in the guest and leave what the
-+# guest received in <outfile>.
-+host_send_to_guest() {
-+	local ns=$1
-+	local nspid=$2
-+	local port=$3
-+	local outfile=$4
-+	local cmd="socat -u VSOCK-LISTEN:${port} STDOUT"
-+	local dst="VSOCK-CONNECT:${VSOCK_CID}:${port}"
-+	local pid
-+
-+	vm_ns_exec "${ns}" "${nspid}" "${cmd}" > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	vm_ns_wait_for_listener "${ns}" "${nspid}" "${port}" "vsock"
-+
-+	echo TEST | socat -u STDIN "${dst}" 2>/dev/null
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done'
-+
-+	vm_ns_exec "${ns}" "${nspid}" \
-+		"pkill -f VSOCK-LISTEN:${port}" &>/dev/null
-+	terminate_pids "${pid}"
-+	wait "${pid}" 2>/dev/null
-+}
-+
-+ns_old_conn_cleanup() {
-+	local port=$1
-+	local pid=$2
-+	local sender=$3
-+	local outfile=$4
-+	local nspid=$5
-+
-+	vm_ns_exec "init_ns" "" "pkill -f VSOCK-CONNECT:2:${port}" &>/dev/null
-+	terminate_pids "${pid}" "${sender}"
-+	wait "${pid}" "${sender}" 2>/dev/null
-+	rm -f "${outfile}"
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+}
-+
-+test_ns_guest_assign_g2h_netns_old_conn_send_fails() {
-+	local gap=$(( WAIT_PERIOD * 3 ))
-+	local port=12346
-+	local elapsed
-+	local started
-+	local outfile
-+	local result
-+	local sender
-+	local nspid
-+	local pid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	socat -u VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	host_wait_for_listener "init_ns" "${port}" "vsock"
-+
-+	# Send a message, wait, then send another. While waiting, assign the
-+	# device to a namespace. Confirm the second message does not arrive.
-+	started=${SECONDS}
-+	vm_ssh "init_ns" -- \
-+		"(echo FIRST; sleep ${gap}; echo SECOND) |" \
-+		"socat -u STDIN VSOCK-CONNECT:2:${port}" &>/dev/null &
-+	sender=$!
-+
-+	timeout "$(( WAIT_PERIOD * WAIT_PERIOD_MAX ))" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done'
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		ns_old_conn_cleanup "${port}" "${pid}" "${sender}" \
-+			"${outfile}" "${nspid}"
-+		return "${KSFT_FAIL}"
-+	fi
-+	elapsed=$(( SECONDS - started ))
-+
-+	sleep $(( gap + WAIT_PERIOD ))
-+
-+	result=$(cat "${outfile}")
-+	ns_old_conn_cleanup "${port}" "${pid}" "${sender}" \
-+		"${outfile}" "${nspid}"
-+
-+	if [[ "${result}" != *FIRST* ]]; then
-+		log_host "no connection before the assign: [${result}]"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if [[ $(( elapsed + 1 )) -ge ${gap} ]]; then
-+		log_host "connect and assign took ${elapsed}s of a ${gap}s gap"
-+		return "${KSFT_SKIP}"
-+	fi
-+
-+	if [[ "${result}" == *SECOND* ]]; then
-+		log_host "old connection still delivered after the assign"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_local_connect_to_host_fails() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "${nspid}" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" == TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_connect_to_host_ok() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "${nspid}" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_init_ns_connect_fails() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" == TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_host_connect_ok() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	host_send_to_guest "init_ns" "${nspid}" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_pins_ns_ok() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	sleep "${WAIT_PERIOD}"
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "" "${port}" "${outfile}"
-+	result=$(cat "${outfile}")
-+	if [[ "${result}" == TEST ]]; then
-+		log_host "device returned to the init ns instead of pinning it"
-+		rm -f "${outfile}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	# Assigning it back is what releases the deleted namespace.
-+	vm_reset_g2h
-+
-+	guest_send_to_host "init_ns" "" "$(( port + 1 ))" "${outfile}"
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]]; then
-+		log_host "device did not come back on reassign: [${result}]"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
- shared_vm_test() {
- 	local tname
- 
-@@ -1453,7 +1941,8 @@ run_shared_vm_tests() {
- 			continue
- 		fi
- 
--		if ! check_netns "${arg}"; then
-+		if ! check_netns "${arg}" ||
-+		   ! check_ns_guest_deps "${arg}"; then
- 			check_result "${KSFT_SKIP}" "${arg}"
- 			continue
- 		fi
-@@ -1517,7 +2006,8 @@ run_ns_tests() {
- 			continue
- 		fi
- 
--		if ! check_netns "${arg}"; then
-+		if ! check_netns "${arg}" ||
-+		   ! check_ns_guest_deps "${arg}"; then
- 			check_result "${KSFT_SKIP}" "${arg}"
- 			continue
- 		fi
+...
 
--- 
-2.53.0-Meta
+> +static int ctlv_file_open(struct inode *inode, struct file *filp)
+> +{
+> +	struct ctlv_device *ctlvdev = container_of(inode->i_cdev, struct ctlv_device, cdev);
+> +	struct ctlv_file *cfile;
+> +	int ret;
+> +
+> +	/*
+> +	 * A failed create can withdraw the cdev while an open is waiting for
+> +	 * the lifecycle lock, so admission itself first pins core storage.
+> +	 */
+> +	get_device(&ctlvdev->dev);
+> +	ctlv_file_open_pinned(ctlvdev);
+> +	scoped_guard(rwsem_read, &ctlvdev->registration_lock) {
+> +		if (!ctlv_file_open_allowed(ctlvdev)) {
+> +			ret = -ENODEV;
+> +			break;
+Personally I still dislike the hidden for loop in scoped_guard()
+and using break with that enough I'd do a 
+	do {
+		guard(rwsem_read)(&ctlvdev->registration_lock);
+
+	
+	} while (0);
+
+Just so it is obvious what those breaks are from.
+
+Maybe I just need to get this one into my code review head...
+> +		}
+> +		if (!(filp->f_mode & FMODE_READ)) {
+> +			ret = -EACCES;
+> +			break;
+> +		}
+> +
+> +		cfile = kzalloc_obj(*cfile, GFP_KERNEL_ACCOUNT);
+> +		if (!cfile) {
+> +			ret = -ENOMEM;
+> +			break;
+> +		}
+> +		cfile->ctlvdev = ctlvdev;
+> +		/*
+> +		 * Commits this description to the device. An open that failed
+> +		 * after this would have to take it back.
+> +		 */
+> +		ret = ctlv_event_file_init(cfile);
+> +		if (ret) {
+> +			kfree(cfile);
+> +			break;
+> +		}
+> +		/* This description keeps the reference taken on entry. */
+> +		filp->private_data = cfile;
+> +		return 0;
+> +	}
+> +
+> +	put_device(&ctlvdev->dev);
+> +	return ret;
+> +}
+
+> +struct ctlv_device *ctlv_create(struct device *parent_dev, const struct ctlv_family *family,
+> +				const void *init_info)
+> +{
+> +	struct ctlv_device *ctlvdev;
+> +	int devnum, ret;
+> +
+> +	if (!parent_dev || !family)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	ctlvdev = kzalloc_obj(*ctlvdev, GFP_KERNEL);
+> +	if (!ctlvdev)
+> +		return ERR_PTR(-ENOMEM);
+> +	ctlvdev->family = family;
+> +	init_rwsem(&ctlvdev->registration_lock);
+> +	spin_lock_init(&ctlvdev->transition_lock);
+> +	ctlv_event_device_init(ctlvdev);
+> +
+> +	/* Before anything reads the schema through this device. */
+> +	ret = ctlv_op_resolution_init(ctlvdev, family);
+> +	if (ret)
+> +		goto err_free;
+> +	/* What this family's events need of every queue opened on it. */
+> +	ret = ctlv_event_sizes(ctlvdev);
+> +	if (ret)
+> +		goto err_free;
+> +	/* Before a minor is spent on a device that could not be announced. */
+> +	ret = ctlv_device_uevent_check(family);
+> +	if (ret)
+> +		goto err_free;
+> +	if (ctlvdev->dynamic_ops_count) {
+> +		ctlvdev->disabled = bitmap_zalloc(ctlvdev->dynamic_ops_count, GFP_KERNEL);
+> +		if (!ctlvdev->disabled) {
+> +			ret = -ENOMEM;
+> +			goto err_free;
+> +		}
+> +	}
+> +	devnum = ida_alloc_max(&ctlv_device_ids, CTLV_MAX_DEVICES - 1, GFP_KERNEL);
+> +	if (devnum < 0) {
+> +		ret = devnum;
+> +		goto err_free;
+> +	}
+> +
+> +	ctlvdev->dev.devt = ctlv_device_number + devnum;
+> +	ctlvdev->dev.class = &ctlv_device_class;
+> +	ctlvdev->dev.parent = parent_dev;
+> +	device_initialize(&ctlvdev->dev);
+> +	/*
+> +	 * The core owns the file operations, so an open holds the core module
+> +	 * and not the family's, which may unload while readers remain.
+> +	 */
+> +	cdev_init(&ctlvdev->cdev, &ctlv_file_operations);
+> +	ctlvdev->cdev.owner = THIS_MODULE;
+> +
+> +	ret = dev_set_name(&ctlvdev->dev, "ctlv%d", devnum);
+> +	if (ret)
+> +		goto err_put;
+> +	ret = ctlv_family_claim_add(family->schema);
+> +	if (ret)
+> +		goto err_put;
+> +	ret = ctlv_family_privs_pre_init(ctlvdev, init_info);
+> +	if (ret)
+> +		goto err_put;
+> +	ret = ctlv_family_privs_init(ctlvdev);
+> +	if (ret)
+> +		goto err_put;
+> +	ctlv_op_publish_all(ctlvdev);
+> +	ctlv_event_contexts_start(ctlvdev);
+> +	ret = ctlv_family_privs_post_init(ctlvdev);
+> +	if (ret)
+> +		goto err_fini;
+> +	scoped_guard(rwsem_write, &ctlvdev->registration_lock) {
+> +		ret = ctlv_device_add(ctlvdev);
+> +		if (!ret)
+> +			ctlvdev->registered = true;
+> +	}
+> +	if (ret)
+> +		goto err_fini;
+> +	return ctlvdev;
+> +
+> +err_fini:
+> +	ctlv_device_fini(ctlvdev);
+> +err_put:
+> +	put_device(&ctlvdev->dev);
+> +	return ERR_PTR(ret);
+
+Jason did some nice handling in the fwctl stuff for
+device alloc and hand over after device_initialize()
+(I've copied it into a few places recently :)
+
+I'd like to see something similar here as it made
+it easier to follow lifetimes etc.
+
+> +err_free:
+> +	bitmap_free(ctlvdev->disabled);
+> +	ctlv_family_privs_free(ctlvdev);
+> +	kfree(ctlvdev->ops);
+> +	kfree(ctlvdev);
+> +	return ERR_PTR(ret);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(ctlv_create, "CTLV");
 
