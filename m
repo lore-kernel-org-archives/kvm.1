@@ -1,111 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792613832;
-	b=FhwKhQyVcfmKBHJUbhCbwjpXP3C8/5ywAQA/hYGnmjZGw/la7mD2anrmuBZWWQpHBe6E
-	 0PlXFFWZsH7VwF59MrBZt7SVhMf9ey0e5vHl31Sg+LC72XtNrtH14iY7En0Jw6u7W8/Mz
-	 egHTrIjonGziWCiPa4KAtTNwEvrcl0kySD5RyEgNFrcGkF61dXwAQBSfkNvOBUirM9XJh
-	 tugB/8bYFO5lmMkB5NIz7hTFvnTSmEqTomQHgIf0dYHhxJsuXIYSvexQSsl+3RsfckpmX
-	 qeB2Ca2Lg7PrUr4bCtvSmoyxd+0uHUQBOJYXw+YJlrza0OEPabfkjuKF5F/7GYVs9JQ==
+	t=1792613840;
+	b=SV/6QTsSLPzPC5Lsl+KhtGZjrGerROzc93WmXHHAjcSFrxy+wCFSmnDUhU+M4ySIXuUm
+	 /wm3Y7u9RrlIpDujKjWHJ5rMmiNru8MezizagRdns+kajWgfrcFtc8RaukPVyt8RY7gB9
+	 dfU39tMMo3pDYfnfi8kybwoF0Bzv22ReQCFxgUJ8ZHN/Osup1GAAfZeAXAxo1cfGtP1Uk
+	 4UDHVk5TkuyTdcfpAM4fLDyxigYQ//nE7YaX0X3Pj41mNK2aNwgkyMdqZwZzB1786ZTq5
+	 gGU5muu5VJpMIUrIRk3R4FbTU3La7XZEZBMIPIxiOXd+dHA9sSl+ussQo3fnQRgW3ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792613832;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792613840;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=At2A/wrqaAUfI4SKCwlEtMqC27pXN2/myITaZPv60nw=;
-	b=aHBPemc82KeXn0apwQdBnSG6M7wEggvTktaQH0QUamsrRMdiT/hI7OtX3qWCmPSZjI2s
-	 vH4aPIetlUpde5wpnk2+Br6zI+/rV/OfNM0I4kpjxx45sExfsCvki1AVFTE+x4qvmKpFv
-	 8PywQLZ9eUHNO1EHrIbyTm8biILhamRnGqilCpofeCo5JYXTIjmrX3pcfQ4pnCKmoLyrV
-	 q6Mnuxry9PMWKfDHl55uGqvYE931ws6dnFx46bM9lS1S8cPcoSRaLKtAlBJ5Zx79x04vH
-	 rtvyvxnre/n9U0pigL7PRLee+a2cUCN4DZ/CqG8TdeGYB8G/BUpVPzBg6cE6ENhkMqA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=y5zGwiWlY/+7u7tVy4Nz9l+XQayzXqtSRL/HPTqEiC4=;
+	b=bYE3L17C5zCWjS8Eax5TYWmAYGY/hiVo+rY76KMkhm6sA6pnkS/umpSvC/H+DD2pThL7
+	 RLOShkq1glfZCU0sj8Ww6WS9HRWtdytc7DZ9yJmA+SSo/GXPOkaJiN6EJgwsrnywSzMRz
+	 0o6LNQlgl4B7k7lRilGViEOzvYZHbAwgkZMnKJN2lagyw+61XSUp+1xqz9PKlWH1uhvwU
+	 ACb8T2Eu1pFpYrmoObuq22lM8r+JuMQFC5OkLKqVZO4YbQHDdftwgg+3OaRBgpmLEdJBW
+	 NpRJIZ6mRcBl0MC7gPUY7gvEkHmNEN7g+duRgzrWqLVruFI2bBoGnBWvRXrwqYnP2aQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=oyFHm1Hz;
-	arc=none smtp.remote-ip=209.85.214.182
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=JAetp1ki;
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33F2606A328
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 20:17:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F33F2606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C337A606A325
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 20:17:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C337A606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=oyFHm1Hz
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2db33db4de9so16865ad.0
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:17:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=JAetp1ki
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a03834d8ffso1329056b3a.3
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792613831; x=1793218631; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=At2A/wrqaAUfI4SKCwlEtMqC27pXN2/myITaZPv60nw=;
-        b=oyFHm1Hz0h2Qlknv1vsiheGJvlBp/hMgh02PzQTmYUIg+yqjimNbrLTG6YVDmdzSj7
-         2h924ZyPg/b7FshKCBPU8Wf34MK3PzDVh+JJCflUO1RAYaHXuXv6wBxYmUiPzwczzC6w
-         bGq67afFW30YUC+3zqYUjsX+7MoFVd5shYJCWSFseb2owxnYIjTAwTaK0aitNp4y5CHx
-         5ok324KMIwDUZkyogu3Gc+7rODb6jTgVHOgl4UjYKgFk3g+pst9EPpMXc/FwibEyyGkO
-         qbqM8aNdfBuih4c2QUv78AaB1MBNwVz+BUwlbiexmEA7RaPQMZ/69mzqr76MJIUIK66u
-         ks6w==
+        d=google.com; s=20251104; t=1792613839; x=1793218639; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=y5zGwiWlY/+7u7tVy4Nz9l+XQayzXqtSRL/HPTqEiC4=;
+        b=JAetp1kiqkjzlxZL8Jo5eBGSC5QmvhuD0DO3wx9QMVFZM2GFR+8xAh4BTJruUr8+IP
+         Xl7a+9mL4boAb+Uz1za5fjJgByqs7v+sNwrcTn204r/O7aUk4OOsFjq/Jv/ahitzpduV
+         SVCruaUS5OUIAiPfcVSDyxjxx4tpRF1VTr4UajXW02W24ozBnI8JIfkBnU6lq41gP00b
+         0wMd4qv9FpV+lQ5uCEBTIDAr6bj5g13v2x70/KA8Y5FfYVE1HVYwopLs75ilUgrjqF6C
+         jBVSZAAwjC7E+RN/cj7QIp5JkBjiyxEv+AvSyh+KfxItcved4Ol/oaBkFVVjVoqQV+Oa
+         PBww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792613831; x=1793218631;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792613839; x=1793218639;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=At2A/wrqaAUfI4SKCwlEtMqC27pXN2/myITaZPv60nw=;
-        b=uspLGZHbr4Erc6Yn03OFjx53Im2WKMgoyt2108ViEiEdjEqG7J64CzpaT6fmVEkfJd
-         LENqPrwoL+H3Dna0dJx1x4Y0RrUpUkm8vZ5e51ufuUMuL0hPrcKRS6FxczBNfdM+TXjT
-         /eByntScAkUWVgu+dAy/iUASKyplXqjPHyYuBI0q1khIpk9n15XixyqGMEyG8lPJ1Ghk
-         EV6UZ/K0iZ6Wtha1ClNARMYXOE0F1lfIMxqUHBRNRWAd1F3nwK5WvSGvJqwzqdcx1hnr
-         FD4PG+kLmil8uV/Xu9KxuhOdUUMR3HD1WOOp7JwzQljK7WE6gK8d7dv27Dqz0TVEg/oH
-         s9FQ==
-X-Forwarded-Encrypted: i=1; AKwUvByhI8hVi4uFdp/BBMv1/JPew81fzpBf8PBYCowuMHTBegrkyfv4bYQxJZQRjYPK1tzyt4E=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK19CAVNSXyYpnh7rJDs3EkVTs+HrAhbzXOpt2nGClPX4mSlV7n
-	m2vzAbAc1jFSDwqEnH4/FQHz4F2R6IaG5caZXE3jj515vHRbT+2ho+KRr3TUf7aMWw==
-X-Gm-Gg: AYBFou0ryP0RJmD0VrLoijCBmD6Y1c6ZnrCh2FjtHPLgLLBy5FLryRAwPeiOhhKOV9J
-	I02Dx0Mbqq60BAzTtCQ606zpHfCkTl3a6AftPUJSfh8oMqmDNM3TIQMA7IhN9LEMoAEc2q1njnf
-	6UNEolJth2Z/KXhJtD7nLUo2X3XrQ0ZzzMsukyJzLFfezlOYteF6Bo1pZYBDke24kPf0hF7g/V+
-	FBT4Sm84XKaic+HPqAKsiwtlb6LxUybmy2rzJTVHL0k/dqPfpjltqk8dECGv1g2uDkVUQabkeKb
-	j/gCKnIJU+AJwzPx3icwVj4xAuIs18g1X6lImtVOfLe+qGVWE8uzYB7rG5io4gGKX2LjDx4ZAih
-	CpWsTE3gkEY2DTeUUm4NV0UMs+6qaOS6SwBK434DfOquoZ2uDVIQV7IRO1VlPYlSoOT4ZF3hUSN
-	Mr0Ht6ss7PswHcFq+5gVT/A5XFGOzIPrghisQVBfShLnpbRzDV79DVCr5GUcd33pZyQtrPJSeBt
-	QzvOf+HnwZlTmX1o+9+HqZWFz4SvDz1B+CBBzi/B2mmCvfCIqdtGwlXw0NdxSSnFvhhDP/N/jrw
-	SO2e5ffL9xRDhatpFm/298NpqFNzOciBexzWXYuqi5bpjQVm
-X-Received: by 2002:a17:903:24b:b0:2e6:d25:d874 with SMTP id d9443c01a7336-2ea6313172cmr689965ad.10.1792613830593;
-        Wed, 21 Oct 2026 13:17:10 -0700 (PDT)
-Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4896c71sm927197a91.6.2026.10.21.13.17.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 13:17:09 -0700 (PDT)
-Date: Wed, 21 Oct 2026 20:17:05 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Fred Griffoul <griffoul@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, David Woodhouse <dwmw2@infradead.org>, 
-	Ackerley Tng <ackerleytng@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 06/11] iommufd: Map memory provider files
-Message-ID: <atkO08eCJzLX6R58@google.com>
-References: <20261014093733.90312-1-griffoul@gmail.com>
- <20261014093733.90312-7-griffoul@gmail.com>
+        bh=y5zGwiWlY/+7u7tVy4Nz9l+XQayzXqtSRL/HPTqEiC4=;
+        b=XC2bIotHRaM9asBcWrzZ6Tk757V4+bGPCmt+9PvDcgoOVws8eAJCNI4UX/idwoebKR
+         a+xpNZzt4uwj7o/LgoDuS+UFwzBhDCt15WZilputK69EcJz5LMtIx/bKDSACKpHyDk7+
+         bNYFFa1jT2G2qFBqMIg2eOin4UFqPf0O3bZzgUnEbX0v7cD98AimECpnUXNF3od5E8wC
+         wZWJw+gelfJCVGom5b6ypnmf5a+9+1Gul5NhPkiL0gYzsV4Ob9otaVBw7Ue1yot48fz5
+         hxPC/3pBSh2Ns7xKt2fE2cRxFx6upce8FVlc/9vsTMT3jgCtA/JOAw7iJen4TNbKPOBN
+         OFQw==
+X-Forwarded-Encrypted: i=1; AKwUvBy9BsTcSVHqWd/IM1vkGka3WTJeD1ax7MgpIi/CdOIndtNrVdRWDDKF0T4KpkPLM345+gg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ7W7J0uslaaup1ksPDDgdtFQ2Z/PS9m3W6kwEb+CCWvkg2i6vF
+	C9Irta3gP4FV2WFPPIf96aIFVsQ0RCyA4SIPQYyqAkZmi8vOuS2k/LlUUwe8JCs1MlGV0L2tIX+
+	U6SaZJA==
+X-Received: from pgbda1.prod.google.com ([2002:a05:6a02:2381:b0:cd6:9aa1:6906])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e8d:b0:3db:4e0a:df51
+ with SMTP id adf61e73a8af0-3e287dd6182mr2176941637.22.1792613838826; Wed, 21
+ Oct 2026 13:17:18 -0700 (PDT)
+Date: Wed, 21 Oct 2026 13:17:18 -0700
+In-Reply-To: <20261019135441.1420968-127-sashal@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -114,219 +79,98 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261014093733.90312-7-griffoul@gmail.com>
+Mime-Version: 1.0
+References: <20261019135441.1420968-1-sashal@kernel.org> <20261019135441.1420968-127-sashal@kernel.org>
+Message-ID: <atkdzsPJgcu123DO@google.com>
+Subject: Re: [PATCH AUTOSEL 6.18-6.6] KVM: x86/xen: Prevent runstate times
+ from becoming negative
+From: Sean Christopherson <seanjc@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
+	David Woodhouse <dwmw@amazon.co.uk>, Paul Durrant <paul@xen.org>, dwmw2@infradead.org, 
+	pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 09:37:28AM +0000, Fred Griffoul wrote:
->From: Fred Griffoul <fgriffo@amazon.co.uk>
->
->IOMMU_IOAS_MAP_FILE pins the pages it maps, which cannot work for a
->memory provider file: the frames may have no struct page, and the
->provider can take any of them back at any time.
->
->Accept a provider file. iommufd neither pins nor accounts its pages.
->It asks the provider for each frame when it fills a domain, and on a
->revoke it unmaps the range in every domain and maps what the provider
->backs now. A device that accesses the range in between faults. A
->revoke charges the page tables it allocates to the memory cgroup that
->mapped the file, not to the task that revoked.
->
->Each frame gets a PAGE_SIZE entry, so a partial revoke never splits a
->large IOMMU page. The next patch maps larger blocks. Holes stay
->unmapped, read-only pages are mapped without IOMMU_WRITE, and MMIO
->pages with IOMMU_MMIO. Frame 0 is refused with -EINVAL: iova_to_phys()
->returns 0 for an IOVA that is not mapped, so a revoke would take that
->page for a hole and leave it mapped.
->
->A revoke would race a dirty bitmap read and lose the dirty bits of the
->range, so provider pages and a dirty tracking domain cannot share an
->IOAS: whichever comes second fails with -EOPNOTSUPP. A provider
->mapping cannot be split by a partial unmap, and in-kernel accesses to
->it are refused.
->
->Assisted-by: Claude:claude-opus-5-5
->Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
->---
-> drivers/iommu/iommufd/Kconfig        |   1 +
-> drivers/iommu/iommufd/io_pagetable.c |  13 +-
-> drivers/iommu/iommufd/io_pagetable.h |  27 ++-
-> drivers/iommu/iommufd/pages.c        | 288 ++++++++++++++++++++++++++-
-> include/uapi/linux/iommufd.h         |  11 +-
-> 5 files changed, 334 insertions(+), 6 deletions(-)
->
+On Mon, Oct 19, 2026, Sasha Levin wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>=20
+> [ Upstream commit 36a85200643e62d20a91f0bc1a811187b59f7762 ]
+>=20
+> When kvm_xen_update_runstate() is invoked to set a vCPU's runstate, the
+> time spent in the previous runstate is accounted. This is based on the
+> delta between the current KVM clock time, and the previous value stored
+> in vcpu->arch.xen.runstate_entry_time.
+>=20
+> If the KVM clock goes backwards, that delta will be negative. Or, since
+> it's an unsigned 64-bit integer, very *large*. Linux guests deal with
+> that particularly badly, reporting 100% steal time for ever more (well,
+> for *centuries* at least, until the delta has been consumed).
+>=20
+> So when a negative delta is detected, just refrain from updating the
+> runstate times until the KVM clock catches up with runstate_entry_time
+> again.
+>=20
+> Also clamp steal_ns to delta_ns to prevent steal time from exceeding
+> the total elapsed time, and handle negative steal_ns (which can happen
+> if run_delay goes backwards across a scheduler update).
+>=20
+> The userspace APIs for setting the runstate times do not allow them to
+> be set past the current KVM clock, but userspace can still adjust the
+> KVM clock *after* setting the runstate times, which would cause this
+> situation to occur.
+>=20
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Reviewed-by: Paul Durrant <paul@xen.org>
+> Link: https://patch.msgid.link/20260728144954.355376-21-dwmw2@infradead.o=
+rg
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-[snip]
+...
 
->+
-> /* The pages are not pinned, so their domains are tracked in pages->tracker. */
-> static inline bool iopt_pages_tracked(struct iopt_pages *pages)
-> {
->-	return iopt_is_dmabuf(pages);
->+	return iopt_is_dmabuf(pages) || iopt_is_provider(pages);
-> }
->
-> static inline bool iopt_dmabuf_revoked(struct iopt_pages *pages)
->@@ -285,6 +306,10 @@ struct iopt_pages *iopt_alloc_dmabuf_pages(struct iommufd_ctx *ictx,
-> 					   unsigned long start_byte,
-> 					   unsigned long start,
-> 					   unsigned long length, bool writable);
->+struct iopt_pages *iopt_alloc_provider_pages(struct file *file,
->+					     unsigned long start,
->+					     unsigned long length,
->+					     bool writable);
-> void iopt_release_pages(struct kref *kref);
-> static inline void iopt_put_pages(struct iopt_pages *pages)
-> {
->diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
->index 660af3d46f5e..aa7740326ad6 100644
->--- a/drivers/iommu/iommufd/pages.c
->+++ b/drivers/iommu/iommufd/pages.c
->@@ -52,6 +52,8 @@
-> #include <linux/iommu.h>
-> #include <linux/iommufd.h>
-> #include <linux/kthread.h>
->+#include <linux/mem_provider.h>
->+#include <linux/memcontrol.h>
-> #include <linux/overflow.h>
-> #include <linux/slab.h>
-> #include <linux/sched/mm.h>
->@@ -238,6 +240,35 @@ static void iommu_unmap_nofail(struct iommu_domain *domain, unsigned long iova,
-> 	WARN_ON(ret != size);
-> }
->
->+/*
->+ * Provider pages are mapped with PAGE_SIZE entries, and may have holes.  Some
->+ * IOMMU drivers warn when asked to unmap an IOVA that is not mapped, so find
->+ * the runs that are mapped and unmap each one, without touching the holes.
->+ * iopt_provider_map() refuses frame 0, which iova_to_phys() reports for
->+ * an IOVA that is not mapped.
->+ */
->+static void iopt_provider_unmap(struct iopt_area *area,
->+				struct iommu_domain *domain,
->+				unsigned long start_index,
->+				unsigned long last_index)
->+{
->+	unsigned long iova = iopt_area_index_to_iova(area, start_index);
->+	size_t left = (last_index - start_index + 1) * PAGE_SIZE;
->+
->+	while (left) {
->+		size_t len = 0;
->+
->+		while (len < left && iommu_iova_to_phys(domain, iova + len))
->+			len += PAGE_SIZE;
->+		if (len)
->+			iommu_unmap_nofail(domain, iova, len);
->+		/* Step over the run and the hole page that ended it. */
->+		len = min(len + PAGE_SIZE, left);
->+		iova += len;
->+		left -= len;
->+	}
->+}
->+
-> static void iopt_area_unmap_domain_range(struct iopt_area *area,
-> 					 struct iommu_domain *domain,
-> 					 unsigned long start_index,
->@@ -245,6 +276,11 @@ static void iopt_area_unmap_domain_range(struct iopt_area *area,
-> {
-> 	unsigned long start_iova = iopt_area_index_to_iova(area, start_index);
->
->+	if (area->provider) {
->+		iopt_provider_unmap(area, domain, start_index, last_index);
->+		return;
->+	}
->+
-> 	iommu_unmap_nofail(domain, start_iova,
-> 			   iopt_area_index_to_iova_last(area, last_index) -
-> 				   start_iova + 1);
->@@ -1349,6 +1385,10 @@ static int pfn_reader_first(struct pfn_reader *pfns, struct iopt_pages *pages,
-> 	    WARN_ON(last_index < start_index))
-> 		return -EINVAL;
->
->+	/* Provider pages are read from the provider, see iopt_provider_map() */
->+	if (WARN_ON(iopt_is_provider(pages)))
->+		return -EINVAL;
->+
-> 	rc = pfn_reader_init(pfns, pages, start_index, last_index);
-> 	if (rc)
-> 		return rc;
->@@ -1647,6 +1687,228 @@ void iopt_pages_untrack_all_domains(struct iopt_area *area,
-> 	}
-> }
->
->+static int iopt_provider_prot(struct iopt_area *area, u32 attrs)
->+{
->+	int prot = area->iommu_prot;
->+
->+	if (attrs & MEM_PROVIDER_ATTR_READONLY)
->+		prot &= ~IOMMU_WRITE;
->+	if (mem_provider_type(attrs) != MEM_PROVIDER_TYPE_RAM) {
->+		prot &= ~IOMMU_CACHE;
->+		prot |= IOMMU_MMIO;
->+	}
->+	return prot;
->+}
->+
->+/*
->+ * Map what the provider backs in [start_index, last_index] of the area into
->+ * @domain, and leave the holes unmapped.  Each frame is mapped with a
->+ * PAGE_SIZE entry, so that a revoke of part of a large block never has to
->+ * split a larger IOMMU page.  On failure nothing in the range is mapped.
->+ */
->+static int iopt_provider_map(struct iopt_area *area, struct iopt_pages *pages,
->+			     struct iommu_domain *domain,
->+			     unsigned long start_index,
->+			     unsigned long last_index)
->+{
->+	unsigned long base = pages->provider.start >> PAGE_SHIFT;
->+	unsigned long index = start_index;
->+	int rc;
->+
->+	lockdep_assert_held(&pages->mutex);
->+
->+	if ((1UL << __ffs(domain->pgsize_bitmap)) > PAGE_SIZE)
->+		return -EOPNOTSUPP;
->+
->+	/*
->+	 * A revoke unmaps under pages->mutex only, so it would race with a
->+	 * dirty bitmap read, and lose the dirty bits of what it unmaps.
->+	 * Provider pages are not mapped in a domain with dirty tracking.
->+	 */
->+	if (domain->dirty_ops)
->+		return -EOPNOTSUPP;
->+
->+	while (index <= last_index) {
->+		unsigned long pfn, iova, block_end, nr, i;
->+		int order = PUD_ORDER;
->+		u32 attrs;
->+		int prot;
->+
->+		rc = mem_provider_get_page(&pages->provider.att, base + index,
->+					   &pfn, &order, &attrs);
->+		if (rc == -EFAULT) {
->+			index++;
->+			continue;
+> **Step 8.1: DETERMINE WHO IS AFFECTED**
+> Xen-ABI KVM guests with runstate/steal enabled (`CONFIG_KVM_XEN` + VMM
+> setup). Not all KVM users.
+>=20
+> Record: [config/driver-specific: KVM Xen guests]
+>=20
+> **Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
+> 1. `KVM_SET_CLOCK` (live migration/snapshot) after runstate SET_ATTR =E2=
+=80=94
+>    documented, exists in this tree
+> 2. kvmclock discontinuities from masterclock re-snapshot =E2=80=94 still =
+present
+>    here; the rest of the series is **not**
+> 3. `run_delay < last_steal` unsigned wrap (ioctl uses VMM `current`;
+>    vCPU path uses the vCPU task)
+>=20
+> Unprivileged guest cannot call `KVM_SET_CLOCK`; the VMM can. Guest then
+> sees broken steal forever.
+>=20
+> Record: [migration/SET_CLOCK and steal wrap] [realistic in production
+> Xen-on-KVM] [VMM-triggered, guest-visible]
+>=20
+> **Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
+> Not a host oops. Guest scheduler steal accounting becomes permanently
+> wrong (100% steal for ~centuries). That breaks guest CPU accounting,
+> load, and can stall workloads/watchdogs. **HIGH** for those guests (not
+> host CRITICAL).
+>=20
+> Record: [guest steal corruption / apparent 100% steal] [HIGH]
+>=20
+> **Step 8.4: CALCULATE RISK-BENEFIT RATIO**
+> Benefit: stops a permanent guest-visible accounting failure on a path
+> used in migration. Risk: ~20 lines, no locking/API change, skip-
+> accounting is conservative.
+>=20
+> Record: [high benefit for Xen-on-KVM] [very low risk] [favorable]
 
-Hi Fred,
-
-Thanks for this.
-
-With this approach, silently skipping holes during IOAS_MAP_FILE means
-iommufd has no tracking of which IOVA ranges in the area are actually
-mapped, which complicates unmap and could also hide a bug if a hole in
-the range was not expected?
-
-I am wondering whether the areas can track the holes, or whether we
-should have areas for the mapped/unmapped ranges? This should allow
-proper sanity checks when doing revoke. I am also thinking about this
-from the live update point of view, where we might need to sanity check
-that the backing memory of mapped regions is preserved.
-
-Could you please CC me on v3? I'd like to follow this from the live
-update IOMMU and iommufd preservation side.
-
-https://lore.kernel.org/all/20260921004834.2601285-1-skhawaja@google.com/
-
-Thanks,
-Sami
+Two questions: do we care abou this specific flaw, and does anyone run Xen =
+guests
+with KVM using an LTS kernel?  I agree with AI's assessment that this is lo=
+w risk,
+but unless this will actually benefit someone, I don't see the point.
