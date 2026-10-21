@@ -1,110 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792585411;
-	b=I7LV0mz+YvxhEe/06jv84rKOKVnllxkCYujY9Ydz2Pn/WYKbzpSXrRE/x+TVcd4vWJg4
-	 D5iXw7Vz8oUGsUV2yC5v9+oZaWGGeSQS898cQ9XyrXao2eX0LUdH+DL9QjjvnPB3xQKNI
-	 7X5SrcUzlJ3jGPIQnrvelPWw71v0np1hivLCJ0iBZmtgbm9wb2ia7mu1FQijXIvBENhvW
-	 q7P29n3o+lW+lSwoaF7puVKZQYSKIZ1hRALN1age7NmO79V07Iq7QQVR4b8skwg/5TcS+
-	 +uxFu2U6UuS5DHnw7MW3u/EZoemn+W0JilSqLZRoK8LE6+s7YdiEYh4cpSkEqTzc0nQ==
+	t=1792585509;
+	b=uwEzzz/KfsEwnXD2HJhYcRBJCKZZNThvMVSLZmI0vUv8jaj9L5yTniorYIvbXwaj+L65
+	 PIOd/2flJFH4RJjHAWx4c8ZSeVvt/kNviWLgWTkBADL/uzpXZ86Na4VrCd4zn5OHpEicO
+	 rrtnot9ee0KCDD05dCBzEu/oQsog9cqALmuulNfKoL+lQmeFrjr1Vt6AhJhX8v94g2SPi
+	 2YlV1foOS8UcnNp2qIS9N6qbp2//RE1mxsRjLhU6eBbMDnFtI8OeG7Y3h/IV/N1oSWZJZ
+	 Aw/hhGYOQc91/NNeiY8ZJcBMD9kYBbxf8hhQjayR8PNF8nQTC61dYSbWBO+HtxkgvYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792585411;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date:
-	 MIME-Version:User-Agent:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=Y13Y29MlvPb+Sz8PtQpD10VqqMQo4I4AAm9Usigt760=;
-	b=KkIVAXAPA/I1DxfEUGcVx8+qyfmxmSbxqulSL4irWDT9gNdQu0kSSgCZOsTlbtoFpBkr
-	 yhdmYTl8Z6T9aIUrudYsLLwTAyN5tTJHVoFlkrBWdGSmz9kj3kPi1Vv1Kk1fwZ/tD0i80
-	 +WLezS3W0mUbzKjFk53CghDISPxikxbojvqN6YtIjXB/opUQS76tJyltooS8u79zwd/cy
-	 9wtz/Ze2mBg4wkvAnhK+qRWer+kTQWUDdU4LOj5yQQHx3C5/gs4AFvzp65ECh1e8+1hui
-	 WGtUT//uSLq1bhqZyGT+oWvN1tVigkDhPc66txsXBhE2m/ogwN4MU2gpQdW2Sr+DBPg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792585509;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=NjooxX8trLUdWh2b/jQFqAnjIlmbplRrLhuuOCg7DJU=;
+	b=0M8OWdpF03yffSXG11VrwPEdhM2Z7p1cGF3oLVdBQU7xH30xLJ8E4CuVPbHd3PrOThVP
+	 eqafKUEuwroIiORmixd9ukcjTH5l5yK6mVTVr69wcASosfejVmNJssr0V8fZyhOqFJucy
+	 rpKknvu2hKkIRIr8sVeqehMa51EX6VVaDnPE2abfR4PC+DSSUAWFg0YzdWLHYSChtMK1T
+	 Kviz6niEJ/jd8y5O/zu2STqltlO3NzdUeZmfwPKV7Zm8dRVbKbmzoch/55OiK6LWpK0Rt
+	 b0sqXz2xwkiOhCM2lPlIQph4cE7QMAIHQfqpVft8+GVwyGKmY5cFVM6H2idKwXrl2Pg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gz6qW5ni;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OvoQ4m2l;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KlKZRHql;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8DC606A319;
-	Wed, 21 Oct 2026 12:23:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E8DC606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5B1606A319
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 12:25:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB5B1606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gz6qW5ni
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69LBiUUu3586175;
-	Wed, 21 Oct 2026 12:23:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Y13Y29
-	MlvPb+Sz8PtQpD10VqqMQo4I4AAm9Usigt760=; b=gz6qW5niygx0BGa9HyQCMg
-	pXAIZ5o7xaEk4fCGCPn3N3CHwuGoJgvYnq7E0/qYhkcR4S7HoHF8QRmHa8v34hu9
-	9w80wPp3J4RXuneQO1i/+8tfaPm+gGLWctDK0RjSXk24EvZIAA40N+OMihRYP/XP
-	8T2rHnwXkj1l/See8nWM7lBcnQoyvY7OCwqm5aVLhL6U85pHOW2ePOrHVjE+9gzl
-	mGHsVhAw5/nlcsOiD+KKVRR8KcjT1vCkJyBlwRD1n9PD+d7KppiZHh8TrbbwoIGL
-	K09eWWtRYXYzF5Mar6g+L4Gttn7/V3x7wWxRzkJLXlmbuBbrCFH4d5QmI/H1R3MQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5bgwnt-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 21 Oct 2026 12:23:10 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69LBo3X83085758;
-	Wed, 21 Oct 2026 12:23:09 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4he8vhvrqm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Oct 2026 12:23:09 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69LCN9wh31392054
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Oct 2026 12:23:09 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B7B858052;
-	Wed, 21 Oct 2026 12:23:09 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3C4E85805E;
-	Wed, 21 Oct 2026 12:23:06 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.75.7])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 21 Oct 2026 12:23:06 +0000 (GMT)
-Message-ID: <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Dionna Glaze <drdeeglaze@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-coco@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-        x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-        rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-        James.Bottomley@hansenpartnership.com, aik@amd.com,
-        jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-        jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-        suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-        elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-        roberto.sassu@huawei.com
-In-Reply-To: <20261020165251.GG3008132@nvidia.com>
-References: <20261017203407.GM13920@nvidia.com>
-	 <atPgqROZZxnihYfC@kernel.org> <20261017231007.GP13920@nvidia.com>
-	 <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
-	 <atX9fugGUsI0hGcA@FV6GYCPJ69>
-	 <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
-	 <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
-	 <20261020140655.GV13920@nvidia.com>
-	 <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
-	 <ateSly15N5mLrM1m@e129823.arm.com> <20261020165251.GG3008132@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 08:23:05 -0400
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OvoQ4m2l;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KlKZRHql
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792585507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NjooxX8trLUdWh2b/jQFqAnjIlmbplRrLhuuOCg7DJU=;
+	b=OvoQ4m2lCHeN5GMjW7Rtm1DsXgbnd7aIVosTSvbAbe5vx/inPZQdrcmDEGu7nzoRd9mxZb
+	2zow/1f7hc6WBSHIdupX6ED5fqSc4RKuGt8zMIZpjYV1Z8BqXVGp45utP/TWQ8ufSBGFff
+	1b+DjVpItPiQOhSNkWLp0iswppPsB2c=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-551-ibMn_esRNCOGnLVEAieijw-1; Wed, 21 Oct 2026 12:25:06 +0000
+X-MC-Unique: ibMn_esRNCOGnLVEAieijw-1
+X-Mimecast-MFC-AGG-ID: ibMn_esRNCOGnLVEAieijw_1792585505
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e9995cea88so7247225ad.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 05:25:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792585505; x=1793190305; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NjooxX8trLUdWh2b/jQFqAnjIlmbplRrLhuuOCg7DJU=;
+        b=KlKZRHqlh6p15wLJQRJDJjHsXiICiAEZPGKm7/YK3i6GCdRXwVp2HppLgkpLth6QqP
+         gXsMref9vE2GjcnsO5IFGD6NqqvuAB/8XyqN7cb3OBQJYuDvUX1nBMHJuQTJCtXKNFu5
+         62vu7+mtFkflvHGElJKx5WiWO6OR9MoFy1WemdYBEi/yc4F2IvxZtyL37kY6noeEkSTS
+         QUtNQt1CHDZX6uCHJTcX5QoocgBPKHndzKyn8CTTCLFjHPY2Imew4wUzQ8ij8EPa1TS7
+         /5ubXKYOU7j0VaJRWXZOwq/87w19/gj3PcjxrKCNwwCZpYzMsf+Nmxl+6XqzCgmNLfD6
+         KkBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792585505; x=1793190305;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NjooxX8trLUdWh2b/jQFqAnjIlmbplRrLhuuOCg7DJU=;
+        b=WmilcUaktBZj8/ncz6jcQU5txPXWzuR6QHGaiBynlx11bSImwwAV8WmlPkGnJCGBHH
+         7Ya0GT9m8XOPsTpESEQQbg/w/ALEUI2cJlaiqGzVPDL+KT9xrl9jNBmihHb/jA0SCpYm
+         xLVN0Z7J1eL+mPpeJTg6Ua1JVsjU8QJf1i1JNmUlzDYbMYurb7AOsAxAyV+vMASHjEHM
+         1BPuDRhDm8QMDUq+Q8eXwH4Kcd0MlnUXtHw4LaG+DLMZCAxIdxkh0EZ7LZ9V8qL5bBdD
+         Sy9CK5IbsS1bsYQY6ghnhq1jUpWUq9rbGScJ4P+/30RQeyhdwnYNdPxzhvZbQjfM3NdJ
+         34mw==
+X-Forwarded-Encrypted: i=1; AKwUvBwcZ6pAtTLjHut44ck63Bne0ul93++y19jXYlw0DOW4HqQT9ITxd/+r2tYfvb7ei7bVdOg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK0Z+vWfPE3Ug2LmSEkq+QaY4Sl9h4TINrp7eyFSZ7eTReC6MNP
+	nKd97QBZFC+Jq3fjvY1BcLX8x4YMlJMAwuPMdLGi3QVk3Fg6gOTNiMG+MJ6Wd0/RVGuOYWJtd7o
+	Pyoi4VSsGtycQekfz9bjDmV6QDp5nBuy3D+VWmm0/fio/YRDNNpeDiA==
+X-Gm-Gg: AYBFou2CKlOgaX5dUYood1PF4o+u/l11AsBxUNGpCt1EJ+ulzjfGLYALv6c0Iez2zbZ
+	PyMoMY/3tlheWbD/8D2hCE+avTXHSjO1nVd8D4mriNcqgeBNYK0xAjucnKv1GgSeSKHyaNQFpRv
+	G/X59g3G6Vk8I36ql5RqlLbQFBC2cYPlj5tCgJeLM9YVi5p+h+Z9d0v6L3Koen104qYrtx2RmZ5
+	W2rrQNhYEcpNN1WBSleMrpKLSC+jlsB5GUDIB5SqVDRP8GoKiqc8TjbcYwBlJ5cGl3J9DOBInIX
+	ehOsfUceahHBqnqyF97VROtZWwPN8Cqj1A7oTlUm11zs+NRYZ50i+XUp8st4njP6eQtKQLnrazC
+	6MIZwb4RV6p3O9QTXp0Axbr9rPeg1uNXXO2T2BMsclw==
+X-Received: by 2002:a17:903:388d:b0:2e5:467a:7a6b with SMTP id d9443c01a7336-2ea43d3a195mr15032325ad.10.1792585505251;
+        Wed, 21 Oct 2026 05:25:05 -0700 (PDT)
+X-Received: by 2002:a17:903:388d:b0:2e5:467a:7a6b with SMTP id d9443c01a7336-2ea43d3a195mr15032085ad.10.1792585504565;
+        Wed, 21 Oct 2026 05:25:04 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b4536ddsm10640795ad.43.2026.10.21.05.24.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 05:25:02 -0700 (PDT)
+Message-ID: <27fe3ba8-c8c8-4d5c-9d57-3cfb67142ac1@redhat.com>
+Date: Wed, 21 Oct 2026 22:24:56 +1000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -114,66 +111,178 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: mhtBMVDnWVjSRXEgOMejCaHGMznMmbKb
-X-Proofpoint-ORIG-GUID: OUxN-Ps5evmI7ZsRjJ6xHIT22ql-EQ4i
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDA0OCBTYWx0ZWRfX+CWHnOcamU9V
- 6wooUZV+3CIKlZ4J+mDp4FpdF8mv26EXt3BOHZl4D9t0tXnWhOTHI6goE6CozgGJ/jqXkTSI4LV
- 1rzuD11nfRdVSr1iBuCgJhHa5t+Y1lo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDA0OCBTYWx0ZWRfXxIYt7aeXQXMm
- 0t3e5tygzLhvMtq3+HdivM94KbY7kfR/sMUk0QZ5w75cMQ3/mH+JFUfu3sypGoHs1E56y5CgSrd
- xvINpBkCJ9nEGxHi+/rZ5j5BI7vVDNYbcUr3Q5GCPS8LxlK4mEpNwXVgOl7CPFP2YW1mVFdAaha
- NZeF3Vc7AsUiDjA+DdWil4teRMpTJ7Z6PDEcgCUkYsiI/0nYhb64nbfr7rNNYep19I233f9u6gk
- FUicF62doDzjy9MN+TIpHFY6+Z/4Y4rGsUYwTBdiWAg6ic9Hn0ovuRQGvUgaBXndg9Zqnfk/ZHU
- HeKUnIcrC78dX53qOiAAe7+LmW1/Zwjabi8VNhDpr0HDwW3W5QSksWNV5EAThuiX9qee2yfsi41
- WRfSr9tSfRa+unODmydO3rXvzTM5wCK1QqwSlR+qzehQby2zOX7Eh1hwGNgYpz7qHBy9nNpMeeh
- jXlHyesR74dNx5W4enA==
-X-Authority-Analysis: v=2.4 cv=Gb2CDgXL c=1 sm=1 tr=0 ts=6ad8aeaf cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=YAVQozInYYzzJe9E9cgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-21_03,2026-10-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
- clxscore=1015 bulkscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610210048
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v4 11/24] target/arm/kvm-rme: Populate Realm with runtime
+ images
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
+ kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+ peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+ pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ lorenzo.pieralisi@linaro.org, enju.kohei@fujitsu.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvm@vger.kernel.org
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-12-mathieu.poirier@linaro.org>
+ <3257a387-490f-44bb-bd44-dbe06036fd52@redhat.com> <atiKJ8-PyIHSRTKy@red-moon>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <atiKJ8-PyIHSRTKy@red-moon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2026-10-20 at 13:52 -0300, Jason Gunthorpe wrote:
-> On Tue, Oct 20, 2026 at 05:11:03PM +0100, Yeoreum Yun wrote:
-> > But, I have a related concern about deferred probing of RoT devices.
-> >=20
-> > For example, if TPM probing is deferred until after the attestation
-> > subsystem has been initialized, how would the subsystem handle the
-> > TPM becoming available later (This is reason for
-> > IMA_INIT_LATE_SYNC).
+On 10/21/26 7:47 PM, Lorenzo Pieralisi wrote:
+> On Fri, Oct 02, 2026 at 01:45:40PM +1000, Gavin Shan wrote:
+>> On 9/4/26 5:35 AM, Mathieu Poirier wrote:
+>>> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+>>>
+>>> Once the Realm descriptor has been created, tell KVM to transfer runtime
+>>> images (kernel, DT, and rootfs) from guest memory to Realm memory.
+>>>
+>>> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+>>> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+>>> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+>>> ---
+>>>    target/arm/kvm-rme.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
+>>>    1 file changed, 76 insertions(+)
+>>>
+>>> diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+>>> index 9985f5daba89..c082a5d8f3d1 100644
+>>> --- a/target/arm/kvm-rme.c
+>>> +++ b/target/arm/kvm-rme.c
+>>> @@ -15,6 +15,7 @@
+>>>    #include "migration/blocker.h"
+>>>    #include "qapi/error.h"
+>>>    #include "qemu/error-report.h"
+>>> +#include "qemu/memalign.h"
+>>>    #include "qom/object_interfaces.h"
+>>>    #include "system/confidential-guest-support.h"
+>>>    #include "system/kvm.h"
+>>> @@ -43,12 +44,87 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+>>>    static RmeGuest *rme_guest;
+>>> +static int rme_populate_range(const RmeRamRegion *region, bool measure,
+>>> +                              Error **errp)
+>>> +{
+>>> +    int ret;
+>>> +    void *buffer;
+>>> +    hwaddr size = region->size;
+>>> +    hwaddr base = region->base;
+>>> +    hwaddr start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
+>>> +    hwaddr end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
+>>> +    struct kvm_arm_rmi_populate populate_args;
+>>> +    size_t aligned_size = ROUND_UP(region->size, qemu_real_host_page_size());
+>>
+>> s/qemu_real_host_page_size()/RME_PAGE_SIZE
+> 
+> It will always have to be qemu_real_host_page_size(), KVM configures it
+> that way.
+> 
+>>> +
+>>> +    if (!region->data) {
+>>> +        return -ENODEV;
+>>> +    }
+>>> +
+>>> +    ret = kvm_set_memory_attributes_private(start, end - start);
+>>> +    if (ret) {
+>>> +        error_report("RME: failed to configure initial"
+>>> +                     "private guest memory");
+>>> +        return ret;
+>>> +    }
+>>> +
+>>> +    /* Allocate page-aligned memory */
+>>> +    buffer = qemu_memalign(qemu_real_host_page_size(), aligned_size);
+>>> +
+>>> +    if (!buffer) {
+>>> +        return -ENOMEM;
+>>> +    }
+>>> +
+>>> +    memset(buffer, 0, aligned_size);
+>>> +    memcpy(buffer, region->data, region->size);
+>>> +
+>>> +    populate_args = (struct kvm_arm_rmi_populate) {
+>>> +        .base = start,
+>>> +        .size = end - start,
+>>> +        .source_uaddr = (uintptr_t)buffer,
+>>> +        .flags = measure ? KVM_ARM_RMI_POPULATE_FLAGS_MEASURE : 0,
+>>> +    };
+>>> +
+>>> +    while (populate_args.size > 0) {
+>>> +        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
+>>> +        if (ret) {
+>>> +            error_setg_errno(errp, -ret,
+>>> +                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
+>>> +                start, end);
+>>> +            break;
+>>> +        }
+>>> +    }
+>>> +
+>>> +    qemu_vfree(buffer);
+>>> +
+>>> +    return ret;
+>>> +}
+>>> +
+>>
+>> I doubt that the unaligned regions (RmeRamRegion) are allowed. For example,
+>> the region [4KB 64KB+4KB] is turned to the aligned range [0 128KB] when RME_PAGE_SIZE
+>> is 64KB. The question is how do we know the added regions due to the alignment
+>> ([0 4KB] and [64KB+4KB 128KB]) are safe for kvm_vm_ioctl(KVM_ARM_RMI_POPULATE).
+> 
+> Getting back to this because it is important. Can you define "safe" here ?
+> 
+> I think it is VMM's role to load with the required alignment and make
+> sure it does not double populate (that is anyway prevented by KVM), what was
+> your concern here to make sure we are in agreement ?
+> 
 
-FYI, this patch set initializes at module_initcall(), not even late_initcal=
-l().
+For example, there are two regions are populated: [0 4KB] and [4KB 64KB] on a 64KB
+host. With the alignment considered, we're populating [0 64KB] for region [0 4KB],
+and [0 64KB] for [4KB 64KB]. [0 64KB] are populated for twice. Is this allowed by
+TF-RMM? If it's allowed by TF-RMM, the data populated in the first time is overwritten
+by the second population.
 
-> I don't think it would be any different, the mechanism for TPM would
-> become generalized and apply to any attestation driver.
->=20
-> This series doesn't attempt to do that flow yet, moving ima over and
-> dealing with this is another series :)
+Thanks,
+Gavin
 
-When TPM device initialization is deferred, it is retried during
-late_initcall().
+> Thanks,
+> Lorenzo
+> 
+>> I guess we probably just reject unaligned regions if they're not expected.
+>>
+>> Even if the unaligned regions are allowed, they seem not well handled.
+>>
+>> - @aligned_size is still 64KB instead of the 128KB ?
+>> - In "memcpy(buffer, region->data, region->size);", the blob data would be copied to
+>>    [4KB, 4KB+64KB]. However, we're copying the data to [0 64KB] now.
+>>
+>>> +static void rme_populate_ram_region(gpointer data, gpointer err)
+>>> +{
+>>> +    Error **errp = err;
+>>> +    const RmeRamRegion *region = data;
+>>> +
+>>> +    if (*errp) {
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    rme_populate_range(region, /* measure */ true, errp);
+>>> +}
+>>> +
+>>>    static void rme_vm_state_change(void *opaque, bool running, RunState state)
+>>>    {
+>>> +    Error *errp = NULL;
+>>> +
+>>>        if (!running) {
+>>>            return;
+>>>        }
+>>> +    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, &errp);
+>>> +    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
+>>> +    if (errp) {
+>>> +        return;
+>>> +    }
+>>> +
+>>>        kvm_mark_guest_state_protected();
+>>>    }
+>>
+>> Thanks,
+>> Gavin
+>>
+> 
 
-As there is no way of ordering within an initcall level, there is a race be=
-tween
-the device driver probing and the call to late_initcall(). The solution was=
- to
-allow IMA to register at late_initcall_sync() based on a Kconfig.
-
-Both device_initcall() and module_initcall() are at level 6. Are you sure:
-=E2=80=A2 the PCIe SPDM Devices will be ready at module_initcall()?
-=E2=80=A2 the PCIe SPDM Devices are not deferred to late_initcall()?
-
-Mimi
