@@ -1,62 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.219
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792566172;
-	b=clheuX+dwFJ8J/aMTGIlpwnaG0S4JiH+ZOlEoK9DcRYSUp3pF/qfax7owLU1sV227eUU
-	 nm9sJgLYJDYv3VTxF43C9lTKIyUQHGSpI1C1AhwM4hy+Ck8S0krZ+GthVW16Io0DXsX1e
-	 zzlYqpeNB/1TJq/hscTXWnflnE8lqoKOvd769HZiHBel/lf3oHFk6rqDSyUvlkt51MZ9E
-	 JoYcDqKoxzO2clqzk/+7yJU8pciXQe1livjEZAhV4KzCDhkg+go1iBsX/31/gvdiZcGDE
-	 98VIYp1Jpy2LmD2Q4UouRb+ni+XwFicsSsQS0KT4OLRwliFzx4HYpEEsxm0Uio+Y4AQ==
+	t=1792566338;
+	b=eGAHxWg9s5SqA6aXwEh1X/Us0v2xLbCAK6+V+PIj3niTT86OawzcAsp/GJPGWpvjFNuG
+	 gvl1hh2VhmuWJ0zyA9MEQCjQxisL11Hk3rdoks5qJ91rGRfREXCpqqAzC8y1WHcqN86XY
+	 PsF6Dqw1vAor3bJFiI97Zb+FWa7h49fGaGGQVBa+jXaRCH+iBfTMnYxWkUpYHk3sH0lBt
+	 oGh66qGSsU8xMgByTgjvrHBt7Z0x087R6C5cqwz5hvwNk7oiJoU2pHbvUwvwIaSlM7rMi
+	 upkAZ7twRQ4/karL1bL+0kClaYHW3poYvGO6t+R4HhqobXvapqfZkznZowAfrkDYnLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792566172;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9ejJRb6pdg5woczfJr39UioN6agm7SyfQ7LOX7To5E0=;
-	b=xNqS6mFaNLgzUxDlPLlxoC5TKeQD5cValzKQd9g74NeGqF4VeU8zSiGiUm79XdbZx1j8
-	 7wulky19KINCUbNum7xQGeA8Bs+kK9NxkhPM+3DsR0U94EmdXbJwUzZnrLnxihnaQBX2U
-	 lhcMrzvLG18wC2abvV250mhb4b7j3vkL6PGasFTatrf7eAkwD4RMS+izSZM7Q+XnWjXEn
-	 sgDKLZtpAqyQ9pU/FHAU0e4MpQL3IVPsAIjeVIrJ8CBDnPL8k6UOMp0H4YonXYqmnqwIm
-	 firKnz40LehrKaXgpkGatKJYRJT6kR591W+uIaln+/nbjqphORgLa9pwBdAhwFBK0kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792566338;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=RGR/Jx3r3CM4i2U8b24w9V0ryLpjT9EAn8+U2VGjkao=;
+	b=OM0nmtYvmEO72E7ASKOR0sy/7KHoXEJu3ZnNekpf1a2XJLHbmV3gxdCQlmmIX2Y6SWK/
+	 jZ8hRY4QRpHOF9EZa56divwLtj2i4W/2ASFXvSD4M7wjFmJCrf2A9WL+iAsAMjofB2I7r
+	 JZof2vFubYrRpmh5miI/pg2RlLPkiuKbL9AFc968HQhGB5z6FXcRwnBVh6zdStVZD8sBZ
+	 Cx1IZrElkR4sSn/MaBuCb//RHHSaq/8VE9dXdREFdvvbPYfZG64AqSXZ+WhXmM/JDNK0D
+	 K1GXHrvuoBShTyMfcOP3A2YAsu8sHV7g4xfY3YAzEtbWFFLz47r6oGXYzAGCyN8AvVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=YwrEjJIt;
-	arc=none smtp.remote-ip=115.124.28.219
-Received: from out28-219.mail.aliyun.com (out28-219.mail.aliyun.com [115.124.28.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nstdDiTH;
+	arc=none smtp.remote-ip=192.198.163.14
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD70606A31E;
-	Wed, 21 Oct 2026 07:02:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AD70606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC778606A319;
+	Wed, 21 Oct 2026 07:05:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC778606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=YwrEjJIt
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1792566164; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=9ejJRb6pdg5woczfJr39UioN6agm7SyfQ7LOX7To5E0=;
-	b=YwrEjJIt4Qo2FdRuNOIoq0rWZzvczRVxu1ZDl9XYrMwmtZbAsx906yO1AsMaqHJ95+djlFgp/fasCxqckiJRM5wCxhabrr5zhRwRDkuLVG9P0hBLg3t+q45DdRCqsv3kRJYSwOhhzEettNz+mL2VQHSflKpnysf2MOD8xpkPArI=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04958579|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00520256-0.00060955-0.994188;FP=10361852787305131134|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033025068124;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=10;RT=10;SR=0;TI=SMTPD_---.jmQmQl9_1792566162;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jmQmQl9_1792566162 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 21 Oct 2026 15:02:44 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Guanglei Zhu <zhugl3@xiaopeng.com>
-Subject: [PATCH] vhost/vringh: reject zero-length indirect descriptor tables
-Date: Wed, 21 Oct 2026 15:02:42 +0800
-Message-ID: <20261021070242.75009-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nstdDiTH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792566338; x=1824102338;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=D7WN6dDMY71qfhiz6XBlibbsaCT69lO3NDprJWMVjeo=;
+  b=nstdDiTHFyC7MwMJQ2Zo4GFM8fHSmO/d4uUiBuleH5F6hsodrRcZb4RM
+   8qxYpk9Xo7NGybmE+9oEQu0RPkc9Yw1jBwBRJqTTlytC+kVpBpEthF1Qt
+   wKuSbVH0A7cExFUjlz7lJk3GrjeT/ImM3v4XI5RvysUmG9oiCrCo/brqJ
+   MCSRI6kiR2f2cxv2x6Y8Qn70ZVQRwJgjxAWN9hP7utj1dTHgqITvqBmR/
+   FxQnID6U76oL/36f7ZMssMR89yFIDo0+Dce8CHpANCWFvbufwPMos2LTZ
+   F/kqBRiKa6vWgn1LzCi/Tqw9SSyCvkX/CQyKBgXJ6kOoTawRmzhdWbmi8
+   w==;
+X-CSE-ConnectionGUID: L1QWDOD5TleQxXWAU+7PFw==
+X-CSE-MsgGUID: 17RCfk68RICuemnyYlFw/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11941"; a="1299238"
+X-IronPort-AV: E=Sophos;i="6.27,169,1787036400"; 
+   d="scan'208";a="1299238"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 00:05:38 -0700
+X-CSE-ConnectionGUID: AQFjolYnQcqyK886Fti09Q==
+X-CSE-MsgGUID: sn3BGS//RTicLJrXTwGuew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,169,1787036400"; 
+   d="scan'208";a="3027640"
+Received: from unknown (HELO [10.238.0.97]) ([10.238.0.97])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 00:05:34 -0700
+Message-ID: <de8b810c-1ee2-4087-927a-06f3975ba670@intel.com>
+Date: Wed, 21 Oct 2026 15:05:32 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,40 +72,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] KVM: x86: leave the legacy private attribute in for
+ TDX and SEV
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Shivank Garg <shivankg@amd.com>,
+ Yan Zhao <yan.y.zhao@intel.com>, Sean Christopherson <seanjc@google.com>
+References: <20261020131447.122096-1-pbonzini@redhat.com>
+ <20261020131447.122096-3-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261020131447.122096-3-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-move_to_indirect() accepts an indirect descriptor with a zero length,
-setting desc_max to 0. __vringh_iov() then reads descs[0] before
-checking the descriptor bounds, resulting in an out-of-bounds read.
+On 10/20/2026 9:14 PM, Paolo Bonzini wrote:
+> As of today, and presumably as of Linux 7.4's release date, there
+> is hardly any VMM that supports guest_memfd attributes.  Support the
+> legacy VM attribute for private memory if SEV or TDX are requested;
+> default it to disabled if only the software-protected VM is requested,
+> since it is only used by guest_memfd selftests.
+> 
+> While in-place conversion is the best option, it is way too
+> early to enable it by default.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Reject a zero-length indirect table in move_to_indirect() so the
-caller returns -EINVAL before dereferencing the table. Also use the
-converted length in the warning to report invalid lengths correctly
-when the vring byte order differs from the CPU byte order.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
-Cc: stable@vger.kernel.org
-Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
----
- drivers/vhost/vringh.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> ---
+>  arch/x86/kvm/Kconfig | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 01a683a9042a..4f7d75ec8c40 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -80,6 +80,7 @@ config KVM_PRIVATE_MEMATTR_VM
+>  	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+>  	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
+>  	select KVM_VM_MEMORY_ATTRIBUTES
+> +	default KVM_INTEL_TDX || KVM_AMD_SEV
+>  	help
+>  	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+>  	  memory attributes.  Using per-VM attributes is deprecated in favor of
+> @@ -87,7 +88,7 @@ config KVM_PRIVATE_MEMATTR_VM
+>  	  CoCo VMs using a VMM that doesn't support guest_memfd memory
+>  	  attributes.
+>  
+> -	  If unsure, say N.
+> +	  If unsure, say "Y".
 
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 9066f9f12ba1..ce4f5a02c8d2 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -197,8 +197,8 @@ static int move_to_indirect(const struct vringh *vrh,
- 	}
- 
- 	len = vringh32_to_cpu(vrh, desc->len);
--	if (unlikely(len % sizeof(struct vring_desc))) {
--		vringh_bad("Strange indirect len %u", desc->len);
-+	if (unlikely(!len || len % sizeof(struct vring_desc))) {
-+		vringh_bad("Strange indirect len %u", len);
- 		return -EINVAL;
- 	}
- 
--- 
-2.50.1
+It looks the no-quote version is more popular.
+
+          If unsure, say Y.
+
+>  
+>  config KVM_SW_PROTECTED_VM
+>  	bool "Enable support for KVM software-protected VMs"
 
