@@ -1,54 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792548723;
-	b=ByWprlro7fBavfSQ877kn6QTp1ckt04CAp89uKKDR88kyoHJaL4vASCGwooyBzW5zQWK
-	 XTemMo1Z45DOZTwZUng9TNyqi/S7j1HS7qBWG3FY7gI28L9m5xwc91HLTdS+o1e+55M/W
-	 hZfonR2wbdxRQqffhUDfljEpbDy9JcuNJDKxOQj8XZ7UNX8EaT2/IzDDj6icpllKCW/pC
-	 Fl0Dg8wy2nRoi3gwpBl7z4z4qr0VWRqVrXM2Fy2E1guhCEGp1iJFbY1JpqZ4okvOxCikU
-	 A9Yyi5On8+8R5ZdA9G494aXdGvYg61uSAZCz+ERH6e3cCPKKsmvu091L3+oLQgWe1Og==
+	t=1792548751;
+	b=ua6QmZB3wvlm1mdhAE59iAG66fIt5TKpZO4aDUQNRySNi1UWrI9oQJZFT2444NQfKJ1q
+	 2AR1GrYYdcpB3zRXCTIxXfUV0pHAS2hijkZeVUInEw9tTU8kj0jILtxMLltzZuQ9J8nhi
+	 NQKfRLV8lwrunL6vMRldExXd8jnbMMpZrsVMBUNWy+JD5eDFtvrOyGTNWsYe6x8F6JXPY
+	 5+uGu5cBSQUAnM4Uc8q01kD2fwomm+SyYr9KGzALLr20MlX56hAH4Gwy5p18OQScRI0jj
+	 XKH87gIXVnplBY76OVztnlIDSB6tKfqyd4JZ9h7cUmJCSuU8i3JRgvxWkbGIPBAvZ0w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792548723;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:MIME-Version:Content-Type:Content-Disposition:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=U1bMnDwm6FzN6mY++vh18qaqtEjRNas2FZcI4bgSDsI=;
-	b=gpNoSJtX3YMKuwnk4xIQS8lUKP8xaHRruKHg2Zh5b9emlb5N/QJzz+5jR7yP4wG9X8DP
-	 QLeq5HQ9cNYq6O5iwgvk4Zv4KGSf3spuYKMP88AwwTap+xMCyO3wiw1KNFlbCU2T9WYqz
-	 zIV+ND2IqzrVxUBicmRRomGfov51X1+X2Xrqpd0HZnbD3c5ZZVrlW++dXqQh6sr9Ehfct
-	 sxQOB6JHd4dKuyxVjHM+UhdTdOrG0ScXgXJUcKRfOvpllgDhfRDdyDxf6RxhQIoG17nIe
-	 IBGP8IC0NYGAn7dB/SLdm1FGOjL3z0Gf4cHDZJrWT4pVQWAnL52GY0UKGmJFymrEACQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792548751;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
+	 Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=LM3zXXEyrs1k6iikZyGFv5HI2GOa7cTFeTDBek3U1qE=;
+	b=UmaXe3lf5WBxOq6NcBYkPzF+9lIZArtBQWTtmlQGv27L1cER49Vj47Fc5Qiv48CstOuI
+	 aChksEB7OaFOKRq/gZJYYmxBtOtm7KOgupCtZpujZyPmaDCJVB4Imu/MMkO4oAcL6QS8j
+	 qbnfdHfHl86I7xTfpcInvvwKX9qabz5+x5wges0UtmKKpYNorEsuAa/CrR2xfrj8UAsBq
+	 HTtkHsktq8h/OZ4Boks6+57nO7LffePS+lc81M00nuKJkv0sVVO3Mk4aXpHjXmD8xQXeA
+	 rchtYgXYPFoN0pJafWIvIWtHs9zwvWgS0J15Pzt748nxf1rejDnGbH/8QcaHYAcEqRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=LS3m70NQ;
-	arc=none smtp.remote-ip=220.197.31.2
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fMu1ySdm;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39405606A319;
-	Wed, 21 Oct 2026 02:11:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39405606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23E9606A319
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 02:12:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C23E9606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=LS3m70NQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=U1bMnDwm6FzN6mY++vh18qaqtEjRNas2FZcI4bgSDsI=;
-	b=LS3m70NQpDk48fEjkIAE534dKS4gx56oT1Ee1Be5ckz7OJesbMLIxTWSl7pVy5
-	7+33wnVooyM4RRxJEJHeXn9s2wSdrnP3Sb2HD91NMegZXeUtQwArgfA2MTNecm1J
-	8wRVAbc41j8SBJL/qORRCc6qOryTd4OZukgph6KFPyN1E=
-Received: from localhost (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgD3VZplH9hqIo9qBA--.10042S2;
-	Wed, 21 Oct 2026 10:11:49 +0800 (CST)
-Date: Wed, 21 Oct 2026 10:11:49 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: x86: Inject #UD for AMD-compatible SYSEXIT in long mode
-Message-ID: <atgfZa-_ZaGT-Lg8@192.168.1.215>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fMu1ySdm
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3aaee1fc104so393872a91.1
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 19:12:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792548750; x=1793153550; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LM3zXXEyrs1k6iikZyGFv5HI2GOa7cTFeTDBek3U1qE=;
+        b=fMu1ySdmKczYVurWwRxucpMNpuFCzKTBtLPq1eOEyqTkETBtmQwuLv0iM0GA+FQbfD
+         tiDfoFf8jXxeEl1PBK7MWgBoKp3C68m3EyMvWhzkfVLH8W941S8H8IOZv54egwQhxV2a
+         zNgOnb9IoS3+PR7ankyuxnZZUknQdR6kX+cRptdznh88kvpg4AhAfOucETHRan9RV3DN
+         acY+ogOaCktWPGKQGEmGYpW3xhSrNlVWwWkhU8c1VlaACVeKmkb4L2FN5reRGRnV1s/j
+         +H9jOTK36MO+3buvLjxTi0pzlgsfIO9TmgPajhbAYDIOj58VjxZnpicWAIfuFhdnDXJ0
+         d2Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792548750; x=1793153550;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=LM3zXXEyrs1k6iikZyGFv5HI2GOa7cTFeTDBek3U1qE=;
+        b=bLAuZUuMztcWAb2qlmmUsQQKYBtVLvv6fMgkEvJyWL7a3lzWHgYLiEvHfqEtQUSGQR
+         ebqTn2Tz4VXmZHmg4Z5u3y94kQfbf/nuO2v19+ZtbRAsm5hV8WnigAGsYu4xZOcCKxyt
+         PFVrl7i6+rbpr2ftXZ9H+PsSXVS4W/OMxfOkOiXHZ1Tx87g5F7pEHMNCzAEylOAzetWo
+         30sC7gWP+jhkak8DQBhIVmGozODwZuGn5jzZlcA+MG/JKj1b/w+qiKzBAAUQxgSxRgBr
+         lp6USJJQxpf4Y0di9y2x2zZOVpZt7MhyEkICd1VF0wwbLEhTNtlq1y0sJmyJ3hMUzySb
+         5LTg==
+X-Gm-Message-State: AFq9FYKrRHeO5v7QGBfVlFF5NlDnmgYGAQA/trK7VUI/O6Ed6DYmuj74
+	l92AOJ9CbzvLujrLgL8pmcwDUXFMSnKtbGT9ImmAWQ9vHNV3skDSwpEB/BTKTdY7D3ZwlXbQA40
+	nv7X+aA==
+X-Received: from pjbhg5.prod.google.com ([2002:a17:90b:3005:b0:3aa:ab59:7e2e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2786:b0:3ac:acf5:6daf
+ with SMTP id 98e67ed59e1d1-3ad8707bffemr601484a91.66.1792548749874; Tue, 20
+ Oct 2026 19:12:29 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 20 Oct 2026 19:12:21 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,81 +75,54 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-CM-TRANSID:QCgvCgD3VZplH9hqIo9qBA--.10042S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCrWDJr4kAw47XF4rKFy7trb_yoW5XryDpF
-	y5ZwsxKrykX34Fy3WvyF4fJay3JF1UJF48GF98Ka4FvFsavw17Xr1I93WavayfuFZ3G34S
-	qF1FvFZxC3Z7uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UVT5JUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+gWxpGrYH2XJoAAA3L
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
+Message-ID: <20261021021221.1703700-1-seanjc@google.com>
+Subject: [PATCH 6.18.y] KVM: x86/mmu: Preserve nested TDP shadow page tables
+ if they are used as roots
+From: Sean Christopherson <seanjc@google.com>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-AMD specifies that SYSEXIT raises #UD in both 64-bit and compatibility
-modes.  On AMD hosts, KVM intercepts the hardware #UD, but SYSEXIT is
-marked EmulateOnUD and em_sysexit() applies Intel semantics without
-checking the guest CPU vendor.
+kvm_mmu_zap_oldest_mmu_pages() excludes a shadow page whose root_count
+is non-zero from top-level reclaim, because such a page cannot be
+freed. The path in mmu_page_zap_pte() that recursively zaps a parentless
+nested TDP child has no such check. As a result, a shadow page can
+be zapped even if the page itself can't be freed; as the comment in
+kvm_mmu_zap_oldest_mmu_pages() notes, zapping it will just force vCPUs
+to rebuild the page.
 
-For an AMD-compatible guest at CPL0, this can incorrectly complete
-the transition to CPL3 or inject #GP, depending on the SYSENTER_CS
-value and other operands.  At nonzero CPL, the generic Priv check
-injects #GP instead of the required #UD.
+As in top-level reclaim, do not recursively prepare zapping of a
+nested TDP child whose root_count is non-zero.
 
-Inject #UD for AMD-compatible vCPUs when EFER.LMA is set, before
-checking CPL or SYSENTER_CS and before modifying architectural state.
-
-Move the CPL check into em_sysexit() and remove the opcode's Priv
-flag so that the generic privilege check does not take precedence
-over AMD's long-mode #UD.  Retain the existing #GP behavior for real
-mode, virtual-8086 mode, and nonzero CPL outside the AMD long-mode
-case.
-
-See the SYSEXIT instruction description in AMD APM Volume 3.
-
-Fixes: 4668f0507870 ("KVM: x86 emulator: Add sysexit emulation")
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+Fixes: 2de4085cccea ("KVM: x86/MMU: Recursively zap nested TDP SPs when zapping last/only parent")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/emulate.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c1b21282187f..2154a2f2fd92 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -2457,12 +2457,18 @@ static int em_sysexit(struct x86_emulate_ctxt *ctxt)
- 	const struct x86_emulate_ops *ops = ctxt->ops;
- 	struct desc_struct cs, ss;
- 	u64 msr_data, rcx, rdx;
-+	u64 efer = 0;
- 	int usermode;
- 	u16 cs_sel = 0, ss_sel = 0;
- 
--	/* inject #GP if in real mode or Virtual 8086 mode */
-+	/* AMD rejects SYSEXIT in both IA-32e submodes, even at CPL3. */
-+	ops->get_msr(ctxt, MSR_EFER, &efer);
-+	if ((efer & EFER_LMA) && !ops->guest_cpuid_is_intel_compatible(ctxt))
-+		return emulate_ud(ctxt);
-+
-+	/* Check CPL here so that AMD's long-mode #UD takes precedence. */
- 	if (ctxt->mode == X86EMUL_MODE_REAL ||
--	    ctxt->mode == X86EMUL_MODE_VM86)
-+	    ctxt->mode == X86EMUL_MODE_VM86 || ops->cpl(ctxt))
- 		return emulate_gp(ctxt, 0);
- 
- 	setup_syscalls_segments(&cs, &ss);
-@@ -4390,7 +4396,7 @@ static const struct opcode twobyte_table[256] = {
- 	II(ImplicitOps | Priv, em_rdmsr, rdmsr),
- 	IIP(ImplicitOps, em_rdpmc, rdpmc, check_rdpmc),
- 	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack, em_sysenter),
--	I(ImplicitOps | Priv | EmulateOnUD | IsBranch | ShadowStack, em_sysexit),
-+	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack, em_sysexit),
- 	N, N,
- 	N, N, N, N, N, N, N, N,
- 	/* 0x40 - 0x4F */
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 205d314a7583..1fa251ca4dcc 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2630,6 +2630,7 @@ static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
+ 			 */
+ 			if (tdp_enabled && invalid_list &&
+ 			    child->role.guest_mode &&
++			    !child->root_count &&
+ 			    !atomic_long_read(&child->parent_ptes.val))
+ 				return kvm_mmu_prepare_zap_page(kvm, child,
+ 								invalid_list);
 
-base-commit: 6c377d19d4a5116d9bec5203aa3c6c11523e7898
+base-commit: 2ff600d29ee478d0a8d46ef8a58afb5e038fe692
 -- 
-2.15.0
+2.56.0.218.g1ec904b173-goog
 
