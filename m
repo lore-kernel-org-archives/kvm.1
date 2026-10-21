@@ -1,58 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792546996;
-	b=zYygs73ykcuuX/8hKk8c3QMuqiSYhS8TWAq8VmK0Ms9+wpPqxaReW6iqTbsAyOrAB2fr
-	 F2edterXKYnTCN23E/vrZSBidoRNWqBSVbd+bLZi/p6+51WJeB/5Hx85tTqpxRCXyB9Ms
-	 u8SIvdX4KJJqJjEj/8ENbRbJcAiUDOGwbz2ibiiKwexgUPhgWRoiDFw4RyVje95bc7TtO
-	 gC69L6CuDTV+oX43CTTp5HPjSPR19EA2au2dQa4uKQvZhgJYjcrQLgM9KRZvOzxxvJzUf
-	 xkum0i1nCxitsPqO6vuoHmO+iYqpJtz3zbR/GG3SzifPdjUyyK3DHT241++faDukLnw==
+	t=1792548628;
+	b=30CB2P306PGIckYFfLajn7Ug4mO8rAC2/PMMcXKcHMZ2TARHZr5c9E0rU3XU+8/W4K4/
+	 2A/uHaoDPXFsakSF6ptsAeV0oZQvHvCkd2EoTnXi4RaAC67YFgMSEf2N8Hox2PLVL7DtT
+	 B3yaRnIRRbwmlPBcH8CVIJWQBN10BNJ0SQkpJuQdSPg2PvNt4CNRHY9eIWPsAql2miQgZ
+	 q6YGvQG1HyKDU11MEf8fyzDlF6g5X/wLEmhRlJv23yn19lq4B3az5SHcsCQKPOBWF+AyU
+	 SoOmYJUG3dUZfvQn1TE+d/la3fcrkYXmdwUoiWrgOqLmDOvl/J7k0lWPTXE3jbfa+Ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792546996;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:From:To:CC:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Originating-IP:X-ClientProxiedBy;
-	bh=50mE+TFxHoSoXlP90mElxa07zcuU+qcnOEjh3mmzvkg=;
-	b=4dpJRxa2hj8kuwp7LwgfLqbizMqbpJGK+pkkq4Dgk6d4MWy6ul9d6CmWiEiaKUYx/g5/
-	 FfS8+HIjqklSuMD/dnFqr3wLoqKmSm7g/ehvNa4jlQrp4WCmOzKnZ3BA3WJyfx4CbGw61
-	 FFoDTyS05aAPsNTnU1Rk9IALi2qgfNS9FOi7diZMVobY+ugr9cJ9zsVB1b18oINlDbkIB
-	 flj15ZLNtdP8XeQi3rcgbCvX4E+Ep2Jze8VpAl1Ze+r0KHRrA8UJw7RCilAo9reh90/Go
-	 bnWWAZ3H27r0nznSZFKAMVG/DJe2i0oX88FQoERNqK2qgyXtvyOABomEYGUTGiU75qQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792548628;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:MIME-Version:Content-Type:Content-Disposition:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=tf067HsMqMNUdUVbIdRMJp7vL0vCEPrg8RdQWmdIS2o=;
+	b=WrsyVPAThdL3McyD8VskReOi16ms2AsLM4DRQQQhD8gS5XDyw3J/EtkZBUGb2z8WxkFW
+	 KjOASzBBoJuSq4QgHRNQA5dvgqqW9JnjSTiDl/gdJyZEwb3Y/elJKL/GgkCdZyZNQGalO
+	 r28Ee2jA8cwgobT2phQ6xqL30pxhX3t2OfgtGEmj7P4btj2TLHgLH/dGkOHe435QaSaoC
+	 A83j6nMfZgl0etZCykfrWvPP4rR3iwq2DNckA/Ql2jamrEIub91TqroBivv+1v29LR422
+	 lj5lpnlj2gzOX+k6rbY2EVtGSmPNWGeTCGgEXjipTipDl4uJp98tgVA5+kj6Pjd/QUg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=H9eEAdIH;
-	arc=none smtp.remote-ip=113.46.200.227
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=hDiNINIr;
+	arc=none smtp.remote-ip=220.197.31.5
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AC7606A319;
-	Wed, 21 Oct 2026 01:43:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12AC7606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C7D606A31A;
+	Wed, 21 Oct 2026 02:10:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88C7D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=H9eEAdIH
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=50mE+TFxHoSoXlP90mElxa07zcuU+qcnOEjh3mmzvkg=;
-	b=H9eEAdIHnxzDlwu+6/Yjn7+5dIH6OaFhTV9R2sOIq/QiWat/oOG9z3hq8vNMHz8y+YIejX5LZ
-	wgIt85byGqwnvsF28+WbiVnYHq6azBKx0xboBQtqULJdKQIHbRvk92VToI0ODCCjUw1VJ3xOrZm
-	iNH9M3qqydQQDZU7OmY8DXc=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4j8X9R3YgcznTXh;
-	Wed, 21 Oct 2026 09:43:07 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 059D040578;
-	Wed, 21 Oct 2026 09:43:06 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 21 Oct 2026 09:43:05 +0800
-Message-ID: <6d86dd9c-83ad-4884-915e-6509995c5ba3@huawei.com>
-Date: Wed, 21 Oct 2026 09:43:05 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=hDiNINIr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=tf067HsMqMNUdUVbIdRMJp7vL0vCEPrg8RdQWmdIS2o=;
+	b=hDiNINIrpqCnDYrRIrIEU2UulrgQVlYwzK/xUX571noxe09rTcyn98+LHnuadr
+	x08oby4atQ25Eu+AHUaUz5eJDTV9cfdBBAIeXe/zMCknniWazMF9WIeiWBsoZ1hs
+	P98NIJ3Jj9Btk6n1HaSiCEh0pICxPDGoHjMC6gruPtnsw=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3n_r7Hthq4ZLEBg--.32434S2;
+	Wed, 21 Oct 2026 10:10:04 +0800 (CST)
+Date: Wed, 21 Oct 2026 10:10:03 +0800
+From: Hao Zhang <hao_zhang_kdev@163.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: x86: Emulate SYSENTER in 64-bit mode for
+ Intel-compatible vCPUs
+Message-ID: <atge--CosCmrOcx6@192.168.1.215>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,152 +59,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v20 00/16] vfio/pci: Add PCIe TPH support
-From: fengchengwen <fengchengwen@huawei.com>
-To: <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20260714104325.54444-1-fengchengwen@huawei.com>
-Content-Language: en-US
-In-Reply-To: <20260714104325.54444-1-fengchengwen@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-CM-TRANSID:_____wD3n_r7Hthq4ZLEBg--.32434S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ur4DuryUAw4xZrW5JF48Xrb_yoW8KF1UpF
+	ZrursrtF95Wry5Ca4kCF4fXa1UZr47tw48WF90gF1FkF4ku3WvqF4UKa45Zas3GF1xCa4F
+	vF4qgr1qkw1rXa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3-PUUUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3hyXimrYHvz1+wAA3B
 
-Hi Alex,
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-Quick follow-up from our LPC discussion on the VFIO TPH patchset.
+Intel allows SYSENTER in both IA-32e submodes, whereas AMD raises #UD
+in either submode.  On AMD hosts, KVM intercepts #UD and emulates
+SYSENTER to support Intel-compatible vCPUs.
 
-The P2P TPH path carries significant verification complexity, as it builds
-on the PCI P2PDMA stack which is still under active upstream revision.
+However, em_sysenter() unconditionally rejects execution from 64-bit
+mode.  As a result, a valid SYSENTER in an Intel-compatible guest can
+fail emulation instead of entering the guest's kernel.  For a
+non-nested guest at CPL0, this results in a
+KVM_INTERNAL_ERROR_EMULATION exit to userspace even when
+KVM_CAP_EXIT_ON_EMULATION_FAILURE is not enabled.
 
-Meanwhile there is clear real-world demand for the device-to-host scenario.
-AMD recently posted their debugfs series exposing CPU-to-ST mappings [1],
-and we also have strong use cases for D2H TPH enablement.
+Remove the unconditional rejection.  The existing IA-32e path already
+loads the full-width SYSENTER EIP and ESP values and installs the
+required CS and SS attributes.
 
-I'd like to propose a phased upstream approach:
-land device-to-host support first, and defer P2P TPH to a follow-up series.
+Also reject SYSENTER for AMD-compatible vCPUs whenever EFER.LMA is
+set, covering both compatibility and 64-bit modes.  This preserves
+AMD's architectural #UD behavior instead of attempting Intel-style
+emulation or reporting an emulation failure.
 
-We can add P2P support cleanly on top once the interface and verification
-are solid. This way we can deliver usable TPH functionality sooner, while
-keeping the path open for full P2P support later.
+See the SYSENTER instruction descriptions in Intel SDM Volume 2 and
+AMD APM Volume 3.
 
-Let me know your thoughts on going ahead with device-to-host support first.
-If you're okay with this, I'll post v21 accordingly.
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+---
+ arch/x86/kvm/emulate.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-Thanks,
-Chengwen
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index c1b21282187f..695957ebd871 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -2413,17 +2413,13 @@ static int em_sysenter(struct x86_emulate_ctxt *ctxt)
+ 		return emulate_gp(ctxt, 0);
+ 
+ 	/*
+-	 * Intel's architecture allows SYSENTER in compatibility mode, but AMD
+-	 * does not.  Note, AMD does allow SYSENTER in legacy protected mode.
++	 * Intel allows SYSENTER in both IA-32e submodes, but AMD does not
++	 * allow SYSENTER in either.  Both allow it in legacy protected mode.
+ 	 */
+-	if ((ctxt->mode != X86EMUL_MODE_PROT64) && (efer & EFER_LMA) &&
++	if ((efer & EFER_LMA) &&
+ 	    !ctxt->ops->guest_cpuid_is_intel_compatible(ctxt))
+ 		return emulate_ud(ctxt);
+ 
+-	/* sysenter/sysexit have not been tested in 64bit mode. */
+-	if (ctxt->mode == X86EMUL_MODE_PROT64)
+-		return X86EMUL_UNHANDLEABLE;
+-
+ 	ops->get_msr(ctxt, MSR_IA32_SYSENTER_CS, &msr_data);
+ 	if ((msr_data & 0xfffc) == 0x0)
+ 		return emulate_gp(ctxt, 0);
 
-[1] https://lore.kernel.org/linux-pci/20261001155551.4182899-1-wei.huang2@amd.com/
-
-
-On 7/14/2026 6:43 PM, Chengwen Feng wrote:
-> This patchset enables full userspace configurable PCIe TPH support for
-> VFIO, which brings performance benefits for userspace workloads such as
-> DPDK and SPDK.
-> 
-> Currently VFIO only exposes read-only TPH capability registers to
-> userspace, while all write operations are silently discarded. This
-> prevents userspace from enabling and configuring TPH, limiting performance
-> optimization opportunities.
-> 
-> Per PCIe spec 7.5.3.15: TPH Completer support is applicable to Root Ports
-> and Endpoints, allowing Steering Tags to target host CPUs or peer devices
-> for P2P transactions.
-> 
-> TPH usage model can be divided into three fundamental parts:
-> 1. Retrieve Steering Tag:
->    - Tags targeting host CPUs are obtained via platform methods (ACPI _DSM)
->      wrapped in pcie_tph_get_cpu_st(). Userspace requires a generic
->      interface to query these CPU-associated ST values.
->    - Tags targeting peer devices are managed by userspace drivers, and set
->      to kernel by dmabuf ioctl which address by zhiping's patchset.
-> 2. Program Steering Tag table:
->    - For devices with standard ST table structures (in capability space or
->      MSI-X table), userspace needs a unified interface to configure ST
->      entries.
->    - Devices without standard ST tables are handled by userspace itself.
-> 3. Toggle device TPH Requester enable/disable state.
-> 
-> The patchset builds a complete, secure, staged TPH feature stack with core
-> design objectives:
-> 1. Refactor & fix upstream PCI/TPH core implementation to provide clean,
->    safe, extendable helper APIs for VFIO consumption;
-> 2. Introduce configurable per-device TPH policy for staged feature
->    enablement, supporting progressive enabling of No-ST/IV/DS/LITERAL
->    modes;
-> 3. Fully virtualize PCIe TPH config space: read-only capability header,
->    virtually writable TPH_CTRL, silent discard invalid writes;
-> 4. Implement unified VFIO user feature uAPI (TPH / TPH_RESOLVE / TPH_ST)
->    for TPH enablement, tag resolution and batch ST table programming;
-> 
-> The patchset is split into three logical parts:
-> 1. The first three patches is Zhiping's patchset of add TPH support for
->    p2p access (based on v11), because this patchset support query dmabuf's
->    ST/PH
-> 2. The second eight patches fix and refactor core PCI/TPH kernel code to
->    export required helper interfaces
-> 3. The last five patches implement corresponding VFIO TPH virtualization
->    and uAPI step by step.
-> 
-> Based on earlier RFC work by Wathsala Vithanage
-> 
-> ---
-> v20:
-> - Address almost all comments from Alex about v19, not within Alex's
->   scope:
->   - Drop LITERAL policy support
->   - uAPI changes: cap have been split into fine-grained
->   - TPH config access: still based on perm mechanism, but restrict the
->     readable and writable length
->   - Debugfs add more fields
-> v19:
-> - Address all comments from Alex
->   - Drop CPU-to-ST translation of PCI/TPH
->   - Re-implement vfio part, please refer:
->     https://lore.kernel.org/linux-pci/20260626092232.53ed3a7c@shazbot.org/
-> - Add expose tph_policy via debugfs
-> 
-> Chengwen Feng (13):
->   PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
->   PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
->   PCI/TPH: Cache negotiated max requester type at probe time
->   PCI/TPH: Refactor pcie_enable_tph and add requester variant
->   PCI/TPH: Refactor pcie_tph_get_cpu_st & add requester variant
->   PCI/TPH: Add macros to check standard and extended TPH support
->   PCI/TPH: Add pcie_tph_set_st_entries() batch ST entry programming
->     helper
->   PCI/TPH: Add pci_tph_dsm_supported() helper to detect device TPH ST
->     _DSM
->   vfio/pci: Add basic NO-ST TPH VFIO device feature support
->   vfio/pci: Add IV-ST TPH policy and VFIO TPH_ST batch programming
->     support
->   vfio/pci: Add DS-ST TPH policy and extend TPH_RESOLVE capabilities
->   vfio/pci: Sync core PCI TPH software state across device lifecycle and
->     resets
->   vfio/pci: Expose per-device TPH state via debugfs
-> 
-> Zhiping Zhang (3):
->   PCI/TPH: Add requester/completer type helpers
->   dma-buf: add optional get_pci_tph() callback
->   vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
-> 
->  drivers/dma-buf/dma-buf.c          |  32 +++
->  drivers/pci/tph.c                  | 282 ++++++++++++++++++------
->  drivers/vfio/pci/vfio_pci.c        |  23 ++
->  drivers/vfio/pci/vfio_pci_config.c | 164 ++++++++++++--
->  drivers/vfio/pci/vfio_pci_core.c   | 341 ++++++++++++++++++++++++++++-
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 102 ++++++++-
->  drivers/vfio/pci/vfio_pci_priv.h   |  18 ++
->  include/linux/dma-buf.h            |  25 +++
->  include/linux/pci-tph.h            |  53 ++++-
->  include/linux/pci.h                |   6 +-
->  include/linux/vfio_pci_core.h      |   3 +
->  include/uapi/linux/vfio.h          | 144 ++++++++++++
->  12 files changed, 1090 insertions(+), 103 deletions(-)
-> 
+base-commit: 6c377d19d4a5116d9bec5203aa3c6c11523e7898
+-- 
+2.15.0
 
