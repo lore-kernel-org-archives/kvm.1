@@ -1,57 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792625421;
-	b=XxJaHsy2Mb+ORsTHoIT5rjG9iV8BV+CHxBDedDOdauEY596fB7Zsav1KFjYMQT4i4Z3M
-	 v1Zq6wXO/x1kSpLWxBaGGL6lhOV6F9VRklvf2D6FC+IbB/49j5M8TmGE7l3QV8BRFc5Fy
-	 KlOL0qga0F/+nCs87Z9yBSOVgJB6ckwIfzVim0tW2dO1VxN61NCmY0GxX4QJO4DDm4gZG
-	 XpnryuPf60P4EFYKV1UOTp6WCeSzjx8vtMwWlpY7Ug2BiSXp6qMiIZnETPKD9/kCYjN73
-	 dLjR4/8/sIi5dbDyKjWwhyRz1oMZCnqhY4Gcwwd0A+Xe+/8hum90i4foPhEUdMsyk/A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792625421;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Ir6FbwZSNiaWiV+I6i7iN9AQfmkcbgxAJM3HyQge9rQ=;
-	b=BO4fpe1lVSPcrhAUsQ0tQ5EtyPPsPRX63clj61kRX2dqIEYNtzfOZDSVq0cp1IcRocHv
-	 tOAHJAbcL58xLKujIy5+cke3ux6qOICu7U+KrVJZ+ZwtTvl4un43rgInXqNeNsqDjz6mQ
-	 AT2/U25I6Eb8uqGDGhO8Gl11su3uSirD7EPK0xh0Z7vtlXGdCxCQ+N2MQ5gcjTdXAUkAB
-	 tvTqsKFstba9icMszVox44/3ySIm+C8vjcvqBDp/Biq4Cgixxw338fP2nNsLo5JaGzLql
-	 6p8vVLpv3W4A0SZze7xfap5AREgT1MfvDpggxOREo53A9/fOZLg2XgA/PaQRnt0YFCA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DR7lQMUc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792625665;
+	b=WS4vq96ZPOqkNvzrqlIzhknpzFMyxWD2h5KLj8SyK4c44YUYvwyadJtDeUNLC/M4jycN
+	 VsSsq60qysm432EIRO/R0LtmO3ZU97k/iBdKBXNFFAxRuaEX6T8CcwNKrdn9SbVr1lJcP
+	 BWpHoFaxUWw1TTxyA0RWq11a3KRelAABrqxLfys+EmORBkCtDESq0U+zcEhuPqs3cvj/X
+	 M4yWTNcd3145wpc6EEn/rvWSjkVOZRLmLNmyIFjVFdw8FOyZfJSN0mr8XHSkg9Fas/xpx
+	 oIzohwolzqQESkkzk9I3IexEiePvdI0zSy+bx3WrckmVOffO0RDvDAmLrjg/eLuRgpQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792625665;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
+	b=IMapoaTPhrMdcmC3NSlNUaOtWH0Oo865vhA75soHX6l9yaWN1ntcc9FvINkrFGIbFT7C
+	 RzFjAvSk9bDWRCfYtu+yTTPgJRfm8bvXklTUBcemsyz7/zsUoDnGrk+NLsQOBBlxzq/Cb
+	 NtHla3zJ8WRpsmD/13hKGB0CTsIKJVszVwaUU1+oMg6vE9XujoNB9Nnp3l7d8RUbEQzEP
+	 dW0bTFvjqRZfT80ThbFE40T34tNBIn64/1Dkf8qW9sh+55wXZnZuh6iQ5Su2+kE8TjNtg
+	 Uq72tY9AUrkPC+arW9ouVIlqcgYczMTejkAsz4OIpbIQzwD75GSUhOWlFq0S7/kRiXQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LdnzE0zJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3934606A31A;
-	Wed, 21 Oct 2026 23:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C10606A31B
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:34:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88C10606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DR7lQMUc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BB61F000C1;
-	Wed, 21 Oct 2026 23:30:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792625420;
-	bh=Ir6FbwZSNiaWiV+I6i7iN9AQfmkcbgxAJM3HyQge9rQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DR7lQMUcicvA8njwYFjeA/FLreJIMOVRE5xkX+5P1hUx42fQbxqltLUL76NT6yosG
-	 8MvzUJqKEAK+WWwZapPcgIDWqopqayOrjM2xgehMmJHpDkwNZ4NlWVtTRSf/9sVJke
-	 tzduvKkOJZAjCWfoz/KO8p6SLJFUrqYEUI553HdNaUcD5aM5QpmCuk0scSGaJFYtgE
-	 K2C809FrNNvKF9kZYnwd3/S/cV0sy+dvxMkxEUJh1hs7BQJ8jqgvexL92HNUM3q9r0
-	 fijYapjGVAWfQpVtBXcUYX74Qiax8REv8W6iVfI8cy/7TxzOHxsFE1scvjDuPlmudH
-	 CP74KOuI6+YAw==
-Message-ID: <sashiko-outbox-180785@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vhost: fix used ring index wrap in
- vhost_add_used_n_in_order
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Fang Xieyan" <fangxy@xiaopeng.com>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
- Perez" <eperezma@redhat.com>
-In-Reply-To: <20261020232956.99970-1-fangxy@xiaopeng.com>
-References: <20261020232956.99970-1-fangxy@xiaopeng.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 23:30:19 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LdnzE0zJ
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2775a12.1
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 16:34:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792625664; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JkBX/elTv+Mqtb6ehioVjO7SzQcgNxhNo5RfNp40i5CwJvR8jldV8c90z8wmdkwo7a
+         Q7iqnO6bQza2/l6D4L22ZVmvB5JQ/0cQtrQwqFmdPoa31sdUY5hGYzoasJZZibR+h0GF
+         aCcJQoDyWFGdxFyJXySeygKpHwBT4GVCuoRvYNZcB46Br9M1DtSRzdCCv6E39D679Uqy
+         OHy0t48GYivCe2y9Wj2qnUzrKj5t60mxr0b32diqTP2ff3njApsDdBVErw0Vk8PZTmTL
+         Mc3lue29ANcaJh08ffu+PrZPnNrrsK93ddRIr+2JdtUSwE+qRL4ZXXgtlsYP2JBsLKDW
+         VX3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
+        fh=n+joK8yClKi/kQhnE16dfXV0bL/TKlsNwI6wrqXPSfU=;
+        b=KWSFBTP/FLzSjdfTp2QjVtOvtCbBn8MX/1RwqEiotsrtwiRQqIrF203RFzYJqRyZoy
+         7nrh6M0iYJ8jKuG6W1Sx+Dl7TmIpQzXKO6qLTcaPtAyCE0IqO6xpJsxNTWZPD4yJ3OrA
+         4nZp1YksabRIWZKakmxugSUxc//IXTxNkTmuPQnx+R+NrO0Mc/68Ylilgac76FvRcFGI
+         XsVO0Z0RF06DvaTowOlrEukM5YbsAjhq8GCiBJ14nzL7HJItN2cGIWEUgpT7NxDHwfGe
+         RuRxIu2VgCkhtrouVur3wbwEN90r1EnoeHa4lmB7LBuWyxtq5uMgcwkJSjpy71E4rHEE
+         55MQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792625664; x=1793230464; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
+        b=LdnzE0zJquVjUHmlmSxeqD4jOmflRdqRlDQ3XcYK1BlPGsbAAi2zlAqYfQhnSIE25/
+         cPcMktJPyAE4aNRAKrqq97X3mOBvXrdK0UATWJsV5ZwcBhmiNawNw7lblKkcdpFGPoN6
+         by8epEvuLM5AhlRJhQVYjBSa2WyTysM3yhC8E0g/WQCVQaYHh3ue5xlxpSUGO5F7Aijp
+         Dg4l24JDX+e/KyNalYUZh3BtXL/I2ohWMOPZiVp2i/IC6j4ZvIxW2wUo9CfU3Bz1OcsM
+         SErjL7K/DS/CVNrLVtaHvGTF1LWefbYArqsphI1ZoW9dfwlGWeYwQg96osf6M541+FB2
+         X8Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792625664; x=1793230464;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+FP6KI1E0WI+ATvprP88F8rImT8RMOfmVLaZJFbAxPw=;
+        b=utESgfcBaVx/gaBJ14zlwrsT1EvGMChH/tia9gqeJOX645TUcBewE9ZMfpeGGrF+jB
+         mDPmuaS61KwYDsbEL9oEFoU1msRbYP1IL2CwZBo8k17My2Wi5kwGOD4q3fjMtr1tPaJS
+         gfzCGrJvNfZdbMAIRUMBPS8956Dw7k4Wj6VV7+XIpsVRIeZSK2fcd6Sk9WBiWHlILuOT
+         Iok6w5yydyKjioepwxkN8FQ6CELXmIwD3inV8lxPXrPxSZhtD3P472qAMBEDwNbGuISr
+         pl1h2f4G+3SfftGkg0d4Xp83TwCjjifM7qv7Y902tXznSh4Wk8SlQwgar3ICNVRSGw8F
+         c5NA==
+X-Forwarded-Encrypted: i=1; AKwUvBxeNlwhmnspE0c+WyTPBk7hah/g9/wZIZVEtdDveqcpHYqbuWa1TW8LWsqszN8CbuTp/ww=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2A9nu7G3MCL/z/BpaaUpntMrcdW0NvvKSAqBkcbHyh01Zo57G
+	1wk3HxMJt5GS3YV+EsKSpE6hNaRi2/ZrSr+rvg/qpUXgOuzE3LTBAaz7t3s640MZos7WCYoqXrp
+	Z3PmKV4f6Sbvnjwr1EnD6vTsmpdHiCL0fooZK+NXT
+X-Gm-Gg: AYBFou29vrNmomBYBBS5cmRoOPeCQywjIHIitIDZWn4kxFp6bXxs+QF008m4yDnWXCG
+	KWfav2Dj3k0BJZyykpcQI4KEe/etJtxsriSCCJ5v1JQ2amUA+eoydxAM6jGqmCcB+AjFT4vLOmO
+	dGBHXWLnpyFLr7QG1gGvCcAsulLxscDGP8aC6Kr0jzCEkbIb6/MSUrcJZctxx8KHQ3omIn/yl9d
+	PdZMO4HUXvrYpjjxwh9UtUXDcoQWKQQO+luJeFnWSTLumt9ROQjtPOr3tQOeerpu8da/2nrSwQ5
+	cc6oGdmX8q98PSfMw4HYH+UsH2PlVMxqujF8ddo+Q7GXB5UjFJbXW0GDmOEoqoMxtoWZvmCFw2Z
+	QFZjT630O6KP1Yb+YYLHWnFwybpMuyOK/pevp
+X-Received: by 2002:a05:6402:3258:20b0:6af:97c0:ce51 with SMTP id
+ 4fb4d7f45d1cf-6b42036d1eamr8171a12.13.1792625663534; Wed, 21 Oct 2026
+ 16:34:23 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,105 +103,93 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-5-shivansh.dhiman@amd.com>
+In-Reply-To: <20261019210532.378628-5-shivansh.dhiman@amd.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 21 Oct 2026 16:34:11 -0700
+X-Gm-Features: AclHuK8Fq2OFwJbDGTBqUL2KjFhS3p59umi4aJ4iOn3Aabk6CQHJXunrqbDFxu0
+Message-ID: <CALMp9eS+vfR=Gk5QhLFrCZ4MyCq1YrunViB=tB5OLo+L8Ka+OA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/12] KVM: SVM: Enable hardware-assisted LBRv2 virtualization
+To: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
+	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
+	nikunj.dadhania@amd.com, sandipan.das@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] vhost: wrong start index for log_used() in vhost_add_used_n_in=
-_order()
---
+On Mon, Oct 19, 2026 at 2:07=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
+d.com> wrote:
+>
+> Enable V_LBR so hardware saves and restores the guest's LBRv2 state in
+> the VMCB, and pass the LBRv2 MSRs through (by disabling interception)
+> to the guest while it is set. V_LBR is enabled lazily, only once the
+> guest turns on branch recording, just like legacy LBR keys off DEBUGCTL.
 
-commit dd320e3245fc3d77e9d6856274ea3ebedcc56808
-Author: Fang Xieyan <fangxy@xiaopeng.com>
+For a Linux guest, I think lazy V_LBR toggling is a bad idea for guest
+context-switch when LBR is in use:
 
-vhost: fix used ring index wrap in vhost_add_used_n_in_order
+Context-switch calls perf_pmu_disable() -> amd_pmu_lbr_reset() ->
+perf_pmu_enable().
 
-This commit masks start with (vq->num - 1) inside the loop in
-vhost_add_used_n_in_order() so that advancing start by nheads[i] cannot
-leave start >=3D vq->num when logging used-ring updates.
+The PMU disable clears LBRV2EN, so V_LBR is cleared. As a result, KVM
+intercepts all of the LBR MSRs written in amd_pmu_lbr_reset(): 32
+stack writes plus LBR_SELECT.
 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 4d5d32e68d35f..b1a9f8f05cf65 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -3188,8 +3188,7 @@ static int vhost_add_used_n_in_order(struct vhost_v=
-irtqueue *vq,
->  		}
->  		start +=3D nheads[i];
->  		new +=3D nheads[i];
-> -		if (start >=3D vq->num)
-> -			start -=3D vq->num;
-> +		start &=3D vq->num - 1;
->  	}
-> =20
->  	if (unlikely(vq->log_used)) {
+> Co-developed-by: Sandipan Das <sandipan.das@amd.com>
+> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+> ---
+>
+> Changes in v2:
+> * Check svm_lbrv2_active() in svm_need_lbr_virtualization(), which is
+>   a newly added function.
+>
+> ---
+>  arch/x86/kvm/svm/svm.c | 45 +++++++++++++++++++++++++++++++++++++++++-
+>  arch/x86/kvm/svm/svm.h |  1 +
+>  2 files changed, 45 insertions(+), 1 deletion(-)
+>
 
-[Severity: Critical]
-Does masking start inside the loop still leave the log_used() calculations
-in drivers/vhost/vhost.c:vhost_add_used_n_in_order() broken, allowing
-out-of-bounds writes to the dirty-log bitmap as well as missed dirty-page
-logging?
+[ ... ]
 
-Before the loop in vhost_add_used_n_in_order(), used is anchored to the
-initial start index, and then the loop advances and masks start on each
-iteration:
+> +static void svm_recalc_lbrv2_msr_intercepts(struct kvm_vcpu *vcpu)
+> +{
+> +       struct vcpu_svm *svm =3D to_svm(vcpu);
+> +       bool intercept =3D !svm_lbrv2_active(vcpu);
+> +       int i;
+> +
+> +       if (intercept =3D=3D svm->lbrv2_msrs_intercepted)
+> +               return;
 
-	start =3D vq->last_used_idx & (vq->num - 1);
-	used =3D vq->used->ring + start;
+This replicates the bug I just fixed in
+https://lore.kernel.org/all/20261020234535.3182385-2-jmattson@google.com/.
 
-	for (i =3D 0; i < count; i++) {
-		if (vhost_put_used(vq, &heads[i], start, 1)) {
-			vq_err(vq, "Failed to write used");
-			return -EFAULT;
-		}
-		start +=3D nheads[i];
-		new +=3D nheads[i];
-		start &=3D vq->num - 1;
-	}
+> +       for (i =3D 0; i < 32; i++)
 
-	if (unlikely(vq->log_used)) {
-		/* Make sure data is seen before log. */
-		smp_wmb();
-		/* Log used ring entry write. */
-		log_used(vq, ((void __user *)used - (void __user *)vq->used),
-			 (vq->num - start) * sizeof *used);
-		if (start + count > vq->num)
-			log_used(vq, 0,
-				 (start + count - vq->num) * sizeof *used);
-	}
+Nit: 2 * SVM_LBR_V2_STACK_SIZE.
 
-When vq->log_used is enabled, the first log_used() call pairs the pre-loop
-used pointer with the post-loop start index. If start wraps around the ring
-during the loop so that the post-loop start is smaller than the initial
-start (for example, initial start =3D vq->num - 1, count =3D 1, nheads[0] =
-=3D 1,
-ending with start =3D 0), then (vq->num - start) * sizeof *used logs
-vq->num elements starting from vq->used->ring[vq->num - 1], extending
-(vq->num - 1) elements past the end of vq->used->ring.
+As I asked on patch 3, what if the guest CPUID.0x80000022:EBX[9:4]
+declares fewer than 16 LBRs?
 
-Similarly, in the second log_used() call, on the vhost-net receive path in
-handle_rx(), count can reach 65 while vq->num is 32. If the post-loop start
-is 31, (start + count - vq->num) * sizeof *used logs 64 elements from the
-start of vq->used, again extending past the end of the 32-entry ring.
+> +               svm_set_intercept_for_msr(vcpu, MSR_AMD_SAMP_BR_FROM + i,=
+ MSR_TYPE_RW, intercept);
+> +
+> +       svm_set_intercept_for_msr(vcpu, MSR_AMD64_LBR_SELECT, MSR_TYPE_RW=
+, intercept);
+> +
+> +       /*
+> +        * DBG_EXTN_CFG stays permanently intercepted for non-SEV-ES gues=
+ts so
+> +        * KVM can observe LBRV2EN and lazily toggle V_LBR.  SEV-ES+ gues=
+ts must
+> +        * delegate LBR virtualization to the processor (per the APM), wh=
+ere
+> +        * intercepting LBR MSRs can be fatal, so toggle it with the rest=
+.  See
+> +        * commit b7e4be0a224f ("KVM: SEV-ES: Delegate LBR virtualization=
+ to the
+> +        * processor").
 
-Because drivers/vhost/vhost.c:vq_log_used_access_ok() only validates the
-bitmap range covering vhost_get_used_size(vq, vq->num):
-
-	return !log_used || log_access_ok(log_base, log_addr,
-					  vhost_get_used_size(vq, vq->num));
-
-can logging past the end of vq->used->ring cross a page boundary and cause
-log_used() -> log_write() to set bits beyond the end of the userspace
-dirty-log bitmap?
-
-Conversely, because each iteration writes a single element at the strided
-index start before advancing start by nheads[i], can this also fail to log
-dirty pages that were actually written (for instance, when start wraps
-during the loop with post-loop start + count <=3D vq->num so the second
-log_used() call is skipped, or when nheads[i] > 1 causes the total span of
-written ring entries to be much larger than count)? Would it make more sense
-to log each written entry inside the loop, or compute the logged range from
-the initial start index and total advance (new - old)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020232956.9997=
-0-1-fangxy@xiaopeng.com?part=3D1
+Is intercepting LBR MSRs fatal, or is clearing LBRV fatal?
