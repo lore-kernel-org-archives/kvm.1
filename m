@@ -1,121 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792567808;
-	b=jF6j1D7hY5jSbSai1gvcLosfJGR7l928aMCeC60ePojqLBCnibtoZ25An2zx/ByqsBvh
-	 VqWx5sl4iQUGjO90CA40d46gKMFawcgonU711ypq5h/dCmPVJtGQ2UO8E5jfyaA2UPbHG
-	 wg0oSIU3eJTZavS/sU6BHJuh+d5grL8rI7MteQf64ez+hYTC4u/7+6hl4pYBey+gdXrW2
-	 1u4L3z3nyxEplEb539OQEid4rTzY5UFjQPfPFvlzprM6NNg9+4ycYUzJKv8ZL8ub+Q1BR
-	 6nCYtDjt8zhBZomwigRo1LNNhxkWcl2LYYj1ij7xkI4PbEvdT5Y5OnlKTtNnImb4pzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792567808;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792570839;
+	b=JoxYt1gwp5EMdSKmMQSPfH93Rtr3aTxlTBFlFBr84JShZmz7hHYAIM0duUVBK/v+nazW
+	 DK5vCGma/LuyrX+yeRiCzVil2YsDvHSCNmdkbffVsIsvFMxTuCGr8T3sbTP5uitWKWea5
+	 YNO+xCW8lDo3vyp4sLAGFg+AyJybuA9GhCJEPq1UqgUR2DOx34k9Fr1kDbCs45QaFDg/w
+	 Ykvi/YQoevyQWpOE/2qF9qE3okzA2KekGdBCUL+cowKC/xv7SlmihPv2zhMCHSIyehbg1
+	 a2wGrLrW/o1YLjVeyLx8qSFlDkddc2Ux5WgT+6NrceXd2O4F9SSzOa7N/4BsX+9eSFw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792570839;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
-	b=s79T8BOeDd1H3m4I7842AtlCKRAGLsfEZCzdz6Ea0wJcqn3AP97bm/V5/yTrRtYgNDv7
-	 Qq3SE8VmvfGuAUJUkiOsd+bFjxhPlZiiPxXUJNzm3YODBoz1ziSc4eamy0lrsbbJf5oj9
-	 /Z37VzKBxIEo51Pswbn3rEfqd1ITSEjwWkZmTdOTf0VTo/IUjeOM/EHCQU5jy9tkE7C0k
-	 mpEted1AwcJ50CZAV8GRaCXRql1Xbg3QkjlwsPZDKCgB6xsjOyYG/GSG7fcJV20mHTZ7y
-	 CvSLFBvTvHhMHPbj+wMWeJ4VdNXg6LRP6SyCSXEjcHqWwEsDvNiay7coZY4TLimPk5w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Received:Received:Date:From:Cc:Subject:Message-ID:MIME-Version:
+	 Content-Type:Content-Disposition;
+	bh=N3zhSUFcOuUecMmOF2S/sOJZ1XZuTYWlBZE5Z6JPRz0=;
+	b=HR4Cnm6nGU/NmOly9iRXK8T7mNJuU7tvOYXSi0SVVtAwe7FxUkEVDkqpTvEZbv9qJJFV
+	 poh2zMFjJtObJ+e8JBWqOIsbsgLn/0JQzcSFT5jfZUtvUWOzzWKMB6XpnkVmzOS6yZNOQ
+	 ZShCJJkaMoIqTsDb5XykWy3KgM7hNG2slQCd7tVc3PT+w3O2F1lkZ2mrHd++ZOFTpS5i6
+	 zhbJMYHDktpOqXE4i1P88kfVyXQ7ZdEI8BKo+FzjqsTOddxvp/YX6yEX1Zf3Lb1TciKTp
+	 Qsy0EnjzGnmC4x1jWXYrGB2bGNt8ftN7Mq3QFQEvvDCSBUJPKIORkAcqXAnIZgdawgQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MEo0p6wi;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=iPKj99OK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cElEAZbI;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=YhfvEEoU;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F5C606A31E
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 07:30:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78F5C606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1720606A31E
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 08:20:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1720606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MEo0p6wi;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=iPKj99OK
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cElEAZbI;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=YhfvEEoU
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792567801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
-	b=MEo0p6wiV0/R/3nHv0Agn6BGUrhqJa+uywYRPZFlq/M0cClJEonQ+FFpq6WLkNWGVgpWdb
-	S2FnjkfHj2uAcqsUlCXxqr7bIOLV9xlDVAnLeP6MuVE4dGRbuB6elm8N5ogmYrALCYSi0o
-	ucKS4A/+IfSTynEDj0VRe5X2a+ffBpc=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	s=mimecast20190719; t=1792570837;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=N3zhSUFcOuUecMmOF2S/sOJZ1XZuTYWlBZE5Z6JPRz0=;
+	b=cElEAZbI6LlcuO5yixatepkqQlulMPbFMz5D3Ff69Vse3oiOOXk4tUpQPzYWueMwvbhOYU
+	zRvcDnzJVNlroTzcoiiPdjjVWAVvRmfPvg8dp2OLS+fKn6RDDq+2YqEY7VRM6ZC75jzISD
+	2MIARdwihH0+dmZ8+xjKiuD//ddRs8w=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-yoq_jJCdOs6fEdUxk8D4Hw-1; Wed, 21 Oct 2026 07:29:59 +0000
-X-MC-Unique: yoq_jJCdOs6fEdUxk8D4Hw-1
-X-Mimecast-MFC-AGG-ID: yoq_jJCdOs6fEdUxk8D4Hw_1792567799
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-869553205a7so7297137b3.1
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 00:29:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792567799; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nA8NPo5UUm5u6tCE6q+InSzDRviRToCSvAJFzztKGktIbrTpcAdj0MlnXx0DwVLcdK
-         yC1hQkYdINorgtOo8yDaE83K9XFFQr4qLPe0HAH9LbkkswAqm2e/8mkPeGM/lpw3hHL6
-         yOcQCtMbQvV/5f5DXJwKbYkXTCpUcbA/VE7s+JMGT//hvFq1sQ6aiQezQ3s1m4zmqTwQ
-         +VJVXesBTiUoWktSQxkiuNYcd87NEjPMDZMTFEuZaJ9TOoNXFVcKTTr7IFizjUZM++7B
-         w9aCzLPYT+3ViB2zGLqDmml2EApieB82ZUWuo0nBEO0cgM1cwnu7oO2xZoRgjremryIU
-         3lnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
-        fh=5f8sQ6cdK0D6tOT1xSf908J0m9PzBhzHXVihpdRkPCc=;
-        b=SbKbligxSHT+qjvQTsxj1n7mum+zIO/+YBHhHJ2Veaq0GT5Ov2V/SZT+g4nNv7MeC+
-         6QuGqinncNgrlpG3rV8KlweT7QUEnxWapFXkJNbMcSXWR037gKQnrAOeLSHAB2AupwOc
-         P40D6kvAHq7b05dxW/zgBLF2zsAz6S7y6KyHlVB54CWUtPnbV9bst9oqoMKHrVT+BrMR
-         Z4Kkb4hLCqeAOEOEO5gKazq3wS9MICSetZVNWq4xoQ+etnfO07uxuqbEaDUZwDyxPZ90
-         FeYRXsYFT+OvT0tgnyNQ5G8r5Q5o5yBohKftzCFrSpULyjUlrZs9qDMKY3mn44vY7/oO
-         7MjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ us-mta-433-5LU86w9rPy--GOt7TFpnUQ-1; Wed, 21 Oct 2026 08:20:36 +0000
+X-MC-Unique: 5LU86w9rPy--GOt7TFpnUQ-1
+X-Mimecast-MFC-AGG-ID: 5LU86w9rPy--GOt7TFpnUQ_1792570835
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48dfaaea30cso305438f8f.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 01:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792567799; x=1793172599; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
-        b=iPKj99OKCYBLxKoFRZQf2Hg6XfmZny80yGZlMAmrHp5kx5XGo0TgWwOm1D8U1+QkFs
-         UERYQore2pDeV1iNLK/bRlznsPf785W4T+NrHK/BAf18mYAiDfpZM/nVmxT27tawAbFd
-         XsQVcFDBnTpT0wR8MAtQ9B/oS0eK085+i7rMB0YbRIyFnv7lD6qH+ZNDHWZeuKxmXnri
-         EboiCCaMxHi9C1T91+RZpQUHX2EfDuCBuWDo7KFZ7OLZdbcK5IpbHsC4PpR5r5GXnYzx
-         rT1z5IzF+foNu4wQnWwAjH9ek8D/VK41l8kXhSuAsNfYzEv/SS3IVpywD7hRuiA9z/rL
-         AJIQ==
+        d=redhat.com; s=google; t=1792570835; x=1793175635; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :from:date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=N3zhSUFcOuUecMmOF2S/sOJZ1XZuTYWlBZE5Z6JPRz0=;
+        b=YhfvEEoUE84ZewaXrchWkHCvvdoWGp5xopLYfABvQ+0yBwBYSAXhcXT37o91O/RvTj
+         x4WDoJ9OaMi3a+tVrNTcoVxUzdrG7+edekT3K3sCOs3oQfomVROQTPznFzrkdHnKMJzT
+         RpMw8BOfwvnTBxi4AGEXCk3g0DjnkNMpYMyvx9pb9fA/vSOSm9qIYG0u/OKgDxb+Z17o
+         d6kPRw17l6tRNyzZ79KmQF4FAfN2JlcnIxiYsEEIxFq8ufXwiy1lAzgt0Ri/ivz5p/gN
+         2C4ox1fQCnXV+W9WJknDgJze6K92V6A0PyT8QsUL/XVc3Vj6Lbi0FV7Imc0+umjq7kjs
+         R1dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792567799; x=1793172599;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
-        b=c0N3ZwYP6pDODM4lVGQaTR9rND/j8f2jhH6KxCSqojzgjHyi+DbnlIarAVn/57WfcJ
-         IBkiqjfc/6LUO3T1Z3Y/M735JN3Al0jGvyP18+h0MKE2ey7jW7g0xWq/Sjdfe804nTgN
-         Y8PLpNCMcU6Ok/r72sX+HYMgmBGi/ugqz4gVSKyTijto/jPUUo13mnJS/edUc7RIC6j3
-         JQuSL7vmK9vvSq0gbVGeqbvxot4r92EeYFqnsAe629c+vkGs+lkwAsKljf4YMb08ashr
-         kLtRXyLQYTRrxanuRaeLWkmeaitLwR9oB4hznOu0bYOJbeGxNbpszexAV7obE6BtqLzp
-         uXjA==
-X-Forwarded-Encrypted: i=1; AKwUvBzFc8VzqYkWhRhfXLMWgiZ/kEv64w0Plnf/Sk0Gpd4bOp3hmDdTVFdA2f7MM6WsqJ7UBaw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIgM4g2ieZ+c9zIgMvGJLbewXu724ON+ZX8qL9/twyT9/TT6pCZ
-	bbaffjitH1A+iffFFUYqpu4CAqfuQkT0yN/n2SmWJvrFD04PsIT56Byum03l/Ve2wyNXobdo4hS
-	b9sp7YZWCtuej/zzqkT0QKbjfho1x35elHYZ/9RqWJP69oJcdoq7WKwqNLw4z0PIFaRZyny8UUY
-	2/mYMXms5fDykf2nVtfWikZsD7Qs6D
-X-Gm-Gg: AYBFou3wFRiXHrGGfZ4/4xCa4+X5EsuPEvmFRlukeiDHO7nyGiK44i5U6NT5J6Xshz3
-	VYSkZUPlKq/HkvwnEd4HcbaD1E+7qAMhwGm8FgOv9jvLXj29LgLg70WHcXjSYeGrJhgCn8JC8LE
-	u5Onzh6WauBC2W0i9vevXJ7avzUeOdxBsAd2Y+ZxY5Ruij9KFNfp0LqefLjaZI9DSA2zKXNqp4d
-	x4w+0bDe1fcubrXdALdY5n9DaY7SWRDZs0+A3GSP9nj0MpvV8BSdPO8T5A=
-X-Received: by 2002:a05:690c:a909:10b0:8b0:e238:2719 with SMTP id 00721157ae682-8b133fff1d6mr5006397b3.31.1792567798914;
-        Wed, 21 Oct 2026 00:29:58 -0700 (PDT)
-X-Received: by 2002:a05:690c:a909:10b0:8b0:e238:2719 with SMTP id
- 00721157ae682-8b133fff1d6mr5006297b3.31.1792567798485; Wed, 21 Oct 2026
- 00:29:58 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792570835; x=1793175635;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N3zhSUFcOuUecMmOF2S/sOJZ1XZuTYWlBZE5Z6JPRz0=;
+        b=TM7T1WPvOPU7hE7Va1wZR4kqM8jX2yvDNP/SXdMCbxthe3rnVYemAmkarxmdbSIIzL
+         Pc7SjcXG8h1z+syr2X6znoAh09pWXasVicTYrXyAHQ8HuC5kuR0ZGJUKlwJ+iNZ5TU6/
+         62sVREL65JIVS1xgafin4LOPcvJcwwKMQ9//1CmJfpjmp/4yWFCd3CVWLS8Rh0CeLwi7
+         jRQq+w64eYq/HsEvL6pQ1jerGUL1dXjLvaxulmKgaEWVKXb4MMdwf5wPN6/jljjtF/TH
+         7Qs1o2Q+ZnpXQCHU/wn9vvXBDIjrmKpjHXC8vY41yH8BY7RbvNV70DIH9HGsKPGRMHMh
+         4qjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxt6p6kFx7RET8vXa/xNl660Ac+nmLHCpsHR3leZtL0lsl/UseJHduw1NURejfi1W4bsU0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKZLqUp9zCpR1fjk4av56fI5VRmLj2s0OGBoz1hr6gTq/vgkcGI
+	yp9BDZcSgzDnEy+HZGa8VE8wNQjO3NDF4lJl2XER2E1fLKQtaeHwx6XeLPe+Q0b6dKNuIy/6jhP
+	nX8kPoUMRMKLqdKu9kAWltgJme0jjoxSMC8jfOw4aDXyokvfoWKcKRmw2gRRnsw==
+X-Gm-Gg: AYBFou0MNudarZzdJ9cmX9gjLAfj5rf+BBMp2++rTGhcRaCDHLxWJXWm4Vw3hVM5adL
+	vVj5oeetl77d2Va9U6w0ki5/pM5URjT89/gGQ6FAELzRkJEv2bdOknAuLt0L5tDC1nLzw5cX4yX
+	Q+ShIazAPff/BFZStcUkLpEp3/l3ROL76y83O4O2y1/fYf3k/hs8egU6llI9lJtXxzgNpQeg4iq
+	bPssuyhoKQFBD7vu7U01cnGrYrea9eucdtPLzNO+u3PeLWol9NGoYEzsGPrtCprctuS8whokTMA
+	68fe2NyAxHIh+AHOyul8urJR/muMk2HC8j2VUkHXIk4hxSPvzyyVWKVAdGfFesGuXeSmCQ==
+X-Received: by 2002:a5d:42ce:0:b0:488:5af8:eabc with SMTP id ffacd0b85a97d-48e264bc498mr1798851f8f.26.1792570834816;
+        Wed, 21 Oct 2026 01:20:34 -0700 (PDT)
+X-Received: by 2002:a5d:42ce:0:b0:488:5af8:eabc with SMTP id ffacd0b85a97d-48e264bc498mr1798809f8f.26.1792570834289;
+        Wed, 21 Oct 2026 01:20:34 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258420e4sm3889294f8f.49.2026.10.21.01.20.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 01:20:33 -0700 (PDT)
+Date: Wed, 21 Oct 2026 04:20:32 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org
+Subject: [PATCH v2 1/2] vfio/pci: fall back to platform ROM when
+ pci_map_rom() fails
+Message-ID: <c5d91752c7bbd40d89f5fce5da8582f1673cdfc3.1792566536.git.mst@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -125,89 +108,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020232956.99970-1-fangxy@xiaopeng.com>
-In-Reply-To: <20261020232956.99970-1-fangxy@xiaopeng.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 21 Oct 2026 09:29:21 +0200
-X-Gm-Features: AclHuK-PqFWCN8ST8zFxglfpmVJtYh8ceAExLMaLATIvJ8UfZfghlr_8jg8ahUM
-Message-ID: <CAJaqyWdoQXHiWEh6aCGt7T+U4U4S8Z79hhp5=QYzzkODeDVyOw@mail.gmail.com>
-Subject: Re: [PATCH] vhost: fix used ring index wrap in vhost_add_used_n_in_order
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@redhat.com>, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Weibin Liu <liuwb@xiaopeng.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Oct 21, 2026 at 1:30=E2=80=AFAM Fang Xieyan <fangxy@xiaopeng.com> w=
-rote:
->
-> vhost_add_used_n_in_order() advances start by nheads[i] but wraps it
-> with a single subtraction.  If start + nheads[i] >=3D 2 * vq->num, start
-> can remain outside the ring.
->
-> With used-ring logging enabled, start > vq->num makes (vq->num - start)
-> underflow.  log_write() then sets bits beyond the dirty-log bitmap,
-> potentially corrupting adjacent userspace memory.  This is reachable on
-> the vhost-net TX path with VIRTIO_F_IN_ORDER: done_idx can reach
-> VHOST_NET_BATCH (64), triggering the issue with a 32-entry ring.
->
-> Wrap start with a mask to keep it within the ring.  VHOST_SET_VRING_NUM
-> enforces a nonzero power-of-two ring size, allowing start to be wrapped
-> using & (vq->num - 1).
->
-> Fixes: 67a873df0c41 ("vhost: basic in order support")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
-> ---
-> Reproducer (verified on a kernel containing commit 67a873df0c41 with a
-> temporary WARN_ON_ONCE probe in log_used(); the probe is not part of
-> this patch):
->
-> With VIRTIO_F_IN_ORDER, num=3D32, and used-ring dirty logging enabled, th=
-e
-> TX batch reaches done_idx=3D64.
+When pci_resource_start() returns non-zero but pci_map_rom() fails
+(ROM BAR exists but content is unreadable), the pdev->rom fallback
+is unreachable because it's behind an else-if that only triggers
+when pci_resource_start() is zero.
 
-Can you send the reproducer? I'm very curious about how vhost_net
-reaches to done_idx=3D64. It seems some bound needs to be added there
-too, isn't it?
+Try pdev->rom whenever the ROM BAR didn't produce a mapping, in both
+the region info ioctl and the read path.
 
-The patch itself looks good to me, even if we will need to modify it
-for packed vqs, so
+Fixes: e021e6cbfb5a ("vfio/pci: Expose setup ROM at ROM bar when needed")
+Cc: Yunxiang Li <Yunxiang.Li@amd.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+Notes (changelog):
+    v1->v2:
+        bound reads by the ROM image rather than the BAR once the
+        pdev->rom fallback is selected, so reads match the reported
+        region size (a pread spanning the image used to fail with
+        -EINVAL past the BAR size)
+        add Fixes: tag
 
->  In the observed run, the initial index is
-> 3, so the single subtraction leaves start=3D35.  The resulting length
-> calculation wraps to 34359738344 bytes, as confirmed by the log_used()
-> probe.
->
-> A 64-byte canary immediately after the 512-byte log bitmap changes from
-> 0xA5 to 0xFF, confirming the out-of-bounds write.  The used-ring canary
-> remains intact because vhost_put_used() runs before start is advanced;
-> the demonstrated corruption is in the dirty-log bitmap.
->
->  drivers/vhost/vhost.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 44cac11b68d2..0226c4c59709 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -3172,8 +3172,7 @@ static int vhost_add_used_n_in_order(struct vhost_v=
-irtqueue *vq,
->                 }
->                 start +=3D nheads[i];
->                 new +=3D nheads[i];
-> -               if (start >=3D vq->num)
-> -                       start -=3D vq->num;
-> +               start &=3D vq->num - 1;
->         }
->
->         if (unlikely(vq->log_used)) {
-> --
-> 2.50.1
->
+ drivers/vfio/pci/vfio_pci_core.c |  4 +++-
+ drivers/vfio/pci/vfio_pci_rdwr.c | 32 ++++++++++++++++++++++++--------
+ 2 files changed, 27 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 050e7542952e..630474d03e3b 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1128,7 +1128,9 @@ int vfio_pci_ioctl_get_region_info(struct vfio_device *core_vdev,
+ 				pci_unmap_rom(pdev, io);
+ 			}
+ 			vfio_pci_memory_unlock_and_restore(vdev, cmd);
+-		} else if (pdev->rom && pdev->romlen) {
++		}
++
++		if (!info->size && pdev->rom && pdev->romlen) {
+ 			info->flags = VFIO_REGION_INFO_FLAG_READ;
+ 			/* Report BAR size as power of two. */
+ 			info->size = roundup_pow_of_two(pdev->romlen);
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index 3bfbb879a005..6e47d529cbb9 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -219,7 +219,8 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	int bar = VFIO_PCI_OFFSET_TO_INDEX(*ppos);
+ 	size_t x_start = 0, x_end = 0;
+ 	resource_size_t end;
+-	void __iomem *io;
++	void __iomem *io = NULL;
++	bool rom_is_mapped = false;
+ 	struct resource *res = &vdev->pdev->resource[bar];
+ 	ssize_t done;
+ 	enum vfio_pci_io_width max_width = VFIO_PCI_IO_WIDTH_8;
+@@ -231,11 +232,6 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	else
+ 		return -EINVAL;
+ 
+-	if (pos >= end)
+-		return -EINVAL;
+-
+-	count = min(count, (size_t)(end - pos));
+-
+ 	if (bar == PCI_ROM_RESOURCE) {
+ 		/*
+ 		 * The ROM can fill less space than the BAR, so we start the
+@@ -244,10 +240,30 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		 */
+ 		if (pci_resource_start(pdev, bar)) {
+ 			io = pci_map_rom(pdev, &x_start);
+-		} else {
++			if (io)
++				rom_is_mapped = true;
++		}
++
++		/*
++		 * The BAR can also exist but be unreadable, e.g. on a GPU
++		 * that was never POSTed.  Fall back to the ROM image stashed
++		 * by the boot loader; the region then follows the image size
++		 * rather than the BAR, so bound the access only after the
++		 * source of the ROM content is known.
++		 */
++		if (!io && pdev->rom && pdev->romlen) {
++			end = roundup_pow_of_two(pdev->romlen);
+ 			io = ioremap(pdev->rom, pdev->romlen);
+ 			x_start = pdev->romlen;
+ 		}
++	}
++
++	if (pos >= end)
++		return -EINVAL;
++
++	count = min(count, (size_t)(end - pos));
++
++	if (bar == PCI_ROM_RESOURCE) {
+ 		if (!io)
+ 			return -ENOMEM;
+ 		x_end = end;
+@@ -283,7 +299,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		*ppos += done;
+ 
+ 	if (bar == PCI_ROM_RESOURCE) {
+-		if (pci_resource_start(pdev, bar))
++		if (rom_is_mapped)
+ 			pci_unmap_rom(pdev, io);
+ 		else
+ 			iounmap(io);
+-- 
+MST
+
 
