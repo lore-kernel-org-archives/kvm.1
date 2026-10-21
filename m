@@ -1,89 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792622846;
-	b=KfEJvov9ayX2HlabGdOHmNr8gsgbHaML3Q4PdWYXDt62vyncv7dz0RZNQ0j9Riuz8Bra
-	 6nKxX+P6Ai0jXsMK386pavQzPYlgiTaEVJuXVVFgS9eB8VMPGbQamkIkgyfnWTkQHTD0Z
-	 h3prtITnR+7G6A+pfVuu3mFzUYuAkNGl0y+5xB8aBi19pWMVqBsj3SxDXU/d0M0PGcNB2
-	 9lp+/Seav9fTISrBDjOeT63d+0F1PhOKB33wPfg9oDsKTNd2xi5QQqzNGQwO8BV0MnCPE
-	 KvMMJaFGpWHR7Hqsie1hfJXBevJn2yydiqHpd3sUPHE5Cq5IRk+SGk5E57XNCDsVPmg==
+	t=1792623741;
+	b=gcZOAqr3J+YE/xUQNy4Sms+Y2+DQUx6nr3hOI84RmGSxPsLMuBM2fm9AittaezfRO+8Z
+	 1RWIz6VSVB0EuvTxNvFZk9svg/x8gzPkxznorW1MX86Q0/qUZLxxUZYnzIOGN1DexOrYp
+	 LWFE+E0noEsCfh18biWS0LapvxVmLP7KQ6LcK5Cay02XOH4hi7alNsaRfzJCDmMY2ctBk
+	 V9jOxVyvqwY/h2rCqzhK+ZYi0b1xS2N9i9aCFq8Vv//HKg8kzKqPySUfUB1gfEPpi+sPx
+	 JT/BuHFovtcktIqFDeD4yBp4mmT2R4Khn+RNMpAtuGlft/949NWkls/4K+JkFkxSU+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792622846;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=9YZUSY6tsOAA9JK8qKUqDFm9nR+q+1jZAAcOqNYqyxE=;
-	b=mB5b6pWBPkg5xfKcNy1LzGgH3oi2GHJv4w1xXzvA0fZn5SCPwJK4bx6afemGe5FZtnFk
-	 elFpzKeqfdwX3GJb9zXpnjqtNATxqWei4BYzN7IzUH745gA0CDmfTK7xI9JrAwy5rslBp
-	 M1SWbc8WzotzxaD7TPWdkuejo50e25lHbY0xQqVSgERmd46JffMEjfrSZParhafThhGX3
-	 yq800rJD9G0t0EkCoQ7dapXsMJejL4VpLVPZ8pwyh4i/RTyi5bDivU5DyVOVT0pJ8dvsd
-	 K682GF+31W+3LvL96hGzhr3UK4GgoDDOgxRmdq2qAyc3vp0kmoY4Y7X4Yfin4ozUmCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792623741;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=Rh1ct0ynFCJmpIeBgUsQvZu9SOoIsv6E2A9BdvVwioc=;
+	b=exoRIDYnaLYL09R8tz/xzhwa6kvBag/6PMwQg3NsYiQnAwgCIIuKUpdXXa5f8TVmigtK
+	 XrHHzS6rD6qdtx260HDuRywdKSp5J8xdXzmptY7SaDY7qPUZxT181MsaZLp8/hEF8p63N
+	 NDOPwxvMckCkYt6pLsnGKC7HPvuP+gP5rc5Soy143MVWOmFja+xR0AY5xfA9kUFBL9d+4
+	 T83Uz5VAot3iHvNDrOiL1kzygBDoXf6gePJUXXrVWr0NDg/RMa18z8itGObUX3IibA93T
+	 hf1GuyK7ey71WJwYiDlStGSXnhkkNZhB/KLJMRr9TmztaOCGQ8u3wttaqPEZcWKU8gQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=WSzgAI9b;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Gz4UAPgW;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB074606A319;
-	Wed, 21 Oct 2026 22:47:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB074606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E0E606A31A
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:02:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21E0E606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=WSzgAI9b
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 69LMgYvc2120816;
-	Wed, 21 Oct 2026 15:46:59 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=9YZUSY6tsOA
-	A9JK8qKUqDFm9nR+q+1jZAAcOqNYqyxE=; b=WSzgAI9bm95kBClJDwXq8oWDw9m
-	d3AkDmQqbOtQ7IPNLD8j2ByvpQ/Ey6Kw8IchUUXZmGJy8gZ4up2gK91hD6yAgYzm
-	rGRnpyA7qaUuLj96ThCkQOntRmskAkqt1HPRBvGvBoKvrpPUurtRCkmLzkHOEVAh
-	zPFJcx7piE7j2COvY/CqyBVXGOgSUzJwlWkKcpekOBtHqbpGvUR/G6Gwo96a4bBE
-	vTI2sQWqIX/zN6VeaC4aUARHqWIUGnHR98Y5phKk4xA4YM2z+TJpybVDEddigb1i
-	iPxfENmJToVq4CKsHrxTpz8WAfIAfCf6EkP2OuqoEHD8cjCVcVXOngpK1sA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4hdw570u5h-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 21 Oct 2026 15:46:59 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 21 Oct
- 2026 22:46:58 +0000
-Date: Wed, 21 Oct 2026 15:46:57 -0700
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-CC: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        "Jonathan
- Corbet" <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        "Stefan
- Hajnoczi" <stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        "Jason Wang" <jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>, <virtualization@lists.linux.dev>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-kselftest@vger.kernel.org>, <sargun@sargun.me>,
-        <jlinbox@meta.com>
-Subject: Re: [PATCH net-next v4 0/7] vsock: assign the guest vsock device to
- a network namespace
-Message-ID: <atlA4V3zz/4MBryS@devvm29614.prn0.facebook.com>
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
- <atiKKS3piuBLEiSd@sgarzare-redhat>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Gz4UAPgW
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so766461a91.2
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 16:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792623740; x=1793228540; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Rh1ct0ynFCJmpIeBgUsQvZu9SOoIsv6E2A9BdvVwioc=;
+        b=Gz4UAPgW8JCrFaLwd83C+NYLWBh7WrVeAbPCKceaugzzPgdHzZFvs8xQ6P/pBp/GFn
+         kNfUOGF2clZnhpB6j0JG8SCjgqZVXBLcBt3zjTlthbSSJqXFq6YSQPByfgyeRZOMqGqY
+         gFdiOi9nkyHnv7/S3ROeTwkHOkKFreTBDdA1soan8c5QpUTRCqhdn5fOHAdholqli5V3
+         I9GKiTsc4yn/PjkjUPmdhxRgJSQ5dc5azJvexnRibXFtw6B8mh1iWuZUq5JyRnh1rp+u
+         2icul+79TpLQiVKEnbkiuQLaITX1iVd1WDOO/mhnpqnRnK1kTPPYSni7VSdjAHbgjppR
+         F26Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792623740; x=1793228540;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Rh1ct0ynFCJmpIeBgUsQvZu9SOoIsv6E2A9BdvVwioc=;
+        b=qFHW+xhNLiZXpNlCkg8KDAXQVXFRbucz9brmxUPQXuWIBT3h3e6fMPoQwow7COfHS9
+         t5doOvw/Ek4Sj3XhsluQPg/EeD9safSMwvVvQ1wBEa6N1ua3GI/a75QQjh3eQMkmFPoF
+         bSAfHpfK4K+IO4zCjcQgngllyapSwi4tVttbEIHp2bBvGP0m92kbO26AtuokT+odEn/k
+         XqbkWLakG71UngJwgEtduTNwKyMp52+IQ4XIMhaBE8Q+dJ7w0w0++Nr2sdzpkKfn+DlL
+         rbtQ0hmCX5zTUh759LYsUXlPTBp27rz8jVIcGEP/Y9VvoZmd9BblI27T4ENVKBJtKKkS
+         j9Tg==
+X-Forwarded-Encrypted: i=1; AKwUvBxYpQbXI8DEfCgoOpS6hcn13rfkhYw2RjMZhLEUqDhE3Zwd7oNMe8ED+gFdVaAoHamOVSw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJOqIz+kvD+Vg7p7+JUq6Akulnqbk+i8cJFOdAHZCKjU7xBlhL1
+	RtXlGraf63NeokL25x6ooY7PKUg8qvtUgQ5iX7bTmDxMz/eyIl0BiL9O9wXqgXmlcQ==
+X-Gm-Gg: AYBFou0ZbNW+jjT6iCBdJoGjwjQ4QhDQ0soTtR1fJeoC42eD3XRPyIQFu6XNiXT4I71
+	mUh1CweOMSWE7DyWxdvpBVu8oKWGY8UZN55NPd9WwH2ggIna00GnUNpDZ7xJzuHp+XllyfBm8kM
+	Ojdln9Fzj597aw9o2k0Fwv34Y5flkUm3vysUhFEPAWtR/fmP8KAbHi5vcPtExABh9+TvQEJ4wlj
+	LvovPffNpHK+QeFdJ5joAxm5XMqrSGkKXJT7/QCTyabbbbU7TnWcoEnqahxJy9/Ofaty+pJYCOL
+	oSHA52u6zGprGuqoWEogTcwORWGMlj++4cUf7Cv3VsYN8CbZJ+gYqd2d4ybg8sbOf1PfxjLyqfs
+	kCRZ1tpOneo3XWm8mWcnfirZHUZXaHIu5BMqVscb0i6MfbTzlnA6Epoi1StV/ZmzWda9yQ4dRb/
+	fohOy3s7gc+7scpQ68FXZoO+xATQVqy98+2kxUI4PAlkEQYuuenxCEuJaIrgKM/gG9UoRq446w3
+	jhAIAgFHDr8JC0FJYFmC2X+P1Iilq0O7rszMgeTYKdpAPyFgHwjv05jPnusdSFCHYtxSFWy3MQx
+	aX9itVIT25VsKOYFyzhxoNyzi2qw5w6BQLfhtw==
+X-Received: by 2002:a17:90b:2f85:b0:3ac:7c4d:8be6 with SMTP id 98e67ed59e1d1-3ad86d9e088mr2829501a91.40.1792623739843;
+        Wed, 21 Oct 2026 16:02:19 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4896c4dsm1314919a91.7.2026.10.21.16.02.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 16:02:18 -0700 (PDT)
+Date: Wed, 21 Oct 2026 23:02:14 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Tarun Sahu <tarunsahu@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] liveupdate: Select file handler by name in
+ the preserve ioctl
+Message-ID: <atlEdhPjlyTPDWmG@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-3-tarunsahu@google.com>
+ <CA+CK2bCnS8wcVDbOymBGeJB6pDUkknOpF22EynbwSV=D5=J4ow@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,82 +112,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <atiKKS3piuBLEiSd@sgarzare-redhat>
-X-Proofpoint-GUID: nWrOyA-SJSPgF7XuQWR4VsnDvf0Fl8wb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDA5MCBTYWx0ZWRfX5Cbq+OsJHbdB
- 0T5M+wE1r0rnip3M+11WDnOQCRV1QNOfYZJP/Sp5ThnJlxeoaUIla2oqerRejohEIAGgV+8mzrj
- ubqt9/klN9GDIoTDsgckbYpLgJDMpnre8PhDi0FCLD0+hWlXJYCBniMIWFMXZc5IwfbxcAbv0N5
- 8k4c1hPUMHfyRA2oqJAbxgcp3WxQccxfr42PoV0TKnpfJm5QrUJI5IINpu/YdqpaI49By2gwRbh
- vLxInws8v6sZKzgZllnjLgtAqPRWhkU95aCY6IZy0AhwPEgBLSzMkqFAMF/blGmAtcMBTmcHds+
- XI3WXFWUGzwooKNAiTQsUb5SeOzJqAH/MMOxyyqHLZtYgBxCu0eD+dSnBrXCrRUSZCACIkaS1v9
- QboLEe1lh+qO6wWkofmONttCKTb5ocmOXpU3h2iUROM8GntXX1JqxUm0+n75nb9+JLX39BoQM5Y
- Y1J1Y/AId9iLQFySzjg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDA5MCBTYWx0ZWRfX8cEX+8H2dRJS
- xyBX1JFThT0Ed2kUq4Ck/+j+N+VTSXpzrhoxUXkj91Yw6Bpf7iszxhtNH8TGL8tLGnv84GU6mYQ
- M/27hhvrnBAtlqrh75YBB8CugBVgQcg=
-X-Authority-Analysis: v=2.4 cv=J+Q/fwnS c=1 sm=1 tr=0 ts=6ad940e3 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=855S8uPTkML1Oy45N9_h:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=-gvGxQiiqzhQZzCLQcIA:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: nWrOyA-SJSPgF7XuQWR4VsnDvf0Fl8wb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-21_06,2026-10-21_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bCnS8wcVDbOymBGeJB6pDUkknOpF22EynbwSV=D5=J4ow@mail.gmail.com>
 
-On Wed, Oct 21, 2026 at 11:48:30AM +0200, Stefano Garzarella wrote:
-> On Tue, Oct 20, 2026 at 06:15:03PM -0700, Bobby Eshleman wrote:
-> > vsock network namespaces let a host put each VM in a namespace of its
-> > own. A guest has no equivalent yet. It has a single G2H device that
-> > cannot be assigned to a network namespace.
-> > 
-> > This series lets a guest move that device into a network namespace. A
-> > new generic netlink family, "vsock", supports the command
-> > VSOCK_CMD_DEV_NETNS_SET which assigns the device to the namespace the
-> > request was sent from. The namespace's existing ns_mode then decides who
-> > may use it: a "global" namespace shares the device with every other
-> > global namespace, and a "local" namespace keeps the host connection to
-> > itself. The device starts out in the initial namespace, so until the
-> > command is issued nothing has moved and no mode has changed. There is no
-> > explicit unassign as assigning the device back to the initial namespace
-> > is equivalent.
-> > 
-> > The command requires CAP_NET_ADMIN in the initial user namespace, so
-> > that an unprivileged user namespace cannot claim the device.
-> > 
-> > Connections that can no longer reach the device after a move are reset,
-> > so that a namespace which has lost access cannot keep using a socket it
-> > opened while it still had access. The assignment holds a reference on
-> > the namespace, so deleting that namespace does not move the device; only
-> > another assignment does.
-> > 
-> > Transports opt in through a new netns_assign_allow flag. Only
-> > virtio-vsock sets it here, because it is the only guest transport
-> > that I am able to test against.
-> > 
-> > Based off of Stefano's original series:
-> > https://lore.kernel.org/all/20200116172428.311437-1-sgarzare@redhat.com/
-> > 
-> > Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> > Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > ---
-> > Changes in v4:
-> > - All Sashiko fixes (see individual patch change lists)
-> > - Link to v3: https://lore.kernel.org/r/20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com
-> > 
+On 2026-10-21 01:17 PM, Pasha Tatashin wrote:
+> On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+> >
+> > Currently luo_preserve_file() iterates over luo_file_handler_list and
+> > picks the first registered handler whose .can_preserve() callback
+> > returns true. When a subsystem introduces a new, backwards-incompatible
+> > file handler alongside an existing one for the same file type, userspace
+> > has no way to choose which handler preserves a file descriptor, nor can
+> > the kernel keep the existing rollback-safe handler as the default while
+> > allowing callers to opt into the new handler.
 > 
-> Sorry, yesterday I started to review v3, but didn't post comments :-(
-> I'll send on this series.
+> That is not how it will work. If we are in the .can_preserve() call,
+> it means the user has already decided which file handlers to use. We
+> need to do that before any preservation happens; otherwise, we could
+> run into conflicts on FLBs i.e. FH of different version require
+> different FLBs.
 > 
-> Thanks,
-> Stefano
+> Therefore, there should be a luoctl call (i.e via a new ioctl to set
+> compatability) that provides the kernel with the specs file of the
+> target kernel we are updating to, allowing the kernel to select the
+> compatible file handlers. Since .can_preserve() is called when the
+> user is already preserving files, the specification must have already
+> been supplied, or the kernel should fall back to using the default
+> (i.e., latest) file handlers.
 
-Hey Stefano, no problem. Sashiko kept me pretty busy. Hopefully we
-landed in a better position for your review.
+I don't think that is the right direction. IMO the kernel should not be
+choosing which file handler to use, userspace should be. If userspace
+gets it wrong and chooses a file handler the next kernel does not
+support, that's on them.
 
-Best,
-Bobby
+The problem with the kernel making a decision about file handlers is
+then userspace does not know what arguments to pass in. We are adding
+custom per-file handler arguments to PRESERVE_FD and RETRIEVE_FD. If the
+kernel is picking which file handler to use, say for a memfd, then
+userspace doesn't know which arguments to pass in.
+
+Sure you could add some method where userspace could query which file
+handlers are active and decide arguments based on that. But it feels
+backwards.
+
+I think a much cleaner solution is that userspace chooses file handler
+during PRESERVE_FD. I would even require it for RETRIEVE_FD so that we
+are guaranteed that the args the user is passing in are being sent to
+the right file handler. Passing to RETRIEVE_FD also opens the door to
+transforming across Live Update (similar to how AWS did LU from Xen to
+KVM as discussed at LPC).
+
+Regarding FLB conflicts, today we don't support multiple FLBs for the
+same global state, so there is nothing to conflict. Selecting a file
+handler during PRESERVE_FD doesn't change that.
+
+If we ever need to support multiple FLBs for the same global state
+(e.g. an incompatible change to the PCI FLB), we can add an ioctl that
+lets userspace select which FLB to use before preserving any files.
+After that, only file handlers registered with the selected FLB can be
+used to preserve files. PRESERVE_FD with any other file handler fails.
+
+That keeps the FLB decision up front and global, like you want, while
+still letting userspace pick the file handler for each fd. I'd also
+expect this to be rare, since FLB serialized state can use the same
+feature flags as everything else in this series.
