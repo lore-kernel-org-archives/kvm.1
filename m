@@ -1,89 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792588403;
-	b=2LCkPDcmjnKDVslbj6OlhhppkqFSskbgvb54EZb2rn2AJiWb+cweK4uADT4mjSq3Fxw7
-	 RaA7eI29m6ZR24jCrxX+Kirwlwt8J02nnMEIzoM+Sjqg3lV2tpWOByuThIury5cHQerhK
-	 Dhw9FiylIvT3hzW72DgcOXkf8qVbe+pAZ4BfhbAa+DKnCZL1PrP0ykBxEJphDZIcnrzOk
-	 5cPYn72D2jlPVcVC3cFxIztGn7dbaNArBQ9EwOMm9WS2LrXIpj9nO9E7ZYVP5K6Jb1ekP
-	 9A1B6onlidxi2TJM+E9NqRDUzeripVAXP6n3yG4zLCYOLucI5W4AlMowf8RD0UtZ4qQ==
+	t=1792588706;
+	b=J3W0FV9TuqmAwQOpkURTjaslc5hEQfYJG1AE3OdXicbKC006HUx7IA8qN8dQeCc/rNKO
+	 ehHnixyIsY0+bgXV9tMtsMFCSJXxgmVMGRBVmisIvu3gEc3Fd7m0elke08mK71sN9SLhR
+	 nd4qImFLh2+ixF8EW6eX2PgWnATrFhErXlGBCF92Fwyi7fYiTmM5gmcy/OTVs12PpO6VL
+	 a8npLiAUuAT2k+bEWXIaZkWTjczxfzPmRoRCsYVAmqbK1GrLC1mQPqcy8vBtyDqyo7Gta
+	 PbdnQrY9A8Sm6lB6UFyZsM+8767vf6oagjobVx3A8NYfWa1IV8c5rvsSmOrEmQNXx/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792588403;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=N5RE4VrUqgRrVxPGuEVRRhHI7VFdRUfeZKkkzZJ3khE=;
-	b=UcSaw3nspvAO3V796J09Uaq4S4kkX89t1TXO4Hg1e86LzFSFKVJHLaef0/UAud1UtXEA
-	 j36gGpVjIXtjQrXCes8EWs8SZbsUZV0ta+snW+kN6voPQ5WQW9UCLyLclg4oyKXU6mgyC
-	 WpyYU7ciDtSEZwuuvxDfJytD5FojK4PYOHWknCvHiZf5hT9fts1yyrH6wnaoJv3KhcB5B
-	 pMSuy0DYdZv14C37AA26eEfxWxgBA94NM/W0/AMdvnay+vQ9V0Em7EZrohrYNwgVBW4bY
-	 mABiwh45E7MU7gu+7IA7YhBiQFLExXNWtzvp8NHxEqPw46BjTfkOP4xSFDt3XuVKWXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588706;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ekCibKv0PWllJqYiwbL8NTR+L8MQ741UG7Kn2SVkZkQ=;
+	b=SrNdeeMzbHMysx2Y0Wcf2zAqWA+/7GJ+i8TK0pndoP+70ZUQ8wWj9zwv3OYjZOKJrMrc
+	 37fojtg2poZFLCa+1lwIjiXYDFp6aRonIlCikeSpMRYdnV+psgtjv5BLRymE6kNVU3fT6
+	 fBat6Ih4JoIz6yJcLk66IjtPpZa/oEE6GwbdWfcm7FRP68Q3FC4rZrae8vN5YYuLKF1gk
+	 1y4LdJn+erda8o29ImrbFBQYRfwdBPt+INc4ytxXT7To9Kuzj1MHhpjZCkfotD/CINXOd
+	 Kv4OkYsw2+sSpLokzYuFV5+lQQ0xRK/qOW5PudZ9s7XgJjeWt9DyuuhK1Xt6hZqv7Tg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dftScbiC;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsr8bwoM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE2360A263C
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 13:13:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EE2360A263C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id E6863606A319;
+	Wed, 21 Oct 2026 13:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dftScbiC
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1fe9efc0eso7244605e9.2
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 06:13:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792588401; x=1793193201; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=N5RE4VrUqgRrVxPGuEVRRhHI7VFdRUfeZKkkzZJ3khE=;
-        b=dftScbiCP6a1eeHD6IgOv+dKCjqK1dz6x1afgj7VzlVqPUjsONvI6Q3epm+bf8uCm9
-         DCSI1YdG54tNCbuIrxPP+BCLMm30oJ1Pxk20zK1EvYVfmoviRWhbxk842sdHQa23ogYK
-         iM9UlyPPdCNuwdG8zQSw9vZnW0REm3+X0N5OS8G4r1Dt8UULxCpiEsSHbo+1nzL32Sev
-         wtqp1xXvO68YaKo8vgYEFw5FEXt+CfU6k3fgF1DH6pPr1fsF8CdS7Jrt4pgOtue+R2ho
-         YEsG/OP7Hknq6sDgOQ79L6++ZMXPv2kX+Wl2fFmJcxFpJETI1KvtI7LJBXzy4bXVPaSM
-         HwLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792588401; x=1793193201;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N5RE4VrUqgRrVxPGuEVRRhHI7VFdRUfeZKkkzZJ3khE=;
-        b=gge/onkLLnCkFZBka9vlijGUxRwe9DzHQ8K5mZj7PfGoXweMRSPBlDNTtAO6DLvLf8
-         Uhxh3G7WXES2QPZD2DvNo0wXc0nkFgNeYvoRc51CyHRcssuqi21k706jYSRVuq23MY8S
-         x3GIaKxh8mYMVSxNEX2TD0XB+I6plHnF+dDTy5MvuIE9fLIaHluBXqab1EZ5Yg+HLCfc
-         7NI8lc6k6lN2GwsCxrmDzsfPgINPm0LePQEV31RMIrrBR3q4UNwgfpKtR/gYCfsGFLxL
-         hsCzXTWR+nVYyzglnSSPTOQZJmgpfPniFKv63mkNelGvC7CIJGj1wHb4gDiUbdKzKe3G
-         03Ag==
-X-Forwarded-Encrypted: i=1; AKwUvBzd2/nWb9zuAz/obQjm/OCd5xgwPBw+tZzNExAa+erCc6kWrzWL1pRNOWqONf0KN9UIZ9w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLV3IRgYeoL7FhpMbRdAU0KIif52NrlOSCz3RXgEOYx1Kq72DjP
-	s2ilrczi+BCChn/vqnO+Z72EMzE2QZVULd/0/XTlC7Revrf61PqCjWPt
-X-Gm-Gg: AYBFou1/KFSdNUNXW1a4Si7e6VtWbyDVav/q4GmQc/z6LDFWtJZ0eRV1lOyjEwmL+Yk
-	ULqzUsrIyqV2J9o39+DBSVOhlnfvqvjwKfdy3HVZRQavt5UK6MmPH+zK5aejGJ82Bo4sEemscRL
-	WbJIInRZnND/qBaBNIWC22wsxH2XqotcnPuq0Fb052aZVDtt1/PpRtNZLNvJkWov7EjhoZ6zIYy
-	CL+CL12/6nAf9UrWM5PgJut32etiNvTh0axFmiR+OO9pK6srS6qg5g5raMj3r7q7pwyaonCPlrw
-	taIq+v/rqOKq/8Bn9iMl7jdW7SjMIVUIVH3L+MDQ9KIwe26SPMif6evzolN+Z95rXVJeRl5RCXW
-	cV22fB2qlr80Ugs+LUO+kmKRM8xjUdWEJR1dtrELbFl1nuhLBM6kIy+L34st2Nzs+2DSuruqmOm
-	1p5PxVwTcOkObIxZJFgtKYkUVVnyd5LIsK+7pdEdTVffF8Bk/3ByDA6mzwuwN1ljUVD7/emFOYh
-	73fLNXez3dKJSwQb9T0QuAbZHTigfT2zM55AJNKl7oVIMIywULaTbEO6u4lYElzOUZIRyvEzY4S
-	Uzt1tcD+M+aOIs/B
-X-Received: by 2002:a05:600c:6385:b0:4a1:e0d5:293e with SMTP id 5b1f17b1804b1-4a1fdb0d18amr43127735e9.21.1792588401415;
-        Wed, 21 Oct 2026 06:13:21 -0700 (PDT)
-Received: from [127.0.1.1] ([2a00:23c4:a702:d301:39f4:e118:e272:79d8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258358c1sm5655560f8f.43.2026.10.21.06.13.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 06:13:20 -0700 (PDT)
-From: Biju Das <biju.das.au@gmail.com>
-Date: Wed, 21 Oct 2026 14:13:16 +0100
-Subject: [PATCH v2 4/4] serial: sh-sci: Toggle TE when restoring SCSCR in
- console write on SCI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsr8bwoM
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0A3D91F000C4;
+	Wed, 21 Oct 2026 13:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792588705;
+	bh=ekCibKv0PWllJqYiwbL8NTR+L8MQ741UG7Kn2SVkZkQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jsr8bwoM0yi7oKg8wHJk3tffC/dTPOTVs02uNlnkZ4oZWn0IRD9DnECnE5Clx9r6/
+	 ae6V09MG/X3D3cV1QxAnRe59hVNjgMeTeC2l3rixB9FwGLnAcoRuWiBmxiMQRy215D
+	 KlFub3OGGxGN1Lj/YXKj9T6VFQl/OwSTT1uEPvEpAYwuf42DB0Qgyo2P3dFeemH39k
+	 hSSRslObIuFVGzjPkPQ4TUg8OJ9ci1WSwwH2CMBPyn+Uo5RY4Hp0Nyg09UBj2hEAjf
+	 6SzyPKcXDuv4ynFZgHteRinGWJl/umxFeJ1xORjnZuD73uYifWxgtWFv9KC4EkTUad
+	 GjWn5gnUhlygw==
+Date: Wed, 21 Oct 2026 16:18:21 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+	Dionna Glaze <drdeeglaze@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	roberto.sassu@huawei.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <ati7na9OJjN9FA1u@kernel.org>
+References: <20261017231007.GP13920@nvidia.com>
+ <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
+ <atX9fugGUsI0hGcA@FV6GYCPJ69>
+ <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
+ <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
+ <20261020140655.GV13920@nvidia.com>
+ <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
+ <ateSly15N5mLrM1m@e129823.arm.com>
+ <20261020165251.GG3008132@nvidia.com>
+ <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,90 +77,35 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-g2ul_sci-v2-4-b4e038220018@bp.renesas.com>
-References: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
-In-Reply-To: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, x86@kernel.org, 
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
- Biju Das <biju.das.jz@bp.renesas.com>, Au Dang <au.dang.jx@renesas.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792588395; l=2226;
- i=biju.das.jz@bp.renesas.com; s=20261020; h=from:subject:message-id;
- bh=eBrM0bnW7fIX8UCFI1hlYQ/wtkJYAm4pg8SckFVkEUs=;
- b=exl2dPJM3XU3wI5tFcxqpq6psM/OOHvMBfuNGCmAkHHVsJCMgohqkx0TMdcopVTGQWyvYfu0t
- KyfEFkkCt8LDahY+xr6F+zNevV3lVMvOV6VbljzJgEP0kTpOCw/fEYj
-X-Developer-Key: i=biju.das.jz@bp.renesas.com; a=ed25519;
- pk=yzD2T1OLS3lEYflbk64xhLlxhk75lZ+NoOtkTOqrlVw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
 
-From: Au Dang <au.dang.jx@renesas.com>
+On Wed, Oct 21, 2026 at 08:23:05AM -0400, Mimi Zohar wrote:
+> On Tue, 2026-10-20 at 13:52 -0300, Jason Gunthorpe wrote:
+> > On Tue, Oct 20, 2026 at 05:11:03PM +0100, Yeoreum Yun wrote:
+> > > But, I have a related concern about deferred probing of RoT devices.
+> > > 
+> > > For example, if TPM probing is deferred until after the attestation
+> > > subsystem has been initialized, how would the subsystem handle the
+> > > TPM becoming available later (This is reason for
+> > > IMA_INIT_LATE_SYNC).
+> 
+> FYI, this patch set initializes at module_initcall(), not even late_initcall().
+> 
+> > I don't think it would be any different, the mechanism for TPM would
+> > become generalized and apply to any attestation driver.
+> > 
+> > This series doesn't attempt to do that flow yet, moving ima over and
+> > dealing with this is another series :)
+> 
+> When TPM device initialization is deferred, it is retried during
+> late_initcall().
 
-When SCI0 (PORT_SCI) is the system console on RZ/G2UL, the board can
-hang at the serial console output stage during boot.
+I don't remember when but I recall that this has been debated a few
+times and the idea of deferred TPM initialization has never been
+successful.
 
-ftrace shows the following sequence:
+Just stating the odds :-)
 
-1. sci_transmit_chars() is draining the TX kfifo through TXI
-   interrupts with SCSCR=0xf0 (TE=1, TIE=1, RE=1, RIE=1).
-
-2. serial_console_write() runs in the middle of that drain. It saves
-   SCSCR=0xf0, switches to polling by writing SCSCR=0x30 (TE=1, TIE=0)
-   and outputs the characters with sci_poll_put_char().
-
-3. It then restores SCSCR=0xf0 in a single write. TE is 1 both before
-   and after, so there is no TE transition.
-
-4. sci_start_tx() is then called repeatedly with SCSCR unchanged, but
-   no TXI is ever raised again, so the drain never resumes and the
-   console hangs.
-
-The RZ/G2UL User's Manual (section 23.3.6, "SCI Initialization") notes
-that changing SCR.TE from 1 to 0 or from 0 to 1 while SCR.TIE is 1
-generates a TXI interrupt request. Without a TE transition, the TXI
-that would restart the drain is never generated.
-
-For PORT_SCI, restore SCSCR in two steps: first with TE cleared, then
-with the full saved value. This forces the TE 1->0->1 transition while
-TIE is being re-enabled, so TXI fires and the interrupted drain
-resumes.
-
-Signed-off-by: Au Dang <au.dang.jx@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v1->v2:
- * No change.
----
- drivers/tty/serial/sh-sci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index aa179c787487..993f330e6881 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3445,10 +3445,14 @@ static void serial_console_write(struct console *co, const char *s,
- 		cpu_relax();
- 
- 	/* restore the SCSCR */
--	if (sci_port->ops->finish_console_write)
-+	if (sci_port->ops->finish_console_write) {
- 		sci_port->ops->finish_console_write(port, ctrl);
--	else
-+	} else {
-+		if (to_sci_port(port)->type == PORT_SCI)
-+			sci_port->ops->write_reg(port, regs->control, ctrl & ~SCSCR_TE);
-+
- 		sci_port->ops->write_reg(port, regs->control, ctrl);
-+	}
- 
- 	if (locked)
- 		uart_port_unlock_irqrestore(port, flags);
-
--- 
-2.43.0
-
+Br, Jarkkko
