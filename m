@@ -1,91 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792624699;
-	b=0fiI5lHid01+GjfGPNXu/ZGGQ0PFUDy1dzjK1CM1Tg0DFsT8D5XWgZElGvlraAfQWxW0
-	 4pygprNpN/ssM64ZBEVMeZq5Ypj2bvuHoC3fPvTeU20eOIwuNxcoC3Du+56Fw/JB7AD8a
-	 tZ145Kfl1BVuuBQbGmIx39IeGxj1KWRyw/bqjBLctCMFrlCBFa1NZ8M8NuQEBQanMEPe8
-	 CEzxDeui65rwJUG8avJNG2pPGiLIDGmLs9U1z9SyJH8xTpVpw4oFzOWXQ+mUni0z9t+c7
-	 a+cgQFC6WjSlGvFrplsQAZJZQCTk/cRB1yEBd2Lk5rjdu8ptMtBum2MteXHMDEAi0xg==
+	t=1792625335;
+	b=dz+acY5XJ/Y/Ksio3DaRf4Glr3kOAf9iWpGOXo3l7MptZAs4UwB3bUnZfeEsFYLpVYd3
+	 o2vhS5JmUwvBmcJLoGBjUZjJgbJBp6dd6zRV0VXj4TXrVrFcpNittlhU9Bqy4O2OywD3B
+	 ICXXJ+NisQjFBTqSdpTqVVhVqt8Mb4z2tYJyMsUl9zr+4/bkIf1pUS5wdF+/6PQwPKJI9
+	 kiGTIjguS4z68LCuGN6QKLrweEiUPDFuiRHjqVQE6tGWjOH/53J2d8lwTcRGoWiIt4UC9
+	 Ptur6G62vI+oBOFBGDZ4iwsUtw/ffeBYJxfGLYUyrK+9rFjDPbz4osYrpWbIL0Uqwlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792624699;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792625335;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
 	 In-Reply-To;
-	bh=7nCAo4+9lz8Iyt19nkj9TmOxKkMhE+NTyi1XeRL1MPk=;
-	b=tUVLqs9asAd114dBK0GTql0WtEwhJvZdcWMyykf/dEgO4WBVri+dQ1px0AUEuhA4cD9d
-	 2SoCF+VBa3uPxwxLa7X3JiBYppfenfZvxGskfI//v/TQE+I7S4S688r7HHZBWbVjaTyPQ
-	 2QRQEChSK8EIxHQ64kziCYfm/pL+tjVO+dMmlAKeV371SsQ4T9ZU4timKp6hpX8yCEceg
-	 G/34akTXXk9y8UvYMiJmsVcEoPQqhQeRXd6Te17Gop/c2GgSF8Q0HuwBB0tl9oRrUpReb
-	 pTGOH0Y8+fKSu/T482svj1QSYp4SdK2zjBW3mUE8DB22rub93wjVgi/eA21b9tuHVPg==
+	bh=j1gtu/2ECGchElAdjQsJmcTzWPpoWAuSh1B1l3W6hUU=;
+	b=XPbNc/A6bnqCVpZpvIktxLwc9N90dWRP1L52ZNetcJEZYiPEvDglqt0WbBz2pSdj9Zo5
+	 HDgyQUKE8WWwIc+lUL+JvvkFAZ3k5SFhxAJ/Pjh+Zi/QqVsqBe6lIqbr7B0b/u1q1cPcW
+	 4wrcrPPnMXQ+bPZsU6HLc3Ieuas3iL/kc7H7I7JHZ7KD79ZTOTNm+G+u/Zhedc6B4+CQb
+	 VSHYeffEBCtFTecw1qKQIqJek+RWRl869WoB4ClClGwUWYEwYTKtnDBFvvy3gBsamZIU/
+	 NPNX7Bp8Ig04kkarT2AMm6hdfTmimifU59GLOn+Ta11mVkvJQJpzx8bcqbOJ82KCPIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=XTgC5U1a;
-	arc=none smtp.remote-ip=209.85.215.174
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=RUqvWpqO;
+	arc=none smtp.remote-ip=209.85.210.171
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EC5606A31D
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:18:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25EC5606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B19E606A31B
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:28:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B19E606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=XTgC5U1a
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc4aa0246b7so486767a12.3
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 16:18:19 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=RUqvWpqO
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a052aff9e9so750457b3a.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 16:28:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792624698; x=1793229498; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792625334; x=1793230134; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7nCAo4+9lz8Iyt19nkj9TmOxKkMhE+NTyi1XeRL1MPk=;
-        b=XTgC5U1avhZC7kS60Wfhcu4iNJ6NZUTB15w7iAv0P+4Xk0fU3Z9lqDMg0+5uT/ZioR
-         V1pzlNVAVaG1PI44ziVmRwdXwwPNLl1i1fbe01hLsNEj75SM+9vlW/bhpCwsK76fEi41
-         m2yoJJDX2Z6BXGc/sMzdvX0/s/ciDTn2uTVTOxDwdfShxa/IGvCrC/6KhBLS/TI0AaOK
-         4FSqZaRMDg7fPIneOSeherAD3s0ms3oLr8jLx84C775gRsQ0tKCcLrtO9Ynuwjr/HLV3
-         EF5B/Fp6LB+jA5yziNZjR3V+KQJcowR4G7b1+lHp542RRnZ0iuI6AhGdOkKSyHF4sZbp
-         O56w==
+        bh=j1gtu/2ECGchElAdjQsJmcTzWPpoWAuSh1B1l3W6hUU=;
+        b=RUqvWpqOjn9AAIuS71Quv64OYn+zq/6gXMfyxq9/YhV/lKLzGOgsbkTqEu40+pWUro
+         71/yt3sl9bDrGUIm58oa1wXgnAobiwsR/d9rX7HYc0oEMZ6hprLHHeYPUFNrXUHNp3HD
+         eREOrf/b0l3KN49LRACMNfV+HbuCwDo60G1+32wDYI0vRh059/pM3HhRc5Na7HlGM+oC
+         Nz7mhChY++JbMqKZt3xqdT3WAn1w9ZYo2bv3THqYKMCmmvFhqGcxfT1PSmWSYuBs5Jgt
+         fCqmEkBylx6zAGda3LBTb5kHB6+KzNJ5GrL1+xC0yOD8oatq/Xfm+r5EVy15Xa3+ApvT
+         1QTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792624698; x=1793229498;
+        d=1e100.net; s=20260707; t=1792625334; x=1793230134;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=7nCAo4+9lz8Iyt19nkj9TmOxKkMhE+NTyi1XeRL1MPk=;
-        b=nz4hGnSYIXpCYzqLurL6fQ2+gDQVia80BrrRgrJ4N7C4khKLn/U+aleKYp3ERUPO8/
-         lvejdYT1nPjc2X6IToSLhaT6CLrDtHCGSdjtBzlIM62rW04zmfJTEctJsFBpYXMCvOJb
-         Re+lorch3QGz5MxpuW96Mz1FS1MZRYyF5QyD9aKe5OjeAF6Uuty0HpRj4Shh3Qy92Jfm
-         7kkusddWf0EaNIyih49VxUyl5rBTbFJ5cOcU0oH3fnONycLniF7j9ocO6WieDW2Fueta
-         7d9D0xwAyQTVHNbo9t7aboTwMLK5swQ5amVpYkDE2a0+h2jbfejgaMW6dwKZsK6U1J4f
-         7lWg==
-X-Forwarded-Encrypted: i=1; AKwUvBwehZdkUcTbQDYywx9YJgxfQJZosKc1LtTyGmfSxxqvImt636gXhsbOdhG7fBOEr5e/vKA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJPkZpHKq8xsBUlkw5QDKcOPTqAjOdII2B5SMCyyKvlzI6QfLQg
-	P6zcVJ8rVRAin7ZIy+u9zhLmZhq0NpdsW8W/SPnwO+o+aySt6gBdIuBKPBIYHTfNzw==
-X-Gm-Gg: AYBFou2HTfntP3b9OGNF8Xj2gU7XaXG+EsUHLMh4QMotA66alBHK165q8CtH78Zmmu/
-	rGQR+PgbnaHjigGlihztJddIEERyB46t4ptJtSpbpTipWPyj3DuDP4fH4f6jUcAa9qVpGAwLFeo
-	lOZ8nKvkO6s6D2T4n4yS5SGNqwkOwSI5UrWZnfBsrUsI0241I1sWiBJc9j9oWR0B6jeLm4sXyb1
-	JPvJpIU6XGIXqqsjW3HkZUiUTYLFCJ3WRcsdS8jMGRlPDxBF3liNsHiGrKWUB2SrxUw0BiLHffu
-	xPgZaBEYq5ASZlxgZMnUdwrtK0aEQj6KkroQMeKSAJ4uSS6LJtVmMNOH81v3ub7KZsRmUWYeteG
-	s3Jew1pQk3YjdlmmdcfEIZ2sO/EnKCLLOkUlhDKTUcqrjs9GR3/O7FvgwwQlS8Tgur8gHggunv5
-	AbNr6vRtu31XFZZd36CKECxPSVHnI6bu+JJyaJlKsW30Plmbn/MjtulKVLkH2IuS+j+DxupgoJ9
-	2oQOiraTW4ofQIO1MmOnNo7M9CNWvfiLE3uBh6NoEG2ghVVhTad0CB0q7Tt2PUxQCkODiB0RsaA
-	7UxoKWYi0/BiGUnJXy9ZrQ3YevAyhZ6ZnYd+BA==
-X-Received: by 2002:a17:90b:3c8d:b0:3ac:7f4c:a690 with SMTP id 98e67ed59e1d1-3ad86eeb9e6mr2442353a91.35.1792624697709;
-        Wed, 21 Oct 2026 16:18:17 -0700 (PDT)
+        bh=j1gtu/2ECGchElAdjQsJmcTzWPpoWAuSh1B1l3W6hUU=;
+        b=tyWOD8CoAhM3F1HSiVh/Wnwmtr/iT59FWEUzbwmb4NVKEcIS9OBRJ0Go04pVaBfss9
+         AHJ3ImnIGtYQXTmQLpdjKlcUJ1XIxWeZb26Ftn5TtJoS63s3NOVJfpidIOJPwDhZWr4m
+         a5ifGX+7HnvyWVS0ScQZ1D36BUSdBXr7nDEiH95M9wchV3DuvLFfs/2hNPt5G0u6YHP7
+         nmDWIt1N0uobYRVWRhtVZo0IulTISA4IiuGJK1CAE1NC4oOfJyC7b+IrUId1wRYl77x8
+         unKK8YAgNN4ADPI1Or+DubUybhlFgVaIfFw+JXNPo/bGH3djQrYPZHB+xDoQDuojpbrW
+         UlcA==
+X-Forwarded-Encrypted: i=1; AKwUvByB0teAEeXfxVQ0QzPqJZgOyjWCbCaAdluTeB2cjtWNOT92N6gq2beqdsVURd2pjc8hMEk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJagF4FuvVEuTiUtoqlV5iQfpZOReilfD7ClbaQqW7Pw0oMCSLk
+	ygdTfNPLk+Q5SmL+b3KRU/hiptqZNZBXMLGwNtq5rb81JjVEbhoGvxim/iVU1wWMwg==
+X-Gm-Gg: AYBFou1AQLxNid4RuBwyjC4PJi6nbVazdNqiumC/PXnwNCfW1Zt6gvtbBoMXd4KL7mR
+	6gb+aGF34EFKu/eZacI/oxoLchUZjIKErwSTu68xaUZj9IfGfCR9Nc8DXJxjfEux/WxHXxMdJ/B
+	DCtUK8lCptdfW/9LVCb3gR93vrX39RrheKDtGEVATBsPKgkmyVAtRMsntvqx0GuRE9WWKaAj+jc
+	AdJo7h58UMhsEetW+s1WOFz1E/4NEquexhXm2JWp6VPMhy+ZNCOY5w7mskfTpGoHYAWLXPgqOyY
+	Dn5RMm2XM+ynq5IGjJLHYZmtiPvDskIzTox58W85qC/7bcFbpJPQ+e37aLrypmv2uDswzsiscY3
+	jCxfHSW5A99Ne+v88tHCQmeQvOiLHtHFyTlbfetlS5BL14Aq1QcAsEoNuLWjUloKgIT3E2m7fu+
+	LpFHjtz2g+eZNRViiAZKIsjMKmcaMqR+qSAQRlUIfK+ujbUldsi6/oFHqWeFdZSpPEtfzl5D6uF
+	Q0YFKB3t94a0b0KAd/HOpN3Zuq1np13MjTRlw0zblJcX8NhipI19lsYddL/sJ8RmypZDbliT432
+	m97088t5NeS8BapB
+X-Received: by 2002:a05:6a00:448b:b0:88b:7278:ebf4 with SMTP id d2e1a72fcca58-8a089dc6e77mr2781314b3a.18.1792625333734;
+        Wed, 21 Oct 2026 16:28:53 -0700 (PDT)
 Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad85f62d22sm3123694a91.4.2026.10.21.16.18.16
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a08933aec9sm1368611b3a.2.2026.10.21.16.28.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 16:18:16 -0700 (PDT)
-Date: Wed, 21 Oct 2026 23:18:13 +0000
+        Wed, 21 Oct 2026 16:28:52 -0700 (PDT)
+Date: Wed, 21 Oct 2026 23:28:48 +0000
 From: David Matlack <dmatlack@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
-	Mike Rapoport <rppt@kernel.org>,
+Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
+	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
 	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
 	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
 	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
@@ -97,12 +96,15 @@ Cc: Tarun Sahu <tarunsahu@google.com>,
 	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
 	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 4/4] mm: memfd_luo: Add the 2-bit pair feature
- header
-Message-ID: <atlINfvlXY4wMbpO@google.com>
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <atlKsD-aJB3mJr2j@google.com>
 References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-5-tarunsahu@google.com>
- <CA+CK2bCWo7ixrNLKPvqETn3JSFwSNaB2UsPgy9RHVAhWroJURQ@mail.gmail.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
+ <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
+ <9huzecdi6go0.fsf@tarunix.c.googlers.com>
+ <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
+ <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -115,260 +117,152 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bCWo7ixrNLKPvqETn3JSFwSNaB2UsPgy9RHVAhWroJURQ@mail.gmail.com>
+In-Reply-To: <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
 
-On 2026-10-21 01:38 PM, Pasha Tatashin wrote:
-> On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+On 2026-10-21 02:50 PM, Pasha Tatashin wrote:
+> On Wed, Oct 21, 2026 at 2:47 PM David Matlack <dmatlack@google.com> wrote:
 > >
-> > Embed the fixed-size 128-byte struct luo_feature_hdr at the start of
-> > struct memfd_luo_ser and define enum memfd_luo_feature
-> > (MEMFD_LUO_FEAT_CORE and MEMFD_LUO_FEAT_MAX) for memfd preservation.
-> >
-> > All current struct memfd_luo_ser fields (pos, size, seals, flags,
-> > nr_folios, folios) and MEMFD_LUO_ALL_SEALS belong to
-> > MEMFD_LUO_FEAT_CORE (LUO_FEAT_REQUIRED in memfd_luo_features). Future
-> > changes add new entries to enum memfd_luo_feature before
-> > MEMFD_LUO_FEAT_MAX and append any new fields to the end of struct
-> > memfd_luo_ser so existing field offsets never shift.
-> >
-> > Signed-off-by: Logan Odell <loganodell@google.com>
-> > Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> > ---
-> >  include/linux/kho/abi/memfd.h | 35 ++++++++++++++++++++++++++++++-----
-> >  mm/memfd_luo.c                | 14 ++++++++++++++
-> >  2 files changed, 44 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-> > index 371ffd108a79..f0b5235a408d 100644
-> > --- a/include/linux/kho/abi/memfd.h
-> > +++ b/include/linux/kho/abi/memfd.h
-> > @@ -13,6 +13,7 @@
-> >
-> >  #include <linux/types.h>
-> >  #include <linux/kho/abi/kexec_handover.h>
-> > +#include <linux/kho/abi/luo.h>
-> >
-> >  /**
-> >   * DOC: memfd Live Update ABI
-> > @@ -21,11 +22,20 @@
-> >   * reboot using the LUO.
-> >   *
-> >   * The state is serialized into a packed structure `struct memfd_luo_ser`
-> > - * which is handed over to the next kernel via the KHO mechanism.
-> > + * which is handed over to the target kernel via the KHO mechanism.
-> >   *
-> > - * This interface is a contract. Any modification to the structure layout
-> > - * constitutes a breaking change. Such changes require incrementing the
-> > - * version number in the MEMFD_LUO_FH_COMPATIBLE string.
-> > + * This interface is a contract. `struct memfd_luo_ser` starts with a fixed
-> > + * 128-byte `struct luo_feature_hdr`. The relative order and offsets of
-> > + * fields must remain unchanged as features are added or retired: new fields
-> > + * are appended at the end of `struct memfd_luo_ser` under a new feature
-> > + * flag in `enum memfd_luo_feature` (before `MEMFD_LUO_FEAT_MAX`), and
-> > + * retired fields are kept in place so subsequent offsets never shift. In
-> > + * the target kernel, fields of a `LUO_FEAT_REQUIRED` feature are guaranteed
-> > + * present once `luo_feature_hdr_validate()` succeeds, whereas fields of a
-> > + * `LUO_FEAT_OPTIONAL` feature should be accessed only after checking
-> > + * `luo_feature_is_active()`. All current fields (`pos`, `size`, `seals`,
-> > + * `flags`, `nr_folios`, `folios`) and `MEMFD_LUO_ALL_SEALS` belong to
-> > + * `MEMFD_LUO_FEAT_CORE` (`LUO_FEAT_REQUIRED` in `memfd_luo_features`).
-> >   */
-> >
-> >  /**
-> > @@ -58,7 +68,7 @@ struct memfd_luo_folio_ser {
-> >
-> >  /*
-> >   * The set of seals this version supports preserving. If support for any new
-> > - * seals is needed, add it here and bump version.
-> > + * seals is needed, gate them behind a new feature flag.
-> >   */
-> >  #define MEMFD_LUO_ALL_SEALS (F_SEAL_SEAL | \
-> >                              F_SEAL_SHRINK | \
-> > @@ -67,8 +77,22 @@ struct memfd_luo_folio_ser {
-> >                              F_SEAL_FUTURE_WRITE | \
-> >                              F_SEAL_EXEC)
-> >
-> > +/**
-> > + * enum memfd_luo_feature - Feature indices for &struct memfd_luo_ser.
-> > + * @MEMFD_LUO_FEAT_CORE: Core feature covering `pos`, `size`, `seals`, `flags`,
-> > + *                       `nr_folios`, `folios`, and %MEMFD_LUO_ALL_SEALS.
-> > + * @MEMFD_LUO_FEAT_MAX:  Number of defined &enum memfd_luo_feature features.
-> > + */
-> > +enum memfd_luo_feature {
-> > +       MEMFD_LUO_FEAT_CORE = 0,
-> > +       MEMFD_LUO_FEAT_MAX,
-> > +};
-> > +
-> > +static_assert((int)MEMFD_LUO_FEAT_MAX <= LUO_FEAT_MAX);
-> > +
-> >  /**
-> >   * struct memfd_luo_ser - Main serialization structure for a memfd.
-> > + * @features:  ABI feature and size header for memfd_luo_ser.
-> >   * @pos:       The file's current position (f_pos).
-> >   * @size:      The total size of the file in bytes (i_size).
-> >   * @seals:     The seals present on the memfd. The seals are uABI so it is safe
-> > @@ -79,6 +103,7 @@ struct memfd_luo_folio_ser {
-> >   *             struct memfd_luo_folio_ser.
-> >   */
-> >  struct memfd_luo_ser {
-> > +       struct luo_feature_hdr features;
+> > On Wed, Oct 21, 2026 at 11:40 AM <tarunsahu@google.com> wrote:
+> > >
+> > > Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+> > >
+> > > > On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+> > > >>
+> > > >> LUO and its file handlers validate handed-over state with monolithic
+> > > >> compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialized
+> > > >> structure, even an optional additive one, must bump the string, which
+> > > >> breaks live update between adjacent kernels. Replace the string in
+> > > >> struct luo_ser with a feature header, so that the target kernel can
+> > > >> accept or reject the source kernel state per feature.
+> > > >>
+> > > >> struct luo_feature_hdr is a fixed 128-byte header: the serialized
+> > > >
+> > > > This patch is all wrong; 128 bytes is far too large. For every _ser
+> > > > struct, we only need 8 bytes instead.
+> > >
+> > > NOO, It is not. It is intended to avoid complex mess with unnecessary
+> > > over-engineering.
 > 
-> I have not looked into this yet, but I would prefer to use some kind
-> of macro constructor for serialized structs. That way, they will
-> automatically include the header, making it easier to search the code
-> for what is actually preserved versus what exists only in this kernel.
-
-If you want to know what is preserved don't you just look at
-include/linux/kho/abi?
-
+> 128-byte per serialized struct is not starter.
 > 
-> So, I think something like this:
-> /* Base serialization header: 4 bytes total size, 4 bytes flags */
-> struct luo_ser_hdr {
->     __u32 total_size;
+> > >
+> > > >
+> > > > The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
+> > > > 30 feature flags + 2 reserved bits for flags extension). The last two
+> > > > bits of the flags indicate whether an extended flags field is present.
+> > > > Each extended flags field is 8 bytes, and its last two bits indicate
+> > > > that yet another extended flags field follows.
+> > >
+> > > If we will have dynamic extension of flags, Think about this.
+> >
+> > To support dynamic extensions in a backward compatible way you want
+> > something like this:
+> >
+> > struct luo_feature_hdr {
+> >    size
+> >    flags
+> 
+> __u32 size
+> __u32 flags
+> 
+> >    extensions  // offset of first luo_feature_extensions (or 0)
+> 
+> __u64 extensions[0]  --> but the size should be specificed in
+> declaration macro that I showed in the next patch.
 
-Why do we need the size? I'm not really opposed to it I just don't
-understand what problem it solves.
+I think you may have misunderstood what I meant. In my proposal,
+extensions is an offset to the first extension, not an array of
+extensions that immediately follow the header.
 
-The luo_ser_hdr is needed for top-level file handler and FLB ser
-structs. Those structs are always dynamically allocated and preserved
-with KHO.
+If the extensions immediately follow the header, then the number of
+extensions is baked into the struct layout. Every field after them sits
+at an offset that depends on how many extensions there are. If we ever
+need one more extension, all the fields shift and old and new kernels
+can no longer read each other's struct. That is the problem Tarun
+pointed out. So in practice the number of extensions is fixed forever
+when the struct is first declared, and we have to guess up front how
+many features a struct will ever need. That's the same as Tarun's
+128-byte header, just with a smaller guess.
 
-On retrieve, KHO gives you back the blob of memory. You look at the
-header to determine what features are used in the struct, and then
-access the fields associated with those features. At no point do you
-need to check the size.
+What I'm proposing is a linked list of extensions, where each link is
+an offset from the start of the struct. A new extension is never
+inserted into the middle of the struct. It is appended at the end along
+with the new fields that need it, like any other new field, so existing
+field offsets never change.
 
-The only time you need the size is for a KHO block array. You want to
-store the size of the KHO block array elements so that the retrieving
-kernel can correctly initialize the iterator.
+Something like this:
 
-e.g. from the PCI base series:
-
-/**
- * struct pci_ser - PCI Subsystem Live Update State
- *
- * This struct tracks state about all devices that are being preserved across
- * a Live Update for the next kernel. It contains only state owned by the PCI
- * core; the state a driver needs to resume its device is preserved separately
- * by that driver.
- *
- * @required_flags: Features that the next kernel must support to take over
- *                  the preserved devices. No flags are currently defined.
- * @optional_flags: Features that the next kernel may ignore if it does not
- *                  support them. No flags are currently defined.
- * @dev_ser_size: The size in bytes of each struct pci_dev_ser in @devices.
- * @nr_devices: The number of devices that were preserved.
- * @devices: Physical address of the first KHO block containing pci_dev_ser.
- */
-struct pci_ser {
-	u64 required_flags;
-	u64 optional_flags;
-	u32 dev_ser_size; <==========
-	u32 nr_devices;
-	u64 devices;
+struct luo_ser_hdr {
+	__u32 flags;
+	__u32 next;    /* Offset of first struct luo_ser_ext, or 0 */
 };
 
->     __u32 flags;
-> };
-> 
-> #define LUO_SER_INIT_HDR(obj, _flags) do {           \
->     (obj)->hdr.total_size = sizeof(*(obj));          \
->     (obj)->hdr.flags = (_flags);                     \
-> } while (0)
-> 
-> #define DECLARE_LUO_SER(name, expected_size, members)       \
->     struct name {                                           \
->         struct luo_ser_hdr hdr;                             \
->         members                                             \
->     };                                                      \
->     static_assert(sizeof(struct name) == (expected_size),   \
->                   "LUO struct " #name " size mismatch!")
-
-Why?
-
-Practically every change to a serialized struct is going to involve
-appending one or more fields to the end of the struct. Asserting the
-size means we have to update the hard-coded size as well every time we
-do that.
-
-Is this to protect against embedded structs accidentally changing?
-
-> 
-> Usage:
-> /*
->  * Header:  8 bytes (hdr: 4 bytes total_size + 4 bytes flags)
->  * Payload: 8 (pos) + 8 (size) + 4 (seals) + 4 (_pad) = 24 bytes
->  * Total:   32 bytes
->  */
-> DECLARE_LUO_SER(memfd_luo_ser, 32,
->     __u64 pos;
->     __u64 size;
->     __u32 seals;
->     __u32 _pad;
-> );
-
-IMO this makes the code harder to read. I think open coding keeps things
-simpler.
-
-struct pci_ser {
-	struct luo_ser_hdr header;
-	__u32 dev_ser_size;
-	__u32 nr_devices;
-	__u64 devices;
+struct luo_ser_ext {
+	__u32 flags;
+	__u32 next;    /* Offset of next struct luo_ser_ext, or 0 */
 };
-LUO_SER_ASSSERT_SIZE(pci_ser, 32);
+
+That's the same 8 bytes as your proposal. And because "is there an
+extension" is next != 0 instead of reserved flag bits, all of the flag
+bits are available for features.
+
+For example, a struct starts out like this:
+
+struct foo_ser {
+	struct luo_ser_hdr hdr;        /* hdr.next = 0 */
+	__u64 a;
+	__u64 b;
+};
+
+Over time we add features and fields until the header flags run out.
+Then we add one more feature, FOO_FEAT_C, which needs a new field c:
+
+struct foo_ser {
+	struct luo_ser_hdr hdr;        /* hdr.next = offsetof(struct foo_ser, ext1) */
+	__u64 a;
+	__u64 b;
+	/* ... fields added for features in hdr.flags ... */
+	struct luo_ser_ext ext1;    /* ext1.next = 0 */
+	__u64 c;
+};
+
+- a, b, and every other existing field stay at the same offsets. Both
+kernels can keep casting the KHO memory directly to struct foo_ser.
+No memcpy() or variable offset math.
+
+- An old kernel that knows nothing about ext1 can still find it by
+following hdr.next, because the chain describes itself. So the old
+kernel can still reject the struct if ext1 has a required feature it
+doesn't support, and ignore ext1 otherwise.
+
+- A new kernel receiving the struct from an old kernel sees
+hdr.next == 0. It treats every feature in ext1 as absent and never
+touches c, so it never reads past the end of the old, smaller struct.
+
+The only rule for subsystems is that a field can only be accessed after
+checking its feature, which a LUO helper can do by walking the chain:
+
+if (luo_ser_has_feature(&ser->hdr, FOO_FEAT_C))
+    c = ser->c;
+
+If we keep size in the header, this is where it would be useful: LUO
+can check that every next offset is within size and strictly increasing
+(so there are no loops) before walking the chain.
 
 > 
-> struct memfd_luo_ser *ser;
-> ...
-> LUO_SER_INIT_HDR(ser, 0);
-> 
-> Thanks,
-> Pasha
-> 
-> >         u64 pos;
-> >         u64 size;
-> >         u32 seals;
-> > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> > index 64f8b8cb75bd..ea1f4c8cd259 100644
-> > --- a/mm/memfd_luo.c
-> > +++ b/mm/memfd_luo.c
-> > @@ -84,6 +84,10 @@
+> > }
 > >
-> >  #include "internal.h"
+> > struct luo_feature_extentions {
+> >     flags
+> >     extensions // offset of next luo_feature_extensions (or 0)
+> > }
 > >
-> > +static const u8 memfd_luo_features[MEMFD_LUO_FEAT_MAX] = {
-> > +       [MEMFD_LUO_FEAT_CORE] = LUO_FEAT_REQUIRED,
-> > +};
-> > +
-> >  static int memfd_luo_preserve_folios(struct file *file,
-> >                                      struct kho_vmalloc *kho_vmalloc,
-> >                                      struct memfd_luo_folio_ser **out_folios_ser,
-> > @@ -284,6 +288,8 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
-> >                 goto err_free_ser;
-> >         }
+> > And then an example serialization struct would be:
 > >
-> > +       luo_feature_hdr_init(&ser->features, sizeof(*ser),
-> > +                            memfd_luo_features);
-> >         ser->pos = args->file->f_pos;
-> >         inode_size = i_size_read(inode);
-> >
-> > @@ -525,6 +531,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
-> >         if (!ser)
-> >                 return -EINVAL;
-> >
-> > +       err = luo_feature_hdr_validate(&ser->features, memfd_luo_features);
-> > +       if (err) {
-> > +               pr_err("memfd_luo_ser feature header validation failed (size=%llu, flags[0]=%#llx): %pe\n",
-> > +                      ser->features.size, ser->features.flags[0],
-> > +                      ERR_PTR(err));
-> > +               goto free_ser;
-> > +       }
-> > +
-> >         /* Make sure the file only has seals supported by this version. */
-> >         if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-> >                 err = -EOPNOTSUPP;
-> > --
-> > 2.56.0.212.g129ede20d9-goog
-> >
+> > struct foo_ser {
+> >     struct luo_feature_hdr header;
+> >     ... fields ...
+> >     struct luo_feature_extension extensions1;
+> >     ... fields ...
+> >     struct luo_feature_extension extensions2;
+> > }
