@@ -1,73 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792588706;
-	b=J3W0FV9TuqmAwQOpkURTjaslc5hEQfYJG1AE3OdXicbKC006HUx7IA8qN8dQeCc/rNKO
-	 ehHnixyIsY0+bgXV9tMtsMFCSJXxgmVMGRBVmisIvu3gEc3Fd7m0elke08mK71sN9SLhR
-	 nd4qImFLh2+ixF8EW6eX2PgWnATrFhErXlGBCF92Fwyi7fYiTmM5gmcy/OTVs12PpO6VL
-	 a8npLiAUuAT2k+bEWXIaZkWTjczxfzPmRoRCsYVAmqbK1GrLC1mQPqcy8vBtyDqyo7Gta
-	 PbdnQrY9A8Sm6lB6UFyZsM+8767vf6oagjobVx3A8NYfWa1IV8c5rvsSmOrEmQNXx/Q==
+	t=1792588958;
+	b=LBw9AAlH1zRosIon2YwmJJvGIE1zQqPBndL7lsdbJlT4hAfBz4KRRAhqhsSOJbwFOJKX
+	 xWClpcoikRCXMKkAtOFo1NkonqriiAD7wBqcpoORC8ZQF5djnDbusbgXLf0QlljQignnN
+	 RDn/zoEtJLVqYmIl9PrlxhzamZqQi3tD/FrcuOAgw148YJyEYoK9e3TIrjpeK9ithHRcu
+	 mFqhAapRqWjyNs4iIKZzSNBMgXBLFBJSaCm8gs3f55XsD05eRwNl2L25MD4ZeuELYFP8+
+	 uUeh/2EvxeQMa1HWpBw6/fTvHpv3UbsP2rSlrKGcyZV3jDZrUdo+4j4rcn/QutsFQDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792588706;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ekCibKv0PWllJqYiwbL8NTR+L8MQ741UG7Kn2SVkZkQ=;
-	b=SrNdeeMzbHMysx2Y0Wcf2zAqWA+/7GJ+i8TK0pndoP+70ZUQ8wWj9zwv3OYjZOKJrMrc
-	 37fojtg2poZFLCa+1lwIjiXYDFp6aRonIlCikeSpMRYdnV+psgtjv5BLRymE6kNVU3fT6
-	 fBat6Ih4JoIz6yJcLk66IjtPpZa/oEE6GwbdWfcm7FRP68Q3FC4rZrae8vN5YYuLKF1gk
-	 1y4LdJn+erda8o29ImrbFBQYRfwdBPt+INc4ytxXT7To9Kuzj1MHhpjZCkfotD/CINXOd
-	 Kv4OkYsw2+sSpLokzYuFV5+lQQ0xRK/qOW5PudZ9s7XgJjeWt9DyuuhK1Xt6hZqv7Tg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588958;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=1e5vEM5bC0Ni4rbWVmWLeHIbQLKHuQ+qzL2ZykOAEfA=;
+	b=AnLcDOnLtVjuiKSVqkWVS5lNS5Skh4Y2rlfnFm5NJsv+FokDofAQOU7mJnpWcCbR2y0h
+	 LFgA7F2edPSyfasPVRb07M6TMmbyTtSLwHER7e4FYeinUS9DoJ/JwG3pODuWUBw1kKgGh
+	 pyU4Muke4ykGGQGgRejFMonjIUlq6DgQBK+yS3c2dVpGI7R47ZhfEjQsroSoGzNZD963Z
+	 rf3Psk/qvyqRZR+dCI20E/0iZ2zZiRv554y/hPx0XPmGBzVYp2WWG7KsSYZU9LjsTLlt1
+	 crUhIvLrjeN/59z7KeZ0kfmFZeaPWza682SQxjBSxu+8aODqG0k7hcNVJvSLV57anZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsr8bwoM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHu9sjEw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id E6863606A319;
-	Wed, 21 Oct 2026 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89EC606A319;
+	Wed, 21 Oct 2026 13:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsr8bwoM
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0A3D91F000C4;
-	Wed, 21 Oct 2026 13:18:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHu9sjEw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF871F000C4;
+	Wed, 21 Oct 2026 13:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792588705;
-	bh=ekCibKv0PWllJqYiwbL8NTR+L8MQ741UG7Kn2SVkZkQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jsr8bwoM0yi7oKg8wHJk3tffC/dTPOTVs02uNlnkZ4oZWn0IRD9DnECnE5Clx9r6/
-	 ae6V09MG/X3D3cV1QxAnRe59hVNjgMeTeC2l3rixB9FwGLnAcoRuWiBmxiMQRy215D
-	 KlFub3OGGxGN1Lj/YXKj9T6VFQl/OwSTT1uEPvEpAYwuf42DB0Qgyo2P3dFeemH39k
-	 hSSRslObIuFVGzjPkPQ4TUg8OJ9ci1WSwwH2CMBPyn+Uo5RY4Hp0Nyg09UBj2hEAjf
-	 6SzyPKcXDuv4ynFZgHteRinGWJl/umxFeJ1xORjnZuD73uYifWxgtWFv9KC4EkTUad
-	 GjWn5gnUhlygw==
-Date: Wed, 21 Oct 2026 16:18:21 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
-	Dionna Glaze <drdeeglaze@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	roberto.sassu@huawei.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <ati7na9OJjN9FA1u@kernel.org>
-References: <20261017231007.GP13920@nvidia.com>
- <CANwfdvVJRv6++MJ8OCUnHSR_5nVD8Yv6eTmYxxqfzxEk0sNfpA@mail.gmail.com>
- <atX9fugGUsI0hGcA@FV6GYCPJ69>
- <CANwfdvUhuQ6L+w+91iDZD=diMmaJ6_2ZsFKkcoiKWOmPMC1oKg@mail.gmail.com>
- <a69c7e7ac4fd07a9c375faadc599e96bb8c8534e.camel@linux.ibm.com>
- <20261020140655.GV13920@nvidia.com>
- <aa00515a0f364fea0150cf1550a09d9400e4632f.camel@linux.ibm.com>
- <ateSly15N5mLrM1m@e129823.arm.com>
- <20261020165251.GG3008132@nvidia.com>
- <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
+	s=k20260515; t=1792588957;
+	bh=1e5vEM5bC0Ni4rbWVmWLeHIbQLKHuQ+qzL2ZykOAEfA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lHu9sjEwzlW3PBpLtZxSQOIc9JAEurY4I7ohfXwaJSnH4n128xr3+r7OWbAd6gfKE
+	 isnlBzO4BLOcxfRYpSOi7jRcBSwI+LvgkszJca4mu6iZZLCma8hhbSLks7sHcXVyZ0
+	 1xieyBhmivr4Uq9KLcxhh78obMNKmPMcz59G+v9oXMhWILWZlm8XQxi2ym4VdHsAZL
+	 tkjJRrB0ryVe6l2+JrzHynggmJsn1wulW1mHHPfTziZXmlXX8CMR67ygTmy9FMK/tv
+	 V4U1HiGtCX0Z/MvVTt2+E/HGU1xeup/QaYDIoOb0OuaU9skjfMb/pLlC4ID39XzhQj
+	 WGJ/TUoAdEnDQ==
+Message-ID: <sashiko-outbox-180298@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/4] serial: sh-sci: Skip TDxE clear when hardware
+ clears it automatically
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Biju Das" <biju.das.au@gmail.com>
+Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, wsa+renesas@sang-engineering.com
+In-Reply-To: <20261021-g2ul_sci-v2-3-b4e038220018@bp.renesas.com>
+References: <20261021-g2ul_sci-v2-0-b4e038220018@bp.renesas.com>
+ <20261021-g2ul_sci-v2-3-b4e038220018@bp.renesas.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 21 Oct 2026 13:22:36 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,36 +60,74 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ae372ed03da3cd2d57c922850b3b017bcb83ca07.camel@linux.ibm.com>
 
-On Wed, Oct 21, 2026 at 08:23:05AM -0400, Mimi Zohar wrote:
-> On Tue, 2026-10-20 at 13:52 -0300, Jason Gunthorpe wrote:
-> > On Tue, Oct 20, 2026 at 05:11:03PM +0100, Yeoreum Yun wrote:
-> > > But, I have a related concern about deferred probing of RoT devices.
-> > > 
-> > > For example, if TPM probing is deferred until after the attestation
-> > > subsystem has been initialized, how would the subsystem handle the
-> > > TPM becoming available later (This is reason for
-> > > IMA_INIT_LATE_SYNC).
-> 
-> FYI, this patch set initializes at module_initcall(), not even late_initcall().
-> 
-> > I don't think it would be any different, the mechanism for TPM would
-> > become generalized and apply to any attestation driver.
-> > 
-> > This series doesn't attempt to do that flow yet, moving ima over and
-> > dealing with this is another series :)
-> 
-> When TPM device initialization is deferred, it is retried during
-> late_initcall().
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] serial: sh-sci: missing has_tdxe_auto_clear init in scix_early_c=
+onsole_setup()
+--
 
-I don't remember when but I recall that this has been debated a few
-times and the idea of deferred TPM initialization has never been
-successful.
+commit 7c4175b5ac1e1b0c0d116921a097acf598dc7be1
+Author: Au Dang <au.dang.jx@renesas.com>
 
-Just stating the odds :-)
+serial: sh-sci: Skip TDxE clear when hardware clears it automatically
 
-Br, Jarkkko
+This commit adds a tdxe_auto_clear flag to struct sci_of_data and propagates
+it to struct sci_port as has_tdxe_auto_clear to skip software clearing of
+TDxE in sci_transmit_chars() and sci_poll_put_char() on PORT_SCI variants.
+
+> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+> index 58120b523ca1e..aa179c7874878 100644
+> --- a/drivers/tty/serial/sh-sci.c
+> +++ b/drivers/tty/serial/sh-sci.c
+> @@ -913,7 +913,8 @@ static void sci_poll_put_char(struct uart_port *port,=
+ unsigned char c)
+>  	} while (!(status & SCxSR_TDxE(port)));
+> =20
+>  	sci_serial_out(port, SCxTDR, c);
+> -	s->ops->clear_SCxSR(port, SCxSR_TDxE_CLEAR(port) & ~SCxSR_TEND(port));
+> +	if (!s->has_tdxe_auto_clear)
+> +		s->ops->clear_SCxSR(port, SCxSR_TDxE_CLEAR(port) & ~SCxSR_TEND(port));
+>  }
+>  #endif /* CONFIG_CONSOLE_POLL || CONFIG_SERIAL_SH_SCI_CONSOLE ||
+>  	  CONFIG_SERIAL_SH_SCI_EARLYCON */
+
+[ ... ]
+
+> @@ -3791,6 +3794,7 @@ static struct plat_sci_port *sci_parse_dt(struct pl=
+atform_device *pdev,
+>  	sp->ops =3D data->ops;
+>  	sp->port.ops =3D data->uart_ops;
+>  	sp->params =3D data->params;
+> +	sp->has_tdxe_auto_clear =3D data->tdxe_auto_clear;
+
+[Severity: Medium]
+Should scix_early_console_setup() in drivers/tty/serial/sh-sci.c also copy
+data->tdxe_auto_clear to sci_ports[0].has_tdxe_auto_clear?
+
+When earlycon is enabled on a renesas,sci port, sci_early_console_setup() ->
+scix_early_console_setup() initializes sci_ports[0] from of_sci_sci, but
+leaves has_tdxe_auto_clear unset:
+
+drivers/tty/serial/sh-sci.c:scix_early_console_setup() {
+	...
+	sci_ports[0].cfg =3D &port_cfg;
+	sci_ports[0].params =3D data->params;
+	sci_ports[0].ops =3D data->ops;
+	sci_ports[0].port.ops =3D data->uart_ops;
+	sci_uart_earlycon =3D true;
+	...
+}
+
+During early console output via serial_console_write() ->
+uart_console_write() -> serial_console_putchar() -> sci_poll_put_char(),
+s->has_tdxe_auto_clear will still be false on sci_ports[0], causing
+s->ops->clear_SCxSR() to be called in software instead of being skipped.
+
+> =20
+>  	sp->has_rtscts =3D of_property_read_bool(np, "uart-has-rtscts");
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-g2ul_sci-v=
+2-0-b4e038220018@bp.renesas.com?part=3D3
