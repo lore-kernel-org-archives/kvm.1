@@ -1,55 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792548628;
-	b=30CB2P306PGIckYFfLajn7Ug4mO8rAC2/PMMcXKcHMZ2TARHZr5c9E0rU3XU+8/W4K4/
-	 2A/uHaoDPXFsakSF6ptsAeV0oZQvHvCkd2EoTnXi4RaAC67YFgMSEf2N8Hox2PLVL7DtT
-	 B3yaRnIRRbwmlPBcH8CVIJWQBN10BNJ0SQkpJuQdSPg2PvNt4CNRHY9eIWPsAql2miQgZ
-	 q6YGvQG1HyKDU11MEf8fyzDlF6g5X/wLEmhRlJv23yn19lq4B3az5SHcsCQKPOBWF+AyU
-	 SoOmYJUG3dUZfvQn1TE+d/la3fcrkYXmdwUoiWrgOqLmDOvl/J7k0lWPTXE3jbfa+Ig==
+	t=1792548723;
+	b=ByWprlro7fBavfSQ877kn6QTp1ckt04CAp89uKKDR88kyoHJaL4vASCGwooyBzW5zQWK
+	 XTemMo1Z45DOZTwZUng9TNyqi/S7j1HS7qBWG3FY7gI28L9m5xwc91HLTdS+o1e+55M/W
+	 hZfonR2wbdxRQqffhUDfljEpbDy9JcuNJDKxOQj8XZ7UNX8EaT2/IzDDj6icpllKCW/pC
+	 Fl0Dg8wy2nRoi3gwpBl7z4z4qr0VWRqVrXM2Fy2E1guhCEGp1iJFbY1JpqZ4okvOxCikU
+	 A9Yyi5On8+8R5ZdA9G494aXdGvYg61uSAZCz+ERH6e3cCPKKsmvu091L3+oLQgWe1Og==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792548628;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792548723;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:MIME-Version:Content-Type:Content-Disposition:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=tf067HsMqMNUdUVbIdRMJp7vL0vCEPrg8RdQWmdIS2o=;
-	b=WrsyVPAThdL3McyD8VskReOi16ms2AsLM4DRQQQhD8gS5XDyw3J/EtkZBUGb2z8WxkFW
-	 KjOASzBBoJuSq4QgHRNQA5dvgqqW9JnjSTiDl/gdJyZEwb3Y/elJKL/GgkCdZyZNQGalO
-	 r28Ee2jA8cwgobT2phQ6xqL30pxhX3t2OfgtGEmj7P4btj2TLHgLH/dGkOHe435QaSaoC
-	 A83j6nMfZgl0etZCykfrWvPP4rR3iwq2DNckA/Ql2jamrEIub91TqroBivv+1v29LR422
-	 lj5lpnlj2gzOX+k6rbY2EVtGSmPNWGeTCGgEXjipTipDl4uJp98tgVA5+kj6Pjd/QUg==
+	bh=U1bMnDwm6FzN6mY++vh18qaqtEjRNas2FZcI4bgSDsI=;
+	b=gpNoSJtX3YMKuwnk4xIQS8lUKP8xaHRruKHg2Zh5b9emlb5N/QJzz+5jR7yP4wG9X8DP
+	 QLeq5HQ9cNYq6O5iwgvk4Zv4KGSf3spuYKMP88AwwTap+xMCyO3wiw1KNFlbCU2T9WYqz
+	 zIV+ND2IqzrVxUBicmRRomGfov51X1+X2Xrqpd0HZnbD3c5ZZVrlW++dXqQh6sr9Ehfct
+	 sxQOB6JHd4dKuyxVjHM+UhdTdOrG0ScXgXJUcKRfOvpllgDhfRDdyDxf6RxhQIoG17nIe
+	 IBGP8IC0NYGAn7dB/SLdm1FGOjL3z0Gf4cHDZJrWT4pVQWAnL52GY0UKGmJFymrEACQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=hDiNINIr;
-	arc=none smtp.remote-ip=220.197.31.5
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=LS3m70NQ;
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C7D606A31A;
-	Wed, 21 Oct 2026 02:10:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88C7D606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39405606A319;
+	Wed, 21 Oct 2026 02:11:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39405606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=hDiNINIr
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=LS3m70NQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=tf067HsMqMNUdUVbIdRMJp7vL0vCEPrg8RdQWmdIS2o=;
-	b=hDiNINIrpqCnDYrRIrIEU2UulrgQVlYwzK/xUX571noxe09rTcyn98+LHnuadr
-	x08oby4atQ25Eu+AHUaUz5eJDTV9cfdBBAIeXe/zMCknniWazMF9WIeiWBsoZ1hs
-	P98NIJ3Jj9Btk6n1HaSiCEh0pICxPDGoHjMC6gruPtnsw=
+	Content-Type; bh=U1bMnDwm6FzN6mY++vh18qaqtEjRNas2FZcI4bgSDsI=;
+	b=LS3m70NQpDk48fEjkIAE534dKS4gx56oT1Ee1Be5ckz7OJesbMLIxTWSl7pVy5
+	7+33wnVooyM4RRxJEJHeXn9s2wSdrnP3Sb2HD91NMegZXeUtQwArgfA2MTNecm1J
+	8wRVAbc41j8SBJL/qORRCc6qOryTd4OZukgph6KFPyN1E=
 Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3n_r7Hthq4ZLEBg--.32434S2;
-	Wed, 21 Oct 2026 10:10:04 +0800 (CST)
-Date: Wed, 21 Oct 2026 10:10:03 +0800
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgD3VZplH9hqIo9qBA--.10042S2;
+	Wed, 21 Oct 2026 10:11:49 +0800 (CST)
+Date: Wed, 21 Oct 2026 10:11:49 +0800
 From: Hao Zhang <hao_zhang_kdev@163.com>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: x86: Emulate SYSENTER in 64-bit mode for
- Intel-compatible vCPUs
-Message-ID: <atge--CosCmrOcx6@192.168.1.215>
+Subject: [PATCH] KVM: x86: Inject #UD for AMD-compatible SYSEXIT in long mode
+Message-ID: <atgfZa-_ZaGT-Lg8@192.168.1.215>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,68 +60,76 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-CM-TRANSID:_____wD3n_r7Hthq4ZLEBg--.32434S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur4DuryUAw4xZrW5JF48Xrb_yoW8KF1UpF
-	ZrursrtF95Wry5Ca4kCF4fXa1UZr47tw48WF90gF1FkF4ku3WvqF4UKa45Zas3GF1xCa4F
-	vF4qgr1qkw1rXa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3-PUUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3hyXimrYHvz1+wAA3B
+X-CM-TRANSID:QCgvCgD3VZplH9hqIo9qBA--.10042S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCrWDJr4kAw47XF4rKFy7trb_yoW5XryDpF
+	y5ZwsxKrykX34Fy3WvyF4fJay3JF1UJF48GF98Ka4FvFsavw17Xr1I93WavayfuFZ3G34S
+	qF1FvFZxC3Z7uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UVT5JUUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+gWxpGrYH2XJoAAA3L
 
 From: Hao Zhang <zhanghao1@kylinos.cn>
 
-Intel allows SYSENTER in both IA-32e submodes, whereas AMD raises #UD
-in either submode.  On AMD hosts, KVM intercepts #UD and emulates
-SYSENTER to support Intel-compatible vCPUs.
+AMD specifies that SYSEXIT raises #UD in both 64-bit and compatibility
+modes.  On AMD hosts, KVM intercepts the hardware #UD, but SYSEXIT is
+marked EmulateOnUD and em_sysexit() applies Intel semantics without
+checking the guest CPU vendor.
 
-However, em_sysenter() unconditionally rejects execution from 64-bit
-mode.  As a result, a valid SYSENTER in an Intel-compatible guest can
-fail emulation instead of entering the guest's kernel.  For a
-non-nested guest at CPL0, this results in a
-KVM_INTERNAL_ERROR_EMULATION exit to userspace even when
-KVM_CAP_EXIT_ON_EMULATION_FAILURE is not enabled.
+For an AMD-compatible guest at CPL0, this can incorrectly complete
+the transition to CPL3 or inject #GP, depending on the SYSENTER_CS
+value and other operands.  At nonzero CPL, the generic Priv check
+injects #GP instead of the required #UD.
 
-Remove the unconditional rejection.  The existing IA-32e path already
-loads the full-width SYSENTER EIP and ESP values and installs the
-required CS and SS attributes.
+Inject #UD for AMD-compatible vCPUs when EFER.LMA is set, before
+checking CPL or SYSENTER_CS and before modifying architectural state.
 
-Also reject SYSENTER for AMD-compatible vCPUs whenever EFER.LMA is
-set, covering both compatibility and 64-bit modes.  This preserves
-AMD's architectural #UD behavior instead of attempting Intel-style
-emulation or reporting an emulation failure.
+Move the CPL check into em_sysexit() and remove the opcode's Priv
+flag so that the generic privilege check does not take precedence
+over AMD's long-mode #UD.  Retain the existing #GP behavior for real
+mode, virtual-8086 mode, and nonzero CPL outside the AMD long-mode
+case.
 
-See the SYSENTER instruction descriptions in Intel SDM Volume 2 and
-AMD APM Volume 3.
+See the SYSEXIT instruction description in AMD APM Volume 3.
 
+Fixes: 4668f0507870 ("KVM: x86 emulator: Add sysexit emulation")
 Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
 ---
- arch/x86/kvm/emulate.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/x86/kvm/emulate.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c1b21282187f..695957ebd871 100644
+index c1b21282187f..2154a2f2fd92 100644
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -2413,17 +2413,13 @@ static int em_sysenter(struct x86_emulate_ctxt *ctxt)
+@@ -2457,12 +2457,18 @@ static int em_sysexit(struct x86_emulate_ctxt *ctxt)
+ 	const struct x86_emulate_ops *ops = ctxt->ops;
+ 	struct desc_struct cs, ss;
+ 	u64 msr_data, rcx, rdx;
++	u64 efer = 0;
+ 	int usermode;
+ 	u16 cs_sel = 0, ss_sel = 0;
+ 
+-	/* inject #GP if in real mode or Virtual 8086 mode */
++	/* AMD rejects SYSEXIT in both IA-32e submodes, even at CPL3. */
++	ops->get_msr(ctxt, MSR_EFER, &efer);
++	if ((efer & EFER_LMA) && !ops->guest_cpuid_is_intel_compatible(ctxt))
++		return emulate_ud(ctxt);
++
++	/* Check CPL here so that AMD's long-mode #UD takes precedence. */
+ 	if (ctxt->mode == X86EMUL_MODE_REAL ||
+-	    ctxt->mode == X86EMUL_MODE_VM86)
++	    ctxt->mode == X86EMUL_MODE_VM86 || ops->cpl(ctxt))
  		return emulate_gp(ctxt, 0);
  
- 	/*
--	 * Intel's architecture allows SYSENTER in compatibility mode, but AMD
--	 * does not.  Note, AMD does allow SYSENTER in legacy protected mode.
-+	 * Intel allows SYSENTER in both IA-32e submodes, but AMD does not
-+	 * allow SYSENTER in either.  Both allow it in legacy protected mode.
- 	 */
--	if ((ctxt->mode != X86EMUL_MODE_PROT64) && (efer & EFER_LMA) &&
-+	if ((efer & EFER_LMA) &&
- 	    !ctxt->ops->guest_cpuid_is_intel_compatible(ctxt))
- 		return emulate_ud(ctxt);
- 
--	/* sysenter/sysexit have not been tested in 64bit mode. */
--	if (ctxt->mode == X86EMUL_MODE_PROT64)
--		return X86EMUL_UNHANDLEABLE;
--
- 	ops->get_msr(ctxt, MSR_IA32_SYSENTER_CS, &msr_data);
- 	if ((msr_data & 0xfffc) == 0x0)
- 		return emulate_gp(ctxt, 0);
+ 	setup_syscalls_segments(&cs, &ss);
+@@ -4390,7 +4396,7 @@ static const struct opcode twobyte_table[256] = {
+ 	II(ImplicitOps | Priv, em_rdmsr, rdmsr),
+ 	IIP(ImplicitOps, em_rdpmc, rdpmc, check_rdpmc),
+ 	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack, em_sysenter),
+-	I(ImplicitOps | Priv | EmulateOnUD | IsBranch | ShadowStack, em_sysexit),
++	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack, em_sysexit),
+ 	N, N,
+ 	N, N, N, N, N, N, N, N,
+ 	/* 0x40 - 0x4F */
 
 base-commit: 6c377d19d4a5116d9bec5203aa3c6c11523e7898
 -- 
