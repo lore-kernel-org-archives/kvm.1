@@ -1,90 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792556769;
-	b=N1mcxKeYQRQsIzseVAVlzEDwXCdy1Wt1nl9jPn42nOrGnsk0cvv/oOZiVE0LX/lloI20
-	 E0IGKZV/nBgjbELdws5U7i5UFqQCExN0rPnuh48k55WSFZ/0wjGPtn4pEC8JU/+NBmzv/
-	 Cam5fe6EfebrL4gSoljNcvajUnRHejaJfI2o3GFRz4nMynHZ2oPWoEdPQXtkpWi2tPCZ0
-	 Dpa+sfFVTNCYnU4uTlHDUyj+2yuHvBV3+C/hBiz70RfyjJo244oQ8HhBgvxaq5jJA79fQ
-	 20YPrI37zYttiKalrA5wG+r4e7PN0FN/yZYco7cVGBNz9Ux1NQ+6pVLg8/s0hhlMc4w==
+	t=1792556771;
+	b=CQmZvNGGlY6wcqRYwKMba0EIICU4xfncdxhehlg2ywWAsu36ts73+fUvE22l6oNTdSh7
+	 8qRnxxQD392gVd2kvqjCqhn0RtzzXnVap07yHaRr0//y6+I3WKneByvsr2MJ7Rvi9juW4
+	 D2XETylosfHm3dtao20hxS5BLk8RabIbFbcXxtdGFfd842UYG2JWcnw3i9uh9y/Q0dHGG
+	 o/GtgxRT8Eqlc/QVOGHSBDMsOvRwkUVacVYL0+iWWsfmdSk4FvwA2eB1HJE7LuSgzox7C
+	 OW/9T6Uv+4Y6AdnWPrkyHzFu5z+d7vsAD9W8KgscRGVpT8juPwggDOb3g42EI9I1yIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792556769;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792556771;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=GjO69g/qQtk0fhS+p3Um2hWP5ehoABiLkMaS6vGdYSk=;
-	b=hFLY3YBw4PyQBPjP7Bcu3/w0xt3IHgppY4RlVAp+SXZFCqe1ZqmC63r3Js+czr0cUlBT
-	 dqV4Ykpz/aahelY+2uyZMgs0GQn9rcbm822nRiMABUzJe0p8qI6727rdvhdFeTiIgtpdE
-	 XkYQ/55i2zwsrYMeVlCx+xK+s0NF/Nm74wy0jDI6pEnT18vrpeGZy5q8bnmAr2fZtMukw
-	 JRB9x2bdcJ0hj2ujCFpFwZpFnvTMAC+LtK9sWGd+QH1tU0zIENlMAaImKp4i5NN0wKlac
-	 he50tWumhlH0Apr2COQtZWy48OCvY0ad9txkLurQTFlMySbR846F9te2vPMflIQnQgw==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=trCcIHaGJhYY0kngjCd9MduQGGuEpJETEp7g5qevHEU=;
+	b=ri4PfG9/WgDZqtWAU03hBaztDaeqjF+Z0VMDyeSbZJB7ez567m1y1VY9KIFnCa8Un/tm
+	 WTgZPqTC9eXfOcc/wq+p5lSLfFGGihdc1QO7u9I07fOBm9TTd1isdkz9xLPM4rP6vBa5p
+	 K22cHe/SWYOdddSV+hO1GDwQaQQbsk00S8w6SdjqvHF3IYgULYV++JpjVANaElpbbwm55
+	 6rpIabd1Vz0dmsGMPRD+AUVRhpKfjd0+TT6OXYKJfKiaf3c3eR4JAd2f4qeSxTyQctG6k
+	 ZXxD+hdmHLqDafpOFJXU20FrvhBsR6UaHyi3EwlnGkBhwDXqWWV9hKKvsSFuZhEKLRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LpkwTUjo;
-	arc=none smtp.remote-ip=209.85.216.41
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="iOfgR/iS";
+	arc=none smtp.remote-ip=209.85.216.52
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EDB606A31A
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 04:26:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90EDB606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D566606A326
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 04:26:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D566606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LpkwTUjo
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so177614a91.1
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 21:26:08 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=iOfgR/iS
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3acdcfa2bd3so253340a91.3
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 21:26:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792556768; x=1793161568; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GjO69g/qQtk0fhS+p3Um2hWP5ehoABiLkMaS6vGdYSk=;
-        b=LpkwTUjojXhv/QKYxnvHgu9CcdOQChvgNEt3TbKxXBBs9a9SnewO1wDzwOTWlq9fHf
-         RqnEJJwgeQj9KW5q35dZ6t0BGC8MmVtuExz6zfDAbgbYmIOfS7AR8O1UcTXotBuMF03C
-         dD0QrN80hRoM7/KffonT5PAvoOJr0+bvK0i3EEubMJAagn1irbtUsLTX0Tx5MIYBzisD
-         Z67AbktIajf2DRG/wgQ82UhP+PBjloEUDVyQucty1UAcIb41jLqNWJDrkDKW2DkKbzac
-         Pwb0e2EClsN42tY3zLf7VCKSJL5Q7GFvUBoSBZEIZF11v+f5Az8RSFdpvUnYIqVKRivV
-         HJhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792556768; x=1793161568;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792556770; x=1793161570; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GjO69g/qQtk0fhS+p3Um2hWP5ehoABiLkMaS6vGdYSk=;
-        b=vV68eXss5+sTk//DVnKL5piEvUJsHaxLod4IzWIIkKZawBCV7e0PhNqeAHpRLz8mox
-         E8+EFNMWE7dGcPGNqgyaiz50k52WC8nYiNRujNO+MIxOG1VxxOH+5JEXn6wH2NnUJwEa
-         PANBn0qXxlhY7qlkrfyw/Oce+kTJOQUBtTSmBZmZHN/AmTPGDoFCsCUIixmN2lSGr1vx
-         VH4JJJmmMwYLqDLXO0maSGIpK3lAxSsu6+uFrch6czl0Lm9BVTlRVk7vUiauDHDbxyKF
-         sZEOa3c50Rovs4T7jmae9isXZffD8OlZpMoiN0DJCHcYDyXa8RxfzL2vzVSuc116jcIH
-         y7uA==
-X-Gm-Message-State: AFq9FYLQHdbpeu4B8cichNs3g1KjOgn/qw5irCDjVw3QFlT8uQsFvDL0
-	6RN8+aq+DTmqYwr4yWvSw27KiT16Ta+peculF5P+TUo3yktIyXeFvBFhyu6k9g==
-X-Gm-Gg: AYBFou21ab1S2PJ4RICMTb7D8fzYN5Fi0WDVE917CFbv8osaQE8Koh5Zq2BcD7Y/Q5u
-	bGjO+yTcVrqBLXLNKREulmoZVGFwWmEedKAeAD/4W8OCHNIMsR9FVTTsMXV1a9nF+cN8ZvB25WP
-	rh/V8SDE8mYxssrgW58fLUWXcN+844kWNN2Ts8QEGcEBFmxVCBolQjWtgUlcSnN6veNepz++b6X
-	x+G1fUkkP6zWb0dKGPK6m/uv0xaLFrQQf0YqBVuekZ3GzFKEsYOtPhExMM84iYVyhUJECAz47Dd
-	aKP/mFQQO/v7eri6gjGSlm0OPli7IvV3qnBtQGlqhopaCtZxxB/g5PRqtZCy7cv86WT3bvWy5CY
-	faTpLsvk3n+Y1+aXBChga/N7xLa9fiz/q4ZTQ+R1fE5XD37cQhwgpf834HqNDZXc7vHv/A6LXkJ
-	kA6lHNIllw4SttyhYWH/1g8rTPIlqTNQsJxx6FLAsJrZ7pcI2J8NE7lYTG87nb8/RaDdh0K3EZ9
-	iiLCsCvsOn8ZS+lLrJTQLCrLXcW9A7Mds1z/LQ1ud4dEC/ABtsUzK8gPZwE8S9r26uy3oeWw9+V
-	UgJC4v0YSBN7YRlBvEL0wIk+w/tJS5B5XzC5ZNWcgGsdGM8cNU8=
-X-Received: by 2002:a17:90b:574d:b0:3ac:af8d:c839 with SMTP id 98e67ed59e1d1-3ad86edd525mr820650a91.35.1792556767866;
-        Tue, 20 Oct 2026 21:26:07 -0700 (PDT)
+        bh=trCcIHaGJhYY0kngjCd9MduQGGuEpJETEp7g5qevHEU=;
+        b=iOfgR/iSZDAAhqlXu0CirpwJTS9iEmx6hFp3LO/OXEaL9g1MMR7irBvyrk8nDrNA7W
+         88+AkfQoKhDa+Kb50PacB9CpR11ACD/dxJ7NIFpqVY7PzGvkSOR0CH9DzhVrXAO7KQgp
+         GG4g48zbMtRm7Qx5E/SuliRcQB8WKkPSn5q2REEb5tF8FUwNaU9qM+6roCzT7qqGX0+F
+         J4KWNd7EFYQaTUDhv22805eis4FoXymMGWX2pfx8HjT2D9MDJGFkvoncluvHYEO/xQMW
+         e0mIKMaBf1tXIzLkmpRVDy6TIMfvmQQqOu0ksYBdWzTijlR+akdvgjMliC7x/D19BIsM
+         Ty0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792556770; x=1793161570;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=trCcIHaGJhYY0kngjCd9MduQGGuEpJETEp7g5qevHEU=;
+        b=UwXujyb9kxNAM3pnZ5vYNnRua3fFkyTdjtezosVBsQvDXlOmopkdTJiRVnOUClw0W4
+         /f3DGT7waeRAdCsC8MMG/9hXKDZxEb+GY/ek+vuvIFLq7LDOThHVhkJBL5ZD5Zr240ej
+         uHwIsRdisbdOlwhN1kBBT2sPficVN+B+nmG5JRTNRZc4OgGRWAu0GpKMBHup9lkyE1YR
+         dSSb5dLXWHaQoPFByZCwBNoVntUd/pf2Hyw5OlkXZTpW2T0xuIaQuxtJqBoHRuHcf+DM
+         VtvMkeIW7PPUfabGv3RlLdcTgvXSFdRjvKyIPzBkdfjkPii4Wug/7DDV+3yV5cFX1d9I
+         rhJQ==
+X-Gm-Message-State: AFq9FYI7XvQMg+/hjbXG6XrR1uJHaU7J0PqPOSzxCvDw3jVhDCiIqcPl
+	e1Kwo3Eweo0Eu/MMvo0Eh6U4MISgurUDr7+OEAeAtxIrOTgT2yogXNNFCfLzGA==
+X-Gm-Gg: AYBFou0Eb1ncYwG+qB3vYRiEMgpxm6zRLDT1V27M9CBtjmTqOEMbBCqwpbcfNMfG29S
+	YGGEZEKjY85KEmhxhPHWif5mTLW651p9/3j+ToJ5UTBJpzVY2TFCQm1KesoAuSUBhfyysZelFs5
+	bxVSJWWAzJxWmTZ3jT8AvfOEpMVA47rPpWwp5dY04ab3WNkEyg8dTC6T7ExHI5Zp82ZLHpd5aX8
+	Kh3wsia4kqr5WGtbM6PGen8TIz1R/OCwBkONpEMn2brAaEP4eKejOaYu+OCzn6DhwUC0DX87384
+	AN+NZivxD8iAwEZzBaWSyKQwgJ5qQJjYDnkXgJICiiQ6XwsFOVkk0Qqb8MANpcuC16HhdJZdTTD
+	k5goalbvBXsCn4PYrdm9xUtIFB2nhBiDTLUVva8eXhDo953XLN6mItR/HMIJyjW4u74vpuRT+tt
+	XTYu6rwQBhM75gR+uNw/ADO4mOXuOncoOtKXqOMFKNEmGoItdo234wvJLnzcr0Jh8H5+NTJ/LFM
+	I8lVfuJ3wZ2h10DqfnqpjwUcugNrdTdfDpYFICfZW3kMyi+PeMojeA9B6vqN8Oov+74xJ905StC
+	f1t2Nw6zu3TVG0zSnsZQ6VwKtOPMcvEldFed3jiampkQUvOdXlQ=
+X-Received: by 2002:a17:90b:3b44:b0:3ab:27f0:c90b with SMTP id 98e67ed59e1d1-3ad8709a59cmr981618a91.53.1792556770623;
+        Tue, 20 Oct 2026 21:26:10 -0700 (PDT)
 Received: from monk.. (border-p14.nat.sfu.ca. [192.75.244.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad80219f83sm2355155a91.6.2026.10.20.21.26.07
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad80219f83sm2355155a91.6.2026.10.20.21.26.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 21:26:07 -0700 (PDT)
+        Tue, 20 Oct 2026 21:26:10 -0700 (PDT)
 From: ma.mandourr@gmail.com
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Mahmoud Abumandour <ma.mandourr@gmail.com>
-Subject: [PATCH 0/2] KVM: nVMX: Don't clobber VM-Entry instruction length on soft INTn exits
-Date: Tue, 20 Oct 2026 21:26:01 -0700
-Message-ID: <20261021042603.608292-1-ma.mandourr@gmail.com>
+Subject: [PATCH 1/2] KVM: nVMX: Don't clobber VM-Entry instruction length when saving soft INTn
+Date: Tue, 20 Oct 2026 21:26:02 -0700
+Message-ID: <20261021042603.608292-2-ma.mandourr@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261021042603.608292-1-ma.mandourr@gmail.com>
+References: <20261021042603.608292-1-ma.mandourr@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -98,29 +102,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Mahmoud Abumandour <ma.mandourr@gmail.com>
 
-KVM writes the length of a soft INTn that L2 was vectoring at the time of
-a nested VM-Exit into vmcs12's VM-Entry instruction length, an L1-owned
-control, instead of the VM-Exit instruction length.  Patch 1 fixes it and
-patch 2 adds a selftest.
+When a VM-Exit from L2 occurs while vectoring a software interrupt, write
+the instruction length to vmcs12's VM-Exit instruction length field, as is
+done for software exceptions, not to the VM-Entry instruction length field,
+which belongs to L1.
 
-Found with a fuzzer for VMX isolation. The selftest patch was written with
-the help of an LLM coding assistant (Claude Opus 5.5). kvm-x86/next was
-run as a nested hypervisor under QEMU. The selftest passes only with
-patch 1, and other nested VMX selftests are unaffected.
+Found with a differential testing harness for VMX isolation.
 
-Mahmoud Abumandour (2):
-  KVM: nVMX: Don't clobber VM-Entry instruction length when saving soft
-    INTn
-  KVM: selftests: Add test for nested VM-Exits while vectoring soft INTs
+Fixes: 5f3d5799974b ("KVM: nVMX: Rework event injection and recovery")
+Signed-off-by: Mahmoud Abumandour <ma.mandourr@gmail.com>
+---
+ arch/x86/kvm/vmx/nested.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/x86/kvm/vmx/nested.c                     |   2 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/vmx_soft_int_vectoring_test.c     | 105 ++++++++++++++++++
- 3 files changed, 107 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/kvm/x86/vmx_soft_int_vectoring_test.c
-
-
-base-commit: dea4f6380f4ec96e8f3b0aaf2343764bd0d25ef4
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 9b0bfa2f854c..302f5b5aa582 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4016,7 +4016,7 @@ static void vmcs12_save_pending_event(struct kvm_vcpu *vcpu,
+ 
+ 		if (vcpu->arch.interrupt.soft) {
+ 			idt_vectoring |= INTR_TYPE_SOFT_INTR;
+-			vmcs12->vm_entry_instruction_len =
++			vmcs12->vm_exit_instruction_len =
+ 				vcpu->arch.event_exit_inst_len;
+ 		} else
+ 			idt_vectoring |= INTR_TYPE_EXT_INTR;
 -- 
 2.43.0
 
