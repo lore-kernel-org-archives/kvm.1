@@ -1,72 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792550966;
-	b=Uyh+lFDrlVEk/iX9kdtCW88pcUHJKdPzAuHBcmpvoUCSrfqBjubVUaQvEfetHV9VPoL4
-	 8MiTesY1BxWhNJK5I4m8p0E/8X/k19EC2t5eAfPtr4JmYL2r4aZs5Tq6n7TIdlVCdVauR
-	 Y9dh4OJpSElUIvmJKVWRxtXbooEjuaEXd+n+rNfc/9l/ACpC0gFfnAkYEh8DyBPYh7c/x
-	 3fighMNXKPNqM7pcMa6cLZCO9Nd4jdDoBMnf10duEYKW2tWWCHv3cEaa8Bl0jn2Fq69Ks
-	 KcapNOBN88THTzckCWqZ8ns+RHqxd7ohgVfRITUP2IVF9pJ9vkTTIZR/0dNUPw+/BPA==
+	t=1792551062;
+	b=DuRRKT5G+K9h10wfMB4Ewfej/NkunkfkO7bDK4BCEsUTmf17vQ3z180yI1ZQZJgAqokq
+	 2c5PhOpRoe53tFFACuxC2Mlg2cJf/JReMlwG3yxGPCjXNhZJgt6CIkAH2iwH/NwGsw8Lc
+	 GKxnuiGcFOH+mYlObhC+5uoTgiTJfn3icvqoEh35GdXPV+KFxo8BOH1/LEoYaUqnMxfsU
+	 dtXB10+cO8GKY9pUy2ay2h5XPa7gFmdk0bZkwvmYARaB7ZrXCa6hAmo6hwt9IeRdqgTH1
+	 BGB4NHU5ljL3RH35PHcY8woL9G88RgRiH4qwx4vtXy4ZTD2ta/SkrSkORdK73FL+wUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792550966;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792551062;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
 	 Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=gSnH3fXxTz7HmVcM/xtbhh/4LxD2ZgAsSDglyoF9vfI=;
-	b=Zv5HUefBJNFG/DtqC2J60UnMPKPKrAAxQbwSBeKbv5rOaByx6jaULaCt8/ecf39RvIOi
-	 FB/5Jdnb7PDyWzXlS5yKs56y0U4anBmGG21X9fJQi9Rymb5l6byaWqonTHx+IRw4eBaTz
-	 T2kgI86Jf64DntLdNvUHlY19FWHOxwifiX49X+nf6TzzOHuT+JHGZ1YqHbBkT5Mb1tVM7
-	 7YYAqPTFvv0Frk70B5dYyTOtQBrt9L9GqvNLF2mpasIQ3ohrpEyL3pQ5XOIy7W18T339y
-	 MLu9giPeAVDDpZxGCnJ13Od9i6ioRI3Nbc0CUW87fxWWFOPjKy0RsAoxf2dH0rh7LSw==
+	bh=TRrUu+6otZ1MrISxoN37o96DSURfs40tWglYbeE1Glg=;
+	b=xk0nrJlTi57FZrcnN3nylYVGgrqDvvBni9GjbFg9BcwOD1ejJ2jT166u42EEOMmHECs7
+	 mHadBgZmPmv/4y8I8lypZn9enk4FPvoIOx4SHZFdLVximbM2s51FgV413L9Cwh/pKQNIT
+	 38tEKcFgv3azxB8uUwwlCRdn+UAV1YvVl+CuIb1muytugH6D0NWoGGF+UMpqYPJ4DfrKS
+	 ubtjyIT3y9wjqb1vd0rQyWQUXNrvzaCDcZY2Mbyb08UDxPM1BjVmY+4e4sHslsBM52IA/
+	 x39U83gX5MHE2Ynto5/EmEVbYkJK4jkEDu9Evx9N6gKT6aKGf/FR7ev3AdjW6dZo4Lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=AVzps8aZ;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=XIQjfX32;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C165606A31B
-	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 02:49:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C165606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DE2606A31E
+	for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 02:51:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0DE2606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=AVzps8aZ
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ac450b74b0so546541a91.0
-        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 19:49:25 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=XIQjfX32
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so463339a91.3
+        for <kvm@vger.kernel.org>; Tue, 20 Oct 2026 19:51:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792550965; x=1793155765; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792551061; x=1793155861; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gSnH3fXxTz7HmVcM/xtbhh/4LxD2ZgAsSDglyoF9vfI=;
-        b=AVzps8aZMOfSNEwYwjdNhFacax5Vdj/VHOahl4IygNsW61gBT8xQTISXu+5F6j8Dv9
-         yFcHnokOKCNvA9JHNaSnT21oUxJUbcoPfgaMNAK/pRbqf9NU3Z+AmXJ3HPaNAr6DxPiZ
-         Fy0Cl643FDTLOINdXaRELtwJKqeoRyXvdxi/ORDZlZrNQo4/Fhj5aJqkpdp9kL3WSCSA
-         ofVeoYM8THlD3O+GFtOfHP/kZe7Z9cYlKzzUJe0LjFJfsoHaFiqcDX3x968OT40fjWzZ
-         WsdP1SqRj7RQhtmTKlqmu7xl1Sa5Gb0r8wt2R8ejQE8LXCEl98DtkewNk7VP+JHEhxqo
-         0SPQ==
+        bh=TRrUu+6otZ1MrISxoN37o96DSURfs40tWglYbeE1Glg=;
+        b=XIQjfX32oJFj/ebKgzHO6OhbnSMlESzNivhvsQ5Nn+s3FCLO+894uYKuNslrFC1K1X
+         KCayLxDollMC32NA0B3G5opyOmkTPMBV+qnwuBUJMNAWrCik+i1x1FoS7yWNReYfr4Kz
+         YMJR+rUCn7ZR+mgyfUNFvrNS4nPuEGoeudG2bCeriSU2z6Jqj//RYeDtJceKcqt7QB+p
+         0tfxEkR2gxjNCPaD5Lkgow9OeKWGNPVIeuH6mANwIPR0Rwk9auq/Ot2Lj1IOaxNsNrod
+         cuJnVzpRPvHHTABc5SA/sjG5j18VMUgGQ7NqfvCrqu1vCd7JnCr0C1XFybXxZJWO5dlW
+         Vxaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792550965; x=1793155765;
+        d=1e100.net; s=20260707; t=1792551061; x=1793155861;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=gSnH3fXxTz7HmVcM/xtbhh/4LxD2ZgAsSDglyoF9vfI=;
-        b=akqqzAfsDefpTIHSJS8nMCv8OGEQA/eoDgWIQ2wXqgrl6QSsn69dcDo56FxSqSH074
-         hhCc/j/1Flj1RzoG7JsZa1o1SHuELnZYu/tjalLbevc1un980RDc4T2dNczLzS7e9grx
-         ZAOqikFpje8hRRVLRjVY+0fPIOuf4ySTJUb3zq8p7NP2t3xF+mKfTWDqqN8vz28ffjNP
-         UPPNQWH+k7oyyu7nr0WfY7/MPLtmqQFJ/GyGcH23fIH3GjfTzhWyux4o02qfUhMPqYYK
-         DH4GjkCGLPd0/rqmGY/feFjjl2tHTh9B7im7Hbd1fZtD7GPXvXq62FoYGE5v8Hcfm3RQ
-         sISw==
-X-Gm-Message-State: AFq9FYLxlSThFscb/fh1Hksz/cNikKuqpmQqs7QBXlROpg9bcfv1S2vS
-	5l5rujiRKU02f64CyNpHnMIyhwfF/GewvrFuxvu/kT2ndMZoe50lhOQ7MVbk1lMsBPJokwprJrM
-	0F8Ob5Q==
-X-Received: from pjsa19.prod.google.com ([2002:a17:90a:be13:b0:3ab:9517:f413])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3b90:b0:3ac:8527:3fc5
- with SMTP id 98e67ed59e1d1-3ad86afbde1mr745223a91.3.1792550964733; Tue, 20
- Oct 2026 19:49:24 -0700 (PDT)
+        bh=TRrUu+6otZ1MrISxoN37o96DSURfs40tWglYbeE1Glg=;
+        b=au6CCI3c1BL93TvOJs8KhHoivdUE0wqqMRff4vX0qeqrnPcCrw91nw2QXbQ4JjyNft
+         GDb87NVxtOxXN2M2NcWrU7Ui+dbNM0i0iJ5jVyZvXwMMNQwbjAK1mFTr92ZLumr+BABf
+         hb5QOTjZ3wIsGBZ33P270Gu23f3xVbrMimQA/xK/u/i5ppp9INdyJTzM0EFuDRPUgNWG
+         gh3cshsJ62RaGzAJ6e2RfrGSrqsXRKvTfYRiUmbmdK01/AstQhUBivtfkmW9ZqVbyvK1
+         gonM9vKG/eHoUhf4g2qVxkkTXMqml5BxHz8wG1uulOsye+qMoB1dnmug/vMzSN4Yhqgv
+         G8tA==
+X-Gm-Message-State: AFq9FYLzbA9+SouB+KwQmhRB8MWu4ZDk5p3ZjqCnCRUoCPFZz0BoFan/
+	OyK6z2PF3Igu4OpEpeyCInBBZ8t66/3ReypaVA0QfVK9kmiUMtUxbwTKv/oIdVm4jUcYCJMIE8b
+	vVpDwYA==
+X-Received: from pgp5-n2.prod.google.com ([2002:a05:6a02:62c5:20b0:cd3:da0f:775b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:ba06:b0:3ad:870d:1bfa
+ with SMTP id 98e67ed59e1d1-3ad870d1c45mr410921a91.23.1792551061087; Tue, 20
+ Oct 2026 19:51:01 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 20 Oct 2026 19:49:21 -0700
+Date: Tue, 20 Oct 2026 19:50:59 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,8 +77,8 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
-Message-ID: <20261021024921.1735149-1-seanjc@google.com>
-Subject: [PATCH 5.15.y] KVM: x86/mmu: Preserve nested TDP shadow page tables
+Message-ID: <20261021025059.1736339-1-seanjc@google.com>
+Subject: [PATCH 5.10.y] KVM: x86/mmu: Preserve nested TDP shadow page tables
  if they are used as roots
 From: Sean Christopherson <seanjc@google.com>
 To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -106,17 +106,17 @@ nested TDP child whose root_count is non-zero.
 Fixes: 2de4085cccea ("KVM: x86/MMU: Recursively zap nested TDP SPs when zapping last/only parent")
 Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[sean: resolve minor conflict due to lack of lockless aging in 5.15]
+[sean: resolve minor conflict due to lack of lockless aging in 5.10]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
  arch/x86/kvm/mmu/mmu.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 081547246801..a768cbe23808 100644
+index 13cad4becfba..d2428c76d940 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2336,7 +2336,9 @@ static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
+@@ -2237,7 +2237,9 @@ static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
  			 * avoids retaining a large number of stale nested SPs.
  			 */
  			if (tdp_enabled && invalid_list &&
@@ -128,7 +128,7 @@ index 081547246801..a768cbe23808 100644
  								invalid_list);
  		}
 
-base-commit: 792fbe1537d8daeca9bd1917e84078b5432aadc2
+base-commit: aca95a35f1bcc0626c4fa4d1252bf2d4c990a1a2
 -- 
 2.56.0.218.g1ec904b173-goog
 
