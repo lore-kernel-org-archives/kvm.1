@@ -1,100 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.21
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792676583;
-	b=p3/RtP8FELYMT8SP9f9Xqe8sQMh3JeqZSFiOGNOjWY9z1MVGmNIDJyj6+PV8mE7Tjxir
-	 BpPAbUt7du3BtgjFRGdZMz/M/h83FTB5cKMk3gebyaezz/T8KvuRSkO5jwz6GYv5Go84N
-	 y2wHqLCcgfyu0jLg2dqeGLUBnlWOSK2UG85f131hV1XqNVi7rteKw6yu94N9z2hrUjhA9
-	 M1zUrZBQx32Dw/1kDum9f5iLITYS+8TQKqivJeDwbUCREAzcHX4VPvNCmMfvQ5xEmMbnk
-	 e7yDHafn2PqWaCwh4O/V/NIemrkCCh4lrTpgipvfAmdTgd1Pbya2RPbMxTo8K1AsOjQ==
+	t=1792678048;
+	b=Oy2Be8cBSlXA5JMaD9B91xK83hZHXXHm/W574+6i9NkhK2XzmXfqnYHCV78nDyYOtRxs
+	 1QJUYkFZYVRzsu78FAowq3iW5WivDnAfOWzoU3icIIB2gthV+9bO8TDwXm8cV/VP6fkLu
+	 79tkK8cOr6yixQbZim2cb9KChgYNrIzdOko1ffNbMVCaWhqfQ6NKckAdhoTKM46aFytre
+	 5tOazp4TiGsrMyJsfCY4jTcRYgdMbEy5kreVAJdI2KcVa3OjKaVRFFdGr1/PRYJ8eJ5RI
+	 mVs4HKxz8dDwNtsg0SkT5dRRu1Lk8OqniyXIFk3xdRAzFNKc6UCCZVWOzv5il3Vj40g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792676583;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=gizFMxgAiNeNcK9yHAVbAAuSg3KjclB/mQKEXDByXnY=;
-	b=Homp1mAjJ3oTb58qTyzhZ7BWTRIXkOQNe/myRH5V9OLZuiNQTX6sv4lqVGG7zL1xgKVu
-	 M3yC/MhbpF3BMrMQlKlY/A3KhrBQ4I/3mntKEnfKRTRCXiCmIJcwwgHNhoDwYMzZbtdr8
-	 wtBAy4/8Vg46bOTmeUvbrs5WPQaGAqqRQdLqeS5L0ohiDffVgflSrWRyPw6ryGt7t0Q2W
-	 w9yB33XVLgbZbil7Gnb7sgq9uT8mb57Q/YUHKfKYkvwhRgcTuUuYMyJSywWzpyhDEc0Mo
-	 7yiG5HQiUsWUCepPQDzmGIf805yMgTkPrQt0mN+bRTsN4W6dm0Bg8JvC5YhKdF8gr5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792678048;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=IBHfJ4PXDuKLTqODMhL17gkfZp2Hf6h78fYN5tiHzwY=;
+	b=tGS2IGOTrodzyBt4M6SdffFKWkS/7szfYYcjtHoLE06MbFvo5cSGCuaRaRQnUH9zQ7FO
+	 O+vmhsRRIBbcYqv1/45n29sgILiYqROIlwN+It3rmc1Jt+yfHO9dUC37RXsZ6vCjqxOIy
+	 BUXEYpCzzHnxzDcsxgrLmqhH4pAxV2f9l3PRRClwSbWEk9b1uADOfG2aiqelxybJJz6+0
+	 1KSqF9QLTNhJ9gCkmy3p6Qqatj3fQWOeOFM85cMDF+FYwEax31eKH0hZn1umvyrRnj+2k
+	 u3Hww1VMhj84oG4NDNENl83BZweRUb9PXlPZ4GEr6+aawChp9OUQt23SlPVr0hnz91A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=soleen.com;
-	spf=pass smtp.mailfrom=soleen.com;
-	dkim=pass header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=W1Ud43OR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Qwt0B2zg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.21
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010021.outbound.protection.outlook.com [52.101.56.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8438B60A2631
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 13:43:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8438B60A2631
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECCA606A31A;
+	Thu, 22 Oct 2026 14:07:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ECCA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=W1Ud43OR
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b1aa2848d2so2801205a12.3
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:43:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792676581; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TQdZnsTJqiIXtmADbsTc/WIa25CogGvUCZeVi5SK5eAFi0SYMgg82ly8AcQCKtRNkH
-         1ZRRCis5E9CEUkX6NOjJY+TA81ASGdJZQcx+9rqlzxegfiEj8GmZ0X1sF0M7/PVlf9ZT
-         R7tZcMT5Rwc5vN6Le8wytsZBBAE3bIY5V9Y7xjuLigm+YspdEUF0jKtHsxyuHVvdLzxk
-         xqaelrFZA/JI2qFbExPWMo4b9hvKgt4B8Hoxz2j3kcWzEe9dsQKRQ7TLJ7MECbLvoLRL
-         n1yGbSWtUAo30Jw+tb0Uy366nKUPyjYC9xGwvJVsdXDAAL6tUtjl4bA+vJRyIIT5DVcU
-         3O0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gizFMxgAiNeNcK9yHAVbAAuSg3KjclB/mQKEXDByXnY=;
-        fh=mYPrq3IZaLaIJITRNPrs9nyJiBLIaTHRV5rWyLpIGEc=;
-        b=spVWli39vYmHN6Ua08ioneF0DbKFFkPySCWOd4ViE9gja4t+SXtUBvmdZIJRYiJiCX
-         SVGLm0Tmmc6D6RxMuCgNqtnxkjrMX7P6pk+DR3BjqleEx13k/R1hAsHAvVYMsEZ12gOq
-         P4u/ZnMOnvPIH8gf/PEPD2mOM2O7bzQ1GTjMiLyKVABbhAqN6jVzrqbVpGnoBFX4VpwN
-         DiLH3dfo2PrSnd1nok+ghoyG+s7TFSkoHysmiiXBkjZdR1Y/vjlzHtlgJXrgFcGH7QaM
-         bkHxvvA7b2XxcaN+tDzz3GUvWHg+bNOg99se3wYnQDMsaIv/wX7aBKx5eksnzdwZBm1+
-         B9Yw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792676581; x=1793281381; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gizFMxgAiNeNcK9yHAVbAAuSg3KjclB/mQKEXDByXnY=;
-        b=W1Ud43ORzgSFMDywx4yvDHgCuuF+9zibORRfmsLvoGg8BFOpG4Lbjv6C87RTAZOJtf
-         QkMOCWMIoew6FIFD0Ynxigr5YmQF64OsEYl3GNvsCkhU1FIwRi3Ku0YfJ09ZBIpsA/a8
-         CC9bLa3cPKSPHM89GoFI46a62fUtGeCfdtyVM+5ooCJQvMiYwNMW1Xk/0RMHO5uhn/2t
-         Bo56RpK3wG6iAMnifAt07fZPmqe3nnQzD8DRosuZG+SomyXv3BALLv5B9/tV/SJdvMMP
-         FYdLZ24HLrVHFCtMG+t2A2oPAAP8Lr7/W1/TLYZXea3u69Vuz9EUmrNwNkAefXZIWVmj
-         HiTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792676581; x=1793281381;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gizFMxgAiNeNcK9yHAVbAAuSg3KjclB/mQKEXDByXnY=;
-        b=gJG287G2coyrfQL3IelwijsuOKvwoWOT47oLVNmSOv0ntrhewGlK20lYUT02aK6cU0
-         kQOt+7T61jTrJme6aXym+u3J8FLOHNal82+oX+ZUq9ZXqk7KV8o50EPpYOWW5QKcJrt6
-         gHPq6vh7I3Q3X3sEshCb0GVh+kaLC6pWMSd27orr0dQhS2nmhZHFeW9CZBSCiUoZ0ab4
-         XxGYNgCSXWJlzHK/ZMKvKfOnYMv3FRl3HFNvzT/CpBR8jLQS7Gj6Xm82rw9dBU29uFgq
-         KafD3V37WkQd8SuvS2FIwX/YgHhGDUBfGxy9YHQAatqAdF9c2gSAf+M8a9545ab5TGKB
-         NGrg==
-X-Forwarded-Encrypted: i=1; AKwUvByTXdIh+X4QXKr+hca14cliM5GF4fvtqczE9LKsberPTyFQyFA/o4P16wiwV/HHhBbogKs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIXgArV2RyFmX4ba3pgIXMqXXbYQkfrY1qV8ZkJVPxU+wYlMaLW
-	WRDsXjNXhM4rSyGMl0q0R6e81qkCsArsrramO0iuMifRo1pALs5bw5JMQYfmOBEOtTfnyGW8evJ
-	a0NTJXGRBnSylDEYTb0oiJQaWQimIpIVPVyLr70+oDA==
-X-Gm-Gg: AYBFou1qJZeitliubxdTifr09yU5FqEaTfMyrafMh00ZDMifdXRbCiDLXFDJRlrMpvt
-	YTorQATMib8qdnapErcYYt9we5G1dJJDrdFNjrPtaLL62mXrcdZDkGERThU/29bWpsK/YMgBqnJ
-	YunrO7yAXQL9o+GBXlUI77FcLKtgHpdCfJhwKWEWDjLwY1Vms0Aeu42m1ztPW7BaAXAk+3e6iQc
-	pdTXhpAdHuz4B51TAqdeVM0kTuoe/EpSnZgx1ja6+6VqxIItkI6dSGKyRKBBjYi2x+8xCnlAIMR
-	EWhl1QCj8uJjB24Hfscj1Jz7nqoKaIptH3BV314mVLJCVqLJBIisSlmInrs3/CIhaAO66hVNN2T
-	tcz8wDdLmRErYXQdPYIJplHToYMBKjNAMIEDZt8sfBAzv7Y3nWdVcuzPDi+axzduxXFlv
-X-Received: by 2002:a05:6402:51cb:b0:6b1:ba86:5f55 with SMTP id
- 4fb4d7f45d1cf-6b408eda746mr4955017a12.35.1792676580475; Thu, 22 Oct 2026
- 06:43:00 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Qwt0B2zg
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xT73HxlfTOaM1w6ffOXsMtu7LuULCGVyPp3+6JD9qGQbQh9wYvzqvH1BdBI0L5myMjxTJNNeXhkleB7lxR7Ttp/t26O3K5NXmBUj4PKFEqG4V8bcXUpW2cH0CyvZF7tIiWAweI5IpYq92fyUcPThTckbNC1h6Y4DeRFCY460Hbo3O2XguTc5MSpLYSLFlTdjpVQ6M2mePOf/upkUy4emWFdbTSrxbQCngIkAvUn5h3rL6yaZP9OO9mZ+jdVgaIiThpyIYhA+T+wBfh+kn0r2P+lrViICb6l5Bk7VeojkX17y0pvbl2xNPVg1+rX6rkPEFivp0c1NbbuNoLEEUDWwwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IBHfJ4PXDuKLTqODMhL17gkfZp2Hf6h78fYN5tiHzwY=;
+ b=C2qWAY8ChQvEOZR1XLSbelH5fRzHeuC+fjVg8mHDuvJbR/blzVuDJc24wqrm6G4BbdNe9RNF0i/y7EJpjrUBGmc7FQ6vr1sTkRcWLaM/VYsIpGHqbXy0tjEg3RNVvE0Xme2IIT9RHO4IrJ07wO1CkUFru0h99TmgImNReMPzG9EgK0LYMQgzto4xIH7S+UnpjwrOXDYAdScgIlkfS0XBp98sFrXpq2Lb3q7QC73Vyz5ZbUoLoRWeTA5nsQFJK5itiVa+6cbiK7kgnfI3/1U03hNCU8/40Sh/6w9VwXVybeeuuIFU+uUMgJvJLq2j19y0vpQ8B+l0LJ3aNPTtcJvysQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IBHfJ4PXDuKLTqODMhL17gkfZp2Hf6h78fYN5tiHzwY=;
+ b=Qwt0B2zgjFRBDiG+Iy6zPJVvoGjgxuqCU0KnJC+XqLIAl8GvDf5/NLV5cLHZUSi3ZOGMkcKtFzLxGeY/sYC0QEchmFP0zgot9yhqudFk9XFE+GRufQyk3Og/Z0HMZMcnjg/LLp7d1JmGTJML2RdFqY6tHn1iAgBOSYH+WInCNXU=
+Received: from CY5PR15CA0246.namprd15.prod.outlook.com (2603:10b6:930:66::19)
+ by MN2PR12MB4391.namprd12.prod.outlook.com (2603:10b6:208:269::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Thu, 22 Oct
+ 2026 14:07:18 +0000
+Received: from CY7PEPF000000F1.namprd05.prod.outlook.com
+ (2603:10b6:930:66:cafe::5b) by CY5PR15CA0246.outlook.office365.com
+ (2603:10b6:930:66::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.18 via Frontend Transport; Thu,
+ 22 Oct 2026 14:07:18 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY7PEPF000000F1.mail.protection.outlook.com (10.167.247.149) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.546.15 via Frontend Transport; Thu, 22 Oct 2026 14:07:18 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 22 Oct
+ 2026 09:07:07 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Borislav Petkov <bp@alien8.de>, Dapeng Mi
+	<dapeng1.mi@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jeff Layton <jlayton@kernel.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, Kiryl Shutsemau <kas@kernel.org>, Li RongQing
+	<lirongqing@baidu.com>, Marco Elver <elver@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sairaj
+ Kodilkar" <sarunkod@amd.com>, Sean Christopherson <seanjc@google.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Suravee Suthikulpanit
+	<suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, "Vasant
+ Hegde" <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
+Subject: [PATCH v6 1/7] iommu/amd: KVM: SVM: Rename cpu to apicid in IOMMU interface
+Date: Thu, 22 Oct 2026 19:34:19 +0530
+Message-ID: <20261022140425.27465-2-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261022140425.27465-1-sarunkod@amd.com>
+References: <20261022140425.27465-1-sarunkod@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,365 +119,226 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-3-tarunsahu@google.com>
- <CA+CK2bCnS8wcVDbOymBGeJB6pDUkknOpF22EynbwSV=D5=J4ow@mail.gmail.com> <9huzik2t5281.fsf@tarunix.c.googlers.com>
-In-Reply-To: <9huzik2t5281.fsf@tarunix.c.googlers.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Oct 2026 09:42:22 -0400
-X-Gm-Features: AclHuK8k5bT2ZKs2HYGA795ETIkO2JydSGkbGrRRu0cT3FC7RgYcT81JMzNVsA4
-Message-ID: <CA+CK2bA2zqQJryBqpoNG7RQqnUnQT1+d8G5xwrjx0Dqo58woHA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 2/4] liveupdate: Select file handler by name in the
- preserve ioctl
-To: tarunsahu@google.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	David Matlack <dmatlack@google.com>, jgg@nvidia.com, robin.murphy@arm.com, 
-	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com, 
-	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, 
-	will@kernel.org, Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
-	linux-arch@vger.kernel.org, sagis@google.com, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev, iommu@lists.linux.dev, linux-pci@vger.kernel.org, 
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY7PEPF000000F1:EE_|MN2PR12MB4391:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5595aebd-d138-4b14-417b-08df3045c853
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|36860700016|376014|1800799024|82310400026|921020|261021121427099003|11063799006|56012099006|261021123027099003|261009223027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	vJuhrb/GaCZp+fTrQCcFX78GiPKeKymcqBHDEcLGh32CdG4el3Y/i+GpXe3Fj1OSVX045894edzlyPK8Tw5N9og2mELmz+ht8E6a3Y3EScSo3xiNWsUHYZTlusQjY5zVfFebFiHpuHkDLDs7K0ZHtQLP4MPMgKller9QDKAjYc19BdT+ZVvBw+6vPGXq1pO3gLjxnRfQBovqIx99NMwggz1cehnz5h6F4vdDuYH/DSOJT8sQ8shW0ig0oOSsYaT1ATHpVuowSvcOLKgn7aOisTYkUkTCaGwIIRspicFb0/bUi3DshsM8BoQuacM1N4bCY98Kory8mDOMVqXh+TTWiIK7ek2XXqpLgec23SdL8EOQBubECh1FJqomSmF/f9V1RZio7DvJ1E3tZAtNzGdaePe3ZSxoLf7LXjbmWGQdA2PZ4vK1gonxX4EaD5lJKBdN0+QMU9K91u26JH1U3wTrLJhvi2Pm2qlDT+py4s/I6sL0PJKnZh+4rnH3pZFB0nGBdHGUZ0wIzYKt5tyGs7aQJlyEhzMz5hTIeXvyYRZCEqVzwC+M0mlBGipz9EW9PW5NtLfZ7Ba/+XXJ4f1Z6dxGBrxn1qhDs18VmZHsXD35nVxKc08kL3ss7CNRR/zqA5w7G12RoUe8Kv72GgdT5MLGUidcjw7tEI4lXlNBqEdlIoOAahc3T3m2KLiPF85sbceOJRoja+HycyrPABiR5Pr7h+HBYQQjD2QQnmQFGLv4qs2W73BgxftIV+zFmavMEZDl
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(36860700016)(376014)(1800799024)(82310400026)(921020)(261021121427099003)(11063799006)(56012099006)(261021123027099003)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	8P0AdtNj9srsXecdIQWGPHEoZCGJ2xowxg9mBqv/1uWb3GzCT7xcsKpl4yfQ+2pc8j/JSjsOgjMCYO/I9bdz2wXIe7m8pAyGOGcQVcG/RynTVXHGzVGO02s+VhDBcYlxUkidg8LNFHlhkj3ZhT6GQDnkYl8o5LxwtBMIsVc6/2m6pY9Vh4PsDnqyJ2vlm3ApynfEnWWhhvT6TEDtnu9rF8yC8ogkqMfAkRpoihiT7bJHkYSe0+bUC1sY2sLifxMeZ3vk4dExRMozI15yq07U6aNU+GDqGakO4HVhchjfITeKOzEB+Zrobm5LmSK8vRtVEWb7MXTEKOTP3I8Ewn77AAt+BWwqI5YlhoYQheQ2trwDiPAitw8aDNlBkmSHJu189VJoBGuMTTGysKGzH5zoz/rdYjgoGBWRnCpJSFMRVw7kEgF5ay94Mb3x98ZXuH3n
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 14:07:18.1087
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5595aebd-d138-4b14-417b-08df3045c853
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY7PEPF000000F1.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4391
 
-On Thu, Oct 22, 2026 at 8:50=E2=80=AFAM <tarunsahu@google.com> wrote:
->
->
-> I have gone through the discussion in reply to this thread between
-> @dmatlack and @pasha
->
-> I am not sure If I understood the discussion correctly.
->
-> userspace IOCTL for FLB compatiblity might not necessary as each FLBs are
-> registered with the file handler. So when new file handler introduced in =
-the
-> system, new flb handlers can be registered that is compatible with this
-> new file handler. I have tried to explain this below.
->
-> Pasha Tatashin <pasha.tatashin@soleen.com> writes:
->
-> > On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@google.c=
-om> wrote:
-> >>
-> >> Currently luo_preserve_file() iterates over luo_file_handler_list and
-> >> picks the first registered handler whose .can_preserve() callback
-> >> returns true. When a subsystem introduces a new, backwards-incompatibl=
-e
-> >> file handler alongside an existing one for the same file type, userspa=
-ce
-> >> has no way to choose which handler preserves a file descriptor, nor ca=
-n
-> >> the kernel keep the existing rollback-safe handler as the default whil=
-e
-> >> allowing callers to opt into the new handler.
-> >
-> > That is not how it will work.
-> > If we are in the .can_preserve() call,
-> > it means the user has already decided which file handlers to use.
->
-> That is not true.
+The cpu field passed from SVM to the AMD IOMMU driver does not hold a
+linux CPU number. It carries the host physical APIC ID used to program
+the IRTE Destination field when the target vCPU is running
+(IRTE[IsRun] = 1).
 
-Please re-read what I wrote: I said that is not how it *will* work.
-Currently, we only have one FH per supported FD type, and that is how
-it will remain when we supply the target kernel specs. before the live
-update begins.
+Rename the field to apicid everywhere in the IOMMU interface so the
+name matches the hardware semantics.
 
->
-> From the documentation of the luo_preserve_file(): 3rd point.
->
-> * This function orchestrates the first phase of preserving a file. It per=
-forms
->  * the following steps:
->  *
->  * 1. Validates that the @token is not already in use within the file_set=
-.
->  * 2. Ensures the file_set's memory for files serialization is allocated
->  *    (allocates if needed).
-> =3D>* 3. Iterates through registered handlers, calling can_preserve() to =
-find one
->  *    compatible with the given @fd.
->  * 4. Calls the handler's .preserve() operation, which saves the file's s=
-tate
->  *    and returns an opaque private data handle.
->  * 5. Adds the new instance to the file_set's internal list.
->  *
->
-> luo_preserve_file():
->
->         list_private_for_each_entry(fh, &luo_file_handler_list, list) {
->                 if (fh->ops->can_preserve(fh, file)) {
->                         if (try_module_get(fh->ops->owner))
->                                 err =3D 0;
->                         break;
->                 }
->         }
->
->
-> the first handler whose can_preserve return true will be selected as the
-> FH;
->
-> later in code:
->
->         err =3D fh->ops->preserve(&args);
->
-> So can_preserve() is called on every handler for a fd and once it finds
-> the FH which reutrns true, it uses its preserve call to preserve the file=
-.
+No functional change is intended.
 
-And as I explained later in that e-mail, the set of FHs will be
-decided ahead of time:
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+---
+ arch/x86/include/asm/irq_remapping.h |  2 +-
+ arch/x86/kvm/svm/avic.c              | 12 +++++-----
+ drivers/iommu/amd/iommu.c            | 35 ++++++++++++++--------------
+ include/linux/amd-iommu.h            |  8 +++----
+ 4 files changed, 29 insertions(+), 28 deletions(-)
 
-"Therefore, there should be a luoctl call (i.e via a new ioctl to set
-compatability) that provides the kernel with the specs file of the
-target kernel we are updating to, allowing the kernel to select the
-compatible file handlers. Since .can_preserve() is called when the
-user is already preserving files, the specification must have already
-been supplied, or the kernel should fall back to using the default
-(i.e., latest) file handlers."
+diff --git a/arch/x86/include/asm/irq_remapping.h b/arch/x86/include/asm/irq_remapping.h
+index 37b94f484ef3..263f4df429d8 100644
+--- a/arch/x86/include/asm/irq_remapping.h
++++ b/arch/x86/include/asm/irq_remapping.h
+@@ -35,7 +35,7 @@ struct amd_iommu_pi_data {
+ 	u64 vapic_addr;		/* Physical address of the vCPU's vAPIC. */
+ 	u32 ga_tag;
+ 	u32 vector;		/* Guest vector of the interrupt */
+-	int cpu;
++	int apicid;
+ 	bool ga_log_intr;
+ 	bool is_guest_mode;
+ 	void *ir_data;
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index 96ca39c0045f..5ac5ce4039a6 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -960,9 +960,9 @@ int avic_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
+ 		 */
+ 		entry = svm->avic_physical_id_entry;
+ 		if (entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK) {
+-			pi_data.cpu = entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK;
++			pi_data.apicid = entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK;
+ 		} else {
+-			pi_data.cpu = -1;
++			pi_data.apicid = -1;
+ 			pi_data.ga_log_intr = entry & AVIC_PHYSICAL_ID_ENTRY_GA_LOG_INTR;
+ 		}
+ 
+@@ -1015,7 +1015,7 @@ enum avic_vcpu_action {
+ 	AVIC_START_BLOCKING	= BIT(1),
+ };
+ 
+-static void avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int cpu,
++static void avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int apicid,
+ 					    enum avic_vcpu_action action)
+ {
+ 	bool ga_log_intr = (action & AVIC_START_BLOCKING);
+@@ -1035,9 +1035,9 @@ static void avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int cpu,
+ 		void *data = irqfd->irq_bypass_data;
+ 
+ 		if (!(action & AVIC_TOGGLE_ON_OFF))
+-			WARN_ON_ONCE(amd_iommu_update_ga(data, cpu, ga_log_intr));
+-		else if (cpu >= 0)
+-			WARN_ON_ONCE(amd_iommu_activate_guest_mode(data, cpu, ga_log_intr));
++			WARN_ON_ONCE(amd_iommu_update_ga(data, apicid, ga_log_intr));
++		else if (apicid >= 0)
++			WARN_ON_ONCE(amd_iommu_activate_guest_mode(data, apicid, ga_log_intr));
+ 		else
+ 			WARN_ON_ONCE(amd_iommu_deactivate_guest_mode(data));
+ 	}
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 56262f6b1f70..aa9848d57f6b 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3993,14 +3993,14 @@ static const struct irq_domain_ops amd_ir_domain_ops = {
+ 	.deactivate = irq_remapping_deactivate,
+ };
+ 
+-static void __amd_iommu_update_ga(struct irte_ga *entry, int cpu,
++static void __amd_iommu_update_ga(struct irte_ga *entry, int apicid,
+ 				  bool ga_log_intr)
+ {
+-	if (cpu >= 0) {
++	if (apicid >= 0) {
+ 		entry->lo.fields_vapic.destination =
+-					APICID_TO_IRTE_DEST_LO(cpu);
++					APICID_TO_IRTE_DEST_LO(apicid);
+ 		entry->hi.fields.destination =
+-					APICID_TO_IRTE_DEST_HI(cpu);
++					APICID_TO_IRTE_DEST_HI(apicid);
+ 		entry->lo.fields_vapic.is_run = true;
+ 		entry->lo.fields_vapic.ga_log_intr = false;
+ 	} else {
+@@ -4013,20 +4013,21 @@ static void __amd_iommu_update_ga(struct irte_ga *entry, int cpu,
+  * Update the pCPU information for an IRTE that is configured to post IRQs to
+  * a vCPU, without issuing an IOMMU invalidation for the IRTE.
+  *
+- * If the vCPU is associated with a pCPU (@cpu >= 0), configure the Destination
+- * with the pCPU's APIC ID, set IsRun, and clear GALogIntr.  If the vCPU isn't
+- * associated with a pCPU (@cpu < 0), clear IsRun and set/clear GALogIntr based
+- * on input from the caller (e.g. KVM only requests GALogIntr when the vCPU is
+- * blocking and requires a notification wake event).  I.e. treat vCPUs that are
+- * associated with a pCPU as running.  This API is intended to be used when a
+- * vCPU is scheduled in/out (or stops running for any reason), to do a fast
+- * update of IsRun, GALogIntr, and (conditionally) Destination.
++ * If the vCPU is associated with a pCPU (@apicid >= 0), configure the
++ * Destination with the pCPU's APIC ID, set IsRun, and clear GALogIntr.  If the
++ * vCPU isn't associated with a pCPU (@apicid < 0), clear IsRun and set/clear
++ * GALogIntr based on input from the caller (e.g. KVM only requests GALogIntr
++ * when the vCPU is blocking and requires a notification wake event).  I.e.
++ * treat vCPUs that are associated with a pCPU as running.  This API is
++ * intended to be used when a vCPU is scheduled in/out (or stops running for
++ * any reason), to do a fast update of IsRun, GALogIntr, and (conditionally)
++ * Destination.
+  *
+  * Per the IOMMU spec, the Destination, IsRun, and GATag fields are not cached
+  * and thus don't require an invalidation to ensure the IOMMU consumes fresh
+  * information.
+  */
+-int amd_iommu_update_ga(void *data, int cpu, bool ga_log_intr)
++int amd_iommu_update_ga(void *data, int apicid, bool ga_log_intr)
+ {
+ 	struct amd_ir_data *ir_data = (struct amd_ir_data *)data;
+ 	struct irte_ga *entry = (struct irte_ga *) ir_data->entry;
+@@ -4040,14 +4041,14 @@ int amd_iommu_update_ga(void *data, int cpu, bool ga_log_intr)
+ 	if (!ir_data->iommu)
+ 		return -ENODEV;
+ 
+-	__amd_iommu_update_ga(entry, cpu, ga_log_intr);
++	__amd_iommu_update_ga(entry, apicid, ga_log_intr);
+ 
+ 	return __modify_irte_ga(ir_data->iommu, ir_data->irq_2_irte.devid,
+ 				ir_data->irq_2_irte.index, entry);
+ }
+ EXPORT_SYMBOL(amd_iommu_update_ga);
+ 
+-int amd_iommu_activate_guest_mode(void *data, int cpu, bool ga_log_intr)
++int amd_iommu_activate_guest_mode(void *data, int apicid, bool ga_log_intr)
+ {
+ 	struct amd_ir_data *ir_data = (struct amd_ir_data *)data;
+ 	struct irte_ga *entry = (struct irte_ga *) ir_data->entry;
+@@ -4070,7 +4071,7 @@ int amd_iommu_activate_guest_mode(void *data, int cpu, bool ga_log_intr)
+ 	entry->hi.fields.vector            = ir_data->ga_vector;
+ 	entry->lo.fields_vapic.ga_tag      = ir_data->ga_tag;
+ 
+-	__amd_iommu_update_ga(entry, cpu, ga_log_intr);
++	__amd_iommu_update_ga(entry, apicid, ga_log_intr);
+ 
+ 	return modify_irte_ga(ir_data->iommu, ir_data->irq_2_irte.devid,
+ 			      ir_data->irq_2_irte.index, entry);
+@@ -4141,7 +4142,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *info)
+ 		ir_data->ga_vector = pi_data->vector;
+ 		ir_data->ga_tag = pi_data->ga_tag;
+ 		if (pi_data->is_guest_mode)
+-			ret = amd_iommu_activate_guest_mode(ir_data, pi_data->cpu,
++			ret = amd_iommu_activate_guest_mode(ir_data, pi_data->apicid,
+ 							    pi_data->ga_log_intr);
+ 		else
+ 			ret = amd_iommu_deactivate_guest_mode(ir_data);
+diff --git a/include/linux/amd-iommu.h b/include/linux/amd-iommu.h
+index edcee9f5335a..2c6232aefafa 100644
+--- a/include/linux/amd-iommu.h
++++ b/include/linux/amd-iommu.h
+@@ -30,8 +30,8 @@ static inline void amd_iommu_detect(void) { }
+ /* IOMMU AVIC Function */
+ extern int amd_iommu_register_ga_log_notifier(int (*notifier)(u32));
+ 
+-extern int amd_iommu_update_ga(void *data, int cpu, bool ga_log_intr);
+-extern int amd_iommu_activate_guest_mode(void *data, int cpu, bool ga_log_intr);
++extern int amd_iommu_update_ga(void *data, int apicid, bool ga_log_intr);
++extern int amd_iommu_activate_guest_mode(void *data, int apicid, bool ga_log_intr);
+ extern int amd_iommu_deactivate_guest_mode(void *data);
+ 
+ #else /* defined(CONFIG_AMD_IOMMU) && defined(CONFIG_IRQ_REMAP) */
+@@ -42,12 +42,12 @@ amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
+ 	return 0;
+ }
+ 
+-static inline int amd_iommu_update_ga(void *data, int cpu, bool ga_log_intr)
++static inline int amd_iommu_update_ga(void *data, int apicid, bool ga_log_intr)
+ {
+ 	return 0;
+ }
+ 
+-static inline int amd_iommu_activate_guest_mode(void *data, int cpu, bool ga_log_intr)
++static inline int amd_iommu_activate_guest_mode(void *data, int apicid, bool ga_log_intr)
+ {
+ 	return 0;
+ }
+-- 
+2.34.1
 
-The user/admin will configure the active set of FHs *before* the first
-FD is preserved. By the time we search for a compatible FH via
-.can_preserve(), that choice has already been made, and there will be
-ONLY one active FH per supported FD type.
-
->
-> > We
-> > need to do that before any preservation happens; otherwise, we could
-> > run into conflicts on FLBs i.e. FH of different version require
-> > different FLBs.
->
-> My change below will select the user passed handler directly if it is
-> valid otherwise it fallbacks to looping .can_preserve based selection.
->
-> ****For flb****:
->
-> Registration of flb handlers happens with original
-> subsytem fd handler, for example, for iommu
->
->  iommu_liveupdate_register_flb(&iommufd_ser_handler); ->liveupdate_regist=
-er_flb(fh, flb);
->
-> This function takes the FH argument. So every FH has direct relation
-> with their flbs.
->
-> If new FH will be introduced within the system, it must register
-> compatible flbs handlers with it by liveupdate_register_flb.
->
-> Currently, FLB objects are preserved with the first dependent file's
-> preservation. and each flb handler in fh->flb_list (was associated
-> using each flb handler registration) will call its ops to preserve itself=
-.
->
-> Same on retrieval side, handler name is preserved so the flb name is
-> also preserved. And they can just call their respects ops to retrieve
-> themselves.
->
-> What about If user try to preserve other dependent but same subsystem
-> files with different handler. Kernel must reject this. I have not
-> integrated this support. Which can also be added as part of this series.
-> Let me know if this sounds good, Then I will add that in the V3?
-
-No, do not go this route. Rejecting mismatched handlers on subsequent
-FDs still leaves handler selection as a per-FD decision, meaning the
-first session/process to preserve an FD dictates the FH and FLB
-version for the entire subsystem. Individual processes preserving FDs
-should not need to know which handler version the target kernel
-supports. Version compatibility is a global orchestration policy and
-should be configured once up front before any FDs are preserved.
-
-Pasha
-
->
-> ~Tarun
->
-> >
-> > Therefore, there should be a luoctl call (i.e via a new ioctl to set
-> > compatability) that provides the kernel with the specs file of the
-> > target kernel we are updating to, allowing the kernel to select the
-> > compatible file handlers. Since .can_preserve() is called when the
-> > user is already preserving files, the specification must have already
-> > been supplied, or the kernel should fall back to using the default
-> > (i.e., latest) file handlers.
-> >
-> >>
-> >> Append char handler[LIVEUPDATE_HNDL_NAME_LENGTH] to struct
-> >> liveupdate_session_preserve_fd immediately after token, keeping
-> >> IOCTL_OP min_size at offsetofend(..., token) so callers passing the
-> >> original 16-byte structure continue to work:
-> >> - When handler is empty (all-zero, or zero-filled when userspace
-> >>   passes the 16-byte structure), luo_preserve_file() selects the first
-> >>   registered handler whose .can_preserve() callback accepts the fd.
-> >> - When handler is non-empty, it must be null-terminated within
-> >>   LIVEUPDATE_HNDL_NAME_LENGTH bytes (returning -EINVAL otherwise);
-> >>   luo_preserve_file() looks up the registered handler with that exact
-> >>   name (returning -ENOENT if unknown) and verifies that its
-> >>   .can_preserve() callback accepts the fd (returning -EINVAL if not).
-> >>
-> >> The retrieve ioctl is unchanged because the handler is identified by t=
-he
-> >> name stored in the serialized payload from the source kernel.
-> >>
-> >> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> >> ---
-> >>  include/uapi/linux/liveupdate.h  | 12 +++++++++---
-> >>  kernel/liveupdate/luo_file.c     | 21 ++++++++++++++++++---
-> >>  kernel/liveupdate/luo_internal.h |  3 ++-
-> >>  kernel/liveupdate/luo_session.c  |  7 ++++++-
-> >>  4 files changed, 35 insertions(+), 8 deletions(-)
-> >>
-> >> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/live=
-update.h
-> >> index 509c6236720d..2413b19dabc1 100644
-> >> --- a/include/uapi/linux/liveupdate.h
-> >> +++ b/include/uapi/linux/liveupdate.h
-> >> @@ -126,9 +126,14 @@ struct liveupdate_ioctl_retrieve_session {
-> >>
-> >>  /**
-> >>   * struct liveupdate_session_preserve_fd - ioctl(LIVEUPDATE_SESSION_P=
-RESERVE_FD)
-> >> - * @size:  Input; sizeof(struct liveupdate_session_preserve_fd)
-> >> - * @fd:    Input; The user-space file descriptor to be preserved.
-> >> - * @token: Input; An opaque, unique token for preserved resource.
-> >> + * @size:    Input; sizeof(struct liveupdate_session_preserve_fd)
-> >> + * @fd:      Input; The user-space file descriptor to be preserved.
-> >> + * @token:   Input; An opaque, unique token for preserved resource.
-> >> + * @handler: Input; Optional null-terminated file handler name (max l=
-ength
-> >> + *           %LIVEUPDATE_HNDL_NAME_LENGTH including null terminator) =
-selecting
-> >> + *           which registered handler preserves @fd. If empty (all-ze=
-ro, or
-> >> + *           omitted when passing the 16-byte structure), the kernel =
-selects
-> >> + *           the first registered handler whose .can_preserve() accep=
-ts @fd.
-> >>   *
-> >>   * Holds parameters for preserving a file descriptor.
-> >>   *
-> >> @@ -152,6 +157,7 @@ struct liveupdate_session_preserve_fd {
-> >>         __u32           size;
-> >>         __s32           fd;
-> >>         __aligned_u64   token;
-> >> +       char            handler[LIVEUPDATE_HNDL_NAME_LENGTH];
-> >>  };
-> >>
-> >>  #define LIVEUPDATE_SESSION_PRESERVE_FD                               =
-  \
-> >> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file=
-.c
-> >> index fb81239bedf3..be20e0f1e0aa 100644
-> >> --- a/kernel/liveupdate/luo_file.c
-> >> +++ b/kernel/liveupdate/luo_file.c
-> >> @@ -207,6 +207,8 @@ static bool luo_token_is_used(struct luo_file_set =
-*file_set, u64 token)
-> >>   * @file_set: The file_set to which the preserved file will be added.
-> >>   * @token:    A unique, user-provided identifier for the file.
-> >>   * @fd:       The file descriptor to be preserved.
-> >> + * @handler:  Optional NUL-terminated handler name. If NULL or empty,=
- the first
-> >> + *            registered handler whose .can_preserve() accepts @fd is=
- selected.
-> >>   *
-> >>   * This function orchestrates the first phase of preserving a file. U=
-pon entry,
-> >>   * it takes a reference to the 'struct file' via fget(), effectively =
-making LUO
-> >> @@ -238,11 +240,13 @@ static bool luo_token_is_used(struct luo_file_se=
-t *file_set, u64 token)
-> >>   *         -EBUSY if the file descriptor is already preserved by anot=
-her session.
-> >>   *         -EBADF if the file descriptor is invalid.
-> >>   *         -ENOSPC if the file_set is full.
-> >> - *         -ENOENT if no compatible handler is found for the file typ=
-e.
-> >> + *         -ENOENT if no matching handler is registered or accepts @f=
-d.
-> >> + *         -EINVAL if the named handler cannot preserve @fd.
-> >>   *         -ENOMEM on memory allocation failure.
-> >>   *         Other erros might be returned by .preserve().
-> >>   */
-> >> -int luo_preserve_file(struct luo_file_set *file_set, u64 token, int f=
-d)
-> >> +int luo_preserve_file(struct luo_file_set *file_set, u64 token, int f=
-d,
-> >> +                     const char *handler)
-> >>  {
-> >>         struct liveupdate_file_op_args args =3D {0};
-> >>         struct liveupdate_file_handler *fh;
-> >> @@ -266,6 +270,18 @@ int luo_preserve_file(struct luo_file_set *file_s=
-et, u64 token, int fd)
-> >>         err =3D -ENOENT;
-> >>         down_read(&luo_register_rwlock);
-> >>         list_private_for_each_entry(fh, &luo_file_handler_list, list) =
-{
-> >> +               if (handler && handler[0]) {
-> >> +                       if (strcmp(fh->name, handler))
-> >> +                               continue;
-> >> +                       if (!fh->ops->can_preserve(fh, file)) {
-> >> +                               err =3D -EINVAL;
-> >> +                               break;
-> >> +                       }
-> >> +                       if (try_module_get(fh->ops->owner))
-> >> +                               err =3D 0;
-> >> +                       break;
-> >> +               }
-> >> +
-> >>                 if (fh->ops->can_preserve(fh, file)) {
-> >>                         if (try_module_get(fh->ops->owner))
-> >>                                 err =3D 0;
-> >> @@ -274,7 +290,6 @@ int luo_preserve_file(struct luo_file_set *file_se=
-t, u64 token, int fd)
-> >>         }
-> >>         up_read(&luo_register_rwlock);
-> >>
-> >> -       /* err is still -ENOENT if no handler was found */
-> >>         if (err)
-> >>                 goto err_fput;
-> >>
-> >> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_=
-internal.h
-> >> index dac6644bfb18..911ffedec9f3 100644
-> >> --- a/kernel/liveupdate/luo_internal.h
-> >> +++ b/kernel/liveupdate/luo_internal.h
-> >> @@ -101,7 +101,8 @@ int __init luo_session_setup_incoming(u64 sessions=
-_pa);
-> >>  int luo_session_serialize(void);
-> >>  int luo_session_deserialize(void);
-> >>
-> >> -int luo_preserve_file(struct luo_file_set *file_set, u64 token, int f=
-d);
-> >> +int luo_preserve_file(struct luo_file_set *file_set, u64 token, int f=
-d,
-> >> +                     const char *handler);
-> >>  void luo_file_unpreserve_files(struct luo_file_set *file_set);
-> >>  int luo_file_freeze(struct luo_file_set *file_set,
-> >>                     struct luo_file_set_ser *file_set_ser);
-> >> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_s=
-ession.c
-> >> index f48e9a4185f9..194ef45907c1 100644
-> >> --- a/kernel/liveupdate/luo_session.c
-> >> +++ b/kernel/liveupdate/luo_session.c
-> >> @@ -266,8 +266,13 @@ static int luo_session_preserve_fd(struct luo_ses=
-sion *session,
-> >>         struct liveupdate_session_preserve_fd *argp =3D ucmd->cmd;
-> >>         int err;
-> >>
-> >> +       if (strnlen(argp->handler, sizeof(argp->handler)) =3D=3D
-> >> +           sizeof(argp->handler))
-> >> +               return -EINVAL;
-> >> +
-> >>         guard(mutex)(&session->mutex);
-> >> -       err =3D luo_preserve_file(&session->file_set, argp->token, arg=
-p->fd);
-> >> +       err =3D luo_preserve_file(&session->file_set, argp->token, arg=
-p->fd,
-> >> +                               argp->handler);
-> >>         if (err)
-> >>                 return err;
-> >>
-> >> --
-> >> 2.56.0.212.g129ede20d9-goog
-> >>
