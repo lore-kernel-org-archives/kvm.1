@@ -1,68 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792661270;
-	b=HmFo6cfKT80/KXuQEZtGcDa66DrMKiSaAxFzLcs4RfgdFCcpI5TXHksbXtMLFZo5/Wnm
-	 DJ1Q523BNo+PFnF7ezWvQMDaKbELjD/j/K0bK/GHzAQY1wxTAf1/4KM5nb0PSRW+q+SlA
-	 7ScVg4B/JJcNry9qAgFt9iu82oPIPtzicDHiSX+AvXdobJPyREU8nqVkE2/ZKBjP3lLe8
-	 3nNS6u0UQOprEjsuOSPJdbYo+2vXhP/TT2TCdg1c9OOe9avDD0d3kOp0iNpScSccH5sDe
-	 OsJqLYxEtOYeV4HoLa7uapra2te6SYa1joo0LSxyrh6zslUuciRnkG9doDdc+c1kaIQ==
+	t=1792661352;
+	b=mya0ysPXaIDyK42iKD2smzm5pOMM1fpe+YBJ+Z/JBSgN+ZOMhTHibe1/qpAIjDGdJICh
+	 yc/SRUw1TsKHR/dP6XdAZXpSarW/6PYfRy3BVUFxW/eIoNtEJhIj0UU34+b5C1KRQBoKK
+	 AL7rwZ/GtGucwDK9XVw12cBAN3/Av4VCbKbxnZzKoPiKBxnfogjSvrhaMTDfFGVkMrQ5D
+	 1qiQMHoRiEwvxQcXhDHbyo+m2xYk1MxjKDxozahGGIiaN6WtV4fkkJZZYrHqTj9eFXnef
+	 QK+LKiKXiLFnzHVB6ieeUb02dkVMwQXs5YGuQaSVtK27XAA61QtILqV8zJ1zTrua1Zw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792661270;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=+ONt4F1TGuj2D4gQ5Y9zhiAKxe2DyLjInWzcKZuuWlA=;
-	b=q7H0ca0hOtuim8A7KHRrY3FCwhVs/NS42eyv+HaFdfg6JvWV8jIy9kW38zY/CilBoA5t
-	 cf3PDAZqf0UzWsT4b14qoDko8Kh2EhJ95Y2C2QPou7tEGIrvM20swyEoXurTYxU/IrEFh
-	 b/BndfCk/YE9sz39gfSwIrG4ZcyDkYZBH5n7ymNaN6vKpDhaizrQhV9gRMltvMDYWrE65
-	 VfdZS8CEu4/2nVwzB72UvW7HzPezxmYIXOu2TDCBBUu9qHlW7K5sT50+t2aAUDoqc+Z6L
-	 TJEu8os4mITgIyMAtsNqkzRKHVPIVsPpQX4zTpbL5fGRtLgwFev3X8/NMe+R+wRH8hA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792661352;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
+	b=hoqymzOlThk7IYBzQL3vmEsNQCD+ssMSUb66+OdikBgGe00eI8Dbto/VvkkjlNf8MYzL
+	 5nf0bJE23fPAfdHUejwSe/U+TW5FkDskS+Qd7c2hm+cjnSC3sm8nGuWLpezDJZfQlgHLe
+	 jmHKnifQuHCulaEonWISSVKp3PghzWk1shIMR/sG23eWGkik26MWRRSIX40xjMCBQa4jD
+	 L6oyw219Q2hwEzWwE9DESChozwEZPWnFU/ewH6Jti6EKrvw7otUQtUsue/LSoOhzIoXP1
+	 Iv/tuo9rWdnhkO9ngNNma4YVl2usIjkZjZS7xa5U/rlHiqhEgbtvER60EROw1uM8s2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ShdJO+V6;
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aKogVBnj;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="fW6/HOpL";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE6C606A32F;
-	Thu, 22 Oct 2026 09:27:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CE6C606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D797C606A320
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 09:29:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D797C606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ShdJO+V6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792661270; x=1824197270;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=rK5sIX1DXwk1tF+cbYqZC1RpKRClNvCK9hC7fUt7PpE=;
-  b=ShdJO+V6REirnz1pz6uKRgBhNLE2fBibKr4TlyEV5lx141c6edaxYWES
-   qqyDSbe8TW5iKbMvgkgt7p00k145nQ3v7Dc58ECoE/FNcFAcNU+05vroR
-   wJYS4+QmQupYjVglEMxTcixAiSkVVW6vCv/gcPzW8n+8tqgHIhuwAorqh
-   PG60OtWWwxNoNLYo1PXeyBJcHADh3ZpsVav/dFRpJknKyeZ5jmTfkBs9g
-   zc+PxP3dGsrQbzAtKw+a/cXqRfkuNgNrXwnrXLAElKE4wSkKS+3+/AGJc
-   S9T+8lRyqU8+MsvS4UO8vLj51z8LcMXEYSVwBp9dsy9wEL17b/nl1WIdO
-   Q==;
-X-CSE-ConnectionGUID: 8cTjpWbdSbaHD1DVkZSYOg==
-X-CSE-MsgGUID: rtR1K3WARySoa2eAExVktQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1276480"
-X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="1276480"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 02:27:49 -0700
-X-CSE-ConnectionGUID: 5ZcempBrR2CHCHyjA59+2w==
-X-CSE-MsgGUID: eEQlHikqQoqFh/RjbTax3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="3675540"
-Received: from unknown (HELO [10.238.0.148]) ([10.238.0.148])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 02:27:43 -0700
-Message-ID: <1e219be9-e7c8-455c-a3ff-10f80515d4dc@linux.intel.com>
-Date: Thu, 22 Oct 2026 17:27:40 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aKogVBnj;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fW6/HOpL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792661351;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
+	b=aKogVBnju0fKsOUL/kesKMM2Wp5JtDTTGKhjuN+9as/8zBiJ0BxWR02q4WRG7/FcJUZJQa
+	Jd01YiXKOT0ZY0AriPRzdvRTmxneCgLhuWhtA0fKZ9X5ktwTtlKdz6dVeeKAEmdOqLOeio
+	HreCxKqSAcHFMlrjJAvj+eG1V6A9NGY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-nZNdFv45N522Z2IqoEI13Q-1; Thu, 22 Oct 2026 09:29:09 +0000
+X-MC-Unique: nZNdFv45N522Z2IqoEI13Q-1
+X-Mimecast-MFC-AGG-ID: nZNdFv45N522Z2IqoEI13Q_1792661348
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1db220b42so14920405e9.0
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:29:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792661348; x=1793266148; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
+        b=fW6/HOpL8dIxGuiiDpKI03pmgLFA64DVP3w/EeHlzc+k192QYqX3x57BU8tRCmA4dA
+         AZf5L+g3jLxNIq5RpLhbFvbzpKSMP60lFldlNeMGERpCjaGXaFKm129m8zlmoBKRDVBA
+         S5QC7cOUn5c2cBmZ9V/pCAqjxbnkqBkfGJ2UKImZpQWB8abN66TUfpZhHBeUIOWsaQUI
+         lI1ErMP1HX85uZsAVAgMgdL3qI2T7qEh7C5d+ns9zSR4JheX7rcIup9v31pB+FMDGtkQ
+         52CMpE8Mxg1WUw3YQ6P804l40b2nYk0SWpONRfTRQWsb5Jd1/WZOOJTCwnGpEHqioowi
+         3SJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792661348; x=1793266148;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6C0nwTWJOi88sDum8VGip3YZoxwI0Nc79E5HIgWtPfM=;
+        b=qKy+tcUeGdW1ojgbCeQKewEddaKSxWe/XDqcImfK0MoGmOBL0KJGVSyzAFLCQ3JQ0F
+         G8mRBNgYibDfFf5/yCK1E+27lhlgt7CoajFWsuDaJLNtil0ijPzhSHS1h6MpjdLJEibf
+         3znqpbGCogtSlx14ElVD2vMUImCexDruZFGUfVyHHSxoAP6iAio6hh56PGrUP0BgRPyp
+         ZOuMg1vtYcMvqtIuHGiudXyn3BcBGN7SVvvEFqDZXPfXiOPw0juJvpswx081cMXCSdvZ
+         mjm68Vo3iIi+nHHuMQOBHINb+DlIQfljse6Nciy0ggpuBifMoZ4rK6DFTpKxDx6xFBNG
+         73lA==
+X-Forwarded-Encrypted: i=1; AKwUvBxtQkymoM82P423DjO7wxq2gEw7aIN7UV6wm8L5ia2wB0QHWZLnLOMfGs83+o+43MbBbcg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJqqn9fd5fuW6UWwlVGDbLPipQe7WiClxAXWEDKo9Sh71ZqqPz0
+	661+uv0DckhoyXC3CzDfs9Ix6Ix7I9y20xIlVMyrW8hW8S+JS9SLDYft2B6o8aTONibAWytfCKa
+	pIbKSNv7l27KuvmlyJaDqLtvQklhO9ssGhUfWh84QluqB02Y1mmMHsQ==
+X-Gm-Gg: AYBFou1pnnLPin7D3ftTPdfy+G2emN4wqd8/2n17RmyeX29kZ/mjOFx0dI/sC/zMPyX
+	YwGPprtSsxCx3qtkmc3MsxNbjAbq3hguhc13xAoUT1kl7Ta27oibjZDR1JSd2JYdkCuZyf90ec5
+	yl60q9yp3mhsQohtbFJMjaFeZGBTRsgYrrkW5nrwY6mSj/5OzPkUSUnit3EhVIA3EC1iygzr78N
+	1FlleL0btl9XtZTrun7XyJ+ZaY4E5uTKObMuSwTHbS6a9O6VSvKUKfIMN7ZnvH15uVxpXpCHluv
+	nk9Gyf3z4spNEsVvEqTKV6D1j4FCxDhn08gGWdpgcuZgd5/upZ9G889tleTEGmTIf1YZKzb11VH
+	yUmeGjhvJWYsPdm7pezejUyewgR118kTifvtKxwXPer2nmzs7/qrHIo+zmv/JOvepcvBUH3loSg
+	==
+X-Received: by 2002:a05:600c:620a:b0:4a1:706f:b40d with SMTP id 5b1f17b1804b1-4a1fdb1a609mr83563675e9.7.1792661347965;
+        Thu, 22 Oct 2026 02:29:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:620a:b0:4a1:706f:b40d with SMTP id 5b1f17b1804b1-4a1fdb1a609mr83563385e9.7.1792661347465;
+        Thu, 22 Oct 2026 02:29:07 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203b42befsm54154205e9.8.2026.10.22.02.29.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 02:29:07 -0700 (PDT)
+Message-ID: <9756cf25-6951-4330-959b-3260f4760c3e@redhat.com>
+Date: Thu, 22 Oct 2026 11:29:05 +0200
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,64 +113,90 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 01/28] KVM: VMX: Enable support for secondary VM exit
- controls
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kvm@vger.kernel.org, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Shivansh Dhiman <shivansh.dhiman@amd.com>,
- David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed <yosry@kernel.org>,
- David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-2-sohil.mehta@intel.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [BUG] net: tun: zero-copy path can expose uninitialized packet
+ data
+To: Cheng Yongkang <teel4res@gmail.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowangio@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Eugenio Perez <eperezma@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261022091847.3654028-1-teel4res@gmail.com>
 Content-Language: en-US
-In-Reply-To: <20260911213659.2025974-2-sohil.mehta@intel.com>
-Content-Type: text/plain; charset=UTF-8
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261022091847.3654028-1-teel4res@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/12/2026 5:36 AM, Sohil Mehta wrote:
-> From: "Xin Li (Intel)" <xin@zytor.com>
+On 10/22/26 11:18, Cheng Yongkang wrote:
+> The experimental vhost-net TX zero-copy path can hand TUN a user buffer
+> whose effective vhost virtio header size is smaller than the TUN
+> device's configured vnet_hdr_sz.  TUN computes an skb copylen that
+> remains larger than the bytes actually available after stripping its
+> configured header, publishes skb->len from that copylen, and
+> zerocopy_sg_from_iter() initializes only the real payload.
 > 
-> Introduce infrastructure to support secondary VM exit controls.
+> The resulting frame contains an uninitialized tail.  The tail can be
+> read by userspace from the TAP peer through normal forwarding.
 > 
-> Always load the controls when supported by hardware, though all control
-> bits remain clear in this patch.
+> Observed on Linux v7.3, commit
+> 08ab31164c55f20c7a2653de3186ae333470e2c1, with:
 > 
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+>    init_on_alloc=0
+>    vhost_net.experimental_zcopytx=1
+>    TAP vnet_hdr_sz=200
+>    vhost TX total length=256
+>    real payload length=56
+>    TUN copylen / skb len=128
+> 
+> The exact control with vnet_hdr_sz=10 delivered the expected 246-byte
+> frame.  The corrected trigger delivered 128 bytes after submitting only
+> 56 payload bytes.
+> 
+> Sixteen of sixteen corrected triggers produced the overlong skb.
+> Eleven of sixteen had nonzero bytes in the 72-byte uninitialized tail.
+> Several contained recognizable stale kernel allocation content from
+> previous skbuff_small_head users, including fragments of environment
+> entries.  Those bytes were never supplied in the virtio TX buffer.
+> 
+> This is a userspace-observable kernel-memory disclosure on a
+> network-forwarding path.  It is configuration-gated by experimental
+> zero-copy and an enlarged TAP vnet header, but the overlong skb occurs
+> regardless of init_on_alloc; init_on_alloc=0 is needed to observe the
+> stale tail in this test build.
+> 
+> This is distinct from candidate BR-023/BR-025, which exercise
+> IFF_NAPI_FRAGS.  This reproducer uses the non-frags tun_alloc_skb() /
+> zerocopy_sg_from_iter() branch.
+> 
+> I found no direct upstream fix or CVE.
+> 
+> The vhost ring reproducer and complete program/console logs are
+> available on request.
+> 
+> This was found with a multi-agent workflow; the
+> information disclosure was reproduced in QEMU/KVM.
+Please stop this AI-generated test-walls dump: it's not very helpful
+except for other agents consumption.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Really, please stop now.
 
-[...]
+Please instead ask your LLMs to try to generated fixes for each of them,
+manually review the generate code if you have the skills, and share
+the patches on the ML, at a very limited rated (no more than a couple
+of series in flight at any given time, with no more than an handful of
+patches overall).
 
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 504630f0eb40..b4aec4218b7d 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -2751,8 +2751,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
->  	u32 _cpu_based_exec_control = 0;
->  	u32 _cpu_based_2nd_exec_control = 0;
->  	u64 _cpu_based_3rd_exec_control = 0;
-> -	u32 _vmexit_control = 0;
->  	u32 _vmentry_control = 0;
-> +	u32 _vmexit_control = 0;
-> +	u64 _vmexit2_control = 0;
+Please consider collaborating with other already in place projects
+(i.e. nebusec) to make you finding available to the community in a
+responsible way.
+
+Thanks,
+
+Paolo
 
 
-Nit:
-Could be _vmexit_2nd_control to be consistent with _cpu_based_2nd_exec_control
-above, as well as vmexit_2nd_control in struct vmcs_config.
-
->  	u64 basic_msr;
->  	u64 misc_msr;
->  
