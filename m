@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792711676;
-	b=vobEcwBz49QNwV1UpH4eXg0RwmFmyHhB1CTsp64Qe8MYd7g6IgXoyJvJpLp/DFlW4Kaj
-	 5RSYIhYwFWnigPuA3pag1FX1lmda6P7hbDeidkIwCBWT0BtdIIVR2HmJkvf3cHcuGsPYj
-	 30Trnax6mSmc7RbtQGjvGhDD+ujbw0mGU5dUnQi0MZ0k/Yuc1bZ5ioRqB02sHaJF3W5FO
-	 iXCziXnowNhEdCtf4yg2pIArYa64RW+Ey0LcA4JQGbRTTZoaQ+hbs5ObiEB42OQXt0tNC
-	 3etcLZCEHkf3QMQ8sY38ocSOakOf8yegOFvBuQXtp3MOmqYs2Ct2HXIJBjOfcaLMOpw==
+	t=1792711679;
+	b=aspKhIqVwomvCK4cBTCcJH/7vwf2tOxjHVmXLrRWVUWgB+7VW5T+Ei8HjqGiuu7L2QhH
+	 ZChBtmPJjJBbl3FJVzrhPBmJdDk9gC/+YaUJqMycaCPCZDnbeQ7x0yiKmNii1sk3SQXW8
+	 xz8p6/QZ6X7Udgxlt1Gv3b4G5h9LZcRz3+WVQWOuxU2hy85hitI7PLrSPOMh+rZGjXyqG
+	 zOSyGw+TUw4tXDbhSuLvl7TTO4wFwcMdRaCqielqtgHOhG8ixJA+ZBOAvHokDIWqPlae2
+	 3gl2CYdo93hSbfxH3IHI4j9cPrDVq10PHa/rOo2ncF38t8Vyxfe439lRhkye984aRHw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792711676;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792711679;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Mw8NuWe2zt3uYUYLmdslwurewyfFMdDfAeZucA82mOY=;
-	b=bo07rKfucjUcd8mXnkUzbUnt7cOvGRS9TM1PGv2nqHyi/PkQp0mAq+0JH6PNBa7rsUAJ
-	 ycLGxhXYdfhBJ10nyW+CZNkA0oc2KyoAoUUioGY9uc4FIq38Vls99eOZtz/2/tjEZpdJN
-	 YU72MR6QcsFm8W10ipElA+1EePR7jsLMLcB+L4VODP8VJP94IMLeZXQQI1tdQtkAsVmVK
-	 Lox06C4IjjYLxxZmiTLRp7WwlwxNJxauLoZJZFPZhiHFkSx0XxjrMYuz8qBRd+qP7pKz7
-	 MH+454aIAXSh0yOhAor7Bu7NsEdVy7VCOyjLnBOg9FScx3EX6Vuz9IBhmB5bwpATx+g==
+	bh=zWZPNhlVhHIuHneGcp6Ke1BtZSCn8SBM6DWKl1LXrLo=;
+	b=qjklQTRzCIGU7apgsMfWYn5P1oG/qVBywaQuabwBWO/CEDRlgptuaan6dvIRtQEARlLv
+	 nB+lDTw6pq7D4CcOQAlZWOCraUdUySNKqFNg6hlpWjX3se4zIA/NGLCi69MYWIi2W0W3r
+	 lrkj5BsnXvLr5OJEjLMqZIHAKwLvxdiB4Isofx9hiHIuQbJnaaippXwAblcTP4A+HC/lc
+	 5k3pBdYwlRUcyGD9eO7vrml8dMe6Q1hPk2xvosKPQHKyOwQTCU+vmTzp2WQ5bdsZwMHkG
+	 xJyRYrCG/vi7OOAtLnrBsrYV+2tz3zZgrhSAT/znBU8uGGzzLjjYY1g3wiSbRQoAWaQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DG7HU12f;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L2qAsoJi;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F39260A263E;
-	Thu, 22 Oct 2026 23:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630AF60A2610;
+	Thu, 22 Oct 2026 23:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DG7HU12f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L2qAsoJi
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792711676;
-	b=Ibj16u5/bIRb0iNZk3zDQYwojotUEHCdOPDwM0csqkXRoCYqMJkWWoGFIkM22d/L9HmJ
-	 H8+eLv43Wroi2SUA7ZIAG1Ql12mOFkCwKIYsrH2aqe2KzodLBCh+gQ0tUhahIAM7xoQ0B
-	 ilva1KVoiwxroJUQzUQiYPWyB9MwItmJRqr22SoubxP6FUD3stbaArNo9bWwEqIn7tLNG
-	 dIEE8jlRoO4Ao7VBX0DMNkj8ctphqdjTgSx5NdNiqpy6lXBFfglYvhksbTfAVqBA/WfsO
-	 7j55xDUeJjgnr5KNQEzUKtQH/0YOYnvvU9U9TZadmCFvVRMWHub5LslCv+W5EruxmyA==
+	t=1792711679;
+	b=AG9YZT7iV/nBqZBeoBGY5/rljHnq9FnIFsTtzKgbofjxRnn6wlp0cNWCK1FgxofHqNKM
+	 a05sn/KX/4AJOyMx4nr3OCi8Z8BAI6AmilmoXWTyD/nA5ct+9+DXaSbAmlM7ExmWvxuCI
+	 D1qoxCChiKnf5gDvVVgmk6jEMLxC7KWXn/Ek2Xcnbxg/IE3VtJp5uKFh17ENpJzJxy54U
+	 PeCszWunVrHFZsKFBuKRnXi1XYdqmn/hta4NpPH/qXq7jp4TIFDy+pBB2VWwuDd3L7m5j
+	 Pj7Lpp/fchdVh/xSy5gth/tL8q9xzFWfqA/Mql/qSbvD+xKLSOaQjKcu3ta5VfzbxIA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792711676;
+	c=relaxed/relaxed; t=1792711679;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Mw8NuWe2zt3uYUYLmdslwurewyfFMdDfAeZucA82mOY=;
-	b=gkp+MIEIIK0WwRwQBspHz0Ug3TYopEIJUeN3dWhUQTuM9/bO1Ppy32+rVnvo4gPsWFXn
-	 Hwk+mpHHZJ6Li3Z60AzhnRURUqcd4XkBJ7bEi7C6Rvl5qAP51SuhqmZ22HyJa8waE/vzo
-	 vl4NnRb8l4JTAxI032gN2WV+HhtjCvcpzIq1PtS619c5PBuoPFxLCtcxor610AtE2ewyH
-	 fiNhHrMcS3aPZH1ty/kW403Ap7NUnTmo4pM4gBo8m7MijzOWi3wDSJkHSOvk8lgdCKa3D
-	 y3VnETCptW5ALMXWbJlMQXAhp7wCqIwF3Z2YHXF9j+wuaR57a75C+AWYVu0Y6OgYD6w==
+	bh=zWZPNhlVhHIuHneGcp6Ke1BtZSCn8SBM6DWKl1LXrLo=;
+	b=y8DR6msRM5lSYvSba0622zOc5Z3/gw++3Z2z1ejcrx+5d/vVbcw5mCG+FZlV1x5KJkyp
+	 DbzolAVDktScY9qOGq0pqi2rWBDi6M+5+vJWBi74GwKh4+UaGrDPVgivwaLWPWNq1I8rM
+	 KXJ5ySprvMg82ry4coi1G7ddRRE+TN38gYFdKPrzJTo9oV0AyuMlrRAWXlhgaFxv4GWR5
+	 QFtH5OAXmqsQQpJQRNjlfh6dwNdMWjSXaw/dPooS4AoiAF8FT1CPQE4mwXlkjAOgF0j1/
+	 1JHCVADwFCCYRoCInLt8Asyj+K9yzLn3rdlceNAhL5qMs3+dOrrM5anPJnslHI/8EVA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 2EB631F031ED;
+	by smtp.kernel.org (Postfix) with ESMTPS id 79FE51F01180;
 	Thu, 22 Oct 2026 23:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792711676;
-	bh=Mw8NuWe2zt3uYUYLmdslwurewyfFMdDfAeZucA82mOY=;
+	s=k20260515; t=1792711679;
+	bh=zWZPNhlVhHIuHneGcp6Ke1BtZSCn8SBM6DWKl1LXrLo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=DG7HU12fCW7Ul9TeYaF8WXju1U3fRV6dSKP8Zo5SyWXPL3j7JLlHg7+L/oNHCHr3u
-	 PfMIZDPm+hJZLPo79G1+eaDuIxHld/Ld3PQiqS6sx6OsVoAyio1fP5Az8P3N7LFf01
-	 kndl3QAQN/aLegK+5A75g2IetIk01Y4KZ8O1zukE99woUtAYezf0zCf0sXDHYJtfSo
-	 r3ZqFPuBvGItzEoIHNxVlTqII0VQOWp3WSP3IDu07XH/YWqf05F0gQohf+cMAR15KI
-	 7ciKv0w0an7+IaghWduTvLXFxlnoiUzBMQE3ihz3xyFzLXguBYDbODnMnVDPNIPSRe
-	 tjHuyjhOJ4FFg==
+	b=L2qAsoJi3Yw1xzg1+iEw/4NyGOK7j4B0vEy46cKE2BW6vvLfUlhZRnDvk4uqEyqC7
+	 jTm0hkR24QjQPa0yVRX9NDcR23CoEvOy0qWx2XcayTrZ8h1LK7VlH32EDzORq8Xb0W
+	 gRR9pnD9Nc7EV59IhoJY8yxjcM9pBe5bduarOW+qznCox/xwRq7mZR+aacmgOHT4xf
+	 Vqb0DUsKknCQWeGSW2e8rqL5vZSTW2qV/IOrbnR0z5ovGF64MwIQX/kXlEjFVlvmkQ
+	 X3ultXOpji3BcuTiTlFx/1bupYwnSzyNkRBzzcsX20f3Xu4zeBl2369kgNrS5LXDh2
+	 NcBfugKj12clQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9BCD542062;
+	by lkml.kernel.org (Postfix) with ESMTP id A8AEA42067;
 	Thu, 22 Oct 2026 23:27:48 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 22 Oct 2026 16:27:40 -0700
-Subject: [PATCH RFC v2 08/50] KVM: selftests: Test rejection of unsupported
- filesystem for resource_fd
+Date: Thu, 22 Oct 2026 16:27:41 -0700
+Subject: [PATCH RFC v2 09/50] KVM: selftests: Test rejection of memfd for
+ resource_fd
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-gmem-alternative-providers-v2-8-5dd1dc6c660a@google.com>
+Message-Id: <20261022-gmem-alternative-providers-v2-9-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 To: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
@@ -135,11 +135,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=1756;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=1909;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=MKtSCk+ZsgV89o0Atosj30SncvaeVEKWTGxyjRkwt3w=;
- b=LXu+Ja9u5BkvgZlmzPdoqaK+INQtueJHsx2u2mHiJGo0Qpee/AO8GRK5ofjeZNlIF2IbkfNgX
- MPs2NATgGOTAyxWhfu7Nl1Hb2BTO+4kwolIttfLzGdtRCeA//sq6R6j
+ bh=qTja1erI/Lan5wmGs9jbLgcIfoZ3cox1rPf5vW4srgs=;
+ b=rew4+7ZZjD6ryhzcWU6m/IEO4Mn/eGn4S6P1gpc2Xyar1xtPPFqbC9vU2tNnvjWrBnFpovP09
+ ++QGuwuIvWnDng1N+Ovvgujyhlo+c7XuMKrwUcV7a74mJEw0lbWBznt
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -150,9 +150,10 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add test coverage verifying that passing a directory file descriptor
-from an unsupported filesystem without provider operations as a resource
-file fails with EOPNOTSUPP.
+Add test coverage verifying that passing an fd created via memfd_create
+as a resource file fails with EOPNOTSUPP, because regular files do not
+implement gmem_provider_ops. Only directory file descriptors representing
+the mount root are supported as resource pools.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
@@ -160,42 +161,42 @@ Signed-off-by: Ackerley Tng <ackerleytng@google.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 3313d306c0bdc..445396860d819 100644
+index 445396860d819..d62ae23256083 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -436,6 +436,27 @@ static void test_resource_fd_invalid(struct kvm_vm *vm)
- 	TEST_ASSERT_EQ(errno, EBADF);
+@@ -457,6 +457,27 @@ static void test_resource_fd_unsupported_fs(struct kvm_vm *vm)
+ 	close(file_fd);
  }
  
-+static void test_resource_fd_unsupported_fs(struct kvm_vm *vm)
++static void test_resource_fd_memfd(struct kvm_vm *vm)
 +{
 +	int fd, file_fd;
 +
 +	/*
-+	 * Passing an FD from an unsupported filesystem without provider ops
-+	 * (e.g. the /proc mount root directory) is rejected by KVM with
-+	 * EOPNOTSUPP.
++	 * Passing an fd returned by memfd_create is rejected with EOPNOTSUPP
++	 * because regular files do not have gmem_provider_ops defined on their
++	 * f_op. Only directory FDs representing the mount root are supported
++	 * resource pools.
 +	 */
-+	file_fd = open("/proc", O_DIRECTORY | O_RDONLY);
-+	TEST_ASSERT(file_fd >= 0, "open /proc failed");
++	file_fd = memfd_create("test_memfd", 0);
++	TEST_ASSERT(file_fd >= 0, "memfd_create failed");
 +
 +	fd = __vm_create_guest_memfd_resource(vm, page_size,
 +					      GUEST_MEMFD_FLAG_USE_RESOURCE,
 +					      file_fd);
-+	TEST_ASSERT(fd < 0, "guest_memfd with /proc fd should fail");
++	TEST_ASSERT(fd < 0, "guest_memfd with memfd should fail");
 +	TEST_ASSERT_EQ(errno, EOPNOTSUPP);
-+
 +	close(file_fd);
 +}
 +
  #define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
  do {									\
  	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
-@@ -495,6 +516,7 @@ static void test_guest_memfd(unsigned long vm_type)
- 	test_guest_memfd_flags(vm);
+@@ -517,6 +538,7 @@ static void test_guest_memfd(unsigned long vm_type)
  
  	test_resource_fd_invalid(vm);
-+	test_resource_fd_unsupported_fs(vm);
+ 	test_resource_fd_unsupported_fs(vm);
++	test_resource_fd_memfd(vm);
  
  	__test_guest_memfd(vm, 0);
  
