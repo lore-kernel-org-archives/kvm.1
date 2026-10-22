@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792634665;
-	b=5dRMFdBobZ2C5OvJF02/FLag6fuGP0ax7BRx6eR9TdZcy62iRkJHcAFDKMU2MBk7KKzi
-	 y6ZB1TRalnZm0lCuuFJ/vIH41BftJ8GS10l4wl3vAcvBnozSA/Hu2WJx0cdPkBIe1V/NI
-	 G0zYMiZBRbQCZ5b8Eo+HzUe1ZinEMuSu6CnuGDIhGkm+jsRyxoV/C1lRQBzcieIKR19z5
-	 sOuxw8vM8IFdQPaNMca9eht5hCnd2MbrTqk0ZrMwRROEcbGlQzBPX7RMbSHp23f4YbINv
-	 KDtY6ojE+aCjbgiPNwEBARJDt9igKLujvHng+4ifRTVdyl8mL1l5qnhi6SC9Go2CTHw==
+	t=1792634668;
+	b=cHGbeg/ESRgwYlEQE0A6ddc1yeRZ0cMB2lueSB2U699H78LkZHVMUjordtCLC1AA09yy
+	 EKItIS6mEhdrfVUVHycKVeKNbvfq/SsxAz54eSQa+zoKaivK6rt/8tZNOskLJReEO+Ibm
+	 52IP+vm6ZvBviYp5ExHpr4XwBXkswAfuTmE9GZkcPfS5S18FhNcWvxlv01Hw3yKyaYq8y
+	 /qbc7tgrE5jcczUDc88WGvpiZYhpg6m6xAKxB35cWEEjJTBeZWk3tcDwySIHYE/alibAJ
+	 CTZ8cR2gwOi6ZGWQer9V0jlZgOuivMs/gCLpccWvtOAztPdLo5CCvQB5DCKwFN/O25g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792634665;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792634668;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=pAVn1Jol9qboT3oLeJKITovPJxq5Jfw12f67icchhi8=;
-	b=UmvNp+xax6SfnOhKxFSRTcYpK36Rjgfu3LtUSxXhwAwb6iEKl/nV1StJBm8BPLmx1svO
-	 Ktw7KM3qERqdqXl/2MO69hpL+z6vMt8xP1s+1eGZ12PhxoJ1o0Zd3wpv6NMIP7lKAVyKX
-	 dzINP1iYkXcgCKXFbRKIpZyXBszBvsnknJA2yI2zxk164bAvrzi+ZqQP9kZgcQSleujBL
-	 E9/TCGLBtW+xtnvOEce9YMFSjnX9H/Ik8P132bCxQmZQuEJrIOTF5DfhyXB5xklT9ilHF
-	 mMbAIsWLoCrIgkukDjnrn3xrcZKlUxIjp75GKxe8y6ZOlBY/V17k9xVAoI4IQceTA+g==
+	bh=EIBe6Egbq8wlFoK5s9mm5fcqq9mc2/jTVPwCC5RTPeA=;
+	b=K9Jt/HUvdk4MtwmuLHtR8S06mBwz7j6ZJ2Q6QNnw0fPTtWUGfHLRkZSTviiBvfuDvzgJ
+	 r+bwxEFhGPL8qFsshDUOgOaHlRkP+ZbU9FxOjnX9ZRHWKlHkfNuDKi1ptSgd+22u7OtqH
+	 2UyD9FxbywbEIheGLs63DAHTdteOZ7xeVJ4xtpZ2FAj1kymxrjSDowZlBQqOq5T8aKGwx
+	 8IOpu9J9VjEN17QypN8yDk8OI940108qtYPEEMjcZK/ZjIVtaazdwozYpFoDuTqhtaC+A
+	 1XyfcSWZMZxNeE9bJD7XVtRF4rkwuyrC/KlcZEpLcF1QDdx/DyXfXIoOrvGvOqNmCAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N0hO6Ggp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2ijeOqb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0860606A31B;
-	Thu, 22 Oct 2026 02:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA9E606A329;
+	Thu, 22 Oct 2026 02:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N0hO6Ggp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBB51F000C2;
-	Thu, 22 Oct 2026 02:04:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2ijeOqb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416891F000C2;
+	Thu, 22 Oct 2026 02:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792634664;
-	bh=pAVn1Jol9qboT3oLeJKITovPJxq5Jfw12f67icchhi8=;
+	s=k20260515; t=1792634668;
+	bh=EIBe6Egbq8wlFoK5s9mm5fcqq9mc2/jTVPwCC5RTPeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N0hO6GgpN3YTS/d8YEcmcRqlnsfYUU7+3hPMRKdQzBtwTiCi+1iCmepbVxtl1OZLJ
-	 5YZ8GXEWLz4wIURJyh9K2Pi5YTjos0JztHVRKyFafNQL5YTWmo2gzkkVzrrAM5RiXb
-	 qUrsz/GJCnn4EZ0A73HhCkHDA0FCxCDdzxSMoyQX9iH/z6TbZDIQSB2SpZJmCdC0mH
-	 7/Xz0poBAPK8W8f2KmmOxT+vSnNjf4tQJSPweWWW6JmU/9x+3uAEDU8GOhINMM2QEP
-	 xW/emOIkZW41KuXQzjG/gAO9beF8nDTeSVEiTquQ2ZtPcWFpQep93dIu80yT34UM+k
-	 QFY6tc7O35f6A==
+	b=j2ijeOqb0B6d//ylvbeNf8on1Tzd1ZfKXgHKdX+U3zdQ09G6k/bjfL3BJ+sABwJQO
+	 MYeJ5vFrzIAsrdYO2xjkgi7drLqlD1o4+uv+h4flnkGewVY3egVCWpCDVGC6IMLq4f
+	 0WzXXZ0iaiL23UOQrejidp6hvUeS7djnDQbnwfa47I0bQHMRYUkb9DC9y5XG5TImw8
+	 vK+ngWdWz2aXiUPP5DIsIFTAFR8PJFfA2ZZEbPrj5l1ezgtW9I0Lohqu4ttymGHjpO
+	 i3aV7nCuJD85m50VknQt7t2VgYYn7EpqqvGHY+ZfiDNj0q9nQf8Hr0ggZwWF+iQTlP
+	 0631pJCCLnHtw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -48,12 +48,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	Hyunwoo Kim <imv4bel@gmail.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 6.18.y v2] KVM: x86/mmu: Preserve nested TDP shadow page tables if they are used as roots
-Date: Wed, 21 Oct 2026 22:03:49 -0400
-Message-ID: <2026-10-21-1-daily-reply-0024-kvm-nested-tdp-roots-6-18-v2@kernel.org>
+Subject: Re: [PATCH 5.15.y] KVM: x86/mmu: Preserve nested TDP shadow page tables if they are used as roots
+Date: Wed, 21 Oct 2026 22:03:52 -0400
+Message-ID: <2026-10-21-1-daily-reply-0027-kvm-nested-tdp-roots-5-15@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261021021635.1710327-1-seanjc@google.com>
-References: <20261021021635.1710327-1-seanjc@google.com>
+In-Reply-To: <20261021024921.1735149-1-seanjc@google.com>
+References: <20261021024921.1735149-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 > As in top-level reclaim, do not recursively prepare zapping of a
 > nested TDP child whose root_count is non-zero.
 
-Queued for 6.18, thanks.
+Queued for 5.15, thanks.
 
 -- 
 Thanks,
