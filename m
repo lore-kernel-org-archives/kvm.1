@@ -1,74 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792693101;
-	b=eXtk65J1DpH2bsWotM3iK52oJJd994YuuGj54NwputeBXwpCcty2NBWzLUL5+uJS4Kb1
-	 8zzOKtV/I+6hjgr7GZAlBX4ttvMx8byQUjbEnd7koXgJoM/RHvao1jP70WxbcoM9a+jy6
-	 P48aYtpoN+NRHINlaFSBOeZV/u2M7d63+BcQSAGeW6eczP8+ckSPaYAr1w+RHYoqZ/tAE
-	 RuxoiQbPb9hRruTqHiouLv9nCMQ+W2RG2ygb6GsgZ+Hv4Q31OyO1+9L7M4Sh80Oe0xJbN
-	 5lW73H0f4DheddMlosMXMcOBdKa9lhw+CVa/b9shR7XY6/d9VGbPiLnmr1jJBu9FyJA==
+	t=1792693131;
+	b=Fxo/V7M7aGMPawphUsLKc7Onrf4oGPvnKf8RP4nEmZDntKkXeceP11xX6Q50H+YFvf5Q
+	 AmLXliI8K0vvbGm0pzxwIwIWItnkITszWOVAS6Uyq+wAZbU3P1cGeikzj90TYUFpFFpGk
+	 f+MjzOuGq/0mjM9h8osuv4nzbts8rQ7Ukyf4loeOFwiJG33S6yknF4CCcJDVyxkgB1EBh
+	 UPKEVmSBJpZU3spaoeZTd3aAM9Qn3OimKJ5sxzL0PJUXkzmWPwL3mlUKHL0hkkn8P8psz
+	 ZaqrgoT0JsVGC0SiapBsRKmck8HflLLv3pL37jl/wv+VnL6jrptKaCMfnqUexEdtSWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792693101;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=gA1AUubl9m6fHOyzeOfDMgK8SFqgm8VvX00DyQ47ihk=;
-	b=vqnQbXdudRoyegh/mD6sRYqUwWIdG3ndTgQs1HT7HT/0P7MySzgdrIA8/OcVjvQt2tz1
-	 SV/b+0QkANQs/hrMWKcAQ/UyqQrDweuXQCCRHCwgh8es4BiezBgpQiD2Kc6KjJFqXpoQp
-	 VUC+99xaC2cUJoqDW+87RG5cfnXq1cMLrj8Hfy92BfLIMRCW/+rLjwM4gpN3W5YyV12Of
-	 2jHMAQ+9sW5mGsZ1GJIkkLarcjCz03D0AEVncAqc33x77ZwW2XKdWUvZyTe9PThEoUDN+
-	 G5PyGVz1L+w1ZvOZ3FS/GvQhWHa1AKoLvc1mdfBV3RW6N43rGa12hqyN9Bplnz5MJ6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792693131;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=20J1E2C12V85IbyALKOv31zrLq0eJ+kd/Y8FrEZKOPs=;
+	b=HLchevHO3B8v7CJxfuHjqttL2Qnwfc2IbAl1Z2gaR2EBmWuvYuo/YqGSfRQrqycuFX5G
+	 L+orcfmBGrklMDPizlAHfmFNlESslk6rAvzAaCEgJnpomZD6ao85EcbyUMD0ctbCTLGas
+	 kO6aMixSW7enkcFu9JgmP7P6dB8T5yEYnyei6XsOTcK+XUlq6ts5QcyB0AKW6I3Hoz3r7
+	 EEXzGqxpu5veijL48WDREvy7ibMnxxiLBqyWrTAqsAwA2HQpvCJ7HU+6aFz4YNLyDlQ2T
+	 aLBumCwQT21r+S8RvAgA2CjUWXw3EVHgqkcfXDEFqgZ0TpUnX4bxRJ3j2qDWs1l5MJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=TA60Awwl;
-	arc=none smtp.remote-ip=209.85.215.200
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="qfns/08f";
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6215606A31B
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 18:18:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6215606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E800606A31A;
+	Thu, 22 Oct 2026 18:18:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E800606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=TA60Awwl
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd3b9e70f88so126993a12.0
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 11:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792693100; x=1793297900; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gA1AUubl9m6fHOyzeOfDMgK8SFqgm8VvX00DyQ47ihk=;
-        b=TA60Awwlh9FiPRH3OLzggHhy88D6w+X/wbdhaTppSyY69zDzorfhPPBS35LxloPTQV
-         /12zlS/wCHoSGl37M2mR5wEIqBcxtfw9wcwpCWKabB4Fq4J5v8n8BqeVX9Ok0dIAlS9R
-         /SAzW9g6fLeTRlykHA3hJ+LwgX3ZGCD9cW9or8hRP9HZn8pYKqHx9sUyG6Dbq3arZkMp
-         IjoEH0ja4TORFk7PkRb2GFKF7MlKp37jNXcu/WwC/oCu7rOPrdFxFDK9t58ESAx6Yqgj
-         2RIrx8jEma6AygFKsD3gfusGWvAZ3085W74F+Y3kz3+5yJ1n32gQFA6BLxMG8UUqfBYv
-         tiiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792693100; x=1793297900;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gA1AUubl9m6fHOyzeOfDMgK8SFqgm8VvX00DyQ47ihk=;
-        b=sLvhz63JdV7Eg9sAr9KEz3Rxkssmnil7Sv68dPHyOc36IuNnvWmGsxE3LcfmanyoN4
-         WOZ4YKiU3b5RYpc9mUFfc5YxVoYRlwMW3ayk+6Sukxx0AFuGrJd1GHDq4xwmeMS5eKLb
-         qCG4586bPsQ35OwAZISojd2LbYWHQShXKxR0oUo3cBYUlW0lmqfs3c0nPLzAZ9iI1BVU
-         ugJNSqKj0tFmPVK6no5CbNtOBo9OiGEKObbssnowXPgKCJ/09EjiYxdbLpD2LulAJvkT
-         6anhfRa8WJjxm9AAgUGxN6ojX6lXJOuFSud44wQNrRo3pzYJF1Xfk+6sob9k89uatNYj
-         5HtA==
-X-Forwarded-Encrypted: i=1; AKwUvBykTgJeBlzI9yq4X36FInlUGtWy0vAJnhC5dnwNMhTAGYVqVJTi8kXWEVhAjK2zeTj1pVU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJFplGkFYqUWiJTIZNS2PgHc07ViBJJXBbqTwhBB2SG6zgwZI5b
-	Whwaxb7mkuzPuNZgtdC5Tv+qNnyXMl4X6kXSp81Q/ufAQ2nfe0bOQmyJ+xrRGuprat4TkvGujdE
-	2npw9VA==
-X-Received: from pgjs24.prod.google.com ([2002:a63:f058:0:b0:cc9:f7f0:57ef])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cf85:b0:3e1:1db7:7608
- with SMTP id adf61e73a8af0-3e287eae778mr4848932637.54.1792693099812; Thu, 22
- Oct 2026 11:18:19 -0700 (PDT)
-Date: Thu, 22 Oct 2026 11:18:19 -0700
-In-Reply-To: <20261020175818.375700-3-borntraeger@linux.ibm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qfns/08f
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69MIEHVu561900;
+	Thu, 22 Oct 2026 18:18:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=20J1E2
+	C12V85IbyALKOv31zrLq0eJ+kd/Y8FrEZKOPs=; b=qfns/08f1VkrcETEnmOeiF
+	twSEFcQmt0jsAlL1vGRbWExBOp00Q/ykDHVB1MXtgB9U1rY91GQC8c1FxACGjINj
+	3Wd8+qb2sgprew1jvDj3BN+l+7RsP9nMDhrRACf1tQeueYyYP04HerEbGVRUOimp
+	1JbiSUSVTxjds3SCVU0MZAbdwGDeH5dVR5TmD6V8fJ/qmZFDQKamZmQztEFeG/Fn
+	yPnxZNCztv9ObMjN2XPI7lrQGRBNYaZomtY9EFoxo5UaJnmpR+Zi7kVXo+UctsVi
+	kq6v8PH0Fz3Oo5D+bpGaoicMZacwO6SeOJZARx4OJM9rz0z6VtPBBfEd5lhb2Z0w
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5b0cx5-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 22 Oct 2026 18:18:34 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69MI543g921268;
+	Thu, 22 Oct 2026 18:18:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hfgck1t4h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Oct 2026 18:18:33 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69MIITpR35848670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Oct 2026 18:18:29 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9AB8B20043;
+	Thu, 22 Oct 2026 18:18:29 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 341A920040;
+	Thu, 22 Oct 2026 18:18:26 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.220.79])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 22 Oct 2026 18:18:25 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+        Vincent Donnefort <vdonnefort@google.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH v3] ring-buffer: Do not check si_mem_available() before deferred init completes
+Date: Thu, 22 Oct 2026 23:48:17 +0530
+Message-ID: <20261022181817.49717-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261016134247.70722-1-amachhiw@linux.ibm.com>
+References: <20261016134247.70722-1-amachhiw@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,118 +102,134 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261020175818.375700-1-borntraeger@linux.ibm.com> <20261020175818.375700-3-borntraeger@linux.ibm.com>
-Message-ID: <atpTa2FMU19UGitv@google.com>
-Subject: Re: [PATCH v2 2/2] KVM: selftests: Test that KVM_RUN fails for
- unresolvable host faults
-From: Sean Christopherson <seanjc@google.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, KVM <kvm@vger.kernel.org>, 
-	linux-s390 <linux-s390@vger.kernel.org>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=X63Hu2Te c=1 sm=1 tr=0 ts=6ada537b cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=z8eC79uxFTNzhPLTDY8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: Kx2uKdHfVx6IFS5Z68c-io43bhkV9Bpw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA3MiBTYWx0ZWRfXw5Ekr0cgGlwB
+ fNm/tWsdi45WOWjs+LhTvC/t1NAwtaYTB8UwBClpC6LQOtsxllDCWxivgAsAb25MSv23goJesDy
+ Pmf2TfRMfa2Sfka/OE8CeIdR23TNE6T0jCI6fj4EfKbsqWHborZlvws4tx7Mbo5ClNOssNGzxQs
+ YGxEsXEj5EAtS49cFUBToBdkE7jzMeWrr3o/7aEYgxYMZ/kUY1EA0N56BWznVWGu4AiHSjGAReR
+ 6/MuGdZ6I1PQVcHNB8pqtlmkq5sXg/EbWM9YS+G6iF3TOVbW+VuEUq0SCgUVSQso7G/Qkbnekji
+ lqlVo3JvKtNBUCSOilyEkIdKdtrJgth1wQVfyljxdhqolgeZ2uyrJzVnhHFaPnBoJhdU9CNUVxj
+ 1yLS+mEt34VYAOyhT7AW39eToQlvOEVN1wJ6jkRb/HnvUxGt1lNau89wjfenrg/7e9hzQOO1ZAo
+ T/ImALZ/T40B4Raz7vg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA3MiBTYWx0ZWRfX7pLdbvyi41uG
+ hsKyMl//M+mA03qZsqqKRhjaomm1lJGDEQtLVqvdufhGpHN4HvRj+sn50ARJgx78KII/CTs4PNN
+ V8IBn+7jnPjOursv/gBh2GuOtznpcEI=
+X-Proofpoint-GUID: sTzPxRDcBuON0esSEq1jmPX4K322kKiE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-22_06,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610220072
 
-On Tue, Oct 20, 2026, Christian Borntraeger wrote:
-> Add a test in which the guest writes to a shmem-backed memslot beyond
-> the end of the file.  KVM_RUN must fail with -EFAULT.
-> 
-> On x86 the guest enables interrupts, and on s390 the test sets up
-> pfault, so that KVM could handle the fault with an asynchronous page
-> fault.  If KVM mistakes the error for a fault that needs I/O, the vCPU
-> retries the access forever, and the test fails after a timeout.
-> 
-> The test is not built for LoongArch, which handles a failed mapping as
-> an MMIO access.
-> 
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->  .../selftests/kvm/faultin_sigbus_test.c       | 169 ++++++++++++++++++
+During early boot (early_trace_init() called from start_kernel()),
+tracing allocates initial ring buffers (temp_buffer, array_buffer, and
+snapshot_buffer) for CPU 0.  Later, as secondary CPUs come online during
+smp_init(), each CPU's ring buffer is allocated via trace_rb_cpu_prepare().
 
-The "sigbus" part of this is confusing, because there is never actually a sigbus.
-Kinda silly, but maybe faultin_efault_test?
+Before attempting page allocation, __rb_allocate_pages() performs a
+heuristic check using si_mem_available() to return early with -ENOMEM if
+memory appears insufficient.
 
-> +static void arch_enable_async_pf(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-> +{
+However, on kernels built with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y,
+NR_FREE_PAGES only reflects the initial non-deferred pool across the entire
+period from early_trace_init() through smp_init().  defer_init() leaves
+only a single section per node (e.g.  16 MiB with 64 KB pages) initialized
+up-front, and on kernels with large static binary footprints (debug
+configurations enabling PAGE_OWNER, DEBUG_PAGEALLOC, KFENCE, or SLUB_DEBUG),
+early core initialisations (SLUB caches, vmalloc, static ftrace records)
+consume virtually all managed pages in this pool.
 
-...
+si_mem_available() therefore returns a false negative (often 0-1 pages)
+across both SYSTEM_BOOTING (for the initial CPU 0 buffers) and
+SYSTEM_SCHEDULING (for secondary CPU buffers via trace_rb_cpu_prepare()),
+causing __rb_allocate_pages() to prematurely abort with -ENOMEM.
 
-> +}
-> +#else
-> +/* x86 needs guest interrupts on, see guest_code(); nothing to do elsewhere. */
-> +static void arch_enable_async_pf(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+This failure is false: the buddy allocator is designed to replenish
+ZONE_NORMAL on demand via deferred_grow_zone() when an actual allocation
+is attempted.  Checking si_mem_available() before calling alloc_pages_node()
+short-circuits this on-demand growth entirely.
 
-Nit, maybe arch_enable_host_async_pf()?  Because x86 has PV async #PFs, where
-instead of scheduling a worker task in the host, KVM (conditionally) reflects
-the #PF into the guest so that the guest can schedule in a different task.  A
-lot of people, myself included, see "async #PF" and think of the PV version first,
-e.g. I initially was looking for the PV side of things here.
+deferred_grow_zone() is only permanently disabled after page_alloc_init_late()
+completes (it spawns per-node kthreads and blocks until done), which happens
+inside kernel_init_freeable() — before system_state is set to
+SYSTEM_FREEING_INITMEM.  Skip the si_mem_available() check until
+SYSTEM_FREEING_INITMEM, at which point all deferred pages are initialized
+and si_mem_available() is accurate.
 
+Wrap the guard in #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT so that on kernels
+without deferred init the original check is preserved unchanged.
 
-> +#endif
-> +
-> +static void guest_code(u64 gva, u64 size)
-> +{
-> +#ifdef __x86_64__
-> +	/* KVM does async #PF, or its halt fallback, only with IRQs enabled. */
-> +	sti_nop();
-> +#endif
-> +	/* Within EOF: must work, proves that the mapping is set up right. */
-> +	WRITE_ONCE(*(u64 *)gva, 1);
-> +	GUEST_SYNC(0);
-> +
-> +	/* Beyond EOF: KVM_RUN must fail with -EFAULT. */
-> +	WRITE_ONCE(*(u64 *)(gva + size - sizeof(u64)), 1);
-> +	GUEST_FAIL("Store beyond EOF succeeded");
-> +}
-> +
-> +static void sig_alarm(int sig)
-> +{
-> +}
+Fixes: 2a872fa4e9c8 ("ring-buffer: Check if memory is available before allocation")
+Cc: stable@vger.kernel.org
+Reported-by: Michal Suchánek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
+Link: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+Changes since v2:
+ - Rebase on top of upstream ring_buffer.c changes from Vincent Donnefort;
+   update threshold to i < (nr_pages << subbuf_order). (Michal Suchánek)
 
-...
+Changes since v1:
+ - Extend the guard to cover SYSTEM_SCHEDULING as well: smp_init() calls
+   trace_rb_cpu_prepare() -> __rb_allocate_pages() before page_alloc_init_late()
+   completes, so the false negative window spans both SYSTEM_BOOTING and
+   SYSTEM_SCHEDULING. Use system_state >= SYSTEM_FREEING_INITMEM as the correct
+   boundary.  (Sashiko, Vincent Donnefort)
+ - Wrap in #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT to preserve the original
+   check unchanged on non-deferred kernels. (Vincent Donnefort)
+ - Drop Tested-by: guard condition changed, requesting fresh test.
 
-> +	TEST_ASSERT(!sigaction(SIGALRM, &sa, NULL), "sigaction() failed");
-> +	alarm(TIMEOUT_SECS);
-> +	r = __vcpu_run(vcpu);
-> +	alarm(0);
-> +
-> +	TEST_ASSERT(!(r == -1 && errno == EINTR),
-> +		    "KVM_RUN did not return within %d seconds: the fault on the SIGBUS page is retried forever",
-> +		    TIMEOUT_SECS);
+ kernel/trace/ring_buffer.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Rather than assert on EINTR, what if we have sig_alarm() explicitly TEST_FAIL()?
-That way readers don't have to piece together that the EINTR is coming from the
-alarm, and there's less chance of the test somehow getting a false pass because
-KVM manages to morph the signal into EFAULT.  That would also allow using the
-single-underscore _vcpu_run(), though I don't know if that's actually a good idea.
-
-E.g.
-
-diff --git a/tools/testing/selftests/kvm/faultin_sigbus_test.c b/tools/testing/selftests/kvm/faultin_sigbus_test.c
-index 9394b04efcd6..9d90c32f3c6a 100644
---- a/tools/testing/selftests/kvm/faultin_sigbus_test.c
-+++ b/tools/testing/selftests/kvm/faultin_sigbus_test.c
-@@ -106,6 +106,7 @@ static void guest_code(u64 gva, u64 size)
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 9c4e40847e43..8e5a59a7b69b 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2463,10 +2463,27 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
+ 		 * memory. It may not be accurate. But we don't care, we just want
+ 		 * to prevent doing any allocation when it is obvious that it is
+ 		 * not going to succeed.
++		 *
++		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, NR_FREE_PAGES only
++		 * reflects the initial non-deferred pool during early boot and
++		 * throughout SMP bring-up (smp_init() runs before
++		 * page_alloc_init_late() completes deferred initialization).
++		 * si_mem_available() returns a false negative across this
++		 * entire window while actual allocations succeed by growing the
++		 * zone on demand via deferred_grow_zone(). Only re-enable the
++		 * check from SYSTEM_FREEING_INITMEM onward, after
++		 * page_alloc_init_late() has finished and si_mem_available() is
++		 * accurate.
+ 		 */
+ 		i = si_mem_available();
++#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
++		if (system_state >= SYSTEM_FREEING_INITMEM &&
++		    i < (nr_pages << subbuf_order))
++			return -ENOMEM;
++#else
+ 		if (i < (nr_pages << subbuf_order))
+ 			return -ENOMEM;
++#endif
  
- static void sig_alarm(int sig)
- {
-+	TEST_FAIL("%d second timeout expired before KVM_RUN hit -EFAULT", TIMEOUT_SECS);
- }
- 
- int main(void)
-@@ -154,12 +155,9 @@ int main(void)
- 
- 	TEST_ASSERT(!sigaction(SIGALRM, &sa, NULL), "sigaction() failed");
- 	alarm(TIMEOUT_SECS);
--	r = __vcpu_run(vcpu);
-+	r = _vcpu_run(vcpu);
- 	alarm(0);
- 
--	TEST_ASSERT(!(r == -1 && errno == EINTR),
--		    "KVM_RUN did not return within %d seconds: the fault on the SIGBUS page is retried forever",
--		    TIMEOUT_SECS);
- 	TEST_ASSERT(r == -1 && errno == EFAULT,
- 		    "Expected KVM_RUN to fail with EFAULT, got r = %d, errno = %d (%s), exit reason %s",
- 		    r, errno, strerror(errno), exit_reason_str(vcpu->run->exit_reason));
+ 		user_thread = current->mm != NULL;
+ 	}
+
+base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
+-- 
+2.54.0 (Apple Git-157)
+
