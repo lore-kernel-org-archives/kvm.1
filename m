@@ -1,102 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792650471;
-	b=grqQgtOXu5D75ZKMMq/3BO+iPZxRs04MBJL9gRj8k1iYBA7WlmG4TaS/gtX8z2O8ueq/
-	 AXEntotZITGdXPgmUpNA5XO+XzwNETOQWDwt9AJ57qV7qO24m6dXFIT52uWf9j9qcvWbf
-	 F2cQ4NdMKAKYRkCltve0MWnEYQfQQON95qtX1Wp45JsPhrBmPszNaegh+qpZFDms7sin8
-	 i54XAM9LtKxdwvT0buI/b+FLAgFic+62sqp2QDvz0Dk46QJe1uBNsL5NsfXRO7Zui9HWZ
-	 RxZSuiY3QBkbv/LyBw4FtsQcLJYQT/wHua3wJu3ubRY7/GMLnWuZuXkLPfyQ5hjzwtA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792650471;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=c8KWIoZNW6/QAD3FZ28O4CFbS3YPAHolywa/ZQAktrE=;
-	b=haBYtyeTG+e3dcz9kCxSZMFeepX1fHNSpXl0b8rusamr06/W2UeW5fi2/fVjqyfPgyZS
-	 moq3fweie1PYuyl8UMg1VFoEijvcrRMd1DW8VvZvZ/ke0P/55+fh4A8uMhzzx4hqoXcKX
-	 sTI6fDeWrjHRHgoqkHuPqYwOickgMwbi7b74sm0ICHTiN44KEiDohZoyI3Gc7F3m83ooN
-	 8omtTF1MjxmVtd5cP90KGlIT6BD70yzAXbQp5KrDHmXUVSRVgULn08w4KEFT4gc9mgX9a
-	 lrtMIkJem3AqMVhd15Y+ysMMCZCxb3FU5pZj+6xtzCJZvyE3TtZ0DACIeSltoJVSOCQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=I6BJalyR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.181
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792650650;
+	b=MjKp9C/UTnbcIsYiraiEiTWCsXicJb3JF/lJLWRyqNsyhncWX4H36IzFTaPKBNsyETHv
+	 cTMrWeKXeo1/w8r5D5osEfJ3CL4L0mnYmPvPFk6vEnWmTuymLCQi7QMnhunEHnrxxdqgy
+	 wiueY0jE8vCHmT7vStYBe5Y6GM9CcovvqI6Pl8s4d7Hzv14YVkDyJAX5SgqOiZCkuMABf
+	 kO4EIrWKIP95LI3uOa3Lx8f2bGKvE/mwJ6Xo+TAdK3M7ohzQzsvUX2OmPpM6wgNbg3rdO
+	 Nrw/jOgF5T15DaQ6AuspVF8/SJxt/I0cDtlELMrNlsJxWwQz6UGHLdZiNHGKNjptTmw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792650650;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=GE58JakduYDn+ctLNsuwPapnuXvCLRfp38EJPuY8zh8=;
+	b=QL0DDakGxyNXG14gGeBJECk9zWTo9z0C5D/XReAGx9fqKrFeP5EydA1tvMFoMSy2+HYT
+	 ImJ6oZf4PjDfu/dQynwDoBxOQvRXVCWULtY3ju/1WRKGIkmjYXrxw3bfPTKAgdN2AEOIx
+	 xeBxKJo4PGVhpW4MMM1u/+mLL3yZhshEqOkysVq6n/MG4WSwafMQ9s/BcKEXHkIV2374n
+	 +3eOjAORHkIhkhzJgyhn8kSeBf7lNe27YlXFmlT+GYQb6I3vryDQf97z9EyFknykn9yv8
+	 d71tGHjADfAWlEUtpwcPqQ/grswA8+euxI7KwJHG8slHQj7AYGv/DCSXc8oiCU0AkbA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BVUBsy4W;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C47606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:27:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53C47606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AC0606A319;
+	Thu, 22 Oct 2026 06:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=I6BJalyR
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3ab4891fc73so13129551fa.0
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:27:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792650468; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MLAX8CQftfTE7FnPl5BwJ1jKC0g+WSgCtNt/piNQA5V4X+5GQjjAnSz+hQG6D5dfvk
-         ElOKJqBILFqcQt1p0M04kTlpKeEbfRmyCwF7NDFMcOXwuija/8ulqD9wiFzZhadZuXoT
-         Py6h+y3o/J3wG/McZ67vW4o/ci5axWKeT7gOLxL8KUIiejTPzJLJN2BwQ6EliVYPgIH7
-         R1ES0pTQu21CWCHF52HaEgNlW51ITeSePvtM/Tiu2kzkkWINTQ26ngJuqINZhxgdCVNG
-         aOdP9UINARvMA9vzp3p3Cykq8KVmM1n//BHY934zRvwZFvuUBwGC/poUNKRLtyi81LNe
-         Z6DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c8KWIoZNW6/QAD3FZ28O4CFbS3YPAHolywa/ZQAktrE=;
-        fh=QRAsW/+httKe8R3eji7tST9Kot/RbatW7EAU9E79dkw=;
-        b=ZS3B47C63LgSPbNHXjx20VaIm3V3NYOJaxWFgmLYJY5/xk7wCZA8apD7E7MpU4Yl0R
-         5UpZuclk2RCNXm4Dd/SHmAc0a0hvg9z5qMrbb/PiWMFT9JU18Cyf4YC5Vcby9kA8Th4+
-         sgPmKFxH9YevPGeqVsPxJR1kuwhICL2Z6itFlCwaC2aJcdw4ZzweyO1WqCEB9w4KM9GT
-         48ntmAjfpgLLCTfFHMjy4HOdLvJolCbIo6zgR1Bb7xPy1KwSAPqo0WLuvBcRBj0fM/Dx
-         7g52oiT1OqSq89aTnmWNP7DlEXsDZ4WKV+HtJJ+TuyViSSK3yu61pSycvLEaVLAHUieR
-         F29w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1792650468; x=1793255268; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c8KWIoZNW6/QAD3FZ28O4CFbS3YPAHolywa/ZQAktrE=;
-        b=I6BJalyRUjlXbBnTqLj/Hw9e0stD1hDGncpWi81zlLKHhhX9z55e2piXfBA2ShEicd
-         js+eeYjcAscnQ1MR2guAhdfiIgd97VwaWxDn+3saZwZwoqyxwsmPxQwCBReVsef3fi4p
-         HEicD/7M6zZU/EAZiEqlwV94O9rbzRJkdL83ScTGERS/129XNqV2yh/Hh2s/GU/rg9ge
-         DoqCjcnoMxuiGu6E6gcAmJyT4Y2sR4GGSTnfKptQqRlRKYVm+KrnjwXvBBM+fKAI1zlB
-         K5EAwtzHBKSotwtsXA1CbDDeNN0sAqJ8tryxfVR/RMqCO3lBl3delvIcRWlgb+9Kj9+j
-         eUHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792650468; x=1793255268;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c8KWIoZNW6/QAD3FZ28O4CFbS3YPAHolywa/ZQAktrE=;
-        b=JmOVG/SNkL8+NLY7ohn8Ntr2ADUEeRxRcUO0arlHedtWAQotzYq0NOIKJ7bY5rwB6E
-         Fs2jv7Qu4TSZ31tYoIAwUADFJudKWCvap3EHxaVImG6vW24pEbWt35FPFu473DVmtCB7
-         09ungtbafo7uwZlKZcgirYSPbLgDQffBfnBzU5rhC6fqwCpkDPfzync0tacOHseKP8m9
-         mFs6ZQ0/s0L+nceMWAITRcKQYZZWT+XUyki/Pm30oRKRvsP90ImFNkcxdaJdaVeWDhVQ
-         0q9TsijIfDzJ0pInzC+cox2T1eVRQWmy6IsgaTSdqAlhe/PggSxqX1+kwb8rZ0f6ygC8
-         pGcw==
-X-Forwarded-Encrypted: i=1; AKwUvBy7+hcvE61w8Jgto3tILc9speMofNET0EcJ7ZO/ksRbfAz+DXPkJeRaNXI5lydnVEF2qxs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJOHRnPyaXE8fg3lMOH3KsAjU+B2R1LJCRvpLzcFCB11fMlmj4P
-	Cpf/B4vXpefvJDi07Dn5g3N4jZSqUkk8y56PEEmpj6XptJov9XFcUE2AiiMmefkZpkoZ6DFaxMS
-	tS9XE8ifJor0ZNPTCikx2jFGVK0LK5gnaVgfEIrIYxg==
-X-Gm-Gg: AYBFou0o4k/4A7BUOXhMr1JgfkJTnLoWtGtpo658jsIHUOvgnG8Q9LcxaXxTHE3emfH
-	Wx7S4f7cSsSiLjVToB41/XQPHUhCsuw93G0fPIQX7w4ifNjUBzGE1qWnSm0Gqw2OWTCPrqC6g9n
-	e8TP/ep3N4IHSu/t2Ap6um/6EyHIpUTDb9WRnJTt/mnutnDTtydoMpKwdjirIprlX0yENpzsjFC
-	aJ9mdUugG5HyH8dQAKBVezdwEoPgfEf5ZJc39bWCtOanmFYSuzRQw5KC4Uvdcajbg9WwRaRq5LI
-	pC8twCChgx9pdAlyQyuiO5HRQFScAaODK7M1frNv+Z8aY4RQIG0A9pWL1rbU5Mty0EBgs/p5MjU
-	15FpMC2bx18o/ACMtFqcOpJ7OsCygkq3XqKVXv3o2wup4k/Yi72kQGgH/NYhMGXdziyQv+cAY8Q
-	ndcz3t2Zk+rBOlscVq8hEq1x+UfzSIEgVq5McRCkziY4RFOp6OPpE/1jDEJjaqhUy+akXfjHGj6
-	vGrgw==
-X-Received: by 2002:a05:651c:3134:b0:3a9:9a3b:6036 with SMTP id
- 38308e7fff4ca-3ac440b53c8mr12628651fa.2.1792650468375; Wed, 21 Oct 2026
- 23:27:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BVUBsy4W
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1888F1F000C1;
+	Thu, 22 Oct 2026 06:30:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792650650;
+	bh=GE58JakduYDn+ctLNsuwPapnuXvCLRfp38EJPuY8zh8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BVUBsy4WkEA5D5/B+y2a1Oe7sZpilEUQKtnoMJKMwk/jEwdraTm7cjNEvScdAaMw1
+	 T7MELsNIxrsk2YLjx0SSY6yJFevAHp9nTM43ffJ3YtRilFLJkJ9DMnY4tEKArZTAMj
+	 1vLaf7AhtyV30biC3JR0CSOXBdWiIrC4D2HkwDsFDel43dtUFnJo0GF7XopNuwZyIq
+	 jmlNC/3qMIN5HV+Uk+hG1E3tqkE6LSE2mE4SV7tM94DNkKHIHT1SMcygGCCsbu7akY
+	 ozekdBsxykFaMlg/wPk+gyQqBz2dKzimQJ3VAwgrqumlPzmC4ED02CWXEbKJyUY7C3
+	 GPhXb4WO0xp+A==
+Message-ID: <sashiko-outbox-181096@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: arm64: selftests: Test VNCR translation
+ invalidation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Itaru Kitayama" <itaru.kitayama@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20261022-b4-vncr-mapping-test-v1-1-e9ad54d506be@fujitsu.com>
+References: <20261022-b4-vncr-mapping-test-v1-1-e9ad54d506be@fujitsu.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 06:30:49 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,56 +60,105 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261014224239.963635-1-heinrich.schuchardt@canonical.com>
-In-Reply-To: <20261014224239.963635-1-heinrich.schuchardt@canonical.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 22 Oct 2026 11:57:36 +0530
-X-Gm-Features: AclHuK-9TFsRegjYZcIPEHWDYDOWlB5NKzsnn-yH7Qq40hb2qm3j1NzJo9FfRwI
-Message-ID: <CAAhSdy39UtV0sUqL0=FX+HWa7oAH0fkei1cFKiF6OBSSFT=gdQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] RISC-V: KVM: Allow Zicclsm, Ziccamoa, Ziccif, Za64rs
- in guest
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Sarah Emery <sarah.emery@canonical.com>, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 15, 2026 at 4:12=E2=80=AFAM Heinrich Schuchardt
-<heinrich.schuchardt@canonical.com> wrote:
->
-> Extend the KVM ISA extension array to allow KVM userspace to
-> detect Zicclsm, Ziccamoa, Ziccif, Za64rs.
->
-> This is just notifying of hardware provided capabilities.
-> No KVM specific support is needed.
->
-> Add the extensions to the get-reg-list test.
->
-> Heinrich Schuchardt (2):
->   RISC-V: KVM: Allow Zicclsm, Ziccamoa, Ziccif, Za64rs in guest
->   KVM: riscv: selftest: add Zicclsm, Ziccamoa, Ziccif, Za64rs
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] KVM: arm64: selftests: inverted page_mask in prepare_memory()
+--
 
-LGTM.
+commit 0e10db3329f0ad09596d72a6be111f7048817b36
+Author: Itaru Kitayama <itaru.kitayama@fujitsu.com>
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+KVM: arm64: selftests: Test VNCR translation invalidation
 
-Queued this series for Linux-7.4
+This commit adds a standalone arm64 kvm selftest that remaps the backing
+page for vncr_el2 across stage-1 page-table updates and tlb invalidations
+to verify that redirected register accesses reach the updated backing page.
 
-Thanks,
-Anup
+> diff --git a/tools/testing/selftests/kvm/arm64/nv_vncr_tlbi_test.c b/tool=
+s/testing/selftests/kvm/arm64/nv_vncr_tlbi_test.c
+> new file mode 100644
+> index 0000000000000..93219d036de6d
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/arm64/nv_vncr_tlbi_test.c
+[ ... ]
+> +/* Add a guest virtual alias for an existing guest physical page. */
+> +static u64 map_alias(struct kvm_vm *vm, u64 gpa)
+> +{
+> +	u64 va =3D vm_unused_gva_gap(vm, vm->page_size,
+> +				  KVM_UTIL_MIN_VADDR);
+> +
+> +	virt_map(vm, va, gpa, 1);
+> +	return va;
+> +}
+> +
+> +static void prepare_memory(struct kvm_vm *vm)
+> +{
+> +	u64 a =3D vm_alloc_page(vm);
+> +	u64 b =3D vm_alloc_page(vm);
+> +	u64 page_mask =3D ~((u64)vm->page_size - 1);
+> +	u64 stack =3D vm_alloc_pages(vm, DEFAULT_STACK_PGS);
+> +	u64 ptep_gpa, ptep_alias;
+> +	u64 *ptep;
+> +
+> +	cfg.slot_a =3D (u64 *)(a + VNCR_TPIDR_OFFSET);
+> +	cfg.slot_b =3D (u64 *)(b + VNCR_TPIDR_OFFSET);
+> +	cfg.l2_sp =3D stack + DEFAULT_STACK_PGS * vm->page_size;
+> +
+> +	/* Initially, the separate VNCR virtual address maps page A. */
+> +	cfg.vncr_va =3D map_alias(vm, addr_gva2gpa(vm, a));
+> +
+> +	ptep =3D virt_get_pte_hva(vm, cfg.vncr_va);
+> +	cfg.pte_a =3D *ptep;
+> +	cfg.pte_b =3D *virt_get_pte_hva(vm, b);
+> +
+> +	TEST_ASSERT(cfg.pte_a !=3D cfg.pte_b,
+> +		    "Backing pages must have different descriptors");
+> +	TEST_ASSERT((cfg.pte_a & (PTE_VALID | PTE_TYPE_PAGE)) =3D=3D
+> +		    (PTE_VALID | PTE_TYPE_PAGE),
+> +		    "VNCR mapping must use a leaf page descriptor");
+> +
+> +	/*
+> +	 * Map the page containing the descriptor into L1, so L1 can
+> +	 * perform its own page-table update and architectural TLBI.
+> +	 */
+> +	ptep_gpa =3D addr_hva2gpa(vm, ptep);
+> +	ptep_alias =3D map_alias(vm, ptep_gpa & ~page_mask);
+> +	cfg.vncr_ptep =3D (u64 *)(ptep_alias + (ptep_gpa & page_mask));
 
->
->  arch/riscv/include/uapi/asm/kvm.h                |  4 ++++
->  arch/riscv/kvm/isa.c                             |  8 ++++++++
->  tools/testing/selftests/kvm/riscv/get-reg-list.c | 16 ++++++++++++++++
->  3 files changed, 28 insertions(+)
->
-> --
-> 2.55.0
->
+[Severity: Medium]
+Are page_mask and ~page_mask inverted when mapping ptep_gpa and computing
+cfg.vncr_ptep in prepare_memory()?
+
+Since page_mask is initialized to ~((u64)vm->page_size - 1), it holds the
+upper page-frame mask while ~page_mask holds the intra-page offset mask.
+
+Passing ptep_gpa & ~page_mask to map_alias() supplies the intra-page byte
+offset of ptep_gpa rather than the page-aligned guest physical address,
+which trips the alignment assertion in map_alias() -> virt_map() ->
+virt_pg_map() -> _virt_pg_map():
+
+tools/testing/selftests/kvm/lib/arm64/processor.c:_virt_pg_map() {
+    ...
+	TEST_ASSERT((gpa % vm->page_size) =3D=3D 0,
+		    "Physical address not on page boundary,\n"
+		    "  gpa: 0x%lx vm->page_size: 0x%x", gpa, vm->page_size);
+    ...
+}
+
+Similarly, adding (ptep_gpa & page_mask) to ptep_alias adds the page-frame
+base address rather than the intra-page offset, leaving cfg.vncr_ptep
+pointing to an unmapped guest virtual address when remap_vncr() writes to
+*cfg.vncr_ptep.
+
+Should this pass ptep_gpa & page_mask to map_alias() and add ptep_gpa &
+~page_mask to ptep_alias?
+
+> +
+> +	sync_global_to_guest(vm, cfg);
+> +}
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-b4-vncr-ma=
+pping-test-v1-1-e9ad54d506be@fujitsu.com?part=3D1
