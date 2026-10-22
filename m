@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792701868;
-	b=2LPlxdkx+MVKSPkksCyZ/k5V/Qg7ZESOse/sevSwJyTHlJzHTmv8WybmCrH++MRb2PQu
-	 f37MijCCYKh8TTzpwf8wHye9kmX3kZGjxD3Ourbk1Ys0F2OemDBkgict1Rfx8cNTJWz0o
-	 ovoQIdXBLiiNcQsEsMMsIzJA5gKquiLBABckg1iZmmZHcwa+M8YBuchd84rvBvU0SV7bG
-	 a1HzzJeJGaddoemCJ+98phGy+uNYxQtleaP6+PCBwqn6zvpHpxejVCXBhUh0DTmx1mLCd
-	 3H+lYVIN87jG1SgamQtu1CBl2L+8mCd02qSkNuhWBeGo1mTGPdwEdRn/p+ldNp6lHqA==
+	b=wR1DhJ8VP8AHu18IEAufP9F7FFctY6rGUse/zaxi6MJFzObAU04h4hWmI0PFbQu3dTYB
+	 +SrjZ2J3yIr8s2S1RpTOHdx8tWvMYPQrSGEkBn7Ax87rbz4sFmpohQrrwk33PtBQB3bYa
+	 Pnxu+ZL5bvAiHjRv3pVEc6ak9hhSpSvH7yTqiCODQFoxg/konU399txtWfO7yy0G71cko
+	 ycyeoSSKT3jbL5f3I1a4ldVnXzcj7bhtmAQO8oB+XrANRGydTfofvyp6xvGFspf8QpFUs
+	 ESCnyBO/49tly6aTUCGM7+3kt/l2n4pADI4Z2E23lx6kxYuFf2LvNqucZuJufrQsDkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792701868;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=9iuFNDxRQ7BpfZLBoKEAQtTzT6oo5KrjNB2Uj0C+KDA=;
-	b=Gt6W4pzLbph/Dz3ssMvXV1ZR0vz7px63nuG4TIuE4vXvxn+aOm6bvZZNru/tk5oEgnas
-	 AYwQMW2sRGAfSX8ssgKeSOeHeuwDPAp9dYCqYD7jpJFdxcpPC/+LMEWAL/8M7/mtlRrxL
-	 pkNm4l90/cgfGHQ/zaPdSon6CQZxHviFZfEww/95/+cDxE5rMShKixUu4YRP9ib+XIko3
-	 bVXmrbKSV8XfW4jdCD254zHkTYZeTOsm+B6vmdRQbx0sOFoSvTtQ0asUi2EqQHHmIz6ma
-	 fMBF3mKXaY7KJPMFpQ/uxwtc2om+snf38T98HMhSl6ViuxCdt2OWSDSuPjEIF1DTKxA==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=d0MllfycnKETQqVutN0dAB5WmCHzfWYy3+PwmH6ryRA=;
+	b=WJW1hEoeDdA744951QGrnbjyNSqyfaltZ4z0NfBowvyzexEJupedIqARugvbDMQblLny
+	 dGUNjdf6sQ8CQHIMMPPH17IQPACGuSQQ3hceu8ZPv3QlYBFg+nsd1KjOV1cBWGe7qR244
+	 4p9tDhSz84y3L+QpvO4H+wcYTg74elrtTiVyniOFA8D4R2ovtxqkSbPi5ayxI/rPR5hVM
+	 8/0JPNIPcPtcRMLD1DH3/aQHHDF9Q8G3efcmL91dMj0rdw8u4cEjKxnrS57e684Y6RNoe
+	 iO2iw/pyzZmUPrfdJ1HFyr55N6RdIzQOkphAnLUr7iVzIh2nDQvBpj6iouCenzEfAWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EdHHrmN3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bT77FbF0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1311606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 20:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37977606A31B
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 20:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EdHHrmN3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B831F01825;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bT77FbF0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB1C1F01828;
 	Thu, 22 Oct 2026 20:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1792701867;
-	bh=9iuFNDxRQ7BpfZLBoKEAQtTzT6oo5KrjNB2Uj0C+KDA=;
-	h=From:To:Cc:Subject:Date;
-	b=EdHHrmN3zUJKG0Kk3Tvjz3liiM7yTYNJG3VA0ycMlzfG+qU04YP9DfKgTAie6ZhVP
-	 wfPy8rI74qh7yiXZXQV6TDViAonjp5r20JkAqUplOOSxOnartNgfu6UWYLOKXw462q
-	 2QqBYe2RAe0vPzRFYJw9+4A1kz/dkzvcwzaJeLiDWjdqb2yKC1KvL/4MirKdAG+FM5
-	 30nvrtvr7d3RgtPVS0ABDmnJLHkSLVjnFHVdYjE6lUJcp5VcuJfkSpaLLAPAPcJCBy
-	 E4Jibafw3YaNaBjEPXdUgZo/zRVRnmCk4QgyqKiSuQ/j8IEcNNHMDW1M35L77kebiF
-	 h2ylXlPF4ds9g==
+	bh=d0MllfycnKETQqVutN0dAB5WmCHzfWYy3+PwmH6ryRA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bT77FbF0GyCxfWDzE/EVNnTNm+wy4EUlKPFC+h9J8m7ihvnbB+i7qZOiv9yVZ8VmN
+	 N3x3Q4aFwljcm/8hefpS+BrXGQV2ZCOHNUzfdo+nRCwRd8LzJMPGcTBT77mPYjO0JF
+	 6zLsiQ4nRKiV5dSpYqlycDAANNp3MB3zZ9PdXakgbb0kHZN54PZ6NUnbrm5nCowYL0
+	 E+FPK+evGv+oR7NkoZY9gg0SZ+r7W5s+zcOuAiOf/DKQR+/9u2Eo2Mw2uryX7cSJqg
+	 +PldxJEgJrvG8qhVQz4WAiQqwv6dLYzT78wQUkcYqg8nvCvRpCUbP6f1ulIVUktO1p
+	 FAX+x1GBKjncg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Thomas Huth <thuth@redhat.com>,
@@ -46,10 +46,12 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Greg Thelen <gthelen@google.com>,
 	kvm@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [kvm-unit-tests PATCH 0/2] Fix Clang 24 -Wunused-but-set-global warnings
-Date: Thu, 22 Oct 2026 20:44:11 +0000
-Message-ID: <20261022204413.856786-1-yosry@kernel.org>
+Subject: [kvm-unit-tests PATCH 1/2] chr-testdev: Remove unused in_vq
+Date: Thu, 22 Oct 2026 20:44:12 +0000
+Message-ID: <20261022204413.856786-2-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+In-Reply-To: <20261022204413.856786-1-yosry@kernel.org>
+References: <20261022204413.856786-1-yosry@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,22 +63,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Building kvm-unit-tests with Clang 24 fails with -Werror due to the new
--Wunused-but-set-global warning flagging static variables that are
-written to but never read in lib/chr-testdev.c and lib/x86/desc.c.
+in_vq is assigned in chr_testdev_init() from vqs[0], but kvm-unit-tests
+only writes to the character device via out_vq and never consumes input
+from the host. Clang 24 warns on this with -Wunused-but-set-global:
 
-Remove both unused variables.
+  lib/chr-testdev.c:15:26: error: variable 'in_vq' set but not used
+  [-Werror,-Wunused-but-set-global]
 
-Yosry Ahmed (2):
-  chr-testdev: Remove unused in_vq
-  x86/desc: Remove unused exception flag
+Remove the unused variable.
 
+Fixes: b412ad0d39a1 ("Introduce chr-testdev")
+Co-developed-by: Greg Thelen <gthelen@google.com>
+Signed-off-by: Greg Thelen <gthelen@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
  lib/chr-testdev.c | 3 +--
- lib/x86/desc.c    | 2 --
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-
-base-commit: 5a221342a025948fa7d84f0c404748f6ba57f3ad
+diff --git a/lib/chr-testdev.c b/lib/chr-testdev.c
+index b3c641a833feb..c23fd92a46308 100644
+--- a/lib/chr-testdev.c
++++ b/lib/chr-testdev.c
+@@ -12,7 +12,7 @@
+ #define TESTDEV_NAME "chr-testdev"
+ 
+ static struct virtio_device *vcon;
+-static struct virtqueue *in_vq, *out_vq;
++static struct virtqueue *out_vq;
+ static struct spinlock lock;
+ 
+ static void __testdev_send(char *buf, unsigned int len)
+@@ -65,6 +65,5 @@ void chr_testdev_init(void)
+ 		return;
+ 	}
+ 
+-	in_vq = vqs[0];
+ 	out_vq = vqs[1];
+ }
 -- 
 2.56.0.257.gf7497c7d27-goog
 
