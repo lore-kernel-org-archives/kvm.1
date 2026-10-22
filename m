@@ -1,56 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792637477;
-	b=UchLnMzn23eKqdIjlz9RRhZKwkn0oEsvAhLChq2O2sUjhe6gRRBaB3d4E4pym1Cmt+03
-	 uDfsil54RLxwnYKakIEOr3b+6QUdFQ58Ts1ckWojAFS9onsv6uhjRWHPZzIgEBxyjA40e
-	 vXuqHaODp2XRORI6Fqd0LaYnY9DscA59gAQzM0txSCKaCEN32GzRQv49MDw4w1LXgDWG+
-	 Ly6LZV9e01A/XTbO1m23Rcc1BrLjSYIVqTao31DJ6kNiCKe5Mbh5Pwu480XtHos5tbM9h
-	 HkGQTVqgOMeZHBfjnYa0NFf+78VPzaCPALGlQmlwI+STXcB4S6DRr8bRyJNSC5+A7ug==
+	t=1792637492;
+	b=OFABvP/MK6NllKuS99LQeRiNbDZ8YnKUo3ccE4nOQiZ4kL1a+3myHCLflerLdZolkhEn
+	 0JVLOzeHeo4CT1PzzQE2j4Kyb1pM0TVXd1rKKWap9Bj5amEWIyYYpNF66gf2AQnasnkXU
+	 Xyovh0gttXb/KuU9MtaYZ2d78jIi17wifmEDR6kFhtCQChBABxcq+RhvCz7FU6BzzbLMR
+	 A+nhZ35QC7ieQhn1jTouACutIX9XhGPD4SmGQ0Ra1XANtbMqKhT5WTqY9wctfsbZLWRaV
+	 ctJpua5lYLIifSxIR87ypZQSvF9QlYq/JGWrNDKDh8A03/C0UF0zOlgQUGlfemFJ/xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792637477;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=0iB/d7fIfVuq6R3fZv62sOSrHGFLxdqWRueSIgOaols=;
-	b=3CqaAEc+fGbnjt4zE2yZBmaFk1Wq1yqvY0vtWLRBEewfPE7G4EGMXcNyUotvqtCo31wT
-	 F0mVcx9TQHnXQ8IUUJgldpyZyFvDCIeD4BNm5/seYkIvKCKyQAHP0vluOKZU+G5dtqjf8
-	 PPK5DnOmfOXB5kbZ9TWP4lIVda5hGt+rNGlPH4HIkgYU0kO99CZpgehQCAdAy39gFnjpN
-	 egtt3qrGvwfCPjo+a+fjRUSyRo58mWr/J6/XogPJ1+GyRpkeNWU2C3/Aqm8jOrBQoc/Of
-	 Y9mYGqu39vqGztaneVN152H4HXzoYAm2e0pCpmGykqgQ0b5dyk91Nb2qFBy59l/+W/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792637492;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=DgxDvLuT+FrYCt+izSlqoI4afXyKDdrxGMCJ1K0jMX4=;
+	b=4TyLcxhR/RZ+92ATK0LiLqGV7RoXR6WEevnFAf+cNuBe7YNs0OHQhTh0+4kQzD9p9SYv
+	 LNYkot0zJo1nKzh5HpXsTey5bOn13ZHIVRhpDHCd+5KJe97pWhPOvDnurITmAP9h29WHM
+	 pF5C+DLtTejOWMDVfx5ruRTPxG69uNjO2WqTPJI2l6sW5WwzPF66B9/yAmJ23eXyKIP27
+	 E9Bj/qJ307IHa23BEJquI4jVowac8khVoiX65o0ZFyGnGdc59fjtHu1uwSR//egt99Xwz
+	 E+58r7dhCkC+P3cg8snaSNUxunVDb97ypQQHbczdsYAZ9Wgx9wGwo0+LDF7/XQZ2I5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCNEV7Mc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="G1/B1IYM";
+	arc=none smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B9E606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929A0606A31D
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:51:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 929A0606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCNEV7Mc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CCB1F000C1;
-	Thu, 22 Oct 2026 02:51:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792637476;
-	bh=0iB/d7fIfVuq6R3fZv62sOSrHGFLxdqWRueSIgOaols=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MCNEV7Mcj8WLCXgcwJAiv8hOPGR4bi1Sk6S1EqpGSgIPgVq6Rwia9mSGXNFOksNvE
-	 +f2Fkih6QwoY6gJnlI0D8RuLaNSii/mvXb+LoJGN5I46kzOyAMdaLJ3Bk+KjmV+lRE
-	 DyEJoroh4bJWZh5HfJzHPYhlSkmZV3XpUdqI/N9bZBLDD6BFDiPn48ZGEy3cewExsD
-	 fgp6g6VN3JIg5Vgh+pQ7SUd3pE1U6MUqRsNnAhCa/HqPxgizLnkqa3XT0KTIz0+V55
-	 lpq272JIbH5uAy5X72uPss+YaoIDrNRFR8KkKi+ZcP0etsQHfV/UeKskPUHPQPm9hy
-	 TkCUmqpw1Mqhw==
-Message-ID: <sashiko-outbox-180886@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86/mmu: WARN and flush TLBs if TDP MMU replaces
- present SPTE with MMIO SPTE
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261022022209.300964-1-seanjc@google.com>
-References: <20261022022209.300964-1-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 02:51:15 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=G1/B1IYM
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a089dfee18so229555b3a.1
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 19:51:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792637491; x=1793242291; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DgxDvLuT+FrYCt+izSlqoI4afXyKDdrxGMCJ1K0jMX4=;
+        b=G1/B1IYMVcrhCs8k5cLUsJt4iwZWffCZ2GipE3/G4twY6XtK3n0IZQfatuGThfkFTu
+         oBjA1YRuAmB3rUPvOfoZRuv8XRlVMAAzm65fcCs0w1qcXhj+6ZnwzHc6WFn2exgARbsi
+         84TpJfPti8NqLiXuuoHAG1VfMsZnBByDsXdWSuGJeECaDkw9+QXJa/4Ffl+GWuPjbfKf
+         6uICkWQiFROSra6jLGRblsPqMh+R2kmA1N/+fv5yLnSNXSygWvGLRIeDUY6B4oo9VPe0
+         0OS+gfveyIJSsXkjcHq182NiCFy9rsKDZS8zAb4Llw6xeZO8j/8kdrjnKUTf+TPQ2j4Q
+         +Xrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792637491; x=1793242291;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DgxDvLuT+FrYCt+izSlqoI4afXyKDdrxGMCJ1K0jMX4=;
+        b=gATAEkZ26nNY3CWWqVw/y92L8nQuRdGf620zGi6imTF6PeBIqu8SQC7Lpbzxy0UqZZ
+         aBQLS6pMUn7yIc5mZj4hF/0vkBqrU4HuMxmA2Hx7Un0hPVV8JWr9J7EvWzuNlPvktyJW
+         4noNoHJmVuaZtgKWUxph65dRjkUEGktfkv3nldYXbOxIkZL0FzsP5yRakGHHqZYEZXb0
+         tiCuK1fceW3RY16rh+CJw5bYmAFer7/Qo6iYa2lJh6olMd3JaY48TLuMxSrdiE6Eefyp
+         zziYyTPCq3eQja99G0r/G9iQu3yaO5SrjvGGX+7yPK+kyXoMKOrslWflY8f+32gsAiFi
+         Klvw==
+X-Forwarded-Encrypted: i=1; AKwUvBzvc5FF19/xQBUTGigsU2VQbz17hDsij5TaRt4ZSl8kpkB1t+n/4y98pfyuL2iCSFrcoYg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIb32q9ZKfa9DadjpMh2nsSegNOBqPI4WVOc+w1jlrQcvXAQuXv
+	EgWN59BsHyYv28PvOBtOf77vMZyl7rgoWR1x+CsCEg4Z2KWPXwIl81NWfBigp8jVAg==
+X-Gm-Gg: AYBFou03WWAMpR1aeJaxFKfEhM92ZNdFK4pBNey0kvVwA1KwKUohZGfDn1kL0H7e2O4
+	zqXARjJMbidJxBZI4JrLYz0a2SIukMMbe/4RNND5yjFxYX05ddl1ikZTR4OkueWHnOLK5wgGdeu
+	VmU++MbI8gxDCs9LYAbpfba6Ty6ZFmLN0ZFUgSNh8P/dW6GLyKwZMnerzRklK7ZgoBWQbtBmVnK
+	7se5RmqQBdlvysxhtOKT0E0hi8gsqCvTiRpOhUSjyM6LtxXJyzhywuBhjqIss7jo/fMx30CNKdq
+	5cTN87Pmq0i9AIwD7XCLS4uFYFW3KoQX0ND6rqgDdNC8n55GJHG4pNGQUQ7zVR1u8gPPclV+/+w
+	fFZbi7Qfv0MMAAzCCMApidTksaXMFxQl2xFQbNpmF7/fFvazU0EFL9bvujN+aH/iqMZulqBxMcm
+	zEX14gn1yb6WgJSB17LoBhwxO58KDF/E+PSe1EfMjQrXH0xwgRqcXB0cMtvW++MVm06iaHY9cnu
+	i+dqp7c2YV6TL1iupQFXTFruKW0VYbROCbrJ3eUwTbF0WG/LMnf32zGPYV9r4hRLE8g2qPZlgOK
+	fWnl5+4OaYxN+bRSTA==
+X-Received: by 2002:a05:6a21:3b46:b0:3e2:ea7:621 with SMTP id adf61e73a8af0-3e2a0bed41bmr545882637.42.1792637489967;
+        Wed, 21 Oct 2026 19:51:29 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6b85e8c9asm635619a12.20.2026.10.21.19.51.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 19:51:28 -0700 (PDT)
+Date: Thu, 22 Oct 2026 02:51:23 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Tarun Sahu <tarunsahu@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 4/4] mm: memfd_luo: Add the 2-bit pair feature
+ header
+Message-ID: <atl6K2Juy6Bh29lh@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-5-tarunsahu@google.com>
+ <CA+CK2bCWo7ixrNLKPvqETn3JSFwSNaB2UsPgy9RHVAhWroJURQ@mail.gmail.com>
+ <atlINfvlXY4wMbpO@google.com>
+ <CA+CK2bDf-pKbH2J13mRYRT7Ddj-Q+VXaGYePs+E-azSWXKzV5w@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,101 +112,330 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+CK2bDf-pKbH2J13mRYRT7Ddj-Q+VXaGYePs+E-azSWXKzV5w@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM: x86/mmu: tdp_mmu_map_handle_target_level() flushes untruncate=
-d GFN on MMIO overwrite
---
+On 2026-10-21 08:41 PM, Pasha Tatashin wrote:
+> > > >  /**
+> > > >   * struct memfd_luo_ser - Main serialization structure for a memfd.
+> > > > + * @features:  ABI feature and size header for memfd_luo_ser.
+> > > >   * @pos:       The file's current position (f_pos).
+> > > >   * @size:      The total size of the file in bytes (i_size).
+> > > >   * @seals:     The seals present on the memfd. The seals are uABI so it is safe
+> > > > @@ -79,6 +103,7 @@ struct memfd_luo_folio_ser {
+> > > >   *             struct memfd_luo_folio_ser.
+> > > >   */
+> > > >  struct memfd_luo_ser {
+> > > > +       struct luo_feature_hdr features;
+> > >
+> > > I have not looked into this yet, but I would prefer to use some kind
+> > > of macro constructor for serialized structs. That way, they will
+> > > automatically include the header, making it easier to search the code
+> > > for what is actually preserved versus what exists only in this kernel.
+> >
+> > If you want to know what is preserved don't you just look at
+> > include/linux/kho/abi?
+> 
+> Yes, and having it initialized and declared in the code correctly with
+> proper macros and verified just gives the right handling and avoids
+> making silly mistakes. The second reason is so we never forget to
+> include the header, and to make it expandable and easy for everyone to
+> use. I think this kind of constructor is just useful overall. Are
+> there any reasons why we wouldn't want to use it?
+> 
+> > > So, I think something like this:
+> > > /* Base serialization header: 4 bytes total size, 4 bytes flags */
+> > > struct luo_ser_hdr {
+> > >     __u32 total_size;
+> >
+> > Why do we need the size? I'm not really opposed to it I just don't
+> > understand what problem it solves.
+> [...]
+> > The luo_ser_hdr is needed for top-level file handler and FLB ser
+> > structs. Those structs are always dynamically allocated and preserved
+> > with KHO.
+> 
+> The top level is not enough. I think it is needed for every single
+> serialized struct in kho/abi - the blocks, the FLBs, etc. They all
+> must
+> be expandable in case we need to allow that. Let's have future
+> protection for everything that gets preserved.
+> 
+> For example, take a look at vCPU preservation:
+> https://lore.kernel.org/all/20260920193650.3373435-9-pasha.tatashin@soleen.com
+> https://lore.kernel.org/all/20260920193650.3373435-11-pasha.tatashin@soleen.com
+> 
+> +struct kvm_vcpu_ser {
+> +    u32 vcpu_id;
+> +    u32 flags;
+> +    u64 vm_token;
+> +    DECLARE_KHOSER_PTR(arch_state, struct kvm_vcpu_arch_ser *);
+> +};
+> 
+> We might want to add fields to the arch-independent part, and we also
+> absolutely must keep the arch-dependent parts expandable. Therefore,
+> the header needs to stay small and flexible enough to grow as needed.
 
-commit 409b2fbe972da1945be9a64a0bcdab640e996156
-Author: Sean Christopherson <seanjc@google.com>
+Hm, anything that is dynamically allocated can have it, but anything
+that it is embedded directly or in an array cannot, because those
+structs cannot grow anyway. So I agree it's not exclusive to the
+top-level FLB and FH structs. But I would push back on any a mandate
+that _every_ struct in include/linux/kho/abi needs it.
 
-KVM: x86/mmu: WARN and flush TLBs if TDP MMU replaces present SPTE with MMI=
-O SPTE
+> 
+> > On retrieve, KHO gives you back the blob of memory. You look at the
+> > header to determine what features are used in the struct, and then
+> > access the fields associated with those features. At no point do you
+> > need to check the size.
+> >
+> > The only time you need the size is for a KHO block array. You want to
+> > store the size of the KHO block array elements so that the retrieving
+> > kernel can correctly initialize the iterator.
+> >
+> > e.g. from the PCI base series:
+> >
+> > /**
+> >  * struct pci_ser - PCI Subsystem Live Update State
+> >  *
+> >  * This struct tracks state about all devices that are being preserved across
+> >  * a Live Update for the next kernel. It contains only state owned by the PCI
+> >  * core; the state a driver needs to resume its device is preserved separately
+> >  * by that driver.
+> >  *
+> >  * @required_flags: Features that the next kernel must support to take over
+> >  *                  the preserved devices. No flags are currently defined.
+> >  * @optional_flags: Features that the next kernel may ignore if it does not
+> >  *                  support them. No flags are currently defined.
+> >  * @dev_ser_size: The size in bytes of each struct pci_dev_ser in @devices.
+> >  * @nr_devices: The number of devices that were preserved.
+> >  * @devices: Physical address of the first KHO block containing pci_dev_ser.
+> >  */
+> > struct pci_ser {
+> >         u64 required_flags;
+> >         u64 optional_flags;
+> >         u32 dev_ser_size; <==========
+> >         u32 nr_devices;
+> >         u64 devices;
+> > };
+> 
+> Having `total_size` embedded in the standard header of every
+> serialized struct solves this uniformly: any struct can be placed in a
+> block array without needing an ad-hoc `*_ser_size` field in the parent
+> struct, and on retrieve we can always sanity-check that the preserved
+> blob is at least as large as the struct fields implied by the flags.
 
-This commit adds a warning and remote tlb flush in
-tdp_mmu_map_handle_target_level() if a shadow-present spte is replaced with=
- a
-non-shadow-present mmio spte due to gfn truncation or wrapping during the
-page table walk.
+I agree we shouldn't need an ad-hoc *_ser_size field in the parent. But
+I don't think the entries are the right place to store the size.
 
-Link: https://lore.kernel.org/all/20260219002241.2908563-1-seanjc@google.com
+A KHO block set needs the entry size before it can do anything with the
+incoming blocks. kho_block_set_restore() uses it to validate each
+block's count, and the iterator uses it to locate every entry (index *
+entry_size). The entry size is a property of the block set, not of each
+entry.
 
-> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> index 44dad106fad19..2735cbb212937 100644
-> --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> @@ -1151,6 +1151,7 @@ static int tdp_mmu_map_handle_target_level(struct k=
-vm_vcpu *vcpu,
->  		return RET_PF_RETRY;
->  	else if (is_shadow_present_pte(iter->old_spte) &&
->  		 (!is_last_spte(iter->old_spte, iter->level) ||
-> +		  WARN_ON_ONCE(!is_shadow_present_pte(new_spte)) ||
->  		  WARN_ON_ONCE(leaf_spte_change_needs_tlb_flush(iter->old_spte, new_sp=
-te))))
->  		kvm_flush_remote_tlbs_gfn(vcpu->kvm, iter->gfn, iter->level);
+Putting the size in a header on every entry means:
 
-[Severity: High]
-When a shadow-present spte mapping a valid memslot gfn is overwritten with a
-non-shadow-present mmio spte due to gfn truncation in the tdp iterator, does
-flushing iter->gfn via kvm_flush_remote_tlbs_gfn() flush the wrong address
-when range-based tlb invalidation is used?
+ - The block set has to peek into the first entry to learn its own
+   layout, so KHO blocks would depend on the LUO header format of
+   whatever is stored in them.
 
-Suppose a guest with a 4-level root first faults in a valid memslot at a
-lower gfn (caching that translation in the tlb), and then triggers a fault =
-on
-an aliased gfn with upper bits set above the root level where fault->slot is
-null.
+ - Every entry repeats the same value, since all entries in a block set
+   are written by the same kernel using the same struct. For small
+   entries that is a lot of overhead, e.g. struct pci_dev_ser is 8 bytes,
+   so an 8-byte header doubles its size.
 
-During kvm_tdp_mmu_map(), tdp_iter_restart() and try_step_down() compute
-iter->gfn via gfn_round_for_level():
+ - Nothing enforces that all the entries actually agree.
 
-arch/x86/kvm/mmu/mmu_internal.h:gfn_round_for_level() {
-	return gfn & -KVM_PAGES_PER_HPAGE(level);
-}
+Instead, I think KHO blocks should record the entry size themselves.
+For example:
 
-which only masks low bits below iter->level and retains the untruncated upp=
-er
-bits in iter->gfn. Meanwhile, tdp_iter_refresh_sptep() indexes the page tab=
-le
-by shifting and masking out the upper bits:
+struct kho_block_header_ser {
+    u64 next;
+    u32 count;
+    u32 entry_size;
+};
 
-arch/x86/kvm/mmu/tdp_iter.c:tdp_iter_refresh_sptep() {
-	iter->sptep =3D iter->pt_path[iter->level - 1] +
-		SPTE_INDEX((iter->gfn | iter->gfn_bits) << PAGE_SHIFT, iter->level);
-}
+kho_block_set_restore() would then take the entry size from the
+previous kernel and verify that every block agrees. Users of the block
+set can read the entry size back and decide how to handle entries
+written by an older or newer kernel, e.g. ignoring fields past the end
+of a smaller entry. That removes dev_ser_size from struct pci_ser, and
+any struct can be stored in a block array without a header or a size
+field in the parent.
 
-resolving iter->sptep to the existing spte for the lower gfn.
+I also don't think block set entries need their own feature flags. The
+struct that holds the block set (e.g. struct pci_ser) already has
+feature flags, and those flags can describe extensions to the entries.
+For example, an optional flag in struct pci_ser could indicate that
+struct pci_dev_ser has a new field appended. All entries in a block set
+are written by the same kernel, so the flags would be identical for
+every entry anyway. The flags only need to be checked once, before
+iterating, rather than once per entry.
 
-When tdp_mmu_map_handle_target_level() overwrites iter->old_spte with the
-mmio spte and calls kvm_flush_remote_tlbs_gfn(vcpu->kvm, iter->gfn,
-iter->level), it passes the untruncated faulting iter->gfn. In
-kvm_flush_remote_tlbs_range():
+If a feature only applies to some entries (e.g. some devices), the
+parent flag indicates the field is present and the value of the field
+in each entry indicates whether that entry uses it.
 
-virt/kvm/kvm_main.c:kvm_flush_remote_tlbs_range() {
-	if (!kvm_arch_flush_remote_tlbs_range(kvm, gfn, nr_pages))
-		return;
-	...
-	kvm_flush_remote_tlbs(kvm);
-}
+The entry size in the block header and the feature flags in the parent
+are complementary: the entry size lets the iterator step over fields
+the kernel doesn't know about, and the flags say which fields are there
+and whether the next kernel must understand them.
 
-if range-based flushing is supported and succeeds (for example, via
-hv_flush_remote_tlbs_range()), only the untruncated iter->gfn is invalidated
-and kvm_flush_remote_tlbs() is skipped.
+Please take a look at this series for how I am extending KHO block set
+elements using top-level feature flags:
 
-Because the spte is now a non-shadow-present mmio spte, subsequent mmu
-notifier invalidations in tdp_mmu_zap_leafs() will skip it without flushing
-tlbs, leaving the cached tlb entry for the original memslot gfn pointing to=
- a
-host pfn that can be freed.
+  https://lore.kernel.org/linux-pci/20261019213054.3157159-1-dmatlack@google.com/
 
-Should this path call kvm_flush_remote_tlbs(vcpu->kvm) (or mask iter->gfn to
-the root's address space) when !is_shadow_present_pte(new_spte) triggers?
+> 
+> >
+> > >     __u32 flags;
+> > > };
+> > >
+> > > #define LUO_SER_INIT_HDR(obj, _flags) do {           \
+> > >     (obj)->hdr.total_size = sizeof(*(obj));          \
+> > >     (obj)->hdr.flags = (_flags);                     \
+> > > } while (0)
+> > >
+> > > #define DECLARE_LUO_SER(name, expected_size, members)       \
+> > >     struct name {                                           \
+> > >         struct luo_ser_hdr hdr;                             \
+> > >         members                                             \
+> > >     };                                                      \
+> > >     static_assert(sizeof(struct name) == (expected_size),   \
+> > >                   "LUO struct " #name " size mismatch!")
+> >
+> > Why?
+> >
+> > Practically every change to a serialized struct is going to involve
+> > appending one or more fields to the end of the struct. Asserting the
+> > size means we have to update the hard-coded size as well every time we
+> > do that.
+> >
+> > Is this to protect against embedded structs accidentally changing?
+> >
+> 
+> Yes, exactly. See how kvm_vcpu_arch_ser is proposed in that same series:
+> 
+> +struct kvm_vcpu_arch_ser {
+> +    struct kvm_regs regs;
+> +    struct kvm_sregs sregs;
+> +    struct kvm_mp_state mp_state;
+> +    u32 pad;
+> +    struct kvm_xcrs xcrs;
+> +    struct kvm_lapic_state lapic;
+> +    u8 pad_xsave[40];
+> +    struct kvm_xsave xsave;
+> +    struct kvm_vcpu_events events;
+> +    struct kvm_debugregs debugregs;
+> +    u32 num_msrs;
+> +    u32 cpuid_nent;
+> +    struct kvm_msr_entry msrs[];
+> +};
+> 
+> All the above structs are uAPI, so they are stable compared to random
+> kernel structs, but they still have a size and can be expanded. So,
+> having the size and a static assert guarantees that when we expand
+> these uAPI structs, we automatically catch that in this struct and add
+> the appropriate flag to notify the next kernel of the changed world.
+> Also, it catches implicit compiler padding changes across
+> architectures.
 
-> =20
-taker
+Ok makes sense. Having protection from accidentally changing the offset
+of fields in a serialized struct is a good thing.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022022209.3009=
-64-1-seanjc@google.com?part=3D1
+> 
+> > >
+> > > Usage:
+> > > /*
+> > >  * Header:  8 bytes (hdr: 4 bytes total_size + 4 bytes flags)
+> > >  * Payload: 8 (pos) + 8 (size) + 4 (seals) + 4 (_pad) = 24 bytes
+> > >  * Total:   32 bytes
+> > >  */
+> > > DECLARE_LUO_SER(memfd_luo_ser, 32,
+> > >     __u64 pos;
+> > >     __u64 size;
+> > >     __u32 seals;
+> > >     __u32 _pad;
+> > > );
+> >
+> > IMO this makes the code harder to read. I think open coding keeps things
+> > simpler.
+> 
+> I am ok switching to a different construct or way of declaring these
+> structs if what I proposed is hard to read. However, we still need
+> standardization so that every serialized struct has a common,
+> expandable header (taking only 8 bytes by default), has its size
+> verified at both compile time and runtime, and is initialized in a
+> uniform way.
+
+I think your idea to have a growable header from the thread basically
+means that the header and the ser struct will be 2 completely separate
+structs and you will need to user pointer arithmetic to jump past the
+header and find your serialized struct. So I think this is probably
+moot.
+
+> 
+> >
+> > struct pci_ser {
+> >         struct luo_ser_hdr header;
+> >         __u32 dev_ser_size;
+> >         __u32 nr_devices;
+> >         __u64 devices;
+> > };
+> > LUO_SER_ASSSERT_SIZE(pci_ser, 32);
+> >
+> > >
+> > > struct memfd_luo_ser *ser;
+> > > ...
+> > > LUO_SER_INIT_HDR(ser, 0);
+> > >
+> > > Thanks,
+> > > Pasha
+> > >
+> > > >         u64 pos;
+> > > >         u64 size;
+> > > >         u32 seals;
+> > > > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> > > > index 64f8b8cb75bd..ea1f4c8cd259 100644
+> > > > --- a/mm/memfd_luo.c
+> > > > +++ b/mm/memfd_luo.c
+> > > > @@ -84,6 +84,10 @@
+> > > >
+> > > >  #include "internal.h"
+> > > >
+> > > > +static const u8 memfd_luo_features[MEMFD_LUO_FEAT_MAX] = {
+> > > > +       [MEMFD_LUO_FEAT_CORE] = LUO_FEAT_REQUIRED,
+> > > > +};
+> > > > +
+> > > >  static int memfd_luo_preserve_folios(struct file *file,
+> > > >                                      struct kho_vmalloc *kho_vmalloc,
+> > > >                                      struct memfd_luo_folio_ser **out_folios_ser,
+> > > > @@ -284,6 +288,8 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+> > > >                 goto err_free_ser;
+> > > >         }
+> > > >
+> > > > +       luo_feature_hdr_init(&ser->features, sizeof(*ser),
+> > > > +                            memfd_luo_features);
+> > > >         ser->pos = args->file->f_pos;
+> > > >         inode_size = i_size_read(inode);
+> > > >
+> > > > @@ -525,6 +531,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+> > > >         if (!ser)
+> > > >                 return -EINVAL;
+> > > >
+> > > > +       err = luo_feature_hdr_validate(&ser->features, memfd_luo_features);
+> > > > +       if (err) {
+> > > > +               pr_err("memfd_luo_ser feature header validation failed (size=%llu, flags[0]=%#llx): %pe\n",
+> > > > +                      ser->features.size, ser->features.flags[0],
+> > > > +                      ERR_PTR(err));
+> > > > +               goto free_ser;
+> > > > +       }
+> > > > +
+> > > >         /* Make sure the file only has seals supported by this version. */
+> > > >         if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
+> > > >                 err = -EOPNOTSUPP;
+> > > > --
+> > > > 2.56.0.212.g129ede20d9-goog
+> > > >
