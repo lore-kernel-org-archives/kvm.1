@@ -1,111 +1,141 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792651616;
-	b=Kp2PQe6Y1jGXqZwN0f/CsAckTCNGHlVnZB617xycH/BK/sYe7J7VuR6FVDwjfcheqClK
-	 sDMpgrBkeGeAwrh6WWGD1us1ASoZrL1W5wH+pdbs1CE9sOb0tc+3pMODG8gCe8PQvLxWG
-	 ePAU8wskgpw/x0Kptc+I4eG3dQ8e0dEN9u8E1JTJBcg1nawOBYJKIRDL0fleLBuBB5A9D
-	 VcAgiCi1bAqY+4+XuNs/STOcMz91KevSQAhfpneFyVxj0HrR1TTVLk5AtSB3f7P1Syp/j
-	 bOLIXI1u5AbeKEjocqE70AYROz/yB0XfmSYraNyiqjY9TvES+Q9dI+F7keDVcFF38zg==
+	t=1792651770;
+	b=yRb2o1e2vYzv2h55nvWkJ2eUBeIiUMevX4w2tsCFsidxx9y8PT4YvaAT6NszQ39NiHy2
+	 broUpOYxuk3yF7Aoy7sCCfb5mMGoPlzXpPa6FNJfcv4wCghmvbZ3SdlHCNNSG/gPfnick
+	 VvtMxo8V4ys1+Awwzf0BLmbKna8iFOzchhBTVanqUrW4r5W9N3NBxeptDBwxRefY+AXMa
+	 BLbqjY24W88cf13hMeIssM0mjdQBTwdvdxDVA/5DCsncf5gdlvknHdCphL5C02/rrUoq+
+	 WTJUV3nlb7yTwtHjJs+rh0aRLv7KA9r6+o6sVJZtG25kR9LnH1guxnc1M2C57CDNLtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792651616;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=U2m1NOxjt9F2BRgX+AxlY6ccXZ7NGdaeYHeYEfzi92w=;
-	b=E0pE0+BxVv8DlwbcItqbjIR94b4oaHhDlduJongfz3mvQAG0dVRc91NaoLZJOjYq2T4h
-	 qZGiJmYW0RLJmIY6iP7KOcwlytehpRZoTIiYKms9+mM0VXQ7zIaQQiGpUj1drf8/D/olG
-	 pHAgYauQ7g4fS6ofLvNoHjGGGUMr2OoGwB9nQEQPl14Ezfmg2fAXwxaEphoHkzPPsrgKj
-	 FxbVUaFHF5pkDnUXLlaiWWwyRz2C/2cA7/9ASFtlbi0vCxiovc8sx40/Re6ljHCqUpMvf
-	 YBbia1YSHj8UjU/esv+nJMXBCxkdIkvsa1FbA2vpaFD5MgVy4WxqjXJgZz7SVt7PXNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792651770;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=lArC7Nt6Avq1n/8C/Ll+Du0fnsulmEPTNsihfxjq4so=;
+	b=ItmxrdLnWMc+z2WRYAKujfRQl4ZLV+JBCoQud8b67byxuyNq4VqVcZl7ivePxBJqe9Xh
+	 Y48MYUedGUwobYlnbn9X3066wk88porNfnhnTdtMKiQk669QXd6L/xOLQO6jDyW5BCjNr
+	 79n7vPpjew3uLXiLnIhFarbEuJ+u6g3CgfFHOTefnhPo9B+w4bGG4K6hOBCwmXx7kN15m
+	 oWGs0ScIiwOMqhkDBGo+pIszADMsInNEqd7a7hUKbMzWD++haWtRbQyzV/kaqBV0s6wqf
+	 QPU0l3YO1MXWrjT6jQXZccQOeWkwg9E3zVGew2LE4J2stXwbn+LI+I4M1nAjVCzs8uw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GF7ZGPL6;
-	arc=none smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HhsTcI5h;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E005E606A33A
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:46:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E005E606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA25606A319
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:49:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EA25606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GF7ZGPL6
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so871046f8f.3
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 23:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792651606; x=1793256406; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=U2m1NOxjt9F2BRgX+AxlY6ccXZ7NGdaeYHeYEfzi92w=;
-        b=GF7ZGPL647B+FNnG04dpET3G8O5xXb61EKo7cJWaxZ39oPa+V/POXl/DjBPqCyvukr
-         uxvVa726bZh5CWEE9C7t29Ca44cLmFKZB8DJAH7gHp2zbYn6eGy3iw/+MTdY/Y+c1dLd
-         bsFmozeSaCQlewtrAFN3OOFEDHko98J7y/YjiPzAcRPMrS20L8WbdKJ9qmumOOE4DVoc
-         l2PknbSPoWVGrlc5N7LF0nwMjR892vdBSDTGyLSerl6iFlzmnvYoF/OysRdU1WZs4YeE
-         K33nwxsxDqHVwCzDED4gqyWjfL/dhrrbehq2DtdmXAZPe0x51KBUtwPLlLd3WNi+aPr9
-         1/TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792651606; x=1793256406;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U2m1NOxjt9F2BRgX+AxlY6ccXZ7NGdaeYHeYEfzi92w=;
-        b=gJvaM8kKOlowW3Mk+r3SpzKLTmr6quQr1XkRR2c0xXEIfbRH7Dxf7UfT+MvvbP+TvB
-         qcSXi+PBsitsXY3ZZRxFX1fTNZ06NEwlz0xvNo1aOvalUriMrkdrrhNRuyBpQ3CUB9T8
-         dbfV3+rEYk+vq3C7pbISpj15yN5QlBZUS60v0fTQvIlhjqx2NtFShJB2oQhHoK1vIDJn
-         cF/iBEr2jCnAEozQCp1asdGHIsKvV7oBwn0pN/i+Rb4R9/8dWZW4RXy3gXNO7ZU/QoTy
-         eN1xM5eNZl1fACKPzR8wdS68UqjaXY00MsIT6Ls7BWDbvZHFTdu31tYxe3MmFxf1MjbS
-         kgvw==
-X-Forwarded-Encrypted: i=1; AKwUvBwHib0IZafEy1jkvHgscWQGNW0jsLkIzimTOZgjCKOkFhiJ+QD5dIdXwGMwzS4HKRQ8vmk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ6TTshnCfNs7c1e15HzsDcAtFIel4WNR2tG2ni7/rlSfT433av
-	rVmrqq26xGxijDOgBykRlO7LXB1rdE9ivLrAhY9aHzoEtAP92IJY7qiE
-X-Gm-Gg: AYBFou3GhZfnxdIvT7NLOIx6OIr+t4vfQBLA+oumt3dYJQrKUt54rxRrkPh2VU1t4Hy
-	JCZdF6bnuYcOk0GzDMZCvoMs07p51sbdoiZ3+SpikIYMdpvR+Xk+qB51RgjnjyCeAmAaqHlI9ZK
-	vSgOQe1YtRBItGS3f78mSpsYJxmOGZdbDTepB/Lr9rrBGTKQXi1pr5j4n2UltjR75dzN04d1XP/
-	wsIhYXkegeAMaFhybHPXlbiUP8goEOV+mhcDSlA/QRGepw/C8dbB0/uqE1/E94pfGkEh3LEVuaO
-	Jg8hvS+6Iu091lIuixHOtLNJJDSDW7VUGYm5cfxll7iJhWplyeU1qj9VJ9McGeuvKyuwiqpRPy3
-	D+GaVAESilZKIPGZxgDGVuUk6beMmn6zEeHyZjiMr7lAMRm1JjlvfymrPPSK7hofT/YVVj5pNAX
-	eXrfTdEo0yq/ZhG0vtyE4vw04wXFaTXqnFPhEEcjCbcW62j1jS8TEx/7ynjInbyZtmRAoFQhSoD
-	gYk/+d7aPUuZ2deQuCeVBN3cPOPKI3M37O0ilLXFlF+yFZ8JojaWGAjx8fXajo9T2P/t+t/VGK9
-	bayom2cAMoyeww9eAc9+3QWvKxbix79yRUiF+JsYduLd9Xe1I5qctyCAln9Dq0Avxg4fEzBUKM5
-	cn/BiNPP5R5yGUtJ3TrkE4hYEhjoPd00mrJhQC0IDQu3tuTEN3WCaDFc41NW8VLmOpw==
-X-Received: by 2002:a05:6000:310c:b0:48d:faf4:54a8 with SMTP id ffacd0b85a97d-48e26493bedmr9081092f8f.11.1792651606193;
-        Wed, 21 Oct 2026 23:46:46 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-ad43-d501-2c28-bb72-120d-420e.310.pool.telefonica.de. [2a02:3100:ad43:d501:2c28:bb72:120d:420e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828cd1sm10215624f8f.22.2026.10.21.23.46.44
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 23:46:45 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 3/3] KVM: selftests: arm64: Test pending writes to active level IRQs
-Date: Thu, 22 Oct 2026 08:46:28 +0200
-Message-Id: <20261022064628.4206-4-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261022064628.4206-1-kmehltretter@gmail.com>
-References: <20261022064628.4206-1-kmehltretter@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HhsTcI5h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792651769;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lArC7Nt6Avq1n/8C/Ll+Du0fnsulmEPTNsihfxjq4so=;
+	b=HhsTcI5hosp2K7FC7DPx06Mea1vgrGslStGo4/pjGFcp4djfIKi0q2U+C/7KIYqtTbL/l0
+	wGe292DfUyRJZXe54aXBkOyHM2yFB8W1CRhYwTHQC3rng84l82EmcEgBCtrvm6h0W6r+s8
+	KpSRP9al+jQ5lM+ylWALWfhbygKFvIQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-9wIN8bqtNjm5ZsV_6-4TKQ-1; Thu,
+ 22 Oct 2026 06:49:26 +0000
+X-MC-Unique: 9wIN8bqtNjm5ZsV_6-4TKQ-1
+X-Mimecast-MFC-AGG-ID: 9wIN8bqtNjm5ZsV_6-4TKQ_1792651761
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E93719560B2;
+	Thu, 22 Oct 2026 06:49:18 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 725C81803A48;
+	Thu, 22 Oct 2026 06:49:14 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 1B3A121E6A04; Thu, 22 Oct 2026 08:49:12 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: devel@lists.libvirt.org
+Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,  Michael Roth
+ <michael.roth@amd.com>,  John Snow <jsnow@redhat.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Mauro Carvalho Chehab
+ <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
+ Kostiuk
+ <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
+ <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
+  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
+ Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@oss.qualcomm.com>,
+  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
+  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
+  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
+  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
+ Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
+  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
+  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
+ <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
+  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
+ Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
+ <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
+ Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
+  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
+ <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
+ <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
+ Lin
+ <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
+ Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
+ Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
+ Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
+ <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
+ <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
+ Dooley <conor@kernel.org>,  Sebastian Huber
+ <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
+ <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Anthony PERARD
+ <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
+ <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
+  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
+  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
+  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
+  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
+ <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
+ Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>
+Subject: Re: Property types changed in this series
+In-Reply-To: <87tsmfkoej.fsf@pond.sub.org> (Markus Armbruster's message of
+	"Wed, 21 Oct 2026 18:29:40 +0200")
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+	<87tsmfkoej.fsf@pond.sub.org>
+Date: Thu, 22 Oct 2026 08:49:12 +0200
+Message-ID: <878q3qkz6f.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -115,143 +145,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Add a two-vCPU GICv3 test for a level SPI set pending through
-GICD_ISPENDR. Re-pend the interrupt while it is active, first from the
-handling vCPU and then from the other vCPU. Require a second delivery
-after deactivation in both cases.
+Libvirt developers: does libvirt use member @type of the reply of
+qom-list, qom-list-properties, qom-list-get?
 
-Also check that the other vCPU observes the initial pending state
-before the interrupt is acknowledged.
+I'm asking because Marc-Andr=C3=A9's work changes many values to add a more
+useful replacement.  I think we should deprecate @type.  I'd like to
+find out whether we need to preserve the values for the deprecation
+grace period.
 
-Without the VGIC fix, the pending state is cleared on deactivation and
-the test fails before the second delivery.
+Markus Armbruster <armbru@redhat.com> writes:
 
-Assisted-by: LLM
----
- tools/testing/selftests/kvm/arm64/vgic_irq.c | 101 +++++++++++++++++++
- 1 file changed, 101 insertions(+)
+> I used qom-list-types and qom-list-properties to list all properties and
+> their types, then looked for changes.  This can miss changes in
+> dynamically created properties; see the note on qom-list-properties in
+> qapi/qom.json.  Moreover, I ran into a few QOM types where
+> qom-list-properties is broken.
 
-diff --git a/tools/testing/selftests/kvm/arm64/vgic_irq.c b/tools/testing/selftests/kvm/arm64/vgic_irq.c
-index 3cb85932ee85c..81f38e523d3c0 100644
---- a/tools/testing/selftests/kvm/arm64/vgic_irq.c
-+++ b/tools/testing/selftests/kvm/arm64/vgic_irq.c
-@@ -959,6 +959,106 @@ static void guest_code_timer_spi(struct test_args *args, int cpuid)
- 	GUEST_DONE();
- }
- 
-+#define REPEND_READ	1
-+#define REPEND_READ_DONE	2
-+#define REPEND_WRITE	3
-+
-+/*
-+ * A level-sensitive SPI that is set pending through GICD_ISPENDR stays
-+ * pending for every vCPU until it is acked. If it is set pending again while
-+ * it is active, it becomes active and pending and must be taken a second time
-+ * once it has been deactivated. The second pending state comes from the vCPU
-+ * that handles the interrupt in the first round, and from the other vCPU in
-+ * the second.
-+ */
-+static void guest_code_level_repend(struct test_args *args, int cpuid)
-+{
-+	int i;
-+
-+	gic_init(GIC_V3, 2);
-+
-+	gic_set_eoi_split(1);
-+	gic_set_priority_mask(CPU_PRIO_MASK);
-+
-+	if (cpuid == 0) {
-+		u32 intid;
-+
-+		local_irq_disable();
-+
-+		gic_irq_set_config(MIN_SPI, false);
-+		gic_set_priority(MIN_SPI, IRQ_DEFAULT_PRIO);
-+		gic_irq_enable(MIN_SPI);
-+
-+		for (i = 0; i < 2; i++) {
-+			gic_irq_set_pending(MIN_SPI);
-+
-+			if (i == 1) {
-+				/* Not acked yet: the other vCPU sees it pending */
-+				WRITE_ONCE(args->shared_data, REPEND_READ);
-+				dsb(ishst);
-+
-+				do {
-+					dsb(ishld);
-+				} while (READ_ONCE(args->shared_data) != REPEND_READ_DONE);
-+			}
-+
-+			GUEST_ASSERT(gic_irq_get_pending(MIN_SPI));
-+			intid = wait_for_and_activate_irq();
-+			GUEST_ASSERT_EQ(intid, MIN_SPI);
-+
-+			if (i == 0) {
-+				gic_irq_set_pending(MIN_SPI);
-+			} else {
-+				WRITE_ONCE(args->shared_data, REPEND_WRITE);
-+				dsb(ishst);
-+
-+				do {
-+					dsb(ishld);
-+				} while (READ_ONCE(args->shared_data) == REPEND_WRITE);
-+			}
-+
-+			GUEST_ASSERT(gic_irq_get_active(MIN_SPI));
-+			gic_set_eoi(intid);
-+			gic_set_dir(intid);
-+			isb();
-+
-+			/* The second pending state must not have been lost */
-+			GUEST_ASSERT(gic_irq_get_pending(MIN_SPI));
-+			intid = wait_for_and_activate_irq();
-+			GUEST_ASSERT_EQ(intid, MIN_SPI);
-+
-+			gic_set_eoi(intid);
-+			gic_set_dir(intid);
-+			isb();
-+
-+			GUEST_ASSERT(!gic_irq_get_active(MIN_SPI));
-+			GUEST_ASSERT(!gic_irq_get_pending(MIN_SPI));
-+			GUEST_ASSERT_EQ(gic_get_and_ack_irq(), IAR_SPURIOUS);
-+		}
-+	} else {
-+		do {
-+			dsb(ishld);
-+		} while (READ_ONCE(args->shared_data) != REPEND_READ);
-+
-+		for (i = 0; i < 64; i++)
-+			GUEST_ASSERT(gic_irq_get_pending(MIN_SPI));
-+
-+		WRITE_ONCE(args->shared_data, REPEND_READ_DONE);
-+		dsb(ishst);
-+
-+		do {
-+			dsb(ishld);
-+		} while (READ_ONCE(args->shared_data) != REPEND_WRITE);
-+
-+		gic_irq_set_pending(MIN_SPI);
-+
-+		WRITE_ONCE(args->shared_data, 0);
-+		dsb(ishst);
-+	}
-+
-+	GUEST_DONE();
-+}
-+
- static void *test_vcpu_run(void *arg)
- {
- 	struct kvm_vcpu *vcpu = arg;
-@@ -1073,6 +1173,7 @@ int main(int argc, char **argv)
- 		test_vgic_two_cpus(guest_code_asym_dir);
- 		test_vgic_two_cpus(guest_code_group_en);
- 		test_vgic_two_cpus(guest_code_timer_spi);
-+		test_vgic_two_cpus(guest_code_level_repend);
- 	} else {
- 		test_vgic(nr_irqs, level_sensitive, eoi_split);
- 	}
--- 
-2.39.5 (Apple Git-154)
+These are ast2700-a1, ast2700-a2, and several riscv CPUs.  A fix for the
+latter has been queued.
+
+> 1. Close misses of QAPI type names change to actual QAPI type names
+>
+>     old property type           new property type
+>     ---------------------------------------------
+>     string                      str
+>     uint64_t                    uint64
+>     uint64_t                    size
+>     int32_t                     int32
+>     int                         size
+>     uint32_t                    uint32
+>     [uint16]                    uint16List
+>     NotifyVMexitOption          NotifyVmexitOption
+>     CXLFixedMemoryWindow        CXLFixedMemoryWindowOptionsList
+>
+> 2. Incorrect QAPI type names change to correct ones
+>
+>     old property type           new property type
+>     ---------------------------------------------
+>     SgxEPC                      SgxEPCList
+>     QAuthZListRule              QAuthZListRuleList
+>     X86CPUFeatureWordInfo       X86CPUFeatureWordInfoList
+>     bool                        Pca9552LedState
+>
+> 3. Less than useful QAPI type names change to more useful ones
+>
+>     old property type           new property type
+>     ---------------------------------------------
+>     str                         Pca9552PinState
+>     str                         Pca9554PinState
+>
+> 4. Lazy crap
+>=20=20
+>     old property type           new property type
+>     ---------------------------------------------
+>     list                        link<arm-cpu>List
+>     list                        strList
+>     list                        uint16List
+>     list                        uint32List
+>     list                        uint64List
+>     list                        uint8List
+>     struct                      any
+>
+>     I'm not sure the first one is what it should be.
+>
+>     I need to have a closer look at the last one.
+>
+> 5. Inventive crap
+>=20=20=20
+>     old property type           new property type
+>     ---------------------------------------------
+>     busnr                       uint8
+>     guest statistics            VirtioBalloonGuestStats
+>     loadparm                    str
+>     on|off|split                OnOffSplit
+>     struct tm                   StructTm
+>
+> 6. An odd duck
+>
+>     old property type           new property type
+>     ---------------------------------------------
+>     str                         int32
+>
+>     This is pci-device property addr.  See PATCH 54.
+>
+> On the way, I noted properties with anti-social names:
+>
+>     QOM type name       property name
+>     ---------------------------------
+>     acpi-ged            memhp container[0]
+>     e500-spin           e500 spin pv device[0]
 
