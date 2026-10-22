@@ -1,58 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792653385;
-	b=zDr0cwykHXjRyCVufOPDnKnb1+KAKxEuoHqq6nVFe27KC0FDi2ZxvoC/C8Q0r2fE8cPe
-	 zSPs9tSrjw9IZjO1kQFSRIlJfq/1/X9BYQ9AiM8Iib6lqpusL3GfA2pd5SCA32RSxaW3Z
-	 nUInCaXeMj/UwMf5NHIOVz692w6EqffWzpTcXu/QtmXA9cPcmUu1UWb7j9jBTn7A1arEK
-	 d/xrUoWPtfByrAi+FlNOa6HP/8MaybkFjT2/z8PhmGrZdSFJOlY1GoE+W0zLRafVGSCbo
-	 xTTVIaXCzL11kT/hCdwq4FQeCGd8rU2wazeBdwpf2zLUJesRMeCxRoDLUVcwshGAo7g==
+	t=1792653553;
+	b=jMSSssrnfBS4BFjbevr+skbbSLC9Fs4nMRQdRr58Wp75pyX/uTP1TEBipP0pS6FNc1MR
+	 xi9gdVqDUhKXticGBRTLiIhctt2iO6BANlbYAZ5Vf191+azoHSr0Ofa6r8bqcbEeNEabM
+	 5k6vtdNfkeEnqEXQ+PDPP6myscOM0FOISSZh8hRLAOKzRprYz5V+yBlSuPaam/E2V6TZ1
+	 +Ww3KE4OL+lVo/JahRIrCozArIl7UEul0Dqlj5uXEz8v8ByU/SRGJjgCZQRhAOoR5bwVV
+	 qpTxCfJJD4fGTRr1rUFXPxmfZOk1A60choz0qjJ6bDu8D9PmrF5Bb50xZIhJO/aCvxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653385;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=lJ5fUpweQrhu19h9RLQKpY4El11g5fZEYmI8m1UfYzE=;
-	b=LYfwwDK0iTye+qrbd8LYqU7+ML3KvTI0ZvTllt1+GZo7qYUhhIeA+BKLyMiSYRWFHEo4
-	 x0i8dlOJvc7NhQ+4krcSS1ETwsMBu0fvXoQJDpd9Ot7hf6QS9fmwejoG5gHFFZx9jsz6J
-	 8D8Yu9dw2zdWFmcRfKyQvYtnX2Ghbb47bfs8oHKz0k6K2NB6MtuAeBVa72YeL8//61k1P
-	 q4vrF39IMEosmlzO+/+lmhQeTQx+ioWbRtaqzx8NFc5SPuiVMIIkw8sr0G6p5C4NA0u6v
-	 mc5TfkZlgqbw7CmkC/VebIOCqfkrZW07c3I/47itrMkme79uM3QrbwkwOEZxmjbRqUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792653553;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:To:Cc:
+	 Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:
+	 Content-Type;
+	bh=pCGbRXaaCKhpFnqdJpERzrBbBhy2ekz2jJLuNljluiE=;
+	b=5V9Wm0pEsRq3z+pqFswuG37+E9/sHv3sW1LJft/D6AzRtvoKl8ncNY7eK7PhYvc7RR8+
+	 h016QnUCHNqei2+kqGTAd8yDKyOAJfD9EXPzQOAYKRw/l6NRDuTVaNxNpolFV5D+bW6QS
+	 yhrgMSRmNkk+s+K1CYzMFT4OPlq4qYng20rTQv7cN0VqOWPny73SldvEKUhu6Gjf24tKc
+	 pLZt+0EM1H86iuVaAffOyBH0eDZOuTaIHwkV4VI/RwMUN7CMDm056OwEZiv0nifZkIRRh
+	 /Cd19qICKoiMso+qz3tJ+LPls9YnMiGlmZdb+RRzFoPI/vsCTp51/JFMSUdbMixWEHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0iq0X7W;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W76EM4Ln;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=uFS4iDHj;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02B9606A31B;
-	Thu, 22 Oct 2026 07:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD57606A319
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 07:19:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FD57606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0iq0X7W
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0341F000C1;
-	Thu, 22 Oct 2026 07:16:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792653384;
-	bh=lJ5fUpweQrhu19h9RLQKpY4El11g5fZEYmI8m1UfYzE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=m0iq0X7WOmi/mqiU+pcCpnG2votXZr/8Uchz/R19oEurGI3lp+DRZHOO6D2YYHHgk
-	 +wM1eipjxCx2lda79Ixb+mbwdcnea870TmHm6Md9mnJPOmQbzW9XqV50SvTYoImTN9
-	 D9KuCGJ/8A8gomACDr5AiX9zYR4KP9B1huPlmmkOBX0PDFaqXgiaSqLFK8iXHqTTW/
-	 wiE8Lj/tdNKh7OxxKc5pBXtNiyhvOD/Ji06Y8cACKFIguPYot9+gJbkMEVRRlKn4BX
-	 5WT0bOVZ52KQ6uqyg+UuiEU3b2GvvkNKMxbed2zjhljZHGqOAqisMyJUmjvi9aboJN
-	 jpLXPcFsG7vtw==
-Message-ID: <sashiko-outbox-181122@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 1/3] KVM: arm64: vgic-v2: Don't drop pending writes
- to active level IRQs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Karl Mehltretter" <kmehltretter@gmail.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20261022064628.4206-2-kmehltretter@gmail.com>
-References: <20261022064628.4206-1-kmehltretter@gmail.com>
- <20261022064628.4206-2-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 07:16:23 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W76EM4Ln;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=uFS4iDHj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792653551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pCGbRXaaCKhpFnqdJpERzrBbBhy2ekz2jJLuNljluiE=;
+	b=W76EM4Ln4uSRLyEP7c8NU/8W2F54tYM1uO4bP+9tAv+P9r/jZnloQGoXjO2aI3IFeM7UXc
+	S13gXR7Mwp4TvCfa3BqveDDTITpWNOg5RkArVzUsCJKJezvrwow5CT12sAl8wtBIYU15CP
+	VcHJPgTk+BltHaDKti24vFDG7YrScy4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-yPYnIAUrMrGXn8umw0Sxaw-1; Thu, 22 Oct 2026 03:19:04 -0400
+X-MC-Unique: yPYnIAUrMrGXn8umw0Sxaw-1
+X-Mimecast-MFC-AGG-ID: yPYnIAUrMrGXn8umw0Sxaw_1792653543
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so810203f8f.1
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 00:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792653543; x=1793258343; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pCGbRXaaCKhpFnqdJpERzrBbBhy2ekz2jJLuNljluiE=;
+        b=uFS4iDHjq1WCIYSq9HdPgVFdyoBQ7ZZkODpIaf95JSuJ8Jj/R8QIXO6/nwA3cu6mp9
+         A8kG1aWAo4q5T70EXc/bEnYmMz5QMQ2vgYjdWH3pRsFjypddPg4bMnFI2NYHMRA3m3SV
+         DXRxo9qrWwV3LQhlA5tHuvSMTfDjFOYisrYv+/Ws1V1EeUWmnOVPMIBBP3CG0N65mv+a
+         1zhjsNT/+NO57NNjZCbWfaq2ISpILRacs8DnwSOPZw0Q2zjYe3ti9PfG+CdGDC1rSuY4
+         EFipAZFCauDJIVQvxoEh4VCyiF+VNjGxplAUeu0H3WQQXx6UFQtWnkWIjhloR9zPyt0M
+         j9fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792653543; x=1793258343;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pCGbRXaaCKhpFnqdJpERzrBbBhy2ekz2jJLuNljluiE=;
+        b=DWItRq+Jvl3NjOntVQQHwiF54Rg28HrHIYGqD12gQn4UOgP1k1LdEx3YVv8h5wRqrd
+         EHNdQaM8jUwMCN7nw5WeaHEMf7WXd0MuN4ErwuA+SX2Gzp3brTeUe1xH3CbhH9/1VbKN
+         VLk8sU8syzbPrqU2vE2GV/iwzE86yfRvNNjRL4o+Ki8POHOtU+e5NiiIIbhSp0NoGm7c
+         o+mGn98Oq2Pcslx73KscJQ1G1Y5zTauhzdhs3szFH/O0UALggEGLeGK1htsjthhx2Seo
+         uwr9qzd96+knIyj9gKuyMEu5u5/IXgeYNYwKydJMEpZLagb01Dxp0tRBJM9eRfdP4AAc
+         tzpA==
+X-Gm-Message-State: AFq9FYLrsj14HPtNWQUsYfrzfIB3wFUN/Trtb76KdvrutNOcBREPhQ4p
+	uX5OQBESeZs7GD9NedTL7u7OUUQ4KAvkhYDOTgfVvG165L5Fm3Rd13u6LbOJvxlriUOp9b61La2
+	qJNmqmgLS3k3bXP72HTLAT0Qc55lFsKFFGrmko+aWFZDEAomtO5UmPQ==
+X-Gm-Gg: AYBFou0cbFpE9EesaiZQyPWr5LLlp7L0xJyYwBkS67VIDB5OhIygKQdWOmRqZXzfIUE
+	s9VDdacyk0HEaytjhzg1rZUAeQ2xO9x9tRTsK53QciVfzVEzOYhgwN1aHS80qpHZgbk00PpY9Am
+	PRjhKz0H7A8M6ve1cJ6tf0SiO9u4K3vX6T05698mHh5r1RUn/CsCSO33msmUQyKFDdACPBkVvri
+	kmEv+Gl++1N4lfNAK7X7PqOedydDkRJfFGE4SCSQ3puFzVnol9A2/fq4TvlImqoo+s1ZGaHtYrm
+	oMh4TQR64W6L4bfaLIldWA10q1f2Zc3v93isUKcwBWiRjs67eb0tzm9n3Kv7vqvyqA15wAigyFV
+	9mntLVgait71Nw4qf4L6JFYlv6xoa0qCFD/CIbl2JnA==
+X-Received: by 2002:a05:6000:1843:b0:487:2777:6354 with SMTP id ffacd0b85a97d-48e2650d1b0mr9235341f8f.48.1792653542974;
+        Thu, 22 Oct 2026 00:19:02 -0700 (PDT)
+X-Received: by 2002:a05:6000:1843:b0:487:2777:6354 with SMTP id ffacd0b85a97d-48e2650d1b0mr9235300f8f.48.1792653542565;
+        Thu, 22 Oct 2026 00:19:02 -0700 (PDT)
+Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258420fasm11055933f8f.50.2026.10.22.00.19.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 00:19:02 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Amirmohammad Eftekhar
+ <amirmohammad.eftekhar@cispa.de>
+Subject: Re: [PATCH] KVM: x86/hyperv: Explicitly reject VP Assist Page reads
+ if cache was clobbered
+In-Reply-To: <20261022021227.295495-1-seanjc@google.com>
+References: <20261022021227.295495-1-seanjc@google.com>
+Date: Thu, 22 Oct 2026 09:19:01 +0200
+Message-ID: <kuptsmerymy.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,202 +114,59 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM: arm64: vgic-v2: unbacked GICH_LR_HW pending state after activ=
-e ISPENDR
-- [Medium] KVM: arm64: vgic-v2: preserved pending_latch on restore of activ=
-e level IRQ
---
+Sean Christopherson <seanjc@google.com> writes:
 
-commit 559e1b17a5a169279b080f4ac07688f66063cf6a
-Author: Karl Mehltretter <kmehltretter@gmail.com>
+> Don't try to read the VP Assist Page if the shared PV EOI cache has been
+> reconfigured via KVM's actual PV EOI MSR, as trying to read 624 bytes of
+> info when the cache is setup for only 1 byte will trip the sanity check
+> WARN in kvm_read_guest_offset_cached().  Ideally, KVM wouldn't use shared
+> state to track the VP Assist Page, but in practice no sane guest enables
+> both KVM's PV EOI and Hyper-V's Assist Page at different addresses, i.e.
+> not allowing both to co-exist independently is "fine".
+>
+> Fixes: b63cf42fd1d8 ("kvm/x86: implement hv EOI assist")
+> Cc: stable@vger.kernel.org
+> Reported-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+> Closes: https://lore.kernel.org/all/20261017093016.32348-7-amirmohammad.eftekhar@cispa.de
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-KVM: arm64: vgic-v2: Don't drop pending writes to active level IRQs
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-This commit preserves pending_latch in vgic_v2_fold_lr() when a
-level-triggered interrupt was already active or had GICD_ISPENDR written wh=
-ile
-present in a list register. It adds a latch_written flag to struct vgic_irq=
- to
-track pending writes that occur while irq->on_lr is set and clears it when
-clearing pending state or folding list registers.
+(I am, however, thinking it would be better in the long term to either
+separate KVM PV / Hyper-V PV state here or even consider a 'big
+hammer' and make these two (+Xen?) mutually exclusive for all PV
+features.)
 
-[ ... ]
+> ---
+>  arch/x86/kvm/hyperv.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index 5d2e3617c952..c08eeaac8bb7 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -949,6 +949,15 @@ int kvm_hv_get_assist_page(struct kvm_vcpu *vcpu)
+>  	if (!hv_vcpu || !kvm_hv_assist_page_enabled(vcpu))
+>  		return -EFAULT;
+>  
+> +	/*
+> +	 * KVM reuses its own PV EOI feature to emulate Hyper-V's EOI Assist,
+> +	 * and rather stupidly reuses the same MSR and cache storage.  Treat
+> +	 * the assist page as inaccessible if the shared state is configured
+> +	 * only for PV EOI's single byte of data.
+> +	 */
+> +	if (vcpu->arch.pv_eoi.data.len < sizeof(struct hv_vp_assist_page))
+> +		return -EFAULT;
+> +
+>  	return kvm_read_guest_cached(vcpu->kvm, &vcpu->arch.pv_eoi.data,
+>  				     &hv_vcpu->vp_assist_page, sizeof(struct hv_vp_assist_page));
+>  }
+>
+> base-commit: 814607cd40df80d5727957adaa857e0feca43497
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v2.c b/arch/arm64/kvm/vgic/vgic-v2.c
-> index 7182f63fc9382..37474ea2431c5 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v2.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v2.c
-> @@ -57,7 +57,7 @@ static void vgic_v2_fold_lr(struct kvm_vcpu *vcpu, u32 =
-val)
->  {
->  	u32 cpuid, intid =3D val & GICH_LR_VIRTUALID;
->  	struct vgic_irq *irq;
-> -	bool deactivated;
-> +	bool deactivated, was_active;
-> =20
->  	/* Extract the source vCPU id from the LR */
->  	cpuid =3D FIELD_GET(GICH_LR_PHYSID_CPUID, val) & 7;
-> @@ -71,7 +71,8 @@ static void vgic_v2_fold_lr(struct kvm_vcpu *vcpu, u32 =
-val)
-> =20
->  	scoped_guard(raw_spinlock, &irq->irq_lock) {
->  		/* Always preserve the active bit, note deactivation */
-> -		deactivated =3D irq->active && !(val & GICH_LR_ACTIVE_BIT);
-> +		was_active =3D irq->active;
-> +		deactivated =3D was_active && !(val & GICH_LR_ACTIVE_BIT);
->  		irq->active =3D !!(val & GICH_LR_ACTIVE_BIT);
-> =20
->  		if (irq->active && vgic_irq_is_sgi(intid))
-> @@ -88,9 +89,15 @@ static void vgic_v2_fold_lr(struct kvm_vcpu *vcpu, u32=
- val)
-> =20
->  		/*
->  		 * Clear soft pending state when level irqs have been acked.
-> +		 * A latch written while the irq was active is a new pending
-> +		 * state. A write while the irq was in the LR may also have
-> +		 * followed the ack, so preserve it too.
->  		 */
-> -		if (irq->config =3D=3D VGIC_CONFIG_LEVEL && !(val & GICH_LR_STATE))
-> +		if (irq->config =3D=3D VGIC_CONFIG_LEVEL &&
-> +		    !(val & GICH_LR_PENDING_BIT) &&
-> +		    !was_active && !irq->latch_written)
->  			irq->pending_latch =3D false;
+-- 
+Vitaly
 
-[Severity: Medium]
-Could checking !was_active here cause a spurious second interrupt delivery
-after saving and restoring a KVM_DEV_TYPE_ARM_VGIC_V2 guest with an active
-level-triggered interrupt?
-
-Unlike KVM_DEV_TYPE_ARM_VGIC_V3, which exposes KVM_DEV_ARM_VGIC_GRP_LEVEL_I=
-NFO
-and returns only irq->pending_latch to userspace in
-arch/arm64/kvm/vgic/vgic-mmio.c:vgic_uaccess_read_pending()->__read_pending=
-(),
-KVM_DEV_TYPE_ARM_VGIC_V2 returns irq_is_pending(irq):
-
-    switch (vcpu->kvm->arch.vgic.vgic_model) {
-    case KVM_DEV_TYPE_ARM_VGIC_V3:
-        if (is_user) {
-            val =3D irq->pending_latch;
-            break;
-        }
-        fallthrough;
-    default:
-        val =3D irq_is_pending(irq);
-        break;
-    }
-
-When a GICv2 guest is saved while a level-triggered interrupt is active
-(irq->active =3D=3D true) and its device line is still asserted
-(irq->line_level =3D=3D true, irq->pending_latch =3D=3D false), userspace r=
-eads 1 from
-both GIC_DIST_ACTIVE_SET and GIC_DIST_PENDING_SET.
-
-On restore, userspace writes 1 to GIC_DIST_ACTIVE_SET via
-vgic_mmio_uaccess_write_sactive(), setting irq->active =3D true, and writes=
- 1 to
-GIC_DIST_PENDING_SET via vgic_uaccess_write_spending()->__set_pending(),
-setting irq->pending_latch =3D true:
-
-    int vgic_uaccess_write_spending(struct kvm_vcpu *vcpu,
-                                    gpa_t addr, unsigned int len,
-                                    unsigned long val)
-    {
-        __set_pending(vcpu, addr, len, val, true);
-        return 0;
-    }
-
-Previously, once the guest cleared the device condition (lowering
-irq->line_level) and deactivated the interrupt, vgic_v2_fold_lr() saw
-!(val & GICH_LR_STATE) and cleared irq->pending_latch =3D false. With the
-!was_active check in vgic_v2_fold_lr(), won't irq->pending_latch remain set
-across the deactivation of the restored active interrupt and cause the
-interrupt to be injected a second time?
-
-> +		irq->latch_written =3D false;
-> =20
->  		/* Handle resampling for mapped interrupts if required */
->  		vgic_irq_handle_resampling(irq, deactivated, val & GICH_LR_PENDING_BIT=
-);
-
-[Severity: High]
-What happens for a mapped level-triggered interrupt (irq->hw =3D=3D true,
-irq->config =3D=3D VGIC_CONFIG_LEVEL, and !vgic_irq_needs_resampling(irq), =
-such as
-the architected timer interrupt) when the guest writes GICD_ISPENDR0 while =
-the
-interrupt is active?
-
-In arch/arm64/kvm/vgic/vgic-mmio.c:vgic_mmio_write_spending()->__set_pendin=
-g():
-
-    if (irq->on_lr)
-        irq->latch_written =3D true;
-
-    irq->pending_latch =3D true;
-    if (irq->hw && !is_user)
-        vgic_irq_set_phys_active(irq, true);
-
-Because the physical interrupt is already active in the host distributor for
-the first in-flight delivery, vgic_irq_set_phys_active(irq, true) coalesces
-with the existing physical active state. When the guest then deactivates the
-first delivery (via GICC_EOIR / GICC_DIR in hardware, or via the EOIcount p=
-ath
-in vgic_v2_fold_lr_state()->vgic_v2_deactivate() writing GIC_CPU_DEACTIVATE=
-),
-the physical interrupt is deactivated in the host distributor.
-
-When vgic_v2_fold_lr() runs on exit, was_active or irq->latch_written is tr=
-ue,
-so irq->pending_latch remains true while irq->active becomes false. However,
-neither vgic_v2_fold_lr() nor
-arch/arm64/kvm/vgic/vgic.c:vgic_irq_handle_resampling() re-activates the
-physical interrupt in the host distributor (and if lr_deactivated &&
-irq->line_level holds with the physical line low, vgic_irq_handle_resamplin=
-g()
-explicitly clears the physical active state):
-
-    if (unlikely(vgic_irq_needs_resampling(irq))) {
-        resample =3D !(irq->active || irq->pending_latch);
-    } else if (lr_pending || (lr_deactivated && irq->line_level)) {
-        irq->line_level =3D vgic_get_phys_line_level(irq);
-        resample =3D !irq->line_level;
-    }
-
-    if (resample)
-        vgic_irq_set_phys_active(irq, false);
-
-On the next guest entry,
-arch/arm64/kvm/vgic/vgic-v2.c:vgic_v2_populate_lr()->vgic_v2_compute_lr() s=
-ees
-irq->active =3D=3D false and irq_is_pending(irq) =3D=3D true from irq->pend=
-ing_latch:
-
-    if (irq->hw && !vgic_irq_needs_resampling(irq)) {
-        val |=3D GICH_LR_HW;
-        val |=3D irq->hwintid << GICH_LR_PHYSID_CPUID_SHIFT;
-        if (irq->active)
-            allow_pending =3D false;
-    }
-
-    if (allow_pending && irq_is_pending(irq)) {
-        val |=3D GICH_LR_PENDING_BIT;
-
-Can this populate the list register with GICH_LR_HW | GICH_LR_PENDING_BIT
-while the corresponding physical interrupt is inactive in the host
-distributor, violating the hardware-bit consistency requirement and trigger=
-ing
-a second physical deactivation when the guest completes the second delivery?
-
-> =20
->  		irq->on_lr =3D false;
->  	}
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022064628.4206=
--1-kmehltretter@gmail.com?part=3D1
