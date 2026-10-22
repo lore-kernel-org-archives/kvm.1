@@ -1,101 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792648152;
-	b=CjsEQA910TxzAO5lizW9bonL3dRXl1X/d9oyCN8ZV8tQM3Zrml+50llT7R/kDyMOrhdi
-	 qiF29h880riIuOSa0fn2jucoNlbXq1wU41iDNR8FHF7etJdFMoJx6HuH6hReDLpy/W8T/
-	 yuQECo4o+JOABR/KHG3IdeoeZ/14g7vbRVxZBvpLPCmEXm8V+S8Dqwh7GT5DBrC6Dfl+A
-	 zlWkgRc4Iaw/SiGh4lmV5vEXZ0PF/s9gmFJDoIIf8HaeYIvB1lOGmcVutp2hFIVNCVIJ6
-	 M2ZnJ0fPFnP89KbdprFmtMUataZE8VSodyLlTShPzo0O20WXL0OtBWSu4oFtcWiOK/g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792648152;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=OLwqPe6nKylyfAeT1HYsvD0areP6du4KRg580T8M6Fc=;
-	b=j9E8p5Cc66kvlBcZn0YcC5gzESnoQ30qstwxk8Zy8tuUeq9ZkLLSOwtAW9pRhW5liD0I
-	 mlFy9PSMr41h2ESsNk5DLSMKFc8jKplLQMQZubDvyfO+tMDD74tM4Gq74dWzgwu8L522q
-	 ijfUHE3qbfpQbBfjZyNIhskfb+hlr7fNKdo7HrAgBZtxPH1Pp0NrjAohqsG1tlSuXa8wv
-	 smS6s3Cad1KEvfsOi3ZEcRc0sQyfEtIRSl+YmeVskXXXRCAAVCSm4OekN1P4rAMaTxAIM
-	 AIayysDwMxax5TjCNBt42ANn8+VjG3rtBjAiw3OfYlvgUendeemaVTRfwJwixfIxrFw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=FxzMc2HV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.117
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792650008;
+	b=Yt0rMgaVphMkKy7Ti8fcZxlUfFRZnp7qd44NNEQwBjPsTRac3jBL9fTYasQFpj2P0FEs
+	 AMgP4DPrGNnBDohhh8o7hUq0nS/bP3SnRcZxIm8znJodYupac1hgOXO5GHkg5+0M2VMyl
+	 0y1F2W0X7MOCJirjyXtwAilc92wbMJ2+r7EdSSOzBK+q0bvhoW8SttLfu3hE4WN9LFbUE
+	 SMnNyj0NVKaD9sTQ2Z/I1aj5U9iFF1nW/KyxQgHGzGPxt3rp4f9uAeAV7I8VUuvDAfWFj
+	 phwS4Z+2U3QSUxnnwlbzMzZ372Yvx6hra8KThttIcl9yw1It/7/xsqcWf2yZOfdc+/Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792650008;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:From:
+	 Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=nfOEQXWDlmV/Zo8XCMuxaKqjh8ws7hBvTby8XB3KbrE=;
+	b=MqD3Eyh6g7P7O0leYZt/CFeqV+OChxEYqlneOg7jZh5AlZ9L+NBF3a35ZcLybquT1s1T
+	 txzBkVK+HZgRP+7/S//fhxMnX5+DG18tOB3prShscVLM5zZT+cuVjar9XqgGfrN1szKyV
+	 dsb2/2pIFTOQwklfGrCanfAivset0nLUhWYC6ynr9aBb1SHjgYGYnL1uK5vWodphdqBzt
+	 FL2Byg9rTRlIqrR41nR7gYaQeO9dr/8vUBK3Uu2m5r/0BIzCF6sXfEWkcbbntJIOLrXYL
+	 wZNxJLQPX8xjXJBORg3wBh/8P8W8Hb76OAsZPGA6S5L1wDG0PO+Ky1g3GuvzPVOhe8w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=jxYqW74s;
+	arc=none smtp.remote-ip=68.232.139.117
+Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EB9606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 05:49:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31EB9606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20CE606A322;
+	Thu, 22 Oct 2026 06:20:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E20CE606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=FxzMc2HV
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1e477fe16so8288555e9.1
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 22:49:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792648150; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VgYWE84oDkl3XC/Vxw3CDS7I9nEpTOrL2R6FSDSp5tEEvlhKSAESXLGJGo0vhYmO5Z
-         B6X3FW48F2JjcVJgNhbQsavIj6IKc/j4LYsmO4LEIRnO4Su71ENrxiew+H5E8RVdAfWh
-         FV2O0TZfJEI+7dKxkuYDKr4Qx4Jlu12/XEXIDrc5h9L1vM7vWl8XbnVdLoN2cAFovDfA
-         UnWiL2li81KfYgIJ96JvVK0NOu1ogwIx0kXMLkg5wyA+reoWomiyKjNYgAOE3d3NJMXq
-         jqm6qKArcsTx7l0j15FiNZdAI4pxO5i3hfFf38Fsg1eddTAM9qyd6qobWss91Ssk4WHK
-         2zbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OLwqPe6nKylyfAeT1HYsvD0areP6du4KRg580T8M6Fc=;
-        fh=UUcMyvh+amVhMOEmkG5SDcjP1kIGeX829h5IWwoLzAs=;
-        b=NH0N3QQIx/Ba2CfkSieGnbETRlw/sKm4LGhXLNp9Y11w2cRv0rS8TVRl9KiY2RUf3w
-         O/kCytKi0M1k0JCgi2ydVnAUc2xcF2+WhofrptKti6qETisZFfW/oQzyDfBh5wRNuaWk
-         D05sE9mh30KUzHnswVxB/HUcRnx4jbknBjJEAhHW83/ynKZQ1WUKbt8lD7OkpD61fCtJ
-         HCvt9RJ18U4K1qliSsJNCVev2ivEbdd4MZ2iAaaHPoWJYeVYNzJrU5MZzRf46JIyNqKq
-         klyFjnvj/+NPCrBg8fAJLCtBH86W0EA63iZ2cfWEBWvnK99feagU8s3k7PlDLbK1sGln
-         NhJA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1792648150; x=1793252950; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OLwqPe6nKylyfAeT1HYsvD0areP6du4KRg580T8M6Fc=;
-        b=FxzMc2HVv8J5ZNXL3wjrsLGqJXPd+ONM7JttQMmkSUf79DQYV/GpJhNb3Z4dxvfGUA
-         IXdTRyt4feW+Ujnpv+6kvIYxaJhV5IXEfPle/JcFkUYEYx9290IDYA6NuWjRPNeBU6ds
-         8WEcLAV7eoIVOBiAAhezBtRFYDxiiwWzb0O9QT2h2xYJnEiNSIV00QCDvgpuBGhxoLO4
-         Cr0ZHL8yGXZnNRsybe0k5Y1uaMS8QdEjgowK5ObwV0j3LAk+ijaEVI1XXJDt5jgQBBbs
-         GGh7GvGVykcUOZp6eDO7awodH3HfoJ+fBlRnaRMI5OJ/R6+X+fgnwscJoqTHQz2oBP81
-         Raeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792648150; x=1793252950;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OLwqPe6nKylyfAeT1HYsvD0areP6du4KRg580T8M6Fc=;
-        b=weDFBK5lw2k2pZm+jNKuVLavKHZ2+ORMNYEDjrUGGwEaQ2Z2jucrYwmz3NSW/zz1Nz
-         V7FnOq6O/nGgS4jxqjNL+7YfdBnH/J/N1XdhbwGOxTTfZtImQle0rhKZGLv061XPpHSm
-         J6upHC8jyLZRKuxDsOWlVR3zW1dTpaZ5MLj+uqeSdZFTmQFr7xxs2UhO9R+R3kcb+isS
-         PhJ4PqbLnBuR8n0oHUVPmcvvR/+pEIrEQhtrx6V882ih6jnMQXbkFfU3yW0zP+sD0Ck+
-         yBan1uAUnNR/SufyPZnXmIssvj9cMLYZhEROTCkpSxZP4zZeekUNE0FKy8pPchqJtalX
-         6u0w==
-X-Forwarded-Encrypted: i=1; AKwUvBxGIe9Aa/moVXLkirVw2UPckC9GBtjZdvFYRLDzJhbX+VhNLw854JWF1S/XrFx4t4N7eok=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLS4OqFHqVMq31CHoDw2yDLbluzmf3LxEAr1NZ6FNIHj33J1E/r
-	CHu5hyZ4mhGQPp+7ZXBJM5v4KY5NJPbR0BtMi+59JpIGtAneUcdD4BVn3WgtroH5GzyLjI4C4GR
-	JpKMYNpYa7JSlFKfM+N6FYUkydh1GRvnVY0OiUfbbqw==
-X-Gm-Gg: AYBFou0Rzl2qo2Q9A2/X8XKfM7f3bTgkDv4KNzTCDGWH3dCm6ndK54fTSjgVFIdm4C4
-	hU13yvBqsg8199fo/E5D4iydE1SiiIXPkxeN0qcEWxoqiicf6dBUfu034G3Oxv82F/5eQewI6gV
-	Br5k2i90adV/ftCQoIS540e62PRw+Q0CCrgTlPjGVcu55SJBgAZDBQmWbEMbF547PvQ8EFE7yH+
-	njCf6FktWaYfk8ah0fc0vemqaJ5Vokv4KnzJuAeg8vMBG/N4FBUZ64FtMSP1E3CaZm3sCY8R0Eu
-	bRw3IJkIwhOD8Cq07wJfF2MHbHOJo4hgkALasqH+k+qq1GOdgX6vw1m+XDsIuetlv0xhgs46/YF
-	f2OPNcP8HQMQL861drYgIdV55qOlJrqz8/6byr7sLsUjSsopOw5g0tMp8uz3GTConLsELLKnh+Q
-	ZooUsmg40k6z7IVP9W8H87BoEwZcAC2AcYujjMf7lCzRq86CjCkZFddN5g
-X-Received: by 2002:a05:600c:34ce:b0:4a1:dbdf:17a8 with SMTP id
- 5b1f17b1804b1-4a1fd8a7d77mr86271145e9.2.1792648150526; Wed, 21 Oct 2026
- 22:49:10 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=jxYqW74s
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1792650007; x=1824186007;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=ylBrsxn7jFn3FfUWPO0HCWyrC/kn6sqQ1CWMj626tQs=;
+  b=jxYqW74sNmws75Tr746QLdm5IFqRw2cYXomwJbHa70x5CiLFr6Tj1N9v
+   ChsaBqDBdPvcVwyHU9vP6EsuF4OdEequU0kpPzhacfT2gu2ecIt+T0BFq
+   ZYDTA+qdpAx9TZMRwXH9tPnR27kkewN07dWZw+ueKcfRnwGxfwm40nFa2
+   PhT8sCYMQTKw3Q1wQ+oaIExJH4LHsQnGfvh9S9Gp2oikDCXI9gXctncxm
+   FGmNRy3mENembKsfy/QKCPr1qmlz30tF/kEnDVkvgUtYAacz3sR+EF+hT
+   D32AXBD60K+LGJYxD5wrdQNS5lLAHp9bkHrszQ8t4jL+1LEfnQF0sO8zq
+   w==;
+X-CSE-ConnectionGUID: +i0jSgbTTl+sZk41eC6Nvw==
+X-CSE-MsgGUID: gBbxWsABTsyomT0aNTg/pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="258608818"
+X-IronPort-AV: E=Sophos;i="6.27,171,1786978800"; 
+   d="scan'208";a="258608818"
+Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
+  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 15:20:05 +0900
+Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 4215EA3AF;
+	Thu, 22 Oct 2026 06:20:05 +0000 (UTC)
+Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id 06051180321D;
+	Thu, 22 Oct 2026 06:20:05 +0000 (UTC)
+Received: from [127.0.1.1] (unknown [10.124.178.20])
+	by az2nlsmom1.o.css.fujitsu.com (Postfix) with ESMTP id E4BB582037B;
+	Thu, 22 Oct 2026 06:19:59 +0000 (UTC)
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Date: Thu, 22 Oct 2026 15:19:52 +0900
+Subject: [PATCH] KVM: arm64: selftests: Test VNCR translation invalidation
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,67 +81,375 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260926055227.3678332-1-matthias.goergens@gmail.com>
-In-Reply-To: <20260926055227.3678332-1-matthias.goergens@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 22 Oct 2026 11:18:57 +0530
-X-Gm-Features: AclHuK8thstWF5FcOG66PqU0xPPPqsryWezn1ub_Gddpp_AR2RhbRXCk-tq945k
-Message-ID: <CAAhSdy3ongNF4xkLXYjEc=jNyn+=KT1soH-kPNY=5wZdoad0RA@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: name the kvm-riscv/linux riscv_kvm_next branch
-To: Matthias Goergens <matthias.goergens@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261022-b4-vncr-mapping-test-v1-1-e9ad54d506be@fujitsu.com>
+X-B4-Tracking: v=1; b=H4sIAAer2WoC/yXMQQqDMBBA0avIrDtgplK0VyldJHGqIzQNmRgE8
+ e5N7fIt/t9BOQkr3JsdEhdR+YQKc2nAzzZMjDJWA7V0My0Rug5L8AnfNkYJE2bWjFdreu+6wRI
+ T1DQmfsl2bh/Pv3V1C/v8e8FxfAHQILsFeAAAAA==
+X-Change-ID: 20261022-b4-vncr-mapping-test-3a18cb49a2e2
+To: Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+ Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
+ Steffen Eiden <seiden@linux.ibm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ kvmarm@lists.linux.dev, Itaru Kitayama <itaru.kitayama@fujitsu.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792649999; l=10003;
+ i=itaru.kitayama@fujitsu.com; s=20260825; h=from:subject:message-id;
+ bh=ylBrsxn7jFn3FfUWPO0HCWyrC/kn6sqQ1CWMj626tQs=;
+ b=JH3T49hvs6NtSTICq6ESaTafpdONTM/XvAVPpMvDnicYxUphQL8ILu+kYIj+gP0hx88geJfQC
+ Zo68819EAS1DyUjgPPT0Rw8p351CN296mBAdWjV/0DrwE+q+f+202pV
+X-Developer-Key: i=itaru.kitayama@fujitsu.com; a=ed25519;
+ pk=g9bTnr9giRP7JwNSZHy+OMLQZBEUtSE9tUnXso0hH1Y=
 
-On Sat, Sep 26, 2026 at 11:22=E2=80=AFAM Matthias Goergens
-<matthias.goergens@gmail.com> wrote:
->
-> The T: entry for KERNEL VIRTUAL MACHINE FOR RISC-V (KVM/riscv) names
-> github.com/kvm-riscv/linux without a branch.  The repository's HEAD
-> points to branch master, which mainline already contains.  linux-next
-> merges the riscv_kvm_next branch of this repository (Next/Trees).  Name
-> that branch in the entry.
->
-> Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
+Add a standalone KVM selftest that checks VNCR accesses after L1
+updates its stage-1 mapping and issues a TLBI.
 
-LGTM.
+Keep VNCR_EL2 unchanged while remapping its backing page A to B then
+again to A. At each step, L2 reads and writes TPIDR_EL2, and L1
+verifies that the accesses reach the selected page while leaving the
+other page unchanged.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+The test runs with L1-managed stage-2 translation disabled.
 
-Queued this patch for Linux-7.4
+Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+---
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ .../selftests/kvm/arm64/nv_vncr_tlbi_test.c        | 303 +++++++++++++++++++++
+ 2 files changed, 304 insertions(+)
 
-Thanks,
-Anup
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index f43549a56f0b..9f0af6ef54ba 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -181,6 +181,7 @@ TEST_GEN_PROGS_arm64 += arm64/host_sve
+ TEST_GEN_PROGS_arm64 += arm64/hypercalls
+ TEST_GEN_PROGS_arm64 += arm64/external_aborts
+ TEST_GEN_PROGS_arm64 += arm64/mmio_sign_ext
++TEST_GEN_PROGS_arm64 += arm64/nv_vncr_tlbi_test
+ TEST_GEN_PROGS_arm64 += arm64/page_fault_test
+ TEST_GEN_PROGS_arm64 += arm64/psci_test
+ TEST_GEN_PROGS_arm64 += arm64/sea_to_user
+diff --git a/tools/testing/selftests/kvm/arm64/nv_vncr_tlbi_test.c b/tools/testing/selftests/kvm/arm64/nv_vncr_tlbi_test.c
+new file mode 100644
+index 000000000000..93219d036de6
+--- /dev/null
++++ b/tools/testing/selftests/kvm/arm64/nv_vncr_tlbi_test.c
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Check VNCR translation invalidation through observable memory effects.
++ *
++ * L1 keeps VNCR_EL2 unchanged while remapping its virtual address:
++ *
++ *     VNCR VA -> page A -> page B -> page A
++ *
++ * L2 reads and writes TPIDR_EL2 with HCR_EL2.{NV2,NV} == {1,1}.
++ * These accesses use the TPIDR_EL2 slot at VNCR offset 0x090.
++ *
++ * After each L2 HVC, L1 checks:
++ *   - the value returned by the redirected register read;
++ *   - the value written to the selected backing page;
++ *   - that the other backing page remains unchanged.
++ *
++ * No L3 and no L1-managed stage-2 translation are needed.
++ */
++
++#include "kvm_util.h"
++#include "processor.h"
++#include "test_util.h"
++#include "ucall_common.h"
++
++#define VNCR_TPIDR_OFFSET	0x090
++
++#define SEED_A			0x1111222233334444ULL
++#define SEED_B			0x5555666677778888ULL
++#define WRITE_A			0xaaaabbbbccccddddULL
++#define WRITE_B			0x123456789abcdef0ULL
++#define WRITE_A_AGAIN		0xfedcba9876543210ULL
++
++#define L1_HCR			(HCR_EL2_RW | HCR_EL2_E2H | \
++				 HCR_EL2_NV | HCR_EL2_NV2)
++#define L2_PSTATE		(PSR_MODE_EL1h | PSR_D_BIT | PSR_A_BIT | \
++				 PSR_I_BIT | PSR_F_BIT)
++
++static struct test_config {
++	u64 vncr_va;
++	u64 *vncr_ptep;
++	u64 pte_a;
++	u64 pte_b;
++	u64 *slot_a;
++	u64 *slot_b;
++	u64 l2_sp;
++} cfg;
++
++static unsigned int round_nr;
++
++extern void l2_probe(void);
++extern char l2_after_hvc[];
++
++/*
++ * x1: value to write.
++ * x0: value read, observed by L1's HVC handler.
++ *
++ * No stack accesses or C calls in L2.
++ * Use the SMCCC convention of a zero HVC immediate.
++ */
++asm(
++".pushsection .text,\"ax\"\n"
++".balign 4\n"
++".global l2_probe\n"
++".type l2_probe, %function\n"
++"l2_probe:\n"
++"	mrs	x0, tpidr_el2\n"
++"	msr	tpidr_el2, x1\n"
++"	dsb	ish\n"
++"	hvc	#0\n"
++".global l2_after_hvc\n"
++"l2_after_hvc:\n"
++"	brk	#0\n"
++".size l2_probe, . - l2_probe\n"
++".popsection\n"
++);
++
++static void remap_vncr(u64 new_pte)
++{
++	u64 hcr = read_sysreg(hcr_el2);
++	u64 operand = cfg.vncr_va >> 12;
++
++	/*
++	 * Use the VHE host translation regime for the EL1 TLBI
++	 * instruction: HCR_EL2.{E2H,TGE} == {1,1}.
++	 */
++	write_sysreg(hcr | HCR_EL2_TGE, hcr_el2);
++	isb();
++
++	/* Break before make. VNCR_EL2 itself is never rewritten. */
++	WRITE_ONCE(*cfg.vncr_ptep, 0);
++	dsb(ishst);
++
++	asm volatile("tlbi vaae1is, %0" : : "r" (operand) : "memory");
++	dsb(ish);
++	isb();
++
++	WRITE_ONCE(*cfg.vncr_ptep, new_pte);
++	dsb(ishst);
++	isb();
++
++	/* Permit return to L2 at EL1. */
++	write_sysreg(hcr, hcr_el2);
++	isb();
++}
++
++static void handle_l2_hvc(struct ex_regs *regs)
++{
++	u64 esr = read_sysreg(esr_el1);
++
++	GUEST_ASSERT_EQ(ESR_ELx_EC(esr), ESR_ELx_EC_HVC64);
++	GUEST_ASSERT_EQ(esr & 0xffff, 0x0);
++	GUEST_ASSERT_EQ(regs->pc, (u64)l2_after_hvc);
++	GUEST_ASSERT_EQ(read_sysreg_s(SYS_VNCR_EL2), cfg.vncr_va);
++
++	dsb(ish);
++
++	switch (round_nr) {
++	case 0:
++		/* Warmed translation: VNCR VA -> A. */
++		GUEST_ASSERT_EQ(regs->regs[0], SEED_A);
++		GUEST_ASSERT_EQ(READ_ONCE(*cfg.slot_a), WRITE_A);
++		GUEST_ASSERT_EQ(READ_ONCE(*cfg.slot_b), SEED_B);
++
++		remap_vncr(cfg.pte_b);
++		regs->regs[1] = WRITE_B;
++		break;
++
++	case 1:
++		/* Following TLBI, reads and writes must now use B. */
++		GUEST_ASSERT_EQ(regs->regs[0], SEED_B);
++		GUEST_ASSERT_EQ(READ_ONCE(*cfg.slot_b), WRITE_B);
++		GUEST_ASSERT_EQ(READ_ONCE(*cfg.slot_a), WRITE_A);
++
++		remap_vncr(cfg.pte_a);
++		regs->regs[1] = WRITE_A_AGAIN;
++		break;
++
++	case 2:
++		/* Check invalidation again, with the mapping reversed. */
++		GUEST_ASSERT_EQ(regs->regs[0], WRITE_A);
++		GUEST_ASSERT_EQ(READ_ONCE(*cfg.slot_a), WRITE_A_AGAIN);
++		GUEST_ASSERT_EQ(READ_ONCE(*cfg.slot_b), WRITE_B);
++
++		GUEST_DONE();
++	default:
++		GUEST_FAIL("Unexpected round %u", round_nr);
++		return;
++	}
++
++	round_nr++;
++	regs->pc = (u64)l2_probe;
++	regs->pstate = L2_PSTATE;
++}
++
++static void guest_code(void)
++{
++	GUEST_ASSERT_EQ(get_current_el(), 2);
++	GUEST_ASSERT(read_sysreg(hcr_el2) & HCR_EL2_E2H);
++
++	/*
++	 * With E2H=1, these EL1 accessors read L1's own configuration.
++	 * EL12 accessors configure the EL1 context used to execute L2.
++	 */
++	write_sysreg_s(read_sysreg(tcr_el1), SYS_TCR_EL12);
++	write_sysreg_s(read_sysreg(ttbr0_el1), SYS_TTBR0_EL12);
++	write_sysreg_s(read_sysreg(mair_el1), SYS_MAIR_EL12);
++	write_sysreg_s(read_sysreg(cpacr_el1), SYS_CPACR_EL12);
++	write_sysreg_s(read_sysreg(vbar_el1), SYS_VBAR_EL12);
++	write_sysreg_s(read_sysreg(sctlr_el1), SYS_SCTLR_EL12);
++	write_sysreg(cfg.l2_sp, sp_el1);
++	isb();
++
++	/*
++	 * These aliases remain mapped throughout the test. They allow
++	 * inspection of both backing pages independently of VNCR VA.
++	 */
++	WRITE_ONCE(*cfg.slot_a, SEED_A);
++	WRITE_ONCE(*cfg.slot_b, SEED_B);
++	dsb(ish);
++
++	/* Program the VNCR address exactly once. */
++	write_sysreg_s(cfg.vncr_va, SYS_VNCR_EL2);
++
++	/* VM=0, TGE=0; enable nested register redirection for L2. */
++	write_sysreg(L1_HCR, hcr_el2);
++	isb();
++
++	GUEST_ASSERT_EQ(read_sysreg(hcr_el2) &
++			(HCR_EL2_NV | HCR_EL2_NV2),
++			HCR_EL2_NV | HCR_EL2_NV2);
++	GUEST_ASSERT(!(read_sysreg(hcr_el2) & HCR_EL2_VM));
++
++	write_sysreg((u64)l2_probe, elr_el2);
++	write_sysreg(L2_PSTATE, spsr_el2);
++	isb();
++
++	asm volatile(
++		"mov x1, %0\n"
++		"eret\n"
++		:
++		: "r" (WRITE_A)
++		: "x1", "memory");
++
++	__builtin_unreachable();
++}
++
++/* Add a guest virtual alias for an existing guest physical page. */
++static u64 map_alias(struct kvm_vm *vm, u64 gpa)
++{
++	u64 va = vm_unused_gva_gap(vm, vm->page_size,
++				  KVM_UTIL_MIN_VADDR);
++
++	virt_map(vm, va, gpa, 1);
++	return va;
++}
++
++static void prepare_memory(struct kvm_vm *vm)
++{
++	u64 a = vm_alloc_page(vm);
++	u64 b = vm_alloc_page(vm);
++	u64 page_mask = ~((u64)vm->page_size - 1);
++	u64 stack = vm_alloc_pages(vm, DEFAULT_STACK_PGS);
++	u64 ptep_gpa, ptep_alias;
++	u64 *ptep;
++
++	cfg.slot_a = (u64 *)(a + VNCR_TPIDR_OFFSET);
++	cfg.slot_b = (u64 *)(b + VNCR_TPIDR_OFFSET);
++	cfg.l2_sp = stack + DEFAULT_STACK_PGS * vm->page_size;
++
++	/* Initially, the separate VNCR virtual address maps page A. */
++	cfg.vncr_va = map_alias(vm, addr_gva2gpa(vm, a));
++
++	ptep = virt_get_pte_hva(vm, cfg.vncr_va);
++	cfg.pte_a = *ptep;
++	cfg.pte_b = *virt_get_pte_hva(vm, b);
++
++	TEST_ASSERT(cfg.pte_a != cfg.pte_b,
++		    "Backing pages must have different descriptors");
++	TEST_ASSERT((cfg.pte_a & (PTE_VALID | PTE_TYPE_PAGE)) ==
++		    (PTE_VALID | PTE_TYPE_PAGE),
++		    "VNCR mapping must use a leaf page descriptor");
++
++	/*
++	 * Map the page containing the descriptor into L1, so L1 can
++	 * perform its own page-table update and architectural TLBI.
++	 */
++	ptep_gpa = addr_hva2gpa(vm, ptep);
++	ptep_alias = map_alias(vm, ptep_gpa & ~page_mask);
++	cfg.vncr_ptep = (u64 *)(ptep_alias + (ptep_gpa & page_mask));
++
++	sync_global_to_guest(vm, cfg);
++}
++
++int main(void)
++{
++	struct kvm_vm *vm;
++	struct kvm_vcpu *vcpu;
++	struct ucall uc;
++	u64 mmfr4, cmd;
++
++	TEST_REQUIRE(test_supports_el2());
++
++	vm = __vm_create_with_one_vcpu(&vcpu, 32, guest_code);
++	TEST_REQUIRE(vcpu_has_el2(vcpu));
++
++	/*
++	 * Target KVM's exposed NV2-only-or-later nested capability.
++	 * Merely having a virtual EL2 is insufficient for this test.
++	 */
++	mmfr4 = vcpu_get_reg(vcpu,
++			    KVM_ARM64_SYS_REG(SYS_ID_AA64MMFR4_EL1));
++	TEST_REQUIRE(FIELD_GET(ID_AA64MMFR4_EL1_NV_frac, mmfr4) >=
++		     ID_AA64MMFR4_EL1_NV_frac_NV2_ONLY);
++
++	vm_init_descriptor_tables(vm);
++	vcpu_init_descriptor_tables(vcpu);
++	vm_install_sync_handler(vm, VECTOR_SYNC_LOWER_64,
++				ESR_ELx_EC_HVC64, handle_l2_hvc);
++
++	prepare_memory(vm);
++
++	for (;;) {
++		vcpu_run(vcpu);
++		cmd = get_ucall(vcpu, &uc);
++
++		switch (cmd) {
++		case UCALL_PRINTF:
++			REPORT_GUEST_PRINTF(uc);
++			break;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			break;
++		case UCALL_DONE:
++			pr_info("PASS: VNCR accesses followed A -> B -> A mappings; "
++		"inactive backing slots remained unchanged\n");
++			kvm_vm_free(vm);
++			return 0;
++		default:
++			TEST_FAIL("Unexpected ucall %lu, KVM exit reason %u",
++				  cmd, vcpu->run->exit_reason);
++		}
++	}
++}
 
-> ---
-> This is part of a cleanup of all T: entries whose repository HEAD is
-> not where development happens: one patch per repository, sent in small
-> batches.  The plan is at [1], and why it goes out in batches at [2].
->
-> [1] https://lore.kernel.org/all/20260924033200.3615554-1-matthias.goergen=
-s@gmail.com/
-> [2] https://lore.kernel.org/all/20260924101844.2403008-1-matthias.goergen=
-s@gmail.com/
->
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 140eafcbbd78..16f6b306adf2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14357,7 +14357,7 @@ L:      kvm@vger.kernel.org
->  L:     kvm-riscv@lists.infradead.org
->  L:     linux-riscv@lists.infradead.org
->  S:     Maintained
-> -T:     git https://github.com/kvm-riscv/linux.git
-> +T:     git https://github.com/kvm-riscv/linux.git riscv_kvm_next
->  F:     arch/riscv/include/asm/kvm*
->  F:     arch/riscv/include/uapi/asm/kvm*
->  F:     arch/riscv/kvm/
->
-> base-commit: 62f4c998b297cf233997a2b4cd6fc2d2df0319c9
-> --
-> 2.55.0
->
+---
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+change-id: 20261022-b4-vncr-mapping-test-3a18cb49a2e2
+
+Best regards,
+--  
+Itaru Kitayama <itaru.kitayama@fujitsu.com>
+
