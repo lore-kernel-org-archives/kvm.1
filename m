@@ -1,100 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792689364;
-	b=AHgo0D4wI6XGGx6x+sNpuO2t+zPstNnOLUfxN1m6hA3q3NCkavEo7m6G1KJuMqtvEw9H
-	 s76JkEQTQ+by7FJSeIpV/+RmrVItxxbfhCNo32y0h1DgkND7DuKjckKHceRGuvWvlb3ED
-	 sDpfEjDkNknqfv42WcHE2CcjMWP6mNOOh3t8EEmLPF4Ju5xpMLTYnrdSTY1zkVoRvIAjb
-	 xLcPGPI/IvHWrO19cZZ7S6KjKnybr5zcZZqFgdMir43Up6sNRqeCi5sXDzDVnAJ99vLhd
-	 j1Ifin+QkojnTTI93ew2XHHjvcHF5z250U6jNpQTJ5cbTnJ/j7V54GeoDxIxxXEjrWw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792689364;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792689690;
+	b=vBbTA+5oqXboSb7YwnQqt+nFPJI1xmqfC1o4uqYbphExx74z7VuNq6duhd7jRH0TiIiH
+	 rcp1SHtJejz7fDKIHb3SwwgA2DVC8jrdFCTPH1BRDq6DdT4b7b1C1v5YTvdTd18ZQCDhu
+	 /j4GWbf8uUomZRz44ZVeWQlThhDRG8TtGuoVDTFli105lMvjariLY4GBt326keieIDaR6
+	 JDSQ1PMfUOmwVOC9MokfRgQn2ohRWRr0cZjFrBLTcVdjDyfQacqmG7Ute7qa1nrsqPe3A
+	 DWIVUx8/aBYF4U+zQ8cUDFdNq7dovNypPXckkRd6T9zpl220pavFW0Z+PRGws1TwFig==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792689690;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=orOSP583y+dthBMPpY/InD7yqO0PC4Gq/OKcTL/XceM=;
-	b=PmEQzWMq+6vC6o2oQ2VMF616OBTbklSzU4R3qscehWGg5QM06rG/ZT+hetNfmHxkNWTk
-	 V3ShoASAIcTOW+YCmdRBvp04taZ+nwVmOu8U+90qZqm5FcEgTO85z3L4gNCCh3AzTiYOd
-	 o5hEliX/gsoeeKtqPi8daqHgCg6KmrH94vPYDzmXmA4t8JXeTH16LB0sYJQL9FV2Zj5KO
-	 oVbTRPtgv05GcNzVmsuN4koUQZcG/emyx8W82ORV340h1NAXEtZBY+9Gu1k9p+eHMHfMR
-	 Adz4B1Lk/Ic0d7aV1oE9HwcsW+jhK6Tf709sdHxRMCoa6x73dJ4hLwrAWq8mp/R5t3Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=OgThn990Yb6qPgczIQMhrPZJbCH52JyOkasQf7xIIHE=;
+	b=UPyWUMA4k69uYO6cyOtLGrV3Kg834NlWOCnbVCA+vbGQuytdCfpjFiP6AK6WbyW+YkSW
+	 8a1vAoYbgbb97oO5n5bGVgpTAQWmxT5l9ykuXUbF/g7JIgC52svqPklRzXEa3jERfZBsX
+	 cKBUfVTrZEwRR5qODw1bVEdlw6RR20AZWXSGaWZUj19N+IZNACdLvF/aLogsaYLeI2pO8
+	 FvueeSDJ6e0hSbLJWqqy/KYRRkydkFO5lzi44z1pG+pvvKF9CPySbS3e6ZvXWLoYEjnEc
+	 E+5vsnb7HzWscbgQ839CVM62Qy7Q3vvpDt8Nq8gxY1Q2w4OqZosGT6wr2ORt7/vLzrg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=cKGmxWaC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=m4Bulbhs;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C6C606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 17:16:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51C6C606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F8C606A31B
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 17:21:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9F8C606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=cKGmxWaC
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so92a12.1
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 10:16:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792689362; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JYYWeBFnNKTtHve0ami89UMDdWyQNaLlmSYmszAVGPUETP/UTMpjFWl9cBXlm3zFlt
-         zoA5jOez+l27Ii0BPISoLMy9bTU+tLjQyDo/4UcnYy1EIpmpv0X/1r9Z04dZ3G6sk3f/
-         WncdpTBqfu3T53kAW1zz26Y/1x/Fhz09b1cfIqsyQXt+iHKs0CCMjG+uRwCTHQjPuY3x
-         M2S8RJt1235LxSJvIDz2uhrW3PuSLiH2b9ZwZmGn0mKifChhLH6JlwSq0qJ5wHhYp0Xk
-         4LxztnqeOxfpkk+WalRJaJoT50x6mVrk8qFayLImxEs1Bm5m1xIyeuIcTzsMo3Wkc8oe
-         tu5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=orOSP583y+dthBMPpY/InD7yqO0PC4Gq/OKcTL/XceM=;
-        fh=dB0szE+unGd3PWNynlrtRPVNXOFv+NrYaxd7KOa844E=;
-        b=ctErQ8HCMziX1/IZQE8mV0WyT6yHuc6+t+Ua3MF/BrL08+EzzY9bJ14bBtgcZdWf8f
-         A4epNXLsLGtEMI3crXUtdxEFwn9XmxiXVxO7uw7H4VXzMLklPjq52og1Q7HcfcdGybNp
-         0+wEjU4Ehgg5otdJg9xaeBYfc4eTaoxdXZALaxTu+vDcMyQ9wWdUH0lZGWAmyDzcRQSO
-         LPUBlgZ/jS+OLSghKfaR83FlVgxKcxDIVmKB75HSH/eWa1lohfVGPXzEeudDQAPk6Gf3
-         k2yFon75xSwT4Rm7sSm8j4D/ca0hjWCm+LSiXi3UkVGYde/8Ox4Ecte3Xe0m624l4U1i
-         Jalw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=m4Bulbhs
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39de4e72b33so79463a91.2
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 10:21:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792689362; x=1793294162; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=orOSP583y+dthBMPpY/InD7yqO0PC4Gq/OKcTL/XceM=;
-        b=cKGmxWaCNfoZqipE6jfPcMJQduGrIftYnM/+Kp4oJODUDkU2EFzy9cbzNcnGPeZG/R
-         hyYDPQ/H7YNC/MSNAxChPIe/KdwWUuPvAy3M/DLHzKliH/lbFcXk54oJn0pmfVyTOyZs
-         7T0mQ8rGC9a6j/lnKPhF2Za/2kd4U7Ukgcmq93FFMcGaaoyT+4gLniyRsttmsE18IdYb
-         16k1R/2UE7bqpyO9GviglctVHq+H5O2lq+YdYGyxCuRkGeA8InL+JpCp3/SoSGZ4b9AP
-         CaEFeWfcCYypcSXiFst6ktCHjb65OwqjdQNuWyIkjRGWKYcLqGrPSjXEQvgiTthuBZYZ
-         lh4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792689362; x=1793294162;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792689689; x=1793294489; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=orOSP583y+dthBMPpY/InD7yqO0PC4Gq/OKcTL/XceM=;
-        b=GEiSFJz7KoQskgsc5x0wJl4yxrNLCM27xJqgRD762XcO74Ro6447GFLmMN41GnC3RN
-         g0utFFSXEpC65CVs7NvchZ+7Fohha3QkttybOb2WqsqKcgn5JocNHMjZ3QoLXgdxr7XK
-         rIV6DKa93ZXy9OwpEBJnCeQTzraYMINxaHsoAY3Ts/bghZdf0CjBg/XDQ1T43FEmenMj
-         DaLSybOXo3iwa5KIdG2xDwiISNWvjgesiAdU5ynjpUg89uIYbcCPBJ7gpKX3/yA8nqeK
-         Sd5JHe3OPIR6DAudsH/U8bk+kfcEZQ8gTEx7s2Bei2p/eKhc5QM1tfVWevP53o/ZNGJ+
-         sKcg==
-X-Forwarded-Encrypted: i=1; AKwUvBzve83noYQfKXE6V2EoT4ItxRpkoLkwEs7TLDjq/83un8OKntCmKziOqchFff+q08mo1WM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIIVhdjsFwEmtwT0jU4Rc9Ij4RHaT0+fox8xAx4DZ9ErqgC67dU
-	BGceYShCrxoSHXzFUNtQyGIP3BFj3TTk9kT94xJHGrMisl+fYKMC4uKnVWnlM7dx7Aiy+KrseS3
-	DMoMU7qXokbHFh4+e4XSFPUxyvBS/9U1TfmGdAqhQ
-X-Gm-Gg: AYBFou0P8ZQDkpf7waXNOjyKVeuxstXqtFj0c6+jVhXnKF8A0Ti7//Uuz+znVBfEG5i
-	YVkgxvn7cwt0dHS5kJJWZ53Ie5itqoZMim9Xuc2cL4xRP6MJxHpq7uzEEoCoLORyCa8nrRVzdEr
-	BWRSe4ce3oJRaQhE4oxSKNePOynTbdD8xmuaKQeireInZaVhXggJseAzBzQGyJ9a7bESEkHQYGl
-	jOz4Sk8QZHA3YQnSRIVK7HcS716rowbVjIZGcoFxsbvgYJ36/12jfzh/zcjtAquRIYY2/1j5rub
-	JGsopJkICYW0Yjfvu01nGY25H2cIyam/9YEX48eQWMhCZirIignTsiNFZqQZbvwhLr2evWRgE+m
-	B1sEZMGyftm94pBKrqecWAhfmQ4+dJwj2Fgl2
-X-Received: by 2002:aa7:d80f:0:b0:6a6:6ded:b4b6 with SMTP id
- 4fb4d7f45d1cf-6b42032007bmr60520a12.13.1792689362023; Thu, 22 Oct 2026
- 10:16:02 -0700 (PDT)
+        bh=OgThn990Yb6qPgczIQMhrPZJbCH52JyOkasQf7xIIHE=;
+        b=m4BulbhsUgzW7fFrghGkBQI4hNRW+0wNDCo+Klfcyfir8ATNfqGIIryeb7JeKert4b
+         Y9jaasJzOSpDCqe4UCHnwfcYQnB7d6R1njKiYhmTUzlAYUIy6rgQ7CDf7ScjX/Fpb9OR
+         6CWVMdtNnC6bA143Ui9Na0GtKGkVkidC54b8Lu0bxfCZWY1e6308iwBc3rQvhOU9U3UE
+         STqw6IRa1eAf9KJ8iWTfYgSDm60EnQEvKUIiy1sRxFqnN/vdrqYd4efkbi+ktLqNE43b
+         dGULfIJG8OYhfD8gVF4wEidZP5qxythYMDc02jQqWl152kJTKT8zAnlAMhVAbNyl/lHc
+         v2Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792689689; x=1793294489;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OgThn990Yb6qPgczIQMhrPZJbCH52JyOkasQf7xIIHE=;
+        b=M36XtD+n7PQ3M+eYFYYmOP7ZVhy9mjD1k/nVB1+q5cgmTdHwLg66pGWDQTn/if9+Zh
+         QdXydXjVG7XU1iWJ6zQeDkb6qVsCnsNcf2z9BOhTAfzl68u6iTcMYGY8O5Xf6OUd6MqI
+         G2Avv0R+N6P151UegdRk/C6CgNNjLiOThE4fdu9gAbppgZD+5dLppyj37PUSzuOLed8C
+         I0xbQkrL6NPTNqDvP3Kzuq4+EP4nNvfJc11L/+bFPpFjH9FoEMkX/ImFIiPlqh31bcya
+         DqUb9CzdB1jCtvjTcUo9iub9aSvNxx784diwQtvTH4YXS6x0fxfwjml0gcUvG6y7WURD
+         Zodw==
+X-Forwarded-Encrypted: i=1; AKwUvBxW9QCJVYvSbkpTikFM+rgcWK7CbI0w7KF0oWLrgkC10lot1PqOwgPvN8WoORrB/qTf9HI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLkrWtjyVNfoNd1qBZfTh7OaYufzvfkf5AlDabNaFjXhhQFpCpr
+	ItO+zE6oqHsTF2WuyKcB/Td5b4E8eRJR3wPC7J4PBo15eQwHOMn4lJnVxSOYnJ+b7PssXbn7Uo6
+	9uM4DRg==
+X-Received: from pjbnc3.prod.google.com ([2002:a17:90b:37c3:b0:3ac:4c80:15de])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:dfcb:b0:3ab:d45c:59da
+ with SMTP id 98e67ed59e1d1-3ad86f717fcmr4648988a91.40.1792689688890; Thu, 22
+ Oct 2026 10:21:28 -0700 (PDT)
+Date: Thu, 22 Oct 2026 10:21:28 -0700
+In-Reply-To: <20261016235221.33726-2-amirmohammad.eftekhar@cispa.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,59 +77,116 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20260310060022.15120-1-manali.shukla@amd.com> <20260310060022.15120-5-manali.shukla@amd.com>
- <20261008175928.732268-1-jmattson@google.com> <a3eee649-0719-46d7-bd82-4dbdb1c98c8b@amd.com>
-In-Reply-To: <a3eee649-0719-46d7-bd82-4dbdb1c98c8b@amd.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 22 Oct 2026 10:15:49 -0700
-X-Gm-Features: AclHuK-95CgjFtiyDe_Sdh0Xkn6b-26MsKY7c1Vl2_cpxsdC_uh3FOAcmguLPK8
-Message-ID: <CALMp9eSAkO+JP=bir6zw4jOLUJba2Bh2hb_9ghD2AzJ-uN7nbQ@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] KVM: x86: Extend CPUID range to include new leaf
-To: Manali Shukla <manali.shukla@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, mingo@redhat.com, bp@alien8.de, 
-	kvm@vger.kernel.org, x86@kernel.org, santosh.shukla@amd.com, 
-	nikunj.dadhania@amd.com, Naveen.Rao@amd.com, dapeng1.mi@linux.intel.com, 
-	ravi.bangoria@amd.com, peterz@infradead.org, Sandipan.Das@amd.com, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20261016235221.33726-2-amirmohammad.eftekhar@cispa.de>
+Message-ID: <atpGGKVAL3bAnmnk@google.com>
+Subject: Re: [PATCH] KVM: nSVM: Reset the virtual VMLOAD/VMSAVE bit in vmcb02
+ on every nested VMRUN
+From: Sean Christopherson <seanjc@google.com>
+To: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Oct 22, 2026 at 5:00=E2=80=AFAM Manali Shukla <manali.shukla@amd.co=
-m> wrote:
->
-> On 10/8/2026 11:29 PM, Jim Mattson wrote:
-> > On Tue, Mar 10, 2026 at 06:00:16AM +0000, Manali Shukla wrote:
-> >> CPUID leaf 0x8000001b (EAX) provides information about Instruction-Bas=
-ed
-> >> sampling capabilities on AMD Platforms. Add the new leaf to
-> >> kvm_cpu_cap_init() using F() macros, which automatically gate each
-> >> capability bits against raw hardware CPUID via raw_cpuid_get().
-> >>
-> >> This allows vendor code to simply clear entire leaf when vibs is not
-> >> enabled, rather than reading hardware CPUID and calling
-> >> kvm_cpu_cap_set() for each capability bits inidividually in later
-> >> patches.
-> >>
-> >> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
-> >
-> > The shortlog is not accurate. The CPUID range does not change; case
-> > 0x80000000 already limits the maximum extended leaf to 0x80000022, whic=
-h
-> > includes 0x8000001B. Before this patch, leaf 0x8000001B went to the def=
-ault
-> > case, which returns all zeros. This patch adds KVM's supported bits for=
- the
-> > leaf and a case that reports them when X86_FEATURE_IBS is supported. Pl=
-ease
-> > change the shortlog to say that.
-> >
->
-> Agreed. I will change the shortlog
->
-> Probably something like this ?
-> KVM: x86: Report supported IBS capabilities in CPUID 0x8000001B
++Yosry and Jim
 
-Sounds good.
+On Sat, Oct 17, 2026, Amirmohammad Eftekhar wrote:
+> The SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE (VLS) bit in
+> vmcb02->control.misc_ctl2 is OR-set in nested_vmcb02_prepare_control()
+> when L2 is allowed to use virtual VMLOAD/VMSAVE, but it is never reset.
+> vmcb02 is a persistent per-vCPU structure reused across nested VMRUNs,
+> so once one nested entry enables VLS the bit leaks into every later
+> entry -- including entries where vmcb12 has VLS cleared and L1 has asked
+> KVM to intercept VMLOAD/VMSAVE.  Per AMD's APM, virtual VMLOAD/VMSAVE is
+> honored over the VMLOAD/VMSAVE intercepts, so with the stale bit set
+> L2's VMLOAD/VMSAVE are virtualized and run without a #VMEXIT, and the
+> intercept L1 explicitly requested is silently dropped.
+> 
+> misc_ctl is reset from vmcb01 a few lines earlier; misc_ctl2's VLS bit
+> has no equivalent reset.  The only writes to misc_ctl2 are this OR-set,
+> the vmcb01 init OR-set, and the independent V_LBR (bit 0) set/clear, so
+> nothing clears bit 1 between entries.  nested_vmcb02_recalc_intercepts()
+> sets INTERCEPT_VMLOAD/VMSAVE when nested_vmcb_needs_vls_intercept() is
+> true and otherwise only WARNs on the reverse condition; it never catches
+> the real hazard of VLS on while the intercept is also set.
+> 
+> Reset the VLS bit before the conditional set, mirroring misc_ctl, and
+> add a forward WARN so a future regression trips immediately.
+> 
+> This is distinct from CVE-2021-3656 (single-VMRUN under-sanitization of
+> a VLS bit L1 set in vmcb12 without being granted the feature); here L1
+> is granted VLS and uses it legitimately, and the bit goes stale across
+> VMRUNs.
+> 
+> Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+> ---
+>  arch/x86/kvm/svm/nested.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index af0ef6784..65e61b796 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -197,6 +197,14 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
+>  	} else {
+>  		WARN_ON_ONCE(!(vmcb02->control.misc_ctl2 & SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE));
+>  	}
+> +
+> +	/*
+> +	 * If KVM is intercepting VMLOAD/VMSAVE, virtual VMLOAD/VMSAVE must be
+> +	 * off, or hardware would honor the virtualization and render the
+> +	 * intercept inert.
+> +	 */
+> +	WARN_ON_ONCE(vmcb_is_intercept(&vmcb02->control, INTERCEPT_VMLOAD) &&
+> +		     (vmcb02->control.misc_ctl2 & SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE));
+>  }
+>  
+>  /*
+> @@ -994,6 +1002,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+>  
+>  	/* SVM_MISC2_ENABLE_V_LBR is controlled by svm_update_lbrv() */
+>  
+> +	/*
+> +	 * vmcb02 is reused across nested VMRUNs and the VLS bit below is only
+> +	 * OR-set, so clear it first; a stale bit would let L2 run VMLOAD/VMSAVE
+> +	 * unintercepted even on a VMRUN that asks KVM to intercept them.
+> +	 */
 
-Thanks.
+This becomes self-explanatory if written as:
+
+	if (nested_vmcb_needs_vls_intercept(svm))
+		vmcb02->control.misc_ctl2 &= ~SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+	else
+		vmcb02->control.misc_ctl2 |= SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
+
+and I definitely think we should un-invert the check to match nested_vmcb02_recalc_intercepts().
+
+That said, not explicitly initializing all of misc_ctl2 is crazy.  AFAICT, LBR
+virtualization is the only other bit in misc_ctl2, and it to is always computed
+dynamically so I'd rather do this:
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 1503fee15baa..6ea35a3dc361 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -884,8 +884,6 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 	}
+ 
+ 	/*
+-	 * Copied from vmcb01.  msrpm_base can be overwritten later.
+-	 *
+ 	 * SVM_MISC_ENABLE_NP in vmcb12 is only used for consistency checks.  If
+ 	 * L1 enables NPTs, KVM shadows L1's NPTs and uses those to run L2. If
+ 	 * L1 disables NPT, KVM runs L2 with the same NPTs used to run L1. For
+@@ -893,6 +891,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 	 * to L1 GPAs, so the same NPTs can be used for L1 and L2.
+ 	 */
+ 	vmcb02->control.misc_ctl = vmcb01->control.misc_ctl & (SVM_MISC_ENABLE_NP | SVM_MISC_ENABLE_GMET);
++	vmcb02->control.misc_ctl2 = 0;
+ 	vmcb02->control.iopm_base_pa = vmcb01->control.iopm_base_pa;
+ 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
+ 	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
+
+Argh!  But nested_vmcb02_prepare_save() isn't called in the svm_set_nested_state()
+case, so AFAICT svm_update_lbrv() is never called.  Though that seems like a
+pre-existing?
