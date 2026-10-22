@@ -1,56 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792679549;
-	b=uAxOSuSE3QyypLTirv3+nKUxGWEQY9kKCtCrQLKMLjkX4su+FMVoY5F57lxeAYMKr3Lb
-	 RcPpyQ2LvifGy52TzkrH6bBt29OEuN75GU2GWoEAQ/oPWuHC4bDLCmVj8b4toVV5gB6BR
-	 pict4MGIpRjDaugyU22YPNfkSx6Rg5u3sNnucdu33+hz9/iFqSBrWgZq8BN8a+AA87WII
-	 MGfdk75+LkmiFRD3vtqskAd9m+PrtR/U5JhzyIB84dXrUDb8TUxxgbEaDSmH0+PPCUBlD
-	 qYWl/LxByG1r9GPduqCBtDUYxsG12jGg+gqMvGeGnN4ZHBPNaYs9/4qhLQvZ9bsv1sA==
+	t=1792679669;
+	b=PsLIKfPisyDOgL/p9LnF3Wsn6PUd89IRY5B+1rl0uScluYlF+m8mJENOJ64WyE6tPNWB
+	 tgTxOsNQNvZY5rBmv4zQsARatnGqQEl19FJ1RpahUWbK0g2XK6Yy2aUxA9HX/U+AaiUWJ
+	 nkKiVypdb0O0O1GgpaPM2KDGcQB5AtYDNkKU7JMiq67zCRdRDqW6qfZ0emlHo/EMb9EkZ
+	 gCbRhjyVumQCLaVoFfwhbwke+l4rv7XzF5OLcl6NobyR3A1+zyLgt5Vq77SFYg0kzd5IH
+	 pgelCNy14arArulDXY3mxGAqSovl8cZdxuUUhsLcglzdlWWw3VmPRzYNATVbMxusTKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792679549;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=VRcuUxciBS4kxql1uP9iLuBxM/q3MNkhJJ328+6GZig=;
-	b=F0cO/j9NZOh986/Mnltxv0MjTNKokqqp/4DQCJIUdA1ouTagIbPxhN+ZHQpNivi7Ls/h
-	 uSLca8jyGkBtYgY25g2eMDpJ/+tkbLKw7s1qnUhoj+MZ/vKDSXpKndh50BXdz63WBk85n
-	 gQHsNGMWmlmuiQKMQO784tkvD3RlHPZTy033H7HAg41rYP5OCMvTpwaG12jWYkF4NIigM
-	 vBToLGJiH/XdQTtn/1VuQxyBtvsszptxvcV1gmq5ZxV1iu4yUuusMmj25cAjRuno7ASxs
-	 cs8d9rl42sl+ioflBuZaSbiByuLIxPu8lDVfc44vfR2NDIctxTfpgB6814NYe2/rGDA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792679669;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=NsTdAQ9klXtboyhfno6ZvDGK7HZPd3nbzvjibLiq8Qo=;
+	b=tojSM2tDJTNR7MziVtSOb5QUv2KpDAr8IE6Vc7wUM/dOtiSzx++qnAdQUxKjJDeat/b2
+	 jH+Ld0wgDnS0trPv6jXXd4MW4kLLy02j4uUdFBqV/hYy3AJFDxeowRfzgWrF1gXq+9I0c
+	 l+xKmJDVvwjlzOsB0KomOpcpPDrr6w+UHkqkEVtJ/E44pjeHtQFJL1wTqcHLv2SuahKYX
+	 KTVDAHZXMVXp6aVtxa8Ngta0RHAB8A603Jp17SXkpOvLDzDcuHPB+7KrzbUKtXGGJBr1j
+	 aTRtzhr41uJr77VVkziUvAp6xenZr81BYwCKi4GeHUNxPKuZ/Wb6G0Njrw3kY5mn5NQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebLCLNRp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NIWL1n2p;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570FA606A31D
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 14:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D364606A31F
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebLCLNRp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9730D1F000C1;
-	Thu, 22 Oct 2026 14:32:28 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NIWL1n2p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A711F000C1;
+	Thu, 22 Oct 2026 14:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792679548;
-	bh=VRcuUxciBS4kxql1uP9iLuBxM/q3MNkhJJ328+6GZig=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=ebLCLNRplvXzmW5sevd9tPtZt+dMjroKnBeqZvS8+XldzPhHQN7xfMIcdhQHpIRqt
-	 DoZNZGpRXrQzAQhGJQovkOrhkSslcksfusSUWPAF24HrDaLIBr3wraZYstgS8imrh5
-	 oI4ZhkaXA79HukVM4sP7Lv3zSMb0mFXBqYpHNPDmKiAnIiCwnSGey1tjU5kdYbitoT
-	 HlHWoxlEIzCN/PK/UgENyR5lzYToafpMyScx0lfiPXbZCZeswdWFuoXMhcDcfh7/FD
-	 kDkOXDL4pYJg0NEwzAm9VG/aYL3hrinVV2GJjhiBcWmtt7aT+lGo8Y2ZvKJ+WyCysH
-	 H0bDzU7TUB8EQ==
-Message-ID: <sashiko-outbox-181641@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 6/7] KVM: SVM: Add support for AMD IOMMU Guest APIC
- Physical Processor Interrupt (GAPPI)
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sairaj Kodilkar" <sarunkod@amd.com>, kvm@vger.kernel.org
-In-Reply-To: <20261022140425.27465-7-sarunkod@amd.com>
-References: <20261022140425.27465-1-sarunkod@amd.com>
- <20261022140425.27465-7-sarunkod@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 14:32:28 +0000
+	s=k20260515; t=1792679669;
+	bh=NsTdAQ9klXtboyhfno6ZvDGK7HZPd3nbzvjibLiq8Qo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NIWL1n2pokMbUr4xbCCNYp5wXYDC1oG8GrN5nYwJamodZBItmNCcIAV4GBaREARJj
+	 YKKYRAQRlR+Vm73PNixWQnLhFgbL1Pe85gG1qYUr50fm7OKRjxqryDfLMRlSFNLPEH
+	 R4OqayjXj+Ojr29ssuGLCfrH1P5MCJ0jmf0YNmQwpFfjmck/4PIdrs7wRGtSq+gKXy
+	 voyyBjiLDX2DtruPeMsNiyEXcnuyAh16/VTIl59TTljkYl8nJMtn6DLqOtSX3lCFFZ
+	 j+nkVoNJnhjVSLWWyxz7w+iur+8SkHPlnE8csi6tNIOsOH0kfmE2Qq25xh+463XWRd
+	 u6cqRpwSv8sTg==
+Date: Thu, 22 Oct 2026 16:34:23 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
+	kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+	peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
+	lorenzo.pieralisi@linaro.org, enju.kohei@fujitsu.com,
+	qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC v4 11/24] target/arm/kvm-rme: Populate Realm with runtime
+ images
+Message-ID: <atoe77pJ119cDcSF@red-moon>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-12-mathieu.poirier@linaro.org>
+ <3257a387-490f-44bb-bd44-dbe06036fd52@redhat.com>
+ <atiKJ8-PyIHSRTKy@red-moon>
+ <27fe3ba8-c8c8-4d5c-9d57-3cfb67142ac1@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,199 +64,170 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <27fe3ba8-c8c8-4d5c-9d57-3cfb67142ac1@redhat.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] KVM: SVM: avic_update_iommu_vcpu_affinity() sets IRTE destination =
-to -1
-- [High] KVM: SVM: avic_update_iommu_vcpu_affinity() skips gappi_cpu on act=
-ivate
-- [High] KVM: SVM: circular lock dependency in __avic_vcpu_load() with GAPPI
---
+On Wed, Oct 21, 2026 at 10:24:56PM +1000, Gavin Shan wrote:
+> On 10/21/26 7:47 PM, Lorenzo Pieralisi wrote:
+> > On Fri, Oct 02, 2026 at 01:45:40PM +1000, Gavin Shan wrote:
+> > > On 9/4/26 5:35 AM, Mathieu Poirier wrote:
+> > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > 
+> > > > Once the Realm descriptor has been created, tell KVM to transfer runtime
+> > > > images (kernel, DT, and rootfs) from guest memory to Realm memory.
+> > > > 
+> > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+> > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > > > ---
+> > > >    target/arm/kvm-rme.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
+> > > >    1 file changed, 76 insertions(+)
+> > > > 
+> > > > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > > > index 9985f5daba89..c082a5d8f3d1 100644
+> > > > --- a/target/arm/kvm-rme.c
+> > > > +++ b/target/arm/kvm-rme.c
+> > > > @@ -15,6 +15,7 @@
+> > > >    #include "migration/blocker.h"
+> > > >    #include "qapi/error.h"
+> > > >    #include "qemu/error-report.h"
+> > > > +#include "qemu/memalign.h"
+> > > >    #include "qom/object_interfaces.h"
+> > > >    #include "system/confidential-guest-support.h"
+> > > >    #include "system/kvm.h"
+> > > > @@ -43,12 +44,87 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> > > >    static RmeGuest *rme_guest;
+> > > > +static int rme_populate_range(const RmeRamRegion *region, bool measure,
+> > > > +                              Error **errp)
+> > > > +{
+> > > > +    int ret;
+> > > > +    void *buffer;
+> > > > +    hwaddr size = region->size;
+> > > > +    hwaddr base = region->base;
+> > > > +    hwaddr start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
+> > > > +    hwaddr end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
+> > > > +    struct kvm_arm_rmi_populate populate_args;
+> > > > +    size_t aligned_size = ROUND_UP(region->size, qemu_real_host_page_size());
+> > > 
+> > > s/qemu_real_host_page_size()/RME_PAGE_SIZE
+> > 
+> > It will always have to be qemu_real_host_page_size(), KVM configures it
+> > that way.
+> > 
+> > > > +
+> > > > +    if (!region->data) {
+> > > > +        return -ENODEV;
+> > > > +    }
+> > > > +
+> > > > +    ret = kvm_set_memory_attributes_private(start, end - start);
+> > > > +    if (ret) {
+> > > > +        error_report("RME: failed to configure initial"
+> > > > +                     "private guest memory");
+> > > > +        return ret;
+> > > > +    }
+> > > > +
+> > > > +    /* Allocate page-aligned memory */
+> > > > +    buffer = qemu_memalign(qemu_real_host_page_size(), aligned_size);
+> > > > +
+> > > > +    if (!buffer) {
+> > > > +        return -ENOMEM;
+> > > > +    }
+> > > > +
+> > > > +    memset(buffer, 0, aligned_size);
+> > > > +    memcpy(buffer, region->data, region->size);
+> > > > +
+> > > > +    populate_args = (struct kvm_arm_rmi_populate) {
+> > > > +        .base = start,
+> > > > +        .size = end - start,
+> > > > +        .source_uaddr = (uintptr_t)buffer,
+> > > > +        .flags = measure ? KVM_ARM_RMI_POPULATE_FLAGS_MEASURE : 0,
+> > > > +    };
+> > > > +
+> > > > +    while (populate_args.size > 0) {
+> > > > +        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
+> > > > +        if (ret) {
+> > > > +            error_setg_errno(errp, -ret,
+> > > > +                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
+> > > > +                start, end);
+> > > > +            break;
+> > > > +        }
+> > > > +    }
+> > > > +
+> > > > +    qemu_vfree(buffer);
+> > > > +
+> > > > +    return ret;
+> > > > +}
+> > > > +
+> > > 
+> > > I doubt that the unaligned regions (RmeRamRegion) are allowed. For example,
+> > > the region [4KB 64KB+4KB] is turned to the aligned range [0 128KB] when RME_PAGE_SIZE
+> > > is 64KB. The question is how do we know the added regions due to the alignment
+> > > ([0 4KB] and [64KB+4KB 128KB]) are safe for kvm_vm_ioctl(KVM_ARM_RMI_POPULATE).
+> > 
+> > Getting back to this because it is important. Can you define "safe" here ?
+> > 
+> > I think it is VMM's role to load with the required alignment and make
+> > sure it does not double populate (that is anyway prevented by KVM), what was
+> > your concern here to make sure we are in agreement ?
+> > 
+> 
+> For example, there are two regions are populated: [0 4KB] and [4KB 64KB] on a 64KB
+> host. With the alignment considered, we're populating [0 64KB] for region [0 4KB],
+> and [0 64KB] for [4KB 64KB]. [0 64KB] are populated for twice. Is this allowed by
+> TF-RMM? If it's allowed by TF-RMM, the data populated in the first time is overwritten
+> by the second population.
 
-commit eadb6986c75d5c64b26f6497306bb267961e5f78
-Author: Sairaj Kodilkar <sarunkod@amd.com>
+It is not allowed by the RMM and it is a VMM bug that we have to prevent.
 
-KVM: SVM: Add support for AMD IOMMU Guest APIC Physical Processor Interrupt=
- (GAPPI)
+Thanks,
+Lorenzo
 
-This commit adds KVM SVM support for AMD IOMMU Guest APIC Physical Processor
-Interrupt (GAPPI) as an alternative to the legacy GA log mechanism for waki=
-ng
-non-running vCPUs when device interrupts are posted to the guest vAPIC
-backing page. When a vCPU blocks, SVM places it on the previous pCPU's post=
-ed
-interrupt wakeup list and programs the IOMMU IRTE destination with that
-pCPU's physical APIC ID and POSTED_INTR_WAKEUP_VECTOR.
-
-> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> index b975f08825ce2..baeca0ad8dfee 100644
-> --- a/arch/x86/kvm/svm/avic.c
-> +++ b/arch/x86/kvm/svm/avic.c
-
-[ ... ]
-
-> @@ -1018,7 +1038,7 @@ enum avic_vcpu_action {
->  };
-> =20
->  static void avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int a=
-picid,
-> -					    enum avic_vcpu_action action)
-> +					    int cpu, enum avic_vcpu_action action)
->  {
->  	bool wakeup_intr =3D (action & AVIC_START_BLOCKING);
->  	bool is_running =3D apicid >=3D 0;
-> @@ -1027,6 +1047,25 @@ static void avic_update_iommu_vcpu_affinity(struct=
- kvm_vcpu *vcpu, int apicid,
-> =20
->  	lockdep_assert_held(&svm->ir_list_lock);
-> =20
-> +	if (action & AVIC_TOGGLE_ON_OFF)
-> +		/*
-> +		 * When AVIC is disabled, IOMMU switches to legacy IRTE and
-> +		 * does not genrate wakeup notification. Hence there is no
-> +		 * need to add vCPU on wakeup list. This reduces the number of
-> +		 * vCPUs on the list, effectively reducing interrupt handler
-> +		 * time and avoiding spurious wakeup to the vCPU.
-> +		 */
-> +		goto skip_wakeup_handler;
-
-[Severity: High]
-When AVIC is activated on a vCPU via avic_refresh_apicv_exec_ctrl() ->
-__avic_vcpu_load(vcpu, vcpu->cpu, AVIC_ACTIVATE), action is AVIC_ACTIVATE
-(which is aliased to AVIC_TOGGLE_ON_OFF). Won't jumping to
-skip_wakeup_handler here skip updating svm->gappi_cpu =3D cpu?
-
-While APICv is inactive or temporarily inhibited (for example at vCPU start=
-up
-before the guest LAPIC is enabled, or due to nested virtualization or IRQ
-window inhibits), svm_vcpu_load() in arch/x86/kvm/svm/svm.c does not call
-avic_vcpu_load() when the vCPU migrates to another pCPU:
-
-	if (kvm_vcpu_apicv_active(vcpu))
-		avic_vcpu_load(vcpu, cpu);
-
-When APICv is later enabled or uninhibited on the current pCPU,
-avic_refresh_apicv_exec_ctrl() calls __avic_vcpu_load(vcpu, vcpu->cpu,
-AVIC_ACTIVATE). Because AVIC_TOGGLE_ON_OFF jumps over svm->gappi_cpu =3D cp=
-u,
-svm->gappi_cpu remains at its previous value (or 0 if the vCPU started on a
-non-zero pCPU).
-
-If the vCPU then blocks via avic_vcpu_blocking() ->
-__avic_vcpu_put(vcpu, AVIC_START_BLOCKING) before another schedule-out and
-schedule-in cycle, or if avic_pi_update_irte() runs while it is not running,
-won't KVM enqueue the vCPU on the wrong pCPU's wakeup_vcpus_on_cpu list and
-program IRTE[Destination] with the stale pCPU's physical APIC ID (which may
-even belong to an offline CPU if the previous pCPU was offlined while APICv
-was inhibited)?
-
-> +
-> +	if (amd_iommu_gappi && is_running) {
-> +		kvm_pi_disable_wakeup_handler(vcpu, svm->gappi_cpu);
-> +		svm->gappi_cpu =3D cpu; /* Store cpu number as target for GAPPI */
-> +	} else if (amd_iommu_gappi && wakeup_intr) {
-> +		apicid =3D cpu_physical_id(svm->gappi_cpu);
-> +		kvm_pi_enable_wakeup_handler(vcpu, svm->gappi_cpu);
-> +	}
-
-[Severity: High]
-What happens when a running vCPU with an assigned device is scheduled out
-without blocking (for example, preempted via kvm_sched_out() ->
-kvm_arch_vcpu_put() -> svm_vcpu_put() -> avic_vcpu_put(), or put via
-vcpu_put() on exit to userspace)?
-
-In that path, avic_vcpu_put() calls __avic_vcpu_put(vcpu, AVIC_STOP_RUNNING=
-),
-which invokes avic_update_iommu_vcpu_affinity(vcpu, -1, -1,
-AVIC_STOP_RUNNING). Both is_running (apicid >=3D 0) and wakeup_intr
-(action & AVIC_START_BLOCKING) are false, so apicid is not updated to
-cpu_physical_id(svm->gappi_cpu) and remains -1 (unlike avic_pi_update_irte(=
-),
-which sets pi_data.apicid =3D cpu_physical_id(svm->gappi_cpu) whenever
-!is_running && amd_iommu_gappi).
-
-avic_update_iommu_vcpu_affinity() then passes apicid =3D -1 to
-amd_iommu_update_ga(data, -1, false, false), where __amd_iommu_update_ga() =
-in
-drivers/iommu/amd/iommu.c unconditionally writes apicid into
-IRTE[Destination]:
-
-	if (amd_iommu_gappi) {
-		entry->lo.fields_vapic.gappi_dis =3D !wakeup_intr &&
-					check_feature2(FEATURE_GAPPIDISSUP);
-		entry->lo.fields_vapic.is_run =3D false;
-		entry->lo.fields_vapic.destination =3D
-					APICID_TO_IRTE_DEST_LO(apicid);
-		entry->hi.fields.destination =3D
-					APICID_TO_IRTE_DEST_HI(apicid);
-	}
-
-Doesn't this program the live guest-mode IRTE destination fields to
-0xffffffff (the broadcast APIC ID), causing the IOMMU to deliver broadcast
-POSTED_INTR_WAKEUP_VECTOR interrupts across host CPUs on hardware that
-supports GAPPI without FEATURE_GAPPIDISSUP?
-
-> +
-> +skip_wakeup_handler:
->  	/*
->  	 * Here, we go through the per-vcpu ir_list to update all existing
->  	 * interrupt remapping table entry targeting this vcpu.
-> @@ -1093,7 +1132,7 @@ static void __avic_vcpu_load(struct kvm_vcpu *vcpu,=
- int cpu,
-> =20
->  	WRITE_ONCE(kvm_svm->avic_physical_id_table[vcpu->vcpu_id], entry);
-> =20
-> -	avic_update_iommu_vcpu_affinity(vcpu, h_physical_id, action);
-> +	avic_update_iommu_vcpu_affinity(vcpu, h_physical_id, cpu, action);
-> =20
->  	raw_spin_unlock_irqrestore(&svm->ir_list_lock, flags);
->  }
-> @@ -1135,7 +1174,7 @@ static void __avic_vcpu_put(struct kvm_vcpu *vcpu, =
-enum avic_vcpu_action action)
->  	 */
->  	raw_spin_lock_irqsave(&svm->ir_list_lock, flags);
-> =20
-> -	avic_update_iommu_vcpu_affinity(vcpu, -1, action);
-> +	avic_update_iommu_vcpu_affinity(vcpu, -1, -1, action);
-
-[Severity: High]
-Can calling kvm_pi_disable_wakeup_handler() inside
-avic_update_iommu_vcpu_affinity() while holding svm->ir_list_lock in
-__avic_vcpu_load() trigger a circular lock dependency with the scheduler and
-posted-interrupt wakeup locks?
-
-1. In the POSTED_INTR_WAKEUP_VECTOR interrupt handler,
-   kvm_pi_wakeup_handler() in arch/x86/kvm/x86.c acquires
-   wakeup_vcpus_on_cpu_lock at subclass 0 and calls kvm_vcpu_wake_up() ->
-   rcuwait_wake_up() -> wake_up_process() -> try_to_wake_up(), which acquir=
-es
-   p->pi_lock and rq->__lock:
-
-   wakeup_vcpus_on_cpu_lock(0) -> p->pi_lock -> rq->__lock
-
-2. When a vCPU is preempted during schedule(), prepare_task_switch() holds
-   rq->__lock and invokes fire_sched_out_preempt_notifiers() ->
-   kvm_sched_out() -> kvm_arch_vcpu_put() -> svm_vcpu_put() ->
-   avic_vcpu_put() -> __avic_vcpu_put(), which acquires svm->ir_list_lock:
-
-   rq->__lock -> svm->ir_list_lock
-
-3. In __avic_vcpu_load() (called from svm_vcpu_load() and
-   avic_vcpu_unblocking()), svm->ir_list_lock is held when
-   avic_update_iommu_vcpu_affinity() calls
-   kvm_pi_disable_wakeup_handler(vcpu, svm->gappi_cpu), which in
-   arch/x86/kvm/x86.c acquires wakeup_vcpus_on_cpu_lock at subclass 0 before
-   PI_LOCK_SCHED_OUT:
-
-   svm->ir_list_lock -> wakeup_vcpus_on_cpu_lock(0)
-
-Holding svm->ir_list_lock across kvm_pi_disable_wakeup_handler() bridges
-rq->__lock to wakeup_vcpus_on_cpu_lock(0), defeating the PI_LOCK_SCHED_OUT
-subclass separation and completing the lockdep cycle.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022140425.2746=
-5-1-sarunkod@amd.com?part=3D6
+> Thanks,
+> Gavin
+> 
+> > Thanks,
+> > Lorenzo
+> > 
+> > > I guess we probably just reject unaligned regions if they're not expected.
+> > > 
+> > > Even if the unaligned regions are allowed, they seem not well handled.
+> > > 
+> > > - @aligned_size is still 64KB instead of the 128KB ?
+> > > - In "memcpy(buffer, region->data, region->size);", the blob data would be copied to
+> > >    [4KB, 4KB+64KB]. However, we're copying the data to [0 64KB] now.
+> > > 
+> > > > +static void rme_populate_ram_region(gpointer data, gpointer err)
+> > > > +{
+> > > > +    Error **errp = err;
+> > > > +    const RmeRamRegion *region = data;
+> > > > +
+> > > > +    if (*errp) {
+> > > > +        return;
+> > > > +    }
+> > > > +
+> > > > +    rme_populate_range(region, /* measure */ true, errp);
+> > > > +}
+> > > > +
+> > > >    static void rme_vm_state_change(void *opaque, bool running, RunState state)
+> > > >    {
+> > > > +    Error *errp = NULL;
+> > > > +
+> > > >        if (!running) {
+> > > >            return;
+> > > >        }
+> > > > +    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, &errp);
+> > > > +    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
+> > > > +    if (errp) {
+> > > > +        return;
+> > > > +    }
+> > > > +
+> > > >        kvm_mark_guest_state_protected();
+> > > >    }
+> > > 
+> > > Thanks,
+> > > Gavin
+> > > 
+> > 
+> 
