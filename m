@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792711687;
-	b=ibHOKvLxhMxLD4Uoz94H65VYFLDwvM6hAK/iKb/9a4XneseAUeMILejyWBzNzNBBVbrI
-	 CRNlaj6CwCIGq2L7Tle2HknVjUy9TG23RlqrdVmm4zreEuQUfRUbCTi51ALAt9zI1YQqa
-	 YRczzTFWQCtPq2AqIyCqOprFv8fONM+V5vQHDyAtGZppFpfC23lIco3THBBGdOF46zkva
-	 dmNQ3/qhHqGlYFct8rQcowxj2sexIy+MWfuodHihQDWCgtuwflIRFekUNMAewmuSVTX+Y
-	 BSXkei+h/40LSez7fplU2wQg7LJURyn9sWdKqNlPa5lmB1RuSQn6dV8IfO0ZOw0ISog==
+	t=1792711688;
+	b=GOx8DV70RxDmxhT9qHwTf0Dh63PRgW9JrAZmEAeEtKKK42Thq0iGxrvBClcnXLOd7/Cx
+	 Jpqnc4Wy5ysN4Nd0Jdej2prtAGEtwHzBlnd9GLSn6Q/fyKitWk4ipUfd7LPLDm9J6e37C
+	 dQBQ+GcsESwhdkC7V8wsNyiQIEAuvt5Z6gHImi0RSfiT856rSxIck2tIs3lVhYMOi+NPz
+	 k7A9dbe07Ebu0CyhY+5N/N8+jHeKetSvd0E07jSiPxS7TTD6rNvghaMMVveZXqvoGpJkh
+	 OZal4W9wqEsfNpB4Edta0n/riGtRsxxRZIKU2FNZyNdoPahhNUN3MVvNgugh60SfB6g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792711687;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792711688;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=hRqhTvz9KoxMSp82jizp9y3sj+8BzvbmPDKN0C9J2o4=;
-	b=w0rll3d7iShAWAbyxMgdSsqoKrO1C8qgJ8TAwfBxPzOIEZhEUKtdL5m7JezPwy+c37Bg
-	 9om+Fk5Ydg4esLANmQGwfjGscMRQxfjkWHVtYMEGzmzXFUSYG4r/wjKjkSP6d9JUv94ux
-	 WepsCNMWTMpEv60UURr4tBd9vBZ8NaJgA/AtbZGzpZiukZWHF3Z2w5IEJPAPX2ehBCxqg
-	 ra26UJyXW7LmZnD98Fhx+FeuFU18q02YWdmpTGwl3IsQ1M1KshQLD9i1srgmccVbk/q8L
-	 DGEAewg72IvUZE3ZcFjUy5WHr34dGBWgzhFwscVrLCIvO20bA4dpkoupBF5NTCqta1A==
+	bh=YM2ZQ+69NUn4Y+pi9b2aNU37FK5sd+xrIN+PQMthuXw=;
+	b=G1yICFLer8isrf3qztD05ZDMHG/Pyo402C8ygiu11kFvlxY2PPl0bXILxy/M2WIUHm9p
+	 xYOnN+lZ6k44fg5PkcxUqhwZ5HFGOtM6KFZHP/8Nb8/FUY/aiQVicYACdt5rCwGAilG1H
+	 l6zCPve77SA2QOAyxwRAzUFSGZ/MwWQIQWbg+nNnFg7VT93iKO5t1a2KStn7HqXc4xEYP
+	 QFa86qpoqEGZokPlZWkFH9BR/JekCMPPqNTYy1QfWhlh+VIdh/WfS/iDv6vZsOGMeBqE6
+	 KxWdvX7ixFCZBTBwEzj7amUP2jAwG1bA3oMxsp64ErBVJgC39TlKEsVMvBN05LgJ2cQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i0vEskgw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e3N3derj;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB4B606A75B;
-	Thu, 22 Oct 2026 23:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE60C606C080;
+	Thu, 22 Oct 2026 23:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i0vEskgw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e3N3derj
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792711686;
-	b=RuOyIlxBBKpnROkW9kK0haexW1r3YLVZC0+N4Vyi6XJW9p0gc57fTT+yKXK1Rrp74GFM
-	 N97SXjLYG0ErqyVJkKUMJI96ilGbx/uBstpYFAHv0WVbHf+HP53PvXKSgdYB3y0A4nP/+
-	 NaicGmyNDkwxQS1jy6+8kcM0ooMLMukG6l4vdxxEwBaubuLLdDvvw8W0rgu2aEoTIFYdJ
-	 M6PQ0fRS2c+k6+hZInxPRjj389xpzw7N1+1SZktGrDceofSpiAoYArOj7+lUszQcyQMKn
-	 Tv5ICJvQ+OmOZpdmiN7Q7NwHNXxVm8OtfkUmKccppbeEPuvjwbBx/XdnbseHYUA50UQ==
+	t=1792711687;
+	b=ti14plLdLVeVx/OeXxaBUHX7U9ljv3yGhvheUqB90DBMie5wL2mjdVjXPXnQgNuKxVeZ
+	 HcT+T+Vtbe8K8WQ+4qFOO2tpCnDDtBC4ID3EaYEfigddM5pstACt+NbT6Xd+VsXoPymuE
+	 JksYVG4wQjKHNbOeDggnCgeTzS9hWi4Pyp56fLIZt14GZbE4SBvdQDFOqq+GVIl1TUWOe
+	 rUISUPX1itS+WQOtSLTH7GBlA5Jz1KqVMiI5MjnRBKNCm9tduk9s/Ohql+2N6Nwpf+XeK
+	 XU3+sCs2K2RuH6K9L4OR2TaAHLe7PDqIxQYzfnXN7qFMgY2ncABdpNfxphp5rYFSkOw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792711686;
+	c=relaxed/relaxed; t=1792711687;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=hRqhTvz9KoxMSp82jizp9y3sj+8BzvbmPDKN0C9J2o4=;
-	b=y9xNaCWi/OD4l0vDATgGUqq3qqSgN4atRhhdbrPJ7puGxKp45azReYzdRHqmhty3v+6+
-	 Jkd49xKiPZ5UnAY/aXFjcxjI/99mBTxxtzVXb6+p9Y3/deZoDd5+6dmljBirjvwEyfhCT
-	 tWpCpF9uk0ydcxtdIjF4TffbC5wmcDeUScmoGm/8jOrVRoy3t3aYSGxaxF2Q/O8prD2S9
-	 HetupgJeaChzZ1Ep5E6nLvZKKsjVetr80OiGUrC0q5aDBvGSuLzgrbcwHUAhGBDzGxg6Y
-	 Cm9XKiYhD7Kgqcg7R4Jf/NnS3LZUpYCimBTgvgUSlOgC+vGv5HmfiXtLEUug4LGQodA==
+	bh=YM2ZQ+69NUn4Y+pi9b2aNU37FK5sd+xrIN+PQMthuXw=;
+	b=Aw6wHkomNkSX93U1QBtzvpt5xC6l+k8DHz1wmY6UAioK/eCCheJDRi7trCz1/RTdEbad
+	 TdBXwBC7xqe6B3nlF4eKIDmEyJtKKWeb4vgFzDAT6fyegYhX4aXfnPJoIf6WNgXxw0LTJ
+	 i7nzpqRFnvgHausvEo7xDCDiPYRQldJLYQp2DIz///xMp2NHQZojoE/i0uxrIyT4YMGP1
+	 0zFy6Vpudey/XcoRVsD1qIl667bK+pi0FNRjLrVOxwTnlm82k3iyMrza/wMe5WKfq6FCC
+	 o+xrCdn4y7HJFI50l/ZxpA/NmJhA0f+dlfSY8bcuiL6KR/vcKoSduuVk0FgbFSxaFzg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A1E6E1F031E0;
-	Thu, 22 Oct 2026 23:27:52 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 64EC61F01193;
+	Thu, 22 Oct 2026 23:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792711686;
-	bh=hRqhTvz9KoxMSp82jizp9y3sj+8BzvbmPDKN0C9J2o4=;
+	s=k20260515; t=1792711687;
+	bh=YM2ZQ+69NUn4Y+pi9b2aNU37FK5sd+xrIN+PQMthuXw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=i0vEskgwoLz49RWPQFtZMXRFPoLr0RkM8F+Xd6LXqCZ3FgwH9G77i7jHxiS/Id3q3
-	 EzVZW/l6MsLyqaLfn7j3Ua3iV9mvjxuazfDyDWXS/Ygao6pw8cK86uiO6gP21OX2WK
-	 4FTtSDGjtgmul9k9TmRbTBxz4/9Pit9doGxCszRf5mA97TltcTSKRdboKfIh6H6tpC
-	 JSb9t25azXs7v1TTPCVPtkdlqUkPh9xkAXxzrHN3vfNp9FNGUuz4XzO5fflJujKp4Z
-	 Bl1Az7pU1nAZH4ajcltUlVwoDAfO/38H2oANNqB9uRaMK1zryghxQcIUiQJ9MpjqCx
-	 j0wPjx/Qxrpug==
+	b=e3N3derjbPHJPHCkjXaN8dqXuFVqT2RFgFr4g9ZCHaIvyx5FwJgD0xkNTmPLTZXEw
+	 FNUjexHKOdpytaQHA2YFfTCqCRuvheOnb3Y3DHrRCKsyZcn6LunF08iLbQjQaRP9i9
+	 XQS0XP50awT6Kbt+tHEP1qfpKpaWW79+stWKzjbOF9RpJM+WDTd6Ub3kdurtsLF5yq
+	 G0BkYJfLZCsPFI5EQIGJHPpk/pKyjTp5kzuAMynsVNrUaB5A+4phyfdDUidxoWTF31
+	 H2TU2PvtiP4eo/mQQxk2NfBmIwqoxHsD1SfmvU5AefPyLuYzfCy/NyPOCqLKq0Ttc5
+	 gH2Dok8MJxc6g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8FA7D4205D;
-	Thu, 22 Oct 2026 23:27:48 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 51EFA4209B;
+	Thu, 22 Oct 2026 23:27:49 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 22 Oct 2026 16:27:39 -0700
-Subject: [PATCH RFC v2 07/50] KVM: selftests: Test negative validation of
- resource_fd argument
+Date: Thu, 22 Oct 2026 16:27:54 -0700
+Subject: [PATCH RFC v2 22/50] samples/kvm: Remove readonly support from
+ sample provider
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-gmem-alternative-providers-v2-7-5dd1dc6c660a@google.com>
+Message-Id: <20261022-gmem-alternative-providers-v2-22-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 To: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
@@ -135,11 +135,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=2102;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=7719;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=jwRLScuSBr88rpMrKjxcHyT+PgJDDASebgtuulQ0YPg=;
- b=96oWiVXYdVXyKYK/6pIVx6tBM1zHA772RaK0kU9B4myUopfTmx7cJXnFbFqQQIQcb2aCyoG1v
- G0UA9Hrcf65AUNSju38e3lbbkDHFTljxEhkRagHttcPtMvn1VMy4by3
+ bh=KmuNfE164jdZmg6x8NSbkgPNCkgJMfiXBEIOVKni6Sw=;
+ b=NL8RHxzlaCihqsS2rYaBHXsTcQILZKtBgbc3euu5fec8+gL9zqbjfaRemzqOwNdyAhjq8IGUg
+ 6gC107g7fskDQKFCsZTkog+JKUugHvc0npKmSYNKVZ/XAJMRqHoC1fo
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -150,61 +150,212 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add negative test coverage verifying that creating a guest_memfd
-instance with a non-zero resource_fd when GUEST_MEMFD_FLAG_USE_RESOURCE
-is clear fails with -EINVAL, and creating with an invalid resource_fd
-fails with -EBADF.
+Remove the MPS_CTL_SET_READONLY ioctl, MEM_PROVIDER_ATTR_READONLY
+attribute, and readonly tracking bitmap from the sample memory provider.
+
+Keeping only the present versus absent control interface focuses
+attention on the essential interface design for page backing and
+revocation.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ samples/kvm/mem_provider_sample.c | 52 ++++++++-------------------------------
+ samples/kvm/mem_provider_sample.h | 13 ++++------
+ 2 files changed, 15 insertions(+), 50 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index cd5df88bc6427..3313d306c0bdc 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -404,6 +404,8 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
- 	int fd;
+diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider_sample.c
+index 5afc433dce6e8..37538dce40cf8 100644
+--- a/samples/kvm/mem_provider_sample.c
++++ b/samples/kvm/mem_provider_sample.c
+@@ -66,7 +66,6 @@ struct mps_info {
+ 	bool fixed_wb;			/* holds a ref on the fixed-region WB alias */
  
- 	for (flag = BIT(0); flag; flag <<= 1) {
-+		if (flag == GUEST_MEMFD_FLAG_USE_RESOURCE)
-+			continue;
- 		fd = __vm_create_guest_memfd(vm, page_size, flag);
- 		if (flag & valid_flags) {
- 			TEST_ASSERT(fd >= 0,
-@@ -418,6 +420,22 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
- 	}
+ 	unsigned long *absent;		/* taken away by CTL_SET_PRESENT */
+-	unsigned long *readonly;
+ 
+ 	/*
+ 	 * A child of the root: its first page in the root, and the pages it
+@@ -146,7 +145,7 @@ static bool mps_page_present(struct mps_info *info, unsigned long index)
+ 
+ /*
+  * The length of the run from @index of pages with the same state as @index:
+- * present, and the same read-only bit.
++ * present.
+  */
+ static unsigned long mps_run(struct mps_info *info, unsigned long index)
+ {
+@@ -156,12 +155,6 @@ static unsigned long mps_run(struct mps_info *info, unsigned long index)
+ 	if (info->owned)
+ 		end = min(end, find_next_zero_bit(info->owned, info->npages,
+ 						  index + 1));
+-	if (test_bit(index, info->readonly))
+-		end = min(end, find_next_zero_bit(info->readonly, info->npages,
+-						  index + 1));
+-	else
+-		end = min(end, find_next_bit(info->readonly, info->npages,
+-					     index + 1));
+ 	return end - index;
  }
  
-+static void test_resource_fd_invalid(struct kvm_vm *vm)
-+{
-+	int fd;
-+
-+	/* Non-zero resource_fd without GUEST_MEMFD_FLAG_USE_RESOURCE fails */
-+	fd = __vm_create_guest_memfd_resource(vm, page_size, 0, 1);
-+	TEST_ASSERT(fd < 0, "guest_memfd with resource_fd but without flag should fail");
-+	TEST_ASSERT_EQ(errno, EINVAL);
-+
-+	/* Bad file descriptor with GUEST_MEMFD_FLAG_USE_RESOURCE fails */
-+	fd = __vm_create_guest_memfd_resource(vm, page_size,
-+					      GUEST_MEMFD_FLAG_USE_RESOURCE, -1);
-+	TEST_ASSERT(fd < 0, "guest_memfd with -1 resource_fd should fail");
-+	TEST_ASSERT_EQ(errno, EBADF);
-+}
-+
- #define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
- do {									\
- 	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
-@@ -476,6 +494,8 @@ static void test_guest_memfd(unsigned long vm_type)
+@@ -211,8 +204,6 @@ static int mps_mp_get_page(struct mem_provider_file *mpf, pgoff_t index,
+ 	}
  
- 	test_guest_memfd_flags(vm);
+ 	*pfn = info->base_pfn + index;
+-	if (test_bit(index, info->readonly))
+-		*attrs |= MEM_PROVIDER_ATTR_READONLY;
+ 	/* The creator of the file decides whether the host may map it. */
+ 	if (!info->mmap_capable)
+ 		*attrs |= MEM_PROVIDER_ATTR_NO_USER_MAP;
+@@ -249,18 +240,6 @@ static int mps_range(struct mps_info *info, u64 offset, u64 len,
+ 	return 0;
+ }
  
-+	test_resource_fd_invalid(vm);
-+
- 	__test_guest_memfd(vm, 0);
+-static void mps_set_readonly(struct mps_info *info, unsigned long start,
+-			     unsigned long end, bool readonly)
+-{
+-	mutex_lock(&info->lock);
+-	if (readonly)
+-		bitmap_set(info->readonly, start, end - start);
+-	else
+-		bitmap_clear(info->readonly, start, end - start);
+-	mps_revoke(info, start, end);
+-	mutex_unlock(&info->lock);
+-}
+-
+ static void mps_set_present(struct mps_info *info, unsigned long start,
+ 			    unsigned long end, bool present)
+ {
+@@ -283,7 +262,6 @@ static long mps_get_stats(struct mps_info *info, void __user *uarg)
+ 	st.owned_pages = info->owned ?
+ 		bitmap_weight(info->owned, info->npages) : info->npages;
+ 	st.absent_pages = bitmap_weight(info->absent, info->npages);
+-	st.readonly_pages = bitmap_weight(info->readonly, info->npages);
+ 	mutex_unlock(&info->lock);
  
- 	flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
+ 	return copy_to_user(uarg, &st, sizeof(st)) ? -EFAULT : 0;
+@@ -291,8 +269,8 @@ static long mps_get_stats(struct mps_info *info, void __user *uarg)
+ 
+ /*
+  * A child fd is read-only to its holder: only GET_STATS.  The owner changes a
+- * child's pages through the control device (MPS_CTL_SET_PRESENT and
+- * MPS_CTL_SET_READONLY), so a VMM that holds a child cannot.
++ * child's pages through the control device (MPS_CTL_SET_PRESENT), so a VMM
++ * that holds a child cannot.
+  */
+ static long mps_file_ioctl(struct file *file, unsigned int cmd,
+ 			   unsigned long arg)
+@@ -335,7 +313,6 @@ static int mps_file_release(struct inode *inode, struct file *file)
+ 	if (info->cma_pages)
+ 		free_contig_range(info->base_pfn, info->npages);
+ 	bitmap_free(info->absent);
+-	bitmap_free(info->readonly);
+ 	kfree(info);
+ 	return 0;
+ }
+@@ -372,8 +349,7 @@ static int mps_new_file(unsigned long base_pfn, unsigned long npages,
+ 	info->npages = npages;
+ 	info->mmap_capable = flags & MPS_FLAG_MMAP_CAPABLE;
+ 	info->absent = bitmap_zalloc(npages, GFP_KERNEL);
+-	info->readonly = bitmap_zalloc(npages, GFP_KERNEL);
+-	if (!info->absent || !info->readonly) {
++	if (!info->absent) {
+ 		ret = -ENOMEM;
+ 		goto err_free;
+ 	}
+@@ -398,7 +374,6 @@ static int mps_new_file(unsigned long base_pfn, unsigned long npages,
+ 
+ err_free:
+ 	bitmap_free(info->absent);
+-	bitmap_free(info->readonly);
+ 	kfree(info);
+ 	return ret;
+ }
+@@ -675,11 +650,10 @@ static bool mps_child_owns(struct mps_info *info, unsigned long first,
+ }
+ 
+ /*
+- * CTL_SET_READONLY and CTL_SET_PRESENT change a child's pages, by the owner on
+- * the control device.  A VMM that holds the child fd cannot, so it cannot undo
+- * them.
++ * CTL_SET_PRESENT changes a child's pages, by the owner on the control device.
++ * A VMM that holds the child fd cannot, so it cannot undo them.
+  */
+-static long mps_ctl_set_range(void __user *uarg, bool readonly)
++static long mps_ctl_set_present(void __user *uarg)
+ {
+ 	struct mps_ctl_range cr;
+ 	unsigned long start, end;
+@@ -695,12 +669,8 @@ static long mps_ctl_set_range(void __user *uarg, bool readonly)
+ 	if (IS_ERR(file))
+ 		return PTR_ERR(file);
+ 	ret = mps_range(info, cr.offset, cr.len, &start, &end);
+-	if (!ret) {
+-		if (readonly)
+-			mps_set_readonly(info, start, end, cr.value);
+-		else
+-			mps_set_present(info, start, end, cr.value);
+-	}
++	if (!ret)
++		mps_set_present(info, start, end, cr.value);
+ 	fput(file);
+ 	return ret;
+ }
+@@ -715,10 +685,8 @@ static long mps_ctl_ioctl(struct file *file, unsigned int cmd,
+ 		return mps_ctl_setup(uarg);
+ 	case MPS_NEW_CHILD:
+ 		return mps_ctl_new_child(uarg);
+-	case MPS_CTL_SET_READONLY:
+-		return mps_ctl_set_range(uarg, true);
+ 	case MPS_CTL_SET_PRESENT:
+-		return mps_ctl_set_range(uarg, false);
++		return mps_ctl_set_present(uarg);
+ 	default:
+ 		return -ENOTTY;
+ 	}
+diff --git a/samples/kvm/mem_provider_sample.h b/samples/kvm/mem_provider_sample.h
+index acff5785099b5..5955c1c0fbf80 100644
+--- a/samples/kvm/mem_provider_sample.h
++++ b/samples/kvm/mem_provider_sample.h
+@@ -48,8 +48,8 @@ struct mps_setup {
+  * RECLAIM them.  Each change revokes the range, so KVM and iommufd follow.
+  *
+  * The owner changes a child's pages through the control device
+- * (CTL_SET_READONLY, CTL_SET_PRESENT).  A child fd is read-only to its
+- * holder: a VMM can only GET_STATS, never change the memory.
++ * (CTL_SET_PRESENT).  A child fd is read-only to its holder: a VMM can
++ * only GET_STATS, never change the memory.
+  */
+ 
+ /*
+@@ -74,16 +74,15 @@ struct mps_stats {
+ 	__u64 region_len;
+ 	__u64 owned_pages;	/* pages the child has */
+ 	__u64 absent_pages;	/* pages taken away by CTL_SET_PRESENT */
+-	__u64 readonly_pages;
+ };
+ 
+ #define MPS_GET_STATS \
+ 	_IOR(MPS_IOCTL_BASE, 10, struct mps_stats)
+ 
+ /*
+- * ioctls on /dev/mem_provider_sample: CTL_SET_READONLY or CTL_SET_PRESENT on
+- * child @fd, by the owner.  @value is the readonly or present value, and
+- * @offset and @len are a byte range within the child, page aligned.
++ * ioctl on /dev/mem_provider_sample: CTL_SET_PRESENT on child @fd, by the
++ * owner. @value is the present value (1 = present, 0 = absent), and @offset
++ * and @len are a byte range within the child, page aligned.
+  */
+ struct mps_ctl_range {
+ 	__s32 fd;
+@@ -92,8 +91,6 @@ struct mps_ctl_range {
+ 	__u64 len;	/* bytes, page aligned */
+ };
+ 
+-#define MPS_CTL_SET_READONLY \
+-	_IOW(MPS_IOCTL_BASE, 11, struct mps_ctl_range)
+ #define MPS_CTL_SET_PRESENT \
+ 	_IOW(MPS_IOCTL_BASE, 12, struct mps_ctl_range)
+ 
 
 -- 
 2.56.0.257.gf7497c7d27-goog
