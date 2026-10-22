@@ -1,100 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792683512;
-	b=ncASh11tYl7wCkBvAtP0mTl63A670uTBXVKzEyngIlWHrdu3+kes0i65KXSXbdWzvyjJ
-	 UOeFTihNNUb9FlV4fmATMV6noyZsgJlGHZT0xt6PKJcIS++o78Rtd2Ph0Ixlw3xoU+Mce
-	 SNz8gHb6xkZMZGxJjO34wHXAU+y5RtC/ZAUI+d9OUPeyL3gliwnma0Fw+nfTGpUVrVzuF
-	 mySD8/I5RyhRvF/nxmunmVxkvOloQaKV7R/jC23nb55h1f3oEms92/SZ5FsqS9Nw/FKIJ
-	 nTNT3blG816Aco42o85zMDVnTAThQtPacWfcKOtSwYI9pULYBSdCvQ9xfwrqtKTv1iQ==
+	t=1792683811;
+	b=VTlKyjbr598Z2MoPkkWgj4YmBicoLAw7qla2P/SjrxtOR+OxuAbmji0fhihFwc3IS39z
+	 7RUI7mzn364/D5Y8g6M8GlnSlZ+RG6PHiWzB+veuddVjiqUke+mzp2iHctALZfipBT8M/
+	 pG0FwfHVJU7qmY5CkVeSuU7JiKCDLZwVMrI1HDC0p4GaIkDVgFLfdL8rRN+9NJefFaJfJ
+	 8LKuf5gParJZyTmIHNlWOvvP/Koi/Y7tvYNmjErFQbPm30bEAkT/tFiwpWzbWk78EWMqY
+	 38JyfOZQebPAHd+4ai433lfZ5uYk53KANN9AM3csrmFWwew+GFgHrozoxWiXPlw1/dw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792683512;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
-	b=gOhGQCj9NgX3Oh/YWRdpRQQqE67Tn/3yZS+vwvTjPvJojStrGi0gTTS8YLHcXp8CwPTv
-	 I3su44whwmvWNLGDq7GFOc8MFGMsx6eCEbAFIKBVzXagd2jwRHI7cC3pOFfZ6V711RIJM
-	 zmW5TaZYBCCAfJ9LvFDi6zfCFpWw4Yj6d81EGoXnMlWVMKB8pI5YGwT111FgKnQUpcWm/
-	 wqtEycM/d+4MQospw/ANO2DyNUblO8sLrIlJPJ1KcYrzx1pjdPHz9S3OmI1HKlozK3ZUN
-	 DRN/QdSehP4PCCkzk80J9Gb+ln2utGZiJBTwBqHwVD183K3t38nfNw29BLDPLo8XqLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792683811;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=H/ZQDZbJUUwaDWq/U/yZ4cIarmdBAnG5+fgMRyphtSo=;
+	b=HwIKfp6hhWKxqRjizQRKXRY+LfmJy5OxZJoidpYkRWcWLC1lPfxPZTeQxH+kdb9sOnVA
+	 +8/zztcVYwih6Zhod3yxYbhXlfqIqz6DAfAteI2LCMIl4HsC7fXH8kRZ5moixhrSr/jUb
+	 wJ6RUrFzfYsEicukauAHfglpqOnTkU6OXOsJRiyNkPqRXSVkFKi1Bv+9ePOuvfF7Q9Jgz
+	 e5OKE+QjK/U+yJHxWYjDEpTKiwOUFkfKpyKWyIZhv6uLR5tpmKWHiGB/W5l+iVtbStlji
+	 wTVzy3APKKgeSg85dFzGNr5eH9V9v17p8fM8yAxHxcfcsaAdycHo/9A8try6BbD5gdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="QYUAaei/";
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HkIm1xBS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF96F606A320
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 15:38:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF96F606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67CE606A319;
+	Thu, 22 Oct 2026 15:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=QYUAaei/
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso6483545e9.1
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 08:38:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792683509; x=1793288309; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
-        b=QYUAaei/oEpBdPK29lyAgt3WaIjE8xnUfNnM6i9wRuCO6sNUu1WXGnEJY4UwSlTCyG
-         3wGrdSOearuuXh6VPWSUboEE1uFUMxxOKzOBQHx8wLpldv1shYxYaj3sE9X+GEVaRzF+
-         jRoGtmImwa5JSCcWfnjdvNELJLF8AmhaQBVWuhrHNv4ClYORSdzrf44cUE6H2p01v+oC
-         d6DYETd+DkavhEfMqdHDYRzskkO3pFkojAdw6O5EEAsVD0gOewBzmc8l38ZgYG6sjWAU
-         NVVPLN7Hz/cRT65qPQ+PhPgY19WGfyVt2rswNlUx/YeV/SbECc8THF3Ud5XLfhnx4Rxg
-         4ANg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792683509; x=1793288309;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=THWbJhv2Q5jbET1QHUfSXWDLSqDqi0mWlN0MWSjDZMo=;
-        b=OZJF0GvULc4YhHk/5h//YmWzeWO4uOeWqj7tIaysfwRIMbt9Eta5z3Gwyi83rl9tg4
-         +iD3x+5W1xKnWl+ByMudvNEPUKLf1libGrtkFtyf39UAbCwxVvtySd4ttsF2BLKVK1Mb
-         bvVLyWlbCkdwDzzx52GOVuLM0tE16BfCBOj2L+pacScm8DE1r/R3C3fKieEof1s/Pkfy
-         PeWJCJDtMQXyCh1K88z5PyF/L82bQ2lUHLwN57ekMbgtFkiCVkXxJf6nIEMpZ5Mbc7e5
-         Fh9deVz8eBS5WlkXlf9CjlOTk2GTEoH1q9NfdCboVvaWLBVDwvJW0ErtnF6USNxbuYvb
-         Iybg==
-X-Forwarded-Encrypted: i=1; AKwUvByN8+gIwvPzLn7HyFH+RP4YrLe3hPlQZg47t8cUY2+K5VUHo8DTB69/i6dH1U0vKF1zXgc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKCmFW8bsfGr/X3LzQRtk2XttlHDfI6alWExUrjj97gmnYgnTY/
-	8izJtOb3ZKvd/20tHOaipHi5YIqMmliXZNzOaBlIEXbLE+ueBRONnJXbvcPI3hmGQes=
-X-Gm-Gg: AYBFou1Ht53ryS35+PnAnHMKYz/QwwPIZGlnJ4g5hK+oSTdFT56EJW/o3CN7P26FGDT
-	eU8AVaS1TlownbhDiUxpI70iVY1EZvh5as7E23DHkYj4R893ba7ERA2tCitNDSd7dLpvfrnL8SV
-	lbC2wcfdPUpDkhon51TttvcmfOf7yFnd9PYuo+2smGwk3rhG292NK1HcmAE835Dpgx19t5EEX1g
-	r1TnxC8MYsXHSr9dmWY3lqxmjPbNSHmD3uNNEHtGFrz3HFy6dPJ6HxCK0dbkOfoA7nSkpSjJAsC
-	jWv56eF0M5sjewIfd6ASXE0DF+Imz1S9es6qL9w+3vJrFMZBMt2pup7beTTWFgmdMXPDb58bu2x
-	g25c5EvUzXKqTLUCvbujIcwnBwHDZYw8+SuYrBOa5ZBleFArEtxpDYrf1NuFvUGLceahZU8olJ5
-	YlLx+CMmQBjadG9OsT/mUGN1zGc+jp+YjRck8zZHZHLzX3pgDuS9WZkeYbLK1dwiilkEE9eHfWc
-	YB9wFbDfjL9mTjVSUVA4mXsX+fX0Ra5LfvdfbNtvqc9QJsDILw+KHgv6d8GUkSXGzc=
-X-Received: by 2002:a05:600d:6413:20b0:4a1:80d8:aed5 with SMTP id 5b1f17b1804b1-4a1fdd20c95mr82878645e9.6.1792683507910;
-        Thu, 22 Oct 2026 08:38:27 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2a034fc2sm8929342f8f.5.2026.10.22.08.38.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 08:38:27 -0700 (PDT)
-Date: Thu, 22 Oct 2026 17:38:22 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <atooh7uO2RauUTfY@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <yq5a7bjajaco.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HkIm1xBS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFAC1F01825;
+	Thu, 22 Oct 2026 15:43:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792683810;
+	bh=H/ZQDZbJUUwaDWq/U/yZ4cIarmdBAnG5+fgMRyphtSo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HkIm1xBS2oaBequM1IPluWU8b+N//ZtGRp17ZRz9uHD5bKy2xYcEdA4HU0rNyrgDg
+	 YBJuHEJRMeL+tUCGYtbZjpENSBmdmPC0uQqPh2SUb6uSsREXyD0lUSYkOkV1P70koK
+	 OpBxQh+BqzrF3MFP5RXmvSeTtHZO3/bxhr4B2iDcNcLx6Gpmah9lHKIk8JbDsl0h+w
+	 16pnLvPlrRDp3BcIAmQGfyE+57bIfZzWGhQES485JDv6J/MtvdsOxkexEJGoFqAI9n
+	 lbeEZcJoLlj4jO4oACEpTZEstHuP263QEUjvW+OTTqmS/WKngm8TZDxFNEC0gQ78/P
+	 +b4+D2p5AvpGA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xJuwx-000000067Lk-3k9q;
+	Thu, 22 Oct 2026 15:43:27 +0000
+Date: Thu, 22 Oct 2026 16:43:27 +0100
+Message-ID: <86h5idzqow.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jean-Philippe Brucker <jpb@kernel.org>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH v2 11/15] KVM: arm64: Export stage-2 MMU config
+In-Reply-To: <20261015142552.4128028-12-ryan.roberts@arm.com>
+References: <20261015142552.4128028-1-ryan.roberts@arm.com>
+	<20261015142552.4128028-12-ryan.roberts@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,194 +87,205 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5a7bjajaco.fsf@kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: ryan.roberts@arm.com, gregkh@linuxfoundation.org, arnd@arndb.de, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, oupton@kernel.org, alex@shazbot.org, jgg@nvidia.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, jpb@kernel.org, ogabbay@kernel.org, corbet@lwn.net, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thu, Oct 22, 2026 at 12:30:47PM +0200, aneesh.kumar@kernel.org wrote:
->Jiri Pirko <jiri@resnulli.us> writes:
->
->> From: Jiri Pirko <jiri@nvidia.com>
->>
->> Linux has several attestation interfaces tied to individual technologies.
->> That makes evidence retrieval, measurement registers, device state and
->> kernel consumers provider-specific.
->>
->> This series introduces a common attestation subsystem. Its goal is to
->> support platform, TEE and device providers through one model, including
->> TPM2, TDX, SEV-SNP, Arm CCA, FIRME, Caliptra and PCI/TSM-backed devices.
->> This first series implements the common subsystem and a TDX provider.
->> Existing native TDX tsm_mr and tsm_report interfaces remain independent.
->>
->> Attestation devices use CTLV, a schema-driven character-device TLV UAPI.
->> Compared with sysfs or configfs, CTLV executes one validated request
->> atomically instead of assembling a transaction through several files.
->> Compared with netlink, an opened device fd directly identifies authority
->> and lifetime, can be delegated normally, and owns its event queue. CTLV
->> also provides:
->>
->>   - generated kernel metadata, UAPI constants and documentation;
->>   - strict type, bounds, nesting and required-field validation;
->>   - runtime operation and schema introspection;
->>   - family inheritance and extension points;
->>   - fragmented queries with generation checks;
->>   - per-fd event subscription, overflow reporting and removal notification;
->>   - large input and output blobs.
->>
->> The attestation family exposes capabilities, evidence, measurement-register
->> topology and operations, an append-only MR journal and journal
->> notifications. This first ABI contains the paths exercised by TDX. Extended
->> evidence classes, dynamic registers, record payloads, verdict recording and
->> device-security transitions follow with providers that need them and are out
->> of scope of this initial patchset. The broader direction is illustrated here:
->>
->> https://github.com/jpirko/linux_mlxsw/commits/wip_attestation_all_1
->>
->> That branch also contains additional providers (test and sim),
->> attestation core extensions, libctlv and ctlvctl. With the tools
->> and kernel specifications, an attestation device can be used as follows:
->>
->>   # Discover CTLV devices and their family chains.
->>   ctlvctl --spec-dir Documentation/ctlv/specs list
->>
->>   # Inspect the root-family lineage and attestation capabilities.
->>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 families-dump
->>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 device-get
->>
->>   # List the measurement registers of the attestation device.
->>   ctlvctl --spec-dir Documentation/ctlv/specs query ctlv0 mr-dump
->>
->>   # Read RTMR0 (MR 1).
->>   ctlvctl --spec-dir Documentation/ctlv/specs \
->>           query ctlv0 mr-read mr.id=1
->>
->>   # Extend RTMR0 with 48 zero bytes (SHA-384).
->>   digest=$(printf '%096d' 0)
->>   ctlvctl --spec-dir Documentation/ctlv/specs \
->>           exec ctlv0 mr-extend --json \
->>           '{"id":1,"value":[{"hash-algo":5,"data":"hex:'"$digest"'"}]}'
->>
->>   # Retrieve the RTMR0 journal.
->>   ctlvctl --spec-dir Documentation/ctlv/specs \
->>           query ctlv0 mr-log-get --json '{"selection":[{"id":1}]}'
->>
->> The 20 patches are organized as follows:
->>
->>   1-13    add CTLV, its generator and documentation
->>   14-17   add the base attestation family and implementation
->>   18-20   expose the native TDX service and add the TDX family
->>
->
->I am using this to understand what the IDE setup flow would look like,
->but it is unclear whether the connect flow belongs in an attestation
->framework. I understand the desire to pass the certificate slot number
->as part of connect, and sysfs is probably not a suitable interface for
->that. However, is CTLV the interface we want to use for connect?
+On Thu, 15 Oct 2026 15:25:45 +0100,
+Ryan Roberts <ryan.roberts@arm.com> wrote:
+> 
+> From: Jean-Philippe Brucker <jpb@kernel.org>
+> 
+> Provide an API to drivers that want to share the stage 2 configuration
+> of a VM with their device. At the moment it is rather limited:
+> 
+> * No invalidation notifiers. The TLBs on the device side, if any,
+>   receive CPU TLB invalidations.
+> 
+> * No remote page fault support. All paging still takes the normal data
+>   abort route on the CPU. Options are pinning all guest memory or
+>   device-specific mechanism for reporting pending faults to the guest.
+> 
+> * No nested VMs. Although we could perhaps support assigning devices to
+>   the hyp context of a nested VM, it seems performative.
+> 
+> So for the moment this API works for devices that share the CPU MMU, but
+> the SMMU driver could use it with DVM.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
+> ---
+>  arch/arm64/include/asm/kvm_host.h |  11 ++++
+>  arch/arm64/include/asm/kvm_mmu.h  |   1 +
+>  arch/arm64/kvm/mmu.c              | 102 ++++++++++++++++++++++++++++++
+>  arch/arm64/kvm/sys_regs.c         |  14 +---
+>  4 files changed, 117 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 30d0082b15ec..c0932b43f959 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -235,6 +235,14 @@ struct kvm_s2_mmu {
+>  	atomic_t refcnt;
+>  };
+>  
+> +/* stage 2 MMU configuration, for drivers that speak VMSA */
+> +struct kvm_arch_guest_mmu {
+> +	u64 hcr;
+> +	u64 hcrx;
+> +	u64 vtcr;
+> +	u64 vttbr;
+> +};
+> +
+>  struct kvm_arch_memory_slot {
+>  };
+>  
+> @@ -1720,4 +1728,7 @@ static __always_inline enum fgt_group_id __fgt_reg_to_group_id(enum vcpu_sysreg
+>  
+>  long kvm_get_cap_for_kvm_ioctl(unsigned int ioctl, long *ext);
+>  
+> +struct kvm_arch_guest_mmu *kvm_arch_get_guest_mmu(struct kvm *kvm);
+> +void kvm_arch_put_guest_mmu(struct kvm *kvm, struct kvm_arch_guest_mmu *mmu);
+> +
+>  #endif /* __ARM64_KVM_HOST_H__ */
+> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
+> index 6eae7e7e2a68..8a9d385fe14d 100644
+> --- a/arch/arm64/include/asm/kvm_mmu.h
+> +++ b/arch/arm64/include/asm/kvm_mmu.h
+> @@ -185,6 +185,7 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu);
+>  int kvm_handle_guest_abort(struct kvm_vcpu *vcpu);
+>  
+>  phys_addr_t kvm_mmu_get_httbr(void);
+> +u64 kvm_mmu_get_hcr(struct kvm *kvm, u64 hcr);
+>  phys_addr_t kvm_get_idmap_vector(void);
+>  int __init kvm_mmu_init(u32 hyp_va_bits);
+>  
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 2d44cd6a5aed..0bf1dff2a41f 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -2805,3 +2805,105 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled)
+>  
+>  	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
+>  }
+> +
+> +#define HCR_MMU_BITS (HCR_VM | HCR_PTW | HCR_DC | HCR_TGE | HCR_RW |	\
+> +		      HCR_CD | HCR_ID | HCR_E2H | HCR_NV | HCR_NV1 |	\
+> +		      HCR_FWB | HCR_ATA | HCR_DCT)
+> +
+> +/* Update MMU-specific host bits of HCR_EL2 */
+> +u64 kvm_mmu_get_hcr(struct kvm *kvm, u64 hcr)
+> +{
+> +	lockdep_assert_held(&kvm->arch.config_lock);
+> +
+> +	WARN_ON(!test_bit(KVM_ARCH_FLAG_VCPU_FEATURES_CONFIGURED,
+> +			  &kvm->arch.flags));
+> +
+> +	hcr &= ~HCR_MMU_BITS;
+> +	hcr |= HCR_VM | HCR_PTW;
+> +
+> +	if (has_vhe() || has_hvhe())
+> +		hcr |= HCR_E2H;
+> +
+> +	if (cpus_have_final_cap(ARM64_HAS_STAGE2_FWB))
+> +		hcr |= HCR_FWB;
+> +
+> +	if (kvm_has_mte(kvm))
+> +		hcr |= HCR_ATA;
+> +
+> +	if (!test_bit(KVM_ARM_VCPU_EL1_32BIT, kvm->arch.vcpu_features))
+> +		hcr |= HCR_RW;
+> +
+> +	return hcr;
+> +}
+> +
+> +/**
+> + * kvm_arch_get_guest_mmu - Get a reference to the guest MMU config
+> + * @kvm: KVM instance. Caller must hold a reference.
+> + *
+> + * Get the stage 2 MMU config of an EL1 VM. The returned object contains
+> + * settings that do not change until the object is released with
+> + * kvm_arch_put_guest_mmu(). This function does not support nested VMs.
+> + *
+> + * HCR has lots of settings, some of which differ between vCPUs, but most of
+> + * them control traps. For EL1 VMs, the bits relevant to MMU translation are
+> + * common to all vCPUs:
+> + * - VM, PTW, DC, TGE, CD, ID, NV, NV1, DCT have fixed values.
+> + * - E2H, FWB, ATA depend on host CPU features (respectively VHE, FWB and MTE2).
+> + * - RW depends on vCPU features. This function does not support 32-bit VMs.
+> + *
+> + * HCRX: EnSDERR, EnSNERR set to 0. TODO: is GCSEn relevant?
+> + *
+> + * VTCR is set once for the VM, depends on the VM's IPA size.
+> + *
+> + * VTTBR:
+> + * - VMID is pinned, until kvm_arch_put_guest_mmu() is called.
+> + * - PGD is allocated and freed with the vm (the caller must hold their
+> + *   reference to @kvm). KVM may create and remove page table mappings at any
+> + *   moment, and uses normal TLB maintenance operations to synchronize with
+> + *   page table walkers. KVM does not notify the caller about mapping changes.
+> + * - CNP is a property of the host system.
+> + *
+> + * Return: a new kvm_arch_guest_mmu instance, or an error pointer on failure.
+> + */
+> +struct kvm_arch_guest_mmu *kvm_arch_get_guest_mmu(struct kvm *kvm)
+> +{
+> +	int ret;
+> +	struct kvm_arch_guest_mmu *mmu;
+> +
+> +	guard(mutex)(&kvm->arch.config_lock);
+> +
+> +	if (is_protected_kvm_enabled())
+> +		return ERR_PTR(-EOPNOTSUPP);
 
-I was thinking about this and "connect" really does not belong in the
-attestation CTLV (same applies to "lock"). I was thinking about some
-parallel PCITSM CTLV instance, but that does not really click as well.
+How does this compose with CCA? Can it be restricted to exclusively
+running VHE rather than also dealing with the lesser configurations?
 
-Currently I'm thinking we can maintain existing "connect" in sysfs and
-extend it with "lock" sysfs knob for Realm side. Both would create
-ctlv-attestation-spdm instance. The same spdm instance may be created
-for other non-PCI-backed device.
+> +
+> +	if (!test_bit(KVM_ARCH_FLAG_VCPU_FEATURES_CONFIGURED, &kvm->arch.flags) ||
+> +	    test_bit(KVM_ARM_VCPU_EL1_32BIT, kvm->arch.vcpu_features) ||
+> +	    test_bit(KVM_ARM_VCPU_HAS_EL2, kvm->arch.vcpu_features))
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	ret = kvm_arm_pinned_vmid_get(kvm);
+> +	if (ret < 0)
+> +		return ERR_PTR(ret);
+> +
+> +	ret = -ENOMEM;
+> +	mmu = kzalloc_obj(*mmu, GFP_KERNEL_ACCOUNT);
+> +	if (!mmu)
+> +		goto err_unpin_vmid;
+> +
+> +	mmu->vtcr = kvm->arch.mmu.vtcr;
+> +	mmu->vttbr = kvm_get_vttbr(&kvm->arch.mmu);
+> +	mmu->hcr = kvm_mmu_get_hcr(kvm, 0);
 
-The proposed host flow is:
+How about the hcrx field in the structure?
 
-    sysfs connect: select tsmN and prepare the connection
-        -> negotiate SPDM and discover certificates
-        -> register ctlv-attestation-spdm instance in DISCOVERED state
+> +
+> +	return mmu;
+> +
+> +err_unpin_vmid:
+> +	kvm_arm_pinned_vmid_put(kvm);
+> +	return ERR_PTR(ret);
+> +}
+> +EXPORT_SYMBOL_GPL(kvm_arch_get_guest_mmu);
 
-    SPDM_GET
-        -> populated certificate slots and digests
+It really feels like this is a bit upside down. Since you are actively
+pinning the S2 MMU context, it should only be a matter of taking a
+reference on the kvm struct (just like KVM devices do), and handing
+off the kvm_s2_mmu structure, rather than copying things. When you're
+done with it, drop the reference.
 
-    EVIDENCE_GET(CERT_CHAIN, blob-instance=slot) /*optional*/
-        -> retrieve candidate certificate chain for appraisal
+If there is a need to deal with a different value for HCR_EL2 (or
+anything else), it can be done in the code that makes use of it,
+rather than being in the KVM code.
 
-    SPDM_AUTHENTICATE(device-generation, spdm-slot=selected_slot)
-        -> authenticate the selected chain
-        -> complete backend-required session and IDE setup
+Thanks,
 
-    sysfs disconnect
-        -> remove the attestation instance
-        -> destroy the native connection
+	M.
 
-The slot is therefore selected after discovery, rather than supplied to
-connect. The attestation instance represents the prepared connection; it
-does not exist beforehand as a controller for a disconnected PCI function.
-
-This requires a staged native backend. It is not how existing automatic
-sysfs connect behaves today, and those backends would retain their
-existing behavior.
-
-For Realm assignment, as written above lock is sysfs interface.
-Lock creates a separate assigned-TDI attestation instance for evidence
-retrieval, EVIDENCE_ACCEPT, and DEVSEC_RUN
-
-Protocol authentication is distinct from the userspace attestation
-verdict: SPDM_AUTHENTICATE does not imply acceptance or TDISP RUN.
-
-So the main difference from your implementation is the lifecycle boundary:
-sysfs creates/removes the native contexts, while attestation handles
-discovery, explicit authentication, evidence, and the evidence-gated
-transition to RUN.
-
-Makes sense?
-
->
->My patches end up doing the following. I am also unsure whether this is
->the intended workflow for the attestation framework.
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ ops ctlv0
-># ctlv/ctlv-attestation/ctlv-attestation-pci, generation 1
->families-dump           query   read    fixed   request 16      reply 112..65536
->ops-dump                query   read    fixed   request 16      reply 56..65536
->op-schema-get           query   read    fixed   request 40      reply 552..65536
->subscriptions-add       action  read    fixed   request 6160
->subscriptions-remove    action  read    fixed   request 6160
->event-queue-get         query   read    fixed   request 16      reply 40..65536
->event-queue-set         action  read    fixed   request 40
->op-changed              event   record 112
->event-overflow          event   record 112
->device-removed          event   record 40
->device-get              action  read    fixed   request 16      reply 12984
->evidence-get            action  read-write      dynamic disabled        request 26800   reply 472
->device-state-changed    event   record 64
->mr-log-entry-appended   event   record 73416
->evidence-accept         action  read-write      dynamic disabled        request 64
->evidence-accept-clear   action  read-write      dynamic disabled        request 16
->devsec-state-get        query   read    dynamic disabled        request 16      reply 40..1024
->devsec-run              action  read-write      dynamic disabled        request 64      reply 40
->evidence-state-changed  event   record 112
->state-get               action  read    fixed   request 16      reply 184
->connect                 action  read-write      dynamic enabled request 88      reply 40
->disconnect              action  read-write      dynamic disabled        request 40      reply 40
->lock                    action  read-write      dynamic disabled        request 64      reply 40
->unlock                  action  read-write      dynamic disabled        request 40      reply 40
->evidence-refresh        action  read-write      dynamic disabled        request 88      reply 40
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
-># state-get, 1 fragment, generation 0
->  pci.generation 0
->  pci.connected 0
->  pci.locked 0
->  pci.accepted 0
-># 
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ schema ctlv0 connect                
->connect (action)
->request:
->  root nest
->    pci.generation required uint [0, 4294967295]
->    pci.tsm-id required uint [0, 2147483647]
->    pci.cert-slot optional uint [0, 7]
->reply:
->  root nest
->    pci.generation required uint [0, 4294967295]
-># 
->
-># ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 connect pci.generation=0 pci.tsm-id=0
->
->-aneesh
+-- 
+Without deviation from the norm, progress is not possible.
