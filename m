@@ -1,99 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792697730;
-	b=z9rb2N9D23Rzgn34pA6f7jZPh+T+Lc5VVJaditHEkdOaIPEl6+9KjHoibQStbQoEt5m0
-	 JHmDB4slXkClA4AggJ29djOMZgMmxTrnPltHHbTad8QQDWCQNK+pSTMxnXxnhID2pvyo1
-	 zngFKVJ0JhsYACO+5FDOEAV/AWWqo2Yq5C3GHpEUHFSMC7/v3weMo3Gp9sJLF0TpL4u2C
-	 C9A6Mf1WC/zA+ZJMcEv12uNekiTo7BMwKMx6al6f7+2DF/LvzHcfFdD0YeLQZa7tuQTqb
-	 RRj7+oR+ToGCOlMYfZSkqTwU9x7D6+snIxd4RBK5EgjtoUmviJF48sSIOK79qjRJF8Q==
+	t=1792697892;
+	b=GQkNsRv8X/356RlgIZk/Du9KDb5ARrI8vAUx+4gGtB+KQJWl+sSb9hrwHorrt7QLEHNS
+	 bk79m5ErwCDQzPTq07PssxSTOxbuoBlQiJh2uRkykf9v7G77RoIdARo/xRf4DLyid1d+f
+	 OntOLmFWOcvM6Jbmy+bcL1EeZovXiK5jXr57R14Fmzhj75bIHAWcRCt79jChQQE1QTElz
+	 OMRx88QQNSnPNmkEmKgMjfCjapf3SxEN2akCJlp4OhSm9kDX31GNLEhFm1aTedG5s1pb0
+	 16Iif/BW/qnKy571+efkVfgV8jJJUxIQUg3ZRnXMxHDjKmbgSPbH+rgu4uWcT0j53gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792697730;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792697892;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=56b7HTZvlpKC4tZk577CJ8+w/mtcoo97dNOMSZZwtIA=;
-	b=qlybnE8wYB+s9HuixyWbaMGxLvC3mOO12Im0DA22tpKXPVCPGUCI99UjGzHzx+cnSP6i
-	 9s8N1YhN4idVtPlu3sIaSDEJSBAT8pFhhwCdrMXfFugPrtM4J854wu74OKKeWA02sVIMv
-	 ZMHojPZ43Appe3iBkCaX3/we6/daN9BgIepDwon1UN2pFt1H3syos1zkHMVCLkllMzfgC
-	 1k6hOXI/SGFWCkYPErtakD72DuyiQHn4EkfJlWdn34OtmfxR72E4PYlR9XVBL/I4QLDqv
-	 KbxzYoC2SeJZY2sZRMGECIu4sx3SJdIz+vs3rha0fHYadG5LT5esH8PKf8wRVqDY8/g==
+	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
+	 Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=s+ssO7Yar1aCyDvBOVmuASAPwfzLrxD3Zbwb3zv4toA=;
+	b=EVgJHe6q5I48lZIZiUGm03/jqCDecTE9z1SlsF+7igugZwZz607PcmRsU9H5MbxhUp1o
+	 lBlz7LYWCtNFqGhelklQX3Bb89An/NETa12Tj30O75+OKMqQkviLdwy3J2OaJN/xZq9OL
+	 tj7VdQCF0ePImqTv2RColgAtQKDPPCi/mf19292JBcVEPFcJkbkuEFjdHXwY+Tk7bgqmw
+	 3fZruS5vZu8MatausOsq9X4DN9uwh8fsUXatn7v5nRranrdRY362/lg35rXeGSETEbxHt
+	 5XWcs9SGYURPSouVM7iFUhbzLQCcT5BaSShV+OFN1+iiyPIVANhPUzdVdrJU/svQsCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b="PMdp/ssP";
-	arc=none smtp.remote-ip=209.85.222.182
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hvl9dGkG;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC373606A323
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 19:35:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC373606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67B460A2605
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 19:38:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B67B460A2605
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=PMdp/ssP
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93e635220b4so11533985a.1
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 12:35:29 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hvl9dGkG
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ac76132001so129869a91.0
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 12:38:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792697728; x=1793302528; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=56b7HTZvlpKC4tZk577CJ8+w/mtcoo97dNOMSZZwtIA=;
-        b=PMdp/ssPxgZMUrGwNR3Bi1/qfM8gMx+PxIvSc1WnlPJyDTsjgIIkEzrC6lRq6jruVG
-         LF8YN3PvUoRYi+pwrW0xef1REaOMVCXkVv52uKDGmTuMWiXRGcOlkvkxhydApZh1H3iJ
-         30+lFkiaiUACZsDIJXmowV9Btzkwb/7tEafCfP9QRb/YTWXqP7XEQlJ/glhbRu30OZAZ
-         Ibo1AqpENbfBnwrk0BmlzhkDHWGVyvB7pVn4WjtFsWPGXAAOTb/CCmselXNXTJGj6rLv
-         HR7zepmdgC9fDWadX4wGSaqHNzCLsFjS8xcgtalMfGJQRg+taGWoC+N1brAzEuWLRdsQ
-         HGLQ==
+        d=google.com; s=20251104; t=1792697891; x=1793302691; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s+ssO7Yar1aCyDvBOVmuASAPwfzLrxD3Zbwb3zv4toA=;
+        b=Hvl9dGkG/2/MbNqQqxsjecqdesrlzRt2BqCgag5GrcJrJdup45TesvJtpCfvZyr+Hv
+         Pgtrs2PQeEu1MlGa54tLudDHH2sTvleozIY7hpwxkaVkGIJhCHAPDOE4xbmdD6NM/5FO
+         fXiAutLAvrRnJ2B6eykGjdFni86N95p3aYBpbF9sYlKIjxB5Dom66JP4ANf67ryIZp7B
+         iDv4EA47D4syfBiYggz3HWsh1Q7ZXe7PyJwLs6UrJweJMUXdv40aeU43hVMI5KbnnitV
+         QSCslMMASLXgNPqdHcVDPW+VcWUxWWCUtQxmF45x2qpF1zSGip0hYoby2rhYOAzGO8l+
+         QYsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792697728; x=1793302528;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=56b7HTZvlpKC4tZk577CJ8+w/mtcoo97dNOMSZZwtIA=;
-        b=q1nrYIkP1EkV73Dbf614RAR22+Ti5Y6QuT1DI/+U9pHE5zRCI7BswigxSA5OxUq3FB
-         wudryQ/dqmq8X5pBLG6pZyeR8SAIefR7nY0pcYAXShT4qqk/wtggA5uZArEw/H/xaOtx
-         cyGKLvGHZ8yXrjMb5/piRvRdbwoxHh6+2097JsT96XxXsPk6/BxZzhGO0dgSeRa0b7P0
-         vBvAE34PoWejnA3S3Lnv9AmGE5e6NwfD10zIq+rfARHzm+MH5ZzDP9Z/lRc77AniGuLR
-         6/fxTakGXbFDDEDP/9h2w+B1GwiGY0F0BBthwLTYvDL1cEfbof/NQqxXkS1TASqwOCVO
-         y8Bg==
-X-Forwarded-Encrypted: i=1; AKwUvBxOZH3wilQR95g9d7DnRcbNVVQFyLLPv/0yYrNSguNe55Ue7ywNntC/vWltR51kQYzlSHo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL3ou50O/UQHpwxMotslGUh2HTi9dWEVZYDOm5el2ANjgBZHvqU
-	8G3106WdoFG2jc1ndCA5tAYKULFzaEdE/p2M7JrO49jwjYc/K0pHuKYxLEiDC/Givd4=
-X-Gm-Gg: AYBFou3fxAB1WVNPcPwNBhEJU7bOd/4k33R+IycZIYOY0rg2kjBPQ84S2OpOBVRuI8T
-	s2mQRsPZGk63Y08p+DuQy1T6EdnoLg0yQoVoiNdIFMkdYL30sFs7/RL5cYF2W6UVyU5/73l/zp4
-	n+rNZ87ttNmdDCY+8/RnE7MH+oAoYDy9599qPKoJtZu/3kdYyGXDlZ924WPkReXZLwRdAszbad2
-	qr9mF0frBYgLNN7kqKncrwtYWA1c5WulfXO3c1dsB5OQ5QV/v9MMa6Xy42XThPmuguI6GrwDsYU
-	dpxUlaw7jw8bNGgIbniSQNlWZUtYDxnWvzuAWrvjTdFybGVr0D4JrNhqzmemTdWek9l56eTaIz+
-	rKq8fCCGvORCB52fw9NqobG/ldY7Tj9gK6VmnCbCRyq9yLBBuJXDe5CF3GkZuzcnSJg6yskrxXY
-	Jd+nmb6LtxvW0fGeNNOUSHneOpxoB56sRXvLRh26j7g4MmvKOoXtUc1+c9ubQNVIUQa+MeCGYuD
-	en4jfKWPc0/qOzNLwscI2W7TzfXU5Z5a4fTJc2Rzm5QcKFh/+t8IPmxH49aFZcTpAtUKvXypzUL
-	dw0SWvQuBf3HEK04rQUZE1t1B59akZ4Z/8MrTQ==
-X-Received: by 2002:a05:620a:2794:b0:93e:c6fc:7f50 with SMTP id af79cd13be357-93f6f79dc27mr75461785a.5.1792697728579;
-        Thu, 22 Oct 2026 12:35:28 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c39766a93sm366276d6.43.2026.10.22.12.35.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 12:35:28 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xJyZT-0000000FmQW-2RHj;
-	Thu, 22 Oct 2026 16:35:27 -0300
-Date: Thu, 22 Oct 2026 16:35:27 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Cc: alex@shazbot.org, iommu@lists.linux.dev, joro@8bytes.org,
-	kevin.tian@intel.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, robin.murphy@arm.com, will@kernel.org
-Subject: Re: [PATCH v3 1/2] iommu: Add iommu_get_pci_resv_windows() helper
-Message-ID: <20261022193527.GG3381610@ziepe.ca>
-References: <20260921115513.GK11599@ziepe.ca>
- <20261004162213.3787623-1-guanghuifeng@linux.alibaba.com>
- <20261004162213.3787623-2-guanghuifeng@linux.alibaba.com>
+        d=1e100.net; s=20260707; t=1792697891; x=1793302691;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=s+ssO7Yar1aCyDvBOVmuASAPwfzLrxD3Zbwb3zv4toA=;
+        b=gQ5y2p+pFox16i8JyGvDE1xZZX3HG4N0AM+QwVlX1NQc4xNoRkbf9UNggCVg/sAiv8
+         yY78mDczpkuPM9DSNQ3jkF/VC10ZJxKW1hLXOjQFieEWgmI3QLmX15o3To/xJvaJNeSX
+         S4V82b1bbr4Bp5Ezyj/p+yXfhFerdVmG3TiVwBiLKjNkbkOgBph/8vaZzJfwpg8LTDKZ
+         lDuuzVFNmvPIBDBNJbI3UpbAnkiyiX0lIuCqvs2IbWYNXAdF9pbSFY9Rpibt8gfbICez
+         NWA7dQ4Gx5Tk6usk9+Ht3Thv8ikzPRG9xSsP8omI2NSD9AK9m+OO312ALD0ykE+pwa+/
+         2afQ==
+X-Gm-Message-State: AFq9FYLDRB9gbCAUpSXF32xEmg1eyCozMob53sjuUtGzVXa9GFKoW1DC
+	I223BwEoi6wEvZ2sRmXn5qU8YCykvDCQrlIK2cBoVSQLH5wz0ptC4nEMjxzdrUVMP+Lr7V5p2fp
+	0QobC/Q==
+X-Received: from pjbst3.prod.google.com ([2002:a17:90b:1fc3:b0:3ac:63e0:9609])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e4b:b0:3ab:2ad1:f10a
+ with SMTP id 98e67ed59e1d1-3adcd7f6cacmr2249a91.0.1792697890904; Thu, 22 Oct
+ 2026 12:38:10 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 22 Oct 2026 12:38:08 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,34 +75,95 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261004162213.3787623-2-guanghuifeng@linux.alibaba.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261022193808.557206-1-seanjc@google.com>
+Subject: [PATCH] KVM: x86: Ratelimit all I/O APIC and local APIC kernel log messages
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Chris Mason <mason@kernel.org>, Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>, 
+	Josef Bacik <josef@toxicpanda.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 05, 2026 at 12:22:12AM +0800, Guanghui Feng wrote:
+From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 
-> +int iommu_get_pci_resv_windows(struct pci_dev *dev, struct list_head *head)
-> +{
-> +	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
-> +	struct iommu_resv_region *region, *next;
-> +	struct resource_entry *window;
-> +	LIST_HEAD(resv_windows);
-> +	int ret;
-> +
-> +	if (!bridge)
-> +		return -ENODEV;
-> +
-> +	resource_list_for_each_entry(window, &bridge->windows) {
-> +		struct iommu_resv_region tmp = {
-> +			.type = IOMMU_RESV_RESERVED,
-> +		};
+Ratelimit all of the kernel messages in the APIC code, as every single one
+can be triggered at will by the guest.
 
-I didn't try to look, but if you are going to add a function to the
-iommu core then dma-iommu.c should also use it so we are sharing the
-same algorithm.
+Opportunistically use the more modern APIs so that the messages are run
+through pr_fmt(), i.e. get prefixed with KVM's name and info.
 
-Maybe a callback function would work better to that end than returning
-a linked list?
+Fixes: 1fd4f2a5ed8f ("KVM: In-kernel I/O APIC model")
+Fixes: 8f423a80d299 ("KVM: SVM: Support MMIO for an SEV-ES guest")
+Cc: Chris Mason <mason@kernel.org>
+Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+Co-developed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+[sean: smush everything into one patch]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/ioapic.c | 4 ++--
+ arch/x86/kvm/lapic.c  | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-Jason
+diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+index 0d59b9c758c2..df15d940181c 100644
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -647,7 +647,7 @@ static int ioapic_mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+ 		memcpy(val, (char *)&result, len);
+ 		break;
+ 	default:
+-		printk(KERN_WARNING "ioapic: wrong length %d\n", len);
++		pr_warn_ratelimited("ioapic: wrong length %d\n", len);
+ 	}
+ 	return 0;
+ }
+@@ -672,7 +672,7 @@ static int ioapic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+ 		data = *(u8  *) val;
+ 		break;
+ 	default:
+-		printk(KERN_WARNING "ioapic: Unsupported size %d\n", len);
++		pr_warn_ratelimited("ioapic: Unsupported size %d\n", len);
+ 		return 0;
+ 	}
+ 
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index ecf611845fb1..a49bb38b4f70 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -1123,7 +1123,7 @@ static void kvm_apic_disabled_lapic_found(struct kvm *kvm)
+ {
+ 	if (!kvm->arch.disabled_lapic_found) {
+ 		kvm->arch.disabled_lapic_found = true;
+-		pr_info("Disabled LAPIC found during irq injection\n");
++		pr_info_ratelimited("Disabled LAPIC found during irq injection\n");
+ 	}
+ }
+ 
+@@ -1359,7 +1359,7 @@ int __kvm_irq_delivery_to_apic(struct kvm *kvm, struct kvm_lapic *src,
+ 
+ 	if (irq->dest_mode == APIC_DEST_PHYSICAL &&
+ 	    irq->dest_id == 0xff && kvm_lowest_prio_delivery(irq)) {
+-		pr_info("apic: phys broadcast and lowest prio\n");
++		pr_info_ratelimited("apic: phys broadcast and lowest prio\n");
+ 		irq->delivery_mode = APIC_DM_FIXED;
+ 	}
+ 
+@@ -1826,8 +1826,8 @@ static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
+ 		memcpy(data, (char *)&result + alignment, len);
+ 		break;
+ 	default:
+-		printk(KERN_ERR "Local APIC read with len = %x, "
+-		       "should be 1,2, or 4 instead\n", len);
++		pr_err_ratelimited("Local APIC read with len = %x, should be 1,2, or 4 instead\n",
++				   len);
+ 		break;
+ 	}
+ 	return 0;
+
+base-commit: 164405e8e9a0378c7e1aff2254625a6553a291f1
+-- 
+2.56.0.257.gf7497c7d27-goog
+
