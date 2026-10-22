@@ -1,109 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792637492;
-	b=OFABvP/MK6NllKuS99LQeRiNbDZ8YnKUo3ccE4nOQiZ4kL1a+3myHCLflerLdZolkhEn
-	 0JVLOzeHeo4CT1PzzQE2j4Kyb1pM0TVXd1rKKWap9Bj5amEWIyYYpNF66gf2AQnasnkXU
-	 Xyovh0gttXb/KuU9MtaYZ2d78jIi17wifmEDR6kFhtCQChBABxcq+RhvCz7FU6BzzbLMR
-	 A+nhZ35QC7ieQhn1jTouACutIX9XhGPD4SmGQ0Ra1XANtbMqKhT5WTqY9wctfsbZLWRaV
-	 ctJpua5lYLIifSxIR87ypZQSvF9QlYq/JGWrNDKDh8A03/C0UF0zOlgQUGlfemFJ/xw==
+	t=1792637527;
+	b=BoVK2bj4VyndorOLaOuhpjQskbRls/ewUcgB9y538DCBCF36uG+0s5Sv5XtIG2vOfB1b
+	 nMgWdkOixoWH2SFWwzfjromysfeM6Z7kXA+x9DDf6dolsSTv/JAYR8tFu4/G8rxUVUPS1
+	 UjzYELAu5n9VExTM8RXFRREYwy1LS1jyXBUbkMtF+4dWW8P8iaOQyZvYPkcihg8cGNN+i
+	 pfxsdn/Gd+pIyNFJMNCvDBcVy5OAZY9jACNNo62dt21uorxDaQ4MONVPHRZolMp5y49ww
+	 7T5tCH8+ZfM24Ys4vDEdx0WZyeYd0J0jfoi3A4f6Jx2y6tbT0hUdQmo997W7pHwwENQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792637492;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=DgxDvLuT+FrYCt+izSlqoI4afXyKDdrxGMCJ1K0jMX4=;
-	b=4TyLcxhR/RZ+92ATK0LiLqGV7RoXR6WEevnFAf+cNuBe7YNs0OHQhTh0+4kQzD9p9SYv
-	 LNYkot0zJo1nKzh5HpXsTey5bOn13ZHIVRhpDHCd+5KJe97pWhPOvDnurITmAP9h29WHM
-	 pF5C+DLtTejOWMDVfx5ruRTPxG69uNjO2WqTPJI2l6sW5WwzPF66B9/yAmJ23eXyKIP27
-	 E9Bj/qJ307IHa23BEJquI4jVowac8khVoiX65o0ZFyGnGdc59fjtHu1uwSR//egt99Xwz
-	 E+58r7dhCkC+P3cg8snaSNUxunVDb97ypQQHbczdsYAZ9Wgx9wGwo0+LDF7/XQZ2I5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792637527;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=h1hesz8Dq/WdkUfYyeZQJF1WiFexhLEBTyIl9jjnwA4=;
+	b=SiNnB7GFYqB4qEgsCE8XjTleMbl7ye8Xd3zzy570QqqVDAujBlMqp/zHpyremUYhYxIA
+	 DjAPOg3KRDf+sieR40EOJu1XVAn+3slm9NtqY3c15Ee29JqCuOYTUK+oUDKn4GjmhP/tn
+	 QnMyjMuupI4Syh8NcUDkisAxjt1s9oFJ+8VmzoYX4fkFsEoWrk+fpopZd9s2WBvbj10ng
+	 /1Hw0HAQr55OkVH92nKwON0UloAOPYmdtXII+etWJcjlp6KWXMM/8epVmLPHzzF9q9KA7
+	 j1XvOmgx+adPRwsRtXdKhC9l91sk0+VaNaguSK95DG0AVk9fgPoy5KI8Dk1mb6O9Mrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="G1/B1IYM";
-	arc=none smtp.remote-ip=209.85.210.181
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ph9SNXCS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929A0606A31D
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:51:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 929A0606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB49606A323
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=G1/B1IYM
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a089dfee18so229555b3a.1
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 19:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792637491; x=1793242291; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DgxDvLuT+FrYCt+izSlqoI4afXyKDdrxGMCJ1K0jMX4=;
-        b=G1/B1IYMVcrhCs8k5cLUsJt4iwZWffCZ2GipE3/G4twY6XtK3n0IZQfatuGThfkFTu
-         oBjA1YRuAmB3rUPvOfoZRuv8XRlVMAAzm65fcCs0w1qcXhj+6ZnwzHc6WFn2exgARbsi
-         84TpJfPti8NqLiXuuoHAG1VfMsZnBByDsXdWSuGJeECaDkw9+QXJa/4Ffl+GWuPjbfKf
-         6uICkWQiFROSra6jLGRblsPqMh+R2kmA1N/+fv5yLnSNXSygWvGLRIeDUY6B4oo9VPe0
-         0OS+gfveyIJSsXkjcHq182NiCFy9rsKDZS8zAb4Llw6xeZO8j/8kdrjnKUTf+TPQ2j4Q
-         +Xrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792637491; x=1793242291;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DgxDvLuT+FrYCt+izSlqoI4afXyKDdrxGMCJ1K0jMX4=;
-        b=gATAEkZ26nNY3CWWqVw/y92L8nQuRdGf620zGi6imTF6PeBIqu8SQC7Lpbzxy0UqZZ
-         aBQLS6pMUn7yIc5mZj4hF/0vkBqrU4HuMxmA2Hx7Un0hPVV8JWr9J7EvWzuNlPvktyJW
-         4noNoHJmVuaZtgKWUxph65dRjkUEGktfkv3nldYXbOxIkZL0FzsP5yRakGHHqZYEZXb0
-         tiCuK1fceW3RY16rh+CJw5bYmAFer7/Qo6iYa2lJh6olMd3JaY48TLuMxSrdiE6Eefyp
-         zziYyTPCq3eQja99G0r/G9iQu3yaO5SrjvGGX+7yPK+kyXoMKOrslWflY8f+32gsAiFi
-         Klvw==
-X-Forwarded-Encrypted: i=1; AKwUvBzvc5FF19/xQBUTGigsU2VQbz17hDsij5TaRt4ZSl8kpkB1t+n/4y98pfyuL2iCSFrcoYg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIb32q9ZKfa9DadjpMh2nsSegNOBqPI4WVOc+w1jlrQcvXAQuXv
-	EgWN59BsHyYv28PvOBtOf77vMZyl7rgoWR1x+CsCEg4Z2KWPXwIl81NWfBigp8jVAg==
-X-Gm-Gg: AYBFou03WWAMpR1aeJaxFKfEhM92ZNdFK4pBNey0kvVwA1KwKUohZGfDn1kL0H7e2O4
-	zqXARjJMbidJxBZI4JrLYz0a2SIukMMbe/4RNND5yjFxYX05ddl1ikZTR4OkueWHnOLK5wgGdeu
-	VmU++MbI8gxDCs9LYAbpfba6Ty6ZFmLN0ZFUgSNh8P/dW6GLyKwZMnerzRklK7ZgoBWQbtBmVnK
-	7se5RmqQBdlvysxhtOKT0E0hi8gsqCvTiRpOhUSjyM6LtxXJyzhywuBhjqIss7jo/fMx30CNKdq
-	5cTN87Pmq0i9AIwD7XCLS4uFYFW3KoQX0ND6rqgDdNC8n55GJHG4pNGQUQ7zVR1u8gPPclV+/+w
-	fFZbi7Qfv0MMAAzCCMApidTksaXMFxQl2xFQbNpmF7/fFvazU0EFL9bvujN+aH/iqMZulqBxMcm
-	zEX14gn1yb6WgJSB17LoBhwxO58KDF/E+PSe1EfMjQrXH0xwgRqcXB0cMtvW++MVm06iaHY9cnu
-	i+dqp7c2YV6TL1iupQFXTFruKW0VYbROCbrJ3eUwTbF0WG/LMnf32zGPYV9r4hRLE8g2qPZlgOK
-	fWnl5+4OaYxN+bRSTA==
-X-Received: by 2002:a05:6a21:3b46:b0:3e2:ea7:621 with SMTP id adf61e73a8af0-3e2a0bed41bmr545882637.42.1792637489967;
-        Wed, 21 Oct 2026 19:51:29 -0700 (PDT)
-Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6b85e8c9asm635619a12.20.2026.10.21.19.51.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 19:51:28 -0700 (PDT)
-Date: Thu, 22 Oct 2026 02:51:23 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Tarun Sahu <tarunsahu@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 4/4] mm: memfd_luo: Add the 2-bit pair feature
- header
-Message-ID: <atl6K2Juy6Bh29lh@google.com>
-References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-5-tarunsahu@google.com>
- <CA+CK2bCWo7ixrNLKPvqETn3JSFwSNaB2UsPgy9RHVAhWroJURQ@mail.gmail.com>
- <atlINfvlXY4wMbpO@google.com>
- <CA+CK2bDf-pKbH2J13mRYRT7Ddj-Q+VXaGYePs+E-azSWXKzV5w@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ph9SNXCS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1A91F000C3;
+	Thu, 22 Oct 2026 02:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792637527;
+	bh=h1hesz8Dq/WdkUfYyeZQJF1WiFexhLEBTyIl9jjnwA4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ph9SNXCSgame0qqq8FiTnR3LZDi37pDYAcFCetUKFBENH3LUU+6EV6R2szSV+ljPa
+	 H8b/9tcYSZQVX0clN7xEApuUQgmlaFFlYQ1W/9yEDEIkkaVNnQlC23yseOZ2USxiEH
+	 B31Q7KCLU8kMdQkSPQVVTO8YCA9bLZUvCoCPoYr7pJlWYI+WevskC9FH/VikCycxdV
+	 S4G9lBspXhcepvmk7NC6hAK0J5qXi55m+5FNtdU2jYnYPmHs9e/hWPZ9pIUpAUjsXV
+	 i9KeN+w+s4GxPyfnjtdHhdzQ3K7m9nKBKg5HD6iSTwpHVZeZuwdQD4uc+0fgBawL8Q
+	 SxPnH8RnDf2AQ==
+Message-ID: <sashiko-outbox-180887@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/2] KVM: x86: Switch to vmcs01 to update EOI exiting
+ bitmap on-demand if L2 is active
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261022022813.303978-2-seanjc@google.com>
+References: <20261022022813.303978-1-seanjc@google.com>
+ <20261022022813.303978-2-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 02:52:06 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,330 +60,181 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+CK2bDf-pKbH2J13mRYRT7Ddj-Q+VXaGYePs+E-azSWXKzV5w@mail.gmail.com>
 
-On 2026-10-21 08:41 PM, Pasha Tatashin wrote:
-> > > >  /**
-> > > >   * struct memfd_luo_ser - Main serialization structure for a memfd.
-> > > > + * @features:  ABI feature and size header for memfd_luo_ser.
-> > > >   * @pos:       The file's current position (f_pos).
-> > > >   * @size:      The total size of the file in bytes (i_size).
-> > > >   * @seals:     The seals present on the memfd. The seals are uABI so it is safe
-> > > > @@ -79,6 +103,7 @@ struct memfd_luo_folio_ser {
-> > > >   *             struct memfd_luo_folio_ser.
-> > > >   */
-> > > >  struct memfd_luo_ser {
-> > > > +       struct luo_feature_hdr features;
-> > >
-> > > I have not looked into this yet, but I would prefer to use some kind
-> > > of macro constructor for serialized structs. That way, they will
-> > > automatically include the header, making it easier to search the code
-> > > for what is actually preserved versus what exists only in this kernel.
-> >
-> > If you want to know what is preserved don't you just look at
-> > include/linux/kho/abi?
-> 
-> Yes, and having it initialized and declared in the code correctly with
-> proper macros and verified just gives the right handling and avoids
-> making silly mistakes. The second reason is so we never forget to
-> include the header, and to make it expandable and easy for everyone to
-> use. I think this kind of constructor is just useful overall. Are
-> there any reasons why we wouldn't want to use it?
-> 
-> > > So, I think something like this:
-> > > /* Base serialization header: 4 bytes total size, 4 bytes flags */
-> > > struct luo_ser_hdr {
-> > >     __u32 total_size;
-> >
-> > Why do we need the size? I'm not really opposed to it I just don't
-> > understand what problem it solves.
-> [...]
-> > The luo_ser_hdr is needed for top-level file handler and FLB ser
-> > structs. Those structs are always dynamically allocated and preserved
-> > with KHO.
-> 
-> The top level is not enough. I think it is needed for every single
-> serialized struct in kho/abi - the blocks, the FLBs, etc. They all
-> must
-> be expandable in case we need to allow that. Let's have future
-> protection for everything that gets preserved.
-> 
-> For example, take a look at vCPU preservation:
-> https://lore.kernel.org/all/20260920193650.3373435-9-pasha.tatashin@soleen.com
-> https://lore.kernel.org/all/20260920193650.3373435-11-pasha.tatashin@soleen.com
-> 
-> +struct kvm_vcpu_ser {
-> +    u32 vcpu_id;
-> +    u32 flags;
-> +    u64 vm_token;
-> +    DECLARE_KHOSER_PTR(arch_state, struct kvm_vcpu_arch_ser *);
-> +};
-> 
-> We might want to add fields to the arch-independent part, and we also
-> absolutely must keep the arch-dependent parts expandable. Therefore,
-> the header needs to stay small and flexible enough to grow as needed.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] KVM: x86: stale vmcs01 EOI exitmap when APICv is uninhibited in L2
+- [Low] KVM: x86: unused load_eoi_exitmap_pending field in struct kvm_vcpu_=
+arch
+--
 
-Hm, anything that is dynamically allocated can have it, but anything
-that it is embedded directly or in an array cannot, because those
-structs cannot grow anyway. So I agree it's not exclusive to the
-top-level FLB and FH structs. But I would push back on any a mandate
-that _every_ struct in include/linux/kho/abi needs it.
+commit aa3ef15390c0560005f0f971f44e1775dbb6d55f
+Author: Sean Christopherson <seanjc@google.com>
 
-> 
-> > On retrieve, KHO gives you back the blob of memory. You look at the
-> > header to determine what features are used in the struct, and then
-> > access the fields associated with those features. At no point do you
-> > need to check the size.
-> >
-> > The only time you need the size is for a KHO block array. You want to
-> > store the size of the KHO block array elements so that the retrieving
-> > kernel can correctly initialize the iterator.
-> >
-> > e.g. from the PCI base series:
-> >
-> > /**
-> >  * struct pci_ser - PCI Subsystem Live Update State
-> >  *
-> >  * This struct tracks state about all devices that are being preserved across
-> >  * a Live Update for the next kernel. It contains only state owned by the PCI
-> >  * core; the state a driver needs to resume its device is preserved separately
-> >  * by that driver.
-> >  *
-> >  * @required_flags: Features that the next kernel must support to take over
-> >  *                  the preserved devices. No flags are currently defined.
-> >  * @optional_flags: Features that the next kernel may ignore if it does not
-> >  *                  support them. No flags are currently defined.
-> >  * @dev_ser_size: The size in bytes of each struct pci_dev_ser in @devices.
-> >  * @nr_devices: The number of devices that were preserved.
-> >  * @devices: Physical address of the first KHO block containing pci_dev_ser.
-> >  */
-> > struct pci_ser {
-> >         u64 required_flags;
-> >         u64 optional_flags;
-> >         u32 dev_ser_size; <==========
-> >         u32 nr_devices;
-> >         u64 devices;
-> > };
-> 
-> Having `total_size` embedded in the standard header of every
-> serialized struct solves this uniformly: any struct can be placed in a
-> block array without needing an ad-hoc `*_ser_size` field in the parent
-> struct, and on retrieve we can always sanity-check that the preserved
-> blob is at least as large as the struct fields implied by the flags.
+KVM: x86: Switch to vmcs01 to update EOI exiting bitmap on-demand if L2 is =
+active
 
-I agree we shouldn't need an ad-hoc *_ser_size field in the parent. But
-I don't think the entries are the right place to store the size.
+This commit updates vmx_load_eoi_exitmap() to temporarily switch to vmcs01
+using guard(vmx_vmcs01) so the EOI exit bitmap can be updated immediately
+while L2 is active. It also removes KVM_REQ_LOAD_EOI_EXITMAP and the
+deferred request handling in vcpu_scan_ioapic() and leave_guest_mode().
 
-A KHO block set needs the entry size before it can do anything with the
-incoming blocks. kho_block_set_restore() uses it to validate each
-block's count, and the iterator uses it to locate every entry (index *
-entry_size). The entry size is a property of the block set, not of each
-entry.
+Closes: https://lore.kernel.org/all/20261017093016.32348-2-amirmohammad.eft=
+ekhar@cispa.de
 
-Putting the size in a header on every entry means:
+> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+> index 447f0ec3e63e4..411eaf445d436 100644
+> --- a/arch/x86/kvm/regs.h
+> +++ b/arch/x86/kvm/regs.h
+> @@ -464,12 +464,6 @@ static inline void enter_guest_mode(struct kvm_vcpu =
+*vcpu)
+>  static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
+>  {
+>  	vcpu->arch.hflags &=3D ~HF_GUEST_MASK;
+> -
+> -	if (vcpu->arch.load_eoi_exitmap_pending) {
+> -		vcpu->arch.load_eoi_exitmap_pending =3D false;
+> -		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+> -	}
+> -
+>  	vcpu->stat.guest_mode =3D 0;
+>  }
+> =20
 
- - The block set has to peek into the first entry to learn its own
-   layout, so KHO blocks would depend on the LUO header format of
-   whatever is stored in them.
+[Severity: Low]
+With the removal of the only reader of vcpu->arch.load_eoi_exitmap_pending =
+in
+leave_guest_mode() (in arch/x86/kvm/regs.h) and its only writer in
+vcpu_scan_ioapic() (in arch/x86/kvm/x86.c), load_eoi_exitmap_pending in
+struct kvm_vcpu_arch has no remaining references in the tree (both at this
+commit and at the end of the series):
 
- - Every entry repeats the same value, since all entries in a block set
-   are written by the same kernel using the same struct. For small
-   entries that is a lot of overhead, e.g. struct pci_dev_ser is 8 bytes,
-   so an 8-byte header doubles its size.
+arch/x86/include/asm/kvm_host.h:
+struct kvm_vcpu_arch {
+	...
+	u64 apic_base;
+	struct kvm_lapic *apic;    /* kernel irqchip context */
+	bool load_eoi_exitmap_pending;
+	DECLARE_BITMAP(ioapic_handled_vectors, 256);
 
- - Nothing enforces that all the entries actually agree.
+Should load_eoi_exitmap_pending be removed from struct kvm_vcpu_arch as wel=
+l?
 
-Instead, I think KHO blocks should record the entry size themselves.
-For example:
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 612ab07d4100f..5e765409398d3 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -7139,6 +7139,8 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u6=
+4 *eoi_exit_bitmap)
+>  	if (!kvm_vcpu_apicv_active(vcpu))
+>  		return;
+> =20
+> +	guard(vmx_vmcs01)(vcpu);
+> +
+>  	vmcs_write64(EOI_EXIT_BITMAP0, eoi_exit_bitmap[0]);
+>  	vmcs_write64(EOI_EXIT_BITMAP1, eoi_exit_bitmap[1]);
+>  	vmcs_write64(EOI_EXIT_BITMAP2, eoi_exit_bitmap[2]);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index aad065d035fbb..082d027ade583 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -8003,17 +8003,6 @@ static void vcpu_scan_ioapic(struct kvm_vcpu *vcpu)
+>  		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
+>  #endif
+> =20
+> -	if (is_guest_mode(vcpu))
+> -		vcpu->arch.load_eoi_exitmap_pending =3D true;
+> -	else
+> -		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+> -}
+> -
+> -static void vcpu_load_eoi_exitmap(struct kvm_vcpu *vcpu)
+> -{
+> -	if (!kvm_apic_hw_enabled(vcpu->arch.apic))
+> -		return;
+> -
+>  #ifdef CONFIG_KVM_HYPERV
+>  	if (to_hv_vcpu(vcpu)) {
+>  		u64 eoi_exit_bitmap[4];
+> @@ -8167,8 +8156,6 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+>  		}
+>  		if (kvm_check_request(KVM_REQ_SCAN_IOAPIC, vcpu))
+>  			vcpu_scan_ioapic(vcpu);
+> -		if (kvm_check_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu))
+> -			vcpu_load_eoi_exitmap(vcpu);
+>  		if (kvm_check_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu))
+>  			kvm_vcpu_reload_apic_access_page(vcpu);
+>  #ifdef CONFIG_KVM_HYPERV
 
-struct kho_block_header_ser {
-    u64 next;
-    u32 count;
-    u32 entry_size;
-};
+[Severity: High]
+Can calling load_eoi_exitmap() directly from vcpu_scan_ioapic() while L2 is
+active leave stale EOI_EXIT_BITMAP0..3 values in vmcs01 when APICv
+transitions from inhibited to uninhibited in L2?
 
-kho_block_set_restore() would then take the entry size from the
-previous kernel and verify that every block agrees. Users of the block
-set can read the entry size back and decide how to handle entries
-written by an older or newer kernel, e.g. ignoring fields past the end
-of a smaller entry. That removes dev_ser_size from struct pci_ser, and
-any struct can be stored in a block array without a header or a size
-field in the parent.
+When APICv becomes inhibited on a vCPU (for example, when L1 or L2 modifies
+the xAPIC APIC_ID via kvm_lapic_reg_write() -> kvm_recalculate_apic_map(),
+disables the APIC via kvm_apic_set_base(), or enables Hyper-V SynIC AutoEOI=
+),
+KVM queues both KVM_REQ_APICV_UPDATE and KVM_REQ_SCAN_IOAPIC.
 
-I also don't think block set entries need their own feature flags. The
-struct that holds the block set (e.g. struct pci_ser) already has
-feature flags, and those flags can describe extensions to the entries.
-For example, an optional flag in struct pci_ser could indicate that
-struct pci_dev_ser has a new field appended. All entries in a block set
-are written by the same kernel, so the flags would be identical for
-every entry anyway. The flags only need to be checked once, before
-iterating, rather than once per entry.
+In vcpu_enter_guest() in arch/x86/kvm/x86.c, KVM_REQ_SCAN_IOAPIC is serviced
+before KVM_REQ_APICV_UPDATE:
 
-If a feature only applies to some entries (e.g. some devices), the
-parent flag indicates the field is present and the value of the field
-in each entry indicates whether that entry uses it.
+arch/x86/kvm/x86.c:vcpu_enter_guest() {
+	...
+		if (kvm_check_request(KVM_REQ_SCAN_IOAPIC, vcpu))
+			vcpu_scan_ioapic(vcpu);
+	...
+		if (kvm_check_request(KVM_REQ_APICV_UPDATE, vcpu))
+			kvm_vcpu_update_apicv(vcpu);
+}
 
-The entry size in the block header and the feature flags in the parent
-are complementary: the entry size lets the iterator step over fields
-the kernel doesn't know about, and the flags say which fields are there
-and whether the next kernel must understand them.
+During the inhibit transition, apic->apicv_active is still true when
+vcpu_scan_ioapic() runs, so vmx_load_eoi_exitmap() writes the zeroed
+ioapic_handled_vectors bitmap into vmcs01's EOI_EXIT_BITMAP0..3 before
+KVM_REQ_APICV_UPDATE sets apic->apicv_active to false. Similarly, any IOAPIC
+routes configured while APICv is inhibited are not written to vmcs01 because
+apic->apicv_active is false.
 
-Please take a look at this series for how I am extending KHO block set
-elements using top-level feature flags:
+When the guest later transitions out of the inhibited state while L2 is
+active (is_guest_mode(vcpu) is true) -- for example, when L2 enables x2APIC
+via MSR_IA32_APICBASE or restores the xAPIC ID -- kvm_apic_set_base() or
+kvm_recalculate_apic_map() clears the APICv inhibit (queuing
+KVM_REQ_APICV_UPDATE) and calls kvm_make_scan_ioapic_request() (queuing
+KVM_REQ_SCAN_IOAPIC).
 
-  https://lore.kernel.org/linux-pci/20261019213054.3157159-1-dmatlack@google.com/
+Previously, because is_guest_mode(vcpu) was true, vcpu_scan_ioapic() set
+vcpu->arch.load_eoi_exitmap_pending =3D true and deferred
+KVM_REQ_LOAD_EOI_EXITMAP until leave_guest_mode() on nested VM-Exit, after
+KVM_REQ_APICV_UPDATE had already set apic->apicv_active =3D true.
 
-> 
-> >
-> > >     __u32 flags;
-> > > };
-> > >
-> > > #define LUO_SER_INIT_HDR(obj, _flags) do {           \
-> > >     (obj)->hdr.total_size = sizeof(*(obj));          \
-> > >     (obj)->hdr.flags = (_flags);                     \
-> > > } while (0)
-> > >
-> > > #define DECLARE_LUO_SER(name, expected_size, members)       \
-> > >     struct name {                                           \
-> > >         struct luo_ser_hdr hdr;                             \
-> > >         members                                             \
-> > >     };                                                      \
-> > >     static_assert(sizeof(struct name) == (expected_size),   \
-> > >                   "LUO struct " #name " size mismatch!")
-> >
-> > Why?
-> >
-> > Practically every change to a serialized struct is going to involve
-> > appending one or more fields to the end of the struct. Asserting the
-> > size means we have to update the hard-coded size as well every time we
-> > do that.
-> >
-> > Is this to protect against embedded structs accidentally changing?
-> >
-> 
-> Yes, exactly. See how kvm_vcpu_arch_ser is proposed in that same series:
-> 
-> +struct kvm_vcpu_arch_ser {
-> +    struct kvm_regs regs;
-> +    struct kvm_sregs sregs;
-> +    struct kvm_mp_state mp_state;
-> +    u32 pad;
-> +    struct kvm_xcrs xcrs;
-> +    struct kvm_lapic_state lapic;
-> +    u8 pad_xsave[40];
-> +    struct kvm_xsave xsave;
-> +    struct kvm_vcpu_events events;
-> +    struct kvm_debugregs debugregs;
-> +    u32 num_msrs;
-> +    u32 cpuid_nent;
-> +    struct kvm_msr_entry msrs[];
-> +};
-> 
-> All the above structs are uAPI, so they are stable compared to random
-> kernel structs, but they still have a size and can be expanded. So,
-> having the size and a static assert guarantees that when we expand
-> these uAPI structs, we automatically catch that in this struct and add
-> the appropriate flag to notify the next kernel of the changed world.
-> Also, it catches implicit compiler padding changes across
-> architectures.
+With this change (and still at the end of the series after commit "KVM: x86:
+Consolidate invocations of kvm_x86_ops.load_eoi_exitmap()"),
+vcpu_scan_ioapic() immediately invokes kvm_x86_call(load_eoi_exitmap)() ->
+vmx_load_eoi_exitmap() while servicing KVM_REQ_SCAN_IOAPIC before
+KVM_REQ_APICV_UPDATE has run. At that point kvm_vcpu_apicv_active(vcpu) is
+still false, so vmx_load_eoi_exitmap() returns early without writing
+EOI_EXIT_BITMAP0..3 to vmcs01:
 
-Ok makes sense. Having protection from accidentally changing the offset
-of fields in a serialized struct is a good thing.
+arch/x86/kvm/vmx/vmx.c:vmx_load_eoi_exitmap() {
+	if (!kvm_vcpu_apicv_active(vcpu))
+		return;
 
-> 
-> > >
-> > > Usage:
-> > > /*
-> > >  * Header:  8 bytes (hdr: 4 bytes total_size + 4 bytes flags)
-> > >  * Payload: 8 (pos) + 8 (size) + 4 (seals) + 4 (_pad) = 24 bytes
-> > >  * Total:   32 bytes
-> > >  */
-> > > DECLARE_LUO_SER(memfd_luo_ser, 32,
-> > >     __u64 pos;
-> > >     __u64 size;
-> > >     __u32 seals;
-> > >     __u32 _pad;
-> > > );
-> >
-> > IMO this makes the code harder to read. I think open coding keeps things
-> > simpler.
-> 
-> I am ok switching to a different construct or way of declaring these
-> structs if what I proposed is hard to read. However, we still need
-> standardization so that every serialized struct has a common,
-> expandable header (taking only 8 bytes by default), has its size
-> verified at both compile time and runtime, and is initialized in a
-> uniform way.
+	guard(vmx_vmcs01)(vcpu);
+	...
+}
 
-I think your idea to have a growable header from the thread basically
-means that the header and the ser struct will be 2 completely separate
-structs and you will need to user pointer arithmetic to jump past the
-header and find your serialized struct. So I think this is probably
-moot.
+KVM_REQ_APICV_UPDATE then calls kvm_vcpu_update_apicv(), which sets
+apic->apicv_active =3D true and enables SECONDARY_EXEC_VIRTUAL_INTR_DELIVER=
+Y in
+vmcs01 via vmx_refresh_apicv_exec_ctrl() without reloading the EOI exit
+bitmap, leaving vmcs01 with stale EOI_EXIT_BITMAP0..3 values and breaking
+level-triggered IOAPIC or Hyper-V SynIC EOI exits.
 
-> 
-> >
-> > struct pci_ser {
-> >         struct luo_ser_hdr header;
-> >         __u32 dev_ser_size;
-> >         __u32 nr_devices;
-> >         __u64 devices;
-> > };
-> > LUO_SER_ASSSERT_SIZE(pci_ser, 32);
-> >
-> > >
-> > > struct memfd_luo_ser *ser;
-> > > ...
-> > > LUO_SER_INIT_HDR(ser, 0);
-> > >
-> > > Thanks,
-> > > Pasha
-> > >
-> > > >         u64 pos;
-> > > >         u64 size;
-> > > >         u32 seals;
-> > > > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> > > > index 64f8b8cb75bd..ea1f4c8cd259 100644
-> > > > --- a/mm/memfd_luo.c
-> > > > +++ b/mm/memfd_luo.c
-> > > > @@ -84,6 +84,10 @@
-> > > >
-> > > >  #include "internal.h"
-> > > >
-> > > > +static const u8 memfd_luo_features[MEMFD_LUO_FEAT_MAX] = {
-> > > > +       [MEMFD_LUO_FEAT_CORE] = LUO_FEAT_REQUIRED,
-> > > > +};
-> > > > +
-> > > >  static int memfd_luo_preserve_folios(struct file *file,
-> > > >                                      struct kho_vmalloc *kho_vmalloc,
-> > > >                                      struct memfd_luo_folio_ser **out_folios_ser,
-> > > > @@ -284,6 +288,8 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
-> > > >                 goto err_free_ser;
-> > > >         }
-> > > >
-> > > > +       luo_feature_hdr_init(&ser->features, sizeof(*ser),
-> > > > +                            memfd_luo_features);
-> > > >         ser->pos = args->file->f_pos;
-> > > >         inode_size = i_size_read(inode);
-> > > >
-> > > > @@ -525,6 +531,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
-> > > >         if (!ser)
-> > > >                 return -EINVAL;
-> > > >
-> > > > +       err = luo_feature_hdr_validate(&ser->features, memfd_luo_features);
-> > > > +       if (err) {
-> > > > +               pr_err("memfd_luo_ser feature header validation failed (size=%llu, flags[0]=%#llx): %pe\n",
-> > > > +                      ser->features.size, ser->features.flags[0],
-> > > > +                      ERR_PTR(err));
-> > > > +               goto free_ser;
-> > > > +       }
-> > > > +
-> > > >         /* Make sure the file only has seals supported by this version. */
-> > > >         if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-> > > >                 err = -EOPNOTSUPP;
-> > > > --
-> > > > 2.56.0.212.g129ede20d9-goog
-> > > >
+Should KVM_REQ_APICV_UPDATE be processed before KVM_REQ_SCAN_IOAPIC in
+vcpu_enter_guest(), or should kvm_vcpu_update_apicv() reload the EOI exit
+bitmap when re-activating APICv?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022022813.3039=
+78-2-seanjc@google.com?part=3D1
