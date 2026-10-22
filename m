@@ -1,79 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792711683;
-	b=sJ04bBecIbQ8oEPrT9IE0oXMiah3lW5gWZdFpGjo4h0quGSsIDIWbS2rNlzVUOhoIv5V
-	 9U7TjqPGZHV8GXrNkVnmoOlFhgZEuTsu9bvBh6x1SWo6VCale5y7J212A56xrQxk5Q8Je
-	 Rm6iIo67SuHPRVYFLw0Ss5s7QSo695E20ggx9FJSaWpxhUqLyFElhjWSvgzBd//2+EE6f
-	 lRLXo0f9Novbz+EguINL2kZZsiM5mdtvJdI+s5CNDvZXcHD1c85jQpkWWG6BdBDkxHeVy
-	 /YDipmC4l/7rfloEnCpVVi35tLEyKm+nkM9SneTDhJWRPvivq2vmqd9sk95Xd75VL/g==
+	t=1792711680;
+	b=bPSgHkpcuE8THFN3d3+DnxxV0yXKjrWFi233bpQRhtMUf8H/ViPJbwbkYrONPNu62Cmn
+	 DSNe7FlGlC1RU6Tq3BFYfP/CvvCvUahZ+NT+pqWRdoy5iV1Z9FFVPVeud7WzryNRtXSNv
+	 TygikCklSmAF3fUcdItojDsntZt8w6jWr34XNK5Ju0UpbECnAiymswJmWuseT2GkHcXzW
+	 UTQy7IRuDSYKDfeDWeECElh2tPHqahb4gY8yz4iaJnzrX7brvaVIfoEFbL4NbICmQin7a
+	 039JNI0CMnNpQXU5P9/gAqutHasqMOV/IhOiKTPlPK1AaxxmKKnGgPsnArwAfQ1TnpQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792711683;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792711680;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SFdMQT7RD1BLjVi7Ab5eCk5xGexiV+/iCJCFEFzCdRM=;
-	b=zVcOwspHCwJU963K0zEixSiZ2QpWqII38FbydWboqwhsRCWHLDo7ke3M6ZwOCzcEVt2d
-	 GscoSNV4/R0a8MRqqZWjihP/QIb2Yk+e/QiF91JzURidX9kuh1j4UUI4/3MvdtgHJkgXb
-	 zO+PnwplKYy0H82aMN5tLTGk9bCcGwDxcInpWgMcotpXGXzH3voMBgt+3EOzz0dkXGk2y
-	 gXnPsApeIa7/mcJeh430PChKPSCWm93NHg5FLax54wMYpYLZY5vkZ44AWn+li9Mjt0tzW
-	 NjHYSerNSnsR9ocn2A2OLH4jMdVxqzzyqi4/PxaD+xSwa4VFjcwYpAVszVfkShtewYw==
+	bh=oLGRAzrHTlyKv2ey9Nfz52vPbyYUhc+dQ/5AY3SAy8Q=;
+	b=T0roeAHs4IAR2TrcwCKuLxw8kp2P9VL/Nfyn6IkCPaNm5fnWWRpU6cCv3QCGEhnWL6CW
+	 71Kjkp/t/ThdMtRgESqwLqSqgPmEVqyC4qMsnpC68Xbom3c1La1YDN3fyZxQGz5vcPF21
+	 dHBkowdYDRGyIE5ZBBK5huzevz6o/cDKORu/w44FLmJw7ZMnAFtwYf0bJhg7tzu91ir8X
+	 LJfYN6q/7oXK5yTWuRTPhu1frNoPJW3FK62nUF8s7XdKSwUV3Ng1SXwJraEancEQlnglB
+	 1cOGwTaIf2SB/ZNtfEnmLgq/hXNjTYrkuSKE0ICWuZT840LgaiiQvnOUGvsWxDZiUuw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ax7kjaLD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gATrDrbx;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30BE60A6F6C;
-	Thu, 22 Oct 2026 23:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C85260A3833;
+	Thu, 22 Oct 2026 23:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ax7kjaLD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gATrDrbx
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792711682;
-	b=JIBzmE3N9kSkTNa5igaCbfVumYkfGfh8lUc8b2WcdJ19v0GiqVatNhOlqYPE74BfRYRi
-	 GXmTfv09VuXnCp+SnQu2/8bto1/py4dKnkfFnIAmDW8fZ8KVF+113wc3Ut+9aIfqZT+HO
-	 YquRILnyBSMtb9PNBDJJTp1u34uuSmzsuCYDlDnC2pwvy9k9IEjeMvi6ux4UkU3ZKqT5k
-	 LUZ08U0ZhnpLXQF14AP3v+ciMehvZHygfXa89DM51Tc109DdyZtu07VZHIdDfnVIByiRS
-	 GeS8ADJsKxs6EbenyxGg7r+t7L1+Dxh0ore1AxtPb9t4XQrSmqClN6IJMfQb9K8cujA==
+	t=1792711680;
+	b=gx3Xw9cnubfNhhVAZQmycKo9LpSSob6sgZFDGJgScbgsaxc0vA+QDvhsoMLBcIELQRiG
+	 mdn3OSXxWXgxMLzcDA7dDzKs8g+HHI1yEEZlIYWkh2Md5FCHRZOBV2hw/aktbgn6SxQSh
+	 1m28Hmxac7XtkPxAXiduA6l8eI7cNqUVoMQ4vy9QKdNZ1rmI9FMwKV0Q7JhUMWwpB4rGB
+	 eZbPdF0bDj5Dvr7Zx4hgUUW1Wc9mObuwph3tAhE+Sr2F1F+UxIsNKefAC10LA/Ia2U9qA
+	 NIiW155Rc+fJAJHH7CVHaYMh+m19M8jyoWjV7Cb06CMkVf3dPvWGft8pDXL/LtV5caQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792711682;
+	c=relaxed/relaxed; t=1792711680;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SFdMQT7RD1BLjVi7Ab5eCk5xGexiV+/iCJCFEFzCdRM=;
-	b=Ox8XH9s5eoix5QXKNxQirzguuj51DXZR8JX4YG0wdKht4DVfhvul52I/z+0ecny4Ou0c
-	 MiI07fHR92g1HZJkB1djaUNql404THik9CfYAqO0KaqBDWxNamOJYq+BngdMJwDm3X+dJ
-	 kXL4k3Wm64wvJlP85k0HmX5teYOpExz/BvAcsHOIOhTAu+W4PXTRqwiWJHBM5fD92dVwo
-	 mdTh8R35+Z7WriL40DY7NBCPWCkC6xIGbodCChwRCCL+QaBODooi1m5oRJPs/8rgcFB29
-	 s//rO+47TkbwnxwTQtVWOMDnirvwZMPlrDetzREoggx6UQu3MgicRBQ7YNjH6N0YIpg==
+	bh=oLGRAzrHTlyKv2ey9Nfz52vPbyYUhc+dQ/5AY3SAy8Q=;
+	b=AAgLRMk5wf9YVF9Cll+gQ82uDHLguoYPt3SGNBm/fV5qr1i1/ghPEJJCF/JHSTIlQxEg
+	 Q9uABIrHYFMPFCkbDaVhYIVIZxLaC4C88HVJXqe31/uAal84GCopM5rhPGMDQtGzCPMH3
+	 9z1KMTl+7b+8CGbsaFm7D8EJTG4GJAJusXYT0oaojKAt1MmS2XVBGLszOTXlF7l25ffwv
+	 esqI54RzExOgP9KqxMPXgSBwFH8NiAra8p3eyzJXh9Uvmq/z9FvtSxqgdognp0NBfFm4V
+	 5gl8bToBoVWNPu/fM1YQ8D0g91qIHd5uIoSaXzx4u4q8egEg4KB4xkaBXcw2lXs8LbA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B6D301F0119F;
-	Thu, 22 Oct 2026 23:27:56 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 387E51F011A8;
+	Thu, 22 Oct 2026 23:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792711682;
-	bh=SFdMQT7RD1BLjVi7Ab5eCk5xGexiV+/iCJCFEFzCdRM=;
+	s=k20260515; t=1792711680;
+	bh=oLGRAzrHTlyKv2ey9Nfz52vPbyYUhc+dQ/5AY3SAy8Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=ax7kjaLDGnEXjDfPRTML6M4rMu+iY3z/jEBafbjfeMRaQruuj7xhXL71sA25dhKnE
-	 KVRjXR/EbDnX1h9WjO8qpkjmDB38FtwzalE/p7MVcIhroTDllJBEVGLiIzFXdXjVSt
-	 D2543jpHHjMpIuD0IW2Jew0yXxS6hlUrPvu1BHuDqRYQ8Ci8acG5vlJw/VAhuT62gD
-	 BSZpWoMwPdohR1gMt9Rey7M0ihuB5iPW5iql5r9oTe5oDR7tTaheRD7wNHCMpKmNKR
-	 bD7qX5pFg3iYe42PIwpKjmm/tWsVEXfJzmAdQ+F1Aq6e3nOgUE0t9UL8iTEYjqSnC2
-	 g/lO8i0WgpmzA==
+	b=gATrDrbxb/Sc264gZPlQgNJvh2c/BiVODXHQDZjRMlkbiXisC34us8w6N2XjGppz6
+	 o8a7DSeXvo1I0jtnKF7sHEANSqBMFX+P6X6oi6Fqygh3BdRTovnz4dPLseT8/UY4Pv
+	 63BG5ts2BmrTnHHh0JvA4w9N56vvBVx5fVRE/lXBedOLo2IofZ8ystwNbcc9iCZ2Um
+	 1WvmoJgYelUjvkERAXpibUtoR3S6F5Ft8ptGP7q7CNj5dC/OjYiuabObRWYRHB4GQ7
+	 NOMlVbnEXu/AjNwNb9BR1Dsdi/37XdSk769Z6DO3UGFauRTKg9An6AprBCvaCFDm+L
+	 JThEomNtkvAhw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 07BC042083;
+	by lkml.kernel.org (Postfix) with ESMTP id 20C8E4208B;
 	Thu, 22 Oct 2026 23:27:49 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 22 Oct 2026 16:27:48 -0700
-Subject: [PATCH RFC v2 16/50] KVM: selftests: Test that shared tmpfs
- resource pool size limit is respected
+Date: Thu, 22 Oct 2026 16:27:50 -0700
+Subject: [PATCH RFC v2 18/50] KVM: selftests: Document testing TODOs
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +83,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-gmem-alternative-providers-v2-16-5dd1dc6c660a@google.com>
+Message-Id: <20261022-gmem-alternative-providers-v2-18-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 To: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
@@ -135,11 +134,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=1067;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=1090;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=AQwSKZXbF8L/tHqgweqYig9l72GDNK/MpFua+P6X8zs=;
- b=Ix5H+hGnyoYH44QhEgu0GyppTZeI87NZ0i8CAhkmNXUohK1DTTmtPG1CNQeel0FhoQmoNccUc
- awsMx9bB7tVBkeyCpQkk3kfTmR1/3L29+gJM1r0yvmt9sTiCVc5Hiwh
+ bh=godniHxo7p4sYODKlWAWDg9KeRfwB6fIAgZfycigz1Q=;
+ b=R/i8dl0tqQod9u3IUnuGkBBKRl2LJ9IKnGENBg55uwgkzUZW5KjiPzoLy20NMDOZmJNRCJmxC
+ qpTDu1tB11kDJPvQLZ9ngBvCkOGGIMqds0dr+HS7ETGioatdbrFK0Wy
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -150,30 +149,34 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Verify that allocating memory across guest_memfd instances sharing a
-tmpfs resource pool fails with ENOSPC when the total allocation exceeds
-the pool capacity.
+Remind myself about all the tests (A)I did not write.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/kvm/guest_memfd_test.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 639b1b0c204ed..20de24ad535f1 100644
+index 8e9261db23354..fd249445ce3cc 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -604,6 +604,10 @@ static void test_resource_fd_tmpfs_shared_pool(struct kvm_vm *vm)
- 	TEST_ASSERT(!fstatvfs(pool_fd, &svfs), "fstatvfs on pool_fd should succeed");
- 	TEST_ASSERT_EQ(svfs.f_blocks - svfs.f_bfree, 2);
+@@ -701,6 +701,16 @@ static void test_guest_memfd(unsigned long vm_type)
  
-+	ret = fallocate(fd2, FALLOC_FL_KEEP_SIZE, page_size, page_size);
-+	TEST_ASSERT(ret < 0, "fallocate exceeding pool capacity should fail");
-+	TEST_ASSERT_EQ(errno, ENOSPC);
-+
- 	close(fd2);
- 	close(fd1);
- 	close(pool_fd);
+ 	test_guest_memfd_flags(vm);
+ 
++	/*
++	 * TODO: Test that guest_memfd creation rejects a read-only tmpfs mount
++	 * (e.g. MOUNT_ATTR_RDONLY) with EROFS.
++	 *
++	 * TODO: Test that guest_memfd creation rejects an ID-mapped tmpfs mount
++	 * (e.g. MOUNT_ATTR_IDMAP) lacking write or execute/search permissions
++	 * with EACCES.
++	 *
++	 * TODO: Test mpol fallback to mount config.
++	 */
+ 	test_resource_fd_invalid(vm);
+ 	test_resource_fd_unsupported_fs(vm);
+ 	test_resource_fd_memfd(vm);
 
 -- 
 2.56.0.257.gf7497c7d27-goog
