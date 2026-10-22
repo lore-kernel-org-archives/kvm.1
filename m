@@ -1,74 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792708717;
-	b=2blArAR6CEXsbDTpHw3eaY2yefl6rVwSABG4cujsxfzQFxaqkzI0cYAM9qQe/CoGT/EJ
-	 KqYl/3QNHMjKT/DLWbj/tzQF+ejnn1fC+lqiAkT0z9h+t8A9TaYfkjS6XHCCwIFdRDXBh
-	 ONfoZO50v8UHbtBcdrEvnUnGxiHtoHk3Gg0swHuvcfKHx6NY8yoyo0fE4kcZRHf3hNYvR
-	 ourMwTDBFencVcFHmL6IVWIw87JYiAMuPia3lPaosLJIyy8IkkvkKA2M8dI956bJM/38s
-	 4UZ7YruY9acvMBVWqYWou1DqbrEW1ZfhCcaezjih4HEHSAPoKZZDJzV3Sl8l1yT9tqg==
+	t=1792708724;
+	b=wORhfPrAH2FRW/Vkec83d/2xQloA5oM2cG8rGccGdktUtahnJE4lTzuNzdAyguWcAbH7
+	 eKWT2dHFQBc3dr2XXgNE4oY97EYr/ciYyVZUdHfdyeM+ispg8dgkFA14tURY3MVnCk9mz
+	 4InU3sDXE7F5GSGD1l/LQ4LJ8SQTFxYwOjZihCtvvxja4EoKH6YvYkka9BDPvBs9FBhgH
+	 nClAZbDfPt4DROuNtInrc6R4ovkZtqy3mSh7MstG6SiTj7X8B0YxptcB5pz4ASgCJ6wQF
+	 4oHoxwLckkCFgEQoVb++2W0F0Tvzf5KJcBLBbxe5BEDD76aY/TgxiSALf6ai+gxd2zg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792708717;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=G7VsWhr2M8RMRhhdUxV4+ISLGkrYm6GOFfsNhoHkbFw=;
-	b=DpVhoj2SqtjgrJvps5yXvWi7PDxl5JITYeVACqqkXB2o2/ILPX/RD6YR1JLwJonGBT5+
-	 LkxwdJU/0Xkb9c1KuE9iQK8e03qeIqwX4MWSEdy/gMS3HV2rxAUMO8Vp335TFq2YljiJc
-	 wjadAXngYg1DygTSjLtxDfOQOJSxKZGCuOqoYgHUpSt9BH4Lt2OmvQzC1Zzx7f3/60qOE
-	 S0kbt4a5D7FtI31ZkvvmjkOMQI8yeIHnJfc78JkZPay4hq6Utq8Yk/mGfGMh4Y5WuiIfP
-	 XAC6ZVRfLBkJAYRv3q9btR6elcwyzmIs8r3OiBKGTAoh8NoDKQVMEfs3M4Kns3j6j5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792708724;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=grkQROvlVwy9sQSzhGpSmDLgHZfoBy2B+4Le3+SCc10=;
+	b=gdxDAq2T/vHRRnhsTXeJpCxc92o1gjl3e/VUxgk8l1iFaDaMsTYX+rKVydYMrMOqooq3
+	 sau2mLyYMwpsmrnTzdEfm65hnGx7iAzt7XT/sSennRG7KKoXamhLFXEYycNI+FbXUIsXb
+	 E5S+YmI8DfwIsJL+eWPOgbMm+m4UMU1dros3MLPxMhmHPeUphI74WA79wQmX/Ol3wcTp2
+	 nyZi6BNa+pHv5bMtkcpC7Vf5TGeSCTMyyBCIz0nDyq7xX/DCwf87skR6jRfk4KTOCatX4
+	 YNYCT3aE9VOOXVAF8ipKbMD8YYONoQRT1vcTGP6zT8iOJ4O4qrg+pbwSWDRTmH2U+XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cispa.de;
-	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=mCOPszip;
-	arc=none smtp.remote-ip=134.76.10.21
-Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gA1VP2lV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61974606A319;
-	Thu, 22 Oct 2026 22:38:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61974606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0BF606A321
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 22:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=mCOPszip
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:
-	Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=G7VsWhr2M8RMRhhdUxV4+ISLGkrYm6GOFfsNhoHkbFw=; b=mCOPszipBEd6qJ15mzHUuH8MYk
-	99vV2TQm+CD3YK7Jz/7MAqRRjtDqOXtX3sWmIDrJdf83LDGcZP1wqPAEYFHRyDOMVhlV03AHT1z+O
-	IfLGODgfUbuFjr7aZhm99WPBfDpf0IF4uXuJ3EPe7Pjp+kFpLL1qSi5czbTC2a+B7bW9L/pZ8yoGk
-	N0I+iOGy9lRzzGfw+JwgLqkpd8icmDJQmNKOJiX5p6rhgblfOOcIlzPaBfkphERarbBdTnGGbOtdY
-	poz3c19s0471uazADTv3hOkPjUYo0d46f0Hy+m4oWKTkG7Lu+BeRlNkJxj2Z36uU5m0FRsnFohXWK
-	j9AueYxQ==;
-Received: from mailer.gwdg.de ([134.76.10.26]:43348)
-	by mailer.gwdg.de with esmtp (GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xK1Qg-00ECOo-2X;
-	Fri, 23 Oct 2026 00:38:34 +0200
-Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
-	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-	(GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xK1Qg-000Ar4-1D;
-	Fri, 23 Oct 2026 00:38:34 +0200
-Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
- (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 23 Oct
- 2026 00:38:27 +0200
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amirmohammad.eftekhar@cispa.de>
-Subject: [PATCH] KVM: nVMX: Restore L2's DEBUGCTL/BNDCFGS/CET from vmcs12 on RSM and nested state restore
-Date: Fri, 23 Oct 2026 00:38:20 +0200
-Message-ID: <20261022223820.8279-1-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gA1VP2lV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31B51F01828;
+	Thu, 22 Oct 2026 22:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792708723;
+	bh=grkQROvlVwy9sQSzhGpSmDLgHZfoBy2B+4Le3+SCc10=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=gA1VP2lVrOiN5n4OyvJQU4bw/nVmJw06Kh52E05bbo3OKcYRxBbFycMNf/mn9QhTp
+	 sJVXNk7OklNNBvJAs/kN7vK+DCy4sKdhqj7OjyIQAZHHlkvxyK8PHa3+MUD74evIWk
+	 UDuS72kHPbx66jNkygrsLqIeNKklIUueIE2MUMI/D2ClNC5hc+smddTJfinO/Lxx5w
+	 LjH2rrK2pLpLt+mD++Za/chyG465c6CDNO/2QCmYWbIN7YcHf8GyudMyvMUihJj+8u
+	 RUVcxBgoxKqXwB1yV7d4vd54X84JAwhlcS3rcTD0uc6LloxoGIQWNm7tw9KS+RKfxv
+	 VpZskqk3DEneg==
+Message-ID: <sashiko-outbox-182126@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/4] Revert "KVM: x86: Skip EFER vs. guest CPUID checks
+ for host-initiated writes"
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261022223052.646891-2-seanjc@google.com>
+References: <20261022223052.646891-1-seanjc@google.com>
+ <20261022223052.646891-2-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 22:38:43 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,108 +60,159 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mbx19-gwd-01.um.gwdg.de (10.108.142.50) To
- mbx19-gwd-01.um.gwdg.de (10.108.142.50)
-X-Virus-Scanned: (clean) by clamav
-X-Spam-Level: -
 
-nested_vmx_enter_non_root_mode() snapshots the guest's DEBUGCTL, BNDCFGS
-and CET state (S_CET/SSP/SSP_TBL) into vmx->nested.pre_vmenter_* so that
-prepare_vmcs02() can preserve into vmcs02 any of those fields that VM
-entry leaves unchanged, i.e. whose VM_ENTRY_LOAD_* control is clear.  The
-snapshot reads the currently loaded VMCS.
-
-That is correct for VMLAUNCH/VMRESUME: the active VMCS is vmcs01, and
-when VM entry does not load a field L2 does inherit L1's value for it.
-It is wrong for the two from_vmentry == false callers -- RSM back into L2
-(vmx_leave_smm()) and KVM_SET_NESTED_STATE -- because there the active
-VMCS is still vmcs01, holding L1's live state, while the state L2 must
-resume with lives in vmcs12.  On RSM the pre-SMI values were put in
-vmcs12 when the SMI forced the L2 -> L1 exit (CET via
-sync_vmcs02_to_vmcs12(), DEBUGCTL/BNDCFGS tracked in vmcs12 as L2 updates
-them); on nested state restore vmcs12 is the state userspace supplied.
-
-So after an SMI taken while L2 is running, followed by RSM -- a sequence
-entirely under the guest's control -- or after a restore, L2 resumes with
-L1's DEBUGCTL, BNDCFGS and CET instead of its own whenever L1 left the
-corresponding VM_ENTRY_LOAD_* control clear.  Nothing rejects it: the
-physical VM entry sees a legal vmcs02 (the stale values are valid, just
-not L2's), so the state is silently wrong rather than faulted.
-
-Source the snapshot from vmcs12 on the !from_vmentry paths.
-
-Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
----
-Notes (not for the commit message):
-
- - Fidelity/correctness bug: the victim is L2 and the entity that both
-   owns L1 and drove the SMI is L1, so this is L1 corrupting its own L2,
-   not a privilege-boundary crossing -- not memory-safety and not
-   guest -> host.  It is a concrete instance of the existing in-tree
-   "L2's values may be corrupted on SMI+RSM" TODO near vmx_enter_smm().
- - The same snapshot bug applies to the KVM_SET_NESTED_STATE restore
-   path, which this fixes too.
- - DEBUGCTL/BNDCFGS have read the active VMCS here for a long time; the
-   CET arm is newer.  Happy to add whatever Fixes:/Cc: stable scope you
-   prefer rather than guess the split.
- - Verified against mainline (v7.3-rc6) and kvm-x86/next; please confirm
-   it still applies on your tree, I will rebase if needed.
-
- arch/x86/kvm/vmx/nested.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 151873407ab..c51dcb1cb8d 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3650,19 +3650,38 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
-
- 	kvm_service_local_tlb_flush_requests(vcpu);
-
-+	/*
-+	 * Snapshot the state that VM-Enter leaves unchanged when the matching
-+	 * VM_ENTRY_LOAD_* control is clear, so it can be restored into vmcs02.
-+	 * On VM-Enter the active VMCS is vmcs01 and its guest state is what L2
-+	 * inherits.  On the !from_vmentry paths (RSM back into L2, and
-+	 * KVM_SET_NESTED_STATE) the active VMCS is still vmcs01, i.e. holds
-+	 * L1's state, whereas L2's state lives in vmcs12 -- read it from there
-+	 * so that resuming L2 doesn't clobber its DEBUGCTL/BNDCFGS/CET with
-+	 * L1's values.
-+	 */
- 	if (!vcpu->arch.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
--		vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();
-+		vmx->nested.pre_vmenter_debugctl = from_vmentry ?
-+			vmx_guest_debugctl_read() : vmcs12->guest_ia32_debugctl;
- 	if (kvm_mpx_supported() &&
- 	    (!vcpu->arch.nested_run_pending ||
- 	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
--		vmx->nested.pre_vmenter_bndcfgs = vmcs_read64(GUEST_BNDCFGS);
-+		vmx->nested.pre_vmenter_bndcfgs = from_vmentry ?
-+			vmcs_read64(GUEST_BNDCFGS) : vmcs12->guest_bndcfgs;
-
- 	if (!vcpu->arch.nested_run_pending ||
--	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_CET_STATE))
--		vmcs_read_cet_state(vcpu, &vmx->nested.pre_vmenter_s_cet,
--				    &vmx->nested.pre_vmenter_ssp,
--				    &vmx->nested.pre_vmenter_ssp_tbl);
-+	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_CET_STATE)) {
-+		if (from_vmentry) {
-+			vmcs_read_cet_state(vcpu, &vmx->nested.pre_vmenter_s_cet,
-+					    &vmx->nested.pre_vmenter_ssp,
-+					    &vmx->nested.pre_vmenter_ssp_tbl);
-+		} else {
-+			vmx->nested.pre_vmenter_s_cet = vmcs12->guest_s_cet;
-+			vmx->nested.pre_vmenter_ssp = vmcs12->guest_ssp;
-+			vmx->nested.pre_vmenter_ssp_tbl = vmcs12->guest_ssp_tbl;
-+		}
-+	}
-
- 	/*
- 	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] kvm: x86: set_efer() revert breaks test_host_initiated_lmsle() a=
+nd api.rst
 --
-2.54.0
 
+commit f8fc3a0796b0b21e716b9ed0c1fcf3c9297d569f
+Author: Sean Christopherson <seanjc@google.com>
+
+Revert "KVM: x86: Skip EFER vs. guest CPUID checks for host-initiated write=
+s"
+
+This commit reverts commit 11988499e62b ("KVM: x86: Skip EFER vs. guest CPU=
+ID
+checks for host-initiated writes") so that set_efer() unconditionally valid=
+ates
+EFER against guest CPUID capabilities and CR0.PG even for host-initiated
+MSR_EFER writes.
+
+> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+> index e91650af44c20..2df42276fd826 100644
+> --- a/arch/x86/kvm/msrs.c
+> +++ b/arch/x86/kvm/msrs.c
+> @@ -580,8 +580,11 @@ static int do_get_feature_msr(struct kvm_vcpu *vcpu,=
+ unsigned index, u64 *data)
+>  				 kvm_get_feature_msr);
+>  }
+> =20
+> -static bool __kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer)
+> +bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer)
+>  {
+> +	if (efer & ~kvm_caps.supported_efer_bits)
+> +		return false;
+> +
+>  	if (efer & EFER_AUTOIBRS && !guest_cpu_cap_has(vcpu, X86_FEATURE_AUTOIB=
+RS))
+>  		return false;
+> =20
+> @@ -610,33 +613,18 @@ static bool __kvm_valid_efer(struct kvm_vcpu *vcpu,=
+ u64 efer)
+> =20
+>  	return true;
+>  }
+> -
+> -bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer)
+> -{
+> -	if (efer & ~kvm_caps.supported_efer_bits)
+> -		return false;
+> -
+> -	return __kvm_valid_efer(vcpu, efer);
+> -}
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_valid_efer);
+> =20
+> -static int set_efer(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+> +static int set_efer(struct kvm_vcpu *vcpu, u64 efer)
+>  {
+>  	u64 old_efer =3D vcpu->arch.efer;
+> -	u64 efer =3D msr_info->data;
+>  	int r;
+> =20
+> -	if (efer & ~kvm_caps.supported_efer_bits)
+> +	if (!kvm_valid_efer(vcpu, efer))
+>  		return 1;
+> =20
+> -	if (!msr_info->host_initiated) {
+> -		if (!__kvm_valid_efer(vcpu, efer))
+> -			return 1;
+> -
+> -		if (is_paging(vcpu) &&
+> -		    (vcpu->arch.efer & EFER_LME) !=3D (efer & EFER_LME))
+> -			return 1;
+> -	}
+> +	if (is_paging(vcpu) && (vcpu->arch.efer & EFER_LME) !=3D (efer & EFER_L=
+ME))
+> +		return 1;
+
+[Severity: Medium]
+Does reverting this check break test_host_initiated_lmsle() in
+tools/testing/selftests/kvm/x86/svm_nested_efer_test.c and leave
+Documentation/virt/kvm/api.rst out of date?
+
+Commit 7358d13e1f19 ("KVM: x86: Honor the guest's EFER_LMSLE_MBZ") and comm=
+it
+34f749161dab ("KVM: selftests: Add coverage for the EFER_LMSLE_MBZ defeatur=
+e")
+were added after commit 11988499e62b ("KVM: x86: Skip EFER vs. guest CPUID
+checks for host-initiated writes"), when set_efer() skipped __kvm_valid_efe=
+r()
+for host-initiated writes.
+
+With this revert, host-initiated MSR_EFER writes via KVM_SET_MSRS take the =
+path
+kvm_arch_vcpu_ioctl() -> msr_io() -> kvm_set_msr() -> kvm_set_msr_common() =
+->
+set_efer() -> kvm_valid_efer(), which rejects EFER_LMSLE when
+X86_FEATURE_EFER_LMSLE_MBZ is set in guest CPUID:
+
+arch/x86/kvm/msrs.c:kvm_valid_efer() {
+	...
+	if (efer & EFER_LMSLE &&
+	    guest_cpu_cap_has(vcpu, X86_FEATURE_EFER_LMSLE_MBZ))
+		return false;
+}
+
+On AMD SVM hosts that support EFER.LMSLE, test_host_initiated_lmsle() in
+tools/testing/selftests/kvm/x86/svm_nested_efer_test.c sets
+X86_FEATURE_EFER_LMSLE_MBZ and then asserts that a host-initiated write of
+EFER_LMSLE succeeds:
+
+tools/testing/selftests/kvm/x86/svm_nested_efer_test.c:test_host_initiated_=
+lmsle() {
+	...
+	vcpu_set_cpuid_feature(vcpu, X86_FEATURE_EFER_LMSLE_MBZ);
+	...
+	vcpu_set_msr(vcpu, MSR_EFER, efer | EFER_LMSLE);
+	TEST_ASSERT_EQ(vcpu_get_msr(vcpu, MSR_EFER), efer | EFER_LMSLE);
+}
+
+Because set_efer() now returns 1 on that write, vcpu_set_msr() fails and ab=
+orts
+the selftest (and neither this patch nor follow-up patch 4/4 in the series
+updates test_host_initiated_lmsle() or the related comment in
+test_sregs_lmsle()).
+
+In addition, Documentation/virt/kvm/api.rst under "Long mode segment limits"
+still states:
+
+  Note, ``KVM_SET_MSRS`` is exempt from the check, as host-initiated MSR wr=
+ites
+  skip guest CPUID checks so that userspace can set MSRs before it sets gue=
+st
+  CPUID.  ``KVM_SET_SREGS`` and nested VMRUN are not exempt.
+
+And efer_trap() in arch/x86/kvm/svm/svm.c still references the removed
+__kvm_valid_efer() helper in its comment:
+
+  * Clear the EFER_SVME bit from EFER. The SVM code always sets this
+  * bit in svm_set_efer(), but __kvm_valid_efer() checks it against
+  * whether the guest has X86_FEATURE_SVM - this avoids a failure if
+  * the guest doesn't have X86_FEATURE_SVM.
+
+Should test_host_initiated_lmsle(), Documentation/virt/kvm/api.rst, and the
+comment in efer_trap() be updated to match the restored set_efer() behavior?
+
+[ ... ]
+
+>
+>  	efer &=3D ~EFER_LMA;
+>  	efer |=3D vcpu->arch.efer & EFER_LMA;
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022223052.6468=
+91-1-seanjc@google.com?part=3D1
