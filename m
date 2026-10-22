@@ -1,56 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792709747;
-	b=vQQ4b9t5rORxUTv9+Mg8pkaQt7+mKYnYLbRJY18HoowqQwmoRaoI6hrJecVt8IphmUCh
-	 gQ6E1/BYyJVG8FSCXjPV7dsJ+ZZ7/2YibXmE3VGqkR/8aNrI7FAWrEJ+/j1I7/MMTanyZ
-	 hf4fJj9Ey4NRLdiLLaxp8PciPdAyzJuz7Cq87kTnVSlbLMayDd6h20XZprW4yrWWjKTGG
-	 S6vAzFk1c4DjoCLBtwtLwf30tNFTioJ6u8+qkCvLcCWRfCbqBwO8d3Imm66C78QPv4BDD
-	 x2kugOLptwTcPd2rrC1hev4OmkOQ9C7YTnisa9uD+lyf/Sq8aKFaXAxMT1GiXHYY9Eg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792709747;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=jSCtG7IxjvJS4+IQPxTygLHz3YkJirajV2SES94EPV4=;
-	b=E9/6P7o9WXcKrmqW8p6tAZeC2+2GeFZvAJZadWsdv4Ou8NSNcYHhTzgDDDHC4E5XWSAc
-	 Zdgckj4tG2xNxLUIbA4wLvNek8aSOo6oVqlV3mLRMRhtcSW1PrsnWGqHsNeZfWcQ5GXH2
-	 JWX5zJeS0s6PJs+q4EZA3QJo+Vtq6+HGaNQkd5ZyqIUeDZIsbgY2X9gyvSyNVtZovbrLN
-	 cIGK7zXsMZV3Cen7IwnwukodLgSTCCU7YnFvmIpLiVvZVHjkgqx5SRXeYPTTQLoB5Xhbg
-	 0rufQ6DuJdhj2mSmgFaaH6qbsdrZaS4+sr5fAxT29SH0xj3gYwnktXfYvRb/OsjTEkQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B0nL4M17;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792711673;
+	b=CyE7RQQkTDGhMPwMXgOE/SyIwRp+Z1qLuV/FG4plkNgOF6cssVegeIHlPDTQGbBIDfBI
+	 uISgT9ujlIXFpf8qAYFWq0YLvXfccy37EgB+FjyyH4yBRItbonld0qZdBEFX0EGPbgxao
+	 ohE0VoWGTQh18VfiNcS07EbkManXsWJjTgZEoW5WPU+BRNVahHURaMjTShVr00MAdUixV
+	 gREaWzN5k38UCB/CzfEjt3p9mP3lIYjyDbqJbmOxEa6NV6Pw34Ro5TM+VpQpbEw6mbBRT
+	 OgIKH9DJ+Mmxj5BuVsiFkq5wJpwLPIWDzvxs4TnZ/cH48Hd11VmSYoFj3oYuq2oUqpQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792711673;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=c2XaHicd3RQVicZnU+2gKJYlk0Hf6Vfb+nO23lyEM/w=;
+	b=CnzM7u8KLcNERCxtBsqcqqQR+VSHt2tEG9tpnEKAtZO7S8G6C7rO4deRBgyWNxm4OXQb
+	 eoSFIxDSePWtXS5833hvhNoF3BWEM9T8tmo5TvRBA1czdLIkUYsEObTiSaqzGMk6gaheO
+	 Ngjv2GdnDdkLhd68v8b7vc3zD4x65e6nElNMlxIczwax40Wr6S9Z1zlDhTKSChaHp/2kJ
+	 y3KMJhrfVIas8MK6c6goIsDygKYwJHzPkrH1XQNQ7Aatb8ybPbkk5yEge7gQPveHBHIEX
+	 p5s7ZmadHYNCX3hzH7ZFpgciBSkbU+ivJGbVp6CXhrydksKwBavDwnMLkZLzl68Wj2g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KYznopac;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB713606A322
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 22:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB1260A2607;
+	Thu, 22 Oct 2026 23:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B0nL4M17
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4951F01829;
-	Thu, 22 Oct 2026 22:55:46 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KYznopac
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792711672;
+	b=sdpAmBAGcv/hpQoMISxkqt82plYm7syHRGhIzNZdL5cgVEXoT9c0e+lDhAqvtTIKmvcE
+	 qZ3cICAtLfXrOnEB3NU4N8EkoyHQJSwRpD6Gcd5zDt3J61RSITw+bWn+v7uGjTwFaepOO
+	 UFwc0U1eusw5798FkPneb5pu4ZAv5nYPU6xyir4/soNH48SpN/yGX/zZWP7K0vGTQjvfV
+	 fqBtkiP2iQ6s6/wr2YWgL4voEfQ/oZKjBLUXHfM2SQPbSBOAAVXdEoF13Pd84nzs1goA/
+	 1KPnMWxwM+1jTmvU/H3PlvSlFC1/+SWVx0E+rnB6y3TuI/8OoZKRB/b8hG8uH/U1GJg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792711672;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=c2XaHicd3RQVicZnU+2gKJYlk0Hf6Vfb+nO23lyEM/w=;
+	b=Wbqm7kbPwIh42Iv+oboeh/zRBL7icPPKeL+IZBbYZP/44yuQSSRsTKmwfDzMG10vWBd5
+	 hzklZoXxsHc9B7ZG9uAKCv+FRb07Z7tJ0u+jInxHkhO5i6MA/234id2IAOzFoPdTqxnXS
+	 eg1EUjBw3ablpiVHWWnlvKjtBCa+B57Nm3pDLlJ7Fc3GQ0Yh1J3hOEoynIJGmvr9HvKXs
+	 S0SvcKBe0DHlk1/WUm7H75V1VfsyDRJm/leMrZk6QnZkvajoQkXoPJBQf0UoWXgIqPn0+
+	 E2fLoHBi2y+vabGX9ln1LfPPkIt6wqpoVWVszEyDq2NmiYOc4bsMJZl2jsUj1TooMVQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 234611F031F3;
+	Thu, 22 Oct 2026 23:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792709746;
-	bh=jSCtG7IxjvJS4+IQPxTygLHz3YkJirajV2SES94EPV4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B0nL4M17Go7wFegggJ/AKRuN4js1ioVlCC0Uyv5+NzQ0FoNE0cLBjXH8VZC/kNIp9
-	 28vDhZ0yg1BHzVaRvqnypKK4Cdz3MBTwGoHf5Azf1H3u8lim/aMLYbFGIHL1ooILlY
-	 IPtKYdwMb1DCM1FK7k/YG+6zuP1TtForpElKRYL8jvDh35jH90BqbrJPWrFM1vP/Tl
-	 gnOaQwM3FC3X28gnm4EgjaiSqZbwKWRLaDeIhWwDilzVxNs2ATWEFS9ETii2YWDL3e
-	 fQKlZN2SHyTKep4e6tChnLuUsuX2NQe51Xd4Q5Gz9La3nUQ8mDiTjib8XtO8boLhlS
-	 /lYcObGY9uhpg==
-Message-ID: <sashiko-outbox-182138@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: nVMX: Restore L2's DEBUGCTL/BNDCFGS/CET from
- vmcs12 on RSM and nested state restore
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amirmohammad Eftekhar" <amirmohammad.eftekhar@cispa.de>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261022223820.8279-1-amirmohammad.eftekhar@cispa.de>
-References: <20261022223820.8279-1-amirmohammad.eftekhar@cispa.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 22:55:45 +0000
+	s=k20260515; t=1792711672;
+	bh=c2XaHicd3RQVicZnU+2gKJYlk0Hf6Vfb+nO23lyEM/w=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=KYznopacLAZs+FjHyw4fx/r1+PG3TLJa8Vz3MO+c8NdNcnntjMu21TQOSvWxIKcGH
+	 NmdVaOrsIG0wqiFqUCii0C3i/EsI65whkOAIHOwc+is8dfRzOVy+5mnvLhbRE7VuvC
+	 II11baqN8G/7HACu8TlzdCKI53gpwn6VrN5+sQ+HJEMOcfkxsy3ieeGf/coT/YKsYV
+	 FJ1eFuR8g0X3xO5AFnkxmm/9E1z1IoLQE4hAMbVKrP/bttRwujXPQLnX/aIEKSmUiy
+	 EZHKEtr8Fy921yqrNZCyOcw1KoKdvOsdf6Wup9lthDNJq6L87a/Z0E77wmjQxXyqzt
+	 zaI900aTGx1Kg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 6A11E4204D;
+	Thu, 22 Oct 2026 23:27:48 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Thu, 22 Oct 2026 16:27:36 -0700
+Subject: [PATCH RFC v2 04/50] KVM: guest_memfd: Support provider folio
+ invalidation
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,311 +82,164 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261022-gmem-alternative-providers-v2-4-5dd1dc6c660a@google.com>
+References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+To: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Alexey Kardashevskiy <aik@amd.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Ashish Kalra <ashish.kalra@amd.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Baolu Lu <baolu.lu@linux.intel.com>, Bill Wendling <morbo@google.com>, 
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Christian Brauner <brauner@kernel.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Connor Williamson <connordw@amazon.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
+ David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
+ Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
+ Fred Griffoul <fgriffo@amazon.co.uk>, Fred Griffoul <griffoul@gmail.com>, 
+ Gregory Price <gourry@gourry.net>, "H. Peter Anvin" <hpa@zytor.com>, 
+ Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@redhat.com>, 
+ Jacob Pan <jacob.pan@linux.microsoft.com>, 
+ James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Jianxiong Gao <jxgao@google.com>, 
+ Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
+ John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Justin Stitt <justinstitt@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+ Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Pratyush Yadav <pratyush@kernel.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Robin Murphy <robin.murphy@arm.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+ Steffen Eiden <seiden@linux.ibm.com>, Steven Price <steven.price@arm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
+ Vishal Annapurve <vannapurve@google.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
+ Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
+ Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=3364;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=pOpRjHf5uMOxgtWpi+y9tHx9LFOGMZVb62SpcPM8kAs=;
+ b=vLwqcufTXFcP6D3c7Xlx1gPvTqIK7do8KFXsvGWNoKx6PNHZuiTN5j5zRaUPTc1ah71428kl4
+ idyPlT0GodsAejJRsUI7uldFOvCZD5ylSwDRPPb/sVqn0//iiwhcJdR
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] KVM: nVMX: nested_vmx_enter_non_root_mode() clobbers MSRs on neste=
-d restore
-- [High] KVM: nVMX: nested_vmx_enter_non_root_mode() loads unsynced vmcs12 =
-on RSM
-- [High] KVM: nVMX: unmasked pre_vmenter_debugctl triggers WARN_ON_ONCE()
-- [High] KVM: nVMX: nested_vmx_enter_non_root_mode() loads unvalidated vmcs=
-12 state
---
+From: Ackerley Tng <ackerleytng@google.com>
 
-commit 82cdff7353032b10db8c74a6ee8e324f714ba70b
-Author: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+tmpfs increments the total number of used pages on the mount at allocation
+time, so that number has to be decremented when the folio is removed from
+tmpfs' ownership.
 
-KVM: nVMX: Restore L2's DEBUGCTL/BNDCFGS/CET from vmcs12 on RSM and nested =
-state restore
+In this model where guest_memfd allocates from a tmpfs mount, I believe we
+should respect the limits set in the mount, hence I require .alloc_folio()
+to increment.
 
-This commit updates nested_vmx_enter_non_root_mode() to snapshot
-pre_vmenter_debugctl, pre_vmenter_bndcfgs, and CET state from vmcs12 instead
-of vmcs01 when from_vmentry is false.
+.invalidate_folio() is then the counterpart to .alloc_folio(), for undoing
+any provider-specific per-folio work during allocations.
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index b252168627408..2847415500c2e 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -3647,19 +3647,38 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
-t_mode(struct kvm_vcpu *vcpu,
-> =20
->  	kvm_service_local_tlb_flush_requests(vcpu);
-> =20
-> +	/*
-> +	 * Snapshot the state that VM-Enter leaves unchanged when the matching
-> +	 * VM_ENTRY_LOAD_* control is clear, so it can be restored into vmcs02.
-> +	 * On VM-Enter the active VMCS is vmcs01 and its guest state is what L2
-> +	 * inherits.  On the !from_vmentry paths (RSM back into L2, and
-> +	 * KVM_SET_NESTED_STATE) the active VMCS is still vmcs01, i.e. holds
-> +	 * L1's state, whereas L2's state lives in vmcs12 -- read it from there
-> +	 * so that resuming L2 doesn't clobber its DEBUGCTL/BNDCFGS/CET with
-> +	 * L1's values.
-> +	 */
->  	if (!vcpu->arch.nested_run_pending ||
->  	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
-> -		vmx->nested.pre_vmenter_debugctl =3D vmx_guest_debugctl_read();
-> +		vmx->nested.pre_vmenter_debugctl =3D from_vmentry ?
-> +			vmx_guest_debugctl_read() : vmcs12->guest_ia32_debugctl;
+.invalidate_folio() requires mapping_set_release_always(). Not sure how odd
+it is to use that mapping flag.
 
-[Severity: High]
-Can assigning the unmasked vmcs12->guest_ia32_debugctl to
-vmx->nested.pre_vmenter_debugctl here trigger the host WARN_ON_ONCE() in
-vmx_guest_debugctl_write() and write host-owned or unsupported bits into
-vmcs02?
+Using .free_folio() is hard because folio->mapping is NULL by then, so I
+can't reach provider information. The provider information could also be
+stuffed in folio->private? What do people think of that?
 
-In arch/x86/kvm/vmx/vmx.c, vmx_leave_smm() calls
-nested_vmx_enter_non_root_mode(vcpu, false) before setting
-vcpu->arch.nested_run_pending (and nested_run_pending is also 0 in
-vmx_set_nested_state() unless KVM_STATE_NESTED_RUN_PENDING is set):
+Another alternative would be to use a custom truncation function in
+guest_memfd, just like shmem_truncate_range() or shmem_undo_range(). The
+con is that guest_memfd might at some point support more generic mm stuff
+like swap/reclaim, of some form? Or maybe never? Shall we go custom now and
+unify later? Or just not think too far ahead?
 
-arch/x86/kvm/vmx/vmx.c:vmx_leave_smm() {
-    ...
-	if (vmx->nested.smm.guest_mode) {
-		vmx->nested.smm.guest_mode =3D false;
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ virt/kvm/guest_memfd.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-		ret =3D nested_vmx_enter_non_root_mode(vcpu, false);
-		if (ret !=3D NVMX_VMENTRY_SUCCESS)
-			return 1;
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 545c3e646e9c1..ee823f2ef0368 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -113,6 +113,13 @@ static struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
+ 	return ERR_PTR(-EOPNOTSUPP);
+ }
+ 
++static void gmem_provider_invalidate_folio(struct gmem_inode *gi,
++					   struct folio *folio)
++{
++	if (gi->provider_ops && gi->provider_ops->invalidate_folio)
++		gi->provider_ops->invalidate_folio(gi->provider, folio);
++}
++
+ #define kvm_gmem_for_each_file(f, inode) \
+ 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
+ 
+@@ -213,6 +220,7 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 
+ 	r = filemap_add_folio(inode->i_mapping, folio, index, GFP_KERNEL);
+ 	if (r) {
++		gmem_provider_invalidate_folio(GMEM_I(inode), folio);
+ 		folio_put(folio);
+ 		if (r == -EEXIST)
+ 			goto retry;
+@@ -942,10 +950,24 @@ static void kvm_gmem_free_folio(struct folio *folio)
+ }
+ #endif
+ 
++static void kvm_gmem_invalidate_folio(struct folio *folio, size_t offset,
++				      size_t len)
++{
++	struct inode *inode = folio->mapping->host;
++	struct gmem_inode *gi = GMEM_I(inode);
++
++	/* guest_memfd only allows truncating full folios. */
++	if (WARN_ON_ONCE(offset != 0 || len != folio_size(folio)))
++		return;
++
++	gmem_provider_invalidate_folio(gi, folio);
++}
++
+ static const struct address_space_operations kvm_gmem_aops = {
+ 	.dirty_folio = noop_dirty_folio,
+ 	.migrate_folio	= kvm_gmem_migrate_folio,
+ 	.error_remove_folio = kvm_gmem_error_folio,
++	.invalidate_folio = kvm_gmem_invalidate_folio,
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+ 	.free_folio = kvm_gmem_free_folio,
+ #endif
+@@ -984,6 +1006,7 @@ static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
+ 	 */
+ 	mapping_set_inaccessible(inode->i_mapping);
+ 	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
++	mapping_set_release_always(inode->i_mapping);
+ 
+ 	gi->flags = flags;
+ 
 
-		vcpu->arch.nested_run_pending =3D KVM_NESTED_RUN_PENDING;
-	}
-    ...
-}
+-- 
+2.56.0.257.gf7497c7d27-goog
 
-Because vcpu->arch.nested_run_pending is 0, prepare_vmcs02() in
-arch/x86/kvm/vmx/nested.c takes the else branch and passes
-vmx->nested.pre_vmenter_debugctl directly to vmx_guest_debugctl_write()
-without masking it with vmx_get_supported_debugctl(vcpu, false):
 
-arch/x86/kvm/vmx/nested.c:prepare_vmcs02() {
-    ...
-	if (vcpu->arch.nested_run_pending &&
-	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
-		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
-		vmx_guest_debugctl_write(vcpu, vmcs12->guest_ia32_debugctl &
-					       vmx_get_supported_debugctl(vcpu, false));
-	} else {
-		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
-		vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);
-	}
-    ...
-}
-
-Even when VM_ENTRY_LOAD_DEBUG_CONTROLS is set in vmcs12,
-nested_vmx_check_guest_state() permits DEBUGCTLMSR_FREEZE_IN_SMM under
-KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM (enabled by default) and
-vmx_is_valid_debugctl() permits DEBUGCTLMSR_BTF and DEBUGCTLMSR_LBR; when
-VM_ENTRY_LOAD_DEBUG_CONTROLS is clear, vmcs12->guest_ia32_debugctl is not
-checked at all.
-
-Passing the unmasked value to vmx_guest_debugctl_write() in
-arch/x86/kvm/vmx/vmx.h:
-
-static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
-{
-	WARN_ON_ONCE(val & VMX_HOST_OWNED_DEBUGCTL_BITS);
-
-	val |=3D vcpu->arch.host_debugctl & VMX_HOST_OWNED_DEBUGCTL_BITS;
-	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
-}
-
-allows an unprivileged guest (via VMWRITE + SMI + RSM) or host userspace
-(via KVM_SET_NESTED_STATE) to fire WARN_ON_ONCE(val &
-VMX_HOST_OWNED_DEBUGCTL_BITS) and write DEBUGCTLMSR_FREEZE_IN_SMM or
-unsupported hardware bits (such as DEBUGCTLMSR_BTF, DEBUGCTLMSR_LBR,
-DEBUGCTLMSR_TR, or DEBUGCTLMSR_BTS) into vmcs02's GUEST_IA32_DEBUGCTL.
-
->  	if (kvm_mpx_supported() &&
->  	    (!vcpu->arch.nested_run_pending ||
->  	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-> -		vmx->nested.pre_vmenter_bndcfgs =3D vmcs_read64(GUEST_BNDCFGS);
-> +		vmx->nested.pre_vmenter_bndcfgs =3D from_vmentry ?
-> +			vmcs_read64(GUEST_BNDCFGS) : vmcs12->guest_bndcfgs;
-
-[Severity: High]
-On the SMI + RSM path, does vmcs12 actually hold L2's live
-GUEST_IA32_DEBUGCTL and GUEST_BNDCFGS values in all cases?
-
-When L1 enters L2 via VMLAUNCH or VMRESUME with VM_ENTRY_LOAD_DEBUG_CONTROLS
-or VM_ENTRY_LOAD_BNDCFGS clear, prepare_vmcs02() in
-arch/x86/kvm/vmx/nested.c propagates L1's vmcs01 value into vmcs02, but
-vmcs12->guest_ia32_debugctl and vmcs12->guest_bndcfgs are never updated.
-
-Furthermore, if L2 writes MSR_IA32_DEBUGCTLMSR or MSR_IA32_BNDCFGS,
-vmx_set_msr() in arch/x86/kvm/vmx/vmx.c only updates
-vmcs12->guest_ia32_debugctl when VM_EXIT_SAVE_DEBUG_CONTROLS is set in
-vmcs12->vm_exit_controls, and only updates vmcs12->guest_bndcfgs on explicit
-WRMSR when BNDCFGS controls are exposed in vmx->nested.msrs (and not on
-VM-Entry inheritance or XRSTORS):
-
-arch/x86/kvm/vmx/vmx.c:vmx_set_msr() {
-    ...
-	case MSR_IA32_DEBUGCTLMSR:
-		...
-		if (is_guest_mode(vcpu) && get_vmcs12(vcpu)->vm_exit_controls &
-						VM_EXIT_SAVE_DEBUG_CONTROLS)
-			get_vmcs12(vcpu)->guest_ia32_debugctl =3D data;
-
-		vmx_guest_debugctl_write(vcpu, data);
-    ...
-	case MSR_IA32_BNDCFGS:
-		...
-		if (is_guest_mode(vcpu) &&
-		    ((vmx->nested.msrs.entry_ctls_high & VM_ENTRY_LOAD_BNDCFGS) ||
-		     (vmx->nested.msrs.exit_ctls_high & VM_EXIT_CLEAR_BNDCFGS)))
-			get_vmcs12(vcpu)->guest_bndcfgs =3D data;
-
-		vmcs_write64(GUEST_BNDCFGS, data);
-}
-
-When an SMI arrives while L2 is running, vmx_enter_smm() ->
-nested_vmx_vmexit() -> sync_vmcs02_to_vmcs12() in arch/x86/kvm/vmx/nested.c
-does not save vmcs02's GUEST_IA32_DEBUGCTL or GUEST_BNDCFGS into vmcs12:
-
-arch/x86/kvm/vmx/nested.c:sync_vmcs02_to_vmcs12() {
-    ...
-	if (vmcs12->vm_exit_controls & VM_EXIT_SAVE_DEBUG_CONTROLS)
-		vmcs12->guest_dr7 =3D vcpu->arch.dr7;
-    ...
-}
-
-When vmx_leave_smm() subsequently calls
-nested_vmx_enter_non_root_mode(vcpu, false) on RSM, won't reading
-vmcs12->guest_ia32_debugctl and vmcs12->guest_bndcfgs overwrite L2's vmcs02
-state with stale values from vmcs12 (including regressing GUEST_BNDCFGS when
-VM_ENTRY_LOAD_BNDCFGS and VM_EXIT_CLEAR_BNDCFGS are clear and neither L2 nor
-SMM wrote BNDCFGS, where vmcs01 previously preserved L2's inherited value)?
-
-> =20
->  	if (!vcpu->arch.nested_run_pending ||
-> -	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_CET_STATE))
-> -		vmcs_read_cet_state(vcpu, &vmx->nested.pre_vmenter_s_cet,
-> -				    &vmx->nested.pre_vmenter_ssp,
-> -				    &vmx->nested.pre_vmenter_ssp_tbl);
-> +	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_CET_STATE)) {
-> +		if (from_vmentry) {
-> +			vmcs_read_cet_state(vcpu, &vmx->nested.pre_vmenter_s_cet,
-> +					    &vmx->nested.pre_vmenter_ssp,
-> +					    &vmx->nested.pre_vmenter_ssp_tbl);
-> +		} else {
-> +			vmx->nested.pre_vmenter_s_cet =3D vmcs12->guest_s_cet;
-> +			vmx->nested.pre_vmenter_ssp =3D vmcs12->guest_ssp;
-> +			vmx->nested.pre_vmenter_ssp_tbl =3D vmcs12->guest_ssp_tbl;
-> +		}
-> +	}
-
-[Severity: High]
-Won't reading pre_vmenter_debugctl, pre_vmenter_bndcfgs, and
-pre_vmenter_{s_cet,ssp,ssp_tbl} from vmcs12 when !from_vmentry cause a
-regression on live migration and state restore when userspace calls
-KVM_SET_MSRS before KVM_SET_NESTED_STATE?
-
-As documented in struct nested_vmx in arch/x86/kvm/vmx/vmx.h (from commits
-764643a6be0744, fa578398a0ba2c, and 5d76b1f8c79309), pre_vmenter_* is
-specifically designed to snapshot L2's MSR values from vmcs01 during
-KVM_SET_NESTED_STATE when userspace restores MSRs prior to nested state:
-
-arch/x86/kvm/vmx/vmx.h:struct nested_vmx {
-    ...
-	/*
-	 * Used to snapshot MSRs that are conditionally loaded on VM-Enter in
-	 * order to propagate the guest's pre-VM-Enter value into vmcs02.  For
-	 * emulation of VMLAUNCH/VMRESUME, the snapshot will be of L1's value.
-	 * For KVM_SET_NESTED_STATE, the snapshot is of L2's value, _if_
-	 * userspace restores MSRs before nested state.  If userspace restores
-	 * MSRs after nested state, the snapshot holds garbage, but KVM can't
-	 * detect that, and the garbage value in vmcs02 will be overwritten by
-	 * MSR restoration in any case.
-	 */
-	u64 pre_vmenter_debugctl;
-	u64 pre_vmenter_bndcfgs;
-	u64 pre_vmenter_s_cet;
-	u64 pre_vmenter_ssp;
-	u64 pre_vmenter_ssp_tbl;
-    ...
-}
-
-When saving a vCPU running in L2, userspace saves L2's MSRs via KVM_GET_MSRS
-(reading vmcs02) and nested state via KVM_GET_NESTED_STATE ->
-vmx_get_nested_state() -> sync_vmcs02_to_vmcs12(), which intentionally does
-not copy GUEST_IA32_DEBUGCTL or GUEST_BNDCFGS from vmcs02 into vmcs12.
-
-During state restore (for example in vcpu_load_state() in
-tools/testing/selftests/kvm/lib/x86/processor.c and VMMs that restore MSRs
-before nested state), KVM_SET_MSRS runs while the vCPU is still in root
-mode, so vmx_set_msr() writes L2's saved MSRs into vmcs01.
-
-When KVM_SET_NESTED_STATE subsequently invokes vmx_set_nested_state() ->
-nested_vmx_enter_non_root_mode(vcpu, false) in arch/x86/kvm/vmx/nested.c
-with vcpu->arch.nested_run_pending =3D=3D false, reading from vmcs12 instea=
-d of
-vmcs01 discards the L2 MSR values restored into vmcs01 by KVM_SET_MSRS and
-overwrites vmcs02 in prepare_vmcs02() with stale or zero values from vmcs12
-(even when VM_ENTRY_LOAD_DEBUG_CONTROLS, VM_ENTRY_LOAD_BNDCFGS, or
-VM_ENTRY_LOAD_CET_STATE is set in vmcs12, since !vcpu->arch.nested_run_pend=
-ing
-is true).
-
-[Severity: High]
-What happens on RSM or KVM_SET_NESTED_STATE when
-VM_ENTRY_LOAD_DEBUG_CONTROLS, VM_ENTRY_LOAD_BNDCFGS, or
-VM_ENTRY_LOAD_CET_STATE is clear in vmcs12->vm_entry_controls and vmcs12
-contains unvalidated values in those guest-state fields?
-
-In nested_vmx_check_guest_state() in arch/x86/kvm/vmx/nested.c (called via
-nested_vmx_check_restored_vmcs12() in vmx_leave_smm() and
-vmx_set_nested_state()), vmcs12->guest_ia32_debugctl, vmcs12->guest_bndcfgs,
-and vmcs12->guest_{s_cet,ssp,ssp_tbl} are only validated when their
-corresponding VM_ENTRY_LOAD_* control bit is set in
-vmcs12->vm_entry_controls:
-
-arch/x86/kvm/vmx/nested.c:nested_vmx_check_guest_state() {
-    ...
-	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
-		u64 debugctl =3D vmcs12->guest_ia32_debugctl;
-		...
-		if (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
-		    CC(!vmx_is_valid_debugctl(vcpu, debugctl, false)))
-			return -EINVAL;
-	}
-    ...
-	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS) &&
-	    (CC(is_noncanonical_msr_address(vmcs12->guest_bndcfgs & PAGE_MASK, vcp=
-u)) ||
-	     CC((vmcs12->guest_bndcfgs & MSR_IA32_BNDCFGS_RSVD))))
-		return -EINVAL;
-
-	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_CET_STATE) {
-		if (nested_vmx_check_cet_state_common(vcpu, vmcs12->guest_s_cet,
-						      vmcs12->guest_ssp,
-						      vmcs12->guest_ssp_tbl))
-			return -EINVAL;
-
-		if (CC(!__is_canonical_address(vmcs12->guest_ssp, max_host_virt_addr_bits=
-() + 1)))
-			return -EINVAL;
-	}
-    ...
-}
-
-Architecturally, when a VM_ENTRY_LOAD_* control is clear in vmcs12, the
-corresponding vmcs12 guest-state fields are ignored on VM-Entry and may
-legally hold arbitrary values (such as reserved bits, non-canonical
-addresses, or an unaligned SSP).
-
-However, vmcs02 unconditionally enables VM_ENTRY_LOAD_DEBUG_CONTROLS,
-VM_ENTRY_LOAD_BNDCFGS (when MPX is supported), and VM_ENTRY_LOAD_CET_STATE
-(when CET is enabled in the host) in its hardware VM-Entry controls
-(inherited from vmcs01 in prepare_vmcs02_early()).
-
-When nested_vmx_enter_non_root_mode() copies those unchecked vmcs12 fields
-into pre_vmenter_* and prepare_vmcs02() writes them into vmcs02, won't the
-subsequent physical VM-Entry into L2 fail hardware guest-state checks with
-EXIT_REASON_INVALID_STATE (failed_vmentry =3D 1, and trigger a host
-WARN_ON_ONCE() when warn_on_missed_cc is enabled) or load unsupported CET
-state into hardware?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022223820.8279=
--1-amirmohammad.eftekhar@cispa.de?part=3D1
