@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792711696;
-	b=ESo/CKKdRmO0VYm3FOdRkbnh70HKGFRT9u8ehhJUcccWlFkRAUiBPF9EYA43wFErB+Xy
-	 3nclhnfF/Gm4DAHrs9AGyrfp6wpFAzNGZwdNnoUzsd/p/7c1Dk95bK7B1fbKjkTfjjXlK
-	 LekPebmU3ekoXd2z/JyzqPhIKzjkW+nRdTn5OukPgSyQYXo+X752Kc8NGz2XKKwf4qnR8
-	 0ScChUVAnNADcBfK0oK8Df0+KXlczms5fciu32EwRmI14zZL0VQ84jnP+D8gkJoS0etsA
-	 hQ5HFroxyQP2sKNENh1mtd0PgeTVzKcfR9TtFyHrXPodFbsaquXVlZB/+qZOf9XlwyA==
+	t=1792711672;
+	b=aTO/7llzLPMHXS/gBHE24nbdtp4p3tLfcALmD2XtEJTQbBkdKOrrCeb5QbCrB1nT0A60
+	 5661WB7clJJVeDZLgym3aafARWB02fxE+uOADkwvEQvcA57vnPVQq/Lm3sI+TUOvlYXIs
+	 XrtIveOjxgFCI2BP/hWZmJsTfsyNHcm7AS8/3K31U5xs42keNWt+l2AkQKQanbCr5WUoq
+	 cxnBX26xIyrcAcmXnieij5d+Nsrs2tnyc+NLV8FoiTClHAVJmDWFABKF7Gzf/lhwHpI3t
+	 Sx7GeiqaQIe/JdX41VpRw0mRts3VQA6H+G/PyIIK/M/sUIOVwi6Q2xwnGS7K/DHuy0g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792711696;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792711672;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=k68GYBk436CaPNprL/QXtHO9RB8x7lga/CshgV9NcYc=;
-	b=zuLQGmnAuKXf34NuWuysw10DeVQhFhwsY0aolwdAH4VVe2O7Fj/FJjOyUttbMI1AhIAj
-	 2dQG0TaiWfgMD+RUbUHmF3Q4IlJhltcj4Ak2YUtwaDNa9+elehVMyDNVUqdqYRuTWJYX5
-	 7+yi4m8PMcz+pKwr6tlJBYf9eE/L7rtKk4kapKZtSNzUld7XCFIyvxCFfthKlMk+C0dof
-	 56AAywijWmCEgjJr4RdjeVfgEmuXRHNZ2Y2378C7pABJAxwP5WGXgYvVWIKSn180sHb2s
-	 UlqrMvco3dADFFbx0wHxnVOYcsPWI7+9787kMPxXeUMIihakuaL0aGvnQuOd6NUKWpw==
+	bh=6ISy2WsvQvNk1sV0mU5gPsd/VQEhvtewcEmpW1TLtd8=;
+	b=K1BS08YKOfbIoG7yvQ3/6CzXq0usFP8CpirwRKbYdLbzX5dMk5005GpmfcIBlDte1Uq7
+	 YXNG3+KYs0a/4kXeotCg4ovjvAkzNzg93WwiwjGyP8me2aiuTgpljmljTEDbc06HKAe+C
+	 XE0ssDZ2p3SllSpG9Q/9GLBSVGA95yPUw762/OQ585DndyuLI7E33EwGly8Fmkgyu5MUt
+	 lk1bvhBGnK/fVvKpxwE2WfY689/eE077m7UMUGl0s6nZ2WegOnSIZ6VRw5wqWMKPsGXZO
+	 0l6O4VEHS5n21S3Z8ADucZ+hPy0Hjh8YH5FOX5J1v2Mg9tpeFnYxC78qlid2TrwWUVQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QhxqA100;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UHeEfOjd;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D8E606F4A2;
-	Thu, 22 Oct 2026 23:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA359606A335;
+	Thu, 22 Oct 2026 23:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QhxqA100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UHeEfOjd
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792711696;
-	b=cvDtnGyYarj2143j7NgZGvdsQbwfEhxHa8YK3V6xlyo8Bm04I+Ji8Ps19YxVgNJEaEQn
-	 rLu0bXgKhQbfUIXSFOho8f2Ei49H6udfzd9PaXrlduhGoDKIO1VKTzV9CX4QuK81dNZhC
-	 Yom+zr/H9mzgPHy5MF+B9G/WEME/IECJA05aivwLGnxakYxi+actnxcvXZH0J/N+jiIPP
-	 zkjBoaekBVoxP9MGdzfMPNfBbnoKkOBjQo3tlqbxwvhNQ1QybiU5hdReFdcg3vTN4B6Zx
-	 sVmrJMA9SJm1lRgqJ3XyaRjNvHat8xkbrmSGwbrPz5LJJiPsOMNtcqMB+k8h0lW6t2w==
+	t=1792711671;
+	b=dePsz3JxF4RJH28yw6Rdm5inXHOxP6kwo1W26Fsjn4Tttfx6SmAUPum+Ukqkz74f2/xd
+	 YnkhpAp9318Y6+RtkcHByT7pzc5EleB3XGMm0KQRbLfcAc7n5n0Ma6EunjyvRVxKqVgMa
+	 gBKl2BSN6w8fjPjZzlFsefJPMY1t9C+bbxGsnuq/Sf0Gbp+Xv1jDmMIJAord0wUxOWZhD
+	 WaZZP41bki687yn5+2lHVVpp2N+kCEOhmWvGhRBSWMN9+R/vbJIJu6o9xbvfsXHhRQl4z
+	 ntKJFnjxNRN/k8uQZvfNZnvJOokJfKA5EzKJVsFFSB8aHlgZGyDOQzLnB9XUTbTmhMA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792711696;
+	c=relaxed/relaxed; t=1792711671;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=k68GYBk436CaPNprL/QXtHO9RB8x7lga/CshgV9NcYc=;
-	b=SSGMnw4F1a8Z+G/YGjJXYAF4ivm8mNp7ZSOEGYTEY8q+txTgXyURIRedXwTp23bTECcG
-	 s2+HdcRDA9y5Q8ZzBEdUZRP2si44Z1CKRCUsgE6I3svyfxlue+lr78GbpOZyPDgaUcgW+
-	 ZARY5MQ+q3VN8kWYD+w9Fb3GqIxk1/dP5FLqGHt6Pbhi6g2G9MGOOFOJNiAM+uAPq78i1
-	 qNbY7RlaA8o/w1JXN0eRMOB4MaoGb2xG2mnygjV/dzD5e2OqAmU8gyzxj1otir2K2t+l0
-	 pAm9dhhHsl+q/mshsuJyVtCXuVpgT5GC3Uw2YOx9+q2L8thQaJipEXK+9Jr7cCmJzOw==
+	bh=6ISy2WsvQvNk1sV0mU5gPsd/VQEhvtewcEmpW1TLtd8=;
+	b=r0S7r7Zj6ecmWLFHPZgEfy47fdhjiB3vTDaI0mTP8bpHmtNh0okvcLqLqRbGpSHCXd1z
+	 mVgCZD7U2Elfx/DAl5fCbzXBXY4Bdy7d66tWdCWZMotE8MdDiDWbJndPfD7MrCW1ExnYg
+	 NhPzRp8oHm6o3O3zuiEthsxTbDOF58NZ3aVLqwt8kgmFS0p1ObqSSLdMDUeprr9eZe1zg
+	 aCNHIfx72d3/sJkpXQEVrjT/uM0wVsyZT6J7b0f/VoBGho9U2ilxB81xZfSMe4hDrQyjf
+	 OL1k+VVsNuVNFQyweHrtFW0FgHdq+fbdLAXTE/q25LGHFdXzcADUawAesAyZKoSz7nA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 3D1041F011B1;
-	Thu, 22 Oct 2026 23:28:08 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 113931F031E2;
+	Thu, 22 Oct 2026 23:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792711696;
-	bh=k68GYBk436CaPNprL/QXtHO9RB8x7lga/CshgV9NcYc=;
+	s=k20260515; t=1792711671;
+	bh=6ISy2WsvQvNk1sV0mU5gPsd/VQEhvtewcEmpW1TLtd8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=QhxqA1000h7kswdTR8r1ZnQuYv0OC8zXLQGB8nxldWR9Lu8xMdBqBesTZTOxLj8mP
-	 cGobQyGslhd46XULNRJs+l8J0saq8xea91BJMvR2Gtnk1bI5VpTia/IzcNL77VGkIy
-	 RkyZBl5nNFlug/dxp4vLSlXJOIy5k8N6eMpNWqRMUtV8AdAEH/vqecdQnS9gPXJLIi
-	 fhD1VfBW/ODIyxqvU6lNcptj9FXLy8CMJnTg940nm3ly+15riWBFOpG3nXuv6RsOxh
-	 HV3gXA6kYXuaOmYmN20et92U7YFfu+c+QZ4aOtmNitcgcTORV7oMbY/4TybHDM8FG/
-	 vqLxn4N6ff9BQ==
+	b=UHeEfOjddIIbLsCmfRmyHOLnniIuXPKJoexYEgOoq534AUfB1zPYUlzm4qWGFkZHk
+	 JYpdhdXDDHUWHLeYqjlJ72xSuRm28TspPalts0vMyD6CRROvxnbVGuBoN8jkfPWEIG
+	 ybui5XwNjKtiMib2g0Q8h2J3EdvGlzc9IvkAL4EToD/ELRmsqh0GtKYEtqGT7xYOwI
+	 cdz/An3NXt2dc23g2GxkcHgQPC4kqrxCVmtdPmctsBYGTu/K2/4lScrL4aRTMXBAaz
+	 FOmUFcodONF6P40LiDx6wrmR+keck7CkNINXWOKUN8T9Byy5RB93jJ2ed0QoyV8MUv
+	 5SgqmgmQyMZBA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id B1B82420BC;
-	Thu, 22 Oct 2026 23:27:49 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 4EF8142043;
+	Thu, 22 Oct 2026 23:27:48 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 22 Oct 2026 16:28:02 -0700
-Subject: [PATCH RFC v2 30/50] KVM: selftests: Add basic test for sample
- memory provider
+Date: Thu, 22 Oct 2026 16:27:34 -0700
+Subject: [PATCH RFC v2 02/50] KVM: guest_memfd: Route folio allocation
+ through native provider operations
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-gmem-alternative-providers-v2-30-5dd1dc6c660a@google.com>
+Message-Id: <20261022-gmem-alternative-providers-v2-2-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
 To: Alex Williamson <alex@shazbot.org>, Alexander Graf <graf@amazon.de>, 
@@ -135,11 +135,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711665; l=5553;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792711664; l=6480;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=DxHc6o6FnWpOH7kMAejZmhFMGKZWARQeHZ9yAfr2gtM=;
- b=MZWm5OhI65j5qGliKRKMwC78fhjZnRK4OJnvkL5NZPMB3GRVId6GmA9lc7rWY/7Oe6I17BuFk
- /BfBpbRroEDB7//o/KaeRPl5dErRndTcfCEIUCt859LcAinaQKoho5Y
+ bh=/6ChK+dhNyFC5epULer4MMTl5heO+eaQ0hyuSzmx3Fo=;
+ b=za/ALoHb/ybC9kgi6o2avnw/xTRhb+35RtnrYcvmZnrWvKtTjSZTkiZbEU0bys25KYfAoQfI6
+ RPM9vxjHJ70CI2szG/reUm3EdeeRow6j6qo08Wm3qQ7SAt8dhK26dXk
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -150,184 +150,201 @@ Content-Transfer-Encoding: 7bit
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a selftest for the sample memory provider (/dev/mem_provider_sample).
+Conceptually refactor the buddy allocator providing guest_memfd with
+order-0 folios as the native provider.
 
-Test basic lifecycle creation across multiple sizes. Verify file capacity
-and absent pages accounting using the MPS_GET_STATS ioctl. Also test
-marking pages absent and present with MPS_SET_PRESENT, verifying that
-absent pages are reflected in stats accordingly.
+Define operations with an alloc_folio callback for the native provider,
+which still uses filemap_alloc_folio to allocate folios as before. Also
+define the attach callback to establish provider context. Route folio
+allocation in the get-folio path through provider ops, and set up the
+native provider during creation using a sentinel fd and attach.
+
+Attach the provider only after the entire inode and pseudo-file have been
+initialized. Exposing the inode to external providers before allocating the
+file or populating the file list risks race conditions and use-after-free
+bugs if an external provider immediately triggers operations on the
+guest_memfd inode.
+
+Now that the inode is exposed for other providers, add a write barrier to
+commit everything in the inode before the provider (and other racing
+provider threads) gets to use the gmem inode.
+
+Expose provider operations so external providers across the kernel can
+implement them.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm           |   1 +
- .../selftests/kvm/mem_provider_sample_test.c       | 147 +++++++++++++++++++++
- 2 files changed, 148 insertions(+)
+ include/linux/guest_memfd.h | 28 +++++++++++++++
+ virt/kvm/guest_memfd.c      | 86 ++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 110 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 17a4256e90819..5f7118bddfc36 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -72,6 +72,7 @@ TEST_GEN_PROGS_COMMON += set_memory_region_test
- TEST_GEN_PROGS_COMMON += memslot_modification_stress_test
- TEST_GEN_PROGS_COMMON += memslot_perf_test
- TEST_GEN_PROGS_COMMON += vm_types_test
-+TEST_GEN_PROGS_COMMON += mem_provider_sample_test
- 
- # Compiled test targets
- TEST_GEN_PROGS_x86 = $(TEST_GEN_PROGS_COMMON)
-diff --git a/tools/testing/selftests/kvm/mem_provider_sample_test.c b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
 new file mode 100644
-index 0000000000000..932ea3f30f494
+index 0000000000000..218de509769c1
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/mem_provider_sample_test.c
-@@ -0,0 +1,147 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Tests for the sample memory provider (/dev/mem_provider_sample).
++++ b/include/linux/guest_memfd.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_GUEST_MEMFD_H
++#define _LINUX_GUEST_MEMFD_H
++
++#include <linux/types.h>
++
++struct file;
++struct folio;
++struct inode;
++struct mempolicy;
++
++/**
++ * struct guest_memfd_provider_operations - Operations for external memory providers
++ * @attach: Attach to a resource file, perform filesystem-specific validation,
++ *          and return an opaque provider context.
++ * @alloc_folio: Allocate an uninserted folio for a given index and NUMA policy.
++ *               Must return a pointer to a struct folio on success, or an
++ *               ERR_PTR() error code on failure. Must never return NULL.
++ *
++ * Used by filesystems and device drivers that provide memory for guest_memfd.
 + */
-+#include <fcntl.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <unistd.h>
++struct guest_memfd_provider_operations {
++	void *(*attach)(struct inode *gmem_inode, struct file *resource_file);
++	struct folio *(*alloc_folio)(void *provider, pgoff_t index,
++				     struct mempolicy *mpol);
++};
 +
-+#include "test_util.h"
-+#include "../../../../samples/kvm/mem_provider_sample.h"
++#endif /* _LINUX_GUEST_MEMFD_H */
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index f865fa0e46840..545c3e646e9c1 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -3,6 +3,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/falloc.h>
+ #include <linux/fs.h>
++#include <linux/guest_memfd.h>
+ #include <linux/kvm_host.h>
+ #include <linux/maple_tree.h>
+ #include <linux/mempolicy.h>
+@@ -35,6 +36,9 @@ struct gmem_inode {
+ 	struct inode vfs_inode;
+ 	struct list_head gmem_file_list;
+ 
++	void *provider;
++	const struct guest_memfd_provider_operations *provider_ops;
 +
-+#define DEV_PATH "/dev/mem_provider_sample"
-+
-+static int open_provider_dev(void)
+ 	u64 flags;
+ 	/*
+ 	 * Every index in this inode, whether memory is populated or
+@@ -50,6 +54,65 @@ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+ 	return container_of(inode, struct gmem_inode, vfs_inode);
+ }
+ 
++static void *gmem_native_attach(struct inode *gmem_inode,
++				struct file *resource_file)
 +{
-+	int fd = open(DEV_PATH, O_RDWR);
-+
-+	if (fd < 0) {
-+		TEST_REQUIRE(errno != ENOENT && errno != ENODEV);
-+		TEST_FAIL("Failed to open %s: %d (%s)", DEV_PATH, errno,
-+			  strerror(errno));
-+	}
-+	return fd;
++	return GMEM_I(gmem_inode);
 +}
 +
-+static int create_provider_file(int dev_fd, uint64_t size)
++static struct folio *gmem_native_alloc_folio(void *provider, pgoff_t index,
++					     struct mempolicy *mpol)
 +{
-+	struct mps_new_file nf = {
-+		.size = size,
-+	};
-+	int fd;
++	struct gmem_inode *gi = provider;
++	struct folio *folio;
++	gfp_t gfp;
 +
-+	fd = ioctl(dev_fd, MPS_NEW_FILE, &nf);
-+	TEST_ASSERT(fd >= 0, "MPS_NEW_FILE failed for size 0x%lx: %d (%s)",
-+		    size, errno, strerror(errno));
-+	return fd;
++	gfp = mapping_gfp_mask(gi->vfs_inode.i_mapping);
++	folio = filemap_alloc_folio(gfp, 0, mpol);
++	if (!folio)
++		return ERR_PTR(-ENOMEM);
++
++	return folio;
 +}
 +
-+static void test_lifecycle_and_creation(int dev_fd)
++static const struct guest_memfd_provider_operations gmem_native_provider_ops = {
++	.attach = gmem_native_attach,
++	.alloc_folio = gmem_native_alloc_folio,
++};
++
++#define GMEM_RESOURCE_FD_NATIVE (-1)
++
++static int kvm_gmem_attach_resource(struct inode *inode, int resource_fd)
 +{
-+	size_t page_size = getpagesize();
-+	uint64_t sizes[] = {
-+		page_size,
-+		2 * page_size,
-+		2 * 1024 * 1024,
-+	};
-+	struct mps_stats st;
-+	int i, fd;
++	const struct guest_memfd_provider_operations *ops = NULL;
++	struct file *resource_file = NULL;
++	void *provider;
 +
-+	for (i = 0; i < ARRAY_SIZE(sizes); i++) {
-+		fd = create_provider_file(dev_fd, sizes[i]);
++	if (resource_fd == GMEM_RESOURCE_FD_NATIVE)
++		ops = &gmem_native_provider_ops;
++	else
++		return -EOPNOTSUPP;
 +
-+		memset(&st, 0, sizeof(st));
-+		TEST_ASSERT(!ioctl(fd, MPS_GET_STATS, &st),
-+			    "MPS_GET_STATS failed: %d (%s)",
-+			    errno, strerror(errno));
-+		TEST_ASSERT(st.size == sizes[i],
-+			    "size mismatch: expected 0x%lx, got 0x%llx",
-+			    sizes[i], st.size);
-+		TEST_ASSERT(st.absent_pages == 0,
-+			    "absent_pages mismatch: expected 0, got %llu",
-+			    st.absent_pages);
++	provider = ops->attach(inode, resource_file);
++	if (IS_ERR(provider))
++		return PTR_ERR(provider);
 +
-+		close(fd);
-+	}
-+}
++	GMEM_I(inode)->provider = provider;
++	GMEM_I(inode)->provider_ops = ops;
 +
-+static void test_set_present(int dev_fd)
-+{
-+	size_t page_size = getpagesize();
-+	uint64_t nr_pages = 4;
-+	uint64_t file_size = nr_pages * page_size;
-+	struct mps_set_present sp;
-+	struct mps_stats st;
-+	int ret, fd;
-+
-+	fd = create_provider_file(dev_fd, file_size);
-+
-+	/* Initially all pages are present */
-+	TEST_ASSERT(!ioctl(fd, MPS_GET_STATS, &st),
-+		    "MPS_GET_STATS failed: %d (%s)", errno, strerror(errno));
-+	TEST_ASSERT(st.absent_pages == 0,
-+		    "Initial absent_pages mismatch: expected 0, got %llu",
-+		    st.absent_pages);
-+
-+	/* Mark page 1 absent */
-+	memset(&sp, 0, sizeof(sp));
-+	sp.value = 0;
-+	sp.offset = page_size;
-+	sp.len = page_size;
-+	ret = ioctl(fd, MPS_SET_PRESENT, &sp);
-+	TEST_ASSERT(!ret, "MPS_SET_PRESENT (absent) failed: %d (%s)",
-+		    errno, strerror(errno));
-+
-+	TEST_ASSERT(!ioctl(fd, MPS_GET_STATS, &st),
-+		    "MPS_GET_STATS failed: %d (%s)", errno, strerror(errno));
-+	TEST_ASSERT(st.size == file_size,
-+		    "size changed unexpectedly: 0x%llx", st.size);
-+	TEST_ASSERT(st.absent_pages == 1,
-+		    "absent_pages mismatch after absent: expected 1, got %llu",
-+		    st.absent_pages);
-+
-+	/* Mark page 1 back to present */
-+	sp.value = 1;
-+	ret = ioctl(fd, MPS_SET_PRESENT, &sp);
-+	TEST_ASSERT(!ret, "MPS_SET_PRESENT (present) failed: %d (%s)",
-+		    errno, strerror(errno));
-+
-+	TEST_ASSERT(!ioctl(fd, MPS_GET_STATS, &st),
-+		    "MPS_GET_STATS failed: %d (%s)", errno, strerror(errno));
-+	TEST_ASSERT(st.absent_pages == 0,
-+		    "absent_pages mismatch after restore: expected 0, got %llu",
-+		    st.absent_pages);
-+
-+	/* Mark all pages absent */
-+	sp.value = 0;
-+	sp.offset = 0;
-+	sp.len = file_size;
-+	ret = ioctl(fd, MPS_SET_PRESENT, &sp);
-+	TEST_ASSERT(!ret, "MPS_SET_PRESENT (all absent) failed: %d (%s)",
-+		    errno, strerror(errno));
-+
-+	TEST_ASSERT(!ioctl(fd, MPS_GET_STATS, &st),
-+		    "MPS_GET_STATS failed: %d (%s)", errno, strerror(errno));
-+	TEST_ASSERT(st.absent_pages == nr_pages,
-+		    "absent_pages mismatch after all absent: expected %lu, got %llu",
-+		    nr_pages, st.absent_pages);
-+
-+	close(fd);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int dev_fd;
-+
-+	dev_fd = open_provider_dev();
-+
-+	test_lifecycle_and_creation(dev_fd);
-+	test_set_present(dev_fd);
-+
-+	close(dev_fd);
 +	return 0;
 +}
++
++static struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
++					       pgoff_t index,
++					       struct mempolicy *mpol)
++{
++	if (gi->provider_ops && gi->provider_ops->alloc_folio)
++		return gi->provider_ops->alloc_folio(gi->provider, index, mpol);
++
++	return ERR_PTR(-EOPNOTSUPP);
++}
++
+ #define kvm_gmem_for_each_file(f, inode) \
+ 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
+ 
+@@ -143,11 +206,10 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 		return folio;
+ 
+ 	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+-	folio = filemap_alloc_folio(mapping_gfp_mask(inode->i_mapping), 0,
+-				    policy);
++	folio = gmem_provider_alloc_folio(GMEM_I(inode), index, policy);
+ 	mpol_cond_put(policy);
+-	if (!folio)
+-		return ERR_PTR(-ENOMEM);
++	if (IS_ERR(folio))
++		return folio;
+ 
+ 	r = filemap_add_folio(inode->i_mapping, folio, index, GFP_KERNEL);
+ 	if (r) {
+@@ -996,6 +1058,20 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	xa_init(&f->bindings);
+ 	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
+ 
++	/*
++	 * Ensure all inode and file initialization (such as gmem_file_list and
++	 * bindings) is globally visible before exposing the inode to the
++	 * provider in ->attach().
++	 */
++	smp_wmb();
++
++	err = kvm_gmem_attach_resource(inode, GMEM_RESOURCE_FD_NATIVE);
++	if (err) {
++		fput(file);
++		put_unused_fd(fd);
++		return err;
++	}
++
+ 	fd_install(fd, file);
+ 	return fd;
+ 
+@@ -1355,6 +1431,8 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+ 	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
+ 
+ 	gi->flags = 0;
++	gi->provider = NULL;
++	gi->provider_ops = NULL;
+ 	INIT_LIST_HEAD(&gi->gmem_file_list);
+ 	return &gi->vfs_inode;
+ }
 
 -- 
 2.56.0.257.gf7497c7d27-goog
