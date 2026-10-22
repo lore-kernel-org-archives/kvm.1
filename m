@@ -1,89 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.27
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792687918;
-	b=1QSRWGmQqjIMU1D/myM+mxHcs77XhS+IELvygiYuuGAOSvxUxLHMbU4IFU/AySdPisad
-	 IfkeTLp2fV2js+RD4Ci8E9g75tYysBFLpwYIyjUK4YS+70E2uizA3btjxsn6GmUhXpQec
-	 G+LFW0xPu8l3iy9LmyyymI5hlhOkGuN/IQ1NzdFWgyd45xIjRg2IG62YtNv/UrRmqttcI
-	 zzU+8NKq4MywuxHEBm7o5gpEh5gH4j9Cl2k0KVeS7IflR1lj2hC70HZ8Zh+Q6hHcHPJGg
-	 IV201FkVwPaQYPo/2HUn/Ol9abGMXu1csObOiD3vJSp6hUzoqg6BJ2q7cqqlVPgusgw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792687918;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:Content-Type:Content-Disposition:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=b9VwIDlGRVXO4HoUkwoV5Blr0nvcxqT11g7GRHsFce0=;
-	b=MILXAN/5bxN4l8R/QThDolPwexoX+tmKkrmJYwrHRiK5H0TEHrHVcsegx7emVv0cxOdg
-	 i0kliW+fYk0xtsi0Q6w6kGmH0ZvTdxkBogpXAGfhATyDBmawRmaY0iGa7ERqWtcFTUy2B
-	 zckzcYuTTAKkSHy3bq6tXQigeQqZV74EKLDBD2jhrZvEi4zIoDel89Dlr6tBswAR7+v4R
-	 d00Mtc1Q9D4S+rLgEMyvf0aIAYWPr5YTeiis+jD+G7hsgHqOgL7jd0+NNzUy88QMRQGJ5
-	 hVwKsQbB4yf840w7QKYWNWyqTnr4Nw8Tq9/1tSjx7Nugd0CQ/5sn6J/2z3kOv84iIQA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pnljgyt6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.27
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013027.outbound.protection.outlook.com [40.93.201.27])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792688019;
+	b=CdasAkyZzNuJM630CZ4lDb+2AndjWlVevaFHOJ2xNx10mHrC11g3wemhcfUcW83EEjwu
+	 MG0/FSCYf30Cq4sJVg/byLy45uWQbv5ElXbpMXtYk7zL/AkrUk1ZGglQZywpfXFowm1k/
+	 En1AgH4kZgHXdPhfNgfD7FiXimO/4NGrLbbGzo+GCayT0h0w6Ew0cOEYtWcJtuVI6XGM5
+	 5sTkwPO2ouVInwNsXzMuDFjKwNQIQXyHuUKPUrslSiLq/xmgs2CIDcBDjFDbwM5y8WxWh
+	 MgG6qY7mWxVwuGlI6X/K55D3mJBQYRX16Ytij14bXQ7c+/h2FgVnzJVg1Nka4se3DgQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792688019;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=l7IXTscY3LKcuQJRmr1is5N8f3yRZJxGSgm9Odb4UY8=;
+	b=FUS9PeecNrl4rmTBxfxTZTDtrmMFIlO0BMbN20TS0fmimtlqAkHmJTqLVuUZJMhO+SDQ
+	 3WaZxCkyFPvpCKBdX/c3Mk5+SH/++Y7ZFvPYxUvUl73JAcLPste0IorVCRN2B8BQxuhWy
+	 Ifg/Uu4sleaRpqMVJjYsM1NEuMOtbQNXL5jtczBP7XUBTr4c5ki5auUnRaJU7/QvQiTqS
+	 juQ/W/d2dcOw6MYzjmLfPwUr04f9eiCOp3czALJ9uG+1YQovBGDVeSC6SSl1X32cBXlY9
+	 H/Xvkk0eYeEMbZ2z3tN0pzXSwukNCSXv0WyCObPASUFn410RH4IqFTeLBR1GvqdY3Eg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n3zmMSdj;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8092B606A31E;
-	Thu, 22 Oct 2026 16:51:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8092B606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA5B606A319;
+	Thu, 22 Oct 2026 16:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pnljgyt6
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CkdJJQVWYTGsVWPEJGEKzjl0whELJAMl2Diu/r5sYXqIT5ARMbwdBG4en1aapovwTpybppH7Y+lLrDuQLtIFJZBg5u1CDbpbFyp4tpELVZQ1h1c2zZb7J7KHcdmP9U8hEw3We7EAkWellV2ukM485cST3WI+hfvbiPxT0MNhQVjhYKEqTSFIbRF2+xZSTnaKYWOqI3mXarmsXv9mrTDIJROTFAuB43PTUIDZz98kU20p36UzcpxhXVh3zuzA7za4xQ6wE2405L7xm5imbSsVDHn6V+q2gnLrUlzdCHZgtdqmW2CrMEHvtZwb3FM0xENDl5wkMXmeOMr/4pWE4eYq6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b9VwIDlGRVXO4HoUkwoV5Blr0nvcxqT11g7GRHsFce0=;
- b=Dbj20+jJKbCM5QWIYz/8idQNIZ4T/EoBO4VPBXBGQGoyjOzAeEIOmqQRv055LZxHBDCdnQ8VQrid6/FSq6xqMD6X728fijiXNb5rxbL1qD0hPVfLdNKhHJWiTCdVvZm+7Ro+k+6wtLCZ4N6XzJt57mGM00W3zdxRgwBwk1F4v5pMIUrvbGqxC8iTBQE5y0bTN21m7HbkYqpJCIiJyDKjy9OsXS2/haPhNnqSyiyvCsbvls2JRUESL0VAG7Gp3TUhWPjZwblv4/dG8FFseku095tm6qqS4at9GDvJrrQqqllUYVEgBLe1bwZMsVVTXOkb4/mHqJeXK74O3IbNFJx1iA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b9VwIDlGRVXO4HoUkwoV5Blr0nvcxqT11g7GRHsFce0=;
- b=pnljgyt6DsUKlHz6eAjLyu0WVpGo1KJSdzjBEKMzBCLrkHRGpmuaYmPQt3aOjTQHXMsSw6jSoGZxpaijE3eyZx6T+Cllke7PIvbAWraedREpB0x8eHU+m7z+UuhIUfB+CNw5OI1Fc6P51/uULB781N4fgCJbWNNsrWgQuekqu1lAt7X0uh4ZV+ly8y51Y5YtG32oWvOMo8tXcfOjoLkpXNL8u7Rm2g02enEPqumkTAoNVEimhNOCT2qvFWWD8mYANFUHovQVLbaBaf9PJKlcmIgVnVe8fPmrPtihIuoLE4W3JTeaD3A34YoxIMGgSsn1+wIvn3cQ7FdCdq/SBI35kQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by IA1PR12MB6434.namprd12.prod.outlook.com
- (2603:10b6:208:3ae::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 16:51:52 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.016; Thu, 22 Oct 2026
- 16:51:52 +0000
-Date: Thu, 22 Oct 2026 13:51:51 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>
-Subject: [GIT PULL] Please pull IOMMUFD subsystem changes
-Message-ID: <20261022165151.GA3692244@nvidia.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mFUbxSPnBhmcY4Wd"
-Content-Disposition: inline
-X-ClientProxiedBy: YT2PR01CA0023.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:38::28) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n3zmMSdj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826AF1F01825;
+	Thu, 22 Oct 2026 16:53:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792688018;
+	bh=l7IXTscY3LKcuQJRmr1is5N8f3yRZJxGSgm9Odb4UY8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=n3zmMSdjxDNkHIG2785zC6d6x7BOlwmPSCCBV2qv2YVNmn02dpOwyW172pZUhwy7G
+	 DwfCoYMCveZbyhfSFeDeu9Bw1Jpkwn3uqvPuu7OhyItmS4pITnNGeyvtRHyCuWW1Oq
+	 1KNzEFqx782+viznaOUtqJ1b9uB/TmLxHr0e3pje2XRu+EZvpLfn+4maZrBYRpKxJU
+	 oJU64GiQ1b1G8Fr/0awE1V5j8xphLYBWzJoxkQGATNMhtjIIAvVTDGFQz0s0lsOyBM
+	 FdpRkJqsSp8nMg9Lsx12a7Z+NMGO+K5fktsr4MZ+wEYey1LOH3o7hoe7mDH+IIGMZf
+	 Vt+xmnA3md/yw==
+Message-ID: <sashiko-outbox-181832@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 08/10] KVM: s390: Improve unmapping of large ranges
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261022155531.204593-9-imbrenda@linux.ibm.com>
+References: <20261022155531.204593-1-imbrenda@linux.ibm.com>
+ <20261022155531.204593-9-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 16:53:37 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -92,162 +61,203 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|IA1PR12MB6434:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b07d16d-47c8-40e6-a162-08df305cc5b3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|6133799003|18002099003|10067099003|261021121427099003|3023799007|261021135927099003|261021123027099003|261009223027099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	yjnziu8gi9QegbPBF+FhPUuTQt4ajjfNKY3gwlVxpM8kgxUKc50DvXN/s5MTz/qE1QhxhSBQo59s8qFDKvFbhxg5riJvwmP9vOFrJPAibzZpRAiMGyj0p/mJN+DASHLY+0/VKMmn1TZv7P/20Isp6eq+fLHRofXwxyxrGI57fij+JYSggJE6NZ4kxxkfTrHr1r5fmgeC+yxprhjZR0vcVZlOWQTyvOHqpBAxYMnsMsVq5iRzlIQjbYCnR34hQOVpWw6UziM7QoOSZmTFEcWpiDFoFsSGGzUt1WPS8GQFU0mY2nIbmcfN5kiEsaqDpGN4O4vNuQ0zrqFSIwaa9aV30Gq5f9LqQ6vDEHGGXPs5jK+PhqTFazVXpxlN+Cl7IIYGIuX2l3mMmgWPY02YHS6ui+dsm70+uk8/ZacWsQ6xDGGRRfHXD9+v5qe20fZG46AEiMaAT04bSrhrNttp9wZuKpls9lGenej8KDS11tDbqeQisL2fH5T8vb+fyIkQg1SAYKlNYAtGLdBS8aSFr/6IyLnT33kVdohkwxN1hnl95USO1RkJ3+gvY/QUBtflaMpCw3VJ+QyqK5Muh0iiGzwFkK+CBbC+xdZecabeirRYGeBWIzQEYkxq9xpI7Oqlc7wkq3wkZMCC0iqSlmnD2gNFz2U0La+4DtfYP+4uru2YmXs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(6133799003)(18002099003)(10067099003)(261021121427099003)(3023799007)(261021135927099003)(261021123027099003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lYCTdUsHLKkn5ev9XznH5+cXryAXbvhmhOBKCQL/jV1NXLcSSmnFMV6sMyC9?=
- =?us-ascii?Q?4dBq8EOfCo/REsFodu4kMAVF0kHenCZjI/+r5BmBWwxvchWZwdteIpjBJsH+?=
- =?us-ascii?Q?WlAKSYTk5lqBUvkUlJiu4iS3WVJhM+WoSjU4db+LglGJA7DDcKutzYbp4zrC?=
- =?us-ascii?Q?/EZHKcXJwKylAE5tS6thV8uxauVcbezb3Dg+EF+s6vdjWBiApVa+eunYz4fu?=
- =?us-ascii?Q?uWXLVRZK97BfNP5g7rklX1dMt/2aqYJS24FnWY+ekYK8hORihtEOTar2adLj?=
- =?us-ascii?Q?/TDe4BuKv/pxF5fx6evgaAst+jPRIKWouc/G8431pw/E22KzONcmnXA4hJEh?=
- =?us-ascii?Q?LSmOtBtRg0uBnOzQh6bs8FGepzFC0/IQSnz9sKLPV2AdtDW0e1qAs5amvNV/?=
- =?us-ascii?Q?u40zjCSpQ25NExDeKriBJafcgkqsxWJ30LYC7KHJFiZ6qDs2zgs68KR2Gw5+?=
- =?us-ascii?Q?bjfLHqxKVxt4CLEdhUu2PNLq7cYUrUNd5+yGlixRTgUmpjmtdnZHPkParXKr?=
- =?us-ascii?Q?2GQiWq8XWmjkce+gmr+rneVrhCL0hc/eogfetym2+KOJMqgdWvO+47jxIHsZ?=
- =?us-ascii?Q?8E9Ym+WhtrhmUNv2dfd1kplUQBYyApxF1OsblKBGRFOeqJSH+L55/Z3ZpzLH?=
- =?us-ascii?Q?I0BM0BaYpqC7ALHTUK/VP1hiiUGUM3LoqClFreYW5tBgxF5Qk7OKkFr3oUiy?=
- =?us-ascii?Q?ItlGC9N3OLxqJN+1RZHWqbgYBjfMw0ds2DKe7NKbEmHGXfuYI79KK0UcSacB?=
- =?us-ascii?Q?g3il/G3CRFs8pRj/46hRC1kciia5xJ2Gle3b3fCtmDD2aZxdK3kJOmufdzyQ?=
- =?us-ascii?Q?Lh/C7ZQ05rUuXEYYICcoHLM5aluR5VKa9XRQkCuR+Z4xzKbpmRvFb1qZsXV3?=
- =?us-ascii?Q?asKnHkmaVDkcQqshtgaqem5OIQz44stCWummeGLYobo0gNRVhkAij6J3F5gs?=
- =?us-ascii?Q?+nX1LG/LbL7z4T6Q4bhCWvtIoeykUpXP4GNN8GWyP9HtJLhhjiwk3X4BmoQZ?=
- =?us-ascii?Q?i8iEOeKzbcZ/RG3W+/XS844ATZ5zg/bLty8oobd/jybi6lr77aIFtchrrAj3?=
- =?us-ascii?Q?WbLLF/z84xgHMgaxFzMfNvm7xTtc0N6aftyljMiXgaQwQY1RN11fqkE183Qj?=
- =?us-ascii?Q?kqO7aGBCWRchOCl5Qjygw6zyOI1zUbuGLd0F8TOvwF9vprLfyxwgQ+oFqadx?=
- =?us-ascii?Q?ti98YRigLr0oKJP5SDSgEAMLcFxD6pKSBAseFOmFdP5bFFYBs5ZCQbnMBd3I?=
- =?us-ascii?Q?tGqAagEai1A3I+4IMOF8C3x4DssF3vKPGVC1PQJK80OiskV0kljF3BAq2lMk?=
- =?us-ascii?Q?o7Gms0cwRGDnNti8YNVyLyCaiHpDCMr9dTbFgfyc0ChVKQydKMQqSHQrnNTK?=
- =?us-ascii?Q?jUvVXtuP7kUiqNJjuikGKjKPAjboTRKyYeY95X6IQaBJ721NRDfJC5sEQT2t?=
- =?us-ascii?Q?TKvbSHvM429q6qidvT5t+FHooVIXt9d79F/s2LOMKW5YoBSSDqsIRGV0cF2G?=
- =?us-ascii?Q?5pgCzYlr+VRKpmAGUjWQOtNH1Q9EB+j9FPsCCNetq6Rtw7NpKt1FjXgHC45h?=
- =?us-ascii?Q?OOnq624K85ol6OtGGVy/FRQR8GpaC/dVGMVmwudHCkwAjOL3UffND4uCeTOo?=
- =?us-ascii?Q?VOejQ/0N+12JCMAuP0WszkXx1R+xF1IqxjISqneM9a6aJJ+LIrKUIMyKjtbJ?=
- =?us-ascii?Q?IkZfU/jpqot0LzCODlzQatKO59bFUCeSZ9ZRCs1zh1yaeTEE?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b07d16d-47c8-40e6-a162-08df305cc5b3
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 16:51:52.2947
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r5+cAbQF8qS5GOq4lj7j+5K4BUU3PfhLuC4RLWX8Am1/MR88XBqk0owIaxgqFlXq
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6434
 
---mFUbxSPnBhmcY4Wd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] KVM: s390: hole PTE clobber and stale pgste.zero in _gmap_unmap_pm=
+d_fast()
+- [High] KVM: s390: missing compiler barriers around PTE loop in _gmap_unma=
+p_pmd_fast()
+--
 
-Hi Linus,
+commit 4a297a39db42bf18a8ae260ff7d2a55c3aa686ed
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Small set of iommufd updates this cycle, pretty much all bug fixes
+KVM: s390: Improve unmapping of large ranges
 
-Thanks,
-Jason
+This commit adds a fast path for unmapping guest address ranges larger than
+one segment by detaching the pmd via idte_crste(), clearing the pte entries
+in the detached page table while saving storage keys, and reattaching the
+pmd.
 
-The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
+> diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
+> index c10681f882c2d..6700a87a420a8 100644
+> --- a/arch/s390/kvm/gmap/gmap.c
+> +++ b/arch/s390/kvm/gmap/gmap.c
 
-  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
+[ ... ]
 
-are available in the Git repository at:
+> @@ -465,6 +456,103 @@ bool gmap_unmap_gfn_range(struct gmap *gmap, struct=
+ kvm_memory_slot *slot, gfn_t
+>  	return false;
+>  }
+> =20
+> +static long _gmap_unmap_pud_fast(union crste *crstep, gfn_t gfn, gfn_t n=
+ext, struct dat_walk *w)
+> +{
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd.git tags/for-linus-iommufd
+[ ... ]
 
-for you to fetch changes up to 04bcf84613346b973a8cc0c59238b6b5bc902688:
+> +static long _gmap_unmap_pmd_fast(union crste *crstep, gfn_t gfn, gfn_t n=
+ext, struct dat_walk *w)
+> +{
+> +	union crste old =3D *crstep;
+> +	struct page_table *pt;
+> +	gfn_t first, last;
+> +	unsigned int i;
+> +
+> +	if (old.h.fc) {
+> +		if (old.s.fc1.vsie_notif)
+> +			gmap_handle_vsie_unshadow_event(w->priv, gfn);
+> +
+> +		idte_crste(crstep, gfn, w->datt.asce);
+> +		WRITE_ONCE(*crstep, _CRSTE_EMPTY(old.h.tt));
+> +
+> +		return 0;
+> +	}
+> +
+> +	if (old.h.i)
+> +		return 0;
+> +
+> +	pt =3D dereference_pmd(old.pmd);
+> +	first =3D max(gfn, w->start) & (PTRS_PER_PTE - 1);
+> +	last =3D (min(next, w->end) - 1) & (PTRS_PER_PTE - 1);
+> +
+> +	for (i =3D first; i <=3D last; i++)
+> +		if (pte_needs_unshadow(pt->ptes[i], _PTE_EMPTY, pt->pgstes[i]))
+> +			gmap_handle_vsie_unshadow_event(w->priv, gfn + i);
+> +
+> +	/* Detach the page table */
+> +	idte_crste(crstep, gfn, w->datt.asce);
+> +
+> +	for (i =3D first; i <=3D last; i++) {
+> +		if (!pt->ptes[i].h.i && w->datt.uses_skeys)
+> +			pt->pgstes[i] =3D dat_save_storage_key_into_pgste(pt->ptes[i], pt->pg=
+stes[i]);
+> +		pt->ptes[i] =3D _PTE_EMPTY;
+> +		pt->pgstes[i].vsie_notif =3D 0;
+> +		pt->pgstes[i].vsie_gmem =3D 0;
+> +	}
 
-  iommupt: Do not allow PTEs to be split when dirty logging (2026-10-15 13:56:22 -0300)
+[Severity: High]
+Can this loop in _gmap_unmap_pmd_fast() clobber hole ptes and leave stale
+pgste.zero bits set?
 
-----------------------------------------------------------------
-iommufd v7.4 merge window pull request
+gmap_unmap_gfn_range_fast() passes DAT_WALK_IGN_HOLES to
+_dat_walk_gfn_range(). In standard pte walks, dat_pte_walk_range() skips
+entries where pte_hole() is true when DAT_WALK_IGN_HOLES is set without
+DAT_WALK_ANY:
 
-Several bug fixes, probably found by AI based on the emails:
+arch/s390/kvm/gmap/dat.c:dat_pte_walk_range() {
+	for ( ; gfn < end; idx++, gfn++) {
+		if (pte_hole(READ_ONCE(table->ptes[idx]))) {
+			if (!(w->flags & DAT_WALK_IGN_HOLES))
+				return -EFAULT;
+			if (!(w->flags & DAT_WALK_ANY))
+				continue;
+		}
+}
 
-- Several edge cases in the self test
+When a non-segment-aligned memslot is deleted or moved via
+kvm_set_memslot() -> kvm_invalidate_memslot() ->
+kvm_prepare_memory_region() -> s390_kvm_mmu_prepare_memory_region(),
+dat_delete_slot() -> _dat_slot_pte() marks the ptes in partially covered
+boundary segments as _PTE_TOK(_DAT_TOKEN_PIC, PGM_ADDRESSING) and drops
+kvm->mmu_lock while invalid_slot is still present in the active hva tree:
 
-- Reject malformed invalidation commands in case the VMM let them through
+arch/s390/kvm/gmap/dat.c:_dat_slot_pte() {
+	new_pte =3D walk->priv ? _PTE_EMPTY : _PTE_TOK(_DAT_TOKEN_PIC, PGM_ADDRESS=
+ING);
+}
 
-- Rework how the invalidation interface works to the drivers to be more
-  robust and fix several Sashiko issues
+If an mmu notifier invalidation larger than _PAGES_PER_SEGMENT runs on that
+hva range before invalid_slot is removed, kvm_handle_hva_range() ->
+kvm_unmap_gfn_range() -> gmap_unmap_gfn_range_fast() ->
+_gmap_unmap_pmd_fast() iterates over [first, last] and unconditionally
+writes _PTE_EMPTY, overwriting those PGM_ADDRESSING hole markers. Would
+subsequent storage key or cmma operations (such as dat_get_storage_key(),
+dat_set_storage_key(), dat_reset_reference_bit(), or dat_perform_essa()) on
+those unmapped gfns then succeed instead of returning PGM_ADDRESSING?
 
-- Correct several error unwind paths
+Also, the slow path (_gmap_unmap_pte() -> gmap_ptep_xchg() ->
+_gmap_ptep_xchg()) clears pgste.zero:
 
-- UAF during eventq file release
+arch/s390/kvm/gmap/gmap.h:_gmap_ptep_xchg() {
+	pgste.zero =3D 0;
+	return __dat_ptep_xchg(ptep, pgste, newpte, gfn, gmap->datt);
+}
 
-- Reject more malformed usage of the dirty tracking by the VMM
+Since _gmap_unmap_pmd_fast() only clears vsie_notif and vsie_gmem, could
+stale pgste.zero bits remain set and be observed by ESSA_GET_STATE or
+ESSA_SET_POT_VOLATILE?
 
-----------------------------------------------------------------
-Andrea Parri (3):
-      iommufd: Keep dmabuf PFNs MMIO when filling another domain
-      iommufd: Reject a zero-length dirty bitmap request
-      iommufd/iova_bitmap: Ensure that iova_bitmap_set() handles the full IOVA
+> +
+> +	/* Reattach the modified page table */
+> +	WRITE_ONCE(*crstep, old);
 
-Donggeun Yoo (1):
-      iommufd: Keep reserved IOVA ranges when a replace within one IOAS fails
+[Severity: High]
+What prevents the compiler from reordering the pt->ptes[i] and
+pt->pgstes[i] accesses outside the detached pmd window in
+_gmap_unmap_pmd_fast()?
 
-Eva Kurchatova (1):
-      iommufd/selftest: Skip when the mock device is not there
+In arch/s390/kvm/gmap/dat.h, idte_crste() only clobbers *crstep and "cc",
+without a "memory" clobber:
 
-Jason Gunthorpe (1):
-      iommupt: Do not allow PTEs to be split when dirty logging
+arch/s390/kvm/gmap/dat.h:idte_crste() {
+	if (!machine_has_tlb_guest()) {
+		/* flush without guest asce */
+		asm volatile("idte	%[table_origin],0,%[gaddr]"
+			: "+m" (*crstep)
+			: [table_origin] "a" (table_origin), [gaddr] "a" (gaddr)
+			: "cc");
+	} else {
+		/* flush with guest asce */
+		asm volatile("idte %[table_origin],%[asce],%[gaddr_opt]"
+			: "+m" (*crstep)
+			: [table_origin] "a" (table_origin),
+			  [gaddr_opt] "a" (gaddr | IDTE_GUEST_ASCE),
+			  [asce] "a" (asce.val)
+			: "cc");
+	}
+}
 
-Karl Mehltretter (1):
-      iommufd: Fix iommufd_hw_capabilities reference in kernel-doc
+Neither page_get_storage_key() nor WRITE_ONCE(*crstep, old) includes a
+compiler memory barrier either (unlike pgste_set_unlock() in
+arch/s390/kvm/gmap/dat.h, which places barrier() before WRITE_ONCE()).
 
-Nicolin Chen (5):
-      iommu/arm-smmu-v3-iommufd: Reject unsupported bits in invalidation commands
-      iommufd: Iterate the cache invalidation array in the core
-      iommufd/selftest: Convert cache invalidation mocks to the core array loop
-      iommu/arm-smmu-v3-iommufd: Convert cache invalidation to the core array loop
-      iommu/vt-d: Convert nested cache invalidation to the core array loop
+Because pt->ptes[i] and pt->pgstes[i] are plain non-volatile accesses to
+types distinct from *crstep (union crste), could the compiler reorder the
+pte/pgste updates before idte_crste() or after WRITE_ONCE(*crstep, old),
+allowing running vcpus to retain stale tlb entries to unmapped pages or
+update hardware storage keys after dat_save_storage_key_into_pgste() has
+read them?
 
-Nirmoy Das (1):
-      iommufd: Fix event queue release use-after-free
+> +
+> +	return 0;
+> +}
+> +
+> +static bool gmap_unmap_gfn_range_fast(struct gmap *gmap, gfn_t start, gf=
+n_t end)
+> +{
+> +	const struct dat_walk_ops ops =3D {
+> +		.pud_entry =3D _gmap_unmap_pud_fast,
+> +		.pmd_entry =3D _gmap_unmap_pmd_fast,
+> +	};
+> +	bool failed;
+> +
+> +	lockdep_assert_held_write(&gmap->kvm->mmu_lock);
+> +
+> +	gmap_unmap_prefix(gmap, ALIGN_DOWN(start, _PAGE_ENTRIES), ALIGN(end, _P=
+AGE_ENTRIES));
+> +
+> +	failed =3D _dat_walk_gfn_range(start, end, gmap->datt, &ops, DAT_WALK_I=
+GN_HOLES, gmap);
+> +	KVM_BUG_ON(failed, gmap->kvm);
+> +	return false;
+> +}
 
-Qinyun Tan (1):
-      iommufd/selftest: Return dmabuf fd from IOMMU_TEST_OP_DMABUF_GET again
+[ ... ]
 
-Samarth Narang (1):
-      iommufd/iova_bitmap: Fail GET_DIRTY_BITMAP when a bitmap page cannot be pinned
-
- .../iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c    | 197 ++++++++++++++++-----
- drivers/iommu/generic_pt/iommu_pt.h                |  30 +---
- drivers/iommu/intel/nested.c                       |  54 +++---
- drivers/iommu/iommufd/device.c                     |   8 +-
- drivers/iommu/iommufd/eventq.c                     |   4 +-
- drivers/iommu/iommufd/hw_pagetable.c               |  25 +--
- drivers/iommu/iommufd/io_pagetable.c               |   5 +-
- drivers/iommu/iommufd/iova_bitmap.c                |  26 ++-
- drivers/iommu/iommufd/pages.c                      |  13 +-
- drivers/iommu/iommufd/selftest.c                   | 153 ++++++++--------
- include/linux/iommu.h                              |   6 +-
- include/linux/iommufd.h                            |   2 +
- include/uapi/linux/iommufd.h                       |  12 +-
- tools/testing/selftests/iommu/iommufd.c            |  24 ++-
- tools/testing/selftests/iommu/iommufd_fail_nth.c   |  14 +-
- 15 files changed, 375 insertions(+), 198 deletions(-)
-
---mFUbxSPnBhmcY4Wd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRRRCHOFoQz/8F5bUaFwuHvBreFYQUCato/JQAKCRCFwuHvBreF
-YZxoAQCJwoZzNNx85eDR2Md5V80eDIgeHkmSXypkjVA8xlqmWgEAmX3fRO0rnhX5
-b0/MrCg852RslQi5/jqgjr8LmddMlgI=
-=zc6c
------END PGP SIGNATURE-----
-
---mFUbxSPnBhmcY4Wd--
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022155531.2045=
+93-1-imbrenda@linux.ibm.com?part=3D8
