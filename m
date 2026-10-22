@@ -1,95 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792657899;
-	b=N+UUKF9YaV9VaztdkRl72UHZvLzhadEQ+emtofQ4ZPOAjKx6/aYalh39c1HOXXDCeTTq
-	 /YC+7SHNrGeuwzY49bgDNtZWxzthbp8/vqOrGkmP606Uktlgodq0nx3PTWp3Ps04TJXMD
-	 k0UKCHAzbTYvEFGsdfK9ewDhZCBYols7At8+okjTR670K/p5u4eDSWdB9s49pB2PnrCf7
-	 8WpnoEGRho+0VMXJEXG+XyXW/ec6X9hcJI3hhpMg5pbxbmY1gGZtu7BYd19n/KyJCxyJN
-	 PpIKcYEHSyaeg3+KSscZc4yIRB4bOvH8a+0hXejQhZXSVL8S7Hm9F4DnS+pWDBfSxqw==
+	t=1792658367;
+	b=C4SxltATZzltpnYAl2BMZHwFJjS/wcJfZk0aMNOKec4xHwRHlWeWorF8dM+CEn4zVtly
+	 p0aOecp0LUWqsfC3zXLeRT2Z6TnLsoKa2U4ieHtCQh/69Lm3ferj7hUwDcaUJ7sigAOfC
+	 xTr6RxAdYiCy6V/7KC9r1twYoKB/XeDTlb/jNxbCuDtkM6QyM9jLhCrZUQva8Gwdk6byc
+	 EP0mpYrQ/0z88GYOMeyeD7cSuFwcmkodcDBhHrJquf5ZWoK9QfntlVUSZnhvO7ELvgtlJ
+	 xWlnUPvShVIaRUq/bzbrO+AIbIe1iH+fV9bcZ9VyvaFj63jNiRtt/kuWHG/XamCkrVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792657899;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=tNqEOrEbvKEdZLXsSkH26l7aedkHF5+jRM5uZ/OAFio=;
-	b=PJ7kzo2F45duYMrnl9e9c4dVHox7yvQkEZE1ShMSAdq8qAN+vyVYR0SUATwXuGm3P7Tq
-	 AFu85alTXePTD0fgYYHAlP/hhFMrhnQ1PcGU35qF8P41KMDHSwSLZKUOl/5OK5x4sArDu
-	 7ha3/3XtZZ1zLpg/JNc7hv06xiv9LivplsZ0nqHPYFL16SPuQQL4CMP1IzyCUBwlCZ1w2
-	 zwU57cRlDmm4uaiwLK3Bp9cPARPLtPgaG6UACtzCll9TbbYmKUOn96o5SLtFOAjQrGxIG
-	 bOElCdPd5ztgSx26y7o+F4u7pstBpmzAzv7cI0YYxpIosIhxEv/77zlPhLQKJS6vOvQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792658367;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=CvCWEqXaZH/iIUkBgP+o8Ay2lvbiOFHenVSVWHTDnio=;
+	b=tvj/hEXdBVSnGssfdOToBlnWdDpY0rWNfL7a8CslFgjLIhBurLJco4jNO3f/8+9RPyYl
+	 /qry3l6WyEa2nhejPHLBHCqeZBDLPntbCbSodv/Xdyn4V2FUXN49ZfWk7JxX19qOgIDz0
+	 RAy25WH+gugC+ur2Tdkn0kkeI5LIdrhaQGGVsjxXrdBZuz18vKazRI2E2MDvQtGZsuT3F
+	 9Fw9bm3/lcPLLrAQPbRdwBR5th1gFiuL+iMypgwVSo3XotRgXEOSX2RzpBaiBgDG9iZZD
+	 mYp7OKOzX8CzsBZz+XxrIB5eKGrj/K33PZ5VGm3C3POeReWwpeqEhkqI1sYWc+NpQyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mg4u7ir0;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CDC606A325
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 08:31:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72CDC606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hEObLniC;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1045E606A319;
+	Thu, 22 Oct 2026 08:39:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1045E606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mg4u7ir0
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1df146015so12162665e9.0
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 01:31:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792657898; x=1793262698; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tNqEOrEbvKEdZLXsSkH26l7aedkHF5+jRM5uZ/OAFio=;
-        b=mg4u7ir0LmPMRyfnxCjmVgra/VWVy0WRW3cdOvZZ/bn9RG0kGrlzNL8+rmud9EbIBE
-         cRvPPnZanb9apo99irs69Jqmfe/e2hOoQNPxjJfL0469kCLq9yfiJ5UnVQtdEV6eqo0M
-         pIM7eK5OtNCdzdjBmpzB1IBSZmuksSuxXQG2+rQcVZzDQJfQCgXjLflT1bSGIiwmiUHX
-         OQm44H/VxqSBi/k0X57a7IEVuiekyKSlSh47QmlbxnpFhTYeul6Amm+jqQl9mT9UGd28
-         iOLUUWBxhKZBHK3cqfzw33eyfCmQqog/gtqdTSh3lDkV04QIMYIdzvODgxRVh1WACSDZ
-         yPxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792657898; x=1793262698;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tNqEOrEbvKEdZLXsSkH26l7aedkHF5+jRM5uZ/OAFio=;
-        b=LuEKGQ+tK9OhSdmZr+qSznrBowxCIUeLJIOy03Fiwmdw/HVPrULDLkwgpaxTGQSU2H
-         o3fabI3QhBs9rSVcnWy4R2tq4SC7nd5D+GvIskvAccfXY/EebCZGYiPOLUcO0DqAo9JY
-         i4RTS7HIKozpDbiQtTdMyw8gwEprSoZFv6EK0FxDcltIyvpGQiJJXcgVVY7eh+3Aeg2x
-         A5r0DgGZ9CRVATeXwyA1WfVXrw+rgi0AbyiDb5s+ibdytl/IzoyxolWKyuGJfXtHomH/
-         11E0vIB9+vT+jPQfY7z5R9OSlz82efiRz6msyrwhqOLePqqrJWhPY2qbfXL4GEkKsWiQ
-         iJRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy0Szn9joiz3b4L/AQUyxsKs0DRn5HYKV8+M7+hbrcCV/mf5oo2qd61HizZiPV1bVnY0Uo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKjls3xB6A147JbYhKOyw+sjF5rn/HK3DLMGgwyZJN4Jxjc+dvE
-	pzR3znBvVX/JanlPw06gp48IJGEMpwsmetW8ixZZZ72ehRbVYqZ2Rc6+CBCBxvTmjg==
-X-Gm-Gg: AYBFou3fp8LKIkVZv3bQr+eWgcpm21PgjG+4fxWR5URykrtzzGF7mO3n49vi/EtGjhr
-	ehtRxgJ+3GYPIjbh8NBMwe8TSbcRDlstdJWkACTI2zcwyg3SQeYKXnBSIlXkMxjgnNvPRf7nMOX
-	PyELtoDizIn4Myen7gm/DmPjwkzJ9iIgqouzhQQ16VOie/yEfN5EwiIFgNq8hxOK6s0dX6CHFxN
-	L3hBQxWERRqEBcff5NON+ZdrJBW2j7YAAOHMJul/0FQp+iiL/c5Jf93+fHYiHlv01LWs3v9cdeu
-	Jz1SZyI4ZMaq+K52ltokEu+m6XSrCmFwoyyyvNBT4k4dsxIaaswZkEejUhMalC/E8VZJDaNbF0p
-	0/lKOf7PxXTkZc1cHVHKTL70KdS/NdZcJHio3PJ9yPZGQw9OKu0Lu/BeX/qSwmM/KdAQm3EUMCc
-	STXw62r+ImFBAWlnErkKQkVUbeZCH4WGY1DNUpln92f3vuFnMSnK4qBW989bBjzIY2Z1r6uuaUl
-	7GyzV/W/73k+EtVNbWway/j6N3f3AewEqkvNxF3HfroKmbx2q1rSH0CFopncisYJYRSC2ZUMAa+
-	iHFdOvwl2j4o5QCyoq+DVjSb
-X-Received: by 2002:a05:600c:34ca:b0:4a1:d10c:7170 with SMTP id 5b1f17b1804b1-4a1fdd34028mr98581465e9.31.1792657897259;
-        Thu, 22 Oct 2026 01:31:37 -0700 (PDT)
-Received: from google.com (197.183.140.34.bc.googleusercontent.com. [34.140.183.197])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a0e64esm53407775e9.3.2026.10.22.01.31.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 01:31:36 -0700 (PDT)
-Date: Thu, 22 Oct 2026 09:31:33 +0100
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: will@kernel.org, julien.thierry.kdev@gmail.com, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	maz@kernel.org, oliver.upton@linux.dev, alexandru.elisei@arm.com,
-	andre.przywara@arm.com
-Subject: Re: [PATCH kvmtool] arm64: THPs for systems with pages bigger than 4K
-Message-ID: <atnJ5RdWkGQ9QZgQ@google.com>
-References: <20261019145949.1922019-1-vdonnefort@google.com>
- <16679dd3-c168-4dee-bb9d-da9b0e3416cf@arm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hEObLniC
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD9062C46;
+	Thu, 22 Oct 2026 01:39:21 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE8D93F673;
+	Thu, 22 Oct 2026 01:39:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792658365; bh=uD8Z+VnaxokujgVMBewvc6O/2Oc94t5bbNpab8XT2Mo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hEObLniCfO8tvUEME++blEmza9btcaiRUMVFVtYl9TdDINt/Jh+KSuOXaWp/rKmlo
+	 WUhI/MoxamaYnryozypEz5akzYCHQwBT1DP41jmVMtmfcNM9rOY0pgG75S1zir53qf
+	 PQfmGihfe1dbVdN8Zrb0zomrdSqiyDwI9lvPy+WU=
+Message-ID: <4a086f49-14a3-43a9-ba9b-ab387f5e7f91@arm.com>
+Date: Thu, 22 Oct 2026 09:39:20 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -99,97 +53,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16679dd3-c168-4dee-bb9d-da9b0e3416cf@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
+To: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+ yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com,
+ jonathan.cameron@oss.qualcomm.com
+References: <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
+ <araketG70TIKeNuf@arm.com> <12e83d88-de4c-4230-aac2-1796123320ad@arm.com>
+ <70d47475-e26e-40e1-b409-b0c16aecb8c0@arm.com>
+ <195cdfe4-a55a-453f-9c34-620738eca244@arm.com> <arqrZ_Auk9BYOopa@arm.com>
+ <0f68dcff-1dfe-4515-9912-515ca6457674@arm.com> <arudWVBPXcnUvYNh@arm.com>
+ <5d487949-9195-442f-97af-acb9e3fdfb0d@arm.com> <86ld7ryvm8.wl-maz@kernel.org>
+ <atj7A1CV4paW3htS@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <atj7A1CV4paW3htS@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 20, 2026 at 03:43:08PM +0100, Suzuki K Poulose wrote:
-> On 19/10/2026 15:59, Vincent Donnefort wrote:
-> > The THP support imposes an alignment of the memslot userspace address to
-> > the size of a THP (PMD_SIZE). To do so, kvmtool overallocates the RAM
-> > size and aligns it. However it assumes PMD_SIZE is 2MiB, which is only
-> > true on 4KiB page systems.
-> > 
-> > Use a huge-page size, based on the system page size. This value can be
-> > massive for a 64KiB page system, so skip the alignment if we couldn't
-> > even install one THP.
-> > 
-> > Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
-> > 
-> > diff --git a/arm64/kvm.c b/arm64/kvm.c
-> > index 36b3284e4a92..2c01dc32fa9a 100644
-> > --- a/arm64/kvm.c
-> > +++ b/arm64/kvm.c
-> > @@ -18,6 +18,8 @@
-> >   #include <asm/image.h>
-> > +#define HUGEPAGE_SIZE (PAGE_SIZE * (PAGE_SIZE / 8UL))
-> > +
-> >   static struct arm64_image_header *kernel_header;
-> >   struct kvm_ext kvm_req_ext[] = {
-> > @@ -35,20 +37,23 @@ bool kvm__arch_cpu_supports_vm(void)
-> >   void kvm__init_ram(struct kvm *kvm)
-> >   {
-> > -	u64 phys_start, phys_size;
-> > +	u64 phys_start, phys_size, ram_alloc_align = SZ_64K;
-> >   	void *host_mem;
-> >   	int err;
-> >   	/*
-> > -	 * Allocate guest memory. We must align our buffer to 64K to
-> > -	 * correlate with the maximum guest page size for virtio-mmio.
-> > -	 * If using THP, then our minimal alignment becomes 2M.
-> > -	 * 2M trumps 64K, so let's go with that.
-> > +	 * Allocate guest memory. We must align our buffer to 64K to correlate
-> > +	 * with the maximum guest page size for virtio-mmio. If using THP, then
-> > +	 * our minimal alignment trumps 64K, so let's go with that.
-> >   	 */
-> >   	kvm->ram_size = kvm->cfg.ram_size;
-> >   	kvm->arch.ram_alloc_size = kvm->ram_size;
-> > -	if (!kvm->cfg.hugetlbfs_path)
-> > -		kvm->arch.ram_alloc_size += SZ_2M;
-> > +	if (!kvm->cfg.hugetlbfs_path) {
-> > +		if (kvm->ram_size >= HUGEPAGE_SIZE)
-> > +			ram_alloc_align = HUGEPAGE_SIZE;
+On 21/10/2026 18:48, Catalin Marinas wrote:
+> On Wed, Oct 21, 2026 at 03:30:07PM +0100, Marc Zyngier wrote:
+>> On Wed, 21 Oct 2026 10:58:13 +0100,
+>> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>>
+>>> On 29/09/2026 12:15, Catalin Marinas wrote:
+>>>> On Mon, Sep 28, 2026 at 07:28:20PM +0100, Suzuki K Poulose wrote:
+>>>>> On 28/09/2026 19:01, Catalin Marinas wrote:
+>>>>>> possible, to defer the RMM activation until the first user (still do the
+>>>>>> RMI probing as an initcall). If we run on RME-capable hardware and
+>>>>>> firmware but don't care about realms or TSM, we still get the normal OS
+>>>>>> functionality.
+>>>>>
+>>>>> Would you prefer this in the first drop of the RMM ? Or is this
+>>>>> something we could add as a separate series ?
+>>>>
+>>>> I think we could add the deferring as a separate patch, maybe together
+>>>> with the KVM bits. An advantage of keeping it here if we merge this
+>>>> first is that we still exercise the activation path without full realm
+>>>> support or TSM. Otherwise a lot of this would be dead code until the
+>>>> other series arrive. Either way, do it as as separate patch on top of
+>>>> this series.
+>>>>
+>>>
+>>> I have been looking at the "on-demand" activation support and came
+>>> across the following design decision.
+>>>
+>>> * We have KVM_CAP_ARM_RME which advertises that KVM can create Realm VMs
+>>>    to the userspace. A VMM could check this before it creates a Realm VM
+>>>    using KVM_CREATE_VM with type=RealmVM.
+>>>
+>>>
+>>> Now, we could delay the RMM activation as late as the KVM_CREATE_VM and
+>>> kick it off while we initialise the kvm as part of kvm_arch_init_vm().
+>>> But if that fails, we would fail the KVM_CREATE_VM.
+>>>
+>>> The question is, what should KVM_CAP_ARM_RME indicate ?  We could
+>>> initially enable the cap based on the presence of RMM (but not
+>>> activated). However, should we turn the KVM_CAP_ARM_RME=off when we
+>>> fail to activate the RMM ? Is that senisble ? (i.e., runtime
+>>> disabling a cap).
+>>
+>> I think this sets a bad precedent. If activation can fail, KVM end-up
+>> not delivering on the promise that it makes, and that's not great.
+>>
+>> My take is that the least surprising behaviour is best. If you have
+>> bought into the CCA kool-aid by enabling it on the kernel command
+>> line, that's not by accident. You expect your VMs to reliably be
+>> created when KVM tells you that CCA is available.
+>>
+>> So KVM_CAP_ARM_RME should indicate whether the RMM has been
+>> successfully activated, and nothing else.
 > 
-> There is logic in builtin-run.c to detect the host_ram_size(), could we
-> use that instead to decide if we should apply this alignment ? Or retry
-> the RAM allocation without the alignment on failure ?
+> Tying activation to kvm-arm.mode=rmm works for me, roughly similar to
+> kvm-arm.mode=protected. It's still an eager activation (just
+> conditional) and KVM_CAP_ARM_RME then only reports whether activation
+> succeeded. We lose kexec/hibernation but that's fine, it was explicitly
+> requested on the command line.
 
-As the mmap() sets MAP_NORESERVE, I believe it is only reserving address space,
-I don't think a failure is expected because we increase the size of that
-reservation or did I miss anything?
-
-> 
-> It doesn't look like a good idea to hard code this based just on the
-> requested RAM size.
-
-The idea is just if we know the guest doesn't have enough RAM to install at
-least one THP, then there is no need over-mmap. But it isn't saving anything
-really so perhaps I may as well drop it?
+Thank you both, I will tie the activation to kvm init, gated on the
+kvm-arm.mode.
 
 > 
-> Cheers
-> Suzuki
-> 
+> There's also the case of a host-only PCIe TSM (without realms). IIUC
+> (grep'ing FIRME spec) on an RME system IDE key programming goes via the
+> RMM, so this would need the RMM activated even without KVM. Not sure it
+> makes sense without realms, so I think we can ignore it until there's a
+> concrete use case (and add one more hook to activate the RMM).
+
+We could, again gate this on kvm-arm.mode. RMM is not useful without
+the capability to run realms. The dependency is the other way around.
+If an RMM exists and would be used for any other device TSM, then it
+should act as the TSM for all devices, to make sure we have a single
+TSM managing the IDEs (and the SPDM connections).
+
+So, tying this again to the kvm-arm.mode=rmm, i.e., the capability
+to run Realms makes sense to me. Thoughts ?
+
+Suzuki
 > 
 
-Thanks for having a look,
-
--- 
-Vincent
-
-> 
-> > +
-> > +		kvm->arch.ram_alloc_size += ram_alloc_align;
-> > +	}
-> >   	if (kvm->cfg.arch.guest_memfd)
-> >   		kvm->arch.ram_alloc_start = mmap_guest_memfd(kvm,
-> > @@ -63,7 +68,7 @@ void kvm__init_ram(struct kvm *kvm)
-> >   		    kvm->arch.ram_alloc_size, errno);
-> >   	kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
-> > -					SZ_2M);
-> > +					ram_alloc_align);
-> >   	if (!kvm->cfg.arch.guest_memfd) {
-> >   		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-> > 
-> > base-commit: f67bc0bdae9433a9cfd05e65ea2c1bb6102566d9
-> 
