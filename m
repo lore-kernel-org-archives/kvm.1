@@ -1,74 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792635505;
-	b=l31AObspvL/M2HGh4zr9td1FrVkUGDbLg9Fj/+qy5D1hCGYYekbhYYXZn1+yhmflWzS1
-	 ZCFZZ0CdgFDBbzRPJLEb6i2ZUITATeSV48j7nE82mzKyNzLKZl24yZihikKFDfVY9DKcC
-	 V0HEST+VDYl7tIvGpL/tSyBsTFOD4BzhTqHzGhsUkGEZ6folPeC6Niq6FkyfYubnha9NT
-	 XIIOvh8LtdY3hybUIZk9xSlTXGVAbxoquw9evYy3ZGyL3YnW7fyukSVGnEJ2NwxiTpruP
-	 5Z9WEaO8R7Lt7kM3a8MJ+cfzZU8J7BjIPzpbt/yUSpBxFkoAH+VT7NdF9xWeKAg/AJg==
+	t=1792635636;
+	b=kcAqqH/vBWtI37mxs+/F+YKM7eD3Be8mMaNkCm+VEpqOWZrsAAYBmLAkWiS6qpdP9QIb
+	 MWjHFzECwoCq9UpqKoVExaDRXpmBV18lDX31IIr/W08X7Q89lZYTANGtWZMeTKTHTQ1wL
+	 R8s21LfWQ9nYSOa38l+1KDoWksGaiphYHeGcx5xHKAjr6GkurhCTdZROU1sY62mhhIWhV
+	 dGM0q6F+v9iTdLacqSvLqRWg7/koXYlhaw+jIEmxm+lHcPxDL/VfSqMj/h2No0rdfXG+D
+	 u9s4dn2KJM18ZUP64Q9Nl/4Bg+SONBVXKc5gBLc6ouasqHPmj3mdR6BraoZ3JxD2QKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792635505;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=zKOY3KM6W7cTDdHPqzyzy77JGlYO/MSVD6fvE2c4CzM=;
-	b=j9z+ANAx2G1SDb5bdkbhZNvB81Tw3+ZiBkRzkETCTw9qtoXNTVr9gAxFgkiu+VpZoJfF
-	 YWx9sIf/t5Xpvnq5lyKS3oFodf3v3pn9IXmNnfv1oVT2ooUN7N8DNf4lFM0wOilyFEFq6
-	 jilci+NJ2nzI6F5WXxGTX0xeGesNoxR0F/FyrysexMG8DV5i++2lHwvAOpYzwT+W/97cp
-	 Z9Tem50yATFqZAEK62J99vYGgkUv8dU0GipvxpSrLx4sRQJm5PQFjF1vGpBhww0yPA0AR
-	 TmRUy02W8l7NbJSIErDL530AbcDkh5+urb2co+aj0Tayddm1NF75tp0g/ja9Zfbg3Bw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792635636;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=gRgsvRbmzx9WhUVzRKlapA61VEA/n0x8CCdbVbELBuE=;
+	b=ciBAAcpJULL6PTBVI5QHt5xmrE8a+NLLhmWM4YL87bSiGcSiCPg1Llx5ve9EanpwZmHB
+	 g6SyeGIJSHI+V0U7D16C/0H89eT6dNga2NSNM7pMCd87KLE4NIgJf+zkpYv9njkVeMiKo
+	 p1WuMnfRnTTcpbQV+ClqnrvK6qsluQKKni0kd/waBsAatCtc7wAqEBLGYD0jz636mpbzv
+	 NHodGKVERWfmUxPeJazbjgdpgbGyKJn0XFcnUuDrlt3mwM8mJ/LIfLH/Lu6wLhs3Y6RtD
+	 e4cdUqpuRXOQBDjvX1lVYoIdJTeV6dcMj5HiTdorgZFRL8JPkHar278Otfj8lDeb48g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QKVmesTO;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GdMmP9qA;
+	arc=none smtp.remote-ip=192.198.163.7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE3C606A32A
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:18:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDE3C606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB71E606A31B;
+	Thu, 22 Oct 2026 02:20:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB71E606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QKVmesTO
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad3fc547bfso1234985a91.2
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 19:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792635504; x=1793240304; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=zKOY3KM6W7cTDdHPqzyzy77JGlYO/MSVD6fvE2c4CzM=;
-        b=QKVmesTO/tg+usxx4kVKRSyM9RPnxeQCvRRGHurKCKkI7MOiaYNY2akdqtUblKap5y
-         SmpQeXyiVhNzj/k8yGtId1byXHKARKfTwvof74QU13Ng/Q60bL1qWOIxHwMhzlnQbQNZ
-         pjfi/S42kyluBGL5+Nv6Pxw9fr8TUnh+FEgdnSL9MU/1U3XiqvM3zAu0jyIyHUYe+NUY
-         ZKjHAixOJ8p4AUTQvwbEqkCOM2TE5dFUDMfCfEOArWCn6U907wADJmsVpIo5yJP0eToU
-         J8el525NCZP3nA0PdQhJZPwmaa2UyEWDnuqZFlM47Tx8yASLsG0QBbqXt67uiQMGSOxC
-         mdXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792635504; x=1793240304;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zKOY3KM6W7cTDdHPqzyzy77JGlYO/MSVD6fvE2c4CzM=;
-        b=dXsXd681t/sDaaJtWbDIrrb8gQQn4v7jsf7DDeaksRutduzcoaib4bzBZr+V4eJP+H
-         GgnXufGTeC4KXYW/zsXrs20TlV2tyRDrS1kr4ObZpOaYjNC6gxyB+l7PEGX9vu/Q14+l
-         SRwS3ItIIk4OUHFep2dx5016junjL+nVfeSrIAbz3hOYo6nYNegmOiXZYe4QX1Yt58LS
-         xmnxmaUjIVem9qgimiwCwfLL2md7NVkzheq23++Krvp+KfM4CNQqdC6AzDVscno58NJK
-         TpFVZG/IqQNGhQDhWJl7Jiuqc1u2x6pDk31D4sltYrLD1DpAYkROIrhTLv3UUseb98KA
-         CL9w==
-X-Gm-Message-State: AFq9FYLZdl6pxXLwJeXxVpOKNx3YNWYgyLTYHtKosUDa0cFH0NC9OfEk
-	jrBQPgnPAN+rjAQR2xVNM4W5AdvBre/HjikDD4mIfwz4lWtDhT1CdrER8LKazY3cl2LD5utssSO
-	fLXqxTQ==
-X-Received: from pjsa18.prod.google.com ([2002:a17:90a:be12:b0:3ad:4377:79ba])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224e:b0:3ad:6781:da6b
- with SMTP id 98e67ed59e1d1-3ad86cd6d65mr3204983a91.62.1792635503892; Wed, 21
- Oct 2026 19:18:23 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 21 Oct 2026 19:18:19 -0700
-In-Reply-To: <20261022021820.298886-1-seanjc@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GdMmP9qA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792635636; x=1824171636;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xYMCFXnTAz0M+rlOpJnTWLxwklR/oq1vvWcReqauUHo=;
+  b=GdMmP9qAa9g4Dv5WdHbg/wmNDa5YnzUVPsI/ZS6PRLxewMrTCXqU74+K
+   Z6iJxRG4w/brl/Y+aEZsKBwecqyWAlb3o4T1x8qEvGeA9y2B7qEO4V0W+
+   8Uabkagy/arwg9ji5cvtkZa+KH/WTs2bmB57NYZ+p02rN1S+pvsqYaS73
+   zA4XxZOThZFFq/28iH6Mq9HTNdZbW0pRlpsEX6VBgQW5uSgUJsqROUbHT
+   D4kv3ve1EpS7x/rJ5oLlCfJAkzEfPqbIlx0yXUsxfEt3cgizishbY8hi7
+   EG+Dto61r2WFWvzGesjkys7ITCIbrQJhfjkei9uezim9JyP61+a0qsRN1
+   w==;
+X-CSE-ConnectionGUID: vAlc43eCT/2UslbgtqW8kw==
+X-CSE-MsgGUID: go3ZqPZvQD29PtnsO3gmNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1274621"
+X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
+   d="scan'208";a="1274621"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 19:20:35 -0700
+X-CSE-ConnectionGUID: TXHai4yBQ/6Qr8RZ1DQMhw==
+X-CSE-MsgGUID: NsM/tIH7QM6C/EK52GLUqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
+   d="scan'208";a="3723991"
+Received: from unknown (HELO [10.238.0.148]) ([10.238.0.148])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 19:20:31 -0700
+Message-ID: <cdfefb02-acb0-4890-80a6-19036f03ea3e@linux.intel.com>
+Date: Thu, 22 Oct 2026 10:20:29 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,58 +71,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022021820.298886-1-seanjc@google.com>
-X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
-Message-ID: <20261022021820.298886-2-seanjc@google.com>
-Subject: [PATCH 1/2] KVM: nVMX: Save shadow VMCS when getting nested state iff
- L2 is active
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/5] KVM: TDX: Report only KVM-allowed CPUIDs in
+ KVM_TDX_CAPABILITIES
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
+ <seanjc@google.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+ "dedekind1@gmail.com" <dedekind1@gmail.com>,
+ "Maloor, Kishen" <kishen.maloor@intel.com>,
+ "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "Hunter, Adrian" <adrian.hunter@intel.com>
+References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
+ <20261016091422.3182216-5-binbin.wu@linux.intel.com>
+ <b69f075f475bb8c09c74cff621ae23f76da50795.camel@intel.com>
+ <2bc913d2-4286-4484-a872-3266326db0a5@linux.intel.com>
+ <b196cf9f65fe1e52aba7b867b7c2687c40caa337.camel@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <b196cf9f65fe1e52aba7b867b7c2687c40caa337.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When getting nested state, copy the shadow VMCS to the userspace buffer if
-and only if the vCPU is in L2, as that is the only scenario where the
-shadow VMCS is "active" and thus needs to be explicitly save/restored via
-KVM_GET_NESTED_STATE.  If the vCPU is in L1, then the shadow VMCS isn't
-active/cached by KVM, i.e. is just a pointer to memory, and doesn't need
-to be saved/restored (userspace is responsible for saving/restore guest
-memory as needed).
+On 10/22/2026 1:19 AM, Edgecombe, Rick P wrote:
+> On Wed, 2026-10-21 at 10:15 +0800, Binbin Wu wrote:
+>> On 10/21/2026 8:39 AM, Edgecombe, Rick P wrote:
+>>> On Fri, 2026-10-16 at 17:14 +0800, Binbin Wu wrote:
+>>>> Note, the change is user-visible, as some bits that were previously
+>>>> reported as configurable no longer are.  The ABI itself is unchanged: KVM
+>>>> already filtered unsupported CPUID bits out of KVM_TDX_CAPABILITIES, albeit
+>>>> via a denylist, and the set of configurable bits already varies with the
+>>>> TDX module and KVM versions.
+>>>
+>>> I'm not sure what this is saying, the change is user visible but there is no ABI
+>>> change? Can't be both... so I think there is an ABI change.
+>>
+>> My understanding is KVM_TDX_CAPABILITIES reports the capabilities supported by
+>> the TDX module *and* KVM, this is not changed before and after this patch series.
+>> ABI-wise, I think userspace doesn't care how KVM do the filter, denylist-based or
+>> allowlist-based. The ABI requires userspace to consult KVM_TDX_CAPABILITIES, and
+>> what KVM_TDX_CAPABILITIES report can be changed. That's why I described the ABI
+>> itself didn't change.
+> 
+> My model is that ABI is the user visible behavior of the kernel. So if you are
+> running a kernel on a machine, and upgrade the kernel, then the behavior changes
+> for your (potentially misguided) userspace. That is still an ABI change.
+> 
+> I think you are thinking about it like a spec - that if the new behavior
+> conforms to the spec, it is not an ABI change. I think it's not right.
+> 
+>>
+>> How about simply noting that this is a user-visible change and dropping the ABI
+>> part to avoid any ambiguity about the scope of the ABI?
+> 
+> Eh, if you want. I'm ok as long as we don't declare there is no ABI change. And
+> then the patch ends up breaking userspace with a log saying no ABI change
+> because of the docs. It could come off wrong.
+> 
+> We are making a potentially breaking change here that we think won't impact any
+> users. It's a sensitive thing.
 
-This fixes a bug where KVM would save the shadow VMCS, but not account the
-size of the shadow VMCS, as the accounting correctly checks for L2 being
-active.  Note, the restore path also consumes the shadow VMCS payload if
-and only if L2 is active.
+Rick sent me a link about the discussions on "what ABI is".
+https://lore.kernel.org/lkml/alpine.LFD.2.00.0812011210030.3256@nehalem.linux-foundation.org/
 
-In practice, writing more bytes than are reported is likely benign, as KVM
-correctly reports the maximum size for KVM_CAP_NESTED_STATE, and no known
-VMM invokes KVM_GET_NESTED_STATE twice on every save to precisely allocate
-its buffer, e.g. QEMU and Google's VMM both allocate the maximum size when
-the vCPU is first created/allocated.
+I will rephrase it in the next version as following:
 
-Fixes: fa58a9fa7497 ("KVM: nVMX: include shadow vmcs12 in nested state")
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Cc: Chris Mason <mason@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/nested.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 9b0bfa2f854c..c2586bc9ebb5 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -6875,7 +6875,7 @@ static int vmx_get_nested_state(struct kvm_vcpu *vcpu,
- 	if (copy_to_user(user_vmx_nested_state->vmcs12, vmcs12, VMCS12_SIZE))
- 		return -EFAULT;
- 
--	if (nested_cpu_has_shadow_vmcs(vmcs12) &&
-+	if (is_guest_mode(vcpu) && nested_cpu_has_shadow_vmcs(vmcs12) &&
- 	    vmcs12->vmcs_link_pointer != INVALID_GPA) {
- 		if (copy_to_user(user_vmx_nested_state->shadow_vmcs12,
- 				 get_shadow_vmcs12(vcpu), VMCS12_SIZE))
--- 
-2.56.0.218.g1ec904b173-goog
+Note, this is an ABI change, as some bits that were previously reported as
+configurable no longer are.  However, the semantics of
+KVM_TDX_CAPABILITIES are unchanged: KVM already filtered unsupported bits
+out of KVM_TDX_CAPABILITIES, albeit via a denylist, and the set of
+reported bits already varies with the TDX module and KVM versions, i.e.
+userspace can't assume a fixed set.
 
