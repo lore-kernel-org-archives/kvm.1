@@ -1,121 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792674377;
-	b=ZBu4u/pkTpMK/TWl17YUMpPfhJIZF03qdRhhESc4W0rfbuyKDVrn5TCZNVlk/t3nO2h0
-	 J2tSXwolhOIN3iyNrKT3jVTthF4sR94YHpUolCJ3AuHoutUL82yJkZFMOtFGT/2IpdGjp
-	 lqjPzmiA7sN5p5CPOiuKXYqmeu8WcwkXeXhzTvljt4aNFvk20PtpM9T3bvY4bfyfjzm24
-	 iTngCkPu3VKJHR6J6KgbTgpxA1k/D669DwNIkdl0MKZVr3AZk6E591Pl72GFXqrDkXD8V
-	 /HNH9IE+VFS9vd6kF1CfN/Ib0M7B3QRYKNSUqLCvM6bOzgjv0i0q2kj72HZm0yPAfSA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792674377;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=dxaVeA9dwlfGvtK81Fy9yy2UTm6OUnIBULBY7N9vAQU=;
-	b=HdWBGbEWD6KxowHpPVPHjQkRdMlweOiEkRu2SpjHUHiVjFDC0N8JUhmN+NWEXNki/dCs
-	 HjqIJi30IujeVkA2MML1gXgQ1aB/ylWrDqk8SRbe0n03LSfPubHXNMwQL78NuvpZxbBkn
-	 qaMlF8kxdNj9x030LGIjpjpOEupKiXu/bvYjUzGRg2hLlGREOePbWEMLTb80E2DCqzted
-	 CVXkqJSIkesE2AFUFxHmVKPm+Qp9y0zD6bAnh104v3l17H8vcJd6DwDnOYkSf4X/MVhHy
-	 5dTzFW8urWHBUnYgwBiE7Y4ZlbIuCahU4DN9ciYKUlf5OPOTPFLh2qxZblHYtj716Cw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NHMlZgXc;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=BUCgKkhN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792674527;
+	b=wqyKnLO8XeKpAmL8p33FOV/Nb6ozLlq3cgzP9hI048YTEUn95jnUz/x54zho4Ayy+QEF
+	 ZLfChyzuoaMS432+aI6GMG7pzoUGdWNmUdd3FD2/e1iIZ4tcZ0PC2E2fh80u/teyv/gyc
+	 FPC75Li0zwW5azHokXNfxtiOKb+WbNrJdVY6lXVI4/rs+2yhTFJGPNz/vwr4n5i8a9WV+
+	 j8qlaIpvIqgxywqyYg1TqqN5smDjSyq1FpzazttjDMDt67jgAeV8egT7oyBEyDwAk0kXf
+	 /r8WlpVkNYLQv5THSw4USb9Rvqn/G/wCifKwR9pzPtrlwOtT10BnEwetfPZYpKhkbsQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792674527;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=M5qHQnLTnpdSrQUS+p19DIXqfKposMzCKXDblMJrEuU=;
+	b=wh4hyrnniTYsroMfUZHDxQOIYIg1P5rj50kwypykrYHodEtoS5UqnEGDgqmkgr4SZBf1
+	 kofWKwKl2/pvi0RbfVXKJi9eHZJUTjNRYX8iyXjxX5g1BWpyac6TIZ4illEck4RMBwxzN
+	 eh8EntsdJKKp27Hiv6j/+f72Bns83GSHTyHWAszFed4Kr0cpEvHRU6aOD9KOd19jzQLbt
+	 OrJ6dlltv4FiZ3toTOkjUMStBqP5l8DwHe95hL08onttsv1ZL61AJzuxLVAccnYmyCtHE
+	 kaCWTJxJId4M5qYiPnP4v4sO3mqg3I7QXmnhOwDArqe7zaVY40B+RZro5VDr0RFeh+w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Jxr7SJyG;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A0606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 13:06:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 123A0606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667F7606A319
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 13:08:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 667F7606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NHMlZgXc;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=BUCgKkhN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792674376;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dxaVeA9dwlfGvtK81Fy9yy2UTm6OUnIBULBY7N9vAQU=;
-	b=NHMlZgXccQ1p/KvazMQlsKs58qLFBriYPkfu/Nd+OF0NZV1K4CiKvMbjy6j/x46hnK/Uhk
-	pc+7tXTTG7AtYrEMns1nHHj7TDXNU9U2e/O0B4q3J4QWyBD4+rQJzq2S/HEG5ZkM4GQGDR
-	x7P4Dq6nAD0JyYVCUvk0gzUDHxGAdhs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-JT3f20GFMO-QIwelByXJHg-1; Thu, 22 Oct 2026 13:06:12 +0000
-X-MC-Unique: JT3f20GFMO-QIwelByXJHg-1
-X-Mimecast-MFC-AGG-ID: JT3f20GFMO-QIwelByXJHg_1792674371
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e0ef019a4so1522808f8f.3
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:06:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792674371; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eIN9WE+LYGwzVSMMoUT5QW4VLQO6Zn6JgUWVDmA6r5YUgZ3lTsxfOO/S9CtJWGzCjI
-         2FES5wyUEQilfGE6nphGGqaKVpxdUmIPX20Wi+IcCBdgACmALBFN+KiTbMLMgrfQbfEX
-         6EjoQYmbeUj+1MJjgZwJdeqtx3+pe1XCFS5gZUL5sfpj/NOq4V9gpPUBgG8Oir2z++ju
-         nGmDSevWMS1hVyOHOk08diBUrhXBB761WJ/dikZkqvWAM5OQ87aN/3Ws4l3zgpafgAqo
-         2TW7M3PJLJd+DgG/uZVopFtFMEsKIAdHDP4ttXdb3H1m7Zh5bl5X1BjAPpN64OkW6f3I
-         Rc9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dxaVeA9dwlfGvtK81Fy9yy2UTm6OUnIBULBY7N9vAQU=;
-        fh=0QnmI5TKg1NSzWojTl1poqAh6veOKo4fEnwr8l7CC/E=;
-        b=qpYot4XFngFG5Z4UhZFqWZyO1qAaKtZDG/dm1XrTQdWiRJxU8LfqcJUanzbH2jEeDF
-         QmdH/RBu87wdn85+Z/8KUe1+c34XrpKpZfPXEjknA8SMQv9OTlW0dmeDkJpBbhF1CuH2
-         wd4XzabFUOk9BGCi0L1EuR6bzjAxx/vSp3ITY02UneY3hc6gin3ebCemUwem7V//0xXF
-         cW3d9QDmYfdio38p0U2z79uNRAGS4kugC41uFjhrH7f0lOWf5hrtdFoKNcMYLSC4RCXG
-         UOdW23gDhAxTxc0D64v5NUmNswYxy5EL2idiKKTy9dOTM1EJZeeP5o1dCiGmX8HDAyEf
-         RO+A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Jxr7SJyG
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so2433330a91.3
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792674371; x=1793279171; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dxaVeA9dwlfGvtK81Fy9yy2UTm6OUnIBULBY7N9vAQU=;
-        b=BUCgKkhNmLancU80maTEAR5D35bSxvBdQTN2Ui3EyRhxEBmzqexF9ywZCzXnLZb+PU
-         4iSU5QCr6Env2ed885l5+XYBeYOdLcY4lFPLnInCkjTS5DMrFud5tyQ2FALifhYb6hUd
-         GK4XIRDAtg8jNa5fdy0TIDocQxX95Nag54vll2GYCFTEHFta7pCNjUqS8l/Rwxnqy9GY
-         E7++lQ34iEVz8t5dinfTuD+Jgt+KiSIvfpXXIb1b1B0D0JY27B/Juvc01NPJ7duiZD0u
-         +dQe9+imCyzf5rLOK7KXZomAyBO+wA0Aao44mYb9iAgvEvaHO2soL0gIh65JwkRHVIku
-         VuzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792674371; x=1793279171;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792674527; x=1793279327; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dxaVeA9dwlfGvtK81Fy9yy2UTm6OUnIBULBY7N9vAQU=;
-        b=hI96mbr2XsZkEpr3SA5Ot1YKp4/o53xZMeyvUxiZ5uO8Y6QKn5um+nbNdYSa4illlG
-         PnATMTPWMzW5cxBK7k/ormzvPPGsSrjqKiqaqSpiXzH31leAXgFB8VJR3nLg8oqqrUal
-         XJcHcxq00ghVU4V9TP8wizK8jirJ08oCZTNM/gHE14zvum+CRiYuELXzW7lO0jfnDcWJ
-         Xra9j0t5odQbk/vA7WaunyAGfPncqlTM5gANAAnFYGZdqwbnJFEq1En9WO8NeuAFNzp6
-         N6dSX0rtGN8Nt99C8tF2TNuJciJA40IFpbK44SWqGjSLVQEOjSYQ9lG6JsIBaUirLqJt
-         CDUg==
-X-Forwarded-Encrypted: i=1; AKwUvBwF/Jbt6g6Y2Li6oUk+/3r//SRIE5LhCyM9X7pUzPz/sl62DdAOGjdVSYGOLX5IwrME3JI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIEtDLO7JeLvJXYGUCmNV0uhFzuhFS98dc2cvui6BM74t9gHJTO
-	V7v8wamj/qlK8O94aixh6jFlEVKWUZYO/1n3FS5YMbuJm33cgBUfvboiMIDeREr9c9kLTqTnYHS
-	JDyfXCD7kuC7OAvzBWuZ9f2WySXXdzHzpxBbuLIxWCOfqtYn+DH025n0Z5vpQn7GaXvDf3ftkNq
-	b2GT50wcqDuW0AUXmyzORC7HviyLpf
-X-Gm-Gg: AYBFou1WNuc1in6TaCFUOGbBFOsBYIhSk8NqWJSlPSGNtMHvmdMjdyRURSV/0UVFOWk
-	QfGyGDzQL+Br7dqIEJ+K2eH4KGPrS/qZSmu8LyAEhnRKQw0ly8zPuP8jFzx37HDYl5r64tUsPp7
-	kvUoI813vayHlAOAsqohsYol0jLyn6kSFlnLdNMP4dt65S6fgNJVDJoMTKwMJayaB0UnWY0LAQ2
-	euov6eEiNvo4+crKTbAPYGGYkwxnlzE6Omh1QbxrtjWuUvgk1jgsTAIjp1ihg==
-X-Received: by 2002:a5d:6f04:0:b0:48a:fb1c:c2a1 with SMTP id ffacd0b85a97d-48e264e5a1amr10387236f8f.47.1792674371379;
-        Thu, 22 Oct 2026 06:06:11 -0700 (PDT)
-X-Received: by 2002:a5d:6f04:0:b0:48a:fb1c:c2a1 with SMTP id
- ffacd0b85a97d-48e264e5a1amr10387172f8f.47.1792674370977; Thu, 22 Oct 2026
- 06:06:10 -0700 (PDT)
+        bh=M5qHQnLTnpdSrQUS+p19DIXqfKposMzCKXDblMJrEuU=;
+        b=Jxr7SJyGAM6POkF3hdl+VbwQpCAW1/lb2u+Oo///0ZGO5d22ZDR1pNWj+vNYcz0QFr
+         H37Pls2dBhHXyB5d/3wgD891lLxrEIlkD3fxvk/G88sf4Hk6HXleTjz3SQnWIQ4KEUUh
+         UF2KHKa8yqQDb1xAGhqWkNpuMHjwUuXYe2kBYGUvy3Vnehynb9X3Q7Yj3nqBmvEFZDF8
+         JSJkFNpHupOrLRNnS8ebA+w8sldFRQilpHx8Z9rC/rXykO+xeN0TGbmNLyFkqZSkNczi
+         YbQRSrNQAIscRuNxb+BtlBwvFAPohb0XiyEyj3yT3vz3bDe3MjQFlCK2CukR4zV4t6O8
+         GEWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792674527; x=1793279327;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M5qHQnLTnpdSrQUS+p19DIXqfKposMzCKXDblMJrEuU=;
+        b=IKIoBIu1NLkvGsbG7KQ+PBSEOZnjdbVozNknv85rlcLQM32VaaXm3ZOMrkhyxqcf9B
+         KFoKJNZBEqW4Vd1vkTUKFLA1YomXb2ijF5j2mf2REq6BfrXM+nJjvzFXJeMupHt89R1H
+         pYofheuAvBlnoZkFX7TOhUo3sta+Dq4ZoxFlDApl1k0pXXb8UJcHoG6jsFNbhzzaFkmL
+         ZZbx56dQMST14LxlqV7f5NtZ9uTfG6lrNZAh89vJpOtK+FLmxvWv+WdBz+WeMU8ra+W0
+         IWfDSV+CrkWRIWjXvn0nxyCP3GJPlz7wft+Jm8VVgA1aV030+ym8w6a4VP9sbcbkQDHG
+         AQWQ==
+X-Gm-Message-State: AFq9FYJsv3D8U0d/s2McQ8iGo/Eai8izCYo5l8ISN7vQ5qRs7vuakPfS
+	Tlce0B5HnDkyOUJRb8tMbFkk4elUHEYdW890i2Z4WPzuSSFk9D1TEHOWRaQT9omlf5Nd51dw63H
+	aStCyGg==
+X-Received: from pjio14.prod.google.com ([2002:a17:90a:5b0e:b0:3ab:323:94d4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:55cc:b0:3a8:185:cf40
+ with SMTP id 98e67ed59e1d1-3ad86f1bd64mr4549299a91.10.1792674526475; Thu, 22
+ Oct 2026 06:08:46 -0700 (PDT)
+Date: Thu, 22 Oct 2026 06:08:45 -0700
+In-Reply-To: <sashiko-outbox-180887@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -124,56 +76,177 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <CAAhSdy1zNA7Xn9Uv1fFTRJMuCP0Pd2xLQazzm2FedTo_DZwMCA@mail.gmail.com>
-In-Reply-To: <CAAhSdy1zNA7Xn9Uv1fFTRJMuCP0Pd2xLQazzm2FedTo_DZwMCA@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 22 Oct 2026 15:05:58 +0200
-X-Gm-Features: AclHuK_RpyhykSoyERIoG3foVlRnMgmZP9P6H-hF9JVROR7Ewx-6kuXhcSsJSlg
-Message-ID: <CABgObfaH4-Ud4VR=GC8giDmWGJWS-tvYSmPOs4TtWg2hm4ocqw@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/riscv changes for 7.4
-To: Anup Patel <anup@brainfault.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	Atish Patra <atish.patra@linux.dev>, 
-	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20261022022813.303978-1-seanjc@google.com> <20261022022813.303978-2-seanjc@google.com>
+ <sashiko-outbox-180887@kernel.org>
+Message-ID: <atoK3Z1hrMxwwgTY@google.com>
+Subject: Re: [PATCH v2 1/2] KVM: x86: Switch to vmcs01 to update EOI exiting
+ bitmap on-demand if L2 is active
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Oct 22, 2026 at 2:51=E2=80=AFPM Anup Patel <anup@brainfault.org> wr=
-ote:
->
-> Hi Paolo,
->
-> I was on vacation last week; hence, I am sending
-> the KVM RISC-V 7.4 PR a bit late. Apologies for
-> the inconvenience.
+On Thu, Oct 22, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+> > index 447f0ec3e63e4..411eaf445d436 100644
+> > --- a/arch/x86/kvm/regs.h
+> > +++ b/arch/x86/kvm/regs.h
+> > @@ -464,12 +464,6 @@ static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
+> >  static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
+> >  {
+> >  	vcpu->arch.hflags &= ~HF_GUEST_MASK;
+> > -
+> > -	if (vcpu->arch.load_eoi_exitmap_pending) {
+> > -		vcpu->arch.load_eoi_exitmap_pending = false;
+> > -		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+> > -	}
+> > -
+> >  	vcpu->stat.guest_mode = 0;
+> >  }
+> >  
+> 
+> [Severity: Low]
+> With the removal of the only reader of vcpu->arch.load_eoi_exitmap_pending in
+> leave_guest_mode() (in arch/x86/kvm/regs.h) and its only writer in
+> vcpu_scan_ioapic() (in arch/x86/kvm/x86.c), load_eoi_exitmap_pending in
+> struct kvm_vcpu_arch has no remaining references in the tree (both at this
+> commit and at the end of the series):
+> 
+> arch/x86/include/asm/kvm_host.h:
+> struct kvm_vcpu_arch {
+> 	...
+> 	u64 apic_base;
+> 	struct kvm_lapic *apic;    /* kernel irqchip context */
+> 	bool load_eoi_exitmap_pending;
+> 	DECLARE_BITMAP(ioapic_handled_vectors, 256);
+> 
+> Should load_eoi_exitmap_pending be removed from struct kvm_vcpu_arch as well?
 
-The problem is not the PR, it's that *none* of these changes were in
-linux-next until yesterday.  This is not the first time that I notice
-this and remind you of it...
+/facepalm
 
-These are 80% bugfixes or otherwise not new features (e.g. 3/4/5/6 in
-the list below would be fine even for -rcN), so I'll pull
-nevertheless. But *please* try to commit stuff as soon as it's ready!
+Every. Single. Time.  I forget to remove the boolean.
 
-Paolo
+> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> > index 612ab07d4100f..5e765409398d3 100644
+> > --- a/arch/x86/kvm/vmx/vmx.c
+> > +++ b/arch/x86/kvm/vmx/vmx.c
+> > @@ -7139,6 +7139,8 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
+> >  	if (!kvm_vcpu_apicv_active(vcpu))
+> >  		return;
+> >  
+> > +	guard(vmx_vmcs01)(vcpu);
+> > +
+> >  	vmcs_write64(EOI_EXIT_BITMAP0, eoi_exit_bitmap[0]);
+> >  	vmcs_write64(EOI_EXIT_BITMAP1, eoi_exit_bitmap[1]);
+> >  	vmcs_write64(EOI_EXIT_BITMAP2, eoi_exit_bitmap[2]);
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index aad065d035fbb..082d027ade583 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -8003,17 +8003,6 @@ static void vcpu_scan_ioapic(struct kvm_vcpu *vcpu)
+> >  		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
+> >  #endif
+> >  
+> > -	if (is_guest_mode(vcpu))
+> > -		vcpu->arch.load_eoi_exitmap_pending = true;
+> > -	else
+> > -		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+> > -}
+> > -
+> > -static void vcpu_load_eoi_exitmap(struct kvm_vcpu *vcpu)
+> > -{
+> > -	if (!kvm_apic_hw_enabled(vcpu->arch.apic))
+> > -		return;
+> > -
+> >  #ifdef CONFIG_KVM_HYPERV
+> >  	if (to_hv_vcpu(vcpu)) {
+> >  		u64 eoi_exit_bitmap[4];
+> > @@ -8167,8 +8156,6 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+> >  		}
+> >  		if (kvm_check_request(KVM_REQ_SCAN_IOAPIC, vcpu))
+> >  			vcpu_scan_ioapic(vcpu);
+> > -		if (kvm_check_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu))
+> > -			vcpu_load_eoi_exitmap(vcpu);
+> >  		if (kvm_check_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu))
+> >  			kvm_vcpu_reload_apic_access_page(vcpu);
+> >  #ifdef CONFIG_KVM_HYPERV
+> 
+> [Severity: High]
+> Can calling load_eoi_exitmap() directly from vcpu_scan_ioapic() while L2 is
+> active leave stale EOI_EXIT_BITMAP0..3 values in vmcs01 when APICv
+> transitions from inhibited to uninhibited in L2?
 
->
-> We have the following KVM RISC-V changes for 7.4:
-> 1) Lazy V-extension enablement for KVM selftests
-> 2) Implement KVM_PRE_FAULT_MEMORY ioctl() and enable corresponding KVM se=
-lftests
-> 3) Show sepc/scause/stval CSRs in KVM selftests vcpu dump
-> 4) Use a raw lock for IMSIC wakeup state
-> 5) Reject vCPU creation after AIA initialization
-> 6) Updated next branch name in KVM/riscv MAINTAINERS entry
-> 7) Allow Zicclsm, Ziccamoa, Ziccif, Za64rs for KVM guest
->
-> In addition to the above, we also have the following fixes
-> and minor improvements:
-> 1) Avoid redundant interrupt check for pending timers
-> 2) Fix build with vector support disabled
-> 3) Fix IPI delivery for out-of-order vcpu_id
-> 4) Replace imsic switch-case macros with range checks
+Huh.  This isn't an L2 vs. L1 issue, this is a pre-existing bug that doesn't have
+anything to do with nested.  Sashiko found a convoluted scenario where not
+deferring the EOI update would create a bigger window for the bug, but there are
+much simpler scenarios that will hit this bug.  E.g. any GSI routing changes that
+affect the EOI bitmap that are made while APICv is inhibited will run afoul of
+this issue.
 
+The bug has likely gone unnoticed because APICv doesn't have many inhibits, and
+pretty much the only one that's likely to be toggled by a "real" guest is the
+APICV_INHIBIT_REASON_HYPERV one that SynIC uses when AutoEOI is enabled.
+
+> When APICv becomes inhibited on a vCPU (for example, when L1 or L2 modifies
+> the xAPIC APIC_ID via kvm_lapic_reg_write() -> kvm_recalculate_apic_map(),
+> disables the APIC via kvm_apic_set_base(), or enables Hyper-V SynIC AutoEOI),
+> KVM queues both KVM_REQ_APICV_UPDATE and KVM_REQ_SCAN_IOAPIC.
+> 
+> In vcpu_enter_guest() in arch/x86/kvm/x86.c, KVM_REQ_SCAN_IOAPIC is serviced
+> before KVM_REQ_APICV_UPDATE:
+> 
+> arch/x86/kvm/x86.c:vcpu_enter_guest() {
+> 	...
+> 		if (kvm_check_request(KVM_REQ_SCAN_IOAPIC, vcpu))
+> 			vcpu_scan_ioapic(vcpu);
+> 	...
+> 		if (kvm_check_request(KVM_REQ_APICV_UPDATE, vcpu))
+> 			kvm_vcpu_update_apicv(vcpu);
+> }
+> 
+> During the inhibit transition, apic->apicv_active is still true when
+> vcpu_scan_ioapic() runs, so vmx_load_eoi_exitmap() writes the zeroed
+> ioapic_handled_vectors bitmap into vmcs01's EOI_EXIT_BITMAP0..3 before
+> KVM_REQ_APICV_UPDATE sets apic->apicv_active to false. Similarly, any IOAPIC
+> routes configured while APICv is inhibited are not written to vmcs01 because
+> apic->apicv_active is false.
+> 
+> When the guest later transitions out of the inhibited state while L2 is
+> active (is_guest_mode(vcpu) is true) -- for example, when L2 enables x2APIC
+> via MSR_IA32_APICBASE or restores the xAPIC ID -- kvm_apic_set_base() or
+> kvm_recalculate_apic_map() clears the APICv inhibit (queuing
+> KVM_REQ_APICV_UPDATE) and calls kvm_make_scan_ioapic_request() (queuing
+> KVM_REQ_SCAN_IOAPIC).
+> 
+> Previously, because is_guest_mode(vcpu) was true, vcpu_scan_ioapic() set
+> vcpu->arch.load_eoi_exitmap_pending = true and deferred
+> KVM_REQ_LOAD_EOI_EXITMAP until leave_guest_mode() on nested VM-Exit, after
+> KVM_REQ_APICV_UPDATE had already set apic->apicv_active = true.
+
+...
+
+> Should KVM_REQ_APICV_UPDATE be processed before KVM_REQ_SCAN_IOAPIC in
+> vcpu_enter_guest(), or should kvm_vcpu_update_apicv() reload the EOI exit
+> bitmap when re-activating APICv?
+
+Neither.  This bug was introduced by commit d62caabb41f3 ("kvm/x86: per-vcpu apicv
+deactivation support").  As KVM does with device posted interrupts, where IRTEs
+are kept up-to-date even if APICv is *currently* inhibited, the simple thing to
+do is keep the EOI bitmap up-to-date if APICv is globally enabled, i.e.:
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b341af4c6057..d8e66d67138f 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7079,7 +7079,7 @@ int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu)
+ 
+ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
+ {
+-	if (!kvm_vcpu_apicv_active(vcpu))
++	if (!lapic_in_kernel(vcpu) || !enable_apicv)
+ 		return;
+ 
+ 	vmcs_write64(EOI_EXIT_BITMAP0, eoi_exit_bitmap[0]);
+
+I'll insert a new patch in v2.
