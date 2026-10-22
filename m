@@ -1,72 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792635504;
-	b=MupejEgZIOxOJ2is8W61G/AwxK5ym/OHbrDii3H6qzZ6qlkPd3nsJkqwKJwGwVpl1HyV
-	 +RLC6cOK6im/9WkbfkGPTByFX/9D9fTuYSp5/PNBPD+4Lp1oCTdo1KlIItvdLk6mg3eyf
-	 PdU6CA3i0c6u8vvzON7epp2neFHdttUv48BsMEkKgQQCTOiq263c8itqQKWBsy5U3H0q0
-	 qGG1daHFqDR0whzKz6cGvBVmz184Ddz84BE0Zehbq8W9BjwlYrRBYAva38PNZzaOWSPgz
-	 0LEahCmJCKU8deNbXw/5VkeJ9ATfXBbkgsnhoiKzPkI2ot58evwF6aZiDVLvzVimtFA==
+	t=1792635511;
+	b=nm46D7Zy7MbM20+3XZauZn14/nFSxU2WhYbA1hF7s10q2C9+vL58Xl++JJhCdfwiZ9Um
+	 CZagS3eV/ncvbh+xXVqb2JBEP2hRqTnsxJaDP+anAc7el0I2l6W/fO30/hI/160WEYHAd
+	 qpcbQqXVNPQPDpP0ZSSTJaxolwHmD71V8fbQAB/lpb3WQ2HsFgDFKpigYfRVgOhNuhCPk
+	 +xkWibI7OG8Zt9MluMXkZMpq0a6C4lzrmUQQh6UQEgNlC0lFbhazqD9TTX4QWoIQ7hgzZ
+	 CXRUTOd3YHapfy3AOrE6znemZfSgvod5XoYQd/jAFPOHl1ugZatUPsax8DSpfFJTC8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792635504;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792635511;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
-	 Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=7c0m7qaS9HqUzHfqjVCvNrAuzThap6chMmtplqP6W0U=;
-	b=fM38KXNtMPMkeS/wuMgOFskoB04cTXzGz6RCtVgvYt4UM6P3d2e7aKfeUbNz973L0x2b
-	 c68c9h3tCG/nKOjwV4q9Sl74fA/OUZ73r7aRblWUO7TLvKGLPvq+JMhZ9JeBx93MJ6B3Z
-	 OUJYLcwHaKTETdjFAxPB/O19UHBykUe+6sVU9UAvq/uhWEHji7HNaYBGswpdpIOh+jru+
-	 6zLojiPn7h1yvP5h0Z/sWs4wxox8fwKsAib9oIibHjmhl0p/F9uFVUoslUBY7xmNpubuv
-	 Pj+FkcWiYve9a2NqgPM86r3/eU8saKdhyZHiegn+iRj1n5ncI2poQP59VyPn4sfdQzQ==
+	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=J9kW36jpIXb4stgoGGP0Gp0ZwbkfanWyIdpTcVbnUYY=;
+	b=aZtclXSHnWXFMq1GTAX9zs+VRqIo5TWDfaGjiLJ7uHXWD6XU2V1vurPCG2WGIe0iM5SN
+	 XB1MVS/G5OK+CW4TT70xkx1uGR/iAeK4lBFTva0fW4+byODsdm8jo9he4KEAmkWuHPML5
+	 XQwjqW87Vqp3QXpZf6C8yoTHMFCIRS4asaPQqjHgpJjqFvSr2dXUBhlE3uwN6nqtu3WJK
+	 aOlvI+ZCdRmNZiRSOuL/rFCNdGbFhrJeDE3t6DSuZjyj7i78K2QcjR4THH1GRDdVdQrnW
+	 Vu7iKoZ0mgFPNOrZMo57qbQ0C8SXsiZw5GhUECM57YutwfbiPJ1EZzGsW637sxTF6WQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=n5bSloBD;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tN8zjtKn;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50662606A31B
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:18:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50662606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E5A606A324
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:18:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66E5A606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=n5bSloBD
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3aca98f01c1so1405081a91.2
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 19:18:23 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tN8zjtKn
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2df8d1e91c9so20545295ad.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 19:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792635502; x=1793240302; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7c0m7qaS9HqUzHfqjVCvNrAuzThap6chMmtplqP6W0U=;
-        b=n5bSloBDYiFamzpE7rWfD1B8XYjfsxrZVUMhnzZOqbBCvWpPXBiyYJLYiL1hHLULAF
-         bRo1PmjRJdB07UX8aIj1AztpMg/tyfFDC2UtqBo82pdiRNlYiI9GX+dofwhp5wdUCLs7
-         WnVBphB/pi5LmtJgqYt9BBlnkWDh3u71bVA6YqHDNlCOlxENdKcj/R2LndzI/4ms6iNO
-         1NGs+nTZixZI73F+kbhHWHSH5RE4A8qztzrQVZdOlo6J580KR1xe4qveirG2E7c2/u6W
-         0oWsmCB4etvAN0pbbOo14VTq7kdMxwYhkDU3UA68F/tvRyIxRyFwi+JHCwKk64+b/vYy
-         vpUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792635502; x=1793240302;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1792635506; x=1793240306; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=7c0m7qaS9HqUzHfqjVCvNrAuzThap6chMmtplqP6W0U=;
-        b=ReeT63RVQCUU2iIr4be8qd9/kd3rxx94AZbw19QY5PdDKTYm1xe/02W/KgwOhCGIRr
-         i4LXoIom/guOt43K7yzL518x1bzW1UVmRokph5HYXesQ5ja8DwASet1Xp2JtFsbXRRlm
-         XJj1IJiVL5G/ArTQpUs1LAwoqbV6PsLL1dap2bH1vnugsJtg3AWpOVWRgQwYZ05VHYuE
-         /KTkE1wUJcDFu4jrVwUrU3VH/gMzjc430Q2h2a0SLxZsNxaK9i3w1c/4p8hgOV+P6rxH
-         cxKr3gkOaFxFONE57f3fLEMiK5Mgwsnl31AHHtchc/u5kVfixul5EEbae+mSJbtGB8IC
-         CU8w==
-X-Gm-Message-State: AFq9FYLgAGoP2Vm4y9pLZsnwuRSJwENTRt5eD/RW+cYLltUznqLZTFA+
-	GYVffAh/YCGxwEVB2zYj4sz9fZeIbKWtK2l2TcGgG3LOJJm+7CtFHOjEY5Z1ll9sjfOWBZnQvTk
-	yrbVQ8g==
-X-Received: from pgn27.prod.google.com ([2002:a63:d5b:0:b0:ccf:ac26:a979])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5243:b0:3ac:a7ee:6760
- with SMTP id 98e67ed59e1d1-3ad86ccdc8fmr3153086a91.23.1792635502327; Wed, 21
- Oct 2026 19:18:22 -0700 (PDT)
+        bh=J9kW36jpIXb4stgoGGP0Gp0ZwbkfanWyIdpTcVbnUYY=;
+        b=tN8zjtKnrxmH60eZP+AG5yFA0/zSgEyLu7otlHRJWxasnE/g8VJ8pTXVwowmhzxLJ4
+         Ks04S8zPT91QGgMxXyDEQpbb74INyDzb9pJBt2Cxgb+iOu2iid2lkWrdNYGT1j/jaUxP
+         BGjl3HVQZ10nYgUqG2lQTwrQLo/0hWzUMt74/YAW8QeBnCkPLYGFOMTW7Q83bHYLN0cm
+         Idy00fQ5dh99+lTI1Lecz5QREQjKHeJB5cdhXrpkInm8tlUooeGXFshkZf02U9uCBEYg
+         FH+IOc7sqR2IgG2t521UkY6W9jF8ySufftX2WcjUSaZZx2MP9viyEp7bFRSne8v2H9zg
+         e47g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792635506; x=1793240306;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=J9kW36jpIXb4stgoGGP0Gp0ZwbkfanWyIdpTcVbnUYY=;
+        b=THF650z5heEw/u8qUgjZYqRJrFdxRy6F5QYaUj5o7t5IiG7QutSBPqkVBpT95agAIo
+         6PutJ/SHbrDynmdwWZhQ+vRZz02sLN1MzggnzHsxFqfRsRNOn245ScZHNWjC4kGwJ1R9
+         HPJTeD2yKBNQ6p2SwLv1y/RDvQtolZBI3Eo0r3t3lChIxMv0TwwxS5+DacK9I/+6o5jm
+         WF6833OqAc7kP9XYz9n+14HEZbhO8BqdXgAAdOR6g6E1o81TSyychDIa+zYi8X8/n1qm
+         4QKBXRcQzn/3VUq81zYmSPNvuzhK/2J6U2f9NTTvqCH21aOYV8hwiorWZCRbMTNQCnwa
+         pyfw==
+X-Gm-Message-State: AFq9FYLFjDO1nL8YKfCpnD4qx9zLChsTI3rf2WqnvSRfHTSnFKu1e4QI
+	0o+xQKSq8T3VN1McLu3uysRG8lF3OwbfsE5bZWL3kXwuSVZtnK7g42/Ac9mRD6IYiicuMOFLviX
+	3zP5QVw==
+X-Received: from plmm4.prod.google.com ([2002:a17:902:c444:b0:2e8:31af:11b0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c405:b0:2e8:1f8a:9113
+ with SMTP id d9443c01a7336-2ea43cecf95mr35738395ad.40.1792635505357; Wed, 21
+ Oct 2026 19:18:25 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 21 Oct 2026 19:18:18 -0700
+Date: Wed, 21 Oct 2026 19:18:20 -0700
+In-Reply-To: <20261022021820.298886-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,32 +78,105 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261022021820.298886-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
-Message-ID: <20261022021820.298886-1-seanjc@google.com>
-Subject: [PATCH 0/2] KVM: nVMX: Fix a (benign) overwrite to a userspace buffer
+Message-ID: <20261022021820.298886-3-seanjc@google.com>
+Subject: [PATCH 2/2] KVM: selftests: Add regression test for KVM writing but
+ not reporting vmcs12
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix a bug where KVM writes more bytes for KVM_GET_NESTED_STATE than it reports
-in the output size if L1 is active and has a valid shadow VMCS pointer.  The
-bug is all but guaranteed to be benign in practice, as all VMMs I could find
-that support nested virtualization just preallocate the max buffer size.
+When saving nested vCPU state, verify that KVM didn't write any more bytes
+than it reported, and add a sync+save point in the state test to trigger a
+save when L1 is active with a valid shadow VMCS.  Before commit <TBD>, KVM
+would incorrectly save the shadow VMCS into the userspace buffer without
+accounting for the size of the shadow VMCS.
 
-Sean Christopherson (2):
-  KVM: nVMX: Save shadow VMCS when getting nested state iff L2 is active
-  KVM: selftests: Add regression test for KVM writing but not reporting
-    vmcs12
-
- arch/x86/kvm/vmx/nested.c                     |  2 +-
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
  .../testing/selftests/kvm/lib/x86/processor.c |  6 +++++
  tools/testing/selftests/kvm/x86/state_test.c  | 24 ++++++++++---------
- 3 files changed, 20 insertions(+), 12 deletions(-)
+ 2 files changed, 19 insertions(+), 11 deletions(-)
 
-
-base-commit: 164405e8e9a0378c7e1aff2254625a6553a291f1
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index 8374afd08baf..976d53af6de7 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -1282,10 +1282,16 @@ struct kvm_x86_state *vcpu_save_state(struct kvm_vcpu *vcpu)
+ 	if (nested_size) {
+ 		state->nested.size = sizeof(state->nested_);
+ 
++		memset(state->nested_, 0xaa, sizeof(state->nested_));
++
+ 		vcpu_nested_state_get(vcpu, &state->nested);
+ 		TEST_ASSERT(state->nested.size <= nested_size,
+ 			    "Nested state size too big, %i (KVM_CHECK_CAP gave %i)",
+ 			    state->nested.size, nested_size);
++
++		for (i = state->nested.size; i < nested_size; i++)
++			TEST_ASSERT((unsigned char)state->nested_[i] == 0xaa,
++				    "KVM killed the canary at offset %u", i);
+ 	} else {
+ 		state->nested.size = 0;
+ 	}
+diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
+index 500b09762555..5bd9a04a3911 100644
+--- a/tools/testing/selftests/kvm/x86/state_test.c
++++ b/tools/testing/selftests/kvm/x86/state_test.c
+@@ -60,13 +60,13 @@ void vmx_l2_guest_code(void)
+ 
+ 	/* L1 has now set up a shadow VMCS for us.  */
+ 	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0ffee);
+-	GUEST_SYNC(10);
+-	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0ffee);
+-	vmwrite(GUEST_RIP, 0xc0fffee);
+ 	GUEST_SYNC(11);
++	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0ffee);
++	vmwrite(GUEST_RIP, 0xc0fffee);
++	GUEST_SYNC(12);
+ 	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0fffee);
+ 	vmwrite(GUEST_RIP, 0xc0ffffee);
+-	GUEST_SYNC(12);
++	GUEST_SYNC(13);
+ 
+ 	/* Done, exit to L1 and never come back.  */
+ 	vmcall();
+@@ -107,15 +107,17 @@ static void vmx_l1_guest_code(struct vmx_pages *vmx_pages)
+ 
+ 	vmwrite(SECONDARY_VM_EXEC_CONTROL, SECONDARY_EXEC_SHADOW_VMCS);
+ 	vmwrite(VMCS_LINK_POINTER, vmx_pages->shadow_vmcs_gpa);
+-
+-	vmptrld(vmx_pages->shadow_vmcs_gpa);
+-	GUEST_ASSERT(__vmlaunch());
+ 	GUEST_SYNC(8);
+-	GUEST_ASSERT(__vmlaunch());
+-	GUEST_ASSERT(__vmresume());
+ 
+-	vmwrite(GUEST_RIP, 0xc0ffee);
++	vmptrld(vmx_pages->shadow_vmcs_gpa);
++	GUEST_ASSERT(__vmlaunch());
+ 	GUEST_SYNC(9);
++
++	GUEST_ASSERT(__vmlaunch());
++	GUEST_ASSERT(__vmresume());
++
++	vmwrite(GUEST_RIP, 0xc0ffee);
++	GUEST_SYNC(10);
+ 	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0ffee);
+ 
+ 	vmptrld(vmx_pages->vmcs_gpa);
+@@ -126,7 +128,7 @@ static void vmx_l1_guest_code(struct vmx_pages *vmx_pages)
+ 	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0ffffee);
+ 	GUEST_ASSERT(__vmlaunch());
+ 	GUEST_ASSERT(__vmresume());
+-	GUEST_SYNC(13);
++	GUEST_SYNC(14);
+ 	GUEST_ASSERT(vmread(GUEST_RIP) == 0xc0ffffee);
+ 	GUEST_ASSERT(__vmlaunch());
+ 	GUEST_ASSERT(__vmresume());
 -- 
 2.56.0.218.g1ec904b173-goog
 
