@@ -1,100 +1,156 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792657680;
-	b=vhNtHVbVTd6gYDXxi+VAYocHm1NTM6zQ2jQNOtnpg5mpFJdhTvHumKQ8bQrA4nAt+qO7
-	 3gnksn2x9EpMOsnh+6CizJaV+EUfc6ekLsNglxAeN9oaX9LW1LfDAIK2Cc5xr6OqtewYh
-	 1cx0y4l/CoWM0qA4oBipQd42sishww8wGXlbtnEWgHCWkneKnFfy9Q4xphKpqr7ITvYgM
-	 LyO9ApycIfPMIxQ/VIMfDSIFZOXh6nx+U8Qkl/PYV7RNDNHv0z3A5Mjd09hliqTWiwXa0
-	 /UAgPiAIqqH8jLD4whbt9DXNvkfzJz0YumcSHAQLxZ6yO5CPeo6a2WNj734jpT8ebAA==
+	t=1792657829;
+	b=gohHGPTXWZXFGfeobO1wrnfcsGi/PuJ3uCvLq1onQCbxtUkUBbhZwLddrLZ1g2dVg24b
+	 JPgC3hnDM98kggjSTX5G6oR2dbU1Sld37mQzYzvUjnm0yVQAeMu/FBbHINQyBZ/sSRTF9
+	 kfwizEH3o3b2gwhFu+rLIB4KvDqBW9DRCjEoJIsu41jC3ImKWU5sFPIgycGTObl14gvsN
+	 5ikwJi5aQ2DALO1Qg0Q9nNdnVajoaURdHrkSznxJPlwIE/jnw+x04CUl5S++zfXv6/z8X
+	 eKTzRJzUPJS4t8h3baSHB/wOXS90jzlihskYaxq9qIXz7O/jVCEF3nOiVbJ6Zk+sqLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792657680;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=asTQwS3Q/pIZmKtVtb/ZZcYojtRdxCAchkNTDOljnRg=;
-	b=zMEXVTlXRRowOTTA6B//yFjgU/49lnrvg3wBu+TYkR9t6C0KzcgcDDnDFNonhG8LouDe
-	 uAlcAyYTG2094PY9Hw7CauHZSkj/C3BCemSNyBEvMT3XlGB3vxRfW46C9jeQozQsSTTxv
-	 pdhKYU0InQXHrZ3UMw4xJTeWP77POwerwF4yDppdWrjWJxVhurnTMVEhtkdmlgKiuBcf5
-	 BhVNxt5kwdb0NUl62xLbB0kPLqAVKj/VwWeOxNTHWRRWAlS3PcT4dZYP82qqqK5nNTfQw
-	 mUQu6jQ65/MdPVTBhkG222V/hV1gSUPym6sYNfKZVnFKM2VdJn1OJzBvEI8T+gX9UdQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792657829;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-Scanned-By;
+	bh=xexW0rNqv/GKFX03e5NGVfizRBWHHld9j1Z0S71dlRQ=;
+	b=ocKUmC0E5YcpjpyKzz0KZg5mAtG2ntOGLhZ77pR+E9gwz8cmswKzXyF1H4ZPy2opuGif
+	 9UUlm7uv/NsAYVbxXA2CpSle/VKA+1BTlpeDHibbPEfq04Zgvo5tWhLPBu/dZesImkWs7
+	 fkCpL5RdCeFNOCTvHQAF7z2tVgGCvA5Z6UHi3JocN9qI5IYekxmw7xcLQF6wHMk83j+zo
+	 IyXBjlOG7X3c5ba06n+bbzzOGD92IQ7CXpVMUQD/m52SEPEfEKmJuEwbpTTzPmWKRizMe
+	 mCyP8o4tkCMsEiok2wVDVSJWLhjbqbb34bYBm83+Loh6Ky+AsKBr5VE12pkNsnGO/5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="Xqn/2yUi";
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hwN1qIcP;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A1A606A31A
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 08:27:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7A1A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66205606A31E
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 08:30:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66205606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=Xqn/2yUi
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a208d93758so3485485e9.3
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 01:27:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1792657677; x=1793262477; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=asTQwS3Q/pIZmKtVtb/ZZcYojtRdxCAchkNTDOljnRg=;
-        b=Xqn/2yUifSYwd1lLkvjTelhwbh1/fDxIkgCiTBzt6jpzF2b6Jtj1W+vx0Bue+MUy58
-         9u42cvxmjlsJRbnQR2g3CWbj4u0rkL/k1ULnZYHkA6SYgBSLjiaJLKo7XUYZtC7tNenJ
-         rsFukD01VvOvzDd3SE4W8Oqv/En+hGSOb1IleVA+BPtjYtldui+qaj/eFrGXDbDTs6Zh
-         HQUgjRlg+/mxJFoLyy6ZYJH45n5kbvVwK0xr1YtKjqBE0q6RxnBXsMTT0TqpvW3YuGgS
-         6xjeAh+dj5PSGSU8D18ZjCN3TeNPZns36H6lwwUccK2iJaoVhrAUeKBlAglwvy3XGzs4
-         TAFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792657677; x=1793262477;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=asTQwS3Q/pIZmKtVtb/ZZcYojtRdxCAchkNTDOljnRg=;
-        b=lqOjE51IU1rnXvFhFNrrH/BwRfGcZS4Ac0vQCu81pcXDpb80yp41cPfcn+MdMmebmw
-         j1udaQ6ByabT4ScnLWNLAGv1shOBYDeO3JLEFxcay6QABPqcBkQDX7QLdSypBS7cxcKf
-         pX/KMfOY2kxb63SiYUUd72U44tAgUlvoCiaPu3km4B4I+MlLNPITInUlEpghClZJzFct
-         xFD5pCKhlEOtJv8G4SGqQZ4/qhZKaH8iIrNUpHZAtFf/MXwPfFNOtig5HUigsRCFgAn6
-         LVXKP/wDFapkVCIVptlAK7FJonRHKCkb6m+O7Gx8cdcltFvB4iA7Rv/fSdZtgpUO4lqL
-         1tNw==
-X-Forwarded-Encrypted: i=1; AKwUvBzMX2wCExIXlP5c93lQKkg1gz0I+uZXS2dUCqi100fEbLN436uNszTb2B4sfXdS1ntIKJQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLTF10aba3A0ja1tw29fioeKFaA8FWIdjt3jlvurOCDI/x5bnzF
-	r4LOUSJjrx0qyRShh0dXZ4/HGN+WlRk72tYExj7MRxniYCdkJrjrADDeye1nSMhr480=
-X-Gm-Gg: AYBFou2ZqV23QrsyF87Q8GDKEHGPbpuX1VitdHvnVI3dIAQkpktZY6IJ56+ZcYt55HD
-	WozjzXXgx8DR6I9FrQZLwRsCcz6nxsto0cHLMxY8+/Psho7OnH9jdfYDL+7gzeLfiynf/n9aQMu
-	6FaYqaYmiCqsWg0zDcvVxwlh9aLXZFB/V6qGEHqiqXtX5FBJcgTpVniRqJINDQU6TvRRltI3DXd
-	slwmyXvuQF0KHAivXyGdSa+DEkydGCCJaZ768RPgttWYvyspy22yi3XuybizRNxpbntXVuBbqsk
-	IE8Tg1mIQo56kcTRHgOeiNcYc4+jjfLUDEPE8NWtDf9/UqijaTIAM3LkE6GvsBqyAtUa0CQJN5y
-	5jtyUURGOeche60A/VbbxNwcYwzBzini9AoOHRFEunKZBZ9Xk7krRarlQ5Q5ocXjbIw3ck0Xn1u
-	T4GmS/8mHEk/eQRt1tpGXoyuv/AMCPZ544P4ZG1gRcH7Tz+L+CR1bn6PiseW0ICCIRU9pzeZ8j8
-	RPiTmJvaAx/Ig739f+cLciwMQ9dHzz2ebM/As4vSnKmm7tcUFXj6d/A5fpWCLty
-X-Received: by 2002:a05:600c:524a:b0:4a2:994:5750 with SMTP id 5b1f17b1804b1-4a209945818mr14069445e9.32.1792657677030;
-        Thu, 22 Oct 2026 01:27:57 -0700 (PDT)
-Received: from localhost ([128.77.52.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e258426f4sm10865456f8f.54.2026.10.22.01.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 01:27:56 -0700 (PDT)
-Date: Thu, 22 Oct 2026 10:27:52 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 05/20] ctlv: Prepare message input handling
-Message-ID: <atnIDx6qmLe-geb4@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-6-jiri@resnulli.us>
- <20261021014324.58376589@jic23-hlaptop>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hwN1qIcP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792657828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xexW0rNqv/GKFX03e5NGVfizRBWHHld9j1Z0S71dlRQ=;
+	b=hwN1qIcPWU5jWq8MyXfzVNIfGA98dEKzvCXxRHXAz8/yVgm8UldjqNQ1hUfvB9BposHJW2
+	K32k8NiOlOsyU61ykUhdhzSzF5AXsolm9S0dyPUyyb/D0go3SNnIBfBt8JixBNcJmaBI9n
+	QZv95T0B3AH3xWsXCncaUnjC76bDZxI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-7m63-_WdN--ms9gOad-qrg-1; Thu,
+ 22 Oct 2026 04:30:24 -0400
+X-MC-Unique: 7m63-_WdN--ms9gOad-qrg-1
+X-Mimecast-MFC-AGG-ID: 7m63-_WdN--ms9gOad-qrg_1792657820
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C984180060C;
+	Thu, 22 Oct 2026 08:30:18 +0000 (UTC)
+Received: from jtomko.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EC8EA1956088;
+	Thu, 22 Oct 2026 08:29:49 +0000 (UTC)
+Date: Thu, 22 Oct 2026 10:29:47 +0200
+From: =?iso-8859-1?B?SuFu?= Tomko <jtomko@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: devel@lists.libvirt.org, marcandre.lureau@redhat.com,
+	qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+	John Snow <jsnow@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+	Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@oss.qualcomm.com>,
+	Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+	Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>,
+	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+	Jagannathan Raman <jag.raman@oracle.com>,
+	John Levon <john.levon@nutanix.com>,
+	Thanos Makatos <thanos.makatos@nutanix.com>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
+	linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sergio Lopez <slp@redhat.com>, qemu-arm@nongnu.org,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org,
+	Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
+	Xianglai Li <lixianglai@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
+	Zhang Chen <zhangckid@gmail.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Alexander Graf <graf@amazon.com>,
+	"Gonglei (Arei)" <arei.gonglei@huawei.com>,
+	zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>,
+	Luc Michel <luc@lmichel.fr>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+	Jamin Lin <jamin_lin@aspeedtech.com>,
+	Kane Chen <kane_chen@aspeedtech.com>,
+	Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>,
+	FangSheng Huang <FangSheng.Huang@amd.com>,
+	Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+	Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+	Jesper Devantier <foss@defmacro.it>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Glenn Miles <milesg@linux.ibm.com>, Conor Dooley <conor@kernel.org>,
+	Sebastian Huber <sebastian.huber@embedded-brains.de>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Titus Rwantare <titusr@google.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Anthony PERARD <anthony@xenproject.org>,
+	Peter Xu <peterx@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	xen-devel@lists.xenproject.org,
+	Roman Bolshakov <rbolshakov@ddn.com>,
+	Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Tao Tang <tangtao1634@phytium.com.cn>,
+	Fabiano Rosas <farosas@suse.de>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Artyom Tarasenko <atar4qemu@gmail.com>,
+	Yoshinori Sato <yoshinori.sato@nifty.com>,
+	Jiri Pirko <jiri@resnulli.us>, Eric Auger <eric.auger@redhat.com>,
+	Laurent Vivier <lvivier@redhat.com>
+Subject: Re: Property types changed in this series
+Message-ID: <atnJe88B09dFcDr2@jtomko.csb>
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+ <87tsmfkoej.fsf@pond.sub.org>
+ <878q3qkz6f.fsf@pond.sub.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,166 +160,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20261021014324.58376589@jic23-hlaptop>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <878q3qkz6f.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Wed, Oct 21, 2026 at 02:43:24AM +0200, jic23@kernel.org wrote:
->On Thu, 15 Oct 2026 16:50:38 +0200
->Jiri Pirko <jiri@resnulli.us> wrote:
+On a Thursday in 2026, Markus Armbruster via Devel wrote:
+>Libvirt developers: does libvirt use member @type of the reply of
+>qom-list, qom-list-properties, qom-list-get?
 >
->> From: Jiri Pirko <jiri@nvidia.com>
->> 
->> Add wire walking, request indexing and validated input accessors for
->> generated family readers.
->> 
->> Keep CONFIG_CTLV unwired until dispatch completes the module.
->> 
->> Assisted-by: Cursor: GPT-5.6 Sol
->> Assisted-by: Cursor: Claude Opus 5.5
->> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
->
->Trivial stuff only. I didn't attempt (yet) to check
->all the walking code, just get a feeling for what was here. 
->
->
->> diff --git a/drivers/ctlv/Kconfig b/drivers/ctlv/Kconfig
->> new file mode 100644
->> index 000000000000..aed3243c55fd
->> --- /dev/null
->> +++ b/drivers/ctlv/Kconfig
->> @@ -0,0 +1,12 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +menuconfig CTLV
->> +	tristate "CTLV character device TLV UAPI"
->> +	help
->> +	  CTLV provides character device UAPIs described by a checked-in YAML
->> +	  specification. It owns the character device lifetime, the strict TLV
->> +	  message format, request validation, reply serialization, the large
->> +	  payloads a request describes rather than carries, per-open event
->> +	  queues and runtime schema introspection, so families only implement
->> +	  semantics.
->> +
->> +	  If you don't know what to do here, say N.
->
->I'd not say that.  Overly cautious for something we expect
->to get fairly extensive use.
 
-Okay.
+The code for getting CPU properties uses qom-list-get for new QEMUs,
+where it checks whether "type" is "bool".
 
+I think that can be easily converted to just check for the JSON type.
 
->
->
->> diff --git a/drivers/ctlv/message.c b/drivers/ctlv/message.c
->> new file mode 100644
->> index 000000000000..7e5742ba8f70
->> --- /dev/null
->> +++ b/drivers/ctlv/message.c
->
->> +
->> +bool ctlv_message_input_rebind(struct ctlv_cursor *nest, const struct ctlv_schema_tree *tree,
->> +			       u32 node)
->> +{
->> +	const struct ctlv_message_input_scope *bound_scope;
->> +	const struct ctlv_message_input_nest *indexed;
->> +	u32 i;
->> +
->> +	if (WARN_ON_ONCE(!nest->attr || !nest->msg || !nest->msg->index))
->> +		return false;
->> +	if (!ctlv_message_nest_index_ok(nest))
->> +		return false;
->> +	bound_scope = &nest->msg->index->scopes[nest->index_nest_scope];
->> +	indexed = &nest->msg->index->nests[bound_scope->nest];
->> +	for (i = 0; i < indexed->scopes_count; i++) {
->
->	for (u32 i = 0; ...
+Jano
 
-Okay.
+>I'm asking because Marc-André's work changes many values to add a more
+>useful replacement.  I think we should deprecate @type.  I'd like to
+>find out whether we need to preserve the values for the deprecation
+>grace period.
+>
 
-
->
->> +		u32 scope_index = indexed->first_scope + i;
->> +		const struct ctlv_message_input_scope *scope =
->> +			&nest->msg->index->scopes[scope_index];
->> +
->> +		if (scope->tree != tree || scope->node != node)
->> +			continue;
->> +		nest->tree = tree;
->> +		nest->node = node;
->> +		nest->index_nest_scope = scope_index;
->> +		return true;
->> +	}
->> +	return false;
->> +}
->
->> +
->> +void ctlv_attr_next(struct ctlv_cursor *cursor)
->> +{
->> +	const struct ctlv_message_input_slot *slot;
->> +	const struct ctlv_message_input_scope *scope;
->> +	const struct ctlv_node_schema *node;
->> +	const struct ctlv_attr *next;
->> +	u32 next_nest;
->> +	u32 next_offset;
->> +
->> +	slot = ctlv_message_cursor_index(cursor);
->> +	if (!slot || WARN_ON_ONCE(!cursor->attr))
->> +		return;
->> +	next = (const void *)((const u8 *)cursor->attr +
->> +			      ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO));
->
->kernel code is allowed to rely on void * arithmetic, so this can be
->	next = (const void *)cursor->attr +
->	       ALIGN((size_t)cursor->attr->len, CTLV_ALIGNTO);
->
->container_of() for instance makes use of sizeof(void) == 1.
-
-Okay.
-
-
-> 
->
->
->> +const void *ctlv_attr_binary(const struct ctlv_cursor *cursor, u32 *len)
->> +{
->> +	const void *value;
->> +
->> +	*len = 0;
->> +	value = ctlv_message_cursor_payload(cursor, BIT(CTLV_SCHEMA_BINARY), len);
->> +	if (!value)
->> +		*len = 0;
->
->I'd kind of have assumed that ctlv_message_cursor_payload() would not
->set len to anything if it returns NULL.  Thus the default *len = 0 would
->be intact.  From a quick look that seems to be the case making this
->code a little odd. 
->
->Perhaps overly defensive or keeping an LLM happy?
->Same applies on some other functions.
-
-You are right. Will remove these.
-
-
->
->
->
->> +	return value;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(ctlv_attr_binary, "CTLV");
->> +
->> +/*
->> + * The room is measured before anything is written, which is what leaves a
->> + * refused attr's message exactly as it was, padding included.
->> + */
->
->Having a trailing comment in a file rarely adds much or indeed
->even more rarely gets read.
-
-True, will remove.
-
-
-Thanks!
-
->
->
->> diff --git a/drivers/ctlv/message.h b/drivers/ctlv/message.h
