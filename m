@@ -1,103 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.61
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792653380;
-	b=TY2bOEc57mS7MNuHkBUgecwLRB4y/cn9OlNGO5JWnKvQ3KJEirH6Y7RG4incS3SPGFC0
-	 Il0zoai8VQn3OGXwXAR9qztWbeop41pABSlZz5tREUr3PGZMSz2lR8nfMGKcwhsuOhBAU
-	 Zu8ielkfEb/CMZchiIVZi/uwhxCzcAV1jkZppdJSLUD9eerV+V/f3Nbr83cSR2wdznqZR
-	 dPEBdSUdevNQy0Lt8Xy/d0gVGAvdgN+sjj4NyjygmYfSaXr6jiPFdC0kTgnbeHKi7gIfp
-	 2XmtO/N5tEg8ndFArW/mRBC4J/e25lio32pY5AW7HL5Gts9ryPUx55RC/K05XzQjGoA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653380;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=0vj8N67BISoQNb9JnmEl9lhNOssRDE36mqWhGAzhZY4=;
-	b=Y4r9IiEi8j0gzacu+tpawPpy7ncJ3ZFsbP8vbUblhb5A6JwaAz/lQV4M8aBIbfIMk0H0
-	 3953FIpiiAWFUoI3haPDsK3JmrbFE6iOh/nOs7qEourXdGJ1JretGmGP/aYGWdDzKphit
-	 qbBpue7eRb8vTkG0qdYPZUQyFbY20yerbeMOaaDrZISaq+uomyXly4id8tZj48nleIpSF
-	 OTABsX49MFLyP3bSgcMQi/yYl0aGP+0rHP8kDv5/G7jshQ/45mo7BW3ylEHfPsJH3TfZE
-	 tCS9CgDifTbylNFOJlioqs2a8TxDoti2HsukdonKKO1ejTV8lydlMVgs0FwTcHkPOgg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kLHJCmJO;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.61
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010061.outbound.protection.outlook.com [52.101.56.61])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792653385;
+	b=zDr0cwykHXjRyCVufOPDnKnb1+KAKxEuoHqq6nVFe27KC0FDi2ZxvoC/C8Q0r2fE8cPe
+	 zSPs9tSrjw9IZjO1kQFSRIlJfq/1/X9BYQ9AiM8Iib6lqpusL3GfA2pd5SCA32RSxaW3Z
+	 nUInCaXeMj/UwMf5NHIOVz692w6EqffWzpTcXu/QtmXA9cPcmUu1UWb7j9jBTn7A1arEK
+	 d/xrUoWPtfByrAi+FlNOa6HP/8MaybkFjT2/z8PhmGrZdSFJOlY1GoE+W0zLRafVGSCbo
+	 xTTVIaXCzL11kT/hCdwq4FQeCGd8rU2wazeBdwpf2zLUJesRMeCxRoDLUVcwshGAo7g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792653385;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=lJ5fUpweQrhu19h9RLQKpY4El11g5fZEYmI8m1UfYzE=;
+	b=LYfwwDK0iTye+qrbd8LYqU7+ML3KvTI0ZvTllt1+GZo7qYUhhIeA+BKLyMiSYRWFHEo4
+	 x0i8dlOJvc7NhQ+4krcSS1ETwsMBu0fvXoQJDpd9Ot7hf6QS9fmwejoG5gHFFZx9jsz6J
+	 8D8Yu9dw2zdWFmcRfKyQvYtnX2Ghbb47bfs8oHKz0k6K2NB6MtuAeBVa72YeL8//61k1P
+	 q4vrF39IMEosmlzO+/+lmhQeTQx+ioWbRtaqzx8NFc5SPuiVMIIkw8sr0G6p5C4NA0u6v
+	 mc5TfkZlgqbw7CmkC/VebIOCqfkrZW07c3I/47itrMkme79uM3QrbwkwOEZxmjbRqUw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0iq0X7W;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAF6606A31E;
-	Thu, 22 Oct 2026 07:16:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BFAF6606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02B9606A31B;
+	Thu, 22 Oct 2026 07:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kLHJCmJO
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JYJsOKrDhqb9ZvxwlrrOtz1F9mON5Uzpq5xPhTtktUxbu+G6YTooh/FEfCU9wwQKEzex16TNa0FMdpdwDbIcelgj+EgEYjsqrIsrsNwwDAnu2C83mzKtN8k1euUJFFzXVYqjJHAb9mX8Oh2FlIvFJ7KVUJp0N7U4D0DsGPunuNPOaTSv+lmUm899yn6dUppHfxNc3VhyPF0uXNC7mWSqT7LccMjbiyL8aE8LurfFeAEjPe0mNYSQUpH4/9xAbqTooI8pClYOUCgp5Phuel95DrBSDz6rM8mMhzv/o1qvp1NTmWfQ+9YF5MPFIlAU5L/0PEfgCYWxuWkS0qAkuT96AA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0vj8N67BISoQNb9JnmEl9lhNOssRDE36mqWhGAzhZY4=;
- b=aQfrDHuox7UqEmJp57pj6nncxU0Ko6BC3AH64fQivZaI1cYsi9Z+K90RaZcTGMZzgRBom6SBNviIicErqfEHbOmBGNRhnfpV9M75ONF3eW2K55yhitmMVfbYuuo1k0WndPF3SAJrmfLKW6A3oXSt46+uYDXjeVs1G7Coy3Q18INzGEwL/MbDsZk9PY6SMsfgy0m7T4Y8jyLj6p8eGPa/mcBnGsRUZug8d5F/KL5rHHdyk0YuQHKevnCrvG4laIY4pqdrX4UdRc5bxrnekIuW0ex+7H0MMpyhl3w2v4b4997Mqb7jjH35sM6JONVFVpmZPIQC2tmhl+Wxj31UWSLyew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0vj8N67BISoQNb9JnmEl9lhNOssRDE36mqWhGAzhZY4=;
- b=kLHJCmJO3gnqfJRSEkhNcie01jDNQXH8Dm67HbfqKN/83/xqFwUaXZ2JgiyW4MikxJ55mcSO6QMDojZ2zVa1t+dlpGxluaFiLNQeGGeKO4/mQxA33qTfCVASKF1x1tFVRI6bkFEGY4P8uucm84AJCSuAFaQL/pifrq//ksV4VdU=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by PH0PR12MB8029.namprd12.prod.outlook.com
- (2603:10b6:510:26c::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.16; Thu, 22 Oct
- 2026 07:16:13 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
- 07:16:13 +0000
-Message-ID: <d9304f91-2371-460b-8616-15a4f96c5674@amd.com>
-Date: Thu, 22 Oct 2026 18:16:04 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v6 09/11] iommufd: Add the vdevice TSM request ioctl
-To: Jason Gunthorpe <jgg@nvidia.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <helgaas@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Kevin Tian <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-10-aneesh.kumar@kernel.org>
- <179027891417.104879.282447770434616733.b4-review@b4>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <179027891417.104879.282447770434616733.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P282CA0040.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:206::8) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0iq0X7W
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0341F000C1;
+	Thu, 22 Oct 2026 07:16:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792653384;
+	bh=lJ5fUpweQrhu19h9RLQKpY4El11g5fZEYmI8m1UfYzE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m0iq0X7WOmi/mqiU+pcCpnG2votXZr/8Uchz/R19oEurGI3lp+DRZHOO6D2YYHHgk
+	 +wM1eipjxCx2lda79Ixb+mbwdcnea870TmHm6Md9mnJPOmQbzW9XqV50SvTYoImTN9
+	 D9KuCGJ/8A8gomACDr5AiX9zYR4KP9B1huPlmmkOBX0PDFaqXgiaSqLFK8iXHqTTW/
+	 wiE8Lj/tdNKh7OxxKc5pBXtNiyhvOD/Ji06Y8cACKFIguPYot9+gJbkMEVRRlKn4BX
+	 5WT0bOVZ52KQ6uqyg+UuiEU3b2GvvkNKMxbed2zjhljZHGqOAqisMyJUmjvi9aboJN
+	 jpLXPcFsG7vtw==
+Message-ID: <sashiko-outbox-181122@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 1/3] KVM: arm64: vgic-v2: Don't drop pending writes
+ to active level IRQs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Karl Mehltretter" <kmehltretter@gmail.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20261022064628.4206-2-kmehltretter@gmail.com>
+References: <20261022064628.4206-1-kmehltretter@gmail.com>
+ <20261022064628.4206-2-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 07:16:23 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,193 +61,202 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|PH0PR12MB8029:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd949fba-9903-4a4d-176a-08df300c5aaf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|56012099006|4143699003|11063799006|261021135927099003|261021121427099003|261009223027099003|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	uuRVTLiJYsJR9LQTcMRG6UP5DVV6CGfExqqf2aYAWQXTnVdUnWZwSAnRWxNBpuDSFK+KpqS653IwD5uS51st5pwx6MpccYhJXw3TScc4LBbTeEG2x49oHAmwgCj9CDwKWnoHiaESvyzuNSavfD/dJAPsF/6XV1T3D/BRqOWYlk2y/RQmIgGABq754nGlRVnpD3vDeV932XGj90hPw8JUiC0/KuJppti3EM+NtZfq1yOryLtCl7metGZnXmAPiSCiRiLnUOovLiwI7K0OfNOYpNi3D6vswNbdGKpIBb4FEzy1zLjxzdxUouhPRmi/UlkjiAn0O2mF1dwrrrz20nxKtbAYaIL2hxrID6yu/yBAZ0tNN8LHPVapdcms89ADDWcMNZGXLcFVPAP4Bh7tFRZoPhlOgdyHUiBFCVj6U+P3sbQlOa170Cqp/f7YVC8GgAtLkNy6er/w3x/1lxkuLMd1aM55CWh6PqyxCg2ggsHVHrA2PFiPpW9G/jcFw45FMik25NEL2nlIjPiGtI2SgyZefAD7urn+a0u5urNuo/Yb3H8GCu6ZDfVP6sdPE1YM3+6ZcKNkzkymDBiQa4U3XTxDb8bNuFro7CfGKWpVszbFn8TJjW0F2v3q+cRNwfEVtfW3BP2bX8kiaVJpg+lQFtCBYg6Fzq8P6T540pkmN5PcL5s=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(56012099006)(4143699003)(11063799006)(261021135927099003)(261021121427099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ajNUbnJwSFlqZ1RzeExkbE5yU0E2VHhjUmtxRTVJM0JPRGtYV2lXUXQxTUNC?=
- =?utf-8?B?TUtHbnk5bnE0QWtrYUMraEh2dCsyc293UkZhcUk2TEx5dFNxTFkzdmU0SUgv?=
- =?utf-8?B?bHZIdkxqVUJjYlVKMGQzU2JHUG9WWGVReTB5bXN5VWNXNzM1ZW15SXRXZE1I?=
- =?utf-8?B?Sm9BY0pFUmxNeEVjbVozcTZSeDg5VFpCWEVYc1pleXZNeEN6VHNOYXhoRFQ2?=
- =?utf-8?B?SW1GeFcrQ29kZmluTm5CdGVyYUhmdFpkQWRJdlF2dkJkaDA3M3crQXJFNFRm?=
- =?utf-8?B?Z3oxVjNJQXhhbWppbjNBaGx2R3JrSlkydnVISTk4WENiVjMrdFBkVVJsd0Fi?=
- =?utf-8?B?cVF4UW10d281MjZRSHlvTWZ4aFhNWVFaTi9LaDg5SyswNTBlYjkvU3FReFpi?=
- =?utf-8?B?bXdlVjlTYTUwVUpTY014QnBRUHdrYlF4QUdFdkFMQmY4ZTJnQktBS091OXBM?=
- =?utf-8?B?MjhwWUg0ekJxMFhOWFdISnJsOU1pSGEvS05weE5KTk9xbHBkZFhUYjNiT2xK?=
- =?utf-8?B?aFJuRTFiTStQNWlzSWQ0QXF2LzFoc0FoejZBTUdobFhaNFZTS1dQbHk0c0U3?=
- =?utf-8?B?OTdkdC9yeGl0amJtVXdXQmZ1bDQ3Vk94QTN5UnlXdDJSblMvMk9XMm41SXNi?=
- =?utf-8?B?YWVYTWNDTW9NMGVLQ1RhVDh5Z2U3YWQzK2JyMkRqVTFxc20wTWlMajNETktv?=
- =?utf-8?B?em1CNUZWR3dpZmpHMjc3cCtWdnJZSjJxc3ZLRThRaWFwZkljTWR2OVY5S1VP?=
- =?utf-8?B?TTYwRkJpNTNSR3JSZE9EZXRWeHlrOFh6V1Rac3FRWUxDTDZ4MXpuNFNSQTla?=
- =?utf-8?B?NnRzMCtsQlErQWxYa3JqOE1pYVFmZ1RrZjBxemw5SmtpbEhzS2IrZmxUbkRn?=
- =?utf-8?B?S203SU14RzByYitybnROd1h6V2cyVUNYTnRmblFJK3RzeXVER2VkTWs1N2Qx?=
- =?utf-8?B?TXF5QzFOR3dYNXpvZzkrZHlOdnJ3OXoyRXNtUzJjdm8wd1hUOUxyTk5lYmlR?=
- =?utf-8?B?OEM1UnJJWE8reUEwUGcrWVBselU0dms4ekE2aC9memtaOXNPVnRBREVrWFpi?=
- =?utf-8?B?MTlBR284NzNWd0pIZ0lQNVNoeUFUYjlVYjlUOGxkRWJ3eFV4anlFMWI2a1Bt?=
- =?utf-8?B?Ym5PbmZBNHhJYjUweFBEanBvcGd1V285SjlDc2RGdWRyb0hzZUtOQjJTdWdo?=
- =?utf-8?B?L09iV0hFckRqNTJIOTNRRWUvZ3ZuaEhYTmE3UmxzT1BwejVuMnByVTlpeGt0?=
- =?utf-8?B?eHFCZHBzSG5ZcXlJQXZtV2hpajA2UzZRMDE4Yktpek4rNkkwQ1dXcGRyR0Jn?=
- =?utf-8?B?bXZYTGd2Y20ydk0xK2xjb3VRaUNBTEJkY05SUnkrUFNnMEtteWEzd0hWSFQy?=
- =?utf-8?B?N1VxaXdnakhyRFRoc0p0SlVZcFpyUG1tYjhlYmhpZTlGbUJJcHRNekVQc1dK?=
- =?utf-8?B?a21GRFltMkNWTnZQOVZFMFYzM2hEc3lZMUZNRjU5ajVsZlB3WlZqTldBRW5X?=
- =?utf-8?B?VHU5aW9PbjNPYzRSRXExSm4waGY0TW9rYnpta2dobEw4VVJtTjA4OHM0aWtM?=
- =?utf-8?B?V2lMYlpNYXE0SmE1dmtZOVZsZGlqTWVmVldnMGJKN3NxN2Q5S0pwSzFDTnlj?=
- =?utf-8?B?MTdpNWdKRVlDaHZuQ2Q3YldrenZweEVZY1dJTUVmSmZKeU1rQkpVUW1tSytX?=
- =?utf-8?B?YnA2cytsdWdhRUVYcUJjdWxTVG9YVERtZzJ0R0ZoYytaUkR1U2E1OE9pUUVE?=
- =?utf-8?B?MlNXcmdYbFJ0bVZWQWpLdFFmcHB4Y3c5T2lEUVZxT3JBNE11bDNLdWdaZ2FU?=
- =?utf-8?B?YzF6TmNuTlF4cy9vd1lUdmtwWjZnRGNqa1VtMlp5NkhrRkMzMTd6U0phUWZW?=
- =?utf-8?B?b0hFUHJHcHZSdlluejUrRUxUWXdMUWxGdlYxeGNVREJxbjBDdGJVTjY4aDRw?=
- =?utf-8?B?NGdJZHdncjdYR1lEOFB5VGpHTEtBdWdWVDdNaFFHVVFxeHZCN2VUS2JaNith?=
- =?utf-8?B?S3FFWFFzN0RGc3oxTGtLVWRDbmdibnh4bUtCT1I5Yjg1cCtZQTYwZmoxd1h5?=
- =?utf-8?B?RmRnNmdHRktKWDluRmswZDBmcFh2MTl1OEF1SFc4ZlZ0SDZVb0lSRGdVdTZ2?=
- =?utf-8?B?eEp4Y1doNlBGZnVpNlB1ZStiK21KYkJya3FHVUtqWGVXbjhXZloxa3pRZDlp?=
- =?utf-8?B?emEzKzMyNU5vemxFSXdjWThnZlNyK2s4SFVITkdtTXdMTHpZdjFMQVZ1dWJY?=
- =?utf-8?B?SGMrOU9ZM3hMYWFFY1E2eW93VlpJSkZROEdRaUp6R1hDT0pwL1BGRmZZT0Jl?=
- =?utf-8?Q?l7SGKbzhaStwZ3AabD?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd949fba-9903-4a4d-176a-08df300c5aaf
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 07:16:13.1353
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GPeOPDFKINDgU9fgdNCb148HS1btYt3qjWYPUCMfplgkKNoH764O4Ff0/6uSKTeWEvvPft34INNO2zblOef1iA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8029
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] KVM: arm64: vgic-v2: unbacked GICH_LR_HW pending state after activ=
+e ISPENDR
+- [Medium] KVM: arm64: vgic-v2: preserved pending_latch on restore of activ=
+e level IRQ
+--
 
+commit 559e1b17a5a169279b080f4ac07688f66063cf6a
+Author: Karl Mehltretter <kmehltretter@gmail.com>
 
-On 25/9/26 05:41, Jason Gunthorpe wrote:
->> [ ... 95 lines skipped ... ]
->> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
->> +{
->> +	switch (tvm_arch) {
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
->> +		return true;
->> +	default:
->> +		return false;
->> +	}
->> +}
-> 
-> Generally speaking we should not do things like this, the viommu
-> object should declare what it supports if we want to have validation
-> on the iommufd side.
-> 
->> [ ... 140 lines skipped ... ]
->> +#ifdef CONFIG_TSM
->> +/**
->> + * struct tsm_guest_req_info - parameters for a guest-initiated TSM request
->> + * @op: operation for the guest-initiated request
->> + * @tvm_arch: guest TVM architecture
->> + * @req: request data buffer filled by guest
->> + * @req_len: the size of @req filled by guest
->> + * @resp: response data buffer filled by host
->> + * @resp_len: the size of @resp buffer filled by guest
->> + */
->> +struct tsm_guest_req_info {
->> +	enum iommu_vdevice_tsm_guest_req_op op;
->> +	enum iommu_vdevice_tsm_guest_tvm_arch tvm_arch;
->> +	sockptr_t req;
->> +	size_t req_len;
->> +	sockptr_t resp;
->> +	size_t resp_len;
->> +};
-> 
-> Why is this struct in tsm land?
-> 
-> I'm not seeing why the iommufd interface should be locked to tsm, as I
-> said other viommus need this kind of command channel too. Can't we
-> have a general one?
-> 
-> Why would it ever not be tied to userspace pointers? I don't want
-> an in kernel user ever using this kind of struct?
+KVM: arm64: vgic-v2: Don't drop pending writes to active level IRQs
 
+This commit preserves pending_latch in vgic_v2_fold_lr() when a
+level-triggered interrupt was already active or had GICD_ISPENDR written wh=
+ile
+present in a list register. It adds a latch_written flag to struct vgic_irq=
+ to
+track pending writes that occur while irq->on_lr is set and clears it when
+clearing pending state or folding list registers.
 
-This mimics the TSM's pci_tsm_guest_req() API which it is a kernel component we did not want to hardcode to use userspace pointers as it does not have uAPI. Makes no sense in tsm_guest_req_info though.
+[ ... ]
 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v2.c b/arch/arm64/kvm/vgic/vgic-v2.c
+> index 7182f63fc9382..37474ea2431c5 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v2.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v2.c
+> @@ -57,7 +57,7 @@ static void vgic_v2_fold_lr(struct kvm_vcpu *vcpu, u32 =
+val)
+>  {
+>  	u32 cpuid, intid =3D val & GICH_LR_VIRTUALID;
+>  	struct vgic_irq *irq;
+> -	bool deactivated;
+> +	bool deactivated, was_active;
+> =20
+>  	/* Extract the source vCPU id from the LR */
+>  	cpuid =3D FIELD_GET(GICH_LR_PHYSID_CPUID, val) & 7;
+> @@ -71,7 +71,8 @@ static void vgic_v2_fold_lr(struct kvm_vcpu *vcpu, u32 =
+val)
+> =20
+>  	scoped_guard(raw_spinlock, &irq->irq_lock) {
+>  		/* Always preserve the active bit, note deactivation */
+> -		deactivated =3D irq->active && !(val & GICH_LR_ACTIVE_BIT);
+> +		was_active =3D irq->active;
+> +		deactivated =3D was_active && !(val & GICH_LR_ACTIVE_BIT);
+>  		irq->active =3D !!(val & GICH_LR_ACTIVE_BIT);
+> =20
+>  		if (irq->active && vgic_irq_is_sgi(intid))
+> @@ -88,9 +89,15 @@ static void vgic_v2_fold_lr(struct kvm_vcpu *vcpu, u32=
+ val)
+> =20
+>  		/*
+>  		 * Clear soft pending state when level irqs have been acked.
+> +		 * A latch written while the irq was active is a new pending
+> +		 * state. A write while the irq was in the LR may also have
+> +		 * followed the ack, so preserve it too.
+>  		 */
+> -		if (irq->config =3D=3D VGIC_CONFIG_LEVEL && !(val & GICH_LR_STATE))
+> +		if (irq->config =3D=3D VGIC_CONFIG_LEVEL &&
+> +		    !(val & GICH_LR_PENDING_BIT) &&
+> +		    !was_active && !irq->latch_written)
+>  			irq->pending_latch =3D false;
 
->> [ ... 34 lines skipped ... ]
->> +/**
->> + * enum iommu_vdevice_tsm_guest_req_op - operation for guest TSM requests
->> + * @TSM_REQ_VALIDATE_MMIO: Validate MMIO for the TDI
->> + * @TSM_REQ_SET_TDI_STATE: Set TDI state
->> + * @TSM_REQ_SEV_ENABLE_DMA: Enable SEV DMA
-> 
-> That seems wrong.. The hypervisor should not have control over T=1
-> DMA.
+[Severity: Medium]
+Could checking !was_active here cause a spurious second interrupt delivery
+after saving and restoring a KVM_DEV_TYPE_ARM_VGIC_V2 guest with an active
+level-triggered interrupt?
 
-This is a guest request to the PSP which does control T=1, the HV is forwarding it and does some extra stuff while there. Probably could be decoupled and go to a separate ioctl().
+Unlike KVM_DEV_TYPE_ARM_VGIC_V3, which exposes KVM_DEV_ARM_VGIC_GRP_LEVEL_I=
+NFO
+and returns only irq->pending_latch to userspace in
+arch/arm64/kvm/vgic/vgic-mmio.c:vgic_uaccess_read_pending()->__read_pending=
+(),
+KVM_DEV_TYPE_ARM_VGIC_V2 returns irq_is_pending(irq):
 
-The HV does not control DMA, it is for configuring DTE in a specific way - the domainid becomes reserved (and its sDTE counterpart starts working) and some other DTE bits have to match whatever the PSP writes to sDTE ("I" == IOTLB enable) and probably more.
+    switch (vcpu->kvm->arch.vgic.vgic_model) {
+    case KVM_DEV_TYPE_ARM_VGIC_V3:
+        if (is_user) {
+            val =3D irq->pending_latch;
+            break;
+        }
+        fallthrough;
+    default:
+        val =3D irq_is_pending(irq);
+        break;
+    }
 
-And then, yeah, "something something RMP" == cut 2MB mappings if corresponding RMP is not 2MB.
+When a GICv2 guest is saved while a level-triggered interrupt is active
+(irq->active =3D=3D true) and its device line is still asserted
+(irq->line_level =3D=3D true, irq->pending_latch =3D=3D false), userspace r=
+eads 1 from
+both GIC_DIST_ACTIVE_SET and GIC_DIST_PENDING_SET.
 
-Thanks,
+On restore, userspace writes 1 to GIC_DIST_ACTIVE_SET via
+vgic_mmio_uaccess_write_sactive(), setting irq->active =3D true, and writes=
+ 1 to
+GIC_DIST_PENDING_SET via vgic_uaccess_write_spending()->__set_pending(),
+setting irq->pending_latch =3D true:
 
-> 
->> + * @TSM_REQ_SEV_DISABLE_DMA: Disable SEV DMA
->> + * @TSM_REQ_READ_OBJECT: Read a TSM object
->> + * @TSM_REQ_REGEN_OBJECT: Regenerate a TSM object
->> + * @TSM_REQ_OBJECT_INFO: Read TSM object information
->> + */
-> 
-> These operations will need alot more commentary. Use kdocs inside the
-> enum below to make that easier.
-> 
->> [ ... 10 lines skipped ... ]
->> +/**
->> + * struct iommu_vdevice_tsm_req - ioctl(IOMMU_VDEVICE_TSM_REQ)
->> + * @size: sizeof(struct iommu_vdevice_tsm_req)
->> + * @vdevice_id: vDevice ID the guest request is for
->> + * @op: One of enum iommu_vdevice_tsm_guest_req_op
->> + * @tvm_arch: One of enum iommu_vdevice_tsm_guest_tvm_arch
->> + * @req_len: Size in bytes of the input payload at @req_uptr
->> + * @resp_len: Size in bytes of the output buffer at @resp_uptr
->> + * @req_uptr: Userspace pointer to the guest-provided request payload
->> + * @resp_uptr: Userspace pointer to the guest response buffer
->> + * @tsm_code: TSM-specific result code returned by the TSM implementation
->> + *
->> + * Forward a TSM request to the TSM bound vDevice. This is intended for
->> + * guest TSM/TDISP message transport where the host kernel only marshals
->> + * bytes between userspace and the TSM implementation.
->> + *
->> + * The request operation is guest initiated. The TSM backend validates
->> + * @tvm_arch against its bound TVM architecture assumptions.
->> + *
->> + * The request payload is read from @req_uptr/@req_len. If a response is
->> + * expected, userspace provides @resp_uptr/@resp_len as writable storage for
->> + * response bytes returned by the TSM path.
->> + *
->> + * The ioctl is only suitable for commands and results that the host kernel
->> + * has no use, the host is only facilitating guest to TSM communication.
->> + */
->> +struct iommu_vdevice_tsm_req {
->> +	__u32 size;
->> +	__u32 vdevice_id;
->> +	__u32 op;
->> +	__u32 tvm_arch;
->> +	__u32 req_len;
->> +	__u32 resp_len;
->> +	__aligned_u64 req_uptr;
->> +	__aligned_u64 resp_uptr;
->> +	__aligned_u64 tsm_code;
-> 
-> out_tsm_code
-> 
+    int vgic_uaccess_write_spending(struct kvm_vcpu *vcpu,
+                                    gpa_t addr, unsigned int len,
+                                    unsigned long val)
+    {
+        __set_pending(vcpu, addr, len, val, true);
+        return 0;
+    }
 
--- 
-Alexey
+Previously, once the guest cleared the device condition (lowering
+irq->line_level) and deactivated the interrupt, vgic_v2_fold_lr() saw
+!(val & GICH_LR_STATE) and cleared irq->pending_latch =3D false. With the
+!was_active check in vgic_v2_fold_lr(), won't irq->pending_latch remain set
+across the deactivation of the restored active interrupt and cause the
+interrupt to be injected a second time?
 
+> +		irq->latch_written =3D false;
+> =20
+>  		/* Handle resampling for mapped interrupts if required */
+>  		vgic_irq_handle_resampling(irq, deactivated, val & GICH_LR_PENDING_BIT=
+);
+
+[Severity: High]
+What happens for a mapped level-triggered interrupt (irq->hw =3D=3D true,
+irq->config =3D=3D VGIC_CONFIG_LEVEL, and !vgic_irq_needs_resampling(irq), =
+such as
+the architected timer interrupt) when the guest writes GICD_ISPENDR0 while =
+the
+interrupt is active?
+
+In arch/arm64/kvm/vgic/vgic-mmio.c:vgic_mmio_write_spending()->__set_pendin=
+g():
+
+    if (irq->on_lr)
+        irq->latch_written =3D true;
+
+    irq->pending_latch =3D true;
+    if (irq->hw && !is_user)
+        vgic_irq_set_phys_active(irq, true);
+
+Because the physical interrupt is already active in the host distributor for
+the first in-flight delivery, vgic_irq_set_phys_active(irq, true) coalesces
+with the existing physical active state. When the guest then deactivates the
+first delivery (via GICC_EOIR / GICC_DIR in hardware, or via the EOIcount p=
+ath
+in vgic_v2_fold_lr_state()->vgic_v2_deactivate() writing GIC_CPU_DEACTIVATE=
+),
+the physical interrupt is deactivated in the host distributor.
+
+When vgic_v2_fold_lr() runs on exit, was_active or irq->latch_written is tr=
+ue,
+so irq->pending_latch remains true while irq->active becomes false. However,
+neither vgic_v2_fold_lr() nor
+arch/arm64/kvm/vgic/vgic.c:vgic_irq_handle_resampling() re-activates the
+physical interrupt in the host distributor (and if lr_deactivated &&
+irq->line_level holds with the physical line low, vgic_irq_handle_resamplin=
+g()
+explicitly clears the physical active state):
+
+    if (unlikely(vgic_irq_needs_resampling(irq))) {
+        resample =3D !(irq->active || irq->pending_latch);
+    } else if (lr_pending || (lr_deactivated && irq->line_level)) {
+        irq->line_level =3D vgic_get_phys_line_level(irq);
+        resample =3D !irq->line_level;
+    }
+
+    if (resample)
+        vgic_irq_set_phys_active(irq, false);
+
+On the next guest entry,
+arch/arm64/kvm/vgic/vgic-v2.c:vgic_v2_populate_lr()->vgic_v2_compute_lr() s=
+ees
+irq->active =3D=3D false and irq_is_pending(irq) =3D=3D true from irq->pend=
+ing_latch:
+
+    if (irq->hw && !vgic_irq_needs_resampling(irq)) {
+        val |=3D GICH_LR_HW;
+        val |=3D irq->hwintid << GICH_LR_PHYSID_CPUID_SHIFT;
+        if (irq->active)
+            allow_pending =3D false;
+    }
+
+    if (allow_pending && irq_is_pending(irq)) {
+        val |=3D GICH_LR_PENDING_BIT;
+
+Can this populate the list register with GICH_LR_HW | GICH_LR_PENDING_BIT
+while the corresponding physical interrupt is inactive in the host
+distributor, violating the hardware-bit consistency requirement and trigger=
+ing
+a second physical deactivation when the guest completes the second delivery?
+
+> =20
+>  		irq->on_lr =3D false;
+>  	}
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022064628.4206=
+-1-kmehltretter@gmail.com?part=3D1
