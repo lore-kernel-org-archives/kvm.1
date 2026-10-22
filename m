@@ -1,141 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792651770;
-	b=yRb2o1e2vYzv2h55nvWkJ2eUBeIiUMevX4w2tsCFsidxx9y8PT4YvaAT6NszQ39NiHy2
-	 broUpOYxuk3yF7Aoy7sCCfb5mMGoPlzXpPa6FNJfcv4wCghmvbZ3SdlHCNNSG/gPfnick
-	 VvtMxo8V4ys1+Awwzf0BLmbKna8iFOzchhBTVanqUrW4r5W9N3NBxeptDBwxRefY+AXMa
-	 BLbqjY24W88cf13hMeIssM0mjdQBTwdvdxDVA/5DCsncf5gdlvknHdCphL5C02/rrUoq+
-	 WTJUV3nlb7yTwtHjJs+rh0aRLv7KA9r6+o6sVJZtG25kR9LnH1guxnc1M2C57CDNLtQ==
+	t=1792652981;
+	b=dCVPNwFbE98xJQ+PHQ6uumLuZRP8XDVOgy5tCwKiZbggEcJ5IGSzu+iVI//d2jhHaDPg
+	 2bm8tX69B6xrmpNmCc5AgnGYNt0O8XN4s7ID7dld1nguoJGLqn7HG80vEIWs2qSZ5ab9Z
+	 7dK6+7TrdCku0S1EjomG+w4i9EJe9br9+xLTIIio9l2lUcMurFJ71EjluWeUe9kBwng2x
+	 UtOn9VxcNW9uFycCevXMcYxIdiYzuA9G1h6SgurOi6FtzF+T77uWhIWRwhQkPTXfoncWg
+	 RXPnOFqrDL1fYHMdlSI1i9OuA5S2oSqwpaLwjlmtJEzYUZKObHdHiYjaNJMjFmzVcaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792651770;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=lArC7Nt6Avq1n/8C/Ll+Du0fnsulmEPTNsihfxjq4so=;
-	b=ItmxrdLnWMc+z2WRYAKujfRQl4ZLV+JBCoQud8b67byxuyNq4VqVcZl7ivePxBJqe9Xh
-	 Y48MYUedGUwobYlnbn9X3066wk88porNfnhnTdtMKiQk669QXd6L/xOLQO6jDyW5BCjNr
-	 79n7vPpjew3uLXiLnIhFarbEuJ+u6g3CgfFHOTefnhPo9B+w4bGG4K6hOBCwmXx7kN15m
-	 oWGs0ScIiwOMqhkDBGo+pIszADMsInNEqd7a7hUKbMzWD++haWtRbQyzV/kaqBV0s6wqf
-	 QPU0l3YO1MXWrjT6jQXZccQOeWkwg9E3zVGew2LE4J2stXwbn+LI+I4M1nAjVCzs8uw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792652981;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=qaaOleomERGZ2ShG2SazR0MfP70bjjcAJQTWOSGLHkc=;
+	b=S3fIk+WuIIOgjc2VVFQCBj3TVFAqy02dCXnhyIZP/zZlhF7wbcr2MfEOMdpKPotxztP+
+	 L6BMK2KCmY0GzJ8rV2E3Pi+b7KDhW6Kv+HVR7ATZpCKZj6zAASGl00ZFiOk9pbshKaln2
+	 QWht7v3rvCTC2AB+zGc0aaEH8tsLE88iqBNwDSTXEZI0f44pdy6stLfsRW8IVeyORyGah
+	 XH46KZ21UEOXP1hfewmOIG3YfRdLdepgO8EPyk4/n0P/Zi+FcPPCdiGtcL0pRpbqVG2Nq
+	 72BJk9vWS5f7pb2KIJhtjt5nrHUNknbqMa5hNyr9ixu4uRd4JrWUcloA3/S7NnXohaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HhsTcI5h;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2JplZFB;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA25606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 06:49:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EA25606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7583D606A31F;
+	Thu, 22 Oct 2026 07:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HhsTcI5h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792651769;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lArC7Nt6Avq1n/8C/Ll+Du0fnsulmEPTNsihfxjq4so=;
-	b=HhsTcI5hosp2K7FC7DPx06Mea1vgrGslStGo4/pjGFcp4djfIKi0q2U+C/7KIYqtTbL/l0
-	wGe292DfUyRJZXe54aXBkOyHM2yFB8W1CRhYwTHQC3rng84l82EmcEgBCtrvm6h0W6r+s8
-	KpSRP9al+jQ5lM+ylWALWfhbygKFvIQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-9wIN8bqtNjm5ZsV_6-4TKQ-1; Thu,
- 22 Oct 2026 06:49:26 +0000
-X-MC-Unique: 9wIN8bqtNjm5ZsV_6-4TKQ-1
-X-Mimecast-MFC-AGG-ID: 9wIN8bqtNjm5ZsV_6-4TKQ_1792651761
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E93719560B2;
-	Thu, 22 Oct 2026 06:49:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 725C81803A48;
-	Thu, 22 Oct 2026 06:49:14 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 1B3A121E6A04; Thu, 22 Oct 2026 08:49:12 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: devel@lists.libvirt.org
-Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,  Michael Roth
- <michael.roth@amd.com>,  John Snow <jsnow@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Mauro Carvalho Chehab
- <mchehab+huawei@kernel.org>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
- Kostiuk
- <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
- <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
- Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
-  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
- Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
-  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
- Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
- <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
-  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
- <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
- Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
- <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
- Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
-  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
- <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
- <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
- Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
- Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
- Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
- Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
- <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
- Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
- <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
- <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
-  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
-  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
-  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
-  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
- <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
- Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>
-Subject: Re: Property types changed in this series
-In-Reply-To: <87tsmfkoej.fsf@pond.sub.org> (Markus Armbruster's message of
-	"Wed, 21 Oct 2026 18:29:40 +0200")
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<87tsmfkoej.fsf@pond.sub.org>
-Date: Thu, 22 Oct 2026 08:49:12 +0200
-Message-ID: <878q3qkz6f.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2JplZFB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98DA1F000C1;
+	Thu, 22 Oct 2026 07:09:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792652981;
+	bh=qaaOleomERGZ2ShG2SazR0MfP70bjjcAJQTWOSGLHkc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=G2JplZFBgYRklu8fsjD6Ff5fIwA/cf+xIUJyo5njE5OnZrZNAD28+u0JL7ZLWKVS6
+	 lk0o30nXUOY5ZCYprhDFi+udWGnI6yFzenvjOwmi3fvjraWd5peeJQ1FkZ0KwfVlPV
+	 CY/0kSqqq/sSctaLQkRNm1j35RIObqIM6EeTvK6snk7wJoyjD7G1Av2mLF4chaaKfz
+	 MKKMbznVmEGBigGPdTwoSL4jVYeXD1jeR61WfhGdjxcZK2TmTaDfHrJnXW9ttq3Jek
+	 jSjyA4bh5a7YqI0v2ePJ+568ZgIM4lRvrksqW0/qm1TvGPA0uKL/o2dxuDMeH369np
+	 VwlJJBZPw9ShQ==
+Message-ID: <sashiko-outbox-181111@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 2/3] KVM: arm64: vgic-v3: Don't drop pending writes
+ to active level IRQs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Karl Mehltretter" <kmehltretter@gmail.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20261022064628.4206-3-kmehltretter@gmail.com>
+References: <20261022064628.4206-1-kmehltretter@gmail.com>
+ <20261022064628.4206-3-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 07:09:40 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -144,98 +61,154 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Libvirt developers: does libvirt use member @type of the reply of
-qom-list, qom-list-properties, qom-list-get?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] KVM: arm64: vgic-v3: vgic_v3_fold_lr() preserves latch on deactiva=
+ted HW IRQ
+--
 
-I'm asking because Marc-Andr=C3=A9's work changes many values to add a more
-useful replacement.  I think we should deprecate @type.  I'd like to
-find out whether we need to preserve the values for the deprecation
-grace period.
+commit 0c743aae5548587f04c81ee3dc502841f4713aff
+Author: Karl Mehltretter <kmehltretter@gmail.com>
 
-Markus Armbruster <armbru@redhat.com> writes:
+KVM: arm64: vgic-v3: Don't drop pending writes to active level IRQs
 
-> I used qom-list-types and qom-list-properties to list all properties and
-> their types, then looked for changes.  This can miss changes in
-> dynamically created properties; see the note on qom-list-properties in
-> qapi/qom.json.  Moreover, I ran into a few QOM types where
-> qom-list-properties is broken.
+This commit updates vgic_v3_fold_lr() so that a soft-pending latch written
+while a level-triggered interrupt is active or present in a list register is
+preserved across deactivation.
 
-These are ast2700-a1, ast2700-a2, and several riscv CPUs.  A fix for the
-latter has been queued.
+> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
+> index 726e20a1da6e7..8009dc6df00db 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v3.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
+> @@ -75,7 +75,7 @@ static void vgic_v3_fold_lr(struct kvm_vcpu *vcpu, u64 =
+val)
+>  {
+>  	struct vgic_irq *irq;
+>  	bool is_v2_sgi =3D false;
+> -	bool deactivated;
+> +	bool deactivated, was_active;
+>  	u32 intid;
+> =20
+>  	if (vcpu->kvm->arch.vgic.vgic_model =3D=3D KVM_DEV_TYPE_ARM_VGIC_V3) {
+> @@ -93,7 +93,8 @@ static void vgic_v3_fold_lr(struct kvm_vcpu *vcpu, u64 =
+val)
+>  		/* Always preserve the active bit for !LPIs, note deactivation */
+>  		if (irq->intid >=3D VGIC_MIN_LPI)
+>  			val &=3D ~ICH_LR_ACTIVE_BIT;
+> -		deactivated =3D irq->active && !(val & ICH_LR_ACTIVE_BIT);
+> +		was_active =3D irq->active;
+> +		deactivated =3D was_active && !(val & ICH_LR_ACTIVE_BIT);
+>  		irq->active =3D !!(val & ICH_LR_ACTIVE_BIT);
+> =20
+>  		/* Edge is the only case where we preserve the pending bit */
+> @@ -103,9 +104,15 @@ static void vgic_v3_fold_lr(struct kvm_vcpu *vcpu, u=
+64 val)
+> =20
+>  		/*
+>  		 * Clear soft pending state when level irqs have been acked.
+> +		 * A latch written while the irq was active is a new pending
+> +		 * state. A write while the irq was in the LR may also have
+> +		 * followed the ack, so preserve it too.
+>  		 */
+> -		if (irq->config =3D=3D VGIC_CONFIG_LEVEL && !(val & ICH_LR_STATE))
+> +		if (irq->config =3D=3D VGIC_CONFIG_LEVEL &&
+> +		    !(val & ICH_LR_PENDING_BIT) &&
+> +		    !was_active && !irq->latch_written)
+>  			irq->pending_latch =3D false;
+> +		irq->latch_written =3D false;
 
-> 1. Close misses of QAPI type names change to actual QAPI type names
->
->     old property type           new property type
->     ---------------------------------------------
->     string                      str
->     uint64_t                    uint64
->     uint64_t                    size
->     int32_t                     int32
->     int                         size
->     uint32_t                    uint32
->     [uint16]                    uint16List
->     NotifyVMexitOption          NotifyVmexitOption
->     CXLFixedMemoryWindow        CXLFixedMemoryWindowOptionsList
->
-> 2. Incorrect QAPI type names change to correct ones
->
->     old property type           new property type
->     ---------------------------------------------
->     SgxEPC                      SgxEPCList
->     QAuthZListRule              QAuthZListRuleList
->     X86CPUFeatureWordInfo       X86CPUFeatureWordInfoList
->     bool                        Pca9552LedState
->
-> 3. Less than useful QAPI type names change to more useful ones
->
->     old property type           new property type
->     ---------------------------------------------
->     str                         Pca9552PinState
->     str                         Pca9554PinState
->
-> 4. Lazy crap
->=20=20
->     old property type           new property type
->     ---------------------------------------------
->     list                        link<arm-cpu>List
->     list                        strList
->     list                        uint16List
->     list                        uint32List
->     list                        uint64List
->     list                        uint8List
->     struct                      any
->
->     I'm not sure the first one is what it should be.
->
->     I need to have a closer look at the last one.
->
-> 5. Inventive crap
->=20=20=20
->     old property type           new property type
->     ---------------------------------------------
->     busnr                       uint8
->     guest statistics            VirtioBalloonGuestStats
->     loadparm                    str
->     on|off|split                OnOffSplit
->     struct tm                   StructTm
->
-> 6. An odd duck
->
->     old property type           new property type
->     ---------------------------------------------
->     str                         int32
->
->     This is pci-device property addr.  See PATCH 54.
->
-> On the way, I noted properties with anti-social names:
->
->     QOM type name       property name
->     ---------------------------------
->     acpi-ged            memhp container[0]
->     e500-spin           e500 spin pv device[0]
+[Severity: High]
+What happens here when a mapped level-triggered interrupt (irq->hw is true,
+irq->config =3D=3D VGIC_CONFIG_LEVEL, and !vgic_irq_needs_resampling(irq), =
+such
+as the architected timer) has its pending latch set via
+vgic_mmio_write_spending() while the interrupt is already active or in a li=
+st
+register?
 
+In arch/arm64/kvm/vgic/vgic-mmio.c:__set_pending(), writing the set-pending
+register sets irq->pending_latch =3D true (and irq->latch_written =3D true =
+if
+irq->on_lr) and calls vgic_irq_set_phys_active(irq, true):
+
+arch/arm64/kvm/vgic/vgic-mmio.c:__set_pending() {
+    ...
+		if (irq->on_lr)
+			irq->latch_written =3D true;
+
+		irq->pending_latch =3D true;
+		if (irq->hw && !is_user)
+			vgic_irq_set_phys_active(irq, true);
+    ...
+}
+
+Because the physical interrupt is already active in the host distributor or
+redistributor for the in-flight virtual interrupt, there is only a single
+physical active state bit. When the guest then deactivates the virtual
+interrupt, hardware deactivation (or vgic_v3_deactivate_phys() when
+deactivated outside the list registers) clears the physical active state in
+the host.
+
+When vgic_v3_fold_lr() runs on exit, was_active or irq->latch_written is tr=
+ue,
+so irq->pending_latch remains true while irq->active becomes false. Neither
+vgic_v3_fold_lr() nor vgic_irq_handle_resampling() re-activates the physical
+interrupt, and if irq->line_level was true and the physical line is now low,
+vgic_irq_handle_resampling() explicitly clears the physical active state:
+
+arch/arm64/kvm/vgic/vgic.c:vgic_irq_handle_resampling() {
+	if (vgic_irq_is_mapped_level(irq)) {
+		bool resample =3D false;
+
+		if (unlikely(vgic_irq_needs_resampling(irq))) {
+			resample =3D !(irq->active || irq->pending_latch);
+		} else if (lr_pending || (lr_deactivated && irq->line_level)) {
+			irq->line_level =3D vgic_get_phys_line_level(irq);
+			resample =3D !irq->line_level;
+		}
+
+		if (resample)
+			vgic_irq_set_phys_active(irq, false);
+	}
+}
+
+On the next guest entry, irq->active is false and irq_is_pending(irq) is tr=
+ue
+via the preserved irq->pending_latch, so vgic_v3_compute_lr() populates the
+list register with ICH_LR_HW | ICH_LR_PENDING_BIT while the physical interr=
+upt
+is inactive in the host:
+
+arch/arm64/kvm/vgic/vgic-v3.c:vgic_v3_compute_lr() {
+    ...
+	if (irq->hw && !vgic_irq_needs_resampling(irq)) {
+		val |=3D ICH_LR_HW;
+		val |=3D ((u64)irq->hwintid) << ICH_LR_PHYS_ID_SHIFT;
+		if (irq->active)
+			allow_pending =3D false;
+	}
+    ...
+	if (allow_pending && irq_is_pending(irq)) {
+		val |=3D ICH_LR_PENDING_BIT;
+    ...
+}
+
+Doesn't placing a list register entry with ICH_LR_HW set in the pending sta=
+te
+while the corresponding physical interrupt is not active in the distributor
+or redistributor violate the hardware-bit consistency requirement (resulting
+in unpredictable cpu interface behavior and a duplicate physical deactivati=
+on
+of an inactive physical interrupt)?
+
+[ ... ]
+
+>
+>=20
+>  		if (is_v2_sgi) {
+>  			u8 cpuid =3D FIELD_GET(GICH_LR_PHYSID_CPUID, val);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022064628.4206=
+-1-kmehltretter@gmail.com?part=3D2
