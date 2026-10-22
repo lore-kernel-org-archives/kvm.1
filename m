@@ -1,72 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792636097;
-	b=tXBXrQIvSs+k4xsuOzi4pFaGox9b3PBNfqOqNWv/fGrf+FQBIkqJlw00DnDbHDzRRxEO
-	 W2pULvg+Myj7n+yD/wEQDJ23OG+rbfust4tiaoqVRB1Ua5Pxppm9TAUhqhEjxcon5QzUa
-	 kCXp8TsAzp/1HRftbCux3KEC99jzp7PPjR+N7CTqe6pQt/PeOum1WOJlgvbhw/SLkRu4f
-	 BYxRcBKaNoaJSzFMhlNBGIIlR5vy2N7bdedcIx6PxjS4OPsZ449wVRTBezfXElnKXWYAX
-	 iKeHAHakFHb03Ua8ammLHx9w3L8QeYAkYiqByB1M71MKZvwDIBLZXhFVPzs0uZNekfQ==
+	t=1792637477;
+	b=UchLnMzn23eKqdIjlz9RRhZKwkn0oEsvAhLChq2O2sUjhe6gRRBaB3d4E4pym1Cmt+03
+	 uDfsil54RLxwnYKakIEOr3b+6QUdFQ58Ts1ckWojAFS9onsv6uhjRWHPZzIgEBxyjA40e
+	 vXuqHaODp2XRORI6Fqd0LaYnY9DscA59gAQzM0txSCKaCEN32GzRQv49MDw4w1LXgDWG+
+	 Ly6LZV9e01A/XTbO1m23Rcc1BrLjSYIVqTao31DJ6kNiCKe5Mbh5Pwu480XtHos5tbM9h
+	 HkGQTVqgOMeZHBfjnYa0NFf+78VPzaCPALGlQmlwI+STXcB4S6DRr8bRyJNSC5+A7ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792636097;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
-	 Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=r7COp7eSdmI3KWQdqQlR04zrDpvtCg9K9xahMpH03/8=;
-	b=ZEUZQPNahMbQDjyEdKxIwbJbShFVDvZy6u2r9Qx2hkNx5mZ8h2wOI3bWkrsOd3D9yORm
-	 yjhpX3uLv7dxE0I80ehVBOuahzD9Lzj4zKrtiTgB8EraZZUtqpAvteTnrp43CxDlqPfaB
-	 Owk/D5BYMsP9Djp3GN35nPY7L4AGlwtGKWh8vAbH3xI9cXCBiF1C9OyZHn1YSbMYEfeN+
-	 M6W3A5cXW6qblzS45tdnU9S3PhBi+oxbXO6qsKcbzRItJxtRoVDy3SNdKYPW56H5EmeuE
-	 F2opksfI1mN4q0Eyv1/OZs8qn+xNG+/VSQtAcm6EYgrbR4mKhxW/R+E1ix8FTwNtqxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792637477;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=0iB/d7fIfVuq6R3fZv62sOSrHGFLxdqWRueSIgOaols=;
+	b=3CqaAEc+fGbnjt4zE2yZBmaFk1Wq1yqvY0vtWLRBEewfPE7G4EGMXcNyUotvqtCo31wT
+	 F0mVcx9TQHnXQ8IUUJgldpyZyFvDCIeD4BNm5/seYkIvKCKyQAHP0vluOKZU+G5dtqjf8
+	 PPK5DnOmfOXB5kbZ9TWP4lIVda5hGt+rNGlPH4HIkgYU0kO99CZpgehQCAdAy39gFnjpN
+	 egtt3qrGvwfCPjo+a+fjRUSyRo58mWr/J6/XogPJ1+GyRpkeNWU2C3/Aqm8jOrBQoc/Of
+	 Y9mYGqu39vqGztaneVN152H4HXzoYAm2e0pCpmGykqgQ0b5dyk91Nb2qFBy59l/+W/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Td8AW8Mx;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCNEV7Mc;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B490606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:28:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B490606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B9E606A319
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 02:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Td8AW8Mx
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e80f7acc67so14395695ad.2
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 19:28:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792636095; x=1793240895; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=r7COp7eSdmI3KWQdqQlR04zrDpvtCg9K9xahMpH03/8=;
-        b=Td8AW8MxqevqQ5s9rozozIe6yUPmCMYWdP1+M1KZ26QmRay/baJiIlJ7r4V95fWpu1
-         Wg1WBH3PfxSejXKwlg7uSiGgVyx5SA0qy7nQ1M800/PHbWxaa8t8Qzl/xtdIW7Yw7tHt
-         OURL1ftyosl7Y4U9inFkhrO/WHXWq/eLX4KXGmiY0hWrr+/BY8MrBVIYQxFFsaND0SKY
-         e63thHRbrmqKChEDgTxlc8A0UZjk4zBegumbVpBtdSrJI5wnX0CDG3GUf1kp269V2tDm
-         q9815mGxRU8lUmGdsUnWkX0HzDwBg6d5X7FkqIQiPYk9BYDNPaeubF6BUqpdN/+xrkOV
-         /5kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792636095; x=1793240895;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=r7COp7eSdmI3KWQdqQlR04zrDpvtCg9K9xahMpH03/8=;
-        b=w7nSAm6IhQe6GmvUmjte7y2gsxfjZ2TG79LII+8WAexfDF4rEm9Vx9ISazDMQ/EUYg
-         Ypr47tYzmY8q7ISPoiXsd7WMSo3k49oocM1fAJF1acWobTPCopdjXSBfahwi0LnokAQh
-         TO+qOkYAGjtHcJ6c+R3kQ8uEmuayjjHBpU4vmveilwJYFHZSVw+3HLUKGVY90dCflJ8d
-         uJRR5OvEdJMbhrn5EmhijbLteQpvODcVDbCbYpx4x46aEhMeG351vfZ+BfRJt1LtcWsL
-         I5cQGB9Y8j/HjgppU0NEAkfRcaZIGUsuds5R4Nr2H5k7qcHWtdW+n3R5J4I+r6VyFHAB
-         gFgA==
-X-Gm-Message-State: AFq9FYIGsbZQoV1dSZvKDhbVirDgV5YBwkNolyTmT5kJ2a6wrGaTrLDd
-	A1cHk4gy2t0Hky0X6MZcpRtNP29j7RXWuuY9kQcMqob58OSsTjwasHgtf4gBuQew8tZa4J8xQvA
-	zvSnbfg==
-X-Received: from plbjk3.prod.google.com ([2002:a17:903:3303:b0:2e4:b03a:397f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:32cb:b0:2e6:13b1:e196
- with SMTP id d9443c01a7336-2ea43d8876bmr28645595ad.74.1792636095139; Wed, 21
- Oct 2026 19:28:15 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 21 Oct 2026 19:28:11 -0700
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCNEV7Mc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CCB1F000C1;
+	Thu, 22 Oct 2026 02:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792637476;
+	bh=0iB/d7fIfVuq6R3fZv62sOSrHGFLxdqWRueSIgOaols=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MCNEV7Mcj8WLCXgcwJAiv8hOPGR4bi1Sk6S1EqpGSgIPgVq6Rwia9mSGXNFOksNvE
+	 +f2Fkih6QwoY6gJnlI0D8RuLaNSii/mvXb+LoJGN5I46kzOyAMdaLJ3Bk+KjmV+lRE
+	 DyEJoroh4bJWZh5HfJzHPYhlSkmZV3XpUdqI/N9bZBLDD6BFDiPn48ZGEy3cewExsD
+	 fgp6g6VN3JIg5Vgh+pQ7SUd3pE1U6MUqRsNnAhCa/HqPxgizLnkqa3XT0KTIz0+V55
+	 lpq272JIbH5uAy5X72uPss+YaoIDrNRFR8KkKi+ZcP0etsQHfV/UeKskPUHPQPm9hy
+	 TkCUmqpw1Mqhw==
+Message-ID: <sashiko-outbox-180886@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: x86/mmu: WARN and flush TLBs if TDP MMU replaces
+ present SPTE with MMIO SPTE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261022022209.300964-1-seanjc@google.com>
+References: <20261022022209.300964-1-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 02:51:15 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,35 +59,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.218.g1ec904b173-goog
-Message-ID: <20261022022813.303978-1-seanjc@google.com>
-Subject: [PATCH v2 0/2] KVM: x86: Drop deferred updates of EOI bitmaps
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-Content-Type: text/plain; charset="UTF-8"
 
-Stop deferring EOI bitmap updates.  As pointed out by Amirmohammad, I missed
-this one when removing all the other cases where KVM defers an update until
-vmcs01 is active.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] KVM: x86/mmu: tdp_mmu_map_handle_target_level() flushes untruncate=
+d GFN on MMIO overwrite
+--
 
-v1: https://lore.kernel.org/all/20261017093016.32348-2-amirmohammad.eftekhar@cispa.de
+commit 409b2fbe972da1945be9a64a0bcdab640e996156
+Author: Sean Christopherson <seanjc@google.com>
 
-Sean Christopherson (2):
-  KVM: x86: Switch to vmcs01 to update EOI exiting bitmap on-demand if
-    L2 is active
-  KVM: x86: Consolidate invocations of kvm_x86_ops.load_eoi_exitmap()
+KVM: x86/mmu: WARN and flush TLBs if TDP MMU replaces present SPTE with MMI=
+O SPTE
 
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kvm/regs.h             |  6 ------
- arch/x86/kvm/vmx/vmx.c          |  2 ++
- arch/x86/kvm/x86.c              | 27 +++++++--------------------
- 4 files changed, 10 insertions(+), 27 deletions(-)
+This commit adds a warning and remote tlb flush in
+tdp_mmu_map_handle_target_level() if a shadow-present spte is replaced with=
+ a
+non-shadow-present mmio spte due to gfn truncation or wrapping during the
+page table walk.
 
+Link: https://lore.kernel.org/all/20260219002241.2908563-1-seanjc@google.com
 
-base-commit: 164405e8e9a0378c7e1aff2254625a6553a291f1
--- 
-2.56.0.218.g1ec904b173-goog
+> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+> index 44dad106fad19..2735cbb212937 100644
+> --- a/arch/x86/kvm/mmu/tdp_mmu.c
+> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
+> @@ -1151,6 +1151,7 @@ static int tdp_mmu_map_handle_target_level(struct k=
+vm_vcpu *vcpu,
+>  		return RET_PF_RETRY;
+>  	else if (is_shadow_present_pte(iter->old_spte) &&
+>  		 (!is_last_spte(iter->old_spte, iter->level) ||
+> +		  WARN_ON_ONCE(!is_shadow_present_pte(new_spte)) ||
+>  		  WARN_ON_ONCE(leaf_spte_change_needs_tlb_flush(iter->old_spte, new_sp=
+te))))
+>  		kvm_flush_remote_tlbs_gfn(vcpu->kvm, iter->gfn, iter->level);
 
+[Severity: High]
+When a shadow-present spte mapping a valid memslot gfn is overwritten with a
+non-shadow-present mmio spte due to gfn truncation in the tdp iterator, does
+flushing iter->gfn via kvm_flush_remote_tlbs_gfn() flush the wrong address
+when range-based tlb invalidation is used?
+
+Suppose a guest with a 4-level root first faults in a valid memslot at a
+lower gfn (caching that translation in the tlb), and then triggers a fault =
+on
+an aliased gfn with upper bits set above the root level where fault->slot is
+null.
+
+During kvm_tdp_mmu_map(), tdp_iter_restart() and try_step_down() compute
+iter->gfn via gfn_round_for_level():
+
+arch/x86/kvm/mmu/mmu_internal.h:gfn_round_for_level() {
+	return gfn & -KVM_PAGES_PER_HPAGE(level);
+}
+
+which only masks low bits below iter->level and retains the untruncated upp=
+er
+bits in iter->gfn. Meanwhile, tdp_iter_refresh_sptep() indexes the page tab=
+le
+by shifting and masking out the upper bits:
+
+arch/x86/kvm/mmu/tdp_iter.c:tdp_iter_refresh_sptep() {
+	iter->sptep =3D iter->pt_path[iter->level - 1] +
+		SPTE_INDEX((iter->gfn | iter->gfn_bits) << PAGE_SHIFT, iter->level);
+}
+
+resolving iter->sptep to the existing spte for the lower gfn.
+
+When tdp_mmu_map_handle_target_level() overwrites iter->old_spte with the
+mmio spte and calls kvm_flush_remote_tlbs_gfn(vcpu->kvm, iter->gfn,
+iter->level), it passes the untruncated faulting iter->gfn. In
+kvm_flush_remote_tlbs_range():
+
+virt/kvm/kvm_main.c:kvm_flush_remote_tlbs_range() {
+	if (!kvm_arch_flush_remote_tlbs_range(kvm, gfn, nr_pages))
+		return;
+	...
+	kvm_flush_remote_tlbs(kvm);
+}
+
+if range-based flushing is supported and succeeds (for example, via
+hv_flush_remote_tlbs_range()), only the untruncated iter->gfn is invalidated
+and kvm_flush_remote_tlbs() is skipped.
+
+Because the spte is now a non-shadow-present mmio spte, subsequent mmu
+notifier invalidations in tdp_mmu_zap_leafs() will skip it without flushing
+tlbs, leaving the cached tlb entry for the original memslot gfn pointing to=
+ a
+host pfn that can be freed.
+
+Should this path call kvm_flush_remote_tlbs(vcpu->kvm) (or mask iter->gfn to
+the root's address space) when !is_shadow_present_pte(new_spte) triggers?
+
+> =20
+taker
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022022209.3009=
+64-1-seanjc@google.com?part=3D1
