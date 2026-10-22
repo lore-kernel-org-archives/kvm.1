@@ -1,102 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.221.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792646446;
-	b=kiNC3LbWeuqdkzQmRM93NenNyRbKGJCZg1MFmPQoLcZcTQgk1a5DcIFArimUxYBtd3YT
-	 Aa/2ju7B+WC49zVb9OoR6i+e7E4GsRFV6XfpATuUvvgVKHe3yXc6pSlMrfwysjDLy5+xk
-	 zwQzyNSSk+mHTH3U9UfaRem5Sh2HRSvckYyZZ94u1yUnL9us6fAVK5WV3d298NXFgZ80I
-	 ZlvPJcFWjafQYg+ALpRw/nmeZW0PTPEpOUnwEmUwE6e+HTXr2qqTr1ZVO8n2zQdwqDcTe
-	 3Jq5gamJfLoRLV2ivWef4wgF5WlyhP7shpPs2NQ501EoYOmfwu58paUr9gyXZfNGIhA==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792646970;
+	b=1EOuovvgmw9XBsrjCQZU2DeR/rfGA3cj7NQElCmGTa7R/xrL/y0v7QZ/TJi9EdLEH6BM
+	 jbR/CeCxEYf1ebPojYH9AwDldWuHJYJuA6U7Qlh4jVcCNNPJ8Peu2qsvl2zCLqentv9yr
+	 CrFgmiPjZs8dm0e1NrtTeZsU8pG4uFLAfvWU1fUDHGzF4T57Un22sKhhihN6iJ9PqCip5
+	 FITF2Hq4G4tFiGO4eU47EtdVXqcVNauDeHV6pDkr82QvjFIXg6Uqn9eVFU1C5LxZc7hYo
+	 VQrQGczQwI259U5JGGn4hWLx8ZfgGJBb6CL+Splf9Doruf6K3VbvoR+Ty2ZeyPGcpXg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792646446;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=5dV8J2o+756ExcNaGq9topEd2CgNZBpheBIgCfX69Gs=;
-	b=Q5DVU1It2DTIO2ThL/hpIUo+x/yfnMgjO4DJuGipTSfOzVDOSclyPm39RgsHFLdeU7F6
-	 qnxorehQdIgWOt1BnW6PYwsUVPSskonWbERjYnCbuzD5g9ujUZuggxnEKGawFJXbTubKM
-	 F3XY4DexJ9BtpiuIvYT0+ta9ru7MgIXVdBr6iKR56Yh40uLCovvc9aS7jBQBy114UyLOW
-	 tSU7GSXxEbFr5fur/70lGAj+89ylCwsjRT0q45y0qda7im9I49LG6HS6a4EfiRTN9qfFw
-	 Sp2dfxHOLkkH1WkM4MygOLpxIk1Tykgp4Qt8RwvDAgXIMFAm6aBANn7Mp8Lj98XWo0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792646970;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=x8nc4lFKIflj0031U24QKhHWYfSWWl9JsVlW+Zb/WiE=;
+	b=GTUbcy3xMZF/wFC46EKWS/aWYff8kNYY9SgY4c695cUSOcq9wBThbZOkaOc9QaXliiul
+	 bbGhqUiAoZlAkPt24pwmubO0sTQ1G6pqmuVjYXaKG1hwUCB0PTVv/ZIF+z9Kt3oqiAmU6
+	 7ySEhAIWiTXjDSZci38X8QgEF6n9G9VB73y13OIekWH4V17964Kt3lPktK6dlJ+lTjdki
+	 E60Slk2ZzHaXs+MP5agTMDAie+KZiqU5SczXN3ZUQmOFiR68AtI8msN8S7vxZOaDycT6x
+	 jY0jFjXwSJ5fVAcCvpmLiLm93xtx7l65QJPhi/g5v3c0+TOw5nKQcnPaHcrCuQxUFhA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=aMLRwuAa;
-	arc=fail smtp.remote-ip=209.85.221.46
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=NMifBLZB;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=AQ4yC2s1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79C2606A319
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 05:20:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E79C2606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D9D606A319
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 05:29:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11D9D606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=aMLRwuAa
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48c4d99c32bso1056518f8f.1
-        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 22:20:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792646444; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=NMifBLZB;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=AQ4yC2s1
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69M3j0UX3094448
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 05:29:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	x8nc4lFKIflj0031U24QKhHWYfSWWl9JsVlW+Zb/WiE=; b=NMifBLZBvyNscsIS
+	OlUvMCfKkwPCFkBrMlfc7wd2xwjWS83v9cCeScE1nB6BCWn5HCDwe/Tiw8VDEg4d
+	+3sqA44Bv5Hy6mnTkOeUqHsMdcfDTWCBgaxzOzveOc1lqCsE3Ea/7YsLgmTzf46M
+	z4ryNy9OOwLujW6rFsRP4E5zITTRbakLd1U6cPhRO14HAk/F/nP+goKmIhTfwXZL
+	CNpUHfBbQfJYO0RgUCm8iXkBc5jDVCqftFHYhYgHc3VPVC2wMLNhl2jUK4eM7Anv
+	y4pEupXJmpgtUeE+3RG9vHFZs7cMiLTtcevvnw0CXLLIi1SlCGltQREdCvY5UzcZ
+	csveKw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hf93bgssn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 05:29:28 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-35c5aef2a74so3410712eec.0
+        for <kvm@vger.kernel.org>; Wed, 21 Oct 2026 22:29:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792646968; cv=none;
         d=google.com; s=arc-20260327;
-        b=lr0lJk+RkEfLX3jMSComiX47Lu9Depd+sAH/nPL5uocEIidqpeJLHaQ2YVYnFIJ/LS
-         7KEK4JH27+e74loNqik/hDBGVVpYCCODMyXTI4I0FSJyXS7dJ4MxzN8bw83e0cfcA3rZ
-         o1/+iJW6+YfuQeyqpFR5effh5xK9kjcNlTX8l29l9IG6yymViYX0OdmuBwcN99Avbahp
-         unToAHMf476It94A8OBSxzy5NHXKN1UnL/MiD0BRrpWcfOkoUr7AUMh+V9UiLm8YU1S0
-         les/oE2ichBSwHMpQTOZ8QxqDWDiy+x4NNsNJ/WOtZa7VnvNHT4360RAWXkMKGBw3Sw9
-         4yXw==
+        b=lhatREk3Vme+2tLEF/PckCsS7RO1M0RFtRqk6p58jmAGy5OYsDkdO2EbFTpBsrLrIB
+         kG2PuaYTvGkZqvnVBNdXKyTwog8ns27CHiPqxo5gA6G2NhWJ6VE/0UblDj+q6E0Lej6j
+         YGwMMD/76+nB+dS+sFftQsS3IoBe/1SH6NDAmWGJbAW0Ah0OkJqY4iRlqglvLmCysT5A
+         NlTMoOmKKIDRmLDLi+lfqw+ehli6Nvar4xVTZp5/djFCVcEj4w3oqNKgizeIkUfxRlCh
+         Z22m8V12dDlkkuKIPg9u4FbV3sVDM8CcfWwgGba6rsHat6MKGJNQbWQX/YaO7CA9rLc4
+         hFYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=5dV8J2o+756ExcNaGq9topEd2CgNZBpheBIgCfX69Gs=;
-        fh=GPDKjzTiQjYvFmw1eBihzQyUBUoztraLxFnJ216PUrc=;
-        b=k5yzaYuf76JGGPY0sAAyOgyBc54+pKONMM3846PTke3fFg+FCug7qdb8XiPLpC2lDl
-         izs4N31cnzlIo4rVG4puxNf8q0cbuXIJJpMtMNqGI3uBMo5z4RwvtelXybu42b7vnwvo
-         MCFIz51c3IKIpBKNfEz6SDnaoU4W0oLhcAY/C+qC+i+Aasl0m1pRoBRdc1/RDae1bH4e
-         26RohkmuLr9IHx8R15w4UA/JHzOsyNKZQi4wfJshkxCXf2gNl81mSaGGp0W7LneizVAS
-         5bvJJfRE00Vb0yJIlBqq4VrhjTK8LDcpTUPsf+ADWMHE1q7FSQuLB3MQGVMwqZC9mqD2
-         tBHA==;
+        bh=x8nc4lFKIflj0031U24QKhHWYfSWWl9JsVlW+Zb/WiE=;
+        fh=s9Hc77Bks8eclH+qYnfAlNvh7HnCBEV7ekA8DoH6gk8=;
+        b=tDW3hWBAQngIpx16il4AuN4uk5d89DQrzsxXgWGbvsIhfg0c1k6ood/NI58iA3Jbrx
+         XpCLJVtZFJ39H2dx24ZZhOezQJe8GWXrTI1R89lV3DEVAzRD0vsTDEavHWBAABwpOq5/
+         u+FJtN1j3cYwJPJ61HvQNhyizPCYT+qvmwUK+mMDFval77NZLo3gOQ8EcvDFAozhyMUj
+         mQaYsRcUhsP6ZtX8pLuqv7Es2zMDCPuwySLk6EeEoGluStSGqlZ/d2Iq/ktcEWwZTrdW
+         ah3PibVHW2kBIq9r+mskfWn3syqJahOlIV7JBAHoSB0Ngo4uGewYFdZ1lt8WoYrhuZHn
+         boJQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1792646444; x=1793251244; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1792646968; x=1793251768; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=5dV8J2o+756ExcNaGq9topEd2CgNZBpheBIgCfX69Gs=;
-        b=aMLRwuAa3ERHVGJY70WDS+qGWqIhOrxtO8b8v9SoygeljlCPgsS9qiX1mL8rvP1xCx
-         FpFHdwvboaJmbBGr42Q56PIl7PA7RvBcbqtwAEVi2tN7JoP0GFhzw6TJ/jsx/obytj8s
-         x1yRMv9UObcXmBCnRgJhjYyreJWvs8m5mDy+84AR8tReeWe6fUhEZxtf22vfWX76lYhG
-         SScV+wRoxe5BHsDMacZOCPSaBy2WtXc1rBxDM1OM8T1szLChNzv0BtbhLnsjUO7xsx/B
-         jDQ98oAqxDtsehGTKaEZWTDbitUDthYS2qhR00W6DFto33fME86vzd3XSXRoSAHYw+AW
-         eqNA==
+        bh=x8nc4lFKIflj0031U24QKhHWYfSWWl9JsVlW+Zb/WiE=;
+        b=AQ4yC2s108bfpJrkMbPBnfeCuWrSvhwcQTgQd109va9mEopX3uSN4SoQkAAxyHAgOY
+         Xrcdehus0Br/84fvcZiwQjqf7ON1qm4PoXD7mF8LLZTXFPsNugratu0Urmme+fYX4+8i
+         1fSCx1EG2KIW93W97FSvHtMNr8Wra4xl8I9M6CN66u0PM9cRxLaAngQoFkFbqw0mZhci
+         7Mg3fyyt3/MhERsgRGFnvBzAKfA82d7s/iLBJDNlikfcW8eUQIw1teSEHttLy1YVHtJp
+         SQif1cSAJOiz8BaHfohAy8+yb43FibaPY/F2EjOFuXhgM8ZeKUgRNQROT5EmwROVqkK7
+         RNnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792646444; x=1793251244;
+        d=1e100.net; s=20260707; t=1792646968; x=1793251768;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5dV8J2o+756ExcNaGq9topEd2CgNZBpheBIgCfX69Gs=;
-        b=2ruzhOJAoJ87ybfLVGfDvvYkTR1mPaORXXzZYNvSSYre18ENV1xKNd1br+lqR1avdY
-         wAj2+Yaz4rSv0K2sU2u7wa555IR1L3Hg8/ICw4ObxY2/Co9nfeRW1aug/Cb4WAneYrCC
-         sThA2rHX7wj2sBHVkzel+DLLOKXLeOrgvyPFHwc214llgew5FzESB7SJfD4d5LWPcS8c
-         f/R0OoBNysLdw755BmQyEyRI8IUYmw2XY65+Iaj8kWV5rSQjMvm8tCMVaxNHnWCxsvOT
-         4Ded82Dm1FBxAgqb/vUqK7XQV+7vHTwPNhU5lr0ZZOSQAW/EdiBtplGfTqnmxxX1SHYV
-         D+Hg==
-X-Forwarded-Encrypted: i=1; AKwUvByJX+tiQP7UDpHENv5nnMDvA0G4EffslWTlh4tqGQQcDSU7AJ1nQhPGaysJIJXVIoy5qjQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIYO4JfNzApTz9dRO1jgY2dK8DxLSrlG6bki6u1Gb8DDSDhShaF
-	lfoIym1dVnsDqL2ZQ9fY+q5l/2uksytHl5oqTUXxPKbwEmMnUaYUdxhtuG0YWXy1i1/O2jYm585
-	QWrUxTK92CMFYVEdv+rwe8jlInkVEwQfh3wFD1JSCoRq3raoXi8tx
-X-Gm-Gg: AYBFou2tiGMtmRGH4WykK+EHZlWADEaDw2Ckcyp2b5oQRG35WgF+u2qWrpLjKFhkNi9
-	x1t3e+chW/02ZBo6duSFSy1m3aTFdwpM3Rd78K55OFP2YSyLYo4O56/ryD/fQ9hK4VgEfya6NhB
-	GsB28T9u/XVCNXFld3KPmESVe2liTrJ31fchqO0slP/2JOkV8nIgvfp7RsGRItjU1PNxQw6BBIj
-	qLYkLvVGgplvlcBK3ug1Eb9VZQ3GzAXpbJgpUZ/dswM/k1xI9Xo12s9BHaksVThX3RxsdW9fHjy
-	YqFIxKU62+KlRlurkk38EiI+/xD5MwAUlir6sh6dWmtR+1q3jPiPCDcypxJI46GeNW3Hszt1On2
-	OcL2DM7sA0NlKtrmIxHKKL7SI2mEuWlmx9646WMDir6pkdtEzX7xKhrkOXk5DyqVuHjKZ4xTMaz
-	AHV7mB2M0MCqhwOjitAyIOOvqW9aJRVbGIhMJ/QAUL0FAQCCVtRiQZoaVwWb+iFA/f77S2fKfln
-	mORpg==
-X-Received: by 2002:a05:6000:4025:b0:48d:c29e:40c3 with SMTP id
- ffacd0b85a97d-48e264bdcd8mr8669565f8f.33.1792646444331; Wed, 21 Oct 2026
- 22:20:44 -0700 (PDT)
+        bh=x8nc4lFKIflj0031U24QKhHWYfSWWl9JsVlW+Zb/WiE=;
+        b=S3u/148Qzh2LvIoPR+GAvP0IHW3xRqufOhuGsInsKtAJmZacdLLhsclb0rMALh0BYO
+         vTyRXVZ0Qgz8p2aRZXPxEBDxv98fvly89bJib67DDsLzcwMULHDC/3D7sDQN7qHn8z4c
+         9x/ex8w2REMH7aUwfg4QBQU96LGNFIKGB0kAmI/F4E41tgLk3ti47aCC94pY4KOqg0Wu
+         GHcY/PY78iS5Mukres9NAIpZFZJfuNrFk1obf2KXZeLn0CaYy0mhVrHc9W6aipQ6ww+2
+         Yh8yEruzIv8FMnK6H/KaNtwgvErVLGprMZ3Qt/vV9IuBscAIb+sTbP2oW3bygFkJY41J
+         UGmg==
+X-Forwarded-Encrypted: i=1; AKwUvBxCf7OYEm/ZKlfZlTcnOncfrqtDKjWJsDb6wfjglIIDsna6GYdxr1DF9L7tlhK/FhT2MFA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKgd/B/ZVqnzefMZJdJ4FQkAwjpf147BJIsgfBXqSNknCcQLtsG
+	t7s2vtDm9FQsT+z8zaQbuLfkWbgkGl0k7d1/hh7uTgq88s8nBNE1J96Z4zFXQA8KVc1v0cmdiMo
+	S049WoNjhODippMyh3L2xkTHGgEzi/u49IDU1rAGIam0GWgdpy08l0kQjJd5/SnU3HqpTbzF8tN
+	+BCKGTmh8kP9a49x0XvD4OZy21x92bSg==
+X-Gm-Gg: AYBFou1+g8CrdysJ0K2hdB1T2wTHTD2AcNPxvBmXBvLtE/9KcAqMbZvgBrlVuuKtD/N
+	D/DS4UQA5s9Pn29drT6zW9+AsqQFSpJ9AVdL8FauTrmbelpU/nEhqRvPU3ttT8WyX0QyDvBCOjV
+	MZvMDyExrpbZuV1Q1mk3o8CcMHtyycL/YiGYwRP6eb+FrcjfnLmZmIOFTc1fs=
+X-Received: by 2002:a05:7301:7a08:b0:368:a679:7fcf with SMTP id 5a478bee46e88-368a679852cmr1863351eec.25.1792646967842;
+        Wed, 21 Oct 2026 22:29:27 -0700 (PDT)
+X-Received: by 2002:a05:7301:7a08:b0:368:a679:7fcf with SMTP id
+ 5a478bee46e88-368a679852cmr1863324eec.25.1792646967328; Wed, 21 Oct 2026
+ 22:29:27 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,55 +127,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019134709.2610129-1-andrew.jones@linux.dev> <atZPqGKEip_sW3fr@orel>
-In-Reply-To: <atZPqGKEip_sW3fr@orel>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 22 Oct 2026 10:50:32 +0530
-X-Gm-Features: AclHuK8Srkuid1EQZ7HZGvxQuXz3bcbCHVgrlN5FrFRdxoTbUp0B6JefKaok7ws
-Message-ID: <CAAhSdy0KvbHT6iShPfMkhePP0V2cVohv6WcHWieWLwZYqkFnjg@mail.gmail.com>
-Subject: Re: [PATCH v2] RISC-V: KVM: Convert IMSIC vsfile_lock to a raw spinlock
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: kvm-riscv@lists.infradead.org, atish.patra@linux.dev, pjw@kernel.org, 
-	palmer@dabbelt.com, kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
+References: <20261001-b4-mmio_load_protect_x0-v1-1-90515d86f201@butz.st>
+In-Reply-To: <20261001-b4-mmio_load_protect_x0-v1-1-90515d86f201@butz.st>
+From: Anup Patel <anup.patel@oss.qualcomm.com>
+Date: Thu, 22 Oct 2026 10:59:15 +0530
+X-Gm-Features: AclHuK_iYzosfJ5Dr7--r4SAxXJKbvTYWI4tQYeVRKuVqR1ywsT80cvntNZ8DOA
+Message-ID: <CABBgwmtE4ZX+wAs9aRTeUDGkWtyfgpF_Ou-Kb5UoFXE88zdkog@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Don't write MMIO load result to x0
+To: Stefan Butz <mail@butz.st>
+Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Paolo Bonzini <pbonzini@redhat.com>, Alexander Graf <graf@amazon.com>,
+        Yifei Jiang <jiangyifei@huawei.com>,
+        Palmer Dabbelt <palmerdabbelt@google.com>, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDAyMSBTYWx0ZWRfX7F5O1sWw+Emn
+ cR7BbIZLtZC5xqLfg7qvsuARYISMqSzdoGVRb7foRuRw4ZH8W2lXcqcFgez3krHkbV3GB1jrIu0
+ LSna6gFiQ+Y0KofuT1lxj6+6IFhu11dNNXIDELHlidPRQsPp5xkcg31pGV+KsFQSRnz2G93Gce1
+ sTS8iz60A4ig49sZEVX7eaT55UOqEcUhlYU1WifxC0QbDhK5xQcaCNPZEJlsK7G/DHIylzv7OQ1
+ /gEmAoGEsXYaj7suDEPllSBiSREv8SaT+DY7w46YxoShDHgqvmTgbhEcDgubxAuZuS5NGv9dJNX
+ SgU+d2zF7u/8oh4YN1GatV9pR4dQRHTGqdyDOzds8ya+BgQnRr897KY21T7ervOMQAcYde+BZkt
+ YMAL5nWUP4TOZiQ0gSS2Vfj2eMSpvc1e9dyRlzS6YEpfeIAuG0kOJqI82WYbSoPB9BCxyrF5ypk
+ HR+1i8jDYQs704jbgyQ==
+X-Proofpoint-GUID: weExQwX70udS1Anw98x5QyH-X5vHx9R5
+X-Proofpoint-ORIG-GUID: weExQwX70udS1Anw98x5QyH-X5vHx9R5
+X-Authority-Analysis: v=2.4 cv=CMy/zhrD c=1 sm=1 tr=0 ts=6ad99f38 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_glEPmIy2e8OvE2BGh3C:22 a=W-_n0kkjAAAA:8 a=OiFHV6dps91ajMyZhnoA:9
+ a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22 a=qeNa2pbTr82C0GpJEZFS:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDAyMSBTYWx0ZWRfX6YCqYmQxSQ5Q
+ fL82liXFxB0J3GvnCdgwqDdl/iWfD8X35PV5uQB2VW4aLq3Y856sEUs64z+1ocSfMyYO83Kz1K4
+ mjtx+R2ZDWtE7yLEJCa84teF4S2n2RQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-22_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610220021
 
-On Mon, Oct 19, 2026 at 10:46=E2=80=AFPM Andrew Jones <andrew.jones@linux.d=
-ev> wrote:
+On Thu, Oct 1, 2026 at 1:05=E2=80=AFPM Stefan Butz <mail@butz.st> wrote:
 >
-> On Mon, Oct 19, 2026 at 03:47:09PM +0200, Andrew Jones wrote:
-> > kvm_riscv_vcpu_aia_imsic_put() runs from the scheduler preemption
-> > notifier with the raw runqueue lock held, so it must not take
-> > vsfile_lock, an rwlock_t, which sleeps on PREEMPT_RT. All vsfile_lock
-> > critical sections are short, so a raw spinlock is fine.
-> >
-> > Fixes: 4cec89db80ba ("RISC-V: KVM: Move HGEI[E|P] CSR access to IMSIC v=
-irtualization")
-> > Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
-> > ---
-> > v2:
-> >  - Convert vsfile_lock to raw_spinlock_t instead of adding a separate
-> >    hgei_lock [Anup]
+> An MMIO load with rd=3Dx0 writes the result into guest_context.zero,
+> which is never cleared, so later emulated reads of x0 return garbage.
 >
-> Hi Anup,
+> Fixes: 9f7013265112 ("RISC-V: KVM: Handle MMIO exits for VCPU")
 >
-> Sashiko found an ABBA deadlock with this v2[1]. Making vsfile_lock
-> exclusive serializes kvm_riscv_vcpu_aia_imsic_put(), which runs under
-> rq->__lock, against the SW-file inject paths, which kick the vCPU
-> (pi_lock/rq->__lock) while holding vsfile_lock. Lockdep confirms it with
-> an EMUL mode guest, and the host then hangs (I should have tested with
-> EMUL before...). v1 doesn't have the problem, since its hgei_lock never
-> has anything that wakes tasks nested under it. I tested v1 in both EMUL
-> mode and hwaccel mode [again] with lockdep and it's good.
->
-> Should we take v1 instead?
->
-> [1] https://sashiko.dev/#/patchset/20261019134709.2610129-1-andrew.jones@=
-linux.dev?part=3D1
->
+> Signed-off-by: Stefan Butz <mail@butz.st>
+> ---
+> An MMIO load with rd=3Dx0 writes the result into guest_context.zero,
+> which is never cleared, so later emulated reads of x0 return garbage.
 
-Okay, we will go ahead with your v1.
+LGTM.
 
-Regards,
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Queued this for Linux-7.4
+
+Thanks,
 Anup
+
+> ---
+>  arch/riscv/kvm/vcpu_insn.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+> index adbbb59a0f36..2a8dc2b88ba8 100644
+> --- a/arch/riscv/kvm/vcpu_insn.c
+> +++ b/arch/riscv/kvm/vcpu_insn.c
+> @@ -647,7 +647,7 @@ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcpu,=
+ struct kvm_run *run)
+>         vcpu->arch.mmio_decode.return_handled =3D 1;
+>         insn =3D vcpu->arch.mmio_decode.insn;
+>
+> -       if (run->mmio.is_write)
+> +       if (run->mmio.is_write || !((insn >> SH_RD) & MASK_RX))
+>                 goto done;
+>
+>         len =3D vcpu->arch.mmio_decode.len;
+>
+> ---
+> base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+> change-id: 20261001-b4-mmio_load_protect_x0-5f5fc11ea52a
+>
+> Best regards,
+> --
+> Stefan Butz <mail@butz.st>
+>
+>
