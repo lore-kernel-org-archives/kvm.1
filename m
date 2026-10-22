@@ -1,72 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792700857;
-	b=1ANIX9CNBpGXu2nh709RIHqsK9dXOkr7ONymwbK5CxvzRHN9YFgpoj0Vdm28j7EvPq+N
-	 kLvlPv4hy8v+/ztbz6wnnK/x9m79UymP8wPhs9pa0Evi4getYWne57rtGt0V9C/FbP0lN
-	 QNH7gJTgpQ1zBT2ghW3diUMBcxYVGKscU/dXySaodqfIZRRbxtBLanED1+vxEQjX3AX0/
-	 6583CFhmaKn1ppt5sBNjLpNV2jG6AnfUeD/dcPN0PoxgVWk2UX/ClirtD+KRLH6B03W/c
-	 RvSTl5EO374afVszTq+jHfEEa1Fk/nkz3imhBuXX5Dy6sUf7IueHDehwtlOj7GeEjKA==
+	t=1792701032;
+	b=Vl/NLWpoSc7WyqEs9YAtbqDPtf1GVc5QUQDTgMJyxLxhq4FJtzhdZf3w6dODN1YOColl
+	 SSnoZ0PC7OZeZm4SopskzdKlgTnQH4eGUHyIMtpGnMUpza5uyf6Py+fUvJWrmWu3Kv/BZ
+	 /nkhvl+lFC8QzXXl+DFK7cvBU/Lcza/KAq56nVd36w0PMKVbORWH2s1ttE716ShApsnnn
+	 A6fpWlMTCFts0INufKmdigZHA+Kesh1mvfRgqWho6QQUzknEBVOrtzZOSUTkJzl2LiNQv
+	 iU1JMxAZT3Q/H3yqQCNnbd4jkfmS6ySBJC/Rt+CHUwooZl5JuMTrH2KVlBTF1iuGgew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792700857;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792701032;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
 	 Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=CmlLUlHh19saemg7b3QpaN9wK1Oa5vIw+YCFEOWdibw=;
-	b=jme+Oqsn1gxCiMLwQahsC5Z9880LkErKdkR9nao+drg4GcQ+BRgu745tU6kzW0/nxSK0
-	 /DYjtPiMPxB+e9tudqaair5uEECmYvwT0uSAm1+xrMhBBCdwS/znLmdgWw2+DIl5wokmd
-	 +C0Ss1tB8ilrsnID5UWkslj0Bc/7ez8BRvpVn0O7TZ0mdsQyzp8FQmKodRvbUueU/wK2G
-	 WEr2Bqr/ToN57/sscJTkrkh6FPasPs3kMV2t6Ekcy6yAWDvh6+60mNRaeJxGUljGP+lHS
-	 B8ay0XStCTGnJRUr3VQ6sjb2XDrj8EG61PxSh/ewUG6ySJAkPzChpJIfPNfRh56qk7w==
+	bh=DxsW3DwwnRnbM7oQ22r7CqLQd3DQoYNNo9Jr9+0Xbzs=;
+	b=Feg6LK1kfN4Wv2SuGxyA/I5E2c6MR4qiqJ/C1jGHYqrwevCirSJagOzBy6U8lQt9opLc
+	 0MLcdK9opJAnarGVwFAXpumjmBrokLTd9M9RzVP+qKLfi/g+8scl4SamcgUgspBDTw42y
+	 oyaDdW64OrrFYpQEcWs5YNAOqZNetdLiAwJd4kV2dR6sxVHErSt7xe4Ll24D1Vx9uJ8X4
+	 4LeQwugMTxoI2CvBkWKdE1evOEkvZI6zzKQoFQk/KA4bk+d9+X8rd0dTd0oTNn33uah+z
+	 y0XKzfsG9i8eOKzMKb8PGPe7W+UkTfaT+gKKp/KssLkqW4WD+0sPWobDcwfLnyS0elQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=OfxH6KeJ;
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=jnYlBEpi;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA64C606A31A
-	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 20:27:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA64C606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC5860A2608
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 20:30:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBC5860A2608
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=OfxH6KeJ
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-88c768885b4so304518b3a.0
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 13:27:36 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=jnYlBEpi
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e818ca61bfso1008855ad.2
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 13:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792700856; x=1793305656; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792701031; x=1793305831; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CmlLUlHh19saemg7b3QpaN9wK1Oa5vIw+YCFEOWdibw=;
-        b=OfxH6KeJ7E67dvFuBfGD9iyfsgfriMJHxkJvWXC6G0hjmQDrS9CoeYgEu+ffPUr1//
-         84SWNiFXCxJU3PQnH71Q7GPEOMMvfXKddLW/GAm5c65KrSw/mQyH2q0jjcYcLYN06jyk
-         tJqBAjqsg/gSwUC0yqgT6QWlbmjWWR7opoeAsMIPvwrQEJZ7bZpIX7+jWHWCWqTFxSXn
-         B8GV7THukFvINvVQ4VJJESPzpIKi+ceP5DTkbCogYMFSOixMxXTgyDvwHIjY5hkOCPCI
-         BqMs9mAk+n7RQnrbZhIeS67J0Z4maZV4jbYZm69GXcycd/7u2FlBGd/qvJCPZvq1QEVa
-         y2nQ==
+        bh=DxsW3DwwnRnbM7oQ22r7CqLQd3DQoYNNo9Jr9+0Xbzs=;
+        b=jnYlBEpiJhdqQbiezRQuuqsOeNeo1bt8ERSaARa7ZU7YcPswi+uTpGAUTQh25vxYcg
+         7cwFuY06pIULoOQCl/J0tOtKZRcOrzI00QPltfmW7a1r6BIl0pOc+tAgjSvUd/7bIGwc
+         4tmZVsS5InVbAdNZxiEtbiHCFnlbT5RpLjgxUuWLkiLWircr+ee2nkSu+X5Q6qv7ogjT
+         9dQOBTYE0faysrtyRJ1WiQZKQFOiXApRNA2t9U+euXMsFvua236VB3mmm5IBkzKag9Aq
+         JI7wwgsn6f4qyaCD97ZboANyn/g/h01gmt1L1fZpmSxDJxZwnXiyiZVqi5QYQymsiDM1
+         tkhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792700856; x=1793305656;
+        d=1e100.net; s=20260707; t=1792701031; x=1793305831;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=CmlLUlHh19saemg7b3QpaN9wK1Oa5vIw+YCFEOWdibw=;
-        b=LBx5bSkWNvdQlw9gJI8LZhsdDMNmxTMx3LO50JhJ8Mueesnan3XJcRkqk7XI5gjL2V
-         uGQSdkBrMftkOtv1z840DXjCgCcl4hKWj3oNLE6BwJ+qzsxLows3JiDFYugzZZC6C3r2
-         eiQC4z/jc+kegqu2qMaNrHJKzNCJCxOEnujp4wfp4rXxBjsbcZrNLFxw+2TkvIc7lK+K
-         tAVh1/uEPLYQZ8EvExhuxF+gvSFIMgwXEFVIxcD3aQMO8tNegEd5WfqGIrM0PsVzrr0/
-         uRV+KAcUWAHd70GlFRpD0rRPDh3ElwN5XltgD/B1iyO2KwhE/PzsVI+4VwbKWvBd9zF9
-         dZRQ==
-X-Gm-Message-State: AFq9FYK4k+hfhfKoL3Ot9VxrsK4EDHVw27oX6ofL5My+kcQoXvHX9cKW
-	pscCMJson/EUzVPupXGjRSrCTbw9PkZQhnDaWks/fhXcVAaR0w10KLeoEtdOVQyhZ2pUXnQXZj0
-	VO7GYxg==
-X-Received: from pfbb9.prod.google.com ([2002:a05:6a00:ac89:b0:89f:827e:eb47])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b16:b0:89f:e248:5727
- with SMTP id d2e1a72fcca58-8a2c5e3a37fmr256625b3a.6.1792700855792; Thu, 22
- Oct 2026 13:27:35 -0700 (PDT)
+        bh=DxsW3DwwnRnbM7oQ22r7CqLQd3DQoYNNo9Jr9+0Xbzs=;
+        b=EdssSSyTpOe6WMCXzhojDZQ5shZmf5LUYAys69ISTd0T8Kf4MxLBPkdVddFlVvf2ue
+         GxLJStbn/H1SFL37fkdlUO16afcXouyQ6ytfEQ2t28tehggLmk5MPUUhj9Dw/aJ1ytsU
+         DKmada3+pgkY88UEIxaELHemhzIec8jWUsFeEAJ5UpkQm8Yvz+bu+48TP0V5dwwRb7eO
+         J4zQ6K8pk8h+BNPsGaeJ+M+u44SP95X1yyxDvSdykRlwvDay2WY7JPA0U3rXyy7rs8Fu
+         h1V8T6M6aHQ4oSaKOgzkpKnfZ3YXkzzxVYDFqC8Na6t0SWiwqYbKUZ4GCngTnnvHiL5b
+         fs5g==
+X-Gm-Message-State: AFq9FYILlmXj7cl8XtnBmFaplz0JbTb6GezXlrOWToQXzqQD4i+rf4oq
+	3YtWhhjZ00E3sBxdD7fOd1uDldZcmNpumxdCOk9pwE66e8YYaRUmQcobZuuoSN/+zvt7O1WGs7o
+	GPWHheg==
+X-Received: from plw21.prod.google.com ([2002:a17:903:45d5:b0:2e9:3db4:99ab])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2305:b0:2e6:136e:f264
+ with SMTP id d9443c01a7336-2ea7d147a7bmr2918405ad.50.1792701030855; Thu, 22
+ Oct 2026 13:30:30 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 22 Oct 2026 13:27:33 -0700
+Date: Thu, 22 Oct 2026 13:30:28 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,48 +77,115 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261022202734.592745-1-seanjc@google.com>
-Subject: [PATCH] KVM: nVMX: Nullify cached vmcs12 pointers if entering VMX
- operation fails
+Message-ID: <20261022203028.595318-1-seanjc@google.com>
+Subject: [PATCH] KVM: SEV: Ratelimit all #VMGEXIT-induced info and error messages
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+	Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+Ratelimit all of the kernel log messages related to #VMGEXIT and/or GHCB
+handling, as they can all be triggered at will by the guest.
 
-Nullify the cached vmcs12 pointers after freeing them if "entering" VMX
-ultimately fails (because of an allocation failure), so that if a stale
-pointer is consumed, KVM hits a NULL pointer dereference instead of a
-use-after-free.  I.e. crash the host instead of providing a potential
-guest escape vector if KVM is buggy.
-
-Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-[sean: rework changelog, drop stable@]
+Fixes: 8f423a80d299 ("KVM: SVM: Support MMIO for an SEV-ES guest")
+Fixes: 8640ca588b03 ("KVM: SVM: Add AP_JUMP_TABLE support in prep for AP booting")
+Fixes: e1d71116b64a ("KVM: SVM: Add support for SEV-ES GHCB MSR protocol function 0x100")
+Fixes: 8d1a36e42be6 ("KVM: SEV: Add GHCB handling for termination requests")
+Reported-by: Stefan Teodorescu <fane@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/nested.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/svm/sev.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 9b0bfa2f854c..3509a84acde2 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -5463,9 +5463,11 @@ static int enter_vmx_operation(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 6427db390b1c..469a313fe7ab 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3654,14 +3654,14 @@ static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 min_len)
  
- out_shadow_vmcs:
- 	kfree(vmx->nested.cached_shadow_vmcs12);
-+	vmx->nested.cached_shadow_vmcs12 = NULL;
+ 	scratch_gpa_beg = svm->sev_es.sw_scratch;
+ 	if (!scratch_gpa_beg) {
+-		pr_err("vmgexit: scratch gpa not provided\n");
++		pr_err_ratelimited("vmgexit: scratch gpa not provided\n");
+ 		goto e_scratch;
+ 	}
  
- out_cached_shadow_vmcs12:
- 	kfree(vmx->nested.cached_vmcs12);
-+	vmx->nested.cached_vmcs12 = NULL;
+ 	scratch_gpa_end = scratch_gpa_beg + min_len;
+ 	if (scratch_gpa_end < scratch_gpa_beg) {
+-		pr_err("vmgexit: scratch length (%#llx) not valid for scratch address (%#llx)\n",
+-		       min_len, scratch_gpa_beg);
++		pr_err_ratelimited("vmgexit: scratch length (%#llx) not valid for scratch address (%#llx)\n",
++				   min_len, scratch_gpa_beg);
+ 		goto e_scratch;
+ 	}
  
- out_cached_vmcs12:
- 	free_loaded_vmcs(&vmx->nested.vmcs02);
+@@ -3680,8 +3680,8 @@ static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 min_len)
+ 		 */
+ 		if (scratch_gpa_beg < ghcb_scratch_beg ||
+ 		    scratch_gpa_end > ghcb_scratch_end) {
+-			pr_err("vmgexit: scratch area is outside of GHCB shared buffer area (%#llx - %#llx)\n",
+-			       scratch_gpa_beg, scratch_gpa_end);
++			pr_err_ratelimited("vmgexit: scratch area is outside of GHCB shared buffer area (%#llx - %#llx)\n",
++					   scratch_gpa_beg, scratch_gpa_end);
+ 			goto e_scratch;
+ 		}
+ 
+@@ -3701,8 +3701,8 @@ static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 min_len)
+ 		 * limit the size
+ 		 */
+ 		if (min_len > GHCB_SCRATCH_AREA_LIMIT) {
+-			pr_err("vmgexit: scratch area exceeds KVM limits (%#llx requested, %#llx limit)\n",
+-			       min_len, GHCB_SCRATCH_AREA_LIMIT);
++			pr_err_ratelimited("vmgexit: scratch area exceeds KVM limits (%#llx requested, %#llx limit)\n",
++					   min_len, GHCB_SCRATCH_AREA_LIMIT);
+ 			goto e_scratch;
+ 		}
+ 		scratch_va = kvzalloc(min_len, GFP_KERNEL_ACCOUNT);
+@@ -3711,7 +3711,7 @@ static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 min_len)
+ 
+ 		if (kvm_read_guest(svm->vcpu.kvm, scratch_gpa_beg, scratch_va, min_len)) {
+ 			/* Unable to copy scratch area from guest */
+-			pr_err("vmgexit: kvm_read_guest for scratch area failed\n");
++			pr_err_ratelimited("vmgexit: kvm_read_guest for scratch area failed\n");
+ 
+ 			kvfree(scratch_va);
+ 			return -EFAULT;
+@@ -4509,8 +4509,8 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+ 		reason_code = get_ghcb_msr_bits(svm,
+ 						GHCB_MSR_TERM_REASON_MASK,
+ 						GHCB_MSR_TERM_REASON_POS);
+-		pr_info("SEV-ES guest requested termination: %#llx:%#llx\n",
+-			reason_set, reason_code);
++		pr_info_ratelimited("SEV-ES guest requested termination: %#llx:%#llx\n",
++				    reason_set, reason_code);
+ 
+ 		goto out_terminate;
+ 	}
+@@ -4678,8 +4678,8 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 			svm_vmgexit_success(svm, sev->ap_jump_table);
+ 			break;
+ 		default:
+-			pr_err("svm: vmgexit: unsupported AP jump table request - exit_info_1=%#llx\n",
+-			       control->exit_info_1);
++			pr_err_ratelimited("svm: vmgexit: unsupported AP jump table request - exit_info_1=%#llx\n",
++					   control->exit_info_1);
+ 			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+ 		}
+ 		return 1;
+@@ -4688,8 +4688,8 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		svm_vmgexit_success(svm, GHCB_HV_FT_SUPPORTED);
+ 		return 1;
+ 	case SVM_VMGEXIT_TERM_REQUEST:
+-		pr_info("SEV-ES guest requested termination: reason %#llx info %#llx\n",
+-			control->exit_info_1, control->exit_info_2);
++		pr_info_ratelimited("SEV-ES guest requested termination: reason %#llx info %#llx\n",
++				    control->exit_info_1, control->exit_info_2);
+ 		vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
+ 		vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SEV_TERM;
+ 		vcpu->run->system_event.ndata = 1;
 
-base-commit: 164405e8e9a0378c7e1aff2254625a6553a291f1
+base-commit: 7e60162b16f9da0d2fa83da5c1723b6853a0ac1d
 -- 
 2.56.0.257.gf7497c7d27-goog
 
