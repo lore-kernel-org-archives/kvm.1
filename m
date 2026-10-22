@@ -1,77 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792705936;
-	b=Cyu3gNrjgiewYfvpfItGK9KcfeINEYK75R4CUY+m+izcaPVuqxShCOsu9H1ReeDWEFFg
-	 De6uo7JUFERGcHF8c013L57GlVO0tQICf8I0xN6DwcFkWKqdHPwCy2e15IOLapui4raWt
-	 Hl6956N9tAQ2/uPDnRX1zBRqr4sziLh37HtWZ9TzpLA+h/bfqW07DAPEax3lwpJENuyR4
-	 iiXPcIJMMIJ6Lll7yHbvrO7Qo7xre2CUWJ8Out/j+ojJXxzVWcnecnJ3soqolUh3PvoJR
-	 2WP4BRZl7qGegfSHXeLDMQ46n4ydAkNl6zI4TgjYHI9QSC/hSa8qkb06RMqL0AV9rDQ==
+	t=1792706143;
+	b=Svp/t68ZvNlcmasiONhaohi77JP7Wp0+YozLrgPCiz/J99/kh0oMyUOFOYgXtNh89LWe
+	 Eivv+/oAs7GC2bfHe9Ccf2KSXT6cxhUBb6C3ahaEMizHYtgDbMnQSCb3xnXopxvp3mY/f
+	 h1tCRA3uJ3dTfzRKPpDV8Ca+xm+3RRYgAHmpjsOoAI6PoB87a0+9j1zCF122XWP8uscfn
+	 v/bgra7pPgVISk1iDvo5IbdIlxyE4Xa17gmMLY7QdN8SmWaEgG/9lBVQkZb+i5ozCymTj
+	 YlZCYhZUa3Yi9DwCOXSZmknRDzZuDXDRUX3iJhHYVXTVam84T1yseXANg079JPdyqYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792705936;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=FA8yLTjvIlvk5v6wvcwdI9lasBto10X4JgXX+a4dJO0=;
-	b=a/cgyCw6Iz7pVNHLB9FL5D5jSPD1bVMZHxUIHhADq4T2zeAbRsc4F4G5QthFy880AVgU
-	 sG0185kClwRCISeLXtatNX0xRWDdlXuGSlgHbqyzV5Bca2Jtk+XWN2qt8WTWHw+89SZWf
-	 DghBQ6XyHPL11z0flqDOaI5pZzoS8crq4drdVwAlRcmAfO/Mw3k2udECYInf7QvRyBQae
-	 eEFO2FHcSYXFrCTzUvmTOw1mPj2wNIO1xC3hEe5h6Zy/8hr7RX0/McWaQDLPbeTbl7VqE
-	 0Rs6ZuFCWXSlEzmAWDMzk6nxsskj3tYN7MN57d15Gke05Ay2my5qcvuo81xT6buV8CQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792706143;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
+	 Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=tegwRz1xXzbYwgS4hypxT4VdLheASXK/igGbsP1RZ5A=;
+	b=wZCurkp9JClUKgEvm7KiYcw8msyWU5oY4wRCV83Xx3zhzACdHeIseEkUox4Nb/e6O+l6
+	 OBQaKVAI9cBjQskeNJeF+gBXg8koyfTNbv5OE94TvWnPDZfRjPIqe3DpEoEfPKIfJDZIA
+	 Gf6LbbI53t7RHN+wTjSxBi+J/uPVtfsNIdZ/9a8NHUqm3GYBwjaE3U1eaYbuWOugLOY5+
+	 y+jdWf8gjlm1Mje9vkaMg7YF8PJJz0oBuXrizj9f2eEqN9PXEJBtsUtDmDPnEXoPcyhyb
+	 8fWdrAszkZkvEnfertIaDdz+LiQ10nmlVc9cL9/1foaOdLwmnZyrZpJl5C9B16E+jpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cispa.de;
-	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=apW+X5om;
-	arc=none smtp.remote-ip=134.76.10.21
-Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=lR6z+Kp3;
+	arc=none smtp.remote-ip=209.85.215.198
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2DE606A319;
-	Thu, 22 Oct 2026 21:52:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C2DE606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5947E606A31B
+	for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 21:55:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5947E606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=apW+X5om
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=FA8yLTjvIlvk5v6wvcwdI9lasBto10X4JgXX+a4dJO0=; b=apW+X5omtFmVzmuL6Qc76xWpVI
-	uTwY1F/FoouNVs8iVMlwN9U4ksB/uR4BbmCXUmQawVDH+JF7Io5iXswbvadWdGFupbejhGcJCSEYs
-	dEpg8JSmNPVxMQZe0yKMyMIgS2LOovPuZoi6FHDEzfF//7EGR0bCZGMk9OdaSlBRMMAAdA7niOsMw
-	0xJS2oackP1/ESWFAPEYif3xwDsqlOxoZQZtJDjOUdGaxI9Apprf/oZFV91Y9jrv27oXBShtljaRQ
-	XTkKFHfVGvlz0DpO5pE+GazH9sP4VrIC997GlgK4O2sgR8Ac2aYAFe/6HJeQvdJIGjN/+Y75HJcnW
-	YQojtJ3w==;
-Received: from mailer.gwdg.de ([134.76.10.26]:42479)
-	by mailer.gwdg.de with esmtp (GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xK0hp-00EBqU-1E;
-	Thu, 22 Oct 2026 23:52:13 +0200
-Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
-	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-	(GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xK0hn-0001o4-0g;
-	Thu, 22 Oct 2026 23:52:11 +0200
-Received: from localhost (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
- (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Thu, 22 Oct
- 2026 23:52:10 +0200
-From: <amirmohammad.eftekhar@cispa.de>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amirmohammadeftekhar@gmail.com>, Amirmohammad Eftekhar
-	<amirmohammad.eftekhar@cispa.de>
-Subject: [PATCH v3 1/2] KVM: nVMX: Reject nested VM-entry in a non-active state blocked by STI/MOV-SS
-Date: Thu, 22 Oct 2026 23:51:45 +0200
-Message-ID: <20261022215146.233479-2-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <atqDVkHjdJ2iF9Uv@google.com>
-References: <atqDVkHjdJ2iF9Uv@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=lR6z+Kp3
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cd8b299b05fso240415a12.0
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 14:55:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792706143; x=1793310943; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tegwRz1xXzbYwgS4hypxT4VdLheASXK/igGbsP1RZ5A=;
+        b=lR6z+Kp3rzS2NaOU4iV1jSKT9ZgSXEq2HBMImvLfVYyvEjlPv3R4NVZG9gMYovvtu6
+         Fn4bTBXzpfcGi6g7rr3I8GA2yggVGelObRxVNDo/JLZvaodNlnUi8J3SusZF9XLZfdUC
+         Wgn+Xacpr0+0LgAcBYOaYDtRoqyjbNLjHpUm7zR+ldGByRNlr7EiGjJSXl422GCq1lZY
+         fkV+NUkP0ZqqJkqVXGrTKWq+aTiLwTLpn28Yo1NDiNLYNGAoCSUwmJ2dch6X5Tt3fe66
+         EdmYHwTEnQHYFUkFLWzxZAjmNv06g/V79UI8fe5bLoAduMFwXdRrwLe0waWv+J+UsbzP
+         WNig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792706143; x=1793310943;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tegwRz1xXzbYwgS4hypxT4VdLheASXK/igGbsP1RZ5A=;
+        b=W4AaV2uFZzZ+a68UU/0fgSXI5dtSbwoFUrlkWs/KfN/T/x3+Stan6Vj7zDdkynb7/c
+         3oHMHIGW1PMhPsPi64DzJJ2S+FzPFGLhcREIQvFFRAgjnP3/qYut+IJY8b6aMcKNndkn
+         k/lziwRu5MgeIgGWlBBgCNoyNOwELLELc29ihquw67g1BqI/Q5OaRdvf+QlaxfRAkFTp
+         A2zcdfVdd45M7/WcjboFhDC0j+ZfN/nLewypsZej3E6mc5k9LlAlMbt/RvbhN6qi0zI7
+         GmgsiHhHSw4tVOWkN0FnOi1555cX7XMXzz4WhFYeqhPbHlYvUOAViZpNTq/uBUBmTANz
+         759w==
+X-Gm-Message-State: AFq9FYLHK2CboSWWrLRwax5M4W4FtwtKhvZZy06+Z/yTIgyST4vYl6+O
+	szGcMyQGeadbhc7coEnMAQKrk5nOxdbFZey7Y6TwwsUmcnB3mZ3GekSVPXYbHVGPgTtsODbSm6P
+	FIj62fw==
+X-Received: from pjuv3.prod.google.com ([2002:a17:90a:d583:b0:3ac:6f46:2983])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5743:b0:3ac:b145:8f4
+ with SMTP id 98e67ed59e1d1-3adce811570mr139671a91.41.1792706142558; Thu, 22
+ Oct 2026 14:55:42 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 22 Oct 2026 14:55:39 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,45 +75,44 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MBX19-FMZ-04.um.gwdg.de (10.108.142.63) To
- mbx19-gwd-01.um.gwdg.de (10.108.142.50)
-X-Virus-Scanned: (clean) by clamav
-X-Spam-Level: -
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261022215541.631694-1-seanjc@google.com>
+Subject: [PATCH 0/2] KVM: x86: Convert all runtime WARNs to ONCE
+From: Sean Christopherson <seanjc@google.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+Convert all bare WARN() and WARN_ON() runtime usage, i.e. WARNs that aren't
+strictly scoped to module init/exit, or similar, to ONCE() variants for what
+should be fairly obvious reasons at this point.
 
-nested_check_guest_non_reg_state() only checks that guest_activity_state is
-one of ACTIVE/HLT/WAIT_SIPI; it does not enforce the SDM's requirement that
-the activity state indicate the active state when the interruptibility-state
-field blocks by STI or MOV SS.  KVM cannot rely on hardware to catch the
-miss: prepare_vmcs02() never writes GUEST_ACTIVITY_STATE, so vmcs02 always
-carries the active state and the physical VMLAUNCH cannot reject the illegal
-combination.  Add the cross-check.
+Sean Christopherson (2):
+  KVM: x86: Convert WARN_ON(preemptible()) to lockdep assertion
+  KVM: x86: Convert all runtime WARNs to ONCE variants
 
-Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
----
- arch/x86/kvm/vmx/nested.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/hyperv.c          |  2 +-
+ arch/x86/kvm/i8254.c           |  2 +-
+ arch/x86/kvm/irq.c             |  4 ++--
+ arch/x86/kvm/lapic.c           | 17 ++++++++++-------
+ arch/x86/kvm/mmu/tdp_mmu.c     |  2 +-
+ arch/x86/kvm/msrs.c            |  2 +-
+ arch/x86/kvm/svm/avic.c        |  2 +-
+ arch/x86/kvm/svm/nested.c      | 12 ++++++------
+ arch/x86/kvm/svm/sev.c         |  2 +-
+ arch/x86/kvm/svm/svm.c         | 12 ++++++------
+ arch/x86/kvm/vmx/nested.c      | 12 ++++++------
+ arch/x86/kvm/vmx/posted_intr.c |  2 +-
+ arch/x86/kvm/vmx/vmx.c         |  8 ++++----
+ arch/x86/kvm/x86.c             | 18 +++++++++---------
+ arch/x86/kvm/x86.h             |  2 +-
+ 15 files changed, 51 insertions(+), 48 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index b25216862740..6e2ec1912f12 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3311,6 +3311,11 @@ static int nested_check_guest_non_reg_state(struct vmcs12 *vmcs12)
- 	       vmcs12->guest_activity_state != GUEST_ACTIVITY_WAIT_SIPI))
- 		return -EINVAL;
- 
-+	if (CC(vmcs12->guest_activity_state != GUEST_ACTIVITY_ACTIVE &&
-+	       (vmcs12->guest_interruptibility_info &
-+		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS))))
-+		return -EINVAL;
-+
- 	return 0;
- }
- 
+
+base-commit: 814607cd40df80d5727957adaa857e0feca43497
 -- 
-2.34.1
+2.56.0.257.gf7497c7d27-goog
 
