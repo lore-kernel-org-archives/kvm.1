@@ -1,74 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792767976;
-	b=u3LhJX1GIxGln8FaLORcrbHG/VPeKrhu4JjX2YCWAW2yvHg4Jb9UfcukRvJgjCwuja9d
-	 xB7SIDSExsaGZeDT6sI1Z1HIJAfOoBhsXKkj8/MFPU09Svw+kZmcGHepX6w4pdcJd157K
-	 6x81judvtZSXrERX44J2Ad+nNTM4mzoSF1ZH2njv6hwfTgVmEzEc4+EYrV7pY/YCaLakZ
-	 R7HggdLId8tGWfUM/+ftZxsT6yrjJkAfMv87YTi6I1HUwKM5ewCMlU4xx3wLJNMvWGSbo
-	 +y+hofsJx/PXy6+VfYU7VAoIK8QIeW4o+yOXHi+dxO1WumzwcZWjHFoB6hiJQlVXDIg==
+	t=1792769327;
+	b=0+LV6aQnnLMfn7K5rk8LjL0Cm+8hcb9X0i+y5f2vgj0JJ0Dd3WFlgfN9B8tOtICZM4gw
+	 5CO5fVUh2zJI3cwuHTdmzuSDLQDUzzn8QANsbhwX0GnxQOjc9w3a2CBVKqXFNPq0o4AMU
+	 /oP2POLMB2yW8+jZQAbiBIX8jEmiGrhG2K75Ufem+Cf4Ed4lMS4lSO1u81gnOuhVMIlcW
+	 3yZD/B9LjN7Z5I3WWEECBxbVA9lSg20nP2I7ne/C+TauvwK40UFa+yWg49UdBP1chm2gj
+	 3RhlyyWGdyhMi9iHR4PxOmpto10RoMTZyPWchUeOEW+wV4JGUWczjWTMf64FJ9YTXcg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792767976;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=wz9tOFWt7BhQDze29fB23fRXoLeWs5QHCqP5Z4tBz+E=;
-	b=M6sxRQqZ9x9uB9tA+PYOMQGkHeh4ykPL54IJDd+53c+sfBd9hld0oNfxy28bT5828B+g
-	 Y99QFkCSlrgtOIUYsJobL9V7d9G+KqD+wqiWi+mf+vlVSd78hnbNhHce8ISmpzFWc9bar
-	 RXgBw6LKYv05V69wSU1URndqFGAuDyKfF0XImOk1D8FgefTcG8MpcDJ0tq6k7KPXRERod
-	 c41BhVPEvJyTM0g9G9wqqz++mi2vGbY3bRRFrIlnFCrHfUb/CLwnMw+emWexj8eFCsh0a
-	 TbPWxcTuCMnR9AE4nIpxFmHFH5ym+Riv9IXhZQYAAL/VKK9FwFc4hg7s8NJXStLprqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792769327;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=6o9HAqgOadPvz3dZ4Qp6eGkpw5FrOU+edcMSRgYKgB0=;
+	b=3r0d27n5/l/KRVn04ZtwH8+9olKI6NFB3b1LlfriifrH/36QndBT2EOSTfeOAN8rwCk8
+	 N9QgOkwGX9+gRcVCTZ4gIQ5tj0ur+wiP+mfWVI7KtZIVbgXYHGrBXwO3xS1f223j5le6D
+	 ecIkOf0Xc+XGuBmYHA3s3VhsSZGpmRFxwv94TEscWumG+9Rr5YGUOidN+uUdo0mpABAFk
+	 mC9pO7RBaIlLbCmCQ9SDgIf2dCIDT9sQPggKa+KF15duiDz5jOUl74pPREw//UKMaFnFZ
+	 klpM59mjZDcHa1QjafDwFdNZWVhPJq6ab2eTLXSrywFtxAJn3WvV+QjndyK5I21dCEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=rY9Eunz7;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=auQgonpq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9E1606A32C
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 15:06:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C9E1606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EDF606A31A;
+	Fri, 23 Oct 2026 15:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=rY9Eunz7
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89e6ddd4554so715510b3a.3
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 08:06:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792767975; x=1793372775; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wz9tOFWt7BhQDze29fB23fRXoLeWs5QHCqP5Z4tBz+E=;
-        b=rY9Eunz7aQZZgNv1E8e5qXPlPd8OfgnrSrMLIR5SR1JMMqv9sK0+qNbBJuaCPBDtCB
-         lfXuWThYUbxke1ygOXvSq7T/Wmv7WWwOtN9G/cSda1Ff443UGstMeMZnw85CUeUSElu5
-         16Kku1zpsf3kUSE1OFs08w/YEqypxtf6it/UHlR/pABBDD2rTXVv9HylxGjjb94IO0LS
-         vuLGe+TqPzSKxKWfKKHGyEBlpIkiwinhqWpQbyr2l72NoZdicmycRtTb46K/Wn1OaPQ/
-         D/mg47rapnmB7jRsc3/Bsu/i8F4PKgf/ZyNpb/b4HZ4xMSdLmbl+75lrHgxkTYJdQYcn
-         WWVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792767975; x=1793372775;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wz9tOFWt7BhQDze29fB23fRXoLeWs5QHCqP5Z4tBz+E=;
-        b=hGrqNvvECT4G6JdOKLLpCJBVPX06Lw5s5zoQffBrE42I/pKzUTqvJE24NmjogPqAqz
-         pO66GZD4x88helihxJ4RwQ2alEZb4w8MoG1qqQdj1jxApUislS88StONMy3eVKFr2IyO
-         Jzq+WqpKPIQVlGz0PqiCTqr7BoVHlzTyD1amFFSX436w8N8aTkhqlgh3avune4ipCCBL
-         SlIIUOCgsfJT3VfAypmzLR4e5AGjzLeLCUDpWzgcWEWRgwqUsYhxjNfUNvWOtxrIs93K
-         cPlHROgFqtyAz6sm9Cjgv58i1haZ/5KGTdCf6dCFAKUKKldiRW2LUUTEHQ1iXW2U2GQI
-         mWzg==
-X-Forwarded-Encrypted: i=1; AKwUvByyfYy7YxlJrHs7TEPihOhAhwuJa2jFCqrLZS0Uhmlz+JP4CcbKSKl1WlL40TXByFvhGas=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLHBYcpWzJmOTGyBVbnQQNUCLbWJBkYkSeo+IU8xIcnoxF113mE
-	bsWVCPiZDmt5PQlLey37qulDj6Zg67HrTI3qffLLm0B0nu1oWQdz4QYCXvQESf4ZRc49UDu25xA
-	LsUbFZg==
-X-Received: from pfww6-n2.prod.google.com ([2002:a05:6a00:8886:20b0:890:ac21:250c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e2a:b0:89f:e1e7:e7e8
- with SMTP id d2e1a72fcca58-8a2c5e33c76mr2368910b3a.18.1792767975274; Fri, 23
- Oct 2026 08:06:15 -0700 (PDT)
-Date: Fri, 23 Oct 2026 08:06:14 -0700
-In-Reply-To: <20261023140506.336663-1-borntraeger@linux.ibm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=auQgonpq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6AF1F01825;
+	Fri, 23 Oct 2026 15:28:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792769327;
+	bh=6o9HAqgOadPvz3dZ4Qp6eGkpw5FrOU+edcMSRgYKgB0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=auQgonpqQDl9Z8udPze90FdbsunEl16YaGHPQJYG/CvZXomZUoVtSLk2zzgglC23O
+	 iaPBmqewIVN5G+RX8bvFpapm2zjSGlhjNrhT1OSPjol6vuDVKz4PYrc8wsrSxu7PrH
+	 XO2+hLOo2a1a5DQwP+JGoNIjiizQ0hURb2FR0RyB/ptOA/tPgjd8NL5J8xXW3GwlrG
+	 6pznEyMdnYI4+M7wEQhmDzaiOEZ8ogX7GQtF+gQeJWEiW8v6dPJlCczLgy9JiNxOXx
+	 VU9H7sdXhFZ+SAaSX4PfaIQ0bn970AX2WU9tjK9MKYnBew75GKmWTR5Q58aLfyR56M
+	 3PgTV3iWASKUQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+In-Reply-To: <20261023142038.GE3977851@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <yq5a7bjajaco.fsf@kernel.org> <atooh7uO2RauUTfY@FV6GYCPJ69>
+ <yq5av76sj10a.fsf@kernel.org> <20261023142038.GE3977851@ziepe.ca>
+Date: Fri, 23 Oct 2026 20:58:35 +0530
+Message-ID: <yq5ase1wiggs.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,32 +70,98 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com> <20261023140506.336663-1-borntraeger@linux.ibm.com>
-Message-ID: <att35ilyLvAA8gM4@google.com>
-Subject: Re: [PATCH v3 2/2] KVM: selftests: Test that KVM_RUN fails for
- unresolvable host faults
-From: Sean Christopherson <seanjc@google.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: frankja@linux.ibm.com, imbrenda@linux.ibm.com, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri, Oct 23, 2026, Christian Borntraeger wrote:
-> Add a test in which the guest writes to a shmem-backed memslot beyond
-> the end of the file.  KVM_RUN must fail with -EFAULT.
-> 
-> On x86 the guest enables interrupts, and on s390 the test sets up
-> pfault, so that KVM could handle the fault with an asynchronous page
-> fault.  If KVM mistakes the error for a fault that needs I/O, the vCPU
-> retries the access forever, and the test fails after a timeout.
-> 
-> The test is not built for LoongArch, which handles a failed mapping as
-> an MMIO access.
-> 
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> ---
-> I went with Seans name proposal
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Aww, bummer.  If you posted a faulty_mcfault_face_test, I would absolutely apply
-that and force Paolo to tell me no :-)
+> On Fri, Oct 23, 2026 at 01:34:53PM +0530, Aneesh Kumar K.V wrote:
+>
+>> CCA currently takes the device identity index during pdev_create. I am
+>> investigating how to retrieve the certificate chains for all slots. For
+>> now, I have implemented the sequence below.
+>
+> Yeah, I think the consensus at LPC was this may be a gap in CCA.
+>
+
+I checked with Alexey, and if I understand him correctly, TIO also needs
+to establish eight separate connections to retrieve the certificate
+chains.
+
+>
+> For now I can imainge CCA just doesn't let you query the certificates,
+> and we'd need an ECN to correct it someday once all the kernel parts
+> are settled.
+>
+> I broadly hope we can use the software SPDM implementation to really
+> flesh out the uapi and make sure that everyone is happy with it. Then
+> we get what subset we get from the first generation of products.
+>
+> Something like if userspace can't get the slot information early it
+> just hardwires slot 0 and goes forward.
+>
+
+
+For now, I am trying Jiri's suggestion: use Rust SPDM to fetch the
+certificate chain and return it via evidence-get. evidence-accept then
+does pdev-create with the specified slot number and compares the
+evidence data returned by the RMM with the value cached by Rust SPDM. If
+they match, it uses the cached value for set_pub_key. This seems to be
+working. (FVP only supports slot 0, hence only one blob-instance)
+
+# echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/connect
+[ 2325.581999] PCI/TSM 0000:02:00.0: connect via tsm0, SPDM discovery enabled=1
+[ 2325.582080] PCI/TSM 0000:02:00.0: starting preliminary Rust SPDM discovery over DOE
+[ 2325.594379] PCI/TSM 0000:02:00.0: Rust SPDM version=0x12 supported slots=0xff populated slots=0x1
+[ 2325.594459] PCI/TSM 0000:02:00.0: fetching certificate chain for slot 0 via Rust SPDM
+[ 2325.623625] PCI/TSM 0000:02:00.0: cached certificate chain for slot 0, 1668 bytes
+[ 2325.623699] PCI/TSM 0000:02:00.0: preliminary Rust SPDM discovery complete
+# cd ../tools/ctlv/
+# sh -x cert.sh
++ ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 device-get
+# device-get, 1 fragment, generation 0
+  device.generation 0
+  device.caps
+    cap.evidence
+      cap.min-challenge-length 0
+      cap.max-challenge-length 0
+      cap.max-total-output-length 369098752
+      cap.evidence-flags evidence-accept,object-selection
+      cap.object
+        cap.blob-class cert-chain
+        cap.blob-instance 0
+        cap.format spdm-cert-chain
+        cap.representation raw
+        cap.representation tcb-digest
+        cap.hash-algo 4
+        cap.hash-algo 5
+        cap.hash-algo 6
+        cap.max-length 16777216
+  device.info
+    pci.name 0000:02:00.0
++ ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
+# state-get, 1 fragment, generation 0
+  pci.generation 0
+  pci.connected 1
+  pci.locked 0
+  pci.accepted 0
+  pci.tsm-id 0
+  pci.dsm 0000:02:00.0
++ ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 evidence-get --json '{ "evidence.challenge": "hex:", "evidence.object": [{ "evidence.blob-class": "cert-chain", "evidence.format": "spdm-cert-chain", "evidence.blob-instance": 0, "evidence.representation": "raw", "evidence.data": { "file": "/tmp/cert0.bin", "data-buf-size": 16777216 } }] }'
+# evidence-get, 1 fragment, generation 0
+  device.generation 0
+  evidence.generation 1
+  evidence.object-length 1668
++ ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 evidence-accept --json '{ "device.generation": 0, "evidence.generation": 1, "evidence.accept-object": { "evidence.blob-class": "cert-chain", "evidence.format": "spdm-cert-chain", "evidence.blob-instance": 0 } }'
+# acknowledged
++ ./ctlvctl/ctlvctl --spec-dir=./specs/ exec ctlv0 state-get
+# state-get, 1 fragment, generation 0
+  pci.generation 0
+  pci.connected 1
+  pci.locked 0
+  pci.accepted 1
+  pci.tsm-id 0
+  pci.dsm 0000:02:00.0
+#
+
+-aneesh
