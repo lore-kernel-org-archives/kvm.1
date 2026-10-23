@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792798328;
-	b=3IFgSUp7Iy3rOC8ew5q/EkvrsQ0u37Bt47hhUxOdnQ7l+fGoqSWCAlqsyp3e0V0gijMT
-	 dnm3cvDbaP58lcxU97TZzH+GF5jHx0m9a9f0BvpqjFoJnb+XQh3s9iF3aTJXluL3bHWrr
-	 XI54CGx/fEdWe9+UlAVCdeQd/ltrubuRJK6EpMS7Y3tNQqdTvVkcFasKNlu2D6ejotp7i
-	 ZnLkOdWNcr1a8COzzznvtAEnrn7bbYXPduUyzXvLXlgCIUxx2P3j0fP8USCP1iFHmYmNA
-	 EdefmiZX/Z/5cYTmRDmv9Klk5nNCCHGzB9nrjRvbPplFvBL+85hSsrDZowq6kbhEZuQ==
+	t=1792798332;
+	b=ThZMahzQ3vwrHSYQ9J0M+8u7B0hHN0jLmU7HHRjpJ4E3d5h7WhiFmwNWAKRlo0exQyxc
+	 8spwSkNw4uyw8m7LkqeHHm9Q9E8XOrz5vd1Xk7zB8aYBG+wSDNaqqL/HnXdmjtK4QAJ1i
+	 BRr9E2depYs1cgznocjYoWgF0hBOHYilya+vzIgOvAeM9l77mR7mWGFbA212BnYs4t9Jn
+	 KufIt12qrKPxPG+pDBrrpHI5N6rNI+JSoT1beMp5ulnKAGhC5hMStlidWSnXlSVkHivgd
+	 u/qkReayGTPaJLzyRSOcF2c/mQ+Rrt/VgESQ7Tbl9zF2wk+X0VUt52Qt4e1DZ2lnLkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792798328;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792798332;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=ruHanbLvoE1VJkWUikficvKLFnq3SIPwAWmLJ71jezY=;
-	b=avpRN8A4VO/XH0hvUdi1i20nrjxCF3IVvemWT2ZuezWIexXssMqvW4nCYQEbUR9Z83bf
-	 JmshuvMwsumh9no0xrjPHpFgEUil27wAYrbBLsY6OHitfu/KqRnq9u4z+FXaUiZBCh7jY
-	 T/8DrTg3iAMEMy2I83q1+Mown0eFn6aYGPF4hXAUEjfZOEUz8zgFjEMIMRYbSyPI/SFJZ
-	 hXZuRutsHUdb4CPFfCY9PJdFFF5MUdXxAnj3lvfWtFpT46HsyvuvBE/I32DgHbwvHdY99
-	 xxAuq2Stp7bRKIaHf4zvsldga49mXTwTLE2Gac0js9wTWLh5HgCIa9y1t1fuCCFuoPw==
+	bh=3UZrbC4N8JNfc6PZwSmyhvVctg9xGDP5yMSRIj5yhQw=;
+	b=T/qWMdIlqNx7DTd4oVjqbiSfxHD1FirmoH6Yg9rmebxMFC0/hUYrIUDTapsAIhGv2Y8T
+	 WE/QkDejF227c+toLqTJJDHt3EI/T9dtOzF4tuVH41Tbu2wM5m1H4DKRFIOHAqpf8kuvf
+	 ic0SDB7mvpefQIcvtBC1ACadTJWgqP9lwp9EdL8WgZpmtARLGv5mEEnTOz+xT/HwNlodj
+	 4Ob1enpj+O29T6OhLG1Coqm+aKoOh2s5yH0gWufm6Q5xTaqdKHP9lpxD1zOGeOC0lKtO7
+	 zl8AjilmxdRpIqDLrjq65Gk+cNkv44M0dok9aYRe3js/COb+hyp4+LXDOhy6Ux2mKkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFcJmQnD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fPyqDrZj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F619606A31B
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EAA606A31A
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFcJmQnD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF7A1F01825;
-	Fri, 23 Oct 2026 23:32:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fPyqDrZj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD2E1F01829;
+	Fri, 23 Oct 2026 23:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792798328;
-	bh=ruHanbLvoE1VJkWUikficvKLFnq3SIPwAWmLJ71jezY=;
+	s=k20260515; t=1792798332;
+	bh=3UZrbC4N8JNfc6PZwSmyhvVctg9xGDP5yMSRIj5yhQw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CFcJmQnDL3astvp/bhPoGy4f9Ecsu73Rkzy5dDEawW6HcUyX5noK0Kyq0OKv0DYno
-	 zFIAHqgogExV+AzopY+PkBwONlYBt7YRWSr6Gg2+cSFFN7oEvhcUGg8GAoL2wgQKu/
-	 IzbGaxqKjqAPzkeoseGw0IvFZvIUI1bqbjt8YWMDwbfm/TyJg3f4jHqyckGvhOLOir
-	 Neu+CGOBFUttA3LzRl3pIJT7plAEj3H/vaEV1zNbFCK+xEWx7IrrHYkJQ1bx1GW6WT
-	 h+EFHWOIprhK28mGZo+lprE0EQzvpcil451fMsluTBeK14uvXwFl5uMjYSocArpLco
-	 fDXolBT2NQLyA==
-Message-ID: <sashiko-outbox-183381@kernel.org>
+	b=fPyqDrZjw5JLD8l37DKGX8bIAPsBQ9025pPwxcHXKxilcY2qc0rlwb+T1uo7AWF6x
+	 n+sM/o3O5fgsuK7PBaVSl2I4QtJz4kTyg/J5Kqcr43GSdmDgPCEvyCjoVombOMveqe
+	 OGFZJexZBH5jswG+0fMPooq+/dfulmNeg9a7psVpF0zezm8fFWuh3JTTNscgOUki4r
+	 Brdfu1rXpDW99cmpH4PnxAPvPE2KglA9pT+eCELv0cl332A/hU8PwLaulhyaV6/MXp
+	 KbSXBULwn/cg9zXqKtMYU2p0GelPZp8ZnJR+C7Ql9eOCuJYZyXt9Tth1hI+0Vvkkz4
+	 bByiUrMyiWMdg==
+Message-ID: <sashiko-outbox-183394@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 17/50] KVM: selftests: Test guest execution with
- tmpfs-backed guest_memfd
+Subject: Re: [PATCH RFC v2 30/50] KVM: selftests: Add basic test for sample
+ memory provider
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org>, "Alexander
  Graf" <graf@amazon.de>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Alexey
@@ -79,12 +79,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261022-gmem-alternative-providers-v2-17-5dd1dc6c660a@google.com>
+In-Reply-To: <20261022-gmem-alternative-providers-v2-30-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261022-gmem-alternative-providers-v2-17-5dd1dc6c660a@google.com>
+ <20261022-gmem-alternative-providers-v2-30-5dd1dc6c660a@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 23:32:05 +0000
+Date: Fri, 23 Oct 2026 23:32:08 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,117 +94,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] KVM: selftests: undersized tmpfs pool in test_guest_memfd_guest_=
-resource()
-- [Low] KVM: selftests: dead pool_fd check and duplication in test_guest_me=
-mfd_guest_resource()
+- [Medium] KVM: selftests: open_provider_dev() reimplements __open_path_or_=
+exit()
 --
 
-commit a03f3023933c2e4a7447fa35e4f2470380c225bd
+commit adc070cca1ed801047bd293a0094a045579d124f
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: selftests: Test guest execution with tmpfs-backed guest_memfd
+KVM: selftests: Add basic test for sample memory provider
 
-This patch adds a selftest in guest_memfd_test.c to verify that a guest
-vCPU can execute instructions and read/write memory backed by a
-tmpfs-backed guest_memfd resource pool.
+This commit adds a selftest for /dev/mem_provider_sample to verify basic fi=
+le
+creation across multiple sizes, stats reporting via MPS_GET_STATS, and page
+presence toggling via MPS_SET_PRESENT.
 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
-ng/selftests/kvm/guest_memfd_test.c
-> index 20de24ad535f1..8e9261db23354 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -799,6 +799,61 @@ static void test_guest_memfd_guest(void)
->  	kvm_vm_free(vm);
->  }
-> =20
-> +static void test_guest_memfd_guest_resource(void)
+> diff --git a/tools/testing/selftests/kvm/mem_provider_sample_test.c b/too=
+ls/testing/selftests/kvm/mem_provider_sample_test.c
+> new file mode 100644
+> index 0000000000000..932ea3f30f494
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+> @@ -0,0 +1,147 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Tests for the sample memory provider (/dev/mem_provider_sample).
+> + */
+> +#include <fcntl.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/stat.h>
+> +#include <unistd.h>
+> +
+> +#include "test_util.h"
+> +#include "../../../../samples/kvm/mem_provider_sample.h"
+> +
+> +#define DEV_PATH "/dev/mem_provider_sample"
+> +
+> +static int open_provider_dev(void)
 > +{
-> +	const gpa_t gpa =3D SZ_4G;
-> +	const int slot =3D 1;
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	int pool_fd, fd, i;
-> +	size_t size;
-> +	u8 *mem;
+> +	int fd =3D open(DEV_PATH, O_RDWR);
 > +
-> +	if (!kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS))
-> +		return;
-> +
-> +	pool_fd =3D create_tmpfs_pool_fd("never", true, page_size);
-> +	if (pool_fd < 0)
-> +		TEST_REQUIRE(false);
-
-[Severity: Low]
-In test_guest_memfd_guest_resource() in
-tools/testing/selftests/kvm/guest_memfd_test.c, can pool_fd < 0 ever be
-true here?
-
-Looking at create_tmpfs_pool_fd(), every failure path already asserts via
-TEST_ASSERT() before returning dir_fd:
-
-	dir_fd =3D open(mount_dir, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-	TEST_ASSERT(dir_fd >=3D 0, "open tmpfs mount directory failed");
-	...
-	return dir_fd;
-
-Also, since test_guest_memfd_guest_resource() duplicates the VM setup,
-memslot configuration, guest execution, and memory verification of
-test_guest_memfd_guest(), could test_guest_memfd_guest() be parameterized
-(and use vm_create_guest_memfd_resource()) instead of duplicating the test
-function?
-
-> +
-> +	vm =3D __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1, gues=
-t_code);
-> +
-> +	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) & GUEST_MEMFD_F=
-LAG_MMAP,
-> +		    "Default VM type should support MMAP, supported flags =3D 0x%x",
-> +		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
-> +	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) & GUEST_MEMFD_F=
-LAG_INIT_SHARED,
-> +		    "Default VM type should support INIT_SHARED, supported flags =3D 0=
-x%x",
-> +		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
-> +
-> +	size =3D max_t(size_t, vm->page_size, page_size);
-> +	fd =3D __vm_create_guest_memfd_resource(vm, size,
-> +					      GUEST_MEMFD_FLAG_MMAP |
-> +					      GUEST_MEMFD_FLAG_INIT_SHARED |
-> +					      GUEST_MEMFD_FLAG_USE_RESOURCE,
-> +					      pool_fd);
-> +	TEST_ASSERT(fd >=3D 0, "guest_memfd with tmpfs pool should succeed");
-> +
-> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NU=
-LL, fd, 0);
-> +
-> +	mem =3D kvm_mmap(size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
-> +	memset(mem, 0xaa, size);
+> +	if (fd < 0) {
+> +		TEST_REQUIRE(errno !=3D ENOENT && errno !=3D ENODEV);
+> +		TEST_FAIL("Failed to open %s: %d (%s)", DEV_PATH, errno,
+> +			  strerror(errno));
+> +	}
+> +	return fd;
+> +}
 
 [Severity: Medium]
-In test_guest_memfd_guest_resource() in
-tools/testing/selftests/kvm/guest_memfd_test.c, what happens when
-vm->page_size is larger than the host page_size?
+Could open_provider_dev() use __open_path_or_exit() from
+tools/testing/selftests/kvm/lib/kvm_util.c instead of hand-rolling the
+open() error handling?
 
-pool_fd is created earlier via create_tmpfs_pool_fd("never", true,
-page_size), which limits the backing tmpfs mount capacity to a single host
-page. When vm->page_size > page_size, size is computed as
-max_t(size_t, vm->page_size, page_size) and exceeds the pool capacity.
+tools/testing/selftests/kvm/lib/kvm_util.c:__open_path_or_exit() {
+	fd =3D open(path, flags);
+	if (fd < 0)
+		goto error;
 
-When memset(mem, 0xaa, size) faults in pages beyond the first host page,
-shmem_gmem_alloc_folio() will fail with -ENOSPC and
-kvm_gmem_fault_user_mapping() will raise SIGBUS.
+	return fd;
 
-Should pool_fd be created after size is computed, passing size instead of
-page_size to create_tmpfs_pool_fd()?
+error:
+	if (errno =3D=3D EACCES || errno =3D=3D ENOENT)
+		ksft_exit_skip("- Cannot open '%s': %s.  %s\n",
+			       path, strerror(errno),
+			       errno =3D=3D EACCES ? "Root required?" : enoent_help);
+	TEST_FAIL("Failed to open '%s'", path);
+}
+
+Because samples/kvm/mem_provider_sample.c registers /dev/mem_provider_sample
+via misc_register() with default 0600 permissions, running the test as an
+unprivileged user causes open() in main()->open_provider_dev() to fail with
+EACCES. That bypasses TEST_REQUIRE(errno !=3D ENOENT && errno !=3D ENODEV) =
+and
+calls TEST_FAIL() -> test_assert() in
+tools/testing/selftests/kvm/lib/assert.c:
+
+tools/testing/selftests/kvm/lib/assert.c:test_assert() {
+	if (!(exp)) {
+		va_start(ap, fmt);
+
+		fprintf(stderr, "\n=3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D\n"
+			"  %s:%u: %s\n"
+			"  pid=3D%d tid=3D%d errno=3D%d - %s\n",
+			file, line, exp_str, getpid(), kvm_gettid(),
+			errno, strerror(errno));
+		test_dump_stack();
+		...
+		if (errno =3D=3D EACCES) {
+			print_skip("Access denied - Exiting");
+			exit(KSFT_SKIP);
+		}
+		exit(254);
+	}
+}
+
+In test_assert(), fprintf() and test_dump_stack() run before the
+errno =3D=3D EACCES check, printing an assertion failure stack trace and
+clobbering errno so the test exits with 254 instead of skipping cleanly. In
+addition, when the sample module is not loaded,
+TEST_REQUIRE(errno !=3D ENOENT && errno !=3D ENODEV) only prints the raw
+expression without the missing device path or Kconfig hint.
 
 [ ... ]
 
->
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-gmem-alter=
-native-providers-v2-0-5dd1dc6c660a@google.com?part=3D17
+native-providers-v2-0-5dd1dc6c660a@google.com?part=3D30
