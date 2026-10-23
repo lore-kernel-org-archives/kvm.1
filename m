@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792798337;
-	b=UWLNLrq+ziZLISk9DdiG9hZKskyHPrWT+m17zXuNr3TYZBzM9ZIdaGLdGDo+1pysdboy
-	 CmxhiqXjI/itLEoQPb93NTlJ6PmzY1TDdOINZHDQ/shWxkX0j8ZIG7h1tmUH1iwVoxQhi
-	 z+He3mQawXBXc3Yye2XDzXVL/EmNJg3eluZX2Zglli4ZxDRIUDFa02h4LPF5k6Wb3vQvo
-	 Hekrx3BMVWrmqyorZU++UXgSX6+YVBGozeqW0D9h1+e2zZUHZFE/18vUWac3Cb+pUOw/B
-	 ncvaYXAuyLXZUeCTvPYZEY56FvgjbtdX8Q/1SLTzCoYIBM0pBV7SOvr5BSiuJkEmAsQ==
+	t=1792798340;
+	b=lJ/RvNDKPWsnDIh79Ijh8DxZ5Z8DSSg0+768hXfduuAxrf/SbC+gWaBKDe1loNdXrPyG
+	 JV1ZLqTJ77LQvOPg0G9QS8uh7hfZVZQoyan7pv8F6lvvhFNktwyipp75aox1LHU5R3LLE
+	 Bj6Rrbuq1GjrcCitvrio2XbpY4R7ASv7QUEVkkH4vymeHSIbEmMczQWsopKBZVR7CR4Rb
+	 oAuxj4jRQSc58ru6iDS76iHC13InCCAoaqAqhzDyoBE91HUXwL6qyYYTRm+eSTwJe6gSO
+	 oo3Gx7rAYpBzoPlTKTyn4nLbf+pVJGPZA1had51j5Q1qAW1f3Z4ADaJ4EmgrZEgIQLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792798337;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792798340;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=+uRpCta2+s96dD69f8bWRQjYDk7aUtR7RRhgbFZAQD8=;
-	b=Ac7jbVG+BBFi7gU4PNHkdEiUGN5Tcy13wRDIrGAMmeP+0KrcUdXFcQMPokkSphllYDtx
-	 vLH/dh8DnXRvEJR/jk5QLQSIiESu8OM02Sr8bjs/9sI8hJgjEhlEevSzDOn4WTLNQrEWW
-	 NjAM7i7+GrLN/l0vbh821A0SSGTvLodT861u93O8H+2HkAI0Psxx+OheceXkPfkpXkwZ3
-	 al1ZEefZWQHfwO+zdddu7kJ2ieuDuiJiS7/F9HbTnf6fqv8K6Y0qXaU3C1QgyO6HU0LOL
-	 yIhxBWICqfWsimEhFwAgt6FDi7McLXpw0Thh3YCXab/0bHcIvsPZmxUSMF0ovFj/Ogg==
+	bh=cUpsYXA4p+AgcY2utW3SVs0gcNM9y9RphrhZOvqDytA=;
+	b=YcSeID5+HRkUpWauxbrF1qGR3WRWmuiSB8PfyCbOJSXrjb9VOIKEs3AcMN6d7X/NZJ3e
+	 jU6dqR6dg9j9FsqHxCOqsU6ipuZkgcVmrqXvLGdswbDPP7Carb4Zpca1t4ns7n/jXLXAY
+	 rx8cdmWxnBad1Y+dJTxBZR4Cfy8DVNUSBTq+zeH1vCcgYJCh5chYhUp1uVYLsPiHTnj2/
+	 //Citp/hjRS4vKInWM4Gf/RMV6c9gc16THxjFC/g0jjdJOu+kkQyczUsEjCMulljdsJYd
+	 q+ZBnUq+Onrs1Ixk7TUn0Yn8+8QzTAaNDkjh5D0GMXPVJwNH6VDqINGLuArsvsBPo5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j9V6hJZx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="UKdfT/OZ";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E34606A31D
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6365D606A31D
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j9V6hJZx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7027B1F031E0;
-	Fri, 23 Oct 2026 23:32:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UKdfT/OZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC0E1F01825;
+	Fri, 23 Oct 2026 23:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792798335;
-	bh=+uRpCta2+s96dD69f8bWRQjYDk7aUtR7RRhgbFZAQD8=;
+	s=k20260515; t=1792798340;
+	bh=cUpsYXA4p+AgcY2utW3SVs0gcNM9y9RphrhZOvqDytA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j9V6hJZxS239yXCckA/anEyzWHe1D+TUClFYUZ5SRLNgcY0APoWFx0NaVJRifd9m7
-	 HVILKLOc/vtTX3wSiwrebwEbypEAD6D7x029EIJY3Gzl7p0z83ic0uCX3OwOTI+2Un
-	 PdF9NXsU1VSzhLWvhbhpoUxZ2Il/IXtZiiztsm1Oafy0ufO/nUgxD68taCTVMsLiaO
-	 xbWd4Vy9Wy61u5FKoW8QphbbYWIXZpW3BO9RFi/omR5PxPT+/zLS2nzNVsKTHNqqW9
-	 wHcJBpQx+GULCGD3mV2dd3zAZP7mVFvmndKhyiH1HiGHoSUiCHkOUhv62mDJ+vCgMZ
-	 RyeM0UfQNNnxA==
-Message-ID: <sashiko-outbox-183409@kernel.org>
+	b=UKdfT/OZXVsr5JNMxUJ4xUGR5FMzBjw2rLouHhtfv7TsAdWvn4MfBIXPwZiFuJpZm
+	 LlpP3saAINecEFdJUKm1nQnQH/7RBoHPEkAQqUJVuODcZofE467/Uwi5TUgTcKeCUr
+	 +uSzdFDPmmpXGm1K2DPcEcWXE3V6lFeWIJK5QaKXny2yBHmuTCRxqzYF+WaSE55+r2
+	 svOHmVOGFENXAq3upyZATpdYrmNhys5CiEZRsVO4cVvCuvAS3521CF5lP9l2G0+UZ0
+	 tTKj8lVqNE3iW21v3+zFjJQlRreIMS3FfAo4AnSws3PzY83j+8YzQfduZ9mogig340
+	 ING54nvBLYZHQ==
+Message-ID: <sashiko-outbox-183414@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 45/50] samples/kvm: Implement attach and release
- provider ops in sample provider
+Subject: Re: [PATCH RFC v2 50/50] KVM: selftests: Test guest_memfd
+ conversions with sample memory provider backing
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org>, "Alexander
  Graf" <graf@amazon.de>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Alexey
@@ -79,12 +79,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com>
+In-Reply-To: <20261022-gmem-alternative-providers-v2-50-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com>
+ <20261022-gmem-alternative-providers-v2-50-5dd1dc6c660a@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 23:32:12 +0000
+Date: Fri, 23 Oct 2026 23:32:16 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,90 +96,53 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] samples/kvm: build failure when CONFIG_KVM_GUEST_MEMFD is disabled
+- [Low] KVM: selftests: wrong relative path to mem_provider_sample.h
 --
 
-commit da89517936ff62d4ed67bf323c9cade71c875336
+commit b071597d5a3f5abd9db2726fb150510172e23946
 Author: Ackerley Tng <ackerleytng@google.com>
 
-samples/kvm: Implement attach and release provider ops in sample provider
+KVM: selftests: Test guest_memfd conversions with sample memory provider ba=
+cking
 
-This commit implements the .attach and .release guest_memfd provider
-operations in the sample memory provider module and wires them up to
-mps_file_fops.gmem_provider_ops.
+This patch adds a fixture variant to guest_memfd_conversions_test.c to test
+guest_memfd conversions backed by the sample memory provider module, skippi=
+ng
+the variant if /dev/mem_provider_sample is unavailable and asserting that
+page pinning fails on pfn-backed memory.
 
-> diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider=
-_sample.c
-> index 397ebb3773f39..d9e57484c3933 100644
-> --- a/samples/kvm/mem_provider_sample.c
-> +++ b/samples/kvm/mem_provider_sample.c
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
+.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> index 023df9cb9d4a6..b99e4cdbab8e6 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> @@ -16,11 +16,13 @@
+>  #include "kselftest_harness.h"
+>  #include "test_util.h"
+>  #include "ucall_common.h"
+> +#include "../../../../samples/kvm/mem_provider_sample.h"
+
+[Severity: Low]
+Since tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c is five
+directory levels below the kernel tree root, four ../ traversals resolve
+relative to the source file as tools/samples/kvm/mem_provider_sample.h, and
+relative to the tools/include search path as two levels above the kernel tr=
+ee
+root, before happening to match via the four-level-deep
+tools/arch/<arch>/include search path.
+
+Should this use five ../ traversals to match other five-level-deep files su=
+ch
+as tools/testing/selftests/kvm/lib/kvm_util.c:
+
+#include "../../../../../samples/kvm/mem_provider_sample.h"
+
+> =20
+>  FIXTURE(gmem_conversions) {
+>  	struct kvm_vcpu *vcpu;
 
 [ ... ]
 
-> @@ -118,11 +119,30 @@ static long mps_file_ioctl(struct file *file, unsig=
-ned int cmd,
->  	}
->  }
-> =20
-> +static void *mps_gmem_attach(struct inode *gmem_inode,
-> +			     struct file *resource_file)
-> +{
-> +	return get_file(resource_file);
-> +}
-> +
-> +static void mps_gmem_release(void *provider)
-> +{
-> +	struct file *resource_file =3D provider;
-> +
-> +	fput(resource_file);
-> +}
-> +
-> +static const struct guest_memfd_provider_operations mps_gmem_provider_op=
-s =3D {
-> +	.attach		=3D mps_gmem_attach,
-> +	.release	=3D mps_gmem_release,
-> +};
-> +
->  static const struct file_operations mps_file_fops =3D {
->  	.owner		=3D THIS_MODULE,
->  	.release	=3D mps_file_release,
->  	.unlocked_ioctl	=3D mps_file_ioctl,
->  	.compat_ioctl	=3D compat_ptr_ioctl,
-> +	.gmem_provider_ops =3D &mps_gmem_provider_ops,
->  };
-
-[Severity: Low]
-Does initializing .gmem_provider_ops in mps_file_fops in
-samples/kvm/mem_provider_sample.c cause a build regression when
-CONFIG_SAMPLE_KVM_MEM_PROVIDER=3Dm is enabled while CONFIG_KVM_GUEST_MEMFD =
-is
-disabled?
-
-In include/linux/fs.h, gmem_provider_ops in struct file_operations is guard=
-ed
-by CONFIG_KVM_GUEST_MEMFD:
-
-    #ifdef CONFIG_KVM_GUEST_MEMFD
-        const struct guest_memfd_provider_operations *gmem_provider_ops;
-    #endif
-
-However, at this point in the series, SAMPLE_KVM_MEM_PROVIDER in
-samples/Kconfig only depends on CONTIG_ALLOC && X86_64 && m:
-
-    config SAMPLE_KVM_MEM_PROVIDER
-        tristate "Build sample memory provider -- loadable module only"
-        depends on CONTIG_ALLOC && X86_64 && m
-
-A later commit in this series, 279ad9d61dfc ("samples/kvm: Support dynamic
-revocation via kvm_gmem_revoke"), adds && KVM_GUEST_MEMFD to
-SAMPLE_KVM_MEM_PROVIDER in samples/Kconfig. Should that Kconfig dependency =
-be
-moved to this commit to avoid breaking bisection when CONFIG_KVM_GUEST_MEMFD
-is not enabled?
-
-> =20
->  static long mps_ctl_new_file(void __user *uarg)
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-gmem-alter=
-native-providers-v2-0-5dd1dc6c660a@google.com?part=3D45
+native-providers-v2-0-5dd1dc6c660a@google.com?part=3D50
