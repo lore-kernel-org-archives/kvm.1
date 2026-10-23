@@ -1,60 +1,159 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.162
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792749539;
-	b=EX2cqFwLrQc1pWuzF6+kjNDSsNNfT0YxtEJGakWMcipdhmHBpu7o5ZH6g8LmCCqX6PnN
-	 KuZwyKrFu49skYwhk/3jWDF804Vm72c5g/LI2ECpt3yQvl8UgYPy7mwjJl1ZVpm4EOg7T
-	 61kxJbKr9xhFX3dFTZerzFsiQl3YtsUfNpwhAp8FP86+0UBXeZeohWqpBHjscZ9VaAwR8
-	 R3gsgUBzXAE3znLF2H2UOpkSGUWXoKusjUVgtTxjlNk9ELcWf2Z8lFubkBomouv0vYEJ3
-	 b1e0nNfzVne8p+/MeAfvtYNXrLfSTbJqrbHuhcdiomYhTh2Ug0GHnr4VHJwSLCB7MUQ==
+	t=1792749910;
+	b=TKumOF7/TshZjK7vqUueT064Z2XqqHMiUXj7SBDoHDpJPa+Y3T4mz8ISd/j/3v02htcy
+	 kTv6/8bQVO1U+QV+CX5uA+puSlU47+fJZ3tBlZQjxegm6noZFRCY2LSbhr37vKSCAzPsC
+	 nzjZL9LLVWqspf+nwSXKgeJ+LeD56a0G8hG+V1+a+0SM1evWKA1BDBrKN2o4jjUVwYGsU
+	 DovlfoNhF7rXKdJIM0kbNKVAG/7G1OitUMoHRDmz1CyCioegY66OYE9I72CQPsiePXv8b
+	 oIzW8JqasOZLPl3acLSbgYSFks+H8e1YChVHGDmh8sgsTafuIBrK1isJH+1mRFh4rIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792749539;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=H+0KPtdEXEfXC/zAqspE+7v+IdIQJVk4V6YQ6i7g3u0=;
-	b=MWYtBwi+aVhTZEYx8nrgCMGTN5myHJVg7I+DMOjjUdUztFpTsoO6LaQ6azrOJzeYnFJA
-	 U/J/CBPF+ItfJQhMdR+7WDHSB2oxT814Uz97wxHfRtmqLG6xXl8Vieo+MmgRX4uuikJO+
-	 Btj1ahJ/uzhNfpIHhVrj1N+nb+gYiw2/XMpV2b5KUD/Bwp8X5ONYB1jZhmkOYthT0CpEY
-	 X2wT5xH3IBvrLsg4Ulq5Y++XASuQ2BHfDpmlA+UjUGdQPzJn9welYwrQtRdyYAFtynb90
-	 wFv4eopPveRiSJJ1kOeeF7iPxKJoWJQTFxANO2VbJemGf1iedNhBQTuImZtT9TlTrnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792749910;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Reply-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:User-Agent:
+	 X-Scanned-By;
+	bh=Z1/M6fHwVdsOcXm3ypxN6/mMXkslI/t6HGQAVs7BRk8=;
+	b=tee6FQpD6IQ0GO8vqKjYXwAV+wlNL7x2gA+VC4ST9Gjtmk1Go8jZIWlaWd3okRC5BDUW
+	 5lWTFsub866avM2ORw7SIRPoAghgOa10/ncYaRVVWg+YXgO9bxyO2Wk7qpXrKPQJhpd0y
+	 itKV7PDIN7b+Se8oKcRbIgKDoZ6XjlI3kJKcjbQJc4FH9NGjA2bvrKk6Uz5RUg8H05FMV
+	 rWI9RriFErLZwlsTRXjN27ilheoYDGhJsxsArlXZdetP/AGtxgl/mF1X53SihvVNKbeaD
+	 mvsWSWI2jXRGQmTptqKorBytuSox4obasLO5dqX3UwvBUttnZySwsLKuforip6KTw2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YHMlUuiF;
-	arc=none smtp.remote-ip=95.215.58.162
-Received: from mta1.migadu.com (out-162.mta1.migadu.com [95.215.58.162])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QngC8xHX;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0886606A31B
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 09:58:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0886606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C44F606A31B
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:05:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C44F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YHMlUuiF
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=y428xEalvyfT4epCMHEwJjAfBxOSoYPKO4WY+t3vG5I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792749534; v=1; x=1793354334;
- b=YHMlUuiFVQzHUTmsbYl1BKOJ4c4ZIiJtgCrPjyE6+pVAhTf40q35e4J9e78sFRB1gCodYO0+
- 2jnod23gSLJgTKqLWCN9SbsKFkCOxYpXiEYHOW5/DAYy70kT1ZoBs6yz3h/yoJNucpnmEuLHZ4P
- Hd3jF3JrERGp44Fs5BvwwZA4=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 9c9f2f82f5f5e975;
-	Fri, 23 Oct 2026 09:58:54 +0000
-X-Mizu-Trace-ID: 9c9f2f82f5f5e975
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 23 Oct 2026 11:58:50 +0200
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
-	Greg Thelen <gthelen@google.com>, kvm@vger.kernel.org
-Subject: Re: [kvm-unit-tests PATCH 1/2] chr-testdev: Remove unused in_vq
-Message-ID: <atsv0knRRoBCeQSi@orel>
-References: <20261022204413.856786-1-yosry@kernel.org>
- <20261022204413.856786-2-yosry@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QngC8xHX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792749908;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z1/M6fHwVdsOcXm3ypxN6/mMXkslI/t6HGQAVs7BRk8=;
+	b=QngC8xHXH0OPqDivJ1ziVXbqfPysZl6EuqroX4C1Xv60D2iy54LisFw6iHKuWuY02UFdJt
+	KkzbOmuyaoJSFcrN/qcETrsFise05H/oaxb+2wa9afNzphrFOidX7B6+tw65dhPZ9k75Ed
+	qyN/gzwEOHKmQfumhcQi9iia8N5BhkU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-DdROSvANPzCaudLkmMT02A-1; Fri,
+ 23 Oct 2026 06:05:04 -0400
+X-MC-Unique: DdROSvANPzCaudLkmMT02A-1
+X-Mimecast-MFC-AGG-ID: DdROSvANPzCaudLkmMT02A_1792749899
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9704D1956057;
+	Fri, 23 Oct 2026 10:04:56 +0000 (UTC)
+Received: from redhat.com (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 18FB21956088;
+	Fri, 23 Oct 2026 10:04:31 +0000 (UTC)
+Date: Fri, 23 Oct 2026 11:04:29 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+	Michael Roth <michael.roth@amd.com>, John Snow <jsnow@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+	Alberto Garcia <berto@igalia.com>, Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+	Zhao Liu <zhao1.liu@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+	Junjie Cao <junjie.cao@intel.com>, Anisa Su <anisa.su@samsung.com>,
+	Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+	Jagannathan Raman <jag.raman@oracle.com>,
+	John Levon <john.levon@nutanix.com>,
+	Thanos Makatos <thanos.makatos@nutanix.com>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
+	linux-cxl@vger.kernel.org, qemu-s390x@nongnu.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sergio Lopez <slp@redhat.com>, qemu-arm@nongnu.org,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Chao Liu <chao.liu@processmission.com>, qemu-riscv@nongnu.org,
+	Song Gao <17746591750@163.com>, Bibo Mao <maobibo@loongson.cn>,
+	Xianglai Li <lixianglai@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
+	Zhang Chen <zhangckid@gmail.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Alexander Graf <graf@amazon.com>,
+	"Gonglei (Arei)" <arei.gonglei@huawei.com>,
+	zhenwei pi <zhenwei.pi@linux.dev>, Ani Sinha <anisinha@redhat.com>,
+	Luc Michel <luc@lmichel.fr>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+	Jamin Lin <jamin_lin@aspeedtech.com>,
+	Kane Chen <kane_chen@aspeedtech.com>,
+	Samuel Tardieu <sam@rfc1149.net>, "Denis V. Lunev" <den@openvz.org>,
+	FangSheng Huang <FangSheng.Huang@amd.com>,
+	Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+	Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+	Jesper Devantier <foss@defmacro.it>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Glenn Miles <milesg@linux.ibm.com>, Conor Dooley <conor@kernel.org>,
+	Sebastian Huber <sebastian.huber@embedded-brains.de>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Titus Rwantare <titusr@google.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Anthony PERARD <anthony@xenproject.org>,
+	Peter Xu <peterx@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	xen-devel@lists.xenproject.org,
+	Roman Bolshakov <rbolshakov@ddn.com>,
+	Phil Dennis-Jordan <phil@philjordan.eu>, Fam Zheng <fam@euphon.net>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Tao Tang <tangtao1634@phytium.com.cn>,
+	Stefan Berger <stefanb@linux.vnet.ibm.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	Artyom Tarasenko <atar4qemu@gmail.com>,
+	Yoshinori Sato <yoshinori.sato@nifty.com>,
+	Jiri Pirko <jiri@resnulli.us>, Eric Auger <eric.auger@redhat.com>,
+	Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
+Message-ID: <atsxLV5YZo8dr-8G@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+ <20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,50 +163,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261022204413.856786-2-yosry@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
+User-Agent: Mutt/2.4.2 (2026-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Oct 22, 2026 at 08:44:12PM +0000, Yosry Ahmed wrote:
-> in_vq is assigned in chr_testdev_init() from vqs[0], but kvm-unit-tests
-> only writes to the character device via out_vq and never consumes input
-> from the host. Clang 24 warns on this with -Wunused-but-set-global:
+On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-André Lureau wrote:
+> PciDevfn is a bit special, since it accepts integer and string as
+> setter, but only output integer as getter.
 > 
->   lib/chr-testdev.c:15:26: error: variable 'in_vq' set but not used
->   [-Werror,-Wunused-but-set-global]
+> Unfortunately, we can't declare an alternate str|int QAPI type for it,
+> since: branch 'string' can't be distinguished from 'integer'
 > 
-> Remove the unused variable.
+> Rather than declaring it as "str", use the common type instead.
 > 
-> Fixes: b412ad0d39a1 ("Introduce chr-testdev")
-> Co-developed-by: Greg Thelen <gthelen@google.com>
-> Signed-off-by: Greg Thelen <gthelen@google.com>
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  lib/chr-testdev.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  hw/core/qdev-properties-system.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/chr-testdev.c b/lib/chr-testdev.c
-> index b3c641a833feb..c23fd92a46308 100644
-> --- a/lib/chr-testdev.c
-> +++ b/lib/chr-testdev.c
-> @@ -12,7 +12,7 @@
->  #define TESTDEV_NAME "chr-testdev"
->  
->  static struct virtio_device *vcon;
-> -static struct virtqueue *in_vq, *out_vq;
-> +static struct virtqueue *out_vq;
->  static struct spinlock lock;
->  
->  static void __testdev_send(char *buf, unsigned int len)
-> @@ -65,6 +65,5 @@ void chr_testdev_init(void)
->  		return;
->  	}
->  
-> -	in_vq = vqs[0];
->  	out_vq = vqs[1];
+> diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+> index 5bfdfe1ab9d9..3381de1144d6 100644
+> --- a/hw/core/qdev-properties-system.c
+> +++ b/hw/core/qdev-properties-system.c
+> @@ -904,7 +904,8 @@ static char *print_pci_devfn(Object *obj, const Property *prop)
 >  }
-> -- 
-> 2.56.0.257.gf7497c7d27-goog
->
+>  
+>  const PropertyInfo qdev_prop_pci_devfn = {
+> -    .type  = "str",
+> +    /* The formatted string accepted by the setter is a CLI convenience. */
 
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+IIUC, this is not limited to the CLI, it will work anywhere the JSON
+syntax is permitted which is both CLI and QMP.
+
+libvirt uses this string syntax:
+
+  -device '{"driver":"pcie-root-port","port":9,"chassis":2,"id":"pci.2","bus":"pcie.0","multifunction":true,"addr":"0x1.0x1"}' \
+
+> +    .type  = "int32",
+>      .description = "Slot and optional function number, example: 06.0 or 06",
+
+
+Changing the type to 'int32', where 99% of usage is input only
+and string based, is pretty unpleasant. Even more so that the
+description doesn't even mention encoding dev+function as an
+integer.
+
+>      .print = print_pci_devfn,
+>      .get   = qdev_propinfo_get_int32,
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+
