@@ -1,112 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792770135;
-	b=lxyLSx9ugoP2gyWpAhuOkWKIs+5fDqEC/uxu5dt1xlatIjC9k+h1QURgAhgYnyV+iRHL
-	 0HCYDkvYWHTVOj7djmmv84dd9Vq47xfSDOKSHba0EvdEcSfBVBicsqf5/gT44Wrr0S8eo
-	 jX8at8hUElgH2BIjA4Fst+bQywKXB2u+9zMLMEXqHwCyx1/ZShTIZ+1hBBLHmE0eSFcEw
-	 ZHQJKoHkLD8T///P81geAWfvLk5x7upKONmDrrWvRzQj1vYHn2Fu/7JiEZM9gsrafj3JG
-	 4mme+0cqUCG1k8Bh+N8qrdl0KWAbyB3TKFqZWn0oLbHlYlOMA/BRlyNYHlzHEkPwc1g==
+	t=1792770535;
+	b=e/2BjUtaWkR9VQzoFCrUZJilLzAoNb5lp+GXPxgyDwI2LF9jz3o538kzFnmCmS4rAfq0
+	 /ofUluy9be2kVa1rRymndB4bloBPbATKuXT1v6KOUT8MibcXbv/nEqrKfHc2J6W4RQSy1
+	 FiQrEaB4rCmfMC1o3/RmB0PG2jxP6/XHUHAR3XcD3a7WmunCWqpziH37MQZS/4ekpFh4x
+	 8TOt1LNltskor/ddOVpfTJGC8+cIWDj9F7V4uhCzbGnS8almfmTddLsYCurWuirW2wUD7
+	 j9SVZqp9MAP4DIztRZqZOZXCRnMmu8bNCNey1JBC5SWYF0fmjzKAYj5XrDUsQLdN9gQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792770135;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=rug7Neq15IHiij489G0zvk8NhY0SVtgpPgzc6r/gkrk=;
-	b=HmZoyWdyV2rLfky5Ajwy0uAL20YuoqlVA2SMMqjvOwGB5bhUrh2xPF/iDgMZlFZkVTmW
-	 sC5UKqYJF/1GhTj9PO4exNf04TZVu3vj/mNE0/LhVrqpaAKkAHiTF/5DYGoQ+eUb4ucKY
-	 35G0DS/Vj3fdwUFn0tEcQN0zQTjiFhfyd5lMcXdV+yx920Sw5pQMN5jsDgIhuz4ItojXV
-	 iValzxtGI4F8jV8yMJEVa8btq7N1sLwa5bbARj3LtDfQv0aTUYkvrUse7oTWqeVmteA4G
-	 RqVr53NdEnNeby87EF45GOUGBs2J58jaagaw95Px5KuQlzH9iJ9guIJGidgXQY3qb7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792770535;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=JF3UN1kRxJtn08yiPLt98scNIxRJBp+OMlmCkWuMdjw=;
+	b=VLrltmeF0CNsI1kO4JjaPUe0Uy3GsvU0earqrsXNjpN37vjBk2kXW55qg90ZKywvznf8
+	 0smnowgh0sJXjnHSJs/mB0AkjSkCPYtqYoNaAJBUoKTfL0yGKhO8erqMGmQwcbmHDkB9F
+	 6LOM+YF4MMvjUoAxVnlQfD01EYpWVqoM5WQW+3mcpF9yiwEklythvCrH85C97kVRdF2Sh
+	 ZDINbaB5CmkSh+8dWHDCKIAqu2KYAAJApNDT/Xkm/l0Sk8qIe5/CAB4kWLAPMKijDNwsW
+	 SdUTPXq32nZQemB/SB8jsXtAl0JO9/6qvmFaM1wXSzOl6VYSQ3iLfyzrXXFKXrB9O4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c27WBFJ2;
-	arc=none smtp.remote-ip=209.85.222.179
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KP86md6N;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC33606A325
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 15:42:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CC33606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE89606A31B;
+	Fri, 23 Oct 2026 15:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c27WBFJ2
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93e635220b4so88129185a.1
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 08:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792770134; x=1793374934; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rug7Neq15IHiij489G0zvk8NhY0SVtgpPgzc6r/gkrk=;
-        b=c27WBFJ20LlEkXwtFWR0pToqFQOALwL+bcaaVuyVwXUk924Vl3bY2TE+HzwUkjjWpt
-         QaaeAPi6z5Ti+PWEFO4B/P+zy2aL4YiNfo4wU22IWJR8UJl5UsOSPZsuUwdq+P5P5bI9
-         72boUzrYkytCjS3Ko/P0xykJ3PbDwA2rQfd47sTgSJkaHkjkNaWVyqh7Xfj2zU9voNek
-         oHWce6+kRLUM7XPX8O2BXEN48XjkeD/eVwT16b3bS4zufHv2bthZ5aNwPUaW3+/wB8mR
-         3LSVs3lqw0vf+xIhH8LUjQVpYyx9cBXBWmBXwJ0sj/UDAKDRx/Nl2/3V8k+ZJ60Qkgg3
-         R0XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792770134; x=1793374934;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rug7Neq15IHiij489G0zvk8NhY0SVtgpPgzc6r/gkrk=;
-        b=2SOk7FNZGkRxcIK2vmdIq50k2HG2h4SsmvW2/VZYu7BOGZZ961Vr4dVTRYyPXsupLF
-         SMa1s1gOiYSFlsLi5Y/MTqVvPqJzQm9Ius7BxuV9FMNDkm4fa+dVEqlIK1AOYLghFqGQ
-         ZYiSC35stQC2F1anJclVkdhriFZnWXfBFmzG+im93DEJ9DOq69GEWm46ah6+Z5zRoVn3
-         y10FBGMk9faeCNymXCx/RDJmvgJz2snc5nyUyW1cb5LPBjjxLqv7kMkhOUk9uT2EQMma
-         Te/GC4tUwYoDCcTSwQK0K2kqaTZ3QYqsSti94yPDtJL/DMMlqHO6DvKcRLzy0JjOMuJj
-         JfdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBya5NCGL7h52s7PFVpQhMy9ME+XXiq37qHGOe4/QNJOmC1Ng5q23g4zn4Ny7ZOFf/RC4NY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKN7ycRk7wIYHEYzgac+iHtSWhsHqeWZ14Zezk2R3nplJu/jXfZ
-	Qh0qVge/uZh/a1MtNRfgxxJjPAVB5cHoTGjCwYri+I7X+ow0hN70kMcDcO5evv8Inps=
-X-Gm-Gg: AYBFou11R9V4wfHl0wnPX1SwyxMeXDbAKI34FI0k3HHWqGI8ejTEp3OxOy0asjAnAxV
-	YbCoOl7Syo1BOYhzO60NS+ylwrtj0CESSQnPJI33GI260ogcXJncDMjISYY9dCrruxbWSHopQ4n
-	hmu/A+Hp9WgvFoohPs3EEFcBRFYsAxcfcWclWmXnW73qQj3TXiAMjoSt9KQLbqqiVeKD0KHOCmp
-	PxBAsEicEJml6ZmYSSoPJ88/rmxJvsNDeVASvC93LfYHl/DQ0SJx0LTKInMu60cGPqthIbfdo3s
-	DjpeXuOYSY9KDmF6Hd3iX3rBwOOONyDjkewLryjCBiOkUlA4WzVutgZ1zbgxCaGRIXZw50HwbrD
-	8FuQLq8iphOin8bVsSn5/2o5H3ONOLhq+al1LG6z/V5YkELOka+JIKp59YtxwPYssv+IHapUdDw
-	btnY22G/Dn2KuHeu1ZRx/fxbTsfz7gfAXcPNqZRwMnfX+b67HMNXYEESs3Ya5m48fJENcRhTEY6
-	oEGHamp87ERr8k3x+zABgryAFFcxo8ytkrdOtIUpnfJOuDmb0L55nH6sXzqJ8uQsPpu2/iWIk7/
-	f6UXWzEuA/UkotxNZ63pxlLAh/LNDeumNDQCnA==
-X-Received: by 2002:a05:620a:1a11:b0:93e:5ef8:c794 with SMTP id af79cd13be357-93f6f9648bbmr497429285a.38.1792770134059;
-        Fri, 23 Oct 2026 08:42:14 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-94047b362a5sm45129985a.33.2026.10.23.08.42.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 08:42:13 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xKHPI-0000000Gn79-3Zzp;
-	Fri, 23 Oct 2026 12:42:12 -0300
-Date: Fri, 23 Oct 2026 12:42:12 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
-	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
-	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
-	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
-	dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
- support
-Message-ID: <20261023154212.GJ3977851@ziepe.ca>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <yq5a7bjajaco.fsf@kernel.org>
- <atooh7uO2RauUTfY@FV6GYCPJ69>
- <yq5av76sj10a.fsf@kernel.org>
- <20261023142038.GE3977851@ziepe.ca>
- <yq5ase1wiggs.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KP86md6N
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95641F01825;
+	Fri, 23 Oct 2026 15:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792770534;
+	bh=JF3UN1kRxJtn08yiPLt98scNIxRJBp+OMlmCkWuMdjw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KP86md6NaScZuCl6YTCgY0Xr8v5vABqnQaOAc+izbq2+s17gkmTEfSsTkjRN2xSol
+	 wpzEObz3dV2PY5pLntGv2zBZIpJtw2AZti6+hjsmJiaqpLzMVWgeUj5OHdNcb9IzHC
+	 W+Ke96PJmCmFs8qsMCdt6bDm+zfpcieuEcrVNaQwJ5PMWfKn7XSr5fX9ZnSgEfAIqj
+	 wuX69hSYx9tCwrMs7MkqxrUHQC9XWCyvj9kcnO8dlLe+T8L2JxK6KCdmXZCd/pf4XQ
+	 adzMcOPSxvDq6aYKBDU8YP8+pAPwJtbH9mFGta2zR+S2XMesX61O9q0rcfrLZbl/rX
+	 iI8kwvaQdZb8Q==
+Date: Fri, 23 Oct 2026 15:48:53 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, jmattson@google.com
+Subject: Re: [PATCH] KVM: nSVM: Reset the virtual VMLOAD/VMSAVE bit in vmcb02
+ on every nested VMRUN
+Message-ID: <att-Epjatf5sw-ba@google.com>
+References: <atpGGKVAL3bAnmnk@google.com>
+ <atqdBFgoztW0nhoC@google.com>
+ <20261023090924.9685-1-amirmohammad.eftekhar@cispa.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,58 +61,236 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5ase1wiggs.fsf@kernel.org>
+In-Reply-To: <20261023090924.9685-1-amirmohammad.eftekhar@cispa.de>
 
-On Fri, Oct 23, 2026 at 08:58:35PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
+On Fri, Oct 23, 2026 at 11:09:24AM +0200, Amirmohammad Eftekhar wrote:
+> On Wed, Oct 22, 2026, Yosry Ahmed wrote:
+> > So this test case passing should be confirming my allegation that
+> > intercepts take precedence over VLS.
 > 
-> > On Fri, Oct 23, 2026 at 01:34:53PM +0530, Aneesh Kumar K.V wrote:
-> >
-> >> CCA currently takes the device identity index during pdev_create. I am
-> >> investigating how to retrieve the certificate chains for all slots. For
-> >> now, I have implemented the sequence below.
-> >
-> > Yeah, I think the consensus at LPC was this may be a gap in CCA.
+> I could be missing something, but a hardware repro points the other way,
+> at least on this part (Zen 4, Ryzen 5 PRO 8500GE, mainline 7.3-rc3). The
+> L2 runs "vmload; cpuid", so the exit code says whether VMLOAD was
+> intercepted (SVM_EXIT_VMLOAD, 0x82) or virtualized and run on to the
+> cpuid (SVM_EXIT_CPUID, 0x72):
 > 
-> I checked with Alexey, and if I understand him correctly, TIO also needs
-> to establish eight separate connections to retrieve the certificate
-> chains.
+>   - Single VMRUN, vmcb12 VLS off, L1 intercepting VMLOAD: 0x82. The
+>     intercept is honored, as expected.
+>   - VMRUN #1 enables VLS legitimately (0x72), then VMRUN #2 with vmcb12
+>     VLS=0 and L1 intercepting VMLOAD: still 0x72. 3/3.
+> 
+> The difference from nested_vmsave_vmload_test.c is that the test only
+> looks at a single VMRUN. On VMRUN #2 vmcb12 has VLS off, so
+> nested_vmcb_needs_vls_intercept() returns true and
+> nested_vmcb02_recalc_intercepts() sets INTERCEPT_VMLOAD/VMSAVE in vmcb02.
 
-Lovely!
+I am not sure if "the test" refers to your repro or the selftest, a
+standalone. A standalone repro would help.
 
-> For now, I am trying Jiri's suggestion: use Rust SPDM to fetch the
-> certificate chain and return it via evidence-get. evidence-accept then
-> does pdev-create with the specified slot number and compares the
-> evidence data returned by the RMM with the value cached by Rust SPDM. If
-> they match, it uses the cached value for set_pub_key. This seems to be
-> working. (FVP only supports slot 0, hence only one blob-instance)
+> But vmcb02->control.misc_ctl2 still has the VLS enable bit from VMRUN #1,
+> since it is only ever OR-set and never cleared, so vmcb02 enters VMRUN #2
+> with both INTERCEPT_VMLOAD and VLS set and the CPU virtualizes VMLOAD
+> anyway. That is the dropped intercept.
+> 
+> So with both bits live in the same vmcb02, VLS wins over the intercept on
+> this hardware, which is why I think the stale bit is an actual
+> intercept-drop (an L1 that intercepts VMLOAD/VMSAVE for its own L2 loses
+> that intercept after it has used VLS even once) rather than only untidy
+> state.
 
-That's a pretty good idea, and works for every arch! Maybe that is
-the best long term direction.
+I tried this on 4 EPYC processors (Zen 2,3,4,5), I basically ran the
+selftest with the bpftrace script below, and here are the results I got
+tracing L0's svm_vcpu_run() and kvm_exit() only with guest mode on real
+hardware. On all 4 microarchitectures, you will see rows with VLS and
+the intercepts enabled, with SVM_EXIT_VMSAVE and SVM_EXIT_VMLOAD exit
+codes:
 
-IDK about all this "Caching" stuff, I'm not sure I love the name
-"Cache" to refer to the security important reference certificate
-bundles. It should have a stronger name to reflect how critical it is
-in the entire security design of SPDM. You select the certificates
-once and everything following must match that or something bad has
-happened. It is effectively a key part of the channel binding.
+================================================================================
+Zen 5 (Turin)
+CPU: AMD EPYC 9B45 128-Core Processor
+================================================================================
+Attached 3 probes
+Random seed: 0x703a00c6
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x83 exit_rip=0x23f9ac
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9ac exit_code=0x400 exit_rip=0x24d2f0
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d2f0 exit_code=0x400 exit_rip=0x24d350
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d350 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x25be50
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x25be50 exit_code=0x400 exit_rip=0x256850
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256850 exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256854 exit_code=0x82 exit_rip=0x23f9cc
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9cc exit_code=0x83 exit_rip=0x23fa33
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23fa33 exit_code=0x81 exit_rip=0x23fa41
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa50 exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x256854 exit_code=0x81 exit_rip=0x23fb04
 
-But yes, RMM is sort of backwards here, the slot number should come
-with information about the certificates, but I think this is fine to
-have RMM fetch them again and then we just confirm everything matches
-the kernel's target. If we don't do a get prior to connecting then the
-kernel would just adopt the RMM's result as the target certificate
-chain for the slot?
 
-It certainly seems like it should be all sketched out and the uAPI
-confirmed. Given the state of things I don't see an issue with a slot
-0 only initial configuration (ie EOPNOTSUPP the certificate gets) so
-long as the long term resolution is clear.
+================================================================================
+Zen 4 (Genoa)
+CPU: AMD EPYC 9B14 96-Core Processor
+================================================================================
+Attached 3 probes
+Random seed: 0x7eb8e37c
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x83 exit_rip=0x23f9ac
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9ac exit_code=0x400 exit_rip=0x24d2f0
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d2f0 exit_code=0x400 exit_rip=0x24d350
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d350 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x25be50
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x25be50 exit_code=0x400 exit_rip=0x256850
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256850 exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256854 exit_code=0x82 exit_rip=0x23f9cc
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9cc exit_code=0x83 exit_rip=0x23fa33
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23fa33 exit_code=0x81 exit_rip=0x23fa41
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa50 exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x256854 exit_code=0x81 exit_rip=0x23fb04
 
-Which is an interesting question for Jiri on CTLV, one of the things
-we have in RDMA is runtime schema pruning. Based on runtime device
-capabilities parts of the schema can be disabled. Can we get there
-with CTLV too? Then introspection could return if the underlying
-implementation supports some of this stuff..
 
-Jason
+================================================================================
+Zen 3 (Milan)
+CPU: AMD EPYC 7B13 64-Core Processor
+================================================================================
+Attached 3 probes
+Random seed: 0x5ea27b94
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x83 exit_rip=0x23f9ac
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9ac exit_code=0x400 exit_rip=0x24d2f0
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d2f0 exit_code=0x400 exit_rip=0x24d350
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d350 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x25be50
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x25be50 exit_code=0x400 exit_rip=0x256850
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256850 exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256854 exit_code=0x82 exit_rip=0x23f9cc
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9cc exit_code=0x83 exit_rip=0x23fa33
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23fa33 exit_code=0x81 exit_rip=0x23fa41
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa50 exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x256854 exit_code=0x81 exit_rip=0x23fb04
+
+
+================================================================================
+Zen 2 (Rome)
+CPU: AMD EPYC 7B12 64-Core Processor
+================================================================================
+Attached 3 probes
+Random seed: 0x3c17b702
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x400 exit_rip=0x23f970
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=0 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f970 exit_code=0x83 exit_rip=0x23f975
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f980 exit_code=0x82 exit_rip=0x23f985
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x400 exit_rip=0x23f990
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f990 exit_code=0x83 exit_rip=0x23f9ac
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9ac exit_code=0x400 exit_rip=0x24d2f0
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d2f0 exit_code=0x400 exit_rip=0x24d350
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d350 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x24d363
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x24d363 exit_code=0x400 exit_rip=0x25be50
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x25be50 exit_code=0x400 exit_rip=0x256850
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256850 exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x256854 exit_code=0x82 exit_rip=0x23f9cc
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23f9cc exit_code=0x83 exit_rip=0x23fa33
+is_guest_mode=1 vls=1 vmload_icpt=1 vmsave_icpt=1 entry_rip=0x23fa33 exit_code=0x81 exit_rip=0x23fa41
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa50 exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x400 exit_rip=0x23fa6c
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x23fa6c exit_code=0x7b exit_rip=0x256854
+is_guest_mode=1 vls=1 vmload_icpt=0 vmsave_icpt=0 entry_rip=0x256854 exit_code=0x81 exit_rip=0x23fb04
+
+> 
+> I haven't managed to square that with your reading of the test, so it is
+> entirely possible I am wrong about the precedence. If it helps I can send
+> the reproducer, or dump vmcb02->control (the intercept bitmap plus
+> misc_ctl2) right before the VMRUN #2 that virtualizes VMLOAD, so we can
+> confirm both bits are set going in.
+
+My bpftrace script is below, if you want to reuse it. You can just run
+it while you run the selftest:
+
+fentry:kvm_amd:svm_vcpu_run {
+    $svm = (struct vcpu_svm *)args.vcpu;
+    $vcpu = args.vcpu;
+    $vmcb = $svm->vmcb;
+
+    /* is_guest_mode(vcpu) == (vcpu->arch.hflags & HF_GUEST_MASK) */
+    $is_guest_mode = ($vcpu->arch.hflags & 1) ? 1 : 0;
+
+    @in_guest_mode[tid] = $is_guest_mode;
+    if ($is_guest_mode) {
+        $vls = ($vmcb->control.misc_ctl2 >> 1) & 1;
+        $word4 = $vmcb->control.intercepts[4];
+        $vmload_icpt = ($word4 >> 2) & 1;
+        $vmsave_icpt = ($word4 >> 3) & 1;
+
+        @cur_vls[tid] = $vls;
+        @cur_vmload[tid] = $vmload_icpt;
+        @cur_vmsave[tid] = $vmsave_icpt;
+        @cur_rip[tid] = $vmcb->save.rip;
+    }
+}
+
+tracepoint:kvm:kvm_exit {
+    if (@in_guest_mode[tid]) {
+        $vls = @cur_vls[tid];
+        $vmload_icpt = @cur_vmload[tid];
+        $vmsave_icpt = @cur_vmsave[tid];
+        $entry_rip = @cur_rip[tid];
+
+        printf("is_guest_mode=1 vls=%d vmload_icpt=%d vmsave_icpt=%d entry_rip=0x%lx exit_code=0x%x exit_rip=0x%lx\n",
+               $vls, $vmload_icpt, $vmsave_icpt, $entry_rip, args.exit_reason, args.guest_rip);
+        @in_guest_mode[tid] = 0;
+    }
+}
+
+END {
+    clear(@cur_vls);
+    clear(@cur_vmload);
+    clear(@cur_vmsave);
+    clear(@cur_rip);
+    clear(@in_guest_mode);
+}
