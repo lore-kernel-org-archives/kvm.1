@@ -1,121 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.28
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792770082;
-	b=Jeiyf8EO33df77tmrivUFegVIvH8VZkezf1Elr84NTwOFnEgIoFzYVSPWrqExdN7F8GO
-	 UPGiCFH/H9S2gjXidq/7XZy2N/F6HR430yU6ERNZMig+5mnM9gLVnXlC9aNo4vaWITkVK
-	 s405fpLQbrwe83WuHTlxjbmf9ysL3huYy2pL4qa26epeNNBBzHq+52QAtVGI6/+NQJ5Jm
-	 AuEDX2MVS5/S36XTuDOEP2FaLw4OGuYXzyKuGbWV8j1sYJjTyo+vVQ0IlkYO0+WCNOCIE
-	 yeuhY9OT9C7MahrL1iH5V1aX11dmkEmwTVLpQV1qtd8hvU1t7gdUVJnAPm/2Ia1DXLg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792770082;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eBR3Pqe3Pyee5roLi63owH40AL/NWUQhGTuxpN3BGEA=;
-	b=kJC/cziTqK3KvpIXy28hE3ZhRL62X+6RhUGJQVHlzcVU1EbtyNc31Z+wUpd1flY0ukJX
-	 u3masJLUh2joj82MTZjEqXqHbywRf1bZKyLn1b8lQr0rLlCMo05MOUTuDzG9UaS6LXrWO
-	 f6pdpqzKBpg/FDrcuiD8mi69o29qPc+jVW+qNr2O0LIhPZY/1w0CXbnhz9X/TJfbbDild
-	 L67trsADPLPeSs1OWbcnGj3TjVsAP16/koz6GbLWEOmag1gEOsNaLu2FtiAvzTxBR852y
-	 gytLZfgxVCXwxYmqsQIqrYxERV2uWfEoZXXKuTCSF2oA/WD1PD2bo6Qeu8PpdQ2RZFA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="j2L2/ww6";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.28
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013028.outbound.protection.outlook.com [40.93.201.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.179
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792770135;
+	b=lxyLSx9ugoP2gyWpAhuOkWKIs+5fDqEC/uxu5dt1xlatIjC9k+h1QURgAhgYnyV+iRHL
+	 0HCYDkvYWHTVOj7djmmv84dd9Vq47xfSDOKSHba0EvdEcSfBVBicsqf5/gT44Wrr0S8eo
+	 jX8at8hUElgH2BIjA4Fst+bQywKXB2u+9zMLMEXqHwCyx1/ZShTIZ+1hBBLHmE0eSFcEw
+	 ZHQJKoHkLD8T///P81geAWfvLk5x7upKONmDrrWvRzQj1vYHn2Fu/7JiEZM9gsrafj3JG
+	 4mme+0cqUCG1k8Bh+N8qrdl0KWAbyB3TKFqZWn0oLbHlYlOMA/BRlyNYHlzHEkPwc1g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792770135;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=rug7Neq15IHiij489G0zvk8NhY0SVtgpPgzc6r/gkrk=;
+	b=HmZoyWdyV2rLfky5Ajwy0uAL20YuoqlVA2SMMqjvOwGB5bhUrh2xPF/iDgMZlFZkVTmW
+	 sC5UKqYJF/1GhTj9PO4exNf04TZVu3vj/mNE0/LhVrqpaAKkAHiTF/5DYGoQ+eUb4ucKY
+	 35G0DS/Vj3fdwUFn0tEcQN0zQTjiFhfyd5lMcXdV+yx920Sw5pQMN5jsDgIhuz4ItojXV
+	 iValzxtGI4F8jV8yMJEVa8btq7N1sLwa5bbARj3LtDfQv0aTUYkvrUse7oTWqeVmteA4G
+	 RqVr53NdEnNeby87EF45GOUGBs2J58jaagaw95Px5KuQlzH9iJ9guIJGidgXQY3qb7Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c27WBFJ2;
+	arc=none smtp.remote-ip=209.85.222.179
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A44D606A33D;
-	Fri, 23 Oct 2026 15:41:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A44D606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC33606A325
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 15:42:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CC33606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=j2L2/ww6
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S5E5Ai6gyxiJX0vcY2lM2ocb92WVGD4C1wnPZe7qBfZs1RhNCoFNWzw1bB/ErwGsOY9JJpZQTEPEsHHFrHTw2ZrMlTLdI1tLBH6q30V7RHcIJpUlamFI3n+7RQG1yd7cW/apVNcVptGuM5s+0Ql5ipWaN0occm8O6xJINzoyR5RsJTptn/8Jv6Oa1fNJTEEVxAIcskRQfgZrUgBJcf7vRcB0ucaZHLsiFnOkhDWkQ5V26/Ucb8Zmp15hmHZZ8EbbVI5xagwG39cX/WmvelsQLmsZ+mcS/fLVb0Wsw8uwHlsG9GmdfcbePQXAK4pEoFZrC7ua946kucU8JtjMV4oeYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eBR3Pqe3Pyee5roLi63owH40AL/NWUQhGTuxpN3BGEA=;
- b=cofGUVwB4Du9TD0VuqqhgCsBBZiNZntJQ/8TdBgY12+h+9WG5rnbRr8XT/Yzav8Xuhyng15D9sWncyt2PnXm0TaGr7Qun56QooMqt3ZNgwy/mm+Cuo/8Wv7BgYG3icLVRgmuFIfBHTwKp7ffCp617Xbug8414/hmMAmDH+5BAaEgzkA8F3NgN+9AOSnLc217dA80zdmP0yJ6FB6umMZAPwGXao/7Tbn4xBQ2G/zYhHnwn/kE9Sq1Au9Cntqq+UHTXzK87FDfFh3aF6GvQh2G+OHa6WzF4ptmDKBXMFa0G6pRfc/NJ0cTfndxGjtWhiGYylN6vCOrks2O7dHL1RdMcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eBR3Pqe3Pyee5roLi63owH40AL/NWUQhGTuxpN3BGEA=;
- b=j2L2/ww6zTgIOj3rXfdpv0eV3eAExSUPQAdLzGg3XlbSLI/XcXmkKxG7KxTUkuzgdWihh8TMl81IcYAJffC1A6pEGeOh4RfizCN7MoYjzdLZVf4x/q899lg9JvSPEfEvSmxTwuQOECQiOfy/N/Rq1H3NoGS5BBdCMXRMIt4Cw3C2LhwAOdjcpI5Nq9v/uILv0oELpHTsjt2uaivA7RcWGHJBUd+sn6c74TSKnzDK18thoNrU0WzvVIvT2TJf0Suz4SY4OJRf6rrViV8HfCtRFN2Y85bDKdHxEH9T8YApAVqA8t6CZkzLUrVSqky/VIqzKtEBuq3K9NSbRhUIYgs//w==
-Received: from SJ0PR03CA0023.namprd03.prod.outlook.com (2603:10b6:a03:33a::28)
- by DS7PR12MB5720.namprd12.prod.outlook.com (2603:10b6:8:73::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Fri, 23 Oct
- 2026 15:41:12 +0000
-Received: from CO1PEPF0001885E.namprd02.prod.outlook.com
- (2603:10b6:a03:33a:cafe::20) by SJ0PR03CA0023.outlook.office365.com
- (2603:10b6:a03:33a::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.17 via Frontend Transport; Fri,
- 23 Oct 2026 15:41:12 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF0001885E.mail.protection.outlook.com (10.167.249.247) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.15 via Frontend Transport; Fri, 23 Oct 2026 15:41:12 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 23 Oct
- 2026 08:40:49 -0700
-Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 23 Oct 2026 08:40:47 -0700
-From: Simon Song <xinmengs@nvidia.com>
-To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
-	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>
-CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
-	<skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
-	<simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
-	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
-	<lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
-	<tmgross@umich.edu>, <jhubbard@nvidia.com>, <ecourtney@nvidia.com>,
-	<cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
-	<alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
-	<kwankhede@nvidia.com>, <targupta@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
-	<boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
-	<work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
-	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<peter@colberg.org>, <xinmengs@nvidia.com>
-Subject: [PATCH v2 09/12] rust: vfio: use the PCI adapter for variant drivers
-Date: Fri, 23 Oct 2026 08:40:04 -0700
-Message-ID: <20261023154009.2246627-10-xinmengs@nvidia.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20261023154009.2246627-1-xinmengs@nvidia.com>
-References: <20261023154009.2246627-1-xinmengs@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c27WBFJ2
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93e635220b4so88129185a.1
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 08:42:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1792770134; x=1793374934; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rug7Neq15IHiij489G0zvk8NhY0SVtgpPgzc6r/gkrk=;
+        b=c27WBFJ20LlEkXwtFWR0pToqFQOALwL+bcaaVuyVwXUk924Vl3bY2TE+HzwUkjjWpt
+         QaaeAPi6z5Ti+PWEFO4B/P+zy2aL4YiNfo4wU22IWJR8UJl5UsOSPZsuUwdq+P5P5bI9
+         72boUzrYkytCjS3Ko/P0xykJ3PbDwA2rQfd47sTgSJkaHkjkNaWVyqh7Xfj2zU9voNek
+         oHWce6+kRLUM7XPX8O2BXEN48XjkeD/eVwT16b3bS4zufHv2bthZ5aNwPUaW3+/wB8mR
+         3LSVs3lqw0vf+xIhH8LUjQVpYyx9cBXBWmBXwJ0sj/UDAKDRx/Nl2/3V8k+ZJ60Qkgg3
+         R0XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792770134; x=1793374934;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rug7Neq15IHiij489G0zvk8NhY0SVtgpPgzc6r/gkrk=;
+        b=2SOk7FNZGkRxcIK2vmdIq50k2HG2h4SsmvW2/VZYu7BOGZZ961Vr4dVTRYyPXsupLF
+         SMa1s1gOiYSFlsLi5Y/MTqVvPqJzQm9Ius7BxuV9FMNDkm4fa+dVEqlIK1AOYLghFqGQ
+         ZYiSC35stQC2F1anJclVkdhriFZnWXfBFmzG+im93DEJ9DOq69GEWm46ah6+Z5zRoVn3
+         y10FBGMk9faeCNymXCx/RDJmvgJz2snc5nyUyW1cb5LPBjjxLqv7kMkhOUk9uT2EQMma
+         Te/GC4tUwYoDCcTSwQK0K2kqaTZ3QYqsSti94yPDtJL/DMMlqHO6DvKcRLzy0JjOMuJj
+         JfdQ==
+X-Forwarded-Encrypted: i=1; AKwUvBya5NCGL7h52s7PFVpQhMy9ME+XXiq37qHGOe4/QNJOmC1Ng5q23g4zn4Ny7ZOFf/RC4NY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKN7ycRk7wIYHEYzgac+iHtSWhsHqeWZ14Zezk2R3nplJu/jXfZ
+	Qh0qVge/uZh/a1MtNRfgxxJjPAVB5cHoTGjCwYri+I7X+ow0hN70kMcDcO5evv8Inps=
+X-Gm-Gg: AYBFou11R9V4wfHl0wnPX1SwyxMeXDbAKI34FI0k3HHWqGI8ejTEp3OxOy0asjAnAxV
+	YbCoOl7Syo1BOYhzO60NS+ylwrtj0CESSQnPJI33GI260ogcXJncDMjISYY9dCrruxbWSHopQ4n
+	hmu/A+Hp9WgvFoohPs3EEFcBRFYsAxcfcWclWmXnW73qQj3TXiAMjoSt9KQLbqqiVeKD0KHOCmp
+	PxBAsEicEJml6ZmYSSoPJ88/rmxJvsNDeVASvC93LfYHl/DQ0SJx0LTKInMu60cGPqthIbfdo3s
+	DjpeXuOYSY9KDmF6Hd3iX3rBwOOONyDjkewLryjCBiOkUlA4WzVutgZ1zbgxCaGRIXZw50HwbrD
+	8FuQLq8iphOin8bVsSn5/2o5H3ONOLhq+al1LG6z/V5YkELOka+JIKp59YtxwPYssv+IHapUdDw
+	btnY22G/Dn2KuHeu1ZRx/fxbTsfz7gfAXcPNqZRwMnfX+b67HMNXYEESs3Ya5m48fJENcRhTEY6
+	oEGHamp87ERr8k3x+zABgryAFFcxo8ytkrdOtIUpnfJOuDmb0L55nH6sXzqJ8uQsPpu2/iWIk7/
+	f6UXWzEuA/UkotxNZ63pxlLAh/LNDeumNDQCnA==
+X-Received: by 2002:a05:620a:1a11:b0:93e:5ef8:c794 with SMTP id af79cd13be357-93f6f9648bbmr497429285a.38.1792770134059;
+        Fri, 23 Oct 2026 08:42:14 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-94047b362a5sm45129985a.33.2026.10.23.08.42.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 08:42:13 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xKHPI-0000000Gn79-3Zzp;
+	Fri, 23 Oct 2026 12:42:12 -0300
+Date: Fri, 23 Oct 2026 12:42:12 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org,
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com,
+	drdeeglaze@gmail.com, James.Bottomley@hansenpartnership.com,
+	aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com,
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com,
+	ankita@nvidia.com, suzuki.poulose@arm.com, kas@kernel.org,
+	rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+	dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+Message-ID: <20261023154212.GJ3977851@ziepe.ca>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <yq5a7bjajaco.fsf@kernel.org>
+ <atooh7uO2RauUTfY@FV6GYCPJ69>
+ <yq5av76sj10a.fsf@kernel.org>
+ <20261023142038.GE3977851@ziepe.ca>
+ <yq5ase1wiggs.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -125,413 +116,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF0001885E:EE_|DS7PR12MB5720:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cf7f2df-f859-43cd-01c3-08df311c1117
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|376014|7416014|36860700016|261021121427099003|11063799006|261021123027099003|56012099006|10067099003|3023799007|261009223027099003|22082099003|18002099003|6133799003|261022105027099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	Nafwm4Cugi71zuUJfvURc7u34Fn/qytJue64AqD0kwkzHo3M9mw/64kx8Q1trxBiQAXhjz9sp4ZdJSlhzxtMH2Vbn5WjfDj0SuyqKjbTvSLc61A0+WL6WnjOKXGvAkA3wSQ6lThiYnN1tMBZLWfbZ50ePntQULXGM7ZLSFQLheFnRaZn6gRASXobUMHT34ChFnKMmKuCzgEV1ZPqj12v4zCIjKI1tP75R49z8PBwWfViSZCUObCIKhqWXu15MxCEl9IhwAljNDZPP2iYZ3KzgU2tn1BHukTJGk3k7+VEGaDo2QSTHXnuJasPMRxKnFVeOiJ2tNmA+XdquzDBYRHUP/W5NzplKkfcBK4PzYnWaJf7LBgBQnp+/LeZp0GOEP78lsyYNq08FyNj5iDTuDhUSW0HgjMpY8lTlEWYU1Fqkx89ygHi34zY0SlJ5L+EVCKOQScjZlXUW5Z3ooxaFkzOZ4pHEy+pNum89n3FhrZe7LIVVFVB8BanpY6cVeovMKynmlMF18u2n4Bpepwmt2QtATyxRMoAgwrJKOdZmS3uq2xz/QIN/HkAhgHGSKDnFYJjWm2DU7cKogHtMckmCsqmg+rU8y5l/V0UMjzzMNw/0BhVgS4uHK3C1NmElCuO3/imN6QmO0ZPxswOq/ZinxQTmrfXAC4z/m+l1wixgbgezdpwCJ59tsuQmmQl/mue4NtcBvvRrcIiIjuJIoE8NzKHCw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(376014)(7416014)(36860700016)(261021121427099003)(11063799006)(261021123027099003)(56012099006)(10067099003)(3023799007)(261009223027099003)(22082099003)(18002099003)(6133799003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	rOckH//4rRyQFfUkuL/ReieXMTsO1Vy6BPsEBzyAxjQrWIXc4Nrrp3eIpHBxuK1BxP3YEDicvIu5YrHDmlJLc8hd0QCcH1R1Q3u9WXNAT9rJj+gdUvvjiTEn7YV4PI2J8qVFJQVUDG31vkdYKaK0QA+IUmBXsHl7PdMshzUP2a1sm1G//HOx3k+h9nr7gYxDzubAjs8XnNWpIdNffER6q8aCRPZgJ8D7GoAxX3WQHKWGNApP16Gkqviy2hnc6yngQ2tOc4zOH7Fy2btvGLHfsElizpqIn+bwrBtdQOR1Ll5SsnOMyxONbsS9jkhFrZGu9FuYnFyhUSpMq4crJmwSFXHK2hqWpEByeMXUCNy2DZBml6K3wcd3jyBI8rOD/JtCbkBe5bJIahWGMJLxJq7w1HlzT8UyTtNYXUTKbGTAGJlGYeH6ODBwoeWt5yQmov0q
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 15:41:12.4795
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cf7f2df-f859-43cd-01c3-08df311c1117
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF0001885E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5720
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5ase1wiggs.fsf@kernel.org>
 
-pci::Driver now provides reset, bind, error, pm callbacks, vfio::pci
-now can reuse pci adapter's callback instead of maintain its own
-separate adapter
+On Fri, Oct 23, 2026 at 08:58:35PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> 
+> > On Fri, Oct 23, 2026 at 01:34:53PM +0530, Aneesh Kumar K.V wrote:
+> >
+> >> CCA currently takes the device identity index during pdev_create. I am
+> >> investigating how to retrieve the certificate chains for all slots. For
+> >> now, I have implemented the sequence below.
+> >
+> > Yeah, I think the consensus at LPC was this may be a gap in CCA.
+> 
+> I checked with Alexey, and if I understand him correctly, TIO also needs
+> to establish eight separate connections to retrieve the certificate
+> chains.
 
-Remove vfio::pci::Adapter and its callback dispatch. Expose VFIO
-registration and runtime PM operations for drivers using pci::Adapter.
+Lovely!
 
-Move the DMA ownership and SR-IOV checks to registration, and require
-VFIO drivers to install PM callbacks when CONFIG_PM is enabled.
+> For now, I am trying Jiri's suggestion: use Rust SPDM to fetch the
+> certificate chain and return it via evidence-get. evidence-accept then
+> does pdev-create with the specified slot number and compares the
+> evidence data returned by the RMM with the value cached by Rust SPDM. If
+> they match, it uses the cached value for set_pub_key. This seems to be
+> working. (FVP only supports slot 0, hence only one blob-instance)
 
-Suggested-by: Zhi Wang <zhiw@nvidia.com>
-Signed-off-by: Simon Song <xinmengs@nvidia.com>
----
- rust/kernel/vfio/pci.rs | 287 +++++++---------------------------------
- 1 file changed, 51 insertions(+), 236 deletions(-)
+That's a pretty good idea, and works for every arch! Maybe that is
+the best long term direction.
 
-diff --git a/rust/kernel/vfio/pci.rs b/rust/kernel/vfio/pci.rs
-index 0fbc6a920dc..f3e68a3d18c 100644
---- a/rust/kernel/vfio/pci.rs
-+++ b/rust/kernel/vfio/pci.rs
-@@ -18,11 +18,8 @@
-     alloc::allocator::Kmalloc,
-     bindings,
-     device,
--    device_id::RawDeviceIdIndex,
--    driver,
-     error::{
-         from_err_ptr,
--        from_result,
-         to_result, //
-     },
-     mm::virt::VmaRef,
-@@ -38,8 +35,7 @@
-         NotThreadSafe,
-         Opaque, //
-     },
--    uaccess::UserPtr,
--    ThisModule, //
-+    uaccess::UserPtr, //
- };
- use core::{
-     alloc::Layout,
-@@ -98,120 +94,6 @@ impl DeviceContext for Ioctl {}
- impl DeviceContext for Read {}
- impl DeviceContext for GetRegionInfo {}
- 
--/// Connect a PCI driver's private data to its VFIO registration.
--///
--/// # Safety
--///
--/// `registration` must always select this PCI device's sole registration and must not sleep.
--/// The driver must use [`Adapter`], and its `probe` and `unbind` callbacks must not enable SR-IOV.
--pub unsafe trait Driver: for<'a> pci::Driver<Data<'a>: Sync> + Sized {
--    /// The VFIO operations implemented by this driver.
--    type Operations: Operations;
--
--    /// Select the registration without blocking or changing its identity.
--    fn registration<'a, 'bound>(
--        data: Pin<&'a Self::Data<'bound>>,
--    ) -> &'a Registration<'bound, Self::Operations>;
--}
--
--/// Register a VFIO PCI variant driver and coordinate its callback lifetimes.
--///
--/// The adapter publishes complete private data before registering VFIO, and unregisters VFIO
--/// before calling the driver's optional `unbind` callback or removing private data. SR-IOV
--/// enable and disable callbacks are not supported by this adapter.
--pub struct Adapter<D: Driver>(D);
--
--// SAFETY: The C PCI driver embeds `device_driver` at the stated offset; its private data is
--// the pinned `D::Data` installed by this adapter's probe callback.
--unsafe impl<D: Driver> driver::DriverLayout for Adapter<D> {
--    type DriverType = bindings::pci_driver;
--    type DriverData<'bound> = D::Data<'bound>;
--    const DEVICE_DRIVER_OFFSET: usize = core::mem::offset_of!(Self::DriverType, driver);
--}
--
--// SAFETY: The driver core unregisters only a successfully registered, still-live PCI driver.
--unsafe impl<D: Driver> driver::RegistrationOps for Adapter<D> {
--    unsafe fn register(
--        pdrv: &Opaque<Self::DriverType>,
--        name: &'static CStr,
--        module: &'static ThisModule,
--    ) -> Result {
--        build_assert!(
--            D::DRIVER_MANAGED_DMA,
--            "VFIO drivers must manage DMA ownership"
--        );
--        #[cfg(CONFIG_PCI_IOV)]
--        build_assert!(
--            !D::HAS_SRIOV_ENABLE && !D::HAS_SRIOV_DISABLE,
--            "VFIO PCI variant drivers do not support SR-IOV configuration"
--        );
--
--        // SAFETY: The driver is being initialized and is not yet visible to the PCI core.
--        unsafe {
--            (*pdrv.get()).name = name.as_char_ptr();
--            (*pdrv.get()).probe = Some(Self::probe_callback);
--            (*pdrv.get()).remove = Some(Self::remove_callback);
--            (*pdrv.get()).id_table = D::ID_TABLE.as_ptr();
--            (*pdrv.get()).driver_managed_dma = D::DRIVER_MANAGED_DMA;
--            (*pdrv.get()).err_handler = &PciCallbacks::<D>::ERROR_HANDLERS;
--            (*pdrv.get()).driver.pm = &PciCallbacks::<D>::PM_OPS;
--        }
--
--        // SAFETY: The caller keeps this initialized driver pinned until unregistration.
--        to_result(unsafe {
--            bindings::__pci_register_driver(pdrv.get(), module.as_ptr(), name.as_char_ptr())
--        })
--    }
--
--    unsafe fn unregister(pdrv: &Opaque<Self::DriverType>) {
--        // SAFETY: The registration contract guarantees a live, registered PCI driver.
--        unsafe { bindings::pci_unregister_driver(pdrv.get()) };
--    }
--}
--
--impl<D: Driver> Adapter<D> {
--    extern "C" fn probe_callback(
--        pdev: *mut bindings::pci_dev,
--        id: *const bindings::pci_device_id,
--    ) -> c_int {
--        // SAFETY: PCI supplies a live device and holds its lock throughout probe.
--        let pdev = unsafe { &*pdev.cast::<pci::Device<device::CoreInternal<'_>>>() };
--        // SAFETY: `DeviceId` is a transparent wrapper with no additional invariants.
--        let id = unsafe { &*id.cast::<pci::DeviceId>() };
--        // SAFETY: The ID comes from `D::ID_TABLE`, a dynamic ID with matching driver_data,
--        // or the wildcard ID whose driver_data is zero.
--        let info = unsafe { id.info_unchecked_opt::<D::IdInfo>() };
--
--        from_result(|| {
--            pdev.as_ref().set_drvdata(D::probe(pdev, info))?;
--            // SAFETY: The fully initialized, pinned `D::Data` was just installed above.
--            let data = unsafe { pdev.as_ref().drvdata_borrow::<D::Data<'_>>() };
--            // SAFETY: `D` selects this device's sole registration. Private data is installed
--            // before VFIO can enable runtime PM.
--            if let Err(error) = unsafe { D::registration(data).register() } {
--                // SAFETY: Failed VFIO registration has unwound its callbacks. In particular,
--                // rejecting a PF with enabled VFs must not disable those VFs during rollback.
--                drop(unsafe { pdev.as_ref().drvdata_obtain::<D::Data<'_>>() });
--                return Err(error);
--            }
--            Ok(0)
--        })
--    }
--
--    extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
--        // SAFETY: PCI supplies a live device under its lock, after quiescing runtime PM.
--        let pdev = unsafe { &*pdev.cast::<pci::Device<device::CoreInternal<'_>>>() };
--        // SAFETY: A successful probe installed this device's complete private data.
--        let data = unsafe { pdev.as_ref().drvdata_borrow::<D::Data<'_>>() };
--        // SAFETY: Probe registered this object. Private data and all its fields remain live
--        // while VFIO unregister drains VFIO, VGA and PM callbacks.
--        unsafe { D::registration(data).unregister() };
--        D::unbind(pdev, data);
--        // SAFETY: Callbacks have drained, so private data can now be removed and destroyed.
--        drop(unsafe { pdev.as_ref().drvdata_obtain::<D::Data<'_>>() });
--    }
--}
--
- /// The trait for VFIO PCI variant driver implementations.
- ///
- /// Unoverridden callbacks delegate to the corresponding PCI core operation.
-@@ -848,109 +730,6 @@ unsafe impl<T: Operations> Sync for Device<T> {}
-     }
- }
- 
--/// Callbacks that recover the VFIO device through its PCI driver's private data.
--struct PciCallbacks<D>(PhantomData<D>);
--
--impl<D: Driver> PciCallbacks<D> {
--    /// # Safety
--    ///
--    /// `dev` must belong to `D`. Its private data must remain installed and valid for `'a`,
--    /// or not yet be installed. The caller must exclude its removal; runtime PM callbacks
--    /// use their own synchronization rather than the PCI device lock.
--    unsafe fn registration<'a>(
--        dev: *mut bindings::device,
--    ) -> Option<&'a Registration<'a, D::Operations>> {
--        // SAFETY: The callback supplies a live device bound to `D`.
--        let data = unsafe { bindings::dev_get_drvdata(dev) };
--        if data.is_null() {
--            return None;
--        }
--        // SAFETY: PCI published a fully initialized, pinned `D::Data`. The caller prevents
--        // its removal, and `D::Data: Sync` permits shared runtime PM callback borrows.
--        let data = unsafe { Pin::new_unchecked(&*data.cast::<D::Data<'_>>()) };
--        Some(D::registration(data))
--    }
--
--    unsafe extern "C" fn reset_prepare(pdev: *mut bindings::pci_dev) {
--        // SAFETY: PCI holds the device lock across reset and registration teardown.
--        let Some(reg) = (unsafe { Self::registration(&raw mut (*pdev).dev) }) else {
--            return;
--        };
--        // SAFETY: The registration owns callback data throughout bind and unbind.
--        unsafe { reg.dev.registration_data_with(D::Operations::reset_prepare) };
--    }
--
--    unsafe extern "C" fn reset_done(pdev: *mut bindings::pci_dev) {
--        // SAFETY: PCI holds the device lock across reset and registration teardown.
--        let Some(reg) = (unsafe { Self::registration(&raw mut (*pdev).dev) }) else {
--            return;
--        };
--        // SAFETY: The registration owns callback data throughout bind and unbind.
--        let result = unsafe { reg.dev.registration_data_with(D::Operations::reset_done) };
--        if let Err(error) = result {
--            // SAFETY: The PCI callback keeps its embedded device alive.
--            let dev = unsafe { device::Device::<device::Normal>::from_raw(&raw mut (*pdev).dev) };
--            dev_err!(dev, "VFIO device reset failed: {:?}\n", error);
--            // SAFETY: The initialized VFIO device remains alive for this callback.
--            unsafe {
--                bindings::vfio_pci_core_aer_err_detected(reg.dev.core_device());
--            }
--        }
--    }
--
--    unsafe extern "C" fn error_detected(
--        pdev: *mut bindings::pci_dev,
--        _state: bindings::pci_channel_state_t,
--    ) -> bindings::pci_ers_result_t {
--        // SAFETY: PCI serializes error callbacks with binding and unbinding.
--        let Some(reg) = (unsafe { Self::registration(&raw mut (*pdev).dev) }) else {
--            return bindings::pci_ers_result_PCI_ERS_RESULT_CAN_RECOVER;
--        };
--        // SAFETY: The registered device owns its error notification state.
--        unsafe { bindings::vfio_pci_core_aer_err_detected(reg.dev.core_device()) }
--    }
--
--    #[cfg(CONFIG_PM)]
--    unsafe extern "C" fn runtime_suspend(dev: *mut bindings::device) -> c_int {
--        // SAFETY: Registration enables PM only after private data is installed. PCI remove
--        // and VFIO unregister quiesce runtime PM before private data can be removed.
--        let Some(reg) = (unsafe { Self::registration(dev) }) else {
--            return EBUSY.to_errno();
--        };
--        // SAFETY: This is the runtime-suspend callback for the initialized core device.
--        unsafe { bindings::vfio_pci_core_runtime_suspend(reg.dev.core_device()) }
--    }
--
--    #[cfg(CONFIG_PM)]
--    unsafe extern "C" fn runtime_resume(dev: *mut bindings::device) -> c_int {
--        // SAFETY: Private data remains installed until VFIO unregister has resumed the
--        // device and quiesced PM, including registration failure.
--        let Some(reg) = (unsafe { Self::registration(dev) }) else {
--            return ENODEV.to_errno();
--        };
--        // SAFETY: This is the runtime-resume callback for the initialized core device.
--        unsafe { bindings::vfio_pci_core_runtime_resume(reg.dev.core_device()) }
--    }
--
--    const ERROR_HANDLERS: bindings::pci_error_handlers = bindings::pci_error_handlers {
--        error_detected: Some(Self::error_detected),
--        mmio_enabled: None,
--        slot_reset: None,
--        reset_prepare: Some(Self::reset_prepare),
--        reset_done: Some(Self::reset_done),
--        resume: None,
--        cor_error_detected: None,
--    };
--
--    const PM_OPS: bindings::dev_pm_ops = bindings::dev_pm_ops {
--        #[cfg(CONFIG_PM)]
--        runtime_suspend: Some(Self::runtime_suspend),
--        #[cfg(CONFIG_PM)]
--        runtime_resume: Some(Self::runtime_resume),
--        ..pin_init::zeroed()
--    };
--}
--
- /// Build the `vfio_device_ops` vtable for a variant driver `T`.
- ///
- /// Open and I/O callbacks dispatch to `T`'s trait implementation.
-@@ -1007,9 +786,8 @@ macro_rules! build_ops {
- /// Owns both the VFIO device reference and the registration data, tying
- /// resource lifetimes to the PCI binding scope `'a`.
- ///
--/// Prepare this owner during probe. [`Adapter`] registers it after private data is installed
--/// and unregisters it before private data is removed. Dropping the owner releases the VFIO
--/// allocation and registration data after callbacks have drained.
-+/// Prepare this owner during probe, register it in [`pci::Driver::bind`], and unregister it
-+/// in [`pci::Driver::unbind`] before releasing any driver data.
- pub struct Registration<'a, T: Operations> {
-     dev: ARef<Device<T>>,
-     _reg_data: Pin<KBox<<T::RegistrationData as ForLt>::Of<'a>>>,
-@@ -1034,8 +812,8 @@ impl<'a, T: Operations> Registration<'a, T> {
-     /// The device must have been allocated during this parent binding and never registered.
-     /// No other `Registration` may own or publish callback data for this device until this
-     /// owner is dropped.
--    /// The caller must hold the PCI device lock. The owner must be stored in the private data
--    /// of a driver registered through [`Adapter`] and selected by [`Driver::registration`].
-+    /// The caller must hold the PCI device lock. Store the owner in the driver's private data
-+    /// and keep it alive until unregistration has completed.
-     pub unsafe fn new(
-         pdev: &'a pci::Device<device::Core<'_>>,
-         dev: &Device<T>,
-@@ -1064,10 +842,25 @@ pub unsafe fn new(
-     ///
-     /// # Safety
-     ///
--    /// Call once under the PCI device lock, after installing complete driver data whose
--    /// [`Driver::registration`] selector returns `self`. On success, unregister before
--    /// private data is removed or destroyed.
--    unsafe fn register(&self) -> Result {
-+    /// Call once from the bound PCI driver `D`'s `bind` callback, with `self` in its installed
-+    /// driver data. Its PCI reset, error and runtime-PM callbacks must delegate to this owner.
-+    /// After success, unregister before any later bind error or driver-data teardown.
-+    pub unsafe fn register<D: pci::Driver>(&self) -> Result {
-+        build_assert!(
-+            D::DRIVER_MANAGED_DMA,
-+            "VFIO drivers must manage DMA ownership"
-+        );
-+        #[cfg(CONFIG_PM)]
-+        build_assert!(
-+            D::PM_OPS.is_some(),
-+            "VFIO drivers must install runtime PM callbacks"
-+        );
-+        #[cfg(CONFIG_PCI_IOV)]
-+        build_assert!(
-+            !D::HAS_SRIOV_ENABLE && !D::HAS_SRIOV_DISABLE,
-+            "VFIO PCI variant drivers do not support SR-IOV configuration"
-+        );
-+
-         // SAFETY: The caller has published complete private data under the PCI device lock;
-         // it remains accessible during runtime PM setup.
-         to_result(unsafe { bindings::vfio_pci_core_register_device(self.dev.core_device()) })
-@@ -1077,9 +870,10 @@ unsafe fn register(&self) -> Result {
-     ///
-     /// # Safety
-     ///
--    /// Call once after successful registration, with the PCI device lock held and private
--    /// data still installed. No private-data fields may have been destroyed.
--    unsafe fn unregister(&self) {
-+    /// Call once after successful registration, with the PCI device lock held and all driver
-+    /// data still installed. Do not call after registration failed: that can disable VFs
-+    /// belonging to a PF which VFIO refused to bind.
-+    pub unsafe fn unregister(&self) {
-         // SAFETY: The caller keeps private data installed while unregistration drains VFIO,
-         // VGA and runtime PM callbacks. No field of the enclosing data is being destroyed.
-         unsafe { bindings::vfio_pci_core_unregister_device(self.dev.core_device()) };
-@@ -1102,12 +896,33 @@ pub fn error_detected(&self) -> bindings::pci_ers_result_t {
-         // SAFETY: This owner keeps the initialized VFIO core device alive.
-         unsafe { bindings::vfio_pci_core_aer_err_detected(self.dev.core_device()) }
-     }
-+
-+    /// Prepare the VFIO core device for runtime suspend.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Only call from the parent PCI driver's runtime-suspend callback.
-+    #[cfg(CONFIG_PM)]
-+    pub unsafe fn runtime_suspend(&self) -> Result {
-+        // SAFETY: The caller supplies the runtime-suspend callback context.
-+        to_result(unsafe { bindings::vfio_pci_core_runtime_suspend(self.dev.core_device()) })
-+    }
-+
-+    /// Complete the VFIO core device's runtime resume.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Only call from the parent PCI driver's runtime-resume callback.
-+    #[cfg(CONFIG_PM)]
-+    pub unsafe fn runtime_resume(&self) -> Result {
-+        // SAFETY: The caller supplies the runtime-resume callback context.
-+        to_result(unsafe { bindings::vfio_pci_core_runtime_resume(self.dev.core_device()) })
-+    }
- }
- 
- impl<T: Operations> Drop for Registration<'_, T> {
-     fn drop(&mut self) {
--        // SAFETY: The adapter unregisters before removing private data. Failed or unattempted
--        // registration also leaves no callbacks behind.
-+        // SAFETY: The driver unregistered in `unbind`, or registration did not succeed.
-         unsafe { *self.dev.reg_data.get() = NonNull::dangling() };
-     }
- }
--- 
-2.43.7
+IDK about all this "Caching" stuff, I'm not sure I love the name
+"Cache" to refer to the security important reference certificate
+bundles. It should have a stronger name to reflect how critical it is
+in the entire security design of SPDM. You select the certificates
+once and everything following must match that or something bad has
+happened. It is effectively a key part of the channel binding.
 
+But yes, RMM is sort of backwards here, the slot number should come
+with information about the certificates, but I think this is fine to
+have RMM fetch them again and then we just confirm everything matches
+the kernel's target. If we don't do a get prior to connecting then the
+kernel would just adopt the RMM's result as the target certificate
+chain for the slot?
+
+It certainly seems like it should be all sketched out and the uAPI
+confirmed. Given the state of things I don't see an issue with a slot
+0 only initial configuration (ie EOPNOTSUPP the certificate gets) so
+long as the long term resolution is clear.
+
+Which is an interesting question for Jiri on CTLV, one of the things
+we have in RDMA is runtime schema pruning. Based on runtime device
+capabilities parts of the schema can be disabled. Can we get there
+with CTLV too? Then introspection could return if the underlying
+implementation supports some of this stuff..
+
+Jason
