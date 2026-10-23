@@ -1,55 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792767864;
-	b=10F/2oFUdv6bQc264n+guizs/6IYeYW1QWk17eFEuEfW9Rpp04f9t/k0kO19siCjF6Zb
-	 DsZnpZj9u7E+l+BkQyPl4dlLtx+omu0kt1njf9QhxO7f7+HUYe+tRV9mFtOQ0Y50GOVmP
-	 VR5EXY891QJokzafctMsfbqRaD+dP06lIQfgd2hSbRK4yWWijrxiFctjVpRdCuaJXxd7h
-	 1VWYUoTDw/pun6foyAK4iIhUJQVqFvB+Hqs7YuLONqRLr4JvfWnIhCw+CQVlxjGLc748O
-	 rmXj1kQhDg9OUWEXJpo8yz2y3aYSFo3H2+Z/iuJcbFdBot4ii466kEQGg1MmwJe2lDA==
+	t=1792767976;
+	b=u3LhJX1GIxGln8FaLORcrbHG/VPeKrhu4JjX2YCWAW2yvHg4Jb9UfcukRvJgjCwuja9d
+	 xB7SIDSExsaGZeDT6sI1Z1HIJAfOoBhsXKkj8/MFPU09Svw+kZmcGHepX6w4pdcJd157K
+	 6x81judvtZSXrERX44J2Ad+nNTM4mzoSF1ZH2njv6hwfTgVmEzEc4+EYrV7pY/YCaLakZ
+	 R7HggdLId8tGWfUM/+ftZxsT6yrjJkAfMv87YTi6I1HUwKM5ewCMlU4xx3wLJNMvWGSbo
+	 +y+hofsJx/PXy6+VfYU7VAoIK8QIeW4o+yOXHi+dxO1WumzwcZWjHFoB6hiJQlVXDIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792767864;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=u0fv7wGzCPLuIrRmUrscALXK3fs5v8cwxjXo0aahob4=;
-	b=n9BJMK0d2zGHsIoykALS4eTJe30wd9QYuXTEVrUPyNksUcFgx1VssfGVltc+eUfitl36
-	 TODmYhb4auA0XU8cF+Ta50mhARYbbvpYKN4Td5iDlKdJhy82XpOjvTSoVcG1v440EAjZb
-	 y3g4wZm9bfgDkWfEEqQgip+W554DGvCSoCKYxRAIoBTCoKnY7VW92hTQpz4yEZJ8BLD8U
-	 vs55vvZkXZII2AriLjJboYfebRJ/ZgcIVRhHbfncoKfxf7Y5GlULyMPQPMnrs3FnfPIsf
-	 xf0c3IBuCsVRr6E1sr7qgh5kcmz8QQ9lqpH4nW59v9k2y67gbzxAROiXl53lDKc6ILg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792767976;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=wz9tOFWt7BhQDze29fB23fRXoLeWs5QHCqP5Z4tBz+E=;
+	b=M6sxRQqZ9x9uB9tA+PYOMQGkHeh4ykPL54IJDd+53c+sfBd9hld0oNfxy28bT5828B+g
+	 Y99QFkCSlrgtOIUYsJobL9V7d9G+KqD+wqiWi+mf+vlVSd78hnbNhHce8ISmpzFWc9bar
+	 RXgBw6LKYv05V69wSU1URndqFGAuDyKfF0XImOk1D8FgefTcG8MpcDJ0tq6k7KPXRERod
+	 c41BhVPEvJyTM0g9G9wqqz++mi2vGbY3bRRFrIlnFCrHfUb/CLwnMw+emWexj8eFCsh0a
+	 TbPWxcTuCMnR9AE4nIpxFmHFH5ym+Riv9IXhZQYAAL/VKK9FwFc4hg7s8NJXStLprqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mxs4b4Vp;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=rY9Eunz7;
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8601606A31A
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9E1606A32C
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 15:06:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C9E1606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mxs4b4Vp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765D91F031E0
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 15:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792767863;
-	bh=u0fv7wGzCPLuIrRmUrscALXK3fs5v8cwxjXo0aahob4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Mxs4b4VpZIA+E+aiA0I6Y7j0UDb0+ayMpDUyqkRFhZSyQ6AwGvRpqVRM4Eos0Awbh
-	 T4zQ5bzkXLwh6n2YDfCWtiK0bStdyVpYepX92s0biKbu8SqXorC0SU2H/TcbLJ29DB
-	 XsVj8wJZe22FGU8SHPG6eUhoXKXYUL7uDTQ4gP4rZ2XkYv0oz4Vc/4ACvYEPuxry9R
-	 yT3nH1XMAmXoJo4ELkdGETBFT3WLxKF2qQOkgLkISGSOFym/Tt8QW18YCwA6CM5oVl
-	 t+4b+tBWJ+dG96qtlZGncwLOmm+rRGpdtqDHtNOm2TiIRBbcw+LyXNR2Gg/WrzSadc
-	 8Q/8D0UcCQODw==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f3c89594cso67378885a.2
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 08:04:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw138sJmQDvBxPgSQxzXGVhwRZHTr9jYL7er+rp0DHVXxGWDLmmyxn66cqKqSyJ3k3cDVk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIseu7eWqsdu43jTD98KKjz0DHnXUZYpa0y6DpVmecVFF1wT03v
-	OawiYv++Q+rHYvnqNjTfqRSC/r15Bmux4hyuuxqkMAfYY2DJMxHmNZ3LsPHdimWOlX1xxyUF+at
-	wZ7MUq2FXQtUHyZ28kuGrauFqBvnUrz8=
-X-Received: by 2002:a05:620a:1a07:b0:93f:33a8:8e99 with SMTP id
- af79cd13be357-93f6f91d470mr470425985a.13.1792767862790; Fri, 23 Oct 2026
- 08:04:22 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=rY9Eunz7
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89e6ddd4554so715510b3a.3
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 08:06:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792767975; x=1793372775; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wz9tOFWt7BhQDze29fB23fRXoLeWs5QHCqP5Z4tBz+E=;
+        b=rY9Eunz7aQZZgNv1E8e5qXPlPd8OfgnrSrMLIR5SR1JMMqv9sK0+qNbBJuaCPBDtCB
+         lfXuWThYUbxke1ygOXvSq7T/Wmv7WWwOtN9G/cSda1Ff443UGstMeMZnw85CUeUSElu5
+         16Kku1zpsf3kUSE1OFs08w/YEqypxtf6it/UHlR/pABBDD2rTXVv9HylxGjjb94IO0LS
+         vuLGe+TqPzSKxKWfKKHGyEBlpIkiwinhqWpQbyr2l72NoZdicmycRtTb46K/Wn1OaPQ/
+         D/mg47rapnmB7jRsc3/Bsu/i8F4PKgf/ZyNpb/b4HZ4xMSdLmbl+75lrHgxkTYJdQYcn
+         WWVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792767975; x=1793372775;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wz9tOFWt7BhQDze29fB23fRXoLeWs5QHCqP5Z4tBz+E=;
+        b=hGrqNvvECT4G6JdOKLLpCJBVPX06Lw5s5zoQffBrE42I/pKzUTqvJE24NmjogPqAqz
+         pO66GZD4x88helihxJ4RwQ2alEZb4w8MoG1qqQdj1jxApUislS88StONMy3eVKFr2IyO
+         Jzq+WqpKPIQVlGz0PqiCTqr7BoVHlzTyD1amFFSX436w8N8aTkhqlgh3avune4ipCCBL
+         SlIIUOCgsfJT3VfAypmzLR4e5AGjzLeLCUDpWzgcWEWRgwqUsYhxjNfUNvWOtxrIs93K
+         cPlHROgFqtyAz6sm9Cjgv58i1haZ/5KGTdCf6dCFAKUKKldiRW2LUUTEHQ1iXW2U2GQI
+         mWzg==
+X-Forwarded-Encrypted: i=1; AKwUvByyfYy7YxlJrHs7TEPihOhAhwuJa2jFCqrLZS0Uhmlz+JP4CcbKSKl1WlL40TXByFvhGas=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLHBYcpWzJmOTGyBVbnQQNUCLbWJBkYkSeo+IU8xIcnoxF113mE
+	bsWVCPiZDmt5PQlLey37qulDj6Zg67HrTI3qffLLm0B0nu1oWQdz4QYCXvQESf4ZRc49UDu25xA
+	LsUbFZg==
+X-Received: from pfww6-n2.prod.google.com ([2002:a05:6a00:8886:20b0:890:ac21:250c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e2a:b0:89f:e1e7:e7e8
+ with SMTP id d2e1a72fcca58-8a2c5e33c76mr2368910b3a.18.1792767975274; Fri, 23
+ Oct 2026 08:06:15 -0700 (PDT)
+Date: Fri, 23 Oct 2026 08:06:14 -0700
+In-Reply-To: <20261023140506.336663-1-borntraeger@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,79 +77,32 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261022223052.646891-1-seanjc@google.com> <20261022223052.646891-4-seanjc@google.com>
-In-Reply-To: <20261022223052.646891-4-seanjc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 23 Oct 2026 08:04:09 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNbieeCQKLjfC4vhaeS_mgFJc3Ex9xKKmKQHL_43j9axw@mail.gmail.com>
-X-Gm-Features: AclHuK8ZFr3SLm5B6kfF7hHd2gH0cRTFJfA9qLmdpH9cNhAFwIHzQjPjX3UFpHs
-Message-ID: <CAO9r8zNbieeCQKLjfC4vhaeS_mgFJc3Ex9xKKmKQHL_43j9axw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] KVM: x86: Recompute EFER.LMA instead of inheriting
- the current value on EFER writes
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com> <20261023140506.336663-1-borntraeger@linux.ibm.com>
+Message-ID: <att35ilyLvAA8gM4@google.com>
+Subject: Re: [PATCH v3 2/2] KVM: selftests: Test that KVM_RUN fails for
+ unresolvable host faults
+From: Sean Christopherson <seanjc@google.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: frankja@linux.ibm.com, imbrenda@linux.ibm.com, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Oct 22, 2026 at 3:31=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Recompute EFER.LMA on bare writes to EFER (via WRMSR or KVM_SET_MSRS)
-> instead of carrying forward the current EFER.LMA.  While it _should_ be
-> impossible for EFER.LMA to end up in an inconsistent state on such a writ=
-e,
-> KVM has had a rash of exactly those bugs, mostly because SVM is quite lax
-> when it comes to consistenty checks, which in turn bleeds into KVM's nest=
-ed
-> SVM implementation.  Retaining the existing EFER is also rather confusing=
-,
-> as understanding why keeping EFER.LMA is correct requires a lot of a prio=
-ri
-> knowledge of both x86-64 and KVM.
->
-> Keep the core concept of the existing logic as a sanity check: WARN and
-> reject the write if the computed EFER.LMA would be toggled, because as
-> described above, that _should_ be impossible.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Fri, Oct 23, 2026, Christian Borntraeger wrote:
+> Add a test in which the guest writes to a shmem-backed memslot beyond
+> the end of the file.  KVM_RUN must fail with -EFAULT.
+> 
+> On x86 the guest enables interrupts, and on s390 the test sets up
+> pfault, so that KVM could handle the fault with an asynchronous page
+> fault.  If KVM mistakes the error for a fault that needs I/O, the vCPU
+> retries the access forever, and the test fails after a timeout.
+> 
+> The test is not built for LoongArch, which handles a failed mapping as
+> an MMIO access.
+> 
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 > ---
->  arch/x86/kvm/msrs.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-> index c3cb1575fe66..41f3ec6eb286 100644
-> --- a/arch/x86/kvm/msrs.c
-> +++ b/arch/x86/kvm/msrs.c
-> @@ -638,8 +638,18 @@ static int set_efer(struct kvm_vcpu *vcpu, u64 efer)
->             (vcpu->arch.efer & EFER_SVME) && !(efer & EFER_SVME))
->                 return 1;
->
-> -       efer &=3D ~EFER_LMA;
-> -       efer |=3D vcpu->arch.efer & EFER_LMA;
-> +       if ((efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu))
-> +               efer |=3D EFER_LMA;
-> +       else
-> +               efer &=3D ~EFER_LMA;
+> I went with Seans name proposal
 
-Does this mean we can effectively revert this patch:
-https://lore.kernel.org/kvm/20260902232028.2767071-3-seanjc@google.com/?
-
-> +
-> +       /*
-> +        * Toggling EFER.LMA on a bare write to EFER should be impossible=
-, as
-> +        * it means KVM allowed architecturally invalid state at some poi=
-nt in
-> +        * the past, i.e. allowed EFER.LMA=3D1 && (!CR0.PG || !CR4.PAE).
-> +        */
-> +       if (WARN_ON_ONCE((efer & EFER_LMA) !=3D (vcpu->arch.efer & EFER_L=
-MA)))
-> +               return 1;
->
->         r =3D kvm_x86_call(set_efer)(vcpu, efer);
->         if (r) {
-> --
-> 2.56.0.257.gf7497c7d27-goog
->
->
+Aww, bummer.  If you posted a faulty_mcfault_face_test, I would absolutely apply
+that and force Paolo to tell me no :-)
