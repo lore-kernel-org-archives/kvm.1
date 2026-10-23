@@ -1,51 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.62
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792738880;
-	b=NK8GUM+nas2+vVBkzdLI3ZncOG097bT+SVDebSyyz+D2rLugGEXF7Jbq4h50g/uPVF9L
-	 qrZsAsygbMgnF1QlTbhQ5fX+AtvH8i5ZTnUkqBkzBRUYbC+jzLB0zcqxmpagLIFgS15ZA
-	 Yl41Eg/B01OzhhinE9nu7er5QPcUtrAETQ8FGVmkcklWaJHyA+ykAW2rPI3jB/M7W0zF0
-	 dg3CXORTJtrI6T3MMsJeeb+QycwAwuTWEo3KtkPEX08snL19toBWoyXrk0lzBCOuBLyTZ
-	 6eczbpJJBqG8NvhVL+TteAoCm08+SXl61rZRP1SAeI5PmlhcLIA1ZX0pn0UhYDNDQNw==
+	t=1792738876;
+	b=puc8zrjorKVk8wZ5GHqO3a4fvUBHsBTgiGNSfkwyDaT/VtpU3d40/ude3FOz/hUG5BHY
+	 XnOSJDROdzGaUALb5+7NJbgmErVw/uBY7HZTq6i9Vr+PGYjaFT0DLhpyb/UU6uICCN8r4
+	 Qt4/IPEaW+5tlK+Fc1+zebpaOiaeKu5X9govVI9pA6NVkH4fZszFrEykQH0BjeOyw5Ws5
+	 t0w6EGPocpKeoBZ3XJzslbOglwjHa6KIhi0szZiqTF/IiZJJ8bEB0ahHSIDwEPUglg1dC
+	 0C9C03xCO902RP4wV711s0FyswSLZ3P2qRTGNSOs/hTYTIQqHIX/Jr7cy9nXfpv6YHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792738880;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792738876;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=IthMuZ/X3+pBoLoIufpj4zbJGn8A/2aYhe0XUm0DWMM=;
-	b=uPoGx3x/mj2MWSDzRScM7gB8pzEiz8lVfcUSEDSa+HYh6KCM4iNNBDuxSijN9OcL0GSR
-	 a/otVnTcnmymSMdXX2fLGjJfrl+iVdZSoZCj6cfaCzSU1WaM5RzEe7kK/pFibIo+yBXWn
-	 H7Wg1Pho/cdraVFsOKW2LtEStQyv8P2q7B9OhKF3KrsBn1rntB0HrjmnY8y6qnEl2pFfP
-	 csOzfAp05IaepPaicD01r/WTaUrYhqpydAlddkuJag35oP0g8vi26uucLMG5wkB2F1CyA
-	 VZfTYp1O02+6absmWuc5yCIJqQOsiHPURdqQkRPSIr4d/yH5uQm+6pZCRa0hK3l5xsw==
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ZaMLjnp9n8JarfzU5Qv1z7FhWJG54NnnFsIG7nhnlMk=;
+	b=bLTFPzhr7RzVvi2G/I/HvuLyiQPR/w4c1HZNfHe0gX049ruAGsK39NAKJKd8RA1gIcHd
+	 0dWAk4irVN/XYpDxS8q0b/Xbh6elY+YRYmnCsLbhNpybxjvu+qzauq04OXU0FjveVR9YY
+	 OMxlwcaBtxbW/8kLJYsKSyVtB16hVU10EgHZZq6VJ0w4gC95XleeWvRbEfoknFLuEvJpG
+	 99jc90tqxtbQSKtuKxt+h0QJ1yzC1SLLDlDV3ofxGr3jch20RrnVNpNBlytH+0aq04CE8
+	 /yvTrKC615yI5aSmZKI7y143go89jvDzehRrOVAw4xrKXuCFb4SWBgvAvFYGwH5M38A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VIIyaJ0S;
-	arc=none smtp.remote-ip=95.215.58.62
-Received: from mta1.migadu.com (out-62.mta1.migadu.com [95.215.58.62])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ml0t4fx0;
+	arc=none smtp.remote-ip=95.215.58.55
+Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE5C606A320
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 07:01:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CE5C606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21A1606A31E
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 07:01:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A21A1606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VIIyaJ0S
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ml0t4fx0
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=bc/l25RHGTThA1qU58knnGQTtBxP0XgtC5Ldu46NdMg=;
+DKIM-Signature: a=rsa-sha256; bh=gXiFoqCU+mSVzPqh7WXxvdn726uaIR10TpfwEXtrPEk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792738877; v=1; x=1793343677;
- b=VIIyaJ0Sw52+V97m1HKFMIqSa8yNktq8sfhmwLCLfRwHTvhwV0dPleik4OXIPg2DcDAfVuTs
- yVRIUsm/0QDbsndkPZ8u3CEHzlCuhbWSoLIFMxsl3QiNzNSTJBfnt8tWlqqrFHZzL9tRocntdjZ
- bLk6ry6z00cJbZ/RFAUTs7Mo=
+ t=1792738872; v=1; x=1793343672;
+ b=Ml0t4fx0EOmjEyn747M6bRSiKuepLQMvLWPd33LA1eO1ftU0oJGhd5nREZfpobsl6DEH/qZj
+ lKec6wcJzax1hBxC83N43vCnHwpFkSYeWQrd7on8GJGXCbdRVsdV8nwgXxKTx7gEgP9sLxDXeMt
+ 71ChShlbKbZ1exksSkOs1xug=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c1557c2947e98bd9;
-	Fri, 23 Oct 2026 07:01:16 +0000
-X-Mizu-Trace-ID: c1557c2947e98bd9
+Received: by smtp.migadu.com with ESMTPS id 399763199c770a61;
+	Fri, 23 Oct 2026 07:01:12 +0000
+X-Mizu-Trace-ID: 399763199c770a61
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -65,12 +64,10 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
-Date: Fri, 23 Oct 2026 08:01:09 +0100
-Message-ID: <20261023070110.1833446-2-fuad.tabba@linux.dev>
+Subject: [PATCH 0/2] KVM: arm64: Stop advertising FEAT_LS64_ACCDATA to guests
+Date: Fri, 23 Oct 2026 08:01:08 +0100
+Message-ID: <20261023070110.1833446-1-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261023070110.1833446-1-fuad.tabba@linux.dev>
-References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,82 +79,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 58ce78667a641 ("arm64: Add support for FEAT_{LS64,
-LS64_V}"), a guest sees the host's ID_AA64ISAR1_EL1.LS64, but KVM only
-enables the FEAT_LS64 and FEAT_LS64_V instructions in HCRX_EL2. On a
-host with FEAT_LS64_ACCDATA, a guest's ST64BV0 therefore traps and hits
-the WARN_ON_ONCE() in handle_other(). ACCDATA_EL1 isn't trapped or
-context-switched either, so every guest on that CPU shares it.
+Hi folks,
 
-Rather than support FEAT_LS64_ACCDATA, which requires ACCDATA_EL1 to be
-context-switched, cap the field at LS64_V. The guest's ACCDATA_EL1
-accesses then UNDEF. This hides FEAT_LS64WB too, as it implies
-FEAT_LS64_ACCDATA.
+On a host with FEAT_LS64_ACCDATA, KVM advertises ST64BV0 and ACCDATA_EL1
+to guests but supports neither. The first patch caps
+ID_AA64ISAR1_EL1.LS64 at LS64_V. A VM saved on an older kernel can carry
+any level up to the host's, so the patch still accepts those levels from
+the VMM, capped at LS64_V, and the VM restores. The second patch moves
+LS64 out of set_id_regs' generic table into a test of its own, since the
+table's invalid value is now one of those levels. It carries Cc: stable
+as well, because a stable tree that takes the first patch alone fails
+the set_id_regs selftest on an LS64_ACCDATA host.
 
-A VM saved on an older kernel can carry any level up to the host's, so
-keep accepting those from the VMM, capped the same way. One saved at
-LS64_ACCDATA or above restores at LS64_V.
+Tested on the FVP AEM with arm_v8_7_accelerator_support_level set to 3
+(LS64_ACCDATA) and 4 (LS64WB). Unpatched, on a VHE host, a guest's
+ST64BV0 hits the WARN in handle_other(). A second VM also reads the
+ACCDATA_EL1 value the first one wrote, once cpuidle.off=1 stops the
+FVP's idle states from powering the CPU down. Patched, on VHE, nVHE and
+protected-mode hosts, ST64BV0 and the ACCDATA_EL1 accesses UNDEF, and
+set_id_regs passes.
 
-Fixes: 58ce78667a641 ("arm64: Add support for FEAT_{LS64, LS64_V}")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arch/arm64/kvm/sys_regs.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+The cap alone would fix the bug, but a VM saved on an older kernel
+would then fail to restore on a patched kernel. 6685f5d572c2 ("KVM:
+arm64: Disable MPAM visibility by default and ignore VMM writes")
+solved the same problem for MPAM: it hid the field from guests, but
+kept accepting the value older kernels exposed.
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 44aae52c473d7..7801166991b12 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1958,6 +1958,9 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
- 				 ID_AA64ISAR1_EL1_API |
- 				 ID_AA64ISAR1_EL1_GPA |
- 				 ID_AA64ISAR1_EL1_GPI);
-+
-+		/* ACCDATA_EL1 isn't context-switched, so no FEAT_LS64_ACCDATA */
-+		val = ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64ISAR1_EL1, LS64, LS64_V);
- 		break;
- 	case SYS_ID_AA64ISAR2_EL1:
- 		if (!vcpu_has_ptrauth(vcpu))
-@@ -2403,6 +2406,22 @@ static int set_id_aa64pfr2_el1(struct kvm_vcpu *vcpu,
- 	return set_id_reg(vcpu, rd, user_val);
- }
- 
-+static int set_id_aa64isar1_el1(struct kvm_vcpu *vcpu,
-+				const struct sys_reg_desc *rd, u64 user_val)
-+{
-+	u64 hw_val = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
-+	u64 ls64_mask = ID_AA64ISAR1_EL1_LS64_MASK;
-+
-+	/*
-+	 * Older kernels let userspace set LS64 up to the host's level, so
-+	 * keep accepting those values, capped at LS64_V.
-+	 */
-+	if ((user_val & ls64_mask) <= (hw_val & ls64_mask))
-+		user_val = ID_REG_LIMIT_FIELD_ENUM(user_val, ID_AA64ISAR1_EL1, LS64, LS64_V);
-+
-+	return set_id_reg(vcpu, rd, user_val);
-+}
-+
- /*
-  * Allow userspace to de-feature a stage-2 translation granule but prevent it
-  * from claiming the impossible.
-@@ -3428,10 +3447,11 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 
- 	/* CRm=6 */
- 	ID_WRITABLE(ID_AA64ISAR0_EL1, ~ID_AA64ISAR0_EL1_RES0),
--	ID_WRITABLE(ID_AA64ISAR1_EL1, ~(ID_AA64ISAR1_EL1_GPI |
--					ID_AA64ISAR1_EL1_GPA |
--					ID_AA64ISAR1_EL1_API |
--					ID_AA64ISAR1_EL1_APA)),
-+	ID_FILTERED(ID_AA64ISAR1_EL1, id_aa64isar1_el1,
-+		    ~(ID_AA64ISAR1_EL1_GPI |
-+		      ID_AA64ISAR1_EL1_GPA |
-+		      ID_AA64ISAR1_EL1_API |
-+		      ID_AA64ISAR1_EL1_APA)),
- 	ID_WRITABLE(ID_AA64ISAR2_EL1, ~(ID_AA64ISAR2_EL1_RES0 |
- 					ID_AA64ISAR2_EL1_APA3 |
- 					ID_AA64ISAR2_EL1_GPA3)),
+Based on Linux 7.3-rc3 (fd73f4a665989). Patch 2 conflicts with
+00e309933879c, now in kvmarm/fixes and kvmarm/next, on the test count.
+The resolution is:
+
+  -	test_cnt = 4 + MPAM_IDREG_TEST + MTE_IDREG_TEST;
+  +	test_cnt = 4 + MPAM_IDREG_TEST + MTE_IDREG_TEST + LS64_IDREG_TEST;
+
+Cheers,
+/fuad
+
+Fuad Tabba (2):
+  KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+  KVM: arm64: selftests: Test ID_AA64ISAR1_EL1.LS64 on its own
+
+ arch/arm64/kvm/sys_regs.c                     | 28 +++++++++--
+ .../testing/selftests/kvm/arm64/set_id_regs.c | 49 ++++++++++++++++++-
+ 2 files changed, 71 insertions(+), 6 deletions(-)
+
+
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
 -- 
 2.47.3
 
