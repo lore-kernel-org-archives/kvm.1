@@ -1,114 +1,141 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792763419;
-	b=i/iBF9wLiCcqw/gW2kS9wIvu0kwyXJsgmLut9h7o7MRz45bx94wcUn35SEJWm/wOHubF
-	 y8nt7jXXMIsYaKa2hisWctqYIHRshktb52qYPn+TmGFVpkniNu+O8S0qlZwbuP4kbGOzQ
-	 nlrDG5nVfjAvAIu8qWRwVALeDR59rwjGflwYo9YYkEzA6Jg/S24A8gQOWS/PG8q2Zn1x3
-	 jA1qm3EOBo5OVUoeVFwt24Kk++u9IZvodwQP0OeVm22DduCYWbBmGJjo85TLxTHLjP8Ph
-	 p/rKS/RbVO/LyIcsHNIsTr95vzKPwSEgKaU0e0J8WzLoBMF879DtZ0DGGUYXn8VcwmQ==
+	t=1792763700;
+	b=icc7oBHKzFJOvMTdXc40vK4VsKAaj1sVu9u5Ln64WZTbPxANGjhEf5GK3VqSGg/8/QWQ
+	 B/hccrplgUpVmsgN65vtN4ceIqGZ9AUYB/+C0G7c3k467R1EZbS2Lkb6j3U3FcxV6rnhc
+	 yAWsPc3Nb0sbtw2BwQj+yxWtQprN9bJxXAGIhvzEhpfm3wT4RyhRZ7K0dlyPbWORh9KP4
+	 O3v6mPlCQFP5YOH/6LW9y82McVIYmCr/tG/TWJonsWAVyIt0AazOyJW7+Sup5RzkrX7u9
+	 GQ5Xc+jR3cyt1j8tXHhbe7QfiBwPj4kJ4HDTBY/c3r2rpd2I+530fRc4CgttrcuD2mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792763419;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=8FyuJnnll3uJwbR+wT99CVBO9fzREsmjzeqnUECMRTY=;
-	b=n7Q9sBUuiJe93LmyqvqBfeVbYhx1btJOEdFmysYum78JCXiVpsuwdZfPQMgNkO7rRjYI
-	 aeYIlOwCXzfAg2P9IEeKjKFFsd0/rkBEG1pGbb1CoiyGwdoX0VtQbiNdLlYmRKoP4A0HK
-	 ZDOYFoaetNxFlPcISzbLrOddJZYfwLc1uiFAaL9P84tUB4VIOZYOu8lOyrEezOndUBSZx
-	 DZvRriseri2LdQ4gOy8XIZgsyZu+rXM9ROHqyhK2c2befDlUgtTRRi5OtVhHyD7kfm1Sy
-	 e11MmIjB4LQdbsGNzcdzxDDImBcEkcHVpO/Ca8xxv3SgxPUHgllfoeQ2B7WHUlkrr/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792763700;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=DjoH8evZxLD/oQi+kI32wJGQ4IzIUrG3x0m38hDozM8=;
+	b=A7yn8Iy+JV7bofaN/RRu/gkiVhPhV/xIL/m7K/m7W1P1AXaqaAj0xg1px2WHJrny3cXf
+	 tI1bXUfZtNaRoOdJzRc5KTBcxs6mR3oYAbimN4By/SbtWDrI9ywhIE0WXqd+6wvGJDgIM
+	 V98sNFo1Qo0EUl6i4hHVc2VWioHgMHt5ayo0IVy+9QJjnP5n3Peucinqj3fcdMMYN+Vue
+	 6VkCrFKKbCXyDcmOvkK1VHV8S0gu3f3kAF+6JQullnowbrtqX6mORO7wl0D9iryKn8yEp
+	 6R+heqHAq9W1RG6TWDft0H1yHf/H134sXYEBkkb5EYxDQO/Y35Lql9o+1DDCj9lCdBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tePYhySp;
-	arc=none smtp.remote-ip=209.85.215.176
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FB6PPRON;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D743606A320
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 13:50:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D743606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EC3606A31E
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 13:55:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59EC3606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tePYhySp
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cd6028ff33fso385805a12.0
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 06:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792763418; x=1793368218; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8FyuJnnll3uJwbR+wT99CVBO9fzREsmjzeqnUECMRTY=;
-        b=tePYhySpUVOPmNC7qMFCyUKUchitL2PPRJngdPKMZb+6YMlbzUwgcreLJ2yA42AZnA
-         v8cLSMIlGA3u4RIUYVaES5a8/BGQAUiCR1RaqgsSgZkWKdBE/ZcATVE5Tll8cS9l1X0y
-         jUG+yVquGbWgcvm/8MxxycOg/mddw+0l+MplyEJOYfUmLmzlCXrzhSBgacFZkAq8wkob
-         Pj6RrEf69ya9zTjuBsqnaaINqezSaQsmRkyRLV8jGDNSGGxqoJhr6jeq4my7fpYC7dyj
-         qOmm9rddJ6UF9PtTp9Nx897N1k7lGSJXyujgP0EVLYI9Voi13+8/ttJ+pRcICMcmmMTc
-         3lJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792763418; x=1793368218;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8FyuJnnll3uJwbR+wT99CVBO9fzREsmjzeqnUECMRTY=;
-        b=r6QSPZlVjwaJUW64cz2OEdSGUmXVbIUTTipipeElcV6tdf2BNSh0Ml9vgWB+tC/5yk
-         HJtYxSabeNFcK27EYDKQSy6xUv/kXK98I+XbwftJoR4MefBkQuCjQZTRiQzzfSOB5goz
-         JyL0GxEMuAfpRmk1wtX/gsvxooZPRB0DZOH/q3MNt8l3R26gohJo65TN7mu4SWV+hB2f
-         dMW/lSMpEzXK3wGn2jWHet2uS4m63kzRar/Tryfp9ADcQw4AORcLTBNlA1TjS68fhqod
-         7EMnuOpMiu/CkxokDej6chd1p8eAjw13DlTtDem/DI4sZn0EbKPvPrdiycxmYOAp4eiT
-         Z/FQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxoD7elO3HAusuIm2kxNXES1rGubLZTfPBOZHh2Au49zSQSnoG4AEPwwgw8sod0fk6noHE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKU508uDurSqun7FRmVp3xETYTAqIeuXI5VrH1A+g+tjiHd4biI
-	Xxyf0x6oqBhbhmN417zdIZCJic06sLwplb41hr8gmulSWfcTIYoIE1MqevKD0v56Uw==
-X-Gm-Gg: AYBFou1yqGvOcmQedTP4soDJbPhyYXvJZxKyP92YhkaphxNl3bl73UEwTOuH3AIvbiw
-	Iusq7+71wr6YU1ccr4KyoSA6ZSnfRf0JY1dek8mqTCguTg5yGrjLMcWPhW7WOCOeBLGpxF9XTji
-	lM7ZW0PuHzcZcOJV3Bngm4vY6wMnCXSLdBzs1UQxem98oHap2v1FFnedG+dW+d8umzR/49oIo4O
-	E/siL5HhDfz6AzTGurHv5zxHZ3WjnAztHRBQbPGv0yuVY0AXEQUKG1mEz/gcg4nrCFr20tRF9Ev
-	jLRXNxJNsw1yoo38nRsOxeXhcNvnBFwqAfaxFxmvjV5TUIHP310y/UaUbXamwarCKtuoFeaik+V
-	jABvTSL71FoeOKdl5KKi4ybJ30gQHFMHb8tpHKvLletGt9SNVdUBzWhJgf+UzoLIQHhEuAkNLEl
-	iB/SQ6O4NCodSkPy4ckry4heqI0/VewWPMRL1zmlIjfRPKkubGM5iSKWsf5EjwxBy6ezUEHEjx6
-	nBqUoD0yo5cqqmRLyw19lLgnsILft4a4G8IorBbpukVhdbsrot+UJyWTChDjCECNQlskX66gtoS
-	jcsS0BAeINW4BiXFF0u8EgoWRRcLVOWRn4sMew==
-X-Received: by 2002:a17:90b:5906:b0:3ab:3437:554f with SMTP id 98e67ed59e1d1-3adce0073a2mr1983207a91.29.1792763417701;
-        Fri, 23 Oct 2026 06:50:17 -0700 (PDT)
-Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea94677c91sm545015ad.4.2026.10.23.06.50.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 06:50:16 -0700 (PDT)
-Date: Fri, 23 Oct 2026 13:50:13 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
-	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <attmFVIFU_mS0Y7p@google.com>
-References: <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
- <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
- <atlKsD-aJB3mJr2j@google.com>
- <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
- <atl7peoVHdP5hz7z@google.com>
- <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
- <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
- <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
- <atpNFEFIlqAoYIwH@google.com>
- <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FB6PPRON
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792763699;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DjoH8evZxLD/oQi+kI32wJGQ4IzIUrG3x0m38hDozM8=;
+	b=FB6PPRONVNlEGUB/jQq026ZGaiNgN9AqTzseEE5GqsutF8XLJiCE90MFgtFmKLbMj8H0BE
+	4f9I5VO3wk6Ul83t1LhSpYqK85kCC6Z0C1GR/wefyNAPKihIELB/13747m3RX/C1AoTC4b
+	0hPkVdmlitgUUBgEajjamy8Q36Yw7gI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-CqSf_XYnNNmtmPh4ytbQ0A-1; Fri,
+ 23 Oct 2026 09:54:53 -0400
+X-MC-Unique: CqSf_XYnNNmtmPh4ytbQ0A-1
+X-Mimecast-MFC-AGG-ID: CqSf_XYnNNmtmPh4ytbQ0A_1792763689
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C62B3195395F;
+	Fri, 23 Oct 2026 13:54:46 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7B7EC3000723;
+	Fri, 23 Oct 2026 13:54:42 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 0863521E6A04; Fri, 23 Oct 2026 15:54:40 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
+ <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
+ Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
+ Kostiuk
+ <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
+ <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
+  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
+ Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@oss.qualcomm.com>,
+  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
+  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
+  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
+  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
+ Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
+  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
+  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
+ <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
+  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
+ Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
+ <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
+ Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
+  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
+ <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
+ <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
+ Lin
+ <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
+ Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
+ Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
+ Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
+ <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
+ <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
+ Dooley <conor@kernel.org>,  Sebastian Huber
+ <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
+ <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Anthony PERARD
+ <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
+ <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
+  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
+  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
+  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
+  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
+ <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
+ Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 11/65] qom: add qapi_type field to ObjectProperty
+In-Reply-To: <20261020-qom-qapi-v7-11-431a86b02b58@redhat.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?=
+	Lureau"'s message of "Tue, 20 Oct 2026 14:45:28 +0400")
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+	<20261020-qom-qapi-v7-11-431a86b02b58@redhat.com>
+Date: Fri, 23 Oct 2026 15:54:39 +0200
+Message-ID: <87h5ica5eo.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -119,153 +146,18 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 2026-10-22 04:53 PM, Pasha Tatashin wrote:
-> On Thu, Oct 22, 2026 at 1:51 PM David Matlack <dmatlack@google.com> wrote:
-> > On 2026-10-22 12:11 AM, Pasha Tatashin wrote:
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-> > > Lets drop the fourth macro argument and generate the combined struct name:
-> > >
-> > > #define DECLARE_LUO_SER(name, expected_size, ext_flags_count)              \
-> > >     struct name##_hdr {                                                    \
-> > >         __u32 size;                                                        \
-> > >         __u32 flags;                                                       \
-> > >         __u64 ext_flags[ext_flags_count];                                  \
-> > >         struct name payload;                                               \
-> > >     };                                                                     \
-> > >     static_assert(sizeof(struct name##_hdr) == (expected_size),            \
-> > >                   "LUO struct " #name " size mismatch!")
-> > >
-> > > For example:
-> > >
-> > > struct luo_memfd_ser {
-> > >     __u64 pos;
-> > >     __u64 size;
-> > > };
-> > >
-> > > DECLARE_LUO_SER_HDR(luo_memfd_ser, 24, 0);
-> >
-> > I think we are getting close, bu I have two remaining concerns:
-> >
-> >  * Reserving bits in each flags word for continuation leaves gaps
-> >    in the flag space that users have to know to skip.
-> 
-> Yes, but callers should never manipulate the raw flag words directly,
-> and we can provide simple accessor macros or inlines that take a
-> contiguous feature ID (0, 1, 2, ...)
-> 
-> enum luo_memfd_feats {
->     LUO_MEMFD_FEAT_HUGETLB = 0,
->     LUO_MEMFD_FEAT_SEALS   = 1,
->     /* ... */
->     LUO_MEMFD_FEAT_FOO     = 15, /* Automatically lands in
-> ext_flags[0] bits 0:1 */
->     LUO_MEMFD_NR_FEATS
-> };
-> 
-> if (luo_ser_get_feat(hdr, LUO_MEMFD_FEAT_HUGETLB)) {
->     /* handle hugetlb */
-> }
+> Add a const pointer to QAPITypeInfo in ObjectProperty. NULL for now,
+> but future patches will add means to make it non-null. The
+> QAPITypeInfo will then be used by QOM introspection to tie the
+> property to a QAPI type.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-Sure but why deal with all the complexity just to save 8 bytes? All of
-these structs are allocated on folios and there are kilobytes of unused
-space to fit this header. And even if we optimize that we are talking
-about 8 bytes per FH/FLB... or 16 bytes for structs with arch-specific
-sub-structs like the KVM ones.
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
-> >  * struct name##_hdr only matches structs written by the current kernel
-> >    (in terms of length of array and offset of payload).
-> 
-> This is not an issue on the incoming path, we never cast incoming data
-> to struct name##_hdr or access ->payload directly. Instead, we parse
-> the incoming buffer, dynamically compute the header size from the
-> continuation bits, and cast the payload offset to "struct name *"
-> based on the negotiated feature flags.
-
-How?
-
-This is the only data structure that describes the header. Are you
-saying the incoming path will parse the header purely with a void *? Or
-use this header but just be careful not to access payload?
-
-We should have one header structure that can be used on the incoming and
-outgoing path. We should not have one header data structure that can be
-used on the outgoing path and one that can be used on the incoming
-path.
-
-Also we need a standard header that can be shared across all structs,
-not a per struct header. Otherwise you will need to do weird casting and
-overlays to implement the shared helper routines that parse it.
-
-> > How about this instead:
-> >
-> > struct luo_ser_hdr {
-> >     __u32 size;        /* Size of header + payload in bytes */
-> >     __u32 nr_flags;    /* Number of features encoded in flags[] */
-> >     __u64 flags[];
-> > };
-> >
-> > Each feature occupies 2 bits of flags[], so feature N is always bits
-> > [2N+1:2N] of flags[N / 32], with no gaps:
-> >
-> >   00: Feature not present
-> >   01: Feature present, safe to ignore if not supported
-> >   11: Feature present, must be supported by the next kernel
-> >   10: Invalid
-> >
-> > The length of flags[] and the header size are computed directly rather
-> > than by walking continuation bits:
-> >
-> > static inline u32 luo_ser_nr_flag_words(const struct luo_ser_hdr *hdr)
-> > {
-> >     return DIV_ROUND_UP(hdr->nr_flags, 32);
-> > }
-> >
-> > static inline size_t luo_ser_hdr_size(const struct luo_ser_hdr *hdr)
-> > {
-> >     return struct_size(hdr, flags, luo_ser_nr_flag_words(hdr));
-> > }
-> >
-> > static inline void *luo_ser_payload(const struct luo_ser_hdr *hdr)
-> > {
-> >     return (void *)hdr + luo_ser_hdr_size(hdr);
-> > }
-> >
-> > and bounds checking is just luo_ser_hdr_size(hdr) <= hdr->size. The
-> > payload is always 8-byte aligned.
-> >
-> > Payload structs are then declared on their own, with no header:
-> >
-> > struct luo_memfd_ser {
-> >     __u64 pos;
-> >     __u64 size;
-> > };
-> > LUO_SER_ASSERT_SIZE(luo_memfd_ser, 16);
-> >
-> > The static_assert covers the payload to catch embedded structs changing
-> > size.  Asserting the header doesn't add anything since its size varies
-> > by kernel. And because flags[] is a flexible array, the header can't be
-> > embedded in front of a payload in a combined struct; it can only be
-> > reached through luo_ser_payload().
-> >
-> > I think the only downside is that the header increases to 16-bytes when
-> > there is at least 1 flag. But I don't think we need to be so concerned
-> > about an 8 byte difference...
-> 
-> I would prefer to keep the default header at 8 bytes. With 15 features
-> fitting directly inside the base __u32 flags word, adding the first 15
-> features to a struct keeps the header at 8 bytes and does not shift
-> the payload.
-> 
-> Computation-wise it is also very similar: for the 99% of structs that
-> have <= 15 features, LUO_FLAGS_CONT is 0, so computing the header size
-> is just a single bit test with no loop. Even if a struct ever needs
-> ext_flags, the loop will walk at most one or two extra words.
-
-Please explain why it is so important to keep the header 8 bytes that we
-have to jump through all these hoops to map a contiguous flag space
-onto a u32 + u64[] array structure where certain bits are reserved and
-have to be skipped.
