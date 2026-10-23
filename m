@@ -1,62 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792746535;
-	b=qRaTvpoBGq3J2/NUajUEiIsGrOlAY++09NcsL2w09BY69kKVsEkKtZLSB80t9whF/+P/
-	 inZ4Fo38XA5pQYO/frXc1jz2ztB8sbTjf3bZwAgp8mMPgZvXZEsd1I+nTYHyUIO5sIqJ+
-	 IrNR9vWZ3qr5kIR8VGTeccBF5zLtxrfKXud/5L90IAtqtqbD7aV713qtWmaNCQdIL74up
-	 ITooX/ujFIXDUqZWJaYLIrA3WV4Uoo49X4M1IeLDjbVMPwV9gpXGCsU009ha7Kk9vmIU/
-	 G4s6p/KxZeh8TsOLIqvS5Ec5DjmIXCa5BTBERWlzUygpIRgWW0Ye+a7EI2WKdsdVITg==
+	t=1792746576;
+	b=IhbOEUSxZ3wWO+FUc0iS8b/08YAf10JcGTccBa7tL6xdj042EZAGF4J2UURcLUfV60Oj
+	 I/m/Uj17aEKbucAieMJwXrUN8xhg7jE5Ac9zytL0i1jC7jmajvLRyGoa8vqowBGkVcEbw
+	 9nCc2LpP2239lmbpYPr9CSremZ5gGgLnkhj2JVfBKM2tmG0JUCuMaZWwTKUiUAfNNjQFo
+	 8/fi6xbq865ZviAMUcP0kcFkt/l0LuWxIG+jmDiCSSmF3ESvDzXZ+IhfFro3Rn61jJSGe
+	 Exei17PQhS+0YWAdQHgrg6JpBYJE8Qc6fFFpEL8jBTDGP9VNDQTpFDbRM8hFuRglOvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792746535;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=aHdZ+oKwe6OINwv5V856+JzJxIwxr2tU0lqEBlQhC6Y=;
-	b=EcRYUG1zQV2la/hTzxCgaExSgW63JPRhN49h/+Q/v3cQjx/EFQ1arrMMu2liZl/B2To3
-	 EZ62sDWP+Q/tEGZmacWtU9+zBlP5GvGbDdXfyCxvz045VQgH+cIKikLeyZq0wlGJ3Jaxc
-	 UzXVQnOPkeWhM76IPg/YhWyyGsvN84KtT1BYqC2BlZTj3BLnxaY99lbY3ZQaRwj7zdYlE
-	 kHOEDx0Dr5DKqu1gxQBAN8lnqwVrZxNnDV544PxbkyLenBzt8RIbpC7KgY4G/0BXUOxzu
-	 OldK8LKeaKfW8uQ2VjnFUIt0FK2NwMRl+BinqEwvvyF6QtGmw6L9EolkUuzVtkgs5zQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792746576;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
+	bh=BPeNtzKdkjRk3yYLPGGWWs/Dmk7smFspz0pCOoXktR4=;
+	b=yvwZw0/ZyBi+CAcnsF9HZZHrNtqPP9pNCOL19KhEB63x+VA1ADWAHxF+5O2wywp2bHPs
+	 PogP3MMMA5ClJzvLNm/135wN39h1IAX6y0Ya5I6pXVYaWneuYGAU32/HwmVA6nZrctBMi
+	 u9nn3mSOZJqq4Y8jQAb7otKxfyci4UY1spVZNHd53ENeS01Ds+VBUHP4Xz7ADP9b8sC9b
+	 L4mP4mJs7MfzEKdtNwbnVi0qB9LTwIHmHV4Fa33D93bhBNOaMsLtTv8vLPV1mk4OwM0CZ
+	 H/zEk+Vxb2TwEI6O1icm3e/Rx7f8GgsqjxZnoqRyKcricbJxDgWruDm45gVGGlXbVqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q+CtonFs;
-	arc=none smtp.remote-ip=95.215.58.173
-Received: from mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=cispa.de;
+	spf=pass smtp.mailfrom=cispa.de;
+	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=bd6wny8Y;
+	arc=none smtp.remote-ip=134.76.10.21
+Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318AF606A31F
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 09:08:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 318AF606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7E7606A31A;
+	Fri, 23 Oct 2026 09:09:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF7E7606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q+CtonFs
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=aHdZ+oKwe6OINwv5V856+JzJxIwxr2tU0lqEBlQhC6Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792746533; v=1; x=1793351333;
- b=q+CtonFsq/yIiM0skPBshBA4a0cnJyCmZl0ywNg+6KYtPzv9uEvbqzU/Ll8t936D8nT9edL0
- 1WjdK2yc4ipdY2VCsy/llbY+ulHP/0tpzk7p3YimKgkK2fxaLD9OHjo04LWNeQ2ctN35L7VooYx
- ovGJ3X95vLsmNWIrn1K3+jTw=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 40fcee38385a36b9;
-	Fri, 23 Oct 2026 09:08:53 +0000
-X-Mizu-Trace-ID: 40fcee38385a36b9
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5be58ad9600so6441e87.0
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 02:08:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz6tjRa9jGAoPgDr9/c98iMyFjHMJvtSMymAek0rZfRTAxOSFzl935D9p6uC6vKyeoSbis=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJNG2/bBp8Zo+y244v2x47/daNYcVUQRkMWLhJKgTXSZ/pbzWJB
-	s7Um/qDA+y833Rt3WJ13I8kHgDwTvBKE/ds9Hb9A0rC8KPQbmst6XlbjwJjkxxMoBwr0UuxhP3D
-	IhKB5ooaejYLsZn7VF/Kt7kd5K/QW4m7of+1TQbMd
-X-Received: by 2002:a05:6512:3f03:b0:5bf:a49c:ddde with SMTP id
- 2adb3069b0e04-5bfb06b5140mr90492e87.10.1792746528071; Fri, 23 Oct 2026
- 02:08:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=bd6wny8Y
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
+	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=BPeNtzKdkjRk3yYLPGGWWs/Dmk7smFspz0pCOoXktR4=; b=bd6wny8YKGwvc+gfYRDfnd2bUT
+	DmwaKghgKrH4dtaIiknXovMUuv+NyxFqJvNfU6nqDAiufJCC6X93Ijb/ULfy1Mi094Wh/BsssNXQl
+	9ZdCZEWBQOlzyZoyqbI+lELp2K9Ke+NsyAt1llsWU8K34SdBcJIvGrxMNa+tqABpuDfW/MmZAvViA
+	5XW8VgGjLybpWaFVJbiHfFIlgBQgg/4WZLgT+cPml+OZsblJQsXSzY3tBHJO4ixdSdkQ/BoHcFnHE
+	nzZspBEdk+s9J90LEbjycmYfJsZ0ZqDMcuiZisSUS4OsFbtwB1gQPbdaMFpT3+3jeTN9SrQJgPCKq
+	RJkvunwg==;
+Received: from mailer.gwdg.de ([134.76.10.26]:35063)
+	by mailer.gwdg.de with esmtp (GWDG Mailer)
+	(envelope-from <amirmohammad.eftekhar@cispa.de>)
+	id 1xKBHJ-00EUFJ-16;
+	Fri, 23 Oct 2026 11:09:32 +0200
+Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
+	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(GWDG Mailer)
+	(envelope-from <amirmohammad.eftekhar@cispa.de>)
+	id 1xKBHI-0004oX-2z;
+	Fri, 23 Oct 2026 11:09:32 +0200
+Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
+ (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 23 Oct
+ 2026 11:09:31 +0200
+From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+To: <yosry@kernel.org>, <seanjc@google.com>
+CC: <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <jmattson@google.com>,
+	<amirmohammad.eftekhar@cispa.de>
+Subject: Re: [PATCH] KVM: nSVM: Reset the virtual VMLOAD/VMSAVE bit in vmcb02 on every nested VMRUN
+Date: Fri, 23 Oct 2026 11:09:24 +0200
+Message-ID: <20261023090924.9685-1-amirmohammad.eftekhar@cispa.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <atqdBFgoztW0nhoC@google.com>
+References: <atpGGKVAL3bAnmnk@google.com> <atqdBFgoztW0nhoC@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,49 +81,48 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
- <20261023070110.1833446-2-fuad.tabba@linux.dev> <86fqxwzul7.wl-maz@kernel.org>
-In-Reply-To: <86fqxwzul7.wl-maz@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Fri, 23 Oct 2026 10:08:11 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
-X-Gm-Features: AclHuK8By_xwbQyrvckEGFfA4cAUoxoiGOv41Z9xRvku379045c1KVkkaVcFF80
-Message-ID: <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, Zhou Wang <wangzhou1@hisilicon.com>, 
-	Arnd Bergmann <arnd@arndb.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MBX19-FMZ-05.um.gwdg.de (10.108.142.64) To
+ mbx19-gwd-01.um.gwdg.de (10.108.142.50)
+X-Virus-Scanned: (clean) by clamav
+X-Spam-Level: -
 
-Hi Marc,
+On Wed, Oct 22, 2026, Yosry Ahmed wrote:
+> So this test case passing should be confirming my allegation that
+> intercepts take precedence over VLS.
 
-On Fri, 23 Oct 2026 09:31:32 +0100, Marc Zyngier <maz@kernel.org> wrote:
-[...]
-> Why settle for the least capable option? Context switching ACCDATA_EL1
-> is easy enough, can be gated on guest features, and avoid the
-> userspace horror story.
->
-> I'd rather see that.
+I could be missing something, but a hardware repro points the other way,
+at least on this part (Zen 4, Ryzen 5 PRO 8500GE, mainline 7.3-rc3). The
+L2 runs "vmload; cpuid", so the exit code says whether VMLOAD was
+intercepted (SVM_EXIT_VMLOAD, 0x82) or virtualized and run on to the
+cpuid (SVM_EXIT_CPUID, 0x72):
 
-Context switching it means accessing ACCDATA_EL1 at EL2, which traps
-to EL3 unless SCR_EL3.ADEn is set. booting.rst doesn't require ADEn
-today, and TF-A only sets it when built with ENABLE_FEAT_LS64_ACCDATA,
-which defaults to off. On such a host, KVM traps to EL3 the first time
-it switches ACCDATA_EL1 for a VM, and every VM has LS64_ACCDATA by
-default. The cap leaves the register alone, and the fine-grained trap
-takes priority over ADEn, so it works whatever ADEn is set to.
+  - Single VMRUN, vmcb12 VLS off, L1 intercepting VMLOAD: 0x82. The
+    intercept is honored, as expected.
+  - VMRUN #1 enables VLS legitimately (0x72), then VMRUN #2 with vmcb12
+    VLS=0 and L1 intercepting VMLOAD: still 0x72. 3/3.
 
-Should we keep the cap as the fix for stable, and post ACCDATA support
-on top? If you agree, I'd rebase your patches 3, 4 and 8 from [1], add
-a booting.rst requirement for ADEn and EnAS0, and lift the cap and the
-compat.
+The difference from nested_vmsave_vmload_test.c is that the test only
+looks at a single VMRUN. On VMRUN #2 vmcb12 has VLS off, so
+nested_vmcb_needs_vls_intercept() returns true and
+nested_vmcb02_recalc_intercepts() sets INTERCEPT_VMLOAD/VMSAVE in vmcb02.
+But vmcb02->control.misc_ctl2 still has the VLS enable bit from VMRUN #1,
+since it is only ever OR-set and never cleared, so vmcb02 enters VMRUN #2
+with both INTERCEPT_VMLOAD and VLS set and the CPU virtualizes VMLOAD
+anyway. That is the dropped intercept.
 
-Cheers,
-/fuad
+So with both bits live in the same vmcb02, VLS wins over the intercept on
+this hardware, which is why I think the stale bit is an actual
+intercept-drop (an L1 that intercepts VMLOAD/VMSAVE for its own L2 loses
+that intercept after it has used VLS even once) rather than only untidy
+state.
 
-[1] https://lore.kernel.org/all/20240815125959.2097734-1-maz@kernel.org/
+I haven't managed to square that with your reading of the test, so it is
+entirely possible I am wrong about the precedence. If it helps I can send
+the reproducer, or dump vmcb02->control (the intercept bitmap plus
+misc_ctl2) right before the VMRUN #2 that virtualizes VMLOAD, so we can
+confirm both bits are set going in.
+
+Thanks,
+Amirmohammad
