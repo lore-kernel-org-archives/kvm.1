@@ -1,75 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792781746;
-	b=b/wzl5oTPPYjPyY637hevzjJdmG0dkGaKX8i8a+mBuqzKdly+vStn2gZmp42RLgPOcv/
-	 vmy5bIZdAsmGeaUdGjxOBIj8bCQZoi6WVqvw6sPry1vAzoEHApagJ+y+WGMYk5xMs9LPj
-	 hUfhuLWAyoPFKArdNxUIa6j3vertfeMJ243KxlHmyxeonsS56N3Ew7konU3g22bxKvR8e
-	 ipcY68LYqleI2/yNiQhoUapZ7ZL/6wyw/QM+4KDHdfvhRykgieX9Xq6ChukgB5ih5QX37
-	 RCatV3i0QCRDX5AEvXEGpJNmrwsmHEev3sWUh8Usg6GBNcn1F4hyE0Vr6IrsoTB46Rw==
+	t=1792782054;
+	b=np1Z7/NFB5Fgq/uvWcAykrQBkG6l82VbpArGLG8h42fxDLalSyqAnXfcDVS63mVSmyKv
+	 AeFnQCOiCz50+SvRzbYcpt6SgqTyx13A35XLF+9JZ3d4CeOOJfnoY8GpDJCgVmDEVQuBj
+	 n8IzJaLDtqA2g1iCFBwy01HbvOb4on5hbwNVtOOiLS2SEtwYC6Va57PqPv+FxFot+/wze
+	 g70V0u71KQTYw6eCyRXC2kp5pZmNUwYo4UrIPRvngaZXxKC6sijnkhIcmDKkxHTsyTjB/
+	 zAfZXlG9z4f0bfORhNWzkW488W8ae2tM70SN6pYOyAaHlgyJqDk1xHl5xw7lrEcPzRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792781746;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792782054;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=H7bF4HrcRDAm1frhSShdaIaUyCju/nDUt7oEcWaxAZo=;
-	b=Dk0sLRnJztXdfBIF/hSRLz4OvNF2Okg1mF+cLFKaVsRdAoDbY+IM2t04QQ7ZgFfAXpdu
-	 KQLko6P9uUlwExtejgtlma8GN0seZy2Wpitp54whBDiVRZ31A57cJDYKBVJJx9Wlt+b1J
-	 A2e8ig5+JUa3SAyW+YJtZQKoIakDSVAFZdM83i4wh9tJMmRQiywM6CZ8oWNpf/V7GCzUI
-	 ZgGRLLkRKgz9UoygLWrmqYTShpGR9seiXoZtri4w3IYpDpeFVxvVEWYR1gpbhQyBrarb0
-	 LSD38hbbQ77sOkaL3MB7mJ6nUO3Y8v15cHjxK+lNRkh8+QrTFvLHE3kfumXSg4juQTw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=5tf4s8d8+MZT/ng3kYJALwtT1EAbBRaxelT7QvlTQng=;
+	b=jHUWkG5x/0KeUyHTNjXxrgf1IkiOgqdLiO3GzPwVOd5JU9K9yeP79uvPpoOasm7rGBEJ
+	 7tTRzF1KQ1pPej0RDkwPg/0YxvdYKKBJmgekmFA4nqPPSg0ZPUH2EpbMTP2pVZmGGqbUH
+	 5lDtXQde8SaPQek0EIZegE2C2t5bLB13vBkBN9HBpv+D4ExRtUFnEeka7BiEnmsTUrWR/
+	 ieDQEqNH2wC4FrcrT2sZGPu9U9VH965TbE8Y4fRpp1Lfr+cCe+3vpxoNJyWjeAfKo+Bi+
+	 ppwNXF1d6MLJENzG2sDJg+I8OmdRT9mJdAqaCIR4JNrjxg8kuB8WJW0f84dy6B0vSfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=u9OQsGB5;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bzc4Cg9j;
+	arc=none smtp.remote-ip=209.85.160.178
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355BA606A31F
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 18:55:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 355BA606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A8606A325
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 19:00:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE7A8606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=u9OQsGB5
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e94f72fb9fso10833665ad.1
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 11:55:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bzc4Cg9j
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-53397554beaso12640421cf.3
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 12:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792781745; x=1793386545; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H7bF4HrcRDAm1frhSShdaIaUyCju/nDUt7oEcWaxAZo=;
-        b=u9OQsGB57/ipLe95e4sVaNu5Jg/bT+PWigJKLHAMDC2LAOUeOW5gqAcaPhvFsMCjnk
-         cbPIC1qBjjhgY/S5GjlLmGkol02YI1OJ5+FpNX0e0iA07N/Lq938cgDR0zMDhsRPIoTt
-         vijkBJRnNPqjLTTSRy9lGBo+Fauxuk+MTY2aqXQRyCm749jfQck76anwk2jK3xZ/itgO
-         Cc4V1MrvvranYhNz1RI1umOtgkhsSJ5FkwfV+wPbKLbGePJVtvAdOeS9gjeyRIWry92Q
-         hw8+TYP+Rl5qzu12qdWQIjpayxi3VeRul/C9ZyiIMT971/xPTG19LH+YLqUs6UkM9WC8
-         ZedQ==
+        d=ziepe.ca; s=google; t=1792782039; x=1793386839; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5tf4s8d8+MZT/ng3kYJALwtT1EAbBRaxelT7QvlTQng=;
+        b=bzc4Cg9jHc+EwZ+EF2GHA00SaE7XNzyRJ2jPm8VaHgqzKDLrehIHY+5e8wqB1yH17y
+         sndSYk22aMmceP9P1fMLTu0Z4V8EzlM2RGsFmTw4gK3j741dLn2NCvrwBRx9Zs2Y9Nrl
+         IH1Flz0MwkfAlUgvicHD3GXb1HCVFF/PCxVAEn/OVSguv9eR9Zs++ljRZWXpHTqI+xAr
+         rfcFCA7qmIwN9IxX9GeYG2HRZ3YRwMSM0MH1BmgGZbTGcamONR+rAGI29PTmp5avInXD
+         sAUAnL9pEXhpYTml9nJyCuJ6EjWQTeYXwbhCn5SvYnMgGcHEU9aguEL9UamXbiSuNSk7
+         hQSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792781745; x=1793386545;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H7bF4HrcRDAm1frhSShdaIaUyCju/nDUt7oEcWaxAZo=;
-        b=aG0c/V0H/8BM40DCXYqTRSQZ1iE6dFwE8ObOJEAvaa//835gq4xh5E4wAmIGtbFLQP
-         b18VfWyMBX2z+qII6W4GVlA1aQSonCbQsxvqcZh/dHbnYf4nZmaokT3Lp0zkq82FFW6J
-         QyALCIkbrtFfJSSJD3zlYclamU2xB9fB+ItcM1NY57uyUjqkyYzWz0EAszplUBK0sbBi
-         tticmUg8D6r+0XkZnZS7004s+71ZQgptJH4eUbctCT32H2vV2dnwzpAyOGb0z0K4swVf
-         s8zsyrkqP+LlhJELoCln6/M+yr7eOK9w2FU42HESiEwLuQwqOqLCkTjDAX3++JANeWxf
-         yROw==
-X-Forwarded-Encrypted: i=1; AKwUvBxG92zSW4XGoej8hYGEvL7//8fsTGo0ttlu0z+5oFIMA8JtW4G8v8yn3elpCDQ3n3M5fvY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJqAv97oRJdyykCHwbuFrnzgpNrFvIwwua7j0qyELA8rXod7NCf
-	mGKOpKN29VKPBQBKRwUDYP1Gui33Du+i980ACo1Ysl+LAT3DBPv0iJ11WCOxWSp/AgsVM+mTs4f
-	ZkyerfphEZLmiLg==
-X-Received: from pldv12.prod.google.com ([2002:a17:902:ca8c:b0:2e5:e1dc:c5])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2f8f:b0:2db:733c:fd1f with SMTP id d9443c01a7336-2ea7c169201mr30400375ad.8.1792781745065;
- Fri, 23 Oct 2026 11:55:45 -0700 (PDT)
-Date: Fri, 23 Oct 2026 11:55:44 -0700
-In-Reply-To: <20260918193937.569414-13-zide.chen@intel.com>
+        d=1e100.net; s=20260707; t=1792782039; x=1793386839;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5tf4s8d8+MZT/ng3kYJALwtT1EAbBRaxelT7QvlTQng=;
+        b=jHC2Mw797MHy8Q1Sp5rMMf/waFauhbNLIRfFmiQ/JORDayB//0Czp/1MmW9/ZebUKN
+         MLsjMOA6EPKwjbUSV1GZKEZ3AB5fDdoDLwB7ukp4uL4LjUQeJFDLHJuRFU9bCP2vsyVe
+         o8k7pL0e4XAQTrEQfG9tTASevHKRhY2gbVYFECLpJJKNFq7yQWCZzr4oXcOq4p0LnboN
+         T3ljq/PLaPOjBXJo3xvclE+jgckp2nOaMfiVOfy5VCfmC15RDdCtBGRf+y8P5JFBvbTn
+         NNWHKdU4gM25scsDbB7ChvlCGc0JMlR7VVCjpcTJyrPOO89cAItQ6mNG65selguaLa9k
+         XCLQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwmrTUaGrTqlDPmS2wD6dK6zB1wzyh61RVnsHWXm1dRiLw4Us0J5vVP3gXiAnD/VzXnbrw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKRlwwZM/91BXHmo6vjvklvBH2OHRfqCFL6cwKh/mXcshzvCqPi
+	QRtkNdwUEhAb8iiHmFKf1yjmrrlPOHZjVYJKJ9Bitoe1pr+WyXPgiSAwGz3y66VZrJM=
+X-Gm-Gg: AYBFou3yPXgGXBDZpOtBr1/dW1Xcq+av0WBhdfQ9WFK3f4lND2RRlI1/LHYcK1cdT+n
+	N1o/LGWQjGmqk0fy4kEuwXWg75V1RT+/h5zYwpflgH39CD3q63cVdUCqbYbWvhlg5KFpxG9lyEe
+	HsgHJIJ4DnSR16w9KNLvi63RvG2iuVuPj0N+AjOgk6u8bSxtTwuvvEem0uyto5W6qaOY3BxHGkV
+	NwkXtOT/bFJbNDaivPGlFt/VzkrGFHAgxvSv9o3y0RmNgzwY1HLbT0c4jKxyPhOZV2wT3CQCGyk
+	RAEFLBI6r5F7deAdPw5NHq8F6JxF1MmWCBGBQi/qzXFA4nMP1j8tPRQ/kyvPOyJuFtiKmIzVQl4
+	FdnjjPvaui1Y+1oxNiyNWJ5wH2XVkudDIpnC39K1pBl3DYARJwb6pIiop/n6Xji/+ehmGx7c1JB
+	8veUf++AZS91oN1nUGzPQbOZ6m6n9oyB+kJawSKQARnr7sFjTqvnCd8BHTwILptnw3SKolei4Ul
+	ogK5tpiYx4PQaUWIibKUk7mjmrMnNz2Yhj7NX/Mtam4MblWrOj3FX6UR6G3lAAPfQNR9mK9Hvmn
+	P3VFhss8axhZESDjAcArugz7hnZW5LTP20Yi3g==
+X-Received: by 2002:ac8:5d8e:0:b0:535:a5f9:7520 with SMTP id d75a77b69052e-536c26e2168mr47897061cf.63.1792782038589;
+        Fri, 23 Oct 2026 12:00:38 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53839709ed6sm1185741cf.16.2026.10.23.12.00.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 12:00:37 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xKKVI-0000000GxzN-4BG5;
+	Fri, 23 Oct 2026 16:00:36 -0300
+Date: Fri, 23 Oct 2026 16:00:36 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v9 02/18] PCI/P2PDMA: Derive routing from directional ACS
+ controls
+Message-ID: <20261023190036.GL3977851@ziepe.ca>
+References: <20261023155914.GK3977851@ziepe.ca>
+ <20261023182715.GA2798722@bhelgaas>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,46 +117,35 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20260918193937.569414-1-zide.chen@intel.com> <20260918193937.569414-13-zide.chen@intel.com>
-X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261023185544.3305206-1-jmattson@google.com>
-Subject: Re: [PATCH v9 12/12] KVM: x86/pmu: Support RDPMC Metrics Clear Mode
-From: Jim Mattson <jmattson@google.com>
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023182715.GA2798722@bhelgaas>
 
-On Fri, Sep 18, 2026 at 12:39 PM Zide Chen <zide.chen@intel.com> wrote:
->
-> +		pmc = kvm_pmc_idx_to_pmc(pmu, INTEL_PMC_IDX_FIXED_SLOTS);
-> +		if (pmc && intel_pmu_metrics_clear_enabled(pmu)) {
+On Fri, Oct 23, 2026 at 01:27:15PM -0500, Bjorn Helgaas wrote:
 
-If kvm_vcpu_has_perf_metrics() requires fixed counter 3 (see my reply
-to 5/12), pmc can't be NULL here.
+> > Yes, the ACS combination is selected to avoid ordering issues
+> 
+> Does a user have any way to know whether the configuration is safe?
 
-[...]
+No, unfortunately in PCIe so much is really difficult when it comes to
+deployment :(
 
-> +	if (perf_capabilities & PERF_CAP_RDPMC_METRICS_CLEAR)
-> +		pmu->fixed_ctr_ctrl_rsvd &=
-> +			~intel_fixed_bits_by_idx(INTEL_FIXED_SLOTS_IDX,
-> +						 INTEL_FIXED_3_METRICS_CLEAR);
+> I'm wondering whether users might use "pci=config_acs=" to configure
+> ACS so things appear to work as they prefer but may not provide the
+> ordering guarantees drivers depend on.
 
-This should be predicated on the guest actually having fixed counter 3
-(and PERF_METRICS). intel_pmu_enable_fixed_counter_bits() only unmasks
-bits for counters below nr_arch_fixed_counters.
+I imagine that could happen, but on most practical systems the root
+complex will blow up if you do asymmetric routing so there is an early
+indication.
 
-[...]
+I know this because I've help debug such configurations at
+customers. Some servers helpfully MCE if you do this. Lovely.
 
-> +		if ((data & PERF_CAP_RDPMC_METRICS_CLEAR) &&
-> +		    !(data & PERF_CAP_PERF_METRICS))
-> +			return 1;
+> If that's a possibility, do we have any notes in dmesg that we are
+> depending on fabric behavior that the OS can't discover and verify?
 
-If IA32_FIXED_CTR_CTRL.METRICS_CLEAR_EN[14] is only unmasked when the
-vCPU has PERF_METRICS, is this check still necessary? KVM generally
-doesn't police userspace's feature combinations unless it has to.
+Maybe, it could be interesting if the P2P logic found asymetric paths
+it refuses to permit it.
+
+Jason
