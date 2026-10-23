@@ -1,90 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.155
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792764317;
-	b=RZlS2k6HyoehxMVsMJR5hRpqUtlAQoYOJG7WePcCfCmsqpNo4ELGCjXCDUZiQ49Pg7bT
-	 UDgnlBJJNn6WXOupQ8p/zhqDfE1EEC5E5A2MYNTsInMrOqiACPLJOc+0Lc5yQ9NN1cHRG
-	 MMrfPiwwDoEfqgPFb6m5HxVLTlqCq7cHT+03mpV52rww9xn9Zg3arz4ckeUd6OEx690h4
-	 JPfn8NKOMvc9Vw+Ji3egvabK6F+IPAAh6sEopIryJdG23J3asEHxNzziMzLrWIzSzxZCa
-	 RvzWsvdD05xcIUoDoMvGv52cLbxJ4cuuBNhq4pCjy3JQ1JSLmvWsCqrgO1Mi2m0qfpg==
+	t=1792764677;
+	b=vZFZNb+PoiqriJ6LIZlXzt01PcVodx1Oobx41ALQggfDQ7Cn1xmcVy0jQKdnccGkiUB9
+	 WRZQ6C5EhEgHhI6uqJ4fj/KvTlHYuPkllQ4swHmf7W87hgVMw6TFu7wfesZ5wr3bJ1v8J
+	 BwwIk+0OqzD01A9v9eCEwUNXiwhJVG20Vovt7+hkOWRCtxkwkcNahm+sK1Mk7G6LbWpKD
+	 TF/1JNScy3fJUr9eImPKXfTiokuxn6ywSR2zSIVPFMBYL+E1l3p33fmVrYCXcJsjlpLbM
+	 kDEPFwK1icsXfpBSGTauJn85WBRMTN1i2dGAJr+xY5J/iVP/LATV8xf85yZO106bxiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792764317;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=7v3lmgoDcgEkiZynxQtLxHGVGQE5njqUbBmBNikKb+w=;
-	b=Ih285fdCSmtcVO4Z5UAirn+p2LzH0U3c4XmzaMPWw1dreA2bHmrIAHOOtZGLAuj0fi4d
-	 MX5VgHrhf+aCOYXIEQqm0TGF01niYmT2y25jnlF/T8WsGzyMwsYtPyJC2dE6gOYnFQPLP
-	 xwQtEJiLgXQxTLy960MUUAejv/5QEu4D3EfEpE1ocStP9N5Myln29UZDFygT8WiLiGkv8
-	 0QOcHdg2QNMxFO93nmUpd3vrMCMLLlnm7Ja7IkAaADgNyT2bFt938R8xcso+edOR5xeIX
-	 ism1k1OGVYae394/2cF1tcDEAjJacMdbp4tK9+H5bxhqyaQn/BaC0QKJ+Jjfur9mFSw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792764677;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=VHsYbMWajiPGkaPnQFmHr/q3XA6XDqqarKFTwdVqZaA=;
+	b=rE5/OtgoS7qaHuTrHEoEgFpRWwhZldZhPhCMUbGMUHHt7+OCysCSAWKWQBBA4v7tbBv3
+	 nBooi+VFaPNB/YMHfqixA/ixUXe5Jh1S2zBEwM6Zt6OkzSy0i9nv+MgsLbWvhKqwOvlQ5
+	 ztzkLvmpKUSMWSnusibymIsra7Yf7O4FVRcWOQf1QPzbLBOwYUotnKx53a+4Ya+IFjSvK
+	 foERjpGN76lO6oW76WseDTmrRbDu+BiqcEeeOnJT0njexggsgg3eM/WfMB0MP1K0lbNv0
+	 pEFvLRsyi05T+w+NkXo9NapdxXmSem7UTcfAZ9v23a7IbRpVsZaRFibe2CZZWefxg3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=atbzxxTb;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dmarc=pass header.from=arndb.de;
+	spf=pass smtp.mailfrom=arndb.de;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=dpSgweoN;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=fEtKMigR;
+	arc=none smtp.remote-ip=202.12.124.155
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C5A606A31B;
-	Fri, 23 Oct 2026 14:05:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9C5A606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56D5606A31B
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 14:11:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E56D5606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=atbzxxTb
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NAESfj2541120;
-	Fri, 23 Oct 2026 14:05:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=7v3lmgoDcgEkiZynx
-	QtLxHGVGQE5njqUbBmBNikKb+w=; b=atbzxxTb5KTrf7WKioy2QioVO43/JUlWr
-	n3bwa4wSnS6Rhe5/uqaWxuPBTf3HCSHkb6TARQzEvs76inQy89Q9TIKhHJMsUTOT
-	X/uCPDdwGR/7B5+BeJL19UUY9UZ30cYo6no7PaOrDHSqUllBpwj3Cxvsy8rbo+aE
-	PeLyjf7EzAPuRIrMsp3qCXuBN5cC4YTdV8WjxZuvfmMB6WZ4e1k0pN5/VtMMwJqq
-	AthI17xlI+cVgjZSHRD0quUZuBTrdd3900JV0ENSONQDlz/vJvVb1KLDip2SGdlz
-	MtxP0WVMPWl12MkJhU+iTtj8K0OKgImZS06CWNCmBxMQ921kfbKJw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5b510y-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 23 Oct 2026 14:05:12 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69NAYplS1950329;
-	Fri, 23 Oct 2026 14:05:11 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hekdgmb6c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Oct 2026 14:05:11 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69NE4Ne329819610
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Oct 2026 14:04:23 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A64A58055;
-	Fri, 23 Oct 2026 14:05:10 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C3A85804B;
-	Fri, 23 Oct 2026 14:05:08 +0000 (GMT)
-Received: from li-d98989cc-2c66-11b2-a85c-93ab83b7dd53.fritz.box (unknown [9.111.18.82])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Oct 2026 14:05:08 +0000 (GMT)
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: seanjc@google.com
-Cc: borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org, pbonzini@redhat.com,
-        shuah@kernel.org
-Subject: [PATCH v3 2/2] KVM: selftests: Test that KVM_RUN fails for unresolvable host faults
-Date: Fri, 23 Oct 2026 16:05:06 +0200
-Message-ID: <20261023140506.336663-1-borntraeger@linux.ibm.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com>
-References: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=dpSgweoN;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=fEtKMigR
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 391957A0282
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:11:16 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Fri, 23 Oct 2026 10:11:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792764666;
+	 x=1792851066; bh=VHsYbMWajiPGkaPnQFmHr/q3XA6XDqqarKFTwdVqZaA=; b=
+	dpSgweoNo091s7m8gEE03TEoLCYOXysEbhnCXk/AIsmM5kxGSm2dUuKlVfvGECHK
+	+K/ddLXrwrWLj/Ew6QOZuwuVr+lElBRHoiExO3wwgNkI7riU60tKTWhaFjhPlyYi
+	i57RD4GnTk65ehTHhv/UIW9nBV/q/rsPPwanqDQT1m1eaGWrRwTiyLO/PARv23Z3
+	EG2EVyf7fFb2reTmq8PlpHnEgg50MjJ14ykR/SecNcvP3VQTEv9ncLE/2IWvtEyX
+	FKm7ni4MQlrQ69DAATruiytl0Cm6TXwi63HDPpfROl5xPqzHWHWZbQBw4U6FshzD
+	MUUDX3pjPv9xl3zEWJhUGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792764666; x=
+	1792851066; bh=VHsYbMWajiPGkaPnQFmHr/q3XA6XDqqarKFTwdVqZaA=; b=f
+	EtKMigR3n+7M8yQnILxn9DnRqg3symMwVA2w8qqJwkMEtu2I6l1ZFs+Qm308SpSt
+	Qk+XpWgz9xsZryG96EvSVTnnRHyYHbn9IJefbrr/tWae+abt5K+WagPrTAHtcDeb
+	dwfXoOWOCZRbDczMkGooxdhGIcD5KXwED9f/54SoctF3NgvCKmyK4SOQzr/mts08
+	SWj2GAzJOhPJEAuS8uEpqjZ1hsPahdGXbmOcUwf1LImEmTh2AvZsCihUiyR8kQXL
+	VP4IQhVE1OkQNBhpyFR+BzDemrhLR9FY+4Yt+PEDVyawUwrIBa8zpGCz0HRqRikm
+	7SJx4TLb3xr684352XI4Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792764666; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm1:rsa-sha256:dmKnrNhJkXflf8vKS8/aWixktNi3fOqCMTCqnHgqNaykiBX
+	HXGKoX9R0PRK+84uFjGEy5lgp7QgZGIHzQuXAX0IYZG+jHBw8p/87s7MH+PPBsLS
+	KxdQJWiR2KX7KwhhmIVJWDQPv4qxf86F/+kUENOCxz1ThxkdZTtZIRhoaI8I4MI/
+	lD0okXbTbGN3WzHk93KrYaaJmxwR7vpIqER9cjnA/IKLYtPQyAbdKzbfHT0At/RV
+	BaNMh4KoC0Z3BiAFR8nXNsrY5felrCnKCenvPkp9Pd5FE//Zoi4j8mn8gTJTIuhU
+	/35xhVWYeOVHFrMWZRBZxdC3IC76JVMU5YH+bTw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:gLdcu4wlVTeOqtG+F1nxk9aFgt/lv+jaAPp2yGbIQCA=:sNAftTAns3R115dm8xVuq12ndv8JtTHMJC021bb9264=;
+X-ME-Sender: <xms:82rbagk6Dq3FqIIZNwQeZvb8UrzoSTfx2XbQVZ0GIx0gWK-vZHFIEA>
+    <xme:82rbaqqfDaHFTgbQCrRmODZqUJZAvgzdPa3Fex-d-IQXFCNveUcaYoBeHYejUNOwu
+    D28_ZhxN-shpJl6RjlkdY-qf3Yx0lkGIFWf6UN1Y1MzBO3tPuUDvvdFhw>
+X-ME-Proxy-Cause: dmFkZTF+XKMUw2hOuK6Q78JhubtZyyLXH043ZxI8uxm2Aug6BXA6W4PTfA0AquoOYCC6F8
+    +oMyCseuDN6IBluJBj0IwaLeH3SqeCuU20fhuONXou8mT14m9M5y77ASHsOEApCpYu8L12
+    Pu/qh/PTXW/nxsXtG5o+7GlUxJw8mg45mvXwW+eN7oGJuudUYU7gupqr7aEyGWP91sKUTZ
+    EymCikImgjItHKrkU8TMXGgEkh9ZGZPPeYDB83uWc8vNUSqdrV9rdA76GhTF3HW2rhJtmH
+    fJwGR2G9l4fhsSO4IqIEvqX4RtlRImBdMzqak5k6Fy36+Tdv5vTtuj4kcSqJAx/EXajBIZ
+    JoreQFcjxeFbx5U7XTo9leDLmnzdh/5qv9vdbgjwAVa6S4BHEAdM+McnsdlhTrWD4b6WJN
+    BAQxcGfhczEBah4yEZ8VAKU9ChzjyZriavARcfwFTYLaTcOulXV8wEp/TahuJgts4Wqi/o
+    XZaZhJgFdX/H9sqw8ctmYjf3/SCuaG1/klo7AEin36mC37fUPKFrMa0YPdP2lQn6BRCK0O
+    PVNYM5qUU+Vp93vy+IIpLHbLOb2WTwonDPBJc824V8lrj/JaPs/TAOuZ7kAD1pZdeZJMc8
+    M8W3+yLp61dXxCfwKsCnUMUC0l8bUijYOIUCj7vIEVqUqVFLgXcC7+ML/7og
+X-ME-Proxy: <xmx:9mrbapsRwNp7ht9Ikq6wixfPE8ymJ-VYAOvX9Y47eN-NMI4Oat1s0g>
+    <xmx:9mrbajY_tZQK14hboBgnxNgMvTpwyOjC4kA2BiHSjY-4Iu0RD2ztSA>
+    <xmx:9mrbatFzayDMZSrfbRE8sfRwSRoxu0IViKt52HEB9I3a-i77So2SOg>
+    <xmx:9mrbaurf-wdnHzYyU6nuOuObs-JYf3fFL2Qjd9jq_K-bPvbrVFeynQ>
+    <xmx:-mrbanNI2vuXFG-cC9EUW3LXr-6UVbc5hfQT-UnN6Y7rKCuwnQ2JtJlf>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 88E4C32A0097; Fri, 23 Oct 2026 10:10:59 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,244 +114,246 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=X63Hu2Te c=1 sm=1 tr=0 ts=6adb6998 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=rcqYDBG26imGHw1RHJgA:9
-X-Proofpoint-ORIG-GUID: AOCn0c7SMNvZfQE10DpP-i7wtNFMBZmr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA1MyBTYWx0ZWRfX6Z7NOK387ebG
- j04U/GMej4/4CPp5AjFBuvqAUdqQofGiixLnQ7AU/Nzb+bUIr0xL9b+B8AN/zQN+gERSY1ZBr5j
- 7xQFJ6OuWs8vc55DJZyCAZPmsyY15ptTlf2u/86U7HAaPPmWsgZoUbMR/obysXLRwZf+Wsvi8gj
- 0WXmJmlPOIQwNLT/ixHswFdKV9qVwDomUyD6G1vhlPbTNbpiNNydmY9viLCqpWNsSS5aufupdvY
- cxhVZZP/yeWGQf2HnNLkscRGv39Vvu6Zltncx+2x/k1G2BAZi+FqepwWTJ9iAXXAvntW5mYZx0A
- +qmMteTTiW0nH1j1eYrQtpy0euxnltLXzKtp8VwocAvl10bVPCMOPgtTJJActcNaLur/SAM/Z5z
- TP7GiJPpC79bMz/m5WXX+3jmK9Mf6pvojD/FPE3W0KUsbAS2iGjro0gug0+XDhANka9V++pMsM+
- u3RaUB1D6xpOoa35yAw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA1MyBTYWx0ZWRfX4Svu2wYfMKA6
- qDtKKH/ilKK9M6SSaDgZXRWevHfLbW3m+w99oKKRY0rgTp4HZFATCYSpl8uZdevfTKPOZoWJCwu
- SjKJow6EdZB2rb8G/WEgtKw/kBCQaFg=
-X-Proofpoint-GUID: ibxIzOeB_ZR9X80fwAN5WD1ewn7C8zui
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-23_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0 malwarescore=0
- clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230053
+X-ThreadId: AmcrnnMArev7
+Date: Fri, 23 Oct 2026 16:10:23 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Fuad Tabba" <fuad.tabba@linux.dev>, "Marc Zyngier" <maz@kernel.org>
+Cc: "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, "Joey Gouly" <joey.gouly@arm.com>,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Zenghui Yu" <yuzenghui@huawei.com>, "Steffen Eiden" <seiden@linux.ibm.com>,
+ "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>,
+ "Yicong Yang" <yangyicong@hisilicon.com>,
+ "Zhou Wang" <wangzhou1@hisilicon.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <ad724195-3452-495a-a50a-5e5c8093a483@app.fastmail.com>
+In-Reply-To: 
+ <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
+ <20261023070110.1833446-2-fuad.tabba@linux.dev>
+ <86fqxwzul7.wl-maz@kernel.org>
+ <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
+ <86ecdgzp6m.wl-maz@kernel.org>
+ <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Add a test in which the guest writes to a shmem-backed memslot beyond
-the end of the file.  KVM_RUN must fail with -EFAULT.
+On Fri, Oct 23, 2026, at 12:37, Fuad Tabba wrote:
+> On Fri, 23 Oct 2026 11:28:17 +0100, Marc Zyngier <maz@kernel.org> wrote:
+> [...]
+>> No, I want this fixed by enabling ACCDATA support by default, which is
+>> what we have *already* promised to userspace, and see the fireworks.
+>> You can add an arm64.nols64 kernel option if you want, which is
+>> consistent with what we do for CNTPOFF, NV3, and other extensions that
+>> depend on FW enabling them.
+>
+> Will do. v2 will have your patches 3 and 4 from [1] rebased, EnAS0 set
+> when the guest has LS64_ACCDATA, and an arm64.nols64 option.
 
-On x86 the guest enables interrupts, and on s390 the test sets up
-pfault, so that KVM could handle the fault with an asynchronous page
-fault.  If KVM mistakes the error for a fault that needs I/O, the vCPU
-retries the access forever, and the test fails after a timeout.
+That sounds good. For reference, I have prototyped support for
+LS64_ACCDATA in Linux drivers based on the corresponding x86 code.
+The code is not yet tested on hardware, but it may help understand
+how this may be used in the future.
 
-The test is not built for LoongArch, which handles a failed mapping as
-an MMIO access.
+       Arnd
 
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
----
-I went with Seans name proposal
-v2->v3:
-- renames as suggested by Sean
-- test fail on alarm
+----
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] arm64: dynamically enable st64bv0 for SVA
 
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/faultin_efault_test.c       | 168 ++++++++++++++++++
- 2 files changed, 169 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/faultin_efault_test.c
+I/O devices that understand the st64bv0 instruction for doing shared
+virtual access from userspace need to set the pasid value in the
+accdata_el1 register, but in general we want this to be disabled unless
+a driver actually hands an MMIO area to userspace that accepts these
+commands and installs a pasid using iommu_sva_bind_device().
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 3cb35a6963d51..2043ee38dacc1 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -63,6 +63,7 @@ TEST_PROGS_x86 += x86/nx_huge_pages_test.sh
- # Compiled test targets valid on all architectures with libkvm support
- TEST_GEN_PROGS_COMMON = demand_paging_test
- TEST_GEN_PROGS_COMMON += dirty_log_test
-+TEST_GEN_PROGS_COMMON += faultin_efault_test
- TEST_GEN_PROGS_COMMON += guest_print_test
- TEST_GEN_PROGS_COMMON += irqfd_test
- TEST_GEN_PROGS_COMMON += kvm_binary_stats_test
-diff --git a/tools/testing/selftests/kvm/faultin_efault_test.c b/tools/testing/selftests/kvm/faultin_efault_test.c
-new file mode 100644
-index 0000000000000..12fab9a46a93d
---- /dev/null
-+++ b/tools/testing/selftests/kvm/faultin_efault_test.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+Rather than trying to find all threads that use an mm_struct by the
+time the pasid created, iommu_sva_bind_device() only stores the pasid in
+'struct iommu_mm_data' and sets up the iommu domain in the device. The
+first attempt to use SVA from userspace traps into do_el0_other(),
+which checks that this is indeed valid and then sets the configured
+pasid before enabling SCTLR_EL1_EnAS0.
+
+This is pretty much a lifted from the x86 try_fixup_enqcmd_gp()
+function.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
+index a2da3cb21c24..7c61b50718d6 100644
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -81,6 +81,7 @@ void do_el0_sys(unsigned long esr, struct pt_regs *regs);
+ void do_sp_pc_abort(unsigned long addr, unsigned long esr, struct pt_regs *regs);
+ void bad_el0_sync(struct pt_regs *regs, int reason, unsigned long esr);
+ void do_el0_cp15(unsigned long esr, struct pt_regs *regs);
++void do_el0_other(struct pt_regs *regs, unsigned long esr);
+ int do_compat_alignment_fixup(unsigned long addr, struct pt_regs *regs);
+ void do_el0_svc(struct pt_regs *regs);
+ void do_el0_svc_compat(struct pt_regs *regs);
+diff --git a/arch/arm64/include/asm/mmu_context.h b/arch/arm64/include/asm/mmu_context.h
+index 803b68758152..55965d752ad5 100644
+--- a/arch/arm64/include/asm/mmu_context.h
++++ b/arch/arm64/include/asm/mmu_context.h
+@@ -16,6 +16,7 @@
+ #include <linux/mm_types.h>
+ #include <linux/pgtable.h>
+ #include <linux/pkeys.h>
++#include <linux/iommu.h>
+ 
+ #include <asm/cacheflush.h>
+ #include <asm/cpufeature.h>
+@@ -247,6 +248,20 @@ static inline void __switch_mm(struct mm_struct *next)
+ 	check_and_switch_context(next);
+ }
+ 
++/* switch to PASID if new task has enabled st64bv0 */
++static inline void switch_iommu_mm(struct mm_struct *mm, struct task_struct *tsk)
++{
++	u32 pasid;
++
++	if (!IS_ENABLED(CONFIG_IOMMU_SVA) ||
++	    !(tsk->thread.sctlr_user & SCTLR_EL1_EnAS0))
++		return;
++
++	pasid = mm_get_enqcmd_pasid(mm);
++	if (pasid != IOMMU_PASID_INVALID)
++		write_sysreg(pasid, accdata_el1);
++}
++
+ static inline void
+ switch_mm(struct mm_struct *prev, struct mm_struct *next,
+ 	  struct task_struct *tsk)
+@@ -254,6 +269,8 @@ switch_mm(struct mm_struct *prev, struct mm_struct *next,
+ 	if (prev != next)
+ 		__switch_mm(next);
+ 
++	switch_iommu_mm(next, tsk); /* FIXME: is there a better place to do this? */
++
+ 	/*
+ 	 * Update the saved TTBR0_EL1 of the scheduled-in task as the previous
+ 	 * value may have not been initialised yet (activate_mm caller) or the
+diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
+index 11d3f888fcd8..abeffb7f1fb2 100644
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -806,6 +806,14 @@ static void noinstr el0_fpac(struct pt_regs *regs, unsigned long esr)
+ 	arm64_exit_to_user_mode(regs);
+ }
+ 
++static void noinstr el0_other(struct pt_regs *regs, unsigned long esr)
++{
++	arm64_enter_from_user_mode(regs);
++	local_daif_restore(DAIF_PROCCTX);
++	do_el0_other(regs, esr);
++	arm64_exit_to_user_mode(regs);
++}
++
+ asmlinkage void noinstr el0t_64_sync_handler(struct pt_regs *regs)
+ {
+ 	unsigned long esr = read_sysreg(esr_el1);
+@@ -869,6 +877,9 @@ asmlinkage void noinstr el0t_64_sync_handler(struct pt_regs *regs)
+ 	case ESR_ELx_EC_FPAC:
+ 		el0_fpac(regs, esr);
+ 		break;
++	case ESR_ELx_EC_OTHER:
++		el0_other(regs, esr);
++		break;
+ 	default:
+ 		el0_inv(regs, esr);
+ 	}
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index d6391ab20db3..ce968cce11e7 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -13,6 +13,7 @@
+ #include <linux/kprobes.h>
+ #include <linux/spinlock.h>
+ #include <linux/uaccess.h>
++#include <linux/iommu.h>
+ #include <linux/hardirq.h>
+ #include <linux/kdebug.h>
+ #include <linux/module.h>
+@@ -543,6 +544,55 @@ void do_el1_mops(struct pt_regs *regs, unsigned long esr)
+ 	kernel_fastforward_single_step(regs);
+ }
+ 
 +/*
-+ * A guest access to memory whose host mapping cannot be faulted in (here: a
-+ * shmem page beyond EOF) must make KVM_RUN fail with -EFAULT.
++ * PASID/ACCDATA is shared by the entire mm, while sctlr_el1
++ * is maintained per thread. Keep things simple and enable
++ * ACCDATA dynamically on first access if available.
 + *
-+ * On architectures with asynchronous page faults, KVM first tries to fault
-+ * the page in without waiting (FOLL_NOWAIT) and hands the fault to a worker
-+ * if that would need I/O.  The error must not be mistaken for "needs I/O",
-+ * otherwise the vCPU retries the access forever and KVM_RUN never returns.
-+ * The architecture hooks below make sure that the async path is actually
-+ * possible, i.e. that the error would be misclassified if KVM got it wrong.
++ * After exiting back to userspace, the st64bv0 instruction
++ * should no longer trap.
 + */
-+#include <signal.h>
-+#include <unistd.h>
-+#include <linux/sizes.h>
-+#include <linux/stringify.h>
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "test_util.h"
-+#include "ucall_common.h"
-+
-+#define TEST_SLOT	10
-+#define TEST_SIZE	SZ_1M
-+#define TIMEOUT_SECS	10
-+
-+#ifdef __s390x__
-+#define __LC_EXT_NEW_PSW		0x1b0
-+#define __LC_SAVED_PSW			0x200	/* free for the OS */
-+#define __LC_WAIT_PSW			0x210	/* free for the OS */
-+#define PSW_MASK_EXT			0x0100000000000000ULL
-+#define PSW_MASK_DAT			0x0400000000000000ULL
-+#define PSW_MASK_WAIT			0x0002000000000000ULL
-+#define CR0_SERVICE_SIGNAL_SUBMASK	BIT_ULL(63 - 54)
-+
-+/*
-+ * Handle pfault like Linux does: on the init interrupt (ext cpu address
-+ * 0x0600) remember the interrupted PSW and wait until the done interrupt
-+ * (0x0680), then retry the access.  A guest that retried at once would
-+ * fill up KVM's queue of async page faults and get the synchronous fault
-+ * path.  Runs with DAT off, so lowcore is addressed by real addresses:
-+ * 0x84 is the ext cpu address, 0x130 the ext old PSW.  Done differs from
-+ * init only in bit 0x80 of 0x85, test it like Linux tests PF_COMPLETE.
-+ */
-+extern char ext_int_handler[];
-+asm(".pushsection .text\n"
-+	"ext_int_handler:\n"
-+	"	tm	0x85,0x80\n"
-+	"	jo	1f\n"
-+	"	mvc	" __stringify(__LC_SAVED_PSW) "(16),0x130\n"
-+	"	lpswe	" __stringify(__LC_WAIT_PSW) "\n"
-+	"1:	lpswe	" __stringify(__LC_SAVED_PSW) "\n"
-+	".popsection\n");
-+
-+static void arch_enable_host_async_pf(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++static bool try_enable_st64bv0(struct pt_regs *regs, unsigned long esr)
 +{
-+	u64 *lowcore = addr_gpa2hva(vm, 0);
-+	struct kvm_sregs sregs;
-+	gva_t token_gva;
-+	gpa_t handler;
-+	int flic;
++	u32 pasid;
++	u64 isar1;
++	u64 sctlr;
 +
-+	flic = kvm_create_device(vm, KVM_DEV_TYPE_FLIC);
-+	kvm_device_attr_set(flic, KVM_DEV_FLIC_APF_ENABLE, 0, NULL);
++	pasid = mm_get_enqcmd_pasid(current->mm);
++	if (pasid == IOMMU_PASID_INVALID)
++		return false;
 +
-+	/* The DIAG 0x258 handshake, with masks that match any guest PSW. */
-+	token_gva = vm_alloc_page(vm);
-+	vcpu_set_reg(vcpu, KVM_REG_S390_PFTOKEN, addr_gva2gpa(vm, token_gva));
-+	vcpu_set_reg(vcpu, KVM_REG_S390_PFSELECT, 0);
-+	vcpu_set_reg(vcpu, KVM_REG_S390_PFCOMPARE, 0);
++	isar1 = read_sanitised_ftr_reg(SYS_ID_AA64ISAR1_EL1);
++	if (!(isar1 & ID_AA64ISAR1_EL1_LS64_LS64_ACCDATA))
++		return false;
 +
-+	vcpu_sregs_get(vcpu, &sregs);
-+	sregs.crs[0] |= CR0_SERVICE_SIGNAL_SUBMASK;
-+	vcpu_sregs_set(vcpu, &sregs);
-+	vcpu->run->psw_mask |= PSW_MASK_EXT;
++	sysreg_clear_set(accdata_el1, ACCDATA_EL1_ACCDATA, pasid);
++	sctlr = current->thread.sctlr_user;
++	sctlr |= SCTLR_EL1_EnAS0;
++	current->thread.sctlr_user = sctlr;
++	update_sctlr_el1(sctlr);
 +
-+	handler = addr_gva2gpa(vm, (gva_t)ext_int_handler);
-+	lowcore[__LC_EXT_NEW_PSW / 8] = vcpu->run->psw_mask &
-+					~(PSW_MASK_EXT | PSW_MASK_DAT);
-+	lowcore[__LC_EXT_NEW_PSW / 8 + 1] = handler;
-+	lowcore[__LC_WAIT_PSW / 8] = (vcpu->run->psw_mask & ~PSW_MASK_DAT) |
-+				     PSW_MASK_WAIT;
-+	lowcore[__LC_WAIT_PSW / 8 + 1] = handler;
-+}
-+#else
-+/* x86 needs guest interrupts on, see guest_code(); nothing to do elsewhere. */
-+static void arch_enable_host_async_pf(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
-+{
-+}
-+#endif
-+
-+static void guest_code(u64 gva, u64 size)
-+{
-+#ifdef __x86_64__
-+	/* KVM does async #PF, or its halt fallback, only with IRQs enabled. */
-+	sti_nop();
-+#endif
-+	/* Within EOF: must work, proves that the mapping is set up right. */
-+	WRITE_ONCE(*(u64 *)gva, 1);
-+	GUEST_SYNC(0);
-+
-+	/* Beyond EOF: KVM_RUN must fail with -EFAULT. */
-+	WRITE_ONCE(*(u64 *)(gva + size - sizeof(u64)), 1);
-+	GUEST_FAIL("Store beyond EOF succeeded");
++	return true;
 +}
 +
-+static void sig_alarm(int sig)
++void do_el0_other(struct pt_regs *regs, unsigned long esr)
 +{
-+	TEST_FAIL("KVM_RUN did not return within %d seconds, the fault is retried forever",
-+		  TIMEOUT_SECS);
-+}
-+
-+int main(void)
-+{
-+	struct sigaction sa = { .sa_handler = sig_alarm };
-+	struct userspace_mem_region *region;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	gpa_t gpa;
-+	gva_t gva;
-+	u64 npages;
-+	int r;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+
-+	/* After slot 0 and the page that some architectures use for ucalls. */
-+	region = memslot2region(vm, 0);
-+	gpa = align_up(region->region.guest_phys_addr +
-+		       region->region.memory_size + vm->page_size, TEST_SIZE);
-+	npages = TEST_SIZE / vm->page_size;
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_SHMEM, gpa, TEST_SLOT,
-+				    npages, 0);
-+	region = memslot2region(vm, TEST_SLOT);
-+	/* Only the first host page is backed, everything behind it is beyond EOF. */
-+	TEST_ASSERT(!ftruncate(region->fd, getpagesize()), "ftruncate() failed");
-+
-+	gva = vm_unused_gva_gap(vm, TEST_SIZE, KVM_UTIL_MIN_VADDR);
-+	virt_map(vm, gva, gpa, npages);
-+	vcpu_args_set(vcpu, 2, gva, TEST_SIZE);
-+
-+	arch_enable_host_async_pf(vm, vcpu);
-+
-+	vcpu_run(vcpu);
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_SYNC:
++	switch (ESR_ELx_ISS(esr)) {
++	case ESR_ELx_ISS_OTHER_ST64BV0:
++		if (try_enable_st64bv0(regs, esr))
++			return;
 +		break;
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
++
++	case ESR_ELx_ISS_OTHER_ST64BV:
++	case ESR_ELx_ISS_OTHER_LDST64B:
 +	default:
-+		TEST_FAIL("Unexpected ucall %lu", uc.cmd);
++		break;
 +	}
-+	TEST_ASSERT_EQ(*(u64 *)region->host_mem, 1);
 +
-+	TEST_ASSERT(!sigaction(SIGALRM, &sa, NULL), "sigaction() failed");
-+	alarm(TIMEOUT_SECS);
-+	r = _vcpu_run(vcpu);
-+	alarm(0);
-+
-+	TEST_ASSERT(r == -1 && errno == EFAULT,
-+		    "Expected KVM_RUN to fail with EFAULT, got r = %d, errno = %d (%s), exit reason %s",
-+		    r, errno, strerror(errno), exit_reason_str(vcpu->run->exit_reason));
-+
-+	kvm_vm_free(vm);
-+	return 0;
++	/* Treat all other "other" trapping instructions as illegal opcode */
++	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
 +}
--- 
-2.56.0
++
+ #define __user_cache_maint(insn, address, res)			\
+ 	if (address >= TASK_SIZE_MAX) {				\
+ 		res = -EFAULT;					\
+@@ -842,6 +892,7 @@ static const char *esr_class_str[] = {
+ 	[ESR_ELx_EC_FP_ASIMD]		= "ASIMD",
+ 	[ESR_ELx_EC_CP10_ID]		= "CP10 MRC/VMRS",
+ 	[ESR_ELx_EC_PAC]		= "PAC",
++	[ESR_ELx_EC_OTHER]		= "OTHER",
+ 	[ESR_ELx_EC_CP14_64]		= "CP14 MCRR/MRRC",
+ 	[ESR_ELx_EC_BTI]		= "BTI",
+ 	[ESR_ELx_EC_ILL]		= "PSTATE.IL",
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index b15a59b9e95d..e358d9ad229b 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -3656,6 +3656,11 @@ Sysreg	TPIDR_EL1	3	0	13	0	4
+ Field	63:0	ThreadID
+ EndSysreg
+ 
++Sysreg	ACCDATA_EL1	3	0	13	0	5
++Res0	63:32
++Field	31:0	ACCDATA
++EndSysreg
++
+ Sysreg	RCWMASK_EL1	3	0	13	0	6
+ Field	63:0	RCWMASK
+ EndSysreg
 
