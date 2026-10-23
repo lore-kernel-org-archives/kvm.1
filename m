@@ -1,114 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792782054;
-	b=np1Z7/NFB5Fgq/uvWcAykrQBkG6l82VbpArGLG8h42fxDLalSyqAnXfcDVS63mVSmyKv
-	 AeFnQCOiCz50+SvRzbYcpt6SgqTyx13A35XLF+9JZ3d4CeOOJfnoY8GpDJCgVmDEVQuBj
-	 n8IzJaLDtqA2g1iCFBwy01HbvOb4on5hbwNVtOOiLS2SEtwYC6Va57PqPv+FxFot+/wze
-	 g70V0u71KQTYw6eCyRXC2kp5pZmNUwYo4UrIPRvngaZXxKC6sijnkhIcmDKkxHTsyTjB/
-	 zAfZXlG9z4f0bfORhNWzkW488W8ae2tM70SN6pYOyAaHlgyJqDk1xHl5xw7lrEcPzRQ==
+	t=1792782226;
+	b=p0lSIQQwUx26YQFFnrjUvU3ufBhMkDEE4uRNw5iUHYAgL8m6jOvaeWlfKC7iugmyr4hk
+	 57EG1DzSWNw+w285IGKwF+XVC8J7fDe4oU7UzFwWPJjYRiiUQNxVHxvONr7jV5fBP2GqL
+	 VgorTLQhW+fDvEkscAWJeoH3r6YEwz+H941QQllR3BxzuWyaM/mGy6D9bojDLsAqakL46
+	 P4kUknuRN/SHGzxg2YSw9ZRiszfhed+G/VsjIcEiVT7iAGOncrLI5ifQa5GWWMhaVNdpt
+	 Z8t/BQJDiMyYe+zdvM/Q7fqSIsleQC3kLjjFb44qpc488JDB4DLEA5Hkwu/50AILqLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792782054;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=5tf4s8d8+MZT/ng3kYJALwtT1EAbBRaxelT7QvlTQng=;
-	b=jHUWkG5x/0KeUyHTNjXxrgf1IkiOgqdLiO3GzPwVOd5JU9K9yeP79uvPpoOasm7rGBEJ
-	 7tTRzF1KQ1pPej0RDkwPg/0YxvdYKKBJmgekmFA4nqPPSg0ZPUH2EpbMTP2pVZmGGqbUH
-	 5lDtXQde8SaPQek0EIZegE2C2t5bLB13vBkBN9HBpv+D4ExRtUFnEeka7BiEnmsTUrWR/
-	 ieDQEqNH2wC4FrcrT2sZGPu9U9VH965TbE8Y4fRpp1Lfr+cCe+3vpxoNJyWjeAfKo+Bi+
-	 ppwNXF1d6MLJENzG2sDJg+I8OmdRT9mJdAqaCIR4JNrjxg8kuB8WJW0f84dy6B0vSfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792782226;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:From:Content-Language:To:Subject:Autocrypt:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=rNWPRBvHW4GWXMBuyyIQh64Bw8Q74fH6mWDNw5ByBy0=;
+	b=frT6aUNIv8bLOz3vS1KmPA5snxVNbupb/vVcu10aUfeVIRjBy77VuW2ZFxhr5/NPPldE
+	 p6vcwnk+l0hqEtk7BuojqmvaqOHeFbs5RrJ4f6P8lx+g7BvMHy0JVB1fmHNpEJZZbekv8
+	 1D1Q+FBY9bHr2xsuWMDZewJaxe0EF16wxcSBlJkln7BYoabCYa2SIfdtlyAdu67KZIkRp
+	 FfX+bOv0wBRrIi9zCiNIWlefQlMJpnVKco491Lfi65BKtEx/tQWMfPMLlLSv1OjQ1cDKM
+	 yldSdi4YGrj7dFSYUYdil7+owEa1UGFzRSQ6UrYsHi2g+VIcClOnc18Kvp52Bw60Itw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bzc4Cg9j;
-	arc=none smtp.remote-ip=209.85.160.178
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QjuG51oE;
+	arc=none smtp.remote-ip=198.175.65.12
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A8606A325
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 19:00:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE7A8606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728A9606A31B;
+	Fri, 23 Oct 2026 19:03:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 728A9606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bzc4Cg9j
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-53397554beaso12640421cf.3
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 12:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792782039; x=1793386839; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5tf4s8d8+MZT/ng3kYJALwtT1EAbBRaxelT7QvlTQng=;
-        b=bzc4Cg9jHc+EwZ+EF2GHA00SaE7XNzyRJ2jPm8VaHgqzKDLrehIHY+5e8wqB1yH17y
-         sndSYk22aMmceP9P1fMLTu0Z4V8EzlM2RGsFmTw4gK3j741dLn2NCvrwBRx9Zs2Y9Nrl
-         IH1Flz0MwkfAlUgvicHD3GXb1HCVFF/PCxVAEn/OVSguv9eR9Zs++ljRZWXpHTqI+xAr
-         rfcFCA7qmIwN9IxX9GeYG2HRZ3YRwMSM0MH1BmgGZbTGcamONR+rAGI29PTmp5avInXD
-         sAUAnL9pEXhpYTml9nJyCuJ6EjWQTeYXwbhCn5SvYnMgGcHEU9aguEL9UamXbiSuNSk7
-         hQSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792782039; x=1793386839;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5tf4s8d8+MZT/ng3kYJALwtT1EAbBRaxelT7QvlTQng=;
-        b=jHC2Mw797MHy8Q1Sp5rMMf/waFauhbNLIRfFmiQ/JORDayB//0Czp/1MmW9/ZebUKN
-         MLsjMOA6EPKwjbUSV1GZKEZ3AB5fDdoDLwB7ukp4uL4LjUQeJFDLHJuRFU9bCP2vsyVe
-         o8k7pL0e4XAQTrEQfG9tTASevHKRhY2gbVYFECLpJJKNFq7yQWCZzr4oXcOq4p0LnboN
-         T3ljq/PLaPOjBXJo3xvclE+jgckp2nOaMfiVOfy5VCfmC15RDdCtBGRf+y8P5JFBvbTn
-         NNWHKdU4gM25scsDbB7ChvlCGc0JMlR7VVCjpcTJyrPOO89cAItQ6mNG65selguaLa9k
-         XCLQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwmrTUaGrTqlDPmS2wD6dK6zB1wzyh61RVnsHWXm1dRiLw4Us0J5vVP3gXiAnD/VzXnbrw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRlwwZM/91BXHmo6vjvklvBH2OHRfqCFL6cwKh/mXcshzvCqPi
-	QRtkNdwUEhAb8iiHmFKf1yjmrrlPOHZjVYJKJ9Bitoe1pr+WyXPgiSAwGz3y66VZrJM=
-X-Gm-Gg: AYBFou3yPXgGXBDZpOtBr1/dW1Xcq+av0WBhdfQ9WFK3f4lND2RRlI1/LHYcK1cdT+n
-	N1o/LGWQjGmqk0fy4kEuwXWg75V1RT+/h5zYwpflgH39CD3q63cVdUCqbYbWvhlg5KFpxG9lyEe
-	HsgHJIJ4DnSR16w9KNLvi63RvG2iuVuPj0N+AjOgk6u8bSxtTwuvvEem0uyto5W6qaOY3BxHGkV
-	NwkXtOT/bFJbNDaivPGlFt/VzkrGFHAgxvSv9o3y0RmNgzwY1HLbT0c4jKxyPhOZV2wT3CQCGyk
-	RAEFLBI6r5F7deAdPw5NHq8F6JxF1MmWCBGBQi/qzXFA4nMP1j8tPRQ/kyvPOyJuFtiKmIzVQl4
-	FdnjjPvaui1Y+1oxNiyNWJ5wH2XVkudDIpnC39K1pBl3DYARJwb6pIiop/n6Xji/+ehmGx7c1JB
-	8veUf++AZS91oN1nUGzPQbOZ6m6n9oyB+kJawSKQARnr7sFjTqvnCd8BHTwILptnw3SKolei4Ul
-	ogK5tpiYx4PQaUWIibKUk7mjmrMnNz2Yhj7NX/Mtam4MblWrOj3FX6UR6G3lAAPfQNR9mK9Hvmn
-	P3VFhss8axhZESDjAcArugz7hnZW5LTP20Yi3g==
-X-Received: by 2002:ac8:5d8e:0:b0:535:a5f9:7520 with SMTP id d75a77b69052e-536c26e2168mr47897061cf.63.1792782038589;
-        Fri, 23 Oct 2026 12:00:38 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53839709ed6sm1185741cf.16.2026.10.23.12.00.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 12:00:37 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xKKVI-0000000GxzN-4BG5;
-	Fri, 23 Oct 2026 16:00:36 -0300
-Date: Fri, 23 Oct 2026 16:00:36 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v9 02/18] PCI/P2PDMA: Derive routing from directional ACS
- controls
-Message-ID: <20261023190036.GL3977851@ziepe.ca>
-References: <20261023155914.GK3977851@ziepe.ca>
- <20261023182715.GA2798722@bhelgaas>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QjuG51oE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792782226; x=1824318226;
+  h=message-id:date:mime-version:from:to:subject:
+   content-transfer-encoding;
+  bh=Ik3Tv57+LpiVdT2vVzm4qW8OYFyfXnFLCSBNq2HUF5E=;
+  b=QjuG51oEkEhMEQ1puGq2HYwHjqDVD1ZvyT2LBSsuZHgwIcsvCnfbVw1t
+   u67dOKDZvY6kn3kgYgXUNXdGEMmFKbLMR4fKYLJGVHbikXrqaC3uJ7mL2
+   e8GFEGb+nBOMJEoO7lxGjeslFwMqn23dSGd6l+ybiUiWQPMbeBXwfJYmJ
+   m0dA9ahzSdWv+1AFgrw2fLQ+pZ9hlY6flKTjWiynOxxq2BxCDtzmJReH4
+   Hx4AE2BvzbBBs8U1pIWC8YrpMlxITguuxIiXqaDiJMkseM7NWlRa0gjCc
+   5gFg0BS4pqbGqEUF0DevixVEFS8kZDSlbnE8Wb5ctgV3qbN4xM1dlMbEl
+   w==;
+X-CSE-ConnectionGUID: zEyGGuK6QJW/qyX03vAY8Q==
+X-CSE-MsgGUID: /cWNB2MxSYGY3T+o0G7zjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1434360"
+X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
+   d="scan'208";a="1434360"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 12:03:45 -0700
+X-CSE-ConnectionGUID: oX7vb1O2RQeFm/AueZ1Bkw==
+X-CSE-MsgGUID: 2XgCkoB0RpaEQnPNVhs9Ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
+   d="scan'208";a="3601112"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.108.4]) ([10.125.108.4])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 12:03:44 -0700
+Message-ID: <2f0560df-69fc-4fc1-81fa-447e289ec2df@intel.com>
+Date: Fri, 23 Oct 2026 12:03:43 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,34 +72,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023182715.GA2798722@bhelgaas>
+User-Agent: Mozilla Thunderbird
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+To: Yang Weijiang <weijiang.yang@intel.com>, "Gao, Chao"
+ <chao.gao@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Maxim Levitsky <mlevitsk@redhat.com>, John Allen <john.allen@amd.com>,
+ LKML <linux-kernel@vger.kernel.org>, pbonzini@redhat.com,
+ peterz@infradead.org, john.allen@amd.com, kvm@vger.kernel.org,
+ binbin.wu@linux.intel.com, Andrew Cooper <andrew.cooper3@citrix.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "Bae, Chang Seok" <chang.seok.bae@intel.com>,
+ "Mehta, Sohil" <sohil.mehta@intel.com>
+Subject: Kernel Shadow Stacks Versus XFEATURE_MASK_GUEST_SUPERVISOR
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 23, 2026 at 01:27:15PM -0500, Bjorn Helgaas wrote:
+So, I'm working on kernel shadow stacks. I have some nice optimization
+code like fred_update_rsp0() for SSP0. It avoids WRMSR's on exits to
+userspace if FRED_SSP0 hasn't changed, just like FRED_RSP0.
 
-> > Yes, the ACS combination is selected to avoid ordering issues
-> 
-> Does a user have any way to know whether the configuration is safe?
+Well, turns out that FRED_SSP0 isn't like FRED_RSP0 in one very
+important way: it is an alias for PL0_SSP, which is managed via
+XFEATURE_CET_KERNEL which is in:
 
-No, unfortunately in PCIe so much is really difficult when it comes to
-deployment :(
+	/* Supervisor features which are enabled only in guest FPUs */
+	#define XFEATURE_MASK_GUEST_SUPERVISOR  XFEATURE_MASK_CET_KERNEL
 
-> I'm wondering whether users might use "pci=config_acs=" to configure
-> ACS so things appear to work as they prefer but may not provide the
-> ordering guarantees drivers depend on.
+So, I was running along just fine in my nice shadow stack kernel going
+in and out of the kernel just fine. But the first time I did an XRSTOR,
+the XFEATURE_CET_KERNEL feature got set to its init state. My SSP0 cache
+didn't notice and I tried to run userspace with SSP0=0. Much hilarity
+ensued on the next kernel entry.
 
-I imagine that could happen, but on most practical systems the root
-complex will blow up if you do asymmetric routing so there is an early
-indication.
+The most adorable part of all this is that I have KVM compiled
+completely out on my config. The "only in guest FPUs" code is biting me
+on a kernel that can't even run guests.
 
-I know this because I've help debug such configurations at
-customers. Some servers helpfully MCE if you do this. Lovely.
+I think this all started because of 8b05b3c98816 ("x86/fpu/xstate: Add
+CET supervisor xfeature support as a guest-only feature"), which seems
+like mostly my doing. So I have mostly myself to blame.
 
-> If that's a possibility, do we have any notes in dmesg that we are
-> depending on fabric behavior that the OS can't discover and verify?
+Any thoughts on what we should do?
 
-Maybe, it could be interesting if the P2P logic found asymetric paths
-it refuses to permit it.
+Actually context switching XFEATURE_CET_KERNEL seems kinda silly in a
+lot of ways. PL0_SSP can always be derived _and_ it isn't actually even
+needed at context switch time, only when running userspace.
 
-Jason
+I could just aggressively blow away my SSP0 cache any time an XRSTOR
+touches XFEATURE_CET_KERNEL. That would be easy. But it also seems silly
+that XFEATURE_CET_KERNEL is being blown away at _all_ during normal
+context switches. Heck, it goes further than that because:
+
+fpregs_restore_userregs() does:
+
+	restore_fpregs_from_fpstate(fpu->fpstate,
+				    XFEATURE_MASK_FPSTATE);
+
+Where XFEATURE_MASK_FPSTATE contains XFEATURE_MASK_SUPERVISOR_SUPPORTED.
+
+So a "restore_userregs" function is blowing away supervisor state.
+
+IOW, I think we're using XFEATURE_MASK_FPSTATE a bit too broadly.
+
+I'd like to get to a place where only the KVM code even has
+XFEATURE_CET_KERNEL in its RFBM.
+
+Anybody have any bright ideas?
