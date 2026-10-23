@@ -1,75 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792775632;
-	b=IrfktWNLtV1eFcD3UrIKVbYh0Xyb4vZiOokmgyvAhJz+Mm6AAOWDKHJeaS1f34DUPjvY
-	 4Cq2tcgzXlouPLvraP/T87t2+ZdXHhaqba8n2fv9WfSGTFxNCKZEHn+KISjadjWhQtG6t
-	 4LtLIrFsnBmWV0SGLEp/iSNdKCB9Qq4eq9tAv1NVD1rLwrtF3qhWKDV1xVOGpz89+T2qU
-	 Z957uFrQ+SixLQsaimrl7vxACNKecSZHDIYyTFUd0Weh/6UyAGoUrrcKZC6q6gAG5O3zs
-	 NEm3OyHJ0o3SBVWRRELW1qjUdmT+gCn3DomHj/GjTrec7icyR/6rVa5ukL/q2MWOppg==
+	t=1792775671;
+	b=rBv/Yc1jFBtj/9ZzkNUVrJUZkY2Hq7ncwY2EK/r5l7VMDA/GtqIScKTQSUDlz6GH/gFo
+	 56Ow5fYSO1OZ4+8H8PvrymYcL4oi9lf4ISrDvCSRY+axQ2W225j24APNrs5TfwVghKLbC
+	 ehqFtP9wZZOA+lKRLvX/Zu7h5TAn6aS77frRhy4Oi1WAikSr0npCbMtf7cYYm2ARzxzW0
+	 bWWaIUcHC1pYN6dmxr6fmtm2NdW7ikiLu3GMB/fn11h4VgckVsaoYLokyQ+KwoUoQzQwJ
+	 RqxgzgFqIUcEMTSDgqNa97bOxDslqaJUHd0ervq/yysrMGFCkwrj5Xtd9Y8SMqq46yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792775632;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792775671;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
 	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=HgMYbhAoeaeOOZxtD9k9QZow02hV/8D2BFRu4aNQ2EE=;
-	b=izxYaQQ/Rydjt7GVXSfw8ZfG8yUnSku7694eq1df0wYv7k4Ij7QT2+M1RZn/RtmKnlMb
-	 y6WciT6D2Rk+pzReOwYDI2I/x3hz8nDUIsGlnperuM3BxMDokbiIJkOTfCUbDiWIDY9kk
-	 hUlezbd9vhwxwSqvn1XNYCA+VeGVCgYXQS2t1NLBnuYyHD6gXwV/LcoHC77F3Su2U2CZ8
-	 TucorQcEuO9JEIWfbgDka/grOKhKoie6Dxbw4O31SU5ZuuETz6dzpU07LEwg8sAyToDKw
-	 i8s568MkjAuzOJ7Datc6CAdmf7SgOuOuiJnypTYLzwUqZ1CxAnuB5GQdYJwYIHQ53QA==
+	bh=IyLwFuwt9xvTMRmGR0g8uY48KLl2wMeZYw2+YnAXfJc=;
+	b=1ijwYV08dGyo7q3NDpjVvrMsbyMjriA6BdZHF1SJ6I+DtBLb+obxs25OlGAiLg7EGQNG
+	 /WVT1RErvoRLTwhqLCuE4oS61pov0/gX/ZqI8FHoVkzkpUV9LAggj3S/YFfArHCgN+Yak
+	 oVCS1dzk9xm3tGqOegJpBi1mHTFdtzElLhlOB65AQ5jyVX1oUMhQdy7lHMox3Xrxp47TZ
+	 aLXZBYK8bUYm8vnnVgMFj8ch0hUT0xXmoB+xGu+GeqYugzK9TGbeAwQaLEmXgFViD40Ug
+	 ltqZUjRjiMcjUTHQaSjYXNc1DC9eb/zZ88ZK6pHLITa0Yfi/1m7jmKaqbrf7dGQQQ8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cispa.de;
 	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=Lvr6nhY4;
+	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=TD8eRhrQ;
 	arc=none smtp.remote-ip=134.76.10.21
 Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F5660A2631;
-	Fri, 23 Oct 2026 17:13:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17F5660A2631
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229FB606A31B;
+	Fri, 23 Oct 2026 17:14:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 229FB606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=Lvr6nhY4
+	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=TD8eRhrQ
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
 	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:
 	Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=HgMYbhAoeaeOOZxtD9k9QZow02hV/8D2BFRu4aNQ2EE=; b=Lvr6nhY4RY7QWlQsJiyfS/SU/r
-	wr71tROMOoZX0Ve5Pj27DypsLxlUyaH5yl0pSRxKuIYu+DHh4FNrfrJUk5CZ3JQan41/7R6YqVb+y
-	zVYlsWBoJtusMNTtrGGhChaC588IprqZpMuVfWq6QeSFkIHqTw2SO13GuuBPk2f28f38do9INXjxa
-	OMjn2T6tMN9rUPA86Y7DDAmJFWzcxjXt7ivoHHi3da9Hph0wGYisObpZCp2z3i/wcQaG6wvgNOyOr
-	y10jvUdfAuX+NJ4v3JJ8ADs9mOeYUHt5J3NQL8j4OdaQVfSwHJcAKyVGQQ7khK/i8CqB6lZKPPjHs
-	u0U7MRqQ==;
-Received: from mailer.gwdg.de ([134.76.10.26]:47115)
+	bh=IyLwFuwt9xvTMRmGR0g8uY48KLl2wMeZYw2+YnAXfJc=; b=TD8eRhrQhGFPygragoQuiRxsMX
+	1DO5ktWB6kcyC+iR3cR87w6p+Aiz6hbfKd9EDMXfP47YYX7pYRrW1/FFOxSZLXC2DI8/xpFKivbXt
+	UmddSk3vDwtcm49f+LIwFThHGXHecBXdXMqDegP19iSG1p0vgrpEm+gK3lKi+N5B7nYYKkhwqTjTb
+	BPt3t3JYGEvLyQt12G52Zbe5AhvPJ6z3SnoI8R/lJA/wga3bFRc5Ay61O8qwGwhz97ZiTy+TOiv2i
+	OqYpVpyV/YX/PEYjeE9moOySEZgL1HZlvIprMWjlJPODLufTj83tc4TN2+ER/AGXNflzTOicooj5S
+	EX4c6M7w==;
+Received: from mailer.gwdg.de ([134.76.10.26]:34981)
 	by mailer.gwdg.de with esmtp (GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xKIpx-00Emw8-2p;
-	Fri, 23 Oct 2026 19:13:49 +0200
+	id 1xKIqb-00EmxH-2K;
+	Fri, 23 Oct 2026 19:14:29 +0200
 Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
 	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
 	(GWDG Mailer)
 	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xKIpx-000M9b-1U;
-	Fri, 23 Oct 2026 19:13:49 +0200
+	id 1xKIqb-000MFz-0z;
+	Fri, 23 Oct 2026 19:14:29 +0200
 Received: from localhost (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
  (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 23 Oct
- 2026 19:13:42 +0200
+ 2026 19:14:28 +0200
 From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 	<pbonzini@redhat.com>
-CC: Maxim Levitsky <mlevitsk@redhat.com>, Santosh Shukla
-	<santosh.shukla@amd.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <amirmohammad.eftekhar@cispa.de>
-Subject: [BUG] KVM: nSVM: vNMI vmcb02->vmcb01 egress runs for a non-nested-vNMI L1 (gated on global vnmi, not nested_vnmi_enabled)
-Date: Fri, 23 Oct 2026 19:13:26 +0200
-Message-ID: <20261023171326.636988-1-amirmohammad.eftekhar@cispa.de>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<amirmohammad.eftekhar@cispa.de>
+Subject: [BUG] KVM: nVMX: RSM re-entry reloads L2's DEBUGCTL/S_CET/SSP/SSP_TBL/BNDCFGS from vmcs01, not L2's pre-SMI values
+Date: Fri, 23 Oct 2026 19:14:09 +0200
+Message-ID: <20261023171409.637483-1-amirmohammad.eftekhar@cispa.de>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -89,44 +88,60 @@ X-Spam-Level: -
 
 Hi,
 
-Reporting an nSVM vNMI fidelity bug (correctness, L1-scoped; not
-memory-safety, not guest->host).
+Reporting a nested-SMM fidelity bug (correctness, L1-self / L2-state; not
+memory-safety and not guest->host). On RSM from SMM back into L2, KVM
+re-stamps a set of guest MSR/state fields into vmcs02 from values it read out
+of the *active* VMCS at the moment of re-entry -- which is still vmcs01 (L1's
+live values) after the SMI forced the L2->L1 switch -- instead of L2's
+pre-SMI values that were already saved into vmcs12.
 
-On nested VM-exit, nested_svm_vmexit() copies the virtual-NMI state from
-vmcb02 back into vmcb01:
+The path
+--------
+vmx_leave_smm() -> nested_vmx_enter_non_root_mode(vcpu, from_vmentry=false)
+runs with nested_run_pending == 0 (vmx_leave_smm() sets
+KVM_NESTED_RUN_PENDING only *after* the re-entry call returns).
 
-  if (vnmi) {                                             /* svm/nested.c ~1407 */
-          if (vmcb02->control.int_ctl & V_NMI_BLOCKING_MASK)
-                  vmcb01->control.int_ctl |= V_NMI_BLOCKING_MASK;
-          else
-                  vmcb01->control.int_ctl &= ~V_NMI_BLOCKING_MASK;
+On that !from_vmentry re-entry, the "stash pre-VM-enter state" block reads the
+current VMCS:
 
-          if (vcpu->arch.nmi_pending) { ... V_NMI_PENDING_MASK ... }
-  }
+  vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();     /* nested.c ~3677 */
+  vmx->nested.pre_vmenter_bndcfgs  = vmcs_read64(GUEST_BNDCFGS);    /* ~3681 */
+  vmcs_read_cet_state(vcpu, &vmx->nested.pre_vmenter_s_cet,         /* ~3685 */
+                      &...ssp, &...ssp_tbl);
 
-The guard is the global `vnmi` module capability, not
-nested_vnmi_enabled(svm). The *ingress* side is gated correctly -- in
-nested_vmcb02_prepare_control() the V_NMI_* bits are only pulled from vmcb12
-when nested_vnmi_enabled(svm) is true (svm/nested.c ~888-896). The egress is
-not symmetric: for an L1 that was NOT granted nested vNMI, KVM still overwrites
-vmcb01's V_NMI_BLOCKING/V_NMI_PENDING from vmcb02 on every L2 round-trip, so
-L1's own NMI-blocking/pending state (which KVM maintains in vmcb01's V_NMI for
-such an L1) is clobbered by L2-derived bits.
+At this point the loaded VMCS is still vmcs01 (the SMI switched L2->L1 and RSM
+has not switched back yet), so these reads capture L1's live DEBUGCTL / S_CET
+/ SSP / SSP_TBL / BNDCFGS.
+
+prepare_vmcs02()'s "no VM_ENTRY_LOAD_*" branch then stamps those stashed
+values into vmcs02:
+
+  vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);  /* nested.c ~2796 */
+  vmcs_write_cet_state(vcpu, vmx->nested.pre_vmenter_s_cet,          /* ~2801 */
+                       ssp, ssp_tbl);
+  vmcs_write64(GUEST_BNDCFGS, vmx->nested.pre_vmenter_bndcfgs);      /* ~2807 */
+
+But sync_vmcs02_to_vmcs12() already saved L2's correct values into vmcs12 when
+the SMI was taken; RSM discards them and L2 resumes with L1's values for these
+fields.
 
 Impact / class
 --------------
-L1-scoped fidelity (a VMEXIT-egress state-mismerge class). Victim is L1; not a
-privilege boundary, not guest->host, AMD-only, and CONFIG_KVM_AMD is off on the
-kvmCTF target, so this is upstream-hardening value rather than a bounty issue.
+E2 fidelity. The victim is L2 and the entity that both owns L1 and drove the
+SMI is L1, so this is L1-self-inflicted state corruption of its own L2, not a
+privilege-boundary crossing, not guest->host, and not kvmCTF-scoring. It is a
+concrete instance of the existing in-tree "L2's values may be corrupted on
+SMI+RSM" TODO near vmx_enter_smm().
 
 Suggested fix
 -------------
-Gate the egress copy on nested_vnmi_enabled(svm) to match the ingress, so a
-non-nested-vNMI L1's V_NMI state in vmcb01 is left untouched across L2 entry/
-exit. Happy to send the patch.
+On the !nested_run_pending (RSM) re-entry branch, source these fields from
+vmcs12 (where sync_vmcs02_to_vmcs12 already put L2's values) rather than from
+the active VMCS. Happy to send a patch once you confirm the preferred shape
+(source-from-vmcs12 vs. reorder the vmcs switch so the stash reads vmcs02).
 
-Read-confirmed against kvm-x86/next (tip of 2026-10-13); present in mainline
-v7.3-rc6.
+Read-confirmed against kvm-x86/next (tip of 2026-10-13) at the three anchors
+above; the same pattern is present in mainline v7.3-rc6.
 
 Thanks,
 Amirmohammad
