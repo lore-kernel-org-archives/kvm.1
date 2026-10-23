@@ -1,80 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792751301;
-	b=sOj3ZBpKH0uGg/hWdJf9iswz+FtrSalyEH5FjpjcGtoN2eHYHQXit1s6CfaQF0b5Z5Ae
-	 D3U6eHMREbujupHipXkCSy1GifujOTfsnDcZSivCcsEdvnq3XChgiMoAOGcl10DBEZZ51
-	 6zavMubDXAT/8DzF3j6XbY84/KHuLve1s0nbcHg3kNhO2H6ESJIN3kILVeEndf+AzQXSm
-	 L8YuNnfHvluL7dfuI01Ar9CRJ0+q1hLT49TXbpTfBbSW6xoul88ADlvUveqMjWa9INJYb
-	 MdIpOWje+F4g0tpSO0mUc3/2JJ6u25tE5hAPT73tK7Qv7wZAwHl5Urux2sfyBGsnjJA==
+	t=1792751909;
+	b=Qniy+7yvZH5+lOVWWHBAJEQD8BQ15VhqjSCfBdyjItwRY7oYAXxioj3B4TRGkAxuLNJy
+	 kWaWMj82ASc9LNY0R5TOgu6OOH3TR/Cb66MQAklKd2lS3V+uucggrEk2lJimWF+Kz9gFD
+	 u93vccNzKCSm/uYllBGakRA+SwBv6UAVajVGrLLOU6fwCJLzOMFt00ve9ock+yve1UWaT
+	 m+Ff5NP1pqnyG6K+rJyb1qnyf+8Dy6D1OJ7U6CZqdO1qH2k4je6bIhK/9YrO2j1weDsKj
+	 1SBDKD0VRhEXsLNYkbVJKrtoPUwFssE0/WkTkExwXQsFCfD1/LJI0dkJCpwoVjQDZBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792751301;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=5xxaFu/2iOxD5RMGVSNWFKVZ9uL4wsCtNZsvzOxk+fg=;
-	b=1IQbpXDDa9dbVRB2ILgGkF2BRwhYdT7fR7rlYKSsEgZUOgFKOREU7mIbqp9A1dr9OqR4
-	 khkUYwVfMAvRZc2hgX5HdAP57+mGMhDkOgVx74iLlBhTP2sE6iOxYeN0osWGsbCP3rTHK
-	 qGgdvqHQZbYj7JLZG1KnmkZFih/T4DRThmyLgzzT2/V330oeCXDokeYvvmD/z5cTIkyAL
-	 Sipiv0VQstKcXtAgjAUELGrHSgeKU/cOTaRc5awbPAcAGgB9AAunjBcvkFgib/OCt1Ptc
-	 /C7hXKwpnvxXlYnUyLUWG53c7f6RPrNvnjitQXuaZiElSYP8DYhd7VkCGWsgN8Kn2Eg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792751909;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=cLLRVkOcST0DyQ8J/JKflZi0Zz/mIu85uAsHsW1TVFg=;
+	b=5Lk+veLPLNWNGl7PpaL0sjMYn5CZ7TuQAClFNgQoWiHXicgJcxPOCk0pTfEO0p33BWCT
+	 ZP1XslkpIRu4VcBvAGXuJ/RLs/PYO6AwUbPD5GnfpD4IL/0YcbsJIIp5Nse5Xaoi7X/qn
+	 XH9uhqH9f2uBw2a2k59ITXskeJwezSVFJvcuvxGwhyS/ZKmeyhqo0cD616PeGlq7DbLru
+	 wm3gIdBijDeDRQpox89jxgWf002ef0rfT76kaqwdCCT3IlJAE3uC2ptFo3uctKoCpe383
+	 bk7+8HTkCiWvow/lSRApyBagNa7z5Rx2jqFK2YIOPv0RF8p6Bq7lkKG8h85KTbnmXfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XdATUmEw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vfClfbAy;
+	arc=none smtp.remote-ip=95.215.58.69
+Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA938606A31A;
-	Fri, 23 Oct 2026 10:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AFE606A31B
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:38:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95AFE606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XdATUmEw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834721F01825;
-	Fri, 23 Oct 2026 10:28:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792751300;
-	bh=5xxaFu/2iOxD5RMGVSNWFKVZ9uL4wsCtNZsvzOxk+fg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XdATUmEwCqIkK3yOA/rtUt6Wt9lkphNipYOQtTDn4nJmriTAh/r9DtJZI9Wavn9+L
-	 egQyYa0IhRRo6LX+B1ALfojMV/jmQxpLDrD0QDXNeygBk3n4gVEy8Cgg2nheuvrT+v
-	 JaITFeF9B0C2dSPZawVWxAQVEGTqn66tCQGaqYmYTKJz5LzWylhbtez8+5pM7GjiQb
-	 h7vzg+8xoSV6IsRgaIMIUVwiJlXpGtcrLzUu51jID/+Srb8ikp8hWUQ4eLDc08ONhf
-	 iG14+4BYnjom3pS6iq4VdaN9yvyq544isEBYbtIgO5n+CEKX1VEqiwM036oN0z9oyR
-	 hv6jhhIhrdVbg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xKCVW-00000006QAz-0RQd;
-	Fri, 23 Oct 2026 10:28:18 +0000
-Date: Fri, 23 Oct 2026 11:28:17 +0100
-Message-ID: <86ecdgzp6m.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Zhou Wang <wangzhou1@hisilicon.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
-In-Reply-To: <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
-References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
-	<20261023070110.1833446-2-fuad.tabba@linux.dev>
-	<86fqxwzul7.wl-maz@kernel.org>
-	<CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vfClfbAy
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=cLLRVkOcST0DyQ8J/JKflZi0Zz/mIu85uAsHsW1TVFg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792751905; v=1; x=1793356705;
+ b=vfClfbAyy9W87INmPAnQRLdM7z9pEaINPiM00p1v2g0GLj9r6L0GQpWJqxVXwZS/0RGLvLJ9
+ sEJERkcBQ/Pz5i08ZdfzIHlsMTNCsqw3Nn295gHeRd92clsIhEipEMAdh4OJnysnDPPgKmhN38t
+ RzcLV0+K9oNUXatYiIrgR4K8=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 854281266f8ae093;
+	Fri, 23 Oct 2026 10:38:25 +0000
+X-Mizu-Trace-ID: 854281266f8ae093
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bcbb378fc9so6903e87.0
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 03:38:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzLndC4d2U9ZUr3+swJngevcVVkbx3MOnNNvOWrt0i8DJIxhzsKN4wAnkO+eeNyboAoeGs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJBKNboXpawBnER9T1F9t/H+xFWvCE5w5xhpIyhEAYCQ4TDa4ka
+	m95jxGVawjuNP4UCksIZWMW9LOXXRqURbdqJ+YF9hTitwfVU+0GaR6wGDs7ZmMeivTQfJ/66zO0
+	zHpv6ClO2sDSc698SsLrnCh6m1DA5Zbkbg9/QvVAr
+X-Received: by 2002:a05:6512:3e26:b0:5bc:fbf6:2352 with SMTP id
+ 2adb3069b0e04-5bfb06d38a0mr119014e87.9.1792751904240; Fri, 23 Oct 2026
+ 03:38:24 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,58 +65,41 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, oupton@kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, seiden@linux.ibm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, yangyicong@hisilicon.com, wangzhou1@hisilicon.com, arnd@arndb.de, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
+ <20261023070110.1833446-2-fuad.tabba@linux.dev> <86fqxwzul7.wl-maz@kernel.org>
+ <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com> <86ecdgzp6m.wl-maz@kernel.org>
+In-Reply-To: <86ecdgzp6m.wl-maz@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 23 Oct 2026 11:37:47 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+X-Gm-Features: AclHuK-Z7-qsjF596RnJ21sZzB7mzj2vXd60dbcKuOxyJq8KgdnvpDHBkQR87RQ
+Message-ID: <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, Zhou Wang <wangzhou1@hisilicon.com>, 
+	Arnd Bergmann <arnd@arndb.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 23 Oct 2026 10:08:11 +0100,
-Fuad Tabba <fuad.tabba@linux.dev> wrote:
-> 
-> Hi Marc,
-> 
-> On Fri, 23 Oct 2026 09:31:32 +0100, Marc Zyngier <maz@kernel.org> wrote:
-> [...]
-> > Why settle for the least capable option? Context switching ACCDATA_EL1
-> > is easy enough, can be gated on guest features, and avoid the
-> > userspace horror story.
-> >
-> > I'd rather see that.
-> 
-> Context switching it means accessing ACCDATA_EL1 at EL2, which traps
-> to EL3 unless SCR_EL3.ADEn is set. booting.rst doesn't require ADEn
-> today, and TF-A only sets it when built with ENABLE_FEAT_LS64_ACCDATA,
-> which defaults to off.
+Hi Marc,
 
-I couldn't care less.
+On Fri, 23 Oct 2026 11:28:17 +0100, Marc Zyngier <maz@kernel.org> wrote:
+[...]
+> No, I want this fixed by enabling ACCDATA support by default, which is
+> what we have *already* promised to userspace, and see the fireworks.
+> You can add an arm64.nols64 kernel option if you want, which is
+> consistent with what we do for CNTPOFF, NV3, and other extensions that
+> depend on FW enabling them.
 
-booting.rst is not authoritative and has absolutely no value when it
-comes to trap bits. Firmware could perfectly enable a feature on trap
-instead of catching fire.  Additionally, shipping firmware that
-doesn't support features that the CPU advertises is a bug, and I want
-to see these systems burn.
+Will do. v2 will have your patches 3 and 4 from [1] rebased, EnAS0 set
+when the guest has LS64_ACCDATA, and an arm64.nols64 option.
 
-> On such a host, KVM traps to EL3 the first time
-> it switches ACCDATA_EL1 for a VM, and every VM has LS64_ACCDATA by
-> default. The cap leaves the register alone, and the fine-grained trap
-> takes priority over ADEn, so it works whatever ADEn is set to.
-> 
-> Should we keep the cap as the fix for stable, and post ACCDATA support
-> on top? If you agree, I'd rebase your patches 3, 4 and 8 from [1], add
-> a booting.rst requirement for ADEn and EnAS0, and lift the cap and the
-> compat.
+Cheers,
+/fuad
 
-No, I want this fixed by enabling ACCDATA support by default, which is
-what we have *already* promised to userspace, and see the fireworks.
-You can add an arm64.nols64 kernel option if you want, which is
-consistent with what we do for CNTPOFF, NV3, and other extensions that
-depend on FW enabling them.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+[1] https://lore.kernel.org/all/20240815125959.2097734-1-maz@kernel.org/
