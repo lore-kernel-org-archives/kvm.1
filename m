@@ -1,117 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.130.129.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792763256;
-	b=ArZEq3u3Xu+j4HfVirDVP7HwXXm9wNY5jZq8Ee4L9BDlf8/OzQx+AgHeOKbeQBZm3adU
-	 Xo9EGGP95DB0EvgZSsRMhefvfZHunEuXSGTk20dp8Ogo5AYkkEScMCu1zK4xulYgYgK1y
-	 dnlDuXcRC5GQiQ9iVPpHk26m9DXA7UYw9r1lo2osTmvblbnK5zGvvEcXEEN5GOaU+iEkB
-	 ULFtY0o4TtoauRX16UUkbmC1/7X67sNIAoi9ksVtl++vky1i3J4MajpnrXo1AlIVkIJjr
-	 WKi70j87j2tmypCjWVGo8+QSHEEAOAtv49bJUz2I1W4DMIqDj0rxyBar6wGk2cEyNog==
+	t=1792763419;
+	b=i/iBF9wLiCcqw/gW2kS9wIvu0kwyXJsgmLut9h7o7MRz45bx94wcUn35SEJWm/wOHubF
+	 y8nt7jXXMIsYaKa2hisWctqYIHRshktb52qYPn+TmGFVpkniNu+O8S0qlZwbuP4kbGOzQ
+	 nlrDG5nVfjAvAIu8qWRwVALeDR59rwjGflwYo9YYkEzA6Jg/S24A8gQOWS/PG8q2Zn1x3
+	 jA1qm3EOBo5OVUoeVFwt24Kk++u9IZvodwQP0OeVm22DduCYWbBmGJjo85TLxTHLjP8Ph
+	 p/rKS/RbVO/LyIcsHNIsTr95vzKPwSEgKaU0e0J8WzLoBMF879DtZ0DGGUYXn8VcwmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792763256;
-	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:User-Agent:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=OAxWznnfDGLMW7OldkZqUjP2oac3UG2TjUk3rieuc58=;
-	b=NXKnuWh2H31fC/n6KexutUzylZly2QAqfTPqbTKoL6jJAYl3KBBhCDVs/9HzzAHH2Qk9
-	 mJjGt7lR07jMWcSa8W3cdzml5S40Gd9mO8jkoYwudUEAwcGClrk4x4jqWwN17WuRjHYjq
-	 uzSY/50bcXteNxdUeUxxeIN76yV8h4dUeLQDru0f1jQ/CxZ610AoFP2wJnlv9MQKihIoS
-	 OomB4zPYZsuVRFMfB8ZrqJsunpzwkzOI7uMU8qJvYyEz8n5q3Yw69L1i5IhxiAaxxm4el
-	 27YM0S5IZVRPMTUxhERoCf2kus+asQq9lii5NuMah/F+jMx/oruVy7Mm+gcyHaVX8uw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792763419;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=8FyuJnnll3uJwbR+wT99CVBO9fzREsmjzeqnUECMRTY=;
+	b=n7Q9sBUuiJe93LmyqvqBfeVbYhx1btJOEdFmysYum78JCXiVpsuwdZfPQMgNkO7rRjYI
+	 aeYIlOwCXzfAg2P9IEeKjKFFsd0/rkBEG1pGbb1CoiyGwdoX0VtQbiNdLlYmRKoP4A0HK
+	 ZDOYFoaetNxFlPcISzbLrOddJZYfwLc1uiFAaL9P84tUB4VIOZYOu8lOyrEezOndUBSZx
+	 DZvRriseri2LdQ4gOy8XIZgsyZu+rXM9ROHqyhK2c2befDlUgtTRRi5OtVhHyD7kfm1Sy
+	 e11MmIjB4LQdbsGNzcdzxDDImBcEkcHVpO/Ca8xxv3SgxPUHgllfoeQ2B7WHUlkrr/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=redhat.com;
-	spf=pass smtp.mailfrom=pond.sub.org;
-	arc=none smtp.remote-ip=94.130.129.15
-Received: from oxygen.pond.sub.org (oxygen.pond.sub.org [94.130.129.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tePYhySp;
+	arc=none smtp.remote-ip=209.85.215.176
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF7F606A31A;
-	Fri, 23 Oct 2026 13:47:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AF7F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pond.sub.org
-Received: from blackfin.pond.sub.org (p50902d79.dip0.t-ipconnect.de [80.144.45.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by oxygen.pond.sub.org (Postfix) with ESMTPSA id 5F19F1FFDF;
-	Fri, 23 Oct 2026 15:47:24 +0200 (CEST)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 2402C21E6A04; Fri, 23 Oct 2026 15:47:21 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
- <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
- Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
- Kostiuk
- <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
- <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
- Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
-  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
- Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
-  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
- Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
- <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
-  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
- <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
- Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
- <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
- Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
-  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
- <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
- <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
- Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
- Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
- Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
- Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
- <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
- Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
- <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
- <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
-  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
-  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
-  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
-  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
- <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
- Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 09/65] qapi: add type-infos generator
-In-Reply-To: <20261020-qom-qapi-v7-9-431a86b02b58@redhat.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?=
-	Lureau"'s message of "Tue, 20 Oct 2026 14:45:26 +0400")
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<20261020-qom-qapi-v7-9-431a86b02b58@redhat.com>
-Date: Fri, 23 Oct 2026 15:47:21 +0200
-Message-ID: <87mrs4a5qu.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D743606A320
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 13:50:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D743606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tePYhySp
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cd6028ff33fso385805a12.0
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 06:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792763418; x=1793368218; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8FyuJnnll3uJwbR+wT99CVBO9fzREsmjzeqnUECMRTY=;
+        b=tePYhySpUVOPmNC7qMFCyUKUchitL2PPRJngdPKMZb+6YMlbzUwgcreLJ2yA42AZnA
+         v8cLSMIlGA3u4RIUYVaES5a8/BGQAUiCR1RaqgsSgZkWKdBE/ZcATVE5Tll8cS9l1X0y
+         jUG+yVquGbWgcvm/8MxxycOg/mddw+0l+MplyEJOYfUmLmzlCXrzhSBgacFZkAq8wkob
+         Pj6RrEf69ya9zTjuBsqnaaINqezSaQsmRkyRLV8jGDNSGGxqoJhr6jeq4my7fpYC7dyj
+         qOmm9rddJ6UF9PtTp9Nx897N1k7lGSJXyujgP0EVLYI9Voi13+8/ttJ+pRcICMcmmMTc
+         3lJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792763418; x=1793368218;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8FyuJnnll3uJwbR+wT99CVBO9fzREsmjzeqnUECMRTY=;
+        b=r6QSPZlVjwaJUW64cz2OEdSGUmXVbIUTTipipeElcV6tdf2BNSh0Ml9vgWB+tC/5yk
+         HJtYxSabeNFcK27EYDKQSy6xUv/kXK98I+XbwftJoR4MefBkQuCjQZTRiQzzfSOB5goz
+         JyL0GxEMuAfpRmk1wtX/gsvxooZPRB0DZOH/q3MNt8l3R26gohJo65TN7mu4SWV+hB2f
+         dMW/lSMpEzXK3wGn2jWHet2uS4m63kzRar/Tryfp9ADcQw4AORcLTBNlA1TjS68fhqod
+         7EMnuOpMiu/CkxokDej6chd1p8eAjw13DlTtDem/DI4sZn0EbKPvPrdiycxmYOAp4eiT
+         Z/FQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxoD7elO3HAusuIm2kxNXES1rGubLZTfPBOZHh2Au49zSQSnoG4AEPwwgw8sod0fk6noHE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKU508uDurSqun7FRmVp3xETYTAqIeuXI5VrH1A+g+tjiHd4biI
+	Xxyf0x6oqBhbhmN417zdIZCJic06sLwplb41hr8gmulSWfcTIYoIE1MqevKD0v56Uw==
+X-Gm-Gg: AYBFou1yqGvOcmQedTP4soDJbPhyYXvJZxKyP92YhkaphxNl3bl73UEwTOuH3AIvbiw
+	Iusq7+71wr6YU1ccr4KyoSA6ZSnfRf0JY1dek8mqTCguTg5yGrjLMcWPhW7WOCOeBLGpxF9XTji
+	lM7ZW0PuHzcZcOJV3Bngm4vY6wMnCXSLdBzs1UQxem98oHap2v1FFnedG+dW+d8umzR/49oIo4O
+	E/siL5HhDfz6AzTGurHv5zxHZ3WjnAztHRBQbPGv0yuVY0AXEQUKG1mEz/gcg4nrCFr20tRF9Ev
+	jLRXNxJNsw1yoo38nRsOxeXhcNvnBFwqAfaxFxmvjV5TUIHP310y/UaUbXamwarCKtuoFeaik+V
+	jABvTSL71FoeOKdl5KKi4ybJ30gQHFMHb8tpHKvLletGt9SNVdUBzWhJgf+UzoLIQHhEuAkNLEl
+	iB/SQ6O4NCodSkPy4ckry4heqI0/VewWPMRL1zmlIjfRPKkubGM5iSKWsf5EjwxBy6ezUEHEjx6
+	nBqUoD0yo5cqqmRLyw19lLgnsILft4a4G8IorBbpukVhdbsrot+UJyWTChDjCECNQlskX66gtoS
+	jcsS0BAeINW4BiXFF0u8EgoWRRcLVOWRn4sMew==
+X-Received: by 2002:a17:90b:5906:b0:3ab:3437:554f with SMTP id 98e67ed59e1d1-3adce0073a2mr1983207a91.29.1792763417701;
+        Fri, 23 Oct 2026 06:50:17 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea94677c91sm545015ad.4.2026.10.23.06.50.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 06:50:16 -0700 (PDT)
+Date: Fri, 23 Oct 2026 13:50:13 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
+	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <attmFVIFU_mS0Y7p@google.com>
+References: <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
+ <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
+ <atlKsD-aJB3mJr2j@google.com>
+ <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
+ <atl7peoVHdP5hz7z@google.com>
+ <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
+ <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
+ <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
+ <atpNFEFIlqAoYIwH@google.com>
+ <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,405 +119,153 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+On 2026-10-22 04:53 PM, Pasha Tatashin wrote:
+> On Thu, Oct 22, 2026 at 1:51 PM David Matlack <dmatlack@google.com> wrote:
+> > On 2026-10-22 12:11 AM, Pasha Tatashin wrote:
 
-> New QAPISchemaGenTypeInfoVisitor produces per-module
-> qapi-type-infos-*.h/c files. Each file declares QAPITypeInfo constants
-> pairing the QAPI type name with its masked introspection name.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  docs/devel/qapi-code-gen.rst |  92 ++++++++++++++++++++++++
->  meson.build                  |   1 +
->  scripts/qapi/backend.py      |   2 +
->  scripts/qapi/type_infos.py   | 163 +++++++++++++++++++++++++++++++++++++=
-++++++
->  4 files changed, 258 insertions(+)
->
-> diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-> index 77f08bb68cac..1cc5338a210a 100644
-> --- a/docs/devel/qapi-code-gen.rst
-> +++ b/docs/devel/qapi-code-gen.rst
-> @@ -1250,6 +1250,9 @@ JSON array of strings.
->  To examine a type, start with a command or event using it, then follow
->  references by name.
->=20=20
-> +.. TODO document QOM introspection (qom-list, qom-list-properties,
-> +   qom-get) and how it relates to QAPI type information.
-> +
->  The SchemaInfo for a command has meta-type "command", and variant
->  members "arg-type", "ret-type" and "allow-oob".  On the wire, the
->  "arguments" member of a client's "execute" command must conform to the
-> @@ -2099,3 +2102,92 @@ Example::
->      }));
->=20=20
->      [Uninteresting stuff omitted...]
-> +
-> +
-> +Code generated for type information
-> +-----------------------------------
-> +
-> +Type information is generated for user-defined types and their array
-> +types.  With option --builtins, it is also generated for the built-in
-> +types.
-> +
-> +The following files are created:
-> +
-> + ``$(prefix)qapi-type-infos.c``
-> +     A ``QAPITypeInfo`` instance for each type listed above, providing
-> +     a mapping between the QAPI type name and the masked name used by
-> +     introspection, along with optional enum lookup table and array
-> +     type pointers.
-> +
-> + ``$(prefix)qapi-type-infos.h``
-> +     Declarations for the above type info instances
-> +
-> +Each ``QAPITypeInfo`` struct has the following fields:
-> +
-> +``name``
-> +    The QAPI type name (e.g. ``"UserDefOne"``).
-> +
-> +``masked_name``
-> +    The masked name used in ``query-qmp-schema`` output.
-> +
-> +``lookup``
-> +    For enum types, a pointer to the corresponding ``QEnumLookup``
-> +    table.  ``NULL`` for non-enum types.
-> +
-> +``list``
-> +    For types that have an array variant, a pointer to the array type's
-> +    ``QAPITypeInfo``.  ``NULL`` when no array type exists.
-> +
-> +These type info instances are used by QOM property registration
-> +functions (``object_property_add_qapi()``,
-> +``object_class_property_add_qapi_enum()``, etc.) to associate each
-> +property with its QAPI type.  The ``qom-list`` and
-> +``device-list-properties`` QMP commands then expose the ``qapi-type``
-> +field, giving management tools a formal type reference they can look
-> +up in the introspection schema.
-> +
-> +Example::
-> +
-> +    $ cat qapi-generated/example-qapi-type-infos.h
-> +    [Uninteresting stuff omitted...]
-> +
-> +    #ifndef EXAMPLE_QAPI_TYPE_INFOS_H
-> +    #define EXAMPLE_QAPI_TYPE_INFOS_H
-> +
-> +    #include "qapi/qapi-builtin-type-infos.h"
-> +
-> +    extern const QAPITypeInfo UserDefOne_type_info;
-> +
-> +    extern const QAPITypeInfo UserDefOneList_type_info;
-> +
-> +    #endif /* EXAMPLE_QAPI_TYPE_INFOS_H */
-> +    $ cat qapi-generated/example-qapi-type-infos.c
-> +    [Uninteresting stuff omitted...]
-> +
-> +    const QAPITypeInfo UserDefOne_type_info =3D {
-> +        .name =3D "UserDefOne",
-> +        .masked_name =3D "1",
+> > > Lets drop the fourth macro argument and generate the combined struct name:
+> > >
+> > > #define DECLARE_LUO_SER(name, expected_size, ext_flags_count)              \
+> > >     struct name##_hdr {                                                    \
+> > >         __u32 size;                                                        \
+> > >         __u32 flags;                                                       \
+> > >         __u64 ext_flags[ext_flags_count];                                  \
+> > >         struct name payload;                                               \
+> > >     };                                                                     \
+> > >     static_assert(sizeof(struct name##_hdr) == (expected_size),            \
+> > >                   "LUO struct " #name " size mismatch!")
+> > >
+> > > For example:
+> > >
+> > > struct luo_memfd_ser {
+> > >     __u64 pos;
+> > >     __u64 size;
+> > > };
+> > >
+> > > DECLARE_LUO_SER_HDR(luo_memfd_ser, 24, 0);
+> >
+> > I think we are getting close, bu I have two remaining concerns:
+> >
+> >  * Reserving bits in each flags word for continuation leaves gaps
+> >    in the flag space that users have to know to skip.
+> 
+> Yes, but callers should never manipulate the raw flag words directly,
+> and we can provide simple accessor macros or inlines that take a
+> contiguous feature ID (0, 1, 2, ...)
+> 
+> enum luo_memfd_feats {
+>     LUO_MEMFD_FEAT_HUGETLB = 0,
+>     LUO_MEMFD_FEAT_SEALS   = 1,
+>     /* ... */
+>     LUO_MEMFD_FEAT_FOO     = 15, /* Automatically lands in
+> ext_flags[0] bits 0:1 */
+>     LUO_MEMFD_NR_FEATS
+> };
+> 
+> if (luo_ser_get_feat(hdr, LUO_MEMFD_FEAT_HUGETLB)) {
+>     /* handle hugetlb */
+> }
 
-Code generated right now has "32".  Doesn't matter to readers, but using
-generated code verbatim eases maintenance a bit.
+Sure but why deal with all the complexity just to save 8 bytes? All of
+these structs are allocated on folios and there are kilobytes of unused
+space to fit this header. And even if we optimize that we are talking
+about 8 bytes per FH/FLB... or 16 bytes for structs with arch-specific
+sub-structs like the KVM ones.
 
+> >  * struct name##_hdr only matches structs written by the current kernel
+> >    (in terms of length of array and offset of payload).
+> 
+> This is not an issue on the incoming path, we never cast incoming data
+> to struct name##_hdr or access ->payload directly. Instead, we parse
+> the incoming buffer, dynamically compute the header size from the
+> continuation bits, and cast the payload offset to "struct name *"
+> based on the negotiated feature flags.
 
-> +        .list =3D &UserDefOneList_type_info,
-> +    };
-> +
-> +    const QAPITypeInfo UserDefOneList_type_info =3D {
-> +        .name =3D "UserDefOneList",
-> +        .masked_name =3D "[1]",
+How?
 
-Likewise.
+This is the only data structure that describes the header. Are you
+saying the incoming path will parse the header purely with a void *? Or
+use this header but just be careful not to access payload?
 
-> +    };
-> +
-> +    [Uninteresting stuff omitted...]
-> +
-> +For a modular QAPI schema (see section `Include directives`_), code for
-> +each sub-module SUBDIR/SUBMODULE.json is actually generated into ::
-> +
-> + SUBDIR/$(prefix)qapi-type-infos-SUBMODULE.h
-> + SUBDIR/$(prefix)qapi-type-infos-SUBMODULE.c
-> +
-> +If qapi-gen.py is run with option --builtins, additional files are
-> +created:
-> +
-> + ``qapi-builtin-type-infos.h``
-> +     Type info instances for built-in types
-> +
-> + ``qapi-builtin-type-infos.c``
-> +     Definitions for the above type info instances
-> diff --git a/meson.build b/meson.build
-> index bbef9d9c2932..e51fb7a37740 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3510,6 +3510,7 @@ qapi_gen_depends =3D [ meson.current_source_dir() /=
- 'scripts/qapi/__init__.py',
->                       meson.current_source_dir() / 'scripts/qapi/parser.p=
-y',
->                       meson.current_source_dir() / 'scripts/qapi/schema.p=
-y',
->                       meson.current_source_dir() / 'scripts/qapi/source.p=
-y',
-> +                     meson.current_source_dir() / 'scripts/qapi/type_inf=
-os.py',
->                       meson.current_source_dir() / 'scripts/qapi/types.py=
-',
->                       meson.current_source_dir() / 'scripts/qapi/visit.py=
-',
->                       meson.current_source_dir() / 'scripts/qapi-gen.py'
-> diff --git a/scripts/qapi/backend.py b/scripts/qapi/backend.py
-> index 49ae6ecdd33e..508ab2173539 100644
-> --- a/scripts/qapi/backend.py
-> +++ b/scripts/qapi/backend.py
-> @@ -8,6 +8,7 @@
->  from .features import gen_features
->  from .introspect import gen_introspect
->  from .schema import QAPISchema
-> +from .type_infos import gen_type_infos
->  from .types import gen_types
->  from .visit import gen_visit
->=20=20
-> @@ -63,3 +64,4 @@ def generate(self,
->          gen_commands(schema, output_dir, prefix, gen_tracing)
->          gen_events(schema, output_dir, prefix)
->          gen_introspect(schema, output_dir, prefix, unmask)
-> +        gen_type_infos(schema, output_dir, prefix, builtins, unmask)
-> diff --git a/scripts/qapi/type_infos.py b/scripts/qapi/type_infos.py
-> new file mode 100644
-> index 000000000000..b29e31d92640
-> --- /dev/null
-> +++ b/scripts/qapi/type_infos.py
-> @@ -0,0 +1,163 @@
-> +"""
-> +QAPI type info generator
-> +
-> +SPDX-License-Identifier: GPL-2.0-or-later
-> +"""
-> +
-> +from typing import List, Optional
-> +
-> +from .common import c_name, mcgen
-> +from .gen import QAPISchemaModularCVisitor, ifcontext
-> +from .schema import (
-> +    QAPISchema,
-> +    QAPISchemaAlternatives,
-> +    QAPISchemaBranches,
-> +    QAPISchemaEnumMember,
-> +    QAPISchemaFeature,
-> +    QAPISchemaIfCond,
-> +    QAPISchemaObjectType,
-> +    QAPISchemaObjectTypeMember,
-> +    QAPISchemaType,
-> +)
-> +from .source import QAPISourceInfo
-> +
-> +
-> +class QAPISchemaGenTypeInfoVisitor(QAPISchemaModularCVisitor):
-> +
-> +    def __init__(self, prefix: str, unmask: bool):
-> +        super().__init__(
-> +            prefix, 'qapi-type-infos',
-> +            ' * Schema-defined QAPI type info',
-> +            ' * Built-in QAPI type info', __doc__)
-> +        self._unmask =3D unmask
-> +        self._schema: Optional[QAPISchema] =3D None
-> +
-> +    def visit_begin(self, schema: QAPISchema) -> None:
-> +        super().visit_begin(schema)
-> +        self._schema =3D schema
-> +
-> +    def _begin_builtin_module(self) -> None:
-> +        self._genc.preamble_add(mcgen('''
-> +#include "qemu/osdep.h"
-> +#include "qapi/qapi-builtin-types.h"
-> +#include "qapi/qapi-builtin-type-infos.h"
-> +'''))
-> +        self._genh.preamble_add(mcgen('''
-> +#include "qapi/qapi-type-info.h"
-> +'''))
-> +
-> +    def _begin_user_module(self, name: str) -> None:
-> +        type_infos =3D self._module_basename('qapi-type-infos', name)
-> +        types =3D self._module_basename('qapi-types', name)
-> +        self._genc.preamble_add(mcgen('''
-> +#include "qemu/osdep.h"
-> +#include "%(types)s.h"
-> +#include "%(type_infos)s.h"
-> +''',
-> +                                      types=3Dtypes,
-> +                                      type_infos=3Dtype_infos))
-> +        self._genh.preamble_add(mcgen('''
-> +#include "qapi/qapi-builtin-type-infos.h"
-> +'''))
-> +
-> +    def _has_list(self, name: str) -> bool:
-> +        assert self._schema is not None
-> +        return self._schema.lookup_type(name + 'List') is not None
+We should have one header structure that can be used on the incoming and
+outgoing path. We should not have one header data structure that can be
+used on the outgoing path and one that can be used on the incoming
+path.
 
-Relies on QAPISchema._make_array_type()'s
+Also we need a standard header that can be shared across all structs,
+not a per struct header. Otherwise you will need to do weird casting and
+overlays to implement the shared helper routines that parse it.
 
-           name =3D element_type + 'List'    # reserved by check_defn_name_=
-str()
+> > How about this instead:
+> >
+> > struct luo_ser_hdr {
+> >     __u32 size;        /* Size of header + payload in bytes */
+> >     __u32 nr_flags;    /* Number of features encoded in flags[] */
+> >     __u64 flags[];
+> > };
+> >
+> > Each feature occupies 2 bits of flags[], so feature N is always bits
+> > [2N+1:2N] of flags[N / 32], with no gaps:
+> >
+> >   00: Feature not present
+> >   01: Feature present, safe to ignore if not supported
+> >   11: Feature present, must be supported by the next kernel
+> >   10: Invalid
+> >
+> > The length of flags[] and the header size are computed directly rather
+> > than by walking continuation bits:
+> >
+> > static inline u32 luo_ser_nr_flag_words(const struct luo_ser_hdr *hdr)
+> > {
+> >     return DIV_ROUND_UP(hdr->nr_flags, 32);
+> > }
+> >
+> > static inline size_t luo_ser_hdr_size(const struct luo_ser_hdr *hdr)
+> > {
+> >     return struct_size(hdr, flags, luo_ser_nr_flag_words(hdr));
+> > }
+> >
+> > static inline void *luo_ser_payload(const struct luo_ser_hdr *hdr)
+> > {
+> >     return (void *)hdr + luo_ser_hdr_size(hdr);
+> > }
+> >
+> > and bounds checking is just luo_ser_hdr_size(hdr) <= hdr->size. The
+> > payload is always 8-byte aligned.
+> >
+> > Payload structs are then declared on their own, with no header:
+> >
+> > struct luo_memfd_ser {
+> >     __u64 pos;
+> >     __u64 size;
+> > };
+> > LUO_SER_ASSERT_SIZE(luo_memfd_ser, 16);
+> >
+> > The static_assert covers the payload to catch embedded structs changing
+> > size.  Asserting the header doesn't add anything since its size varies
+> > by kernel. And because flags[] is a flexible array, the header can't be
+> > embedded in front of a payload in a combined struct; it can only be
+> > reached through luo_ser_payload().
+> >
+> > I think the only downside is that the header increases to 16-bytes when
+> > there is at least 1 flag. But I don't think we need to be so concerned
+> > about an 8 byte difference...
+> 
+> I would prefer to keep the default header at 8 bytes. With 15 features
+> fitting directly inside the base __u32 flags word, adding the first 15
+> features to a struct keeps the header at 8 bytes and does not shift
+> the payload.
+> 
+> Computation-wise it is also very similar: for the 99% of structs that
+> have <= 15 features, LUO_FLAGS_CONT is 0, so computing the header size
+> is just a single bit test with no loop. Even if a struct ever needs
+> ext_flags, the loop will walk at most one or two extra words.
 
-Suggest to point to ._make_array_type() with a comment.
-
-There's another name + 'List' below, at [*].  One comment here could do,
-though.
-
-> +
-> +    def _masked_name(self, name: str) -> str:
-> +        assert self._schema is not None
-> +        return self._schema.definition_introspection_name(name, self._un=
-mask)
-> +
-> +    def _gen_type_info(self, name: str,
-> +                       ifcond: Optional[QAPISchemaIfCond] =3D None,
-> +                       with_lookup: bool =3D False,
-> +                       with_list: bool =3D False) -> None:
-> +        c_id =3D c_name(name + '_type_info')
-> +        masked_name_str =3D '"%s"' % self._masked_name(name)
-> +        with ifcontext(ifcond or QAPISchemaIfCond(),
-> +                       self._genh, self._genc):
-> +            self._genh.add(mcgen('''
-> +
-> +extern const QAPITypeInfo %(c_id)s;
-> +''',
-> +                                 c_id=3Dc_id))
-> +            self._genc.add(mcgen('''
-> +
-> +const QAPITypeInfo %(c_id)s =3D {
-> +    .name =3D "%(name)s",
-> +    .masked_name =3D %(masked_name)s,
-> +''',
-> +                                 c_id=3Dc_id, name=3Dname,
-> +                                 masked_name=3Dmasked_name_str))
-
-Simpler and clearer, I think:
-
-       .masked_name =3D "%(masked_name)s",
-                                    ...
-                                    masked_name=3D self._masked_name(name))
-
-> +            if with_lookup:
-> +                self._genc.add(mcgen('''
-> +    .lookup =3D &%(c_name)s_lookup,
-> +''',
-> +                                     c_name=3Dc_name(name)))
-> +            if with_list:
-> +                self._genc.add(mcgen('''
-> +    .list =3D &%(list_id)s,
-> +''',
-> +                                     list_id=3Dc_name(name + 'List_type_=
-info')))
-
-[*]
-
-> +            self._genc.add(mcgen('''
-> +};
-> +'''))
-
-Three variations of c_name(name maybe with suffix) in this function:
-
-    c_name(name + '_type_info')
-    c_name(name)
-    c_name(name + 'List_type_info')
-
-Let's put just
-
-    cname =3D c_name(name)
-
-at the beginning, and add the suffix within the template like we do in
-events.py, types.py, and visit.py, i.e. like this:
-
-               self._genh.add(mcgen('''
-
-   extern const QAPITypeInfo %(cname)s_type_info;
-   ''',
-                                    cname=3Dcname))
-
-> +
-> +    def visit_builtin_type(self,
-> +                           name: str,
-> +                           info: Optional[QAPISourceInfo],
-> +                           json_type: str) -> None:
-> +        self._gen_type_info(name, with_list=3Dself._has_list(name))
-> +
-> +    def visit_enum_type(self,
-> +                        name: str,
-> +                        info: Optional[QAPISourceInfo],
-> +                        ifcond: QAPISchemaIfCond,
-> +                        features: List[QAPISchemaFeature],
-> +                        members: List[QAPISchemaEnumMember],
-> +                        prefix: Optional[str]) -> None:
-> +        self._gen_type_info(name, ifcond,
-> +                            with_lookup=3DTrue,
-> +                            with_list=3Dself._has_list(name))
-> +
-> +    def visit_array_type(self,
-> +                         name: str,
-> +                         info: Optional[QAPISourceInfo],
-> +                         ifcond: QAPISchemaIfCond,
-> +                         element_type: QAPISchemaType) -> None:
-> +        self._gen_type_info(name, ifcond)
-> +
-> +    def visit_object_type(self,
-> +                          name: str,
-> +                          info: Optional[QAPISourceInfo],
-> +                          ifcond: QAPISchemaIfCond,
-> +                          features: List[QAPISchemaFeature],
-> +                          base: Optional[QAPISchemaObjectType],
-> +                          members: List[QAPISchemaObjectTypeMember],
-> +                          branches: Optional[QAPISchemaBranches]) -> Non=
-e:
-> +        assert self._schema is not None
-> +        typ =3D self._schema.lookup_type(name)
-> +        assert typ
-> +        if typ.is_implicit():
-> +            return
-> +        self._gen_type_info(name, ifcond,
-> +                            with_list=3Dself._has_list(name))
-> +
-> +    def visit_alternate_type(self,
-> +                             name: str,
-> +                             info: Optional[QAPISourceInfo],
-> +                             ifcond: QAPISchemaIfCond,
-> +                             features: List[QAPISchemaFeature],
-> +                             alternatives: QAPISchemaAlternatives) -> No=
-ne:
-> +        self._gen_type_info(name, ifcond,
-> +                            with_list=3Dself._has_list(name))
-
-All but one caller of ._gen_type_info() pass
-with_list=3Dself._has_list(name).  The exception is visit_array_type(),
-where we let with_list default to False.  Since .has_list(name) would
-surely be False there, we could do away with with_list and check
-._has_list() in ._gen_type_info().
-
-The array business complicates review of this patch and PATCH 07 a bit.
-It isn't actually needed until PATCH 59.  I'd like you to delay it until
-then to get it out of the way here:
-
-* Create QAPITypeInfo without member @list in PATCH 07.
-
-* Don't generate member @list in PATCH 09.
-
-* Do both right before PATCH 59.
-
-Might also enable quicker merging of the bulk of this series.
-
-> +
-> +
-> +def gen_type_infos(schema: QAPISchema,
-> +                   output_dir: str,
-> +                   prefix: str,
-> +                   opt_builtins: bool,
-> +                   opt_unmask: bool) -> None:
-> +    vis =3D QAPISchemaGenTypeInfoVisitor(prefix, opt_unmask)
-> +    schema.visit(vis)
-> +    vis.write(output_dir, opt_builtins)
+Please explain why it is so important to keep the header 8 bytes that we
+have to jump through all these hoops to map a contiguous flag space
+onto a u32 + u64[] array structure where certain bits are reserved and
+have to be skipped.
