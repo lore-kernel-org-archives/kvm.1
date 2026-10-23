@@ -1,92 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792715841;
-	b=aWdBBo2VsD7h0I9AT6r9G1jMAlJ/5ly9p6Y224FnwcE8Wqnl7353UE8sm+M/KchvVQbf
-	 on/T/BLr1PH6Mq4IiL1FMsdFZcgpSgAiTBiZP6fAa2x7k/UlMjfdyoZw9yXt3xNql4z8p
-	 SuiRXCW96lXeJHFPuCrcccvkGs1JCuQ99al5WephFfJFrQ2snrnRVNhMZWRrfSFHABZfF
-	 XynnhmwN4hU0A7YBATFA+XJlimgdBaUA6wOB8PTt/lpSF4mFNEzm3w304volinUjLwiAZ
-	 8bpq42fEOjDXlwZ3orGlpRXWb94tSQx4U7uh2OOxvoo63MvPNN2PfkU0u5xzYCHeulg==
+	b=v2E6MvmzU3RNGTg1mlgYALvTYBnxPXC+DIV/SsittOrZkM3d4iHVWhoiLzr+7NJ6SXEh
+	 ayJ036S8x7WZFsxLS9A9xR0TQjUbaWx0pvs0aLCUpnRcEwQTXBv/G+CXnnWfJtaluKamh
+	 JIelbcFcDkbIANsNYeS2MgbToPL8+muMyboFGrkDlovedvrAn5lX0EzTzoCwxJInvIRgu
+	 GysIw9GHl2dDOPPw/517/w+4H4GxdlWCxz0RAj1t83a0nUeOG9pyUeyVyyNJwmA/4OY2L
+	 vG2HMTUbXP0aTndJ8vlJ1JIhsr7Fwly56CR8V5B1ArKOPlxbek+Zlxf8yom9ta0i3sQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792715841;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Qeq68Q+CJWiMtIHtxnnAZC5/gq7FwITJWmPi8p3IhTY=;
-	b=gzcilxciQMoncS9svJ6dNXb9+ikCeOeSY+QwtroyRbJDbf0nqvDuFCE0T+dsIUQRmRB+
-	 qFxvmGhTJVBNEEQciuABAalQhLvOFvyTtWYbGEzUT0LBi+XYxZ+i9PxGw0wRL4F8mce4+
-	 kmF3NlF4yy4G7njcI2E2KSpBgbTANEl/qewXR9Y1Ve4EesHSmskYOgNuDJY3WOJk38l0X
-	 NFprucdSW3b1y6nXbcRONPqTb9P4kV7CvD3/hZfmt5FBABZE8QXC77oa53C7Y9Bmjv8LQ
-	 xGhm/YOjRJ0Q5QY+8neAScL/OEPbeVMKG7P550H0kxEEjpoGulL4aey3Fl8nQ13lZRA==
+	bh=ekHro9xAtxRzjQSxLihJ+G5gJFsdRypjIV1jZ3KARnY=;
+	b=IactllXlWjNJXsCHyknlu+WsFNgSMyOLQswwbAjAe4qK8lIf2LMR5HBvHr9vcwMuIaSP
+	 hKacmHKyap17Vnoei5HP0KSDop0NgAPIKWgeYNstQb1KuGCnjn8KoTVKT2y4aCdsiFrqs
+	 Yh0JeToE/GhCj6p6fZcy9PUcX/xfJwAJ6OLA1xFuxaYcO4y9ZaH64IlPYVrbnXM8pSj7Y
+	 B7zYSCLXoZxQsW6Nys06rP9VG8QGxQjkhZfA3R4oeXUv9WSF4NSHqHqhkhBEEzxDnZaLp
+	 CWNHvaeYaJpLQYl3sjOp9Nvah0owNTkhoUDmPFKV6Hpe79o15r7bvodpMkLj8liZhZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SdOAjaja;
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rQ6+ZyUm;
+	arc=none smtp.remote-ip=209.85.215.181
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D025606A31B
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 00:37:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D025606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C88606A325
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 00:37:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50C88606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SdOAjaja
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ab752f6244so277558a91.2
-        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 17:37:20 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rQ6+ZyUm
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cd6a7b62ce8so153209a12.0
+        for <kvm@vger.kernel.org>; Thu, 22 Oct 2026 17:37:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792715840; x=1793320640; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792715841; x=1793320641; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Qeq68Q+CJWiMtIHtxnnAZC5/gq7FwITJWmPi8p3IhTY=;
-        b=SdOAjajaplVPPBwB71aA1nIf3KSbB2lRyIewUEZjhub9eYlcYp9QJ2OOhzE8GwOzg6
-         smD6BfYamd1Ir/oKrOkPyoB1efap1Iem9Yp5qkqsRLfOl6Aq2Umy3dnNfQgZLn0so6vX
-         0BYuq/cmi6Da576GfuiXscF3YIXug2mxrad1Ya/RA1aPIR9aoxU0wiCNn5xI5ul2VNRh
-         KvuTKEpXNf1c8gg1ReiA6GWmGM6NaqfMPj/LelmkS08FcXzx9EDKLCMk1pK243Yu9c8g
-         znND1eRsmByOk8PMO0egZRqZf1isYbANkuj1Sj/3xF8Xeeh7twClubkW8rcdytvy2vOD
-         fK5A==
+        bh=ekHro9xAtxRzjQSxLihJ+G5gJFsdRypjIV1jZ3KARnY=;
+        b=rQ6+ZyUmouL0GWJIvHRIjW6eRebs9l7gK7S+MhxgOpdbt45sArF1c9wHWf6PBXrO47
+         vpOga/4XbC2R2Cd96IhPLOjE2RqOPVTIxYshEUCRouDUT2J4uo1oq4Ww0A6bKsKl2vBE
+         xNkaXuYq0RKPuwSyVZKJ9IKD2t6w7ygjNu3R7Wo2yMZ0XqpqKLx1YEaRRRRbfUn7ZFpM
+         eot2qhR8ZW+TCgYJj/gLE0YJegKIcob2qKABGtnMgSI4wfmmlwZSirr2pPgJzCxsNI7R
+         /UPmZmh8I8QnuhyTt0lI3KtqYMkPvIm7qJF/wluT90cFkpQTBeRrh7q6uKgfe0SCOO7y
+         uJVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792715840; x=1793320640;
+        d=1e100.net; s=20260707; t=1792715841; x=1793320641;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Qeq68Q+CJWiMtIHtxnnAZC5/gq7FwITJWmPi8p3IhTY=;
-        b=rhMi+di1XNLeP6JG+pQQWKjbHULMXEGl6u2owGsrMArdvpfDYbXBrARrdSpogfWm43
-         PTaNN82Kz8MJFhWajHZQAxBNBFDLljgT6D5NrPuwgPmpJVxcAT7Eax6bVjpE2ikX/Nun
-         5bFf81r+aBwbpzfH4S002ccl1gztR8j0AK9c97MCdTAfKwbB293iA5JaDGXiXft7sToP
-         2peSt/jf1DvbScWFdJxDD2rIGDxFqUb6LJ7zcVYb0jUyUR/YqX9tgl+aJ+R8B4JT9PWq
-         l3CNS4aQ34Q//9W65uvwMvDyBqyzJdSCvLeQU82gh1I0+AaKdvAWIWNdpn+7oxkX81m5
-         BEyw==
-X-Gm-Message-State: AFq9FYIH5yIClXz3UW2AXlDlemm9FO7QQ5iEj+mhGhYUHGxO/pML4VHt
-	+wkoKAuTNINu2X+9hqz4vAwGvNZuSCJmt9D3VtCzgAhJSSDoqwSIQvZ75leYVA==
-X-Gm-Gg: AYBFou28Z8NF08zapSFUw+A92ws86KnFd/pJLKNYgCTLlZz9P+19dxAzUTiOJ782q49
-	7UeyIS0nRWsT9n/lxQOStPn+qrv3e0JG/6e9USvUcstLxcZ1s/OqNnndDz09ssvPHTHC8JSLQGT
-	mXFHUYJDCgYDAah1ua23+e95iH6vUQHDDG95lKPCxNsbB/t1aTY9Sh3gpL4VqgtqDH1um+yWrof
-	wbJtIkcAIc7EJTJQVl7LiKjExoEjLXhTZEsRHk4k/i2wurOAV6iicxBVNqcDVfrdzy8aztB6KuZ
-	DxD7ee4HRQ7ypQHhnBCVlh9pU30bvseeGsF3NToAeoQCqxs93xAvjL+LGAJLKwIuFCWzVoJ5qxy
-	gVKxbxWyrV7znpK9Kl1w+lbiqk5j9YIVmHS2oAbwKMacFZazMXHvmNBjmYvi9cm7yGxlIoulpfN
-	wXVWxeD2DiD0FY76rAGtO3Pe8usXs1yVYJ7Akr1T3BGCMxJrEElCUs6hZha+yJT2VPwc3hkcQN/
-	Lj8i/aSyg1tCVnegBpjTFhIMJOKTbwE7tlXOIbwT8ygbU6vZzEIAEQsPFO9iM63+spFrdWyhu+l
-	nRezy1wviQ1gKGRZ+mr31H3+7LTxHNzuG835+vSRRbu2j/O5o4/5bISo1D7BSrZmy+MubXCZq3B
-	Ko/sx5AM6+APY
-X-Received: by 2002:a17:90b:2281:b0:3ac:adce:60be with SMTP id 98e67ed59e1d1-3adce02ec73mr376652a91.21.1792715839853;
-        Thu, 22 Oct 2026 17:37:19 -0700 (PDT)
+        bh=ekHro9xAtxRzjQSxLihJ+G5gJFsdRypjIV1jZ3KARnY=;
+        b=zznfnTa2fPY68eYONH3gJbemX8osoEofec4LPVbsdAwXKfjRrmxeoWN9PktptV5j1R
+         767E9kPspKoxOBjed/S5qYfiX4eOfh9SCYjlnKNsbMPvwLr+sSAmW4DaPHI5E63sL3/s
+         ToPb7T51oGUQCfnURZc1XHldjalA5YYlOYNDiIcjb8cRNtkt1IYT7j2AnM40ZQQjEaGl
+         ppRDx0f2mNz2M2fA/HfFOgSHqP11Fg3dTNldemXybp7tmYse/123TJzVsDx5kYR8ZzQG
+         d7UqDeyWtjhzmuLeCdZrDChuv+SbKr0AsKgBmSnXWS/o1sawKinzMFxeRun4OTmpRfmZ
+         YP9A==
+X-Gm-Message-State: AFq9FYJjTFOhyGdkhXE+RYGTtGEpORijBYxpznQiEuc4mG5+tz38Bw+o
+	tgxpFfDphMuYXAzt2WxBu5CaMV3fF6ohedttErhx+hhefK82ycaHzYoU
+X-Gm-Gg: AYBFou2OReJcEXiuer2WNBwesXoqY2W9qLHwWOQtR3i7pdAvdTd17kG7J/LD0g5PMXT
+	twuqElIs9DHaA002KQlT3rnW6J9/Q/eE8uYukM1uaOrsJymfCDFP3n4OAzHuOaLi79igk2x1xD1
+	D99KGSBoqyCz3D0YYAkVsUGP8wlmFKa6q1BStZ6fR8fH8wAuUzdz5DBE++0hRDPsno0ghu0PFaz
+	hzkSyF2HTi3xNiMeLiSAWlxLVSrVPqS2as2FQy6TudNCskC+U7HZDKismhI8KSnd7UDYws8c/7w
+	PQvWuSXCQzAAIYMyNLtpZF06mD2KQnoa5oBlUoTcH86NurJE3z6kEpT/VWTAHrsgr9+jV6H4f/R
+	XD029cDnGEGu4V0lBCggzrzijjhvLH2GmHy1CSi7eIfBVgqX/a/VfweoTRwgv+1PTqoR3zN4bLK
+	Ogo5IEtmQmEzWp6GAD5Iw62LSARpUWKcczV4deY8rdfAbiseY6pFWStBtq66gdyaQcWXGAB5n/e
+	AWg8DhNpUG1WPhKlRjoB5h81Au/oGiY6xEKmiQmiw/HjS0sDrN+/7DRi4EXlqEgb+sERCRFcD/x
+	ILcsciJIrHc5SJJbRxbrUyyeNgO5zfngKYQXrQtXDGxrDAlWfZjKbtKAouvTKRtU1bA=
+X-Received: by 2002:a17:90b:2f8b:b0:3ac:a203:e092 with SMTP id 98e67ed59e1d1-3adce0d002amr472765a91.1.1792715840497;
+        Thu, 22 Oct 2026 17:37:20 -0700 (PDT)
 Received: from monk.wireless.sfu.ca (border-p1.nat.sfu.ca. [192.75.244.1])
         by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adcb0a28f3sm964360a91.3.2026.10.22.17.37.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 17:37:19 -0700 (PDT)
+        Thu, 22 Oct 2026 17:37:20 -0700 (PDT)
 From: ma.mandourr@gmail.com
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	ma.mandourr@gmail.com
-Subject: [PATCH v2 2/3] KVM: nVMX: Don't clobber VM-Entry instruction length when saving soft INTn
-Date: Thu, 22 Oct 2026 17:37:02 -0700
-Message-ID: <20261023003703.450577-3-ma.mandourr@gmail.com>
+Subject: [PATCH v2 3/3] KVM: selftests: Verify nested VM-Exits while vectoring INT3 and INTn
+Date: Thu, 22 Oct 2026 17:37:03 -0700
+Message-ID: <20261023003703.450577-4-ma.mandourr@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261023003703.450577-1-ma.mandourr@gmail.com>
 References: <20261023003703.450577-1-ma.mandourr@gmail.com>
@@ -103,29 +102,94 @@ Content-Transfer-Encoding: 8bit
 
 From: Mahmoud Abumandour <ma.mandourr@gmail.com>
 
-When a nested VM-Exit occurs while L2 is vectoring a software interrupt,
-save the INTn's length in vmcs12's VM-Exit instruction length, as is
-done for software exceptions, instead of VM-Entry instruction length.
+Verify that a VM-Exit while L2 is vectoring INT3 or INTn through the
+empty IDT reports the event and its instruction length, and leaves the
+VM-Entry instruction length alone. Only VMX is tested, as both lengths
+are VMX fields.
 
-Fixes: 5f3d5799974b ("KVM: nVMX: Rework event injection and recovery")
+Assisted-by: LLM
 Signed-off-by: Mahmoud Abumandour <ma.mandourr@gmail.com>
 ---
- arch/x86/kvm/vmx/nested.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../kvm/x86/nested_exceptions_test.c          | 39 +++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 6f7c00083beb..4286b0503046 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4016,7 +4016,7 @@ static void vmcs12_save_pending_event(struct kvm_vcpu *vcpu,
+diff --git a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+index f47432526ea1..9311af590566 100644
+--- a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+@@ -40,12 +40,25 @@
+ #define GP_ERROR_CODE_INTEL ((SS_VECTOR * 8) | ERROR_CODE_IDT_FLAG | ERROR_CODE_EXT_FLAG)
+ #define GP_ERROR_CODE_ZHAOXIN ((SS_VECTOR * 8) | ERROR_CODE_IDT_FLAG)
  
- 		if (vcpu->arch.interrupt.soft) {
- 			idt_vectoring |= INTR_TYPE_SOFT_INTR;
--			vmcs12->vm_entry_instruction_len =
-+			vmcs12->vm_exit_instruction_len =
- 				vcpu->arch.event_exit_inst_len;
- 		} else
- 			idt_vectoring |= INTR_TYPE_EXT_INTR;
++/* No "External event" flag, as INT3 and INTn are software events. */
++#define GP_ERROR_CODE_SOFT_INT(vector) (((vector) * 8) | ERROR_CODE_IDT_FLAG)
++
+ /*
+  * Intel and AMD both shove '0' into the error code on #DF, regardless of what
+  * led to the double fault.
+  */
+ #define DF_ERROR_CODE 0
+ 
++/* Arbitrary, any vector #GPs with the empty IDT. */
++#define INTN_VECTOR		0x40
++
++#define INTR_INFO_VALID_MASK		BIT(31)
++#define INTR_TYPE_SOFT_INTR		(4 << 8)
++#define INTR_TYPE_SOFT_EXCEPTION	(6 << 8)
++
++/* Arbitrary, but not the length of INT3 or INTn. */
++#define VM_ENTRY_INSN_LEN	7
++
+ #define INTERCEPT_SS		(BIT_ULL(SS_VECTOR))
+ #define INTERCEPT_SS_DF		(INTERCEPT_SS | BIT_ULL(DF_VECTOR))
+ #define INTERCEPT_SS_GP_DF	(INTERCEPT_SS_DF | BIT_ULL(GP_VECTOR))
+@@ -70,6 +83,16 @@ static void l2_ss_injected_tf_test(void)
+ 	GUEST_SYNC(FAKE_TRIPLE_FAULT_VECTOR);
+ }
+ 
++static void l2_int3_test(void)
++{
++	asm volatile("int3");
++}
++
++static void l2_intn_test(void)
++{
++	asm volatile("int $" __stringify(INTN_VECTOR));
++}
++
+ static void svm_run_l2(struct svm_test_data *svm, void *l2_code, int vector,
+ 		       u32 error_code)
+ {
+@@ -127,6 +150,18 @@ static void vmx_run_l2(void *l2_code, int vector, u32 error_code)
+ 	GUEST_ASSERT(!vmread(GUEST_INTERRUPTIBILITY_INFO));
+ }
+ 
++static void vmx_run_l2_soft_int(void *l2_code, u32 type, int vector,
++				u32 insn_len)
++{
++	vmwrite(VM_ENTRY_INSTRUCTION_LEN, VM_ENTRY_INSN_LEN);
++	vmx_run_l2(l2_code, GP_VECTOR, GP_ERROR_CODE_SOFT_INT(vector));
++
++	GUEST_ASSERT_EQ(vmread(IDT_VECTORING_INFO_FIELD),
++			INTR_INFO_VALID_MASK | type | vector);
++	GUEST_ASSERT_EQ(vmread(VM_EXIT_INSTRUCTION_LEN), insn_len);
++	GUEST_ASSERT_EQ(vmread(VM_ENTRY_INSTRUCTION_LEN), VM_ENTRY_INSN_LEN);
++}
++
+ static void l1_vmx_code(struct vmx_pages *vmx)
+ {
+ 	prepare_for_vmx_operation(vmx);
+@@ -146,6 +181,10 @@ static void l1_vmx_code(struct vmx_pages *vmx)
+ 	vmx_run_l2(l2_ss_injected_gp_test, GP_VECTOR,
+ 		   host_cpu_is_zhaoxin ? GP_ERROR_CODE_ZHAOXIN : GP_ERROR_CODE_INTEL);
+ 
++	/* INT3 and INTn also #GP, due to the empty IDT. */
++	vmx_run_l2_soft_int(l2_int3_test, INTR_TYPE_SOFT_EXCEPTION, BP_VECTOR, 1);
++	vmx_run_l2_soft_int(l2_intn_test, INTR_TYPE_SOFT_INTR, INTN_VECTOR, 2);
++
+ 	vmwrite(EXCEPTION_BITMAP, INTERCEPT_SS_DF);
+ 	vmx_run_l2(l2_ss_injected_df_test, DF_VECTOR, DF_ERROR_CODE);
+ 
 -- 
 2.43.0
 
