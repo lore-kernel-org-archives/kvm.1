@@ -1,22 +1,22 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.28
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792770064;
-	b=K2rw7H1iOG+nV1e9TuFPyzygo4FcS2oBvzpD8NxBZpb9Gc4dRR8SAZzbTHJeNRotnxWl
-	 4SEIGXPbzFpNdkB0bhxWRM9pmiR/O+1K4R5SVvXUTsyL6QnfFD7VMj99eYJtBrwPNgUGa
-	 /y7B2cTo2tVifFwfBEN6UyAXqBo3br4WhCRnEZKlR+15FLeaInNdTu8/WuXp5tUOrT55c
-	 Oms3y+T2JtODoR3LT4clWshuL8Oc3VVhYiSPVRa7bAZ2+oB8umZrOceC6TjjCOGHyUiQy
-	 dme8tCRYKc5jExvpxuHFn1xUwOsI6BuImIrGY06Wynb4ECHEmxZb25ZLYTppHRVbMSg==
+	t=1792770071;
+	b=IhuhM28u36Kg4e7suT2BwMw5x3U0KXAQgUnRL6eh/1R6SoxKRTANwunW9Ud/5RxMqgL4
+	 LK1uKsmKW1itf6bHA82cRiFyso3bIhvjJbhOk27SboqnbTDt2Ht/aw0enbvXk2AS8wsXZ
+	 DTcAAUo9Q7vV8blw+ISrVqRx6kA7measrSLV4ZI+zJDw/4ILJmplIxMj1A6BiTmb5aiVf
+	 gzc1fv2SQCKZ1XIF0m/y9aVKL/hj9e+HxP7SxVraybIEg8MheuhX4/Y9rkMPVqSgGdjNW
+	 c/3K6iPFn5P692cLKXA1EgODGAl6g9oY25dmVxXxT3RqHghQMKoJwhvSigVoVKfCa7Q==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792770064;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792770071;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
@@ -26,72 +26,72 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=FTpMsPedD8A3Ep+V61dgAdy8F87vVfoLgCwSA4qT+WE=;
-	b=q/GuMc+N56kqGkfBe/P4WBn9I83RiTIcRLsLXKXb7adC24qodUKzE6to78u6cLEgaxZi
-	 HzSOR6AEuCEEW28VEyusr8qlV3J2Sr4pEGguJXc045fY9+qqDNlpuMfEUoPvPvzLCtGdK
-	 mTPX6e5fGhB34AGz5rKy4l/om+O4OAlbwd9C3/vT1lzvWZ7XUeM10e7CjLXGhpG4FFYQc
-	 CfHzD3jtUqMzcLs4AIivyXL/HJ+PE307WHLRushW++q0SnHst1VjDcDeq+GoPeTdtuSJ1
-	 DJmAqoPsjU/Fy/rtG2ZRbMoXQJe5WXiYHx9KJ3okU+IjeR0PwYKutSeNfjD7DVZqJyQ==
+	bh=YXWxb0Nu+7DMiplo068Wx74Y31bcVlK4KkzH7Z6kzZU=;
+	b=nJvEdqvGMeygjvAFhSmiY+T8em6woXrtpdG86KXQVYWZuJF2SzYiivcMXR0nrqDYXHxD
+	 T6mzYQx0uvNPF8yFaOB+H6Td5zKi5xT71OfrDqnpA8H3osG8PCxQ8Qg47ogd3cE5/hXbs
+	 B0aYMbTdCWXIFcInwwLl14FSBtHDHskbuGc1G0AsK295OxYuqfm/eticiRSMDg3DyGlfq
+	 OZTMtH6I2c8vFS3gRwwycaO/v353Cmhf7xxGTQ5AXaUL/NZsheD9M/BlgMy0RCoLJQxzI
+	 OVeo+WHTc1FiiCxzddHNUouGep6PuZN0z0u0tNcm2AvkfPz1Iqe5vly8VGd/2WA1m0A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NEbJztuk;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.54
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010054.outbound.protection.outlook.com [52.101.201.54])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=d2BtU3km;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.28
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011028.outbound.protection.outlook.com [40.107.208.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A165606A31A;
-	Fri, 23 Oct 2026 15:41:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A165606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B1E606A320;
+	Fri, 23 Oct 2026 15:41:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29B1E606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NEbJztuk
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=d2BtU3km
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lTaeylx0D1yaaOMBG6e6Sd/f0ZZQbk3xfuSM/7NYmudVe56iKDtoJ5CsVtWVMIxqnKD/lKfu0boT4MjwqgM6PW02pHFAY4gQc7jS817+8+7oLJWpqoZBsyObQau2ofKQPONZpmH3iG4LH8UL94nt9nWBhxYObGHid8rbfDBuKCzqwjBr1ezoLZABFqiDS45dz1T5/fTNfDvZMmR00YgJbUGlp9WOvXiMEOSmjPQXNBUrvT6QcyFK6V8IQuFUe7GLzKfQxZeZGTfOQdl25RLXncd2a/0mHcxRgXLsTE8gQG7o9VmRgzWTmxce6Lqt/+Q5PQgEPa5nZZUk2/Mw2zRr/A==
+ b=F2PZUpFR7unIEXpeevC4kKP5zeD2W/m4Rz1kDG5ibpid2FRqnvYbrJIF9athxLFzIBrpfrIMSLvA/eCD4WZZfLr/fm6XBD+kr6DtjPTchzpIH7OVHPnVPfhPVNwjG2Li3wUbSuBDdQEleFq3OPFsHbl1OtOBmnzthw976oXoS7o4nvZpj3JFJBqmFf1LcXWecFpPN9irfY5YX1Ojoi/ckVo5VtJ9rYLmboRhd3eh24yG6wBQ96buBs2yjGbygS0Skk8A3L2TTzE6e90rMkT++/TwKOMS2fkTCTvUNc9inOgJoq/UfW3UL6PyeRcdIqqnThGMLvbRDbQnyu5ro2RFcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FTpMsPedD8A3Ep+V61dgAdy8F87vVfoLgCwSA4qT+WE=;
- b=gUN0J2u2ZP4SbsQRc1lczOhcniVzXvlC0lOV6P4xszKucOv6OCLNYcbJGk2yWEMmy6fhOjVRrasuuIlD+vZnggPZ33Vfj2mV54Cx3XyWSnFfNDfrL0mDS6vxzfSYADJL/CcfrvWzuvsR7agQyiaDwSNhp3DEeTy2aRCLze/yBkz+gMjQudttafZfeDW4uRqi/nHcwufj2zGfdV3mZ4wSmUtxwk4jKD2tfqEQW3Kg3PJFF6tToZe9FC2tK3SR3P0rBBmx8Dn5VFv9wuBWPnKjZRPpMTpa0E23Ou2Vr2+vlMktCE1+Q//mRiqmRX0L/C4QvwUu9sFgcS+h4MjOM83VeQ==
+ bh=YXWxb0Nu+7DMiplo068Wx74Y31bcVlK4KkzH7Z6kzZU=;
+ b=NizEJGn8kkJLCN3s69mvr0eWpmv1OQoNWjZAiObdDKllie5Pm42nFNaMy/8rD8kpPva1AJUBhip4/HnFQ742AbJynq/WvoOrdYOjIlQG5HZ9hIGixgI2PnNVGHISNAcMX83tCureJ3/TKS4cL6FkFjHxZjxbyr5qdosC+W13j0bE0kiI6dmksOFPjF2O/cz0l3Iu7ML39qjTGoAZ3qQl6hQzW+aYNQQbYhGpcJ0xNh91m4lMoxqFWjhIGplS6sxBNS1hRuAnAt3O60dMitHMzMHH2QmpaQ9woX6x3r24Yf3j9uHzVx2GLInQO3TeujMKtqaNx1ZR+RKoK0fzbUAIXQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FTpMsPedD8A3Ep+V61dgAdy8F87vVfoLgCwSA4qT+WE=;
- b=NEbJztukwGcawfGq9YmyIRgjGtoihkjTqbmnsckCmpTFHeAxxoUUOm+o4ZjNd3U426CXJ9Uk8E2qOwYo6oS3hYLta0uHE/XmXJMZbxy9FrTJUBsFNawM670GrAHZol2ZZ5QOwLimhhZCV0pcANvXjed4E0AxjPGisXweSqeXOIqDS5tYqcGJsPJ2Wvh7UdUPQHf7juR8eEyVEBO+rcFTbxHEGjjTw3M/HFoaxqOTbxAhR+ECxkrOec49jhwQNCCwWDmyRpUI28cG/WCDInOpBDyF97d3ygF+iVS4c+BRs+2Q9VLaP1eSoBKKl0Q1i/V/VW8S5NVvEipodRepFmuEZg==
-Received: from CH5P221CA0016.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::12)
- by CH3PR12MB8536.namprd12.prod.outlook.com (2603:10b6:610:15e::10) with
+ bh=YXWxb0Nu+7DMiplo068Wx74Y31bcVlK4KkzH7Z6kzZU=;
+ b=d2BtU3kmzEVds1RKNRu9Gs+QIhHsguBFc52E2VoAj8kULe0Cg4wborJd/oDuweKz5KTKINJQpIe++rNNBsCnIDIs/5rP5gNtnP4wl4AHJMX/gXak5PTWsCLue8dDgWywWKbDWPkbbPT41+S9AecTpfBgvVMiLsQjOmqRArrVvdA3BtOjBbq6L38BCPW17Az41DRYbsn9fErtpoIAwWHhent4LiYTvl/LgiH1+0KiriyAgsgfrvNg+nnYwXyAIOQoyYCXn/ruKNxzjlk+0+6BqK11KAtfyMIIHmFLiDwbXYREy4G3oQ0bXdE0EETQbe1UhIvY+F/JThOIZzU6JVIRfg==
+Received: from MW4PR03CA0321.namprd03.prod.outlook.com (2603:10b6:303:dd::26)
+ by CY3PR12MB9702.namprd12.prod.outlook.com (2603:10b6:930:103::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Fri, 23 Oct
- 2026 15:40:55 +0000
-Received: from BL02EPF0002992D.namprd02.prod.outlook.com
- (2603:10b6:610:1f2:cafe::4) by CH5P221CA0016.outlook.office365.com
- (2603:10b6:610:1f2::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.19 via Frontend Transport; Fri,
- 23 Oct 2026 15:40:55 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Fri, 23 Oct
+ 2026 15:41:06 +0000
+Received: from CO1PEPF0001885F.namprd02.prod.outlook.com
+ (2603:10b6:303:dd:cafe::3c) by MW4PR03CA0321.outlook.office365.com
+ (2603:10b6:303:dd::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.19 via Frontend Transport; Fri,
+ 23 Oct 2026 15:41:06 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF0002992D.mail.protection.outlook.com (10.167.249.58) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1PEPF0001885F.mail.protection.outlook.com (10.167.249.248) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Fri, 23 Oct 2026 15:40:55 +0000
+ 15.21.569.4 via Frontend Transport; Fri, 23 Oct 2026 15:41:05 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 23 Oct
- 2026 08:40:26 -0700
+ 2026 08:40:41 -0700
 Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.231.37) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 23 Oct 2026 08:40:25 -0700
+ 15.2.2562.56; Fri, 23 Oct 2026 08:40:39 -0700
 From: Simon Song <xinmengs@nvidia.com>
 To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
 	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
@@ -110,10 +110,12 @@ CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
 	<work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
 	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
 	<peter@colberg.org>, <xinmengs@nvidia.com>
-Subject: [PATCH v2 00/12] Rust VFIO PCI support and NVIDIA vGPU driver
-Date: Fri, 23 Oct 2026 08:39:55 -0700
-Message-ID: <20261023154009.2246627-1-xinmengs@nvidia.com>
+Subject: [PATCH v2 05/12] rust: pci: add reset callbacks
+Date: Fri, 23 Oct 2026 08:40:00 -0700
+Message-ID: <20261023154009.2246627-6-xinmengs@nvidia.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261023154009.2246627-1-xinmengs@nvidia.com>
+References: <20261023154009.2246627-1-xinmengs@nvidia.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -129,127 +131,168 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992D:EE_|CH3PR12MB8536:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13eb2116-6351-4673-54cb-08df311c06da
+X-MS-TrafficTypeDiagnostic: CO1PEPF0001885F:EE_|CY3PR12MB9702:EE_
+X-MS-Office365-Filtering-Correlation-Id: fbaad403-f375-401a-745d-08df311c0d0e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|376014|7416014|36860700016|261022115727099003|260925021911599003|260925021311599003|261022113327099003|260925022911599003|11063799006|261021135927099003|56012099006|261021123027099003|261009223027099003|261021130227099003|261021121427099003|10067099003|18002099003|6133799003|261022105027099003|261022075727099003|3023799007;
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700016|23010399003|11063799006|56012099006|261022113327099003|261022105027099003|261022075727099003|261021121427099003|261009223027099003|10067099003|18002099003|22082099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	1y94mE36t39juB5rcbTFPQb6rVy5OnF8hTavP7nNkR4jrjluLKCVWmvGcJGUBCixzdpug5efw9voaOS0koce8FuxPPkGwlwDSvvPuApOxdb0y0xL3hYG2NW8QV2wlboHRLDsSUdUsE+1KeeYNGZasl44m8gfNqqvfwkX+oF3OEOumDJXmz82F32QIq4pjfnvv0xM/AzFhx9Kx4o6o5arBrIVVWqCi+sSczGtK2C2WEzSWMgVDdifb/eH1p3CYpxvS66iEgCXBO5oZuA1CGby9O6v7A+7KPQbWLO3WhhMqr3uqA5j5QCObgzSZlnRRd8BBNt/sxI61WeMX7s10g5/cV82Hhy4Cix+6T4y9XBcawHW5I+HdnP+sx5TE3l8mJPHeJZk7Nn6aDNRya692Mj1pzGiGtk9YA7szS9gxFZ83EqOv/o3DPuLMTImEoqMM6A5tGB/EjQ5bZ5kTrgNsmYQUF4nDxbTkOO/H/iJ10kIurKFSuUKN4Jl7uQvwlNZUAYE0x0boG1LFuhAilymZ1InkD3Zpa4oxhVKBHD0GZkQ8ABnOx/BGSEDiGVCICAUz5ZcDJoWrbpaIb1pN9UEKocji3UswQwFIAC8ACo40aO+5EjhZgVAdA7+IwjqEgtIyNNZC7edvMKFKZnHxkqiU/20g0+ovOob+ixOFa4Du7hE5R/6mPENubn7nofYwl3Cn+FyNl8QMJOqMJbnDgPx2jpAGA==
+	220DotB7r7HuCr5wnTGyrHcg97F885E5ia3/E2CbZbZZN5nU6tOaFpIeExBdYg9nnOQWNdHyJErvujA4X1yRp5hV0iB/1g/RXMz7GVlg96cWpu0BtOoy48MD5IffCeYe05dP6WlakMXlIXI3vVTpkRREHKQ/ez2fY2XNKI7g5IuRzlsOxqlvSQMGOfQn0AJjgl2EsndCZeDD2bc8CEXnITdpHmu7baXnLQykuJvVQ3taGoMCzsPC1Y/XsDcLX3zSA3kXzxVypWNOWRnO/oVOiF8YA4oMxl4b/z+elX/a/f3YQyMDA3n4la6nrDpnbqo6y/9G9/OvWm0WrnGUtGkNw8agAr1w2Ln0/Pw9FHbkR/D10iTQ5uaaDPWp0ah4icrINIZAP/TtcrsIohwmzPj6UFjhm3vQrGwWPY6MIRt8+dvicU9Chwylmhzr2lbYFNcdfqeINYLtO0raKUIefaq/Q2wksZBNJnaEhVAtXZS/jzCyI8fcwmNeZqSOfxBiLlKs5T5QTVo1wJbIDhGBqgWlZyTFtC1+677u5pzmNbSJXeDasK+vf1jd7XnMjSQ3ZUgibUuUdK1qUYxY2PYhouU0gmibl2DcPPYLqCM0au2yKarP8WXLR18pPKq8/ErxAvyKX7bSpVnqxCuNNmPvLHpkBjQvY4Poe7RuyOwKeHfVzMVQo/xtsoWpiGlqnORbLkhO/gZcgQqI9xwDtmIH1Cbpog==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(376014)(7416014)(36860700016)(261022115727099003)(260925021911599003)(260925021311599003)(261022113327099003)(260925022911599003)(11063799006)(261021135927099003)(56012099006)(261021123027099003)(261009223027099003)(261021130227099003)(261021121427099003)(10067099003)(18002099003)(6133799003)(261022105027099003)(261022075727099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700016)(23010399003)(11063799006)(56012099006)(261022113327099003)(261022105027099003)(261022075727099003)(261021121427099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	DUvhxrto5e0v4fSQ8b4W4rGRHvipT0HgdZdX5aYjVoqWzmprSuSJZZKKV0Qts7zDx7PQpL2sUyzrTKu4icHTHORliLjXqCUsESkLPPbtlYMAvr9Cz8IsYQry0mfe9edS8sxzVXVEqSR84FKesn9eqoGif5Af94S1FEKkThGsDrn1nmAZFphANMPb0o1Vuofwkax+M2JL9FGlnETirFd1Rz3oxdq4UpK5mc1PZzqz3KaMWy3v0rJS5b6IOpSSsdSRHyD+/opRRg14d+sDp/f4ha/CJGE4kJwSxlnuJYevHmSCmZtIjZZHnQVl5oZop2BfC9JL7IfMO11IBoqYuXJHyabS3K5FTHbQ1tBikMWV5cONEtRhHhryRdjlcstj811m2s8VdSi+CxTjNWf1JeZ5V9VlkuzOO1Wto6v9p1r2RCDJQy010JJsylsjLOv+rTMo
+	agFOV1Algyeta/HTdWkKLWP7qYiQU2UfPze3vmnhySRCcAM7OudCbOZTqjlbizIcREPvqH+OR6uYYjKuq5+wOrX0hWDaff0YFfadfYao8Js3Sh39C7Ss1zInalN5qdzsrEp3D7CTH7NZ+eFvJl0WxQwqNsiJc4zb2EMkVytiBjiZjINZ5zge0tsPaReKmJuMtymSx8cWmYhzbQJEGmf9ShCYv3iDgu7ox7Ho6EaJmiUsMvLPBcmKMhl1SSmMVU9J0G1R1ofSgsYt25dxxC3HDD7ejWEPuqVywNJPJShcrFLGuiVj6e5R9uEQVb+zyPUwXLsRLmpPgIGlF9f9D8jksuVWi+v+jj2AAH83+Lqg4F5YakXDuc109gN4YsGcgsbOpolyjN67P6D7nGix8wroSxLsN4fnz18wd9VsbmRKlqwc+aPXqeZkvPhWRJqaOV+u
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 15:40:55.2071
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 15:41:05.7165
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13eb2116-6351-4673-54cb-08df311c06da
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbaad403-f375-401a-745d-08df311c0d0e
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992D.namprd02.prod.outlook.com
+	CO1PEPF0001885F.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8536
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9702
 
-This updates Zhi Wang's Rust VFIO PCI series [1]. The NVIDIA variant
-uses nova-core's typed SR-IOV PF interface to create, reset and release
-vGPU instances while VFIO provides userspace access to the PCI device.
+VFIO PCI variant drivers will use reset_prepare() and reset_done() to
+forward PCI reset notifications to their VFIO registration.
 
-The base includes Zhi's BAR1 self-test fix:
+Adding these callbacks to pci::Driver lets VFIO variants reuse the PCI
+adapter's reset callback dispatch. A following patch removes the
+duplicate vfio::pci::Adapter.
 
-- commit 317e76cc60b7 ("gpu: nova-core: mm: keep BAR1 self-test page
-  tables alive") [2]
+Because there is no gurantee that drvdata must be valid when reset is
+issued, using callback_data_with which contains the helper to null-check
+drv_data, this could occur during probe if reset is called before
+set_drvdata
 
-It also includes both prerequisites cherry-picked from Alex Williamson's
-VFIO tree:
+Suggested-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Simon Song <xinmengs@nvidia.com>
+---
+ rust/kernel/pci.rs      | 70 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/vfio/pci.rs | 12 +++++++
+ 2 files changed, 82 insertions(+)
 
-- commit f1b563d3e3cb ("Merge tag 'topic/pci-vgaarb-rework-2026-10-01'
-  of https://gitlab.freedesktop.org/drm/kernel into v7.4/vfio/next") [3]
-- commit 6a5f427bee12 ("vfio/pci: Remove the core dependency on driver
-  data") [4]
-
-These allow Rust VFIO PCI drivers to use their own typed PCI driver data.
-
-Patches 1-4 provide the PCI helpers and VFIO PCI abstractions. Patches
-5-8 add reset, bind, AER and runtime-PM support to the shared PCI adapter.
-Patch 9 migrates VFIO to that adapter. Patch 10 separates common VFIO
-handling from PCI, patch 11 publishes the typed Nova PF interface, and
-patch 12 adds the NVIDIA VFIO variant driver.
-
-Changes since v1:
-- Patch 2: restrict vf_id() to Device<device::Bound>, following Danilo's
-  review, so VF index lookup requires a bound PCI device.
-- Patch 4: adapt to the updated VFIO core driver-data APIs. Pass only the
-  core device to vfio_pci_core_register_device() and
-  vfio_pci_core_aer_err_detected(), use VFIO core's VGA callback, and
-  guard runtime-PM helpers with CONFIG_PM.
-- New patches 5-8: add bind, reset, AER and runtime-PM callbacks to
-  pci::Driver so VFIO variants can reuse the PCI adapter. Run bind()
-  after driver data is installed, and require Sync only for runtime-PM
-  driver data.
-- New patch 9: remove vfio::pci::Adapter and expose VFIO registration
-  through the shared PCI adapter, with a build-time check that VFIO
-  drivers install PM callbacks when CONFIG_PM is enabled.
-- Patch 12 (v1 patch 7): register the NVIDIA driver through pci::Adapter
-  and delegate bind, unbind, reset, AER and runtime PM to its VFIO
-  registration.
-
-Integration branch:
-https://github.com/xinmengsong/nova-core/tree/nova-vgpu-wip-oct-18
-
-[1]
-https://lore.kernel.org/nova-gpu/cover.1790764573.git.zhiw@nvidia.com/
-[2]
-https://github.com/zhiwang-nvidia/nova-core/commit/317e76cc60b763a03664cbf8244f4de076e58aa7
-[3]
-https://github.com/awilliam/linux-vfio/commit/f1b563d3e3cb0f9a97ef77f538ffc0e75e79a628
-[4]
-https://github.com/awilliam/linux-vfio/commit/6a5f427bee12c82beaf13efbd133416da1541c39
-
-Danilo Krummrich (5):
-  rust: pci: add VFIO override device IDs
-  rust: pci: expose the VF index within its PF
-  rust: pci: allow drivers to manage DMA ownership
-  rust: vfio: add PCI variant driver abstractions
-  vfio/nvidia-vgpu: add the Rust VFIO variant driver
-
-Simon Song (5):
-  rust: pci: add reset callbacks
-  rust: pci: add a bind callback after installing driver data
-  rust: pci: add an error_detected callback
-  rust: pci: add runtime PM callbacks
-  rust: vfio: use the PCI adapter for variant drivers
-
-Zhi Wang (2):
-  rust: vfio: separate common device handling from PCI
-  gpu: nova-core: publish typed SR-IOV PF APIs
-
- drivers/gpu/Makefile                        |  15 +-
- drivers/gpu/nova-core/driver.rs             |  47 ++
- drivers/gpu/nova-core/nova_core.rs          |   2 +
- drivers/gpu/nova-core/vgpu/vgpu_api.rs      |  82 +-
- drivers/vfio/pci/Kconfig                    |   2 +
- drivers/vfio/pci/Makefile                   |   2 +
- drivers/vfio/pci/nvidia-vgpu/Kconfig        |  20 +
- drivers/vfio/pci/nvidia-vgpu/Makefile       |   3 +
- drivers/vfio/pci/nvidia-vgpu/nvidia_vgpu.rs | 402 +++++++++
- rust/bindings/bindings_helper.h             |   4 +
- rust/kernel/lib.rs                          |   2 +
- rust/kernel/pci.rs                          | 229 ++++++
- rust/kernel/pci/iov.rs                      |   8 +
- rust/kernel/vfio.rs                         | 290 +++++++
- rust/kernel/vfio/pci.rs                     | 849 ++++++++++++++++++++
- 15 files changed, 1953 insertions(+), 4 deletions(-)
- create mode 100644 drivers/vfio/pci/nvidia-vgpu/Kconfig
- create mode 100644 drivers/vfio/pci/nvidia-vgpu/Makefile
- create mode 100644 drivers/vfio/pci/nvidia-vgpu/nvidia_vgpu.rs
- create mode 100644 rust/kernel/vfio.rs
- create mode 100644 rust/kernel/vfio/pci.rs
-
-base-commit: 07484ea6c8335226301113bc86e7c11b52312f51
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index a156927e23d..adc7e92d44e 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -109,6 +109,9 @@ unsafe fn register(
+             (*pdrv.get()).remove = Some(Self::remove_callback);
+             (*pdrv.get()).id_table = T::ID_TABLE.as_ptr();
+             (*pdrv.get()).driver_managed_dma = T::DRIVER_MANAGED_DMA;
++            if T::HAS_RESET_PREPARE || T::HAS_RESET_DONE {
++                (*pdrv.get()).err_handler = &Self::ERROR_HANDLERS;
++            }
+             #[cfg(CONFIG_PCI_IOV)]
+             if T::HAS_SRIOV_ENABLE {
+                 (*pdrv.get()).sriov_configure = Some(Self::sriov_configure_callback);
+@@ -175,6 +178,61 @@ extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
+         // Drop private data before returning to PCI core, while its removal context is valid.
+         drop(data);
+     }
++
++    /// # Safety
++    ///
++    /// `dev` must belong to `T`. Any installed driver data must remain installed until this
++    /// call returns. The data lifetime is independent of the callback borrow.
++    unsafe fn callback_data_with<R>(
++        dev: *mut bindings::device,
++        f: impl for<'borrow, 'data> FnOnce(Pin<&'borrow T::Data<'data>>) -> R,
++    ) -> Option<R> {
++        // SAFETY: The callback supplies a device bound to `T`.
++        let data = unsafe { bindings::dev_get_drvdata(dev) };
++        if data.is_null() {
++            return None;
++        }
++        // SAFETY: PCI installed pinned `T::Data`; the caller excludes its removal.
++        Some(f(unsafe {
++            Pin::new_unchecked(&*data.cast::<T::Data<'_>>())
++        }))
++    }
++
++    extern "C" fn reset_prepare_callback(pdev: *mut bindings::pci_dev) {
++        // SAFETY: PCI holds the device lock throughout reset.
++        let dev = unsafe { &*pdev.cast::<Device<device::CoreInternal<'_>>>() };
++        // SAFETY: The device lock prevents removal of installed driver data.
++        let _ = unsafe {
++            Self::callback_data_with(&raw mut (*pdev).dev, |data| T::reset_prepare(dev, data))
++        };
++    }
++
++    extern "C" fn reset_done_callback(pdev: *mut bindings::pci_dev) {
++        // SAFETY: PCI holds the device lock throughout reset.
++        let dev = unsafe { &*pdev.cast::<Device<device::CoreInternal<'_>>>() };
++        // SAFETY: The device lock prevents removal of installed driver data.
++        let _ = unsafe {
++            Self::callback_data_with(&raw mut (*pdev).dev, |data| T::reset_done(dev, data))
++        };
++    }
++
++    const ERROR_HANDLERS: bindings::pci_error_handlers = bindings::pci_error_handlers {
++        error_detected: None,
++        mmio_enabled: None,
++        slot_reset: None,
++        reset_prepare: if T::HAS_RESET_PREPARE {
++            Some(Self::reset_prepare_callback)
++        } else {
++            None
++        },
++        reset_done: if T::HAS_RESET_DONE {
++            Some(Self::reset_done_callback)
++        } else {
++            None
++        },
++        resume: None,
++        cor_error_detected: None,
++    };
+ }
+ 
+ /// Declares a kernel module that exposes a single PCI driver.
+@@ -375,6 +433,18 @@ fn unbind<'bound>(dev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<'
+         let _ = (dev, this);
+     }
+ 
++    /// Called before a PCI function reset, with the device lock held.
++    fn reset_prepare<'bound>(dev: &Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
++        let _ = (dev, this);
++        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
++    }
++
++    /// Called after a PCI function reset, with the device lock held.
++    fn reset_done<'bound>(dev: &Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
++        let _ = (dev, this);
++        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
++    }
++
+     /// Enables Single Root I/O Virtualization (SR-IOV) for a PF.
+     ///
+     /// Called when userspace writes a nonzero VF count to `sriov_numvfs`. The token carries the
+diff --git a/rust/kernel/vfio/pci.rs b/rust/kernel/vfio/pci.rs
+index 43c14b4e3a1..db30dbce6a8 100644
+--- a/rust/kernel/vfio/pci.rs
++++ b/rust/kernel/vfio/pci.rs
+@@ -1084,6 +1084,18 @@ unsafe fn unregister(&self) {
+         // VGA and runtime PM callbacks. No field of the enclosing data is being destroyed.
+         unsafe { bindings::vfio_pci_core_unregister_device(self.dev.core_device()) };
+     }
++
++    /// Prepare the variant driver's state for a PCI reset.
++    pub fn reset_prepare(&self) {
++        // SAFETY: This owner keeps the pinned registration data alive.
++        unsafe { self.dev.registration_data_with(T::reset_prepare) };
++    }
++
++    /// Complete the variant driver's state update after a PCI reset.
++    pub fn reset_done(&self) -> Result {
++        // SAFETY: This owner keeps the pinned registration data alive.
++        unsafe { self.dev.registration_data_with(T::reset_done) }
++    }
+ }
+ 
+ impl<T: Operations> Drop for Registration<'_, T> {
 -- 
 2.43.7
 
