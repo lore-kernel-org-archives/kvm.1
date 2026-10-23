@@ -1,86 +1,86 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792770944;
-	b=THs3BeB81NCrUihtVnC2oakaIKdQm8zh0KWEMnlY1v6XDPv2YxlpVmHCN3O4LoQz8JUU
-	 nQ7/4Aeek18FCdYBN8i2Z5wevAkgj/94Ix2A5HyaQwLKcx2P8BNTYKXWodyBeWWbS/XmI
-	 yCkoSNukjmpuEn7i/qIFV5VXl3XPeDwU8aF0JxDAfwjLXrWtECuCKJVKwSGxyOrvgvLhf
-	 YNk8+c3Xww4iE2jjUG6q+9Yo0pUp5nQnrusdCaIgGrmFoRqfpklDqSjVv+9gGUeS1b1l/
-	 jIxeUbzShV7tRD21y/UnR1HzOTSFnecCGb5nUpLEthL3QINktShYQo0aJq+zlnRXt6A==
+	t=1792770942;
+	b=0tQnmZIY7aBgwwgWV91poVQFKmYcG8SzDsN9s1bBctv2mFSktdBzq+5PEnj95KF38w+O
+	 VGjGexpUZhnH9cKXhIT7IYNhxr0iDyX/e+8d6n0FS1rbp93izXjtX6HZMkXvrjyJMP7cn
+	 Y54qq9jZZqT6HDE1CjHArKT8dridADFH4rqK5BWeuoyC7hlF2wHPgOWo9DZ5rCYWYRSuN
+	 N4Mx8SN1U4ynQ1z16Uomp3WgYx4YQHK21MmXA1n2Fn+6oaykLzYRv30KVrmZxxdqnnSyS
+	 MsohZ3kD3Tvu40cOpfWAc3rN+zKHxmiMJAvQ2aLDSU/VPKAnvnocVr+JwXLSqQFTK1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792770944;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792770942;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=bnmp/bT9446rOHtQDGSZ20E2dlcWbaVmV3aA5kJZmrQ=;
-	b=pMbiXVKDK1/a1GAG+5NHl9eSFwSn6+osesxfuFSYBQo9IzevqK4prOHRy6ZBnyeNOEqm
-	 rvMe1l3xJH0E4bXj8k+pejRlQ54C5v3LHchw+QkGYh6FbNINnc/2gvGhKpvJRvoVQcqlm
-	 1/WUyT7qKfgLfmERVj05HduFmrmEEqDYBA9RBJPpHmAhITgyXH6JmQ+hvdvVwJ7/jiLFQ
-	 Q5vFXrYIBNXe6QccPrD9giNaoyLtZ6dpd7szHUtNFFsng3NV+0eKy7oLqVkJXbMOwfDxO
-	 IkWrVe85kLAy6O7h0Ko1P3WPZepiZDswEXdZU4+eKfeZJ6Rgx/2+lJA+mKkO6VKlbGA==
+	bh=GzDT0H9gqpV+k6XBmpb1Gc2FAVECsDExjYUaF6UfxRA=;
+	b=CVwg0pYbfV3OpA7V9LwvJsbSO3SlxqSNjJkt1qTj7rY+ubIZ20HqYjkH+hjrsti3WHoI
+	 jl32mW+6b6tUJaub4CEU/XOzzlseNZ9CJk4UH9IbAA9Y/V3YzMA1T8PR52q6nSOUgVIfm
+	 D3eTDAUDc6zwQ41O/hzEyeASxxk/dvwn5kBxm1NVn2szWyki4tdkJ3gPOwvqKJqUywQIU
+	 Tznaq9i6nPqWOxXXCAnwjEDSm+9BbtpYdx4KduCCYddZ9yn5LRXshBHJ/69LKD9jkdOb3
+	 ijs/G0G4UYK4u1xd1roZFICEJqdwKOnO4bXCaVU/HbPWZ2Zt0QlyoKincK5l3+2gSXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.ibm.com;
 	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gojAqZAt;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iV3dH+k0;
 	arc=none smtp.remote-ip=148.163.158.5
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C3A606A33D;
-	Fri, 23 Oct 2026 15:55:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5C3A606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659E6606A31E;
+	Fri, 23 Oct 2026 15:55:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 659E6606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gojAqZAt
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NEEFqJ2036471;
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iV3dH+k0
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NEEOkU3183816;
 	Fri, 23 Oct 2026 15:55:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=bnmp/bT9446rOHtQD
-	GSZ20E2dlcWbaVmV3aA5kJZmrQ=; b=gojAqZAtVD7GsyGHLtU/vdpuiPiIXl5j0
-	mNyEfWdtYKyxu/6OVvPsYK8P5EAs1VDLW/mmUVip4cW3mTTr2DXENBedeM0EO/pn
-	ffMUHhfbcLTY9oGbQlMc2ItYSKyOYXSqKllQlKcw0wgooyJjh79OMOEOZFUCbzWX
-	3suUjtbYSS4/2HZbTu7Dj0yLImuenUu4iO2U/ZZbmApFJAyq3zY3p5VhLoAqSOM4
-	VZSEnD4dQkRNWUrJx8QlBcpaqoSrYUgOblsrwBCem0PslYqEIglDc3GPZdSAW1rJ
-	yFwuL2mNZmSGffNUvCsgsOcOnuikrmcKIDwy6LAxqQUzT7U6F/iTQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw58nehs-1
+	:mime-version:references:subject:to; s=pp1; bh=GzDT0H9gqpV+k6XBm
+	pb1Gc2FAVECsDExjYUaF6UfxRA=; b=iV3dH+k06zUY1nEsLJjwwoAqjU+kNXq7G
+	LmTLFHWZnzwT8OfCG4cVh94BEnGNGiWn+bHWwadHyvPYgVYkWmvshxPZk1gfT/Sw
+	fa/tZazzjuDrJF8CFzqjON9xrw3O6cXMizQqMgEIfKstVRQwkIFTeevMeCeWiRni
+	66TUcMRmZLztmHuTNK73DGW5CNsuwpDDf4qma4pTfv9AoBCUv1qCVolgk9r8K1XU
+	2yjSQJ/BiaJA5OZTLgoTfxx9a4dRW5HxC/5hJ5cq6ORt7cWRWZlkTh/Yh731w6oM
+	nvV+PegDrggUixY5ScIH1O6MvD/QudYvWCHcOQ1IUJzp5CanCjnIQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5adeju-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Fri, 23 Oct 2026 15:55:39 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69NE64II1018552;
-	Fri, 23 Oct 2026 15:55:39 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hg5exsa2f-1
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69NE67DX2263050;
+	Fri, 23 Oct 2026 15:55:38 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hfgck67dj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 23 Oct 2026 15:55:38 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69NFtXkN48955824
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69NFtW3N31851206
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Oct 2026 15:55:33 GMT
+	Fri, 23 Oct 2026 15:55:32 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1AEF020040;
-	Fri, 23 Oct 2026 15:55:33 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED1392004D;
+	by IMSVA (Postfix) with ESMTP id 1C11720040;
 	Fri, 23 Oct 2026 15:55:32 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EF4A82004B;
+	Fri, 23 Oct 2026 15:55:31 +0000 (GMT)
 Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Oct 2026 15:55:32 +0000 (GMT)
+	Fri, 23 Oct 2026 15:55:31 +0000 (GMT)
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 To: kvm@vger.kernel.org
 Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
         david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
         gra@linux.ibm.com
-Subject: [PATCH v2 07/10] KVM: s390: Fix UCONTROL inconsistencies
-Date: Fri, 23 Oct 2026 17:55:28 +0200
-Message-ID: <20261023155531.206113-8-imbrenda@linux.ibm.com>
+Subject: [PATCH v2 01/10] KVM: s390: Move some skey functions to headers
+Date: Fri, 23 Oct 2026 17:55:22 +0200
+Message-ID: <20261023155531.206113-2-imbrenda@linux.ibm.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261023155531.206113-1-imbrenda@linux.ibm.com>
 References: <20261023155531.206113-1-imbrenda@linux.ibm.com>
@@ -95,180 +95,113 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA2MSBTYWx0ZWRfX4Tw44L+0VJQY
- kqh9iNWvuOYoboODBlf7A2BCmol5Yn7erEpXsyMeKTFMF/0V41aTywL32TrI6CuyleXT2YYQVAY
- p+ifUp/9oAHuCyYncilzIjTvP+DRWlg=
-X-Proofpoint-GUID: 2PWVjI0Yzi6dwatDiJQeM6imky8zpxED
-X-Proofpoint-ORIG-GUID: 2PWVjI0Yzi6dwatDiJQeM6imky8zpxED
-X-Authority-Analysis: v=2.4 cv=UOBIjyfy c=1 sm=1 tr=0 ts=6adb837b cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA2MSBTYWx0ZWRfX7yoXN4UBvVee
+ oYuyaDlzwzRXUOumItAVelJ3U5yEemgJWKo+QZXKjs3tv0PIOiuOjoNdaKlXSfSuw65fPEDalg+
+ kvg/2eX6hyYJoIaZCfZ2fBGmoBb+5XAHrzIs++Ho5glbwGDLuMw5/OSa7lu9KGU7XTmsfvTlJva
+ 1NEVV5oKYtoGw43H8RQYyAgidZJr6/b7xMHgPsrR8QksZXkqwWBo5Eobcb2QTstZzqN45I7dSf8
+ 4I80Qv5ZMB4GyBvqjDYKoo6GYuS7xZHVuYw1Jn2ed/WtwEr7OcpQSsP9jMbqh5/qymkuxx+WTVe
+ TfJBpvAGBcG8RkZxhSkO8fC0Jh5J8jQ7PDvZ+JEWIw0LOAeI+z4uEz/6wDahqfn+DL5CqPBHh6Z
+ 62ajHnQItNV8jqpFaUyuBn7O8B3bDc5zUWroY6sxkb7BdUJPAZPS9rTsDzr25g3RxEoGeO/pAp/
+ Hk3lqeCEE9QtlB+11wQ==
+X-Proofpoint-ORIG-GUID: ahRE2k7pvAgBuIq7-6k4jWlrOSbfe-2X
+X-Proofpoint-GUID: ahRE2k7pvAgBuIq7-6k4jWlrOSbfe-2X
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA2MSBTYWx0ZWRfX8pa7UTbDUCLa
+ 9Nd/Vh2NfjqucUPrlCFt9A09UxKfXXLH7xqb6ZBxT/UYoRlZgn8LymYbGWT2T1+IwcMA/ouppAG
+ 578/O3qkAi18KzAK6+UOavXVrmfQ9aE=
+X-Authority-Analysis: v=2.4 cv=ZfSIpcVA c=1 sm=1 tr=0 ts=6adb837b cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=qdRAtj89VwdXhDZmnPMA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA2MSBTYWx0ZWRfX1xp8cE75Emw3
- 2wpoFO8xP5Nhbhlw6nw5yj19ZI7EaHhpAFZ/E0Wl2wtYzRUE6QubbmUKuqMtEU1kiEJkcnDgmVe
- vKhmz40O5hXi1iF0vt6K+lvQNlFA1skXAwl4yOwhewvobTXagCx7jJddJsKh6DbfgVQF0lmjRgB
- Yv6Of5DImryEu3pyttLqr36a4twPhMdMTRiOHIZTfLU72cBypvU/lRnDUDGWMKRsxFAE2bV5xUG
- EPN5zTsqW9l7tQWdnGGT8U2nLJ7Np8LW34uib+c6HMWedbV9AS1A1JJyXK1b0efIEqPg38gIdL7
- CmZB+/i74SuUfH1srngfcFZ2VJcpjUEGlBGlFJyRuaQmo8Pq0shUqgRlB6GrkVOQu4OxbYlGdmT
- IkAR5n9o4piplBKSJj5BeBGyLgpDoskrUj4u0oG+Yla4Upa/qfTMhrsYFiQtKoZWm39EDrlrr7z
- jA6Jpcu/tnczn0TVsMg==
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=HEUQaSvOCpYZseJEH4QA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-23_04,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ clxscore=1015 phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230061
 
-For UCONTROL VMs, when a vCPU segment entry is mapped but unallocated,
-the tl field was set to 1. This collides with the present bit, which
-means that other parts of gmap would mistake the entry for a present
-one.
+Move some storage key handling functions to headers, since they will be
+needed from outside, and they are small, so inlining is acceptable.
 
-Refactor the code to use a different combination of flags to indicate a
-mapped but unallocated segment.
-
-Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
 Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 ---
- arch/s390/kvm/gmap/dat.h  | 16 +++++++++++-
- arch/s390/kvm/gmap/gmap.c | 54 +++++++++++++++++++--------------------
- 2 files changed, 41 insertions(+), 29 deletions(-)
+ arch/s390/kvm/gmap/dat.c | 26 --------------------------
+ arch/s390/kvm/gmap/dat.h | 26 ++++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+), 26 deletions(-)
 
+diff --git a/arch/s390/kvm/gmap/dat.c b/arch/s390/kvm/gmap/dat.c
+index ff80d02c9f56..b9507daaf327 100644
+--- a/arch/s390/kvm/gmap/dat.c
++++ b/arch/s390/kvm/gmap/dat.c
+@@ -159,32 +159,6 @@ bool __must_check dat_crstep_xchg_atomic(union crste *crstep, union crste old, u
+ 	return cspg_crste(crstep, old, new);
+ }
+ 
+-static void dat_set_storage_key_from_pgste(union pte pte, union pgste pgste)
+-{
+-	union skey nkey = { .acc = pgste.acc, .fp = pgste.fp };
+-
+-	page_set_storage_key(pte_origin(pte), nkey.skey, 0);
+-}
+-
+-static void dat_move_storage_key(union pte old, union pte new)
+-{
+-	page_set_storage_key(pte_origin(new), page_get_storage_key(pte_origin(old)), 1);
+-}
+-
+-static union pgste dat_save_storage_key_into_pgste(union pte pte, union pgste pgste)
+-{
+-	union skey skey;
+-
+-	skey.skey = page_get_storage_key(pte_origin(pte));
+-
+-	pgste.acc = skey.acc;
+-	pgste.fp = skey.fp;
+-	pgste.gr |= skey.r;
+-	pgste.gc |= skey.c;
+-
+-	return pgste;
+-}
+-
+ union pgste __dat_ptep_xchg(union pte *ptep, union pgste pgste, union pte new, gfn_t gfn,
+ 			    union asce asce, bool uses_skeys)
+ {
 diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
-index 319a8670fb10..3493f033e204 100644
+index 90389d47ba4e..3167543bf2cc 100644
 --- a/arch/s390/kvm/gmap/dat.h
 +++ b/arch/s390/kvm/gmap/dat.h
-@@ -105,6 +105,8 @@ union pte {
- #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
- #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
- #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
-+#define _UCAS_ENTRY_LENGTH	0
-+#define _UCAS_ENTRY_OFFSET	3
- 
- #define CRDTE_NODAT		IPTE_NODAT
- #define CRDTE_GUEST_ASCE	IPTE_GUEST_ASCE
-@@ -429,6 +431,17 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, int tt)
- 	return res;
+@@ -988,4 +988,30 @@ static inline bool crste_is_ucas(union crste crste)
+ 	return is_pmd(crste) && crste.h.i && crste.h.fc0.tl == 1 && crste.h.fc == 0;
  }
  
-+static inline union crste _crste_ucas(kvm_pfn_t pfn)
++static inline void dat_set_storage_key_from_pgste(union pte pte, union pgste pgste)
 +{
-+	union crste res = { .val = PFN_PHYS(pfn) };
++	union skey nkey = { .acc = pgste.acc, .fp = pgste.fp };
 +
-+	res.h.i = 1;
-+	res.h.tt = TABLE_TYPE_SEGMENT;
-+	res.h.fc0.tl = _UCAS_ENTRY_LENGTH;
-+	res.h.fc0.tf = _UCAS_ENTRY_OFFSET;
-+	return res;
++	page_set_storage_key(pte_origin(pte), nkey.skey, 0);
 +}
 +
- /**
-  * _crste() - Useful constructor for union crste with FC=1
-  * @pfn: the pfn this pte should point to.
-@@ -1027,7 +1040,8 @@ static inline int dat_create_slot(struct kvm_s390_mmu_cache *mc, struct dat_tabl
- 
- static inline bool crste_is_ucas(union crste crste)
- {
--	return is_pmd(crste) && crste.h.i && crste.h.fc0.tl == 1 && crste.h.fc == 0;
-+	return is_pmd(crste) && crste.h.i && !crste.h.fc &&
-+	       crste.h.fc0.tl == _UCAS_ENTRY_LENGTH && crste.h.fc0.tf == _UCAS_ENTRY_OFFSET;
- }
- 
- static inline void dat_set_storage_key_from_pgste(union pte pte, union pgste pgste)
-diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
-index c23da6fad92a..c10681f882c2 100644
---- a/arch/s390/kvm/gmap/gmap.c
-+++ b/arch/s390/kvm/gmap/gmap.c
-@@ -781,16 +781,14 @@ static int gmap_ucas_map_one(struct kvm_s390_mmu_cache *mc, struct gmap *gmap,
- 	if (rc)
- 		return rc;
- 	if (!ptep) {
--		newcrste = _crste_fc0(p_gfn, TABLE_TYPE_SEGMENT);
--		newcrste.h.i = 1;
--		newcrste.h.fc0.tl = 1;
-+		newcrste = _crste_ucas(p_gfn);
- 	} else {
- 		pt = pte_table_start(ptep);
- 		dat_set_ptval(pt, PTVAL_VMADDR, p_gfn >> (_SEGMENT_SHIFT - PAGE_SHIFT));
- 		newcrste = _crste_fc0(virt_to_pfn(pt), TABLE_TYPE_SEGMENT);
- 	}
--	rc = dat_entry_walk(mc, c_gfn, gmap->datt, DAT_WALK_ALLOC, TABLE_TYPE_SEGMENT,
--			    &crstep, &ptep);
-+	rc = dat_entry_walk(mc, c_gfn, gmap->datt, DAT_WALK_ALLOC | DAT_WALK_IGN_HOLES,
-+			    TABLE_TYPE_SEGMENT, &crstep, &ptep);
- 	if (rc)
- 		return rc;
- 	do {
-@@ -806,8 +804,9 @@ static int gmap_ucas_translate_simple(struct gmap *gmap, gpa_t *gaddr, union crs
- 	union pte *ptep;
- 	int rc;
- 
--	rc = dat_entry_walk(NULL, gpa_to_gfn(*gaddr), gmap->datt, DAT_WALK_CONTINUE,
--			    TABLE_TYPE_SEGMENT, crstepp, &ptep);
-+	rc = dat_entry_walk(NULL, gpa_to_gfn(*gaddr), gmap->datt,
-+			    DAT_WALK_IGN_HOLES | DAT_WALK_ANY,
-+			    TABLE_TYPE_PAGE_TABLE, crstepp, &ptep);
- 	if (rc || (!ptep && !crste_is_ucas(**crstepp)))
- 		return -EREMOTE;
- 	if (!ptep)
-@@ -844,26 +843,24 @@ int gmap_ucas_translate(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, gpa_t
- 		if (rc <= 0)
- 			return rc;
- 	}
--	do {
--		scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
--			rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
--			if (rc <= 0)
--				return rc;
--			translated_address = (*gaddr & ~_SEGMENT_MASK) |
--					     (crstep->val & _SEGMENT_MASK);
--			rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
--		}
--		if (!rc) {
--			*gaddr = translated_address;
--			return 0;
--		}
--		if (rc != -ENOMEM)
--			return -EREMOTE;
--		rc = kvm_s390_mmu_cache_topup(mc);
--		if (rc)
-+	rc = kvm_s390_mmu_cache_topup(mc);
-+	if (rc)
-+		return rc;
++static inline void dat_move_storage_key(union pte old, union pte new)
++{
++	page_set_storage_key(pte_origin(new), page_get_storage_key(pte_origin(old)), 1);
++}
 +
-+	scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
-+		rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
-+		if (rc <= 0)
- 			return rc;
--	} while (1);
--	return 0;
-+		translated_address = (*gaddr & ~_SEGMENT_MASK) |
-+				     (crstep->val & _SEGMENT_MASK);
-+		rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
-+	}
++static inline union pgste dat_save_storage_key_into_pgste(union pte pte, union pgste pgste)
++{
++	union skey skey;
 +
-+	if (!rc)
-+		*gaddr = translated_address;
-+	if (!rc || rc == -ENOMEM)
-+		return rc;
-+	return -EREMOTE;
- }
- 
- int gmap_ucas_map(struct gmap *gmap, gfn_t p_gfn, gfn_t c_gfn, unsigned long count)
-@@ -900,8 +897,9 @@ static void gmap_ucas_unmap_one(struct gmap *gmap, gfn_t c_gfn)
- 	union pte *ptep;
- 	int rc;
- 
--	rc = dat_entry_walk(NULL, c_gfn, gmap->datt, 0, TABLE_TYPE_SEGMENT, &crstep, &ptep);
--	if (rc)
-+	rc = dat_entry_walk(NULL, c_gfn, gmap->datt, DAT_WALK_IGN_HOLES,
-+			    TABLE_TYPE_SEGMENT, &crstep, &ptep);
-+	if (rc || !is_pmd(*crstep))
- 		return;
- 	while (!dat_crstep_xchg_atomic(crstep, READ_ONCE(*crstep), _PMD_EMPTY,
- 				       c_gfn, gmap->datt.asce))
++	skey.skey = page_get_storage_key(pte_origin(pte));
++
++	pgste.acc = skey.acc;
++	pgste.fp = skey.fp;
++	pgste.gr |= skey.r;
++	pgste.gc |= skey.c;
++
++	return pgste;
++}
++
+ #endif /* ARCH_KVM_GMAP_DAT_H */
 -- 
 2.56.0
 
