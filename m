@@ -1,95 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.43.75
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792745685;
-	b=4IDqMt/Xf7kCzCBXiWWz+v2hNpA/R0/jFw5tlPkSrnZcHe/Hi5xBxlzB7mIgpzUHAiWV
-	 o+q7/qUPPVaQO2zo24vMdhVjQHgGogG/O6F/7gpWS7rM5KCV/rUBmE2cPrjIUzmERx+SR
-	 4qsNEtgOmGYIZzyrNZdH6hX30z1ir7PGZiIFV9ufs0j6qKYsS6N22ZstS3/oaVfMMRjRM
-	 LOQraQQGedlpXnEAA5H6Fvp0g9kxC6sOC13A2m+tk0wLrEi/8PWRrfDLDeHRABD+kjtJ6
-	 6tBkos7Fc+/CxuF0wD+zJI7BtEIVXofzbncio4gS8INmhf5vW8e++rUZ9IZtgAesbpA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792745685;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:
-	 X-Microsoft-Original-Message-ID:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=keS+Mb2+kayankKoQxT0EtUmES+ls4hsXkWi8D4VIlc=;
-	b=ArdEuG8NgpJAPgsFEKUkmD5jcYSDUa2UtRjS9z9WyFl20Mbsjjk2ERgLhAaVN+l2xu9U
-	 GgXdnrWWHGChuH8QjCOpmS5bENxJO0VcON7NjprxeBiDaPDmz5wpIchlBuspvU1LnQAI2
-	 3HYy70O3SNdwXjRpUc7s+36QZ48y9+nT6vtH2cHeazAs10rodZdKVQDYbCZb0cRIssO4O
-	 +r1xzAZcNyx5yloJc6Sm3ZIpieLpBQuHhHL/mfEejRBjs8aW0pznXL3zywciLDMQYG0I3
-	 w3/JJUJcfXh/qlYYZdiS6avBtJNQQEbR/I2KyngYzI2Eval0d6L137zM5w5BqPaVOkw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hotmail.com;
-	spf=pass smtp.mailfrom=hotmail.com;
-	dkim=pass header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=GrB4qDoY;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.43.75
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013075.outbound.protection.outlook.com [52.103.43.75])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792745971;
+	b=IPmuxerYTZjFhr/j7CrTllINIoXGrZbClwi9F452L8zG7vjaBJejTXQiA5REomq70A8S
+	 TWDnd1bHZ9sn6mOKgBQeAdmc5oe2LlC2jy3nA5Zxp+g7hc3LOOsqsXBnVNeAoySy+7f/c
+	 NoPFn7vOjnzFm6AxD96LbdT1bVQ6bFP7Dg2bgrMIF8MT9E4EQAefYxOvyWCBL4DU6MzLw
+	 B5CTfG6g3PFjCKvWFKl4foYQTuMt8e3u2EnyVhBNeIe01OgnGwtmBfYD3csbbyvq3M54j
+	 zM538txlaLA5qaeUGIVjjwwOZ/WIFpy71n/3jAjRO8r0LkhVjWCJBMrtOg5mk8oLUjQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792745971;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=zmg/yxiwkjfaDfTODXwb587ZNjoOvF78dqo2aQK83Zk=;
+	b=hy8xh5/HN92DPdzdHEX1wb9mMvgW/EycT00DQC9UXgYAodJvsoS5ptupJMNkCx6KjMy5
+	 RXouCOWh3HgwojHhhvD9GHjpaguoGShLMMnKkBYuKusO4mE7i2cKYZuVgOcNAXeYERJcm
+	 gzWqmqP+iVU+Oyf80PLPX02Gbx56nMbukH9qQrv0zTO9M8Fk5ZcQjQJma2pUh4pNqfDvZ
+	 aHMJUet0/izkyjsqZEr6hcfNal+UlbZddfwxdEeqqwWFe+wKYm6BUccGORBUmB+xZa6x4
+	 Mz0Nc91z+0q2iWvlup613foR8Pp/sH8V9909EEWS2CbPQUg5h/0DGEHAjsZq/zSGb6A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Si6ZiX4G;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D364606A31A;
-	Fri, 23 Oct 2026 08:54:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D364606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED9606A31A;
+	Fri, 23 Oct 2026 08:59:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5ED9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=GrB4qDoY
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TTkQXdV2Bfh5ilmv4pvjbdcgFcIZMStJggl8dI/BZy1lFwcNz4NOILyLNhdRVKqMYfBZ9qsUBWhG1piBxUJ/WcAemmvgibsHCCJD+RQijwto/S3LlVlvgibfqQ54kUrVA33Vf/pXwJKn7WaKAHKPw519BQKq46pQOCnTVss2CVG76WqXJHsHnLE/RWyRpYwwzI7ipuoppahQJn4Z61z+SCZDq94Bzub5bRADNSonpLVJhYHI6mi6MCYdvbhXmiJ7T4AbHpnA17Q4Agx/PTzBJpkAliwY91EEALXx36li4GFyR/KcDvN7k+eJCqIOKafIc8U6yY6b66wpLH6kCquAkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=keS+Mb2+kayankKoQxT0EtUmES+ls4hsXkWi8D4VIlc=;
- b=Gpz/lVPAop4/8lzW7PvzTvNNcGxbVIbda4tDvnDZwT0kjjmV7p7Az5URcAQGxfgESg+KIJ3an73TfbtBYB9cqbWRVUv3RtNUCxEuM+3gdKU15WCbJHcX+nSUly2rAui+kSP9aqavOROln5jEh7XqwHLVqj5qH9c+DPWyBAo/XBrcFEq55ZpLv11uBbAekUDw2bG5BI9+mH0w2y3fnOxmxgnTYIWuqBbk5jSxn6t+vnm8pvotZSeM/iP4GHoz5RH5hIGtElqTKmGJtPeOdjJj8u6dkGtYWtoDPKn15WpTqSXpYI+R1/ree6EXOf0OLzAT+2CbwiLsnS9Qz19nV4X5Hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=keS+Mb2+kayankKoQxT0EtUmES+ls4hsXkWi8D4VIlc=;
- b=GrB4qDoY9HPrWixZBQJuTsOlqlQ9/BqxElu3jBMCr9uFhUESv0zraAXEVJ/+lehjH3meF3XqIoIn+B5o3NL5cxvVGZjtFlW11YHCz6x6/n8uMAO0H+KyyDSzkOIlGjzVzJTQgalXNjUOWr0jXLdnsH6kKofiNo3eIcweX4dschLIL6ON/t65sZh30v/mBRy8Np1TGnu2a8X+7OwyyJEndA5sTnlfHlA15Oje7eE/OpWHWu5RTicqA94YdSBCoDmnUNKJQEqOV81CHe8hzWl2GSHKnd3xu5G4L1+ppnNDihdoGZV4o+bhAL+W6hx04IQixKV4hRNW9AdVrqih0Kgf5w==
-Received: from KL1PR04MB7484.apcprd04.prod.outlook.com (2603:1096:820:121::10)
- by KUYPR04MB9655.apcprd04.prod.outlook.com (2603:1096:d10:96::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Fri, 23 Oct
- 2026 08:54:39 +0000
-Received: from KL1PR04MB7484.apcprd04.prod.outlook.com
- ([fe80::9def:492a:962b:46d1]) by KL1PR04MB7484.apcprd04.prod.outlook.com
- ([fe80::9def:492a:962b:46d1%6]) with mapi id 15.21.0546.016; Fri, 23 Oct 2026
- 08:54:39 +0000
-Message-ID:
- <KL1PR04MB74849191EAE49D9DBCCD2BDEF3642@KL1PR04MB7484.apcprd04.prod.outlook.com>
-Date: Fri, 23 Oct 2026 16:54:31 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] RISC-V: KVM: Fix double free of the split page cache
-To: Li Jinyue <jinyue.li@linux.alibaba.com>, kvm-riscv@lists.infradead.org
-Cc: kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, anup@brainfault.org, atish.patra@linux.dev,
- pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- wang.yechao255@zte.com.cn, stable@vger.kernel.org
-References: <20261022025248.477832-1-jinyue.li@linux.alibaba.com>
-Content-Language: en-US
-From: "Nutty.Liu" <nutty.liu@hotmail.com>
-In-Reply-To: <20261022025248.477832-1-jinyue.li@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TY4P301CA0043.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:36b::6) To KL1PR04MB7484.apcprd04.prod.outlook.com
- (2603:1096:820:121::10)
-X-Microsoft-Original-Message-ID:
- <3bd6586e-777f-42b9-86b9-fd267a98d971@hotmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Si6ZiX4G
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7Ep282248252;
+	Fri, 23 Oct 2026 08:59:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=zmg/yx
+	iwkjfaDfTODXwb587ZNjoOvF78dqo2aQK83Zk=; b=Si6ZiX4GdRH4M63Fjzk4kp
+	y1ZIct7LXRhkltn1PC5Ijn+r3ISCDzDH4OCDEAQ+ve4nTY2ksdebVlWbu1BTFRr6
+	UjRZbTa1pb2ypKeLZA7spCQLI0ORbYAuEis0qlE9d8q7SIYAsLz26x2keFDzVaE8
+	1N1tQct5KnwmUN1xSJs9+sxMpuBw1F2iqvirX+x4VE8SQbUZ1/ikxLtxZcHapYyw
+	0pjFvfbEO48GXvD4N4h5xA9flmSOUSofeSmlgSQuAxHXpPEtUg1fNk64e850VzRZ
+	2wVZxB4676ZNymWsXOJuoy2expb3BXRp3piWL7r2C9wTch3zvxskpRGlFNrFYsIQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5am50v-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 08:59:27 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69N7K2e11759338;
+	Fri, 23 Oct 2026 08:59:27 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hfj1x4bww-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 08:59:26 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69N8xNiV50266472
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Oct 2026 08:59:23 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 126742004D;
+	Fri, 23 Oct 2026 08:59:23 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF07F20043;
+	Fri, 23 Oct 2026 08:59:22 +0000 (GMT)
+Received: from [9.224.92.241] (unknown [9.224.92.241])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 23 Oct 2026 08:59:22 +0000 (GMT)
+Message-ID: <e30a260ee021532b4bcbe424a18b47143638f222.camel@linux.ibm.com>
+Subject: Re: [PATCH v10 2/5] s390/pci: Reuse FMB buffer across enable and
+ disable cycles
+From: Gerd Bayer <gbayer@linux.ibm.com>
+To: Omar Elghoul <oelghoul@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, schnelle@linux.ibm.com,
+        mjrosato@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, Gerd Bayer <gbayer@linux.ibm.com>
+Date: Fri, 23 Oct 2026 10:59:22 +0200
+In-Reply-To: <20261020212427.2561-3-oelghoul@linux.ibm.com>
+References: <20261020212427.2561-1-oelghoul@linux.ibm.com>
+	 <20261020212427.2561-3-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -99,166 +101,174 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: KL1PR04MB7484:EE_|KUYPR04MB9655:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04d78590-9a06-4ae7-7ddc-08df30e3458f
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|6090799003|23021999003|24121999003|5072599009|15080799012|55001999006|22091999003|8060799015|19110799012|19101099003|4140399003|25010399006|440099028|3412199025|12091999003|40105399003|52005399003|11031999003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZDJjMVp2c1YvTzE2ZTBSV2FnanVOUWFvNi9ZSFZiajBoKy83aXEwT1paU2Rj?=
- =?utf-8?B?TmRUM2d2NWRsZGpGVVpYdTNIZlh0RmszRHNFNWpmQm8yVXJNVmtxWW1wbGUw?=
- =?utf-8?B?OEY2VHdHcldxUXM0NWlrbDFGWTdJY1hHSERsZHBid2VORDNTa2IzV1VVd1dH?=
- =?utf-8?B?ZFlwdi93M1VXcHhBN1FyVWNZbEE2VktZT0VvRXhYMC9TSCtmdVZjTjZLVmJj?=
- =?utf-8?B?UUtPZnBKN2JLMmF4UVF4M0F0UjNlVU9wK2k2ZWczd3V0YXFiY2UvWC9HQlNF?=
- =?utf-8?B?MFV3RElBZ3BiMDVTMklob1hKOWVsbkZjU1dvcmNRZkNzR1VVRVhEUy9nS3FJ?=
- =?utf-8?B?YVZuQ2ZXWmdSa3VWRmhtZ1djRTBFK1hBT0dkSm8vK1dzRmxmVWQyN1JFWUM1?=
- =?utf-8?B?eEc0eHIzUkdjMFU1KzRVZHFlNHFHQXpNbWtHKy9xelZLVHZkYnI3RC9FSEFa?=
- =?utf-8?B?aGUxNC9hYUxOZU9MWlRUTUdjOWlzSmRhSExKRWhRZU5wTENXVWdHSllXckxJ?=
- =?utf-8?B?SzJHRjZtemxyVVUvaTVyakxwS05NRDNRend2VzVQY3BXNS80aXkzdlVUV2pZ?=
- =?utf-8?B?am94R25JcDdiaUFCc203cGRaZU5QeVR1dnlGVGZtNVVXZTg1UnlxcmtDVkdz?=
- =?utf-8?B?d3d4WmkrUkhOanBLZW5jK3RsZDRVQmFUbzE0OTErVjUrTzdjcFpYUmQ3clV5?=
- =?utf-8?B?WmdjcWIyUTZNUGw1S3JoYnB2NDI1VWdSTlBPcHVaNE9ib2ZuWUZtczkyYXlK?=
- =?utf-8?B?TTQxU1dJSUdkNjVHT25GeURYR1FDbkRmMUZtY01TRDBMS3kvOWhWYkhXZ0NP?=
- =?utf-8?B?SkNoS2tKVDNaZnZ3bytObHN5UGQ0V2dIRnhYTTNML05tWnpKQlNhZU40NFRG?=
- =?utf-8?B?MVhod21vWFZtT3VGdDRZM3NXeWY5eUFldExQSUZjd3FaVUVGUDBweWh6cmRq?=
- =?utf-8?B?bkppUCtSTTRRbHVQVSt4ck10Rk15bEVHejREY2dzaHU4WitMenVsdHFiWnd0?=
- =?utf-8?B?dFdqbVhYdkNtSnlTYTlXakNjOUVCNHRJbnF0WEZWRDVPdVlhZWxvSGNWVTlI?=
- =?utf-8?B?VzVjeXFxeTBMWDFvYVJnUHVnOFFXUFozT0ZvY0RxTkpsWEZlc2xJc1BLQXVY?=
- =?utf-8?B?NnFSOHl0bENZbmtVeHVVYndDQTNma0huQklGTmxsa2FBSnNkQTVnNjNud3RR?=
- =?utf-8?B?OWg5Z2FIWlNjRHFXc2FIc3NPaWVxWndpVVRGWDdrK1I0bit2UlMyUXgyR2hY?=
- =?utf-8?B?dTlHQThUTDczK0RyUnI5bXZQRDBBQ2tHM1hnaXNTL3NsUy9md1FZUWw2ZXpK?=
- =?utf-8?B?Y2V1d2lqSUFRdmd5bEFySGN3UzNlem9XWE5TMWM0WTJLWUJQZzhWMVZkMlJO?=
- =?utf-8?B?eXFER3JzclVVMWZ6UUNsaUtjbG5tMXdFT210NGFnaW5ldldkOW1wNWxwUkZq?=
- =?utf-8?B?aGRoU1VENm1YcGJXMmNEbDlSTlBibVBBOWNQWkFhTlV2M3FtWXQ0T3N2VjE4?=
- =?utf-8?Q?31GFGhRsGebwkSdUXqg6N1dW1XY?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVlyeXYyeW1TblZkTGMzZHhYKzBVeE1zQjU5ZXJWNExWZTBabTZCeDhHU25i?=
- =?utf-8?B?dktjR0F5QjdNT0lZTkdWQ29wN3B4OXdXbDBoWHV1UnZiTGVVZlMzS1ZqVHNJ?=
- =?utf-8?B?SXg0UVAreXVHSlpVaDl6RHMxSmpnbTdBV3BkVFRFM1ZrVVhJSytDUWJTclNT?=
- =?utf-8?B?QkJGdTVZbTc0YTZneHZ4WmhDczJ5Q3FCRTUxSklZY0pJZWNPb1FQTUJVRkNC?=
- =?utf-8?B?SVJkV05nc1RCMEsrYm9ZcWNTanpFTktvTGhjOGtjWG9FUlZYakNLMkVzSXkw?=
- =?utf-8?B?SkFiRDBOV2VVVWNNenBUOHljVkgyODJsTTRYZTJKd1IxN2d0OWFrWTl3cjBC?=
- =?utf-8?B?TWtEZUpWSkZhUVlqQlRxeGZFZ3V4N1QydVg1QVZvRVJyZHlTRHZMeW95eDR3?=
- =?utf-8?B?Qm40VWZMdG5oSWo1YWV5WUwrTm5va00rZ3NOdWszTzRGVWFyTDBFaVFWL2px?=
- =?utf-8?B?Mk9MMzJaSG9BUVUzckpJL3ZWVlpxMUpyaFBRVHJXK1Q2SDJwVTYxME8xcEFi?=
- =?utf-8?B?clk2NzVYS2JCcW0wSDdidkNjY2UwUllTNUlISU9RR2lLMlYyd1FxZmM3L09m?=
- =?utf-8?B?SEN0UU4vbGE3czNyZmtnekRMSW91bEp6NkJSTlJvUS9YQTlKZ0dFYmFNRmRJ?=
- =?utf-8?B?aTZnYlFITVh6TTh1U1p3Uk9pT1MvV1hDSWQ2RXpTSzcraTdjVnFFYU1NeDQ0?=
- =?utf-8?B?NUNiZUkyVURSaFJEZFRlWmxXVjBUNnRKZy9QNlZlcTRQVWFZOVMyZFFUbUJV?=
- =?utf-8?B?NVJRYjRFK3VEbnJNa1QvbGQ0Z2I5dHVFSUEyNE9pZnBNdEZpS1hVbWZFeVcw?=
- =?utf-8?B?dGFDa3Z1a3V6S1JkdmpEVzRraWhrMXRsNmdWdktHclI4ZE9RSHliekRvQlN0?=
- =?utf-8?B?Ujc5Yk05RVZ4Z3E2Q3RCcm5iTE9OSjhzZU1HbTFGdjdRZ1Vic084YVJLdkow?=
- =?utf-8?B?ZHk0MlhGSEdNa1BUL25uZWcrd2tQVFNyWnBQc3RzQ1A4czMrTDdqS2RveVht?=
- =?utf-8?B?RGJMZTZFeGhkT1paTTZvN0p4VS81YmdVWXNtdk1nSGRwRFhwbW1WeVZxS2Ux?=
- =?utf-8?B?dzB0Q1JKR0ZpN1owVmJnWUlrYzdWRnlSTHY0Si9na2xoRnA3T2ZaSGh6Zmdw?=
- =?utf-8?B?OHRNWkxxVFRncGdnMjg2dS9GYng1Yk5uTElnaFhYVjJ1V0crQlh5cSs4cUVi?=
- =?utf-8?B?SmVWUlMzckFUSHFMWEIydmJ6Wk9tR0srNkZleG9oNURRd1cySExHWFE4VndR?=
- =?utf-8?B?aVJmOWM2WXc2Y3RJVS9wVWkyRWRkallEWVJyY1RsWVVqWkpzcWN3MmUwKy9F?=
- =?utf-8?B?dnlDalI1NzlJR0ZDZk1rYzJ0ak1WYlpLWFlsRndOVWFwaVhadEt2SnA3aVNs?=
- =?utf-8?B?M0laUldISUh3T3lVTTFZYytUR0dLSDQrQjROL09XbjRtMXRkOWlPdVFUdHk1?=
- =?utf-8?B?akt3eXBqRjFRaEVLWTd6OHNVcW9QWG9ManZWa1dkZ0duTkNUcERHVFRZTHZR?=
- =?utf-8?B?NzZlQ0l0QmxuN2VsVUJtSlE4MkFrWFErWENyaHQremZxQnd6ZFFFLzVNeFlq?=
- =?utf-8?B?Y2lCODZVTXVZQkY0dzVoWFc3U1BnQlVTRjIyakVJSGpxNktWaDFRMCtaS1k5?=
- =?utf-8?B?c0RaTXdaL0lCUUZkWE1mWFZsSHEzV3JMUHRjb2twOG5hQkNsT2V0RThvMzJq?=
- =?utf-8?B?Mi8vb0tTT2lIUm95SUc1ZGkyS29XSU1rTzlpYjNaRXFsUHNZblZ1OG9mL3Fn?=
- =?utf-8?B?T0xXcXRSNlBaTWdrblFqWDFpano4eGZSUEJGNTJUc0U4dUpqR1Y2V3RuVmVJ?=
- =?utf-8?B?cnlWSmVPUmk1cFFIcHkrTVRqYkdJb3FndDdOWTM5dHEzSWpFd3NYVTJ5UlRM?=
- =?utf-8?Q?aSRYZ7ME5iG+1?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04d78590-9a06-4ae7-7ddc-08df30e3458f
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR04MB7484.apcprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 08:54:39.8036
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KUYPR04MB9655
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDAzNCBTYWx0ZWRfX37QqU4qQ0dNe
+ KAbG6MTbYkXI1chB9odXUyDFKZYBPKVF5fzcQtxQJMzVORY0BSHBCGTEKu/NcpoNR4yBqfzUGTj
+ 3X7zAaG3sK9MFbHZ98jpSc9vupJQzAc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDAzNCBTYWx0ZWRfX8s9n6xo4qDEX
+ iEs1SOxocVBxMdNY/VbQzbcIwcco/a9Au1pCZhWKXiLmSlrcbSuITZm/8gK6DfYu6Asw80PAHlv
+ uErYlGE+h3XdjsSCqsQkvXmN9nTa46v+Ga+QBsEefiE58IAdEq/3mAuD6i+/kUZeniYBGqSgia6
+ NLRae1tuREzQvhq7YhZ43WSUPNxrNRPfZFjoCzQtEmTzYpjMpdquBKHFy7LOWZiuPkyl+pm0N1g
+ b1O/DAyHd5efswZrcBvTeWL+jsoZSfdwV5Z1oGQ7RvzQQ3PvV9DlUXHLqkH0/c4lQFqwNDaLs0Z
+ xe0F343mQmeMkf5S9FT17KbRrbLoyf5nHiRa+4kryR609APpN9hhucTzqc6VtrHKyDkR/VxhHKU
+ BG8yK5RXiz+KaN9rMRUGXz1RXMWzmP1BXZ5nvuHW24jpDeOOL/KbQsXnawrX4nDf45105LIng7+
+ OByRACeTD78+kJQ54lA==
+X-Proofpoint-GUID: jn6DB7ZxMlWmnOokHjvEgVgOZiczanZO
+X-Authority-Analysis: v=2.4 cv=JIKuIMKb c=1 sm=1 tr=0 ts=6adb21ef cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=hEZ094eQ13rxNu7WmyAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: jn6DB7ZxMlWmnOokHjvEgVgOZiczanZO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-23_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610230034
 
+On Tue, 2026-10-20 at 17:24 -0400, Omar Elghoul wrote:
+> Allocate the FMB once upon first enable and keep it for the lifetime of
+> the zdev instead of freeing it on every disable. Track the enablement
+> state in the new statistics_on bool, since a non-null FMB no longer
+> implies that measurement is enabled.
 
-On 10/22/2026 10:52 AM, Li Jinyue wrote:
-> kvm_riscv_mmu_free_pgd() frees pgd_split_page_cache after dropping
-> mmu_lock. It is reached from kvm_arch_flush_shadow_all(), i.e. from the
-> MMU notifier ->release() callback, which can run concurrently for the
-> same VM from exit_mmap() and from mmu_notifier_unregister() in
-> kvm_destroy_vm(). The stage-2 teardown is serialized by mmu_lock and the
-> second caller finds kvm->arch.pgd already cleared, but both callers then
-> go on to free the cache, and kvm_mmu_free_memory_cache() does not
-> tolerate concurrent callers:
->
->    BUG: KASAN: double-free in kvfree+0x28/0x32
->    ...
->     kfree+0xc4/0x428
->     kvfree+0x28/0x32
->     kvm_mmu_free_memory_cache+0x178/0x246
->     kvm_riscv_mmu_free_pgd+0x20e/0x2b4
->     kvm_arch_flush_shadow_all+0x1a/0x24
->     kvm_mmu_notifier_release+0x36/0x7c
->     __mmu_notifier_release+0x182/0x66a
->     exit_mmap+0x7f8/0x8c4
->     mmput+0x7e/0x2fc
->     do_exit+0x57a/0x22b4
->    ...
->    Freed by task 15956 on cpu 3 at 8926.103524s:
->    ...
->     kvm_mmu_free_memory_cache+0x178/0x246
->     kvm_riscv_mmu_free_pgd+0x20e/0x2b4
->     kvm_arch_flush_shadow_all+0x1a/0x24
->     kvm_mmu_notifier_release+0x36/0x7c
->     mmu_notifier_unregister+0xf0/0x328
->     kvm_put_kvm+0x32a/0x7b8
->     kvm_vm_release+0x3a/0x50
->     __fput+0x330/0x974
->
-> The cache only feeds huge page splitting from VM ioctls, so it does not
-> need to be released together with the page table. Free it from
-> kvm_arch_destroy_vm() instead, which runs once after the MMU notifier
-> has been unregistered, as arm64 and x86 already do. The error path in
-> kvm_arch_init_vm() is not affected because the cache cannot have been
-> filled at that point.
->
-> Found by syzkaller.
->
-> Fixes: 6c7f75ef096a ("RISC-V: KVM: Add the split page cache for ioctl context")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Li Jinyue <jinyue.li@linux.alibaba.com>
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+Hi Omar,
 
-Thanks,
-Nutty
+thanks for picking up the suggestion to split this into two patches.
+However, if you swapped patch 2 and 3 you'd introduce the "bool
+statistics_on" in a more intuitive way and then the reuse of FMB
+buffers once they're allocated comes in more naturally? That way the
+name of "statistics_on" has a better explanation and this patch becomes
+a lot smaller, maybe.
+
+> Defer freeing the buffer until device teardown in zpci_release_device().
+>=20
+> Drop the alignment warning after allocating the FMB buffer due to it
+> already being guaranteed by the kmem_cache.
+>=20
+> Audit the only consumer of the FMB (pci_perf_show) and update its
+> liveness check to be aware of this change.
+>=20
+> Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
 > ---
->   arch/riscv/kvm/mmu.c | 2 --
->   arch/riscv/kvm/vm.c  | 2 ++
->   2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 3e955d808743..74dece22d172 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -798,8 +798,6 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
->   
->   	if (pgd)
->   		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
-> -
-> -	kvm_mmu_free_memory_cache(&kvm->arch.pgd_split_page_cache);
->   }
->   
->   void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
-> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-> index a9f083feeb76..a7e1b518257a 100644
-> --- a/arch/riscv/kvm/vm.c
-> +++ b/arch/riscv/kvm/vm.c
-> @@ -54,6 +54,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->   	kvm_destroy_vcpus(kvm);
->   
->   	kvm_riscv_aia_destroy_vm(kvm);
+>  arch/s390/include/asm/pci.h |  1 +
+>  arch/s390/pci/pci.c         | 41 ++++++++++++++++++++++---------------
+>  arch/s390/pci/pci_debug.c   |  2 +-
+>  3 files changed, 27 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+> index 88a125b92bdd..f4fea1c34746 100644
+> --- a/arch/s390/include/asm/pci.h
+> +++ b/arch/s390/include/asm/pci.h
+> @@ -208,6 +208,7 @@ struct zpci_dev {
+>  	struct zpci_fmb *fmb;
+>  	u16		fmb_update;	/* update interval */
+>  	u16		fmb_length;
+> +	bool		statistics_on;
+> =20
+>  	u8		version;
+>  	enum pci_bus_speed max_bus_speed;
+> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+> index c055a9ad0972..2a7e1ca0fa12 100644
+> --- a/arch/s390/pci/pci.c
+> +++ b/arch/s390/pci/pci.c
+> @@ -175,13 +175,17 @@ int zpci_fmb_enable_device(struct zpci_dev *zdev)
+> =20
+>  	lockdep_assert_held(&zdev->fmb_lock);
+> =20
+> -	if (zdev->fmb || sizeof(*zdev->fmb) < zdev->fmb_length)
+> +	if (zdev->statistics_on || sizeof(*zdev->fmb) < zdev->fmb_length)
+>  		return -EINVAL;
+> =20
+> -	zdev->fmb =3D kmem_cache_zalloc(zdev_fmb_cache, GFP_KERNEL);
+> -	if (!zdev->fmb)
+> -		return -ENOMEM;
+> -	WARN_ON((u64) zdev->fmb & 0xf);
+> +	if (!zdev->fmb) {
+> +		zdev->fmb =3D kmem_cache_zalloc(zdev_fmb_cache, GFP_KERNEL);
+> +		if (!zdev->fmb)
+> +			return -ENOMEM;
+> +	} else {
+> +		/* reuse the same FMB buffer for as long as the zdev lives */
+> +		memset(zdev->fmb, 0, sizeof(*zdev->fmb));
+> +	}
+> =20
+>  	/* reset software counters */
+>  	spin_lock_irqsave(&zdev->dom_lock, flags);
+> @@ -199,11 +203,11 @@ int zpci_fmb_enable_device(struct zpci_dev *zdev)
+>  	fib.fmb_addr =3D virt_to_phys(zdev->fmb);
+>  	fib.gd =3D zdev->gisa;
+>  	cc =3D zpci_mod_fc(req, &fib, &status);
+> -	if (cc) {
+> -		kmem_cache_free(zdev_fmb_cache, zdev->fmb);
+> -		zdev->fmb =3D NULL;
+> -	}
+> -	return cc ? -EIO : 0;
+> +	if (cc)
+> +		return -EIO;
 > +
-> +	kvm_mmu_free_memory_cache(&kvm->arch.pgd_split_page_cache);
->   }
->   
->   int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irql,
->
-> base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+> +	zdev->statistics_on =3D true;
+> +	return 0;
+>  }
+> =20
+>  /* Modify PCI: Disable PCI function measurement */
+> @@ -215,7 +219,7 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
+> =20
+>  	lockdep_assert_held(&zdev->fmb_lock);
+> =20
+> -	if (!zdev->fmb)
+> +	if (!zdev->statistics_on)
+>  		return -EINVAL;
+> =20
+>  	fib.gd =3D zdev->gisa;
+> @@ -224,12 +228,11 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
+>  	cc =3D zpci_mod_fc(req, &fib, &status);
+>  	if (cc =3D=3D 3) /* Function already gone. */
+>  		cc =3D 0;
+> +	if (cc)
+> +		return -EIO;
+> =20
+> -	if (!cc) {
+> -		kmem_cache_free(zdev_fmb_cache, zdev->fmb);
+> -		zdev->fmb =3D NULL;
+> -	}
+> -	return cc ? -EIO : 0;
+> +	zdev->statistics_on =3D false;
+> +	return 0;
+>  }
+> =20
+>  static int zpci_cfg_load(struct zpci_dev *zdev, int offset, u32 *val, u8=
+ len)
+> @@ -1003,6 +1006,12 @@ void zpci_release_device(struct kref *kref)
+>  	if (zdev->has_resources)
+>  		zpci_cleanup_bus_resources(zdev);
+> =20
+> +	if (zdev->fmb) {
+> +		zdev->statistics_on =3D false;
+> +		kmem_cache_free(zdev_fmb_cache, zdev->fmb);
+> +		zdev->fmb =3D NULL;
+> +	}
+> +
+>  	zpci_bus_device_unregister(zdev);
+>  	zpci_destroy_iommu(zdev);
+>  	zpci_dbg(3, "rem fid:%x\n", zdev->fid);
+> diff --git a/arch/s390/pci/pci_debug.c b/arch/s390/pci/pci_debug.c
+> index c7ed7bf254b5..419c6a9200a2 100644
+> --- a/arch/s390/pci/pci_debug.c
+> +++ b/arch/s390/pci/pci_debug.c
+> @@ -97,7 +97,7 @@ static int pci_perf_show(struct seq_file *m, void *v)
+>  		return 0;
+> =20
+>  	mutex_lock(&zdev->fmb_lock);
+> -	if (!zdev->fmb) {
+> +	if (!zdev->statistics_on || !zdev->fmb) {
+>  		mutex_unlock(&zdev->fmb_lock);
+>  		seq_puts(m, "FMB statistics disabled\n");
+>  		return 0;
+
+Thank you,
+Gerd
