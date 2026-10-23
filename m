@@ -1,70 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792741455;
-	b=FZm+50GKq2Snzk3EKKvj6hWl2FL4XyralciMaqGP4yVMSPbLc94KdXTxYskAih+L4PxD
-	 WDDkCYD7r2u0Xk6SVIAb558Nz0nTBwZMv8B0F+sxEXZItfKcFLO8NjkYqyvJx4gSP7k3l
-	 6RofpFqBQRTN95SZdeGvmqJU0sKe7JgiMnwxsje3XqFlVEn1K5IBhnQf7P7TCwh1X1rZw
-	 sfhxvnvSn2127b+IDOwOYjA15vDHAH7iHtkOOJeGfiVN8c0CZ9nGVb69T+UJYUpbPJLvp
-	 VVA9pyYNvs0+abtFFnrRhalxQiOTvkGVZAA/ASLBZx3+9oB7mWAnqjAA77R8Eid/Lyg==
+	t=1792741571;
+	b=OzEOxDQtzt/ZPZaZntEgv7YwWCZfF0U/lpOiUIREdZvjliSjylRaC6ob5+BEOfil5XqZ
+	 f25lSuJMa7X6w6vmi8RHrTBBssVsmEEAV4QPZOCzOGqhahp9E5+vHSTf+j4vzEFnsGmn+
+	 09DByY2Lh9+hugRSavp6ngrqpCI24xO3NStBk2/MhHzsuLN2ykqUcasrEzbD3znMuHoNd
+	 I2wJsNVDTQ6ABS6YjZm+9fI/mg2HXxKmYA++qpbuz24uKC7sAZV0cgoUZejDc+9tObkSI
+	 /CFqvn3TcRrgSsGIdpN9/9Yl5wbgf5x6Uh0e9JNrg+VzJwAn7XI4lWVv/4oP1+7HI+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792741455;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=wy/cnaPswmms/QpZfcVOeHijhXMXPHn20ADaK91xPcA=;
-	b=dTsoxeNIRIxZI1vaI3Lp6J5Wu0xUaKAOvp7jDDOt+XF8ElN/o/XvgD7DCZagn8ZyRF1r
-	 NthybCoaYGGKUJViF/YxRto8cyGYJDBsqCY+1RfwQ7FYFQ5ZJLsKRAe/xxOrsIkzSEwl7
-	 XyP7GyoZMAPhgPNA+coXjyMnQq1oJJcniXP3OW9yCEZC66/eAxx/1dB++6iP4jR0jUexH
-	 YuCg7CIP5+FU4Aam3pZUmDkSwJv4u109N6iM1Vz7Y+a2SimmVzbn5DX6bK3pD6XnBvjDq
-	 UOwo8tx5UeiBShwdpNFTsGciMwsfvgkLC20G6PqBOkG0VEmA5bryqmS1+qUOCa+OClw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792741571;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=0vmqenTiO/Ur1kCgbPIkOxfDI3diR+fA38SWISXWKiE=;
+	b=cBURQS9KAPllwP0ehE+/XO//xXoEmoz9SIutw7AvnMFZTCOI3se8CSlnQCntj9elx3Ir
+	 axQyhUykP2tguOiFlP1182yWGghLh8OYitZchZwN0KrRbNhqDnRIgNXzJg40HaCLQDsEV
+	 r2NqrkpSpOB/nx6zCLiVHLq5LNHAKfb8GiFz5DEXR9ZEfQWKRvRqze6/Le7cPO99L317a
+	 2wXHc3/mxzPCWBvusi4w3bl2b6aYXUHvZm7Xzi1jBJDXagpiKZoEGmr/fIsUipUmua7Ak
+	 apxgzpifdANWMk8+5LlWn/vTzRvANRuX24L4eV8qWkQQvET8wkf0wr41fs72GdKeOZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EaM7GVz8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hO6HGJcV;
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E82E606A31A;
-	Fri, 23 Oct 2026 07:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87026606A31A;
+	Fri, 23 Oct 2026 07:46:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87026606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EaM7GVz8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9170D1F01825;
-	Fri, 23 Oct 2026 07:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792741455;
-	bh=wy/cnaPswmms/QpZfcVOeHijhXMXPHn20ADaK91xPcA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EaM7GVz8N1F1WL1rJOnrhPXJUtKGkqsv14MRU42ie3CqopgX3LNFxUDnl1OPNUi/e
-	 2iQPCPAmrugokeUqdjjGnxoE/8npZif6jkFURSIYhrlahltUYFVTdLrUtWmi4bJDt4
-	 uJpg0nOqXHeMjeyusKILIH3Cl4Mf3vGvpiVoTnLCyKCJvnhkOfk8IhqWDgFcrVZDsw
-	 RQJc+E3xcDPh7iuKo7qjMm+aQPiRzX97cIhkWDsUcyao4CJSpPFEH+7iNFyZcmmnZH
-	 r3znD2zes+BCcnM/Q+slSfn7Uk5g9JQYqOi58zhfrrPLbNKPn/9s/EmGcuM+9Ol3+7
-	 YAzLqgDZtmCpA==
-Date: Fri, 23 Oct 2026 10:44:01 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: tarunsahu@google.com
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	David Matlack <dmatlack@google.com>, jgg@nvidia.com,
-	robin.murphy@arm.com, loganodell@google.com, oupton@kernel.org,
-	kevin.tian@intel.com, alex@shazbot.org, dwmw2@infradead.org,
-	pbonzini@redhat.com, seanjc@google.com, will@kernel.org,
-	Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/4] liveupdate: Rename handler compatible to name
-Message-ID: <atsQQcUiVhb9KXWZ@kernel.org>
-References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-2-tarunsahu@google.com>
- <CA+CK2bC_wc4LxvHe0TREbBP7esYW3pcMNtkGK-kqvf6MyvOh2g@mail.gmail.com>
- <9huzik2u6hs5.fsf@tarunix.c.googlers.com>
- <CA+CK2bDyk=F7W3J=q3pKCjsr2wy_PLdgqgu+ywp0F5HL=VoMpA@mail.gmail.com>
- <9huzld7q4zjz.fsf@tarunix.c.googlers.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hO6HGJcV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792741568; x=1824277568;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OnTZ37KIWGCoXkclN2187LudGkSSaXGYJfnRi2DcBeg=;
+  b=hO6HGJcV7PZ6NTDk0hwSrSQR/frPm5UxVPj5Ecy04Dc4xZ6gLan4lE1y
+   /iilB67bfAvJjcBvP6j6Tnj6IXFn/59KFR90qbhlciouz0LXxVAJybEf2
+   TRwm9xuoepDnhNKKR84EnyiGMerT9y8m3O92bt8A3NvZnnSC/u5OFifCJ
+   qOeAbLWWwyEmYywH5OoSuWPjsXFABgpiQgg1xwis7+e6XEMakw4y3RC/u
+   OmLjl+tSKaLpmJBhmyk2MkATM50/zdh8shpj7LH2rmpz9wugSX1bpCL/z
+   CSJeOAIl1/PcVDs+lEcWVhT5X4dKkKL0MbBe9ht220Pjq6EPG4a1v9+2a
+   Q==;
+X-CSE-ConnectionGUID: NmfHrBZWTKuWBsgqWswevw==
+X-CSE-MsgGUID: oBGy4B1SRJWJ8MbRlvsLXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1386527"
+X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
+   d="scan'208";a="1386527"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 00:46:08 -0700
+X-CSE-ConnectionGUID: w9/qt7pnTJa6k/C8f18DsQ==
+X-CSE-MsgGUID: sZ4QN/vgRpavWmprRCYObA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
+   d="scan'208";a="3451637"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.140]) ([10.124.240.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 00:46:04 -0700
+Message-ID: <32413bfd-a448-483b-b2b5-7f4ff6cbc56a@intel.com>
+Date: Fri, 23 Oct 2026 15:46:01 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,165 +72,75 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9huzld7q4zjz.fsf@tarunix.c.googlers.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] KVM: TDX: Validate userspace CPUID input for
+ KVM_TDX_INIT_VM
+To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
+ andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, chao.gao@intel.com,
+ tony.lindgren@linux.intel.com, kishen.maloor@intel.com, dedekind1@gmail.com,
+ adrian.hunter@intel.com
+References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
+ <20261016091422.3182216-6-binbin.wu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20261016091422.3182216-6-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 21, 2026 at 07:35:28PM +0000, tarunsahu@google.com wrote:
-> Pasha Tatashin <pasha.tatashin@soleen.com> writes:
-> > On Wed, Oct 21, 2026 at 2:16 PM <tarunsahu@google.com> wrote:
-> >> Pasha Tatashin <pasha.tatashin@soleen.com> writes:
-> >>
-> >> > On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
-> >> >>
-> >> >> File handler and File-Lifecycle-Bound (FLB) identifiers name the
-> >> >
-> >> > Please use FLB directly, no need to spell it out.
-> >> >
-> >> >> registered handler or FLB rather than a monolithic compatibility version.
-> >> >> Rename compatible to name across LUO headers, structures, and consumers:
-> >> >> - struct liveupdate_file_handler and struct luo_file_ser name field
-> >> >> - LIVEUPDATE_HNDL_NAME_LENGTH (in include/uapi/linux/liveupdate.h) and
-> >> >>   MEMFD_LUO_FH_NAME
-> >> >> - struct liveupdate_flb name field, LIVEUPDATE_FLB_NAME_LENGTH,
-> >> >>   PCI_LUO_FLB_NAME, and LIVEUPDATE_TEST_FLB_NAME
-> >> >>
-> >> >> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> >> >> ---
-> >> >>  drivers/pci/liveupdate.c        | 10 ++++----
-> >> >>  include/linux/kho/abi/luo.h     | 26 +++++++++----------
-> >> >>  include/linux/kho/abi/memfd.h   |  4 +--
-> >> >>  include/linux/kho/abi/pci.h     |  2 +-
-> >> >>  include/linux/liveupdate.h      | 18 +++++--------
-> >> >>  include/uapi/linux/liveupdate.h |  3 +++
-> >> >>  kernel/liveupdate/luo_file.c    | 45 +++++++++++++++++----------------
-> >> >>  kernel/liveupdate/luo_flb.c     | 16 ++++++------
-> >> >>  lib/tests/liveupdate.c          | 22 ++++++++--------
-> >> >>  mm/memfd_luo.c                  |  2 +-
-> >> >>  10 files changed, 73 insertions(+), 75 deletions(-)
-> >> >>
-> >> >> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> >> >> index 51695782ed42..3cf01d7d615c 100644
-> >> >> --- a/drivers/pci/liveupdate.c
-> >> >> +++ b/drivers/pci/liveupdate.c
-> >> >> @@ -424,7 +424,7 @@ static struct liveupdate_flb_ops pci_liveupdate_flb_ops = {
-> >> >>
-> >> >>  static struct liveupdate_flb pci_liveupdate_flb = {
-> >> >>         .ops = &pci_liveupdate_flb_ops,
-> >> >> -       .compatible = PCI_LUO_FLB_COMPATIBLE,
-> >> >> +       .name = PCI_LUO_FLB_NAME,
-> >> >>  };
-> >> >>
-> >> >>  static void pci_liveupdate_flb_put_outgoing(void)
-> >> >> @@ -667,13 +667,13 @@ static struct pci_flb_incoming *pci_liveupdate_flb_get_incoming(void)
-> >> >>
-> >> >>         /*
-> >> >>          * Live Update is enabled and there is incoming FLB data, but none of it
-> >> >> -        * matches pci_liveupdate_flb.compatible.
-> >> >> +        * matches pci_liveupdate_flb.name.
-> >> >>          */
-> >> >>         if (ret == -ENOENT)
-> >> >>                 return NULL;
-> >> >>
-> >> >>         /*
-> >> >> -        * There is incoming FLB data that matches pci_liveupdate_flb.compatible
-> >> >> +        * There is incoming FLB data that matches pci_liveupdate_flb.name
-> >> >>          * but retrieve failed (pci_flb_retrieve() returned an error or LUO
-> >> >>          * failed to acquire a reference to pci_liveupdate_flb_ops.owner).
-> >> >>          */
-> >> >> @@ -998,7 +998,7 @@ EXPORT_SYMBOL_GPL(pci_liveupdate_is_incoming);
-> >> >>   */
-> >> >>  int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
-> >> >>  {
-> >> >> -       pr_debug("Registering file handler \"%s\"\n", fh->compatible);
-> >> >> +       pr_debug("Registering file handler \"%s\"\n", fh->name);
-> >> >>         return liveupdate_register_flb(fh, &pci_liveupdate_flb);
-> >> >>  }
-> >> >>  EXPORT_SYMBOL_GPL(pci_liveupdate_register_flb);
-> >> >> @@ -1009,7 +1009,7 @@ EXPORT_SYMBOL_GPL(pci_liveupdate_register_flb);
-> >> >>   */
-> >> >>  void pci_liveupdate_unregister_flb(struct liveupdate_file_handler *fh)
-> >> >>  {
-> >> >> -       pr_debug("Unregistering file handler \"%s\"\n", fh->compatible);
-> >> >> +       pr_debug("Unregistering file handler \"%s\"\n", fh->name);
-> >> >>         liveupdate_unregister_flb(fh, &pci_liveupdate_flb);
-> >> >>  }
-> >> >>  EXPORT_SYMBOL_GPL(pci_liveupdate_unregister_flb);
-> >> >> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-> >> >> index 288076de6d4a..5fb2f46425d7 100644
-> >> >> --- a/include/linux/kho/abi/luo.h
-> >> >> +++ b/include/linux/kho/abi/luo.h
-> >> >> @@ -39,9 +39,9 @@
-> >> >>   *     Multiple blocks are linked via the `next` field in the header.
-> >> >>   *
-> >> >>   *   - struct luo_file_ser:
-> >> >> - *     Metadata for a single preserved file. Contains the `compatible` string to
-> >> >> - *     find the correct handler in the new kernel, a user-provided `token` for
-> >> >> - *     identification, and an opaque `data` handle for the handler to use.
-> >> >> + *     Metadata for a single preserved file. Contains the handler `name` string
-> >> >> + *     to find the correct handler in the new kernel, a user-provided `token`
-> >> >> + *     for identification, and an opaque `data` handle for the handler to use.
-> >> >>   *
-> >> >>   *   - struct luo_flb_header_ser:
-> >> >>   *     Header for the FLB array. Contains the total page count of the
-> >> >> @@ -49,9 +49,9 @@
-> >> >>   *     that follow.
-> >> >>   *
-> >> >>   *   - struct luo_flb_ser:
-> >> >> - *     Metadata for a single preserved global object. Contains its `name`
-> >> >> - *     (compatible string), an opaque `data` handle, and the `count`
-> >> >> - *     number of files depending on it.
-> >> >> + *     Metadata for a single preserved global object. Contains its FLB `name`
-> >> >> + *     string, an opaque `data` handle, and the `count` number of files
-> >> >> + *     depending on it.
-> >> >>   */
-> >> >>
-> >> >>  #ifndef _LINUX_KHO_ABI_LUO_H
-> >> >> @@ -84,18 +84,16 @@ struct luo_ser {
-> >> >>         u64 flbs_pa;
-> >> >>  } __packed;
-> >> >>
-> >> >> -#define LIVEUPDATE_HNDL_COMPAT_LENGTH  48
-> >> >> -
-> >> >>  /**
-> >> >>   * struct luo_file_ser - Represents the serialized preserves files.
-> >> >> - * @compatible:  File handler compatible string.
-> >> >> + * @name:        File handler name string.
-> >> >
-> >> > We are renaming from cpmaptible to name; I am not sure that is
-> >> > necessary. We can still use compatible for the same purpose as name.
-> >> > Unless it really bothers people, but for me 'compatible' works just
-> >> > the same.
-> >>
-> >> Yes it is necessary, For example if we have two handler for a single
-> >> subsystem. We should refer it by handle this or handler that, not like
-> >> handler with compatible string this and handler with compatible string
-> >> that.
-> >
-> > I still feel like compatability makes more sense to me. Take an example:
-> >
-> > We have two file handlers for memfd (i.e., FH_OLD and FH_NEW): one has
-> > compatibility = "memfd", and the other has compatibility =
-> > "memfd_next_generation". The user chooses one of them to preserve the
-> > memfd data, and the compatibility string is saved alongside the FD.
-> > When the next kernel scans through the registered file handlers, it
-> > must find exactly one that is compatible with the preserved data.
+On 10/16/2026 5:14 PM, Binbin Wu wrote:
+> Validate the CPUID configuration provided by userspace through
+> KVM_TDX_INIT_VM against KVM's TDX allowlist, and drop the hardcoded
+> denylist-based check.
 > 
-> I will open this for vote.
+> The TDX module lets the VMM directly configure certain CPUID bits for a TD
+> at initialization time, but KVM must strictly govern which of those bits
+> userspace can set, otherwise a feature that clobbers host state could be
+> enabled behind KVM's back.  The existing denylist rejects only TSX and
+> WAITPKG, and thus would accept any bit that a future TDX module makes
+> configurable, even if KVM knows nothing about the associated feature.
+> 
+> Add tdx_has_unsupported_cpuid_cfg_bit() and reject KVM_TDX_INIT_VM if
+> userspace sets any bit outside of the mask returned by
+> tdx_get_cpuid_cfg_mask(), i.e. the same mask used to filter
+> KVM_TDX_CAPABILITIES.  Don't bother intersecting the userspace input with
+> the bits that the TDX module reports as directly configurable, as the TDX
+> module itself rejects any bit outside that set.
+> 
+> As with the existing check, use the subleaf reported by the TDX module to
+> look up the allowed mask.  For leaves without subleaves, the TDX module's
+> "no subleaf" index is normalized to 0, which matches how such leaves are
+> tracked in reverse_cpuid[].
+> 
+> Note, the change is user-visible, as KVM_TDX_INIT_VM now rejects some
+> input that was previously accepted.  The ABI itself is unchanged: KVM
+> already rejected unsupported CPUID bits, albeit via a denylist, and
+> userspace has always been required to consult KVM_TDX_CAPABILITIES and set
+> only the bits reported as configurable.
+> 
+> The change isn't expected to break userspace or guests:
+>  - The newly rejected bits are no longer reported as configurable by
+>    KVM_TDX_CAPABILITIES, so userspace that honors KVM_TDX_CAPABILITIES
+>    won't set them.
+>  - CORE_CAPABILITIES, which older TDX module specs defined as fixed-1, is
+>    still allowed.
+>  - The dropped features are either obsolete or unsupported by KVM, and in
+>    the latter case, a guest relying on them would already have run into
+>    problems.
+> 
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 
-I'd rather won't ;-)
+The patch generally looks good to me. However, since it depends on Patch 1,
+which, I assume, is going to be replaced by Sean's series[1]. If that's case,
+the patch will need a rebase and adjust on top.
 
-"compatible" does not contradict more fine grained bitfields, and still has meaning.
-Just like in FDT world from where we inherited it, it means "these ops are
-somewhat compatible with that serialized format, will check the details and
-will know for sure".
+Free feel to add
 
-And IMO we should keep it.
- 
-And please, trim your responses. I had to scroll 463 lines to see there's
-nothing there.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
--- 
-Sincerely yours,
-Mike.
+if there is no big design change in the end.
+
+[1] https://lore.kernel.org/all/20261022210134.612848-1-seanjc@google.com/
