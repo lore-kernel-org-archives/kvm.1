@@ -1,141 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792763700;
-	b=icc7oBHKzFJOvMTdXc40vK4VsKAaj1sVu9u5Ln64WZTbPxANGjhEf5GK3VqSGg/8/QWQ
-	 B/hccrplgUpVmsgN65vtN4ceIqGZ9AUYB/+C0G7c3k467R1EZbS2Lkb6j3U3FcxV6rnhc
-	 yAWsPc3Nb0sbtw2BwQj+yxWtQprN9bJxXAGIhvzEhpfm3wT4RyhRZ7K0dlyPbWORh9KP4
-	 O3v6mPlCQFP5YOH/6LW9y82McVIYmCr/tG/TWJonsWAVyIt0AazOyJW7+Sup5RzkrX7u9
-	 GQ5Xc+jR3cyt1j8tXHhbe7QfiBwPj4kJ4HDTBY/c3r2rpd2I+530fRc4CgttrcuD2mw==
+	t=1792764317;
+	b=RZlS2k6HyoehxMVsMJR5hRpqUtlAQoYOJG7WePcCfCmsqpNo4ELGCjXCDUZiQ49Pg7bT
+	 UDgnlBJJNn6WXOupQ8p/zhqDfE1EEC5E5A2MYNTsInMrOqiACPLJOc+0Lc5yQ9NN1cHRG
+	 MMrfPiwwDoEfqgPFb6m5HxVLTlqCq7cHT+03mpV52rww9xn9Zg3arz4ckeUd6OEx690h4
+	 JPfn8NKOMvc9Vw+Ji3egvabK6F+IPAAh6sEopIryJdG23J3asEHxNzziMzLrWIzSzxZCa
+	 RvzWsvdD05xcIUoDoMvGv52cLbxJ4cuuBNhq4pCjy3JQ1JSLmvWsCqrgO1Mi2m0qfpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792763700;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=DjoH8evZxLD/oQi+kI32wJGQ4IzIUrG3x0m38hDozM8=;
-	b=A7yn8Iy+JV7bofaN/RRu/gkiVhPhV/xIL/m7K/m7W1P1AXaqaAj0xg1px2WHJrny3cXf
-	 tI1bXUfZtNaRoOdJzRc5KTBcxs6mR3oYAbimN4By/SbtWDrI9ywhIE0WXqd+6wvGJDgIM
-	 V98sNFo1Qo0EUl6i4hHVc2VWioHgMHt5ayo0IVy+9QJjnP5n3Peucinqj3fcdMMYN+Vue
-	 6VkCrFKKbCXyDcmOvkK1VHV8S0gu3f3kAF+6JQullnowbrtqX6mORO7wl0D9iryKn8yEp
-	 6R+heqHAq9W1RG6TWDft0H1yHf/H134sXYEBkkb5EYxDQO/Y35Lql9o+1DDCj9lCdBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792764317;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=7v3lmgoDcgEkiZynxQtLxHGVGQE5njqUbBmBNikKb+w=;
+	b=Ih285fdCSmtcVO4Z5UAirn+p2LzH0U3c4XmzaMPWw1dreA2bHmrIAHOOtZGLAuj0fi4d
+	 MX5VgHrhf+aCOYXIEQqm0TGF01niYmT2y25jnlF/T8WsGzyMwsYtPyJC2dE6gOYnFQPLP
+	 xwQtEJiLgXQxTLy960MUUAejv/5QEu4D3EfEpE1ocStP9N5Myln29UZDFygT8WiLiGkv8
+	 0QOcHdg2QNMxFO93nmUpd3vrMCMLLlnm7Ja7IkAaADgNyT2bFt938R8xcso+edOR5xeIX
+	 ism1k1OGVYae394/2cF1tcDEAjJacMdbp4tK9+H5bxhqyaQn/BaC0QKJ+Jjfur9mFSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FB6PPRON;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=atbzxxTb;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EC3606A31E
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 13:55:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59EC3606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C5A606A31B;
+	Fri, 23 Oct 2026 14:05:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9C5A606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FB6PPRON
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792763699;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DjoH8evZxLD/oQi+kI32wJGQ4IzIUrG3x0m38hDozM8=;
-	b=FB6PPRONVNlEGUB/jQq026ZGaiNgN9AqTzseEE5GqsutF8XLJiCE90MFgtFmKLbMj8H0BE
-	4f9I5VO3wk6Ul83t1LhSpYqK85kCC6Z0C1GR/wefyNAPKihIELB/13747m3RX/C1AoTC4b
-	0hPkVdmlitgUUBgEajjamy8Q36Yw7gI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-CqSf_XYnNNmtmPh4ytbQ0A-1; Fri,
- 23 Oct 2026 09:54:53 -0400
-X-MC-Unique: CqSf_XYnNNmtmPh4ytbQ0A-1
-X-Mimecast-MFC-AGG-ID: CqSf_XYnNNmtmPh4ytbQ0A_1792763689
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C62B3195395F;
-	Fri, 23 Oct 2026 13:54:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7B7EC3000723;
-	Fri, 23 Oct 2026 13:54:42 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 0863521E6A04; Fri, 23 Oct 2026 15:54:40 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
- <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
- Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
- Kostiuk
- <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
- <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
- Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
- <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
-  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
-  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
- Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,
-  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
-  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
-  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
- Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
-  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
- <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
-  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
- <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
- <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
-  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
- <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
- Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
- <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
- Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
-  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
- <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
- <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
- Lin
- <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
- Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
- Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
- Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
- <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
- <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
- Dooley <conor@kernel.org>,  Sebastian Huber
- <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
- <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  Anthony PERARD
- <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
- <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
-  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
-  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
-  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
-  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
- <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
- Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v7 11/65] qom: add qapi_type field to ObjectProperty
-In-Reply-To: <20261020-qom-qapi-v7-11-431a86b02b58@redhat.com>
- (=?utf-8?Q?=22Marc-Andr=C3=A9?=
-	Lureau"'s message of "Tue, 20 Oct 2026 14:45:28 +0400")
-References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
-	<20261020-qom-qapi-v7-11-431a86b02b58@redhat.com>
-Date: Fri, 23 Oct 2026 15:54:39 +0200
-Message-ID: <87h5ica5eo.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=atbzxxTb
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69NAESfj2541120;
+	Fri, 23 Oct 2026 14:05:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=7v3lmgoDcgEkiZynx
+	QtLxHGVGQE5njqUbBmBNikKb+w=; b=atbzxxTb5KTrf7WKioy2QioVO43/JUlWr
+	n3bwa4wSnS6Rhe5/uqaWxuPBTf3HCSHkb6TARQzEvs76inQy89Q9TIKhHJMsUTOT
+	X/uCPDdwGR/7B5+BeJL19UUY9UZ30cYo6no7PaOrDHSqUllBpwj3Cxvsy8rbo+aE
+	PeLyjf7EzAPuRIrMsp3qCXuBN5cC4YTdV8WjxZuvfmMB6WZ4e1k0pN5/VtMMwJqq
+	AthI17xlI+cVgjZSHRD0quUZuBTrdd3900JV0ENSONQDlz/vJvVb1KLDip2SGdlz
+	MtxP0WVMPWl12MkJhU+iTtj8K0OKgImZS06CWNCmBxMQ921kfbKJw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hdw5b510y-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 14:05:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69NAYplS1950329;
+	Fri, 23 Oct 2026 14:05:11 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hekdgmb6c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Oct 2026 14:05:11 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69NE4Ne329819610
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Oct 2026 14:04:23 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6A64A58055;
+	Fri, 23 Oct 2026 14:05:10 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C3A85804B;
+	Fri, 23 Oct 2026 14:05:08 +0000 (GMT)
+Received: from li-d98989cc-2c66-11b2-a85c-93ab83b7dd53.fritz.box (unknown [9.111.18.82])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 23 Oct 2026 14:05:08 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: seanjc@google.com
+Cc: borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org, pbonzini@redhat.com,
+        shuah@kernel.org
+Subject: [PATCH v3 2/2] KVM: selftests: Test that KVM_RUN fails for unresolvable host faults
+Date: Fri, 23 Oct 2026 16:05:06 +0200
+Message-ID: <20261023140506.336663-1-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com>
+References: <50a3ff35-ae53-4372-a53c-c07f1d153627@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -145,19 +94,244 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=X63Hu2Te c=1 sm=1 tr=0 ts=6adb6998 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=rcqYDBG26imGHw1RHJgA:9
+X-Proofpoint-ORIG-GUID: AOCn0c7SMNvZfQE10DpP-i7wtNFMBZmr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIzMDA1MyBTYWx0ZWRfX6Z7NOK387ebG
+ j04U/GMej4/4CPp5AjFBuvqAUdqQofGiixLnQ7AU/Nzb+bUIr0xL9b+B8AN/zQN+gERSY1ZBr5j
+ 7xQFJ6OuWs8vc55DJZyCAZPmsyY15ptTlf2u/86U7HAaPPmWsgZoUbMR/obysXLRwZf+Wsvi8gj
+ 0WXmJmlPOIQwNLT/ixHswFdKV9qVwDomUyD6G1vhlPbTNbpiNNydmY9viLCqpWNsSS5aufupdvY
+ cxhVZZP/yeWGQf2HnNLkscRGv39Vvu6Zltncx+2x/k1G2BAZi+FqepwWTJ9iAXXAvntW5mYZx0A
+ +qmMteTTiW0nH1j1eYrQtpy0euxnltLXzKtp8VwocAvl10bVPCMOPgtTJJActcNaLur/SAM/Z5z
+ TP7GiJPpC79bMz/m5WXX+3jmK9Mf6pvojD/FPE3W0KUsbAS2iGjro0gug0+XDhANka9V++pMsM+
+ u3RaUB1D6xpOoa35yAw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIzMDA1MyBTYWx0ZWRfX4Svu2wYfMKA6
+ qDtKKH/ilKK9M6SSaDgZXRWevHfLbW3m+w99oKKRY0rgTp4HZFATCYSpl8uZdevfTKPOZoWJCwu
+ SjKJow6EdZB2rb8G/WEgtKw/kBCQaFg=
+X-Proofpoint-GUID: ibxIzOeB_ZR9X80fwAN5WD1ewn7C8zui
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-23_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610230053
 
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
+Add a test in which the guest writes to a shmem-backed memslot beyond
+the end of the file.  KVM_RUN must fail with -EFAULT.
 
-> Add a const pointer to QAPITypeInfo in ObjectProperty. NULL for now,
-> but future patches will add means to make it non-null. The
-> QAPITypeInfo will then be used by QOM introspection to tie the
-> property to a QAPI type.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+On x86 the guest enables interrupts, and on s390 the test sets up
+pfault, so that KVM could handle the fault with an asynchronous page
+fault.  If KVM mistakes the error for a fault that needs I/O, the vCPU
+retries the access forever, and the test fails after a timeout.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+The test is not built for LoongArch, which handles a failed mapping as
+an MMIO access.
+
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+---
+I went with Seans name proposal
+v2->v3:
+- renames as suggested by Sean
+- test fail on alarm
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/faultin_efault_test.c       | 168 ++++++++++++++++++
+ 2 files changed, 169 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/faultin_efault_test.c
+
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 3cb35a6963d51..2043ee38dacc1 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -63,6 +63,7 @@ TEST_PROGS_x86 += x86/nx_huge_pages_test.sh
+ # Compiled test targets valid on all architectures with libkvm support
+ TEST_GEN_PROGS_COMMON = demand_paging_test
+ TEST_GEN_PROGS_COMMON += dirty_log_test
++TEST_GEN_PROGS_COMMON += faultin_efault_test
+ TEST_GEN_PROGS_COMMON += guest_print_test
+ TEST_GEN_PROGS_COMMON += irqfd_test
+ TEST_GEN_PROGS_COMMON += kvm_binary_stats_test
+diff --git a/tools/testing/selftests/kvm/faultin_efault_test.c b/tools/testing/selftests/kvm/faultin_efault_test.c
+new file mode 100644
+index 0000000000000..12fab9a46a93d
+--- /dev/null
++++ b/tools/testing/selftests/kvm/faultin_efault_test.c
+@@ -0,0 +1,168 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * A guest access to memory whose host mapping cannot be faulted in (here: a
++ * shmem page beyond EOF) must make KVM_RUN fail with -EFAULT.
++ *
++ * On architectures with asynchronous page faults, KVM first tries to fault
++ * the page in without waiting (FOLL_NOWAIT) and hands the fault to a worker
++ * if that would need I/O.  The error must not be mistaken for "needs I/O",
++ * otherwise the vCPU retries the access forever and KVM_RUN never returns.
++ * The architecture hooks below make sure that the async path is actually
++ * possible, i.e. that the error would be misclassified if KVM got it wrong.
++ */
++#include <signal.h>
++#include <unistd.h>
++#include <linux/sizes.h>
++#include <linux/stringify.h>
++
++#include "kvm_util.h"
++#include "processor.h"
++#include "test_util.h"
++#include "ucall_common.h"
++
++#define TEST_SLOT	10
++#define TEST_SIZE	SZ_1M
++#define TIMEOUT_SECS	10
++
++#ifdef __s390x__
++#define __LC_EXT_NEW_PSW		0x1b0
++#define __LC_SAVED_PSW			0x200	/* free for the OS */
++#define __LC_WAIT_PSW			0x210	/* free for the OS */
++#define PSW_MASK_EXT			0x0100000000000000ULL
++#define PSW_MASK_DAT			0x0400000000000000ULL
++#define PSW_MASK_WAIT			0x0002000000000000ULL
++#define CR0_SERVICE_SIGNAL_SUBMASK	BIT_ULL(63 - 54)
++
++/*
++ * Handle pfault like Linux does: on the init interrupt (ext cpu address
++ * 0x0600) remember the interrupted PSW and wait until the done interrupt
++ * (0x0680), then retry the access.  A guest that retried at once would
++ * fill up KVM's queue of async page faults and get the synchronous fault
++ * path.  Runs with DAT off, so lowcore is addressed by real addresses:
++ * 0x84 is the ext cpu address, 0x130 the ext old PSW.  Done differs from
++ * init only in bit 0x80 of 0x85, test it like Linux tests PF_COMPLETE.
++ */
++extern char ext_int_handler[];
++asm(".pushsection .text\n"
++	"ext_int_handler:\n"
++	"	tm	0x85,0x80\n"
++	"	jo	1f\n"
++	"	mvc	" __stringify(__LC_SAVED_PSW) "(16),0x130\n"
++	"	lpswe	" __stringify(__LC_WAIT_PSW) "\n"
++	"1:	lpswe	" __stringify(__LC_SAVED_PSW) "\n"
++	".popsection\n");
++
++static void arch_enable_host_async_pf(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++	u64 *lowcore = addr_gpa2hva(vm, 0);
++	struct kvm_sregs sregs;
++	gva_t token_gva;
++	gpa_t handler;
++	int flic;
++
++	flic = kvm_create_device(vm, KVM_DEV_TYPE_FLIC);
++	kvm_device_attr_set(flic, KVM_DEV_FLIC_APF_ENABLE, 0, NULL);
++
++	/* The DIAG 0x258 handshake, with masks that match any guest PSW. */
++	token_gva = vm_alloc_page(vm);
++	vcpu_set_reg(vcpu, KVM_REG_S390_PFTOKEN, addr_gva2gpa(vm, token_gva));
++	vcpu_set_reg(vcpu, KVM_REG_S390_PFSELECT, 0);
++	vcpu_set_reg(vcpu, KVM_REG_S390_PFCOMPARE, 0);
++
++	vcpu_sregs_get(vcpu, &sregs);
++	sregs.crs[0] |= CR0_SERVICE_SIGNAL_SUBMASK;
++	vcpu_sregs_set(vcpu, &sregs);
++	vcpu->run->psw_mask |= PSW_MASK_EXT;
++
++	handler = addr_gva2gpa(vm, (gva_t)ext_int_handler);
++	lowcore[__LC_EXT_NEW_PSW / 8] = vcpu->run->psw_mask &
++					~(PSW_MASK_EXT | PSW_MASK_DAT);
++	lowcore[__LC_EXT_NEW_PSW / 8 + 1] = handler;
++	lowcore[__LC_WAIT_PSW / 8] = (vcpu->run->psw_mask & ~PSW_MASK_DAT) |
++				     PSW_MASK_WAIT;
++	lowcore[__LC_WAIT_PSW / 8 + 1] = handler;
++}
++#else
++/* x86 needs guest interrupts on, see guest_code(); nothing to do elsewhere. */
++static void arch_enable_host_async_pf(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
++{
++}
++#endif
++
++static void guest_code(u64 gva, u64 size)
++{
++#ifdef __x86_64__
++	/* KVM does async #PF, or its halt fallback, only with IRQs enabled. */
++	sti_nop();
++#endif
++	/* Within EOF: must work, proves that the mapping is set up right. */
++	WRITE_ONCE(*(u64 *)gva, 1);
++	GUEST_SYNC(0);
++
++	/* Beyond EOF: KVM_RUN must fail with -EFAULT. */
++	WRITE_ONCE(*(u64 *)(gva + size - sizeof(u64)), 1);
++	GUEST_FAIL("Store beyond EOF succeeded");
++}
++
++static void sig_alarm(int sig)
++{
++	TEST_FAIL("KVM_RUN did not return within %d seconds, the fault is retried forever",
++		  TIMEOUT_SECS);
++}
++
++int main(void)
++{
++	struct sigaction sa = { .sa_handler = sig_alarm };
++	struct userspace_mem_region *region;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	gpa_t gpa;
++	gva_t gva;
++	u64 npages;
++	int r;
++
++	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++
++	/* After slot 0 and the page that some architectures use for ucalls. */
++	region = memslot2region(vm, 0);
++	gpa = align_up(region->region.guest_phys_addr +
++		       region->region.memory_size + vm->page_size, TEST_SIZE);
++	npages = TEST_SIZE / vm->page_size;
++
++	vm_userspace_mem_region_add(vm, VM_MEM_SRC_SHMEM, gpa, TEST_SLOT,
++				    npages, 0);
++	region = memslot2region(vm, TEST_SLOT);
++	/* Only the first host page is backed, everything behind it is beyond EOF. */
++	TEST_ASSERT(!ftruncate(region->fd, getpagesize()), "ftruncate() failed");
++
++	gva = vm_unused_gva_gap(vm, TEST_SIZE, KVM_UTIL_MIN_VADDR);
++	virt_map(vm, gva, gpa, npages);
++	vcpu_args_set(vcpu, 2, gva, TEST_SIZE);
++
++	arch_enable_host_async_pf(vm, vcpu);
++
++	vcpu_run(vcpu);
++	switch (get_ucall(vcpu, &uc)) {
++	case UCALL_SYNC:
++		break;
++	case UCALL_ABORT:
++		REPORT_GUEST_ASSERT(uc);
++		break;
++	default:
++		TEST_FAIL("Unexpected ucall %lu", uc.cmd);
++	}
++	TEST_ASSERT_EQ(*(u64 *)region->host_mem, 1);
++
++	TEST_ASSERT(!sigaction(SIGALRM, &sa, NULL), "sigaction() failed");
++	alarm(TIMEOUT_SECS);
++	r = _vcpu_run(vcpu);
++	alarm(0);
++
++	TEST_ASSERT(r == -1 && errno == EFAULT,
++		    "Expected KVM_RUN to fail with EFAULT, got r = %d, errno = %d (%s), exit reason %s",
++		    r, errno, strerror(errno), exit_reason_str(vcpu->run->exit_reason));
++
++	kvm_vm_free(vm);
++	return 0;
++}
+-- 
+2.56.0
 
