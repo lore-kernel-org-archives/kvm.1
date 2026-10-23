@@ -1,60 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792750412;
-	b=vPYB83Pu4PdP0wfqzzsZZ1iGeBMJKC8/honztJbzujgoZKC3zoPe++5Rf/Fw9+SotlYn
-	 iC61vRJgf5gj9dx/m+uNUMWjxYdxlOfuZ4eaLgmtOAIEP/jMrj8+yMsRMr1JeuTJ5kDzv
-	 aJfAAjIua6FWLvtlvAnr/19PdzDa/IKoV3YGgIkynBThMEkMDxVT2o/lyQ9SUq9fG5Tho
-	 6up4jwwnZZzods4FxgxxBwdHQtWjq8MnThG1iD83CT89LgESazwE33sM3+GxyJvUSuI7n
-	 9WKoeBKT5eRXU/11NZXYiokYfY8s2RlVNWTHkMZE3YiB6HI6bY5WQlfEzrWEh9gs04g==
+	t=1792750637;
+	b=lZRakikVteadmJkd6KTVSPCTZoz0EZETmq/y3sIV4XnW4A0x1H+EC1pcn8Jxn1J09+C+
+	 XpXRkF24N0jJszLI8HryuTXylsrnRxDZ2zzoXQh93EAP81clmSE+TU2sVab7i7hd4voR6
+	 LgIaK/BF89QD96JkCDb1hshVhtRxPYvqfApoRjPJAwIEfYriTsmua3XQ1KKupVgY1ceW4
+	 NMaTrEWEO/zfWox+q4xTqXxOnFWLNweEkySurB3/KUyW/hC1wTwtfenMPKeHCmDa8ZQmR
+	 WVe5cZxEgiqcgfPltwBSmY1bsK8hMnMhmrTeSYed0f0Hgcnxd/nLBMERE/Sgqzj/ETg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792750412;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=6DfDp1o9SWa4Xb1iGe8PGA7eQLTGhvN1SanEm1WQEes=;
-	b=v5deRgC3utWO2uCjte5Kpvl6WYoAf0cl+YFmHYz2SQkeZMi+C3ULey11POKN7TO+dC2e
-	 ln5wI5sgyY8x+6cnVLFPeA4JRInCsqMEKMyD7C1GMHQAPo+m770thDMYL0BDkPR0g0KdG
-	 fghhkEv6aplK7GZnTkSRVGuZ6UwtbcpPf+yjfisxye1wtgwEHNkw8FiUgGeDdHF6C9YMR
-	 ZlLLKBsAQYs2UnOBwSXKExCwwWmYYDGBGtt3f+DUdEy1gBXd3A5RpVpQZfhY/vooSNhBF
-	 MvqzLa2C5uNzcHfj4QSnIeCXxnDF4G0TquAjJAFCcAVvNDG1PtyPILxj/JNT+Hl5Klw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792750637;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=gpeLZJVtpiJlPDO3HGOLqYYd8BW6Z+Hn1e4Q/28eTGA=;
+	b=dw7L76MQ+BAhh8ijk+p7XX96Gh2HzcSbFmTLefx12mSTYUwiIet+hbi/At41gjQb4B9c
+	 RJUxYsEiBb8prM51wylpcv67JvvUCH53glsO+A/HB0hbf7tS8r1pUyooF93AnLtCBNiLD
+	 8N0QNpmrQjcBUdCT02mbMyHWuACUfl9k8Ul7sbOcTxDhk6mk/8ZALRub66JlevYfIFcfK
+	 SdhkpL9UAbtss4xqw2CGbKjrPLB0b7pCk0TzavXJ3JoNfo64QdKXhwBHc6+YFnO/GBXFu
+	 Jv2Y8ozZOUr06UR6uMQLXYpmavASMM0oKO3xUGm8cv/jH3wXmdJwh8ZlGJirqVZjLXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GYV71AqB;
-	arc=none smtp.remote-ip=91.218.175.151
-Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VYk/D+3k";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64595606A31A
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:13:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64595606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C730606A31A;
+	Fri, 23 Oct 2026 10:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GYV71AqB
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=fKBkHWnt456uHkkOHw4bPYUmVOV4SXwzeUkGlmGDAEA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792750408; v=1; x=1793355208;
- b=GYV71AqB/Uov+xYYdJtXYwYwR+qEXoz1X3SA5LbpBmyjJMaVLU6d60dnOgqGtreT/DIwgNyb
- UwIjrSg1sHHPQDkbT+JGa/GuyCxMVf6ebxyvT602WT1cCQu+BRzU1BNieRjEznr/lg1KxVXTvd0
- 19/LBOCw2f0OmlZc93retEjQ=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 99fbb73a2f9b5088;
-	Fri, 23 Oct 2026 10:13:28 +0000
-X-Mizu-Trace-ID: 99fbb73a2f9b5088
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 23 Oct 2026 12:13:23 +0200
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Qingwei Hu <qingwei.hu@bytedance.com>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	James Raphael Tiovalen <jamestiotio@gmail.com>
-Subject: Re: [kvm-unit-tests PATCH] riscv: sbi: Fix timer delay measurement
- race
-Message-ID: <atsy0DXLV-WNdi-c@orel>
-References: <20261023030442.3709880-1-qingwei.hu@bytedance.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VYk/D+3k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73411F01825;
+	Fri, 23 Oct 2026 10:17:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792750636;
+	bh=gpeLZJVtpiJlPDO3HGOLqYYd8BW6Z+Hn1e4Q/28eTGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VYk/D+3kbKnN4Td708RzwXNiZQVZkFWUmZxiuigbcwG+CdlVoZzrggmWEYTIZLwuh
+	 AzXJb59AXe41gthqxiYcdHMvmnpJEdZaoscSDro0jUBpaQEzorZAmc/U0kFk91XQwy
+	 ak0p76QwdoFgt6Uxn2BIe3th7Ohg6KmkLYhX3sGt/7cOKh2U6xoEzL+9ncKD9Gtlki
+	 3tUvSxvqITPkB8czRLZuV/ZsDod6v3hlLKdk4wT1ygaQznFpM9OFOy60We3qObERos
+	 NC37C3T09OtndSaZM/duFZcoS4/5fy9dfm/7jHIc048POkCIMSzGm/jgTpk7PMk+MP
+	 XzcuznffEhkGQ==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 6975A198003A;
+	Fri, 23 Oct 2026 06:17:12 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 23 Oct 2026 06:17:14 -0400
+X-ME-Sender: <xms:JzTbamcM6thTVQGnNUGh5O7vXtFmn-fFEBcx-um2RSE3YGq57VkFrw>
+    <xme:JzTbagFRooSn3XcuAnLfBtgpWGZp6Evs0rL_gpPZ6UNyH9ycxo5F3rvatpJzelQm8
+    yIbvAUMe5JL4TA5XMciswkJl9IZIUdHxi4VrrpsMk_77z5fvsmn903N>
+X-ME-Received: <xmr:JzTbak1qpy8Z6yC8grYUdBiyEYMJdJ6LcAeUO9Oo4InJHUdVFjUbJS33WjU>
+X-ME-Proxy-Cause: dmFkZTErg9z4G4UhidklPuc8uFrLu2Z2aaxmgnGy3D0KEdUY6W7O/OlsaLOLS5DbOc08LB
+    +5/iEztytUd59/o2IkmcrQGmA/fZJJD1NOHadjZHONHNkkocRANUoUv+g0S8bKlfeTQ+Fl
+    JWTd5e9DLxWLLLAP+rGKsOMDHdiWSzUzgTQlZp+FcF6FlQHgqwNAX3euVj9+ZJdBXcMrk3
+    sFB4RuHQI1wi9F9fPlEHNIObiUrEWqNOoCQvC36+l3uwhPwTowNT04EaTvE+HV8B7IJgqo
+    ZNY6ia+NrtfoBJmiriJ0t9g0M7mlpIN/h6AJiITfUM4iGRmbdgNy+hX4rzpdjUQJVckkcf
+    R1FVprDjCR3M6+GS67BrJ7uOzJWXeVND86gwtT679fhrrz/yzaXzvahEraMbK+H3fWzZ0l
+    D7RO0rkhGNX47LUnKuFs96ULJscKhEltHMup9JV9Rj315617++feXwpPDC0whXS7AA9x7b
+    mA0+gnFZQ6jYx0lpO+PXUIRO9ORhl8mmBvzWQbUpvLohOhrhZsec5F5s67HXOOq7jfoQB8
+    cRa6EzcDscpNfcGPtWkNkYRO9fSCuGryHQZrwPOCHytoRDDhHXG80raBJQzcjV9KwzBmJW
+    RD7huo7vf95k76ktT8jRXuqaB+ZECAwZoI3eIyDaZksX5riQla3+0EgstAeQ
+X-ME-Proxy: <xmx:JzTbagIodmA06YeFG2ObXsM6bu0asV1jbKGP6NOGcj-5aH96uXehzg>
+    <xmx:JzTbav2poA5KMbiX94TINoYMtbvJpT-_VEIvxX1OZP50l6jn_Z1YJg>
+    <xmx:JzTbarj0NwG5BPrVWnS-ubsq0QLHh7HGrL4iAC3ITKbu9PcKc1kpCQ>
+    <xmx:JzTbav09oRLTFwhhGukdOsryfPzJVIQmk2dREs0dOn1q15jyLK5i9A>
+    <xmx:JzTbamdL2cE8AUTDCr-OJSFGboKtUIfnCbTufQJR-RwIrkFOAH0qbs-9>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 23 Oct 2026 06:17:11 -0400 (EDT)
+Date: Fri, 23 Oct 2026 11:17:10 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: moe@flashbots.net
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Dan Williams <djbw@kernel.org>, Jun Miao <jun.miao@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] virt: tdx-guest: Fix and speed up the wait for a
+ Quote
+Message-ID: <atsz9rdU4CCjhSD2@thinkstation>
+References: <20261022-tdx-guest-quote-poll-v2-0-7543c6eb2d36@flashbots.net>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,64 +91,21 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261023030442.3709880-1-qingwei.hu@bytedance.com>
+In-Reply-To: <20261022-tdx-guest-quote-poll-v2-0-7543c6eb2d36@flashbots.net>
 
-On Fri, Oct 23, 2026 at 11:04:42AM +0800, Qingwei Hu wrote:
-> The timer test samples the counter before checking timer_works in the
-> wait loop. If the timer interrupt arrives between these operations, the
-> handler sets timer_works and the loop exits with a timestamp taken before
-> the interrupt. That timestamp can precede the deadline, causing a false
-> "timer delay honored" failure in both the normal and masked IRQ tests.
+On Thu, Oct 22, 2026 at 04:31:40PM +0000, Moe Mahhouk via B4 Relay wrote:
+> Getting a TDX Quote takes at least one second, because
+> wait_for_quote_completion() sleeps a full second before each status
+> check, while a local Quote Generation Service answers in a few
+> milliseconds. Patch 2 polls with an exponential backoff instead.
 > 
-> Record the counter at the start of timer_irq_handler() and use it to
-> calculate the elapsed time. Keep the loop timestamp for timeout detection.
-> 
-> Fixes: 14fa12b1351c ("riscv: sbi: Add test for timer extension")
-> Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
-> ---
->  riscv/sbi.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/riscv/sbi.c b/riscv/sbi.c
-> index 3b8aadce..a298228b 100644
-> --- a/riscv/sbi.c
-> +++ b/riscv/sbi.c
-> @@ -245,6 +245,7 @@ struct timer_info {
->  	bool timer_irq_set;
->  	bool timer_irq_cleared;
->  	unsigned long timer_irq_count;
-> +	unsigned long irq_cycles;
->  };
->  
->  static struct timer_info timer_info;
-> @@ -256,6 +257,7 @@ static bool timer_irq_pending(void)
->  
->  static void timer_irq_handler(struct pt_regs *regs)
->  {
-> +	timer_info.irq_cycles = timer_get_cycles();
->  	timer_info.timer_works = true;
->  
->  	if (timer_info.timer_irq_count < ULONG_MAX)
-> @@ -304,7 +306,7 @@ static void timer_check_set_timer(bool mask_timer_irq)
->  	}
->  
->  	if (timer_info.timer_works) {
-> -		duration = end - begin;
-> +		duration = timer_info.irq_cycles - begin;
->  		report(duration >= d && duration <= (d + margin), "timer delay honored%s", mask_test_str);
->  	}
->  
-> -- 
-> 2.39.5
-> 
+> In v1, Kiryl noticed that the same loop gets a real timeout wrong.
+> Patch 1 fixes that on its own, so that it can be backported; patch 2
+> then replaces the loop.
 
-Hi Qingwei,
+For the series:
 
-Your patch is fine, but I think we could also just change the loop a bit
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-    while (!timer_info.timer_works && timer_get_cycles() <= begin + d + margin)
-        cpu_relax();
-    end = timer_get_cycles();
-
-Thanks,
-drew
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
