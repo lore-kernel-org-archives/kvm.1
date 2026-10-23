@@ -1,79 +1,141 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792744295;
-	b=dw/0/KDJt4fAnSN6dcZsQZ32ZPeoxDlPJEPrsi/BgqWMxRY3pqCCTx2qAQLXpNJ9zv4O
-	 tWGzYPtAc0HQ++haihTKt1QYH4TVbYfaCQqZQ863o2fXe/DEobw+Ci6my10zy4+7rQLpI
-	 DiDAxdA3LyAJtPa+MxjTjrFdVY3uXie1UgUKFPNkOiC01fddwVQ/SmVIHJTLa/cJ3i9tO
-	 E/Ajs884xPlZGSxVHGpHOUokZn8PhuFapSP5U4IIicr0VEFaIdvnwBSSgFRDUn6V1He1m
-	 SVUnLHFY1YJnWKsWHIULYHM9Gwql2P6i6jQXZveS0Y2uJkNda3Ky7b0VSVPHayYfSZQ==
+	t=1792744811;
+	b=uQcsgP1LQ0AjTYqoqtdseQed0Tus9uVMP4Oco50+B9ej/oR48gKqpqASIMuUYgU7mY1N
+	 k4lVYt6qWfspFBPxluOO6MpSKcF+4tM1Xv4QBdXxUHV+ECOcQNru8Im9GfcBaoGWJYMZV
+	 +c5NbqDp5wYqXKd3dQB5QO3S0p0Qne6TZ16w55dD/QUIVJyW5AV+Xkeqpb1sxYTcSYdVV
+	 Eny6cTsYbegJefmU54ybRlQ6c8YK3VEeO1s8xaVzp5wdMvtA4TKAXc95eUZjjDROzUSB6
+	 9YwkQcgKg73Un210wwH06myc3xQdClqEPMRmv2l5RvWC0mBAq9obddgqhn7oKTN5Bmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792744295;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=NShwj3uySdZgYCjF4f6Gih+68kU6l/C0njQVpdn1AzA=;
-	b=RHUIrnFxs0L4Kk+Y8OtfqXXX+pXISHWM8bbjSwJiLf4U61lGIs3KBAjJGX7JHkBvh2sl
-	 qDx9UqArz3wj1q6l52QDd/DcXVtXLaMtz0d2BonBVGF9yx1V81Ladts1h7/YngtSOy0Wz
-	 qXywMB6PRbddTDIqBQF1PExUja/furfHZWRae8Pnk4JdHfn8iTHyT70O5jUQts4tfwYi9
-	 z6JRloft71EVv0WeqdlDk643MAtAJzys2D2eq0PLD8WdWJxjPzvArfOfvKCUIDT2zo0vv
-	 g7redBD4gg6M/dGP/da8BtRNF83B2Xv6pG2ZLnClh1kCFIOYarXDuSdXGN6iuAms34A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792744811;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=sUVOWJHsQU1n4B4x2fZjqv8j8/n7UdJLo1ig2jGCIIw=;
+	b=1IVzgRuSNW0aqANzb3kOHeBORbOmtC9jfqvyWmMFQ9jiT164wSXFjMNZoMv/fk6rkW/9
+	 NzI5ppUL+VYFgC9zgqoz3HVQ2SuNoMZm7nSxV1RYQfB2K7NumR8OpC0hEcIot9z6Cxt+p
+	 xuon2RI+i51Xt8iWaTeHn0A9Q0RoFxARV+S8Tf9YApSvbxtMLtUvFW1JPwP7IyNH3fe8a
+	 qXuvnsEnYe5dZ2Pyv3wuZVvYxF/EHAGBZ9H5UyCpOchuTx8qcpbnQepSNrNSXDn/4f0IY
+	 Amp0EqOP8ysnbfUQnTzt3cfZUaiWEH04NFljjtyn+Z+dktEq3xWQO/8AaPB04VVqw1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SVHaoBAL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bLEmrYFP;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D737606A31A;
-	Fri, 23 Oct 2026 08:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB90606A31A
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 08:40:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FB90606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SVHaoBAL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECECF1F01825;
-	Fri, 23 Oct 2026 08:31:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792744295;
-	bh=NShwj3uySdZgYCjF4f6Gih+68kU6l/C0njQVpdn1AzA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SVHaoBALR7WJ71D1liXzObFE+vCHKRrdo3c5LpI+6iVskBn02BK/NlEMU4dxHSTbT
-	 eUvJnwQnFMYfOQJ9CXtpGs7sScqi38Dj4CBHZc6Cr11rf/x9uks0Pu6VteITazLQEX
-	 Pqa3bcJ2nweoJarZTzWpyrLy4uhH9MdZIQEX26nN6be9wuMtTtICUzToiY2qDin5dR
-	 bu52nrKzoUMNX7stcph1UIvAmwda1E7V2E5hPkydNkGAv1hlbTZW4jPQh3rHmJle9d
-	 SdOlY3O7f6dmcnueb2RxBBmQBlxwANA4rT/WMl733fj//RUC8l8sTYbWYYrTuGpo9U
-	 4eDXUFodChlNQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xKAgW-00000006NxD-3HaW;
-	Fri, 23 Oct 2026 08:31:32 +0000
-Date: Fri, 23 Oct 2026 09:31:32 +0100
-Message-ID: <86fqxwzul7.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Zhou Wang <wangzhou1@hisilicon.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Fuad Tabba <tabba@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
-In-Reply-To: <20261023070110.1833446-2-fuad.tabba@linux.dev>
-References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
-	<20261023070110.1833446-2-fuad.tabba@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bLEmrYFP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792744810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sUVOWJHsQU1n4B4x2fZjqv8j8/n7UdJLo1ig2jGCIIw=;
+	b=bLEmrYFPqzYBWu8Oh1fLRPUwI5Pri8N3Mrhfi4kM7Tf0URC4AxggevAiEnzrfUGsskAhnD
+	dQIG5aEhbkjs/+DPn7vLvKGFEUnQOa8Iv7/AduKkZiQKHj85RLP/0JOvDnHCrQTdJijrM6
+	SIBh/OQr8/Wkz/tnMLdSeNNR6ZRy33I=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-gEH36swhMSWp1ifHI3FC6w-1; Fri,
+ 23 Oct 2026 04:40:06 -0400
+X-MC-Unique: gEH36swhMSWp1ifHI3FC6w-1
+X-Mimecast-MFC-AGG-ID: gEH36swhMSWp1ifHI3FC6w_1792744801
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A187518005AB;
+	Fri, 23 Oct 2026 08:39:58 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2BC4018001CA;
+	Fri, 23 Oct 2026 08:39:54 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id D776D21E6A04; Fri, 23 Oct 2026 10:39:51 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  John Snow
+ <jsnow@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Mauro
+ Carvalho Chehab <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+  Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Kostiantyn
+ Kostiuk
+ <kkostiuk@redhat.com>,  Eric Blake <eblake@redhat.com>,  David Hildenbrand
+ <david@kernel.org>,  Igor Mammedov <imammedo@redhat.com>,  "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
+  Marcelo Tosatti <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto
+ Garcia <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@oss.qualcomm.com>,
+  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
+  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
+  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
+  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
+ Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
+  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
+  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
+ <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
+  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
+ Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
+ <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
+ Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
+  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
+ <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
+ <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
+ Lin
+ <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
+ Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
+ Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
+ Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
+ <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
+ <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
+ Dooley <conor@kernel.org>,  Sebastian Huber
+ <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
+ <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Anthony PERARD
+ <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
+ <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
+  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
+  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
+  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
+  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
+ <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
+ Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 07/65] qapi: add QAPITypeInfo struct definition
+In-Reply-To: <20261020-qom-qapi-v7-7-431a86b02b58@redhat.com>
+ (=?utf-8?Q?=22Marc-Andr=C3=A9?=
+	Lureau"'s message of "Tue, 20 Oct 2026 14:45:24 +0400")
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+	<20261020-qom-qapi-v7-7-431a86b02b58@redhat.com>
+Date: Fri, 23 Oct 2026 10:39:51 +0200
+Message-ID: <875wyshktk.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,35 +144,122 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, oupton@kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, seiden@linux.ibm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, yangyicong@hisilicon.com, wangzhou1@hisilicon.com, arnd@arndb.de, tabba@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Fri, 23 Oct 2026 08:01:09 +0100,
-Fuad Tabba <fuad.tabba@linux.dev> wrote:
-> 
-> Since commit 58ce78667a641 ("arm64: Add support for FEAT_{LS64,
-> LS64_V}"), a guest sees the host's ID_AA64ISAR1_EL1.LS64, but KVM only
-> enables the FEAT_LS64 and FEAT_LS64_V instructions in HCRX_EL2. On a
-> host with FEAT_LS64_ACCDATA, a guest's ST64BV0 therefore traps and hits
-> the WARN_ON_ONCE() in handle_other(). ACCDATA_EL1 isn't trapped or
-> context-switched either, so every guest on that CPU shares it.
-> 
-> Rather than support FEAT_LS64_ACCDATA, which requires ACCDATA_EL1 to be
-> context-switched, cap the field at LS64_V. The guest's ACCDATA_EL1
-> accesses then UNDEF. This hides FEAT_LS64WB too, as it implies
-> FEAT_LS64_ACCDATA.
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-Why settle for the least capable option? Context switching ACCDATA_EL1
-is easy enough, can be gated on guest features, and avoid the
-userspace horror story.
+> Introduce a minimal struct that pairs a QAPI type's internal name with
+> its "masked" introspection name. Generated constants of this type will
+> let QOM property registration carry a reliable reference to the QAPI
+> schema and possibly other associated data.
+>
+> The fields are populated in following commits.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  include/qapi/qapi-type-info.h | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>
+> diff --git a/include/qapi/qapi-type-info.h b/include/qapi/qapi-type-info.h
+> new file mode 100644
+> index 000000000000..6a6355568325
+> --- /dev/null
+> +++ b/include/qapi/qapi-type-info.h
+> @@ -0,0 +1,31 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef QAPI_TYPE_INFO_H
+> +#define QAPI_TYPE_INFO_H
+> +
+> +#include "qapi/util.h"
+> +
+> +/**
+> + * QAPITypeInfo - QAPI type metadata
+> + *
+> + * @name: QAPI type name (e.g. "str", "OnOffAuto", "int32List").
+> + *        QOM uses this as the property type string.
+> + * @masked_name: Name of the type in the QAPI introspection schema, assi=
+gned by
+> + *        scripts/qapi code generator (e.g. "368").
 
-I'd rather see that.
+I figure "in the output of query-qmp-schema" would be clearer.
 
-	M.
+> + * @lookup: QEnumLookup for this type, or NULL for non-enum types.
+> + *        visit_type_enum(), qapi_enum_parse(), and qapi_enum_lookup()
+> + *        all rely on it.
 
--- 
-Without deviation from the norm, progress is not possible.
+"It" is ambiguous and easily misunderstod.
+
+Correct interpretation: the QEnumLookup.
+
+Incorrect interpretation: QAPITypeInfo member @lookup.
+
+QAPITypeInfo member @lookup is actually used by QOM property stuff in
+object.c.  Or rather will be: PATCH 15+17.
+
+Do we need the second sentence?
+
+> + * @list: The list-type counterpart, or NULL if none exists.
+> + *        str_type_info.list points to strList_type_info.  qdev array
+> + *        properties follow this to find the list type for their element.
+
+This alludes to
+
+    static const QAPITypeInfo *qdev_prop_qapi_type(const Property *prop)
+    {
+        if (prop->info->qapi_type) {
+            return prop->info->qapi_type;
+        }
+        if (prop->info->element_info) {
+            assert(prop->info->element_info->qapi_type);
+            assert(prop->info->element_info->qapi_type->list);
+            return prop->info->element_info->qapi_type->list;
+        }
+        return NULL;
+    }
+
+These array properties don't have prop->info->qapi_type set, and instead
+retrieve it from their element type [PATCH 59].
+
+Maybe something like "qdev array properties lack a QAPITypeInfo, and
+instead use their element QAPITypeInfo's @list to find it."
+
+Except all that isn't true at this point in the series.  Consider adding
+it only when it is true.
+
+Ignorant question: could we set their prop->info->qapi_type at creation
+time?  No need for qdev_prop_qapi_type() then.  Hmm, I guess not, the
+obvious patch (appended) fails with "initializer element is not
+constant".
+
+> + */
+> +typedef struct QAPITypeInfo {
+> +    const char *name;
+> +    const char *masked_name;
+> +    const QEnumLookup *lookup;
+> +    const struct QAPITypeInfo *list;
+> +} QAPITypeInfo;
+> +
+> +#endif /* QAPI_TYPE_INFO_H */
+
+
+diff --git a/hw/core/qdev-prop-internal.h b/hw/core/qdev-prop-internal.h
+index 40fa4bc63f..18d982a212 100644
+--- a/hw/core/qdev-prop-internal.h
++++ b/hw/core/qdev-prop-internal.h
+@@ -40,6 +40,7 @@ void default_prop_array(ObjectProperty *op, const Propert=
+y *prop);
+  */
+ #define DEFINE_PROP_ARRAY_INFO(_elem_prop_info, _elem_type) \
+     {                                                       \
++        .qapi_type =3D _elem_prop_info.qapi_type->list,       \
+         .element_info =3D &(_elem_prop_info),                 \
+         .element_size =3D sizeof(_elem_type),                 \
+         .get =3D get_prop_array,                              \
+
