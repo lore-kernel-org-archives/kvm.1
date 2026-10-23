@@ -1,58 +1,167 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792775854;
-	b=GUsI85YJomjCLsWDQ6nKFSq1zTc5meVS2pwgx5H5GOGt89fR4nvW61ySCfZFv5Lmepbg
-	 oAXT61dIGApCMutAzlqYAmUejMkCcWk/aSXr4imW0xS1moP6IigL05wM6CbHRR6AYZLwf
-	 1iv85filpCVwaQ7TGTN2n/ZGsmTbAy7zn2olg0HQAlvtSVf9jX6L9QeTwsunoacVsHTMf
-	 oVQC9hGAbIXTVdCbQf49XFYmoOYa1e+5+WLkVFyj51ohib8sFvYPKpHKB2T2Sl1hUNf34
-	 A53qvBz/YHLJ3B1xJk9IHw3psUVuisYkqu+UwBDFQcvoCtBm2FLHznCMn1k7rYm5IBQ==
+	t=1792776231;
+	b=21zxgk5cJfVhrTPitN7OU+x1EFObiK//ppxH6RY9vrl2Poc97uEmMx3cw18GzEZHRcKq
+	 dLrLK6nfgHwhiV7S5cSF9AMsL0GfTe/Djqq5Wnzr1nk7aTBQjyZoVE5f0GGjOWDHvbjrP
+	 BdknSkMjtHfyA6WOpCubFdAJmI2sTy0oLY99jBkT+I0M98qtjkEDFpE0wYeGhX0R3AR/T
+	 FvCkNP6uXbVJWL5TxHK4E+QfoAKkESog8Ei7Og9n5bwlZN3JrgLyFpMvQzhRtl+5FW4Rh
+	 GradzRYF9zWftjXIcca72eKp0Ty9/YqQ29mYoP7NZ37Lr7jEpteZMNEq2lA06VzCNxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792775854;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=HfBaRCSj53nWpDLHO1eD+/W9hko9c9addAFkAxeqTCw=;
-	b=v1WaHBmajnF0JaDtiOkvYXknBavUwWuCjBErbv1D2YwTuO7gEG1FGG6PiVSn7duUSnpK
-	 jcpuBbbn+CCI45/+qGlbsQIOkynTP58JwLHNP5x2fv0WYOoKPSuUiR1hKGhKb/c2v6ORz
-	 cUOvhK1dCxUSXv3nU5pi0rGo8dEF/Guy0ffxc0JdtDAqhNdB9EyFhrtQoTnNBudVLGcSY
-	 JaVs/X1YCeoKZjH17UVEYMzTKDmiREivMMQQWwtphwqwW/ljcBNhMYqVyM30BS07gIeuV
-	 0r55ryJchm0lwbYXFod1PEoaPwAgTWZyZJ5W5dJG7DQQ/Z0zxnxT/za4jkz4JvsMQ5A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792776231;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=b9U8BJjnSyQLu8vlmMN8CV+h3S1yPSnSBNwOLGcNxzs=;
+	b=jDVeJvTLNXWgePRVMPitV3WcGz0KN1/MDDn3Wwsd8AlXerMcKq5KL/H0kVUbjtOAYX5r
+	 DMx4gOnXkK3H4BldF+v+pKOgQPN6vDJMlffDnQZ4Zv90qkYsdY3Okchkx/dtrDAGVbbhW
+	 43ekSyFo8/DOgUEFBi6FBoWUQyJQRwIErF7BcAsbgcSTG0/nsiDhWjpl+OWQlSfREfJtL
+	 o4XGPorBYZAA1YqKHiJ8VvnefJB9U233z8d8tOAMIQofw0qbB9lHLNUa2rymhEkmpCS5I
+	 OTba6LbDx3r6FKEt1gVWX237R+yU8gtdVji0YSQfNoHCMTXSrxvxW3i8S32+mBwfcMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=StpvNeSr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="m/lj/Off";
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79EC606A31A;
-	Fri, 23 Oct 2026 17:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F72E606A320
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 17:23:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F72E606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=StpvNeSr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB291F01825;
-	Fri, 23 Oct 2026 17:17:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792775853;
-	bh=HfBaRCSj53nWpDLHO1eD+/W9hko9c9addAFkAxeqTCw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=StpvNeSr/W3hr7n/Ox6+F0NCah82ZKsPqsMdKNiw0fHVLsv0kMYGYWpW7l675LLwA
-	 Nz8I8OE2JwoorV8ZKhXG8Lpf1bDLatCsuGWHYrKqOAvhOFSY+FM+QKHiLslKB2MXtL
-	 PjWBGluepKbZCjwjEnaSAb31VeVvTlggRbPE9EeuzGsH0ixfbpvQNSlT+TIRo+JEer
-	 ZmmE7brQMtDFRQp2grweAexqMOYn5fhfrLvSx2FvvNP0oD4I2FE7f3zs4ZMXoaF6We
-	 NWR7rV6hmLlIB+3d9UDoPEqWSOHh28jlOqowuqhj9so21PSzgCqdhlR5fQVKzVJt15
-	 Jk8Yum4ojqYAQ==
-Message-ID: <sashiko-outbox-182996@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 08/10] KVM: s390: Improve unmapping of large ranges
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261023155531.206113-9-imbrenda@linux.ibm.com>
-References: <20261023155531.206113-1-imbrenda@linux.ibm.com>
- <20261023155531.206113-9-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 17:17:32 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=m/lj/Off
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1e477fe16so8907965e9.1
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:23:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792776230; x=1793381030; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b9U8BJjnSyQLu8vlmMN8CV+h3S1yPSnSBNwOLGcNxzs=;
+        b=m/lj/OffyrqASJ7/+k2ndy3ARnMmZ4ngzDDHOfoxfIyRpwQk+KAsWUQg3rrdg+qaNN
+         3TFoyZ+aewF8WQz7pGfyEVXk5pHwaqut5XJ5xuFHCeBh7vAoOzdEgwybgifqnIAZykIF
+         avAi8vIkMrmNGJPtKRcrpQfo9ODQv0n4tbspV4EXY1DvEzOb+OeH8TwDdedQ8F/jexXy
+         rs4p9x1faefX53U5CkJj3x29eWfVs5Ga8NTm2vD010Jv9UP2rh6zuzJFkWQHRz18S/te
+         y0hZ3bPqJeoOiYzcQCyxNZqytGu/jC/a9iGP3pmR3VmnMEoNj2iCNmhJDNd8HzM1Ilsh
+         GG1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792776230; x=1793381030;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b9U8BJjnSyQLu8vlmMN8CV+h3S1yPSnSBNwOLGcNxzs=;
+        b=EbII8b7W83vESTAz9eaBbI5f0cF/hzMakKUluJBxHbOu8fVUQAxBqzUAtA4pxEvj+5
+         /FPnKHV7qW79GWtO+xWvA65rhg+HJd2qSUqnmZ6cxKHglBAC6qlB6eJKSYVXbOHJ6Hrq
+         T+e9lFxE+JdHlWrrdcWIs2mE2RHz4y0m25Ck4EIQaeUXM6J7iyRxNLDeBZRaGoavrUgY
+         dDi8f9IH/UJdbti5f8JkbQVkrc+ItaEoiXcdmpO/EnwlVTWR5qn0TENx5FOaXmkC4rhN
+         s6lz6JtIxNCzbSVpo1K5FIO6Cf+7e1DbaU83AKY8TLjoW4jLlIVoWTEQMRI/W9GkQnCS
+         lqTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwCvmb5/M+orV3I9IoEdiCvCEJTlo5v14yUQeIHykmswfjbaIkPH7oS6NIlMB7B9HlDGbM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLDGE0B0cR5X2scU3s95xtGZUgVytQCmzg/kOTVQwMXnc1RCVsK
+	ZP/RDIEMVW0NRpcyZY+C1RWQiLbFneRkC/8VZ7AA1K9FMaGIUIlXSgp1
+X-Gm-Gg: AYBFou1XRdd0oWe1IUxfq62pINvjX580mwoCfmF4vIjsyWgjIJzZDk28X+MgKqX3zWG
+	42CS7xFcG8idLPNQyWr0FLgN/gJn7ZHYwmFwZoC/Da9I6b/fz65C5bdIyOjLnr4RK59rQ84lWqe
+	8py803mbHzAOSzoO2qdWNSxrxIPa9GIeMLccjwJGoh3FOjUBXrXJGUmvzL1ZxwaZfAPGZvDfgSB
+	TaJLWFdz+3YScgrqZ4vd/Rw6201HRwhk+Q29mCb35jk62pdeHEo/rnMic80CZSwuHJbRKI97iRN
+	mvG4WMeWLaeJYDgHogkNckAVrwK9KiCFf+0Hz89XcW96Fe2bC33WiZ2GP0IG7sG194ufV/y7x7f
+	Sf1nIpqMsOY4kDdaYqnVHx9S0f+TgF0Kc5JAx5oscE+z1Z6pOXM4qvaVpHV1i9RvnfjjcqX4N7X
+	rf55x8/w9pwKsstwBkUeMdAdjQCJSYAaizcPjLoEPU9I9KCUQHo+C3BZ9z/c2uJBK7gZYLL0dY3
+	PzzYI3l26oHMMI5SEt6RRtcUMNAYV1mZC19mjiIKIW2yWyGEegka2WIB1Tol98omFbC82+mw+pE
+	hqwBTxrYFAhI7txaQuY9mPXSatldEN/J62NDj6XUYp+J561OdZtCW2o/aD0DPJa0NnGp16Mcqxt
+	ARTJVJHq+ZxlfGX32
+X-Received: by 2002:a05:600c:354c:b0:4a2:1197:1de0 with SMTP id 5b1f17b1804b1-4a211cb23f3mr50233895e9.19.1792776229374;
+        Fri, 23 Oct 2026 10:23:49 -0700 (PDT)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a30764e9e7sm17932475e9.2.2026.10.23.10.23.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 23 Oct 2026 10:23:48 -0700 (PDT)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Alexander Graf <graf@amazon.de>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baolu Lu <baolu.lu@linux.intel.com>,
+	Bill Wendling <morbo@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	Connor Williamson <connordw@amazon.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Gregory Price <gourry@gourry.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Hugh Dickins <hughd@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	James Houghton <jthoughton@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jianxiong Gao <jxgao@google.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	John Starks <John.Starks@microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Justin Stitt <justinstitt@google.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Michael Roth <michael.roth@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tarun Sahu <tarunsahu@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Tycho Andersen <tycho@kernel.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	x86@kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH RFC v2 31/50] KVM: guest_memfd: Support getting PFNs for stage 2 from providers
+Date: Fri, 23 Oct 2026 17:23:47 +0000
+Message-ID: <20261023172347.88443-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261022-gmem-alternative-providers-v2-31-5dd1dc6c660a@google.com>
+References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com> <20261022-gmem-alternative-providers-v2-31-5dd1dc6c660a@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,130 +170,26 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM: s390: _gmap_unmap_pmd_fast() overwrites pte_hole() entries wi=
-th _PTE_EMPTY
---
+> +	int (*get_pfn)(void *provider, pgoff_t index, unsigned long *pfn,
+> +		       int *max_order);
 
-commit e24d7490ad24c4b12cfd0f6fe018550a836e83db
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Should get_pfn() also return attributes of the frame? Only the provider
+knows them, and every mapping of the frame has to follow them. Two
+examples:
 
-KVM: s390: Improve unmapping of large ranges
+- Read only. A provider may lend a page that the guest can read but not
+  write. I know you dropped this from the sample to keep things simple,
+  but without it guest_memfd maps every frame writable, and there is no
+  other way to make a guest_memfd page read only.
 
-This patch optimizes unmapping of guest ranges larger than 1M by
-detaching the PMD, overwriting PTEs in bulk, and reattaching the PMD
-rather than invalidating leaf DAT entries individually.
+- Aliased. The frame is also reachable somewhere else, e.g. a ring
+  shared with a device. Such a frame must not become private; see my
+  reply to 34/50.
 
-> diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
-> index c10681f882c2d..01d25aa1f605f 100644
-> --- a/arch/s390/kvm/gmap/gmap.c
-> +++ b/arch/s390/kvm/gmap/gmap.c
-> @@ -465,6 +456,105 @@ bool gmap_unmap_gfn_range(struct gmap *gmap, struct=
- kvm_memory_slot *slot, gfn_t
+A u32 of flags, with 0 for today's behaviour, would cover both and
+leave room for more later.
 
-[ ... ]
-
-> +static long _gmap_unmap_pmd_fast(union crste *crstep, gfn_t gfn, gfn_t n=
-ext, struct dat_walk *w)
-> +{
-> +	union crste old =3D *crstep;
-> +	struct page_table *pt;
-> +	gfn_t first, last;
-> +	unsigned int i;
-> +
-> +	if (old.h.fc) {
-> +		if (old.s.fc1.vsie_notif)
-> +			gmap_handle_vsie_unshadow_event(w->priv, gfn);
-> +
-> +		idte_crste(crstep, gfn, w->datt.asce);
-> +		WRITE_ONCE(*crstep, _CRSTE_EMPTY(old.h.tt));
-> +
-> +		return 0;
-> +	}
-> +
-> +	if (old.h.i)
-> +		return 0;
-> +
-> +	pt =3D dereference_pmd(old.pmd);
-> +	first =3D max(gfn, w->start) & (PTRS_PER_PTE - 1);
-> +	last =3D (min(next, w->end) - 1) & (PTRS_PER_PTE - 1);
-> +
-> +	for (i =3D first; i <=3D last; i++)
-> +		if (pte_needs_unshadow(pt->ptes[i], _PTE_EMPTY, pt->pgstes[i]))
-> +			gmap_handle_vsie_unshadow_event(w->priv, gfn + i);
-> +
-> +	/* Detach the page table */
-> +	idte_crste(crstep, gfn, w->datt.asce);
-> +
-> +	for (i =3D first; i <=3D last; i++) {
-> +		if (!pt->ptes[i].h.i && w->datt.uses_skeys)
-> +			pt->pgstes[i] =3D dat_save_storage_key_into_pgste(pt->ptes[i], pt->pg=
-stes[i]);
-> +		pt->ptes[i] =3D _PTE_EMPTY;
-> +		pt->pgstes[i].vsie_notif =3D 0;
-> +		pt->pgstes[i].vsie_gmem =3D 0;
-> +		pt->pgstes[i].zero =3D 0;
-> +	}
-
-[Severity: High]
-Can _gmap_unmap_pmd_fast() overwrite pte_hole() entries with _PTE_EMPTY?
-
-In gmap_unmap_gfn_range_fast(), _dat_walk_gfn_range() is called with
-DAT_WALK_IGN_HOLES, which causes dat_crste_walk_range() to skip CRSTE holes.
-However, _gmap_unmap_pmd_fast() open-codes the PTE loop over
-pt->ptes[first..last] instead of going through dat_pte_walk_range(), which
-would normally skip PTE holes when DAT_WALK_IGN_HOLES is set:
-
-arch/s390/kvm/gmap/dat.c:dat_pte_walk_range() {
-	for ( ; gfn < end; idx++, gfn++) {
-		if (pte_hole(READ_ONCE(table->ptes[idx]))) {
-			if (!(w->flags & DAT_WALK_IGN_HOLES))
-				return -EFAULT;
-			if (!(w->flags & DAT_WALK_ANY))
-				continue;
-		}
-}
-
-When a memslot larger than 1M whose start or end GFN is not 1M-aligned
-(_PAGES_PER_SEGMENT) is deleted or moved via kvm_set_memslot(),
-kvm_invalidate_memslot() installs invalid_slot into the active
-slots->hva_tree before kvm_prepare_memory_region() ->
-s390_kvm_mmu_prepare_memory_region() calls dat_delete_slot() under
-kvm->mmu_lock:
-
-arch/s390/kvm/gmap/kvm_mmu.c:s390_kvm_mmu_prepare_memory_region() {
-	scoped_guard(write_lock, &kvm->mmu_lock) {
-		kvm_s390_update_cmma_dirty(kvm, old);
-		if (change =3D=3D KVM_MR_DELETE || change =3D=3D KVM_MR_MOVE)
-			rc =3D dat_delete_slot(kvm->arch.gmap->datt, old->base_gfn, old->npages);
-		if (!rc && (change =3D=3D KVM_MR_MOVE || change =3D=3D KVM_MR_CREATE))
-			rc =3D dat_create_slot(mc, kvm->arch.gmap->datt, new->base_gfn, new->npa=
-ges);
-	}
-}
-
-For any boundary 1M segment not completely covered by the deleted memslot,
-_dat_slot_crste() leaves the existing page table attached (!crste.h.fc &&
-!crste.h.i) and _dat_slot_pte() marks the deleted GFNs' PTEs as pte_hole()
-(_PTE_TOK(_DAT_TOKEN_PIC, PGM_ADDRESSING)).
-
-After s390_kvm_mmu_prepare_memory_region() drops kvm->mmu_lock and before
-kvm_delete_memslot() or kvm_move_memslot() removes invalid_slot from
-slots->hva_tree, a concurrent mmu_notifier invalidation
-(kvm_mmu_notifier_invalidate_range_start() -> kvm_mmu_unmap_gfn_range() ->
-gmap_unmap_gfn_range()) covering more than _PAGES_PER_SEGMENT pages will run
-_gmap_unmap_pmd_fast() on that boundary segment and overwrite the pte_hole()
-entries with _PTE_EMPTY.
-
-Since dat_entry_walk() checks pte_hole() to return PGM_ADDRESSING for
-unmapped GFNs inside a split segment, wouldn't overwriting those hole tokens
-with _PTE_EMPTY cause subsequent storage key (ISKE/SSKE/RRBE), ESSA, and CM=
-MA
-operations on those unmapped GFNs to treat them as valid guest pages instead
-of raising PGM_ADDRESSING or returning -EFAULT?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023155531.2061=
-13-1-imbrenda@linux.ibm.com?part=3D8
+Fred
