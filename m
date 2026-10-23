@@ -1,193 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792718725;
-	b=kOSg3k0CpQiOgq+Y0pS3rEin+cx7XOUsSzCZxbac5Nxwv5C+9PA1+gbLc1kqR3D3G6RT
-	 aBu4Bc1G+PJjUmEnHYmLRN7vXQsw53tCCt5j8W4gMupTEjlzb8TXMF/20vNTn+EcWf/+X
-	 blM5ESUdta2Alragq282CH1neK4lv1d/VqvcAdVCXZewRBapqlUSbSfXGcNfYRFJgZCxb
-	 R0OGQmOsWvbbA1KpCjNkfs6TCNnZlkhaiLDzxnspAlWNd7N2sq8WLxeW3ktXs8lQKuW81
-	 tpk7DhXKBRSCmYMTZ2gkFUvZTtN1UxzZAvvUdZtAplsLANPtaqm6rkfNa4SeGDqqTUA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792718725;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=207.54.90.47
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792719000;
+	b=IWQXe4/Sjg+zZ4+fPInl5ddSeJyErEEwcn9e2FeBECeQgC9nnXTk5aMkHEgVM3r2Q6VZ
+	 WaK7lOSn7lU74Cx9vYeVNE2uQYSGcIVW8GZdY8TRbPpUT9NOLLWxLHad5u2ruej2PMqoV
+	 9OUUmEULDg/2uMsdYnSyjbs+RtUOQqZU8/gRDOH6JALhsyoz42mQZmzPUOclCFrujeNGf
+	 bAL+Hh1K9kPYzXy4OXJG5vwsvMbAGNp0SF7sZzj6tetVWbiNw85ugBEwvp1DRsjsm9fGj
+	 OD+i9Q5F5X0D2cNHX6UjxtYSWOZofZXppMavQHueVNDn47y9Y+haTCJV1oNNFvpNoiw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792719000;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:user-agent:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=wS/Pa4QuV3WGy2u//KsecjSVLH0PW3HlvfHVAlC+WWM=;
-	b=qsKJUlJVboIKnA36veS1r3/qLJyXAtVbZSV7OPYwyWxVi50tOubRlW38v6Xn+0F5PXIP
-	 H/RtVFCGfdU+f2Tq9+EyfG3jtoGGZiIXEVS1cxPSmpOpUACeOvFjv5knUewWT2qoYX7pn
-	 vhuBnizuvOlE2RSaAB67mi7+NGrICWamWC+zqF0KBlQN6ISFQF4on4PvB3bbSbjjHCbpL
-	 3vv5pVog0EGknYyU0lpjewTc73eX67a3fqpLev02Knc7JbJvKLkmhO6WKUiMMdqOKMUn4
-	 ud0ux7OI/tsNab32elkYeYMKlmDQOYpGXnsKNGiQKqw3tP9JXqnpQ6MEHkuSfCS4fGw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OV0Cs3ew;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.11
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=QpYlSLBOVm1TVBcENr8nj4ESG+L/sMY7eZTmrI06N0Q=;
+	b=Pj8X3vquqLW3+14GKHKrT+JZ2pzV5FXGmpr5o7GZVSs5HXi51h7z3gZ5vMCVn8WtavCb
+	 ru/pNAlFQyeDfAoTAYq0lrLWMMaCemu0BXjGCE0ywXRworx8K6zOoI49XPYStM3A/gzUz
+	 Ka63/Hz8iVibgwsBlgUDzjyuNyqw9v6qfty9oHhjciB7H8OnBXhly/FB0qYSwyHqz3rJh
+	 +2xK1CUM/0SgbX4Y6Esoz3F3KDXhXwkMZQ7annjhivzwrWlvjrPYyKsDsePlBcyWidnc8
+	 dCNRCC4qEKHtWMuAAGTXuCaLIsaYXjwNn4uT96PAj+7Egz+nSYu7j98pS8eX4SXw0FQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=fxRjOrlJ;
+	arc=none smtp.remote-ip=207.54.90.47
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C12606A31B;
-	Fri, 23 Oct 2026 01:25:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34C12606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913A6606A31A;
+	Fri, 23 Oct 2026 01:29:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 913A6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OV0Cs3ew
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792718725; x=1824254725;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=wS/Pa4QuV3WGy2u//KsecjSVLH0PW3HlvfHVAlC+WWM=;
-  b=OV0Cs3ewvJsPaWw/cwueG313ExON7QhXVLRBxXAxcy3G3Zqmdck31b5b
-   SI/AKXbFr57uxILHAO/VM/3vYYFBFDyohlAgqmhDb0wHfu31Vdg5ZYKVx
-   l95r97haFrOLwjrDDd3JUDVDuHq2x8iv39WolF8+8iFiFJnUEAzIiWlGw
-   0TKe9uowRNxzjA4wPyklkLPFcWd+EV/EZWBgDsIqTJ0mC2KsC7kKg9yJy
-   Jrg+c2p0LBWokv4UcAfXK8BQGbN4W7q7Z4pt45PogZjWZjqdTGVrcRidC
-   vQ39XMsxAUo9Nh5qUsykbY3o/0jfhngOhkSNMql3d0rytoh2yOdtqhvIS
-   w==;
-X-CSE-ConnectionGUID: J00DJIByQnS/BtBAUX07yw==
-X-CSE-MsgGUID: dfz5h/FnR2C0ITLwKF7FpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1365623"
-X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="1365623"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 18:25:24 -0700
-X-CSE-ConnectionGUID: N35rFGKKQUidUi1PNi3ecQ==
-X-CSE-MsgGUID: qZXEZbgpQ6ytiUiL3ZlWog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="3505162"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 18:25:24 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 22 Oct 2026 18:25:22 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 22 Oct 2026 18:25:22 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.41)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 22 Oct 2026 18:25:22 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aq+Cli3S2VoENu/Db1cCw7VJKAJtsxyNLYCL+FceYoNrEGNdHrmQh+9AfZc4sV2CgNaz62TDAJT8mWVmWMLqIAxxM2rVBBM4y80nYH9iF6SFPFRUJtoG71oxKV6Ur5eaT8iSkTxrUFYG7lRh4Jp1NiQKwQyTH7gQDdm3lSMr9lMlgl2Wrq8vgu1ZyKsdVkn0kySZH+KzBBnJDtA2Bqv9uCVadsEBua01uGx0wiXiLJZP6uFq5Vdr/sGBsFubv6IXZbX5uT9LfX/ep4+PL1bSgxlbEC0Mamd1sgLWzvF4p2rekcbgT97lI7SEq0rrrE6fk4jayrLIkHFlOcfzebrTOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wS/Pa4QuV3WGy2u//KsecjSVLH0PW3HlvfHVAlC+WWM=;
- b=myhGWf4nJPwiPMw85JReKbtCzyNGC9MildeKPI9c16oSAOpEqks4rP9C/4aFviOkJeerQD9qwDKqJDyol5QDZrv0veTbAxGCLhch2NTGz6ZdpVzIyNlmDX9EelRlZzDWOPKydsx1vEKViP64UhoDy2FINBWvDCuLHVqZVVMMXRYaKhxbe3qfuzqPHI0UCzGlrK2+OxA8N1FiC+8u0MpRsRCBp+tM4an/2ll8gIO3+UzkIdF87Uc01tAWhC/+ghcBWQrw0TqnQKFvECIYV8X1GMwv3s3Qr3PY+yUOpHn2d9ISxzdhU33K0cW9Ze0IV9j/zR5vYsp7PTI7B4N8oXK8OQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- (2603:10b6:208:549::23) by LV3PR11MB8741.namprd11.prod.outlook.com
- (2603:10b6:408:21d::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Fri, 23 Oct
- 2026 01:25:20 +0000
-Received: from IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57]) by IA3PR11MB634048.namprd11.prod.outlook.com
- ([fe80::760f:f0a4:7417:6e57%5]) with mapi id 15.21.0546.012; Fri, 23 Oct 2026
- 01:25:19 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>, "x86@kernel.org"
-	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@kernel.org"
-	<tglx@kernel.org>
-CC: "hpa@zytor.com" <hpa@zytor.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "sashiko-bot@kernel.org"
-	<sashiko-bot@kernel.org>, "changyuanl@google.com" <changyuanl@google.com>
-Subject: Re: [PATCH v2 0/3] x86/cpuid: KVM: TDX CPUID fixes
-Thread-Topic: [PATCH v2 0/3] x86/cpuid: KVM: TDX CPUID fixes
-Thread-Index: AQHdYmiRF0WilxtwJEaPaKwHY3ykwLcKVemA
-Date: Fri, 23 Oct 2026 01:25:19 +0000
-Message-ID: <16fe7eac87e2b29fbf353b05916c4a92033f8079.camel@intel.com>
-References: <20261022210134.612848-1-seanjc@google.com>
-In-Reply-To: <20261022210134.612848-1-seanjc@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB634048:EE_|LV3PR11MB8741:EE_
-x-ms-office365-filtering-correlation-id: d2c65fcc-99bc-4bcb-956b-08df30a48079
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|56012099006|38070700021|11063799006|10067099003|18002099003|22082099003|261021121427099003|6133799003;
-x-microsoft-antispam-message-info: Ekr0HWrJQETBvzAhEG1h75xTyu29fsWp+V+7V65J+iYkzv4UfH5svYPq9w812Z/1XmfIzkR4SxuuHQYnjrmXT6Gs7306LaEfBvXvA+lad+NOYV0ys0zVNd+j8K1Y5FCdNIkcnNe3S4KWELMEdwVcXxf89XNjUetA7Iyx1Pp9F1COdHvvAEvaX+6B/dBTM0BfgM3BJKcRvWdJftEyRIBvCzQGdeo4/CnUlW5Ozt7E2ScRAtiqKQ7+lss3Oppdg4l5Aum4i/Up3sOfjzFxqyyNWyGkXmRRiwKtF8Eoa0Kg+QDf5QCZ8myu+/fj8M6I4ITOPEE0tTi/kHeCmQSSKNRv7NhOvCUFHV+8IVDm1kaKImBFDkgt3cNREbuZ4gStNN4SJVISgUtgxZGlg6EsISvHS+nxrcRAZhaIbohHO/3q/mn6T2FqKZfLIB9Ch0LRV+vKGBRrVZ4vMzu4ztc9nzeSYEXUUz9eihkYrJSsSV+7dDVKkjOwpDv2YKw0bueFKYtTKa8hmhOgjFLovR9m5uWrRI3UvDLIcS7n1pMJ09GO7c3eKs8E9I+Fj4KXvDv0Irbmngs7KmyMHVD3zl0SMNsdkuZWod4pj7Yjj62yY5vqypgrMBo3wEQsGm4RGYlOglP6vCXXQxDxTRPE19Iau+wOpZSFNDUNy3re4qxO+pq65TSqI0PUev5SYqMBiutGOfltAKtHRLPTWRLscOVnI/mEtJQJM1uE1EfSe+mMkKFdSgk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB634048.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(56012099006)(38070700021)(11063799006)(10067099003)(18002099003)(22082099003)(261021121427099003)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WnQrbmlEU1gxS3FpU3hMRXFMd2FzanIvSzNNNCtVWVpPOHBVUlV0K2RyMWlH?=
- =?utf-8?B?QXo2Qi9iZHFkczcyUzd0OGRhKzJKYmQrWjhnaGlPQ2d6YTk2b2hLZUdTUnBl?=
- =?utf-8?B?NHA5MU5BSWtTa2prMkVBdE1xdWJaMXJ1NVNPLzJsNVM4cEVldWhNRXJjNmdt?=
- =?utf-8?B?MWJwdHNqd1VNa1didzl5cmkrQ0EzMnpxYlEyWTg1b0hybU9SZ0hSZlRsQkhM?=
- =?utf-8?B?QU5mQ2RGdUlndXdISGJpb2k1a3ZoSFpCdHMzTUo4aHJtalZPS2pYZU8zeEdW?=
- =?utf-8?B?TXVjSWVHMGRtV0Jub2x6dGU5bnFXU2xVcFQxS1R3UnVZTGdBbERQdmN5WitD?=
- =?utf-8?B?KzV6N0c3Y0hmaGNZNjZpUWwzOVAvZ3BuYklvUDhtc0sxNHlldCtJMnpDNDdx?=
- =?utf-8?B?aTVFWFY1V3pNamdWdlBHRm1oTWJXMzhDZE4waFpOWHpvMzliWThIN1ZxNXdV?=
- =?utf-8?B?cVI4MjBZaTFnRHFCU0dBa1NzRWpSd0JmaW5weHVGVzZQK3VES3o3Ti9oTnNQ?=
- =?utf-8?B?aTUxK3NZbjZ1MElmN1dUc3FqTXl6WFNUUUlIWnBscnJ6TktMcWJkQ25Yc1k3?=
- =?utf-8?B?aUtHU1paeU1jN254SXhSVUNpbDROQ0FRM3hjSU4yQncyTXZJTzNsQ2dhU0pq?=
- =?utf-8?B?RDdZWGE5TzJpZVkwcDJ1akFJWFp3MGlSM1YzaitEVlI2cm1LOE5DbEthRmk5?=
- =?utf-8?B?dU1EQVRXK2JmTGMxZ3BQNnF2bEtITUp1QW9sdmxZeHRCeHhtNU1RbEJBeWFj?=
- =?utf-8?B?N3ZrK3d5NTJEQjhwK1kvOWYweTQ0YWNxdDNOaVo1WFdmZWs2eHY2VG1MUU9B?=
- =?utf-8?B?dlRBUm1OUFU1RnZFVUY4OTI1a3BQMDNiaERkNXU5MTJZelZ0KzE3RU9idnJU?=
- =?utf-8?B?TzdySHhpYjBZV1p0dElvSmVqcmY0YlpKWklHL1g5T1A3VzNmNXFUQk1UN1Bu?=
- =?utf-8?B?S01qWm5lQnVxOWhIVnZPQzRoRVNFL2Nsb2Rkd0pwYnFHRHR3WGt5TFZjZmZF?=
- =?utf-8?B?ZTRYbDZ1STBSQWJ6a3NJL1ZPVitHdTZnaGdFL0lhRFRYN05lMWE1SHBOWmRJ?=
- =?utf-8?B?b3lGUGJtR3E5dHVBdkh5enRLQkFMWStxMGZxWEVybVJQWG0vcDRmT3FXZDBu?=
- =?utf-8?B?OHlmZUtNMnVoTWhyL2lEL2ZyN2dVb0h1TG95SitXT20yK053YmhoWFRUbmh4?=
- =?utf-8?B?dU5kbHVqdEk5Y3cvbVJPKzhNR3hpaUp0bkp2cVFDaEMrR2dNS2NCcExFZTBj?=
- =?utf-8?B?bXpETzQyZExkejZBYUYzbU5UWmptQW03bm1OK05WeVdYOE1VSnFmdUZHRUdm?=
- =?utf-8?B?UG1tSWJCYmNrZ0d1aFp6N00wZkZwVWhEREF4bExMRW1STWZ2MDkvU2l4dkhS?=
- =?utf-8?B?QU1pcXFPSkFvakpRMGJiMmpOem9DZ1V4KzJCb3pZVVplbTVnd1VUQU00SmEx?=
- =?utf-8?B?YmVsclZKamp0TDlLNG9TdlNYQU5UVFhZRUtGQTBrb2srYm9hd1BRTmhuZTd1?=
- =?utf-8?B?ajd1bWZwMXRHdERTOHVIRmdzZUpwMDhwMVRoclBiNVFiNW0zdW8vdlppV2dI?=
- =?utf-8?B?V3JnRFo1TXpxSmFtNzdIcHJWTE5xU0NkSkRWMW00OTRjSnEvc3VBemZFNXJk?=
- =?utf-8?B?bWlGM3NmNktPaDdKTjE2UGZPdXBqOHlOaCtzdFE5UkptbDBPaS96K2pFMGJI?=
- =?utf-8?B?TTRGeDArM2VIbHl6ZGc3NU1Lbk12TUNwU2dmOHViTkNhWkNvRk1yWkIwemRU?=
- =?utf-8?B?OW90NitDQ3dQZCs5MUc0S3Jud0ZpZlBBQ1FTRnF0NjFCaGJRQ0tidm1GZENP?=
- =?utf-8?B?czBIQk5uaFlZTFRqMmdCVjlJaVZDa3dDTm5vSFd0S1FURmhzUVFZNWFaSlQ3?=
- =?utf-8?B?aHk2QUFSVG9jVmEzOWlsejNSaTBsczdjTXpNb25iOG5UNVZTbS85TUVrSFYr?=
- =?utf-8?B?SENJRC9PWUtmandaTTE2ZHZFVDc5Q3NVOFlLNVBEUHliektXOU1WeThRTndY?=
- =?utf-8?B?dmtFUHorMXZ2cE1ISEhiR2Y5ZXN3L2IySFB3M01vWW5XMzl4bXZqdWtDZG9q?=
- =?utf-8?B?K2QxWHNEbE9XcXh0ZHBEVHE0azFYbzkrUXIyd2I1UEYwUVhlc2cxbHlyUjcz?=
- =?utf-8?B?OWNZT3N6VFB2MDlyMDZORm9RcHpKMFd5TGt1UmpqYVdobXZQdXdjQUJ4VjI4?=
- =?utf-8?B?MTd2dno3MUxUQ01hMDVKY1U3ZTh0eStuNFlUa1VYL0wvdWtHeG8zclRMYTVu?=
- =?utf-8?B?dWc2WCttMzFkZzJFbVBPNDBJN0V2KzBNaDdNWU13MkxYdzdSV1l0dVNNRXg0?=
- =?utf-8?B?Ylp5NlRHcmc1ZkhUeVdGMjQ4c1FYaGhkYjltNUNvdjBKNU1oY0pCNTRHYnhk?=
- =?utf-8?Q?RipCJQEn/OcvOQj8=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <84799AB1D943E14D8ACA36E80723F4FB@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=fxRjOrlJ
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1792719000; x=1824255000;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q/43GhANLwexWUHi7sLp6rT3JtxS4Ij0uWILefHuoNU=;
+  b=fxRjOrlJevb+4QMTs8610vLu2t8++jjmLPjpyxZYPt2mwgqM7bF3Trn3
+   zksOuXj9AgDxYaeOcpkAT9J4/pney+KSBZUnyey6Eu6i90acoki2FsOE5
+   61rYTvNzrNH/umUQZevn/f3C75VgHM5RtnzchFGK3SKeuEafIHSxn57R+
+   gvqmcCNkFvKpc7ymwPZZd6w/vNxA10DUox0I+D5TkuuD6tzlVPC5Swz0y
+   LDdszQsu/DCZ3mgGZEHTn6Qam+pnVdgBPu0dCFOPi6mxNbgaYIO1smoGg
+   XCxGJZodT2aTTxF3VN5thPW1jX7/TFoI+HXoEJKSpCVCJxNKOfgUjgGmN
+   Q==;
+X-CSE-ConnectionGUID: FnuMEA50SMSw43tiQB4zpA==
+X-CSE-MsgGUID: yMgtarldRQyAuQoo2JNCSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="259153887"
+X-IronPort-AV: E=Sophos;i="6.27,173,1786978800"; 
+   d="scan'208";a="259153887"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 10:29:58 +0900
+Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id C521240610B;
+	Fri, 23 Oct 2026 01:29:57 +0000 (UTC)
+Received: from az2uksmom3.o.css.fujitsu.com (unknown [10.151.22.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id 77C731804174;
+	Fri, 23 Oct 2026 01:29:57 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.10.127.164])
+	by az2uksmom3.o.css.fujitsu.com (Postfix) with SMTP id 8C0B010003CB;
+	Fri, 23 Oct 2026 01:29:46 +0000 (UTC)
+Date: Fri, 23 Oct 2026 10:29:44 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com, 
+	Soby Mathew <Soby.Mathew@arm.com>
+Subject: Re: [PATCH v22 06/10] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+Message-ID: <atq3Q7CBCmfzqzCL@FCCLS0092175.localdomain>
+References: <20261002061507.1600269-1-suzuki.poulose@arm.com>
+ <20261002061507.1600269-7-suzuki.poulose@arm.com>
+ <atiyZ7_S7aBxowIQ@FCCLS0092175.localdomain>
+ <34bf0c98-35b1-4402-842f-a100245cb9a7@arm.com>
+ <atjEkyLimpQSL4d4@FCCLS0092175.localdomain>
+ <0ab0d3a1-a225-4a88-91bf-04f8f0e42eb7@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -197,24 +97,165 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 1+pD+tNg8qBgtXR5ZivraFdKw8o7kGstXQk1tbFdh76XYjllt05CwivC5VwmoLUT9jatbw/m2D5SdeUeUAit2p7us5jgrZ8FQm6jhewmWmKtLESATQIv0dYQsaNKgQHOAdahiS20qWP3PcGPfxrgzzXX1BaQzbIWL3XnEgtJmHavQsFRn6lImQTApeSdHt7BNbjVdAtfQq/CIaq40SMYmChrMLfsARCllGs8HiYpzzz7LCLOgJ87KLogTQVW7qcnJ78sCWt2ljFbapRufbYsdAk6MovsNL+iD/WRgAuugL6DTrHT5bdSr4SYMcdG87Lm5on+c+BXbjoebfFIkJxugA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB634048.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2c65fcc-99bc-4bcb-956b-08df30a48079
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2026 01:25:19.7507
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /e1HYLAJquE+Tgu9ovfjl+zOcT7auh4ez3re/hAeai7U94qi3kbUd5OskRgIf7L+P0CZpYvnB4GVlEHNSdFbsmjRDoZWUZRjEsZloGr0QbE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8741
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <0ab0d3a1-a225-4a88-91bf-04f8f0e42eb7@arm.com>
 
-T24gVGh1LCAyMDI2LTEwLTIyIGF0IDE0OjAxIC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBDaGFuZ3l1YW4gTHl1ICgxKToNCj4gwqAgS1ZNOiBURFg6IFNldCBTSUdOSUZDQU5U
-X0lOREVYIGZsYWcgYXMgYXBwcm9wcmlhdGUgd2hlbiBmaWxsaW5nIENQVUlEDQo+IMKgwqDCoCBl
-bnRyaWVzDQo+IA0KPiBTZWFuIENocmlzdG9waGVyc29uICgyKToNCj4gwqAgeDg2L2NwdWlkOiBN
-YXJrIENQVUlEIGZ1bmN0aW9uIDB4MjMgYXMgYmVpbmcgaW5kZXhlZA0KPiDCoCBLVk06IFREWDog
-UmVqZWN0IEtWTV9URFhfSU5JVF9WTSBpZiBpbmRleGVkIENQVUlEIGZ1bmN0aW9ucyBkb24ndA0K
-PiDCoMKgwqAgbWF0Y2gNCg0KUmFuIGl0IHRocm91Z2ggb3VyIGF1dG9tYXRlZCB0ZXN0czoNCg0K
-VGVzdGVkLWJ5OiBSaWNrIEVkZ2Vjb21iZSA8cmljay5wLmVkZ2Vjb21iZUBpbnRlbC5jb20+DQo=
+Hi Soby, Suzuki,
+
+On 10/22 13:07, Suzuki K Poulose wrote:
+> On 21/10/2026 15:00, Kohei Enju wrote:
+> > On 10/21 14:35, Suzuki K Poulose wrote:
+> > > Hi
+> > > 
+> > > On 21/10/2026 14:07, Kohei Enju wrote:
+> > > > Hi Suzuki,
+> > > > 
+> > > > I've tested this series and found a possible TF-RMM issue.
+> > > > Please  below.
+> > > > 
+> > > > On 10/02 07:15, Suzuki K Poulose wrote:
+> > > > > From: Steven Price <steven.price@arm.com>
+> > > > > 
+> > > > > The RMM maintains the state of all the granules in the system to make
+> > > > > sure that the host is abiding by the rules. This state can be maintained
+> > > > > at different granularity, per page (TRACKING_FINE) or per region
+> > > > > (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+> > > > > underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region,
+> > > > > all pages in the region must be of the same state, this implies we need to
+> > > > > have "fine" tracking for DRAM, so that we can delegate individual pages.
+> > > > > 
+> > > > > For now we only support a statically carved out memory for tracking
+> > > > > granules for the "fine" regions. This can be extended in the future to
+> > > > > allow modifying the tracking granularity and remove the need for a
+> > > > > static allocation by the firmware.
+> > > > > 
+> > > > > Similarly, the firmware may create L0 GPT entries describing the total
+> > > > > address space. But if we change the "PAS" (Physical Address Space) of a
+> > > > > granule, then the firmware may need to create L1 tables to track the PAS
+> > > > > at a finer granularity. Linux therefore checks if the platform firmware
+> > > > > manages the PAR region. i.e., the firmware is in charge of managing the
+> > > > > L1 GPTs (creation and the required memory for the GPT tables - via static
+> > > > > carveouts) without host intervention. Support for dynamic GPT creation by
+> > > > > the host will be added later.
+> > > > > 
+> > > > > If the firmware requires us to manage the tracking or GPT memory,
+> > > > > deactivate the RMM and reclaim any memory donated at RMM activation.
+> > > > > 
+> > > > > Apply the same checks when hotplugged memory is brought online.
+> > > > > 
+> > > > > Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> > > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > > > > Tested-by: Gavin Shan <gshan@redhat.com>
+> > > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > > Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > ---
+> > > > [...]
+> > > > > +/*
+> > > > > + * We do not support creating L1 GPTs yet. So, make sure that all the regions
+> > > > > + * are managed by the firmware.
+> > > > > + */
+> > > > > +static int rmi_verify_gpt_firmware_managed(phys_addr_t start, phys_addr_t end)
+> > > > > +{
+> > > > > +	unsigned long l0gpt_sz;
+> > > > > +	unsigned long next, par_state;
+> > > > > +
+> > > > > +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+> > > > > +					  rmi_feat_reg(1)));
+> > > > > +	start = ALIGN_DOWN(start, l0gpt_sz);
+> > > > > +	end = ALIGN(end, l0gpt_sz);
+> > > > > +
+> > > > > +	while (start < end) {
+> > > > > +		long ret = rmi_gpt_info(start, end, &next, &par_state);
+> > > > > +
+> > > > > +		if (ret != RMI_SUCCESS) {
+> > > > > +			pr_err("RMI_GPT_INFO failed for %llx-%llx: (%ld)\n",
+> > > > > +				start, end, ret);
+> > > > > +			return -ENXIO;
+> > > > > +		}
+> > > > > +
+> > > > > +		if (WARN_ON(next <= start))
+> > > > > +			return -ENXIO;
+> > > > > +
+> > > > > +		if (par_state != RMI_GPT_PAR_PLAT) {
+> > > > > +			pr_err("GPT for the region is not managed by firmware %llx-%lx\n",
+> > > > > +				start, next);
+> > > > > +			return -ENODEV;
+> > > > 
+> > > > When system RAM starts at a non-L0GPTSZ-aligned address, the alignment
+> > > > in rmi_verify_gpt_firmware_managed() may cause the queried L0GPT range
+> > > > to include a memory hole.
+> > > 
+> > > > 
+> > > > On out platform, the relevant memory layout is:
+> > > > 
+> > > >       800c0000000-800dc3fffff : memory hole
+> > > >       800dc400000-82fffffffff : System RAM
+> > > > 
+> > > 
+> > > Thanks for the report.
+> > > 
+> > > > Consequently, Linux queries the following L0GPT range:
+> > > > 
+> > > >       800c0000000-80100000000
+> > > > 
+> > > > The query fails with RMI_GPT_PAR_RESERVED:
+> > > > 
+> > > >       [    8.551855] GPT for the region is not managed by firmware 800c0000000-80100000000
+> > > > 
+> > > > and arm64_init_rmi() subsequently fails.
+> > > > 
+> > > > As I understand it, smc_gpt_info() in TF-RMM checks only the beginning
+> > > > of the aligned L0GPT range. Since that address is in the hole, the whole
+> > > > range is reported as RMI_GPT_PAR_RESERVED, even though it contains
+> > > > platform-managed System RAM.
+> > > > 
+> > > > I believe this should be addressed in TF-RMM. Do you have any thoughts
+> > > > on the expected RMI_GPT_INFO behavior in this case?
+> > > 
+> > > I believe the RMM should report a value that represents the situation
+> > > better. In this case, there is a hole, and some conventional memory
+> > > areas. For the conventional memory, the RMM has to manage the GPTs.
+> > > (This applies to the tf-RMM implementation of TRACKING Granule state
+> > > too. It only looks at the first granule and reports the type of memory.)
+> > > 
+> > > RMI_GPT_PAR_RESERVED is not accurate as the memory region is not
+> > > reserved, unless it is reserved for firmware (in which case the
+> > > memory description is wrong).
+> > > 
+> > > I would say RMI_GPT_PAR_PLAT  is accurate if the L1GPT exists, as the
+> > >   region covered by the L0GPT has some memory that are delegable.
+> > > 
+> > > Otherwise it must be reported as RMI_GPT_HOST_NOT_CREATED.
+> > > 
+> > > The information that a given memory region is not "memory" (i.e. hole)
+> > > is basically TRACKING_STATE returned as RMI_MEM_CATEGORY_NONE
+> > 
+> > Thanks for the clarification. Could you please raise this with the TF-RMM
+> > team? Please let me know if I can help with testing or provide any
+> > additional information.
+> 
+> [Duplicating Soby's response, which may have been filtered due to the HTML
+> email]
+
+Thanks for relaying Soby's response :)
+
+> 
+> --->8---
+> 
+> Thanks Kohei for reporting this issue. I have pushed a fix for this in
+> TF-RMM which we hope to get merged soon.
+> 
+> https://review.trustedfirmware.org/c/TF-RMM/tf-rmm/+/55689/1
+
+Thank you for the quick fix! I'll check the patch and give it a try on our
+platform.
+
+Thanks,
+Kohei
+
+> 
+> Best Regards
+> Soby Mathew
