@@ -1,76 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792746205;
-	b=WWusbrGJJkriLJSPeIHoOnvHF8aNRV8kKX7ZuIhVOilSwnAH+egAVEi8p94EvelrSmdg
-	 OZPJIMhdIMxkaU516qVQQF689CdlUhtEJNwukuClFVgrr3cf6tHz91rGDD+WxCx7IQjLx
-	 RxcTtFrRa8T+JzJ6rx/OK3uQAhEBvL2clvDqX0PkTUedWg2gdLXVHV5ZtwmiFW24eK889
-	 aKs0KnmadEbk999WG5xWltEKQDgc6YSbsfLfKb6knTDqutmQJOcRSTXYuE+NkgKGsKdkM
-	 il1Eg3hFSueaIvfpt7Yn+0F0k9MpXIlvNwA/Iaw+0jtVaEOjYKwwgdntMtAWiF3Do5Q==
+	t=1792746535;
+	b=qRaTvpoBGq3J2/NUajUEiIsGrOlAY++09NcsL2w09BY69kKVsEkKtZLSB80t9whF/+P/
+	 inZ4Fo38XA5pQYO/frXc1jz2ztB8sbTjf3bZwAgp8mMPgZvXZEsd1I+nTYHyUIO5sIqJ+
+	 IrNR9vWZ3qr5kIR8VGTeccBF5zLtxrfKXud/5L90IAtqtqbD7aV713qtWmaNCQdIL74up
+	 ITooX/ujFIXDUqZWJaYLIrA3WV4Uoo49X4M1IeLDjbVMPwV9gpXGCsU009ha7Kk9vmIU/
+	 G4s6p/KxZeh8TsOLIqvS5Ec5DjmIXCa5BTBERWlzUygpIRgWW0Ye+a7EI2WKdsdVITg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792746205;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=+TPZCqvEzY45esRVQeY5p3s4Xp+9LPXNAGtYJSVwFMo=;
-	b=kyRNyQFURNt47BgVRLlZzBWxvZOZlK+3vOMeb6B11+m/a7gP+RIqeMNGzki0jI1X9FJI
-	 Qn2llrpA9gUMx3BfiRS1LdhgKQXFkqD+g2KH3GrgUje4AXoGC9dtPScyQGMZzmSVU6jna
-	 KyR/udBpKyEixxNH3r8cfIs3/O9LZfxtrBbV2Umx9qdz+vbh+o+zADGjZ/DAkbMaoetSI
-	 yRRcTJa7mi+xqK6bu5iRQy6gRTOIB2Ja0P6NB3FwIocPanMvHDkUljOMbNiiyZJnOgyLI
-	 4xVo+eggUriHjfJO6ongC3iNXQ1VIfvSzFbDnhv981Aap5Mu8HFEOy1gqehM6nfMrXQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792746535;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=aHdZ+oKwe6OINwv5V856+JzJxIwxr2tU0lqEBlQhC6Y=;
+	b=EcRYUG1zQV2la/hTzxCgaExSgW63JPRhN49h/+Q/v3cQjx/EFQ1arrMMu2liZl/B2To3
+	 EZ62sDWP+Q/tEGZmacWtU9+zBlP5GvGbDdXfyCxvz045VQgH+cIKikLeyZq0wlGJ3Jaxc
+	 UzXVQnOPkeWhM76IPg/YhWyyGsvN84KtT1BYqC2BlZTj3BLnxaY99lbY3ZQaRwj7zdYlE
+	 kHOEDx0Dr5DKqu1gxQBAN8lnqwVrZxNnDV544PxbkyLenBzt8RIbpC7KgY4G/0BXUOxzu
+	 OldK8LKeaKfW8uQ2VjnFUIt0FK2NwMRl+BinqEwvvyF6QtGmw6L9EolkUuzVtkgs5zQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cispa.de;
-	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=ZcDP1FMl;
-	arc=none smtp.remote-ip=134.76.10.21
-Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q+CtonFs;
+	arc=none smtp.remote-ip=95.215.58.173
+Received: from mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64B1606A321;
-	Fri, 23 Oct 2026 09:03:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B64B1606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318AF606A31F
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 09:08:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 318AF606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=ZcDP1FMl
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=+TPZCqvEzY45esRVQeY5p3s4Xp+9LPXNAGtYJSVwFMo=; b=ZcDP1FMlhMW7kAS20/0s5Xk2yr
-	16Uhd83CLkS63KYMQGl3rZMw+EXTqMWf3TSVFxDpDD6Ws6RzQ7whV5HCKGHo1GVTERmgpv+osk/fg
-	//JZxORp1pBhSJNyEbrVzeoW8DNtjn3ke4dVvyAs3/D92Sjw5L52UwlyW4iZfBWSHe8K+zFUz/7c7
-	QwSqePMBpG8Q6rYm+cN/WVtbTWlsPtQwMKF7d4wfLK1Hv6Z1SexrtratqeNfsYtynZuAXvvqoeMv8
-	nshHT0PQ/Aw3bvDO9xeY9gfEVKc9UuLv+s6zF9Ou9Pe9LGuCjzlsKinzMPdcZczf7WAuQopBi6db5
-	AYPnioyg==;
-Received: from mailer.gwdg.de ([134.76.10.26]:33723)
-	by mailer.gwdg.de with esmtp (GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xKBBK-00ETwh-0a;
-	Fri, 23 Oct 2026 11:03:21 +0200
-Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
-	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-	(GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xKBBJ-00019z-2R;
-	Fri, 23 Oct 2026 11:03:21 +0200
-Received: from localhost.localdomain (10.250.9.199) by mbx19-gwd-01.um.gwdg.de
- (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 23 Oct
- 2026 11:03:21 +0200
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amirmohammad.eftekhar@cispa.de>
-Subject: Re: [PATCH] KVM: nVMX: Restore L2's DEBUGCTL/BNDCFGS/CET from vmcs12 on RSM and nested state restore
-Date: Fri, 23 Oct 2026 11:03:13 +0200
-Message-ID: <20261023090313.9524-1-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261022223820.8279-1-amirmohammad.eftekhar@cispa.de>
-References: <20261022223820.8279-1-amirmohammad.eftekhar@cispa.de>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q+CtonFs
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=aHdZ+oKwe6OINwv5V856+JzJxIwxr2tU0lqEBlQhC6Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792746533; v=1; x=1793351333;
+ b=q+CtonFsq/yIiM0skPBshBA4a0cnJyCmZl0ywNg+6KYtPzv9uEvbqzU/Ll8t936D8nT9edL0
+ 1WjdK2yc4ipdY2VCsy/llbY+ulHP/0tpzk7p3YimKgkK2fxaLD9OHjo04LWNeQ2ctN35L7VooYx
+ ovGJ3X95vLsmNWIrn1K3+jTw=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 40fcee38385a36b9;
+	Fri, 23 Oct 2026 09:08:53 +0000
+X-Mizu-Trace-ID: 40fcee38385a36b9
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5be58ad9600so6441e87.0
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 02:08:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz6tjRa9jGAoPgDr9/c98iMyFjHMJvtSMymAek0rZfRTAxOSFzl935D9p6uC6vKyeoSbis=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJNG2/bBp8Zo+y244v2x47/daNYcVUQRkMWLhJKgTXSZ/pbzWJB
+	s7Um/qDA+y833Rt3WJ13I8kHgDwTvBKE/ds9Hb9A0rC8KPQbmst6XlbjwJjkxxMoBwr0UuxhP3D
+	IhKB5ooaejYLsZn7VF/Kt7kd5K/QW4m7of+1TQbMd
+X-Received: by 2002:a05:6512:3f03:b0:5bf:a49c:ddde with SMTP id
+ 2adb3069b0e04-5bfb06b5140mr90492e87.10.1792746528071; Fri, 23 Oct 2026
+ 02:08:48 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,44 +66,49 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mbx19-fmz-01.um.gwdg.de (10.108.142.52) To
- mbx19-gwd-01.um.gwdg.de (10.108.142.50)
-X-Virus-Scanned: (clean) by clamav
-X-Spam-Level: -
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
+ <20261023070110.1833446-2-fuad.tabba@linux.dev> <86fqxwzul7.wl-maz@kernel.org>
+In-Reply-To: <86fqxwzul7.wl-maz@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 23 Oct 2026 10:08:11 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
+X-Gm-Features: AclHuK8By_xwbQyrvckEGFfA4cAUoxoiGOv41Z9xRvku379045c1KVkkaVcFF80
+Message-ID: <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, Zhou Wang <wangzhou1@hisilicon.com>, 
+	Arnd Bergmann <arnd@arndb.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The automated Sashiko review of this patch is right, please drop it.
+Hi Marc,
 
-I missed that the pre_vmenter_* snapshot is taken from the loaded VMCS on
-purpose. The comment on struct nested_vmx says as much: on
-KVM_SET_NESTED_STATE the snapshot ends up holding L2's value because
-userspace restores the MSRs into vmcs01 before it restores nested state.
-Reading from vmcs12 on that path discards those restored values, so the
-patch breaks restore rather than helping it. My changelog had this
-backwards.
+On Fri, 23 Oct 2026 09:31:32 +0100, Marc Zyngier <maz@kernel.org> wrote:
+[...]
+> Why settle for the least capable option? Context switching ACCDATA_EL1
+> is easy enough, can be gated on guest features, and avoid the
+> userspace horror story.
+>
+> I'd rather see that.
 
-The other points hold up too:
+Context switching it means accessing ACCDATA_EL1 at EL2, which traps
+to EL3 unless SCR_EL3.ADEn is set. booting.rst doesn't require ADEn
+today, and TF-A only sets it when built with ENABLE_FEAT_LS64_ACCDATA,
+which defaults to off. On such a host, KVM traps to EL3 the first time
+it switches ACCDATA_EL1 for a VM, and every VM has LS64_ACCDATA by
+default. The cap leaves the register alone, and the fine-grained trap
+takes priority over ADEn, so it works whatever ADEn is set to.
 
-  - On RSM and on restore nested_run_pending is 0, so prepare_vmcs02()
-    hands pre_vmenter_debugctl to vmx_guest_debugctl_write() unmasked.
-    vmcs12->guest_ia32_debugctl is not validated when
-    VM_ENTRY_LOAD_DEBUG_CONTROLS is clear, so with VMWRITE + SMI + RSM a
-    guest can trip WARN_ON_ONCE(val & VMX_HOST_OWNED_DEBUGCTL_BITS) and
-    get host-owned bits written into vmcs02.
+Should we keep the cap as the fix for stable, and post ACCDATA support
+on top? If you agree, I'd rebase your patches 3, 4 and 8 from [1], add
+a booting.rst requirement for ADEn and EnAS0, and lift the cap and the
+compat.
 
-  - vmcs12->guest_ia32_debugctl and guest_bndcfgs are not reliably L2's
-    live values anyway. sync_vmcs02_to_vmcs12() deliberately does not
-    save them, and vmx_set_msr() only updates them under the matching
-    save/load controls, so sourcing them from vmcs12 can regress the
-    plain inherit case.
+Cheers,
+/fuad
 
-The only gap I still see is narrower: on RSM into L2 with
-VM_ENTRY_LOAD_CET_STATE clear, the CET snapshot comes from vmcs01 (L1's
-state) while L2's pre-SMI CET was saved into vmcs12. That looks like the
-SMI+RSM corruption the TODO near vmx_enter_smm() already flags, and if it
-is worth fixing it needs a validated, RSM-only change, not this blanket
-one.
-
-Thanks,
-Amirmohammad
+[1] https://lore.kernel.org/all/20240815125959.2097734-1-maz@kernel.org/
