@@ -1,57 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792741743;
-	b=g5kF4FJxmDUtnVImiaXlIjtD0Fh2Jc+HYSKH/hloV2lHto32w+lguliWvVR7XZI7iZen
-	 rBa7vqDsF/4U7j3iF5SJhokYJ3CDdOoagSdX5kE2CNKDCQrGB4dxdF4nX8T+J56aPVeLt
-	 gSGRf5+zoUPduEraue9Ajv2WdpDZuYljSsHsLwcnZQg0b9aEVtU98JD016DkGwLVsTgkh
-	 G8ftIODOad8kUoDjUpPp9ClH8wEippSwIKAHRfoVa1MPGSoUqb3CSoPgMhucujrvPvB+l
-	 zWp+QCkDzWHWAiC+VL1LthXi5BA7WRCNW6m3RLND73yEvle4tsBLlNutmCJXnlrvsxg==
+	t=1792741909;
+	b=kTAR26FXBVeHhm1tNkGqazrhG0I+HosU4YVHaiAOmDM++zm1PsQGWeXzNOA8ltMUPPtT
+	 9mlM7RvpzmJjj3bHvY4S9iicJ8cET+uy9KxYTBo+sabWQyQyC7+z6TNzikUSG1RC2ylFs
+	 3YjzyQ6gXlNOge+u9QMZb71bLxmhcEUdTQW8VyisYUcKHbsxg9Gf3gyuMM5zwMOGeSobq
+	 c+iXdbNkL7tN0pXkvRJatZfvER4l6Qo5RY/vVOj+djA4q1V0eiOEANCo5QSnj9eSQt01w
+	 GjFQMaRmfizDoVJl0N7TGLFNAXLY+MqqP1+2bCgf5009p/mUpgF2VO9EiZXo8/XVnDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792741743;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=MkUZ4vqORvB7eJJfz766hR4tJ14+qTxynK70uLJ97fM=;
-	b=AQIoOoZPT5n9epr2OqFChoz3T8PdG3xC49ORpKXXKpK6gyTEwHbivYYy857UCT/yfXGq
-	 6vgTFgMgSBKDxb5w6spOuylYWvoMcVrub+lD74wWzNu0TLweoZT0k0m5K9PqLzz1JNi+2
-	 wmsFJxxlE2Vb/hKczQVij1HoE5igXCyE1v3n6x4iaYBE83oQemhCU5a4iff9hZpA4cUOq
-	 btXn1EwLTJ+mE3US8pbbQSUUF9BwW+xX1QOlogBHqj4SRc2bMI2XMIpOnZtnuVE++1Wg8
-	 YJg51rVfqJk746CiLYXKuiW7ixY8LsoeWvWP4upXuWWxD0ui4zAWATscJgKrXbObRsw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792741909;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=iUsPR0OCp370MJMknYypVXmwmCS7YSHmFpaJb7wjCuo=;
+	b=fgoXGgbuux3f571VCoGdV4/GnL/EWcrI8aPhk2gJKUJApJoYJOrRbRGHYC114zxSvO1T
+	 laH+8qU7aXuvrpVhnSYhZhBmrrd2xsltGiizK6XHDiaQgGS+SXg/voyYihBD8+JFOllms
+	 4T5Dq+6RSdAv4JmJlUOzHew17pVEnJMy0FUDu3v5DsSk43w98V9BwBCirw6LXI15uLzVF
+	 kNar7IAuvL0sMpJ5yvM2J/CuekbgEpwL/qo9uhxWdkkz5NNYIuv2Sf6fgHWTBgEUjKkTW
+	 q9Pmkutq/wC8RCEQjbsNq5pvCoBGAu72o9rLYdgnJlLVuLdXifgO61UZ/+rtblZ9Ang==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYbUzfgg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="UHLF//tz";
+	arc=none smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F19C60A2606
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 07:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241D3606A324
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 07:51:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 241D3606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYbUzfgg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C771F01828;
-	Fri, 23 Oct 2026 07:49:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792741742;
-	bh=MkUZ4vqORvB7eJJfz766hR4tJ14+qTxynK70uLJ97fM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SYbUzfggYC4S4xEdxRCSLjGw6nQCh9MiyuxTA9Uv7rmcfdgNnZqKXGIVI5IBZSykO
-	 Fgl6hhr4gZDiVxY55lFAAZfWApkQ/UnCqUw+ylGYDastLaeONhP+8DR7oGlvVj4tpD
-	 x4221XEEoGwGAwtrpCzMV1zYQpamJXVptms6Y4p7DVjYPLPkptZCaJg1aRg4253IOg
-	 sPCwc1gdvWzGMSf2u/XBsHoiMtedPo/i+gD967fwHEeEwSX6LXTDBLmCYycU3scE1n
-	 Yvrru1LkinYXiZFTfVmLpgh2UZw2a3BSKN4E4jJU93n2HERvT/ToX6/g7m2+b0eH96
-	 a9bae7HE4rJNA==
-Message-ID: <sashiko-outbox-182440@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 2/5] powerpc/pseries/eeh: Add RTAS error injection
- helpers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Narayana Murty N" <nnmlinux@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261023073642.59657-3-nnmlinux@linux.ibm.com>
-References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
- <20261023073642.59657-3-nnmlinux@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 07:49:02 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=UHLF//tz
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e9ae391a05so3483855ad.1
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 00:51:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792741908; x=1793346708; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iUsPR0OCp370MJMknYypVXmwmCS7YSHmFpaJb7wjCuo=;
+        b=UHLF//tzRgSGiDuDK85GAkCxRbuLsEqVfStuhsPWYBoGG+Bz6eqGoBJB/EP8jKoDYy
+         VLrDEbIBPhW7K2ambof6KO5GcfhXJagSFYe+ptNvJxE4gHwIV1kuJCuqy2YyiWQnB3fl
+         dkZ9EtVDfJmW65MjiI5r2A0sRXi+iqHssqourIMQBoZ21rF5nJJeek8u0rZzUvTUe41t
+         fi7jWSPV41ebLLGtqguY5zXxwo8Kd3PoQ/dNHMXKX6g4/u47TSIDxYNAzMbxn6fRaZoh
+         0/MpP2+HKCvE4zpyVnWEFoh5xyvMGpol7ZKThiy0r/ElXU6oiwAUrHg/9XMJjfdG0nPM
+         Yapg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792741908; x=1793346708;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iUsPR0OCp370MJMknYypVXmwmCS7YSHmFpaJb7wjCuo=;
+        b=bN49WB4VbXU1P9vMfzKCwxB8Vfs5EW/9NLDpjqh3JZSXYlgrfziM4C3RQk/rnBQKEQ
+         kGlCTEjucNkyLlvNkqw0CPIrlIAzU06YSGryA0YugF26TUDkLCQRPyexwV4bvt1jgvKF
+         61BryBMcemQBakgA5EbmwFOjFJAkWxMwalswzt7YMZt0SAlC8eqVBSnvB68LjxF5fjVX
+         266XoBi5gtRFDc01mVdP7YEMNOLPl6Ygd4jhzq0Siiz7cl98jGUg4kFaJL0Yen7dNAfK
+         JlsQK3Goa7FphRNbS9osFyNETvJ/yBQJ7e0mp1oT2c5/AYl3LoYXfvnhokqr/uLv8LVd
+         iNYg==
+X-Forwarded-Encrypted: i=1; AKwUvBzoGOaKBa3iSCS8a8jkhQWZouZT7B6mfvkIY7PUeHHXOmLUCoPuLf4LW591TbWpyetf7HE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLzaEmIjLr+r/CO2kmoQHleRoftkS58oPzEPj5XjOL5lrdltalf
+	3EptGxZSA/yvGAdH1UUtzzEUEE5XFcrYuEgY+aks19A7lBOD3Si5hVafnkoRarqURYU=
+X-Gm-Gg: AYBFou2iasR0UGzQwLb6rDDNMJt8gGgDGzYZAnRbx+Qnb+Gp8jSaWt8qfnkcBSI44Rv
+	+lH9uTr8QAlG2IqaBvpV5C/ricsFbQ+x5JFJjKSSRCUVycf7SqHT0OT8fbR/bHokit/OKiu4s5q
+	ImnMttNM5pjROFFRrFzji5YBDV7bJ5WAvFFwnNjJ95FD1Gr0Q3oIEYA76W4YI/FRBC2vt/KpoDe
+	P0TFOKZGuqT2jxGlucmwLzfQP1RnHBbBMeL5xxu7hP/iNQOOa2NUBCn6xO0AX0feFQD+4No6yv2
+	6fUZWs/BZbPMmjq0Hr6k1T9sLpjSzh3S8VZb+Xs1G99bNO3YaRxnO+0aef8LxXF3CVZx8LeYSb+
+	s58httY8dH+cTyxHnHwGMRlcQ9WST3Y5rZTxtvn8YeHXYHSfLWc1npwWzbBqXgKZbcg1nODi6l6
+	KIu3hfZTgvp8D/YtaliLHmgsM33kGDNrAl9t8dwNPSWElPf7vGDGIr3ufZCzX5fJ/zTeh7MDnNB
+	c5cOx3J76q3D+Buvo6n+4dApkBUIZ7WTa/Y87dnjFb6ogJsKxuU5chxPA==
+X-Received: by 2002:a17:902:c947:b0:2e5:debe:cb4b with SMTP id d9443c01a7336-2ea627e3aa7mr31156235ad.10.1792741907784;
+        Fri, 23 Oct 2026 00:51:47 -0700 (PDT)
+Received: from gmail.com ([185.220.236.117])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea7b368c90sm7208265ad.29.2026.10.23.00.51.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 00:51:47 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: netdev@vger.kernel.org
+Cc: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	bobbyeshleman@meta.com,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5 0/5] vsock/virtio: reduce RX per-packet socket overhead
+Date: Fri, 23 Oct 2026 15:51:35 +0800
+Message-Id: <20261023075140.9613-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,125 +106,276 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] powerpc/pseries/eeh: static RTAS helpers defined without callers
---
+This series reduces per-packet socket overhead in the virtio-vsock RX
+worker.
 
-commit 8b171281b038661dc89a614c1b95db68271706f4
-Author: Narayana Murty N <nnmlinux@linux.ibm.com>
+Patch 1: separate socket lookup from locked packet processing.
 
-powerpc/pseries/eeh: Add RTAS error injection helpers
+Patch 2: factor out the RX skb metadata-budget check.
 
-This patch adds static RTAS error injection helper functions,
-pseries_eeh_type_to_rtas() and validate_addr_mask_in_pe(), to prepare
-the pSeries EEH backend for RTAS-based error injection.
+Patch 3: keep one socket lock across a bounded run of established
+STREAM/RW packets for the same native socket, and reuse the locked socket
+for later same-flow packets.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202512101130.EYUo0oZx-lkp@int=
-el.com/
+Patch 4: coalesce default write-space notifications while that
+lock is held.
 
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/=
-platforms/pseries/eeh_pseries.c
-> index b12ef382fec70..28b1fd19e8bcd 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+Patch 5: defer the default readable callback until after the batch
+unlocks.
 
-[ ... ]
+Performance:
 
-> @@ -786,6 +789,137 @@ static int pseries_notify_resume(struct eeh_dev *ed=
-ev)
->  }
->  #endif
-> =20
-> +/*
-> + * RTAS firmware error-type encodings (PAPR).  These are pseries-private;
-> + * user-space sees only the generic EEH_ERR_TYPE_* values from eeh.h.
-> + * Only IOA bus-error types are supported; other PAPR encodings are not
-> + * reachable through the generic EEH_ERR_TYPE_* UAPI.
-> + */
-> +#define RTAS_ERR_TYPE_IOA_BUS_ERROR		0x07
-> +#define RTAS_ERR_TYPE_IOA_BUS_ERROR_64		0x0f
-> +
-> +/* Size of the ibm,errinjct work buffer as defined by PAPR */
-> +#define RTAS_ERRINJCT_BUF_SIZE			SZ_1K
-> +
-> +/**
-> + * pseries_eeh_type_to_rtas - Map generic EEH error type to RTAS encoding
-> + * @type: generic EEH error type (EEH_ERR_TYPE_32, EEH_ERR_TYPE_64)
-> + *
-> + * Translates the generic VFIO/EEH error type passed from userspace into
-> + * the RTAS-specific ibm,errinjct error type encoding defined by PAPR.
-> + *
-> + * Return: RTAS error type on success, -EINVAL for unknown types.
-> + */
-> +static int pseries_eeh_type_to_rtas(int type)
-> +{
-> +	switch (type) {
-> +	case EEH_ERR_TYPE_32:
-> +		return RTAS_ERR_TYPE_IOA_BUS_ERROR;
-> +	case EEH_ERR_TYPE_64:
-> +		return RTAS_ERR_TYPE_IOA_BUS_ERROR_64;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +/**
-> + * validate_addr_mask_in_pe - Validate addr against PCI bus BAR addresse=
-s in PE
-> + * @pe:   EEH PE containing one or more PCI devices
-> + * @addr: PCI bus address to validate
-> + * @mask: address mask (passed to firmware unchanged)
-> + *
-> + * RTAS IOA bus-error injection uses PCI bus addresses.  Linux PCI resou=
-rces
-> + * are CPU/resource addresses and may differ on pseries due to PHB window
-> + * translation.  Convert each BAR resource to PCI bus address space befo=
-re
-> + * validating @addr.
-> + *
-> + * Zero addr and mask are accepted without BAR lookup (no-address inject=
-ion).
-> + *
-> + * Return: 0 if valid, -EINVAL on invalid input.
-> + */
-> +static int validate_addr_mask_in_pe(struct eeh_pe *pe, unsigned long add=
-r,
-> +				    unsigned long mask)
+Tested on a single-stream vsock connection (one Guest receiver thread on
+CPU0, virtio-vsock IRQ on Guest CPU1, fresh QEMU Guest per state, with 16
+balanced AB/BA pairs per payload for each baseline/patchset comparison).
+The host uses vhost-vsock.
 
-[Severity: Low]
-Does defining pseries_eeh_type_to_rtas() and validate_addr_mask_in_pe() in
-arch/powerpc/platforms/pseries/eeh_pseries.c without callers or
-__maybe_unused cause a -Werror=3Dunused-function build failure at this comm=
-it?
+For throughput, vsock_perf runs on the host as the
+sender, with a custom single-threaded Guest receiver pinned to Guest CPU0
+using blocking recv(). The fixed-64K table uses a 64K buffer; the matched
+table uses the sender's request size. The virtio-vsock IRQ/RX worker is
+pinned to Guest CPU1. To normalize run times across payloads into a
+bounded, deterministic window and avoid long runs being skewed by host
+background noise or virtualization scheduling jitter, transfer sizes scale
+proportionally with the request size (64B/64M, 256B/256M, etc.), capped at
+2G for 4K–64K. The custom receiver keeps the recv() size and count
+explicit; vsock_perf's receiver uses poll()+read().
 
-The commit message notes that validate_errinjct_args() and
-prepare_errinjct_buffer() were deferred to the next patch ("powerpc/pseries=
-/eeh:
-Implement RTAS-based EEH error injection") and that pseries_eeh_err_inject()
-retains its existing MMIO body here so each intermediate commit builds
-cleanly with CONFIG_WERROR:
+Latency uses a custom user-space vsock ping-pong tool.
 
-arch/powerpc/platforms/pseries/eeh_pseries.c:pseries_eeh_err_inject() {
-	struct	eeh_dev	*pdev;
+The measurements below were collected for the RX batching series.
 
-	/* Check on PCI error type */
-	if (type !=3D EEH_ERR_TYPE_32 && type !=3D EEH_ERR_TYPE_64)
-		return -EINVAL;
-    ...
-}
+This benchmark does not run vsock_perf on both ends. Instead, it uses
+vsock_perf as the sender on the host (vhost-vsock) side and a custom
+blocking recv() program without poll() on the Guest side, with the receiver
+thread pinned to Guest CPU0 (and the virtio-vsock RX worker pinned to Guest
+CPU1). Plain blocking recv() combined with strict core pinning gives
+audit-level determinism for tracing a single-threaded TID.
 
-However, those deferred functions and the updated pseries_eeh_err_inject() =
-are
-the only callers of pseries_eeh_type_to_rtas() and validate_addr_mask_in_pe=
-().
-When building with CONFIG_PPC_PSERIES=3Dy and CONFIG_PPC_WERROR=3Dy (in
-arch/powerpc/Kbuild) or CONFIG_WERROR=3Dy (in scripts/Makefile.warn), won't
-this commit fail to compile with -Werror=3Dunused-function until the follow=
--up
-patch adds their callers?
+With all patches applied:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023073642.5965=
-7-1-nnmlinux@linux.ibm.com?part=3D2
+End-to-end RX throughput (64K Guest recv() size, SO_RCVLOWAT=1; Gbit/s):
+
+  payload  baseline RX  PATCH RX  throughput change (95% CI)
+           (Gbit/s)      (Gbit/s)
+  64B        0.1290       0.2489    +92.91% [+89.31%, +96.58%]
+  256B       0.5780       0.9727    +68.29% [+66.14%, +70.48%]
+  512B       1.1688       1.8316    +56.70% [+53.85%, +59.61%]
+  1K         2.3059       3.3377    +44.75% [+43.39%, +46.12%]
+  4K         3.8787       5.7310    +47.76% [+45.20%, +50.36%]
+  8K         4.5983       5.4575    +18.68% [+16.42%, +20.99%]
+  16K        5.0806       5.5615     +9.47% [ +8.05%, +10.90%]
+  64K        5.4842       5.6423     +2.88% [ +1.13%,  +4.67%]
+
+Fixed-syscall stress test (receiver recv() size = sender write size;
+Gbit/s):
+
+  payload baseline PATCH    throughput change (95% CI)    recv()
+          RX       RX                                     (base/patch)
+          (Gbit/s) (Gbit/s)
+  64B      0.1384   0.2532   +82.99% [+74.19%, +92.24%]       1048577/1048577
+  256B     0.4042   0.8983  +122.25% [+113.06%, +131.85%]    1048577/1048577
+  512B     0.8056   1.6035   +99.05% [+89.34%, +109.26%]      1048577/1048577
+  1K       1.6030   2.7158   +69.42% [+63.22%, +75.85%]       1048577/1048577
+  4K       3.0194   4.9586   +64.22% [+58.43%, +70.23%]       536799/525225
+  8K       3.8316   5.1255   +33.77% [+31.00%, +36.59%]       274864/263013
+  16K      4.5702   5.3808   +17.74% [+14.87%, +20.67%]       144958/131332
+  64K      5.4736   5.7118    +4.35% [ +2.79%,  +5.94%]        49039/32938
+
+Request-response latency (Ping-Pong RTT, 10,000 requests):
+
+  payload  baseline mean RTT (us)  PATCH mean RTT (us)  change (95% CI)
+  64B      224.148                  224.151              +0.00%
+                                                        [-2.26%, +2.32%]
+  256B     222.037                  224.499              +1.11%
+                                                        [-1.66%, +3.95%]
+  4K       225.982                  227.026              +0.46%
+                                                        [-1.15%, +2.10%]
+
+Guest CPU1 aggregate cycles per received byte (fixed 64K receiver, with perf):
+
+  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+  64B        65.282    57.843  -11.40% [-13.77%, -8.95%]
+  256B       14.710    13.813   -6.10% [ -7.89%, -4.28%]
+  512B        7.709     7.188   -6.75% [ -8.79%, -4.66%]
+  1K          4.075     3.862   -5.23% [ -6.80%, -3.63%]
+  4K          2.034     1.887   -7.21% [ -8.67%, -5.72%]
+  8K          1.664     1.568   -5.78% [ -7.83%, -3.69%]
+  16K         1.450     1.385   -4.48% [ -6.08%, -2.86%]
+  64K         1.338     1.317   -1.51% [ -3.21%, +0.22%]
+
+P1-P3 contribution:
+
+  payload  baseline RX  PATCH RX  throughput change (95% CI)
+           (Gbit/s)      (Gbit/s)
+  64B        0.1285       0.2462    +91.59% [+79.74%, +104.22%]
+  256B       0.5909       0.9666    +63.59% [+61.03%, +66.19%]
+  512B       1.1817       1.8350    +55.29% [+46.76%, +64.32%]
+  1K         2.3252       3.3600    +44.50% [+38.93%, +50.30%]
+  4K         3.8436       5.5661    +44.82% [+40.30%, +49.47%]
+  8K         4.6609       5.4115    +16.10% [ +8.91%, +23.77%]
+  16K        5.1196       5.6399    +10.16% [ +4.07%, +16.61%]
+  64K        5.6095       5.7062     +1.72% [-3.19%, +6.89%]
+
+Fixed-syscall stress test (receiver recv() size = sender write size;
+no perf; Gbit/s):
+
+  payload baseline PATCH    throughput change (95% CI)    recv()
+          RX       RX                                     (base/patch)
+          (Gbit/s) (Gbit/s)
+  64B      0.1446   0.2540   +75.71% [+63.67%, +88.62%]       1048577/1048577
+  256B     0.4211   0.9061  +115.18% [+72.13%, +169.00%]     1048577/1048577
+  512B     0.7980   1.6112  +101.90% [+95.30%, +108.72%]     1048577/1048577
+  1K       1.4965   2.6986   +80.33% [+68.93%, +92.49%]       1048577/1048577
+  4K       2.9384   4.8590   +65.36% [+60.17%, +70.72%]       539544/524982
+  8K       3.8170   5.1887   +35.94% [+27.66%, +44.75%]       274857/262991
+  16K      4.6856   5.5996   +19.51% [+15.36%, +23.81%]       147518/131351
+  64K      5.5182   5.8800    +6.56% [-0.83%, +14.49%]        48492/32910
+
+Guest CPU1 aggregate cycles per received byte (fixed 64K receiver, with perf):
+
+  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+  64B        66.728    61.220  -8.25% [-18.99%, +3.91%]
+  256B       14.363    14.515  +1.06% [ -4.22%, +6.64%]
+  512B        7.792     7.578  -2.74% [ -6.55%, +1.23%]
+  1K          3.988     4.032  +1.09% [ -1.64%, +3.88%]
+  4K          2.063     1.973  -4.38% [ -8.23%, -0.37%]
+  8K          1.702     1.667  -2.06% [ -7.99%, +4.25%]
+  16K         1.473     1.475  +0.17% [ -5.06%, +5.68%]
+  64K         1.385     1.358  -1.96% [-10.61%, +7.53%]
+
+P4-P5 contribution (combined):
+
+End-to-end RX throughput (64K Guest recv() size, SO_RCVLOWAT=1; Gbit/s):
+
+  payload  P1-P3 RX  P1-P5 RX  throughput change (95% CI)
+           (Gbit/s)      (Gbit/s)
+  64B        0.2449       0.2463    +0.55% [-3.86%, +5.17%]
+  256B       0.9649       0.9931    +2.93% [+0.83%, +5.07%]
+  512B       1.8205       1.8260    +0.30% [-4.27%, +5.10%]
+  1K         3.3431       3.3420    -0.03% [-2.15%, +2.12%]
+  4K         5.6541       5.8428    +3.34% [+1.10%, +5.63%]
+  8K         5.4280       5.3364    -1.69% [-15.55%, +14.46%]
+  16K        5.5935       5.6701    +1.37% [-1.41%, +4.23%]
+  64K        5.6917       5.8351    +2.52% [-0.20%, +5.31%]
+
+Fixed-syscall stress test (receiver recv() size = sender write size;
+Gbit/s):
+
+  payload P1-P3 P1-P5    throughput change (95% CI)    recv()
+          RX       RX                                     (P1-P3/P1-P5)
+          (Gbit/s) (Gbit/s)
+  64B      0.2553   0.2575   +0.87% [-3.68%, +5.63%]          1048577/1048577
+  256B     0.9069   0.9183   +1.26% [-3.96%, +6.76%]          1048577/1048577
+  512B     1.6048   1.6459   +2.56% [+0.98%, +4.18%]          1048577/1048577
+  1K       2.6939   2.7357   +1.55% [-1.35%, +4.54%]          1048577/1048577
+  4K       4.9168   4.9678   +1.04% [-1.84%, +4.00%]          524965/525283
+  8K       5.1476   5.2005   +1.03% [-4.02%, +6.34%]          262926/263156
+  16K      5.5964   5.6609   +1.15% [-2.86%, +5.33%]          131311/131475
+  64K      5.9439   5.9073   -0.62% [-3.00%, +1.83%]          32875/32937
+
+Guest CPU1 aggregate cycles per received byte (fixed 64K receiver, with perf):
+
+  payload     P1-P3     P1-P5  change (95% CI)
+  64B        60.281    58.258  -3.36% [-8.74%, +2.35%]
+  256B       14.242    13.648  -4.17% [-9.81%, +1.82%]
+  512B        7.547     7.211  -4.45% [-9.73%, +1.13%]
+  1K          3.987     3.853  -3.35% [-8.52%, +2.12%]
+  4K          1.983     1.880  -5.17% [-7.97%, -2.27%]
+  8K          1.665     1.620  -2.75% [-9.03%, +3.96%]
+  16K         1.409     1.346  -4.52% [-10.94%, +2.37%]
+  64K         1.322     1.281  -3.11% [-6.49%, +0.38%]
+
+---
+This rerun used a stable host with a single Guest running and no background
+workload. The baseline throughput is higher and more stable than in v4, and
+the previous anomalous 4K throughput spike was not reproduced, confirming it
+was an artifact of host-side scheduling jitter. Consequently, while the
+absolute throughput numbers differ due to the cleaner host environment, the
+relative CPU cycle savings and syscall reductions remain consistent and
+robust.
+
+v5:
+  - split the former batching patch into a metadata-budget helper (patch 2)
+    and the batching policy itself (patch 3)
+  - retain write-space coalescing and deferred data-ready handling as
+    separate patches (patches 4 and 5)
+  - document why a connected lookup type mismatch returns to the regular
+    receive path, which sends the reset
+  - restore reverse-Christmas-tree declaration order in the batch helpers
+  - add the requested cap rationale, guest-virtio-only scope explanation,
+    and cumulative performance results to patch 3
+  - add cumulative full-series performance results to patch 5 and identify
+    the P4/P5 result as a combined measurement
+  - use AF_VSOCK helpers for native callback access and save native
+    callbacks before socket publication
+  - serialize callback/protocol/psock eligibility checks with
+    sk_callback_lock at every notification batch boundary
+  - make the callback timing dependency explicit: patch 4 retains the
+    under-lock context and patch 5 moves both notification types after
+    release_sock()
+  - share the receive low-watermark predicate between the ordinary and
+    deferred data-ready paths
+  - clarify the caller-provided network namespace and locking contract in
+    the preparatory lookup split
+v4:
+  - use only the connected socket lookup for batch admission and return
+    misses to the normal receive path
+  - read packet-specific addresses from the skb in the locked receive
+    helper and use the matched socket namespace for reset replies
+  - remove the extra address and network namespace arguments from the
+    locked receive helper
+v3:
+  - restrict RX batching to sockets using the original protocol and
+    data-ready/write-space callbacks
+  - exclude sockets carrying the psock marker published before sockmap
+    protocol/callback replacement, and recheck it at each packet boundary
+  - preserve existing sockmap update return values; an attach racing a
+    native batch makes the next packet end the batch without queued-skb
+    handoff
+  - remove a leftover blank line after an opening brace
+  - remove callback handoff work and attach/detach kicks, preserving the
+    existing per-packet behavior for sockmap and other non-native sockets
+  - avoid making this series drain queued or partially consumed skbs when a
+    socket is added to or removed from a sockmap
+  - clarify that Patch 1 prepares for batching and intends no functional
+    change
+  - inline address decoding and receive tracing, simplify the socket lookup
+    helper, and pass locked receive arguments directly
+  - fold same-flow lookup reuse into Patch 2 and match packets against the
+    locked socket state, reducing the series from five patches to four
+v2:
+  - stop a batch after it consumes the last skb metadata slot, sharing the
+    admission predicate with virtio_transport_inc_rx_pkt()
+  - move replacement-callback handoff into vsock, process queued skbs one
+    at a time, and trigger the handoff from vsock_bpf_update_proto() on
+    attach and detach
+  - reduce the packet-context diff in the locked receive helper
+  - keep RX batch counters in the batch state and reset them in the finish
+    path
+  - use the vsock/virtio subject prefix and add the requested measurements
+v1: https://lore.kernel.org/virtualization/20261002074551.318789-1-physicalmtea@gmail.com/
+
+Jia Jia (5):
+  vsock/virtio: split socket lookup from locked RX processing
+  vsock/virtio: factor RX skb metadata budget check
+  vsock/virtio: amortize RX socket locking for stream packets
+  vsock/virtio: coalesce native RX write-space notifications
+  vsock/virtio: defer native RX readiness notifications until batch
+    unlock
+
+ include/linux/virtio_vsock.h            |  26 ++
+ include/net/af_vsock.h                  |  11 +
+ net/vmw_vsock/af_vsock.c                |  45 ++-
+ net/vmw_vsock/virtio_transport.c        |   7 +-
+ net/vmw_vsock/virtio_transport_common.c | 440 +++++++++++++++++++++---
+ 5 files changed, 471 insertions(+), 58 deletions(-)
+
+
+base-commit: 8df0638138d3e0344fd1fb36cf2d1ca1cf5028f0
+-- 
+2.34.1
