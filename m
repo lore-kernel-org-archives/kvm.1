@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792798306;
-	b=P6U5kEXGEXogistAoEZAvBJdf6zkM+/5PgIPyangMhKCwEH+PuwLGFRSq38gGytSgDZ1
-	 O5BWXhj63w2K2uiXwgpvqJRtTx+tDDS4QWuXtGOLgBhta2oFVcyxQBZQJTzsT5vApYUdw
-	 Kd5qxBtJz+S4/igVc82/dY87NHGPAGB7o8j5sUHHIZZTg/BozAES45BT+UfROPdEh63+P
-	 Uv4uEfy21fM+M4DTMTybs9thoeG/eymHq7R95YGI5xJXytnGeAgIXSHoOlZMVHRcNkpCO
-	 vFKcl0vMCKXjQYp9Qj9nmXEo+ZjmDR1b1EkxmaOK7S+ERezxrF71JY3zHyOzZAbPygw==
+	t=1792798310;
+	b=jcHTX/pmtHkTyrrHW0wZvIr/0POj7diuYPjQrcJjWDgLCYYRF7ckvoye6VSyB3IEQLxf
+	 IXkxG4Vg65nCtCe/S42W9cZGWx2wxi1UDw6rBmrlmw8/yCknF08op2RImR3IdWHSRrUrq
+	 GwxevXGl1p603yER5y/LOpqNPcWTvJX+XL5y+OzuxrfwokqiKrcJNdtAW3dxdPdqy4XzQ
+	 aWwXGRnaHiKLpUkgtQibUCIEL84YjhdryAui5zA3L/Xn05xs7ZpDhTHclLO7CDx3JRsGa
+	 WjLUILQ/Nrtfoi8/GAA0ZmjB7TyBHpH1Eh7F78CTNZ0Xwrh5GbTvfxrJLgNO3ecARNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792798306;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792798310;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=0U/WoSsaRNQO1MenTP79HZhjU0z0zPCOkKNFxINsepk=;
-	b=HZBhkiT4iukMR0bHs7oJl2slFg0e279CJ5nbCdvFCO5vr+yK4tOph8g65PY57f28WW0O
-	 E3wvuCSpaWBlAhjK0+kUpBaFBS1fhnCn+EAAMsGuxgYedI5PrUyQlETgp3SYgwq/mqKs3
-	 I1D+Z2ix5cG/IDGo12q3IM+295qpfOnWUKkV+rmheKFwfOVL/zYYphWK79k9DT7TdUYKq
-	 /o+P8UgxySbOBKyV9Qlwhmx3Gy1iVHrzJgOSBBrXZw+vozweDz0zsUOj2rDzQ0WOovKGC
-	 lUP4VkegZAP4HmS9O8WPz1UAmIWwFa3Ez4NTL/GNwdo7cF8sHOtvqzr/fq6YNH3E9GA==
+	bh=N6oew5qL/EGvyQxxsjUH/pbhr45NldZJXrfEfFnr/kk=;
+	b=cOtgHoQWKuSqPqvVK0liy7hNnRRGz3Kjx5bH3eZGlRfudSrYbdJk5iDD7uHomMpOV9JM
+	 1vsYyJZYYKVSUCWEbjibF2AAJvDU/Cj7sagCbRVvi4t2zI8l3woesotQK7k7oj87KGTkT
+	 lZ9ooyXArsh4x3fKSiR12ulZLV7PpIfoUS1usAEio9UxO8Gai3fiqJTrjuRF62MfbkYZw
+	 SGEJjFREHOj7ft9DMo9j3MdReLA91e4iK5nIp/yQfTLQemX7neHknOcyM0Z4dCoMlG20f
+	 FIbFZfHCGRt6ACkfqhP8+byzbzJP6ZeCmcXz9R7kSWA1qz9LuAoXT8XjWSTEVAJhBXA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fRfO36dC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LRKQCUm4;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209EA606A31A
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B11606A31A
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fRfO36dC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73851F01825;
-	Fri, 23 Oct 2026 23:31:42 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LRKQCUm4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF941F01828;
+	Fri, 23 Oct 2026 23:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792798305;
-	bh=0U/WoSsaRNQO1MenTP79HZhjU0z0zPCOkKNFxINsepk=;
+	s=k20260515; t=1792798310;
+	bh=N6oew5qL/EGvyQxxsjUH/pbhr45NldZJXrfEfFnr/kk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fRfO36dCskEVIkZdUyz1AP4sFNn3Vdizzf4q1mkANHNr0FdRfC1cT1dkho/liIZbN
-	 Tvuu8o4tSzh1vHr94+Zt0gcIf4ZdXsZt794ecvWRA+P8mt+KLYIJYFV83ddcdnb5hN
-	 njwUawLRHpfyj4ByNrTHlkIF7XPYj9UzAORGXOqes9M/qkTnYpYVeo4EkYHh9/7PXv
-	 RzzIOvkL0YkbaF2pZOQx/5LPLJ5yucMi8K/Z9P8PJ55pZi85u+YyZ0OB/auUMRG1dR
-	 llmZq4eXCFuY/1elRHGeiU1MEfh7laZv+z2HD70/UJs83Mwty9jtekPaLmYhIS11d4
-	 hFNkMl2rBAxaw==
-Message-ID: <sashiko-outbox-183367@kernel.org>
+	b=LRKQCUm4Jw1b23J1ePMQCSwNabSprFxLieX6tQdjDJig9B3j5T4HQUPoDoQDRrfCI
+	 FdD2n0HrhiKjTtoDcKOhrQMNki7/pe1rRywLIv8AO68MLtP0RESd3ssZfc2RuH1nxS
+	 /KjcaKx/rY0GlMeuGqdj67n/m028GgXdYuE/LS3hKoKuDWj0Kk+WHHWSXcHkg2WOX8
+	 anZq/J2JuIqGTbiK1W2O5g83IgOoADQ9LR9S/DN/R7LQr85fS8x+LJuTJxbsWKITZZ
+	 OECtgSL1Y2Y42BzyxmYcnXwh3O0m//I8YK7Cq6Lw6iFWnOfiCR6CzSMEjAsxPhBdBr
+	 DO5bl7ZJilUGw==
+Message-ID: <sashiko-outbox-183368@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 03/50] mm: shmem: Implement guest_memfd provider
- operations for tmpfs
+Subject: Re: [PATCH RFC v2 04/50] KVM: guest_memfd: Support provider folio
+ invalidation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org>, "Alexander
  Graf" <graf@amazon.de>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Alexey
@@ -79,12 +79,12 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261022-gmem-alternative-providers-v2-3-5dd1dc6c660a@google.com>
+In-Reply-To: <20261022-gmem-alternative-providers-v2-4-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261022-gmem-alternative-providers-v2-3-5dd1dc6c660a@google.com>
+ <20261022-gmem-alternative-providers-v2-4-5dd1dc6c660a@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 23:31:42 +0000
+Date: Fri, 23 Oct 2026 23:31:45 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,149 +94,129 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] mm: shmem: reference count leak on sbinfo->mpol in shmem_gmem_allo=
-c_folio()
-- [High] mm: shmem: shmem_gmem_alloc_folio() allocates unmovable folios as =
-movable
+- [High] KVM: guest_memfd: AS_RELEASE_ALWAYS without release_folio() in kvm=
+_gmem_aops
 --
 
-commit 88b5d5c54fc1c479ad407c9b1ae1787c3dad600e
+commit 761ef1ff98198357ffc1c8f5492a708cb9b2d9ab
 Author: Ackerley Tng <ackerleytng@google.com>
 
-mm: shmem: Implement guest_memfd provider operations for tmpfs
+KVM: guest_memfd: Support provider folio invalidation
 
-This commit adds guest_memfd_provider_operations to file_operations and
-implements tmpfs memory provider callbacks on shmem_dir_operations so that a
-tmpfs root directory file descriptor can provide backing memory to
-guest_memfd.
+This commit adds a provider invalidate_folio callback to guest_memfd and wi=
+res
+it up to address_space_operations.invalidate_folio and the filemap_add_foli=
+o()
+error path in kvm_gmem_get_folio(). It also sets AS_RELEASE_ALWAYS on the
+inode mapping in kvm_gmem_init_inode() so truncate_cleanup_folio() invokes
+.invalidate_folio.
 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 848316eaa7f4f..2a9faf8be7382 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 545c3e646e9c1..ee823f2ef0368 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
 
 [ ... ]
 
-> @@ -5237,6 +5245,124 @@ static const struct inode_operations shmem_specia=
-l_inode_operations =3D {
+> @@ -942,10 +950,24 @@ static void kvm_gmem_free_folio(struct folio *folio)
+>  }
 >  #endif
->  };
 > =20
-> +#ifdef CONFIG_KVM_GUEST_MEMFD
-
-[ ... ]
-
-> +static struct folio *shmem_gmem_alloc_folio(void *provider, pgoff_t inde=
-x,
-> +					    struct mempolicy *mpol)
+> +static void kvm_gmem_invalidate_folio(struct folio *folio, size_t offset,
+> +				      size_t len)
 > +{
-> +	struct mempolicy *sb_mpol =3D NULL;
-> +	struct vfsmount *mnt =3D provider;
-> +	struct shmem_sb_info *sbinfo;
-> +	struct folio *folio;
+> +	struct inode *inode =3D folio->mapping->host;
+> +	struct gmem_inode *gi =3D GMEM_I(inode);
 > +
-> +	sbinfo =3D SHMEM_SB(mnt->mnt_sb);
-> +	if (sbinfo->max_blocks &&
-> +	    !percpu_counter_limited_add(&sbinfo->used_blocks,
-> +					sbinfo->max_blocks, 1))
-> +		return ERR_PTR(-ENOSPC);
+> +	/* guest_memfd only allows truncating full folios. */
+> +	if (WARN_ON_ONCE(offset !=3D 0 || len !=3D folio_size(folio)))
+> +		return;
 > +
-> +	if (!mpol) {
-> +		sb_mpol =3D shmem_get_sbmpol(sbinfo);
-> +		mpol =3D sb_mpol;
-> +	}
-> +
-> +	if (mpol)
-> +		folio =3D folio_alloc_mpol(GFP_HIGHUSER_MOVABLE, 0, mpol, index,
-> +					 numa_node_id());
-> +	else
-> +		folio =3D folio_alloc(GFP_HIGHUSER_MOVABLE, 0);
-
-[Severity: High]
-Should shmem_gmem_alloc_folio() allocate folios with GFP_HIGHUSER instead of
-GFP_HIGHUSER_MOVABLE?
-
-In virt/kvm/guest_memfd.c, kvm_gmem_get_folio() inserts the folio returned =
-by
-gmem_provider_alloc_folio() -> shmem_gmem_alloc_folio() into the guest_memfd
-inode->i_mapping via filemap_add_folio(). However, kvm_gmem_init_inode()
-configures that mapping as inaccessible and unevictable:
-
-virt/kvm/guest_memfd.c:kvm_gmem_init_inode() {
-	...
-	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-
-	/*
-	 * guest_memfd memory is neither migratable nor swappable: set
-	 * inaccessible to gate off both.
-	 */
-	mapping_set_inaccessible(inode->i_mapping);
-	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-	...
-}
-
-Because mapping_inaccessible() is true, move_to_new_folio() in mm/migrate.c
-and isolate_migratepages_block() in mm/compaction.c reject migration with
--EOPNOTSUPP, kvm_gmem_migrate_folio() triggers WARN_ON_ONCE(1) and returns
--EINVAL, and shmem_gmem_attach() requires sbinfo->noswap. Allocating these
-folios with __GFP_MOVABLE allows unmovable and unreclaimable guest_memfd
-pages to be placed in ZONE_MOVABLE, MIGRATE_CMA, and MIGRATE_MOVABLE
-pageblocks, which can cause CMA allocations, compaction, and memory
-hot-unplug to fail.
-
-> +
-> +	mpol_cond_put(sb_mpol);
-
-[Severity: High]
-Does mpol_cond_put(sb_mpol) leak a reference on sbinfo->mpol when
-shmem_gmem_alloc_folio() is called with a NULL mpol on a tmpfs mount
-configured with an mpol=3D mount option?
-
-When mpol is NULL, shmem_get_sbmpol() in mm/shmem.c unconditionally takes a
-reference on sbinfo->mpol via mpol_get():
-
-mm/shmem.c:shmem_get_sbmpol() {
-	struct mempolicy *mpol =3D NULL;
-	if (sbinfo->mpol) {
-		raw_spin_lock(&sbinfo->stat_lock);
-		mpol =3D sbinfo->mpol;
-		mpol_get(mpol);
-		raw_spin_unlock(&sbinfo->stat_lock);
-	}
-	return mpol;
-}
-
-However, mpol_cond_put() in include/linux/mempolicy.h only drops the
-reference if MPOL_F_SHARED is set:
-
-include/linux/mempolicy.h:mpol_cond_put() {
-	if (mpol_needs_cond_ref(pol))
-		__mpol_put(pol);
-}
-
-Since sbinfo->mpol is allocated via mpol_parse_str() -> mpol_new() without
-MPOL_F_SHARED, mpol_cond_put(sb_mpol) is a no-op and leaks a reference on
-every allocation, preventing sbinfo->mpol from being freed on remount or
-unmount (and eventually wrapping atomic_t refcnt). Should this call
-mpol_put(sb_mpol) instead, matching shmem_show_options() and
-mpol_shared_policy_init()?
-
-> +
-> +	if (!folio) {
-> +		if (sbinfo->max_blocks)
-> +			percpu_counter_sub(&sbinfo->used_blocks, 1);
-> +		return ERR_PTR(-ENOMEM);
-> +	}
-> +
-> +	return folio;
+> +	gmem_provider_invalidate_folio(gi, folio);
 > +}
+> +
+>  static const struct address_space_operations kvm_gmem_aops =3D {
+>  	.dirty_folio =3D noop_dirty_folio,
+>  	.migrate_folio	=3D kvm_gmem_migrate_folio,
+>  	.error_remove_folio =3D kvm_gmem_error_folio,
+> +	.invalidate_folio =3D kvm_gmem_invalidate_folio,
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+>  	.free_folio =3D kvm_gmem_free_folio,
+>  #endif
+> @@ -984,6 +1006,7 @@ static int kvm_gmem_init_inode(struct inode *inode, =
+loff_t size, u64 flags)
+>  	 */
+>  	mapping_set_inaccessible(inode->i_mapping);
+>  	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> +	mapping_set_release_always(inode->i_mapping);
+> =20
+>  	gi->flags =3D flags;
+> =20
 
-[ ... ]
+[Severity: High]
+Does setting mapping_set_release_always() in kvm_gmem_init_inode() without
+providing a .release_folio callback in kvm_gmem_aops cause filemap_release_=
+folio()
+to fall back to try_to_free_buffers() and allow mapping_evict_folio() to ev=
+ict
+guest_memfd folios?
 
->
+When AS_RELEASE_ALWAYS is set, folio_needs_release(folio) returns true. If
+mapping->a_ops->release_folio is NULL, filemap_release_folio() falls through
+to try_to_free_buffers():
+
+mm/filemap.c:filemap_release_folio() {
+	if (!folio_needs_release(folio))
+		return true;
+	if (folio_test_writeback(folio))
+		return false;
+
+	if (mapping && mapping->a_ops->release_folio)
+		return mapping->a_ops->release_folio(folio, gfp);
+	return try_to_free_buffers(folio);
+}
+
+fs/buffer.c:try_to_free_buffers() {
+	/* Misconfigured folio check */
+	if (WARN_ON_ONCE(!folio_buffers(folio)))
+		return true;
+}
+
+When a folio is allocated in kvm_gmem_get_folio(), filemap_add_folio() plac=
+es
+it on the unevictable LRU with PG_lru set. If the folio is not mapped into
+userspace page tables (such as private guest_memfd folios or unmapped shared
+folios, even while mapped in KVM Stage-2/TDP page tables), its refcount is 1
+and it is clean.
+
+If soft_offline_page() in mm/memory-failure.c runs on that PFN (or if
+__do_fault() in mm/memory.c encounters a PageHWPoison guest_memfd folio), it
+calls mapping_evict_folio() in mm/truncate.c:
+
+soft_offline_page()
+  -> get_hwpoison_page()
+  -> soft_offline_in_use_page()
+    -> mapping_evict_folio()
+      -> filemap_release_folio()
+        -> try_to_free_buffers()
+      -> remove_mapping()
+
+Because mapping_evict_folio() does not check mapping_unevictable(), it calls
+filemap_release_folio(), triggers WARN_ON_ONCE(!folio_buffers(folio)) in
+try_to_free_buffers(), and receives true. It then proceeds to remove_mappin=
+g(),
+which removes the folio from inode->i_mapping without holding
+filemap_invalidate_lock, without zapping KVM Stage-2 mappings, and without
+invoking kvm_gmem_invalidate_folio(), leaking the provider's allocation
+accounting (such as tmpfs sbinfo->used_blocks).
+
+Should kvm_gmem_aops also implement .release_folio (or avoid
+mapping_set_release_always()) so that filemap_release_folio() does not fall
+through to try_to_free_buffers() and permit eviction via mapping_evict_foli=
+o()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-gmem-alter=
-native-providers-v2-0-5dd1dc6c660a@google.com?part=3D3
+native-providers-v2-0-5dd1dc6c660a@google.com?part=3D4
