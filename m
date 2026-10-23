@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792735687;
-	b=R+C3/hjhdG+cwIIza/kw/H0T9q1xr9h6MO8guJTo0WBytkVwYlSRJNzMa3pFSVf+Eslv
-	 8Hb4ASVAvcRuJjht384MLhNLLkqFulM9Gu4akPF3AxpITpPJllgJDn5Zn07PugFmqFwPC
-	 JepLFrE8flHtyOw3wKYJ/yHWoa/VvbUh93oP5cF0gy0UqU1yizm9A7F2GEvSYfvkEhK43
-	 1oXYdOE0DAyEDPcy8l1yNynwCmsYczEsqTO8NqXn8b/659V7KkSDs9c5NjbQC7jeONYx7
-	 gFWPUs4225YzoK8wKL17XJ5RmypPTNY4bNfqzt2JU0LV21U9wfwtfOiG3yGMIyk+bvQ==
+	t=1792738160;
+	b=on5JhwaBqyrbO7oGsUsWu+mFozOmqT/75gDlG2+f8Joba8aOTNhrke6w7A0KeJSg0jQz
+	 Esb2kVQIZ3KcXASR4vsTRWq7xGTfsgCtWYKXxb3IZNLaZC46C2iJMLX9DdVNGPpYRvGTP
+	 mXH4afLnmFqDqpZHU4N2VwJrpRn5hkAvsNVaid89JH3000rkEgkw417M4OWI5fCkMSeZt
+	 n+B10uHggWk89dOphAvAsQtm+hbKf0UThpusVSLMKihkseEj6HoZ1tSjWkjGAJAaNnK4j
+	 EvcrmFdbZM5xncx+hHcGIgIGTq4LTj3JFbxB1NeBSxoHiMa2gvXpMIkmENdzgfxE88Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792735687;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792738160;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=PtMbD2L/4lUTkQw591ynv8uNvYteldWADj8nmIYhx9w=;
-	b=WqpCeIoIaXTiz0nRu39rGegTHvw/QTruL12TgBvzzJt6fkPnka0YcO5BI83Unqqex2s4
-	 kT7m7dCsVgF4MSVB8qCjEJiMi+RRNKZjBzn2qrK+LNin3QpUYJAwQ2kZXTkurV5UnX3n9
-	 4FvAawNhKvYx6ZyfkQPiUiNI84/gVVTLZcLRXVoOSFDxGbr9ZkhJWaqiWAWAQXVlVZMZv
-	 N19YN1o/adbpFYIhxNbIkJ+9e8aB9EpTr7Yg75EHQyw1L0n+aC3PPnDTsC3wQxo7aog4L
-	 hoc8G8gHDgiH6LJqZuyi9R1gjyW1FZ5IB9jPZjfYwMJvkA/ziTDwgKGjcjuQhl8R0rw==
+	bh=BwLp3QfU2sOxvBZM8DouICo+apOt//WLVr04keFV3KA=;
+	b=KFNyEy7nlXQwX5cXEABtx/6rWnQLzVjNbLeV8Pc/BuDa+OHRouKC4GcAVooaSeLCo5cY
+	 fdyHj6q5mjG0FY3UGhVHBXgWQbXqNm9+6rrdqNFudpa6bAn+LCCu+T69OGYwiaJewBrWf
+	 n1gvIqJh9UVj2gqOOOLiHTzbEmxV3pZvdHu6yexHnfQQvwXHJxhul4NUdFSJDYy8fC4Jo
+	 k6yHYUR9DHhK1LztonabvsL037UhmfP8gN0rHKIymkL+VQimUL4z3FIw2cW4J7U6093n5
+	 G4O8aCqO5d1FtpK4w8L/KtrigTjVtGtzRuXHnkH3lbUxXst6WEdnu+IY5fCu+5P0bbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SEaClo2N;
-	arc=none smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZMd9mc3M;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0381E606A31A;
-	Fri, 23 Oct 2026 06:08:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0381E606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF0B606A31D;
+	Fri, 23 Oct 2026 06:49:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BF0B606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SEaClo2N
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZMd9mc3M
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792735687; x=1824271687;
+  t=1792738159; x=1824274159;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=C81i/82DeDeE1JH62JhWsNHM4gE4jeuRndx5t5ttChs=;
-  b=SEaClo2NQIaW06zL7l6Ya5IrE7Ai8AZpeFMVRq0rjHIT1S6X2OcfpBPd
-   ZtdBbR77y2CKjeIYDoCYfneZfHlNHqFXktnYsIFNiwHBRHZdeBBjEMfCG
-   Z4UctXPEFHu0OOQGlbiniJOvrzP2RLrqn4IKMNh1ynQYdK0zEkdwh7dh4
-   8EZJUQU2Oe1NZTrCKnOlrdQ6OYalJNmrEadieNq0KazHMTto5vFPmyrVY
-   l7PcWlfLA0YG/v6Pt2eBGByEDDYuiymX7ujlJUTlBbpC1xxJUNT9orWDD
-   kizjXrI7MK+UsVKFdrW/4dEQyTFCYu/GNWc/fTo1hX6ZEUB2z8SbX1Lt9
-   Q==;
-X-CSE-ConnectionGUID: 5ki/el3GTWujjChBfZlZPQ==
-X-CSE-MsgGUID: p52PFYlJTeeBE4OLLNMrpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1599103"
+  bh=boXZwJMU/3Bv1Xe3K7Nqjbqy3UaF2PKOM3J7JBumcJM=;
+  b=ZMd9mc3MOMmJXntdZOJfSp0keU+I8maH/K4jUbG7wQUky6Cv5nyT+oPN
+   2vi891BmKssjyZIEovjFw80/evC5kWwXexqE+xqKuHSCGiA1Lkr5sGkax
+   eGlO1dcauPDQuJzuwaKlqffaFQw98PHCQLdgMHQ4yfKlpjA1vJ4dNtMu+
+   qZf9i7HrakEeLJmH+KVm8SPikyWyABb4y4tHkHO9ErmTHhYMp8q471HnF
+   JgA4XBpXfRQwppIouzRJVUJ8CfCv+Kyni/Ymq5wOS7d+pBsfvoqS+wLpe
+   hTwewOmb3E4Vh2jCeEopa1uBiBLKHsbz0psdWABwm62g4DFiLKwnMnwpA
+   A==;
+X-CSE-ConnectionGUID: VAbShD2ZT025p+sXznVhzg==
+X-CSE-MsgGUID: upGeNo/aTmW3YBgQnSix/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11943"; a="1498003"
 X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="1599103"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 23:08:06 -0700
-X-CSE-ConnectionGUID: jbxrQI+LQeyEO93z/LGx9g==
-X-CSE-MsgGUID: oty+PjFtR7aIMb5gzI1E2g==
+   d="scan'208";a="1498003"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 23:49:19 -0700
+X-CSE-ConnectionGUID: 6IigzIhqSvKN3h/YLYaUmA==
+X-CSE-MsgGUID: 1pPxJ9cpQ96AIShE8W0lFQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,173,1787036400"; 
-   d="scan'208";a="3592890"
+   d="scan'208";a="3465966"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 23:08:00 -0700
-Message-ID: <64e27c4c-23e1-4539-a812-e81d5f322003@linux.intel.com>
-Date: Fri, 23 Oct 2026 14:07:57 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 23:49:12 -0700
+Message-ID: <85872794-1868-406e-8ac0-5d9de522a8cb@linux.intel.com>
+Date: Fri, 23 Oct 2026 14:49:10 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,8 +73,8 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 05/28] x86/cea: Use array indexing to simplify
- exception stack access
+Subject: Re: [PATCH v10 06/28] x86/fred: Export this_cpu_fred_rsp() for KVM
+ usage
 To: Sohil Mehta <sohil.mehta@intel.com>, kvm@vger.kernel.org, x86@kernel.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
@@ -91,76 +91,85 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  David Matlack <dmatlack@google.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-6-sohil.mehta@intel.com>
+ <20260911213659.2025974-7-sohil.mehta@intel.com>
 From: Binbin Wu <binbin.wu@linux.intel.com>
 Content-Language: en-US
-In-Reply-To: <20260911213659.2025974-6-sohil.mehta@intel.com>
+In-Reply-To: <20260911213659.2025974-7-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 9/12/2026 5:36 AM, Sohil Mehta wrote:
 > From: "Xin Li (Intel)" <xin@zytor.com>
 > 
-> Refactor struct cea_exception_stacks to leverage array indexing for
-> exception stack access, improving code clarity and eliminating the
-> need for the ESTACKS_MEMBERS() macro.
+> Introduce and export this_cpu_fred_rsp() to provide KVM with a self-
+> explanatory interface for retrieving per-CPU FRED regular stacks for
+> stack levels 1->3.
 > 
-> Convert __this_cpu_ist_{bottom,top}_va() from macros to functions,
-> allowing removal of the now-obsolete CEA_ESTACK_BOT and CEA_ESTACK_TOP
-> macros.
-> 
-> Also drop CEA_ESTACK_SIZE, which just duplicated EXCEPTION_STKSZ.
+> FRED introduced new fields in the VMCS host-state area for stack levels
+> 1–>3 (HOST_IA32_FRED_RSP[123]), which correspond to the per-CPU FRED
+> regular stacks for stack levels 1->3.  KVM must populate these fields
+> each time a vCPU is loaded onto a CPU to ensure a complete valid FRED
+> event delivery context immediately after any VM-Exits.
 > 
 > Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 > Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-One nit below.
-
-[...]>  
-> +/*
-> + * The exception stack ordering in [cea_]exception_stacks
-> + */
-> +enum exception_stack_ordering {
-> +	ESTACK_DF,
-> +	ESTACK_NMI,
-> +	ESTACK_DB,
-> +	ESTACK_MCE,
-> +	ESTACK_VC,
-> +	ESTACK_VC2,
-> +	N_EXCEPTION_STACKS
-> +};
-> +
->  /* Macro to enforce the same ordering and stack sizes */
-
-Nit:
-Is this still hold ? ...
-
->  #define ESTACKS_MEMBERS(guardsize, optional_stack_size)		\
->  	char	ESTACK_DF_stack_guard[guardsize];		\
-> @@ -39,37 +52,22 @@ struct exception_stacks {
->  
->  /* The effective cpu entry area mapping with guard pages. */
->  struct cea_exception_stacks {
-> -	ESTACKS_MEMBERS(PAGE_SIZE, EXCEPTION_STKSZ)
-> +	struct {
-> +		char stack_guard[PAGE_SIZE];
-> +		char stack[EXCEPTION_STKSZ];
-> +	} event_stacks[N_EXCEPTION_STACKS];
-> +	char IST_top_guard[PAGE_SIZE];
-
-... Before this change, ESTACKS_MEMBERS() is used both in exception_stacks and
-cea_exception_stacks, so ESTACKS_MEMBERS() can enforce the order and stack
-sizes.
-
-After the change, ESTACKS_MEMBERS() only used in one place, so it doesn't have
-the capability to enforce them.
-
-The order consistency depends on the consistency b/t ESTACKS_MEMBERS and
-enum exception_stack_ordering now.
-
->  };
+Two nits below.
 
 [...]
+
+>  
+> +enum fred_stack_level {
+> +	FRED_STACK_LEVEL_0,
+> +	FRED_STACK_LEVEL_1,
+> +	FRED_STACK_LEVEL_2,
+> +	FRED_STACK_LEVEL_3
+> +};
+> +
+
+[...]
+
+>  
+> +unsigned long this_cpu_fred_rsp(enum fred_stack_level lvl)
+> +{
+> +	switch (lvl) {
+> +	case FRED_STACK_LEVEL_0:
+> +		return __this_cpu_read(fred_rsp0);
+> +	case FRED_STACK_LEVEL_1:
+> +		return __this_cpu_ist_top_va(ESTACK_DB);
+> +	case FRED_STACK_LEVEL_2:
+> +		return __this_cpu_ist_top_va(ESTACK_NMI);
+
+Nit:
+How about adding a comment to state NMI and MC share this one? 
+
+
+Also, currently, FRED_{DB,NMI,MC,DF}_STACK_LEVEL are defined as
+number, may be it can be defined using the new added 
+FRED_STACK_LEVEL_{1,2,3}
+
+> +	case FRED_STACK_LEVEL_3:
+> +		return __this_cpu_ist_top_va(ESTACK_DF);
+> +	default:
+> +		BUG();
+> +	}
+> +}
+> +EXPORT_SYMBOL_FOR_KVM(this_cpu_fred_rsp);
+> +
+>  /* Must be called after setup_cpu_entry_areas() */
+>  void cpu_init_fred_rsps(void)
+>  {
+> @@ -84,7 +102,7 @@ void cpu_init_fred_rsps(void)
+>  	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+>  
+>  	/* The FRED equivalents to IST stacks... */
+> -	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
+> -	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
+> -	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
+> +	wrmsrq(MSR_IA32_FRED_RSP1, this_cpu_fred_rsp(FRED_STACK_LEVEL_1));
+> +	wrmsrq(MSR_IA32_FRED_RSP2, this_cpu_fred_rsp(FRED_STACK_LEVEL_2));
+> +	wrmsrq(MSR_IA32_FRED_RSP3, this_cpu_fred_rsp(FRED_STACK_LEVEL_3));
+>  }
+
