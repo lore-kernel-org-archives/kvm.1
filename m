@@ -1,62 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792751909;
-	b=Qniy+7yvZH5+lOVWWHBAJEQD8BQ15VhqjSCfBdyjItwRY7oYAXxioj3B4TRGkAxuLNJy
-	 kWaWMj82ASc9LNY0R5TOgu6OOH3TR/Cb66MQAklKd2lS3V+uucggrEk2lJimWF+Kz9gFD
-	 u93vccNzKCSm/uYllBGakRA+SwBv6UAVajVGrLLOU6fwCJLzOMFt00ve9ock+yve1UWaT
-	 m+Ff5NP1pqnyG6K+rJyb1qnyf+8Dy6D1OJ7U6CZqdO1qH2k4je6bIhK/9YrO2j1weDsKj
-	 1SBDKD0VRhEXsLNYkbVJKrtoPUwFssE0/WkTkExwXQsFCfD1/LJI0dkJCpwoVjQDZBQ==
+	t=1792752043;
+	b=44TJM/qbSyOb+V/w5sC8E/jt1wL+sLZnV0mVbxx4OuMyWIn8h6h/NdlUUW77bS9tDmp/
+	 082w+OIlymo0EU6lxV/eqi5PNDxF8oSV8sbdIba2WiEPS8ijsQq/HXX05CdpCgTCWo4zE
+	 Fp5nYsRgC9Top27VM+TrtaHLke24+4JESbkzYxp91Q1qnje4lV1db8rbstFUvCkcg4OJP
+	 ZuIzcnp8PJKBb+Q6n8r2Sl4ET699IiAsLwkyfKZBl4CYW4OywrjuybeVL4w4m1vvny7A1
+	 vZGbbYo7hKkNUMa2qOOl5HQ/SgB7OdV+/oTYSz9oWyM2tUBA5okD2yzlsfXsC4ARNcQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792751909;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=cLLRVkOcST0DyQ8J/JKflZi0Zz/mIu85uAsHsW1TVFg=;
-	b=5Lk+veLPLNWNGl7PpaL0sjMYn5CZ7TuQAClFNgQoWiHXicgJcxPOCk0pTfEO0p33BWCT
-	 ZP1XslkpIRu4VcBvAGXuJ/RLs/PYO6AwUbPD5GnfpD4IL/0YcbsJIIp5Nse5Xaoi7X/qn
-	 XH9uhqH9f2uBw2a2k59ITXskeJwezSVFJvcuvxGwhyS/ZKmeyhqo0cD616PeGlq7DbLru
-	 wm3gIdBijDeDRQpox89jxgWf002ef0rfT76kaqwdCCT3IlJAE3uC2ptFo3uctKoCpe383
-	 bk7+8HTkCiWvow/lSRApyBagNa7z5Rx2jqFK2YIOPv0RF8p6Bq7lkKG8h85KTbnmXfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792752043;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=3fn/qeSOMh17ArAGKi+SkWfmCErKg3ju5QLNHCwzqmI=;
+	b=txhWlZToTOLXUws5NF7SlN9llsQWI9JUdr3aG8Kzgv0oG9d6NJTVmdZWdTUZwk7u0YJz
+	 2kqbGhlxih4U6AeErhmYIBbtImQ9WohroGrYX8GncB/D99gcLf9RX4H5W1KE3v2sIp3hO
+	 L/sGyXZx39Q7vETPdjmYaLhtbikyld60a/vs+tYMZKQE0jZd2Rq312NVfGqU1Tp0OMNGU
+	 tAjHkaXMvv2x1z4ZJIamvjJQa9VFuBTAi5Eyi2D4NPEJT9kmpY9BASv+Ksba23D8XnByL
+	 scZkWolQX81pqZuzX4sPbtX09qo3+0kBt81Y8C2CgA1jfk+mFry+BEAXyfXDJkOVAGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vfClfbAy;
-	arc=none smtp.remote-ip=95.215.58.69
-Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N6s2C5Vu;
+	arc=none smtp.remote-ip=209.85.215.181
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AFE606A31B
-	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:38:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95AFE606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC719606A320
+	for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 10:40:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC719606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vfClfbAy
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=cLLRVkOcST0DyQ8J/JKflZi0Zz/mIu85uAsHsW1TVFg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792751905; v=1; x=1793356705;
- b=vfClfbAyy9W87INmPAnQRLdM7z9pEaINPiM00p1v2g0GLj9r6L0GQpWJqxVXwZS/0RGLvLJ9
- sEJERkcBQ/Pz5i08ZdfzIHlsMTNCsqw3Nn295gHeRd92clsIhEipEMAdh4OJnysnDPPgKmhN38t
- RzcLV0+K9oNUXatYiIrgR4K8=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 854281266f8ae093;
-	Fri, 23 Oct 2026 10:38:25 +0000
-X-Mizu-Trace-ID: 854281266f8ae093
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bcbb378fc9so6903e87.0
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 03:38:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzLndC4d2U9ZUr3+swJngevcVVkbx3MOnNNvOWrt0i8DJIxhzsKN4wAnkO+eeNyboAoeGs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJBKNboXpawBnER9T1F9t/H+xFWvCE5w5xhpIyhEAYCQ4TDa4ka
-	m95jxGVawjuNP4UCksIZWMW9LOXXRqURbdqJ+YF9hTitwfVU+0GaR6wGDs7ZmMeivTQfJ/66zO0
-	zHpv6ClO2sDSc698SsLrnCh6m1DA5Zbkbg9/QvVAr
-X-Received: by 2002:a05:6512:3e26:b0:5bc:fbf6:2352 with SMTP id
- 2adb3069b0e04-5bfb06d38a0mr119014e87.9.1792751904240; Fri, 23 Oct 2026
- 03:38:24 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=N6s2C5Vu
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc502d509c0so268785a12.2
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 03:40:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792752042; x=1793356842; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3fn/qeSOMh17ArAGKi+SkWfmCErKg3ju5QLNHCwzqmI=;
+        b=N6s2C5VuIa6TtEuPqdllmx/G8ra3m0faGDWBnZw+fj5k3NmLUHlKGpmIL+QIo5BHXN
+         kgokd0TzFnYZ2jnTj+4ee1OPSRoEpOIiiz7VgqNG6pg1z90cMaU8QaNEe2IIwIVV1RCp
+         z4kvIUFCc++Aq1QYnEDvIVpNJHdygjE5QS9f8yzm0K1t4p9XrMvZuVVw/VVKBQgMoQB7
+         nBBaxWeuG0wMQyw1hROWVHjQf+SLTD1wL4GD4+GqNRrpG39oxp73f3XCVrN1hQYhP7Jv
+         5K0x/GIBnJDf11j10qYrzExDKCYROoLMtUakyXZBsr3Z7sIZby6j3p2zOaQ+NqZq0n0H
+         gXiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792752042; x=1793356842;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3fn/qeSOMh17ArAGKi+SkWfmCErKg3ju5QLNHCwzqmI=;
+        b=JbpxEmKU+T6/Q1HHNowvXC6cEPE0MmUhpRLiUe2X7V5hMrPFcpXukJxRMKIqJgAJPp
+         sGO+yndauULAQxpKGVmO3DrcuRAbgkZ/BlZ45dn0+LuSGsY6pV3BE3rRqKUSasyXjrVi
+         IcseW58/GLZ+6AofSzBG17qgLwq3wTYaKYiLxehWwJgxqSF0rpfmg5GUp9o7iM35o6A5
+         a4ggksCK5Zc/xp8Gkxu4PWYeJIOpSgEQKI0ZdFh+J/4m2kx/1SBAb/t0kpfiXrcnWHtY
+         a7pVnc7BqE/Zj9mUkcyvEPCYkRItAL4lh5oOOzuytfjuOHrYXu/NwhM+3+dasTMyZFgI
+         PrMQ==
+X-Forwarded-Encrypted: i=1; AKwUvByFI9WcJ2pJyC2FoO3ICreALCJPXm2t86jPNb80NfeOJcwoAMbLQYxqORZP8m+jFgyghUw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJWOOKNYgEK/hYpAFxcI1fUetvJM+ssHIvy01AShzUzSP138x8u
+	LflgOg4hZ3NkDxewK03u50+Wi+u8OOiU3/Qlf+X6wiTYefkqL8cnl8af
+X-Gm-Gg: AYBFou04EVoY5T9t0/ysa0NOXHNj/LLW7HD/Ebo44LBoiDL8TnNwMSf810IXqB0rmjS
+	163eu0jK9Rwu8GOS3VNX3oRZhiYrCtpOOTz3w1vFoLEiRUV7qDI7Kr/D2GhyJxZ3TQgqUabI5RK
+	zJKA/h+S8UD6h0PWGQJQ2HzsZDuAY0yPyUbqOdzR/fzMHgX+0K7kKHuLBJA+GNQi7gJXUW/DkGD
+	pKmd7Xz+SJtSIdemj4bFH3WfORGkEcudNhFVEIGYoW6tTvy0qm6wrAW3X7DLgi21QVmrW2njdDC
+	idF1oP2NCx669eQR8LqKzsQ/AtsTBx3yUBXKwIxCxKH/WFrdyyvF93ZhD3wX6bc+66A0tfKxFJ4
+	YpUoGJqHjXXeyzDFra9khGQJCIWuF+SyrhJ+WMyCIakBpryvc65lvscBT6B2BVG+evmkx/ZRf0J
+	OfgDE7kuIMNQTgsQNxKhGt2udycE7jAyZpfsE9/Tol/FoUW2lbWPVlEkcpbGnuplgyc7MMsjoYv
+	Mgq9ZlXNG1wi4xLZRrZu14v85PBXhowpRMNi4Ns29CwiNiXhOTNfMuLSA==
+X-Received: by 2002:a17:90b:2543:b0:3ac:b08a:ed2c with SMTP id 98e67ed59e1d1-3adce08327fmr1475446a91.40.1792752041791;
+        Fri, 23 Oct 2026 03:40:41 -0700 (PDT)
+Received: from gmail.com ([185.220.236.117])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adcb1b133dsm3300636a91.7.2026.10.23.03.40.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 03:40:41 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] vhost-scsi: fix page reference leak in misaligned I/O fallback
+Date: Fri, 23 Oct 2026 18:40:35 +0800
+Message-Id: <20261023104035.6686-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,40 +100,58 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
- <20261023070110.1833446-2-fuad.tabba@linux.dev> <86fqxwzul7.wl-maz@kernel.org>
- <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com> <86ecdgzp6m.wl-maz@kernel.org>
-In-Reply-To: <86ecdgzp6m.wl-maz@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Fri, 23 Oct 2026 11:37:47 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
-X-Gm-Features: AclHuK-Z7-qsjF596RnJ21sZzB7mzj2vXd60dbcKuOxyJq8KgdnvpDHBkQR87RQ
-Message-ID: <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, Zhou Wang <wangzhou1@hisilicon.com>, 
-	Arnd Bergmann <arnd@arndb.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Marc,
+iov_iter_get_pages2() returns a byte count that excludes the offset into
+the first page, but also returns a reference to that page in pages[].
 
-On Fri, 23 Oct 2026 11:28:17 +0100, Marc Zyngier <maz@kernel.org> wrote:
-[...]
-> No, I want this fixed by enabling ACCDATA support by default, which is
-> what we have *already* promised to userspace, and see the fireworks.
-> You can add an arm64.nols64 kernel option if you want, which is
-> consistent with what we do for CNTPOFF, NV3, and other extensions that
-> depend on FW enabling them.
+On the misaligned-I/O fallback, vhost_scsi_revert_map_iov_to_sgl() puts
+pages already added to the SG list. The cleanup loop starts at
+pages[npages], but accounts for its first page as PAGE_SIZE bytes
+rather than PAGE_SIZE - offset. If the remaining data starts at a
+non-zero offset, it can finish one page early and leave a page reference
+behind.
 
-Will do. v2 will have your patches 3 and 4 from [1] rebased, EnAS0 set
-when the guest has LS64_ACCDATA, and an arm64.nols64 option.
+Use PAGE_SIZE - offset for the first remaining page and clear offset for
+later pages, as in the mapping loop. Without this, each affected request
+leaks one page reference.
 
-Cheers,
-/fuad
+Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+Testing:
 
-[1] https://lore.kernel.org/all/20240815125959.2097734-1-maz@kernel.org/
+- Four fileio vhost-scsi test instances repeatedly issued affected writes
+  using recycled backing pages. After about 1.33 million requests,
+  MemAvailable fell from 5.3 GB to 13 MB and swap was nearly exhausted.
+
+The affected fallback is reachable from guest-issued virtio-scsi I/O.
+
+ drivers/vhost/scsi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 4f8c0260bc9e..b0a536fbc69a 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -883,11 +883,16 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
+ 
+ 	iov_iter_revert(iter, bytes);
++	/*
++	 * pages[npages] is the first page not added to the SG list.
++	 * The remaining data starts at offset in that page.
++	 */
+ 	while (bytes) {
+-		n = min_t(unsigned int, PAGE_SIZE, bytes);
++		n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
+ 
+ 		put_page(pages[npages++]);
+ 		bytes -= n;
++		offset = 0;
+ 	}
+ 
+ 	return -EINVAL;
+-- 
+2.34.1
