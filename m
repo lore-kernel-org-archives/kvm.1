@@ -1,67 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792858282;
-	b=h6yKQKnhZsf7GoQ69RPeOcksErL4oMDgcvQE6DXmcrwxGHf8Bl0H8JqzuM2BvHJ3y+YW
-	 ukqk+6HsRaqvl3hUvSk40qT+3BiV+kOVFuYl/x5aAsCsuRuH8xGC5X7lzQKt+Ft4KftTc
-	 eDWq47E7BqaJ0qfIcWzntloVcHi4lql0Ul+C85HlsxluHgNi2kqsdmKYhuhjQh+YdrZTO
-	 q5i/8eE6RozJ2JKDKIid4/GEj9c7/iEWjZONGqenWH8PiuCE5RdptAyKrIGWBxg1VmXSl
-	 1m/4qmFc69m7AxSJtYcfj53UwaEVWIba1+gWRltS7+dJqvd331z9RmFz+w7vCbE8o/A==
+	t=1792858818;
+	b=Cuet2Q0lpeb8oK2z2rGdG1EuuISsZ3wgS2HPyeaCWPntgmrW1rGsQ9+dd9oJTKQTXr4Z
+	 gSxjtEddJ3piufb6VSTVVpu9/f7yYs3v1WuPfTFj0tOocaGKwzAQcbKb+H3lVu5/pRmh3
+	 W6NNCnpVVhqiiIyg2hKrQIymLjfGR1mqTdZOj88HWoABGIo+wXNE3f/+8V8qdX6FZb1iI
+	 PpNvytyPp+PW+HvqcRsu9N23o5dYz/1iH/gaPmnhENLB1Amtq6wjV8SeP0KLH2i58iese
+	 OXqX0iNWXHZeqFRU0dTfMkxmsqNuRWgtEctq+TuukmzhZs1NNyaoR0z3Rt1rP3Pxjqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792858282;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=W27aSalgzv2Xbhoow/lwveUu1WS93+h0c2znFzv+Gb4=;
-	b=lDm7yuAScq3tLVpfChm4mpjomuw6iqnFee0toXXsEfIYEv1y/0AUhCZPuyil4AFeBbYF
-	 9esSrNo+aFP5gdZSmo96xSaZBqzM55dmMkmg3cDZjvH8PHFBFH9NYzvr3ssppJcdOIyVC
-	 a2bcaSREkXLMO0Lv2Yu977lf5Zvj4BOpW5yloXygz1O2noUxaOY655ns1bmez7CAoP++k
-	 gDcfNI5LZClgleFd6r+1WxU3k0yhsm1xTuxd7xvCIsmexjqdeihDUy35KSf1XZonUfvNx
-	 BSswecJ5HUpq2iMsBvId2wCC/k9UrutUrWcNf3ywD9vgUXmwAJvQlktwNr4LNGw+ouw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792858818;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=0LUNcR/8KJKuB0k5JLTs6CD6KvSgfj2q7nuRdY/7M0c=;
+	b=kVabdQLXwR8wvDNprgGqc4di03Ie7gITXJWK+satYiOCLJV9Qx/i9Y0J5DM+dvLvIDr9
+	 464LJyKERWCUYDIbyr/Mzn2MtFiIrmpRd5plWydrepkLd9X/uh6E2s0GimuTmSWYYmZXv
+	 5zmeTtvsTJ80sy44RVNeETEUca+1+yXLwbxlSTW2108C3vnCAzuXXwa/iWqCSUaw6UBB8
+	 hAXBn6WHQtXvBTtgfuH5xwQoBncl253PgWFRZMJg8UHOwNm5abNnXr6PML3f6kMYOcBYh
+	 imQbLcBYswQ8WdA9ZrsPdqHCuEOLfSx6y+Eengh6BEPt1YCBK/gJXw3pGMfP61Pp5Vw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X2Q+YVI4;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--smostafa.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="p4/I1/p/";
+	arc=none smtp.remote-ip=209.85.128.71
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC7D606A31E;
-	Sat, 24 Oct 2026 16:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55581606A31A
+	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 16:20:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55581606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--smostafa.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X2Q+YVI4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6BC1F01825;
-	Sat, 24 Oct 2026 16:11:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792858281;
-	bh=W27aSalgzv2Xbhoow/lwveUu1WS93+h0c2znFzv+Gb4=;
-	h=From:To:Cc:Subject:Date;
-	b=X2Q+YVI4JJRsEhbQrDjwlDFBW1bkYeTfu/NVkgbhJQosNuEypKZGkOILmN4DthdpU
-	 a3kSC4CnRyy5nN+5jfVJz41vPvG+dT6kP8mgSUPKgwb8cbE7xy2KKYj08Vm5/VC74W
-	 wA0ChyCgi01R2pmgS1rKMS7h2P8QISkKN503K3nNbXBSXrQspvLjVPEsSwMR/y6lhM
-	 XOrpsP2NLCJZfh4X7yGbhr13dUhSA0bfC2izzxeFrFfcvmvJ+JdlGhBkGpxRPpwQ4s
-	 rnOnK451RgnTRfzf06YzPhkq5uQrEcBKD5B844ux7BDfWjWdJaDz9LGbIX8wZMX/Sn
-	 Lj7xBvatHsN1Q==
-From: Sasha Levin <sashal@kernel.org>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: arm64: selftests: Skip ignored AArch32 ID regs in the failed-run test
-Date: Sat, 24 Oct 2026 12:11:18 -0400
-Message-ID: <20261024161118.1007472-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=p4/I1/p/
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a2063be13dso14365335e9.3
+        for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 09:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792858816; x=1793463616; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0LUNcR/8KJKuB0k5JLTs6CD6KvSgfj2q7nuRdY/7M0c=;
+        b=p4/I1/p/qx18W8SN4qIaz/kr+mXT4Peo9FUO750ksKj0gVPIy3sSeDxLRELIttU9pQ
+         zwp/o55Yil1MUxPqOv5TzpsAr1jJPF2btTTbEB5/JsevSE6FRy1BlxI9ib1vkYyJtu4C
+         ww7BnghqYkierN/p8VCCRhHaihhwh69JbqsnYHa3fZ/cYmezowWChILxyjMFEplUe2Hg
+         ri/AzJtkejlypiQLtaL2RSpCp/69IkmMMXkJrDssJJspeL3o6Ci7sf6NqhPezI5HbN3U
+         zGTX9tL5vX2PWuYzUaMQvuUDaCjLKUi+IdJFsiA540U5X/tXEdxp2rIFvkhy8xudnTTa
+         Mw6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792858816; x=1793463616;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0LUNcR/8KJKuB0k5JLTs6CD6KvSgfj2q7nuRdY/7M0c=;
+        b=zwFbuF7hiHmD9ZGfmQWne7hUx2OPQRsSRD+ic7jTk6ZAQAR5pvWsmz8TjXo7bvyvX8
+         InPTNCJCdIk17spjCxicMJjM3GaB46bd49hCfKsjNEu3mKKOWINoGvD04bJsshHlL+Ot
+         tuMlSTGo8FhkwIdoVi8fKKxNxK4oyJfz9vb3+NkICS2nu2LLq/U7yb7cc1uKb3h7iPRp
+         Zk4pDDZQkgfZCqSPXe6sIvScNABvMVQjihCtj94zNOi8YTLZtrJGQs7o5nhPY1qGTgsM
+         oy9XDtYtzsdiHa46bmvwHmQmDMbr+Ga/ePEoO9MUsXaU0FXNoiaK2crhaNJBmorIjkcY
+         whZA==
+X-Gm-Message-State: AFq9FYKeX1ZJRPqWvrejA2JRC6V76sMo6LhyaRIBPC5NpLNxohEl28VQ
+	lDH6ftzMABMJvYQrZE3kBBItIOYXZ0RtUt4Ge8+tp2LdkGw/Z6TVfDyIq5HmbQyyXBUUgeYEPL+
+	XBceDyom/IjNOCJ3NOMimuA2kJU+QeoudFwZcXS/ChN1IDTO2TgjTabDxPdiiGh+rWHH7Nj4k8i
+	2+x5LxmrOCW9aVJEGPevL6Egy/php+J6e/dnV4wrQeL1E=
+X-Received: from wmbg13.prod.google.com ([2002:a05:600c:a40d:b0:4a1:de16:b260])
+ (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:84ca:20b0:4a1:97c6:d2e8 with SMTP id 5b1f17b1804b1-4a35acb35dbmr23105455e9.32.1792858816235;
+ Sat, 24 Oct 2026 09:20:16 -0700 (PDT)
+Date: Sat, 24 Oct 2026 16:18:53 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,93 +75,93 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261024161902.2093581-1-smostafa@google.com>
+Subject: [PATCH kvmtool 0/9] vfio: Add support for platform devices
+From: Mostafa Saleh <smostafa@google.com>
+To: kvm@vger.kernel.org
+Cc: will@kernel.org, julien.thierry.kdev@gmail.com, praan@google.com, 
+	eric.auger@redhat.com, alex@shazbot.org, Mostafa Saleh <smostafa@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-test_idreg_frozen_after_failed_run() checks that changing a feature ID
-register after a failed first KVM_RUN is rejected with -EBUSY, and does
-so for every register in test_regs.
+This patch series extend VFIO support to platform devices by using
+VFIO-platform.
 
-On a host without AArch32 support at EL0, KVM treats the AArch32 ID
-registers as RAZ/WI: aa32_id_visibility() returns REG_RAZ | REG_USER_WI,
-and kvm_sys_reg_set_user() ignores the write and returns 0 before
-set_id_reg() checks whether the ID registers are final. The test then
-fails on the first such register:
+One of the main difference is how the guest discover the device, which
+is done through the device tree.
+kvmtool can only describe:
+- regs
+- interrupts
 
-  arm64/set_id_regs.c:870: r < 0 && errno == EBUSY
-  ID_DFR0_EL1_PerfMon write after failed first run: r=0 errno=16
+However, the guest still needs a compatible string and other per device
+bindings.
+To avoid having any hardcoded DT nodes in the source code, kvmtool will
+accept a dtb argument with each assigned device that will be copied to
+the guest node.
 
-KernelCI hits this on every run on an AArch64 only GB300 host.
+Patches
+=======
+1-4: Fixes, code refactoring and improving interrupt support.
+5: DT common function.
+6-8: VFIO-platform support.
+9: Custom device tree support.
 
-An ignored write leaves the register unchanged, so the ID registers are
-still immutable and only the test's expectation is wrong. Skip the
-AArch32 ID registers that KVM_ARM_GET_REG_WRITABLE_MASKS reports as not
-writable for this VM, which is decided by the same
-kvm_supports_32bit_el0() check as the write path. The aarch64_only flag
-that test_vm_ftr_id_regs() uses is not a good fit here, as it comes from
-the EL0 field of another VM's vCPU, which reads as AArch64 only whenever
-that vCPU has EL2 enabled, even on hosts that support AArch32.
+Patch 2 is better viewed with --color-moved
 
-Fixes: 00e309933879 ("KVM: arm64: selftests: Check ID regs are immutable after a failed run")
-Link: https://d.kernelci.org/test/maestro:6adcad0c55fda50760800a00
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Testing
+=======
+Tested on Lenovo Mini-x Gen 10 (Snapdragon-X) by assigning 2 devices,
+QCE and BAM as follows:
 
-Tested on an AArch64 only GB300 (Neoverse V2) running KernelCI's arm64
-build of mainline 5b0764a53235: set_id_regs fails as above without this
-change and passes with it (104 pass, 4 skip, 0 fail) in three runs.
+echo 1dfa000.crypto > /sys/bus/platform/drivers/qcrypto/unbind
+echo 1dc4000.dma-controller > /sys/bus/platform/drivers/bam-dma-engine/unbind
 
-This does not change the AArch32 ID register readback issue under nested
-virtualization that Itaru reported:
-https://lore.kernel.org/all/as8x38o9taXgKZym@sm-arm-grace07/
+echo "vfio-platform" > /sys/bus/platform/devices/1dfa000.crypto/driver_override
+echo "vfio-platform" > /sys/bus/platform/devices/1dc4000.dma-controller/driver_override
 
- .../testing/selftests/kvm/arm64/set_id_regs.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+echo 1dc4000.dma-controller > /sys/bus/platform/drivers/vfio-platform/bind
+echo 1dfa000.crypto > /sys/bus/platform/drivers/vfio-platform/bind
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 10849d21c0dd2..c8c9aaf9d7e86 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -815,6 +815,10 @@ static void test_idreg_frozen_after_failed_run(void)
- 		SYS_REVIDR_EL1,
- 		SYS_AIDR_EL1,
- 	};
-+	u64 masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
-+	struct reg_mask_range range = {
-+		.addr = (__u64)masks,
-+	};
- 	struct kvm_vcpu_init init;
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
-@@ -831,6 +835,7 @@ static void test_idreg_frozen_after_failed_run(void)
- 
- 	vm = vm_create(1);
- 	vm_enable_cap(vm, KVM_CAP_ARM_WRITABLE_IMP_ID_REGS, 0);
-+	vm_ioctl(vm, KVM_ARM_GET_REG_WRITABLE_MASKS, &range);
- 	kvm_get_default_vcpu_target(vm, &init);
- 	init.features[0] |= (1 << KVM_ARM_VCPU_PMU_V3);
- 	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
-@@ -852,8 +857,18 @@ static void test_idreg_frozen_after_failed_run(void)
- 	 */
- 	for (int i = 0; i < ARRAY_SIZE(test_regs); i++) {
- 		const struct reg_ftr_bits *ftr_bits = test_regs[i].ftr_bits;
--		u64 reg = KVM_ARM64_SYS_REG(test_regs[i].reg);
--		u64 val = vcpu_get_reg(vcpu, reg);
-+		u32 reg_id = test_regs[i].reg;
-+		u64 reg = KVM_ARM64_SYS_REG(reg_id);
-+		u64 val;
-+
-+		/*
-+		 * KVM ignores writes to the AArch32 ID registers when it can't
-+		 * expose AArch32 EL0, and reports them as not writable.
-+		 */
-+		if (sys_reg_CRm(reg_id) < 4 && !masks[encoding_to_range_idx(reg_id)])
-+			continue;
-+
-+		val = vcpu_get_reg(vcpu, reg);
- 
- 		for (int j = 0; ftr_bits[j].type != FTR_END; j++) {
- 			u64 ftr = (val & ftr_bits[j].mask) >> ftr_bits[j].shift;
+./lkvm-static run --irqchip gicv3 -k Image -p "nokaslr" -d rootfs.ext2 --force-pci -c 1  --debug --vfio-
+platform 1dc4000.dma-controller,purwa-cryptobam.dtb --vfio-platform 1dfa000.crypto,purwa-qce.dtb
+
+There are some fixes on the list that are needed to be able to unbind
+the bam device [1]
+
+Mostafa Saleh (9):
+  vfio: Fix fd leak in vfio_group_get_for_dev()
+  vfio: Factor out wired IRQ setup and teardown
+  vfio: Support edge-triggered wired IRQs
+  fdt: Allow fdt_irq_fn to generate multiple interrupts
+  fdt: Add helper to copy an FDT node
+  vfio: Reserve guest address space for VFIO platform
+  vfio: Add basic support for vfio-platform
+  vfio: platform: Add interrupts support
+  vfio: platform: Take the guest node from a device tree template
+
+ Makefile                       |   1 +
+ arm64/fdt.c                    |  36 ++--
+ arm64/include/kvm/kvm-arch.h   |  10 +-
+ builtin-run.c                  |   3 +
+ hw/cfi_flash.c                 |   4 +-
+ hw/rtc.c                       |   4 +-
+ hw/serial.c                    |   3 +-
+ include/kvm/fdt.h              |  32 +++-
+ include/kvm/vfio.h             |  41 ++++-
+ mips/include/kvm/kvm-arch.h    |   2 +
+ powerpc/include/kvm/kvm-arch.h |   2 +
+ riscv/fdt.c                    |   2 +-
+ riscv/include/kvm/kvm-arch.h   |   7 +-
+ riscv/irq.c                    |  27 ++-
+ vfio/core.c                    | 152 +++++++++++++++-
+ vfio/pci.c                     | 111 +-----------
+ vfio/platform.c                | 317 +++++++++++++++++++++++++++++++++
+ virtio/mmio.c                  |  10 +-
+ x86/include/kvm/kvm-arch.h     |   2 +
+ 19 files changed, 619 insertions(+), 147 deletions(-)
+ create mode 100644 vfio/platform.c
+
 -- 
-2.53.0
+2.56.0.307.g5fe7bd680c-goog
 
