@@ -1,101 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792812384;
-	b=OAiP9FizGxqC6ryR9ciXyOuhkSG0EVK/KqNpbgvkwAcmA+6KlB7Ym6cs9eVCd0baE3Hw
-	 a/kEgK/ua4ESORlttN08cF2KVv2yNiNNb3zL8IUIb/h8TnhtGDmZM70sWWUr6/z3ZQve1
-	 by3gb+UHIb1bUekccCuUjyAIA2KhU4V4U9M1tT2A/e+oHvuHQonW2LTtCQwv86iu8HqYn
-	 zziUidaE/D7yaRtAJJd6LyTNsOGlLwmx0GLHVxGcDlQYQNb8QlRn5pxbYMOCKkBK08nRE
-	 WRJwzNCgz1Qzr2mr2lI41l9tIRL9pMpz4/YJBkRPEa5xjNqLGF5/yBhbmvYx9DCJ5+g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792812384;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792824347;
+	b=vXPD/4qKkJ6NKA72InPZFz6C5rdhbCnAxQ93vM+vn9c/fFtyvEIgEcAIvGn6Qs/3B53P
+	 NErvCr15FD5HUL4nv0LeOC6cbTS64yAk1smGCJ+tUUfi3QBXJG4pPQfbiMgP+goJOMuwg
+	 xsuw3lulEUY8lkwakS3nz9f7jpSPOAEHZR+fSpaOAhBrd/4ikSitGhh9H5s0BL+2P22nZ
+	 k/56vczIQnkui236+lrGchYcOx7FR6fgXDTYdaKgHs8MZ7tsyRaQUXA0ZDfe3Re40A6oX
+	 QPU0TVI4kKrmQ18xLo5rnoli+WK0Dcld7ekxp4EUGqhQOGfUOxzsQh+mg71swqHuZ1g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792824347;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=FicJIZs2+/qCTDE+0FRHSg6kJmTqD7XGGr4iZ+o1ZRU=;
-	b=d/jRGUIedi1c5NTkSY+qdpkK+rn5POh+uMm0ryztEgWtMnf70G2GotitpEYTX4W/Thhe
-	 pb0yeT91AYsSBg1qILWfGvhjgiflEj4Jn7iBUOFFK3lXYW6TjTBjQzUbVQZ4l9jaz/ZaX
-	 KBgyibVZdJ/jcv+kYjVsXXY+GWNrYYH3t6Ec64MT8l0p1Qyf3Kc14R0Qyle6TmQwY9LJB
-	 uVdmjCOKP2+OmWG37lvERSKI0jGNej9DcBfW/MdgWKPsohNeltD+rv74m1WwD9ae1Ej5N
-	 TKjVVl/7aZSxvZVYEebvDkD8NNlAWB6Uw2QvXsIv6ThlvAsi15a13ZkYaHy5JByvVtg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JPkEfqc3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.181
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=VZkrS3h3QtN2lN0JtRWstJekBxv3Yb3xF/ujHnm2w/E=;
+	b=NAKSGHJmu+36QRvo6oc4MudsFugL6p0g+Tu6xdhFvhuFbOy0VFu8lO4uV7GzGLMArj1m
+	 wHaemno+bs6yZF2x3VF9NItZzkvNUXbG3co9u/0A0Y4cRA5YWU40ev57gWyZYAf8W0FcY
+	 PqCeBLs5PCCwTMLjZ5aJ/xt2kpmOMsMqbUYhLAVTIem5h7sdTNDUzSXmPmaomxsAAdK82
+	 j8JhVnSiUIrN9Mf0JzJhdCd08nKvHdnZk8NFRxIo1dPPA5Adk+oPwAjGkl2cRP07jFkk7
+	 zv4nV4RZjHiih0psBj7ftRVwAJNe7n9zPI3qX5ZZypSBM3/RBSetD76d86zaLbJFETA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T7+vrpj7;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qyWrtnwO;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B4B606A31D
-	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 03:26:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20B4B606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D82606A31F
+	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 06:45:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40D82606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JPkEfqc3
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53512cd2f85so15662501cf.1
-        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 20:26:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792812383; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EZPeSjBcGJhXAjASGgmuNKdIAWvY68TJtH6KNNu+bKsW30Pce/UL9tzwOAMfBzUMVo
-         JtG3c3lMCTuISG7z3d+RakrbeCWy0+E/F6fy594vGdpnNjhAU7Hzm5sBvARE7glEfukh
-         thrZoV1rObfdFxmcdVWIozdBAZ7vp5AGHmN4SRMhQNZgLzZXDd/AXZN4rLsquzx22E4d
-         E0x6Dzd5Tgs9uLNf6Y4KJ1y2tb6cUqxWdqfKrZlkbZ8E0/683bDpiNw5WH9MGaLipGSB
-         +/0KN1tlJtn8Reffj1/IZRle9bzAlf1ueyrm51LuRtqjMynIykHhW/vBJhdHiIDakqkS
-         sfBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FicJIZs2+/qCTDE+0FRHSg6kJmTqD7XGGr4iZ+o1ZRU=;
-        fh=KSwtYyo89I8gRBn0/jcGvryxCKyTduTyOGgjfcAJHCk=;
-        b=WXjgbHcfuzStFng9b4c3ADqVx5Y94hjkGgzHJm0t/+AFjPy9pC7Pf6sbUnhoz4ctW/
-         G9WX++tnnbwkXOjUC7pbYQ7Kv5JlAlL+hvyF9J+NXyXqmPP/ukJXC6hEedOQBBqnOSb6
-         vMiwovKNqzdxI3cExTHlxcl+e69iowEJNfrDS+ubewchOYbfcbmFr07aGJc8090rXkW6
-         VUvOANz60zuU2KAfVvvHIoLHEfc9xazZX3q/7gGQmE4UQ3LUOHXzMGhekNBie51dwQzH
-         Whw2bGgQavUACeexja4ENBExawE6qHkfqNAbiiPLXEeEbcdyn76DeAdwYmcq2i2b15J7
-         ThpA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T7+vrpj7;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qyWrtnwO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792824346;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VZkrS3h3QtN2lN0JtRWstJekBxv3Yb3xF/ujHnm2w/E=;
+	b=T7+vrpj7S76ce9Leg450qxqwAGfKOdzcByHEMCV2ibOIWLV0Yf7gD14ZuUBcMx3cU1tDZY
+	WLJqw0EE4QarMyVMIOeb36TbJh2m0iESBEV+83oJd4cmLyZ3HxzepY8WGIrk/uY1jFr2Fc
+	GudSOUYsVOhkCkZuEmh801195QyymVw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-163-zVT6nVJrMa2AtT8GwbF2ZA-1; Sat, 24 Oct 2026 02:45:44 -0400
+X-MC-Unique: zVT6nVJrMa2AtT8GwbF2ZA-1
+X-Mimecast-MFC-AGG-ID: zVT6nVJrMa2AtT8GwbF2ZA_1792824343
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a211bff50bso9532775e9.2
+        for <kvm@vger.kernel.org>; Fri, 23 Oct 2026 23:45:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792812383; x=1793417183; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FicJIZs2+/qCTDE+0FRHSg6kJmTqD7XGGr4iZ+o1ZRU=;
-        b=JPkEfqc38rmVYfBrogvq0HcazTissN0pHHCPFvXuEHZAFWWFfqeXm++eSjOmi06YDL
-         SJcUq8tZjdWdtztCDSE4OnOhc7+JupfiOahyimATsNI2DfpxgRDl5VikOe1KqEa2bxRb
-         x1Rag0wSOPQT489sGmvn7vOkDJuwKRhf+nSYqDBb5NDmOkXbbnhTvioy1WS843k1+m+c
-         xKeJxq8dwAHDkVgGayc+kNBX3ADw63+op6lwCt6enK2g45SEnzjzijeu+PztTXcvcSlW
-         W2dxvy2YcGbWnjqU8E64E6zMvOffo43W9UpFDUpygE8FkeyCWGKHL2+ICOJZuwYBlmkv
-         Mu9A==
+        d=redhat.com; s=google; t=1792824343; x=1793429143; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VZkrS3h3QtN2lN0JtRWstJekBxv3Yb3xF/ujHnm2w/E=;
+        b=qyWrtnwOQ/VuuWPScSgijCP+M7VHXg8PK7QLyCGp0Y7D/rUTgjc/9RizDiVhlu7dPY
+         laBdpxunQICvYpKnx8sKthxhHZJjOx0ApDSXbYDDAvydfZ5Pwtg9CQ2f2cibuL2to2tN
+         geljcatw5qL/kWpevQqvu3+UEZSZWAvo8koK20y71iUcLo+oN1a+1q5+TF07rjzggsbp
+         cIjbFzXMjS9g714qiKjnMiXHwl++CYOwSHiZCG24Gl+nTFDv5ISdRDcDbB+5qkXGu0xP
+         KT1PUJpKc0ty5XGdjOI2QECEAZOdHl3vX6T1MOiyf4dl1f7QWKxKJnoeJhV7h47LCztD
+         ZcSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792812383; x=1793417183;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FicJIZs2+/qCTDE+0FRHSg6kJmTqD7XGGr4iZ+o1ZRU=;
-        b=g4+RSGMSgPJF5AdjvjDYSAL5kPFirsuDNCi9lzpRMX8hFZzingK7v4Y9MbfHqluIRh
-         OcXJYFoo3Rqd+te2Q+dX45dgN67PMhjxh6UsmvCR2u/HfgqiLE/3xpYSvsRNxv4ckSaf
-         KBOmy0ZU+DmVXm6+0SVh5PJesnI9b6uj3KYWrBWQd+Aa7ki1xfAvUuFQLdxJFp1B8kyw
-         6V3rcvfzEqn1h6XDEr5rBCq5TbIzpzf4FavQs6Y+HUdgKr/TKTgiPFkxb+o5eMcfbOMR
-         8/ZpiH2jyZ6Z/46e/yuswKaMmHJ45WnGQezBuaovaSUcReaVuuviWzY06NuWWDdTdCRo
-         UXCw==
-X-Forwarded-Encrypted: i=1; AKwUvBx1x2wq9X2ypa54W9Rc706UnZCQEQdpcDdH0IVMUlmiw44JtVzeuSLPW4ULqIsGPcmvFDk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ1Tlk2N3KUS/REVEYxBBUxL9rCfb2B9YMuVLX03NEIwo/AmeaC
-	NRzRrOrXelUhRMwUyLTUVm7J2HWfTuJMDzd5UJEY+jmr2WQmYpwMi/tMHwAKzksKOzMouk/tayf
-	1TzeilgnjCINzQE8/krnwlOn4J7zlB5U=
-X-Gm-Gg: AYBFou2310xJmqIUO4RQQlWV3LeySCmydkce4dn1hycz4yxTlKgno7h5AaHSiR0Ml6X
-	pdWbfnJK9LQbJGw7XIEIExqmQkJfnuKjhpdqvIipVoIfSrWQ/NPvuIJZmnpB5pzfk9hz00m/1Y7
-	L/mgV/lAbSDDD9vITEJ4kaD4cSLZbMYApMqbo1l0g136EQsljZmvkoegsalUl9N1rcfgMPc3Zee
-	DtxtpW8rnQp/Y1K3uQjEemRVfovtZ2UjlksJOdFR3ZNkqqezPT+0kP2dJ82g6MiZPYH6FVTbhbg
-	lf37gJPDdGZ57XHBDvrchxvaYy+03rkLzZZt8acFlWTpGCnwLRS/bPAmzayZ3FuXp0kHfpA8F+j
-	RtxamQ6f2l3Isb6vQU3NYu5/xX/3ALKrU5JYWnWYrZ94/7hsuH1NVYNccaSULGP6hELHyEWWg/c
-	SXs1HQnaiqz3kGwB3bXvU=
-X-Received: by 2002:ac8:5f93:0:b0:535:11e7:fdb3 with SMTP id
- d75a77b69052e-5383b4fd48cmr11061231cf.34.1792812382943; Fri, 23 Oct 2026
- 20:26:22 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792824343; x=1793429143;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=VZkrS3h3QtN2lN0JtRWstJekBxv3Yb3xF/ujHnm2w/E=;
+        b=ZBannxfperqfkhqIBATs2Xq3YzHRep4VkEo2kHI8RS1CYfmi5UphZhw3qPC+uPxggX
+         hzkoI2md5T2s/PleML6gILTNNtefOVSN80JQ+dLD4kbGoFR2E9wQq+ganEYN6QTuJKQp
+         94DdWu4wE4Z4cZAs6Y2ShnKZpSIpmDZlUB2KiwwWbELvSLYqgdNYO899+uroxwU56qTF
+         8efDDFImKvVzZKDhUgtyYnBFQ9z6mOzL3OCAI9hzmGdxsBzPhZQoMYEvQoX3H+qnUaB6
+         vJOgQolMIAcWT6DoXjcjyP1mvLHmJWThxIIJ6gS0OyRjF0JujyN9+tI1TusQj+zlo9eh
+         eqwA==
+X-Forwarded-Encrypted: i=1; AKwUvBwHhcNU6FbIMFDWctojka+bh+5cBpvX5DLJIrvwNQLw4XH1dg9KBzJQiN8MPxsuU/MaZrY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIcoVpV5hBIOeqIxDP8gLSk2qWN5IaYTUZyjo8EG7QGUdh448ci
+	nSHZ9pl7UeNWkKf10oG4KsIfO1cjqtUWoa96Rdi2hpH6JhSe7YCktcZnLiPCjt3sediAb+5SoqT
+	106Vl66sqdCa+3yS4+CvYBYkc64oGEcMD5XDtO3zsS3p5nQdy7SDbXooedM1GPQ==
+X-Gm-Gg: AYBFou16o2txP9ypfsvjzaHFtNqxkLffitGA89yuErtasTwNetNzB6mIx+z/XPE6Y7A
+	IEzjJNDP+gULpTWUl3WkeDyC/uS9p+9PZdMOTQWw+Qrq8+e8Fl5epHPP2WLiW2tQUWqPoT/k9ie
+	vp6a1rql8XnFRTaB8DV8Uby0uZe5EaSYZwRu1qnfqfLP4enTNO/qhoegbarl3eScVVo8yRh33jF
+	NoMeg45VHiRBjl0aGrx3azRQ9NouICbYwAVjKfP2syXN9CSBpcNxXtZ4sKX4vAU9ECnGGZPB2jE
+	trcdd+5itN9/JQeQckuh+8NUjpITlNJWSxHdZEH2kGukB655ZE4uTA2/6AtDcEl0DssfhU4=
+X-Received: by 2002:a05:600c:3487:b0:4a1:fba8:b13d with SMTP id 5b1f17b1804b1-4a35ac8c231mr16890865e9.9.1792824343218;
+        Fri, 23 Oct 2026 23:45:43 -0700 (PDT)
+X-Received: by 2002:a05:600c:3487:b0:4a1:fba8:b13d with SMTP id 5b1f17b1804b1-4a35ac8c231mr16890615e9.9.1792824342728;
+        Fri, 23 Oct 2026 23:45:42 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73f6:2400:30a8:9e33:7d82:c035])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359f3e00asm63050615e9.0.2026.10.23.23.45.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 23:45:41 -0700 (PDT)
+Date: Sat, 24 Oct 2026 02:45:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Guikun Yang <yangguikun19@qq.com>
+Cc: Jason Wang <jasowang@redhat.com>, Eugenio Perez <eperezma@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost/net: initialize the whole negotiated RX vnet header
+Message-ID: <20261024024028-mutt-send-email-mst@kernel.org>
+References: <tencent_803981983647D9F9444561A4227F138C600A@qq.com>
+ <20261023080824-mutt-send-email-mst@kernel.org>
+ <tencent_E3543FCAC26722EA3D15F87B69C4C769D905@qq.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,168 +118,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018201727.96924-1-williamwoodstock79@gmail.com> <20261019141053.7b2d8e23@nvidia.com>
-In-Reply-To: <20261019141053.7b2d8e23@nvidia.com>
-From: William Woodstock <williamwoodstock79@gmail.com>
-Date: Fri, 23 Oct 2026 20:26:12 -0700
-X-Gm-Features: AclHuK-yfT4LvkJ-ln5yWRznOXG4xObhTaFvAUkqkJ-ddhw8muvQiG6pyIjtX5o
-Message-ID: <CAC_eNMPu=3Tez6L0jO2f-OkRWPL9-ub8BS+7uftcRqSGKbCFQA@mail.gmail.com>
-Subject: Re: [PATCH] PCI: Avoid bus reset on NVIDIA GB202 and GB203 GPUs
-To: Alex Williamson <alwilliamson@nvidia.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_E3543FCAC26722EA3D15F87B69C4C769D905@qq.com>
 
-Resending because html was rejected, and I also tried kernel 7.3, with
-no success.
+On Sat, Oct 24, 2026 at 10:11:01AM +0800, Guikun Yang wrote:
+> On Fri, Oct 23, 2026 at 08:13:22AM -0400, Michael S. Tsirkin wrote:
+> > Which backend did you use? Sounds like you did not set
+> > TUN_VNET_TNL_SIZE or did not set TUNSETOFFLOAD?
+> > That's the issue then.
+> 
+> The backend is a tap device attached via the normal tun path:
+> TUNSETIFF (IFF_TAP|IFF_NO_PI, no IFF_VNET_HDR),
 
-> What's your RTX 5080 vBIOS version and system information?  Is it the
-> same Asus X870E as the other 5090 reports or something else?
+Ah, no IFF_VNET_HDR *with* vhost. That's a weird combination.
 
-vBIOS: 98.03.3b.c0.0b
-Card:  Zotac GeForce RTX 5080 (10de:2c02, subsystem 19da:1765),
-       primary PCIEX16 slot, bifurcation Auto
-Board: Gigabyte X870E Aorus Master, BIOS F14d (not the Asus board)
-CPU:   AMD Ryzen 9 9950X3D2, GPU on root port 00:01.1 [1022:14db]
-Host:  Proxmox VE, kernel 7.0.14-20-pve; guest Windows 11 Pro,
-       GPU passed through with vfio-pci
+> then
+> VHOST_NET_SET_BACKEND on the RX vq.
+> 
+> I re-ran the repro with TUNSETOFFLOAD declared before attaching the
+> backend, listing every offload bit the interface understands:
+> 
+> 	TUN_F_CSUM | TUN_F_TSO4 | TUN_F_TSO6 |
+> 	TUN_F_USO4 | TUN_F_USO6 |
+> 	TUN_F_UDP_TUNNEL_GSO | TUN_F_UDP_TUNNEL_GSO_CSUM
+> 
+> TUNSETOFFLOAD succeeds (0 is returned, so tun accepted all of them,
+> including the UDP tunnel GSO bits).  The result is unchanged:
+> 
+> 	features[0] = 0x108000000, features[1] = 0xa   (tunnel bits on)
+> 	VHOST_SET_FEATURES_ARRAY ok
+> 	TUNSETOFFLOAD ok
+> 	--- RX buffer first 32 bytes (initially all 0xAA) ---
+> 	hdr: 00 00 00 00 00 00 00 00 00 00 01 00
+> 	     aa aa aa aa aa aa aa aa aa aa aa aa     <-- offsets 12..23
+> 	     33 33 00 00 ...
+> 
+> Offsets 12..23 still contain the stale 0xAA fill.
+> 
+> The reason is that vhost_net_set_features() computes vhost_hlen purely
+> from the feature bits passed via VHOST_SET_FEATURES(_ARRAY):
+> 
+> 	hdr_len = ... sizeof(struct virtio_net_hdr_v1_hash_tunnel) when
+> 	           HOST/GUEST_UDP_TUNNEL_GSO is set ...
+> 	if (test_bit(VHOST_NET_F_VIRTIO_NET_HDR))
+> 		vhost_hlen = hdr_len;
+> 
+> TUNSETOFFLOAD only updates tun->set_features and the tap device's
+> wanted_features; it does not feed back into the vhost feature bits or
+> into vhost_hlen.  handle_rx() then writes vhost_hlen bytes of the
+> virtio-net header into the guest buffer while handle_tx() / the GSO
+> path never touches those 12 bytes for a header vhost itself built.
+> 
+> I could not find TUN_VNET_TNL_SIZE anywhere in 7.3.0-rc7 or in
 
-It reproduces without a VM. On the host, with the link at 32GT/s x16:
+Apologies. TUN_VNET_TNL_SIZE is an internal macro that header size
+is set it. TUNSETVNETHDRSZ is what I meant.
 
-  echo 1 > /sys/bus/pci/devices/0000:00:01.1/reset_subordinate
-
-brings it back at x8. A bwctrl retrain restores the speed but not the
-width; only a cold boot gets x16 back.
-
-> Is the issue still present on kernel v7.3?
-
-Yes. I built v7.3 from kernel.org with no patches, using the Proxmox
-7.0.14-20-pve config (make olddefconfig, LOCALVERSION=3D-stock), and ran
-the same host-only test with no VM running:
-
-  uname -r: 7.3.0-stock
-
-  before: 01:00.0 LnkSta: Speed 2.5GT/s (downgraded), Width x16
-  after:  01:00.0 LnkSta: Speed 32GT/s, Width x8 (downgraded)
-
-  [  211.617016] vfio-pci 0000:01:00.0: resetting
-  [  211.617225] vfio-pci 0000:01:00.1: resetting
-  [  212.898377] vfio-pci 0000:01:00.0: not ready 1023ms after bus
-reset; waiting
-  [  279.586064] vfio-pci 0000:01:00.0: not ready 65535ms after bus
-reset; giving up
-  [  279.587022] vfio-pci 0000:01:00.0: reset done
-  [  279.589284] vfio-pci 0000:01:00.1: reset done
-
-The 65 s "not ready" wait didn't happen on 7.0.14, where the reset
-finished in about a second. On this run the guest had been
-force-stopped just before the reset, so that may explain it rather
-than 7.3. The x8 result is the same either way.
-
-> Disabling bus reset entirely should be a last resort, it has
-> implications for device isolation when no other reset mechanism exists.
-
-Understood. What I measured:
-
-- 01:00.0 (GPU) reports reset_method "flr bus"; 01:00.1 (HDA) none.
-- With only .0 assigned, FLR is used and the link stays x16.
-- With .1 assigned too, vfio falls back to a bus reset and the link
-  drops to x8.
-
-So the bus reset is only reached because the audio function has no
-reset of its own. Would you rather see a quirk that gives the HDA
-function a usable reset, or keep the bus reset and restore the link
-width afterwards? Happy to test either.
-Thanks,
-mark-ship-it
+> linux-next (drivers/net/tun.c, drivers/vhost/net.c, include/uapi/linux/
+> if_tun.h, include/uapi/linux/vhost.h) — is that an interface from a
+> tree/series I'm missing?  If it is meant to gate vhost_hlen I'd be
+> happy to re-test with it.
+> 
+> Meanwhile the stale 12 bytes are observable with a plain tun backend
+> that has declared full tunnel offload support, so I believe the patch
+> (Zero-initialize the largest header layout and copy vhost_hlen bytes)
+> is still needed.  Happy to re-test under whatever backend setup you
+> had in mind.
+> 
+> Best,
+> Guikun Yang
 
 
-On Mon, Oct 19, 2026 at 1:11=E2=80=AFPM Alex Williamson <alwilliamson@nvidi=
-a.com> wrote:
->
-> On Sun, 18 Oct 2026 13:17:27 -0700
-> mark-ship-it <williamwoodstock79@gmail.com> wrote:
->
-> > NVIDIA GB202 (GeForce RTX 5090, RTX PRO 6000) and GB203 (GeForce RTX
-> > 5080/5070 Ti/5070) GPUs train their link at x16 at boot, but after a
-> > Secondary Bus Reset the link comes back at x8 and stays there until the
-> > next cold boot.
-> >
-> > The GPU's HD Audio function (e.g. 10de:22e9 on GB203) has no reset meth=
-od,
-> > so when both functions are assigned to a VM, vfio-pci falls back to a b=
-us
-> > reset at VM start and again at release, and the GPU then runs at half
-> > width. Assigning only function 0 avoids the bus reset because the GPU
-> > itself supports FLR, which is why the problem is usually reported as
-> > "passing the audio function breaks x16".
-> >
-> > Observed on an RTX 5080 (10de:2c02) behind an AMD Root Port, kernel
-> > 7.0.14, Proxmox VE host with a Windows 11 Pro guest:
-> >
-> >   boot:                         LnkSta: Speed 32GT/s, Width x16
-> >   echo 1 > /sys/bus/pci/devices/<root port>/reset_subordinate
-> >                                 LnkSta: Speed 32GT/s, Width x8 (downgra=
-ded)
-> >
-> > No VM is involved in that reproduction. Stepping the link speed through
-> > bwctrl (Gen5 -> Gen4 -> Gen5) retrains the link and the speed follows,
-> > but the width stays at x8. With a VM started frozen (-S), the link is
-> > already at x8 before any guest code has run, so the guest driver is not
-> > involved.
-> >
-> > With this patch applied, reset_method for the GPU is "flr" only, both
-> > functions can be assigned, and the link stays at x16 Gen5 across VM
-> > start, shutdown and restart, with the Windows guest driver working.
-> >
-> > The same symptom has been reported with an RTX 5090 (10de:2b85) on an
-> > AMD X870E board, where passing only function 0 was the only thing that
-> > kept x16.
-> >
-> > Link: https://forum.proxmox.com/threads/asus-x870e-pcie-x8-bifurcation-=
-bug-with-rtx-5090-vfio-passthrough.178461/
-> >
-> > Signed-off-by: mark-ship-it <williamwoodstock79@gmail.com>
-> > ---
-> >  drivers/pci/quirks.c | 9 ++++++++-
-> >  1 file changed, 8 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> > index 1aa87a3ef..a4adcc3e7 100644
-> > --- a/drivers/pci/quirks.c
-> > +++ b/drivers/pci/quirks.c
-> > @@ -3769,10 +3769,17 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, =
-0x22D0, quirk_no_bus_reset);
-> >  /*
-> >   * Some NVIDIA GPU devices do not work with bus reset, SBR needs to be
-> >   * prevented for those affected devices.
-> > + *
-> > + * GB202 (0x2b80-0x2bbf) and GB203 (0x2c00-0x2c7f) GPUs train at x16 a=
-t
-> > + * boot, but after a Secondary Bus Reset the link comes back at x8 and
-> > + * stays there until the next cold boot; a link retrain restores the s=
-peed
-> > + * but not the width.  Function Level Reset does not have this problem=
-.
-> >   */
-> >  static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
-> >  {
-> > -     if ((dev->device & 0xffc0) =3D=3D 0x2340)
-> > +     if ((dev->device & 0xffc0) =3D=3D 0x2340 ||
-> > +         (dev->device & 0xffc0) =3D=3D 0x2b80 ||
-> > +         (dev->device & 0xff80) =3D=3D 0x2c00)
-> >               quirk_no_bus_reset(dev);
-> >  }
-> >  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
->
-> What's your RTX 5080 vBIOS version and system information?  Is it the
-> same Asus X870E as the other 5090 reports or something else?
->
-> Is the issue still present on kernel v7.3?
->
-> Disabling bus reset entirely should be a last resort, it has
-> implications for device isolation when no other reset mechanism exists.
-> Thanks,
->
-> Alex
+I have in mind simply disabling this combo: vhost + !IFF_VNET_HDR)
+
+I'll research a bit whether anything anywhere could reasonably
+use it.
+
+Can you reproduce any problem *with* IFF_VNET_HDR?
+
+-- 
+MST
+
