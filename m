@@ -1,74 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.64
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792827209;
-	b=pLURvyKipVTQFy3xwd/DRcpffcayfYSj4RsLD9/j8p1gDXuKtKBjKGFPKMvP2FIjiEFN
-	 mjSx1a6x+Gb8qvp2bdv9XHBShGmJ5YsUALKhipo1xEWLQ0zX5slGnlhmZxeG3+Z1VIEcP
-	 tYJrg3yaR+mZ2ksgSCXDOjzN1qom4MGp24UCT+nvdRAu6F253c8VLh7eZdEov0sHi5S/q
-	 w8vSMlQsxj6hQAc/FQN2wB1dU8N7mYOD+UPe97I/KQkZGBX87ZdDixEJrBXehTA+4+AVL
-	 Ntm7ClSfP10UEMgyZocmGeq12xHksJkFEF0OAIycTMANDM4+xmb+AUvPstKfCV1bDtA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792827209;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Ok3pjg22edXzQhuK8h6FzdRDjegD24d8xy6xP3Un7Og=;
-	b=redg4FJ+fVf/l1FIfpgXag9dd4JrN/MouXfgEGuMsm+/LoDw2PK/0ws+U042zQlLXhTd
-	 R4Q1VFkuyF79GBsAGM1mZv2zojwI/Fjqetl1OY+Q988k5XbNWoWCxIH+f80QnS90qhTTf
-	 qPAZ+WPsTCiuYaef26DqX0hfeUTpeX9lcevC3jamUqn569O8W5U6aNCtLTlPVBji1e3q8
-	 shNoUbQ//5/o7CrRZuSfhGvc/BeeBavQwQYyx4HQ/jv6ct77JV6O0K7P2rxU6l92M4J4d
-	 T/QUdigo+lqLcFDz9eUSqX8eIe+RjnVg6iFhNT51uNGlYiWKxUiZAwmip+6jo7PD9Qg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=fzdllpE6;
-	arc=none smtp.remote-ip=162.62.57.64
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792851237;
+	b=c0qlHdxlUvbwzrXusPNGuj6plcT9aae6ZhTw8o9HJaMR+Qz30QpkvOsIzKV0978yqhO3
+	 1u5RnEjWgjfj4kzeg2KQBbzhNVLyyNGgJ5fLqtTeLBEyBdp9IUzieUGRRqplAVjH3l0pG
+	 +VE8NgL6zqzyU/cXcKaBmhp6WOa8HSt6ciGWcfkSsBHhLOB42dBDKIuV817bSN//J5MDk
+	 WQ91MVDNDzM+/bMSnFCl7zCtV9Ni2OZANrxADyHDRMjWSvP2dZunAm58UHRCQPRReV5ML
+	 Cx7UAHct58v6LuuE4NfbbNKNNwN7YbQUFKoFfhhTixiISO6c6jvzUcCKvKCZ5t4WqiQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792851237;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
+	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=WETvM4XgvEH9H1z2IswGX570YSIkvo3XsB9Z+m0Q4E8=;
+	b=ThRsrgp6iEsik9MM97J35VP+3UzrUu4J/WQkykqU0P1b2NMfVVXkfujXMQNdHBhTdLkk
+	 PPJpyxz+3pKXMnjGciAIp5qfe96wYyG7vRI73bPxy2kWyQmJScAOm0cddw0JkUSdj4VFi
+	 ZMu9Dm5qLDIUO1sGZKuNIrfCXWTdIrTh8xZt0RgxPBqKtERbBVBi4V3JEqAw5zXZt06Ml
+	 IMGqlc1uDSbvlWyGX2pIPkxRNmv5n4hu7H8NkaEQ7Wdav2AIwEXqNHyRstw08AfhIy6gn
+	 erI9Y0F8kyk1eRPov8ZIHz+IfofcIrqeNEtmsIa6lnmxMyHWbmAbmSFrDpua/29Q0QA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=P3aPtiqa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.17
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013017.outbound.protection.outlook.com [40.93.201.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C91606A31A;
-	Sat, 24 Oct 2026 07:33:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81C91606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E364606A32C
+	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 14:13:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E364606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=fzdllpE6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792827203; bh=Ok3pjg22edXzQhuK8h6FzdRDjegD24d8xy6xP3Un7Og=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fzdllpE6O5GmIISEiixKEHXvpzrpblzndNtULG9lk+boRG5QVvg6kYzt38scv8siQ
-	 x/72E1EbEy3WJe790wUVUz4/YSgUDCQH372K9wOMP8S4pxOlEMdQAIb3M69auBrmKn
-	 4ycwP1iB0mEtYDnGkbI9wCgT+bq4Z+kIX24tM/F0=
-Received: from [172.18.4.77] ([111.31.227.58])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 855128F4; Sat, 24 Oct 2026 15:33:21 +0800
-X-QQ-mid: xmsmtpt1792827201t5bz1fjn2
-Message-ID: <tencent_4528029FEDA8E7D49AEFE291032742538F07@qq.com>
-X-QQ-XMAILINFO: M1rD3f8svNznoVYgx84LsIAP5h2YIyC95fLBj1+igaesL7k2a3y8AV0oqlqnGK
-	 btgd/OgvLzUpyxM0HB9VguSu56OjljM2QW4Wu/w7OqtIbX34vVMB3He83DkZecQKvX49yOOBrB44
-	 2FTsbOzykZZ8vzXIH1Ye2nEE95688cK4Uc8OyEzAWIczuLGbm3VOL/zX2pddpXtZ7lAwUDLbSXDS
-	 d/7nQrXZH91K6eXxhd0gjSOrBXB/MXC0AatQkDjUl1ImEWkT8T82jkG0791+DqD8LY+la6w60I9k
-	 LLPpbmdAM2laYP43dBS5MalHr8PtL/DW7FOps5oh9PTDK6DMn2sEDO4ssJJsZBztSTVnVL2Jetc8
-	 NFErxvRoTc/0moD9/fH2GSFjHWp/rvQ1YYMPGLdNW2I7NBnpc45pJvEfkF66Kfzz4METLDmP621K
-	 qVOSaPlPYWq0mjgWTZosT+TbZ8qUC3JwKpeOqfMWUtAfjCWj+wwY+x48MUfKJmCRMi+wkm48mInG
-	 PhWdvrkVfAOuE2dUTL+KRVa3o9cRnoFBwalRX29Ps8xtk5VL4fRBEvcFV41sP0jjw25R+OTORkHB
-	 1AS9wa3P4X1HGdHDOvsME337oNwzzfCNi6BY2l0b5nDb2w1RHMt9ZArSlnUW1fJN8oh2eoVWdyxP
-	 Zk8AqZmtaSKI+heHUl4X/QvfjkTSdhcdqGAHcbzNwSums+0twgyOe52JTQqgRvU45QMqIRKe/iHj
-	 gkfXHkrQ4ExzBwdswyn0KkPxCnchttF2isjJNM93q1xP3e6NTGB3+eWv+IEjcj3ZPLS92UPzSU9s
-	 L1D2CxtQ2YvA0KONXcnDUfjlByj5exhl9VCwVHlKp5YKQkafVDm5pkkbACHoAbKOBfIXjs0FnTJ+
-	 jNqSvFvgZY3k5kXROAq3PP3bQd7g/SRtqzt0VJ8FPmjX3+Dsy+HJBg7IPUsC3iDCGaWmP1gIaSD8
-	 J9MDT2Qv1tZYmOtpqxLLufx7UpnqGeQbsbZ7WK85F1FhZTDSNWoqJU6OZkffvvVP3O8NrJeGeXU1
-	 buyOLnoKzom+B9pZ3vh9EfNSf5gFE7gGqaLFao0dxclUxhefDvXLuu8rLcO9L/H8+BeD/nCLMux+
-	 gylTKh7JM24jBQjGo=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Guikun Yang <yangguikun19@qq.com>
-To: Michael S. Tsirkin <mst@redhat.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/net: initialize the whole negotiated RX vnet header
-Date: Sat, 24 Oct 2026 15:33:19 +0800
-X-OQ-MSGID: <20261024153319.61076-vhost-yangguikun19@qq.com>
-In-Reply-To: <20261024150815.36216-vhost-yangguikun19@qq.com>
-References: <tencent_803981983647D9F9444561A4227F138C600A@qq.com> <20261023080824-mutt-send-email-mst@kernel.org> <20261024101101.71420-vhost-yangguikun19@qq.com> <20261024150815.36216-vhost-yangguikun19@qq.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=P3aPtiqa
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yd/yT94B/GXPKfwbUV6spypMFPclQpMwuXM/R4N+0Fi5tlaUmuC/ibeEC0VK8EpFCd9XPvNIwGjeIcdd4jzObz5VJdL9mWJpLrPP3vKM1TK7OSnn7G5V0P49xKYxZzw6HJ8yZ2EbWVOcLPDe3HzwEmS0MWtfMIEtrDOatDUMWrdUiZIxklvH1+SG0Ih22p3yDgnhvM/gUC6PRRshTCIOE3hkns3xf9fLncKjhGWznqYxUmV0ZUouB048S8XeqgIjSz4uX2HIgdkHg4dLgH5bnstkGtlTRxIS9xzBqj9ulbpPXYW4RXH0//xTJjoN3AxB0s67w7fimO8qJv2OHQiQoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WETvM4XgvEH9H1z2IswGX570YSIkvo3XsB9Z+m0Q4E8=;
+ b=d8Ubf+VSvr1alDdXW1tQoNKNzkRZ0v9EIuY6H5TEkLSpXsR6T3rofVE+zK5Ojpn918+v1DfNheE3+2vbpQUJagsM1vxJ0KXpueCiLWvX5AWlx9xyaweQrC1sYuDFdhLPoPKcI6enSrTxbNwi72OXxtgDfdsuDtuqp+t1Z4durHVfFZpIH7fzJvWKShGU9MfedxBkmjtfRMDr+hQAkT4VpeOTZ8eBHLlz7dDukgepApvFhixURUmrBtgkl53pbQqmRMMo61nhcWutsA7a8KqQaZmYAHBhmc5ZbqXPwL7t/Lm4YtKq7g1ifD0IQhF1IrckyQiK/TaEzkXZJMDLcFP2yQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WETvM4XgvEH9H1z2IswGX570YSIkvo3XsB9Z+m0Q4E8=;
+ b=P3aPtiqa00AGDWFiTts4LNW88/cLL3Nm2BW8pAlVx6eML3ER/c/r+MbUDycsXrfF7DUk42bdPzhIpoU69CkQX480vdn92J0ClcKGM//6BhiKChVuDlDTTcfyHWdGMhosqmn9vD7wAagRmCAtxMt1RkjIkfpPsWdoAji/KuXsg/8=
+Received: from PH0PR07CA0042.namprd07.prod.outlook.com (2603:10b6:510:e::17)
+ by CH1PPF16C2BD7B0.namprd12.prod.outlook.com (2603:10b6:61f:fc00::607) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.20; Sat, 24 Oct
+ 2026 14:13:51 +0000
+Received: from SJ5PEPF00000203.namprd05.prod.outlook.com
+ (2603:10b6:510:e:cafe::a0) by PH0PR07CA0042.outlook.office365.com
+ (2603:10b6:510:e::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.21 via Frontend Transport; Sat,
+ 24 Oct 2026 14:13:51 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF00000203.mail.protection.outlook.com (10.167.244.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.569.4 via Frontend Transport; Sat, 24 Oct 2026 14:13:51 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sat, 24 Oct
+ 2026 09:13:50 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sat, 24 Oct
+ 2026 09:13:50 -0500
+Received: from [192.168.1.2] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Sat, 24 Oct 2026 09:13:46 -0500
+Message-ID: <ac4d5a91-a3c9-4aba-92cf-5487dc264443@amd.com>
+Date: Sat, 24 Oct 2026 19:43:45 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,91 +105,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/12] KVM: SVM: Add VMCB fields for LBRv2
+ virtualization
+To: Jim Mattson <jmattson@google.com>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <acme@kernel.org>,
+	<kvm@vger.kernel.org>, <x86@kernel.org>, <yosry@kernel.org>,
+	<thomas.lendacky@amd.com>, <nikunj.dadhania@amd.com>, <sandipan.das@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>
+References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
+ <20261019210532.378628-2-shivansh.dhiman@amd.com>
+ <CALMp9eTXz6vD9iUN0mXPjwbxK_ZnocL+BwS3qbphSUFXzmeiaw@mail.gmail.com>
+Content-Language: en-US
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <CALMp9eTXz6vD9iUN0mXPjwbxK_ZnocL+BwS3qbphSUFXzmeiaw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000203:EE_|CH1PPF16C2BD7B0:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0fa64c8-3263-4b90-4166-08df31d9076d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|7416014|376014|1800799024|10067099003|22082099003|18002099003|13003099007|56012099006|11063799006|4143699003|261009223027099003|261021121427099003|261022105027099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info:
+	UWB0lvoiVfaTpSf6idrXbI1/bcKRQlr97HNDCtxeqS3lSS8cetU4UIVKL8mpscNYitrXUPCt0D7P81oeUa1Kfbm27hWI4iGn6jKfwlJ8bH0qTWBc05Te5R/mKVSvnBvLlqAN9xVbp+r9Ne//yPNxQ1MHX/Fx3AwaVQjnU7pX40q1ps4LCfi5gQDCskze7APQUxg51hDc+se8MVeo5Cx8QWgg2Aqt1Px0V6Nzrq5/H5C1OtlbIbnJmu7KfR303hHjjHVfdH9gQL7XD4w/1AcHKCkYDg8DOnattAOUT5BcpewP9FFEFgQNresQZgQd1sYJkBa+tucxwAgyjhEaNFLvxQ7MuI7gP8NDgumFxgWaTJrbtLd7t0vTHvYzNBQ6OUH0UET1JJJAbMXGOe9oUqQ7FURvC0Z42OHWP2qfWHQkR2j+4suy0dBmH/PiGmNIVPIeFPYHunISUL+E8DXULbBo/J9WmGZuEJ+KcNkW3Sc6Yo7M2MvWfjleTi7h4rlqMrok5gMvWaWWSagChqYx9USDDd/F5z5Th86QbQdR5qL9SijEYkP5bxocMHZLbezSTbdc3OwHJy6oOcr1/LchiaHs8Pm5gtGRGFV9oY67jQK4mM0F7OMiP4oJz2Y+pByIieeLM08yJU0DkVFHFa7294EbAs8YETD/whzew9tMK0UF1C8in8YQ0vmZ7robWlMU8MPlkAzg2RQ6MklhdRrBYSF9lA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(7416014)(376014)(1800799024)(10067099003)(22082099003)(18002099003)(13003099007)(56012099006)(11063799006)(4143699003)(261009223027099003)(261021121427099003)(261022105027099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	sPNVQbw6noVjWa5juSMU0qxttMdwQJYhLt4nprvUpdTq7obvZk25Kv/ryqHHRh3/9k7ALAdfwpkmUbVCXDR+RdS+DVJpefTVKt1w2gmip3oiASph7fo+oz26mlh8mibMBR4924KBhZH3kI8vyOCWRmRkGD7KjTIHgzrg/fE7Sa/ig3Ah5RJiRZYtY0i6en8UxQlbL2tZlTzqPUwYcNQpTvnRfcbB724d1MrCQGmK96pF/wmGXu3dV5G79qbpevjRsWCoFsJz9UTpUQ/Eu3exbAzhV/PiwiEmsiX43twd9CbkVO2xNcfDPi0fQ4XWCH5g4u9RD5MW3M0L+1DNzun8KJKfentf5f3AYcurhUGd6gvoRp0AMutAQ5/+T4ERirdsPUduAXfOg4Kte08Zqi3Xncr0YNnh6esPdM+UzPhnjtpDYTYbv67CyYgnpevs0D55
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2026 14:13:51.0898
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0fa64c8-3263-4b90-4166-08df31d9076d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000203.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF16C2BD7B0
 
-First, a correction to my previous message: the AF_PACKET injection in
-that run never actually worked.  I took the "ifindex" from the ifreq
-returned by TUNSETIFF, but TUNSETIFF fills in ifr_flags there (the
-values 4098/20482 I printed were BROADCAST|MULTICAST|VNET_HDR flag
-bits), so every sendto failed with ENODEV and no packet was ever
-injected.  The all-0xAA buffer in that run only shows that no packet
-was processed at all, and the "payload starts at offset 24" claim was
-wrong.  Sorry for the noise.
 
-I fixed the injection (SIOCGIFINDEX by name) and re-ran both
-configurations on 7.3.0-rc7 with a 64-byte broadcast frame injected on
-the tap.  With IFF_VNET_HDR enabled (plus TUNSETVNETHDRSZ(24)) the
-result is worse than stale bytes: the packet is consumed from the tun
-queue and then silently discarded, so the guest sees nothing at all:
 
-  tunnel mode (no IFF_VNET_HDR), sendto 64 bytes ok:
-	hdr: 00 00 00 00 00 00 00 00 00 00 01 00
-	     aa aa aa aa aa aa aa aa aa aa aa aa   <- stale 12..23
-	     ff ff ff ff ff ff 02 02 ...           <- our frame at 24
+On 20-10-26 03:39, Jim Mattson wrote:
+> [You don't often get email from jmattson@google.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On Mon, Oct 19, 2026 at 2:06 PM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
+>>
+>> From: Sandipan Das <sandipan.das@amd.com>
+>>
+>> Define the new VMCB fields that will be used to save and restore the
+>> state of the following Last Branch Record Extension Version 2 (LbrExtV2)
+>> related MSRs.
+>>   * Last Branch Stack Select (MSR 0xc000010e)
+>>   * Debug Extension Control (MSR 0xc000010f)
+>>   * LBRv2 Branch FROM (MSRs 0xc0010300..0xc001031e)
+>>   * LBRv2 Branch To (MSRs 0xc0010301..0xc001031f)
+>>
+>> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> ---
+>>  arch/x86/include/asm/svm.h | 14 +++++++++++---
+>>  1 file changed, 11 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+>> index 83fd49b26a4b..d76844224745 100644
+>> --- a/arch/x86/include/asm/svm.h
+>> +++ b/arch/x86/include/asm/svm.h
+>> @@ -372,8 +372,15 @@ struct vmcb_save_area {
+>>         u64 br_to;
+>>         u64 last_excp_from;
+>>         u64 last_excp_to;
+>> -       u8 reserved_0x298[72];
+>> +       u64 dbg_extn_cfg;
+>> +       u8 reserved_0x2a0[64];
+>>         u64 spec_ctrl;          /* Guest version of SPEC_CTRL at 0x2E0 */
+>> +       u8 reserved_0x2e8[904];
+>> +       struct {
+>> +               u64 lbr_stack_from;
+>> +               u64 lbr_stack_to;
+>> +       } __packed lbr[16];
+> 
+> Nit: instead of '16', can we hoist the definition of
+> SVM_LBR_V2_STACK_SIZE from patch 3 and use that here?
 
-  tunnel-vnet-hdr mode (IFF_VNET_HDR | TUNSETVNETHDRSZ(24)),
-  same 64-byte sendto ok:
-	hdr: aa aa aa aa ... (all 32 bytes untouched)
+That's a good idea. will do that in next version.
 
-The guest buffer is never touched in the second run.  The packet was
-read out of the tun queue and then dropped.
+> 
+> Reviewed-by: Jim Mattson <jmattson@google.com>
 
-The reason is a peek/read size disagreement:
-
-  - peek_head_len() returns head->len, i.e. the raw skb->len.  The tun
-    vnet header is not in the skb; tun_put_user() adds vnet_hdr_sz
-    bytes at read time.
-  - With VHOST_NET_F_VIRTIO_NET_HDR negotiated, sock_hlen = 0, so
-    handle_rx() computes sock_len = peek = skb->len (64) and calls
-    recvmsg(sock, &msg, 64, ...) with a msg_iter sized for
-    vhost_len = 64 + vhost_hlen(24) = 88.
-  - tun_do_read() delivers skb->len + vnet_hdr_sz = 64 + 24 = 88 bytes
-    and returns 88.
-  - handle_rx() then sees err (88) != sock_len (64) and takes the
-    "Discarded rx packet" path: vhost_discard_vq_desc() rolls back the
-    descriptor, but the skb has already been dequeued from the tun
-    receive queue.  The frame is gone.
-
-So for a tun backend, the three combinations are:
-
-  VHOST_NET_F_VIRTIO_NET_HDR | IFF_VNET_HDR | result
-  ---------------------------+--------------+--------------------------
-  off                        | on           | ok (classic: tun header
-                             |              | passed through)
-  on                         | off          | header written by vhost,
-                             |              | bytes 12..23 stale (the
-                             |              | patch under discussion)
-  on                         | on           | every packet consumed and
-                             |              | dropped, guest RX blackout
-
-VHOST_NET_F_VIRTIO_NET_HDR means "vhost supplies the header, the socket
-data has none", so it is only consistent with a backend whose
-vnet_hdr_sz is 0.  When the backend has vnet_hdr_sz > 0 the peek and
-the read disagree and handle_rx() eats every frame.
-
-Given that, I don't think disabling "vhost + !IFF_VNET_HDR" is the
-right fix: that is exactly the combination VHOST_NET_F_VIRTIO_NET_HDR
-is for, and it works apart from the 12 stale bytes my patch addresses.
-The combination that is plainly broken is "vhost supplies the header"
-together with a backend that supplies one (IFF_VNET_HDR set), which
-today results in a silent total RX blackout.
-
-So I'd suggest one of:
-
-  1. Reject VHOST_NET_F_VIRTIO_NET_HDR (or refuse the backend attach)
-     when the backend's vnet_hdr_sz is nonzero, so both broken
-     combinations become impossible; keep my patch for the stale bytes
-     in the remaining valid combination.  The backend header size could
-     be queried at attach time the same way TUNSETIFF-derived sockets
-     are handled today.
-
-  2. Keep all combinations and fix both symptoms: my patch for the
-     stale bytes, plus making the peek path account for the backend
-     header so peek and read agree.
-
-Happy to test whichever you prefer.
-
-Best,
-Guikun Yang
+Thanks for reviewing. :)
 
