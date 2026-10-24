@@ -1,70 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792859654;
-	b=htrvMC0SQHg5rXZ1BbP6UFE+NCz/SpfBgCbNDHcBxU1kXOy+wCQslYGAT0oFh6dvI3lc
-	 9no2dkEwjTda9Uw1QQZtZuw3gQy6L8BMVtASN/AmMY/9Xn6CQHdkZJnkSXrRZEyr9JLQO
-	 Y1i6kRTtDU5hYSXVOOG80xBBHYxkRWRtAKCtV6afFwN4x/rj5j8L+i7j1IX8ycWXlM8b4
-	 Olg8qq5B1w9Bg/EDWGvEzRnEqrL9adP9NBK22RC1zTjqRcL1h0RJw4NtZwRW0O1B1bmSF
-	 SUmIKqZg2QdL3pYaGm2juOCPsVzW/NryMmuA2i70s9VXeT9pDY6KtrFAPmw09wu/Tpw==
+	t=1792863928;
+	b=3RTfzw15mXy0DuK9HkK9jUSuSljUzJhXEcmnNnxaORuGqU2WeehRmxEMm4RRQNDcvzCz
+	 P9sp+lBL7tvZS5HSYqj3z9TNSCP9OSBLyljP/kYwf0ZypQloYtXxkF959m8e0oxomWcWQ
+	 T9HwqRCusxHtS7YMU0qcGKeGivYNrZsPp0GoWoQa5d7Oap2vZHzarZXAqBOQeKmD7Nfe4
+	 A1fxA+TdeK1w3WLGQJmZlpDYBLSDts1xiZTjILT5DMnisJEyPqQZivvr7DmUJHbELIDPj
+	 UgrEq3BiIUsnDhHFg0pICa0q9xRsQS+U1cRUW2WtLSu/kHAezDhOr50liksGacgLEtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792859654;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=cxP5oKTBqBRr5h+B+rnFKsncP8O8TdfFu/+MyP8ofrw=;
-	b=SKeM4v272ZZMBZu4h63D5P9PTTVIL+eRPFBeVNvXlv7qkAZj44lsEQZpAwW06wWXCK2c
-	 Rm3L/n3tQl3VEuV6EGsKC7NxdWm5+cx2HC8sGVlqueLjJVaT0PEyCiau/PMdr5oZbKEVD
-	 QZ+8kNA8rA96WTHBYwBZdDgHPYkPh81s/383ZrT6D7A+3hcPB4d6kivQm0btIkrN11Pyz
-	 5lGO3Apk5JQXCpLy8VPcrBOkOAfGax0vpWvK4EigPbCBC/qUB1XunQrbuLCDd7NGZAhpa
-	 ayVh1pCbE0Ha92Uz8N5HDjVlI6tvFzbtpdkrxsMoimXGaCvy5T1xKNo6rCfhwnt+NJQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792863928;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=YPntnK5/sTqgJzzmr8vORbmE7z2ohaOAG1bhPVxZBnc=;
+	b=ZLCxI3ioM/vHH0vn0TrfVzOC4RVC14xmZI5e1QyZ+4MUZNsUTsIxQ6q+0wXBXlmpep33
+	 bwzBlrt2AVUHqp7X/Yg21Dt8Jg8nO8BOF9PeUQ++WICp2+WmZAuO/yFifq4vvgCwno9Zq
+	 q1DIikuLNAvo89O1aFF4gxnl34UhcuNcfCQvtlg2IG6sAGuXove6ZcUWYJHS+0R8JJRfS
+	 VyC8xa3vVPBAVfXWejecg5hY2y7K+vM1bq8FLYDfEVZx24dK1/kjcoFuTyNUC8PSPzCQ7
+	 ziEztv/Pp4Uy+riCUjJ5nKiErqa//v/hK33bCS5naMwGcn490p8qPJRxQJwPY0O/5Bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=iNGH4xwT;
-	arc=none smtp.remote-ip=162.62.57.137
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZV55JokN;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6768A606A31A
-	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 16:34:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6768A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5B6606A31A;
+	Sat, 24 Oct 2026 17:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=iNGH4xwT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792859648; bh=cxP5oKTBqBRr5h+B+rnFKsncP8O8TdfFu/+MyP8ofrw=;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZV55JokN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC561F01825;
+	Sat, 24 Oct 2026 17:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792863927;
+	bh=YPntnK5/sTqgJzzmr8vORbmE7z2ohaOAG1bhPVxZBnc=;
 	h=From:To:Cc:Subject:Date;
-	b=iNGH4xwTYlL63SDFjC5bgTZ7wa1mpdUrBgU9Dvo4sgX6+grMdjH4DQpJ47u3AqVcf
-	 0m4lavQrnNOU9SP/O0hFQj7GaELW96BFDZmT+Cl4H/SbSXU+8DtARrZ7IkEiGBWZBp
-	 JOfN+BJH8HsWqUAXyvcqbCSZ1UoQssp1RhOtMpeY=
-Received: from [127.0.0.1] ([2409:8d5c:c30:3b3:dfb:e67e:fa31:2357])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 88631457; Sun, 25 Oct 2026 00:34:06 +0800
-X-QQ-mid: xmsmtpt1792859646tsx6awf4f
-Message-ID: <tencent_293D1F71F29317D2FD1758BA4419D205A606@qq.com>
-X-QQ-XMAILINFO: OZMlMiGBv3y9sewMKs6VyGqtA3fLK09G177aCqLALVX0DtKWWIg5mS+nvD41w3
-	 nUkUEKY/4Ubj0xj6NqX2NrjpV69JpArOp1ezKcH2bgnwD4bdjBFh8JO6LodCDIsF2xQV+o+p556Y
-	 cCfnryeFwYztL5Mix+XBPFXFfoRaznYrb3hwSX2Rtn08nSKlOuArtL+g9gwynx8iTSFprokBrPYV
-	 hJ4N45EUtSIAyF7A0OvLb8Q7THmyVF/SFNOIqobyMGJJGH6PQWJ388JIH9SplnU+UR0tCM3F7rw8
-	 0zCcK/uphZ4aBZ44VO51zcaxpx4Ul/xrtL3ItsM6HUDFJLkobhJzpx6g5hx4CoDCAiJvzdPNX+1i
-	 lXdz00lsFsKbrLexpO5a9TK6TlVpLmiYbLCdWItl7dyiFqLZPrZqpZhkkHABUHt6YmnyK64g8gq7
-	 iU1zb7i9RqGpAWZY4sXnjFKaYOnYs8oftwdW+GlVFbFkJjIHKi+Mfeq/tyqhVRHXlgSAHw+Nt1ne
-	 EfQD/siX47NSnCA6MfaNGo+E0O57dtbkcjMVGNyJTp9ttB2flWjvs4vEICnpEZrmUzUDrEpVUYck
-	 dTEsNw4NveRXu+uB5zkTwOze51BqeT1SyuyXakDa3esRCbdea+ra2J5Wcotc30LdyOKfGii/mvw4
-	 V/ihXcTduAQ55ufGqbM5mJob17JvvLN0QD5hEI3UOOkQUD7p7nVJHwhr0+vLE+NiywL4ClpB+vld
-	 Q3BO7jvQ6K2K/HF4f+u6iaVdKfY0P5YCNS3tx8q0qVXjhSUTrFKBSbWdAVg/5zoqduN7scLtbcEk
-	 2d55vWwYKhKNz1NzJ+jRP7bZwUWOW7c2ctE4z9l64zHdXqmzmks+wZNSIKOzFzFnRbh4erG/yHD2
-	 X61Z5iB0CGCjWv+GamWSolER7uUOyk2PixTZ6+Zp+WAYptK1R7Gusb+GEZqBhhJjcaahlmYoGCJJ
-	 NzGMMirm5Q4VXcVfhKybVr+oroeQXt6FDpKbkv4SCPdYGioGIeln7GWu8Y3LWmYlauFQVdQxky10
-	 AG+0Xt/kfJlIScHGSJmMn1JLlBoANKOFNsEsDlhg==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Hang Nan <2122295973@qq.com>
-To: kvm@vger.kernel.org
-Cc: Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH] KVM: coalesced_mmio: reject zone sizes that don't fit in an int
-Date: Sun, 25 Oct 2026 00:29:51 +0800
-X-OQ-MSGID: <1792859391.770388.v1@qq.com>
+	b=ZV55JokN4t9sQ+Hr+sbHPsm6P7K7HBgl60hdmptGKYcK4lRWi05GrdE8tA6WHmfiB
+	 DmjRmD2WCUpa9oVbmejv8c2Bv3etcx3xmBlcA7dMYG3fUeYh8QSKdehHI2Ag/Vq+y7
+	 ss6YEmMm3YUxnEhJf0qkTvrD0MkS4O51jwT9PLqoLXM+SPrik7TgRMCUksJF78gwnu
+	 3mqFGeLLOESD6iWHBSUsVffCd2BZc0kUwNTPama3loAW7NyjFJIAiptXAqCX41/XFW
+	 LP4nUnIgoPjfxRzXx/hEEmt5cQF/UyivAswrSu0uXEL/X4Tyg4LvC+HNr2wZyKmDUB
+	 fe3hKVDSC2pEg==
+From: Sasha Levin <sashal@kernel.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: x86: Compute the max guest TSC frequency from the current tsc_khz
+Date: Sat, 24 Oct 2026 13:45:25 -0400
+Message-ID: <20261024174525.1218244-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,76 +59,138 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-kvm_vm_ioctl_register_coalesced_mmio() validates @zone->pio but not
-@zone->size.  The u32 size is handed to kvm_io_bus_register_dev() as an
-"int len", so any size >= 0x80000000 silently becomes negative.
+KVM computes the highest frequency that KVM_SET_TSC_KHZ accepts once,
+during vendor init, from the tsc_khz of the time. When KVM is built in,
+that runs before tsc_refine_calibration_work() refines tsc_khz, about a
+second later. If refinement raises tsc_khz, the cap stays below what the
+maximum scaling ratio gives for the refined frequency, and
+KVM_SET_TSC_KHZ rejects frequencies that set_tsc_khz() would accept, as
+set_tsc_khz() computes the ratio from the current tsc_khz.
 
-coalesced_mmio_in_range() bails out immediately for len < 0, so such a
-zone never matches its own range:
+nested_tsc_scaling_test runs into this on AMD: its last case asks for
+the frequency KVM_GET_TSC_KHZ reports times SVM's maximum ratio, and gets
+-EINVAL on boots where refinement raised tsc_khz. KernelCI sees it
+intermittently on a DL345 Gen11 (EPYC). On Intel the cap is limited to
+INT_MAX, so the test does not hit it there.
 
-  - coalesced MMIO writes for the zone are no longer coalesced and are
-    forwarded to userspace instead;
-  - KVM_UNREGISTER_COALESCED_MMIO returns 0 but does not remove the zone,
-    because the unregister path uses coalesced_mmio_in_range() for matching
-    too, leaving the kvm_io_device permanently registered;
-  - the leaked device occupies a slot on the MMIO/PIO bus.  After
-    NR_IOBUS_DEVS - 1 (998) such zones every further
-    kvm_io_bus_register_dev() on that bus fails with -ENOSPC, including
-    ioeventfds and valid coalesced zones, effectively killing the VM's
-    device model until the VM is destroyed.
+Like commit 741e511b4208 ("KVM: x86: Don't snapshot "max" TSC if host TSC
+is constant") did for the default frequency of new VMs, compute the cap
+from tsc_khz when it is used instead of taking a snapshot at load time.
+This covers KVM_SET_TSC_KHZ on both the vCPU and the VM file descriptor.
 
-A negative len additionally breaks the sorted-interval invariant used by
-kvm_io_bus_cmp(), which computes the end of an interval as "addr + len".
+This also drops setting the cap to tsc_khz in the Hyper-V reenlightenment
+notifier, which left no room for scaling up once the host TSC frequency
+had changed; commit 0092e4346f49 ("x86/kvm: Support Hyper-V
+reenlightenment") gives no reason for that limit. The cap now follows the
+new frequency the same way. The notifier still does not recompute the
+multipliers of vCPUs that already exist.
 
-ioeventfd rejects lengths outside {0, 1, 2, 4, 8}, so the same ioctl
-family cannot be abused this way; coalesced MMIO has no equivalent check.
-
-Reject the ioctl with -EINVAL instead.  The check has never existed
-(git log -S 'INT_MAX' -- virt/kvm/coalesced_mmio.c is empty), so there is
-no Fixes: tag; this is not a regression.
-
-Reproducer, unprivileged on /dev/kvm (x86_64, v7.3-rc):
-
-  - KVM_CREATE_VM
-  - KVM_REGISTER_COALESCED_MMIO { addr = 0x1000, size = 0x80000000,
-                                  pio = 0 }            -> 0 (accepted)
-  - KVM_UNREGISTER_COALESCED_MMIO { same }             -> 0 (zone stays)
-  - repeat 998 times, then register a valid zone       -> -ENOSPC
-
-Signed-off-by: Hang Nan <2122295973@qq.com>
-
-A PoC plus the serial log from a KASAN kernel built from
-v7.3-11778-g5b0764a53235 is available on request (it is ~150 lines of
-static C that only uses /dev/kvm).
-
+Fixes: 92a1f12d2598 ("KVM: X86: Implement userspace interface to set virtual_tsc_khz")
+Link: https://d.kernelci.org/test/maestro:6adc828a55fda507607f79c3
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/coalesced_mmio.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/virt/kvm/coalesced_mmio.c b/virt/kvm/coalesced_mmio.c
-index 000000000000..000000000000 100644
---- a/virt/kvm/coalesced_mmio.c
-+++ b/virt/kvm/coalesced_mmio.c
-@@ -14,6 +14,7 @@
- #include <linux/kvm_host.h>
- #include <linux/slab.h>
- #include <linux/kvm.h>
-+#include <linux/limits.h>
+Reproduced on an AMD DL345 Gen11 booted with tsc_early_khz= 500 kHz below
+the refined frequency, so that refinement always raises tsc_khz after KVM
+is initialized. With KernelCI's x86 build of mainline 5b0764a53235,
+nested_tsc_scaling_test failed 3 out of 3 times with KVM_SET_TSC_KHZ
+returning -EINVAL. With the same config plus this patch it passed 3 out
+of 3, and tsc_scaling_sync, tsc_msrs_test, kvm_clock_test and
+nested_tsc_adjust_test still pass. A nested SVM guest with the same
+tsc_early_khz trick gives the same result, and with tsc_early_khz above
+the real frequency (refinement lowers tsc_khz) mainline passes.
+
+This does not change the existing window between the cap check and
+set_tsc_khz(), which read tsc_khz separately.
+
+ arch/x86/include/asm/kvm_host.h |  2 --
+ arch/x86/kvm/x86.c              | 30 +++++++++++++++---------------
+ 2 files changed, 15 insertions(+), 17 deletions(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 1ee4b127004df..35a74f0eb45e5 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -260,8 +260,6 @@ struct kvm_x86_pmu_event_filter;
+ struct kvm_caps {
+ 	/* control of guest tsc rate supported? */
+ 	bool has_tsc_control;
+-	/* maximum supported tsc_khz for guests */
+-	u32  max_guest_tsc_khz;
+ 	/* number of bits of the fractional part of the TSC scaling ratio */
+ 	u8   tsc_scaling_ratio_frac_bits;
+ 	/* maximum allowed value of TSC scaling ratio */
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 32563a91fba99..9e22072f39c18 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1156,6 +1156,19 @@ static inline u64 __scale_tsc(u64 ratio, u64 tsc)
+ 	return mul_u64_u64_shr(tsc, ratio, kvm_caps.tsc_scaling_ratio_frac_bits);
+ }
  
- #ifndef __KVM_NO_MMIO
- 
-@@ -130,6 +131,10 @@
- 	if (zone->pio != 1 && zone->pio != 0)
- 		return -EINVAL;
- 
-+	/* kvm_io_bus_register_dev() takes an int, don't let the u32 wrap */
-+	if (zone->size > INT_MAX)
-+		return -EINVAL;
++/*
++ * Use the current tsc_khz, not the one at load time, as the TSC frequency can
++ * be refined after KVM is initialized.  Make sure the user can only configure
++ * tsc_khz values that fit into a signed integer, otherwise KVM_GET_TSC_KHZ
++ * would return a negative value and confuse userspace.  A min value is not
++ * calculated because it will always be 1 on all machines.
++ */
++static u32 kvm_max_guest_tsc_khz(void)
++{
++	return min(0x7fffffffULL,
++		   __scale_tsc(kvm_caps.max_tsc_scaling_ratio, tsc_khz));
++}
 +
- 	dev = kzalloc_obj(struct kvm_coalesced_mmio_dev, GFP_KERNEL_ACCOUNT);
- 	if (!dev)
- 		return -ENOMEM;
+ u64 kvm_scale_tsc(u64 tsc, u64 ratio)
+ {
+ 	u64 _tsc = tsc;
+@@ -3728,7 +3741,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		user_tsc_khz = (u32)arg;
+ 
+ 		if (kvm_caps.has_tsc_control &&
+-		    user_tsc_khz > kvm_caps.max_guest_tsc_khz)
++		    user_tsc_khz > kvm_max_guest_tsc_khz())
+ 			goto out;
+ 
+ 		if (user_tsc_khz == 0)
+@@ -4695,7 +4708,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 		user_tsc_khz = (u32)arg;
+ 
+ 		if (kvm_caps.has_tsc_control &&
+-		    user_tsc_khz > kvm_caps.max_guest_tsc_khz)
++		    user_tsc_khz > kvm_max_guest_tsc_khz())
+ 			goto out;
+ 
+ 		if (user_tsc_khz == 0)
+@@ -6749,7 +6762,6 @@ static void kvm_hyperv_tsc_notifier(void)
+ 		for_each_present_cpu(cpu)
+ 			per_cpu(cpu_tsc_khz, cpu) = tsc_khz;
+ 	}
+-	kvm_caps.max_guest_tsc_khz = tsc_khz;
+ 
+ 	list_for_each_entry(kvm, &vm_list, vm_list) {
+ 		__kvm_start_pvclock_update(kvm);
+@@ -7188,18 +7200,6 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
+ 	if (!tdp_enabled)
+ 		kvm_caps.supported_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+ 
+-	if (kvm_caps.has_tsc_control) {
+-		/*
+-		 * Make sure the user can only configure tsc_khz values that
+-		 * fit into a signed integer, otherwise KVM_GET_TSC_KHZ would
+-		 * return a negative value and confuse userspace.
+-		 * A min value is not calculated because it will always
+-		 * be 1 on all machines.
+-		 */
+-		u64 max = min(0x7fffffffULL,
+-			      __scale_tsc(kvm_caps.max_tsc_scaling_ratio, tsc_khz));
+-		kvm_caps.max_guest_tsc_khz = max;
+-	}
+ 	kvm_caps.default_tsc_scaling_ratio = 1ULL << kvm_caps.tsc_scaling_ratio_frac_bits;
+ 	kvm_init_msr_lists();
+ 	return 0;
+-- 
+2.53.0
 
