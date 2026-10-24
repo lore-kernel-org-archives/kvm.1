@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792858827;
-	b=bpra6kbgV7kNg7xq98UN5B/t5SzzQdZFMAeXWmAdTxrvdOffDfn/Xnk2TZVQVFe37aop
-	 KU9SEZapzWlHsAZ8qU2CVcjakfkzhohe8FgISiaR3gJlQXAAhV9v3R4RQSQXlbNctRegL
-	 enocVBarMJ5lpcLuqAuev8kaD07FUj8EErm39qdZnMbUjTMK6FljeVVb+iRS4t5OyLMsT
-	 fzctYR/wVNZoJtxNprSx75C1MmYILIbAJWBOi1cMqte621WGQJaXXm1hCJM/i29zlDURi
-	 +kfpPT7nAicyNBSaBsSgLG4KkHsO2QJ/bys3OP5Jni0OZvml8VQlzUKn76WV2SbmbYA==
+	t=1792858823;
+	b=duCB44LSApMFESywe5xC4BtqMAk7gOJ+W/iocIdcDGRD5NTonBpmHQ8CmM3OmsXFeZ5y
+	 O+swIUi+oZFP8gKnCuAw0tcOQf2zbnbTI3ZfouoP00rC/eh82zRsiKATj9Im00wdOSERr
+	 1bK4+/FSEXHGiJphZ07wg91+to3GmXGyweKYrrxP2mGnMm20gT3aFb6V5rtMmV5WhVXZX
+	 gAmUgUiwk4TqID0nERx0LhJJg47pphNUvfbLEIA5rRYVJ5z+Oz9DYaa87DVphc76z1ZEw
+	 vLi5ec3Vq8QsxzRyRRiYMXrXtjdd6aztKuHDHCqWGQECMRlJ9jWqJ9OHyJWVfu9Omyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792858827;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792858823;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=2tZvnoPMNast8sg8P9s907+bbFghLSFF53ZiDLSPY2E=;
-	b=wawkmRdyt34lvUad0QkwraB9axkwjyY79rHRGkjz799Gy9X/jAR+ZAOSa6MMsewnf04y
-	 1aEMw4nJPhjt7Wijp5hFotdVZYLbzigUjncRmJHEKGwAZweFHfZzm8+Y/+0xTC+HrrLnK
-	 dIWBkrYRT6Bo7TEJgCLRYGKlU9OkI6Eq3cp/vrNuEyrfP8wl/lNlbX7EOd05OHMwiF0k0
-	 eRu7ZjNMB3EhtXWHjw+A6uPFLqhUW1dfXieuS3F6QDZimA6swiugXjji/GyfEnNufis2L
-	 d5l+6MwlWKPDqN/iPyVYwj84BA3boL7ZScFkMSVgKAbaYc7UQwTZ2XHLRykzeFRoy2Q==
+	bh=O2tMFFP5cdIjSqXYrvLhwaCDEdhX+ecKCxDK247guW4=;
+	b=gjCb/mpz2Li6Z4GWLBpcJncUaboUQlsfltyfk2lJ6zuM7dCn8V0SyY4+HiDsanY8iPYi
+	 yzupk/kfu8PvGMIACRblwOlvnJ4WIxGEBJZpqzzbyuTgs7ukajp0rHmIZNmEWxGP5BR22
+	 l/Ad7CfAVWGlFpm7vmJneDV45ARnYiTqa11E0sdp0f7Akp2VgLJiJ27g1aH0C1+2FK53N
+	 x9GSaV+pYfPWifTbqgCgVPeQhWz2APZlwT4hSx93Idl/TRCR8waOGXg71nl0EQBelyLus
+	 fDxW+D2JDeErgnGp+pncnZqPN4kjKXhklN5is/I0H3xvUy9OfEn/tCA5Mdhe0/q5zZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--smostafa.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CKaHeis9;
-	arc=none smtp.remote-ip=209.85.128.71
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bgDiTPa8;
+	arc=none smtp.remote-ip=209.85.128.72
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA94606A332
-	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 16:20:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DA94606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AA1606A31D
+	for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 16:20:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2AA1606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--smostafa.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CKaHeis9
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49953abe51fso13466175e9.1
-        for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 09:20:26 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bgDiTPa8
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a16dc2323cso15049885e9.3
+        for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 09:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792858825; x=1793463625; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792858821; x=1793463621; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2tZvnoPMNast8sg8P9s907+bbFghLSFF53ZiDLSPY2E=;
-        b=CKaHeis9xLYzZLuktBujtjpZsL+ZEVoElzo0iRPdS4m74GEPLzHRN23uTels4UFN7w
-         e7A8sTRAcJpA7RLPW5HqzUAZBGZMDjTliR1Mlm0E5b7F7Yi/cKtepdCD4Q4tavjnJwZ5
-         AyYJ+GMEOuEYVMSKYbybjtLbnpXz1h1k+7uAHJwox++TJNDlScb9oSqufFOAI5BeyuRp
-         kIbvlxrPqPTCGA1vbCtOkja6xM9jdmaYmUuLuxhm3xe6mFBWu/LXl978J6GXdolP8BUL
-         r02yb8iMY5LuIy1Lv1C3jhVOSewraUmVyh0mL9VP7Rj5LyIE0X28ZHW6bUwcfkwPHFbb
-         jQGg==
+        bh=O2tMFFP5cdIjSqXYrvLhwaCDEdhX+ecKCxDK247guW4=;
+        b=bgDiTPa8K1XXaTlZ32bAOK1q7SqubvM++tOPaFmqZwBj57wvKv6zguo3QRj2LEDHNU
+         CiR+uQrK01DCU8OVnDrGggF4xS0RwDzAH8CuanGg+u+Xej8PHJRz1JM9XSiQL6tVJREN
+         4MKb1P+Jvui2x3zKtABUP1AQpPdjxTiDqhyelyiJp1CuJcmi6L2d97rJRsM1VbtIWeWS
+         QRH54jNkwoNfs1G3n7+sZGi/34sXmxAaXRC8NJ271FVAkIh383dp3MjYzbc66yvJ2fa9
+         bENpC/jMpFScrP4NJPDvdv/mwAlQg+tAl7TFufHTdhYMKJvcLeN1M27wb4ZsyfNgiCXU
+         oIFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792858825; x=1793463625;
+        d=1e100.net; s=20260707; t=1792858821; x=1793463621;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2tZvnoPMNast8sg8P9s907+bbFghLSFF53ZiDLSPY2E=;
-        b=pJ99E9jhpd1qeK2GE2hJysVNoBA71FV2hxR1hkwPYNZ+dOKIqOOkj4Py73PfL6kzvA
-         V95SEyxYw7+ojWAuTahW1wToUNH7XPufcLPXrfun7aoqwEpsAe7+YI3ggBemUcWEBjui
-         CZLfroLGLH2lLTacGrk/idFpYs3kGwzaj6fGSeQLmi+tFKqpEQxFnOabJhasfk6JsMw8
-         OY/Tcufiskg+P7vpnYeQoaRAD8fwRAZ0M/OrUDFn+WCWgqJIlVg3JMq1Xi2TCwIMp2uc
-         ntdcVneoMTLGCYGqHMlWn5vFwwkqf7PvpD3GvnOjYoVQqZyeJVjNETNJ9P2FR8AGCztn
-         h1bg==
-X-Gm-Message-State: AFq9FYLERG63HXHw502JWimIJTE4lOfk97rUvQjauayUeYZwtUPxnJe7
-	bygKMoYjP782v9FfarnaLp5YsH4u45e8krnczeNqLCcKgvY6VobXqN+YuMPnC+uW3oU68MGobPb
-	a9jf6pXjvdGYteEa313XKVp0QCmq+Runi1UBGLorprDP3Nvi+nEd2bcVhC22KrShZJOTTmK1D+w
-	O4L5PowkSrGGeD7eKVan+x57r1UvK+hXACuHlQSDhu2rI=
-X-Received: from wmgi7.prod.google.com ([2002:a05:600c:2d87:b0:4a1:f4c2:f6c7])
+        bh=O2tMFFP5cdIjSqXYrvLhwaCDEdhX+ecKCxDK247guW4=;
+        b=KvjM4HGzA9AW9qldwG497LBfxE3LF7Wy8RsL9L4pfYwbfEZFj+UhEH8H2apMiYzZLH
+         GVPF9mSN2Q0bDqDrvdc8gQJHzvcnq17GA9qwdhnu+Zxok5BTQXmy7n3oThvAy898mVGM
+         qQ+8A+4J+Ee+lzln7B/MWpH4O7subKB2BtGmyFN4tT+CwIQbJPvQLoC/uw2LTdmoKUyz
+         MbcQLm94tHagu+DbaFwkEoR8ZR6Mu1ICcV0B5yAQ9JiziSOBLGEp2re4Ss7pVzY+7XBN
+         aRDvftytowng7PoEBa5yXTI9CF3EZVQDqS+mgZdJqkO/oN5Ytj45K2TwAmMzQVMBLvAR
+         bFbg==
+X-Gm-Message-State: AFq9FYLiVXPKyiWkNapFO0o3Qvpx69aGZeA+qKPKNWXn2cZyCHqD9TrM
+	ySOwU9jjXjduPs6nyxt248nAIK6kXxN838aDAt0K9jL7diuP8dDigKj1Bwu0javfKuAK7/qJ5XE
+	pKKmk29bZGT5awLvx4lgFfb1OL75WC/+HMJe48zdwvn3WzFeGI+HfOzMM1kzt3zEPcyYnRttHKM
+	ihoYITK16dynBZutmgHngZFR/+lzEFrlA4zKEvulnQkMI=
+X-Received: from wmco10.prod.google.com ([2002:a05:600c:a30a:b0:4a1:e3ce:e2eb])
  (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b09:b0:4a1:7e76:d02f with SMTP id 5b1f17b1804b1-4a35aca4a0cmr35044485e9.14.1792858824796;
- Sat, 24 Oct 2026 09:20:24 -0700 (PDT)
-Date: Sat, 24 Oct 2026 16:19:00 +0000
+ 2002:a05:600c:4688:b0:4a3:12fb:1ee7 with SMTP id 5b1f17b1804b1-4a35acaf93bmr33877405e9.25.1792858821039;
+ Sat, 24 Oct 2026 09:20:21 -0700 (PDT)
+Date: Sat, 24 Oct 2026 16:18:57 +0000
 In-Reply-To: <20261024161902.2093581-1-smostafa@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,300 +80,276 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261024161902.2093581-1-smostafa@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261024161902.2093581-8-smostafa@google.com>
-Subject: [PATCH kvmtool 7/9] vfio: Add basic support for vfio-platform
+Message-ID: <20261024161902.2093581-5-smostafa@google.com>
+Subject: [PATCH kvmtool 4/9] fdt: Allow fdt_irq_fn to generate multiple interrupts
 From: Mostafa Saleh <smostafa@google.com>
 To: kvm@vger.kernel.org
 Cc: will@kernel.org, julien.thierry.kdev@gmail.com, praan@google.com, 
 	eric.auger@redhat.com, alex@shazbot.org, Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-A VFIO device can be assigned to a guest with new cmdline
---vfio-platform ${dev} , where ${dev} is the name of the device under
-/sys/bus/platform.
+fdt_irq_fn currently accepts a single interrupt line and trigger type,
+which is sufficient for emulated MMIO devices with one interrupt.
+Assigned platform devices can expose multiple interrupts that must be
+written into a single "interrupts" property.
 
-The device is expected to be bound to vfio-platform driver before
-running the tool.
-
-The MMIO regions of the device are mapped into the guest address
-space reserved for VFIO, and described in a device tree node.
-The node only carries reg, so no guest driver binds to it yet.
-Interrupts and the rest of the node are added in the next patches.
+Update fdt_irq_fn and its arm64 and riscv implementations to accept an
+array of interrupt lines and trigger types, and convert existing callers
+to use the fdt_irq_fn typedef.
 
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- Makefile           |   1 +
- builtin-run.c      |   3 +
- include/kvm/vfio.h |   3 +
- vfio/core.c        |  22 +++++++
- vfio/platform.c    | 158 +++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 187 insertions(+)
- create mode 100644 vfio/platform.c
+ arm64/fdt.c                  | 36 ++++++++++++++++++++++++++----------
+ hw/cfi_flash.c               |  4 +---
+ hw/rtc.c                     |  4 +---
+ hw/serial.c                  |  3 ++-
+ include/kvm/fdt.h            |  4 +++-
+ riscv/fdt.c                  |  2 +-
+ riscv/include/kvm/kvm-arch.h |  4 +++-
+ riscv/irq.c                  | 27 +++++++++++++++++++--------
+ virtio/mmio.c                | 10 ++++------
+ 9 files changed, 60 insertions(+), 34 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 1c0e7f5..8d1c0d9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -65,6 +65,7 @@ OBJS	+= pci.o
- OBJS	+= term.o
- OBJS	+= vfio/core.o
- OBJS	+= vfio/pci.o
-+OBJS	+= vfio/platform.o
- OBJS	+= virtio/blk.o
- OBJS	+= virtio/scsi.o
- OBJS	+= virtio/console.o
-diff --git a/builtin-run.c b/builtin-run.c
-index 81f255f..b09fc2e 100644
---- a/builtin-run.c
-+++ b/builtin-run.c
-@@ -261,6 +261,9 @@ static int loglevel_parser(const struct option *opt, const char *arg, int unset)
- 	OPT_GROUP("VFIO options:"),					\
- 	OPT_CALLBACK('\0', "vfio-pci", NULL, "[domain:]bus:dev.fn",	\
- 		     "Assign a PCI device to the virtual machine",	\
-+		     vfio_device_parser, kvm),				\
-+	OPT_CALLBACK('\0', "vfio-platform", NULL, "device",		\
-+		     "Assign a platform device to the virtual machine",	\
- 		     vfio_device_parser, kvm),				\
- 									\
- 	OPT_GROUP("Debug options:"),					\
-diff --git a/include/kvm/vfio.h b/include/kvm/vfio.h
-index 0b2b105..f641292 100644
---- a/include/kvm/vfio.h
-+++ b/include/kvm/vfio.h
-@@ -24,6 +24,7 @@
+diff --git a/arm64/fdt.c b/arm64/fdt.c
+index 3cbd36e..e2c37ad 100644
+--- a/arm64/fdt.c
++++ b/arm64/fdt.c
+@@ -60,15 +60,29 @@ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
+ 	_FDT(fdt_end_node(fdt));
+ }
  
- enum vfio_device_type {
- 	VFIO_DEVICE_PCI,
-+	VFIO_DEVICE_PLATFORM,
+-static void generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type)
++static void generate_irq_prop(void *fdt, const u8 *irqs,
++			      const enum irq_type *irq_types,
++			      unsigned int num_irqs)
+ {
+-	u32 irq_prop[] = {
+-		cpu_to_fdt32(GIC_FDT_IRQ_TYPE_SPI),
+-		cpu_to_fdt32(irq - GIC_SPI_IRQ_BASE),
+-		cpu_to_fdt32(irq_type)
+-	};
++	unsigned int i;
++	u32 *irq_prop;
+ 
+-	_FDT(fdt_property(fdt, "interrupts", irq_prop, sizeof(irq_prop)));
++	if (!num_irqs)
++		return;
++
++	irq_prop = calloc(num_irqs, 3 * sizeof(*irq_prop));
++	if (!irq_prop)
++		die("Failed to allocate the interrupts property");
++
++	for (i = 0; i < num_irqs; i++) {
++		irq_prop[3 * i] = cpu_to_fdt32(GIC_FDT_IRQ_TYPE_SPI);
++		irq_prop[3 * i + 1] = cpu_to_fdt32(irqs[i] - GIC_SPI_IRQ_BASE);
++		irq_prop[3 * i + 2] = cpu_to_fdt32(irq_types[i]);
++	}
++
++	_FDT(fdt_property(fdt, "interrupts", irq_prop,
++			  3 * sizeof(*irq_prop) * num_irqs));
++	free(irq_prop);
+ }
+ 
+ static bool emit_dma_regions;
+@@ -78,9 +92,11 @@ void generate_dma_region_prop(void *fdt)
+ 		_FDT(fdt_property_cell(fdt, "memory-region", PHANDLE_DMA));
+ }
+ 
+-static void generate_aux_props(void *fdt, u8 irq, enum irq_type irq_type)
++static void generate_aux_props(void *fdt, const u8 *irqs,
++			       const enum irq_type *irq_types,
++			       unsigned int num_irqs)
+ {
+-	generate_irq_prop(fdt, irq, irq_type);
++	generate_irq_prop(fdt, irqs, irq_types, num_irqs);
+ 	generate_dma_region_prop(fdt);
+ }
+ 
+@@ -125,7 +141,7 @@ static int setup_fdt(struct kvm *kvm)
+ 	void *fdt_dest		= guest_flat_to_host(kvm,
+ 						     kvm->arch.dtb_guest_start);
+ 	void (*generate_mmio_fdt_nodes)(void *, struct device_header *,
+-					void (*)(void *, u8, enum irq_type));
++					fdt_irq_fn);
+ 	void (*generate_cpu_peripheral_fdt_nodes)(void *, struct kvm *)
+ 					= kvm->cpus[0]->generate_fdt_nodes;
+ 
+diff --git a/hw/cfi_flash.c b/hw/cfi_flash.c
+index 4413955..5641af6 100644
+--- a/hw/cfi_flash.c
++++ b/hw/cfi_flash.c
+@@ -518,9 +518,7 @@ static void cfi_flash_mmio(struct kvm_cpu *vcpu,
+ #ifdef CONFIG_HAS_LIBFDT
+ static void generate_cfi_flash_fdt_node(void *fdt,
+ 					struct device_header *dev_hdr,
+-					void (*generate_irq_prop)(void *fdt,
+-								  u8 irq,
+-								enum irq_type))
++					fdt_irq_fn generate_irq_prop)
+ {
+ 	struct cfi_flash_device *sfdev;
+ 	u64 reg_prop[2];
+diff --git a/hw/rtc.c b/hw/rtc.c
+index e3523a1..fc6533a 100644
+--- a/hw/rtc.c
++++ b/hw/rtc.c
+@@ -136,9 +136,7 @@ static void cmos_ram_io(struct kvm_cpu *vcpu, u64 addr, u8 *data,
+ #ifdef CONFIG_HAS_LIBFDT
+ static void generate_rtc_fdt_node(void *fdt,
+ 				  struct device_header *dev_hdr,
+-				  void (*generate_irq_prop)(void *fdt,
+-							    u8 irq,
+-							    enum irq_type))
++				  fdt_irq_fn generate_irq_prop)
+ {
+ 	u64 reg_prop[2] = { cpu_to_fdt64(RTC_BASE_ADDRESS), cpu_to_fdt64(2) };
+ 
+diff --git a/hw/serial.c b/hw/serial.c
+index 68e6186..8e26837 100644
+--- a/hw/serial.c
++++ b/hw/serial.c
+@@ -434,6 +434,7 @@ void serial8250_generate_fdt_node(void *fdt, struct device_header *dev_hdr,
+ 		cpu_to_fdt64(addr),
+ 		cpu_to_fdt64(8),
+ 	};
++	enum irq_type irq_type = IRQ_TYPE_LEVEL_HIGH;
+ 
+ 	snprintf(dev_name, DEVICE_NAME_MAX_LEN, "U6_16550A@%llx", addr);
+ 
+@@ -446,7 +447,7 @@ void serial8250_generate_fdt_node(void *fdt, struct device_header *dev_hdr,
+ 	_FDT(fdt_begin_node(fdt, dev_name));
+ 	_FDT(fdt_property_string(fdt, "compatible", "ns16550a"));
+ 	_FDT(fdt_property(fdt, "reg", reg_prop, sizeof(reg_prop)));
+-	irq_fn(fdt, dev->irq, IRQ_TYPE_LEVEL_HIGH);
++	irq_fn(fdt, &dev->irq, &irq_type, 1);
+ 	_FDT(fdt_property_cell(fdt, "clock-frequency", 1843200));
+ 	_FDT(fdt_end_node(fdt));
+ }
+diff --git a/include/kvm/fdt.h b/include/kvm/fdt.h
+index 060c37b..e84c5c1 100644
+--- a/include/kvm/fdt.h
++++ b/include/kvm/fdt.h
+@@ -25,7 +25,9 @@ enum irq_type {
+ 	IRQ_TYPE_LEVEL_MASK	= (IRQ_TYPE_LEVEL_LOW | IRQ_TYPE_LEVEL_HIGH),
  };
  
- /* MSI/MSI-X capability enabled */
-@@ -146,5 +147,7 @@ void vfio_irq_disable(struct kvm *kvm, struct vfio_device *vdev,
- 		      unsigned int index, struct vfio_irq *irq);
- int vfio_pci_setup_device(struct kvm *kvm, struct vfio_device *device);
- void vfio_pci_teardown_device(struct kvm *kvm, struct vfio_device *vdev);
-+int vfio_platform_setup_device(struct kvm *kvm, struct vfio_device *device);
-+void vfio_platform_teardown_device(struct kvm *kvm, struct vfio_device *vdev);
+-typedef void (*fdt_irq_fn)(void *fdt, u8 irq, enum irq_type irq_type);
++typedef void (*fdt_irq_fn)(void *fdt, const u8 *irqs,
++			   const enum irq_type *irq_types,
++			   unsigned int num_irqs);
  
- #endif /* KVM__VFIO_H */
-diff --git a/vfio/core.c b/vfio/core.c
-index aa124d2..6823a95 100644
---- a/vfio/core.c
-+++ b/vfio/core.c
-@@ -41,6 +41,19 @@ static int vfio_device_pci_parser(const struct option *opt, char *arg,
+ extern char *fdt_stdout_path;
+ 
+diff --git a/riscv/fdt.c b/riscv/fdt.c
+index 1eb45fc..b571724 100644
+--- a/riscv/fdt.c
++++ b/riscv/fdt.c
+@@ -351,7 +351,7 @@ static int setup_fdt(struct kvm *kvm)
+ 	void *fdt_dest		= guest_flat_to_host(kvm,
+ 						     kvm->arch.dtb_guest_start);
+ 	void (*generate_mmio_fdt_nodes)(void *, struct device_header *,
+-					void (*)(void *, u8, enum irq_type));
++					fdt_irq_fn);
+ 
+ 	/* Create new tree without a reserve map */
+ 	_FDT(fdt_create(fdt, FDT_MAX_SIZE));
+diff --git a/riscv/include/kvm/kvm-arch.h b/riscv/include/kvm/kvm-arch.h
+index 1bb2d32..460b90b 100644
+--- a/riscv/include/kvm/kvm-arch.h
++++ b/riscv/include/kvm/kvm-arch.h
+@@ -117,7 +117,9 @@ void riscv__del_irqfd(struct kvm *kvm, unsigned int gsi, int trigger_fd);
+ 
+ int riscv__setup_irqfd_lines(struct kvm *kvm);
+ 
+-void riscv__generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type);
++void riscv__generate_irq_prop(void *fdt, const u8 *irqs,
++			      const enum irq_type *irq_types,
++			      unsigned int num_irqs);
+ 
+ void riscv__irqchip_create(struct kvm *kvm);
+ 
+diff --git a/riscv/irq.c b/riscv/irq.c
+index 62dbaa8..2c35f25 100644
+--- a/riscv/irq.c
++++ b/riscv/irq.c
+@@ -119,18 +119,29 @@ int riscv__setup_irqfd_lines(struct kvm *kvm)
  	return 0;
  }
  
-+/* @arg is the name of the device under /sys/bus/platform/devices */
-+static int vfio_device_platform_parser(const struct option *opt, char *arg,
-+				       struct vfio_device_params *dev)
-+{
-+	dev->type = VFIO_DEVICE_PLATFORM;
-+	dev->bus = "platform";
-+	dev->name = strdup(arg);
-+	if (!dev->name)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
- int vfio_device_parser(const struct option *opt, const char *arg, int unset)
+-void riscv__generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type)
++void riscv__generate_irq_prop(void *fdt, const u8 *irqs,
++			      const enum irq_type *irq_types,
++			      unsigned int num_irqs)
  {
- 	int ret = -EINVAL;
-@@ -72,6 +85,8 @@ int vfio_device_parser(const struct option *opt, const char *arg, int unset)
+-	u32 prop[2], size;
++	unsigned int i, cells = riscv_irqchip_line_sensing ? 2 : 1;
++	u32 *prop;
  
- 	if (!strcmp(opt->long_name, "vfio-pci"))
- 		ret = vfio_device_pci_parser(opt, cur, dev);
-+	else if (!strcmp(opt->long_name, "vfio-platform"))
-+		ret = vfio_device_platform_parser(opt, cur, dev);
- 	else
- 		ret = -EINVAL;
- 
-@@ -433,6 +448,10 @@ static int vfio_configure_device(struct kvm *kvm, struct vfio_device *vdev)
- 		BUG_ON(!(vdev->info.flags & VFIO_DEVICE_FLAGS_PCI));
- 		ret = vfio_pci_setup_device(kvm, vdev);
- 		break;
-+	case VFIO_DEVICE_PLATFORM:
-+		BUG_ON(!(vdev->info.flags & VFIO_DEVICE_FLAGS_PLATFORM));
-+		ret = vfio_platform_setup_device(kvm, vdev);
-+		break;
- 	default:
- 		BUG_ON(1);
- 		ret = -EINVAL;
-@@ -703,6 +722,9 @@ static void vfio_device_exit(struct kvm *kvm, struct vfio_device *vdev)
- 	case VFIO_DEVICE_PCI:
- 		vfio_pci_teardown_device(kvm, vdev);
- 		break;
-+	case VFIO_DEVICE_PLATFORM:
-+		vfio_platform_teardown_device(kvm, vdev);
-+		break;
- 	default:
- 		vfio_dev_warn(vdev, "no teardown function for device");
+-	prop[0] = cpu_to_fdt32(irq);
+-	size = sizeof(u32);
+-	if (riscv_irqchip_line_sensing) {
+-		prop[1] = cpu_to_fdt32(irq_type);
+-		size += sizeof(u32);
++	if (!num_irqs)
++		return;
++
++	prop = calloc(num_irqs, cells * sizeof(*prop));
++	if (!prop)
++		die("Failed to allocate the interrupts property");
++
++	for (i = 0; i < num_irqs; i++) {
++		prop[cells * i] = cpu_to_fdt32(irqs[i]);
++		if (riscv_irqchip_line_sensing)
++			prop[cells * i + 1] = cpu_to_fdt32(irq_types[i]);
  	}
-diff --git a/vfio/platform.c b/vfio/platform.c
-new file mode 100644
-index 0000000..c5b447f
---- /dev/null
-+++ b/vfio/platform.c
-@@ -0,0 +1,158 @@
-+#include "linux/sizes.h"
-+
-+#include "kvm/kvm.h"
-+#include "kvm/vfio.h"
-+
-+#include <errno.h>
-+
-+#include <sys/ioctl.h>
-+#include <stdlib.h>
-+#include "kvm/fdt.h"
-+
-+static u64 vfio_mmio_io_space_next = KVM_VFIO_MMIO_AREA;
-+
-+static int vfio_mmio_alloc_io_space(u64 size, u64 *addr)
-+{
-+	u64 align = max_t(u64, PAGE_SIZE, MAX_PAGE_SIZE);
-+	u64 end = KVM_VFIO_MMIO_AREA + KVM_VFIO_MMIO_SIZE;
-+
-+	vfio_mmio_io_space_next = ALIGN(vfio_mmio_io_space_next, align);
-+	size = ALIGN(size, align);
-+	if (size > end - vfio_mmio_io_space_next)
-+		return -ENOSPC;
-+
-+	*addr = vfio_mmio_io_space_next;
-+	vfio_mmio_io_space_next += size;
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_HAS_LIBFDT
-+static void generate_mmio_fdt_node(void *fdt,
-+				   struct device_header *dev_hdr,
+ 
+-	_FDT(fdt_property(fdt, "interrupts", prop, size));
++	_FDT(fdt_property(fdt, "interrupts", prop,
++			  cells * sizeof(*prop) * num_irqs));
++	free(prop);
+ }
+ 
+ static void (*riscv__irqchip_create_funcs[])(struct kvm *kvm) = {
+diff --git a/virtio/mmio.c b/virtio/mmio.c
+index fae73b5..0c66724 100644
+--- a/virtio/mmio.c
++++ b/virtio/mmio.c
+@@ -113,9 +113,7 @@ int virtio_mmio_signal_config(struct kvm *kvm, struct virtio_device *vdev)
+ static
+ void generate_virtio_mmio_fdt_node(void *fdt,
+ 				   struct device_header *dev_hdr,
+-				   void (*generate_irq_prop)(void *fdt,
+-							     u8 irq,
+-							     enum irq_type))
 +				   fdt_irq_fn generate_irq_prop)
-+{
-+	struct vfio_device *vdev = container_of(dev_hdr,
-+						struct vfio_device, dev_hdr);
-+	unsigned int i, num_regions = vdev->info.num_regions;
-+	char node_name[PATH_MAX];
-+	u64 *reg_prop;
-+
-+	reg_prop = calloc(num_regions, 2 * sizeof(*reg_prop));
-+	if (!reg_prop)
-+		die("Failed to allocate the reg property");
-+
-+	for (i = 0; i < num_regions; i++) {
-+		reg_prop[2 * i] = cpu_to_fdt64(vdev->regions[i].guest_phys_addr);
-+		reg_prop[2 * i + 1] = cpu_to_fdt64(vdev->regions[i].info.size);
-+	}
-+
-+	snprintf(node_name, sizeof(node_name), "%s@%llx",
-+		 vdev->params->name, vdev->regions[0].guest_phys_addr);
-+
-+	_FDT(fdt_begin_node(fdt, node_name));
-+	_FDT(fdt_property(fdt, "reg", reg_prop,
-+			  2 * sizeof(*reg_prop) * num_regions));
-+	_FDT(fdt_end_node(fdt));
-+
-+	free(reg_prop);
-+}
-+#endif /* CONFIG_HAS_LIBFDT */
-+
-+static void vfio_platform_unmap_regions(struct kvm *kvm,
-+					struct vfio_device *vdev,
-+					unsigned int nr_regions)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < nr_regions; i++)
-+		vfio_unmap_region(kvm, &vdev->regions[i]);
-+}
-+
-+static int vfio_platform_configure_regs(struct kvm *kvm,
-+					struct vfio_device *vdev)
-+{
-+	int ret = 0;
-+	unsigned int i = 0;
-+	struct vfio_region *region;
-+	struct vfio_region_info *info;
-+
-+	if (!vdev->info.num_regions)
-+		return -ENODEV;
-+
-+	for (i = 0; i < vdev->info.num_regions; i++) {
-+		info = &vdev->regions[i].info;
-+		*info = (struct vfio_region_info) {
-+			.argsz = sizeof(*info),
-+			.index = i,
-+		};
-+
-+		if (ioctl(vdev->fd, VFIO_DEVICE_GET_REGION_INFO, info)) {
-+			ret = -errno;
-+			vfio_dev_err(vdev, "failed to get info for region[%u]", i);
-+			goto err_unmap;
-+		}
-+
-+		if (!info->size) {
-+			ret = -EINVAL;
-+			goto err_unmap;
-+		}
-+
-+		region = &vdev->regions[i];
-+		region->vdev = vdev;
-+		region->is_ioport = false;
-+		ret = vfio_mmio_alloc_io_space(region->info.size,
-+					       &region->guest_phys_addr);
-+		if (ret) {
-+			vfio_dev_err(vdev, "no guest address space left for region[%u] (0x%llx bytes)",
-+				     i, info->size);
-+			goto err_unmap;
-+		}
-+
-+		ret = vfio_map_region(kvm, vdev, region);
-+		if (ret) {
-+			vfio_dev_err(vdev, "failed to map region[%u] at 0x%llx", i, info->offset);
-+			goto err_unmap;
-+		}
-+	}
-+
-+	return 0;
-+
-+err_unmap:
-+	vfio_platform_unmap_regions(kvm, vdev, i);
-+	return ret;
-+}
-+
-+int vfio_platform_setup_device(struct kvm *kvm, struct vfio_device *vdev)
-+{
-+	int ret;
-+
-+	ret = vfio_platform_configure_regs(kvm, vdev);
-+	if (ret) {
-+		vfio_dev_err(vdev, "failed to configure regs");
-+		return ret;
-+	}
-+
-+	vdev->dev_hdr = (struct device_header) {
-+		.bus_type	= DEVICE_BUS_MMIO,
-+#ifdef CONFIG_HAS_LIBFDT
-+		.data		= generate_mmio_fdt_node,
-+#endif
-+	};
-+
-+	ret = device__register(&vdev->dev_hdr);
-+	if (ret) {
-+		vfio_dev_err(vdev, "failed to register VFIO device");
-+		vfio_platform_unmap_regions(kvm, vdev, vdev->info.num_regions);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+void vfio_platform_teardown_device(struct kvm *kvm, struct vfio_device *vdev)
-+{
-+	vfio_platform_unmap_regions(kvm, vdev, vdev->info.num_regions);
-+
-+	device__unregister(&vdev->dev_hdr);
-+}
+ {
+ 	char dev_name[DEVICE_NAME_MAX_LEN];
+ 	struct virtio_mmio *vmmio = container_of(dev_hdr,
+@@ -126,6 +124,7 @@ void generate_virtio_mmio_fdt_node(void *fdt,
+ 		cpu_to_fdt64(addr),
+ 		cpu_to_fdt64(VIRTIO_MMIO_IO_SIZE),
+ 	};
++	enum irq_type irq_type = IRQ_TYPE_EDGE_RISING;
+ 
+ 	snprintf(dev_name, DEVICE_NAME_MAX_LEN, "virtio@%llx", addr);
+ 
+@@ -133,14 +132,13 @@ void generate_virtio_mmio_fdt_node(void *fdt,
+ 	_FDT(fdt_property_string(fdt, "compatible", "virtio,mmio"));
+ 	_FDT(fdt_property(fdt, "reg", reg_prop, sizeof(reg_prop)));
+ 	_FDT(fdt_property(fdt, "dma-coherent", NULL, 0));
+-	generate_irq_prop(fdt, vmmio->irq, IRQ_TYPE_EDGE_RISING);
++	generate_irq_prop(fdt, &vmmio->irq, &irq_type, 1);
+ 	_FDT(fdt_end_node(fdt));
+ }
+ #else
+ static void generate_virtio_mmio_fdt_node(void *fdt,
+ 					  struct device_header *dev_hdr,
+-					  void (*generate_irq_prop)(void *fdt,
+-								    u8 irq))
++					  fdt_irq_fn generate_irq_prop)
+ {
+ 	die("Unable to generate device tree nodes without libfdt\n");
+ }
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
