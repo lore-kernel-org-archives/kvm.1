@@ -1,62 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792917316;
-	b=rQDnBCizT5K3zh6eaZPOoWd+1SXrEgRAripqtFxQHM6z+b4r7zHE11hpEMGZ8FID0YE1
-	 nEKYqbJvQDi012qXazAU3I1Kj1m6PQ8GI1O3od20mSlwrFkrCFNifPhvcrWThG890k5j5
-	 R1AgYiwNBAyNT18laN/Je489fjmfyK5Rk1yMYA6t9L9goUsH6pl9/3LZjydpTXmirFkkb
-	 c+1kWg1S4qaHhukTkQ3sab+4Q/Kri6e9aMqo8UPDBEgHUrf5ai569fto8mVLSHlL7ibSi
-	 gKvhn+7EckkAadLzNW7fPINGV+iegLmDidl9My6+YPCvrtlMNXr44cNAVF8kC8xyK+Q==
+	t=1792935026;
+	b=5cJSepzVVw7yGE7RAfHPlOqvDuZ4ZwPDoHGXXlkCqc82b2DSot+do3hZn/U09ptHJfLi
+	 5VfJhovZk6J3lQCN2rMpVW1W6puv5mkEfcCIFPWxbczcYymCAoP2r0Gm/x1H9tjTt4Aqn
+	 nVKfBOZFtl21MzxuLVKJu/On7jChf3qIauwMjzr4H09upvH++wwRP6rrnQycoL2fypqg9
+	 rJkVu7AEjL1oCZJ+ySoDARcns9trb3EIqfqUOBstaF6DuyPx3WN54QQ2VNjZCjxfKssw2
+	 7dTIeX9IavUjXpGFYjECHYSb9y4MJKgruV8wvNWJzZjwxNNth3hSppsjJl6qj7UiirA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792917316;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=Umtx2QekNJJOh/UY3thL10Al6ydHDa8XNgIJCQa01dk=;
-	b=B4c6RwRUv52CLeFoYV1hupECeLtRfPAjktobQeOpmokBuUQS3LzVlHAOhlr4Kxc0N6Ct
-	 TAWarhVJYiMdvmHmvxawwN2MjheO2z8dXBlE1JjqM1I6o+UMAil6lCiz/yo1m43LU5EQH
-	 PEW9AHcB6FZws4schkigyt8doB+IaUXe8/Zmuf3ga9EPBAtcDo/mIz0NNyNyApZmLoUpz
-	 xQsbtJYD/oQxdq88cjc3OYkZaOb6eX/fxCcqnes2g/AYz8nTLh7d+51e9lCu/djIY88ST
-	 WFI613+Rn47tieRNbdmU4VOpVoQrE9FICtC0q1TxkiPuC8PU1+2ZZSWYJgKWzXE65Kw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792935026;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=/vkV3+4Cb8UAzcre2euQRS6FXnY2cF6zop3hRFO/Chw=;
+	b=xxdOG89rk42CIRFAmmtb93wmM6uKpASnmOmIKehgRJ/mlv3JWEbTse0e5X6p/m72UCGN
+	 6d8gX0QwiI1gBRA2I7uyUFPMDFJEPsugI4R2nyjaNFtapA7s5BnAyX9IQvMeAwAshmyfv
+	 2DswMspGIzwSTYHct3cA3ybieEtoEvA676UW1iVhyITbXz01GzryGM0VCCHaHU5udRpmO
+	 z/rF9q07f6C4/qF1c7E0pzmlbC1cjmc0nKGBaoumliiaIGcCK5biuG4zuk8mv1L3W/Vko
+	 1VaxDvwk35TrWJ6RDbtAvEetQ4MGl5K8q2gelI9GX8uwJKzvXwFD7wc79ylYrnqPFcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HwWbrWr5;
-	arc=none smtp.remote-ip=91.218.175.50
-Received: from mta0.migadu.com (out-50.mta0.migadu.com [91.218.175.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=LCVu117t;
+	arc=none smtp.remote-ip=115.124.30.101
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE80606A320
-	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 08:35:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDE80606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8728606A31B;
+	Sun, 25 Oct 2026 13:30:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8728606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HwWbrWr5
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Umtx2QekNJJOh/UY3thL10Al6ydHDa8XNgIJCQa01dk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792917312; v=1; x=1793522112;
- b=HwWbrWr5kH39BlfikdLrFRyIbdJ1SbM/25MQ0oJN7Kxw2ZeucgCjJrW9BeMyajcuruWsvBXD
- UCCAlVmD2sJeqgj0zVacQGoE3ND93S850cPquuJy79YAKXFTU/bWuTf7/Q6YF9+dtyDBlBf0g2t
- rOrY2GFtgFC6soU5zT/EwhQw=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 8b14502940942cb9;
-	Sun, 25 Oct 2026 08:35:12 +0000
-X-Mizu-Trace-ID: 8b14502940942cb9
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5be3b2f17c1so4001e87.1
-        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 01:35:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByDK2fhIUHquXBZ2T6KE8C0w/qbfSISmFrtYQsK+GgAiZyek8oyrf2o00jC3IkN94oiEF0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKJhxlGYNqa6xaKpCuGOlWQ+0cemaG6FbAuhwNmOTKzUrxjo/B2
-	FGfTNoCpWcAgjll3rZjok258JB8Om5pSilp8rw5r350qOqeixWyZbRdCaSXGqGrJx+QMUyWOJ4B
-	oMwh5oeRpcmq4uYIvFwytbLgLEcFDNz1cellmGKrV
-X-Received: by 2002:a05:6512:3a8a:b0:5bb:ff6f:b4bd with SMTP id
- 2adb3069b0e04-5bfb79cfb9dmr89930e87.14.1792917307506; Sun, 25 Oct 2026
- 01:35:07 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=LCVu117t
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792935022; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=/vkV3+4Cb8UAzcre2euQRS6FXnY2cF6zop3hRFO/Chw=;
+	b=LCVu117t8m3DEgxzNknj7XPmE2zIMh0tOv5Pvpt2eE8nCVJ4AjqbS/wnvcT8NT5S/pYMppBkEadjScEp1D7+Hp7+P6nRMgIAe+5nwB5ztdyh4Yr3vjVlBama2GUS9hbDotQ1HCFeEyS4XqwmwctRfQ3QUQm93Nn1GIZ3xVEzO54=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XDQQjMj_1792935021;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XDQQjMj_1792935021 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 25 Oct 2026 21:30:21 +0800
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+To: jgg@ziepe.ca
+Cc: alex@shazbot.org,
+	iommu@lists.linux.dev,
+	joro@8bytes.org,
+	kevin.tian@intel.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	robin.murphy@arm.com,
+	will@kernel.org
+Subject: [PATCH v4 1/2] iommu: Add iommu_for_each_pci_mmio_window() iterator
+Date: Sun, 25 Oct 2026 21:29:59 +0800
+Message-ID: <20261025133000.205508-2-guanghuifeng@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261025133000.205508-1-guanghuifeng@linux.alibaba.com>
+References: <20261022193359.GF3381610@ziepe.ca>
+ <20261025133000.205508-1-guanghuifeng@linux.alibaba.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,42 +68,187 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261024161118.1007472-1-sashal@kernel.org>
-In-Reply-To: <20261024161118.1007472-1-sashal@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Sun, 25 Oct 2026 08:34:31 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTxKRThB+kp33nALkEejj2L8vDxE=SZYw+0KyHodYu0y8g@mail.gmail.com>
-X-Gm-Features: AclHuK_kP_F3xF9Iyo3ZWQZWl_t2OJWVWAHcLTFVaYw38-o0EI2yWRjxxMOJhA0
-Message-ID: <CA+EHjTxKRThB+kp33nALkEejj2L8vDxE=SZYw+0KyHodYu0y8g@mail.gmail.com>
-Subject: Re: [PATCH] KVM: arm64: selftests: Skip ignored AArch32 ID regs in
- the failed-run test
-To: Sasha Levin <sashal@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Mark Brown <broonie@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+Add a callback-based iterator that walks a PCI device's host bridge
+MMIO windows and invokes a caller-supplied function with each window's
+bus address range.  This consolidates the bridge window enumeration
+logic into a single shared algorithm in the IOMMU core.
 
-On Sat, 24 Oct 2026 17:11:18 +0100, Sasha Levin <sashal@kernel.org> wrote:
-> test_idreg_frozen_after_failed_run() checks that changing a feature ID
-> register after a failed first KVM_RUN is rejected with -EBUSY, and does
-> so for every register in test_regs.
-[...]
+Refactor iova_reserve_pci_windows() to use the new iterator, replacing
+its open-coded resource_list_for_each_entry loop.  The callback approach
+avoids intermediate allocations: the DMA path's callback directly calls
+reserve_iova() with the computed PFN range, maintaining the same
+zero-allocation overhead as the original open-coded loop.
 
-I reproduced this on the FVP AEM model configured with no AArch32 at
-any EL and with PMUv3, under nVHE: set_id_regs fails on
-ID_DFR0_EL1_PerfMon without this patch and passes with it. It also
-passes on QEMU (which supports AArch32 at EL0) under VHE, nVHE and
-pKVM.
+Using a callback rather than returning a linked list of iommu_resv_region
+entries eliminates size_t truncation risk on 32-bit PAE systems (the
+callback receives phys_addr_t start/end directly) and removes the need
+for allocation failure cleanup paths.
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
+Note: commit cd2c9fcf5c66 ("iommu/dma: Move PCI window region reservation back into dma specific path.")
+intentionally keeps PCI window reservation out of the IOMMU group-level
+reserved region API.  This iterator respects that boundary: it does not
+inject windows into iommu_get_group_resv_regions().
 
-Cheers,
-/fuad
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+---
+ drivers/iommu/dma-iommu.c  | 29 ++++++++++++++++------
+ drivers/iommu/iommu-priv.h | 25 +++++++++++++++++++
+ drivers/iommu/iommu.c      | 51 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 97 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 68ee57800fef..d4e4a4c90d8b 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -37,6 +37,7 @@
+ 
+ #include "dma-iommu.h"
+ #include "iommu-pages.h"
++#include "iommu-priv.h"
+ 
+ struct iommu_dma_msi_page {
+ 	struct list_head	list;
+@@ -504,6 +505,20 @@ static int iommu_dma_ranges_sort(void *priv, const struct list_head *a,
+ 	return res_a->res->start > res_b->res->start;
+ }
+ 
++struct iova_pci_resv_data {
++	struct iova_domain *iovad;
++};
++
++static int iova_reserve_pci_window_fn(phys_addr_t start, phys_addr_t end,
++				      void *data)
++{
++	struct iova_pci_resv_data *d = data;
++
++	reserve_iova(d->iovad, iova_pfn(d->iovad, start),
++		     iova_pfn(d->iovad, end));
++	return 0;
++}
++
+ static int iova_reserve_pci_windows(struct pci_dev *dev,
+ 		struct iova_domain *iovad)
+ {
+@@ -511,15 +526,13 @@ static int iova_reserve_pci_windows(struct pci_dev *dev,
+ 	struct resource_entry *window;
+ 	unsigned long lo, hi;
+ 	phys_addr_t start = 0, end;
++	struct iova_pci_resv_data data = { .iovad = iovad };
++	int ret;
+ 
+-	resource_list_for_each_entry(window, &bridge->windows) {
+-		if (resource_type(window->res) != IORESOURCE_MEM)
+-			continue;
+-
+-		lo = iova_pfn(iovad, window->res->start - window->offset);
+-		hi = iova_pfn(iovad, window->res->end - window->offset);
+-		reserve_iova(iovad, lo, hi);
+-	}
++	ret = iommu_for_each_pci_mmio_window(dev, iova_reserve_pci_window_fn,
++					     &data);
++	if (ret)
++		return ret;
+ 
+ 	/* Get reserved DMA windows from host bridge */
+ 	list_sort(NULL, &bridge->dma_ranges, iommu_dma_ranges_sort);
+diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
+index aaffad5854fc..36a2e4691455 100644
+--- a/drivers/iommu/iommu-priv.h
++++ b/drivers/iommu/iommu-priv.h
+@@ -123,4 +123,29 @@ static inline void iommu_debug_init(void)
+ 
+ #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
+ 
++struct pci_dev;
++
++/**
++ * iommu_pci_mmio_window_fn_t - callback for host bridge MMIO window iteration
++ * @start: First PCI bus address of the window (inclusive)
++ * @end: Last PCI bus address of the window (inclusive)
++ * @data: Opaque pointer from iommu_for_each_pci_mmio_window() caller
++ *
++ * Return: 0 to continue iteration, negative errno to stop and propagate.
++ */
++typedef int (*iommu_pci_mmio_window_fn_t)(phys_addr_t start, phys_addr_t end,
++					  void *data);
++
++#ifdef CONFIG_PCI
++int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
++				   iommu_pci_mmio_window_fn_t fn, void *data);
++#else
++static inline int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
++						 iommu_pci_mmio_window_fn_t fn,
++						 void *data)
++{
++	return 0;
++}
++#endif /* CONFIG_PCI */
++
+ #endif /* __LINUX_IOMMU_PRIV_H */
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index cd1bca7ede9a..ec66118d13e9 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -945,6 +945,57 @@ iommu_insert_device_resv_regions(struct list_head *dev_resv_regions,
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_PCI
++/**
++ * iommu_for_each_pci_mmio_window - iterate over PCI host bridge MMIO windows
++ * @dev: PCI device whose host bridge to scan
++ * @fn: callback invoked with each window's bus address range
++ * @data: opaque pointer passed to @fn
++ *
++ * Walks the MEM windows of @dev's PCI host bridge and invokes
++ * @fn(start, end, data) for each one, where start and end are PCI bus
++ * addresses (inclusive).  Iteration stops early if @fn returns non-zero,
++ * and that value is propagated to the caller.
++ *
++ * This provides a zero-allocation way for both the DMA IOVA layer and
++ * iommufd to enumerate the same host bridge window information using a
++ * shared algorithm.
++ *
++ * Note: commit cd2c9fcf5c66 ("iommu/dma: Move PCI window region reservation back into dma specific path.")
++ * intentionally keeps PCI window reservation out of the IOMMU group-level
++ * reserved region API.  This iterator respects that boundary: it does not
++ * inject windows into iommu_get_group_resv_regions().
++ *
++ * Return: 0 on success, negative errno on failure (including from @fn).
++ */
++int iommu_for_each_pci_mmio_window(struct pci_dev *dev,
++				   iommu_pci_mmio_window_fn_t fn, void *data)
++{
++	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
++	struct resource_entry *window;
++
++	if (!bridge)
++		return -ENODEV;
++
++	resource_list_for_each_entry(window, &bridge->windows) {
++		phys_addr_t start, end;
++		int ret;
++
++		if (resource_type(window->res) != IORESOURCE_MEM)
++			continue;
++
++		start = window->res->start - window->offset;
++		end = window->res->end - window->offset;
++
++		ret = fn(start, end, data);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++EXPORT_SYMBOL_GPL(iommu_for_each_pci_mmio_window);
++#endif /* CONFIG_PCI */
++
+ int iommu_get_group_resv_regions(struct iommu_group *group,
+ 				 struct list_head *head)
+ {
+-- 
+2.43.7
+
