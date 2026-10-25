@@ -1,100 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792950743;
-	b=arLxliLGuTTovEhlaJeXlylROpX37acSHwkTYuinVA83P5+AkjAHAsp28UlZ9tDkwOJ+
-	 KvgyVTirVu/pf8PbyRIqVYkYs4WMSg51Q23Nxf1NaWuwGJbiri8XkpENSU8OEv6A/oHiR
-	 On+8Jv05Az9Pe2JGNrMRAC1KUKlyoAcUsXMxvESfVYg2j3Sayt2Pr/VB5ZDdSvtm+KYsd
-	 F2vupjjNCJxNLO3nDsoVrLwCUoo4nblVFbd9i34WPGNRSCp8LNIeGFBRJwzP4QXcnTUyg
-	 YJnSpWl4+KJzlCy51ecwYL4GDbH7hjJSlPSKJg0CTfu/iHZRkidLNzXcYC9kEEnZ4ng==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792950743;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792960234;
+	b=JSDtrQy8JRUeu3P3Jks+eGl0k8m+nuzvhXKjl4cNJ5R5hovl+iiGa2lYbbzj2xSPqGHb
+	 Er+U/CZIDBb10ErY3WusvmwbsOOVrZbZ30cAOIrGYMZDlXIpyd60XIoZSQ9tgDoZTCsVh
+	 1z1Hjq5EqOmRJ21MwM/uoxpNMgfdn6x8J1kFAh6f3h+yYT4KFgv5RiNlr6UmIYO5I+iih
+	 Kyad1zSzOdDVADOCY3Nn3MBq17PR6zcy0zCnOt7MQF7Ah1qQYb4lxXhPqWzkoiJU2S77/
+	 ruFB+nWntovSuBM6mxXI+gOWnQfNm4ZBSNDmbsXjbbPVfLC2jEItrVUym6uTT3DtVRQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792960234;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=7aFt4J3E+xSQOGJ2c0aTTJGMbHVCzTORiyeLEMNWLak=;
-	b=QREU+PIAEbTB6jNu++UZq+wv+IAl6xZ3k3XuTGW56Yq76Y+vrlWojOaLjRdhBmP+kGNz
-	 n0umiXIQsYVJHEJn/12447mgZscFx68nJFv1cjzsgoTT2s+9PHFaxJBQaphKbWZ+Do/D8
-	 uBomtJZO6KQn6xRr+kfYg7+rVxe7Mhl4NBsROz9wUhQQTQhfjg+OyW9AdfxqQXjpwszy8
-	 GbYsouPV6rlPw21OCUVQKrESmq5ov1p0InExMjXqJ40IB3OXUd0bNqktIrncDLL98HwyM
-	 GFESmbNKtYkQUrNefDOepJjC+PDL88lIJlaWUjJ3n9wQaauwstzRurzJ1hQBM9LsrEw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=xhfm/FnI3dgYatG4alzCY4CMRbBwFdv1fIdjJsOp9rQ=;
+	b=X4QH/rCWciTHTEUJt/HABiCQ+dqFfGtj7HWysknTbFpNXv4blZJoVLe/Nh1SULXz8S5w
+	 p5g2bE44peL/hYL1fqk3zrosFNCm+XkZl+Y6EdtXRlnC+6uOsMVbD4RzkYsoyKHYSpe0e
+	 3pgM1PQzw6rGxTrUQqjOCbyxy4B9WaKW8rTcbhhaK9aEdLvvw/A/Qc+SCcwOH+utOJ2ex
+	 qLs2k7IZWnKeJa33G7yJkbUNtrz7yKNGQ9tkJwhe1pGvfSZQOyKY8rh01rWVOUzP5Ril0
+	 Gh6dbsk061XI3r+zN+0SmImFsvVFrZ96QF1+v15DoOq/i001xKyVnmmuOuwaD3bdOcg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FC6HUzYm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.45
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="hDS/99aC";
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81B7606A31D
-	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 17:52:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A81B7606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E817A606A31D
+	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 20:30:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E817A606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FC6HUzYm
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4550d8ab15so288799566b.2
-        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 10:52:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792950741; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qbAh8Xw456IMVzxK7QPfWHf97BGiFEUEvikk7XV/WyqXDPxwtpiF9ecBw47ZbrgYS1
-         tgTb5FZOAfMM5qsHckkxK4KiArL0mSSraHtHoRZRgaw4FPLjRMMKswpudqTXtZi7uzPy
-         6UPZC2wm3JHjvAnnhAsAd0stmnOIIGuHjTWgBCXudtlLOS5a+BWx8ct+gGFqwWBf0yVt
-         GroCvnATYtJBgVT0+CHHh6t8nLCBNcFTO+5O9jZBCMYAmoVEI3ZJVrMMgtfFSWPKc451
-         CFdV0PAN2RAvVaDtpNSBMCXpwT+ePTQwUsgftFZAhifIymdly4yCkDaUFjDzoi+QSTNe
-         R6Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7aFt4J3E+xSQOGJ2c0aTTJGMbHVCzTORiyeLEMNWLak=;
-        fh=oxJ6IYdo/uDdO7mcLQaNtaKk7mlri/YOvNlciSElX7E=;
-        b=T0fgM2HyxoWjpGoAKJqWhQEjsmhjtbrASjqcmvsV95Z8IV7b/MR1hs3ryMPi/0I5rI
-         teBfbDgHPofeYvbI7uzyMbz9qKW1Y46rNISVnSFjfebvwrbq4tIEKP2NPQmKt6soMcdz
-         LjQ7jRDbZqmGTOTFarQBgUWTohuNrELDBouRBvZ4dzw5Md/D7hD3yQw/ZSGBRJbGm/WC
-         Vm1P0eOeYJecIaSI+4VfmiZKnFWBvFJaVOavH/X6NjT0WHAUSJtd3vYvMLW1bX3C0ITT
-         MHDv6fE6HAbO2gKOLlFb3ZDhJbnAzUVGHnPRy0yfQuPBUxUldUm61xNn1zx/rQmjmHJQ
-         lp6g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hDS/99aC
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a35a60499eso10540605e9.0
+        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 13:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792950741; x=1793555541; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7aFt4J3E+xSQOGJ2c0aTTJGMbHVCzTORiyeLEMNWLak=;
-        b=FC6HUzYmMNQxSMmCXmfY45ZCuO/QTfl4IX7GWuzE+msxmYINvXAo6QHDZeyEiSHCJX
-         L2PHiLT28UoHFEosGOk9U4m+39P4IKoyBS5McHyEcRkFC+3hV4BsXrEjmRk7DEzawapX
-         VSuY0cUGX3gBsgSAdNjNzyMKf9fOPNMzn6Z1c8jMvlxdAYMTMExd+UI9ZLeGnH8PqUCN
-         y4Y0RridFPMkvhRla0ZTxu+O9HQD9fK08Jnf1N/UtW43eyx8wBe6CqhXP3sXSjmGFf1h
-         yw4V1AcDslf+F5ZpJPBH3UAUlMPpHHKQdgRYj/P2dc/YlzRLEd20N4BbEpmhYC9iahwA
-         TbGg==
+        d=gmail.com; s=20251104; t=1792960232; x=1793565032; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xhfm/FnI3dgYatG4alzCY4CMRbBwFdv1fIdjJsOp9rQ=;
+        b=hDS/99aCeF7CJxsoTTpZ0+zronkwQywQHbjg0mGFpMqPy+P33plzbb03DSSh3yWcFE
+         XdokAJchxaBwkz1TGf7v1Gs0AnodKhKfLIPwCMU/jCH/+DUiIpraVT7SZv3j1rnWdIZ+
+         CWKSD7mo/0UxzGlOMn8LKZtslmb/kPKp1WGmrz8q2kjdCkJgANiCoAjh1iK5k9MJXUdB
+         ReeG6l/aUIsPWkG4MRK1QRz2l4gspNxWA2cEf5A7Mn/2ViokXWssTASVkm6mYDVm4giP
+         uVDtfai7MqPXeUsoS/ww2h35N8E8p/6jY49tQGi6mPliQE/8W1aCSdPnV4V29mt8S4pP
+         IjPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792950741; x=1793555541;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=7aFt4J3E+xSQOGJ2c0aTTJGMbHVCzTORiyeLEMNWLak=;
-        b=CYGeLdMwo4RGzjBOVSkHh8JXlR2+3AOkau95XPJpuqaP5l2gXGUlqYUSjPmyIEeirb
-         RxiHDEDYGPjNPf/VIpqE5JpALByXO7LOIzN57m/LkXh1Rvvnu9brl07k3jxxxIQ0pass
-         DSe4vbnLGdllRO2V1MBv/aObDuLcWVq65vVtlqAuC7nSJ+ZPyM81McsekNnxLFWiJXWt
-         i8ioe3fdxr0jRHCfAVYq5onrCvP+8QihJMgC8sCJyCtmzZIbpLOVRtK99zLXy+HQ2Uwv
-         YVmOzccbuQxMnWM2DWHPW71xriCFOBcRWOQ8SgKhQbW914BJzL2LPOc46sxWrnGgb2fv
-         kgBA==
-X-Forwarded-Encrypted: i=1; AKwUvBywxKnrEvY3K1jmDSnFW6PkL1F/OCJRfS+6pXXorbqMYU48kPlwaMiPpQQfINvy6ZmLFhw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6+q92Q4WqcIRNfNVGC86k5zt0maXQpRV9qK5klhRTW6VGLa3q
-	77OKF5eutuaDS/yyDMCrTBf2/PJMCq73FgWazK7BfaqZ9IRHBtcXodKQO4BkR7kxoTvdoh69fyU
-	29Hr6U3VPASS46dJ5Avu1ybAqs8Aeu78=
-X-Gm-Gg: AYBFou1vRN27jtrTgbUHypeJvShChJ0c9fxiZQiR5XiSuLEw4BMho0l4teECOVRI89x
-	w3tJ0QaxxZw0ybkUM1UJIY8b6peOaKkPXxOkAZUHg2tX1rZvIhFQpExzbqvFmQjONGP/KE+t3Qr
-	x+uQ9sKrOcfB5+AaMaTy7bVHkJhkFDFbeovq9Zy1oBfgpB5Iuo74FAGH1gxCWxK1DXjD3ttT/P5
-	H/DRVxUAr5m3aWDsuud5B9JW9uUNV9sMaONVC4D3tIKv7a8leFBZntroPADGdxKdX8DI43Yp2hE
-	oBdD3ziMxgY0RaxBrx2Qr9nesIMKjf2Ac4eMgFP2v+fRsJ6/rfoCZmdpgmhtyLKc2OrDce34R5D
-	qWFYpgDlLx748uhpR6/4dM+xCzd8bbu2NTczlmmk22QD7BwaFvOcj5dDknpvVOGh8gO+OrxpY6l
-	szjQb3ILCVoxCIVrvDa/NMCg79rvqBQShnEx+Ys74VXjkpegVW0kE=
-X-Received: by 2002:a17:907:9711:b0:c46:7b82:27b4 with SMTP id
- a640c23a62f3a-c46bddc9600mr600371766b.19.1792950740660; Sun, 25 Oct 2026
- 10:52:20 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792960232; x=1793565032;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xhfm/FnI3dgYatG4alzCY4CMRbBwFdv1fIdjJsOp9rQ=;
+        b=wRd/33O5gQvlQaJdX5JlLltLjIjI69lVyufnaouR+iFTOuDDFenjcEmYBl159JPv7G
+         VW+E+7YT/B5UtVdjxnlte/8OM60L3d7FrxgJq5rQcttURNcEjKW5iXsjHCqED93MA84B
+         QKL8QAWVRmUiabp/LV7T/SHjBGrI/0Cb+JTzH+4WiXIHt67OelWNmRjYmbY0t5RdPlib
+         6/Xs1pVDH5xsXPfpQSid1bACMmLNulLoamrrdtSSqecp6W2+2WaY7iZzfnNMYrdoHHul
+         wzCvQGUUn/orF34OAFYKdPwfETIo3dQliqvJXfsD0OfO131SGS7I0utx/lt0iadGQ+pf
+         fqnA==
+X-Forwarded-Encrypted: i=1; AKwUvByanStGlVItFIiQtiVwoPxhLuFZ2CyXEH/jJHKwkN7ZKzhEN9PZrS9QjKKJaAj9IXAySoY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJyutsKjbjVT5pjofSzw9MiR/mLm58N2/4nbyd9NyPxg5woyL4l
+	Tx8fxtsdLwVFwIjupBSCEwvMY28ykFwQfqDenbP23dxNpIe0h6CgKyEt
+X-Gm-Gg: AYBFou1i78XRkQiGmE+rIxkzmbTc7usgbKPIRFc2kBT6yXjZltmjMvgrAZvXCy+mZAs
+	VIVYMwfOSdYuXWl8zg/OHwWnfGIkNzGn8NGtDUigJE7oh/ZhyQb3rqtZnigdfteV26wx8MIfGHO
+	j4fUMuCPro2pJP+k55qKM2T8HHz4oE2mmBKBY8VSEC+MAfFj4JOhiu77pfbMnI3JfZGpo/wDIdh
+	4Cq8PxQ9D5Gz1PDtHLDl/KpZRjaM/Bium3+gxYLaLq4ymYZyvuQiXvlhRl+stoFEiKpR/sDJJMF
+	5/2VU9e2ZNE9rIWQm6+I8ypWkoLBcgloR2z3AzbfhzvB3Y86PE00U1EowjT55C7N9qOO30zyzGK
+	FT+IVia3n/ZXQdFc1I+8bUWG/JrdfMF0mD4peo9CXKlP15cuMB/bpDJHCA24U6XxIwwDCw92zA+
+	6yVh8hKxX4tDqKSu8F+kMn8kMkyMbgOIFNSFQtf7keHF1cCfWwMdAaOMBnZKUHr6T0Rx5EYYtfh
+	j8MGpQSoG/06SyJpv9p0VF30dtQBqeaEzWvzAQjRbR2h2kSnCB2S5ugqR4/oM6C2yBnXbFL3s33
+	HhTjG9zGRJktCEjYyR9Xzq69m3VunfRGfdluv5UMbHkGje21CVEBUmPwbLAhYR2FTSpvbicYXmG
+	8FSbyifjhrwb14wkic1psOS2A1ZUlhmAZESDx5wvqPQXho1S9B1sFFdfkEkTF1cwbMw8IBTQX31
+	5j
+X-Received: by 2002:a05:600c:4583:b0:4a1:825a:56fd with SMTP id 5b1f17b1804b1-4a35acc2773mr98426965e9.32.1792960232061;
+        Sun, 25 Oct 2026 13:30:32 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a9cc-4401-09c3-9199-30c4-c6a3.310.pool.telefonica.de. [2a02:3100:a9cc:4401:9c3:9199:30c4:c6a3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebc3cfasm12003158f8f.17.2026.10.25.13.30.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 13:30:31 -0700 (PDT)
+Date: Sun, 25 Oct 2026 21:30:29 +0100
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Eric Auger <eric.auger@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] KVM: arm64: Preserve level IRQ re-pending
+Message-ID: <at5k-_Ign30fPuHE@gmail.com>
+References: <20261022064628.4206-1-kmehltretter@gmail.com>
+ <atxWfRsNNK8vdeSr@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,89 +105,57 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAOz=NNVc4C3aSC+VL59V31==P_sfgCkjSK+nG3LAByUF84OVVQ@mail.gmail.com>
- <at41Hdy8ATMj9LRC@wunner.de>
-In-Reply-To: <at41Hdy8ATMj9LRC@wunner.de>
-From: Patryk Janik <patrykjanik1710@gmail.com>
-Date: Sun, 25 Oct 2026 18:52:09 +0100
-X-Gm-Features: AclHuK88Z2QavAmx4mSXDSBISgT_e3iYcuZ7GDfDRBk8SUdPo9i421telRTgTEI
-Message-ID: <CAOz=NNVW9khnnt40Bm_ddiNeZ+4Jr6pEPjSLb5Ezq0gAi6Y7uA@mail.gmail.com>
-Subject: Re: [PATCH RFC] PCI: Don't restore state of a device whose config
- space is inaccessible
-To: Lukas Wunner <lukas@wunner.de>
-Cc: bhelgaas@google.com, linux-pci@vger.kernel.org, alex@shazbot.org, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atxWfRsNNK8vdeSr@kernel.org>
 
-On Sun, Oct 25, 2026 at 05:58PM +0100, Lukas Wunner wrote:
-> Config Space Writes are Posted Requests. There are no Completions
-> sent in return and consequently no Completion Timeout is observed.
-> So the above paragraph doesn't really make sense.
+On Fri, Oct 23, 2026 at 11:55:57PM +0100, Oliver Upton wrote:
+> > The exact alternative is to stop and synchronize the target vCPU
+> > before applying such a write, as the active-state accessors do. Is the
+> > conservative replay acceptable here, or should ISPENDR pay that
+> > synchronization cost?
+> 
+> Yes, just kick the target vCPU out and sync the LRs back into the VGIC
+> state. That's consistent with the approach we're taking everywhere else
+> where this sort of issue arises.
+> 
+> If we're lucky the vCPU is just poking at its own redistributor and the
+> synchronization is free.
 
-You're right that the writes aren't where the time goes; the
-paragraph is worded badly. (Strictly, Configuration Writes are
-Non-Posted on the link and do get a Completion, but with ECAM the CPU
-doesn't wait for it, so they don't stall either way.)
+That makes sense. In my current v2, vgic_mmio_write_spending() uses
+vgic_access_active_prepare() and vgic_access_active_finish() under
+config_lock, and drops the extra struct vgic_irq flag.
 
-What stalls are the config *reads*. The trace is in pci_mmcfg_read()
-with RCX = R13 = 0xffc: when every header reads ~0,
-PCI_EXT_CAP_NEXT(0xffffffff) is 0xffc, and
-pci_find_next_ext_capability() re-reads that offset until its ttl of
-480 expires. pci_restore_state() does about ten such walks, so a
-single restore issues several thousand config reads to a device that
-no longer answers, each one stalling until the Root Port's Completion
-Timeout. On this host that was ~56 minutes in pci_restore_state()
-(and another ~33 minutes in the subsequent save for the bus reset).
+> 
+> > The issue was reproduced with Zephyr, NuttX and RT-Thread guests. On a
+> > Raspberry Pi 400 host with a GIC-400, each GICv2 guest handled the SPI
+> > once before the fix and twice afterwards.
+> 
+> Have you configured these guests in such a way to reproduce the issue?
+> What exactly are they doing that is susceptible to this issue?
+> 
 
-I'll fix the commit message in a v2.
+Yes, the runs used a small test harness in each guest. Each test
+configures unused SPI 150 as level-sensitive, pends it from thread
+context, and pends it once more from the ISR before deactivation:
 
-> The outcome was that there's a firmware fix available and a quirk
-> should at least differentiate between good and bad firmware.
-> Or the fix is to update the firmware and then we don't need a quirk.
+- Zephyr (qemu_cortex_a53): k_irq_set_pending() -> GICD_ISPENDR.
+- NuttX (qemu-armv8a): up_set_irq_type(IRQ_HIGH_LEVEL) and
+  up_trigger_irq() -> GICD_ISPENDR.
+- RT-Thread (qemu-virt64-aarch64, pic.gicv2_eoimode=1):
+  rt_pic_irq_set_state_raw() -> GICD_ISPENDR.
 
-Agreed on the FLR failure itself, which I'm pursuing with NVIDIA
-separately (for this SKU, 10de:2bb4, no newer VBIOS is published yet).
+A driver that hits the same pattern is RT-Thread's
+components/drivers/mailbox/mailbox-pic.c, which amp.dtsi configures with
+level-high SPIs and rings via GICD_ISPENDR. 
 
-This patch is not a quirk, though, and not NVIDIA-specific: it doesn't
-touch the reset, it only makes pci_restore_state() bail out on a
-device whose config space reads ~0, the same way pci_save_state() and
-pcie_flr() already do via pci_dev_config_accessible(). Whatever
-firmware the device runs, once it has fallen off after a failed reset
-the kernel shouldn't spend an hour in soft lockups restoring state
-into it. The same applies to any device that dies during reset.
+pic_mbox_isr() reads MAILBOX_ISTATE once at entry and clears only those
+bits at exit.
 
-I left dev->state_saved untouched on the early return so a later
-restore can still apply the saved state if the device comes back.
+Sending on another channel while pic_mbox_isr() is active sets the new
+MAILBOX_ISTATE bit and writes GICD_ISPENDR. Without this RFC fix,
+deactivation drops the second pending state on both GICv2 and GICv3 and
+leaves the new channel bit stuck.
 
 Thanks,
-Patryk Janik
-
-
-On Sun, 25 Oct 2026 at 17:58, Lukas Wunner <lukas@wunner.de> wrote:
->
-> On Sun, Oct 25, 2026 at 05:37:39PM +0100, Patryk Janik wrote:
-> > After a failed reset, vfio_pci_core_disable() unconditionally calls
-> > pci_restore_state(). When the device did not come back (FLR timed out,
-> > config reads return ~0), restoring state walks the extended capability
-> > list and rewrites the whole config space. Every one of those accesses
-> > stalls for a completion timeout, so the host spends minutes in soft
-> > lockups instead of failing fast.
->
-> Config Space Writes are Posted Requests.  There are no Completions
-> sent in return and consequently no Completion Timeout is observed.
-> So the above paragraph doesn't really make sense.
->
-> > - "PCI: Avoid FLR for NVIDIA 5090 GPU" (linux-pci, 2026-04-16), where the
-> >   underlying FLR failure was described as a known device firmware defect.
->
-> I assume you're referring to:
->
-> https://lore.kernel.org/r/20260416070707.3242381-1-yuan.gao@ucloud.cn/
->
-> The outcome was that there's a firmware fix available and a quirk
-> should at least differentiate between good and bad firmware.
-> Or the fix is to update the firmware and then we don't need a quirk.
->
-> Thanks,
->
-> Lukas
+Karl
