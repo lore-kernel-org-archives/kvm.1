@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792894794;
-	b=2pw3qqMflouY+2bzSpFOr0Q9rC559l5WDOMcqg4JZlNr0MTHKo2XPc7AMdEX8e/4vDwu
-	 SgDA006UYY1MLsOYU2QvOQ4UALj2AQ3XuxIIbXaEp1guNWrCqN9KDyP/akyiOBLSskW1Q
-	 I/OzR4ATsty7V8w0MiMFc4unc73SHlWtGN2hqBi1Z3WD8BwX0wPd6BER6klA32+MhqXxc
-	 YGigeN7wSjaVo2f7MwZrtNOiYcDibt31dbEb5hMB/bCpAQe/qOZRF3z34wdih+DFuewnU
-	 phqkxl44+6SJHnKF4Nb8XbpbZzyJVIdUHdgtO+s2wnGswvQPhWrzI1ze+wogEc3HgcA==
+	t=1792894792;
+	b=ZZDO1WUnXwDm47DAvO1Sl7x7aj4VtYqFffwqQyynDShTtQZ24F2A0Yqd86kQwL9nfQYk
+	 32tUZKqQeIJoCm9qJQBfQVI/WWY97BPCH1EJ51BZW+05HKa08gJAZdbrgXCJ0Z6xPBgP0
+	 Qx13KaUkjokdQhCr5V8sMA1vJGhuE1fZYNJ46FhNYGIutuUiV05R3BFJ7jwz2fe80c8IZ
+	 AiPWiokt2gH0BqnNTTIZ0j5QWQdKQ9KetAyqrI+sgGeR3KvnVxyVPj/1CEHGhtXjh2eT8
+	 mEN+zGZpL51XKqWVz0hzRNTTGeUDag0A68Itvl4BeaQGI2btPNd8yCT+5VBsUcYSzUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792894794;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792894792;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=iAmL6dDCl6VCpbqXazWUpvxA8pF8WBHEUzN8tOpo6p0=;
-	b=ZzGkHxBzl7gDcCN3JEroBZeG1aamk2IR1bpSID0MMJlhajHDGX/Rds9Pcz5PykK7Ovu2
-	 OlOQCz/BviPiMG693o1ZzXxLhHWZns/rEk8mZTK/4gw1NxCP7YSVTsFVLU0awm3UOn8Fc
-	 MN2IVGvU+DmFbzwJrdWbJaboVp+QqOxX3a7B/cnQN9SlNqtXBaJRN4NTDOsf9XdDm9c6b
-	 lDb6YoiNnkiRjn7IY+8d3fJyJUNMq0nvMHElmJbcTrtqx69iwQbYzSF4IL6Cmmpt4HGYn
-	 KqkApZcJoJur25YvdNFQoCBjuEURqU2uvXmr7Iw4ywDAsf2i2njHU8Njhubb8oi8S6A==
+	bh=gFxfqRPTTiNci0a2xkz2JDSqfxRC3WenmzWdDXFtYp8=;
+	b=VRZ0heTkRmlB1GUK55C0a4BHekAQ9e9PHotD+SxbQhri0QE4eYQNEjAaN5udeABGIsjS
+	 gUMf8wAAw7K7eRL0F+CGvuIcj+t5UKWsYP3r8wjGo4mu5D4IDLGN8frPeGngnbFz1V0QC
+	 6eX+bCQ0uHpw7U/HG5vOQkH0eAf5OQIv3bbe3xXHCItDU6CPdGtD1FHuzQjsDexGKZw4+
+	 rnYjs9ewyP0l+NqiC3pJC8EzcQEEVAzLh0S139sF+Gpnn7V3fRwZDGHacIigveIft3ZWe
+	 D01JpeQUuftId0LgrmRg4u9yo+13ev0Q/1M3MQeeJW1RUQFT0Nf0OQikTFqgJGedDmw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mQTk80qZ;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BujbbpJo;
+	arc=none smtp.remote-ip=209.85.210.200
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD9860A381E
-	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 02:19:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FD9860A381E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D83606B9E5
+	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 02:19:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44D83606B9E5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mQTk80qZ
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e94f72fb9fso18293835ad.1
-        for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 19:19:53 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BujbbpJo
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-887c99013edso1137724b3a.3
+        for <kvm@vger.kernel.org>; Sat, 24 Oct 2026 19:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792894793; x=1793499593; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792894792; x=1793499592; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iAmL6dDCl6VCpbqXazWUpvxA8pF8WBHEUzN8tOpo6p0=;
-        b=mQTk80qZaBm+ggx80wcBAKFzFVCC7rojO+o6FUSAafYBBHbsaVkeQgOgdpudnZwJB7
-         g0knTI+jj0athZ9Um0oYISLL8IQPZO9HlJmbyY/GC3BEmniOBJpkbiLG7vvi9Z/LoR0U
-         QntuI5kBMXcLYyQ9dKYrnWBXvrq/rZ/wnPcE8uV7KGAIvLv7W/abLnNKvlaWJEJecVVj
-         n0RAUg4VQSm5jm/GXnXI2Eqv6WTuRYIMjYUO7iZNtU7pjOPHs0yBmxJAiTAySs2kqGRs
-         IWoxTLOMHsK5Usk0OXWfGQAzdqvW1U1VznYxHKn19iCnr8EFE1hYetEKVV5Y7dO+yY6b
-         t5bg==
+        bh=gFxfqRPTTiNci0a2xkz2JDSqfxRC3WenmzWdDXFtYp8=;
+        b=BujbbpJoFpzSmpuvNT/dFDmfu3S9LiA3F1GDyoGtiKQWshPpGl6T+mF0XGIiTTMGBd
+         HQ3hDggJTIMBajU4bClGzKxeUfFnX8MWir+d/ql9zmF8+BJBKteVPh6pnF+vgIvhBXFE
+         8PWiOWam75u104l4u9VDoCx7BI19A366au0Ow+os5RCCE+XzSXsQsmNCCFnD+7tXRLo1
+         SkvbzKR+/TX9/AvvZ2+OF8zr5LOuCrirpCIq6f929XsGtlD8VgKIG6cp7PIu3TL6TYe2
+         c3zKYgedUbVCBTiTAtXIBns+ifbmOaiJZ5Kis4T+WHMqmYuXG/uiVg2uVsvAJDK/JDGT
+         RFvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792894793; x=1793499593;
+        d=1e100.net; s=20260707; t=1792894792; x=1793499592;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iAmL6dDCl6VCpbqXazWUpvxA8pF8WBHEUzN8tOpo6p0=;
-        b=PRVBDKwNMZfD9nc+zbDb3nf3seAAqnOR0z3Kl7OOtfNb2MyNUciHUzziWNYYUBUQ6w
-         S+keFu6Ac3/Yp9MNg9kOONvWt8pwiiteNn/Ae0OcgXQD5//xEbyo4PU8yklkfP3ExA5D
-         xQQ8AVaFu/pB9H5u0wZZamp+yrATr2y0txPkII/Ulh2hnrp2QEx04Y79bTxLge8snjTe
-         zxJA2p4GoesJN2IvkfLmxnLlTIDdqSQa2lzjFvn9e/xaVmlkqAXU+zfLmtsljZy7rsE/
-         izpWQbVqhTCPtCqsLHKAhfp8vqwVle60iCn14I35z+JOFgOCFB/zM7ktvgZG3dBs0EyP
-         +RWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzecLzadJt1cu5I1S0e3Q+QlOefDF9rPjeqWrl6LnIyI0VglVzr2vzbuyR1Sm6isYjmTbA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIj7lTmV67YxkFa+77E1nCpsrpP9cuBnAb1kKM0f1WbRqUFrd7v
-	yLZ5k1X15mGTYORLF+GFFMtH5vPBolPP7KzE2rjMI38WDVbXBvZPL8Cgq62EnOSQpB3x5roc4kT
-	UOeJt2Bljzv+HWQ==
-X-Received: from pggs7.prod.google.com ([2002:a63:dc07:0:b0:cd8:bfaf:1ea3])
+        bh=gFxfqRPTTiNci0a2xkz2JDSqfxRC3WenmzWdDXFtYp8=;
+        b=jiRXnrDEXFhrhk3CPldyss9cWaS5M2q4LXWIg7e0/pBpKeT1w8J1X7F2GQ3vPrCPFe
+         E9N0elIirBWz77scdYjKJ9V55dhyshXs/ObGD/TbOWyhs5XCcH17CAU8GfLY+btCc0ce
+         BN4MjjNrbKImTJ1eK/n1xw/g67KJQOz2VBpFqeNkGEFoirG1r4XQKU4WUhFmxSqOliGu
+         2ECcsyf3+DrRg5+XrbOz+UK367o0f4iwvIUcGul5Gl4qpCWxboJ/FV0WYTaKIfJW4frR
+         XsksJ4Et7SCDDyAt4b3GsWhvOyqBSSlZ5CzLDezh1VTEn9xXQswAiIFxek1R0/HzhGJ8
+         BU6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBydEdFsYkLbyRR5K0HeYam04TBSGo0jDbsM61xufgC/mfYOgJPFA6w8slUID7IJIxa6mQ0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJp9CM+6KzqSsAMJgdoxhf9JWw3m8K0RevjuoT4BwfghYgpCotH
+	UbvQJOwveyjcSx/vbVNEbZaBT/U81OPVx4UtHPuTeSVWwXTosatxNKmnPOIjC02GZqFB5E1RLZZ
+	uRD56xBoHA/jWgg==
+X-Received: from pgbm22-n2.prod.google.com ([2002:a05:6a02:6196:20b0:cd6:1d17:2ccc])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1a30:b0:2e5:467a:7a6b with SMTP id d9443c01a7336-2ea9c69aa27mr28295695ad.10.1792894792865;
- Sat, 24 Oct 2026 19:19:52 -0700 (PDT)
-Date: Sun, 25 Oct 2026 02:19:25 +0000
+ 2002:a05:6a20:9c16:b0:3e2:8fdc:a6cf with SMTP id adf61e73a8af0-3e7bfab8c31mr2586186637.30.1792894791568;
+ Sat, 24 Oct 2026 19:19:51 -0700 (PDT)
+Date: Sun, 25 Oct 2026 02:19:24 +0000
 In-Reply-To: <20261025021930.674647-1-skhawaja@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,278 +81,290 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261025021930.674647-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261025021930.674647-15-skhawaja@google.com>
-Subject: [PATCH v6 14/18] iommufd: Implement ioctl to mark HWPT for preservation
+Message-ID: <20261025021930.674647-14-skhawaja@google.com>
+Subject: [PATCH v6 13/18] iommu/vt-d: Handle reattach of the restored domain
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
 	David Woodhouse <dwmw2@infradead.org>
-Cc: YiFei Zhu <zhuyifei@google.com>, Pranjal Shrivastava <praan@google.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Robin Murphy <robin.murphy@arm.com>, 
+Cc: Samiullah Khawaja <skhawaja@google.com>, Robin Murphy <robin.murphy@arm.com>, 
 	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, 
 	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
 	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
 	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
 Content-Type: text/plain; charset="UTF-8"
 
-From: YiFei Zhu <zhuyifei@google.com>
+Reattach the restored domain to the preserved device using restored
+domain ID. While reattaching do not setup the context and PASID entries
+as those are preserved during liveupdate.
 
-Userspace provides a token to mark the HWPT for preservation. Note that
-this token is not the LUO token that is used to preserve the iommufd.
-Once all the required HWPT are marked for preservation, the user can
-preserve the iommufd into LUO. The iommufd will preserve the HWPTs that
-are marked for preservation.
-
-The marked HWPTs are tracked using a new XArray mark protected by a new
-liveupdate mutex. This mutex will also be used during iommufd
-preservation to protect against any race with the mark preserve ioctl.
-
-The HWPT token will be used during restore to identify this HWPT. The
-restoration logic is not implemented and will be added later.
-
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- MAINTAINERS                             |  1 +
- drivers/iommu/iommufd/Makefile          |  1 +
- drivers/iommu/iommufd/iommufd_private.h | 17 ++++++
- drivers/iommu/iommufd/liveupdate.c      | 72 +++++++++++++++++++++++++
- drivers/iommu/iommufd/main.c            |  9 ++++
- include/uapi/linux/iommufd.h            | 27 ++++++++++
- 6 files changed, 127 insertions(+)
- create mode 100644 drivers/iommu/iommufd/liveupdate.c
+ drivers/iommu/intel/iommu.c      |  34 ++++++--
+ drivers/iommu/intel/iommu.h      |  14 ++++
+ drivers/iommu/intel/liveupdate.c | 131 +++++++++++++++++++++++++++++++
+ 3 files changed, 171 insertions(+), 8 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 15e1da41b0cc..78af4e3dc106 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13738,6 +13738,7 @@ M:	Samiullah Khawaja <skhawaja@google.com>
- R:	Pranjal Shrivastava <praan@google.com>
- L:	iommu@lists.linux.dev
- S:	Maintained
-+F:	drivers/iommu/iommufd/liveupdate.c
- F:	drivers/iommu/liveupdate.c
- F:	include/linux/iommu-liveupdate.h
- F:	include/linux/kho/abi/iommu.h
-diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
-index 67207914bb6e..cfd5b4b14ccb 100644
---- a/drivers/iommu/iommufd/Makefile
-+++ b/drivers/iommu/iommufd/Makefile
-@@ -12,6 +12,7 @@ iommufd-y := \
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index ecec057f78dd..4f01aa34ccb5 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -2926,6 +2926,9 @@ static int blocking_domain_attach_dev(struct iommu_domain *domain,
+ 				      struct device *dev,
+ 				      struct iommu_domain *old)
+ {
++	if (dev_iommu_restored_state(dev))
++		return -EBUSY;
++
+ 	iopf_for_domain_remove(old, dev);
+ 	device_block_translation(dev);
+ 	return 0;
+@@ -3294,6 +3297,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
+ {
+ 	int ret;
  
- iommufd-$(CONFIG_IOMMUFD_NOIOMMU) += hwpt_noiommu.o
- iommufd-$(CONFIG_IOMMUFD_TEST) += selftest.o
-+iommufd-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
++	if (dev_iommu_restored_state(dev))
++		return intel_iommu_attach_restored_device(domain, dev);
++
+ 	device_block_translation(dev);
  
- obj-$(CONFIG_IOMMUFD) += iommufd.o
- obj-$(CONFIG_IOMMUFD_DRIVER) += iova_bitmap.o
-diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-index eb2e85b27e42..a33b32708afa 100644
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -44,6 +44,11 @@ struct iommufd_ctx {
- 	struct file *file;
- 	struct xarray objects;
- 	struct xarray groups;
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+#define IOMMUFD_OBJ_LIVEUPDATE_MARK XA_MARK_1
-+	/* @liveupdate_mutex: Protects the preservation of HWPTs. */
-+	struct mutex liveupdate_mutex;
-+#endif
- 	wait_queue_head_t destroy_wait;
- 	struct rw_semaphore ioas_creation_lock;
- 	struct maple_tree mt_mmap;
-@@ -392,6 +397,9 @@ struct iommufd_hwpt_paging {
- 	bool auto_domain : 1;
- 	bool enforce_cache_coherency : 1;
- 	bool nest_parent : 1;
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	u64 liveupdate_token;
-+#endif
- 	/* Head at iommufd_ioas::hwpt_list */
- 	struct list_head hwpt_item;
- 	struct iommufd_sw_msi_maps present_sw_msi;
-@@ -729,6 +737,15 @@ void iommufd_vdevice_abort(struct iommufd_object *obj);
- int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd);
- void iommufd_hw_queue_destroy(struct iommufd_object *obj);
+ 	ret = paging_domain_compatible(domain, dev);
+@@ -3424,7 +3430,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
+ 	info->iommu = iommu;
+ 	RB_CLEAR_NODE(&info->node);
+ 	if (dev_is_pci(dev)) {
+-		if (ecap_dev_iotlb_support(iommu->ecap) &&
++		if (!dev_iommu_restored_state(dev) &&
++		    ecap_dev_iotlb_support(iommu->ecap) &&
+ 		    pci_ats_supported(pdev) &&
+ 		    dmar_ats_supported(pdev, iommu)) {
+ 			info->ats_supported = 1;
+@@ -3529,12 +3536,16 @@ static void intel_iommu_release_device(struct device *dev)
+ 	struct device_domain_info *info = dev_iommu_priv_get(dev);
+ 	struct intel_iommu *iommu = info->iommu;
  
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd);
-+#else
-+static inline int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
-+{
-+	return -ENOTTY;
-+}
-+#endif
-+
- #ifdef CONFIG_IOMMUFD_TEST
- int iommufd_test(struct iommufd_ucmd *ucmd);
- void iommufd_selftest_destroy(struct iommufd_object *obj);
-diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
-new file mode 100644
-index 000000000000..5fb491ff3a3d
---- /dev/null
-+++ b/drivers/iommu/iommufd/liveupdate.c
-@@ -0,0 +1,72 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (C) 2026, Google LLC
-+ * Author: Samiullah Khawaja <skhawaja@google.com>
-+ */
-+
-+#define pr_fmt(fmt) "iommufd: " fmt
-+
-+#include <linux/file.h>
-+#include <linux/iommufd.h>
-+#include <linux/liveupdate.h>
-+
-+#include "iommufd_private.h"
-+
-+int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
-+{
-+	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
-+	struct iommufd_ctx *ictx = ucmd->ictx;
-+	struct iommufd_hwpt_paging *hwpt;
-+	struct iommufd_object *obj;
-+	unsigned long index;
-+	bool marked = false;
-+	int rc = 0;
-+
-+	hwpt = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
-+	if (IS_ERR(hwpt))
-+		return PTR_ERR(hwpt);
-+
-+	mutex_lock(&ictx->liveupdate_mutex);
-+
-+	xa_lock(&ictx->objects);
-+
-+	/* PRI use cases are not supported. */
-+	if (hwpt->common.fault) {
-+		rc = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
-+
-+	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
-+		struct iommufd_hwpt_paging *hwpt_marked;
-+
-+		if (WARN_ON_ONCE(obj->type != IOMMUFD_OBJ_HWPT_PAGING))
-+			continue;
-+
-+		hwpt_marked = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
-+
-+		if (hwpt_marked == hwpt)
-+			marked = true;
-+
-+		if (hwpt_marked->liveupdate_token == cmd->hwpt_token) {
-+			if (hwpt_marked == hwpt)
-+				goto out_unlock;
-+
-+			rc = -EADDRINUSE;
-+			goto out_unlock;
+-	iommu_disable_pci_pri(info);
+-	iommu_disable_pci_ats(info);
++	if (!dev_iommu_restored_state(dev)) {
++		iommu_disable_pci_pri(info);
++		iommu_disable_pci_ats(info);
+ 
+-	if (info->pasid_enabled) {
+-		pci_disable_pasid(to_pci_dev(dev));
+-		info->pasid_enabled = 0;
++		if (info->pasid_enabled) {
++			pci_disable_pasid(to_pci_dev(dev));
++			info->pasid_enabled = 0;
 +		}
++	} else {
++		intel_iommu_detach_restored_device(dev);
+ 	}
+ 
+ 	mutex_lock(&iommu->iopf_lock);
+@@ -3542,11 +3553,15 @@ static void intel_iommu_release_device(struct device *dev)
+ 		device_rbtree_remove(info);
+ 	mutex_unlock(&iommu->iopf_lock);
+ 
+-	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev) &&
++	if (!dev_iommu_restored_state(dev) && sm_supported(iommu) &&
++	    !dev_is_real_dma_subdevice(dev) &&
+ 	    !context_copied(iommu, info->bus, info->devfn))
+ 		intel_pasid_teardown_sm_context(dev);
+ 
+-	intel_pasid_free_table(dev);
++	if (!dev_iommu_restored_state(dev))
++		intel_pasid_free_table(dev);
++	else
++		kfree(info->pasid_table);
+ 	intel_iommu_debugfs_remove_dev(info);
+ 	kfree(info);
+ }
+@@ -4003,6 +4018,9 @@ static int identity_domain_attach_dev(struct iommu_domain *domain,
+ 	struct intel_iommu *iommu = info->iommu;
+ 	int ret;
+ 
++	if (dev_iommu_restored_state(dev))
++		return -EBUSY;
++
+ 	device_block_translation(dev);
+ 
+ 	if (dev_is_real_dma_subdevice(dev))
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index 260c7a5b1240..f910e5383e12 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -1322,6 +1322,9 @@ void clear_unpreserved_context_entries(struct intel_iommu *iommu);
+ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+ 					       struct iommu_hw_ser *iommu_ser);
+ void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu);
++int intel_iommu_attach_restored_device(struct iommu_domain *domain,
++				       struct device *dev);
++int intel_iommu_detach_restored_device(struct device *dev);
+ #else
+ static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
+ {
+@@ -1335,6 +1338,17 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
+ static inline void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
+ {
+ }
++
++static inline int intel_iommu_attach_restored_device(struct iommu_domain *domain,
++						     struct device *dev)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int intel_iommu_detach_restored_device(struct device *dev)
++{
++	return -EOPNOTSUPP;
++}
+ #endif
+ 
+ #ifdef CONFIG_INTEL_IOMMU_SVM
+diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+index 36816d3651e6..665ebb81bd61 100644
+--- a/drivers/iommu/intel/liveupdate.c
++++ b/drivers/iommu/intel/liveupdate.c
+@@ -394,6 +394,137 @@ void intel_iommu_handle_drhd_restore_failure(struct intel_iommu *iommu)
+ 		      iommu->name);
+ }
+ 
++static void domain_detach_restored_iommu(struct dmar_domain *domain,
++					 struct intel_iommu *iommu)
++{
++	struct iommu_domain_info *info;
++
++	guard(mutex)(&iommu->did_lock);
++	info = xa_load(&domain->iommu_array, iommu->seq_id);
++	if (--info->refcnt == 0) {
++		xa_erase(&domain->iommu_array, iommu->seq_id);
++		kfree(info);
++	}
++}
++
++static int domain_attach_restored_iommu(struct dmar_domain *domain,
++					struct intel_iommu *iommu,
++					struct iommu_device_ser *device_ser)
++{
++	struct iommu_domain_info *info, *curr;
++	struct iommu_domain_ser *domain_ser;
++	struct iommu_hw_ser *iommu_hw_ser;
++	int restored_did;
++	int ret;
++
++	if (!iommu_domain_restored_state(&domain->domain))
++		return -EINVAL;
++
++	if (!device_ser->attachment.domain_phys ||
++	    !device_ser->iommu_phys)
++		return -EINVAL;
++
++	domain_ser = phys_to_virt(device_ser->attachment.domain_phys);
++	if (domain_ser->restored_domain != &domain->domain)
++		return -EINVAL;
++
++	iommu_hw_ser = phys_to_virt(device_ser->iommu_phys);
++	if (iommu_hw_ser->type != IOMMU_SER_TYPE_INTEL ||
++	    iommu_hw_ser->intel.phys_addr != iommu->reg_phys)
++		return -EINVAL;
++
++	restored_did = device_ser->attachment.attachment_id;
++	if (!ida_exists(&iommu->domain_ida, restored_did))
++		return -EINVAL;
++
++	info = kzalloc_obj(*info);
++	if (!info)
++		return -ENOMEM;
++
++	guard(mutex)(&iommu->did_lock);
++	curr = xa_load(&domain->iommu_array, iommu->seq_id);
++	if (curr) {
++		curr->refcnt++;
++		kfree(info);
++		return 0;
 +	}
 +
-+	__xa_set_mark(&ictx->objects, hwpt->common.obj.id, IOMMUFD_OBJ_LIVEUPDATE_MARK);
++	info->refcnt	= 1;
++	info->did	= restored_did;
++	info->iommu	= iommu;
++	curr = xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
++			  NULL, info, GFP_KERNEL);
++	if (curr) {
++		ret = xa_err(curr) ? : -EBUSY;
++		goto err_unlock;
++	}
 +
-+	if (marked)
-+		pr_warn_ratelimited("Overwriting HWPT liveupdate token from: %llu to %llu\n",
-+				    hwpt->liveupdate_token, cmd->hwpt_token);
-+	hwpt->liveupdate_token = cmd->hwpt_token;
++	return 0;
 +
-+out_unlock:
-+	xa_unlock(&ictx->objects);
-+	mutex_unlock(&ictx->liveupdate_mutex);
-+	iommufd_put_object(ictx, &hwpt->common.obj);
-+	return rc;
++err_unlock:
++	kfree(info);
++	return ret;
 +}
-diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-index 9a921b153162..fe8610fd58e3 100644
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -333,6 +333,9 @@ static int iommufd_fops_open(struct inode *inode, struct file *filp)
- 	init_rwsem(&ictx->ioas_creation_lock);
- 	xa_init_flags(&ictx->objects, XA_FLAGS_ALLOC1 | XA_FLAGS_ACCOUNT);
- 	xa_init(&ictx->groups);
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	mutex_init(&ictx->liveupdate_mutex);
-+#endif
- 	ictx->file = filp;
- 	mt_init_flags(&ictx->mt_mmap, MT_FLAGS_ALLOC_RANGE);
- 	init_waitqueue_head(&ictx->destroy_wait);
-@@ -395,6 +398,9 @@ static int iommufd_fops_release(struct inode *inode, struct file *filp)
- 	 * iommufd_object_tombstone_user()
- 	 */
- 	xa_destroy(&ictx->objects);
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	mutex_destroy(&ictx->liveupdate_mutex);
-+#endif
- 
- 	WARN_ON(!xa_empty(&ictx->groups));
- 
-@@ -440,6 +446,7 @@ union ucmd_buffer {
- 	struct iommu_hwpt_alloc hwpt;
- 	struct iommu_hwpt_get_dirty_bitmap get_dirty_bitmap;
- 	struct iommu_hwpt_invalidate cache;
-+	struct iommu_hwpt_liveupdate_mark_preserve mark_preserve;
- 	struct iommu_hwpt_set_dirty_tracking set_dirty_tracking;
- 	struct iommu_ioas_alloc alloc;
- 	struct iommu_ioas_allow_iovas allow_iovas;
-@@ -516,6 +523,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
- 		 __reserved),
- 	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
- 		 struct iommu_viommu_alloc, out_viommu_id),
-+	IOCTL_OP(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE, iommufd_hwpt_liveupdate_mark_preserve,
-+		 struct iommu_hwpt_liveupdate_mark_preserve, hwpt_token),
- #ifdef CONFIG_IOMMUFD_TEST
- 	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
- #endif
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 206fa667c782..93372689afec 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -58,6 +58,7 @@ enum {
- 	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
- 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
- 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
-+	IOMMUFD_CMD_HWPT_LIVEUPDATE_MARK_PRESERVE = 0x96,
- };
- 
- /**
-@@ -1390,4 +1391,30 @@ struct iommu_hw_queue_alloc {
- 	__aligned_u64 length;
- };
- #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
 +
 +/**
-+ * struct iommu_hwpt_liveupdate_mark_preserve - ioctl(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE)
-+ * @size: sizeof(struct iommu_hwpt_liveupdate_mark_preserve)
-+ * @hwpt_id: HW pagetable ID to preserve for liveupdate
-+ * @hwpt_token: Token to identify this hwpt upon restore
++ * intel_iommu_attach_restored_device() - Restore device domain attachment after live update
++ * @domain: Restored domain
++ * @dev: Restored device
 + *
-+ * The target HWPT will be preserved during iommufd preservation.
-+ * Only file-based memory mappings (e.g. memfd) are supported for HWPTs marked
-+ * for preservation. Mapping anonymous memory into a preserved HWPT will result
-+ * in a failure during the preservation phase.
-+ *
-+ * The hwpt_token is provided by userspace. If userspace enters a token
-+ * already in use within this iommufd, -EADDRINUSE is returned from this ioctl.
-+ *
-+ * Note: There is no 'unmark' operation, so any HWPTs pooled in userspace that
-+ * are marked for preservation must be destroyed after use.
++ * Return: 0 on success, or negative error code.
 + */
-+struct iommu_hwpt_liveupdate_mark_preserve {
-+	__u32 size;
-+	__u32 hwpt_id;
-+	__aligned_u64 hwpt_token;
-+};
-+#define IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE \
-+	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_HWPT_LIVEUPDATE_MARK_PRESERVE)
++int intel_iommu_attach_restored_device(struct iommu_domain *domain,
++				       struct device *dev)
++{
++	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
++	struct device_domain_info *info = dev_iommu_priv_get(dev);
++	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
++	struct intel_iommu *iommu = info->iommu;
++	unsigned long flags;
++	int ret;
 +
- #endif
++	if (!device_ser)
++		return -EINVAL;
++
++	ret = domain_attach_restored_iommu(dmar_domain, iommu, device_ser);
++	if (ret)
++		return ret;
++
++	info->domain = dmar_domain;
++	info->domain_attached = true;
++	spin_lock_irqsave(&dmar_domain->lock, flags);
++	list_add(&info->link, &dmar_domain->devices);
++	spin_unlock_irqrestore(&dmar_domain->lock, flags);
++
++	return 0;
++}
++
++int intel_iommu_detach_restored_device(struct device *dev)
++{
++	struct device_domain_info *info = dev_iommu_priv_get(dev);
++	struct intel_iommu *iommu = info->iommu;
++	struct iommu_domain *domain;
++	unsigned long flags;
++
++	if (!info->domain_attached || !info->domain)
++		return -EINVAL;
++
++	domain = &info->domain->domain;
++	if (!iommu_domain_restored_state(domain))
++		return -EINVAL;
++
++	info->domain_attached = false;
++
++	spin_lock_irqsave(&info->domain->lock, flags);
++	list_del(&info->link);
++	spin_unlock_irqrestore(&info->domain->lock, flags);
++
++	domain_detach_restored_iommu(info->domain, iommu);
++	info->domain = NULL;
++
++	return 0;
++}
++
+ enum pasid_lu_op {
+ 	PASID_LU_OP_PRESERVE = 1,
+ 	PASID_LU_OP_UNPRESERVE,
 -- 
 2.56.0.257.gf7497c7d27-goog
 
