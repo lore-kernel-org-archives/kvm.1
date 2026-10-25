@@ -1,51 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.253
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.229
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792914726;
-	b=Y+XNRtQHAwqWIDQFbh+Ya0zpsr2J0MlaH3dB09jmU3QJTpQoUZV0iswkveAj1ElQ5Wi6
-	 lmroZuLrYwcI52JFFEw32G8gmzg5GM7c1zit9s5q5bUi/dKY+40di2Pk6HW541QuGtq1m
-	 71+k0YGVO3qkHPDUm1EbVuyIf9NiBp+Veo0oFk9xWeQ23biILRF23PNfQXkW43TSpZ5gb
-	 OYC+LrENx/E9T8uSOLie7PFWzwn4Onpg3ROBgJWnyJ7zlx4GPy3Srwe9YxSt78LMaaqsq
-	 6Rt+qbKyWsWfyYMP+sZ3jK48HqT8l3IwXfeN7a2m846l7ty7R8VtZ+ppO8+L6Rgcqfg==
+	t=1792914708;
+	b=r99/6MM3o7b03teeD7Hb0cEBv8/6pbOcIgFfOHKCAFbzytY39N8pwkxntu8+nqZQyC5j
+	 3NlMYPMdbgRt/Uy3KAsu0X3L8mO32s6xjdxx3mTFj3W3QSP4IWaX9Q5eqHJ/R3Gf0aaHV
+	 AYxTkSeYkKjP+aVcvN9Mk8SsR4Z4vqCfIlSuSVqGIeU8UwnyLlrypEryQlTpab+m7uXov
+	 Wxh75qvlh/TfQxuAuDnGZmHTM1rTRlEp6zjZ+a1scLA2QhV+ZYI4WFiv/ychyy02pTYf6
+	 Bb5oRnzQOszUEa8Z1B4+X62R9ZLzR1ZZeHptTa6lFHhWu+JmMN0cK9J5UFCRqBlCtdQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792914726;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792914708;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=mhsArRboNOG7MEYGvuVxZAVzLd8DQVPPiwRvsOHZhfo=;
-	b=c5rNDJMFXcuggTvs6/E+mgr7wgKOWwoJssKe7NN9M8cInXf/hXqYCeafx/N4nuxw9j86
-	 YXdMa3rvKAA1T742wpZ3XigPXWUN0INuKP4/q4sGVr7QZ44tbajTdbZ/EU/3Th9MYJeke
-	 tV+BL1naw4k/w81wLeoX5BAjMuqMLda9QONWlJh/La1PN+m4+Oh0/m3TqoS2WUpmUDWIH
-	 QBA2Ba132QViyR8EgnI6SZ3X3j7pkNT+QteKx9jZXB3P6eedeK4GOd7MxYXHWpgp8RoKn
-	 akRh/50HlOvtUGopTrsKZrhtAIW4oUMzQTc0pqf0USSt7hzPeZPQSb7FM4J6fU0lrYA==
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=z5DPNgnct5lFOm6/GJKN1n5GxtnVi3Rdus7r1K5LOpU=;
+	b=FKiJzO2iFbws7xgRRuWsU0kh2f7fS8eJVYzbRGg7BVSb7fcw6z/1CiDlBz9DazTGwCG0
+	 2abn6ol4adPiFxzgw9B+24k8/ZqiKXRh7i3lQ5keiWgt4iV4XFTifZJ4sdKyzeoPzPUNv
+	 3h45kuShWzRiSpSEV252T9Ff4hNGvUDEsm68HLuWJaArzKhcKxS6wmoSlNpZF0Zma5WoO
+	 46cTjGs6RVochh4CzEdpya4IPuwNXOTQ9wC/gau7KbldSrlkMM2g3v1wYbNpt1gP91kwJ
+	 jtG202jZpZevEGEGH+pqSSbxJoGMREjiayP6ivR79VYNQxJzXqVGmIy16p8HYe8/qGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="sC/6rAUw";
-	arc=none smtp.remote-ip=91.218.175.253
-Received: from mta0.migadu.com (out-253.mta0.migadu.com [91.218.175.253])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TJzimjCe;
+	arc=none smtp.remote-ip=91.218.175.229
+Received: from mta0.migadu.com (out-229.mta0.migadu.com [91.218.175.229])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2871F606A31D
-	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 07:52:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2871F606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF7C606A322
+	for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 07:51:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BF7C606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sC/6rAUw
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TJzimjCe
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=LcQIPG/aqOFsoIK9+iuAeL5MlGsV4fSp77IzdGl2HiA=;
+DKIM-Signature: a=rsa-sha256; bh=+igOoHTp4OV4TccBEgdDYfC02hrHe22jCQcAB41Vkjg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792914724; v=1; x=1793519524;
- b=sC/6rAUwXo0pzNTDUH8x0UXP5BF9FnWVhg6DikAT7/VVzO4B8Yv1xnhyp2wDNqpZtOqjzo+h
- Bo/7itC0JMa/Grty6vd9OyQpYCutmeHa8SobhWmx2N+dwrp3NYjWNq+cYMJZ8ZnhoigXuI/yWOS
- 3l6tTv7YpoRcy5NGxFUNtfG0=
+ t=1792914703; v=1; x=1793519503;
+ b=TJzimjCeGdQEUvey4qs+W7p0N+ceRemf1VF9TTaXxN3mbmHBOhvVeZcQWRc+RwMhSeZ2fnGH
+ XM6w9YFsgPaiBi53N/cVIfNcYNo7bSyCPqfMKt2Lt8GZNACVKbCte18mJ8EG5HXX5Txl6nl3VPs
+ vSWv3uQkTnD+rponDLQSjW0k=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 176e5694bb0be5f6;
-	Sun, 25 Oct 2026 07:52:03 +0000
-X-Mizu-Trace-ID: 176e5694bb0be5f6
+Received: by smtp.migadu.com with ESMTPS id 21872143caefef64;
+	Sun, 25 Oct 2026 07:51:43 +0000
+X-Mizu-Trace-ID: 21872143caefef64
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -65,12 +64,10 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/5] KVM: arm64: Enable ST64BV0 for guests with FEAT_LS64_ACCDATA
-Date: Sun, 25 Oct 2026 07:51:37 +0000
-Message-ID: <20261025075138.2919734-5-fuad.tabba@linux.dev>
+Subject: [PATCH v2 0/5] KVM: arm64: Support FEAT_LS64_ACCDATA in guests
+Date: Sun, 25 Oct 2026 07:51:33 +0000
+Message-ID: <20261025075138.2919734-1-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261025075138.2919734-1-fuad.tabba@linux.dev>
-References: <20261025075138.2919734-1-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,36 +79,67 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 58ce78667a641 ("arm64: Add support for FEAT_{LS64,
-LS64_V}"), a guest sees the host's ID_AA64ISAR1_EL1.LS64, but KVM only
-enables the FEAT_LS64 and FEAT_LS64_V instructions in HCRX_EL2. On a
-host with FEAT_LS64_ACCDATA, a guest's ST64BV0 therefore traps and hits
-the WARN_ON_ONCE() in handle_other().
+Hi folks,
 
-Set HCRX_EL2.EnAS0 when the guest has FEAT_LS64_ACCDATA, now that
-ACCDATA_EL1 is context-switched.
+Changes since v1 [1]:
+  - Support FEAT_LS64_ACCDATA in guests instead of capping
+    ID_AA64ISAR1_EL1.LS64 at LS64_V. A saved VM keeps its level, so
+    restore no longer has to accept older kernels' levels, and v1's
+    set_id_regs patch goes. (Marc)
+  - Add an arm64.nols64 option. (Marc)
+  - Retitled the series to match.
 
-Fixes: 58ce78667a641 ("arm64: Add support for FEAT_{LS64, LS64_V}")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arch/arm64/include/asm/kvm_emulate.h | 3 +++
- 1 file changed, 3 insertions(+)
+On a host with FEAT_LS64_ACCDATA, KVM advertises ST64BV0 and ACCDATA_EL1
+to guests but doesn't support either. A guest's ST64BV0 hits the WARN in
+handle_other(), and every guest on a CPU shares ACCDATA_EL1.
 
-diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-index a3c1928bdf743..d07f72082531c 100644
---- a/arch/arm64/include/asm/kvm_emulate.h
-+++ b/arch/arm64/include/asm/kvm_emulate.h
-@@ -712,6 +712,9 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
- 		if (kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64_V))
- 			vcpu->arch.hcrx_el2 |= HCRX_EL2_EnASR;
- 
-+		if (kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64_ACCDATA))
-+			vcpu->arch.hcrx_el2 |= HCRX_EL2_EnAS0;
-+
- 		/*
- 		 * NV3 is a host-specific extension, and we always use
- 		 * it when present and that the guest uses NV. It may
+Patches 2 and 3 are Marc's from 2024 [2], rebased. I changed patch 3
+to switch ACCDATA_EL1 for guests only, and only when the new
+ARM64_HAS_LS64_ACCDATA capability is set, for the reasons in its note.
+Patch 4 sets HCRX_EL2.EnAS0. Patch 1 adds arm64.nols64 to disable LS64
+on a host whose firmware leaves SCR_EL3.ADEn clear. It comes
+first so that the option exists in every commit that switches
+ACCDATA_EL1. All five carry Cc: stable. The get-reg-list patch carries
+it because the test fails on a host with the feature once patch 2 is
+in.
+
+Tested on the FVP with arm_v8_7_accelerator_support_level at 3
+(LS64_ACCDATA) in VHE, nVHE and protected mode, and at 4 (LS64WB) in
+VHE, with cpuidle.off=1 so that idle doesn't reset ACCDATA_EL1 between
+VMs. In my reproducer, one VM writes ACCDATA_EL1 and the next VM on the
+same CPU reads it. Unpatched, it reads the first VM's value and ST64BV0
+hits the WARN. Patched, the second VM reads 0 and ST64BV0 doesn't trap.
+
+Based on Linux 7.3-rc3 (fd73f4a665989).
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/20261023070110.1833446-1-fuad.tabba@linux.dev/
+[2] https://lore.kernel.org/all/20240815125959.2097734-1-maz@kernel.org/
+
+Fuad Tabba (3):
+  arm64: Add override for ID_AA64ISAR1_EL1.LS64
+  KVM: arm64: Enable ST64BV0 for guests with FEAT_LS64_ACCDATA
+  KVM: arm64: selftests: Add ACCDATA_EL1 to get-reg-list
+
+Marc Zyngier (2):
+  KVM: arm64: Add ACCDATA_EL1 to the sysreg array
+  KVM: arm64: Add context-switch of ACCDATA_EL1
+
+ .../admin-guide/kernel-parameters.txt         |  3 +++
+ arch/arm64/include/asm/kvm_emulate.h          |  3 +++
+ arch/arm64/include/asm/kvm_host.h             |  3 +++
+ arch/arm64/kernel/cpufeature.c                |  7 ++++++
+ arch/arm64/kernel/pi/idreg-override.c         |  2 ++
+ arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h    | 23 +++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c                     | 12 +++++++++-
+ arch/arm64/tools/cpucaps                      |  1 +
+ .../selftests/kvm/arm64/get-reg-list.c        |  2 ++
+ 9 files changed, 55 insertions(+), 1 deletion(-)
+
+
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
 -- 
 2.47.3
 
