@@ -1,88 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999158;
-	b=wo/ijtL4+A7wUD8j5kne5NZ9gPhuV6O25AAN7iyFZ+zA0/K/o+rVY/72FE1znHGSbUNO
-	 TSItWVcr2IiaUyl+uKQlqoD1fsGXhYqk3Kz0mdVroSHKkW7UrWzLLXWauXsx6pDZFXOqJ
-	 90B7YagRNlgqcKQ4so1yFBl4W2JIphuP9i5kk1zEVOWnM/vbCxumd1SkAyfUhj+DH3XmO
-	 wjR0dx6XRHSvu1kyIB/oq+G17M7Opd9bXDHDl0F5QeRdroneUKtVqxFvcZmWUtARKHX7+
-	 bNfVtu66HQIveDhib4a2PRp/1aEumED0qO0dN1ngMw4dpQRjMb/H2SMXsHcCqIyrNww==
+	t=1792999167;
+	b=SlxLrvWZq++w8LYGWFulWzDTbsA4aSEWSM2IP5ekh1eKOgHK89MVGgJc350jx2t9rvG/
+	 /JjAgeBBoJ3EJ8+ujcKCSqoPHEsmSj03a8fI6wx66+ikTl70LmCFYpwpSHRYUc5qD43eJ
+	 a3vzXU2d8Tlog5eVbFiz4/M5zZT77b+hjFsUBae3ll7V0HHzaoNGTNjoOYgUXJqyJnHti
+	 drRHRHK8aODyDHM1CwO6GLyCZkqx61USzTKTTd8gaa0cYkItl2saHreijSK/KrAdWSN4j
+	 2ZTasbnmYNd7ueTj/WjIcf5tSebO8xcrXYdMmhspKLXWi9DISH7VrSGCcv/exiWtHrA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999158;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=pgNA9ES5pzu/PrIv6QLbL97KrUMwvmUV8dNRJkoausc=;
-	b=0/FUax2ETDa68v1L85yNvmFwyo4TsT8cs6rHdPkjQpaC5c+oeL9v27qeqavsaDLU797s
-	 oA7D5mYmNisy11yr2W9zgTkNiWWx+3N278F0Rql4jzsuZEPqjMPFm98SyCGkNnTNBclPi
-	 5tQFHVJc7ECNipY3C0uKC9MORPnjWEH5sU9B4elxmoYg0v5CnfXCvfucWg1C6SB+6M1zk
-	 xEckNVMdxDXaBj0/ZdwjK3MjDDRSAh3N2AI0G5FHk8MRSYEUpuJ7zeyt3d31pIk6oEwSG
-	 23T3ovRBykbqxSnq6cA/yqIRFqLz4KrGQ6xMx6hsBVleVqB9kwnCdO0bCwZghYZ7SWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999167;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=49JESZcsjiw1c/C+26eVc6rSdXnULsa0Qk2GhTMeOpw=;
+	b=Uo2zbIyJjst7SpeHd6L3tTSZ4SrVfTeX/Aqzw/0N4UmSNN2Cp6YcpSnjhIFMbYRIxcDl
+	 qjeqVEBHnuyZuweVoOwSsojOrKt5Fj7gKS7eRxxZyLGOOoacMlmz9HkKiR1t71JbKCMzY
+	 f8139Q10xal7X7s9vRZDhfaxZZkYYRyVgP/+Zy544YUqq3kUSk4JFCTBThYqaD8WsjN5X
+	 9hFTuDKj6dfj7LxWiMhoIladRldo1iYPtub5NwkLVM2+8wXE39f7OWKcrsHisojYJRUgX
+	 dNtfnSP6FsD8iBUFGYrdNl14w0XGz8KY0kCNkRxxiDIOOB7bntOIilswhevwNtD1Txw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=alOFJpGp;
-	arc=none smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6Fzsh2B;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF5A606A31A
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:19:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EF5A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35BB606A31A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=alOFJpGp
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so6293465e9.0
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 00:19:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792999157; x=1793603957; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pgNA9ES5pzu/PrIv6QLbL97KrUMwvmUV8dNRJkoausc=;
-        b=alOFJpGp702Sbo8JIYzXMb2YB4qbNbcYug8GhJLutW9Hv9lhotA1aeZeJJEKH14l4o
-         cGffY/Jyqsn18hBjreCkAo5W/BqUp0lOQCKOdFMeiKgUjzz7fegp5kjUPrXzV9/B8Szx
-         idWCCPrqhl7zQXE/oKXJ0Cyn+HHaYJhH9KMR1xturFWVqMogU/bs0hAhU5d47XGGDpk1
-         dQCtUkOZBqVQ+22v4iZeezKYuZ7yBSad3S7RPYnem+zzq3BBTu2U0poKv4NsiOxWt8fi
-         XWoH/OngyESsuan0Y3qkpl/A/TsbQ2QtfYVBBQHAhdu6GzLCo4kDO8RVmGBMsz/hBz8b
-         iKhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792999157; x=1793603957;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pgNA9ES5pzu/PrIv6QLbL97KrUMwvmUV8dNRJkoausc=;
-        b=AzxcVh/vTTDUF6Z0RTo2UkAFcX7UsuM5KdQvXDB3iOtpQhovAf2AdCkbB2SKJgIvHo
-         6SpuovSlKLBgERmh0eyp7sg7h69kXUi5iD7Lw8ALoxgyJWPBNdwwYROpohYdad8vEJxu
-         ZfWrhzLPcTj6ULCZGMwVt5kLYxQ8y92OfVQWNVD5vAmkkvRLNLsDwX0/HSOhCLolZ3qq
-         thIDWVWp7YyIzWFhfcOZB6IVPa7eglQmJFld4WBlV8YMNbThPgCvlVVVmTi8/RP6rbaz
-         ITQKM2mUaSA35FIirIvIPnEkuns/iw75PYny5vtsMrxAkPh/VXI65EvFm5rbVHV55vpv
-         JwZw==
-X-Forwarded-Encrypted: i=1; AKwUvBw3AzYBJayPMrLOkkeNdOmopbun3bYJf0oHnPS2xp6HxRbEmFOJ1DyneOToi4R+OPKCgVA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKvgweUm+KemcLr9QtkG7IDssFrEK782njkELa+kQZO8sq+Lv3U
-	Eq99J0jBMx1kQppHtgmPq4bY4qtK6QC1fiADGkmidTDMiOKQbbYBPRt6CjoQT62UZ7g=
-X-Gm-Gg: AYBFou1U6z24Ch8tXuTojzjinwwnXMtQ48uCIbHXQWfSi1heY/M/0V+COF/HQVkDIR+
-	8L4GTtF5y9ijwVCvXmkoAv4LgTntgZte6DZSGvjoCusMeg36UH/rIt4KkTVlklSZX3MhFQplf7n
-	n9Eha99THJ2CiB9Xnqdnfkh2v1GtdVIENz9CLbHPhPw/es784HC8iDBN1GUJkNybIXq2zLCa6/n
-	xqg1unW48/aNzBwRkeBBUdAtMRV3leEHpindWxFp7vqRPzzuc3Bvi/W8BYV2qD9u5mqC76LnnlM
-	l31Pdm6r57j7Sevx1NjRIejZRMin1D28wNKifYjn8eQpdlazJomW5EBuvPpzNdE9iYNncsVq4Gu
-	KQSTovloIAUlS1QOTdxsmA1O0zfUdd9WIB0F0g0td20MzYtKf9SkgnjlgO8UBQcE7SGndLoSrO6
-	VTowz5hqVS8pThJjMdvDO/FBOPNAZlv4yDnDrhozabYJ3KZhYgumDxWPxn9uWJxxueZ20j+qJ+K
-	ih09b70mwOQhsMMRQOmQx6D49JyJAQguyDtXCQ1lcD3u17RLuXOHs/CqJsTToFOt51xRBbYo9lA
-	uEN8
-X-Received: by 2002:a05:600c:4704:b0:4a2:967:dfb8 with SMTP id 5b1f17b1804b1-4a35acb115cmr112800535e9.20.1792999156749;
-        Mon, 26 Oct 2026 00:19:16 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebc3bcdsm12607073f8f.13.2026.10.26.00.19.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Oct 2026 00:19:16 -0700 (PDT)
-Message-ID: <dcf5b271-516e-4fbe-9917-511a517899a7@suse.com>
-Date: Mon, 26 Oct 2026 09:19:15 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6Fzsh2B
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AAA1F01828;
+	Mon, 26 Oct 2026 07:19:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792999166;
+	bh=49JESZcsjiw1c/C+26eVc6rSdXnULsa0Qk2GhTMeOpw=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=f6Fzsh2BNkPMKE7Ii/WpLkAjzDdbghOGLv0IDDbfoQHDWW9SztlcImGiZa/X3GdDZ
+	 rAz5GtwT8GwWThY2mXA8TYn8pOppHnzWrdrmbcjixDRH7C0TbJhbdeZh8HNo4FBFtk
+	 qNA2ZtzctBqYMXbEME9zxJ2sZ9FMNzpEvvQQneUsDbJ2zGzQfCHPobIzhVUg9vTPJs
+	 XZylrlqWGQ9G2J0FnTUTgZMIqRzvwPnFtS2VM0UAK+hkiNmYbQ35qDNNx6hIjczT5l
+	 VQvk/F018UFjgoN2m9GZQ8CfRVSw9G1P3QgJ8Ow39OCeOf8sY7CMJEZhl8lFX0v4MZ
+	 +cNWx+aWjZUfQ==
+Message-ID: <sashiko-outbox-184655@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 2/5] KVM: guest_memfd: Add ioctl
+ KVM_LINK_GUEST_MEMFD
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Gong" <gongtao@google.com>, kvm@vger.kernel.org
+In-Reply-To: <20261026064424.3003536-3-gongtao@google.com>
+References: <20261026064424.3003536-1-gongtao@google.com>
+ <20261026064424.3003536-3-gongtao@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 26 Oct 2026 07:19:26 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -91,94 +59,205 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/5] KVM: TDX: Add CORE_CAPABILITIES to the allowlist
-To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
- andrew.cooper3@citrix.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- xiaoyao.li@intel.com, chao.gao@intel.com, tony.lindgren@linux.intel.com,
- kishen.maloor@intel.com, dedekind1@gmail.com, adrian.hunter@intel.com
-References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
- <20261016091422.3182216-4-binbin.wu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20261016091422.3182216-4-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] KVM: guest_memfd: multiple same-VM links to one inode in kvm_gmem_=
+link()
+- [High] KVM: x86: kvm_arch_gmem_link_allowed() allows unsafe TDX and SEV g=
+uest_memfd linking
+--
 
+commit f69df48ff894e872fc6ccbcb9ce7d8cfde5a15f3
+Author: Ackerley Tng <ackerleytng@google.com>
 
-On 16.10.26 г. 12:14 ч., Binbin Wu wrote:
-> Add CORE_CAPABILITIES (CPUID.0x7.0.EDX[30]) to KVM's allowlist of TDX
-> directly configurable CPUID feature bits to accommodate the legacy TDX
-> module definition of the bit, even though KVM doesn't support
-> MSR_IA32_CORE_CAPS for TDs.
-> 
-> Older TDX module specs define CORE_CAPABILITIES as fixed-1, so userspace
-> may expect the bit to be set for TDs.  The bit is redefined as directly
-> configurable due to #VE reduction.  Leaving it out of the allowlist would
-> prevent userspace from setting it once KVM starts validating the CPUID
-> input to KVM_TDX_INIT_VM, which would be an unexpected behavior change for
-> such userspace.
-> 
-> Reporting CORE_CAPABILITIES as directly configurable also lets userspace
-> detect that the bit is no longer fixed-1, and thus update its stale
-> knowledge.
-> 
-> Keep MSR_IA32_CORE_CAPS unsupported for TDs, as no existing TDX user needs
-> guest access to the MSR.
-> 
-> Note, CORE_CAPABILITIES is the only bit that is both unsupported by KVM
-> *and* redefined from fixed-1 to directly configurable due to #VE
-> reduction, and no further #VE reductions are expected.
-> 
-> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+KVM: guest_memfd: Add ioctl KVM_LINK_GUEST_MEMFD
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+This commit introduces the KVM_LINK_GUEST_MEMFD ioctl to link an existing
+guest_memfd's underlying inode to a new file descriptor bound to a target V=
+M,
+allowing compatible VMs to share the same underlying guest_memfd memory.
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c081e4b9b25de..4427d32290c0f 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10648,6 +10648,16 @@ bool kvm_arch_supports_gmem_init_shared(struct k=
+vm *kvm)
+>  	return gmem_in_place_conversion || !kvm_arch_has_private_mem(kvm);
+>  }
+> =20
+> +bool kvm_arch_gmem_link_allowed(struct kvm *dst, struct kvm *src)
+> +{
+> +	/*
+> +	 * Different VM types have different requirements for, and different
+> +	 * (vendor) state associated with, guest_memfd memory, e.g. memory that
+> +	 * is private to a TDX guest must never be mapped into a non-TDX VM.
+> +	 */
+> +	return dst->arch.vm_type =3D=3D src->arch.vm_type;
+> +}
+
+[Severity: High]
+Is checking dst->arch.vm_type =3D=3D src->arch.vm_type in
+kvm_arch_gmem_link_allowed() sufficient for confidential VM types on x86?
+
+On Intel TDX (KVM_X86_TDX_VM), each physical page in a guest_memfd is
+exclusively owned in the TDX Module PAMT by a single TD's TDR and encrypted
+with that TD's private HKID. If userspace links a guest_memfd between two T=
+DX
+VMs and both VMs populate or fault in the same private page via
+tdx_mem_page_add() or tdx_mem_page_aug(), the second TD's SEAMCALL will fail
+with TDX_PAGE_NOT_FREE and trigger a host WARN_ON_ONCE via TDX_BUG_ON_2():
+
+arch/x86/kvm/vmx/tdx.c:tdx_mem_page_aug() {
+	err =3D tdh_mem_page_aug(&kvm_tdx->td, gpa, level, pfn, &entry, &level_sta=
+te);
+	if (unlikely(tdx_operand_busy(err)))
+		return -EBUSY;
+
+	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_AUG, entry, level_state, kvm))
+		return -EIO;
+}
+
+On AMD SEV-SNP (KVM_X86_SNP_VM), each physical page's hardware RMP entry
+records a single (ASID, GPA) owner. If two SNP VMs link the same guest_memf=
+d:
+
+1. When dst faults in a private page already assigned in the RMP to src,
+   sev_gmem_make_private() checks snp_lookup_rmpentry() without verifying t=
+he
+   owning ASID or GPA, and returns 0, installing an NPT mapping in dst for a
+   PFN owned by src's ASID:
+
+arch/x86/kvm/svm/sev.c:sev_gmem_make_private() {
+	rc =3D snp_lookup_rmpentry(pfn, &assigned, &level);
+	...
+	if (assigned) {
+		pr_debug("%s: already assigned: gfn %llx pfn %llx nr_pages %llx level %d\=
+n",
+			 __func__, gfn, pfn, nr_pages, level);
+		return 0;
+	}
+}
+
+2. If src closes its guest_memfd and is destroyed while dst keeps the linked
+   guest_memfd open, the shared inode's folios are not freed, so
+   kvm_gmem_free_folio() -> sev_gmem_make_shared() does not run.
+   sev_vm_destroy() then decommissions src's SNP context and frees src's AS=
+ID
+   via sev_asid_free() while physical pages in the guest_memfd remain
+   Assigned=3D1 to that freed/recycled ASID in the RMP.
+
+3. If dst converts pages to shared or punches a hole while src has pages
+   marked Immutable=3D1 in the RMP via KVM_SEV_SNP_LAUNCH_UPDATE,
+   sev_gmem_make_shared() -> rmp_make_shared() fails and triggers WARN_ONCE=
+().
+
+In addition, for legacy SEV and SEV-ES VMs initialized via KVM_SEV_INIT or
+KVM_SEV_ES_INIT, sev_guest_init() leaves kvm->arch.vm_type set to
+KVM_X86_DEFAULT_VM, so kvm_arch_gmem_link_allowed() treats legacy SEV/SEV-ES
+VMs and non-SEV default VMs as having the same vm_type.
+
+Should kvm_arch_gmem_link_allowed() disallow linking when either VM is a
+confidential VM (or only allow KVM_X86_DEFAULT_VM without SEV enabled)?
+
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 3ca6f64d48040..54b11747a8c48 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -970,7 +979,10 @@ static struct file *kvm_gmem_alloc_file(struct kvm *=
+kvm, struct inode *inode,
+>  	kvm_get_kvm(kvm);
+>  	f->kvm =3D kvm;
+>  	xa_init(&f->bindings);
+> +
+> +	filemap_invalidate_lock(inode->i_mapping);
+>  	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
+> +	filemap_invalidate_unlock(inode->i_mapping);
+> =20
+>  	return file;
+>  }
+> @@ -1026,6 +1038,77 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_cr=
+eate_guest_memfd *args)
+>  	return __kvm_gmem_create(kvm, size, flags);
+>  }
+> =20
+> +int kvm_gmem_link(struct kvm *kvm, struct kvm_link_guest_memfd *args)
+> +{
+[ ... ]
+> +	ret =3D -EINVAL;
+> +	if (src_file->f_op !=3D &kvm_gmem_fops)
+> +		goto out;
+> +
+> +	/* Cannot link a gmem file with the same VM again. */
+> +	gmem =3D src_file->private_data;
+> +	if (gmem->kvm =3D=3D kvm)
+> +		goto out;
+> +
+> +	if (!kvm_arch_gmem_link_allowed(kvm, gmem->kvm))
+> +		goto out;
+> +
+> +	fd =3D get_unused_fd_flags(0);
+> +	if (fd < 0) {
+> +		ret =3D fd;
+> +		goto out;
+> +	}
+> +
+> +	inode =3D file_inode(src_file);
+> +	ihold(inode);
+> +
+> +	dst_file =3D kvm_gmem_alloc_file(kvm, inode, name);
+> +	if (IS_ERR(dst_file)) {
+> +		iput(inode);
+> +		ret =3D PTR_ERR(dst_file);
+> +		goto out_fd;
+> +	}
+
+[Severity: High]
+Can kvm_gmem_link() still link the same guest_memfd inode to the same VM
+multiple times?
+
+In kvm_gmem_link(), the check only verifies whether src_file's immediate
+gmem_file->kvm matches the target kvm, and does so without holding
+filemap_invalidate_lock(inode->i_mapping).
+
+If userspace creates fd1 on VM1 and links fd1 to VM2 (producing fd2), it can
+then:
+1. Call KVM_LINK_GUEST_MEMFD(fd1) on VM2 a second time,
+2. Call KVM_LINK_GUEST_MEMFD(fd2) back onto VM1, or
+3. Call KVM_LINK_GUEST_MEMFD(fd1) concurrently from two threads on VM2.
+
+In all three cases, gmem->kvm =3D=3D kvm is false, so kvm_gmem_alloc_file()
+inserts a second struct gmem_file for the same struct kvm onto
+GMEM_I(inode)->gmem_file_list.
+
+Having multiple struct gmem_file instances for the same VM on the same inode
+breaks two assumptions elsewhere in guest_memfd.c:
+
+First, kvm_gmem_commit_memory_region() only checks f->bindings on the single
+gmem_file being bound:
+
+virt/kvm/guest_memfd.c:kvm_gmem_commit_memory_region() {
+	if (!xa_empty(&f->bindings) &&
+	    xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
+		filemap_invalidate_unlock(inode->i_mapping);
+		return -EEXIST;
+	}
+}
+
+With two gmem_file fds for the same VM and inode, a single VM can bind two
+memslots at different GPAs to the exact same pgoff range of the same
+guest_memfd inode.
+
+Second, kvm_gmem_invalidate_start() iterates over gmem_file_list and calls
+__kvm_gmem_invalidate_start() per gmem_file, which acquires and releases
+KVM_MMU_LOCK(kvm) per gmem_file while mmu_invalidate_in_progress is active.
+
+Should GMEM_I(inode)->gmem_file_list be walked while holding
+filemap_invalidate_lock(inode->i_mapping) to reject any link where an entry
+with f->kvm =3D=3D kvm already exists on the inode?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026064424.3003=
+536-1-gongtao@google.com?part=3D2
