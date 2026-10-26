@@ -1,62 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793002218;
-	b=qtGhp/08NN149bZPvyRkvSgm004+m+d7K6ou0ngVTuRV5M0wOk1jK2xsgylDVxVPWvYP
-	 wGfQbQWGI2ftlL8iOlFZBxQ7ueqU5wZ4w2qb5Kyg4m35zUPph2pUDvjXAR2OTIRqoC4eO
-	 kKpnM8XnCZgKu3InmyJJA9inRnBi2H/HCgwlTab1eJGSfx9QTN2NBbQ+9Qy90b0+xQ8Wx
-	 h7r6BbgUEFbYw9mQOG+XSiM8vUlelLGC4iTRLy40eAp8CL0IySzPAmZM+AZxhdyYUFQHg
-	 n6cmSvIiQ5xRZcwBNhxkPEb5udTVpUdiSxqwRp+1OA4FqHD7yRFTcnRe7n5oXKhPIkw==
+	t=1793002903;
+	b=IOXteFxe34ZzZGbZq7WgQhONEJAKDl90eMQDHPo/C6KA7H3IozSWPxmpIfvqZ/7hBKdG
+	 dQ2Vp0hoSJIJUNGbjZJg/CfbSYpV11ONhUXc87+2MNIKeuMKaCaDEwK6ejP20px5fKsZv
+	 Ljlzip2zsxoC3f2C3q4uii8Oro5dKSpA2muiJoe2skDzhyXpn7vOVG1E89igq0WqUgp/a
+	 Bp23WpIC8ECTqMTigo1za2pSNFFsaJOydwSZ8cFsWJNRrWVXTjibCywLPdb60pZ6+WVqp
+	 nC5d3bi1SnwsFnNZS33klcSirUUEuWUvQrh7nBT9DraoTAptfApweIHIRtm1ErNX8Vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793002218;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793002903;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type;
-	bh=SU/p59HmrY1l63uWO1J6fBGj9iSaP1sfb4BVk3OH0dM=;
-	b=sdTem2FoQbUJfr3hyCSwZe0ViBZReheftt9Z1IoFlq46zbI1zIPq72mnhOiOZz8g2D7l
-	 6W9ne1BE8OMYmRPtJwd/juu2FzOUXnZ+wcwx/em49Ae2ZdiYRVeAlFs2MPwl5SaA2WCvR
-	 tJzcD+PT1LZ5pk2UESFYQRPyFVWv/76nFpwk5R3doRsniZTRszqC5H44BelMj/uDgSnko
-	 g0VH1rXp8+u8VDQWIilEGm2wlwWrrxm7McycvLcUWL0WSFjroiMrBGFqqIV/O9hz4UBMV
-	 8NkDCxFf2LiLUrYNF/M4YiEDn2tj7F4QugX7glj7iVjtIRm903uyWsQIGs3kaizFlEQ==
+	bh=HeN8sKTlUL/VwaqkACE76c/cgf/RcKGyONBxScYlrEc=;
+	b=csmRF+cb2NVDIVEXUu7VOi60QOb1ybHUh+uCkVTqw9cwPEU5Ibio56HDaoOnCGXwhuBH
+	 SmXtu9fchO6iciFjtotzkgu8s9XpONJdXZQJfcLj7mm03oLvJUcfOQYrCfho3TskgAX3J
+	 VAgGfZEScbojw3DHx9irAehLE8yCcv/gbloIDi6QhgpF+j3kvAvihPAVQ4t9D4bMZnBdo
+	 bsL7wZHvV3YU6lxHbip+lonN58Ue98Y9Nkp8D/O52fOC7wo+vT0Wd34h+F/D6V7U1zMrF
+	 kaZvy5vZS4WM9B9ttx8CfIuZTTh1nszZS62LGl4RwgEBd4l3WByuHELs4hIIYvqbMjQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="JivXV/uP";
-	arc=none smtp.remote-ip=95.215.58.172
-Received: from mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q6Aw1b8e;
+	arc=none smtp.remote-ip=95.215.58.100
+Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E52B606A321
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 08:10:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E52B606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5E4606A31E
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 08:21:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F5E4606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JivXV/uP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q6Aw1b8e
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=SU/p59HmrY1l63uWO1J6fBGj9iSaP1sfb4BVk3OH0dM=;
+DKIM-Signature: a=rsa-sha256; bh=HeN8sKTlUL/VwaqkACE76c/cgf/RcKGyONBxScYlrEc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793002216; v=1; x=1793607016;
- b=JivXV/uPxz7cg80nrzqcgoUz12nR6uhuUlQ4//2Rl/eG3J6Cm9yy2qVIuqF18Su9RqNdVGsv
- lY4EaWoM5LIQQnbwmKr9CYOITehKJjKWEvO+9vvwzBO0krMFhvPrk5vinQR4jA5A/y/cZW4V4ee
- OL1TrhN4r4rfLquwOPGO1uS0=
+ t=1793002900; v=1; x=1793607700;
+ b=q6Aw1b8efW++iuQUWre8az/96BUp5KZwbzMtYVxMEyW9rXKqHTmpAzkaDHqSZcdMP9ZdnVo0
+ CTfDq/xXJzBmxhcOHj9qc3HMk50c4m6jP1Ds0maOj1yqsz2nTCCUIrnMkis28OKrK6R+40/iQ0R
+ 4RsPNCDXl5j4/et/j7cGzsac=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id cf45f50629a58979;
-	Mon, 26 Oct 2026 08:10:16 +0000
-X-Mizu-Trace-ID: cf45f50629a58979
+Received: by smtp.migadu.com with ESMTPS id 40465b0bc632989d;
+	Mon, 26 Oct 2026 08:21:40 +0000
+X-Mizu-Trace-ID: 40465b0bc632989d
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5be4a7b9e6fso6233e87.1
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 01:10:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxY3f76Ckk8XBqvIuRNttWZup0tSkxMekzEJ1XAuqOhC6YxyJWpu7PJE02/yd+vdoGnNJY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLbBOxlrsX6xrvLF0HtayckdJ4PPX7F3513frBlGEeZkJYvni5K
-	IUROeSSorE1UDcYejNNn+yL1Ibov4VO/eNDS9yMkM6MqUfOCgSzGQXbNRIx1qUEmz/iWQakTpVC
-	72FFmRripOn/GSTjzw+q9YPuvmOTS2gvTACS7Vn9m
-X-Received: by 2002:a05:6512:3f03:b0:5bf:a28a:f2d9 with SMTP id
- 2adb3069b0e04-5bfb79dafd3mr111700e87.4.1793002210084; Mon, 26 Oct 2026
- 01:10:10 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5bcbb378fc9so8607e87.0
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 01:21:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxPwY5sQ03RsV7azcfH9zbEbg9ZNYtz4xKWTvjeDBpFDRwjg8ZgEOFeFoIBsrWkidoHf3A=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLSZQReWoyKgVGq8k7LNJ5J+nniHjZZ4i/8jVqXn6dtEQ5ibwTa
+	DKQbPmCrhDJiBbkyIt2ZfnkpELPQNAKykQD1ZL+e+NK7QvRkDLZNA0SczPKfQe2AbqhU+UILdkD
+	0Sdo388u/EqREBf/5zbEjeJj5mHDq/YWqFzwhklBB
+X-Received: by 2002:a05:6512:3091:b0:5be:4d73:e44d with SMTP id
+ 2adb3069b0e04-5bfb79db1f6mr139727e87.5.1793002898251; Mon, 26 Oct 2026
+ 01:21:38 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,41 +66,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026012128.2270251-1-sashal@kernel.org>
-In-Reply-To: <20261026012128.2270251-1-sashal@kernel.org>
+References: <20261026-b4-vncr-mapping-test-v3-1-7c094a00d46e@fujitsu.com>
+In-Reply-To: <20261026-b4-vncr-mapping-test-v3-1-7c094a00d46e@fujitsu.com>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Mon, 26 Oct 2026 08:09:33 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTzF5PsNt+riasW-SK-nhkLYh3kojMFyCEqs372-Mficnw@mail.gmail.com>
-X-Gm-Features: AclHuK9ieRbKRZ3vlLRpK7x9lOVSGw-njZY_CzO5qLbrpHOtyOHbR5m8v7LhEMQ
-Message-ID: <CA+EHjTzF5PsNt+riasW-SK-nhkLYh3kojMFyCEqs372-Mficnw@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: arm64: selftests: Skip unwritable ID fields in
- the failed-run test
-To: Sasha Levin <sashal@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Mark Brown <broonie@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 08:21:02 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTy=bU1ygvgYiwKiWpxP4XTY_QEmkMgW=Bxd1pxyFZ0qdA@mail.gmail.com>
+X-Gm-Features: AclHuK9mNQcdy23LyjVrKUw6ZiFaEhEa1RjPtCWEqLpOPj2wxuYrSqZs8yklhYY
+Message-ID: <CA+EHjTy=bU1ygvgYiwKiWpxP4XTY_QEmkMgW=Bxd1pxyFZ0qdA@mail.gmail.com>
+Subject: Re: [PATCH v3] KVM: arm64: selftests: Test VNCR translation invalidation
+To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Sasha,
+Hi Itaru,
 
-On Mon, 26 Oct 2026 01:21:28 +0000, Sasha Levin <sashal@kernel.org> wrote:
-> test_idreg_frozen_after_failed_run() checks that changing a feature ID
-> register after a failed first KVM_RUN is rejected with -EBUSY, and does
-> so for every field of every register in test_regs.
+On Mon, 26 Oct 2026 03:10:10 +0000, Itaru Kitayama
+<itaru.kitayama@fujitsu.com> wrote:
 [...]
 
-I tested v2 on the FVP AEM model configured with no AArch32 at any EL
-and with PMUv3, under nVHE: set_id_regs fails on ID_DFR0_EL1_PerfMon
-without this patch and passes with it. It also passes on QEMU (which
-supports AArch32 at EL0) under VHE, nVHE and pKVM.
+These are from v2, and I didn't retest v3 since it only makes the
+changes I asked for. In cases like this, feel free to keep my tags on
+the respin.
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
 Cheers,
 /fuad
