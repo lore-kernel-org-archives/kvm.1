@@ -1,79 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793003578;
-	b=Q7vNt5lFlM7i8HTY3+uTSim0d2ky5vE59geP+OUbWXx0RYx/87gU9RoPDsK/ew139UdX
-	 6z85iCMQMURMKDuZhCeYvzgLDOxC0zoW0L3i8JqFDjM+ZDUHF4fyMVPnJ+xWJT1NuGaN9
-	 zNkXVmUNb2KT0fNxHjll8+FO+a4r6tGPtk6DK9s4G+n1JsVGVq06iP0RornY46jKOJVXT
-	 hXMd2FY4hIsH1bBEaYMRQMLHJ7LVj2E0Z9qvrVD7vVt6L/v4ebtd2rS2CrSAc+R2CJZPr
-	 a3/4yWzMiBVbp5dBPqFB5NNP6oSsHSfzM6dwlhEz+1cWYB1jLE0oW0TO3yq/DkTWqjg==
+	t=1793004711;
+	b=JBPMfsA8O+9NRXjm22ymSMV62W8Z7nqEKXabYBnIMsdgXU6fiNldWeHDEEFIajwttQS3
+	 16iFX5TeezCrx3tdfU6cub+deEPsFzNlqEwAlhr5PzliPvgNDvvPwRunWKzR60Wbm2Yvf
+	 rZySHtUG+ttEIR5Us7OHcXiV4Sfd/4TV6tlXIFex1LQYPGsrAnXoJpBWdk+ulnCYct7Sx
+	 L0ACppisGictuxLvBDmInyNAwH6H7289g+ENbRCClzlMDWWEjD0GP5aSlF7xu4/kGRtVs
+	 7zsuzejgYqZPPDZFkf+8lMMaxfcJQ5ru16Xt/HcCZMNilq3O4AwqhrLnOBlYJCKprmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793003578;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:From:Cc:To:
-	 Subject:X-Mailer:References:In-Reply-To:X-TM-AS-GCONF:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=rwC4GylDd9c+4eiGgcXq+Au8IRKCFRDfpJRHmKrbzu0=;
-	b=n2oNOiQVCK1WApFEqVGzai7rAsyn6AFpQQcn/jxJNVcuPrf0au30ZDvspt9wd6Irzt9w
-	 cdUH2T2cAwL81PoEeqIaOVTzQe8WyZPculAgQ7fQTEAP7shQwbEMebnNXLvkJcDi8KxfR
-	 UqmVKerPWoa1S2banu2BmWHlMnQ+OVQ3TJ60Fh04itFNgwBrQLXObvgKq1LTkpXzExLWz
-	 rxjfscVOcGIRyStNRs6CXI99cbPnSaPN2tibzXQrYoYJtNXb4kskbThLw7k/5zx7yY9F7
-	 tCzOnu9LYrgLW2tr2LAaUQeLa6nmQvJnKxX/8FHNmVNZkSUFZvw2ChYXdvlojPxZ2MA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793004711;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=5P4rRS1DRPSI0zxWWVxffkcVyoVoD1HNQyHCxglVNkg=;
+	b=lypjJxK+3xgxLHvYseHF9GQqDiSYGfH9sLE4xDFgcIP+KRK0chOm3nX/jEv5QBfWb2I/
+	 bupEum56VQZeAOwlfaa1iNu+vMlsirNPTaZ3F4/cNq0EunIa6mAu+uoBfNEkgolmgRKCl
+	 2DpvPacBuB9r1UJt3TIDAdYTNjo0RSRj3gt6xQsG5jKw5pXrVcR792q3c06VUYVSCSgIw
+	 RrCQlmoVqrz0/FUWcHB1/Xbrivxsn4d6wX2bKcQrtpBg3vvaFxWvANTBfT3gQdciQ7yQS
+	 bKoz31OQ/GMNNqoyosTzFbIsy6Gb1iKqod5VB1xQYu5EP32xvN5GfSYkeZihuxMKqQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=asM2Vvso;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GVSsSDNO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81248606A31A;
-	Mon, 26 Oct 2026 08:32:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81248606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17CA606A32C;
+	Mon, 26 Oct 2026 08:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=asM2Vvso
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69Q2ib1o1980582;
-	Mon, 26 Oct 2026 08:32:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=rwC4Gy
-	lDd9c+4eiGgcXq+Au8IRKCFRDfpJRHmKrbzu0=; b=asM2Vvso7jXHjMtC/9M5L3
-	dcrN5uQtdFeKeyZTdSyquIWuQPBmij/fJjxGVtic1wfGHubqTJBtBjR36rpKTgA2
-	y59quEIbULrrV0ep1N5ZEPycSvqFgwvUVq0HyQhBkbejB96u5O1GuZJZw95T0kwd
-	PLbprHd4K3+5N6Ejy022xOjkEDmGtJbIOAjLVWUmh4Y3N1CZbBuCXm9AQv//AKap
-	dw5QlZ/beQgBaQmHupiVFlCIITdnPbA6LNaqj8aFhfjG7XZ4dA6BYONcs8s9IOCY
-	eqDVuvcnJK9IbAZwOH209YESox1F1X+zBr9LQUyBpBizvzim9Si8UE+hSqw+uaWQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmav8ekd-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 08:32:54 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69Q7IlYE1866617;
-	Mon, 26 Oct 2026 08:32:54 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh7cvd21m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 08:32:54 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69Q8Wo6D31850944
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Oct 2026 08:32:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 39BB320043;
-	Mon, 26 Oct 2026 08:32:50 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2720520040;
-	Mon, 26 Oct 2026 08:32:50 +0000 (GMT)
-Received: from darkmoore (unknown [9.68.0.144])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 Oct 2026 08:32:50 +0000 (GMT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GVSsSDNO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0BE1F01828;
+	Mon, 26 Oct 2026 08:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793004711;
+	bh=5P4rRS1DRPSI0zxWWVxffkcVyoVoD1HNQyHCxglVNkg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GVSsSDNOmJcE9hHiZdW7K/sOwwSLw33BIY4nEzCOXxBloSn2gbywB1iQ/r2KcCpvg
+	 o5tnESc5RFx1DfB/+sIrye9yLGxc0yTv73uTEm9OEPkTOKkJ+rqB1knHxT1bA3oTLH
+	 SF4cyMzcfTUu3ECaK2i/Uia88Ea4EAwOEJVwqsYDJkksa+JYmo9ovwNGXHgvRzTTXh
+	 mdNksmO2sCwooHSa3MJLtVVuyrHYsGHnrOoiTm9Skp1uGdI1pmDUJ4n504r0hdiPar
+	 jIyZdl66ne6HbnD+LMMKeAIfkvAgY6cWjM+K+JK05jgdvYpp+kGTuXSPuwqB0NHyaW
+	 19c4UwGr5YfKQ==
+Message-ID: <sashiko-outbox-184700@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v4 2/6] virtio-net: support receive timestamp
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Trumtrar" <s.trumtrar@pengutronix.de>
+Cc: virtualization@lists.linux.dev, bpf@vger.kernel.org, kvm@vger.kernel.org, "Michael
+ S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
+In-Reply-To: <20261026-v6-7-topic-virtio-net-ptp-v4-2-008af03cd43b@pengutronix.de>
+References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+ <20261026-v6-7-topic-virtio-net-ptp-v4-2-008af03cd43b@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 26 Oct 2026 08:51:50 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,64 +60,88 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Oct 2026 09:32:44 +0100
-Message-Id: <DMEMPUIXHLZE.3GREOEACPXURN@linux.ibm.com>
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <borntraeger@de.ibm.com>,
-        <frankja@linux.ibm.com>, <david@kernel.org>, <nrb@linux.ibm.com>,
-        <schlameuss@linux.ibm.com>, <gra@linux.ibm.com>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v2 01/10] KVM: s390: Move some skey functions to headers
-X-Mailer: aerc 0.22.0
-References: <20261023155531.206113-1-imbrenda@linux.ibm.com>
- <20261023155531.206113-2-imbrenda@linux.ibm.com>
-In-Reply-To: <20261023155531.206113-2-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=P8SvFSAu c=1 sm=1 tr=0 ts=6adf1036 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=I8xHs1_fuKMvQGz33WUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: BuXP91i7icxqZzcZETifvLvOzOALyEHc
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDAzMiBTYWx0ZWRfX5LbOnjXe6V4U
- 5LJafm6/APZWF02pdYQvoYUWvU2E646ip5h3ImINBGs3lohGrUiYRXTH9AxVLEZrBXk1O5kAfVY
- dpBL17gkCjZsozJvZU34WhgCWhjd0Q8=
-X-Proofpoint-ORIG-GUID: BuXP91i7icxqZzcZETifvLvOzOALyEHc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDAzMiBTYWx0ZWRfX11o05cxIg5EU
- U8qo7lmexJ4i5XdnTl+KSeMwBpls4FOQYdv1jy99baQaeiyzqIKs5Lb6wmguX6jGFF/TZHJm8yi
- xQIDqxknadl/GsqcpnBiVnzRmxTn/P/r9w17Ji21U09waNCwBOiAftBkcb9soPUcopwsXs/MMx7
- Pvv8rYoa4OM9sbOF1TaOeawLdkghV8bUD8aUkk4FYnWgl/zvrtqEclf6JxF9mFOOasI1BvXvrBa
- ZZuRcgcL0trOuEQiXSt+juR76TuMRV3YLgrrlWsfENoCaRP9vcTUg6enwLQNyv9EYHFy4qQ/O2T
- vrx1SZKf4ufRLrJWtera09MfpXBUvG92i/fYzDYRXpukLwctLJxeNmAnsTiflqkRUQThJAUbBUP
- H1S6X+GxXHO3d9WFR+VPLpMRjtVtY0MUNV09u0H9SUxdgqVjJ18ySdpeHoWB2YtMHsT0Wr6JRxO
- 863YEj/a2vjxkEklOtw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-26_01,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 malwarescore=0 phishscore=0 spamscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610260032
 
-On Fri Oct 23, 2026 at 5:55 PM CEST, Claudio Imbrenda wrote:
-> Move some storage key handling functions to headers, since they will be
-> needed from outside, and they are small, so inlining is acceptable.
->
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] virtio-net: incomplete TX header zeroing in xmit_skb() leaks skb=
+ memory
+--
 
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+commit 33c9a34145febcaa0e50429953d991f89f3ffb19
+Author: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-> ---
->  arch/s390/kvm/gmap/dat.c | 26 --------------------------
->  arch/s390/kvm/gmap/dat.h | 26 ++++++++++++++++++++++++++
->  2 files changed, 26 insertions(+), 26 deletions(-)
+virtio-net: support receive timestamp
 
+This commit adds optional hardware RX timestamp offload support via the
+VIRTIO_NET_F_RX_TSTAMP feature, extending struct virtio_net_common_hdr to
+40 bytes to carry a 64-bit TAI receive timestamp and wiring up the
+ethtool and netdev hardware timestamping callbacks.
 
-[...]
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 17d3e32eed9d6..23af10c613b48 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+[ ... ]
+> @@ -3303,6 +3333,10 @@ static int xmit_skb(struct send_queue *sq, struct =
+sk_buff *skb, bool orphan)
+>  					false, feature_hdrlen))
+>  		return -EPROTO;
+> =20
+> +	/* Don't leak skb->cb or headroom; the device expects tstamp to be 0 */
+> +	if (hdr_len > sizeof(*hdr))
+> +		memset((u8 *)hdr + sizeof(*hdr), 0, hdr_len - sizeof(*hdr));
+> +
+>  	if (vi->mergeable_rx_bufs)
+>  		hdr->hash_hdr.hdr.num_buffers =3D 0;
 
+[Severity: Medium]
+Can this leave bytes in the middle of the transmitted header uninitialized
+and leak stale skb->cb or headroom memory to the device?
 
+When VIRTIO_NET_F_RX_TSTAMP is negotiated, virtnet_probe() sets vi->hdr_len
+to 40 bytes (offsetofend(struct virtio_net_common_hdr, tstamp)), even if
+hash reporting, UDP tunnel GSO, or mergeable RX buffers were not
+negotiated.
+
+In xmit_skb(), hdr has type struct virtio_net_hdr_v1_hash_tunnel *
+(sizeof(*hdr) is 24 bytes) and points either into skb headroom or to
+&skb_vnet_common_hdr(skb)->tnl_hdr (aliasing skb->cb). When xmit_skb()
+calls virtio_net_hdr_tnl_from_skb() for a packet without UDP tunnel GSO, it
+returns early after calling virtio_net_hdr_from_skb():
+
+include/linux/virtio_net.h:virtio_net_hdr_tnl_from_skb() {
+	tnl_gso_type =3D skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
+						    SKB_GSO_UDP_TUNNEL_CSUM);
+	if (!tnl_gso_type) {
+		ret =3D virtio_net_hdr_from_skb(skb, hdr, little_endian,
+					      has_data_valid, vlan_hlen);
+		if (ret)
+			return ret;
+
+		if (feature_hdrlen && hdr->hdr_len)
+			__virtio_net_set_hdrlen(skb, hdr, little_endian);
+
+		return ret;
+	}
+}
+
+Because virtio_net_hdr_from_skb() takes a struct virtio_net_hdr * argument,
+its memset(hdr, 0, sizeof(*hdr)) only zeroes the first 10 bytes (offsets
+0..9).
+
+The new memset((u8 *)hdr + sizeof(*hdr), 0, hdr_len - sizeof(*hdr)) starts
+at offset 24 and zeroes offsets 24..39, while hdr->hash_hdr.hdr.num_buffers
+=3D 0 only zeroes offsets 10..11 when vi->mergeable_rx_bufs is set. As a
+result, offsets 12..23 (hash_value_lo, hash_value_hi, hash_report, padding,
+outer_th_offset, inner_nh_offset) and offsets 10..11 (when
+!vi->mergeable_rx_bufs) are never zeroed before all 40 bytes are mapped into
+sq->sg and passed to the device.
+
+Additionally, when !can_push, hdr points to the 24-byte tnl_hdr member
+sub-object inside struct virtio_net_common_hdr, so writing past sizeof(*hdr)
+via hdr writes across the sub-object boundary into sibling fields of
+struct virtio_net_common_hdr.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026-v6-7-topic=
+-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de?part=3D2
