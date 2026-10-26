@@ -1,110 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793055808;
-	b=pSwWSLWIc+KJVVaoWBV2w04txpjDx/uRjVRH4smYnTquETiitdaJnWKKi+EnYTNwxSSz
-	 oi1aOKAFLdoMwdSaEo1RXeqUbj1eiNr3t3KIUNxM6ld85/Wb8GjYrd5BJpz9aOhvtHgRd
-	 ctRyYl3aNKdSyqTPmdhAXuGDxBUe8JAXlN1mxtoxIeM5EStk2wd6bMG5PUTPhlBgsUIqs
-	 4HBjlTblV3lP22DWHxkMCPmU4x2bkWnLTkQykrh06+lqc2s9X/lGeCt2BB1mmmofSw3m6
-	 AlyEnb7JaGUVhB13X9c5USeGQ3IQxzLgfX6wBp59WjUjOc8hoPJoJy6nz3etbhvScag==
+	t=1793057327;
+	b=41jGKlB/vIo+VveM4dE1rf25DNZ83YrbI5P4s84RPAvj57oK3ApKnbp7aWBVkwZN0AJj
+	 O8+xXf68ceqyuqDlYB6LJH1LXAvb+byMXcNaDj2wu5Zyee24Eiyoy7eoStiqosLZxOeli
+	 85zuKW2ywz8be6rn3dU2PUJHvAhcZEC6FbXVDPdWNPsqPkVbTKT4pF6L1As/qRwRKQHf+
+	 LauglL1siFmBrV/0pnEGPbv/BGmydeNvTSMDtl1j1+XdLu0ofxQ7LaNWk5s0OgTmDLDGp
+	 hNzXkHUgflyhJbsCu58fxPW4fIQjwiLOjQhiNjWdC+QEFuziM5PYK4S94CMbWqSZZtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793055808;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=D7+yWhNEfwBLVAnh4DVgwdCxL54hx3J7AhdglfNEalQ=;
-	b=MUmkSYw4YJEiC4MUPH8F9oyLrOQbYeRqs6GY6UVapUYBEg72SKmZ5ovZJkNB+ktk5d4i
-	 EI1mnWzrZc/7O9+Qes54l/Sg0IqoFvlQgkqNZh9bU5iIMbwSqMDMTUYst/MG4Ir57/8g4
-	 EONeEjGfO/jCjlpkkRSa/5nuYKLzEB8Z+mg1wLM8UaQ2O5yedVmiwOfpRte/UI6hsp8D/
-	 7XUcj8nAihEtaKmyQ7BGN5cLbARNm7WQ/oAMQ55YV3yU4lzkYk/Lv6G06R9TT9vpXnh2H
-	 UgvCnnzfxVjdybexSn3dWZwYkDTsEQIF9RmJpsEZpsv4oJvVmajVCHEA/oxTYlgE8lw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793057327;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
+	b=xz0qANLGRyienLbYtB1jsRNfK0dQ0y1KFAKOwJKi7Zon4rf2mwlOvWZlwJgm5BoD8eb+
+	 MwVfnjEAzDK+AcNw0Ro4RqQnpUWr/3oFYub5S39jXL2uwMVwUYNsbTD30KePe6GCIpFjn
+	 9wfBbmh16+4LwBevmt6VlkAWuzOfBL1QiihBuaRBMpOWm/FbI9y95kUC6yw7fLxD99+Ex
+	 2xRln+h3vCstx+956XMI4ux+QdcAblnh+xkmFMUwF7P3UcYBgd09QigA9NZlm2TTaZ12G
+	 l/72akMCjPmKp7VqjXwECdo7fUjKHFhyhokQME2+t9/eNpbgpQjnX78fxiaeXVndsVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arndb.de;
-	spf=pass smtp.mailfrom=arndb.de;
-	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b="YnCT/mJB";
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z9BmjjcB;
-	arc=none smtp.remote-ip=103.168.172.139
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hK9TvNQw;
+	arc=none smtp.remote-ip=209.85.208.72
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B13606A322
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 23:03:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9B13606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FC3606A31B
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 23:28:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73FC3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=YnCT/mJB;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z9BmjjcB
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailflow.phl.internal (Postfix) with ESMTP id 0638D1380299
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 19:03:26 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Mon, 26 Oct 2026 19:03:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793055790;
-	 x=1793062990; bh=D7+yWhNEfwBLVAnh4DVgwdCxL54hx3J7AhdglfNEalQ=; b=
-	YnCT/mJB73FAGmQIu27ctvo5RESP4K+pTIiK9EhLFaGH8j7kXKQE+tSbzesbfDxs
-	bV+9wV/9mJE87FIh60l/aPw0vUFP1oQOrI5riJBeeRGczFUwDyCLA8/y4BcBY12w
-	wRegLgnRHobHCSF6BA6i0C+reNBRVR2FKTT/gbMwVrLZscUYxkn/44Vw8eG0qSvi
-	tWJdiyjuyg2ickLmpnfR0RB/KUcSZm6NPyieIrb9GtPlZj+tCTyGrh4XFyNGGvj3
-	0mNzbe0+txL9uJr9T4IbJyuT48LYOX1e+ZzKJe7AQTdcUWk+BiA6E+y23Kktm4eF
-	0OdWKJ+MXJqpGpYEJntcLg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793055790; x=
-	1793062990; bh=D7+yWhNEfwBLVAnh4DVgwdCxL54hx3J7AhdglfNEalQ=; b=Z
-	9BmjjcB8Ht97U3XpSdkutzu7KGGU83nJYqys9fKA8A8LFo89cKjsWQGjTr4pUO1L
-	aP9kjNesX0okG+vOVw+RbXwBhTP1dlNpD+KBb13+OcK03C9JQt4JuFOOxyE3GGLG
-	ZspFTpPuZDfO6wPr4qEO2A5TQRvlMMTy9lXbOlVikLCqKHWaoSShkmyr2lAQA0MW
-	I75SaI19xADFJtpVucfW5iXU1oSN1+WUXqV2eC8N5VxDvuOCOwE0yDQK4eXGJuSC
-	Y9wL+SsocvtYeidK4mRb5GFh4Lq5vzciH3Z2KUk3zskK7IRDyEhPwx+HWzKZpC0W
-	mE1pSP6ArkmhYFD6hOYlw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793055790; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:ZFJ+xB77wecGyDpfd7GYUpUZKTmbg116E5jqrtSzIDn3fXk
-	n58TJc9s1zYR0ZqktqG6GxNqkwDatCipziBjHdSs3IZlDh94lmQ755SpYHP33p3w
-	uuVAEoX/uALHZsKafik3Qv68nONV3lyLOTZUmay8/lXBlDKsoNg+s2DaWMklHQEW
-	GHzV8608wUCAah08da5UMwr9rvqkl2HCvywuwROOxKb7kT8F1Y+ZNTzwx6V3vPCB
-	8gBZp7KrA55vEgUW2XB7Huxbmzg+lG9BrxOM/r9imxNUFbwknGAsZtTH6sv5Ef3+
-	nci5LJnKnPxuZKS7QmcEHoy3UU7g8h9awiIlf7w==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:t7TmO85uHz3Bu9BudK5SiRDodgnhLHm1Jzu0xBGeMzU=:nc6weggs1vuexqOORIgzQ+8Q4IQMXclbAa/HauyeO68=;
-X-ME-Sender: <xms:I9zfarVlhcJ2BCr_X0f-Oqe3MJ-tfizxDxcVqqJu0UTFnur8n55_Vw>
-    <xme:I9zfaua_l0AUV_QUaHlFQ6Xk6c6S9hDoF9LDP0z9ZWTiBfyLFB6bGMt2m3Qf-Wf2r
-    Gp1aY7E3hmIDYnxO6ClUpLNdypmMNJMMAjKb_KTlIEA5DbBcFarl32S>
-X-ME-Proxy-Cause: dmFkZTG2ipuQjn7o/dduxIouS3rexG2Fs38Yf1mgntfcBayDO96egVm+yZQ4lqIIentjs/
-    mqWlr4cScm3wkM9Qig2xKeks6qaebjWFYjqSr1PEW0Un0mkdsaFkbg+xdJQiG2O2dvowLj
-    8E21v7JskZMeciXQK6+wWU3W5TpMrftfB6Bs3P2KNxD6AlDYn9LdKl79i+Pap9CUN0lvH5
-    Kmf7XF9ELL/4XciMlrED2crBvL0Cr1f1u2ohCkkGXPJJyr9NhF3TZ6Ev/Xhe+zrfxeWaDU
-    CHzGxCZtrUFf0j+qOyVHd7hT7F2sM8dBpGw742e3r2mvfUUQKFeZdDheW6KomSHxo+nEDw
-    iI6qO2cDvY1NeToTkMsmxh+Idwqe78oXaZf4JBivXyC6kcFQnAnTHzPS/v1istw/y4OU7I
-    Ig5+4LcAMjuaK21mmbb4bb1DmpocpNGdDRw9yq3nlrcPMsuuD3uvsbn3xyT972zofrrKbr
-    ymQ2KeWkMRr8lrdJKsZ996mCPszGebzucdgyrtSsUPulGKB9lpIv0RpYgf85X7CxFkC5mx
-    0ahqqI390L+Dj1eTAd45HDhy64TtvMVlHqpgXnFPGAYR24gTjdAn2Wh1e+VqFY1QE9IKWw
-    dT6VBuP/aA1R/oxwzZkn1goeGaMw0LOVAE7QiXpixIzvdkU0wv6eIJAHAEFA
-X-ME-Proxy: <xmx:KdzfajHGJ6tf5pxLJ3v2PfbGRd6Rt6Io_8hyQBlkYOXCV7Lb2b01Vw>
-    <xmx:Kdzfapg-6ACQ-dUEsnrl6Ji_ntio6Ly_-zbhQjCdP4T2kZZPc2mbjg>
-    <xmx:KdzfapZpLCwDwzVm3OeHceISOSkLUArE0NE7AI0C6AgT-FmN177JAA>
-    <xmx:Kdzfam27dS94lXZ5VmP_WcqDu7eLBRosip4J-91RpWhTlpq7UwmFJg>
-    <xmx:LtzfasvLSVKrc-K83R8kLrDibnrCdXZT8NkkCjHCIPMKCuEvlTPp1urH>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id C999832A0097; Mon, 26 Oct 2026 19:02:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hK9TvNQw
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1a4c9eadeso3626840a12.1
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 16:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793057326; x=1793662126; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
+        b=hK9TvNQwKUHIZZZjxzV0a2Cbv7bIzmVQ6+G1+2ZS+4rTVIMHR7NWA80kKuwDAAcZoF
+         pLSOv89ov3CxcEG25n/cIU3vcbj43p8ZXy7YHgOAoZooXblEghty3Cp5OoXY961rTOFW
+         vluruvAUIamnZHp/w6s/IA7uOvsu/nAHiF4juHAsJeVSwD1sGDyCemEYrF5pQaIy2+dJ
+         QncJE2F0CD5HeT7HOcfVMBY502l/Fc/PZf3COQxRAYovwWZKrkVRC9iWD24UfTl8Wv1i
+         2Cb4/bNodGzK/8TOu/0nGkcK9Dm/cZFmh/qAGvSI9XFlwuGZNgDKyDxopMHwUIKLkmPa
+         2o7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793057326; x=1793662126;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
+        b=irYCAW/4zrlTsflIhk5YJUO7pO0xc53mjO5jB4I1penwuLPFibBdlOVzfa/2o4r6vf
+         vFa1w9ePrac+nmj3UPb5O4uUnXVsaSFG0N53aEr28LAP8bZVjwxCnre+TW3sdZXBMNp2
+         X31Abu6ef7ekz0smM7DrIDmQwcMqbqt4ZUqPowug+2/+3MqyUUL0PbZ29GtPQNrES6t0
+         49o+GIG5/RbO4iNikRKGozSne6zqwD/7PobScluBsm0NPwGQp3Vz2hoRqtzbuL9DAKLz
+         4gZnaQOvpme4pDAeQsAoLagUIK0VY/LnFqmvz5yQXG3HkSYLTe10b7QS3pJeDqdThtYZ
+         H7Bg==
+X-Forwarded-Encrypted: i=1; AKwUvByG9JJhnOZVlcy8LMC1lPQqA5mTdvPAshrZi71CTgdQaHzH7763e0Zm2KoTgnkXujtf93s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLpzudbyBbsaH5XeBjecrOPII/GdfzDoEo4HuLvkRvLuocWHIxa
+	OYoM0Sf3BOMdys34YohiAw3mUfc9EvDA+SWkCX7Aq+3eVneVu5o+VH/Wg5vwdZiTyz/vWdqTjVd
+	p/0veHPt3U6QYU1NbKg==
+X-Received: from edxw25.prod.google.com ([2002:a05:6402:719:b0:6a7:4541:3de3])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:4026:b0:6b4:1037:2b87 with SMTP id 4fb4d7f45d1cf-6b44300b84fmr9392138a12.31.1793057325809;
+ Mon, 26 Oct 2026 16:28:45 -0700 (PDT)
+Date: Mon, 26 Oct 2026 23:28:45 +0000
+In-Reply-To: <at_CncIPYCxOVkLo@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,79 +77,163 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-ThreadId: AmKN4IVPaSCN
-Date: Tue, 27 Oct 2026 00:02:38 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "James Houghton" <jthoughton@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>
-Cc: "Thomas Gleixner" <tglx@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Kees Cook" <kees@kernel.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Sean Christopherson" <seanjc@google.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson" <jmattson@google.com>,
- "Jens Axboe" <axboe@kernel.dk>, "Pavel Begunkov" <asml.silence@gmail.com>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, "David Sterba" <dsterba@suse.com>,
- "Chris Mason" <mason@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>,
- "John Fastabend" <john.fastabend@gmail.com>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Arnaldo Carvalho de Melo" <acme@kernel.org>,
- "Namhyung Kim" <namhyung@kernel.org>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <3b0a8fc4-d140-4a90-b810-cbc1283fc083@app.fastmail.com>
-In-Reply-To: <20261026215226.3713941-11-jthoughton@google.com>
-References: <20261026215226.3713941-1-jthoughton@google.com>
- <20261026215226.3713941-11-jthoughton@google.com>
-Subject: Re: [RFC PATCH 10/10] uaccess: Move the NULL mm warning out of line
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com> <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+ <9huzzew0el59.fsf@tarunix.c.googlers.com> <at_CncIPYCxOVkLo@google.com>
+Message-ID: <9huzecdcghxu.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+From: tarunsahu@google.com
+To: David Matlack <dmatlack@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 26, 2026, at 22:52, James Houghton wrote:
-> uaccess_without_mm() is inlined into every user copy, including every
-> copy_{to,from}_user() call site on architectures that define
-> INLINE_COPY_USER, such as arm64. Each inlined WARN_ON_ONCE() adds its
-> own __bug_table entry.
->
-> Keep the NULL current->mm check inline, but move the warning into a
-> single out-of-line, __cold function, uaccess_warn_without_mm().
->
-> The trade-off is that only the first offending access in the system
-> warns, rather than the first one from each call site. The stack trace
-> still identifies the caller, and the access is refused either way.
->
-> Compared to the base of this series, with defconfig + KVM:
->
->                      inline WARN_ON_ONCE()    out-of-line warning
->   x86_64 total       +5,884 B (+0.014%)       +9,714 B (+0.023%)
->   arm64  total      +40,948 B (+0.10%)       +24,609 B (+0.06%)
->
-> On arm64, this removes the ~16 KB of __bug_table growth, while text
-> size is unchanged, as a call is the same size as the inline brk. On
-> x86_64, the call is larger than the inline ud2 and causes more .cold
-> splitting, so this is a slight regression.
->
-> Signed-off-by: James Houghton <jthoughton@google.com>
-> ---
-> NOTE: This patch is included for reference only, to show the cost of the
->       inline warning.
+David Matlack <dmatlack@google.com> writes:
 
-I would suspect that the growth is larger on architectures that
-don't implement __WARN_FLAGS() but rely on the generic WARN_ON().
+> On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
+>> Right, Required bit should be source kernel payload property to tell
+>> target kernel that the payload must be handled to correctly deserialize
+>> the data. It should be source kernel (userspace) responsiblity to make
+>> sure it understand the target kernel before doing liveupdate.
+>> 
+>> Saying this, During deserialization, target kernel's required bit is not
+>> necessary. So I propose the following truth table.
+>> 
+>> Source hdr  Target supported[i]  Action
+>> ----------  -------------------  ----------------------------------
+>> 00          0 or 1               Accept: feature absent in payload
+>> 01          0                    Accept: ignore the feature data
+>> 01          1                    Accept: use the feature data
+>> 11          0                    Reject: -EOPNOTSUPP
+>> 11          1                    Accept: use the feature data
+>> 10          0 or 1               Reject: -EINVAL (invalid encoding)
+>
+> Yes, this matches what I had in mind for the semantics.
+>
+> To be explicit: the source kernel should set the bits for each Live
+> Update based on what is actually preserved, rather than generating the
+> header from a static per-kernel array. E.g. memfd would only mark a
+> feature present for memfds that actually use it. That's what allows
+> rollback to an older kernel as long as nothing being preserved depends
+> on the new feature.
+>
+> But looking at this again, I think the required bit is redundant. Whether
+> a feature can be safely ignored is a property of the feature itself, not
+> of any particular file. Every file that has a feature present will have
+> the same required bit for it. The only thing that actually varies per
+> file is whether the feature is present.
 
-This would mainly affect 32-bit arm and mips machines, some of which
-are very memory limited, most of the 64-bit architectures have it.
+The required bit is subsystem property not the per-file. e.g. memfd_luo,
+it is set at compile time for a kernel. So every file will get that required
+bit set. It is not per file property.
 
-      Arnd
+struct u8 memfd_luo_feature_state {
+       [MEMFD_LUO_CORE_FEATURE] = LUO_FEATURE_REQUIRED
+}
+
+
+>
+> The required bit still has to be conveyed to the target somehow, since
+> the kernel that needs it is the one that doesn't know about the feature.
+> But it can be conveyed by the feature's number rather than an extra bit:
+> split the flag space into required features and optional features, and
+> assign each feature to one of them when it is defined. This is similar
+> to the required_flags and optional_flags approach in struct pci_ser [1].
+>
+> Keeping the same header shape as discussed with Pasha:
+>
+> struct kho_ser_hdr {
+>     __u32 size;           /* Size of header + payload in bytes */
+>     __u16 nr_required;    /* Number of required feature bits */
+>     __u16 nr_optional;    /* Number of optional feature bits */
+>     __u64 flags[];        /* Required bits, followed by optional bits */
+> };
+>
+> Required feature N is bit N of flags[], and optional feature N is bit
+> nr_required + N (using nr_required from the incoming header). The length
+> of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
+> are numbered contiguously, so there are no gaps, and up to 64 features
+> still fit in a 16-byte header.
+>
+> Each bit just means the feature is present, so the truth table becomes:
+>
+> Source bit       Target supports  Action
+> ---------------  ---------------  ------------------------------
+> Not set          -                Accept: feature absent
+> Optional set     No               Accept: ignore the feature data
+> Optional set     Yes              Accept: use the feature data
+> Required set     No               Reject: -EOPNOTSUPP
+> Required set     Yes              Accept: use the feature data
+>
+> There is no invalid encoding left to check.
+
+
+IIUC, I believe this will not work.
+
+To Communicate between source and target, We are defining a protocol, A
+protocol which will be standard for all the kernel. And each bit location in
+flags must have the same meaning in both the source and target kernel.
+
+Now in you approach, If Source kernel send feature N to target kernel,
+target kernel must understand Nth bit as the same feature. Even though
+the bit position in your approach is not fixed but they are fixed
+relative to their starting point.
+
+required: reference is 0th bit: So target kernel will undersatnd the
+          bit as the same feature as source kernel.
+optional: reference is nr_required: So target kernel will understand the
+          bit as the same feature as the source kernel.
+
+To make sure there is harmony between these two kernel. Even though a
+bit is not set in required for a feature that must be 0 in required
+range. and similarly for optional bits.
+
+So flags will look like 0b 0 0 1 1 0 0 0 1 0 0 1 1 1 0
+                               o o o o o o r r r r r r
+
+                        0b 0 0 0 0 0 0 0 0 1 1 1 1 1 1
+                                           o o o r r r <= This is wrong
+                                           because target can never know
+                                           which bit mean what feature.
+                                           So as you said there will be
+                                           no gaps which will not work here.
+
+So, Based on the first, We still using same number of bits and increased
+complexity and no gain.
+
+
+For the current appraoch and V3 [2]. Think the below one as msb is
+required bit and lsb is feature present in payload bit.
+
+00  FEATURE_ABSENT / DEPRECATED
+01  FEATURE_OPTIONAL
+11  FEATURE_REQUIRED
+10  IS INVALID (analogy: required set but feature is not present) which can
+have different meaning in future if in future, a need arises to reuse this
+field.
+
+Deserialization can happen per feature from right to left. without
+jumping back and forth.
+
+Because of all these reasons, I believe current approach presented in
+V3 [2] is the better. It is close to your PCI series with two flags
+field for required and optional except I combined both field into one
+flags. In your above approach you do have two counts but not having gaps
+(which is wrong) and the way you proposed to parse with an offset is different.
+
+Let me know what you think.
+
+[2] https://lore.kernel.org/all/20261026174217.603114-1-tarunsahu@google.com/
+>
+> [1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
