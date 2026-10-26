@@ -1,109 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.117
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793049253;
-	b=dV9PhKxFCWkz34xMr0t2B5NM8XPYSfSmm+oLlpDCA1L3KVoyeHl5+2RTXJW46A2ADypi
-	 gmgC3JYGT/FUd7eHMJ7bJjBz/VZ5X1fcr83ChtIyW0kjMTCUMDFB6Us9xiEqIq+11tOGU
-	 MI7fSzzjxIiU7WQNktgodq0X6rVn4a+QiKBlmDQUe5uqfqksZncFrwd3VkaRj6YAmTr01
-	 55ymmHnwOvLc8FZr8EJ963hOzKFdZD5udFKg+iuoQPWV91uLObo8m5q5NGYTGMBJrgO/h
-	 FC9MBoAO91KChcaUaGN61cY8OnqnbH/0eso7miIkwpjuK4f5zZPgDCqLB0YzI9Nk3mw==
+	t=1793050996;
+	b=seFQNpc6GylUq7oPq7HEMv9jmtAAQ0UCJus4pIAx+O0teidgTtJYwn1LoHs9Pe/Abuna
+	 ge/diJWM7vbcP0M6cNGsI0+5ed21e9/VCUctrYDpxQou+3l022Hwz47RBgp9q2bv5Jt2f
+	 F0sk6DCCtH7ea+p4tk3qTL4tE27dgbrlvzMODOVAjKb1bnXagnlokqEUptgS8ENnbBeOX
+	 NdPa7hrRuKNe3uIRZ0WdTp9wkloqJcbJHReQqpnNh2U47LpBi7yo96V081Fp5264zyLgi
+	 Oq2OxCrxfi078f99qGDWtp0VBNGhaoVMMiz6un1yPLj8sO2YbOqYzv5cu0lsIceZXWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793049253;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=gKF3hAWDK1ltcE+SHB5ZbEu9q5rcNDasVCUAn/AhQHg=;
-	b=lYi93SLIysZf+C7guhaPku9C/0r+7JLGjkbdKTuTUta8lI19t54c2QLfkOCo/k3EnFi6
-	 rqvYhF84G5TofmwYYpBr31fE4cP45elmjbep8U1Gdmmqs4XjKw7yGCv6j4Lgfh40oww/D
-	 MxviHJpWHNbSRXnJxievkKIu7ra+ZPtqoDublB5f+S2QgsjOZNc5SNFKYq1j2KHd3cswu
-	 7aNp5U9Ebuv8JsyKR6tstWKzydKmn+j9i8obEKjJgtpN0d9cWlz7oL+gYo74+JWRAI88G
-	 Lzlqk9nIzYog/Lmk2igIN/xQFt0KCKsQIIV7XCLEwbqY5hdaoCFCZH8UQY4nCwaBokg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793050996;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=0Lq4a/V8mDm6FCGgdk05nU9bT6DX1rNy3nB4AjBmimk=;
+	b=qWamf3eZGgS0qxVw1ExzmXq5bBSNQTWyJZfHAmZk7n/+jA+8AxshuebnRxUFAm9BPk0C
+	 2wrsTIhn/xgY2gjq9hIjSVb5wKehxliMEBn4Ho7VQoeNTvR04i2TpvMMGuE0bScDOivXD
+	 X34ScF7XShuU0UJn0aIqtDkJTLRQ05+NNg50sEX7cgRmB49zY+f9FLbkHj39vqcit5x8X
+	 8Y7OPCV+O5+A/fOWpqjdDVASMNnbJqWPnUujZTVvIBU7Ia9BnCm1v7dijdoxExvFnTEGX
+	 ej/DV1SRVpgFpWTSrHrzrsYnoqoRch1ffx1VX6KSY439166i2adpkyw37mULxUKkffQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=K67nv9XJ;
-	arc=none smtp.remote-ip=209.85.210.181
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=fFqDVruR;
+	arc=none smtp.remote-ip=68.232.139.117
+Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2988D606A322
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 21:14:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2988D606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4A0606A31B;
+	Mon, 26 Oct 2026 21:43:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C4A0606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=K67nv9XJ
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a070755c8cso1602587b3a.0
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 14:14:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793049252; x=1793654052; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gKF3hAWDK1ltcE+SHB5ZbEu9q5rcNDasVCUAn/AhQHg=;
-        b=K67nv9XJ4TeaL34vMeEZnzHwkkjAJXvovbKt25dK0ARJPImK8eAJxasjllvcrO3Mvz
-         0GnHKSvbs2j+fu1L93vtVfYaEU7xBX2oBxVR4XSp19D8BxbS5MYCpBV1+ZjPWQ/Qou0G
-         zCzOQQs71hCXYgkSqfxoI+w4i5o+oRk28rX4pfVUgSmX2Ghz150YtewTvUM95BqcWP5W
-         +em5Y44xGXwMDj3h+mYQvTQ5PR6vT1Y1kvTbUxQmieHlgsnHuGeGqx3rs6CbGzAdcSyS
-         aIIPuVbSixMCtl5PfpYxO7dwRL+PhVrWizeSZ5Cq07AOWp7dCw6lGuB6PhYEUCIwAA9v
-         LA7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793049252; x=1793654052;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gKF3hAWDK1ltcE+SHB5ZbEu9q5rcNDasVCUAn/AhQHg=;
-        b=C9oxtRpYhuRVVa7y44P83cuKe1pt9lGHcSTJbg/iWVCERSob6gfttY09nBqN90jt8B
-         wjKx6ZVB6C63zcZ+dWUt25JiPBnJ7dCw2swKUnKrWgnfRJYxqQB1XmCQFTHzpJkZcybz
-         jucytEGuncVywWRcXrCivLJf4bw01i9//8kHyY9ahO96zaf1wU/XE6HPkUOSBqpVC140
-         7qI+4r1k1itrjhrLRoUS4DJXiBUdLJYgd3rbowIk4aEUp4VSez85DQTFcETtL0GUT7B+
-         dBoMxdB63G/IzYQPYuOEm5OHbskO8oSSFQC3KQP3ssw1EvTUCYtDVRLU60ivSFaU5AHu
-         ww8g==
-X-Forwarded-Encrypted: i=1; AKwUvBxr/EZPl2X9w1LNC11IGqjbSeakXlDbcvV/dwNnlo12IMmQDiT9mhlT2MF0Iqf1LW7sRek=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK9hMwYhzF49XI4vcVhdAveEnUtYUoG5mDf1qWNRIDVdDseGQH7
-	WsT+AAQMxFjsPiyTwbnwuhbTN5Yc2Z7++9OKVqGoeROiMghoDAF3IFm0ZMkoQbRA5A==
-X-Gm-Gg: AYBFou0tUGJI8Va3Ub/0FTm23GB+EVo189ljD5ueEkd3Co36FuFAFT/4DpjlerImSiM
-	dxlQDMU+84AxBcVyvgeIrW6kBqtKGEb3/6LR5UJVJaSJS5yJtjQuTxxNc8mdS+zbnFdXajwF8EP
-	bUo5AdTZ4lAnOu2+6PLkIvMIOedDUzlDIYFNEk27/E1K5CyE1D9hzBgGOBcSTkzLtzX6r5TuPlk
-	5P6nsJyV2z8lwQ7HSPOJ/M4uKC8Em7BxnVve/EgB4xPzTcwTfjCVVV5euJDXtBpA0PwN7GsMlbU
-	AQtAlreVVI9w+z3vgDA5XPPzMxlz/9V19VfawB7+qdNnjiI+/pGPKn7oPLlWWOAtEixTCirSJSo
-	8IifheXVJ31F9uyH0oG6eN3kx7N/zKhZPhDV6a5C3KjMTj/fAWq7Zvaydtya/5wAhPEPKb4qBF/
-	gDP5ii3Eg/XGaR8n1zZqZrTuWBQJ44VqbLjKwI0aKU50hSWw8b96x9jvSHNf/uefw0MJC660tMV
-	kAQL1VJwYd172BrpmCvtzJGUe5/GQZ1IW7i7aO0Ohjgvh+yYj5hj36HOhojNylYlU3x3AFpLDuB
-	as4twU+n2QPIftYYg1a931ZM78GZ5K+jX8RV8xm3hpw=
-X-Received: by 2002:a05:6300:6bc9:b0:3e2:3392:53e7 with SMTP id adf61e73a8af0-3e7a1b97750mr5308652637.0.1793049251805;
-        Mon, 26 Oct 2026 14:14:11 -0700 (PDT)
-Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36b372888sm1666157b3a.30.2026.10.26.14.14.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 14:14:09 -0700 (PDT)
-Date: Mon, 26 Oct 2026 21:14:05 +0000
-From: David Matlack <dmatlack@google.com>
-To: tarunsahu@google.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <at_CncIPYCxOVkLo@google.com>
-References: <20261021152527.375070-1-tarunsahu@google.com>
- <20261021152527.375070-4-tarunsahu@google.com>
- <atlQ_Er0Ig7CCSxv@google.com>
- <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
- <9huzzew0el59.fsf@tarunix.c.googlers.com>
+	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=fFqDVruR
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1793051002; x=1824587002;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=K8Tw0xjvYKK5C3EMr77Wx4LoUSWiFby6WDQXp/hFglg=;
+  b=fFqDVruRMWH3WtvV1cI0fpT6D4dw8oHupgTBadNcrcuXGG5/3E8nDHGt
+   PTmUQlP45QK30et00rkJN3kh4BksMY4b9/xrCXDPWjQu4rbfJbMbwzWLJ
+   RZe1WB5i+9tN8yNy1FwyQBwOez1wkG/nqpK8ABzQDAPPKssQe+MP8DqU9
+   3HPPS+oknEkywUON7cKyZEJ2/940haOTnz+jcI8t2MUnCdKc5Y7Sv2f00
+   km8U65dF/CpxQ8K9TZw1Kf9K8KN/GyfozcmyfJeHr4tgyCjARSCv6pceO
+   KftkOnP9ily+FFMOeeu9lnMYzjgQ05Gm+AMNK/C3fvYutQVvFF0TyTwNS
+   A==;
+X-CSE-ConnectionGUID: v4N2/SSOQ7OWG0uKTUeBrA==
+X-CSE-MsgGUID: r69fHcvGSjiOax1fSVtqVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="259043794"
+X-IronPort-AV: E=Sophos;i="6.27,180,1786978800"; 
+   d="scan'208";a="259043794"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 06:43:20 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id C29121C000D5;
+	Mon, 26 Oct 2026 21:43:13 +0000 (UTC)
+Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 7387CC00FDD;
+	Mon, 26 Oct 2026 21:43:13 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmom4.o.css.fujitsu.com (Postfix) with ESMTPS id 36B3A405E32;
+	Mon, 26 Oct 2026 21:43:07 +0000 (UTC)
+Date: Tue, 27 Oct 2026 06:43:05 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3] KVM: arm64: selftests: Test VNCR translation
+ invalidation
+Message-ID: <at_JaV29gVqxueSK@sm-arm-grace07>
+References: <20261026-b4-vncr-mapping-test-v3-1-7c094a00d46e@fujitsu.com>
+ <861p9czwxc.wl-maz@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -115,73 +99,39 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9huzzew0el59.fsf@tarunix.c.googlers.com>
+In-Reply-To: <861p9czwxc.wl-maz@kernel.org>
 
-On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
-> Right, Required bit should be source kernel payload property to tell
-> target kernel that the payload must be handled to correctly deserialize
-> the data. It should be source kernel (userspace) responsiblity to make
-> sure it understand the target kernel before doing liveupdate.
+On Mon, Oct 26, 2026 at 08:30:07AM +0000, Marc Zyngier wrote:
+> On Mon, 26 Oct 2026 03:10:10 +0000,
+> Itaru Kitayama <itaru.kitayama@fujitsu.com> wrote:
+> > 
+> > Add a standalone KVM selftest that checks VNCR accesses after L1
+> > updates its stage-1 mapping and issues a TLBI. This guards against
+> > stale VNCR translations, as KVM caches L1's translation of
+> > VNCR_EL2 and must drop it when L1 invalidates the mapping in
+> > kvm_handle_s1e2_tlbi().
+> > 
+> > Keep VNCR_EL2 unchanged while remapping its backing page A to B then
+> > again to A. At each step, L2 reads and writes TPIDR_EL2, and L1
+> > verifies that the accesses reach the selected page while leaving the
+> > other page unchanged.
 > 
-> Saying this, During deserialization, target kernel's required bit is not
-> necessary. So I propose the following truth table.
+> If you were tracking cross vcpu invalidation and exercising all the
+> architecture corner cases (such as permission changes and co), that
+> would be helpful.
 > 
-> Source hdr  Target supported[i]  Action
-> ----------  -------------------  ----------------------------------
-> 00          0 or 1               Accept: feature absent in payload
-> 01          0                    Accept: ignore the feature data
-> 01          1                    Accept: use the feature data
-> 11          0                    Reject: -EOPNOTSUPP
-> 11          1                    Accept: use the feature data
-> 10          0 or 1               Reject: -EINVAL (invalid encoding)
+> But as it is, it doesn't help much as a validation tool. Its scope is
+> way too narrow.
 
-Yes, this matches what I had in mind for the semantics.
+Thank you for your comments. I will try to incorporate the suggested
+test scenarios.
 
-To be explicit: the source kernel should set the bits for each Live
-Update based on what is actually preserved, rather than generating the
-header from a static per-kernel array. E.g. memfd would only mark a
-feature present for memfds that actually use it. That's what allows
-rollback to an older kernel as long as nothing being preserved depends
-on the new feature.
+Thanks,
+Itaru.
 
-But looking at this again, I think the required bit is redundant. Whether
-a feature can be safely ignored is a property of the feature itself, not
-of any particular file. Every file that has a feature present will have
-the same required bit for it. The only thing that actually varies per
-file is whether the feature is present.
-
-The required bit still has to be conveyed to the target somehow, since
-the kernel that needs it is the one that doesn't know about the feature.
-But it can be conveyed by the feature's number rather than an extra bit:
-split the flag space into required features and optional features, and
-assign each feature to one of them when it is defined. This is similar
-to the required_flags and optional_flags approach in struct pci_ser [1].
-
-Keeping the same header shape as discussed with Pasha:
-
-struct kho_ser_hdr {
-    __u32 size;           /* Size of header + payload in bytes */
-    __u16 nr_required;    /* Number of required feature bits */
-    __u16 nr_optional;    /* Number of optional feature bits */
-    __u64 flags[];        /* Required bits, followed by optional bits */
-};
-
-Required feature N is bit N of flags[], and optional feature N is bit
-nr_required + N (using nr_required from the incoming header). The length
-of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
-are numbered contiguously, so there are no gaps, and up to 64 features
-still fit in a 16-byte header.
-
-Each bit just means the feature is present, so the truth table becomes:
-
-Source bit       Target supports  Action
----------------  ---------------  ------------------------------
-Not set          -                Accept: feature absent
-Optional set     No               Accept: ignore the feature data
-Optional set     Yes              Accept: use the feature data
-Required set     No               Reject: -EOPNOTSUPP
-Required set     Yes              Accept: use the feature data
-
-There is no invalid encoding left to check.
-
-[1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
+> 
+> 	M.
+> 
+> -- 
+> Without deviation from the norm, progress is not possible.
+> 
