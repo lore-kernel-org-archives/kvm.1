@@ -1,81 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793023468;
-	b=zK1as6vAI43MrmQAqLTL6e/OPIWV7rXujhcOi5L1HC34jIqUQEVKCfmkScUOo0Jomym+
-	 X1QmSJFLunG7ELkFnuml5ZhlFlzFqKXgUOFbJm/qObnmwlsC3B5X9zpt7TVTDAkqZDrGm
-	 WUFHfx7ghxBhRQ8Sk/v6Vm02i6zazHYiFRqLi2eY1TuDHrX1DO3afnkQkSsMdyr41n0LC
-	 B0EVFJ+/iKnxeL2MFYNzzFVkViiWChWX8+Q0p0mfnWRSMCBuvxiA33rmLYgIN5V5HohBo
-	 4YAPgsQRyxgVBdIa50A96h/P1zsLZxfOzDopG2/HYXrppx+UOml4dKI1SX7tAQgxhgA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793023468;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=PuMxAq8ry7rkPRNo8bPxAsp3Y2xQSTcDNM5FlctNm3Y=;
-	b=sGIXo8Pq5TDxw4YvRAv+i3gSa3LxMbImFnp3pGyv4Sp18DvsDq1paQJTo1PTKKXE4P91
-	 wYnlRrKE+U5UOkBHk2DPi+jyAbi621+Xx9+17+t6qo2DKsWqERX669kgsj1dCQWQxwtT6
-	 eD/biMr9Xm1vpaBz3j+HAcBa4eR6Umh4/clkxsjtk8pjZG/0ecpu0NrnDabhsYKVmnjbs
-	 yQDDeEE43FwlHp3vF8xhDjRj0Ekwu9VvsMMtE2FUCTzgbqFxa6BW/qPBq0aVadA+dQx+0
-	 9xRUnqdBGuYs2e6kfYECF3kG6F3ptKmo/vy2qjAcG/ZOtfeJpXGlm8mbmW9L+couVxw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WczHv1l5;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.33
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793023691;
+	b=1EeMTjMKberCnqe72XzpFAjSWGPVCPVbW22w2rXOikyj+viB58A2Zn/vZx1qb6ZX5K5j
+	 M7kEP2MOA/ZuscL8xXGgqah55YwWc+DOWFx419qInkJ6L991Q4CEYm38UgwkjUGE+JiC5
+	 YLv44Rmr+T4VFVI85ppBP5o4YSQvc+MvgW7dE1qpswkmGaX7EN8Q/cAOEFO5N/gBGrgv8
+	 DWHgOPjZDzDgvw00reLRHiuRmkgizDdZrL8saxP3Ys3/PVhvXXaG8BLj+nCC8OKEhr7OO
+	 7blHqlR0Oce+8TKdqUP1zYPCnJ2HWvCM4KJJMvGjlILxZqiC3LTHUNGVQsCRwxrCsTw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793023691;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=qO5Q/+Qq8g5kS1BG8gogQRkCnmX/WNdhAWCYDcRQ3RM=;
+	b=13ndIEx9hOgbpFq3cPlICkmxkYPCeKstLGCVQ5Yl1bemMcAqQLW3++wfEf74DYBGpuNd
+	 zSbJ2WcAtd2Q15uEt6emQk4aEewKsDCDHzNwTHWcBHgQn8oNt30g2OmKewNbQ7jsVtH0Q
+	 BJsEoCS18pknsRihX/fB3+qDkV1UX1rukptZigxzjqAO1vVErZJwtaWUNyVHfmu949QOw
+	 AH7OBCSJH0eLllzDG6msN1pxY7AjjWxkiDdLNwIRp9ilxuASxv/NQn/QHEH7H8Byuc/eD
+	 yoMS2KteFyYNHvc51BWuxw5pSkeNL6qX31jDfH4rzupzwZ7A96hIvGVQdn3o4XkuvqA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ox5WsBzY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.33
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010033.outbound.protection.outlook.com [52.101.201.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4551A606A322;
-	Mon, 26 Oct 2026 14:04:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4551A606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF6A606A31B;
+	Mon, 26 Oct 2026 14:08:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFF6A606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WczHv1l5
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69QBEiR42189635;
-	Mon, 26 Oct 2026 14:04:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PuMxAq
-	8ry7rkPRNo8bPxAsp3Y2xQSTcDNM5FlctNm3Y=; b=WczHv1l5TOazfh0PnAEzes
-	Qd7QtYSoqM4Pu74DM3sgyIyevq6tqoWsHNtSOj+Ji2BhAq9Rx+dOCmfY9F3deanr
-	XBFMTwbN5XybZ2HekLpJki5jgaPyA+TEfdJzEZj4tkwD9/xJfU2blM0+Vs27OGb+
-	weKJHo511MJYYo1WYjz8TBHvPhzQAxW9cLKirYeyWGDgiVn/YwC+7v+d+kf14/F7
-	nd3buw7wKcBG/anvY/ZzeX2w4Uo4828vBS32QptpmQ9MZOmw87QqeUSAiX+9mrvT
-	Xt6/dLyTN9Azu4z2IVSRhleCAEa0tUHcITR/N8AZd/blMVxYdYuuFdL4FVbUOJug
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgk3ft8j1-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 14:04:27 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69QB4vt12397555;
-	Mon, 26 Oct 2026 14:04:26 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh80je7jf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 14:04:26 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69QE4PTM11272786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Oct 2026 14:04:25 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D9115805D;
-	Mon, 26 Oct 2026 14:04:25 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B51D358052;
-	Mon, 26 Oct 2026 14:04:24 +0000 (GMT)
-Received: from [9.61.99.193] (unknown [9.61.99.193])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 Oct 2026 14:04:24 +0000 (GMT)
-Message-ID: <b544c525-f13e-4fde-a98a-3e41f1827ca3@linux.ibm.com>
-Date: Mon, 26 Oct 2026 10:04:24 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ox5WsBzY
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Td2IQWTgmTNOqrxDTu0cU+vBSlBbaGrcB//biwv7JlhJuXXqFM2stdmnCraymxBA39axQAmJyrhwuULQxZjYVLiDuY+4G5BEyLoe2tlS7m4MbSH2AiZbESVkSBOubmkF5bIIl3nqDdcuHCBnEroLuTMZA/ZBC5gsMnfgUQdeKHog1+eSBblzRWuSwjx0+7xEr0nmhdRDCgWsIkR8uCJjfG5RJoORuUYB6OqnW/qNnG3ZT1h8oz/3nH9+/XDmaGqa94G7OUvsOShpM+d+hAEugyNg9B74xK1V3qmngbkN5VcTOl4tUK6a2Uva2Yuww/vgDCO/xl8OATR7VuiTKoawZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qO5Q/+Qq8g5kS1BG8gogQRkCnmX/WNdhAWCYDcRQ3RM=;
+ b=okMxBkQ5iH78LfsE+m+e01dAlcLJg0BBchIfEuTYIOoIJe/3adSqgaRLNdMBm+dteNRVf2VnEZIHao2vobIoiz9fM3eVXM6tt3H45jiZIcokmJmYAeQx4Wg3DGBUIfoQyIAOwuTIr+jpVmW+Y8LyhtaW2QDBTVZl2Kcb3Ar/vobvLd9XmjI9MEKGmrMoyUlafvC1AAUQQRSKsTz11JnNO4iBIr0xWoPX9+pGdOZIYwRjidQhfvM72PwZh/L6gH1IE/dkjZX52LkGVp8k4cN2eWyGV2V/MnzRZcBr9XOBb9S+rl80h60jbLS6uFPximRGi5T1rm39RW6arAxZQJbLFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qO5Q/+Qq8g5kS1BG8gogQRkCnmX/WNdhAWCYDcRQ3RM=;
+ b=ox5WsBzYWFaSmRMZmcBptg1Va4na/YapRlVyZwz7kD0b1evGHtgJpKW82K4Sc4oL2KMv+54lVgt+Csmpi2U3pUx/sIV45fYXeD4flCuWNWexT+yqEtrH0fvKAR4s0qsxe3XHtA+eLRxcANHNXBqU07kdh3tz6BcqqTyRjLZlgsiZ5cYIfX77tqR9AU4sMfQVoOGbBF1pjIyzKMghV2mKcTcfSBFF4SiUdsYbLbr9ElY0wVCFEilPx0YWEEBKIRZPWE3ar52xswF0eNuZOYUMd9NKxEh61EFbcBrY2d0B1ZQWuEHw+Vo2xJB9iwQNs4DVmyFRG91tXFl38RdeLbAA8w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by DM4PR12MB5961.namprd12.prod.outlook.com
+ (2603:10b6:8:68::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 14:08:02 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 14:08:01 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH RFC 08/20] ctlv: Prepare message output handling
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+ linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com, 
+ lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+ cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+ James.Bottomley@HansenPartnership.com, aik@amd.com, jpiotrowski@nvidia.com, 
+ qinkun@google.com, pgonda@google.com, jic23@kernel.org, 
+ alistair.francis@wdc.com, ankita@nvidia.com, suzuki.poulose@arm.com, 
+ kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com, 
+ dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+ peter.fang@intel.com
+In-Reply-To: <20261015145053.3664509-9-jiri@resnulli.us>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-9-jiri@resnulli.us>
+Date: Mon, 26 Oct 2026 11:07:54 -0300
+Message-Id: <179302367451.58760.3909701518454079333.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-ClientProxiedBy: YT4PR01CA0047.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:fe::26) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,134 +106,82 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 03/15] s390/vfio-ap: Functions to initialize/release
- vfio device migration data
-To: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20261023174349.3545941-1-akrowiak@linux.ibm.com>
- <20261023174349.3545941-4-akrowiak@linux.ibm.com>
- <sashiko-outbox-183045@kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <sashiko-outbox-183045@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: I-b_LZiAvJqRA3N8MXIvxgQWmPynsOsC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDA1NCBTYWx0ZWRfXxcC4PE98AgQz
- Gq+Eiw6qAAq/5Esvd5WHSp8eY6+brnF0FTi4dgHyQhNB1/38k9T/dMAle5kw6TjLRZHC9Ap8roi
- nET2g5SzOsV2k6D0uUlRf5ehFjFs54ukMtC4QorVisxbIiYkf2mbVXg0rhfYu+WdbDvbToGcu3q
- Vkmoq6pAOZtfLMXzcmzmFu4mHPb5vRnfB2T1v0tXnROK/KY2AHAmqhj/l4YMrZ6LAgOm1X86joV
- FSojkaF2bupdGMLw/QgMrRR2RLyu5wkkVINsxglEzEjRVd7RBPrkdqsHQ7U8jEpgnHVHLRgY54w
- BR+VFbW6kffPaxDz8Qiookijfvlp+YZrxr5IuQJmQczuop7zXcD+XIn77vgdbgYLXvYbeXHWkqt
- t7iZ858lYFmUyPPineKHroSzniAt9A==
-X-Authority-Analysis: v=2.4 cv=BOMmP1QG c=1 sm=1 tr=0 ts=6adf5deb cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=B8PkBatXBUWJemwRq-AA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: I-b_LZiAvJqRA3N8MXIvxgQWmPynsOsC
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDA1NCBTYWx0ZWRfX76SUMlkYQkRf
- P7CfxINkR/qwFRUO9+DJ2WiCi1gG8IjIiho2ASBwGR755T72jFPcw/w2dbZB7qy7jn0evCt/a0X
- /uQ8dCfh3k06rkDJv1QCY33jyf214D8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-26_02,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 malwarescore=0 adultscore=0 phishscore=0
- spamscore=0 lowpriorityscore=0 classifier=typeunknown authscore=0 authtc=
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.22.0-2610190000 definitions=main-2610260054
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DM4PR12MB5961:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9f7af9c-1573-48d5-8a19-08df336a8bdc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|56012099006|11063799006|261021121427099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	OeSNXRrMa+2j9+PgXoY7xYFux9iSaljVBv40symLscMIhGEGWFnQ3tUXbRBPKfVIzvRlG173ooBM7zyNf4igLYHt3OW90d9kjydSKPfYaNDO/Wu55XWE4iwe/UQiZjG0FzfruzVvKPZHY8yG8TafQ3WdHnutObkrsRo6CKgFBDBAFymLMMQOcUOvEc5h0OQwkciMpo5Su/RRBgZAi0HKeFpk5kT9PNPYSXGXnAm/a05toDQHh/VuTwhLKNvP7SggAJ3acenC/e+urtkJVRn049lO/fYyW9fAd/NUrUnN02o5qKHhw6d5uDWIiSTOpXvRF50RdpOS1QgDv6f0u+M0oUP7extWltci4xL3dwZtWBg8F+s+IeD0Dqs+hKoVGqjx+IfC9RvURiVpdgXojeYWnnB736B+eB/2zs8OUQs/C2iMycHay9UI88ncyvxV5D/HVbYXe3DuOi4dJAlZmzrjDG9in/Jirf1oGpAl763PykiUcE87gDlYfdkg2jhSALOTctB980eTv7ZaQ3S9BP9zno6R5TsWwz1vDYRY7xayrGxpeFlaIov0g3i/IlFCPTaMPQ8u1zIPpBs5QpcW2/OgV/2XDHvUrfpQ+HnTJXjAjI9NTfqDzpWQQBSiEkM3sgsJiE9cJkRM7HnxoLNlz6jkpbhO9YJsIOBpYLX2Kp3X0/8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(56012099006)(11063799006)(261021121427099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R1lhUEdNWWlsVTUyWnl1TjdkdlN1NmdCM0xzN1MxamNJWmZ4S2o4SmlqaVF5?=
+ =?utf-8?B?NzRrcTVYMy9SVm5VU0sxLzAxM3k2NUNBcEVtSW5KNGp0K1FURW1NcEo4TWRM?=
+ =?utf-8?B?c0ZKQjExSFRUTzM3WnhtNDlmMXpIeE1hdjd0NWZUSytXTk1kMWV1OVh2Yi9y?=
+ =?utf-8?B?cURDNHluelF5UGorbWdIQ0lDVGdpbWdGdEFJWVdud0IyN012YXFZZzFpbFRW?=
+ =?utf-8?B?WEI0ejB6aE5TOVpWNm1FYVZCQ1MrZFVsZFVFUUozbzJvWlpjanhENFBoTXVl?=
+ =?utf-8?B?KzUzL2duQktjaFQ5T2Z4WVZEd1RJYmk3Z0VqdnQ3a1FlOWVCMnpqRGkyWUVS?=
+ =?utf-8?B?eDRieXI2WWRCd1Q4RUU4Y1ZZbTBjMkFKZDJmQk5UaHpIQi9GZUw0M0VoNE1k?=
+ =?utf-8?B?bGd2dnFNWWV6Lzk5S20vZW11Zm5taFZoZXpCMU9DS3ZaTjBzTWJBUm1hSWI3?=
+ =?utf-8?B?eGZaNXdXVUVPdlVzM3IxbVN4ZEQ5QnEvZGtVU3ZqcE11cDEweG40Q1pYY05n?=
+ =?utf-8?B?ZUJCaFpOUE1sNmdrb2ZsTTlzYklKalVCK3FEaWh6L24vY2tFQXJISkxRc3Uz?=
+ =?utf-8?B?YS92anhvYzVEYy9UQUNmQXVuRGRsc2JDN01mYVlxMzVyK3oyVHhOV0R2cVRm?=
+ =?utf-8?B?RGdLRkdWT2szdFZ6cUZmQlNNSjRPSUt0dGNnd3dRTTdOZlI2M3VFVlgwZHRM?=
+ =?utf-8?B?YnBSV3hmYW5QczZTQXJPdzRMTFNHYzErUXl2Y3VpQzNFUEZVSm9BaTRrTG5U?=
+ =?utf-8?B?NHdHZHNDNHBGK2NaWlc2akFNeGVGem4zcWY2alorTXFvdHMzRTI3di9HV091?=
+ =?utf-8?B?bUxmTlZUTEhHUEdyV3dWVEF3R2hvL3RxNnVWeEpGVU92VFlkK0FxMlpibldN?=
+ =?utf-8?B?MXlBSE12Ui90R2NLRUhHQUkxanFIbjNtaldKNFRBa3poZTlLY1A4RnRQRFli?=
+ =?utf-8?B?RCtNQVVuVzRHOGduY25PblAyRTZqTkltbmo5VjRlUVo1RFZnVURFeGJTUWdK?=
+ =?utf-8?B?NTNDOFpnOUo1SjJOdnoreEFLUm9MYmp5MzUrZEMrcCtLTS9FUDBuRXN6S3lm?=
+ =?utf-8?B?SGNDY3VRRTRRRHFtMU9ydmI0L3BKK2J3TUV3TEd1U0haNFA5T2kyVFNucHB5?=
+ =?utf-8?B?eW5FQmc2VnBaOEpiY3lDVU12RHRkYVZoVmNvRG1SQ21uV0xsRGltaFZIZ1dw?=
+ =?utf-8?B?YXFjT05CaWZTaVUra1EwZU41dnNhN29pMkM0SFlvMmpzTDlHRDNXTjJBV2tT?=
+ =?utf-8?B?MWkzUXhSRmR0dVNwaU4vUGFPd0cvTUxYSXY0a01seFNFSC9zY2hxSXZERnJp?=
+ =?utf-8?B?ZlVlMWY0M1M2cDRRdnRrY1BZb1M4Q3JGaXR4VEdlQ01SbGNvN0FURndoOFZD?=
+ =?utf-8?B?RjV3SzdmQUt3ME1KYVRZWml5djdPOG9iS3lOMlpNLy81eHFwZk5sOGh5OVNn?=
+ =?utf-8?B?eXpYQUVtenZnNWpBMVNxTCtiZjhIc01wc3ZRd1A4bUFiYmdwMGx0V2JQMHZ2?=
+ =?utf-8?B?VHZKa3JRejJmODhLUmh3NndGT0VFVDJUZjNUVVZjeGlEYStYeFFidGh3dWxN?=
+ =?utf-8?B?L1BYT0lpWjdGWDhnS1RUR3F6d3R6WDdkWG1QbytlMjF4ZUM4SUI5TlR5a0pJ?=
+ =?utf-8?B?RHY3VzdLMlZsZFZGd0tSa2FKaTlPUTZ3MlNBSUhGMnV4YjZvZmcyWGdnK0tt?=
+ =?utf-8?B?RWw1M1ZxaUZlZ05NV0lzcGdKb0RlcG9BbmpWMnBGMTh4K2thWXdhd2tXbmx3?=
+ =?utf-8?B?MXo3OCsyVXFjQWV5bElIVjU3VmRkSURGYm5VSEwwbDBJZVA1Vm1TN1p2LzY2?=
+ =?utf-8?B?OTY0eFl6SnRCdDBQMGhFTWRXdUIvWTRSakxwWkMzTWV0RFlKSWZVa0llOW53?=
+ =?utf-8?B?MWR0MERSZmxaVUFJSkxja0xoQTZLY3lReHovU2xCSWc4REZ4RGxQMnpuMUZt?=
+ =?utf-8?B?anMrZTZWZFBDSExna1RkMjlNT3pHbjNBVWloQ2tDYkJ2Y2Rwam1PK3V5c2lC?=
+ =?utf-8?B?Tnl4SzRISUU5ZUh2WThHRkg0bnYyYTE1NWpTYTNjUE9wSzhST1B4UGlCYVg0?=
+ =?utf-8?B?V2RDMFZaRERTU2lKZVhFVkhiMDRKODE1N0p1Q2tZMWYzSUdQeUVmNlhoYUo5?=
+ =?utf-8?B?MjhneGFjbWhHdVRNdlpPOEdpbGtQZWxZQXd3SXY4cnBVYmVaMFNWL29aOGJI?=
+ =?utf-8?B?SkNjUk01NUc1YTBNeUgwTzZPelNMaHMveUorZzZRLzJYWFVMUmVFMm1XMTF4?=
+ =?utf-8?B?d1JpZzJVTXBzRE9MRFh4RlVPcFl3bzArK3lPVGtUQnltdjZCK2VxRFNuUW9B?=
+ =?utf-8?Q?DS9LR7sbmRJLPvIV15?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9f7af9c-1573-48d5-8a19-08df336a8bdc
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:08:01.7080
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: etgD/ftINCks2JbkgLZCqNOkCMKn4SarjolBAp2HFD6bsMQSzr8tZlzuX8uRDNV6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5961
 
+> [ ... 498 lines skipped ... ]
+> +/**
+> + * ctlv_op_query_done - Complete the last query fragment.
+> + * @ctx: query operation context
+> + * @generation: current data generation
+> + *
+> + * Return: 0, or a negative error.
+> + */
+> +int ctlv_op_query_done(struct ctlv_op_ctx *ctx, u64 generation);
 
+Typical kernel style has kdocs in the C files along side the function
+body not the header file
 
-On 10/23/26 2:09 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] s390/vfio-ap: ap_is_se_guest() checks host in vfio_ap_init_migration_data()
-> --
->
-> commit 79c297f4ef408f423e0eed3174df28dca4e407f2
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: Functions to initialize/release vfio device migration data
->
-> This patch adds helper functions to allocate, initialize, and release the
-> vfio_ap_migration_data structure and its associated migration file state
-> when a vfio_ap mediated device is opened, closed, or released.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
->> index f01a37e4c418f..ba86a1afbb332 100644
->> --- a/drivers/s390/crypto/vfio_ap_migration.c
->> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> [ ... ]
->
->> +int vfio_ap_init_migration_data(struct ap_matrix_mdev *matrix_mdev)
->> +{
->> +	struct vfio_ap_migration_data *mig_data;
->> +
->> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
->> +
->> +	/*
->> +	 * Live guest migration is not supported for SE guests, so there is no
->> +	 * need to initialize the migration data.
->> +	 */
->> +	if (ap_is_se_guest())
->> +		return 0;
-> [Severity: Medium]
-> Does ap_is_se_guest() check the right entity here when called via
-> vfio_ap_mdev_open_device() -> vfio_ap_init_migration_data()?
->
-> In drivers/s390/crypto/ap_bus.c, ap_is_se_guest() is defined as:
->
-> bool ap_is_se_guest(void)
-> {
-> 	return is_prot_virt_guest() && ap_sb_available();
-> }
->
-> That helper checks whether the currently running kernel itself is executing as
-> a Protected Virtualization (Secure Execution) guest, rather than checking
-> whether the target KVM guest attached to the mediated device is an SE guest.
-> Because vfio_ap runs on the KVM host where is_prot_virt_guest() is false,
-> ap_is_se_guest() will always evaluate to false here and matrix_mdev->mig_data
-> will still be allocated and initialized for SE guests.
->
-> Additionally, vfio_ap_init_migration_data() is called from
-> vfio_ap_mdev_open_device() when userspace first opens the VFIO device (and
-> before vfio_ap_mdev_set_kvm() sets matrix_mdev->kvm), whereas an s390 KVM
-> guest only transitions into Protected Virtualization mode later when the guest
-> executes DIAG 308 subcode 8 or 10. Can the SE guest check be performed when a
-> migration state transition is requested via kvm_s390_pv_is_protected(), rather
-> than during device open?
-
-It is true that ap_is_se_guest() checks only whether the host kernel 
-itself is
-running as a Secure Execution guest; it does not check whether the KVM 
-guest
-attached to the mdev is protected. However, when the host kernel is an 
-SE guest,
-the AP hardware queues are bound to that SE host under UV control. The 
-AP queue
-state on an SE host is protected memory and cannot be extracted and 
-transmitted
-to a destination host, so live guest migration of vfio-ap devices is not
-possible from such a host regardless of whether any particular KVM guest is
-also running under SE. The ap_is_se_guest() guard in
-vfio_ap_setup_vfio_device_migration() and vfio_ap_init_migration_data() is
-checking the right entity for the right reason.
-
-The existing uses of ap_is_se_guest() in ap_queue.c (e.g. the secure binding
-path) follow the same pattern — they gate AP subsystem behavior on the 
-host's
-own SE status, not on any KVM guest's status. The features_show() 
-function in
-vfio_ap_drv.c omits the migration feature token on SE hosts for the same 
-reason.
-
->
-
+-- 
+Jason
