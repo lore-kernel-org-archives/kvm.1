@@ -1,100 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793026361;
-	b=ecvAIDC044YeB1kIani6lgJ4SdIBMAlnu/xuaF4nfsK2s54HsvbTAxggg89lCukv5J1u
-	 nXyXiLhaWnAccEsqYR96sA/tQK1Viezr2KgO72zC/G+13TltDSteSipRCS9PTuBjOIIRF
-	 +XAC2ZM/hmZbc/DVggNGQCc3DrzSMuBsGoKmavGmD/wyAUK4OxhoYGM9fmFnK9LofoJ0V
-	 RSTl2XMYi6pVi4XY+9Dc408Qm0wV1QcjkmVfT3XOA3ImcsAIj71cvhlAnr1DtQx95rHab
-	 2YbtMCUgiWwXXe9vybAiIrbB/SdWTxJbDnFPkIJnlnQaZO/HpoLR2Ua4024fSUBAQLQ==
+	t=1793026929;
+	b=ozJCk8Rg64iQCSHO+JFo6urUNs5I6PoNHR+s0ys/xarmAkNydTNU8WY85YEpPwo5y82d
+	 PeZenJUrbWccwL73ZVemf8FM5tnRgRK5UW9XF9hJKDOloQb17gvxmB/b+p9cY67LwfdBI
+	 xbBH2iPcyYWrHryGwVgSqi/7Y1koe16i1SLxV5ouHe5e/0FBvsx6HQBsYZkTqJEzj2vyr
+	 jHgflKyIJ/V3P0WZ70PzA0+Ly71wU9KnCf3ZMAdnKUos2C1Ohg0wNluQeiIuwq/X949kf
+	 89DDPJTZ0DWAFwoDz8FeSuCMnnqROaJOj/VUDaUA6ZZh3rISTdpZD6t5+bcmXSiWVYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026361;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=VdhjTRpZkzPz14e+11oPuZMjIuI1bMnZdjQ9c48oYKg=;
-	b=rmFLmjMZk2rZRZYIhcMng+/mFkcP7yItRqVXSC9t1ikc/VjOFc4d6gHxLG+RYM6M4Tb4
-	 bqYeg9HrFGPPSj300XV1MnllWwlv2r5Us+XT1wyKl6VQQi9Is5gaubnWvWChjHo/FW2XD
-	 5+cjJEOEmdMkmD+fzzuWW3Syy5mDzytO0pBcknFCBuhGH3xixMybGrkmvIPcEyvGFHeft
-	 j6T38fd3+B7A0eVPBt3sjPSYpj2OzOnkkBXX7/dg1ufA7mTanc/gi6Ij5RqS9T9AfPpMb
-	 t5l7p+1/2HpQuoTmgoFJ+5NOFdCaKSFQ1AIEXqvc7TOgtHcdM05HFExIN+avxvlYwGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793026929;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=m9xXitEiI+hi1F9clvRlUMjS8JnuPFDTdYXDE0kyjzc=;
+	b=KM04mACNdHYQJbt7WIvaJY9I9A3ffDzkcuDcdHpb0tavuVCML6B0RXPTLdewiPBMMx5D
+	 FHefHIA7lsglTfrMAl64uPGuNvpUVlf2mJZGVNAhQCB2yG1CAo5fFrqiFBRfK4eZlRldH
+	 sVBFg2BjGmKkzuzC9opH6WQTbirNO+nU/ZHWCFeProPy8FXX7o11/5yhjOdmIw2/sZMdg
+	 OtkczIXxaCCGuibp7ubHS+C36LDIVpGPUA/kV+YuZ96OXmG46GBg7Pcao3vYKdctO+ytE
+	 4nkCyuxaWOE02zwfZHZiEep5EahxrR/L0xtkqGHJF1EaGcJxMbOJfxPHDKjM61Mpa+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=mXmlo9KF;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3ABA606A325
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 14:52:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3ABA606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Fq8fBUGG;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E1606A31D;
+	Mon, 26 Oct 2026 15:02:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 767E1606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=mXmlo9KF
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a35a60499eso17849275e9.0
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:52:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793026354; x=1793631154; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VdhjTRpZkzPz14e+11oPuZMjIuI1bMnZdjQ9c48oYKg=;
-        b=mXmlo9KFfO7C9F1JFA8jDMW1R6BdkfNbBAtAR+uIFFX3PSFcODnFdrXZa1KfFJtQfe
-         1wYn7NZZoJaxDL/t967U1Hs0rKedL8HWe0MeuV+kdfVc3BgbfLpnErhoLHo2A3dwbhUD
-         zuGqlNbTM0JhttmPQXgO33kNqvh+2vXB3bJYAqHbdjWU8UdCdUlN7nPYBUAnXyEWLQdu
-         BSAnyLX/VZB+uFlqnUMpVx8Kl0DqyQ1tQ7+6tZcZoJp5PfXjNV+HXKz1BjRGvXtiACbB
-         bVxAk59302VeDMsvIwuK58TpeDB3KNVK9NVhLsRFkUhIN1VwsdfhXArbGQKmp878hYXv
-         FhNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793026354; x=1793631154;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VdhjTRpZkzPz14e+11oPuZMjIuI1bMnZdjQ9c48oYKg=;
-        b=Lj5k0/Z+SgI4VpnZfKp18Oo0bdXa2eDCUs/El7DfHfme3IIrLxd659vQ5shHdmthU/
-         FlqpyprlO7MSJmT9IOxK0NmphNyKSorsf/gwKCSpEuwGLczMJOAiGSSzfppcneSCE4Y1
-         AEzgSdzlRy/HySka5vpl4DBdM4fJVoLXSEWgzV4YOvTHvD64+a2lAG1HYEvjZykImcUI
-         Mn64aW+1vbE1BQA4zBEObvJ/Cv0taM3H8EPnT5Cr8GMOJJIn0jQxVS+DgeENHhgcIwV1
-         tbvyf1c7RD+x8ZWaeFa3FLGPVNJGBHHLL3JmArgYUDX3n8EvdbAVLAHHYVqO3h/bg0ax
-         ihcQ==
-X-Forwarded-Encrypted: i=1; AKwUvByqzukQVzH+I73DzueISkbPH7Crg8IZiXwCBqozuMLyyrbAFyfjXYWwJHvYAi5YXKEj8+8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIzgOD3ScdbnhZ5w4SnF6IgIOyjUPndj9lRpL0PKCPJ7TgbQit5
-	yDm+/N3IoaehuAgSMO5UIl2vbDYw98XqBelGQ3tV0U3kZz06wTIkiQaW2eF1iUCLpu4=
-X-Gm-Gg: AYBFou3OaZujPb1F8MQeHhyVCC52BMhyaMOg2PJr5uSuaTUww+gB8bwwb3HdgaNW6o7
-	wM655bRJ0Wj5Ebno3du+hccwUYDSqC64YrlZDZnOFqEzj0ndNovDVE0ZPj7RuiSOA74IvfJFeI+
-	pFr+wZOzxyklXG+g9wmtCxRp3h0PRGkVmqpOxHlvJ/U7MgjIDVQFWmQOVtGvYeGwjFDKYOwcNu5
-	WHFzmJP6rfvh1F2IgkhwRt960U2GOfowuuWuSCDQuO7G8D01oM0JxV+YyR0cHh4ZbhWxBjOZWxJ
-	RqlNRrNM7MmwghVoeM9/Da+jj4jCPHg3RUwRXmZ7yxbWs1e1ts2nic+t/QAiM0bxmVgPdKAskhS
-	i+R11vQBk0qTTzXVSUEGfC7vll9G/BSzENUxB4Sl6+IBDG/4E6hjk6R8Up+3j8Xpoxn4zd1sv6T
-	rfznRVoOpnx1K6+wj1Uq36ydzOS2ueKMBj6N1GyG4ieBvfkt/NFr9yLEz4cZQy4s+msYJYNJqYY
-	TwS87XpauxSY4LfMWiUwUZSh8BjpeWVgi6L4+ftj2prOvThmtV4ftcYpPgC+AgmSg==
-X-Received: by 2002:a05:600c:3493:b0:4a2:a6e:80f5 with SMTP id 5b1f17b1804b1-4a35ac9d0e8mr130236665e9.11.1793026353844;
-        Mon, 26 Oct 2026 07:52:33 -0700 (PDT)
-Received: from localhost ([208.127.45.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a04ad39sm528356935e9.1.2026.10.26.07.52.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 07:52:33 -0700 (PDT)
-Date: Mon, 26 Oct 2026 15:52:30 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <at9nsxtGOl3N5PJR@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
- <179302367452.58760.11808905856343064399.b4-review@b4>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Fq8fBUGG
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AEA1B1655;
+	Mon, 26 Oct 2026 08:02:03 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EA793F7B4;
+	Mon, 26 Oct 2026 08:02:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793026926; bh=v+zgyK0QwsGg1V453RC6kjK16TjZSW8MMUUh5EUtImA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Fq8fBUGGhyKB1XXODIVt6BLwqv4o1xkXZa7X2pGzhE3cWxE1Dx6V2Agz2JruU6v8B
+	 e6+kt1FW/KX9OCoA7zQKe+M/qRq4dDfLlyRJhVUpUX6qmLxdWvCOV5AohG8CCGKOyh
+	 lOSGCTkE5jrlgqOKG5he5sUj7qM29vi1N67m9FTc=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	maz@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 01/15] KVM: arm64: pgtables: Change write bit from S2AP_W to DBM
+Date: Mon, 26 Oct 2026 15:02:00 +0000
+Message-ID: <at9raEVrsbb7rj6n@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <8ca88576-651a-4b7f-91ff-2cb2359aa79e@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-2-zhengtian10@huawei.com> <arxW4PUY3qqRkogl@kernel.org> <8ca88576-651a-4b7f-91ff-2cb2359aa79e@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,246 +91,54 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179302367452.58760.11808905856343064399.b4-review@b4>
+Content-Transfer-Encoding: 8bit
 
-Mon, Oct 26, 2026 at 03:07:54PM +0100, jgg@nvidia.com wrote:
->> [ ... 53 lines skipped ... ]
->> +/* A cursor packs the record and member where fragmentation resumes. */
->> +#define CTLV_INTROSPECTION_MEMBER_SHIFT 48
->> +#define CTLV_INTROSPECTION_RECORD_MASK GENMASK_ULL(CTLV_INTROSPECTION_MEMBER_SHIFT - 1, 0)
->
->Use genmask for everything:
->
-> #define CTLV_INTROSPECTION_MEMBER_MASK GENMASK_U64(63, 48)
-> #define CTLV_INTROSPECTION_RECORD_MASK GENMASK_U64(47, 0)
->
->	pos->record = FIELD_GET(CTLV_INTROSPECTION_RECORD_MASK, cursor);
->	pos->member = FIELD_GET(CTLV_INTROSPECTION_MEMBER_MASK, cursor);
->
->	return FIELD_PREP(CTLV_INTROSPECTION_RECORD_MASK, pos->record) |
->	       FIELD_PREP(CTLV_INTROSPECTION_MEMBER_MASK, pos->member);
->
->> +
->> +struct ctlv_introspection_dump_position {
->> +	u64 record;
->> +	u32 member;
->
->Maybe a comment describing how record and member are encoded for each
->of the users?
->
->> [ ... 13 lines skipped ... ]
->> +/* The immutable root-first chain always has generation zero. */
->
->This comment seems out of place, it should be closer to the 0's it
->refers to a function below
->
->> +static bool ctlv_introspection_family_record(struct ctlv_cursor *reply, struct ctlv_cursor *entry,
->> +					     const struct ctlv_family *family,
->> +					     struct ctlv_introspection_dump_position *pos)
->> +{
->> +	const struct ctlv_family_schema *schema = family->schema;
->> +
->> +	if (!ctlv_family_entry_start(reply, entry))
->> +		return false;
->
->I'm finding it quite hard to go from this statement to the YAML. I get this:
->
->CTLV_NEST_START(ctlv_family_entry, CTLV_ATTR_FAMILY_ENTRY, CTLV_SCHEMA_NEST)
->
->I asked AI and it said it was this:
->
->attr-sets:
->  - name: family-entry
->    attrs:
->      - family.id
->      - family.name
->
->Which is some cyclical reference to this one:
->
->attr-groups:
->  # One record per family of the chain a device answers, as reported by
->  # families-dump.
->  - name: family
->    attrs:
->      - name: id
->        type: uint
->      - name: name
->        type: string
->        max-length: 63
->      - name: entry
->        attrs: family-entry
->        max-occurrences: unlimited
->
->But having poked it some more I see that AI was wrong, and it is the
->reverse..
+On Wed, Sep 30, 2026 at 10:44:26AM +0800, Tian Zheng wrote:
+> On 9/30/2026 8:25 AM, Oliver Upton wrote:
+> > Hmm... I'd actually like to see this structured where the "write" bit
+> > could either be S2AP_W or DBM depending on if the system supports
+> > FEAT_HAFDBS. Look at how HVHE is handled for selecting the right AP
+> > encoding for the hyp stage-1 page tables.
+> > 
+> 
+> Hi Oliver,
+> 
+> Thanks for the suggestion. I missed the case where FEAT_HAFDBS is not
+> supported. Systems without the feature should keep the original
+> encoding, with S2AP[1] as the write permission bit. I'll follow the HVHE
+> pattern to select between the two encodings in the next version.
+> 
+> Thanks!
+> Tian
+> 
 
-Yep. Already spotted. Will fix.
+Hi Oliver, Tian,
 
->
->But.. Where is the actual op? I finally see it is here:
->
->ops:
->  - name: families-dump
->    type: query
->    fd-access: read
->    reply:
->      attrs: family.entry
->
->So.. The op points to family.entry which points back to family.id and
->family.name through the attr-sets? I queried AI for a while and came
->to this:
->
->  The confusing part is that the family group contains both the leaf
->  attributes and the container that holds them. Their grouping
->  establishes names and attribute IDs; it doesn't imply
->  nesting. Nesting comes from attrs: family-entry.
+After some digging, I think it would be better if we kept using S2AP[1] as 
+a writable bit, while DBM can be treated as "Can promote a non-writable 
+page to writable if HAFDBS=on". 
 
-True, will fix.
+I know it's not that intuitive, as the Arm ARM even introduced the concept 
+of Writable-clean an Writable-dirty, but I think it will be the best way of 
+referring to what was intended of the bit.
 
+I wrote down what I mean by that:
+https://lore.kernel.org/all/20261026144413.441566-1-leo.bras@arm.com/
 
->
->I don't have a constructive idea yet. I've been trying to understand
->the yaml in this series for a while now, and I think it is just
->unreadable in this organization. The information is spread about all
->over the place and it is very hard to construct an idea of what is
->actually in a particular system call. Maybe the missing html
->generation would be helpful..
->
->Poking at AI some more I understand it is like this because this is
->how the ABI numbers are generated, things need to be in these lists so
->they can be automatically numbered.
->
->Going the other way isn't much better..
->
->ops:
->  - name: device-get
->    type: action
->    fd-access: read
->    reply:
->      attrs: device-reply
->
->Okay, so then I see:
->
->  - name: device-reply
->    attrs:
->      - device.caps
->      - device.info
->
->Uh, why do we have this extra layer? but OK..
->
->attr-groups:
->  - name: device
->    attrs:
->      - name: caps
->        attrs: device-caps
->
->Er.. 
->
->  - name: device-caps
->    optional-attrs:
->      - cap.evidence
->      - cap.mr
->
->Getting closer!!
->
->  - name: cap
->    attrs:
->      - name: evidence
->        attrs: evidence-cap
->
->Oh, apparently not..
->
->  - name: evidence-cap
->    attrs:
->      - cap.min-challenge-length
->      - cap.max-challenge-length
->      - cap.max-total-output-length
->      - cap.object
->
->This time for sure!
->
->  - name: cap
->    attrs:
->      - name: min-challenge-length
->        type: uint
->
->It is too much, this going back and forth to the sets is very
->obfuscating. Everything is called attr. There is no editor aid to jump
->between the sections, by the time you figure out what type a single
->value is you've lost the trail for the rest of it.
->
->This isn't even that complicated, if I ask AI to explain it in a C ish
->language:
->
->struct device_get_reply {
->	struct {
->		optional struct {
->			uint min_challenge_length;
->			uint max_challenge_length;
->			uint max_total_output_length;
->			struct {
->				enum blob_class;
->				string format;
->				enum representation;
->				uint max_length;
->			} objects[];
->		} evidence;
->
->		optional struct {
->			flags mr_flags; /* read, extend */
->		} mr;
->	} caps;
->
->	struct {
->		/* device-info: filled by the derived family */
->	} info;
->};
->
->I think the yaml names are not helping, calling everything attrs
->everywhere is really confusing. At least the transition into a nest
->and an attr-set should be more clearly marked in the yaml..
->
->The yaml would be significantly better if it was layed out according
->to the actual semantic flow instead of artificially being twisted into
->this need to put everything into a linear list. AI invented this:
->
->device-get:
->  request: {}
->  reply:
->    caps:
->      evidence?:
->        min-challenge-length: uint
->        max-challenge-length: uint
->        max-total-output-length: uint
->        objects[]:
->          blob-class: evidence-blob-class
->          format: string
->          representation: evidence-representation
->          max-length: uint
->      mr?:
->        mr-flags: mr-device-caps
->    info:
->      $extend: device-info
->
->So.. how about could we drop the sets, use a direct description of the
->layout and do something else for the ID numbering? Maybe the numbering
->can be solved directly by only listing the names in:
+tl;dr: 
+- DBM + S2AP[1] is set on writable entries (KVM_PGTABLE_PROT_W)
+- Writable detection is made only on S2AP[1], so no changes
+- Wrprotect sets S2AP[1]=0 from the PTE, and also DBM=0 if it's a block
 
-I didn't want to have a lot of duplications. Netlink show us that the
-same attr, or attr group (or nest) is often used in multiple ops. It is
-not good to repeat them each time (multiple obvious reasons), so I came
-with the sets and groups. But I will think about how to make this
-possible to be formatted in more readable way.
+On dirty-tracking:
+- If HAFDBS=0 : no functional change, DBM bit there but unused
+- If HDBSS=1
+  - Pages: writable-clean promoted to writable-dirty on write, HDBSS does 
+    the tracking
+  - Blocks: faults on write, splits in pages, pages get DBM=1. 
+  	(argh, I think we need a PROT_DBM for that) 
 
+Does that make sense?
 
->
->numbering:
->  - device-get.reply
->  - device-get.reply.caps
->  - device-get.caps.evidence
->  -[..]
->
->?
->
->-- 
->Jason
+Thanks!
+Leo
