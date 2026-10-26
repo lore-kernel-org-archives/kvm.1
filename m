@@ -1,93 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.117
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793050996;
-	b=seFQNpc6GylUq7oPq7HEMv9jmtAAQ0UCJus4pIAx+O0teidgTtJYwn1LoHs9Pe/Abuna
-	 ge/diJWM7vbcP0M6cNGsI0+5ed21e9/VCUctrYDpxQou+3l022Hwz47RBgp9q2bv5Jt2f
-	 F0sk6DCCtH7ea+p4tk3qTL4tE27dgbrlvzMODOVAjKb1bnXagnlokqEUptgS8ENnbBeOX
-	 NdPa7hrRuKNe3uIRZ0WdTp9wkloqJcbJHReQqpnNh2U47LpBi7yo96V081Fp5264zyLgi
-	 Oq2OxCrxfi078f99qGDWtp0VBNGhaoVMMiz6un1yPLj8sO2YbOqYzv5cu0lsIceZXWA==
+	t=1793051572;
+	b=xISKExPcMbrWOCSD3mOuqbwNA94IUK1udYyQoQ1iSuTTQb+g5UHLwO2LPOb/nKaIk1pg
+	 pPk8GjZmlB16SDKdSk816CrgfxxgnwnrxtufoKKQM3IJ2qMSKTPznHyh5mirEtdAfsbQA
+	 +50VkIKklYO5wYas3Rszkt0D6TkAFurR69SlU0t8754fLwIjgBInYXG3COS00+Mb8XXyr
+	 pigLJXzC+MuxxYOVAcrcwL/KZvLC3JI06cT/fG0mo766+12VT19j7kpW6kbwiE4ntPlyV
+	 aSNjdjOwI65YqwTRJVV3aI1Qp1x7XZNPdmj5a65SUfDnBzu2D44bxpSweuR/qjyGZ4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793050996;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=0Lq4a/V8mDm6FCGgdk05nU9bT6DX1rNy3nB4AjBmimk=;
-	b=qWamf3eZGgS0qxVw1ExzmXq5bBSNQTWyJZfHAmZk7n/+jA+8AxshuebnRxUFAm9BPk0C
-	 2wrsTIhn/xgY2gjq9hIjSVb5wKehxliMEBn4Ho7VQoeNTvR04i2TpvMMGuE0bScDOivXD
-	 X34ScF7XShuU0UJn0aIqtDkJTLRQ05+NNg50sEX7cgRmB49zY+f9FLbkHj39vqcit5x8X
-	 8Y7OPCV+O5+A/fOWpqjdDVASMNnbJqWPnUujZTVvIBU7Ia9BnCm1v7dijdoxExvFnTEGX
-	 ej/DV1SRVpgFpWTSrHrzrsYnoqoRch1ffx1VX6KSY439166i2adpkyw37mULxUKkffQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793051572;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=0zQfCS+xbNCI3ecGYMw9q9f4jA1EzYR8/pz81vPbgxA=;
+	b=U5PO3pKosv4zCB6c7df4mOHbXp9zbnUhIEmeqf3o087p6s30V4fkyet44Rx0ooywsLjt
+	 HD51P5sVvozaMAZ0s0bHa9gIGW5auR+CF91rEYwyjUC4rH75OHHHz272VdQ/T4zqYLkG2
+	 GTgbf7Uemb3so2Tp+QozUCakktsNXwmUSb/xxWXJBJEbAL482DS+tDKrVja4Mv7+noIcw
+	 Eo/3O0GVawN/qK6+hVs35m2t2hVMXwq2iqU2soDp/c+YKK3I6QpvNFoZnJlELiy8qGQfi
+	 W+YQdEVsLu/a3zoZ4eGv1+9CMZAmjOTRrRAFFh/6THlvf8k766tiVBv4b5TGgDoXEBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=fFqDVruR;
-	arc=none smtp.remote-ip=68.232.139.117
-Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=RC8kMmU1;
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4A0606A31B;
-	Mon, 26 Oct 2026 21:43:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C4A0606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECA660A381A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 21:52:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4ECA660A381A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=fFqDVruR
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1793051002; x=1824587002;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K8Tw0xjvYKK5C3EMr77Wx4LoUSWiFby6WDQXp/hFglg=;
-  b=fFqDVruRMWH3WtvV1cI0fpT6D4dw8oHupgTBadNcrcuXGG5/3E8nDHGt
-   PTmUQlP45QK30et00rkJN3kh4BksMY4b9/xrCXDPWjQu4rbfJbMbwzWLJ
-   RZe1WB5i+9tN8yNy1FwyQBwOez1wkG/nqpK8ABzQDAPPKssQe+MP8DqU9
-   3HPPS+oknEkywUON7cKyZEJ2/940haOTnz+jcI8t2MUnCdKc5Y7Sv2f00
-   km8U65dF/CpxQ8K9TZw1Kf9K8KN/GyfozcmyfJeHr4tgyCjARSCv6pceO
-   KftkOnP9ily+FFMOeeu9lnMYzjgQ05Gm+AMNK/C3fvYutQVvFF0TyTwNS
-   A==;
-X-CSE-ConnectionGUID: v4N2/SSOQ7OWG0uKTUeBrA==
-X-CSE-MsgGUID: r69fHcvGSjiOax1fSVtqVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="259043794"
-X-IronPort-AV: E=Sophos;i="6.27,180,1786978800"; 
-   d="scan'208";a="259043794"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 06:43:20 +0900
-Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id C29121C000D5;
-	Mon, 26 Oct 2026 21:43:13 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 7387CC00FDD;
-	Mon, 26 Oct 2026 21:43:13 +0000 (UTC)
-Received: from sm-arm-grace07 (unknown [10.124.178.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with ESMTPS id 36B3A405E32;
-	Mon, 26 Oct 2026 21:43:07 +0000 (UTC)
-Date: Tue, 27 Oct 2026 06:43:05 +0900
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
-Subject: Re: [PATCH v3] KVM: arm64: selftests: Test VNCR translation
- invalidation
-Message-ID: <at_JaV29gVqxueSK@sm-arm-grace07>
-References: <20261026-b4-vncr-mapping-test-v3-1-7c094a00d46e@fujitsu.com>
- <861p9czwxc.wl-maz@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=RC8kMmU1
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a59717b0c0so1041670b3a.3
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 14:52:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793051572; x=1793656372; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0zQfCS+xbNCI3ecGYMw9q9f4jA1EzYR8/pz81vPbgxA=;
+        b=RC8kMmU1ng9PI0xVDUVB9y4b2qkHrIc62PNyX4CzWbIdDe/vbucy2fxbMQVvz5M/xe
+         IO7bs505etfgEHNsbXHOq1v8h8HofxMyo+PKPU+my9lhsGvDArvAYhYz55zgEC2MkyOf
+         J46ym8a3S5Jp5fu3b7pIzq3ZgvKG/BWDa77DRrlIIXA6EMPsQpKBLv7/sbzdO6/CUcKe
+         Hm4Zk7JL4UbMt2ax+X6noxQGwVuFhcvfgX+0jyCFIlr0T4a+inqsYhiXD0iuHZueewf4
+         BhOxnojGjwJATQ35C5SS63tXVQxqgWO4TEgqnfuB0+6qy3MHnLM2dV3exIa8s5AQ+XD5
+         5Lxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793051572; x=1793656372;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0zQfCS+xbNCI3ecGYMw9q9f4jA1EzYR8/pz81vPbgxA=;
+        b=ES5FcyurERGGShbw2qwIQAcZQXVRTUzTby55EfHjpWINeDr6VqUJGqGq4IbiRGeflm
+         Nk4hoxvWUSlnaYkBUTogzYViMTcTwYcUpC+fwatwgAq5Q77WGDC09PuZhjPmXUp0ba4z
+         1n6SBL+wjHfl1ZSOorWY31FBcCUZnQGOHIyMUtN2Oqey/xrm5nxDd4MH8A5ETq2enNHP
+         BMDQbSMoD8H073g9kH6Zh20DsY6fe864XwP1XyoP82wRlG7cx8Tldy2DOS6SDLKFZMvW
+         axAtesOBmEBv0pajg30+J9AQVJvRnM5Zqp2ThSwTueZjpZz+YIzZAInWPIlOyzGvb5wH
+         k5TQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxl5O0y/VUKAPl/jgz5fXwOrOSb2FDf6B4LHXyBO5cbSCYtSoOpYsbd2s5JZO0DyXjlWyM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKzJgIurCjY/mMWMofLbxIDNjyUz9v2RlEgGa7ldOttQZlNk1vb
+	tPPvggUCUhibBhP2Wa5uAjlF1sP5wRgMgUNkMJMnCSm2nM0wxiY74s9ZoIEptOkmLTy0f1FEj4r
+	SRt92Vejp8TD6z9vQvE667Q==
+X-Received: from pfbho14.prod.google.com ([2002:a05:6a00:880e:b0:8a0:6a08:e927])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:bd81:b0:87c:e44e:5694 with SMTP id d2e1a72fcca58-8a366b88ce9mr5902881b3a.21.1793051571129;
+ Mon, 26 Oct 2026 14:52:51 -0700 (PDT)
+Date: Mon, 26 Oct 2026 21:52:20 +0000
+In-Reply-To: <20261026215226.3713941-1-jthoughton@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,42 +78,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <861p9czwxc.wl-maz@kernel.org>
+Mime-Version: 1.0
+References: <20261026215226.3713941-1-jthoughton@google.com>
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261026215226.3713941-5-jthoughton@google.com>
+Subject: [RFC PATCH 04/10] stacktrace: Don't unwind the user stack without an mm
+From: James Houghton <jthoughton@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jim Mattson <jmattson@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Pavel Begunkov <asml.silence@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <mason@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 26, 2026 at 08:30:07AM +0000, Marc Zyngier wrote:
-> On Mon, 26 Oct 2026 03:10:10 +0000,
-> Itaru Kitayama <itaru.kitayama@fujitsu.com> wrote:
-> > 
-> > Add a standalone KVM selftest that checks VNCR accesses after L1
-> > updates its stage-1 mapping and issues a TLBI. This guards against
-> > stale VNCR translations, as KVM caches L1's translation of
-> > VNCR_EL2 and must drop it when L1 invalidates the mapping in
-> > kvm_handle_s1e2_tlbi().
-> > 
-> > Keep VNCR_EL2 unchanged while remapping its backing page A to B then
-> > again to A. At each step, L2 reads and writes TPIDR_EL2, and L1
-> > verifies that the accesses reach the selected page while leaving the
-> > other page unchanged.
-> 
-> If you were tracking cross vcpu invalidation and exercising all the
-> architecture corner cases (such as permission changes and co), that
-> would be helpful.
-> 
-> But as it is, it doesn't help much as a validation tool. Its scope is
-> way too narrow.
+stack_trace_save_user() only refuses to unwind the user stack of tasks
+with PF_KTHREAD set. That doesn't cover all tasks without an mm:
 
-Thank you for your comments. I will try to incorporate the suggested
-test scenarios.
+ - A user task that has already gone through exit_mm(), e.g. when an
+   event fires from exit_files(), exit_task_work() or the final context
+   switch in do_exit().
+ - PID 1 before it execs init, and usermode helper children before they
+   exec, which are created with user_mode_thread() and don't have
+   PF_KTHREAD set. E.g. booting with trace_options=userstacktrace and
+   an event enabled with trace_event= unwinds PID 1's "user stack"
+   during initcalls.
 
-Thanks,
-Itaru.
+With the ftrace userstacktrace option enabled, the architecture
+unwinders then read the user stack without an mm. That access does not
+reliably fail: the user half of the address space belongs to whatever
+mm happens to be lazily loaded, if any, so the unwinder may read
+another task's memory.
 
-> 
-> 	M.
-> 
-> -- 
-> Without deviation from the norm, progress is not possible.
-> 
+Use is_user_task() instead, which also checks current->mm, as perf
+already does for the same reason since commit 76ed27608f7d ("perf:
+sched: Fix perf crash with new is_user_task() helper"). This also stops
+unwinding the user stack of PF_USER_WORKER threads, which never run in
+user space, matching perf.
+
+Fixes: 214d8ca6ee85 ("stacktrace: Provide common infrastructure")
+Signed-off-by: James Houghton <jthoughton@google.com>
+---
+ kernel/stacktrace.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/stacktrace.c b/kernel/stacktrace.c
+index afb3c116da91..f96a5ec12f6c 100644
+--- a/kernel/stacktrace.c
++++ b/kernel/stacktrace.c
+@@ -228,8 +228,12 @@ unsigned int stack_trace_save_user(unsigned long *store, unsigned int size)
+ 		.size	= size,
+ 	};
+ 
+-	/* Trace user stack if not a kernel thread */
+-	if (current->flags & PF_KTHREAD)
++	/*
++	 * Trace user stack only if this is a user task that still has an mm,
++	 * i.e. not a kernel thread or user worker, and not a task that has
++	 * already gone through exit_mm().
++	 */
++	if (!is_user_task(current))
+ 		return 0;
+ 
+ 	arch_stack_walk_user(consume_entry, &c, task_pt_regs(current));
+-- 
+2.56.0.307.g5fe7bd680c-goog
+
