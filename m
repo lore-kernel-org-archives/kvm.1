@@ -1,55 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793037858;
-	b=pLVcIbp8B68537fahl8aO3tYQ/Yvk5jLBvYIY0lYZvMa63NFN1RVKK71brn/574PBzZD
-	 AVG1OyncVTMeC6jzDImexDYMXL3LekgCUg+5hV19J8x9r2M8Z7dKC3Co3FpC6un0945h3
-	 u2hqGRkZJD0vUgJypzpjfNEYRcIIf9AcBjYoVvoo71QFXSrsM3Asr181MDs0TiCfrPRu4
-	 YTU2WVKB9GDjG1MDx13OnrZkGx6FwBq06Nx7dYI4MOsEe0BSf2EAtguJCowIw4hH5VnIl
-	 fWm6oJQ7uQAwPnxz5CKIRMfHkd5DwfB3wwGeFQPj/JqqVEfdNdPmZxJquikjO9mnYew==
+	t=1793037953;
+	b=PtnnrmW+mcy2YoYJAyWENL7uZb/h6gUL0UhodSf3iS5YOnv4H1AMwEytSjTbL/7GXyM7
+	 VLXz46IbHDq02LjDQ/1B7QaaX/a5OeJydwaFCLX9t7N2Uwhb9nP5vdxYSOk3IS9FkEy0X
+	 n4Kc/H3T2tTnH2yn5HhKaIe1OqogvoqddL7j/+j4+yjhCRz0uTFZI/DBgbI+waUxbyIoh
+	 Mw9Mx4w500/AD61KMFoJtF3QBPEPT+Aqcq5nu8/MxVdADGQVeP1rTdyYR03ZY9s7/pcpf
+	 gCUdIdsjIgWLp9BTKz7U1p9R5Mm+2wsaNaI6UejTGTfYCZ/MrYok/gGhNEyvmicxs5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793037858;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=9uxlLJEsA1bXTEHp1c6LcwARsGRwFYTcu3KTbRjTHlA=;
-	b=kjiW5QyX2Qpobjrb1djiZV3rteKozjxh471wm9J+j0nbZkBo6qA2AKTHf6aGmTD4qHZF
-	 Kp6j8zGw4DIPdfNhOa+oLWRR6Zxdb6QBH6Ugw9zTqT2Aupp2uxThkcRdPcLsmOwlIUYiz
-	 gbKFXQOSFHhWuLuisz2resql+yb+m3yQtWIItaTEIRJ8Zbr0NACQ4suHN1pYUwLFHepAj
-	 jEVVTZlu3Raw56/3DlFaAlu4Cg5IHKBzU9a7+7EpkYkzMuS5lUjUUlCcQXp8TuTGuH90N
-	 zyIqlUdS5TVcImOIXEqCBcb8jJCnu3OdCCUPqSaTLk5+DMcFaaP75AASzNeSNG73/mQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793037953;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=Dazdfuswvplzd+nZxkdJ2Trb6gBuPhP20O43N/pReRw=;
+	b=yfW6kNMSSbjV1JIDbakCHJJKdOq/eSYIc0dk0yc98KDF7Fy12IdGq985MV2rag0XYNaF
+	 iNqGUVw+k5s4/3rCkebrdFF7VtlqLWvVOewYBLk9++ydb7kFLZ1vBrIbBk3CPsxTm7KLy
+	 p23XVy3D82phWw+4BDCwBt8DLNqiMGtLf3lQdBs9OWloh99Gi4Il9RWEvWmjoc3K+sJtU
+	 MDK0xsdm7dJ572nRriFunnN7Y9ydiJy5UUeWD/jgGK5z8rZNTV8U3VLC9qd4VHWVrZxuV
+	 mYWwRjDTEeTRLdRjO0xT0kBsFTDdkRtPXIfnrjSSbv7IRugRsu9AZIG3GbQapnPzGYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nbNDw0R/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF67606A31D
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 18:04:17 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oiB7p4FK;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E30606A31D;
+	Mon, 26 Oct 2026 18:05:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3E30606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nbNDw0R/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C9B1F01825
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 18:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793037857;
-	bh=9uxlLJEsA1bXTEHp1c6LcwARsGRwFYTcu3KTbRjTHlA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nbNDw0R/EpYHYoifQ3AZeula7uMg6lFVErZjDVExn+hx8a2bL4/rSPvN0FJYwK7ln
-	 DCqyTsBm431pvy/lhvvKteMb9mGXbuUBTT37epr7Ka/AHMMxplEnenbqSdPpey5d0p
-	 p/CqYUnu3MRiOQ2M5BN7wRGtKMi0rfFqQPmoPEQ/97KjyXKbrKK7W1KP6T5DNBKmzX
-	 jC6iFfanNZbxiUEUuJqS4ql8ITCmHnXvqbgeF/MLzxZ4f9ZK3rHSdcE02bhTgh8QCc
-	 NQ6QMG+BB/yl4lY4JPgZVDHrQrRu2GDFEYCM03HSxzsca5raoht9A/2rpxjPyyFXon
-	 CryRac76Xjoqw==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c45551fa84eso489296566b.3
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 11:04:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzMcc9IPAJnOZ/l3N9t63/VwsIBM+3CbgvZObSctDE1mmIWXVqujHBDqFuuuWOZxBKoEoA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLXmWk2QjJ2czKOu5POpIsnglU7guos6BmfNGplsSItr2od3LPs
-	0QZFeqk9eLaV0ia11isYFUH90gAtziJWGOuTQ1vsnTJXjStIkywZmRYkE079iB/dlCXCuUyUrEQ
-	h+txqsS/rpMRvb1xteCb2tonXRbDUKrA=
-X-Received: by 2002:a17:907:7fa5:b0:c40:dead:7466 with SMTP id
- a640c23a62f3a-c46bdc0ea2bmr844359966b.20.1793037856284; Mon, 26 Oct 2026
- 11:04:16 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oiB7p4FK
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7783D19F6;
+	Mon, 26 Oct 2026 11:05:47 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9D403F7B4;
+	Mon, 26 Oct 2026 11:05:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793037950; bh=0Fm//jObvS8Sn73p6wEdeeyE1A5W+WdjYk5R853HCAU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=oiB7p4FKmQfYPhak2KyREhmAxzj21VR9bO/7IkVcr4vAhuyPU4BxeGZVArbjZCBEd
+	 7nzK9K8tzkV9r//ANLZIfuLWdMzOrAyY3poD5DzLJ8uSGtE5kCj10S9IqZQr1/eDt6
+	 WhdNQVWRU4yJS35XoSMSRo4NhGpvYUfZQjEkElRo=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 05/15] KVM: arm64: Harvest stage-2 dirty state into the host folio account
+Date: Mon, 26 Oct 2026 18:05:38 +0000
+Message-ID: <at-WceRKAVM2kEnI@LeoBrasDK>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20260929103655.85107-6-zhengtian10@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-6-zhengtian10@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,48 +89,42 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022215541.631694-1-seanjc@google.com> <CAO9r8zPFEwUVYSTePWN-FurHLzGN6cY8bd-BOj3sjRmjj4xQbA@mail.gmail.com>
- <at-Pfgjt__PJl55M@google.com>
-In-Reply-To: <at-Pfgjt__PJl55M@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 26 Oct 2026 11:04:04 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPAvi0vCENtj+7+gVrojB2nOHEoYfyhgdgxpmiUA2kWgQ@mail.gmail.com>
-X-Gm-Features: AclHuK-_mV-_o8oyTvjNfVPUxDkJ4-4h_LvJxqYkxEhvrUiyoB5NiBgnQwLbofA
-Message-ID: <CAO9r8zPAvi0vCENtj+7+gVrojB2nOHEoYfyhgdgxpmiUA2kWgQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] KVM: x86: Convert all runtime WARNs to ONCE
-To: Sean Christopherson <seanjc@google.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 26, 2026 at 10:36=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Fri, Oct 23, 2026, Yosry Ahmed wrote:
-> > On Thu, Oct 22, 2026 at 2:55=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > Convert all bare WARN() and WARN_ON() runtime usage, i.e. WARNs that =
-aren't
-> > > strictly scoped to module init/exit, or similar, to ONCE() variants f=
-or what
-> > > should be fairly obvious reasons at this point.
-> >
-> > Do you wanna CC stable?
->
-> Not really?  Maybe?  I worry that this will generate an absurd number of =
-conflicts
-> and also have "misses" in older kernels, to the point where it oculd do m=
-ore harm
-> than good.
->
-> I could be convinced this should be tagged for stable@, though honestly i=
-t might
-> be better to omit the automatic backport trigger and just rely on someone=
- to
-> "manually" provide equivalent patches.
+Hi Tian,
+Sorry for the delay in reviewing...
 
-I can just see this ultimately preventing a DoS and if it lands on any
-stable kernel it should be a win, but yeah probably manual backports
-are needed :/
+On Tue, Sep 29, 2026 at 06:36:45PM +0800, Tian Zheng wrote:
+> With VTCR_EL2.HD set, hardware promotes writable-clean descriptors to
+> writable-dirty without any VM exit, and the only record of the write
+> is the S2AP[1] bit in the stage-2 PTE. The write never passed through
+> the host stage-1, and no unmap path reads the bit, so the record dies
+> with the PTE and reclaim may discard written guest data (silent
+> corruption).
+
+Sorry, I didn't get what you are trying to achieve here.
+
+On your patch, I see you marking backing pages dirty at wrprotect and unmap 
+walkers, and it's very confusing to me on why you are doing this.
+
+IIUC, what you are trying to do is make sure a page does not lose it's 
+contents in case it is reclaimed by the OS.
+
+IIUC, when a page is reclaimed, it will unmap the S2 PTE, and save it's 
+contents to swap, so when the guest read or write to that page will cause 
+it to fault. 
+
+The page can never be just unmaped, as if there was a single write to it, 
+the backing pages should be writable, and the contents need to be saved 
+somewhere. 
+
+So, if I was able to understand your suggestion, we don't need to worry 
+about this, and this patch wouldn't be necessary. 
+
+Did you hit this issue? 
+Can you please expand on your issue, if I could not describe it above?
+
+Thanks!
+Leo
