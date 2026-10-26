@@ -1,76 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793036161;
-	b=LbhmdwPTiGMO+R0LQ3niOLhOGZYAi6659ilGlFWrHyVk6TgW7LuMBLFPX8+MkUyKgqNV
-	 BUoCMe3Laqd2sI6f0g50HXvZgckCGgYduI0e0AhlGcCdHIbqND6+VEICTy7pI1cCr/ADy
-	 ssL2omFRPwvcVQDQK0OrOxK+bNYWPakAJw3ySHa31sllGnzUVnexDChEtyuo5xviIW3K9
-	 MuJqMoDFVID5ZUdJraV9rDGcS9niC2aecgISfm/1AjfOx7HmjTagemVP7z+zHs3L8/N6q
-	 sdYK9qrM9phqmPcGt8uqyqLDSWpyql40jI8D5wAH6gjYkrKB3dKv+ytB2vkp7GQBaOg==
+	t=1793036236;
+	b=RWulM/Jl2nBsEeZr15WmpPEyOw0GCz1jPj31LzI7Gdqij7Ra9KKAOK81RFIE3OWqVM4O
+	 dbycMghiWq2P0MJtOMTgNBiFwT0m82H45olLAcvxuAiG2qADNQ0OWC8vQm9M5xkCdLra1
+	 cO+EpRTrJ0ltageSn+ZcONDW9W1nJTEERU7JE1Lwf8lC7M5y/WTkrsGb11G08bQBT+WAB
+	 efuegXIV/9qIMfFqU0jXc70Yy0bGbVXPeTuF++Xbr2utSrit6n5wGS5mqQYHDF1yN7cY5
+	 /5fICxWcsMWBRQZSbDbYIjWVcWo/j7HYFlx8yE0IFe6BHWIrqNWNNy27+CyfrItLEAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793036161;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793036236;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=axrVcD0p5PvEtJBCkRASdU2YtEOHDgVXbwmKjNoGb30=;
-	b=Z90XJafRyO8LwrQvrqJssnXE0k37vyzLrNDmMBHrjv0hlgxc86UscDLlKdPHEANZMoz3
-	 4GgMr0mwGZPPenrTb+7Rn7Dt2lJ5pADxTyI/ufeODFzhGPGKjG6RsO84n88JuxRkEg/2v
-	 8DavBWSenCYUU07JbMw3NAoGuXl8EUX1SuZWzGesY1jIANi3T8gh7WhDXQBOzYOE1hyjm
-	 bhF9y6XOJus+f9BB9kz9915A6+H7Owrqk9M2zw6vGIwZpLek/aRsc3nXwr/V4P6V+dIL1
-	 CvcpRKgCXWbx2hRJ2izaYN49qPtiD+F89cF0N6HEHzT0by/ZxxqJv800jBaUD/MPRuQ==
+	bh=u3uDBAF1Ovkb0RC2KTlASMQ4Rd8WYJb+WLyWCC0Ty9k=;
+	b=f7B363bZ89fYT0rmjFZaTCrx8ZFL0fznbUl17tNcF3JWivJOMy+VKvb+/d6ioU8C+21a
+	 t/e2YVxTOXw6h9XUPoyFy1LA+48emLGyJjpzMKOsu0Td7M0z7ESibO+Xgj34vlSML6HtX
+	 cEENmqvuXJuN6bS3pS7O0z2vewe2MoCA+AU3gSNZxmUzXlWLHb422EHm2hxhreZ3X2nzr
+	 JaSU0TWS7rfgY/tLr0P31ngFpCqYK50PEpYb3SPahH9DiLGcXPGrnaNNtbP5iDgi7bv/e
+	 jeaN6aXO6cEBqPKBik2uB8ZyVX6yVt/L4HFBvWC3r7+BI9G06aQtQBQ6Cp3JhOSL0ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=eGncRXIq;
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=P02yuksC;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6460606A31A
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 17:36:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6460606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C2A606A31D
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 17:37:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89C2A606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=eGncRXIq
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a079256596so2458356b3a.0
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 10:36:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=P02yuksC
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ea446ea8c9so829805ad.0
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 10:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793036160; x=1793640960; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1793036236; x=1793641036; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=axrVcD0p5PvEtJBCkRASdU2YtEOHDgVXbwmKjNoGb30=;
-        b=eGncRXIqVGHNQGs4hfSwjOtKaTJd4KaN0r9pHolyrwa+OmicTDLvbFll4VIj/WztRu
-         apDgOypywlVYFZ0PGCNTXsd53runcxOM9cYkc+WF6h3uvP7BRUtjWXNglSjisCd6ydAZ
-         1yO5qExA/QuDaRvfsP10XifQI7DQDL7MFQsxaSV/XiXHeMZNwsKNdi5nK0mywrOu/aBX
-         gRqDawHWUKybklxjNxlMJ8NCieN7AH+by/m0fhisjqPGnUyThKPhSOM4CI0N6l+ZSdNQ
-         rsV7n4TcTsZxRH01sHci2k7hXYDSht4JdeP7wQPnuUrMNeWOgGL/Z957x+k4vGV12dO2
-         vnoQ==
+        bh=u3uDBAF1Ovkb0RC2KTlASMQ4Rd8WYJb+WLyWCC0Ty9k=;
+        b=P02yuksC3DvUK68oipBNIgX+rOQVFqmFViaa3wC8WfAKmnslU0xkePJYWNtE1kRXus
+         8hTv94aeZCNTC+Vip/VcqniQmXZnNk9B59MH18/lL3pnSZyTVwKUjORBEP+LBUSB4Cy/
+         doTdKpFYXjgoaKLdukQwUy/MVat7OQ2lgZ8lz/Za3CiKR6IsDK9OtGYquwvtlP2pgUVO
+         0uHQ3pZ96NpE5c6L8Z32hjznLu8lZzLeIMU1uacsGDFLNQNQFYopyPd1uZpjjrfyyuOl
+         gEOU/Qt+SKhEyNpTBsP7eM9890DaZaX9TDHCAi2jOMQIPS22T1KxNBN1p8YJi/rbp+Mq
+         RH3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793036160; x=1793640960;
+        d=1e100.net; s=20260707; t=1793036236; x=1793641036;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=axrVcD0p5PvEtJBCkRASdU2YtEOHDgVXbwmKjNoGb30=;
-        b=wlWKdxQ7tTMJDrYAcGI/s+fsdlRa6j4lAYHrE3AmY9nRq/bnOVR6z4JNjkipQLiDoS
-         OK+XpFWHmslxR12VRRmlxohtNYYrxz6eyh8qEuPdir7nMJFn6Hu+88GppTTvnF+lm/7x
-         h2k7rs1BMVSoEehgd+o1XI1Q3ofR28qrPgKh8bF7ubnb5IDPL+kGz1AB5v7omn2ymH5E
-         oGeJjmIX0bbGo4dMYpfqpPPcj6CiW286w8LA/j6C+8+v9KU5SyQjfHy5hoT2K9PDq2U1
-         SOn8QRvne8kFvaxNhENFNdAvP3QKkkodH0AEul3PHcd33xtU/nzeXRkqHk8w78BqPy/u
-         0qFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxMcYpQbLSaMLP/aeqIYH4jo7zWeYs+M3pHxEPBnjLkhJq/dO8+UBmKpA+U3kwsoAcDQ44=@vger.kernel.org
-X-Gm-Message-State: AFq9FYICzItfylxdVRHXGpA2zix2BbhcrVtDyiIb8/GSDFmzTzC6dOFw
-	zbtPQic1R3pI+BA0aTOrmnFCktYNuS0nHyGiIe4ZtCATa9zAyX1q2fGOjAPqVjPVNka9WtPtAMQ
-	rhd91rg==
-X-Received: from pfbfh38.prod.google.com ([2002:a05:6a00:3926:b0:88a:f8c3:9c75])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:12c1:b0:893:4980:630e
- with SMTP id d2e1a72fcca58-8a3689aa54bmr6009770b3a.31.1793036159953; Mon, 26
- Oct 2026 10:35:59 -0700 (PDT)
-Date: Mon, 26 Oct 2026 10:35:58 -0700
-In-Reply-To: <CAO9r8zPFEwUVYSTePWN-FurHLzGN6cY8bd-BOj3sjRmjj4xQbA@mail.gmail.com>
+        bh=u3uDBAF1Ovkb0RC2KTlASMQ4Rd8WYJb+WLyWCC0Ty9k=;
+        b=cGkWQz5b11R0d9A9giFwNvSKkPDSzQBoVJ/QGaBYfFUSKg1xJ+kxqtzf7nU/rdz0ZL
+         YZagQOnF1pLz90OfOqw4TeDbiWCfMDFzQBOtiB2b8ahpz6RZSmYqQnY7/iTrOFTg+Nov
+         ca9d0Qb3MVZELmpG8IW9Y0rulGb1+DAkPahYyFiDCvcQ9QKvixW8HwsQG7N4GRk5xTkM
+         v5MdBS+a9Xp7lFJ0s8V15Dz5HdHueNKu+o2hui+8BkXrk1hPssk504CrC6Pmi7fl+JDE
+         RyUFGdHZ0bga9nNff6BiDMQV05XQ3wDqUs2FdxWfmpZmFQebX8P06LB6ODOdTjk/yQYU
+         Mv0Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxUxSRA6u09LrtyjPrGx0O1L0va2ed8fmlyhljKQyFAFJHgxWvFyW2yAQwMH3dA1KneyDA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJc20U3UfMkW/XiNybie8lxPH9T3isz6QpOEyuekEHL+TREYD6f
+	ghUhx4xnR5fTlt9SRHHtE0q4Qljvhk9pJ/EvFw1Sq2rQN7XqGvwWkER7e7DyAIRXQ8KRG7Qrb/p
+	csBGJWQ==
+X-Received: from plkq2.prod.google.com ([2002:a17:902:edc2:b0:2dd:bff7:1e38])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1109:b0:2e9:b831:29ea
+ with SMTP id d9443c01a7336-2eae40c9849mr1522565ad.40.1793036235657; Mon, 26
+ Oct 2026 10:37:15 -0700 (PDT)
+Date: Mon, 26 Oct 2026 10:37:14 -0700
+In-Reply-To: <CAO9r8zNbieeCQKLjfC4vhaeS_mgFJc3Ex9xKKmKQHL_43j9axw@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,36 +80,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261022215541.631694-1-seanjc@google.com> <CAO9r8zPFEwUVYSTePWN-FurHLzGN6cY8bd-BOj3sjRmjj4xQbA@mail.gmail.com>
-Message-ID: <at-Pfgjt__PJl55M@google.com>
-Subject: Re: [PATCH 0/2] KVM: x86: Convert all runtime WARNs to ONCE
+References: <20261022223052.646891-1-seanjc@google.com> <20261022223052.646891-4-seanjc@google.com>
+ <CAO9r8zNbieeCQKLjfC4vhaeS_mgFJc3Ex9xKKmKQHL_43j9axw@mail.gmail.com>
+Message-ID: <at-Pyu-tvtPEXOxT@google.com>
+Subject: Re: [PATCH 3/4] KVM: x86: Recompute EFER.LMA instead of inheriting
+ the current value on EFER writes
 From: Sean Christopherson <seanjc@google.com>
 To: Yosry Ahmed <yosry@kernel.org>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, Oct 23, 2026, Yosry Ahmed wrote:
-> On Thu, Oct 22, 2026 at 2:55=E2=80=AFPM Sean Christopherson <seanjc@googl=
+> On Thu, Oct 22, 2026 at 3:31=E2=80=AFPM Sean Christopherson <seanjc@googl=
 e.com> wrote:
 > >
-> > Convert all bare WARN() and WARN_ON() runtime usage, i.e. WARNs that ar=
-en't
-> > strictly scoped to module init/exit, or similar, to ONCE() variants for=
- what
-> > should be fairly obvious reasons at this point.
+> > Recompute EFER.LMA on bare writes to EFER (via WRMSR or KVM_SET_MSRS)
+> > instead of carrying forward the current EFER.LMA.  While it _should_ be
+> > impossible for EFER.LMA to end up in an inconsistent state on such a wr=
+ite,
+> > KVM has had a rash of exactly those bugs, mostly because SVM is quite l=
+ax
+> > when it comes to consistenty checks, which in turn bleeds into KVM's ne=
+sted
+> > SVM implementation.  Retaining the existing EFER is also rather confusi=
+ng,
+> > as understanding why keeping EFER.LMA is correct requires a lot of a pr=
+iori
+> > knowledge of both x86-64 and KVM.
+> >
+> > Keep the core concept of the existing logic as a sanity check: WARN and
+> > reject the write if the computed EFER.LMA would be toggled, because as
+> > described above, that _should_ be impossible.
+> >
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/msrs.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+> > index c3cb1575fe66..41f3ec6eb286 100644
+> > --- a/arch/x86/kvm/msrs.c
+> > +++ b/arch/x86/kvm/msrs.c
+> > @@ -638,8 +638,18 @@ static int set_efer(struct kvm_vcpu *vcpu, u64 efe=
+r)
+> >             (vcpu->arch.efer & EFER_SVME) && !(efer & EFER_SVME))
+> >                 return 1;
+> >
+> > -       efer &=3D ~EFER_LMA;
+> > -       efer |=3D vcpu->arch.efer & EFER_LMA;
+> > +       if ((efer & EFER_LME) && is_paging(vcpu) && is_pae(vcpu))
+> > +               efer |=3D EFER_LMA;
+> > +       else
+> > +               efer &=3D ~EFER_LMA;
 >=20
-> Do you wanna CC stable?
+> Does this mean we can effectively revert this patch:
+> https://lore.kernel.org/kvm/20260902232028.2767071-3-seanjc@google.com/?
 
-Not really?  Maybe?  I worry that this will generate an absurd number of co=
-nflicts
-and also have "misses" in older kernels, to the point where it oculd do mor=
-e harm
-than good.
+No, because that flow goes straight through svm_set_efer(), i.e. doesn't hi=
+t this
+path:
 
-I could be convinced this should be tagged for stable@, though honestly it =
-might
-be better to omit the automatic backport trigger and just rely on someone t=
-o
-"manually" provide equivalent patches.
++	/* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing VMRUN). */
++	if (!(svm->nested.save.efer & EFER_LME))
++		svm->nested.save.efer &=3D ~EFER_LMA;
++
+ 	svm_set_efer(vcpu, svm->nested.save.efer);
