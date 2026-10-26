@@ -1,85 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793026929;
-	b=ozJCk8Rg64iQCSHO+JFo6urUNs5I6PoNHR+s0ys/xarmAkNydTNU8WY85YEpPwo5y82d
-	 PeZenJUrbWccwL73ZVemf8FM5tnRgRK5UW9XF9hJKDOloQb17gvxmB/b+p9cY67LwfdBI
-	 xbBH2iPcyYWrHryGwVgSqi/7Y1koe16i1SLxV5ouHe5e/0FBvsx6HQBsYZkTqJEzj2vyr
-	 jHgflKyIJ/V3P0WZ70PzA0+Ly71wU9KnCf3ZMAdnKUos2C1Ohg0wNluQeiIuwq/X949kf
-	 89DDPJTZ0DWAFwoDz8FeSuCMnnqROaJOj/VUDaUA6ZZh3rISTdpZD6t5+bcmXSiWVYQ==
+	t=1793029307;
+	b=W0uR/D15LMzsaAxqxvArf18av2egp9kLovkxbpqxe17idvGPKXQSGuvbNwcpWYzbCiUP
+	 PLWBT8EfUfbuN4F+N+9v87CLOs8hwjU/4dE8omECCKw+z5SGWQV3Z8Z+J/H0heH4G0MQN
+	 PWqDwQZmbERiAr96htxxSg61sK0rOI8POYn0HjqgJlbF1IC2Z/dJY4wv/pMP6y9FPJlyi
+	 uWE9eCIQdWVq71XkpTbfXozulHLlSMyS2Dax5q+dlFHxt0wYiwPpknez+lYvWs8pbN9Y1
+	 U0QWhHAAKCIEUdMqLtZssaujNc5dhUcZLv+jXhfE+VYSRxQwpSBHeRUyQPQA0z2GELQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026929;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=m9xXitEiI+hi1F9clvRlUMjS8JnuPFDTdYXDE0kyjzc=;
-	b=KM04mACNdHYQJbt7WIvaJY9I9A3ffDzkcuDcdHpb0tavuVCML6B0RXPTLdewiPBMMx5D
-	 FHefHIA7lsglTfrMAl64uPGuNvpUVlf2mJZGVNAhQCB2yG1CAo5fFrqiFBRfK4eZlRldH
-	 sVBFg2BjGmKkzuzC9opH6WQTbirNO+nU/ZHWCFeProPy8FXX7o11/5yhjOdmIw2/sZMdg
-	 OtkczIXxaCCGuibp7ubHS+C36LDIVpGPUA/kV+YuZ96OXmG46GBg7Pcao3vYKdctO+ytE
-	 4nkCyuxaWOE02zwfZHZiEep5EahxrR/L0xtkqGHJF1EaGcJxMbOJfxPHDKjM61Mpa+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793029307;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=GKj9JFfk8I4IU3vVzFmwmNrdflyxwhRRx6GsvWvD46w=;
+	b=G6vLek5Dc3A9b7vLfeR0OHKN0qOuKiWsbXaX/fmc2hVHR2oWr4yKICR11HbZAyx/oBq7
+	 4JPamqevAqG/1Uc9t3DSQywohaI9yM+j2IGcVaxToKQgDL9WcTkGQHmHE1A5/bOGTLMYl
+	 vyIZ2Mmta3psX9RGpU58N1eQm9yhyzWEnDVCrz6z4NPk0brhr20HsfMtd1shCPOszh0UM
+	 Bb4Ek/s/e1MhxGtPQnmr1Y6gYymc8nodmbV6xjvtNwu2dJyUKURTCJau6wV+oxcR3POvI
+	 cP8kiIt2+nc/O2Yiai2miWI6/nya4cpRCUSXxJM3Xce/k+2oUuJv5uKCxJ2PbpM3qXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Fq8fBUGG;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="kUwXwSd/";
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E1606A31D;
-	Mon, 26 Oct 2026 15:02:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 767E1606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2C0606A31A;
+	Mon, 26 Oct 2026 15:41:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D2C0606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Fq8fBUGG
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=kUwXwSd/
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AEA1B1655;
-	Mon, 26 Oct 2026 08:02:03 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EA793F7B4;
-	Mon, 26 Oct 2026 08:02:03 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 38E9819F6;
+	Mon, 26 Oct 2026 08:41:42 -0700 (PDT)
+Received: from [10.57.10.231] (unknown [10.57.10.231])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 199523F59E;
+	Mon, 26 Oct 2026 08:41:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793026926; bh=v+zgyK0QwsGg1V453RC6kjK16TjZSW8MMUUh5EUtImA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fq8fBUGGhyKB1XXODIVt6BLwqv4o1xkXZa7X2pGzhE3cWxE1Dx6V2Agz2JruU6v8B
-	 e6+kt1FW/KX9OCoA7zQKe+M/qRq4dDfLlyRJhVUpUX6qmLxdWvCOV5AohG8CCGKOyh
-	 lOSGCTkE5jrlgqOKG5he5sUj7qM29vi1N67m9FTc=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	maz@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	tangchengchang@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com,
-	fuad.tabba@linux.dev,
-	mark.rutland@arm.com,
-	seanjc@google.com,
-	rdunlap@infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH v5 01/15] KVM: arm64: pgtables: Change write bit from S2AP_W to DBM
-Date: Mon, 26 Oct 2026 15:02:00 +0000
-Message-ID: <at9raEVrsbb7rj6n@LeoBrasDK>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <8ca88576-651a-4b7f-91ff-2cb2359aa79e@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-2-zhengtian10@huawei.com> <arxW4PUY3qqRkogl@kernel.org> <8ca88576-651a-4b7f-91ff-2cb2359aa79e@huawei.com>
+	t=1793029305; bh=cmexXTKLOSAI+heYuz0JDdMhnzANsLX6gihKP09ScZw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kUwXwSd/nn5jBPQbUkRuYeXNe3OVLuPy3WXmLnpGX+CIDo6d3qTUCjK+OljzDFHAY
+	 hHak9JAT251sASlhwcYogAAeQ/6wJIWTHJItJTmkwOuL6KIbI8P7oyuE95FgDmbwB5
+	 ar8e8neaJQw3JFISwK7KgFX43wTDM7oEPFDEOhCg=
+Message-ID: <a86348e5-a55a-4a99-a3c6-24b3213ed3d1@arm.com>
+Date: Mon, 26 Oct 2026 15:41:41 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,56 +53,143 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] KVM: arm64: Add context-switch of ACCDATA_EL1
+Content-Language: en-GB
+To: Fuad Tabba <fuad.tabba@linux.dev>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>, Zenghui Yu <yuzenghui@huawei.com>,
+ Steffen Eiden <seiden@linux.ibm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Yicong Yang <yangyicong@hisilicon.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ Arnd Bergmann <arnd@arndb.de>, Fuad Tabba <tabba@google.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261025075138.2919734-1-fuad.tabba@linux.dev>
+ <20261025075138.2919734-4-fuad.tabba@linux.dev>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261025075138.2919734-4-fuad.tabba@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 30, 2026 at 10:44:26AM +0800, Tian Zheng wrote:
-> On 9/30/2026 8:25 AM, Oliver Upton wrote:
-> > Hmm... I'd actually like to see this structured where the "write" bit
-> > could either be S2AP_W or DBM depending on if the system supports
-> > FEAT_HAFDBS. Look at how HVHE is handled for selecting the right AP
-> > encoding for the hyp stage-1 page tables.
-> > 
+Hi Fuad
+
+On 25/10/2026 07:51, Fuad Tabba wrote:
+> From: Marc Zyngier <maz@kernel.org>
 > 
-> Hi Oliver,
+> Add ACCDATA_EL1 save/restore as part of the EL0 context. This is
+> conditioned on the guest's view of ID_AA64ISAR1_EL1.LS64 reporting
+> that this register is supported.
 > 
-> Thanks for the suggestion. I missed the case where FEAT_HAFDBS is not
-> supported. Systems without the feature should keep the original
-> encoding, with S2AP[1] as the write permission bit. I'll follow the HVHE
-> pattern to select between the two encodings in the next version.
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Fixes: 58ce78667a641 ("arm64: Add support for FEAT_{LS64, LS64_V}")
+> Link: https://lore.kernel.org/r/20240815125959.2097734-5-maz@kernel.org
+> Cc: stable@vger.kernel.org
+> [Fuad: rebased; switch ACCDATA_EL1 for guests only, as the host never
+>   uses it; gate it on a new ARM64_HAS_LS64_ACCDATA capability, since
+>   in pKVM the host controls a non-protected guest's ID registers, and
+>   an EL2 access to ACCDATA_EL1 on a CPU without the feature is UNDEFINED]
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> ---
+>   arch/arm64/kernel/cpufeature.c             |  7 +++++++
+>   arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h | 23 ++++++++++++++++++++++
+>   arch/arm64/tools/cpucaps                   |  1 +
+>   3 files changed, 31 insertions(+)
 > 
-> Thanks!
-> Tian
-> 
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 32102c3912fa7..b5720c56eebc9 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -3225,6 +3225,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+>   		.cpu_enable = cpu_enable_ls64_v,
+>   		ARM64_CPUID_FIELDS(ID_AA64ISAR1_EL1, LS64, LS64_V)
+>   	},
+> +	{
+> +		.desc = "LS64_ACCDATA",
+> +		.capability = ARM64_HAS_LS64_ACCDATA,
+> +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+> +		.matches = has_cpuid_feature,
+> +		ARM64_CPUID_FIELDS(ID_AA64ISAR1_EL1, LS64, LS64_ACCDATA)
+> +	},
+>   #ifdef CONFIG_ARM64_LSUI
+>   	{
+>   		.desc = "Unprivileged Load Store Instructions (LSUI)",
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> index c382848d31947..4a008c8a696ba 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> @@ -17,6 +17,7 @@
+>   #include <asm/kvm_mmu.h>
+>   
+>   static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt);
+> +static inline bool ctxt_has_accdata(struct kvm_cpu_context *ctxt);
+>   
+>   static inline struct kvm_vcpu *ctxt_to_vcpu(struct kvm_cpu_context *ctxt)
+>   {
+> @@ -67,6 +68,13 @@ static inline void __sysreg_save_user_state(struct kvm_cpu_context *ctxt)
+>   {
+>   	ctxt_sys_reg(ctxt, TPIDR_EL0)	= read_sysreg(tpidr_el0);
+>   	ctxt_sys_reg(ctxt, TPIDRRO_EL0)	= read_sysreg(tpidrro_el0);
+> +
+> +	/*
+> +	 * Despite the appearances, ACCDATA_EL1 is part of the EL0
+> +	 * context, as it can only be used using ST64BV0.
+> +	 */
+> +	if (ctxt_has_accdata(ctxt))
+> +		ctxt_sys_reg(ctxt, ACCDATA_EL1)	= read_sysreg_s(SYS_ACCDATA_EL1);
+>   }
+>   
+>   static inline bool ctxt_has_mte(struct kvm_cpu_context *ctxt)
+> @@ -131,6 +139,18 @@ static inline bool ctxt_has_sctlr2(struct kvm_cpu_context *ctxt)
+>   	return kvm_has_sctlr2(kern_hyp_va(vcpu->kvm));
+>   }
+>   
+> +static inline bool ctxt_has_accdata(struct kvm_cpu_context *ctxt)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +
+> +	/* The host never uses ACCDATA_EL1 */
+> +	if (!cpus_have_final_cap(ARM64_HAS_LS64_ACCDATA) || !ctxt_is_guest(ctxt))
+> +		return false;
+> +
+> +	vcpu = ctxt_to_vcpu(ctxt);
+> +	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64ISAR1_EL1, LS64, LS64_ACCDATA);
 
-Hi Oliver, Tian,
+minor nit: Aligning with the other kvm_has_feat() usecsaes, should we 
+wrap this under kvm_has_accdata() (with moving the cpus_have_final_cap()
+to the wrapper ?)
 
-After some digging, I think it would be better if we kept using S2AP[1] as 
-a writable bit, while DBM can be treated as "Can promote a non-writable 
-page to writable if HAFDBS=on". 
+Otherwise looks good to me.
 
-I know it's not that intuitive, as the Arm ARM even introduced the concept 
-of Writable-clean an Writable-dirty, but I think it will be the best way of 
-referring to what was intended of the bit.
+Suzuki
 
-I wrote down what I mean by that:
-https://lore.kernel.org/all/20261026144413.441566-1-leo.bras@arm.com/
 
-tl;dr: 
-- DBM + S2AP[1] is set on writable entries (KVM_PGTABLE_PROT_W)
-- Writable detection is made only on S2AP[1], so no changes
-- Wrprotect sets S2AP[1]=0 from the PTE, and also DBM=0 if it's a block
 
-On dirty-tracking:
-- If HAFDBS=0 : no functional change, DBM bit there but unused
-- If HDBSS=1
-  - Pages: writable-clean promoted to writable-dirty on write, HDBSS does 
-    the tracking
-  - Blocks: faults on write, splits in pages, pages get DBM=1. 
-  	(argh, I think we need a PROT_DBM for that) 
+> +}
+> +
+>   static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+>   {
+>   	ctxt_sys_reg(ctxt, SCTLR_EL1)	= read_sysreg_el1(SYS_SCTLR);
+> @@ -210,6 +230,9 @@ static inline void __sysreg_restore_user_state(struct kvm_cpu_context *ctxt)
+>   {
+>   	write_sysreg(ctxt_sys_reg(ctxt, TPIDR_EL0),	tpidr_el0);
+>   	write_sysreg(ctxt_sys_reg(ctxt, TPIDRRO_EL0),	tpidrro_el0);
+> +
+> +	if (ctxt_has_accdata(ctxt))
+> +		write_sysreg_s(ctxt_sys_reg(ctxt, ACCDATA_EL1), SYS_ACCDATA_EL1);
+>   }
+>   
+>   static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt,
+> diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+> index 2775ba3359cfe..f01719bbd6037 100644
+> --- a/arch/arm64/tools/cpucaps
+> +++ b/arch/arm64/tools/cpucaps
+> @@ -49,6 +49,7 @@ HAS_LPA2
+>   HAS_LSE_ATOMICS
+>   HAS_LS64
+>   HAS_LS64_V
+> +HAS_LS64_ACCDATA
+>   HAS_LSUI
+>   HAS_MOPS
+>   HAS_NESTED_VIRT
 
-Does that make sense?
-
-Thanks!
-Leo
