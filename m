@@ -1,67 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792977692;
-	b=PwswJvr0NhJIeIn/vz/KranZoLwZZbuXsZjGSwvnSrGw7I7uFhMkapR1+ZuOvLzH3vab
-	 KKjcafat5HdC2vaZX4GWcYPFDNo57etrrH5ULxsEekJDBrpSGCA4f2Zt5XEwrzQfArr4v
-	 lzqz4bUWw2kD7bgNV1qSkuPfAPLvWsGrOHR+r/h93uVqsG6jpC6adh9A84y2UR8k7R54O
-	 qigoKNSw4FmeFyhte20ATmER+eefOZO89FNllsibAi04vsMfna1w1YvKtGTEsujMh7YK5
-	 I2HQq3oszfooFVEGjA8N5l89ekle7uC/RPb5fp0idl0UdjrBu5jbch5OEAhHCWIkXEA==
+	t=1792983294;
+	b=VFF05V9YPs7QtEKU0tE8yf0gi7AOfkEJtccNBawSwgImwHOnlC70MYREb/v1b1Ev4/a4
+	 pmQPLlEo41yewDIPtblPKPgZ0ux2a/WmDT9D3rPgwJMLmEdR0/b3WEpXEOMBwpnOI4XU4
+	 3hATjaJz7gXkmXXkN+YZmkogIZSws3+jDF+m5ixFFMdBuG24slqxnFgY+2XeeDh0jLP0+
+	 lfUkAsx3t/Ci0oodMSbpKy65SsU/42kFy/c/nmGzan487eAqBCcIimt/BMBVV8u2wVsA2
+	 hWz79hs59R8W1LxImkg1hvj8RR3cfyLpnJoAH3Z2d3akKuZt6HQejrvU1Kp3gsGy7Vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792977692;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=C5ioxP7uY30s85vV8DwHkSdiepRHIKFRzyzh0pLyvrQ=;
-	b=xMaC5EGF1JkvdEufvnl86L8uj5WzFTyhsj/cDQE2NlRMiMNQjry/vzHnZWsPIzatHcX6
-	 ph01Vj8eK/dq24mTqH5SKzFfVs0uChLrzyEfseQa/BHYMc2+Ck4PzXPzBC4Ql42taGLJ9
-	 i3Ix346Gh+RWWxmvZzUe1ybOLvJJHq1R6bseaXGp6uL3YxpEIV1KKkQTwMJabxD+vOChS
-	 Vv5+hNAxCLb01afXfXtR2klEehOqOrR4bmRbqKc6Dsk7aq/g0BATZLKCmR3FSPTjGLZMx
-	 fzde7eXtwO2fyGCgzZdfEjdODab+TMpJBmU6/+xYeGMJk9vQeLNFQNOAkqSPog294vw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792983294;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Content-Type:
+	 Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
+	bh=O/IOyk0aeiwbjnpRPbiHFXjKM3OS9bO6qM44PQ6xvNk=;
+	b=LoA68ZS+CRCESlXvY5iILOzMiDjyHwAM6y2GeMi59fNmtEogeerLUJg9z9Q5bVDWFb8x
+	 LMaIdRSm0S4M1s4Q26LQnN8TVob7Q4DeucNCCIHvBrkbprjWkMIGIGyBAlI+PWgNXK28a
+	 /M71WL0vjAzneWwpEco8c77BPCNe3yHAEcksrM5PdYm3KgKcEYnMFIMQ6kA2F10j2UHe3
+	 753yQdW+VUmBvxzyfO2EeYPOlM9JOBnB4JYd1VnRnGpd8JEwY2jfP9A8zcHR7hnBoK1KY
+	 CarncEJKP4bIVemLfWICe0FdowHH2b8VwZPBD1nQsYdDHR9zljx9Qzduvg4F6p1SggQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V1DqB3pb;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=bytedance.com;
+	spf=pass smtp.mailfrom=bytedance.com;
+	dkim=pass header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=EbvC2jga;
+	arc=none smtp.remote-ip=74.125.82.46
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1860D606A31A;
-	Mon, 26 Oct 2026 01:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080E8606A31A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 02:54:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 080E8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V1DqB3pb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BEC1F01825;
-	Mon, 26 Oct 2026 01:21:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792977691;
-	bh=C5ioxP7uY30s85vV8DwHkSdiepRHIKFRzyzh0pLyvrQ=;
-	h=From:To:Cc:Subject:Date;
-	b=V1DqB3pbxP7rI9SN1R43pBQWTS3C67zUkKSoznsjQEqKyNtm8D6VseVMV4dlPp+Yj
-	 vUfWs8GRNk8VeYo1YsHqRQb/2GPMcudOZ/dSNZw7amrf+fH7BeRNCYHSmgbGXMfawP
-	 N2BBF1UKzjie0mK5a3YE7Wc1wUe3aLXW1ArWK9O4MAKNaqX4o3XUbCPiZ/6NVVainY
-	 2ZqMA2i5RDZOCzcWFB6DhMgVp9FjqoQBzYu0jUuQYzuHEYDYGRcicx7C2vXRn8lpST
-	 4RO/SjJB9dhvFteWGILoKpABngLxeW43OkAEphOc7N6fnhgx3l9heeD2DCL2ikPWsN
-	 q0ZeSD33q5Sdg==
-From: Sasha Levin <sashal@kernel.org>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] KVM: arm64: selftests: Skip unwritable ID fields in the failed-run test
-Date: Sun, 25 Oct 2026 21:21:28 -0400
-Message-ID: <20261026012128.2270251-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=EbvC2jga
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-19305bcb72cso1586351c88.1
+        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 19:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1792983293; x=1793588093; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=O/IOyk0aeiwbjnpRPbiHFXjKM3OS9bO6qM44PQ6xvNk=;
+        b=EbvC2jgaL4ffIhUMR7Z3XzdyMQoA4XmjrV02lN4aRXPeRi0J2KfC7L7wIjSTSFsHSz
+         diovwEz/KOnqsoTOWslK4XLBPJuu9nk2lXIDXqqQMP5SLS1CFtNSHzy56K+h6cmYkp19
+         supTs47cgx7TnwbCsBPr6qnNmoko3AL3R860nVhy5zyX0cjLYUr6w8bmBXQiS+joDDGa
+         LgqGo4h01N07BLCQQxpryuM0HJZIpBDs66ZcgcCoE3wsFhxgFxyiq1CiurF2ap8zgUy+
+         80HaXCREMcUEk9PptyW30xGOGOgAKFbk0H0L27xjQX8Zpt5qSyHFXHW9lTW7ADr5qgeo
+         oaVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792983293; x=1793588093;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O/IOyk0aeiwbjnpRPbiHFXjKM3OS9bO6qM44PQ6xvNk=;
+        b=pwZGAbXE4AndFlCbG4OWYVMkkHzUTznKYcmWBOn0hM14nc1K5PT17qb+FBoMNb1tI5
+         CFoWtxlooF7PbrcHAub5H81+z/lGkXEYut/FxHfvu0z+a7yc9nxdSpoS8Jo4oY1jOPb+
+         jXJbI35VAkvbXMwJtelSDvh2ZtPoqN3sbYNYtOfuf9D5aqx64ZHJndhgyC5ifYF7IOtI
+         N7rnUhoTwcJ/Gu/t85CBX1zUyI7UQfy5DU7wgllGJNVy2+hHU+qVXkckbbQqqSJi7A6h
+         VeDaFmE4/Bjh/cEWrD0TUdj9IxqxOMMiRohvEpe6GwXRuP/S3KlsxL8NKJRQLA4yTVik
+         uFsg==
+X-Gm-Message-State: AFq9FYLpxpX0hczlLsz1DtewSzQvOwk3wkbzVfTLVLoe93Hss7FJZqGC
+	Kc5gcN1p4NDsTqPTe+6efc77W98l9ENujf9lswrGZUUBwQ4sIl0vxkWSyNOEI6zklaE=
+X-Gm-Gg: AYBFou0w9h0fKGl0Y5VHURSAhKmict/jw7qnRYvYGxGm0DVY830bMRmGv345bQNu0fd
+	8CbpE1fAAOUtmJu9I2uGJca/5mXIobGd0o+skaP44XspfTH8HIYX5cfTEkdHyNg425KpEgr4Kyq
+	evrsaRwhWYNXuCez2fVhwdRGemXuhxF8JZRbSkzoXCYsNPNb9TN4jUPt1HxROtTrFRp5sgCsTx9
+	ytmi83SY5PvRMVyN8mOAZGoCDuoQrHxwUrluijEVbLoom99pPf7ECncwA7Go+oaFkEY90aQXho8
+	+wfAPzt6ihMHARFP/WPN08VZZaIDjM0ahdIUcVdUegjIcG/OBtAvJvVKC/9pl65ClkFdP6gvRzO
+	lJwmWKybxtxj59CfJ0mJlkfTRSNImlgSOteYhdoox6wvfTZrdrSDdiI1qr2mS1pEJn2WDEjefYu
+	IEVyvp/BSLxl2siaCX0omSmA7zc0gVfJYZniaZP+tNfGcw8WZ0GDDYjvwp7MypvPCrFJile7rLd
+	Nqpib69KePsaG+14DdiBBu3PO/ObapSr/wA1a/b8NmdbEQPG/7PZOs8D/lBXMXoEksVaDEYBD6n
+	52rNmbB8Cw==
+X-Received: by 2002:a05:7022:4585:b0:147:a685:912d with SMTP id a92af1059eb24-1993580ef4cmr11608601c88.29.1792983292830;
+        Sun, 25 Oct 2026 19:54:52 -0700 (PDT)
+Received: from smtpclient.apple ([186.240.245.239])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1989ff2ee69sm27803493c88.4.2026.10.25.19.54.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 25 Oct 2026 19:54:51 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,92 +88,101 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [External] [kvm-unit-tests PATCH] riscv: sbi: Fix timer delay
+ measurement race
+From: Qingwei Hu <qingwei.hu@bytedance.com>
+In-Reply-To: <atsy0DXLV-WNdi-c@orel>
+Date: Mon, 26 Oct 2026 10:54:36 +0800
+Cc: kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org,
+ James Raphael Tiovalen <jamestiotio@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F7E4D434-C723-4739-8EC3-1A8EA6C2F3E8@bytedance.com>
+References: <20261023030442.3709880-1-qingwei.hu@bytedance.com>
+ <atsy0DXLV-WNdi-c@orel>
+To: Andrew Jones <andrew.jones@linux.dev>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
 
-test_idreg_frozen_after_failed_run() checks that changing a feature ID
-register after a failed first KVM_RUN is rejected with -EBUSY, and does
-so for every field of every register in test_regs.
 
-On a host without AArch32 support at EL0, KVM treats the AArch32 ID
-registers as RAZ/WI: aa32_id_visibility() returns REG_RAZ | REG_USER_WI,
-and kvm_sys_reg_set_user() ignores the write and returns 0 before
-set_id_reg() checks whether the ID registers are final. The test then
-fails on the first such register:
+> On Oct 23, 2026, at 18:13, Andrew Jones <andrew.jones@linux.dev> =
+wrote:
+>=20
+> On Fri, Oct 23, 2026 at 11:04:42AM +0800, Qingwei Hu wrote:
+>> The timer test samples the counter before checking timer_works in the
+>> wait loop. If the timer interrupt arrives between these operations, =
+the
+>> handler sets timer_works and the loop exits with a timestamp taken =
+before
+>> the interrupt. That timestamp can precede the deadline, causing a =
+false
+>> "timer delay honored" failure in both the normal and masked IRQ =
+tests.
+>>=20
+>> Record the counter at the start of timer_irq_handler() and use it to
+>> calculate the elapsed time. Keep the loop timestamp for timeout =
+detection.
+>>=20
+>> Fixes: 14fa12b1351c ("riscv: sbi: Add test for timer extension")
+>> Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
+>> ---
+>> riscv/sbi.c | 4 +++-
+>> 1 file changed, 3 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/riscv/sbi.c b/riscv/sbi.c
+>> index 3b8aadce..a298228b 100644
+>> --- a/riscv/sbi.c
+>> +++ b/riscv/sbi.c
+>> @@ -245,6 +245,7 @@ struct timer_info {
+>> bool timer_irq_set;
+>> bool timer_irq_cleared;
+>> unsigned long timer_irq_count;
+>> + unsigned long irq_cycles;
+>> };
+>>=20
+>> static struct timer_info timer_info;
+>> @@ -256,6 +257,7 @@ static bool timer_irq_pending(void)
+>>=20
+>> static void timer_irq_handler(struct pt_regs *regs)
+>> {
+>> + timer_info.irq_cycles =3D timer_get_cycles();
+>> timer_info.timer_works =3D true;
+>>=20
+>> if (timer_info.timer_irq_count < ULONG_MAX)
+>> @@ -304,7 +306,7 @@ static void timer_check_set_timer(bool =
+mask_timer_irq)
+>> }
+>>=20
+>> if (timer_info.timer_works) {
+>> - duration =3D end - begin;
+>> + duration =3D timer_info.irq_cycles - begin;
+>> report(duration >=3D d && duration <=3D (d + margin), "timer delay =
+honored%s", mask_test_str);
+>> }
+>>=20
+>> --=20
+>> 2.39.5
+>>=20
+>=20
+> Hi Qingwei,
+>=20
+> Your patch is fine, but I think we could also just change the loop a =
+bit
+>=20
+>    while (!timer_info.timer_works && timer_get_cycles() <=3D begin + d =
++ margin)
+>        cpu_relax();
+>    end =3D timer_get_cycles();
+>=20
+> Thanks,
+> drew
 
-  arm64/set_id_regs.c:870: r < 0 && errno == EBUSY
-  ID_DFR0_EL1_PerfMon write after failed first run: r=0 errno=16
+Hi Drew,
 
-KernelCI hits this on every run on an AArch64 only GB300 host.
+Thanks for this tip. I have tested that the recommended code is useful.
 
-Only a field that userspace can change can be frozen, and KVM reports
-these registers as not writable in KVM_ARM_GET_REG_WRITABLE_MASKS. Skip
-the fields that the writable mask does not cover. test_vm_ftr_id_regs()
-already requires the mask to cover every other field in test_regs, so
-this only drops the fields KVM never lets userspace change. Whether KVM
-accepts writes to fields it reports as not writable is a separate
-question from finalization.
+I'll send a v2 with your suggested change.
 
-Fixes: 00e309933879 ("KVM: arm64: selftests: Check ID regs are immutable after a failed run")
-Link: https://d.kernelci.org/test/maestro:6adcad0c55fda50760800a00
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-Changes in v2:
-- Skip every field that KVM_ARM_GET_REG_WRITABLE_MASKS does not report as
-  writable, instead of special casing the AArch32 ID registers (Mark Brown).
-
-v1: https://lore.kernel.org/all/20261024161118.1007472-1-sashal@kernel.org/
-
- tools/testing/selftests/kvm/arm64/set_id_regs.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 10849d21c0dd2..1d2cc25cb3f4c 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -815,6 +815,10 @@ static void test_idreg_frozen_after_failed_run(void)
- 		SYS_REVIDR_EL1,
- 		SYS_AIDR_EL1,
- 	};
-+	u64 masks[KVM_ARM_FEATURE_ID_RANGE_SIZE];
-+	struct reg_mask_range range = {
-+		.addr = (__u64)masks,
-+	};
- 	struct kvm_vcpu_init init;
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
-@@ -831,6 +835,7 @@ static void test_idreg_frozen_after_failed_run(void)
- 
- 	vm = vm_create(1);
- 	vm_enable_cap(vm, KVM_CAP_ARM_WRITABLE_IMP_ID_REGS, 0);
-+	vm_ioctl(vm, KVM_ARM_GET_REG_WRITABLE_MASKS, &range);
- 	kvm_get_default_vcpu_target(vm, &init);
- 	init.features[0] |= (1 << KVM_ARM_VCPU_PMU_V3);
- 	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
-@@ -852,7 +857,9 @@ static void test_idreg_frozen_after_failed_run(void)
- 	 */
- 	for (int i = 0; i < ARRAY_SIZE(test_regs); i++) {
- 		const struct reg_ftr_bits *ftr_bits = test_regs[i].ftr_bits;
--		u64 reg = KVM_ARM64_SYS_REG(test_regs[i].reg);
-+		u32 reg_id = test_regs[i].reg;
-+		u64 reg = KVM_ARM64_SYS_REG(reg_id);
-+		u64 mask = masks[encoding_to_range_idx(reg_id)];
- 		u64 val = vcpu_get_reg(vcpu, reg);
- 
- 		for (int j = 0; ftr_bits[j].type != FTR_END; j++) {
-@@ -860,6 +867,10 @@ static void test_idreg_frozen_after_failed_run(void)
- 			u64 safe = get_safe_value(&ftr_bits[j], ftr);
- 			u64 new_val;
- 
-+			/* Only a field userspace could change can be frozen. */
-+			if ((mask & ftr_bits[j].mask) != ftr_bits[j].mask)
-+				continue;
-+
- 			if (safe == ftr)
- 				continue;
- 
-
-base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
--- 
-2.53.0
+Thanks,
+Qingwei
 
