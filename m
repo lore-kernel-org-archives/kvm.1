@@ -1,79 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793009026;
-	b=3GmGrgDXzSutTH86DSWGyX5/fUC9E1NMRIyXYVVXTcmZYQA5YyxsSzVX9eaSA3AeROBT
-	 QziCq8KGb4ib+fSJIyKtmiefp6FJr14wNT9n0ORpkwnpqAt534Lu53QorNEXZ9DtcznEX
-	 HMeqEqQp6Og249JsIPO9QBh3x9LtY5ve1E+SqHruqVoJgKsTTKJaRR8GvDneNbTSt46eK
-	 VySb9hhgEXcoJZr56I2umaviLZAVbmIu4bCyuv2d/u28ePpBgBnsFZoxbNf9c6zset8HE
-	 NG/KUl6k+fUYJ3s7CuoZeaer1qYYv/qzywogBSWWCw/EFK9D0LKQoixTacGIK3bf3Cw==
+	t=1793009951;
+	b=vPWVeRjOjzFzB1906SZUwozOqPcKAnfI/n2KAxWAXAcDjWJjviMPTFTad5qQUnANWNVx
+	 4snEajpCcCHvRVfviwSljNDBdiXOzRzS2q/A5BrVN51tC4+sOVAusRYwKAVaknLZREhvK
+	 +57VplwFs8vvgDCMf8BX0rhqGqSGrpVMPeWdxxT6MxR/i/AdfXP2k2t7wnz1EZd8yVMFJ
+	 qe1bHnkDVvfIfZE+ctgC13fr8TG9aoNmOGZZsGHPHUxggr9pzAvhtZk/LJqgRtp3SrY0d
+	 zggo/e+OrqrXaxelMZLolz/U7DZODvFD+XKNv29azM7wy6TQIE/yXlLTkNdTC6yUOlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793009026;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:From:Cc:To:
-	 Subject:X-Mailer:References:In-Reply-To:X-TM-AS-GCONF:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=xCktAOtrIXlMUdZfhydjqeG39UfDnbT0LmYjvVkSdCE=;
-	b=gHuWXK5uV4JBEZb3pwhWnljGa10U6aVIl5XzOT+o4635MkeOjS+7SlCW/UBIKsBm5rSP
-	 c41tPzOH7+IVm3L/x/c37IyNNh2H3cR58kMB26pROoGsl9tOf5puaSzg4KCXQCeIxJZY8
-	 8DINgJedKluGQMXib6JJMPoeInLUpoLhxjzJhSTzmFJ1nZKJyAUtazoaByQuMisOHohYT
-	 zQFtYvJY7U9NLwxeE29BxWCcr6WAnA73vg3fjzd9FjaVO74nQIl9wwWeSQjN23t8jeX0q
-	 Y9aAUbAcUzplbQYVY/8xkzgxxjmbLAY6rubValy64S+x95yFriOOfFEPxufJ+e80JZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793009951;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=gWMbbaDrS+Z/q+gwFvCBoA1YPyMIW2ku9Du6CHyXUeI=;
+	b=P9F2GV4a1lRTsRO8pRSCUK0KmVtxHtnDPn++BPD5cI887lLUG4AvnpjlUpmNNQKudg/E
+	 JFdl0K/6HnytX9G16F7CcvH/pxJH518sFdHvzDU7EwZF30a+2EQ3oZTyaAIqQ9bSMhHgk
+	 xGtl9JMhD5iwNc0tDTGq5Jfy16+Ov0UAFQVnWnQNWnvYf4wNYXsuV4stsNJa/lCof8V+c
+	 6ck3FGosIa+Wy1IHf2wpCT1/d37QAtonW7gYT32PJpayJq5agl2tTIr131JckIj12wb5P
+	 HVZcTedmVYqrYba+EB5ktOx3hLqUZ/r5bLs2eP2fkf+yQpHrwvnDKQRiF7wvfh1qZFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TeqHiqsE;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dmarc=none header.from=bosc.ac.cn;
+	spf=pass smtp.mailfrom=bosc.ac.cn;
+	dkim=pass header.d=bosc.ac.cn header.i=@bosc.ac.cn header.a=rsa-sha256 header.s=default header.b=ikSnAHKO;
+	arc=none smtp.remote-ip=115.124.28.1
+Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A8E606A32D;
-	Mon, 26 Oct 2026 10:03:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3A8E606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBDF606A31A;
+	Mon, 26 Oct 2026 10:19:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DBDF606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bosc.ac.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TeqHiqsE
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69Q2iLud1990697;
-	Mon, 26 Oct 2026 10:03:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xCktAO
-	trIXlMUdZfhydjqeG39UfDnbT0LmYjvVkSdCE=; b=TeqHiqsErPSsnnPn3Roe91
-	p6AMic0egOjlY0SCEDggmjKQlAP951L0lf3xJw+dziqezGDdsY6HMg7XjqTi42tP
-	x3X0IzEAgnFlLhzODoUid/IY9kNMLBPQWA2KoiqGagToXlalRhis1iqNWnioXGLQ
-	j07M+byAfFdGsmkm4uHx3lp3HCgMW9P4Fc96Pk2ywEdhEJ/lTde5QzUlE3YU+e+4
-	p3APM6JIfFJUHwHxa8KjHVnalU01PS6aucooWjPsuAKD7JfDrt3kkU1EnmDSOShn
-	Sdt1A7y5SY+YSuBGRZVhAVUL/d8tikECSyqregyBXYPQLyXz8cIgN/wl+lRVQHUg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmd6s6fs-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 10:03:43 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69Q7N2Ig1924572;
-	Mon, 26 Oct 2026 10:03:42 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hh8ggw6d7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 10:03:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69QA3c5x29753638
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Oct 2026 10:03:38 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C3D620078;
-	Mon, 26 Oct 2026 10:03:38 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7919920071;
-	Mon, 26 Oct 2026 10:03:38 +0000 (GMT)
-Received: from darkmoore (unknown [9.68.0.144])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 Oct 2026 10:03:38 +0000 (GMT)
+	dkim=pass (2048-bit key, unprotected) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.a=rsa-sha256 header.s=default header.b=ikSnAHKO
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=bosc.ac.cn; s=default;
+	t=1793009940; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gWMbbaDrS+Z/q+gwFvCBoA1YPyMIW2ku9Du6CHyXUeI=;
+	b=ikSnAHKOe8YlKxnigq32VxQ1YMuTdwZPF0dTwON5iwyYcLcXAipdc3jPuw8RimWX7cfiU/mXbxYEQopebdV0/1CprF2zMzv/nEiuHcNTI1IttYPdbDfdBfcPwGQhNNyKHtMosDLUW6bpvEe5eYWoZIlTplJSjbxwQ/Q1xJr+umfM3dZQS7rfruC1eGOjic83ikluo1cVIqVjSEeXX8rebo1m1WVVJflL2QUTZi6i9oX7bR4xFRYseZCVbG8ovXMWmlmycX15fIaV/Cgu17+uXAvQLMmaAZ0TPjG39tql9CKEXapiBjJaxDs2dTqeF2m6G/U316pBa4xTAxbe2AOfTA==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07438087|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0770432-0.0476673-0.875289;FP=3292197540223116792|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034184;MF=guoyaxing@bosc.ac.cn;NM=1;PH=DS;RN=13;RT=13;SR=0;TI=SMTPD_---.jpxnHJ3_1793009937;
+Received: from 172.28.100.209(mailfrom:guoyaxing@bosc.ac.cn fp:SMTPD_---.jpxnHJ3_1793009937 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 26 Oct 2026 18:18:58 +0800
+Message-ID: <8dfb9c5b-cc02-4340-8f6c-61265f711d5a@bosc.ac.cn>
+Date: Mon, 26 Oct 2026 18:18:57 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,67 +52,390 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Oct 2026 11:03:33 +0100
-Message-Id: <DMEONDGJ1YZJ.3FKMTP7P8PZQ@linux.ibm.com>
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: <linux-s390@vger.kernel.org>, <borntraeger@de.ibm.com>,
-        <frankja@linux.ibm.com>, <david@kernel.org>, <nrb@linux.ibm.com>,
-        <schlameuss@linux.ibm.com>, <gra@linux.ibm.com>
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v2 06/10] KVM: s390: Rework some helper functions
-X-Mailer: aerc 0.22.0
-References: <20261023155531.206113-1-imbrenda@linux.ibm.com>
- <20261023155531.206113-7-imbrenda@linux.ibm.com>
-In-Reply-To: <20261023155531.206113-7-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ZYOIpcVA c=1 sm=1 tr=0 ts=6adf257f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=hWlUGzjMdFzisyG0TwcA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDAzOCBTYWx0ZWRfX8AkfrqpxSJNQ
- 7pGD4HzjbDCKpjIIbk+SLjrpPhl6ZZqudF7Xhqj86SSJfErjLjY3PUbhMJ6LRUouZ0asRAnITE0
- uDRVZyErxrm8I1BUdEW0SUQ16lcu/N7kSYrpni30CdjUFFZaLnnHToww3QsusUc1iW7XJ7GKQ1L
- mfxhM7CblSfFMDsEAV+aFpPFB7TTodPkqJX1Wybxz28G3ieLU5QI1jLlKcm8iEBTOq/9IOFBxvk
- BqXj/5Dc4y1FBYoNzvqClNrZ9hj2dfjoTEBZYQTG/gVS41p9ijxJg/jXRXRmfsAN0AekUSpoSYJ
- 1Ddb2AwdQAIQzKRuXkuRBB8nFD/vR4btcpotrfxDhqmJans5O2H8NM2XCRgreMrsrqivNmnj+VQ
- a16BindvovJ877junR0zDM3wHXk6ipxLYwDTJmUbNwvJfmRrjHkfkIkxPxBus1YA6eOKvBDBzag
- xrDZtbqS2JI1tPLr8uA==
-X-Proofpoint-GUID: gwjGy9-sl4dKzy7J-HvmECiRAhu0TvSK
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDAzOCBTYWx0ZWRfX0FhlHmJoBvow
- C2LQZQ1dTIoFhKT+FKa+ePwzrkYZfpYyVN+nFSm/IVN/9I+ZYCZrUU/n5fPXKEgFWfW1+rtGd0d
- KeA7Iu5h3PVeRvTmutiGD2sPoHixZzs=
-X-Proofpoint-ORIG-GUID: gwjGy9-sl4dKzy7J-HvmECiRAhu0TvSK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-26_01,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610260038
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] RISC-V: KVM: Flush VS-stage TLB before reusing a host CPU
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, majiuyue@bosc.ac.cn, anzoso@outlook.com,
+ xiangwencheng@lanxincomputing.com
+References: <20260817102447.40259-1-guoyaxing@bosc.ac.cn>
+ <CAAhSdy2qwdHE7SB2gRK3_PQ6m_bMSfWpvcuSG-31W2yd3-UTKg@mail.gmail.com>
+ <285419e5-c4fc-4c75-a765-436165bdc8b9@bosc.ac.cn>
+ <CAAhSdy1Q7a+54qn0xNBQBd1eV2ve+Nzqz9uRsWrGSmTn35z8=A@mail.gmail.com>
+ <c050c85c-482a-4351-b627-ac074f7f7952@bosc.ac.cn>
+ <CAAhSdy3XDEGfFJJnHfx2Q0w+dG4FombF3Lj5O_V4wBpkyAYTNg@mail.gmail.com>
+From: guoyaxing <guoyaxing@bosc.ac.cn>
+In-Reply-To: <CAAhSdy3XDEGfFJJnHfx2Q0w+dG4FombF3Lj5O_V4wBpkyAYTNg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Change is fine, but you could also consolidate the logic in gmap_add_child(=
-)
-which does currently test for is_ucontrol() and kvm_is_ucontrol().
 
-On Fri Oct 23, 2026 at 5:55 PM CEST, Claudio Imbrenda wrote:
-> Introduce export_on_unmap() to make the code more readable
->
-> Move the #ifdef inside is_ucontrol(), make kvm_is_ucontrol() into a
-> wrapper around is_ucontrol(). This way the compiler can remove more
-> code when CONFIG_KVM_S390_UCONTROL is disabled.
->
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Reviewed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+在 2026/10/24 23:49, Anup Patel 写道:
+> On Sat, Oct 10, 2026 at 2:36 PM guoyaxing <guoyaxing@bosc.ac.cn> wrote:
+>>
+>>
+>>
+>> 在 2026/10/10 15:50, Anup Patel 写道:
+>>> On Sat, Oct 10, 2026 at 4:12 AM guoyaxing <guoyaxing@bosc.ac.cn> wrote:
+>>>>
+>>>>
+>>>>
+>>>> 在 2026/10/10 02:51, Anup Patel 写道:
+>>>>> On Mon, Aug 17, 2026 at 12:25 PM Yaxing Guo <guoyaxing@bosc.ac.cn> wrote:
+>>>>>>
+>>>>>> Guest Linux uses mm_cpumask to decide whether an sfence.vma needs to be
+>>>>>> local or remote. Under KVM that mask tracks guest CPUs, not the host CPUs
+>>>>>> that previously backed a vCPU.
+>>>>>>
+>>>>>> This can miss stale VS-stage TLB entries when a vCPU migrates across host
+>>>>>> CPUs. For example:
+>>>>>>
+>>>>>>      - vcpu0 runs on host CPU1 and fills a VS-stage TLB entry.
+>>>>>>      - vcpu0 migrates to host CPU0.
+>>>>>>      - the guest updates the mapping on vcpu0 and issues a local sfence.vma.
+>>>>>>      - later, the guest task runs on vcpu1 while vcpu1 is backed by host CPU1.
+>>>>>
+>>>>> When the vcpu0 is brought back to host CPU1, the kvm_riscv_local_tlb_sanitize()
+>>>>> will ensure TLB entries associated with Guest/VM are nuked.
+>>>>>
+>>>>> By default, kvm_riscv_local_hfence_gvma_vmid_all() will only do HFENCE.GVMA
+>>>>> for the associated VMID because most RISC-V H-extension implemenation will
+>>>>> tag VS-stage TLB entries with VMID and HFENCE.GVMA must remove both
+>>>>> G-stage and VS-stage TLB entries for given VMID.
+>>>>>
+>>>>> If your HW does not tag VS-stage TLB enteries with VMID then it buggy
+>>>>> / inefficient
+>>>>> so you have to set kvm_riscv_vsstage_tlb_no_gpa in
+>>>>> kvm_riscv_setup_vendor_features()
+>>>>> as work-around.
+>>>>>
+>>>>> NACK to this patch from myside.
+>>>>>
+>>>>> Regards,
+>>>>> Anup
+>>>>>
+>>>> Hi Anup,
+>>>>      Thanks for the review and clarification.
+>>>>
+>>>>      Regarding “When the vcpu0 is brought back to host CPU1”: the failure
+>>>> we hit is not caused by vcpu0 being brought back onto host CPU1. In our
+>>>> case, after vcpu0 has already migrated away, neither vCPU migrates
+>>>> again. The guest process is later scheduled inside the multi-vCPU guest
+>>>> onto vcpu1, which is still running on host CPU1. So the stale TLB is
+>>>> re-hit without any further KVM vCPU migration, and
+>>>> kvm_riscv_local_tlb_sanitize() is not involved on that path.
+>>>>
+>>>>      My commit message was a bit too terse on this point. The concrete
+>>>> sequence we observed was described earlier in the RFC discussion:
+>>>>
+>>>>
+>>>> https://lore.kernel.org/kvm/0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.ac.cn/
+>>>>
+>>>>      In short, the issue is: because vcpu0 migrated away, cpu1 still has
+>>>> stale TLB entries while cpu0 has the new mapping. After that, neither
+>>>> vcpu migrated again, but the process was scheduled from vcpu0 to vcpu1
+>>>> (which is on cpu1), causing it to hit the stale TLB. Consider the
+>>>> following scenario:
+>>>>
+>>>>      1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcpu0 is
+>>>> on cpu1, and a process on it reads a page, which gets cached in the TLB
+>>>> (let's call this the "stale TLB entry").
+>>>>
+>>>>      2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now on
+>>>> cpu0) does a CoW (copy-on-write) and establishes a new mapping.
+>>>>
+>>>>      3. Neither vcpu0 nor vcpu1 migrates again. At this point, the process
+>>>> gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads the
+>>>> same page, and hits the stale TLB entry.
+>>>
+>>> This cannot happen because in step#2 when mapping was updated the
+>>> Guest OS will do TLB flush for all its VCPUs which means vcpu1 on cpu0
+>>> will also receive TLB flush and the stale TLB will be removed. This means
+>>> when process is moved back to vcpu1 on cpu0, HW will fetch updated
+>>> PTE and new TLB entry will be populated.
+>>>
+>>
+>> Hi Anup,
+>>
+>> Thanks for the follow-up. I may be missing something, so I wanted to
+>> double-check this against the guest TLB shootdown path.
+>>
+>> If I follow the Linux guest CoW path correctly, when the mapping is
+>> updated in step#2 it goes through:
+>>
+>>     wp_page_copy()
+>>       -> ptep_clear_flush()
+>>         -> flush_tlb_page()
+>>           -> __flush_tlb_range(mm, mm_cpumask(mm), ...)
+>>
+>> So the remote SFENCE.VMA appears to be targeted only at CPUs in
+>> mm_cpumask(mm), rather than at all VCPUs of the guest. mm_cpumask is
+>> updated in switch_mm()/set_mm() for guest CPUs that have actually run
+>> that mm.
+>>
+>> In our case, before the CoW the process had only ever run on vcpu0. From
+>> the guest's point of view it did not migrate: the host migration of
+>> vcpu0 from cpu1 to cpu0 is not visible to guest Linux, which only sees
+>> vCPUs. So at CoW time mm_cpumask still contains only vcpu0 (or at least
+>> does not contain vcpu1), and __flush_tlb_range() would not IPI vcpu1.
+>> The local SFENCE on vcpu0 would only cover host cpu0, where vcpu0 is
+>> currently running. The stale VS-stage TLB entry left on host cpu1 from
+>> when vcpu0 previously ran there would then remain.
+>>
+>> Later, still without any further vCPU migration, the process is
+>> scheduled inside the guest onto vcpu1, which remains on host cpu1, and
+>> can hit that stale entry.
+>>
+>> This also seems more likely when the ASID allocator is enabled, because
+>> set_mm_asid() does not always local_flush_tlb_all() on switch_mm(). So
+>> even the first time the process lands on vcpu1, a stale ASID-tagged
+>> entry on host cpu1 may still be present.
+>>
+>> In other words, I am not sure this case is covered by a full guest TLB
+>> flush to all VCPUs on the mapping update. Guest shootdown looks
+>> mm_cpumask-based, and host pCPU migration of a vCPU does not by itself
+>> add other vCPUs that never ran the mm into that mask.
+> 
+> This makes sense now considering ASID allocator in Guest Linux is global
+> and not local. In any case, KVM RISC-V must not assume that the Guest OS
+> has local ASID allocator hence the kvm_riscv_local_tlb_sanitize() must also
+> santize TLB for other VCPUs of the same Guest which can potentially run
+> on the previous host CPU where current VCPU ran.
+> 
+> Having said the above, there are multiple issues with the current patch:
+> 1) The kvm_riscv_local_hfence_gvma_vmid_all() is sufficient for most
+> implementations to sanitize both G-stage and VS-stage TLB entries
+> because both G-stage and VS-stage TLB entries are generally tagged
+> with VMID. The kvm_riscv_vsstage_tlb_no_gpa work-around is for
+> implmentations which do not tag VS-stage TLB entries with VMID
+> and this patch remove this work-around.
+> 2) The other VCPUs on the previous host CPU may be already running
+> and may still hit stale TLB entry before kvm_riscv_local_tlb_sanitize()
+> gets a chance to sanitize TLB on previous host CPU.
+> 3) The per-CPU pointer in struct kvm_arch is racy because we
+> may have two VCPUs on same host CPU which are migrated to
+> other host CPUs. Instead, it is much simpler to have an atomic
+> cpumask in each VCPU where any part of KVM can mark a host
+> CPU in the cpumask of the VCPU to force TLB sanitization whenever
+> the VCPU runs on that particular host CPU.
+> 
+> How about the following change ?
+> 
+> diff --git a/arch/riscv/include/asm/kvm_host.h
+> b/arch/riscv/include/asm/kvm_host.h
+> index a30600579231..c975eee7240c 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+> @@ -9,6 +9,7 @@
+>   #ifndef __RISCV_KVM_HOST_H__
+>   #define __RISCV_KVM_HOST_H__
+> 
+> +#include <linux/cpumask.h>
+>   #include <linux/types.h>
+>   #include <linux/kvm.h>
+>   #include <linux/kvm_types.h>
+> @@ -184,6 +185,9 @@ struct kvm_vcpu_arch {
+>       /* ISA feature bits (similar to MISA) */
+>       DECLARE_BITMAP(isa, RISCV_ISA_EXT_MAX);
+> 
+> +    /* Sanitize TLB host CPU mask */
+> +    cpumask_t tlb_sanitize_mask;
+> +
+>       /* Vendor, Arch, and Implementation details */
+>       unsigned long mvendorid;
+>       unsigned long marchid;
+> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+> index 2ae34632cdcb..b1387a00c8b0 100644
+> --- a/arch/riscv/kvm/tlb.c
+> +++ b/arch/riscv/kvm/tlb.c
+> @@ -207,11 +207,31 @@ void kvm_riscv_local_hfence_vvma_all(unsigned long vmid)
+> 
+>   void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
+>   {
+> -    unsigned long vmid;
+> +    struct kvm_vcpu *tvcpu;
+> +    unsigned long i, vmid;
+> 
+> -    if (!kvm_riscv_gstage_vmid_bits() ||
+> -        vcpu->arch.last_exit_cpu == vcpu->cpu)
+> -        return;
+> +    if (!cpumask_test_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask)) {
+> +        if (!kvm_riscv_gstage_vmid_bits() ||
+> +            vcpu->arch.last_exit_cpu == vcpu->cpu)
+> +            return;
+> +    }
+> +
+> +    /*
+> +     * The VCPU might have left stale TLBs on the previous host CPU so
+> +     * mark previous host CPU in the tlb_sanitize_mask of other VCPUs.
+> +     */
+> +    if (vcpu->arch.last_exit_cpu > -1 && vcpu->arch.last_exit_cpu !=
+> vcpu->cpu) {
+> +        kvm_for_each_vcpu(i, tvcpu, vcpu->kvm) {
+> +            if (tvcpu == vcpu)
+> +                continue;
+> +            cpumask_set_cpu(vcpu->arch.last_exit_cpu,
+> +                    &tvcpu->arch.tlb_sanitize_mask);
+> +            kvm_vcpu_kick(tvcpu);
+> +        }
+> +    }
+> +
+> +    /* Clear current host CPU from the tlb_sanitize_mask */
+> +    cpumask_clear_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask);
+> 
+>       /*
+>        * On RISC-V platforms with hardware VMID support, we share same
+> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> index dd786f758eb7..c00dc0b191dc 100644
+> --- a/arch/riscv/kvm/vcpu.c
+> +++ b/arch/riscv/kvm/vcpu.c
+> @@ -107,6 +107,8 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu
+> *vcpu, bool kvm_sbi_reset)
+> 
+>       vcpu->arch.last_exit_cpu = -1;
+> 
+> +    cpumask_clear(&vcpu->arch.tlb_sanitize_mask);
+> +
+>       kvm_riscv_vcpu_context_reset(vcpu, kvm_sbi_reset);
+> 
+>       kvm_riscv_vcpu_fp_reset(vcpu);
+> 
+> Regards,
+> Anup
 
-> ---
->  arch/s390/kvm/gmap/gmap.c | 2 +-
->  arch/s390/kvm/gmap/gmap.h | 9 +++++++++
->  arch/s390/kvm/s390/s390.h | 6 +-----
->  3 files changed, 11 insertions(+), 6 deletions(-)
+Hi Anup,
+
+Thanks for the explanation and for suggesting the per-vCPU sanitization
+mask. Building on your proposal, I would like to suggest two changes:
+
+1. Separate the invalidation strategy for vCPU migration and a mask hit.
+
+    Keep HFENCE.GVMA for vCPU migration, identified by
+    last_exit_cpu != vcpu->cpu, when hardware VMIDs are available. Use
+    HFENCE.VVMA when the current host CPU is marked in tlb_sanitize_mask.
+    A mask hit caused by another vCPU of the same VM running on this CPU
+    requires VS-stage sanitization; it does not by itself require G-stage
+    invalidation.
+
+    For example, if vCPU0 and vCPU1 both last ran on CPU0, switching from
+    vCPU1 back to vCPU0 only needs the mask-triggered VVMA. This avoids
+    requesting G-stage invalidation when the shared G-stage mappings have
+    not changed. If both migration and a mask hit occur, both fences run.
+
+2. Move mask updates to kvm_arch_vcpu_put().
+
+    Mark the outgoing host CPU in the masks of the other vCPUs of the
+    same VM when a vCPU is put. This also covers a switch between vCPUs
+    on one host CPU without either vCPU migrating. Marking only when
+    migration is detected in kvm_riscv_local_tlb_sanitize() would miss
+    that case.
+
+    The marking now happens on the outgoing CPU before another vCPU can
+    enter guest mode there. The migration-time marking and kicks are
+    therefore removed. The trade-off is an O(nr_vcpus) walk on each
+    qualifying put().
+
+    How about the following change ?
+
+diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+index 2ac3c0a20fce..ae8a40b3429c 100644
+--- a/arch/riscv/kvm/tlb.c
++++ b/arch/riscv/kvm/tlb.c
+@@ -160,32 +160,15 @@
+
+  void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
+  {
+-	struct kvm_vcpu *tvcpu;
+-	unsigned long i, vmid;
+-
+-	if (!cpumask_test_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask)) {
+-		if (!kvm_riscv_gstage_vmid_bits() ||
+-		    vcpu->arch.last_exit_cpu == vcpu->cpu)
+-			return;
+-	}
+-
+-	/*
+-	 * The VCPU might have left stale TLBs on the previous host CPU so
+-	 * mark previous host CPU in the tlb_sanitize_mask of other VCPUs.
+-	 */
+-	if (vcpu->arch.last_exit_cpu > -1 &&
+-	    vcpu->arch.last_exit_cpu != vcpu->cpu) {
+-		kvm_for_each_vcpu(i, tvcpu, vcpu->kvm) {
+-			if (tvcpu == vcpu)
+-				continue;
+-			cpumask_set_cpu(vcpu->arch.last_exit_cpu,
+-					&tvcpu->arch.tlb_sanitize_mask);
+-			kvm_vcpu_kick(tvcpu);
+-		}
+-	}
+-
+-	/* Clear current host CPU from the tlb_sanitize_mask */
+-	cpumask_clear_cpu(vcpu->cpu, &vcpu->arch.tlb_sanitize_mask);
++	unsigned long vmid;
++	bool vcpu_migrated, sanitize_vsstage;
++
++	vcpu_migrated = vcpu->arch.last_exit_cpu != vcpu->cpu;
++	sanitize_vsstage = cpumask_test_and_clear_cpu(vcpu->cpu,
++						&vcpu->arch.tlb_sanitize_mask);
++	if (!sanitize_vsstage &&
++	    (!kvm_riscv_gstage_vmid_bits() || !vcpu_migrated))
++		return;
+
+  	/*
+  	 * On RISC-V platforms with hardware VMID support, we share same
+@@ -199,13 +182,16 @@
+  	 */
+
+  	vmid = READ_ONCE(vcpu->kvm->arch.vmid.vmid);
+-	kvm_riscv_local_hfence_gvma_vmid_all(vmid);
++	if (vcpu_migrated && kvm_riscv_gstage_vmid_bits())
++		kvm_riscv_local_hfence_gvma_vmid_all(vmid);
+
+  	/*
+-	 * Flush VS-stage TLB entries for implementation where VS-stage
+-	 * TLB does not cahce guest physical address and VMID.
++	 * Flush VS-stage entries marked when another VCPU left this CPU, or when
++	 * required by the split-TLB vendor workaround on this VCPU's migration.
+  	 */
+-	if (static_branch_unlikely(&kvm_riscv_vsstage_tlb_no_gpa))
++	    if (sanitize_vsstage ||
++	        (vcpu_migrated &&
++	        static_branch_unlikely(&kvm_riscv_vsstage_tlb_no_gpa)))
+  		    kvm_riscv_local_hfence_vvma_all(vmid);
+  }
+
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index f2e52f3b0786..6209c66b24e1 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -644,8 +644,18 @@
+
+  void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+  {
++	struct kvm_vcpu *tvcpu;
++	unsigned long i;
++	int cpu = vcpu->cpu;
+  	void *nsh;
+  	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
++
++	if (cpu >= 0 && vcpu->arch.last_exit_cpu == cpu) {
++		kvm_for_each_vcpu(i, tvcpu, vcpu->kvm) {
++			if (tvcpu != vcpu)
++				cpumask_set_cpu(cpu, &tvcpu->arch.tlb_sanitize_mask);
++		}
++	}
+
+  	vcpu->cpu = -1;
+
+    Would these changes make sense to you, or is there anythingI might 
+be overlooking?
+
+
+Regards,
+Yaxing
 
