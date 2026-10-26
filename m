@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792999132;
-	b=Kc5DbaMu/zzD3aNxJ2rZ0wJuRBqyomtLrnrAEUOXHsQvph7lvk2xj0riMTiw9Vnsvxar
-	 4UCC5tInAm9AnWkFLLbeYUgtJfyckfo1fD6hWlkmhKg8G+sVebqohl+oExI5WD9mtFz1n
-	 zr1pZ3741FrsbAs2UP6xzYoD/Ij+0kGZ/qQw39VXvU45RP/bQ1SH+cgjn0mjSBIs/AzGH
-	 SMpoSc5IVzwrHT9NfkVs9KFJI/buQmVnQ1r4Oc9C8CrOMYxrM+vNtrzLQy1UBIrUKItbq
-	 qkui/pzu87s4uglwIHJf6S74UV7F7XUmWC7qPcwtQjPWZH9Gkp/64PpT1a6kc/VDXhQ==
+	t=1792999158;
+	b=wo/ijtL4+A7wUD8j5kne5NZ9gPhuV6O25AAN7iyFZ+zA0/K/o+rVY/72FE1znHGSbUNO
+	 TSItWVcr2IiaUyl+uKQlqoD1fsGXhYqk3Kz0mdVroSHKkW7UrWzLLXWauXsx6pDZFXOqJ
+	 90B7YagRNlgqcKQ4so1yFBl4W2JIphuP9i5kk1zEVOWnM/vbCxumd1SkAyfUhj+DH3XmO
+	 wjR0dx6XRHSvu1kyIB/oq+G17M7Opd9bXDHDl0F5QeRdroneUKtVqxFvcZmWUtARKHX7+
+	 bNfVtu66HQIveDhib4a2PRp/1aEumED0qO0dN1ngMw4dpQRjMb/H2SMXsHcCqIyrNww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792999132;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999158;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=djhi73/E0YES7rDU6N5TQtgUKhsNPCDgyp+K6uJathY=;
-	b=C7QYd4QHQbTFR/EYvJyW5C5xg02ZYLd9WL78i4/lQCLTA25bn2GHFI7fF03vSmSO2Lar
-	 g4TBHYMgFffAxyxh7bm6O2djHnQ+yg8iTxsPsWh2IvxgtKFp22vNwnAjs6/ZRdeRm3tvp
-	 3lC/7iIVVADn9vdYsbtYwMrpOcwa3D6pijRpMxWoD82eUkLfi0Ww+Qb19TwNxuZUYmk5h
-	 7h6EVckg02OfZZl22GZGQ4V7B/UCodgdRMmU/Vn4r+cU3Icwg6gduOF6yBoa8m+oev1gN
-	 4zMgj6Aq4zIXZ1wRa3AAZnDRGDoKZF0lSvvgjTR6Egfwpu2TmNcFfYkSO3ivFL2lpoQ==
+	bh=pgNA9ES5pzu/PrIv6QLbL97KrUMwvmUV8dNRJkoausc=;
+	b=0/FUax2ETDa68v1L85yNvmFwyo4TsT8cs6rHdPkjQpaC5c+oeL9v27qeqavsaDLU797s
+	 oA7D5mYmNisy11yr2W9zgTkNiWWx+3N278F0Rql4jzsuZEPqjMPFm98SyCGkNnTNBclPi
+	 5tQFHVJc7ECNipY3C0uKC9MORPnjWEH5sU9B4elxmoYg0v5CnfXCvfucWg1C6SB+6M1zk
+	 xEckNVMdxDXaBj0/ZdwjK3MjDDRSAh3N2AI0G5FHk8MRSYEUpuJ7zeyt3d31pIk6oEwSG
+	 23T3ovRBykbqxSnq6cA/yqIRFqLz4KrGQ6xMx6hsBVleVqB9kwnCdO0bCwZghYZ7SWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=suse.com;
 	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=dtYNlF53;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=alOFJpGp;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974BE606A31E
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:18:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 974BE606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF5A606A31A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:19:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EF5A606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=dtYNlF53
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a20bde60a0so21378335e9.3
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 00:18:51 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=alOFJpGp
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so6293465e9.0
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 00:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792999130; x=1793603930; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1792999157; x=1793603957; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=djhi73/E0YES7rDU6N5TQtgUKhsNPCDgyp+K6uJathY=;
-        b=dtYNlF53tfrvhfPzi0uF1flxN4D7lkFQO352gLd0QGWYo8mO6gPNkNfS6Yhbo0uZAQ
-         wHtH4T35hlbmlBs0ggQpA4xuy0zWzpx1ypufashgnjTtLZ7Oi3D/YIrIugkPkd35iXTA
-         l/BbYFYzxeH5N/KM6k7uYe269acyCNZsVHQhUCK018f9+Gq9dm4ovwV/Vq6FJe3b4Htj
-         eEtiVJViEv6wh+3JV4dlZknuUNAFsEp7Qkxurwto9pt/7QarB2SOdnmeX1ZdpBc//BR1
-         d+NmJkaBUbmTPnEkbK07/MNrzryBFVkXDiXPNTXo4TZK10IG1oMwA/qvgICi5iHrf/qH
-         64MQ==
+        bh=pgNA9ES5pzu/PrIv6QLbL97KrUMwvmUV8dNRJkoausc=;
+        b=alOFJpGp702Sbo8JIYzXMb2YB4qbNbcYug8GhJLutW9Hv9lhotA1aeZeJJEKH14l4o
+         cGffY/Jyqsn18hBjreCkAo5W/BqUp0lOQCKOdFMeiKgUjzz7fegp5kjUPrXzV9/B8Szx
+         idWCCPrqhl7zQXE/oKXJ0Cyn+HHaYJhH9KMR1xturFWVqMogU/bs0hAhU5d47XGGDpk1
+         dQCtUkOZBqVQ+22v4iZeezKYuZ7yBSad3S7RPYnem+zzq3BBTu2U0poKv4NsiOxWt8fi
+         XWoH/OngyESsuan0Y3qkpl/A/TsbQ2QtfYVBBQHAhdu6GzLCo4kDO8RVmGBMsz/hBz8b
+         iKhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792999130; x=1793603930;
+        d=1e100.net; s=20260707; t=1792999157; x=1793603957;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=djhi73/E0YES7rDU6N5TQtgUKhsNPCDgyp+K6uJathY=;
-        b=HeMQlsPuvhku6Jq9VhiySIVWXvjEUZOW+F6Rr5n+oi3C0sjv1WBHWUuN9phgkaZM3R
-         n565Z7u3C+6bwKQj1s95GH2UcQwlVOd0lxMjxOAuGKGkSWYuqMc0R3pHH2XyLddM/vH7
-         DMDQJMwXKNgCQ3EpqrzsjmuROq/CtKIXYYqyv2FPw9xBpMfXZ/DC3vW+DKE2CUnX9GWJ
-         YF7iHIQ/4FrM/D3lAhP5LwyBMRuCFWBH/DcRJj6UZMDRp92Cz6+0oReC6+5Cs3b9WQdF
-         MgMpy8/b/tZbd+np/nl8M2VBjEnUeayUWcCs8qlwzhEl058xyBVr1G9Z2aSXW7Sg8Dh2
-         k3Sw==
-X-Forwarded-Encrypted: i=1; AKwUvBz0Qt8LQ6e6zZmi28abwpDQBt5ie3GFlwNRdDKVK9pZmyCOInCy/8/E12xScg9ZZmh/9SU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLGQ8iJR985HDr/2pXZHvpsoPsoeo1vMgXA8ezqpdOPReZe30hd
-	7OTXrZ7MgfZ4vJNsc7qd2b3CFadG8LD44iaeHaJOtYjSp+1Xe95sqfXIDegYg35HE2s=
-X-Gm-Gg: AYBFou1fX+lWVa0Gy+Zf34AEq/N3z8MkQWKKvlw1KB1y3vdCYzwQvPmpijCSHlqyfXz
-	HkOD6q3RpkVFukn161T+LUbPi6ut4sV3GUYZj0uJDU3doILkiaR8W9JouFeDWM9t1DkoIFiNfZt
-	rMioKhBLFtsdyI+aBKf4zwG/am3vSM3YpYDG7mLyTu8KGsz6VR/RFfEUZQyZCNFEqLH4OP33kCn
-	Rj6Nr7kDO8w1r6Mrk2hApWCo7uOLxhigXjXgMmFfxWFjFa2su5jU6g7dkEL8XUNl5WEhEPTocxX
-	qEq1nEoY4uvegDxQTd17ZZtNAeOKCwAgC2r6PsiU9hvvM35otHVetIR5+zpTyMgXZIL6RzxGoll
-	q9D+IEwXWBrt1pdR3QC8O1tQ33jpHhCFG+Ch8AYjjI7BPVOOSY+GYftZAGZ32zgCZ/exw1qENP4
-	RQ4HTl02pE+s2/6AnB01j/rbGqJ6BvgcPqHq7KNzMqQuzSUy0Wy/Qg2sUzAkvLvw19LvqPpYEeR
-	uoziK4SgL91eWg95tEp8fgN1+D+HjPioJafLZfGTaLvTRfSJZ2VKeJZhu1fPV0MEV0zOVTOpLjI
-	+YJI
-X-Received: by 2002:a05:600c:4e44:b0:4a2:86b7:b76e with SMTP id 5b1f17b1804b1-4a35ac95a17mr100011305e9.13.1792999129962;
-        Mon, 26 Oct 2026 00:18:49 -0700 (PDT)
+        bh=pgNA9ES5pzu/PrIv6QLbL97KrUMwvmUV8dNRJkoausc=;
+        b=AzxcVh/vTTDUF6Z0RTo2UkAFcX7UsuM5KdQvXDB3iOtpQhovAf2AdCkbB2SKJgIvHo
+         6SpuovSlKLBgERmh0eyp7sg7h69kXUi5iD7Lw8ALoxgyJWPBNdwwYROpohYdad8vEJxu
+         ZfWrhzLPcTj6ULCZGMwVt5kLYxQ8y92OfVQWNVD5vAmkkvRLNLsDwX0/HSOhCLolZ3qq
+         thIDWVWp7YyIzWFhfcOZB6IVPa7eglQmJFld4WBlV8YMNbThPgCvlVVVmTi8/RP6rbaz
+         ITQKM2mUaSA35FIirIvIPnEkuns/iw75PYny5vtsMrxAkPh/VXI65EvFm5rbVHV55vpv
+         JwZw==
+X-Forwarded-Encrypted: i=1; AKwUvBw3AzYBJayPMrLOkkeNdOmopbun3bYJf0oHnPS2xp6HxRbEmFOJ1DyneOToi4R+OPKCgVA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKvgweUm+KemcLr9QtkG7IDssFrEK782njkELa+kQZO8sq+Lv3U
+	Eq99J0jBMx1kQppHtgmPq4bY4qtK6QC1fiADGkmidTDMiOKQbbYBPRt6CjoQT62UZ7g=
+X-Gm-Gg: AYBFou1U6z24Ch8tXuTojzjinwwnXMtQ48uCIbHXQWfSi1heY/M/0V+COF/HQVkDIR+
+	8L4GTtF5y9ijwVCvXmkoAv4LgTntgZte6DZSGvjoCusMeg36UH/rIt4KkTVlklSZX3MhFQplf7n
+	n9Eha99THJ2CiB9Xnqdnfkh2v1GtdVIENz9CLbHPhPw/es784HC8iDBN1GUJkNybIXq2zLCa6/n
+	xqg1unW48/aNzBwRkeBBUdAtMRV3leEHpindWxFp7vqRPzzuc3Bvi/W8BYV2qD9u5mqC76LnnlM
+	l31Pdm6r57j7Sevx1NjRIejZRMin1D28wNKifYjn8eQpdlazJomW5EBuvPpzNdE9iYNncsVq4Gu
+	KQSTovloIAUlS1QOTdxsmA1O0zfUdd9WIB0F0g0td20MzYtKf9SkgnjlgO8UBQcE7SGndLoSrO6
+	VTowz5hqVS8pThJjMdvDO/FBOPNAZlv4yDnDrhozabYJ3KZhYgumDxWPxn9uWJxxueZ20j+qJ+K
+	ih09b70mwOQhsMMRQOmQx6D49JyJAQguyDtXCQ1lcD3u17RLuXOHs/CqJsTToFOt51xRBbYo9lA
+	uEN8
+X-Received: by 2002:a05:600c:4704:b0:4a2:967:dfb8 with SMTP id 5b1f17b1804b1-4a35acb115cmr112800535e9.20.1792999156749;
+        Mon, 26 Oct 2026 00:19:16 -0700 (PDT)
 Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a55e9aasm175964295e9.5.2026.10.26.00.18.48
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebc3bcdsm12607073f8f.13.2026.10.26.00.19.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Oct 2026 00:18:49 -0700 (PDT)
-Message-ID: <5d0a6304-225d-4dd9-966b-ad569d522e0b@suse.com>
-Date: Mon, 26 Oct 2026 09:18:48 +0200
+        Mon, 26 Oct 2026 00:19:16 -0700 (PDT)
+Message-ID: <dcf5b271-516e-4fbe-9917-511a517899a7@suse.com>
+Date: Mon, 26 Oct 2026 09:19:15 +0200
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,8 +93,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/5] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
+Subject: Re: [PATCH v5 3/5] KVM: TDX: Add CORE_CAPABILITIES to the allowlist
 To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
  kvm@vger.kernel.org
 Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
@@ -102,7 +101,7 @@ Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com,
  xiaoyao.li@intel.com, chao.gao@intel.com, tony.lindgren@linux.intel.com,
  kishen.maloor@intel.com, dedekind1@gmail.com, adrian.hunter@intel.com
 References: <20261016091422.3182216-1-binbin.wu@linux.intel.com>
- <20261016091422.3182216-3-binbin.wu@linux.intel.com>
+ <20261016091422.3182216-4-binbin.wu@linux.intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -148,60 +147,38 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20261016091422.3182216-3-binbin.wu@linux.intel.com>
+In-Reply-To: <20261016091422.3182216-4-binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 16.10.26 г. 12:14 ч., Binbin Wu wrote:
-> Add tdx_cpu_cfg_caps[] to track the subset of TDX directly configurable
-> CPUID feature bits that KVM supports, and initialize it during TDX
-> hardware setup.
+> Add CORE_CAPABILITIES (CPUID.0x7.0.EDX[30]) to KVM's allowlist of TDX
+> directly configurable CPUID feature bits to accommodate the legacy TDX
+> module definition of the bit, even though KVM doesn't support
+> MSR_IA32_CORE_CAPS for TDs.
 > 
-> The TDX module reports the CPUID bits that the VMM can directly configure
-> for a TD, but KVM can't blindly expose every reported bit to userspace.
-> Some features imply additional state, e.g. MSRs, that KVM must context
-> switch across host/guest transitions to avoid corrupting host state.  The
-> existing hardcoded denylist can't account for such features introduced by
-> future TDX modules.
+> Older TDX module specs define CORE_CAPABILITIES as fixed-1, so userspace
+> may expect the bit to be set for TDs.  The bit is redefined as directly
+> configurable due to #VE reduction.  Leaving it out of the allowlist would
+> prevent userspace from setting it once KVM starts validating the CPUID
+> input to KVM_TDX_INIT_VM, which would be an unexpected behavior change for
+> such userspace.
 > 
-> Aside from a few fixed-1 bits required for basic TDX support, features
-> that can clobber host state are either directly configurable or controlled
-> by TD ATTRIBUTES/XFAM, which KVM already validates.  Thus, an allowlist
-> covering only the directly configurable bits is sufficient.
+> Reporting CORE_CAPABILITIES as directly configurable also lets userspace
+> detect that the bit is no longer fixed-1, and thus update its stale
+> knowledge.
 > 
-> Organize tdx_cpu_cfg_caps[] like kvm_cpu_caps[] so that the allowlist can
-> be built with feature-name based initializers.  Directly configurable bits
-> that aren't feature flags will be handled when building the per-register
-> masks for KVM_TDX_CAPABILITIES.
+> Keep MSR_IA32_CORE_CAPS unsupported for TDs, as no existing TDX user needs
+> guest access to the MSR.
 > 
-> Sort the directly configurable CPUID feature bits into three categories:
-> 
->   1) Features that KVM supports and tracks in kvm_cpu_caps[].  Use
->      TDX_CFG_F() so that they are also capped by kvm_cpu_caps[].
-> 
->   2) Features that KVM supports, or can safely allow, but doesn't track in
->      kvm_cpu_caps[], i.e. MWAIT and HT.  Use TDX_CFG_INDEPENDENT_F().
-> 
->   3) Features that are obsolete or unsupported by KVM, and thus excluded,
->      i.e. EST, TM2, CID, SDBG, XTPR, DCA, PN (PSN), ACPI, ACC (TM), PBE,
->      HLE, RTM, CQM (RDT_M), RDT_A, PREFETCHWT1, WAITPKG, TME, PCONFIG,
->      CORE_CAPABILITIES, RAO_INT, FRED, and AMX-TRANSPOSE.
-> 
-> Excluding the features in category 3 shouldn't break userspace, as
-> userspace is expected to consult KVM_TDX_CAPABILITIES for the configurable
-> bits before invoking KVM_TDX_INIT_VM.  Nor should it break guests, as the
-> features are either obsolete or unsupported by KVM, and in the latter case,
-> a guest relying on them would already have run into problems.
-> CORE_CAPABILITIES is a special case; it will be allowed separately to
-> accommodate its legacy fixed-1 definition.
-> 
-> Future changes will use tdx_cpu_cfg_caps[] to filter KVM_TDX_CAPABILITIES
-> and to reject unsupported CPUID input to KVM_TDX_INIT_VM, so that directly
-> configurable bits introduced by future TDX modules are neither advertised
-> to nor configurable by userspace until KVM explicitly opts in.
+> Note, CORE_CAPABILITIES is the only bit that is both unsupported by KVM
+> *and* redefined from fixed-1 to directly configurable due to #VE
+> reduction, and no further #VE reductions are expected.
 > 
 > Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
