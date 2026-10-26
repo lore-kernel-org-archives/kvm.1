@@ -1,100 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793022501;
-	b=YkZD8+jeDXysZSI5xNu6ll+ZEQCt2n1O4ccYawBMolagYLzdYh/way8OC2xfv9lCiaks
-	 4r0PWvWghnKrJ9QUCow7NHDck5gpv6l7zgUPZDySTTDT2lS5+8xVQoHzwARircb3crT2t
-	 pNguuBzChdCwbOdQ78bODKAeWHN6eOET/lz/nfb+peWvpw3EjW4eZkcS5FXd9MPUYv+WS
-	 UZ9paqu1+zcezAO2qMy8ZSG4XDi2lIoUpQ+TTUrmDkwJSAaqRO8lwpIH2IRtV7Mkq7n+q
-	 EDI02R+R5N73r8S4hcFkYp0I6od0+1NPPPIJFEPTGpOgjyPonJQ5t0aHhwvuBxjkLnA==
+	t=1793022599;
+	b=N3tP3meD2UZTiwIKcNmZbhx/1hwkdl+WEcHsiwG4XWD1LH6X4yO24VeSXS+vY+3uzCn3
+	 SEhislD2+JedHfGoKuabzjK/BhdRF1r/qFz5JgDllFMo6YAWF4t5J/W7NyUp766fPoly4
+	 s1o3ktf4xjrv/bH8xSPWYqvNpEsQCHA0miMDLsWMo+HPRhdDLln+ijXxRX9kwTuM06o3l
+	 k4drW20Eq+oGMtOGRcRJxD4QrtUnzwcmGSReNtzd8e0xzICa3NDvUgdmfMN5BBvoM4p0j
+	 z95euqIGzUKc7rFpKiFCMy4xhmj/3WxU0qirJgB+eu5sMLTblnoz03ejsNw4gzooLeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793022501;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793022599;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=eeiDIzKBgXHTvIB/FzTge64uqO1p8vq38QKemD1zDpA=;
-	b=OavLPYQQOzkcOObJrhIfQdlMTHUDDbir9DgQ4ZImEp5v3KJcTwZb8zcp3jDIGaEJY8Ak
-	 CMz1Sl1/qNXYfjgoxOL/QVn9J1ha063lTfGKYi+TJuuDZRVrTmc0637RZth5RXK82JtDh
-	 qDjeWG1nKA8in8lU9zEdQZrBU/I2RcHC/EwAb7g2jNKWyVxkh8t6ItHF4OgMIY4tKuoxF
-	 bXTqB+FzQHQsI+38aQbcKVmIPJomwq/W9mjJeSS5hgyL3apK7nGOBIcGY/25ggm55vm6K
-	 b9bEI6n+aA2+p33gfZRZDszPQNB4ukcdC2fCVbGpOiNmGjb/mkmU5o7geR/be0VUceQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=c7my5rSEsn+U+kYhoFnNu7P7PE6jHz+gWSHK/wcS/Mk=;
+	b=UD0RKdFlMCcIASemMx8b+RK4gOjPX1CxO9OgytRd56kVc2Sq6Xz1HI76vcJEjE4oaD4l
+	 yRl6w3a9lYk1GTmkJj/waQl5s2ad0su5aQ+EcjjfIT4TKSkEVYrWxHWtY8paLzZiDyUmk
+	 b3aTN2h0ObuDVho77fM9tg1+hsMHO36At32VQ1gQ0YQmoCgWyRER+H/7niPXQzQnTU9vE
+	 81xJW5Hiso191Z4CxpG3hA4dro1pj3+Qvuvy+BnDYvT+AK/hWGpbek8Dvp3lxQzKd0qbc
+	 koiOHMef9zi6bb0fnx12BkK51J94foPczzPLWbqWBz4K4qGGZVTuLjXAKRgcx5SQMJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=OKDVyKgE;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15D606A31D
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 13:48:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD15D606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so13421435e9.2
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 06:48:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352F5606A31A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 13:49:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 352F5606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=OKDVyKgE
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad840053c7so3034544a91.1
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 06:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793022494; x=1793627294; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eeiDIzKBgXHTvIB/FzTge64uqO1p8vq38QKemD1zDpA=;
-        b=VM8IYrnCNNqs45DDC5LE9lQowRMEKYE5Y/KZ57bV4yet/aoDBGlAsxJOmTRykOk8dn
-         FshcS/W8j64dt0Mh5C8VdYgUtcsCto+ScQaOEpF+I1g+GJr3PKhwYJY8a9G++KZq2rIk
-         fciASrl2LvGXd8pYXvHkATr9UTdfoqHxMbXc79S2QEtkqqFElfTeqUk4ffn+ZNgaeGe/
-         nm24iy1xia1O5G3DOANrqIMherXJogHmuD48d2u+nc2vCUxcd8XNkN3ljWXSZqr8HlaX
-         Y9o5gWTDf6GO67jT9mY+jbYN5IM9+ZXATUXh+KiGk5uTlXn1ZnpDB+tpDMpOFgjZMwAW
-         Jg2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793022494; x=1793627294;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1793022598; x=1793627398; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eeiDIzKBgXHTvIB/FzTge64uqO1p8vq38QKemD1zDpA=;
-        b=NrOVY3zkN2Ta2JrurBtFQjyt7ZUJVOp2j0Uz4Y0mnLdyZeocYlOAi/TbCVgXU45wol
-         CiDATOH6vv7CAlxds8JWQLPItuuI0T+oZJju5NNQPvdVDAraO3wm7iouiRDN6qBQf/wJ
-         ByxDjfjYEZ8KTjLReKInfF+vuFkkgTATJ1i0oCRnQ1iLyVW2fLnTmoFTKZhuVTj5SkhS
-         Zt/m5XHecEAGiPN63CckAQl4W1P11LdzoKUiF93yaMNZUlOaWh0yAqzaQV4ms/jkT+8j
-         gq5NMMc3e4ezqx042QNWT+GmbZFJk+pGOusn48xLis1Kgipr0f9bPmag36I2gKp6srMa
-         fzPA==
-X-Forwarded-Encrypted: i=1; AKwUvBztt9UX/Fj+/gzRuuVDaGSKjhBZiTwJEqy7swjHhjX35E1bObuRnyIZV2cQ8fT6hSCWzo4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKxAF0NI1dQ3e5qjZeKGTcqBQd7YhJl9h62HZt9YR2dkplWsxDA
-	9pD9V7LY1vRhM6sl2zPh6qUZryoajL6B0oRbU7rNDK8AJ0PXpZ+bFk/Lg3MsmTg0MxY=
-X-Gm-Gg: AYBFou14yjvW+B58VygdZX8TV64h7MU2jlcKz/BdosO7LgxxyTXKO5+KDClYnv24Dsr
-	T49X7mS1203mIL2lATNRwQte1byR0n2DJ/U2SbzMMS6brhsCHh1w6RU5y1gCOCFNisLUgR3LlsB
-	juiZou3kKo9tx6kJxHrkZHz6lgi/qWdIADCNZ8pHnX9yvCuH/ZF8ERloGBKG+2VS1BsLrI+/qnw
-	n30CkXA0rDMibNgE+rzOqPipfKOCEKFgn1eWTlyAU/bDLCVs08x+GDApALsiEeevn1ZwpNJZf9J
-	+M5p2Ph8YPm8eyDX+rC+WgTpGxjMkqyOj0XYK8J5gBKq+0gIpmYU23FJVIYGorey3o6lr8bDdIF
-	eURyB1UZleFusOsWBv3WToaFm7yl1F/JBjqzCZBaeLhJ0acKVRmX8c7nrI/nQQASvpQgvaSmD8H
-	ia0L2HXNyXtAuBudX0e/RqzZ2plQ5Dfh+oH3e6HiYUfsDG5wxN/yTNBRaNgHKmW0Xw40MEwo8DR
-	+WW5/bp7525jV2Q+jq/ifVRPEl3sJdvENye9bXO499NkC9Nth4JAp2ApOgbtzMX
-X-Received: by 2002:a05:600c:3d8d:b0:4a1:f377:5c75 with SMTP id 5b1f17b1804b1-4a35acc2edbmr104469535e9.33.1793022493724;
-        Mon, 26 Oct 2026 06:48:13 -0700 (PDT)
-Received: from localhost ([208.127.45.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a5ea0df763sm107133535e9.3.2026.10.26.06.48.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 06:48:13 -0700 (PDT)
-Date: Mon, 26 Oct 2026 14:48:09 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
-	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
-	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
-	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 12/20] ctlv: Add device and operation dispatch
-Message-ID: <at9ZEDZl89V0jaJB@FV6GYCPJ69>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-13-jiri@resnulli.us>
- <20261021022505.6fe1b1bb@jic23-hlaptop>
- <20261022184313.GD3381610@ziepe.ca>
- <attZl_0TNMDLgi4U@FV6GYCPJ69>
- <20261023142633.GF3977851@ziepe.ca>
+        bh=c7my5rSEsn+U+kYhoFnNu7P7PE6jHz+gWSHK/wcS/Mk=;
+        b=OKDVyKgEF3jYW4Cf647YnddnbotpaIlDw2BqJ3HVXNLwO6uSOa9wIYmZIzbffqqwg9
+         dw+vs8m7gm7095GZf13wFXtdHJp8RxdNtfD3LnRku8RQEURhM/DYpm5YF8dcWrnLe4pD
+         pr0cLmGeMSLKxHmsB6ux653+RM8S9ix1mRMGF7I32+u7L01vB5iA/IB5kE88YGMTXvjx
+         H9iZb4C0r7Pl++1fBVmflIOoQWiqzvXOggy9o/iNguje64DCqRKXtCjhlAKCjhvfM62k
+         MTEA2aiKU0/3n0mmzvcBYzOgSR/VXCD7/Htzs9W5G/OngyH4UXCWAI2n4GZsYbqTnJC0
+         zNcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793022598; x=1793627398;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=c7my5rSEsn+U+kYhoFnNu7P7PE6jHz+gWSHK/wcS/Mk=;
+        b=P+Blc3/EvfNf46Hv2JRu/n7HDY4dkDIZxmA0iafbZiy8iaRVA23fyrDU1lWhiVBc51
+         gK/eJe1Vd5uP6SoEUs1uiy5UotkB2/g4cpwrocdmGqgKnzr0oLOHbLHGdYJ+QefDI29j
+         VU2K+EEg3UgxRtqq9kBg0h4Um5ssvPDbAuSCccNPC9h4LXcLRBauJ/o4AOKMYdlR4sVj
+         pVDU3mcdEwkCCDZfd90LTNVGOXP9u5kPI7VcjASv7374jRRfFmivlidFCQFrYvE0gjnh
+         /m+At63ijUMSOYGZfJj8HkrpBM+syEO4spkzpiEFOxPNfvchGk09eUkWGzTjYgdhh5BL
+         LWVA==
+X-Forwarded-Encrypted: i=1; AKwUvByDELhIp13JMJPewExFU3xEM3Z20B76bpEjVN8pmAisngWOKR4RJy1/YTY7gOxgj6E6NzI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwZVFQS8ilM8Kj957nLi4Xl2QIP/ryWFPWLWXWj4Dh77HkUeiz
+	yUogXDpab8EaGj9HqkjGGJV/tpUVuXEFh739CLSHglSR1b/JT5gLKJyOwhsm24nA3261yfcOT7B
+	wLpjfLQ==
+X-Received: from pjbbu22.prod.google.com ([2002:a17:90a:ee56:b0:3ac:c43b:e322])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:564d:b0:3ac:7f4c:a690
+ with SMTP id 98e67ed59e1d1-3adeafb0449mr5178332a91.35.1793022598376; Mon, 26
+ Oct 2026 06:49:58 -0700 (PDT)
+Date: Mon, 26 Oct 2026 06:49:56 -0700
+In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,62 +77,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023142633.GF3977851@ziepe.ca>
+Mime-Version: 1.0
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
+Message-ID: <at9ahKiYsVtH8kpU@google.com>
+Subject: Re: [PATCH v2 0/6] mm, drm: fix interaction of .pfn_mkwrite() with fixup_user_fault()
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Christian Koenig <christian.koenig@amd.com>, 
+	David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org, 
+	Fei Li <fei1.li@intel.com>, Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, 
+	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
+	Sergio Lopez <slp@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="us-ascii"
 
-Fri, Oct 23, 2026 at 04:26:33PM +0200, jgg@ziepe.ca wrote:
->On Fri, Oct 23, 2026 at 02:58:33PM +0200, Jiri Pirko wrote:
->> >> Jason did some nice handling in the fwctl stuff for
->> >> device alloc and hand over after device_initialize()
->> >> (I've copied it into a few places recently :)
->> >> 
->> >> I'd like to see something similar here as it made
->> >> it easier to follow lifetimes etc.
->> >
->> >This is really at the wrong layer.. Attestation subsystem is the lead
->> >subsystem, it should be allocating the struct device memory and the
->> >driver should see the typical
->> >
->> >  struct attestation_dev *adev;
->> >
->> >  adev = attestation_alloc()
->> >  [..]
->> >  attestation_register(adev)
->> 
->> Er, the driver would call attestation_create() which will be a wrapper
->> of ctvl_create. The reason is inheritance chain and each parent being
->> passed info to and doing its own init()
->
->We really want it to look like the above so we get proper container_of
->stuff.
->
->struct driver_attestion_dev {
->   struct attestaion_dev adev;
->}
->
->driver_adev = attestaion_alloc(..)
->
->Don't want "create" to allocate the memory, it is upside down. The
->fixed memory ctvl needs should be buried in the attestaion_Dev
->
->struct attestation_dev {
->   struct device dev;    // sysfs dev inside class attestation
->   struct ctlv_XX ctlv;  // ctlv instance
->   struct cdev cdev;
->
->   const struct attestation_ops *ops;
->}
->
->That's the essential skeleton of what a subsystem should look like in
->linux, ctvl shouldn't co-opt it, it should embed like cdev does.
->
->Look at fwctl for reference
+On Tue, Aug 04, 2026, Paolo Bonzini wrote:
+> This "v2" combines three series that I have previously posted separately to gather
+> reviews and tests:
+> 
+> - kvm: apply VM_READ/VM_WRITE checks to all VMA types
+>   https://lore.kernel.org/kvm/20260731175834.1121005-1-pbonzini@redhat.com/
+> 
+> - mm: pull writability check to follow_pfnmap_start()
+>   https://lore.kernel.org/kvm/20260731160514.1101989-1-pbonzini@redhat.com/T/#u
+> 
+> - mm, drm: ensure .fault() does not have to be followed by .pfn_mkwrite() for write faults
+>   https://lore.kernel.org/kvm/20260731164341.1109827-1-pbonzini@redhat.com/
+> 
+> All three, together, make it possible to write drivers that use .fault()
+> and .pfn_mkwrite() callbacks for VM_IO|VM_PFNMAP regions, and that also
+> interact correctly with users of fixup_user_fault().
+> 
+> The problem is that if you define .pfn_mkwrite(), vma_set_page_prot()
+> clears the writable PTE bit in vma->vm_page_prot, at which point
+> the .fault() callback has no way to create a writable PTE.  Users of
+> fixup_user_fault() will then see a read-only PTE and have no clue that
+> the page needs a *second* fault to reach its final status.
+> 
+> fixup_user_fault() itself does not have a good way to notice this, because
+> vma->vm_page_prot is an opaque pgprot_t, so the fix needs to be somewhere
+> else.  Other preexisting functions, namely vmf_insert_page_mkwrite()
+> as well as vmf_insert_pfn_pmd(), suggest that this has to be the driver.
+> In fact, of the five vm_ops that use .pfn_mkwrite() together with .fault(),
+> three are in file systems and are not buggy: all of them ultimately end
+> up in dax_fault_iter(), which uses vmf_insert_page_mkwrite() to correctly
+> insert the PTE.
+> 
+> The two problematic implementations instead are both in drm code.  One, in
+> drm_gem_shmem_helper, was reported as a KVM regression; the other, in
+> vmwgfx, was found by inspection of .pfn_mkwrite() implementors.
+> Both of these use pfn-mapped regions, but there is nothing like a
+> vmf_insert_pfn_mkwrite() function that they could use; the first part of
+> this series thus adjusts mm.h to provide two new functions for this
+> usecase---vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_mkwrite()---and
+> then teaches drm's two users of .pfn_mkwrite() to call them.
+> 
+> This however leaves another case buggy where fixup_user_fault() is preceded
+> by follow_pfnmap_start().  Most callers of follow_pfnmap_start(), seeing
+> it return 0 for a PFN that is mapped read-only, would not attempt to
+> call fixup_user_fault() on it, and thus the PTE would not be upgraded
+> to writable.
+> 
+> This is arguably a bug in... almost all the callers of follow_pfnmap_start(),
+> but fixing it is much better achieved with a small improvement to the API;
+> if follow_pfnmap_start() is told by the caller that it needs the memory
+> for a write, most callers are simplified because they were doing such a check
+> anyway and now just see -EFAULT.  They then proceed to call fixup_user_fault()
+> and everyone is happy.  This is done in patch 5.
+> 
+> To sum up:
+> 
+> - patches 1-3 introduce the new MM API, and use it in the DRM .fault()
+>   callbacks to install writable PTEs in response to write faults
+> 
+> - patch 4 is a preparatory fix in KVM, eliminating inconsistencies in the
+>   handling of !VM_READ and !VM_WRITE VMAs; these would return different
+>   error codes for a !VM_WRITE VMA depending on whether the PTE happens
+>   to be mapped (but with wrong permissions).  This needs to be here
+>   because the next patch would introduce even more inconsistencies.
+>   
+> - patch 5 moves the check for writable PTEs from follow_pfnmap_start()'s
+>   callers to the function itself
+> 
+> - finally, patch 6 is a KVM addendum that will have to wait until
+>   the next merge window; it removes yet another inconsistency in
+>   KVM's handling of !VM_WRITE but is technically userspace-visible,
+>   and therefore it shouldn't be included in stable kernel releases
+>   unlike the rest.
 
-Yeah, I understand the typical flow. I just wanted to benefit from the
-fact the ctlv has the inheritance chain to reuse it for init/fini flows
-alongside the private structures allocations. It saves a lot of
-boilerplate code and hides it inside CTLV. I admit, it makes things a
-bit obfuscated for end user (driver/subsystem). I'm working on
-conversion to what you suggest.
+What happened to this series?  It seemed liked something semi-urgent, but AFAICT
+it got silently dropped?
