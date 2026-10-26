@@ -1,113 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793019821;
-	b=NCgfj2EGsHlkLhfabgACYYfI9IWMHT6IIl0H0atGAOKVubCmfmCAWRbQD3n/Z+nFrkFq
-	 qa6C9RFoAzCI7sDC64EzO96czZm4B9i6ZfwlxIcDVYmTdUqR5jzcAzCJNiV8V1goMlZgB
-	 IJG4b/O+aqkjBeYm+VaTHTG8/kj0aR+phHow7xULFsaaELTWIvcw4y+wppTNsrTFZvngl
-	 CwBlzj6NOfiPKgTHIfSOS87IvhHvs25svR8wvcpRYFu28gGkKXfO1oUAi+9aBJWxj1++p
-	 B1e+ZjQdLEdn1zdaU3pcfFiSokANS84uP6N3cdasV6tiGhsw/VT6INMCv7SFwUIpHLA==
+	t=1793022501;
+	b=YkZD8+jeDXysZSI5xNu6ll+ZEQCt2n1O4ccYawBMolagYLzdYh/way8OC2xfv9lCiaks
+	 4r0PWvWghnKrJ9QUCow7NHDck5gpv6l7zgUPZDySTTDT2lS5+8xVQoHzwARircb3crT2t
+	 pNguuBzChdCwbOdQ78bODKAeWHN6eOET/lz/nfb+peWvpw3EjW4eZkcS5FXd9MPUYv+WS
+	 UZ9paqu1+zcezAO2qMy8ZSG4XDi2lIoUpQ+TTUrmDkwJSAaqRO8lwpIH2IRtV7Mkq7n+q
+	 EDI02R+R5N73r8S4hcFkYp0I6od0+1NPPPIJFEPTGpOgjyPonJQ5t0aHhwvuBxjkLnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793019821;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:X-Spamd-Result:
-	 X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=3BLIuDEhsTthzC16kupGp2wOIgagbUkGHrl+XCDNR18=;
-	b=sSQ6IsFLJxjQj/nYMhFPmb7W+V+M12c+cAj9R2J5iCQ/KqXfYSbYaLk7TLgH0GsL8KE0
-	 vftEbX//hPlWXm4NWiJBkxgqQjzGvRD6TrDwv8ixV7OJLsnOalHRwhlz+QnXCU9zWV64K
-	 1sRk/TBbO08jSlRbuSl95FNmgmEm8IsHUTTYZP6ZyevW33RVC99lwfEFUQ114vKG3zNkQ
-	 p3Ua4r9suHFxuDPMrMI8FxavIx+O/rW9L5mARxqo2m2YMKX7YiIGyErMNb+MVQGiwbvVC
-	 qIs+DnvZONuXOSwyAC+8GlUV8JfqCzTJT/Vqu/zDgilGAFFOsuCeuKWJrgpHdJNf3Tg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793022501;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=eeiDIzKBgXHTvIB/FzTge64uqO1p8vq38QKemD1zDpA=;
+	b=OavLPYQQOzkcOObJrhIfQdlMTHUDDbir9DgQ4ZImEp5v3KJcTwZb8zcp3jDIGaEJY8Ak
+	 CMz1Sl1/qNXYfjgoxOL/QVn9J1ha063lTfGKYi+TJuuDZRVrTmc0637RZth5RXK82JtDh
+	 qDjeWG1nKA8in8lU9zEdQZrBU/I2RcHC/EwAb7g2jNKWyVxkh8t6ItHF4OgMIY4tKuoxF
+	 bXTqB+FzQHQsI+38aQbcKVmIPJomwq/W9mjJeSS5hgyL3apK7nGOBIcGY/25ggm55vm6K
+	 b9bEI6n+aA2+p33gfZRZDszPQNB4ukcdC2fCVbGpOiNmGjb/mkmU5o7geR/be0VUceQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=bSj2J5fY;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=bSj2J5fY;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C11606A327;
-	Mon, 26 Oct 2026 13:03:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3C11606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=bSj2J5fY;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=bSj2J5fY
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3FABB1F7C8;
-	Mon, 26 Oct 2026 13:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1793019819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BLIuDEhsTthzC16kupGp2wOIgagbUkGHrl+XCDNR18=;
-	b=bSj2J5fYNQd9A157z3In6GKUk+AOWsyNTlr3WBkL9j/yGxMea62EAbcJvEvgcC2iNYoSpX
-	XkD1S18U9aCKxmA0X1zFsQ3b7EGyZKHG7PvNYvxhoZ1RcHL+bmWbUZ65zYHgaMrD+B1A0/
-	yzmRpGHrun6A+ihXpCV8UNL0uhz37AA=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1793019819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BLIuDEhsTthzC16kupGp2wOIgagbUkGHrl+XCDNR18=;
-	b=bSj2J5fYNQd9A157z3In6GKUk+AOWsyNTlr3WBkL9j/yGxMea62EAbcJvEvgcC2iNYoSpX
-	XkD1S18U9aCKxmA0X1zFsQ3b7EGyZKHG7PvNYvxhoZ1RcHL+bmWbUZ65zYHgaMrD+B1A0/
-	yzmRpGHrun6A+ihXpCV8UNL0uhz37AA=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6339513408;
-	Mon, 26 Oct 2026 13:03:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ws83DqpP32rVWwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Mon, 26 Oct 2026 13:03:38 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: [PATCH v5 12/12] x86/msr: Simplify some rdmsrq() use cases
-Date: Mon, 26 Oct 2026 14:02:23 +0100
-Message-ID: <20261026130223.773129-13-jgross@suse.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261026130223.773129-1-jgross@suse.com>
-References: <20261026130223.773129-1-jgross@suse.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15D606A31D
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 13:48:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD15D606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so13421435e9.2
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 06:48:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1793022494; x=1793627294; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eeiDIzKBgXHTvIB/FzTge64uqO1p8vq38QKemD1zDpA=;
+        b=VM8IYrnCNNqs45DDC5LE9lQowRMEKYE5Y/KZ57bV4yet/aoDBGlAsxJOmTRykOk8dn
+         FshcS/W8j64dt0Mh5C8VdYgUtcsCto+ScQaOEpF+I1g+GJr3PKhwYJY8a9G++KZq2rIk
+         fciASrl2LvGXd8pYXvHkATr9UTdfoqHxMbXc79S2QEtkqqFElfTeqUk4ffn+ZNgaeGe/
+         nm24iy1xia1O5G3DOANrqIMherXJogHmuD48d2u+nc2vCUxcd8XNkN3ljWXSZqr8HlaX
+         Y9o5gWTDf6GO67jT9mY+jbYN5IM9+ZXATUXh+KiGk5uTlXn1ZnpDB+tpDMpOFgjZMwAW
+         Jg2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793022494; x=1793627294;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eeiDIzKBgXHTvIB/FzTge64uqO1p8vq38QKemD1zDpA=;
+        b=NrOVY3zkN2Ta2JrurBtFQjyt7ZUJVOp2j0Uz4Y0mnLdyZeocYlOAi/TbCVgXU45wol
+         CiDATOH6vv7CAlxds8JWQLPItuuI0T+oZJju5NNQPvdVDAraO3wm7iouiRDN6qBQf/wJ
+         ByxDjfjYEZ8KTjLReKInfF+vuFkkgTATJ1i0oCRnQ1iLyVW2fLnTmoFTKZhuVTj5SkhS
+         Zt/m5XHecEAGiPN63CckAQl4W1P11LdzoKUiF93yaMNZUlOaWh0yAqzaQV4ms/jkT+8j
+         gq5NMMc3e4ezqx042QNWT+GmbZFJk+pGOusn48xLis1Kgipr0f9bPmag36I2gKp6srMa
+         fzPA==
+X-Forwarded-Encrypted: i=1; AKwUvBztt9UX/Fj+/gzRuuVDaGSKjhBZiTwJEqy7swjHhjX35E1bObuRnyIZV2cQ8fT6hSCWzo4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKxAF0NI1dQ3e5qjZeKGTcqBQd7YhJl9h62HZt9YR2dkplWsxDA
+	9pD9V7LY1vRhM6sl2zPh6qUZryoajL6B0oRbU7rNDK8AJ0PXpZ+bFk/Lg3MsmTg0MxY=
+X-Gm-Gg: AYBFou14yjvW+B58VygdZX8TV64h7MU2jlcKz/BdosO7LgxxyTXKO5+KDClYnv24Dsr
+	T49X7mS1203mIL2lATNRwQte1byR0n2DJ/U2SbzMMS6brhsCHh1w6RU5y1gCOCFNisLUgR3LlsB
+	juiZou3kKo9tx6kJxHrkZHz6lgi/qWdIADCNZ8pHnX9yvCuH/ZF8ERloGBKG+2VS1BsLrI+/qnw
+	n30CkXA0rDMibNgE+rzOqPipfKOCEKFgn1eWTlyAU/bDLCVs08x+GDApALsiEeevn1ZwpNJZf9J
+	+M5p2Ph8YPm8eyDX+rC+WgTpGxjMkqyOj0XYK8J5gBKq+0gIpmYU23FJVIYGorey3o6lr8bDdIF
+	eURyB1UZleFusOsWBv3WToaFm7yl1F/JBjqzCZBaeLhJ0acKVRmX8c7nrI/nQQASvpQgvaSmD8H
+	ia0L2HXNyXtAuBudX0e/RqzZ2plQ5Dfh+oH3e6HiYUfsDG5wxN/yTNBRaNgHKmW0Xw40MEwo8DR
+	+WW5/bp7525jV2Q+jq/ifVRPEl3sJdvENye9bXO499NkC9Nth4JAp2ApOgbtzMX
+X-Received: by 2002:a05:600c:3d8d:b0:4a1:f377:5c75 with SMTP id 5b1f17b1804b1-4a35acc2edbmr104469535e9.33.1793022493724;
+        Mon, 26 Oct 2026 06:48:13 -0700 (PDT)
+Received: from localhost ([208.127.45.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a5ea0df763sm107133535e9.3.2026.10.26.06.48.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 06:48:13 -0700 (PDT)
+Date: Mon, 26 Oct 2026 14:48:09 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, 
+	rodrigo.vivi@intel.com, cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
+Subject: Re: [PATCH RFC 12/20] ctlv: Add device and operation dispatch
+Message-ID: <at9ZEDZl89V0jaJB@FV6GYCPJ69>
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <20261015145053.3664509-13-jiri@resnulli.us>
+ <20261021022505.6fe1b1bb@jic23-hlaptop>
+ <20261022184313.GD3381610@ziepe.ca>
+ <attZl_0TNMDLgi4U@FV6GYCPJ69>
+ <20261023142633.GF3977851@ziepe.ca>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -117,363 +104,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-15.80 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,outlook.com:email];
-	FREEMAIL_CC(0.00)[suse.com,infradead.org,redhat.com,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org,alien8.de,zytor.com,microsoft.com,outlook.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com]
-X-Spam-Score: -15.80
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023142633.GF3977851@ziepe.ca>
 
-After the conversion of rdmsrq() to an inline function some use cases
-can be simplified by dropping an intermediate variable or by
-eliminating the inline function completely.
+Fri, Oct 23, 2026 at 04:26:33PM +0200, jgg@ziepe.ca wrote:
+>On Fri, Oct 23, 2026 at 02:58:33PM +0200, Jiri Pirko wrote:
+>> >> Jason did some nice handling in the fwctl stuff for
+>> >> device alloc and hand over after device_initialize()
+>> >> (I've copied it into a few places recently :)
+>> >> 
+>> >> I'd like to see something similar here as it made
+>> >> it easier to follow lifetimes etc.
+>> >
+>> >This is really at the wrong layer.. Attestation subsystem is the lead
+>> >subsystem, it should be allocating the struct device memory and the
+>> >driver should see the typical
+>> >
+>> >  struct attestation_dev *adev;
+>> >
+>> >  adev = attestation_alloc()
+>> >  [..]
+>> >  attestation_register(adev)
+>> 
+>> Er, the driver would call attestation_create() which will be a wrapper
+>> of ctvl_create. The reason is inheritance chain and each parent being
+>> passed info to and doing its own init()
+>
+>We really want it to look like the above so we get proper container_of
+>stuff.
+>
+>struct driver_attestion_dev {
+>   struct attestaion_dev adev;
+>}
+>
+>driver_adev = attestaion_alloc(..)
+>
+>Don't want "create" to allocate the memory, it is upside down. The
+>fixed memory ctvl needs should be buried in the attestaion_Dev
+>
+>struct attestation_dev {
+>   struct device dev;    // sysfs dev inside class attestation
+>   struct ctlv_XX ctlv;  // ctlv instance
+>   struct cdev cdev;
+>
+>   const struct attestation_ops *ops;
+>}
+>
+>That's the essential skeleton of what a subsystem should look like in
+>linux, ctvl shouldn't co-opt it, it should embed like cdev does.
+>
+>Look at fwctl for reference
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com> # Hyper-V
-Acked-by: Sean Christopherson <seanjc@google.com>
----
-V3:
-- eliminate KVM's read_msr() (Sean Christopherson)
----
- arch/x86/events/amd/core.c      |  6 +-----
- arch/x86/events/amd/lbr.c       | 12 ++----------
- arch/x86/events/intel/core.c    |  6 +-----
- arch/x86/events/intel/cstate.c  |  5 +----
- arch/x86/events/intel/knc.c     |  6 +-----
- arch/x86/events/intel/lbr.c     | 17 +++--------------
- arch/x86/events/intel/uncore.c  |  6 +-----
- arch/x86/events/rapl.c          |  4 +---
- arch/x86/events/zhaoxin/core.c  |  6 +-----
- arch/x86/hyperv/hv_apic.c       |  5 +----
- arch/x86/include/asm/apic.h     |  5 +----
- arch/x86/include/asm/debugreg.h |  6 +-----
- arch/x86/include/asm/kvm_host.h | 10 ----------
- arch/x86/kvm/vmx/tdx.c          |  2 +-
- arch/x86/kvm/vmx/vmx.c          |  6 +++---
- 15 files changed, 19 insertions(+), 83 deletions(-)
-
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 80ed49dba255..3d0e076c1636 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -660,12 +660,8 @@ static __always_inline void amd_pmu_set_global_ctl(u64 ctl)
- 
- static inline u64 amd_pmu_get_global_status(void)
- {
--	u64 status;
--
- 	/* PerfCntrGlobalStatus is read-only */
--	status = rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
- }
- 
- static inline void amd_pmu_ack_global_status(u64 status)
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index 0972690c7d45..5e219a94f28c 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -74,20 +74,12 @@ static __always_inline void amd_pmu_lbr_set_to(unsigned int idx, u64 val)
- 
- static __always_inline u64 amd_pmu_lbr_get_from(unsigned int idx)
- {
--	u64 val;
--
--	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
--
--	return val;
-+	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
- }
- 
- static __always_inline u64 amd_pmu_lbr_get_to(unsigned int idx)
- {
--	u64 val;
--
--	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
--
--	return val;
-+	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
- }
- 
- static __always_inline u64 sign_ext_branch_ip(u64 ip)
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 20e96e6c649c..96bcbf823aec 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2972,11 +2972,7 @@ static void intel_tfa_pmu_enable_all(int added)
- 
- static inline u64 intel_pmu_get_status(void)
- {
--	u64 status;
--
--	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
- }
- 
- static inline void intel_pmu_ack_status(u64 ack)
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index 69eb6cf51d3b..c6d9146d8ec8 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -322,10 +322,7 @@ static int cstate_pmu_event_init(struct perf_event *event)
- 
- static inline u64 cstate_pmu_read_counter(struct perf_event *event)
- {
--	u64 val;
--
--	val = rdmsrq(event->hw.event_base);
--	return val;
-+	return rdmsrq(event->hw.event_base);
- }
- 
- static void cstate_pmu_event_update(struct perf_event *event)
-diff --git a/arch/x86/events/intel/knc.c b/arch/x86/events/intel/knc.c
-index c4f81215f758..a74caa8280be 100644
---- a/arch/x86/events/intel/knc.c
-+++ b/arch/x86/events/intel/knc.c
-@@ -199,11 +199,7 @@ static void knc_pmu_enable_event(struct perf_event *event)
- 
- static inline u64 knc_pmu_get_status(void)
- {
--	u64 status;
--
--	status = rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
- }
- 
- static inline void knc_pmu_ack_status(u64 ack)
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index 68d184ea5bcf..beac04502b73 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -209,10 +209,7 @@ void intel_pmu_lbr_reset(void)
-  */
- static inline u64 intel_pmu_lbr_tos(void)
- {
--	u64 tos;
--
--	tos = rdmsrq(x86_pmu.lbr_tos);
--	return tos;
-+	return rdmsrq(x86_pmu.lbr_tos);
- }
- 
- enum {
-@@ -311,26 +308,18 @@ static __always_inline u64 rdlbr_from(unsigned int idx, struct lbr_entry *lbr)
- 
- static __always_inline u64 rdlbr_to(unsigned int idx, struct lbr_entry *lbr)
- {
--	u64 val;
--
- 	if (lbr)
- 		return lbr->to;
- 
--	val = rdmsrq(x86_pmu.lbr_to + idx);
--
--	return val;
-+	return rdmsrq(x86_pmu.lbr_to + idx);
- }
- 
- static __always_inline u64 rdlbr_info(unsigned int idx, struct lbr_entry *lbr)
- {
--	u64 val;
--
- 	if (lbr)
- 		return lbr->info;
- 
--	val = rdmsrq(x86_pmu.lbr_info + idx);
--
--	return val;
-+	return rdmsrq(x86_pmu.lbr_info + idx);
- }
- 
- static inline void
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index ab2c5a962b31..cffbd780a435 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -169,11 +169,7 @@ struct intel_uncore_box *uncore_pmu_to_box(struct intel_uncore_pmu *pmu, int cpu
- 
- u64 uncore_msr_read_counter(struct intel_uncore_box *box, struct perf_event *event)
- {
--	u64 count;
--
--	count = rdmsrq(event->hw.event_base);
--
--	return count;
-+	return rdmsrq(event->hw.event_base);
- }
- 
- void uncore_mmio_exit_box(struct intel_uncore_box *box)
-diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
-index 180cc18282ca..2d2376c59816 100644
---- a/arch/x86/events/rapl.c
-+++ b/arch/x86/events/rapl.c
-@@ -192,9 +192,7 @@ static inline unsigned int get_rapl_pmu_idx(int cpu, int scope)
- 
- static inline u64 rapl_read_counter(struct perf_event *event)
- {
--	u64 raw;
--	raw = rdmsrq(event->hw.event_base);
--	return raw;
-+	return rdmsrq(event->hw.event_base);
- }
- 
- static inline u64 rapl_scale(u64 v, struct perf_event *event)
-diff --git a/arch/x86/events/zhaoxin/core.c b/arch/x86/events/zhaoxin/core.c
-index 1980e5995e27..9203321c18b4 100644
---- a/arch/x86/events/zhaoxin/core.c
-+++ b/arch/x86/events/zhaoxin/core.c
-@@ -266,11 +266,7 @@ static void zhaoxin_pmu_enable_all(int added)
- 
- static inline u64 zhaoxin_pmu_get_status(void)
- {
--	u64 status;
--
--	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
--
--	return status;
-+	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
- }
- 
- static inline void zhaoxin_pmu_ack_status(u64 ack)
-diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
-index 4e30f9a11bc4..52ee8c237c2c 100644
---- a/arch/x86/hyperv/hv_apic.c
-+++ b/arch/x86/hyperv/hv_apic.c
-@@ -36,10 +36,7 @@ static struct apic orig_apic;
- 
- static u64 hv_apic_icr_read(void)
- {
--	u64 reg_val;
--
--	reg_val = rdmsrq(HV_X64_MSR_ICR);
--	return reg_val;
-+	return rdmsrq(HV_X64_MSR_ICR);
- }
- 
- static void hv_apic_icr_write(u32 low, u32 id)
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index e028140fac49..993b52b52625 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -231,10 +231,7 @@ static inline void native_x2apic_icr_write(u32 low, u32 id)
- 
- static inline u64 native_x2apic_icr_read(void)
- {
--	unsigned long val;
--
--	val = rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
--	return val;
-+	return rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
- }
- 
- extern int x2apic_mode;
-diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-index 60a3df32a4d3..e00251c7eb12 100644
---- a/arch/x86/include/asm/debugreg.h
-+++ b/arch/x86/include/asm/debugreg.h
-@@ -174,15 +174,11 @@ static inline unsigned long amd_get_dr_addr_mask(unsigned int dr)
- 
- static inline unsigned long get_debugctlmsr(void)
- {
--	unsigned long debugctlmsr = 0;
--
- #ifndef CONFIG_X86_DEBUGCTLMSR
- 	if (boot_cpu_data.x86 < 6)
- 		return 0;
- #endif
--	debugctlmsr = rdmsrq(MSR_IA32_DEBUGCTLMSR);
--
--	return debugctlmsr;
-+	return rdmsrq(MSR_IA32_DEBUGCTLMSR);
- }
- 
- static inline void update_debugctlmsr(unsigned long debugctlmsr)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index e1e5d32c6286..183f252a6815 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1875,16 +1875,6 @@ enum kvm_intr_type {
- 
- #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
- 
--#ifdef CONFIG_X86_64
--static inline unsigned long read_msr(unsigned long msr)
--{
--	u64 value;
--
--	value = rdmsrq(msr);
--	return value;
--}
--#endif
--
- #define HF_GUEST_MASK		(1 << 0) /* VCPU is in guest-mode */
- 
- #ifdef CONFIG_KVM_SMM
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 8a593159c9b7..926bbf88b20a 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -793,7 +793,7 @@ void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 	if (likely(is_64bit_mm(current->mm)))
- 		vt->msr_host_kernel_gs_base = current->thread.gsbase;
- 	else
--		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
-+		vt->msr_host_kernel_gs_base = rdmsrq(MSR_KERNEL_GS_BASE);
- 
- 	vt->guest_state_loaded = true;
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index aa8d23ba1204..7cd64feefc67 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1390,8 +1390,8 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 	} else {
- 		savesegment(fs, fs_sel);
- 		savesegment(gs, gs_sel);
--		fs_base = read_msr(MSR_FS_BASE);
--		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
-+		fs_base = rdmsrq(MSR_FS_BASE);
-+		vt->msr_host_kernel_gs_base = rdmsrq(MSR_KERNEL_GS_BASE);
- 	}
- 
- 	wrmsrq(MSR_KERNEL_GS_BASE, vmx->msr_guest_kernel_gs_base);
-@@ -1450,7 +1450,7 @@ static u64 vmx_read_guest_host_msr(struct vcpu_vmx *vmx, u32 msr, u64 *cache)
- {
- 	preempt_disable();
- 	if (vmx->vt.guest_state_loaded)
--		*cache = read_msr(msr);
-+		*cache = rdmsrq(msr);
- 	preempt_enable();
- 	return *cache;
- }
--- 
-2.56.0
-
+Yeah, I understand the typical flow. I just wanted to benefit from the
+fact the ctlv has the inheritance chain to reuse it for init/fini flows
+alongside the private structures allocations. It saves a lot of
+boilerplate code and hides it inside CTLV. I admit, it makes things a
+bit obfuscated for end user (driver/subsystem). I'm working on
+conversion to what you suggest.
