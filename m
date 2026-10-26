@@ -1,45 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.108.3.164
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793054571;
-	b=B7T/neuu5eKFWTj4eDIbafaZix0ObE4pl/aQ+4WZuK94+TcpL9e6d6os9ixA8SQzbXd7
-	 RPzhCdaKysTRkLum7w1125ZdgRD4y8fJ635SW4uiGTTNSYItcMHGw/y7GGeMkIlOZpVyx
-	 9cs/cNhC1US+YFllBwkTu8PYw2WNYY2jC7R6B+X4dhnAO5u06lp6Gf9dpDTFo4cyhm0gM
-	 ACQ8VttFuUMkD7yvNGJ1IBEVyXlMD+uYtetY0U9IWRNscJ6MiAiPF8J5Y6wGPyykWZ+X2
-	 labOgYyQjH4XmSZFZdEA1UD4kvclR3eQ1T8EI8z3tEkfkbFY/np1fVNoelOE9I8A86g==
+	t=1793054605;
+	b=m10CU1JKMdS3/Kcd94O/Zz6+AYQGWMXI6CI+CiAMxhGM5ga+Mazc/0nk43pkHwabgZ6Z
+	 Cg325kAIvZQEvVhgaM/EiGTBWssPU2sSsxpk0RLS85W1GtBTzrNV3NV6S2KRY0qpEYHuQ
+	 2wb4rFosbkx6Gt9JWtNSFd040DjiobFDz1SMVEUvogJlDZ5UOyK8zWvf7jobQIjFfwi7x
+	 xhrRsglgQy4nIvtsKfzDqNU7RPIt4RMj5OVcTR8CUQZJ6rXps15tutNvpw5o1VbI09cQH
+	 ns/zm4MLN5ZIbObo0f4MrUu0Q5ky9emZPU9MIa2KtDWLV8GNlVJ+TJHH0H3J8z7Show==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793054571;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=zcu2D4FJ8AUuSLc0io/ntAE/p7xplg+q76zeVM6cDrI=;
-	b=5bwOMS+l1bJQ01out63Z5Y0I4oVC8npZT0DsVR4urseF3P33EeFUmSedN9CKnpiRx9wu
-	 kjxgR/Wy0FzskDh/aPVygTBxJvYjvXYQYA/fx9pfm8YNN48Oldr2qarpdpmsjZ4h5PFfB
-	 +XJ78y4AlDggvHKSo2+aQNHpgkD3hvFaVmoeWwKlxvfCzgzYZLfVZJuXBBqCtPjx0hbiB
-	 yvGgnH6L6uZYCKhc4x+uY25lNYk6Xv3DU4K0YSl6qp8GB2XMpUuktUjpikQXH9eHflJcd
-	 jvoTLv8SSNh6RgPk6KWKj7UMTUZ84KTZjDXMbBkojUnAYNsF4eGREudGsUeRweGZpxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793054605;
+	h=DMARC-Filter:DKIM-Signature:X-SMAIL-HELO:Received:X-Sender:X-Auth-ID:
+	 X-SMAIL-MID:X-SMAIL-UIID:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=f7aSe4Sxv65Zsds/L7MRmIHr8Y4rpVrFO6R+RPKzJVQ=;
+	b=1RWc/uJonlgYRYCEL0XhM4/9dQtNkpZbbndLdi/4nB81TlpapSOJui/lsAUBYHPmzvHb
+	 uRYPUVOXzKpJxGAIPbDrgcqWU0lHzt3rMi5w8DB8mXuXUwmVnvhCSYE6MCUkPhLPwdMyz
+	 wyC7TDqX2dYjrs3uB1UnZJE+uVKscLI2vIWv3TF+/WWauFqVeTti7TISP6WNje6vFftGl
+	 GXNJ7tiWfsZjDjvEhezTW7rtSf0vP5v8OMYTx4cI8SUe8gDIm+YMVqs9hEeVmj1UIK5uA
+	 8d4ZG7OCEV7vOFq3gJgMjtlcmiMITpnfImiSpQT6/+mk3YPSdaiE846aoggzBbhpeag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=fail reason="signature verification failed" header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+uwSINy;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=sina.com;
+	spf=pass smtp.mailfrom=sina.com;
+	dkim=pass header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b="M3JW/aMW";
+	arc=none smtp.remote-ip=202.108.3.164
+Received: from mail3-164.sinamail.sina.com.cn (mail3-164.sinamail.sina.com.cn [202.108.3.164])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BF1606A31B;
-	Mon, 26 Oct 2026 22:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5122C606A320
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 22:43:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5122C606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+uwSINy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365B01F01825;
-	Mon, 26 Oct 2026 22:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793054571;
-	bh=zcu2D4FJ8AUuSLc0io/ntAE/p7xplg+q76zeVM6cDrI=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=m+uwSINyQXwtu73UZ6EyuYN1h51rwPwU+wBhwQ3x6vmKi83kNfW/gfdRbFyu2HNka
-	 7VReOVigciR9zgZA89RZbtbnvj5XXQ/G6TNtz4hWpZsN9YfowyTTvxcAd5CV23+dCo
-	 kwOl5dmVClKxNRL9LoZLcTCJjd7Oi+GEyiutZ+FQrSiTq5KfDAS1cTn+Qetc1J45UA
-	 tlo8YpMhi0rPJU2nlQprIjVkP6LSttyfZaSKzxm5CdW5t1SoWlXNdh7eay4cH9TrvB
-	 dDcwGOzRtd1woJrWVPijYslHDOfGawLoQdVx6NOSD7HbBD401iC78cwGYI3UppwGB3
-	 AB4oKffoYrJrg==
-Content-Type: multipart/mixed; boundary="===============7206656739672881745=="
+	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=M3JW/aMW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1793054602;
+	bh=f7aSe4Sxv65Zsds/L7MRmIHr8Y4rpVrFO6R+RPKzJVQ=;
+	h=From:Subject:Date:Message-ID;
+	b=M3JW/aMWQmCBRx/EXnFGkX1icTbjIDq1XmZfHAbZBAFWvJDp0F3AuKcY5mWP9sx64
+	 doJMqeNTpwAoHorWGHPWuTHiNbY/Da4asBdpYGCpmpTIN/35g9qhi7xvQfpSfMRR+g
+	 64KKAu9bRYDSMcheidZwjIihxdo3HoJnrIMnRTwE=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([221.216.116.161])
+	by sina.com (10.54.253.32) with ESMTP
+	id 6ADFD782000022EE; Mon, 27 Oct 2026 06:43:18 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 7175894456982
+X-SMAIL-UIID: F2260DAA33A64767990FCE80BCC0D11E-20261027-064318-1
+From: Hillf Danton <hdanton@sina.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+Date: Tue, 27 Oct 2026 06:43:03 +0800
+Message-ID: <20261026224305.1254-1-hdanton@sina.com>
+In-Reply-To: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com>
+References: 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -49,203 +71,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <b9959bd7711dee7a83a07b012b5967980d178c95eae90adeebebcb6040fc526f@mail.kernel.org>
-In-Reply-To: <20261026215226.3713941-7-jthoughton@google.com>
-References: <20261026215226.3713941-7-jthoughton@google.com>
-Subject: Re: [RFC PATCH 06/10] uaccess: Refuse and warn on user copies when current->mm is NULL
-From: bot+bpf-ci@kernel.org
-To: jthoughton@google.com,akpm@linux-foundation.org,viro@zeniv.linux.org.uk
-Cc: tglx@kernel.org,peterz@infradead.org,kees@kernel.org,arnd@arndb.de,david@kernel.org,ljs@kernel.org,liam@infradead.org,vbabka@kernel.org,rppt@kernel.org,surenb@google.com,mhocko@suse.com,seanjc@google.com,pbonzini@redhat.com,jmattson@google.com,axboe@kernel.dk,asml.silence@gmail.com,James.Bottomley@HansenPartnership.com,mkp@kernel.org,dsterba@suse.com,mason@kernel.org,ast@kernel.org,daniel@iogearbox.net,john.fastabend@gmail.com,jpoimboe@kernel.org,rostedt@goodmis.org,mhiramat@kernel.org,mathieu.desnoyers@efficios.com,mingo@redhat.com,acme@kernel.org,namhyung@kernel.org,linux-mm@kvack.org,linux-fsdevel@vger.kernel.org,kvm@vger.kernel.org,io-uring@vger.kernel.org,linux-scsi@vger.kernel.org,linux-btrfs@vger.kernel.org,bpf@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-perf-users@vger.kernel.org,linux-kernel@vger.kernel.org,jthoughton@google.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.
- org,ihor.solodrai@linux.dev
-Date: Mon, 26 Oct 2026 22:42:50 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============7206656739672881745==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Ask the locking people to shed light on the warning.
 
-> uaccess: Refuse and warn on user copies when current->mm is NULL
-
-TL;DR:
-- Possible spurious -EFAULT on valid kernel addresses on xtensa/nios2 from
-  mm-less tasks (kworkers), e.g. d_path
-- nofault helpers may hit the new WARN_ON_ONCE (BPF/tracing); fix is later in
-  series, breaking bisection
-
-> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-> index eddbbb65ccc4..e54a6d804bf9 100644
-> --- a/include/linux/uaccess.h
-> +++ b/include/linux/uaccess.h
-> @@ -50,6 +50,23 @@
-
-[ ... ]
-
-> +static __always_inline bool uaccess_should_fail(void)
-> +{
-> +	if (WARN_ON_ONCE(!current->mm))
-> +		return true;
-> +	return should_fail_usercopy();
-> +}
-
-[ ... ]
-
-> @@ -114,7 +131,7 @@ __copy_from_user(void *to, const void __user *from, unsigned long n)
->  
->  	might_fault();
->  	instrument_copy_from_user_before(to, from, n);
-> -	if (should_fail_usercopy())
-> +	if (uaccess_should_fail())
->  		return n;
->  	check_object_size(to, n, false);
->  	res = raw_copy_from_user(to, from, n);
-
-Can this refuse legitimate kernel address copies on xtensa and nios2?
-
-On both architectures __copy_from_user() and __copy_to_user() also sit under
-the generic kernel nofault accessors.  Neither architecture defines
-__get_kernel_nofault or arch_get_kernel_nofault, so both use the fallback in
-include/linux/uaccess.h, which goes through __get_user()/__put_user() on the
-kernel address:
-
-    #define __get_kernel_nofault(dst, src, type, label)    \
-    ...
-            if (__get_user(data, p))                       \
-                    goto label;                            \
-
-On xtensa, 8-byte __get_user()/__put_user() are implemented with
-__copy_from_user()/__copy_to_user() (arch/xtensa/include/asm/uaccess.h):
-
-    case 8: {
-            u64 __x;
-            if (unlikely(__copy_from_user(&__x, ptr, 8))) {
-    ...
-            retval = __copy_to_user(ptr, &__v64, 8) ? -EFAULT : 0;
-
-On nios2, __put_user_common() sends any size other than 1, 2 or 4 to
-__copy_to_user().
-
-Neither architecture selects HAVE_EFFICIENT_UNALIGNED_ACCESS, so
-copy_from_kernel_nofault() and copy_to_kernel_nofault() (mm/maccess.c) use
-the u64 loop whenever dst and src are both 8-byte aligned and at least 8
-bytes remain:
-
-    if (!(align & 7))
-            copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
-
-With this patch, every such access from a task with current->mm == NULL
-(kworkers, khungtaskd, kernel_init before exec, the idle task in IRQ, kgdb
-entered from idle) hits WARN_ON_ONCE(!current->mm), and __copy_from_user()
-returns n.  copy_from_kernel_nofault() then returns -EFAULT on valid kernel
-memory.
-
-Concrete generic callers include:
-
-  d_path() -> prepend() -> prepend_copy() (fs/d_path.c) fills the component
-  with 'x' and stops the walk.  This is reachable from LSM/IMA path hooks
-  run by kworkers, for example async firmware loading.
-
-  print_worker_info() (kernel/workqueue.c), called from
-  dump_stack_print_info() and sched_show_task() for kworkers, which copies
-  wq->name and worker->desc.
-
-  copy_to_kernel_nofault() from kgdb_hex2mem()/kgdb_ebin2mem() on nios2,
-  which selects HAVE_ARCH_KGDB.
-
-Before this patch these accesses worked on kernel addresses, since
-raw_copy_{from,to}_user() on these architectures is a plain fixup-protected
-copy and access_ok() is not involved.  Only opt-in fault injection could
-make them fail.
-
-The commit message rationale ("Accessing user memory from a task that has no
-mm is always a bug") does not apply to kernel addresses.  The commit message
-also says get_user()/put_user() are not covered, which does not hold for
-8-byte accesses on these two architectures.
-
-No later commit in this series appears to touch these paths.
-
-[ ... ]
-
-> diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
-> index 5bb752ff7c61..565b3125e752 100644
-> --- a/lib/strncpy_from_user.c
-> +++ b/lib/strncpy_from_user.c
-> @@ -115,7 +115,7 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
->  	unsigned long max_addr, src_addr;
->  
->  	might_fault();
-> -	if (should_fail_usercopy())
-> +	if (uaccess_should_fail())
->  		return -EFAULT;
->  	if (unlikely(count <= 0))
->  		return 0;
-
-Can strncpy_from_user_nofault() now trip this WARN_ON_ONCE() from contexts
-where current->mm is NULL by design?
-
-In this tree strncpy_from_user_nofault() (mm/maccess.c) has no current->mm
-check and no nmi_uaccess_okay() check.  It goes straight to
-strncpy_from_user():
-
-    pagefault_disable();
-    ret = strncpy_from_user(dst, unsafe_addr, count);
-    pagefault_enable();
-
-and strncpy_from_user() now calls uaccess_should_fail(), which does:
-
-    if (WARN_ON_ONCE(!current->mm))
-            return true;
-
-The callers of strncpy_from_user_nofault() are tracing helpers that run in
-whatever context the probe fires in, including kernel threads and IRQs taken
-while the idle task runs:
-
-  bpf_probe_read_user_str() via bpf_probe_read_user_str_common()
-  (kernel/trace/bpf_trace.c), and bpf_probe_read_str() for addresses below
-  TASK_SIZE.
-
-  bpf_trace_printk()/bpf_snprintf() through bpf_trace_copy_string()
-  (kernel/bpf/helpers.c).  With CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
-  (x86, arm64, ...), any '%s' argument below TASK_SIZE takes this path,
-  including a NULL pointer.  So bpf_printk("%s", ptr) with ptr == NULL in a
-  kprobe that fires in a kworker now triggers the warning.
-
-  kprobe/fprobe/eprobe ustring fetch args (fetch_store_string_user() in
-  kernel/trace/trace_probe_kernel.h).
-
-  The .ustring event filters (test_ustring() in
-  kernel/trace/trace_events_filter.c).
-
-  Synthetic event string fields (trace_string() in
-  kernel/trace/trace_events_synth.c).
-
-  The bpf_copy_from_user_str_dynptr family (copy_user_str_nofault()).
-
-Before this patch these calls either failed quietly with -EFAULT or read the
-lazily loaded mm.  Now a tracing user (CAP_BPF plus CAP_PERFMON, or tracefs
-access) can trigger a warning splat, and a panic with panic_on_warn, just by
-tracing a function that kernel threads run.
-
-The same applies to copy_to_user_iter_nofault() in lib/iov_iter.c, which this
-patch also switches to uaccess_should_fail().  The commit message lists
-copy_to_user_nofault() as intentionally covered, but it does not account for
-the nofault helpers being used from mm-less contexts by design.
-
-A fix appears later in the series, e8bf23b5b30d ("uaccess: Fail user nofault
-helpers quietly when current->mm is NULL").  It adds an early !current->mm
-return to copy_{from,to}_user_nofault(), strncpy_from_user_nofault() and
-strnlen_user_nofault(), and switches copy_to_user_iter_nofault() back to
-should_fail_usercopy().  Its message describes this exact problem
-(bpf_probe_read_user_str() from a BPF program attached to a function called
-by a kernel thread would now trip the WARN_ON_ONCE() in
-strncpy_from_user()).
-
-This commit on its own still introduces the regression, which breaks
-bisection.  Could that fix be folded into this patch, or ordered before it?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/40410166379
---===============7206656739672881745==--
+> Date: Mon, 26 Oct 2026 03:19:37 -0700	[thread overview]
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    c03c1a14507d Linux 7.3
+> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> console output: https://syzkaller.appspot.com/x/log.txt?x=128d8ca5580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=129d675874dbf896
+> dashboard link: https://syzkaller.appspot.com/bug?extid=f11512d1e5878ba5e60e
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=168d8ca5580000
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
+> 
+> =============================
+> [ BUG: Invalid wait context ]
+> syzkaller #0 Tainted: G S                 
+> -----------------------------
+> syz-executor177/6041 is trying to lock:
+> ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
+> ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> other info that might help us debug this:
+> context-{2:2}
+> locks held by syz-executor177/6041: 1, last CPU#1:
+>  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
+>  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
+>  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
+>  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
+> stack backtrace:
+> CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
+> Tainted: [S]=CPU_OUT_OF_SPEC
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> Call Trace:
+>  <IRQ>
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+>  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
+>  check_wait_context kernel/locking/lockdep.c:4946 [inline]
+>  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
+>  lock_acquire kernel/locking/lockdep.c:5942 [inline]
+>  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+>  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
+>  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
+>  get_partial_node_bulk mm/slub.c:3831 [inline]
+>  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+>  refill_objects+0x58/0x410 mm/slub.c:7405
+>  refill_sheaf mm/slub.c:2885 [inline]
+>  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
+>  alloc_from_pcs mm/slub.c:4850 [inline]
+>  slab_alloc_node mm/slub.c:4984 [inline]
+>  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
+>  _kmalloc_noprof include/linux/slab.h:991 [inline]
+>  _kzalloc_noprof include/linux/slab.h:1312 [inline]
+>  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
+>  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
+>  instr_sysvec_kvm_asyncpf_interrupt arch/x86/kernel/kvm.c:327 [inline]
+>  sysvec_kvm_asyncpf_interrupt+0x9e/0xc0 arch/x86/kernel/kvm.c:327
+>  </IRQ>
+>  <TASK>
+>  asm_sysvec_kvm_asyncpf_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:753
+> RIP: 0010:memcmp+0x156/0x1d0 lib/string.c:665
+> Code: 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 42 0f b6 14 28 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e c6 <84> d2 42 0f b6 0c 29 0f 95 c2 40 84 d6 0f 84 45 ff ff ff be 08 00
+> RSP: 0018:ffffc90003ab7538 EFLAGS: 00000297
+> RAX: ffff8880220be413 RBX: ffff8880220be40c RCX: 1ffff11004417c82
+> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8880220be40c
+> RBP: ffffffff8c58a940 R08: 0000000000000001 R09: 0000000000000066
+> R10: 0000000000000066 R11: 0000000000000001 R12: 0000000000000012
+> R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
+>  strstr+0x109/0x170 lib/string.c:743
+>  tomoyo_add_entry security/tomoyo/common.c:2157 [inline]
+>  tomoyo_supervisor+0xf47/0x1340 security/tomoyo/common.c:2238
+>  tomoyo_audit_path_log security/tomoyo/file.c:169 [inline]
+>  tomoyo_path_permission security/tomoyo/file.c:592 [inline]
+>  tomoyo_path_permission+0x270/0x3b0 security/tomoyo/file.c:577
+>  tomoyo_check_open_permission+0x37f/0x3c0 security/tomoyo/file.c:782
+>  tomoyo_file_open+0x6b/0x90 security/tomoyo/tomoyo.c:334
+>  security_file_open+0xb5/0x1e0 security/security.c:2739
+>  do_dentry_open+0x588/0x14d0 fs/open.c:973
+>  vfs_open+0x82/0x3f0 fs/open.c:1101
+>  do_open fs/namei.c:4836 [inline]
+>  path_openat+0x1a23/0x2450 fs/namei.c:4999
+>  do_file_open+0x20e/0x430 fs/namei.c:5028
+>  do_sys_openat2+0x10f/0x1e0 fs/open.c:1417
+>  do_sys_open fs/open.c:1423 [inline]
+>  __do_sys_openat fs/open.c:1439 [inline]
+>  __se_sys_openat fs/open.c:1434 [inline]
+>  __x64_sys_openat+0x12d/0x210 fs/open.c:1434
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
