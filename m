@@ -1,109 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793005271;
-	b=VwHHJIr8jj8NypnXccOVCVajmih7NrlRgOFwLZwDUPedcHKJWc90I/xwh/kKkzHPFEY1
-	 fAZy7vnpJx8zPxCXNyt0joqthJKPz23xrMeTFI2NnMatsBXuKhfoLaG1J3X9wR7wDhJAJ
-	 7V+EoWNqI5OuuUnoUe5GJYC3A35DHXdnYnKMQ6rCR8a+P4zvjUEqwr3unlmSd20SNH7Gj
-	 56525SExXqWfAY8ZIBeCVA6YrcwLRiao2teBYthO3wCHT8ceh1IfhbMuIKqHe6m+GRdY+
-	 6ROJVKzoQkZvpOGXjrdAUhq6bxPUWM1wRXWdNMmcaYEDBEQSymCkaMeXHE5ifmJKUMg==
+	t=1793005441;
+	b=RVVgOrgvhsDyuf/hBFp9irLv/Ftd8YkswOHRbvdizD4jA0PorC0cwE+62f2dCqREyA6y
+	 7fhRp0cwI62ICcxoApvHSrVZt3Eb7SvprsklojjVrAKutzNdzLQ6Ys1PWIfzoUn70K6P1
+	 7xQHqeCWfQOrFKBj760p35aTAjpvHfh3RaFP3BJyS3wtZ08XxhqQLojwYIuku7iudXmPX
+	 DPLM+1VAZ6/wywIk/xN4TiUtQm8AuE0QiUDDP7MYPuQJNPLxaXQaLvc8jhD571STFRRcj
+	 GOe/MlojDa63BeGKUkr6BlVdJCFHDT96s0pEC/qqPMbQ8JnFEstsd0u768ioFFpb0nA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793005271;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:To:Cc:
-	 Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:
-	 Content-Type;
-	bh=BIokrW6dBSe7+DSoMXOn3ohQYcJwX5c+NY7lmM9Zk94=;
-	b=WYvyz2itcCqa7X23LwBKIBkvqVW1NebqLN92bYqSgiMvJL+9KAzHbQk9jgn2hI30kPut
-	 7aRHIUzUOs66AuwFZOmvm1KAQxmrP1v1B4F2erNZArFJqxH+ksMDe9+/AVahpjhF5w7U6
-	 K6G9oafA0TnRF/oFqQekiaDn/XxsW7utKl6oBniTytmPwGOg7a1PleIYbfkaJxPDPNiKn
-	 i3J0exwN91bsZe4w+s0ildzzBrA5S21AZrFZ9xmP3qw0XnMy4A/amZX3JbFngY9AKtqHp
-	 y/9sOwTsIMi1ein/HWahogyeo95wa0Prop0yDgLVRAgXtFiscAO2n5c355BnfhyRj6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793005441;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=SjrKCS1IPYsIx6ZwmedhiYRwNF3yTKQbRR/BABZtZEo=;
+	b=y24eRrdYINlDXrWrfnG0aN54NZc5ghk5zt+VMTaMXzJrnWZulLlwMXe3xZ6A3nSC3fVQ
+	 ywJioK6HNkTqz8x2srU7Rxgee01L1l6jRfrhrnJU7oHanjZySYizVRI8tu2pxLovdzWfA
+	 dktZjRMKQAPKclqFDhEGfNfZdMZWvstqyd/WDG6QfL5bqyS/wLO9C5h6LGkfJ4a84ToaU
+	 WPm/XipmTl2NNDKUbiSMHhDYJtI5RUsNaVoPe5aCb6LO9dk5qCc0wU3HZZKttD2f2nFjV
+	 5DiHgGptKuKaucMXOzYabidtc4qBkpTAdNDa/kDscoGZeNmYQ4FLJXxOEyamlkAj3yQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OePPmOGs;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EZcsIlGc;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EWL0uDOq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F21E606A31A
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 09:01:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F21E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91052606A31A;
+	Mon, 26 Oct 2026 09:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OePPmOGs;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EZcsIlGc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793005270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BIokrW6dBSe7+DSoMXOn3ohQYcJwX5c+NY7lmM9Zk94=;
-	b=OePPmOGsFnSAe2euc72KcxOkxC5CP1I1QD2YvUCGrlq2rH/E7oBx2vB03KDYadI2IOPBuy
-	ypb8fxPeQSMucmJLRB621HNZC8x17gsxVAE1A0wMka0XjoIg6kEVAPr9MNIrHsxXCFHBNr
-	9LfgijZh+ds9GerCSRd886+dl3gnLEo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-iHpMvn78OTCKAmbtV8QDzg-1; Mon, 26 Oct 2026 05:01:08 -0400
-X-MC-Unique: iHpMvn78OTCKAmbtV8QDzg-1
-X-Mimecast-MFC-AGG-ID: iHpMvn78OTCKAmbtV8QDzg_1793005267
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48af4046a3bso2874104f8f.2
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 02:01:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793005267; x=1793610067; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BIokrW6dBSe7+DSoMXOn3ohQYcJwX5c+NY7lmM9Zk94=;
-        b=EZcsIlGcbWe3r30dNGRIhAK+gJR6rNlgMa3l7BDqkOgytfDi9vfeprNlxKJIajRCmM
-         iJvHMO4uBvCzSLZvc9NSW2lqtt2pFx05N91htyTb5N0aYnAvVXZvNPvg32+JT9OetuYN
-         3lifqrgk8ta0Z0AscWtpAx/bklFL2t/RsyiJYbZmi3UyEa3xdm1+Ay4hgk/holBrtgOI
-         1BkGAfJaCUxHZrDdEiRrde7rfEVmlPwlTalC+TvUcPG7ntT/0OzuocqjnQpVEXBqeC5a
-         66clCavC+yiVdeuERd3xRZzXS3Hp3ng5yuXNcHK3bfkiXBSB4aEvuBzHRjEBuSv6FpUK
-         GCyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793005267; x=1793610067;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BIokrW6dBSe7+DSoMXOn3ohQYcJwX5c+NY7lmM9Zk94=;
-        b=ByVX7SwlIrlinkoCaUrlfzBAmWjC9luP2D/gnyXtCUP5MTbMYuAJ7t/b3B1e4s+5n3
-         C2V3YQ+T1uWUGalHspfgRjJ7PlC0RqLxQAzUhMCemHdmz/OnVwjCKGp1xPjFHisKBYDU
-         acnPuICRWTrTXnqhe+tbH8ELqavhyTOsoEOW6LgIW4LO00bagROh9y9OeekcwD3w+T76
-         DK+0qEcLCIgeFijWnYTN1FX3fg5UwZT7vdsCQJi9jYTvoOrfcWP70PWt4m++Q53P6c/f
-         zfNFqT/F3gbNwY6s4zRmJEUAfbK7IR4fVz3vNJdgLOXvAxnAauLc0wETSD7GBsbE+d48
-         om1Q==
-X-Gm-Message-State: AFq9FYIc9ZD12Do0QEgItug0lC9kmOyzzQBHSe74mBDwzyxAaWAvpdh5
-	/2xhEbnZoJftmWFCZzKJBL37VFuLYPbESLYFM0oqHznGbCxgNB7vpF6nW3RCMvWzthX6z5XsFrm
-	229NrRdJwfwA1a+HePxldpNncdjyEuEino22mkpYG3G7H9e0koPj2Wg==
-X-Gm-Gg: AYBFou1G/6ZKRMC07CxnRWYnFXkwOX/XqYKhPxpFUm/ASA2bm11r51YMOVAKhAHUGRt
-	D4PPc7uz+dbH+7LnBVoHctEqIM+8LgfbcxkZ1jbf4jd0KmLOF7NHPPm+wahEjk9tYenRtAk5cpV
-	RhMVqT2Ya0hNPOWmRc+Own6YRSBpz74tSR8ftIRYeulM3s0hTW3C4R51l8f9EW41dyb12v1Wsrp
-	OkSRbp1UiMM8nmzvw1xTXF5aK/c/8/MMb1Q0toxSl3PqiRADDecpCmcbCdx2xqHxMpw/s9Xv1Iu
-	g/kZAs6OgkXK2I4FOX6HLzVIu1SyR/+7qTR/jSXw6jCxONe5ixpzMgd+M8d1+tu5lwun/a+RmIS
-	cQZpusdxcDk+62YqPJBHXmrVzv7tIL1r2ENFDfc+f4w==
-X-Received: by 2002:a05:6000:4011:b0:48e:37e:470f with SMTP id ffacd0b85a97d-48e3ebb84bcmr13705202f8f.51.1793005266782;
-        Mon, 26 Oct 2026 02:01:06 -0700 (PDT)
-X-Received: by 2002:a05:6000:4011:b0:48e:37e:470f with SMTP id ffacd0b85a97d-48e3ebb84bcmr13704486f8f.51.1793005261390;
-        Mon, 26 Oct 2026 02:01:01 -0700 (PDT)
-Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (g3.ign.cz. [91.219.240.17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4bc5sm14925277f8f.34.2026.10.26.02.01.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 02:01:00 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, seanjc@google.com,
- pbonzini@redhat.com
-Subject: Re: [PATCH] KVM: VMX: Add array_index_nospec() to evmcs_field_offset()
-In-Reply-To: <20261017093016.32348-3-amirmohammad.eftekhar@cispa.de>
-References: <20261017093016.32348-3-amirmohammad.eftekhar@cispa.de>
-Date: Mon, 26 Oct 2026 10:00:59 +0100
-Message-ID: <kuph5i8x2d0.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EWL0uDOq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CD61F01825;
+	Mon, 26 Oct 2026 09:04:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793005441;
+	bh=SjrKCS1IPYsIx6ZwmedhiYRwNF3yTKQbRR/BABZtZEo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EWL0uDOq4bimtB16yiSeFqejESn2omWGVl4pbrgDI5BPyVpKFiuFPe6BPMOFFeLoK
+	 4wwEDFIMjCY08dVepRRWIIjTKJUOinl1M5/CG5XBAGCc/72cC4HPCpXqYd+uOKAEHF
+	 1ZqlVz99SRCt4NvT/siYkyXxifZMbJa2+LuChteYlpymWnwe9xqoK5MnYR73yA1AEe
+	 3ju8PUj5d+krZvWDS4XmcUtiyQ4jgkjtoiQZwws+/8ArqsVJL1Uf2WKCby39kMaxHC
+	 4hfE+J2LMx3pbi5XIYr8yeQK5ZqgXNMYt9vidQPtg9+h/BS9DDIdEGC8gK1dh6Yxyf
+	 cZWdCSECd1GJw==
+Message-ID: <sashiko-outbox-184725@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v4 5/6] virtio-net: add XDP rx timestamp metadata
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Trumtrar" <s.trumtrar@pengutronix.de>
+Cc: virtualization@lists.linux.dev, bpf@vger.kernel.org, kvm@vger.kernel.org, "Michael
+ S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
+In-Reply-To: <20261026-v6-7-topic-virtio-net-ptp-v4-5-008af03cd43b@pengutronix.de>
+References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
+ <20261026-v6-7-topic-virtio-net-ptp-v4-5-008af03cd43b@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 26 Oct 2026 09:04:00 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,74 +60,111 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de> writes:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] virtio-net: virtnet_xdp_rx_timestamp() reads header overlapping XD=
+P data_meta
+--
 
-> evmcs_field_offset() bounds-checks the guest-supplied field index against
-> nr_evmcs_1_fields and then indexes vmcs_field_to_evmcs_1[] without an
-> array_index_nospec() clamp, unlike its vmcs12 counterpart
-> get_vmcs12_field_offset().  An enlightened VMREAD/VMWRITE from the guest
-> can therefore speculatively read out of bounds of vmcs_field_to_evmcs_1[]
-> past the bound check (Spectre v1).
+commit 232ef11034e0a6c3f2481ceaa1291cc9268f328c
+Author: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-I think your concern is valid but the changelog requires massaging.
+virtio-net: add XDP rx timestamp metadata
 
-"enlightened VMREAD/VMWRITE" is basically the guest doing just memory
-read/write and we can't do much about it. These reads/writes don't trap
-to KVM. What the guest can actually do, is try executing 'normal'
-VMREAD/VMWRITE instructions.
+This commit implements the xmo_rx_timestamp XDP metadata callback in
+virtio_net so XDP programs can read hardware receive timestamps via
+bpf_xdp_metadata_rx_timestamp(). It also installs virtnet_xdp_metadata_ops
+when VIRTIO_NET_F_RX_TSTAMP is negotiated.
 
-Note, Hyper-V TLFS states that
-
-"Any VMREAD or VMWRITE instructions while an enlightened VMCS is active
-is unsupported and can result in unexpected behavior."
-
-and our initial implementation was completely forbidding
-both. Unfortunately, it turned out that Windows itself does not comply
-and does occasional VMREADs, see 6cbbaab60ff3 ("KVM: nVMX: Allow VMREAD
-when Enlightened VMCS is in use"). I think you need to add corresponding
-Fixes: tag.
-
-My understanding is that VMWRITEs are still completely forbidden while
-eVMCS is active. So I think you need to say something like
-
-"""
-Regular VMREAD instruction is allowed when eVMCS is active since
-6cbbaab60ff3 ("KVM: nVMX: Allow VMREAD when Enlightened VMCS is in use")
-but unlike get_vmcs12_field_offset() evmcs_field_offset() does not clamp
-the index and thus the guest may be able to speculatively access
-hypervisor's memory.
-"""
-Note, 'offset' is short and thus the exposure is somewhat limited.
-
-Other pathes using evmcs_field_offset() should not be under the direct
-guest control but array_index_nospec() should not hurt.
-
->
-> Clamp the index with array_index_nospec(), mirroring
-> get_vmcs12_field_offset().
->
-> Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-> ---
->  arch/x86/kvm/vmx/hyperv_evmcs.h | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/x86/kvm/vmx/hyperv_evmcs.h b/arch/x86/kvm/vmx/hyperv_evmcs.h
-> index bc08fe405..052b62b8e 100644
-> --- a/arch/x86/kvm/vmx/hyperv_evmcs.h
-> +++ b/arch/x86/kvm/vmx/hyperv_evmcs.h
-> @@ -136,6 +136,8 @@ static __always_inline int evmcs_field_offset(unsigned long field,
->  	if (unlikely(index >= nr_evmcs_1_fields))
->  		return -ENOENT;
->  
-> +	index = array_index_nospec(index, nr_evmcs_1_fields);
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 23af10c613b48..e79b65653fad7 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -6848,8 +6848,30 @@ static int virtnet_xdp_rx_hash(const struct xdp_md=
+ *_ctx, u32 *hash,
+>  	return 0;
+>  }
+> =20
+> +static int virtnet_xdp_rx_timestamp(const struct xdp_md *_ctx, u64 *time=
+stamp)
+> +{
+> +	const struct xdp_buff *xdp =3D (void *)_ctx;
+> +	const struct virtio_net_common_hdr *hdr;
+> +	struct virtnet_info *vi;
+> +	u64 tstamp;
 > +
->  	evmcs_field = &vmcs_field_to_evmcs_1[index];
->  
->  	/*
+> +	vi =3D netdev_priv(xdp->rxq->dev);
+> +	if (!READ_ONCE(vi->hwts_rx_en))
+> +		return -ENODATA;
+> +
+> +	hdr =3D (const struct virtio_net_common_hdr *)(xdp->data - vi->hdr_len);
+> +	tstamp =3D get_unaligned_le64(hdr->tstamp);
 
--- 
-Vitaly
+[Severity: High]
+Can reading hdr->tstamp in place from xdp->data - vi->hdr_len collide with
+the XDP data_meta region when an XDP program uses bpf_xdp_adjust_meta()?
 
+When VIRTIO_NET_F_RX_TSTAMP is negotiated and hardware rx timestamping is
+enabled via virtnet_hwtstamp_set(), virtnet_probe() sets vi->hdr_len to 40
+bytes:
+
+drivers/net/virtio_net.c:virtnet_probe() {
+	if (vi->has_rx_tstamp)
+		vi->hdr_len =3D offsetofend(struct virtio_net_common_hdr, tstamp);
+}
+
+In the XDP receive paths (receive_small_xdp(), receive_mergeable_xdp() ->
+virtnet_build_xdp_buff_mrg(), and virtnet_receive_xsk_buf()), the
+virtio_net_common_hdr remains in the headroom immediately preceding
+xdp->data, spanning [xdp->data - 40, xdp->data). Within that header,
+hdr->tstamp sits at [xdp->data - 8, xdp->data) and hdr->hash_v1_hdr sits at
+[xdp->data - 28, xdp->data - 20).
+
+Documentation/networking/xdp-rx-metadata.rst notes that drivers must move
+device-reserved metadata out of the [xdp->data_meta, xdp->data) area before
+running the XDP program because XDP programs call bpf_xdp_adjust_meta()
+first and then populate their custom metadata structure in [xdp->data_meta,
+xdp->data) using the xdp_metadata kfuncs.
+
+For example, in tools/testing/selftests/bpf/progs/xdp_hw_metadata.c:rx(),
+where struct xdp_meta is 32 bytes:
+
+	err =3D bpf_xdp_adjust_meta(ctx, -(int)sizeof(struct xdp_meta));
+	if (err)
+		return XDP_PASS;
+
+	data =3D (void *)(long)ctx->data;
+	meta =3D (void *)(long)ctx->data_meta;
+	if (meta + 1 > data)
+		return XDP_PASS;
+
+	meta->hint_valid =3D 0;
+
+	meta->xdp_timestamp =3D bpf_ktime_get_tai_ns();
+	err =3D bpf_xdp_metadata_rx_timestamp(ctx, &meta->rx_timestamp);
+	if (err)
+		meta->rx_timestamp_err =3D err;
+	else
+		meta->hint_valid |=3D XDP_META_FIELD_TS;
+
+	err =3D bpf_xdp_metadata_rx_hash(ctx, &meta->rx_hash,
+				       &meta->rx_hash_type);
+
+Here, initializing meta->hint_valid =3D 0 writes to [xdp->data - 4,
+xdp->data), which overwrites the upper 32 bits of hdr->tstamp before
+bpf_xdp_metadata_rx_timestamp() calls virtnet_xdp_rx_timestamp(). Then,
+writing meta->xdp_timestamp and meta->rx_timestamp at [xdp->data - 32,
+xdp->data - 16) overwrites hdr->hash_v1_hdr at [xdp->data - 28,
+xdp->data - 22) before bpf_xdp_metadata_rx_hash() calls
+virtnet_xdp_rx_hash().
+
+Unlike the skb paths (receive_buf() and virtnet_receive_xsk_buf()), which
+save the timestamp via virtnet_record_rx_tstamp() before invoking the XDP
+program, virtnet_xdp_rx_timestamp() reads from the live buffer during XDP
+execution. Should the driver extract or preserve the rx metadata outside
+the [xdp->data_meta, xdp->data) region before running the XDP program?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026-v6-7-topic=
+-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de?part=3D5
