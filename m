@@ -1,67 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.108.3.164
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793054605;
-	b=m10CU1JKMdS3/Kcd94O/Zz6+AYQGWMXI6CI+CiAMxhGM5ga+Mazc/0nk43pkHwabgZ6Z
-	 Cg325kAIvZQEvVhgaM/EiGTBWssPU2sSsxpk0RLS85W1GtBTzrNV3NV6S2KRY0qpEYHuQ
-	 2wb4rFosbkx6Gt9JWtNSFd040DjiobFDz1SMVEUvogJlDZ5UOyK8zWvf7jobQIjFfwi7x
-	 xhrRsglgQy4nIvtsKfzDqNU7RPIt4RMj5OVcTR8CUQZJ6rXps15tutNvpw5o1VbI09cQH
-	 ns/zm4MLN5ZIbObo0f4MrUu0Q5ky9emZPU9MIa2KtDWLV8GNlVJ+TJHH0H3J8z7Show==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793054605;
-	h=DMARC-Filter:DKIM-Signature:X-SMAIL-HELO:Received:X-Sender:X-Auth-ID:
-	 X-SMAIL-MID:X-SMAIL-UIID:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=f7aSe4Sxv65Zsds/L7MRmIHr8Y4rpVrFO6R+RPKzJVQ=;
-	b=1RWc/uJonlgYRYCEL0XhM4/9dQtNkpZbbndLdi/4nB81TlpapSOJui/lsAUBYHPmzvHb
-	 uRYPUVOXzKpJxGAIPbDrgcqWU0lHzt3rMi5w8DB8mXuXUwmVnvhCSYE6MCUkPhLPwdMyz
-	 wyC7TDqX2dYjrs3uB1UnZJE+uVKscLI2vIWv3TF+/WWauFqVeTti7TISP6WNje6vFftGl
-	 GXNJ7tiWfsZjDjvEhezTW7rtSf0vP5v8OMYTx4cI8SUe8gDIm+YMVqs9hEeVmj1UIK5uA
-	 8d4ZG7OCEV7vOFq3gJgMjtlcmiMITpnfImiSpQT6/+mk3YPSdaiE846aoggzBbhpeag==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sina.com;
-	spf=pass smtp.mailfrom=sina.com;
-	dkim=pass header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b="M3JW/aMW";
-	arc=none smtp.remote-ip=202.108.3.164
-Received: from mail3-164.sinamail.sina.com.cn (mail3-164.sinamail.sina.com.cn [202.108.3.164])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793055393;
+	b=x7kIBAEz8Xv3G4f4duH2+VACxk6BtTea23wpCxwY/FK+aKj9RKjVIDpo1nE2fWFDnush
+	 KzoJWYrA37mvKq6SvsuluLo6ZXZJ3INPTjDoBa5v2yPNcEYEtiWuMQP4AY/W6uRkgdUpU
+	 /f6RHWSYvLp0oeyf0qRwo88o+bWDjvMNmm0QxHt61/+shx7UiSQgHyBHXnbshoZMBexYf
+	 TjlcGBuVvURPU6/lHwqw81wnyJu8qG7pKyZVxGLDeWdSmGHSQG2Gq5FJqEuPJzgN0zQ3P
+	 pUj5ox23JOE+1N+N30nv30j9IBn2MjmZpra/S/zmastAqJPhx06/A/j7ZogQE0DFA6g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793055393;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
+	b=4xyM/V+0Lm5mGftf6QrGmaQW9ZgYfeqNGXNsKM7RdKF4v8Q4i8aFdIDaNHehEIOhAFB3
+	 xxCe0FsZ2521nyv23ZC8JGjKnE144ILcX77gZRIQQ6pfIepS4QK66YGM5/PbJztAl30lR
+	 +wn5kXesLcEFXupFU1S4mvoy0jLkJ60lgeKK3TembdfaDW7d1sv+rT4QEJjQG1I567L/z
+	 pKUdNeTRLA/WNlb0t0Exj8bdUy+RgnwKAhvsQd5IHrgmAeqs8wU94e07EOKk3EKAsktUG
+	 GJ8Tyr7x2SxUdUIxAxL4mpQAQd9c7mXyaSgrjO1x7LBd0ZL7PivCv1ZY9Oz+quDQvnA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=s8grGiR3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.42
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5122C606A320
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 22:43:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5122C606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D582606A325
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 22:56:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D582606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=M3JW/aMW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1793054602;
-	bh=f7aSe4Sxv65Zsds/L7MRmIHr8Y4rpVrFO6R+RPKzJVQ=;
-	h=From:Subject:Date:Message-ID;
-	b=M3JW/aMWQmCBRx/EXnFGkX1icTbjIDq1XmZfHAbZBAFWvJDp0F3AuKcY5mWP9sx64
-	 doJMqeNTpwAoHorWGHPWuTHiNbY/Da4asBdpYGCpmpTIN/35g9qhi7xvQfpSfMRR+g
-	 64KKAu9bRYDSMcheidZwjIihxdo3HoJnrIMnRTwE=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([221.216.116.161])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6ADFD782000022EE; Mon, 27 Oct 2026 06:43:18 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 7175894456982
-X-SMAIL-UIID: F2260DAA33A64767990FCE80BCC0D11E-20261027-064318-1
-From: Hillf Danton <hdanton@sina.com>
-To: Boqun Feng <boqun@kernel.org>
-Cc: syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
-Date: Tue, 27 Oct 2026 06:43:03 +0800
-Message-ID: <20261026224305.1254-1-hdanton@sina.com>
-In-Reply-To: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com>
-References: 
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=s8grGiR3
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c423b145922so479998066b.3
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 15:56:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793055391; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cY2Lac45+/9JJKBUQ0VRTtr3YH+4JZ9iHsu89NxFlG7Pg3XdnmbBtUmOW6PBIMrgN7
+         ngIhZG9uY6Dq1XtEukPxXw020Gab6kGPKemLhIMJQ7WdcbIMlq3cQv7jy4h9jhZF5cL0
+         T3cnsEeZ45QSMYJI1kAbWnc+WQf1TF9x/BU6JIlxRChXji08VXe64j/G4v48B12ilfgL
+         rpgqD7hII4KiS5wNSzssdWINg7+Z5Ip3YyXituGgtZV5/v/T8Hajk6EDIzp02/htsb0O
+         ZIUXA066EXLry5NVmWKdTd1OX0+/OP/sLdCk1AvF6uASTMjMZ7UIty9J5SjuyXUkLvdc
+         AbrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
+        fh=gjQnyH4gMxkDVjuRnVxsFVR/695HDrTh1NEYQDmII7A=;
+        b=L0QvGSJNW7OZZTv7CKy4EwuFiX8snp5T5x8gYt30UDEiI8oJXwtPQSbgZzxwbcByDq
+         bGt+YkzeDdRBntcL7AsEHb4mYFr84CXIennJ+GyfIo3JTJKGH16wTTfBbzvzijSF/CD+
+         YCItHOStgRUyU3GS+Uo7D/OqokcG5irmqNbfftLj4LcktvZCo57DMT63Eq4IGJZmQFuT
+         qAeZjzfzIpYHJTlmXeECJEbsWAeT+YkxSF6aM/iQmtUNtRNt4DKIjg/QH4YN/XA4qHv4
+         /NOEOX3LcUpEwBTLtC9bu7btKHnaPjvqMvhPCso5sbmwyz3G3ro9VCUXrk8NQu1ickR6
+         G3JA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793055391; x=1793660191; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
+        b=s8grGiR3jmOk9ry50/nEnZjaxWjWOPyppi2m4MHQTMfb5el8k0obk5/UMSWfPsQmIM
+         HPtLzsEa12OcSsVXiRmiCNw+UUDDo1UYyS6DiU9bwXoKmoGF82ns9DjJzrfs9pJWdjkT
+         dIxIeAf/R+LNQl/XTj1bdocyLOLlTkNfh75pW2KuZcZpn6JGMaXwZms8i83nnm2msMhG
+         qxuIapSALuC5I4z0EKwNizZvGG6PaVYwrsYFc03clQ+zaffY9Yi7+Rd9DeVq8TqQMsPo
+         mOa9KjkQgAnBHYiQJzjduIMO8ab1In9zxpTDESz20wql691IHa3z4eYMgIiR+VfFmdpS
+         4rSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793055391; x=1793660191;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
+        b=1n5zMvhlX0kbHiso9A43hHHQzQx1HfX5rn6rhFXq07BLCjlPxZISMC9U0GLknizQk+
+         OeIxQlctumyLJeUEJJZqz7gKQza05K8MiMqTBArf5883oT7I2/Me2EkaPpRUKUM+aPH+
+         edBdGnFgmNU3MUmOllrpDJqaKtwyTiw2nvpX4g9jaRLcSudEoG005ADEK5FF17n01hE0
+         ttePOa1Ezy7eZCNFrAMeBbeDnazPq5VGFYqTgGH1IyCrCHxYW956vr2Easv3aMU4VAt7
+         nSeUWbrWA2NcYhxmiljnsir05HCZkqWvP07i4hDVEPM6Sg/O1/o0NTHWcIBk9VQOuzsE
+         OOhg==
+X-Forwarded-Encrypted: i=1; AKwUvBxpGsgHLawl8Mfl/8RBm76CQgrZ3YONvR+ev8eDIoO+Cwm9w/ERsfhB+6ITVRTROlnguaA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJCT2z1+Qq/1nc4kaJfk78udX5BHrqsiM4viGEnwKCgKbMXksBU
+	bIOZRK0yVt5bJR8Ya2HqKnXUiXQHMFNY2sFZPowQAznI6JCAgGo7vQqVBwK1Rcuvw+UT8B3flLg
+	Y91tsBhfTrPnhymz0jMu7fiDexhUlxtiScaIdHoyZ
+X-Gm-Gg: AYBFou22tgHMbiU1cPX22ssIbDBqV25LoCmDbTnjNiJATlRUcYYBWkH4z7x0LlGU1wn
+	8FlqbFoigfyMtsHZmsbPpVsJp3+Bn/YOfJi754379RXghGoiS86Fq12ZSFi8tXmWgIB2SZz82rz
+	IhQxg/3sQOKR/DYx1xF7ecgtGqEIXSlBCSd1j41uEnGgLdKVq2eftQgNaI2mdvMwEhWekuABZmF
+	ewwxgc5VQepGQk+M4LYYH/xwBj+w8ugvanXjtu2NKb7wtZTxmnyV7rYZy0iExEWJlVwn6Rxbfvp
+	M274EEOpqMrNZrvZoE/IhySAMdTnqh+P+PBmxAyKpA9qJFkcAgpNcm3DmnqKFeoGhvxKPD0d3KA
+	r3SehIvRB+2YMUMg2MXIWuk4XHkR6IIUhOLLc6tWxtkY/alSbn8UXjCjNarDA5BRyN4cAmfwATN
+	P2Qg7X8m0/YcXJWOrg6HYLd8vK98BvOuDeouIQnuJBJkLOm+e1Xggo0qcS6MAApkEyzmtdAsNiR
+	AW2QFoY
+X-Received: by 2002:a17:906:9c8a:b0:c2e:7da8:f54f with SMTP id
+ a640c23a62f3a-c46bde874d7mr911731866b.38.1793055390933; Mon, 26 Oct 2026
+ 15:56:30 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,99 +106,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261026215226.3713941-5-jthoughton@google.com> <bce97570ea9665a2f83216d4dfd7ab7ce17d54aa777f761c3d12db430ba21bb9@mail.kernel.org>
+In-Reply-To: <bce97570ea9665a2f83216d4dfd7ab7ce17d54aa777f761c3d12db430ba21bb9@mail.kernel.org>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 26 Oct 2026 15:55:53 -0700
+X-Gm-Features: AclHuK_4pEIR4EnpfJkK690R4CHqdS4wt-7zneGKcf5MW03i114xuH5q5kcZiJk
+Message-ID: <CADrL8HXeYRC8w7F7e_6ZXK6MHd6FRepN_zD632j0JPjNUDrLZw@mail.gmail.com>
+Subject: Re: [RFC PATCH 04/10] stacktrace: Don't unwind the user stack without
+ an mm
+To: bot+bpf-ci@kernel.org
+Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, tglx@kernel.org, 
+	peterz@infradead.org, kees@kernel.org, arnd@arndb.de, david@kernel.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, seanjc@google.com, pbonzini@redhat.com, 
+	jmattson@google.com, axboe@kernel.dk, asml.silence@gmail.com, 
+	James.Bottomley@hansenpartnership.com, mkp@kernel.org, dsterba@suse.com, 
+	mason@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	john.fastabend@gmail.com, jpoimboe@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, mingo@redhat.com, 
+	acme@kernel.org, namhyung@kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, andrii@kernel.org, martin.lau@kernel.org, 
+	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ask the locking people to shed light on the warning.
+On Mon, Oct 26, 2026 at 3:30=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
+>
+> > stacktrace: Don't unwind the user stack without an mm
+>
+> TL;DR: Commit message only: the Fixes: tag may point at the wrong commit;
+> 7e8e6816c649, which dropped the !current->mm check, looks like the real
+> culprit rather than 214d8ca6ee85.
+>
+> > stacktrace: Don't unwind the user stack without an mm
+> >
+> > stack_trace_save_user() only refuses to unwind the user stack of tasks
+> > with PF_KTHREAD set. That doesn't cover all tasks without an mm:
+> >  - A user task that has already gone through exit_mm(), e.g. when an
+> >    event fires from exit_files(), exit_task_work() or the final context
+> >    switch in do_exit().
+> >  - PID 1 before it execs init, and usermode helper children before they
+> >    exec, which are created with user_mode_thread() and don't have
+> >    PF_KTHREAD set. E.g. booting with trace_options=3Duserstacktrace and
+> >    an event enabled with trace_event=3D unwinds PID 1's "user stack"
+> >    during initcalls.
+> > With the ftrace userstacktrace option enabled, the architecture
+> > unwinders then read the user stack without an mm. That access does not
+> > reliably fail: the user half of the address space belongs to whatever
+> > mm happens to be lazily loaded, if any, so the unwinder may read
+> > another task's memory.
+> > Use is_user_task() instead, which also checks current->mm, as perf
+> > already does for the same reason since commit 76ed27608f7d ("perf:
+> > sched: Fix perf crash with new is_user_task() helper"). This also stops
+> > unwinding the user stack of PF_USER_WORKER threads, which never run in
+> > user space, matching perf.
+> > Fixes: 214d8ca6ee85 ("stacktrace: Provide common infrastructure")
+> > Signed-off-by: James Houghton <jthoughton@google.com>
+>
+> Is the Fixes: tag pointing at the right commit?
+>
+> When 214d8ca6ee85 added the ARCH_STACKWALK version of
+> stack_trace_save_user(), it guarded the unwind with:
+>
+>         /* Trace user stack if not a kernel thread */
+>         if (!current->mm)
+>                 return 0;
+>
+> That check already covers both cases described above (a task past exit_mm=
+(),
+> and PID 1 or usermode helpers before exec, which have mm =3D=3D NULL).
+>
+> The check was replaced by commit 7e8e6816c649 ("stacktrace: Use PF_KTHREA=
+D to
+> check for kernel threads"), which switched it to:
+>
+>         if (current->flags & PF_KTHREAD)
+>                 return 0;
+>
+> That dropped the no-mm protection, which looks like what this patch resto=
+res
+> via is_user_task().
+>
+> Should this be:
+>
+>   Fixes: 7e8e6816c649 ("stacktrace: Use PF_KTHREAD to check for kernel th=
+reads")
 
-> Date: Mon, 26 Oct 2026 03:19:37 -0700	[thread overview]
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    c03c1a14507d Linux 7.3
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> console output: https://syzkaller.appspot.com/x/log.txt?x=128d8ca5580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=129d675874dbf896
-> dashboard link: https://syzkaller.appspot.com/bug?extid=f11512d1e5878ba5e60e
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=168d8ca5580000
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
-> 
-> =============================
-> [ BUG: Invalid wait context ]
-> syzkaller #0 Tainted: G S                 
-> -----------------------------
-> syz-executor177/6041 is trying to lock:
-> ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
-> ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
-> other info that might help us debug this:
-> context-{2:2}
-> locks held by syz-executor177/6041: 1, last CPU#1:
->  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
->  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
->  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
->  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
-> stack backtrace:
-> CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
-> Tainted: [S]=CPU_OUT_OF_SPEC
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> Call Trace:
->  <IRQ>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
->  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
->  check_wait_context kernel/locking/lockdep.c:4946 [inline]
->  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
->  lock_acquire kernel/locking/lockdep.c:5942 [inline]
->  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
->  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
->  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
->  get_partial_node_bulk mm/slub.c:3831 [inline]
->  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
->  refill_objects+0x58/0x410 mm/slub.c:7405
->  refill_sheaf mm/slub.c:2885 [inline]
->  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
->  alloc_from_pcs mm/slub.c:4850 [inline]
->  slab_alloc_node mm/slub.c:4984 [inline]
->  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
->  _kmalloc_noprof include/linux/slab.h:991 [inline]
->  _kzalloc_noprof include/linux/slab.h:1312 [inline]
->  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
->  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
->  instr_sysvec_kvm_asyncpf_interrupt arch/x86/kernel/kvm.c:327 [inline]
->  sysvec_kvm_asyncpf_interrupt+0x9e/0xc0 arch/x86/kernel/kvm.c:327
->  </IRQ>
->  <TASK>
->  asm_sysvec_kvm_asyncpf_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:753
-> RIP: 0010:memcmp+0x156/0x1d0 lib/string.c:665
-> Code: 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 42 0f b6 14 28 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e c6 <84> d2 42 0f b6 0c 29 0f 95 c2 40 84 d6 0f 84 45 ff ff ff be 08 00
-> RSP: 0018:ffffc90003ab7538 EFLAGS: 00000297
-> RAX: ffff8880220be413 RBX: ffff8880220be40c RCX: 1ffff11004417c82
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8880220be40c
-> RBP: ffffffff8c58a940 R08: 0000000000000001 R09: 0000000000000066
-> R10: 0000000000000066 R11: 0000000000000001 R12: 0000000000000012
-> R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
->  strstr+0x109/0x170 lib/string.c:743
->  tomoyo_add_entry security/tomoyo/common.c:2157 [inline]
->  tomoyo_supervisor+0xf47/0x1340 security/tomoyo/common.c:2238
->  tomoyo_audit_path_log security/tomoyo/file.c:169 [inline]
->  tomoyo_path_permission security/tomoyo/file.c:592 [inline]
->  tomoyo_path_permission+0x270/0x3b0 security/tomoyo/file.c:577
->  tomoyo_check_open_permission+0x37f/0x3c0 security/tomoyo/file.c:782
->  tomoyo_file_open+0x6b/0x90 security/tomoyo/tomoyo.c:334
->  security_file_open+0xb5/0x1e0 security/security.c:2739
->  do_dentry_open+0x588/0x14d0 fs/open.c:973
->  vfs_open+0x82/0x3f0 fs/open.c:1101
->  do_open fs/namei.c:4836 [inline]
->  path_openat+0x1a23/0x2450 fs/namei.c:4999
->  do_file_open+0x20e/0x430 fs/namei.c:5028
->  do_sys_openat2+0x10f/0x1e0 fs/open.c:1417
->  do_sys_open fs/open.c:1423 [inline]
->  __do_sys_openat fs/open.c:1439 [inline]
->  __se_sys_openat fs/open.c:1434 [inline]
->  __x64_sys_openat+0x12d/0x210 fs/open.c:1434
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Thank you, yes that appears to be correct. Updated in v2.
