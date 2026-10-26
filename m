@@ -1,103 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793031154;
-	b=cD0ySkrke2HmrpnXwObjV4yJ/3itIFRRUxl7juy4msXZn9J2P1SSJnPCd6XUFaoFt0N1
-	 RSoALeLPQmF1+NtHsswyO8cLas+oiSz8hzSeobW5yEDgX64SI0RqwEcuRLoJTlJDppLbj
-	 t/9JqpS9nfmkD/dgW06jZevyYBWi6Pc1TBqMUukjzIQcr9x+M0qaRBcaXmzbfSvV0AxCA
-	 J8bH4UN7YDOsAGFK0kHD07DDjKveKKiv8KXd7LnaFVqZYJ8+YrRvVMQa6+Fr5mh2QaXqs
-	 jXs2nv0EvjJYhrgMLIk21Pp8YXK0K5GIyWcJ4Rhi3xjs9/HyVF3T6mYomg5srIneKZw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793031154;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jlkPzgTlmUMOKrW11p2Wj2h4Qapw8gJ3Mse34u5Vu34=;
-	b=OwEKztxgqakw7Iibc4RxFrw+d0aMSGVAQyPR+SysaBJf7mI9rc2wmuWHy+k3YDFkrHg/
-	 AMMgLmmV0J8Ai92S3HUm1bnBxFJzwsyBA98jbnX0FA/Y8N9082iEOdzHh7MBkME24yXK6
-	 xh5P1wk0TpqVOC4PfaHOOUvnyb54azKEBJL9dVs8YBJnWU0QEdTmeaQZA5uQ6vAdwiW+3
-	 6piwexxZE3s0RTqKNWVNgXB9QGue5sQLITlHrlXCJCC36JF8wVDObO1CrI/jlguan+KQg
-	 6v+fpQDJevEzA8zAzZg4i4edD8d5/PSnQ/Z8DQLv1fKFOZFUtMNJxd1vBkCl/cHAArQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VNkRZ8gs;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.48
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013048.outbound.protection.outlook.com [40.93.201.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793033518;
+	b=m0WWirPOwU18O9du3tema0+lQSd9VtZlREK283MU9AG7uelmom3NvQk0V0JPXXTUKrSv
+	 QVwGf2W3/6Dy2BjD5yAkEXeQsQr7XGZ3Pt3zxOIMXUKm5e38cbScuhAwqeOskZfdf2wIe
+	 VF9jgu+77fxs4vUlacjdAzWD+tF2F+Mx5miJqmNftDQUpaAPTeQJZxEioSk4H+1xTGhM+
+	 /flcgjMbGeHz7H1PQDEO7HH9x3KBQ+RGpWVfxrQ24HYZ9f5gWa++5x1s+guZtfbAhHCK9
+	 CNT9FCJa2jxFnVFo18SeA/4yY16iZj0xNtagyPIrrkSGaSIBcWPdzFvUqbyK2+WyHKQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793033518;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=2/2qQgHjg7B4L90wJY7NcYQb/sw77pDt+0YufHxfkwg=;
+	b=KpM4k39o5E9LSOLz5WvcKZmg7x9AuWmt7N9PaKmPWl9yWLeTWLZps8zNEk23cLq/wxnf
+	 7ysJhMD3Z80I45PVU1FOQ1Aea2OGQ9OY7337NRRwdoSL08D4hbk7tYCx/BR5NYca9laY/
+	 79TBYh2XeiymciaXQ/WeFlnbvluoLPnczpCbBhAcp9tUS4mod576r0xzFxA6ckJ4/I2LC
+	 2u1b68JSTbk2D25puT5/dR/WUfGVCltCvGpWeLIujXfAdqodh7zGA2uP3XCo/U+vKt8cp
+	 4L99iVew//j4fy8yn7MZuOiYQ+PvefyB0MR9AWNzSLu6mIeCEY8N6Q7F216sPGQ3jbw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uMdD4p6K;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FA1606A31A;
-	Mon, 26 Oct 2026 16:12:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33FA1606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291CD606A32D
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 16:51:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 291CD606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VNkRZ8gs
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WmHCN5CcKMI7Inqcr4hQND48iB4MZYug+znLE845FJuPkThTvxGYRFAOAFTcR3y04e4DtuVyDvl8FtzskSAsNDMOVrW/sjLKpuAIMjyIiUyvtkFePGaAvJJ9G6RAXx1OjK8s9mcidD7jRrH6XH5rP1aye9I9Cd4kGHmu/Pfy4SEl30mz20fQfI+DO0UUYjREBrRJpEjy4UtdBBwqKTz5D9yuxh+zixhMy4g4x9Sv075yrKAgXBSFOjvo4Bl0Og78yvOAN1CBDrr1/4/h3qob2MPMkC8hzj/sm2iakurRdOy72Om3Ok8H1foTKGeW/oOkrQIhWKarp6/XG6Ykstx/ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jlkPzgTlmUMOKrW11p2Wj2h4Qapw8gJ3Mse34u5Vu34=;
- b=I9k6kg41OTMnva3aeO+aq+ia3RNxKWIaEZR/Qa1LXdSh2KsBuwdGmRdGxNpC6DPziKR3s7bpsWbJxoKo0STTMtsjxs7Z5Wdqf+QkDJ6w3/K35yVHKCjzDh15KP7o5dzMpQB30uKecR9qN/Nbl3XX4pSJ+Gi/UsMPDZtHe2ACsonuSMq2Wx/O/sxnkdcs2ckd1cUalf7opxmSIIilDfg23jlWvIZfIE2Af2GrL8QSzznXB47RkOgABZgBAfBJerP2TdOS0czy/iB+HIWcKdjNd5dJRdl4hCb9Vz29YcSQ5v0pRjDymdcz5x5ZjzSiMvv6E4FaPuRivYfZKMl31yVUkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jlkPzgTlmUMOKrW11p2Wj2h4Qapw8gJ3Mse34u5Vu34=;
- b=VNkRZ8gsVSwVIYc9y3gPHhzxGpt1F4fSTi7KNVOpgxm90QDs0Aqmw0lAFQO5LUA1XmOkVPozfhpjTE2l8iEHpmk42x7LKpasMFYZeMjt9Pae8Z+ITLUqn1fo8cPHDu2CnXSxzT4ZatO8bTQ8UevWPmMHGxhU7V11+/5ujyH5ASxDA+uK2YSxvYyVLWmXc8nN2cm67y5r+qw0gd9kLEVqHdhqX9w/1X5JPMlK7ME3fS4iIaFzfEp4yvZXPooWrXkW06LlvoISMq1vu8e0uzXj9OFTwdct+zkpx0uL8bStpmW7rw8wlrMi8m4u5QBUENfIhILhEyNCwv/qgSiYwRuWPQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by CH2PR12MB4312.namprd12.prod.outlook.com
- (2603:10b6:610:af::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 16:12:21 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 16:12:21 +0000
-Date: Mon, 26 Oct 2026 13:12:20 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com
-Subject: Re: [PATCH RFC 11/20] ctlv: Prepare runtime introspection
-Message-ID: <20261026161220.GA1671235@nvidia.com>
-References: <20261015145053.3664509-1-jiri@resnulli.us>
- <20261015145053.3664509-12-jiri@resnulli.us>
- <179302367452.58760.11808905856343064399.b4-review@b4>
- <at9nsxtGOl3N5PJR@FV6GYCPJ69>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <at9nsxtGOl3N5PJR@FV6GYCPJ69>
-X-ClientProxiedBy: BN9PR03CA0373.namprd03.prod.outlook.com
- (2603:10b6:408:f7::18) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uMdD4p6K
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a5b2be99a8so11886525e9.2
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 09:51:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793033516; x=1793638316; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2/2qQgHjg7B4L90wJY7NcYQb/sw77pDt+0YufHxfkwg=;
+        b=uMdD4p6KVakawh179kk8FHBLF5CXO9wel4SSzout3Cv109M7RXUmUmrC9sJPIgWsSH
+         9ABB0JV8Z5NUOTGY7GHDP30lVe2PF06Z5Rb3sGZu9AHhb2etfX/cHvQCyiGlPRRn3Cbe
+         CFLeOIxpliD0sRukb/bWQTt0J7k1R+JKXgZVJ1KMgCeuSSmAA57l+zaNLFl6HnQ/Ahaw
+         zQi33bNvGhiw52l+kM3vvg4nLkAUFO3pt8PlK45P8ZDXb1WCt8rTiBonnjcILrrKElFt
+         fjlgVO/cXdwsEDjIa5uw8AyiN4qBUQXEww/1M11No4eGietgwgSL41okjBF4DwT+0EjC
+         VbRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793033516; x=1793638316;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2/2qQgHjg7B4L90wJY7NcYQb/sw77pDt+0YufHxfkwg=;
+        b=ZjwHY9183ko+ez/C9Lw5FbaSQVF5nZgE28PCmc8ehC8uMjuk2IINk/3CIhgxVc5VMi
+         NylFfuwif0gdfn+csMGrPXa7I/kZpnAOOo71SGsqiVzA9kid8B6Zyu2RRPTspa4sD+Pt
+         UtI2KDRgKcPRCURyu6jJUOSksCu75J3Zqa38VbtlKRwEnfP/obXEKatN0F+QawuXNX3Z
+         zjHSJ5k+Bjsai4QxwBeq5vzTFU03bInomO5ZRfSHBQHaTe06sKE/wCBofOwsnIWuYNL1
+         BFdeqpYkr8CvnwaSp6TpsUcX0JEOyacFyeh4q3CLFuvi/bWAZuU7iEFNoPtPQ1WLi/YF
+         uftQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxuCE8aLh15CskOcCPo1oWo5BhbjJhoCvkX+uqbFda9kKBXzKt1dffYGpLVnOCPDALRfeo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJggmesUuIjMq3qAg8OWoYzIAphXzJtXVw0/u5OBw5dEJccSbYt
+	y94Nl2GtS94C/CaH7bnicMfvpI0Ae2vknzAHT2jbhT2+z19bjLU3C/IdWQl6okHyTg==
+X-Gm-Gg: AYBFou3F6E3TwIo5YasFsI1yD28+/qIyfT9D09HVxYfI0t/ETZ0XyLw4BPVEtX1DC57
+	wcCvyLe18Tzmzvl+SoLhkELE5ntJttvfg4r/AS6mi5ojZooVEOaCgdPg5g9fG3qJHDi+t0C4Gv5
+	y5iT8qiVkAHwH1Khq5duIR2eN1nHuMVHKHZdh2JnLhrehlDR6mcsbr1j49OdMRepCktSToBtneK
+	2juM+Ze+v5uygGAzeOfJ0NPqDPIXhMZgdl1WsNeGqq8hDwTh06f8oFXl13L8OrAZHNrJLZKI1uf
+	FTw0BtUpYdkDM1lC5kElxU0qvdDUzeWI1COOsF3Ov2K/Dz5rIN4se8+rZB/13hlB1che0bdTN8O
+	Fc0qZU8eTccvZ+ii4FhjxsoEbVk68L+uZVzNMpGNV/8VUiR503R/RoboavU/X1VO+C7VZkV3N54
+	Go/dAnvJNOsxN1qOQ9nGzbgxQiYisen7Q/6SJsJyNkxU3rdJSCQEvm0Jvwde4gqYOQ2b8yUSzGJ
+	9o2ULwlygdbr4h8uHObq62tyMCjFFy5f+RgkLGhS3NIFBth1b8nd7kVUzCsz88M3wbrH9HZlwrx
+	tomhQtwh9VZ609QpXZXw4UFr
+X-Received: by 2002:a05:600c:46c5:b0:4a2:1364:252b with SMTP id 5b1f17b1804b1-4a35acba20dmr143926245e9.35.1793033515974;
+        Mon, 26 Oct 2026 09:51:55 -0700 (PDT)
+Received: from google.com (197.183.140.34.bc.googleusercontent.com. [34.140.183.197])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a58a293sm204540985e9.12.2026.10.26.09.51.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 09:51:55 -0700 (PDT)
+Date: Mon, 26 Oct 2026 16:51:52 +0000
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	kvm-ppc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] ring-buffer: Do not check si_mem_available() before
+ deferred init completes
+Message-ID: <at-FKOk_-OrKTP8H@google.com>
+References: <20261023145459.47516-1-amachhiw@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -107,106 +106,112 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CH2PR12MB4312:EE_
-X-MS-Office365-Filtering-Correlation-Id: bbdb8a00-d070-40de-0138-08df337bea5d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|18002099003|22082099003|261026121527099003|3023799007|56012099006|11063799006|4143699003|261021121427099003|10067099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	F6w0XDT9LyST6qOcKb2CDq+wuUDQb3azPD+hJHg7dQzVw+/rFtGAEU8D2nVi+JRvEwbjQCsE6ayM1ARCjAZzhIObxDbCLX5RMb+TfnvGOVSCOwhL8SO1BK9+9YxRnpKJnZBy30vm2nYxTrS84ZqNtaBTy6LC+h9FXEVTcmhTFXxqEiFSr5U5mFvZBXKpZPG2UXotTEIwYjp/F96HcMVDVs/lqyMEWjadjkfTEiD0WWZrn6ADUR6E1FnzuIdGWhe2LZm9T5mrQPo19Sf4wQQTNrYtKYwtQi17l4pOtsojYpwpMWzakHT6ORm3ZJT4rMqjYBLQb+KD1owNHUuT7wp2WmG3q22Bz0rFK0ifry4I6szig+TPiTrCG27s2BnrdyjDSmChDska942Cb6n0KZOiYvUa+Si62Z7fqGQ5BSkjxN3sJixQydsaKrsCe/kBMGH2I7/jSMzDAZcwBkLeyFN1JGbHP2CLe/ZdMWFPxMRdkKP/f8TKTtRtBV3VN2ekH3JDMESXZ873rStfAT7mqGQwldTs2vCdKQaviUO/R9POBfHUoHPtq2vcvl0inE0NnssEG0ypNDVhd+YgqZ4rRVPW/yaPzYHenbIWgPaAIgQ9DTJwqWzoujPRIKlhnD72aj+odH56w87woTwpKmhebwYDYme7IIQ2oN9RXpvZwPVQZSY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(261026121527099003)(3023799007)(56012099006)(11063799006)(4143699003)(261021121427099003)(10067099003)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QPF5V16Gu8NFRhgj/OAzwLAMqP6iS7NPDPhFOAr/XpJ/RK2ZuTOF3S68GG3H?=
- =?us-ascii?Q?hQEMiM216Xodwp+uV3MGvA6sQZ305F7BhxvkMw1lE9SuNQzYlSISLVUL9XGA?=
- =?us-ascii?Q?2Kf15koZpSDGlNPNu3rbz6XNCLL0+tZ79V0Z3rLMHUSCHj2oAuXiJD3k8Xgs?=
- =?us-ascii?Q?3vV59wuav2UuSD2vt40rJIdYAH8veinOqgtBbyAe5ld+hU/TfW4fPT1JuQBe?=
- =?us-ascii?Q?EErot6t8BVhW/ExLcbrTLLLomnvr+PXZ6YO5Gt/BTix20tqEzy1W3VaJ/+hv?=
- =?us-ascii?Q?GwOoB5IRwsZbtDDvrEl+zUxaMsTWqw28U4Mq/qHl3CHlFw3HHe35URJ3oZTv?=
- =?us-ascii?Q?vSfmqMrkbcb27qgFfP2Myys3HOhJ4jpeKIC58xrsm5vwcISec5KJlr6O2xBb?=
- =?us-ascii?Q?cF/q2QE1q04wrj4BzsD/d9ux/fLNqaUM4ALm5TQEtLT7a/SKxD3vaHBUCu49?=
- =?us-ascii?Q?DcGfIUVCtj+YER+oScaTProtCUluXTSsiQKoq10kWW3izmpNzPACfe9LadBK?=
- =?us-ascii?Q?hIQzXpxAMofLg39qsPsIb+BMD+Z/ABCuXxuLS8u3rhhV7fop3bJRbqz7J75N?=
- =?us-ascii?Q?WFCagsGAwR1GH5HJkUd7JdSeCUhweBgmNyOBbn2IjiiG4aRmDw4fcI97bqnZ?=
- =?us-ascii?Q?5m+9vV9c2uyL8WjG5mFAyUZ3GLcTynmtwk/X9eVfoAohpLhnyPbNN00DNi9Q?=
- =?us-ascii?Q?WjZKtiioRDXznzs4DloD3jZvRuEgq7Ch9Ygb56smRqjPjoiL0AMBiUqxmIo0?=
- =?us-ascii?Q?mL7wlrXMqap+egTC6jMpbwKGsDgxPUz4tQdRdDR5xbHT5eXgQ3g149u4zLq/?=
- =?us-ascii?Q?uPawnYlikcP0BTioqwrC7fUs/Jpru0k/Ju/jjchg0wBrjWNtDRQJwo7qtGQ5?=
- =?us-ascii?Q?nr+8IPEL72S3ZG57gP6ewdxoWRS5qPVNCxi0nJeLyPcpAg9ysqF7W8qzKUJM?=
- =?us-ascii?Q?CESOiAbxWd0749c7qpnUuXEFnCmfAfh87rbxX+GVnDXa5+VtEmQ7rU8pbJAq?=
- =?us-ascii?Q?Wzd1lIL9NJeaDMhZgQ+teScoQEI79ABkiKMeUqBX7E0SnYPhVPVS9EMQG5bh?=
- =?us-ascii?Q?vq7/pI3Zl9B2kuXAwbwI2WRWkQkcF2oFa02iidJUHl7F55U0aFTbK8P15HwG?=
- =?us-ascii?Q?op06xsLN9+tmlLS9qa6ry8remCb3q6lO1UgDipVC1+wGvWNlcLwIBjsWUBxb?=
- =?us-ascii?Q?jrRrMEB2n77g5/f+KqIr+GabsT1Wvd8S9oyqGOhuCmexIbksULI9CG2MCwWh?=
- =?us-ascii?Q?61f6mcWaM+bE4uWjSFTAjgheE0N1S6Adot7tgCL9fzXf3hu2/ei3k1cnWHTg?=
- =?us-ascii?Q?oEGqtMop6Epdoj4wk03CHLoNVHUCWGBHN5CsqkArD7qY8PkwJkF1jJmihTZZ?=
- =?us-ascii?Q?lfMJIHuisFk1qk+r6vGby2ff0xeySMTrYHCPSEgdWZBwfKmqaiOkq/wdpcr4?=
- =?us-ascii?Q?OdigYp18hpDE6DY/sj8uwKbYRoqTR5+Vze9m8eAWSR2sJNnU8XnCsox46zsq?=
- =?us-ascii?Q?jWAlq38ETsIDUyWhWhkj5WYzMHbe3QFdYDiq+j4eEVC6SibSPm/qlTgGm8bA?=
- =?us-ascii?Q?u1ndEsiAHAOHmwRgWi5nMu17XG8R8YRYZw6etkDrGe+tG83sBx0SIKBjjQhD?=
- =?us-ascii?Q?baXmqOdbyqtuolsZPxl2HFPRFFh3KCe4WDcS4gpiqt524efSRJ3+687hTPA4?=
- =?us-ascii?Q?gsiBfVfI8fYwRDAUMV+jBIhX7483J7ponXdvOoyW2rSbmGFS?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbdb8a00-d070-40de-0138-08df337bea5d
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 16:12:21.6990
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D4tUu3CnIgi7PfZwokGmK419h3hSMflqsHwC8zEWObXc3+dVIoXy+5vrwPvgF0CX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4312
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261023145459.47516-1-amachhiw@linux.ibm.com>
 
-On Mon, Oct 26, 2026 at 03:52:30PM +0100, Jiri Pirko wrote:
-> >device-get:
-> >  request: {}
-> >  reply:
-> >    caps:
-> >      evidence?:
-> >        min-challenge-length: uint
-> >        max-challenge-length: uint
-> >        max-total-output-length: uint
-> >        objects[]:
-> >          blob-class: evidence-blob-class
-> >          format: string
-> >          representation: evidence-representation
-> >          max-length: uint
-> >      mr?:
-> >        mr-flags: mr-device-caps
-> >    info:
-> >      $extend: device-info
-> >
-> >So.. how about could we drop the sets, use a direct description of the
-> >layout and do something else for the ID numbering? Maybe the numbering
-> >can be solved directly by only listing the names in:
+On Fri, Oct 23, 2026 at 08:24:59PM +0530, Amit Machhiwal wrote:
+> During early boot (early_trace_init() called from start_kernel()),
+> tracing allocates initial ring buffers (temp_buffer, array_buffer, and
+> snapshot_buffer) for CPU 0.  Later, as secondary CPUs come online during
+> smp_init(), each CPU's ring buffer is allocated via trace_rb_cpu_prepare().
 > 
-> I didn't want to have a lot of duplications. Netlink show us that the
-> same attr, or attr group (or nest) is often used in multiple ops. It is
-> not good to repeat them each time (multiple obvious reasons), so I came
-> with the sets and groups. But I will think about how to make this
-> possible to be formatted in more readable way.
+> Before attempting page allocation, __rb_allocate_pages() performs a
+> heuristic check using si_mem_available() to return early with -ENOMEM if
+> memory appears insufficient.
+> 
+> However, on kernels built with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y,
+> NR_FREE_PAGES only reflects the initial non-deferred pool across the entire
+> period from early_trace_init() through smp_init().  defer_init() leaves
+> only a single section per node (e.g.  16 MiB with 64 KB pages) initialized
+> up-front, and on kernels with large static binary footprints (debug
+> configurations enabling PAGE_OWNER, DEBUG_PAGEALLOC, KFENCE, or SLUB_DEBUG),
+> early core initialisations (SLUB caches, vmalloc, static ftrace records)
+> consume virtually all managed pages in this pool.
+> 
+> si_mem_available() therefore returns a false negative (often 0-1 pages)
+> across both SYSTEM_BOOTING (for the initial CPU 0 buffers) and
+> SYSTEM_SCHEDULING (for secondary CPU buffers via trace_rb_cpu_prepare()),
+> causing __rb_allocate_pages() to prematurely abort with -ENOMEM.
+> 
+> This failure is false: the buddy allocator is designed to replenish
+> ZONE_NORMAL on demand via deferred_grow_zone() when an actual allocation
+> is attempted.  Checking si_mem_available() before calling alloc_pages_node()
+> short-circuits this on-demand growth entirely.
+> 
+> deferred_grow_zone() is only permanently disabled after page_alloc_init_late()
+> completes (it spawns per-node kthreads and blocks until done), which happens
+> inside kernel_init_freeable() — before system_state is set to
+> SYSTEM_FREEING_INITMEM.  Skip the si_mem_available() check until
+> SYSTEM_FREEING_INITMEM, at which point all deferred pages are initialized
+> and si_mem_available() is accurate.
+> 
+> Use IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT) to set i = LONG_MAX during
+> this window, unconditionally bypassing the threshold check.  On kernels
+> without deferred init IS_ENABLED() compiles the branch away and the original
+> check is preserved unchanged.
 
-If a "record" is re-used in multiple places, then sure, put it in one
-spot, not disagreeing with that.
+Commit messages are not LLMs' strong suit.
 
-That can still work out with a clearer top down flow, more like C:
+Otherwise.
 
-records:
-   evidence-object:
-          blob-class: evidence-blob-class
-          format: string
-          representation: evidence-representation
-          max-length: uint
+Reviewed-by: Vincent Donnefort <vdonnefort@google.com>
 
-ops:
-  device-get:
-    reply:
-      caps:
-       evidence?:
-	 objects[]: record evidence-object
-
-Jason
+> 
+> Fixes: 2a872fa4e9c8 ("ring-buffer: Check if memory is available before allocation")
+> Cc: stable@vger.kernel.org
+> Reported-by: Michal Suchánek <msuchanek@suse.de>
+> Closes: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
+> Link: https://lore.kernel.org/all/arYskzbiaNzBR9MD@kunlun.suse.cz/
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Changes since v3:
+>  - Replace #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT / #else / #endif with
+>    IS_ENABLED() + i = LONG_MAX to avoid duplicating the threshold check.
+>    (Vincent Donnefort)
+>  - Trim the in-code comment to one sentence. (Vincent Donnefort)
+> 
+> Changes since v2:
+>  - Rebase on top of upstream ring_buffer.c changes from Vincent Donnefort;
+>    update threshold to i < (nr_pages << subbuf_order). (Michal Suchánek)
+> 
+> Changes since v1:
+>  - Extend the guard to cover SYSTEM_SCHEDULING as well: smp_init() calls
+>    trace_rb_cpu_prepare() -> __rb_allocate_pages() before page_alloc_init_late()
+>    completes, so the false negative window spans both SYSTEM_BOOTING and
+>    SYSTEM_SCHEDULING. Use system_state >= SYSTEM_FREEING_INITMEM as the correct
+>    boundary.  (Sashiko, Vincent Donnefort)
+>  - Wrap in #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT to preserve the original
+>    check unchanged on non-deferred kernels. (Vincent Donnefort)
+>  - Drop Tested-by: guard condition changed, requesting fresh test.
+> 
+>  kernel/trace/ring_buffer.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 9c4e40847e43..09c02e838c4d 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -2463,8 +2463,16 @@ static int __rb_allocate_pages(struct ring_buffer_per_cpu *cpu_buffer,
+>  		 * memory. It may not be accurate. But we don't care, we just want
+>  		 * to prevent doing any allocation when it is obvious that it is
+>  		 * not going to succeed.
+> +		 *
+> +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, si_mem_available()
+> +		 * will reflect the actual available memory only after
+> +		 * SYSTEM_FREEING_INITMEM.
+>  		 */
+>  		i = si_mem_available();
+> +		if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT) &&
+> +		    system_state < SYSTEM_FREEING_INITMEM)
+> +			i = LONG_MAX;
+> +
+>  		if (i < (nr_pages << subbuf_order))
+>  			return -ENOMEM;
+>  
+> 
+> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+> -- 
+> 2.54.0 (Apple Git-157)
+> 
