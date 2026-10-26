@@ -1,45 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793053846;
-	b=G+3sSeobXOBBW8+8ZhgtA1zGCxDGoQl2jCYZY/Jltb8U9hDfN2CvwycxZJuwvn0z4qqG
-	 uiuil6Drz0zt4I1Jl8WCplzBYd3bJBFLc8kbINr7DB9i/9vu4EyCkPH/lBAV/2zHTy+VF
-	 YwvcuRCW3uQr2CAeXzY6kXg+dtVoNedDywS3bB6mdyHUUs5+cVEFkB1KaPd1srSwhTbhs
-	 bQjI4/jP4Y+gFgPtnnNnyaSdPhwPjXz1W4fFyLMKEuMMwQHX+lA/yFqb02VoyE77B6FWR
-	 l2PA8yPqShFTx2CH0Il37sbNERaGThzxqFn4wiufAiWDoXvhmug+hJK/Xyato1CokPw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793053846;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=hDtNVLezgn7PdnL8lxuAMKA3HktkOtqQ7BOccgZ24og=;
-	b=pxXrQR3Dl6Wt8VQcBnML9YgMyx4QEGRrSE0GGnYf33pn8l4uaxu71Hr2q0AP30vja+De
-	 2B6xnQ5GK/4dH4KCfPNyCm3tfMEeYCTR570U4S47DWfM0Sw2dsp4USy/cwPnQHGjtiui6
-	 SAUtAY0nzNjRgyulb536i3ghJWCJqylBgksWQXyR+LpNBiaQxLt/tT9ZDB4TF5OdYN3t3
-	 kHCKLH9g0qUtpjZHFM3FIjtwFssCboawddl+Hk6banDKKvp0xmnu2CTScff6WiVVTBhcG
-	 lRCHBOy75nnq8bn35wo1RsoD5Cg3Q0LnN0hh66FP6naPBq4PMJeRMf5LloCAoUFZ8kw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=fail reason="signature verification failed" header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WFbyZTea;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793054554;
+	b=29tLAdZ5glvt+5Q18BIybdwwk/abFRLZdetBeCFCI2LV/2jHezsogTUtnmQVUmVzwDzD
+	 mTnD1YUQe17FSmXN8xbl3ssJCJnvGkH5rvSpvKaRLFgxEMhM2IAYSsHegx/7SJszhU0wt
+	 CSy/8B2phLdXngd1ECMPyQD2B9ip0L4+hFRSGtAWozIajkw55BCw7gYEoiS2AVvD3WmY6
+	 vnZerMMJCD+OF4zgrd4D6e570y1rPCGkXWxYHok39yLtZNa/58nGEW1mvAyktyoyPOxmr
+	 tRiZOiPFJbaltMoaNSEYU3fuMmIutX1da0+dT7JXLkbEDFvbvfBjiKzxDdqPr4KSC1A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793054554;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=1g41ScjhVwvRbzMcxKIfOWek1hrUNmo67dv5vjZ2E34=;
+	b=dtG2LmVmJD3x0tOmGU0vOOKqWNR96hgMEuUODOOrW+vaImAPhnBcEsUJcshjY1S8n+ij
+	 7MEXIYPqbY/Tn3Ov33GTpul6LuHV8AlFf11sjLGcs++n97tDrcIusmup+JOlx+gXv/6m/
+	 XsEXLVHlsy2K3abxlDn/byGfHl5dI0GxA0wm5jLRr9je9xtYEkbY46vo7svnz9xHxFgV+
+	 3GwTNOYmuMmU8dNhr+Nw6bmHZEFVut4GsWxJlmSJjLutoNyjskN4N8MiPM82oADDNi6VT
+	 GIzWwb28WgQkadj98HCFhXpoeWcRF3OsUI31mgGAiNNHEmO2hKOfTj/R1lq9sJQIYMA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Ho8+h6Mf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B554606A331;
-	Mon, 26 Oct 2026 22:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955A7606A32C
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 22:42:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 955A7606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WFbyZTea
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2237D1F01829;
-	Mon, 26 Oct 2026 22:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793053845;
-	bh=hDtNVLezgn7PdnL8lxuAMKA3HktkOtqQ7BOccgZ24og=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=WFbyZTeaLbCY7ikuEs02jXbJsHCKJuFY/nfKSONWHoJU/2S/39wsTuAQ8g+/Md79e
-	 DB4TvvDXjasmcGt144E8xgtFsxUljyQhx2sGVcmNSUlwQK8UT6v1M2yr3CugiNXCkX
-	 m6MweNqwjERuBLkScl1t31HP2jc07sHYYSpdSJ68gbrdL/+ctrs3iVv9aC7CSLkAjN
-	 6sfOzrtVhHenVSn7PIuB9pFdtoetDWKLPpn/MlWVg4bOXaxKC0xsmnyNj/ErH2Bc6b
-	 sj8C/3hyI7le0llJhynkd5e0XA9841gGOYgDuz95tXwTXvafMEg0Jn8hmj5vP/quKy
-	 U4OyEGKm4+pCg==
-Content-Type: multipart/mixed; boundary="===============9203731180031934646=="
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Ho8+h6Mf
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4395d31228so525983566b.1
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 15:42:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793054552; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PDClMuJoYGK9k41lXV+b4Ae2mpYrCfrzU3tF+coQ6GAzOcPMlyIw3ZVtTRrAFb04HY
+         rJ0Gw0Mfp8DWY/ybWy2bkynVbIrVDSfR1One4YkBRNQCR41ywiWm0Y/6Nio5dkNdC4ZZ
+         SXnRsWVN1LWGallpZ6hBZkpgjw/aGmyiCtJ/Q0Asf8lQov8zCyhEJYaTAI3PIQ6BF19A
+         MNzkKgprMztok2n1jd5fKF9Et4/bgHYEhjIwmgSrNLA0jfQMX311z6zEv4Bnln8g6QTq
+         oZTinLgdo7pPC54CPyLIoX4kr/dXmfiBXkIp0crY79dMI03dFLBw09LqDGpfBlIenLwI
+         /WlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1g41ScjhVwvRbzMcxKIfOWek1hrUNmo67dv5vjZ2E34=;
+        fh=TevP+hAl2y6l96+KkPc5hGVUoIxK8h/C5QKCqailDk8=;
+        b=nZ4u1qMPH4x/vcBUzQI9Byur7M+AOeTMkosepD8NhUXBCDFH5BROXk+igZu1Cdcwwv
+         J4M/StTSxW3Xl61z4Q4Ai8V5ZulsZ9LQR4fI7h161CXcX8JSKMzrt0BMiW3ou7T99wOD
+         6YduZZGvyu/TqPlkEAoIZTcxzRZMEF3q96kY2BSMOlVvocbThUnrkzgOAdlQBb1JhiFI
+         JX6d5TwRk0to3uhdA5LkDUyiRyu5upZMc7/l/4WgEEaRtgzJswZ/9Bk8effGkI1tmt4T
+         4+mIg5Yw4unwc4pxCA2jhGg5oc/MVehYvKQhq55BqGlL34S9aKLrDpPABUJtJUGX2efy
+         LSmw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793054552; x=1793659352; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1g41ScjhVwvRbzMcxKIfOWek1hrUNmo67dv5vjZ2E34=;
+        b=Ho8+h6MfzfNYBnYXWcB1Csn7RkH5FDAzc185C3faxOFFVI5Ip8rPZvUVVS9a7mPz36
+         24gi8R8N3yA+KvfwmaRReqCQoQsNezGiPP1Bp7GiihlQBrxNS9eCbaY93g0l7+W+vIC0
+         voQ2Heu+uMnZMYR6TuMnUotBhMhKn8fZO7YhZJ/VGMtSyWbiopW5EZJQ5vT2/6dOt2QP
+         h6y7P/JEcSU5qhjYmxEPNqjJ3oooD2zuidI/sWorRbLSpg0w4GfbG7VlXLnZBZNxscre
+         60kjozBonZXdnmTiD0g6qsMUd7kqNlcLdjiG7bhzjYU1/2dfEHHIUzSVvBAgpzwQCCET
+         IiFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793054552; x=1793659352;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1g41ScjhVwvRbzMcxKIfOWek1hrUNmo67dv5vjZ2E34=;
+        b=Nddt6otvvtw/p25X3g52nIIeLOrSuibOewXcThDHe6mOajGDtb+cnOz3qJVtHepBfy
+         SFIqcQ0t8qVsAzBS5eDbubFqK1EuOXMPgjcJX+KMB+lfNR502YTVmINx0vRgUize3wba
+         3mruUnAPH5S2YDvraA9bGp6D+nNIYN+A92tZ4KrPfP8JOxMw1Q/D8ch/MMRLtc9pqRyg
+         nz2qSJbG/tqhus6RWgqWtpYeSb5yfxS6Gub2urLTRIhvVlmKqODQgG6xJuSKmTjNy5Pf
+         a2yRzORqTGdDKT+JCHOJoQOu8+dqPqlLQwQsyol07LjZJlqdBYP4aQ7Wphkgek5/Gwpr
+         tPnA==
+X-Forwarded-Encrypted: i=1; AKwUvBygC2WdjbwuCdZVNLVmzZlhGKUMsKqT/zFYhlEqtMBen4GaZ9ronwpRFOeGI1CG6zfXIx8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIpQo/MAOPNyadpjTRXcld0jLlHid9IFTgKXq4l09hTb2X6Ou9F
+	G2VBrsx/GlLIw9mH6V/Zg42iV+98IAdd2ajzaSH5jWrh8xG/PuEkP1VGEnOcENAKeFROPjl+dZe
+	V7Rya+aUfvRz6xcPwE9KmOgFEa2iAJHH+wbpYT9hq
+X-Gm-Gg: AYBFou21gIDzb3ZUththaylqgjsI0Nj0N5ehMWD9b9ZAptzyDR1XRsZ690DXd/RI6+H
+	bCRJ9zGXhheVS6Ga/btue7p8x0/znDAEmx/xsieGbRx0rpd5grUSObU+jl9NRFKnazv/YgMX1Gg
+	CC6NdUJmG0y4V+wzT4OcQe9lJgje7BXPSBMpcXsvbOYdp7HkDQaACoFuRWcsFusBcxDo0u7RO8Q
+	erYyUPA57s91OoYubL5XRx4CQH+nZZlk2oM+E21ww1cUfL1KZ4xjiXm8w1rcN9JldoPxLFT1gJo
+	lhOZhqZVrOjqBwndWYIoO/YQ3GlEz0nkHVVGu3aja7m7bY7ki79oEN35ZgCleRzNtBBl/gjzhPZ
+	byhwPIHF+Gervq4nnTSBwDIsTXto24VvksjyTf++vDaOVjS1Vj0WL8K65jpjt8+1/dMt6SbqeUE
+	DH3l8oOBExeDUCpwPMetvQhm9qS1xij40mB1BKO1/4d7Q+l2yUnd+rZ1sNLJCs8vtLFr7NmlxKg
+	b2vDx6S
+X-Received: by 2002:a17:906:4fcb:b0:c46:8733:642b with SMTP id
+ a640c23a62f3a-c46bdeba20dmr991156866b.43.1793054551213; Mon, 26 Oct 2026
+ 15:42:31 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -49,87 +106,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <10ab2f3b005f0df2c0a88e93e6917826d928bb1f82c6a645f942c099e48f8b6e@mail.kernel.org>
-In-Reply-To: <20261026215226.3713941-4-jthoughton@google.com>
-References: <20261026215226.3713941-4-jthoughton@google.com>
-Subject: Re: [RFC PATCH 03/10] bpf: Fail sleepable user copy helpers when current->mm is NULL
-From: bot+bpf-ci@kernel.org
-To: jthoughton@google.com,akpm@linux-foundation.org,viro@zeniv.linux.org.uk
-Cc: tglx@kernel.org,peterz@infradead.org,kees@kernel.org,arnd@arndb.de,david@kernel.org,ljs@kernel.org,liam@infradead.org,vbabka@kernel.org,rppt@kernel.org,surenb@google.com,mhocko@suse.com,seanjc@google.com,pbonzini@redhat.com,jmattson@google.com,axboe@kernel.dk,asml.silence@gmail.com,James.Bottomley@HansenPartnership.com,mkp@kernel.org,dsterba@suse.com,mason@kernel.org,ast@kernel.org,daniel@iogearbox.net,john.fastabend@gmail.com,jpoimboe@kernel.org,rostedt@goodmis.org,mhiramat@kernel.org,mathieu.desnoyers@efficios.com,mingo@redhat.com,acme@kernel.org,namhyung@kernel.org,linux-mm@kvack.org,linux-fsdevel@vger.kernel.org,kvm@vger.kernel.org,io-uring@vger.kernel.org,linux-scsi@vger.kernel.org,linux-btrfs@vger.kernel.org,bpf@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-perf-users@vger.kernel.org,linux-kernel@vger.kernel.org,jthoughton@google.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.
- org,ihor.solodrai@linux.dev
-Date: Mon, 26 Oct 2026 22:30:45 +0000 (UTC)
+References: <20261026215226.3713941-9-jthoughton@google.com> <da7bb91d95914febc9b2b981c0b8292022d6f6437ecb68ed2b717f0f4a3a04c2@mail.kernel.org>
+In-Reply-To: <da7bb91d95914febc9b2b981c0b8292022d6f6437ecb68ed2b717f0f4a3a04c2@mail.kernel.org>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 26 Oct 2026 15:41:52 -0700
+X-Gm-Features: AclHuK9NQf_DmtP280VFWB18VLK39ZMzdxZm9Qsh_-4Snm7U1eOCkiznChHcSHY
+Message-ID: <CADrL8HXA3KVX9agtcExpPuaBLC-zAEWx6QgsRnQ6+cb4AZZrFQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 08/10] uaccess: Refuse and warn on __copy_from_user_inatomic()
+ without an mm
+To: bot+bpf-ci@kernel.org
+Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, tglx@kernel.org, 
+	peterz@infradead.org, kees@kernel.org, arnd@arndb.de, david@kernel.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, seanjc@google.com, pbonzini@redhat.com, 
+	jmattson@google.com, axboe@kernel.dk, asml.silence@gmail.com, 
+	James.Bottomley@hansenpartnership.com, mkp@kernel.org, dsterba@suse.com, 
+	mason@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	john.fastabend@gmail.com, jpoimboe@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, mingo@redhat.com, 
+	acme@kernel.org, namhyung@kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, andrii@kernel.org, martin.lau@kernel.org, 
+	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---===============9203731180031934646==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> bpf: Fail sleepable user copy helpers when current->mm is NULL
-
-TL;DR: Commit message only: the security_file_release() example of a sleepable
-program running from a kworker looks inaccurate, since such a program appears
-not to be attachable there. The fix itself looks justified.
-
-> bpf: Fail sleepable user copy helpers when current->mm is NULL
+On Mon, Oct 26, 2026 at 3:30=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
 >
-> Sleepable BPF programs can run on behalf of a kernel thread, or of a
-> task that has already gone through exit_mm(). For example, bpf_wq
-> callbacks always run from a kworker, bpf_task_work callbacks queued
-> late enough run from exit_task_work(), and lsm.s or fentry.s programs
-> may be attached to functions called during exit_files(),
-> exit_task_work() or from kernel threads (e.g. security_file_release()
-> from a kworker running delayed_fput()).
-> In such contexts, bpf_copy_from_user(), bpf_copy_from_user_str() and
-> bpf_copy_from_user{,_str}_dynptr() (when reading from the current task)
-> call copy_from_user() or strncpy_from_user() without an mm. That access
-> does not reliably fail: the user half of the address space belongs to
-> whatever mm happens to be lazily loaded, if any, so the program may read
-> another task's memory.
-> As there is no user memory to read from in this case, fail with -EFAULT
-> without attempting the access.
-> Fixes: 07be4c4a3e7a ("bpf: Add bpf_copy_from_user() helper.")
-> Fixes: 65ab5ac4df01 ("bpf: Add bpf_copy_from_user_str kfunc")
-> Fixes: a498ee7576de ("bpf: Implement dynptr copy kfuncs")
-> Signed-off-by: James Houghton <jthoughton@google.com>
+> > uaccess: Refuse and warn on __copy_from_user_inatomic() without an mm
+>
+> TL;DR: Commit message only: it names kvm_read_guest_atomic(), which no lo=
+nger
+> exists in this tree; the review suggests kvm_vcpu_read_guest_atomic() ins=
+tead.
+>
+> >     uaccess: Refuse and warn on __copy_from_user_inatomic() without an =
+mm
+> >
+> >     __copy_from_user_inatomic() never called should_fail_usercopy(), so=
+ the
+> >     NULL current->mm check added to uaccess_should_fail() does not cove=
+r it.
+> >     It is used e.g. by KVM's kvm_read_guest_atomic(), by several
+> >     architectures' perf callchain and stack trace code, and by the gene=
+ric
+> >     copy_from_user_inatomic_nontemporal().
+> >
+> >     Split the NULL mm check out of uaccess_should_fail() into
+> >     uaccess_without_mm(), and use it in __copy_from_user_inatomic() to =
+warn
+> >     and refuse the copy.
+> >
+> >     Don't use uaccess_should_fail() there, as that would also start inj=
+ecting
+> >     failures into __copy_from_user_inatomic(), which some callers don't
+> >     expect to fail in practice, e.g. __wp_page_copy_user() warns if the=
+ copy
+> >     fails twice.
+> >
+> >     copy_from_user_nofault() already fails quietly when current->mm is =
+NULL,
+> >     and the generic user stack unwinding entry points (perf_callchain()=
+,
+> >     get_perf_callchain() and stack_trace_save_user()) only unwind the u=
+ser
+> >     stack of a user task with an mm, so neither is affected.
+> >
+> >     Signed-off-by: James Houghton <jthoughton@google.com>
+>
+> The changelog names kvm_read_guest_atomic() as a user of
+> __copy_from_user_inatomic(), but that function no longer exists in this t=
+ree.
+> It was removed by commit ef82eddc0e31 ("KVM: Remove kvm_read_guest_atomic=
+()").
+>
+> The KVM user is now kvm_vcpu_read_guest_atomic() in virt/kvm/kvm_main.c,
+> which calls the static __kvm_read_guest_atomic():
+>
+>     static int __kvm_read_guest_atomic(struct kvm_memory_slot *slot, gfn_=
+t gfn,
+>                                        void *data, int offset, unsigned l=
+ong len)
+>     {
+>         ...
+>         pagefault_disable();
+>         r =3D __copy_from_user_inatomic(data, (void __user *)addr + offse=
+t, len);
+>         pagefault_enable();
+>
+> A grep for kvm_read_guest_atomic only finds __kvm_read_guest_atomic() and
+> kvm_vcpu_read_guest_atomic().
+>
+> Could the changelog say kvm_vcpu_read_guest_atomic() instead?
 
-The commit message gives security_file_release() as an example of a place
-where an lsm.s or fentry.s program can run from a kworker:
-
-> (e.g. security_file_release() from a kworker running delayed_fput())
-
-Is this example accurate for the tree being patched?
-
-bpf_lsm_file_release is not in the sleepable_lsm_hooks set in
-kernel/bpf/bpf_lsm.c, so btf_id_allow_sleepable() rejects a sleepable
-BPF_PROG_TYPE_LSM program there.  bpf_lsm_file_free_security, the other hook
-reached from __fput() through file_free(), is in untrusted_lsm_hooks rather
-than the sleepable set.
-
-For a BPF_PROG_TYPE_TRACING program, check_attach_sleepable() requires
-within_error_injection_list(addr) (or a syscall prefix when
-CONFIG_FUNCTION_ERROR_INJECTION is off), or an fmodret set with
-KF_SLEEPABLE.  Neither security_file_release() nor bpf_lsm_file_release()
-has ALLOW_ERROR_INJECTION, and the only fmodret sets are in
-net/bpf/test_run.c, net/mptcp/bpf.c and bpf_testmod.
-
-That suggests a program attached to security_file_release() is never
-sleepable and cannot call bpf_copy_from_user() or the KF_SLEEPABLE copy
-kfuncs.
-
-The fix itself still looks justified, since bpf_wq callbacks run from a
-kworker and is_async_cb_sleepable() is true for them.  Only the example
-appears to be off.
-
-Would an example that is actually reachable keep the changelog accurate?
-For instance, bpf_lsm_task_alloc() when kthreadd forks a kernel thread
-(current is kthreadd), or bpf_lsm_kernel_read_file() and bpf_lsm_file_open()
-when a kworker loads firmware with kernel_read_file().  All three hooks are
-in sleepable_lsm_hooks.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/40410166379
---===============9203731180031934646==--
+Yes, that is correct. I've applied this fix in v2.
