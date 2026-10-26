@@ -1,56 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793000537;
-	b=4Bmu6lJzvDQUgA0FQ8orRG9vbuwnXtGuETPMeVmg1/dcYXK00NJ25lBAhCmAaKM3pC2t
-	 2c3PulWzPSUaQxxAeoqk1hMMPi+gqw3ScQVjNu1PwFdSXavFF1cHeUbvR2KHxEUF+HbiR
-	 h6vqZyQs3sHyw6Q78KqsjAXAHD6ZKE/Xko2aVxErE9NgsMDIgeEcHrvcBXW5qEjuXstHb
-	 4728G12LUZCdXM6C5XBDLPgGHS+yNU7PbJlwupv8t2GNCqr1dUTG7IwO8Qf2pXR+rXrMW
-	 HX8nAi9IptQdKShRAdTXhGiJaEPPVug1Dq/52Tc/s9fdTeBRHTTdOYb64wHfWVlmyKw==
+	t=1793002218;
+	b=qtGhp/08NN149bZPvyRkvSgm004+m+d7K6ou0ngVTuRV5M0wOk1jK2xsgylDVxVPWvYP
+	 wGfQbQWGI2ftlL8iOlFZBxQ7ueqU5wZ4w2qb5Kyg4m35zUPph2pUDvjXAR2OTIRqoC4eO
+	 kKpnM8XnCZgKu3InmyJJA9inRnBi2H/HCgwlTab1eJGSfx9QTN2NBbQ+9Qy90b0+xQ8Wx
+	 h7r6BbgUEFbYw9mQOG+XSiM8vUlelLGC4iTRLy40eAp8CL0IySzPAmZM+AZxhdyYUFQHg
+	 n6cmSvIiQ5xRZcwBNhxkPEb5udTVpUdiSxqwRp+1OA4FqHD7yRFTcnRe7n5oXKhPIkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793000537;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=QK09cvCCv1U2VbXXs4aXYBwdDy0Jn6Y8NtPS8Cb2LSk=;
-	b=AovLTzQf9ZlKzDhEjJizb+f1mojlBXq0TP+B+ekk8aOc6Xe4Bl6fLFaTf95PB5FmPzCg
-	 auALs0mfaqYlkbP91bi+GnKLdXjVmNIRTn9RBLxHkne5fWBFb2LUzQYYhnaZptlehmxn2
-	 4QoGPZVQ9oV3c4C1Vshejj8rvr6NPJI0/na/vO1NS6LOXekE06hUfO7Gfhb4+8gmSnqHr
-	 DAtStmN0vf0yzY2tfHW2aBkQ2H5bbbhw804CvnsPotogNUKKItmEJ8/8YSo5F3s4TfSlW
-	 82XkHRDv71F00KnyETw1I6Xfux9kyLqLO5ZPwHBzZRdnsvuFGi5iNk861rMJRpAbSvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793002218;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=SU/p59HmrY1l63uWO1J6fBGj9iSaP1sfb4BVk3OH0dM=;
+	b=sdTem2FoQbUJfr3hyCSwZe0ViBZReheftt9Z1IoFlq46zbI1zIPq72mnhOiOZz8g2D7l
+	 6W9ne1BE8OMYmRPtJwd/juu2FzOUXnZ+wcwx/em49Ae2ZdiYRVeAlFs2MPwl5SaA2WCvR
+	 tJzcD+PT1LZ5pk2UESFYQRPyFVWv/76nFpwk5R3doRsniZTRszqC5H44BelMj/uDgSnko
+	 g0VH1rXp8+u8VDQWIilEGm2wlwWrrxm7McycvLcUWL0WSFjroiMrBGFqqIV/O9hz4UBMV
+	 8NkDCxFf2LiLUrYNF/M4YiEDn2tj7F4QugX7glj7iVjtIRm903uyWsQIGs3kaizFlEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zz1SyuAS;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="JivXV/uP";
+	arc=none smtp.remote-ip=95.215.58.172
+Received: from mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E103606A31A
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E52B606A321
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 08:10:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E52B606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zz1SyuAS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F420F1F01825;
-	Mon, 26 Oct 2026 07:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793000537;
-	bh=QK09cvCCv1U2VbXXs4aXYBwdDy0Jn6Y8NtPS8Cb2LSk=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=Zz1SyuASBC+eJsHXA5Wv5i8DneYUcveOWukvOTNfkeEwlSUTilmpcFF3r3LDzaOPt
-	 81pt2O99nRR7S6JTKWaegQ3MDZ8lavjuYsFhUaPmrdvarAnxHKfVmXmB+qdBh0ZbGm
-	 1XRtqzZ4Juqw+1U2e+YX4AGjwgAjxS531nQbk58y/mN6onG/pEXrCYi+YVrKQbcJeB
-	 3cnBDSyxZ/cRqrWj1fGAEAZUqquXcI+xcuhD7i1yICCPUcYkZC/NPTUXpiBkVw09ED
-	 Y/rZYFZPDHApe/UwD6LJjjRwZSuLESMCnjGN5GqBACkycvaptg9n/KLZ8pT62Ez8HX
-	 RtjtVBmmlwrnw==
-Message-ID: <sashiko-outbox-184664@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 4/5] KVM: selftests: Add tests for
- KVM_LINK_GUEST_MEMFD ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Gong" <gongtao@google.com>, kvm@vger.kernel.org
-In-Reply-To: <20261026064424.3003536-5-gongtao@google.com>
-References: <20261026064424.3003536-1-gongtao@google.com>
- <20261026064424.3003536-5-gongtao@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 26 Oct 2026 07:42:16 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JivXV/uP
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=SU/p59HmrY1l63uWO1J6fBGj9iSaP1sfb4BVk3OH0dM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793002216; v=1; x=1793607016;
+ b=JivXV/uPxz7cg80nrzqcgoUz12nR6uhuUlQ4//2Rl/eG3J6Cm9yy2qVIuqF18Su9RqNdVGsv
+ lY4EaWoM5LIQQnbwmKr9CYOITehKJjKWEvO+9vvwzBO0krMFhvPrk5vinQR4jA5A/y/cZW4V4ee
+ OL1TrhN4r4rfLquwOPGO1uS0=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id cf45f50629a58979;
+	Mon, 26 Oct 2026 08:10:16 +0000
+X-Mizu-Trace-ID: cf45f50629a58979
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5be4a7b9e6fso6233e87.1
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 01:10:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxY3f76Ckk8XBqvIuRNttWZup0tSkxMekzEJ1XAuqOhC6YxyJWpu7PJE02/yd+vdoGnNJY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLbBOxlrsX6xrvLF0HtayckdJ4PPX7F3513frBlGEeZkJYvni5K
+	IUROeSSorE1UDcYejNNn+yL1Ibov4VO/eNDS9yMkM6MqUfOCgSzGQXbNRIx1qUEmz/iWQakTpVC
+	72FFmRripOn/GSTjzw+q9YPuvmOTS2gvTACS7Vn9m
+X-Received: by 2002:a05:6512:3f03:b0:5bf:a28a:f2d9 with SMTP id
+ 2adb3069b0e04-5bfb79dafd3mr111700e87.4.1793002210084; Mon, 26 Oct 2026
+ 01:10:10 -0700 (PDT)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,66 +65,42 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+References: <20261026012128.2270251-1-sashal@kernel.org>
+In-Reply-To: <20261026012128.2270251-1-sashal@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Mon, 26 Oct 2026 08:09:33 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTzF5PsNt+riasW-SK-nhkLYh3kojMFyCEqs372-Mficnw@mail.gmail.com>
+X-Gm-Features: AclHuK9ieRbKRZ3vlLRpK7x9lOVSGw-njZY_CzO5qLbrpHOtyOHbR5m8v7LhEMQ
+Message-ID: <CA+EHjTzF5PsNt+riasW-SK-nhkLYh3kojMFyCEqs372-Mficnw@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: arm64: selftests: Skip unwritable ID fields in
+ the failed-run test
+To: Sasha Levin <sashal@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] KVM: selftests: test_link() hits vm->type assert in ____vm_creat=
-e() on arm64
---
+Hi Sasha,
 
-commit c8e0fca46d65aef6ffa609495f3f615b1c614301
-Author: Ackerley Tng <ackerleytng@google.com>
+On Mon, 26 Oct 2026 01:21:28 +0000, Sasha Levin <sashal@kernel.org> wrote:
+> test_idreg_frozen_after_failed_run() checks that changing a feature ID
+> register after a failed first KVM_RUN is rejected with -EBUSY, and does
+> so for every field of every register in test_regs.
+[...]
 
-KVM: selftests: Add tests for KVM_LINK_GUEST_MEMFD ioctl
+I tested v2 on the FVP AEM model configured with no AArch32 at any EL
+and with PMUv3, under nVHE: set_id_regs fails on ID_DFR0_EL1_PerfMon
+without this patch and passes with it. It also passes on QEMU (which
+supports AArch32 at EL0) under VHE, nVHE and pKVM.
 
-This commit adds kselftest helpers and test cases in guest_memfd_test.c for
-the KVM_LINK_GUEST_MEMFD ioctl, covering invalid inputs and valid linking
-between VMs.
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
-ng/selftests/kvm/guest_memfd_test.c
-> index 2233d871a38f4..ccde4d735c77c 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -418,6 +418,68 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
->  	}
->  }
-> =20
-> +static void test_link(struct kvm_vm *vm, int src_fd, size_t total_size)
-> +{
-> +	struct kvm_link_guest_memfd params =3D {};
-> +	struct stat src_stat, dst_stat;
-> +	struct kvm_vm *dst_vm;
-> +	int dst_fd, bad_fd;
-> +	int ret;
-> +
-> +	/* guest_memfd can only be linked between VMs of the same type. */
-> +	dst_vm =3D vm_create_barebones_type(vm->type);
-
-[Severity: Medium]
-Will passing vm->type to vm_create_barebones_type() here trigger an
-assertion failure in ____vm_create() on arm64 when vm->pa_bits !=3D 40?
-
-On arm64, main() invokes test_guest_memfd(VM_TYPE_DEFAULT) with vm_type =3D=
- 0,
-and the initial vm_create_barebones_type(vm_type) call in test_guest_memfd()
-reaches tools/testing/selftests/kvm/lib/kvm_util.c:____vm_create():
-
-#ifdef __aarch64__
-	TEST_ASSERT(!vm->type, "ARM doesn't support test-provided types");
-	if (vm->pa_bits !=3D 40)
-		vm->type =3D KVM_VM_TYPE_ARM_IPA_SIZE(vm->pa_bits);
-#endif
-
-When the selected default guest mode has a physical address width other than
-40 bits (for example on hosts where guest_modes_append_default() selects a
-48-bit or 52-bit IPA mode), ____vm_create() overwrites vm->type in place
-with a non-zero KVM_VM_TYPE_ARM_IPA_SIZE(vm->pa_bits) value.
-
-When __test_guest_memfd() then calls test_link(), passing that mutated
-vm->type into vm_create_barebones_type(vm->type) forwards a non-zero
-shape.type into ____vm_create(), tripping TEST_ASSERT(!vm->type, ...).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026064424.3003=
-536-1-gongtao@google.com?part=3D4
+Cheers,
+/fuad
