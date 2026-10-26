@@ -1,74 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793057327;
-	b=41jGKlB/vIo+VveM4dE1rf25DNZ83YrbI5P4s84RPAvj57oK3ApKnbp7aWBVkwZN0AJj
-	 O8+xXf68ceqyuqDlYB6LJH1LXAvb+byMXcNaDj2wu5Zyee24Eiyoy7eoStiqosLZxOeli
-	 85zuKW2ywz8be6rn3dU2PUJHvAhcZEC6FbXVDPdWNPsqPkVbTKT4pF6L1As/qRwRKQHf+
-	 LauglL1siFmBrV/0pnEGPbv/BGmydeNvTSMDtl1j1+XdLu0ofxQ7LaNWk5s0OgTmDLDGp
-	 hNzXkHUgflyhJbsCu58fxPW4fIQjwiLOjQhiNjWdC+QEFuziM5PYK4S94CMbWqSZZtw==
+	t=1793058117;
+	b=D9fkEshsEwnU0wPQAwT7h53DMxW70+1meNccOgj6dU9v3Tw4V7PAMxnTnUTgOaTA+J2y
+	 2mZlysZnfZX48cd2yaNtfl3sjBpGPhhV7hySuxNevIw7Pj6zNZH1oc8ZrZqq5xQ7k0KWY
+	 RsHs2w2Gpd2jNVaasrpeA9WOLHpZQZhqSuwXph1SUQ9oFymX4VtSoh1CLqZW3+PEPnRrf
+	 UgaeWes60i2qsaVMavkLm5CRrZ1v+QQivgL3JMnlu54QytaqSUybYdQVla2Tw5HiyjjGz
+	 o3+QecP+NlF3FQHqCzLvcnAUp3nSbX9czksSALggBh0Wzi6+IUB52eG0u8UnKzqAsQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793057327;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793058117;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
-	b=xz0qANLGRyienLbYtB1jsRNfK0dQ0y1KFAKOwJKi7Zon4rf2mwlOvWZlwJgm5BoD8eb+
-	 MwVfnjEAzDK+AcNw0Ro4RqQnpUWr/3oFYub5S39jXL2uwMVwUYNsbTD30KePe6GCIpFjn
-	 9wfBbmh16+4LwBevmt6VlkAWuzOfBL1QiihBuaRBMpOWm/FbI9y95kUC6yw7fLxD99+Ex
-	 2xRln+h3vCstx+956XMI4ux+QdcAblnh+xkmFMUwF7P3UcYBgd09QigA9NZlm2TTaZ12G
-	 l/72akMCjPmKp7VqjXwECdo7fUjKHFhyhokQME2+t9/eNpbgpQjnX78fxiaeXVndsVg==
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=OpV2CXxIZjHnFgwnEW1Our7mkEl1DYiqfIv6pgFa/1c=;
+	b=HKCUjozMOLiHjZDvZPzMuUBdSivFy0F2h5im+55ncx2/UkEpU7pryArKmvtO00oNYsrC
+	 DultxrgrI8QfwC0OYqvOGFKSBw/uH4uV53DmD0G5swR/MpYSeO5psVbWzd7dUojYoMU9+
+	 SmOqra9YnAkY5ASvpas9fC5uBAVhgbW6yke31/Mszg/60PIVxOmqzALhtoQbQ/0GnDBdU
+	 j6e8q4Oe+ET8pxbsPp7AsQAgUMxr+GhCgHWcdewEU6fZxUdmR1613OZ84nmh6aVKMceOQ
+	 gedtM6AaMoQ45WzXFgnIoEPuWi3f/g2H697Jf2zebl0Pk4V88Q83TfzgbhRjgcW6AyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hK9TvNQw;
-	arc=none smtp.remote-ip=209.85.208.72
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=WbJh7H2x;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FC3606A31B
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 23:28:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73FC3606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB72C606A320
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 23:41:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB72C606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hK9TvNQw
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1a4c9eadeso3626840a12.1
-        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 16:28:47 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=WbJh7H2x
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ade5b3ae97so277168a91.1
+        for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 16:41:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793057326; x=1793662126; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
-        b=hK9TvNQwKUHIZZZjxzV0a2Cbv7bIzmVQ6+G1+2ZS+4rTVIMHR7NWA80kKuwDAAcZoF
-         pLSOv89ov3CxcEG25n/cIU3vcbj43p8ZXy7YHgOAoZooXblEghty3Cp5OoXY961rTOFW
-         vluruvAUIamnZHp/w6s/IA7uOvsu/nAHiF4juHAsJeVSwD1sGDyCemEYrF5pQaIy2+dJ
-         QncJE2F0CD5HeT7HOcfVMBY502l/Fc/PZf3COQxRAYovwWZKrkVRC9iWD24UfTl8Wv1i
-         2Cb4/bNodGzK/8TOu/0nGkcK9Dm/cZFmh/qAGvSI9XFlwuGZNgDKyDxopMHwUIKLkmPa
-         2o7g==
+        d=google.com; s=20251104; t=1793058116; x=1793662916; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OpV2CXxIZjHnFgwnEW1Our7mkEl1DYiqfIv6pgFa/1c=;
+        b=WbJh7H2xfNzPzGtyN2CnN1kSzgv+XUp7mQLMTr3lqSBQFkjLtZxuZ+WWbHPjiuOk0/
+         2F0A8D4uhfk3lGrAdrpEQKQL3dMcUTqASiF0S5fqMX4dB1/0JPseIa9iC8Z5ptpgOjJA
+         vKpYym1YJnxCcoPVLhqfgLrywOwlm7spEFGhdXaZMZAIZ5eHY5ys5Ql8TSyizdk2XTYO
+         9ULTcTBL53xZsOSFzjn3+3ed7aicqQxgxKzC0wqt48H0y1zIL+G9y3duKzCvnkP0fLja
+         0C4n+jQ8v3WWVGxnR29Tng2LJNFaahwIdUwgKwyxBrt91SGngHnmbhYWxQZzediGLcsP
+         ofKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793057326; x=1793662126;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
-        b=irYCAW/4zrlTsflIhk5YJUO7pO0xc53mjO5jB4I1penwuLPFibBdlOVzfa/2o4r6vf
-         vFa1w9ePrac+nmj3UPb5O4uUnXVsaSFG0N53aEr28LAP8bZVjwxCnre+TW3sdZXBMNp2
-         X31Abu6ef7ekz0smM7DrIDmQwcMqbqt4ZUqPowug+2/+3MqyUUL0PbZ29GtPQNrES6t0
-         49o+GIG5/RbO4iNikRKGozSne6zqwD/7PobScluBsm0NPwGQp3Vz2hoRqtzbuL9DAKLz
-         4gZnaQOvpme4pDAeQsAoLagUIK0VY/LnFqmvz5yQXG3HkSYLTe10b7QS3pJeDqdThtYZ
-         H7Bg==
-X-Forwarded-Encrypted: i=1; AKwUvByG9JJhnOZVlcy8LMC1lPQqA5mTdvPAshrZi71CTgdQaHzH7763e0Zm2KoTgnkXujtf93s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLpzudbyBbsaH5XeBjecrOPII/GdfzDoEo4HuLvkRvLuocWHIxa
-	OYoM0Sf3BOMdys34YohiAw3mUfc9EvDA+SWkCX7Aq+3eVneVu5o+VH/Wg5vwdZiTyz/vWdqTjVd
-	p/0veHPt3U6QYU1NbKg==
-X-Received: from edxw25.prod.google.com ([2002:a05:6402:719:b0:6a7:4541:3de3])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:4026:b0:6b4:1037:2b87 with SMTP id 4fb4d7f45d1cf-6b44300b84fmr9392138a12.31.1793057325809;
- Mon, 26 Oct 2026 16:28:45 -0700 (PDT)
-Date: Mon, 26 Oct 2026 23:28:45 +0000
-In-Reply-To: <at_CncIPYCxOVkLo@google.com>
+        d=1e100.net; s=20260707; t=1793058116; x=1793662916;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OpV2CXxIZjHnFgwnEW1Our7mkEl1DYiqfIv6pgFa/1c=;
+        b=Dl6cU6XCa1o0nEYllHdLuCXvqWzrTb+4ATLjX9HClZ8uJYGudwQ6/MrtIdLZj+Ke25
+         PxWowr5Twu2qr0KLQxUKvFpJ57DGUmUj2O0JS1P4lnC/ovcCuDWan6CvQc3gV/8A3EC8
+         YGh/Iaw2/LrwnGS6WroDoFsscEK46czMhmDCwyEaSUbVVvnso1st82wsP5FN1mBpx1l0
+         Tr5rrTRnQkhvmGp6Y7VSIHglHfxVM0QairJ/kvOq64BAReCLbhpZeDL2Uuw6mPoFIAsH
+         +vfw1UXGNn7zOWX3W7ySkG7h29ekJN+XEgtbhtgS4cEr8qB4m1PlAKxImC23oWDw+P2f
+         lstA==
+X-Forwarded-Encrypted: i=1; AKwUvBwUxsTuUoby8NAXZdOG22YR6YmzZuUOUzqhrYQFC4ftzrCZ3vbVJoH/ngFofpWdAJaf/vU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIBtq9p2W+sHLPpYRPpWWTw4KLp2T4RqytH6l/y9uLl9BcDQz5w
+	YTCs1TvFUh1bg/0jRmNJc8F1TOMq6vLjdR9FJdBHqSjwW7qwzl7jJrLLWpsUMo7X/w8qPrBAm50
+	ITVZs9h9y8lTcxdeGazbogw==
+X-Received: from plso3.prod.google.com ([2002:a17:902:bcc3:b0:2e9:4eb5:953d])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:d60c:b0:3ac:b764:8521 with SMTP id 98e67ed59e1d1-3ae4041abb8mr609334a91.38.1793058115737;
+ Mon, 26 Oct 2026 16:41:55 -0700 (PDT)
+Date: Mon, 26 Oct 2026 23:41:54 +0000
+In-Reply-To: <b9959bd7711dee7a83a07b012b5967980d178c95eae90adeebebcb6040fc526f@mail.kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,162 +80,342 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
- <atlQ_Er0Ig7CCSxv@google.com> <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
- <9huzzew0el59.fsf@tarunix.c.googlers.com> <at_CncIPYCxOVkLo@google.com>
-Message-ID: <9huzecdcghxu.fsf@tarunix.c.googlers.com>
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-From: tarunsahu@google.com
-To: David Matlack <dmatlack@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
-	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <b9959bd7711dee7a83a07b012b5967980d178c95eae90adeebebcb6040fc526f@mail.kernel.org>
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261026234155.4028467-1-jthoughton@google.com>
+Subject: Re: [RFC PATCH 06/10] uaccess: Refuse and warn on user copies when
+ current->mm is NULL
+From: James Houghton <jthoughton@google.com>
+To: bot+bpf-ci@kernel.org
+Cc: James.Bottomley@HansenPartnership.com, acme@kernel.org, 
+	akpm@linux-foundation.org, andrii@kernel.org, arnd@arndb.de, 
+	asml.silence@gmail.com, ast@kernel.org, axboe@kernel.dk, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, david@kernel.org, dsterba@suse.com, eddyz87@gmail.com, 
+	ihor.solodrai@linux.dev, io-uring@vger.kernel.org, jmattson@google.com, 
+	john.fastabend@gmail.com, jpoimboe@kernel.org, jthoughton@google.com, 
+	kees@kernel.org, kvm@vger.kernel.org, liam@infradead.org, 
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, ljs@kernel.org, martin.lau@kernel.org, 
+	mason@kernel.org, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	mhocko@suse.com, mingo@redhat.com, mkp@kernel.org, namhyung@kernel.org, 
+	pbonzini@redhat.com, peterz@infradead.org, rostedt@goodmis.org, 
+	rppt@kernel.org, seanjc@google.com, surenb@google.com, tglx@kernel.org, 
+	vbabka@kernel.org, viro@zeniv.linux.org.uk, yonghong.song@linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-David Matlack <dmatlack@google.com> writes:
-
-> On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
->> Right, Required bit should be source kernel payload property to tell
->> target kernel that the payload must be handled to correctly deserialize
->> the data. It should be source kernel (userspace) responsiblity to make
->> sure it understand the target kernel before doing liveupdate.
->> 
->> Saying this, During deserialization, target kernel's required bit is not
->> necessary. So I propose the following truth table.
->> 
->> Source hdr  Target supported[i]  Action
->> ----------  -------------------  ----------------------------------
->> 00          0 or 1               Accept: feature absent in payload
->> 01          0                    Accept: ignore the feature data
->> 01          1                    Accept: use the feature data
->> 11          0                    Reject: -EOPNOTSUPP
->> 11          1                    Accept: use the feature data
->> 10          0 or 1               Reject: -EINVAL (invalid encoding)
+On Mon, Oct 26, 2026 at 3:42=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
 >
-> Yes, this matches what I had in mind for the semantics.
+> > uaccess: Refuse and warn on user copies when current->mm is NULL
 >
-> To be explicit: the source kernel should set the bits for each Live
-> Update based on what is actually preserved, rather than generating the
-> header from a static per-kernel array. E.g. memfd would only mark a
-> feature present for memfds that actually use it. That's what allows
-> rollback to an older kernel as long as nothing being preserved depends
-> on the new feature.
+> TL;DR:
+> - Possible spurious -EFAULT on valid kernel addresses on xtensa/nios2 fro=
+m
+>   mm-less tasks (kworkers), e.g. d_path
+> - nofault helpers may hit the new WARN_ON_ONCE (BPF/tracing); fix is late=
+r in
+>   series, breaking bisection
 >
-> But looking at this again, I think the required bit is redundant. Whether
-> a feature can be safely ignored is a property of the feature itself, not
-> of any particular file. Every file that has a feature present will have
-> the same required bit for it. The only thing that actually varies per
-> file is whether the feature is present.
+> > diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> > index eddbbb65ccc4..e54a6d804bf9 100644
+> > --- a/include/linux/uaccess.h
+> > +++ b/include/linux/uaccess.h
+> > @@ -50,6 +50,23 @@
+>
+> [ ... ]
+>
+> > +static __always_inline bool uaccess_should_fail(void)
+> > +{
+> > +     if (WARN_ON_ONCE(!current->mm))
+> > +             return true;
+> > +     return should_fail_usercopy();
+> > +}
+>
+> [ ... ]
+>
+> > @@ -114,7 +131,7 @@ __copy_from_user(void *to, const void __user *from,=
+ unsigned long n)
+> >
+> >       might_fault();
+> >       instrument_copy_from_user_before(to, from, n);
+> > -     if (should_fail_usercopy())
+> > +     if (uaccess_should_fail())
+> >               return n;
+> >       check_object_size(to, n, false);
+> >       res =3D raw_copy_from_user(to, from, n);
+>
+> Can this refuse legitimate kernel address copies on xtensa and nios2?
+>
+> On both architectures __copy_from_user() and __copy_to_user() also sit un=
+der
+> the generic kernel nofault accessors.  Neither architecture defines
+> __get_kernel_nofault or arch_get_kernel_nofault, so both use the fallback=
+ in
+> include/linux/uaccess.h, which goes through __get_user()/__put_user() on =
+the
+> kernel address:
+>
+>     #define __get_kernel_nofault(dst, src, type, label)    \
+>     ...
+>             if (__get_user(data, p))                       \
+>                     goto label;                            \
+>
+> On xtensa, 8-byte __get_user()/__put_user() are implemented with
+> __copy_from_user()/__copy_to_user() (arch/xtensa/include/asm/uaccess.h):
+>
+>     case 8: {
+>             u64 __x;
+>             if (unlikely(__copy_from_user(&__x, ptr, 8))) {
+>     ...
+>             retval =3D __copy_to_user(ptr, &__v64, 8) ? -EFAULT : 0;
+>
+> On nios2, __put_user_common() sends any size other than 1, 2 or 4 to
+> __copy_to_user().
+>
+> Neither architecture selects HAVE_EFFICIENT_UNALIGNED_ACCESS, so
+> copy_from_kernel_nofault() and copy_to_kernel_nofault() (mm/maccess.c) us=
+e
+> the u64 loop whenever dst and src are both 8-byte aligned and at least 8
+> bytes remain:
+>
+>     if (!(align & 7))
+>             copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
+>
+> With this patch, every such access from a task with current->mm =3D=3D NU=
+LL
+> (kworkers, khungtaskd, kernel_init before exec, the idle task in IRQ, kgd=
+b
+> entered from idle) hits WARN_ON_ONCE(!current->mm), and __copy_from_user(=
+)
+> returns n.  copy_from_kernel_nofault() then returns -EFAULT on valid kern=
+el
+> memory.
+>
+> Concrete generic callers include:
+>
+>   d_path() -> prepend() -> prepend_copy() (fs/d_path.c) fills the compone=
+nt
+>   with 'x' and stops the walk.  This is reachable from LSM/IMA path hooks
+>   run by kworkers, for example async firmware loading.
+>
+>   print_worker_info() (kernel/workqueue.c), called from
+>   dump_stack_print_info() and sched_show_task() for kworkers, which copie=
+s
+>   wq->name and worker->desc.
+>
+>   copy_to_kernel_nofault() from kgdb_hex2mem()/kgdb_ebin2mem() on nios2,
+>   which selects HAVE_ARCH_KGDB.
+>
+> Before this patch these accesses worked on kernel addresses, since
+> raw_copy_{from,to}_user() on these architectures is a plain fixup-protect=
+ed
+> copy and access_ok() is not involved.  Only opt-in fault injection could
+> make them fail.
+>
+> The commit message rationale ("Accessing user memory from a task that has=
+ no
+> mm is always a bug") does not apply to kernel addresses.  The commit mess=
+age
+> also says get_user()/put_user() are not covered, which does not hold for
+> 8-byte accesses on these two architectures.
+>
+> No later commit in this series appears to touch these paths.
 
-The required bit is subsystem property not the per-file. e.g. memfd_luo,
-it is set at compile time for a kernel. So every file will get that required
-bit set. It is not per file property.
+This analysis is correct. Implementing copy-from-kernel functions with call=
+s to
+uaccess functions is a little hard to make sense of. :/
 
-struct u8 memfd_luo_feature_state {
-       [MEMFD_LUO_CORE_FEATURE] = LUO_FEATURE_REQUIRED
-}
-
+I've included a patch at the front of my v2 for xtensa and nios2. I don't t=
+hink
+any other architecture has this problem. I've placed the patch at the botto=
+m of
+this reply. I've also adjusted the wording for patch 6.
 
 >
-> The required bit still has to be conveyed to the target somehow, since
-> the kernel that needs it is the one that doesn't know about the feature.
-> But it can be conveyed by the feature's number rather than an extra bit:
-> split the flag space into required features and optional features, and
-> assign each feature to one of them when it is defined. This is similar
-> to the required_flags and optional_flags approach in struct pci_ser [1].
+> [ ... ]
 >
-> Keeping the same header shape as discussed with Pasha:
+> > diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
+> > index 5bb752ff7c61..565b3125e752 100644
+> > --- a/lib/strncpy_from_user.c
+> > +++ b/lib/strncpy_from_user.c
+> > @@ -115,7 +115,7 @@ long strncpy_from_user(char *dst, const char __user=
+ *src, long count)
+> >       unsigned long max_addr, src_addr;
+> >
+> >       might_fault();
+> > -     if (should_fail_usercopy())
+> > +     if (uaccess_should_fail())
+> >               return -EFAULT;
+> >       if (unlikely(count <=3D 0))
+> >               return 0;
 >
-> struct kho_ser_hdr {
->     __u32 size;           /* Size of header + payload in bytes */
->     __u16 nr_required;    /* Number of required feature bits */
->     __u16 nr_optional;    /* Number of optional feature bits */
->     __u64 flags[];        /* Required bits, followed by optional bits */
-> };
+> Can strncpy_from_user_nofault() now trip this WARN_ON_ONCE() from context=
+s
+> where current->mm is NULL by design?
 >
-> Required feature N is bit N of flags[], and optional feature N is bit
-> nr_required + N (using nr_required from the incoming header). The length
-> of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
-> are numbered contiguously, so there are no gaps, and up to 64 features
-> still fit in a 16-byte header.
+> In this tree strncpy_from_user_nofault() (mm/maccess.c) has no current->m=
+m
+> check and no nmi_uaccess_okay() check.  It goes straight to
+> strncpy_from_user():
 >
-> Each bit just means the feature is present, so the truth table becomes:
+>     pagefault_disable();
+>     ret =3D strncpy_from_user(dst, unsafe_addr, count);
+>     pagefault_enable();
 >
-> Source bit       Target supports  Action
-> ---------------  ---------------  ------------------------------
-> Not set          -                Accept: feature absent
-> Optional set     No               Accept: ignore the feature data
-> Optional set     Yes              Accept: use the feature data
-> Required set     No               Reject: -EOPNOTSUPP
-> Required set     Yes              Accept: use the feature data
+> and strncpy_from_user() now calls uaccess_should_fail(), which does:
 >
-> There is no invalid encoding left to check.
-
-
-IIUC, I believe this will not work.
-
-To Communicate between source and target, We are defining a protocol, A
-protocol which will be standard for all the kernel. And each bit location in
-flags must have the same meaning in both the source and target kernel.
-
-Now in you approach, If Source kernel send feature N to target kernel,
-target kernel must understand Nth bit as the same feature. Even though
-the bit position in your approach is not fixed but they are fixed
-relative to their starting point.
-
-required: reference is 0th bit: So target kernel will undersatnd the
-          bit as the same feature as source kernel.
-optional: reference is nr_required: So target kernel will understand the
-          bit as the same feature as the source kernel.
-
-To make sure there is harmony between these two kernel. Even though a
-bit is not set in required for a feature that must be 0 in required
-range. and similarly for optional bits.
-
-So flags will look like 0b 0 0 1 1 0 0 0 1 0 0 1 1 1 0
-                               o o o o o o r r r r r r
-
-                        0b 0 0 0 0 0 0 0 0 1 1 1 1 1 1
-                                           o o o r r r <= This is wrong
-                                           because target can never know
-                                           which bit mean what feature.
-                                           So as you said there will be
-                                           no gaps which will not work here.
-
-So, Based on the first, We still using same number of bits and increased
-complexity and no gain.
-
-
-For the current appraoch and V3 [2]. Think the below one as msb is
-required bit and lsb is feature present in payload bit.
-
-00  FEATURE_ABSENT / DEPRECATED
-01  FEATURE_OPTIONAL
-11  FEATURE_REQUIRED
-10  IS INVALID (analogy: required set but feature is not present) which can
-have different meaning in future if in future, a need arises to reuse this
-field.
-
-Deserialization can happen per feature from right to left. without
-jumping back and forth.
-
-Because of all these reasons, I believe current approach presented in
-V3 [2] is the better. It is close to your PCI series with two flags
-field for required and optional except I combined both field into one
-flags. In your above approach you do have two counts but not having gaps
-(which is wrong) and the way you proposed to parse with an offset is different.
-
-Let me know what you think.
-
-[2] https://lore.kernel.org/all/20261026174217.603114-1-tarunsahu@google.com/
+>     if (WARN_ON_ONCE(!current->mm))
+>             return true;
 >
-> [1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
+> The callers of strncpy_from_user_nofault() are tracing helpers that run i=
+n
+> whatever context the probe fires in, including kernel threads and IRQs ta=
+ken
+> while the idle task runs:
+>
+>   bpf_probe_read_user_str() via bpf_probe_read_user_str_common()
+>   (kernel/trace/bpf_trace.c), and bpf_probe_read_str() for addresses belo=
+w
+>   TASK_SIZE.
+>
+>   bpf_trace_printk()/bpf_snprintf() through bpf_trace_copy_string()
+>   (kernel/bpf/helpers.c).  With CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_S=
+PACE
+>   (x86, arm64, ...), any '%s' argument below TASK_SIZE takes this path,
+>   including a NULL pointer.  So bpf_printk("%s", ptr) with ptr =3D=3D NUL=
+L in a
+>   kprobe that fires in a kworker now triggers the warning.
+>
+>   kprobe/fprobe/eprobe ustring fetch args (fetch_store_string_user() in
+>   kernel/trace/trace_probe_kernel.h).
+>
+>   The .ustring event filters (test_ustring() in
+>   kernel/trace/trace_events_filter.c).
+>
+>   Synthetic event string fields (trace_string() in
+>   kernel/trace/trace_events_synth.c).
+>
+>   The bpf_copy_from_user_str_dynptr family (copy_user_str_nofault()).
+>
+> Before this patch these calls either failed quietly with -EFAULT or read =
+the
+> lazily loaded mm.  Now a tracing user (CAP_BPF plus CAP_PERFMON, or trace=
+fs
+> access) can trigger a warning splat, and a panic with panic_on_warn, just=
+ by
+> tracing a function that kernel threads run.
+>
+> The same applies to copy_to_user_iter_nofault() in lib/iov_iter.c, which =
+this
+> patch also switches to uaccess_should_fail().  The commit message lists
+> copy_to_user_nofault() as intentionally covered, but it does not account =
+for
+> the nofault helpers being used from mm-less contexts by design.
+>
+> A fix appears later in the series, e8bf23b5b30d ("uaccess: Fail user nofa=
+ult
+> helpers quietly when current->mm is NULL").  It adds an early !current->m=
+m
+> return to copy_{from,to}_user_nofault(), strncpy_from_user_nofault() and
+> strnlen_user_nofault(), and switches copy_to_user_iter_nofault() back to
+> should_fail_usercopy().  Its message describes this exact problem
+> (bpf_probe_read_user_str() from a BPF program attached to a function call=
+ed
+> by a kernel thread would now trip the WARN_ON_ONCE() in
+> strncpy_from_user()).
+>
+> This commit on its own still introduces the regression, which breaks
+> bisection.  Could that fix be folded into this patch, or ordered before i=
+t?
+
+Ah, yes. I'll flip the order of patch 6 and 7 in the v2. Thanks.
+
+Okay, the xtensa/nios2 patch is here:
+
+-------
+
+    xtensa, nios2: Don't use __copy_{from,to}_user() in __{get,put}_user()
+   =20
+    Architectures that don't define __get_kernel_nofault() or
+    arch_get_kernel_nofault() use the generic fallback in
+    include/linux/uaccess.h, which accesses *kernel* addresses with
+    __get_user() and __put_user(). That relies on __get_user() and
+    __put_user() being raw accessors, i.e. plain fixup-protected loads and
+    stores with no extra checks that only make sense for user memory.
+   =20
+    xtensa and nios2 use this fallback, but don't quite meet that: on
+    xtensa, 8-byte __get_user() and __put_user() are implemented with
+    __copy_from_user() and __copy_to_user(), and on nios2, __put_user() of
+    any size other than 1, 2 or 4 bytes (i.e. 8-byte puts) uses
+    __copy_to_user(). __copy_{from,to}_user() do more than a plain copy: th=
+ey
+    inject failures with CONFIG_FAULT_INJECTION_USERCOPY, check the kernel
+    object size with CONFIG_HARDENED_USERCOPY, and, with a later patch in
+    this series, refuse and warn on user accesses when current->mm is NULL.
+   =20
+    As neither architecture selects HAVE_EFFICIENT_UNALIGNED_ACCESS,
+    copy_from_kernel_nofault() and copy_to_kernel_nofault() use 8-byte
+    accesses when both pointers are 8-byte aligned, so kernel nofault
+    accesses (used e.g. by d_path() and print_worker_info()) end up in
+    __copy_{from,to}_user() on kernel addresses. With the NULL mm check,
+    copy_from_kernel_nofault() would then fail on valid kernel memory when
+    called from kernel threads.
+   =20
+    Use raw_copy_{from,to}_user() instead, as asm-generic's
+    __get_user_fn()/__put_user_fn() do, and as nios2 already does for 8-byt=
+e
+    gets (__get_user_8()). This only drops the extra checks and KASAN/KCSAN
+    instrumentation for 8-byte accesses, making them consistent with the 1,
+    2 and 4-byte cases, which are plain inline asm.
+   =20
+    The fallback itself is fine and is still needed: it's used by alpha,
+    arc, csky, hexagon, microblaze, nios2, openrisc, sh, sparc and xtensa.
+    Of those, only xtensa and nios2 have __get_user()/__put_user() that
+    aren't raw. The others use either asm-generic's, which call
+    raw_copy_{from,to}_user(), or inline asm for all sizes. The remaining
+    architectures (arm, arm64, loongarch, m68k, mips, parisc, powerpc,
+    riscv, s390, um and x86) define their own __get_kernel_nofault() or
+    arch_get_kernel_nofault(), which don't use __get_user()/__put_user() or
+    __copy_{from,to}_user().
+
+    Signed-off-by: James Houghton <jthoughton@google.com>
+   =20
+diff --git a/arch/nios2/include/asm/uaccess.h b/arch/nios2/include/asm/uacc=
+ess.h
+index 5e6e05cc6efc..f20f11bd21dc 100644
+--- a/arch/nios2/include/asm/uaccess.h
++++ b/arch/nios2/include/asm/uaccess.h
+@@ -161,7 +161,7 @@ do {									\
+ 	default:							\
+ 		/* XXX: This looks wrong... */				\
+ 		__pu_err =3D 0;						\
+-		if (__copy_to_user(__pu_ptr, &(__pu_val),		\
++		if (raw_copy_to_user(__pu_ptr, &(__pu_val),		\
+ 			sizeof(*__pu_ptr)))				\
+ 			__pu_err =3D -EFAULT;				\
+ 		break;							\
+diff --git a/arch/xtensa/include/asm/uaccess.h b/arch/xtensa/include/asm/ua=
+ccess.h
+index 6538a29a2bbd..30c8805d1c83 100644
+--- a/arch/xtensa/include/asm/uaccess.h
++++ b/arch/xtensa/include/asm/uaccess.h
+@@ -76,7 +76,7 @@ do {									\
+ 	case 4: __put_user_asm(x, ptr, retval, 4, "s32i", __cb); break;	\
+ 	case 8: {							\
+ 		     __typeof__(*ptr) __v64 =3D x;			\
+-		     retval =3D __copy_to_user(ptr, &__v64, 8) ? -EFAULT : 0;	\
++		     retval =3D raw_copy_to_user(ptr, &__v64, 8) ? -EFAULT : 0;	\
+ 		     break;						\
+ 	        }							\
+ 	default: __put_user_bad();					\
+@@ -176,7 +176,7 @@ do {									\
+ 	case 4: __get_user_asm(x, ptr, retval, 4, "l32i", __cb);  break;\
+ 	case 8: {							\
+ 		u64 __x;						\
+-		if (unlikely(__copy_from_user(&__x, ptr, 8))) {		\
++		if (unlikely(raw_copy_from_user(&__x, ptr, 8))) {	\
+ 			retval =3D -EFAULT;				\
+ 			(x) =3D (__typeof__(*(ptr)))0;			\
+ 		} else {						\
