@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793000160;
-	b=S5L9f3dL8ASSkcPYF9R2N21xzpiCjlIME7aD1+Tvwo4uorpvTJpW4+Svcw8f57GWiW/O
-	 EjNJYSIcnzPal3xDYwxHZrPTvkpA1KEchfaHRBhGlYJ1dZ7nO2NHD2hkTeAE98oVJXPRK
-	 nv2olWW6lO7OAVuJKI1b149o5d9eXeaZQICq+rSK3Tp24GMULiDFHW4RwP5e7D/MUAV6H
-	 KocC872+x8wUuHYJQ32ks4V75HYYOufkt39JJB/KyNvU6wAuENHSIYM4IZIy+73cHlH7S
-	 pyiGqO9IlVRkwetWgOktBtW0AVYctL+3Lm1+t0AlKIX9JyBFbUHHiZ2ZlGvWTA9mwpQ==
+	t=1793000537;
+	b=4Bmu6lJzvDQUgA0FQ8orRG9vbuwnXtGuETPMeVmg1/dcYXK00NJ25lBAhCmAaKM3pC2t
+	 2c3PulWzPSUaQxxAeoqk1hMMPi+gqw3ScQVjNu1PwFdSXavFF1cHeUbvR2KHxEUF+HbiR
+	 h6vqZyQs3sHyw6Q78KqsjAXAHD6ZKE/Xko2aVxErE9NgsMDIgeEcHrvcBXW5qEjuXstHb
+	 4728G12LUZCdXM6C5XBDLPgGHS+yNU7PbJlwupv8t2GNCqr1dUTG7IwO8Qf2pXR+rXrMW
+	 HX8nAi9IptQdKShRAdTXhGiJaEPPVug1Dq/52Tc/s9fdTeBRHTTdOYb64wHfWVlmyKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793000160;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793000537;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=W4aGUUJNgkmH4WywgrlMXxv329VDCA9p+jUtQYZbo0w=;
-	b=LtlujY82ZHx641HRb0CKFpbQFK7KDUKMQBvdb2DK+ne1yLJkPc1j9SnK7AcCY/kykALD
-	 SD+3izkBPeqYgmrx2/A+z3iR55QqDcP0Jn73d7TOairsLHtyLmsaz3Y4F0fPqO4mT00Y5
-	 m30BSUmL3dA+vSfS9iDist6WGieIqz03hhPPz0TX2MxeRaXahiOUKcB/8ojyvUBY6D1Kz
-	 xnGpox9EKl+z4zEH26yOEwPkCwFk9Kzbm6+PrsDAxoFAWq2PX9MLcihqwE+mdn2hYwErB
-	 JBor9V5hQSPc1eR+NpXV0nFuDhRY7V4JAnPOtNJloJS83VMcqiBhY0LrA4iCL9S3Mdw==
+	bh=QK09cvCCv1U2VbXXs4aXYBwdDy0Jn6Y8NtPS8Cb2LSk=;
+	b=AovLTzQf9ZlKzDhEjJizb+f1mojlBXq0TP+B+ekk8aOc6Xe4Bl6fLFaTf95PB5FmPzCg
+	 auALs0mfaqYlkbP91bi+GnKLdXjVmNIRTn9RBLxHkne5fWBFb2LUzQYYhnaZptlehmxn2
+	 4QoGPZVQ9oV3c4C1Vshejj8rvr6NPJI0/na/vO1NS6LOXekE06hUfO7Gfhb4+8gmSnqHr
+	 DAtStmN0vf0yzY2tfHW2aBkQ2H5bbbhw804CvnsPotogNUKKItmEJ8/8YSo5F3s4TfSlW
+	 82XkHRDv71F00KnyETw1I6Xfux9kyLqLO5ZPwHBzZRdnsvuFGi5iNk861rMJRpAbSvA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cDqC2fMe;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zz1SyuAS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E859606A31D
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E103606A31A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 07:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cDqC2fMe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF251F01825;
-	Mon, 26 Oct 2026 07:36:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zz1SyuAS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F420F1F01825;
+	Mon, 26 Oct 2026 07:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793000160;
-	bh=W4aGUUJNgkmH4WywgrlMXxv329VDCA9p+jUtQYZbo0w=;
+	s=k20260515; t=1793000537;
+	bh=QK09cvCCv1U2VbXXs4aXYBwdDy0Jn6Y8NtPS8Cb2LSk=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=cDqC2fMeF25/JKerwdiP6L/hwfoviv09WqUxIArU/J2npADSTpVaEJxYe/E1govum
-	 lCq555MLnnl4GDf+wOFon0xKhVsHLELhW4dWz6A8m7xeQrHW1fBhPI4IuidRJmHPMf
-	 OupqIR3tdVyz3w8y5lOcCMAnWK1A1KM4T17d4vlErEq2OSa8cDBjiJ0vA8dPq1cax5
-	 ba1T0TZ4g80HysCphzEbUXYEGhm5UftbS2wQIa6+fxB7JKQ3VSlanjdbL7hHZpqN91
-	 im4360Cs826ESMldIwcE+KfOduLSbKct8/4ljiAL58bILL6vsZPpEXqMTdLVbuhpD5
-	 q9Yo/5VXqcaLQ==
-Message-ID: <sashiko-outbox-184661@kernel.org>
+	b=Zz1SyuASBC+eJsHXA5Wv5i8DneYUcveOWukvOTNfkeEwlSUTilmpcFF3r3LDzaOPt
+	 81pt2O99nRR7S6JTKWaegQ3MDZ8lavjuYsFhUaPmrdvarAnxHKfVmXmB+qdBh0ZbGm
+	 1XRtqzZ4Juqw+1U2e+YX4AGjwgAjxS531nQbk58y/mN6onG/pEXrCYi+YVrKQbcJeB
+	 3cnBDSyxZ/cRqrWj1fGAEAZUqquXcI+xcuhD7i1yICCPUcYkZC/NPTUXpiBkVw09ED
+	 Y/rZYFZPDHApe/UwD6LJjjRwZSuLESMCnjGN5GqBACkycvaptg9n/KLZ8pT62Ez8HX
+	 RtjtVBmmlwrnw==
+Message-ID: <sashiko-outbox-184664@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 3/5] KVM: guest_memfd: Advertise support for
- KVM_LINK_GUEST_MEMFD
+Subject: Re: [RFC PATCH v3 4/5] KVM: selftests: Add tests for
+ KVM_LINK_GUEST_MEMFD ioctl
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tao Gong" <gongtao@google.com>, kvm@vger.kernel.org
-In-Reply-To: <20261026064424.3003536-4-gongtao@google.com>
+In-Reply-To: <20261026064424.3003536-5-gongtao@google.com>
 References: <20261026064424.3003536-1-gongtao@google.com>
- <20261026064424.3003536-4-gongtao@google.com>
+ <20261026064424.3003536-5-gongtao@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 26 Oct 2026 07:35:59 +0000
+Date: Mon, 26 Oct 2026 07:42:16 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,95 +62,63 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] KVM: guest_memfd: disallow linking guest_memfd across TDX and SEV-=
-SNP VMs
+- [Medium] KVM: selftests: test_link() hits vm->type assert in ____vm_creat=
+e() on arm64
 --
 
-commit 22378b77744900b2602bc894dbec906d31acf8be
-Author: Vishal Annapurve <vannapurve@google.com>
+commit c8e0fca46d65aef6ffa609495f3f615b1c614301
+Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: guest_memfd: Advertise support for KVM_LINK_GUEST_MEMFD
+KVM: selftests: Add tests for KVM_LINK_GUEST_MEMFD ioctl
 
-This commit introduces KVM_CAP_GUEST_MEMFD_LINK and advertises it via
-KVM_CHECK_EXTENSION so userspace can discover support for linking
-guest_memfd instances across VMs with KVM_LINK_GUEST_MEMFD.
+This commit adds kselftest helpers and test cases in guest_memfd_test.c for
+the KVM_LINK_GUEST_MEMFD ioctl, covering invalid inputs and valid linking
+between VMs.
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 70521371b64ab..135e7bb7609a8 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -5008,6 +5008,8 @@ static int kvm_vm_ioctl_check_extension_generic(str=
-uct kvm *kvm, long arg)
->  			return 0;
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
+ng/selftests/kvm/guest_memfd_test.c
+> index 2233d871a38f4..ccde4d735c77c 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -418,6 +418,68 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+>  	}
+>  }
 > =20
->  		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +	case KVM_CAP_GUEST_MEMFD_LINK:
-> +		return 1;
+> +static void test_link(struct kvm_vm *vm, int src_fd, size_t total_size)
+> +{
+> +	struct kvm_link_guest_memfd params =3D {};
+> +	struct stat src_stat, dst_stat;
+> +	struct kvm_vm *dst_vm;
+> +	int dst_fd, bad_fd;
+> +	int ret;
+> +
+> +	/* guest_memfd can only be linked between VMs of the same type. */
+> +	dst_vm =3D vm_create_barebones_type(vm->type);
 
-[Severity: High]
-Should KVM_CAP_GUEST_MEMFD_LINK and kvm_arch_gmem_link_allowed() restrict
-linking guest_memfd instances for confidential VM types such as TDX and
-SEV-SNP?
+[Severity: Medium]
+Will passing vm->type to vm_create_barebones_type() here trigger an
+assertion failure in ____vm_create() on arm64 when vm->pa_bits !=3D 40?
 
-Right now, kvm_vm_ioctl_check_extension_generic() unconditionally returns 1
-for all VM instances, and on x86, kvm_gmem_link() ->
-kvm_arch_gmem_link_allowed() only checks whether the two VMs have the same
-vm_type:
+On arm64, main() invokes test_guest_memfd(VM_TYPE_DEFAULT) with vm_type =3D=
+ 0,
+and the initial vm_create_barebones_type(vm_type) call in test_guest_memfd()
+reaches tools/testing/selftests/kvm/lib/kvm_util.c:____vm_create():
 
-arch/x86/kvm/x86.c:kvm_arch_gmem_link_allowed() {
-	return dst->arch.vm_type =3D=3D src->arch.vm_type;
-}
+#ifdef __aarch64__
+	TEST_ASSERT(!vm->type, "ARM doesn't support test-provided types");
+	if (vm->pa_bits !=3D 40)
+		vm->type =3D KVM_VM_TYPE_ARM_IPA_SIZE(vm->pa_bits);
+#endif
 
-This allows userspace to link a guest_memfd between two KVM_X86_TDX_VM
-instances, two KVM_X86_SNP_VM instances, or between a legacy SEV VM
-(initialized via KVM_SEV_INIT on a KVM_X86_DEFAULT_VM without changing
-kvm->arch.vm_type) and a default VM:
+When the selected default guest mode has a physical address width other than
+40 bits (for example on hosts where guest_modes_append_default() selects a
+48-bit or 52-bit IPA mode), ____vm_create() overwrites vm->type in place
+with a non-zero KVM_VM_TYPE_ARM_IPA_SIZE(vm->pa_bits) value.
 
-1. For KVM_X86_TDX_VM, private guest_memfd pages are encrypted with a
-per-TD ephemeral HKID and tracked in the TDX Module PAMT as exclusively
-owned by a single TD. If two TDX VMs link a guest_memfd and both map the
-same private PFN via KVM_TDX_INIT_MEM_REGION -> tdx_mem_page_add() or a
-stage-2 EPT fault -> tdx_mem_page_aug(), the second TD's SEAMCALL fails
-with TDX_PAGE_NOT_FREE:
-
-arch/x86/kvm/vmx/tdx.c:tdx_mem_page_aug() {
-	err =3D tdh_mem_page_aug(&kvm_tdx->td, gpa, level, pfn, &entry, &level_sta=
-te);
-	if (unlikely(tdx_operand_busy(err)))
-		return -EBUSY;
-
-	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_AUG, entry, level_state, kvm))
-		return -EIO;
-}
-
-Because TDX_PAGE_NOT_FREE is not an operand-busy error, TDX_BUG_ON_2()
-triggers a host WARN_ON_ONCE().
-
-2. For KVM_X86_SNP_VM, each physical page has a single system-wide RMP
-entry binding it to one (ASID, GPA) pair. When a second SNP VM faults in a
-private guest_memfd page already assigned in the RMP to the first SNP VM,
-sev_gmem_make_private() sees assigned =3D=3D true from snp_lookup_rmpentry()
-and returns 0 without checking whether the RMP entry belongs to the current
-VM's ASID:
-
-arch/x86/kvm/svm/sev.c:sev_gmem_make_private() {
-	if (assigned) {
-		pr_debug("%s: already assigned: gfn %llx pfn %llx nr_pages %llx level %d\=
-n",
-			 __func__, gfn, pfn, nr_pages, level);
-		return 0;
-	}
-}
-
-KVM then installs the page into the second SNP VM's NPT, leading to
-repeated guest RMP #NPF faults; furthermore, if the first SNP VM is
-destroyed while the second SNP VM keeps the linked guest_memfd alive,
-sev_vm_destroy() frees the first VM's ASID via sev_asid_free() while the
-shared guest_memfd pages remain assigned to that ASID in the RMP table.
-
-Should KVM_CAP_GUEST_MEMFD_LINK and kvm_arch_gmem_link_allowed() disallow
-linking for TDX and SEV/SNP VMs?
+When __test_guest_memfd() then calls test_link(), passing that mutated
+vm->type into vm_create_barebones_type(vm->type) forwards a non-zero
+shape.type into ____vm_create(), tripping TEST_ASSERT(!vm->type, ...).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026064424.3003=
-536-1-gongtao@google.com?part=3D3
+536-1-gongtao@google.com?part=3D4
