@@ -1,90 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792985867;
-	b=A10fSC9qCONPU/VK0gKqrYIeyx1+EJECF5KqDL6rK5VNfSKupPg4eFZVkU9Jt5NDV+dr
-	 39WZvnnQcD97RMMkrYL452fpxwq/Ac2r7uU9sL7DUFYoEN6na2BvvQFMbtAWsuI6AlBda
-	 q57a/reeo5YQRB3VBmdafQvF37MsQl1nRBuvkpo6UPZ+iXXSWX8jWWpUbjLQwYGJBZT+z
-	 /z+H6uBlKciNfpim+Vc2yQWLutVfVG+hcqHsYciFtBUaSsgBuPHUP7MRf6BMoDYda4KQn
-	 SXtz1Hc5rMwFGDN/Vf+eaH069lFi8wzFE8S/2Ne5U9JNIn9OK92cDKuBihaRIBIAWpw==
+	t=1792986271;
+	b=t4hKzbLjEleh8mU9DlOKqBmaC3+E5tAyBWzrGogn5kpbc2oJzUgIlmqXepbXvHVSxZSn
+	 DlEDRleqthVMWdCAsgYcFCDvWPFXAzrJmoBqun2UyoJbiz7HhYos2dK41XSgpMGDgmqGs
+	 9Jg3tNHQiPKex/WdoAy7St5eYbxrnPkAP/EajFWslSkKcioWFBr1NbIiQpqfA5GmEByqI
+	 gpzH4PS7xm0HAr8i3mTvJDbjyC9EQiSEgBYnuayq4hEbUNizz2FQhLbix9S2JMb6UvVqX
+	 5wffXI3byCG5BrFzjZ6pe4YZT2237dbylj6yW1z0TWBrvmH00HrLbYLiEUub7rzBHqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792985867;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792986271;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=AcVF0+7J4tCY38BzQtPDDFcEioY3MRDaVDGoLP3rSf4=;
-	b=xIOuiXo3RmB1Y9bB8+utrXdjBctpRKHeyqMgwnQkbn9Tvxz+ifQmggnhNKlBLkn4dm8y
-	 1oNlwkTdA86UIEU9apdheROvxoJhO5T7M+nU87sihPy8mTL3PUsg87jztUB+PsAKTYgMj
-	 g1WqteeSXHygF6G1LSes5C8GFw+uKuq3Jh9U5MlhtcyZIaWZtmgLYTTz9crvnpfMGmdTC
-	 OLlVXqa1vjd9aaxC9uGQyo+/TOxHBCxvIESciFz04qiqJcFrXzRN9z5UupYchwiGIvpuP
-	 luO2alrZd9kqtJ7SNa2xSk45Bq3cNIa0xsQcteXeQzWQlB6bjOcQh5lgquNmldaV1Xw==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=FuZU9Bm4L1tjpR5OE6ZUvzPtHgo0PRLa1bH4/fzLGaA=;
+	b=ImtYfmd8DixjRj6yLf62T248iPYYeYKRAge+H7M9LKoJwK33MjMWXYB9OEz4kA36k0V5
+	 Udk50NINp9UvKyfs9RH5Ai11g0Rdr+HqLd1yMk8QtQtZkQ4+Dlp3n/Vth9VfkN7jGiiOm
+	 qc1BPfoOnt1123vjmw++mg/IuErWNW9W1GetIrBGG1F9lL2LMZ1Mlzxl9kbahkiSkGOuZ
+	 G9UiaJqF33Qc/8bpihi72ikIDH120clbDFYjlLgQLXPM9X/KZILOvCxZ69XZKPqLfOn4g
+	 VWzQfCTvXwq2ZQ0wVbXhCE/5VBoxAfkYOYloZz31d/6G49DeHYWyNUw6lW0KUElZOEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bytedance.com;
-	spf=pass smtp.mailfrom=bytedance.com;
-	dkim=pass header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=VAgsQ1Yd;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XFeqDJ3a;
+	arc=none smtp.remote-ip=209.85.160.181
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3502606A31A
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 03:37:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3502606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84080606A31A
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 03:44:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84080606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=VAgsQ1Yd
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1550429a91.2
-        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 20:37:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XFeqDJ3a
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5361e313e63so24634951cf.3
+        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 20:44:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1792985866; x=1793590666; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792986270; x=1793591070; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AcVF0+7J4tCY38BzQtPDDFcEioY3MRDaVDGoLP3rSf4=;
-        b=VAgsQ1YdNt0Y2u83226p1GJlrEQAge5zJn+naGeczL6mMbk4YtHwYrKXBR8fJp5q3n
-         OHEXx2pSTg2MXotEv/oGU1mKLHhnJsnssYdbVB/CXUHSkynUpQIgqSGSPxwBVQ3YexTQ
-         PpTc1nlbyvX1bNlkOo9MgqvZ7+MIJvIwn77Qy9qNvqS5OTniB90XJLN/mWS445TgR5Mw
-         TnI8czsjAQJkXY+u8/yDPAQtDTkOMs9v2f/zjlhJhqF45hcEocwJszm6bLGWA/DB9Y9N
-         RYMtWglSt4Vhx1BXF4X5tMtAR5xstrCW0oPfl4yfrisOXANUI1Vb4f2RJ/F+uIXqThvR
-         s0Aw==
+        bh=FuZU9Bm4L1tjpR5OE6ZUvzPtHgo0PRLa1bH4/fzLGaA=;
+        b=XFeqDJ3aqCLfK8rrrOUKshScqKQbmpP2YKgSEkoMcDpM1IGtiD9AxmIQ4pb97xtnzW
+         wF8WVlBAxgPHE13QC9fwkToonYBTQroVIa+N8zTzWLWUbJ1A2o5s8mArhBb2AqPnMlX0
+         edRMOh3Wr01dtJsTWl1AClAKCJRFUFd2Pi6xti/P+EstLXMOF45iDByRyEzccHlViIip
+         ShHDZX/cm+8UcpgoRtTkDKRgMGmfr/R9uv41GxiiQnRbfB8drvGTaS4dH3IvurK80yPR
+         2L68p1pDbKpFdrgJ+qe4UeLMbASOFKO5aw9B6fFKliCmVCKOj69P7JY8ct9ivfFCSAz7
+         qaTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792985866; x=1793590666;
+        d=1e100.net; s=20260707; t=1792986270; x=1793591070;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AcVF0+7J4tCY38BzQtPDDFcEioY3MRDaVDGoLP3rSf4=;
-        b=wFxZiT6+NBL/LFfHRyp5Q+Isl7Y94tMVZ2bThQI5ANkZsoIIHllVxreutymZWYIiHI
-         +2S2ZKJq/ovZz5F2QQA2eZVTkXrKx3KPRzc4XbL4keNa8e3cr5sN8NL36RukwJdWmGSm
-         C56nlUEIwWctqSOlCJmyTztKRPaWzzuW6QcNdeuT5vsxEOIzyEZDfj5UfzWR+o5L8VMQ
-         NaMKsKYc0CBmrnhso8F5mNEl3CFqyTjd/4ZwsqE7cm2bRqMtDHuEyI99H4efIb9WfHhX
-         i4BJkOTC19jABRpL3pF7YU3+GRFg665njMSqP6JDWKMGRy6lzeLOXQ3vzzhS08aib7uz
-         djQw==
-X-Gm-Message-State: AFq9FYJ6z51O8IJUZHuE/kdE39ZSjF7sTCG/OCLlqRjwCjuaT0ofgv88
-	aWdVL95thtQgNnHc/3nPkI8ojtFK87IdzFxntZmy9OvMe9/iNFa62Q62zkZOw0bE3bnnq+rxACT
-	kbW/6Evmvqg==
-X-Gm-Gg: AYBFou0o4lK7WHEvGgIMDRqgliTKFyST+zPjFW74q8Fp27KmGUshauNMkND6M31BnSN
-	+yoaahx8IWXb2adJGaTWpwBo5BitcGH62t5z7ddJF9tGfCCghqQKTW7Slzv+yfSTKYYr6/yDZ9Q
-	jjPz33Pgz+zCXCafPK5A2AJgawbipYaqTLZBxPbege7yutLmMWw2+LsHvMmAXoJgkFQ8LL5ryJp
-	hE8VAVFFtbhX3vXm2+juwMMnfQCfO81nikvigvnPvsKXolFpH3GbkX4cbdhd9nj5bu1sBkILCab
-	n9tdcUyeGRlX/IiI1MloWviNXsLT1ift1zXgrfAWf7sCTNP2r1QTmAuRmKuc621Hl+SVjW/rIvI
-	wAVisxZhC5+1xL6tyh86urhYycsRuevQ0dr7hdoaNm12klmmxjSQbaRht8ZULsXemVbX41v70dD
-	4VEY2ofF6oql2pk3wzkRSSnpwzUzMphW/V5eqpwAb0GzFvxvV0LwwWZoXmCB6dFpSxTth2YRQPv
-	XNFni+Q2v2YLuLiyJdDiXqwvPJh6SLA1jooqOYTc17urUEp13pJBHcgsiHCRwQzzttJT2PChFc=
-X-Received: by 2002:a17:90b:57cd:b0:3ad:5c64:c7a0 with SMTP id 98e67ed59e1d1-3adead48641mr4554613a91.38.1792985865903;
-        Sun, 25 Oct 2026 20:37:45 -0700 (PDT)
-Received: from n37-012-226.byted.org ([115.190.40.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebe8f09csm6754815a91.7.2026.10.25.20.37.43
+        bh=FuZU9Bm4L1tjpR5OE6ZUvzPtHgo0PRLa1bH4/fzLGaA=;
+        b=doCUUc1chF95dZE8UZXIomXipZSO8SQngrNWZBH6JGaY1lBhqu1NR3RAyWZoCEnQL8
+         K88FAa7V0Ma4Dbn9SGokq+74B+6zCaNvfVNP5QqGFh82kjnf019Jt17ZIoBxMPE8kPq9
+         jaWS68soX/BOZQE5/k4V0rwPhNQMNBvZidTPVZlEKFQSDMXJYZXzA6ntY1y1kJcDVs1a
+         yl5UmKU7lJEMKU8rELK+TK7hjv0yNB8EjDO98rL2TMBgwPCAZhiFBZA+gBNyQwMoARQZ
+         JpqMESiCkKn9QGN7mT1E1ClvfOQahOJetUEnbehjHzA6V82T7yNcMkAXa2VlHQn7TL9R
+         l5xQ==
+X-Gm-Message-State: AFq9FYKciHJzZV3rWucsOMvvdStuBh7f/d9gVxbMXyPXi3ul+WplUPx3
+	5WBqWKxRmflF7VO12V4+XiCGjd1XCRY1QwvlZwh39X5rAVQA/1aAN630Elgn8w==
+X-Gm-Gg: AYBFou3pB/qMgIQeQjuJuQgQeilzK2+sIX7ujdCxRt9wSXQSI/opDvMLHXG8uIQPVg9
+	Tl8QETFkQ7Fw4jzo9rItOp1MfvDWn3bJXegLHuoukN41Dh4hyrT8lTLYwlVrqtAnOj9VmmQyBTR
+	Y3R56XBbk6P2TBVAyOVBUbVxzC+mbgsRXAxAsiF+ApzMway60uxpQ36/QU3ZA3iLKVV1/wu/4Sq
+	orUlcu7Vm9S+2D2ZIb+gpS1HFUvhQXBEv5jpV4gqc08dYsBPcHTiDBiOwyV+i2bX0uxI1A0ww95
+	5fl9QJnVCslcdXGgoka5hTCAe8O2PHuD6VQXGHANsQRe8w3UwcOoLnwQolqyvAmbZawly31xGDB
+	5vCnxAtsH+IPQ6GzUfeyYNwp4dtrXjstGbeYLfon+yEe2eWEcwzt1pmfd30vH3o0fh1XkdhIp0o
+	EoaDhlQdpX6PBGq0XHNvHXhOWpMA+gUbSiKelaXmL/85pmrca488e9gqsZGVSriLYlpgHa/ebP2
+	MaYigt3sR+7xxPSmNGnsDLzLIOPxN4GVasWxY9orcCnQc+K6/dl9dczoH2cskaE9d/CdoHDJztT
+	Sl6+HDtG7uMx8xPiinYDyvZSaCXiw4JWwpF3OwHS3pXhv/9y6eHZfXNxGl3Q
+X-Received: by 2002:ac8:6546:0:b0:536:699d:9a1c with SMTP id d75a77b69052e-5383b3509cdmr79585421cf.2.1792986270529;
+        Sun, 25 Oct 2026 20:44:30 -0700 (PDT)
+Received: from paul-white-HP-Pavilion-Laptop-15-cs1xxx.mynetworksettings.com ([2600:4040:ad65:1c00:4cc4:d0be:4ab6:9a0b])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-538394c5273sm46202121cf.9.2026.10.25.20.44.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 20:37:45 -0700 (PDT)
-From: Qingwei Hu <qingwei.hu@bytedance.com>
-To: kvm@vger.kernel.org
-Cc: kvm-riscv@lists.infradead.org,
-	Andrew Jones <andrew.jones@linux.dev>,
-	James Raphael Tiovalen <jamestiotio@gmail.com>,
-	Qingwei Hu <qingwei.hu@bytedance.com>
-Subject: [kvm-unit-tests PATCH v2] riscv: sbi: Fix timer delay measurement race
-Date: Mon, 26 Oct 2026 11:37:38 +0800
-Message-Id: <20261026033738.96294-1-qingwei.hu@bytedance.com>
-X-Mailer: git-send-email 2.39.5
+        Sun, 25 Oct 2026 20:44:30 -0700 (PDT)
+From: Paul White <paul.white.kernel@gmail.com>
+To: anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr
+Cc: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Paul White <paul.white.kernel@gmail.com>
+Subject: [PATCH 0/2] KVM: riscv: Unify and optimize FP register loops
+Date: Sun, 25 Oct 2026 23:41:25 -0400
+Message-ID: <cover.1792982932.git.paul.white.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,49 +102,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The timer test samples the counter before checking timer_works in the
-wait loop. If the timer interrupt arrives between these operations, the
-handler sets timer_works and the loop exits with a timestamp taken before
-the interrupt. That timestamp can precede the deadline, causing a false
-"timer delay honored" failure in both the normal and masked IRQ tests.
+The change to both patches in this series is a 
+structural/architectural one. Both functions set_reg and get_reg use 
+identical code to locate the register the application specified in the 
+token even though they do different things with that location 
+information: the set_reg function adds data the application requested 
+to send to that identified location  (in the copy_from_user function) 
+while the get_reg function retrieves what data is at that identified 
+location and sends it to the application (using the copy_to_user 
+function). Everything else is the same. That is the only difference 
+between the code. 
 
-Check timer_works first in the wait loop and sample the counter again
-after the loop exits. Use this timestamp to calculate the elapsed time
-so that an interrupt cannot cause the test to use a stale timestamp.
+Therefore I was able to apply the same solution to both of the 
+function's finding-the-requested-register parts (which is everything 
+up until the final if statement) which were filled with redundancy. 
+The solution I came up with is to create local variables for the 
+entire function for all the variables of the original code that would 
+be different, depending on the floating point type. Then once I ask 
+whether it is a double floating point or single floating point mode, I 
+assign the aforementioned variables to the values they should have for 
+that mode so that when I go through the if statements that ask whether 
+the requested register number is a status control register or data 
+register, I only have to go through it once because the respective 
+floating point values/addresses would have been assigned to the 
+aforementioned local variables, so the whole code kind of changes or 
+is tailored to the floating point type. 
 
-Fixes: 14fa12b1351c ("riscv: sbi: Add test for timer extension")
-Suggested-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
----
-Changes in v2:
-- Check timer_works first and sample the counter after the wait loop,
-  as suggested by Andrew Jones.
-- Drop the timestamp field and counter read from the interrupt handler.
+This architectural change/solution will make the cpu execute the code 
+faster (as the cpu will have less decisions to make and the bare-metal 
+math used to figure out the address of the register is executed faster 
+by the cpu than looking up object properties and array indexes), is 
+more maintainable, and is more readable.
 
-Testing:
-- Cross-built riscv/sbi.flat and built it natively on a RISC-V host.
-- Ran the SBI tests with KVM five times each with 1 and 32 vCPUs.
-  All runs passed, with 15 tests skipped per run. Both timer delay
-  checks passed in all runs.
+Paul White (2):
+  KVM: riscv: Eliminate redundancy in get_reg function via pointers
+  KVM: riscv: Eliminate redundancy in set_reg function via pointers
 
- riscv/sbi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/vcpu_fp.c | 128 +++++++++++++++++++++++----------------
+ 1 file changed, 76 insertions(+), 52 deletions(-)
 
-diff --git a/riscv/sbi.c b/riscv/sbi.c
-index 3b8aadce..5633b1f9 100644
---- a/riscv/sbi.c
-+++ b/riscv/sbi.c
-@@ -292,8 +292,9 @@ static void timer_check_set_timer(bool mask_timer_irq)
- 	if (ret.error)
- 		report_info("set timer%s failed with %ld\n", mask_test_str, ret.error);
- 
--	while ((end = timer_get_cycles()) <= (begin + d + margin) && !timer_info.timer_works)
-+	while (!timer_info.timer_works && timer_get_cycles() <= begin + d + margin)
- 		cpu_relax();
-+	end = timer_get_cycles();
- 
- 	report(timer_info.timer_works, "timer interrupt received%s", mask_test_str);
- 	report(timer_info.timer_irq_set, "pending timer interrupt bit set in irq handler%s", mask_test_str);
 -- 
-2.39.5
+2.53.0
 
