@@ -1,80 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792986271;
-	b=t4hKzbLjEleh8mU9DlOKqBmaC3+E5tAyBWzrGogn5kpbc2oJzUgIlmqXepbXvHVSxZSn
-	 DlEDRleqthVMWdCAsgYcFCDvWPFXAzrJmoBqun2UyoJbiz7HhYos2dK41XSgpMGDgmqGs
-	 9Jg3tNHQiPKex/WdoAy7St5eYbxrnPkAP/EajFWslSkKcioWFBr1NbIiQpqfA5GmEByqI
-	 gpzH4PS7xm0HAr8i3mTvJDbjyC9EQiSEgBYnuayq4hEbUNizz2FQhLbix9S2JMb6UvVqX
-	 5wffXI3byCG5BrFzjZ6pe4YZT2237dbylj6yW1z0TWBrvmH00HrLbYLiEUub7rzBHqg==
+	t=1792986274;
+	b=lTYeehRCFWH0m6oy++z2z8L0fPSobROATf7tfOFOIRAFTctwTSLM+wFTx8VMaHYxq/hs
+	 2i4GJ8cs7YzR1AaVCCPfOIqXxvQC8RhfDBLccg2WJVEkgwSpQ6j0pKqOKJssGEOPLSTYC
+	 TsizjOCagCg/rNZkaExhimHGXRjSmhONWAs4yKtzt2ZER5eQBq8hZ785M7dN/RBBKn6FO
+	 +dypQsMf2zVPICvyrwL592NuLHBar9EZAEyT6BrRyYY26TxMkSTvtztN7RotNrlTN7QJo
+	 I9DwA7KAknlp4uwX6GNX/N/sDOGNu3QQofHPJV4kiPkl0OP8BmhgSwFQQuy+LSggwfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792986271;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792986274;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=FuZU9Bm4L1tjpR5OE6ZUvzPtHgo0PRLa1bH4/fzLGaA=;
-	b=ImtYfmd8DixjRj6yLf62T248iPYYeYKRAge+H7M9LKoJwK33MjMWXYB9OEz4kA36k0V5
-	 Udk50NINp9UvKyfs9RH5Ai11g0Rdr+HqLd1yMk8QtQtZkQ4+Dlp3n/Vth9VfkN7jGiiOm
-	 qc1BPfoOnt1123vjmw++mg/IuErWNW9W1GetIrBGG1F9lL2LMZ1Mlzxl9kbahkiSkGOuZ
-	 G9UiaJqF33Qc/8bpihi72ikIDH120clbDFYjlLgQLXPM9X/KZILOvCxZ69XZKPqLfOn4g
-	 VWzQfCTvXwq2ZQ0wVbXhCE/5VBoxAfkYOYloZz31d/6G49DeHYWyNUw6lW0KUElZOEw==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=epO44nguKeOQQCjQUMlL4Yq07v1OlIx6nj2eYc7j0sg=;
+	b=Xp2is2c+KgIfLV/QGCowgvRvTWduHk+P7ga/8YBnHiDK2OcVvCG3DI5jyhZypTBCqgRj
+	 pXTrCvYqNIeWnBFcF1eggeVGfhEN9SdII0koxnqNKebTnt0iP5/iYBQo5WHpABkW4+par
+	 Bu18KBDgauA4gsk94Zlno7rcWhjqVrhhqlURaoE+Dy/ll/H/WSFEuvhwcw94WmyM19sLy
+	 4FW4blJ3ztSzTotyTxQ3GC/fTonzwB962Nsvx5SLx9U2qfa6vwvaUoUlIEKB4t3oJIjeb
+	 5Dv/PZVsv13VGaJ+yjkXvakUn/Lwq3mtY8WU6DR7650Q/4y+hfg5qvKfpK9xT46lY3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XFeqDJ3a;
-	arc=none smtp.remote-ip=209.85.160.181
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pARMttdt;
+	arc=none smtp.remote-ip=209.85.160.174
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84080606A31A
-	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 03:44:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84080606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA3606A322
+	for <kvm@vger.kernel.org>; Mon, 26 Oct 2026 03:44:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45FA3606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XFeqDJ3a
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5361e313e63so24634951cf.3
-        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 20:44:31 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pARMttdt
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5364648ae07so32956391cf.1
+        for <kvm@vger.kernel.org>; Sun, 25 Oct 2026 20:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792986270; x=1793591070; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FuZU9Bm4L1tjpR5OE6ZUvzPtHgo0PRLa1bH4/fzLGaA=;
-        b=XFeqDJ3aqCLfK8rrrOUKshScqKQbmpP2YKgSEkoMcDpM1IGtiD9AxmIQ4pb97xtnzW
-         wF8WVlBAxgPHE13QC9fwkToonYBTQroVIa+N8zTzWLWUbJ1A2o5s8mArhBb2AqPnMlX0
-         edRMOh3Wr01dtJsTWl1AClAKCJRFUFd2Pi6xti/P+EstLXMOF45iDByRyEzccHlViIip
-         ShHDZX/cm+8UcpgoRtTkDKRgMGmfr/R9uv41GxiiQnRbfB8drvGTaS4dH3IvurK80yPR
-         2L68p1pDbKpFdrgJ+qe4UeLMbASOFKO5aw9B6fFKliCmVCKOj69P7JY8ct9ivfFCSAz7
-         qaTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792986270; x=1793591070;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792986272; x=1793591072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FuZU9Bm4L1tjpR5OE6ZUvzPtHgo0PRLa1bH4/fzLGaA=;
-        b=doCUUc1chF95dZE8UZXIomXipZSO8SQngrNWZBH6JGaY1lBhqu1NR3RAyWZoCEnQL8
-         K88FAa7V0Ma4Dbn9SGokq+74B+6zCaNvfVNP5QqGFh82kjnf019Jt17ZIoBxMPE8kPq9
-         jaWS68soX/BOZQE5/k4V0rwPhNQMNBvZidTPVZlEKFQSDMXJYZXzA6ntY1y1kJcDVs1a
-         yl5UmKU7lJEMKU8rELK+TK7hjv0yNB8EjDO98rL2TMBgwPCAZhiFBZA+gBNyQwMoARQZ
-         JpqMESiCkKn9QGN7mT1E1ClvfOQahOJetUEnbehjHzA6V82T7yNcMkAXa2VlHQn7TL9R
-         l5xQ==
-X-Gm-Message-State: AFq9FYKciHJzZV3rWucsOMvvdStuBh7f/d9gVxbMXyPXi3ul+WplUPx3
-	5WBqWKxRmflF7VO12V4+XiCGjd1XCRY1QwvlZwh39X5rAVQA/1aAN630Elgn8w==
-X-Gm-Gg: AYBFou3pB/qMgIQeQjuJuQgQeilzK2+sIX7ujdCxRt9wSXQSI/opDvMLHXG8uIQPVg9
-	Tl8QETFkQ7Fw4jzo9rItOp1MfvDWn3bJXegLHuoukN41Dh4hyrT8lTLYwlVrqtAnOj9VmmQyBTR
-	Y3R56XBbk6P2TBVAyOVBUbVxzC+mbgsRXAxAsiF+ApzMway60uxpQ36/QU3ZA3iLKVV1/wu/4Sq
-	orUlcu7Vm9S+2D2ZIb+gpS1HFUvhQXBEv5jpV4gqc08dYsBPcHTiDBiOwyV+i2bX0uxI1A0ww95
-	5fl9QJnVCslcdXGgoka5hTCAe8O2PHuD6VQXGHANsQRe8w3UwcOoLnwQolqyvAmbZawly31xGDB
-	5vCnxAtsH+IPQ6GzUfeyYNwp4dtrXjstGbeYLfon+yEe2eWEcwzt1pmfd30vH3o0fh1XkdhIp0o
-	EoaDhlQdpX6PBGq0XHNvHXhOWpMA+gUbSiKelaXmL/85pmrca488e9gqsZGVSriLYlpgHa/ebP2
-	MaYigt3sR+7xxPSmNGnsDLzLIOPxN4GVasWxY9orcCnQc+K6/dl9dczoH2cskaE9d/CdoHDJztT
-	Sl6+HDtG7uMx8xPiinYDyvZSaCXiw4JWwpF3OwHS3pXhv/9y6eHZfXNxGl3Q
-X-Received: by 2002:ac8:6546:0:b0:536:699d:9a1c with SMTP id d75a77b69052e-5383b3509cdmr79585421cf.2.1792986270529;
-        Sun, 25 Oct 2026 20:44:30 -0700 (PDT)
+        bh=epO44nguKeOQQCjQUMlL4Yq07v1OlIx6nj2eYc7j0sg=;
+        b=pARMttdt5sIHUR6snNn2w+A8GAyfTtIb+GNhfxyv9r2teQJoncLOOzbyLmIelYfiVF
+         1qEDkiXunBGuxl3tJ7D5/ZfDRbWSi/N9Yj1IGFHKPaThtmpsZjzAMZFXEEc7co7PHaGY
+         pZX/d00f7g79OOOltSthIDkHQyUM8DxSaOC5mlrPgNa/lMnUCIF6s/OELJloKQHOod52
+         xyzg0SKCdw07T1XBvDIgzvOS6jLkQHy0lTpWuSCTuKT8/8CDSfVX+bpujjd3T9mFmSwu
+         UJ41d/HqW5aMYQGHEotLhY6aqx5OaWIkUlFAHnyUfguFdAjIXGJ8I9Xb9ZwK4hQLpX9I
+         cs8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792986272; x=1793591072;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=epO44nguKeOQQCjQUMlL4Yq07v1OlIx6nj2eYc7j0sg=;
+        b=S5RwtQatADCuf/rh7dxOp1c1/7EHFJL0QlF+fDLrz2YZBxl4mUOHhS+p84S9OlZC1P
+         7prj84zRhx3VM+8dOjriP//Fk3xUmdgS/elqpB/I5+6ktCX7ElnyCrlCMTwxO1OspD2r
+         ZpuYH/ckyJjnPKI2G5m3+EVEPIKLjAGGj+FFdMtv/ZQxs/6y0+3n5c8R+gjh/WBlNigM
+         7/vXz4r9nmCNrAb6fDDLzVODl2Dp6TpVMn1r12HMAoJtezFgAL3eJCxLdK5CjkP+e2op
+         tJW+QEAcBqWBXLMVISZlM/KCO9/IzJwUZ0U3dwWO5f8y8UR9qHIpnEK8nVmFSL52lgyQ
+         tJBg==
+X-Gm-Message-State: AFq9FYKYd/n0t/v31q8zesgy/rC2w8P/vh/qHkxVuQcQ7/OZCZ023BO7
+	kP8ptl114v3M8Y7tkyzTtjHJ7rpJf5fsUZPrBsDNAvbvpOafo22Ut3GS
+X-Gm-Gg: AYBFou1Xt276Nm0ZcCcaD1ZAs3fV5ogQqiUICQ4zGjjbInKd5aKvwoR9BZ9jMo9pCLf
+	jHx1dW5GGzgYZBL/aGJ1RBlAvKjcRZuIJZAaPrCMjq5rbxNXHe+dSDGXSBjDw9dBli9aL13unwn
+	up12Jz/0Y1fTSLA+cfW3mKJtra/n1wLxufBaOWKjONN5LsrlMabe/ppX//opCqAXz3jiPW+w7I0
+	LWzrh4C7ihY3a0DjBnX6DjuAoAzoWSJnfBP0clHMd1j2CITQtQhhXBjV/1tx0mkMIq7Xl6fC+CQ
+	t0SmaXfjBs4HVtd/9RiM6ZTxv8ZA4pSNJGhHEqk3CyO9EHv84nTN0UnVzPId/Me0BZH+o/HgDgY
+	5ZARfwI3kl/InjwsD4SRNfiPecrXaXFEGpa6o3QixbgGIqlnc6zVoh35LGqA7oOzAM0bVe909ir
+	oBiBLE8upXsLFSgbL2Z2SlHcqFsbAx2TrtQbAlNiq3EpDXxtaEuUTzUpgIo1mm3XGsqRaQxAtzA
+	FPQSyzySZLSVhNbyXjiFQNK/fLxuFO85qXCsAN1n4PgXIpOGM3pSBZyyeLl4zWPUjWQXq109C4L
+	gM6om1GfjYaC4ahnpV8ur6moN9wTn1paOQoKXDMzeX+TDnUAlO0ogK50aeD/8OK9SS8JcpXvXtT
+	KXUxDNA==
+X-Received: by 2002:a05:622a:64f:b0:535:13c1:ce94 with SMTP id d75a77b69052e-5383b5d830emr85091791cf.38.1792986272132;
+        Sun, 25 Oct 2026 20:44:32 -0700 (PDT)
 Received: from paul-white-HP-Pavilion-Laptop-15-cs1xxx.mynetworksettings.com ([2600:4040:ad65:1c00:4cc4:d0be:4ab6:9a0b])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-538394c5273sm46202121cf.9.2026.10.25.20.44.29
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-538394c5273sm46202121cf.9.2026.10.25.20.44.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 20:44:30 -0700 (PDT)
+        Sun, 25 Oct 2026 20:44:31 -0700 (PDT)
 From: Paul White <paul.white.kernel@gmail.com>
 To: anup@brainfault.org,
 	atish.patra@linux.dev,
@@ -87,10 +90,12 @@ Cc: kvm@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Paul White <paul.white.kernel@gmail.com>
-Subject: [PATCH 0/2] KVM: riscv: Unify and optimize FP register loops
-Date: Sun, 25 Oct 2026 23:41:25 -0400
-Message-ID: <cover.1792982932.git.paul.white.kernel@gmail.com>
+Subject: [PATCH 1/2] KVM: riscv: Eliminate redundancy in get_reg function via pointers
+Date: Sun, 25 Oct 2026 23:41:26 -0400
+Message-ID: <f7fcf15c1117ce734247cf951c0afff1f5eb54c8.1792982932.git.paul.white.kernel@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1792982932.git.paul.white.kernel@gmail.com>
+References: <cover.1792982932.git.paul.white.kernel@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,45 +107,157 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The change to both patches in this series is a 
-structural/architectural one. Both functions set_reg and get_reg use 
-identical code to locate the register the application specified in the 
-token even though they do different things with that location 
-information: the set_reg function adds data the application requested 
-to send to that identified location  (in the copy_from_user function) 
-while the get_reg function retrieves what data is at that identified 
-location and sends it to the application (using the copy_to_user 
-function). Everything else is the same. That is the only difference 
-between the code. 
+The original code is essentially asking: for each possible floating
+point mode, ask if reg_num is a status control register or a data
+register. It is redundant to ask those same questions for every
+possible floating point mode case.
 
-Therefore I was able to apply the same solution to both of the 
-function's finding-the-requested-register parts (which is everything 
-up until the final if statement) which were filled with redundancy. 
-The solution I came up with is to create local variables for the 
-entire function for all the variables of the original code that would 
-be different, depending on the floating point type. Then once I ask 
-whether it is a double floating point or single floating point mode, I 
-assign the aforementioned variables to the values they should have for 
-that mode so that when I go through the if statements that ask whether 
-the requested register number is a status control register or data 
-register, I only have to go through it once because the respective 
-floating point values/addresses would have been assigned to the 
-aforementioned local variables, so the whole code kind of changes or 
-is tailored to the floating point type. 
+In order to only ask the "status control register or data register"
+question once, the variables in the status control if statement and
+the data register if statement that would be different depending on
+the type of floating point mode (for example,
+KVM_REG_RISCV_FP_F_REG(fcsr) would be KVM_REG_RISCV_FP_D_REG(fcsr) if
+the floating point mode was double) were made local variables of the
+entire function so that once the cpu passes the if statement inquiring
+whether it is double point mode or single point mode, all the
+variables that change depending on the type in the status control if
+statements and data register if statements will be set to the
+appropriate values they should be when in that mode before/when it
+enters the status control and data register if statements, allowing me
+to only have to ask those questions once and creating a dynamic code
+that changes based on the information. This results in a "asking the
+type then asking status control or data register question once"
+structure rather than a type-questions, type-questions redundant
+structure like before.
 
-This architectural change/solution will make the cpu execute the code 
-faster (as the cpu will have less decisions to make and the bare-metal 
-math used to figure out the address of the register is executed faster 
-by the cpu than looking up object properties and array indexes), is 
-more maintainable, and is more readable.
+This results in faster cpu execution because despite the longer lines
+of code the cpu has to make less decisions, which saves time in case,
+due to its tendency to make assumptions about what an if statement will
+evaluate to, it has to backpedal because it realized it needed to go
+down a different if statement/path. Finding an address via my
+bare-metal approach is also faster than looking up an object properties
+and then an array. It is also more maintainable in the future. If the
+original code needed to be changed, you would have to remember to do
+the same thing to both type blocks whereas mine would just require a
+change in the beginning if statements. If a new floating point mode was
+added you have to ask those same questions all over again, which may
+make the code longer in the long run.
 
-Paul White (2):
-  KVM: riscv: Eliminate redundancy in get_reg function via pointers
-  KVM: riscv: Eliminate redundancy in set_reg function via pointers
+I also renamed reg_num to token_reg_num in my code as I felt it made
+it clearer that it was the register number the application wants and
+requested in a token. It differentiated it from the many other
+variables with the word reg in it.
 
- arch/riscv/kvm/vcpu_fp.c | 128 +++++++++++++++++++++++----------------
- 1 file changed, 76 insertions(+), 52 deletions(-)
+Signed-off-by: Paul White <paul.white.kernel@gmail.com>
+---
+ arch/riscv/kvm/vcpu_fp.c | 70 +++++++++++++++++++++++-----------------
+ 1 file changed, 41 insertions(+), 29 deletions(-)
 
+diff --git a/arch/riscv/kvm/vcpu_fp.c b/arch/riscv/kvm/vcpu_fp.c
+index bb11e6757d34..16999a5c45de 100644
+--- a/arch/riscv/kvm/vcpu_fp.c
++++ b/arch/riscv/kvm/vcpu_fp.c
+@@ -83,41 +83,53 @@ int kvm_riscv_vcpu_get_reg_fp(struct kvm_vcpu *vcpu,
+ 	struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
+ 	unsigned long __user *uaddr =
+ 			(unsigned long __user *)(unsigned long)reg->addr;
+-	unsigned long reg_num = reg->id & ~(KVM_REG_ARCH_MASK |
++	unsigned long token_reg_num = reg->id & ~(KVM_REG_ARCH_MASK |
+ 					    KVM_REG_SIZE_MASK |
+ 					    rtype);
+ 	void *reg_val;
+ 
++	u32 *fcsr_addr;
++	void *f_array_addr;
++	size_t byte_offset = 0;
++	unsigned long offical_fcsr_num = 0;
++	unsigned long offical_first_reg = 0;
++	unsigned long offical_last_reg = 0;
++
+ 	if ((rtype == KVM_REG_RISCV_FP_F) &&
+ 	    riscv_isa_extension_available(vcpu->arch.isa, F)) {
++		fcsr_addr = &cntx->fp.f.fcsr;
++		f_array_addr = &cntx->fp.f.f;
++		byte_offset = 4;
++		offical_fcsr_num = KVM_REG_RISCV_FP_F_REG(fcsr);
++		offical_first_reg = KVM_REG_RISCV_FP_F_REG(f[0]);
++		offical_last_reg = KVM_REG_RISCV_FP_F_REG(f[31]);
++	} else if  ((rtype == KVM_REG_RISCV_FP_D) &&
++			   riscv_isa_extension_available(vcpu->arch.isa, D)) {
++		fcsr_addr = &cntx->fp.d.fcsr;
++		f_array_addr = &cntx->fp.d.f;
++		byte_offset = 8;
++		offical_fcsr_num = KVM_REG_RISCV_FP_D_REG(fcsr);
++		offical_first_reg = KVM_REG_RISCV_FP_D_REG(f[0]);
++		offical_last_reg = KVM_REG_RISCV_FP_D_REG(f[31]);
++	} else {
++		return -ENOENT;
++	}
++
++	if (token_reg_num == offical_fcsr_num) {
+ 		if (KVM_REG_SIZE(reg->id) != sizeof(u32))
+ 			return -EINVAL;
+-		if (reg_num == KVM_REG_RISCV_FP_F_REG(fcsr))
+-			reg_val = &cntx->fp.f.fcsr;
+-		else if ((KVM_REG_RISCV_FP_F_REG(f[0]) <= reg_num) &&
+-			  reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
+-			reg_num = array_index_nospec(reg_num,
+-					ARRAY_SIZE(cntx->fp.f.f));
+-			reg_val = &cntx->fp.f.f[reg_num];
+-		} else
+-			return -ENOENT;
+-	} else if ((rtype == KVM_REG_RISCV_FP_D) &&
+-		   riscv_isa_extension_available(vcpu->arch.isa, D)) {
+-		if (reg_num == KVM_REG_RISCV_FP_D_REG(fcsr)) {
+-			if (KVM_REG_SIZE(reg->id) != sizeof(u32))
+-				return -EINVAL;
+-			reg_val = &cntx->fp.d.fcsr;
+-		} else if ((KVM_REG_RISCV_FP_D_REG(f[0]) <= reg_num) &&
+-			   reg_num <= KVM_REG_RISCV_FP_D_REG(f[31])) {
+-			if (KVM_REG_SIZE(reg->id) != sizeof(u64))
+-				return -EINVAL;
+-			reg_num = array_index_nospec(reg_num,
+-					ARRAY_SIZE(cntx->fp.d.f));
+-			reg_val = &cntx->fp.d.f[reg_num];
+-		} else
+-			return -ENOENT;
+-	} else
++		reg_val = fcsr_addr;
++	} else if ((offical_first_reg <= token_reg_num) && (token_reg_num <= offical_last_reg)) {
++		if ((KVM_REG_SIZE(reg->id) != sizeof(u32)) &&
++		    (KVM_REG_SIZE(reg->id) != sizeof(u64))) {
++			return -EINVAL;
++		}
++		token_reg_num = array_index_nospec(token_reg_num,
++						   32);
++		reg_val = (u8 *)f_array_addr + (token_reg_num * byte_offset);
++	} else {
+ 		return -ENOENT;
++	}
+ 
+ 	if (copy_to_user(uaddr, reg_val, KVM_REG_SIZE(reg->id)))
+ 		return -EFAULT;
+@@ -144,9 +156,9 @@ int kvm_riscv_vcpu_set_reg_fp(struct kvm_vcpu *vcpu,
+ 		if (reg_num == KVM_REG_RISCV_FP_F_REG(fcsr))
+ 			reg_val = &cntx->fp.f.fcsr;
+ 		else if ((KVM_REG_RISCV_FP_F_REG(f[0]) <= reg_num) &&
+-			  reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
++			 reg_num <= KVM_REG_RISCV_FP_F_REG(f[31])) {
+ 			reg_num = array_index_nospec(reg_num,
+-					ARRAY_SIZE(cntx->fp.f.f));
++						     ARRAY_SIZE(cntx->fp.f.f));
+ 			reg_val = &cntx->fp.f.f[reg_num];
+ 		} else
+ 			return -ENOENT;
+@@ -161,7 +173,7 @@ int kvm_riscv_vcpu_set_reg_fp(struct kvm_vcpu *vcpu,
+ 			if (KVM_REG_SIZE(reg->id) != sizeof(u64))
+ 				return -EINVAL;
+ 			reg_num = array_index_nospec(reg_num,
+-					ARRAY_SIZE(cntx->fp.d.f));
++						     ARRAY_SIZE(cntx->fp.d.f));
+ 			reg_val = &cntx->fp.d.f[reg_num];
+ 		} else
+ 			return -ENOENT;
 -- 
 2.53.0
 
