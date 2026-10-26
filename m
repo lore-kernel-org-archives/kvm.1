@@ -1,79 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793003381;
-	b=StNQjMTn0tWr5k7uAFYgKwLX1dsWfhJ885RA8D+K9MRZTnN2sfucABGO4H+QnvcM1lNm
-	 CnZxa3NcIWmxgUlTzMI0aoP8P0qI4wJr2qVKyMJEAitESuK6+31MJbCSNndrRH+hw+zO8
-	 Od/tV5Is/jxT3zL/j/ich/Ho0hmZmJVyDNoih1eeDjBUNQ7BXvY9KbHhx4rti0b8apME6
-	 yEsDkTcXJ+Bd+QlDICkpq1KhzAlp7LgTXDeDlg4baHu+YP3TUfN6NFg6ejDVVNZU2ILPn
-	 aKUpsElCxZDI9Z3C4ZM5rUUA3bH/JjL3IHuYBbI5ecKNkKqUWS/Kq1qiNgcATtg8tQg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793003381;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=8CEwU6AVVLUrN8syM2T/p6MeATp6WE5o4yWux7VIDNA=;
-	b=kefd0krzSlvb8s0FjgVhuWvEer8bCpYn/ZlM0r5E9yMubcukZwye1T2qB51XB6jXJTIy
-	 kIN17dyc7vxJcscrO2fxMLx9WFQLVPYzNCyGJyeAIWBUopgAZYdQLRcaOjMJmupWJA2gh
-	 qXBIWVRIiwQufxObDYMDfPyaMklg778PKdElS6UD1P1AQ4E/FvHQqzkH6RjM/NfJ/YF/6
-	 WnsjHU40FBK8WMFW87ZVGMs2KqJ264Nftf+yObsTXJKuCMirbnpTlTyDJSOiO73hWA76z
-	 6qy1Rh5hOWbTVahb5fvBXv/7z9FZoOSTd6TiE6ZIoEkyx+RQcIxWk7/tbC5yNBMoOHA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ZgdWQvgn;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793003410;
+	b=1/g//3nLN4OPXj9L4q4rfBwWrAkgwdWeQlqTIlgHsy3IvS5XmljfgJfxtCF6g/s28z0G
+	 nnpbNNcfh+1FUo1mPhOXGFgOdZyIF+wXNzJqMwgFEkPl3ixxDletcgQ9pNq9/W0ALJQJq
+	 YeZhI9u0+hFLV0oLagL0D2Fqx5f0eqN4KnObPZBlkLZscxSB6miwU0Ckt2UBoCifXzISJ
+	 8LMlJOirA+4wBPNJTaN8Yt7RYQG9PwD96XPaydY/ukz97Qm0hFAd0I4Ax5uuJhlSIHYTB
+	 oqIbXpNyrMk0ucSlpb+h6LAAvN0Uug4TFXPxghn48+HJbV4J81rBM0/X5be6Wge44ng==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793003410;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=G63bq4wpgZslgc8Jrbf5zqBVwNjBpTm05EKH4grfb9g=;
+	b=NFmlvwjOy7lmBgJG9AS9vbdK72ginn+ultA0bf/GnF7Pj3AxgQIDbeBMJEUA7NgWkCzv
+	 zD0dtPWVPijOdbHkgJYERUpjDcd4bWBr96IJp0zK1b5V4zOD7wDeM8uyGwGWQ+P6gZkea
+	 1T/CDLJc0YOX04JqlJQrkzpCTUqgKDtHudg/Htpw/yeIRX/vBeAZ4c2qT3bwOz5d9yMNm
+	 QThQo67onFEqwAEyhh15lA7GMlwWnBIcRNpAwi3NIdzp/ikXIXV8W7EqYyvC0xy662msm
+	 8iLiBvs2XHR0J2vULelbuliq726WhRNfiaomnaEJORaWl6Tnm1VqrqDMjMUzOfBIkfw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNjS8GtB;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E378D606A333;
-	Mon, 26 Oct 2026 08:29:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E378D606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453E2606A32C;
+	Mon, 26 Oct 2026 08:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ZgdWQvgn
-Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 214F8201E09;
-	Mon, 26 Oct 2026 09:29:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793003365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8CEwU6AVVLUrN8syM2T/p6MeATp6WE5o4yWux7VIDNA=;
-	b=ZgdWQvgnRbGbDbNyi+7fVkSkj30ZlQbaV4WnR0J/D9kZBfvyk2v08VL+wEv5siR6l93TQ8
-	rbrDvhyamJQGrYAq1Dll1RMazCTRTwdOn7E2tv1ymBJtfphiGF53rO3Z3+Daqpi1JwQFDo
-	lgiWDurSOlJg401zE2zbjJmZaUiRTFfFa7jgLWYegzXcsRilY7AiXGsfL8jpnhn1AITZaQ
-	G3qbE0BLfc31MxyxQXdDlj65/nbTNydPTpcGjPM1yIHGzW0NZSoTkaaoV0WfV9tpUBUu1k
-	G/ActxEJrnRaEbvgPeySYEsa42/eR3XYbjDDSctPqmkC6gfZnuNnNyAhnMg1mw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793003365; a=rsa-sha256;
-	cv=none;
-	b=V/2Jd+FRb2gDbajd+XqLv1olN4WP17zV1T/4hLwRE5wwdE1lhQo452k3HTxsbz+D+6SYeS
-	S4mG/G6enRqJ0GmqQhTlpknnT1yBpk6253yhpahjJMwVx33Zh1e1sgcL/7gGwdMqVfzlcv
-	YBm+V93iImbhljnPGb+NQxwuA2xT29fL2PV5Pa13ewbgrQzMQ2eoEuw9iWM9gUit//Jclp
-	XmHzoE0hmb16sHzK/FWxYni9ZGSZW8b6UYwS8nh5qG8nCYJulmtc7SF5CWmsV9nL5sWlPy
-	Yb5zzRqdfIjUaHCSjoddK8dFLJdwqGZDCgmPj/fBovJ7TRXkh8Kdt7HQ8ZP8xQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793003365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8CEwU6AVVLUrN8syM2T/p6MeATp6WE5o4yWux7VIDNA=;
-	b=Mut1e86Y7UcJ3aTKy+R2SoF4OTyC6vPpbee5Hq5cEQT7MSgXxrpOKGZG/c6DaphckDK0iW
-	Ud7RiHnv61ybMPE7EbQxlPe27+AClM3CKoM0boLUM/m957wblYSQOEritpf0k5tZCbgRBB
-	rte6ndk1E9RbiLKs7aH5ldT7p6TiUZXiwG8ftwAJppPBMpyoS0xFnVl8Daxt6QIldD+iL9
-	vzIGayKhwHmIXWzzsK9IwT9iLuV+eUVMhwbRzbCNiusNnrOOancxEA1Xi14ktPAvv052TZ
-	T62k4qKT+MS0gQc/Uk1sEIUeSIvwWgifF75AEmq9Pop6tZ6bqsjLJMoQzaYQdg==
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 26 Oct 2026 09:29:06 +0100
-Subject: [PATCH RFC v4 6/6] tun: add rx timestamp to the vnet header
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNjS8GtB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF321F01825;
+	Mon, 26 Oct 2026 08:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793003409;
+	bh=G63bq4wpgZslgc8Jrbf5zqBVwNjBpTm05EKH4grfb9g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eNjS8GtBeBPyA8EYl+0IroArRKZqddmttCe/pqhYkfWRzMvjs0xHUdFA5zBuwJ/dB
+	 cexNnd49Tts1u13A+p4i8tn4a6PQV0NVL4aKqOnr5UNq3cxWOoYv8fpIfiswUtP92d
+	 Z/9qaxzZpNLLPgIMFYE9xf3BEexK7pTS8AmZRw3kFDaXrDQy/VvVUq+JtED9OnVfGc
+	 ZydQEiSyZc1cxdXcaC5pdQtGfR9YCuabQKeK0u7lqpU5YbBU1ouoQYk3TpT3VuHNZj
+	 +NcclCy7JnHtweFs19IZK/1wJ01Z598SreYQSegk757HsENmnfVqZE/Na5wDhrrM/1
+	 utx8qgxT6pVpQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xLG5n-00000007ABg-2krT;
+	Mon, 26 Oct 2026 08:30:07 +0000
+Date: Mon, 26 Oct 2026 08:30:07 +0000
+Message-ID: <861p9czwxc.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3] KVM: arm64: selftests: Test VNCR translation invalidation
+In-Reply-To: <20261026-b4-vncr-mapping-test-v3-1-7c094a00d46e@fujitsu.com>
+References: <20261026-b4-vncr-mapping-test-v3-1-7c094a00d46e@fujitsu.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,144 +79,35 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-v6-7-topic-virtio-net-ptp-v4-6-008af03cd43b@pengutronix.de>
-References: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-In-Reply-To: <20261026-v6-7-topic-virtio-net-ptp-v4-0-008af03cd43b@pengutronix.de>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kvm@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3856;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=UF0DDam13NecUshEazoA59/3GN4tkViJoDxQqx4ifAg=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9Z9/qS6RRnBX5gStr/RDi6UrGeUnhZ0q5qFUXyKs2Kjk
- fnhI886SlkYxLgYZMUUWVQWVvCJenzwjJwmwgUzh5UJZAgDF6cATOTYDob/Pmf/v3g478vlf4zF
- x2M3Kmz+IHF+qmOP6If/0UZc96u95Bn+pz3M7RDc9jQz6JTYFpfVp7/EJP/Jl5zSld18Vs41Lqq
- SAQA=
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=24A1780E1548F0495996140A1ABD20720A5E5622
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: itaru.kitayama@fujitsu.com, pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Reference implementation of the device side of VIRTIO_NET_F_RX_TSTAMP: if
-the configured vnet_hdr_sz covers the tstamp field, write the current
-TAI time into the header when a packet is handed to userspace or vhost.
-__tun_vnet_hdr_put() now takes the full struct virtio_net_common_hdr
-and copies as much of it as vnet_hdr_sz holds.
+On Mon, 26 Oct 2026 03:10:10 +0000,
+Itaru Kitayama <itaru.kitayama@fujitsu.com> wrote:
+> 
+> Add a standalone KVM selftest that checks VNCR accesses after L1
+> updates its stage-1 mapping and issues a TLBI. This guards against
+> stale VNCR translations, as KVM caches L1's translation of
+> VNCR_EL2 and must drop it when L1 invalidates the mapping in
+> kvm_handle_s1e2_tlbi().
+> 
+> Keep VNCR_EL2 unchanged while remapping its backing page A to B then
+> again to A. At each step, L2 reads and writes TPIDR_EL2, and L1
+> verifies that the accesses reach the selected page while leaving the
+> other page unchanged.
 
-This is not intended to be merged. A full test needs a QEMU that knows
-the feature and sets the matching vnet_hdr_sz in
-virtio_net_set_mrg_rx_bufs(); see
-https://github.com/strumtrar/qemu/tree/v11.0.1/virtio-rx-stamps
+If you were tracking cross vcpu invalidation and exercising all the
+architecture corner cases (such as permission changes and co), that
+would be helpful.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Assisted-by: Claude:claude-opus-5-5
----
- drivers/net/tun.c      | 14 +++++++++-----
- drivers/net/tun_vnet.h | 18 ++++++++++++------
- 2 files changed, 21 insertions(+), 11 deletions(-)
+But as it is, it doesn't help much as a validation tool. Its scope is
+way too narrow.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 242899f7fd071..67699f9fc3d3d 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -57,6 +57,7 @@
- #include <linux/math.h>
- #include <linux/nsproxy.h>
- #include <linux/virtio_net.h>
-+#include <linux/unaligned.h>
- #include <linux/rcupdate.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-@@ -2160,12 +2161,16 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 	}
- 
- 	if (vnet_hdr_sz) {
--		struct virtio_net_hdr_v1_hash_tunnel hdr;
--		struct virtio_net_hdr *gso;
-+		struct virtio_net_common_hdr hdr;
- 
- 		memset(&hdr, 0, sizeof(hdr));
-+
-+		/* The configured header covers the tstamp field */
-+		if (vnet_hdr_sz >= offsetofend(struct virtio_net_common_hdr, tstamp))
-+			put_unaligned_le64(ktime_get_clocktai_ns(), hdr.tstamp);
-+
- 		ret = tun_vnet_hdr_tnl_from_skb(tun->flags, tun->dev, skb,
--						&hdr);
-+						&hdr.tnl_hdr);
- 		if (ret)
- 			return ret;
- 
-@@ -2173,9 +2178,8 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 		 * Drop the packet if the configured header size is too small
- 		 * WRT the enabled offloads.
- 		 */
--		gso = (struct virtio_net_hdr *)&hdr;
- 		ret = __tun_vnet_hdr_put(vnet_hdr_sz, tun->dev->features,
--					 iter, gso);
-+					 iter, &hdr);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-index f4c652b1fa44d..d4cc56dac98d6 100644
---- a/drivers/net/tun_vnet.h
-+++ b/drivers/net/tun_vnet.h
-@@ -153,19 +153,21 @@ static inline int tun_vnet_hdr_get(int sz, unsigned int flags,
- 	return __tun_vnet_hdr_get(sz, flags, 0, from, hdr);
- }
- 
-+/* hdr is fully initialized, copy as much of it as the configured size holds */
- static inline int __tun_vnet_hdr_put(int sz, netdev_features_t features,
- 				     struct iov_iter *iter,
--				     const struct virtio_net_hdr *hdr)
-+				     const struct virtio_net_common_hdr *hdr)
- {
--	unsigned int parsed_size = tun_vnet_parse_size(features);
-+	unsigned int put_size = min_t(unsigned int, sizeof(*hdr), sz);
- 
--	if (unlikely(iov_iter_count(iter) < sz))
-+	if (unlikely(iov_iter_count(iter) < sz ||
-+		     sz < tun_vnet_parse_size(features)))
- 		return -EINVAL;
- 
--	if (unlikely(copy_to_iter(hdr, parsed_size, iter) != parsed_size))
-+	if (unlikely(copy_to_iter(hdr, put_size, iter) != put_size))
- 		return -EFAULT;
- 
--	if (iov_iter_zero(sz - parsed_size, iter) != sz - parsed_size)
-+	if (iov_iter_zero(sz - put_size, iter) != sz - put_size)
- 		return -EFAULT;
- 
- 	return 0;
-@@ -174,7 +176,11 @@ static inline int __tun_vnet_hdr_put(int sz, netdev_features_t features,
- static inline int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
- 				   const struct virtio_net_hdr *hdr)
- {
--	return __tun_vnet_hdr_put(sz, 0, iter, hdr);
-+	struct virtio_net_common_hdr common_hdr = {};
-+
-+	common_hdr.hdr = *hdr;
-+
-+	return __tun_vnet_hdr_put(sz, 0, iter, &common_hdr);
- }
- 
- static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
+	M.
 
 -- 
-2.52.0
-
+Without deviation from the norm, progress is not possible.
