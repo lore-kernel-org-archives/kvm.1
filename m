@@ -1,84 +1,84 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793116014;
-	b=jJWonhclQYIWNZ77k+Ogv2znSwuk6EWb2ThspmR8dh1Ei6ZlGEwK/IDrvFVManzMLzrD
-	 LWSlKLvdJP3nS87ryiODY0HSpWQ4RYPrgACErTQVDUacp0xVsWgJNz+jJxn+0iDakaD2S
-	 FY7dGVxg7GdVW6pJVthiAv2vYHKMovHx9b98FkLTKQmcC6tsdmeSXowBzznjTbSgb1/TL
-	 qG0ss2TyZ34SLBWhK0dgKOaN3Qu9e1KTcbHQGiePRMew86SZhwC3E7fSWdy5eh6KBLYAE
-	 DHbkY6eqdZnYe8O6JNk07sISAsyJxi/QDbHt37aE9miCu10d1Tzno6Z1cFvX9BiCB2Q==
+	t=1793116020;
+	b=b9gwZ3O4KIcGK/VNn1W63MsIbXafIqUuC5wmWlSX/QmCEIZSPiTa0wA2jf7czG9mo6J1
+	 yFqeOWYUtkxHU0oK95Yx8eF3X24GS6asEq5p/oxylfPQpQIeCQa/Xw5ANZa8NiwFG69/3
+	 aN6urAl656SyRoy76JWE3znT7fz8peHLApcbR3UuxdHnIP0i/K/ifSR+Jt8esylX8Q41d
+	 HmQvG9fqbeMND6oH8G3VraUXSH+Jwyw0TPJxKE8ofaF4ZaJm8mLIQ1s/W98U8RSfYYiNQ
+	 n/gsEOKOtNDGhh/I4Upi/M9wxTSZJytW6yda5J3m9Hhq7CV0/+XIBxQ9sHmJJPdGEhQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793116014;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793116020;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=YJI/IvC1da7kmYqInNWG1mwawohNUcOpQb+NW22ILQk=;
-	b=AuU2QHSHQ5pZpx4VRcGGrwmrTitL/jZStHTcJ2gT8t0pBUQZ1z19ic/O1TLiCYZwFr7u
-	 EG6qt0O6N0jGMVAolC+j3IEGu4vBO7iEn1O7RWAQ/gXvDjNz0LpxQTSFSVb0BosmRmP/B
-	 ph09kIfTd3o3Y+rocFvGE7Z/UHd7jmrNq4LfZBVFu6PZptJxN+oTiWM88CugJX490/JaS
-	 eI3HqVSQHYlxsTaw8+o8IgNNCjPDuBJwKibAOfI7BPAk9Y9F4I4EuFWoI4pV4gx7k5X6Q
-	 LYPH9ayx8Kzi+9cT55QXNNpXJvryaw/hUpsAaQAB/FkDL9DWlxQa1cHs1Vh8NoWY+Jg==
+	bh=2Ywf1kYABPcYkKuVCWE8YXozL9O+0YxMyRYyN2zEgtg=;
+	b=DGBQlpnaJCpRCixisvNUVzia2EjrDYABW0idjP0b0rFASDrEXOgn1XrStuhPwtZXKV2B
+	 yPk3Z9M6HuscBBAZ77LmT2tVpi+cBrcshR6Ag5AlqqiR1i6Y9tMWmoKKsy7/9DWXjoWT9
+	 sTSgzVlDfXgNMRgx/f3DkKnJqDJCjiLjJ1o2pakBX1aq+WGMhIQDaardIIA1RQE2n56/C
+	 OS8r8IC9ISb6MTHSl2eurp4R3TQjeW4RPQpL5TN+TGbLvZwJAkJD5j8fKB/SqB2dmFb2n
+	 q+glB7d8FNZ5odSyO5lI8k/q5VxJIPXI6kDj1cn1VoXqcEU4MsjkxLuU1moKWkf60DA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gp7q5X9O;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f8x+bMSw;
 	arc=none smtp.remote-ip=209.85.128.51
 Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C4D60A2635
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:46:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29C4D60A2635
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DF2606A329
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 15:46:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1DF2606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gp7q5X9O
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so41666935e9.2
-        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 08:46:53 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f8x+bMSw
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a208d93758so49311195e9.3
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 08:46:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793116012; x=1793720812; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793116017; x=1793720817; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YJI/IvC1da7kmYqInNWG1mwawohNUcOpQb+NW22ILQk=;
-        b=Gp7q5X9OZNaWZq6rfD2a8r0ypyc2QTBoGmBwKEu8RQwliMFQ/Ea9EmqGrf9rUJkwUI
-         5k9R1giULOl5m7OYp3WVBlmP/XRCPXDMiXfwmb0GdeLk9uymGP6CthRe6iDuO7sjrcAw
-         NnhmkCfB5kdMM6lg4gPgqaAIuNwX5EfbKYcWQ/qIWikYxWWmNUwKvS6Y/3pzslYmStVf
-         +dB7Cm6a7OtfxF7xqDNID/y+HuETlZ3p/oCvh5Eg4Y4EpxXU9pmq338roPGbYM0QM/8R
-         Kzmz3Ak4Yf++R7OyIvA1PbN9N/tdDNryqg6EO+qCNTszMT19dkiQgiGJ3GcpLpfrUeHu
-         rxtw==
+        bh=2Ywf1kYABPcYkKuVCWE8YXozL9O+0YxMyRYyN2zEgtg=;
+        b=f8x+bMSwMXuRUTZwqunp6Yh7TFhi3yk5fAK0eSSt59nBf2/ZRIqZ4BpquoeqqjsIUt
+         NOGJDJd4ivvho2ep5UE6YDyaFPyFTDb5ywZlwEtWw4wU4DGoC65yXDjcNadX5KFZRc0B
+         2kiLHmX7/UtX+I8Dyg/ofvQr17KACzeiy83MfothYY8x1d5fPN2ZhJuUKR61ghfrw/cp
+         6aCy9TwisAv66t66bY+/uxeUjjITYceBgHdXR+JKtZIGtd/DaLOhGkhvmGvq26V3R5AZ
+         BUSyHYteemsg0K/L+cbI9bzKWncl2cibm3pyLGOMfrZW4KS39QmcQYHMOLbz15DMzi6G
+         o5cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793116012; x=1793720812;
+        d=1e100.net; s=20260707; t=1793116017; x=1793720817;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YJI/IvC1da7kmYqInNWG1mwawohNUcOpQb+NW22ILQk=;
-        b=RjIYqQXRMRYQUpyS8l26MpvleXwOFsOlGjMxDnDU0pv1/xgV+/zh4U4XD1Yf2OonUT
-         P2UhCyH6AFSDSnUr83gY4EsjB00tM9l4WLBogUwrh/8ArozVmrYHSv9rVL6D/AU6eObs
-         pch8o1/Xm2inCZa+U8qgj4LkEwO3XW+2wUasUolBxETfzN+oC18J8D9ydf5cIdvFzvli
-         sVCT5ewx3KSLg+YK1EUm+F34mfnX/G89BpFnMbjarMATb9GnS1zvnRRHs+v2aCyj5Gz+
-         2mGQomSach5zYH5ev8xTrY2hKLXxkKYP73am5ALXFeA1/1NsS4G2NrpzpYo3vZ+CO28O
-         RFpA==
-X-Forwarded-Encrypted: i=1; AKwUvBw/ps/F/5wDGncq2GpqJv4bbEQwij1qO9OmSmpKwnjYw090Rg4U3wqpQD8dtAef6ALcvmg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLByWjSDd5Hev4C/fBaFKRpbSV5GuiVUjXxRCm0+x5bBDQXZ+w4
-	s93aJJ1Gh4KET9YiBZrsDVegLogNUn1RNh80CY6vTRZH3E1t/vbrMDN4
-X-Gm-Gg: AYBFou2OAqnDVquaRrk+6sPYQ/6K6MCw2SySsq27keczbCaCVMYQqugMRoZ1q0s/H8m
-	BjTjhQQYxRdlN5racw1c324vOtM1zfLqZm3uSFOpI673U+mpVz9NWOfbMx+trNHaPli1QxGUK+1
-	rD9PYjI6FgSD2+r64ONvk7WFbtls/ET7wLnwR06BTyMK7V0z0xiYF1NaBQsF4HWLVFZtlwMAsLQ
-	q9fk8O/sAA4pDYd20lUrSZOJpeI7inuakScVQAzjWW8IZPen6Z4JHkc/xJuvasaFKeAjp6bALTs
-	AFjGxXgN4zehNTAguEduox4GqygAQg9Xjnc3QrlLRX4o0fNjQ5p/EVkD+l8X91BbXZ8Q3jOMKDN
-	gq+CehjWgURYdDju5e+8o8Y9GHue8TiDQY2AvuQOEWp1ZSITDywoBqqiO4pYP9kd6Tv3xcHegOH
-	ndj2IwxyhV1A5bL/5ETSK8vinWmwEosMmku4liyIENWbvkZpOeyKw9aJ6juGJ+d8wJf+Dz9vTqK
-	r3gLV3ahJ7IyVU2tUhFV5J39Eoe2e3hkoeRRX1pBX36YwD3l48XOuOfptrJDf4+9dFuNGNPMlMI
-	ZRCEOSUajnzhWjG0ghi3g/BFSWNGQHUQIl1B++xyRihxbTA6a9jsYpPBkNxQCnfLiGr5wfMbbb2
-	KTX+vd6IQ3g58XH6X
-X-Received: by 2002:a05:600c:4f89:b0:4a1:ddaa:571e with SMTP id 5b1f17b1804b1-4a35ac9d018mr202236635e9.15.1793116012270;
-        Tue, 27 Oct 2026 08:46:52 -0700 (PDT)
+        bh=2Ywf1kYABPcYkKuVCWE8YXozL9O+0YxMyRYyN2zEgtg=;
+        b=UWZCYZ04KMsR3U2Gz0YcuhfhEI5QqpuCXHNGycvAGJQwgRuxMS+wcIIxm7zY0A0mcF
+         zbPxuTcC5CBxpfMGgkF+v9DIK1YCSUE3Sg0KkzkUqlzpA6G8R757XqwLiE0AC1b7IYOz
+         dRWQJF0PIwyIBwp+Fb2r2sd35c8stcXyD1e95GAr4PCbceauHT36XkayqtSrmvdJQhV5
+         htbFDHPbk//oXgAPzwIwHfUlDYHjW/isKhwKEQGxUslAgPtIua+d4NU3JgdzioT0SFQy
+         ygSfUFJaj2PhC8kMlaE2W7Eo0BRlcOZbRY1+vtNnDHYtUtQhw7XqRCIqbFaLSdVYBkZy
+         d6Vg==
+X-Forwarded-Encrypted: i=1; AKwUvBzZSJqgkCrFNG6vGCLRPg1ppiEIiznKwathUHn4RP1AKHs5AimQt2jto+Yf/oCIiD3CX+M=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI3V6RPTNSTVC8b+hj/ZcY8wMuNPGO4mp5f1ZkoQE/sIF3O0f5Q
+	P+lSlLNhwYA81ONrN/gvC+Q6l7R3Fr/wIlatgFAwj6SIZzmBgW+n9XjJ
+X-Gm-Gg: AYBFou0A3mRF9xAAy4glP2hDOtHik4mkb8uFgHov4GAB7DJSO015a4JTcRmSPR+Maex
+	/wX/F4AtgHvXWzyJKuZy4enPf6zDLitdSH8h684VRmWpGTbbP0vxGEbds0ttHXHXBTCCCP7cXwv
+	O1t1rnVYPFncJKoecXkcNA01lK0dMbW3CQTDzjrgdP/DeMJxJoeK3P9oKYBtzySD5Jg9xbc2hgE
+	7xgmR+xpulLBXXdTqQMcEjbqkUIcdOo4emxFaSREGqZTLSeaRVcqr6HLuB3EWVbsrIONpVswMk/
+	vnqFiCB+6W9KPWfbt5rixU1t3j0Zsy6TGd+bCFH/ShCZ+iL0cMiTiiw+QzkrdCFEVHgLg07ps2t
+	WBvuaeSy4uc3LwwrdDAV/8ONQZJjbGzgLjh3h01navaSGMBBTo702F2iouNoY7lXU+4lr5VgEOH
+	83Dj3b5YdG4TRYt0RT30b+bNaSPxhPu+/3poNGDwywZMHSHZl8ThoPbJS9S42h+EUGsEUQYj2iR
+	uIxFas+FMkq8ystQL7/2EpVEVXMVUpaPIomNglkcRdAzQOh6y6yLzz5xmcR+zU/TdICbbkW7UTe
+	vtKk06yGECWXYGuFhVbMev5ItkS6tvOsqvUCxJgPqsJ6IuBrbZq5WItHm4GezZ49Abr2nj9uXxp
+	Vlru/J/sT0IuG/aeI
+X-Received: by 2002:a05:600c:8b41:b0:4a7:7d22:c50c with SMTP id 5b1f17b1804b1-4a77d22c51amr83981995e9.2.1793116017189;
+        Tue, 27 Oct 2026 08:46:57 -0700 (PDT)
 Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb958sm23845574f8f.21.2026.10.27.08.46.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb958sm23845574f8f.21.2026.10.27.08.46.54
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Oct 2026 08:46:51 -0700 (PDT)
+        Tue, 27 Oct 2026 08:46:56 -0700 (PDT)
 From: Fred Griffoul <griffoul@gmail.com>
 To: Ackerley Tng <ackerleytng@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -157,12 +157,13 @@ Cc: Alex Williamson <alex@shazbot.org>,
 	linux-mm@kvack.org,
 	llvm@lists.linux.dev,
 	iommu@lists.linux.dev
-Subject: [RFC PATCH 00/14] guest_memfd: Export guest_memfd files to iommufd
-Date: Tue, 27 Oct 2026 15:46:35 +0000
-Message-ID: <20261027154649.91571-1-griffoul@gmail.com>
+Subject: [RFC PATCH 02/14] KVM: guest_memfd: Support read-only frames from PFN mode providers
+Date: Tue, 27 Oct 2026 15:46:37 +0000
+Message-ID: <20261027154649.91571-3-griffoul@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+In-Reply-To: <20261027154649.91571-1-griffoul@gmail.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
+ <20261027154649.91571-1-griffoul@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -176,256 +177,491 @@ Content-Transfer-Encoding: 8bit
 
 From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-This series follows Ackerley's RFC v2, "guest_memfd alternative
-providers" [1], and applies on top of it (kvm/next 7e60162b16f9 plus
-his 50 patches). It answers one question his RFC leaves open: how the
-IOMMU mappings of a device assigned to the guest follow guest_memfd.
+A PFN mode provider may lend a frame that the guest must not write,
+e.g. one shared by several guests, but guest_memfd maps every frame
+writable.
 
-A device cannot fault, and iommufd cannot pin guest_memfd pages: a
-conversion to private, a punch hole, memory failure or a provider's
-revoke must take a page away from the device too, and in PFN mode
-there is no page to pin. So guest_memfd has to drive the device
-mapping. This series proposes an interface for that, uses it in
-iommufd as a demonstration, and adds the two PFN mode pieces it relies
-on.
+Add an attributes output to get_pfn(), with GUEST_MEMFD_PFN_READONLY as
+its first bit. KVM then maps such a frame read only and exits to
+userspace on a guest write, and the VMM's mapping raises SIGBUS on a
+write. A read-only frame cannot back a private page or be populated.
 
-The interface
-=============
+On arm64, the new exit in gmem_abort() also restores the return after a
+failed kvm_gmem_get_pfn() that a kvm/next merge dropped.
 
-A subsystem that maps guest_memfd pages, such as iommufd, uses three
-functions and one callback, all in include/linux/guest_memfd.h:
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
+---
+ arch/arm64/kvm/mmu.c              |  10 ++-
+ arch/arm64/kvm/nested.c           |   9 ++-
+ arch/x86/kvm/mmu/mmu.c            |  15 +++-
+ arch/x86/kvm/svm/sev.c            |   4 +-
+ include/linux/guest_memfd.h       |  24 +++++-
+ include/linux/kvm_host.h          |   6 +-
+ samples/kvm/mem_provider_sample.c |   2 +-
+ virt/kvm/guest_memfd.c            | 128 ++++++++++++++++++++++++++----
+ 8 files changed, 168 insertions(+), 30 deletions(-)
 
-  kvm_gmem_export_attach()      start following a guest_memfd file
-  kvm_gmem_export_lookup_pfn()  which frame backs this page? A frame for
-                                a shared page with memory, nothing for a
-                                private page or a page without memory
-  kvm_gmem_export_detach()      stop following it
-  update(start, nr_pages)       the subsystem's callback: the answer for
-                                this range may have changed, look it up
-                                again and fix the mappings
-
-No reference is taken on the frames. Instead, guest_memfd calls
-update() on every change: conversions, punch holes, memory failure,
-pages getting memory, and a PFN mode provider taking frames back or
-giving them. The subsystem can rely on this:
-
-  - the old frames stay valid until update() returns, so a device that
-    never faults can switch each mapping in one step, to the new frame
-    or to a scratch page; after it returns, the old frames are no
-    longer used;
-  - update() cannot fail (see the open questions);
-  - update() may be called for pages that did not change;
-  - it runs under guest_memfd's invalidate lock.
-
-For the update to come before a frame is freed, a punch hole keeps the
-frames until then: folios are held until update() returns, and in PFN
-mode the range reads as holes until the update has run, before the
-provider gets its frames back.
-
-A PFN mode provider takes frames back with kvm_gmem_revoke(), from
-Ackerley's RFC. When it gives frames to pages that had none, or makes a
-read-only frame writable, it calls the new kvm_gmem_restore(), the
-"counterpart to kvm_gmem_revoke()" that his sample leaves for users that
-cannot fault (48/50). Nothing is taken away then, so restore only calls
-update(); KVM and the VMM fault the pages in themselves.
-
-Why not dma-buf: our RFC that backed guest_memfd with an imported
-dma-buf [3] needed a dma-buf call for importers to build their own page
-tables, and ranged invalidation, and Christian rejected both: importers
-filling page tables is a no-go for dma-buf. A dma-buf also knows
-nothing of shared and private pages, and folio mode guest_memfd needs
-the same tracking as PFN mode. So the interface lives in guest_memfd.
-
-iommufd, as a demonstration
-===========================
-
-IOMMU_IOAS_MAP_FILE accepts a guest_memfd. Its pages are not pinned:
-each update() unmaps the range and maps what a lookup returns now, with
-PAGE_SIZE IOPTEs, so a device that touches the range during an update
-faults. Dirty tracking, the no-IOMMU mode and kernel access are
-refused. This tests the interface and is not meant to be merged: real
-support needs large IOPTEs cut and merged in place, IOPTEs replaced in
-one step, and a scratch page for holes, all generic_pt work (Jason, on
-our v2), and will be a separate iommufd series.
-
-PFN mode pieces
-===============
-
-Two PFN mode changes come first, both raised in replies to Ackerley's
-series:
-
-  - get_pfn()'s order now means the naturally aligned block around the
-    index, and KVM clamps it to a block it can map, aligned and of one
-    attribute; today it can map a block over the wrong frames, or over
-    shared and private pages. Invalidations of a PFN mode file cover
-    the 1G-aligned blocks around their range, so that a fault that
-    sized a block before the change retries.
-  - get_pfn() gains an attributes output, with read only as its first
-    bit, which the guest's, the VMM's and the IOMMU's mappings follow.
-
-Open questions
-==============
-
-  - Private pages. The export gives shared pages only. That suits
-    devices that are not trusted, and TDX, where a shared IOPTE on a
-    private page is fatal. A trusted device (TDISP) needs private pages
-    too: on AMD the IOMMU maps them, with IOPTE sizes that follow the
-    RMP. The choice depends on the architecture and the device, so
-    userspace would make it through iommufd, which would pass an attach
-    flag asking lookups for private frames too, refused where the
-    architecture cannot take it. Is an attach flag the right place for
-    it?
-  - update() cannot fail, but a consumer may need memory to apply one:
-    iommufd allocates page tables to map a range again, and will need
-    one to cut a large IOPTE. The demonstration only warns when that
-    fails. Either the consumer reserves page tables when a range is
-    mapped, or guest_memfd adds a prepare step before a conversion,
-    which could fail and abort it. A provider's revoke cannot be
-    aborted, so it would need the reservation either way. Which would
-    you prefer?
-
-Patches
-=======
-
-  1-2   PFN mode: clamp the order KVM maps, read-only frames.
-  3-7   the export interface: folio mode, truncation, PFN mode, hole
-        sizes, and updates when pages get memory.
-  8-10  iommufd: track revocable domains, map guest_memfd files, and
-        mock-domain IOVA queries for the test.
-  11    kvm_gmem_restore().
-  12-13 the sample provider: read-only pages, large blocks, and backing
-        pages on demand and freeing them on a punch hole.
-  14    gmem_conversion_iommufd_test.
-
-Patch 2 also puts back the return after a failed kvm_gmem_get_pfn() in
-arm64's gmem_abort(), which a kvm/next merge dropped; the fix alone
-will be sent separately.
-
-Testing
-=======
-
-On x86_64 in QEMU, with KASAN and lockdep:
-
-  - gmem_conversion_iommufd_test maps the guest_memfd of a
-    KVM_X86_SW_PROTECTED_VM into an iommufd mock domain, backed by
-    folios, a tmpfs resource or the sample provider in PFN mode, and
-    checks that the guest, the VMM and the device all see each change:
-    conversions, allocations, punch holes, memory failure, and the
-    provider's revokes and restores;
-  - Ackerley's tests pass as on his RFC alone;
-  - the iommufd selftests pass, except 12 dmabuf and
-    access_domain_destory tests that also fail on his RFC alone here;
-  - each patch builds with KVM and iommufd built in, with KVM as a
-    module, with both as modules, and with SEV.
-
-arm64 is neither built nor run.
-
-History
-=======
-
-Our v2 [2] added an interface in mm for drivers that lend memory, with
-guest_memfd and iommufd as two consumers of a provider file. Ackerley's
-RFC now gives guest_memfd PFN mode providers itself and takes v2's
-sample provider, so this series drops the mm interface: iommufd maps
-the guest_memfd, not the provider file, and follows conversions.
-
-[1] https://lore.kernel.org/all/20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com/
-[2] https://lore.kernel.org/all/20261014093733.90312-1-griffoul@gmail.com/
-[3] https://lore.kernel.org/all/20261005095329.49764-1-griffoul@gmail.com/
-
-prerequisite-message-id: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
-
-Fred Griffoul (14):
-  KVM: guest_memfd: Clamp the order of PFN mode blocks to what KVM can
-    map
-  KVM: guest_memfd: Support read-only frames from PFN mode providers
-  KVM: guest_memfd: Allow other subsystems to map guest_memfd files
-  KVM: guest_memfd: Keep truncated folios until the exports are updated
-  KVM: guest_memfd: Export PFN mode files
-  KVM: guest_memfd: Report the size of holes in export lookups
-  KVM: guest_memfd: Update exports when pages are allocated
-  iommufd: Track the domains of revocable pages in struct iopt_pages
-  iommufd: Map guest_memfd files
-  iommufd/selftest: Add mock-domain IOVA queries
-  KVM: guest_memfd: Add kvm_gmem_restore() for PFN mode providers
-  samples/kvm: Add read-only pages and large blocks to the sample
-    provider
-  samples/kvm: Back absent pages on demand in the sample provider
-  KVM: selftests: Test guest_memfd mapped by iommufd
-
- arch/arm64/kvm/mmu.c                          |  10 +-
- arch/arm64/kvm/nested.c                       |   9 +-
- arch/x86/kvm/Makefile                         |   4 +-
- arch/x86/kvm/mmu/mmu.c                        |  15 +-
- arch/x86/kvm/svm/sev.c                        |   4 +-
- drivers/iommu/iommufd/io_pagetable.c          |  38 +-
- drivers/iommu/iommufd/io_pagetable.h          |  61 +-
- drivers/iommu/iommufd/iommufd_test.h          |  18 +
- drivers/iommu/iommufd/pages.c                 | 366 ++++++-
- drivers/iommu/iommufd/selftest.c              | 125 +++
- include/linux/guest_memfd.h                   |  93 +-
- include/linux/kvm_host.h                      |   6 +-
- include/uapi/linux/iommufd.h                  |  11 +-
- samples/kvm/mem_provider_sample.c             | 118 ++-
- samples/kvm/mem_provider_sample.h             |  18 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/gmem_conversion_iommufd_test.c    | 956 ++++++++++++++++++
- virt/kvm/guest_memfd.c                        | 601 ++++++++++-
- 18 files changed, 2329 insertions(+), 125 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test.c
-
-
-base-commit: 7e60162b16f9da0d2fa83da5c1723b6853a0ac1d
-prerequisite-patch-id: d0932c65d2a453e84f7917da27f9f6ae1da95856
-prerequisite-patch-id: 7be8f39fdcfe7e504a9ac85e835a5dfb2ee414ba
-prerequisite-patch-id: c6d0df8d4fdd910000ed9e35f514db6ac32e6e11
-prerequisite-patch-id: 45cd3951b114a26eac94390727287c1221862b5c
-prerequisite-patch-id: 6d978b6f0561697e5b145e4b82d79ac8c89f9f31
-prerequisite-patch-id: 9bd6979aa47dd00c87a3aa8feb1798486107ac4b
-prerequisite-patch-id: 98438bd35d53340738a20fd8724b038c9de1207e
-prerequisite-patch-id: 146dfaa64e29a4930adb60e9524c7613f888a241
-prerequisite-patch-id: 170e27bc053fede8d24accca69809d3687faf668
-prerequisite-patch-id: 789fe5bfb1183f6b9a9b0d817e5d1050a7999e1a
-prerequisite-patch-id: 5dd6878d0476a9dd925aa8d7ef1cf18900cbcd82
-prerequisite-patch-id: 1f0d1dca2a51df2283f1d83ed57dd9ce4e11b025
-prerequisite-patch-id: 503eb8fb0bf9af163f344c2693d374b6a3093fd1
-prerequisite-patch-id: 94e4777a58b357458bdce680bbb41c04c0c661f4
-prerequisite-patch-id: 4c1f6b548994d239e5093ee1d268ef5a12a76873
-prerequisite-patch-id: f6d13ac583d54fe1ae22adde87f5c68d8e8e41ce
-prerequisite-patch-id: 7846b44d34507a9af6ac8a3fb263ee446ea56a1d
-prerequisite-patch-id: 2d309198e27a3922b5cf5805ac5660ea92029219
-prerequisite-patch-id: e1f75965298956ad87bb78969461eff31419b6eb
-prerequisite-patch-id: 40ef669df2a64e5b28127059e4cea288d426f6f6
-prerequisite-patch-id: d8adb8f100cb13423db02e7e7a834fa241ff04fe
-prerequisite-patch-id: 75591ca138e7de26db6cd3e242a7f0ce56c4752c
-prerequisite-patch-id: b1e2c46b473783f37490c29140498a0bb35ec7d3
-prerequisite-patch-id: bc8b607986a132eef4daa5e20979d3f038d046ba
-prerequisite-patch-id: c9de5cd8a95f8102597b49dcf70b8ec5825b9ec7
-prerequisite-patch-id: 954606132449080c4e173eb06d114504f87d0322
-prerequisite-patch-id: 82a44a46cf9d4cc3fcdc03c362fc4e86d1fc533a
-prerequisite-patch-id: 23dbc9968c0b2570f40cd6c3b13337078334aa8d
-prerequisite-patch-id: 6c6a5ca6d0a1b60158a47ed21f25889dd71dd9b7
-prerequisite-patch-id: e4d1ba4119277d7772dbf6e81f748beab4e62856
-prerequisite-patch-id: a32d69bdd1fb21b85547fdc026475e2d94ffbc28
-prerequisite-patch-id: 2704fe13a294e1f33cfbee6cd27c11ee392a8b78
-prerequisite-patch-id: ebb701b7e050327e798c172d897021806f7e6c35
-prerequisite-patch-id: 03db7e48c976a019ce478883002670c4b1a33cd9
-prerequisite-patch-id: a18608129e63bbbc6e89a4ca237863ba4c506a63
-prerequisite-patch-id: a35607a73bd0329fd91a39bd7b9c855edb4b8798
-prerequisite-patch-id: 6d57cd16d6c6e71c3da069c1d9eee1c86bdeee8d
-prerequisite-patch-id: b64a5a718f540e7daf2dc4f0703422ad2cc52ebe
-prerequisite-patch-id: eb9a9e4d7f4b7e439c5687786628f07c406864a4
-prerequisite-patch-id: 2fe22fda60b4e4678bcf62d87bfd82181556af98
-prerequisite-patch-id: 26211cbacdbc31a62524aa5ad402b0f3933d433e
-prerequisite-patch-id: 02455f9ee70487d8b30b6aada5f5b62ff4e5ebe2
-prerequisite-patch-id: 113da62f7845c2a9f86d24ed178cf52756917cc0
-prerequisite-patch-id: 9ef3e8b12bc70690470035f0c6f351fa49562659
-prerequisite-patch-id: 0953a92b86c0790554b64ebda5d6aed038a6cf0e
-prerequisite-patch-id: 877e1c79e389936278122aa1efbdf99053b2d6c7
-prerequisite-patch-id: 0b04c869d49a4c1ad96ff7b5d8e3b11c4069f23f
-prerequisite-patch-id: 942b7480ddb281b9df74705f1a3a6e23a2440a43
-prerequisite-patch-id: 98c3864233a7ba6d789ad260f4af170a020d2929
-prerequisite-patch-id: 40dc0f2b1ab5e59f1f5de0be5134101ca896d13d
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 745cb86f9e04..cdf6d671158a 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1736,7 +1736,7 @@ static gfn_t get_canonical_gfn(const struct kvm_s2_fault_desc *s2fd,
+ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+ 		      struct kvm_s2_fault_result *result)
+ {
+-	bool write_fault, exec_fault;
++	bool write_fault, exec_fault, writable;
+ 	bool perm_fault = kvm_s2_fault_is_perm(s2fd);
+ 	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
+ 	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+@@ -1773,17 +1773,19 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+ 	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+ 	smp_rmb();
+ 
+-	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL);
+-	if (ret) {
++	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL,
++			       &writable);
++	if (ret || (write_fault && !writable)) {
+ 		/* If result is non-NULL this is a synthetic fault. */
+ 		if (!result)
+ 			kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(canonical_gfn),
+ 						      s2vi.vma_pagesize, write_fault, exec_fault,
+ 						      false);
+ 		kfree(mapping);
++		return ret ?: -EFAULT;
+ 	}
+ 
+-	if (!(s2fd->memslot->flags & KVM_MEM_READONLY))
++	if (!(s2fd->memslot->flags & KVM_MEM_READONLY) && writable)
+ 		prot |= KVM_PGTABLE_PROT_W;
+ 
+ 	if (s2fd->nested)
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index f1c414f1c3fa..ec3bcdc230cf 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1615,12 +1615,19 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
+ 			return -EFAULT;
+ 		}
+ 	} else {
+-		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL);
++		ret = kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL,
++				       &writable);
+ 		if (ret) {
+ 			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
+ 					      write_fault, false, false);
+ 			return ret;
+ 		}
++		/* The CPU writes the VNCR page: a read-only frame cannot back it. */
++		if (!writable) {
++			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
++					      true, false, false);
++			return -EFAULT;
++		}
+ 
+ 		writable = !(memslot->flags & KVM_MEM_READONLY);
+ 	}
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 5a2cc6a17a9b..1c50955e80f9 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4675,6 +4675,7 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+ 				    struct kvm_page_fault *fault)
+ {
+ 	int max_order, r;
++	bool writable;
+ 
+ 	if (!kvm_slot_has_gmem(fault->slot)) {
+ 		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+@@ -4682,13 +4683,23 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+ 	}
+ 
+ 	r = kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault->pfn,
+-			     &max_order);
++			     &max_order, &writable);
+ 	if (r) {
+ 		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+ 		return r;
+ 	}
+ 
+-	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
++	/*
++	 * guest_memfd may report a read-only frame: map it without write
++	 * permission, and exit to userspace on a guest write rather than
++	 * install it.
++	 */
++	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY) &&
++			      writable;
++	if (fault->write && !fault->map_writable) {
++		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
++		return -EFAULT;
++	}
+ 	fault->max_level = kvm_max_level_for_order(max_order);
+ 
+ 	return RET_PF_CONTINUE;
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 6427db390b1c..4125b4fd30da 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4096,7 +4096,7 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 * The new VMSA will be private memory guest memory, so retrieve the
+ 	 * PFN from the gmem backend.
+ 	 */
+-	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL))
++	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL, NULL))
+ 		return;
+ 
+ 	read_lock(&kvm->mmu_lock);
+@@ -5092,7 +5092,7 @@ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+ 	mmu_seq = kvm->mmu_invalidate_seq;
+ 	smp_rmb();
+ 
+-	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &order);
++	ret = kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &order, NULL);
+ 	if (ret) {
+ 		pr_warn_ratelimited("SEV: Unexpected RMP fault, no backing page for private GPA 0x%llx\n",
+ 				    gpa);
+diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+index a38a81693422..9d8764b93af2 100644
+--- a/include/linux/guest_memfd.h
++++ b/include/linux/guest_memfd.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_GUEST_MEMFD_H
+ #define _LINUX_GUEST_MEMFD_H
+ 
++#include <linux/bits.h>
+ #include <linux/types.h>
+ 
+ struct file;
+@@ -23,9 +24,12 @@ struct mempolicy;
+  *           zeroing if necessary. On success, return 0 with the physical frame
+  *           number in @pfn and, if @max_order is non-NULL, the largest order
+  *           for which the naturally aligned block of 2^order pages that
+- *           contains @index is backed by contiguous frames. Returns a
+- *           negative error code on failure. The provider must define
+- *           @lookup_pfn_range when @get_pfn is defined.
++ *           contains @index is backed by contiguous frames. @attrs, preset
++ *           to 0 by guest_memfd, receives the GUEST_MEMFD_PFN_* attributes
++ *           of the whole block. A provider that changes them must then
++ *           kvm_gmem_revoke() the range. Returns a negative error code on
++ *           failure. The provider must define @lookup_pfn_range when
++ *           @get_pfn is defined.
+  * @lookup_pfn_range: Look up the PFN for a given index. Returns 0 on success
+  *                    with the physical frame number in @pfn and the number of
+  *                    contiguous pages the mapping is valid for in @nr_pages.
+@@ -49,12 +53,24 @@ struct guest_memfd_provider_operations {
+ 				     struct mempolicy *mpol);
+ 	void (*invalidate_folio)(void *provider, struct folio *folio);
+ 	int (*get_pfn)(void *provider, pgoff_t index, unsigned long *pfn,
+-		       int *max_order);
++		       int *max_order, u32 *attrs);
+ 	int (*lookup_pfn_range)(void *provider, pgoff_t index,
+ 				unsigned long *pfn, size_t *nr_pages);
+ 	void (*put_pfn_range)(void *provider, pgoff_t index, size_t nr_pages);
+ };
+ 
++/*
++ * Attributes of a PFN mode block, reported by get_pfn().  Only the provider
++ * knows them, and every mapping of the block must follow them.
++ *
++ * READONLY: the guest may read the block but not write it, e.g. a page that
++ * the provider lends to several guests.  guest_memfd maps it read only for
++ * the guest and the VMM, and never backs a private page with it.
++ */
++#define GUEST_MEMFD_PFN_READONLY	BIT(0)
++
++#define GUEST_MEMFD_PFN_ATTRS		GUEST_MEMFD_PFN_READONLY
++
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+ int kvm_gmem_revoke(struct inode *inode, pgoff_t start, size_t nr_pages,
+ 		    const unsigned long *pfn);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 345f97b110fa..3d0db49ad08b 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2628,11 +2628,13 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+ }
+ 
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+-		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
++		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order,
++		     bool *writable);
+ #else
+ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+ 				   struct kvm_memory_slot *slot, gfn_t gfn,
+-				   kvm_pfn_t *pfn, int *max_order)
++				   kvm_pfn_t *pfn, int *max_order,
++				   bool *writable)
+ {
+ 	KVM_BUG_ON(1, kvm);
+ 	return -EIO;
+diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider_sample.c
+index 5496e0c7864b..f30654a60dd8 100644
+--- a/samples/kvm/mem_provider_sample.c
++++ b/samples/kvm/mem_provider_sample.c
+@@ -179,7 +179,7 @@ static void mps_gmem_release(void *provider)
+ }
+ 
+ static int mps_gmem_get_pfn(void *provider, pgoff_t index, unsigned long *pfn,
+-			    int *max_order)
++			    int *max_order, u32 *attrs)
+ {
+ 	struct file *resource_file = provider;
+ 	struct mps_info *info = resource_file->private_data;
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index be26bd16d420..1554a17906da 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -142,18 +142,25 @@ static struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
+ }
+ 
+ static int gmem_provider_get_pfn(struct gmem_inode *gi, pgoff_t index,
+-				 kvm_pfn_t *pfn, int *max_order)
++				 kvm_pfn_t *pfn, int *max_order, u32 *attrs)
+ {
+ 	unsigned long raw_pfn;
++	u32 __attrs = 0;
+ 	int r;
+ 
+ 	if (max_order)
+ 		*max_order = 0;
+-	r = gi->provider_ops->get_pfn(gi->provider, index, &raw_pfn, max_order);
++	r = gi->provider_ops->get_pfn(gi->provider, index, &raw_pfn, max_order,
++				      &__attrs);
+ 	if (r)
+ 		return r;
+ 
++	if (WARN_ON_ONCE(__attrs & ~GUEST_MEMFD_PFN_ATTRS))
++		return -EIO;
++
+ 	*pfn = raw_pfn;
++	if (attrs)
++		*attrs = __attrs;
+ 	return 0;
+ }
+ 
+@@ -546,7 +553,7 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+ 				break;
+ 			}
+ 
+-			r = gmem_provider_get_pfn(gi, index, &pfn, &max_order);
++			r = gmem_provider_get_pfn(gi, index, &pfn, &max_order, NULL);
+ 			if (r)
+ 				break;
+ 
+@@ -721,13 +728,71 @@ static bool kvm_gmem_supports_mmap(struct inode *inode)
+ 	return GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_MMAP;
+ }
+ 
++/* The protection for a host mapping of a PFN mode frame with @attrs. */
++static pgprot_t kvm_gmem_pfn_prot(struct vm_area_struct *vma, u32 attrs)
++{
++	vm_flags_t flags = vma->vm_flags;
++
++	if (attrs & GUEST_MEMFD_PFN_READONLY)
++		flags &= ~VM_WRITE;
++	return vm_get_page_prot(flags);
++}
++
++/*
++ * Map a PFN mode frame for the host.  Called with the invalidate lock held
++ * shared, so that a frame is never mapped after the revoke that removes it.
++ * A read-only frame is mapped without write permission, and a write to it
++ * raises SIGBUS.
++ */
++static vm_fault_t kvm_gmem_pfn_fault(struct vm_fault *vmf)
++{
++	struct inode *inode = file_inode(vmf->vma->vm_file);
++	struct vm_area_struct *vma = vmf->vma;
++	bool write = vmf->flags & FAULT_FLAG_WRITE;
++	kvm_pfn_t pfn;
++	u32 attrs;
++	int r;
++
++	r = gmem_provider_get_pfn(GMEM_I(inode), vmf->pgoff, &pfn, NULL, &attrs);
++	if (r)
++		return vmf_error(r);
++
++	if (write && (attrs & GUEST_MEMFD_PFN_READONLY))
++		return VM_FAULT_SIGBUS;
++
++	return vmf_insert_pfn_prot(vma, vmf->address, pfn,
++				   kvm_gmem_pfn_prot(vma, attrs));
++}
++
++/*
++ * A write to a read-only PTE, e.g. after mprotect(): allow it unless the frame
++ * is read only.  The core upgrades the PTE under its lock only if it did not
++ * change, and a provider that makes the frame read only revokes it first.
++ */
++static vm_fault_t kvm_gmem_pfn_mkwrite(struct vm_fault *vmf)
++{
++	struct inode *inode = file_inode(vmf->vma->vm_file);
++	vm_fault_t ret = 0;
++	kvm_pfn_t pfn;
++	u32 attrs;
++	int r;
++
++	filemap_invalidate_lock_shared(inode->i_mapping);
++	r = gmem_provider_get_pfn(GMEM_I(inode), vmf->pgoff, &pfn, NULL, &attrs);
++	if (r)
++		ret = vmf_error(r);
++	else if (attrs & GUEST_MEMFD_PFN_READONLY)
++		ret = VM_FAULT_SIGBUS;
++	filemap_invalidate_unlock_shared(inode->i_mapping);
++	return ret;
++}
++
+ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ {
+ 	struct inode *inode = file_inode(vmf->vma->vm_file);
+ 	struct gmem_inode *gi = GMEM_I(inode);
+ 	vm_fault_t ret = VM_FAULT_LOCKED;
+ 	struct folio *folio = NULL;
+-	kvm_pfn_t pfn;
+ 	int r = 0;
+ 
+ 	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+@@ -737,9 +802,7 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ 	if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff)) {
+ 		r = -EACCES;
+ 	} else if (kvm_gmem_is_pfn_mode(gi)) {
+-		r = gmem_provider_get_pfn(gi, vmf->pgoff, &pfn, NULL);
+-		if (!r)
+-			ret = vmf_insert_pfn(vmf->vma, vmf->address, pfn);
++		ret = kvm_gmem_pfn_fault(vmf);
+ 	} else {
+ 		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+ 		if (IS_ERR(folio))
+@@ -815,6 +878,12 @@ static const struct vm_operations_struct kvm_gmem_vm_ops = {
+ #endif
+ };
+ 
++/* PFN mode: a write to a page mapped read only comes back to guest_memfd. */
++static const struct vm_operations_struct kvm_gmem_pfn_vm_ops = {
++	.fault		= kvm_gmem_fault_user_mapping,
++	.pfn_mkwrite	= kvm_gmem_pfn_mkwrite,
++};
++
+ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct gmem_inode *gi = GMEM_I(file_inode(file));
+@@ -827,8 +896,11 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (kvm_gmem_is_pfn_mode(gi))
++	if (kvm_gmem_is_pfn_mode(gi)) {
+ 		vm_flags_set(vma, VM_PFNMAP);
++		vma->vm_ops = &kvm_gmem_pfn_vm_ops;
++		return 0;
++	}
+ 
+ 	vma->vm_ops = &kvm_gmem_vm_ops;
+ 
+@@ -1503,7 +1575,7 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 					struct kvm_memory_slot *slot,
+ 					pgoff_t index, kvm_pfn_t *pfn,
+-					int *max_order)
++					int *max_order, u32 *attrs)
+ {
+ 	struct file *slot_file = READ_ONCE(slot->gmem.file);
+ 	struct gmem_inode *gi = GMEM_I(file_inode(file));
+@@ -1522,7 +1594,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 	}
+ 
+ 	if (kvm_gmem_is_pfn_mode(gi)) {
+-		r = gmem_provider_get_pfn(gi, index, pfn, max_order);
++		r = gmem_provider_get_pfn(gi, index, pfn, max_order, attrs);
+ 		if (r)
+ 			return ERR_PTR(r);
+ 		return NULL;
+@@ -1588,14 +1660,22 @@ static int kvm_gmem_pfn_map_order(struct inode *inode, pgoff_t index,
+ 	return order;
+ }
+ 
++/*
++ * @writable, if not NULL, is set to whether the guest may write the page.  It
++ * may be NULL only for private pages, which are always writable.
++ */
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+-		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
++		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order,
++		     bool *writable)
+ {
+ 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+ 	struct folio *folio;
+ 	int r = 0, __order;
++	u32 attrs = 0;
+ 
+ 	max_order = max_order ?: &__order;
++	if (writable)
++		*writable = true;
+ 
+ 	CLASS(gmem_get_file, file)(slot);
+ 	if (!file)
+@@ -1603,15 +1683,28 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 
+ 	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+ 
+-	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
++	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order, &attrs);
+ 	if (IS_ERR(folio)) {
+ 		r = PTR_ERR(folio);
+ 		goto out;
+ 	}
+ 
+-	if (kvm_gmem_is_pfn_mode(GMEM_I(file_inode(file))))
++	if (kvm_gmem_is_pfn_mode(GMEM_I(file_inode(file)))) {
++		/*
++		 * A read-only frame is not the guest's alone, so it never
++		 * backs a private page: a private fault on it is a hole.
++		 */
++		if (attrs & GUEST_MEMFD_PFN_READONLY) {
++			if (kvm_gmem_is_private_mem(file_inode(file), index) ||
++			    WARN_ON_ONCE(!writable)) {
++				r = -EFAULT;
++				goto out;
++			}
++			*writable = false;
++		}
+ 		*max_order = kvm_gmem_pfn_map_order(file_inode(file), index, gfn,
+ 						    *pfn, *max_order);
++	}
+ 
+ 	if (kvm_arch_has_gmem_convert() &&
+ 	    kvm_gmem_is_private_mem(file_inode(file), index))
+@@ -1637,12 +1730,13 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+ {
+ 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+ 	struct folio *folio;
++	u32 attrs = 0;
+ 	kvm_pfn_t pfn;
+ 	int ret;
+ 
+ 	filemap_invalidate_lock(file->f_mapping);
+ 
+-	folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
++	folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL, &attrs);
+ 	if (IS_ERR(folio)) {
+ 		ret = PTR_ERR(folio);
+ 		goto out_unlock;
+@@ -1651,6 +1745,12 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	if (folio)
+ 		folio_unlock(folio);
+ 
++	/* Populated pages are private, and are written: not a read-only frame. */
++	if (attrs & GUEST_MEMFD_PFN_READONLY) {
++		ret = -EPERM;
++		goto out_put_folio;
++	}
++
+ 	if (!kvm_is_private_gfn(kvm, gfn)) {
+ 		ret = -EINVAL;
+ 		goto out_put_folio;
 -- 
 2.47.3
 
