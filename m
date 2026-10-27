@@ -1,91 +1,144 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793112712;
-	b=5gU8ma7pXinEUbhlJ6Mtak+7nd1Wg2t3VlMOXAQrIOrIs92RtUfbW3MRIAT8IhCNPJdY
-	 gTt1759/vjxPyZqMMhMR/Ub/WIVYTm0N7Zvzs68F4YW0GxQRp5Iphc/nSZquGbI5rAmty
-	 mSvZQD7qICn0sCON3qe64lhQqaUxuBaNdOUY7EgHLBprc3eKIo9aDyejLOjkHeOxVdBL8
-	 iUsONiUea4OvaoWbeWLr3us8OjKsC/6Gd9lYJxGNcM6lw/vKi93h0qo80UNDUPcmALT0W
-	 IWVQNncwryyweeHuPtbkYrkemRiZgfkOaNq/r13R5iiviIKm9v/oUBNqSdMqmOFlfeA==
+	t=1793112866;
+	b=HLp0F1TDsT6cRSaviyjxJ0SKSZZkiZsNzVfeGwoMb76Wu9r94haq+XSOq3Xam6qsjUv4
+	 8iBoj5hMQo9h06sj+gi1Vhd6QW+RHDPGWfdVDCfz+veZdocB5OskEzJ6qBq3uDRZ4q4Dv
+	 d1ZuVlYp8+P4hXP1oz+rEW2TnaOlIdjvP+7CPfTbBCPLjwpz5QJ/yQGPZ+CyZsOk2W2v6
+	 ew27k4kwkEayh0hrjpL9BSgQvEgZ+VQZRmCT68a0FyvnjLqyblDA9PaaiQ/OFbYNDdHIh
+	 DkWKkWvrekTlglxX/LW0+Fd7g7+vBQ+87jEZbl48FOhSg6rZjbDR/ozdQfMubQQmgbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112712;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=JoOqvyAj0+Jgjt+c2q64ZVpxp84DiEqBDr/qWbcE/6Q=;
-	b=gl5zJe4q2GY1YnHShxmgtLEt8K0QhgNW6j2Uix/EGnpAu2nR+B3ogUPEHfM9pBF1Oi/s
-	 Od0cLXAAn+9/J+QSSrU0ZVOFUVqyNjRI1scVcXB+CT33ALirtTvJ7PO4wWtFbLZ1wVf6f
-	 QmmlfmQAfD4cdxnfuh2iUM5MmeBi0eyZwHB/DQMiwBDHKmdqfaqWvakJ2sl1HKMNALn38
-	 QrUqaxBaPvKsbOFw/PXcI1FXdBCPmAJmNpnwhV7aLdiJwK5KrTSEFD2oo42QjiNQJP71f
-	 kRo6yvagdhH9ehqT5kTCq3bEiKeZH3naoApqF5IiVsNVijJibBiD6IBmGOyudl18UVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793112866;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=iS39GqGO9tfq4zbugL0Bc404rj9V2Bh+OcTDZ0hucj4=;
+	b=Xf9V8yMn7o8alA2ELWNO/yql7kq5Ewjj0pB0AIzTW2uEvx4VQWWm60rcTooFYEa5A3Mx
+	 K95sz4Duh78wEsYeRdNrYRwRDAZnvqd2fpdlW2oXr9EP5F6YPIHpJT0RM/c1zZetxwSW3
+	 1inRMEVvxR5hgmLXU74+xM4Q0OOdBaNZ0noN+2kxZILW86J2jUReIR5Emee2N0igKtioN
+	 Nnw3jWhhN07LrGBStAoYTt5sQPjo7Ug7ruhINIgTDDnXzFxtlmuAv9IhT7wDC1wkIJpbR
+	 jD/V+PZ/9AlAdNGF0ECQJTzohQODpVCLzKfIQjlllIOT3lhBrbjaPR9a6q8bgY/Tpcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=az4lEek2;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="cd835ly/";
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA49606A31B
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4506606A338
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:54:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4506606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=az4lEek2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F541F031E5;
-	Tue, 27 Oct 2026 14:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793112711;
-	bh=JoOqvyAj0+Jgjt+c2q64ZVpxp84DiEqBDr/qWbcE/6Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=az4lEek2XZaQvbtwT/js8IRwBNgkl2479NPzwhFVN//obZR3z3zbbiUTdI83cibmn
-	 lhlHU/NMSDCWNPKVwHA2RhwSm5NU19g1rT89n/pVplKXWBYvrKHRjTIfFJqK23Obw8
-	 0Q0fpMzlY7hmAefyfeXKPrZwojDSGOdQq62pdlJlVIYxXiHxS1MPJyBO8wTZFgmXCB
-	 HB/K00P4XAt8ZJND776NrElFPSpcFa2Xq7SyCn5MUK0yZ65yBVGtalX+BEt6uS4eBB
-	 /t1nZMo7C7FQj6EdWsUZbtd1vM4z5ff5OHId/0Z+p4o4I9fam+WF4FPEcrbnq80Ytq
-	 vAXX+WDtn8GUA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 5D75A198004A;
-	Tue, 27 Oct 2026 10:51:45 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 27 Oct 2026 10:51:49 -0400
-X-ME-Sender: <xms:gLrgavLAlgkrAhj-6GVk5yLjUj1kyaDiq3PHRAuB8g5hZtL3adnBMA>
-    <xme:gLrgahq9Ns9x_c8FHLAL2iQ29lp-hr92Bw2cw2gpp6xFzPUbsAt_MgBkpxcEL9Qso
-    VTCqJC2qCdFPNYFJk1IFe7oQ3ugipZgsgosd87cO1r_YL9q7BICvRYm>
-X-ME-Received: <xmr:gLrgaigHnEu2DOyJCpY49eTeuHuI1p8TjWFQcr3g-i1UMc-y-AQAr1B7orc>
-X-ME-Proxy-Cause: dmFkZTGhb5CCIEhi8YRVlZWXxywwjLDCiGKJTqYq3TGxohkiie2e7b08prnm6qm3Mgq/Xv
-    f8mSL32tsLRpmgHaz6MZN+ZLdDrreydc6PdATZZoDlZZ4l4PoJjiJdhSudk3RV1jcJLsWl
-    oGA9pKowkapDelRVuYlxCWlLeI7Z9/5iCynDokopMlVbGp8TOM3/RjSN/h13nNEROePlRY
-    T35FzV8bgHo+mgJ1f+5oYNw35uJOWghFaZlb9xVnbDVCacqulVDS82UMGOBzg1yx5ECtZJ
-    FuUQ2k/l29twYFlZP1ht6lfqh9RlJqn8qcxxQSBg1/mtGcYkOI8JiYt70URezpQ7kmjRmV
-    J0aWJh/2p99Q5+2naRg9TcLhY7jPBYo2JWuKgkFL8E4JXBF2S0D8yAS+GGxhVRrDOgc9BC
-    sMOKD8Wl7RYrMPEiZQOpn9PekBFgU7capm2o7nIlInu72F6Xp1aDS5bdkZpG9R5GaJJCR3
-    56gL0cSDcpTgU9GBjEaKbu1mje0wR7SzmSZEBZumtk18Yekozk9oGPdB9y5v/ze1OYIaSX
-    tF8S/frgaX2ZSwZSJSxf4Jsr8L8G6idJw06leYWdZ26CGTfqBOijN+PT0bh+d3bnyy3g2n
-    92jz6sAl2//Fv0Kppx7hFvHhS12BccSJOh2PGA7gOFwihsIfKg8mLHvpsSFg
-X-ME-Proxy: <xmx:gLrgaumHM46mCUBbbnYEqXur4opZmpmG4YXo5V15tjjpYM-Mc85uPg>
-    <xmx:gLrgah49HVzBmPghZOLcaa4hCoPYdU3q6YoMMqHVA-Q7u2TyKQg52A>
-    <xmx:gLrgaim0om9HQc7lD6Tc-7i8r87HAvGK3UN41DOa8xgFZ_UxpPTy2Q>
-    <xmx:gLrgajiZQVCrpJT1ZH2Qks2KtrpGxe2s57jSA7H7IlInRy3VksMJAQ>
-    <xmx:gLrganlsr6aI5eIKIEcQYttuzXZA1Q_Yq5sz8KY9RTMvBvSmQ70WtJOR>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 10:51:44 -0400 (EDT)
-Date: Tue, 27 Oct 2026 14:51:43 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	kvm@vger.kernel.org, =?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v4 4/4] selftests/mm: test fork of PMD-mapped shmem THPs
-Message-ID: <auC4eUEN52PJF1bM@thinkstation>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-4-66f00b7a564c@virtuozzo.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cd835ly/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793112864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iS39GqGO9tfq4zbugL0Bc404rj9V2Bh+OcTDZ0hucj4=;
+	b=cd835ly/kfZ9/gGK9QVhDqnIq9RhvYyThAaWFCw0lP0FG31dh9PSCMwrtfZoW583kJrSV0
+	rJyIKaugaMjlkK4DDZ+y/YD4faxwdGVm0VcC4m/LeH4x3rYRD6EVzdL+I2lNu3EI+gBod0
+	h/WK6w5wmXUfWBB7aoQ5Dv++GVzX3QU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-nyqVetLPM2uBg4ZbpUvWIg-1; Tue,
+ 27 Oct 2026 10:54:19 -0400
+X-MC-Unique: nyqVetLPM2uBg4ZbpUvWIg-1
+X-Mimecast-MFC-AGG-ID: nyqVetLPM2uBg4ZbpUvWIg_1793112855
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 56DB7195411B;
+	Tue, 27 Oct 2026 14:54:11 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.2])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F9C31800495;
+	Tue, 27 Oct 2026 14:54:06 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id CEB8121E6A04; Tue, 27 Oct 2026 15:54:03 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
+  qemu-devel@nongnu.org,
+  Michael Roth <michael.roth@amd.com>,  John Snow <jsnow@redhat.com>,
+  Peter Maydell <peter.maydell@linaro.org>,  Mauro Carvalho Chehab
+ <mchehab+huawei@kernel.org>,  Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+  Kostiantyn Kostiuk <kkostiuk@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  David Hildenbrand <david@kernel.org>,  Igor Mammedov
+ <imammedo@redhat.com>,  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+  Jason Wang <jasowangio@gmail.com>,  Marcelo Tosatti
+ <mtosatti@redhat.com>,  kvm@vger.kernel.org,  Alberto Garcia
+ <berto@igalia.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@oss.qualcomm.com>,
+  Zhao Liu <zhao1.liu@intel.com>,  Jonathan Cameron <jic23@kernel.org>,
+  Junjie Cao <junjie.cao@intel.com>,  Anisa Su <anisa.su@samsung.com>,
+  Elena Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  John Levon <john.levon@nutanix.com>,  Thanos
+ Makatos <thanos.makatos@nutanix.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,
+  Cornelia Huck <cohuck@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+  qemu-block@nongnu.org,  linux-cxl@vger.kernel.org,
+  qemu-s390x@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Sergio
+ Lopez <slp@redhat.com>,  qemu-arm@nongnu.org,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Alistair Francis <alistair.francis@wdc.com>,
+  Weiwei Li <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <daniel.barboza@oss.qualcomm.com>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Chao Liu <chao.liu@processmission.com>,
+  qemu-riscv@nongnu.org,  Song Gao <17746591750@163.com>,  Bibo Mao
+ <maobibo@loongson.cn>,  Xianglai Li <lixianglai@loongson.cn>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Pedro Barbuda <pbarbuda@microsoft.com>,
+  Mohamed Mediouni <mohamed@unpredictable.fr>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,  Amit
+ Machhiwal <amachhiw@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhang Chen
+ <zhangckid@gmail.com>,  Li Zhijian <lizhijian@fujitsu.com>,  Alistair
+ Francis <alistair@alistair23.me>,  Alexander Graf <graf@amazon.com>,
+  "Gonglei (Arei)" <arei.gonglei@huawei.com>,  zhenwei pi
+ <zhenwei.pi@linux.dev>,  Ani Sinha <anisinha@redhat.com>,  Luc Michel
+ <luc@lmichel.fr>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Jamin
+ Lin
+ <jamin_lin@aspeedtech.com>,  Kane Chen <kane_chen@aspeedtech.com>,  Samuel
+ Tardieu <sam@rfc1149.net>,  "Denis V. Lunev" <den@openvz.org>,  FangSheng
+ Huang <FangSheng.Huang@amd.com>,  Tyrone Ting <kfting@nuvoton.com>,  Hao
+ Wu <wuhaotsh@google.com>,  Keith Busch <kbusch@kernel.org>,  Klaus Jensen
+ <its@irrelevant.dk>,  Jesper Devantier <foss@defmacro.it>,  Aditya Gupta
+ <adityag@linux.ibm.com>,  Glenn Miles <milesg@linux.ibm.com>,  Conor
+ Dooley <conor@kernel.org>,  Sebastian Huber
+ <sebastian.huber@embedded-brains.de>,  Halil Pasic <pasic@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,  Jason Herne
+ <jjherne@linux.ibm.com>,  Titus Rwantare <titusr@google.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Anthony PERARD
+ <anthony@xenproject.org>,  Peter Xu <peterx@redhat.com>,  Chinmay Rath
+ <rathc@linux.ibm.com>,  Hendrik Brueckner <brueckner@linux.ibm.com>,
+  xen-devel@lists.xenproject.org,  Roman Bolshakov <rbolshakov@ddn.com>,
+  Phil Dennis-Jordan <phil@philjordan.eu>,  Fam Zheng <fam@euphon.net>,
+  Farhan Ali <alifm@linux.ibm.com>,  Alex Williamson <alex@shazbot.org>,
+  Tao Tang <tangtao1634@phytium.com.cn>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Fabiano Rosas <farosas@suse.de>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Artyom Tarasenko
+ <atar4qemu@gmail.com>,  Yoshinori Sato <yoshinori.sato@nifty.com>,  Jiri
+ Pirko <jiri@resnulli.us>,  Eric Auger <eric.auger@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v7 54/65] qdev: adjust PciDevfn declared type
+In-Reply-To: <CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
+	(=?utf-8?Q?=22Marc-Andr=C3=A9?= Lureau"'s message of "Fri, 23 Oct 2026
+ 15:39:22 +0400")
+References: <20261020-qom-qapi-v7-0-431a86b02b58@redhat.com>
+	<20261020-qom-qapi-v7-54-431a86b02b58@redhat.com>
+	<atsxLV5YZo8dr-8G@redhat.com>
+	<CAMxuvazd7G_NBOM_c6BxZn5PFSw=XQUHueHqBoQQfpzPPgi9qA@mail.gmail.com>
+Date: Tue, 27 Oct 2026 15:54:03 +0100
+Message-ID: <87zevz5h4k.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,28 +148,283 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-4-66f00b7a564c@virtuozzo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Oct 21, 2026 at 10:36:03PM +0200, Konstantin Khorenko wrote:
-> +	/* The child's exit took the parent's share off the counter. */
-> +	if (*after < own || *before - *after >= own)
-> +		return FAIL_COUNTER;
-> +	if (*after != *before)
-> +		return CHANGED;
-> +	if (mem[pmdsize] != (shared ? 'c' : 2) || !data_ok(mem, size, pmdsize) ||
-> +	    !check_huge_shmem(mem, size - pmdsize, NR_PMDS - 1, pmdsize))
-> +		return FAIL_PARENT;
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> writes:
 
-ShmemPmdMapped is system-wide. A drop of 'own' or more from another
-process between the two reads fails the test instead of being retried
-as CHANGED.
+> Hi
+>
+> On Fri, Oct 23, 2026 at 2:04=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange=
+@redhat.com> wrote:
+>>
+>> On Tue, Oct 20, 2026 at 02:46:11PM +0400, Marc-Andr=C3=A9 Lureau wrote:
+>> > PciDevfn is a bit special, since it accepts integer and string as
+>> > setter, but only output integer as getter.
 
-The parent's THPs can also lose their PMDs during the test: reclaim can
-swap one out, and NUMA balancing can migrate one, which leaves the
-counter low while the migration entry is in place. That gives
-FAIL_COUNTER, or FAIL_PARENT from the exact count in check_huge_shmem().
+Yes.  See below.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>> > Unfortunately, we can't declare an alternate str|int QAPI type for it,
+>> > since: branch 'string' can't be distinguished from 'integer'
+
+Yes, except with trickery; more on this below.
+
+>> >
+>> > Rather than declaring it as "str", use the common type instead.
+>> >
+>> > Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>> > ---
+>> >  hw/core/qdev-properties-system.c | 3 ++-
+>> >  1 file changed, 2 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-propertie=
+s-system.c
+>> > index 5bfdfe1ab9d9..3381de1144d6 100644
+>> > --- a/hw/core/qdev-properties-system.c
+>> > +++ b/hw/core/qdev-properties-system.c
+>> > @@ -904,7 +904,8 @@ static char *print_pci_devfn(Object *obj, const Pr=
+operty *prop)
+>> >  }
+>> >
+>> >  const PropertyInfo qdev_prop_pci_devfn =3D {
+>> > -    .type  =3D "str",
+>> > +    /* The formatted string accepted by the setter is a CLI convenien=
+ce. */
+>>
+>> IIUC, this is not limited to the CLI, it will work anywhere the JSON
+>> syntax is permitted which is both CLI and QMP.
+>>
+>> libvirt uses this string syntax:
+>>
+>>   -device '{"driver":"pcie-root-port","port":9,"chassis":2,"id":"pci.2",=
+"bus":"pcie.0","multifunction":true,"addr":"0x1.0x1"}' \
+>>
+>> > +    .type  =3D "int32",
+>> >      .description =3D "Slot and optional function number, example: 06.=
+0 or 06",
+          .print =3D print_pci_devfn,
+          .get   =3D qdev_propinfo_get_int32,
+          .set   =3D set_pci_devfn,
+          .set_default_value =3D qdev_propinfo_set_default_value_int,
+      };
+
+The property is backed by an int32_t.  In
+include/hw/core/qdev-properties-system.h:
+
+    #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
+        DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
+
+It's only ever used for PCI device property "addr".
+
+Its .get() simply visits it.  This is why qom-get returns an integer:
+
+    --> {"execute":"qom-get","arguments":{"path":"/machine/unattached/devic=
+e[4]/pm", "property": "type"}}
+    <-- {"return": "PIIX4_PM"}
+    --> {"execute":"qom-get","arguments":{"path":"/machine/unattached/devic=
+e[4]/pm", "property": "addr"}}
+    <-- {"return": 11}
+
+Its .set() is a handwritten visit of an alternate of 'str' and 'int32',
+where 'str' gets parsed as DEV.FN into int32.  This is why QMP
+device_add accepts both JSON string and JSON number (HMP device_add and
+-device only do string).  QAPI doesn't let us define such an alternate
+type, as you wrote in your commit message, but handwritten visits fly
+below that radar.  This is of course too clever by half.  Goes back to
+commit 768a9ebe188 (qdev: accept both strings and integers for PCI
+addresses) in v1.1.
+
+Its .print() prints it like DEV.FN.  Its only user is "info qtree".
+
+>> Changing the type to 'int32', where 99% of usage is input only
+>> and string based, is pretty unpleasant. Even more so that the
+>> description doesn't even mention encoding dev+function as an
+>> integer.
+>
+> This is purely a metadata change, the setter still accepts both str &
+> int,
+
+Yes.
+
+.type is only used as @type argument for object_class_property_add() and
+object_property_add().  They store it in ObjectProperty member @type.
+Visible externally in QOM introspection (ObjectPropertyInfo and
+ObjectPropertyValue member type).  Also in help, but let's ignore that
+for a minute.
+
+Before the series, QOM instrospection shows type "str" for PCI device
+property "addr".
+
+For reading, that's a lie: qom-get and qom-list-get return an JSON
+integer, not a JSON string.
+
+For writing, it's merely incomplete: qom-set accepts a JSON string in
+addition to a JSON integer.
+
+Does it matter?  To make use of QOM introspection's type, you have to
+hardcode so much silly stuff, what's one more case?
+
+With this patch, it shows type "int32".  Less wrong.
+
+Again, does it matter?  The change could conceivably break a client.  I
+figure the risk is small.  Is "less wrong" worth even a small risk?
+
+>      so I don't think this change blocks this series.
+
+I figure it's no worse than the other type values the series changes.
+
+Let's discuss them under my
+
+    Subject: Property types changed in this series (was: [PATCH v7 00/65] H=
+i)
+    Date: Wed, 21 Oct 2026 18:29:40 +0200
+    Message-ID: <87tsmfkoej.fsf@pond.sub.org>
+
+>                                                       But I agree we
+> could do better.
+>
+> There are multiple options. We could keep declaring the property as
+> str instead. In this case, the getter should probably return a string
+> for consistency and correctness. This might surprise some existing
+> users though.
+
+I.e. ditch numeric suppport for numeric addresses, right?
+
+Incompatible change.  Do we care?
+
+If we don't, we should be honest about it and mark qom-get unstable.
+
+> We could introduce new properties like `devfn-str` and `devfn-int`
+> that alias the same value.
+
+Compatibility break.  If breaking compatibility is okay, I'd rather use
+the opportunity to get rid of cleverness, and go with your first option.
+
+> We could also introduce a new structured QAPI type.
+
+What kind of type do you have in mind?
+
+> Markus, what's your take?
+
+From a QAPI/QMP point of view, the clean way to support "either string
+or numeric address" is an alternate type.
+
+Trouble is the generator rejects such an alternate, as you pointed out
+in your commit message.  Why is that?
+
+docs/devel/qapi-code-gen.rst:
+
+    An alternate type is like a union type, except there is no
+    discriminator on the wire.  Instead, the branch to use is inferred
+    from the value.  An alternate can only express a choice between types
+    represented differently on the wire.
+
+So, we can't have two 'str' branches (both JSON string), or a 'str' and
+an 'enum' branch (same).
+
+But 'int32' and 'str' are different on the wire (JSON number and JSON
+string), so what's going on?  This:
+
+commit c0644771ebedbd8f47f3c24816445e30111d226b (tag: pull-qapi-2017-05-31)
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Mon May 22 18:42:15 2017 +0200
+
+    qapi: Reject alternates that can't work with keyval_parse()
+=20=20=20=20
+    Alternates are sum types like unions, but use the JSON type on the
+    wire / QType in QObject instead of an explicit tag.  That's why we
+    require alternate members to have distinct QTypes.
+=20=20=20=20
+    The recently introduced keyval_parse() (commit d454dbe) can only
+    produce string scalars.  The qobject_input_visitor_new_keyval() input
+    visitor mostly hides the difference, so code using a QObject input
+    visitor doesn't have to care whether its input was parsed from JSON or
+    KEY=3DVALUE,...  The difference leaks for alternates, as noted in commit
+    0ee9ae7: a non-string, non-enum scalar alternate value can't currently
+    be expressed.
+=20=20=20=20
+    In part, this is just our insufficiently sophisticated implementation.
+    Consider alternate type 'GuestFileWhence'.  It has an integer member
+    and a 'QGASeek' member.  The latter is an enumeration with values
+    'set', 'cur', 'end'.  The meaning of b=3Dset, b=3Dcur, b=3Dend, b=3D0, =
+b=3D1 and
+    so forth is perfectly obvious.  However, our current implementation
+    falls apart at run time for b=3D0, b=3D1, and so forth.  Fixable, but n=
+ot
+    today; add a test case and a TODO comment.
+=20=20=20=20
+    Now consider an alternate type with a string and an integer member.
+    What's the meaning of a=3D42?  Is it the string "42" or the integer 42?
+    Whichever meaning you pick makes the other inexpressible.  This isn't
+    just an implementation problem, it's fundamental.  Our current
+    implementation will pick string.
+=20=20=20=20
+    So far, we haven't needed such alternates.  To make sure we stop and
+    think before we add one that cannot sanely work with keyval_parse(),
+    let's require alternate members to have sufficiently distinct
+    representation in KEY=3DVALUE,... syntax:
+=20=20=20=20
+    * A string member clashes with any other scalar member
+=20=20=20=20
+    * An enumeration member clashes with bool members when it has value
+      'on' or 'off'.
+=20=20=20=20
+    * An enumeration member clashes with numeric members when it has a
+      value that starts with '-', '+', or a decimal digit.  This is a
+      rather lazy approximation of the actual number syntax accepted by
+      the visitor.
+=20=20=20=20
+      Note that enumeration values starting with '-' and '+' are rejected
+      elsewhere already, but better safe than sorry.
+=20=20=20=20
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Message-Id: <1495471335-23707-5-git-send-email-armbru@redhat.com>
+    Reviewed-by: Eric Blake <eblake@redhat.com>
+    Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+However, keyval_parse() + its input visitor can't express everything
+QAPI even with such alternates outlawed.  From util/keyval.c:
+
+ * Design flaw: there is no way to denote an empty array or non-root
+ * object.  While interpreting "key absent" as empty seems natural
+ * (removing a key-val from the input string removes the member when
+ * there are more, so why not when it's the last), it doesn't work:
+ * "key absent" already means "optional object/array absent", which
+ * isn't the same as "empty object/array present".
+ *
+ * Design flaw: scalar values can only be strings; there is no way to
+ * denote numbers, true, false or null.  The special QObject input
+ * visitor returned by qobject_input_visitor_new_keyval() mostly hides
+ * this by automatically converting strings to the type the visitor
+ * expects.  Breaks down for type 'any', where the visitor's
+ * expectation isn't clear.  Code visiting 'any' needs to do the
+ * conversion itself, but only when using this keyval visitor.
+ * Awkward.  Note that we carefully restrict alternate types to avoid
+ * similar ambiguity.
+
+We commonly use keyval syntax together with JSON: if the input starts
+with '{', it's assumed to be JSON, else keyval.  See
+qobject_input_visitor_new_str().  This lets you fall back to JSON when
+keyval can't express what you want.
+
+Beware, there *are* uses of keyval without a JSON fallback.
+
+As the commit message I quoted says, we could permit alternates that are
+ambiguous with keyval.  The keyval visitor could then pick a branch (you
+can't express the others), or it could refuse to pick (you can't express
+any of them).
+
+In the particular case of PCI device property "addr", picking str would
+be fine: same behavior as the handwritten visit in in set_pci_devfn().
+
+But once we permit such alternates, nothing but conscientious testing
+with keyval syntax will stop us from adding interfaces that don't work
+or work the wrong way.  Hmm.
+
+I need to think about this some more if we want to explore this
+direction.
+
+[...]
+
