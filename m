@@ -1,86 +1,86 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793122369;
-	b=vuSq3P/kHJgoKDUEvAqgTUT9ZOG/Ga7Sgb485/tIEfypsSFugvsise+vOPHIUg7ROHkf
-	 y1/SOfJ8RYR5qbOJE3n1bTIV904bdmzVdxpC+ivCmEsT+4mF+ZpYLN9vgOdNyHyORAPnv
-	 xXkKuPYG6v9oDPzWFGUsE85N/zsDxzO51ibaLqx4xoZydSBD7Ez6vmxQE77W+gz4fNsgP
-	 PNkArFDiYcpKG5qpScGRXiGX8WoCgnhnTDj1QzkNtwO7V/gM/EaVEa72mGCNIwEbYe8S9
-	 jdsevdvS98o6CLcBVgYY9Eu6BR5RMr+1+sAG6ihLo7OP+yHoGQhARSs4jPgNi8vp8Ng==
+	t=1793122370;
+	b=tZbCAQ7hlOOr4qTqnS75mu+oo8Vx7pR3NdWyXgu+s3vG/Dc4NF5wNToJfR3nlw+PT30Q
+	 qCv2DGasnYhJd1J7/r2VLPYo5ccfj17NpOeIIEMCdZLdTYhJWOm04ql1d4rkQeAyAw9c5
+	 +XP4kJnYAdkPU5lr3g47gKSV81qxTMoSqC4XGj4SPC2VDXtMH0F0M9R8A/Kt+5W9KR6sN
+	 wikQXCVgSj07mQ84U85b3XgYWnVt0lEunv29Y3FU1rK7yg1aT+m1K+oqeSOKUo/xmLNuE
+	 MWkGOo+IceRJvsSJoWRSg0u73aK1SOpBMkmC3ArCsru/l+xAEXpXxW9eZTTQfLt8xJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793122369;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793122370;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=4fMuLgmYvjX3xo8QP/iPEhZWBmTaa0bBMzpjgLt2cpE=;
-	b=irjZd8OsXx4EXvNDH87RF+yyYQ4c/K3Dge7B277UaAIX270V6qvvnlWv/MReaKAiExb+
-	 pBw4buSFJgHM2rZyhm6orB+y6uCf4H6UWP8g5k+HrPQuQFv2eLKiZAjcuxuJTf2MSgMeG
-	 lRRCFP2GKGvTrh6MFY+EKEfITnLwsIlIhy3ueIY+38HHEy5luru0Tn5wutek3+vmJJQT0
-	 TZnquH0NxqPkNxMPS/XL0EtaSfYtBKv3OXBQAWy5kBpYYYh9GyD2oAwGsaRvSN5helhPT
-	 CQMSPcbVIK2WY8n1T/a3r30pPOcEGKqYiZb3Tg/uXe8Z+3mGHnSuMceYhBSNEOFRRcw==
+	bh=Bx77vG8fgSGqZKPYwF8T80Gm1qYuuLD+7NHnPJ1frnc=;
+	b=e7gPo4NnnHBB6v3I4xbSklm+ucotS74CfZ0e+5jgxFMpIamdacoO8zsMtnw0X5oY5jaI
+	 CneTzGs9y5F0CKC80yem/+0OqyOouD8gqz2ADmP2atmEDDd2MEYhmBJ8o9GntPRND1/ne
+	 nUHRBFJgzzsTuGeq6cVIhpTCxIJu4TwGtSiJC74E0baTJJCDnxJdsNKngir6ZVQvnkHl+
+	 ZQAu4wwTKIEV1IJY7qNHdMIyROd7Th0CwYZ1OiNR+lWyBVLGHFh49a4/RBfcYdjhCHJ1g
+	 H+1qnB7uDTaH0MQOmBIbsh16obuxzTj4r33iDLrECHm6BZzqLHAHwnU1b+P987p+nYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.ibm.com;
 	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VDvpIRaG;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fadt0Kji;
 	arc=none smtp.remote-ip=148.163.158.5
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E04606A32E;
-	Tue, 27 Oct 2026 17:32:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1E04606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9969A606A322;
+	Tue, 27 Oct 2026 17:32:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9969A606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VDvpIRaG
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69RHES6J3129257;
-	Tue, 27 Oct 2026 17:32:46 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fadt0Kji
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69RHEVh33040763;
+	Tue, 27 Oct 2026 17:32:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=4fMuLgmYvjX3xo8QP
-	/iPEhZWBmTaa0bBMzpjgLt2cpE=; b=VDvpIRaGglWvYUVdCy4WrohcUWKx2aUoh
-	g25NhSj5+whdb0QFUc7cutGB671cUSl+n5ymdx/F4PvhfGTOmt3u/v6jxtaAeGhi
-	NcQjtw4c2jCZF/qGEvpVDj5J+XGVhQx3tf1uYp92UyxT596SrNb2tzVes5wAKgSc
-	g+F7/61Ai0WYUErFx3Xad+4CT/oLQi4Volw1M5wM6ykXIPMmsqx/tC1xOwDZu15n
-	oNbZviYFAI98//pYhVZy0O9MlsgsppEpaEujJtNKaxha3Aqu3JalHVAFYlhZieig
-	+iXYwCHTG48IeajxIW8B+vQqxMm0Pvl7rbn8P7FI/FiOPjmnGZP4Q==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgmavge8n-1
+	:mime-version:references:subject:to; s=pp1; bh=Bx77vG8fgSGqZKPYw
+	F8T80Gm1qYuuLD+7NHnPJ1frnc=; b=fadt0KjiovK+c4wTTC6KuER68XkoQWmGN
+	wTrefCFTDpse9V7Pnr2KI6scYkoVsE4RkI4EiJlz/DPp5VxQV8z9i29sWlTzj12S
+	HKN+OXhzQzz+Ks5KW6qbRdbNi1FaUkAOwpPAH5Sha5vjBXVuWjEQH1Rv+cGTo+Vf
+	V41u6FvKnG9r2ELnCJAEXcBB7a2P/cPoC1HcF0eJN3/CYMwZG1I/DG+T6w4HuIRR
+	E+dh7HQUaKagxLvDwfjALnZZyYMjAZkW/NM83go2BrnUK/Rr1t2fZxrnW3AN0NTU
+	yxT4aA0tpt+R9OX2m//j3G6gjWmfgRhr+cuG0Dfc7RuMiSofAJqtA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hgj3m91ck-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Tue, 27 Oct 2026 17:32:46 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69RH53iB226004;
-	Tue, 27 Oct 2026 17:32:45 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hjtnn9ma7-1
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69RH53Lg3288258;
+	Tue, 27 Oct 2026 17:32:46 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hk010g4nq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Oct 2026 17:32:45 +0000 (GMT)
+	Tue, 27 Oct 2026 17:32:46 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69RHWdDE48955888
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69RHWeUk38732278
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Oct 2026 17:32:39 GMT
+	Tue, 27 Oct 2026 17:32:40 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA70420043;
-	Tue, 27 Oct 2026 17:32:39 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3EDE220043;
+	Tue, 27 Oct 2026 17:32:40 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9834B2004D;
-	Tue, 27 Oct 2026 17:32:39 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 15F652004F;
+	Tue, 27 Oct 2026 17:32:40 +0000 (GMT)
 Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.68.31.243])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Oct 2026 17:32:39 +0000 (GMT)
+	Tue, 27 Oct 2026 17:32:40 +0000 (GMT)
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 To: kvm@vger.kernel.org
 Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
         david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
         gra@linux.ibm.com
-Subject: [PATCH v3 1/4] KVM: s390: Fix UCONTROL inconsistencies
-Date: Tue, 27 Oct 2026 18:32:36 +0100
-Message-ID: <20261027173239.224849-2-imbrenda@linux.ibm.com>
+Subject: [PATCH v3 4/4] KVM: s390: vsie: Fix pinning using the wrong flag
+Date: Tue, 27 Oct 2026 18:32:39 +0100
+Message-ID: <20261027173239.224849-5-imbrenda@linux.ibm.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261027173239.224849-1-imbrenda@linux.ibm.com>
 References: <20261027173239.224849-1-imbrenda@linux.ibm.com>
@@ -95,183 +95,301 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=P8SvFSAu c=1 sm=1 tr=0 ts=6ae0e03e cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA2OCBTYWx0ZWRfX/yj7KC4ZlPkR
+ 5E2TpFzICIDDCqyGB06c+kK/LEJ+WwMsV3Ptxf04zRjHLqFe9axH1e8gffRkEc9FiBmDBR2cA1d
+ A9AHvDLM0ollHhHQ/m9TDQgpS8fBHGA=
+X-Proofpoint-ORIG-GUID: H8l3_LuMFR-7EVfu7jRth9-LJfkVHKaR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA2OCBTYWx0ZWRfXwNKiMsj6duCe
+ ha126pLnvr/fI0SjWQSQJ/9J7SD7Sj/d9t9Xz3g4FXQpuMNUOQn5AU0GVKYkrfl5sGPAZ2hOu1m
+ XVxCWOIfW3W66NyVNhE5jHTfviOVCmdKgZBuwtCfL1M4livhUYwxhRHn2Sx5XbxeqWxGm+4CzJP
+ pr5w7WoDMHgI00P27/8on3xsMtOjkxDp2PhxIrHfkMrSHbNPALThA4/m0+bASUsSFeITXHGYfyH
+ eoWRT5eexKDT4qsIkv77ox23tU2VMFiJ8Vl6mD0jG5cZaRu/Wk+UPARVgvAlXLYQTifWbKdoiKg
+ 5GrgjGr5ILL+WkZS2D7dcuFPWZi3v25XE21Lk4fcQ00GqjrwSqkjGg5GQDePulcKIfnU34wbjzI
+ kQQjM9cV1NNLpOXDiCa9bpZKWZ0BzrZBlA0AWlLVkdlHC4O21b+I9ytZap8iMktXg/Fqc4/01Rt
+ svUM3VS27Cq26CNRrIA==
+X-Authority-Analysis: v=2.4 cv=G7uJgNk5 c=1 sm=1 tr=0 ts=6ae0e03e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=J4Tbm5U8bJx2TlbRrzQA:9
-X-Proofpoint-GUID: bL50nKylT-9Leo0T-p20i1NjFLWfWnGJ
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA2OCBTYWx0ZWRfX4Jmv4mV8L9dK
- YgZgaU0vVqsNFZ45joGp+Px+LDwGE75aIJzULbUVPtBkdCbbLXOGMwqJqpFGct/TcsKxB84zDmD
- xQCEVEIfv8MUDtvoh6EwrpZpOTOmwkY=
-X-Proofpoint-ORIG-GUID: bL50nKylT-9Leo0T-p20i1NjFLWfWnGJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA2OCBTYWx0ZWRfXx9R5ko1RFrxQ
- LRaeBftGfJvnvLsB0THBOofnb/fF6NUy0vqGOwB5ngifQg+RkENt+nxbJl2Dz3I0XIEiSBJknx0
- vJeAyv/f+C+nhBLSjFI8QoI/HBS57NxtjSOEf94mLFloCbRy8FPZLacAYrilVPfrePb+GBtalKF
- bOc9Jhn+LIL00j9QEwFaDyq27Z3tThPqXUPU0/ZdBO3rqmGqC2pGQsOGkClSV8FNAdQ/w1do9GK
- GBTGRtDMDStq2Z/i1g76qBKx5NYXg3FliI4d5M+PVhkChx3541RiOMHZ3XUwYPYcGoJdYGVTBs+
- SzE9AMcsZmjCuRQD1e4eSxtcQ3Kx4ftYQncgZ3sBFS9CgqlzpHGRNekLjhsI6uD8FiYZWTRzcLZ
- XKtytMndoBAn0FbwTTLck1SIZ4GubY8H+aOV4k1SqpJw3R4NoOyV1QmNDQlrCSQSfoBahB3RQjj
- ibQa6Yg9YibfSr78Arw==
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=ugznIdUm-YL1OzzZZBQA:9
+X-Proofpoint-GUID: H8l3_LuMFR-7EVfu7jRth9-LJfkVHKaR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-27_04,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 malwarescore=0 phishscore=0 spamscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610270068
+ bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015
+ phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610270068
 
-For UCONTROL VMs, when a vCPU segment entry is mapped but unallocated,
-the tl field was set to 1. This collides with the present bit, which
-means that other parts of gmap would mistake the entry for a present
-one.
+When pinning guest memory using pin_blocks(), gfn_to_page() was used,
+which under the hood uses FOLL_GET, which is the wrong type of flag for
+memory that is accessed directly by hardware.
 
-Refactor the code to use a different combination of flags to indicate a
-mapped but unallocated segment.
+Fix by using kvm_vcpu_{,un}map(), which uses FOLL_PIN and is the
+correct thing to do.
 
-Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+While technically a bugfix, the previous behaviour can only lead to
+guest corruption in extremely convoluted test scenarios that cannot
+happen in real/production systems.
+
+Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
 Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: stable@vger.kernel.org # 7.0+
+Cc: stable@vger.kernel.org #7.0+
 ---
- arch/s390/kvm/gmap/dat.h  | 16 +++++++++++-
- arch/s390/kvm/gmap/gmap.c | 54 +++++++++++++++++++--------------------
- 2 files changed, 41 insertions(+), 29 deletions(-)
+ arch/s390/kvm/s390/vsie.c | 137 ++++++++++++++------------------------
+ 1 file changed, 50 insertions(+), 87 deletions(-)
 
-diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
-index 90389d47ba4e..4665c1112bb9 100644
---- a/arch/s390/kvm/gmap/dat.h
-+++ b/arch/s390/kvm/gmap/dat.h
-@@ -109,6 +109,8 @@ union pte {
- #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
- #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
- #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
-+#define _UCAS_ENTRY_LENGTH	0
-+#define _UCAS_ENTRY_OFFSET	3
- 
- /* Soft dirty, needed as macro for atomic operations on ptes */
- #define _PAGE_SD 0x002
-@@ -421,6 +423,17 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, int tt)
- 	return res;
+diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
+index 5926689fa226..cdaa84539645 100644
+--- a/arch/s390/kvm/s390/vsie.c
++++ b/arch/s390/kvm/s390/vsie.c
+@@ -49,20 +49,21 @@ struct vsie_page {
+ 	/* address of the last reported fault to guest2 */
+ 	unsigned long fault_addr;		/* 0x0228 */
+ 	/* calculated guest addresses of satellite control blocks */
+-	gpa_t sca_gpa;				/* 0x0230 */
+-	gpa_t itdba_gpa;			/* 0x0238 */
+-	gpa_t gvrd_gpa;				/* 0x0240 */
+-	gpa_t riccbd_gpa;			/* 0x0248 */
+-	gpa_t sdnx_gpa;				/* 0x0250 */
++	struct kvm_host_map sca_map;		/* 0x0230 */
++	struct kvm_host_map itdba_map;		/* 0x0260 */
++	struct kvm_host_map gvrd_map;		/* 0x0290 */
++	struct kvm_host_map riccbd_map;		/* 0x02c0 */
++	struct kvm_host_map sdnx_map;		/* 0x02f0 */
++	struct kvm_host_map scb_map;		/* 0x0320 */
+ 	/*
+ 	 * guest address of the original SCB. Remains set for free vsie
+ 	 * pages, so we can properly look them up in our addr_to_page
+ 	 * radix tree.
+ 	 */
+-	gpa_t scb_gpa;				/* 0x0258 */
++	gpa_t scb_gpa;				/* 0x0350 */
+ 	/* the shadow gmap in use by the vsie_page */
+-	struct gmap_cache gmap_cache;		/* 0x0260 */
+-	__u8 reserved[0x06f8 - 0x0278];		/* 0x0278 */
++	struct gmap_cache gmap_cache;		/* 0x0358 */
++	__u8 reserved[0x06f8 - 0x0370];		/* 0x0370 */
+ 	struct kvm_s390_crypto_cb crycb;	/* 0x06f8 */
+ 	__u8 fac[8 + S390_ARCH_FAC_LIST_SIZE_BYTE];/* 0x07f8 */
+ };
+@@ -681,72 +682,45 @@ static int map_prefix(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, struct
  }
  
-+static inline union crste _crste_ucas(kvm_pfn_t pfn)
-+{
-+	union crste res = { .val = PFN_PHYS(pfn) };
-+
-+	res.h.i = 1;
-+	res.h.tt = TABLE_TYPE_SEGMENT;
-+	res.h.fc0.tl = _UCAS_ENTRY_LENGTH;
-+	res.h.fc0.tf = _UCAS_ENTRY_OFFSET;
-+	return res;
-+}
-+
- /**
-  * _crste() - Useful constructor for union crste with FC=1
-  * @pfn: the pfn this pte should point to.
-@@ -985,7 +998,8 @@ static inline int dat_create_slot(struct kvm_s390_mmu_cache *mc, union asce asce
- 
- static inline bool crste_is_ucas(union crste crste)
+ /*
+- * Pin the guest page given by gpa and set hpa to the pinned host address.
++ * pin_guest_page() - Pin the given guest page and return its hpa.
++ * @vcpu: the vCPU
++ * @gpa: the gpa to pin
++ * @map: the map representing this pinning.
++ *
+  * Will always be pinned writable.
+  *
+- * Returns: - 0 on success
+- *          - -EINVAL if the gpa is not valid guest storage
++ * Returns: - 0 if the gpa is not valid guest storage,
++ *          - The host hpa of the pinned page in case of success
+  */
+-static int pin_guest_page(struct kvm *kvm, gpa_t gpa, hpa_t *hpa)
++static hpa_t pin_guest_page(struct kvm_vcpu *vcpu, gpa_t gpa, struct kvm_host_map *map)
  {
--	return is_pmd(crste) && crste.h.i && crste.h.fc0.tl == 1 && crste.h.fc == 0;
-+	return is_pmd(crste) && crste.h.i && !crste.h.fc &&
-+	       crste.h.fc0.tl == _UCAS_ENTRY_LENGTH && crste.h.fc0.tf == _UCAS_ENTRY_OFFSET;
- }
- 
- #endif /* ARCH_KVM_GMAP_DAT_H */
-diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
-index bf91e3d5013b..225fdae3d57c 100644
---- a/arch/s390/kvm/gmap/gmap.c
-+++ b/arch/s390/kvm/gmap/gmap.c
-@@ -777,16 +777,14 @@ static int gmap_ucas_map_one(struct kvm_s390_mmu_cache *mc, struct gmap *gmap,
- 	if (rc)
- 		return rc;
- 	if (!ptep) {
--		newcrste = _crste_fc0(p_gfn, TABLE_TYPE_SEGMENT);
--		newcrste.h.i = 1;
--		newcrste.h.fc0.tl = 1;
-+		newcrste = _crste_ucas(p_gfn);
- 	} else {
- 		pt = pte_table_start(ptep);
- 		dat_set_ptval(pt, PTVAL_VMADDR, p_gfn >> (_SEGMENT_SHIFT - PAGE_SHIFT));
- 		newcrste = _crste_fc0(virt_to_pfn(pt), TABLE_TYPE_SEGMENT);
- 	}
--	rc = dat_entry_walk(mc, c_gfn, gmap->asce, DAT_WALK_ALLOC, TABLE_TYPE_SEGMENT,
--			    &crstep, &ptep);
-+	rc = dat_entry_walk(mc, c_gfn, gmap->asce, DAT_WALK_ALLOC | DAT_WALK_IGN_HOLES,
-+			    TABLE_TYPE_SEGMENT, &crstep, &ptep);
- 	if (rc)
- 		return rc;
- 	do {
-@@ -802,8 +800,9 @@ static int gmap_ucas_translate_simple(struct gmap *gmap, gpa_t *gaddr, union crs
- 	union pte *ptep;
- 	int rc;
- 
--	rc = dat_entry_walk(NULL, gpa_to_gfn(*gaddr), gmap->asce, DAT_WALK_CONTINUE,
--			    TABLE_TYPE_SEGMENT, crstepp, &ptep);
-+	rc = dat_entry_walk(NULL, gpa_to_gfn(*gaddr), gmap->asce,
-+			    DAT_WALK_IGN_HOLES | DAT_WALK_ANY,
-+			    TABLE_TYPE_PAGE_TABLE, crstepp, &ptep);
- 	if (rc || (!ptep && !crste_is_ucas(**crstepp)))
- 		return -EREMOTE;
- 	if (!ptep)
-@@ -840,26 +839,24 @@ int gmap_ucas_translate(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, gpa_t
- 		if (rc <= 0)
- 			return rc;
- 	}
--	do {
--		scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
--			rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
--			if (rc <= 0)
--				return rc;
--			translated_address = (*gaddr & ~_SEGMENT_MASK) |
--					     (crstep->val & _SEGMENT_MASK);
--			rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
--		}
--		if (!rc) {
--			*gaddr = translated_address;
--			return 0;
--		}
--		if (rc != -ENOMEM)
--			return -EREMOTE;
--		rc = kvm_s390_mmu_cache_topup(mc);
--		if (rc)
-+	rc = kvm_s390_mmu_cache_topup(mc);
-+	if (rc)
-+		return rc;
-+
-+	scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
-+		rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
-+		if (rc <= 0)
- 			return rc;
--	} while (1);
+-	struct page *page;
+-
+-	page = gfn_to_page(kvm, gpa_to_gfn(gpa));
+-	if (!page)
+-		return -EINVAL;
+-	*hpa = (hpa_t)page_to_phys(page) + (gpa & ~PAGE_MASK);
 -	return 0;
-+		translated_address = (*gaddr & ~_SEGMENT_MASK) |
-+				     (crstep->val & _SEGMENT_MASK);
-+		rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
-+	}
-+
-+	if (!rc)
-+		*gaddr = translated_address;
-+	if (!rc || rc == -ENOMEM)
-+		return rc;
-+	return -EREMOTE;
+-}
+-
+-/* Unpins a page previously pinned via pin_guest_page, marking it as dirty. */
+-static void unpin_guest_page(struct kvm *kvm, gpa_t gpa, hpa_t hpa)
+-{
+-	kvm_release_page_dirty(pfn_to_page(phys_to_pfn(hpa)));
+-	/* mark the page always as dirty for migration */
+-	mark_page_dirty(kvm, gpa_to_gfn(gpa));
++	if (kvm_vcpu_map(vcpu, gpa_to_gfn(gpa), map))
++		return 0;
++	if (!kvm_vcpu_mapped(map))
++		return 0;
++	return (hpa_t)PFN_PHYS(map->pfn) + (gpa & ~PAGE_MASK);
  }
  
- int gmap_ucas_map(struct gmap *gmap, gfn_t p_gfn, gfn_t c_gfn, unsigned long count)
-@@ -896,8 +893,9 @@ static void gmap_ucas_unmap_one(struct gmap *gmap, gfn_t c_gfn)
- 	union pte *ptep;
- 	int rc;
+ /* unpin all blocks previously pinned by pin_blocks(), marking them dirty */
+ static void unpin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ {
+ 	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
+-	hpa_t hpa;
  
--	rc = dat_entry_walk(NULL, c_gfn, gmap->asce, 0, TABLE_TYPE_SEGMENT, &crstep, &ptep);
--	if (rc)
-+	rc = dat_entry_walk(NULL, c_gfn, gmap->asce, DAT_WALK_IGN_HOLES,
-+			    TABLE_TYPE_SEGMENT, &crstep, &ptep);
-+	if (rc || !is_pmd(*crstep))
- 		return;
- 	while (!dat_crstep_xchg_atomic(crstep, READ_ONCE(*crstep), _PMD_EMPTY, c_gfn, gmap->asce))
- 		;
+-	hpa = (u64) scb_s->scaoh << 32 | scb_s->scaol;
+-	if (hpa) {
+-		unpin_guest_page(vcpu->kvm, vsie_page->sca_gpa, hpa);
+-		vsie_page->sca_gpa = 0;
+-		scb_s->scaol = 0;
+-		scb_s->scaoh = 0;
+-	}
++	kvm_vcpu_unmap(vcpu, &vsie_page->sca_map);
++	scb_s->scaol = 0;
++	scb_s->scaoh = 0;
+ 
+-	hpa = scb_s->itdba;
+-	if (hpa) {
+-		unpin_guest_page(vcpu->kvm, vsie_page->itdba_gpa, hpa);
+-		vsie_page->itdba_gpa = 0;
+-		scb_s->itdba = 0;
+-	}
++	kvm_vcpu_unmap(vcpu, &vsie_page->itdba_map);
++	scb_s->itdba = 0;
+ 
+-	hpa = scb_s->gvrd;
+-	if (hpa) {
+-		unpin_guest_page(vcpu->kvm, vsie_page->gvrd_gpa, hpa);
+-		vsie_page->gvrd_gpa = 0;
+-		scb_s->gvrd = 0;
+-	}
++	kvm_vcpu_unmap(vcpu, &vsie_page->gvrd_map);
++	scb_s->gvrd = 0;
+ 
+-	hpa = scb_s->riccbd;
+-	if (hpa) {
+-		unpin_guest_page(vcpu->kvm, vsie_page->riccbd_gpa, hpa);
+-		vsie_page->riccbd_gpa = 0;
+-		scb_s->riccbd = 0;
+-	}
++	kvm_vcpu_unmap(vcpu, &vsie_page->riccbd_map);
++	scb_s->riccbd = 0;
+ 
+-	hpa = scb_s->sdnxo;
+-	if (hpa) {
+-		unpin_guest_page(vcpu->kvm, vsie_page->sdnx_gpa, hpa);
+-		vsie_page->sdnx_gpa = 0;
+-		scb_s->sdnxo = 0;
+-	}
++	kvm_vcpu_unmap(vcpu, &vsie_page->sdnx_map);
++	scb_s->sdnxo = 0;
+ }
+ 
+ /*
+@@ -783,13 +757,12 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 			 ((gpa + offsetof(struct bsca_block, cpu[0]) - 1) & PAGE_MASK))
+ 			rc = set_validity_icpt(scb_s, 0x003bU);
+ 		if (!rc) {
+-			rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-			if (rc)
++			hpa = pin_guest_page(vcpu, gpa, &vsie_page->sca_map);
++			if (!hpa)
+ 				rc = set_validity_icpt(scb_s, 0x0034U);
+ 		}
+-		if (rc)
++		if (rc || !hpa)
+ 			goto unpin;
+-		vsie_page->sca_gpa = gpa;
+ 		scb_s->scaoh = (u32)((u64)hpa >> 32);
+ 		scb_s->scaol = (u32)(u64)hpa;
+ 	}
+@@ -801,12 +774,11 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 			goto unpin;
+ 		}
+ 		/* 256 bytes cannot cross page boundaries */
+-		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-		if (rc) {
++		hpa = pin_guest_page(vcpu, gpa, &vsie_page->itdba_map);
++		if (!hpa) {
+ 			rc = set_validity_icpt(scb_s, 0x0080U);
+ 			goto unpin;
+ 		}
+-		vsie_page->itdba_gpa = gpa;
+ 		scb_s->itdba = hpa;
+ 	}
+ 
+@@ -820,12 +792,11 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 		 * 512 bytes vector registers cannot cross page boundaries
+ 		 * if this block gets bigger, we have to shadow it.
+ 		 */
+-		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-		if (rc) {
++		hpa = pin_guest_page(vcpu, gpa, &vsie_page->gvrd_map);
++		if (!hpa) {
+ 			rc = set_validity_icpt(scb_s, 0x1310U);
+ 			goto unpin;
+ 		}
+-		vsie_page->gvrd_gpa = gpa;
+ 		scb_s->gvrd = hpa;
+ 	}
+ 
+@@ -836,13 +807,12 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 			goto unpin;
+ 		}
+ 		/* 64 bytes cannot cross page boundaries */
+-		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-		if (rc) {
++		hpa = pin_guest_page(vcpu, gpa, &vsie_page->riccbd_map);
++		if (!hpa) {
+ 			rc = set_validity_icpt(scb_s, 0x0043U);
+ 			goto unpin;
+ 		}
+ 		/* Validity 0x0044 will be checked by SIE */
+-		vsie_page->riccbd_gpa = gpa;
+ 		scb_s->riccbd = hpa;
+ 	}
+ 	if (((scb_s->ecb & ECB_GS) && !(scb_s->ecd & ECD_HOSTREGMGMT)) ||
+@@ -866,12 +836,11 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 		/* Due to alignment rules (checked above) this cannot
+ 		 * cross page boundaries
+ 		 */
+-		rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-		if (rc) {
++		hpa = pin_guest_page(vcpu, gpa, &vsie_page->sdnx_map);
++		if (!hpa) {
+ 			rc = set_validity_icpt(scb_s, 0x10b0U);
+ 			goto unpin;
+ 		}
+-		vsie_page->sdnx_gpa = gpa;
+ 		scb_s->sdnxo = hpa | sdnxc;
+ 	}
+ 	return 0;
+@@ -881,13 +850,9 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ }
+ 
+ /* unpin the scb provided by guest 2, marking it as dirty */
+-static void unpin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
+-		      gpa_t gpa)
++static void unpin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ {
+-	hpa_t hpa = virt_to_phys(vsie_page->scb_o);
+-
+-	if (hpa)
+-		unpin_guest_page(vcpu->kvm, gpa, hpa);
++	kvm_vcpu_unmap(vcpu, &vsie_page->scb_map);
+ 	vsie_page->scb_o = NULL;
+ }
+ 
+@@ -901,12 +866,10 @@ static int pin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
+ 		   gpa_t gpa)
+ {
+ 	hpa_t hpa;
+-	int rc;
+ 
+-	rc = pin_guest_page(vcpu->kvm, gpa, &hpa);
+-	if (rc) {
+-		rc = kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
+-		WARN_ON_ONCE(rc);
++	hpa = pin_guest_page(vcpu, gpa, &vsie_page->scb_map);
++	if (!hpa) {
++		WARN_ON_ONCE(kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING));
+ 		return 1;
+ 	}
+ 	vsie_page->scb_o = phys_to_virt(hpa);
+@@ -1601,7 +1564,7 @@ int kvm_s390_handle_vsie(struct kvm_vcpu *vcpu)
+ out_unshadow:
+ 	unshadow_scb(vcpu, vsie_page);
+ out_unpin_scb:
+-	unpin_scb(vcpu, vsie_page, scb_addr);
++	unpin_scb(vcpu, vsie_page);
+ out_put:
+ 	put_vsie_page(vsie_page);
+ 
 -- 
 2.56.0
 
