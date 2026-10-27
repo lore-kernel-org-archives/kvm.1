@@ -1,57 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793109823;
-	b=IdHXgkQFjOFaIPCoycytQd1WJDWvbpgtmKbge0wpyfl/V7JXRD56em7TMJjdqkqhdLsO
-	 p/h2Lk1viUzOQ7NpBS0S9UEt7LIHJeAEZNh5/XS/googiEfw9YfuS0XW8fEpPbGh0kMsW
-	 cBbHLXvfjaayK9T33nw4JCmtWtZfvG0cvAzcFm1ixUOBvjK2+WjJuTuhWvr77jNBwj/Ra
-	 RO2BeHDiY/e0vGb0lF8NbavciPffeQeT7qFIeqquqHDSRynm9wvUrgYMatjPqAGcidfpr
-	 qPF327UwE+Ae9OS+ADW9UDKsGpoFC6zBg7ETrq6LuktSBV5ikQIeLM8o/eurNxEdjqQ==
+	t=1793109949;
+	b=UaEYCrJffMxtGtv5RPWXA781LQg6wteN4BhNEOf3cBdltiasoNM6WZQ21dzfHiDKHWQO
+	 ulX2wxRvuyBhPoUAN1NrqpihktKian4i+JP1Gx8MSFBLYJ/s9f1YDftaF3V1rEuR/kQ8h
+	 5uejs5FCYMrAuggF/+Ze8IuQqf+ezX93RIyOxzC597lWtDTUR7+J/EmzuHElw8t5I75sx
+	 /MNBfTWwx8jX9QEQ5BiXW1Ev1nxadYeueBOa6a0ya0M0mmruz1IPz555MiJVw2rrDkKIy
+	 GzYi1RYaxAL1IqF5+hGCQJ/Xlads9b6aFo3rC7HqmS4CvmZOt7zuYJR+W/ZKpti9pow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793109823;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=XoFMhljdtvesrCdXOtN3CnaAsyT2Zq81OSye7AuCvDQ=;
-	b=RuKGVuuE3ULGcydgoazhUex1CL23+oNvonYYhMeMf5FCq9YVB5jOnOOcBUABX/zO+h+l
-	 yR3y9PUh7zpvKUyVBGBldHH5waFoZI7olOJvcL8g1TmdF5UhG9/tmfAQKXhSp1h3L81ia
-	 qVemdo3GS2M8uqEzGLPYLsjHtf001Cf2lkk+TyH9XIfFGF6TyYr5IJooG/DmST1NrjJaf
-	 zyrp6FpdXEl6hxUmsIovV7SxT+L1r6WnkEdTq1YTlMhvG+k+RqK33kTDC05/DVn0hEnsv
-	 o/INxaiS0FsndZHDLPC9OGlMiBAL2N+05h9/lv8gEoYNnjjEwf/3EPDbENvhwpKqwFg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793109949;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
+	b=u6LFfRKTWoKZ8uDfVAcH5jyUCDfnoEkZL+zylWzbSDoizxqW9UrE3dS8dBhd6mXC666Z
+	 vwVQrPOYefP+nEfWK63mOqxfhF8A/Q6gxnINiUE+V2a2lBldIgL5lGrjGMHXPAt+2G5I4
+	 4iAGxNG2jomzX9qreaQ7Pr4nVUabwxu6XdbB4lrXyENSxr8g2bZ2e/ws5q6mm32Q0tpZC
+	 Tse/FOARThae7wrekL4yKbLrnx1nLqHuMI1edN7AoPZdJ9tTrPryR5oY8sHglUVyWWG/D
+	 74LvohkmeJicCD7YL1VtSu0CnAdTOOY1VLqEjmCSqnABm3Rspnmgb+uGtnv5gw9GzUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QiJ5wrpD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uXbUuRDy;
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39F0606A31D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F6B606A31B
+	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 14:05:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0F6B606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QiJ5wrpD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B9E1F01828;
-	Tue, 27 Oct 2026 14:03:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793109822;
-	bh=XoFMhljdtvesrCdXOtN3CnaAsyT2Zq81OSye7AuCvDQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QiJ5wrpDtPKaISqFb7rRXhy7eOcpbX/HZgC+YfWT+f6vwP3fs+a9JkxfIvDE3J3Xj
-	 MjAxLQCGE08lrVLuyUJ7SJIOEMNkxOn3DwbK0tMJ3rfaCiCw/ZToYcr84Ixc/MzSM4
-	 lnNODmpKj8xD9Z+kaEUhV5KZsUUrLLlLVVCmzrOe5dlRMplH7gPNeLlvjTc1FgW88w
-	 obfIZpSIcNjCPbCm+cFG4zsyK3S60ok44OL81r6nnWrv3UwOut9UYp0d2XnF3PjpSh
-	 9Es0yfjPdCgxpAT0qXTqQStHo4kpNEXVNPnt9NEJMBzKxDo5DLb/zHETkfZE9gWB2O
-	 5OFleVfqXmEqA==
-Message-ID: <sashiko-outbox-186687@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 1/3] riscv: vector: Add a guest owner invalidation
- hook
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "slack up" <yxcnew@outlook.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <OSQPR01MB6326C7FC1D0778FA203C4CC4C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
-References: <OSQPR01MB63265385597FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
- <OSQPR01MB6326C7FC1D0778FA203C4CC4C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 14:03:42 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uXbUuRDy
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd67d4bbdffso3192577a12.3
+        for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 07:05:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793109948; x=1793714748; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
+        b=uXbUuRDyl16gOXgWVUihpfVQPkghTFvbIh9Pi+wkMzeqmN2MMMrbpVzcU4Pno4oNye
+         V3grwk230KSLgDIzQCoaYeuNCF1+hzlit5RyzRQIsREVAI+ftxr/FAk77s21gvyLx9ad
+         gCG/HEoNUfv8KSHMBuDFCzgRVyLqsXObRP5h7gRI9PdRieHfsZhYfai9tu7iLknW5kG+
+         K3ukDXDq3FeHzsVHG3wt+gNCXllsj18mBxh4mquJonTw/7aP4gT/aynuUep/w56MHo1/
+         UfobFuEgxhumii57xnCQbt4kRWhzygBk07QC5AIcs00ekhasbTkfloyiS8/4HRw7eT84
+         OqLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793109948; x=1793714748;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ScKNcqWNcrrNfUJK36ONgLidCscYb0P1HQayNuGC1DQ=;
+        b=WTeY9Dtf033kX5s9NO5Caz5RuZnq3r2kFyy5K2VYCGNj+AhgroxsIsuLxQCg9xYi0F
+         RxCuMcIQS7gNUjvVRH4u9bLR9OrNw15SGvR4UK7Pb0cxBaYKrerScgRTgAIXwjEfsBZ4
+         qSGkoosgBdUWle0O3TNL/jF/ESltD5nBALNyp63+a2MJx2G9Mqog2sKqvJ6WmDfhGdwA
+         KLzaPITd0yK3yxb1d+YwFFbOcw2W9Slb9HmRBXkd3ViFXsZQ1AbvMKmim+k4vI7vHlDe
+         +Fnc5MGiBdj3KNdzWk8NUKYxRvn1QHwvI7/FKixjKsjuXPOzbbEtmYiE3k03pi8/NfQV
+         S5Qw==
+X-Forwarded-Encrypted: i=1; AKwUvBxhcZTzGDLEXXupxInaPoSr53y/kl4X9SMH3JWhv6XBhSInrS0YeDtZiTAdrrj1u1fGnJk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK3nOqT1lh8UxDc2H2gQhH2rBbZxpYc5/JBYyi/tuOLEkU0JSC/
+	DNgdPBeR9K3qzi/+il7dNhS7sn9mn5VedylKrWkqdzjg0piTgVZ9UqWbEZmGOu70CdN2daOuguG
+	xISaOWw==
+X-Received: from pjbsb7.prod.google.com ([2002:a17:90b:50c7:b0:3ac:6795:2cbd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1cc4:b0:3ab:c80:9370
+ with SMTP id 98e67ed59e1d1-3adead57e85mr7634057a91.20.1793109947891; Tue, 27
+ Oct 2026 07:05:47 -0700 (PDT)
+Date: Tue, 27 Oct 2026 07:05:47 -0700
+In-Reply-To: <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,151 +77,71 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <20261022210134.612848-1-seanjc@google.com> <20261022210134.612848-3-seanjc@google.com>
+ <741bfe7c-5d21-4c6b-98c0-95b01a2a21f3@intel.com>
+Message-ID: <auCvuyY7tTg7ISwR@google.com>
+Subject: Re: [PATCH v2 2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate
+ when filling CPUID entries
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] riscv: vector: RCU and noinstr violation in riscv_v_vstate_discard=
-()
-- [High] riscv: vector: missed owner invalidation in riscv_v_start_kernel_c=
-ontext()
---
+On Tue, Oct 27, 2026, Xiaoyao Li wrote:
+> On 10/23/2026 5:01 AM, Sean Christopherson wrote:
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 271c2f94b8dd..37d088f6f7a8 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -2,6 +2,7 @@
+> >  #include <linux/cleanup.h>
+> >  #include <linux/cpu.h>
+> >  #include <asm/cpufeature.h>
+> > +#include <asm/cpuid/api.h>
+> >  #include <asm/fpu/xcr.h>
+> >  #include <linux/misc_cgroup.h>
+> >  #include <linux/mmu_context.h>
+> > @@ -163,12 +164,23 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+> >  
+> >  	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
+> >  	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
+> > +	entry->flags = 0;
+> >  	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
+> >  	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
+> >  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+> >  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
+> >  
+> > -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
+> > +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
+> > +		     (entry->index != KVM_TDX_CPUID_NO_SUBLEAF));
+> 
+> I think the WARN_ON_ONCE() is very likely to be triggered in the future when
+> people run old kernel with new TDX modules.
 
-commit 1bfcfc81beacec1c831b6f2d3e0f036424e54b70
-Author: Xiaochun Yu <yxcnew@outlook.com>
+Then upstream patches to make that not happen.  Intel insists on treating the TDX
+Module like hardware.  So, treat new TDX Modules like new hardware.  Upstream
+support for the new "hardware" before it ships, cc'd to stable@vger.kernel.org
+if necessary.
 
-riscv: vector: Add a guest owner invalidation hook
+Because IMO, the WARN is doing exactly what it's intended to do: alerting the
+admin that they are running a potentially dangerous setup.
 
-This commit introduces an RCU-protected invalidation callback guarded by a
-static key so generic RISC-V Vector paths can notify KVM before modifying
-the hardware Vector register file. It adds invalidation hooks to task
-Vector state save, restore, and discard paths, kernel-mode Vector entry,
-and context switch resume for preemptible kernel Vector users.
-
-> diff --git a/arch/riscv/include/asm/vector.h b/arch/riscv/include/asm/vec=
-tor.h
-> index 1f8dcae3af517..967dd70f4ea4a 100644
-> --- a/arch/riscv/include/asm/vector.h
-> +++ b/arch/riscv/include/asm/vector.h
-
-[ ... ]
-
-> @@ -303,6 +323,7 @@ static inline void __riscv_v_vstate_discard(void)
->  static inline void riscv_v_vstate_discard(struct pt_regs *regs)
->  {
->  	if (riscv_v_vstate_query(regs)) {
-> +		riscv_v_owner_invalidate(RISCV_V_INVALIDATE_TASK_DISCARD);
->  		__riscv_v_vstate_discard();
->  		__riscv_v_vstate_dirty(regs);
->  	}
-
-[Severity: High]
-Is it safe to call riscv_v_owner_invalidate() from riscv_v_vstate_discard()
-during syscall entry before RCU is watching?
-
-In arch/riscv/kernel/traps.c, do_trap_ecall_u() is a __trap_section
-(noinstr) handler that calls riscv_v_vstate_discard() before entering the
-kernel context:
-
-arch/riscv/kernel/traps.c:do_trap_ecall_u() {
-	if (user_mode(regs)) {
-		...
-		riscv_v_vstate_discard(regs);
-
-		if (likely(syscall_enter_from_user_mode_randomize_stack(regs, &syscall)))=
- {
-
-The transition out of the user-mode RCU extended quiescent state
-(CT_STATE_USER) via enter_from_user_mode() -> user_exit_irqoff() only
-happens inside syscall_enter_from_user_mode_randomize_stack().
-
-When a userspace task with active Vector state issues a syscall while
-riscv_v_owner_invalidate_key is enabled, riscv_v_vstate_discard() calls
-into the instrumentable __riscv_v_owner_invalidate() function, which calls
-rcu_read_lock(), rcu_dereference(), the registered callback, and
-rcu_read_unlock() while the CPU is still in CT_STATE_USER.
-
-On kernels with CONFIG_CONTEXT_TRACKING_USER=3Dy (such as CONFIG_NO_HZ_FULL=
-=3Dy
-or CONFIG_CONTEXT_TRACKING_FORCE=3Dy), RCU is not watching at this point.
-Wouldn't this violate noinstr constraints, trigger the rcu_read_lock()
-lockdep warning for being used while idle, and allow synchronize_rcu() in
-kvm_riscv_unregister_vctx_invalidate() to finish while invalidate_callback()
-is still executing?
-
-> @@ -393,6 +416,13 @@ static inline void __switch_to_vector(struct task_st=
-ruct *prev,
->  	}
-> =20
->  	if (riscv_preempt_v_started(next)) {
-> +		/*
-> +		 * A preemptible kernel Vector user can be scheduled back after a
-> +		 * vCPU published a guest owner on this hart.  Drop that owner before
-> +		 * the kernel context resumes or restores and overwrites the register
-> +		 * file.
-> +		 */
-> +		riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR);
->  		if (next->thread.riscv_v_flags & RISCV_PREEMPT_V_IN_SCHEDULE) {
->  			next->thread.riscv_v_flags &=3D ~RISCV_PREEMPT_V_IN_SCHEDULE;
->  			riscv_v_enable();
-
-[ ... ]
-
-> diff --git a/arch/riscv/kernel/kernel_mode_vector.c b/arch/riscv/kernel/k=
-ernel_mode_vector.c
-> index 77e98b504485e..9e87bdf020285 100644
-> --- a/arch/riscv/kernel/kernel_mode_vector.c
-> +++ b/arch/riscv/kernel/kernel_mode_vector.c
-
-[ ... ]
-
-> @@ -106,6 +142,8 @@ static void __riscv_flush_vector_context(void)
->  {
->  	void (*vcpu_flush_v_callback)(void);
-> =20
-> +	riscv_v_owner_invalidate(RISCV_V_INVALIDATE_KERNEL_VECTOR);
-> +
->  	if (riscv_v_flags() & RISCV_V_VCPU_CTX) {
->  		rcu_read_lock();
->  		vcpu_flush_v_callback =3D rcu_dereference(kvm_flush_vector_ctx_callbac=
-k);
-
-[Severity: High]
-Can a preemption or migration between put_cpu_vector_context() and
-riscv_v_start(RISCV_PREEMPT_V) in riscv_v_start_kernel_context() miss a
-required guest owner invalidation?
-
-With CONFIG_RISCV_ISA_V_PREEMPTIVE=3Dy, kernel_vector_begin() sets up
-preemptible kernel Vector execution via riscv_v_start_kernel_context():
-
-arch/riscv/kernel/kernel_mode_vector.c:riscv_v_start_kernel_context() {
-	...
-	/* Transfer the ownership of V from user to kernel, then save */
-	get_cpu_vector_context();
-	__riscv_flush_vector_context();
-	put_cpu_vector_context();
-	...
-	riscv_v_start(RISCV_PREEMPT_V);
-	return 0;
-}
-
-__riscv_flush_vector_context() calls riscv_v_owner_invalidate() on the
-current hart while preemption is disabled, and then put_cpu_vector_context()
-re-enables preemption and bottom halves before riscv_v_start(RISCV_PREEMPT_=
-V)
-sets RISCV_PREEMPT_V in current->thread.riscv_v_flags.
-
-If the task is preempted in that window before RISCV_PREEMPT_V is set, a
-vCPU thread can run on the same hart and publish guest Vector ownership, or
-the task can migrate to another hart that already has a resident guest
-Vector owner.
-
-When the task is scheduled back in, __switch_to_vector() checks
-riscv_preempt_v_started(next), which is still false because RISCV_PREEMPT_V
-has not been set yet, so __switch_to_vector() skips
-riscv_v_owner_invalidate(). The task then sets RISCV_PREEMPT_V, returns to
-kernel_vector_begin(), calls riscv_v_enable(), and overwrites the hardware
-Vector registers while the hart's guest Vector owner remains valid.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/OSQPR01MB6326538559=
-7FE472C4209353C2602@OSQPR01MB6326.apcprd01.prod.exchangelabs.com?part=3D1
+> > +	/*
+> > +	 * Explicitly zero the index when it's not significant, even though it
+> > +	 * _should_ be meaningless.  Userspace relies on the index being zero
+> > +	 * (the ABI was inherited from KVM_GET_SUPPORTED_CPUID).
+> > +	 */
+> > +	if (cpuid_function_is_indexed(entry->function))
+> > +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+> > +	else
+> >  		entry->index = 0;
+> >  
+> >  	/*
+> 
+> 
