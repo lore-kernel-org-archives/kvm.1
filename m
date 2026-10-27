@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793141820;
-	b=EGI8A6mfiNc5GS3rqJfi01Nfi0/OgQ6BsFlx96E0Y448yn4fXYUEgXJ2oEIR0SiI3P2L
-	 zqpjF3K6bJp3q53nDTO7t1eSJAmlBcCi4604DDOXKwmoU32oz4C0772zEFcUSPvpUN3Fi
-	 BUJwAGQHlMCOa/zh4i6vAaV0s2+5sI4SFkBDIkPh4k8XWW7Dg94+ORGZNgxDzDYnDYAAE
-	 Jwahk1rVDPsTqlpzHcWbvNhZFR8/RDJShWdYlWJwixsIB/5/pUPL8RgHW1alKy6UOz0VP
-	 yvlYgHr61+AJ2yf0kLJERcI7lSfMx/fU+dScw4bNmnPIvw92MoZ1h8guDVwJ9HwiOkw==
+	t=1793142564;
+	b=PYyKsbAbDSCR74vKJQbF/By9Nqu2Fvv1WHuJkYhuFSmoCsj2TsOkokvH9Q1Qw1EcUy+h
+	 jQ6ETh1+2mrlBFYbDQiSbHf0MXyih+gsVfT5EHNPZrL/dDr08DnB7dKQuKvOzN30eLbuk
+	 RaG9ZJcigVmsUZ9RAne+fqGoveju8eHEHWBjy/aR3Si5qVtYZgLuBsf8/OfsIwzzKMwOp
+	 Lg+AiNsdyuDO03MEP2k1MWB4tfIMVeG/LnPbCzErrcsQ3fUGjBwigYRIf4xiKB+o02K2u
+	 hiPPeaW5ZegnamsINZPnxhIkUNzOtjdfCGdu23VxRmOyPGyMvOhm2Dma53il1xJ1/dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793141820;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793142564;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=gIVns6+2kR7Rl7cmy4htyby4FQjdtEx7csuUjrR4iLk=;
-	b=F130/u5v/q46NJS0VJ72GXNUl2k47DUb89G0qOAn1sn85RyKAHSEdxq9biMKoCHciLI7
-	 c7zOhZ/Y6UQ0dnbTsiww9FDoFC1W2oN/mAuW8O3tYlvFyhHE8yXnVzrQVndLzSUfEKi5k
-	 9tVtrngWYggJaKajhIQQ5fuigkVgXGiWFT7bRbUdIALKMV3yT/yh8Tf/obFZ0PhkrYPTm
-	 LsxypdBdQiGoCMsolwoYrnOolvImm0/aYPE9mKnmrVXDX7Y00MUcz8kzDNpRhMb7tObRv
-	 J/iEHE2DhcRZnBxaALtIO8HnQNOEjaIxAykqZSEb/ZfYH009boPgX/cE3wvI2b4rM3w==
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=PV2RT6jIH1WRbU7hSLbKZt++GuxkbZqxWqm1JGu5HoE=;
+	b=KKfWo6SwSXvnAfELZ9gkBEcPrxE8y0ESfokPLB5bU8PT1iDtt1MRQe5XtY7fT+mZysUU
+	 mwerWGAjrEMH/vkEufeqaU2IBjRd713kVXNVGp3CXPb6UZTvFA4uZjxE83Q2cP9RDtLDN
+	 RAlDrTItDw8+54d+90VIwm64XKiXZSdIvRyW06YTs3inkEmM9N0D0WIJPmJ0IwmnGQ3U5
+	 McbiScN5N1yU3HwxvxpnProA0/k3Za5Wv4Ht7/CO+1HK27WA/jNpkc25MRKAWqEf0ogmQ
+	 E6doKF8pTijN2G2TAXtSVi8c9nSGL8VFA7hacD5SvvmOdWAbNlI1Cd5T10Yn2C+3BPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ia0l5YsQ;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JIvT7bqL;
+	arc=none smtp.remote-ip=198.175.65.16
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654B606A31D
-	for <kvm@vger.kernel.org>; Tue, 27 Oct 2026 22:56:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6654B606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABB4606A31D;
+	Tue, 27 Oct 2026 23:09:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6ABB4606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ia0l5YsQ
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JIvT7bqL
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793141818; x=1824677818;
+  t=1793142564; x=1824678564;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=sOlyCuSZxE0bpLNopzU/8YOcrlV8+AwrSCT7isibU64=;
-  b=Ia0l5YsQfifRZH2wzIMpg6e5f1qQFOZvfYPs5UHUPDQvvzHmjcMJ5sHu
-   ON/uK4CEjP58Gpw3RfQfF43TZ9kH5vebJpr+LS3JHhM2yL7I6FG3pu+oP
-   ddbu/4RM4Q24wp3NQYpoTTwUqzhm+E2x8yHO0hJdntv1bx974wGIc1ShH
-   XCBqjFaE5diwy7D9yiTjmknChew4np62TVzi90JnXPsEHZQXnc38lZxQO
-   KLJ+6iY4Jb7YdWHpaK2zwV8MO+ceR+zfI8THKhpr2chUC64Qcvce9eF2G
-   xoc9mbTwLpozWUzPPn5Q+J3Q8+GH8Xt5e7XuJFxdq8qPEEfRorPwQrt+T
+  bh=RQBKrRd8W+UdFFloUvBdZhOEkrOVdVKDsQPlJex8VVI=;
+  b=JIvT7bqL1M831tucFki87nLuaRHE8mE77kdZO6t7x57BsYUBgFx7swpB
+   FoKbaqr7lXwzNFzPpj/JSm2MnpcVQjafsDa8djmRDzg+Kpx6Pg+lQ/DvA
+   9MsKuKgFoztO4Q+Rcub8IUUg+gYYWZ90ajG9lQwNHcWuQkWpkdmUkDb4W
+   vyJClk5hxLK+3C8CX18ld0zkUhptl59GejzWjb2DuvsdWfWUoSTYUG3JG
+   tu5I+ioZ3Uis9Cz71KnOCWc2u7mqDspjA1R6IQzf0PoG1sFIVXX8CLZOw
+   YAcmCAtJXEo+dHnTcgSGmAw/BaKliuSAYo0oKkJfn7YfI2QeckkXf/qyh
    A==;
-X-CSE-ConnectionGUID: coxP653nT7S/xJrHgNe3pw==
-X-CSE-MsgGUID: sLHc3+kySwerXRIqAsZWAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1946899"
+X-CSE-ConnectionGUID: 0Y3BCEZhS++GR2HGfhWYiQ==
+X-CSE-MsgGUID: qryDNBcFQZ2CFwctftukaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1844086"
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1946899"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 15:56:58 -0700
-X-CSE-ConnectionGUID: 47NJByKORP2a9ouAGCSZiw==
-X-CSE-MsgGUID: Eowt1B9AQoS9P7g39cH8WQ==
+   d="scan'208";a="1844086"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 16:09:23 -0700
+X-CSE-ConnectionGUID: 2pNB8aHzQb6DVHvFCDzqJA==
+X-CSE-MsgGUID: EjfxNES/QuKl/hZDbHfGbA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4998129"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 15:56:57 -0700
-Message-ID: <1e3230bc-800c-4862-9bb8-ff1074e76fc8@intel.com>
-Date: Tue, 27 Oct 2026 17:56:56 -0500
+   d="scan'208";a="5014929"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.170]) ([10.125.108.170])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 16:09:20 -0700
+Message-ID: <5f33aeed-a20d-4881-9ccf-a69bc308d348@intel.com>
+Date: Tue, 27 Oct 2026 16:09:19 -0700
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,164 +73,215 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 12/12] KVM: x86/pmu: Support RDPMC Metrics Clear Mode
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>, sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260918193937.569414-1-zide.chen@intel.com>
- <20260918193937.569414-13-zide.chen@intel.com>
- <20260918202200.F39971F000FF@smtp.kernel.org>
- <1de5af16-06a5-4b97-ba92-0a4ac02c32ff@linux.intel.com>
+Subject: Re: [PATCH RFC 00/20] attestation: Add a common subsystem and TDX
+ support
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, x86@kernel.org,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org, david.quigley@intel.com,
+ lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
+ cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
+ James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com,
+ qinkun@google.com, pgonda@google.com, jic23@kernel.org,
+ alistair.francis@wdc.com, ankita@nvidia.com, suzuki.poulose@arm.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, elena.reshetova@intel.com,
+ dave.hansen@linux.intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ peter.fang@intel.com
+References: <20261015145053.3664509-1-jiri@resnulli.us>
+ <592d643f-e97d-4de8-9a87-e47d57dc8457@intel.com>
+ <20261027193629.GK1685504@ziepe.ca>
+From: Dave Jiang <dave.jiang@intel.com>
 Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <1de5af16-06a5-4b97-ba92-0a4ac02c32ff@linux.intel.com>
+In-Reply-To: <20261027193629.GK1685504@ziepe.ca>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 9/21/2026 4:39 AM, Mi, Dapeng wrote:
+On 10/27/26 12:36 PM, Jason Gunthorpe wrote:
+> On Tue, Oct 27, 2026 at 11:43:04AM -0700, Dave Jiang wrote:
 > 
-> On 9/19/2026 4:22 AM, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
->> - [High] pmu: event filter mistakenly strips METRICS_CLEAR_EN from fixed_ctr_ctrl_hw
->> - [Medium] pmu: METRICS_CLEAR_EN unmasked without validating fixed counter bounds
->> - [Low] pmu: emulation incorrectly ties PERF_METRICS clearing to SLOTS PMC existence
->> --
->>
->> commit 8ba3725c32dbde4a1c3935cb433e898e06425b83
->> Author: Zide Chen <zide.chen@intel.com>
->>
->> KVM: x86/pmu: Support RDPMC Metrics Clear Mode
->>
->> This commit adds support for PERF_CAP_RDPMC_METRICS_CLEAR (bit 19 of
->> IA32_PERF_CAPABILITIES). It advertises this capability to guests when the
->> mediated PMU is enabled and the host reports it, unmasking the relevant
->> control bit. It also updates intel_emulate_rdpmc() to replicate the
->> clear-on-read behavior for consistency.
->>
->>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->>> index 98e2fb80347a1..3e5e8bae67ab0 100644
->>> --- a/arch/x86/kvm/vmx/pmu_intel.c
->>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->> [ ... ]
->>> @@ -138,6 +149,18 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
->>>  			return 1;
->>>  
->>>  		*data = pmu->perf_metrics;
->>> +
->>> +		/*
->>> +		 * Per the SDM, RDPMC of PERF_METRICS clears both PERF_METRICS
->>> +		 * and the SLOTS fixed counter when Metrics Clear Mode is
->>> +		 * enabled via INTEL_FIXED_3_METRICS_CLEAR in FIXED_CTR_CTRL.
->>> +		 */
->>> +		pmc = kvm_pmc_idx_to_pmc(pmu, INTEL_PMC_IDX_FIXED_SLOTS);
->>> +		if (pmc && intel_pmu_metrics_clear_enabled(pmu)) {
->>> +			pmu->perf_metrics = 0;
->>> +			pmc_write_counter(pmc, 0);
->>> +		}
->>> +
->> [Severity: Low]
->> Does tying the clearing of PERF_METRICS to the existence of the SLOTS PMC in
->> intel_emulate_rdpmc() violate the hardware specification?
->>
->> If the guest executes RDPMC natively and triggers an interception, and the
->> SLOTS counter is not exposed to the guest (making kvm_pmc_idx_to_pmc return
->> NULL), but METRICS_CLEAR_EN is enabled, this code silently skips clearing
->> PERF_METRICS.
->>
->> Should the clearing of pmu->perf_metrics be performed independently of whether
->> the software PMC object for the SLOTS counter exists?
->>
->>>  		return 0;
->>>  	default:
->>>  		return 1;
->> [ ... ]
->>> @@ -601,6 +624,11 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
->>>  						 INTEL_FIXED_0_USER |
->>>  						 INTEL_FIXED_0_ENABLE_PMI);
->>>  
->>> +	if (perf_capabilities & PERF_CAP_RDPMC_METRICS_CLEAR)
->>> +		pmu->fixed_ctr_ctrl_rsvd &=
->>> +			~intel_fixed_bits_by_idx(INTEL_FIXED_SLOTS_IDX,
->>> +						 INTEL_FIXED_3_METRICS_CLEAR);
->>> +
->> [Severity: Medium]
->> Does intel_pmu_refresh() unconditionally unmask the METRICS_CLEAR_EN bit
->> without verifying if the guest topology actually exposes the SLOTS counter?
->>
->> If a VM is configured with 3 or fewer fixed counters, this unmasking would
->> allow the unprivileged guest OS to write to bit 14 in
->> MSR_CORE_PERF_FIXED_CTR_CTRL without triggering the expected #GP.
->>
->> Should this be gated by checking if pmu->nr_arch_fixed_counters >
->> INTEL_FIXED_SLOTS_IDX?
+>> I built a proof of concept on your wip_attestation_all_1 branch with help of LLM
+>> for TDX Connect device attestation to see how it holds up, and wanted to share
+>> what I found.
 > 
-> This sounds like a real risk. Should we mask out PERF_METRICS from guest
-> PERF_CAPABILITIES in intel_pmu_refresh() if guest doesn't advertise fixed
-> counter 3?
-
-Yes, will checks the availability of guest FC3 in
-kvm_vcpu_has_perf_metrics() as well.
-
->>
->> [Severity: High]
->> Does this patch inadvertently cause event filters to strip the METRICS_CLEAR_EN
->> bit in kvm_mediated_pmu_refresh_event_filter()?
->>
->> When a host-level event filter denies the SLOTS counter (counter 3) from
->> counting, KVM applies a 0xf hardware mask that zeroes all 4 configuration bits
->> for the counter:
->>
->> arch/x86/kvm/pmu.c:kvm_mediated_pmu_refresh_event_filter() {
->> ...
->> 	} else {
->> 		u64 mask = intel_fixed_bits_by_idx(pmc->idx - KVM_FIXED_PMC_BASE_IDX, 0xf);
->>
->> 		pmu->fixed_ctr_ctrl_hw &= ~mask;
->> 		if (allowed)
->> 			pmu->fixed_ctr_ctrl_hw |= pmu->fixed_ctr_ctrl & mask;
->> 	}
->> }
->>
->> Since this mask covers the entire 4-bit configuration block, it will also clear
->> bit 14 (METRICS_CLEAR_EN) from hardware. If the guest sets METRICS_CLEAR_EN and
->> then executes RDPMC natively, it will lead to un-cleared stale metrics.
->>
->> Should the mask be updated to avoid interfering with this newly introduced
->> feature bit?
+> Nice!
 > 
-> This is another tricky corner case. The best way should be disabling
-> PERF_METRICS along with fixed counter 3. But Intel HW doesn't provide a way
-> to disable PERF_METRICS except the EN_PERF_METRICS bit in PERF_GLOBAL_CTRL.
-> Since PERF_GLOBAL_CTRL could be in pass-through mode and guest could
-> directly overwrite PERF_GLOBAL_CTRL, it becomes meaningless for KVM
-> clearing EN_PERF_METRICS bit for guest PERF_GLOBAL_CTRL.
-> 
-> For the filter mask, it may be good enough to only mask out
-> (INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER).
-
-Yes, the 0xf mask erroneously strips bit 14 (METRICS_CLEAR_EN).
-Since event filtering is only intended to prevent counter
-increments, mask out only (INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER) is
-sufficient, which also leaves the PMI enable bit intact.
-
-This also matches the GP counter handling, which only masks out the
-necessary enable bit and keep all other bits unchanged.
-
-@@ -557,7 +574,9 @@ static void
-kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
-                        pmc->eventsel_hw |= pmc->eventsel &
-                                            ARCH_PERFMON_EVENTSEL_ENABLE;
-        } else {
--               u64 mask = intel_fixed_bits_by_idx(pmc->idx -
-KVM_FIXED_PMC_BASE_IDX, 0xf);
-+               u64 mask = intel_fixed_bits_by_idx(pmc->idx -
-KVM_FIXED_PMC_BASE_IDX,
-+                                                  INTEL_FIXED_0_KERNEL |
-+                                                  INTEL_FIXED_0_USER);
-> 
+>> What I built:
 >>
->>>  	counter_rsvd = ~((BIT_ULL(pmu->nr_arch_gp_counters) - 1) |
->>>  			 ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
->>>  	pmu->global_ctrl_rsvd = counter_rsvd;
+>> - A ctlv-attestation-spdm family. As you proposed, the sysfs lock creates the
+>>   assigned-TDI attestation instance; in my version unlock removes it.
+>>   EVIDENCE_GET, EVIDENCE_ACCEPT, DEVSEC_STATE_GET and DEVSEC_RUN all go through
+>>   your ops.
+> 
+>> - A provider (a 'struct attestation_provider') that sits on top of PCI/TSM, so
+>>   any backend can use it. It serves the evidence PCI/TSM already publishes, and
+>>   asks the backend for a refresh when EVIDENCE_GET carries a challenge.
+>>
+>> I ran it in QEMU with the devsec sample TSM, and in a TDX Connect guest on real
+>> hardware with a real device. Both worked: lock, EVIDENCE_GET, DEVSEC_RUN
+>> refusing a device without a verdict, RUN, and unlock. My tree has out of tree
+>> code for TDX Connect to get things working.
+>>
+>> The model works well for device attestation. A few things came up that I think
+>> worth a look.
+>>
+>> 1. EVIDENCE_ACCEPT and DEVSEC_RUN take any evidence generation since the last
+>>    device change (attestation_evidence_validate()). Ranges would narrow that,
+>>    but they need measurement registers (attestation_ranges_required()), and a
+>>    device has none. So a verdict survives a refresh. In QEMU with the devsec
+>>    sample:
+>>
+>>      EVIDENCE_GET, empty challenge   -> evidence generation 1
+>>      EVIDENCE_GET, challenge c1      -> generation 2, measurements changed
+>>      EVIDENCE_ACCEPT generation 1    -> ok
+>>      EVIDENCE_GET, challenge c2      -> generation 3, measurements changed
+>>      DEVSEC_RUN generation 1         -> ok, device in RUN
+>>
+>>    Any process that can issue EVIDENCE_GET can do this between the appraisal and
+>>    DEVSEC_RUN, and the device runs on evidence nobody looked at.
+> 
+> We don't care about freshness of measurements. What we care about is
+> that the device has remained continuously locked while we are doing
+> this.
+> 
+> Generation should not have anything to do with the # of evidence
+> collected, it should be tied to the lock event. We do a lock and we
+> get a generation number. That number remains fixed and could be passed
+> into run as a minor sanity check.
+> 
+> However the real security work is in the kernel driver which is
+> required to actively detect/prevent any host tampering with LOCKED.
+> 
+> RMM does this with a trio of sequences counters maintained by the
+> kernel driver: lock_seq, meas_seq, report_seq
+> 
+> If the host tampers with things then the sequences computed by the
+> driver will not match those computed by the RMM and it will fail.
+> 
+> So, I don't care if we lock the device and then collect three
+> evidences for some reason. It is not the APIs problem to make sure
+> they are all the same, or that the one used for attestation is
+> "freshest". 
+> 
+> While locked the device is not supposed to change its measurements,
+> allowing that turns locked into complete security nonsense. How do you
+> know when the measurements stop changing to actually measure it?
+> 
+> The only point here is to collect some evidence that represents the
+> start time of a continuous period of exclusive guest control.
+> 
+> Have I got this wrong somehow?
 
+You have it mostly right. The devsec sample has no real measurements. Its
+refresh only puts the new nonce into a fake request, so the "measurements
+changed" lines just reflect the nonce. I'm dropping the
+attestation_evidence_replaced() idea.
+
+There are two issues for TDX Connect. One, the device info is collected at
+SPDM connect (TDH.SPDM.CONNECT), not at lock. TDH.TDI.BIND only returns the
+interface report. So the measurements a TD sees at lock can be from well
+before the lock. To get measurements taken after the bind, the TD has to
+ask the VMM for a recollection with its own nonce.
+
+Second, a device may take a runtime firmware update of equal or higher SVN
+while its TDIs stay locked, unless the lock sets NO_FW_UPDATE. The TD isn't
+told when that happens. The VMM picks the lock flags, and INTERFACE_INFO
+bit 0 in the interface report tells the TD whether updates are permitted
+while locked. Currently our host passes no lock flags and nothing in the
+guest checks that bit.
+
+With NO_FW_UPDATE set and the evidence collected after the bind, tying the
+generation to the lock works for me.
+
+On the RMM sequence counters, I don't think TDX has an equivalent set. What it
+has is a bind session ID. The TD reads it after the bind, and TDG.TDI.START
+only succeeds with that same ID. Before START the TD checks the device info and
+report against the TDX Module's digests. After START it relies on the state the
+TDX Module tracks, which can lag as I mentioned.
+
+> 
+>> 2. TDX Connect (maybe others) does not raise an event when a device drops out of
+>>    RUN. The provider only finds out when it asks, and on TDX even that answer
+>>    can lag. The guest reads the state the TDX Module last saw in a TDISP
+>>    response. A function level reset, for example, moves a locked TDI to ERROR,
+>>    but the guest keeps reading CONFIG_LOCKED until the TDX Module sees another
+>>    TDISP response, such as when the host asks the device for its state.
+> 
+> Yeah, I bet this is common.
+> 
+>>    Could the core add a version of attestation_state_changed() that a provider
+>>    can call while the op already holds the lock? Or let the provider flag the
+>>    change, and have the core send the notification once the op drops the lock?
+> 
+> Sounds right to me
+>  
+>> 3. Jason asked on 14/20 whether anyone needs a variable-length challenge. I
+>>    don't think devices need a range. A plain read sends an empty challenge, and
+>>    an SPDM GET_MEASUREMENTS nonce is "NL = 32 or 0". Your TDX provider always
+>>    takes 64 (attestation_tdx_evidence_caps).
+> 
+>>    A device needs exactly two lengths: 0 for a plain read and 32 for a refresh.
+>>    struct attestation_evidence_caps only holds a single min/max range. It's
+>>    checked on every request in attestation_evidence_request_decode(), and any
+>>    range that allows both 0 and 32 also allows everything in between.
+>>
+>>    To work around that, my provider declares 0-64 and PCI/TSM rejects any length
+>>    other than the backend's nonce size, 32 for both backends I ran. Could the
+>>    caps give one exact challenge length instead of a range, plus a flag that
+>>    also allows an empty challenge? A device provider would set 32 with the flag,
+>>    and your TDX provider 64 without it.
+> 
+> I'd expect to be able to learn the exact nonce sice that the challenge
+> can support. It should probably be a list not a range, then you could
+> include 0 for SPDM..
+
+A list works for me. It covers 0 and 32 for a device, 64 for TDX, and other
+sizes later.
+
+> 
+> And maybe other lens if we do crypto agility here or something.
+> 
+> The challenge is formed into the returned token so it is a kind of
+> ABI and we don't want things like transparent 0 pad or something, so
+> userspace does have to know..
+> 
+>> 4. EVIDENCE_GET rejects any buffer smaller than max_length
+>>    (attestation_evidence_decode_objects()), so userspace has to allocate for the
+>>    worst case. Aneesh's provider declares 16M per certificate chain, so every
+>>    read needs a 16M buffer. Could EVIDENCE_GET take a smaller buffer and return
+>>    the length it needs, or offer a way to ask for the size?
+> 
+> Makes sense, this is also where someday having the memfd as an option
+> might be nice since it could be dynamicaly sized by the kernel
+>  
+>> 5. evidence.challenge is a required attr of evidence-request, so a plain read
+>>    has to send an empty one ("hex:" in Aneesh's example). Could it be optional?
+> 
+> I'm a bit puzzled by this optional challenge concept, I haven't tried
+> to read SPDM spec yet, but it really has a way to omit the challenge
+> from the reply? It doesn't just replace it with 0 or something?
+
+SPDM puts the requester's nonce in the GET_MEASUREMENTS request, and only when
+the request asks for a signature. The MEASUREMENTS response always carries the
+responder's own nonce, and the signature covers the request too. An unsigned
+request has no nonce and gets an unsigned response.
+
+The empty challenge in my provider means something else though: don't
+recollect, return the evidence collected earlier. So it's less "omit the
+nonce" and more "no new collection". Maybe that's better as an explicit flag
+than an empty challenge?
+
+>  
+>> 6. tdx_attestation_test's discovery_and_construction_fields expects an
+>>    inheritance chain of 4, but the TDX family inherits ctlv-attestation
+>>    directly, which gives 3. In a real TDX guest it fails with
+>>    "Expected 4 (4) == ctlv_chain_len(self->dev) (3)".
+> 
+> I would have naively guessed this should inherent from some SPDM family?
+
+The TDX family is the TD's own attestation (TD report, Quote and RTMRs), with
+no device or SPDM in it. In wip_attestation_all_1 it inherits ctlv-attestation
+directly, so I think the test's 4 is what's stale. Jiri would know for sure.
+
+DJ
